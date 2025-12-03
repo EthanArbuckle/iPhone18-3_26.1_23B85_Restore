@@ -1,137 +1,137 @@
 @interface PUImportViewController
-+ (id)totalSizeStringForItems:(id)a3;
++ (id)totalSizeStringForItems:(id)items;
 + (unsigned)defaultThumbnailImageFormat;
-- (BOOL)_isItemVisibleAtIndex:(id)a3;
+- (BOOL)_isItemVisibleAtIndex:(id)index;
 - (BOOL)anyAlreadyImportedItemsAreSelected;
-- (BOOL)areAllItemsSelectedInAssetCollection:(id)a3;
-- (BOOL)canBeginDoubleTapGesture:(id)a3;
-- (BOOL)canBeginSwipeSelectionAtScrollViewLocation:(CGPoint)a3;
+- (BOOL)areAllItemsSelectedInAssetCollection:(id)collection;
+- (BOOL)canBeginDoubleTapGesture:(id)gesture;
+- (BOOL)canBeginSwipeSelectionAtScrollViewLocation:(CGPoint)location;
 - (BOOL)canDragOut;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)importSectionedGridLayout:(id)a3 shouldEmphasizeSection:(unint64_t)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)importSectionedGridLayout:(id)layout shouldEmphasizeSection:(unint64_t)section;
 - (BOOL)importSourceIsAppleDevice;
 - (BOOL)isEmpty;
 - (BOOL)isImporting;
-- (BOOL)sectionHeadersCoverLocation:(CGPoint)a3;
-- (BOOL)swipeSelectionManagerIsInMultiSelectMode:(id)a3;
+- (BOOL)sectionHeadersCoverLocation:(CGPoint)location;
+- (BOOL)swipeSelectionManagerIsInMultiSelectMode:(id)mode;
 - (BOOL)updateSpec;
 - (BOOL)wantsPlaceholderView;
-- (CGRect)imageRectFromPhotoView:(id)a3;
+- (CGRect)imageRectFromPhotoView:(id)view;
 - (CGSize)_cachedViewSizeTransitionContextSize;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
 - (CGSize)gridItemSize;
 - (PHImportSource)importSource;
-- (PUImportViewController)initWithSpec:(id)a3 photoLibrary:(id)a4;
-- (PXSimpleIndexPath)selectionIndexPathForItem:(SEL)a3;
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathAtLocation:(id)a4;
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathClosestAboveLocation:(id)a4;
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathClosestLeadingLocation:(id)a4;
+- (PUImportViewController)initWithSpec:(id)spec photoLibrary:(id)library;
+- (PXSimpleIndexPath)selectionIndexPathForItem:(SEL)item;
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathAtLocation:(id)location;
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathClosestAboveLocation:(id)location;
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathClosestLeadingLocation:(id)location;
 - (UIEdgeInsets)collectionViewSafeAreaInsets;
-- (double)sectionedGridLayout:(id)a3 accessibilitySectionHeaderHeightForVisualSection:(int64_t)a4;
-- (double)sectionedGridLayout:(id)a3 aspectRatioForItemAtIndexPath:(id)a4;
-- (double)sectionedGridLayout:(id)a3 sectionHeaderHeightForVisualSection:(int64_t)a4;
+- (double)sectionedGridLayout:(id)layout accessibilitySectionHeaderHeightForVisualSection:(int64_t)section;
+- (double)sectionedGridLayout:(id)layout aspectRatioForItemAtIndexPath:(id)path;
+- (double)sectionedGridLayout:(id)layout sectionHeaderHeightForVisualSection:(int64_t)section;
 - (id)_bestReferenceItemIndexPath;
 - (id)_createSubtitleText;
 - (id)_gridLayout;
-- (id)_newGridLayoutFromSpec:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)_newGridLayoutFromSpec:(id)spec;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)deleteButtonItem;
-- (id)importDestinationForActionCoordinator:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)importDestinationForActionCoordinator:(id)coordinator;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (id)newGridLayout;
-- (id)oneUpViewControllerForItemAtIndexPath:(id)a3;
+- (id)oneUpViewControllerForItemAtIndexPath:(id)path;
 - (id)px_navigationDestination;
-- (int64_t)_titleViewVerticalSizeClassForExtendedTraitCollection:(id)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)contentFillModeForImportCell:(id)a3;
-- (int64_t)importCell:(id)a3 requestImageForImportItem:(id)a4 ofSize:(unint64_t)a5 completion:(id)a6;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (unint64_t)routingOptionsForDestination:(id)a3;
+- (int64_t)_titleViewVerticalSizeClassForExtendedTraitCollection:(id)collection;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)contentFillModeForImportCell:(id)cell;
+- (int64_t)importCell:(id)cell requestImageForImportItem:(id)item ofSize:(unint64_t)size completion:(id)completion;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (unint64_t)routingOptionsForDestination:(id)destination;
 - (void)_beginImport;
 - (void)_beginUninterruptibleOperation;
 - (void)_cancelAlerts;
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3;
-- (void)_deleteItems:(id)a3;
-- (void)_deselectCell:(id)a3;
-- (void)_dismissPopupsAnimated:(BOOL)a3;
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification;
+- (void)_deleteItems:(id)items;
+- (void)_deselectCell:(id)cell;
+- (void)_dismissPopupsAnimated:(BOOL)animated;
 - (void)_endImport;
 - (void)_endUninterruptibleOperation;
-- (void)_getDataForVisualSection:(int64_t)a3 hasActionButton:(BOOL *)a4 title:(id *)a5 startDate:(id *)a6 endDate:(id *)a7;
+- (void)_getDataForVisualSection:(int64_t)section hasActionButton:(BOOL *)button title:(id *)title startDate:(id *)date endDate:(id *)endDate;
 - (void)_importControllerDidEndAction;
 - (void)_importControllerWillBeginAction;
 - (void)_invalidateCachedViewSizeTransitionContext;
-- (void)_navigateToPhotoAtIndexPath:(id)a3 animated:(BOOL)a4 interactive:(BOOL)a5;
-- (void)_selectCell:(id)a3;
-- (void)_setCollectionViewLayoutReferenceWidth:(double)a3;
-- (void)_setCollectionViewSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)_updateBackdropGroupNameForHeaderView:(id)a3;
-- (void)_updateCell:(id)a3 atIndex:(id)a4;
+- (void)_navigateToPhotoAtIndexPath:(id)path animated:(BOOL)animated interactive:(BOOL)interactive;
+- (void)_selectCell:(id)cell;
+- (void)_setCollectionViewLayoutReferenceWidth:(double)width;
+- (void)_setCollectionViewSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)_updateBackdropGroupNameForHeaderView:(id)view;
+- (void)_updateCell:(id)cell atIndex:(id)index;
 - (void)_updateContentOffsetForPendingViewSizeTransition;
-- (void)_updateItemViewAtIndex:(id)a3;
+- (void)_updateItemViewAtIndex:(id)index;
 - (void)_updateLayoutMetrics;
-- (void)_updateToolbarAnimated:(BOOL)a3;
-- (void)actionCoordinator:(id)a3 didCompleteWithImportSession:(id)a4 results:(id)a5;
-- (void)actionCoordinatorDidEndDelete:(id)a3;
-- (void)actionCoordinatorWillBeginDelete:(id)a3;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)configureSupplementaryView:(id)a3 ofKind:(id)a4 forIndexPath:(id)a5;
+- (void)_updateToolbarAnimated:(BOOL)animated;
+- (void)actionCoordinator:(id)coordinator didCompleteWithImportSession:(id)session results:(id)results;
+- (void)actionCoordinatorDidEndDelete:(id)delete;
+- (void)actionCoordinatorWillBeginDelete:(id)delete;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)configureSupplementaryView:(id)view ofKind:(id)kind forIndexPath:(id)path;
 - (void)dealloc;
-- (void)delete:(id)a3;
+- (void)delete:(id)delete;
 - (void)disableSwipeSelection;
 - (void)enableSwipeSelection;
-- (void)getEmptyPlaceholderViewTitle:(id *)a3 message:(id *)a4 buttonTitle:(id *)a5 buttonAction:(id *)a6;
-- (void)handleDoubleTapGesture:(id)a3;
-- (void)handleImportCompleteAlertResponse:(__CFUserNotification *)a3 flags:(unint64_t)a4;
-- (void)handleLongPressGesture:(id)a3;
-- (void)handleNewDataSource:(id)a3;
-- (void)handleTapGesture:(id)a3;
-- (void)handleTouchEvent:(int64_t)a3 forCell:(id)a4;
-- (void)headerViewDidPressActionButton:(id)a3 inHeaderView:(id)a4;
-- (void)importCell:(id)a3 didRequestCancellationOfThumbnailRequestWithID:(int64_t)a4;
-- (void)importController:(id)a3 didCompleteImportWithImportSession:(id)a4 results:(id)a5 completion:(id)a6;
-- (void)importController:(id)a3 didLoadAssets:(id)a4 exceptions:(id)a5;
-- (void)importControllerProgressDidChange:(id)a3;
+- (void)getEmptyPlaceholderViewTitle:(id *)title message:(id *)message buttonTitle:(id *)buttonTitle buttonAction:(id *)action;
+- (void)handleDoubleTapGesture:(id)gesture;
+- (void)handleImportCompleteAlertResponse:(__CFUserNotification *)response flags:(unint64_t)flags;
+- (void)handleLongPressGesture:(id)gesture;
+- (void)handleNewDataSource:(id)source;
+- (void)handleTapGesture:(id)gesture;
+- (void)handleTouchEvent:(int64_t)event forCell:(id)cell;
+- (void)headerViewDidPressActionButton:(id)button inHeaderView:(id)view;
+- (void)importCell:(id)cell didRequestCancellationOfThumbnailRequestWithID:(int64_t)d;
+- (void)importController:(id)controller didCompleteImportWithImportSession:(id)session results:(id)results completion:(id)completion;
+- (void)importController:(id)controller didLoadAssets:(id)assets exceptions:(id)exceptions;
+- (void)importControllerProgressDidChange:(id)change;
 - (void)installGestureRecognizers;
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)navigateToRectEdge:(unsigned int)a3 animated:(BOOL)a4;
-- (void)notifyUserOfImportCompletionIfNeededWithImportSession:(id)a3 results:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)presentOneUpViewController:(id)a3 animated:(BOOL)a4 interactive:(BOOL)a5;
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
+- (void)navigateToRectEdge:(unsigned int)edge animated:(BOOL)animated;
+- (void)notifyUserOfImportCompletionIfNeededWithImportSession:(id)session results:(id)results;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)presentOneUpViewController:(id)controller animated:(BOOL)animated interactive:(BOOL)interactive;
 - (void)reloadData;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 - (void)selectAllSelectableItems;
-- (void)setAllItemsSelected:(BOOL)a3 inAssetCollection:(id)a4;
-- (void)setImportController:(id)a3;
-- (void)setImportDataSource:(id)a3;
-- (void)setImportDataSourceManager:(id)a3;
-- (void)setImportSource:(id)a3;
-- (void)setUnfilteredImportDataSourceManager:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)stayScrolledToBottomIfAtBottomAfterDrag:(id)a3;
-- (void)stopImport:(id)a3;
+- (void)setAllItemsSelected:(BOOL)selected inAssetCollection:(id)collection;
+- (void)setImportController:(id)controller;
+- (void)setImportDataSource:(id)source;
+- (void)setImportDataSourceManager:(id)manager;
+- (void)setImportSource:(id)source;
+- (void)setUnfilteredImportDataSourceManager:(id)manager;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)stayScrolledToBottomIfAtBottomAfterDrag:(id)drag;
+- (void)stopImport:(id)import;
 - (void)toggleAlreadyImportedExpansion;
-- (void)transitionFromDataSource:(id)a3 toDataSource:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
+- (void)transitionFromDataSource:(id)source toDataSource:(id)dataSource animated:(BOOL)animated completionHandler:(id)handler;
 - (void)uninstallGestureRecognizers;
 - (void)updateAlreadyImportedCollapseStatus;
 - (void)updateAlreadyImportedHeaderIfVisible;
 - (void)updateDataSourceManagerFilters;
-- (void)updateHeaderView:(id)a3 forAlreadyImportedAssetCollection:(id)a4;
-- (void)updateHeaderView:(id)a3 forAssetCollection:(id)a4;
-- (void)updateNavigationBarAnimated:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateHeaderView:(id)view forAlreadyImportedAssetCollection:(id)collection;
+- (void)updateHeaderView:(id)view forAssetCollection:(id)collection;
+- (void)updateNavigationBarAnimated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PUImportViewController
@@ -160,14 +160,14 @@
 
 - (id)px_navigationDestination
 {
-  v3 = [(PUImportViewController *)self importSource];
-  v4 = [v3 uuid];
+  importSource = [(PUImportViewController *)self importSource];
+  uuid = [importSource uuid];
 
-  if (v4)
+  if (uuid)
   {
     v5 = objc_alloc(MEMORY[0x1E69C3930]);
-    v6 = [(PUImportViewController *)self importSource];
-    v7 = [v5 initWithImportSource:v6 revealMode:0];
+    importSource2 = [(PUImportViewController *)self importSource];
+    v7 = [v5 initWithImportSource:importSource2 revealMode:0];
   }
 
   else
@@ -178,10 +178,10 @@
   return v7;
 }
 
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = a5;
-  if ([(PUImportViewController *)self routingOptionsForDestination:a3])
+  handlerCopy = handler;
+  if ([(PUImportViewController *)self routingOptionsForDestination:destination])
   {
     v7 = 1;
   }
@@ -191,18 +191,18 @@
     v7 = 2;
   }
 
-  v8[2](v8, v7, 0);
+  handlerCopy[2](handlerCopy, v7, 0);
 }
 
-- (unint64_t)routingOptionsForDestination:(id)a3
+- (unint64_t)routingOptionsForDestination:(id)destination
 {
-  v4 = a3;
-  if ([v4 type] == 21)
+  destinationCopy = destination;
+  if ([destinationCopy type] == 21)
   {
-    v5 = [(PUImportViewController *)self importSource];
-    v6 = [v5 uuid];
-    v7 = [v4 importSourceUUID];
-    v8 = [v6 isEqual:v7];
+    importSource = [(PUImportViewController *)self importSource];
+    uuid = [importSource uuid];
+    importSourceUUID = [destinationCopy importSourceUUID];
+    v8 = [uuid isEqual:importSourceUUID];
   }
 
   else
@@ -213,30 +213,30 @@
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXSwipeSelectionManager *)self->_swipeSelectionManager gesturesForFailureRequirements];
-  if ([v8 containsObject:v6])
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  gesturesForFailureRequirements = [(PXSwipeSelectionManager *)self->_swipeSelectionManager gesturesForFailureRequirements];
+  if ([gesturesForFailureRequirements containsObject:recognizerCopy])
   {
-    v9 = [(PUPhotosGridViewController *)self photoOrStackPinchGestureRecognizer];
+    photoOrStackPinchGestureRecognizer = [(PUPhotosGridViewController *)self photoOrStackPinchGestureRecognizer];
 
-    if (v9 != v7)
+    if (photoOrStackPinchGestureRecognizer != gestureRecognizerCopy)
     {
-      v10 = [(PXSwipeSelectionManager *)self->_swipeSelectionManager state];
-      v11 = v10 != 0;
+      state = [(PXSwipeSelectionManager *)self->_swipeSelectionManager state];
+      v11 = state != 0;
       v12 = _importGridLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        v17 = [(PXSwipeSelectionManager *)self->_swipeSelectionManager state];
+        state2 = [(PXSwipeSelectionManager *)self->_swipeSelectionManager state];
         v18 = 136315650;
         v19 = "[PUImportViewController gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:]";
         v20 = 2048;
-        v21 = v10 != 0;
+        v21 = state != 0;
         v22 = 2048;
-        v23 = v17;
+        v23 = state2;
         _os_log_debug_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_DEBUG, "%s: shouldRecognize returning %ld(swipe state %ld)", &v18, 0x20u);
       }
 
@@ -248,13 +248,13 @@
   {
   }
 
-  v13 = [(PUPhotosGridViewController *)self photoOrStackPinchGestureRecognizer];
-  v14 = v13;
-  if (v13 == v6)
+  photoOrStackPinchGestureRecognizer2 = [(PUPhotosGridViewController *)self photoOrStackPinchGestureRecognizer];
+  v14 = photoOrStackPinchGestureRecognizer2;
+  if (photoOrStackPinchGestureRecognizer2 == recognizerCopy)
   {
-    v15 = [(PUPhotosGridViewController *)self longPressGestureRecognizer];
+    longPressGestureRecognizer = [(PUPhotosGridViewController *)self longPressGestureRecognizer];
 
-    if (v15 == v7)
+    if (longPressGestureRecognizer == gestureRecognizerCopy)
     {
       v11 = 1;
       goto LABEL_11;
@@ -271,25 +271,25 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if (self->_tapGestureRecognizer == v4)
+  beginCopy = begin;
+  if (self->_tapGestureRecognizer == beginCopy)
   {
     goto LABEL_6;
   }
 
-  v5 = [(PUPhotosGridViewController *)self longPressGestureRecognizer];
+  longPressGestureRecognizer = [(PUPhotosGridViewController *)self longPressGestureRecognizer];
 
-  if (v5 == v4)
+  if (longPressGestureRecognizer == beginCopy)
   {
     LODWORD(self) = ![(PUImportViewController *)self isPeeking];
     goto LABEL_9;
   }
 
-  v6 = [(PUPhotosGridViewController *)self photoOrStackPinchGestureRecognizer];
+  photoOrStackPinchGestureRecognizer = [(PUPhotosGridViewController *)self photoOrStackPinchGestureRecognizer];
 
-  if (v6 == v4)
+  if (photoOrStackPinchGestureRecognizer == beginCopy)
   {
 LABEL_6:
     LOBYTE(self) = 1;
@@ -297,19 +297,19 @@ LABEL_6:
 
   else
   {
-    v7 = [(PUImportViewController *)self doubleTapGestureRecognizer];
+    doubleTapGestureRecognizer = [(PUImportViewController *)self doubleTapGestureRecognizer];
 
-    if (v7 == v4)
+    if (doubleTapGestureRecognizer == beginCopy)
     {
-      v8 = [(PUImportViewController *)self doubleTapGestureRecognizer];
-      LOBYTE(self) = [(PUImportViewController *)self canBeginDoubleTapGesture:v8];
+      doubleTapGestureRecognizer2 = [(PUImportViewController *)self doubleTapGestureRecognizer];
+      LOBYTE(self) = [(PUImportViewController *)self canBeginDoubleTapGesture:doubleTapGestureRecognizer2];
     }
 
     else
     {
       v10.receiver = self;
       v10.super_class = PUImportViewController;
-      LOBYTE(self) = [(PUPhotosGridViewController *)&v10 gestureRecognizerShouldBegin:v4];
+      LOBYTE(self) = [(PUPhotosGridViewController *)&v10 gestureRecognizerShouldBegin:beginCopy];
     }
   }
 
@@ -323,14 +323,14 @@ LABEL_9:
   v7.receiver = self;
   v7.super_class = PUImportViewController;
   [(PUPhotosGridViewController *)&v7 uninstallGestureRecognizers];
-  v3 = [(UITapGestureRecognizer *)self->_tapGestureRecognizer view];
-  [v3 removeGestureRecognizer:self->_tapGestureRecognizer];
+  view = [(UITapGestureRecognizer *)self->_tapGestureRecognizer view];
+  [view removeGestureRecognizer:self->_tapGestureRecognizer];
 
   tapGestureRecognizer = self->_tapGestureRecognizer;
   self->_tapGestureRecognizer = 0;
 
-  v5 = [(UITapGestureRecognizer *)self->_doubleTapGestureRecognizer view];
-  [v5 removeGestureRecognizer:self->_doubleTapGestureRecognizer];
+  view2 = [(UITapGestureRecognizer *)self->_doubleTapGestureRecognizer view];
+  [view2 removeGestureRecognizer:self->_doubleTapGestureRecognizer];
 
   doubleTapGestureRecognizer = self->_doubleTapGestureRecognizer;
   self->_doubleTapGestureRecognizer = 0;
@@ -341,7 +341,7 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = PUImportViewController;
   [(PUPhotosGridViewController *)&v8 installGestureRecognizers];
-  v3 = [(PUImportViewController *)self view];
+  view = [(PUImportViewController *)self view];
   if (!self->_tapGestureRecognizer)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleTapGesture_];
@@ -349,7 +349,7 @@ LABEL_9:
     self->_tapGestureRecognizer = v4;
 
     [(UITapGestureRecognizer *)self->_tapGestureRecognizer setDelegate:self];
-    [v3 addGestureRecognizer:self->_tapGestureRecognizer];
+    [view addGestureRecognizer:self->_tapGestureRecognizer];
   }
 
   if (!self->_doubleTapGestureRecognizer)
@@ -360,27 +360,27 @@ LABEL_9:
 
     [(UITapGestureRecognizer *)self->_doubleTapGestureRecognizer setDelegate:self];
     [(UITapGestureRecognizer *)self->_doubleTapGestureRecognizer setNumberOfTapsRequired:2];
-    [v3 addGestureRecognizer:self->_doubleTapGestureRecognizer];
+    [view addGestureRecognizer:self->_doubleTapGestureRecognizer];
   }
 }
 
-- (PXSimpleIndexPath)selectionIndexPathForItem:(SEL)a3
+- (PXSimpleIndexPath)selectionIndexPathForItem:(SEL)item
 {
   v6 = a4;
   if (v6)
   {
     v13 = v6;
-    v7 = [(PUImportViewController *)self importController];
-    v8 = [v7 selectionManager];
+    importController = [(PUImportViewController *)self importController];
+    selectionManager = [importController selectionManager];
 
-    v9 = [v8 dataSourceManager];
-    v10 = [v9 dataSource];
+    dataSourceManager = [selectionManager dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
 
     *&retstr->var0 = 0u;
     *&retstr->var2 = 0u;
-    if (v10)
+    if (dataSource)
     {
-      [v10 itemIndexPathForItem:v13];
+      [dataSource itemIndexPathForItem:v13];
     }
 
     v6 = v13;
@@ -396,18 +396,18 @@ LABEL_9:
   return result;
 }
 
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathClosestAboveLocation:(id)a4
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathClosestAboveLocation:(id)location
 {
   y = a5.y;
   x = a5.x;
   v30 = *MEMORY[0x1E69E9840];
-  v9 = [(PUPhotosGridViewController *)self contentScrollView];
-  v10 = [(PUImportViewController *)self collectionView];
-  [v9 convertPoint:v10 fromView:{x, y}];
+  contentScrollView = [(PUPhotosGridViewController *)self contentScrollView];
+  collectionView = [(PUImportViewController *)self collectionView];
+  [contentScrollView convertPoint:collectionView fromView:{x, y}];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(PUImportViewController *)self importDataSource];
+  importDataSource = [(PUImportViewController *)self importDataSource];
   v27 = 0;
   v28 = 0;
   v16 = [(PUPhotosGridViewController *)self itemIndexPathAtPoint:0 outClosestMatch:&v28 outLeftClosestMatch:&v27 outAboveClosestMatch:v12, v14];
@@ -415,7 +415,7 @@ LABEL_9:
   v18 = v27;
   v25 = 0u;
   *&v26 = 0;
-  [v15 identifier];
+  [importDataSource identifier];
   PXSimpleIndexPathFromIndexPath();
   v19 = 0;
   v20 = *MEMORY[0x1E69C4880];
@@ -423,7 +423,7 @@ LABEL_9:
   if (*MEMORY[0x1E69C4880])
   {
     memset(buf, 0, 32);
-    v19 = [v15 assetAtItemIndexPath:buf];
+    v19 = [importDataSource assetAtItemIndexPath:buf];
     if (([v19 isSelectable] & 1) == 0)
     {
       v25 = *v21;
@@ -454,18 +454,18 @@ LABEL_9:
   return result;
 }
 
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathClosestLeadingLocation:(id)a4
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathClosestLeadingLocation:(id)location
 {
   y = a5.y;
   x = a5.x;
   v30 = *MEMORY[0x1E69E9840];
-  v9 = [(PUPhotosGridViewController *)self contentScrollView];
-  v10 = [(PUImportViewController *)self collectionView];
-  [v9 convertPoint:v10 fromView:{x, y}];
+  contentScrollView = [(PUPhotosGridViewController *)self contentScrollView];
+  collectionView = [(PUImportViewController *)self collectionView];
+  [contentScrollView convertPoint:collectionView fromView:{x, y}];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(PUImportViewController *)self importDataSource];
+  importDataSource = [(PUImportViewController *)self importDataSource];
   v27 = 0;
   v28 = 0;
   v16 = [(PUPhotosGridViewController *)self itemIndexPathAtPoint:0 outClosestMatch:&v28 outLeftClosestMatch:&v27 outAboveClosestMatch:v12, v14];
@@ -473,7 +473,7 @@ LABEL_9:
   v18 = v27;
   v25 = 0u;
   *&v26 = 0;
-  [v15 identifier];
+  [importDataSource identifier];
   PXSimpleIndexPathFromIndexPath();
   v19 = 0;
   v20 = *MEMORY[0x1E69C4880];
@@ -481,7 +481,7 @@ LABEL_9:
   if (*MEMORY[0x1E69C4880])
   {
     memset(buf, 0, 32);
-    v19 = [v15 assetAtItemIndexPath:buf];
+    v19 = [importDataSource assetAtItemIndexPath:buf];
     if (([v19 isSelectable] & 1) == 0)
     {
       v25 = *v21;
@@ -512,26 +512,26 @@ LABEL_9:
   return result;
 }
 
-- (PXSimpleIndexPath)swipeSelectionManager:(SEL)a3 itemIndexPathAtLocation:(id)a4
+- (PXSimpleIndexPath)swipeSelectionManager:(SEL)manager itemIndexPathAtLocation:(id)location
 {
   y = a5.y;
   x = a5.x;
   v24 = *MEMORY[0x1E69E9840];
-  v9 = [(PUImportViewController *)self collectionView];
-  v10 = [v9 indexPathForItemAtPoint:{x, y}];
+  collectionView = [(PUImportViewController *)self collectionView];
+  v10 = [collectionView indexPathForItemAtPoint:{x, y}];
 
   if (v10)
   {
-    v11 = [(PUImportViewController *)self importDataSource];
+    importDataSource = [(PUImportViewController *)self importDataSource];
     v19 = 0u;
     *&v20 = 0;
-    [v11 identifier];
+    [importDataSource identifier];
     PXSimpleIndexPathFromIndexPath();
     memset(buf, 0, sizeof(buf));
-    v12 = [v11 assetAtItemIndexPath:buf];
-    v13 = [v12 isSelectable];
+    v12 = [importDataSource assetAtItemIndexPath:buf];
+    isSelectable = [v12 isSelectable];
     v14 = MEMORY[0x1E69C48E8];
-    if ((v13 & 1) == 0)
+    if ((isSelectable & 1) == 0)
     {
       v19 = *MEMORY[0x1E69C48E8];
       v20 = *(MEMORY[0x1E69C48E8] + 16);
@@ -547,7 +547,7 @@ LABEL_9:
       *&buf[22] = 2048;
       *&buf[24] = v20;
       v22 = 1024;
-      v23 = v13;
+      v23 = isSelectable;
       _os_log_debug_impl(&dword_1B36F3000, v15, OS_LOG_TYPE_DEBUG, "%s: [%ld, %ld] (selectable: %d)", buf, 0x26u);
     }
 
@@ -570,10 +570,10 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)swipeSelectionManagerIsInMultiSelectMode:(id)a3
+- (BOOL)swipeSelectionManagerIsInMultiSelectMode:(id)mode
 {
-  v3 = [(PUImportViewController *)self swipeSelectionManager];
-  v4 = v3 != 0;
+  swipeSelectionManager = [(PUImportViewController *)self swipeSelectionManager];
+  v4 = swipeSelectionManager != 0;
 
   return v4;
 }
@@ -593,13 +593,13 @@ LABEL_9:
 {
   if (!self->_swipeSelectionManager)
   {
-    v7 = [(PUPhotosGridViewController *)self contentScrollView];
-    v3 = [(PUImportViewController *)self importController];
-    v4 = [v3 selectionManager];
+    contentScrollView = [(PUPhotosGridViewController *)self contentScrollView];
+    importController = [(PUImportViewController *)self importController];
+    selectionManager = [importController selectionManager];
 
-    if (v4 && v7)
+    if (selectionManager && contentScrollView)
     {
-      v5 = [objc_alloc(MEMORY[0x1E69A2918]) initWithSelectionManager:v4 scrollView:v7];
+      v5 = [objc_alloc(MEMORY[0x1E69A2918]) initWithSelectionManager:selectionManager scrollView:contentScrollView];
       swipeSelectionManager = self->_swipeSelectionManager;
       self->_swipeSelectionManager = v5;
 
@@ -608,19 +608,19 @@ LABEL_9:
   }
 }
 
-- (BOOL)canBeginSwipeSelectionAtScrollViewLocation:(CGPoint)a3
+- (BOOL)canBeginSwipeSelectionAtScrollViewLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = [(PUImportViewController *)self importController];
-  if ([v6 isImportingAssets])
+  importController = [(PUImportViewController *)self importController];
+  if ([importController isImportingAssets])
   {
     goto LABEL_4;
   }
 
-  v7 = [(PUImportViewController *)self importController];
-  if ([v7 isDeletingAssets])
+  importController2 = [(PUImportViewController *)self importController];
+  if ([importController2 isDeletingAssets])
   {
 
 LABEL_4:
@@ -629,21 +629,21 @@ LABEL_5:
     return v8;
   }
 
-  v10 = [(PUImportViewController *)self presentedViewController];
+  presentedViewController = [(PUImportViewController *)self presentedViewController];
 
-  if (v10)
+  if (presentedViewController)
   {
     goto LABEL_5;
   }
 
-  v11 = [(PUPhotosGridViewController *)self contentScrollView];
-  v12 = [(PUImportViewController *)self collectionView];
-  v13 = [v12 indexPathForItemAtPoint:{x, y}];
+  contentScrollView = [(PUPhotosGridViewController *)self contentScrollView];
+  collectionView = [(PUImportViewController *)self collectionView];
+  v13 = [collectionView indexPathForItemAtPoint:{x, y}];
 
-  v14 = [(PUImportViewController *)self collectionView];
-  v15 = [v14 cellForItemAtIndexPath:v13];
+  collectionView2 = [(PUImportViewController *)self collectionView];
+  v15 = [collectionView2 cellForItemAtIndexPath:v13];
 
-  [v11 convertPoint:v15 toView:{x, y}];
+  [contentScrollView convertPoint:v15 toView:{x, y}];
   v8 = [v15 shouldBeginGestureForPoint:?];
   v16 = _importGridLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -658,63 +658,63 @@ LABEL_5:
   return v8;
 }
 
-- (void)stayScrolledToBottomIfAtBottomAfterDrag:(id)a3
+- (void)stayScrolledToBottomIfAtBottomAfterDrag:(id)drag
 {
-  v5 = a3;
+  dragCopy = drag;
   if ([(PUImportViewController *)self userHasScrolled])
   {
-    v4 = [(PUImportViewController *)self importController];
+    importController = [(PUImportViewController *)self importController];
 
-    if (v4)
+    if (importController)
     {
-      -[PUImportViewController setShouldStayScrolledToBottom:](self, "setShouldStayScrolledToBottom:", [v5 px_isScrolledAtEdge:3]);
+      -[PUImportViewController setShouldStayScrolledToBottom:](self, "setShouldStayScrolledToBottom:", [dragCopy px_isScrolledAtEdge:3]);
     }
   }
 }
 
-- (void)navigateToRectEdge:(unsigned int)a3 animated:(BOOL)a4
+- (void)navigateToRectEdge:(unsigned int)edge animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = *&a3;
+  animatedCopy = animated;
+  v5 = *&edge;
   [(PUImportViewController *)self setUserHasScrolled:1];
   v7.receiver = self;
   v7.super_class = PUImportViewController;
-  [(PUPhotosGridViewController *)&v7 navigateToRectEdge:v5 animated:v4];
+  [(PUPhotosGridViewController *)&v7 navigateToRectEdge:v5 animated:animatedCopy];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   v5.receiver = self;
   v5.super_class = PUImportViewController;
-  [(PUPhotosGridViewController *)&v5 scrollViewDidScroll:v4];
-  if (([v4 isDragging] & 1) == 0)
+  [(PUPhotosGridViewController *)&v5 scrollViewDidScroll:scrollCopy];
+  if (([scrollCopy isDragging] & 1) == 0)
   {
-    [(PUImportViewController *)self stayScrolledToBottomIfAtBottomAfterDrag:v4];
+    [(PUImportViewController *)self stayScrolledToBottomIfAtBottomAfterDrag:scrollCopy];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v4.receiver = self;
   v4.super_class = PUImportViewController;
-  [(PUPhotosGridViewController *)&v4 scrollViewWillBeginDragging:a3];
+  [(PUPhotosGridViewController *)&v4 scrollViewWillBeginDragging:dragging];
   [(PUImportViewController *)self setUserHasScrolled:1];
   [(PUImportViewController *)self setShouldStayScrolledToBottom:0];
 }
 
-- (CGRect)imageRectFromPhotoView:(id)a3
+- (CGRect)imageRectFromPhotoView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 contentHelper];
-  [v3 bounds];
-  [v4 imageContentFrameForBounds:?];
+  viewCopy = view;
+  contentHelper = [viewCopy contentHelper];
+  [viewCopy bounds];
+  [contentHelper imageContentFrameForBounds:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  [v3 convertRect:0 toView:{v6, v8, v10, v12}];
+  [viewCopy convertRect:0 toView:{v6, v8, v10, v12}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -731,23 +731,23 @@ LABEL_5:
   return result;
 }
 
-- (void)handleTouchEvent:(int64_t)a3 forCell:(id)a4
+- (void)handleTouchEvent:(int64_t)event forCell:(id)cell
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  cellCopy = cell;
   v7 = _importGridLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     *&buf[4] = "[PUImportViewController handleTouchEvent:forCell:]";
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = event;
     _os_log_debug_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEBUG, "%s: %lu", buf, 0x16u);
   }
 
-  v8 = [v6 representedImportItem];
-  v9 = [v8 kind];
-  v10 = [v9 isEqualToString:*MEMORY[0x1E69C4080]];
+  representedImportItem = [cellCopy representedImportItem];
+  kind = [representedImportItem kind];
+  v10 = [kind isEqualToString:*MEMORY[0x1E69C4080]];
 
   if (v10)
   {
@@ -755,17 +755,17 @@ LABEL_5:
     goto LABEL_18;
   }
 
-  v11 = [(PUImportViewController *)self importController];
-  if ([v11 isImportingAssets])
+  importController = [(PUImportViewController *)self importController];
+  if ([importController isImportingAssets])
   {
 
     goto LABEL_18;
   }
 
-  v12 = [(PUImportViewController *)self importController];
-  v13 = [v12 isDeletingAssets];
+  importController2 = [(PUImportViewController *)self importController];
+  isDeletingAssets = [importController2 isDeletingAssets];
 
-  if (v13)
+  if (isDeletingAssets)
   {
     goto LABEL_18;
   }
@@ -775,33 +775,33 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  if (a3 != 1)
+  if (event != 1)
   {
-    if (a3)
+    if (event)
     {
       goto LABEL_18;
     }
 
 LABEL_11:
-    if ([v8 isSelected])
+    if ([representedImportItem isSelected])
     {
-      [(PUImportViewController *)self _deselectCell:v6];
+      [(PUImportViewController *)self _deselectCell:cellCopy];
     }
 
     else
     {
-      [(PUImportViewController *)self _selectCell:v6];
+      [(PUImportViewController *)self _selectCell:cellCopy];
     }
 
     goto LABEL_18;
   }
 
   memset(buf, 0, 32);
-  v14 = [(PUImportViewController *)self importDataSource];
-  v15 = v14;
-  if (v14)
+  importDataSource = [(PUImportViewController *)self importDataSource];
+  v15 = importDataSource;
+  if (importDataSource)
   {
-    [v14 itemIndexPathForItem:v8];
+    [importDataSource itemIndexPathForItem:representedImportItem];
   }
 
   else
@@ -817,12 +817,12 @@ LABEL_11:
 LABEL_18:
 }
 
-- (void)handleLongPressGesture:(id)a3
+- (void)handleLongPressGesture:(id)gesture
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_acceptsLongPress && [v4 state] == 1)
+  gestureCopy = gesture;
+  v5 = gestureCopy;
+  if (self->_acceptsLongPress && [gestureCopy state] == 1)
   {
     self->_acceptsLongPress = 0;
     v6 = _importGridLog();
@@ -833,14 +833,14 @@ LABEL_18:
       _os_log_debug_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEBUG, "%s", &v14, 0xCu);
     }
 
-    v7 = [(PUPhotosGridViewController *)self contentScrollView];
-    [v5 locationInView:v7];
+    contentScrollView = [(PUPhotosGridViewController *)self contentScrollView];
+    [v5 locationInView:contentScrollView];
     v9 = v8;
     v11 = v10;
     if (![(PUImportViewController *)self sectionHeadersCoverLocation:?])
     {
-      v12 = [(PUImportViewController *)self collectionView];
-      v13 = [v12 indexPathForItemAtPoint:{v9, v11}];
+      collectionView = [(PUImportViewController *)self collectionView];
+      v13 = [collectionView indexPathForItemAtPoint:{v9, v11}];
 
       if (v13)
       {
@@ -855,15 +855,15 @@ LABEL_18:
   }
 }
 
-- (void)handleDoubleTapGesture:(id)a3
+- (void)handleDoubleTapGesture:(id)gesture
 {
-  v4 = [(PUImportViewController *)self importController];
-  v10 = [v4 selectionManager];
+  importController = [(PUImportViewController *)self importController];
+  selectionManager = [importController selectionManager];
 
-  v5 = [v10 selectionSnapshot];
-  if ([v5 isAnyItemSelected] && (objc_msgSend(v5, "dataSource"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "numberOfSelectableItems"), v6, objc_msgSend(v5, "selectedIndexPaths"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7 == v9))
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  if ([selectionSnapshot isAnyItemSelected] && (objc_msgSend(selectionSnapshot, "dataSource"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "numberOfSelectableItems"), v6, objc_msgSend(selectionSnapshot, "selectedIndexPaths"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7 == v9))
   {
-    [v10 performChanges:&__block_literal_global_34883];
+    [selectionManager performChanges:&__block_literal_global_34883];
   }
 
   else
@@ -872,11 +872,11 @@ LABEL_18:
   }
 }
 
-- (BOOL)canBeginDoubleTapGesture:(id)a3
+- (BOOL)canBeginDoubleTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(PUImportViewController *)self importController];
-  if ([v5 isImportingAssets])
+  gestureCopy = gesture;
+  importController = [(PUImportViewController *)self importController];
+  if ([importController isImportingAssets])
   {
     v6 = 0;
 LABEL_15:
@@ -884,16 +884,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v7 = [(PUImportViewController *)self importController];
-  v8 = [v7 isDeletingAssets];
+  importController2 = [(PUImportViewController *)self importController];
+  isDeletingAssets = [importController2 isDeletingAssets];
 
-  if ((v8 & 1) == 0)
+  if ((isDeletingAssets & 1) == 0)
   {
-    v5 = [(PUPhotosGridViewController *)self contentScrollView];
-    [v4 locationInView:v5];
+    importController = [(PUPhotosGridViewController *)self contentScrollView];
+    [gestureCopy locationInView:importController];
     v10 = v9;
     v12 = v11;
-    v13 = [v5 hitTest:0 withEvent:?];
+    v13 = [importController hitTest:0 withEvent:?];
     v14 = v13;
     if (v13)
     {
@@ -906,10 +906,10 @@ LABEL_15:
           break;
         }
 
-        v16 = [v15 superview];
+        superview = [v15 superview];
 
-        v15 = v16;
-        if (!v16)
+        v15 = superview;
+        if (!superview)
         {
           goto LABEL_9;
         }
@@ -929,8 +929,8 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v17 = [(PUImportViewController *)self collectionView];
-      v15 = [v17 indexPathForItemAtPoint:{v10, v12}];
+      collectionView = [(PUImportViewController *)self collectionView];
+      v15 = [collectionView indexPathForItemAtPoint:{v10, v12}];
 
       v6 = v15 == 0;
     }
@@ -944,63 +944,63 @@ LABEL_16:
   return v6;
 }
 
-- (void)handleTapGesture:(id)a3
+- (void)handleTapGesture:(id)gesture
 {
-  v13 = a3;
-  v4 = [(PUPhotosGridViewController *)self contentScrollView];
-  [v13 locationInView:v4];
+  gestureCopy = gesture;
+  contentScrollView = [(PUPhotosGridViewController *)self contentScrollView];
+  [gestureCopy locationInView:contentScrollView];
   v6 = v5;
   v8 = v7;
   if (![(PUImportViewController *)self sectionHeadersCoverLocation:?])
   {
-    v9 = [(PUImportViewController *)self collectionView];
-    v10 = [v9 indexPathForItemAtPoint:{v6, v8}];
+    collectionView = [(PUImportViewController *)self collectionView];
+    v10 = [collectionView indexPathForItemAtPoint:{v6, v8}];
 
-    v11 = [(PUImportViewController *)self collectionView];
-    v12 = [v11 cellForItemAtIndexPath:v10];
+    collectionView2 = [(PUImportViewController *)self collectionView];
+    v12 = [collectionView2 cellForItemAtIndexPath:v10];
 
-    [v12 handleTapGesture:v13];
+    [v12 handleTapGesture:gestureCopy];
   }
 }
 
-- (void)_navigateToPhotoAtIndexPath:(id)a3 animated:(BOOL)a4 interactive:(BOOL)a5
+- (void)_navigateToPhotoAtIndexPath:(id)path animated:(BOOL)animated interactive:(BOOL)interactive
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [MEMORY[0x1E69C3620] sharedInstance];
-  v10 = [v9 usePhotosOneUp];
+  interactiveCopy = interactive;
+  animatedCopy = animated;
+  pathCopy = path;
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  usePhotosOneUp = [mEMORY[0x1E69C3620] usePhotosOneUp];
 
-  if (v10)
+  if (usePhotosOneUp)
   {
-    v11 = [(PUImportViewController *)self importDataSourceManager];
-    v12 = [v11 dataSource];
+    importDataSourceManager = [(PUImportViewController *)self importDataSourceManager];
+    dataSource = [importDataSourceManager dataSource];
 
-    [v12 identifier];
+    [dataSource identifier];
     PXSimpleIndexPathFromIndexPath();
     memset(v33, 0, sizeof(v33));
-    v13 = [v12 assetReferenceAtItemIndexPath:v33];
+    v13 = [dataSource assetReferenceAtItemIndexPath:v33];
     v14 = [PUPXAssetsDataSourceManager alloc];
-    v15 = [(PUImportViewController *)self importDataSourceManager];
-    v16 = [(PUPXAssetsDataSourceManager *)v14 initWithUnderlyingDataSourceManager:v15];
+    importDataSourceManager2 = [(PUImportViewController *)self importDataSourceManager];
+    v16 = [(PUPXAssetsDataSourceManager *)v14 initWithUnderlyingDataSourceManager:importDataSourceManager2];
 
     v17 = [PUPXMediaProvider alloc];
-    v18 = [(PUImportViewController *)self importController];
-    v19 = [v18 importMediaProvider];
-    v20 = [(PUPXMediaProvider *)v17 initWithUnderlyingMediaProvider:v19];
+    importController = [(PUImportViewController *)self importController];
+    importMediaProvider = [importController importMediaProvider];
+    v20 = [(PUPXMediaProvider *)v17 initWithUnderlyingMediaProvider:importMediaProvider];
 
     v21 = [[PUBrowsingSession alloc] initWithDataSourceManager:v16 actionManager:0 mediaProvider:v20];
-    v22 = [(PUBrowsingSession *)v21 viewModel];
+    viewModel = [(PUBrowsingSession *)v21 viewModel];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __75__PUImportViewController__navigateToPhotoAtIndexPath_animated_interactive___block_invoke;
     v29[3] = &unk_1E7B809F0;
-    v30 = v22;
+    v30 = viewModel;
     v31 = v13;
     v32 = v16;
     v23 = v16;
     v24 = v13;
-    v25 = v22;
+    v25 = viewModel;
     [v25 performChanges:v29];
     v26 = [[PUOneUpViewController alloc] initWithBrowsingSession:v21];
     v27 = [[PUNavigationController alloc] initWithNavigationBarClass:0 toolbarClass:objc_opt_class()];
@@ -1011,8 +1011,8 @@ LABEL_16:
 
   else
   {
-    v28 = [(PUImportViewController *)self oneUpViewControllerForItemAtIndexPath:v8];
-    [(PUImportViewController *)self presentOneUpViewController:v28 animated:v6 interactive:v5];
+    v28 = [(PUImportViewController *)self oneUpViewControllerForItemAtIndexPath:pathCopy];
+    [(PUImportViewController *)self presentOneUpViewController:v28 animated:animatedCopy interactive:interactiveCopy];
   }
 }
 
@@ -1026,10 +1026,10 @@ void __75__PUImportViewController__navigateToPhotoAtIndexPath_animated_interacti
   [*(a1 + 32) setCurrentAssetReference:v5];
 }
 
-- (void)presentOneUpViewController:(id)a3 animated:(BOOL)a4 interactive:(BOOL)a5
+- (void)presentOneUpViewController:(id)controller animated:(BOOL)animated interactive:(BOOL)interactive
 {
-  v5 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   v8 = _importGridLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1038,23 +1038,23 @@ void __75__PUImportViewController__navigateToPhotoAtIndexPath_animated_interacti
   }
 
   v9 = [[PUNavigationController alloc] initWithNavigationBarClass:0 toolbarClass:objc_opt_class()];
-  [(PUNavigationController *)v9 pushViewController:v7 animated:0];
+  [(PUNavigationController *)v9 pushViewController:controllerCopy animated:0];
 
   [(PUNavigationController *)v9 setModalPresentationStyle:0];
-  [(PUImportViewController *)self presentViewController:v9 animated:v5 completion:0];
+  [(PUImportViewController *)self presentViewController:v9 animated:animatedCopy completion:0];
 }
 
-- (id)oneUpViewControllerForItemAtIndexPath:(id)a3
+- (id)oneUpViewControllerForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUImportViewController *)self importDataSourceManager];
-  v6 = [v5 dataSource];
+  pathCopy = path;
+  importDataSourceManager = [(PUImportViewController *)self importDataSourceManager];
+  dataSource = [importDataSourceManager dataSource];
 
-  if (v4)
+  if (pathCopy)
   {
     v19 = 0uLL;
     v20 = 0uLL;
-    [v6 identifier];
+    [dataSource identifier];
     PXSimpleIndexPathFromIndexPath();
   }
 
@@ -1062,24 +1062,24 @@ void __75__PUImportViewController__navigateToPhotoAtIndexPath_animated_interacti
   {
     v19 = 0uLL;
     v20 = 0uLL;
-    if (v6)
+    if (dataSource)
     {
-      [v6 firstItemIndexPath];
+      [dataSource firstItemIndexPath];
     }
   }
 
   v18[0] = v19;
   v18[1] = v20;
-  v7 = [v6 assetReferenceAtItemIndexPath:v18];
+  v7 = [dataSource assetReferenceAtItemIndexPath:v18];
 
-  v8 = [v7 asset];
+  asset = [v7 asset];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v7 asset];
-    if ([v10 isDuplicate])
+    asset2 = [v7 asset];
+    if ([asset2 isDuplicate])
     {
       v11 = 1;
     }
@@ -1096,10 +1096,10 @@ void __75__PUImportViewController__navigateToPhotoAtIndexPath_animated_interacti
   }
 
   v12 = [PUImportOneUpViewController alloc];
-  v13 = [(PUImportViewController *)self importController];
-  v14 = [(PUImportViewController *)self importController];
-  v15 = [v14 importMediaProvider];
-  v16 = [(PUImportOneUpViewController *)v12 initWithImportController:v13 mediaProvider:v15 startingAssetReference:v7 presentationFilter:v11];
+  importController = [(PUImportViewController *)self importController];
+  importController2 = [(PUImportViewController *)self importController];
+  importMediaProvider = [importController2 importMediaProvider];
+  v16 = [(PUImportOneUpViewController *)v12 initWithImportController:importController mediaProvider:importMediaProvider startingAssetReference:v7 presentationFilter:v11];
 
   return v16;
 }
@@ -1108,36 +1108,36 @@ void __75__PUImportViewController__navigateToPhotoAtIndexPath_animated_interacti
 {
   if ([(PUImportViewController *)self shouldCollapseAlreadyImportedSection])
   {
-    v3 = [(PUImportViewController *)self importDataSourceManager];
-    v4 = [v3 unfilteredAlreadyImportedAssetCollection];
+    importDataSourceManager = [(PUImportViewController *)self importDataSourceManager];
+    unfilteredAlreadyImportedAssetCollection = [importDataSourceManager unfilteredAlreadyImportedAssetCollection];
 
-    v5 = [v4 numberOfItems];
-    v6 = [(PUPhotosGridViewController *)self gridLayout];
-    v7 = [v6 columnsPerRow];
+    numberOfItems = [unfilteredAlreadyImportedAssetCollection numberOfItems];
+    gridLayout = [(PUPhotosGridViewController *)self gridLayout];
+    columnsPerRow = [gridLayout columnsPerRow];
 
-    v8 = [(PUImportViewController *)self importController];
-    [v8 setAlreadyImportedItemsSelectable:v5 <= v7];
+    importController = [(PUImportViewController *)self importController];
+    [importController setAlreadyImportedItemsSelectable:numberOfItems <= columnsPerRow];
   }
 
   else
   {
-    v4 = [(PUImportViewController *)self importController];
-    [v4 setAlreadyImportedItemsSelectable:1];
+    unfilteredAlreadyImportedAssetCollection = [(PUImportViewController *)self importController];
+    [unfilteredAlreadyImportedAssetCollection setAlreadyImportedItemsSelectable:1];
   }
 
   if ([(PUImportViewController *)self shouldCollapseAlreadyImportedSection])
   {
-    v9 = [(PUPhotosGridViewController *)self gridLayout];
-    v10 = [v9 columnsPerRow];
+    gridLayout2 = [(PUPhotosGridViewController *)self gridLayout];
+    columnsPerRow2 = [gridLayout2 columnsPerRow];
   }
 
   else
   {
-    v10 = 0x7FFFFFFFFFFFFFFFLL;
+    columnsPerRow2 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v11 = [(PUImportViewController *)self importDataSourceManager];
-  [v11 setMaxAlreadyImportedItems:v10];
+  importDataSourceManager2 = [(PUImportViewController *)self importDataSourceManager];
+  [importDataSourceManager2 setMaxAlreadyImportedItems:columnsPerRow2];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1153,20 +1153,20 @@ void __56__PUImportViewController_updateDataSourceManagerFilters__block_invoke(u
   [v1 updateFilteredAssetsIfNeeded];
 }
 
-- (double)sectionedGridLayout:(id)a3 aspectRatioForItemAtIndexPath:(id)a4
+- (double)sectionedGridLayout:(id)layout aspectRatioForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  if (v5)
+  pathCopy = path;
+  if (pathCopy)
   {
     *buf = 0u;
     v15 = 0u;
-    v6 = [(PUImportViewController *)self importDataSource];
-    [v6 identifier];
+    importDataSource = [(PUImportViewController *)self importDataSource];
+    [importDataSource identifier];
     PXSimpleIndexPathFromIndexPath();
 
-    v7 = [(PUImportViewController *)self importDataSource];
+    importDataSource2 = [(PUImportViewController *)self importDataSource];
     memset(v13, 0, sizeof(v13));
-    v8 = [v7 assetAtItemIndexPath:v13];
+    v8 = [importDataSource2 assetAtItemIndexPath:v13];
 
     if (v8)
     {
@@ -1195,60 +1195,60 @@ void __56__PUImportViewController_updateDataSourceManagerFilters__block_invoke(u
   return v10;
 }
 
-- (double)sectionedGridLayout:(id)a3 accessibilitySectionHeaderHeightForVisualSection:(int64_t)a4
+- (double)sectionedGridLayout:(id)layout accessibilitySectionHeaderHeightForVisualSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+  layoutCopy = layout;
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
-    v9 = [(PUImportViewController *)self _spec];
-    v10 = [v9 sectionHeaderStyle];
+    _spec = [(PUImportViewController *)self _spec];
+    sectionHeaderStyle = [_spec sectionHeaderStyle];
 
-    v11 = [MEMORY[0x1E695DF00] date];
-    v12 = [MEMORY[0x1E695DF00] date];
-    v13 = [MEMORY[0x1E69C38E8] sharedMetrics];
-    v14 = [v6 collectionView];
-    [v14 bounds];
-    [v13 accessibilitySectionHeaderHeightForStyle:v10 width:0 actionButton:0 disclosure:&stru_1F2AC6818 title:v11 startDate:v12 endDate:CGRectGetWidth(v19) + -8.0 + -8.5 locations:MEMORY[0x1E695E0F0] actionButtonSpec:0];
+    date = [MEMORY[0x1E695DF00] date];
+    date2 = [MEMORY[0x1E695DF00] date];
+    mEMORY[0x1E69C38E8] = [MEMORY[0x1E69C38E8] sharedMetrics];
+    collectionView = [layoutCopy collectionView];
+    [collectionView bounds];
+    [mEMORY[0x1E69C38E8] accessibilitySectionHeaderHeightForStyle:sectionHeaderStyle width:0 actionButton:0 disclosure:&stru_1F2AC6818 title:date startDate:date2 endDate:CGRectGetWidth(v19) + -8.0 + -8.5 locations:MEMORY[0x1E695E0F0] actionButtonSpec:0];
     v16 = v15;
   }
 
   else
   {
-    [(PUImportViewController *)self sectionedGridLayout:v6 sectionHeaderHeightForVisualSection:a4];
+    [(PUImportViewController *)self sectionedGridLayout:layoutCopy sectionHeaderHeightForVisualSection:section];
     v16 = v17;
   }
 
   return v16;
 }
 
-- (double)sectionedGridLayout:(id)a3 sectionHeaderHeightForVisualSection:(int64_t)a4
+- (double)sectionedGridLayout:(id)layout sectionHeaderHeightForVisualSection:(int64_t)section
 {
-  v6 = [(PUImportViewController *)self referenceHeaderView];
-  v7 = [(PUImportViewController *)self cachedHeaderHeight];
+  referenceHeaderView = [(PUImportViewController *)self referenceHeaderView];
+  cachedHeaderHeight = [(PUImportViewController *)self cachedHeaderHeight];
 
-  if (!v7)
+  if (!cachedHeaderHeight)
   {
-    v8 = [MEMORY[0x1E696AC88] indexPathWithIndex:a4];
-    [(PUImportViewController *)self configureSupplementaryView:v6 ofKind:@"PUImportSectionHeaderReuseIdentifier" forIndexPath:v8];
-    v9 = [(PUImportViewController *)self traitCollection];
-    v10 = [v9 horizontalSizeClass];
-    v11 = [(PUImportViewController *)self collectionView];
-    [v11 bounds];
+    v8 = [MEMORY[0x1E696AC88] indexPathWithIndex:section];
+    [(PUImportViewController *)self configureSupplementaryView:referenceHeaderView ofKind:@"PUImportSectionHeaderReuseIdentifier" forIndexPath:v8];
+    traitCollection = [(PUImportViewController *)self traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
+    collectionView = [(PUImportViewController *)self collectionView];
+    [collectionView bounds];
     Width = CGRectGetWidth(v25);
-    v13 = [(PUPhotosGridViewController *)self gridSpec];
-    [v13 sectionHeaderInsets];
-    [v6 heightForSizeClass:v10 width:Width safeAreaInsets:{v14, v15, v16, v17}];
+    gridSpec = [(PUPhotosGridViewController *)self gridSpec];
+    [gridSpec sectionHeaderInsets];
+    [referenceHeaderView heightForSizeClass:horizontalSizeClass width:Width safeAreaInsets:{v14, v15, v16, v17}];
     v19 = v18;
 
     v20 = [MEMORY[0x1E696AD98] numberWithDouble:v19];
     [(PUImportViewController *)self setCachedHeaderHeight:v20];
   }
 
-  v21 = [(PUImportViewController *)self cachedHeaderHeight];
-  [v21 doubleValue];
+  cachedHeaderHeight2 = [(PUImportViewController *)self cachedHeaderHeight];
+  [cachedHeaderHeight2 doubleValue];
   v23 = v22;
 
   return v23;
@@ -1256,27 +1256,27 @@ void __56__PUImportViewController_updateDataSourceManagerFilters__block_invoke(u
 
 - (BOOL)anyAlreadyImportedItemsAreSelected
 {
-  v2 = [(PUImportViewController *)self importController];
-  v3 = [v2 selectionManager];
+  importController = [(PUImportViewController *)self importController];
+  selectionManager = [importController selectionManager];
 
-  v4 = [v3 selectionSnapshot];
-  v5 = [v4 dataSource];
-  v6 = [v5 alreadyImportedCollection];
-  if (v6)
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  dataSource = [selectionSnapshot dataSource];
+  alreadyImportedCollection = [dataSource alreadyImportedCollection];
+  if (alreadyImportedCollection)
   {
-    v7 = [v5 sectionForAssetCollection:v6];
+    v7 = [dataSource sectionForAssetCollection:alreadyImportedCollection];
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v8 = [v4 selectedIndexPaths];
+    selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __60__PUImportViewController_anyAlreadyImportedItemsAreSelected__block_invoke;
     v11[3] = &unk_1E7B78128;
     v11[4] = &v12;
     v11[5] = v7;
-    [v8 enumerateItemIndexPathsUsingBlock:v11];
+    [selectedIndexPaths enumerateItemIndexPathsUsingBlock:v11];
 
     v9 = *(v13 + 24);
     _Block_object_dispose(&v12, 8);
@@ -1303,17 +1303,17 @@ uint64_t __60__PUImportViewController_anyAlreadyImportedItemsAreSelected__block_
 
 - (void)updateAlreadyImportedCollapseStatus
 {
-  v3 = [(PUImportViewController *)self anyAlreadyImportedItemsAreSelected];
-  v4 = [(PUImportViewController *)self importDataSourceManager];
-  v9 = [v4 unfilteredAlreadyImportedAssetCollection];
+  anyAlreadyImportedItemsAreSelected = [(PUImportViewController *)self anyAlreadyImportedItemsAreSelected];
+  importDataSourceManager = [(PUImportViewController *)self importDataSourceManager];
+  unfilteredAlreadyImportedAssetCollection = [importDataSourceManager unfilteredAlreadyImportedAssetCollection];
 
-  v5 = [v9 numberOfItems];
-  v6 = [(PUPhotosGridViewController *)self gridLayout];
-  v7 = [v6 columnsPerRow];
+  numberOfItems = [unfilteredAlreadyImportedAssetCollection numberOfItems];
+  gridLayout = [(PUPhotosGridViewController *)self gridLayout];
+  columnsPerRow = [gridLayout columnsPerRow];
 
   if ([(PUImportViewController *)self userWantsAlreadyImportedSectionCollapsedIfPossible])
   {
-    v8 = (v5 > v7) & ~v3;
+    v8 = (numberOfItems > columnsPerRow) & ~anyAlreadyImportedItemsAreSelected;
   }
 
   else
@@ -1335,23 +1335,23 @@ uint64_t __60__PUImportViewController_anyAlreadyImportedItemsAreSelected__block_
 
 - (void)selectAllSelectableItems
 {
-  v3 = [(PUImportViewController *)self importDataSource];
-  v5 = [v3 allSelectableItems];
+  importDataSource = [(PUImportViewController *)self importDataSource];
+  allSelectableItems = [importDataSource allSelectableItems];
 
-  v4 = [(PUImportViewController *)self importController];
-  [v4 setSelected:1 forItems:v5];
+  importController = [(PUImportViewController *)self importController];
+  [importController setSelected:1 forItems:allSelectableItems];
 }
 
-- (BOOL)areAllItemsSelectedInAssetCollection:(id)a3
+- (BOOL)areAllItemsSelectedInAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PUImportViewController *)self importDataSource];
-  v6 = [v5 sectionForAssetCollection:v4];
-  v7 = [(PUImportViewController *)self importController];
-  v8 = [v7 selectionManager];
+  collectionCopy = collection;
+  importDataSource = [(PUImportViewController *)self importDataSource];
+  v6 = [importDataSource sectionForAssetCollection:collectionCopy];
+  importController = [(PUImportViewController *)self importController];
+  selectionManager = [importController selectionManager];
 
-  v9 = [v8 selectionSnapshot];
-  v10 = [v9 selectedIndexPaths];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1362,9 +1362,9 @@ uint64_t __60__PUImportViewController_anyAlreadyImportedItemsAreSelected__block_
   v13[3] = &unk_1E7B78128;
   v13[4] = &v14;
   v13[5] = v6;
-  [v10 enumerateItemIndexPathsUsingBlock:v13];
-  v11 = [v4 numberOfItems];
-  LOBYTE(v6) = v15[3] == v11;
+  [selectedIndexPaths enumerateItemIndexPathsUsingBlock:v13];
+  numberOfItems = [collectionCopy numberOfItems];
+  LOBYTE(v6) = v15[3] == numberOfItems;
   _Block_object_dispose(&v14, 8);
 
   return v6;
@@ -1380,10 +1380,10 @@ uint64_t __63__PUImportViewController_areAllItemsSelectedInAssetCollection___blo
   return result;
 }
 
-- (void)setAllItemsSelected:(BOOL)a3 inAssetCollection:(id)a4
+- (void)setAllItemsSelected:(BOOL)selected inAssetCollection:(id)collection
 {
-  v4 = a3;
-  v6 = a4;
+  selectedCopy = selected;
+  collectionCopy = collection;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -1395,25 +1395,25 @@ uint64_t __63__PUImportViewController_areAllItemsSelectedInAssetCollection___blo
   v8[2] = __64__PUImportViewController_setAllItemsSelected_inAssetCollection___block_invoke;
   v8[3] = &unk_1E7B78100;
   v8[4] = &v9;
-  [v6 arrangedObjects:v8];
-  v7 = [(PUImportViewController *)self importController];
-  [v7 setSelected:v4 forItems:v10[5]];
+  [collectionCopy arrangedObjects:v8];
+  importController = [(PUImportViewController *)self importController];
+  [importController setSelected:selectedCopy forItems:v10[5]];
 
   _Block_object_dispose(&v9, 8);
 }
 
-- (BOOL)sectionHeadersCoverLocation:(CGPoint)a3
+- (BOOL)sectionHeadersCoverLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v28 = *MEMORY[0x1E69E9840];
-  v6 = [(PUImportViewController *)self collectionView];
-  [v6 convertPoint:0 toView:{x, y}];
+  collectionView = [(PUImportViewController *)self collectionView];
+  [collectionView convertPoint:0 toView:{x, y}];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(PUImportViewController *)self collectionView];
-  v12 = [v11 indexPathsForVisibleSupplementaryElementsOfKind:@"PUImportSectionHeaderReuseIdentifier"];
+  collectionView2 = [(PUImportViewController *)self collectionView];
+  v12 = [collectionView2 indexPathsForVisibleSupplementaryElementsOfKind:@"PUImportSectionHeaderReuseIdentifier"];
 
   v25 = 0u;
   v26 = 0u;
@@ -1435,16 +1435,16 @@ uint64_t __63__PUImportViewController_areAllItemsSelectedInAssetCollection___blo
         }
 
         v18 = *(*(&v23 + 1) + 8 * i);
-        v19 = [(PUImportViewController *)self collectionView];
-        v20 = [v19 supplementaryViewForElementKind:@"PUImportSectionHeaderReuseIdentifier" atIndexPath:v18];
+        collectionView3 = [(PUImportViewController *)self collectionView];
+        v20 = [collectionView3 supplementaryViewForElementKind:@"PUImportSectionHeaderReuseIdentifier" atIndexPath:v18];
 
         [v20 bounds];
         [v20 convertRect:0 toView:?];
         v29.x = v8;
         v29.y = v10;
-        LOBYTE(v19) = CGRectContainsPoint(v30, v29);
+        LOBYTE(collectionView3) = CGRectContainsPoint(v30, v29);
 
-        if (v19)
+        if (collectionView3)
         {
           v21 = 1;
           goto LABEL_11;
@@ -1467,12 +1467,12 @@ LABEL_11:
   return v21;
 }
 
-- (void)updateHeaderView:(id)a3 forAssetCollection:(id)a4
+- (void)updateHeaderView:(id)view forAssetCollection:(id)collection
 {
-  v8 = a3;
-  LODWORD(a4) = [(PUImportViewController *)self areAllItemsSelectedInAssetCollection:a4];
-  [v8 setShowsActionButton:1];
-  if (a4)
+  viewCopy = view;
+  LODWORD(collection) = [(PUImportViewController *)self areAllItemsSelectedInAssetCollection:collection];
+  [viewCopy setShowsActionButton:1];
+  if (collection)
   {
     v6 = @"DESELECT_BUTTON_TITLE";
   }
@@ -1483,62 +1483,62 @@ LABEL_11:
   }
 
   v7 = PULocalizedString(v6);
-  [v8 setActionText:v7];
+  [viewCopy setActionText:v7];
 
-  [v8 layoutIfNeeded];
+  [viewCopy layoutIfNeeded];
 }
 
-- (void)updateHeaderView:(id)a3 forAlreadyImportedAssetCollection:(id)a4
+- (void)updateHeaderView:(id)view forAlreadyImportedAssetCollection:(id)collection
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(PUPhotosGridViewController *)self gridLayout];
-  v8 = [v7 columnsPerRow];
+  viewCopy = view;
+  collectionCopy = collection;
+  gridLayout = [(PUPhotosGridViewController *)self gridLayout];
+  columnsPerRow = [gridLayout columnsPerRow];
 
-  v9 = [v6 numberOfItems];
-  if (v9 <= v8)
+  numberOfItems = [collectionCopy numberOfItems];
+  if (numberOfItems <= columnsPerRow)
   {
-    [v13 setShowsActionButton:0];
-    [v13 setActionText:0];
+    [viewCopy setShowsActionButton:0];
+    [viewCopy setActionText:0];
   }
 
   else
   {
-    [v13 setShowsActionButton:1];
+    [viewCopy setShowsActionButton:1];
     [(PUImportViewController *)self shouldCollapseAlreadyImportedSection];
     v10 = PLLocalizedFrameworkString();
-    [v13 setActionText:v10];
+    [viewCopy setActionText:v10];
 
-    v11 = [(PUImportViewController *)self anyAlreadyImportedItemsAreSelected];
+    anyAlreadyImportedItemsAreSelected = [(PUImportViewController *)self anyAlreadyImportedItemsAreSelected];
     if ([(PUImportViewController *)self animateHeaderActionButtonChanges])
     {
-      v12 = [(PUImportViewController *)self px_isVisible];
+      px_isVisible = [(PUImportViewController *)self px_isVisible];
     }
 
     else
     {
-      v12 = 0;
+      px_isVisible = 0;
     }
 
-    [v13 setActionButtonEnabled:!v11 animated:v12];
+    [viewCopy setActionButtonEnabled:!anyAlreadyImportedItemsAreSelected animated:px_isVisible];
   }
 
-  [v13 layoutIfNeeded];
+  [viewCopy layoutIfNeeded];
 }
 
-- (void)headerViewDidPressActionButton:(id)a3 inHeaderView:(id)a4
+- (void)headerViewDidPressActionButton:(id)button inHeaderView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  buttonCopy = button;
+  viewCopy = view;
+  v8 = viewCopy;
   v13 = 0;
-  if (v7)
+  if (viewCopy)
   {
-    [v7 sectionIndexPath];
+    [viewCopy sectionIndexPath];
   }
 
-  v9 = [(PUImportViewController *)self importDataSource];
-  v10 = [v9 assetCollectionForSection:0];
+  importDataSource = [(PUImportViewController *)self importDataSource];
+  v10 = [importDataSource assetCollectionForSection:0];
 
   if ([v10 alreadyImportedGroup])
   {
@@ -1549,83 +1549,83 @@ LABEL_11:
   {
     if ([(PUImportViewController *)self areAllItemsSelectedInAssetCollection:v10])
     {
-      v11 = self;
+      selfCopy2 = self;
       v12 = 0;
     }
 
     else
     {
-      v11 = self;
+      selfCopy2 = self;
       v12 = 1;
     }
 
-    [(PUImportViewController *)v11 setAllItemsSelected:v12 inAssetCollection:v10];
+    [(PUImportViewController *)selfCopy2 setAllItemsSelected:v12 inAssetCollection:v10];
   }
 }
 
-- (void)_getDataForVisualSection:(int64_t)a3 hasActionButton:(BOOL *)a4 title:(id *)a5 startDate:(id *)a6 endDate:(id *)a7
+- (void)_getDataForVisualSection:(int64_t)section hasActionButton:(BOOL *)button title:(id *)title startDate:(id *)date endDate:(id *)endDate
 {
-  v10 = [(PUImportViewController *)self importDataSource:a3];
-  v11 = [v10 assetCollectionForSection:a3];
+  v10 = [(PUImportViewController *)self importDataSource:section];
+  v11 = [v10 assetCollectionForSection:section];
 
-  if (a5)
+  if (title)
   {
-    *a5 = [v11 localizedTitle];
+    *title = [v11 localizedTitle];
   }
 
-  if (a4)
+  if (button)
   {
-    *a4 = 0;
+    *button = 0;
   }
 }
 
-- (void)_updateBackdropGroupNameForHeaderView:(id)a3
+- (void)_updateBackdropGroupNameForHeaderView:(id)view
 {
-  v4 = a3;
-  v5 = [(PUImportViewController *)self navigationController];
-  v7 = [v5 navigationBar];
+  viewCopy = view;
+  navigationController = [(PUImportViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  v6 = [v7 _backdropViewLayerGroupName];
-  [v4 setBackdropViewGroupName:v6];
+  _backdropViewLayerGroupName = [navigationBar _backdropViewLayerGroupName];
+  [viewCopy setBackdropViewGroupName:_backdropViewLayerGroupName];
 }
 
-- (void)configureSupplementaryView:(id)a3 ofKind:(id)a4 forIndexPath:(id)a5
+- (void)configureSupplementaryView:(id)view ofKind:(id)kind forIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"PUImportSectionHeaderReuseIdentifier"])
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:@"PUImportSectionHeaderReuseIdentifier"])
   {
-    v11 = v8;
-    v12 = [(PUImportViewController *)self importDataSource];
-    v13 = [v12 assetCollectionForSection:{objc_msgSend(v10, "section")}];
+    v11 = viewCopy;
+    importDataSource = [(PUImportViewController *)self importDataSource];
+    v13 = [importDataSource assetCollectionForSection:{objc_msgSend(pathCopy, "section")}];
 
-    v14 = [v13 localizedTitle];
-    v15 = [(PUImportViewController *)self importDataSource];
-    v16 = [v15 identifier];
-    v17 = [v10 section];
+    localizedTitle = [v13 localizedTitle];
+    importDataSource2 = [(PUImportViewController *)self importDataSource];
+    identifier = [importDataSource2 identifier];
+    section = [pathCopy section];
 
-    v29[0] = v16;
-    v29[1] = v17;
+    v29[0] = identifier;
+    v29[1] = section;
     v30 = xmmword_1B3D0CED0;
     [v11 setSectionIndexPath:v29];
-    v28 = v14;
-    [v11 setPrimaryText:v14];
-    v18 = [(PUImportViewController *)self importDataSourceManager];
-    v19 = [v18 unfilteredDataSource];
+    v28 = localizedTitle;
+    [v11 setPrimaryText:localizedTitle];
+    importDataSourceManager = [(PUImportViewController *)self importDataSourceManager];
+    unfilteredDataSource = [importDataSourceManager unfilteredDataSource];
 
-    v20 = [v13 identifier];
-    v21 = [v19 assetCollectionForIdentifier:v20];
+    identifier2 = [v13 identifier];
+    v21 = [unfilteredDataSource assetCollectionForIdentifier:identifier2];
 
-    v22 = [v21 numberOfItems];
-    if (v22 < 1)
+    numberOfItems = [v21 numberOfItems];
+    if (numberOfItems < 1)
     {
       v25 = 0;
     }
 
     else
     {
-      v23 = v22;
+      v23 = numberOfItems;
       v24 = PULocalizedString(@"IMPORT_ITEMS_COUNT");
       v27 = v23;
       v25 = PULocalizedStringWithValidatedFormat(v24, @"%d");
@@ -1643,8 +1643,8 @@ LABEL_11:
       [(PUImportViewController *)self updateHeaderView:v11 forAssetCollection:v21];
     }
 
-    v26 = [(PUPhotosGridViewController *)self gridSpec];
-    [v26 sectionHeaderInsets];
+    gridSpec = [(PUPhotosGridViewController *)self gridSpec];
+    [gridSpec sectionHeaderInsets];
     [v11 setContentInsets:?];
 
     [(PUImportViewController *)self _updateBackdropGroupNameForHeaderView:v11];
@@ -1654,26 +1654,26 @@ LABEL_11:
   {
     v31.receiver = self;
     v31.super_class = PUImportViewController;
-    [(PUPhotosGridViewController *)&v31 configureSupplementaryView:v8 ofKind:v9 forIndexPath:v10];
+    [(PUPhotosGridViewController *)&v31 configureSupplementaryView:viewCopy ofKind:kindCopy forIndexPath:pathCopy];
   }
 }
 
 - (void)updateAlreadyImportedHeaderIfVisible
 {
-  v3 = [(PUImportViewController *)self importDataSource];
-  v11 = [v3 alreadyImportedCollection];
+  importDataSource = [(PUImportViewController *)self importDataSource];
+  alreadyImportedCollection = [importDataSource alreadyImportedCollection];
 
-  v4 = [(PUImportViewController *)self importDataSource];
-  v5 = [v4 sectionForAssetCollection:v11];
+  importDataSource2 = [(PUImportViewController *)self importDataSource];
+  v5 = [importDataSource2 sectionForAssetCollection:alreadyImportedCollection];
 
   v6 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:v5];
-  v7 = [(PUImportViewController *)self collectionView];
-  v8 = [v7 indexPathsForVisibleSupplementaryElementsOfKind:@"PUImportSectionHeaderReuseIdentifier"];
+  collectionView = [(PUImportViewController *)self collectionView];
+  v8 = [collectionView indexPathsForVisibleSupplementaryElementsOfKind:@"PUImportSectionHeaderReuseIdentifier"];
 
   if ([v8 containsObject:v6])
   {
-    v9 = [(PUImportViewController *)self collectionView];
-    v10 = [v9 supplementaryViewForElementKind:@"PUImportSectionHeaderReuseIdentifier" atIndexPath:v6];
+    collectionView2 = [(PUImportViewController *)self collectionView];
+    v10 = [collectionView2 supplementaryViewForElementKind:@"PUImportSectionHeaderReuseIdentifier" atIndexPath:v6];
 
     [(PUImportViewController *)self configureSupplementaryView:v10 ofKind:@"PUImportSectionHeaderReuseIdentifier" forIndexPath:v6];
   }
@@ -1688,104 +1688,104 @@ LABEL_11:
   return v3;
 }
 
-- (void)getEmptyPlaceholderViewTitle:(id *)a3 message:(id *)a4 buttonTitle:(id *)a5 buttonAction:(id *)a6
+- (void)getEmptyPlaceholderViewTitle:(id *)title message:(id *)message buttonTitle:(id *)buttonTitle buttonAction:(id *)action
 {
   if ([(PUImportViewController *)self importSourceIsAppleDevice])
   {
-    v11 = [(PUImportViewController *)self importController];
-    v12 = [v11 isUserRequiredToTrustHostOnSourceDevice];
+    importController = [(PUImportViewController *)self importController];
+    isUserRequiredToTrustHostOnSourceDevice = [importController isUserRequiredToTrustHostOnSourceDevice];
 
-    v13 = [(PUImportViewController *)self importController];
-    v14 = v13;
-    if (v12)
+    importController2 = [(PUImportViewController *)self importController];
+    v14 = importController2;
+    if (isUserRequiredToTrustHostOnSourceDevice)
     {
-      v15 = [v13 importSource];
-      v16 = [v15 productKind];
+      importSource = [importController2 importSource];
+      productKind = [importSource productKind];
 
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UNLOCK_DEVICE_%@", v16];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UNLOCK_DEVICE_%@", productKind];
       v18 = PLLocalizedFrameworkString();
-      *a3 = v18;
-      *a4 = 0;
-      *a5 = 0;
-      *a6 = 0;
+      *title = v18;
+      *message = 0;
+      *buttonTitle = 0;
+      *action = 0;
 
 LABEL_6:
       goto LABEL_8;
     }
 
-    v19 = [v13 isLoadingInitialBatchOfAssets];
+    isLoadingInitialBatchOfAssets = [importController2 isLoadingInitialBatchOfAssets];
 
-    if (v19)
+    if (isLoadingInitialBatchOfAssets)
     {
-      v20 = [(PUImportViewController *)self importController];
-      v21 = [v20 importSource];
-      v16 = [v21 name];
+      importController3 = [(PUImportViewController *)self importController];
+      importSource2 = [importController3 importSource];
+      productKind = [importSource2 name];
 
       v17 = PLLocalizedFrameworkString();
-      *a3 = PULocalizedStringWithValidatedFormat(v17, @"%@");
-      *a4 = 0;
-      *a5 = 0;
-      *a6 = 0;
+      *title = PULocalizedStringWithValidatedFormat(v17, @"%@");
+      *message = 0;
+      *buttonTitle = 0;
+      *action = 0;
       goto LABEL_6;
     }
   }
 
-  v16 = PLLocalizedFrameworkString();
-  *a3 = v16;
+  productKind = PLLocalizedFrameworkString();
+  *title = productKind;
 LABEL_8:
 
   v22 = PLLocalizedFrameworkString();
-  *a4 = v22;
-  *a5 = 0;
-  *a6 = 0;
+  *message = v22;
+  *buttonTitle = 0;
+  *action = 0;
 }
 
 - (BOOL)importSourceIsAppleDevice
 {
-  v3 = [(PUImportViewController *)self importController];
-  v4 = [v3 importSource];
-  v5 = [v4 productKind];
+  importController = [(PUImportViewController *)self importController];
+  importSource = [importController importSource];
+  productKind = [importSource productKind];
 
-  v6 = [(PUImportViewController *)self importController];
-  v7 = [v6 importSource];
-  v8 = [v7 name];
+  importController2 = [(PUImportViewController *)self importController];
+  importSource2 = [importController2 importSource];
+  name = [importSource2 name];
 
-  v9 = ([v5 isEqualToString:@"Camera"] & 1) == 0 && objc_msgSend(v8, "length") != 0;
+  v9 = ([productKind isEqualToString:@"Camera"] & 1) == 0 && objc_msgSend(name, "length") != 0;
   return v9;
 }
 
 - (BOOL)wantsPlaceholderView
 {
-  v3 = [(PUImportViewController *)self isEmpty];
-  v4 = [(PUImportViewController *)self importController];
-  v5 = [v4 isLoadingInitialBatchOfAssets];
+  isEmpty = [(PUImportViewController *)self isEmpty];
+  importController = [(PUImportViewController *)self importController];
+  isLoadingInitialBatchOfAssets = [importController isLoadingInitialBatchOfAssets];
 
-  v6 = [(PUImportViewController *)self importSourceIsAppleDevice];
-  v7 = [(PUImportViewController *)self importController];
-  v8 = [v7 isUserRequiredToTrustHostOnSourceDevice];
+  importSourceIsAppleDevice = [(PUImportViewController *)self importSourceIsAppleDevice];
+  importController2 = [(PUImportViewController *)self importController];
+  isUserRequiredToTrustHostOnSourceDevice = [importController2 isUserRequiredToTrustHostOnSourceDevice];
 
-  if (v8)
+  if (isUserRequiredToTrustHostOnSourceDevice)
   {
     return 1;
   }
 
   else
   {
-    return v3 & (v5 & v6 | v5 ^ 1);
+    return isEmpty & (isLoadingInitialBatchOfAssets & importSourceIsAppleDevice | isLoadingInitialBatchOfAssets ^ 1);
   }
 }
 
 - (BOOL)isEmpty
 {
-  v2 = [(PUImportViewController *)self importDataSource];
-  v3 = [v2 numberOfItems] == 0;
+  importDataSource = [(PUImportViewController *)self importDataSource];
+  v3 = [importDataSource numberOfItems] == 0;
 
   return v3;
 }
 
-- (void)updateNavigationBarAnimated:(BOOL)a3
+- (void)updateNavigationBarAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v10 = *MEMORY[0x1E69E9840];
   v5 = _importGridLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1795,12 +1795,12 @@ LABEL_8:
     _os_log_debug_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEBUG, "%s: [PUPhotosGridViewController] super squash", &v8, 0xCu);
   }
 
-  v6 = [(PUImportViewController *)self importController];
-  v7 = [v6 isLoadingContent];
+  importController = [(PUImportViewController *)self importController];
+  isLoadingContent = [importController isLoadingContent];
 
-  if ((v7 & 1) == 0)
+  if ((isLoadingContent & 1) == 0)
   {
-    [(PUImportViewController *)self _updateToolbarAnimated:v3];
+    [(PUImportViewController *)self _updateToolbarAnimated:animatedCopy];
   }
 }
 
@@ -1818,35 +1818,35 @@ LABEL_8:
   return 0;
 }
 
-- (int64_t)contentFillModeForImportCell:(id)a3
+- (int64_t)contentFillModeForImportCell:(id)cell
 {
-  v3 = [(PUImportViewController *)self _spec];
-  v4 = [v3 cellFillMode];
+  _spec = [(PUImportViewController *)self _spec];
+  cellFillMode = [_spec cellFillMode];
 
-  return v4;
+  return cellFillMode;
 }
 
-- (void)importCell:(id)a3 didRequestCancellationOfThumbnailRequestWithID:(int64_t)a4
+- (void)importCell:(id)cell didRequestCancellationOfThumbnailRequestWithID:(int64_t)d
 {
-  v6 = [(PUImportViewController *)self importController];
-  v5 = [v6 importMediaProvider];
-  [v5 cancelImageRequest:a4];
+  importController = [(PUImportViewController *)self importController];
+  importMediaProvider = [importController importMediaProvider];
+  [importMediaProvider cancelImageRequest:d];
 }
 
-- (int64_t)importCell:(id)a3 requestImageForImportItem:(id)a4 ofSize:(unint64_t)a5 completion:(id)a6
+- (int64_t)importCell:(id)cell requestImageForImportItem:(id)item ofSize:(unint64_t)size completion:(id)completion
 {
-  v9 = a6;
-  if (v9)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = a4;
-    v11 = [(PUImportViewController *)self importController];
-    v12 = [v11 importMediaProvider];
+    itemCopy = item;
+    importController = [(PUImportViewController *)self importController];
+    importMediaProvider = [importController importMediaProvider];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __81__PUImportViewController_importCell_requestImageForImportItem_ofSize_completion___block_invoke;
     v15[3] = &unk_1E7B780D8;
-    v16 = v9;
-    v13 = [v12 requestImageForImportItem:v10 ofSize:a5 completion:v15];
+    v16 = completionCopy;
+    v13 = [importMediaProvider requestImageForImportItem:itemCopy ofSize:size completion:v15];
   }
 
   else
@@ -1859,8 +1859,8 @@ LABEL_8:
 
 - (CGSize)gridItemSize
 {
-  v2 = [(PUImportViewController *)self _gridLayout];
-  [v2 itemSize];
+  _gridLayout = [(PUImportViewController *)self _gridLayout];
+  [_gridLayout itemSize];
   v4 = v3;
   v6 = v5;
 
@@ -1876,17 +1876,17 @@ LABEL_8:
   return result;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(PUImportViewController *)self collectionView:a3];
-  v6 = [v5 indexPathsForVisibleItems];
+  v5 = [(PUImportViewController *)self collectionView:settings];
+  indexPathsForVisibleItems = [v5 indexPathsForVisibleItems];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [indexPathsForVisibleItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1898,52 +1898,52 @@ LABEL_8:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         [(PUImportViewController *)self _updateItemViewAtIndex:*(*(&v11 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [indexPathsForVisibleItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)notifyUserOfImportCompletionIfNeededWithImportSession:(id)a3 results:(id)a4
+- (void)notifyUserOfImportCompletionIfNeededWithImportSession:(id)session results:(id)results
 {
   v57 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PUImportViewController *)self importController];
-  v10 = [v9 importSource];
+  sessionCopy = session;
+  resultsCopy = results;
+  importController = [(PUImportViewController *)self importController];
+  importSource = [importController importSource];
 
-  objc_storeStrong(&self->_completedImportSessionInfo, a3);
+  objc_storeStrong(&self->_completedImportSessionInfo, session);
   if (!self->_completedImportSessionInfo)
   {
     _PFAssertContinueHandler();
   }
 
-  v11 = [v8 importRecords];
-  if (!v10)
+  importRecords = [resultsCopy importRecords];
+  if (!importSource)
   {
     self->_completedAnImport = 0;
     [0 canDeleteContent];
     goto LABEL_51;
   }
 
-  v12 = [(PXImportSessionInfo *)self->_completedImportSessionInfo importedItems];
-  self->_completedAnImport = [v12 count] != 0;
+  importedItems = [(PXImportSessionInfo *)self->_completedImportSessionInfo importedItems];
+  self->_completedAnImport = [importedItems count] != 0;
 
-  v13 = [v10 canDeleteContent];
-  v14 = [(PXImportSessionInfo *)self->_completedImportSessionInfo importedItems];
-  v15 = [v14 count];
+  canDeleteContent = [importSource canDeleteContent];
+  importedItems2 = [(PXImportSessionInfo *)self->_completedImportSessionInfo importedItems];
+  v15 = [importedItems2 count];
 
   if (v15)
   {
-    v16 = v13 == 0;
+    v16 = canDeleteContent == 0;
   }
 
   else
@@ -1953,10 +1953,10 @@ LABEL_8:
 
   if (!v16)
   {
-    v17 = [(PXImportSessionInfo *)self->_completedImportSessionInfo importStopped];
+    importStopped = [(PXImportSessionInfo *)self->_completedImportSessionInfo importStopped];
     v18 = _importGridLog();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-    if (v17)
+    if (importStopped)
     {
       if (v19)
       {
@@ -1975,20 +1975,20 @@ LABEL_8:
     v49 = PLLocalizedFrameworkString();
     v48 = PLLocalizedFrameworkString();
     v21 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"KEEPORDELETE_"];
-    v45 = v11;
+    v45 = importRecords;
     v46 = v20;
     v47 = v21;
-    if ([v11 count] == 1)
+    if ([importRecords count] == 1)
     {
-      v22 = [v11 objectAtIndex:0];
-      v23 = [v22 importAsset];
+      v22 = [importRecords objectAtIndex:0];
+      importAsset = [v22 importAsset];
 
-      if ([v23 isImage] && !objc_msgSend(v23, "isLivePhoto"))
+      if ([importAsset isImage] && !objc_msgSend(importAsset, "isLivePhoto"))
       {
         v24 = @"PHOTO_";
       }
 
-      else if ([v23 isMovie])
+      else if ([importAsset isMovie])
       {
         v24 = @"VIDEO_";
       }
@@ -2003,12 +2003,12 @@ LABEL_8:
 
     else
     {
-      v44 = v7;
+      v44 = sessionCopy;
       v54 = 0u;
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v25 = v11;
+      v25 = importRecords;
       v26 = [v25 countByEnumeratingWithState:&v52 objects:v56 count:16];
       if (v26)
       {
@@ -2025,8 +2025,8 @@ LABEL_8:
               objc_enumerationMutation(v25);
             }
 
-            v32 = [*(*(&v52 + 1) + 8 * i) importAsset];
-            if ([v32 isImage])
+            importAsset2 = [*(*(&v52 + 1) + 8 * i) importAsset];
+            if ([importAsset2 isImage])
             {
               v29 = 0;
             }
@@ -2034,7 +2034,7 @@ LABEL_8:
             else
             {
               v30 = 0;
-              v29 &= [v32 isMovie];
+              v29 &= [importAsset2 isMovie];
             }
 
             if ((v30 & 1) == 0 && !v29)
@@ -2042,7 +2042,7 @@ LABEL_8:
 
               v21 = v47;
               [v47 appendString:@"MEDIA_"];
-              v7 = v44;
+              sessionCopy = v44;
               v20 = v46;
               goto LABEL_41;
             }
@@ -2060,7 +2060,7 @@ LABEL_8:
         v20 = v46;
         if ((v30 & 1) == 0)
         {
-          v7 = v44;
+          sessionCopy = v44;
           v21 = v47;
           if (v29)
           {
@@ -2077,15 +2077,15 @@ LABEL_8:
 
       v21 = v47;
       [v47 appendString:@"PHOTOS_"];
-      v7 = v44;
+      sessionCopy = v44;
     }
 
 LABEL_41:
-    v33 = [v10 productKind];
-    v34 = [v10 name];
-    if (([v33 isEqualToString:@"Camera"] & 1) != 0 || !objc_msgSend(v34, "length"))
+    productKind = [importSource productKind];
+    name = [importSource name];
+    if (([productKind isEqualToString:@"Camera"] & 1) != 0 || !objc_msgSend(name, "length"))
     {
-      [v21 appendString:v33];
+      [v21 appendString:productKind];
       v36 = PLLocalizedFrameworkString();
     }
 
@@ -2127,34 +2127,34 @@ LABEL_41:
 
     CFRelease(importCompleteNotification);
 
-    v11 = v45;
+    importRecords = v45;
   }
 
 LABEL_51:
 }
 
-- (void)importController:(id)a3 didLoadAssets:(id)a4 exceptions:(id)a5
+- (void)importController:(id)controller didLoadAssets:(id)assets exceptions:(id)exceptions
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  if (![a4 count] && objc_msgSend(v6, "count"))
+  exceptionsCopy = exceptions;
+  if (![assets count] && objc_msgSend(exceptionsCopy, "count"))
   {
     v7 = _importGridLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = 138543362;
-      v9 = v6;
+      v9 = exceptionsCopy;
       _os_log_error_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_ERROR, "Error(s) loading assets: %{public}@", &v8, 0xCu);
     }
   }
 }
 
-- (void)importController:(id)a3 didCompleteImportWithImportSession:(id)a4 results:(id)a5 completion:(id)a6
+- (void)importController:(id)controller didCompleteImportWithImportSession:(id)session results:(id)results completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  sessionCopy = session;
+  resultsCopy = results;
+  completionCopy = completion;
   v12 = _importGridLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -2169,12 +2169,12 @@ LABEL_51:
   v17[2] = __97__PUImportViewController_importController_didCompleteImportWithImportSession_results_completion___block_invoke;
   v17[3] = &unk_1E7B7C590;
   v17[4] = self;
-  v18 = v9;
-  v19 = v10;
-  v20 = v11;
-  v14 = v11;
-  v15 = v10;
-  v16 = v9;
+  v18 = sessionCopy;
+  v19 = resultsCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = resultsCopy;
+  v16 = sessionCopy;
   dispatch_after(v13, MEMORY[0x1E69E96A0], v17);
 }
 
@@ -2203,15 +2203,15 @@ uint64_t __97__PUImportViewController_importController_didCompleteImportWithImpo
   [(PUImportViewController *)self _updateToolbarAnimated:0];
 }
 
-- (id)importDestinationForActionCoordinator:(id)a3
+- (id)importDestinationForActionCoordinator:(id)coordinator
 {
-  v3 = [(PUImportViewController *)self importController];
-  v4 = [v3 importDestinationAlbum];
+  importController = [(PUImportViewController *)self importController];
+  importDestinationAlbum = [importController importDestinationAlbum];
 
-  return v4;
+  return importDestinationAlbum;
 }
 
-- (void)actionCoordinatorDidEndDelete:(id)a3
+- (void)actionCoordinatorDidEndDelete:(id)delete
 {
   [(PUImportViewController *)self _endUninterruptibleOperation];
   [(PUImportViewController *)self _importControllerDidEndAction];
@@ -2219,14 +2219,14 @@ uint64_t __97__PUImportViewController_importController_didCompleteImportWithImpo
   [(PUPhotosGridViewController *)self updatePeripheralInterfaceAnimated:1];
 }
 
-- (void)actionCoordinatorWillBeginDelete:(id)a3
+- (void)actionCoordinatorWillBeginDelete:(id)delete
 {
   [(PUImportViewController *)self _beginUninterruptibleOperation];
 
   [(PUImportViewController *)self _importControllerWillBeginAction];
 }
 
-- (void)actionCoordinator:(id)a3 didCompleteWithImportSession:(id)a4 results:(id)a5
+- (void)actionCoordinator:(id)coordinator didCompleteWithImportSession:(id)session results:(id)results
 {
   v9 = *MEMORY[0x1E69E9840];
   v6 = _importGridLog();
@@ -2240,19 +2240,19 @@ uint64_t __97__PUImportViewController_importController_didCompleteImportWithImpo
   [(PUImportViewController *)self _endImport];
 }
 
-- (void)importControllerProgressDidChange:(id)a3
+- (void)importControllerProgressDidChange:(id)change
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69C4068]];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69C4068]];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69C4060]];
+  userInfo2 = [changeCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69C4060]];
 
-  v9 = [v4 userInfo];
+  userInfo3 = [changeCopy userInfo];
 
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69C4078]];
+  v10 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E69C4078]];
 
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
@@ -2273,12 +2273,12 @@ uint64_t __97__PUImportViewController_importController_didCompleteImportWithImpo
 
   if (v12 == 0.0)
   {
-    v14 = [(PUImportViewController *)self roundProgressView];
-    [v14 resetProgress];
+    roundProgressView = [(PUImportViewController *)self roundProgressView];
+    [roundProgressView resetProgress];
   }
 
-  v15 = [(PUImportViewController *)self importController];
-  [v15 isDeletingAssets];
+  importController = [(PUImportViewController *)self importController];
+  [importController isDeletingAssets];
 
   v16 = PLLocalizedFrameworkString();
   v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "integerValue")}];
@@ -2297,16 +2297,16 @@ uint64_t __97__PUImportViewController_importController_didCompleteImportWithImpo
     [(UIBarButtonItem *)self->_progressButtonItem setAccessibilityLabel:v20];
   }
 
-  v21 = [MEMORY[0x1E69C3620] sharedInstance];
-  v22 = [v21 showProgressTitles];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  showProgressTitles = [mEMORY[0x1E69C3620] showProgressTitles];
 
-  if (v22)
+  if (showProgressTitles)
   {
     [(PUImportViewController *)self _updateToolbarAnimated:0];
   }
 }
 
-- (void)stopImport:(id)a3
+- (void)stopImport:(id)import
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = _importGridLog();
@@ -2317,22 +2317,22 @@ uint64_t __97__PUImportViewController_importController_didCompleteImportWithImpo
     _os_log_impl(&dword_1B36F3000, v4, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  v5 = [(PUImportViewController *)self actionCoordinator];
-  [v5 stopImport];
+  actionCoordinator = [(PUImportViewController *)self actionCoordinator];
+  [actionCoordinator stopImport];
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  v4 = a3;
-  v5 = [(PUImportViewController *)self actionCoordinator];
-  [v5 deleteItemsFromBarButtonItem:v4];
+  deleteCopy = delete;
+  actionCoordinator = [(PUImportViewController *)self actionCoordinator];
+  [actionCoordinator deleteItemsFromBarButtonItem:deleteCopy];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && sel_delete_ == a3)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && sel_delete_ == action)
   {
     v7 = 0;
   }
@@ -2341,49 +2341,49 @@ uint64_t __97__PUImportViewController_importController_didCompleteImportWithImpo
   {
     v9.receiver = self;
     v9.super_class = PUImportViewController;
-    v7 = [(PUPhotosGridViewController *)&v9 canPerformAction:a3 withSender:v6];
+    v7 = [(PUPhotosGridViewController *)&v9 canPerformAction:action withSender:senderCopy];
   }
 
   return v7;
 }
 
-- (void)transitionFromDataSource:(id)a3 toDataSource:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)transitionFromDataSource:(id)source toDataSource:(id)dataSource animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(PUImportViewController *)self importDataSourceManager];
-  v14 = [v13 changeHistory];
+  animatedCopy = animated;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  handlerCopy = handler;
+  importDataSourceManager = [(PUImportViewController *)self importDataSourceManager];
+  changeHistory = [importDataSourceManager changeHistory];
 
-  v15 = [(PUImportViewController *)self changeDetailsHelper];
+  changeDetailsHelper = [(PUImportViewController *)self changeDetailsHelper];
 
-  if (!v15)
+  if (!changeDetailsHelper)
   {
     objc_initWeak(&location, self);
     v16 = [PUImportChangeDetailsCollectionViewHelper alloc];
-    v17 = [(PUImportViewController *)self collectionView];
+    collectionView = [(PUImportViewController *)self collectionView];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __91__PUImportViewController_transitionFromDataSource_toDataSource_animated_completionHandler___block_invoke;
     v23[3] = &unk_1E7B78088;
     objc_copyWeak(&v24, &location);
-    v18 = [(PUImportChangeDetailsCollectionViewHelper *)v16 initWithCollectionView:v17 dataSourceSettingHandler:v23];
+    v18 = [(PUImportChangeDetailsCollectionViewHelper *)v16 initWithCollectionView:collectionView dataSourceSettingHandler:v23];
     [(PUImportViewController *)self setChangeDetailsHelper:v18];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
   }
 
-  v19 = [(PUImportViewController *)self changeDetailsHelper];
+  changeDetailsHelper2 = [(PUImportViewController *)self changeDetailsHelper];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __91__PUImportViewController_transitionFromDataSource_toDataSource_animated_completionHandler___block_invoke_2;
   v21[3] = &unk_1E7B780B0;
   v21[4] = self;
-  v22 = v12;
-  v20 = v12;
-  [v19 transitionFromDataSource:v10 toDataSource:v11 changeHistory:v14 animated:v7 completionHandler:v21];
+  v22 = handlerCopy;
+  v20 = handlerCopy;
+  [changeDetailsHelper2 transitionFromDataSource:sourceCopy toDataSource:dataSourceCopy changeHistory:changeHistory animated:animatedCopy completionHandler:v21];
 }
 
 void __91__PUImportViewController_transitionFromDataSource_toDataSource_animated_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2416,13 +2416,13 @@ uint64_t __91__PUImportViewController_transitionFromDataSource_toDataSource_anim
   return result;
 }
 
-- (void)handleNewDataSource:(id)a3
+- (void)handleNewDataSource:(id)source
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUImportViewController *)self importDataSource];
-  v6 = [v5 identifier];
-  if (v6 != [v4 identifier])
+  sourceCopy = source;
+  importDataSource = [(PUImportViewController *)self importDataSource];
+  identifier = [importDataSource identifier];
+  if (identifier != [sourceCopy identifier])
   {
     if ([(PUImportViewController *)self performingDataSourceChange])
     {
@@ -2430,29 +2430,29 @@ uint64_t __91__PUImportViewController_transitionFromDataSource_toDataSource_anim
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v20 = [v4 identifier];
+        identifier2 = [sourceCopy identifier];
         _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEFAULT, "Collection view is performing changes, making pending data source: %ti", buf, 0xCu);
       }
 
-      [(PUImportViewController *)self setPendingDataSource:v4];
+      [(PUImportViewController *)self setPendingDataSource:sourceCopy];
     }
 
     else
     {
       if ([(PUImportViewController *)self px_isVisible])
       {
-        v8 = [(PUImportViewController *)self importController];
-        if ([v8 isLoadingInitialBatchOfAssets])
+        importController = [(PUImportViewController *)self importController];
+        if ([importController isLoadingInitialBatchOfAssets])
         {
           v9 = 0;
         }
 
         else
         {
-          v10 = [(PUImportViewController *)self isViewAppearing];
-          if (v4)
+          isViewAppearing = [(PUImportViewController *)self isViewAppearing];
+          if (sourceCopy)
           {
-            v11 = v5 == 0;
+            v11 = importDataSource == 0;
           }
 
           else
@@ -2461,7 +2461,7 @@ uint64_t __91__PUImportViewController_transitionFromDataSource_toDataSource_anim
           }
 
           v12 = !v11;
-          if (v10)
+          if (isViewAppearing)
           {
             v9 = 0;
           }
@@ -2478,16 +2478,16 @@ uint64_t __91__PUImportViewController_transitionFromDataSource_toDataSource_anim
         v9 = 0;
       }
 
-      v13 = [v5 alreadyImportedCollection];
-      v14 = [v13 numberOfItems];
+      alreadyImportedCollection = [importDataSource alreadyImportedCollection];
+      numberOfItems = [alreadyImportedCollection numberOfItems];
 
-      v15 = [v4 alreadyImportedCollection];
-      v16 = [v15 numberOfItems];
+      alreadyImportedCollection2 = [sourceCopy alreadyImportedCollection];
+      numberOfItems2 = [alreadyImportedCollection2 numberOfItems];
 
       if ([(PUImportViewController *)self shouldCollapseAlreadyImportedSection])
       {
         v17 = ![(PUImportViewController *)self isTransitioningToNewSize];
-        if (v14 <= v16)
+        if (numberOfItems <= numberOfItems2)
         {
           v17 = 1;
         }
@@ -2501,7 +2501,7 @@ uint64_t __91__PUImportViewController_transitionFromDataSource_toDataSource_anim
       v18[2] = __46__PUImportViewController_handleNewDataSource___block_invoke;
       v18[3] = &unk_1E7B80DD0;
       v18[4] = self;
-      [(PUImportViewController *)self transitionFromDataSource:v5 toDataSource:v4 animated:v9 completionHandler:v18];
+      [(PUImportViewController *)self transitionFromDataSource:importDataSource toDataSource:sourceCopy animated:v9 completionHandler:v18];
     }
   }
 }
@@ -2562,25 +2562,25 @@ void __46__PUImportViewController_handleNewDataSource___block_invoke_2(uint64_t 
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXImportControllerObserverContext_34960 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXImportControllerObserverContext_34960 == context)
   {
-    if (v6)
+    if (changeCopy)
     {
       [(PUPhotosGridViewController *)self invalidateEmptyPlaceholderView];
     }
 
     else
     {
-      if ((v6 & 2) != 0 || (v6 & 4) != 0)
+      if ((changeCopy & 2) != 0 || (changeCopy & 4) != 0)
       {
         goto LABEL_19;
       }
 
-      if ((v6 & 8) != 0)
+      if ((changeCopy & 8) != 0)
       {
         v27[0] = MEMORY[0x1E69E9820];
         v27[1] = 3221225472;
@@ -2592,7 +2592,7 @@ void __46__PUImportViewController_handleNewDataSource___block_invoke_2(uint64_t 
         goto LABEL_21;
       }
 
-      if ((v6 & 0x10) == 0)
+      if ((changeCopy & 0x10) == 0)
       {
         goto LABEL_24;
       }
@@ -2604,29 +2604,29 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  if (PXImportAssetsDataSourceManagerObserverContext_34961 != a5)
+  if (PXImportAssetsDataSourceManagerObserverContext_34961 != context)
   {
-    if (PUImportUnfilteredAssetsDataSourceManagerObserverContext != a5)
+    if (PUImportUnfilteredAssetsDataSourceManagerObserverContext != context)
     {
-      if ((v6 & 1) != 0 && PUImportSelectionManagerObserverContext_34962 == a5)
+      if ((changeCopy & 1) != 0 && PUImportSelectionManagerObserverContext_34962 == context)
       {
-        v9 = [(PUImportViewController *)self currentSelectionSnapshot];
-        v10 = [(PUImportViewController *)self importController];
-        v11 = [v10 selectionManager];
-        v12 = [v11 selectionSnapshot];
-        [(PUImportViewController *)self setCurrentSelectionSnapshot:v12];
+        currentSelectionSnapshot = [(PUImportViewController *)self currentSelectionSnapshot];
+        importController = [(PUImportViewController *)self importController];
+        selectionManager = [importController selectionManager];
+        selectionSnapshot = [selectionManager selectionSnapshot];
+        [(PUImportViewController *)self setCurrentSelectionSnapshot:selectionSnapshot];
 
-        v13 = [v9 selectedIndexPaths];
-        v14 = [(PUImportViewController *)self currentSelectionSnapshot];
-        v15 = [v14 selectedIndexPaths];
-        v16 = v15;
-        if (v13 == v15)
+        selectedIndexPaths = [currentSelectionSnapshot selectedIndexPaths];
+        currentSelectionSnapshot2 = [(PUImportViewController *)self currentSelectionSnapshot];
+        selectedIndexPaths2 = [currentSelectionSnapshot2 selectedIndexPaths];
+        v16 = selectedIndexPaths2;
+        if (selectedIndexPaths == selectedIndexPaths2)
         {
         }
 
         else
         {
-          v17 = [v13 isEqual:v15];
+          v17 = [selectedIndexPaths isEqual:selectedIndexPaths2];
 
           if ((v17 & 1) == 0)
           {
@@ -2655,18 +2655,18 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v18 = [(PUImportViewController *)self importDataSourceManager];
-    v19 = [v18 dataSource];
+    importDataSourceManager = [(PUImportViewController *)self importDataSourceManager];
+    dataSource = [importDataSourceManager dataSource];
 
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __55__PUImportViewController_observable_didChange_context___block_invoke_2;
     v25[3] = &unk_1E7B80C38;
     v25[4] = self;
-    v26 = v19;
-    v20 = v19;
+    v26 = dataSource;
+    v20 = dataSource;
     dispatch_async(MEMORY[0x1E69E96A0], v25);
   }
 
@@ -2700,125 +2700,125 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
   return [v2 updateAlreadyImportedCollapseStatus];
 }
 
-- (void)setImportDataSource:(id)a3
+- (void)setImportDataSource:(id)source
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   v5 = _importGridLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PXImportAssetsDataSource *)self->_importDataSource identifier];
-    v7 = [(PXImportAssetsDataSource *)self->_importDataSource numberOfSections];
-    v8 = [(PXImportAssetsDataSource *)self->_importDataSource numberOfItems];
+    identifier = [(PXImportAssetsDataSource *)self->_importDataSource identifier];
+    numberOfSections = [(PXImportAssetsDataSource *)self->_importDataSource numberOfSections];
+    numberOfItems = [(PXImportAssetsDataSource *)self->_importDataSource numberOfItems];
     v13 = 136316674;
     v14 = "[PUImportViewController setImportDataSource:]";
     v15 = 2048;
-    v16 = v6;
+    v16 = identifier;
     v17 = 2048;
-    v18 = v7;
+    v18 = numberOfSections;
     v19 = 2048;
-    v20 = v8;
+    v20 = numberOfItems;
     v21 = 2048;
-    v22 = [v4 identifier];
+    identifier2 = [sourceCopy identifier];
     v23 = 2048;
-    v24 = [v4 numberOfSections];
+    numberOfSections2 = [sourceCopy numberOfSections];
     v25 = 2048;
-    v26 = [v4 numberOfItems];
+    numberOfItems2 = [sourceCopy numberOfItems];
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "%s: Going from data source %lu (%lu sections, %lu assets) to %lu (%lu sections, %lu assets)", &v13, 0x48u);
   }
 
   importDataSource = self->_importDataSource;
-  self->_importDataSource = v4;
-  v10 = v4;
+  self->_importDataSource = sourceCopy;
+  v10 = sourceCopy;
 
   v11 = self->_importDataSource;
-  v12 = [(PUImportViewController *)self fakePhotosDataSource];
-  [v12 setImportDataSource:v11];
+  fakePhotosDataSource = [(PUImportViewController *)self fakePhotosDataSource];
+  [fakePhotosDataSource setImportDataSource:v11];
 }
 
-- (void)setUnfilteredImportDataSourceManager:(id)a3
+- (void)setUnfilteredImportDataSourceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   unfilteredImportDataSourceManager = self->_unfilteredImportDataSourceManager;
-  if (unfilteredImportDataSourceManager != v5)
+  if (unfilteredImportDataSourceManager != managerCopy)
   {
-    v7 = v5;
+    v7 = managerCopy;
     [(PXImportAssetsDataSourceManager *)unfilteredImportDataSourceManager unregisterChangeObserver:self context:PUImportUnfilteredAssetsDataSourceManagerObserverContext];
-    objc_storeStrong(&self->_unfilteredImportDataSourceManager, a3);
+    objc_storeStrong(&self->_unfilteredImportDataSourceManager, manager);
     unfilteredImportDataSourceManager = [(PXImportAssetsDataSourceManager *)self->_unfilteredImportDataSourceManager registerChangeObserver:self context:PUImportUnfilteredAssetsDataSourceManagerObserverContext];
-    v5 = v7;
+    managerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](unfilteredImportDataSourceManager, v5);
+  MEMORY[0x1EEE66BB8](unfilteredImportDataSourceManager, managerCopy);
 }
 
-- (void)setImportDataSourceManager:(id)a3
+- (void)setImportDataSourceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   importDataSourceManager = self->_importDataSourceManager;
-  if (importDataSourceManager != v5)
+  if (importDataSourceManager != managerCopy)
   {
-    v8 = v5;
+    v8 = managerCopy;
     [(PXImportAssetsDataSourceManager *)importDataSourceManager unregisterChangeObserver:self context:PXImportAssetsDataSourceManagerObserverContext_34961];
-    objc_storeStrong(&self->_importDataSourceManager, a3);
+    objc_storeStrong(&self->_importDataSourceManager, manager);
     [(PXImportAssetsDataSourceManager *)self->_importDataSourceManager registerChangeObserver:self context:PXImportAssetsDataSourceManagerObserverContext_34961];
-    v7 = [(PXImportAssetsDataSourceManager *)self->_importDataSourceManager dataSource];
-    [(PUImportViewController *)self handleNewDataSource:v7];
+    dataSource = [(PXImportAssetsDataSourceManager *)self->_importDataSourceManager dataSource];
+    [(PUImportViewController *)self handleNewDataSource:dataSource];
 
-    v5 = v8;
+    managerCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](importDataSourceManager, v5);
+  MEMORY[0x1EEE66BB8](importDataSourceManager, managerCopy);
 }
 
-- (void)setImportController:(id)a3
+- (void)setImportController:(id)controller
 {
-  v5 = a3;
-  if (self->_importController != v5)
+  controllerCopy = controller;
+  if (self->_importController != controllerCopy)
   {
-    v13 = v5;
-    v6 = [(PUImportViewController *)self unfilteredImportDataSourceManager];
+    v13 = controllerCopy;
+    unfilteredImportDataSourceManager = [(PUImportViewController *)self unfilteredImportDataSourceManager];
 
-    if (v6)
+    if (unfilteredImportDataSourceManager)
     {
       importController = self->_importController;
-      v8 = [(PUImportViewController *)self unfilteredImportDataSourceManager];
-      [(PXImportController *)importController removeDataSourceManager:v8];
+      unfilteredImportDataSourceManager2 = [(PUImportViewController *)self unfilteredImportDataSourceManager];
+      [(PXImportController *)importController removeDataSourceManager:unfilteredImportDataSourceManager2];
 
       [(PUImportViewController *)self setUnfilteredImportDataSourceManager:0];
     }
 
-    v9 = [(PXImportController *)self->_importController selectionManager];
-    [v9 unregisterChangeObserver:self context:PUImportSelectionManagerObserverContext_34962];
+    selectionManager = [(PXImportController *)self->_importController selectionManager];
+    [selectionManager unregisterChangeObserver:self context:PUImportSelectionManagerObserverContext_34962];
 
     [(PXImportController *)self->_importController unregisterChangeObserver:self context:PXImportControllerObserverContext_34960];
-    objc_storeStrong(&self->_importController, a3);
-    v10 = [(PXImportController *)self->_importController dataSourceManager];
-    [(PUImportViewController *)self setImportDataSourceManager:v10];
+    objc_storeStrong(&self->_importController, controller);
+    dataSourceManager = [(PXImportController *)self->_importController dataSourceManager];
+    [(PUImportViewController *)self setImportDataSourceManager:dataSourceManager];
 
     [(PUImportViewController *)self setUserWantsAlreadyImportedSectionCollapsedIfPossible:1];
     [(PUImportViewController *)self setShouldCollapseAlreadyImportedSection:[(PUImportViewController *)self userWantsAlreadyImportedSectionCollapsedIfPossible]];
     [(PUImportViewController *)self updateDataSourceManagerFilters];
     [(PXImportController *)self->_importController registerChangeObserver:self context:PXImportControllerObserverContext_34960];
-    v11 = [(PXImportController *)self->_importController selectionManager];
-    [v11 registerChangeObserver:self context:PUImportSelectionManagerObserverContext_34962];
+    selectionManager2 = [(PXImportController *)self->_importController selectionManager];
+    [selectionManager2 registerChangeObserver:self context:PUImportSelectionManagerObserverContext_34962];
 
     v12 = [(PXImportController *)self->_importController createDataSourceManagerWithLogIdentifier:@"unfiltered"];
     [(PUImportViewController *)self setUnfilteredImportDataSourceManager:v12];
 
-    v5 = v13;
+    controllerCopy = v13;
   }
 }
 
-- (void)setImportSource:(id)a3
+- (void)setImportSource:(id)source
 {
-  v4 = a3;
-  if (v4)
+  sourceCopy = source;
+  if (sourceCopy)
   {
-    v5 = [MEMORY[0x1E69C3620] sharedInstance];
-    v6 = [v5 showNewestItemsInGridUntilScrolled];
+    mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+    showNewestItemsInGridUntilScrolled = [mEMORY[0x1E69C3620] showNewestItemsInGridUntilScrolled];
 
-    if (v6)
+    if (showNewestItemsInGridUntilScrolled)
     {
       v7 = 1;
     }
@@ -2829,38 +2829,38 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
     }
 
     v8 = objc_alloc(MEMORY[0x1E69C3608]);
-    v9 = [(PUPhotosGridViewController *)self photoLibrary];
-    v10 = [v8 initWithImportSource:v4 photoLibrary:v9 imageFormat:objc_msgSend(objc_opt_class() dateOrder:"defaultThumbnailImageFormat"), v7];
+    photoLibrary = [(PUPhotosGridViewController *)self photoLibrary];
+    v10 = [v8 initWithImportSource:sourceCopy photoLibrary:photoLibrary imageFormat:objc_msgSend(objc_opt_class() dateOrder:"defaultThumbnailImageFormat"), v7];
     [(PUImportViewController *)self setImportController:v10];
 
-    v11 = [(PUImportViewController *)self importController];
-    [v11 setImportCompletionDelegate:self];
+    importController = [(PUImportViewController *)self importController];
+    [importController setImportCompletionDelegate:self];
 
     v12 = [PUImportFakePhotosDataSource alloc];
-    v13 = [(PUImportViewController *)self importController];
-    v14 = [v13 dataSourceManager];
-    v15 = [v14 dataSource];
-    v16 = [(PUPhotosGridViewController *)self photoLibrary];
-    v17 = [(PUImportFakePhotosDataSource *)v12 initWithImportDataSource:v15 photoLibrary:v16];
+    importController2 = [(PUImportViewController *)self importController];
+    dataSourceManager = [importController2 dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
+    photoLibrary2 = [(PUPhotosGridViewController *)self photoLibrary];
+    v17 = [(PUImportFakePhotosDataSource *)v12 initWithImportDataSource:dataSource photoLibrary:photoLibrary2];
     [(PUImportViewController *)self setFakePhotosDataSource:v17];
 
-    v18 = [(PUImportViewController *)self fakePhotosDataSource];
-    [(PUPhotosGridViewController *)self setPhotosDataSource:v18];
+    fakePhotosDataSource = [(PUImportViewController *)self fakePhotosDataSource];
+    [(PUPhotosGridViewController *)self setPhotosDataSource:fakePhotosDataSource];
 
-    [(PUImportViewController *)self setShouldStayScrolledToBottom:v6];
-    v19 = [(PUImportViewController *)self importController];
-    [v19 loadAssets];
+    [(PUImportViewController *)self setShouldStayScrolledToBottom:showNewestItemsInGridUntilScrolled];
+    importController3 = [(PUImportViewController *)self importController];
+    [importController3 loadAssets];
 
     v20 = [PUImportActionCoordinator alloc];
-    v21 = [(PUImportViewController *)self importController];
-    v22 = [(PUImportActionCoordinator *)v20 initWithViewController:self importController:v21 loggingSource:0];
+    importController4 = [(PUImportViewController *)self importController];
+    v22 = [(PUImportActionCoordinator *)v20 initWithViewController:self importController:importController4 loggingSource:0];
     [(PUImportViewController *)self setActionCoordinator:v22];
 
-    v23 = [(PUImportViewController *)self actionCoordinator];
-    [v23 setPresentsAdditionalDeleteAllConfirmation:1];
+    actionCoordinator = [(PUImportViewController *)self actionCoordinator];
+    [actionCoordinator setPresentsAdditionalDeleteAllConfirmation:1];
 
-    v24 = [(PUImportViewController *)self actionCoordinator];
-    [v24 setDelegate:self];
+    actionCoordinator2 = [(PUImportViewController *)self actionCoordinator];
+    [actionCoordinator2 setDelegate:self];
 
     [(PUImportViewController *)self enableSwipeSelection];
   }
@@ -2868,26 +2868,26 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
   else
   {
     [(PUImportViewController *)self setActionCoordinator:0];
-    v25 = [(PUImportViewController *)self importController];
-    [v25 shutdown];
+    importController5 = [(PUImportViewController *)self importController];
+    [importController5 shutdown];
 
     [(PUImportViewController *)self setImportController:0];
     [(PUImportViewController *)self _cancelAlerts];
     if (self->_completedAnImport)
     {
-      v26 = [(PUImportViewController *)self view];
-      v27 = [v26 superview];
+      view = [(PUImportViewController *)self view];
+      superview = [view superview];
 
-      if (v27)
+      if (superview)
       {
         self->_completedAnImport = 0;
       }
     }
 
     [(PUImportViewController *)self disableSwipeSelection];
-    v28 = [(PUImportViewController *)self presentingViewController];
+    presentingViewController = [(PUImportViewController *)self presentingViewController];
 
-    if (v28)
+    if (presentingViewController)
     {
       v29 = _importGridLog();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -2896,18 +2896,18 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
         _os_log_impl(&dword_1B36F3000, v29, OS_LOG_TYPE_DEFAULT, "Import source went away while modally presented. Auto-dismissing import UI", v31, 2u);
       }
 
-      v30 = [(PUImportViewController *)self presentingViewController];
-      [v30 dismissViewControllerAnimated:1 completion:0];
+      presentingViewController2 = [(PUImportViewController *)self presentingViewController];
+      [presentingViewController2 dismissViewControllerAnimated:1 completion:0];
     }
   }
 }
 
 - (PHImportSource)importSource
 {
-  v2 = [(PUImportViewController *)self importController];
-  v3 = [v2 importSource];
+  importController = [(PUImportViewController *)self importController];
+  importSource = [importController importSource];
 
-  return v3;
+  return importSource;
 }
 
 - (void)_cancelAlerts
@@ -2926,11 +2926,11 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
     self->_importCompleteNotification = 0;
   }
 
-  v4 = [(PUImportViewController *)self presentedViewController];
+  presentedViewController = [(PUImportViewController *)self presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
-    v5 = [(PUImportViewController *)self presentedViewController];
+    presentedViewController2 = [(PUImportViewController *)self presentedViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2940,39 +2940,39 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
 
 - (BOOL)isImporting
 {
-  v2 = [(PUImportViewController *)self importController];
-  v3 = [v2 isImportingAssets];
+  importController = [(PUImportViewController *)self importController];
+  isImportingAssets = [importController isImportingAssets];
 
-  return v3;
+  return isImportingAssets;
 }
 
-- (void)handleImportCompleteAlertResponse:(__CFUserNotification *)a3 flags:(unint64_t)a4
+- (void)handleImportCompleteAlertResponse:(__CFUserNotification *)response flags:(unint64_t)flags
 {
-  if (self->_importCompleteNotification == a3)
+  if (self->_importCompleteNotification == response)
   {
     if (!self->_completedImportSessionInfo)
     {
       _PFAssertContinueHandler();
     }
 
-    v6 = _importGridLog();
-    v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (a4 == 1)
+    importedItems = _importGridLog();
+    v7 = os_log_type_enabled(importedItems, OS_LOG_TYPE_DEFAULT);
+    if (flags == 1)
     {
       if (v7)
       {
         *buf = 0;
-        _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEFAULT, "Import Complete Dialog: Deleting imported items.", buf, 2u);
+        _os_log_impl(&dword_1B36F3000, importedItems, OS_LOG_TYPE_DEFAULT, "Import Complete Dialog: Deleting imported items.", buf, 2u);
       }
 
-      v6 = [(PXImportSessionInfo *)self->_completedImportSessionInfo importedItems];
-      [(PUImportViewController *)self _deleteItems:v6];
+      importedItems = [(PXImportSessionInfo *)self->_completedImportSessionInfo importedItems];
+      [(PUImportViewController *)self _deleteItems:importedItems];
     }
 
     else if (v7)
     {
       *v9 = 0;
-      _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEFAULT, "Import Complete Dialog: Keeping imported items.", v9, 2u);
+      _os_log_impl(&dword_1B36F3000, importedItems, OS_LOG_TYPE_DEFAULT, "Import Complete Dialog: Keeping imported items.", v9, 2u);
     }
 
     completedImportSessionInfo = self->_completedImportSessionInfo;
@@ -2983,21 +2983,21 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
   }
 }
 
-- (void)_deleteItems:(id)a3
+- (void)_deleteItems:(id)items
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = _importGridLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 136315394;
     v8 = "[PUImportViewController _deleteItems:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = itemsCopy;
     _os_log_debug_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEBUG, "%s: %@", &v7, 0x16u);
   }
 
-  if (![v4 count])
+  if (![itemsCopy count])
   {
     _PFAssertContinueHandler();
   }
@@ -3010,7 +3010,7 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
     _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEFAULT, "%s: Delete operation starting", &v7, 0xCu);
   }
 
-  [(PUImportActionCoordinator *)self->_actionCoordinator deleteItemsWithoutConfirmation:v4];
+  [(PUImportActionCoordinator *)self->_actionCoordinator deleteItemsWithoutConfirmation:itemsCopy];
 }
 
 - (void)_endImport
@@ -3058,8 +3058,8 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
   self->_busyCount = v4;
   if (!v4)
   {
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v5 setIdleTimerDisabled:0];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] setIdleTimerDisabled:0];
   }
 }
 
@@ -3077,8 +3077,8 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
   busyCount = self->_busyCount;
   if (!busyCount)
   {
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v5 setIdleTimerDisabled:1];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] setIdleTimerDisabled:1];
 
     busyCount = self->_busyCount;
   }
@@ -3086,26 +3086,26 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
   self->_busyCount = busyCount + 1;
 }
 
-- (void)_updateItemViewAtIndex:(id)a3
+- (void)_updateItemViewAtIndex:(id)index
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  indexCopy = index;
   v5 = _importGridLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v9 = 136315394;
     v10 = "[PUImportViewController _updateItemViewAtIndex:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = indexCopy;
     _os_log_debug_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEBUG, "%s: %@", &v9, 0x16u);
   }
 
-  v6 = [(PUImportViewController *)self collectionView];
-  v7 = [v6 cellForItemAtIndexPath:v4];
+  collectionView = [(PUImportViewController *)self collectionView];
+  v7 = [collectionView cellForItemAtIndexPath:indexCopy];
 
   if (v7)
   {
-    [(PUImportViewController *)self _updateCell:v7 atIndex:v4];
+    [(PUImportViewController *)self _updateCell:v7 atIndex:indexCopy];
   }
 
   else
@@ -3116,114 +3116,114 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
       v9 = 136315394;
       v10 = "[PUImportViewController _updateItemViewAtIndex:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = indexCopy;
       _os_log_debug_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEBUG, "%s: Warning missing cell for index %@", &v9, 0x16u);
     }
   }
 }
 
-- (void)_updateCell:(id)a3 atIndex:(id)a4
+- (void)_updateCell:(id)cell atIndex:(id)index
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  indexCopy = index;
   v8 = _importGridLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     *&buf[4] = "[PUImportViewController _updateCell:atIndex:]";
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = indexCopy;
     _os_log_debug_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEBUG, "%s: %@", buf, 0x16u);
   }
 
-  [v6 refreshThumbnail];
-  v9 = [MEMORY[0x1E69C3620] sharedInstance];
-  v10 = [v9 showImportItemFilenames];
+  [cellCopy refreshThumbnail];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  showImportItemFilenames = [mEMORY[0x1E69C3620] showImportItemFilenames];
 
-  if (v10)
+  if (showImportItemFilenames)
   {
     memset(buf, 0, 32);
-    v11 = [(PUImportViewController *)self importDataSource];
-    [v11 identifier];
+    importDataSource = [(PUImportViewController *)self importDataSource];
+    [importDataSource identifier];
     PXSimpleIndexPathFromIndexPath();
 
-    v12 = [(PUImportViewController *)self importDataSource];
+    importDataSource2 = [(PUImportViewController *)self importDataSource];
     v17[0] = *buf;
     v17[1] = *&buf[16];
-    v13 = [v12 assetAtItemIndexPath:v17];
+    v13 = [importDataSource2 assetAtItemIndexPath:v17];
 
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [v13 debugDisplayName];
-    v16 = [v14 stringWithFormat:@"%@ [%lu]", v15, objc_msgSend(v7, "row")];
-    [v6 updateDebugLabel:v16];
+    debugDisplayName = [v13 debugDisplayName];
+    v16 = [v14 stringWithFormat:@"%@ [%lu]", debugDisplayName, objc_msgSend(indexCopy, "row")];
+    [cellCopy updateDebugLabel:v16];
   }
 
   else
   {
-    [v6 updateDebugLabel:0];
+    [cellCopy updateDebugLabel:0];
   }
 }
 
-- (void)_deselectCell:(id)a3
+- (void)_deselectCell:(id)cell
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 representedImportItem];
+  cellCopy = cell;
+  representedImportItem = [cellCopy representedImportItem];
   v6 = _importGridLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315650;
     v9 = "[PUImportViewController _deselectCell:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = representedImportItem;
     v12 = 2112;
-    v13 = v4;
+    v13 = cellCopy;
     _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEFAULT, "%s: model: %@ cell: %@", &v8, 0x20u);
   }
 
-  if (v5)
+  if (representedImportItem)
   {
-    v7 = [(PUImportViewController *)self importController];
-    [v7 deselectItem:v5];
+    importController = [(PUImportViewController *)self importController];
+    [importController deselectItem:representedImportItem];
 
-    [v4 setSelected:0];
+    [cellCopy setSelected:0];
   }
 }
 
-- (void)_selectCell:(id)a3
+- (void)_selectCell:(id)cell
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 representedImportItem];
+  cellCopy = cell;
+  representedImportItem = [cellCopy representedImportItem];
   v6 = _importGridLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315650;
     v9 = "[PUImportViewController _selectCell:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = representedImportItem;
     v12 = 2112;
-    v13 = v4;
+    v13 = cellCopy;
     _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEFAULT, "%s: model: %@ cell: %@", &v8, 0x20u);
   }
 
-  if (v5)
+  if (representedImportItem)
   {
-    v7 = [(PUImportViewController *)self importController];
-    [v7 selectItem:v5];
+    importController = [(PUImportViewController *)self importController];
+    [importController selectItem:representedImportItem];
 
-    [v4 setSelected:1];
+    [cellCopy setSelected:1];
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v13 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  cellCopy = cell;
   v10.receiver = self;
   v10.super_class = PUImportViewController;
-  [(PUPhotosGridViewController *)&v10 collectionView:a3 didEndDisplayingCell:v8 forItemAtIndexPath:a5];
+  [(PUPhotosGridViewController *)&v10 collectionView:view didEndDisplayingCell:cellCopy forItemAtIndexPath:path];
   v9 = _importGridLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -3235,15 +3235,15 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 cancelThumbnailLoadIfActive];
+    [cellCopy cancelThumbnailLoadIfActive];
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v12 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
+  pathCopy = path;
+  cellCopy = cell;
   v9 = _importGridLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -3252,13 +3252,13 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
     _os_log_debug_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_DEBUG, "%s", &v10, 0xCu);
   }
 
-  [(PUImportViewController *)self _updateCell:v8 atIndex:v7];
+  [(PUImportViewController *)self _updateCell:cellCopy atIndex:pathCopy];
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  pathCopy = path;
   v6 = _importGridLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -3266,7 +3266,7 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
     v10 = 136315650;
     v11 = "[PUImportViewController collectionView:shouldSelectItemAtIndexPath:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = pathCopy;
     v14 = 1024;
     v15 = allowsSelection;
     _os_log_debug_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEBUG, "%s: %@ -> %d", &v10, 0x1Cu);
@@ -3276,18 +3276,18 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PUImportViewController *)self importDataSource];
-  [v9 identifier];
+  viewCopy = view;
+  pathCopy = path;
+  importDataSource = [(PUImportViewController *)self importDataSource];
+  [importDataSource identifier];
   PXSimpleIndexPathFromIndexPath();
 
-  v10 = [(PUImportViewController *)self importDataSource];
+  importDataSource2 = [(PUImportViewController *)self importDataSource];
   memset(buf, 0, 32);
-  v11 = [v10 assetAtItemIndexPath:buf];
+  v11 = [importDataSource2 assetAtItemIndexPath:buf];
 
   if (!v11)
   {
@@ -3295,18 +3295,18 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
     v19 = _importGridLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [(PUImportViewController *)self importDataSource];
+      importDataSource3 = [(PUImportViewController *)self importDataSource];
       *buf = 136315650;
       *&buf[4] = "[PUImportViewController collectionView:cellForItemAtIndexPath:]";
       *&buf[12] = 2114;
-      *&buf[14] = v8;
+      *&buf[14] = pathCopy;
       *&buf[22] = 2114;
-      *&buf[24] = v20;
+      *&buf[24] = importDataSource3;
       _os_log_error_impl(&dword_1B36F3000, v19, OS_LOG_TYPE_ERROR, "%s: Unreachable Error: Import view model at index path %{public}@ is nil, import data source: %{public}@", buf, 0x20u);
     }
 
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PUImportViewController.m" lineNumber:869 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUImportViewController.m" lineNumber:869 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -3319,17 +3319,17 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
     *&buf[12] = 2112;
     *&buf[14] = v11;
     *&buf[22] = 2112;
-    *&buf[24] = v8;
+    *&buf[24] = pathCopy;
     _os_log_debug_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_DEBUG, "%s: %@(%@)", buf, 0x20u);
   }
 
-  v13 = [(PUImportViewController *)self collectionView];
-  v14 = [v13 dequeueReusableCellWithReuseIdentifier:@"PUImportCellReuseIdentifier" forIndexPath:v8];
+  collectionView = [(PUImportViewController *)self collectionView];
+  v14 = [collectionView dequeueReusableCellWithReuseIdentifier:@"PUImportCellReuseIdentifier" forIndexPath:pathCopy];
 
   [v14 setDelegate:self];
   [v14 setRepresentedImportItem:v11];
-  v15 = [(PUImportViewController *)self itemsBeingTransitioned];
-  v16 = [v15 member:v11];
+  itemsBeingTransitioned = [(PUImportViewController *)self itemsBeingTransitioned];
+  v16 = [itemsBeingTransitioned member:v11];
 
   v17 = 0.0;
   if (!v16)
@@ -3342,30 +3342,30 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
   return v14;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v10 != @"PUImportSectionHeaderReuseIdentifier")
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if (kindCopy != @"PUImportSectionHeaderReuseIdentifier")
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUImportViewController.m" lineNumber:839 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUImportViewController.m" lineNumber:839 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v12 = v11;
-  v13 = [v9 dequeueReusableSupplementaryViewOfKind:@"PUImportSectionHeaderReuseIdentifier" withReuseIdentifier:@"PUImportSectionHeaderReuseIdentifier" forIndexPath:v11];
+  v12 = pathCopy;
+  v13 = [viewCopy dequeueReusableSupplementaryViewOfKind:@"PUImportSectionHeaderReuseIdentifier" withReuseIdentifier:@"PUImportSectionHeaderReuseIdentifier" forIndexPath:pathCopy];
   [v13 setDelegate:self];
   [(PUImportViewController *)self configureSupplementaryView:v13 ofKind:@"PUImportSectionHeaderReuseIdentifier" forIndexPath:v12];
 
   return v13;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v5 = [(PUImportViewController *)self collectionView:a3];
+  v5 = [(PUImportViewController *)self collectionView:view];
   [v5 contentSize];
   v7 = v6;
 
@@ -3376,62 +3376,62 @@ uint64_t __55__PUImportViewController_observable_didChange_context___block_invok
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(PUImportViewController *)self importDataSource];
-  v6 = [v5 numberOfItemsInSection:a4];
+  importDataSource = [(PUImportViewController *)self importDataSource];
+  v6 = [importDataSource numberOfItemsInSection:section];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = [(PUImportViewController *)self importDataSource];
-  v4 = [v3 numberOfSections];
+  importDataSource = [(PUImportViewController *)self importDataSource];
+  numberOfSections = [importDataSource numberOfSections];
 
-  return v4;
+  return numberOfSections;
 }
 
-- (BOOL)importSectionedGridLayout:(id)a3 shouldEmphasizeSection:(unint64_t)a4
+- (BOOL)importSectionedGridLayout:(id)layout shouldEmphasizeSection:(unint64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 0;
   }
 
-  v5 = [(PUImportViewController *)self importDataSource];
-  v6 = [v5 hasAlreadyImportedSection];
+  importDataSource = [(PUImportViewController *)self importDataSource];
+  hasAlreadyImportedSection = [importDataSource hasAlreadyImportedSection];
 
-  return v6;
+  return hasAlreadyImportedSection;
 }
 
 - (id)_bestReferenceItemIndexPath
 {
-  v2 = [(PUImportViewController *)self collectionView];
-  v3 = [v2 collectionViewLayout];
-  v4 = [v3 collectionView];
-  if (!v4 || (v5 = v4, [v2 window], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
+  collectionView = [(PUImportViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  collectionView2 = [collectionViewLayout collectionView];
+  if (!collectionView2 || (v5 = collectionView2, [collectionView window], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
   {
 LABEL_19:
     v20 = 0;
     goto LABEL_20;
   }
 
-  [v2 contentOffset];
+  [collectionView contentOffset];
   v8 = v7;
   v10 = v9;
-  [v2 bounds];
+  [collectionView bounds];
   v12 = v11;
   v14 = v13;
-  v15 = [v2 numberOfSections];
-  v16 = v15 - 1;
-  if (v15 < 1 || [v2 numberOfItemsInSection:0] < 1)
+  numberOfSections = [collectionView numberOfSections];
+  v16 = numberOfSections - 1;
+  if (numberOfSections < 1 || [collectionView numberOfItemsInSection:0] < 1)
   {
     goto LABEL_25;
   }
 
   v17 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
-  v18 = [v3 layoutAttributesForItemAtIndexPath:v17];
+  v18 = [collectionViewLayout layoutAttributesForItemAtIndexPath:v17];
   v19 = v18;
   if (v18 && ([v18 frame], v29.origin.x = v8, v29.origin.y = v10, v29.size.width = v12, v29.size.height = v14, CGRectIntersectsRect(v27, v29)))
   {
@@ -3443,11 +3443,11 @@ LABEL_19:
     v20 = 0;
   }
 
-  v21 = [v2 numberOfItemsInSection:v16];
+  v21 = [collectionView numberOfItemsInSection:v16];
   if (!v20 && v21 >= 1)
   {
     v22 = [MEMORY[0x1E696AC88] indexPathForItem:v21 - 1 inSection:v16];
-    v23 = [v3 layoutAttributesForItemAtIndexPath:v22];
+    v23 = [collectionViewLayout layoutAttributesForItemAtIndexPath:v22];
     v24 = v23;
     if (v23 && ([v23 frame], v30.origin.x = v8, v30.origin.y = v10, v30.size.width = v12, v30.size.height = v14, CGRectIntersectsRect(v28, v30)))
     {
@@ -3463,9 +3463,9 @@ LABEL_19:
   if (!v20)
   {
 LABEL_25:
-    if ([v3 conformsToProtocol:&unk_1F2C21280])
+    if ([collectionViewLayout conformsToProtocol:&unk_1F2C21280])
     {
-      v20 = [v3 itemIndexPathAtCenterOfRect:{v8, v10, v12, v14}];
+      v20 = [collectionViewLayout itemIndexPathAtCenterOfRect:{v8, v10, v12, v14}];
       goto LABEL_20;
     }
 
@@ -3477,32 +3477,32 @@ LABEL_20:
   return v20;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  if ([a3 isEqualToString:{@"PUImportSectionHeaderReuseIdentifier", a4}])
+  if ([kind isEqualToString:{@"PUImportSectionHeaderReuseIdentifier", path}])
   {
-    v5 = [(PUImportViewController *)self collectionView];
-    v6 = [v5 collectionViewLayout];
+    collectionView = [(PUImportViewController *)self collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
 
-    v7 = [v6 globalHeaderAttributes];
+    globalHeaderAttributes = [collectionViewLayout globalHeaderAttributes];
   }
 
   else
   {
-    v7 = 0;
+    globalHeaderAttributes = 0;
   }
 
-  return v7;
+  return globalHeaderAttributes;
 }
 
-- (id)_newGridLayoutFromSpec:(id)a3
+- (id)_newGridLayoutFromSpec:(id)spec
 {
-  v4 = a3;
+  specCopy = spec;
   v5 = objc_alloc_init(PUSectionedGridLayout);
   [(PUSectionedGridLayout *)v5 setSectionHeadersEnabled:1];
   [(PUSectionedGridLayout *)v5 setSectionHeaderElementKind:@"PUImportSectionHeaderReuseIdentifier"];
   [(PUSectionedGridLayout *)v5 setSectionTopPadding:0.0];
-  [v4 baseInterItemSpacing];
+  [specCopy baseInterItemSpacing];
   v7 = v6;
 
   [(PUSectionedGridLayout *)v5 setGlobalTopPadding:v7];
@@ -3513,61 +3513,61 @@ LABEL_20:
 
 - (id)_gridLayout
 {
-  v2 = [(PUImportViewController *)self collectionView];
-  v3 = [v2 collectionViewLayout];
+  collectionView = [(PUImportViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  return v3;
+  return collectionViewLayout;
 }
 
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification
 {
   [(PUPhotosGridViewController *)self updateLayoutMetrics];
   [(PUImportViewController *)self setCachedHeaderHeight:0];
-  v5 = [(PUImportViewController *)self collectionView];
-  v4 = [v5 collectionViewLayout];
-  [v4 invalidateLayout];
+  collectionView = [(PUImportViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (void)_updateLayoutMetrics
 {
-  v11 = [(PUImportViewController *)self _spec];
-  v3 = [(PUImportViewController *)self _gridLayout];
+  _spec = [(PUImportViewController *)self _spec];
+  _gridLayout = [(PUImportViewController *)self _gridLayout];
   [(PUImportViewController *)self _collectionViewLayoutReferenceWidth];
   v5 = v4;
-  v6 = [(PUImportViewController *)self collectionView];
-  [v6 safeAreaInsets];
-  [v11 configureCollectionViewGridLayout:v3 forWidth:v5 safeAreaInsets:{v7, v8, v9, v10}];
+  collectionView = [(PUImportViewController *)self collectionView];
+  [collectionView safeAreaInsets];
+  [_spec configureCollectionViewGridLayout:_gridLayout forWidth:v5 safeAreaInsets:{v7, v8, v9, v10}];
 }
 
 - (void)_updateContentOffsetForPendingViewSizeTransition
 {
-  v15 = [(PUImportViewController *)self _pendingViewSizeTransitionContext];
-  if (v15)
+  _pendingViewSizeTransitionContext = [(PUImportViewController *)self _pendingViewSizeTransitionContext];
+  if (_pendingViewSizeTransitionContext)
   {
     if ([(PUImportViewController *)self isViewLoaded])
     {
-      v3 = [(PUImportViewController *)self collectionView];
-      [v3 bounds];
+      collectionView = [(PUImportViewController *)self collectionView];
+      [collectionView bounds];
       CGRectGetWidth(v17);
 
       [(PUImportViewController *)self _collectionViewLayoutReferenceWidth];
       if (PXFloatApproximatelyEqualToFloat())
       {
-        v4 = [(PUImportViewController *)self _gridLayout];
-        v5 = [(PUImportViewController *)self collectionView];
-        [v5 contentOffset];
+        _gridLayout = [(PUImportViewController *)self _gridLayout];
+        collectionView2 = [(PUImportViewController *)self collectionView];
+        [collectionView2 contentOffset];
         v7 = v6;
         v9 = v8;
 
-        [v4 targetContentOffsetForViewSizeTransitionContext:v15];
+        [_gridLayout targetContentOffsetForViewSizeTransitionContext:_pendingViewSizeTransitionContext];
         v12 = v11;
         v13 = v10;
         if (v7 != v11 || v9 != v10)
         {
-          v14 = [(PUImportViewController *)self collectionView];
-          [v14 setContentOffset:{v12, v13}];
+          collectionView3 = [(PUImportViewController *)self collectionView];
+          [collectionView3 setContentOffset:{v12, v13}];
 
-          [v4 invalidateLayout];
+          [_gridLayout invalidateLayout];
         }
 
         [(PUImportViewController *)self _setPendingViewSizeTransitionContext:0];
@@ -3580,13 +3580,13 @@ LABEL_20:
 {
   v11.receiver = self;
   v11.super_class = PUImportViewController;
-  v3 = [(PUPhotosGridViewController *)&v11 updateSpec];
-  v4 = [(PUImportViewController *)self traitCollection];
-  if ([v4 horizontalSizeClass] && objc_msgSend(v4, "verticalSizeClass"))
+  updateSpec = [(PUPhotosGridViewController *)&v11 updateSpec];
+  traitCollection = [(PUImportViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] && objc_msgSend(traitCollection, "verticalSizeClass"))
   {
-    v5 = [PUInterfaceManager shouldUsePhoneLayoutWithTraitCollection:v4];
+    v5 = [PUInterfaceManager shouldUsePhoneLayoutWithTraitCollection:traitCollection];
     v6 = objc_opt_class();
-    v7 = [(PUImportViewController *)self _spec];
+    _spec = [(PUImportViewController *)self _spec];
     v8 = objc_opt_class();
 
     self->_compactLayoutMode = v5;
@@ -3595,36 +3595,36 @@ LABEL_20:
       v9 = objc_alloc_init(v6);
       [(PUImportViewController *)self _setSpec:v9];
 
-      v3 = 1;
+      updateSpec = 1;
     }
   }
 
   else
   {
-    v3 = 0;
+    updateSpec = 0;
   }
 
-  return v3;
+  return updateSpec;
 }
 
-- (void)_setCollectionViewSafeAreaInsets:(UIEdgeInsets)a3
+- (void)_setCollectionViewSafeAreaInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_collectionViewSafeAreaInsets.top, v3), vceqq_f64(*&self->_collectionViewSafeAreaInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_collectionViewSafeAreaInsets = a3;
+    self->_collectionViewSafeAreaInsets = insets;
     [(PUImportViewController *)self _updateLayoutMetrics];
   }
 }
 
-- (void)_setCollectionViewLayoutReferenceWidth:(double)a3
+- (void)_setCollectionViewLayoutReferenceWidth:(double)width
 {
-  if (self->__collectionViewLayoutReferenceWidth != a3)
+  if (self->__collectionViewLayoutReferenceWidth != width)
   {
-    self->__collectionViewLayoutReferenceWidth = a3;
+    self->__collectionViewLayoutReferenceWidth = width;
     [(PUImportViewController *)self _updateLayoutMetrics];
   }
 }
@@ -3643,8 +3643,8 @@ LABEL_20:
   v12.receiver = self;
   v12.super_class = PUImportViewController;
   [(PUImportViewController *)&v12 viewSafeAreaInsetsDidChange];
-  v3 = [(PUImportViewController *)self collectionView];
-  [v3 safeAreaInsets];
+  collectionView = [(PUImportViewController *)self collectionView];
+  [collectionView safeAreaInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -3662,19 +3662,19 @@ LABEL_20:
   [(PUImportViewController *)self updateAlreadyImportedHeaderIfVisible];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v29.receiver = self;
   v29.super_class = PUImportViewController;
-  [(PUPhotosGridViewController *)&v29 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(PUImportViewController *)self collectionView];
-  v9 = [v8 collectionViewLayout];
+  [(PUPhotosGridViewController *)&v29 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  collectionView = [(PUImportViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  v10 = [v9 prepareForViewTransitionToSize:{width, height}];
-  if ([v7 isAnimated] && (-[PUImportViewController px_isVisible](self, "px_isVisible") & 1) != 0)
+  v10 = [collectionViewLayout prepareForViewTransitionToSize:{width, height}];
+  if ([coordinatorCopy isAnimated] && (-[PUImportViewController px_isVisible](self, "px_isVisible") & 1) != 0)
   {
     [(PUImportViewController *)self _setPendingViewSizeTransitionContext:0];
     v11 = 0;
@@ -3686,25 +3686,25 @@ LABEL_14:
   [(PUImportViewController *)self _cachedViewSizeTransitionContextSize];
   if (width == v13 && height == v12)
   {
-    v14 = [(PUImportViewController *)self _cachedViewSizeTransitionContext];
+    _cachedViewSizeTransitionContext = [(PUImportViewController *)self _cachedViewSizeTransitionContext];
 
-    LOBYTE(v15) = 0;
-    v10 = v14;
+    LOBYTE(isSuspended) = 0;
+    v10 = _cachedViewSizeTransitionContext;
   }
 
   else
   {
-    v16 = [MEMORY[0x1E69DC668] sharedApplication];
-    v15 = [v16 isSuspended];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    isSuspended = [mEMORY[0x1E69DC668] isSuspended];
 
-    if (v15)
+    if (isSuspended)
     {
-      v17 = [(PUImportViewController *)self _cachedViewSizeTransitionContext];
+      _cachedViewSizeTransitionContext2 = [(PUImportViewController *)self _cachedViewSizeTransitionContext];
 
-      if (!v17)
+      if (!_cachedViewSizeTransitionContext2)
       {
-        v18 = [(PUImportViewController *)self view];
-        [v18 bounds];
+        view = [(PUImportViewController *)self view];
+        [view bounds];
         v20 = v19;
         v22 = v21;
 
@@ -3712,19 +3712,19 @@ LABEL_14:
         [(PUImportViewController *)self _setCachedViewSizeTransitionContextSize:v20, v22];
       }
 
-      LOBYTE(v15) = 1;
+      LOBYTE(isSuspended) = 1;
     }
   }
 
-  v23 = [(PUImportViewController *)self _pendingViewSizeTransitionContext];
+  _pendingViewSizeTransitionContext = [(PUImportViewController *)self _pendingViewSizeTransitionContext];
 
-  if (!v23)
+  if (!_pendingViewSizeTransitionContext)
   {
     [(PUImportViewController *)self _setPendingViewSizeTransitionContext:v10];
   }
 
   v11 = 1;
-  if ((v15 & 1) == 0)
+  if ((isSuspended & 1) == 0)
   {
     goto LABEL_14;
   }
@@ -3742,9 +3742,9 @@ LABEL_15:
   v25[3] = &unk_1E7B78060;
   v27 = v11;
   v25[4] = self;
-  v26 = v9;
-  v24 = v9;
-  [v7 animateAlongsideTransition:v28 completion:v25];
+  v26 = collectionViewLayout;
+  v24 = collectionViewLayout;
+  [coordinatorCopy animateAlongsideTransition:v28 completion:v25];
 }
 
 uint64_t __77__PUImportViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -3785,46 +3785,46 @@ void __77__PUImportViewController_viewWillTransitionToSize_withTransitionCoordin
   [*(a1 + 32) setTransitioningToNewSize:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = PUImportViewController;
   [(PUPhotosGridViewController *)&v5 viewWillDisappear:?];
-  [(PUImportViewController *)self _dismissPopupsAnimated:v3];
+  [(PUImportViewController *)self _dismissPopupsAnimated:disappearCopy];
   [(PUImportViewController *)self disableSwipeSelection];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUImportViewController;
-  [(PUPhotosGridViewController *)&v4 viewDidAppear:a3];
+  [(PUPhotosGridViewController *)&v4 viewDidAppear:appear];
   [(PUImportViewController *)self setViewAppearing:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(PUImportViewController *)self setViewAppearing:1];
-  v5 = [(PUImportViewController *)self _spec];
+  _spec = [(PUImportViewController *)self _spec];
   v6 = objc_opt_class();
 
   v13.receiver = self;
   v13.super_class = PUImportViewController;
-  [(PUPhotosGridViewController *)&v13 viewWillAppear:v3];
-  v7 = [(PUImportViewController *)self _spec];
+  [(PUPhotosGridViewController *)&v13 viewWillAppear:appearCopy];
+  _spec2 = [(PUImportViewController *)self _spec];
   v8 = objc_opt_class();
 
-  v9 = [(PUImportViewController *)self view];
-  [v9 frame];
+  view = [(PUImportViewController *)self view];
+  [view frame];
   v11 = v10;
 
   [(PUImportViewController *)self _setCollectionViewLayoutReferenceWidth:v11];
   if (v6 != v8)
   {
-    v12 = [(PUImportViewController *)self _gridLayout];
-    [v12 invalidateLayout];
+    _gridLayout = [(PUImportViewController *)self _gridLayout];
+    [_gridLayout invalidateLayout];
 
     [(PUImportViewController *)self reloadData];
   }
@@ -3835,13 +3835,13 @@ void __77__PUImportViewController_viewWillTransitionToSize_withTransitionCoordin
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(PUImportViewController *)self updateSpec];
-  v4 = [(PUImportViewController *)self view];
-  [v4 frame];
+  updateSpec = [(PUImportViewController *)self updateSpec];
+  view = [(PUImportViewController *)self view];
+  [view frame];
   v6 = v5;
 
-  v7 = [(PUImportViewController *)self collectionView];
-  [v7 safeAreaInsets];
+  collectionView = [(PUImportViewController *)self collectionView];
+  [collectionView safeAreaInsets];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -3858,10 +3858,10 @@ void __77__PUImportViewController_viewWillTransitionToSize_withTransitionCoordin
     [(PUPhotosGridViewController *)self updateVisibleSupplementaryViewsOfKind:@"PUImportSectionHeaderReuseIdentifier"];
   }
 
-  if (v3)
+  if (updateSpec)
   {
-    v18 = [(PUImportViewController *)self _gridLayout];
-    [v18 invalidateLayout];
+    _gridLayout = [(PUImportViewController *)self _gridLayout];
+    [_gridLayout invalidateLayout];
 
     if ([(PUImportViewController *)self performingDataSourceChange])
     {
@@ -3882,22 +3882,22 @@ void __77__PUImportViewController_viewWillTransitionToSize_withTransitionCoordin
   v10.receiver = self;
   v10.super_class = PUImportViewController;
   [(PUPhotosGridViewController *)&v10 viewDidLoad];
-  v3 = [(PUImportViewController *)self collectionView];
+  collectionView = [(PUImportViewController *)self collectionView];
   v4 = +[PUInterfaceManager currentTheme];
-  v5 = [v4 photoCollectionViewBackgroundColor];
-  [v3 setBackgroundColor:v5];
+  photoCollectionViewBackgroundColor = [v4 photoCollectionViewBackgroundColor];
+  [collectionView setBackgroundColor:photoCollectionViewBackgroundColor];
 
-  v6 = [(PUImportViewController *)self collectionView];
-  [v6 setAllowsMultipleSelection:1];
+  collectionView2 = [(PUImportViewController *)self collectionView];
+  [collectionView2 setAllowsMultipleSelection:1];
 
-  v7 = [(PUImportViewController *)self collectionView];
-  [v7 setAlwaysBounceVertical:1];
+  collectionView3 = [(PUImportViewController *)self collectionView];
+  [collectionView3 setAlwaysBounceVertical:1];
 
-  v8 = [(PUImportViewController *)self collectionView];
-  [v8 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PUImportCellReuseIdentifier"];
+  collectionView4 = [(PUImportViewController *)self collectionView];
+  [collectionView4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PUImportCellReuseIdentifier"];
 
-  v9 = [(PUImportViewController *)self collectionView];
-  [v9 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUImportSectionHeaderReuseIdentifier" withReuseIdentifier:@"PUImportSectionHeaderReuseIdentifier"];
+  collectionView5 = [(PUImportViewController *)self collectionView];
+  [collectionView5 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUImportSectionHeaderReuseIdentifier" withReuseIdentifier:@"PUImportSectionHeaderReuseIdentifier"];
 
   [(PUImportViewController *)self updateSpec];
 }
@@ -3909,28 +3909,28 @@ void __77__PUImportViewController_viewWillTransitionToSize_withTransitionCoordin
   self->_actionCoordinator = 0;
 
   [(PUImportViewController *)self setImportController:0];
-  v4 = [MEMORY[0x1E69C3620] sharedInstance];
-  [v4 removeKeyObserver:self];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  [mEMORY[0x1E69C3620] removeKeyObserver:self];
 
   v5.receiver = self;
   v5.super_class = PUImportViewController;
   [(PUPhotosGridViewController *)&v5 dealloc];
 }
 
-- (PUImportViewController)initWithSpec:(id)a3 photoLibrary:(id)a4
+- (PUImportViewController)initWithSpec:(id)spec photoLibrary:(id)library
 {
-  v7 = a3;
+  specCopy = spec;
   v16.receiver = self;
   v16.super_class = PUImportViewController;
-  v8 = [(PUPhotosGridViewController *)&v16 initWithSpec:v7 photoLibrary:a4];
+  v8 = [(PUPhotosGridViewController *)&v16 initWithSpec:specCopy photoLibrary:library];
   v9 = v8;
   if (v8)
   {
     v8->_busyCount = 0;
-    objc_storeStrong(&v8->__spec, a3);
+    objc_storeStrong(&v8->__spec, spec);
     v9->_allowsSelection = 1;
-    v10 = [MEMORY[0x1E69C3620] sharedInstance];
-    [v10 addKeyObserver:v9];
+    mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+    [mEMORY[0x1E69C3620] addKeyObserver:v9];
 
     cachedHeaderHeight = v9->_cachedHeaderHeight;
     v9->_cachedHeaderHeight = 0;
@@ -3946,11 +3946,11 @@ void __77__PUImportViewController_viewWillTransitionToSize_withTransitionCoordin
 
 - (id)deleteButtonItem
 {
-  v3 = [(PUImportViewController *)self importController];
-  v4 = [v3 importSource];
-  v5 = [v4 canDeleteContent];
+  importController = [(PUImportViewController *)self importController];
+  importSource = [importController importSource];
+  canDeleteContent = [importSource canDeleteContent];
 
-  if (v5)
+  if (canDeleteContent)
   {
     v6 = self->_deleteButtonItemIcon;
   }
@@ -3963,62 +3963,62 @@ void __77__PUImportViewController_viewWillTransitionToSize_withTransitionCoordin
   return v6;
 }
 
-- (int64_t)_titleViewVerticalSizeClassForExtendedTraitCollection:(id)a3
+- (int64_t)_titleViewVerticalSizeClassForExtendedTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 layoutSizeClass] == 1 && objc_msgSend(v3, "layoutOrientation") == 2;
+  collectionCopy = collection;
+  v4 = [collectionCopy layoutSizeClass] == 1 && objc_msgSend(collectionCopy, "layoutOrientation") == 2;
 
   return v4;
 }
 
-- (void)_dismissPopupsAnimated:(BOOL)a3
+- (void)_dismissPopupsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUImportViewController *)self presentedViewController];
+  animatedCopy = animated;
+  presentedViewController = [(PUImportViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
 
-    [(PUImportViewController *)self dismissViewControllerAnimated:v3 completion:0];
+    [(PUImportViewController *)self dismissViewControllerAnimated:animatedCopy completion:0];
   }
 }
 
 - (id)_createSubtitleText
 {
-  v3 = [(PUImportViewController *)self importController];
-  v4 = [v3 isImportingAssets];
+  importController = [(PUImportViewController *)self importController];
+  isImportingAssets = [importController isImportingAssets];
 
-  v5 = [(PUImportViewController *)self importController];
-  v6 = [v5 isDeletingAssets];
+  importController2 = [(PUImportViewController *)self importController];
+  isDeletingAssets = [importController2 isDeletingAssets];
 
-  v7 = [MEMORY[0x1E69C3620] sharedInstance];
-  v8 = [v7 showProgressTitles];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  showProgressTitles = [mEMORY[0x1E69C3620] showProgressTitles];
 
   [(PUImportViewController *)self numTotalItemsToComplete];
   [(PUImportViewController *)self numItemsCompleted];
-  v9 = [(PUImportViewController *)self importController];
-  v10 = [v9 selectionManager];
-  v11 = [v10 selectionSnapshot];
+  importController3 = [(PUImportViewController *)self importController];
+  selectionManager = [importController3 selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  if ([v11 isAnyItemSelected])
+  if ([selectionSnapshot isAnyItemSelected])
   {
-    v12 = [(PUImportViewController *)self importController];
-    [v12 selectedItems];
+    importController4 = [(PUImportViewController *)self importController];
+    [importController4 selectedItems];
   }
 
   else
   {
-    v13 = [(PUImportViewController *)self importDataSourceManager];
-    v12 = [v13 unfilteredDataSource];
+    importDataSourceManager = [(PUImportViewController *)self importDataSourceManager];
+    importController4 = [importDataSourceManager unfilteredDataSource];
 
-    [v12 allItemsUnsorted];
+    [importController4 allItemsUnsorted];
   }
   v14 = ;
 
   v15 = [objc_opt_class() totalSizeStringForItems:v14];
-  if ((v4 | v6) & v8)
+  if ((isImportingAssets | isDeletingAssets) & showProgressTitles)
   {
     v16 = PULocalizedString(@"IMPORT_ASSET_PROGRESS_REMAINING_MULTILINE_TOP");
     v17 = PULocalizedStringWithValidatedFormat(v16, @"%d");
@@ -4027,9 +4027,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v18 = [(PUImportViewController *)self importController];
-  v19 = [v18 selectedItems];
-  v20 = [v19 count];
+  importController5 = [(PUImportViewController *)self importController];
+  selectedItems = [importController5 selectedItems];
+  v20 = [selectedItems count];
 
   if (v20)
   {
@@ -4065,9 +4065,9 @@ LABEL_14:
   return v17;
 }
 
-- (void)_updateToolbarAnimated:(BOOL)a3
+- (void)_updateToolbarAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v65 = *MEMORY[0x1E69E9840];
   if (![(PUImportViewController *)self isViewLoaded])
   {
@@ -4082,15 +4082,15 @@ LABEL_14:
     _os_log_debug_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [(PUImportViewController *)self importController];
-  v8 = [v7 selectionManager];
-  v9 = [v8 selectionSnapshot];
-  [v9 isAnyItemSelected];
+  array = [MEMORY[0x1E695DF70] array];
+  importController = [(PUImportViewController *)self importController];
+  selectionManager = [importController selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  [selectionSnapshot isAnyItemSelected];
 
   if (!self->_deleteButtonItem)
   {
-    v57 = v6;
+    v57 = array;
     v10 = PLLocalizedFrameworkString();
     v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v10 style:2 target:self action:sel_delete_];
     deleteButtonItem = self->_deleteButtonItem;
@@ -4116,17 +4116,17 @@ LABEL_14:
     v21 = [objc_alloc(MEMORY[0x1E69BE1C8]) initWithFrame:3 style:{0.0, 0.0, 28.0, 28.0}];
     [(PUImportViewController *)self setRoundProgressView:v21];
 
-    v22 = [(PUImportViewController *)self roundProgressView];
-    [v22 setUserInteractionEnabled:0];
+    roundProgressView = [(PUImportViewController *)self roundProgressView];
+    [roundProgressView setUserInteractionEnabled:0];
 
     v23 = objc_alloc(MEMORY[0x1E69DC708]);
-    v24 = [(PUImportViewController *)self roundProgressView];
-    v25 = [v23 initWithCustomView:v24];
+    roundProgressView2 = [(PUImportViewController *)self roundProgressView];
+    v25 = [v23 initWithCustomView:roundProgressView2];
     progressButtonItem = self->_progressButtonItem;
     self->_progressButtonItem = v25;
 
-    v27 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v27 addObserver:self selector:sel_importControllerProgressDidChange_ name:*MEMORY[0x1E69C4070] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_importControllerProgressDidChange_ name:*MEMORY[0x1E69C4070] object:0];
 
     [(UIBarButtonItem *)self->_progressButtonItem setIsAccessibilityElement:1];
     [(UIBarButtonItem *)self->_progressButtonItem setAccessibilityTraits:*MEMORY[0x1E69DDA18] | *MEMORY[0x1E69DDA38]];
@@ -4169,95 +4169,95 @@ LABEL_14:
     [(UIBarButtonItem *)self->_stopBarItem setPossibleTitles:v30];
     [(UIBarButtonItem *)self->_progressButtonItem setPossibleTitles:v30];
 
-    v3 = v3;
-    v6 = v57;
+    animatedCopy = animatedCopy;
+    array = v57;
   }
 
-  v37 = [(PUImportViewController *)self importController];
-  v38 = [v37 isImportingAssets];
+  importController2 = [(PUImportViewController *)self importController];
+  isImportingAssets = [importController2 isImportingAssets];
 
-  if (v38)
+  if (isImportingAssets)
   {
-    [v6 addObject:self->_stopBarItem];
+    [array addObject:self->_stopBarItem];
   }
 
   else
   {
-    v39 = [(PUImportViewController *)self importDataSource];
-    v40 = [v39 numberOfItems];
+    importDataSource = [(PUImportViewController *)self importDataSource];
+    numberOfItems = [importDataSource numberOfItems];
 
-    if (v40)
+    if (numberOfItems)
     {
-      v41 = [(PUImportViewController *)self actionCoordinator];
-      [v41 configureImportActionsForBarButtonItem:self->_importButtonItem];
+      actionCoordinator = [(PUImportViewController *)self actionCoordinator];
+      [actionCoordinator configureImportActionsForBarButtonItem:self->_importButtonItem];
 
-      [v6 addObject:self->_importButtonItem];
+      [array addObject:self->_importButtonItem];
       v42 = PLLocalizedFrameworkString();
       [(UIBarButtonItem *)self->_deleteButtonItem setAccessibilityLabel:v42];
       [(UIBarButtonItem *)self->_deleteButtonItem setTitle:v42];
-      v43 = [(PUImportViewController *)self deleteButtonItem];
-      if (v43)
+      deleteButtonItem = [(PUImportViewController *)self deleteButtonItem];
+      if (deleteButtonItem)
       {
         v44 = [MEMORY[0x1E69DC708] fixedSpaceItemOfWidth:0.0];
-        [v6 addObject:v44];
+        [array addObject:v44];
 
-        [v6 addObject:v43];
+        [array addObject:deleteButtonItem];
       }
     }
   }
 
-  v45 = [(PUImportViewController *)self importController];
-  if ([v45 isImportingAssets])
+  importController3 = [(PUImportViewController *)self importController];
+  if ([importController3 isImportingAssets])
   {
 
     goto LABEL_22;
   }
 
-  v46 = [(PUImportViewController *)self importController];
-  v47 = [v46 isDeletingAssets];
+  importController4 = [(PUImportViewController *)self importController];
+  isDeletingAssets = [importController4 isDeletingAssets];
 
-  if (v47)
+  if (isDeletingAssets)
   {
 LABEL_22:
     if (![(PUImportViewController *)self compactLayoutMode])
     {
-      [v6 addObject:self->_progressButtonItem];
+      [array addObject:self->_progressButtonItem];
     }
   }
 
-  v48 = [(PUImportViewController *)self importController];
-  if ([v48 isImportingAssets])
+  importController5 = [(PUImportViewController *)self importController];
+  if ([importController5 isImportingAssets])
   {
     v49 = 0;
   }
 
   else
   {
-    v50 = [(PUImportViewController *)self importController];
-    v49 = [v50 isDeletingAssets] ^ 1;
+    importController6 = [(PUImportViewController *)self importController];
+    v49 = [importController6 isDeletingAssets] ^ 1;
   }
 
-  v51 = [(PUImportViewController *)self importController];
-  v52 = [v51 hasLoadedInitialBatchOfAssets];
+  importController7 = [(PUImportViewController *)self importController];
+  hasLoadedInitialBatchOfAssets = [importController7 hasLoadedInitialBatchOfAssets];
 
-  [(UIBarButtonItem *)self->_importButtonItem setEnabled:v52 & v49];
-  [(UIBarButtonItem *)self->_deleteButtonItem setEnabled:v52 & v49];
-  [(UIBarButtonItem *)self->_deleteButtonItemIcon setEnabled:v52 & v49];
-  v53 = [(PUImportViewController *)self navigationItem];
+  [(UIBarButtonItem *)self->_importButtonItem setEnabled:hasLoadedInitialBatchOfAssets & v49];
+  [(UIBarButtonItem *)self->_deleteButtonItem setEnabled:hasLoadedInitialBatchOfAssets & v49];
+  [(UIBarButtonItem *)self->_deleteButtonItemIcon setEnabled:hasLoadedInitialBatchOfAssets & v49];
+  navigationItem = [(PUImportViewController *)self navigationItem];
   v54 = PLLocalizedFrameworkString();
-  [v53 setTitle:v54];
-  v55 = [(PUImportViewController *)self _createSubtitleText];
-  [v53 setSubtitle:v55];
+  [navigationItem setTitle:v54];
+  _createSubtitleText = [(PUImportViewController *)self _createSubtitleText];
+  [navigationItem setSubtitle:_createSubtitleText];
 
-  [v53 setLargeTitleDisplayMode:3];
-  [v53 setRightBarButtonItems:v6 animated:v3];
+  [navigationItem setLargeTitleDisplayMode:3];
+  [navigationItem setRightBarButtonItems:array animated:animatedCopy];
 }
 
-- (BOOL)_isItemVisibleAtIndex:(id)a3
+- (BOOL)_isItemVisibleAtIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(PUImportViewController *)self collectionView];
-  v6 = [v5 cellForItemAtIndexPath:v4];
+  indexCopy = index;
+  collectionView = [(PUImportViewController *)self collectionView];
+  v6 = [collectionView cellForItemAtIndexPath:indexCopy];
 
   return v6 != 0;
 }
@@ -4270,16 +4270,16 @@ LABEL_22:
     v3 = _importGridLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(PUImportViewController *)self importDataSource];
+      importDataSource = [(PUImportViewController *)self importDataSource];
       v6 = 136315394;
       v7 = "[PUImportViewController reloadData]";
       v8 = 2048;
-      v9 = [v4 identifier];
+      identifier = [importDataSource identifier];
       _os_log_impl(&dword_1B36F3000, v3, OS_LOG_TYPE_DEFAULT, "%s: Reloading datasource %lu. Expensive (cancels all requests).", &v6, 0x16u);
     }
 
-    v5 = [(PUImportViewController *)self collectionView];
-    [v5 reloadData];
+    collectionView = [(PUImportViewController *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
@@ -4309,9 +4309,9 @@ void __53__PUImportViewController_defaultThumbnailImageFormat__block_invoke()
   }
 }
 
-+ (id)totalSizeStringForItems:(id)a3
++ (id)totalSizeStringForItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -4321,7 +4321,7 @@ void __53__PUImportViewController_defaultThumbnailImageFormat__block_invoke()
   v6[2] = __50__PUImportViewController_totalSizeStringForItems___block_invoke;
   v6[3] = &unk_1E7B78038;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [itemsCopy enumerateObjectsUsingBlock:v6];
   v4 = [MEMORY[0x1E696AAF0] stringFromByteCount:v8[3] countStyle:0];
   _Block_object_dispose(&v7, 8);
 

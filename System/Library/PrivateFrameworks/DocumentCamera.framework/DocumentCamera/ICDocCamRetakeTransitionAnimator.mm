@@ -1,26 +1,26 @@
 @interface ICDocCamRetakeTransitionAnimator
-- (ICDocCamRetakeTransitionAnimator)initWithImage:(id)a3 indexPath:(id)a4 duration:(double)a5 completion:(id)a6;
-- (id)makeUIImageFromCIImage:(id)a3;
-- (void)animateTransition:(id)a3;
+- (ICDocCamRetakeTransitionAnimator)initWithImage:(id)image indexPath:(id)path duration:(double)duration completion:(id)completion;
+- (id)makeUIImageFromCIImage:(id)image;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation ICDocCamRetakeTransitionAnimator
 
-- (ICDocCamRetakeTransitionAnimator)initWithImage:(id)a3 indexPath:(id)a4 duration:(double)a5 completion:(id)a6
+- (ICDocCamRetakeTransitionAnimator)initWithImage:(id)image indexPath:(id)path duration:(double)duration completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  imageCopy = image;
+  pathCopy = path;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = ICDocCamRetakeTransitionAnimator;
   v14 = [(ICDocCamRetakeTransitionAnimator *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_retakeImage, a3);
-    objc_storeStrong(&v15->_indexPath, a4);
-    v15->_duration = a5;
-    v16 = _Block_copy(v13);
+    objc_storeStrong(&v14->_retakeImage, image);
+    objc_storeStrong(&v15->_indexPath, path);
+    v15->_duration = duration;
+    v16 = _Block_copy(completionCopy);
     completion = v15->_completion;
     v15->_completion = v16;
   }
@@ -28,19 +28,19 @@
   return v15;
 }
 
-- (id)makeUIImageFromCIImage:(id)a3
+- (id)makeUIImageFromCIImage:(id)image
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBF740];
   v11 = *MEMORY[0x277CBF910];
   v12[0] = MEMORY[0x277CBEC28];
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  imageCopy = image;
   v6 = [v4 dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v7 = [v3 contextWithOptions:v6];
 
-  [v5 extent];
-  v8 = [v7 createCGImage:v5 fromRect:?];
+  [imageCopy extent];
+  v8 = [v7 createCGImage:imageCopy fromRect:?];
 
   v9 = [MEMORY[0x277D755B8] imageWithCGImage:v8];
   CGImageRelease(v8);
@@ -48,11 +48,11 @@
   return v9;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v184[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v160 = self;
+  transitionCopy = transition;
+  selfCopy = self;
   if ([(ICDocCamRetakeTransitionAnimator *)self presenting])
   {
     v5 = os_log_create("com.apple.documentcamera", "");
@@ -62,46 +62,46 @@
     }
   }
 
-  v159 = [v4 viewControllerForKey:*MEMORY[0x277D77240]];
-  v157 = [v4 viewControllerForKey:*MEMORY[0x277D77230]];
-  v6 = [v4 containerView];
-  v7 = [v159 view];
-  v8 = [v157 view];
-  [v6 insertSubview:v7 belowSubview:v8];
+  v159 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  v157 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77230]];
+  containerView = [transitionCopy containerView];
+  view = [v159 view];
+  view2 = [v157 view];
+  [containerView insertSubview:view belowSubview:view2];
 
-  v9 = [v157 view];
-  [v9 frame];
+  view3 = [v157 view];
+  [view3 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [v159 view];
-  [v18 setFrame:{v11, v13, v15, v17}];
+  view4 = [v159 view];
+  [view4 setFrame:{v11, v13, v15, v17}];
 
-  v19 = [v159 view];
-  [v19 setNeedsLayout];
+  view5 = [v159 view];
+  [view5 setNeedsLayout];
 
-  v20 = [v159 view];
-  [v20 layoutIfNeeded];
+  view6 = [v159 view];
+  [view6 layoutIfNeeded];
 
   v21 = objc_opt_class();
   v22 = DCDynamicCast(v21, v157);
-  v23 = [(ICDocCamRetakeTransitionAnimator *)v160 indexPath];
-  [v22 zoomTargetForIndexPath:v23];
+  indexPath = [(ICDocCamRetakeTransitionAnimator *)selfCopy indexPath];
+  [v22 zoomTargetForIndexPath:indexPath];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
 
-  v32 = [MEMORY[0x277D75418] currentDevice];
-  v154 = [v32 _graphicsQuality];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  _graphicsQuality = [currentDevice _graphicsQuality];
 
-  v158 = [(ICDocCamRetakeTransitionAnimator *)v160 retakeImage];
-  if (v154 != 100)
+  retakeImage = [(ICDocCamRetakeTransitionAnimator *)selfCopy retakeImage];
+  if (_graphicsQuality != 100)
   {
     v33 = objc_alloc(MEMORY[0x277CBF758]);
-    v34 = v158;
-    v35 = [v33 initWithCGImage:{objc_msgSend(v158, "CGImage")}];
+    v34 = retakeImage;
+    v35 = [v33 initWithCGImage:{objc_msgSend(retakeImage, "CGImage")}];
     [v35 extent];
     v186 = CGRectIntegral(v185);
     x = v186.origin.x;
@@ -109,9 +109,9 @@
     width = v186.size.width;
     height = v186.size.height;
     v40 = [v35 imageByCroppingToRect:?];
-    v41 = [v40 imageByClampingToExtent];
-    [v41 extent];
-    v42 = [v41 imageBySettingAlphaOneInExtent:?];
+    imageByClampingToExtent = [v40 imageByClampingToExtent];
+    [imageByClampingToExtent extent];
+    v42 = [imageByClampingToExtent imageBySettingAlphaOneInExtent:?];
 
     v43 = MEMORY[0x277CBF750];
     v183[0] = *MEMORY[0x277CBFAF0];
@@ -121,16 +121,16 @@
     v184[1] = v44;
     v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v184 forKeys:v183 count:2];
     v46 = [v43 filterWithName:@"CIGaussianBlur" withInputParameters:v45];
-    v47 = [v46 outputImage];
-    v48 = [v47 imageByCroppingToRect:{x, y, width, height}];
+    outputImage = [v46 outputImage];
+    v48 = [outputImage imageByCroppingToRect:{x, y, width, height}];
 
-    v49 = [(ICDocCamRetakeTransitionAnimator *)v160 makeUIImageFromCIImage:v48];
-    [v158 size];
+    v49 = [(ICDocCamRetakeTransitionAnimator *)selfCopy makeUIImageFromCIImage:v48];
+    [retakeImage size];
     v51 = v50;
-    [v158 size];
+    [retakeImage size];
     v52 = [v49 dc_scaledImageWithSize:v51 scale:?];
 
-    v158 = v52;
+    retakeImage = v52;
   }
 
   v173 = 0;
@@ -140,15 +140,15 @@
   v177 = __Block_byref_object_dispose__9;
   v178 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v25, v27, v29, v31}];
   [v174[5] setContentMode:2];
-  [v174[5] setImage:v158];
+  [v174[5] setImage:retakeImage];
   [v174[5] setClipsToBounds:1];
-  v53 = [v4 containerView];
-  [v53 addSubview:v174[5]];
+  containerView2 = [transitionCopy containerView];
+  [containerView2 addSubview:v174[5]];
 
-  v153 = [v4 containerView];
+  containerView3 = [transitionCopy containerView];
   v156 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v54 = [v22 statusBarWasHiddenWhenDoneTapped];
-  if (v54)
+  statusBarWasHiddenWhenDoneTapped = [v22 statusBarWasHiddenWhenDoneTapped];
+  if (statusBarWasHiddenWhenDoneTapped)
   {
     v55 = 0;
     v56 = 0.0;
@@ -156,78 +156,78 @@
 
   else
   {
-    v57 = [v22 view];
-    v58 = [v57 window];
-    v59 = [v58 windowScene];
-    v60 = [v59 statusBarManager];
-    [v60 statusBarFrame];
+    view7 = [v22 view];
+    window = [view7 window];
+    windowScene = [window windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager statusBarFrame];
     v62 = v61;
     v64 = v63;
     v66 = v65;
     v56 = v67;
 
     v55 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v62, v64, v66, v56}];
-    v68 = [MEMORY[0x277D75348] whiteColor];
-    [v55 setBackgroundColor:v68];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v55 setBackgroundColor:whiteColor];
 
     [v55 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v69 = [v4 containerView];
-    [v69 addSubview:v55];
+    containerView4 = [transitionCopy containerView];
+    [containerView4 addSubview:v55];
 
-    v70 = [v55 leadingAnchor];
-    v71 = [v153 leadingAnchor];
-    v72 = [v70 constraintEqualToAnchor:v71 constant:0.0];
+    leadingAnchor = [v55 leadingAnchor];
+    leadingAnchor2 = [containerView3 leadingAnchor];
+    v72 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
     [v156 addObject:v72];
 
-    v73 = [v55 trailingAnchor];
-    v74 = [v153 trailingAnchor];
-    v75 = [v73 constraintEqualToAnchor:v74 constant:0.0];
+    trailingAnchor = [v55 trailingAnchor];
+    trailingAnchor2 = [containerView3 trailingAnchor];
+    v75 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
     [v156 addObject:v75];
 
-    v76 = [v55 topAnchor];
-    v77 = [v153 topAnchor];
-    v78 = [v76 constraintEqualToAnchor:v77 constant:0.0];
+    topAnchor = [v55 topAnchor];
+    topAnchor2 = [containerView3 topAnchor];
+    v78 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     [v156 addObject:v78];
 
-    v79 = [v55 heightAnchor];
-    v80 = [v79 constraintEqualToConstant:v56];
+    heightAnchor = [v55 heightAnchor];
+    v80 = [heightAnchor constraintEqualToConstant:v56];
     [v156 addObject:v80];
   }
 
-  v81 = [v22 navigationItem];
-  v162 = [v81 navigationBar];
+  navigationItem = [v22 navigationItem];
+  navigationBar = [navigationItem navigationBar];
 
-  [v162 size];
+  [navigationBar size];
   v83 = v82;
-  [v162 size];
+  [navigationBar size];
   v84 = *MEMORY[0x277D768C8];
   v85 = *(MEMORY[0x277D768C8] + 8);
   v86 = *(MEMORY[0x277D768C8] + 16);
   v87 = *(MEMORY[0x277D768C8] + 24);
-  v89 = [v162 resizableSnapshotViewFromRect:1 afterScreenUpdates:0.0 withCapInsets:{0.0, v83, v88, *MEMORY[0x277D768C8], v85, v86, v87}];
+  v89 = [navigationBar resizableSnapshotViewFromRect:1 afterScreenUpdates:0.0 withCapInsets:{0.0, v83, v88, *MEMORY[0x277D768C8], v85, v86, v87}];
   [v89 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v162 size];
+  [navigationBar size];
   v91 = v90;
-  [v162 size];
+  [navigationBar size];
   [v89 setFrame:{0.0, v56, v91, v92}];
-  v93 = [v4 containerView];
-  [v93 addSubview:v89];
+  containerView5 = [transitionCopy containerView];
+  [containerView5 addSubview:v89];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v156];
-  v155 = [v22 bottomToolbar];
-  [v155 size];
+  bottomToolbar = [v22 bottomToolbar];
+  [bottomToolbar size];
   v95 = v94;
-  [v155 size];
-  v97 = [v155 resizableSnapshotViewFromRect:1 afterScreenUpdates:0.0 withCapInsets:{0.0, v95, v96, v84, v85, v86, v87}];
+  [bottomToolbar size];
+  v97 = [bottomToolbar resizableSnapshotViewFromRect:1 afterScreenUpdates:0.0 withCapInsets:{0.0, v95, v96, v84, v85, v86, v87}];
   [v97 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v155 frame];
+  [bottomToolbar frame];
   [v97 setFrame:?];
-  v98 = [v4 containerView];
-  [v98 addSubview:v97];
+  containerView6 = [transitionCopy containerView];
+  [containerView6 addSubview:v97];
 
-  v99 = [v22 pageViewController];
-  v100 = [v99 view];
-  [v100 setHidden:1];
+  pageViewController = [v22 pageViewController];
+  view8 = [pageViewController view];
+  [view8 setHidden:1];
 
   [MEMORY[0x277CD9FF0] begin];
   v101 = MEMORY[0x277CD9FF0];
@@ -235,7 +235,7 @@
   v165[1] = 3221225472;
   v165[2] = __54__ICDocCamRetakeTransitionAnimator_animateTransition___block_invoke;
   v165[3] = &unk_278F941F0;
-  v147 = v4;
+  v147 = transitionCopy;
   v166 = v147;
   v172 = &v173;
   v151 = v97;
@@ -246,7 +246,7 @@
   v169 = v150;
   v152 = v22;
   v170 = v152;
-  v171 = v160;
+  v171 = selfCopy;
   [v101 setCompletionBlock:v165];
   LODWORD(v102) = 1051361018;
   LODWORD(v103) = 1045220557;
@@ -262,9 +262,9 @@
   v107 = *MEMORY[0x277CDA230];
   [v105 setFillMode:*MEMORY[0x277CDA230]];
   [v105 setTimingFunction:v161];
-  v108 = [v152 view];
-  v109 = [v108 layer];
-  [v109 addAnimation:v105 forKey:@"opacity"];
+  view9 = [v152 view];
+  layer = [view9 layer];
+  [layer addAnimation:v105 forKey:@"opacity"];
   v148 = v105;
 
   v110 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
@@ -276,10 +276,10 @@
   [v110 setRemovedOnCompletion:0];
   [v110 setFillMode:v107];
   [v110 setTimingFunction:v161];
-  v112 = [v151 layer];
-  [v112 addAnimation:v110 forKey:@"opacity"];
+  layer2 = [v151 layer];
+  [layer2 addAnimation:v110 forKey:@"opacity"];
 
-  if ((v54 & 1) == 0)
+  if ((statusBarWasHiddenWhenDoneTapped & 1) == 0)
   {
     v113 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
     [v113 setFromValue:&unk_285C6D5A0];
@@ -290,8 +290,8 @@
     [v113 setRemovedOnCompletion:0];
     [v113 setFillMode:v107];
     [v113 setTimingFunction:v161];
-    v115 = [v149 layer];
-    [v115 addAnimation:v113 forKey:@"opacity"];
+    layer3 = [v149 layer];
+    [layer3 addAnimation:v113 forKey:@"opacity"];
   }
 
   v116 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
@@ -303,8 +303,8 @@
   [v116 setRemovedOnCompletion:0];
   [v116 setFillMode:v107];
   [v116 setTimingFunction:v161];
-  v118 = [v150 layer];
-  [v118 addAnimation:v116 forKey:@"opacity"];
+  layer4 = [v150 layer];
+  [layer4 addAnimation:v116 forKey:@"opacity"];
 
   v119 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.scale"];
   [v119 setFromValue:&unk_285C6D5A0];
@@ -328,15 +328,15 @@
   v124 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
   [v121 setTimingFunction:v124];
 
-  if (v154 == 100)
+  if (_graphicsQuality == 100)
   {
     v146 = *MEMORY[0x277CDA328];
     v125 = [MEMORY[0x277CD9EA0] filterWithType:?];
     [v125 setEnabled:1];
     [v125 setValue:MEMORY[0x277CBEC38] forKey:@"inputNormalizeEdges"];
     [v125 setValue:&unk_285C6D5B8 forKey:@"inputRadius"];
-    v126 = [MEMORY[0x277D75418] currentDevice];
-    if ([v126 _graphicsQuality] == 100)
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 _graphicsQuality] == 100)
     {
       v127 = @"default";
     }
@@ -348,17 +348,17 @@
 
     [v125 setValue:v127 forKey:@"inputQuality"];
 
-    v128 = [v174[5] layer];
+    layer5 = [v174[5] layer];
     v182 = v125;
     v129 = [MEMORY[0x277CBEA60] arrayWithObjects:&v182 count:1];
-    [v128 setFilters:v129];
+    [layer5 setFilters:v129];
 
-    v130 = [v174[5] layer];
-    [v130 setShouldRasterize:1];
+    layer6 = [v174[5] layer];
+    [layer6 setShouldRasterize:1];
 
     v131 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"filters.gaussianBlur.inputRadius"];
-    v132 = [v174[5] layer];
-    v133 = [v132 valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
+    layer7 = [v174[5] layer];
+    v133 = [layer7 valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
     [v131 setFromValue:v133];
 
     [v131 setToValue:&unk_285C6D5D0];
@@ -374,8 +374,8 @@
     [v136 setEnabled:1];
     [v136 setValue:MEMORY[0x277CBEC38] forKey:@"inputNormalizeEdges"];
     [v136 setValue:&unk_285C6D5D0 forKey:@"inputRadius"];
-    v137 = [MEMORY[0x277D75418] currentDevice];
-    if ([v137 _graphicsQuality] == 100)
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice3 _graphicsQuality] == 100)
     {
       v138 = @"default";
     }
@@ -387,10 +387,10 @@
 
     [v136 setValue:v138 forKey:@"inputQuality"];
 
-    v139 = [v174[5] layer];
+    layer8 = [v174[5] layer];
     v181 = v136;
     v140 = [MEMORY[0x277CBEA60] arrayWithObjects:&v181 count:1];
-    [v139 setFilters:v140];
+    [layer8 setFilters:v140];
   }
 
   else
@@ -398,23 +398,23 @@
     v131 = 0;
   }
 
-  v141 = [v174[5] layer];
-  [v141 setOpacity:0.0];
+  layer9 = [v174[5] layer];
+  [layer9 setOpacity:0.0];
 
   CATransform3DMakeScale(&v164, 0.5, 0.5, 0.5);
-  v142 = [v174[5] layer];
+  layer10 = [v174[5] layer];
   v163 = v164;
-  [v142 setTransform:&v163];
+  [layer10 setTransform:&v163];
 
-  v143 = [MEMORY[0x277CD9E00] animation];
-  [v143 setDuration:0.28];
-  if (v154 == 100 && v131)
+  animation = [MEMORY[0x277CD9E00] animation];
+  [animation setDuration:0.28];
+  if (_graphicsQuality == 100 && v131)
   {
     v180[0] = v119;
     v180[1] = v121;
     v180[2] = v131;
     v144 = [MEMORY[0x277CBEA60] arrayWithObjects:v180 count:3];
-    [v143 setAnimations:v144];
+    [animation setAnimations:v144];
   }
 
   else
@@ -422,11 +422,11 @@
     v179[0] = v119;
     v179[1] = v121;
     v144 = [MEMORY[0x277CBEA60] arrayWithObjects:v179 count:2];
-    [v143 setAnimations:v144];
+    [animation setAnimations:v144];
   }
 
-  v145 = [v174[5] layer];
-  [v145 addAnimation:v143 forKey:@"animGroup"];
+  layer11 = [v174[5] layer];
+  [layer11 addAnimation:animation forKey:@"animGroup"];
 
   [MEMORY[0x277CD9FF0] commit];
   _Block_object_dispose(&v173, 8);

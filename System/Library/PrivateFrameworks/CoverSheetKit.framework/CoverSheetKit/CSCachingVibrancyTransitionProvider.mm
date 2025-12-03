@@ -1,18 +1,18 @@
 @interface CSCachingVibrancyTransitionProvider
-- (id)vibrancyLUTWithStartingLUT:(id)a3 transitionProgress:(double)a4 toIdentifier:(id)a5;
+- (id)vibrancyLUTWithStartingLUT:(id)t transitionProgress:(double)progress toIdentifier:(id)identifier;
 @end
 
 @implementation CSCachingVibrancyTransitionProvider
 
-- (id)vibrancyLUTWithStartingLUT:(id)a3 transitionProgress:(double)a4 toIdentifier:(id)a5
+- (id)vibrancyLUTWithStartingLUT:(id)t transitionProgress:(double)progress toIdentifier:(id)identifier
 {
   cachedVibrancyLUT = self->_cachedVibrancyLUT;
   if (!cachedVibrancyLUT)
   {
-    cachedVibrancyLUT = a3;
+    cachedVibrancyLUT = t;
   }
 
-  v7 = [cachedVibrancyLUT copyWithBlend:a5 toIdentifier:a4];
+  v7 = [cachedVibrancyLUT copyWithBlend:identifier toIdentifier:progress];
   v8 = self->_cachedVibrancyLUT;
   self->_cachedVibrancyLUT = v7;
 

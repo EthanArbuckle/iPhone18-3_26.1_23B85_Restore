@@ -1,25 +1,25 @@
 @interface PLManagedKeyword
-+ (id)keywordForTitle:(id)a3 context:(id)a4;
-+ (id)keywordForUuid:(id)a3 context:(id)a4;
-- (id)payloadForChangedKeys:(id)a3;
++ (id)keywordForTitle:(id)title context:(id)context;
++ (id)keywordForUuid:(id)uuid context:(id)context;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
-- (id)payloadIDForTombstone:(id)a3;
+- (id)payloadIDForTombstone:(id)tombstone;
 - (void)awakeFromInsert;
 @end
 
 @implementation PLManagedKeyword
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PLManagedObjectJournalEntryPayload *)[PLKeywordJournalEntryPayload alloc] initWithManagedObject:self changedKeys:v4];
+  keysCopy = keys;
+  v5 = [(PLManagedObjectJournalEntryPayload *)[PLKeywordJournalEntryPayload alloc] initWithManagedObject:self changedKeys:keysCopy];
 
   return v5;
 }
 
-- (id)payloadIDForTombstone:(id)a3
+- (id)payloadIDForTombstone:(id)tombstone
 {
-  v3 = [a3 objectForKeyedSubscript:@"uuid"];
+  v3 = [tombstone objectForKeyedSubscript:@"uuid"];
   v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
 
   return v4;
@@ -27,8 +27,8 @@
 
 - (id)payloadID
 {
-  v2 = [(PLManagedKeyword *)self uuid];
-  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v2];
+  uuid = [(PLManagedKeyword *)self uuid];
+  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:uuid];
 
   return v3;
 }
@@ -38,38 +38,38 @@
   v4.receiver = self;
   v4.super_class = PLManagedKeyword;
   [(PLManagedKeyword *)&v4 awakeFromInsert];
-  v3 = [MEMORY[0x1E69BF320] UUIDString];
-  [(PLManagedKeyword *)self setUuid:v3];
+  uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+  [(PLManagedKeyword *)self setUuid:uUIDString];
 }
 
-+ (id)keywordForUuid:(id)a3 context:(id)a4
++ (id)keywordForUuid:(id)uuid context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  uuidCopy = uuid;
   v7 = +[PLManagedKeyword fetchRequest];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"uuid", v6];
+  uuidCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"uuid", uuidCopy];
 
-  [v7 setPredicate:v8];
-  v9 = [v5 executeFetchRequest:v7 error:0];
+  [v7 setPredicate:uuidCopy];
+  v9 = [contextCopy executeFetchRequest:v7 error:0];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-+ (id)keywordForTitle:(id)a3 context:(id)a4
++ (id)keywordForTitle:(id)title context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  titleCopy = title;
   v7 = +[PLManagedKeyword fetchRequest];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"title", v6];
+  titleCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"title", titleCopy];
 
-  [v7 setPredicate:v8];
-  v9 = [v5 executeFetchRequest:v7 error:0];
+  [v7 setPredicate:titleCopy];
+  v9 = [contextCopy executeFetchRequest:v7 error:0];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
 @end

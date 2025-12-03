@@ -1,18 +1,18 @@
 @interface AKPDFDocumentWrapper
-- (AKPDFDocumentWrapper)initWithPDF:(CGPDFDocument *)a3;
+- (AKPDFDocumentWrapper)initWithPDF:(CGPDFDocument *)f;
 - (void)dealloc;
 @end
 
 @implementation AKPDFDocumentWrapper
 
-- (AKPDFDocumentWrapper)initWithPDF:(CGPDFDocument *)a3
+- (AKPDFDocumentWrapper)initWithPDF:(CGPDFDocument *)f
 {
   v6.receiver = self;
   v6.super_class = AKPDFDocumentWrapper;
   v4 = [(AKPDFDocumentWrapper *)&v6 init];
   if (v4)
   {
-    v4->_pdfDocument = CGPDFDocumentRetain(a3);
+    v4->_pdfDocument = CGPDFDocumentRetain(f);
   }
 
   return v4;

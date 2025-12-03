@@ -10,9 +10,9 @@
   v4 = MEMORY[0x277CCAD78];
   v5 = a3;
   v6 = [v4 crk_UUIDWithOpaqueString:v5];
-  v7 = [a1 crk_groupIDWithOpaqueString:v5];
+  v7 = [self crk_groupIDWithOpaqueString:v5];
 
-  v8 = [[a1 alloc] initWithOrganizationUUID:v6 groupID:v7];
+  v8 = [[self alloc] initWithOrganizationUUID:v6 groupID:v7];
 
   return v8;
 }

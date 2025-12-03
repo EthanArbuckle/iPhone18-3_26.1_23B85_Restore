@@ -4,16 +4,16 @@
 - (id)debugDescription;
 - (id)ef_publicDescription;
 - (id)initGlobalInstance;
-- (void)_queue_handleEvent:(id)a3;
-- (void)_queue_handleXPCEvent:(id)a3;
+- (void)_queue_handleEvent:(id)event;
+- (void)_queue_handleXPCEvent:(id)event;
 - (void)_queue_notifyAlarmsOfPendingEvents;
-- (void)_queue_scheduleEvent:(id)a3;
-- (void)_queue_unscheduleEventWithName:(id)a3;
-- (void)addAlarm:(id)a3;
-- (void)removeAlarm:(id)a3;
-- (void)scheduleEvent:(id)a3;
-- (void)test_fireEvent:(id)a3;
-- (void)unscheduleEventWithName:(id)a3;
+- (void)_queue_scheduleEvent:(id)event;
+- (void)_queue_unscheduleEventWithName:(id)name;
+- (void)addAlarm:(id)alarm;
+- (void)removeAlarm:(id)alarm;
+- (void)scheduleEvent:(id)event;
+- (void)test_fireEvent:(id)event;
+- (void)unscheduleEventWithName:(id)name;
 @end
 
 @implementation EFXPCAlarmScheduler
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __26__EFXPCAlarmScheduler_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_9 != -1)
   {
     dispatch_once(&log_onceToken_9, block);
@@ -45,11 +45,11 @@ void __26__EFXPCAlarmScheduler_log__block_invoke(uint64_t a1)
 
 - (id)initGlobalInstance
 {
-  v2 = [(EFXPCAlarmScheduler *)self _init];
-  if (v2)
+  _init = [(EFXPCAlarmScheduler *)self _init];
+  if (_init)
   {
-    objc_initWeak(&location, v2);
-    v3 = v2[3];
+    objc_initWeak(&location, _init);
+    v3 = _init[3];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __41__EFXPCAlarmScheduler_initGlobalInstance__block_invoke;
@@ -60,7 +60,7 @@ void __26__EFXPCAlarmScheduler_log__block_invoke(uint64_t a1)
     objc_destroyWeak(&location);
   }
 
-  return v2;
+  return _init;
 }
 
 void __41__EFXPCAlarmScheduler_initGlobalInstance__block_invoke(uint64_t a1, void *a2)
@@ -77,9 +77,9 @@ void __41__EFXPCAlarmScheduler_initGlobalInstance__block_invoke(uint64_t a1, voi
   v2 = [(EFXPCAlarmScheduler *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     alarms = v2->_alarms;
-    v2->_alarms = v3;
+    v2->_alarms = strongToWeakObjectsMapTable;
 
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     pendingEvents = v2->_pendingEvents;
@@ -95,18 +95,18 @@ void __41__EFXPCAlarmScheduler_initGlobalInstance__block_invoke(uint64_t a1, voi
   return v2;
 }
 
-- (void)_queue_handleXPCEvent:(id)a3
+- (void)_queue_handleXPCEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
-  string = xpc_dictionary_get_string(v4, *MEMORY[0x1E69E9E40]);
-  v6 = [MEMORY[0x1E695DF00] date];
+  string = xpc_dictionary_get_string(eventCopy, *MEMORY[0x1E69E9E40]);
+  date = [MEMORY[0x1E695DF00] date];
   v7 = +[EFXPCAlarmScheduler log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
-    [v6 timeIntervalSince1970];
+    [date timeIntervalSince1970];
     v14 = 138543874;
     v15 = v8;
     v16 = 2082;
@@ -119,7 +119,7 @@ void __41__EFXPCAlarmScheduler_initGlobalInstance__block_invoke(uint64_t a1, voi
   if (string)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
-    v11 = [[EFXPCAlarmEvent alloc] initWithName:v10 fireDate:v6 isUserVisible:xpc_dictionary_get_BOOL(v4, "UserVisible")];
+    v11 = [[EFXPCAlarmEvent alloc] initWithName:v10 fireDate:date isUserVisible:xpc_dictionary_get_BOOL(eventCopy, "UserVisible")];
     [(EFXPCAlarmScheduler *)self _queue_handleEvent:v11];
   }
 
@@ -136,51 +136,51 @@ void __41__EFXPCAlarmScheduler_initGlobalInstance__block_invoke(uint64_t a1, voi
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_scheduleEvent:(id)a3
+- (void)_queue_scheduleEvent:(id)event
 {
-  v8 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
   v4 = xpc_dictionary_create(0, 0, 0);
-  v5 = [v8 fireDate];
-  [v5 timeIntervalSince1970];
+  fireDate = [eventCopy fireDate];
+  [fireDate timeIntervalSince1970];
   xpc_dictionary_set_date(v4, "Date", (v6 * 1000000000.0));
 
-  xpc_dictionary_set_BOOL(v4, "UserVisible", [v8 isUserVisible]);
-  v7 = [v8 name];
-  [v7 UTF8String];
+  xpc_dictionary_set_BOOL(v4, "UserVisible", [eventCopy isUserVisible]);
+  name = [eventCopy name];
+  [name UTF8String];
   xpc_set_event();
 }
 
-- (void)_queue_unscheduleEventWithName:(id)a3
+- (void)_queue_unscheduleEventWithName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   dispatch_assert_queue_V2(self->_queue);
-  [v6 UTF8String];
+  [nameCopy UTF8String];
   xpc_set_event();
   pendingEvents = self->_pendingEvents;
-  v5 = [EFXPCAlarmEvent _eventWithName:v6];
+  v5 = [EFXPCAlarmEvent _eventWithName:nameCopy];
   [(NSMutableSet *)pendingEvents removeObject:v5];
 }
 
-- (void)test_fireEvent:(id)a3
+- (void)test_fireEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__EFXPCAlarmScheduler_test_fireEvent___block_invoke;
   v7[3] = &unk_1E82485D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_queue_handleEvent:(id)a3
+- (void)_queue_handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
-  [(NSMutableSet *)self->_pendingEvents addObject:v4];
+  [(NSMutableSet *)self->_pendingEvents addObject:eventCopy];
   [(EFXPCAlarmScheduler *)self _queue_notifyAlarmsOfPendingEvents];
 }
 
@@ -211,8 +211,8 @@ void __41__EFXPCAlarmScheduler_initGlobalInstance__block_invoke(uint64_t a1, voi
 
         v7 = *(*(&v22 + 1) + 8 * i);
         alarms = self->_alarms;
-        v9 = [v7 name];
-        v10 = [(NSMapTable *)alarms objectForKey:v9];
+        name = [v7 name];
+        v10 = [(NSMapTable *)alarms objectForKey:name];
 
         if (v10)
         {
@@ -263,17 +263,17 @@ void __41__EFXPCAlarmScheduler_initGlobalInstance__block_invoke(uint64_t a1, voi
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addAlarm:(id)a3
+- (void)addAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__EFXPCAlarmScheduler_addAlarm___block_invoke;
   v7[3] = &unk_1E82485D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = alarmCopy;
+  v6 = alarmCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -304,17 +304,17 @@ uint64_t __32__EFXPCAlarmScheduler_addAlarm___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeAlarm:(id)a3
+- (void)removeAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__EFXPCAlarmScheduler_removeAlarm___block_invoke;
   v7[3] = &unk_1E82485D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = alarmCopy;
+  v6 = alarmCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -343,17 +343,17 @@ void __35__EFXPCAlarmScheduler_removeAlarm___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)scheduleEvent:(id)a3
+- (void)scheduleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__EFXPCAlarmScheduler_scheduleEvent___block_invoke;
   v7[3] = &unk_1E82485D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -379,17 +379,17 @@ uint64_t __37__EFXPCAlarmScheduler_scheduleEvent___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)unscheduleEventWithName:(id)a3
+- (void)unscheduleEventWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__EFXPCAlarmScheduler_unscheduleEventWithName___block_invoke;
   v7[3] = &unk_1E82485D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -418,18 +418,18 @@ uint64_t __47__EFXPCAlarmScheduler_unscheduleEventWithName___block_invoke(uint64
 - (id)debugDescription
 {
   dispatch_assert_queue_not_V2(self->_queue);
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%p", objc_opt_class(), self];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__EFXPCAlarmScheduler_debugDescription__block_invoke;
   block[3] = &unk_1E82485D0;
-  v6 = v3;
+  v6 = array;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   dispatch_sync(queue, block);
   v7 = [v6 componentsJoinedByString:@"\n"];
 
@@ -515,9 +515,9 @@ void __39__EFXPCAlarmScheduler_debugDescription__block_invoke(uint64_t a1)
 - (id)ef_publicDescription
 {
   v3 = +[EFDevice currentDevice];
-  v4 = [v3 isInternal];
+  isInternal = [v3 isInternal];
 
-  if (v4)
+  if (isInternal)
   {
     [(EFXPCAlarmScheduler *)self debugDescription];
   }

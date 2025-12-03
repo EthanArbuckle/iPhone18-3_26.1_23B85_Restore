@@ -6,15 +6,15 @@
 - (BOOL)isAnimationsRunningExceptBump;
 - (BOOL)isBumpAnimationRunning;
 - (BOOL)isPathAnimationRunning;
-- (BOOL)moveToPoint:(const void *)a3 withHeading:()Unit<geo:(double>)a4 :()Unit<geo:(double>)a5 :(BOOL)a6 RadianUnitDescription RadianUnitDescription withPitch:(id)a7 animated:completionHandler:;
-- (BOOL)tapAtPoint:(CGPoint)a3;
-- (Matrix<float,)screenPointWithOffset:(CGPoint)a3;
-- (Unit<geo::RadianUnitDescription,)_horizontalFieldOfView:()Unit<geo:(double>)a3 :RadianUnitDescription;
+- (BOOL)moveToPoint:(const void *)point withHeading:()Unit<geo:(double>)geo :()Unit<geo:(double>)a5 :(BOOL)a6 RadianUnitDescription RadianUnitDescription withPitch:(id)pitch animated:completionHandler:;
+- (BOOL)tapAtPoint:(CGPoint)point;
+- (Matrix<float,)screenPointWithOffset:(CGPoint)offset;
+- (Unit<geo::RadianUnitDescription,)_horizontalFieldOfView:()Unit<geo:(double>)geo :RadianUnitDescription;
 - (Unit<geo::RadianUnitDescription,)_pitchForScreenPoint:()Matrix<float;
-- (Unit<geo::RadianUnitDescription,)_verticalFieldOfView:()Unit<geo:(double>)a3 :RadianUnitDescription;
-- (VKMuninCameraController)initWithTaskContext:(shared_ptr<md:(void *)a4 :(AnimationRunner *)a5 TaskContext>)a3 mapDataAccess:(RunLoopController *)a6 animationRunner:(id)a7 runLoopController:(void *)a8 cameraDelegate:(void *)a9 muninSceneLogic:elevationLogic:;
+- (Unit<geo::RadianUnitDescription,)_verticalFieldOfView:()Unit<geo:(double>)geo :RadianUnitDescription;
+- (VKMuninCameraController)initWithTaskContext:(shared_ptr<md:(void *)context :(AnimationRunner *)a5 TaskContext>)a3 mapDataAccess:(RunLoopController *)access animationRunner:(id)runner runLoopController:(void *)controller cameraDelegate:(void *)delegate muninSceneLogic:elevationLogic:;
 - (const)currentPoint;
-- (double)_zoomRubberBandFov:(double)a3;
+- (double)_zoomRubberBandFov:(double)fov;
 - (double)distanceFromCenterCoordinate;
 - (double)tapAtPoint:;
 - (id).cxx_construct;
@@ -23,38 +23,38 @@
 - (uint64_t)runBumpAnimation:targetPoint:completionHandler:;
 - (uint64_t)selectLabelMarker:completion:;
 - (uint64_t)tapAtPoint:;
-- (uint64_t)tapAtPoint:(uint64_t)a1;
-- (void)_setHeading:()Unit<geo:(double>)a3 :RadianUnitDescription;
-- (void)_updateDebugOverlay:(void *)a3;
-- (void)animatePath:(void *)a3 animator:(const void *)a4 preloadedRequiredViews:(void *)a5 prePruneData:(BOOL)a6 completionHandler:(id)a7;
-- (void)animatePath:(void *)a3 withTarget:(const void *)a4 lookAtTarget:(BOOL)a5 constantLod:(BOOL)a6 prePruneData:(BOOL)a7 completionHandler:(id)a8;
+- (uint64_t)tapAtPoint:(uint64_t)point;
+- (void)_setHeading:()Unit<geo:(double>)geo :RadianUnitDescription;
+- (void)_updateDebugOverlay:(void *)overlay;
+- (void)animatePath:(void *)path animator:(const void *)animator preloadedRequiredViews:(void *)views prePruneData:(BOOL)data completionHandler:(id)handler;
+- (void)animatePath:(void *)path withTarget:(const void *)target lookAtTarget:(BOOL)atTarget constantLod:(BOOL)lod prePruneData:(BOOL)data completionHandler:(id)handler;
 - (void)animatePath:animator:preloadedRequiredViews:prePruneData:completionHandler:;
 - (void)moveToPoint:withHeading:withPitch:animated:completionHandler:;
-- (void)pathAnimationComplete:(unint64_t)a3;
-- (void)pathAnimationPrepared:(PathAnimationDescription *)a3 tap:(TapDescription *)a4 preloadedViews:()unordered_map<gdc:()std:()gdc:()std:(std:(std::shared_ptr<gdc::LayerData>>>> *)a5 :allocator<std::pair<const)gdc::LayerDataRequestKey :equal_to<gdc::LayerDataRequestKey> :LayerDataRequestKeyHash :shared_ptr<gdc::LayerData> :LayerDataRequestKey;
+- (void)pathAnimationComplete:(unint64_t)complete;
+- (void)pathAnimationPrepared:(PathAnimationDescription *)prepared tap:(TapDescription *)tap preloadedViews:()unordered_map<gdc:()std:()gdc:()std:(std:(std::shared_ptr<gdc::LayerData>>>> *)std :allocator<std::pair<const)gdc::LayerDataRequestKey :equal_to<gdc::LayerDataRequestKey> :LayerDataRequestKeyHash :shared_ptr<gdc::LayerData> :LayerDataRequestKey;
 - (void)resetPathAnimation;
-- (void)runBumpAnimation:(const void *)a3 targetPoint:(const void *)a4 completionHandler:(id)a5;
+- (void)runBumpAnimation:(const void *)animation targetPoint:(const void *)point completionHandler:(id)handler;
 - (void)runBumpAnimation:targetPoint:completionHandler:;
-- (void)selectLabelMarker:(const void *)a3 completion:(id)a4;
-- (void)setCameraFrame:()CameraFrame<geo:(double> *)a3 :Radians;
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 animationStyle:(int64_t)a8 timingCurve:(id)a9 completion:(id)a10;
-- (void)setCurrentPoint:(const void *)a3;
-- (void)setCurrentSegment:(void *)a3;
-- (void)setVkCamera:(id)a3;
-- (void)setWidestFieldOfView:()Unit<geo:(double>)a3 :RadianUnitDescription;
-- (void)startPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4;
-- (void)startPinchingWithFocusPoint:(CGPoint)a3;
+- (void)selectLabelMarker:(const void *)marker completion:(id)completion;
+- (void)setCameraFrame:()CameraFrame<geo:(double> *)geo :Radians;
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration animationStyle:(int64_t)style timingCurve:(id)curve completion:(id)self0;
+- (void)setCurrentPoint:(const void *)point;
+- (void)setCurrentSegment:(void *)segment;
+- (void)setVkCamera:(id)camera;
+- (void)setWidestFieldOfView:()Unit<geo:(double>)geo :RadianUnitDescription;
+- (void)startPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint;
+- (void)startPinchingWithFocusPoint:(CGPoint)point;
 - (void)stopAnimations;
 - (void)stopAnimationsExceptBump;
-- (void)stopPanningAtPoint:(CGPoint)a3;
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3;
+- (void)stopPanningAtPoint:(CGPoint)point;
+- (void)stopPinchingWithFocusPoint:(CGPoint)point;
 - (void)tapAtPoint:;
-- (void)updateCurrentPointView:(BOOL)a3;
-- (void)updatePanWithTranslation:(CGPoint)a3;
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5;
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4;
-- (void)willStopPanningAtPoint:(CGPoint)a3 withVelocity:(CGPoint)a4;
-- (void)zoomAnimatedWithDuration:()Unit<geo:(double>)a3 :(float)a4 RadianUnitDescription duration:(id)a5 completion:;
+- (void)updateCurrentPointView:(BOOL)view;
+- (void)updatePanWithTranslation:(CGPoint)translation;
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor;
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context;
+- (void)willStopPanningAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity;
+- (void)zoomAnimatedWithDuration:()Unit<geo:(double>)geo :(float)a4 RadianUnitDescription duration:(id)duration completion:;
 @end
 
 @implementation VKMuninCameraController
@@ -97,17 +97,17 @@
   return self;
 }
 
-- (void)zoomAnimatedWithDuration:()Unit<geo:(double>)a3 :(float)a4 RadianUnitDescription duration:(id)a5 completion:
+- (void)zoomAnimatedWithDuration:()Unit<geo:(double>)geo :(float)a4 RadianUnitDescription duration:(id)duration completion:
 {
-  v6 = *&a3._value;
+  v6 = *&geo._value;
   v9 = v5;
   v10 = v9;
   v11 = *(self + 554);
-  if (*a5 == v11)
+  if (*duration == v11)
   {
     if (v9)
     {
-      (*(v9 + 2))(v9, 1, *a5);
+      (*(v9 + 2))(v9, 1, *duration);
     }
   }
 
@@ -122,7 +122,7 @@
     v18[2] = __72__VKMuninCameraController_zoomAnimatedWithDuration_duration_completion___block_invoke;
     v18[3] = &unk_1F2A1BF08;
     objc_copyWeak(v19, &location);
-    v13 = *a5;
+    v13 = *duration;
     v19[1] = *&v11;
     v19[2] = v13;
     [*(self + 539) setStepHandler:v18];
@@ -165,7 +165,7 @@ uint64_t __72__VKMuninCameraController_zoomAnimatedWithDuration_duration_complet
   return result;
 }
 
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3
+- (void)stopPinchingWithFocusPoint:(CGPoint)point
 {
   if (*(self + 4280) != 1)
   {
@@ -181,7 +181,7 @@ uint64_t __72__VKMuninCameraController_zoomAnimatedWithDuration_duration_complet
     goto LABEL_7;
   }
 
-  v7 = [(VKCameraController *)self canvas:a3.x];
+  v7 = [(VKCameraController *)self canvas:point.x];
   [v7 size];
   *&v8 = v8;
   *&v9 = v9;
@@ -200,8 +200,8 @@ uint64_t __72__VKMuninCameraController_zoomAnimatedWithDuration_duration_complet
     v4 = *(self + 15);
     v5 = *(v4 + 752);
 LABEL_7:
-    v13 = [(VKCameraController *)self canvas];
-    [v13 size];
+    canvas = [(VKCameraController *)self canvas];
+    [canvas size];
     *&v14 = v14;
     *&v15 = v15;
     v16 = 728;
@@ -222,8 +222,8 @@ LABEL_7:
     return;
   }
 
-  v18 = [(VKCameraController *)self cameraDelegate];
-  [v18 didEndPinchingAccess];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate didEndPinchingAccess];
 }
 
 void __54__VKMuninCameraController_stopPinchingWithFocusPoint___block_invoke(uint64_t a1)
@@ -232,15 +232,15 @@ void __54__VKMuninCameraController_stopPinchingWithFocusPoint___block_invoke(uin
   [v1 didEndPinchingAccess];
 }
 
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor
 {
   if (*(self + 4280) == 1)
   {
-    y = a3.y;
-    x = a3.x;
-    [(VKMuninCameraController *)self _zoomRubberBandFov:*(self + 537) / a4];
+    y = point.y;
+    x = point.x;
+    [(VKMuninCameraController *)self _zoomRubberBandFov:*(self + 537) / factor];
     v8 = v7;
-    [(VKMuninCameraController *)self _zoomRubberBandFov:*(self + 537) / a5];
+    [(VKMuninCameraController *)self _zoomRubberBandFov:*(self + 537) / newFactor];
     v10 = v9;
     v11 = *(self + 537);
     v44 = v9;
@@ -248,16 +248,16 @@ void __54__VKMuninCameraController_stopPinchingWithFocusPoint___block_invoke(uin
     [(VKCameraController *)self centerScreenPoint];
     v13 = v12;
     v15 = v14;
-    v16 = [(VKCameraController *)self canvas];
-    [v16 size];
+    canvas = [(VKCameraController *)self canvas];
+    [canvas size];
     v18 = v17;
-    v19 = [(VKCameraController *)self canvas];
-    [v19 size];
+    canvas2 = [(VKCameraController *)self canvas];
+    [canvas2 size];
     v21 = v20;
 
     v39 = *(self + 4284);
-    v22 = [(VKCameraController *)self canvas];
-    [v22 size];
+    canvas3 = [(VKCameraController *)self canvas];
+    [canvas3 size];
     v38 = v23;
     v25 = v24;
     v26 = v8 / v11;
@@ -284,8 +284,8 @@ void __54__VKMuninCameraController_stopPinchingWithFocusPoint___block_invoke(uin
     v34 = v43;
     *(self + 551) = *(self + 551) + v44 * v31.f32[0];
     *(self + 552) = fmin(fmax(*(self + 552) + v34 * *&v10, -0.785398163), 0.785398163);
-    v35 = [(VKCameraController *)self cameraDelegate];
-    [v35 mapLayerDidChangeVisibleRegion];
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate mapLayerDidChangeVisibleRegion];
 
     v36 = *[(VKCameraController *)self runLoopController];
     if (v36)
@@ -296,13 +296,13 @@ void __54__VKMuninCameraController_stopPinchingWithFocusPoint___block_invoke(uin
   }
 }
 
-- (void)startPinchingWithFocusPoint:(CGPoint)a3
+- (void)startPinchingWithFocusPoint:(CGPoint)point
 {
-  if (![(VKMuninCameraController *)self isAnimationsRunningExceptBump:a3.x])
+  if (![(VKMuninCameraController *)self isAnimationsRunningExceptBump:point.x])
   {
     [(VKMuninCameraController *)self cancelPendingMoveExceptBump];
-    v4 = [(VKCameraController *)self cameraDelegate];
-    [v4 willBeginPinchingAccess];
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate willBeginPinchingAccess];
 
     *(self + 537) = *(self + 554);
     *(self + 4280) = 1;
@@ -310,14 +310,14 @@ void __54__VKMuninCameraController_stopPinchingWithFocusPoint___block_invoke(uin
   }
 }
 
-- (void)setWidestFieldOfView:()Unit<geo:(double>)a3 :RadianUnitDescription
+- (void)setWidestFieldOfView:()Unit<geo:(double>)geo :RadianUnitDescription
 {
   v4 = v3;
   v6 = *(self + 15);
   v7 = v6[94];
   v8 = v6[95];
-  v9 = [(VKCameraController *)self canvas];
-  [v9 size];
+  canvas = [(VKCameraController *)self canvas];
+  [canvas size];
   *&v10 = v10;
   *&v11 = v11;
   v12 = 91;
@@ -330,8 +330,8 @@ void __54__VKMuninCameraController_stopPinchingWithFocusPoint___block_invoke(uin
   v14 = v6[96];
 
   v15 = *(self + 15);
-  v16 = [(VKCameraController *)self canvas];
-  [v16 size];
+  canvas2 = [(VKCameraController *)self canvas];
+  [canvas2 size];
   *&v17 = v17;
   *&v18 = v18;
   v19 = 720;
@@ -402,11 +402,11 @@ LABEL_16:
   }
 }
 
-- (double)_zoomRubberBandFov:(double)a3
+- (double)_zoomRubberBandFov:(double)fov
 {
   v5 = *(self + 15);
-  v6 = [(VKCameraController *)self canvas];
-  [v6 size];
+  canvas = [(VKCameraController *)self canvas];
+  [canvas size];
   *&v7 = v7;
   *&v8 = v8;
   v9 = 728;
@@ -419,8 +419,8 @@ LABEL_16:
   v11 = *(v5 + 768);
 
   v12 = *(self + 15);
-  v13 = [(VKCameraController *)self canvas];
-  [v13 size];
+  canvas2 = [(VKCameraController *)self canvas];
+  [canvas2 size];
   *&v14 = v14;
   *&v15 = v15;
   v16 = 728;
@@ -433,11 +433,11 @@ LABEL_16:
 
   v18 = *(self + 15);
   v19 = *(v18 + 752);
-  v20 = a3;
+  fovCopy = fov;
   v21 = fmax(v19 - *(v18 + 760), 0.00872664626);
   v22 = v19;
   v23 = v17;
-  v24 = logf(v20);
+  v24 = logf(fovCopy);
   v25 = logf(v21);
   v26 = logf(v22);
   v27 = logf(v23);
@@ -461,21 +461,21 @@ LABEL_16:
   return expf(-v30);
 }
 
-- (void)stopPanningAtPoint:(CGPoint)a3
+- (void)stopPanningAtPoint:(CGPoint)point
 {
   if (*(self + 4232) == 1)
   {
     *(self + 4232) = 0;
-    v3 = [(VKCameraController *)self cameraDelegate:a3.x];
+    v3 = [(VKCameraController *)self cameraDelegate:point.x];
     [v3 didEndPanningAccess];
   }
 }
 
-- (void)willStopPanningAtPoint:(CGPoint)a3 withVelocity:(CGPoint)a4
+- (void)willStopPanningAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity
 {
   if (*(self + 4232) == 1)
   {
-    x = a4.x;
+    x = velocity.x;
     v6 = *(self + 1083);
     v7 = (self + 4336);
     v8 = *(self + 543);
@@ -535,14 +535,14 @@ void __63__VKMuninCameraController_willStopPanningAtPoint_withVelocity___block_i
   }
 }
 
-- (void)updatePanWithTranslation:(CGPoint)a3
+- (void)updatePanWithTranslation:(CGPoint)translation
 {
   if (*(self + 4232) == 1)
   {
-    y = a3.y;
-    x = a3.x;
-    v6 = [(VKCameraController *)self canvas];
-    [v6 size];
+    y = translation.y;
+    x = translation.x;
+    canvas = [(VKCameraController *)self canvas];
+    [canvas size];
     v8 = v7;
     v10 = v9;
 
@@ -576,8 +576,8 @@ void __63__VKMuninCameraController_willStopPanningAtPoint_withVelocity___block_i
       *(self + 1083) = v21;
     }
 
-    v22 = [(VKCameraController *)self cameraDelegate];
-    [v22 mapLayerDidChangeVisibleRegion];
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate mapLayerDidChangeVisibleRegion];
 
     v23 = *[(VKCameraController *)self runLoopController];
     if (v23)
@@ -602,15 +602,15 @@ void __63__VKMuninCameraController_willStopPanningAtPoint_withVelocity___block_i
   return v10;
 }
 
-- (Unit<geo::RadianUnitDescription,)_verticalFieldOfView:()Unit<geo:(double>)a3 :RadianUnitDescription
+- (Unit<geo::RadianUnitDescription,)_verticalFieldOfView:()Unit<geo:(double>)geo :RadianUnitDescription
 {
   v5 = v3;
   v7 = v4;
-  v8 = [(VKCameraController *)self canvas];
-  [v8 size];
+  canvas = [(VKCameraController *)self canvas];
+  [canvas size];
   v10 = v9;
-  v11 = [(VKCameraController *)self canvas];
-  [v11 size];
+  canvas2 = [(VKCameraController *)self canvas];
+  [canvas2 size];
   v13 = v10 / v12;
 
   v14._value = *v5;
@@ -623,23 +623,23 @@ void __63__VKMuninCameraController_willStopPanningAtPoint_withVelocity___block_i
   return v14;
 }
 
-- (Unit<geo::RadianUnitDescription,)_horizontalFieldOfView:()Unit<geo:(double>)a3 :RadianUnitDescription
+- (Unit<geo::RadianUnitDescription,)_horizontalFieldOfView:()Unit<geo:(double>)geo :RadianUnitDescription
 {
   v5 = v3;
   v7 = v4;
-  v8 = [(VKCameraController *)self canvas];
-  [v8 size];
+  canvas = [(VKCameraController *)self canvas];
+  [canvas size];
   if (v9 <= 0.0)
   {
 
     goto LABEL_5;
   }
 
-  v10 = [(VKCameraController *)self canvas];
-  [v10 size];
+  canvas2 = [(VKCameraController *)self canvas];
+  [canvas2 size];
   v12 = v11;
-  v13 = [(VKCameraController *)self canvas];
-  [v13 size];
+  canvas3 = [(VKCameraController *)self canvas];
+  [canvas3 size];
   v15 = v12 / v14;
 
   if (v15 >= 1.0)
@@ -655,10 +655,10 @@ LABEL_6:
   return v16;
 }
 
-- (void)startPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4
+- (void)startPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (![(VKMuninCameraController *)self isAnimationsRunningExceptBump])
   {
     v7 = *(self + 543);
@@ -668,12 +668,12 @@ LABEL_6:
     }
 
     [(VKMuninCameraController *)self cancelPendingMoveExceptBump];
-    v8 = [(VKCameraController *)self cameraDelegate];
-    [v8 willBeginPanningAccess];
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate willBeginPanningAccess];
 
     *(self + 4244) = 0;
-    v9 = [(VKCameraController *)self canvas];
-    [v9 size];
+    canvas = [(VKCameraController *)self canvas];
+    [canvas size];
     v11 = v10;
     v13 = v12;
 
@@ -687,7 +687,7 @@ LABEL_6:
   }
 }
 
-- (BOOL)tapAtPoint:(CGPoint)a3
+- (BOOL)tapAtPoint:(CGPoint)point
 {
   v3 = MEMORY[0x1EEE9AC00](self);
   v181 = *MEMORY[0x1E69E9840];
@@ -1135,11 +1135,11 @@ LABEL_22:
 
 - (void)tapAtPoint:
 {
-  *a1 = &unk_1F2A18CC0;
-  v2 = a1 + 192;
-  objc_destroyWeak((a1 + 4064));
-  geo::small_vector_base<md::mun::PhotoInfo>::~small_vector_base(a1 + 2224);
-  objc_destroyWeak((a1 + 2032));
+  *self = &unk_1F2A18CC0;
+  v2 = self + 192;
+  objc_destroyWeak((self + 4064));
+  geo::small_vector_base<md::mun::PhotoInfo>::~small_vector_base(self + 2224);
+  objc_destroyWeak((self + 2032));
   geo::small_vector_base<md::mun::PhotoInfo>::~small_vector_base(v2);
 
   JUMPOUT(0x1B8C62190);
@@ -1148,90 +1148,90 @@ LABEL_22:
 - (double)tapAtPoint:
 {
   *a2 = &unk_1F2A18E60;
-  objc_copyWeak((a2 + 8), (a1 + 8));
-  v4 = *(a1 + 32);
-  *(a2 + 16) = *(a1 + 16);
+  objc_copyWeak((a2 + 8), (self + 8));
+  v4 = *(self + 32);
+  *(a2 + 16) = *(self + 16);
   *(a2 + 32) = v4;
-  v5 = *(a1 + 48);
-  v6 = *(a1 + 64);
-  v7 = *(a1 + 96);
-  *(a2 + 80) = *(a1 + 80);
+  v5 = *(self + 48);
+  v6 = *(self + 64);
+  v7 = *(self + 96);
+  *(a2 + 80) = *(self + 80);
   *(a2 + 96) = v7;
   *(a2 + 48) = v5;
   *(a2 + 64) = v6;
-  *(a2 + 112) = *(a1 + 112);
-  v8 = *(a1 + 120);
-  *(a2 + 136) = *(a1 + 136);
+  *(a2 + 112) = *(self + 112);
+  v8 = *(self + 120);
+  *(a2 + 136) = *(self + 136);
   *(a2 + 120) = v8;
-  v9 = *(a1 + 144);
-  *(a2 + 152) = *(a1 + 152);
+  v9 = *(self + 144);
+  *(a2 + 152) = *(self + 152);
   *(a2 + 144) = v9;
-  *(a2 + 156) = *(a1 + 156);
-  v10 = *(a1 + 168);
-  v11 = *(a1 + 184);
+  *(a2 + 156) = *(self + 156);
+  v10 = *(self + 168);
+  v11 = *(self + 184);
   *(a2 + 200) = a2 + 232;
   *(a2 + 168) = v10;
   *(a2 + 184) = v11;
   *(a2 + 208) = a2 + 232;
   *(a2 + 216) = a2 + 232;
   *(a2 + 224) = 6;
-  geo::small_vector_base<md::mun::PhotoInfo>::append<md::mun::PhotoInfo const*>((a2 + 200), *(a1 + 200), *(a1 + 208));
-  v12 = *(a1 + 1960);
-  *(a2 + 1965) = *(a1 + 1965);
+  geo::small_vector_base<md::mun::PhotoInfo>::append<md::mun::PhotoInfo const*>((a2 + 200), *(self + 200), *(self + 208));
+  v12 = *(self + 1960);
+  *(a2 + 1965) = *(self + 1965);
   *(a2 + 1960) = v12;
-  v13 = *(a1 + 1976);
-  *(a2 + 1992) = *(a1 + 1992);
+  v13 = *(self + 1976);
+  *(a2 + 1992) = *(self + 1992);
   *(a2 + 1976) = v13;
-  v14 = *(a1 + 2000);
-  *(a2 + 2016) = *(a1 + 2016);
+  v14 = *(self + 2000);
+  *(a2 + 2016) = *(self + 2016);
   *(a2 + 2000) = v14;
-  result = *(a1 + 2024);
+  result = *(self + 2024);
   *(a2 + 2024) = result;
-  *(a2 + 2032) = *(a1 + 2032);
+  *(a2 + 2032) = *(self + 2032);
   return result;
 }
 
 - (uint64_t)tapAtPoint:
 {
-  *a1 = &unk_1F2A18CC0;
-  v2 = a1 + 192;
-  objc_destroyWeak((a1 + 4064));
-  geo::small_vector_base<md::mun::PhotoInfo>::~small_vector_base(a1 + 2224);
-  objc_destroyWeak((a1 + 2032));
+  *self = &unk_1F2A18CC0;
+  v2 = self + 192;
+  objc_destroyWeak((self + 4064));
+  geo::small_vector_base<md::mun::PhotoInfo>::~small_vector_base(self + 2224);
+  objc_destroyWeak((self + 2032));
   geo::small_vector_base<md::mun::PhotoInfo>::~small_vector_base(v2);
-  return a1;
+  return self;
 }
 
-- (uint64_t)tapAtPoint:(uint64_t)a1
+- (uint64_t)tapAtPoint:(uint64_t)point
 {
   v4 = *(a2 + 16);
-  *a1 = *a2;
-  *(a1 + 16) = v4;
+  *point = *a2;
+  *(point + 16) = v4;
   v5 = *(a2 + 32);
   v6 = *(a2 + 48);
   v7 = *(a2 + 80);
-  *(a1 + 64) = *(a2 + 64);
-  *(a1 + 80) = v7;
-  *(a1 + 32) = v5;
-  *(a1 + 48) = v6;
-  *(a1 + 96) = *(a2 + 96);
+  *(point + 64) = *(a2 + 64);
+  *(point + 80) = v7;
+  *(point + 32) = v5;
+  *(point + 48) = v6;
+  *(point + 96) = *(a2 + 96);
   v8 = *(a2 + 104);
-  *(a1 + 120) = *(a2 + 120);
-  *(a1 + 104) = v8;
+  *(point + 120) = *(a2 + 120);
+  *(point + 104) = v8;
   v9 = *(a2 + 128);
-  *(a1 + 136) = *(a2 + 136);
-  *(a1 + 128) = v9;
-  *(a1 + 140) = *(a2 + 140);
+  *(point + 136) = *(a2 + 136);
+  *(point + 128) = v9;
+  *(point + 140) = *(a2 + 140);
   v10 = *(a2 + 152);
   v11 = *(a2 + 168);
-  *(a1 + 184) = a1 + 216;
-  v12 = a1 + 184;
-  *(a1 + 152) = v10;
-  *(a1 + 168) = v11;
-  *(a1 + 192) = a1 + 216;
-  *(a1 + 200) = a1 + 216;
-  *(a1 + 208) = 6;
-  geo::small_vector_base<md::mun::PhotoInfo>::append<md::mun::PhotoInfo const*>((a1 + 184), *(a2 + 184), *(a2 + 192));
+  *(point + 184) = point + 216;
+  v12 = point + 184;
+  *(point + 152) = v10;
+  *(point + 168) = v11;
+  *(point + 192) = point + 216;
+  *(point + 200) = point + 216;
+  *(point + 208) = 6;
+  geo::small_vector_base<md::mun::PhotoInfo>::append<md::mun::PhotoInfo const*>((point + 184), *(a2 + 184), *(a2 + 192));
   v13 = *(a2 + 1944);
   *(v12 + 1765) = *(a2 + 1949);
   *(v12 + 1760) = v13;
@@ -1272,18 +1272,18 @@ LABEL_22:
   *(v12 + 2056) = 6;
   geo::small_vector_base<md::mun::PhotoInfo>::append<md::mun::PhotoInfo const*>((v12 + 2032), *(a2 + 2216), *(a2 + 2224));
   v23 = *(a2 + 3976);
-  *(a1 + 3981) = *(a2 + 3981);
-  *(a1 + 3976) = v23;
+  *(point + 3981) = *(a2 + 3981);
+  *(point + 3976) = v23;
   v24 = *(a2 + 3992);
-  *(a1 + 4008) = *(a2 + 4008);
-  *(a1 + 3992) = v24;
+  *(point + 4008) = *(a2 + 4008);
+  *(point + 3992) = v24;
   v25 = *(a2 + 4016);
-  *(a1 + 4032) = *(a2 + 4032);
-  *(a1 + 4016) = v25;
-  *(a1 + 4040) = *(a2 + 4040);
-  *(a1 + 4048) = *(a2 + 4048);
-  objc_copyWeak((a1 + 4056), (a2 + 4056));
-  return a1;
+  *(point + 4032) = *(a2 + 4032);
+  *(point + 4016) = v25;
+  *(point + 4040) = *(a2 + 4040);
+  *(point + 4048) = *(a2 + 4048);
+  objc_copyWeak((point + 4056), (a2 + 4056));
+  return point;
 }
 
 void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___block_invoke(uint64_t a1)
@@ -1323,7 +1323,7 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
   }
 }
 
-- (void)pathAnimationComplete:(unint64_t)a3
+- (void)pathAnimationComplete:(unint64_t)complete
 {
   v4 = *(self + 569);
   if (v4)
@@ -1436,7 +1436,7 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
   }
 }
 
-- (void)pathAnimationPrepared:(PathAnimationDescription *)a3 tap:(TapDescription *)a4 preloadedViews:()unordered_map<gdc:()std:()gdc:()std:(std:(std::shared_ptr<gdc::LayerData>>>> *)a5 :allocator<std::pair<const)gdc::LayerDataRequestKey :equal_to<gdc::LayerDataRequestKey> :LayerDataRequestKeyHash :shared_ptr<gdc::LayerData> :LayerDataRequestKey
+- (void)pathAnimationPrepared:(PathAnimationDescription *)prepared tap:(TapDescription *)tap preloadedViews:()unordered_map<gdc:()std:()gdc:()std:(std:(std::shared_ptr<gdc::LayerData>>>> *)std :allocator<std::pair<const)gdc::LayerDataRequestKey :equal_to<gdc::LayerDataRequestKey> :LayerDataRequestKeyHash :shared_ptr<gdc::LayerData> :LayerDataRequestKey
 {
   v5 = MEMORY[0x1EEE9AC00](self);
   v7 = v6;
@@ -1629,18 +1629,18 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
   }
 }
 
-- (void)runBumpAnimation:(const void *)a3 targetPoint:(const void *)a4 completionHandler:(id)a5
+- (void)runBumpAnimation:(const void *)animation targetPoint:(const void *)point completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v22 = a5;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v28 = 0uLL;
   v29 = 0.0;
-  geo::Geocentric<double>::toCoordinate3D<geo::Radians,double>(a3, &v28);
+  geo::Geocentric<double>::toCoordinate3D<geo::Radians,double>(animation, &v28);
   v8 = v29;
   v28 = 0uLL;
   v29 = 0.0;
-  geo::Geocentric<double>::toCoordinate3D<geo::Radians,double>(a4, &v28);
+  geo::Geocentric<double>::toCoordinate3D<geo::Radians,double>(point, &v28);
   v9 = *(&v28 + 1);
   v10 = tan(*&v28 * 0.5 + 0.785398163);
   v11 = atan(v10) * 2.0 + -1.57079633;
@@ -1656,7 +1656,7 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
   v26[2] = (v8 + v15 * 0.99330562) * v14.__sinval;
   do
   {
-    *(&v28 + v18 * 8) = v26[v18] - *(a3 + v18 * 8);
+    *(&v28 + v18 * 8) = v26[v18] - *(animation + v18 * 8);
     ++v18;
   }
 
@@ -1666,7 +1666,7 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
   to[3] = v20;
   objc_copyWeak(to, &location);
   objc_copyWeak(&v24, &location);
-  v21 = MEMORY[0x1B8C62DA0](v22);
+  v21 = MEMORY[0x1B8C62DA0](handlerCopy);
   objc_copyWeak(v23, &location);
   v23[1] = MEMORY[0x1B8C62DA0](v21);
   +[VKDebugSettings sharedSettings];
@@ -1676,7 +1676,7 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
 
 - (void)runBumpAnimation:targetPoint:completionHandler:
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }
@@ -1684,21 +1684,21 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
 - (uint64_t)runBumpAnimation:targetPoint:completionHandler:
 {
   *a2 = off_1F2A18C78;
-  objc_copyWeak((a2 + 8), (a1 + 8));
-  result = MEMORY[0x1B8C62DA0](*(a1 + 16));
+  objc_copyWeak((a2 + 8), (self + 8));
+  result = MEMORY[0x1B8C62DA0](*(self + 16));
   *(a2 + 16) = result;
   return result;
 }
 
-- (void)animatePath:(void *)a3 withTarget:(const void *)a4 lookAtTarget:(BOOL)a5 constantLod:(BOOL)a6 prePruneData:(BOOL)a7 completionHandler:(id)a8
+- (void)animatePath:(void *)path withTarget:(const void *)target lookAtTarget:(BOOL)atTarget constantLod:(BOOL)lod prePruneData:(BOOL)data completionHandler:(id)handler
 {
-  v10 = a8;
-  v11 = v10;
-  if ((0x63FB9AEB1FDCD759 * ((*(a3 + 1) - *a3) >> 3)) >= 2)
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if ((0x63FB9AEB1FDCD759 * ((*(path + 1) - *path) >> 3)) >= 2)
   {
     v12 = *(self + 15);
-    v13 = [(VKCameraController *)self canvas];
-    [v13 sizeInPixels];
+    canvas = [(VKCameraController *)self canvas];
+    [canvas sizeInPixels];
     md::MuninSceneLogic::getLodForCavasSize(v12, v16);
 
     [(VKCameraController *)self mapDataAccess];
@@ -1706,7 +1706,7 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
     operator new();
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     if (GEOGetVectorKitVKMuninLog_onceToken != -1)
     {
@@ -1724,7 +1724,7 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
   }
 }
 
-- (void)animatePath:(void *)a3 animator:(const void *)a4 preloadedRequiredViews:(void *)a5 prePruneData:(BOOL)a6 completionHandler:(id)a7
+- (void)animatePath:(void *)path animator:(const void *)animator preloadedRequiredViews:(void *)views prePruneData:(BOOL)data completionHandler:(id)handler
 {
   v7 = MEMORY[0x1EEE9AC00](self);
   v29 = v8;
@@ -1795,21 +1795,21 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
 
 - (void)animatePath:animator:preloadedRequiredViews:prePruneData:completionHandler:
 {
-  *a1 = &unk_1F2A188C0;
-  v2 = (a1 + 16);
+  *self = &unk_1F2A188C0;
+  v2 = (self + 16);
   std::vector<md::mun::CollectionPoint>::__destroy_vector::operator()[abi:nn200100](&v2);
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }
 
 - (uint64_t)animatePath:animator:preloadedRequiredViews:prePruneData:completionHandler:
 {
-  *a1 = &unk_1F2A188C0;
-  v3 = (a1 + 16);
+  *self = &unk_1F2A188C0;
+  v3 = (self + 16);
   std::vector<md::mun::CollectionPoint>::__destroy_vector::operator()[abi:nn200100](&v3);
-  objc_destroyWeak((a1 + 8));
-  return a1;
+  objc_destroyWeak((self + 8));
+  return self;
 }
 
 - (BOOL)isAnimationsRunning
@@ -2039,7 +2039,7 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
   }
 }
 
-- (void)setCurrentSegment:(void *)a3
+- (void)setCurrentSegment:(void *)segment
 {
   v8 = 1;
   v4 = (self + 152);
@@ -2058,13 +2058,13 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
   }
 }
 
-- (BOOL)moveToPoint:(const void *)a3 withHeading:()Unit<geo:(double>)a4 :()Unit<geo:(double>)a5 :(BOOL)a6 RadianUnitDescription RadianUnitDescription withPitch:(id)a7 animated:completionHandler:
+- (BOOL)moveToPoint:(const void *)point withHeading:()Unit<geo:(double>)geo :()Unit<geo:(double>)a5 :(BOOL)a6 RadianUnitDescription RadianUnitDescription withPitch:(id)pitch animated:completionHandler:
 {
   v9 = v7;
   v11 = a6;
   v70 = *MEMORY[0x1E69E9840];
   v14 = v8;
-  if (*(self + 4136) == 1 && *(self + 19) == *a3)
+  if (*(self + 4136) == 1 && *(self + 19) == *point)
   {
     v15 = *(self + 556);
     v16 = *(self + 557);
@@ -2082,7 +2082,7 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
       v21 = 0.0;
     }
 
-    [(VKMuninCameraController *)self setCenterCoordinate:0 altitude:VKAnimationCurveLinear yaw:v14 pitch:*&v53 duration:v54 animationStyle:*v11 * -57.2957795 timingCurve:*a7 * 57.2957795 completion:v21];
+    [(VKMuninCameraController *)self setCenterCoordinate:0 altitude:VKAnimationCurveLinear yaw:v14 pitch:*&v53 duration:v54 animationStyle:*v11 * -57.2957795 timingCurve:*pitch * 57.2957795 completion:v21];
   }
 
   else
@@ -2090,39 +2090,39 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
     [(VKMuninCameraController *)self cancelPendingMove];
     v63 = 0u;
     v62 = 0u;
-    v22 = *(a3 + 7) * 6.28318531;
-    v23 = exp(*(a3 + 8) * 6.28318531 + -3.14159265);
+    v22 = *(point + 7) * 6.28318531;
+    v23 = exp(*(point + 8) * 6.28318531 + -3.14159265);
     v24 = atan(v23) * 2.0 + -1.57079633;
     v25 = fmod(v22, 6.28318531);
     v26 = fmod(v25 + 6.28318531, 6.28318531);
-    v27 = *(a3 + 9);
+    v27 = *(point + 9);
     v59 = v24;
     v60 = v26 + -3.14159265;
     *&v63 = *v11;
-    v28 = *a7;
+    v28 = *pitch;
     v61 = v27;
     *(&v62 + 1) = v28;
     if (!v9 || *(self + 4136) != 1)
     {
       v33 = *(self + 15);
-      v34 = [(VKCameraController *)self canvas];
-      [v34 sizeInPixels];
+      canvas = [(VKCameraController *)self canvas];
+      [canvas sizeInPixels];
       LodForCavasSize = md::MuninSceneLogic::getLodForCavasSize(v33, v71);
 
       v53 = 0uLL;
       v54 = 0.0;
-      v36 = *(a3 + 11);
-      v37 = *(a3 + 12);
+      v36 = *(point + 11);
+      v37 = *(point + 12);
       if (v36 != v37)
       {
-        v50 = self;
+        selfCopy = self;
         v38 = 0.0;
         v39 = 0.0;
         do
         {
-          v40 = *a3;
+          v40 = *point;
           v41 = *(v36 + 240);
-          v42 = *(a3 + 1859);
+          v42 = *(point + 1859);
           if (*&v39 >= *&v54)
           {
             v43 = v38;
@@ -2188,15 +2188,15 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
 
         while (v36 != v37);
         v53.f64[0] = v38;
-        self = v50;
+        self = selfCopy;
       }
 
-      md::mun::MuninMetadataContainer::addActiveMetadataPoint(*(*(self + 15) + 168), a3);
+      md::mun::MuninMetadataContainer::addActiveMetadataPoint(*(*(self + 15) + 168), point);
     }
 
     memset(v58, 0, sizeof(v58));
     std::vector<md::mun::CollectionPoint>::push_back[abi:nn200100](v58, self + 152);
-    std::vector<md::mun::CollectionPoint>::push_back[abi:nn200100](v58, a3);
+    std::vector<md::mun::CollectionPoint>::push_back[abi:nn200100](v58, point);
     gdc::CameraFrame<geo::Radians,double>::toRigidTransformEcefNoOffset(&v53, &v59);
     v52[1] = 0;
     v52[0] = 0;
@@ -2228,35 +2228,35 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
 
 - (void)moveToPoint:withHeading:withPitch:animated:completionHandler:
 {
-  *a1 = &unk_1F2A18830;
+  *self = &unk_1F2A18830;
 
-  geo::small_vector_base<md::mun::PhotoInfo>::~small_vector_base(a1 + 104);
-  objc_destroyWeak((a1 + 8));
+  geo::small_vector_base<md::mun::PhotoInfo>::~small_vector_base(self + 104);
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }
 
 - (uint64_t)moveToPoint:withHeading:withPitch:animated:completionHandler:
 {
-  *a1 = &unk_1F2A18830;
+  *self = &unk_1F2A18830;
 
-  geo::small_vector_base<md::mun::PhotoInfo>::~small_vector_base(a1 + 104);
-  objc_destroyWeak((a1 + 8));
-  return a1;
+  geo::small_vector_base<md::mun::PhotoInfo>::~small_vector_base(self + 104);
+  objc_destroyWeak((self + 8));
+  return self;
 }
 
-- (void)selectLabelMarker:(const void *)a3 completion:(id)a4
+- (void)selectLabelMarker:(const void *)marker completion:(id)completion
 {
   v31[4] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  completionCopy = completion;
   v9 = *(self + 518);
-  if (v9 && ([*(v9 + 600) running] & 1) != 0 || (v10 = *a3, *(*a3 + 224)))
+  if (v9 && ([*(v9 + 600) running] & 1) != 0 || (v10 = *marker, *(*marker + 224)))
   {
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_5;
   }
 
-  v11 = *(a3 + 1);
+  v11 = *(marker + 1);
   if (v11)
   {
     atomic_fetch_add_explicit(&v11->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -2274,7 +2274,7 @@ void __70__VKMuninCameraController_moveAlongPath_tap_preloadedViews_continued___
   {
     v22 = 1;
 LABEL_19:
-    v8[2](v8, v22);
+    completionCopy[2](completionCopy, v22);
     goto LABEL_22;
   }
 
@@ -2350,7 +2350,7 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v8[2](v8, 0);
+  completionCopy[2](completionCopy, 0);
   if (v16)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v16);
@@ -2448,10 +2448,10 @@ void __56__VKMuninCameraController_selectLabelMarker_completion___block_invoke_2
   return result;
 }
 
-- (Matrix<float,)screenPointWithOffset:(CGPoint)a3
+- (Matrix<float,)screenPointWithOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(VKCameraController *)self edgeInsets];
   v7 = v6;
   [(VKCameraController *)self edgeInsets];
@@ -2466,7 +2466,7 @@ void __56__VKMuninCameraController_selectLabelMarker_completion___block_invoke_2
   return result;
 }
 
-- (void)updateCurrentPointView:(BOOL)a3
+- (void)updateCurrentPointView:(BOOL)view
 {
   v96 = *MEMORY[0x1E69E9840];
   v3 = self + 152;
@@ -2487,21 +2487,21 @@ void __56__VKMuninCameraController_selectLabelMarker_completion___block_invoke_2
     return;
   }
 
-  v4 = a3;
+  viewCopy = view;
   v83 = *(*(self + 15) + 832);
   md::MapDataAccess::cameraFromFrame(v93, *([(VKCameraController *)self mapDataAccess]+ 16), self + 4464);
   gdc::CameraView::ecefCameraView(buf, v93);
   v6 = *(self + 15);
-  v7 = [(VKCameraController *)self canvas];
-  [v7 sizeInPixels];
+  canvas = [(VKCameraController *)self canvas];
+  [canvas sizeInPixels];
   *(self + 4560) = md::MuninSceneLogic::getLodForCavasSize(v6, v97);
 
-  LODWORD(v84) = v4;
+  LODWORD(v84) = viewCopy;
   v8 = *(self + 554);
   v9.n128_u64[0] = 0x3FE657184AE74488;
   v10 = *(v3 + 239);
   v11 = *(v3 + 240);
-  v82 = self;
+  selfCopy = self;
   v79 = v8 < 0.698131701;
   v12 = 0;
   if (v10 != v11)
@@ -2598,7 +2598,7 @@ LABEL_8:
   else
   {
     v24 = 0;
-    v85 = *(v82 + 4560);
+    v85 = *(selfCopy + 4560);
     v25 = *(v3 + 260);
     v26 = *(v3 + 261);
     do
@@ -2736,7 +2736,7 @@ LABEL_60:
       while (v32 < (v11 - v10) >> 3);
     }
 
-    v45 = *(v82 + 15);
+    v45 = *(selfCopy + 15);
     __p = (v45 + 208);
     v46 = pthread_rwlock_wrlock((v45 + 208));
     if (v46)
@@ -2929,7 +2929,7 @@ LABEL_110:
         while (v68 != v66);
       }
 
-      v76 = *(v82 + 15);
+      v76 = *(selfCopy + 15);
       v95 = 0;
       md::MuninSceneLogic::addPreloadViews(v76, &__p, v94);
     }
@@ -2949,31 +2949,31 @@ LABEL_110:
   }
 }
 
-- (void)setCurrentPoint:(const void *)a3
+- (void)setCurrentPoint:(const void *)point
 {
   v3[0] = 0;
   v5 = 0;
-  [(VKMuninCameraController *)self setCurrentPoint:a3 secondaryPoint:v3];
+  [(VKMuninCameraController *)self setCurrentPoint:point secondaryPoint:v3];
   if (v5 == 1)
   {
     geo::small_vector_base<md::mun::PhotoInfo>::~small_vector_base(&v4);
   }
 }
 
-- (void)setCenterCoordinate:(id)a3 altitude:(double)a4 yaw:(double)a5 pitch:(double)a6 duration:(double)a7 animationStyle:(int64_t)a8 timingCurve:(id)a9 completion:(id)a10
+- (void)setCenterCoordinate:(id)coordinate altitude:(double)altitude yaw:(double)yaw pitch:(double)pitch duration:(double)duration animationStyle:(int64_t)style timingCurve:(id)curve completion:(id)self0
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   v54 = *MEMORY[0x1E69E9840];
-  v15 = a10;
+  completionCopy = completion;
   [(VKMuninCameraController *)self cancelPendingMoveExceptBump];
-  if (a7 <= 0.0)
+  if (duration <= 0.0)
   {
-    v37 = [(VKCameraController *)self cameraDelegate];
-    v38 = v37;
-    if (v37)
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    v38 = cameraDelegate;
+    if (cameraDelegate)
     {
-      [v37 willBeginRegionChangeAccess:0];
+      [cameraDelegate willBeginRegionChangeAccess:0];
     }
 
     else
@@ -2981,18 +2981,18 @@ LABEL_110:
       memset(location, 0, sizeof(location));
     }
 
-    v39 = [(VKCameraController *)self cameraDelegate];
-    [v39 mapLayerWillAnimateToLocation:{var0, var1}];
+    cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate2 mapLayerWillAnimateToLocation:{var0, var1}];
 
     v40.f64[0] = var0;
     v40.f64[1] = var1;
     *(self + 4440) = vmulq_f64(v40, vdupq_n_s64(0x3F91DF46A2529D39uLL));
-    *(self + 557) = a4;
-    *(self + 552) = a6 * 0.0174532925;
-    v47 = a5 * -0.0174532925;
+    *(self + 557) = altitude;
+    *(self + 552) = pitch * 0.0174532925;
+    v47 = yaw * -0.0174532925;
     [(VKMuninCameraController *)self _setHeading:&v47];
-    v41 = [(VKCameraController *)self cameraDelegate];
-    [v41 didEndRegionChangeAccess:location];
+    cameraDelegate3 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate3 didEndRegionChangeAccess:location];
 
     v42 = *[(VKCameraController *)self runLoopController];
     if (v42)
@@ -3001,9 +3001,9 @@ LABEL_110:
       md::MapEngine::setNeedsTick(v42, &v47);
     }
 
-    if (v15)
+    if (completionCopy)
     {
-      v15[2](v15, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(location);
@@ -3013,18 +3013,18 @@ LABEL_110:
   {
     v16 = *(self + 556);
     v43 = *(self + 557);
-    v44 = a4;
+    altitudeCopy = altitude;
     v17 = __sincos_stret(*(self + 555));
     v18 = __sincos_stret(v16);
     v19 = *(self + 551);
     v20 = *(self + 552);
     v21 = __sincos_stret(var0 * 0.0174532925);
     v22 = __sincos_stret(var1 * 0.0174532925);
-    v23 = a5 * -0.0174532925;
-    v24 = a6 * 0.0174532925;
-    v25 = fmod(3.14159265 - a5 * -0.0174532925 + v19, 6.28318531);
+    v23 = yaw * -0.0174532925;
+    v24 = pitch * 0.0174532925;
+    v25 = fmod(3.14159265 - yaw * -0.0174532925 + v19, 6.28318531);
     v26 = fmod(v25 + 6.28318531, 6.28318531);
-    v27 = fmod(3.14159265 - a6 * 0.0174532925 + v20, 6.28318531);
+    v27 = fmod(3.14159265 - pitch * 0.0174532925 + v20, 6.28318531);
     v28 = fmod(v27 + 6.28318531, 6.28318531);
     [(VKMuninCameraController *)self stopPanningAtPoint:0.5, 0.5];
     v29 = [[VKTimedAnimation alloc] initWithDuration:fmax(fabs(v26 * 0.159154943 + -0.5), fabs(v28 * 0.318309886 + -1.0)) * 1.9 + 0.1];
@@ -3039,7 +3039,7 @@ LABEL_110:
     v30 = 6378137.0 / sqrt(-(v17.__sinval * v17.__sinval * 0.00669437999 + -1.0));
     v31 = (v30 + v43) * v17.__cosval;
     v32 = 6378137.0 / sqrt(-(v21.__sinval * v21.__sinval * 0.00669437999 + -1.0));
-    v33 = (v32 + v44) * v21.__cosval;
+    v33 = (v32 + altitudeCopy) * v21.__cosval;
     v52[1] = *&v20;
     v52[2] = *&v24;
     v52[3] = *&v19;
@@ -3049,9 +3049,9 @@ LABEL_110:
     *&v52[7] = (v43 + v30 * 0.99330562) * v17.__sinval;
     *&v52[8] = v33 * v22.__cosval;
     *&v52[9] = v33 * v22.__sinval;
-    *&v52[10] = (v44 + v32 * 0.99330562) * v21.__sinval;
+    *&v52[10] = (altitudeCopy + v32 * 0.99330562) * v21.__sinval;
     [*(self + 533) setStepHandler:v51];
-    v34 = MEMORY[0x1B8C62DA0](v15);
+    v34 = MEMORY[0x1B8C62DA0](completionCopy);
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __113__VKMuninCameraController_setCenterCoordinate_altitude_yaw_pitch_duration_animationStyle_timingCurve_completion___block_invoke_24;
@@ -3061,8 +3061,8 @@ LABEL_110:
     v49 = v35;
     objc_copyWeak(&v50, location);
     [*(self + 533) setCompletionHandler:v48];
-    v36 = [(VKCameraController *)self cameraDelegate];
-    [v36 willBeginAnimatingAccess];
+    cameraDelegate4 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate4 willBeginAnimatingAccess];
 
     md::AnimationRunner::runAnimation([(VKCameraController *)self animationRunner], *(self + 533));
     objc_destroyWeak(&v50);
@@ -3134,13 +3134,13 @@ void __113__VKMuninCameraController_setCenterCoordinate_altitude_yaw_pitch_durat
   }
 }
 
-- (void)setCameraFrame:()CameraFrame<geo:(double> *)a3 :Radians
+- (void)setCameraFrame:()CameraFrame<geo:(double> *)geo :Radians
 {
-  value = a3->_target.altitude._value;
-  *(self + 4440) = *&a3->_target.latitude._value;
+  value = geo->_target.altitude._value;
+  *(self + 4440) = *&geo->_target.latitude._value;
   *(self + 557) = value;
-  *(self + 552) = *&a3->_pitch._value;
-  v6 = a3->_heading._value;
+  *(self + 552) = *&geo->_pitch._value;
+  v6 = geo->_heading._value;
   [(VKMuninCameraController *)self _setHeading:&v6];
   v5 = *[(VKCameraController *)self runLoopController];
   if (v5)
@@ -3150,15 +3150,15 @@ void __113__VKMuninCameraController_setCenterCoordinate_altitude_yaw_pitch_durat
   }
 }
 
-- (void)setVkCamera:(id)a3
+- (void)setVkCamera:(id)camera
 {
-  v4 = a3;
+  cameraCopy = camera;
   v11.receiver = self;
   v11.super_class = VKMuninCameraController;
-  [(VKCameraController *)&v11 setVkCamera:v4];
-  if (v4)
+  [(VKCameraController *)&v11 setVkCamera:cameraCopy];
+  if (cameraCopy)
   {
-    [v4 cameraFrame:0];
+    [cameraCopy cameraFrame:0];
   }
 
   else
@@ -3196,7 +3196,7 @@ void __113__VKMuninCameraController_setCenterCoordinate_altitude_yaw_pitch_durat
   return v2;
 }
 
-- (void)_setHeading:()Unit<geo:(double>)a3 :RadianUnitDescription
+- (void)_setHeading:()Unit<geo:(double>)geo :RadianUnitDescription
 {
   v4 = *v3;
   *(self + 551) = *v3;
@@ -3216,23 +3216,23 @@ void __113__VKMuninCameraController_setCenterCoordinate_altitude_yaw_pitch_durat
   return result;
 }
 
-- (void)_updateDebugOverlay:(void *)a3
+- (void)_updateDebugOverlay:(void *)overlay
 {
-  v3 = md::LayoutContext::debugConsoleForId(a3, 18);
+  v3 = md::LayoutContext::debugConsoleForId(overlay, 18);
   if (v3)
   {
     v4 = v3;
     v5 = +[VKDebugSettings sharedSettings];
-    v6 = [v5 muninShowLODInfo];
+    muninShowLODInfo = [v5 muninShowLODInfo];
 
-    if (v6)
+    if (muninShowLODInfo)
     {
       ggl::DebugConsole::begin(v4);
     }
   }
 }
 
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context
 {
   v5 = MEMORY[0x1EEE9AC00](self);
   v7 = v6;
@@ -3526,8 +3526,8 @@ LABEL_37:
     *&v182[8] = 0;
     gm::quaternionFromAngleAxis<float>(v177, v182, v76);
     v77 = *(v10 + 15);
-    v78 = [v10 canvas];
-    [v78 size];
+    canvas = [v10 canvas];
+    [canvas size];
     *&v79 = v79;
     *&v80 = v80;
     v81 = 720;
@@ -3719,9 +3719,9 @@ LABEL_102:
         else
         {
           v132 = +[VKPlatform sharedPlatform];
-          v133 = [v132 isPad];
+          isPad = [v132 isPad];
 
-          if (v133)
+          if (isPad)
           {
             v131 = 0.04;
           }
@@ -3729,9 +3729,9 @@ LABEL_102:
           else
           {
             v134 = +[VKPlatform sharedPlatform];
-            v135 = [v134 isMac];
+            isMac = [v134 isMac];
 
-            if (v135)
+            if (isMac)
             {
               v131 = 0.015;
             }
@@ -3807,9 +3807,9 @@ LABEL_102:
       else
       {
         v110 = +[VKPlatform sharedPlatform];
-        v111 = [v110 isMac];
+        isMac2 = [v110 isMac];
 
-        if (!v111)
+        if (!isMac2)
         {
           v108 = -0.1;
 LABEL_95:
@@ -3834,8 +3834,8 @@ LABEL_130:
     goto LABEL_134;
   }
 
-  v147 = [v10 canvas];
-  [v147 size];
+  canvas2 = [v10 canvas];
+  [canvas2 size];
   *&v148 = v148;
   *&v149 = v149;
   v150 = 91;
@@ -3856,8 +3856,8 @@ LABEL_134:
       v154 = *(v10 + 15);
       v155 = v154[94];
       v156 = v154[95];
-      v157 = [v10 canvas];
-      [v157 size];
+      canvas3 = [v10 canvas];
+      [canvas3 size];
       v158 = fmax(v155 - v156, 0.00872664626);
       *&v159 = v159;
       *&v160 = v160;
@@ -3896,17 +3896,17 @@ LABEL_134:
   [v10 _updateDebugOverlay:v7];
 }
 
-- (VKMuninCameraController)initWithTaskContext:(shared_ptr<md:(void *)a4 :(AnimationRunner *)a5 TaskContext>)a3 mapDataAccess:(RunLoopController *)a6 animationRunner:(id)a7 runLoopController:(void *)a8 cameraDelegate:(void *)a9 muninSceneLogic:elevationLogic:
+- (VKMuninCameraController)initWithTaskContext:(shared_ptr<md:(void *)context :(AnimationRunner *)a5 TaskContext>)a3 mapDataAccess:(RunLoopController *)access animationRunner:(id)runner runLoopController:(void *)controller cameraDelegate:(void *)delegate muninSceneLogic:elevationLogic:
 {
   ptr = a3.__ptr_;
   v20.receiver = self;
   v20.super_class = VKMuninCameraController;
-  v11 = [(VKCameraController *)&v20 initWithMapDataAccess:a3.__cntrl_ animationRunner:a4 runLoopController:a5 cameraDelegate:a6];
+  v11 = [(VKCameraController *)&v20 initWithMapDataAccess:a3.__cntrl_ animationRunner:context runLoopController:a5 cameraDelegate:access];
   v12 = v11;
   if (v11)
   {
-    *(v11 + 15) = a7;
-    *(v11 + 16) = a8;
+    *(v11 + 15) = runner;
+    *(v11 + 16) = controller;
     v13 = v11 + 136;
     v15 = *ptr;
     v14 = *(ptr + 1);

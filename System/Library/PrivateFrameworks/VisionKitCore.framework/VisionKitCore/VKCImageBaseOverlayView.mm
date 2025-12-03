@@ -1,23 +1,23 @@
 @interface VKCImageBaseOverlayView
 - (BOOL)isPublicAPI;
 - (BOOL)isVIHosted;
-- (CGPoint)normalizedPointFromViewPoint:(CGPoint)a3;
-- (CGPoint)viewPointFromNormalizedPoint:(CGPoint)a3;
+- (CGPoint)normalizedPointFromViewPoint:(CGPoint)point;
+- (CGPoint)viewPointFromNormalizedPoint:(CGPoint)point;
 - (CGRect)contentBounds;
 - (CGRect)contentsRect;
-- (CGRect)normalizedRectFromViewRect:(CGRect)a3;
+- (CGRect)normalizedRectFromViewRect:(CGRect)rect;
 - (CGRect)normalizedVisibleRect;
-- (CGRect)viewRectFromNormalizedRect:(CGRect)a3;
+- (CGRect)viewRectFromNormalizedRect:(CGRect)rect;
 - (CGRect)visibleRect;
 - (VKCImageAnalysisResult)analysisResult;
-- (VKCImageBaseOverlayView)initWithFrame:(CGRect)a3;
+- (VKCImageBaseOverlayView)initWithFrame:(CGRect)frame;
 - (VKCImageBaseOverlayViewDelegate)baseDelegate;
 - (id)description;
-- (id)normalizedPathFromViewPath:(id)a3;
-- (id)normalizedQuadFromViewQuad:(id)a3;
-- (id)viewPathFromNormalizedPath:(id)a3;
-- (id)viewQuadFromNormalizedQuad:(id)a3;
-- (void)setNormalizedVisibleRect:(CGRect)a3;
+- (id)normalizedPathFromViewPath:(id)path;
+- (id)normalizedQuadFromViewQuad:(id)quad;
+- (id)viewPathFromNormalizedPath:(id)path;
+- (id)viewQuadFromNormalizedQuad:(id)quad;
+- (void)setNormalizedVisibleRect:(CGRect)rect;
 @end
 
 @implementation VKCImageBaseOverlayView
@@ -26,17 +26,17 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(VKCImageBaseOverlayView *)self analysisResult];
-  v6 = [v3 stringWithFormat:@"<%@: %p> id: %d", v4, self, objc_msgSend(v5, "analysisRequestID")];
+  analysisResult = [(VKCImageBaseOverlayView *)self analysisResult];
+  v6 = [v3 stringWithFormat:@"<%@: %p> id: %d", v4, self, objc_msgSend(analysisResult, "analysisRequestID")];
 
   return v6;
 }
 
-- (VKCImageBaseOverlayView)initWithFrame:(CGRect)a3
+- (VKCImageBaseOverlayView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = VKCImageBaseOverlayView;
-  result = [(VKCImageBaseOverlayView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(VKCImageBaseOverlayView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_contentsRect.origin = VKMRectUnit;
@@ -49,26 +49,26 @@
 - (VKCImageAnalysisResult)analysisResult
 {
   v3 = objc_opt_class();
-  v4 = [(VKCImageBaseOverlayView *)self recognitionResult];
-  v5 = VKDynamicCast(v3, v4);
+  recognitionResult = [(VKCImageBaseOverlayView *)self recognitionResult];
+  v5 = VKDynamicCast(v3, recognitionResult);
 
   return v5;
 }
 
 - (BOOL)isPublicAPI
 {
-  v2 = [(VKCImageBaseOverlayView *)self baseDelegate];
-  v3 = [v2 isPublicAPI];
+  baseDelegate = [(VKCImageBaseOverlayView *)self baseDelegate];
+  isPublicAPI = [baseDelegate isPublicAPI];
 
-  return v3;
+  return isPublicAPI;
 }
 
 - (BOOL)isVIHosted
 {
-  v2 = [(VKCImageBaseOverlayView *)self baseDelegate];
-  v3 = [v2 isVIHosted];
+  baseDelegate = [(VKCImageBaseOverlayView *)self baseDelegate];
+  isVIHosted = [baseDelegate isVIHosted];
 
-  return v3;
+  return isVIHosted;
 }
 
 - (CGRect)contentBounds
@@ -108,14 +108,14 @@
   return CGRectIntersection(*&v35, *&v28);
 }
 
-- (void)setNormalizedVisibleRect:(CGRect)a3
+- (void)setNormalizedVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_normalizedVisibleRect = &self->_normalizedVisibleRect;
-  if (!CGRectEqualToRect(self->_normalizedVisibleRect, a3))
+  if (!CGRectEqualToRect(self->_normalizedVisibleRect, rect))
   {
     p_normalizedVisibleRect->origin.x = x;
     p_normalizedVisibleRect->origin.y = y;
@@ -126,10 +126,10 @@
   }
 }
 
-- (CGPoint)normalizedPointFromViewPoint:(CGPoint)a3
+- (CGPoint)normalizedPointFromViewPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(VKCImageBaseOverlayView *)self bounds];
   v7 = v6;
   v9 = v8;
@@ -144,10 +144,10 @@
   return result;
 }
 
-- (CGPoint)viewPointFromNormalizedPoint:(CGPoint)a3
+- (CGPoint)viewPointFromNormalizedPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(VKCImageBaseOverlayView *)self bounds];
   v7 = v6;
   v9 = v8;
@@ -162,12 +162,12 @@
   return result;
 }
 
-- (CGRect)normalizedRectFromViewRect:(CGRect)a3
+- (CGRect)normalizedRectFromViewRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(VKCImageBaseOverlayView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -184,12 +184,12 @@
   return result;
 }
 
-- (CGRect)viewRectFromNormalizedRect:(CGRect)a3
+- (CGRect)viewRectFromNormalizedRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(VKCImageBaseOverlayView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -206,22 +206,22 @@
   return result;
 }
 
-- (id)normalizedQuadFromViewQuad:(id)a3
+- (id)normalizedQuadFromViewQuad:(id)quad
 {
-  v4 = a3;
-  [v4 topLeft];
+  quadCopy = quad;
+  [quadCopy topLeft];
   [(VKCImageBaseOverlayView *)self normalizedPointFromViewPoint:?];
   v6 = v5;
   v8 = v7;
-  [v4 topRight];
+  [quadCopy topRight];
   [(VKCImageBaseOverlayView *)self normalizedPointFromViewPoint:?];
   v10 = v9;
   v12 = v11;
-  [v4 bottomLeft];
+  [quadCopy bottomLeft];
   [(VKCImageBaseOverlayView *)self normalizedPointFromViewPoint:?];
   v14 = v13;
   v16 = v15;
-  [v4 bottomRight];
+  [quadCopy bottomRight];
   v18 = v17;
   v20 = v19;
 
@@ -231,22 +231,22 @@
   return v23;
 }
 
-- (id)viewQuadFromNormalizedQuad:(id)a3
+- (id)viewQuadFromNormalizedQuad:(id)quad
 {
-  v4 = a3;
-  [v4 topLeft];
+  quadCopy = quad;
+  [quadCopy topLeft];
   [(VKCImageBaseOverlayView *)self viewPointFromNormalizedPoint:?];
   v6 = v5;
   v8 = v7;
-  [v4 topRight];
+  [quadCopy topRight];
   [(VKCImageBaseOverlayView *)self viewPointFromNormalizedPoint:?];
   v10 = v9;
   v12 = v11;
-  [v4 bottomLeft];
+  [quadCopy bottomLeft];
   [(VKCImageBaseOverlayView *)self viewPointFromNormalizedPoint:?];
   v14 = v13;
   v16 = v15;
-  [v4 bottomRight];
+  [quadCopy bottomRight];
   v18 = v17;
   v20 = v19;
 
@@ -256,22 +256,22 @@
   return v23;
 }
 
-- (id)normalizedPathFromViewPath:(id)a3
+- (id)normalizedPathFromViewPath:(id)path
 {
-  v4 = a3;
-  [v4 bounds];
+  pathCopy = path;
+  [pathCopy bounds];
   [(VKCImageBaseOverlayView *)self normalizedRectFromViewRect:?];
-  v5 = [v4 vk_pathByFittingToRect:?];
+  v5 = [pathCopy vk_pathByFittingToRect:?];
 
   return v5;
 }
 
-- (id)viewPathFromNormalizedPath:(id)a3
+- (id)viewPathFromNormalizedPath:(id)path
 {
-  v4 = a3;
-  [v4 bounds];
+  pathCopy = path;
+  [pathCopy bounds];
   [(VKCImageBaseOverlayView *)self viewRectFromNormalizedRect:?];
-  v5 = [v4 vk_pathByFittingToRect:?];
+  v5 = [pathCopy vk_pathByFittingToRect:?];
 
   return v5;
 }

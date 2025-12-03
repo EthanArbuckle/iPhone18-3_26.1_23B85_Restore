@@ -1,153 +1,153 @@
 @interface ApproverStoreItem
-- (ApproverStoreItem)initWithDictionary:(id)a3;
-- (ApproverStoreItem)initWithItemIdentifier:(id)a3 requestIdentifier:(id)a4 uniqueIdentifier:(id)a5 date:(id)a6;
-- (ApproverStoreItem)initWithRequest:(id)a3 date:(id)a4;
+- (ApproverStoreItem)initWithDictionary:(id)dictionary;
+- (ApproverStoreItem)initWithItemIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier uniqueIdentifier:(id)uniqueIdentifier date:(id)date;
+- (ApproverStoreItem)initWithRequest:(id)request date:(id)date;
 - (id)compile;
 - (id)description;
 @end
 
 @implementation ApproverStoreItem
 
-- (ApproverStoreItem)initWithRequest:(id)a3 date:(id)a4
+- (ApproverStoreItem)initWithRequest:(id)request date:(id)date
 {
-  v5 = a3;
+  requestCopy = request;
   v58.receiver = self;
   v58.super_class = ApproverStoreItem;
   v6 = [(ApproverStoreItem *)&v58 init];
   if (v6)
   {
-    v7 = [v5 ageRating];
+    ageRating = [requestCopy ageRating];
     ageRating = v6->_ageRating;
-    v6->_ageRating = v7;
+    v6->_ageRating = ageRating;
 
-    v9 = [v5 ageRatingValue];
+    ageRatingValue = [requestCopy ageRatingValue];
     ageRatingValue = v6->_ageRatingValue;
-    v6->_ageRatingValue = v9;
+    v6->_ageRatingValue = ageRatingValue;
 
-    v11 = [v5 approverDSID];
+    approverDSID = [requestCopy approverDSID];
     approverDSID = v6->_approverDSID;
-    v6->_approverDSID = v11;
+    v6->_approverDSID = approverDSID;
 
-    v6->_canSendViaMessages = [v5 canSendViaMessages];
-    v13 = [v5 createdDate];
+    v6->_canSendViaMessages = [requestCopy canSendViaMessages];
+    createdDate = [requestCopy createdDate];
     createdDate = v6->_createdDate;
-    v6->_createdDate = v13;
+    v6->_createdDate = createdDate;
 
-    v15 = [v5 modifiedDate];
+    modifiedDate = [requestCopy modifiedDate];
     modifiedDate = v6->_modifiedDate;
-    v6->_modifiedDate = v15;
+    v6->_modifiedDate = modifiedDate;
 
-    v6->_isException = [v5 isException];
-    v17 = [v5 itemIdentifier];
+    v6->_isException = [requestCopy isException];
+    itemIdentifier = [requestCopy itemIdentifier];
     itemIdentifier = v6->_itemIdentifier;
-    v6->_itemIdentifier = v17;
+    v6->_itemIdentifier = itemIdentifier;
 
-    v19 = [v5 requestIdentifier];
+    requestIdentifier = [requestCopy requestIdentifier];
     requestIdentifier = v6->_requestIdentifier;
-    v6->_requestIdentifier = v19;
+    v6->_requestIdentifier = requestIdentifier;
 
-    v21 = [v5 uniqueIdentifier];
+    uniqueIdentifier = [requestCopy uniqueIdentifier];
     uniqueIdentifier = v6->_uniqueIdentifier;
-    v6->_uniqueIdentifier = v21;
+    v6->_uniqueIdentifier = uniqueIdentifier;
 
-    v23 = [v5 itemTitle];
+    itemTitle = [requestCopy itemTitle];
     itemTitle = v6->_itemTitle;
-    v6->_itemTitle = v23;
+    v6->_itemTitle = itemTitle;
 
-    v25 = [v5 itemDescription];
+    itemDescription = [requestCopy itemDescription];
     itemDescription = v6->_itemDescription;
-    v6->_itemDescription = v25;
+    v6->_itemDescription = itemDescription;
 
-    v27 = [v5 localizedPrice];
+    localizedPrice = [requestCopy localizedPrice];
     localizedPrice = v6->_localizedPrice;
-    v6->_localizedPrice = v27;
+    v6->_localizedPrice = localizedPrice;
 
-    v29 = [v5 itemBundleID];
+    itemBundleID = [requestCopy itemBundleID];
     itemBundleID = v6->_itemBundleID;
-    v6->_itemBundleID = v29;
+    v6->_itemBundleID = itemBundleID;
 
-    v31 = [v5 localizations];
+    localizations = [requestCopy localizations];
     localizations = v6->_localizations;
-    v6->_localizations = v31;
+    v6->_localizations = localizations;
 
-    v33 = [v5 metricsID];
+    metricsID = [requestCopy metricsID];
     metricsID = v6->_metricsID;
-    v6->_metricsID = v33;
+    v6->_metricsID = metricsID;
 
-    v35 = [v5 offerName];
+    offerName = [requestCopy offerName];
     offerName = v6->_offerName;
-    v6->_offerName = v35;
+    v6->_offerName = offerName;
 
-    v37 = [v5 previewURL];
+    previewURL = [requestCopy previewURL];
     previewURL = v6->_previewURL;
-    v6->_previewURL = v37;
+    v6->_previewURL = previewURL;
 
-    v39 = [v5 productType];
+    productType = [requestCopy productType];
     productType = v6->_productType;
-    v6->_productType = v39;
+    v6->_productType = productType;
 
-    v41 = [v5 thumbnailURLString];
+    thumbnailURLString = [requestCopy thumbnailURLString];
     thumbnailURLString = v6->_thumbnailURLString;
-    v6->_thumbnailURLString = v41;
+    v6->_thumbnailURLString = thumbnailURLString;
 
-    v43 = [v5 requesterDSID];
+    requesterDSID = [requestCopy requesterDSID];
     requesterDSID = v6->_requesterDSID;
-    v6->_requesterDSID = v43;
+    v6->_requesterDSID = requesterDSID;
 
-    v45 = [v5 requesterName];
+    requesterName = [requestCopy requesterName];
     requesterName = v6->_requesterName;
-    v6->_requesterName = v45;
+    v6->_requesterName = requesterName;
 
-    v47 = [v5 requestInfo];
+    requestInfo = [requestCopy requestInfo];
     requestInfo = v6->_requestInfo;
-    v6->_requestInfo = v47;
+    v6->_requestInfo = requestInfo;
 
-    v49 = [v5 starRating];
+    starRating = [requestCopy starRating];
     starRating = v6->_starRating;
-    v6->_starRating = v49;
+    v6->_starRating = starRating;
 
-    v6->_status = [v5 status];
-    v6->_suppressClientResume = [v5 suppressClientResume];
-    v51 = [v5 requestString];
+    v6->_status = [requestCopy status];
+    v6->_suppressClientResume = [requestCopy suppressClientResume];
+    requestString = [requestCopy requestString];
     requestString = v6->_requestString;
-    v6->_requestString = v51;
+    v6->_requestString = requestString;
 
-    v53 = [v5 requestSummary];
+    requestSummary = [requestCopy requestSummary];
     requestSummary = v6->_requestSummary;
-    v6->_requestSummary = v53;
+    v6->_requestSummary = requestSummary;
 
-    v55 = [v5 priceSummary];
+    priceSummary = [requestCopy priceSummary];
     priceSummary = v6->_priceSummary;
-    v6->_priceSummary = v55;
+    v6->_priceSummary = priceSummary;
   }
 
   return v6;
 }
 
-- (ApproverStoreItem)initWithItemIdentifier:(id)a3 requestIdentifier:(id)a4 uniqueIdentifier:(id)a5 date:(id)a6
+- (ApproverStoreItem)initWithItemIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier uniqueIdentifier:(id)uniqueIdentifier date:(id)date
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  requestIdentifierCopy = requestIdentifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = ApproverStoreItem;
   v15 = [(ApproverStoreItem *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_itemIdentifier, a3);
-    objc_storeStrong(&v16->_requestIdentifier, a4);
-    objc_storeStrong(&v16->_uniqueIdentifier, a5);
-    objc_storeStrong(&v16->_createdDate, a6);
+    objc_storeStrong(&v15->_itemIdentifier, identifier);
+    objc_storeStrong(&v16->_requestIdentifier, requestIdentifier);
+    objc_storeStrong(&v16->_uniqueIdentifier, uniqueIdentifier);
+    objc_storeStrong(&v16->_createdDate, date);
   }
 
   return v16;
 }
 
-- (ApproverStoreItem)initWithDictionary:(id)a3
+- (ApproverStoreItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v154.receiver = self;
   v154.super_class = ApproverStoreItem;
   v5 = [(ApproverStoreItem *)&v154 init];
@@ -159,7 +159,7 @@ LABEL_121:
     goto LABEL_122;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"itemIdentifier"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"itemIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -174,8 +174,8 @@ LABEL_121:
       v8 = +[APLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
@@ -187,7 +187,7 @@ LABEL_121:
       v158 = v11;
       v159 = 2114;
       v160 = v13;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, "Unexpected type for key %{public}@. Expected %{public}@, got %{public}@.", buf, 0x20u);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_FAULT, "Unexpected type for key %{public}@. Expected %{public}@, got %{public}@.", buf, 0x20u);
     }
 
     v7 = 0;
@@ -196,7 +196,7 @@ LABEL_121:
   v151 = v7;
   v14 = v7;
 
-  v15 = [v4 objectForKeyedSubscript:@"requestIdentifier"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"requestIdentifier"];
   objc_opt_class();
   v152 = v14;
   if (objc_opt_isKindOfClass())
@@ -212,8 +212,8 @@ LABEL_121:
       v17 = +[APLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
+    oSLogObject2 = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
     {
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
@@ -225,7 +225,7 @@ LABEL_121:
       v158 = v20;
       v159 = 2114;
       v160 = v22;
-      _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_FAULT, "Unexpected type for key %{public}@. Expected %{public}@, got %{public}@.", buf, 0x20u);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_FAULT, "Unexpected type for key %{public}@. Expected %{public}@, got %{public}@.", buf, 0x20u);
 
       v14 = v152;
     }
@@ -236,7 +236,7 @@ LABEL_121:
   v150 = v16;
   v153 = v16;
 
-  v23 = [v4 objectForKeyedSubscript:@"uniqueIdentifier"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"uniqueIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -251,8 +251,8 @@ LABEL_121:
       v25 = +[APLogConfig sharedConfig];
     }
 
-    v26 = [v25 OSLogObject];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
+    oSLogObject3 = [v25 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_FAULT))
     {
       v27 = objc_opt_class();
       v28 = NSStringFromClass(v27);
@@ -264,7 +264,7 @@ LABEL_121:
       v158 = v28;
       v159 = 2114;
       v160 = v30;
-      _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_FAULT, "Unexpected type for key %{public}@. Expected %{public}@, got %{public}@.", buf, 0x20u);
+      _os_log_impl(&_mh_execute_header, oSLogObject3, OS_LOG_TYPE_FAULT, "Unexpected type for key %{public}@. Expected %{public}@, got %{public}@.", buf, 0x20u);
 
       v14 = v152;
     }
@@ -275,7 +275,7 @@ LABEL_121:
   v147 = v24;
   v31 = v24;
 
-  v32 = [v4 objectForKeyedSubscript:@"createdTimeInterval"];
+  v32 = [dictionaryCopy objectForKeyedSubscript:@"createdTimeInterval"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -300,8 +300,8 @@ LABEL_121:
         v35 = +[APLogConfig sharedConfig];
       }
 
-      v36 = [v35 OSLogObject];
-      if (os_log_type_enabled(v36, OS_LOG_TYPE_FAULT))
+      oSLogObject4 = [v35 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_FAULT))
       {
         v37 = objc_opt_class();
         v38 = NSStringFromClass(v37);
@@ -309,7 +309,7 @@ LABEL_121:
         v156 = @"createdTimeInterval";
         v157 = 2114;
         v158 = v38;
-        _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_FAULT, "Unexpected type for key %{public}@. Expected NSDate or NSNumber, got %{public}@.", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, oSLogObject4, OS_LOG_TYPE_FAULT, "Unexpected type for key %{public}@. Expected NSDate or NSNumber, got %{public}@.", buf, 0x16u);
 
         v14 = v152;
       }
@@ -322,7 +322,7 @@ LABEL_121:
   v146 = v33;
   v39 = v33;
 
-  v40 = [v4 objectForKeyedSubscript:@"modifiedTimeInterval"];
+  v40 = [dictionaryCopy objectForKeyedSubscript:@"modifiedTimeInterval"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -348,8 +348,8 @@ LABEL_121:
         v43 = +[APLogConfig sharedConfig];
       }
 
-      v44 = [v43 OSLogObject];
-      if (os_log_type_enabled(v44, OS_LOG_TYPE_FAULT))
+      oSLogObject5 = [v43 OSLogObject];
+      if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_FAULT))
       {
         v45 = objc_opt_class();
         v46 = NSStringFromClass(v45);
@@ -357,7 +357,7 @@ LABEL_121:
         v156 = @"modifiedTimeInterval";
         v157 = 2114;
         v158 = v46;
-        _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_FAULT, "Unexpected type for key %{public}@. Expected NSDate or NSNumber, got %{public}@.", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, oSLogObject5, OS_LOG_TYPE_FAULT, "Unexpected type for key %{public}@. Expected NSDate or NSNumber, got %{public}@.", buf, 0x16u);
 
         v14 = v152;
       }
@@ -373,7 +373,7 @@ LABEL_121:
 
   if (v14 && v153 && v39 && v31)
   {
-    v48 = [v4 objectForKeyedSubscript:@"ageRating"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"ageRating"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -387,7 +387,7 @@ LABEL_121:
 
     v142 = v49;
 
-    v51 = [v4 objectForKeyedSubscript:@"ageRatingValue"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"ageRatingValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -402,7 +402,7 @@ LABEL_121:
     v136 = v52;
     v141 = v52;
 
-    v53 = [v4 objectForKeyedSubscript:@"canSendViaMessages"];
+    v53 = [dictionaryCopy objectForKeyedSubscript:@"canSendViaMessages"];
     objc_opt_class();
     obj = v49;
     if (objc_opt_isKindOfClass())
@@ -417,7 +417,7 @@ LABEL_121:
 
     v55 = v54;
 
-    v56 = [v4 objectForKeyedSubscript:@"approverDSID"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"approverDSID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -432,7 +432,7 @@ LABEL_121:
     v133 = v57;
     v140 = v57;
 
-    v58 = [v4 objectForKeyedSubscript:@"isException"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"isException"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -446,7 +446,7 @@ LABEL_121:
 
     v139 = v59;
 
-    v60 = [v4 objectForKeyedSubscript:@"itemBundleID"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"itemBundleID"];
     objc_opt_class();
     v143 = v47;
     if (objc_opt_isKindOfClass())
@@ -461,7 +461,7 @@ LABEL_121:
 
     v137 = v61;
 
-    v62 = [v4 objectForKeyedSubscript:@"localizations"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"localizations"];
     objc_opt_class();
     v132 = v61;
     if (objc_opt_isKindOfClass())
@@ -478,7 +478,7 @@ LABEL_121:
 
     v135 = v64;
     v134 = [[RequestLocalizations alloc] initWithDictionary:v64];
-    v65 = [v4 objectForKeyedSubscript:@"price"];
+    v65 = [dictionaryCopy objectForKeyedSubscript:@"price"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -493,7 +493,7 @@ LABEL_121:
     v129 = v66;
     v67 = v66;
 
-    v68 = [v4 objectForKeyedSubscript:@"metricsID"];
+    v68 = [dictionaryCopy objectForKeyedSubscript:@"metricsID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -508,7 +508,7 @@ LABEL_121:
     v128 = v69;
     v131 = v69;
 
-    v70 = [v4 objectForKeyedSubscript:@"offerName"];
+    v70 = [dictionaryCopy objectForKeyedSubscript:@"offerName"];
     objc_opt_class();
     v144 = v31;
     if (objc_opt_isKindOfClass())
@@ -524,7 +524,7 @@ LABEL_121:
     v126 = v71;
     v130 = v71;
 
-    v72 = [v4 objectForKeyedSubscript:@"previewURL"];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"previewURL"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -548,7 +548,7 @@ LABEL_121:
     v124 = v73;
     v74 = v73;
 
-    v75 = [v4 objectForKeyedSubscript:@"productType"];
+    v75 = [dictionaryCopy objectForKeyedSubscript:@"productType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -563,7 +563,7 @@ LABEL_121:
     v122 = v76;
     v125 = v76;
 
-    v77 = [v4 objectForKeyedSubscript:@"itemTitle"];
+    v77 = [dictionaryCopy objectForKeyedSubscript:@"itemTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -578,7 +578,7 @@ LABEL_121:
     v119 = v78;
     v123 = v78;
 
-    v79 = [v4 objectForKeyedSubscript:@"itemDescription"];
+    v79 = [dictionaryCopy objectForKeyedSubscript:@"itemDescription"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -593,7 +593,7 @@ LABEL_121:
     v117 = v80;
     v121 = v80;
 
-    v81 = [v4 objectForKeyedSubscript:@"thumbnailURL"];
+    v81 = [dictionaryCopy objectForKeyedSubscript:@"thumbnailURL"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -608,7 +608,7 @@ LABEL_121:
     v116 = v82;
     v120 = v82;
 
-    v83 = [v4 objectForKeyedSubscript:@"requesterName"];
+    v83 = [dictionaryCopy objectForKeyedSubscript:@"requesterName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -623,7 +623,7 @@ LABEL_121:
     v114 = v84;
     v118 = v84;
 
-    v85 = [v4 objectForKeyedSubscript:@"requesterDSID"];
+    v85 = [dictionaryCopy objectForKeyedSubscript:@"requesterDSID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -638,7 +638,7 @@ LABEL_121:
     v112 = v86;
     v115 = v86;
 
-    v87 = [v4 objectForKeyedSubscript:@"requestInfo"];
+    v87 = [dictionaryCopy objectForKeyedSubscript:@"requestInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -653,7 +653,7 @@ LABEL_121:
     v111 = v88;
     v113 = v88;
 
-    v89 = [v4 objectForKeyedSubscript:@"starRating"];
+    v89 = [dictionaryCopy objectForKeyedSubscript:@"starRating"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -668,7 +668,7 @@ LABEL_121:
     v109 = v90;
     v110 = v90;
 
-    v91 = [v4 objectForKeyedSubscript:@"status"];
+    v91 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -682,7 +682,7 @@ LABEL_121:
 
     v93 = v92;
 
-    v94 = [v4 objectForKeyedSubscript:@"suppressClientResume"];
+    v94 = [dictionaryCopy objectForKeyedSubscript:@"suppressClientResume"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -696,7 +696,7 @@ LABEL_121:
 
     v96 = v95;
 
-    v97 = [v4 objectForKeyedSubscript:@"requestString"];
+    v97 = [dictionaryCopy objectForKeyedSubscript:@"requestString"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -711,7 +711,7 @@ LABEL_121:
     v107 = v98;
     v108 = v98;
 
-    v99 = [v4 objectForKeyedSubscript:@"requestSummary"];
+    v99 = [dictionaryCopy objectForKeyedSubscript:@"requestSummary"];
     objc_opt_class();
     v149 = v39;
     v127 = v74;
@@ -728,7 +728,7 @@ LABEL_121:
     v106 = v100;
     v101 = v100;
 
-    v102 = [v4 objectForKeyedSubscript:@"priceSummary"];
+    v102 = [dictionaryCopy objectForKeyedSubscript:@"priceSummary"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -784,83 +784,83 @@ LABEL_122:
 - (id)compile
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(ApproverStoreItem *)self itemIdentifier];
-  [v3 ap_setNullableObject:v4 forKey:@"itemIdentifier"];
+  itemIdentifier = [(ApproverStoreItem *)self itemIdentifier];
+  [v3 ap_setNullableObject:itemIdentifier forKey:@"itemIdentifier"];
 
-  v5 = [(ApproverStoreItem *)self requestIdentifier];
-  [v3 ap_setNullableObject:v5 forKey:@"requestIdentifier"];
+  requestIdentifier = [(ApproverStoreItem *)self requestIdentifier];
+  [v3 ap_setNullableObject:requestIdentifier forKey:@"requestIdentifier"];
 
-  v6 = [(ApproverStoreItem *)self uniqueIdentifier];
-  [v3 ap_setNullableObject:v6 forKey:@"uniqueIdentifier"];
+  uniqueIdentifier = [(ApproverStoreItem *)self uniqueIdentifier];
+  [v3 ap_setNullableObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
 
-  v7 = [(ApproverStoreItem *)self createdDate];
-  [v7 timeIntervalSinceReferenceDate];
+  createdDate = [(ApproverStoreItem *)self createdDate];
+  [createdDate timeIntervalSinceReferenceDate];
   v8 = [NSNumber numberWithDouble:?];
   [v3 ap_setNullableObject:v8 forKey:@"createdTimeInterval"];
 
-  v9 = [(ApproverStoreItem *)self modifiedDate];
-  [v9 timeIntervalSinceReferenceDate];
+  modifiedDate = [(ApproverStoreItem *)self modifiedDate];
+  [modifiedDate timeIntervalSinceReferenceDate];
   v10 = [NSNumber numberWithDouble:?];
   [v3 ap_setNullableObject:v10 forKey:@"modifiedTimeInterval"];
 
-  v11 = [(ApproverStoreItem *)self ageRating];
-  [v3 ap_setNullableObject:v11 forKey:@"ageRating"];
+  ageRating = [(ApproverStoreItem *)self ageRating];
+  [v3 ap_setNullableObject:ageRating forKey:@"ageRating"];
 
-  v12 = [(ApproverStoreItem *)self ageRatingValue];
-  [v3 ap_setNullableObject:v12 forKey:@"ageRatingValue"];
+  ageRatingValue = [(ApproverStoreItem *)self ageRatingValue];
+  [v3 ap_setNullableObject:ageRatingValue forKey:@"ageRatingValue"];
 
-  v13 = [(ApproverStoreItem *)self approverDSID];
-  [v3 ap_setNullableObject:v13 forKey:@"approverDSID"];
+  approverDSID = [(ApproverStoreItem *)self approverDSID];
+  [v3 ap_setNullableObject:approverDSID forKey:@"approverDSID"];
 
   v14 = [NSNumber numberWithBool:[(ApproverStoreItem *)self isException]];
   [v3 ap_setNullableObject:v14 forKey:@"isException"];
 
-  v15 = [(ApproverStoreItem *)self itemBundleID];
-  [v3 ap_setNullableObject:v15 forKey:@"itemBundleID"];
+  itemBundleID = [(ApproverStoreItem *)self itemBundleID];
+  [v3 ap_setNullableObject:itemBundleID forKey:@"itemBundleID"];
 
   v16 = [NSNumber numberWithBool:[(ApproverStoreItem *)self canSendViaMessages]];
   [v3 ap_setNullableObject:v16 forKey:@"canSendViaMessages"];
 
-  v17 = [(ApproverStoreItem *)self itemTitle];
-  [v3 ap_setNullableObject:v17 forKey:@"itemTitle"];
+  itemTitle = [(ApproverStoreItem *)self itemTitle];
+  [v3 ap_setNullableObject:itemTitle forKey:@"itemTitle"];
 
-  v18 = [(ApproverStoreItem *)self itemDescription];
-  [v3 ap_setNullableObject:v18 forKey:@"itemDescription"];
+  itemDescription = [(ApproverStoreItem *)self itemDescription];
+  [v3 ap_setNullableObject:itemDescription forKey:@"itemDescription"];
 
-  v19 = [(ApproverStoreItem *)self localizations];
-  v20 = [v19 compile];
-  [v3 ap_setNullableObject:v20 forKey:@"localizations"];
+  localizations = [(ApproverStoreItem *)self localizations];
+  compile = [localizations compile];
+  [v3 ap_setNullableObject:compile forKey:@"localizations"];
 
-  v21 = [(ApproverStoreItem *)self localizedPrice];
-  [v3 ap_setNullableObject:v21 forKey:@"price"];
+  localizedPrice = [(ApproverStoreItem *)self localizedPrice];
+  [v3 ap_setNullableObject:localizedPrice forKey:@"price"];
 
-  v22 = [(ApproverStoreItem *)self metricsID];
-  [v3 ap_setNullableObject:v22 forKey:@"metricsID"];
+  metricsID = [(ApproverStoreItem *)self metricsID];
+  [v3 ap_setNullableObject:metricsID forKey:@"metricsID"];
 
-  v23 = [(ApproverStoreItem *)self offerName];
-  [v3 ap_setNullableObject:v23 forKey:@"offerName"];
+  offerName = [(ApproverStoreItem *)self offerName];
+  [v3 ap_setNullableObject:offerName forKey:@"offerName"];
 
-  v24 = [(ApproverStoreItem *)self previewURL];
-  v25 = [v24 absoluteString];
-  [v3 ap_setNullableObject:v25 forKey:@"previewURL"];
+  previewURL = [(ApproverStoreItem *)self previewURL];
+  absoluteString = [previewURL absoluteString];
+  [v3 ap_setNullableObject:absoluteString forKey:@"previewURL"];
 
-  v26 = [(ApproverStoreItem *)self productType];
-  [v3 ap_setNullableObject:v26 forKey:@"productType"];
+  productType = [(ApproverStoreItem *)self productType];
+  [v3 ap_setNullableObject:productType forKey:@"productType"];
 
-  v27 = [(ApproverStoreItem *)self thumbnailURLString];
-  [v3 ap_setNullableObject:v27 forKey:@"thumbnailURL"];
+  thumbnailURLString = [(ApproverStoreItem *)self thumbnailURLString];
+  [v3 ap_setNullableObject:thumbnailURLString forKey:@"thumbnailURL"];
 
-  v28 = [(ApproverStoreItem *)self requesterName];
-  [v3 ap_setNullableObject:v28 forKey:@"requesterName"];
+  requesterName = [(ApproverStoreItem *)self requesterName];
+  [v3 ap_setNullableObject:requesterName forKey:@"requesterName"];
 
-  v29 = [(ApproverStoreItem *)self requesterDSID];
-  [v3 ap_setNullableObject:v29 forKey:@"requesterDSID"];
+  requesterDSID = [(ApproverStoreItem *)self requesterDSID];
+  [v3 ap_setNullableObject:requesterDSID forKey:@"requesterDSID"];
 
-  v30 = [(ApproverStoreItem *)self requestInfo];
-  [v3 ap_setNullableObject:v30 forKey:@"requestInfo"];
+  requestInfo = [(ApproverStoreItem *)self requestInfo];
+  [v3 ap_setNullableObject:requestInfo forKey:@"requestInfo"];
 
-  v31 = [(ApproverStoreItem *)self starRating];
-  [v3 ap_setNullableObject:v31 forKey:@"starRating"];
+  starRating = [(ApproverStoreItem *)self starRating];
+  [v3 ap_setNullableObject:starRating forKey:@"starRating"];
 
   v32 = [NSNumber numberWithInteger:[(ApproverStoreItem *)self status]];
   [v3 ap_setNullableObject:v32 forKey:@"status"];
@@ -868,22 +868,22 @@ LABEL_122:
   v33 = [NSNumber numberWithBool:[(ApproverStoreItem *)self suppressClientResume]];
   [v3 ap_setNullableObject:v33 forKey:@"suppressClientResume"];
 
-  v34 = [(ApproverStoreItem *)self requestString];
-  [v3 ap_setNullableObject:v34 forKey:@"requestString"];
+  requestString = [(ApproverStoreItem *)self requestString];
+  [v3 ap_setNullableObject:requestString forKey:@"requestString"];
 
-  v35 = [(ApproverStoreItem *)self requestSummary];
-  [v3 ap_setNullableObject:v35 forKey:@"requestSummary"];
+  requestSummary = [(ApproverStoreItem *)self requestSummary];
+  [v3 ap_setNullableObject:requestSummary forKey:@"requestSummary"];
 
-  v36 = [(ApproverStoreItem *)self priceSummary];
-  [v3 ap_setNullableObject:v36 forKey:@"priceSummary"];
+  priceSummary = [(ApproverStoreItem *)self priceSummary];
+  [v3 ap_setNullableObject:priceSummary forKey:@"priceSummary"];
 
   return v3;
 }
 
 - (id)description
 {
-  v3 = [(ApproverStoreItem *)self compile];
-  v4 = [(ApproverStoreItem *)self ap_generateDescriptionWithSubObjects:v3];
+  compile = [(ApproverStoreItem *)self compile];
+  v4 = [(ApproverStoreItem *)self ap_generateDescriptionWithSubObjects:compile];
 
   return v4;
 }

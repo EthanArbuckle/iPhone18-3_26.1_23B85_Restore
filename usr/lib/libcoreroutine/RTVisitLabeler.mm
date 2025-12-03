@@ -1,29 +1,29 @@
 @interface RTVisitLabeler
-- (BOOL)labelVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 error:(id *)a6;
-- (RTVisitLabeler)initWithDefaultsManager:(id)a3 placeInferenceManager:(id)a4 locationManager:(id)a5 wifiManager:(id)a6;
-- (void)_collectWiFiScansAndLabelVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 maxRetries:(unint64_t)a6 handler:(id)a7;
-- (void)_findPointOfInterestForVisit:(id)a3 clientIdentifier:(id)a4 handler:(id)a5;
-- (void)_labelConstantMonitorVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 handler:(id)a6;
-- (void)_processVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 handler:(id)a6;
-- (void)findPointOfInterestForVisit:(id)a3 clientIdentifier:(id)a4 handler:(id)a5;
-- (void)labelConstantMonitorVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 handler:(id)a6;
-- (void)labelEventMonitorVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 handler:(id)a6;
-- (void)labelVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 handler:(id)a6;
-- (void)onWiFiScanNotification:(id)a3;
-- (void)setRegisteredForWifiScan:(BOOL)a3;
-- (void)startWiFiScanForLabelling:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 handler:(id)a6;
+- (BOOL)labelVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy error:(id *)error;
+- (RTVisitLabeler)initWithDefaultsManager:(id)manager placeInferenceManager:(id)inferenceManager locationManager:(id)locationManager wifiManager:(id)wifiManager;
+- (void)_collectWiFiScansAndLabelVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy maxRetries:(unint64_t)retries handler:(id)handler;
+- (void)_findPointOfInterestForVisit:(id)visit clientIdentifier:(id)identifier handler:(id)handler;
+- (void)_labelConstantMonitorVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy handler:(id)handler;
+- (void)_processVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy handler:(id)handler;
+- (void)findPointOfInterestForVisit:(id)visit clientIdentifier:(id)identifier handler:(id)handler;
+- (void)labelConstantMonitorVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy handler:(id)handler;
+- (void)labelEventMonitorVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy handler:(id)handler;
+- (void)labelVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy handler:(id)handler;
+- (void)onWiFiScanNotification:(id)notification;
+- (void)setRegisteredForWifiScan:(BOOL)scan;
+- (void)startWiFiScanForLabelling:(id)labelling clientIdentifier:(id)identifier policy:(unint64_t)policy handler:(id)handler;
 @end
 
 @implementation RTVisitLabeler
 
-- (RTVisitLabeler)initWithDefaultsManager:(id)a3 placeInferenceManager:(id)a4 locationManager:(id)a5 wifiManager:(id)a6
+- (RTVisitLabeler)initWithDefaultsManager:(id)manager placeInferenceManager:(id)inferenceManager locationManager:(id)locationManager wifiManager:(id)wifiManager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v11)
+  managerCopy = manager;
+  inferenceManagerCopy = inferenceManager;
+  locationManagerCopy = locationManager;
+  wifiManagerCopy = wifiManager;
+  v15 = wifiManagerCopy;
+  if (!managerCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -38,7 +38,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v12)
+  if (!inferenceManagerCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -51,7 +51,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v13)
+  if (!locationManagerCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -64,7 +64,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v14)
+  if (!wifiManagerCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -76,7 +76,7 @@ LABEL_16:
 
 LABEL_17:
 
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -91,7 +91,7 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [(RTVisitLabeler *)v17 UTF8String];
+      uTF8String = [(RTVisitLabeler *)v17 UTF8String];
     }
 
     else
@@ -99,18 +99,18 @@ LABEL_17:
       v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v17];
       label = [v23 UTF8String];
 
-      v18 = label;
+      uTF8String = label;
     }
 
-    labela = dispatch_queue_create(v18, attr);
+    labela = dispatch_queue_create(uTF8String, attr);
 
     queue = v17->_queue;
     v17->_queue = labela;
 
-    objc_storeStrong(&v17->_defaultsManager, a3);
-    objc_storeStrong(&v17->_placeInferenceManager, a4);
-    objc_storeStrong(&v17->_wifiManager, a6);
-    objc_storeStrong(&v17->_locationManager, a5);
+    objc_storeStrong(&v17->_defaultsManager, manager);
+    objc_storeStrong(&v17->_placeInferenceManager, inferenceManager);
+    objc_storeStrong(&v17->_wifiManager, wifiManager);
+    objc_storeStrong(&v17->_locationManager, locationManager);
     v25 = objc_opt_new();
     timerManager = v17->_timerManager;
     v17->_timerManager = v25;
@@ -124,17 +124,17 @@ LABEL_17:
   }
 
   self = v16;
-  v21 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v21;
+  return selfCopy;
 }
 
-- (BOOL)labelVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 error:(id *)a6
+- (BOOL)labelVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  visitCopy = visit;
+  identifierCopy = identifier;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
@@ -156,7 +156,7 @@ LABEL_18:
   v40 = &v41;
   v12 = v11;
   v38 = v12;
-  [(RTVisitLabeler *)self labelVisit:v9 clientIdentifier:v10 policy:a5 handler:v37];
+  [(RTVisitLabeler *)self labelVisit:visitCopy clientIdentifier:identifierCopy policy:policy handler:v37];
   v13 = v12;
   v14 = [MEMORY[0x277CBEAA8] now];
   v15 = dispatch_time(0, 3600000000000);
@@ -167,11 +167,11 @@ LABEL_18:
     v18 = v17;
     v19 = objc_opt_new();
     v20 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_10];
-    v21 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v22 = [v21 filteredArrayUsingPredicate:v20];
-    v23 = [v22 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v22 = [callStackSymbols filteredArrayUsingPredicate:v20];
+    firstObject = [v22 firstObject];
 
-    [v19 submitToCoreAnalytics:v23 type:1 duration:v18];
+    [v19 submitToCoreAnalytics:firstObject type:1 duration:v18];
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
     {
@@ -211,16 +211,16 @@ LABEL_8:
   if (v42[5] || ([v48[5] placeInference], v32 = objc_claimAutoreleasedReturnValue(), v33 = v32 == 0, v32, v33))
   {
     v31 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v42[5];
+      *error = v42[5];
     }
   }
 
   else
   {
-    v34 = [v48[5] placeInference];
-    [v9 setPlaceInference:v34];
+    placeInference = [v48[5] placeInference];
+    [visitCopy setPlaceInference:placeInference];
 
     v31 = 1;
   }
@@ -271,20 +271,20 @@ void __59__RTVisitLabeler_labelVisit_clientIdentifier_policy_error___block_invok
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)labelVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 handler:(id)a6
+- (void)labelVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy handler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [v11 source];
-  if (v14 <= 1)
+  visitCopy = visit;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  source = [visitCopy source];
+  if (source <= 1)
   {
-    if (v14)
+    if (source)
     {
-      if (v14 == 1)
+      if (source == 1)
       {
-        [(RTVisitLabeler *)self labelConstantMonitorVisit:v11 clientIdentifier:v12 policy:a5 handler:v13];
+        [(RTVisitLabeler *)self labelConstantMonitorVisit:visitCopy clientIdentifier:identifierCopy policy:policy handler:handlerCopy];
       }
 
       goto LABEL_15;
@@ -297,7 +297,7 @@ void __59__RTVisitLabeler_labelVisit_clientIdentifier_policy_error___block_invok
       *buf = 138412546;
       v32 = v25;
       v33 = 2048;
-      v34 = [v11 source];
+      source2 = [visitCopy source];
       _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "%@, unsupported visit source, %lu", buf, 0x16u);
     }
 
@@ -312,11 +312,11 @@ LABEL_14:
     v23 = [v19 dictionaryWithObjects:v20 forKeys:v21 count:1];
     v24 = [v16 errorWithDomain:v17 code:1 userInfo:v23];
 
-    v13[2](v13, v11, v24);
+    handlerCopy[2](handlerCopy, visitCopy, v24);
     goto LABEL_15;
   }
 
-  if (v14 == 3)
+  if (source == 3)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -325,7 +325,7 @@ LABEL_14:
       *buf = 138412546;
       v32 = v26;
       v33 = 2048;
-      v34 = [v11 source];
+      source2 = [visitCopy source];
       _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "%@, unsupported visit source, %lu", buf, 0x16u);
     }
 
@@ -340,80 +340,80 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (v14 == 2)
+  if (source == 2)
   {
-    [(RTVisitLabeler *)self labelEventMonitorVisit:v11 clientIdentifier:v12 policy:32 handler:v13];
+    [(RTVisitLabeler *)self labelEventMonitorVisit:visitCopy clientIdentifier:identifierCopy policy:32 handler:handlerCopy];
   }
 
 LABEL_15:
 }
 
-- (void)labelConstantMonitorVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 handler:(id)a6
+- (void)labelConstantMonitorVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(RTVisitLabeler *)self queue];
+  visitCopy = visit;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  queue = [(RTVisitLabeler *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__RTVisitLabeler_labelConstantMonitorVisit_clientIdentifier_policy_handler___block_invoke;
   block[3] = &unk_2788C5110;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a5;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = visitCopy;
+  v20 = handlerCopy;
+  policyCopy = policy;
+  v19 = identifierCopy;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
+  v16 = visitCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_labelConstantMonitorVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 handler:(id)a6
+- (void)_labelConstantMonitorVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy handler:(id)handler
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
-  if (a5 == 1)
+  visitCopy = visit;
+  handlerCopy = handler;
+  if (policy == 1)
   {
-    v13 = a4;
-    [(RTVisitLabeler *)self startWiFiScanForLabelling:v11 clientIdentifier:v13 policy:1 handler:v12];
+    identifierCopy = identifier;
+    [(RTVisitLabeler *)self startWiFiScanForLabelling:visitCopy clientIdentifier:identifierCopy policy:1 handler:handlerCopy];
   }
 
   else
   {
     aSelector = a2;
     v14 = MEMORY[0x277CE41F8];
-    v42 = a4;
+    identifierCopy2 = identifier;
     v15 = [v14 alloc];
-    v16 = [v11 location];
-    [v16 latitude];
+    location = [visitCopy location];
+    [location latitude];
     v18 = v17;
-    v19 = [v11 location];
-    [v19 longitude];
+    location2 = [visitCopy location];
+    [location2 longitude];
     v21 = CLLocationCoordinate2DMake(v18, v20);
-    v22 = [v11 location];
-    [v22 altitude];
+    location3 = [visitCopy location];
+    [location3 altitude];
     v24 = v23;
-    v25 = [v11 location];
-    [v25 horizontalUncertainty];
+    location4 = [visitCopy location];
+    [location4 horizontalUncertainty];
     v27 = v26;
-    [v11 location];
+    [visitCopy location];
     v29 = v28 = self;
     [v29 verticalUncertainty];
     v31 = v30;
-    [v11 location];
-    v32 = v43 = v12;
-    v33 = [v32 date];
-    v13 = [v15 initWithCoordinate:v33 altitude:v21.latitude horizontalAccuracy:v21.longitude verticalAccuracy:v24 timestamp:{v27, v31}];
+    [visitCopy location];
+    v32 = v43 = handlerCopy;
+    date = [v32 date];
+    identifierCopy = [v15 initWithCoordinate:date altitude:v21.latitude horizontalAccuracy:v21.longitude verticalAccuracy:v24 timestamp:{v27, v31}];
 
     v34 = v28;
     v35 = objc_alloc(MEMORY[0x277D011E0]);
-    v53[0] = v13;
+    v53[0] = identifierCopy;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:1];
-    v37 = [v35 initWithFidelityPolicy:0 locations:v36 accessPoints:MEMORY[0x277CBEBF8] clientIdentifier:v42];
+    v37 = [v35 initWithFidelityPolicy:0 locations:v36 accessPoints:MEMORY[0x277CBEBF8] clientIdentifier:identifierCopy2];
 
-    v12 = v43;
+    handlerCopy = v43;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v38 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
@@ -423,21 +423,21 @@ LABEL_15:
         *buf = 138412803;
         v48 = v39;
         v49 = 2117;
-        v50 = v11;
+        v50 = visitCopy;
         v51 = 2048;
         v52 = 0;
         _os_log_impl(&dword_2304B3000, v38, OS_LOG_TYPE_INFO, "%@ , visit, %{sensitive}@, fidelity policy, %lu", buf, 0x20u);
       }
     }
 
-    v40 = [(RTVisitLabeler *)v34 placeInferenceManager];
+    placeInferenceManager = [(RTVisitLabeler *)v34 placeInferenceManager];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __77__RTVisitLabeler__labelConstantMonitorVisit_clientIdentifier_policy_handler___block_invoke;
     v44[3] = &unk_2788C5558;
-    v45 = v11;
+    v45 = visitCopy;
     v46 = v43;
-    [v40 fetchPlaceInferencesForOptions:v37 handler:v44];
+    [placeInferenceManager fetchPlaceInferencesForOptions:v37 handler:v44];
   }
 }
 
@@ -538,33 +538,33 @@ void __77__RTVisitLabeler__labelConstantMonitorVisit_clientIdentifier_policy_han
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)labelEventMonitorVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 handler:(id)a6
+- (void)labelEventMonitorVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(RTVisitLabeler *)self queue];
+  visitCopy = visit;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  queue = [(RTVisitLabeler *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__RTVisitLabeler_labelEventMonitorVisit_clientIdentifier_policy_handler___block_invoke;
   block[3] = &unk_2788C5110;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a5;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = visitCopy;
+  v20 = handlerCopy;
+  policyCopy = policy;
+  v19 = identifierCopy;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
+  v16 = visitCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)startWiFiScanForLabelling:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 handler:(id)a6
+- (void)startWiFiScanForLabelling:(id)labelling clientIdentifier:(id)identifier policy:(unint64_t)policy handler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  labellingCopy = labelling;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   [(RTVisitLabeler *)self setWifiScanTimerFireCount:0];
   v14 = NSStringFromSelector(a2);
   v32[0] = 0;
@@ -587,26 +587,26 @@ void __77__RTVisitLabeler__labelConstantMonitorVisit_clientIdentifier_policy_han
       }
     }
 
-    v13[2](v13, v11, 0);
+    handlerCopy[2](handlerCopy, labellingCopy, 0);
   }
 
   else
   {
     [(RTVisitLabeler *)self setCollectingWiFiScans:1];
-    v17 = [(RTVisitLabeler *)self timerManager];
-    v18 = [(RTVisitLabeler *)self queue];
+    timerManager = [(RTVisitLabeler *)self timerManager];
+    queue = [(RTVisitLabeler *)self queue];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __76__RTVisitLabeler_startWiFiScanForLabelling_clientIdentifier_policy_handler___block_invoke;
     v25[3] = &unk_2788C5CA0;
     v30 = a2;
     v25[4] = self;
-    v26 = v11;
-    v31 = a5;
-    v27 = v12;
+    v26 = labellingCopy;
+    policyCopy = policy;
+    v27 = identifierCopy;
     v29 = v32;
-    v28 = v13;
-    v19 = [v17 timerWithIdentifier:@"com.apple.routined.visit.wifiscan.delaytimer" queue:v18 handler:v25];
+    v28 = handlerCopy;
+    v19 = [timerManager timerWithIdentifier:@"com.apple.routined.visit.wifiscan.delaytimer" queue:queue handler:v25];
     [(RTVisitLabeler *)self setWifiScanDelayTimer:v19];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -615,20 +615,20 @@ void __77__RTVisitLabeler__labelConstantMonitorVisit_clientIdentifier_policy_han
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v21 = NSStringFromSelector(a2);
-        v22 = [(RTVisitLabeler *)self wifiScanDelayTimer];
+        wifiScanDelayTimer = [(RTVisitLabeler *)self wifiScanDelayTimer];
         *buf = 138412546;
         v35 = v21;
         v36 = 2112;
-        v37 = v22;
+        v37 = wifiScanDelayTimer;
         _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_INFO, "%@, wifiScanDelayTimer start, %@", buf, 0x16u);
       }
     }
 
-    v23 = [(RTVisitLabeler *)self wifiScanDelayTimer];
-    [v23 fireAfterDelay:10.0];
+    wifiScanDelayTimer2 = [(RTVisitLabeler *)self wifiScanDelayTimer];
+    [wifiScanDelayTimer2 fireAfterDelay:10.0];
 
-    v24 = [(RTVisitLabeler *)self wifiScanDelayTimer];
-    [v24 resume];
+    wifiScanDelayTimer3 = [(RTVisitLabeler *)self wifiScanDelayTimer];
+    [wifiScanDelayTimer3 resume];
   }
 
   _Block_object_dispose(v32, 8);
@@ -711,17 +711,17 @@ void __76__RTVisitLabeler_startWiFiScanForLabelling_clientIdentifier_policy_hand
   (*(*(a1 + 40) + 16))(*(a1 + 40), v5);
 }
 
-- (void)_collectWiFiScansAndLabelVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 maxRetries:(unint64_t)a6 handler:(id)a7
+- (void)_collectWiFiScansAndLabelVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy maxRetries:(unint64_t)retries handler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  if (v15)
+  visitCopy = visit;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v16 = [(RTVisitLabeler *)self wifiScanTimer];
+    wifiScanTimer = [(RTVisitLabeler *)self wifiScanTimer];
 
-    if (v16)
+    if (wifiScanTimer)
     {
       v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -735,8 +735,8 @@ void __76__RTVisitLabeler_startWiFiScanForLabelling_clientIdentifier_policy_hand
     }
 
     objc_initWeak(&location, self);
-    v18 = [(RTVisitLabeler *)self timerManager];
-    v19 = [(RTVisitLabeler *)self queue];
+    timerManager = [(RTVisitLabeler *)self timerManager];
+    queue = [(RTVisitLabeler *)self queue];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __92__RTVisitLabeler__collectWiFiScansAndLabelVisit_clientIdentifier_policy_maxRetries_handler___block_invoke;
@@ -744,12 +744,12 @@ void __76__RTVisitLabeler_startWiFiScanForLabelling_clientIdentifier_policy_hand
     v30[1] = a2;
     v26[4] = self;
     objc_copyWeak(v30, &location);
-    v27 = v13;
-    v28 = v14;
-    v30[2] = a5;
-    v30[3] = a6;
-    v29 = v15;
-    v20 = [v18 timerWithIdentifier:@"com.apple.routined.visit.wifiscan.timer" queue:v19 handler:v26];
+    v27 = visitCopy;
+    v28 = identifierCopy;
+    v30[2] = policy;
+    v30[3] = retries;
+    v29 = handlerCopy;
+    v20 = [timerManager timerWithIdentifier:@"com.apple.routined.visit.wifiscan.timer" queue:queue handler:v26];
     [(RTVisitLabeler *)self setWifiScanTimer:v20];
 
     [(RTVisitLabeler *)self setRegisteredForWifiScan:1];
@@ -765,14 +765,14 @@ void __76__RTVisitLabeler_startWiFiScanForLabelling_clientIdentifier_policy_hand
       }
     }
 
-    v23 = [(RTVisitLabeler *)self wifiManager];
-    [v23 scheduleActiveScan];
+    wifiManager = [(RTVisitLabeler *)self wifiManager];
+    [wifiManager scheduleActiveScan];
 
-    v24 = [(RTVisitLabeler *)self wifiScanTimer];
-    [v24 fireAfterDelay:5.0];
+    wifiScanTimer2 = [(RTVisitLabeler *)self wifiScanTimer];
+    [wifiScanTimer2 fireAfterDelay:5.0];
 
-    v25 = [(RTVisitLabeler *)self wifiScanTimer];
-    [v25 resume];
+    wifiScanTimer3 = [(RTVisitLabeler *)self wifiScanTimer];
+    [wifiScanTimer3 resume];
 
     objc_destroyWeak(v30);
     objc_destroyWeak(&location);
@@ -907,34 +907,34 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_processVisit:(id)a3 clientIdentifier:(id)a4 policy:(unint64_t)a5 handler:(id)a6
+- (void)_processVisit:(id)visit clientIdentifier:(id)identifier policy:(unint64_t)policy handler:(id)handler
 {
   v70[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v54 = a6;
+  visitCopy = visit;
+  handlerCopy = handler;
   v10 = MEMORY[0x277CE41F8];
-  v51 = a4;
+  identifierCopy = identifier;
   v11 = [v10 alloc];
-  v12 = [v9 location];
-  [v12 latitude];
+  location = [visitCopy location];
+  [location latitude];
   v14 = v13;
-  v15 = [v9 location];
-  [v15 longitude];
+  location2 = [visitCopy location];
+  [location2 longitude];
   v17 = CLLocationCoordinate2DMake(v14, v16);
-  v18 = [v9 location];
-  [v18 altitude];
+  location3 = [visitCopy location];
+  [location3 altitude];
   v20 = v19;
-  v21 = [v9 location];
-  [v21 horizontalUncertainty];
+  location4 = [visitCopy location];
+  [location4 horizontalUncertainty];
   v23 = v22;
-  v24 = [v9 location];
-  [v24 verticalUncertainty];
+  location5 = [visitCopy location];
+  [location5 verticalUncertainty];
   v26 = v25;
-  v27 = [v9 location];
-  v28 = [v27 date];
-  v29 = [v11 initWithCoordinate:v28 altitude:v17.latitude horizontalAccuracy:v17.longitude verticalAccuracy:v20 timestamp:{v23, v26}];
+  location6 = [visitCopy location];
+  date = [location6 date];
+  v29 = [v11 initWithCoordinate:date altitude:v17.latitude horizontalAccuracy:v17.longitude verticalAccuracy:v20 timestamp:{v23, v26}];
 
-  v30 = self;
+  selfCopy = self;
   v31 = objc_alloc(MEMORY[0x277D01160]);
   [v29 coordinate];
   v33 = v32;
@@ -942,15 +942,15 @@ LABEL_15:
   v35 = v34;
   [v29 horizontalAccuracy];
   v37 = v36;
-  v38 = [v29 timestamp];
-  v39 = [v31 initWithLatitude:v38 longitude:v33 horizontalUncertainty:v35 date:v37];
+  timestamp = [v29 timestamp];
+  v39 = [v31 initWithLatitude:timestamp longitude:v33 horizontalUncertainty:v35 date:v37];
 
   v40 = [(NSMutableArray *)self->_accessPoints copy];
   v41 = objc_alloc(MEMORY[0x277D011E0]);
   v70[0] = v29;
   v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:1];
   LOBYTE(v50) = 1;
-  v43 = [v41 initWithFidelityPolicy:0.0 locations:-1 accessPoints:v50 distance:v51 location:? startDate:? endDate:? limit:? useBackground:? clientIdentifier:?];
+  v43 = [v41 initWithFidelityPolicy:0.0 locations:-1 accessPoints:v50 distance:identifierCopy location:? startDate:? endDate:? limit:? useBackground:? clientIdentifier:?];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -965,27 +965,27 @@ LABEL_15:
       v64 = 2048;
       v65 = [v40 count];
       v66 = 2048;
-      v67 = a5;
+      policyCopy = policy;
       v68 = 2048;
-      v69 = [(RTVisitLabeler *)v30 wifiScanTimerFireCount];
+      wifiScanTimerFireCount = [(RTVisitLabeler *)selfCopy wifiScanTimerFireCount];
       _os_log_impl(&dword_2304B3000, v44, OS_LOG_TYPE_INFO, "%@, location, %{sensitive}@, access point count, %lu, fidelity policy, %lu, _wifiScanTimerFireCount, %lu", buf, 0x34u);
     }
   }
 
-  v46 = [(RTVisitLabeler *)v30 placeInferenceManager];
+  placeInferenceManager = [(RTVisitLabeler *)selfCopy placeInferenceManager];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
   v55[2] = __64__RTVisitLabeler__processVisit_clientIdentifier_policy_handler___block_invoke;
   v55[3] = &unk_2788C5D18;
-  v55[4] = v30;
-  v56 = v9;
+  v55[4] = selfCopy;
+  v56 = visitCopy;
   v57 = v39;
-  v58 = v54;
+  v58 = handlerCopy;
   v59 = a2;
-  v47 = v54;
+  v47 = handlerCopy;
   v48 = v39;
-  v49 = v9;
-  [v46 fetchPlaceInferencesForOptions:v43 handler:v55];
+  v49 = visitCopy;
+  [placeInferenceManager fetchPlaceInferencesForOptions:v43 handler:v55];
 }
 
 void __64__RTVisitLabeler__processVisit_clientIdentifier_policy_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1219,18 +1219,18 @@ LABEL_33:
   }
 }
 
-- (void)onWiFiScanNotification:(id)a3
+- (void)onWiFiScanNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTVisitLabeler *)self queue];
+  notificationCopy = notification;
+  queue = [(RTVisitLabeler *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__RTVisitLabeler_onWiFiScanNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __41__RTVisitLabeler_onWiFiScanNotification___block_invoke(uint64_t a1)
@@ -1244,32 +1244,32 @@ void __41__RTVisitLabeler_onWiFiScanNotification___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setRegisteredForWifiScan:(BOOL)a3
+- (void)setRegisteredForWifiScan:(BOOL)scan
 {
-  if (self->_registeredForWifiScan != a3)
+  if (self->_registeredForWifiScan != scan)
   {
-    v4 = a3;
-    self->_registeredForWifiScan = a3;
-    v7 = [(RTVisitLabeler *)self wifiManager];
+    scanCopy = scan;
+    self->_registeredForWifiScan = scan;
+    wifiManager = [(RTVisitLabeler *)self wifiManager];
     +[(RTNotification *)RTWiFiManagerNotificationScanResults];
-    if (v4)
+    if (scanCopy)
       v6 = {;
-      [v7 addObserver:self selector:sel_onWiFiScanNotification_ name:v6];
+      [wifiManager addObserver:self selector:sel_onWiFiScanNotification_ name:v6];
     }
 
     else
       v6 = {;
-      [v7 removeObserver:self fromNotification:v6];
+      [wifiManager removeObserver:self fromNotification:v6];
     }
   }
 }
 
-- (void)_findPointOfInterestForVisit:(id)a3 clientIdentifier:(id)a4 handler:(id)a5
+- (void)_findPointOfInterestForVisit:(id)visit clientIdentifier:(id)identifier handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  visitCopy = visit;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([(RTVisitLabeler *)self collectingWiFiScans])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1284,7 +1284,7 @@ void __41__RTVisitLabeler_onWiFiScanNotification___block_invoke(uint64_t a1)
       }
     }
 
-    v11[2](v11, v9, 0);
+    handlerCopy[2](handlerCopy, visitCopy, 0);
   }
 
   else
@@ -1296,8 +1296,8 @@ void __41__RTVisitLabeler_onWiFiScanNotification___block_invoke(uint64_t a1)
     v14[3] = &unk_2788C5D40;
     v14[4] = self;
     v16 = a2;
-    v15 = v11;
-    [(RTVisitLabeler *)self _collectWiFiScansAndLabelVisit:v9 clientIdentifier:v10 policy:32 maxRetries:0 handler:v14];
+    v15 = handlerCopy;
+    [(RTVisitLabeler *)self _collectWiFiScansAndLabelVisit:visitCopy clientIdentifier:identifierCopy policy:32 maxRetries:0 handler:v14];
   }
 }
 
@@ -1326,24 +1326,24 @@ void __72__RTVisitLabeler__findPointOfInterestForVisit_clientIdentifier_handler_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)findPointOfInterestForVisit:(id)a3 clientIdentifier:(id)a4 handler:(id)a5
+- (void)findPointOfInterestForVisit:(id)visit clientIdentifier:(id)identifier handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTVisitLabeler *)self queue];
+  visitCopy = visit;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  queue = [(RTVisitLabeler *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__RTVisitLabeler_findPointOfInterestForVisit_clientIdentifier_handler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = visitCopy;
+  v17 = identifierCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
+  v14 = visitCopy;
+  dispatch_async(queue, v15);
 }
 
 @end

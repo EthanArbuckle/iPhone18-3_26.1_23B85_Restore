@@ -1,25 +1,25 @@
 @interface TSKAbstractAlert
 - (TSKAbstractAlert)init;
-- (id)buttonTitleAtIndex:(int64_t)a3;
-- (int64_t)addButtonWithTitle:(id)a3;
+- (id)buttonTitleAtIndex:(int64_t)index;
+- (int64_t)addButtonWithTitle:(id)title;
 - (int64_t)cancelButtonIndex;
 - (int64_t)firstOtherButtonIndex;
 - (int64_t)numberOfButtons;
 - (int64_t)showSynchronously;
-- (void)_didPresentAlertView:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)clickedButtonAtIndex:(int64_t)a3;
+- (void)_didPresentAlertView:(id)view;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)clickedButtonAtIndex:(int64_t)index;
 - (void)dealloc;
-- (void)didDismissWithButtonIndex:(int64_t)a3;
-- (void)dismissWithClickedButtonIndex:(int64_t)a3 animated:(BOOL)a4;
+- (void)didDismissWithButtonIndex:(int64_t)index;
+- (void)dismissWithClickedButtonIndex:(int64_t)index animated:(BOOL)animated;
 - (void)enterBackground;
-- (void)setCancelButtonIndex:(int64_t)a3;
+- (void)setCancelButtonIndex:(int64_t)index;
 - (void)show;
 - (void)showAlert;
-- (void)showWithClickedButtonBlock:(id)a3;
-- (void)showWithDelegate:(id)a3 context:(id)a4;
-- (void)showWithDismissedByButtonBlock:(id)a3;
-- (void)willDismissWithButtonIndex:(int64_t)a3;
+- (void)showWithClickedButtonBlock:(id)block;
+- (void)showWithDelegate:(id)delegate context:(id)context;
+- (void)showWithDismissedByButtonBlock:(id)block;
+- (void)willDismissWithButtonIndex:(int64_t)index;
 - (void)willPresentAlertView;
 @end
 
@@ -35,10 +35,10 @@
   {
     v2->_result = 0;
     v2->_cancelOnEnterBackground = 0;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v3 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
   }
 
   return v3;
@@ -46,10 +46,10 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76758] object:0];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76660] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76660] object:0];
   [(TSKAbstractAlert *)self setRetainedDelegate:0];
   clickedBlock = self->_clickedBlock;
   if (clickedBlock)
@@ -68,18 +68,18 @@
   [(TSKAbstractAlert *)&v7 dealloc];
 }
 
-- (int64_t)addButtonWithTitle:(id)a3
+- (int64_t)addButtonWithTitle:(id)title
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAbstractAlert addButtonWithTitle:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 67, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 67, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKAbstractAlert addButtonWithTitle:]"), 0}]);
 }
 
-- (void)showWithDelegate:(id)a3 context:(id)a4
+- (void)showWithDelegate:(id)delegate context:(id)context
 {
-  self->_delegate = a3;
-  [(TSKAbstractAlert *)self setContext:a4];
+  self->_delegate = delegate;
+  [(TSKAbstractAlert *)self setContext:context];
 
   [(TSKAbstractAlert *)self show];
 }
@@ -89,25 +89,25 @@
   self->_result = 0x7FFFFFFFFFFFFFFFLL;
   *&self->_inBackground = 0;
   *&self->_didPresentAlertView = 0;
-  v3 = self;
+  selfCopy = self;
 
   [(TSKAbstractAlert *)self showAlert];
 }
 
-- (void)showWithClickedButtonBlock:(id)a3
+- (void)showWithClickedButtonBlock:(id)block
 {
-  self->_clickedBlock = _Block_copy(a3);
+  self->_clickedBlock = _Block_copy(block);
   self->_result = 0x7FFFFFFFFFFFFFFFLL;
-  v4 = self;
+  selfCopy = self;
 
   [(TSKAbstractAlert *)self showAlert];
 }
 
-- (void)showWithDismissedByButtonBlock:(id)a3
+- (void)showWithDismissedByButtonBlock:(id)block
 {
-  self->_dismissedBlock = _Block_copy(a3);
+  self->_dismissedBlock = _Block_copy(block);
   self->_result = 0x7FFFFFFFFFFFFFFFLL;
-  v4 = self;
+  selfCopy = self;
 
   [(TSKAbstractAlert *)self showAlert];
 }
@@ -120,7 +120,7 @@
   *&self->_didPresentAlertView = 0;
   [(TSKAbstractAlert *)self setContext:0];
   [(TSKAbstractAlert *)self setCancelOnEnterBackground:1];
-  v3 = self;
+  selfCopy = self;
   if ([objc_msgSend(MEMORY[0x277D75128] "sharedApplication")] == 2)
   {
     [(TSKAbstractAlert *)self enterBackground];
@@ -152,55 +152,55 @@
   return result;
 }
 
-- (id)buttonTitleAtIndex:(int64_t)a3
+- (id)buttonTitleAtIndex:(int64_t)index
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAbstractAlert buttonTitleAtIndex:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 159, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 159, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKAbstractAlert buttonTitleAtIndex:]"), 0}]);
 }
 
 - (int64_t)numberOfButtons
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAbstractAlert numberOfButtons]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 164, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 164, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKAbstractAlert numberOfButtons]"), 0}]);
 }
 
 - (int64_t)cancelButtonIndex
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAbstractAlert cancelButtonIndex]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 169, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 169, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKAbstractAlert cancelButtonIndex]"), 0}]);
 }
 
-- (void)setCancelButtonIndex:(int64_t)a3
+- (void)setCancelButtonIndex:(int64_t)index
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAbstractAlert setCancelButtonIndex:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 174, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 174, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKAbstractAlert setCancelButtonIndex:]"), 0}]);
 }
 
 - (int64_t)firstOtherButtonIndex
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAbstractAlert firstOtherButtonIndex]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 179, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 179, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKAbstractAlert firstOtherButtonIndex]"), 0}]);
 }
 
-- (void)dismissWithClickedButtonIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)dismissWithClickedButtonIndex:(int64_t)index animated:(BOOL)animated
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAbstractAlert dismissWithClickedButtonIndex:animated:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 184, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 184, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKAbstractAlert dismissWithClickedButtonIndex:animated:]"), 0}]);
 }
 
-- (void)clickedButtonAtIndex:(int64_t)a3
+- (void)clickedButtonAtIndex:(int64_t)index
 {
   if (!self->_clickedButtonAtIndex && (![(TSKAbstractAlert *)self inBackground]|| [(TSKAbstractAlert *)self cancelOnEnterBackground]))
   {
@@ -211,10 +211,10 @@
     }
 
     self->_clickedButtonAtIndex = 1;
-    self->_result = a3;
+    self->_result = index;
     if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [(TSKUIAlertProtocol *)self->_delegate alert:self clickedButtonAtIndex:a3 withContext:self->_context];
+      [(TSKUIAlertProtocol *)self->_delegate alert:self clickedButtonAtIndex:index withContext:self->_context];
     }
 
     clickedBlock = self->_clickedBlock;
@@ -227,21 +227,21 @@
   }
 }
 
-- (void)didDismissWithButtonIndex:(int64_t)a3
+- (void)didDismissWithButtonIndex:(int64_t)index
 {
   if (!self->_didDismissWithButtonIndex && (![(TSKAbstractAlert *)self inBackground]|| [(TSKAbstractAlert *)self cancelOnEnterBackground]))
   {
     self->_didDismissWithButtonIndex = 1;
-    self->_result = a3;
+    self->_result = index;
     if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [(TSKUIAlertProtocol *)self->_delegate alert:self didDismissWithButtonIndex:a3 withContext:self->_context];
+      [(TSKUIAlertProtocol *)self->_delegate alert:self didDismissWithButtonIndex:index withContext:self->_context];
     }
 
     dismissedBlock = self->_dismissedBlock;
     if (dismissedBlock)
     {
-      dismissedBlock[2](dismissedBlock, self, a3);
+      dismissedBlock[2](dismissedBlock, self, index);
     }
 
     [(TSKAbstractAlert *)self setCancelOnEnterBackground:0];
@@ -253,11 +253,11 @@
 
     self->_delegate = 0;
 
-    v6 = self;
+    selfCopy = self;
   }
 }
 
-- (void)willDismissWithButtonIndex:(int64_t)a3
+- (void)willDismissWithButtonIndex:(int64_t)index
 {
   if (!self->_willDismissWithButtonIndex && (![(TSKAbstractAlert *)self inBackground]|| [(TSKAbstractAlert *)self cancelOnEnterBackground]))
   {
@@ -265,17 +265,17 @@
     if (self->_inBackground)
     {
 
-      [(TSKAbstractAlert *)self didDismissWithButtonIndex:a3];
+      [(TSKAbstractAlert *)self didDismissWithButtonIndex:index];
     }
   }
 }
 
-- (void)_didPresentAlertView:(id)a3
+- (void)_didPresentAlertView:(id)view
 {
   if (!self->_didPresentAlertView)
   {
     self->_didPresentAlertView = 1;
-    v4 = [objc_msgSend(objc_msgSend(a3 "window")];
+    v4 = [objc_msgSend(objc_msgSend(view "window")];
     if (v4 == 2 || v4 == -1)
     {
 
@@ -299,13 +299,13 @@
     self->_inBackground = 1;
     self->_result = [(TSKAbstractAlert *)self cancelButtonIndex];
     [(TSKAbstractAlert *)self clickedButtonAtIndex:[(TSKAbstractAlert *)self cancelButtonIndex]];
-    v3 = [(TSKAbstractAlert *)self cancelButtonIndex];
+    cancelButtonIndex = [(TSKAbstractAlert *)self cancelButtonIndex];
 
-    [(TSKAbstractAlert *)self dismissWithClickedButtonIndex:v3 animated:0];
+    [(TSKAbstractAlert *)self dismissWithClickedButtonIndex:cancelButtonIndex animated:0];
   }
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   if (self->_inBackground)
   {
@@ -329,9 +329,9 @@
 
 - (void)showAlert
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAbstractAlert showAlert]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 329, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKUIAlert.mm"), 329, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSKAbstractAlert showAlert]"), 0}]);
 }
 

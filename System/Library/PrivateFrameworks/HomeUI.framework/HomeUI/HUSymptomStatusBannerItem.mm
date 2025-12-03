@@ -1,14 +1,14 @@
 @interface HUSymptomStatusBannerItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUSymptomStatusBannerItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = HUSymptomStatusBannerItem;
-  v4 = [(HUStatusBannerItem *)&v8 _subclass_updateWithOptions:a3];
+  v4 = [(HUStatusBannerItem *)&v8 _subclass_updateWithOptions:options];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HUSymptomStatusBannerItem__subclass_updateWithOptions___block_invoke;

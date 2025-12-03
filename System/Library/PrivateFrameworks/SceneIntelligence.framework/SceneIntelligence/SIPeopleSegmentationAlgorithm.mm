@@ -1,40 +1,40 @@
 @interface SIPeopleSegmentationAlgorithm
-- (SIPeopleSegmentationAlgorithm)initWithComputeEngine:(int64_t)a3 andNetworkConfiguration:(int64_t)a4 useAppleNeuralEngineFramework:(BOOL)a5;
-- (SIPeopleSegmentationAlgorithm)initWithInputResolution:(CGSize)a3;
-- (SIPeopleSegmentationAlgorithm)initWithNetworkConfiguration:(id)a3;
-- (int64_t)_preprocessingInputData:(id)a3;
-- (int64_t)runWithInput:(__CVBuffer *)a3 output:(__IOSurface *)a4;
-- (int64_t)runWithInput:(__CVBuffer *)a3 output:(__IOSurface *)a4 networkConfiguration:(int64_t)a5;
-- (int64_t)switchConfiguration:(unint64_t)a3;
+- (SIPeopleSegmentationAlgorithm)initWithComputeEngine:(int64_t)engine andNetworkConfiguration:(int64_t)configuration useAppleNeuralEngineFramework:(BOOL)framework;
+- (SIPeopleSegmentationAlgorithm)initWithInputResolution:(CGSize)resolution;
+- (SIPeopleSegmentationAlgorithm)initWithNetworkConfiguration:(id)configuration;
+- (int64_t)_preprocessingInputData:(id)data;
+- (int64_t)runWithInput:(__CVBuffer *)input output:(__IOSurface *)output;
+- (int64_t)runWithInput:(__CVBuffer *)input output:(__IOSurface *)output networkConfiguration:(int64_t)configuration;
+- (int64_t)switchConfiguration:(unint64_t)configuration;
 @end
 
 @implementation SIPeopleSegmentationAlgorithm
 
-- (SIPeopleSegmentationAlgorithm)initWithInputResolution:(CGSize)a3
+- (SIPeopleSegmentationAlgorithm)initWithInputResolution:(CGSize)resolution
 {
   v3 = [(SIPeopleSegmentationAlgorithm *)self initWithComputeEngine:SISupportANE() andNetworkConfiguration:0];
 
   return v3;
 }
 
-- (SIPeopleSegmentationAlgorithm)initWithComputeEngine:(int64_t)a3 andNetworkConfiguration:(int64_t)a4 useAppleNeuralEngineFramework:(BOOL)a5
+- (SIPeopleSegmentationAlgorithm)initWithComputeEngine:(int64_t)engine andNetworkConfiguration:(int64_t)configuration useAppleNeuralEngineFramework:(BOOL)framework
 {
   v8 = objc_alloc_init(SIPeopleSegmentationNetworkConfiguration);
-  [(SINetworkConfiguration *)v8 setEngineType:a3];
-  [(SIPeopleSegmentationNetworkConfiguration *)v8 setNetworkModeEnum:a4];
+  [(SINetworkConfiguration *)v8 setEngineType:engine];
+  [(SIPeopleSegmentationNetworkConfiguration *)v8 setNetworkModeEnum:configuration];
   [(SINetworkConfiguration *)v8 setRunByE5RT:1];
   v9 = [(SIPeopleSegmentationAlgorithm *)self initWithNetworkConfiguration:v8];
 
   return v9;
 }
 
-- (int64_t)runWithInput:(__CVBuffer *)a3 output:(__IOSurface *)a4
+- (int64_t)runWithInput:(__CVBuffer *)input output:(__IOSurface *)output
 {
   v7 = objc_alloc_init(SIImageInputData);
-  [(SIImageInputData *)v7 setInputImageBuffer:a3];
+  [(SIImageInputData *)v7 setInputImageBuffer:input];
   v8 = objc_alloc_init(SIPeopleSegmentationData);
   pixelBufferOut = 0;
-  CVPixelBufferCreateWithIOSurface(0, a4, 0, &pixelBufferOut);
+  CVPixelBufferCreateWithIOSurface(0, output, 0, &pixelBufferOut);
   [(SIPeopleSegmentationData *)v8 setSegmentation:CVPixelBufferRetain(pixelBufferOut)];
   v11.receiver = self;
   v11.super_class = SIPeopleSegmentationAlgorithm;
@@ -43,38 +43,38 @@
   return v9;
 }
 
-- (int64_t)runWithInput:(__CVBuffer *)a3 output:(__IOSurface *)a4 networkConfiguration:(int64_t)a5
+- (int64_t)runWithInput:(__CVBuffer *)input output:(__IOSurface *)output networkConfiguration:(int64_t)configuration
 {
-  result = [(SIPeopleSegmentationAlgorithm *)self switchConfiguration:a5];
+  result = [(SIPeopleSegmentationAlgorithm *)self switchConfiguration:configuration];
   if (!result)
   {
 
-    return [(SIPeopleSegmentationAlgorithm *)self runWithInput:a3 output:a4];
+    return [(SIPeopleSegmentationAlgorithm *)self runWithInput:input output:output];
   }
 
   return result;
 }
 
-- (SIPeopleSegmentationAlgorithm)initWithNetworkConfiguration:(id)a3
+- (SIPeopleSegmentationAlgorithm)initWithNetworkConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v22.receiver = self;
   v22.super_class = SIPeopleSegmentationAlgorithm;
-  v5 = [(SIAlgorithm *)&v22 initWithNetworkConfiguration:v4];
+  v5 = [(SIAlgorithm *)&v22 initWithNetworkConfiguration:configurationCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SIAlgorithm *)v5 model];
+    model = [(SIAlgorithm *)v5 model];
     model = v6->_model;
-    v6->_model = v7;
+    v6->_model = model;
 
     v9 = [SIVideoToolboxScaler alloc];
     [(SIPeopleSegmentation *)v6->_model getInputResolution];
     v11 = v10;
     v13 = v12;
-    v14 = [v4 inputImageFormat];
-    v15 = [v4 imageScalerIdentifier];
-    v16 = [(SIBaseScaler *)v9 initForOutputResolution:v14 outputPixelFormat:0 mode:v15 algorithmKey:v11, v13];
+    inputImageFormat = [configurationCopy inputImageFormat];
+    imageScalerIdentifier = [configurationCopy imageScalerIdentifier];
+    v16 = [(SIBaseScaler *)v9 initForOutputResolution:inputImageFormat outputPixelFormat:0 mode:imageScalerIdentifier algorithmKey:v11, v13];
     scaler = v6->_scaler;
     v6->_scaler = v16;
 
@@ -88,12 +88,12 @@
   return v6;
 }
 
-- (int64_t)switchConfiguration:(unint64_t)a3
+- (int64_t)switchConfiguration:(unint64_t)configuration
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [(SIAlgorithm *)self networkConfiguration];
-  v6 = [v5 networkModeEnum];
-  if ([(SIPeopleSegmentation *)self->_model switchNetworkConfiguration:a3])
+  networkConfiguration = [(SIAlgorithm *)self networkConfiguration];
+  networkModeEnum = [networkConfiguration networkModeEnum];
+  if ([(SIPeopleSegmentation *)self->_model switchNetworkConfiguration:configuration])
   {
     v7 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -110,15 +110,15 @@
 
   else
   {
-    if (v6 != a3)
+    if (networkModeEnum != configuration)
     {
       v9 = [SIVideoToolboxScaler alloc];
       [(SIPeopleSegmentation *)self->_model getInputResolution];
       v11 = v10;
       v13 = v12;
-      v14 = [v5 inputImageFormat];
-      v15 = [v5 imageScalerIdentifier];
-      v16 = [(SIBaseScaler *)v9 initForOutputResolution:v14 outputPixelFormat:0 mode:v15 algorithmKey:v11, v13];
+      inputImageFormat = [networkConfiguration inputImageFormat];
+      imageScalerIdentifier = [networkConfiguration imageScalerIdentifier];
+      v16 = [(SIBaseScaler *)v9 initForOutputResolution:inputImageFormat outputPixelFormat:0 mode:imageScalerIdentifier algorithmKey:v11, v13];
       scaler = self->_scaler;
       self->_scaler = v16;
     }
@@ -130,10 +130,10 @@
   return v8;
 }
 
-- (int64_t)_preprocessingInputData:(id)a3
+- (int64_t)_preprocessingInputData:(id)data
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = -[SIVideoToolboxScaler createScaledImage:](self->_scaler, "createScaledImage:", [a3 inputImageBuffer]);
+  v4 = -[SIVideoToolboxScaler createScaledImage:](self->_scaler, "createScaledImage:", [data inputImageBuffer]);
   [(SIImageInputData *)self->_inputData setInputImageBuffer:v4];
   CVPixelBufferRelease(v4);
   if ([(SIImageInputData *)self->_inputData inputImageBuffer])

@@ -1,5 +1,5 @@
 @interface KeyFrameAnimatorDebugController
-- (void)_animationToIndex:(unint64_t)a3;
+- (void)_animationToIndex:(unint64_t)index;
 - (void)prepareContent;
 - (void)saveFileAndReload;
 @end
@@ -23,11 +23,11 @@
   }
 }
 
-- (void)_animationToIndex:(unint64_t)a3
+- (void)_animationToIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_items count]> a3)
+  if ([(NSMutableArray *)self->_items count]> index)
   {
-    v5 = [(NSMutableArray *)self->_items objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_items objectAtIndex:index];
     v6 = v5;
     if (v5)
     {
@@ -55,9 +55,9 @@
       [v22 doubleValue];
       v24 = v23;
 
-      v25 = [(MapsDebugValuesViewController *)self delegate];
-      v26 = [v25 allVisibleMapViewsForDebugController:self];
-      v27 = [v26 firstObject];
+      delegate = [(MapsDebugValuesViewController *)self delegate];
+      v26 = [delegate allVisibleMapViewsForDebugController:self];
+      firstObject = [v26 firstObject];
 
       v28 = [MKMapCamera cameraLookingAtCenterCoordinate:v9 fromDistance:v12 pitch:v21 heading:v18, v15];
       objc_initWeak(&location, self);
@@ -65,7 +65,7 @@
       v33[1] = 3221225472;
       v33[2] = sub_100D687D8;
       v33[3] = &unk_101661A90;
-      v29 = v27;
+      v29 = firstObject;
       v34 = v29;
       v30 = v28;
       v35 = v30;
@@ -74,7 +74,7 @@
       v31[2] = sub_100D687E4;
       v31[3] = &unk_101652E88;
       objc_copyWeak(v32, &location);
-      v32[1] = a3;
+      v32[1] = index;
       [UIView animateWithDuration:v33 animations:v31 completion:v24];
       objc_destroyWeak(v32);
 

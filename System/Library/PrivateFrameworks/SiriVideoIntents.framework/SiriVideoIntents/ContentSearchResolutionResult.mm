@@ -1,22 +1,22 @@
 @interface ContentSearchResolutionResult
-+ (id)confirmationRequiredWithContentSearchToConfirm:(id)a3;
-+ (id)disambiguationWithContentSearchsToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedContentSearch:(id)a3;
++ (id)confirmationRequiredWithContentSearchToConfirm:(id)confirm;
++ (id)disambiguationWithContentSearchsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedContentSearch:(id)search;
 @end
 
 @implementation ContentSearchResolutionResult
 
-+ (id)successWithResolvedContentSearch:(id)a3
++ (id)successWithResolvedContentSearch:(id)search
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static ContentSearchResolutionResult.success(with:)(v4);
+  searchCopy = search;
+  v5 = static ContentSearchResolutionResult.success(with:)(searchCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithContentSearchsToDisambiguate:(id)a3
++ (id)disambiguationWithContentSearchsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for ContentSearch();
   v3 = sub_269854CB4();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithContentSearchToConfirm:(id)a3
++ (id)confirmationRequiredWithContentSearchToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static ContentSearchResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static ContentSearchResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_26984C7F8();
   sub_269854CB4();

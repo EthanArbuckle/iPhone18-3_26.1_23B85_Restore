@@ -1,38 +1,38 @@
 @interface DSIOHIDDevice
-+ (id)deviceMatchingAccessories:(id)a3 identifierMask:(unint64_t)a4;
-+ (id)deviceWithAccessory:(unint64_t)a3 identifierMask:(unint64_t)a4;
-- (BOOL)reportWithID:(int64_t)a3 reportType:(int)a4 object:(char *)a5 length:(int64_t *)a6;
-- (DSIOHIDDevice)initWithDeviceIdentifiers:(id)a3 identifierMask:(unint64_t)a4;
++ (id)deviceMatchingAccessories:(id)accessories identifierMask:(unint64_t)mask;
++ (id)deviceWithAccessory:(unint64_t)accessory identifierMask:(unint64_t)mask;
+- (BOOL)reportWithID:(int64_t)d reportType:(int)type object:(char *)object length:(int64_t *)length;
+- (DSIOHIDDevice)initWithDeviceIdentifiers:(id)identifiers identifierMask:(unint64_t)mask;
 - (id)_sharedSerialQueue;
 - (id)serialNumber;
-- (id)stringFromHIDReport:(int64_t)a3;
+- (id)stringFromHIDReport:(int64_t)report;
 - (void)dealloc;
 - (void)serialNumber;
 @end
 
 @implementation DSIOHIDDevice
 
-+ (id)deviceWithAccessory:(unint64_t)a3 identifierMask:(unint64_t)a4
++ (id)deviceWithAccessory:(unint64_t)accessory identifierMask:(unint64_t)mask
 {
-  v6 = [DSIODeviceIdentifier identifierForAccessoryModel:a3];
-  v7 = [a1 alloc];
+  v6 = [DSIODeviceIdentifier identifierForAccessoryModel:accessory];
+  v7 = [self alloc];
   v11 = v6;
   v8 = [NSArray arrayWithObjects:&v11 count:1];
-  v9 = [v7 initWithDeviceIdentifiers:v8 identifierMask:a4];
+  v9 = [v7 initWithDeviceIdentifiers:v8 identifierMask:mask];
 
   return v9;
 }
 
-+ (id)deviceMatchingAccessories:(id)a3 identifierMask:(unint64_t)a4
++ (id)deviceMatchingAccessories:(id)accessories identifierMask:(unint64_t)mask
 {
-  v16 = a1;
-  v4 = a3;
+  selfCopy = self;
+  accessoriesCopy = accessories;
   v5 = +[NSMutableArray array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = accessoriesCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v7)
   {
@@ -72,15 +72,15 @@
     while (v8);
   }
 
-  v14 = [[v16 alloc] initWithDeviceIdentifiers:v5 identifierMask:a4];
+  v14 = [[selfCopy alloc] initWithDeviceIdentifiers:v5 identifierMask:mask];
 
   return v14;
 }
 
-- (DSIOHIDDevice)initWithDeviceIdentifiers:(id)a3 identifierMask:(unint64_t)a4
+- (DSIOHIDDevice)initWithDeviceIdentifiers:(id)identifiers identifierMask:(unint64_t)mask
 {
-  v4 = a4;
-  v6 = a3;
+  maskCopy = mask;
+  identifiersCopy = identifiers;
   v41.receiver = self;
   v41.super_class = DSIOHIDDevice;
   v7 = [(DSIOHIDDevice *)&v41 init];
@@ -100,8 +100,8 @@ LABEL_36:
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v35 = v6;
-  obj = v6;
+  v35 = identifiersCopy;
+  obj = identifiersCopy;
   v10 = [obj countByEnumeratingWithState:&v37 objects:v44 count:16];
   if (!v10)
   {
@@ -122,15 +122,15 @@ LABEL_36:
 
       v14 = *(*(&v37 + 1) + 8 * v13);
       v15 = objc_alloc_init(NSMutableDictionary);
-      if (v4)
+      if (maskCopy)
       {
         v18 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v14 usagePage]);
         [v15 setObject:v18 forKeyedSubscript:@"DeviceUsagePage"];
 
-        if ((v4 & 2) == 0)
+        if ((maskCopy & 2) == 0)
         {
 LABEL_9:
-          if ((v4 & 4) == 0)
+          if ((maskCopy & 4) == 0)
           {
             goto LABEL_10;
           }
@@ -139,7 +139,7 @@ LABEL_9:
         }
       }
 
-      else if ((v4 & 2) == 0)
+      else if ((maskCopy & 2) == 0)
       {
         goto LABEL_9;
       }
@@ -147,10 +147,10 @@ LABEL_9:
       v19 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v14 usage]);
       [v15 setObject:v19 forKeyedSubscript:@"DeviceUsage"];
 
-      if ((v4 & 4) == 0)
+      if ((maskCopy & 4) == 0)
       {
 LABEL_10:
-        if ((v4 & 8) == 0)
+        if ((maskCopy & 8) == 0)
         {
           goto LABEL_12;
         }
@@ -166,7 +166,7 @@ LABEL_16:
       v20 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v14 vendorID]);
       [v15 setObject:v20 forKeyedSubscript:@"VendorID"];
 
-      if ((v4 & 8) != 0)
+      if ((maskCopy & 8) != 0)
       {
         goto LABEL_11;
       }
@@ -196,13 +196,13 @@ LABEL_19:
       [DSIOHIDDevice initWithDeviceIdentifiers:identifierMask:];
     }
 
-    v6 = v35;
+    identifiersCopy = v35;
     goto LABEL_33;
   }
 
   IOHIDManagerSetDeviceMatchingMultiple(manager, v9);
   v23 = IOHIDManagerCopyDevices(v34->_manager);
-  v6 = v35;
+  identifiersCopy = v35;
   if (!v23)
   {
 LABEL_34:
@@ -232,16 +232,16 @@ LABEL_34:
     }
   }
 
-  v26 = [v24 anyObject];
-  v34->_device = v26;
-  if (!v26)
+  anyObject = [v24 anyObject];
+  v34->_device = anyObject;
+  if (!anyObject)
   {
 LABEL_33:
 
     goto LABEL_34;
   }
 
-  v27 = IOHIDDeviceOpen(v26, 0);
+  v27 = IOHIDDeviceOpen(anyObject, 0);
   if (v27)
   {
     v28 = v27;
@@ -349,7 +349,7 @@ LABEL_13:
   return v5;
 }
 
-- (id)stringFromHIDReport:(int64_t)a3
+- (id)stringFromHIDReport:(int64_t)report
 {
   v11 = 0;
   v12 = &v11;
@@ -358,15 +358,15 @@ LABEL_13:
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
   objc_initWeak(&location, self);
-  v5 = [(DSIOHIDDevice *)self _sharedSerialQueue];
+  _sharedSerialQueue = [(DSIOHIDDevice *)self _sharedSerialQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __37__DSIOHIDDevice_stringFromHIDReport___block_invoke;
   v8[3] = &unk_181A0;
   objc_copyWeak(v9, &location);
-  v9[1] = a3;
+  v9[1] = report;
   v8[4] = &v11;
-  dispatch_sync(v5, v8);
+  dispatch_sync(_sharedSerialQueue, v8);
 
   v6 = v12[5];
   objc_destroyWeak(v9);
@@ -408,25 +408,25 @@ void __37__DSIOHIDDevice_stringFromHIDReport___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)reportWithID:(int64_t)a3 reportType:(int)a4 object:(char *)a5 length:(int64_t *)a6
+- (BOOL)reportWithID:(int64_t)d reportType:(int)type object:(char *)object length:(int64_t *)length
 {
   objc_initWeak(&location, self);
   v18 = 0;
   v19[0] = &v18;
   v19[1] = 0x2020000000;
   v20 = 0;
-  v11 = [(DSIOHIDDevice *)self _sharedSerialQueue];
+  _sharedSerialQueue = [(DSIOHIDDevice *)self _sharedSerialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __55__DSIOHIDDevice_reportWithID_reportType_object_length___block_invoke;
   block[3] = &unk_181C8;
   objc_copyWeak(v16, &location);
-  v17 = a4;
+  typeCopy = type;
   block[4] = &v18;
-  v16[1] = a3;
-  v16[2] = a5;
-  v16[3] = a6;
-  dispatch_sync(v11, block);
+  v16[1] = d;
+  v16[2] = object;
+  v16[3] = length;
+  dispatch_sync(_sharedSerialQueue, block);
 
   if (*(v19[0] + 24))
   {
@@ -499,7 +499,7 @@ void __35__DSIOHIDDevice__sharedSerialQueue__block_invoke(id a1)
 - (void)serialNumber
 {
   v3 = 134217984;
-  v4 = CFGetTypeID(a1);
+  v4 = CFGetTypeID(self);
   _os_log_error_impl(&dword_0, a2, OS_LOG_TYPE_ERROR, "Unable to parse serial number with type = %lu.", &v3, 0xCu);
 }
 

@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterSetpointChangeEvent
 - (MTRThermostatClusterSetpointChangeEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterSetpointChangeEvent);
-  v5 = [(MTRThermostatClusterSetpointChangeEvent *)self systemMode];
-  [(MTRThermostatClusterSetpointChangeEvent *)v4 setSystemMode:v5];
+  systemMode = [(MTRThermostatClusterSetpointChangeEvent *)self systemMode];
+  [(MTRThermostatClusterSetpointChangeEvent *)v4 setSystemMode:systemMode];
 
-  v6 = [(MTRThermostatClusterSetpointChangeEvent *)self occupancy];
-  [(MTRThermostatClusterSetpointChangeEvent *)v4 setOccupancy:v6];
+  occupancy = [(MTRThermostatClusterSetpointChangeEvent *)self occupancy];
+  [(MTRThermostatClusterSetpointChangeEvent *)v4 setOccupancy:occupancy];
 
-  v7 = [(MTRThermostatClusterSetpointChangeEvent *)self previousSetpoint];
-  [(MTRThermostatClusterSetpointChangeEvent *)v4 setPreviousSetpoint:v7];
+  previousSetpoint = [(MTRThermostatClusterSetpointChangeEvent *)self previousSetpoint];
+  [(MTRThermostatClusterSetpointChangeEvent *)v4 setPreviousSetpoint:previousSetpoint];
 
-  v8 = [(MTRThermostatClusterSetpointChangeEvent *)self currentSetpoint];
-  [(MTRThermostatClusterSetpointChangeEvent *)v4 setCurrentSetpoint:v8];
+  currentSetpoint = [(MTRThermostatClusterSetpointChangeEvent *)self currentSetpoint];
+  [(MTRThermostatClusterSetpointChangeEvent *)v4 setCurrentSetpoint:currentSetpoint];
 
   return v4;
 }

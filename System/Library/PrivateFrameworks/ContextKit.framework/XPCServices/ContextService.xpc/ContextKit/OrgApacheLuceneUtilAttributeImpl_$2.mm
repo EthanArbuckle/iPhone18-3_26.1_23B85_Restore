@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneUtilAttributeImpl_$2
-- (OrgApacheLuceneUtilAttributeImpl_$2)initWithOrgApacheLuceneUtilAttributeImpl:(id)a3 withJavaLangReflectField:(id)a4;
+- (OrgApacheLuceneUtilAttributeImpl_$2)initWithOrgApacheLuceneUtilAttributeImpl:(id)impl withJavaLangReflectField:(id)field;
 - (id)run;
 - (void)dealloc;
 @end
@@ -18,10 +18,10 @@
   return [(JavaLangReflectField *)self->val$f_ getWithId:self->this$0_];
 }
 
-- (OrgApacheLuceneUtilAttributeImpl_$2)initWithOrgApacheLuceneUtilAttributeImpl:(id)a3 withJavaLangReflectField:(id)a4
+- (OrgApacheLuceneUtilAttributeImpl_$2)initWithOrgApacheLuceneUtilAttributeImpl:(id)impl withJavaLangReflectField:(id)field
 {
-  JreStrongAssign(&self->this$0_, a3);
-  JreStrongAssign(&self->val$f_, a4);
+  JreStrongAssign(&self->this$0_, impl);
+  JreStrongAssign(&self->val$f_, field);
   return self;
 }
 

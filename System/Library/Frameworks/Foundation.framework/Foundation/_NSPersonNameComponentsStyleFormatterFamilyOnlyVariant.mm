@@ -1,5 +1,5 @@
 @interface _NSPersonNameComponentsStyleFormatterFamilyOnlyVariant
-- (BOOL)fullComponentsAreValid:(id)a3;
+- (BOOL)fullComponentsAreValid:(id)valid;
 - (id)keysOfInterest;
 @end
 
@@ -17,7 +17,7 @@
   return result;
 }
 
-- (BOOL)fullComponentsAreValid:(id)a3
+- (BOOL)fullComponentsAreValid:(id)valid
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -25,7 +25,7 @@
   v4 = [(_NSPersonNameComponentsStyleFormatter *)&v6 fullComponentsAreValid:?];
   if (v4)
   {
-    LOBYTE(v4) = [objc_msgSend(a3 "familyName")] > 1;
+    LOBYTE(v4) = [objc_msgSend(valid "familyName")] > 1;
   }
 
   return v4;

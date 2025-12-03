@@ -1,41 +1,41 @@
 @interface GATSchemaGATCreateSessionEventFailed
-- (BOOL)isEqual:(id)a3;
-- (GATSchemaGATCreateSessionEventFailed)initWithDictionary:(id)a3;
-- (GATSchemaGATCreateSessionEventFailed)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GATSchemaGATCreateSessionEventFailed)initWithDictionary:(id)dictionary;
+- (GATSchemaGATCreateSessionEventFailed)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GATSchemaGATCreateSessionEventFailed
 
-- (GATSchemaGATCreateSessionEventFailed)initWithDictionary:(id)a3
+- (GATSchemaGATCreateSessionEventFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = GATSchemaGATCreateSessionEventFailed;
   v5 = [(GATSchemaGATCreateSessionEventFailed *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"errorDomain"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"errorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GATSchemaGATCreateSessionEventFailed setErrorDomain:](v5, "setErrorDomain:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GATSchemaGATCreateSessionEventFailed setErrorCode:](v5, "setErrorCode:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"error"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"error"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(GATSchemaGATCreateSessionEventFailed *)v5 setError:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"underlyingError"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"underlyingError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (GATSchemaGATCreateSessionEventFailed)initWithJSON:(id)a3
+- (GATSchemaGATCreateSessionEventFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GATSchemaGATCreateSessionEventFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GATSchemaGATCreateSessionEventFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GATSchemaGATCreateSessionEventFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,20 +93,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_error)
   {
-    v4 = [(GATSchemaGATCreateSessionEventFailed *)self error];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    error = [(GATSchemaGATCreateSessionEventFailed *)self error];
+    dictionaryRepresentation = [error dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"error"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"error"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"error"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"error"];
     }
   }
 
@@ -114,7 +114,7 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[GATSchemaGATCreateSessionEventFailed errorCode](self, "errorCode")}];
-    [v3 setObject:v8 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v8 forKeyedSubscript:@"errorCode"];
 
     has = self->_has;
   }
@@ -132,28 +132,28 @@
       v10 = off_1E78D6FF0[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"errorDomain"];
+    [dictionary setObject:v10 forKeyedSubscript:@"errorDomain"];
   }
 
   if (self->_underlyingError)
   {
-    v11 = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    underlyingError = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
+    dictionaryRepresentation2 = [underlyingError dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"underlyingError"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"underlyingError"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"underlyingError"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"underlyingError"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -184,16 +184,16 @@ LABEL_6:
   return v5 ^ [(GATSchemaGATError *)self->_underlyingError hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_19;
@@ -202,13 +202,13 @@ LABEL_6:
   if (*&has)
   {
     errorDomain = self->_errorDomain;
-    if (errorDomain != [v4 errorDomain])
+    if (errorDomain != [equalCopy errorDomain])
     {
       goto LABEL_19;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -220,26 +220,26 @@ LABEL_6:
   if (v8)
   {
     errorCode = self->_errorCode;
-    if (errorCode != [v4 errorCode])
+    if (errorCode != [equalCopy errorCode])
     {
       goto LABEL_19;
     }
   }
 
-  v10 = [(GATSchemaGATCreateSessionEventFailed *)self error];
-  v11 = [v4 error];
-  if ((v10 != 0) == (v11 == 0))
+  error = [(GATSchemaGATCreateSessionEventFailed *)self error];
+  error2 = [equalCopy error];
+  if ((error != 0) == (error2 == 0))
   {
     goto LABEL_18;
   }
 
-  v12 = [(GATSchemaGATCreateSessionEventFailed *)self error];
-  if (v12)
+  error3 = [(GATSchemaGATCreateSessionEventFailed *)self error];
+  if (error3)
   {
-    v13 = v12;
-    v14 = [(GATSchemaGATCreateSessionEventFailed *)self error];
-    v15 = [v4 error];
-    v16 = [v14 isEqual:v15];
+    v13 = error3;
+    error4 = [(GATSchemaGATCreateSessionEventFailed *)self error];
+    error5 = [equalCopy error];
+    v16 = [error4 isEqual:error5];
 
     if (!v16)
     {
@@ -251,12 +251,12 @@ LABEL_6:
   {
   }
 
-  v10 = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
-  v11 = [v4 underlyingError];
-  if ((v10 != 0) != (v11 == 0))
+  error = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
+  error2 = [equalCopy underlyingError];
+  if ((error != 0) != (error2 == 0))
   {
-    v17 = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
-    if (!v17)
+    underlyingError = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
+    if (!underlyingError)
     {
 
 LABEL_22:
@@ -264,10 +264,10 @@ LABEL_22:
       goto LABEL_20;
     }
 
-    v18 = v17;
-    v19 = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
-    v20 = [v4 underlyingError];
-    v21 = [v19 isEqual:v20];
+    v18 = underlyingError;
+    underlyingError2 = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
+    underlyingError3 = [equalCopy underlyingError];
+    v21 = [underlyingError2 isEqual:underlyingError3];
 
     if (v21)
     {
@@ -287,9 +287,9 @@ LABEL_20:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -302,29 +302,29 @@ LABEL_20:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(GATSchemaGATCreateSessionEventFailed *)self error];
+  error = [(GATSchemaGATCreateSessionEventFailed *)self error];
 
-  if (v5)
+  if (error)
   {
-    v6 = [(GATSchemaGATCreateSessionEventFailed *)self error];
+    error2 = [(GATSchemaGATCreateSessionEventFailed *)self error];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
+  underlyingError = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (underlyingError)
   {
-    v9 = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
+    underlyingError2 = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -337,26 +337,26 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = GATSchemaGATCreateSessionEventFailed;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(GATSchemaGATCreateSessionEventFailed *)self error];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  error = [(GATSchemaGATCreateSessionEventFailed *)self error];
+  v7 = [error applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(GATSchemaGATCreateSessionEventFailed *)self deleteError];
   }
 
-  v9 = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  underlyingError = [(GATSchemaGATCreateSessionEventFailed *)self underlyingError];
+  v10 = [underlyingError applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(GATSchemaGATCreateSessionEventFailed *)self deleteUnderlyingError];
   }

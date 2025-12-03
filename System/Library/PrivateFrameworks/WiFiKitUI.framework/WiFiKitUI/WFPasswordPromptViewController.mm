@@ -1,18 +1,18 @@
 @interface WFPasswordPromptViewController
-- (WFPasswordPromptViewController)initWithAlertMessage:(id)a3 joinCompletion:(id)a4;
-- (WFPasswordPromptViewController)initWithCoder:(id)a3;
-- (WFPasswordPromptViewController)initWithNetworkName:(id)a3 joinCompletion:(id)a4;
-- (WFPasswordPromptViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (WFPasswordPromptViewController)initWithAlertMessage:(id)message joinCompletion:(id)completion;
+- (WFPasswordPromptViewController)initWithCoder:(id)coder;
+- (WFPasswordPromptViewController)initWithNetworkName:(id)name joinCompletion:(id)completion;
+- (WFPasswordPromptViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation WFPasswordPromptViewController
 
-- (WFPasswordPromptViewController)initWithNetworkName:(id)a3 joinCompletion:(id)a4
+- (WFPasswordPromptViewController)initWithNetworkName:(id)name joinCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = v6;
-  if (!a3)
+  if (!name)
   {
     v9 = 0;
     if (v6)
@@ -26,7 +26,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  a3 = sub_2740517D8();
+  name = sub_2740517D8();
   v9 = v8;
   if (!v7)
   {
@@ -45,7 +45,7 @@ LABEL_6:
   *v13 = 0;
   v13[1] = 0;
   v14 = (self + OBJC_IVAR___WFPasswordPromptViewController_joinHandler);
-  *v12 = a3;
+  *v12 = name;
   v12[1] = v9;
   *v14 = v11;
   v14[1] = v10;
@@ -54,11 +54,11 @@ LABEL_6:
   return [(WFPasswordPromptViewController *)&v16 initWithNibName:0 bundle:0];
 }
 
-- (WFPasswordPromptViewController)initWithAlertMessage:(id)a3 joinCompletion:(id)a4
+- (WFPasswordPromptViewController)initWithAlertMessage:(id)message joinCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = v6;
-  if (!a3)
+  if (!message)
   {
     v9 = 0;
     if (v6)
@@ -72,7 +72,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  a3 = sub_2740517D8();
+  message = sub_2740517D8();
   v9 = v8;
   if (!v7)
   {
@@ -91,7 +91,7 @@ LABEL_6:
   *v13 = 0;
   v13[1] = 0;
   v14 = (self + OBJC_IVAR___WFPasswordPromptViewController_joinHandler);
-  *v13 = a3;
+  *v13 = message;
   v13[1] = v9;
   *v14 = v11;
   v14[1] = v10;
@@ -100,7 +100,7 @@ LABEL_6:
   return [(WFPasswordPromptViewController *)&v16 initWithNibName:0 bundle:0];
 }
 
-- (WFPasswordPromptViewController)initWithCoder:(id)a3
+- (WFPasswordPromptViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR___WFPasswordPromptViewController_networkName);
   *v3 = 0;
@@ -118,11 +118,11 @@ LABEL_6:
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_274021D10();
 }
 
-- (WFPasswordPromptViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFPasswordPromptViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

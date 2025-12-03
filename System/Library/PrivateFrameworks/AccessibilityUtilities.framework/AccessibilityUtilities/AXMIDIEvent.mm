@@ -1,15 +1,15 @@
 @interface AXMIDIEvent
-- (AXMIDIEvent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AXMIDIEvent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)noteDescription;
 - (int64_t)ordinalChannel;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMIDIEvent
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AXMIDIEvent);
   [(AXMIDIEvent *)v4 setChannel:[(AXMIDIEvent *)self channel]];
@@ -23,35 +23,35 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[AXMIDIEvent channel](self forKey:{"channel"), @"midi_channel"}];
-  [v4 encodeInteger:-[AXMIDIEvent type](self forKey:{"type"), @"midi_type"}];
-  [v4 encodeInteger:-[AXMIDIEvent note](self forKey:{"note"), @"midi_note"}];
-  [v4 encodeInteger:-[AXMIDIEvent pressure](self forKey:{"pressure"), @"midi_pressure"}];
-  [v4 encodeInteger:-[AXMIDIEvent control](self forKey:{"control"), @"midi_control"}];
-  [v4 encodeInteger:-[AXMIDIEvent controlValue](self forKey:{"controlValue"), @"midi_controlvalue"}];
-  [v4 encodeInteger:-[AXMIDIEvent program](self forKey:{"program"), @"midi_program"}];
-  [v4 encodeInteger:-[AXMIDIEvent pitchBend](self forKey:{"pitchBend"), @"midi_pitchbend"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[AXMIDIEvent channel](self forKey:{"channel"), @"midi_channel"}];
+  [coderCopy encodeInteger:-[AXMIDIEvent type](self forKey:{"type"), @"midi_type"}];
+  [coderCopy encodeInteger:-[AXMIDIEvent note](self forKey:{"note"), @"midi_note"}];
+  [coderCopy encodeInteger:-[AXMIDIEvent pressure](self forKey:{"pressure"), @"midi_pressure"}];
+  [coderCopy encodeInteger:-[AXMIDIEvent control](self forKey:{"control"), @"midi_control"}];
+  [coderCopy encodeInteger:-[AXMIDIEvent controlValue](self forKey:{"controlValue"), @"midi_controlvalue"}];
+  [coderCopy encodeInteger:-[AXMIDIEvent program](self forKey:{"program"), @"midi_program"}];
+  [coderCopy encodeInteger:-[AXMIDIEvent pitchBend](self forKey:{"pitchBend"), @"midi_pitchbend"}];
 }
 
-- (AXMIDIEvent)initWithCoder:(id)a3
+- (AXMIDIEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AXMIDIEvent;
   v5 = [(AXMIDIEvent *)&v7 init];
   if (v5)
   {
-    v5->_channel = [v4 decodeIntegerForKey:@"midi_channel"];
-    v5->_type = [v4 decodeIntegerForKey:@"midi_type"];
-    v5->_note = [v4 decodeIntegerForKey:@"midi_note"];
-    v5->_pressure = [v4 decodeIntegerForKey:@"midi_pressure"];
-    v5->_control = [v4 decodeIntegerForKey:@"midi_control"];
-    v5->_controlValue = [v4 decodeIntegerForKey:@"midi_controlvalue"];
-    v5->_program = [v4 decodeIntegerForKey:@"midi_program"];
-    v5->_pitchBend = [v4 decodeIntegerForKey:@"midi_pitchbend"];
+    v5->_channel = [coderCopy decodeIntegerForKey:@"midi_channel"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"midi_type"];
+    v5->_note = [coderCopy decodeIntegerForKey:@"midi_note"];
+    v5->_pressure = [coderCopy decodeIntegerForKey:@"midi_pressure"];
+    v5->_control = [coderCopy decodeIntegerForKey:@"midi_control"];
+    v5->_controlValue = [coderCopy decodeIntegerForKey:@"midi_controlvalue"];
+    v5->_program = [coderCopy decodeIntegerForKey:@"midi_program"];
+    v5->_pitchBend = [coderCopy decodeIntegerForKey:@"midi_pitchbend"];
   }
 
   return v5;
@@ -59,57 +59,57 @@
 
 - (id)description
 {
-  v3 = [(AXMIDIEvent *)self type];
+  type = [(AXMIDIEvent *)self type];
   v4 = 0;
-  if (v3 <= 3)
+  if (type <= 3)
   {
-    if (v3 > 1)
+    if (type > 1)
     {
       v9 = MEMORY[0x1E696AEC0];
-      if (v3 == 2)
+      if (type == 2)
       {
         v6 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[AXMIDIEvent note](self, "note")}];
-        v7 = [(AXMIDIEvent *)self noteDescription];
+        noteDescription = [(AXMIDIEvent *)self noteDescription];
         v8 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[AXMIDIEvent pressure](self, "pressure")}];
-        [v9 stringWithFormat:@"Note On. note:%@ (%@) pressure:%@", v6, v7, v8];
+        [v9 stringWithFormat:@"Note On. note:%@ (%@) pressure:%@", v6, noteDescription, v8];
       }
 
       else
       {
         v6 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[AXMIDIEvent note](self, "note")}];
-        v7 = [(AXMIDIEvent *)self noteDescription];
+        noteDescription = [(AXMIDIEvent *)self noteDescription];
         v8 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[AXMIDIEvent pressure](self, "pressure")}];
-        [v9 stringWithFormat:@"AfterTouch. note:%@ (%@) pressure:%@", v6, v7, v8];
+        [v9 stringWithFormat:@"AfterTouch. note:%@ (%@) pressure:%@", v6, noteDescription, v8];
       }
     }
 
     else
     {
-      if (!v3)
+      if (!type)
       {
         v4 = @"Unknown";
         goto LABEL_24;
       }
 
-      if (v3 != 1)
+      if (type != 1)
       {
         goto LABEL_24;
       }
 
       v5 = MEMORY[0x1E696AEC0];
       v6 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[AXMIDIEvent note](self, "note")}];
-      v7 = [(AXMIDIEvent *)self noteDescription];
+      noteDescription = [(AXMIDIEvent *)self noteDescription];
       v8 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[AXMIDIEvent pressure](self, "pressure")}];
-      [v5 stringWithFormat:@"Note Off. note:%@ (%@) pressure:%@", v6, v7, v8];
+      [v5 stringWithFormat:@"Note Off. note:%@ (%@) pressure:%@", v6, noteDescription, v8];
     }
     v4 = ;
 
     goto LABEL_20;
   }
 
-  if (v3 <= 5)
+  if (type <= 5)
   {
-    if (v3 != 4)
+    if (type != 4)
     {
       v10 = MEMORY[0x1E696AEC0];
       v6 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[AXMIDIEvent program](self, "program")}];
@@ -120,15 +120,15 @@
 
     v12 = MEMORY[0x1E696AEC0];
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[AXMIDIEvent control](self, "control")}];
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[AXMIDIEvent controlValue](self, "controlValue")}];
-    v4 = [v12 stringWithFormat:@"Control Change. control:%@ value:%@", v6, v7];
+    noteDescription = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{-[AXMIDIEvent controlValue](self, "controlValue")}];
+    v4 = [v12 stringWithFormat:@"Control Change. control:%@ value:%@", v6, noteDescription];
 LABEL_20:
 
 LABEL_23:
     goto LABEL_24;
   }
 
-  switch(v3)
+  switch(type)
   {
     case 6:
       v11 = MEMORY[0x1E696AEC0];
@@ -272,15 +272,15 @@ LABEL_24:
 
 - (id)noteDescription
 {
-  v3 = [(AXMIDIEvent *)self noteValue];
-  if (v3 > 0xB)
+  noteValue = [(AXMIDIEvent *)self noteValue];
+  if (noteValue > 0xB)
   {
     v4 = &stru_1EFE6D570;
   }
 
   else
   {
-    v4 = off_1E71EB360[v3];
+    v4 = off_1E71EB360[noteValue];
   }
 
   v5 = MEMORY[0x1E696AEC0];

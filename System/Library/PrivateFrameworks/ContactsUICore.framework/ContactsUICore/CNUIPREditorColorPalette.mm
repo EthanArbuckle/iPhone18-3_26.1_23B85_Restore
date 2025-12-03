@@ -1,21 +1,21 @@
 @interface CNUIPREditorColorPalette
 + (id)standardPalette;
-- (CNUIPREditorColorPalette)initWithEditorColorPalette:(id)a3;
+- (CNUIPREditorColorPalette)initWithEditorColorPalette:(id)palette;
 - (id)colors;
 @end
 
 @implementation CNUIPREditorColorPalette
 
-- (CNUIPREditorColorPalette)initWithEditorColorPalette:(id)a3
+- (CNUIPREditorColorPalette)initWithEditorColorPalette:(id)palette
 {
-  v5 = a3;
+  paletteCopy = palette;
   v9.receiver = self;
   v9.super_class = CNUIPREditorColorPalette;
   v6 = [(CNUIPREditorColorPalette *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedEditorColorPalette, a3);
+    objc_storeStrong(&v6->_wrappedEditorColorPalette, palette);
   }
 
   return v7;
@@ -42,23 +42,23 @@
 
   v4 = v3;
   _Block_object_dispose(&v9, 8);
-  v5 = [v3 standardPalette];
-  v6 = [(CNUIPREditorColorPalette *)v2 initWithEditorColorPalette:v5];
+  standardPalette = [v3 standardPalette];
+  v6 = [(CNUIPREditorColorPalette *)v2 initWithEditorColorPalette:standardPalette];
 
   return v6;
 }
 
 - (id)colors
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PREditorColorPalette *)self->_wrappedEditorColorPalette colors];
+  array = [MEMORY[0x1E695DF70] array];
+  colors = [(PREditorColorPalette *)self->_wrappedEditorColorPalette colors];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__CNUIPREditorColorPalette_colors__block_invoke;
   v7[3] = &unk_1E76E9960;
-  v5 = v3;
+  v5 = array;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [colors enumerateObjectsUsingBlock:v7];
 
   return v5;
 }

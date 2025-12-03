@@ -1,15 +1,15 @@
 @interface AFRequestHandlingContext
-+ (id)newWithBuilder:(id)a3;
-- (AFRequestHandlingContext)initWithBuilder:(id)a3;
-- (AFRequestHandlingContext)initWithCoder:(id)a3;
-- (AFRequestHandlingContext)initWithDictionaryRepresentation:(id)a3;
-- (AFRequestHandlingContext)initWithRequestID:(id)a3 inputDeviceID:(id)a4 inputAssistantID:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFRequestHandlingContext)initWithBuilder:(id)builder;
+- (AFRequestHandlingContext)initWithCoder:(id)coder;
+- (AFRequestHandlingContext)initWithDictionaryRepresentation:(id)representation;
+- (AFRequestHandlingContext)initWithRequestID:(id)d inputDeviceID:(id)iD inputAssistantID:(id)assistantID;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFRequestHandlingContext
@@ -41,13 +41,13 @@
   return v8;
 }
 
-- (AFRequestHandlingContext)initWithDictionaryRepresentation:(id)a3
+- (AFRequestHandlingContext)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"requestID"];
+    v6 = [representationCopy objectForKey:@"requestID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,41 +84,41 @@
     }
 
     self = [(AFRequestHandlingContext *)self initWithRequestID:v7 inputDeviceID:v10 inputAssistantID:v12];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requestID = self->_requestID;
-  v5 = a3;
-  [v5 encodeObject:requestID forKey:@"AFRequestHandlingContext::requestID"];
-  [v5 encodeObject:self->_inputDeviceID forKey:@"AFRequestHandlingContext::inputDeviceID"];
-  [v5 encodeObject:self->_inputAssistantID forKey:@"AFRequestHandlingContext::inputAssistantID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:requestID forKey:@"AFRequestHandlingContext::requestID"];
+  [coderCopy encodeObject:self->_inputDeviceID forKey:@"AFRequestHandlingContext::inputDeviceID"];
+  [coderCopy encodeObject:self->_inputAssistantID forKey:@"AFRequestHandlingContext::inputAssistantID"];
 }
 
-- (AFRequestHandlingContext)initWithCoder:(id)a3
+- (AFRequestHandlingContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFRequestHandlingContext::requestID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFRequestHandlingContext::inputDeviceID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFRequestHandlingContext::inputAssistantID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFRequestHandlingContext::requestID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFRequestHandlingContext::inputDeviceID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFRequestHandlingContext::inputAssistantID"];
 
   v8 = [(AFRequestHandlingContext *)self initWithRequestID:v5 inputDeviceID:v6 inputAssistantID:v7];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -128,18 +128,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AFRequestHandlingContext *)v5 requestID];
+      v5 = equalCopy;
+      requestID = [(AFRequestHandlingContext *)v5 requestID];
       requestID = self->_requestID;
-      if (requestID == v6 || [(NSString *)requestID isEqual:v6])
+      if (requestID == requestID || [(NSString *)requestID isEqual:requestID])
       {
-        v8 = [(AFRequestHandlingContext *)v5 inputDeviceID];
+        inputDeviceID = [(AFRequestHandlingContext *)v5 inputDeviceID];
         inputDeviceID = self->_inputDeviceID;
-        if (inputDeviceID == v8 || [(NSString *)inputDeviceID isEqual:v8])
+        if (inputDeviceID == inputDeviceID || [(NSString *)inputDeviceID isEqual:inputDeviceID])
         {
-          v10 = [(AFRequestHandlingContext *)v5 inputAssistantID];
+          inputAssistantID = [(AFRequestHandlingContext *)v5 inputAssistantID];
           inputAssistantID = self->_inputAssistantID;
-          v12 = inputAssistantID == v10 || [(NSString *)inputAssistantID isEqual:v10];
+          v12 = inputAssistantID == inputAssistantID || [(NSString *)inputAssistantID isEqual:inputAssistantID];
         }
 
         else
@@ -170,7 +170,7 @@
   return v4 ^ [(NSString *)self->_inputAssistantID hash];
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -181,21 +181,21 @@
   return v6;
 }
 
-- (AFRequestHandlingContext)initWithRequestID:(id)a3 inputDeviceID:(id)a4 inputAssistantID:(id)a5
+- (AFRequestHandlingContext)initWithRequestID:(id)d inputDeviceID:(id)iD inputAssistantID:(id)assistantID
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  assistantIDCopy = assistantID;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __77__AFRequestHandlingContext_initWithRequestID_inputDeviceID_inputAssistantID___block_invoke;
   v16[3] = &unk_1E73451E0;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v17 = dCopy;
+  v18 = iDCopy;
+  v19 = assistantIDCopy;
+  v11 = assistantIDCopy;
+  v12 = iDCopy;
+  v13 = dCopy;
   v14 = [(AFRequestHandlingContext *)self initWithBuilder:v16];
 
   return v14;
@@ -210,31 +210,31 @@ void __77__AFRequestHandlingContext_initWithRequestID_inputDeviceID_inputAssista
   [v4 setInputAssistantID:a1[6]];
 }
 
-- (AFRequestHandlingContext)initWithBuilder:(id)a3
+- (AFRequestHandlingContext)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v18.receiver = self;
   v18.super_class = AFRequestHandlingContext;
   v5 = [(AFRequestHandlingContext *)&v18 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFRequestHandlingContextMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFRequestHandlingContextMutation *)v7 isDirty])
     {
-      v8 = [(_AFRequestHandlingContextMutation *)v7 getRequestID];
-      v9 = [v8 copy];
+      getRequestID = [(_AFRequestHandlingContextMutation *)v7 getRequestID];
+      v9 = [getRequestID copy];
       requestID = v6->_requestID;
       v6->_requestID = v9;
 
-      v11 = [(_AFRequestHandlingContextMutation *)v7 getInputDeviceID];
-      v12 = [v11 copy];
+      getInputDeviceID = [(_AFRequestHandlingContextMutation *)v7 getInputDeviceID];
+      v12 = [getInputDeviceID copy];
       inputDeviceID = v6->_inputDeviceID;
       v6->_inputDeviceID = v12;
 
-      v14 = [(_AFRequestHandlingContextMutation *)v7 getInputAssistantID];
-      v15 = [v14 copy];
+      getInputAssistantID = [(_AFRequestHandlingContextMutation *)v7 getInputAssistantID];
+      v15 = [getInputAssistantID copy];
       inputAssistantID = v6->_inputAssistantID;
       v6->_inputAssistantID = v15;
     }
@@ -243,36 +243,36 @@ void __77__AFRequestHandlingContext_initWithRequestID_inputDeviceID_inputAssista
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFRequestHandlingContextMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFRequestHandlingContextMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFRequestHandlingContext);
-      v7 = [(_AFRequestHandlingContextMutation *)v5 getRequestID];
-      v8 = [v7 copy];
+      getRequestID = [(_AFRequestHandlingContextMutation *)v5 getRequestID];
+      v8 = [getRequestID copy];
       requestID = v6->_requestID;
       v6->_requestID = v8;
 
-      v10 = [(_AFRequestHandlingContextMutation *)v5 getInputDeviceID];
-      v11 = [v10 copy];
+      getInputDeviceID = [(_AFRequestHandlingContextMutation *)v5 getInputDeviceID];
+      v11 = [getInputDeviceID copy];
       inputDeviceID = v6->_inputDeviceID;
       v6->_inputDeviceID = v11;
 
-      v13 = [(_AFRequestHandlingContextMutation *)v5 getInputAssistantID];
-      v14 = [v13 copy];
+      getInputAssistantID = [(_AFRequestHandlingContextMutation *)v5 getInputAssistantID];
+      v14 = [getInputAssistantID copy];
       inputAssistantID = v6->_inputAssistantID;
       v6->_inputAssistantID = v14;
     }

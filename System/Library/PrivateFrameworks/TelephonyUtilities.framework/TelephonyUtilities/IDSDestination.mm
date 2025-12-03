@@ -1,67 +1,67 @@
 @interface IDSDestination
-+ (IDSDestination)destinationWithTUConversationMember:(id)a3;
-+ (IDSDestination)destinationWithTUConversationParticipant:(id)a3;
-- (BOOL)canReceiveMessagesForCallProvider:(id)a3;
++ (IDSDestination)destinationWithTUConversationMember:(id)member;
++ (IDSDestination)destinationWithTUConversationParticipant:(id)participant;
+- (BOOL)canReceiveMessagesForCallProvider:(id)provider;
 - (BOOL)canReceiveRelayedCalls;
-- (id)deviceForService:(id)a3;
+- (id)deviceForService:(id)service;
 @end
 
 @implementation IDSDestination
 
-+ (IDSDestination)destinationWithTUConversationMember:(id)a3
++ (IDSDestination)destinationWithTUConversationMember:(id)member
 {
-  v4 = a3;
-  v5 = [v4 idsDestination];
-  v6 = [v4 isLightweightMember];
+  memberCopy = member;
+  idsDestination = [memberCopy idsDestination];
+  isLightweightMember = [memberCopy isLightweightMember];
 
-  v7 = [a1 destinationWithStringURI:v5 isLightWeight:v6];
+  v7 = [self destinationWithStringURI:idsDestination isLightWeight:isLightweightMember];
 
   return v7;
 }
 
-+ (IDSDestination)destinationWithTUConversationParticipant:(id)a3
++ (IDSDestination)destinationWithTUConversationParticipant:(id)participant
 {
-  v4 = a3;
-  if ([v4 audioVideoMode])
+  participantCopy = participant;
+  if ([participantCopy audioVideoMode])
   {
-    v5 = [v4 isLightweight];
+    isLightweight = [participantCopy isLightweight];
   }
 
   else
   {
-    v5 = 1;
+    isLightweight = 1;
   }
 
-  v6 = [v4 handle];
-  v7 = [v6 value];
-  v8 = [v7 IDSFormattedDestinationID];
-  v9 = [a1 destinationWithStringURI:v8 isLightWeight:v5];
+  handle = [participantCopy handle];
+  value = [handle value];
+  iDSFormattedDestinationID = [value IDSFormattedDestinationID];
+  v9 = [self destinationWithStringURI:iDSFormattedDestinationID isLightWeight:isLightweight];
 
   return v9;
 }
 
 - (BOOL)canReceiveRelayedCalls
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100381390();
 
   return v3 & 1;
 }
 
-- (BOOL)canReceiveMessagesForCallProvider:(id)a3
+- (BOOL)canReceiveMessagesForCallProvider:(id)provider
 {
-  v4 = a3;
-  v5 = self;
+  providerCopy = provider;
+  selfCopy = self;
   LOBYTE(self) = sub_1003813B4();
 
   return self & 1;
 }
 
-- (id)deviceForService:(id)a3
+- (id)deviceForService:(id)service
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_100381424(v4);
+  serviceCopy = service;
+  selfCopy = self;
+  v6 = sub_100381424(serviceCopy);
 
   return v6;
 }

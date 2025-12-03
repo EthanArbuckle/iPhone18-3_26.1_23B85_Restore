@@ -1,23 +1,23 @@
 @interface CPLSyncSessionBlockedState
-- (CPLSyncSessionBlockedState)initWithRescheduler:(id)a3 blocked:(BOOL)a4 syncHasBeenRequested:(BOOL)a5 runtimeCharacteristics:(id)a6;
+- (CPLSyncSessionBlockedState)initWithRescheduler:(id)rescheduler blocked:(BOOL)blocked syncHasBeenRequested:(BOOL)requested runtimeCharacteristics:(id)characteristics;
 @end
 
 @implementation CPLSyncSessionBlockedState
 
-- (CPLSyncSessionBlockedState)initWithRescheduler:(id)a3 blocked:(BOOL)a4 syncHasBeenRequested:(BOOL)a5 runtimeCharacteristics:(id)a6
+- (CPLSyncSessionBlockedState)initWithRescheduler:(id)rescheduler blocked:(BOOL)blocked syncHasBeenRequested:(BOOL)requested runtimeCharacteristics:(id)characteristics
 {
-  v11 = a3;
-  v12 = a6;
+  reschedulerCopy = rescheduler;
+  characteristicsCopy = characteristics;
   v16.receiver = self;
   v16.super_class = CPLSyncSessionBlockedState;
   v13 = [(CPLSyncSessionBlockedState *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_rescheduler, a3);
-    v14->_blocked = a4;
-    v14->_syncHasBeenRequested = a5;
-    objc_storeStrong(&v14->_runtimeCharacteristics, a6);
+    objc_storeStrong(&v13->_rescheduler, rescheduler);
+    v14->_blocked = blocked;
+    v14->_syncHasBeenRequested = requested;
+    objc_storeStrong(&v14->_runtimeCharacteristics, characteristics);
   }
 
   return v14;

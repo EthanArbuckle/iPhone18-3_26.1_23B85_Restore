@@ -1,45 +1,45 @@
 @interface AVAirTransportStreams
-- (AVAirTransportStreams)initWithInput:(id)a3 output:(id)a4;
+- (AVAirTransportStreams)initWithInput:(id)input output:(id)output;
 - (BOOL)canWrite;
 - (BOOL)isReadyToSend;
 - (NSString)description;
 - (id)_readAvailableData;
-- (id)_readDataNonBlockingUpToMaxLength:(unint64_t)a3;
-- (int64_t)_writeData:(id)a3;
+- (id)_readDataNonBlockingUpToMaxLength:(unint64_t)length;
+- (int64_t)_writeData:(id)data;
 - (void)_inputStreamDidClose;
 - (void)_inputStreamHasBytesAvailable;
 - (void)_outputStreamDidOpen;
 - (void)invalidate;
 - (void)open;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation AVAirTransportStreams
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v4 = a4;
+  eventCopy = event;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  streamCopy = stream;
   if (!isRunningEventThread())
   {
     __assert_rtn("[AVAirTransportStreams stream:handleEvent:]", "AVAirTransport.m", 211, "isRunningEventThread()");
   }
 
-  v7 = [(AVAirTransportStreams *)self inputStream];
+  inputStream = [(AVAirTransportStreams *)self inputStream];
 
-  v8 = [(AVAirTransportStreams *)self outputStream];
+  outputStream = [(AVAirTransportStreams *)self outputStream];
 
   v9 = @"Input";
-  if (v8 == v6)
+  if (outputStream == streamCopy)
   {
     v9 = @"Output";
   }
 
   v10 = v9;
-  if ((v4 & 8) == 0)
+  if ((eventCopy & 8) == 0)
   {
-    if ((v4 & 1) == 0)
+    if ((eventCopy & 1) == 0)
     {
       goto LABEL_9;
     }
@@ -54,10 +54,10 @@
       _os_log_impl(&dword_18B49C000, v11, OS_LOG_TYPE_DEFAULT, "%s %{public}@: OpenCompleted", &v16, 0x16u);
     }
 
-    if (v8 == v6)
+    if (outputStream == streamCopy)
     {
       [(AVAirTransportStreams *)self _outputStreamDidOpen];
-      if ((v4 & 0x10) != 0)
+      if ((eventCopy & 0x10) != 0)
       {
 LABEL_10:
         v12 = _avairlog();
@@ -70,7 +70,7 @@ LABEL_10:
           _os_log_impl(&dword_18B49C000, v12, OS_LOG_TYPE_DEFAULT, "%s %{public}@: EndEncountered", &v16, 0x16u);
         }
 
-        if (v7 == v6)
+        if (inputStream == streamCopy)
         {
           [(AVAirTransportStreams *)self _inputStreamDidClose];
           goto LABEL_28;
@@ -81,13 +81,13 @@ LABEL_10:
     else
     {
 LABEL_9:
-      if ((v4 & 0x10) != 0)
+      if ((eventCopy & 0x10) != 0)
       {
         goto LABEL_10;
       }
     }
 
-    if ((v4 & 4) != 0)
+    if ((eventCopy & 4) != 0)
     {
       v14 = _avairlog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -99,13 +99,13 @@ LABEL_9:
         _os_log_impl(&dword_18B49C000, v14, OS_LOG_TYPE_DEFAULT, "%s %{public}@: HasSpaceAvailable", &v16, 0x16u);
       }
 
-      if (v8 == v6)
+      if (outputStream == streamCopy)
       {
         [(AVAirTransportStreams *)self _outputStreamCanWrite];
       }
     }
 
-    if ((v4 & 2) != 0)
+    if ((eventCopy & 2) != 0)
     {
       v15 = _avairlog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -117,7 +117,7 @@ LABEL_9:
         _os_log_impl(&dword_18B49C000, v15, OS_LOG_TYPE_DEFAULT, "%s %{public}@: HasBytesAvailable", &v16, 0x16u);
       }
 
-      if (v7 == v6)
+      if (inputStream == streamCopy)
       {
         [(AVAirTransportStreams *)self _inputStreamHasBytesAvailable];
       }
@@ -142,19 +142,19 @@ LABEL_28:
 - (void)_inputStreamDidClose
 {
   [(AVAirTransport *)self terminatePendingRequests];
-  v3 = [(AVAirTransport *)self delegate];
-  [v3 airTransportInputDidClose:self];
+  delegate = [(AVAirTransport *)self delegate];
+  [delegate airTransportInputDidClose:self];
 }
 
 - (void)_outputStreamDidOpen
 {
-  v3 = [(AVAirTransport *)self delegate];
+  delegate = [(AVAirTransport *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AVAirTransport *)self delegate];
-    [v5 airTransportOutputDidOpen:self];
+    delegate2 = [(AVAirTransport *)self delegate];
+    [delegate2 airTransportOutputDidOpen:self];
   }
 }
 
@@ -174,7 +174,7 @@ LABEL_28:
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__7313;
   v11 = __Block_byref_object_dispose__7314;
-  v12 = [(AVAirTransportStreams *)self _readAvailableData];
+  _readAvailableData = [(AVAirTransportStreams *)self _readAvailableData];
   if (*(*(&buf + 1) + 40))
   {
     v5[0] = MEMORY[0x1E69E9820];
@@ -279,14 +279,14 @@ void __54__AVAirTransportStreams__inputStreamHasBytesAvailable__block_invoke(uin
   while (([v3 shouldCallReverseTransformerAgain] & 1) != 0);
 }
 
-- (int64_t)_writeData:(id)a3
+- (int64_t)_writeData:(id)data
 {
-  v4 = a3;
-  v5 = [(AVAirTransportStreams *)self outputStream];
-  v6 = [v4 bytes];
-  v7 = [v4 length];
+  dataCopy = data;
+  outputStream = [(AVAirTransportStreams *)self outputStream];
+  bytes = [dataCopy bytes];
+  v7 = [dataCopy length];
 
-  v8 = [v5 write:v6 maxLength:v7];
+  v8 = [outputStream write:bytes maxLength:v7];
   return v8;
 }
 
@@ -302,21 +302,21 @@ void __54__AVAirTransportStreams__inputStreamHasBytesAvailable__block_invoke(uin
 
 - (BOOL)canWrite
 {
-  v2 = [(AVAirTransportStreams *)self outputStream];
-  v3 = [v2 hasSpaceAvailable];
+  outputStream = [(AVAirTransportStreams *)self outputStream];
+  hasSpaceAvailable = [outputStream hasSpaceAvailable];
 
-  return v3;
+  return hasSpaceAvailable;
 }
 
 - (BOOL)isReadyToSend
 {
-  v2 = [(AVAirTransportStreams *)self outputStream];
-  v3 = [v2 streamStatus];
+  outputStream = [(AVAirTransportStreams *)self outputStream];
+  streamStatus = [outputStream streamStatus];
 
-  return v3 > 1;
+  return streamStatus > 1;
 }
 
-- (id)_readDataNonBlockingUpToMaxLength:(unint64_t)a3
+- (id)_readDataNonBlockingUpToMaxLength:(unint64_t)length
 {
   v35 = *MEMORY[0x1E69E9840];
   if (!isRunningEventThread())
@@ -324,37 +324,37 @@ void __54__AVAirTransportStreams__inputStreamHasBytesAvailable__block_invoke(uin
     __assert_rtn("[AVAirTransportStreams _readDataNonBlockingUpToMaxLength:]", "AVAirTransport.m", 86, "isRunningEventThread()");
   }
 
-  v5 = [(AVAirTransportStreams *)self inputStream];
-  v6 = [v5 hasBytesAvailable];
+  inputStream = [(AVAirTransportStreams *)self inputStream];
+  hasBytesAvailable = [inputStream hasBytesAvailable];
 
-  if (!v6)
+  if (!hasBytesAvailable)
   {
     v19 = 0;
     goto LABEL_31;
   }
 
-  if (a3 >= 0x8000)
+  if (length >= 0x8000)
   {
-    v7 = 0x8000;
+    lengthCopy = 0x8000;
   }
 
   else
   {
-    v7 = a3;
+    lengthCopy = length;
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v7];
-  v9 = [(AVAirTransportStreams *)self inputStream];
-  v10 = [v9 hasBytesAvailable];
+  v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:lengthCopy];
+  inputStream2 = [(AVAirTransportStreams *)self inputStream];
+  hasBytesAvailable2 = [inputStream2 hasBytesAvailable];
 
-  if (v10)
+  if (hasBytesAvailable2)
   {
     v11 = 0;
     while (1)
     {
-      v12 = v7 >= a3 - v11 ? a3 - v11 : v7;
-      v13 = [(AVAirTransportStreams *)self inputStream];
-      v14 = [v13 read:objc_msgSend(v8 maxLength:{"mutableBytes") + v11, v12}];
+      v12 = lengthCopy >= length - v11 ? length - v11 : lengthCopy;
+      inputStream3 = [(AVAirTransportStreams *)self inputStream];
+      v14 = [inputStream3 read:objc_msgSend(v8 maxLength:{"mutableBytes") + v11, v12}];
 
       if (v14 < 1)
       {
@@ -370,11 +370,11 @@ void __54__AVAirTransportStreams__inputStreamHasBytesAvailable__block_invoke(uin
 
       v11 += v14;
       [v8 increaseLengthBy:0x20000];
-      v17 = [(AVAirTransportStreams *)self inputStream];
-      v18 = [v17 hasBytesAvailable];
+      inputStream4 = [(AVAirTransportStreams *)self inputStream];
+      hasBytesAvailable3 = [inputStream4 hasBytesAvailable];
 
-      v7 = 0x20000;
-      if ((v18 & 1) == 0)
+      lengthCopy = 0x20000;
+      if ((hasBytesAvailable3 & 1) == 0)
       {
         goto LABEL_29;
       }
@@ -382,12 +382,12 @@ void __54__AVAirTransportStreams__inputStreamHasBytesAvailable__block_invoke(uin
 
     if ((v14 & 0x8000000000000000) == 0)
     {
-      v20 = [(AVAirTransportStreams *)self inputStream];
-      v21 = [v20 streamStatus];
+      inputStream5 = [(AVAirTransportStreams *)self inputStream];
+      streamStatus = [inputStream5 streamStatus];
 
       v22 = _avairlog();
       v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
-      if (v21 == 5)
+      if (streamStatus == 5)
       {
         if (v23)
         {
@@ -406,7 +406,7 @@ LABEL_27:
         v31 = 136315394;
         v32 = "[AVAirTransportStreams _readDataNonBlockingUpToMaxLength:]";
         v33 = 1024;
-        LODWORD(v34) = v21;
+        LODWORD(v34) = streamStatus;
         v24 = "%s the input data disappeared! Are multiple clients trying to read from this stream? (status = %d)";
         v25 = v22;
         v26 = 18;
@@ -419,12 +419,12 @@ LABEL_27:
     v27 = _avairlog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(AVAirTransportStreams *)self inputStream];
-      v29 = [v28 streamError];
+      inputStream6 = [(AVAirTransportStreams *)self inputStream];
+      streamError = [inputStream6 streamError];
       v31 = 136315394;
       v32 = "[AVAirTransportStreams _readDataNonBlockingUpToMaxLength:]";
       v33 = 2114;
-      v34 = v29;
+      v34 = streamError;
       _os_log_impl(&dword_18B49C000, v27, OS_LOG_TYPE_DEFAULT, "%s an error prevented bytes from being read! (%{public}@)", &v31, 0x16u);
     }
   }
@@ -442,13 +442,13 @@ LABEL_31:
 {
   v13.receiver = self;
   v13.super_class = AVAirTransportStreams;
-  v3 = [(AVAirTransport *)&v13 delegate];
-  if (v3)
+  delegate = [(AVAirTransport *)&v13 delegate];
+  if (delegate)
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [v4 stringWithFormat:@"<%@ %p>", v6, v3];
+    v7 = [v4 stringWithFormat:@"<%@ %p>", v6, delegate];
   }
 
   else
@@ -520,18 +520,18 @@ LABEL_31:
   [(AVAirTransport *)&v13 invalidate];
 }
 
-- (AVAirTransportStreams)initWithInput:(id)a3 output:(id)a4
+- (AVAirTransportStreams)initWithInput:(id)input output:(id)output
 {
-  v7 = a3;
-  v8 = a4;
+  inputCopy = input;
+  outputCopy = output;
   v17.receiver = self;
   v17.super_class = AVAirTransportStreams;
-  v9 = [(AVAirTransport *)&v17 _initPrivate];
-  v10 = v9;
-  if (v9)
+  _initPrivate = [(AVAirTransport *)&v17 _initPrivate];
+  v10 = _initPrivate;
+  if (_initPrivate)
   {
-    objc_storeStrong(v9 + 7, a3);
-    objc_storeStrong(&v10->_outputStream, a4);
+    objc_storeStrong(_initPrivate + 7, input);
+    objc_storeStrong(&v10->_outputStream, output);
     [(NSInputStream *)v10->_inputStream setDelegate:v10];
     inputStream = v10->_inputStream;
     v12 = +[AVAirTransport eventRunLoop];

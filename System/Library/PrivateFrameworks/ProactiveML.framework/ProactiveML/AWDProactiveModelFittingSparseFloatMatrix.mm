@@ -1,66 +1,66 @@
 @interface AWDProactiveModelFittingSparseFloatMatrix
-+ (id)sparseFloatMatrixFromDenseMatrix:(id)a3;
-+ (id)sparseFloatMatrixFromSparseMatrix:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (float)valueAtRow:(unint64_t)a3 column:(unint64_t)a4;
-- (float)valuesAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)sparseFloatMatrixFromDenseMatrix:(id)matrix;
++ (id)sparseFloatMatrixFromSparseMatrix:(id)matrix;
+- (BOOL)isEqual:(id)equal;
+- (float)valueAtRow:(unint64_t)row column:(unint64_t)column;
+- (float)valuesAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (unint64_t)columnIndicesAtIndex:(unint64_t)a3;
+- (unint64_t)columnIndicesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (unint64_t)rowIndicesAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)rowIndicesAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRowLength:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasRowLength:(BOOL)length;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveModelFittingSparseFloatMatrix
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v13 = a3;
-  v4 = [v13 columnIndicesCount];
-  if (v4)
+  fromCopy = from;
+  columnIndicesCount = [fromCopy columnIndicesCount];
+  if (columnIndicesCount)
   {
-    v5 = v4;
+    v5 = columnIndicesCount;
     for (i = 0; i != v5; ++i)
     {
-      -[AWDProactiveModelFittingSparseFloatMatrix addColumnIndices:](self, "addColumnIndices:", [v13 columnIndicesAtIndex:i]);
+      -[AWDProactiveModelFittingSparseFloatMatrix addColumnIndices:](self, "addColumnIndices:", [fromCopy columnIndicesAtIndex:i]);
     }
   }
 
-  if (v13[12])
+  if (fromCopy[12])
   {
-    self->_columnLength = v13[10];
+    self->_columnLength = fromCopy[10];
     *&self->_has |= 1u;
   }
 
-  v7 = [v13 rowIndicesCount];
-  if (v7)
+  rowIndicesCount = [fromCopy rowIndicesCount];
+  if (rowIndicesCount)
   {
-    v8 = v7;
+    v8 = rowIndicesCount;
     for (j = 0; j != v8; ++j)
     {
-      -[AWDProactiveModelFittingSparseFloatMatrix addRowIndices:](self, "addRowIndices:", [v13 rowIndicesAtIndex:j]);
+      -[AWDProactiveModelFittingSparseFloatMatrix addRowIndices:](self, "addRowIndices:", [fromCopy rowIndicesAtIndex:j]);
     }
   }
 
-  if ((v13[12] & 2) != 0)
+  if ((fromCopy[12] & 2) != 0)
   {
-    self->_rowLength = v13[11];
+    self->_rowLength = fromCopy[11];
     *&self->_has |= 2u;
   }
 
-  v10 = [v13 valuesCount];
-  if (v10)
+  valuesCount = [fromCopy valuesCount];
+  if (valuesCount)
   {
-    v11 = v10;
+    v11 = valuesCount;
     for (k = 0; k != v11; ++k)
     {
-      [v13 valuesAtIndex:k];
+      [fromCopy valuesAtIndex:k];
       [(AWDProactiveModelFittingSparseFloatMatrix *)self addValues:?];
     }
   }
@@ -93,24 +93,24 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ PBRepeatedFloatHash();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || !PBRepeatedUInt64IsEqual())
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || !PBRepeatedUInt64IsEqual())
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 96);
+  v5 = *(equalCopy + 96);
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_columnLength != *(v4 + 10))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_columnLength != *(equalCopy + 10))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_15;
   }
@@ -122,16 +122,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v6 = *(v4 + 96);
+  v6 = *(equalCopy + 96);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_rowLength != *(v4 + 11))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_rowLength != *(equalCopy + 11))
     {
       goto LABEL_15;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
     goto LABEL_15;
   }
@@ -142,9 +142,9 @@ LABEL_16:
   return IsEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedUInt64Copy();
   if (*&self->_has)
   {
@@ -163,69 +163,69 @@ LABEL_16:
   return v4;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if ([(AWDProactiveModelFittingSparseFloatMatrix *)self columnIndicesCount])
   {
-    [v13 clearColumnIndices];
-    v4 = [(AWDProactiveModelFittingSparseFloatMatrix *)self columnIndicesCount];
-    if (v4)
+    [toCopy clearColumnIndices];
+    columnIndicesCount = [(AWDProactiveModelFittingSparseFloatMatrix *)self columnIndicesCount];
+    if (columnIndicesCount)
     {
-      v5 = v4;
+      v5 = columnIndicesCount;
       for (i = 0; i != v5; ++i)
       {
-        [v13 addColumnIndices:{-[AWDProactiveModelFittingSparseFloatMatrix columnIndicesAtIndex:](self, "columnIndicesAtIndex:", i)}];
+        [toCopy addColumnIndices:{-[AWDProactiveModelFittingSparseFloatMatrix columnIndicesAtIndex:](self, "columnIndicesAtIndex:", i)}];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v13 + 10) = self->_columnLength;
-    *(v13 + 96) |= 1u;
+    *(toCopy + 10) = self->_columnLength;
+    *(toCopy + 96) |= 1u;
   }
 
   if ([(AWDProactiveModelFittingSparseFloatMatrix *)self rowIndicesCount])
   {
-    [v13 clearRowIndices];
-    v7 = [(AWDProactiveModelFittingSparseFloatMatrix *)self rowIndicesCount];
-    if (v7)
+    [toCopy clearRowIndices];
+    rowIndicesCount = [(AWDProactiveModelFittingSparseFloatMatrix *)self rowIndicesCount];
+    if (rowIndicesCount)
     {
-      v8 = v7;
+      v8 = rowIndicesCount;
       for (j = 0; j != v8; ++j)
       {
-        [v13 addRowIndices:{-[AWDProactiveModelFittingSparseFloatMatrix rowIndicesAtIndex:](self, "rowIndicesAtIndex:", j)}];
+        [toCopy addRowIndices:{-[AWDProactiveModelFittingSparseFloatMatrix rowIndicesAtIndex:](self, "rowIndicesAtIndex:", j)}];
       }
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v13 + 11) = self->_rowLength;
-    *(v13 + 96) |= 2u;
+    *(toCopy + 11) = self->_rowLength;
+    *(toCopy + 96) |= 2u;
   }
 
   if ([(AWDProactiveModelFittingSparseFloatMatrix *)self valuesCount])
   {
-    [v13 clearValues];
-    v10 = [(AWDProactiveModelFittingSparseFloatMatrix *)self valuesCount];
-    if (v10)
+    [toCopy clearValues];
+    valuesCount = [(AWDProactiveModelFittingSparseFloatMatrix *)self valuesCount];
+    if (valuesCount)
     {
-      v11 = v10;
+      v11 = valuesCount;
       for (k = 0; k != v11; ++k)
       {
         [(AWDProactiveModelFittingSparseFloatMatrix *)self valuesAtIndex:k];
-        [v13 addValues:?];
+        [toCopy addValues:?];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v14 = v4;
+  toCopy = to;
+  v14 = toCopy;
   if (self->_columnIndices.count)
   {
     v5 = 0;
@@ -233,7 +233,7 @@ LABEL_16:
     {
       v6 = self->_columnIndices.list[v5];
       PBDataWriterWriteUint64Field();
-      v4 = v14;
+      toCopy = v14;
       ++v5;
     }
 
@@ -244,7 +244,7 @@ LABEL_16:
   {
     columnLength = self->_columnLength;
     PBDataWriterWriteUint64Field();
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_rowIndices.count)
@@ -254,7 +254,7 @@ LABEL_16:
     {
       v9 = self->_rowIndices.list[v8];
       PBDataWriterWriteUint64Field();
-      v4 = v14;
+      toCopy = v14;
       ++v8;
     }
 
@@ -265,7 +265,7 @@ LABEL_16:
   {
     rowLength = self->_rowLength;
     PBDataWriterWriteUint64Field();
-    v4 = v14;
+    toCopy = v14;
   }
 
   p_values = &self->_values;
@@ -276,7 +276,7 @@ LABEL_16:
     {
       v13 = p_values->list[v12];
       PBDataWriterWriteFloatField();
-      v4 = v14;
+      toCopy = v14;
       ++v12;
     }
 
@@ -286,29 +286,29 @@ LABEL_16:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = PBRepeatedUInt64NSArray();
-  [v3 setObject:v4 forKey:@"columnIndices"];
+  [dictionary setObject:v4 forKey:@"columnIndices"];
 
   if (*&self->_has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_columnLength];
-    [v3 setObject:v5 forKey:@"columnLength"];
+    [dictionary setObject:v5 forKey:@"columnLength"];
   }
 
   v6 = PBRepeatedUInt64NSArray();
-  [v3 setObject:v6 forKey:@"rowIndices"];
+  [dictionary setObject:v6 forKey:@"rowIndices"];
 
   if ((*&self->_has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_rowLength];
-    [v3 setObject:v7 forKey:@"rowLength"];
+    [dictionary setObject:v7 forKey:@"rowLength"];
   }
 
   v8 = PBRepeatedFloatNSArray();
-  [v3 setObject:v8 forKey:@"values"];
+  [dictionary setObject:v8 forKey:@"values"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -317,31 +317,31 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = AWDProactiveModelFittingSparseFloatMatrix;
   v4 = [(AWDProactiveModelFittingSparseFloatMatrix *)&v8 description];
-  v5 = [(AWDProactiveModelFittingSparseFloatMatrix *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveModelFittingSparseFloatMatrix *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (float)valuesAtIndex:(unint64_t)a3
+- (float)valuesAtIndex:(unint64_t)index
 {
   p_values = &self->_values;
   count = self->_values.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_values->list[a3];
+  return p_values->list[index];
 }
 
-- (void)setHasRowLength:(BOOL)a3
+- (void)setHasRowLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 2;
   }
@@ -354,36 +354,36 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unint64_t)rowIndicesAtIndex:(unint64_t)a3
+- (unint64_t)rowIndicesAtIndex:(unint64_t)index
 {
   p_rowIndices = &self->_rowIndices;
   count = self->_rowIndices.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_rowIndices->list[a3];
+  return p_rowIndices->list[index];
 }
 
-- (unint64_t)columnIndicesAtIndex:(unint64_t)a3
+- (unint64_t)columnIndicesAtIndex:(unint64_t)index
 {
   p_columnIndices = &self->_columnIndices;
   count = self->_columnIndices.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_columnIndices->list[a3];
+  return p_columnIndices->list[index];
 }
 
 - (void)dealloc
@@ -396,13 +396,13 @@ LABEL_16:
   [(AWDProactiveModelFittingSparseFloatMatrix *)&v3 dealloc];
 }
 
-- (float)valueAtRow:(unint64_t)a3 column:(unint64_t)a4
+- (float)valueAtRow:(unint64_t)row column:(unint64_t)column
 {
   v7 = 0.0;
   if ([(AWDProactiveModelFittingSparseFloatMatrix *)self valuesCount])
   {
     v8 = 0;
-    while ([(AWDProactiveModelFittingSparseFloatMatrix *)self rowIndices][8 * v8] != a3 || [(AWDProactiveModelFittingSparseFloatMatrix *)self columnIndices][8 * v8] != a4)
+    while ([(AWDProactiveModelFittingSparseFloatMatrix *)self rowIndices][8 * v8] != row || [(AWDProactiveModelFittingSparseFloatMatrix *)self columnIndices][8 * v8] != column)
     {
       if (++v8 >= [(AWDProactiveModelFittingSparseFloatMatrix *)self valuesCount])
       {
@@ -416,19 +416,19 @@ LABEL_16:
   return v7;
 }
 
-+ (id)sparseFloatMatrixFromSparseMatrix:(id)a3
++ (id)sparseFloatMatrixFromSparseMatrix:(id)matrix
 {
-  v3 = a3;
+  matrixCopy = matrix;
   v4 = objc_opt_new();
-  [v4 setColumnLength:{objc_msgSend(v3, "numberOfColumns")}];
-  [v4 setRowLength:{objc_msgSend(v3, "numberOfRows")}];
+  [v4 setColumnLength:{objc_msgSend(matrixCopy, "numberOfColumns")}];
+  [v4 setRowLength:{objc_msgSend(matrixCopy, "numberOfRows")}];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__AWDProactiveModelFittingSparseFloatMatrix_PML__sparseFloatMatrixFromSparseMatrix___block_invoke;
   v7[3] = &unk_279AC04A0;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateNonZeroValuesWithBlock:v7];
+  [matrixCopy enumerateNonZeroValuesWithBlock:v7];
 
   return v5;
 }
@@ -443,19 +443,19 @@ uint64_t __84__AWDProactiveModelFittingSparseFloatMatrix_PML__sparseFloatMatrixF
   return [v7 addValues:v8];
 }
 
-+ (id)sparseFloatMatrixFromDenseMatrix:(id)a3
++ (id)sparseFloatMatrixFromDenseMatrix:(id)matrix
 {
-  v3 = a3;
+  matrixCopy = matrix;
   v4 = objc_opt_new();
-  [v4 setColumnLength:{objc_msgSend(v3, "numberOfColumns")}];
-  [v4 setRowLength:{objc_msgSend(v3, "numberOfRows")}];
+  [v4 setColumnLength:{objc_msgSend(matrixCopy, "numberOfColumns")}];
+  [v4 setRowLength:{objc_msgSend(matrixCopy, "numberOfRows")}];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__AWDProactiveModelFittingSparseFloatMatrix_PML__sparseFloatMatrixFromDenseMatrix___block_invoke;
   v7[3] = &unk_279AC04A0;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateNonZeroValuesWithBlock:v7];
+  [matrixCopy enumerateNonZeroValuesWithBlock:v7];
 
   return v5;
 }

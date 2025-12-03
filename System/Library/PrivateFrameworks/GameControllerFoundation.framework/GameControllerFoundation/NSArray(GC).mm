@@ -17,7 +17,7 @@
     [NSArray(GC) gc_requiredObjectAtIndex:ofClass:];
   }
 
-  v6 = [a1 objectAtIndex:?];
+  v6 = [self objectAtIndex:?];
   if (v6 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v9 = NSStringFromClass(a4);
@@ -58,7 +58,7 @@
     [NSArray(GC) gc_requiredObjectAtIndex:ofClass:error:];
   }
 
-  if ([a1 count] > a3 && (objc_msgSend(a1, "objectAtIndex:", a3), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ([self count] > a3 && (objc_msgSend(self, "objectAtIndex:", a3), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
     if (objc_opt_isKindOfClass())
@@ -130,13 +130,13 @@ LABEL_10:
 - (id)gc_reversedArray
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a1 reverseObjectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  reverseObjectEnumerator = [self reverseObjectEnumerator];
+  v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -147,13 +147,13 @@ LABEL_10:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         [v2 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -168,13 +168,13 @@ LABEL_10:
 - (id)gc_arrayByTransformingElementsWithOptions:()GC usingBlock:
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = a1;
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  selfCopy = self;
+  v9 = [selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -187,7 +187,7 @@ LABEL_10:
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(selfCopy);
         }
 
         v14 = (*(a4 + 16))(a4, *(*(&v19 + 1) + 8 * v13), v11);
@@ -201,7 +201,7 @@ LABEL_10:
       }
 
       while (v10 != v13);
-      v15 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v15 = [selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       v10 = v15;
     }
 
@@ -216,7 +216,7 @@ LABEL_10:
 
 - (id)gc_arrayByRemovingObject:()GC
 {
-  v4 = [a1 mutableCopy];
+  v4 = [self mutableCopy];
   [v4 removeObject:a3];
   v5 = [v4 copy];
 
@@ -230,7 +230,7 @@ LABEL_10:
   v5[2] = __57__NSArray_GC__gc_enumerateObjectsWithOptions_usingBlock___block_invoke;
   v5[3] = &__block_descriptor_40_e15_v32__0_8Q16_B24lu32l8;
   v5[4] = a4;
-  return [a1 enumerateObjectsUsingBlock:v5];
+  return [self enumerateObjectsUsingBlock:v5];
 }
 
 - (void)gc_requiredObjectAtIndex:()GC ofClass:.cold.1()

@@ -1,10 +1,10 @@
 @interface CalDAVCalendarServerUserItem
 - (id)copyParseRules;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (void)setAcceptedURLItem:(id)a3;
-- (void)setFirstNameItem:(id)a3;
-- (void)setLastNameItem:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)setAcceptedURLItem:(id)item;
+- (void)setFirstNameItem:(id)item;
+- (void)setLastNameItem:(id)item;
 @end
 
 @implementation CalDAVCalendarServerUserItem
@@ -17,65 +17,65 @@
   v4 = [(CoreDAVItem *)&v27 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CalDAVCalendarServerUserItem *)self commonName];
-  v6 = [v5 payloadAsString];
-  [v3 appendFormat:@"\n  Common name: [%@]", v6];
+  commonName = [(CalDAVCalendarServerUserItem *)self commonName];
+  payloadAsString = [commonName payloadAsString];
+  [v3 appendFormat:@"\n  Common name: [%@]", payloadAsString];
 
-  v7 = [(CalDAVCalendarServerUserItem *)self firstName];
-  [v3 appendFormat:@"\n  First Name: [%@]", v7];
+  firstName = [(CalDAVCalendarServerUserItem *)self firstName];
+  [v3 appendFormat:@"\n  First Name: [%@]", firstName];
 
-  v8 = [(CalDAVCalendarServerUserItem *)self lastName];
-  [v3 appendFormat:@"\n  Last Name: [%@]", v8];
+  lastName = [(CalDAVCalendarServerUserItem *)self lastName];
+  [v3 appendFormat:@"\n  Last Name: [%@]", lastName];
 
-  v9 = [(CalDAVCalendarServerUserItem *)self acceptedURL];
-  [v3 appendFormat:@"\n  Accepted URL: [%@]", v9];
+  acceptedURL = [(CalDAVCalendarServerUserItem *)self acceptedURL];
+  [v3 appendFormat:@"\n  Accepted URL: [%@]", acceptedURL];
 
-  v10 = [(CalDAVCalendarServerUserItem *)self href];
-  v11 = [v10 payloadAsFullURL];
-  [v3 appendFormat:@"\n  Full HREF: [%@]", v11];
+  href = [(CalDAVCalendarServerUserItem *)self href];
+  payloadAsFullURL = [href payloadAsFullURL];
+  [v3 appendFormat:@"\n  Full HREF: [%@]", payloadAsFullURL];
 
-  v12 = [(CalDAVCalendarServerUserItem *)self href];
-  v13 = [v12 payloadAsOriginalURL];
-  [v3 appendFormat:@"\n  Original HREF: [%@]", v13];
+  href2 = [(CalDAVCalendarServerUserItem *)self href];
+  payloadAsOriginalURL = [href2 payloadAsOriginalURL];
+  [v3 appendFormat:@"\n  Original HREF: [%@]", payloadAsOriginalURL];
 
-  v14 = [(CalDAVCalendarServerUserItem *)self inviteStatus];
-  v15 = [v14 nameSpace];
-  v16 = [(CalDAVCalendarServerUserItem *)self inviteStatus];
-  v17 = [v16 name];
-  [v3 appendFormat:@"\n  Invite status: [%@%@]", v15, v17];
+  inviteStatus = [(CalDAVCalendarServerUserItem *)self inviteStatus];
+  nameSpace = [inviteStatus nameSpace];
+  inviteStatus2 = [(CalDAVCalendarServerUserItem *)self inviteStatus];
+  name = [inviteStatus2 name];
+  [v3 appendFormat:@"\n  Invite status: [%@%@]", nameSpace, name];
 
-  v18 = [(CalDAVCalendarServerUserItem *)self access];
-  v19 = [v18 accessLevel];
-  v20 = [v19 nameSpace];
-  v21 = [(CalDAVCalendarServerUserItem *)self access];
-  v22 = [v21 accessLevel];
-  v23 = [v22 name];
-  [v3 appendFormat:@"\n  Access level: [%@%@]", v20, v23];
+  access = [(CalDAVCalendarServerUserItem *)self access];
+  accessLevel = [access accessLevel];
+  nameSpace2 = [accessLevel nameSpace];
+  access2 = [(CalDAVCalendarServerUserItem *)self access];
+  accessLevel2 = [access2 accessLevel];
+  name2 = [accessLevel2 name];
+  [v3 appendFormat:@"\n  Access level: [%@%@]", nameSpace2, name2];
 
-  v24 = [(CalDAVCalendarServerUserItem *)self summary];
-  v25 = [v24 payloadAsString];
-  [v3 appendFormat:@"\n  Summary: [%@]", v25];
+  summary = [(CalDAVCalendarServerUserItem *)self summary];
+  payloadAsString2 = [summary payloadAsString];
+  [v3 appendFormat:@"\n  Summary: [%@]", payloadAsString2];
 
   return v3;
 }
 
-- (void)setFirstNameItem:(id)a3
+- (void)setFirstNameItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  [(CalDAVCalendarServerUserItem *)self setFirstName:v4];
+  payloadAsString = [item payloadAsString];
+  [(CalDAVCalendarServerUserItem *)self setFirstName:payloadAsString];
 }
 
-- (void)setLastNameItem:(id)a3
+- (void)setLastNameItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  [(CalDAVCalendarServerUserItem *)self setLastName:v4];
+  payloadAsString = [item payloadAsString];
+  [(CalDAVCalendarServerUserItem *)self setLastName:payloadAsString];
 }
 
-- (void)setAcceptedURLItem:(id)a3
+- (void)setAcceptedURLItem:(id)item
 {
-  v5 = [a3 href];
-  v4 = [v5 payloadAsFullURL];
-  [(CalDAVCalendarServerUserItem *)self setAcceptedURL:v4];
+  href = [item href];
+  payloadAsFullURL = [href payloadAsFullURL];
+  [(CalDAVCalendarServerUserItem *)self setAcceptedURL:payloadAsFullURL];
 }
 
 - (id)copyParseRules
@@ -111,47 +111,47 @@
   return v20;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if (self == v4)
+  compareCopy = compare;
+  if (self == compareCopy)
   {
     v9 = 0;
   }
 
   else
   {
-    v5 = [(CalDAVCalendarServerUserItem *)self href];
-    v6 = [v5 payloadAsString];
-    v7 = [(CalDAVCalendarServerUserItem *)v4 href];
-    v8 = [v7 payloadAsString];
-    v9 = [v6 compare:v8];
+    href = [(CalDAVCalendarServerUserItem *)self href];
+    payloadAsString = [href payloadAsString];
+    href2 = [(CalDAVCalendarServerUserItem *)compareCopy href];
+    payloadAsString2 = [href2 payloadAsString];
+    v9 = [payloadAsString compare:payloadAsString2];
 
     if (!v9)
     {
-      v10 = [(CalDAVCalendarServerUserItem *)self access];
-      v11 = [v10 accessLevel];
-      v12 = [v11 name];
-      v13 = [(CalDAVCalendarServerUserItem *)v4 access];
-      v14 = [v13 accessLevel];
-      v15 = [v14 name];
-      v9 = [v12 compare:v15];
+      access = [(CalDAVCalendarServerUserItem *)self access];
+      accessLevel = [access accessLevel];
+      name = [accessLevel name];
+      access2 = [(CalDAVCalendarServerUserItem *)compareCopy access];
+      accessLevel2 = [access2 accessLevel];
+      name2 = [accessLevel2 name];
+      v9 = [name compare:name2];
 
       if (!v9)
       {
-        v16 = [(CalDAVCalendarServerUserItem *)self inviteStatus];
-        v17 = [v16 name];
-        v18 = [(CalDAVCalendarServerUserItem *)v4 inviteStatus];
-        v19 = [v18 name];
-        v9 = [v17 compare:v19];
+        inviteStatus = [(CalDAVCalendarServerUserItem *)self inviteStatus];
+        name3 = [inviteStatus name];
+        inviteStatus2 = [(CalDAVCalendarServerUserItem *)compareCopy inviteStatus];
+        name4 = [inviteStatus2 name];
+        v9 = [name3 compare:name4];
 
         if (!v9)
         {
-          v20 = [(CalDAVCalendarServerUserItem *)self commonName];
-          v21 = [v20 payloadAsString];
-          v22 = [(CalDAVCalendarServerUserItem *)v4 commonName];
-          v23 = [v22 payloadAsString];
-          v9 = [v21 compare:v23];
+          commonName = [(CalDAVCalendarServerUserItem *)self commonName];
+          payloadAsString3 = [commonName payloadAsString];
+          commonName2 = [(CalDAVCalendarServerUserItem *)compareCopy commonName];
+          payloadAsString4 = [commonName2 payloadAsString];
+          v9 = [payloadAsString3 compare:payloadAsString4];
         }
       }
     }

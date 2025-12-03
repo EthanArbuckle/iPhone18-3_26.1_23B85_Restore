@@ -1,21 +1,21 @@
 @interface TILabeledKeyboardCandidate
-- (BOOL)isEqual:(id)a3;
-- (TILabeledKeyboardCandidate)initWithCandidate:(id)a3 forInput:(id)a4 label:(id)a5 transliterationType:(int64_t)a6;
-- (TILabeledKeyboardCandidate)initWithCandidateResultSetCoder:(id)a3;
-- (TILabeledKeyboardCandidate)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCandidateResultSetCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TILabeledKeyboardCandidate)initWithCandidate:(id)candidate forInput:(id)input label:(id)label transliterationType:(int64_t)type;
+- (TILabeledKeyboardCandidate)initWithCandidateResultSetCoder:(id)coder;
+- (TILabeledKeyboardCandidate)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCandidateResultSetCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TILabeledKeyboardCandidate
 
-- (void)encodeWithCandidateResultSetCoder:(id)a3
+- (void)encodeWithCandidateResultSetCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TILabeledKeyboardCandidate;
-  v4 = a3;
-  [(TIKeyboardCandidateSingle *)&v6 encodeWithCandidateResultSetCoder:v4];
+  coderCopy = coder;
+  [(TIKeyboardCandidateSingle *)&v6 encodeWithCandidateResultSetCoder:coderCopy];
   if (self->_label)
   {
     label = self->_label;
@@ -26,36 +26,36 @@
     label = &stru_1EF56D550;
   }
 
-  [v4 encodeString:{label, v6.receiver, v6.super_class}];
-  [v4 encodeByte:LOBYTE(self->_transliterationType)];
+  [coderCopy encodeString:{label, v6.receiver, v6.super_class}];
+  [coderCopy encodeByte:LOBYTE(self->_transliterationType)];
 }
 
-- (TILabeledKeyboardCandidate)initWithCandidateResultSetCoder:(id)a3
+- (TILabeledKeyboardCandidate)initWithCandidateResultSetCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TILabeledKeyboardCandidate;
-  v5 = [(TIKeyboardCandidateSingle *)&v10 initWithCandidateResultSetCoder:v4];
+  v5 = [(TIKeyboardCandidateSingle *)&v10 initWithCandidateResultSetCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeString];
-    v7 = [v6 copy];
+    decodeString = [coderCopy decodeString];
+    v7 = [decodeString copy];
     label = v5->_label;
     v5->_label = v7;
 
-    v5->_transliterationType = [v4 decodeByte];
+    v5->_transliterationType = [coderCopy decodeByte];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8.receiver = self;
     v8.super_class = TILabeledKeyboardCandidate;
     if ([(TIKeyboardCandidate *)&v8 isEqual:v5])
@@ -77,48 +77,48 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TILabeledKeyboardCandidate;
-  [(TIKeyboardCandidateSingle *)&v7 encodeWithCoder:v4];
+  [(TIKeyboardCandidateSingle *)&v7 encodeWithCoder:coderCopy];
   label = self->_label;
   if (label)
   {
-    [v4 encodeObject:label forKey:@"label"];
+    [coderCopy encodeObject:label forKey:@"label"];
   }
 
   transliterationType = self->_transliterationType;
   if (transliterationType)
   {
-    [v4 encodeInt:transliterationType forKey:@"transliterationType"];
+    [coderCopy encodeInt:transliterationType forKey:@"transliterationType"];
   }
 }
 
-- (TILabeledKeyboardCandidate)initWithCoder:(id)a3
+- (TILabeledKeyboardCandidate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TILabeledKeyboardCandidate;
-  v5 = [(TIKeyboardCandidateSingle *)&v9 initWithCoder:v4];
+  v5 = [(TIKeyboardCandidateSingle *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v6;
 
-    v5->_transliterationType = [v4 decodeIntForKey:@"transliterationType"];
+    v5->_transliterationType = [coderCopy decodeIntForKey:@"transliterationType"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = TILabeledKeyboardCandidate;
-  v4 = [(TIKeyboardCandidateSingle *)&v7 copyWithZone:a3];
+  v4 = [(TIKeyboardCandidateSingle *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -129,17 +129,17 @@
   return v5;
 }
 
-- (TILabeledKeyboardCandidate)initWithCandidate:(id)a3 forInput:(id)a4 label:(id)a5 transliterationType:(int64_t)a6
+- (TILabeledKeyboardCandidate)initWithCandidate:(id)candidate forInput:(id)input label:(id)label transliterationType:(int64_t)type
 {
-  v11 = a5;
+  labelCopy = label;
   v15.receiver = self;
   v15.super_class = TILabeledKeyboardCandidate;
-  v12 = [(TIKeyboardCandidateSingle *)&v15 initWithCandidate:a3 forInput:a4];
+  v12 = [(TIKeyboardCandidateSingle *)&v15 initWithCandidate:candidate forInput:input];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_label, a5);
-    v13->_transliterationType = a6;
+    objc_storeStrong(&v12->_label, label);
+    v13->_transliterationType = type;
   }
 
   return v13;

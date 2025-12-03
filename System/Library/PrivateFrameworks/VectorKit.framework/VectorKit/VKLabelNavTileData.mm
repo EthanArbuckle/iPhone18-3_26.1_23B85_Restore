@@ -1,14 +1,14 @@
 @interface VKLabelNavTileData
-- (VKLabelNavTileData)initWithTile:(const void *)a3;
+- (VKLabelNavTileData)initWithTile:(const void *)tile;
 - (__n128)_findTileEdgeJunctions;
 - (__n128)findOppositeCarriagewayJunctionsWithRouteFeatures:distanceThreshold:;
 - (id).cxx_construct;
 - (id)findTileEdgeJunctionAtCoordinate:()Matrix<float;
 - (id)junctionAtCoordinate:()Matrix<float;
 - (void)_findTileEdgeJunctions;
-- (void)addJunction:(id)a3;
-- (void)appendNavJunctionsInWorldRect:(const void *)a3 junctions:(id)a4;
-- (void)findOppositeCarriagewayJunctionsWithRouteFeatures:(void *)a3 distanceThreshold:(double)a4;
+- (void)addJunction:(id)junction;
+- (void)appendNavJunctionsInWorldRect:(const void *)rect junctions:(id)junctions;
+- (void)findOppositeCarriagewayJunctionsWithRouteFeatures:(void *)features distanceThreshold:(double)threshold;
 - (void)findOppositeCarriagewayJunctionsWithRouteFeatures:distanceThreshold:;
 - (void)initializeJunctionInfos;
 @end
@@ -25,27 +25,27 @@
   return self;
 }
 
-- (void)findOppositeCarriagewayJunctionsWithRouteFeatures:(void *)a3 distanceThreshold:(double)a4
+- (void)findOppositeCarriagewayJunctionsWithRouteFeatures:(void *)features distanceThreshold:(double)threshold
 {
   v76 = *MEMORY[0x1E69E9840];
   if (!self->_oppositeCarriagewayJunctionsValid)
   {
-    v6 = self;
+    selfCopy = self;
     self->_oppositeCarriagewayJunctionsValid = 1;
     if (self->_junctionInfos.__begin_ == self->_junctionInfos.__end_)
     {
       [(VKLabelNavTileData *)self initializeJunctionInfos];
     }
 
-    [(NSMutableArray *)v6->_oppositeCarriagewayJunctions removeAllObjects];
-    begin = v6->_junctionInfos.__begin_;
-    end = v6->_junctionInfos.__end_;
+    [(NSMutableArray *)selfCopy->_oppositeCarriagewayJunctions removeAllObjects];
+    begin = selfCopy->_junctionInfos.__begin_;
+    end = selfCopy->_junctionInfos.__end_;
     if (begin != end)
     {
-      v67 = a3;
+      featuresCopy = features;
       do
       {
-        v9 = [(NSMapTable *)v6->_geoJunctionToJunctionMap objectForKey:*begin];
+        v9 = [(NSMapTable *)selfCopy->_geoJunctionToJunctionMap objectForKey:*begin];
         v10 = v9;
         if (v9)
         {
@@ -56,7 +56,7 @@
 
           if ([(VKLabelNavJunction *)v10 isOnDualCarriageway])
           {
-            [(NSMutableArray *)v6->_oppositeCarriagewayJunctions addObject:v10];
+            [(NSMutableArray *)selfCopy->_oppositeCarriagewayJunctions addObject:v10];
             goto LABEL_71;
           }
         }
@@ -65,7 +65,7 @@
         v74 = 0;
         v75 = 0;
         v71 = 8;
-        v11 = *(v6->_tile.__ptr_ + 3);
+        v11 = *(selfCopy->_tile.__ptr_ + 3);
         v12 = v11[1];
         v69 = *v11;
         v70 = v12;
@@ -162,7 +162,7 @@ LABEL_32:
           v24 = v71;
           while (1)
           {
-            v25 = std::__hash_table<std::__hash_value_type<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,std::shared_ptr<md::LabelDedupingGroup>>,std::__unordered_map_hasher<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,std::__hash_value_type<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,std::shared_ptr<md::LabelDedupingGroup>>,std::hash<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>,std::equal_to<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>,true>,std::__unordered_map_equal<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,std::__hash_value_type<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,std::shared_ptr<md::LabelDedupingGroup>>,std::equal_to<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>,std::hash<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>,true>,geo::allocator_adapter<std::__hash_value_type<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,std::shared_ptr<md::LabelDedupingGroup>>,mdm::zone_mallocator>>::find<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>(a3, v16);
+            v25 = std::__hash_table<std::__hash_value_type<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,std::shared_ptr<md::LabelDedupingGroup>>,std::__unordered_map_hasher<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,std::__hash_value_type<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,std::shared_ptr<md::LabelDedupingGroup>>,std::hash<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>,std::equal_to<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>,true>,std::__unordered_map_equal<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,std::__hash_value_type<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,std::shared_ptr<md::LabelDedupingGroup>>,std::equal_to<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>,std::hash<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>,true>,geo::allocator_adapter<std::__hash_value_type<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,std::shared_ptr<md::LabelDedupingGroup>>,mdm::zone_mallocator>>::find<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>(features, v16);
             if (v25)
             {
               break;
@@ -242,26 +242,26 @@ LABEL_52:
               if (v36 > 0.1)
               {
 LABEL_49:
-                if ((v32 < v30 - 1 || v36 < 0.99) && v37 <= a4)
+                if ((v32 < v30 - 1 || v36 < 0.99) && v37 <= threshold)
                 {
                   if (!v10)
                   {
-                    v10 = [[VKLabelNavJunction alloc] initWithGEOJunction:*begin routeOffset:0xBF80000000000000 tile:&v6->_tile];
-                    [(VKLabelNavTileData *)v6 addJunction:v10];
+                    v10 = [[VKLabelNavJunction alloc] initWithGEOJunction:*begin routeOffset:0xBF80000000000000 tile:&selfCopy->_tile];
+                    [(VKLabelNavTileData *)selfCopy addJunction:v10];
                   }
 
                   [(VKLabelNavJunction *)v10 setDepthFromRoute:1];
                   [(VKLabelNavJunction *)v10 setIsOnDualCarriageway:1];
-                  v46 = v6;
+                  v46 = selfCopy;
                   v47 = end;
                   v48 = (v28 + 32);
-                  v49 = [*(v28 + 32) routeOffset];
+                  routeOffset = [*(v28 + 32) routeOffset];
                   v50 = (v28 + 40);
-                  v51 = [*(v28 + 40) routeOffset];
-                  LODWORD(v53) = HIDWORD(v49);
-                  if (*(&v49 + 1) < 0.0 || (LODWORD(v52) = HIDWORD(v51), *(&v51 + 1) < 0.0))
+                  routeOffset2 = [*(v28 + 40) routeOffset];
+                  LODWORD(v53) = HIDWORD(routeOffset);
+                  if (*(&routeOffset + 1) < 0.0 || (LODWORD(v52) = HIDWORD(routeOffset2), *(&routeOffset2 + 1) < 0.0))
                   {
-                    if (*(&v49 + 1) >= 0.0)
+                    if (*(&routeOffset + 1) >= 0.0)
                     {
                       v66 = (v28 + 32);
                     }
@@ -272,17 +272,17 @@ LABEL_49:
                     }
 
                     end = v47;
-                    v6 = v46;
-                    a3 = v67;
+                    selfCopy = v46;
+                    features = featuresCopy;
                     -[VKLabelNavJunction setRouteOffset:](v10, "setRouteOffset:", [*v66 routeOffset]);
                   }
 
                   else
                   {
-                    v54 = [*v48 routeOffset];
+                    routeOffset3 = [*v48 routeOffset];
                     LODWORD(v55) = [*v48 routeOffset] >> 32;
-                    v56 = [*v50 routeOffset];
-                    v57 = [*v50 routeOffset];
+                    routeOffset4 = [*v50 routeOffset];
+                    routeOffset5 = [*v50 routeOffset];
                     v58 = **v28;
                     v59 = vsubq_f64(*(*(v28 + 8) - 16), v58);
                     v60 = vmulq_f64(v59, v59);
@@ -294,21 +294,21 @@ LABEL_49:
                       v61 = fmin(fmax(vdivq_f64(vaddq_f64(vdupq_laneq_s64(v62, 1), v62), vaddq_f64(vdupq_laneq_s64(v60, 1), v60)).f64[0], 0.0), 1.0);
                     }
 
-                    v63 = v55 + v54 + v61 * (v56 - (v55 + v54) + *(&v57 + 1));
+                    v63 = v55 + routeOffset3 + v61 * (routeOffset4 - (v55 + routeOffset3) + *(&routeOffset5 + 1));
                     v64 = v63;
                     v65 = v63 - trunc(v63);
-                    v6 = v46;
+                    selfCopy = v46;
                     if (v65 >= 1.0)
                     {
                       v64 += vcvtms_u32_f32(v65);
                       v65 = v65 - floorf(v65);
                     }
 
-                    a3 = v67;
+                    features = featuresCopy;
                     [(VKLabelNavJunction *)v10 setRouteOffset:v64 | (LODWORD(v65) << 32)];
                   }
 
-                  [(NSMutableArray *)v6->_oppositeCarriagewayJunctions addObject:v10];
+                  [(NSMutableArray *)selfCopy->_oppositeCarriagewayJunctions addObject:v10];
                   break;
                 }
               }
@@ -371,7 +371,7 @@ LABEL_71:
     if (v7[2 * v6 + 1] <= 0)
     {
 LABEL_8:
-      v10 = *(a1 + 8);
+      v10 = *(self + 8);
       v11 = *v10;
       if (v11 >= *(v2 + 151))
       {
@@ -384,7 +384,7 @@ LABEL_8:
       {
         if (*v12)
         {
-          v13 = *(a1 + 16);
+          v13 = *(self + 16);
           std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::basic_string[abi:nn200100]<0>(&v26, v12);
           v14 = std::vector<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,geo::allocator_adapter<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,mdm::zone_mallocator>>::push_back[abi:nn200100](v13, &v26);
           if (v27 < 0)
@@ -404,7 +404,7 @@ LABEL_8:
         {
           v18 = objc_alloc(MEMORY[0x1E696AEC0]);
           v19 = [v18 initWithFormat:@"%@_%llX", v17, v25];
-          v20 = *(a1 + 16);
+          v20 = *(self + 16);
           v21 = v19;
           std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>::basic_string[abi:nn200100]<0>(&v26, [v19 UTF8String]);
           v22 = std::vector<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,geo::allocator_adapter<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>,mdm::zone_mallocator>>::push_back[abi:nn200100](v20, &v26);
@@ -423,14 +423,14 @@ LABEL_8:
 - (__n128)findOppositeCarriagewayJunctionsWithRouteFeatures:distanceThreshold:
 {
   *a2 = &unk_1F2A384B8;
-  result = *(a1 + 8);
+  result = *(self + 8);
   *(a2 + 8) = result;
   return result;
 }
 
-- (void)appendNavJunctionsInWorldRect:(const void *)a3 junctions:(id)a4
+- (void)appendNavJunctionsInWorldRect:(const void *)rect junctions:(id)junctions
 {
-  v13 = a4;
+  junctionsCopy = junctions;
   begin = self->_junctionInfos.__begin_;
   end = self->_junctionInfos.__end_;
   if (begin == end)
@@ -445,7 +445,7 @@ LABEL_8:
     v8 = 0;
     v9 = *(begin + 1);
     v10 = 1;
-    while (v9 >= *(a3 + v8) && v9 < *(a3 + v8 + 2))
+    while (v9 >= *(rect + v8) && v9 < *(rect + v8 + 2))
     {
       v11 = v10;
       v10 = 0;
@@ -460,7 +460,7 @@ LABEL_8:
           [(VKLabelNavTileData *)self addJunction:v12];
         }
 
-        [v13 addObject:v12];
+        [junctionsCopy addObject:v12];
 
         end = self->_junctionInfos.__end_;
         break;
@@ -711,16 +711,16 @@ LABEL_16:
 {
   v3 = *a2;
   v4 = *(*a2 + 8);
-  if (!v4 || v4 == **(a1 + 8) - 1)
+  if (!v4 || v4 == **(self + 8) - 1)
   {
-    v5.i64[0] = *(**(a1 + 16) + 8 * v4);
+    v5.i64[0] = *(**(self + 16) + 8 * v4);
     v5.i64[1] = v5.i64[0];
     v6.i32[0] = vmovn_s32(vcgtq_f32(v5, xmmword_1B33B2170)).u32[0];
     v6.i32[1] = vmovn_s32(vcgtq_f32(xmmword_1B33B2170, v5)).i32[1];
     if ((vmaxv_u16(vcltz_s16(vshl_n_s16(v6, 0xFuLL))) & 1) != 0 && !*(v3 + 40))
     {
-      v7 = [[VKLabelNavJunction alloc] initWithRoadEdge:v3 atA:1 routeOffset:0xBF80000000000000 tile:**(a1 + 24) + 8];
-      [**(a1 + 24) addJunction:?];
+      v7 = [[VKLabelNavJunction alloc] initWithRoadEdge:v3 atA:1 routeOffset:0xBF80000000000000 tile:**(self + 24) + 8];
+      [**(self + 24) addJunction:?];
     }
   }
 }
@@ -728,22 +728,22 @@ LABEL_16:
 - (__n128)_findTileEdgeJunctions
 {
   *a2 = &unk_1F2A38428;
-  result = *(a1 + 8);
+  result = *(self + 8);
   *(a2 + 8) = result;
   return result;
 }
 
-- (void)addJunction:(id)a3
+- (void)addJunction:(id)junction
 {
-  v4 = a3;
-  if ([v4 geoJunction])
+  junctionCopy = junction;
+  if ([junctionCopy geoJunction])
   {
-    -[NSMapTable setObject:forKey:](self->_geoJunctionToJunctionMap, "setObject:forKey:", v4, [v4 geoJunction]);
+    -[NSMapTable setObject:forKey:](self->_geoJunctionToJunctionMap, "setObject:forKey:", junctionCopy, [junctionCopy geoJunction]);
   }
 
   else
   {
-    [(NSMutableArray *)self->_tileEdgeJunctions addObject:v4];
+    [(NSMutableArray *)self->_tileEdgeJunctions addObject:junctionCopy];
   }
 }
 
@@ -793,7 +793,7 @@ LABEL_11:
   return v4;
 }
 
-- (VKLabelNavTileData)initWithTile:(const void *)a3
+- (VKLabelNavTileData)initWithTile:(const void *)tile
 {
   v17.receiver = self;
   v17.super_class = VKLabelNavTileData;
@@ -801,8 +801,8 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    v7 = *a3;
-    v6 = *(a3 + 1);
+    v7 = *tile;
+    v6 = *(tile + 1);
     if (v6)
     {
       atomic_fetch_add_explicit((v6 + 8), 1uLL, memory_order_relaxed);

@@ -1,9 +1,9 @@
 @interface QSSMultilingualStreamingResponse
-- (Offset<siri::speech::qss_fb::MultilingualStreamingResponse>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::qss_fb::MultilingualStreamingResponse>)addObjectToBuffer:(void *)buffer;
 - (QSSAudioLimitExceeded)contentAsQSSAudioLimitExceeded;
 - (QSSFinalBlazarResponse)contentAsQSSFinalBlazarResponse;
 - (QSSFinalSpeechRecognitionResponse)contentAsQSSFinalSpeechRecognitionResponse;
-- (QSSMultilingualStreamingResponse)initWithFlatbuffData:(id)a3 root:(const MultilingualStreamingResponse *)a4 verify:(BOOL)a5;
+- (QSSMultilingualStreamingResponse)initWithFlatbuffData:(id)data root:(const MultilingualStreamingResponse *)root verify:(BOOL)verify;
 - (QSSPartialSpeechRecognitionResponse)contentAsQSSPartialSpeechRecognitionResponse;
 - (QSSRecognitionCandidate)contentAsQSSRecognitionCandidate;
 - (QSSRequestStatsResponse)contentAsQSSRequestStatsResponse;
@@ -42,13 +42,13 @@ flatbuffers::DetachedBuffer *__48__QSSMultilingualStreamingResponse_flatbuffData
   return result;
 }
 
-- (Offset<siri::speech::qss_fb::MultilingualStreamingResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::MultilingualStreamingResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSMultilingualStreamingResponse *)self content_type];
+  content_type = [(QSSMultilingualStreamingResponse *)self content_type];
   if ([(QSSMultilingualStreamingResponse *)self content_type]== 1)
   {
-    v6 = [(QSSMultilingualStreamingResponse *)self contentAsQSSFinalSpeechRecognitionResponse];
-    LODWORD(v7) = [v6 addObjectToBuffer:a3];
+    contentAsQSSFinalSpeechRecognitionResponse = [(QSSMultilingualStreamingResponse *)self contentAsQSSFinalSpeechRecognitionResponse];
+    LODWORD(v7) = [contentAsQSSFinalSpeechRecognitionResponse addObjectToBuffer:buffer];
 
     v7 = v7;
   }
@@ -60,8 +60,8 @@ flatbuffers::DetachedBuffer *__48__QSSMultilingualStreamingResponse_flatbuffData
 
   if ([(QSSMultilingualStreamingResponse *)self content_type]== 2)
   {
-    v8 = [(QSSMultilingualStreamingResponse *)self contentAsQSSPartialSpeechRecognitionResponse];
-    v9 = [v8 addObjectToBuffer:a3];
+    contentAsQSSPartialSpeechRecognitionResponse = [(QSSMultilingualStreamingResponse *)self contentAsQSSPartialSpeechRecognitionResponse];
+    v9 = [contentAsQSSPartialSpeechRecognitionResponse addObjectToBuffer:buffer];
 
     v10 = v9;
   }
@@ -73,8 +73,8 @@ flatbuffers::DetachedBuffer *__48__QSSMultilingualStreamingResponse_flatbuffData
 
   if ([(QSSMultilingualStreamingResponse *)self content_type]== 3)
   {
-    v11 = [(QSSMultilingualStreamingResponse *)self contentAsQSSRecognitionCandidate];
-    v12 = [v11 addObjectToBuffer:a3];
+    contentAsQSSRecognitionCandidate = [(QSSMultilingualStreamingResponse *)self contentAsQSSRecognitionCandidate];
+    v12 = [contentAsQSSRecognitionCandidate addObjectToBuffer:buffer];
 
     v13 = v12;
   }
@@ -86,8 +86,8 @@ flatbuffers::DetachedBuffer *__48__QSSMultilingualStreamingResponse_flatbuffData
 
   if ([(QSSMultilingualStreamingResponse *)self content_type]== 4)
   {
-    v14 = [(QSSMultilingualStreamingResponse *)self contentAsQSSRequestStatsResponse];
-    v15 = [v14 addObjectToBuffer:a3];
+    contentAsQSSRequestStatsResponse = [(QSSMultilingualStreamingResponse *)self contentAsQSSRequestStatsResponse];
+    v15 = [contentAsQSSRequestStatsResponse addObjectToBuffer:buffer];
 
     v30 = v15;
   }
@@ -99,8 +99,8 @@ flatbuffers::DetachedBuffer *__48__QSSMultilingualStreamingResponse_flatbuffData
 
   if ([(QSSMultilingualStreamingResponse *)self content_type]== 5)
   {
-    v16 = [(QSSMultilingualStreamingResponse *)self contentAsQSSAudioLimitExceeded];
-    v17 = [v16 addObjectToBuffer:a3];
+    contentAsQSSAudioLimitExceeded = [(QSSMultilingualStreamingResponse *)self contentAsQSSAudioLimitExceeded];
+    v17 = [contentAsQSSAudioLimitExceeded addObjectToBuffer:buffer];
 
     v28 = v17;
   }
@@ -110,11 +110,11 @@ flatbuffers::DetachedBuffer *__48__QSSMultilingualStreamingResponse_flatbuffData
     v28 = 0;
   }
 
-  v18 = v5;
+  v18 = content_type;
   if ([(QSSMultilingualStreamingResponse *)self content_type]== 6)
   {
-    v19 = [(QSSMultilingualStreamingResponse *)self contentAsQSSFinalBlazarResponse];
-    v20 = [v19 addObjectToBuffer:a3];
+    contentAsQSSFinalBlazarResponse = [(QSSMultilingualStreamingResponse *)self contentAsQSSFinalBlazarResponse];
+    v20 = [contentAsQSSFinalBlazarResponse addObjectToBuffer:buffer];
     v21 = v13;
     v22 = v7;
 
@@ -128,43 +128,43 @@ flatbuffers::DetachedBuffer *__48__QSSMultilingualStreamingResponse_flatbuffData
     v23 = 0;
   }
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v25 = *(a3 + 5);
-  v24 = *(a3 + 6);
-  v26 = *(a3 + 4);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v18);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v25 = *(buffer + 5);
+  v24 = *(buffer + 6);
+  v26 = *(buffer + 4);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, v18);
   if ([(QSSMultilingualStreamingResponse *)self content_type]== 1)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v22);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v22);
   }
 
   if ([(QSSMultilingualStreamingResponse *)self content_type]== 2)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v10);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v10);
   }
 
   if ([(QSSMultilingualStreamingResponse *)self content_type]== 3)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v21);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v21);
   }
 
   if ([(QSSMultilingualStreamingResponse *)self content_type]== 4)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v30);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v30);
   }
 
   if ([(QSSMultilingualStreamingResponse *)self content_type]== 5)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v29);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v29);
   }
 
   if ([(QSSMultilingualStreamingResponse *)self content_type]== 6)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v23);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v23);
   }
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v26 - v24 + v25);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v26 - v24 + v25);
 }
 
 - (QSSFinalBlazarResponse)contentAsQSSFinalBlazarResponse
@@ -380,10 +380,10 @@ flatbuffers::DetachedBuffer *__48__QSSMultilingualStreamingResponse_flatbuffData
   }
 }
 
-- (QSSMultilingualStreamingResponse)initWithFlatbuffData:(id)a3 root:(const MultilingualStreamingResponse *)a4 verify:(BOOL)a5
+- (QSSMultilingualStreamingResponse)initWithFlatbuffData:(id)data root:(const MultilingualStreamingResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v33.receiver = self;
   v33.super_class = QSSMultilingualStreamingResponse;
   v10 = [(QSSMultilingualStreamingResponse *)&v33 init];
@@ -393,32 +393,32 @@ flatbuffers::DetachedBuffer *__48__QSSMultilingualStreamingResponse_flatbuffData
     goto LABEL_52;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_53;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (v5)
+  v10->_root = root;
+  if (verifyCopy)
   {
-    v13 = [(NSData *)v10->_data bytes];
+    bytes2 = [(NSData *)v10->_data bytes];
     v14 = [(NSData *)v10->_data length];
     root = v10->_root;
-    if (root < v13 || root > v13 + v14)
+    if (root < bytes2 || root > bytes2 + v14)
     {
       goto LABEL_53;
     }
 
-    v17 = [(NSData *)v10->_data bytes];
+    bytes3 = [(NSData *)v10->_data bytes];
     v18 = [(NSData *)v10->_data length];
-    v28 = v17;
+    v28 = bytes3;
     v29 = v18;
     v30 = xmmword_26914CD70;
     v31 = 0;
@@ -523,9 +523,9 @@ LABEL_53:
   }
 
 LABEL_51:
-  v24 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v24;
+  v11->_storage = dictionary;
 
 LABEL_52:
   v26 = v11;

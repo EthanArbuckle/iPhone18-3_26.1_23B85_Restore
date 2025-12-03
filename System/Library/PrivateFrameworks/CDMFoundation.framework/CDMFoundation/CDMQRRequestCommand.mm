@@ -1,19 +1,19 @@
 @interface CDMQRRequestCommand
-- (CDMQRRequestCommand)initWithQRRequest:(id)a3;
+- (CDMQRRequestCommand)initWithQRRequest:(id)request;
 @end
 
 @implementation CDMQRRequestCommand
 
-- (CDMQRRequestCommand)initWithQRRequest:(id)a3
+- (CDMQRRequestCommand)initWithQRRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = CDMQRRequestCommand;
   v6 = [(CDMBaseCommand *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_qrRequest, a3);
+    objc_storeStrong(&v6->_qrRequest, request);
   }
 
   return v7;

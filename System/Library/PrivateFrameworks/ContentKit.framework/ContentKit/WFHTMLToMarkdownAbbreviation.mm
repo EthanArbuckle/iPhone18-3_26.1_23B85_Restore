@@ -1,14 +1,14 @@
 @interface WFHTMLToMarkdownAbbreviation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation WFHTMLToMarkdownAbbreviation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -18,9 +18,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFHTMLToMarkdownAbbreviation *)self abbreviation];
-      v6 = [(WFHTMLToMarkdownAbbreviation *)v4 abbreviation];
-      v7 = [v5 isEqualToString:v6];
+      abbreviation = [(WFHTMLToMarkdownAbbreviation *)self abbreviation];
+      abbreviation2 = [(WFHTMLToMarkdownAbbreviation *)equalCopy abbreviation];
+      v7 = [abbreviation isEqualToString:abbreviation2];
     }
 
     else
@@ -34,8 +34,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WFHTMLToMarkdownAbbreviation *)self abbreviation];
-  v3 = [v2 hash];
+  abbreviation = [(WFHTMLToMarkdownAbbreviation *)self abbreviation];
+  v3 = [abbreviation hash];
 
   return v3;
 }

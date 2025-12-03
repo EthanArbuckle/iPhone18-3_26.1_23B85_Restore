@@ -1,17 +1,17 @@
 @interface HFAccessoryBatteryStatusItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFAccessoryBatteryStatusItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:HFItemUpdateOptionFastInitialUpdate];
-  v6 = [v5 BOOLValue];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:HFItemUpdateOptionFastInitialUpdate];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = MEMORY[0x277D2C900];
     v28 = @"hidden";
@@ -23,14 +23,14 @@
 
   else
   {
-    v11 = [(HFStatusItem *)self home];
-    v12 = [v11 accessories];
+    home = [(HFStatusItem *)self home];
+    accessories = [home accessories];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __60__HFAccessoryBatteryStatusItem__subclass_updateWithOptions___block_invoke;
     v27[3] = &unk_277DF3888;
     v27[4] = self;
-    v13 = [v12 na_filter:v27];
+    v13 = [accessories na_filter:v27];
 
     objc_initWeak(&location, self);
     v14 = MEMORY[0x277D2C900];
@@ -39,7 +39,7 @@
     v23[2] = __60__HFAccessoryBatteryStatusItem__subclass_updateWithOptions___block_invoke_3;
     v23[3] = &unk_277E00648;
     objc_copyWeak(&v25, &location);
-    v24 = v4;
+    v24 = optionsCopy;
     v15 = [v13 na_map:v23];
     v16 = [v14 combineAllFutures:v15];
 

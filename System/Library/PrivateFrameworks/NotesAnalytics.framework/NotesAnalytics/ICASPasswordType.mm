@@ -1,33 +1,33 @@
 @interface ICASPasswordType
-- (ICASPasswordType)initWithPasswordType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASPasswordType)initWithPasswordType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASPasswordType
 
-- (ICASPasswordType)initWithPasswordType:(int64_t)a3
+- (ICASPasswordType)initWithPasswordType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASPasswordType;
   result = [(ICASPasswordType *)&v5 init];
   if (result)
   {
-    result->_passwordType = a3;
+    result->_passwordType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASPasswordType *)self passwordType];
+  passwordType = [(ICASPasswordType *)self passwordType];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (passwordType == 1)
   {
     v4 = @"v1";
   }
 
-  if (v3 == 2)
+  if (passwordType == 2)
   {
     return @"v2";
   }

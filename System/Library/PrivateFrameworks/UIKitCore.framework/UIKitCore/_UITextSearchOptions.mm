@@ -1,6 +1,6 @@
 @interface _UITextSearchOptions
 + (id)defaultSearchOptions;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation _UITextSearchOptions
@@ -14,17 +14,17 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 stringCompareOptions];
-    if (v6 == [(_UITextSearchOptions *)self stringCompareOptions])
+    v5 = equalCopy;
+    stringCompareOptions = [v5 stringCompareOptions];
+    if (stringCompareOptions == [(_UITextSearchOptions *)self stringCompareOptions])
     {
-      v7 = [v5 wordMatchMethod];
-      v8 = v7 == [(_UITextSearchOptions *)self wordMatchMethod];
+      wordMatchMethod = [v5 wordMatchMethod];
+      v8 = wordMatchMethod == [(_UITextSearchOptions *)self wordMatchMethod];
     }
 
     else

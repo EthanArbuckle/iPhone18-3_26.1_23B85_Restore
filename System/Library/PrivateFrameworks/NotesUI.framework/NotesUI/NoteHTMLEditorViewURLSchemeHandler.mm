@@ -1,39 +1,39 @@
 @interface NoteHTMLEditorViewURLSchemeHandler
 - (NoteHTMLEditorView)noteHTMLEditorView;
-- (NoteHTMLEditorViewURLSchemeHandler)initWithNoteHMLEditorView:(id)a3;
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4;
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4;
+- (NoteHTMLEditorViewURLSchemeHandler)initWithNoteHMLEditorView:(id)view;
+- (void)webView:(id)view startURLSchemeTask:(id)task;
+- (void)webView:(id)view stopURLSchemeTask:(id)task;
 @end
 
 @implementation NoteHTMLEditorViewURLSchemeHandler
 
-- (NoteHTMLEditorViewURLSchemeHandler)initWithNoteHMLEditorView:(id)a3
+- (NoteHTMLEditorViewURLSchemeHandler)initWithNoteHMLEditorView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = NoteHTMLEditorViewURLSchemeHandler;
   v5 = [(NoteHTMLEditorViewURLSchemeHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_noteHTMLEditorView, v4);
+    objc_storeWeak(&v5->_noteHTMLEditorView, viewCopy);
   }
 
   return v6;
 }
 
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4
+- (void)webView:(id)view startURLSchemeTask:(id)task
 {
-  v5 = a4;
-  v6 = [(NoteHTMLEditorViewURLSchemeHandler *)self noteHTMLEditorView];
-  [v6 loadAttachmentContentForURLSchemeTask:v5];
+  taskCopy = task;
+  noteHTMLEditorView = [(NoteHTMLEditorViewURLSchemeHandler *)self noteHTMLEditorView];
+  [noteHTMLEditorView loadAttachmentContentForURLSchemeTask:taskCopy];
 }
 
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4
+- (void)webView:(id)view stopURLSchemeTask:(id)task
 {
-  v5 = a4;
-  v6 = [(NoteHTMLEditorViewURLSchemeHandler *)self noteHTMLEditorView];
-  [v6 stopLoadingAttachmentContentForURLSchemeTask:v5];
+  taskCopy = task;
+  noteHTMLEditorView = [(NoteHTMLEditorViewURLSchemeHandler *)self noteHTMLEditorView];
+  [noteHTMLEditorView stopLoadingAttachmentContentForURLSchemeTask:taskCopy];
 }
 
 - (NoteHTMLEditorView)noteHTMLEditorView

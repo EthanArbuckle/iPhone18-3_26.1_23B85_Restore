@@ -1,18 +1,18 @@
 @interface SWConfigurationManager
-- (SWConfigurationManager)initWithWebContentScriptsManager:(id)a3 logger:(id)a4 serializer:(id)a5;
-- (void)setConfiguration:(id)a3;
+- (SWConfigurationManager)initWithWebContentScriptsManager:(id)manager logger:(id)logger serializer:(id)serializer;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation SWConfigurationManager
 
-- (SWConfigurationManager)initWithWebContentScriptsManager:(id)a3 logger:(id)a4 serializer:(id)a5
+- (SWConfigurationManager)initWithWebContentScriptsManager:(id)manager logger:(id)logger serializer:(id)serializer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  v13 = 0;
-  if (v9 && v11)
+  managerCopy = manager;
+  loggerCopy = logger;
+  serializerCopy = serializer;
+  v12 = serializerCopy;
+  selfCopy = 0;
+  if (managerCopy && serializerCopy)
   {
     v17.receiver = self;
     v17.super_class = SWConfigurationManager;
@@ -20,49 +20,49 @@
     p_isa = &v14->super.isa;
     if (v14)
     {
-      objc_storeStrong(&v14->_webContentScriptsManager, a3);
-      objc_storeStrong(p_isa + 3, a4);
-      objc_storeStrong(p_isa + 5, a5);
+      objc_storeStrong(&v14->_webContentScriptsManager, manager);
+      objc_storeStrong(p_isa + 3, logger);
+      objc_storeStrong(p_isa + 5, serializer);
     }
 
     self = p_isa;
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v17 = a3;
-  if (v17)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v4 = [(SWConfigurationManager *)self configuration];
-    v5 = [v4 isEqualToConfiguration:v17];
+    configuration = [(SWConfigurationManager *)self configuration];
+    v5 = [configuration isEqualToConfiguration:configurationCopy];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(SWConfigurationManager *)self logger];
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Updating configuration with: %@", v17];
-      [v6 log:v7];
+      logger = [(SWConfigurationManager *)self logger];
+      configurationCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Updating configuration with: %@", configurationCopy];
+      [logger log:configurationCopy];
 
-      v8 = [(SWConfigurationManager *)self webContentScriptsManager];
-      v9 = [(SWConfigurationManager *)self configurationScript];
-      [v8 removeScript:v9];
+      webContentScriptsManager = [(SWConfigurationManager *)self webContentScriptsManager];
+      configurationScript = [(SWConfigurationManager *)self configurationScript];
+      [webContentScriptsManager removeScript:configurationScript];
 
-      v10 = [v17 copy];
+      v10 = [configurationCopy copy];
       configuration = self->_configuration;
       self->_configuration = v10;
 
-      v12 = [(SWConfigurationManager *)self serializer];
-      v13 = [v12 serializeWebContentConfiguration:v17];
+      serializer = [(SWConfigurationManager *)self serializer];
+      v13 = [serializer serializeWebContentConfiguration:configurationCopy];
 
       v14 = [[SWConfigurationScript alloc] initWithConfiguration:v13];
-      v15 = [(SWConfigurationManager *)self webContentScriptsManager];
-      [v15 executeScript:v14 completion:0];
+      webContentScriptsManager2 = [(SWConfigurationManager *)self webContentScriptsManager];
+      [webContentScriptsManager2 executeScript:v14 completion:0];
 
-      v16 = [(SWConfigurationManager *)self webContentScriptsManager];
-      [v16 addScript:v14];
+      webContentScriptsManager3 = [(SWConfigurationManager *)self webContentScriptsManager];
+      [webContentScriptsManager3 addScript:v14];
 
       [(SWConfigurationManager *)self setConfigurationScript:v14];
     }

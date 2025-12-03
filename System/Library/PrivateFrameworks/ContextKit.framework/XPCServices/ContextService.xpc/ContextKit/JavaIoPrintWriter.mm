@@ -1,53 +1,53 @@
 @interface JavaIoPrintWriter
 - (BOOL)checkError;
-- (JavaIoPrintWriter)initWithJavaIoWriter:(id)a3;
-- (JavaIoPrintWriter)initWithJavaIoWriter:(id)a3 withBoolean:(BOOL)a4;
-- (id)appendWithJavaLangCharSequence:(id)a3;
-- (id)formatWithJavaUtilLocale:(id)a3 withNSString:(id)a4 withNSObjectArray:(id)a5;
-- (id)formatWithNSString:(id)a3 withNSObjectArray:(id)a4;
+- (JavaIoPrintWriter)initWithJavaIoWriter:(id)writer;
+- (JavaIoPrintWriter)initWithJavaIoWriter:(id)writer withBoolean:(BOOL)boolean;
+- (id)appendWithJavaLangCharSequence:(id)sequence;
+- (id)formatWithJavaUtilLocale:(id)locale withNSString:(id)string withNSObjectArray:(id)array;
+- (id)formatWithNSString:(id)string withNSObjectArray:(id)array;
 - (void)clearError;
 - (void)close;
 - (void)dealloc;
 - (void)flush;
-- (void)printWithBoolean:(BOOL)a3;
-- (void)printWithChar:(unsigned __int16)a3;
-- (void)printWithCharArray:(id)a3;
-- (void)printWithDouble:(double)a3;
-- (void)printWithFloat:(float)a3;
-- (void)printWithId:(id)a3;
-- (void)printWithInt:(int)a3;
-- (void)printWithLong:(int64_t)a3;
-- (void)printWithNSString:(id)a3;
+- (void)printWithBoolean:(BOOL)boolean;
+- (void)printWithChar:(unsigned __int16)char;
+- (void)printWithCharArray:(id)array;
+- (void)printWithDouble:(double)double;
+- (void)printWithFloat:(float)float;
+- (void)printWithId:(id)id;
+- (void)printWithInt:(int)int;
+- (void)printWithLong:(int64_t)long;
+- (void)printWithNSString:(id)string;
 - (void)println;
-- (void)printlnWithBoolean:(BOOL)a3;
-- (void)printlnWithChar:(unsigned __int16)a3;
-- (void)printlnWithCharArray:(id)a3;
-- (void)printlnWithDouble:(double)a3;
-- (void)printlnWithFloat:(float)a3;
-- (void)printlnWithId:(id)a3;
-- (void)printlnWithInt:(int)a3;
-- (void)printlnWithLong:(int64_t)a3;
-- (void)printlnWithNSString:(id)a3;
+- (void)printlnWithBoolean:(BOOL)boolean;
+- (void)printlnWithChar:(unsigned __int16)char;
+- (void)printlnWithCharArray:(id)array;
+- (void)printlnWithDouble:(double)double;
+- (void)printlnWithFloat:(float)float;
+- (void)printlnWithId:(id)id;
+- (void)printlnWithInt:(int)int;
+- (void)printlnWithLong:(int64_t)long;
+- (void)printlnWithNSString:(id)string;
 - (void)setError;
-- (void)writeWithCharArray:(id)a3;
-- (void)writeWithNSString:(id)a3;
+- (void)writeWithCharArray:(id)array;
+- (void)writeWithNSString:(id)string;
 @end
 
 @implementation JavaIoPrintWriter
 
-- (JavaIoPrintWriter)initWithJavaIoWriter:(id)a3
+- (JavaIoPrintWriter)initWithJavaIoWriter:(id)writer
 {
-  JavaIoWriter_initWithId_(self, a3);
+  JavaIoWriter_initWithId_(self, writer);
   self->autoFlush_ = 0;
-  JreStrongAssign(&self->out_, a3);
+  JreStrongAssign(&self->out_, writer);
   return self;
 }
 
-- (JavaIoPrintWriter)initWithJavaIoWriter:(id)a3 withBoolean:(BOOL)a4
+- (JavaIoPrintWriter)initWithJavaIoWriter:(id)writer withBoolean:(BOOL)boolean
 {
-  JavaIoWriter_initWithId_(self, a3);
-  self->autoFlush_ = a4;
-  JreStrongAssign(&self->out_, a3);
+  JavaIoWriter_initWithId_(self, writer);
+  self->autoFlush_ = boolean;
+  JreStrongAssign(&self->out_, writer);
   return self;
 }
 
@@ -109,22 +109,22 @@
   objc_sync_exit(lock);
 }
 
-- (id)formatWithNSString:(id)a3 withNSObjectArray:(id)a4
+- (id)formatWithNSString:(id)string withNSObjectArray:(id)array
 {
   Default = JavaUtilLocale_getDefault();
 
-  return [(JavaIoPrintWriter *)self formatWithJavaUtilLocale:Default withNSString:a3 withNSObjectArray:a4];
+  return [(JavaIoPrintWriter *)self formatWithJavaUtilLocale:Default withNSString:string withNSObjectArray:array];
 }
 
-- (id)formatWithJavaUtilLocale:(id)a3 withNSString:(id)a4 withNSObjectArray:(id)a5
+- (id)formatWithJavaUtilLocale:(id)locale withNSString:(id)string withNSObjectArray:(id)array
 {
-  if (!a4)
+  if (!string)
   {
     v7 = new_JavaLangNullPointerException_initWithNSString_(@"format == null");
     objc_exception_throw(v7);
   }
 
-  [new_JavaUtilFormatter_initWithJavaLangAppendable_withJavaUtilLocale_(self formatWithNSString:"formatWithNSString:withNSObjectArray:" withNSObjectArray:a4, a5];
+  [new_JavaUtilFormatter_initWithJavaLangAppendable_withJavaUtilLocale_(self formatWithNSString:"formatWithNSString:withNSObjectArray:" withNSObjectArray:string, array];
   if (self->autoFlush_)
   {
     [(JavaIoPrintWriter *)self flush];
@@ -133,73 +133,73 @@
   return self;
 }
 
-- (void)printWithCharArray:(id)a3
+- (void)printWithCharArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [NSString stringWithCharacters:a3 offset:0 length:*(a3 + 2)];
+  v4 = [NSString stringWithCharacters:array offset:0 length:*(array + 2)];
 
   [(JavaIoPrintWriter *)self printWithNSString:v4];
 }
 
-- (void)printWithChar:(unsigned __int16)a3
+- (void)printWithChar:(unsigned __int16)char
 {
-  v4 = NSString_valueOfChar_(a3);
+  v4 = NSString_valueOfChar_(char);
 
   [(JavaIoPrintWriter *)self printWithNSString:v4];
 }
 
-- (void)printWithDouble:(double)a3
+- (void)printWithDouble:(double)double
 {
-  v4 = NSString_valueOfDouble_(a3);
+  v4 = NSString_valueOfDouble_(double);
 
   [(JavaIoPrintWriter *)self printWithNSString:v4];
 }
 
-- (void)printWithFloat:(float)a3
+- (void)printWithFloat:(float)float
 {
-  v4 = NSString_valueOfFloat_(a3);
+  v4 = NSString_valueOfFloat_(float);
 
   [(JavaIoPrintWriter *)self printWithNSString:v4];
 }
 
-- (void)printWithInt:(int)a3
+- (void)printWithInt:(int)int
 {
-  v4 = NSString_valueOfInt_(a3);
+  v4 = NSString_valueOfInt_(int);
 
   [(JavaIoPrintWriter *)self printWithNSString:v4];
 }
 
-- (void)printWithLong:(int64_t)a3
+- (void)printWithLong:(int64_t)long
 {
-  v4 = NSString_valueOfLong_(a3);
+  v4 = NSString_valueOfLong_(long);
 
   [(JavaIoPrintWriter *)self printWithNSString:v4];
 }
 
-- (void)printWithId:(id)a3
+- (void)printWithId:(id)id
 {
-  v4 = NSString_valueOf_(a3);
+  v4 = NSString_valueOf_(id);
 
   [(JavaIoPrintWriter *)self printWithNSString:v4];
 }
 
-- (void)printWithNSString:(id)a3
+- (void)printWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
-    a3 = NSString_valueOf_(0);
+    string = NSString_valueOf_(0);
   }
 
-  [(JavaIoPrintWriter *)self writeWithNSString:a3];
+  [(JavaIoPrintWriter *)self writeWithNSString:string];
 }
 
-- (void)printWithBoolean:(BOOL)a3
+- (void)printWithBoolean:(BOOL)boolean
 {
-  v4 = NSString_valueOfBool_(a3);
+  v4 = NSString_valueOfBool_(boolean);
 
   [(JavaIoPrintWriter *)self printWithNSString:v4];
 }
@@ -217,73 +217,73 @@
   objc_sync_exit(lock);
 }
 
-- (void)printlnWithCharArray:(id)a3
+- (void)printlnWithCharArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [NSString stringWithCharacters:a3 offset:0 length:*(a3 + 2)];
+  v4 = [NSString stringWithCharacters:array offset:0 length:*(array + 2)];
 
   [(JavaIoPrintWriter *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithChar:(unsigned __int16)a3
+- (void)printlnWithChar:(unsigned __int16)char
 {
-  v4 = NSString_valueOfChar_(a3);
+  v4 = NSString_valueOfChar_(char);
 
   [(JavaIoPrintWriter *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithDouble:(double)a3
+- (void)printlnWithDouble:(double)double
 {
-  v4 = NSString_valueOfDouble_(a3);
+  v4 = NSString_valueOfDouble_(double);
 
   [(JavaIoPrintWriter *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithFloat:(float)a3
+- (void)printlnWithFloat:(float)float
 {
-  v4 = NSString_valueOfFloat_(a3);
+  v4 = NSString_valueOfFloat_(float);
 
   [(JavaIoPrintWriter *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithInt:(int)a3
+- (void)printlnWithInt:(int)int
 {
-  v4 = NSString_valueOfInt_(a3);
+  v4 = NSString_valueOfInt_(int);
 
   [(JavaIoPrintWriter *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithLong:(int64_t)a3
+- (void)printlnWithLong:(int64_t)long
 {
-  v4 = NSString_valueOfLong_(a3);
+  v4 = NSString_valueOfLong_(long);
 
   [(JavaIoPrintWriter *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithId:(id)a3
+- (void)printlnWithId:(id)id
 {
-  v4 = NSString_valueOf_(a3);
+  v4 = NSString_valueOf_(id);
 
   [(JavaIoPrintWriter *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithNSString:(id)a3
+- (void)printlnWithNSString:(id)string
 {
   lock = self->super.lock_;
   objc_sync_enter(lock);
-  [(JavaIoPrintWriter *)self printWithNSString:a3];
+  [(JavaIoPrintWriter *)self printWithNSString:string];
   [(JavaIoPrintWriter *)self println];
 
   objc_sync_exit(lock);
 }
 
-- (void)printlnWithBoolean:(BOOL)a3
+- (void)printlnWithBoolean:(BOOL)boolean
 {
-  v4 = NSString_valueOfBool_(a3);
+  v4 = NSString_valueOfBool_(boolean);
 
   [(JavaIoPrintWriter *)self printlnWithNSString:v4];
 }
@@ -297,43 +297,43 @@
   objc_sync_exit(lock);
 }
 
-- (void)writeWithCharArray:(id)a3
+- (void)writeWithCharArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  [(JavaIoPrintWriter *)self writeWithCharArray:a3 withInt:0 withInt:v4];
+  [(JavaIoPrintWriter *)self writeWithCharArray:array withInt:0 withInt:v4];
 }
 
-- (void)writeWithNSString:(id)a3
+- (void)writeWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 toCharArray];
+  toCharArray = [string toCharArray];
 
-  [(JavaIoPrintWriter *)self writeWithCharArray:v4];
+  [(JavaIoPrintWriter *)self writeWithCharArray:toCharArray];
 }
 
-- (id)appendWithJavaLangCharSequence:(id)a3
+- (id)appendWithJavaLangCharSequence:(id)sequence
 {
-  if (a3)
+  if (sequence)
   {
-    v4 = a3;
+    sequenceCopy = sequence;
   }
 
   else
   {
-    v4 = @"null";
+    sequenceCopy = @"null";
   }
 
-  [(JavaIoPrintWriter *)self appendWithJavaLangCharSequence:v4 withInt:0 withInt:[(__CFString *)v4 length]];
+  [(JavaIoPrintWriter *)self appendWithJavaLangCharSequence:sequenceCopy withInt:0 withInt:[(__CFString *)sequenceCopy length]];
   return self;
 }
 

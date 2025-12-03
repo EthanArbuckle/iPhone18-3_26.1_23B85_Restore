@@ -1,9 +1,9 @@
 @interface ICAccountProxy
-+ (id)accountProxyWithAccount:(id)a3;
++ (id)accountProxyWithAccount:(id)account;
 - (BOOL)isDeleted;
-- (BOOL)noteIsVisible:(id)a3;
-- (BOOL)supportsVisibilityTestingType:(int64_t)a3;
-- (ICAccountProxy)initWithAccount:(id)a3;
+- (BOOL)noteIsVisible:(id)visible;
+- (BOOL)supportsVisibilityTestingType:(int64_t)type;
+- (ICAccountProxy)initWithAccount:(id)account;
 - (NSArray)visibleNotes;
 - (NSManagedObjectContext)managedObjectContext;
 - (NSString)accountName;
@@ -14,155 +14,155 @@
 - (id)predicateForSearchableAttachments;
 - (id)predicateForSearchableNotes;
 - (id)predicateForVisibleNotes;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)visibleNotesCount;
 @end
 
 @implementation ICAccountProxy
 
-- (ICAccountProxy)initWithAccount:(id)a3
+- (ICAccountProxy)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v8.receiver = self;
   v8.super_class = ICAccountProxy;
   v5 = [(ICAccountProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICAccountProxy *)v5 setAccount:v4];
+    [(ICAccountProxy *)v5 setAccount:accountCopy];
   }
 
   return v6;
 }
 
-+ (id)accountProxyWithAccount:(id)a3
++ (id)accountProxyWithAccount:(id)account
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAccount:v4];
+  accountCopy = account;
+  v5 = [[self alloc] initWithAccount:accountCopy];
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(ICAccountProxy *)self account];
-  v6 = [v5 compare:v4];
+  compareCopy = compare;
+  account = [(ICAccountProxy *)self account];
+  v6 = [account compare:compareCopy];
 
   return v6;
 }
 
 - (id)objectID
 {
-  v2 = [(ICAccountProxy *)self account];
-  v3 = [v2 objectID];
+  account = [(ICAccountProxy *)self account];
+  objectID = [account objectID];
 
-  return v3;
+  return objectID;
 }
 
 - (NSManagedObjectContext)managedObjectContext
 {
-  v2 = [(ICAccountProxy *)self account];
-  v3 = [v2 managedObjectContext];
+  account = [(ICAccountProxy *)self account];
+  managedObjectContext = [account managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (NSString)accountName
 {
-  v2 = [(ICAccountProxy *)self account];
-  v3 = [v2 localizedName];
+  account = [(ICAccountProxy *)self account];
+  localizedName = [account localizedName];
 
-  return v3;
+  return localizedName;
 }
 
-- (BOOL)supportsVisibilityTestingType:(int64_t)a3
+- (BOOL)supportsVisibilityTestingType:(int64_t)type
 {
-  v4 = [(ICAccountProxy *)self account];
-  LOBYTE(a3) = [v4 supportsVisibilityTestingType:a3];
+  account = [(ICAccountProxy *)self account];
+  LOBYTE(type) = [account supportsVisibilityTestingType:type];
 
-  return a3;
+  return type;
 }
 
 - (id)predicateForVisibleNotes
 {
-  v2 = [(ICAccountProxy *)self account];
-  v3 = [v2 predicateForVisibleNotes];
+  account = [(ICAccountProxy *)self account];
+  predicateForVisibleNotes = [account predicateForVisibleNotes];
 
-  return v3;
+  return predicateForVisibleNotes;
 }
 
 - (id)predicateForPinnedNotes
 {
-  v2 = [(ICAccountProxy *)self account];
-  v3 = [v2 predicateForPinnedNotes];
+  account = [(ICAccountProxy *)self account];
+  predicateForPinnedNotes = [account predicateForPinnedNotes];
 
-  return v3;
+  return predicateForPinnedNotes;
 }
 
 - (id)predicateForSearchableNotes
 {
-  v2 = [(ICAccountProxy *)self account];
-  v3 = [v2 predicateForSearchableNotes];
+  account = [(ICAccountProxy *)self account];
+  predicateForSearchableNotes = [account predicateForSearchableNotes];
 
-  return v3;
+  return predicateForSearchableNotes;
 }
 
 - (id)predicateForSearchableAttachments
 {
-  v2 = [(ICAccountProxy *)self account];
-  v3 = [v2 predicateForSearchableAttachments];
+  account = [(ICAccountProxy *)self account];
+  predicateForSearchableAttachments = [account predicateForSearchableAttachments];
 
-  return v3;
+  return predicateForSearchableAttachments;
 }
 
 - (NSArray)visibleNotes
 {
-  v2 = [(ICAccountProxy *)self account];
-  v3 = [v2 visibleNotes];
+  account = [(ICAccountProxy *)self account];
+  visibleNotes = [account visibleNotes];
 
-  return v3;
+  return visibleNotes;
 }
 
 - (unint64_t)visibleNotesCount
 {
-  v2 = [(ICAccountProxy *)self account];
-  v3 = [v2 visibleNotesCount];
+  account = [(ICAccountProxy *)self account];
+  visibleNotesCount = [account visibleNotesCount];
 
-  return v3;
+  return visibleNotesCount;
 }
 
-- (BOOL)noteIsVisible:(id)a3
+- (BOOL)noteIsVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(ICAccountProxy *)self account];
-  v6 = [v5 noteIsVisible:v4];
+  visibleCopy = visible;
+  account = [(ICAccountProxy *)self account];
+  v6 = [account noteIsVisible:visibleCopy];
 
   return v6;
 }
 
 - (NSString)titleForNavigationBar
 {
-  v2 = [(ICAccountProxy *)self account];
-  v3 = [v2 titleForNavigationBar];
+  account = [(ICAccountProxy *)self account];
+  titleForNavigationBar = [account titleForNavigationBar];
 
-  return v3;
+  return titleForNavigationBar;
 }
 
 - (NSString)titleForTableViewCell
 {
-  v2 = [(ICAccountProxy *)self account];
-  v3 = [v2 titleForTableViewCell];
+  account = [(ICAccountProxy *)self account];
+  titleForTableViewCell = [account titleForTableViewCell];
 
-  return v3;
+  return titleForTableViewCell;
 }
 
 - (BOOL)isDeleted
 {
-  v2 = [(ICAccountProxy *)self account];
-  v3 = [v2 isDeleted];
+  account = [(ICAccountProxy *)self account];
+  isDeleted = [account isDeleted];
 
-  return v3;
+  return isDeleted;
 }
 
 @end

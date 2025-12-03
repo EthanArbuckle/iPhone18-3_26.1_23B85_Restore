@@ -1,6 +1,6 @@
 @interface ICAudioRecordingManager
 + (ICAttachment)currentAttachment;
-+ (void)cancelCurrentAudioRecordingSessionWithCompletionHandler:(id)a3;
++ (void)cancelCurrentAudioRecordingSessionWithCompletionHandler:(id)handler;
 - (ICAudioRecordingManager)init;
 @end
 
@@ -18,15 +18,15 @@
   return v2;
 }
 
-+ (void)cancelCurrentAudioRecordingSessionWithCompletionHandler:(id)a3
++ (void)cancelCurrentAudioRecordingSessionWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7C9F60);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  *(v9 + 24) = a1;
+  *(v9 + 24) = self;
   v10 = sub_1D4419F94();
   (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
   v11 = swift_allocObject();

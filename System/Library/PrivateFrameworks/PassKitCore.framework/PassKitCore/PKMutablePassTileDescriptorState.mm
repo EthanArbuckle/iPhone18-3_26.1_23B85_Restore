@@ -1,15 +1,15 @@
 @interface PKMutablePassTileDescriptorState
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setEnabled:(unint64_t)a3;
-- (void)setInProgress:(BOOL)a3;
-- (void)setStateIdentifier:(id)a3;
-- (void)setStateOverride:(id)a3;
-- (void)setSupported:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setEnabled:(unint64_t)enabled;
+- (void)setInProgress:(BOOL)progress;
+- (void)setStateIdentifier:(id)identifier;
+- (void)setStateOverride:(id)override;
+- (void)setSupported:(BOOL)supported;
 @end
 
 @implementation PKMutablePassTileDescriptorState
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (!self)
   {
@@ -21,46 +21,46 @@
   return v4;
 }
 
-- (void)setSupported:(BOOL)a3
+- (void)setSupported:(BOOL)supported
 {
   if (self)
   {
-    self->super._supported = a3;
+    self->super._supported = supported;
   }
 }
 
-- (void)setEnabled:(unint64_t)a3
+- (void)setEnabled:(unint64_t)enabled
 {
   if (self)
   {
-    self->super._enabled = a3 != 0;
+    self->super._enabled = enabled != 0;
   }
 }
 
-- (void)setStateIdentifier:(id)a3
+- (void)setStateIdentifier:(id)identifier
 {
   if (self)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
     stateIdentifier = self->super._stateIdentifier;
     self->super._stateIdentifier = v4;
   }
 }
 
-- (void)setStateOverride:(id)a3
+- (void)setStateOverride:(id)override
 {
-  v5 = a3;
+  overrideCopy = override;
   if (self)
   {
-    objc_storeStrong(&self->super._stateOverride, a3);
+    objc_storeStrong(&self->super._stateOverride, override);
   }
 }
 
-- (void)setInProgress:(BOOL)a3
+- (void)setInProgress:(BOOL)progress
 {
   if (self)
   {
-    self->super._inProgress = a3;
+    self->super._inProgress = progress;
   }
 }
 

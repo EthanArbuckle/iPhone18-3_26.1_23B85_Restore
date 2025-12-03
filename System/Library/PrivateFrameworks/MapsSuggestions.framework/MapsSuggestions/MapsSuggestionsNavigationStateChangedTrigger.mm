@@ -1,7 +1,7 @@
 @interface MapsSuggestionsNavigationStateChangedTrigger
 - (BOOL)isTrue;
 - (MapsSuggestionsNavigationStateChangedTrigger)init;
-- (void)navigationListener:(id)a3 didChangeNavigationState:(unint64_t)a4 transportType:(int)a5;
+- (void)navigationListener:(id)listener didChangeNavigationState:(unint64_t)state transportType:(int)type;
 @end
 
 @implementation MapsSuggestionsNavigationStateChangedTrigger
@@ -14,8 +14,8 @@
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x1E69A2290]);
-    v4 = [(MapsSuggestionsBaseTrigger *)v2 dispatchQueue];
-    v5 = [v3 initWithQueue:v4];
+    dispatchQueue = [(MapsSuggestionsBaseTrigger *)v2 dispatchQueue];
+    v5 = [v3 initWithQueue:dispatchQueue];
     navigationListener = v2->_navigationListener;
     v2->_navigationListener = v5;
 
@@ -25,17 +25,17 @@
   return v2;
 }
 
-- (void)navigationListener:(id)a3 didChangeNavigationState:(unint64_t)a4 transportType:(int)a5
+- (void)navigationListener:(id)listener didChangeNavigationState:(unint64_t)state transportType:(int)type
 {
   objc_initWeak(&location, self);
-  v7 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+  dispatchQueue = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __106__MapsSuggestionsNavigationStateChangedTrigger_navigationListener_didChangeNavigationState_transportType___block_invoke;
   block[3] = &unk_1E81F5948;
   objc_copyWeak(v9, &location);
-  v9[1] = a4;
-  dispatch_async(v7, block);
+  v9[1] = state;
+  dispatch_async(dispatchQueue, block);
 
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
@@ -75,13 +75,13 @@ void __106__MapsSuggestionsNavigationStateChangedTrigger_navigationListener_didC
 
 - (BOOL)isTrue
 {
-  v2 = self;
-  v3 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+  selfCopy = self;
+  dispatchQueue = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__MapsSuggestionsNavigationStateChangedTrigger_isTrue__block_invoke;
   v6[3] = &unk_1E81F5E28;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v4 = v6;
   v10 = 0;
   v11 = &v10;
@@ -93,11 +93,11 @@ void __106__MapsSuggestionsNavigationStateChangedTrigger_navigationListener_didC
   block[3] = &unk_1E81F5E78;
   v8 = v4;
   v9 = &v10;
-  dispatch_sync(v3, block);
-  LOBYTE(v2) = *(v11 + 24);
+  dispatch_sync(dispatchQueue, block);
+  LOBYTE(selfCopy) = *(v11 + 24);
 
   _Block_object_dispose(&v10, 8);
-  return v2;
+  return selfCopy;
 }
 
 @end

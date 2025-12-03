@@ -1,7 +1,7 @@
 @interface CycleDeviationsSectionCell
 - (BOOL)isHighlighted;
-- (_TtC24MenstrualCyclesAppPlugin26CycleDeviationsSectionCell)initWithCoder:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC24MenstrualCyclesAppPlugin26CycleDeviationsSectionCell)initWithCoder:(id)coder;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation CycleDeviationsSectionCell
@@ -13,17 +13,17 @@
   return [(CycleDeviationsSectionCell *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(CycleDeviationsSectionCell *)&v5 setHighlighted:v3];
+  [(CycleDeviationsSectionCell *)&v5 setHighlighted:highlightedCopy];
   sub_29E1CD824();
 }
 
-- (_TtC24MenstrualCyclesAppPlugin26CycleDeviationsSectionCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin26CycleDeviationsSectionCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin26CycleDeviationsSectionCell_item;
   *v3 = 0u;

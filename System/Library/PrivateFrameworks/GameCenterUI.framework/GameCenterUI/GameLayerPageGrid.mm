@@ -1,5 +1,5 @@
 @interface GameLayerPageGrid
-- (GameLayerPageGrid)initWithWidth:(double)a3 columnSizeCategory:(int64_t)a4 maxColumns:(id)a5;
+- (GameLayerPageGrid)initWithWidth:(double)width columnSizeCategory:(int64_t)category maxColumns:(id)columns;
 - (UIEdgeInsets)centeringInsets;
 - (UIEdgeInsets)minimumInsets;
 @end
@@ -26,11 +26,11 @@
   return result;
 }
 
-- (GameLayerPageGrid)initWithWidth:(double)a3 columnSizeCategory:(int64_t)a4 maxColumns:(id)a5
+- (GameLayerPageGrid)initWithWidth:(double)width columnSizeCategory:(int64_t)category maxColumns:(id)columns
 {
-  v6 = a4;
-  v7 = a5;
-  return PageGrid.init(width:columnSizeCategory:maxColumns:)(v6, a5);
+  categoryCopy = category;
+  columnsCopy = columns;
+  return PageGrid.init(width:columnSizeCategory:maxColumns:)(categoryCopy, columns);
 }
 
 @end

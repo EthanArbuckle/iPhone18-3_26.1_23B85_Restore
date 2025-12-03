@@ -1,15 +1,15 @@
 @interface TSPDatabaseInputStream
-- (TSPDatabaseInputStream)initWithBlob:(sqlite3_blob *)a3;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
+- (TSPDatabaseInputStream)initWithBlob:(sqlite3_blob *)blob;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
 - (void)close;
 - (void)dealloc;
-- (void)readWithQueue:(id)a3 handler:(id)a4;
-- (void)seekToOffset:(int64_t)a3;
+- (void)readWithQueue:(id)queue handler:(id)handler;
+- (void)seekToOffset:(int64_t)offset;
 @end
 
 @implementation TSPDatabaseInputStream
 
-- (TSPDatabaseInputStream)initWithBlob:(sqlite3_blob *)a3
+- (TSPDatabaseInputStream)initWithBlob:(sqlite3_blob *)blob
 {
   v7.receiver = self;
   v7.super_class = TSPDatabaseInputStream;
@@ -17,8 +17,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_blob = a3;
-    v4->_length = sqlite3_blob_bytes(a3);
+    v4->_blob = blob;
+    v4->_length = sqlite3_blob_bytes(blob);
   }
 
   return v5;
@@ -42,10 +42,10 @@
   }
 }
 
-- (void)readWithQueue:(id)a3 handler:(id)a4
+- (void)readWithQueue:(id)queue handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   length = self->_length;
   if (length)
   {
@@ -69,16 +69,16 @@
 
       v9 += v11;
       length -= v11;
-      v14 = dispatch_data_create(v13, v11, v6, v10);
+      v14 = dispatch_data_create(v13, v11, queueCopy, v10);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __48__TSPDatabaseInputStream_readWithQueue_handler___block_invoke_2;
       block[3] = &unk_279D47298;
-      v21 = v7;
+      v21 = handlerCopy;
       v22 = length;
       v20 = v14;
       v15 = v14;
-      dispatch_sync(v6, block);
+      dispatch_sync(queueCopy, block);
 
       if (!length)
       {
@@ -102,8 +102,8 @@
 
   v16[2] = v17;
   v16[3] = &unk_279D47270;
-  v16[4] = v7;
-  dispatch_async(v6, v16);
+  v16[4] = handlerCopy;
+  dispatch_async(queueCopy, v16);
 
 LABEL_14:
 }
@@ -115,46 +115,46 @@ void __48__TSPDatabaseInputStream_readWithQueue_handler___block_invoke_3(uint64_
   (*(v1 + 16))(v1, 1, MEMORY[0x277D85CC8], v2);
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
-  if (a4 >> 31)
+  if (size >> 31)
   {
     [TSPDatabaseInputStream readToBuffer:size:];
-    LODWORD(a4) = 0x7FFFFFFF;
+    LODWORD(size) = 0x7FFFFFFF;
   }
 
-  if (a4 >= self->_length - self->_offset)
+  if (size >= self->_length - self->_offset)
   {
-    v6 = self->_length - self->_offset;
+    sizeCopy = self->_length - self->_offset;
   }
 
   else
   {
-    v6 = a4;
+    sizeCopy = size;
   }
 
-  if (sqlite3_blob_read(self->_blob, a3, v6, self->_offset))
+  if (sqlite3_blob_read(self->_blob, buffer, sizeCopy, self->_offset))
   {
     return 0;
   }
 
-  self->_offset += v6;
-  return v6;
+  self->_offset += sizeCopy;
+  return sizeCopy;
 }
 
-- (void)seekToOffset:(int64_t)a3
+- (void)seekToOffset:(int64_t)offset
 {
-  if (a3 > 0x7FFFFFFF || self->_length < a3)
+  if (offset > 0x7FFFFFFF || self->_length < offset)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPDatabaseInputStream seekToOffset:]"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPDatabaseInputStream.m"];
-    [v5 handleFailureInFunction:v6 file:v7 lineNumber:124 description:@"Requested seek to offset past end of stream"];
+    [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:124 description:@"Requested seek to offset past end of stream"];
 
-    LODWORD(a3) = self->_length;
+    LODWORD(offset) = self->_length;
   }
 
-  self->_offset = a3;
+  self->_offset = offset;
 }
 
 - (void)readToBuffer:size:.cold.1()

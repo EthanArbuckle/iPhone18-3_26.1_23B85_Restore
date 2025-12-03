@@ -1,36 +1,36 @@
 @interface PLNotificationUNCenter
 + (id)_UNNotificationInitialize;
-+ (id)_categoryIdentifierForNotification:(id)a3;
-+ (id)_contentUserInfoForNotification:(id)a3;
-+ (id)_invitationsCategoryWithJunkAction:(BOOL)a3;
-+ (id)_notificationEnablementKeyForNotificationType:(int64_t)a3;
++ (id)_categoryIdentifierForNotification:(id)notification;
++ (id)_contentUserInfoForNotification:(id)notification;
++ (id)_invitationsCategoryWithJunkAction:(BOOL)action;
++ (id)_notificationEnablementKeyForNotificationType:(int64_t)type;
 + (id)_sharedLibraryParticipantAssetTrashNotificationCategory;
 + (id)_sharedLibrarySuggestionsCategory;
-+ (id)_soundForNotification:(id)a3;
-+ (id)_threadIdentifierForNotification:(id)a3;
++ (id)_soundForNotification:(id)notification;
++ (id)_threadIdentifierForNotification:(id)notification;
 + (id)_updatesCategory;
 + (id)_updatesCommentedCategory;
-+ (unint64_t)_interruptionLevelForNotification:(id)a3;
++ (unint64_t)_interruptionLevelForNotification:(id)notification;
 - (PLNotificationUNCenter)init;
 - (PLNotificationUNCenterDelegate)delegate;
-- (id)_copiedContentFromContent:(id)a3 WithImageData:(id)a4 identifier:(id)a5;
-- (id)_makeTempThumbnailFileForImageData:(id)a3 identifier:(id)a4;
-- (id)_makeTempThumbnailFileForNotification:(id)a3;
-- (id)_notificationContentWithNotification:(id)a3 withImageURL:(id)a4 sound:(BOOL)a5;
-- (void)_findNotificationForRequestIdentifier:(id)a3 withPendingHandler:(id)a4 deliveredHandler:(id)a5 completionHandler:(id)a6;
+- (id)_copiedContentFromContent:(id)content WithImageData:(id)data identifier:(id)identifier;
+- (id)_makeTempThumbnailFileForImageData:(id)data identifier:(id)identifier;
+- (id)_makeTempThumbnailFileForNotification:(id)notification;
+- (id)_notificationContentWithNotification:(id)notification withImageURL:(id)l sound:(BOOL)sound;
+- (void)_findNotificationForRequestIdentifier:(id)identifier withPendingHandler:(id)handler deliveredHandler:(id)deliveredHandler completionHandler:(id)completionHandler;
 - (void)_updateAppBadge;
-- (void)enumerateExistingNotificationsUsingBlock:(id)a3;
-- (void)findExistingNotificationByIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)mergeExistingAndSendNotificationForNotification:(id)a3 requestIdentifier:(id)a4 thumbnailHandler:(id)a5;
-- (void)mergeExistingAndSendNotificationForNotification:(id)a3 thumbnailHandler:(id)a4;
+- (void)enumerateExistingNotificationsUsingBlock:(id)block;
+- (void)findExistingNotificationByIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)mergeExistingAndSendNotificationForNotification:(id)notification requestIdentifier:(id)identifier thumbnailHandler:(id)handler;
+- (void)mergeExistingAndSendNotificationForNotification:(id)notification thumbnailHandler:(id)handler;
 - (void)removeAllNotifications;
-- (void)removeNotificationWithRequestIdentifiers:(id)a3;
-- (void)removeNotificationsForNotifications:(id)a3;
-- (void)sendNotificationForNotification:(id)a3;
-- (void)sendNotificationForNotification:(id)a3 withAttachmentURL:(id)a4 forceToSound:(BOOL)a5;
-- (void)updateBadgeCountWithDelay:(unint64_t)a3;
-- (void)updateImageData:(id)a3 forNotificationWithIdentifier:(id)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)removeNotificationWithRequestIdentifiers:(id)identifiers;
+- (void)removeNotificationsForNotifications:(id)notifications;
+- (void)sendNotificationForNotification:(id)notification;
+- (void)sendNotificationForNotification:(id)notification withAttachmentURL:(id)l forceToSound:(BOOL)sound;
+- (void)updateBadgeCountWithDelay:(unint64_t)delay;
+- (void)updateImageData:(id)data forNotificationWithIdentifier:(id)identifier;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation PLNotificationUNCenter
@@ -45,19 +45,19 @@
 - (void)_updateAppBadge
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(PLNotificationUNCenter *)self delegate];
-  v4 = [v3 currentAppBadgeCountForNotificationUNCenter:self];
+  delegate = [(PLNotificationUNCenter *)self delegate];
+  v4 = [delegate currentAppBadgeCountForNotificationUNCenter:self];
 
-  v5 = [(UNUserNotificationCenter *)self->_unc badgeNumber];
-  v6 = [v5 unsignedIntValue];
+  badgeNumber = [(UNUserNotificationCenter *)self->_unc badgeNumber];
+  unsignedIntValue = [badgeNumber unsignedIntValue];
 
-  if (v4 != v6)
+  if (v4 != unsignedIntValue)
   {
     v7 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134218240;
-      v9 = v6;
+      v9 = unsignedIntValue;
       v10 = 2048;
       v11 = v4;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "[Badge Count] Changed application badge count from %lu to %lu", &v8, 0x16u);
@@ -67,38 +67,38 @@
   [(UNUserNotificationCenter *)self->_unc setBadgeCount:v4 withCompletionHandler:0];
 }
 
-- (id)_copiedContentFromContent:(id)a3 WithImageData:(id)a4 identifier:(id)a5
+- (id)_copiedContentFromContent:(id)content WithImageData:(id)data identifier:(id)identifier
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  contentCopy = content;
+  dataCopy = data;
+  identifierCopy = identifier;
+  if (!contentCopy)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:927 description:{@"Invalid parameter not satisfying: %@", @"content"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:927 description:{@"Invalid parameter not satisfying: %@", @"content"}];
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E6983220]);
-  v13 = [v9 title];
-  [v12 setTitle:v13];
+  title = [contentCopy title];
+  [v12 setTitle:title];
 
-  v14 = [v9 body];
-  [v12 setBody:v14];
+  body = [contentCopy body];
+  [v12 setBody:body];
 
-  v15 = [v9 categoryIdentifier];
-  [v12 setCategoryIdentifier:v15];
+  categoryIdentifier = [contentCopy categoryIdentifier];
+  [v12 setCategoryIdentifier:categoryIdentifier];
 
-  v16 = [v9 threadIdentifier];
-  [v12 setThreadIdentifier:v16];
+  threadIdentifier = [contentCopy threadIdentifier];
+  [v12 setThreadIdentifier:threadIdentifier];
 
-  v17 = [v9 defaultActionURL];
-  [v12 setDefaultActionURL:v17];
+  defaultActionURL = [contentCopy defaultActionURL];
+  [v12 setDefaultActionURL:defaultActionURL];
 
-  v18 = [v9 sound];
-  [v12 setSound:v18];
+  sound = [contentCopy sound];
+  [v12 setSound:sound];
 
-  v19 = [(PLNotificationUNCenter *)self _makeTempThumbnailFileForImageData:v10 identifier:v11];
+  v19 = [(PLNotificationUNCenter *)self _makeTempThumbnailFileForImageData:dataCopy identifier:identifierCopy];
   if (v19)
   {
     v31 = 0;
@@ -111,11 +111,11 @@
       [v12 setAttachments:v22];
 
       v23 = MEMORY[0x1E695DF90];
-      v24 = [v9 userInfo];
-      v25 = [v23 dictionaryWithDictionary:v24];
+      userInfo = [contentCopy userInfo];
+      v25 = [v23 dictionaryWithDictionary:userInfo];
 
       v26 = [v25 objectForKeyedSubscript:*MEMORY[0x1E69C0200]];
-      [v26 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69C0290]];
+      [v26 setObject:dataCopy forKeyedSubscript:*MEMORY[0x1E69C0290]];
 
       [v12 setUserInfo:v25];
     }
@@ -125,11 +125,11 @@
       v27 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        v28 = [v21 localizedDescription];
+        localizedDescription = [v21 localizedDescription];
         *buf = 138412546;
         v33 = v19;
         v34 = 2112;
-        v35 = v28;
+        v35 = localizedDescription;
         _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "ERROR: create attachment for URL (%@) failed, error: %@", buf, 0x16u);
       }
 
@@ -147,50 +147,50 @@
   return v12;
 }
 
-- (id)_notificationContentWithNotification:(id)a3 withImageURL:(id)a4 sound:(BOOL)a5
+- (id)_notificationContentWithNotification:(id)notification withImageURL:(id)l sound:(BOOL)sound
 {
-  v5 = a5;
+  soundCopy = sound;
   v32[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  notificationCopy = notification;
+  lCopy = l;
+  if (!notificationCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:893 description:{@"Invalid parameter not satisfying: %@", @"notification"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:893 description:{@"Invalid parameter not satisfying: %@", @"notification"}];
   }
 
   v11 = objc_alloc_init(MEMORY[0x1E6983220]);
-  v12 = [v9 title];
-  [v11 setTitle:v12];
+  title = [notificationCopy title];
+  [v11 setTitle:title];
 
-  v13 = [v9 message];
-  [v11 setBody:v13];
+  message = [notificationCopy message];
+  [v11 setBody:message];
 
-  v14 = [objc_opt_class() _categoryIdentifierForNotification:v9];
+  v14 = [objc_opt_class() _categoryIdentifierForNotification:notificationCopy];
   [v11 setCategoryIdentifier:v14];
 
-  v15 = [objc_opt_class() _threadIdentifierForNotification:v9];
+  v15 = [objc_opt_class() _threadIdentifierForNotification:notificationCopy];
   [v11 setThreadIdentifier:v15];
 
-  [v11 setInterruptionLevel:{objc_msgSend(objc_opt_class(), "_interruptionLevelForNotification:", v9)}];
+  [v11 setInterruptionLevel:{objc_msgSend(objc_opt_class(), "_interruptionLevelForNotification:", notificationCopy)}];
   v16 = MEMORY[0x1E695DFF8];
-  v17 = [v9 destinationURLString];
-  v18 = [v16 URLWithString:v17];
+  destinationURLString = [notificationCopy destinationURLString];
+  v18 = [v16 URLWithString:destinationURLString];
   [v11 setDefaultActionURL:v18];
 
-  v19 = [objc_opt_class() _contentUserInfoForNotification:v9];
+  v19 = [objc_opt_class() _contentUserInfoForNotification:notificationCopy];
   [v11 setUserInfo:v19];
 
-  if (v5)
+  if (soundCopy)
   {
-    v20 = [objc_opt_class() _soundForNotification:v9];
+    v20 = [objc_opt_class() _soundForNotification:notificationCopy];
     [v11 setSound:v20];
   }
 
-  if (v10)
+  if (lCopy)
   {
     v27 = 0;
-    v21 = [MEMORY[0x1E6983268] attachmentWithIdentifier:@"my_image" URL:v10 options:0 error:&v27];
+    v21 = [MEMORY[0x1E6983268] attachmentWithIdentifier:@"my_image" URL:lCopy options:0 error:&v27];
     v22 = v27;
     if (v21)
     {
@@ -204,11 +204,11 @@
       v23 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v22 localizedDescription];
+        localizedDescription = [v22 localizedDescription];
         *buf = 138412546;
-        v29 = v10;
+        v29 = lCopy;
         v30 = 2112;
-        v31 = v24;
+        v31 = localizedDescription;
         _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "ERROR: create attachment for URL (%@) failed, error: %@", buf, 0x16u);
       }
     }
@@ -217,24 +217,24 @@
   return v11;
 }
 
-- (id)_makeTempThumbnailFileForImageData:(id)a3 identifier:(id)a4
+- (id)_makeTempThumbnailFileForImageData:(id)data identifier:(id)identifier
 {
   v4 = 0;
   v18 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (data && identifier)
   {
-    v6 = a4;
-    v7 = a3;
+    identifierCopy = identifier;
+    dataCopy = data;
     v8 = NSTemporaryDirectory();
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"notificationTempImage_%@.jpg", v6];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"notificationTempImage_%@.jpg", identifierCopy];
 
-    v10 = [v8 stringByAppendingPathComponent:v9];
+    v10 = [v8 stringByAppendingPathComponent:identifierCopy];
 
     v15 = 0;
-    LODWORD(v6) = [v7 writeToFile:v10 options:1 error:&v15];
+    LODWORD(identifierCopy) = [dataCopy writeToFile:v10 options:1 error:&v15];
 
     v11 = v15;
-    if (v6)
+    if (identifierCopy)
     {
       v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10];
     }
@@ -244,9 +244,9 @@
       v12 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v11 localizedDescription];
+        localizedDescription = [v11 localizedDescription];
         *buf = 138412290;
-        v17 = v13;
+        v17 = localizedDescription;
         _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "ERROR: Writing temp file for notification thumbnail failed: %@", buf, 0xCu);
       }
 
@@ -257,14 +257,14 @@
   return v4;
 }
 
-- (id)_makeTempThumbnailFileForNotification:(id)a3
+- (id)_makeTempThumbnailFileForNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 thumbnailImageData];
-  if (v5 && ([v4 requestIdentifier], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  notificationCopy = notification;
+  thumbnailImageData = [notificationCopy thumbnailImageData];
+  if (thumbnailImageData && ([notificationCopy requestIdentifier], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [(PLNotificationUNCenter *)self _makeTempThumbnailFileForImageData:v5 identifier:v6];
+    v8 = [(PLNotificationUNCenter *)self _makeTempThumbnailFileForImageData:thumbnailImageData identifier:v6];
   }
 
   else
@@ -275,20 +275,20 @@
   return v8;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v6 = a5;
-  PLProcessNotificationResponse(a4);
-  v6[2]();
+  handlerCopy = handler;
+  PLProcessNotificationResponse(response);
+  handlerCopy[2]();
 }
 
-- (void)enumerateExistingNotificationsUsingBlock:(id)a3
+- (void)enumerateExistingNotificationsUsingBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:429 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:429 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   v12[0] = 0;
@@ -300,7 +300,7 @@
   v9[1] = 3221225472;
   v9[2] = __67__PLNotificationUNCenter_enumerateExistingNotificationsUsingBlock___block_invoke;
   v9[3] = &unk_1E7571828;
-  v7 = v5;
+  v7 = blockCopy;
   v10 = v7;
   v11 = v12;
   v9[4] = self;
@@ -376,15 +376,15 @@ void __67__PLNotificationUNCenter_enumerateExistingNotificationsUsingBlock___blo
   }
 }
 
-- (void)findExistingNotificationByIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)findExistingNotificationByIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:415 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:415 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
     if (v9)
     {
@@ -392,13 +392,13 @@ void __67__PLNotificationUNCenter_enumerateExistingNotificationsUsingBlock___blo
     }
 
 LABEL_5:
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:416 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:416 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -425,16 +425,16 @@ LABEL_3:
   v10 = v9;
   v14 = v10;
   v15 = v18;
-  [(PLNotificationUNCenter *)self _findNotificationForRequestIdentifier:v7 withPendingHandler:v17 deliveredHandler:v16 completionHandler:v13];
+  [(PLNotificationUNCenter *)self _findNotificationForRequestIdentifier:identifierCopy withPendingHandler:v17 deliveredHandler:v16 completionHandler:v13];
 
   _Block_object_dispose(v18, 8);
 }
 
-- (void)mergeExistingAndSendNotificationForNotification:(id)a3 requestIdentifier:(id)a4 thumbnailHandler:(id)a5
+- (void)mergeExistingAndSendNotificationForNotification:(id)notification requestIdentifier:(id)identifier thumbnailHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  notificationCopy = notification;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x2020000000;
@@ -448,8 +448,8 @@ LABEL_3:
   v25[2] = __109__PLNotificationUNCenter_mergeExistingAndSendNotificationForNotification_requestIdentifier_thumbnailHandler___block_invoke;
   v25[3] = &unk_1E75716E8;
   v25[4] = self;
-  v26 = v9;
-  v27 = v8;
+  v26 = identifierCopy;
+  v27 = notificationCopy;
   v28 = v30;
   v29 = v32;
   v19[0] = MEMORY[0x1E69E9820];
@@ -458,7 +458,7 @@ LABEL_3:
   v19[3] = &unk_1E7571710;
   v23 = v32;
   v20 = v27;
-  v21 = self;
+  selfCopy = self;
   v11 = v26;
   v22 = v11;
   v24 = v30;
@@ -471,7 +471,7 @@ LABEL_3:
   v12 = v20;
   v15 = v12;
   v18 = v30;
-  v13 = v10;
+  v13 = handlerCopy;
   v16 = v13;
   [(PLNotificationUNCenter *)self _findNotificationForRequestIdentifier:v11 withPendingHandler:v25 deliveredHandler:v19 completionHandler:v14];
 
@@ -600,41 +600,41 @@ void __109__PLNotificationUNCenter_mergeExistingAndSendNotificationForNotificati
   }
 }
 
-- (void)mergeExistingAndSendNotificationForNotification:(id)a3 thumbnailHandler:(id)a4
+- (void)mergeExistingAndSendNotificationForNotification:(id)notification thumbnailHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 requestIdentifier];
-  [(PLNotificationUNCenter *)self mergeExistingAndSendNotificationForNotification:v7 requestIdentifier:v8 thumbnailHandler:v6];
+  handlerCopy = handler;
+  notificationCopy = notification;
+  requestIdentifier = [notificationCopy requestIdentifier];
+  [(PLNotificationUNCenter *)self mergeExistingAndSendNotificationForNotification:notificationCopy requestIdentifier:requestIdentifier thumbnailHandler:handlerCopy];
 }
 
-- (void)removeNotificationWithRequestIdentifiers:(id)a3
+- (void)removeNotificationWithRequestIdentifiers:(id)identifiers
 {
   unc = self->_unc;
-  v5 = a3;
-  [(UNUserNotificationCenter *)unc removePendingNotificationRequestsWithIdentifiers:v5];
-  [(UNUserNotificationCenter *)self->_unc removeDeliveredNotificationsWithIdentifiers:v5];
+  identifiersCopy = identifiers;
+  [(UNUserNotificationCenter *)unc removePendingNotificationRequestsWithIdentifiers:identifiersCopy];
+  [(UNUserNotificationCenter *)self->_unc removeDeliveredNotificationsWithIdentifiers:identifiersCopy];
 
   [(PLNotificationUNCenter *)self updateBadgeCountWithDelay:1];
 }
 
-- (void)_findNotificationForRequestIdentifier:(id)a3 withPendingHandler:(id)a4 deliveredHandler:(id)a5 completionHandler:(id)a6
+- (void)_findNotificationForRequestIdentifier:(id)identifier withPendingHandler:(id)handler deliveredHandler:(id)deliveredHandler completionHandler:(id)completionHandler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  deliveredHandlerCopy = deliveredHandler;
+  completionHandlerCopy = completionHandler;
+  if (!identifierCopy)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:263 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:263 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  v15 = (v12 | v13) == 0;
-  if (!(v12 | v13))
+  v15 = (handlerCopy | deliveredHandlerCopy) == 0;
+  if (!(handlerCopy | deliveredHandlerCopy))
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:264 description:{@"Invalid parameter not satisfying: %@", @"pendingHandler || deliveredHandler"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:264 description:{@"Invalid parameter not satisfying: %@", @"pendingHandler || deliveredHandler"}];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -642,11 +642,11 @@ void __109__PLNotificationUNCenter_mergeExistingAndSendNotificationForNotificati
   aBlock[2] = __118__PLNotificationUNCenter__findNotificationForRequestIdentifier_withPendingHandler_deliveredHandler_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7571648;
   aBlock[4] = self;
-  v16 = v11;
+  v16 = identifierCopy;
   v36 = v16;
-  v17 = v13;
+  v17 = deliveredHandlerCopy;
   v37 = v17;
-  v18 = v14;
+  v18 = completionHandlerCopy;
   v38 = v18;
   v19 = _Block_copy(aBlock);
   v29[0] = MEMORY[0x1E69E9820];
@@ -655,7 +655,7 @@ void __109__PLNotificationUNCenter_mergeExistingAndSendNotificationForNotificati
   v29[3] = &unk_1E75716C0;
   v29[4] = self;
   v30 = v16;
-  v31 = v12;
+  v31 = handlerCopy;
   v32 = v17;
   v20 = v19;
   v33 = v20;
@@ -663,12 +663,12 @@ void __109__PLNotificationUNCenter_mergeExistingAndSendNotificationForNotificati
   v21 = v18;
   v22 = v17;
   v23 = v16;
-  v24 = v12;
+  v24 = handlerCopy;
   v25 = _Block_copy(v29);
   v26 = v25;
   if (!v15)
   {
-    if (!v12)
+    if (!handlerCopy)
     {
       v25 = v20;
     }
@@ -785,15 +785,15 @@ void __118__PLNotificationUNCenter__findNotificationForRequestIdentifier_withPen
   }
 }
 
-- (void)updateImageData:(id)a3 forNotificationWithIdentifier:(id)a4
+- (void)updateImageData:(id)data forNotificationWithIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  dataCopy = data;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (!dataCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"imageData"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"imageData"}];
 
     if (v9)
     {
@@ -801,13 +801,13 @@ void __118__PLNotificationUNCenter__findNotificationForRequestIdentifier_withPen
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!identifierCopy)
   {
     goto LABEL_5;
   }
@@ -822,7 +822,7 @@ LABEL_3:
   v18[2] = __72__PLNotificationUNCenter_updateImageData_forNotificationWithIdentifier___block_invoke;
   v18[3] = &unk_1E75715A8;
   v18[4] = self;
-  v19 = v7;
+  v19 = dataCopy;
   v20 = v9;
   v21 = v22;
   v14[0] = MEMORY[0x1E69E9820];
@@ -958,10 +958,10 @@ void __72__PLNotificationUNCenter_updateImageData_forNotificationWithIdentifier_
   }
 }
 
-- (void)updateBadgeCountWithDelay:(unint64_t)a3
+- (void)updateBadgeCountWithDelay:(unint64_t)delay
 {
   objc_initWeak(&location, self);
-  v4 = dispatch_time(0, 1000000000 * a3);
+  v4 = dispatch_time(0, 1000000000 * delay);
   v5 = dispatch_get_global_queue(17, 0);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -992,13 +992,13 @@ void __52__PLNotificationUNCenter_updateBadgeCountWithDelay___block_invoke_2(uin
   [WeakRetained _updateAppBadge];
 }
 
-- (void)removeNotificationsForNotifications:(id)a3
+- (void)removeNotificationsForNotifications:(id)notifications
 {
-  v5 = a3;
-  if (!v5)
+  notificationsCopy = notifications;
+  if (!notificationsCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"notifications"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"notifications"}];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1008,7 +1008,7 @@ void __52__PLNotificationUNCenter_updateBadgeCountWithDelay___block_invoke_2(uin
   v9[3] = &unk_1E7571558;
   v10 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [notificationsCopy enumerateObjectsUsingBlock:v9];
   [(UNUserNotificationCenter *)self->_unc removePendingNotificationRequestsWithIdentifiers:v7];
   [(UNUserNotificationCenter *)self->_unc removeDeliveredNotificationsWithIdentifiers:v7];
   [(PLNotificationUNCenter *)self updateBadgeCountWithDelay:1];
@@ -1033,36 +1033,36 @@ void __62__PLNotificationUNCenter_removeNotificationsForNotifications___block_in
   [(UNUserNotificationCenter *)unc removeAllDeliveredNotifications];
 }
 
-- (void)sendNotificationForNotification:(id)a3 withAttachmentURL:(id)a4 forceToSound:(BOOL)a5
+- (void)sendNotificationForNotification:(id)notification withAttachmentURL:(id)l forceToSound:(BOOL)sound
 {
-  v5 = a5;
+  soundCopy = sound;
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  notificationCopy = notification;
+  lCopy = l;
+  if (!notificationCopy)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"notification"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"notification"}];
   }
 
-  v11 = [objc_opt_class() _notificationEnablementKeyForNotificationType:{objc_msgSend(v9, "notificationType")}];
+  v11 = [objc_opt_class() _notificationEnablementKeyForNotificationType:{objc_msgSend(notificationCopy, "notificationType")}];
   if (!v11 || (PLIsNotificationTypeEnabledForKey() & 1) != 0)
   {
-    v12 = [v9 notificationType];
-    if (v12 <= 7)
+    notificationType = [notificationCopy notificationType];
+    if (notificationType <= 7)
     {
-      if ((v12 - 2) >= 4)
+      if ((notificationType - 2) >= 4)
       {
-        if (v12 >= 2)
+        if (notificationType >= 2)
         {
           v13 = 0.001;
-          if (v12 == 6)
+          if (notificationType == 6)
           {
-            v21 = [v9 notificationDeliveryDate];
-            v22 = v21;
-            if (v21)
+            notificationDeliveryDate = [notificationCopy notificationDeliveryDate];
+            v22 = notificationDeliveryDate;
+            if (notificationDeliveryDate)
             {
-              [v21 timeIntervalSinceNow];
+              [notificationDeliveryDate timeIntervalSinceNow];
               v13 = v23;
             }
 
@@ -1071,8 +1071,8 @@ void __62__PLNotificationUNCenter_removeNotificationsForNotifications___block_in
               v13 = 0.001;
             }
 
-            v24 = [MEMORY[0x1E695E000] standardUserDefaults];
-            v25 = [v24 objectForKey:@"PhotosMemoriesNotificationDelayOverride"];
+            standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+            v25 = [standardUserDefaults objectForKey:@"PhotosMemoriesNotificationDelayOverride"];
 
             if (v25)
             {
@@ -1090,10 +1090,10 @@ LABEL_18:
       }
     }
 
-    else if ((v12 - 8) >= 9)
+    else if ((notificationType - 8) >= 9)
     {
       v13 = 0.001;
-      if (v12 != 17)
+      if (notificationType != 17)
       {
         goto LABEL_13;
       }
@@ -1109,9 +1109,9 @@ LABEL_13:
     }
 
     v14 = [MEMORY[0x1E6983300] triggerWithTimeInterval:0 repeats:v13];
-    v15 = [(PLNotificationUNCenter *)self _notificationContentWithNotification:v9 withImageURL:v10 sound:v5];
-    v16 = [v9 requestIdentifier];
-    v17 = [MEMORY[0x1E6983298] requestWithIdentifier:v16 content:v15 trigger:v14];
+    v15 = [(PLNotificationUNCenter *)self _notificationContentWithNotification:notificationCopy withImageURL:lCopy sound:soundCopy];
+    requestIdentifier = [notificationCopy requestIdentifier];
+    v17 = [MEMORY[0x1E6983298] requestWithIdentifier:requestIdentifier content:v15 trigger:v14];
     objc_initWeak(buf, self);
     unc = self->_unc;
     v28[0] = MEMORY[0x1E69E9820];
@@ -1122,7 +1122,7 @@ LABEL_13:
     v31[1] = *&v13;
     v19 = v15;
     v29 = v19;
-    v20 = v16;
+    v20 = requestIdentifier;
     v30 = v20;
     [(UNUserNotificationCenter *)unc addNotificationRequest:v17 withCompletionHandler:v28];
 
@@ -1136,7 +1136,7 @@ LABEL_13:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v33 = v9;
+    v33 = notificationCopy;
     v34 = 2114;
     v35 = v11;
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Ignoring disabled notification %@, enablement key: %{public}@", buf, 0x16u);
@@ -1189,19 +1189,19 @@ void __89__PLNotificationUNCenter_sendNotificationForNotification_withAttachment
   }
 }
 
-- (void)sendNotificationForNotification:(id)a3
+- (void)sendNotificationForNotification:(id)notification
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  notificationCopy = notification;
+  v8 = notificationCopy;
+  if (!notificationCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"notification"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"notification"}];
 
-    v5 = 0;
+    notificationCopy = 0;
   }
 
-  v6 = [(PLNotificationUNCenter *)self _makeTempThumbnailFileForNotification:v5];
+  v6 = [(PLNotificationUNCenter *)self _makeTempThumbnailFileForNotification:notificationCopy];
   [(PLNotificationUNCenter *)self sendNotificationForNotification:v8 withAttachmentURL:v6 forceToSound:1];
 }
 
@@ -1212,9 +1212,9 @@ void __89__PLNotificationUNCenter_sendNotificationForNotification_withAttachment
   v2 = [(PLNotificationUNCenter *)&v6 init];
   if (v2)
   {
-    v3 = [objc_opt_class() _UNNotificationInitialize];
+    _UNNotificationInitialize = [objc_opt_class() _UNNotificationInitialize];
     unc = v2->_unc;
-    v2->_unc = v3;
+    v2->_unc = _UNNotificationInitialize;
 
     [(UNUserNotificationCenter *)v2->_unc setDelegate:v2];
   }
@@ -1222,92 +1222,92 @@ void __89__PLNotificationUNCenter_sendNotificationForNotification_withAttachment
   return v2;
 }
 
-+ (id)_contentUserInfoForNotification:(id)a3
++ (id)_contentUserInfoForNotification:(id)notification
 {
-  v5 = a3;
-  if (!v5)
+  notificationCopy = notification;
+  if (!notificationCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"PLNotificationUNCenter.m" lineNumber:968 description:{@"Invalid parameter not satisfying: %@", @"notification"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotificationUNCenter.m" lineNumber:968 description:{@"Invalid parameter not satisfying: %@", @"notification"}];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v5, "notificationType")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(notificationCopy, "notificationType")}];
   [v6 setObject:v7 forKey:*MEMORY[0x1E69C0248]];
 
-  v8 = [v5 mainAssetUUID];
+  mainAssetUUID = [notificationCopy mainAssetUUID];
 
-  if (v8)
+  if (mainAssetUUID)
   {
-    v9 = [v5 mainAssetUUID];
-    [v6 setObject:v9 forKey:*MEMORY[0x1E69C01B0]];
+    mainAssetUUID2 = [notificationCopy mainAssetUUID];
+    [v6 setObject:mainAssetUUID2 forKey:*MEMORY[0x1E69C01B0]];
   }
 
-  v10 = [v5 albumCloudGUID];
+  albumCloudGUID = [notificationCopy albumCloudGUID];
 
-  if (v10)
+  if (albumCloudGUID)
   {
-    v11 = [v5 albumCloudGUID];
-    [v6 setObject:v11 forKey:*MEMORY[0x1E69C0180]];
+    albumCloudGUID2 = [notificationCopy albumCloudGUID];
+    [v6 setObject:albumCloudGUID2 forKey:*MEMORY[0x1E69C0180]];
   }
 
-  v12 = [v5 interestingMemoryUUID];
+  interestingMemoryUUID = [notificationCopy interestingMemoryUUID];
 
-  if (v12)
+  if (interestingMemoryUUID)
   {
-    v13 = [v5 interestingMemoryUUID];
-    [v6 setObject:v13 forKey:*MEMORY[0x1E69C0220]];
+    interestingMemoryUUID2 = [notificationCopy interestingMemoryUUID];
+    [v6 setObject:interestingMemoryUUID2 forKey:*MEMORY[0x1E69C0220]];
   }
 
-  v14 = [v5 photoLibraryURLString];
+  photoLibraryURLString = [notificationCopy photoLibraryURLString];
 
-  if (v14)
+  if (photoLibraryURLString)
   {
-    v15 = [v5 photoLibraryURLString];
-    [v6 setObject:v15 forKey:*MEMORY[0x1E69C0268]];
+    photoLibraryURLString2 = [notificationCopy photoLibraryURLString];
+    [v6 setObject:photoLibraryURLString2 forKey:*MEMORY[0x1E69C0268]];
   }
 
-  v16 = [v5 suppressionContexts];
+  suppressionContexts = [notificationCopy suppressionContexts];
 
-  if (v16)
+  if (suppressionContexts)
   {
-    v17 = [v5 suppressionContexts];
-    [v6 setObject:v17 forKey:*MEMORY[0x1E69C0280]];
+    suppressionContexts2 = [notificationCopy suppressionContexts];
+    [v6 setObject:suppressionContexts2 forKey:*MEMORY[0x1E69C0280]];
   }
 
-  v18 = [v5 dictionaryRepresentation];
-  if (v18)
+  dictionaryRepresentation = [notificationCopy dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    [v6 setObject:v18 forKey:*MEMORY[0x1E69C0200]];
+    [v6 setObject:dictionaryRepresentation forKey:*MEMORY[0x1E69C0200]];
   }
 
   return v6;
 }
 
-+ (unint64_t)_interruptionLevelForNotification:(id)a3
++ (unint64_t)_interruptionLevelForNotification:(id)notification
 {
-  v3 = [a3 notificationType];
-  if (v3 > 0x11)
+  notificationType = [notification notificationType];
+  if (notificationType > 0x11)
   {
     return 0;
   }
 
   else
   {
-    return qword_19C60FBF8[v3];
+    return qword_19C60FBF8[notificationType];
   }
 }
 
-+ (id)_threadIdentifierForNotification:(id)a3
++ (id)_threadIdentifierForNotification:(id)notification
 {
-  v3 = [a3 notificationType];
+  notificationType = [notification notificationType];
   v4 = @"com.apple.mobileslideshow.iCloudPhotoSharing";
-  if (((1 << v3) & 0x2003B) == 0)
+  if (((1 << notificationType) & 0x2003B) == 0)
   {
     v4 = 0;
   }
 
-  if (v3 <= 0x11)
+  if (notificationType <= 0x11)
   {
     return v4;
   }
@@ -1318,18 +1318,18 @@ void __89__PLNotificationUNCenter_sendNotificationForNotification_withAttachment
   }
 }
 
-+ (id)_categoryIdentifierForNotification:(id)a3
++ (id)_categoryIdentifierForNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 notificationType];
+  notificationCopy = notification;
+  notificationType = [notificationCopy notificationType];
   v5 = 0;
   v6 = MEMORY[0x1E69C0120];
-  switch(v4)
+  switch(notificationType)
   {
     case 0:
-      v7 = [v3 offerToReportAsJunk];
+      offerToReportAsJunk = [notificationCopy offerToReportAsJunk];
       v6 = MEMORY[0x1E69C0128];
-      if (v7)
+      if (offerToReportAsJunk)
       {
         v6 = MEMORY[0x1E69C0130];
       }
@@ -1377,11 +1377,11 @@ LABEL_15:
   return v5;
 }
 
-+ (id)_notificationEnablementKeyForNotificationType:(int64_t)a3
++ (id)_notificationEnablementKeyForNotificationType:(int64_t)type
 {
-  if (a3 <= 0x11 && ((0x2567Fu >> a3) & 1) != 0)
+  if (type <= 0x11 && ((0x2567Fu >> type) & 1) != 0)
   {
-    v4 = **(&unk_1E7571848 + a3);
+    v4 = **(&unk_1E7571848 + type);
   }
 
   else
@@ -1392,15 +1392,15 @@ LABEL_15:
   return v4;
 }
 
-+ (id)_soundForNotification:(id)a3
++ (id)_soundForNotification:(id)notification
 {
   v3 = MEMORY[0x1E6983238];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = [v3 soundWithAlertType:9];
-  v6 = [v4 notificationType];
+  notificationType = [notificationCopy notificationType];
 
   v7 = MEMORY[0x1E69DA918];
-  if (v6 != 6)
+  if (notificationType != 6)
   {
     v7 = MEMORY[0x1E69DA920];
   }
@@ -1450,12 +1450,12 @@ LABEL_15:
   return v13;
 }
 
-+ (id)_invitationsCategoryWithJunkAction:(BOOL)a3
++ (id)_invitationsCategoryWithJunkAction:(BOOL)action
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  actionCopy = action;
+  array = [MEMORY[0x1E695DF70] array];
   v5 = *MEMORY[0x1E69C0128];
-  if (v3)
+  if (actionCopy)
   {
     v6 = MEMORY[0x1E6983250];
     v7 = *MEMORY[0x1E69C0100];
@@ -1463,7 +1463,7 @@ LABEL_15:
     v9 = [MEMORY[0x1E6983260] iconWithSystemImageName:@"xmark.bin"];
     v10 = [v6 actionWithIdentifier:v7 title:v8 options:0 icon:v9];
 
-    [v4 addObject:v10];
+    [array addObject:v10];
     v11 = *MEMORY[0x1E69C0130];
 
     v5 = v11;
@@ -1475,15 +1475,15 @@ LABEL_15:
   v15 = [MEMORY[0x1E6983260] iconWithSystemImageName:@"checkmark.circle"];
   v16 = [v12 actionWithIdentifier:v13 title:v14 options:0 icon:v15];
 
-  [v4 addObject:v16];
+  [array addObject:v16];
   v17 = MEMORY[0x1E6983250];
   v18 = *MEMORY[0x1E69C00F8];
   v19 = PLServicesLocalizedFrameworkStringForAssetsd();
   v20 = [MEMORY[0x1E6983260] iconWithSystemImageName:@"xmark.circle"];
   v21 = [v17 actionWithIdentifier:v18 title:v19 options:0 icon:v20];
 
-  [v4 addObject:v21];
-  v22 = [MEMORY[0x1E6983278] categoryWithIdentifier:v5 actions:v4 intentIdentifiers:MEMORY[0x1E695E0F0] options:0];
+  [array addObject:v21];
+  v22 = [MEMORY[0x1E6983278] categoryWithIdentifier:v5 actions:array intentIdentifiers:MEMORY[0x1E695E0F0] options:0];
 
   return v22;
 }
@@ -1535,17 +1535,17 @@ LABEL_15:
 {
   v15 = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:@"com.apple.mobileslideshow"];
   v14 = MEMORY[0x1E695DFD8];
-  v13 = [objc_opt_class() _updatesCategory];
-  v2 = [objc_opt_class() _updatesLikedCategory];
-  v3 = [objc_opt_class() _updatesCommentedCategory];
+  _updatesCategory = [objc_opt_class() _updatesCategory];
+  _updatesLikedCategory = [objc_opt_class() _updatesLikedCategory];
+  _updatesCommentedCategory = [objc_opt_class() _updatesCommentedCategory];
   v4 = [objc_opt_class() _invitationsCategoryWithJunkAction:0];
   v5 = [objc_opt_class() _invitationsCategoryWithJunkAction:1];
-  v6 = [objc_opt_class() _invitationAcceptedCategory];
-  v7 = [objc_opt_class() _expiringCMMCategory];
-  v8 = [objc_opt_class() _readyToViewInvitationCMMCategory];
-  v9 = [objc_opt_class() _sharedLibrarySuggestionsCategory];
-  v10 = [objc_opt_class() _sharedLibraryParticipantAssetTrashNotificationCategory];
-  v11 = [v14 setWithObjects:{v13, v2, v3, v4, v5, v6, v7, v8, v9, v10, 0}];
+  _invitationAcceptedCategory = [objc_opt_class() _invitationAcceptedCategory];
+  _expiringCMMCategory = [objc_opt_class() _expiringCMMCategory];
+  _readyToViewInvitationCMMCategory = [objc_opt_class() _readyToViewInvitationCMMCategory];
+  _sharedLibrarySuggestionsCategory = [objc_opt_class() _sharedLibrarySuggestionsCategory];
+  _sharedLibraryParticipantAssetTrashNotificationCategory = [objc_opt_class() _sharedLibraryParticipantAssetTrashNotificationCategory];
+  v11 = [v14 setWithObjects:{_updatesCategory, _updatesLikedCategory, _updatesCommentedCategory, v4, v5, _invitationAcceptedCategory, _expiringCMMCategory, _readyToViewInvitationCMMCategory, _sharedLibrarySuggestionsCategory, _sharedLibraryParticipantAssetTrashNotificationCategory, 0}];
 
   [v15 setNotificationCategories:v11];
 

@@ -1,49 +1,49 @@
 @interface CUIPSDGradientOpacityStop
-+ (id)opacityStopWithLocation:(double)a3 opacity:(double)a4;
++ (id)opacityStopWithLocation:(double)location opacity:(double)opacity;
 + (void)initialize;
-- (CUIPSDGradientOpacityStop)initWithCoder:(id)a3;
-- (CUIPSDGradientOpacityStop)initWithLocation:(double)a3 opacity:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CUIPSDGradientOpacityStop)initWithCoder:(id)coder;
+- (CUIPSDGradientOpacityStop)initWithLocation:(double)location opacity:(double)opacity;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CUIPSDGradientOpacityStop
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
-+ (id)opacityStopWithLocation:(double)a3 opacity:(double)a4
++ (id)opacityStopWithLocation:(double)location opacity:(double)opacity
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithLocation:a3 opacity:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithLocation:location opacity:opacity];
 
   return v4;
 }
 
-- (CUIPSDGradientOpacityStop)initWithLocation:(double)a3 opacity:(double)a4
+- (CUIPSDGradientOpacityStop)initWithLocation:(double)location opacity:(double)opacity
 {
   v6.receiver = self;
   v6.super_class = CUIPSDGradientOpacityStop;
-  result = [(CUIPSDGradientStop *)&v6 initWithLocation:a3];
+  result = [(CUIPSDGradientStop *)&v6 initWithLocation:location];
   if (result)
   {
-    result->opacity = a4;
+    result->opacity = opacity;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = CUIPSDGradientOpacityStop;
-  result = [(CUIPSDGradientStop *)&v5 copyWithZone:a3];
+  result = [(CUIPSDGradientStop *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 2) = *&self->opacity;
@@ -52,22 +52,22 @@
   return result;
 }
 
-- (CUIPSDGradientOpacityStop)initWithCoder:(id)a3
+- (CUIPSDGradientOpacityStop)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CUIPSDGradientOpacityStop;
   v4 = [(CUIPSDGradientStop *)&v8 initWithCoder:?];
   if (v4)
   {
-    if ([a3 allowsKeyedCoding])
+    if ([coder allowsKeyedCoding])
     {
-      [a3 decodeDoubleForKey:@"CUIPSDGradientOpacityStopOpacity"];
+      [coder decodeDoubleForKey:@"CUIPSDGradientOpacityStopOpacity"];
     }
 
     else
     {
       v7 = 0.0;
-      [a3 decodeValueOfObjCType:"d" at:&v7 size:8];
+      [coder decodeValueOfObjCType:"d" at:&v7 size:8];
       v5 = v7;
     }
 
@@ -77,22 +77,22 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CUIPSDGradientOpacityStop;
   [(CUIPSDGradientStop *)&v7 encodeWithCoder:?];
   opacity = self->opacity;
   v6 = opacity;
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeInteger:+[CUIPSDGradientOpacityStop version](CUIPSDGradientOpacityStop forKey:{"version"), @"CUIPSDGradientOpacityStopVersion"}];
-    [a3 encodeDouble:@"CUIPSDGradientOpacityStopOpacity" forKey:opacity];
+    [coder encodeInteger:+[CUIPSDGradientOpacityStop version](CUIPSDGradientOpacityStop forKey:{"version"), @"CUIPSDGradientOpacityStopVersion"}];
+    [coder encodeDouble:@"CUIPSDGradientOpacityStopOpacity" forKey:opacity];
   }
 
   else
   {
-    [a3 encodeValueOfObjCType:"d" at:&v6];
+    [coder encodeValueOfObjCType:"d" at:&v6];
   }
 }
 

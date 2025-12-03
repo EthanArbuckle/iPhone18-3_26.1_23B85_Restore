@@ -11,10 +11,10 @@
   v2 = [(SKPaymentQueueInternal *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
 
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     transactions = v2->_transactions;

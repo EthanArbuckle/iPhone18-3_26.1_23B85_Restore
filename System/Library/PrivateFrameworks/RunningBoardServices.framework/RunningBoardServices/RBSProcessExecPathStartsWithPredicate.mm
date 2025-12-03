@@ -1,32 +1,32 @@
 @interface RBSProcessExecPathStartsWithPredicate
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 @end
 
 @implementation RBSProcessExecPathStartsWithPredicate
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = a3;
-  v5 = [v4 executablePath];
-  if (v5)
+  processCopy = process;
+  executablePath = [processCopy executablePath];
+  if (executablePath)
   {
-    v6 = v5;
+    executablePath2 = executablePath;
   }
 
   else
   {
-    v7 = [v4 bundle];
-    v6 = [v7 executablePath];
+    bundle = [processCopy bundle];
+    executablePath2 = [bundle executablePath];
 
-    if (!v6)
+    if (!executablePath2)
     {
       v9 = 0;
       goto LABEL_5;
     }
   }
 
-  v8 = [(RBSProcessStringPredicate *)self identifier];
-  v9 = [v6 hasPrefix:v8];
+  identifier = [(RBSProcessStringPredicate *)self identifier];
+  v9 = [executablePath2 hasPrefix:identifier];
 
 LABEL_5:
   return v9;

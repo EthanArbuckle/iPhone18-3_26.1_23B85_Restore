@@ -1,21 +1,21 @@
 @interface MSSSharedLibraryInvitationCell
-- (MSSSharedLibraryInvitationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (MSSSharedLibraryInvitationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation MSSSharedLibraryInvitationCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  [(MSSSharedLibraryInvitationCell *)self setSpecifier:v4];
-  v8 = [v4 userInfo];
+  specifierCopy = specifier;
+  [(MSSSharedLibraryInvitationCell *)self setSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
 
-  v5 = [v8 conformsToProtocol:&OBJC_PROTOCOL___PXSharedLibraryParticipant];
-  v6 = v8;
+  v5 = [userInfo conformsToProtocol:&OBJC_PROTOCOL___PXSharedLibraryParticipant];
+  v6 = userInfo;
   if (v5)
   {
-    v7 = v8 == 0;
+    v7 = userInfo == 0;
   }
 
   else
@@ -25,26 +25,26 @@
 
   if (!v7)
   {
-    v5 = [(PXSharedLibraryInvitationContentView *)self->_invitationContentView setOwner:v8];
-    v6 = v8;
+    v5 = [(PXSharedLibraryInvitationContentView *)self->_invitationContentView setOwner:userInfo];
+    v6 = userInfo;
   }
 
   _objc_release_x1(v5, v6);
 }
 
-- (MSSSharedLibraryInvitationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MSSSharedLibraryInvitationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = MSSSharedLibraryInvitationCell;
-  v4 = [(MSSSharedLibraryInvitationCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MSSSharedLibraryInvitationCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(PXSharedLibraryInvitationContentView);
     invitationContentView = v4->_invitationContentView;
     v4->_invitationContentView = v5;
 
-    v7 = [(MSSSharedLibraryInvitationCell *)v4 contentView];
-    [v7 px_addFullBoundsSubview:v4->_invitationContentView];
+    contentView = [(MSSSharedLibraryInvitationCell *)v4 contentView];
+    [contentView px_addFullBoundsSubview:v4->_invitationContentView];
 
     [(MSSSharedLibraryInvitationCell *)v4 setAccessoryType:1];
   }

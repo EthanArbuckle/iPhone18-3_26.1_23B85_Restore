@@ -1,14 +1,14 @@
 @interface PKLabeledValueAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation PKLabeledValueAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKLabeledValue" hasInstanceVariable:@"_label" withType:"NSString"];
-  [v3 validateClass:@"PKLabeledValue" hasInstanceVariable:@"_value" withType:"NSString"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKLabeledValue" hasInstanceVariable:@"_label" withType:"NSString"];
+  [validationsCopy validateClass:@"PKLabeledValue" hasInstanceVariable:@"_value" withType:"NSString"];
 }
 
 @end

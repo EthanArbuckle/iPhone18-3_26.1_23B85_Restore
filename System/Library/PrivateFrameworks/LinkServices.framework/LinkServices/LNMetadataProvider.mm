@@ -1,50 +1,50 @@
 @interface LNMetadataProvider
-- (BOOL)enumerateActionsForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)enumerateEntitiesForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)enumerateEnumsForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)enumerateQueriesForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)registerBundleWithIdentifier:(id)a3 error:(id *)a4;
-- (LNMetadataProvider)initWithOptions:(int64_t)a3;
-- (_TtC12LinkServices25_LNMetadataProviderDirect)getDirectProviderWithError:(_TtC12LinkServices25_LNMetadataProviderDirect *)a1;
-- (id)actionForBundleIdentifier:(id)a3 andActionIdentifier:(id)a4 error:(id *)a5;
-- (id)actionIdentifiersForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)actionsAndSystemProtocolDefaultsForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)actionsConformingToSystemProtocol:(id)a3 withParametersOfTypes:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6;
-- (id)actionsConformingToSystemProtocols:(id)a3 logicalType:(unint64_t)a4 bundleIdentifier:(id)a5 error:(id *)a6;
-- (id)actionsForBundleIdentifier:(id)a3 andActionIdentifier:(id)a4 error:(id *)a5;
-- (id)actionsForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)actionsForSchemaIdentifier:(id)a3 error:(id *)a4;
-- (id)actionsWithError:(id *)a3;
-- (id)actionsWithFullyQualifiedIdentifiers:(id)a3 error:(id *)a4;
-- (id)appShortcutsProviderMangledTypeNameForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)bundleRegistrationsWithError:(id *)a3;
-- (id)bundlesWithError:(id *)a3;
-- (id)entitiesForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)entitiesForSchemaIdentifier:(id)a3 error:(id *)a4;
-- (id)entitiesWithError:(id *)a3;
-- (id)entityForBundleIdentifier:(id)a3 withEntityIdentifier:(id)a4 error:(id *)a5;
-- (id)entityIdentifiersForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)enumsForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)enumsForSchemaIdentifier:(id)a3 error:(id *)a4;
-- (id)enumsWithError:(id *)a3;
-- (id)examplePhrasesForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)getInterfaceWithSource:(uint64_t)a1;
+- (BOOL)enumerateActionsForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateEntitiesForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateEnumsForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateQueriesForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error;
+- (BOOL)registerBundleWithIdentifier:(id)identifier error:(id *)error;
+- (LNMetadataProvider)initWithOptions:(int64_t)options;
+- (_TtC12LinkServices25_LNMetadataProviderDirect)getDirectProviderWithError:(_TtC12LinkServices25_LNMetadataProviderDirect *)error;
+- (id)actionForBundleIdentifier:(id)identifier andActionIdentifier:(id)actionIdentifier error:(id *)error;
+- (id)actionIdentifiersForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)actionsAndSystemProtocolDefaultsForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)actionsConformingToSystemProtocol:(id)protocol withParametersOfTypes:(id)types bundleIdentifier:(id)identifier error:(id *)error;
+- (id)actionsConformingToSystemProtocols:(id)protocols logicalType:(unint64_t)type bundleIdentifier:(id)identifier error:(id *)error;
+- (id)actionsForBundleIdentifier:(id)identifier andActionIdentifier:(id)actionIdentifier error:(id *)error;
+- (id)actionsForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)actionsForSchemaIdentifier:(id)identifier error:(id *)error;
+- (id)actionsWithError:(id *)error;
+- (id)actionsWithFullyQualifiedIdentifiers:(id)identifiers error:(id *)error;
+- (id)appShortcutsProviderMangledTypeNameForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)bundleRegistrationsWithError:(id *)error;
+- (id)bundlesWithError:(id *)error;
+- (id)entitiesForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)entitiesForSchemaIdentifier:(id)identifier error:(id *)error;
+- (id)entitiesWithError:(id *)error;
+- (id)entityForBundleIdentifier:(id)identifier withEntityIdentifier:(id)entityIdentifier error:(id *)error;
+- (id)entityIdentifiersForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)enumsForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)enumsForSchemaIdentifier:(id)identifier error:(id *)error;
+- (id)enumsWithError:(id *)error;
+- (id)examplePhrasesForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)getInterfaceWithSource:(uint64_t)source;
 - (id)getXPCProvider;
-- (id)openActionsForTypeIdentifier:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-- (id)openCollectionActionsForEntityTypeIdentifier:(id)a3 capabilities:(int64_t)a4 bundleIdentifier:(id)a5 error:(id *)a6;
-- (id)queriesForBundleIdentifier:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (id)queriesForSchemaIdentifier:(id)a3 error:(id *)a4;
-- (id)queriesWithCapabilities:(unint64_t)a3 inputValueType:(id)a4 resultValueType:(id)a5 error:(id *)a6;
-- (id)queriesWithError:(id *)a3;
-- (id)queryForBundleIdentifier:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (id)suggestionPhrasesForQueries:(id)a3 error:(id *)a4;
-- (int64_t)metadataVersionForBundleIdentifier:(id)a3 error:(id *)a4;
+- (id)openActionsForTypeIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier error:(id *)error;
+- (id)openCollectionActionsForEntityTypeIdentifier:(id)identifier capabilities:(int64_t)capabilities bundleIdentifier:(id)bundleIdentifier error:(id *)error;
+- (id)queriesForBundleIdentifier:(id)identifier ofType:(id)type error:(id *)error;
+- (id)queriesForSchemaIdentifier:(id)identifier error:(id *)error;
+- (id)queriesWithCapabilities:(unint64_t)capabilities inputValueType:(id)type resultValueType:(id)valueType error:(id *)error;
+- (id)queriesWithError:(id *)error;
+- (id)queryForBundleIdentifier:(id)identifier ofType:(id)type error:(id *)error;
+- (id)suggestionPhrasesForQueries:(id)queries error:(id *)error;
+- (int64_t)metadataVersionForBundleIdentifier:(id)identifier error:(id *)error;
 - (void)dealloc;
-- (void)diagnoseBundleIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)registerBundleWithIdentifier:(id)a3 force:(BOOL)a4 reply:(id)a5;
-- (void)resetWithReply:(id)a3;
-- (void)scanBundlesWithReply:(id)a3;
-- (void)unregisterBundleWithIdentifier:(id)a3 reply:(id)a4;
+- (void)diagnoseBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)registerBundleWithIdentifier:(id)identifier force:(BOOL)force reply:(id)reply;
+- (void)resetWithReply:(id)reply;
+- (void)scanBundlesWithReply:(id)reply;
+- (void)unregisterBundleWithIdentifier:(id)identifier reply:(id)reply;
 @end
 
 @implementation LNMetadataProvider
@@ -59,14 +59,14 @@
 
 - (id)getXPCProvider
 {
-  v1 = *(a1 + 24);
+  v1 = *(self + 24);
   if (!v1)
   {
-    v3 = [[_LNMetadataProviderXPC alloc] initWithConnection:*(a1 + 40)];
-    v4 = *(a1 + 24);
-    *(a1 + 24) = v3;
+    v3 = [[_LNMetadataProviderXPC alloc] initWithConnection:*(self + 40)];
+    v4 = *(self + 24);
+    *(self + 24) = v3;
 
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
   }
 
   v5 = v1;
@@ -74,39 +74,39 @@
   return v5;
 }
 
-- (void)diagnoseBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)diagnoseBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = [(LNMetadataProvider *)self getInterfaceWithSource:?];
-  [v8 diagnoseBundleIdentifier:v7 completionHandler:v6];
+  [v8 diagnoseBundleIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (id)getInterfaceWithSource:(uint64_t)a1
+- (id)getInterfaceWithSource:(uint64_t)source
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (source)
   {
-    os_unfair_lock_lock((a1 + 8));
+    os_unfair_lock_lock((source + 8));
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __45__LNMetadataProvider_getInterfaceWithSource___block_invoke;
     v19[3] = &unk_1E74B2318;
-    v19[4] = a1;
+    v19[4] = source;
     v5 = _Block_copy(v19);
     if (a2 == 1)
     {
-      v7 = *(a1 + 32);
+      v7 = *(source + 32);
       if (!v7)
       {
         v11 = [_TtC12LinkServices25_LNMetadataProviderDirect alloc];
-        v12 = *(a1 + 40);
-        v13 = *(a1 + 16);
+        v12 = *(source + 40);
+        v13 = *(source + 16);
         v20 = 0;
         v14 = [(_LNMetadataProviderDirect *)v11 initWithConnection:v12 options:v13 error:&v20];
         v15 = v20;
-        v16 = *(a1 + 32);
-        *(a1 + 32) = v14;
+        v16 = *(source + 32);
+        *(source + 32) = v14;
 
         if (v15)
         {
@@ -118,15 +118,15 @@
             _os_log_impl(&dword_19763D000, v17, OS_LOG_TYPE_ERROR, "Request for read access failed, falling back to XPC: %@", buf, 0xCu);
           }
 
-          v18 = [(LNMetadataProvider *)a1 getXPCProvider];
+          getXPCProvider = [(LNMetadataProvider *)source getXPCProvider];
         }
 
         else
         {
-          v18 = *(a1 + 32);
+          getXPCProvider = *(source + 32);
         }
 
-        v2 = v18;
+        v2 = getXPCProvider;
 
         goto LABEL_12;
       }
@@ -142,9 +142,9 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      if (!*(a1 + 32))
+      if (!*(source + 32))
       {
-        v8 = [(LNMetadataProvider *)a1 getXPCProvider];
+        getXPCProvider2 = [(LNMetadataProvider *)source getXPCProvider];
         goto LABEL_11;
       }
 
@@ -155,12 +155,12 @@ LABEL_12:
         _os_log_impl(&dword_19763D000, v6, OS_LOG_TYPE_INFO, "XPC provider requested, but there is already direct provider available", buf, 2u);
       }
 
-      v7 = *(a1 + 32);
+      v7 = *(source + 32);
     }
 
-    v8 = v7;
+    getXPCProvider2 = v7;
 LABEL_11:
-    v2 = v8;
+    v2 = getXPCProvider2;
     goto LABEL_12;
   }
 
@@ -171,10 +171,10 @@ LABEL_13:
   return v2;
 }
 
-- (id)suggestionPhrasesForQueries:(id)a3 error:(id *)a4
+- (id)suggestionPhrasesForQueries:(id)queries error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  queriesCopy = queries;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -194,7 +194,7 @@ LABEL_13:
   v17[3] = &unk_1E74B1228;
   v19 = &v21;
   v17[4] = self;
-  v8 = v6;
+  v8 = queriesCopy;
   v18 = v8;
   v20 = &v27;
   os_activity_apply(v7, v17);
@@ -205,12 +205,12 @@ LABEL_13:
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v13 = getLNLogCategoryMetadata();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = *a4;
+      v14 = *error;
       *buf = 138412290;
       v34 = v14;
       _os_log_impl(&dword_19763D000, v13, OS_LOG_TYPE_DEFAULT, "error when fetching suggestion phrases - %@", buf, 0xCu);
@@ -219,13 +219,13 @@ LABEL_13:
     v15 = v28[5];
     if (v15)
     {
-      *a4 = v15;
+      *error = v15;
     }
 
     else
     {
       v16 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v16;
+      *error = v16;
     }
   }
 
@@ -250,7 +250,7 @@ void __56__LNMetadataProvider_suggestionPhrasesForQueries_error___block_invoke(u
   *(v6 + 40) = v5;
 }
 
-- (id)actionsWithError:(id *)a3
+- (id)actionsWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -280,18 +280,18 @@ void __56__LNMetadataProvider_suggestionPhrasesForQueries_error___block_invoke(u
     v7 = v6;
   }
 
-  else if (a3)
+  else if (error)
   {
     v9 = v13[5];
     if (v9)
     {
-      *a3 = v9;
+      *error = v9;
     }
 
     else
     {
       v10 = NSErrorFromMetadataProviderError(9004);
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -314,10 +314,10 @@ void __39__LNMetadataProvider_actionsWithError___block_invoke(uint64_t *a1)
   *(v5 + 40) = v4;
 }
 
-- (id)entityForBundleIdentifier:(id)a3 withEntityIdentifier:(id)a4 error:(id *)a5
+- (id)entityForBundleIdentifier:(id)identifier withEntityIdentifier:(id)entityIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  entityIdentifierCopy = entityIdentifier;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -337,9 +337,9 @@ void __39__LNMetadataProvider_actionsWithError___block_invoke(uint64_t *a1)
   block[3] = &unk_1E74B11D8;
   v19 = &v21;
   block[4] = self;
-  v11 = v8;
+  v11 = identifierCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = entityIdentifierCopy;
   v18 = v12;
   v20 = &v27;
   os_activity_apply(v10, block);
@@ -352,7 +352,7 @@ void __39__LNMetadataProvider_actionsWithError___block_invoke(uint64_t *a1)
 
   else
   {
-    *a5 = v28[5];
+    *error = v28[5];
   }
 
   _Block_object_dispose(&v21, 8);
@@ -376,9 +376,9 @@ void __75__LNMetadataProvider_entityForBundleIdentifier_withEntityIdentifier_err
   *(v7 + 40) = v6;
 }
 
-- (id)entitiesForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)entitiesForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -398,7 +398,7 @@ void __75__LNMetadataProvider_entityForBundleIdentifier_withEntityIdentifier_err
   v14[3] = &unk_1E74B1228;
   v16 = &v18;
   v14[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
   v17 = &v24;
   os_activity_apply(v7, v14);
@@ -409,18 +409,18 @@ void __75__LNMetadataProvider_entityForBundleIdentifier_withEntityIdentifier_err
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v25[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
 
     else
     {
       v13 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -444,7 +444,7 @@ void __56__LNMetadataProvider_entitiesForBundleIdentifier_error___block_invoke(u
   *(v6 + 40) = v5;
 }
 
-- (id)entitiesWithError:(id *)a3
+- (id)entitiesWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -474,18 +474,18 @@ void __56__LNMetadataProvider_entitiesForBundleIdentifier_error___block_invoke(u
     v7 = v6;
   }
 
-  else if (a3)
+  else if (error)
   {
     v9 = v19[5];
     if (v9)
     {
-      *a3 = v9;
+      *error = v9;
     }
 
     else
     {
       v10 = NSErrorFromMetadataProviderError(9004);
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -508,9 +508,9 @@ void __40__LNMetadataProvider_entitiesWithError___block_invoke(uint64_t *a1)
   *(v5 + 40) = v4;
 }
 
-- (id)enumsForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)enumsForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -530,7 +530,7 @@ void __40__LNMetadataProvider_entitiesWithError___block_invoke(uint64_t *a1)
   v14[3] = &unk_1E74B1228;
   v16 = &v18;
   v14[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
   v17 = &v24;
   os_activity_apply(v7, v14);
@@ -541,18 +541,18 @@ void __40__LNMetadataProvider_entitiesWithError___block_invoke(uint64_t *a1)
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v25[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
 
     else
     {
       v13 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -576,7 +576,7 @@ void __53__LNMetadataProvider_enumsForBundleIdentifier_error___block_invoke(uint
   *(v6 + 40) = v5;
 }
 
-- (id)enumsWithError:(id *)a3
+- (id)enumsWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -606,18 +606,18 @@ void __53__LNMetadataProvider_enumsForBundleIdentifier_error___block_invoke(uint
     v7 = v6;
   }
 
-  else if (a3)
+  else if (error)
   {
     v9 = v19[5];
     if (v9)
     {
-      *a3 = v9;
+      *error = v9;
     }
 
     else
     {
       v10 = NSErrorFromMetadataProviderError(9004);
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -640,10 +640,10 @@ void __37__LNMetadataProvider_enumsWithError___block_invoke(uint64_t *a1)
   *(v5 + 40) = v4;
 }
 
-- (id)queriesWithCapabilities:(unint64_t)a3 inputValueType:(id)a4 resultValueType:(id)a5 error:(id *)a6
+- (id)queriesWithCapabilities:(unint64_t)capabilities inputValueType:(id)type resultValueType:(id)valueType error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  valueTypeCopy = valueType;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -663,10 +663,10 @@ void __37__LNMetadataProvider_enumsWithError___block_invoke(uint64_t *a1)
   v20[3] = &unk_1E74B0A58;
   v23 = &v26;
   v20[4] = self;
-  v25 = a3;
-  v13 = v10;
+  capabilitiesCopy = capabilities;
+  v13 = typeCopy;
   v21 = v13;
-  v14 = v11;
+  v14 = valueTypeCopy;
   v22 = v14;
   v24 = &v32;
   os_activity_apply(v12, v20);
@@ -677,18 +677,18 @@ void __37__LNMetadataProvider_enumsWithError___block_invoke(uint64_t *a1)
     v16 = v15;
   }
 
-  else if (a6)
+  else if (error)
   {
     v18 = v33[5];
     if (v18)
     {
-      *a6 = v18;
+      *error = v18;
     }
 
     else
     {
       v19 = NSErrorFromMetadataProviderError(9004);
-      *a6 = v19;
+      *error = v19;
     }
   }
 
@@ -714,10 +714,10 @@ void __83__LNMetadataProvider_queriesWithCapabilities_inputValueType_resultValue
   *(v8 + 40) = v7;
 }
 
-- (id)queriesForBundleIdentifier:(id)a3 ofType:(id)a4 error:(id *)a5
+- (id)queriesForBundleIdentifier:(id)identifier ofType:(id)type error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -737,9 +737,9 @@ void __83__LNMetadataProvider_queriesWithCapabilities_inputValueType_resultValue
   block[3] = &unk_1E74B11D8;
   v21 = &v23;
   block[4] = self;
-  v11 = v8;
+  v11 = identifierCopy;
   v19 = v11;
-  v12 = v9;
+  v12 = typeCopy;
   v20 = v12;
   v22 = &v29;
   os_activity_apply(v10, block);
@@ -750,18 +750,18 @@ void __83__LNMetadataProvider_queriesWithCapabilities_inputValueType_resultValue
     v14 = v13;
   }
 
-  else if (a5)
+  else if (error)
   {
     v16 = v30[5];
     if (v16)
     {
-      *a5 = v16;
+      *error = v16;
     }
 
     else
     {
       v17 = NSErrorFromMetadataProviderError(9004);
-      *a5 = v17;
+      *error = v17;
     }
   }
 
@@ -786,7 +786,7 @@ void __62__LNMetadataProvider_queriesForBundleIdentifier_ofType_error___block_in
   *(v7 + 40) = v6;
 }
 
-- (id)queriesWithError:(id *)a3
+- (id)queriesWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -816,18 +816,18 @@ void __62__LNMetadataProvider_queriesForBundleIdentifier_ofType_error___block_in
     v7 = v6;
   }
 
-  else if (a3)
+  else if (error)
   {
     v9 = v19[5];
     if (v9)
     {
-      *a3 = v9;
+      *error = v9;
     }
 
     else
     {
       v10 = NSErrorFromMetadataProviderError(9004);
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -850,9 +850,9 @@ void __39__LNMetadataProvider_queriesWithError___block_invoke(uint64_t *a1)
   *(v5 + 40) = v4;
 }
 
-- (id)actionsForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)actionsForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -872,7 +872,7 @@ void __39__LNMetadataProvider_queriesWithError___block_invoke(uint64_t *a1)
   v14[3] = &unk_1E74B1228;
   v16 = &v18;
   v14[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
   v17 = &v24;
   os_activity_apply(v7, v14);
@@ -883,18 +883,18 @@ void __39__LNMetadataProvider_queriesWithError___block_invoke(uint64_t *a1)
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v25[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
 
     else
     {
       v13 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -918,9 +918,9 @@ void __55__LNMetadataProvider_actionsForBundleIdentifier_error___block_invoke(ui
   *(v6 + 40) = v5;
 }
 
-- (id)examplePhrasesForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)examplePhrasesForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -940,7 +940,7 @@ void __55__LNMetadataProvider_actionsForBundleIdentifier_error___block_invoke(ui
   v14[3] = &unk_1E74B1228;
   v16 = &v18;
   v14[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
   v17 = &v24;
   os_activity_apply(v7, v14);
@@ -951,18 +951,18 @@ void __55__LNMetadataProvider_actionsForBundleIdentifier_error___block_invoke(ui
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v25[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
 
     else
     {
       v13 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -986,20 +986,20 @@ void __62__LNMetadataProvider_examplePhrasesForBundleIdentifier_error___block_in
   *(v6 + 40) = v5;
 }
 
-- (void)unregisterBundleWithIdentifier:(id)a3 reply:(id)a4
+- (void)unregisterBundleWithIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v8 = _os_activity_create(&dword_19763D000, "appintents:unregister bundle", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__LNMetadataProvider_unregisterBundleWithIdentifier_reply___block_invoke;
   block[3] = &unk_1E74B2580;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = replyCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = replyCopy;
   os_activity_apply(v8, block);
 }
 
@@ -1015,17 +1015,17 @@ void __59__LNMetadataProvider_unregisterBundleWithIdentifier_reply___block_invok
   [v3 unregisterBundleWithIdentifier:*(a1 + 40) reply:*(a1 + 48)];
 }
 
-- (void)scanBundlesWithReply:(id)a3
+- (void)scanBundlesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = _os_activity_create(&dword_19763D000, "appintents:scan bundles", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__LNMetadataProvider_scanBundlesWithReply___block_invoke;
   v7[3] = &unk_1E74B1930;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   os_activity_apply(v5, v7);
 }
 
@@ -1041,17 +1041,17 @@ void __43__LNMetadataProvider_scanBundlesWithReply___block_invoke(uint64_t a1)
   [v3 scanBundlesWithReply:*(a1 + 40)];
 }
 
-- (void)resetWithReply:(id)a3
+- (void)resetWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = _os_activity_create(&dword_19763D000, "appintents:reset metadata", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__LNMetadataProvider_resetWithReply___block_invoke;
   v7[3] = &unk_1E74B1930;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   os_activity_apply(v5, v7);
 }
 
@@ -1067,18 +1067,18 @@ void __37__LNMetadataProvider_resetWithReply___block_invoke(uint64_t a1)
   [v3 resetWithReply:*(a1 + 40)];
 }
 
-- (void)registerBundleWithIdentifier:(id)a3 force:(BOOL)a4 reply:(id)a5
+- (void)registerBundleWithIdentifier:(id)identifier force:(BOOL)force reply:(id)reply
 {
   v9 = 0;
-  v7 = a5;
-  [(LNMetadataProvider *)self registerBundleWithIdentifier:a3 error:&v9];
+  replyCopy = reply;
+  [(LNMetadataProvider *)self registerBundleWithIdentifier:identifier error:&v9];
   v8 = v9;
-  v7[2](v7, v8);
+  replyCopy[2](replyCopy, v8);
 }
 
-- (BOOL)registerBundleWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)registerBundleWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -1091,16 +1091,16 @@ void __37__LNMetadataProvider_resetWithReply___block_invoke(uint64_t a1)
   block[2] = __57__LNMetadataProvider_registerBundleWithIdentifier_error___block_invoke;
   block[3] = &unk_1E74B1C40;
   block[4] = self;
-  v11 = v6;
+  v11 = identifierCopy;
   v12 = &v13;
-  v8 = v6;
+  v8 = identifierCopy;
   os_activity_apply(v7, block);
 
-  *a4 = v14[5];
-  LOBYTE(a4) = v14[5] == 0;
+  *error = v14[5];
+  LOBYTE(error) = v14[5] == 0;
   _Block_object_dispose(&v13, 8);
 
-  return a4;
+  return error;
 }
 
 void __57__LNMetadataProvider_registerBundleWithIdentifier_error___block_invoke(void *a1)
@@ -1130,9 +1130,9 @@ void __57__LNMetadataProvider_registerBundleWithIdentifier_error___block_invoke(
   _Block_object_dispose(&v7, 8);
 }
 
-- (id)appShortcutsProviderMangledTypeNameForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)appShortcutsProviderMangledTypeNameForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1152,17 +1152,17 @@ void __57__LNMetadataProvider_registerBundleWithIdentifier_error___block_invoke(
   v12[3] = &unk_1E74B1228;
   v14 = &v16;
   v12[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v13 = v8;
   v15 = &v22;
   os_activity_apply(v7, v12);
 
-  if (a4)
+  if (error)
   {
     v9 = v23[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -1187,9 +1187,9 @@ void __83__LNMetadataProvider_appShortcutsProviderMangledTypeNameForBundleIdenti
   *(v6 + 40) = v5;
 }
 
-- (int64_t)metadataVersionForBundleIdentifier:(id)a3 error:(id *)a4
+- (int64_t)metadataVersionForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1207,17 +1207,17 @@ void __83__LNMetadataProvider_appShortcutsProviderMangledTypeNameForBundleIdenti
   v12[3] = &unk_1E74B1228;
   v14 = &v16;
   v12[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v13 = v8;
   v15 = &v20;
   os_activity_apply(v7, v12);
 
-  if (a4)
+  if (error)
   {
     v9 = v21[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -1239,9 +1239,9 @@ void __63__LNMetadataProvider_metadataVersionForBundleIdentifier_error___block_i
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (id)entityIdentifiersForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)entityIdentifiersForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1261,7 +1261,7 @@ void __63__LNMetadataProvider_metadataVersionForBundleIdentifier_error___block_i
   v14[3] = &unk_1E74B1228;
   v16 = &v18;
   v14[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
   v17 = &v24;
   os_activity_apply(v7, v14);
@@ -1272,18 +1272,18 @@ void __63__LNMetadataProvider_metadataVersionForBundleIdentifier_error___block_i
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v25[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
 
     else
     {
       v13 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -1307,7 +1307,7 @@ void __65__LNMetadataProvider_entityIdentifiersForBundleIdentifier_error___block
   *(v6 + 40) = v5;
 }
 
-- (id)bundleRegistrationsWithError:(id *)a3
+- (id)bundleRegistrationsWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -1337,18 +1337,18 @@ void __65__LNMetadataProvider_entityIdentifiersForBundleIdentifier_error___block
     v7 = v6;
   }
 
-  else if (a3)
+  else if (error)
   {
     v9 = v19[5];
     if (v9)
     {
-      *a3 = v9;
+      *error = v9;
     }
 
     else
     {
       v10 = NSErrorFromMetadataProviderError(9004);
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -1371,7 +1371,7 @@ void __51__LNMetadataProvider_bundleRegistrationsWithError___block_invoke(uint64
   *(v5 + 40) = v4;
 }
 
-- (id)bundlesWithError:(id *)a3
+- (id)bundlesWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -1401,18 +1401,18 @@ void __51__LNMetadataProvider_bundleRegistrationsWithError___block_invoke(uint64
     v7 = v6;
   }
 
-  else if (a3)
+  else if (error)
   {
     v9 = v19[5];
     if (v9)
     {
-      *a3 = v9;
+      *error = v9;
     }
 
     else
     {
       v10 = NSErrorFromMetadataProviderError(9004);
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -1435,13 +1435,13 @@ void __39__LNMetadataProvider_bundlesWithError___block_invoke(uint64_t *a1)
   *(v5 + 40) = v4;
 }
 
-- (id)openCollectionActionsForEntityTypeIdentifier:(id)a3 capabilities:(int64_t)a4 bundleIdentifier:(id)a5 error:(id *)a6
+- (id)openCollectionActionsForEntityTypeIdentifier:(id)identifier capabilities:(int64_t)capabilities bundleIdentifier:(id)bundleIdentifier error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
   v12 = [(LNMetadataProvider *)self getInterfaceWithSource:?];
   v18 = 0;
-  v13 = [v12 openCollectionActionsForEntityTypeIdentifier:v11 capabilities:a4 bundleIdentifier:v10 error:&v18];
+  v13 = [v12 openCollectionActionsForEntityTypeIdentifier:identifierCopy capabilities:capabilities bundleIdentifier:bundleIdentifierCopy error:&v18];
 
   v14 = v18;
   if (v13)
@@ -1452,19 +1452,19 @@ void __39__LNMetadataProvider_bundlesWithError___block_invoke(uint64_t *a1)
   else
   {
     v16 = v14;
-    *a6 = v14;
+    *error = v14;
   }
 
   return v13;
 }
 
-- (id)openActionsForTypeIdentifier:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (id)openActionsForTypeIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
   v10 = [(LNMetadataProvider *)self getInterfaceWithSource:?];
   v16 = 0;
-  v11 = [v10 openActionsForTypeIdentifier:v9 bundleIdentifier:v8 error:&v16];
+  v11 = [v10 openActionsForTypeIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy error:&v16];
 
   v12 = v16;
   if (v11)
@@ -1475,15 +1475,15 @@ void __39__LNMetadataProvider_bundlesWithError___block_invoke(uint64_t *a1)
   else
   {
     v14 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (id)actionsWithFullyQualifiedIdentifiers:(id)a3 error:(id *)a4
+- (id)actionsWithFullyQualifiedIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1496,7 +1496,7 @@ void __39__LNMetadataProvider_bundlesWithError___block_invoke(uint64_t *a1)
   v23 = __Block_byref_object_copy__2676;
   v24 = __Block_byref_object_dispose__2677;
   v25 = 0;
-  v7 = [v6 count] != 1;
+  v7 = [identifiersCopy count] != 1;
   v8 = _os_activity_create(&dword_19763D000, "appintents:fetch fully qualified actions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1505,7 +1505,7 @@ void __39__LNMetadataProvider_bundlesWithError___block_invoke(uint64_t *a1)
   v17 = &v20;
   block[4] = self;
   v19 = v7;
-  v9 = v6;
+  v9 = identifiersCopy;
   v16 = v9;
   v18 = &v26;
   os_activity_apply(v8, block);
@@ -1516,18 +1516,18 @@ void __39__LNMetadataProvider_bundlesWithError___block_invoke(uint64_t *a1)
     v11 = v10;
   }
 
-  else if (a4)
+  else if (error)
   {
     v13 = v27[5];
     if (v13)
     {
-      *a4 = v13;
+      *error = v13;
     }
 
     else
     {
       v14 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v14;
+      *error = v14;
     }
   }
 
@@ -1566,11 +1566,11 @@ void __65__LNMetadataProvider_actionsWithFullyQualifiedIdentifiers_error___block
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)actionForBundleIdentifier:(id)a3 andActionIdentifier:(id)a4 error:(id *)a5
+- (id)actionForBundleIdentifier:(id)identifier andActionIdentifier:(id)actionIdentifier error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  actionIdentifierCopy = actionIdentifier;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -1590,9 +1590,9 @@ void __65__LNMetadataProvider_actionsWithFullyQualifiedIdentifiers_error___block
   block[3] = &unk_1E74B11D8;
   v23 = &v25;
   block[4] = self;
-  v11 = v8;
+  v11 = identifierCopy;
   v21 = v11;
-  v12 = v9;
+  v12 = actionIdentifierCopy;
   v22 = v12;
   v24 = &v31;
   os_activity_apply(v10, block);
@@ -1618,18 +1618,18 @@ void __65__LNMetadataProvider_actionsWithFullyQualifiedIdentifiers_error___block
       }
     }
 
-    if (a5)
+    if (error)
     {
       v18 = v32[5];
       if (v18)
       {
-        *a5 = v18;
+        *error = v18;
       }
 
       else
       {
         v19 = NSErrorFromMetadataProviderError(9004);
-        *a5 = v19;
+        *error = v19;
       }
     }
   }
@@ -1656,11 +1656,11 @@ void __74__LNMetadataProvider_actionForBundleIdentifier_andActionIdentifier_erro
   *(v7 + 40) = v6;
 }
 
-- (id)actionsForBundleIdentifier:(id)a3 andActionIdentifier:(id)a4 error:(id *)a5
+- (id)actionsForBundleIdentifier:(id)identifier andActionIdentifier:(id)actionIdentifier error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  actionIdentifierCopy = actionIdentifier;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -1680,9 +1680,9 @@ void __74__LNMetadataProvider_actionForBundleIdentifier_andActionIdentifier_erro
   block[3] = &unk_1E74B11D8;
   v23 = &v25;
   block[4] = self;
-  v11 = v8;
+  v11 = identifierCopy;
   v21 = v11;
-  v12 = v9;
+  v12 = actionIdentifierCopy;
   v22 = v12;
   v24 = &v31;
   os_activity_apply(v10, block);
@@ -1708,18 +1708,18 @@ void __74__LNMetadataProvider_actionForBundleIdentifier_andActionIdentifier_erro
 
   else
   {
-    if (a5)
+    if (error)
     {
       v16 = v32[5];
       if (v16)
       {
         v15 = 0;
-        *a5 = v16;
+        *error = v16;
         goto LABEL_12;
       }
 
       v17 = NSErrorFromMetadataProviderError(9004);
-      *a5 = v17;
+      *error = v17;
     }
 
     v15 = 0;
@@ -1748,9 +1748,9 @@ void __75__LNMetadataProvider_actionsForBundleIdentifier_andActionIdentifier_err
   *(v7 + 40) = v6;
 }
 
-- (id)actionIdentifiersForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)actionIdentifiersForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1770,7 +1770,7 @@ void __75__LNMetadataProvider_actionsForBundleIdentifier_andActionIdentifier_err
   v14[3] = &unk_1E74B1228;
   v16 = &v18;
   v14[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
   v17 = &v24;
   os_activity_apply(v7, v14);
@@ -1781,18 +1781,18 @@ void __75__LNMetadataProvider_actionsForBundleIdentifier_andActionIdentifier_err
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v25[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
 
     else
     {
       v13 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -1816,11 +1816,11 @@ void __65__LNMetadataProvider_actionIdentifiersForBundleIdentifier_error___block
   *(v6 + 40) = v5;
 }
 
-- (id)actionsConformingToSystemProtocol:(id)a3 withParametersOfTypes:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6
+- (id)actionsConformingToSystemProtocol:(id)protocol withParametersOfTypes:(id)types bundleIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  protocolCopy = protocol;
+  typesCopy = types;
+  identifierCopy = identifier;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -1840,11 +1840,11 @@ void __65__LNMetadataProvider_actionIdentifiersForBundleIdentifier_error___block
   v22[3] = &unk_1E74B0A80;
   v26 = &v28;
   v22[4] = self;
-  v14 = v10;
+  v14 = protocolCopy;
   v23 = v14;
-  v15 = v11;
+  v15 = typesCopy;
   v24 = v15;
-  v16 = v12;
+  v16 = identifierCopy;
   v25 = v16;
   v27 = &v34;
   os_activity_apply(v13, v22);
@@ -1855,18 +1855,18 @@ void __65__LNMetadataProvider_actionIdentifiersForBundleIdentifier_error___block
     v18 = v17;
   }
 
-  else if (a6)
+  else if (error)
   {
     v20 = v35[5];
     if (v20)
     {
-      *a6 = v20;
+      *error = v20;
     }
 
     else
     {
       v21 = NSErrorFromMetadataProviderError(9004);
-      *a6 = v21;
+      *error = v21;
     }
   }
 
@@ -1892,9 +1892,9 @@ void __101__LNMetadataProvider_actionsConformingToSystemProtocol_withParametersO
   *(v8 + 40) = v7;
 }
 
-- (id)actionsAndSystemProtocolDefaultsForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)actionsAndSystemProtocolDefaultsForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1914,7 +1914,7 @@ void __101__LNMetadataProvider_actionsConformingToSystemProtocol_withParametersO
   v14[3] = &unk_1E74B1228;
   v16 = &v18;
   v14[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
   v17 = &v24;
   os_activity_apply(v7, v14);
@@ -1925,18 +1925,18 @@ void __101__LNMetadataProvider_actionsConformingToSystemProtocol_withParametersO
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v25[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
 
     else
     {
       v13 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -1960,10 +1960,10 @@ void __80__LNMetadataProvider_actionsAndSystemProtocolDefaultsForBundleIdentifie
   *(v6 + 40) = v5;
 }
 
-- (id)actionsConformingToSystemProtocols:(id)a3 logicalType:(unint64_t)a4 bundleIdentifier:(id)a5 error:(id *)a6
+- (id)actionsConformingToSystemProtocols:(id)protocols logicalType:(unint64_t)type bundleIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  protocolsCopy = protocols;
+  identifierCopy = identifier;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -1983,10 +1983,10 @@ void __80__LNMetadataProvider_actionsAndSystemProtocolDefaultsForBundleIdentifie
   v20[3] = &unk_1E74B0A58;
   v23 = &v26;
   v20[4] = self;
-  v13 = v10;
+  v13 = protocolsCopy;
   v21 = v13;
-  v25 = a4;
-  v14 = v11;
+  typeCopy = type;
+  v14 = identifierCopy;
   v22 = v14;
   v24 = &v32;
   os_activity_apply(v12, v20);
@@ -1997,18 +1997,18 @@ void __80__LNMetadataProvider_actionsAndSystemProtocolDefaultsForBundleIdentifie
     v16 = v15;
   }
 
-  else if (a6)
+  else if (error)
   {
     v18 = v33[5];
     if (v18)
     {
-      *a6 = v18;
+      *error = v18;
     }
 
     else
     {
       v19 = NSErrorFromMetadataProviderError(9004);
-      *a6 = v19;
+      *error = v19;
     }
   }
 
@@ -2034,10 +2034,10 @@ void __92__LNMetadataProvider_actionsConformingToSystemProtocols_logicalType_bun
   *(v8 + 40) = v7;
 }
 
-- (id)queryForBundleIdentifier:(id)a3 ofType:(id)a4 error:(id *)a5
+- (id)queryForBundleIdentifier:(id)identifier ofType:(id)type error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -2057,9 +2057,9 @@ void __92__LNMetadataProvider_actionsConformingToSystemProtocols_logicalType_bun
   block[3] = &unk_1E74B11D8;
   v21 = &v23;
   block[4] = self;
-  v11 = v8;
+  v11 = identifierCopy;
   v19 = v11;
-  v12 = v9;
+  v12 = typeCopy;
   v20 = v12;
   v22 = &v29;
   os_activity_apply(v10, block);
@@ -2070,18 +2070,18 @@ void __92__LNMetadataProvider_actionsConformingToSystemProtocols_logicalType_bun
     v14 = v13;
   }
 
-  else if (a5)
+  else if (error)
   {
     v16 = v30[5];
     if (v16)
     {
-      *a5 = v16;
+      *error = v16;
     }
 
     else
     {
       v17 = NSErrorFromMetadataProviderError(9004);
-      *a5 = v17;
+      *error = v17;
     }
   }
 
@@ -2106,9 +2106,9 @@ void __60__LNMetadataProvider_queryForBundleIdentifier_ofType_error___block_invo
   *(v7 + 40) = v6;
 }
 
-- (id)queriesForSchemaIdentifier:(id)a3 error:(id *)a4
+- (id)queriesForSchemaIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2128,7 +2128,7 @@ void __60__LNMetadataProvider_queryForBundleIdentifier_ofType_error___block_invo
   v14[3] = &unk_1E74B1228;
   v16 = &v18;
   v14[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
   v17 = &v24;
   os_activity_apply(v7, v14);
@@ -2139,18 +2139,18 @@ void __60__LNMetadataProvider_queryForBundleIdentifier_ofType_error___block_invo
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v25[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
 
     else
     {
       v13 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -2174,9 +2174,9 @@ void __55__LNMetadataProvider_queriesForSchemaIdentifier_error___block_invoke(ui
   *(v6 + 40) = v5;
 }
 
-- (id)entitiesForSchemaIdentifier:(id)a3 error:(id *)a4
+- (id)entitiesForSchemaIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2196,7 +2196,7 @@ void __55__LNMetadataProvider_queriesForSchemaIdentifier_error___block_invoke(ui
   v14[3] = &unk_1E74B1228;
   v16 = &v18;
   v14[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
   v17 = &v24;
   os_activity_apply(v7, v14);
@@ -2207,18 +2207,18 @@ void __55__LNMetadataProvider_queriesForSchemaIdentifier_error___block_invoke(ui
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v25[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
 
     else
     {
       v13 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -2242,9 +2242,9 @@ void __56__LNMetadataProvider_entitiesForSchemaIdentifier_error___block_invoke(u
   *(v6 + 40) = v5;
 }
 
-- (id)enumsForSchemaIdentifier:(id)a3 error:(id *)a4
+- (id)enumsForSchemaIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2264,7 +2264,7 @@ void __56__LNMetadataProvider_entitiesForSchemaIdentifier_error___block_invoke(u
   v14[3] = &unk_1E74B1228;
   v16 = &v18;
   v14[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
   v17 = &v24;
   os_activity_apply(v7, v14);
@@ -2275,18 +2275,18 @@ void __56__LNMetadataProvider_entitiesForSchemaIdentifier_error___block_invoke(u
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v25[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
 
     else
     {
       v13 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -2310,9 +2310,9 @@ void __53__LNMetadataProvider_enumsForSchemaIdentifier_error___block_invoke(uint
   *(v6 + 40) = v5;
 }
 
-- (id)actionsForSchemaIdentifier:(id)a3 error:(id *)a4
+- (id)actionsForSchemaIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2332,7 +2332,7 @@ void __53__LNMetadataProvider_enumsForSchemaIdentifier_error___block_invoke(uint
   v14[3] = &unk_1E74B1228;
   v16 = &v18;
   v14[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
   v17 = &v24;
   os_activity_apply(v7, v14);
@@ -2343,18 +2343,18 @@ void __53__LNMetadataProvider_enumsForSchemaIdentifier_error___block_invoke(uint
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v25[5];
     if (v12)
     {
-      *a4 = v12;
+      *error = v12;
     }
 
     else
     {
       v13 = NSErrorFromMetadataProviderError(9004);
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -2378,10 +2378,10 @@ void __55__LNMetadataProvider_actionsForSchemaIdentifier_error___block_invoke(ui
   *(v6 + 40) = v5;
 }
 
-- (BOOL)enumerateQueriesForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateQueriesForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2400,16 +2400,16 @@ void __55__LNMetadataProvider_actionsForSchemaIdentifier_error___block_invoke(ui
   block[4] = self;
   v18 = &v24;
   v19 = &v20;
-  v11 = v8;
+  v11 = identifierCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = blockCopy;
   v17 = v12;
   os_activity_apply(v10, block);
 
   v13 = *(v21 + 24);
-  if (a5 && (v21[3] & 1) == 0)
+  if (error && (v21[3] & 1) == 0)
   {
-    *a5 = v25[5];
+    *error = v25[5];
     v13 = *(v21 + 24);
   }
 
@@ -2451,21 +2451,21 @@ void __75__LNMetadataProvider_enumerateQueriesForBundleIdentifier_usingBlock_err
   }
 }
 
-- (_TtC12LinkServices25_LNMetadataProviderDirect)getDirectProviderWithError:(_TtC12LinkServices25_LNMetadataProviderDirect *)a1
+- (_TtC12LinkServices25_LNMetadataProviderDirect)getDirectProviderWithError:(_TtC12LinkServices25_LNMetadataProviderDirect *)error
 {
-  v2 = a1;
+  errorCopy = error;
   v16 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (error)
   {
     v4 = [_TtC12LinkServices25_LNMetadataProviderDirect alloc];
-    v5 = *v2[1].requiresAssertion;
-    v6 = *v2->requiresAssertion;
+    v5 = *errorCopy[1].requiresAssertion;
+    v6 = *errorCopy->requiresAssertion;
     v13 = 0;
-    v2 = [(_LNMetadataProviderDirect *)v4 initWithConnection:v5 options:v6 error:&v13];
+    errorCopy = [(_LNMetadataProviderDirect *)v4 initWithConnection:v5 options:v6 error:&v13];
     v7 = v13;
-    if (v2)
+    if (errorCopy)
     {
-      v8 = v2;
+      v8 = errorCopy;
     }
 
     else
@@ -2488,13 +2488,13 @@ void __75__LNMetadataProvider_enumerateQueriesForBundleIdentifier_usingBlock_err
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return errorCopy;
 }
 
-- (BOOL)enumerateEntitiesForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateEntitiesForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2513,16 +2513,16 @@ void __75__LNMetadataProvider_enumerateQueriesForBundleIdentifier_usingBlock_err
   block[4] = self;
   v18 = &v24;
   v19 = &v20;
-  v11 = v8;
+  v11 = identifierCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = blockCopy;
   v17 = v12;
   os_activity_apply(v10, block);
 
   v13 = *(v21 + 24);
-  if (a5 && (v21[3] & 1) == 0)
+  if (error && (v21[3] & 1) == 0)
   {
-    *a5 = v25[5];
+    *error = v25[5];
     v13 = *(v21 + 24);
   }
 
@@ -2564,10 +2564,10 @@ void __76__LNMetadataProvider_enumerateEntitiesForBundleIdentifier_usingBlock_er
   }
 }
 
-- (BOOL)enumerateEnumsForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateEnumsForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2586,16 +2586,16 @@ void __76__LNMetadataProvider_enumerateEntitiesForBundleIdentifier_usingBlock_er
   block[4] = self;
   v18 = &v24;
   v19 = &v20;
-  v11 = v8;
+  v11 = identifierCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = blockCopy;
   v17 = v12;
   os_activity_apply(v10, block);
 
   v13 = *(v21 + 24);
-  if (a5 && (v21[3] & 1) == 0)
+  if (error && (v21[3] & 1) == 0)
   {
-    *a5 = v25[5];
+    *error = v25[5];
     v13 = *(v21 + 24);
   }
 
@@ -2637,10 +2637,10 @@ void __73__LNMetadataProvider_enumerateEnumsForBundleIdentifier_usingBlock_error
   }
 }
 
-- (BOOL)enumerateActionsForBundleIdentifier:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)enumerateActionsForBundleIdentifier:(id)identifier usingBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2659,16 +2659,16 @@ void __73__LNMetadataProvider_enumerateEnumsForBundleIdentifier_usingBlock_error
   block[4] = self;
   v18 = &v24;
   v19 = &v20;
-  v11 = v8;
+  v11 = identifierCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = blockCopy;
   v17 = v12;
   os_activity_apply(v10, block);
 
   v13 = *(v21 + 24);
-  if (a5 && (v21[3] & 1) == 0)
+  if (error && (v21[3] & 1) == 0)
   {
-    *a5 = v25[5];
+    *error = v25[5];
     v13 = *(v21 + 24);
   }
 
@@ -2710,7 +2710,7 @@ void __75__LNMetadataProvider_enumerateActionsForBundleIdentifier_usingBlock_err
   }
 }
 
-- (LNMetadataProvider)initWithOptions:(int64_t)a3
+- (LNMetadataProvider)initWithOptions:(int64_t)options
 {
   v11.receiver = self;
   v11.super_class = LNMetadataProvider;
@@ -2719,7 +2719,7 @@ void __75__LNMetadataProvider_enumerateActionsForBundleIdentifier_usingBlock_err
   if (v4)
   {
     v4->_lock._os_unfair_lock_opaque = 0;
-    v4->_options = a3;
+    v4->_options = options;
     v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.linkd.registry" options:0];
     connection = v5->_connection;
     v5->_connection = v6;

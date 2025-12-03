@@ -1,28 +1,28 @@
 @interface MTMPUApplicationDefaults
-- (BOOL)BOOLForKey:(id)a3;
-- (MTMPUApplicationDefaults)initWithApplicationIdentifier:(id)a3;
-- (id)_objectForKey:(id)a3 expectedTypeID:(unint64_t)a4;
-- (id)arrayForKey:(id)a3;
-- (id)dateForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)numberForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (int64_t)integerForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
+- (MTMPUApplicationDefaults)initWithApplicationIdentifier:(id)identifier;
+- (id)_objectForKey:(id)key expectedTypeID:(unint64_t)d;
+- (id)arrayForKey:(id)key;
+- (id)dateForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)numberForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (int64_t)integerForKey:(id)key;
 - (void)_applyUpdates;
 - (void)_defaultsDidChange;
-- (void)_setObject:(id)a3 forKey:(id)a4;
+- (void)_setObject:(id)object forKey:(id)key;
 - (void)dealloc;
-- (void)performBatchUpdates:(id)a3;
-- (void)registerDefaults:(id)a3;
-- (void)setBool:(BOOL)a3 forKey:(id)a4;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4;
+- (void)performBatchUpdates:(id)updates;
+- (void)registerDefaults:(id)defaults;
+- (void)setBool:(BOOL)bool forKey:(id)key;
+- (void)setInteger:(int64_t)integer forKey:(id)key;
 @end
 
 @implementation MTMPUApplicationDefaults
 
-- (MTMPUApplicationDefaults)initWithApplicationIdentifier:(id)a3
+- (MTMPUApplicationDefaults)initWithApplicationIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = MTMPUApplicationDefaults;
   v6 = [(MTMPUApplicationDefaults *)&v12 init];
@@ -32,10 +32,10 @@
     accessQueue = v6->_accessQueue;
     v6->_accessQueue = v7;
 
-    objc_storeStrong(&v6->_applicationIdentifier, a3);
-    v9 = [(MTMPUApplicationDefaults *)v6 _defaultsDidChangeNotificationName];
+    objc_storeStrong(&v6->_applicationIdentifier, identifier);
+    _defaultsDidChangeNotificationName = [(MTMPUApplicationDefaults *)v6 _defaultsDidChangeNotificationName];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, _MPUApplicationDefaultsDidChangeNotification, v9, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+    CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, _MPUApplicationDefaultsDidChangeNotification, _defaultsDidChangeNotificationName, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   }
 
   return v6;
@@ -43,37 +43,37 @@
 
 - (void)dealloc
 {
-  v3 = [(MTMPUApplicationDefaults *)self _defaultsDidChangeNotificationName];
+  _defaultsDidChangeNotificationName = [(MTMPUApplicationDefaults *)self _defaultsDidChangeNotificationName];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, v3, 0);
+  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, _defaultsDidChangeNotificationName, 0);
 
   v5.receiver = self;
   v5.super_class = MTMPUApplicationDefaults;
   [(MTMPUApplicationDefaults *)&v5 dealloc];
 }
 
-- (void)registerDefaults:(id)a3
+- (void)registerDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__MTMPUApplicationDefaults_registerDefaults___block_invoke;
   v7[3] = &unk_2782BDD68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = defaultsCopy;
+  v6 = defaultsCopy;
   dispatch_barrier_sync(accessQueue, v7);
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:v4 expectedTypeID:CFBooleanGetTypeID()];
+  keyCopy = key;
+  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:keyCopy expectedTypeID:CFBooleanGetTypeID()];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
@@ -91,17 +91,17 @@
     block[3] = &unk_2782BE6A8;
     v14 = &v15;
     block[4] = self;
-    v9 = v4;
+    v9 = keyCopy;
     v13 = v9;
     dispatch_sync(accessQueue, block);
-    v10 = [(MTMPUApplicationDefaults *)self _defaultsDomain];
-    CFPreferencesSetAppValue(v9, v16[5], v10);
-    v7 = [v16[5] BOOLValue];
+    _defaultsDomain = [(MTMPUApplicationDefaults *)self _defaultsDomain];
+    CFPreferencesSetAppValue(v9, v16[5], _defaultsDomain);
+    bOOLValue = [v16[5] BOOLValue];
 
     _Block_object_dispose(&v15, 8);
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 uint64_t __39__MTMPUApplicationDefaults_BOOLForKey___block_invoke(void *a1)
@@ -114,49 +114,49 @@ uint64_t __39__MTMPUApplicationDefaults_BOOLForKey___block_invoke(void *a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)setBool:(BOOL)a3 forKey:(id)a4
+- (void)setBool:(BOOL)bool forKey:(id)key
 {
   v4 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!bool)
   {
     v4 = MEMORY[0x277CBED10];
   }
 
-  [(MTMPUApplicationDefaults *)self _setObject:*v4 forKey:a4];
+  [(MTMPUApplicationDefaults *)self _setObject:*v4 forKey:key];
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:v4 expectedTypeID:CFStringGetTypeID()];
+  keyCopy = key;
+  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:keyCopy expectedTypeID:CFStringGetTypeID()];
 
   return v5;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:v4 expectedTypeID:CFArrayGetTypeID()];
+  keyCopy = key;
+  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:keyCopy expectedTypeID:CFArrayGetTypeID()];
 
   return v5;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:v4 expectedTypeID:CFDictionaryGetTypeID()];
+  keyCopy = key;
+  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:keyCopy expectedTypeID:CFDictionaryGetTypeID()];
 
   return v5;
 }
 
-- (int64_t)integerForKey:(id)a3
+- (int64_t)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:v4 expectedTypeID:CFNumberGetTypeID()];
+  keyCopy = key;
+  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:keyCopy expectedTypeID:CFNumberGetTypeID()];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
@@ -174,17 +174,17 @@ uint64_t __39__MTMPUApplicationDefaults_BOOLForKey___block_invoke(void *a1)
     block[3] = &unk_2782BE6A8;
     v14 = &v15;
     block[4] = self;
-    v9 = v4;
+    v9 = keyCopy;
     v13 = v9;
     dispatch_sync(accessQueue, block);
-    v10 = [(MTMPUApplicationDefaults *)self _defaultsDomain];
-    CFPreferencesSetAppValue(v9, v16[5], v10);
-    v7 = [v16[5] integerValue];
+    _defaultsDomain = [(MTMPUApplicationDefaults *)self _defaultsDomain];
+    CFPreferencesSetAppValue(v9, v16[5], _defaultsDomain);
+    integerValue = [v16[5] integerValue];
 
     _Block_object_dispose(&v15, 8);
   }
 
-  return v7;
+  return integerValue;
 }
 
 uint64_t __42__MTMPUApplicationDefaults_integerForKey___block_invoke(void *a1)
@@ -197,33 +197,33 @@ uint64_t __42__MTMPUApplicationDefaults_integerForKey___block_invoke(void *a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:v4 expectedTypeID:CFNumberGetTypeID()];
+  keyCopy = key;
+  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:keyCopy expectedTypeID:CFNumberGetTypeID()];
 
   return v5;
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4
+- (void)setInteger:(int64_t)integer forKey:(id)key
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [(MTMPUApplicationDefaults *)self _setObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithInteger:integer];
+  [(MTMPUApplicationDefaults *)self _setObject:v8 forKey:keyCopy];
 }
 
-- (id)dateForKey:(id)a3
+- (id)dateForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:v4 expectedTypeID:CFDateGetTypeID()];
+  keyCopy = key;
+  v5 = [(MTMPUApplicationDefaults *)self _objectForKey:keyCopy expectedTypeID:CFDateGetTypeID()];
 
   return v5;
 }
 
-- (void)performBatchUpdates:(id)a3
+- (void)performBatchUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -231,7 +231,7 @@ uint64_t __42__MTMPUApplicationDefaults_integerForKey___block_invoke(void *a1)
   block[3] = &unk_2782BDD90;
   block[4] = self;
   dispatch_barrier_sync(accessQueue, block);
-  v4[2](v4);
+  updatesCopy[2](updatesCopy);
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -254,14 +254,14 @@ uint64_t __42__MTMPUApplicationDefaults_integerForKey___block_invoke(void *a1)
 
 - (void)_applyUpdates
 {
-  v3 = [(MTMPUApplicationDefaults *)self _defaultsDomain];
+  _defaultsDomain = [(MTMPUApplicationDefaults *)self _defaultsDomain];
   v4 = dispatch_get_global_queue(0, 0);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __41__MTMPUApplicationDefaults__applyUpdates__block_invoke;
   v5[3] = &unk_2782BE150;
   v5[4] = self;
-  v5[5] = v3;
+  v5[5] = _defaultsDomain;
   dispatch_async(v4, v5);
 }
 
@@ -276,16 +276,16 @@ void __41__MTMPUApplicationDefaults__applyUpdates__block_invoke(uint64_t a1)
 - (void)_defaultsDidChange
 {
   CFPreferencesAppSynchronize([(MTMPUApplicationDefaults *)self _defaultsDomain]);
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"MPUApplicationDefaultsDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"MPUApplicationDefaultsDidChangeNotification" object:self];
 }
 
-- (id)_objectForKey:(id)a3 expectedTypeID:(unint64_t)a4
+- (id)_objectForKey:(id)key expectedTypeID:(unint64_t)d
 {
-  v6 = a3;
-  v7 = CFPreferencesCopyAppValue(v6, [(MTMPUApplicationDefaults *)self _defaultsDomain]);
+  keyCopy = key;
+  v7 = CFPreferencesCopyAppValue(keyCopy, [(MTMPUApplicationDefaults *)self _defaultsDomain]);
 
-  if (v7 && CFGetTypeID(v7) != a4)
+  if (v7 && CFGetTypeID(v7) != d)
   {
     CFRelease(v7);
     v7 = 0;
@@ -294,11 +294,11 @@ void __41__MTMPUApplicationDefaults__applyUpdates__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)_setObject:(id)a3 forKey:(id)a4
+- (void)_setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  CFPreferencesSetAppValue(v7, v6, [(MTMPUApplicationDefaults *)self _defaultsDomain]);
+  objectCopy = object;
+  keyCopy = key;
+  CFPreferencesSetAppValue(keyCopy, objectCopy, [(MTMPUApplicationDefaults *)self _defaultsDomain]);
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;

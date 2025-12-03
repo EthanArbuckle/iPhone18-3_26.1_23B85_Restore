@@ -1,35 +1,35 @@
 @interface RPAudioMixUtility
-+ (id)exportPresetForAVAsset:(id)a3;
++ (id)exportPresetForAVAsset:(id)asset;
 + (id)tempFileURL;
-+ (id)videoCodecTypeForAVAsset:(id)a3;
-+ (void)mixAudioForMovie:(id)a3 finalMovieURL:(id)a4 outputFileType:(id)a5 withCompletionHandler:(id)a6;
-+ (void)mixAudioForMovie:(id)a3 withCompletionHandler:(id)a4;
++ (id)videoCodecTypeForAVAsset:(id)asset;
++ (void)mixAudioForMovie:(id)movie finalMovieURL:(id)l outputFileType:(id)type withCompletionHandler:(id)handler;
++ (void)mixAudioForMovie:(id)movie withCompletionHandler:(id)handler;
 @end
 
 @implementation RPAudioMixUtility
 
-+ (void)mixAudioForMovie:(id)a3 withCompletionHandler:(id)a4
++ (void)mixAudioForMovie:(id)movie withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  movieCopy = movie;
   +[RPAudioMixUtility tempFileURL];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000119C;
   v10 = v9[3] = &unk_1000184C0;
-  v11 = v5;
+  v11 = handlerCopy;
   v7 = v10;
-  v8 = v5;
-  [RPAudioMixUtility mixAudioForMovie:v6 finalMovieURL:v7 outputFileType:AVFileTypeMPEG4 withCompletionHandler:v9];
+  v8 = handlerCopy;
+  [RPAudioMixUtility mixAudioForMovie:movieCopy finalMovieURL:v7 outputFileType:AVFileTypeMPEG4 withCompletionHandler:v9];
 }
 
-+ (void)mixAudioForMovie:(id)a3 finalMovieURL:(id)a4 outputFileType:(id)a5 withCompletionHandler:(id)a6
++ (void)mixAudioForMovie:(id)movie finalMovieURL:(id)l outputFileType:(id)type withCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v9)
+  movieCopy = movie;
+  lCopy = l;
+  typeCopy = type;
+  handlerCopy = handler;
+  if (movieCopy)
   {
     if (__RPLogLevel <= 1)
     {
@@ -40,7 +40,7 @@
         v40 = 1024;
         v41 = 33;
         v42 = 2112;
-        v43 = v9;
+        v43 = movieCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d movieURL  %@", buf, 0x1Cu);
       }
 
@@ -51,19 +51,19 @@
         v40 = 1024;
         v41 = 34;
         v42 = 2112;
-        v43 = v10;
+        v43 = lCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d finalMovieURL %@", buf, 0x1Cu);
       }
     }
 
-    v29 = v9;
-    v13 = [AVAsset assetWithURL:v9];
+    v29 = movieCopy;
+    v13 = [AVAsset assetWithURL:movieCopy];
     v26 = [RPAudioMixUtility exportPresetForAVAsset:v13];
     v14 = [[AVAssetExportSession alloc] initWithAsset:v13 presetName:v26];
-    v28 = v10;
-    [v14 setOutputURL:v10];
-    v27 = v11;
-    [v14 setOutputFileType:v11];
+    v28 = lCopy;
+    [v14 setOutputURL:lCopy];
+    v27 = typeCopy;
+    [v14 setOutputFileType:typeCopy];
     v15 = [v13 tracksWithMediaType:AVMediaTypeAudio];
     v16 = +[NSMutableArray array];
     v33 = 0u;
@@ -114,13 +114,13 @@
     v30[2] = sub_100001670;
     v30[3] = &unk_1000184E8;
     v31 = v14;
-    v32 = v12;
+    v32 = handlerCopy;
     v25 = v14;
     [v25 exportAsynchronouslyWithCompletionHandler:v30];
 
-    v10 = v28;
-    v9 = v29;
-    v11 = v27;
+    lCopy = v28;
+    movieCopy = v29;
+    typeCopy = v27;
   }
 
   else
@@ -131,15 +131,15 @@
     }
 
     v13 = [NSError _rpUserErrorForCode:-5818 userInfo:0];
-    (*(v12 + 2))(v12, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
   }
 }
 
 + (id)tempFileURL
 {
   v2 = +[NSFileManager defaultManager];
-  v3 = [v2 _srTempPath];
-  v4 = [NSString stringWithFormat:@"%@/RPReplay_Final", v3];
+  _srTempPath = [v2 _srTempPath];
+  v4 = [NSString stringWithFormat:@"%@/RPReplay_Final", _srTempPath];
 
   v5 = +[NSDate date];
   [v5 timeIntervalSince1970];
@@ -151,9 +151,9 @@
   return v9;
 }
 
-+ (id)videoCodecTypeForAVAsset:(id)a3
++ (id)videoCodecTypeForAVAsset:(id)asset
 {
-  v3 = [a3 tracksWithMediaType:AVMediaTypeVideo];
+  v3 = [asset tracksWithMediaType:AVMediaTypeVideo];
   if ([v3 count] != 1)
   {
     if (__RPLogLevel <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -161,14 +161,14 @@
       sub_10000B394();
     }
 
-    v5 = 0;
+    formatDescriptions = 0;
     v4 = 0;
     goto LABEL_14;
   }
 
   v4 = [v3 objectAtIndexedSubscript:0];
-  v5 = [v4 formatDescriptions];
-  if ([v5 count] != 1)
+  formatDescriptions = [v4 formatDescriptions];
+  if ([formatDescriptions count] != 1)
   {
     if (__RPLogLevel <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -180,7 +180,7 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  v6 = [v5 objectAtIndexedSubscript:0];
+  v6 = [formatDescriptions objectAtIndexedSubscript:0];
   CMFormatDescriptionGetMediaSubType(v6);
 
   v7 = [NSString stringWithUTF8String:RPStringUtility_FourccToCStr()];
@@ -201,10 +201,10 @@ LABEL_6:
   return v7;
 }
 
-+ (id)exportPresetForAVAsset:(id)a3
++ (id)exportPresetForAVAsset:(id)asset
 {
   v4 = AVAssetExportPresetHighestQuality;
-  v5 = [RPAudioMixUtility videoCodecTypeForAVAsset:a3];
+  v5 = [RPAudioMixUtility videoCodecTypeForAVAsset:asset];
   v6 = v5;
   if (!v5)
   {

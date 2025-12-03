@@ -1,18 +1,18 @@
 @interface _UIPhysicalButtonBSActionResponder
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation _UIPhysicalButtonBSActionResponder
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = [a5 _physicalButtonInteractionArbiter];
-  if (([a5 _hasInvalidated] & 1) != 0 || !v8)
+  _physicalButtonInteractionArbiter = [iScene _physicalButtonInteractionArbiter];
+  if (([iScene _hasInvalidated] & 1) != 0 || !_physicalButtonInteractionArbiter)
   {
-    v21 = a3;
+    actionsCopy = actions;
 LABEL_19:
-    v18 = v21;
+    v18 = actionsCopy;
     v12 = 0;
     goto LABEL_20;
   }
@@ -21,12 +21,12 @@ LABEL_19:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = a3;
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  actionsCopy2 = actions;
+  v10 = [actionsCopy2 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v10)
   {
 
-    v21 = v9;
+    actionsCopy = actionsCopy2;
     goto LABEL_19;
   }
 
@@ -39,7 +39,7 @@ LABEL_19:
     {
       if (*v24 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(actionsCopy2);
       }
 
       v15 = *(*(&v23 + 1) + 8 * i);
@@ -55,17 +55,17 @@ LABEL_19:
           }
 
           [v12 addObject:v16];
-          [(_UIPhysicalButtonInteractionArbiter *)v8 _handleBSAction:v16];
+          [(_UIPhysicalButtonInteractionArbiter *)_physicalButtonInteractionArbiter _handleBSAction:v16];
         }
       }
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v11 = [actionsCopy2 countByEnumeratingWithState:&v23 objects:v27 count:16];
   }
 
   while (v11);
 
-  v17 = v9;
+  v17 = actionsCopy2;
   v18 = v17;
   if (v12)
   {

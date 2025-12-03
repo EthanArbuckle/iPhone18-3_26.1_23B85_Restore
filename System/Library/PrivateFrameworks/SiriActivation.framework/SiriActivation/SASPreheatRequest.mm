@@ -1,36 +1,36 @@
 @interface SASPreheatRequest
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SASPreheatRequest)initWithBuilder:(id)a3;
-- (SASPreheatRequest)initWithCoder:(id)a3;
-- (SASPreheatRequest)initWithRequestSource:(int64_t)a3 configuration:(int64_t)a4 activationReferenceIdentifier:(id)a5;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SASPreheatRequest)initWithBuilder:(id)builder;
+- (SASPreheatRequest)initWithCoder:(id)coder;
+- (SASPreheatRequest)initWithRequestSource:(int64_t)source configuration:(int64_t)configuration activationReferenceIdentifier:(id)identifier;
 - (id)description;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SASPreheatRequest
 
-- (SASPreheatRequest)initWithBuilder:(id)a3
+- (SASPreheatRequest)initWithBuilder:(id)builder
 {
-  v4 = [SASPreheatRequest newWithBuilder:a3];
+  v4 = [SASPreheatRequest newWithBuilder:builder];
 
   return v4;
 }
 
-- (SASPreheatRequest)initWithRequestSource:(int64_t)a3 configuration:(int64_t)a4 activationReferenceIdentifier:(id)a5
+- (SASPreheatRequest)initWithRequestSource:(int64_t)source configuration:(int64_t)configuration activationReferenceIdentifier:(id)identifier
 {
-  v8 = a5;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = SASPreheatRequest;
   v9 = [(SASPreheatRequest *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_requestSource = a3;
-    v9->_configuration = a4;
-    v11 = [v8 copy];
+    v9->_requestSource = source;
+    v9->_configuration = configuration;
+    v11 = [identifierCopy copy];
     activationReferenceIdentifier = v10->_activationReferenceIdentifier;
     v10->_activationReferenceIdentifier = v11;
   }
@@ -78,10 +78,10 @@
   return v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -91,13 +91,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       requestSource = self->_requestSource;
       if (requestSource == [(SASPreheatRequest *)v5 requestSource]&& (configuration = self->_configuration, configuration == [(SASPreheatRequest *)v5 configuration]))
       {
-        v8 = [(SASPreheatRequest *)v5 activationReferenceIdentifier];
+        activationReferenceIdentifier = [(SASPreheatRequest *)v5 activationReferenceIdentifier];
         activationReferenceIdentifier = self->_activationReferenceIdentifier;
-        v10 = activationReferenceIdentifier == v8 || [(NSUUID *)activationReferenceIdentifier isEqual:v8];
+        v10 = activationReferenceIdentifier == activationReferenceIdentifier || [(NSUUID *)activationReferenceIdentifier isEqual:activationReferenceIdentifier];
       }
 
       else
@@ -115,65 +115,65 @@
   return v10;
 }
 
-- (SASPreheatRequest)initWithCoder:(id)a3
+- (SASPreheatRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASPreheatRequest::requestSource"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASPreheatRequest::requestSource"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASPreheatRequest::configuration"];
-  v8 = [v7 integerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASPreheatRequest::configuration"];
+  integerValue2 = [v7 integerValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASPreheatRequest::activationReferenceIdentifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASPreheatRequest::activationReferenceIdentifier"];
 
-  v10 = [(SASPreheatRequest *)self initWithRequestSource:v6 configuration:v8 activationReferenceIdentifier:v9];
+  v10 = [(SASPreheatRequest *)self initWithRequestSource:integerValue configuration:integerValue2 activationReferenceIdentifier:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   requestSource = self->_requestSource;
-  v8 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:requestSource];
-  [v8 encodeObject:v6 forKey:@"SASPreheatRequest::requestSource"];
+  [coderCopy encodeObject:v6 forKey:@"SASPreheatRequest::requestSource"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_configuration];
-  [v8 encodeObject:v7 forKey:@"SASPreheatRequest::configuration"];
+  [coderCopy encodeObject:v7 forKey:@"SASPreheatRequest::configuration"];
 
-  [v8 encodeObject:self->_activationReferenceIdentifier forKey:@"SASPreheatRequest::activationReferenceIdentifier"];
+  [coderCopy encodeObject:self->_activationReferenceIdentifier forKey:@"SASPreheatRequest::activationReferenceIdentifier"];
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SASPreheatRequestMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SASPreheatRequestMutation *)v4 generate];
+  generate = [(_SASPreheatRequestMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SASPreheatRequestMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SASPreheatRequestMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SASPreheatRequestMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SASPreheatRequest *)self copy];
+    generate = [(SASPreheatRequest *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
 @end

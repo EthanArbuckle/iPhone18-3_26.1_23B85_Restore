@@ -4,44 +4,44 @@
 - (BOOL)inputRequired;
 - (BOOL)inputsMultipleItems;
 - (BOOL)isDiscontinued;
-- (BOOL)mappedValueIsTrue:(id)a3 forContentMapping:(id)a4;
+- (BOOL)mappedValueIsTrue:(id)true forContentMapping:(id)mapping;
 - (BOOL)outputsMultipleItems;
 - (BOOL)requiresCallback;
 - (BOOL)shouldSuppressCallback;
-- (BOOL)visibleForUse:(int64_t)a3;
-- (WFInterchangeAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5;
-- (WFInterchangeAction)initWithInterchangeAction:(id)a3 identifier:(id)a4 definition:(id)a5 serializedParameters:(id)a6;
+- (BOOL)visibleForUse:(int64_t)use;
+- (WFInterchangeAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters;
+- (WFInterchangeAction)initWithInterchangeAction:(id)action identifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters;
 - (id)app;
 - (id)appDescriptor;
-- (id)appDescriptorFromWFInterchangeApp:(id)a3;
+- (id)appDescriptorFromWFInterchangeApp:(id)app;
 - (id)description;
 - (id)descriptionDefinition;
-- (id)disabledPlatformsForInterchangeActionWithIdentifier:(id)a3;
+- (id)disabledPlatformsForInterchangeActionWithIdentifier:(id)identifier;
 - (id)inputContentClasses;
 - (id)inputParameterKey;
-- (id)localizedCategoryWithContext:(id)a3;
-- (id)localizedKeywordsWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedCategoryWithContext:(id)context;
+- (id)localizedKeywordsWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
 - (id)outputContentClasses;
 - (id)parameterSummary;
 - (id)requiredResources;
 - (id)specifiedInputContentClasses;
 - (id)specifiedOutputContentClasses;
 - (id)userInterfaceTypes;
-- (void)performActionWithInput:(id)a3 parameters:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)performActionWithInput:(id)input parameters:(id)parameters userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFInterchangeAction
 
-- (id)disabledPlatformsForInterchangeActionWithIdentifier:(id)a3
+- (id)disabledPlatformsForInterchangeActionWithIdentifier:(id)identifier
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  if (identifierCopy)
   {
-    v7 = v5;
+    v7 = identifierCopy;
     if (v7 == @"com.apple.iBooks.openin" || (v8 = v7, v9 = [(__CFString *)v7 isEqualToString:@"com.apple.iBooks.openin"], v8, v9))
     {
       v14[0] = @"Watch";
@@ -52,8 +52,8 @@
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFInterchangeAction.m" lineNumber:409 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFInterchangeAction.m" lineNumber:409 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v10 = MEMORY[0x1E695E0F0];
@@ -64,32 +64,32 @@ LABEL_7:
   return v10;
 }
 
-- (void)performActionWithInput:(id)a3 parameters:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7
+- (void)performActionWithInput:(id)input parameters:(id)parameters userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(WFInterchangeAction *)self interchangeAction];
-  [v17 performActionWithInput:v16 parameters:v15 userInterface:v14 successHandler:v13 errorHandler:v12];
+  errorHandlerCopy = errorHandler;
+  handlerCopy = handler;
+  interfaceCopy = interface;
+  parametersCopy = parameters;
+  inputCopy = input;
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  [interchangeAction performActionWithInput:inputCopy parameters:parametersCopy userInterface:interfaceCopy successHandler:handlerCopy errorHandler:errorHandlerCopy];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   if ([(WFInterchangeAction *)self requiresCallback])
   {
-    v5 = [(WFAction *)self runningDelegate];
+    runningDelegate = [(WFAction *)self runningDelegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(WFAction *)self runningDelegate];
-      v8 = [v7 currentRunningContextForAction:self];
+      runningDelegate2 = [(WFAction *)self runningDelegate];
+      v8 = [runningDelegate2 currentRunningContextForAction:self];
 
-      LOBYTE(v7) = [v8 isShortcutsApp];
-      if ((v7 & 1) == 0)
+      LOBYTE(runningDelegate2) = [v8 isShortcutsApp];
+      if ((runningDelegate2 & 1) == 0)
       {
 LABEL_4:
         v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFActionErrorDomain" code:2 userInfo:0];
@@ -100,25 +100,25 @@ LABEL_4:
 
     else
     {
-      v10 = [MEMORY[0x1E6996CA8] sharedContext];
-      v11 = [v10 applicationOrNil];
+      mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+      applicationOrNil = [mEMORY[0x1E6996CA8] applicationOrNil];
 
-      if (!v11)
+      if (!applicationOrNil)
       {
         goto LABEL_4;
       }
     }
   }
 
-  v12 = [(WFAction *)self processedParameters];
-  v9 = [v12 mutableCopy];
+  processedParameters = [(WFAction *)self processedParameters];
+  v9 = [processedParameters mutableCopy];
 
   if ([(WFInterchangeAction *)self shouldSuppressCallback])
   {
     [v9 setObject:MEMORY[0x1E695E118] forKey:@"DisableCallback"];
   }
 
-  v13 = [(WFAction *)self userInterface];
+  userInterface = [(WFAction *)self userInterface];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __50__WFInterchangeAction_runAsynchronouslyWithInput___block_invoke;
@@ -129,7 +129,7 @@ LABEL_4:
   v14[2] = __50__WFInterchangeAction_runAsynchronouslyWithInput___block_invoke_2;
   v14[3] = &unk_1E837E5E0;
   v14[4] = self;
-  [(WFInterchangeAction *)self performActionWithInput:v4 parameters:v9 userInterface:v13 successHandler:v15 errorHandler:v14];
+  [(WFInterchangeAction *)self performActionWithInput:inputCopy parameters:v9 userInterface:userInterface successHandler:v15 errorHandler:v14];
 
 LABEL_9:
 }
@@ -160,23 +160,23 @@ LABEL_6:
   [*(a1 + 32) finishRunningWithError:v6];
 }
 
-- (BOOL)mappedValueIsTrue:(id)a3 forContentMapping:(id)a4
+- (BOOL)mappedValueIsTrue:(id)true forContentMapping:(id)mapping
 {
-  v5 = a3;
-  v6 = a4;
+  trueCopy = true;
+  mappingCopy = mapping;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 stringValue];
+    stringValue = [trueCopy stringValue];
   }
 
   else
   {
-    v7 = v5;
+    stringValue = trueCopy;
   }
 
-  v8 = v7;
-  v9 = [v6 valueMapping];
-  v10 = [v9 objectForKey:v8];
+  v8 = stringValue;
+  valueMapping = [mappingCopy valueMapping];
+  v10 = [valueMapping objectForKey:v8];
   v11 = v10;
   if (v10)
   {
@@ -185,22 +185,22 @@ LABEL_6:
 
   else
   {
-    v12 = v5;
+    v12 = trueCopy;
   }
 
   v13 = v12;
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
   }
 
   else
   {
-    v14 = 0;
+    bOOLValue = 0;
   }
 
-  return v14;
+  return bOOLValue;
 }
 
 - (BOOL)callbackIsCurrentlyDisabled
@@ -216,10 +216,10 @@ LABEL_6:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(WFInterchangeAction *)self interchangeAction];
-  v5 = [v4 inputMapping];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  inputMapping = [interchangeAction inputMapping];
 
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v6 = [inputMapping countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -230,18 +230,18 @@ LABEL_5:
     {
       if (*v24 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(inputMapping);
       }
 
       v10 = *(*(&v23 + 1) + 8 * v9);
-      v11 = [v10 destinationType];
-      if (![v11 isEqualToString:@"DisableCallback"])
+      destinationType = [v10 destinationType];
+      if (![destinationType isEqualToString:@"DisableCallback"])
       {
         goto LABEL_12;
       }
 
-      v12 = [v10 sourceType];
-      v13 = [v12 isEqualToString:@"Parameter"];
+      sourceType = [v10 sourceType];
+      v13 = [sourceType isEqualToString:@"Parameter"];
 
       if (v13)
       {
@@ -251,7 +251,7 @@ LABEL_5:
 LABEL_13:
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v7 = [inputMapping countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v7)
         {
           goto LABEL_5;
@@ -261,30 +261,30 @@ LABEL_13:
       }
     }
 
-    v14 = [(WFAction *)self processedParameters];
+    processedParameters = [(WFAction *)self processedParameters];
 
-    if (v14)
+    if (processedParameters)
     {
-      v11 = [(WFAction *)self processedParameters];
-      v19 = [v10 sourceKey];
-      v20 = [v11 objectForKey:v19];
+      destinationType = [(WFAction *)self processedParameters];
+      sourceKey = [v10 sourceKey];
+      v20 = [destinationType objectForKey:sourceKey];
       v3 = [(WFInterchangeAction *)self mappedValueIsTrue:v20 forContentMapping:v10];
 
 LABEL_18:
       goto LABEL_19;
     }
 
-    v15 = [v10 sourceKey];
-    v16 = [(WFAction *)self parameterStateForKey:v15];
+    sourceKey2 = [v10 sourceKey];
+    v16 = [(WFAction *)self parameterStateForKey:sourceKey2];
     v17 = objc_opt_class();
-    v11 = WFEnforceClass_1501(v16, v17);
+    destinationType = WFEnforceClass_1501(v16, v17);
 
-    v18 = [v11 value];
+    value = [destinationType value];
 
-    if (v18)
+    if (value)
     {
-      v19 = [v11 value];
-      v3 = [(WFInterchangeAction *)self mappedValueIsTrue:v19 forContentMapping:v10];
+      sourceKey = [destinationType value];
+      v3 = [(WFInterchangeAction *)self mappedValueIsTrue:sourceKey forContentMapping:v10];
       goto LABEL_18;
     }
 
@@ -304,8 +304,8 @@ LABEL_20:
 
 - (BOOL)shouldSuppressCallback
 {
-  v3 = [MEMORY[0x1E6996CA8] sharedContext];
-  v4 = [v3 provider];
+  mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+  provider = [mEMORY[0x1E6996CA8] provider];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -314,23 +314,23 @@ LABEL_20:
     return 0;
   }
 
-  v6 = [(WFAction *)self workflow];
-  v7 = [v6 actions];
+  workflow = [(WFAction *)self workflow];
+  actions = [workflow actions];
 
-  v8 = [v7 indexOfObject:self];
-  v9 = v8 == [v7 count] - 1;
+  v8 = [actions indexOfObject:self];
+  v9 = v8 == [actions count] - 1;
 
   return v9;
 }
 
 - (BOOL)requiresCallback
 {
-  v3 = [(WFInterchangeAction *)self interchangeAction];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(WFInterchangeAction *)self interchangeAction];
-    if ([v4 isCallbackAction])
+    interchangeAction2 = [(WFInterchangeAction *)self interchangeAction];
+    if ([interchangeAction2 isCallbackAction])
     {
       v5 = ![(WFInterchangeAction *)self callbackIsCurrentlyDisabled];
     }
@@ -359,57 +359,57 @@ LABEL_20:
 
   else
   {
-    v4 = [(WFInterchangeAction *)self interchangeAction];
-    v5 = [v4 outputsMultipleItems];
+    interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+    outputsMultipleItems = [interchangeAction outputsMultipleItems];
 
-    return v5;
+    return outputsMultipleItems;
   }
 }
 
 - (BOOL)inputsMultipleItems
 {
-  v2 = [(WFInterchangeAction *)self interchangeAction];
-  v3 = [v2 inputsMultipleItems];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  inputsMultipleItems = [interchangeAction inputsMultipleItems];
 
-  return v3;
+  return inputsMultipleItems;
 }
 
 - (id)outputContentClasses
 {
-  v3 = [(WFInterchangeAction *)self interchangeAction];
-  v4 = [v3 outputContentClasses];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  outputContentClasses = [interchangeAction outputContentClasses];
 
-  if ([v4 count])
+  if ([outputContentClasses count])
   {
-    v5 = v4;
+    inputContentClasses = outputContentClasses;
   }
 
   else
   {
-    v5 = [(WFInterchangeAction *)self inputContentClasses];
+    inputContentClasses = [(WFInterchangeAction *)self inputContentClasses];
   }
 
-  v6 = v5;
+  v6 = inputContentClasses;
 
   return v6;
 }
 
 - (id)specifiedOutputContentClasses
 {
-  v3 = [(WFInterchangeAction *)self interchangeAction];
-  v4 = [v3 outputContentClasses];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  outputContentClasses = [interchangeAction outputContentClasses];
 
-  if ([v4 count])
+  if ([outputContentClasses count])
   {
-    v5 = v4;
+    specifiedInputContentClasses = outputContentClasses;
   }
 
   else
   {
-    v5 = [(WFInterchangeAction *)self specifiedInputContentClasses];
+    specifiedInputContentClasses = [(WFInterchangeAction *)self specifiedInputContentClasses];
   }
 
-  v6 = v5;
+  v6 = specifiedInputContentClasses;
 
   return v6;
 }
@@ -421,14 +421,14 @@ LABEL_20:
   contentClasses = self->_contentClasses;
   if (!contentClasses)
   {
-    v5 = [(WFInterchangeAction *)self interchangeAction];
-    v6 = [v5 skipItemClassesSupportingInput];
+    interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+    skipItemClassesSupportingInput = [interchangeAction skipItemClassesSupportingInput];
 
-    if (v6)
+    if (skipItemClassesSupportingInput)
     {
-      v7 = [(WFInterchangeAction *)self interchangeAction];
-      v8 = [v7 inputContentClasses];
-      v9 = [v8 copy];
+      interchangeAction2 = [(WFInterchangeAction *)self interchangeAction];
+      inputContentClasses = [interchangeAction2 inputContentClasses];
+      v9 = [inputContentClasses copy];
       v10 = self->_contentClasses;
       self->_contentClasses = v9;
     }
@@ -436,15 +436,15 @@ LABEL_20:
     else
     {
       v36 = 360;
-      v7 = objc_opt_new();
+      interchangeAction2 = objc_opt_new();
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v11 = [(WFInterchangeAction *)self interchangeAction];
-      v12 = [v11 inputContentClasses];
+      interchangeAction3 = [(WFInterchangeAction *)self interchangeAction];
+      inputContentClasses2 = [interchangeAction3 inputContentClasses];
 
-      v13 = [v12 countByEnumeratingWithState:&v43 objects:v48 count:16];
+      v13 = [inputContentClasses2 countByEnumeratingWithState:&v43 objects:v48 count:16];
       if (v13)
       {
         v14 = v13;
@@ -453,21 +453,21 @@ LABEL_20:
         v17 = 0x1E6996000uLL;
         v18 = 0x1E6996000uLL;
         v37 = *v44;
-        v38 = v12;
+        v38 = inputContentClasses2;
         do
         {
           for (i = 0; i != v14; ++i)
           {
             if (*v44 != v16)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(inputContentClasses2);
             }
 
             v20 = *(*(&v43 + 1) + 8 * i);
             v21 = *(v15 + 3936);
             if (v20 == objc_opt_class() || (v22 = *(v17 + 3976), v20 == objc_opt_class()) || (v23 = *(v18 + 3664), v20 == objc_opt_class()) || v20 == objc_opt_class())
             {
-              [v7 addObject:{v20, v36}];
+              [interchangeAction2 addObject:{v20, v36}];
             }
 
             else
@@ -476,8 +476,8 @@ LABEL_20:
               v42 = 0u;
               v39 = 0u;
               v40 = 0u;
-              v24 = [v20 ownedTypes];
-              v25 = [v24 countByEnumeratingWithState:&v39 objects:v47 count:16];
+              ownedTypes = [v20 ownedTypes];
+              v25 = [ownedTypes countByEnumeratingWithState:&v39 objects:v47 count:16];
               if (v25)
               {
                 v26 = v25;
@@ -488,39 +488,39 @@ LABEL_20:
                   {
                     if (*v40 != v27)
                     {
-                      objc_enumerationMutation(v24);
+                      objc_enumerationMutation(ownedTypes);
                     }
 
                     v29 = *(*(&v39 + 1) + 8 * j);
-                    v30 = [MEMORY[0x1E6996D68] sharedRegistry];
-                    v31 = [v30 contentItemClassesSupportingType:v29];
-                    [v7 unionSet:v31];
+                    mEMORY[0x1E6996D68] = [MEMORY[0x1E6996D68] sharedRegistry];
+                    v31 = [mEMORY[0x1E6996D68] contentItemClassesSupportingType:v29];
+                    [interchangeAction2 unionSet:v31];
                   }
 
-                  v26 = [v24 countByEnumeratingWithState:&v39 objects:v47 count:16];
+                  v26 = [ownedTypes countByEnumeratingWithState:&v39 objects:v47 count:16];
                 }
 
                 while (v26);
               }
 
               v16 = v37;
-              v12 = v38;
+              inputContentClasses2 = v38;
               v15 = 0x1E6996000;
               v17 = 0x1E6996000;
               v18 = 0x1E6996000;
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v43 objects:v48 count:16];
+          v14 = [inputContentClasses2 countByEnumeratingWithState:&v43 objects:v48 count:16];
         }
 
         while (v14);
       }
 
-      v32 = [v7 array];
+      array = [interchangeAction2 array];
       v3 = v36;
       v33 = *(&self->super.super.isa + v36);
-      *(&self->super.super.isa + v36) = v32;
+      *(&self->super.super.isa + v36) = array;
     }
 
     contentClasses = *(&self->super.super.isa + v3);
@@ -533,41 +533,41 @@ LABEL_20:
 
 - (id)specifiedInputContentClasses
 {
-  v2 = [(WFInterchangeAction *)self interchangeAction];
-  v3 = [v2 inputContentClasses];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  inputContentClasses = [interchangeAction inputContentClasses];
 
-  return v3;
+  return inputContentClasses;
 }
 
 - (id)inputParameterKey
 {
-  v2 = [(WFInterchangeAction *)self interchangeAction];
-  v3 = [v2 inputParameterSourceKey];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  inputParameterSourceKey = [interchangeAction inputParameterSourceKey];
 
-  return v3;
+  return inputParameterSourceKey;
 }
 
 - (BOOL)inputPassthrough
 {
-  v2 = [(WFInterchangeAction *)self interchangeAction];
-  v3 = [v2 outputContentClasses];
-  v4 = [v3 count] == 0;
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  outputContentClasses = [interchangeAction outputContentClasses];
+  v4 = [outputContentClasses count] == 0;
 
   return v4;
 }
 
 - (BOOL)inputRequired
 {
-  v2 = [(WFInterchangeAction *)self interchangeAction];
-  v3 = [v2 inputRequired];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  inputRequired = [interchangeAction inputRequired];
 
-  return v3;
+  return inputRequired;
 }
 
 - (id)app
 {
-  v2 = [(WFInterchangeAction *)self interchangeAction];
-  v3 = [v2 app];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  v3 = [interchangeAction app];
 
   return v3;
 }
@@ -575,50 +575,50 @@ LABEL_20:
 - (id)userInterfaceTypes
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(WFInterchangeAction *)self interchangeAction];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v9[0] = *MEMORY[0x1E6997170];
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
+    userInterfaceTypes = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = WFInterchangeAction;
-    v5 = [(WFAction *)&v8 userInterfaceTypes];
+    userInterfaceTypes = [(WFAction *)&v8 userInterfaceTypes];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return userInterfaceTypes;
 }
 
 - (id)requiredResources
 {
   v40 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(WFInterchangeAction *)self interchangeAction];
-  v5 = [v4 requiredResourceNames];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  requiredResourceNames = [interchangeAction requiredResourceNames];
 
-  v6 = [(WFInterchangeAction *)self interchangeAction];
-  v7 = [v6 definition];
-  v8 = [v7 objectForKey:@"RequiredResources"];
+  interchangeAction2 = [(WFInterchangeAction *)self interchangeAction];
+  definition = [interchangeAction2 definition];
+  v8 = [definition objectForKey:@"RequiredResources"];
 
   v9 = v8;
   if (!v8)
   {
-    if (v5)
+    if (requiredResourceNames)
     {
-      v33 = v5;
+      v33 = requiredResourceNames;
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      obj = v5;
+      obj = requiredResourceNames;
       v10 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (v10)
       {
@@ -639,21 +639,21 @@ LABEL_20:
               v15 = v3;
               v16 = objc_opt_new();
               [v16 setObject:v14 forKey:@"WFResourceClass"];
-              v17 = [(WFInterchangeAction *)self interchangeAction];
-              v18 = [v17 app];
-              v19 = [v18 identifier];
-              [v16 setObject:v19 forKey:@"AppIdentifier"];
+              interchangeAction3 = [(WFInterchangeAction *)self interchangeAction];
+              v18 = [interchangeAction3 app];
+              identifier = [v18 identifier];
+              [v16 setObject:identifier forKey:@"AppIdentifier"];
 
-              v20 = [(WFInterchangeAction *)self interchangeAction];
+              interchangeAction4 = [(WFInterchangeAction *)self interchangeAction];
               objc_opt_class();
-              LOBYTE(v19) = objc_opt_isKindOfClass();
+              LOBYTE(identifier) = objc_opt_isKindOfClass();
 
-              if (v19)
+              if (identifier)
               {
-                v21 = [(WFInterchangeAction *)self interchangeAction];
-                v22 = [v21 scheme];
-                v23 = [v22 scheme];
-                [v16 setObject:v23 forKey:@"UtilizedScheme"];
+                interchangeAction5 = [(WFInterchangeAction *)self interchangeAction];
+                scheme = [interchangeAction5 scheme];
+                v22Scheme = [scheme scheme];
+                [v16 setObject:v22Scheme forKey:@"UtilizedScheme"];
               }
 
               v3 = v15;
@@ -668,10 +668,10 @@ LABEL_20:
       }
 
       v8 = 0;
-      v5 = v33;
+      requiredResourceNames = v33;
     }
 
-    v24 = [(WFInterchangeAction *)self interchangeAction];
+    interchangeAction6 = [(WFInterchangeAction *)self interchangeAction];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -701,23 +701,23 @@ LABEL_20:
   appDescriptor = self->_appDescriptor;
   if (!appDescriptor)
   {
-    v4 = [(WFInterchangeAction *)self interchangeAction];
-    v5 = [v4 app];
+    interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+    v5 = [interchangeAction app];
     v6 = [(WFInterchangeAction *)self appDescriptorFromWFInterchangeApp:v5];
 
     v7 = objc_alloc(MEMORY[0x1E69635F8]);
-    v8 = [(WFInterchangeAction *)self interchangeAction];
-    v9 = [v8 app];
-    v10 = [v9 bundleIdentifier];
-    v11 = [v7 initWithBundleIdentifier:v10 allowPlaceholder:0 error:0];
+    interchangeAction2 = [(WFInterchangeAction *)self interchangeAction];
+    v9 = [interchangeAction2 app];
+    bundleIdentifier = [v9 bundleIdentifier];
+    v11 = [v7 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:0];
 
     if (!v11)
     {
       goto LABEL_5;
     }
 
-    v12 = [MEMORY[0x1E696E748] sharedResolver];
-    v13 = [v12 resolvedAppMatchingDescriptor:v6];
+    mEMORY[0x1E696E748] = [MEMORY[0x1E696E748] sharedResolver];
+    v13 = [mEMORY[0x1E696E748] resolvedAppMatchingDescriptor:v6];
     v14 = self->_appDescriptor;
     self->_appDescriptor = v13;
 
@@ -730,22 +730,22 @@ LABEL_5:
   return v6;
 }
 
-- (id)appDescriptorFromWFInterchangeApp:(id)a3
+- (id)appDescriptorFromWFInterchangeApp:(id)app
 {
   v3 = MEMORY[0x1E696E720];
-  v4 = a3;
+  appCopy = app;
   v5 = [v3 alloc];
-  v6 = [v4 localizedName];
-  v7 = [v4 bundleIdentifier];
+  localizedName = [appCopy localizedName];
+  bundleIdentifier = [appCopy bundleIdentifier];
 
-  v8 = [v5 initWithLocalizedName:v6 bundleIdentifier:v7 extensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:0 supportedIntents:0 bundleURL:0 documentTypes:0];
+  v8 = [v5 initWithLocalizedName:localizedName bundleIdentifier:bundleIdentifier extensionBundleIdentifier:0 counterpartIdentifiers:0 teamIdentifier:0 supportedIntents:0 bundleURL:0 documentTypes:0];
 
   return v8;
 }
 
-- (BOOL)visibleForUse:(int64_t)a3
+- (BOOL)visibleForUse:(int64_t)use
 {
-  if (a3)
+  if (use)
   {
     return 0;
   }
@@ -757,29 +757,29 @@ LABEL_5:
     return 0;
   }
 
-  v4 = [(WFInterchangeAction *)self interchangeAction];
-  v5 = [v4 isDiscoverable];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  isDiscoverable = [interchangeAction isDiscoverable];
 
-  return v5;
+  return isDiscoverable;
 }
 
 - (BOOL)isDiscontinued
 {
-  v2 = [(WFInterchangeAction *)self interchangeAction];
-  v3 = [v2 isDiscontinued];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  isDiscontinued = [interchangeAction isDiscontinued];
 
-  return v3;
+  return isDiscontinued;
 }
 
-- (id)localizedKeywordsWithContext:(id)a3
+- (id)localizedKeywordsWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFInterchangeAction *)self interchangeAction];
-  v6 = [v5 keywords];
+  contextCopy = context;
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  keywords = [interchangeAction keywords];
 
-  if (v6)
+  if (keywords)
   {
-    v7 = [v4 localize:v6];
+    v7 = [contextCopy localize:keywords];
     v8 = [v7 componentsSeparatedByString:@"|"];
   }
 
@@ -793,34 +793,34 @@ LABEL_5:
 
 - (id)descriptionDefinition
 {
-  v2 = [(WFInterchangeAction *)self interchangeAction];
-  v3 = [v2 descriptionDefinition];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  descriptionDefinition = [interchangeAction descriptionDefinition];
 
-  return v3;
+  return descriptionDefinition;
 }
 
-- (id)localizedCategoryWithContext:(id)a3
+- (id)localizedCategoryWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFInterchangeAction *)self interchangeAction];
-  v6 = [v5 localizedSubcategoryWithContext:v4];
+  contextCopy = context;
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  v6 = [interchangeAction localizedSubcategoryWithContext:contextCopy];
 
   return v6;
 }
 
 - (id)parameterSummary
 {
-  v2 = [(WFInterchangeAction *)self interchangeAction];
-  v3 = [v2 parameterSummaryDefinition];
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  parameterSummaryDefinition = [interchangeAction parameterSummaryDefinition];
 
-  return v3;
+  return parameterSummaryDefinition;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFInterchangeAction *)self interchangeAction];
-  v6 = [v5 localizedNameWithContext:v4];
+  contextCopy = context;
+  interchangeAction = [(WFInterchangeAction *)self interchangeAction];
+  v6 = [interchangeAction localizedNameWithContext:contextCopy];
 
   if (v6)
   {
@@ -830,7 +830,7 @@ LABEL_5:
   else
   {
     v8 = WFLocalizedStringResourceWithKey(@"Unknown Action", @"Unknown Action");
-    v7 = [v4 localize:v8];
+    v7 = [contextCopy localize:v8];
   }
 
   return v7;
@@ -847,39 +847,39 @@ LABEL_5:
   return v5;
 }
 
-- (WFInterchangeAction)initWithInterchangeAction:(id)a3 identifier:(id)a4 definition:(id)a5 serializedParameters:(id)a6
+- (WFInterchangeAction)initWithInterchangeAction:(id)action identifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters
 {
   v48[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  actionCopy = action;
+  identifierCopy = identifier;
+  definitionCopy = definition;
+  parametersCopy = parameters;
+  if (!actionCopy)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"WFInterchangeAction.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFInterchangeAction.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"action"}];
   }
 
-  v40 = v14;
-  v41 = v12;
-  if (!v13)
+  v40 = parametersCopy;
+  v41 = identifierCopy;
+  if (!definitionCopy)
   {
     v15 = [WFActionDefinition alloc];
-    v13 = [(WFActionDefinition *)v15 initWithDictionary:MEMORY[0x1E695E0F8]];
+    definitionCopy = [(WFActionDefinition *)v15 initWithDictionary:MEMORY[0x1E695E0F8]];
   }
 
   v47[0] = @"AppDefinition";
   v45 = *MEMORY[0x1E69E0908];
-  v16 = [v11 app];
-  v17 = [v16 identifier];
-  v46 = v17;
+  v16 = [actionCopy app];
+  identifier = [v16 identifier];
+  v46 = identifier;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
   v47[1] = @"ICActionIdentifier";
   v48[0] = v18;
-  v19 = [v11 identifier];
-  v48[1] = v19;
+  identifier2 = [actionCopy identifier];
+  v48[1] = identifier2;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
-  v21 = [(WFActionDefinition *)v13 definitionByAddingEntriesInDictionary:v20];
+  v21 = [(WFActionDefinition *)definitionCopy definitionByAddingEntriesInDictionary:v20];
 
   v22 = [v21 objectForKey:@"Parameters"];
 
@@ -890,9 +890,9 @@ LABEL_5:
 
   else
   {
-    v24 = [v11 inputMapping];
+    inputMapping = [actionCopy inputMapping];
     v25 = [MEMORY[0x1E696AE18] predicateWithFormat:@"sourceType = %@", @"Parameter"];
-    v26 = [v24 filteredArrayUsingPredicate:v25];
+    v26 = [inputMapping filteredArrayUsingPredicate:v25];
 
     if ([v26 count])
     {
@@ -908,8 +908,8 @@ LABEL_5:
     v23 = v40;
   }
 
-  v30 = [v11 identifier];
-  v31 = [(WFInterchangeAction *)self disabledPlatformsForInterchangeActionWithIdentifier:v30];
+  identifier3 = [actionCopy identifier];
+  v31 = [(WFInterchangeAction *)self disabledPlatformsForInterchangeActionWithIdentifier:identifier3];
 
   v32 = WFInjectDisabledPlatformsInActionDefinition(v31, v21);
 
@@ -919,7 +919,7 @@ LABEL_5:
   v34 = v33;
   if (v33)
   {
-    objc_storeStrong(&v33->_interchangeAction, a3);
+    objc_storeStrong(&v33->_interchangeAction, action);
     v35 = v34;
   }
 
@@ -956,13 +956,13 @@ id __92__WFInterchangeAction_initWithInterchangeAction_identifier_definition_ser
   return v6;
 }
 
-- (WFInterchangeAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5
+- (WFInterchangeAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters
 {
   v74 = *MEMORY[0x1E69E9840];
-  v57 = a3;
-  v7 = a4;
-  v54 = a5;
-  v8 = [v7 objectForKey:@"AppDefinition"];
+  identifierCopy = identifier;
+  definitionCopy = definition;
+  parametersCopy = parameters;
+  v8 = [definitionCopy objectForKey:@"AppDefinition"];
   v9 = objc_opt_class();
   v10 = WFEnforceClass_1501(v8, v9);
 
@@ -971,8 +971,8 @@ id __92__WFInterchangeAction_initWithInterchangeAction_identifier_definition_ser
   v12 = objc_opt_class();
   v13 = WFEnforceClass_1501(v11, v12);
 
-  v55 = v7;
-  v14 = [v7 objectForKey:@"ICActionIdentifier"];
+  v55 = definitionCopy;
+  v14 = [definitionCopy objectForKey:@"ICActionIdentifier"];
   v15 = objc_opt_class();
   v16 = WFEnforceClass_1501(v14, v15);
 
@@ -1003,8 +1003,8 @@ id __92__WFInterchangeAction_initWithInterchangeAction_identifier_definition_ser
   v69 = 0u;
   v70 = 0u;
   v58 = v20;
-  v22 = [v20 schemes];
-  v51 = [v22 countByEnumeratingWithState:&v67 objects:v73 count:16];
+  schemes = [v20 schemes];
+  v51 = [schemes countByEnumeratingWithState:&v67 objects:v73 count:16];
   if (v51)
   {
     v23 = *v68;
@@ -1015,7 +1015,7 @@ id __92__WFInterchangeAction_initWithInterchangeAction_identifier_definition_ser
       {
         if (*v68 != v23)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(schemes);
         }
 
         v25 = *(*(&v67 + 1) + 8 * i);
@@ -1023,8 +1023,8 @@ id __92__WFInterchangeAction_initWithInterchangeAction_identifier_definition_ser
         v64 = 0u;
         v65 = 0u;
         v66 = 0u;
-        v26 = [v25 actions];
-        v27 = [v26 countByEnumeratingWithState:&v63 objects:v72 count:16];
+        actions = [v25 actions];
+        v27 = [actions countByEnumeratingWithState:&v63 objects:v72 count:16];
         if (v27)
         {
           v28 = v27;
@@ -1035,12 +1035,12 @@ id __92__WFInterchangeAction_initWithInterchangeAction_identifier_definition_ser
             {
               if (*v64 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(actions);
               }
 
               v31 = *(*(&v63 + 1) + 8 * j);
-              v32 = [v31 identifier];
-              v33 = [v32 isEqualToString:v21];
+              identifier = [v31 identifier];
+              v33 = [identifier isEqualToString:v21];
 
               if (v33)
               {
@@ -1050,7 +1050,7 @@ id __92__WFInterchangeAction_initWithInterchangeAction_identifier_definition_ser
               }
             }
 
-            v28 = [v26 countByEnumeratingWithState:&v63 objects:v72 count:16];
+            v28 = [actions countByEnumeratingWithState:&v63 objects:v72 count:16];
             if (v28)
             {
               continue;
@@ -1063,7 +1063,7 @@ id __92__WFInterchangeAction_initWithInterchangeAction_identifier_definition_ser
         v23 = v50;
       }
 
-      v51 = [v22 countByEnumeratingWithState:&v67 objects:v73 count:16];
+      v51 = [schemes countByEnumeratingWithState:&v67 objects:v73 count:16];
     }
 
     while (v51);
@@ -1073,8 +1073,8 @@ id __92__WFInterchangeAction_initWithInterchangeAction_identifier_definition_ser
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v22 = [v58 documentActions];
-  v34 = [v22 countByEnumeratingWithState:&v59 objects:v71 count:16];
+  schemes = [v58 documentActions];
+  v34 = [schemes countByEnumeratingWithState:&v59 objects:v71 count:16];
   if (v34)
   {
     v35 = v34;
@@ -1085,12 +1085,12 @@ id __92__WFInterchangeAction_initWithInterchangeAction_identifier_definition_ser
       {
         if (*v60 != v36)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(schemes);
         }
 
         v38 = *(*(&v59 + 1) + 8 * k);
-        v39 = [v38 identifier];
-        v40 = [v39 isEqualToString:v21];
+        identifier2 = [v38 identifier];
+        v40 = [identifier2 isEqualToString:v21];
 
         if (v40)
         {
@@ -1099,7 +1099,7 @@ id __92__WFInterchangeAction_initWithInterchangeAction_identifier_definition_ser
         }
       }
 
-      v35 = [v22 countByEnumeratingWithState:&v59 objects:v71 count:16];
+      v35 = [schemes countByEnumeratingWithState:&v59 objects:v71 count:16];
       if (v35)
       {
         continue;
@@ -1114,19 +1114,19 @@ LABEL_31:
 
   if (v41)
   {
-    v42 = v57;
-    v44 = v54;
+    v42 = identifierCopy;
+    v44 = parametersCopy;
     v43 = v55;
-    v45 = [(WFInterchangeAction *)self initWithInterchangeAction:v41 identifier:v57 definition:v55 serializedParameters:v54];
-    v46 = v45;
+    selfCopy = [(WFInterchangeAction *)self initWithInterchangeAction:v41 identifier:identifierCopy definition:v55 serializedParameters:parametersCopy];
+    v46 = selfCopy;
   }
 
   else
   {
     v46 = 0;
-    v45 = self;
-    v42 = v57;
-    v44 = v54;
+    selfCopy = self;
+    v42 = identifierCopy;
+    v44 = parametersCopy;
     v43 = v55;
   }
 

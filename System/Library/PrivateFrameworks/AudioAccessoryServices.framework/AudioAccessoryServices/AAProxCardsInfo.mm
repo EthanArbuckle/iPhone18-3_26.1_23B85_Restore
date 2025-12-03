@@ -1,21 +1,21 @@
 @interface AAProxCardsInfo
-- (AAProxCardsInfo)initWithBluetoothAddress:(id)a3;
-- (AAProxCardsInfo)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AAProxCardsInfo)initWithBluetoothAddress:(id)address;
+- (AAProxCardsInfo)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAProxCardsInfo
 
-- (AAProxCardsInfo)initWithBluetoothAddress:(id)a3
+- (AAProxCardsInfo)initWithBluetoothAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v5 = [(AAProxCardsInfo *)self init];
   if (v5)
   {
-    v6 = [v4 uppercaseString];
+    uppercaseString = [addressCopy uppercaseString];
     bluetoothAddress = v5->_bluetoothAddress;
-    v5->_bluetoothAddress = v6;
+    v5->_bluetoothAddress = uppercaseString;
 
     v8 = v5;
   }
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v25 = [objc_opt_class() description];
   NSAppendPrintF_safe();
@@ -174,7 +174,7 @@
     v5 = v22;
   }
 
-  if (a3 < 21)
+  if (level < 21)
   {
     NSAppendPrintF_safe();
     v23 = v5;
@@ -185,13 +185,13 @@
   return v5;
 }
 
-- (AAProxCardsInfo)initWithCoder:(id)a3
+- (AAProxCardsInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AAProxCardsInfo *)self init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -291,120 +291,120 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   bluetoothAddress = self->_bluetoothAddress;
-  v21 = v4;
+  v21 = coderCopy;
   if (bluetoothAddress)
   {
-    [v4 encodeObject:bluetoothAddress forKey:@"btAd"];
-    v4 = v21;
+    [coderCopy encodeObject:bluetoothAddress forKey:@"btAd"];
+    coderCopy = v21;
   }
 
   caseDoubleTapVersion = self->_caseDoubleTapVersion;
   if (caseDoubleTapVersion)
   {
     [v21 encodeInt64:caseDoubleTapVersion forKey:@"caDT"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   chargingRemindersVersion = self->_chargingRemindersVersion;
   if (chargingRemindersVersion)
   {
     [v21 encodeInt64:chargingRemindersVersion forKey:@"chR"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   dynamicEndOfChargeNotificationVersion = self->_dynamicEndOfChargeNotificationVersion;
   if (dynamicEndOfChargeNotificationVersion)
   {
     [v21 encodeInt64:dynamicEndOfChargeNotificationVersion forKey:@"decN"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   fitEducationNotificationsShownCount = self->_fitEducationNotificationsShownCount;
   if (fitEducationNotificationsShownCount)
   {
     [v21 encodeInt64:fitEducationNotificationsShownCount forKey:@"fitEdN"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   headGesturesVersion = self->_headGesturesVersion;
   if (headGesturesVersion)
   {
     [v21 encodeInt64:headGesturesVersion forKey:@"hGes"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   hearingAssistVersion = self->_hearingAssistVersion;
   if (hearingAssistVersion)
   {
     [v21 encodeInt64:hearingAssistVersion forKey:@"hgAs"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   hearingTestVersion = self->_hearingTestVersion;
   if (hearingTestVersion)
   {
     [v21 encodeInt64:hearingTestVersion forKey:@"hgTs"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   heartRateVersion = self->_heartRateVersion;
   if (heartRateVersion)
   {
     [v21 encodeInt64:heartRateVersion forKey:@"heRa"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   newChargingStatusVersion = self->_newChargingStatusVersion;
   if (newChargingStatusVersion)
   {
     [v21 encodeInt64:newChargingStatusVersion forKey:@"nCh"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   pauseMediaOnSleepVersion = self->_pauseMediaOnSleepVersion;
   if (pauseMediaOnSleepVersion)
   {
     [v21 encodeInt64:pauseMediaOnSleepVersion forKey:@"pMOS"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   personalTranslatorVersion = self->_personalTranslatorVersion;
   if (personalTranslatorVersion)
   {
     [v21 encodeInt64:personalTranslatorVersion forKey:@"prT"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   remoteCameraControlVersion = self->_remoteCameraControlVersion;
   if (remoteCameraControlVersion)
   {
     [v21 encodeInt64:remoteCameraControlVersion forKey:@"rCC"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   usbAudioVersion = self->_usbAudioVersion;
   if (usbAudioVersion)
   {
     [v21 encodeInt64:usbAudioVersion forKey:@"usbA"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   voiceQualityVersion = self->_voiceQualityVersion;
   if (voiceQualityVersion)
   {
     [v21 encodeInt64:voiceQualityVersion forKey:@"voQu"];
-    v4 = v21;
+    coderCopy = v21;
   }
 
   whatsNewVersion = self->_whatsNewVersion;
   if (whatsNewVersion)
   {
     [v21 encodeInt64:whatsNewVersion forKey:@"wNew"];
-    v4 = v21;
+    coderCopy = v21;
   }
 }
 

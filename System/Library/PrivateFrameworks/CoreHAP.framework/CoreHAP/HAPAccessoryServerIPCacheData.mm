@@ -1,9 +1,9 @@
 @interface HAPAccessoryServerIPCacheData
 + (id)logCategory;
-- (HAPAccessoryServerIPCacheData)initWithCachedIp:(id)a3 bonjourRecord:(id)a4;
+- (HAPAccessoryServerIPCacheData)initWithCachedIp:(id)ip bonjourRecord:(id)record;
 - (id)debugDescription;
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation HAPAccessoryServerIPCacheData
@@ -11,9 +11,9 @@
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPAccessoryServerIPCacheData *)self socketInfo];
-  v5 = [(HAPAccessoryServerIPCacheData *)self bonjourDeviceInfo];
-  v6 = [v3 stringWithFormat:@"HAPAccessoryServerIPCacheData: socketInfo %@, bonjour %@", v4, v5];
+  socketInfo = [(HAPAccessoryServerIPCacheData *)self socketInfo];
+  bonjourDeviceInfo = [(HAPAccessoryServerIPCacheData *)self bonjourDeviceInfo];
+  v6 = [v3 stringWithFormat:@"HAPAccessoryServerIPCacheData: socketInfo %@, bonjour %@", socketInfo, bonjourDeviceInfo];
 
   return v6;
 }
@@ -21,22 +21,22 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HAPAccessoryServerIPCacheData *)self socketInfo];
-  v4 = [(HAPAccessoryServerIPCacheData *)self bonjourDeviceInfo];
-  v5 = v4;
-  if (v3 && v4)
+  socketInfo = [(HAPAccessoryServerIPCacheData *)self socketInfo];
+  bonjourDeviceInfo = [(HAPAccessoryServerIPCacheData *)self bonjourDeviceInfo];
+  v5 = bonjourDeviceInfo;
+  if (socketInfo && bonjourDeviceInfo)
   {
     v13[0] = @"socketInfo";
     v13[1] = @"bonjourDeviceInfo";
-    v14[0] = v3;
-    v14[1] = v4;
+    v14[0] = socketInfo;
+    v14[1] = bonjourDeviceInfo;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -55,23 +55,23 @@
   return v6;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"socketInfo"];
-  v6 = [v4 objectForKeyedSubscript:@"bonjourDeviceInfo"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"socketInfo"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"bonjourDeviceInfo"];
   v7 = v6;
   if (v5 && v6)
   {
-    v8 = [(HAPAccessoryServerIPCacheData *)self initWithCachedIp:v5 bonjourRecord:v6];
-    v9 = v8;
+    selfCopy = [(HAPAccessoryServerIPCacheData *)self initWithCachedIp:v5 bonjourRecord:v6];
+    v9 = selfCopy;
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -79,7 +79,7 @@
       v15 = 138543618;
       v16 = v12;
       v17 = 2112;
-      v18 = v4;
+      v18 = dictionaryCopy;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%{public}@Invalid input dictionary %@", &v15, 0x16u);
     }
 
@@ -91,18 +91,18 @@
   return v9;
 }
 
-- (HAPAccessoryServerIPCacheData)initWithCachedIp:(id)a3 bonjourRecord:(id)a4
+- (HAPAccessoryServerIPCacheData)initWithCachedIp:(id)ip bonjourRecord:(id)record
 {
-  v7 = a3;
-  v8 = a4;
+  ipCopy = ip;
+  recordCopy = record;
   v12.receiver = self;
   v12.super_class = HAPAccessoryServerIPCacheData;
   v9 = [(HAPAccessoryServerIPCacheData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_socketInfo, a3);
-    objc_storeStrong(&v10->_bonjourDeviceInfo, a4);
+    objc_storeStrong(&v9->_socketInfo, ip);
+    objc_storeStrong(&v10->_bonjourDeviceInfo, record);
   }
 
   return v10;

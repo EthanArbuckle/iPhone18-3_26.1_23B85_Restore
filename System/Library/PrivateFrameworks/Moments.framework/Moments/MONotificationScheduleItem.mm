@@ -1,47 +1,47 @@
 @interface MONotificationScheduleItem
-- (MONotificationScheduleItem)initWithCoder:(id)a3;
-- (MONotificationScheduleItem)initWithHour:(id)a3 minute:(id)a4 weekdays:(id)a5;
-- (id)initScheduleWithHour:(id)a3 minute:(id)a4 weekdays:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (MONotificationScheduleItem)initWithCoder:(id)coder;
+- (MONotificationScheduleItem)initWithHour:(id)hour minute:(id)minute weekdays:(id)weekdays;
+- (id)initScheduleWithHour:(id)hour minute:(id)minute weekdays:(id)weekdays;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MONotificationScheduleItem
 
-- (MONotificationScheduleItem)initWithHour:(id)a3 minute:(id)a4 weekdays:(id)a5
+- (MONotificationScheduleItem)initWithHour:(id)hour minute:(id)minute weekdays:(id)weekdays
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  hourCopy = hour;
+  minuteCopy = minute;
+  weekdaysCopy = weekdays;
   v15.receiver = self;
   v15.super_class = MONotificationScheduleItem;
   v12 = [(MONotificationScheduleItem *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_hour, a3);
-    objc_storeStrong(&v13->_minute, a4);
-    objc_storeStrong(&v13->_weekdays, a5);
+    objc_storeStrong(&v12->_hour, hour);
+    objc_storeStrong(&v13->_minute, minute);
+    objc_storeStrong(&v13->_weekdays, weekdays);
   }
 
   return v13;
 }
 
-- (id)initScheduleWithHour:(id)a3 minute:(id)a4 weekdays:(id)a5
+- (id)initScheduleWithHour:(id)hour minute:(id)minute weekdays:(id)weekdays
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  hourCopy = hour;
+  minuteCopy = minute;
+  weekdaysCopy = weekdays;
   v26.receiver = self;
   v26.super_class = MONotificationScheduleItem;
   v12 = [(MONotificationScheduleItem *)&v26 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_hour, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    if ([v9 intValue] > 0x17 || objc_msgSend(v10, "intValue") > 0x3B)
+    objc_storeStrong(&v12->_hour, hour);
+    objc_storeStrong(p_isa + 2, minute);
+    objc_storeStrong(p_isa + 3, weekdays);
+    if ([hourCopy intValue] > 0x17 || objc_msgSend(minuteCopy, "intValue") > 0x3B)
     {
 LABEL_15:
       v19 = 0;
@@ -52,7 +52,7 @@ LABEL_15:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v14 = v11;
+    v14 = weekdaysCopy;
     v15 = [v14 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v15)
     {
@@ -96,23 +96,23 @@ LABEL_16:
   return v19;
 }
 
-- (MONotificationScheduleItem)initWithCoder:(id)a3
+- (MONotificationScheduleItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = MONotificationScheduleItem;
   v5 = [(MONotificationScheduleItem *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hour"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hour"];
     hour = v5->_hour;
     v5->_hour = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minute"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minute"];
     minute = v5->_minute;
     v5->_minute = v8;
 
-    v10 = [v4 decodeIntForKey:@"weekdays"];
+    v10 = [coderCopy decodeIntForKey:@"weekdays"];
     v11 = objc_opt_new();
     v12 = 1;
     do
@@ -135,12 +135,12 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 encodeObject:self->_hour forKey:@"hour"];
-  [v4 encodeObject:self->_minute forKey:@"minute"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_hour forKey:@"hour"];
+  [coderCopy encodeObject:self->_minute forKey:@"minute"];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -160,9 +160,9 @@ LABEL_16:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) intValue];
-        v11 = 1 << ((v10 & 7) - 1);
-        if ((v10 & 7) == 0)
+        intValue = [*(*(&v13 + 1) + 8 * i) intValue];
+        v11 = 1 << ((intValue & 7) - 1);
+        if ((intValue & 7) == 0)
         {
           LOBYTE(v11) = 0;
         }
@@ -177,7 +177,7 @@ LABEL_16:
     v6 = v7 & 0x7F;
   }
 
-  [v4 encodeInt:v6 forKey:@"weekdays"];
+  [coderCopy encodeInt:v6 forKey:@"weekdays"];
   v12 = *MEMORY[0x277D85DE8];
 }
 

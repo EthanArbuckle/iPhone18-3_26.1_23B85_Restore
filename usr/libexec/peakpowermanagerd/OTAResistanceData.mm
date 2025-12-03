@@ -1,14 +1,14 @@
 @interface OTAResistanceData
-- (BOOL)isEqual:(id)a3;
-- (float)resistance25CAtIndex:(unint64_t)a3;
-- (float)temperatureCoeffAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)resistance25CAtIndex:(unint64_t)index;
+- (float)temperatureCoeffAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTAResistanceData
@@ -22,32 +22,32 @@
   [(OTAResistanceData *)&v3 dealloc];
 }
 
-- (float)resistance25CAtIndex:(unint64_t)a3
+- (float)resistance25CAtIndex:(unint64_t)index
 {
   p_resistance25Cs = &self->_resistance25Cs;
   count = self->_resistance25Cs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_resistance25Cs->list[a3];
+  return p_resistance25Cs->list[index];
 }
 
-- (float)temperatureCoeffAtIndex:(unint64_t)a3
+- (float)temperatureCoeffAtIndex:(unint64_t)index
 {
   p_temperatureCoeffs = &self->_temperatureCoeffs;
   count = self->_temperatureCoeffs.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_temperatureCoeffs->list[a3];
+  return p_temperatureCoeffs->list[index];
 }
 
 - (id)description
@@ -55,8 +55,8 @@
   v7.receiver = self;
   v7.super_class = OTAResistanceData;
   v3 = [(OTAResistanceData *)&v7 description];
-  v4 = [(OTAResistanceData *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(OTAResistanceData *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -73,10 +73,10 @@
   return v2;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_resistance25Cs.count)
   {
     v5 = 0;
@@ -84,7 +84,7 @@
     {
       v6 = self->_resistance25Cs.list[v5];
       PBDataWriterWriteFloatField();
-      v4 = v10;
+      toCopy = v10;
       ++v5;
     }
 
@@ -99,7 +99,7 @@
     {
       v9 = p_temperatureCoeffs->list[v8];
       PBDataWriterWriteFloatField();
-      v4 = v10;
+      toCopy = v10;
       ++v8;
     }
 
@@ -107,52 +107,52 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ([(OTAResistanceData *)self resistance25CsCount])
   {
-    [v10 clearResistance25Cs];
-    v4 = [(OTAResistanceData *)self resistance25CsCount];
-    if (v4)
+    [toCopy clearResistance25Cs];
+    resistance25CsCount = [(OTAResistanceData *)self resistance25CsCount];
+    if (resistance25CsCount)
     {
-      v5 = v4;
+      v5 = resistance25CsCount;
       for (i = 0; i != v5; ++i)
       {
         [(OTAResistanceData *)self resistance25CAtIndex:i];
-        [v10 addResistance25C:?];
+        [toCopy addResistance25C:?];
       }
     }
   }
 
   if ([(OTAResistanceData *)self temperatureCoeffsCount])
   {
-    [v10 clearTemperatureCoeffs];
-    v7 = [(OTAResistanceData *)self temperatureCoeffsCount];
-    if (v7)
+    [toCopy clearTemperatureCoeffs];
+    temperatureCoeffsCount = [(OTAResistanceData *)self temperatureCoeffsCount];
+    if (temperatureCoeffsCount)
     {
-      v8 = v7;
+      v8 = temperatureCoeffsCount;
       for (j = 0; j != v8; ++j)
       {
         [(OTAResistanceData *)self temperatureCoeffAtIndex:j];
-        [v10 addTemperatureCoeff:?];
+        [toCopy addTemperatureCoeff:?];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedFloatCopy();
   PBRepeatedFloatCopy();
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()] && PBRepeatedFloatIsEqual())
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && PBRepeatedFloatIsEqual())
   {
     IsEqual = PBRepeatedFloatIsEqual();
   }
@@ -165,27 +165,27 @@
   return IsEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v10 = a3;
-  v4 = [v10 resistance25CsCount];
-  if (v4)
+  fromCopy = from;
+  resistance25CsCount = [fromCopy resistance25CsCount];
+  if (resistance25CsCount)
   {
-    v5 = v4;
+    v5 = resistance25CsCount;
     for (i = 0; i != v5; ++i)
     {
-      [v10 resistance25CAtIndex:i];
+      [fromCopy resistance25CAtIndex:i];
       [(OTAResistanceData *)self addResistance25C:?];
     }
   }
 
-  v7 = [v10 temperatureCoeffsCount];
-  if (v7)
+  temperatureCoeffsCount = [fromCopy temperatureCoeffsCount];
+  if (temperatureCoeffsCount)
   {
-    v8 = v7;
+    v8 = temperatureCoeffsCount;
     for (j = 0; j != v8; ++j)
     {
-      [v10 temperatureCoeffAtIndex:j];
+      [fromCopy temperatureCoeffAtIndex:j];
       [(OTAResistanceData *)self addTemperatureCoeff:?];
     }
   }

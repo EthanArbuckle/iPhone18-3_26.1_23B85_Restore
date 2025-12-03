@@ -1,7 +1,7 @@
 @interface ACCClientPortShimManager
 - (ACCClientPortShimManager)init;
-- (void)addClienPort:(id)a3 forUUID:(id)a4;
-- (void)removeClienPortForUUID:(id)a3;
+- (void)addClienPort:(id)port forUUID:(id)d;
+- (void)removeClienPortForUUID:(id)d;
 @end
 
 @implementation ACCClientPortShimManager
@@ -21,10 +21,10 @@
   return v2;
 }
 
-- (void)addClienPort:(id)a3 forUUID:(id)a4
+- (void)addClienPort:(id)port forUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  portCopy = port;
+  dCopy = d;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 7;
@@ -54,18 +54,18 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = portCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "addClientPort: %@ forUID: %@", &v11, 0x16u);
   }
 
-  [(NSMutableDictionary *)self->_portList setObject:v6 forKey:v7];
+  [(NSMutableDictionary *)self->_portList setObject:portCopy forKey:dCopy];
 }
 
-- (void)removeClienPortForUUID:(id)a3
+- (void)removeClienPortForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 7;
@@ -95,11 +95,11 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "removeClientPortForUID: %@", &v8, 0xCu);
   }
 
-  [(NSMutableDictionary *)self->_portList removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_portList removeObjectForKey:dCopy];
 }
 
 @end

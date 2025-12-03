@@ -1,12 +1,12 @@
 @interface AVMediaSelectionOption
-+ (BOOL)_plistHasOptionIdentifier:(id)a3;
-+ (id)mediaSelectionNilOptionForGroup:(id)a3;
-+ (id)mediaSelectionOptionForAsset:(id)a3 group:(id)a4 dictionary:(id)a5 hasUnderlyingTrack:(BOOL)a6;
++ (BOOL)_plistHasOptionIdentifier:(id)identifier;
++ (id)mediaSelectionNilOptionForGroup:(id)group;
++ (id)mediaSelectionOptionForAsset:(id)asset group:(id)group dictionary:(id)dictionary hasUnderlyingTrack:(BOOL)track;
 - (AVMediaSelectionOption)associatedMediaSelectionOptionInMediaSelectionGroup:(AVMediaSelectionGroup *)mediaSelectionGroup;
-- (AVMediaSelectionOption)initWithGroup:(id)a3;
+- (AVMediaSelectionOption)initWithGroup:(id)group;
 - (BOOL)_isAuxiliaryContent;
 - (BOOL)_isDesignatedDefault;
-- (BOOL)_updateDisplayNameWithLocale:(id)a3 fallingBackToMatchingUndeterminedAndMultilingual:(BOOL)a4 context:(int64_t)a5;
+- (BOOL)_updateDisplayNameWithLocale:(id)locale fallingBackToMatchingUndeterminedAndMultilingual:(BOOL)multilingual context:(int64_t)context;
 - (BOOL)displaysNonForcedSubtitles;
 - (BOOL)hasMediaCharacteristic:(AVMediaCharacteristic)mediaCharacteristic;
 - (NSArray)_audioCompositionPresetIndexesForFallbackIDs;
@@ -17,11 +17,11 @@
 - (NSString)unicodeLanguageCode;
 - (NSString)unicodeLanguageIdentifier;
 - (id)_ancillaryDescription;
-- (id)_displayNameWithLocale:(id)a3 fallingBackToMatchingUndeterminedAndMultilingual:(BOOL)a4;
-- (id)_languageDisplayNameFromMetadataAccordingToPreferredLanguages:(id)a3 fallingBackToMatchingEmptyLocale:(BOOL)a4;
+- (id)_displayNameWithLocale:(id)locale fallingBackToMatchingUndeterminedAndMultilingual:(BOOL)multilingual;
+- (id)_languageDisplayNameFromMetadataAccordingToPreferredLanguages:(id)languages fallingBackToMatchingEmptyLocale:(BOOL)locale;
 - (id)_matchingOptionWithEnhancedSpeechIntelligibility;
 - (id)_preferredLocalizationLanguage;
-- (id)_preferredMetadataTitleAccordingToPreferredLanguages:(id)a3 fallingBackToMatchingEmptyLocale:(BOOL)a4 excludeM3U8Metadata:(BOOL)a5;
+- (id)_preferredMetadataTitleAccordingToPreferredLanguages:(id)languages fallingBackToMatchingEmptyLocale:(BOOL)locale excludeM3U8Metadata:(BOOL)metadata;
 - (id)_taggedMediaCharacteristics;
 - (id)_title;
 - (id)associatedExtendedLanguageTag;
@@ -40,7 +40,7 @@
 
 @implementation AVMediaSelectionOption
 
-+ (BOOL)_plistHasOptionIdentifier:(id)a3
++ (BOOL)_plistHasOptionIdentifier:(id)identifier
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -48,35 +48,35 @@
     return 0;
   }
 
-  if ([a3 objectForKey:*MEMORY[0x1E69737D8]] || objc_msgSend(a3, "objectForKey:", *MEMORY[0x1E6973788]))
+  if ([identifier objectForKey:*MEMORY[0x1E69737D8]] || objc_msgSend(identifier, "objectForKey:", *MEMORY[0x1E6973788]))
   {
     return 1;
   }
 
-  return [a3 objectForKey:*MEMORY[0x1E69737F0]] != 0;
+  return [identifier objectForKey:*MEMORY[0x1E69737F0]] != 0;
 }
 
-+ (id)mediaSelectionOptionForAsset:(id)a3 group:(id)a4 dictionary:(id)a5 hasUnderlyingTrack:(BOOL)a6
++ (id)mediaSelectionOptionForAsset:(id)asset group:(id)group dictionary:(id)dictionary hasUnderlyingTrack:(BOOL)track
 {
   v6 = off_1E745C950;
-  if (!a6)
+  if (!track)
   {
     v6 = off_1E745C940;
   }
 
-  v7 = [objc_alloc(*v6) initWithAsset:a3 group:a4 dictionary:a5];
+  v7 = [objc_alloc(*v6) initWithAsset:asset group:group dictionary:dictionary];
 
   return v7;
 }
 
-+ (id)mediaSelectionNilOptionForGroup:(id)a3
++ (id)mediaSelectionNilOptionForGroup:(id)group
 {
-  v3 = [[AVMediaSelectionNilOption alloc] initWithGroup:a3];
+  v3 = [[AVMediaSelectionNilOption alloc] initWithGroup:group];
 
   return v3;
 }
 
-- (AVMediaSelectionOption)initWithGroup:(id)a3
+- (AVMediaSelectionOption)initWithGroup:(id)group
 {
   v7.receiver = self;
   v7.super_class = AVMediaSelectionOption;
@@ -87,7 +87,7 @@
     v4->_mediaSelectionOption = v5;
     if (v5)
     {
-      v4->_mediaSelectionOption->_groupMediaCharacteristics = [objc_msgSend(a3 "_groupMediaCharacteristics")];
+      v4->_mediaSelectionOption->_groupMediaCharacteristics = [objc_msgSend(group "_groupMediaCharacteristics")];
       v4->_mediaSelectionOption->_synthesizeMediaCharacteristicsOnce = objc_alloc_init(AVDispatchOnce);
     }
 
@@ -123,15 +123,15 @@
 - (id)_ancillaryDescription
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = [(AVMediaSelectionOption *)self mediaType];
-  v42 = [(AVMediaSelectionOption *)self group];
-  v4 = [(AVMediaSelectionOption *)self _title];
-  v5 = [(AVMediaSelectionOption *)self _taggedMediaCharacteristics];
-  v6 = [(AVMediaSelectionOption *)self associatedExtendedLanguageTag];
-  v7 = v6;
-  if (v4)
+  mediaType = [(AVMediaSelectionOption *)self mediaType];
+  group = [(AVMediaSelectionOption *)self group];
+  _title = [(AVMediaSelectionOption *)self _title];
+  _taggedMediaCharacteristics = [(AVMediaSelectionOption *)self _taggedMediaCharacteristics];
+  associatedExtendedLanguageTag = [(AVMediaSelectionOption *)self associatedExtendedLanguageTag];
+  v7 = associatedExtendedLanguageTag;
+  if (_title)
   {
-    v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@", title = %@", v4];
+    v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@", title = %@", _title];
     if (v7)
     {
 LABEL_3:
@@ -143,7 +143,7 @@ LABEL_3:
   else
   {
     v47 = &stru_1F0A8E470;
-    if (v6)
+    if (associatedExtendedLanguageTag)
     {
       goto LABEL_3;
     }
@@ -151,14 +151,14 @@ LABEL_3:
 
   v46 = &stru_1F0A8E470;
 LABEL_6:
-  if ([v5 count])
+  if ([_taggedMediaCharacteristics count])
   {
     v8 = [MEMORY[0x1E696AD60] stringWithString:&stru_1F0A8E470];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v9 = [v5 countByEnumeratingWithState:&v49 objects:v53 count:16];
+    v9 = [_taggedMediaCharacteristics countByEnumeratingWithState:&v49 objects:v53 count:16];
     if (v9)
     {
       v10 = v9;
@@ -170,7 +170,7 @@ LABEL_6:
         {
           if (*v50 != v12)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_taggedMediaCharacteristics);
           }
 
           v14 = *(*(&v49 + 1) + 8 * i);
@@ -183,7 +183,7 @@ LABEL_6:
         }
 
         v11 += v10;
-        v10 = [v5 countByEnumeratingWithState:&v49 objects:v53 count:16];
+        v10 = [_taggedMediaCharacteristics countByEnumeratingWithState:&v49 objects:v53 count:16];
       }
 
       while (v10);
@@ -197,13 +197,13 @@ LABEL_6:
     v15 = &stru_1F0A8E470;
   }
 
-  v16 = [(AVMediaSelectionOption *)self _isDesignatedDefault];
-  v17 = [(AVMediaSelectionOption *)self _isAuxiliaryContent];
-  v18 = [(AVMediaSelectionOption *)self fallbackIDs];
-  if (v18)
+  _isDesignatedDefault = [(AVMediaSelectionOption *)self _isDesignatedDefault];
+  _isAuxiliaryContent = [(AVMediaSelectionOption *)self _isAuxiliaryContent];
+  fallbackIDs = [(AVMediaSelectionOption *)self fallbackIDs];
+  if (fallbackIDs)
   {
-    v19 = v18;
-    v44 = v16;
+    v19 = fallbackIDs;
+    v44 = _isDesignatedDefault;
     v20 = [MEMORY[0x1E696AD60] stringWithString:&stru_1F0A8E470];
     v21 = [v19 count];
     if (v21)
@@ -221,7 +221,7 @@ LABEL_6:
     }
 
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@", fallback track or variant IDs = {%@}", v20];
-    v16 = v44;
+    _isDesignatedDefault = v44;
   }
 
   else
@@ -229,7 +229,7 @@ LABEL_6:
     v24 = &stru_1F0A8E470;
   }
 
-  if ([(NSString *)v3 isEqualToString:@"sbtl"]|| [(NSString *)v3 isEqualToString:@"text"])
+  if ([(NSString *)mediaType isEqualToString:@"sbtl"]|| [(NSString *)mediaType isEqualToString:@"text"])
   {
     if ([(AVMediaSelectionOption *)self hasMediaCharacteristic:@"public.subtitles.forced-only"])
     {
@@ -240,7 +240,7 @@ LABEL_41:
       goto LABEL_42;
     }
 
-    if (v42)
+    if (group)
     {
       v26 = [(AVMediaSelectionOption *)self associatedMediaSelectionOptionInMediaSelectionGroup:?];
       if (v26)
@@ -258,23 +258,23 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  if (![(NSString *)v3 isEqualToString:@"soun"])
+  if (![(NSString *)mediaType isEqualToString:@"soun"])
   {
     goto LABEL_40;
   }
 
-  v30 = [(AVMediaSelectionOption *)self mediaSubTypes];
-  v31 = [(NSArray *)v30 count];
+  mediaSubTypes = [(AVMediaSelectionOption *)self mediaSubTypes];
+  v31 = [(NSArray *)mediaSubTypes count];
   if (v31)
   {
     v32 = v31;
-    v43 = v17;
-    v45 = v3;
+    v43 = _isAuxiliaryContent;
+    v45 = mediaType;
     v33 = [MEMORY[0x1E696AD60] stringWithString:&stru_1F0A8E470];
     for (k = 0; k != v32; ++k)
     {
       valuePtr = 0;
-      CFNumberGetValue([(NSArray *)v30 objectAtIndex:k], kCFNumberSInt32Type, &valuePtr);
+      CFNumberGetValue([(NSArray *)mediaSubTypes objectAtIndex:k], kCFNumberSInt32Type, &valuePtr);
       v35 = valuePtr;
       if (k)
       {
@@ -286,10 +286,10 @@ LABEL_40:
     }
 
     v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@", mediaSubTypes = {%@}", v33];
-    v3 = v45;
+    mediaType = v45;
     v37 = v46;
     v38 = v47;
-    v17 = v43;
+    _isAuxiliaryContent = v43;
   }
 
   else
@@ -300,7 +300,7 @@ LABEL_40:
   }
 
 LABEL_42:
-  if (v17)
+  if (_isAuxiliaryContent)
   {
     v39 = @", auxiliary = YES";
   }
@@ -310,7 +310,7 @@ LABEL_42:
     v39 = &stru_1F0A8E470;
   }
 
-  if (v16)
+  if (_isDesignatedDefault)
   {
     v40 = @", default = YES";
   }
@@ -320,23 +320,23 @@ LABEL_42:
     v40 = &stru_1F0A8E470;
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@", mediaType = '%@'%@%@%@%@%@%@%@", v3, v25, v24, v15, v38, v40, v39, v37];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@", mediaType = '%@'%@%@%@%@%@%@%@", mediaType, v25, v24, v15, v38, v40, v39, v37];
 }
 
 - (id)optionID
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E69737D8];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (NSArray)mediaSubTypes
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(AVMediaSelectionOption *)self dictionary];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69737C0]];
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
+  v5 = [dictionary objectForKey:*MEMORY[0x1E69737C0]];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -360,7 +360,7 @@ LABEL_42:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = v3;
+          v11 = array;
           v12 = v10;
 LABEL_11:
           [(NSArray *)v11 addObject:v12];
@@ -374,7 +374,7 @@ LABEL_11:
           if (v13)
           {
             v12 = v13;
-            v11 = v3;
+            v11 = array;
             goto LABEL_11;
           }
         }
@@ -390,30 +390,30 @@ LABEL_12:
     while (v7);
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)_isAuxiliaryContent
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69737A8]];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
+  v3 = [dictionary objectForKey:*MEMORY[0x1E69737A8]];
 
   return [v3 BOOLValue];
 }
 
 - (id)_taggedMediaCharacteristics
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E69737E8];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (BOOL)hasMediaCharacteristic:(AVMediaCharacteristic)mediaCharacteristic
 {
-  v4 = [(AVMediaSelectionOption *)self mediaCharacteristics];
+  mediaCharacteristics = [(AVMediaSelectionOption *)self mediaCharacteristics];
 
-  return [v4 containsObject:mediaCharacteristic];
+  return [mediaCharacteristics containsObject:mediaCharacteristic];
 }
 
 - (id)mediaCharacteristics
@@ -479,110 +479,110 @@ id __46__AVMediaSelectionOption_mediaCharacteristics__block_invoke(uint64_t a1)
 
 - (BOOL)_isDesignatedDefault
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69737B0]];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
+  v3 = [dictionary objectForKey:*MEMORY[0x1E69737B0]];
 
   return [v3 BOOLValue];
 }
 
 - (NSString)extendedLanguageTag
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E6973798];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (NSString)unicodeLanguageIdentifier
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E6973800];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (id)associatedExtendedLanguageTag
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E6973760];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (id)associatedUnicodeLanguageIdentifier
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E6973770];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (id)languageCode
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E69737B8];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (NSString)unicodeLanguageCode
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E69737F8];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (id)associatedPersistentIDs
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E6973768];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (id)fallbackIDs
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E69737A0];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (BOOL)displaysNonForcedSubtitles
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
-  v3 = [v2 objectForKey:*MEMORY[0x1E6973790]];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
+  v3 = [dictionary objectForKey:*MEMORY[0x1E6973790]];
 
   return [v3 BOOLValue];
 }
 
 - (NSNumber)_audioCompositionPresetIndex
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E6973778];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (NSArray)_audioCompositionPresetIndexesForFallbackIDs
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E6973780];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (id)_matchingOptionWithEnhancedSpeechIntelligibility
 {
-  v3 = [(AVMediaSelectionOption *)self dictionary];
-  result = [v3 objectForKey:*MEMORY[0x1E69737E0]];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
+  result = [dictionary objectForKey:*MEMORY[0x1E69737E0]];
   if (result)
   {
     v5 = result;
-    v6 = [(AVMediaSelectionOption *)self group];
+    group = [(AVMediaSelectionOption *)self group];
 
-    return [v6 _optionWithID:v5 displaysNonForcedSubtitles:0 audioCompositionPresetIndex:0];
+    return [group _optionWithID:v5 displaysNonForcedSubtitles:0 audioCompositionPresetIndex:0];
   }
 
   return result;
@@ -639,31 +639,31 @@ id __46__AVMediaSelectionOption_mediaCharacteristics__block_invoke(uint64_t a1)
 - (AVMediaSelectionOption)associatedMediaSelectionOptionInMediaSelectionGroup:(AVMediaSelectionGroup *)mediaSelectionGroup
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = [(AVMediaSelectionOption *)self group];
-  if ((-[AVMediaSelectionGroup isEqual:](mediaSelectionGroup, "isEqual:", v5) & 1) != 0 || ![-[AVMediaSelectionGroup asset](mediaSelectionGroup "asset")])
+  group = [(AVMediaSelectionOption *)self group];
+  if ((-[AVMediaSelectionGroup isEqual:](mediaSelectionGroup, "isEqual:", group) & 1) != 0 || ![-[AVMediaSelectionGroup asset](mediaSelectionGroup "asset")])
   {
     return 0;
   }
 
-  v6 = [(AVMediaSelectionOption *)self associatedPersistentIDs];
+  associatedPersistentIDs = [(AVMediaSelectionOption *)self associatedPersistentIDs];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v46 objects:v53 count:16];
+  v7 = [associatedPersistentIDs countByEnumeratingWithState:&v46 objects:v53 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v47;
     v32 = *v47;
-    v33 = v6;
+    v33 = associatedPersistentIDs;
     while (2)
     {
       for (i = 0; i != v8; ++i)
       {
         if (*v47 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(associatedPersistentIDs);
         }
 
         v11 = *(*(&v46 + 1) + 8 * i);
@@ -671,8 +671,8 @@ id __46__AVMediaSelectionOption_mediaCharacteristics__block_invoke(uint64_t a1)
         v43 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v12 = [(AVMediaSelectionGroup *)mediaSelectionGroup options];
-        v13 = [(NSArray *)v12 countByEnumeratingWithState:&v42 objects:v52 count:16];
+        options = [(AVMediaSelectionGroup *)mediaSelectionGroup options];
+        v13 = [(NSArray *)options countByEnumeratingWithState:&v42 objects:v52 count:16];
         if (v13)
         {
           v14 = v13;
@@ -683,7 +683,7 @@ LABEL_10:
           {
             if (*v43 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(options);
             }
 
             v17 = *(*(&v42 + 1) + 8 * v16);
@@ -694,7 +694,7 @@ LABEL_10:
 
             if (v14 == ++v16)
             {
-              v14 = [(NSArray *)v12 countByEnumeratingWithState:&v42 objects:v52 count:16];
+              v14 = [(NSArray *)options countByEnumeratingWithState:&v42 objects:v52 count:16];
               if (v14)
               {
                 goto LABEL_10;
@@ -706,7 +706,7 @@ LABEL_10:
         }
 
         v9 = v32;
-        v6 = v33;
+        associatedPersistentIDs = v33;
       }
 
       v8 = [v33 countByEnumeratingWithState:&v46 objects:v53 count:16];
@@ -719,19 +719,19 @@ LABEL_10:
     }
   }
 
-  v18 = [(AVMediaSelectionOption *)self locale];
-  if (!v18)
+  locale = [(AVMediaSelectionOption *)self locale];
+  if (!locale)
   {
     return 0;
   }
 
-  v19 = v18;
+  v19 = locale;
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v20 = [(AVMediaSelectionGroup *)mediaSelectionGroup options];
-  v21 = [(NSArray *)v20 countByEnumeratingWithState:&v38 objects:v51 count:16];
+  options2 = [(AVMediaSelectionGroup *)mediaSelectionGroup options];
+  v21 = [(NSArray *)options2 countByEnumeratingWithState:&v38 objects:v51 count:16];
   if (!v21)
   {
 LABEL_29:
@@ -739,8 +739,8 @@ LABEL_29:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v25 = [(AVMediaSelectionGroup *)mediaSelectionGroup options];
-    v26 = [(NSArray *)v25 countByEnumeratingWithState:&v34 objects:v50 count:16];
+    options3 = [(AVMediaSelectionGroup *)mediaSelectionGroup options];
+    v26 = [(NSArray *)options3 countByEnumeratingWithState:&v34 objects:v50 count:16];
     if (v26)
     {
       v27 = v26;
@@ -751,14 +751,14 @@ LABEL_31:
       {
         if (*v35 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(options3);
         }
 
         v17 = *(*(&v34 + 1) + 8 * v29);
-        v30 = [(AVMediaSelectionOption *)v17 associatedExtendedLanguageTag];
-        if (v30)
+        associatedExtendedLanguageTag = [(AVMediaSelectionOption *)v17 associatedExtendedLanguageTag];
+        if (associatedExtendedLanguageTag)
         {
-          if ([(NSString *)[(AVMediaSelectionOption *)self extendedLanguageTag] isEqualToString:v30]&& (![(AVMediaSelectionOption *)v17 hasMediaCharacteristic:@"AVMediaCharacteristicLegible"]|| [(AVMediaSelectionOption *)v17 hasMediaCharacteristic:@"public.subtitles.forced-only"]))
+          if ([(NSString *)[(AVMediaSelectionOption *)self extendedLanguageTag] isEqualToString:associatedExtendedLanguageTag]&& (![(AVMediaSelectionOption *)v17 hasMediaCharacteristic:@"AVMediaCharacteristicLegible"]|| [(AVMediaSelectionOption *)v17 hasMediaCharacteristic:@"public.subtitles.forced-only"]))
           {
             return v17;
           }
@@ -766,7 +766,7 @@ LABEL_31:
 
         if (v27 == ++v29)
         {
-          v27 = [(NSArray *)v25 countByEnumeratingWithState:&v34 objects:v50 count:16];
+          v27 = [(NSArray *)options3 countByEnumeratingWithState:&v34 objects:v50 count:16];
           v17 = 0;
           if (v27)
           {
@@ -789,7 +789,7 @@ LABEL_21:
   {
     if (*v39 != v23)
     {
-      objc_enumerationMutation(v20);
+      objc_enumerationMutation(options2);
     }
 
     v17 = *(*(&v38 + 1) + 8 * v24);
@@ -803,7 +803,7 @@ LABEL_21:
 
     if (v22 == ++v24)
     {
-      v22 = [(NSArray *)v20 countByEnumeratingWithState:&v38 objects:v51 count:16];
+      v22 = [(NSArray *)options2 countByEnumeratingWithState:&v38 objects:v51 count:16];
       if (v22)
       {
         goto LABEL_21;
@@ -816,34 +816,34 @@ LABEL_21:
 
 - (id)propertyList
 {
-  v3 = [(AVMediaSelectionOption *)self optionID];
-  v4 = [(AVMediaSelectionOption *)self outOfBandIdentifier];
-  v5 = [(AVMediaSelectionOption *)self outOfBandSource];
-  v6 = [(AVMediaSelectionOption *)self _audioCompositionPresetIndex];
-  v7 = [(AVMediaSelectionOption *)self _audioCompositionPresetIndexesForFallbackIDs];
-  if (!v3 && !v4 && !v5)
+  optionID = [(AVMediaSelectionOption *)self optionID];
+  outOfBandIdentifier = [(AVMediaSelectionOption *)self outOfBandIdentifier];
+  outOfBandSource = [(AVMediaSelectionOption *)self outOfBandSource];
+  _audioCompositionPresetIndex = [(AVMediaSelectionOption *)self _audioCompositionPresetIndex];
+  _audioCompositionPresetIndexesForFallbackIDs = [(AVMediaSelectionOption *)self _audioCompositionPresetIndexesForFallbackIDs];
+  if (!optionID && !outOfBandIdentifier && !outOfBandSource)
   {
     goto LABEL_17;
   }
 
   v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:0];
-  [v8 setValue:v3 forKey:*MEMORY[0x1E69737D8]];
-  [v8 setValue:v4 forKey:*MEMORY[0x1E6973788]];
-  [v8 setValue:v5 forKey:*MEMORY[0x1E69737F0]];
-  [v8 setValue:v6 forKey:*MEMORY[0x1E6973778]];
-  [v8 setValue:v7 forKey:*MEMORY[0x1E6973780]];
-  v9 = [(AVMediaSelectionOption *)self _groupID];
-  v10 = [(AVMediaSelectionOption *)self _groupMediaType];
-  if (v9)
+  [v8 setValue:optionID forKey:*MEMORY[0x1E69737D8]];
+  [v8 setValue:outOfBandIdentifier forKey:*MEMORY[0x1E6973788]];
+  [v8 setValue:outOfBandSource forKey:*MEMORY[0x1E69737F0]];
+  [v8 setValue:_audioCompositionPresetIndex forKey:*MEMORY[0x1E6973778]];
+  [v8 setValue:_audioCompositionPresetIndexesForFallbackIDs forKey:*MEMORY[0x1E6973780]];
+  _groupID = [(AVMediaSelectionOption *)self _groupID];
+  _groupMediaType = [(AVMediaSelectionOption *)self _groupMediaType];
+  if (_groupID)
   {
     v11 = MEMORY[0x1E6973740];
-    v12 = v9;
+    v12 = _groupID;
   }
 
   else
   {
-    v12 = v10;
-    if (!v10)
+    v12 = _groupMediaType;
+    if (!_groupMediaType)
     {
       goto LABEL_9;
     }
@@ -859,11 +859,11 @@ LABEL_9:
     [v8 setObject:v13 forKey:*MEMORY[0x1E6973790]];
   }
 
-  v14 = [(AVMediaSelectionOption *)self dictionary];
-  [v8 setValue:objc_msgSend(v14 forKey:{"objectForKey:", *MEMORY[0x1E69737D0]), *MEMORY[0x1E69737D0]}];
-  [v8 setValue:objc_msgSend(v14 forKey:{"objectForKey:", *MEMORY[0x1E69737B8]), *MEMORY[0x1E69737B8]}];
-  [v8 setValue:objc_msgSend(v14 forKey:{"objectForKey:", *MEMORY[0x1E6973798]), *MEMORY[0x1E6973798]}];
-  [v8 setValue:objc_msgSend(v14 forKey:{"objectForKey:", *MEMORY[0x1E69737E8]), *MEMORY[0x1E69737E8]}];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
+  [v8 setValue:objc_msgSend(dictionary forKey:{"objectForKey:", *MEMORY[0x1E69737D0]), *MEMORY[0x1E69737D0]}];
+  [v8 setValue:objc_msgSend(dictionary forKey:{"objectForKey:", *MEMORY[0x1E69737B8]), *MEMORY[0x1E69737B8]}];
+  [v8 setValue:objc_msgSend(dictionary forKey:{"objectForKey:", *MEMORY[0x1E6973798]), *MEMORY[0x1E6973798]}];
+  [v8 setValue:objc_msgSend(dictionary forKey:{"objectForKey:", *MEMORY[0x1E69737E8]), *MEMORY[0x1E69737E8]}];
   if (v8)
   {
     v15 = [v8 copy];
@@ -877,24 +877,24 @@ LABEL_17:
   return [v17 dictionary];
 }
 
-- (id)_preferredMetadataTitleAccordingToPreferredLanguages:(id)a3 fallingBackToMatchingEmptyLocale:(BOOL)a4 excludeM3U8Metadata:(BOOL)a5
+- (id)_preferredMetadataTitleAccordingToPreferredLanguages:(id)languages fallingBackToMatchingEmptyLocale:(BOOL)locale excludeM3U8Metadata:(BOOL)metadata
 {
-  v5 = a5;
-  v6 = a4;
+  metadataCopy = metadata;
+  localeCopy = locale;
   v36 = *MEMORY[0x1E69E9840];
-  v9 = [(AVMediaSelectionOption *)self commonMetadata];
-  if (![(AVMediaSelectionOption *)self _track]&& [(AVMediaSelectionOption *)self _isMainProgramContent]&& v5)
+  commonMetadata = [(AVMediaSelectionOption *)self commonMetadata];
+  if (![(AVMediaSelectionOption *)self _track]&& [(AVMediaSelectionOption *)self _isMainProgramContent]&& metadataCopy)
   {
-    v10 = [(NSArray *)v9 mutableCopy];
-    [(NSArray *)v10 removeObjectsInArray:[AVMetadataItem metadataItemsFromArray:v9 withKey:@"NAME" keySpace:@"m3u8"]];
-    v9 = v10;
+    v10 = [(NSArray *)commonMetadata mutableCopy];
+    [(NSArray *)v10 removeObjectsInArray:[AVMetadataItem metadataItemsFromArray:commonMetadata withKey:@"NAME" keySpace:@"m3u8"]];
+    commonMetadata = v10;
   }
 
-  v11 = [AVMetadataItem metadataItemsFromArray:v9 withKey:@"title" keySpace:@"comn"];
-  v12 = [AVMetadataItem metadataItemsFromArray:v11 filteredAndSortedAccordingToPreferredLanguages:a3];
+  v11 = [AVMetadataItem metadataItemsFromArray:commonMetadata withKey:@"title" keySpace:@"comn"];
+  v12 = [AVMetadataItem metadataItemsFromArray:v11 filteredAndSortedAccordingToPreferredLanguages:languages];
   if (![(NSArray *)v12 count]&& [(NSArray *)v11 count]>= 2)
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -916,7 +916,7 @@ LABEL_17:
           v18 = *(*(&v29 + 1) + 8 * i);
           if ([v18 extendedLanguageTag])
           {
-            [v13 addObject:{objc_msgSend(v18, "extendedLanguageTag")}];
+            [array addObject:{objc_msgSend(v18, "extendedLanguageTag")}];
           }
         }
 
@@ -929,8 +929,8 @@ LABEL_17:
     v19 = FigCopyRankedLanguagesAccordingToPreferredLanguages2();
     if (CFArrayGetCount(v19) >= 1)
     {
-      v34 = [v19 firstObject];
-      v12 = +[AVMetadataItem metadataItemsFromArray:filteredAndSortedAccordingToPreferredLanguages:](AVMetadataItem, "metadataItemsFromArray:filteredAndSortedAccordingToPreferredLanguages:", v11, [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1]);
+      firstObject = [v19 firstObject];
+      v12 = +[AVMetadataItem metadataItemsFromArray:filteredAndSortedAccordingToPreferredLanguages:](AVMetadataItem, "metadataItemsFromArray:filteredAndSortedAccordingToPreferredLanguages:", v11, [MEMORY[0x1E695DEC8] arrayWithObjects:&firstObject count:1]);
     }
 
     if (v19)
@@ -947,7 +947,7 @@ LABEL_17:
 
   else
   {
-    if (v6)
+    if (localeCopy)
     {
       v27 = 0u;
       v28 = 0u;
@@ -999,58 +999,58 @@ LABEL_26:
   }
 }
 
-- (id)_languageDisplayNameFromMetadataAccordingToPreferredLanguages:(id)a3 fallingBackToMatchingEmptyLocale:(BOOL)a4
+- (id)_languageDisplayNameFromMetadataAccordingToPreferredLanguages:(id)languages fallingBackToMatchingEmptyLocale:(BOOL)locale
 {
-  v4 = a4;
+  localeCopy = locale;
   if (![(AVMediaSelectionOption *)self hasMediaCharacteristic:@"com.apple.has-language-display-name-as-name"])
   {
     return 0;
   }
 
-  return [(AVMediaSelectionOption *)self _preferredMetadataTitleAccordingToPreferredLanguages:a3 fallingBackToMatchingEmptyLocale:v4 excludeM3U8Metadata:0];
+  return [(AVMediaSelectionOption *)self _preferredMetadataTitleAccordingToPreferredLanguages:languages fallingBackToMatchingEmptyLocale:localeCopy excludeM3U8Metadata:0];
 }
 
-- (id)_displayNameWithLocale:(id)a3 fallingBackToMatchingUndeterminedAndMultilingual:(BOOL)a4
+- (id)_displayNameWithLocale:(id)locale fallingBackToMatchingUndeterminedAndMultilingual:(BOOL)multilingual
 {
-  v4 = a4;
-  if ([(AVMediaSelectionOption *)self _updateDisplayNameWithLocale:a3 fallingBackToMatchingUndeterminedAndMultilingual:a4 context:3])
+  multilingualCopy = multilingual;
+  if ([(AVMediaSelectionOption *)self _updateDisplayNameWithLocale:locale fallingBackToMatchingUndeterminedAndMultilingual:multilingual context:3])
   {
 
     self->_mediaSelectionOption->_displayName = 0;
-    [(AVMediaSelectionOption *)self _updateDisplayNameWithLocale:a3 fallingBackToMatchingUndeterminedAndMultilingual:v4 context:5];
+    [(AVMediaSelectionOption *)self _updateDisplayNameWithLocale:locale fallingBackToMatchingUndeterminedAndMultilingual:multilingualCopy context:5];
   }
 
   return self->_mediaSelectionOption->_displayName;
 }
 
-- (BOOL)_updateDisplayNameWithLocale:(id)a3 fallingBackToMatchingUndeterminedAndMultilingual:(BOOL)a4 context:(int64_t)a5
+- (BOOL)_updateDisplayNameWithLocale:(id)locale fallingBackToMatchingUndeterminedAndMultilingual:(BOOL)multilingual context:(int64_t)context
 {
-  v6 = a4;
+  multilingualCopy = multilingual;
   v77[3] = *MEMORY[0x1E69E9840];
-  v9 = [(AVMediaSelectionOption *)self _preferredLocalizationLanguage];
-  if (a3)
+  _preferredLocalizationLanguage = [(AVMediaSelectionOption *)self _preferredLocalizationLanguage];
+  if (locale)
   {
-    if ([v9 isEqualToString:{objc_msgSend(a3, "localeIdentifier")}])
+    if ([_preferredLocalizationLanguage isEqualToString:{objc_msgSend(locale, "localeIdentifier")}])
     {
-      v10 = 0;
+      localeCopy = 0;
     }
 
     else
     {
-      v10 = a3;
+      localeCopy = locale;
     }
   }
 
   else
   {
-    a3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v9];
-    v10 = 0;
+    locale = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:_preferredLocalizationLanguage];
+    localeCopy = 0;
   }
 
-  if (!-[NSString isEqualToString:](self->_mediaSelectionOption->_displayNameLocaleIdentifier, "isEqualToString:", [a3 localeIdentifier]))
+  if (!-[NSString isEqualToString:](self->_mediaSelectionOption->_displayNameLocaleIdentifier, "isEqualToString:", [locale localeIdentifier]))
   {
 
-    self->_mediaSelectionOption->_displayNameLocaleIdentifier = [objc_msgSend(a3 "localeIdentifier")];
+    self->_mediaSelectionOption->_displayNameLocaleIdentifier = [objc_msgSend(locale "localeIdentifier")];
     self->_mediaSelectionOption->_displayName = 0;
   }
 
@@ -1061,8 +1061,8 @@ LABEL_26:
   }
 
   bundleID = [-[AVMediaSelectionOption group](self "group")];
-  v12 = [a3 objectForKey:*MEMORY[0x1E695D9A8]];
-  if (v6)
+  v12 = [locale objectForKey:*MEMORY[0x1E695D9A8]];
+  if (multilingualCopy)
   {
     v77[0] = v12;
     v77[1] = @"mul";
@@ -1081,28 +1081,28 @@ LABEL_26:
   }
 
   v16 = [v13 arrayWithObjects:v14 count:v15];
-  v17 = [(AVMediaSelectionOption *)self _preferredMetadataTitleAccordingToPreferredLanguages:v16 fallingBackToMatchingEmptyLocale:v6 excludeM3U8Metadata:1];
-  v18 = [(AVMediaSelectionOption *)self extendedLanguageTag];
-  if (!v18)
+  v17 = [(AVMediaSelectionOption *)self _preferredMetadataTitleAccordingToPreferredLanguages:v16 fallingBackToMatchingEmptyLocale:multilingualCopy excludeM3U8Metadata:1];
+  extendedLanguageTag = [(AVMediaSelectionOption *)self extendedLanguageTag];
+  if (!extendedLanguageTag)
   {
-    v24 = 0;
+    outPropertyData = 0;
     v22 = 0;
     v25 = bundleID;
     goto LABEL_36;
   }
 
-  v19 = v18;
-  v64 = v10;
-  v20 = AVLanguageCodeFromExtendedLanguageTag(v18);
+  v19 = extendedLanguageTag;
+  v64 = localeCopy;
+  v20 = AVLanguageCodeFromExtendedLanguageTag(extendedLanguageTag);
   if (AVIsSpecialSpokenExtendedLanguageTag(v19))
   {
-    v21 = [a3 displayNameForKey:*MEMORY[0x1E695D9B0] value:v20];
+    v21 = [locale displayNameForKey:*MEMORY[0x1E695D9B0] value:v20];
     if (v21)
     {
       v22 = v21;
       if (([v20 isEqualToString:@"no"] & 1) != 0 || (objc_msgSend(v20, "isEqualToString:", @"nor") & 1) != 0 || (objc_msgSend(v20, "isEqualToString:", v19) & 1) == 0)
       {
-        v23 = [a3 localizedStringForLanguage:v19 context:a5];
+        v23 = [locale localizedStringForLanguage:v19 context:context];
       }
 
       else
@@ -1113,7 +1113,7 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v23 = -[AVMediaSelectionOption _languageDisplayNameFromMetadataAccordingToPreferredLanguages:fallingBackToMatchingEmptyLocale:](self, "_languageDisplayNameFromMetadataAccordingToPreferredLanguages:fallingBackToMatchingEmptyLocale:", [v16 arrayByAddingObject:v19], v6);
+    v23 = -[AVMediaSelectionOption _languageDisplayNameFromMetadataAccordingToPreferredLanguages:fallingBackToMatchingEmptyLocale:](self, "_languageDisplayNameFromMetadataAccordingToPreferredLanguages:fallingBackToMatchingEmptyLocale:", [v16 arrayByAddingObject:v19], multilingualCopy);
     if (v23)
     {
       goto LABEL_26;
@@ -1121,9 +1121,9 @@ LABEL_26:
   }
 
   v26 = [MEMORY[0x1E695DF58] canonicalLocaleIdentifierFromString:v19];
-  if (!v26 || (v27 = v26, v22 = [a3 displayNameForKey:*MEMORY[0x1E695D9B0] value:v26], v23 = objc_msgSend(a3, "localizedStringForLanguage:context:", v27, a5), !v22))
+  if (!v26 || (v27 = v26, v22 = [locale displayNameForKey:*MEMORY[0x1E695D9B0] value:v26], v23 = objc_msgSend(locale, "localizedStringForLanguage:context:", v27, context), !v22))
   {
-    v23 = -[AVMediaSelectionOption _languageDisplayNameFromMetadataAccordingToPreferredLanguages:fallingBackToMatchingEmptyLocale:](self, "_languageDisplayNameFromMetadataAccordingToPreferredLanguages:fallingBackToMatchingEmptyLocale:", [v16 arrayByAddingObject:v19], v6);
+    v23 = -[AVMediaSelectionOption _languageDisplayNameFromMetadataAccordingToPreferredLanguages:fallingBackToMatchingEmptyLocale:](self, "_languageDisplayNameFromMetadataAccordingToPreferredLanguages:fallingBackToMatchingEmptyLocale:", [v16 arrayByAddingObject:v19], multilingualCopy);
 LABEL_26:
     v22 = v23;
   }
@@ -1146,31 +1146,31 @@ LABEL_27:
 
   if (v28)
   {
-    v24 = v28;
+    outPropertyData = v28;
   }
 
   else
   {
-    v24 = v19;
+    outPropertyData = v19;
   }
 
-  v10 = v64;
+  localeCopy = v64;
   v25 = bundleID;
 LABEL_36:
   if (v17 && [-[__CFString stringByTrimmingCharactersInSet:](v17 stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x1E696AB08], "whitespaceCharacterSet")), "length"}])
   {
     if (v22 && [(__CFString *)v17 rangeOfString:v22 options:1]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      v29 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"SUBTITLE_TRACK_DISPLAY_FORMAT", @"AVMediaSelectionOption", v10, v25);
+      v29 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"SUBTITLE_TRACK_DISPLAY_FORMAT", @"AVMediaSelectionOption", localeCopy, v25);
       v11 = [(__CFString *)v29 hasPrefix:@"%2$@"]^ 1;
       *&inSpecifier[0] = 0;
-      v24 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v29 validFormatSpecifiers:@"%@%@" error:inSpecifier, v17, v24];
+      outPropertyData = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v29 validFormatSpecifiers:@"%@%@" error:inSpecifier, v17, outPropertyData];
     }
 
     else
     {
       LOBYTE(v11) = 0;
-      v24 = v17;
+      outPropertyData = v17;
     }
   }
 
@@ -1183,7 +1183,7 @@ LABEL_36:
   {
     if ([(AVMediaSelectionOption *)self hasMediaCharacteristic:@"public.accessibility.transcribes-spoken-dialog"]&& [(AVMediaSelectionOption *)self hasMediaCharacteristic:@"public.accessibility.describes-music-and-sound"])
     {
-      v30 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"SDH_SUBTITLE_FORMAT", @"AVMediaSelectionOption", v10, v25);
+      v30 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"SDH_SUBTITLE_FORMAT", @"AVMediaSelectionOption", localeCopy, v25);
       v31 = v30;
       if (v11)
       {
@@ -1196,18 +1196,18 @@ LABEL_36:
       }
 
       v36 = &stru_1F0A8E470;
-      if (v24)
+      if (outPropertyData)
       {
-        v36 = v24;
+        v36 = outPropertyData;
       }
 
       *&inSpecifier[0] = 0;
-      v24 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v31 validFormatSpecifiers:@"%@" error:inSpecifier, v36];
+      outPropertyData = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v31 validFormatSpecifiers:@"%@" error:inSpecifier, v36];
     }
 
     if ([(AVMediaSelectionOption *)self hasMediaCharacteristic:@"public.subtitles.forced-only"])
     {
-      v37 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"FORCEDONLY_SUBTITLE_FORMAT", @"AVMediaSelectionOption", v10, v25);
+      v37 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"FORCEDONLY_SUBTITLE_FORMAT", @"AVMediaSelectionOption", localeCopy, v25);
       v38 = v37;
       if (v11)
       {
@@ -1220,13 +1220,13 @@ LABEL_36:
       }
 
       v39 = &stru_1F0A8E470;
-      if (v24)
+      if (outPropertyData)
       {
-        v39 = v24;
+        v39 = outPropertyData;
       }
 
       *&inSpecifier[0] = 0;
-      v24 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v38 validFormatSpecifiers:@"%@" error:inSpecifier, v39];
+      outPropertyData = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v38 validFormatSpecifiers:@"%@" error:inSpecifier, v39];
     }
 
     if (![(AVMediaSelectionOption *)self hasMediaCharacteristic:@"public.easy-to-read"])
@@ -1234,7 +1234,7 @@ LABEL_36:
       goto LABEL_75;
     }
 
-    v40 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"EASYTOREAD_SUBTITLE_FORMAT", @"AVMediaSelectionOption", v10, v25);
+    v40 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"EASYTOREAD_SUBTITLE_FORMAT", @"AVMediaSelectionOption", localeCopy, v25);
     v41 = v40;
     if (v11)
     {
@@ -1247,9 +1247,9 @@ LABEL_36:
     }
 
     v42 = &stru_1F0A8E470;
-    if (v24)
+    if (outPropertyData)
     {
-      v42 = v24;
+      v42 = outPropertyData;
     }
 
     *&inSpecifier[0] = 0;
@@ -1263,7 +1263,7 @@ LABEL_36:
     {
       if ([(AVMediaSelectionOption *)self hasMediaCharacteristic:@"public.accessibility.describes-video"])
       {
-        v34 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"DESCRIBESVIDEO_AUDIO_FORMAT", @"AVMediaSelectionOption", v10, v25);
+        v34 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"DESCRIBESVIDEO_AUDIO_FORMAT", @"AVMediaSelectionOption", localeCopy, v25);
         v35 = v34;
         if (v11)
         {
@@ -1276,18 +1276,18 @@ LABEL_36:
         }
 
         v48 = &stru_1F0A8E470;
-        if (v24)
+        if (outPropertyData)
         {
-          v48 = v24;
+          v48 = outPropertyData;
         }
 
         *&inSpecifier[0] = 0;
-        v24 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v35 validFormatSpecifiers:@"%@" error:inSpecifier, v48];
+        outPropertyData = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v35 validFormatSpecifiers:@"%@" error:inSpecifier, v48];
       }
 
       if ([(AVMediaSelectionOption *)self hasMediaCharacteristic:@"public.translation.voice-over"])
       {
-        v49 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"VOICEOVERTRANSLATION_AUDIO_FORMAT", @"AVMediaSelectionOption", v10, v25);
+        v49 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"VOICEOVERTRANSLATION_AUDIO_FORMAT", @"AVMediaSelectionOption", localeCopy, v25);
         v50 = v49;
         if (v11)
         {
@@ -1300,18 +1300,18 @@ LABEL_36:
         }
 
         v51 = &stru_1F0A8E470;
-        if (v24)
+        if (outPropertyData)
         {
-          v51 = v24;
+          v51 = outPropertyData;
         }
 
         *&inSpecifier[0] = 0;
-        v24 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v50 validFormatSpecifiers:@"%@" error:inSpecifier, v51];
+        outPropertyData = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v50 validFormatSpecifiers:@"%@" error:inSpecifier, v51];
       }
 
       if ([(AVMediaSelectionOption *)self hasMediaCharacteristic:@"public.original-content"])
       {
-        v52 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"ORIGINAL_AUDIO_FORMAT", @"AVMediaSelectionOption", v10, v25);
+        v52 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"ORIGINAL_AUDIO_FORMAT", @"AVMediaSelectionOption", localeCopy, v25);
         v53 = v52;
         if (v11)
         {
@@ -1324,46 +1324,46 @@ LABEL_36:
         }
 
         v54 = &stru_1F0A8E470;
-        if (v24)
+        if (outPropertyData)
         {
-          v54 = v24;
+          v54 = outPropertyData;
         }
 
         *&inSpecifier[0] = 0;
-        v24 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v53 validFormatSpecifiers:@"%@" error:inSpecifier, v54];
+        outPropertyData = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v53 validFormatSpecifiers:@"%@" error:inSpecifier, v54];
       }
 
-      v55 = [(AVMediaSelectionOption *)self mediaSubTypes];
-      if ([(NSArray *)v55 count])
+      mediaSubTypes = [(AVMediaSelectionOption *)self mediaSubTypes];
+      if ([(NSArray *)mediaSubTypes count])
       {
         v72 = 0u;
         v73 = 0u;
         v70 = 0u;
         v71 = 0u;
-        v56 = [(NSArray *)v55 countByEnumeratingWithState:&v70 objects:v75 count:16];
+        v56 = [(NSArray *)mediaSubTypes countByEnumeratingWithState:&v70 objects:v75 count:16];
         if (v56)
         {
           v57 = v56;
           v58 = *v71;
           while (2)
           {
-            v59 = v10;
+            v59 = localeCopy;
             for (i = 0; i != v57; ++i)
             {
               if (*v71 != v58)
               {
-                objc_enumerationMutation(v55);
+                objc_enumerationMutation(mediaSubTypes);
               }
 
               if ([*(*(&v70 + 1) + 8 * i) intValue] != 1633889587)
               {
-                v10 = v59;
+                localeCopy = v59;
                 goto LABEL_123;
               }
             }
 
-            v57 = [(NSArray *)v55 countByEnumeratingWithState:&v70 objects:v75 count:16];
-            v10 = v59;
+            v57 = [(NSArray *)mediaSubTypes countByEnumeratingWithState:&v70 objects:v75 count:16];
+            localeCopy = v59;
             if (v57)
             {
               continue;
@@ -1382,9 +1382,9 @@ LABEL_36:
         if (outPropertyData)
         {
           v25 = bundleID;
-          if ([(__CFString *)v24 rangeOfString:?]== 0x7FFFFFFFFFFFFFFFLL)
+          if ([(__CFString *)outPropertyData rangeOfString:?]== 0x7FFFFFFFFFFFFFFFLL)
           {
-            v61 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"AUDIOENCODING_AUDIO_FORMAT", @"AVMediaSelectionOption", v10, bundleID);
+            v61 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"AUDIOENCODING_AUDIO_FORMAT", @"AVMediaSelectionOption", localeCopy, bundleID);
             v62 = v61;
             if (v11)
             {
@@ -1397,13 +1397,13 @@ LABEL_36:
             }
 
             v63 = &stru_1F0A8E470;
-            if (v24)
+            if (outPropertyData)
             {
-              v63 = v24;
+              v63 = outPropertyData;
             }
 
             v74 = 0;
-            v24 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v62 validFormatSpecifiers:@"%@%@" error:&v74, v63, outPropertyData];
+            outPropertyData = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v62 validFormatSpecifiers:@"%@%@" error:&v74, v63, outPropertyData];
           }
 
           if (outPropertyData)
@@ -1423,7 +1423,7 @@ LABEL_123:
     goto LABEL_75;
   }
 
-  v32 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"CC_SUBTITLE_FORMAT", @"AVMediaSelectionOption", v10, v25);
+  v32 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"CC_SUBTITLE_FORMAT", @"AVMediaSelectionOption", localeCopy, v25);
   v33 = v32;
   if (v11)
   {
@@ -1435,9 +1435,9 @@ LABEL_123:
     v11 = [(__CFString *)v32 hasPrefix:@"%1$@"]^ 1;
   }
 
-  if (v24)
+  if (outPropertyData)
   {
-    v46 = v24;
+    v46 = outPropertyData;
   }
 
   else
@@ -1446,10 +1446,10 @@ LABEL_123:
   }
 
   *&inSpecifier[0] = 0;
-  v24 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v33 validFormatSpecifiers:@"%@" error:inSpecifier, v46];
+  outPropertyData = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v33 validFormatSpecifiers:@"%@" error:inSpecifier, v46];
   if ([(AVMediaSelectionOption *)self hasMediaCharacteristic:@"public.easy-to-read"])
   {
-    v47 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"EASYTOREAD_SUBTITLE_FORMAT", @"AVMediaSelectionOption", v10, v25);
+    v47 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"EASYTOREAD_SUBTITLE_FORMAT", @"AVMediaSelectionOption", localeCopy, v25);
     v41 = v47;
     if (v11)
     {
@@ -1461,9 +1461,9 @@ LABEL_123:
       v11 = [(__CFString *)v47 hasPrefix:@"%1$@"]^ 1;
     }
 
-    if (v24)
+    if (outPropertyData)
     {
-      v42 = v24;
+      v42 = outPropertyData;
     }
 
     else
@@ -1474,14 +1474,14 @@ LABEL_123:
     *&inSpecifier[0] = 0;
     v43 = MEMORY[0x1E696AEC0];
 LABEL_74:
-    v24 = [v43 stringWithValidatedFormat:v41 validFormatSpecifiers:@"%@" error:inSpecifier, v42];
+    outPropertyData = [v43 stringWithValidatedFormat:v41 validFormatSpecifiers:@"%@" error:inSpecifier, v42];
   }
 
 LABEL_75:
-  v44 = -[__CFString stringByTrimmingCharactersInSet:](v24, "stringByTrimmingCharactersInSet:", [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet]);
+  v44 = -[__CFString stringByTrimmingCharactersInSet:](outPropertyData, "stringByTrimmingCharactersInSet:", [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet]);
   if (![(__CFString *)v44 length])
   {
-    v44 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"UNKNOWN_LANGUAGE", @"AVMediaSelectionOption", v10, v25);
+    v44 = AVLocalizedStringFromTableWithLocaleWithBundleIdentifier(@"UNKNOWN_LANGUAGE", @"AVMediaSelectionOption", localeCopy, v25);
   }
 
   self->_mediaSelectionOption->_displayName = v44;
@@ -1501,18 +1501,18 @@ LABEL_75:
 
 - (id)outOfBandSource
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E69737F0];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (id)outOfBandIdentifier
 {
-  v2 = [(AVMediaSelectionOption *)self dictionary];
+  dictionary = [(AVMediaSelectionOption *)self dictionary];
   v3 = *MEMORY[0x1E6973788];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 @end

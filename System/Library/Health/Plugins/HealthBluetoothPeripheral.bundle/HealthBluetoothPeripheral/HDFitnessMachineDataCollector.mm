@@ -1,29 +1,29 @@
 @interface HDFitnessMachineDataCollector
-- (HDFitnessMachineDataCollector)initWithFitnessMachineType:(unint64_t)a3 profile:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)dataAggregator:(id)a3 wantsCollectionWithConfiguration:(id)a4;
-- (void)handleDataCharacteristic:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setMachineBrand:(id)a3;
-- (void)setMachinePreferredUntilDate:(id)a3;
-- (void)setMachineStartDate:(id)a3;
+- (HDFitnessMachineDataCollector)initWithFitnessMachineType:(unint64_t)type profile:(id)profile;
+- (void)addObserver:(id)observer;
+- (void)dataAggregator:(id)aggregator wantsCollectionWithConfiguration:(id)configuration;
+- (void)handleDataCharacteristic:(id)characteristic;
+- (void)removeObserver:(id)observer;
+- (void)setMachineBrand:(id)brand;
+- (void)setMachinePreferredUntilDate:(id)date;
+- (void)setMachineStartDate:(id)date;
 - (void)tearDown;
-- (void)unitTest_processDatumsByMetric:(id)a3 completion:(id)a4;
+- (void)unitTest_processDatumsByMetric:(id)metric completion:(id)completion;
 @end
 
 @implementation HDFitnessMachineDataCollector
 
-- (HDFitnessMachineDataCollector)initWithFitnessMachineType:(unint64_t)a3 profile:(id)a4
+- (HDFitnessMachineDataCollector)initWithFitnessMachineType:(unint64_t)type profile:(id)profile
 {
-  v6 = a4;
+  profileCopy = profile;
   v33.receiver = self;
   v33.super_class = HDFitnessMachineDataCollector;
   v7 = [(HDFitnessMachineDataCollector *)&v33 init];
   v8 = v7;
   if (v7)
   {
-    v7->_fitnessMachineType = a3;
-    objc_storeWeak(&v7->_profile, v6);
+    v7->_fitnessMachineType = type;
+    objc_storeWeak(&v7->_profile, profileCopy);
     v10 = +[NSMapTable strongToWeakObjectsMapTable];
     aggregators = v8->_aggregators;
     v8->_aggregators = v10;
@@ -77,15 +77,15 @@
   return v8;
 }
 
-- (void)setMachineBrand:(id)a3
+- (void)setMachineBrand:(id)brand
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  brandCopy = brand;
+  v5 = [brandCopy copy];
   machineBrand = self->_machineBrand;
   self->_machineBrand = v5;
 
   v7 = [HKDevice alloc];
-  v8 = [v7 initWithName:v4 manufacturer:v4 model:0 hardwareVersion:0 firmwareVersion:0 softwareVersion:0 localIdentifier:HKDeviceConnectedGymIdentifier UDIDeviceIdentifier:0];
+  v8 = [v7 initWithName:brandCopy manufacturer:brandCopy model:0 hardwareVersion:0 firmwareVersion:0 softwareVersion:0 localIdentifier:HKDeviceConnectedGymIdentifier UDIDeviceIdentifier:0];
 
   device = self->_device;
   self->_device = v8;
@@ -96,31 +96,31 @@
   [(HKDevice *)v10 _setFitnessMachineType:fitnessMachineType];
 }
 
-- (void)setMachineStartDate:(id)a3
+- (void)setMachineStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_24F78;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)setMachinePreferredUntilDate:(id)a3
+- (void)setMachinePreferredUntilDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_25064;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -161,77 +161,77 @@
   }
 }
 
-- (void)handleDataCharacteristic:(id)a3
+- (void)handleDataCharacteristic:(id)characteristic
 {
-  v4 = a3;
+  characteristicCopy = characteristic;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_2521C;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = characteristicCopy;
+  v6 = characteristicCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)dataAggregator:(id)a3 wantsCollectionWithConfiguration:(id)a4
+- (void)dataAggregator:(id)aggregator wantsCollectionWithConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_25DB0;
   v8[3] = &unk_5C8C8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = configurationCopy;
+  v7 = configurationCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_25E84;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
   sub_39C64(self);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_25F28;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)unitTest_processDatumsByMetric:(id)a3 completion:(id)a4
+- (void)unitTest_processDatumsByMetric:(id)metric completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  metricCopy = metric;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_39E34;
   block[3] = &unk_5D740;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = metricCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = metricCopy;
   dispatch_async(queue, block);
 }
 

@@ -9,7 +9,7 @@
 - (void)bindInFindCacheIdStatement:()SQLRequests database:startingAtIndex:gettingNextIndex:
 {
   v10 = a4;
-  [v10 bindUnsignedLongLong:objc_msgSend(a1 atIndex:"fileId") inStatement:{a5, a3}];
+  [v10 bindUnsignedLongLong:objc_msgSend(self atIndex:"fileId") inStatement:{a5, a3}];
 
   if (a6)
   {
@@ -23,7 +23,7 @@
   v5 = [v4 prepareStatement:{"SELECT rowid, version FROM basic_files WHERE fileId=?"}];
   if (v5)
   {
-    [v4 bindUnsignedLongLong:objc_msgSend(a1 atIndex:"fileId") inStatement:{1, v5}];
+    [v4 bindUnsignedLongLong:objc_msgSend(self atIndex:"fileId") inStatement:{1, v5}];
   }
 
   return v5;

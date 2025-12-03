@@ -1,27 +1,27 @@
 @interface CMAVRoutingTimeMappingAsValue
-+ (id)valueWithCMTimeMapping:(id *)a3;
++ (id)valueWithCMTimeMapping:(id *)mapping;
 - ($2FE3C3292E52C4A5B67D27538456EAD9)CMTimeMappingValue;
-- (BOOL)isEqualToValue:(id)a3;
-- (CMAVRoutingTimeMappingAsValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqualToValue:(id)value;
+- (CMAVRoutingTimeMappingAsValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)getValue:(void *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)getValue:(void *)value;
 @end
 
 @implementation CMAVRoutingTimeMappingAsValue
 
-+ (id)valueWithCMTimeMapping:(id *)a3
++ (id)valueWithCMTimeMapping:(id *)mapping
 {
-  v4 = [objc_allocWithZone(a1) init];
-  v5 = *&a3->var0.var0.var3;
-  *(v4 + 8) = *&a3->var0.var0.var0;
+  v4 = [objc_allocWithZone(self) init];
+  v5 = *&mapping->var0.var0.var3;
+  *(v4 + 8) = *&mapping->var0.var0.var0;
   *(v4 + 24) = v5;
-  v6 = *&a3->var1.var1.var1;
-  v8 = *&a3->var0.var1.var1;
-  v7 = *&a3->var1.var0.var0;
-  *(v4 + 72) = *&a3->var1.var0.var3;
+  v6 = *&mapping->var1.var1.var1;
+  v8 = *&mapping->var0.var1.var1;
+  v7 = *&mapping->var1.var0.var0;
+  *(v4 + 72) = *&mapping->var1.var0.var3;
   *(v4 + 88) = v6;
   *(v4 + 40) = v8;
   *(v4 + 56) = v7;
@@ -43,18 +43,18 @@
   return self;
 }
 
-- (void)getValue:(void *)a3
+- (void)getValue:(void *)value
 {
   v3 = *&self->_timeMapping.source.start.epoch;
-  *a3 = *&self->_timeMapping.source.start.value;
-  *(a3 + 1) = v3;
+  *value = *&self->_timeMapping.source.start.value;
+  *(value + 1) = v3;
   v4 = *&self->_timeMapping.target.duration.timescale;
   v6 = *&self->_timeMapping.source.duration.timescale;
   v5 = *&self->_timeMapping.target.start.value;
-  *(a3 + 4) = *&self->_timeMapping.target.start.epoch;
-  *(a3 + 5) = v4;
-  *(a3 + 2) = v6;
-  *(a3 + 3) = v5;
+  *(value + 4) = *&self->_timeMapping.target.start.epoch;
+  *(value + 5) = v4;
+  *(value + 2) = v6;
+  *(value + 3) = v5;
 }
 
 - (id)description
@@ -73,9 +73,9 @@
   return [v2 stringWithFormat:@"CMTimeMapping: {%@, %@}", v4, CMTimeRangeCopyDescription(v3, &range)];
 }
 
-- (BOOL)isEqualToValue:(id)a3
+- (BOOL)isEqualToValue:(id)value
 {
-  if (self == a3)
+  if (self == value)
   {
     LOBYTE(v9) = 1;
   }
@@ -88,9 +88,9 @@
     if (objc_opt_isKindOfClass())
     {
       memset(v14, 0, sizeof(v14));
-      if (a3)
+      if (value)
       {
-        [a3 CMTimeMappingValue];
+        [value CMTimeMappingValue];
       }
 
       p_timeMapping = &self->_timeMapping;
@@ -133,9 +133,9 @@
   return v4 ^ v5 ^ CMTimeHash(&start);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  if (NSShouldRetainWithZone(self, a3))
+  if (NSShouldRetainWithZone(self, zone))
   {
 
     return self;
@@ -156,11 +156,11 @@
   }
 }
 
-- (CMAVRoutingTimeMappingAsValue)initWithCoder:(id)a3
+- (CMAVRoutingTimeMappingAsValue)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
-    v10 = self;
+    selfCopy = self;
     v16 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v11, v12, v13, v14, v15, "[coder allowsKeyedCoding]"), 0}];
     objc_exception_throw(v16);
   }
@@ -172,9 +172,9 @@
   if (v6)
   {
     p_timeMapping = &v6->_timeMapping;
-    if (a3)
+    if (coder)
     {
-      [a3 decodeCMTimeMappingForKey:@"CMTimeMapping"];
+      [coder decodeCMTimeMappingForKey:@"CMTimeMapping"];
     }
 
     else
@@ -198,9 +198,9 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v6, v7, v8, v9, v10, "[coder allowsKeyedCoding]"), 0}];
     objc_exception_throw(v14);
@@ -215,7 +215,7 @@
   v13 = *&self->_timeMapping.source.start.epoch;
   v15[0] = *&self->_timeMapping.source.start.value;
   v15[1] = v13;
-  [a3 encodeCMTimeMapping:v15 forKey:@"CMTimeMapping"];
+  [coder encodeCMTimeMapping:v15 forKey:@"CMTimeMapping"];
 }
 
 @end

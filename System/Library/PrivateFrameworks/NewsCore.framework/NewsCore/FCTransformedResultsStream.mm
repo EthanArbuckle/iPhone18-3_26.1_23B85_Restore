@@ -1,17 +1,17 @@
 @interface FCTransformedResultsStream
 - (BOOL)isFinished;
-- (FCTransformedResultsStream)initWithStream:(id)a3 asyncTransformBlock:(id)a4;
-- (id)fetchMoreResultsWithLimit:(unint64_t)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
+- (FCTransformedResultsStream)initWithStream:(id)stream asyncTransformBlock:(id)block;
+- (id)fetchMoreResultsWithLimit:(unint64_t)limit qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation FCTransformedResultsStream
 
-- (FCTransformedResultsStream)initWithStream:(id)a3 asyncTransformBlock:(id)a4
+- (FCTransformedResultsStream)initWithStream:(id)stream asyncTransformBlock:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  streamCopy = stream;
+  blockCopy = block;
+  if (!streamCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "stream != nil"];
     *buf = 136315906;
@@ -24,13 +24,13 @@
     v25 = v15;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v8)
+    if (blockCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (blockCopy)
   {
     goto LABEL_6;
   }
@@ -56,10 +56,10 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    if (v7 && v8)
+    if (streamCopy && blockCopy)
     {
-      objc_storeStrong(&v9->_stream, a3);
-      v11 = [v8 copy];
+      objc_storeStrong(&v9->_stream, stream);
+      v11 = [blockCopy copy];
       asyncTransformBlock = v10->_asyncTransformBlock;
       v10->_asyncTransformBlock = v11;
     }
@@ -75,22 +75,22 @@ LABEL_6:
   return v10;
 }
 
-- (id)fetchMoreResultsWithLimit:(unint64_t)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (id)fetchMoreResultsWithLimit:(unint64_t)limit qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [(FCTransformedResultsStream *)self stream];
+  queueCopy = queue;
+  handlerCopy = handler;
+  stream = [(FCTransformedResultsStream *)self stream];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __105__FCTransformedResultsStream_fetchMoreResultsWithLimit_qualityOfService_callbackQueue_completionHandler___block_invoke;
   v17[3] = &unk_1E7C3F278;
   v17[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = a4;
-  v13 = v11;
-  v14 = v10;
-  v15 = [v12 fetchMoreResultsWithLimit:a3 qualityOfService:a4 callbackQueue:v14 completionHandler:v17];
+  v18 = queueCopy;
+  v19 = handlerCopy;
+  serviceCopy = service;
+  v13 = handlerCopy;
+  v14 = queueCopy;
+  v15 = [stream fetchMoreResultsWithLimit:limit qualityOfService:service callbackQueue:v14 completionHandler:v17];
 
   return v15;
 }
@@ -138,10 +138,10 @@ void __105__FCTransformedResultsStream_fetchMoreResultsWithLimit_qualityOfServic
 
 - (BOOL)isFinished
 {
-  v2 = [(FCTransformedResultsStream *)self stream];
-  v3 = [v2 isFinished];
+  stream = [(FCTransformedResultsStream *)self stream];
+  isFinished = [stream isFinished];
 
-  return v3;
+  return isFinished;
 }
 
 @end

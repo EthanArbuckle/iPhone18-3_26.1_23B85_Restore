@@ -1,22 +1,22 @@
 @interface AXAuditTextMarker
-+ (void)registerTransportableObjectWithManager:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (void)registerTransportableObjectWithManager:(id)manager;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation AXAuditTextMarker
 
-+ (void)registerTransportableObjectWithManager:(id)a3
++ (void)registerTransportableObjectWithManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v6 = [[AXAuditObjectTransportInfoPropertyBased alloc] initWithClass:objc_opt_class() transportKey:@"AXAuditTextMarker_v1"];
   v4 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportPropertyEntry *)v4 setTransportKey:@"PlatformMarkerValue_v1"];
   [(AXAuditObjectTransportPropertyEntry *)v4 setLocalValueToTransportValue:&__block_literal_global_24];
   [(AXAuditObjectTransportPropertyEntry *)v4 setPopulateLocalObjectWithTransportValue:&__block_literal_global_11_2];
   [(AXAuditObjectTransportInfoPropertyBased *)v6 addPropertyEntry:v4];
-  [v3 registerTransportInfoPropertyBased:v6];
+  [managerCopy registerTransportInfoPropertyBased:v6];
 
   v5 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportInfoPropertyBased *)v6 addPropertyEntry:v5];
@@ -65,18 +65,18 @@ void __60__AXAuditTextMarker_registerTransportableObjectWithManager___block_invo
 
 - (unint64_t)hash
 {
-  v3 = [(AXAuditTextMarker *)self platformMarker];
-  v4 = [v3 hash];
-  v5 = [(AXAuditTextMarker *)self markerDescription];
-  v6 = [v5 hash];
+  platformMarker = [(AXAuditTextMarker *)self platformMarker];
+  v4 = [platformMarker hash];
+  markerDescription = [(AXAuditTextMarker *)self markerDescription];
+  v6 = [markerDescription hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -86,19 +86,19 @@ void __60__AXAuditTextMarker_registerTransportableObjectWithManager___block_invo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AXAuditTextMarker *)self platformMarker];
-      v7 = [(AXAuditTextMarker *)v5 platformMarker];
-      if (v6 | v7 && ![v6 isEqual:v7])
+      v5 = equalCopy;
+      platformMarker = [(AXAuditTextMarker *)self platformMarker];
+      platformMarker2 = [(AXAuditTextMarker *)v5 platformMarker];
+      if (platformMarker | platformMarker2 && ![platformMarker isEqual:platformMarker2])
       {
         v10 = 0;
       }
 
       else
       {
-        v8 = [(AXAuditTextMarker *)self markerDescription];
-        v9 = [(AXAuditTextMarker *)v5 markerDescription];
-        v10 = !(v8 | v9) || [v8 isEqual:v9];
+        markerDescription = [(AXAuditTextMarker *)self markerDescription];
+        markerDescription2 = [(AXAuditTextMarker *)v5 markerDescription];
+        v10 = !(markerDescription | markerDescription2) || [markerDescription isEqual:markerDescription2];
       }
     }
 
@@ -111,14 +111,14 @@ void __60__AXAuditTextMarker_registerTransportableObjectWithManager___block_invo
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(AXAuditTextMarker *)self platformMarker];
-  [v4 setPlatformMarker:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  platformMarker = [(AXAuditTextMarker *)self platformMarker];
+  [v4 setPlatformMarker:platformMarker];
 
-  v6 = [(AXAuditTextMarker *)self markerDescription];
-  [v4 setMarkerDescription:v6];
+  markerDescription = [(AXAuditTextMarker *)self markerDescription];
+  [v4 setMarkerDescription:markerDescription];
 
   return v4;
 }

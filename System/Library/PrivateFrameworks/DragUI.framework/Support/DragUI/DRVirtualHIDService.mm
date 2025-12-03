@@ -1,43 +1,43 @@
 @interface DRVirtualHIDService
-- (BOOL)_isNormalizedPointOutOfBounds:(CAPoint3D)a3;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 forService:(id)a5;
-- (CAPoint3D)_normalizedLocationFromReferenceLocation:(CAPoint3D)a3;
+- (BOOL)_isNormalizedPointOutOfBounds:(CAPoint3D)bounds;
+- (BOOL)setProperty:(id)property forKey:(id)key forService:(id)service;
+- (CAPoint3D)_normalizedLocationFromReferenceLocation:(CAPoint3D)location;
 - (CAPoint3D)currentLocation;
-- (DRVirtualHIDService)initWithScreen:(id)a3;
+- (DRVirtualHIDService)initWithScreen:(id)screen;
 - (void)_configureHIDServiceIfNeeded;
-- (void)_initializeHIDEventBaseWithLocation:(CAPoint3D)a3;
-- (void)_moveToLocation:(CAPoint3D)a3;
-- (void)_sendHIDEvent:(__IOHIDEvent *)a3;
-- (void)_updateHIDEventBaseWithLocation:(CAPoint3D)a3 touching:(BOOL)a4;
-- (void)beginAtPoint:(CAPoint3D)a3;
+- (void)_initializeHIDEventBaseWithLocation:(CAPoint3D)location;
+- (void)_moveToLocation:(CAPoint3D)location;
+- (void)_sendHIDEvent:(__IOHIDEvent *)event;
+- (void)_updateHIDEventBaseWithLocation:(CAPoint3D)location touching:(BOOL)touching;
+- (void)beginAtPoint:(CAPoint3D)point;
 - (void)dealloc;
 - (void)lift;
-- (void)liftAtLocation:(CAPoint3D)a3;
-- (void)notification:(int64_t)a3 withProperty:(id)a4 forService:(id)a5;
+- (void)liftAtLocation:(CAPoint3D)location;
+- (void)notification:(int64_t)notification withProperty:(id)property forService:(id)service;
 @end
 
 @implementation DRVirtualHIDService
 
-- (DRVirtualHIDService)initWithScreen:(id)a3
+- (DRVirtualHIDService)initWithScreen:(id)screen
 {
-  v5 = a3;
+  screenCopy = screen;
   v9.receiver = self;
   v9.super_class = DRVirtualHIDService;
   v6 = [(DRVirtualHIDService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_screen, a3);
+    objc_storeStrong(&v6->_screen, screen);
   }
 
   return v7;
 }
 
-- (void)beginAtPoint:(CAPoint3D)a3
+- (void)beginAtPoint:(CAPoint3D)point
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
+  z = point.z;
+  y = point.y;
+  x = point.x;
   [(DRVirtualHIDService *)self _configureHIDServiceIfNeeded];
   self->_sentUp = 0;
   [(DRVirtualHIDService *)self _initializeHIDEventBaseWithLocation:x, y, z];
@@ -46,11 +46,11 @@
   [(DRVirtualHIDService *)self _sendHIDEvent:HIDEventBase];
 }
 
-- (void)_moveToLocation:(CAPoint3D)a3
+- (void)_moveToLocation:(CAPoint3D)location
 {
   if (self->_HIDEventBase)
   {
-    [(DRVirtualHIDService *)self _updateHIDEventBaseWithLocation:1 touching:a3.x, a3.y, a3.z];
+    [(DRVirtualHIDService *)self _updateHIDEventBaseWithLocation:1 touching:location.x, location.y, location.z];
     HIDEventBase = self->_HIDEventBase;
 
     [(DRVirtualHIDService *)self _sendHIDEvent:HIDEventBase];
@@ -67,13 +67,13 @@
   }
 }
 
-- (void)liftAtLocation:(CAPoint3D)a3
+- (void)liftAtLocation:(CAPoint3D)location
 {
   if (self->_HIDEventBase)
   {
-    z = a3.z;
-    y = a3.y;
-    x = a3.x;
+    z = location.z;
+    y = location.y;
+    x = location.x;
     [(DRVirtualHIDService *)self moveToLocation:?];
     [(DRVirtualHIDService *)self _updateHIDEventBaseWithLocation:0 touching:x, y, z];
     [(DRVirtualHIDService *)self _sendHIDEvent:self->_HIDEventBase];
@@ -131,13 +131,13 @@
   v5 = self->_eventService;
   if (v5)
   {
-    v6 = [(DRVirtualHIDService *)self queue];
+    queue = [(DRVirtualHIDService *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100015634;
     block[3] = &unk_100054B50;
     v9 = v5;
-    dispatch_async(v6, block);
+    dispatch_async(queue, block);
   }
 
   v7.receiver = self;
@@ -145,24 +145,24 @@
   [(DRVirtualHIDService *)&v7 dealloc];
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 forService:(id)a5
+- (BOOL)setProperty:(id)property forKey:(id)key forService:(id)service
 {
-  v7 = a3;
-  v8 = [a4 isEqual:@"DeviceOpenedByEventSystem"];
+  propertyCopy = property;
+  v8 = [key isEqual:@"DeviceOpenedByEventSystem"];
   if (v8)
   {
-    self->_isOpen = [v7 BOOLValue];
+    self->_isOpen = [propertyCopy BOOLValue];
     dispatch_group_leave(self->_waitForOpenGroup);
   }
 
   return v8;
 }
 
-- (void)notification:(int64_t)a3 withProperty:(id)a4 forService:(id)a5
+- (void)notification:(int64_t)notification withProperty:(id)property forService:(id)service
 {
-  v7 = a4;
+  propertyCopy = property;
   v8 = @"terminated";
-  if (a3 == 10)
+  if (notification == 10)
   {
     v8 = @"enumerated";
   }
@@ -176,11 +176,11 @@
     v13 = 138413058;
     v14 = v12;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v9;
     v19 = 2112;
-    v20 = v7;
+    v20 = propertyCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "<%@:%p> notification: %@ withProperty: %@", &v13, 0x2Au);
   }
 }
@@ -230,15 +230,15 @@
     v32[8] = v13;
     v14 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:9];
 
-    v15 = [(DRVirtualHIDService *)self screen];
-    v16 = [v15 displayConfiguration];
-    v17 = [v16 hardwareIdentifier];
+    screen = [(DRVirtualHIDService *)self screen];
+    displayConfiguration = [screen displayConfiguration];
+    hardwareIdentifier = [displayConfiguration hardwareIdentifier];
 
-    if (v17)
+    if (hardwareIdentifier)
     {
       v18 = [(NSDictionary *)v14 mutableCopy];
       [(NSDictionary *)v18 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Built-In"];
-      [(NSDictionary *)v18 setObject:v17 forKeyedSubscript:@"displayUUID"];
+      [(NSDictionary *)v18 setObject:hardwareIdentifier forKeyedSubscript:@"displayUUID"];
 
       v14 = v18;
     }
@@ -251,19 +251,19 @@
     eventService = self->_eventService;
     self->_eventService = v21;
 
-    v23 = [(DRVirtualHIDService *)self queue];
+    queue = [(DRVirtualHIDService *)self queue];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100015B40;
     v25[3] = &unk_100054C50;
     v26 = v21;
-    v27 = self;
+    selfCopy = self;
     v24 = v21;
-    dispatch_sync(v23, v25);
+    dispatch_sync(queue, v25);
   }
 }
 
-- (void)_sendHIDEvent:(__IOHIDEvent *)a3
+- (void)_sendHIDEvent:(__IOHIDEvent *)event
 {
   waitForOpenGroup = self->_waitForOpenGroup;
   v5 = dispatch_time(0, 2000000000);
@@ -271,25 +271,25 @@
   Copy = IOHIDEventCreateCopy();
   mach_absolute_time();
   IOHIDEventSetTimeStamp();
-  v7 = [(DRVirtualHIDService *)self queue];
+  queue = [(DRVirtualHIDService *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100015D00;
   v8[3] = &unk_100055640;
   v8[4] = self;
   v8[5] = Copy;
-  dispatch_sync(v7, v8);
+  dispatch_sync(queue, v8);
 
   CFRelease(Copy);
 }
 
-- (CAPoint3D)_normalizedLocationFromReferenceLocation:(CAPoint3D)a3
+- (CAPoint3D)_normalizedLocationFromReferenceLocation:(CAPoint3D)location
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(DRVirtualHIDService *)self screen:a3.x];
-  v6 = [v5 fixedCoordinateSpace];
-  [v6 bounds];
+  y = location.y;
+  x = location.x;
+  v5 = [(DRVirtualHIDService *)self screen:location.x];
+  fixedCoordinateSpace = [v5 fixedCoordinateSpace];
+  [fixedCoordinateSpace bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -323,19 +323,19 @@
   return result;
 }
 
-- (void)_initializeHIDEventBaseWithLocation:(CAPoint3D)a3
+- (void)_initializeHIDEventBaseWithLocation:(CAPoint3D)location
 {
-  self->_currentLocation = a3;
+  self->_currentLocation = location;
   [(DRVirtualHIDService *)self _normalizedLocationFromReferenceLocation:?];
   mach_absolute_time();
   DigitizerEvent = IOHIDEventCreateDigitizerEvent();
-  v5 = [(DRVirtualHIDService *)self properties];
-  v6 = [v5 valueForKey:@"DisplayIntegrated"];
+  properties = [(DRVirtualHIDService *)self properties];
+  v6 = [properties valueForKey:@"DisplayIntegrated"];
   [v6 BOOLValue];
 
   IOHIDEventSetIntegerValue();
-  v7 = [(DRVirtualHIDService *)self properties];
-  v8 = [v7 valueForKey:@"Built-In"];
+  properties2 = [(DRVirtualHIDService *)self properties];
+  v8 = [properties2 valueForKey:@"Built-In"];
   [v8 BOOLValue];
 
   IOHIDEventSetIntegerValue();
@@ -364,11 +364,11 @@
   self->_HIDEventBase = DigitizerEvent;
 }
 
-- (void)_updateHIDEventBaseWithLocation:(CAPoint3D)a3 touching:(BOOL)a4
+- (void)_updateHIDEventBaseWithLocation:(CAPoint3D)location touching:(BOOL)touching
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
+  z = location.z;
+  y = location.y;
+  x = location.x;
   [(DRVirtualHIDService *)self _normalizedLocationFromReferenceLocation:?];
   v9 = v8;
   v11 = v10;
@@ -420,16 +420,16 @@ LABEL_7:
   self->_currentLocation.z = z;
 }
 
-- (BOOL)_isNormalizedPointOutOfBounds:(CAPoint3D)a3
+- (BOOL)_isNormalizedPointOutOfBounds:(CAPoint3D)bounds
 {
-  v3 = a3.x < 0.0;
-  if (a3.x > 1.0)
+  v3 = bounds.x < 0.0;
+  if (bounds.x > 1.0)
   {
     v3 = 1;
   }
 
-  v4 = a3.y < 0.0;
-  if (a3.y > 1.0)
+  v4 = bounds.y < 0.0;
+  if (bounds.y > 1.0)
   {
     v4 = 1;
   }

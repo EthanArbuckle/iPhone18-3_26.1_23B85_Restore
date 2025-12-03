@@ -1,52 +1,52 @@
 @interface RTVehicleLocationCompanionLink
 - (BOOL)_companionLinkConnected;
-- (RTVehicleLocationCompanionLink)initWithQueue:(id)a3 companionLinkClient:(id)a4 vehicleEventHandler:(id)a5 deviceConnectionUpdateHandler:(id)a6;
-- (RTVehicleLocationCompanionLink)initWithQueue:(id)a3 deviceConnectionUpdateHandler:(id)a4;
-- (RTVehicleLocationCompanionLink)initWithQueue:(id)a3 vehicleEventHandler:(id)a4;
-- (id)decodeVehicleEvent:(id)a3;
-- (id)encodeVehicleEvent:(id)a3;
+- (RTVehicleLocationCompanionLink)initWithQueue:(id)queue companionLinkClient:(id)client vehicleEventHandler:(id)handler deviceConnectionUpdateHandler:(id)updateHandler;
+- (RTVehicleLocationCompanionLink)initWithQueue:(id)queue deviceConnectionUpdateHandler:(id)handler;
+- (RTVehicleLocationCompanionLink)initWithQueue:(id)queue vehicleEventHandler:(id)handler;
+- (id)decodeVehicleEvent:(id)event;
+- (id)encodeVehicleEvent:(id)event;
 - (void)registerEventHandlers;
-- (void)sendVehicleEvent:(id)a3 handler:(id)a4;
+- (void)sendVehicleEvent:(id)event handler:(id)handler;
 @end
 
 @implementation RTVehicleLocationCompanionLink
 
-- (RTVehicleLocationCompanionLink)initWithQueue:(id)a3 vehicleEventHandler:(id)a4
+- (RTVehicleLocationCompanionLink)initWithQueue:(id)queue vehicleEventHandler:(id)handler
 {
   v6 = MEMORY[0x277D44160];
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  queueCopy = queue;
   v9 = objc_alloc_init(v6);
-  v10 = [(RTVehicleLocationCompanionLink *)self initWithQueue:v8 companionLinkClient:v9 vehicleEventHandler:v7 deviceConnectionUpdateHandler:0];
+  v10 = [(RTVehicleLocationCompanionLink *)self initWithQueue:queueCopy companionLinkClient:v9 vehicleEventHandler:handlerCopy deviceConnectionUpdateHandler:0];
 
   return v10;
 }
 
-- (RTVehicleLocationCompanionLink)initWithQueue:(id)a3 deviceConnectionUpdateHandler:(id)a4
+- (RTVehicleLocationCompanionLink)initWithQueue:(id)queue deviceConnectionUpdateHandler:(id)handler
 {
   v6 = MEMORY[0x277D44160];
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  queueCopy = queue;
   v9 = objc_alloc_init(v6);
-  v10 = [(RTVehicleLocationCompanionLink *)self initWithQueue:v8 companionLinkClient:v9 vehicleEventHandler:0 deviceConnectionUpdateHandler:v7];
+  v10 = [(RTVehicleLocationCompanionLink *)self initWithQueue:queueCopy companionLinkClient:v9 vehicleEventHandler:0 deviceConnectionUpdateHandler:handlerCopy];
 
   return v10;
 }
 
-- (RTVehicleLocationCompanionLink)initWithQueue:(id)a3 companionLinkClient:(id)a4 vehicleEventHandler:(id)a5 deviceConnectionUpdateHandler:(id)a6
+- (RTVehicleLocationCompanionLink)initWithQueue:(id)queue companionLinkClient:(id)client vehicleEventHandler:(id)handler deviceConnectionUpdateHandler:(id)updateHandler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  queueCopy = queue;
+  clientCopy = client;
+  handlerCopy = handler;
+  updateHandlerCopy = updateHandler;
+  if (!queueCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v23 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -57,7 +57,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!clientCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -76,49 +76,49 @@ LABEL_12:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_queue, a3);
-    v17 = _Block_copy(v13);
+    objc_storeStrong(&v15->_queue, queue);
+    v17 = _Block_copy(handlerCopy);
     vehicleEventHandler = v16->_vehicleEventHandler;
     v16->_vehicleEventHandler = v17;
 
-    objc_storeStrong(&v16->_client, a4);
-    [(RPCompanionLinkClient *)v16->_client setDispatchQueue:v11];
+    objc_storeStrong(&v16->_client, client);
+    [(RPCompanionLinkClient *)v16->_client setDispatchQueue:queueCopy];
     [(RPCompanionLinkClient *)v16->_client setControlFlags:32];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __118__RTVehicleLocationCompanionLink_initWithQueue_companionLinkClient_vehicleEventHandler_deviceConnectionUpdateHandler___block_invoke;
     v32[3] = &unk_2788D0790;
-    v19 = v14;
+    v19 = updateHandlerCopy;
     v33 = v19;
-    v20 = [(RTVehicleLocationCompanionLink *)v16 client];
-    [v20 setDeviceFoundHandler:v32];
+    client = [(RTVehicleLocationCompanionLink *)v16 client];
+    [client setDeviceFoundHandler:v32];
 
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __118__RTVehicleLocationCompanionLink_initWithQueue_companionLinkClient_vehicleEventHandler_deviceConnectionUpdateHandler___block_invoke_22;
     v30[3] = &unk_2788D0790;
     v31 = v19;
-    v21 = [(RTVehicleLocationCompanionLink *)v16 client];
-    [v21 setDeviceLostHandler:v30];
+    client2 = [(RTVehicleLocationCompanionLink *)v16 client];
+    [client2 setDeviceLostHandler:v30];
 
     objc_initWeak(location, v16);
-    v22 = [(RTVehicleLocationCompanionLink *)v16 client];
+    client3 = [(RTVehicleLocationCompanionLink *)v16 client];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __118__RTVehicleLocationCompanionLink_initWithQueue_companionLinkClient_vehicleEventHandler_deviceConnectionUpdateHandler___block_invoke_23;
     v27[3] = &unk_2788D07B8;
     objc_copyWeak(&v28, location);
-    [v22 activateWithCompletion:v27];
+    [client3 activateWithCompletion:v27];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(location);
   }
 
   self = v16;
-  v23 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v23;
+  return selfCopy;
 }
 
 void __118__RTVehicleLocationCompanionLink_initWithQueue_companionLinkClient_vehicleEventHandler_deviceConnectionUpdateHandler___block_invoke(uint64_t a1, void *a2)
@@ -266,13 +266,13 @@ LABEL_5:
   }
 }
 
-- (id)encodeVehicleEvent:(id)a3
+- (id)encodeVehicleEvent:(id)event
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_opt_new();
   v5 = v4;
-  if (!v3)
+  if (!eventCopy)
   {
     [v4 setObject:@"clear" forKeyedSubscript:@"type"];
 LABEL_8:
@@ -281,7 +281,7 @@ LABEL_8:
   }
 
   v12 = 0;
-  v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v12];
+  v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:eventCopy requiringSecureCoding:1 error:&v12];
   v7 = v12;
   if (!v7)
   {
@@ -306,11 +306,11 @@ LABEL_9:
   return v10;
 }
 
-- (id)decodeVehicleEvent:(id)a3
+- (id)decodeVehicleEvent:(id)event
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"type"];
+  eventCopy = event;
+  v4 = [eventCopy objectForKeyedSubscript:@"type"];
   if (![@"update" isEqualToString:v4])
   {
     if ([@"clear" isEqualToString:v4])
@@ -332,7 +332,7 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"payload"];
+  v5 = [eventCopy objectForKeyedSubscript:@"payload"];
   v10 = 0;
   v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v10];
   v7 = v10;
@@ -408,8 +408,8 @@ void __55__RTVehicleLocationCompanionLink_registerEventHandlers__block_invoke(ui
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(RPCompanionLinkClient *)self->_client activeDevices];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v14 count:16];
+  activeDevices = [(RPCompanionLinkClient *)self->_client activeDevices];
+  v3 = [activeDevices countByEnumeratingWithState:&v8 objects:v14 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -419,7 +419,7 @@ void __55__RTVehicleLocationCompanionLink_registerEventHandlers__block_invoke(ui
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activeDevices);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -443,7 +443,7 @@ void __55__RTVehicleLocationCompanionLink_registerEventHandlers__block_invoke(ui
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v14 count:16];
+      v3 = [activeDevices countByEnumeratingWithState:&v8 objects:v14 count:16];
       if (v3)
       {
         continue;
@@ -458,24 +458,24 @@ LABEL_14:
   return v3;
 }
 
-- (void)sendVehicleEvent:(id)a3 handler:(id)a4
+- (void)sendVehicleEvent:(id)event handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  handlerCopy = handler;
   if ([(RTVehicleLocationCompanionLink *)self _companionLinkConnected])
   {
-    v8 = [(RTVehicleLocationCompanionLink *)self encodeVehicleEvent:v6];
+    v8 = [(RTVehicleLocationCompanionLink *)self encodeVehicleEvent:eventCopy];
     if (v8)
     {
-      v9 = [(RTVehicleLocationCompanionLink *)self client];
+      client = [(RTVehicleLocationCompanionLink *)self client];
       v10 = *MEMORY[0x277D44230];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __59__RTVehicleLocationCompanionLink_sendVehicleEvent_handler___block_invoke;
       v14[3] = &unk_2788C48C0;
-      v15 = v7;
-      [v9 sendEventID:@"com.apple.routined.rapport.vehicleEventUpdate" event:v8 destinationID:v10 options:0 completion:v14];
+      v15 = handlerCopy;
+      [client sendEventID:@"com.apple.routined.rapport.vehicleEventUpdate" event:v8 destinationID:v10 options:0 completion:v14];
     }
 
     else
@@ -484,11 +484,11 @@ LABEL_14:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v17 = v6;
+        v17 = eventCopy;
         _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "RTVehicleLocationCompanionLink, invalid payload, %@", buf, 0xCu);
       }
 
-      (*(v7 + 2))(v7, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
@@ -497,13 +497,13 @@ LABEL_14:
     v11 = _rt_log_facility_get_os_log(RTLogFacilityVehicleLocation);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(RPCompanionLinkClient *)self->_client activeDevices];
+      activeDevices = [(RPCompanionLinkClient *)self->_client activeDevices];
       *buf = 138412290;
-      v17 = v13;
+      v17 = activeDevices;
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "RTVehicleLocationCompanionLink, no connected clients, %@", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

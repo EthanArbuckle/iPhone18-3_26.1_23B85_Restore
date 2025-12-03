@@ -1,33 +1,33 @@
 @interface NPKProtoStandalonePaymentProvisioningFlowPickerSection
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addItems:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addItems:(id)items;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentProvisioningFlowPickerSection
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   items = self->_items;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!items)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_items;
     self->_items = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     items = self->_items;
   }
 
-  [(NSMutableArray *)items addObject:v4];
+  [(NSMutableArray *)items addObject:itemsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentProvisioningFlowPickerSection;
   v4 = [(NPKProtoStandalonePaymentProvisioningFlowPickerSection *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentProvisioningFlowPickerSection *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowPickerSection *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   footer = self->_footer;
@@ -81,8 +81,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -99,10 +99,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_title)
   {
     PBDataWriterWriteStringField();
@@ -148,44 +148,44 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_title)
   {
-    [v8 setTitle:?];
+    [toCopy setTitle:?];
   }
 
   if (self->_footer)
   {
-    [v8 setFooter:?];
+    [toCopy setFooter:?];
   }
 
   if ([(NPKProtoStandalonePaymentProvisioningFlowPickerSection *)self itemsCount])
   {
-    [v8 clearItems];
-    v4 = [(NPKProtoStandalonePaymentProvisioningFlowPickerSection *)self itemsCount];
-    if (v4)
+    [toCopy clearItems];
+    itemsCount = [(NPKProtoStandalonePaymentProvisioningFlowPickerSection *)self itemsCount];
+    if (itemsCount)
     {
-      v5 = v4;
+      v5 = itemsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoStandalonePaymentProvisioningFlowPickerSection *)self itemsAtIndex:i];
-        [v8 addItems:v7];
+        [toCopy addItems:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_footer copyWithZone:a3];
+  v8 = [(NSString *)self->_footer copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -209,7 +209,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addItems:v15];
 
         ++v14;
@@ -226,13 +226,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((title = self->_title, !(title | v4[3])) || -[NSString isEqual:](title, "isEqual:")) && ((footer = self->_footer, !(footer | v4[1])) || -[NSString isEqual:](footer, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((title = self->_title, !(title | equalCopy[3])) || -[NSString isEqual:](title, "isEqual:")) && ((footer = self->_footer, !(footer | equalCopy[1])) || -[NSString isEqual:](footer, "isEqual:")))
   {
     items = self->_items;
-    if (items | v4[2])
+    if (items | equalCopy[2])
     {
       v8 = [(NSMutableArray *)items isEqual:?];
     }
@@ -258,16 +258,16 @@
   return v4 ^ [(NSMutableArray *)self->_items hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(NPKProtoStandalonePaymentProvisioningFlowPickerSection *)self setTitle:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NPKProtoStandalonePaymentProvisioningFlowPickerSection *)self setFooter:?];
   }
@@ -276,7 +276,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

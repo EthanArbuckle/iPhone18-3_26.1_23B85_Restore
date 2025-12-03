@@ -1,10 +1,10 @@
 @interface HUUtilityOnboardingNoAccountViewController
 - (Class)onboardingFlowClass;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUUtilityOnboardingNoAccountViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (HUUtilityOnboardingNoAccountViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
-- (void)setDelegate:(id)a3;
+- (HUUtilityOnboardingNoAccountViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (HUUtilityOnboardingNoAccountViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
+- (void)setDelegate:(id)delegate;
 - (void)viewDidLoad;
 @end
 
@@ -18,25 +18,25 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR___HUUtilityOnboardingNoAccountViewController_delegate;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D072D18();
 }
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
-  v4 = a3;
-  v5 = self;
+  sessionCopy = session;
+  selfCopy = self;
   v6 = sub_20D075FC4();
 
   return v6;
@@ -49,14 +49,14 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (HUUtilityOnboardingNoAccountViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (HUUtilityOnboardingNoAccountViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (HUUtilityOnboardingNoAccountViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (HUUtilityOnboardingNoAccountViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

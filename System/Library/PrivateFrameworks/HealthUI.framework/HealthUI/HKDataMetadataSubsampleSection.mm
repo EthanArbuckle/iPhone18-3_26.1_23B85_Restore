@@ -1,60 +1,60 @@
 @interface HKDataMetadataSubsampleSection
-+ (id)displayNameForSampleType:(id)a3 displayTypeController:(id)a4;
++ (id)displayNameForSampleType:(id)type displayTypeController:(id)controller;
 - (HKDataMetadataSubsampleDelegate)subsampleDelegate;
-- (HKDataMetadataSubsampleSection)initWithSample:(id)a3 workoutActivity:(id)a4 subSampleTypes:(id)a5 showOnlyExertion:(BOOL)a6 healthStore:(id)a7 displayTypeController:(id)a8 unitController:(id)a9 subsampleDelegate:(id)a10;
-- (id)_allFixedValuesFromSamples:(id)a3 displayTypeController:(id)a4 unitController:(id)a5;
-- (id)_fixedValuesfromSamples:(id)a3 ofExertionType:(id)a4 displayTypeController:(id)a5 unitController:(id)a6;
-- (id)_formattedDisplayValueFromValue:(id)a3 exertionType:(id)a4 displayTypeController:(id)a5 unitController:(id)a6;
-- (id)_formattedValueWithUnits:(id)a3 sampleType:(id)a4;
-- (id)_localizedWorkoutEffortRatingFromValue:(id)a3 stringValue:(id)a4;
-- (id)_mergeTypesForFixedValues:(id)a3 subSampleTypes:(id)a4;
-- (id)_mostRelevantFixedValuesFromSamples:(id)a3 displayTypeController:(id)a4 unitController:(id)a5;
-- (id)_subSampleAggregatePredicate:(id)a3;
-- (id)_subSamplePredicateOnSelectCellForSampleType:(id)a3;
+- (HKDataMetadataSubsampleSection)initWithSample:(id)sample workoutActivity:(id)activity subSampleTypes:(id)types showOnlyExertion:(BOOL)exertion healthStore:(id)store displayTypeController:(id)controller unitController:(id)unitController subsampleDelegate:(id)self0;
+- (id)_allFixedValuesFromSamples:(id)samples displayTypeController:(id)controller unitController:(id)unitController;
+- (id)_fixedValuesfromSamples:(id)samples ofExertionType:(id)type displayTypeController:(id)controller unitController:(id)unitController;
+- (id)_formattedDisplayValueFromValue:(id)value exertionType:(id)type displayTypeController:(id)controller unitController:(id)unitController;
+- (id)_formattedValueWithUnits:(id)units sampleType:(id)type;
+- (id)_localizedWorkoutEffortRatingFromValue:(id)value stringValue:(id)stringValue;
+- (id)_mergeTypesForFixedValues:(id)values subSampleTypes:(id)types;
+- (id)_mostRelevantFixedValuesFromSamples:(id)samples displayTypeController:(id)controller unitController:(id)unitController;
+- (id)_subSampleAggregatePredicate:(id)predicate;
+- (id)_subSamplePredicateOnSelectCellForSampleType:(id)type;
 - (id)_subSampleTypesWithoutWorkoutEffort;
-- (id)_trimAndSortSampleTypes:(id)a3;
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4;
-- (void)_exertionFixedValuesDisplayTypeController:(id)a3 unitController:(id)a4 healthStore:(id)a5 completion:(id)a6;
-- (void)_submitAverageAggregateQueryForQuantityType:(id)a3 aggregateQueryFinishedBlock:(id)a4;
-- (void)_submitCountStandHourQueryForSampleType:(id)a3 aggregateQueryFinishedBlock:(id)a4;
-- (void)_submitMaximumValueQueryForQuantityType:(id)a3 aggregateQueryFinishedBlock:(id)a4;
-- (void)_submitRangeValueQueryForQuantityType:(id)a3 aggregateQueryFinishedBlock:(id)a4;
-- (void)_submitRateOfExertionFixedValuesWithDisplayTypeController:(id)a3 unitController:(id)a4 healthStore:(id)a5 finishedBlock:(id)a6;
-- (void)_submitSingleValueQueryForQuantityType:(id)a3 aggregateQueryFinishedBlock:(id)a4;
-- (void)_submitSubSampleAggregateQueriesWithCompletion:(id)a3;
-- (void)_submitSumAggregateQueryForQuantityType:(id)a3 aggregateQueryFinishedBlock:(id)a4;
-- (void)_updateAggregateValue:(id)a3 sampleType:(id)a4 aggregateQueryFinishedBlock:(id)a5;
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5;
+- (id)_trimAndSortSampleTypes:(id)types;
+- (id)cellForIndex:(unint64_t)index tableView:(id)view;
+- (void)_exertionFixedValuesDisplayTypeController:(id)controller unitController:(id)unitController healthStore:(id)store completion:(id)completion;
+- (void)_submitAverageAggregateQueryForQuantityType:(id)type aggregateQueryFinishedBlock:(id)block;
+- (void)_submitCountStandHourQueryForSampleType:(id)type aggregateQueryFinishedBlock:(id)block;
+- (void)_submitMaximumValueQueryForQuantityType:(id)type aggregateQueryFinishedBlock:(id)block;
+- (void)_submitRangeValueQueryForQuantityType:(id)type aggregateQueryFinishedBlock:(id)block;
+- (void)_submitRateOfExertionFixedValuesWithDisplayTypeController:(id)controller unitController:(id)unitController healthStore:(id)store finishedBlock:(id)block;
+- (void)_submitSingleValueQueryForQuantityType:(id)type aggregateQueryFinishedBlock:(id)block;
+- (void)_submitSubSampleAggregateQueriesWithCompletion:(id)completion;
+- (void)_submitSumAggregateQueryForQuantityType:(id)type aggregateQueryFinishedBlock:(id)block;
+- (void)_updateAggregateValue:(id)value sampleType:(id)type aggregateQueryFinishedBlock:(id)block;
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation HKDataMetadataSubsampleSection
 
-- (HKDataMetadataSubsampleSection)initWithSample:(id)a3 workoutActivity:(id)a4 subSampleTypes:(id)a5 showOnlyExertion:(BOOL)a6 healthStore:(id)a7 displayTypeController:(id)a8 unitController:(id)a9 subsampleDelegate:(id)a10
+- (HKDataMetadataSubsampleSection)initWithSample:(id)sample workoutActivity:(id)activity subSampleTypes:(id)types showOnlyExertion:(BOOL)exertion healthStore:(id)store displayTypeController:(id)controller unitController:(id)unitController subsampleDelegate:(id)self0
 {
-  v12 = a6;
-  v34 = a3;
-  v32 = a4;
-  v33 = a5;
-  v31 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
+  exertionCopy = exertion;
+  sampleCopy = sample;
+  activityCopy = activity;
+  typesCopy = types;
+  storeCopy = store;
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
+  delegateCopy = delegate;
   v37.receiver = self;
   v37.super_class = HKDataMetadataSubsampleSection;
   v20 = [(HKDataMetadataSubsampleSection *)&v37 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_sample, a3);
-    objc_storeStrong(&v21->_workoutActivity, a4);
-    objc_storeStrong(&v21->_healthStore, a7);
-    objc_storeStrong(&v21->_displayTypeController, a8);
-    objc_storeStrong(&v21->_unitController, a9);
-    objc_storeWeak(&v21->_subsampleDelegate, v19);
-    v21->_showOnlyExertion = v12;
-    v22 = [v34 fixedAggregateValuesWithDisplayTypeController:v17 unitController:v18];
-    v23 = [v22 allKeys];
-    v24 = [(HKDataMetadataSubsampleSection *)v21 _mergeTypesForFixedValues:v23 subSampleTypes:v33];
+    objc_storeStrong(&v20->_sample, sample);
+    objc_storeStrong(&v21->_workoutActivity, activity);
+    objc_storeStrong(&v21->_healthStore, store);
+    objc_storeStrong(&v21->_displayTypeController, controller);
+    objc_storeStrong(&v21->_unitController, unitController);
+    objc_storeWeak(&v21->_subsampleDelegate, delegateCopy);
+    v21->_showOnlyExertion = exertionCopy;
+    v22 = [sampleCopy fixedAggregateValuesWithDisplayTypeController:controllerCopy unitController:unitControllerCopy];
+    allKeys = [v22 allKeys];
+    v24 = [(HKDataMetadataSubsampleSection *)v21 _mergeTypesForFixedValues:allKeys subSampleTypes:typesCopy];
     subSampleTypes = v21->_subSampleTypes;
     v21->_subSampleTypes = v24;
 
@@ -65,7 +65,7 @@
       goto LABEL_8;
     }
 
-    if (v12)
+    if (exertionCopy)
     {
       v26 = v21->_subSampleTypes;
       v21->_subSampleTypes = MEMORY[0x1E695E0F0];
@@ -95,21 +95,21 @@ void __164__HKDataMetadataSubsampleSection_initWithSample_workoutActivity_subSam
   [WeakRetained finishedAggregateQuery];
 }
 
-- (void)_updateAggregateValue:(id)a3 sampleType:(id)a4 aggregateQueryFinishedBlock:(id)a5
+- (void)_updateAggregateValue:(id)value sampleType:(id)type aggregateQueryFinishedBlock:(id)block
 {
   aggregationValue = self->_aggregationValue;
-  v8 = a5;
-  [(NSMutableDictionary *)aggregationValue setObject:a3 forKey:a4];
-  v8[2]();
+  blockCopy = block;
+  [(NSMutableDictionary *)aggregationValue setObject:value forKey:type];
+  blockCopy[2]();
 }
 
-- (id)_formattedValueWithUnits:(id)a3 sampleType:(id)a4
+- (id)_formattedValueWithUnits:(id)units sampleType:(id)type
 {
   displayTypeController = self->_displayTypeController;
-  v7 = a3;
-  v8 = [(HKDisplayTypeController *)displayTypeController displayTypeForObjectType:a4];
+  unitsCopy = units;
+  v8 = [(HKDisplayTypeController *)displayTypeController displayTypeForObjectType:type];
   v9 = [(HKUnitPreferenceController *)self->_unitController unitForDisplayType:v8];
-  [v7 doubleValueForUnit:v9];
+  [unitsCopy doubleValueForUnit:v9];
   v11 = v10;
 
   v12 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
@@ -130,33 +130,33 @@ void __164__HKDataMetadataSubsampleSection_initWithSample_workoutActivity_subSam
   return v16;
 }
 
-- (id)_subSampleAggregatePredicate:(id)a3
+- (id)_subSampleAggregatePredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   WeakRetained = objc_loadWeakRetained(&self->_subsampleDelegate);
-  v6 = [WeakRetained defaultPredicateForSampleType:v4];
+  v6 = [WeakRetained defaultPredicateForSampleType:predicateCopy];
 
-  v7 = [(HKSample *)self->_sample subSamplePredicate];
-  v8 = HKUIPredicateMatchingPredicates(v6, v7);
+  subSamplePredicate = [(HKSample *)self->_sample subSamplePredicate];
+  v8 = HKUIPredicateMatchingPredicates(v6, subSamplePredicate);
 
   return v8;
 }
 
-- (void)_submitSumAggregateQueryForQuantityType:(id)a3 aggregateQueryFinishedBlock:(id)a4
+- (void)_submitSumAggregateQueryForQuantityType:(id)type aggregateQueryFinishedBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKDataMetadataSubsampleSection *)self _subSampleAggregatePredicate:v6];
+  typeCopy = type;
+  blockCopy = block;
+  v8 = [(HKDataMetadataSubsampleSection *)self _subSampleAggregatePredicate:typeCopy];
   v9 = objc_alloc(MEMORY[0x1E696C4E0]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __102__HKDataMetadataSubsampleSection__submitSumAggregateQueryForQuantityType_aggregateQueryFinishedBlock___block_invoke;
   v13[3] = &unk_1E81BB6A8;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = typeCopy;
+  v15 = blockCopy;
+  v10 = blockCopy;
+  v11 = typeCopy;
   v12 = [v9 initWithQuantityType:v11 quantitySamplePredicate:v8 options:16 completionHandler:v13];
   [(HKHealthStore *)self->_healthStore executeQuery:v12];
   [(NSMutableDictionary *)self->_aggregationValue setObject:@" " forKey:v11];
@@ -179,21 +179,21 @@ void __102__HKDataMetadataSubsampleSection__submitSumAggregateQueryForQuantityTy
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 
-- (void)_submitAverageAggregateQueryForQuantityType:(id)a3 aggregateQueryFinishedBlock:(id)a4
+- (void)_submitAverageAggregateQueryForQuantityType:(id)type aggregateQueryFinishedBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKDataMetadataSubsampleSection *)self _subSampleAggregatePredicate:v6];
+  typeCopy = type;
+  blockCopy = block;
+  v8 = [(HKDataMetadataSubsampleSection *)self _subSampleAggregatePredicate:typeCopy];
   v9 = objc_alloc(MEMORY[0x1E696C4E0]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __106__HKDataMetadataSubsampleSection__submitAverageAggregateQueryForQuantityType_aggregateQueryFinishedBlock___block_invoke;
   v13[3] = &unk_1E81BB6A8;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = typeCopy;
+  v15 = blockCopy;
+  v10 = blockCopy;
+  v11 = typeCopy;
   v12 = [v9 initWithQuantityType:v11 quantitySamplePredicate:v8 options:2 completionHandler:v13];
   [(HKHealthStore *)self->_healthStore executeQuery:v12];
   [(NSMutableDictionary *)self->_aggregationValue setObject:@" " forKey:v11];
@@ -216,21 +216,21 @@ void __106__HKDataMetadataSubsampleSection__submitAverageAggregateQueryForQuanti
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 
-- (void)_submitSingleValueQueryForQuantityType:(id)a3 aggregateQueryFinishedBlock:(id)a4
+- (void)_submitSingleValueQueryForQuantityType:(id)type aggregateQueryFinishedBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKDataMetadataSubsampleSection *)self _subSampleAggregatePredicate:v6];
+  typeCopy = type;
+  blockCopy = block;
+  v8 = [(HKDataMetadataSubsampleSection *)self _subSampleAggregatePredicate:typeCopy];
   v9 = objc_alloc(MEMORY[0x1E696C3C8]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __101__HKDataMetadataSubsampleSection__submitSingleValueQueryForQuantityType_aggregateQueryFinishedBlock___block_invoke;
   v13[3] = &unk_1E81B5A88;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = typeCopy;
+  v15 = blockCopy;
+  v10 = blockCopy;
+  v11 = typeCopy;
   v12 = [v9 initWithSampleType:v11 predicate:v8 limit:1 sortDescriptors:0 resultsHandler:v13];
   [(HKHealthStore *)self->_healthStore executeQuery:v12];
   [(NSMutableDictionary *)self->_aggregationValue setObject:@" " forKey:v11];
@@ -258,21 +258,21 @@ void __101__HKDataMetadataSubsampleSection__submitSingleValueQueryForQuantityTyp
   }
 }
 
-- (void)_submitMaximumValueQueryForQuantityType:(id)a3 aggregateQueryFinishedBlock:(id)a4
+- (void)_submitMaximumValueQueryForQuantityType:(id)type aggregateQueryFinishedBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKDataMetadataSubsampleSection *)self _subSampleAggregatePredicate:v6];
+  typeCopy = type;
+  blockCopy = block;
+  v8 = [(HKDataMetadataSubsampleSection *)self _subSampleAggregatePredicate:typeCopy];
   v9 = objc_alloc(MEMORY[0x1E696C4E0]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __102__HKDataMetadataSubsampleSection__submitMaximumValueQueryForQuantityType_aggregateQueryFinishedBlock___block_invoke;
   v13[3] = &unk_1E81BB6A8;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = typeCopy;
+  v15 = blockCopy;
+  v10 = blockCopy;
+  v11 = typeCopy;
   v12 = [v9 initWithQuantityType:v11 quantitySamplePredicate:v8 options:8 completionHandler:v13];
   [(HKHealthStore *)self->_healthStore executeQuery:v12];
   [(NSMutableDictionary *)self->_aggregationValue setObject:@" " forKey:v11];
@@ -295,21 +295,21 @@ void __102__HKDataMetadataSubsampleSection__submitMaximumValueQueryForQuantityTy
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 
-- (void)_submitRangeValueQueryForQuantityType:(id)a3 aggregateQueryFinishedBlock:(id)a4
+- (void)_submitRangeValueQueryForQuantityType:(id)type aggregateQueryFinishedBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKDataMetadataSubsampleSection *)self _subSampleAggregatePredicate:v6];
+  typeCopy = type;
+  blockCopy = block;
+  v8 = [(HKDataMetadataSubsampleSection *)self _subSampleAggregatePredicate:typeCopy];
   v9 = objc_alloc(MEMORY[0x1E696C4E0]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __100__HKDataMetadataSubsampleSection__submitRangeValueQueryForQuantityType_aggregateQueryFinishedBlock___block_invoke;
   v13[3] = &unk_1E81BB6A8;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = typeCopy;
+  v15 = blockCopy;
+  v10 = blockCopy;
+  v11 = typeCopy;
   v12 = [v9 initWithQuantityType:v11 quantitySamplePredicate:v8 options:12 completionHandler:v13];
   [(HKHealthStore *)self->_healthStore executeQuery:v12];
   [(NSMutableDictionary *)self->_aggregationValue setObject:@" " forKey:v11];
@@ -344,19 +344,19 @@ void __100__HKDataMetadataSubsampleSection__submitRangeValueQueryForQuantityType
   dispatch_async(MEMORY[0x1E69E96A0], v17);
 }
 
-- (void)_submitCountStandHourQueryForSampleType:(id)a3 aggregateQueryFinishedBlock:(id)a4
+- (void)_submitCountStandHourQueryForSampleType:(id)type aggregateQueryFinishedBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __102__HKDataMetadataSubsampleSection__submitCountStandHourQueryForSampleType_aggregateQueryFinishedBlock___block_invoke;
   aBlock[3] = &unk_1E81B5A88;
   aBlock[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v8 = v7;
-  v9 = v6;
+  v14 = typeCopy;
+  v15 = blockCopy;
+  v8 = blockCopy;
+  v9 = typeCopy;
   v10 = _Block_copy(aBlock);
   v11 = [(HKDataMetadataSubsampleSection *)self _subSampleAggregatePredicate:v9];
   v12 = [objc_alloc(MEMORY[0x1E696C3C8]) initWithSampleType:v9 predicate:v11 limit:0 sortDescriptors:0 resultsHandler:v10];
@@ -428,15 +428,15 @@ void __102__HKDataMetadataSubsampleSection__submitCountStandHourQueryForSampleTy
   }
 }
 
-- (void)_submitSubSampleAggregateQueriesWithCompletion:(id)a3
+- (void)_submitSubSampleAggregateQueriesWithCompletion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  completionCopy = completion;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v25 = self;
+  selfCopy = self;
   v4 = self->_subSampleTypes;
   v5 = [(NSArray *)v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
@@ -474,39 +474,39 @@ void __102__HKDataMetadataSubsampleSection__submitCountStandHourQueryForSampleTy
 
           v16 = v4;
           v12 = [MEMORY[0x1E696C2E0] categoryTypeForIdentifier:v23];
-          v17 = [v11 identifier];
-          v18 = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:v17];
+          identifier = [v11 identifier];
+          v18 = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:identifier];
           if (v18)
           {
-            v19 = [(NSMutableDictionary *)v25->_aggregationValue objectForKey:v11];
+            v19 = [(NSMutableDictionary *)selfCopy->_aggregationValue objectForKey:v11];
             if (!v19)
             {
-              v20 = [v11 associatedSampleAggregationStyle];
-              if (v20 <= 2)
+              associatedSampleAggregationStyle = [v11 associatedSampleAggregationStyle];
+              if (associatedSampleAggregationStyle <= 2)
               {
-                if (v20 == 1)
+                if (associatedSampleAggregationStyle == 1)
                 {
-                  [(HKDataMetadataSubsampleSection *)v25 _submitSumAggregateQueryForQuantityType:v18 aggregateQueryFinishedBlock:v22];
+                  [(HKDataMetadataSubsampleSection *)selfCopy _submitSumAggregateQueryForQuantityType:v18 aggregateQueryFinishedBlock:completionCopy];
                 }
 
-                else if (v20 == 2)
+                else if (associatedSampleAggregationStyle == 2)
                 {
-                  [(HKDataMetadataSubsampleSection *)v25 _submitAverageAggregateQueryForQuantityType:v18 aggregateQueryFinishedBlock:v22];
+                  [(HKDataMetadataSubsampleSection *)selfCopy _submitAverageAggregateQueryForQuantityType:v18 aggregateQueryFinishedBlock:completionCopy];
                 }
               }
 
               else
               {
-                switch(v20)
+                switch(associatedSampleAggregationStyle)
                 {
                   case 3:
-                    [(HKDataMetadataSubsampleSection *)v25 _submitSingleValueQueryForQuantityType:v18 aggregateQueryFinishedBlock:v22];
+                    [(HKDataMetadataSubsampleSection *)selfCopy _submitSingleValueQueryForQuantityType:v18 aggregateQueryFinishedBlock:completionCopy];
                     break;
                   case 4:
-                    [(HKDataMetadataSubsampleSection *)v25 _submitMaximumValueQueryForQuantityType:v18 aggregateQueryFinishedBlock:v22];
+                    [(HKDataMetadataSubsampleSection *)selfCopy _submitMaximumValueQueryForQuantityType:v18 aggregateQueryFinishedBlock:completionCopy];
                     break;
                   case 5:
-                    [(HKDataMetadataSubsampleSection *)v25 _submitRangeValueQueryForQuantityType:v18 aggregateQueryFinishedBlock:v22];
+                    [(HKDataMetadataSubsampleSection *)selfCopy _submitRangeValueQueryForQuantityType:v18 aggregateQueryFinishedBlock:completionCopy];
                     break;
                 }
               }
@@ -517,7 +517,7 @@ void __102__HKDataMetadataSubsampleSection__submitCountStandHourQueryForSampleTy
 
           else if ([v12 isEqual:v11])
           {
-            [(HKDataMetadataSubsampleSection *)v25 _submitCountStandHourQueryForSampleType:v11 aggregateQueryFinishedBlock:v22];
+            [(HKDataMetadataSubsampleSection *)selfCopy _submitCountStandHourQueryForSampleType:v11 aggregateQueryFinishedBlock:completionCopy];
           }
 
           v4 = v16;
@@ -536,7 +536,7 @@ LABEL_15:
     while (v21);
   }
 
-  [(HKDataMetadataSubsampleSection *)v25 _submitRateOfExertionFixedValuesWithDisplayTypeController:v25->_displayTypeController unitController:v25->_unitController healthStore:v25->_healthStore finishedBlock:v22];
+  [(HKDataMetadataSubsampleSection *)selfCopy _submitRateOfExertionFixedValuesWithDisplayTypeController:selfCopy->_displayTypeController unitController:selfCopy->_unitController healthStore:selfCopy->_healthStore finishedBlock:completionCopy];
 }
 
 - (id)_subSampleTypesWithoutWorkoutEffort
@@ -551,13 +551,13 @@ LABEL_15:
   return v2;
 }
 
-- (void)_submitRateOfExertionFixedValuesWithDisplayTypeController:(id)a3 unitController:(id)a4 healthStore:(id)a5 finishedBlock:(id)a6
+- (void)_submitRateOfExertionFixedValuesWithDisplayTypeController:(id)controller unitController:(id)unitController healthStore:(id)store finishedBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HKDataMetadataSubsampleSection *)self sample];
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
+  storeCopy = store;
+  blockCopy = block;
+  sample = [(HKDataMetadataSubsampleSection *)self sample];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -568,8 +568,8 @@ LABEL_15:
     v16[2] = __133__HKDataMetadataSubsampleSection__submitRateOfExertionFixedValuesWithDisplayTypeController_unitController_healthStore_finishedBlock___block_invoke;
     v16[3] = &unk_1E81B7B20;
     v16[4] = self;
-    v17 = v13;
-    [(HKDataMetadataSubsampleSection *)self _exertionFixedValuesDisplayTypeController:v10 unitController:v11 healthStore:v12 completion:v16];
+    v17 = blockCopy;
+    [(HKDataMetadataSubsampleSection *)self _exertionFixedValuesDisplayTypeController:controllerCopy unitController:unitControllerCopy healthStore:storeCopy completion:v16];
   }
 }
 
@@ -633,30 +633,30 @@ LABEL_12:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_exertionFixedValuesDisplayTypeController:(id)a3 unitController:(id)a4 healthStore:(id)a5 completion:(id)a6
+- (void)_exertionFixedValuesDisplayTypeController:(id)controller unitController:(id)unitController healthStore:(id)store completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(HKDataMetadataSubsampleSection *)self sample];
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
+  completionCopy = completion;
+  sample = [(HKDataMetadataSubsampleSection *)self sample];
   v13 = MEMORY[0x1E696C378];
-  v14 = [v12 UUID];
-  v15 = [v13 predicateForObjectWithUUID:v14];
+  uUID = [sample UUID];
+  v15 = [v13 predicateForObjectWithUUID:uUID];
 
   v16 = objc_alloc(MEMORY[0x1E696C5B0]);
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __114__HKDataMetadataSubsampleSection__exertionFixedValuesDisplayTypeController_unitController_healthStore_completion___block_invoke;
   v24 = &unk_1E81BB6D0;
-  v25 = self;
-  v26 = v9;
-  v27 = v10;
-  v28 = v11;
-  v17 = v10;
-  v18 = v9;
-  v19 = v11;
+  selfCopy = self;
+  v26 = controllerCopy;
+  v27 = unitControllerCopy;
+  v28 = completionCopy;
+  v17 = unitControllerCopy;
+  v18 = controllerCopy;
+  v19 = completionCopy;
   v20 = [v16 initWithPredicate:v15 anchor:0 options:0 resultsHandler:&v21];
-  [(HKHealthStore *)self->_healthStore executeQuery:v20, v21, v22, v23, v24, v25];
+  [(HKHealthStore *)self->_healthStore executeQuery:v20, v21, v22, v23, v24, selfCopy];
 }
 
 void __114__HKDataMetadataSubsampleSection__exertionFixedValuesDisplayTypeController_unitController_healthStore_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4, void *a5)
@@ -800,37 +800,37 @@ LABEL_17:
 LABEL_25:
 }
 
-- (id)_allFixedValuesFromSamples:(id)a3 displayTypeController:(id)a4 unitController:(id)a5
+- (id)_allFixedValuesFromSamples:(id)samples displayTypeController:(id)controller unitController:(id)unitController
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  samplesCopy = samples;
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
   v11 = [MEMORY[0x1E696C2E0] dataTypeWithCode:304];
   v12 = [MEMORY[0x1E696C2E0] dataTypeWithCode:298];
-  v13 = [HKExertionUtilities filterSamplesOfExertionTypeCode:304 fromExertionSamples:v8];
+  v13 = [HKExertionUtilities filterSamplesOfExertionTypeCode:304 fromExertionSamples:samplesCopy];
   v22 = v11;
-  v14 = [(HKDataMetadataSubsampleSection *)self _fixedValuesfromSamples:v13 ofExertionType:v11 displayTypeController:v9 unitController:v10];
+  v14 = [(HKDataMetadataSubsampleSection *)self _fixedValuesfromSamples:v13 ofExertionType:v11 displayTypeController:controllerCopy unitController:unitControllerCopy];
   _HKInitializeLogging();
   v15 = MEMORY[0x1E696B9A8];
   v16 = *MEMORY[0x1E696B9A8];
   if (os_log_type_enabled(*MEMORY[0x1E696B9A8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2112;
     v26 = v14;
     _os_log_impl(&dword_1C3942000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received effort %@", buf, 0x16u);
   }
 
-  v17 = [HKExertionUtilities filterSamplesOfExertionTypeCode:298 fromExertionSamples:v8];
-  v18 = [(HKDataMetadataSubsampleSection *)self _fixedValuesfromSamples:v17 ofExertionType:v12 displayTypeController:v9 unitController:v10];
+  v17 = [HKExertionUtilities filterSamplesOfExertionTypeCode:298 fromExertionSamples:samplesCopy];
+  v18 = [(HKDataMetadataSubsampleSection *)self _fixedValuesfromSamples:v17 ofExertionType:v12 displayTypeController:controllerCopy unitController:unitControllerCopy];
   _HKInitializeLogging();
   v19 = *v15;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2112;
     v26 = v18;
     _os_log_impl(&dword_1C3942000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received estimated %@", buf, 0x16u);
@@ -843,19 +843,19 @@ LABEL_25:
   return v20;
 }
 
-- (id)_fixedValuesfromSamples:(id)a3 ofExertionType:(id)a4 displayTypeController:(id)a5 unitController:(id)a6
+- (id)_fixedValuesfromSamples:(id)samples ofExertionType:(id)type displayTypeController:(id)controller unitController:(id)unitController
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v10, "count")}];
+  samplesCopy = samples;
+  typeCopy = type;
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
+  v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(samplesCopy, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v10;
+  obj = samplesCopy;
   v14 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v14)
   {
@@ -871,14 +871,14 @@ LABEL_25:
         }
 
         v18 = MEMORY[0x1E696AD98];
-        v19 = [*(*(&v25 + 1) + 8 * i) quantity];
-        [v19 _value];
+        quantity = [*(*(&v25 + 1) + 8 * i) quantity];
+        [quantity _value];
         v20 = [v18 numberWithDouble:?];
 
-        v21 = [(HKDataMetadataSubsampleSection *)self _formattedDisplayValueFromValue:v20 exertionType:v11 displayTypeController:v12 unitController:v13];
+        v21 = [(HKDataMetadataSubsampleSection *)self _formattedDisplayValueFromValue:v20 exertionType:typeCopy displayTypeController:controllerCopy unitController:unitControllerCopy];
         if (v21)
         {
-          [v24 setObject:v21 forKey:v11];
+          [v24 setObject:v21 forKey:typeCopy];
         }
       }
 
@@ -891,37 +891,37 @@ LABEL_25:
   return v24;
 }
 
-- (id)_mostRelevantFixedValuesFromSamples:(id)a3 displayTypeController:(id)a4 unitController:(id)a5
+- (id)_mostRelevantFixedValuesFromSamples:(id)samples displayTypeController:(id)controller unitController:(id)unitController
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  unitControllerCopy = unitController;
+  controllerCopy = controller;
+  samplesCopy = samples;
   _HKInitializeLogging();
   v11 = *MEMORY[0x1E696B9A8];
   if (os_log_type_enabled(*MEMORY[0x1E696B9A8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v26 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C3942000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Finding most relevant sample", buf, 0xCu);
   }
 
   v12 = [MEMORY[0x1E696C2E0] dataTypeWithCode:304];
   v13 = [MEMORY[0x1E696C2E0] dataTypeWithCode:298];
-  v24 = [HKExertionUtilities filterSamplesOfExertionTypeCode:304 fromExertionSamples:v10];
+  v24 = [HKExertionUtilities filterSamplesOfExertionTypeCode:304 fromExertionSamples:samplesCopy];
   v14 = [HKExertionUtilities mostRelevantValueFromExertionSamples:?];
-  v15 = [HKExertionUtilities filterSamplesOfExertionTypeCode:298 fromExertionSamples:v10];
+  v15 = [HKExertionUtilities filterSamplesOfExertionTypeCode:298 fromExertionSamples:samplesCopy];
 
   v16 = [HKExertionUtilities mostRelevantValueFromExertionSamples:v15];
-  v17 = [(HKDataMetadataSubsampleSection *)self _formattedDisplayValueFromValue:v14 exertionType:v12 displayTypeController:v9 unitController:v8];
-  v18 = [(HKDataMetadataSubsampleSection *)self _formattedDisplayValueFromValue:v16 exertionType:v13 displayTypeController:v9 unitController:v8];
+  v17 = [(HKDataMetadataSubsampleSection *)self _formattedDisplayValueFromValue:v14 exertionType:v12 displayTypeController:controllerCopy unitController:unitControllerCopy];
+  v18 = [(HKDataMetadataSubsampleSection *)self _formattedDisplayValueFromValue:v16 exertionType:v13 displayTypeController:controllerCopy unitController:unitControllerCopy];
 
   _HKInitializeLogging();
   v19 = *MEMORY[0x1E696B9A8];
   if (os_log_type_enabled(*MEMORY[0x1E696B9A8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2112;
     v28 = v17;
     v29 = 2112;
@@ -945,19 +945,19 @@ LABEL_25:
   return v20;
 }
 
-- (id)_localizedWorkoutEffortRatingFromValue:(id)a3 stringValue:(id)a4
+- (id)_localizedWorkoutEffortRatingFromValue:(id)value stringValue:(id)stringValue
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 intValue] > 3)
+  valueCopy = value;
+  stringValueCopy = stringValue;
+  if ([valueCopy intValue] > 3)
   {
-    if ([v5 intValue] > 6)
+    if ([valueCopy intValue] > 6)
     {
-      v11 = [v5 intValue];
+      intValue = [valueCopy intValue];
       v7 = MEMORY[0x1E696AEC0];
       v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v9 = v8;
-      if (v11 > 8)
+      if (intValue > 8)
       {
         v10 = @"%@_WORKOUT_LOAD_ALLOUT";
       }
@@ -986,21 +986,21 @@ LABEL_25:
   }
 
   v12 = [v8 localizedStringForKey:v10 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v13 = [v7 stringWithFormat:v12, v6];
+  stringValueCopy = [v7 stringWithFormat:v12, stringValueCopy];
 
-  return v13;
+  return stringValueCopy;
 }
 
-- (id)_formattedDisplayValueFromValue:(id)a3 exertionType:(id)a4 displayTypeController:(id)a5 unitController:(id)a6
+- (id)_formattedDisplayValueFromValue:(id)value exertionType:(id)type displayTypeController:(id)controller unitController:(id)unitController
 {
-  if (a3)
+  if (value)
   {
-    v9 = a6;
-    v10 = a3;
-    v11 = [a5 displayTypeForObjectType:a4];
-    v12 = [v9 unitForDisplayType:v11];
+    unitControllerCopy = unitController;
+    valueCopy = value;
+    v11 = [controller displayTypeForObjectType:type];
+    v12 = [unitControllerCopy unitForDisplayType:v11];
     v13 = [v11 hk_numberFormatterForUnit:v12];
-    v14 = [v13 stringFromNumber:v10 displayType:v11 unitController:v9];
+    v14 = [v13 stringFromNumber:valueCopy displayType:v11 unitController:unitControllerCopy];
   }
 
   else
@@ -1011,13 +1011,13 @@ LABEL_25:
   return v14;
 }
 
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4
+- (id)cellForIndex:(unint64_t)index tableView:(id)view
 {
   subSampleTypes = self->_subSampleTypes;
-  v7 = a4;
-  v8 = [(NSArray *)subSampleTypes objectAtIndex:a3];
+  viewCopy = view;
+  v8 = [(NSArray *)subSampleTypes objectAtIndex:index];
   v9 = [(NSMutableDictionary *)self->_aggregationValue objectForKey:v8];
-  v10 = [v7 dequeueReusableCellWithIdentifier:@"sub_samples"];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:@"sub_samples"];
 
   if (!v10)
   {
@@ -1026,13 +1026,13 @@ LABEL_25:
   }
 
   v11 = [objc_opt_class() displayNameForSampleType:v8 displayTypeController:self->_displayTypeController];
-  v12 = [v8 associatedSampleAggregationStyle];
+  associatedSampleAggregationStyle = [v8 associatedSampleAggregationStyle];
   v13 = 0;
-  if (v12 <= 2)
+  if (associatedSampleAggregationStyle <= 2)
   {
-    if (v12)
+    if (associatedSampleAggregationStyle)
     {
-      if (v12 == 1)
+      if (associatedSampleAggregationStyle == 1)
       {
         v14 = MEMORY[0x1E696AEC0];
         v15 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -1042,7 +1042,7 @@ LABEL_25:
 
       else
       {
-        if (v12 != 2)
+        if (associatedSampleAggregationStyle != 2)
         {
           goto LABEL_16;
         }
@@ -1061,7 +1061,7 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  switch(v12)
+  switch(associatedSampleAggregationStyle)
   {
     case 5:
       v14 = MEMORY[0x1E696AEC0];
@@ -1086,14 +1086,14 @@ LABEL_15:
   v13 = [v14 stringWithFormat:v18, v11];
 
 LABEL_16:
-  v19 = [(HKDataMetadataSimpleTableViewCell *)v10 titleTextLabel];
-  v20 = v19;
+  titleTextLabel = [(HKDataMetadataSimpleTableViewCell *)v10 titleTextLabel];
+  v20 = titleTextLabel;
   if (v9)
   {
-    [v19 setText:v9];
+    [titleTextLabel setText:v9];
 
-    v19 = [(HKDataMetadataSimpleTableViewCell *)v10 subtitleTextLabel];
-    v20 = v19;
+    titleTextLabel = [(HKDataMetadataSimpleTableViewCell *)v10 subtitleTextLabel];
+    v20 = titleTextLabel;
     v21 = v13;
   }
 
@@ -1102,19 +1102,19 @@ LABEL_16:
     v21 = v11;
   }
 
-  [v19 setText:v21];
+  [titleTextLabel setText:v21];
 
   return v10;
 }
 
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated
 {
-  v5 = a5;
-  v14 = a4;
+  animatedCopy = animated;
+  controllerCopy = controller;
   if ([(HKDataMetadataSubsampleSection *)self showOnlyExertion])
   {
-    v8 = [(HKDataMetadataSubsampleSection *)self exertionSamples];
-    v9 = [v8 objectAtIndexedSubscript:a3];
+    exertionSamples = [(HKDataMetadataSubsampleSection *)self exertionSamples];
+    v9 = [exertionSamples objectAtIndexedSubscript:index];
 
     WeakRetained = objc_loadWeakRetained(&self->_subsampleDelegate);
     v11 = [WeakRetained viewControllerForSampleSelected:v9];
@@ -1122,7 +1122,7 @@ LABEL_16:
 
   else
   {
-    v9 = [(NSArray *)self->_subSampleTypes objectAtIndex:a3];
+    v9 = [(NSArray *)self->_subSampleTypes objectAtIndex:index];
     WeakRetained = [(HKDataMetadataSubsampleSection *)self _subSamplePredicateOnSelectCellForSampleType:v9];
     v12 = [objc_opt_class() displayNameForSampleType:v9 displayTypeController:self->_displayTypeController];
     v13 = objc_loadWeakRetained(&self->_subsampleDelegate);
@@ -1131,20 +1131,20 @@ LABEL_16:
 
   if (v11)
   {
-    [v14 hk_showViewController:v11 animated:v5];
+    [controllerCopy hk_showViewController:v11 animated:animatedCopy];
   }
 }
 
-- (id)_mergeTypesForFixedValues:(id)a3 subSampleTypes:(id)a4
+- (id)_mergeTypesForFixedValues:(id)values subSampleTypes:(id)types
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] arrayWithArray:a4];
+  valuesCopy = values;
+  v7 = [MEMORY[0x1E695DF70] arrayWithArray:types];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = valuesCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -1177,7 +1177,7 @@ LABEL_16:
   return v14;
 }
 
-- (id)_trimAndSortSampleTypes:(id)a3
+- (id)_trimAndSortSampleTypes:(id)types
 {
   v4 = MEMORY[0x1E696AE18];
   v12[0] = MEMORY[0x1E69E9820];
@@ -1185,9 +1185,9 @@ LABEL_16:
   v12[2] = __58__HKDataMetadataSubsampleSection__trimAndSortSampleTypes___block_invoke;
   v12[3] = &unk_1E81BB6F8;
   v12[4] = self;
-  v5 = a3;
+  typesCopy = types;
   v6 = [v4 predicateWithBlock:v12];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  v7 = [typesCopy filteredArrayUsingPredicate:v6];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1220,40 +1220,40 @@ uint64_t __58__HKDataMetadataSubsampleSection__trimAndSortSampleTypes___block_in
   return v9;
 }
 
-- (id)_subSamplePredicateOnSelectCellForSampleType:(id)a3
+- (id)_subSamplePredicateOnSelectCellForSampleType:(id)type
 {
-  v4 = a3;
-  if ([v4 code] == 298 || objc_msgSend(v4, "code") == 304)
+  typeCopy = type;
+  if ([typeCopy code] == 298 || objc_msgSend(typeCopy, "code") == 304)
   {
-    v5 = [(HKSample *)self->_sample subExertionSamplePredicate];
+    subExertionSamplePredicate = [(HKSample *)self->_sample subExertionSamplePredicate];
   }
 
   else
   {
-    v5 = [(HKSample *)self->_sample subSamplePredicate];
+    subExertionSamplePredicate = [(HKSample *)self->_sample subSamplePredicate];
   }
 
-  v6 = v5;
+  v6 = subExertionSamplePredicate;
 
   return v6;
 }
 
-+ (id)displayNameForSampleType:(id)a3 displayTypeController:(id)a4
++ (id)displayNameForSampleType:(id)type displayTypeController:(id)controller
 {
-  v4 = [a4 displayTypeForObjectType:a3];
+  v4 = [controller displayTypeForObjectType:type];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 localization];
-    v7 = [v6 displayName];
+    localization = [v4 localization];
+    displayName = [localization displayName];
   }
 
   else
   {
-    v7 = 0;
+    displayName = 0;
   }
 
-  return v7;
+  return displayName;
 }
 
 - (HKDataMetadataSubsampleDelegate)subsampleDelegate

@@ -1,25 +1,25 @@
 @interface BRCStagePersistedState
-+ (id)loadFromClientStateInSession:(id)a3 options:(id)a4;
++ (id)loadFromClientStateInSession:(id)session options:(id)options;
 - (BRCStagePersistedState)init;
-- (BRCStagePersistedState)initWithCoder:(id)a3;
-- (BRCStagePersistedState)initWithLatestGCStartTime:(int64_t)a3;
+- (BRCStagePersistedState)initWithCoder:(id)coder;
+- (BRCStagePersistedState)initWithLatestGCStartTime:(int64_t)time;
 - (int64_t)timeSinceLatestGCStartTime;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)timeSinceLatestGCStartTime;
 @end
 
 @implementation BRCStagePersistedState
 
-+ (id)loadFromClientStateInSession:(id)a3 options:(id)a4
++ (id)loadFromClientStateInSession:(id)session options:(id)options
 {
-  v4 = [a3 clientState];
-  v5 = [v4 objectForKeyedSubscript:@"stage"];
+  clientState = [session clientState];
+  v5 = [clientState objectForKeyedSubscript:@"stage"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v7 = objc_opt_new();
 
-    [v4 setObject:v7 forKeyedSubscript:@"stage"];
+    [clientState setObject:v7 forKeyedSubscript:@"stage"];
     v5 = v7;
   }
 
@@ -33,14 +33,14 @@
   return [(BRCStagePersistedState *)self initWithLatestGCStartTime:v3];
 }
 
-- (BRCStagePersistedState)initWithLatestGCStartTime:(int64_t)a3
+- (BRCStagePersistedState)initWithLatestGCStartTime:(int64_t)time
 {
   v5.receiver = self;
   v5.super_class = BRCStagePersistedState;
   result = [(BRCStagePersistedState *)&v5 init];
   if (result)
   {
-    result->_latestGCStartTime = a3;
+    result->_latestGCStartTime = time;
   }
 
   return result;
@@ -64,27 +64,27 @@
   return v2;
 }
 
-- (BRCStagePersistedState)initWithCoder:(id)a3
+- (BRCStagePersistedState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = BRCStagePersistedState;
-  v5 = [(BRCPersistedState *)&v7 initWithCoder:v4];
+  v5 = [(BRCPersistedState *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_latestGCStartTime = [v4 decodeInt64ForKey:@"gc"];
+    v5->_latestGCStartTime = [coderCopy decodeInt64ForKey:@"gc"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BRCStagePersistedState;
-  v4 = a3;
-  [(BRCPersistedState *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_latestGCStartTime forKey:{@"gc", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(BRCPersistedState *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_latestGCStartTime forKey:{@"gc", v5.receiver, v5.super_class}];
 }
 
 - (void)timeSinceLatestGCStartTime

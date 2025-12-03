@@ -1,12 +1,12 @@
 @interface PosterGestureTutorialAnimationPackageView
 - (CGSize)intrinsicContentSize;
-- (_TtC17WallpaperSettings41PosterGestureTutorialAnimationPackageView)initWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC17WallpaperSettings41PosterGestureTutorialAnimationPackageView)initWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation PosterGestureTutorialAnimationPackageView
 
-- (_TtC17WallpaperSettings41PosterGestureTutorialAnimationPackageView)initWithCoder:(id)a3
+- (_TtC17WallpaperSettings41PosterGestureTutorialAnimationPackageView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17WallpaperSettings41PosterGestureTutorialAnimationPackageView_package) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17WallpaperSettings41PosterGestureTutorialAnimationPackageView_animating) = 0;
@@ -16,16 +16,16 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC17WallpaperSettings41PosterGestureTutorialAnimationPackageView_packageLayer);
   if (v3)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v8 = self;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    selfCopy = self;
     v9 = v3;
     v12.origin.x = x;
     v12.origin.y = y;
@@ -47,7 +47,7 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC17WallpaperSettings41PosterGestureTutorialAnimationPackageView_packageLayer);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = v2;
     [v4 bounds];
     v6 = v5 * 0.333333333;

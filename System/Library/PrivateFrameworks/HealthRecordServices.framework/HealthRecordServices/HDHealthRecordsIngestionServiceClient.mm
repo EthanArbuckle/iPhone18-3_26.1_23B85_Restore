@@ -1,16 +1,16 @@
 @interface HDHealthRecordsIngestionServiceClient
 - (HDHealthRecordsIngestionServiceClient)init;
-- (HDHealthRecordsIngestionServiceClient)initWithConnection:(id)a3;
+- (HDHealthRecordsIngestionServiceClient)initWithConnection:(id)connection;
 - (id)exportedInterface;
-- (id)handleSignedClinicalDataFeature:(id)a3 context:(id)a4 error:(id *)a5;
-- (void)addCardToWalletForRecord:(id)a3 completion:(id)a4;
-- (void)didUpdateSignedClinicalDataRecord:(id)a3;
-- (void)parseSignedClinicalData:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)processOriginalSignedClinicalDataRecords:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)reverifySignatureForRecord:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)triggerDownloadIssuerRegistryWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)triggerDownloadPublicKeysWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)willDeleteSignedClinicalDataRecordWithSyncIdentifier:(id)a3;
+- (id)handleSignedClinicalDataFeature:(id)feature context:(id)context error:(id *)error;
+- (void)addCardToWalletForRecord:(id)record completion:(id)completion;
+- (void)didUpdateSignedClinicalDataRecord:(id)record;
+- (void)parseSignedClinicalData:(id)data options:(unint64_t)options completion:(id)completion;
+- (void)processOriginalSignedClinicalDataRecords:(id)records options:(unint64_t)options completion:(id)completion;
+- (void)reverifySignatureForRecord:(id)record options:(unint64_t)options completion:(id)completion;
+- (void)triggerDownloadIssuerRegistryWithOptions:(unint64_t)options completion:(id)completion;
+- (void)triggerDownloadPublicKeysWithOptions:(unint64_t)options completion:(id)completion;
+- (void)willDeleteSignedClinicalDataRecordWithSyncIdentifier:(id)identifier;
 @end
 
 @implementation HDHealthRecordsIngestionServiceClient
@@ -23,15 +23,15 @@
   return v4;
 }
 
-- (HDHealthRecordsIngestionServiceClient)initWithConnection:(id)a3
+- (HDHealthRecordsIngestionServiceClient)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = HDHealthRecordsIngestionServiceClient;
   v5 = [(HDHealthRecordsIngestionServiceClient *)&v9 init];
   if (v5)
   {
-    v6 = [[HKHealthRecordsDaemonProxyProvider alloc] initWithConnection:v4 serviceIdentifier:@"HealthRecordsIngestionService" exportedObject:v5];
+    v6 = [[HKHealthRecordsDaemonProxyProvider alloc] initWithConnection:connectionCopy serviceIdentifier:@"HealthRecordsIngestionService" exportedObject:v5];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = &v6->super;
 
@@ -41,16 +41,16 @@
   return v5;
 }
 
-- (void)parseSignedClinicalData:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)parseSignedClinicalData:(id)data options:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a5];
+  dataCopy = data;
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __84__HDHealthRecordsIngestionServiceClient_parseSignedClinicalData_options_completion___block_invoke;
   v14[3] = &unk_2796DC4A8;
-  v15 = v8;
-  v17 = a4;
+  v15 = dataCopy;
+  optionsCopy = options;
   v16 = v9;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -58,14 +58,14 @@
   v12[3] = &unk_2796DBFF8;
   v13 = v16;
   v10 = v16;
-  v11 = v8;
+  v11 = dataCopy;
   [(HDHealthRecordsIngestionServiceClient *)self _fetchProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (id)handleSignedClinicalDataFeature:(id)a3 context:(id)a4 error:(id *)a5
+- (id)handleSignedClinicalDataFeature:(id)feature context:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  featureCopy = feature;
+  contextCopy = context;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -82,9 +82,9 @@
   v19[1] = 3221225472;
   v19[2] = __87__HDHealthRecordsIngestionServiceClient_handleSignedClinicalDataFeature_context_error___block_invoke;
   v19[3] = &unk_2796DC4F8;
-  v10 = v8;
+  v10 = featureCopy;
   v20 = v10;
-  v11 = v9;
+  v11 = contextCopy;
   v21 = v11;
   v22 = &v30;
   v23 = &v24;
@@ -101,10 +101,10 @@
     v14 = v13;
     if (v13)
     {
-      if (a5)
+      if (error)
       {
         v15 = v13;
-        *a5 = v14;
+        *error = v14;
       }
 
       else
@@ -150,16 +150,16 @@ void __87__HDHealthRecordsIngestionServiceClient_handleSignedClinicalDataFeature
   *(v9 + 40) = v6;
 }
 
-- (void)processOriginalSignedClinicalDataRecords:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)processOriginalSignedClinicalDataRecords:(id)records options:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a5];
+  recordsCopy = records;
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __101__HDHealthRecordsIngestionServiceClient_processOriginalSignedClinicalDataRecords_options_completion___block_invoke;
   v14[3] = &unk_2796DC4A8;
-  v15 = v8;
-  v17 = a4;
+  v15 = recordsCopy;
+  optionsCopy = options;
   v16 = v9;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -167,20 +167,20 @@ void __87__HDHealthRecordsIngestionServiceClient_handleSignedClinicalDataFeature
   v12[3] = &unk_2796DBFF8;
   v13 = v16;
   v10 = v16;
-  v11 = v8;
+  v11 = recordsCopy;
   [(HDHealthRecordsIngestionServiceClient *)self _fetchProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (void)reverifySignatureForRecord:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)reverifySignatureForRecord:(id)record options:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a5];
+  recordCopy = record;
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __87__HDHealthRecordsIngestionServiceClient_reverifySignatureForRecord_options_completion___block_invoke;
   v14[3] = &unk_2796DC4A8;
-  v15 = v8;
-  v17 = a4;
+  v15 = recordCopy;
+  optionsCopy = options;
   v16 = v9;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -188,19 +188,19 @@ void __87__HDHealthRecordsIngestionServiceClient_handleSignedClinicalDataFeature
   v12[3] = &unk_2796DBFF8;
   v13 = v16;
   v10 = v16;
-  v11 = v8;
+  v11 = recordCopy;
   [(HDHealthRecordsIngestionServiceClient *)self _fetchProxyWithHandler:v14 errorHandler:v12];
 }
 
-- (void)addCardToWalletForRecord:(id)a3 completion:(id)a4
+- (void)addCardToWalletForRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  recordCopy = record;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __77__HDHealthRecordsIngestionServiceClient_addCardToWalletForRecord_completion___block_invoke;
   v12[3] = &unk_2796DC520;
-  v13 = v6;
+  v13 = recordCopy;
   v14 = v7;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -208,25 +208,25 @@ void __87__HDHealthRecordsIngestionServiceClient_handleSignedClinicalDataFeature
   v10[3] = &unk_2796DBFF8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = recordCopy;
   [(HDHealthRecordsIngestionServiceClient *)self _fetchProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)didUpdateSignedClinicalDataRecord:(id)a3
+- (void)didUpdateSignedClinicalDataRecord:(id)record
 {
-  v5 = a3;
+  recordCopy = record;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __75__HDHealthRecordsIngestionServiceClient_didUpdateSignedClinicalDataRecord___block_invoke;
   v8[3] = &unk_2796DC548;
-  v9 = v5;
+  v9 = recordCopy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__HDHealthRecordsIngestionServiceClient_didUpdateSignedClinicalDataRecord___block_invoke_2;
   v7[3] = &unk_2796DC570;
   v7[4] = self;
   v7[5] = a2;
-  v6 = v5;
+  v6 = recordCopy;
   [(HDHealthRecordsIngestionServiceClient *)self _fetchProxyWithHandler:v8 errorHandler:v7];
 }
 
@@ -241,21 +241,21 @@ void __75__HDHealthRecordsIngestionServiceClient_didUpdateSignedClinicalDataReco
   }
 }
 
-- (void)willDeleteSignedClinicalDataRecordWithSyncIdentifier:(id)a3
+- (void)willDeleteSignedClinicalDataRecordWithSyncIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __94__HDHealthRecordsIngestionServiceClient_willDeleteSignedClinicalDataRecordWithSyncIdentifier___block_invoke;
   v8[3] = &unk_2796DC548;
-  v9 = v5;
+  v9 = identifierCopy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __94__HDHealthRecordsIngestionServiceClient_willDeleteSignedClinicalDataRecordWithSyncIdentifier___block_invoke_2;
   v7[3] = &unk_2796DC570;
   v7[4] = self;
   v7[5] = a2;
-  v6 = v5;
+  v6 = identifierCopy;
   [(HDHealthRecordsIngestionServiceClient *)self _fetchProxyWithHandler:v8 errorHandler:v7];
 }
 
@@ -270,14 +270,14 @@ void __94__HDHealthRecordsIngestionServiceClient_willDeleteSignedClinicalDataRec
   }
 }
 
-- (void)triggerDownloadIssuerRegistryWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)triggerDownloadIssuerRegistryWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueDoubleObjectHandlerWithCompletion:a4];
+  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueDoubleObjectHandlerWithCompletion:completion];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __93__HDHealthRecordsIngestionServiceClient_triggerDownloadIssuerRegistryWithOptions_completion___block_invoke;
   v10[3] = &unk_2796DC598;
-  v12 = a3;
+  optionsCopy = options;
   v11 = v6;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -288,14 +288,14 @@ void __94__HDHealthRecordsIngestionServiceClient_willDeleteSignedClinicalDataRec
   [(HDHealthRecordsIngestionServiceClient *)self _fetchProxyWithHandler:v10 errorHandler:v8];
 }
 
-- (void)triggerDownloadPublicKeysWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)triggerDownloadPublicKeysWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueDoubleObjectHandlerWithCompletion:a4];
+  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueDoubleObjectHandlerWithCompletion:completion];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __89__HDHealthRecordsIngestionServiceClient_triggerDownloadPublicKeysWithOptions_completion___block_invoke;
   v10[3] = &unk_2796DC598;
-  v12 = a3;
+  optionsCopy = options;
   v11 = v6;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;

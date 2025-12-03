@@ -1,23 +1,23 @@
 @interface PlaybackArtworkView
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PlaybackArtworkView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BF64C30();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for PlaybackArtworkView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(PlaybackArtworkView *)&v6 traitCollectionDidChange:v4];
+  [(PlaybackArtworkView *)&v6 traitCollectionDidChange:changeCopy];
   sub_20BF653A8();
 }
 

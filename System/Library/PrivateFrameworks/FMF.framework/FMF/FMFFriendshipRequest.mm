@@ -1,120 +1,120 @@
 @interface FMFFriendshipRequest
-+ (id)friendshipRequestToHandles:(id)a3 fromHandle:(id)a4 withType:(int64_t)a5 groupId:(id)a6 withEndDate:(id)a7;
-- (FMFFriendshipRequest)initWithCoder:(id)a3;
-- (FMFFriendshipRequest)initWithFromHandle:(id)a3 toHandle:(id)a4 ofType:(int64_t)a5 groupId:(id)a6 endDate:(id)a7 requestId:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)friendshipRequestToHandles:(id)handles fromHandle:(id)handle withType:(int64_t)type groupId:(id)id withEndDate:(id)date;
+- (FMFFriendshipRequest)initWithCoder:(id)coder;
+- (FMFFriendshipRequest)initWithFromHandle:(id)handle toHandle:(id)toHandle ofType:(int64_t)type groupId:(id)id endDate:(id)date requestId:(id)requestId;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMFFriendshipRequest
 
-- (FMFFriendshipRequest)initWithFromHandle:(id)a3 toHandle:(id)a4 ofType:(int64_t)a5 groupId:(id)a6 endDate:(id)a7 requestId:(id)a8
+- (FMFFriendshipRequest)initWithFromHandle:(id)handle toHandle:(id)toHandle ofType:(int64_t)type groupId:(id)id endDate:(id)date requestId:(id)requestId
 {
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = a6;
-  v18 = a3;
+  toHandleCopy = toHandle;
+  dateCopy = date;
+  requestIdCopy = requestId;
+  idCopy = id;
+  handleCopy = handle;
   v19 = objc_alloc_init(objc_opt_class());
 
-  [(FMFFriendshipRequest *)v19 setRequestType:a5];
-  [(FMFFriendshipRequest *)v19 setFromHandle:v18];
+  [(FMFFriendshipRequest *)v19 setRequestType:type];
+  [(FMFFriendshipRequest *)v19 setFromHandle:handleCopy];
 
-  if (v14)
+  if (toHandleCopy)
   {
-    v20 = [MEMORY[0x277CBEB98] setWithObject:v14];
+    v20 = [MEMORY[0x277CBEB98] setWithObject:toHandleCopy];
     [(FMFFriendshipRequest *)v19 setToHandles:v20];
   }
 
-  [(FMFFriendshipRequest *)v19 setEndDate:v15];
-  [(FMFFriendshipRequest *)v19 setRequestId:v16];
+  [(FMFFriendshipRequest *)v19 setEndDate:dateCopy];
+  [(FMFFriendshipRequest *)v19 setRequestId:requestIdCopy];
 
-  [(FMFFriendshipRequest *)v19 setGroupId:v17];
+  [(FMFFriendshipRequest *)v19 setGroupId:idCopy];
   return v19;
 }
 
-+ (id)friendshipRequestToHandles:(id)a3 fromHandle:(id)a4 withType:(int64_t)a5 groupId:(id)a6 withEndDate:(id)a7
++ (id)friendshipRequestToHandles:(id)handles fromHandle:(id)handle withType:(int64_t)type groupId:(id)id withEndDate:(id)date
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
+  dateCopy = date;
+  idCopy = id;
+  handleCopy = handle;
+  handlesCopy = handles;
   v15 = objc_alloc_init(objc_opt_class());
-  [v15 setToHandles:v14];
+  [v15 setToHandles:handlesCopy];
 
-  [v15 setRequestType:a5];
-  [v15 setEndDate:v11];
+  [v15 setRequestType:type];
+  [v15 setEndDate:dateCopy];
 
-  [v15 setGroupId:v12];
-  [v15 setFromHandle:v13];
+  [v15 setGroupId:idCopy];
+  [v15 setFromHandle:handleCopy];
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setRequestType:{-[FMFFriendshipRequest requestType](self, "requestType")}];
-  v5 = [(FMFFriendshipRequest *)self requestId];
-  [v4 setRequestId:v5];
+  requestId = [(FMFFriendshipRequest *)self requestId];
+  [v4 setRequestId:requestId];
 
-  v6 = [(FMFFriendshipRequest *)self fromHandle];
-  [v4 setFromHandle:v6];
+  fromHandle = [(FMFFriendshipRequest *)self fromHandle];
+  [v4 setFromHandle:fromHandle];
 
-  v7 = [(FMFFriendshipRequest *)self toHandles];
-  [v4 setToHandles:v7];
+  toHandles = [(FMFFriendshipRequest *)self toHandles];
+  [v4 setToHandles:toHandles];
 
-  v8 = [(FMFFriendshipRequest *)self endDate];
-  [v4 setEndDate:v8];
+  endDate = [(FMFFriendshipRequest *)self endDate];
+  [v4 setEndDate:endDate];
 
-  v9 = [(FMFFriendshipRequest *)self groupId];
-  [v4 setGroupId:v9];
+  groupId = [(FMFFriendshipRequest *)self groupId];
+  [v4 setGroupId:groupId];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[FMFFriendshipRequest requestType](self forKey:{"requestType"), @"requestType"}];
-  v5 = [(FMFFriendshipRequest *)self requestId];
-  [v4 encodeObject:v5 forKey:@"requestId"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[FMFFriendshipRequest requestType](self forKey:{"requestType"), @"requestType"}];
+  requestId = [(FMFFriendshipRequest *)self requestId];
+  [coderCopy encodeObject:requestId forKey:@"requestId"];
 
-  v6 = [(FMFFriendshipRequest *)self fromHandle];
-  [v4 encodeObject:v6 forKey:@"fromHandle"];
+  fromHandle = [(FMFFriendshipRequest *)self fromHandle];
+  [coderCopy encodeObject:fromHandle forKey:@"fromHandle"];
 
-  v7 = [(FMFFriendshipRequest *)self toHandles];
-  [v4 encodeObject:v7 forKey:@"toHandles"];
+  toHandles = [(FMFFriendshipRequest *)self toHandles];
+  [coderCopy encodeObject:toHandles forKey:@"toHandles"];
 
-  v8 = [(FMFFriendshipRequest *)self endDate];
-  [v4 encodeObject:v8 forKey:@"endDate"];
+  endDate = [(FMFFriendshipRequest *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
 
-  v9 = [(FMFFriendshipRequest *)self groupId];
-  [v4 encodeObject:v9 forKey:@"groupId"];
+  groupId = [(FMFFriendshipRequest *)self groupId];
+  [coderCopy encodeObject:groupId forKey:@"groupId"];
 }
 
-- (FMFFriendshipRequest)initWithCoder:(id)a3
+- (FMFFriendshipRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
-  -[FMFFriendshipRequest setRequestType:](v5, "setRequestType:", [v4 decodeIntegerForKey:@"requestType"]);
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestId"];
+  -[FMFFriendshipRequest setRequestType:](v5, "setRequestType:", [coderCopy decodeIntegerForKey:@"requestType"]);
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestId"];
   [(FMFFriendshipRequest *)v5 setRequestId:v6];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fromHandle"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fromHandle"];
   [(FMFFriendshipRequest *)v5 setFromHandle:v7];
 
   v8 = MEMORY[0x277CBEB98];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"toHandles"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"toHandles"];
   [(FMFFriendshipRequest *)v5 setToHandles:v11];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
   [(FMFFriendshipRequest *)v5 setEndDate:v12];
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupId"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupId"];
 
   [(FMFFriendshipRequest *)v5 setGroupId:v13];
   return v5;
@@ -122,24 +122,24 @@
 
 - (id)description
 {
-  v3 = [(FMFFriendshipRequest *)self requestType];
-  if (!v3)
+  requestType = [(FMFFriendshipRequest *)self requestType];
+  if (!requestType)
   {
     v8 = MEMORY[0x277CCACA8];
     v9 = objc_opt_class();
-    v6 = [(FMFFriendshipRequest *)self toHandles];
-    v7 = [(FMFFriendshipRequest *)self endDate];
-    [v8 stringWithFormat:@"<%@ %p [%@ :Type => FMFFriendshipRequestTypeOffer, Expires: %@]>", v9, self, v6, v7];
+    toHandles = [(FMFFriendshipRequest *)self toHandles];
+    endDate = [(FMFFriendshipRequest *)self endDate];
+    [v8 stringWithFormat:@"<%@ %p [%@ :Type => FMFFriendshipRequestTypeOffer, Expires: %@]>", v9, self, toHandles, endDate];
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (requestType == 1)
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = objc_opt_class();
-    v6 = [(FMFFriendshipRequest *)self fromHandle];
-    v7 = [(FMFFriendshipRequest *)self endDate];
-    [v4 stringWithFormat:@"<%@ %p [%@ :Type => FMFFriendshipRequestTypeAsk, Expires: %@]>", v5, self, v6, v7];
+    toHandles = [(FMFFriendshipRequest *)self fromHandle];
+    endDate = [(FMFFriendshipRequest *)self endDate];
+    [v4 stringWithFormat:@"<%@ %p [%@ :Type => FMFFriendshipRequestTypeAsk, Expires: %@]>", v5, self, toHandles, endDate];
     v10 = LABEL_5:;
 
     goto LABEL_7;

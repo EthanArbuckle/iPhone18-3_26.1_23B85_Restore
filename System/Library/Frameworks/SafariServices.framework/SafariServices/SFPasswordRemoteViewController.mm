@@ -1,27 +1,27 @@
 @interface SFPasswordRemoteViewController
-+ (id)requestViewControllerWithConnectionHandler:(id)a3;
++ (id)requestViewControllerWithConnectionHandler:(id)handler;
 - (SFPasswordRemoteViewControllerDelegate)delegate;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 - (void)willDismissServiceViewController;
 @end
 
 @implementation SFPasswordRemoteViewController
 
-+ (id)requestViewControllerWithConnectionHandler:(id)a3
++ (id)requestViewControllerWithConnectionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_opt_class();
-  v6 = [a1 passwordServiceViewControllerName];
-  v7 = [v5 requestViewController:v6 fromServiceWithBundleIdentifier:@"com.apple.SafariViewService" connectionHandler:v4];
+  passwordServiceViewControllerName = [self passwordServiceViewControllerName];
+  v7 = [v5 requestViewController:passwordServiceViewControllerName fromServiceWithBundleIdentifier:@"com.apple.SafariViewService" connectionHandler:handlerCopy];
 
   return v7;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteViewController:self viewServiceDidTerminateWithError:v4];
+  [WeakRetained remoteViewController:self viewServiceDidTerminateWithError:errorCopy];
 }
 
 - (void)willDismissServiceViewController

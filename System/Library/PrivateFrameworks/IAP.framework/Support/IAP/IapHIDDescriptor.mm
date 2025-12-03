@@ -1,10 +1,10 @@
 @interface IapHIDDescriptor
 - (BOOL)areOutReportsAvailable;
-- (BOOL)handleInReport:(char *)a3 withLength:(unsigned int)a4;
-- (BOOL)handleOutReport:(char *)a3 withLength:(int64_t)a4;
+- (BOOL)handleInReport:(char *)report withLength:(unsigned int)length;
+- (BOOL)handleOutReport:(char *)report withLength:(int64_t)length;
 - (id)dequeueOutReport;
 - (void)dealloc;
-- (void)queueOutReport:(id)a3;
+- (void)queueOutReport:(id)report;
 @end
 
 @implementation IapHIDDescriptor
@@ -53,7 +53,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)handleInReport:(char *)a3 withLength:(unsigned int)a4
+- (BOOL)handleInReport:(char *)report withLength:(unsigned int)length
 {
   if ((&self->_deviceRef & 7) != 0)
   {
@@ -76,16 +76,16 @@ LABEL_11:
   return self;
 }
 
-- (BOOL)handleOutReport:(char *)a3 withLength:(int64_t)a4
+- (BOOL)handleOutReport:(char *)report withLength:(int64_t)length
 {
-  if (a4 < 0)
+  if (length < 0)
   {
-    NSLog(@"ERROR - %s:%s - %d HID report length is less than 0, not sending report", a2, a3, "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/IapHIDDescriptor.mm", "[IapHIDDescriptor handleOutReport:withLength:]", 143);
+    NSLog(@"ERROR - %s:%s - %d HID report length is less than 0, not sending report", a2, report, "/Library/Caches/com.apple.xbs/Sources/iapd/iapd/IapHIDDescriptor.mm", "[IapHIDDescriptor handleOutReport:withLength:]", 143);
   }
 
   else
   {
-    v5 = [[NSData alloc] initWithBytes:a3 length:a4];
+    v5 = [[NSData alloc] initWithBytes:report length:length];
     [(IapHIDDescriptor *)self queueOutReport:v5];
   }
 
@@ -119,7 +119,7 @@ LABEL_11:
   return self;
 }
 
-- (void)queueOutReport:(id)a3
+- (void)queueOutReport:(id)report
 {
   p_outReportsLock = &self->_outReportsLock;
   if ((&self->_outReportsLock & 7) != 0)
@@ -152,7 +152,7 @@ LABEL_14:
     *p_outReports = v8;
   }
 
-  [(NSMutableArray *)v8 addObject:a3];
+  [(NSMutableArray *)v8 addObject:report];
   [(NSLock *)*p_outReportsLock unlock];
   if (outReportsReadSinceLastEvent)
   {

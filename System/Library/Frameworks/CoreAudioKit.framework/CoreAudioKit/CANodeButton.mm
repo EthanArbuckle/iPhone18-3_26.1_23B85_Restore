@@ -2,7 +2,7 @@
 - (CANodeButton)init;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setHasLabel:(BOOL)a3;
+- (void)setHasLabel:(BOOL)label;
 @end
 
 @implementation CANodeButton
@@ -74,20 +74,20 @@
   [-[CANodeButton titleLabel](self "titleLabel")];
 }
 
-- (void)setHasLabel:(BOOL)a3
+- (void)setHasLabel:(BOOL)label
 {
-  self->hasLabel = a3;
-  v5 = [(CANodeButton *)self titleLabel];
-  if (a3)
+  self->hasLabel = label;
+  titleLabel = [(CANodeButton *)self titleLabel];
+  if (label)
   {
 
-    [(CANodeButton *)self addSubview:v5];
+    [(CANodeButton *)self addSubview:titleLabel];
   }
 
   else
   {
 
-    [v5 removeFromSuperview];
+    [titleLabel removeFromSuperview];
   }
 }
 

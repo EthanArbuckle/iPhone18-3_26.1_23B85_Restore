@@ -1,20 +1,20 @@
 @interface PBUIPosterWallpaperMigrationInfo
-- (id)_initWithPairingType:(char)a3 lockProvider:(char)a4 homeProvider:(char)a5;
+- (id)_initWithPairingType:(char)type lockProvider:(char)provider homeProvider:(char)homeProvider;
 - (id)description;
 @end
 
 @implementation PBUIPosterWallpaperMigrationInfo
 
-- (id)_initWithPairingType:(char)a3 lockProvider:(char)a4 homeProvider:(char)a5
+- (id)_initWithPairingType:(char)type lockProvider:(char)provider homeProvider:(char)homeProvider
 {
   v9.receiver = self;
   v9.super_class = PBUIPosterWallpaperMigrationInfo;
   result = [(PBUIPosterWallpaperMigrationInfo *)&v9 init];
   if (result)
   {
-    *(result + 8) = a3;
-    *(result + 9) = a4;
-    *(result + 10) = a5;
+    *(result + 8) = type;
+    *(result + 9) = provider;
+    *(result + 10) = homeProvider;
   }
 
   return result;

@@ -1,15 +1,15 @@
 @interface _TVProxyWeakContainer
-+ (id)weakContainerWithObject:(id)a3;
++ (id)weakContainerWithObject:(id)object;
 - (id)object;
 @end
 
 @implementation _TVProxyWeakContainer
 
-+ (id)weakContainerWithObject:(id)a3
++ (id)weakContainerWithObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_alloc_init(_TVProxyWeakContainer);
-  [(_TVProxyWeakContainer *)v4 setObject:v3];
+  [(_TVProxyWeakContainer *)v4 setObject:objectCopy];
 
   return v4;
 }

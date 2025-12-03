@@ -7,8 +7,8 @@
 - (id)entriesMatchingPredicate:()TelephonyUI
 {
   v4 = a3;
-  v5 = [a1 entries];
-  v6 = [v5 filteredArrayUsingPredicate:v4];
+  entries = [self entries];
+  v6 = [entries filteredArrayUsingPredicate:v4];
 
   return v6;
 }

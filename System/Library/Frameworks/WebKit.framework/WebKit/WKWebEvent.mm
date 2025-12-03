@@ -1,10 +1,10 @@
 @interface WKWebEvent
-- (WKWebEvent)initWithEvent:(id)a3;
+- (WKWebEvent)initWithEvent:(id)event;
 @end
 
 @implementation WKWebEvent
 
-- (WKWebEvent)initWithEvent:(id)a3
+- (WKWebEvent)initWithEvent:(id)event
 {
   if (_MergedGlobals_292 != 1)
   {
@@ -12,27 +12,27 @@
     _MergedGlobals_292 = 1;
   }
 
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 _hidEvent])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [event _hidEvent])
   {
-    v5 = [a3 _keyCode];
-    v6 = [a3 _inputFlags];
-    v7 = [a3 _gsModifierFlags];
-    a3 = [a3 _cloneEvent];
+    _keyCode = [event _keyCode];
+    _inputFlags = [event _inputFlags];
+    _gsModifierFlags = [event _gsModifierFlags];
+    event = [event _cloneEvent];
   }
 
   else
   {
-    if (a3)
+    if (event)
     {
-      v8 = a3;
+      eventCopy = event;
     }
 
-    v5 = 0;
-    v6 = 0;
-    v7 = 0;
+    _keyCode = 0;
+    _inputFlags = 0;
+    _gsModifierFlags = 0;
   }
 
-  if ([a3 _isKeyDown])
+  if ([event _isKeyDown])
   {
     v9 = 4;
   }
@@ -42,19 +42,19 @@
     v9 = 5;
   }
 
-  [a3 timestamp];
+  [event timestamp];
   v11 = v10;
-  v12 = [a3 _modifiedInput];
-  v13 = [a3 _unmodifiedInput];
+  _modifiedInput = [event _modifiedInput];
+  _unmodifiedInput = [event _unmodifiedInput];
   v19.receiver = self;
   v19.super_class = WKWebEvent;
-  BYTE2(v18) = [objc_msgSend(a3 "_modifiedInput")];
-  LOWORD(v18) = v5;
-  v14 = [(WebEvent *)&v19 initWithKeyEventType:v9 timeStamp:v12 characters:v13 charactersIgnoringModifiers:v7 modifiers:v6 & 1 isRepeating:v6 withFlags:v11 withInputManagerHint:0 keyCode:v18 isTabKey:?];
+  BYTE2(v18) = [objc_msgSend(event "_modifiedInput")];
+  LOWORD(v18) = _keyCode;
+  v14 = [(WebEvent *)&v19 initWithKeyEventType:v9 timeStamp:_modifiedInput characters:_unmodifiedInput charactersIgnoringModifiers:_gsModifierFlags modifiers:_inputFlags & 1 isRepeating:_inputFlags withFlags:v11 withInputManagerHint:0 keyCode:v18 isTabKey:?];
   v15 = v14;
   if (!v14)
   {
-    if (!a3)
+    if (!event)
     {
       return v15;
     }
@@ -63,8 +63,8 @@
   }
 
   m_ptr = v14->_uiEvent.m_ptr;
-  v14->_uiEvent.m_ptr = a3;
-  a3 = m_ptr;
+  v14->_uiEvent.m_ptr = event;
+  event = m_ptr;
   if (m_ptr)
   {
 LABEL_14:

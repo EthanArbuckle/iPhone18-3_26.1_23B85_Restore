@@ -1,10 +1,10 @@
 @interface HUServiceDetailsResetAccessoryItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUServiceDetailsResetAccessoryItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsResetHomePodDeviceButton", @"HUServiceDetailsResetHomePodDeviceButton", 1);

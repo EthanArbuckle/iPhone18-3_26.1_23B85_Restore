@@ -1,20 +1,20 @@
 @interface MTLStitchedLibraryDescriptorSPI
-- (id)formattedDescription:(unint64_t)a3;
+- (id)formattedDescription:(unint64_t)description;
 @end
 
 @implementation MTLStitchedLibraryDescriptorSPI
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v28 = self;
-  v6 = [(MTLStitchedLibraryDescriptor *)self functionGraphs];
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  selfCopy = self;
+  functionGraphs = [(MTLStitchedLibraryDescriptor *)self functionGraphs];
+  v7 = [(NSArray *)functionGraphs countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v7)
   {
     v8 = v7;
@@ -26,7 +26,7 @@
       {
         if (*v35 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(functionGraphs);
         }
 
         v12 = *(*(&v34 + 1) + 8 * i);
@@ -40,10 +40,10 @@
           v9 = objc_opt_new();
         }
 
-        [v9 appendString:{objc_msgSend(v12, "formattedDescription:", a3 + 4)}];
+        [v9 appendString:{objc_msgSend(v12, "formattedDescription:", description + 4)}];
       }
 
-      v8 = [(NSArray *)v6 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v8 = [(NSArray *)functionGraphs countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v8);
@@ -58,8 +58,8 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = [(MTLStitchedLibraryDescriptor *)self binaryArchives];
-  v14 = [(NSArray *)v13 countByEnumeratingWithState:&v30 objects:v39 count:16];
+  binaryArchives = [(MTLStitchedLibraryDescriptor *)self binaryArchives];
+  v14 = [(NSArray *)binaryArchives countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v14)
   {
     v15 = v14;
@@ -71,7 +71,7 @@
       {
         if (*v31 != v17)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(binaryArchives);
         }
 
         v19 = *(*(&v30 + 1) + 8 * j);
@@ -85,10 +85,10 @@
           v16 = objc_opt_new();
         }
 
-        [v16 appendString:{objc_msgSend(v19, "formattedDescription:", a3 + 4)}];
+        [v16 appendString:{objc_msgSend(v19, "formattedDescription:", description + 4)}];
       }
 
-      v15 = [(NSArray *)v13 countByEnumeratingWithState:&v30 objects:v39 count:16];
+      v15 = [(NSArray *)binaryArchives countByEnumeratingWithState:&v30 objects:v39 count:16];
     }
 
     while (v15);
@@ -100,7 +100,7 @@
   }
 
   v20 = MEMORY[0x1E696AEC0];
-  v29.receiver = v28;
+  v29.receiver = selfCopy;
   v29.super_class = MTLStitchedLibraryDescriptorSPI;
   v21 = [(MTLStitchedLibraryDescriptor *)&v29 description];
   v38[0] = v5;
@@ -119,13 +119,13 @@
   v38[2] = v23;
   v38[3] = v5;
   v38[4] = @"functions =";
-  v24 = [(MTLStitchedLibraryDescriptor *)v28 functions];
-  if (!v24)
+  functions = [(MTLStitchedLibraryDescriptor *)selfCopy functions];
+  if (!functions)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    functions = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38[5] = v24;
+  v38[5] = functions;
   v38[6] = v5;
   if (v16)
   {

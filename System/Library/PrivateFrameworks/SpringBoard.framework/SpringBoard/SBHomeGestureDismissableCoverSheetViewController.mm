@@ -1,44 +1,44 @@
 @interface SBHomeGestureDismissableCoverSheetViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (void)_addOrRemoveGestureForCurrentSettings;
-- (void)_handleBottomEdgeGesture:(id)a3;
-- (void)_handleBottomEdgeGestureEnded:(id)a3;
+- (void)_handleBottomEdgeGesture:(id)gesture;
+- (void)_handleBottomEdgeGestureEnded:(id)ended;
 - (void)_relinquishHomeGestureOwnership;
 - (void)_requestHomeGestureOwnership;
-- (void)setWantsHomeGestureOwnership:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)zStackParticipantDidChange:(id)a3;
+- (void)setWantsHomeGestureOwnership:(BOOL)ownership;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)zStackParticipantDidChange:(id)change;
 @end
 
 @implementation SBHomeGestureDismissableCoverSheetViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBHomeGestureDismissableCoverSheetViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewDidAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewDidAppear:appear];
   [(SBHomeGestureDismissableCoverSheetViewController *)self _addOrRemoveGestureForCurrentSettings];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBHomeGestureDismissableCoverSheetViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillDisappear:disappear];
   [(SBHomeGestureDismissableCoverSheetViewController *)self _addOrRemoveGestureForCurrentSettings];
 }
 
-- (void)zStackParticipantDidChange:(id)a3
+- (void)zStackParticipantDidChange:(id)change
 {
   [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self];
   v7 = +[SBSystemGestureManager mainDisplayManager];
-  v4 = [(SBFZStackParticipant *)self->_zStackParticipant ownsHomeGesture];
-  if (self->_hasHomeGestureOwnership != v4)
+  ownsHomeGesture = [(SBFZStackParticipant *)self->_zStackParticipant ownsHomeGesture];
+  if (self->_hasHomeGestureOwnership != ownsHomeGesture)
   {
-    v5 = v4;
+    v5 = ownsHomeGesture;
     bottomEdgeRecognizer = self->_bottomEdgeRecognizer;
-    if (v4)
+    if (ownsHomeGesture)
     {
       [v7 addGestureRecognizer:bottomEdgeRecognizer withType:96];
     }
@@ -52,12 +52,12 @@
   }
 }
 
-- (void)setWantsHomeGestureOwnership:(BOOL)a3
+- (void)setWantsHomeGestureOwnership:(BOOL)ownership
 {
-  if (self->_wantsHomeGestureOwnership != a3)
+  if (self->_wantsHomeGestureOwnership != ownership)
   {
-    self->_wantsHomeGestureOwnership = a3;
-    if (a3)
+    self->_wantsHomeGestureOwnership = ownership;
+    if (ownership)
     {
       [(SBHomeGestureDismissableCoverSheetViewController *)self _requestHomeGestureOwnership];
     }
@@ -71,33 +71,33 @@
 
 - (void)_requestHomeGestureOwnership
 {
-  v3 = [(SBHomeGestureDismissableCoverSheetViewController *)self zStackParticipant];
-  if (!v3)
+  zStackParticipant = [(SBHomeGestureDismissableCoverSheetViewController *)self zStackParticipant];
+  if (!zStackParticipant)
   {
     if (![(SBHomeGestureDismissableCoverSheetViewController *)self zStackParticipantIdentifier])
     {
       return;
     }
 
-    v4 = [(SBHomeGestureDismissableCoverSheetViewController *)self view];
-    v5 = [v4 _sbWindowScene];
-    v6 = [v5 zStackResolver];
-    v7 = [v6 acquireParticipantWithIdentifier:-[SBHomeGestureDismissableCoverSheetViewController zStackParticipantIdentifier](self delegate:{"zStackParticipantIdentifier"), self}];
+    view = [(SBHomeGestureDismissableCoverSheetViewController *)self view];
+    _sbWindowScene = [view _sbWindowScene];
+    zStackResolver = [_sbWindowScene zStackResolver];
+    v7 = [zStackResolver acquireParticipantWithIdentifier:-[SBHomeGestureDismissableCoverSheetViewController zStackParticipantIdentifier](self delegate:{"zStackParticipantIdentifier"), self}];
 
     [(SBHomeGestureDismissableCoverSheetViewController *)self setZStackParticipant:v7];
     [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self];
-    v3 = v7;
+    zStackParticipant = v7;
   }
 }
 
 - (void)_relinquishHomeGestureOwnership
 {
-  v3 = [(SBHomeGestureDismissableCoverSheetViewController *)self zStackParticipant];
+  zStackParticipant = [(SBHomeGestureDismissableCoverSheetViewController *)self zStackParticipant];
 
-  if (v3)
+  if (zStackParticipant)
   {
-    v4 = [(SBHomeGestureDismissableCoverSheetViewController *)self zStackParticipant];
-    [v4 invalidate];
+    zStackParticipant2 = [(SBHomeGestureDismissableCoverSheetViewController *)self zStackParticipant];
+    [zStackParticipant2 invalidate];
 
     [(SBHomeGestureDismissableCoverSheetViewController *)self setZStackParticipant:0];
   }
@@ -106,8 +106,8 @@
 - (void)_addOrRemoveGestureForCurrentSettings
 {
   v7 = +[SBSystemGestureManager mainDisplayManager];
-  v3 = [(SBHomeGestureDismissableCoverSheetViewController *)self _appearState];
-  if (v3 && v3 != 3 && SBHomeGestureEnabled())
+  _appearState = [(SBHomeGestureDismissableCoverSheetViewController *)self _appearState];
+  if (_appearState && _appearState != 3 && SBHomeGestureEnabled())
   {
     if (!self->_bottomEdgeRecognizer)
     {
@@ -137,55 +137,55 @@
   }
 }
 
-- (void)_handleBottomEdgeGesture:(id)a3
+- (void)_handleBottomEdgeGesture:(id)gesture
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if ((v4 - 3) < 3)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if ((state - 3) < 3)
   {
-    [(SBHomeGestureDismissableCoverSheetViewController *)self _handleBottomEdgeGestureEnded:v7];
+    [(SBHomeGestureDismissableCoverSheetViewController *)self _handleBottomEdgeGestureEnded:gestureCopy];
 LABEL_8:
-    v6 = v7;
+    v6 = gestureCopy;
     goto LABEL_9;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
-    [(SBHomeGestureDismissableCoverSheetViewController *)self _handleBottomEdgeGestureChanged:v7];
+    [(SBHomeGestureDismissableCoverSheetViewController *)self _handleBottomEdgeGestureChanged:gestureCopy];
     goto LABEL_8;
   }
 
-  v5 = v4 == 1;
-  v6 = v7;
+  v5 = state == 1;
+  v6 = gestureCopy;
   if (v5)
   {
-    [(SBHomeGestureDismissableCoverSheetViewController *)self _handleBottomEdgeGestureBegan:v7];
+    [(SBHomeGestureDismissableCoverSheetViewController *)self _handleBottomEdgeGestureBegan:gestureCopy];
     goto LABEL_8;
   }
 
 LABEL_9:
 }
 
-- (void)_handleBottomEdgeGestureEnded:(id)a3
+- (void)_handleBottomEdgeGestureEnded:(id)ended
 {
-  if (self->_bottomEdgeRecognizer == a3 && [(SBHomeGestureDismissableCoverSheetViewController *)self shouldDismissForHomeGestureRecognizer:?])
+  if (self->_bottomEdgeRecognizer == ended && [(SBHomeGestureDismissableCoverSheetViewController *)self shouldDismissForHomeGestureRecognizer:?])
   {
 
     [(CSCoverSheetViewControllerBase *)self dismiss];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = [(SBHomeGestureDismissableCoverSheetViewController *)self view];
-  v5 = [v4 _sbWindowScene];
-  v6 = [v5 zStackResolver];
-  v7 = v6 == 0;
+  view = [(SBHomeGestureDismissableCoverSheetViewController *)self view];
+  _sbWindowScene = [view _sbWindowScene];
+  zStackResolver = [_sbWindowScene zStackResolver];
+  v7 = zStackResolver == 0;
 
-  v8 = [(SBHomeGestureDismissableCoverSheetViewController *)self zStackParticipant];
-  LOBYTE(v4) = [v8 ownsHomeGesture];
+  zStackParticipant = [(SBHomeGestureDismissableCoverSheetViewController *)self zStackParticipant];
+  LOBYTE(view) = [zStackParticipant ownsHomeGesture];
 
-  return (v7 | v4) & 1;
+  return (v7 | view) & 1;
 }
 
 @end

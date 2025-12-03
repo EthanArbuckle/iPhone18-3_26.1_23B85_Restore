@@ -1,18 +1,18 @@
 @interface ASDTExclavesSensorManager
-+ (id)forSensorName:(id)a3;
-- (ASDTExclavesSensorManager)initWithSensorName:(id)a3;
-- (void)ioThreadStartStop:(BOOL)a3 withStatusTracker:(void *)a4;
++ (id)forSensorName:(id)name;
+- (ASDTExclavesSensorManager)initWithSensorName:(id)name;
+- (void)ioThreadStartStop:(BOOL)stop withStatusTracker:(void *)tracker;
 @end
 
 @implementation ASDTExclavesSensorManager
 
-+ (id)forSensorName:(id)a3
++ (id)forSensorName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   if (+[ASDTExclavesSensorManager forSensorName:]::onceToken == -1)
   {
-    if (v3)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -51,15 +51,15 @@ uint64_t __43__ASDTExclavesSensorManager_forSensorName___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (ASDTExclavesSensorManager)initWithSensorName:(id)a3
+- (ASDTExclavesSensorManager)initWithSensorName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = ASDTExclavesSensorManager;
   if ([(ASDTExclavesSensorManager *)&v9 init])
   {
-    v5 = [v4 UTF8String];
-    ASDT::Exclaves::Sensor::Create(v5, v6);
+    uTF8String = [nameCopy UTF8String];
+    ASDT::Exclaves::Sensor::Create(uTF8String, v6);
   }
 
   v7 = 0;
@@ -67,16 +67,16 @@ uint64_t __43__ASDTExclavesSensorManager_forSensorName___block_invoke()
   return v7;
 }
 
-- (void)ioThreadStartStop:(BOOL)a3 withStatusTracker:(void *)a4
+- (void)ioThreadStartStop:(BOOL)stop withStatusTracker:(void *)tracker
 {
-  if (a4)
+  if (tracker)
   {
-    v5 = a3;
+    stopCopy = stop;
     v12 = 0;
     Status = ASDT::Exclaves::Sensor::GetStatus(self->_sensor.__ptr_, &v12);
     if (!Status)
     {
-      if (v5)
+      if (stopCopy)
       {
         v7 = 1;
       }
@@ -91,7 +91,7 @@ uint64_t __43__ASDTExclavesSensorManager_forSensorName___block_invoke()
       *&v9[0] = -1;
       v10 = v8;
       v11 = v7;
-      ASDT::Exclaves::StatusTracker::Push(a4, v9);
+      ASDT::Exclaves::StatusTracker::Push(tracker, v9);
     }
   }
 }

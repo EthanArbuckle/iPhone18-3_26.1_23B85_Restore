@@ -1,63 +1,63 @@
 @interface VCPFaceCropManager
-- (BOOL)_clearDirtyStateOnFaceCrop:(id)a3 error:(id *)a4;
-- (BOOL)_generateAndAssociateFaceprintedFaceForFaceCrop:(id)a3 faceCropFaceLocalIdentifier:(id *)a4 error:(id *)a5;
-- (BOOL)_persistGeneratedFaceCrops:(id)a3 forAsset:(id)a4 error:(id *)a5;
-- (BOOL)_processDirtyFaceCrop:(id)a3 faceCropFaceLocalIdentifier:(id *)a4 error:(id *)a5;
-- (BOOL)_updateFace:(id)a3 withFaceCrop:(id)a4 error:(id *)a5;
-- (BOOL)_updateFaceprint:(id)a3 forFace:(id)a4 error:(id *)a5;
-- (BOOL)generateAndPersistFaceCropsForFaces:(id)a3 withAsset:(id)a4 resource:(id)a5 resourceURL:(id)a6 error:(id *)a7;
-- (VCPFaceCropManager)initWithPhotoLibrary:(id)a3 andContext:(id)a4;
-- (id)_associateFace:(id)a3 withFaceCrop:(id)a4 error:(id *)a5;
-- (id)_bestFaceForFacePrintRequest:(id)a3 withRect:(CGRect)a4;
-- (id)_bestObservationInAnimalObservations:(id)a3 withRect:(CGRect)a4;
-- (id)_faceAssociatedWithFaceCrop:(id)a3;
-- (id)_faceFromFaceCrop:(id)a3 error:(id *)a4;
-- (id)_vcpAnimalFaceWithFaceCrop:(id)a3 animalFaceObservations:(id)a4 animalBodyObservations:(id)a5 animalprintRequest:(id)a6 normalizedFaceCropBoundingBox:(CGRect)a7 faceCropImageDimension:(CGSize)a8 error:(id *)a9;
-- (id)_vcpFaceCropFromPHFaceCrop:(id)a3;
-- (id)_vcpHumanFaceWithFaceCrop:(id)a3 imageRequestHandler:(id)a4 faceDetectionRequest:(id)a5 normalizedFaceCropBoundingBox:(CGRect)a6 faceCropImageDimension:(CGSize)a7 faceprintRequest:(id)a8 error:(id *)a9;
-- (int)processDirtyFaceCrops:(unint64_t *)a3 withCancelBlock:(id)a4 andExtendTimeoutBlock:(id)a5;
+- (BOOL)_clearDirtyStateOnFaceCrop:(id)crop error:(id *)error;
+- (BOOL)_generateAndAssociateFaceprintedFaceForFaceCrop:(id)crop faceCropFaceLocalIdentifier:(id *)identifier error:(id *)error;
+- (BOOL)_persistGeneratedFaceCrops:(id)crops forAsset:(id)asset error:(id *)error;
+- (BOOL)_processDirtyFaceCrop:(id)crop faceCropFaceLocalIdentifier:(id *)identifier error:(id *)error;
+- (BOOL)_updateFace:(id)face withFaceCrop:(id)crop error:(id *)error;
+- (BOOL)_updateFaceprint:(id)faceprint forFace:(id)face error:(id *)error;
+- (BOOL)generateAndPersistFaceCropsForFaces:(id)faces withAsset:(id)asset resource:(id)resource resourceURL:(id)l error:(id *)error;
+- (VCPFaceCropManager)initWithPhotoLibrary:(id)library andContext:(id)context;
+- (id)_associateFace:(id)face withFaceCrop:(id)crop error:(id *)error;
+- (id)_bestFaceForFacePrintRequest:(id)request withRect:(CGRect)rect;
+- (id)_bestObservationInAnimalObservations:(id)observations withRect:(CGRect)rect;
+- (id)_faceAssociatedWithFaceCrop:(id)crop;
+- (id)_faceFromFaceCrop:(id)crop error:(id *)error;
+- (id)_vcpAnimalFaceWithFaceCrop:(id)crop animalFaceObservations:(id)observations animalBodyObservations:(id)bodyObservations animalprintRequest:(id)request normalizedFaceCropBoundingBox:(CGRect)box faceCropImageDimension:(CGSize)dimension error:(id *)error;
+- (id)_vcpFaceCropFromPHFaceCrop:(id)crop;
+- (id)_vcpHumanFaceWithFaceCrop:(id)crop imageRequestHandler:(id)handler faceDetectionRequest:(id)request normalizedFaceCropBoundingBox:(CGRect)box faceCropImageDimension:(CGSize)dimension faceprintRequest:(id)faceprintRequest error:(id *)error;
+- (int)processDirtyFaceCrops:(unint64_t *)crops withCancelBlock:(id)block andExtendTimeoutBlock:(id)timeoutBlock;
 @end
 
 @implementation VCPFaceCropManager
 
-- (VCPFaceCropManager)initWithPhotoLibrary:(id)a3 andContext:(id)a4
+- (VCPFaceCropManager)initWithPhotoLibrary:(id)library andContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = VCPFaceCropManager;
   v9 = [(VCPFaceCropManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibrary, a3);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v9->_photoLibrary, library);
+    objc_storeStrong(&v10->_context, context);
   }
 
   return v10;
 }
 
-- (BOOL)_persistGeneratedFaceCrops:(id)a3 forAsset:(id)a4 error:(id *)a5
+- (BOOL)_persistGeneratedFaceCrops:(id)crops forAsset:(id)asset error:(id *)error
 {
   v65[2] = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v42 = a4;
-  v43 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v39 = self;
-  v47 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v47 setIncludeNonvisibleFaces:1];
+  cropsCopy = crops;
+  assetCopy = asset;
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  selfCopy = self;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:1];
   v7 = *MEMORY[0x1E6978D90];
   v65[0] = *MEMORY[0x1E6978D70];
   v65[1] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:2];
-  [v47 setFetchPropertySets:v8];
+  [librarySpecificFetchOptions setFetchPropertySets:v8];
 
-  [v47 setIncludedDetectionTypes:&unk_1F49BECB0];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BECB0];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v40;
+  obj = cropsCopy;
   v9 = [obj countByEnumeratingWithState:&v53 objects:v64 count:16];
   if (!v9)
   {
@@ -68,10 +68,10 @@ LABEL_23:
     aBlock[1] = 3221225472;
     aBlock[2] = __64__VCPFaceCropManager__persistGeneratedFaceCrops_forAsset_error___block_invoke;
     aBlock[3] = &unk_1E834D238;
-    v51 = v43;
-    v52 = v42;
+    v51 = strongToStrongObjectsMapTable;
+    v52 = assetCopy;
     v31 = _Block_copy(aBlock);
-    v32 = [(PHPhotoLibrary *)v39->_photoLibrary performChangesAndWait:v31 error:a5];
+    v32 = [(PHPhotoLibrary *)selfCopy->_photoLibrary performChangesAndWait:v31 error:error];
 
     goto LABEL_28;
   }
@@ -92,8 +92,8 @@ LABEL_23:
       }
 
       v12 = *(*(&v53 + 1) + 8 * v11);
-      v13 = [v12 originatingFace];
-      if (!v13)
+      originatingFace = [v12 originatingFace];
+      if (!originatingFace)
       {
         v33 = MEMORY[0x1E696ABC0];
         v62 = v46;
@@ -107,17 +107,17 @@ LABEL_23:
       }
 
       v14 = objc_autoreleasePoolPush();
-      v15 = [v13 localIdentifier];
-      v16 = v15;
-      if (!v15)
+      localIdentifier = [originatingFace localIdentifier];
+      v16 = localIdentifier;
+      if (!localIdentifier)
       {
         goto LABEL_13;
       }
 
       v17 = MEMORY[0x1E69787D0];
-      v61 = v15;
+      v61 = localIdentifier;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v61 count:1];
-      v19 = [v17 fetchFacesWithLocalIdentifiers:v18 options:v47];
+      v19 = [v17 fetchFacesWithLocalIdentifiers:v18 options:librarySpecificFetchOptions];
 
       if ([v19 count] != 1)
       {
@@ -126,12 +126,12 @@ LABEL_13:
         v27 = MEMORY[0x1E696ABC0];
         v59 = v46;
         v28 = MEMORY[0x1E696AEC0];
-        v23 = [v13 localIdentifier];
-        v24 = [v28 stringWithFormat:@"Failed to find originating PHFace %@", v23];
+        localIdentifier2 = [originatingFace localIdentifier];
+        v24 = [v28 stringWithFormat:@"Failed to find originating PHFace %@", localIdentifier2];
         v60 = v24;
         v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
         v26 = [v27 errorWithDomain:v45 code:-18 userInfo:v25];
-        v20 = 0;
+        firstObject = 0;
 LABEL_14:
 
         v29 = 0;
@@ -140,27 +140,27 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v20 = [v19 firstObject];
+      firstObject = [v19 firstObject];
 
-      if (!v20)
+      if (!firstObject)
       {
         goto LABEL_13;
       }
 
-      if ([v20 manual])
+      if ([firstObject manual])
       {
         v21 = MEMORY[0x1E696ABC0];
         v57 = v46;
         v22 = MEMORY[0x1E696AEC0];
-        v23 = [v20 localIdentifier];
-        v24 = [v22 stringWithFormat:@"Failed to generate facecrop on manual originating face %@", v23];
+        localIdentifier2 = [firstObject localIdentifier];
+        v24 = [v22 stringWithFormat:@"Failed to generate facecrop on manual originating face %@", localIdentifier2];
         v58 = v24;
         v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
         v26 = [v21 errorWithDomain:v45 code:-18 userInfo:v25];
         goto LABEL_14;
       }
 
-      [v43 setObject:v12 forKey:v20];
+      [strongToStrongObjectsMapTable setObject:v12 forKey:firstObject];
       v29 = 1;
 LABEL_15:
 
@@ -187,11 +187,11 @@ LABEL_20:
   }
 
 LABEL_25:
-  if (a5)
+  if (error)
   {
     v37 = v49;
     v32 = 0;
-    *a5 = v49;
+    *error = v49;
   }
 
   else
@@ -252,29 +252,29 @@ void __64__VCPFaceCropManager__persistGeneratedFaceCrops_forAsset_error___block_
   }
 }
 
-- (id)_faceAssociatedWithFaceCrop:(id)a3
+- (id)_faceAssociatedWithFaceCrop:(id)crop
 {
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v5 setIncludeNonvisibleFaces:1];
-  [v5 setIncludedDetectionTypes:&unk_1F49BECC8];
-  v6 = [MEMORY[0x1E69787D0] fetchFacesForFaceCrop:v4 options:v5];
-  v7 = [v6 firstObject];
+  cropCopy = crop;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:1];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BECC8];
+  v6 = [MEMORY[0x1E69787D0] fetchFacesForFaceCrop:cropCopy options:librarySpecificFetchOptions];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (id)_bestFaceForFacePrintRequest:(id)a3 withRect:(CGRect)a4
+- (id)_bestFaceForFacePrintRequest:(id)request withRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v45 = v8;
-  v9 = [v8 results];
-  v10 = [v9 count];
+  requestCopy = request;
+  v45 = requestCopy;
+  results = [requestCopy results];
+  v10 = [results count];
 
   v49 = x;
   v50 = y;
@@ -282,11 +282,11 @@ void __64__VCPFaceCropManager__persistGeneratedFaceCrops_forAsset_error___block_
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v19 = [v8 results];
+      results2 = [requestCopy results];
       *buf = 138412546;
       v56 = @"[FaceCropManager][BestFace]";
       v57 = 2048;
-      v58 = [v19 count];
+      v58 = [results2 count];
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Detected %lu faces from facecrop", buf, 0x16u);
     }
 
@@ -294,9 +294,9 @@ void __64__VCPFaceCropManager__persistGeneratedFaceCrops_forAsset_error___block_
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v20 = [v8 results];
-    v12 = 0;
-    v21 = [v20 countByEnumeratingWithState:&v51 objects:v61 count:16];
+    results3 = [requestCopy results];
+    firstObject = 0;
+    v21 = [results3 countByEnumeratingWithState:&v51 objects:v61 count:16];
     if (v21)
     {
       v22 = *v52;
@@ -308,7 +308,7 @@ void __64__VCPFaceCropManager__persistGeneratedFaceCrops_forAsset_error___block_
         {
           if (*v52 != v22)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(results3);
           }
 
           v25 = *(*(&v51 + 1) + 8 * i);
@@ -358,12 +358,12 @@ void __64__VCPFaceCropManager__persistGeneratedFaceCrops_forAsset_error___block_
           {
             v37 = v25;
 
-            v12 = v37;
+            firstObject = v37;
             v48 = v33;
           }
         }
 
-        v21 = [v20 countByEnumeratingWithState:&v51 objects:v61 count:{16, v36}];
+        v21 = [results3 countByEnumeratingWithState:&v51 objects:v61 count:{16, v36}];
       }
 
       while (v21);
@@ -374,14 +374,14 @@ void __64__VCPFaceCropManager__persistGeneratedFaceCrops_forAsset_error___block_
       v48 = 1.17549435e-38;
     }
 
-    v8 = v45;
+    requestCopy = v45;
     if (MediaAnalysisLogLevel() >= 6)
     {
       v38 = MEMORY[0x1E69E9C10];
       v39 = MEMORY[0x1E69E9C10];
       if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
       {
-        v40 = [v12 description];
+        v40 = [firstObject description];
         *buf = 138412546;
         v56 = @"[FaceCropManager][BestFace]";
         v57 = 2112;
@@ -389,7 +389,7 @@ void __64__VCPFaceCropManager__persistGeneratedFaceCrops_forAsset_error___block_
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "%@ Best face observation %@", buf, 0x16u);
       }
 
-      v8 = v45;
+      requestCopy = v45;
     }
 
 LABEL_27:
@@ -401,10 +401,10 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v11 = [v8 results];
-  v12 = [v11 firstObject];
+  results4 = [requestCopy results];
+  firstObject = [results4 firstObject];
 
-  [v12 boundingBox];
+  [firstObject boundingBox];
   v13 = v64.origin.x;
   v14 = v64.origin.y;
   v15 = v64.size.width;
@@ -441,7 +441,7 @@ LABEL_28:
     v42 = MEMORY[0x1E69E9C10];
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
-      v43 = [v12 description];
+      v43 = [firstObject description];
       *buf = 138412802;
       v56 = @"[FaceCropManager][BestFace]";
       v57 = 2112;
@@ -452,35 +452,35 @@ LABEL_28:
     }
   }
 
-  v12 = 0;
-  v8 = v45;
+  firstObject = 0;
+  requestCopy = v45;
 LABEL_33:
 
-  return v12;
+  return firstObject;
 }
 
-- (id)_vcpHumanFaceWithFaceCrop:(id)a3 imageRequestHandler:(id)a4 faceDetectionRequest:(id)a5 normalizedFaceCropBoundingBox:(CGRect)a6 faceCropImageDimension:(CGSize)a7 faceprintRequest:(id)a8 error:(id *)a9
+- (id)_vcpHumanFaceWithFaceCrop:(id)crop imageRequestHandler:(id)handler faceDetectionRequest:(id)request normalizedFaceCropBoundingBox:(CGRect)box faceCropImageDimension:(CGSize)dimension faceprintRequest:(id)faceprintRequest error:(id *)error
 {
-  height = a7.height;
-  width = a7.width;
-  v13 = a6.size.height;
-  v14 = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = dimension.height;
+  width = dimension.width;
+  v13 = box.size.height;
+  v14 = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v46 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a8;
+  cropCopy = crop;
+  handlerCopy = handler;
+  requestCopy = request;
+  faceprintRequestCopy = faceprintRequest;
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v23 = [v37 localIdentifier];
+    localIdentifier = [cropCopy localIdentifier];
     *buf = 138412290;
-    v45 = v23;
+    v45 = localIdentifier;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[FaceCropManager][%@] Create human face for facecrop", buf, 0xCu);
   }
 
-  v24 = [(VCPFaceCropManager *)self _bestFaceForFacePrintRequest:v22 withRect:x, y, v14, v13];
+  v24 = [(VCPFaceCropManager *)self _bestFaceForFacePrintRequest:faceprintRequestCopy withRect:x, y, v14, v13];
   if (v24)
   {
     goto LABEL_10;
@@ -488,67 +488,67 @@ LABEL_33:
 
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v25 = [v37 localIdentifier];
+    localIdentifier2 = [cropCopy localIdentifier];
     *buf = 138412290;
-    v45 = v25;
+    v45 = localIdentifier2;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[FaceCropManager][%@] No qualified face; force faceprinting", buf, 0xCu);
   }
 
-  v24 = [MEMORY[0x1E6984518] faceObservationWithRequestRevision:objc_msgSend(v21 boundingBox:"revision") andAlignedBoundingBox:{x, y, v14, v13, x, y, v14, v13}];
+  v24 = [MEMORY[0x1E6984518] faceObservationWithRequestRevision:objc_msgSend(requestCopy boundingBox:"revision") andAlignedBoundingBox:{x, y, v14, v13, x, y, v14, v13}];
   v43 = v24;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
-  [v22 setInputFaceObservations:v26];
+  [faceprintRequestCopy setInputFaceObservations:v26];
 
-  [v22 setForceFaceprintCreation:1];
-  v42 = v22;
+  [faceprintRequestCopy setForceFaceprintCreation:1];
+  v42 = faceprintRequestCopy;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
   v38 = 0;
-  v28 = [v20 performRequests:v27 error:&v38];
+  v28 = [handlerCopy performRequests:v27 error:&v38];
   v29 = v38;
 
   if (v28)
   {
-    v30 = [v22 results];
-    v31 = [v30 firstObject];
+    results = [faceprintRequestCopy results];
+    firstObject = [results firstObject];
 
-    v24 = v31;
+    v24 = firstObject;
 LABEL_10:
-    v39[0] = v21;
-    v39[1] = v22;
+    v39[0] = requestCopy;
+    v39[1] = faceprintRequestCopy;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
     LOBYTE(v36) = 1;
-    a9 = [VCPPhotosFace faceFromFaceObservation:v24 humanObservation:0 sourceWidth:width sourceHeight:height visionRequests:v29 processingVersion:[(VCPPhotosFaceProcessingContext *)self->_context processingVersion] force:v36 andError:a9];
+    error = [VCPPhotosFace faceFromFaceObservation:v24 humanObservation:0 sourceWidth:width sourceHeight:height visionRequests:v29 processingVersion:[(VCPPhotosFaceProcessingContext *)self->_context processingVersion] force:v36 andError:error];
     goto LABEL_11;
   }
 
-  if (a9)
+  if (error)
   {
     v33 = MEMORY[0x1E696ABC0];
     v40 = *MEMORY[0x1E696A578];
     v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create faceprint - %@", v29];
     v41 = v34;
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-    *a9 = [v33 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v35];
+    *error = [v33 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v35];
 
-    a9 = 0;
+    error = 0;
   }
 
 LABEL_11:
 
-  return a9;
+  return error;
 }
 
-- (id)_bestObservationInAnimalObservations:(id)a3 withRect:(CGRect)a4
+- (id)_bestObservationInAnimalObservations:(id)observations withRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if ([v8 count] == 1)
+  observationsCopy = observations;
+  if ([observationsCopy count] == 1)
   {
-    v9 = [v8 firstObject];
+    firstObject = [observationsCopy firstObject];
   }
 
   else
@@ -557,8 +557,8 @@ LABEL_11:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = v8;
-    v9 = 0;
+    v10 = observationsCopy;
+    firstObject = 0;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
@@ -596,7 +596,7 @@ LABEL_11:
             {
               v20 = v15;
 
-              v9 = v20;
+              firstObject = v20;
               v13 = v19;
             }
           }
@@ -609,62 +609,62 @@ LABEL_11:
     }
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (id)_vcpAnimalFaceWithFaceCrop:(id)a3 animalFaceObservations:(id)a4 animalBodyObservations:(id)a5 animalprintRequest:(id)a6 normalizedFaceCropBoundingBox:(CGRect)a7 faceCropImageDimension:(CGSize)a8 error:(id *)a9
+- (id)_vcpAnimalFaceWithFaceCrop:(id)crop animalFaceObservations:(id)observations animalBodyObservations:(id)bodyObservations animalprintRequest:(id)request normalizedFaceCropBoundingBox:(CGRect)box faceCropImageDimension:(CGSize)dimension error:(id *)error
 {
-  height = a8.height;
-  width = a8.width;
-  v11 = a7.size.height;
-  v12 = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
+  height = dimension.height;
+  width = dimension.width;
+  v11 = box.size.height;
+  v12 = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v42 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
+  cropCopy = crop;
+  observationsCopy = observations;
+  bodyObservationsCopy = bodyObservations;
+  requestCopy = request;
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v23 = [v19 localIdentifier];
+    localIdentifier = [cropCopy localIdentifier];
     *buf = 138412290;
-    v41 = v23;
+    v41 = localIdentifier;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[FaceCropManager][%@] Create animal face for facecrop", buf, 0xCu);
   }
 
-  v24 = [(VCPFaceCropManager *)self _bestObservationInAnimalObservations:v20 withRect:x, y, v12, v11];
-  v25 = [(VCPFaceCropManager *)self _bestObservationInAnimalObservations:v21 withRect:x, y, v12, v11];
+  v24 = [(VCPFaceCropManager *)self _bestObservationInAnimalObservations:observationsCopy withRect:x, y, v12, v11];
+  v25 = [(VCPFaceCropManager *)self _bestObservationInAnimalObservations:bodyObservationsCopy withRect:x, y, v12, v11];
   v26 = v25;
   if (v24 | v25)
   {
     if (v25)
     {
-      v27 = [v25 labels];
-      v28 = [v27 firstObject];
-      v29 = [v28 identifier];
+      labels = [v25 labels];
+      firstObject = [labels firstObject];
+      identifier = [firstObject identifier];
     }
 
     else
     {
-      v32 = [v24 labels];
-      v33 = [v32 firstObject];
-      v27 = [v33 identifier];
+      labels2 = [v24 labels];
+      firstObject2 = [labels2 firstObject];
+      labels = [firstObject2 identifier];
 
-      if ([v27 isEqualToString:*MEMORY[0x1E6984888]])
+      if ([labels isEqualToString:*MEMORY[0x1E6984888]])
       {
         v34 = MEMORY[0x1E6984898];
       }
 
       else
       {
-        if (([v27 isEqualToString:*MEMORY[0x1E6984880]] & 1) == 0)
+        if (([labels isEqualToString:*MEMORY[0x1E6984880]] & 1) == 0)
         {
           if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
-            v37 = [v19 localIdentifier];
+            localIdentifier2 = [cropCopy localIdentifier];
             *buf = 138412290;
-            v41 = v37;
+            v41 = localIdentifier2;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[FaceCropManager][%@] faceLabel is not dog or cat. Ignoring", buf, 0xCu);
           }
 
@@ -675,15 +675,15 @@ LABEL_11:
         v34 = MEMORY[0x1E6984890];
       }
 
-      v29 = *v34;
+      identifier = *v34;
     }
 
-    v39 = v22;
+    v39 = requestCopy;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
     LODWORD(v38) = [(VCPPhotosFaceProcessingContext *)self->_context processingVersion];
-    v31 = [VCPPhotosFace faceFromAnimalHeadObservation:v24 animalBodyObservation:v26 animalLabel:v29 sourceWidth:width sourceHeight:height visionRequests:v35 processingVersion:v38];
+    v31 = [VCPPhotosFace faceFromAnimalHeadObservation:v24 animalBodyObservation:v26 animalLabel:identifier sourceWidth:width sourceHeight:height visionRequests:v35 processingVersion:v38];
 
-    v27 = v29;
+    labels = identifier;
 LABEL_17:
 
     goto LABEL_18;
@@ -691,9 +691,9 @@ LABEL_17:
 
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v30 = [v19 localIdentifier];
+    localIdentifier3 = [cropCopy localIdentifier];
     *buf = 138412290;
-    v41 = v30;
+    v41 = localIdentifier3;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[FaceCropManager][%@] Either animal face or animal body detected in facecrop", buf, 0xCu);
   }
 
@@ -703,14 +703,14 @@ LABEL_18:
   return v31;
 }
 
-- (id)_faceFromFaceCrop:(id)a3 error:(id *)a4
+- (id)_faceFromFaceCrop:(id)crop error:(id *)error
 {
   v139[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  cropCopy = crop;
+  v7 = cropCopy;
+  if (!cropCopy)
   {
-    if (!a4)
+    if (!error)
     {
       v18 = 0;
       goto LABEL_33;
@@ -718,18 +718,18 @@ LABEL_18:
 
     v19 = MEMORY[0x1E696ABC0];
     v138 = *MEMORY[0x1E696A578];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Facecrop is nil"];
-    v139[0] = v8;
+    resourceData = [MEMORY[0x1E696AEC0] stringWithFormat:@"Facecrop is nil"];
+    v139[0] = resourceData;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v139 forKeys:&v138 count:1];
     [v19 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v15];
-    *a4 = v18 = 0;
+    *error = v18 = 0;
     goto LABEL_16;
   }
 
-  v8 = [v6 resourceData];
-  if (!v8)
+  resourceData = [cropCopy resourceData];
+  if (!resourceData)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_31;
     }
@@ -743,30 +743,30 @@ LABEL_18:
     goto LABEL_14;
   }
 
-  if (![VCPFaceCropUtils isValidFaceCrop:v8])
+  if (![VCPFaceCropUtils isValidFaceCrop:resourceData])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_31;
     }
 
     v22 = MEMORY[0x1E696ABC0];
     v134 = *MEMORY[0x1E696A578];
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid facecrop image data %@", v8];
+    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid facecrop image data %@", resourceData];
     v135 = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v135 forKeys:&v134 count:1];
     v21 = [v22 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v16];
     goto LABEL_14;
   }
 
-  [VCPFaceCropUtils faceBoundsFromFaceCrop:v8 error:a4];
+  [VCPFaceCropUtils faceBoundsFromFaceCrop:resourceData error:error];
   x = v141.origin.x;
   y = v141.origin.y;
   width = v141.size.width;
   height = v141.size.height;
   if (!CGRectIsNull(v141))
   {
-    [VCPFaceCropUtils faceCropDimensionsFromFaceCrop:v8 error:a4];
+    [VCPFaceCropUtils faceCropDimensionsFromFaceCrop:resourceData error:error];
     v25 = v23;
     v26 = v24;
     v27 = MEMORY[0x1E695F060];
@@ -779,7 +779,7 @@ LABEL_18:
       v96 = v143.size.height;
       if (CGRectIsNull(v143))
       {
-        if (a4)
+        if (error)
         {
           v31 = MEMORY[0x1E696ABC0];
           v128 = *MEMORY[0x1E696A578];
@@ -792,7 +792,7 @@ LABEL_18:
           v16 = [v32 stringWithFormat:@"Failed to normalize bound %@ with image (%.0fx%.0f)", v15, *&v25, *&v26];
           v129 = v16;
           v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v129 forKeys:&v128 count:1];
-          *a4 = [v31 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v33];
+          *error = [v31 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v33];
 
           goto LABEL_7;
         }
@@ -802,12 +802,12 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      [VCPFaceCropUtils faceCropDimensionsFromFaceCrop:v8 error:a4];
+      [VCPFaceCropUtils faceCropDimensionsFromFaceCrop:resourceData error:error];
       v37 = v36;
       v38 = v35;
       if (v36 == *v27 && v35 == v27[1])
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_31;
         }
@@ -822,10 +822,10 @@ LABEL_31:
       }
 
       v41 = objc_alloc(MEMORY[0x1E69845B8]);
-      v15 = [v41 initWithData:v8 orientation:1 options:MEMORY[0x1E695E0F8]];
+      v15 = [v41 initWithData:resourceData orientation:1 options:MEMORY[0x1E695E0F8]];
       if (!v15)
       {
-        if (!a4)
+        if (!error)
         {
           v18 = 0;
           goto LABEL_16;
@@ -837,7 +837,7 @@ LABEL_31:
         v125 = v16;
         v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v125 forKeys:&v124 count:1];
         [v46 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v44];
-        *a4 = v18 = 0;
+        *error = v18 = 0;
         goto LABEL_103;
       }
 
@@ -846,7 +846,7 @@ LABEL_31:
       v16 = v104;
       if (v42)
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_7;
         }
@@ -857,7 +857,7 @@ LABEL_31:
         v123 = v44;
         v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v123 forKeys:&v122 count:1];
         [v43 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v45];
-        *a4 = v18 = 0;
+        *error = v18 = 0;
         goto LABEL_102;
       }
 
@@ -866,7 +866,7 @@ LABEL_31:
       v44 = v103;
       if (v47)
       {
-        if (!a4)
+        if (!error)
         {
           v18 = 0;
 LABEL_103:
@@ -880,7 +880,7 @@ LABEL_103:
         v121 = v45;
         v92 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v121 forKeys:&v120 count:1];
         [v48 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:?];
-        *a4 = v18 = 0;
+        *error = v18 = 0;
 
 LABEL_102:
         goto LABEL_103;
@@ -892,7 +892,7 @@ LABEL_102:
       v45 = v50;
       if (v49)
       {
-        if (!a4)
+        if (!error)
         {
           v18 = 0;
           goto LABEL_102;
@@ -904,7 +904,7 @@ LABEL_102:
         v93 = v119;
         v90 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v119 forKeys:&v118 count:1];
         [v51 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:?];
-        *a4 = v18 = 0;
+        *error = v18 = 0;
 
 LABEL_101:
         goto LABEL_102;
@@ -920,7 +920,7 @@ LABEL_101:
 
       if ((v53 & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v18 = 0;
           goto LABEL_101;
@@ -932,7 +932,7 @@ LABEL_101:
         v91 = v116;
         v89 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v116 forKeys:&v115 count:1];
         [v56 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v89];
-        *a4 = v18 = 0;
+        *error = v18 = 0;
 
         goto LABEL_100;
       }
@@ -942,7 +942,7 @@ LABEL_101:
       v91 = v100;
       if (v54)
       {
-        if (a4)
+        if (error)
         {
           v55 = MEMORY[0x1E696ABC0];
           v113 = *MEMORY[0x1E696A578];
@@ -950,7 +950,7 @@ LABEL_101:
           v114 = v88;
           v86 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
           [v55 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v86];
-          *a4 = v18 = 0;
+          *error = v18 = 0;
 
 LABEL_99:
           goto LABEL_100;
@@ -967,7 +967,7 @@ LABEL_100:
       v88 = v99;
       if (v57)
       {
-        if (!a4)
+        if (!error)
         {
           v18 = 0;
           goto LABEL_99;
@@ -975,63 +975,63 @@ LABEL_100:
 
         v58 = MEMORY[0x1E696ABC0];
         v111 = *MEMORY[0x1E696A578];
-        v87 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to set VNCreateAnimalprintRequest"];
-        v112 = v87;
+        array = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to set VNCreateAnimalprintRequest"];
+        v112 = array;
         v83 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
         [v58 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v83];
-        *a4 = v18 = 0;
+        *error = v18 = 0;
 
 LABEL_98:
         goto LABEL_99;
       }
 
-      v87 = [MEMORY[0x1E695DF70] array];
-      v59 = [v16 results];
-      v60 = v59 == 0;
+      array = [MEMORY[0x1E695DF70] array];
+      results = [v16 results];
+      v60 = results == 0;
 
       if (!v60)
       {
-        v61 = [v16 results];
-        [v91 setInputFaceObservations:v61];
+        results2 = [v16 results];
+        [v91 setInputFaceObservations:results2];
 
-        [v87 addObject:v91];
+        [array addObject:v91];
       }
 
-      v62 = [v44 results];
-      v63 = v62 == 0;
+      results3 = [v44 results];
+      v63 = results3 == 0;
 
       if (!v63)
       {
-        v84 = [MEMORY[0x1E695DF70] array];
-        v64 = [v45 results];
-        v65 = [v64 count] == 0;
+        array2 = [MEMORY[0x1E695DF70] array];
+        results4 = [v45 results];
+        v65 = [results4 count] == 0;
 
         if (!v65)
         {
-          v66 = [v45 results];
-          [v84 addObjectsFromArray:v66];
+          results5 = [v45 results];
+          [array2 addObjectsFromArray:results5];
         }
 
-        v67 = [v44 results];
-        v68 = [v67 count] == 0;
+        results6 = [v44 results];
+        v68 = [results6 count] == 0;
 
         if (!v68)
         {
-          v69 = [v44 results];
-          [v84 addObjectsFromArray:v69];
+          results7 = [v44 results];
+          [array2 addObjectsFromArray:results7];
         }
 
-        [v88 setInputDetectedObjectObservations:v84];
-        [v87 addObject:v88];
+        [v88 setInputDetectedObjectObservations:array2];
+        [array addObject:v88];
       }
 
       v98 = v93;
-      v70 = [v15 performRequests:v87 error:&v98];
+      v70 = [v15 performRequests:array error:&v98];
       v82 = v98;
 
       if ((v70 & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v18 = 0;
           v93 = v82;
@@ -1040,27 +1040,27 @@ LABEL_98:
 
         v72 = MEMORY[0x1E696ABC0];
         v109 = *MEMORY[0x1E696A578];
-        v85 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to print facecrop - %@", v82];
-        v110 = v85;
+        mad_allPersonsFetchOptions = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to print facecrop - %@", v82];
+        v110 = mad_allPersonsFetchOptions;
         v94 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v110 forKeys:&v109 count:1];
         [v72 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v94];
-        *a4 = v18 = 0;
+        *error = v18 = 0;
 LABEL_97:
 
         v93 = v82;
         goto LABEL_98;
       }
 
-      v85 = [(PHPhotoLibrary *)self->_photoLibrary mad_allPersonsFetchOptions];
-      v94 = [MEMORY[0x1E6978978] fetchPersonForFaceCrop:v7 options:v85];
-      v81 = [v94 firstObject];
-      if (!v81)
+      mad_allPersonsFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary mad_allPersonsFetchOptions];
+      v94 = [MEMORY[0x1E6978978] fetchPersonForFaceCrop:v7 options:mad_allPersonsFetchOptions];
+      firstObject = [v94 firstObject];
+      if (!firstObject)
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v73 = [v7 localIdentifier];
+          localIdentifier = [v7 localIdentifier];
           *buf = 138412290;
-          v108 = v73;
+          v108 = localIdentifier;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[FaceCropManager][%@] Failed to retrieve PHPerson from facecrop", buf, 0xCu);
         }
 
@@ -1068,27 +1068,27 @@ LABEL_97:
         goto LABEL_96;
       }
 
-      if ([v81 detectionType] == 1)
+      if ([firstObject detectionType] == 1)
       {
-        v71 = [(VCPFaceCropManager *)self _vcpHumanFaceWithFaceCrop:v7 imageRequestHandler:v15 faceDetectionRequest:v16 normalizedFaceCropBoundingBox:v91 faceCropImageDimension:a4 faceprintRequest:v29 error:v30, v95, v96, v37, v38];
+        v71 = [(VCPFaceCropManager *)self _vcpHumanFaceWithFaceCrop:v7 imageRequestHandler:v15 faceDetectionRequest:v16 normalizedFaceCropBoundingBox:v91 faceCropImageDimension:error faceprintRequest:v29 error:v30, v95, v96, v37, v38];
       }
 
       else
       {
-        if ([v81 detectionType] != 3 && objc_msgSend(v81, "detectionType") != 4)
+        if ([firstObject detectionType] != 3 && objc_msgSend(firstObject, "detectionType") != 4)
         {
           goto LABEL_88;
         }
 
-        v80 = [v44 results];
-        v74 = [v45 results];
-        v71 = [(VCPFaceCropManager *)self _vcpAnimalFaceWithFaceCrop:v7 animalFaceObservations:v80 animalBodyObservations:v74 animalprintRequest:v88 normalizedFaceCropBoundingBox:a4 faceCropImageDimension:v29 error:v30, v95, v96, v37, v38];
+        results8 = [v44 results];
+        results9 = [v45 results];
+        v71 = [(VCPFaceCropManager *)self _vcpAnimalFaceWithFaceCrop:v7 animalFaceObservations:results8 animalBodyObservations:results9 animalprintRequest:v88 normalizedFaceCropBoundingBox:error faceCropImageDimension:v29 error:v30, v95, v96, v37, v38];
       }
 
       if (v71)
       {
-        v75 = [v71 imageprintWrapper];
-        v76 = v75 == 0;
+        imageprintWrapper = [v71 imageprintWrapper];
+        v76 = imageprintWrapper == 0;
 
         if (!v76)
         {
@@ -1100,14 +1100,14 @@ LABEL_96:
           goto LABEL_97;
         }
 
-        if (a4)
+        if (error)
         {
           v78 = MEMORY[0x1E696ABC0];
           v105 = *MEMORY[0x1E696A578];
           v97 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to wrap faceprint/faceTorsoprint/animalprint"];
           v106 = v97;
           v79 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v106 forKeys:&v105 count:1];
-          *a4 = [v78 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v79];
+          *error = [v78 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v79];
         }
 
 LABEL_94:
@@ -1118,7 +1118,7 @@ LABEL_94:
 LABEL_88:
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v77 = *a4;
+        v77 = *error;
         *buf = 138412290;
         v108 = v77;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[FaceCropManager] Failed to create VCPPhotosFace - %@", buf, 0xCu);
@@ -1128,7 +1128,7 @@ LABEL_88:
       goto LABEL_94;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_31;
     }
@@ -1141,11 +1141,11 @@ LABEL_88:
     v21 = [v34 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v16];
 LABEL_14:
     v18 = 0;
-    *a4 = v21;
+    *error = v21;
     goto LABEL_15;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_31;
   }
@@ -1161,7 +1161,7 @@ LABEL_14:
   v16 = [v14 stringWithFormat:@"Invalid facecrop bounding box %@", v15];
   v133 = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v133 forKeys:&v132 count:1];
-  *a4 = [v13 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v17];
+  *error = [v13 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v17];
 
 LABEL_7:
   v18 = 0;
@@ -1175,16 +1175,16 @@ LABEL_33:
   return v18;
 }
 
-- (id)_associateFace:(id)a3 withFaceCrop:(id)a4 error:(id *)a5
+- (id)_associateFace:(id)face withFaceCrop:(id)crop error:(id *)error
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 localIdentifier];
+  faceCopy = face;
+  cropCopy = crop;
+  localIdentifier = [faceCopy localIdentifier];
 
-  if (v10)
+  if (localIdentifier)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -1194,14 +1194,14 @@ LABEL_33:
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Face has already been persisted with a facecrop"];
     v41[0] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
-    *a5 = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v13];
+    *error = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v13];
 
     goto LABEL_4;
   }
 
-  v14 = [v8 imageprintWrapper];
+  imageprintWrapper = [faceCopy imageprintWrapper];
 
-  if (v14)
+  if (imageprintWrapper)
   {
     v30 = 0;
     v31 = &v30;
@@ -1213,46 +1213,46 @@ LABEL_33:
     v24 = 3221225472;
     v25 = __56__VCPFaceCropManager__associateFace_withFaceCrop_error___block_invoke;
     v26 = &unk_1E834FE18;
-    v27 = v8;
+    v27 = faceCopy;
     v29 = &v30;
-    v28 = v9;
+    v28 = cropCopy;
     v15 = _Block_copy(&v23);
-    if ([(PHPhotoLibrary *)self->_photoLibrary performChangesAndWait:v15 error:a5, v23, v24, v25, v26])
+    if ([(PHPhotoLibrary *)self->_photoLibrary performChangesAndWait:v15 error:error, v23, v24, v25, v26])
     {
-      a5 = v31[5];
+      error = v31[5];
     }
 
-    else if (a5)
+    else if (error)
     {
       v19 = MEMORY[0x1E696ABC0];
       v36 = *MEMORY[0x1E696A578];
       v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to persist face and facecrop"];
       v37 = v20;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-      *a5 = [v19 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v21];
+      *error = [v19 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v21];
 
-      a5 = 0;
+      error = 0;
     }
 
     _Block_object_dispose(&v30, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     v16 = MEMORY[0x1E696ABC0];
     v38 = *MEMORY[0x1E696A578];
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Face does not have a faceprint"];
     v39 = v17;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-    *a5 = [v16 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v18];
+    *error = [v16 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v18];
 
 LABEL_4:
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_13:
 
-  return a5;
+  return error;
 }
 
 void __56__VCPFaceCropManager__associateFace_withFaceCrop_error___block_invoke(void *a1)
@@ -1270,19 +1270,19 @@ void __56__VCPFaceCropManager__associateFace_withFaceCrop_error___block_invoke(v
   [v6 setFace:v2];
 }
 
-- (BOOL)_clearDirtyStateOnFaceCrop:(id)a3 error:(id *)a4
+- (BOOL)_clearDirtyStateOnFaceCrop:(id)crop error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  cropCopy = crop;
+  v7 = cropCopy;
+  if (cropCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __55__VCPFaceCropManager__clearDirtyStateOnFaceCrop_error___block_invoke;
     aBlock[3] = &unk_1E834BDC0;
-    v12 = v6;
+    v12 = cropCopy;
     v8 = _Block_copy(aBlock);
-    v9 = [(PHPhotoLibrary *)self->_photoLibrary performChangesAndWait:v8 error:a4];
+    v9 = [(PHPhotoLibrary *)self->_photoLibrary performChangesAndWait:v8 error:error];
   }
 
   else
@@ -1305,34 +1305,34 @@ void __55__VCPFaceCropManager__clearDirtyStateOnFaceCrop_error___block_invoke(ui
   [v1 setState:1];
 }
 
-- (BOOL)_generateAndAssociateFaceprintedFaceForFaceCrop:(id)a3 faceCropFaceLocalIdentifier:(id *)a4 error:(id *)a5
+- (BOOL)_generateAndAssociateFaceprintedFaceForFaceCrop:(id)crop faceCropFaceLocalIdentifier:(id *)identifier error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  cropCopy = crop;
   v24 = 0;
-  v9 = [(VCPFaceCropManager *)self _faceFromFaceCrop:v8 error:&v24];
+  v9 = [(VCPFaceCropManager *)self _faceFromFaceCrop:cropCopy error:&v24];
   v10 = v24;
   v11 = v10;
   if (v9)
   {
     v23 = v10;
-    v12 = [(VCPFaceCropManager *)self _associateFace:v9 withFaceCrop:v8 error:&v23];
+    v12 = [(VCPFaceCropManager *)self _associateFace:v9 withFaceCrop:cropCopy error:&v23];
     v13 = v23;
 
     v14 = v12 != 0;
     if (v12)
     {
-      if (a4)
+      if (identifier)
       {
         v15 = v12;
-        *a4 = v12;
+        *identifier = v12;
       }
 
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v16 = [v8 localIdentifier];
+        localIdentifier = [cropCopy localIdentifier];
         *buf = 138412546;
-        v26 = v16;
+        v26 = localIdentifier;
         v27 = 2112;
         v28 = v12;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[FacecropManager][%@] Associated with face %@", buf, 0x16u);
@@ -1343,21 +1343,21 @@ void __55__VCPFaceCropManager__clearDirtyStateOnFaceCrop_error___block_invoke(ui
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v19 = [v8 localIdentifier];
-        v20 = [v9 localIdentifier];
+        localIdentifier2 = [cropCopy localIdentifier];
+        localIdentifier3 = [v9 localIdentifier];
         *buf = 138412802;
-        v26 = v19;
+        v26 = localIdentifier2;
         v27 = 2112;
-        v28 = v20;
+        v28 = localIdentifier3;
         v29 = 2112;
         v30 = v13;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[FaceCropManager][%@] Failed to associate with face %@ - %@", buf, 0x20u);
       }
 
-      if (a5)
+      if (error)
       {
         v21 = v13;
-        *a5 = v13;
+        *error = v13;
       }
     }
 
@@ -1368,49 +1368,49 @@ void __55__VCPFaceCropManager__clearDirtyStateOnFaceCrop_error___block_invoke(ui
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v17 = [v8 localIdentifier];
+      localIdentifier4 = [cropCopy localIdentifier];
       *buf = 138412546;
-      v26 = v17;
+      v26 = localIdentifier4;
       v27 = 2112;
       v28 = v11;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[FaceCropManager][%@] Failed to faceprint - %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v18 = v11;
-      *a5 = v11;
+      *error = v11;
     }
 
-    [(VCPFaceCropManager *)self _clearDirtyStateOnFaceCrop:v8 error:a5];
+    [(VCPFaceCropManager *)self _clearDirtyStateOnFaceCrop:cropCopy error:error];
     v14 = 0;
   }
 
   return v14;
 }
 
-- (BOOL)_updateFaceprint:(id)a3 forFace:(id)a4 error:(id *)a5
+- (BOOL)_updateFaceprint:(id)faceprint forFace:(id)face error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  faceprintCopy = faceprint;
+  faceCopy = face;
   v10 = objc_alloc(MEMORY[0x1E6978818]);
-  v11 = [v8 data];
-  v12 = [v10 initWithFaceprintData:v11 faceprintVersion:{objc_msgSend(v8, "version")}];
+  data = [faceprintCopy data];
+  v12 = [v10 initWithFaceprintData:data faceprintVersion:{objc_msgSend(faceprintCopy, "version")}];
 
   if (v12)
   {
-    v13 = [v9 photoLibrary];
-    v14 = [v13 librarySpecificFetchOptions];
+    photoLibrary = [faceCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v14 setMinimumUnverifiedFaceCount:0];
-    [v14 setMinimumVerifiedFaceCount:0];
-    [v14 setIncludeTorsoOnlyPerson:1];
-    [v14 setIncludedDetectionTypes:&unk_1F49BECE0];
-    v15 = [MEMORY[0x1E6978978] fetchPersonWithFace:v9 options:v14];
-    v16 = [v15 firstObject];
+    [librarySpecificFetchOptions setMinimumUnverifiedFaceCount:0];
+    [librarySpecificFetchOptions setMinimumVerifiedFaceCount:0];
+    [librarySpecificFetchOptions setIncludeTorsoOnlyPerson:1];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BECE0];
+    v15 = [MEMORY[0x1E6978978] fetchPersonWithFace:faceCopy options:librarySpecificFetchOptions];
+    firstObject = [v15 firstObject];
 
-    if ([v16 type] == -1 && objc_msgSend(v16, "verifiedType") == 2)
+    if ([firstObject type] == -1 && objc_msgSend(firstObject, "verifiedType") == 2)
     {
       v17 = -1;
     }
@@ -1424,20 +1424,20 @@ void __55__VCPFaceCropManager__clearDirtyStateOnFaceCrop_error___block_invoke(ui
     aBlock[1] = 3221225472;
     aBlock[2] = __53__VCPFaceCropManager__updateFaceprint_forFace_error___block_invoke;
     aBlock[3] = &unk_1E834D7D0;
-    v23 = v9;
+    v23 = faceCopy;
     v24 = v12;
     v25 = v17;
     v18 = _Block_copy(aBlock);
-    v19 = [(PHPhotoLibrary *)self->_photoLibrary performChangesAndWait:v18 error:a5];
+    v19 = [(PHPhotoLibrary *)self->_photoLibrary performChangesAndWait:v18 error:error];
   }
 
   else
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v20 = [v9 localIdentifier];
+      localIdentifier = [faceCopy localIdentifier];
       *buf = 138412290;
-      v27 = v20;
+      v27 = localIdentifier;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[FacecropManager] Failed to retreive faceprint for face %@", buf, 0xCu);
     }
 
@@ -1463,18 +1463,18 @@ void __53__VCPFaceCropManager__updateFaceprint_forFace_error___block_invoke(uint
   }
 }
 
-- (BOOL)_updateFace:(id)a3 withFaceCrop:(id)a4 error:(id *)a5
+- (BOOL)_updateFace:(id)face withFaceCrop:(id)crop error:(id *)error
 {
-  v8 = a3;
+  faceCopy = face;
   v19 = 0;
-  v9 = [(VCPFaceCropManager *)self _faceFromFaceCrop:a4 error:&v19];
+  v9 = [(VCPFaceCropManager *)self _faceFromFaceCrop:crop error:&v19];
   v10 = v19;
   v11 = v10;
   if (v9)
   {
-    v12 = [v9 imageprintWrapper];
+    imageprintWrapper = [v9 imageprintWrapper];
     v18 = v11;
-    v13 = [(VCPFaceCropManager *)self _updateFaceprint:v12 forFace:v8 error:&v18];
+    v13 = [(VCPFaceCropManager *)self _updateFaceprint:imageprintWrapper forFace:faceCopy error:&v18];
     v14 = v18;
 
     if (v13)
@@ -1485,7 +1485,7 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (!a5)
+    if (!error)
     {
       v15 = 0;
       goto LABEL_11;
@@ -1496,7 +1496,7 @@ LABEL_11:
 
   else
   {
-    if (!a5)
+    if (!error)
     {
       v15 = 0;
       goto LABEL_12;
@@ -1507,26 +1507,26 @@ LABEL_11:
 
   v16 = v14;
   v15 = 0;
-  *a5 = v14;
+  *error = v14;
 LABEL_12:
 
   return v15;
 }
 
-- (BOOL)_processDirtyFaceCrop:(id)a3 faceCropFaceLocalIdentifier:(id *)a4 error:(id *)a5
+- (BOOL)_processDirtyFaceCrop:(id)crop faceCropFaceLocalIdentifier:(id *)identifier error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [v8 resourceData];
-  [VCPFaceCropUtils faceCropDimensionsFromFaceCrop:v9 error:a5];
+  cropCopy = crop;
+  resourceData = [cropCopy resourceData];
+  [VCPFaceCropUtils faceCropDimensionsFromFaceCrop:resourceData error:error];
   v11 = v10;
   v13 = v12;
 
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    v14 = [v8 localIdentifier];
+    localIdentifier = [cropCopy localIdentifier];
     *buf = 138412802;
-    v32 = v14;
+    v32 = localIdentifier;
     v33 = 2048;
     *v34 = v11;
     *&v34[8] = 2048;
@@ -1534,66 +1534,66 @@ LABEL_12:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[FaceCropManager][%@] Analyzing facecrop (%.0fx%.0f)", buf, 0x20u);
   }
 
-  if (![v8 state])
+  if (![cropCopy state])
   {
-    v18 = [v8 resourceData];
-    v19 = v18 == 0;
+    resourceData2 = [cropCopy resourceData];
+    v19 = resourceData2 == 0;
 
     if (v19)
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v26 = [v8 localIdentifier];
+        localIdentifier2 = [cropCopy localIdentifier];
         *buf = 138412290;
-        v32 = v26;
+        v32 = localIdentifier2;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[FaceCropManager][%@] FaceCrop does not have data", buf, 0xCu);
       }
     }
 
     else
     {
-      v20 = [(VCPFaceCropManager *)self _faceAssociatedWithFaceCrop:v8];
+      v20 = [(VCPFaceCropManager *)self _faceAssociatedWithFaceCrop:cropCopy];
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v21 = [v8 localIdentifier];
-        v22 = [v20 localIdentifier];
+        localIdentifier3 = [cropCopy localIdentifier];
+        localIdentifier4 = [v20 localIdentifier];
         *buf = 138412546;
-        v32 = v21;
+        v32 = localIdentifier3;
         v33 = 2112;
-        *v34 = v22;
+        *v34 = localIdentifier4;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[FaceCropManager][%@] existing face %@", buf, 0x16u);
       }
 
       if (!v20)
       {
-        v25 = [(VCPFaceCropManager *)self _generateAndAssociateFaceprintedFaceForFaceCrop:v8 faceCropFaceLocalIdentifier:a4 error:a5];
+        v25 = [(VCPFaceCropManager *)self _generateAndAssociateFaceprintedFaceForFaceCrop:cropCopy faceCropFaceLocalIdentifier:identifier error:error];
 LABEL_22:
         v17 = v25;
         goto LABEL_28;
       }
 
       v30 = 0;
-      v23 = [(VCPFaceCropManager *)self _updateFace:v20 withFaceCrop:v8 error:&v30];
+      v23 = [(VCPFaceCropManager *)self _updateFace:v20 withFaceCrop:cropCopy error:&v30];
       v24 = v30;
       if (v23)
       {
-        if (a4)
+        if (identifier)
         {
-          *a4 = [v20 localIdentifier];
+          *identifier = [v20 localIdentifier];
         }
 
-        v25 = [(VCPFaceCropManager *)self _clearDirtyStateOnFaceCrop:v8 error:a5];
+        v25 = [(VCPFaceCropManager *)self _clearDirtyStateOnFaceCrop:cropCopy error:error];
         goto LABEL_22;
       }
 
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v27 = [v20 localIdentifier];
-        v28 = [v20 localIdentifier];
+        localIdentifier5 = [v20 localIdentifier];
+        localIdentifier6 = [v20 localIdentifier];
         *buf = 138412802;
-        v32 = v27;
+        v32 = localIdentifier5;
         v33 = 2112;
-        *v34 = v28;
+        *v34 = localIdentifier6;
         *&v34[8] = 2112;
         v35 = v24;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[FaceCropManager][%@] Failed to update associated face %@ - %@", buf, 0x20u);
@@ -1606,12 +1606,12 @@ LABEL_22:
 
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    v15 = [v8 localIdentifier];
-    v16 = [v8 state];
+    localIdentifier7 = [cropCopy localIdentifier];
+    state = [cropCopy state];
     *buf = 138412802;
-    v32 = v15;
+    v32 = localIdentifier7;
     v33 = 1024;
-    *v34 = v16;
+    *v34 = state;
     *&v34[4] = 1024;
     *&v34[6] = 0;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[FaceCropManager][%@] Not in a dirty state (state:%d, expect:%d); skipping process", buf, 0x18u);
@@ -1623,17 +1623,17 @@ LABEL_28:
   return v17;
 }
 
-- (id)_vcpFaceCropFromPHFaceCrop:(id)a3
+- (id)_vcpFaceCropFromPHFaceCrop:(id)crop
 {
-  v3 = a3;
-  v4 = [v3 localIdentifier];
-  if (v4)
+  cropCopy = crop;
+  localIdentifier = [cropCopy localIdentifier];
+  if (localIdentifier)
   {
     v5 = [VCPFaceCrop alloc];
-    v6 = [v3 resourceData];
-    v7 = [(VCPFaceCrop *)v5 initWithLocalIdentifier:v4 faceCropData:v6];
+    resourceData = [cropCopy resourceData];
+    v7 = [(VCPFaceCrop *)v5 initWithLocalIdentifier:localIdentifier faceCropData:resourceData];
 
-    -[VCPFaceCrop setState:](v7, "setState:", [v3 state]);
+    -[VCPFaceCrop setState:](v7, "setState:", [cropCopy state]);
   }
 
   else
@@ -1644,19 +1644,19 @@ LABEL_28:
   return v7;
 }
 
-- (BOOL)generateAndPersistFaceCropsForFaces:(id)a3 withAsset:(id)a4 resource:(id)a5 resourceURL:(id)a6 error:(id *)a7
+- (BOOL)generateAndPersistFaceCropsForFaces:(id)faces withAsset:(id)asset resource:(id)resource resourceURL:(id)l error:(id *)error
 {
   v64 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v43 = a4;
-  v40 = a5;
-  v42 = a6;
-  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  facesCopy = faces;
+  assetCopy = asset;
+  resourceCopy = resource;
+  lCopy = l;
+  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(facesCopy, "count")}];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v12 = v10;
+  v12 = facesCopy;
   v13 = [v12 countByEnumeratingWithState:&v48 objects:v63 count:16];
   if (v13)
   {
@@ -1685,7 +1685,7 @@ LABEL_28:
 
   if ([v11 count])
   {
-    v41 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
@@ -1710,50 +1710,50 @@ LABEL_28:
           {
             if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
             {
-              v22 = [v43 localIdentifier];
-              v23 = [v21 localIdentifier];
+              localIdentifier = [assetCopy localIdentifier];
+              localIdentifier2 = [v21 localIdentifier];
               *buf = 138412546;
-              v53 = v22;
+              v53 = localIdentifier;
               v54 = 2112;
-              v55 = v23;
+              v55 = localIdentifier2;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[FaceCropManager][%@] Facecrop will not be generated for the manual face %@", buf, 0x16u);
             }
           }
 
           else
           {
-            v24 = [v43 creationDate];
+            creationDate = [assetCopy creationDate];
             if (_GetGroupingIdentifier(NSDate *)::dateFormatterCreationToken != -1)
             {
               [VCPFaceCropManager generateAndPersistFaceCropsForFaces:withAsset:resource:resourceURL:error:];
             }
 
-            v25 = [_GetGroupingIdentifier(NSDate *)::dateFormatterToStripTime stringFromDate:v24];
+            v25 = [_GetGroupingIdentifier(NSDate *)::dateFormatterToStripTime stringFromDate:creationDate];
 
-            v26 = [VCPFaceCrop generateFaceCropsForFace:v21 resourceURL:v42 groupingIdentifier:v25];
+            v26 = [VCPFaceCrop generateFaceCropsForFace:v21 resourceURL:lCopy groupingIdentifier:v25];
 
             if (v26)
             {
-              [v41 addObject:v26];
+              [array addObject:v26];
               [v26 imageDimensions];
               if (v27 < 128.0 || ([v26 imageDimensions], v28 < 128.0))
               {
                 if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
                 {
-                  v29 = [v43 localIdentifier];
+                  localIdentifier3 = [assetCopy localIdentifier];
                   [v26 imageDimensions];
                   v31 = v30;
                   [v26 imageDimensions];
                   *buf = 138413314;
-                  v53 = v29;
+                  v53 = localIdentifier3;
                   v54 = 2048;
                   v55 = v31;
                   v56 = 2048;
                   v57 = v32;
                   v58 = 2112;
-                  v59 = v40;
+                  v59 = resourceCopy;
                   v60 = 2112;
-                  v61 = v42;
+                  v61 = lCopy;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[FaceCropManager][%@] Too small facecrop (%.0fx%.0f) using resource %@ (%@)", buf, 0x34u);
                 }
               }
@@ -1772,25 +1772,25 @@ LABEL_28:
 
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v33 = [v43 localIdentifier];
-      v34 = [v41 count];
+      localIdentifier4 = [assetCopy localIdentifier];
+      v34 = [array count];
       *buf = 138412546;
-      v53 = v33;
+      v53 = localIdentifier4;
       v54 = 2048;
       v55 = v34;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[FaceCropManager][%@] Generated %lu facecrop(s)", buf, 0x16u);
     }
 
-    v35 = [(VCPFaceCropManager *)self _persistGeneratedFaceCrops:v41 forAsset:v43 error:a7];
+    v35 = [(VCPFaceCropManager *)self _persistGeneratedFaceCrops:array forAsset:assetCopy error:error];
   }
 
   else
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v36 = [v43 localIdentifier];
+      localIdentifier5 = [assetCopy localIdentifier];
       *buf = 138412290;
-      v53 = v36;
+      v53 = localIdentifier5;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[FaceCropManager][%@] Asset has face; skip facecrop generation", buf, 0xCu);
     }
 
@@ -1800,11 +1800,11 @@ LABEL_28:
   return v35;
 }
 
-- (int)processDirtyFaceCrops:(unint64_t *)a3 withCancelBlock:(id)a4 andExtendTimeoutBlock:(id)a5
+- (int)processDirtyFaceCrops:(unint64_t *)crops withCancelBlock:(id)block andExtendTimeoutBlock:(id)timeoutBlock
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v29 = a5;
+  blockCopy = block;
+  timeoutBlockCopy = timeoutBlock;
   v7 = VCPSignPostLog();
   v8 = os_signpost_id_generate(v7);
 
@@ -1817,8 +1817,8 @@ LABEL_28:
   }
 
   v11 = MEMORY[0x1E69787E8];
-  v12 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  v13 = [v11 fetchFaceCropsNeedingFaceDetectionWithOptions:v12];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  v13 = [v11 fetchFaceCropsNeedingFaceDetectionWithOptions:librarySpecificFetchOptions];
 
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
@@ -1833,12 +1833,12 @@ LABEL_28:
   while (v15 < [v13 count])
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v6[2](v6);
+    v18 = blockCopy[2](blockCopy);
     if ((v18 & 1) == 0)
     {
-      if (v29)
+      if (timeoutBlockCopy)
       {
-        v29[2]();
+        timeoutBlockCopy[2]();
       }
 
       v19 = [v13 objectAtIndexedSubscript:v15];
@@ -1852,9 +1852,9 @@ LABEL_28:
 
       else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v22 = [v19 localIdentifier];
+        localIdentifier = [v19 localIdentifier];
         *buf = 138412546;
-        v32 = v22;
+        v32 = localIdentifier;
         v33 = 2112;
         v34 = v21;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[FaceCropManager] Failed to process dirty facecrop %@ - %@", buf, 0x16u);
@@ -1870,7 +1870,7 @@ LABEL_28:
     }
   }
 
-  *a3 = v16;
+  *crops = v16;
   v24 = VCPSignPostLog();
   v25 = v24;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))

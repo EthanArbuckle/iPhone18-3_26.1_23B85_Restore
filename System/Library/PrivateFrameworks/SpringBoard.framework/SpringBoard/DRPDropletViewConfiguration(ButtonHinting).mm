@@ -7,12 +7,12 @@
 + (id)hardwareButtonHintForButton:()ButtonHinting stage:keylineStyle:rectEdge:buttonRect:canvasSize:
 {
   v22 = +[SBHardwareButtonHintPrototypeDomain rootSettings];
-  v76.origin.x = a1;
+  v76.origin.x = self;
   v76.origin.y = a2;
   v76.size.width = a3;
   v76.size.height = a4;
   MidY = CGRectGetMidY(v76);
-  v77.origin.x = a1;
+  v77.origin.x = self;
   v77.origin.y = a2;
   v77.size.width = a3;
   v77.size.height = a4;
@@ -220,28 +220,28 @@ LABEL_37:
   v74[2] = *(MEMORY[0x277CD9DE8] + 32);
   v74[3] = v66;
   v29 = [MEMORY[0x277D069F8] edgeAdaptiveKeylineWithCanvasSize:a12 edge:v74 protrusionFromEdge:a5 centerAlongEdge:a6 containerSize:v27 containerCornerRadius:MidY transform3D:v26 dropletRadius:{Height, v25, v28}];
-  v67 = [v29 keylineStyle];
+  keylineStyle = [v29 keylineStyle];
   [v22 allButtonKeylineWidth];
-  [v67 setOuterWidth:?];
+  [keylineStyle setOuterWidth:?];
 
   if ((a11 == 2 || a11 == 1 && a9 == 2) && a10)
   {
     [v29 changeToIntelligentLightStyle:a11 preferAudioReactivity:1 canvasSize:{a5, a6}];
-    v68 = [v22 intelligentEdgeLightKeylineStyleBehaviorSettings];
-    [v29 setBehaviorSettingsForKeyPath:@"keylineStyle" behaviorSettings:v68];
+    intelligentEdgeLightKeylineStyleBehaviorSettings = [v22 intelligentEdgeLightKeylineStyleBehaviorSettings];
+    [v29 setBehaviorSettingsForKeyPath:@"keylineStyle" behaviorSettings:intelligentEdgeLightKeylineStyleBehaviorSettings];
   }
 
-  v69 = [v22 centerXBehaviorSettings];
-  [v29 setBehaviorSettingsForKeyPath:@"centerX" behaviorSettings:v69];
+  centerXBehaviorSettings = [v22 centerXBehaviorSettings];
+  [v29 setBehaviorSettingsForKeyPath:@"centerX" behaviorSettings:centerXBehaviorSettings];
 
-  v70 = [v22 centerYBehaviorSettings];
-  [v29 setBehaviorSettingsForKeyPath:@"centerY" behaviorSettings:v70];
+  centerYBehaviorSettings = [v22 centerYBehaviorSettings];
+  [v29 setBehaviorSettingsForKeyPath:@"centerY" behaviorSettings:centerYBehaviorSettings];
 
-  v71 = [v22 containerWidthBehaviorSettings];
-  [v29 setBehaviorSettingsForKeyPath:@"containerWidth" behaviorSettings:v71];
+  containerWidthBehaviorSettings = [v22 containerWidthBehaviorSettings];
+  [v29 setBehaviorSettingsForKeyPath:@"containerWidth" behaviorSettings:containerWidthBehaviorSettings];
 
-  v72 = [v22 containerHeightBehaviorSettings];
-  [v29 setBehaviorSettingsForKeyPath:@"containerHeight" behaviorSettings:v72];
+  containerHeightBehaviorSettings = [v22 containerHeightBehaviorSettings];
+  [v29 setBehaviorSettingsForKeyPath:@"containerHeight" behaviorSettings:containerHeightBehaviorSettings];
 
 LABEL_43:
 

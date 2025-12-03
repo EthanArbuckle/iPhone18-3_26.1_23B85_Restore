@@ -1,20 +1,20 @@
 @interface AWDSMSSentMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCtError:(BOOL)a3;
-- (void)setHasFzError:(BOOL)a3;
-- (void)setHasHasAttachments:(BOOL)a3;
-- (void)setHasIsGroupMessage:(BOOL)a3;
-- (void)setHasIsToEmail:(BOOL)a3;
-- (void)setHasIsToPhoneNumber:(BOOL)a3;
-- (void)setHasSendDuration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasCtError:(BOOL)error;
+- (void)setHasFzError:(BOOL)error;
+- (void)setHasHasAttachments:(BOOL)attachments;
+- (void)setHasIsGroupMessage:(BOOL)message;
+- (void)setHasIsToEmail:(BOOL)email;
+- (void)setHasIsToPhoneNumber:(BOOL)number;
+- (void)setHasSendDuration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSMSSentMessage
@@ -27,9 +27,9 @@
   [(AWDSMSSentMessage *)&v3 dealloc];
 }
 
-- (void)setHasFzError:(BOOL)a3
+- (void)setHasFzError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 4;
   }
@@ -42,9 +42,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCtError:(BOOL)a3
+- (void)setHasCtError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 2;
   }
@@ -57,9 +57,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsGroupMessage:(BOOL)a3
+- (void)setHasIsGroupMessage:(BOOL)message
 {
-  if (a3)
+  if (message)
   {
     v3 = 16;
   }
@@ -72,9 +72,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsToPhoneNumber:(BOOL)a3
+- (void)setHasIsToPhoneNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 64;
   }
@@ -87,9 +87,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsToEmail:(BOOL)a3
+- (void)setHasIsToEmail:(BOOL)email
 {
-  if (a3)
+  if (email)
   {
     v3 = 32;
   }
@@ -102,9 +102,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasHasAttachments:(BOOL)a3
+- (void)setHasHasAttachments:(BOOL)attachments
 {
-  if (a3)
+  if (attachments)
   {
     v3 = 8;
   }
@@ -117,9 +117,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSendDuration:(BOOL)a3
+- (void)setHasSendDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 0x80;
   }
@@ -141,12 +141,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   has = self->_has;
@@ -252,7 +252,7 @@ LABEL_10:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_guid)
   {
@@ -370,18 +370,18 @@ LABEL_19:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 52) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 52) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -400,8 +400,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(a3 + 5) = self->_fzError;
-  *(a3 + 52) |= 4u;
+  *(to + 5) = self->_fzError;
+  *(to + 52) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -415,8 +415,8 @@ LABEL_6:
   }
 
 LABEL_14:
-  *(a3 + 4) = self->_ctError;
-  *(a3 + 52) |= 2u;
+  *(to + 4) = self->_ctError;
+  *(to + 52) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -430,8 +430,8 @@ LABEL_7:
   }
 
 LABEL_15:
-  *(a3 + 9) = self->_isGroupMessage;
-  *(a3 + 52) |= 0x10u;
+  *(to + 9) = self->_isGroupMessage;
+  *(to + 52) |= 0x10u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -445,8 +445,8 @@ LABEL_8:
   }
 
 LABEL_16:
-  *(a3 + 11) = self->_isToPhoneNumber;
-  *(a3 + 52) |= 0x40u;
+  *(to + 11) = self->_isToPhoneNumber;
+  *(to + 52) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -460,8 +460,8 @@ LABEL_9:
   }
 
 LABEL_17:
-  *(a3 + 10) = self->_isToEmail;
-  *(a3 + 52) |= 0x20u;
+  *(to + 10) = self->_isToEmail;
+  *(to + 52) |= 0x20u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -472,25 +472,25 @@ LABEL_10:
     }
 
 LABEL_19:
-    *(a3 + 12) = self->_sendDuration;
-    *(a3 + 52) |= 0x80u;
+    *(to + 12) = self->_sendDuration;
+    *(to + 52) |= 0x80u;
     return;
   }
 
 LABEL_18:
-  *(a3 + 8) = self->_hasAttachments;
-  *(a3 + 52) |= 8u;
+  *(to + 8) = self->_hasAttachments;
+  *(to + 52) |= 8u;
   if ((*&self->_has & 0x80) != 0)
   {
     goto LABEL_19;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 24) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v5 + 24) = [(NSString *)self->_guid copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -602,23 +602,23 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     guid = self->_guid;
-    if (!(guid | *(a3 + 3)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
+    if (!(guid | *(equal + 3)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
     {
       if (*&self->_has)
       {
-        if ((*(a3 + 52) & 1) == 0 || self->_timestamp != *(a3 + 1))
+        if ((*(equal + 52) & 1) == 0 || self->_timestamp != *(equal + 1))
         {
           goto LABEL_43;
         }
       }
 
-      else if (*(a3 + 52))
+      else if (*(equal + 52))
       {
 LABEL_43:
         LOBYTE(v5) = 0;
@@ -627,86 +627,86 @@ LABEL_43:
 
       if ((*&self->_has & 4) != 0)
       {
-        if ((*(a3 + 52) & 4) == 0 || self->_fzError != *(a3 + 5))
+        if ((*(equal + 52) & 4) == 0 || self->_fzError != *(equal + 5))
         {
           goto LABEL_43;
         }
       }
 
-      else if ((*(a3 + 52) & 4) != 0)
+      else if ((*(equal + 52) & 4) != 0)
       {
         goto LABEL_43;
       }
 
       if ((*&self->_has & 2) != 0)
       {
-        if ((*(a3 + 52) & 2) == 0 || self->_ctError != *(a3 + 4))
+        if ((*(equal + 52) & 2) == 0 || self->_ctError != *(equal + 4))
         {
           goto LABEL_43;
         }
       }
 
-      else if ((*(a3 + 52) & 2) != 0)
+      else if ((*(equal + 52) & 2) != 0)
       {
         goto LABEL_43;
       }
 
       if ((*&self->_has & 0x10) != 0)
       {
-        if ((*(a3 + 52) & 0x10) == 0 || self->_isGroupMessage != *(a3 + 9))
+        if ((*(equal + 52) & 0x10) == 0 || self->_isGroupMessage != *(equal + 9))
         {
           goto LABEL_43;
         }
       }
 
-      else if ((*(a3 + 52) & 0x10) != 0)
+      else if ((*(equal + 52) & 0x10) != 0)
       {
         goto LABEL_43;
       }
 
       if ((*&self->_has & 0x40) != 0)
       {
-        if ((*(a3 + 52) & 0x40) == 0 || self->_isToPhoneNumber != *(a3 + 11))
+        if ((*(equal + 52) & 0x40) == 0 || self->_isToPhoneNumber != *(equal + 11))
         {
           goto LABEL_43;
         }
       }
 
-      else if ((*(a3 + 52) & 0x40) != 0)
+      else if ((*(equal + 52) & 0x40) != 0)
       {
         goto LABEL_43;
       }
 
       if ((*&self->_has & 0x20) != 0)
       {
-        if ((*(a3 + 52) & 0x20) == 0 || self->_isToEmail != *(a3 + 10))
+        if ((*(equal + 52) & 0x20) == 0 || self->_isToEmail != *(equal + 10))
         {
           goto LABEL_43;
         }
       }
 
-      else if ((*(a3 + 52) & 0x20) != 0)
+      else if ((*(equal + 52) & 0x20) != 0)
       {
         goto LABEL_43;
       }
 
       if ((*&self->_has & 8) != 0)
       {
-        if ((*(a3 + 52) & 8) == 0 || self->_hasAttachments != *(a3 + 8))
+        if ((*(equal + 52) & 8) == 0 || self->_hasAttachments != *(equal + 8))
         {
           goto LABEL_43;
         }
       }
 
-      else if ((*(a3 + 52) & 8) != 0)
+      else if ((*(equal + 52) & 8) != 0)
       {
         goto LABEL_43;
       }
 
-      LOBYTE(v5) = *(a3 + 52) >= 0;
+      LOBYTE(v5) = *(equal + 52) >= 0;
       if ((*&self->_has & 0x80) != 0)
       {
-        if ((*(a3 + 52) & 0x80) == 0 || self->_sendDuration != *(a3 + 12))
+        if ((*(equal + 52) & 0x80) == 0 || self->_sendDuration != *(equal + 12))
         {
           goto LABEL_43;
         }
@@ -830,19 +830,19 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDSMSSentMessage *)self setGuid:?];
   }
 
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 52);
+    v5 = *(from + 52);
     if ((v5 & 4) == 0)
     {
 LABEL_5:
@@ -855,14 +855,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(a3 + 52) & 4) == 0)
+  else if ((*(from + 52) & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_fzError = *(a3 + 5);
+  self->_fzError = *(from + 5);
   *&self->_has |= 4u;
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -875,9 +875,9 @@ LABEL_6:
   }
 
 LABEL_14:
-  self->_ctError = *(a3 + 4);
+  self->_ctError = *(from + 4);
   *&self->_has |= 2u;
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 0x10) == 0)
   {
 LABEL_7:
@@ -890,9 +890,9 @@ LABEL_7:
   }
 
 LABEL_15:
-  self->_isGroupMessage = *(a3 + 9);
+  self->_isGroupMessage = *(from + 9);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 0x40) == 0)
   {
 LABEL_8:
@@ -905,9 +905,9 @@ LABEL_8:
   }
 
 LABEL_16:
-  self->_isToPhoneNumber = *(a3 + 11);
+  self->_isToPhoneNumber = *(from + 11);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 0x20) == 0)
   {
 LABEL_9:
@@ -920,9 +920,9 @@ LABEL_9:
   }
 
 LABEL_17:
-  self->_isToEmail = *(a3 + 10);
+  self->_isToEmail = *(from + 10);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 8) == 0)
   {
 LABEL_10:
@@ -932,15 +932,15 @@ LABEL_10:
     }
 
 LABEL_19:
-    self->_sendDuration = *(a3 + 12);
+    self->_sendDuration = *(from + 12);
     *&self->_has |= 0x80u;
     return;
   }
 
 LABEL_18:
-  self->_hasAttachments = *(a3 + 8);
+  self->_hasAttachments = *(from + 8);
   *&self->_has |= 8u;
-  if ((*(a3 + 52) & 0x80) != 0)
+  if ((*(from + 52) & 0x80) != 0)
   {
     goto LABEL_19;
   }

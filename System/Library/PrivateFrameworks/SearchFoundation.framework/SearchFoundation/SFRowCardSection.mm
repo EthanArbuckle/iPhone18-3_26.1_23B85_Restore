@@ -1,12 +1,12 @@
 @interface SFRowCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFRowCardSection)initWithCoder:(id)a3;
-- (SFRowCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFRowCardSection)initWithCoder:(id)coder;
+- (SFRowCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFRowCardSection
@@ -16,68 +16,68 @@
   v43.receiver = self;
   v43.super_class = SFRowCardSection;
   v3 = [(SFCardSection *)&v43 hash];
-  v42 = [(SFCardSection *)self punchoutOptions];
-  v4 = [v42 hash];
-  v41 = [(SFCardSection *)self punchoutPickerTitle];
-  v5 = v4 ^ [v41 hash];
-  v40 = [(SFCardSection *)self punchoutPickerDismissText];
-  v6 = v5 ^ [v40 hash];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v4 = [punchoutOptions hash];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v5 = v4 ^ [punchoutPickerTitle hash];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v6 = v5 ^ [punchoutPickerDismissText hash];
   v7 = v6 ^ [(SFCardSection *)self canBeHidden];
   v8 = v7 ^ [(SFCardSection *)self hasTopPadding]^ v3;
-  v9 = [(SFCardSection *)self hasBottomPadding];
-  v39 = [(SFRowCardSection *)self type];
-  v10 = v9 ^ [v39 hash];
+  hasBottomPadding = [(SFCardSection *)self hasBottomPadding];
+  type = [(SFRowCardSection *)self type];
+  v10 = hasBottomPadding ^ [type hash];
   v11 = v10 ^ [(SFCardSection *)self separatorStyle];
-  v38 = [(SFCardSection *)self backgroundColor];
-  v12 = v11 ^ [v38 hash];
-  v37 = [(SFRowCardSection *)self image];
-  v13 = v8 ^ v12 ^ [v37 hash];
-  v14 = [(SFRowCardSection *)self imageIsRightAligned];
-  v15 = [(SFRowCardSection *)self leadingText];
-  v16 = v14 ^ [v15 hash];
-  v17 = [(SFRowCardSection *)self trailingText];
-  v18 = v16 ^ [v17 hash];
-  v19 = [(SFRowCardSection *)self attributionImage];
-  v20 = v18 ^ [v19 hash];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v12 = v11 ^ [backgroundColor hash];
+  image = [(SFRowCardSection *)self image];
+  v13 = v8 ^ v12 ^ [image hash];
+  imageIsRightAligned = [(SFRowCardSection *)self imageIsRightAligned];
+  leadingText = [(SFRowCardSection *)self leadingText];
+  v16 = imageIsRightAligned ^ [leadingText hash];
+  trailingText = [(SFRowCardSection *)self trailingText];
+  v18 = v16 ^ [trailingText hash];
+  attributionImage = [(SFRowCardSection *)self attributionImage];
+  v20 = v18 ^ [attributionImage hash];
   v21 = [(SFRowCardSection *)self key];
   v22 = v20 ^ [v21 hash];
   v36 = v13 ^ v22 ^ [(SFRowCardSection *)self keyNoWrap];
-  v23 = [(SFRowCardSection *)self keyWeight];
-  v24 = [v23 hash];
-  v25 = [(SFRowCardSection *)self value];
-  v26 = v24 ^ [v25 hash];
+  keyWeight = [(SFRowCardSection *)self keyWeight];
+  v24 = [keyWeight hash];
+  value = [(SFRowCardSection *)self value];
+  v26 = v24 ^ [value hash];
   v27 = v26 ^ [(SFRowCardSection *)self valueNoWrap];
-  v28 = [(SFRowCardSection *)self valueWeight];
-  v29 = v27 ^ [v28 hash];
+  valueWeight = [(SFRowCardSection *)self valueWeight];
+  v29 = v27 ^ [valueWeight hash];
   v30 = v29 ^ [(SFRowCardSection *)self cardPaddingBottom];
-  v31 = [(SFRowCardSection *)self leadingSubtitle];
-  v32 = v30 ^ [v31 hash];
-  v33 = [(SFRowCardSection *)self trailingSubtitle];
-  v34 = v32 ^ [v33 hash];
+  leadingSubtitle = [(SFRowCardSection *)self leadingSubtitle];
+  v32 = v30 ^ [leadingSubtitle hash];
+  trailingSubtitle = [(SFRowCardSection *)self trailingSubtitle];
+  v34 = v32 ^ [trailingSubtitle hash];
 
   return v36 ^ v34;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
     goto LABEL_99;
   }
 
-  if (![(SFRowCardSection *)v4 isMemberOfClass:objc_opt_class()]|| (v162.receiver = self, v162.super_class = SFRowCardSection, ![(SFCardSection *)&v162 isEqual:v4]))
+  if (![(SFRowCardSection *)equalCopy isMemberOfClass:objc_opt_class()]|| (v162.receiver = self, v162.super_class = SFRowCardSection, ![(SFCardSection *)&v162 isEqual:equalCopy]))
   {
     v19 = 0;
     goto LABEL_99;
   }
 
-  v5 = v4;
-  v159 = [(SFCardSection *)self punchoutOptions];
-  v158 = [(SFCardSection *)v5 punchoutOptions];
-  v156 = v158 == 0;
-  v157 = v159 != 0;
+  v5 = equalCopy;
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  punchoutOptions2 = [(SFCardSection *)v5 punchoutOptions];
+  v156 = punchoutOptions2 == 0;
+  v157 = punchoutOptions != 0;
   if (v157 == v156)
   {
     v155 = 0uLL;
@@ -107,15 +107,15 @@
     goto LABEL_16;
   }
 
-  v7 = [(SFCardSection *)self punchoutOptions];
-  v8 = v7 != 0;
-  v143 = v7;
-  if (v7)
+  punchoutOptions3 = [(SFCardSection *)self punchoutOptions];
+  v8 = punchoutOptions3 != 0;
+  v143 = punchoutOptions3;
+  if (punchoutOptions3)
   {
-    v9 = [(SFCardSection *)self punchoutOptions];
+    punchoutOptions4 = [(SFCardSection *)self punchoutOptions];
     [(SFCardSection *)v5 punchoutOptions];
-    v138 = v139 = v9;
-    if (![v9 isEqual:?])
+    v138 = v139 = punchoutOptions4;
+    if (![punchoutOptions4 isEqual:?])
     {
       v154 = 0uLL;
       *(&v155 + 4) = 0;
@@ -147,10 +147,10 @@
     }
   }
 
-  v141 = [(SFCardSection *)self punchoutPickerTitle];
-  v140 = [(SFCardSection *)v5 punchoutPickerTitle];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  punchoutPickerTitle2 = [(SFCardSection *)v5 punchoutPickerTitle];
   HIDWORD(v155) = v8;
-  if ((v141 != 0) == (v140 == 0))
+  if ((punchoutPickerTitle != 0) == (punchoutPickerTitle2 == 0))
   {
     *(&v155 + 4) = 0;
     v10 = 0;
@@ -180,15 +180,15 @@
     goto LABEL_16;
   }
 
-  v20 = [(SFCardSection *)self punchoutPickerTitle];
-  v21 = v20 != 0;
-  v137 = v20;
-  if (v20)
+  punchoutPickerTitle3 = [(SFCardSection *)self punchoutPickerTitle];
+  v21 = punchoutPickerTitle3 != 0;
+  v137 = punchoutPickerTitle3;
+  if (punchoutPickerTitle3)
   {
-    v22 = [(SFCardSection *)self punchoutPickerTitle];
-    v133 = [(SFCardSection *)v5 punchoutPickerTitle];
-    v134 = v22;
-    if (![v22 isEqual:?])
+    punchoutPickerTitle4 = [(SFCardSection *)self punchoutPickerTitle];
+    punchoutPickerTitle5 = [(SFCardSection *)v5 punchoutPickerTitle];
+    v134 = punchoutPickerTitle4;
+    if (![punchoutPickerTitle4 isEqual:?])
     {
       v10 = 0;
       memset(v153, 0, 24);
@@ -220,10 +220,10 @@
     }
   }
 
-  v136 = [(SFCardSection *)self punchoutPickerDismissText];
-  v135 = [(SFCardSection *)v5 punchoutPickerDismissText];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  punchoutPickerDismissText2 = [(SFCardSection *)v5 punchoutPickerDismissText];
   DWORD2(v155) = v21;
-  if ((v136 != 0) == (v135 == 0))
+  if ((punchoutPickerDismissText != 0) == (punchoutPickerDismissText2 == 0))
   {
     memset(v153, 0, 24);
     *&v155 = 0;
@@ -253,15 +253,15 @@
     goto LABEL_16;
   }
 
-  v35 = [(SFCardSection *)self punchoutPickerDismissText];
-  v36 = v35 != 0;
-  v132 = v35;
-  if (v35)
+  punchoutPickerDismissText3 = [(SFCardSection *)self punchoutPickerDismissText];
+  v36 = punchoutPickerDismissText3 != 0;
+  v132 = punchoutPickerDismissText3;
+  if (punchoutPickerDismissText3)
   {
-    v37 = [(SFCardSection *)self punchoutPickerDismissText];
-    v130 = [(SFCardSection *)v5 punchoutPickerDismissText];
-    v131 = v37;
-    if (![v37 isEqual:?])
+    punchoutPickerDismissText4 = [(SFCardSection *)self punchoutPickerDismissText];
+    punchoutPickerDismissText5 = [(SFCardSection *)v5 punchoutPickerDismissText];
+    v131 = punchoutPickerDismissText4;
+    if (![punchoutPickerDismissText4 isEqual:?])
     {
       v11 = 0;
       *&v155 = 0x100000000;
@@ -300,8 +300,8 @@
     DWORD1(v155) = 0;
   }
 
-  v38 = [(SFCardSection *)self canBeHidden];
-  if (v38 != [(SFCardSection *)v5 canBeHidden]|| (v39 = [(SFCardSection *)self hasTopPadding], v39 != [(SFCardSection *)v5 hasTopPadding]) || (v40 = [(SFCardSection *)self hasBottomPadding], v40 != [(SFCardSection *)v5 hasBottomPadding]))
+  canBeHidden = [(SFCardSection *)self canBeHidden];
+  if (canBeHidden != [(SFCardSection *)v5 canBeHidden]|| (v39 = [(SFCardSection *)self hasTopPadding], v39 != [(SFCardSection *)v5 hasTopPadding]) || (v40 = [(SFCardSection *)self hasBottomPadding], v40 != [(SFCardSection *)v5 hasBottomPadding]))
   {
     v11 = 0;
     LODWORD(v155) = 0;
@@ -332,9 +332,9 @@
     goto LABEL_16;
   }
 
-  v129 = [(SFRowCardSection *)self type];
-  v128 = [(SFRowCardSection *)v5 type];
-  if ((v129 != 0) == (v128 == 0))
+  type = [(SFRowCardSection *)self type];
+  type2 = [(SFRowCardSection *)v5 type];
+  if ((type != 0) == (type2 == 0))
   {
     v11 = 0;
     LODWORD(v155) = 0;
@@ -366,15 +366,15 @@
     goto LABEL_16;
   }
 
-  v41 = [(SFRowCardSection *)self type];
-  v42 = v41 != 0;
-  v127 = v41;
-  if (v41)
+  type3 = [(SFRowCardSection *)self type];
+  v42 = type3 != 0;
+  v127 = type3;
+  if (type3)
   {
-    v43 = [(SFRowCardSection *)self type];
-    v125 = [(SFRowCardSection *)v5 type];
-    v126 = v43;
-    if (![v43 isEqual:?])
+    type4 = [(SFRowCardSection *)self type];
+    type5 = [(SFRowCardSection *)v5 type];
+    v126 = type4;
+    if (![type4 isEqual:?])
     {
       v12 = 0;
       *(v153 + 4) = 0uLL;
@@ -414,12 +414,12 @@
     LODWORD(v155) = 0;
   }
 
-  v44 = [(SFCardSection *)self separatorStyle];
-  if (v44 == [(SFCardSection *)v5 separatorStyle])
+  separatorStyle = [(SFCardSection *)self separatorStyle];
+  if (separatorStyle == [(SFCardSection *)v5 separatorStyle])
   {
-    v124 = [(SFCardSection *)self backgroundColor];
-    v123 = [(SFCardSection *)v5 backgroundColor];
-    if ((v124 != 0) == (v123 == 0))
+    backgroundColor = [(SFCardSection *)self backgroundColor];
+    backgroundColor2 = [(SFCardSection *)v5 backgroundColor];
+    if ((backgroundColor != 0) == (backgroundColor2 == 0))
     {
       *(&v153[1] + 4) = 0;
       *(v153 + 4) = 0;
@@ -452,14 +452,14 @@
 
     else
     {
-      v45 = [(SFCardSection *)self backgroundColor];
-      *&v161[16] = v45 != 0;
-      v122 = v45;
-      if (!v45 || (-[SFCardSection backgroundColor](self, "backgroundColor"), v46 = objc_claimAutoreleasedReturnValue(), -[SFCardSection backgroundColor](v5, "backgroundColor"), v118 = objc_claimAutoreleasedReturnValue(), v119 = v46, [v46 isEqual:?]))
+      backgroundColor3 = [(SFCardSection *)self backgroundColor];
+      *&v161[16] = backgroundColor3 != 0;
+      v122 = backgroundColor3;
+      if (!backgroundColor3 || (-[SFCardSection backgroundColor](self, "backgroundColor"), v46 = objc_claimAutoreleasedReturnValue(), -[SFCardSection backgroundColor](v5, "backgroundColor"), v118 = objc_claimAutoreleasedReturnValue(), v119 = v46, [v46 isEqual:?]))
       {
-        v121 = [(SFRowCardSection *)self image];
-        v120 = [(SFRowCardSection *)v5 image];
-        if ((v121 != 0) == (v120 == 0))
+        image = [(SFRowCardSection *)self image];
+        image2 = [(SFRowCardSection *)v5 image];
+        if ((image != 0) == (image2 == 0))
         {
           v153[1] = 0;
           *&v161[8] = 0;
@@ -492,17 +492,17 @@
 
         else
         {
-          v47 = [(SFRowCardSection *)self image];
-          *&v161[12] = v47 != 0;
-          v117 = v47;
-          if (!v47 || (-[SFRowCardSection image](self, "image"), v48 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection image](v5, "image"), v115 = objc_claimAutoreleasedReturnValue(), v116 = v48, [v48 isEqual:?]))
+          image3 = [(SFRowCardSection *)self image];
+          *&v161[12] = image3 != 0;
+          v117 = image3;
+          if (!image3 || (-[SFRowCardSection image](self, "image"), v48 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection image](v5, "image"), v115 = objc_claimAutoreleasedReturnValue(), v116 = v48, [v48 isEqual:?]))
           {
-            v49 = [(SFRowCardSection *)self imageIsRightAligned];
-            if (v49 == [(SFRowCardSection *)v5 imageIsRightAligned])
+            imageIsRightAligned = [(SFRowCardSection *)self imageIsRightAligned];
+            if (imageIsRightAligned == [(SFRowCardSection *)v5 imageIsRightAligned])
             {
-              v114 = [(SFRowCardSection *)self leadingText];
-              v113 = [(SFRowCardSection *)v5 leadingText];
-              if ((v114 != 0) == (v113 == 0))
+              leadingText = [(SFRowCardSection *)self leadingText];
+              leadingText2 = [(SFRowCardSection *)v5 leadingText];
+              if ((leadingText != 0) == (leadingText2 == 0))
               {
                 *&v161[4] = 0;
                 v147 = 0;
@@ -535,14 +535,14 @@
 
               else
               {
-                v50 = [(SFRowCardSection *)self leadingText];
-                *&v161[8] = v50 != 0;
-                v112 = v50;
-                if (!v50 || (-[SFRowCardSection leadingText](self, "leadingText"), v51 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection leadingText](v5, "leadingText"), v108 = objc_claimAutoreleasedReturnValue(), v109 = v51, [v51 isEqual:?]))
+                leadingText3 = [(SFRowCardSection *)self leadingText];
+                *&v161[8] = leadingText3 != 0;
+                v112 = leadingText3;
+                if (!leadingText3 || (-[SFRowCardSection leadingText](self, "leadingText"), v51 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection leadingText](v5, "leadingText"), v108 = objc_claimAutoreleasedReturnValue(), v109 = v51, [v51 isEqual:?]))
                 {
-                  v111 = [(SFRowCardSection *)self trailingText];
-                  v110 = [(SFRowCardSection *)v5 trailingText];
-                  if ((v111 != 0) == (v110 == 0))
+                  trailingText = [(SFRowCardSection *)self trailingText];
+                  trailingText2 = [(SFRowCardSection *)v5 trailingText];
+                  if ((trailingText != 0) == (trailingText2 == 0))
                   {
                     v151 = 0x100000000;
                     *v161 = 0;
@@ -574,14 +574,14 @@
 
                   else
                   {
-                    v52 = [(SFRowCardSection *)self trailingText];
-                    *&v161[4] = v52 != 0;
-                    v107 = v52;
-                    if (!v52 || (-[SFRowCardSection trailingText](self, "trailingText"), v53 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection trailingText](v5, "trailingText"), v103 = objc_claimAutoreleasedReturnValue(), v104 = v53, [v53 isEqual:?]))
+                    trailingText3 = [(SFRowCardSection *)self trailingText];
+                    *&v161[4] = trailingText3 != 0;
+                    v107 = trailingText3;
+                    if (!trailingText3 || (-[SFRowCardSection trailingText](self, "trailingText"), v53 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection trailingText](v5, "trailingText"), v103 = objc_claimAutoreleasedReturnValue(), v104 = v53, [v53 isEqual:?]))
                     {
-                      v106 = [(SFRowCardSection *)self attributionImage];
-                      v105 = [(SFRowCardSection *)v5 attributionImage];
-                      if ((v106 != 0) == (v105 == 0))
+                      attributionImage = [(SFRowCardSection *)self attributionImage];
+                      attributionImage2 = [(SFRowCardSection *)v5 attributionImage];
+                      if ((attributionImage != 0) == (attributionImage2 == 0))
                       {
                         v149 = 0;
                         *v161 = 0;
@@ -613,10 +613,10 @@
 
                       else
                       {
-                        v54 = [(SFRowCardSection *)self attributionImage];
-                        *v161 = v54 != 0;
-                        v102 = v54;
-                        if (!v54 || (-[SFRowCardSection attributionImage](self, "attributionImage"), v55 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection attributionImage](v5, "attributionImage"), v98 = objc_claimAutoreleasedReturnValue(), v99 = v55, [v55 isEqual:?]))
+                        attributionImage3 = [(SFRowCardSection *)self attributionImage];
+                        *v161 = attributionImage3 != 0;
+                        v102 = attributionImage3;
+                        if (!attributionImage3 || (-[SFRowCardSection attributionImage](self, "attributionImage"), v55 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection attributionImage](v5, "attributionImage"), v98 = objc_claimAutoreleasedReturnValue(), v99 = v55, [v55 isEqual:?]))
                         {
                           v101 = [(SFRowCardSection *)self key];
                           v100 = [(SFRowCardSection *)v5 key];
@@ -656,12 +656,12 @@
                             v97 = v56;
                             if (!v56 || (-[SFRowCardSection key](self, "key"), v57 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection key](v5, "key"), v95 = objc_claimAutoreleasedReturnValue(), v96 = v57, [v57 isEqual:?]))
                             {
-                              v58 = [(SFRowCardSection *)self keyNoWrap];
-                              if (v58 == [(SFRowCardSection *)v5 keyNoWrap])
+                              keyNoWrap = [(SFRowCardSection *)self keyNoWrap];
+                              if (keyNoWrap == [(SFRowCardSection *)v5 keyNoWrap])
                               {
-                                v94 = [(SFRowCardSection *)self keyWeight];
-                                v93 = [(SFRowCardSection *)v5 keyWeight];
-                                if ((v94 != 0) == (v93 == 0))
+                                keyWeight = [(SFRowCardSection *)self keyWeight];
+                                keyWeight2 = [(SFRowCardSection *)v5 keyWeight];
+                                if ((keyWeight != 0) == (keyWeight2 == 0))
                                 {
                                   v150 = 0;
                                   v146 = 0x100000000;
@@ -691,14 +691,14 @@
 
                                 else
                                 {
-                                  v59 = [(SFRowCardSection *)self keyWeight];
-                                  HIDWORD(v154) = v59 != 0;
-                                  v92 = v59;
-                                  if (!v59 || (-[SFRowCardSection keyWeight](self, "keyWeight"), v60 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection keyWeight](v5, "keyWeight"), v88 = objc_claimAutoreleasedReturnValue(), v89 = v60, [v60 isEqual:?]))
+                                  keyWeight3 = [(SFRowCardSection *)self keyWeight];
+                                  HIDWORD(v154) = keyWeight3 != 0;
+                                  v92 = keyWeight3;
+                                  if (!keyWeight3 || (-[SFRowCardSection keyWeight](self, "keyWeight"), v60 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection keyWeight](v5, "keyWeight"), v88 = objc_claimAutoreleasedReturnValue(), v89 = v60, [v60 isEqual:?]))
                                   {
-                                    v91 = [(SFRowCardSection *)self value];
-                                    v90 = [(SFRowCardSection *)v5 value];
-                                    if ((v91 != 0) == (v90 == 0))
+                                    value = [(SFRowCardSection *)self value];
+                                    value2 = [(SFRowCardSection *)v5 value];
+                                    if ((value != 0) == (value2 == 0))
                                     {
                                       v148 = 0;
                                       *(&v154 + 4) = 0;
@@ -729,17 +729,17 @@
 
                                     else
                                     {
-                                      v61 = [(SFRowCardSection *)self value];
-                                      DWORD2(v154) = v61 != 0;
-                                      v85 = v61;
-                                      if (!v61 || (-[SFRowCardSection value](self, "value"), v62 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection value](v5, "value"), v86 = objc_claimAutoreleasedReturnValue(), v87 = v62, [v62 isEqual:?]))
+                                      value3 = [(SFRowCardSection *)self value];
+                                      DWORD2(v154) = value3 != 0;
+                                      v85 = value3;
+                                      if (!value3 || (-[SFRowCardSection value](self, "value"), v62 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection value](v5, "value"), v86 = objc_claimAutoreleasedReturnValue(), v87 = v62, [v62 isEqual:?]))
                                       {
-                                        v63 = [(SFRowCardSection *)self valueNoWrap];
-                                        if (v63 == [(SFRowCardSection *)v5 valueNoWrap])
+                                        valueNoWrap = [(SFRowCardSection *)self valueNoWrap];
+                                        if (valueNoWrap == [(SFRowCardSection *)v5 valueNoWrap])
                                         {
-                                          v84 = [(SFRowCardSection *)self valueWeight];
-                                          v83 = [(SFRowCardSection *)v5 valueWeight];
-                                          if ((v84 != 0) == (v83 == 0))
+                                          valueWeight = [(SFRowCardSection *)self valueWeight];
+                                          valueWeight2 = [(SFRowCardSection *)v5 valueWeight];
+                                          if ((valueWeight != 0) == (valueWeight2 == 0))
                                           {
                                             v13 = 0;
                                             v14 = 0;
@@ -769,17 +769,17 @@
 
                                           else
                                           {
-                                            v64 = [(SFRowCardSection *)self valueWeight];
-                                            DWORD1(v154) = v64 != 0;
-                                            v80 = v64;
-                                            if (!v64 || (-[SFRowCardSection valueWeight](self, "valueWeight"), v65 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection valueWeight](v5, "valueWeight"), v81 = objc_claimAutoreleasedReturnValue(), v82 = v65, [v65 isEqual:?]))
+                                            valueWeight3 = [(SFRowCardSection *)self valueWeight];
+                                            DWORD1(v154) = valueWeight3 != 0;
+                                            v80 = valueWeight3;
+                                            if (!valueWeight3 || (-[SFRowCardSection valueWeight](self, "valueWeight"), v65 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection valueWeight](v5, "valueWeight"), v81 = objc_claimAutoreleasedReturnValue(), v82 = v65, [v65 isEqual:?]))
                                             {
-                                              v66 = [(SFRowCardSection *)self cardPaddingBottom];
-                                              if (v66 == [(SFRowCardSection *)v5 cardPaddingBottom])
+                                              cardPaddingBottom = [(SFRowCardSection *)self cardPaddingBottom];
+                                              if (cardPaddingBottom == [(SFRowCardSection *)v5 cardPaddingBottom])
                                               {
-                                                v79 = [(SFRowCardSection *)self leadingSubtitle];
-                                                v78 = [(SFRowCardSection *)v5 leadingSubtitle];
-                                                if ((v79 != 0) == (v78 == 0))
+                                                leadingSubtitle = [(SFRowCardSection *)self leadingSubtitle];
+                                                leadingSubtitle2 = [(SFRowCardSection *)v5 leadingSubtitle];
+                                                if ((leadingSubtitle != 0) == (leadingSubtitle2 == 0))
                                                 {
                                                   v15 = 0;
                                                   v16 = 0;
@@ -809,14 +809,14 @@
 
                                                 else
                                                 {
-                                                  v67 = [(SFRowCardSection *)self leadingSubtitle];
-                                                  HIDWORD(v153[3]) = v67 != 0;
-                                                  v75 = v67;
-                                                  if (!v67 || (-[SFRowCardSection leadingSubtitle](self, "leadingSubtitle"), v68 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection leadingSubtitle](v5, "leadingSubtitle"), v76 = objc_claimAutoreleasedReturnValue(), v77 = v68, [v68 isEqual:?]))
+                                                  leadingSubtitle3 = [(SFRowCardSection *)self leadingSubtitle];
+                                                  HIDWORD(v153[3]) = leadingSubtitle3 != 0;
+                                                  v75 = leadingSubtitle3;
+                                                  if (!leadingSubtitle3 || (-[SFRowCardSection leadingSubtitle](self, "leadingSubtitle"), v68 = objc_claimAutoreleasedReturnValue(), -[SFRowCardSection leadingSubtitle](v5, "leadingSubtitle"), v76 = objc_claimAutoreleasedReturnValue(), v77 = v68, [v68 isEqual:?]))
                                                   {
-                                                    v74 = [(SFRowCardSection *)self trailingSubtitle];
-                                                    v72 = [(SFRowCardSection *)v5 trailingSubtitle];
-                                                    if ((v74 != 0) == (v72 == 0))
+                                                    trailingSubtitle = [(SFRowCardSection *)self trailingSubtitle];
+                                                    trailingSubtitle2 = [(SFRowCardSection *)v5 trailingSubtitle];
+                                                    if ((trailingSubtitle != 0) == (trailingSubtitle2 == 0))
                                                     {
                                                       v17 = 0;
                                                       v18 = 0;
@@ -846,14 +846,14 @@
 
                                                     else
                                                     {
-                                                      v73 = [(SFRowCardSection *)self trailingSubtitle];
-                                                      if (v73)
+                                                      trailingSubtitle3 = [(SFRowCardSection *)self trailingSubtitle];
+                                                      if (trailingSubtitle3)
                                                       {
-                                                        v69 = [(SFRowCardSection *)self trailingSubtitle];
-                                                        v70 = [(SFRowCardSection *)v5 trailingSubtitle];
-                                                        v71 = v69;
-                                                        v19 = [v69 isEqual:v70];
-                                                        v6 = v70;
+                                                        trailingSubtitle4 = [(SFRowCardSection *)self trailingSubtitle];
+                                                        trailingSubtitle5 = [(SFRowCardSection *)v5 trailingSubtitle];
+                                                        v71 = trailingSubtitle4;
+                                                        v19 = [trailingSubtitle4 isEqual:trailingSubtitle5];
+                                                        v6 = trailingSubtitle5;
                                                         v18 = 1;
                                                         LODWORD(v154) = 1;
                                                         LODWORD(v153[3]) = 1;
@@ -881,7 +881,7 @@
 
                                                       else
                                                       {
-                                                        v73 = 0;
+                                                        trailingSubtitle3 = 0;
                                                         v18 = 0;
                                                         LODWORD(v154) = 1;
                                                         LODWORD(v153[3]) = 1;
@@ -1383,7 +1383,7 @@
 LABEL_16:
   if (v18)
   {
-    v142 = v4;
+    v142 = equalCopy;
     v23 = v19;
     v24 = v13;
     v25 = v12;
@@ -1405,7 +1405,7 @@ LABEL_16:
     v12 = v25;
     v13 = v24;
     v19 = v23;
-    v4 = v142;
+    equalCopy = v142;
     if (!v33)
     {
       goto LABEL_18;
@@ -1629,50 +1629,50 @@ LABEL_99:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v36.receiver = self;
   v36.super_class = SFRowCardSection;
-  v4 = [(SFCardSection *)&v36 copyWithZone:a3];
-  v5 = [(SFCardSection *)self punchoutOptions];
-  v6 = [v5 copy];
+  v4 = [(SFCardSection *)&v36 copyWithZone:zone];
+  punchoutOptions = [(SFCardSection *)self punchoutOptions];
+  v6 = [punchoutOptions copy];
   [v4 setPunchoutOptions:v6];
 
-  v7 = [(SFCardSection *)self punchoutPickerTitle];
-  v8 = [v7 copy];
+  punchoutPickerTitle = [(SFCardSection *)self punchoutPickerTitle];
+  v8 = [punchoutPickerTitle copy];
   [v4 setPunchoutPickerTitle:v8];
 
-  v9 = [(SFCardSection *)self punchoutPickerDismissText];
-  v10 = [v9 copy];
+  punchoutPickerDismissText = [(SFCardSection *)self punchoutPickerDismissText];
+  v10 = [punchoutPickerDismissText copy];
   [v4 setPunchoutPickerDismissText:v10];
 
   [v4 setCanBeHidden:{-[SFCardSection canBeHidden](self, "canBeHidden")}];
   [v4 setHasTopPadding:{-[SFCardSection hasTopPadding](self, "hasTopPadding")}];
   [v4 setHasBottomPadding:{-[SFCardSection hasBottomPadding](self, "hasBottomPadding")}];
-  v11 = [(SFRowCardSection *)self type];
-  v12 = [v11 copy];
+  type = [(SFRowCardSection *)self type];
+  v12 = [type copy];
   [v4 setType:v12];
 
   [v4 setSeparatorStyle:{-[SFCardSection separatorStyle](self, "separatorStyle")}];
-  v13 = [(SFCardSection *)self backgroundColor];
-  v14 = [v13 copy];
+  backgroundColor = [(SFCardSection *)self backgroundColor];
+  v14 = [backgroundColor copy];
   [v4 setBackgroundColor:v14];
 
-  v15 = [(SFRowCardSection *)self image];
-  v16 = [v15 copy];
+  image = [(SFRowCardSection *)self image];
+  v16 = [image copy];
   [v4 setImage:v16];
 
   [v4 setImageIsRightAligned:{-[SFRowCardSection imageIsRightAligned](self, "imageIsRightAligned")}];
-  v17 = [(SFRowCardSection *)self leadingText];
-  v18 = [v17 copy];
+  leadingText = [(SFRowCardSection *)self leadingText];
+  v18 = [leadingText copy];
   [v4 setLeadingText:v18];
 
-  v19 = [(SFRowCardSection *)self trailingText];
-  v20 = [v19 copy];
+  trailingText = [(SFRowCardSection *)self trailingText];
+  v20 = [trailingText copy];
   [v4 setTrailingText:v20];
 
-  v21 = [(SFRowCardSection *)self attributionImage];
-  v22 = [v21 copy];
+  attributionImage = [(SFRowCardSection *)self attributionImage];
+  v22 = [attributionImage copy];
   [v4 setAttributionImage:v22];
 
   v23 = [(SFRowCardSection *)self key];
@@ -1680,26 +1680,26 @@ LABEL_99:
   [v4 setKey:v24];
 
   [v4 setKeyNoWrap:{-[SFRowCardSection keyNoWrap](self, "keyNoWrap")}];
-  v25 = [(SFRowCardSection *)self keyWeight];
-  v26 = [v25 copy];
+  keyWeight = [(SFRowCardSection *)self keyWeight];
+  v26 = [keyWeight copy];
   [v4 setKeyWeight:v26];
 
-  v27 = [(SFRowCardSection *)self value];
-  v28 = [v27 copy];
+  value = [(SFRowCardSection *)self value];
+  v28 = [value copy];
   [v4 setValue:v28];
 
   [v4 setValueNoWrap:{-[SFRowCardSection valueNoWrap](self, "valueNoWrap")}];
-  v29 = [(SFRowCardSection *)self valueWeight];
-  v30 = [v29 copy];
+  valueWeight = [(SFRowCardSection *)self valueWeight];
+  v30 = [valueWeight copy];
   [v4 setValueWeight:v30];
 
   [v4 setCardPaddingBottom:{-[SFRowCardSection cardPaddingBottom](self, "cardPaddingBottom")}];
-  v31 = [(SFRowCardSection *)self leadingSubtitle];
-  v32 = [v31 copy];
+  leadingSubtitle = [(SFRowCardSection *)self leadingSubtitle];
+  v32 = [leadingSubtitle copy];
   [v4 setLeadingSubtitle:v32];
 
-  v33 = [(SFRowCardSection *)self trailingSubtitle];
-  v34 = [v33 copy];
+  trailingSubtitle = [(SFRowCardSection *)self trailingSubtitle];
+  v34 = [trailingSubtitle copy];
   [v4 setTrailingSubtitle:v34];
 
   return v4;
@@ -1708,189 +1708,189 @@ LABEL_99:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRowCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBRowCardSection *)v2 jsonData];
+  jsonData = [(_SFPBRowCardSection *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRowCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBRowCardSection *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRowCardSection *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFRowCardSection;
-  [(SFCardSection *)&v3 encodeWithCoder:a3];
+  [(SFCardSection *)&v3 encodeWithCoder:coder];
 }
 
-- (SFRowCardSection)initWithCoder:(id)a3
+- (SFRowCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCardSection *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCardSection alloc] initWithData:v6];
   v8 = [[SFCardSection alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v9];
+    punchoutOptions = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions];
 
-    v10 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v10];
+    punchoutPickerTitle = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle];
 
-    v11 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v11];
+    punchoutPickerDismissText = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
-    v12 = [(SFCardSection *)v8 type];
-    [(SFRowCardSection *)v5 setType:v12];
+    type = [(SFCardSection *)v8 type];
+    [(SFRowCardSection *)v5 setType:type];
 
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v13 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v13];
+    backgroundColor = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor];
 
-    v14 = [(SFCardSection *)v8 image];
-    [(SFRowCardSection *)v5 setImage:v14];
+    image = [(SFCardSection *)v8 image];
+    [(SFRowCardSection *)v5 setImage:image];
 
     [(SFRowCardSection *)v5 setImageIsRightAligned:[(SFCardSection *)v8 imageIsRightAligned]];
-    v15 = [(SFCardSection *)v8 leadingText];
-    [(SFRowCardSection *)v5 setLeadingText:v15];
+    leadingText = [(SFCardSection *)v8 leadingText];
+    [(SFRowCardSection *)v5 setLeadingText:leadingText];
 
-    v16 = [(SFCardSection *)v8 trailingText];
-    [(SFRowCardSection *)v5 setTrailingText:v16];
+    trailingText = [(SFCardSection *)v8 trailingText];
+    [(SFRowCardSection *)v5 setTrailingText:trailingText];
 
-    v17 = [(SFCardSection *)v8 attributionImage];
-    [(SFRowCardSection *)v5 setAttributionImage:v17];
+    attributionImage = [(SFCardSection *)v8 attributionImage];
+    [(SFRowCardSection *)v5 setAttributionImage:attributionImage];
 
     v18 = [(SFCardSection *)v8 key];
     [(SFRowCardSection *)v5 setKey:v18];
 
     [(SFRowCardSection *)v5 setKeyNoWrap:[(SFCardSection *)v8 keyNoWrap]];
-    v19 = [(SFCardSection *)v8 keyWeight];
-    [(SFRowCardSection *)v5 setKeyWeight:v19];
+    keyWeight = [(SFCardSection *)v8 keyWeight];
+    [(SFRowCardSection *)v5 setKeyWeight:keyWeight];
 
-    v20 = [(SFCardSection *)v8 value];
-    [(SFRowCardSection *)v5 setValue:v20];
+    value = [(SFCardSection *)v8 value];
+    [(SFRowCardSection *)v5 setValue:value];
 
     [(SFRowCardSection *)v5 setValueNoWrap:[(SFCardSection *)v8 valueNoWrap]];
-    v21 = [(SFCardSection *)v8 valueWeight];
-    [(SFRowCardSection *)v5 setValueWeight:v21];
+    valueWeight = [(SFCardSection *)v8 valueWeight];
+    [(SFRowCardSection *)v5 setValueWeight:valueWeight];
 
     [(SFRowCardSection *)v5 setCardPaddingBottom:[(SFCardSection *)v8 cardPaddingBottom]];
-    v22 = [(SFCardSection *)v8 leadingSubtitle];
-    [(SFRowCardSection *)v5 setLeadingSubtitle:v22];
+    leadingSubtitle = [(SFCardSection *)v8 leadingSubtitle];
+    [(SFRowCardSection *)v5 setLeadingSubtitle:leadingSubtitle];
 
-    v23 = [(SFCardSection *)v8 trailingSubtitle];
-    [(SFRowCardSection *)v5 setTrailingSubtitle:v23];
+    trailingSubtitle = [(SFCardSection *)v8 trailingSubtitle];
+    [(SFRowCardSection *)v5 setTrailingSubtitle:trailingSubtitle];
 
-    v24 = [(SFCardSection *)v8 nextCard];
-    [(SFCardSection *)v5 setNextCard:v24];
+    nextCard = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:nextCard];
 
-    v25 = [(SFCardSection *)v8 commands];
-    [(SFCardSection *)v5 setCommands:v25];
+    commands = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:commands];
 
-    v26 = [(SFCardSection *)v8 parameterKeyPaths];
-    [(SFCardSection *)v5 setParameterKeyPaths:v26];
+    parameterKeyPaths = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:parameterKeyPaths];
 
-    v27 = [(SFCardSection *)v8 cardSectionId];
-    [(SFCardSection *)v5 setCardSectionId:v27];
+    cardSectionId = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:cardSectionId];
 
-    v28 = [(SFCardSection *)v8 resultIdentifier];
-    [(SFCardSection *)v5 setResultIdentifier:v28];
+    resultIdentifier = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:resultIdentifier];
 
-    v29 = [(SFCardSection *)v8 userReportRequest];
-    [(SFCardSection *)v5 setUserReportRequest:v29];
+    userReportRequest = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:userReportRequest];
 
-    v30 = [(SFCardSection *)v8 command];
-    [(SFCardSection *)v5 setCommand:v30];
+    command = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:command];
 
-    v31 = [(SFCardSection *)v8 previewCommand];
-    [(SFCardSection *)v5 setPreviewCommand:v31];
+    previewCommand = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:previewCommand];
 
-    v32 = [(SFCardSection *)v8 previewButtonItems];
-    [(SFCardSection *)v5 setPreviewButtonItems:v32];
+    previewButtonItems = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:previewButtonItems];
 
-    v33 = [(SFCardSection *)v8 cardSectionDetail];
-    [(SFCardSection *)v5 setCardSectionDetail:v33];
+    cardSectionDetail = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:cardSectionDetail];
 
-    v34 = [(SFCardSection *)v8 previewButtonItemsTitle];
-    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v34];
+    previewButtonItemsTitle = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:previewButtonItemsTitle];
 
-    v35 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v35];
+    backgroundColor2 = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor2];
 
     [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
-    v36 = [(SFCardSection *)v8 leadingSwipeButtonItems];
-    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v36];
+    leadingSwipeButtonItems = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:leadingSwipeButtonItems];
 
-    v37 = [(SFCardSection *)v8 trailingSwipeButtonItems];
-    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v37];
+    trailingSwipeButtonItems = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:trailingSwipeButtonItems];
 
-    v38 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v38];
+    punchoutOptions2 = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions2];
 
-    v39 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v39];
+    punchoutPickerTitle2 = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
 
-    v40 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v40];
+    punchoutPickerDismissText2 = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v41 = [(SFCardSection *)v8 referencedCommands];
-    [(SFCardSection *)v5 setReferencedCommands:v41];
+    referencedCommands = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:referencedCommands];
 
     [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
     [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
-    v42 = [(SFCardSection *)v8 appEntityAnnotation];
-    [(SFCardSection *)v5 setAppEntityAnnotation:v42];
+    appEntityAnnotation = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:appEntityAnnotation];
 
-    v43 = [(SFCardSection *)v8 emphasisSubjectId];
-    [(SFCardSection *)v5 setEmphasisSubjectId:v43];
+    emphasisSubjectId = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:emphasisSubjectId];
 
     [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
-    v44 = [(SFCardSection *)v8 secondaryCommand];
-    [(SFCardSection *)v5 setSecondaryCommand:v44];
+    secondaryCommand = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:secondaryCommand];
 
     [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
-    v45 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
-    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v45];
+    racFeedbackSubfeatureId = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId];
 
-    v46 = [(SFCardSection *)v8 racFeedbackLoggingContent];
-    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v46];
+    racFeedbackLoggingContent = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:racFeedbackLoggingContent];
 
-    v47 = [(SFCardSection *)v8 copyableItems];
-    [(SFCardSection *)v5 setCopyableItems:v47];
+    copyableItems = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:copyableItems];
 
-    v48 = [(SFCardSection *)v8 applicationBundleIdentifier];
-    [(SFCardSection *)v5 setApplicationBundleIdentifier:v48];
+    applicationBundleIdentifier = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   return v5;
 }
 
-- (SFRowCardSection)initWithProtobuf:(id)a3
+- (SFRowCardSection)initWithProtobuf:(id)protobuf
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v61.receiver = self;
   v61.super_class = SFRowCardSection;
   v5 = [(SFCardSection *)&v61 init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [protobufCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1904,8 +1904,8 @@ LABEL_99:
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v57 objects:v62 count:16];
+    punchoutOptions2 = [protobufCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v57 objects:v62 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1916,7 +1916,7 @@ LABEL_99:
         {
           if (*v58 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[SFPunchout alloc] initWithProtobuf:*(*(&v57 + 1) + 8 * i)];
@@ -1926,172 +1926,172 @@ LABEL_99:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v57 objects:v62 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v57 objects:v62 count:16];
       }
 
       while (v10);
     }
 
     [(SFCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [protobufCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(SFCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [protobufCopy punchoutPickerTitle];
+      [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [protobufCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(SFCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [protobufCopy punchoutPickerDismissText];
+      [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 canBeHidden])
+    if ([protobufCopy canBeHidden])
     {
-      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [protobufCopy canBeHidden]);
     }
 
-    if ([v4 hasTopPadding])
+    if ([protobufCopy hasTopPadding])
     {
-      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [protobufCopy hasTopPadding]);
     }
 
-    if ([v4 hasBottomPadding])
+    if ([protobufCopy hasBottomPadding])
     {
-      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [protobufCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [protobufCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(SFRowCardSection *)v5 setType:v19];
+      type2 = [protobufCopy type];
+      [(SFRowCardSection *)v5 setType:type2];
     }
 
-    if ([v4 separatorStyle])
+    if ([protobufCopy separatorStyle])
     {
-      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [protobufCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [protobufCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [SFColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(SFColor *)v21 initWithProtobuf:v22];
+      backgroundColor2 = [protobufCopy backgroundColor];
+      v23 = [(SFColor *)v21 initWithProtobuf:backgroundColor2];
       [(SFCardSection *)v5 setBackgroundColor:v23];
     }
 
-    v24 = [v4 image];
+    image = [protobufCopy image];
 
-    if (v24)
+    if (image)
     {
       v25 = [SFImage alloc];
-      v26 = [v4 image];
-      v27 = [(SFImage *)v25 initWithProtobuf:v26];
+      image2 = [protobufCopy image];
+      v27 = [(SFImage *)v25 initWithProtobuf:image2];
       [(SFRowCardSection *)v5 setImage:v27];
     }
 
-    if ([v4 imageIsRightAligned])
+    if ([protobufCopy imageIsRightAligned])
     {
-      -[SFRowCardSection setImageIsRightAligned:](v5, "setImageIsRightAligned:", [v4 imageIsRightAligned]);
+      -[SFRowCardSection setImageIsRightAligned:](v5, "setImageIsRightAligned:", [protobufCopy imageIsRightAligned]);
     }
 
-    v28 = [v4 leadingText];
+    leadingText = [protobufCopy leadingText];
 
-    if (v28)
+    if (leadingText)
     {
       v29 = [SFRichText alloc];
-      v30 = [v4 leadingText];
-      v31 = [(SFRichText *)v29 initWithProtobuf:v30];
+      leadingText2 = [protobufCopy leadingText];
+      v31 = [(SFRichText *)v29 initWithProtobuf:leadingText2];
       [(SFRowCardSection *)v5 setLeadingText:v31];
     }
 
-    v32 = [v4 trailingText];
+    trailingText = [protobufCopy trailingText];
 
-    if (v32)
+    if (trailingText)
     {
       v33 = [SFRichText alloc];
-      v34 = [v4 trailingText];
-      v35 = [(SFRichText *)v33 initWithProtobuf:v34];
+      trailingText2 = [protobufCopy trailingText];
+      v35 = [(SFRichText *)v33 initWithProtobuf:trailingText2];
       [(SFRowCardSection *)v5 setTrailingText:v35];
     }
 
-    v36 = [v4 attributionImage];
+    attributionImage = [protobufCopy attributionImage];
 
-    if (v36)
+    if (attributionImage)
     {
       v37 = [SFImage alloc];
-      v38 = [v4 attributionImage];
-      v39 = [(SFImage *)v37 initWithProtobuf:v38];
+      attributionImage2 = [protobufCopy attributionImage];
+      v39 = [(SFImage *)v37 initWithProtobuf:attributionImage2];
       [(SFRowCardSection *)v5 setAttributionImage:v39];
     }
 
-    v40 = [v4 key];
+    v40 = [protobufCopy key];
 
     if (v40)
     {
-      v41 = [v4 key];
+      v41 = [protobufCopy key];
       [(SFRowCardSection *)v5 setKey:v41];
     }
 
-    if ([v4 keyNoWrap])
+    if ([protobufCopy keyNoWrap])
     {
-      -[SFRowCardSection setKeyNoWrap:](v5, "setKeyNoWrap:", [v4 keyNoWrap]);
+      -[SFRowCardSection setKeyNoWrap:](v5, "setKeyNoWrap:", [protobufCopy keyNoWrap]);
     }
 
-    if ([v4 keyWeight])
+    if ([protobufCopy keyWeight])
     {
-      v42 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "keyWeight")}];
+      v42 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "keyWeight")}];
       [(SFRowCardSection *)v5 setKeyWeight:v42];
     }
 
-    v43 = [v4 value];
+    value = [protobufCopy value];
 
-    if (v43)
+    if (value)
     {
-      v44 = [v4 value];
-      [(SFRowCardSection *)v5 setValue:v44];
+      value2 = [protobufCopy value];
+      [(SFRowCardSection *)v5 setValue:value2];
     }
 
-    if ([v4 valueNoWrap])
+    if ([protobufCopy valueNoWrap])
     {
-      -[SFRowCardSection setValueNoWrap:](v5, "setValueNoWrap:", [v4 valueNoWrap]);
+      -[SFRowCardSection setValueNoWrap:](v5, "setValueNoWrap:", [protobufCopy valueNoWrap]);
     }
 
-    if ([v4 valueWeight])
+    if ([protobufCopy valueWeight])
     {
-      v45 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "valueWeight")}];
+      v45 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "valueWeight")}];
       [(SFRowCardSection *)v5 setValueWeight:v45];
     }
 
-    if ([v4 cardPaddingBottom])
+    if ([protobufCopy cardPaddingBottom])
     {
-      -[SFRowCardSection setCardPaddingBottom:](v5, "setCardPaddingBottom:", [v4 cardPaddingBottom]);
+      -[SFRowCardSection setCardPaddingBottom:](v5, "setCardPaddingBottom:", [protobufCopy cardPaddingBottom]);
     }
 
-    v46 = [v4 leadingSubtitle];
+    leadingSubtitle = [protobufCopy leadingSubtitle];
 
-    if (v46)
+    if (leadingSubtitle)
     {
       v47 = [SFRichText alloc];
-      v48 = [v4 leadingSubtitle];
-      v49 = [(SFRichText *)v47 initWithProtobuf:v48];
+      leadingSubtitle2 = [protobufCopy leadingSubtitle];
+      v49 = [(SFRichText *)v47 initWithProtobuf:leadingSubtitle2];
       [(SFRowCardSection *)v5 setLeadingSubtitle:v49];
     }
 
-    v50 = [v4 trailingSubtitle];
+    trailingSubtitle = [protobufCopy trailingSubtitle];
 
-    if (v50)
+    if (trailingSubtitle)
     {
       v51 = [SFRichText alloc];
-      v52 = [v4 trailingSubtitle];
-      v53 = [(SFRichText *)v51 initWithProtobuf:v52];
+      trailingSubtitle2 = [protobufCopy trailingSubtitle];
+      v53 = [(SFRichText *)v51 initWithProtobuf:trailingSubtitle2];
       [(SFRowCardSection *)v5 setTrailingSubtitle:v53];
     }
 

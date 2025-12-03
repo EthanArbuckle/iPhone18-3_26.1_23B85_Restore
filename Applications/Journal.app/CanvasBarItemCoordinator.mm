@@ -1,6 +1,6 @@
 @interface CanvasBarItemCoordinator
 - (void)editingDidChange;
-- (void)updateUndoRedoItems:(id)a3;
+- (void)updateUndoRedoItems:(id)items;
 @end
 
 @implementation CanvasBarItemCoordinator
@@ -11,7 +11,7 @@
   sub_1003CFBF4();
 }
 
-- (void)updateUndoRedoItems:(id)a3
+- (void)updateUndoRedoItems:(id)items
 {
   v4 = sub_1000F24EC(&qword_100AD5170);
   __chkstk_darwin(v4 - 8);

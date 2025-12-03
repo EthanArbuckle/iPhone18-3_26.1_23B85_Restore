@@ -1,17 +1,17 @@
 @interface MPCModelRadioGetTracksOperation
-- (MPCModelRadioGetTracksOperation)initWithGetTracksRequest:(id)a3 siriAssetInfo:(id)a4 radioQueueFeeder:(id)a5;
-- (id)_cacheTracksForStep:(id)a3;
-- (void)_runStep:(id)a3 withFinishHandler:(id)a4;
+- (MPCModelRadioGetTracksOperation)initWithGetTracksRequest:(id)request siriAssetInfo:(id)info radioQueueFeeder:(id)feeder;
+- (id)_cacheTracksForStep:(id)step;
+- (void)_runStep:(id)step withFinishHandler:(id)handler;
 - (void)execute;
 @end
 
 @implementation MPCModelRadioGetTracksOperation
 
-- (void)_runStep:(id)a3 withFinishHandler:(id)a4
+- (void)_runStep:(id)step withFinishHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stepCopy = step;
+  handlerCopy = handler;
   v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -19,9 +19,9 @@
     *buf = 134218498;
     v16 = radioQueueFeederPointerForLogging;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v6;
+    v20 = stepCopy;
     _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, "RQF %p [GTO %p]: _runStep: [performWithCompletionHandler] step=%{public}@", buf, 0x20u);
   }
 
@@ -30,10 +30,10 @@
   v12[2] = __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_invoke;
   v12[3] = &unk_1E82351F0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = stepCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = stepCopy;
   [v11 performWithCompletionHandler:v12];
 }
 
@@ -142,16 +142,16 @@ void __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_in
   }
 }
 
-- (id)_cacheTracksForStep:(id)a3
+- (id)_cacheTracksForStep:(id)step
 {
   v79 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 response];
-  v5 = [v4 tracks];
+  stepCopy = step;
+  response = [stepCopy response];
+  tracks = [response tracks];
 
-  if (v5)
+  if (tracks)
   {
-    v6 = [MEMORY[0x1E69E4570] flattenedTracksWithTracks:v5];
+    v6 = [MEMORY[0x1E69E4570] flattenedTracksWithTracks:tracks];
   }
 
   else
@@ -159,16 +159,16 @@ void __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_in
     v6 = 0;
   }
 
-  v7 = [v3 delegatedIdentityProperties];
-  v41 = v3;
-  v40 = [v3 identityProperties];
-  v8 = [v40 DSID];
-  v46 = [v8 unsignedLongLongValue];
+  delegatedIdentityProperties = [stepCopy delegatedIdentityProperties];
+  v41 = stepCopy;
+  identityProperties = [stepCopy identityProperties];
+  dSID = [identityProperties DSID];
+  unsignedLongLongValue = [dSID unsignedLongLongValue];
 
-  v9 = [v7 DSID];
-  v45 = [v9 unsignedLongLongValue];
+  dSID2 = [delegatedIdentityProperties DSID];
+  unsignedLongLongValue2 = [dSID2 unsignedLongLongValue];
 
-  v47 = [MEMORY[0x1E6970990] sharedCache];
+  mEMORY[0x1E6970990] = [MEMORY[0x1E6970990] sharedCache];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
@@ -192,11 +192,11 @@ void __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_in
         v51 = v11;
         v12 = *(*(&v62 + 1) + 8 * v11);
         v13 = objc_alloc_init(MEMORY[0x1E6970998]);
-        [v13 setAccountID:v46];
+        [v13 setAccountID:unsignedLongLongValue];
         [v13 setRequestType:3];
         [v13 setStoreRadioAdamID:{objc_msgSend(v12, "storeAdamID")}];
         v50 = v13;
-        [v13 setDelegatedAccountID:v45];
+        [v13 setDelegatedAccountID:unsignedLongLongValue2];
         v14 = objc_alloc_init(MEMORY[0x1E6970820]);
         if ([v12 trackType] == 4)
         {
@@ -204,12 +204,12 @@ void __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_in
         }
 
         v53 = v14;
-        v15 = [v12 fileAssets];
+        fileAssets = [v12 fileAssets];
         v58 = 0u;
         v59 = 0u;
         v60 = 0u;
         v61 = 0u;
-        v16 = [v15 countByEnumeratingWithState:&v58 objects:v77 count:16];
+        v16 = [fileAssets countByEnumeratingWithState:&v58 objects:v77 count:16];
         if (v16)
         {
           v17 = v16;
@@ -221,7 +221,7 @@ void __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_in
             {
               if (*v59 != v19)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(fileAssets);
               }
 
               v21 = [objc_alloc(MEMORY[0x1E69709B0]) initWithiTunesCloudStoreFileAssetInfo:*(*(&v58 + 1) + 8 * i)];
@@ -229,14 +229,14 @@ void __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_in
               {
                 if (!v18)
                 {
-                  v18 = [objc_alloc(*(v10 + 3952)) initWithCapacity:{objc_msgSend(v15, "count")}];
+                  v18 = [objc_alloc(*(v10 + 3952)) initWithCapacity:{objc_msgSend(fileAssets, "count")}];
                 }
 
                 [v18 addObject:v21];
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v58 objects:v77 count:16];
+            v17 = [fileAssets countByEnumeratingWithState:&v58 objects:v77 count:16];
           }
 
           while (v17);
@@ -249,11 +249,11 @@ void __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_in
 
         v22 = v53;
         [v53 setFileAssetInfoList:v18];
-        v23 = [v12 expirationDate];
-        [v23 timeIntervalSinceNow];
+        expirationDate = [v12 expirationDate];
+        [expirationDate timeIntervalSinceNow];
         if (v24 >= 3600.0)
         {
-          v25 = v23;
+          v25 = expirationDate;
         }
 
         else
@@ -264,16 +264,16 @@ void __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_in
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
             radioQueueFeederPointerForLogging = self->_radioQueueFeederPointerForLogging;
-            v28 = [v12 expirationDate];
+            expirationDate2 = [v12 expirationDate];
             *buf = 134219010;
             v68 = radioQueueFeederPointerForLogging;
             v69 = 2048;
-            v70 = self;
+            selfCopy = self;
             v22 = v53;
             v71 = 2114;
             v72 = v12;
             v73 = 2114;
-            v74 = v28;
+            v74 = expirationDate2;
             v75 = 2114;
             v76 = v25;
             _os_log_impl(&dword_1C5C61000, v26, OS_LOG_TYPE_DEFAULT, "RQF %p [GTO %p]: _cacheTracksForStep: override %{public}@ response expiration date from %{public}@ to %{public}@", buf, 0x34u);
@@ -281,21 +281,21 @@ void __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_in
         }
 
         v52 = v25;
-        v29 = [v12 hlsAsset];
-        if (v29)
+        hlsAsset = [v12 hlsAsset];
+        if (hlsAsset)
         {
-          v30 = [objc_alloc(MEMORY[0x1E69709B8]) initWithiTunesCloudStoreHLSAssetInfo:v29];
+          v30 = [objc_alloc(MEMORY[0x1E69709B8]) initWithiTunesCloudStoreHLSAssetInfo:hlsAsset];
           [v22 setHlsAssetInfo:v30];
         }
 
-        v49 = v29;
+        v49 = hlsAsset;
         v31 = objc_alloc_init(*(v10 + 3952));
-        v32 = [v12 radioStreamAssets];
+        radioStreamAssets = [v12 radioStreamAssets];
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
         v57 = 0u;
-        v33 = [v32 countByEnumeratingWithState:&v54 objects:v66 count:16];
+        v33 = [radioStreamAssets countByEnumeratingWithState:&v54 objects:v66 count:16];
         if (v33)
         {
           v34 = v33;
@@ -306,7 +306,7 @@ void __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_in
             {
               if (*v55 != v35)
               {
-                objc_enumerationMutation(v32);
+                objc_enumerationMutation(radioStreamAssets);
               }
 
               v37 = [objc_alloc(MEMORY[0x1E69709F8]) initWithiTunesCloudStoreRadioStreamAssetInfo:*(*(&v54 + 1) + 8 * j)];
@@ -316,7 +316,7 @@ void __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_in
               }
             }
 
-            v34 = [v32 countByEnumeratingWithState:&v54 objects:v66 count:16];
+            v34 = [radioStreamAssets countByEnumeratingWithState:&v54 objects:v66 count:16];
           }
 
           while (v34);
@@ -336,7 +336,7 @@ void __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_in
         }
 
         [v53 setExpirationDate:v38];
-        [v47 addCachedResponse:v53 forRequest:v50];
+        [mEMORY[0x1E6970990] addCachedResponse:v53 forRequest:v50];
 
         v11 = v51 + 1;
       }
@@ -366,9 +366,9 @@ void __62__MPCModelRadioGetTracksOperation__runStep_withFinishHandler___block_in
   v4 = [v3 beginTaskWithName:@"com.apple.MediaPlaybackCore.MPCModelRadioGetTracksOperation" expirationHandler:v9];
 
   v11[3] = v4;
-  v5 = [(ICRadioGetTracksRequest *)self->_request reasonType];
+  reasonType = [(ICRadioGetTracksRequest *)self->_request reasonType];
   v6 = off_1E822D700;
-  if (v5 != 1)
+  if (reasonType != 1)
   {
     v6 = off_1E822D708;
   }
@@ -419,25 +419,25 @@ void __42__MPCModelRadioGetTracksOperation_execute__block_invoke_2(uint64_t a1, 
   }
 }
 
-- (MPCModelRadioGetTracksOperation)initWithGetTracksRequest:(id)a3 siriAssetInfo:(id)a4 radioQueueFeeder:(id)a5
+- (MPCModelRadioGetTracksOperation)initWithGetTracksRequest:(id)request siriAssetInfo:(id)info radioQueueFeeder:(id)feeder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  infoCopy = info;
+  feederCopy = feeder;
   v17.receiver = self;
   v17.super_class = MPCModelRadioGetTracksOperation;
   v11 = [(MPAsyncOperation *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [requestCopy copy];
     request = v11->_request;
     v11->_request = v12;
 
-    v14 = [v9 copy];
+    v14 = [infoCopy copy];
     siriAssetInfo = v11->_siriAssetInfo;
     v11->_siriAssetInfo = v14;
 
-    v11->_radioQueueFeederPointerForLogging = v10;
+    v11->_radioQueueFeederPointerForLogging = feederCopy;
   }
 
   return v11;

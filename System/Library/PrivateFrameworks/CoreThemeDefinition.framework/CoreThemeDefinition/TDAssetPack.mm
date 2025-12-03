@@ -1,12 +1,12 @@
 @interface TDAssetPack
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation TDAssetPack
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setTags:{-[TDAssetPack tags](self, "tags")}];
@@ -27,23 +27,23 @@
   [(TDAssetPack *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ![objc_msgSend(a3 "tags")])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ![objc_msgSend(equal "tags")])
   {
     return 0;
   }
 
-  v5 = [a3 assetPackIdentifier];
-  v6 = [(TDAssetPack *)self assetPackIdentifier];
+  assetPackIdentifier = [equal assetPackIdentifier];
+  assetPackIdentifier2 = [(TDAssetPack *)self assetPackIdentifier];
 
-  return [v5 isEqualToString:v6];
+  return [assetPackIdentifier isEqualToString:assetPackIdentifier2];
 }
 
 @end

@@ -6,7 +6,7 @@
 
 - (BOOL)isExhausted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LetMeInRequestorKeyAgreement.isExhausted.getter();
 
   return v3;

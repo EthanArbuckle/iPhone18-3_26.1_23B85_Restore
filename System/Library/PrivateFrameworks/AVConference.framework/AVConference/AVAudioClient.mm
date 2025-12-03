@@ -2,23 +2,23 @@
 + (BOOL)hasActiveAudioSession;
 + (BOOL)isMicrophoneMuted;
 + (BOOL)isMixingVoiceWithMediaEnabled;
-+ (BOOL)setInputDevice:(id)a3;
-+ (BOOL)setOutputDevice:(id)a3;
++ (BOOL)setInputDevice:(id)device;
++ (BOOL)setOutputDevice:(id)device;
 + (id)currentInputDevice;
 + (id)currentOutputDevice;
 + (id)sharedInstance;
-+ (int)registerForMutedTalkerNotifications:(id)a3;
-+ (int)setMuteStateChangedHandler:(id)a3;
++ (int)registerForMutedTalkerNotifications:(id)notifications;
++ (int)setMuteStateChangedHandler:(id)handler;
 + (int)unregisterFromMutedTalkerNotifications;
-+ (void)registerSecureMicrophoneEngagedHandler:(id)a3;
++ (void)registerSecureMicrophoneEngagedHandler:(id)handler;
 + (void)resetAudioSessionOutputPortOverride;
-+ (void)setAudioSessionProperties:(id)a3;
-+ (void)setFollowSystemInputEnabled:(BOOL)a3;
-+ (void)setFollowSystemOutputEnabled:(BOOL)a3;
-+ (void)setMicrophoneMuted:(BOOL)a3;
-+ (void)setMixingVoiceWithMediaEnabled:(BOOL)a3;
++ (void)setAudioSessionProperties:(id)properties;
++ (void)setFollowSystemInputEnabled:(BOOL)enabled;
++ (void)setFollowSystemOutputEnabled:(BOOL)enabled;
++ (void)setMicrophoneMuted:(BOOL)muted;
++ (void)setMixingVoiceWithMediaEnabled:(BOOL)enabled;
 + (void)startAudioSession;
-+ (void)startAudioSessionWithCompletionHandler:(id)a3;
++ (void)startAudioSessionWithCompletionHandler:(id)handler;
 + (void)stopAudioSession;
 - (AVAudioClient)init;
 - (AVAudioDevice)currentInputDevice;
@@ -29,39 +29,39 @@
 - (BOOL)reregisterClientSideHandlersOverXPC;
 - (BOOL)reregisterMuteStateChangedHandlerOverXPC;
 - (BOOL)reregisterMutedTalkerNotificationOverXPC;
-- (BOOL)setInputDevice:(id)a3;
-- (BOOL)setOutputDevice:(id)a3;
+- (BOOL)setInputDevice:(id)device;
+- (BOOL)setOutputDevice:(id)device;
 - (BOOL)setupXPCConnection;
 - (id)changeListener;
 - (id)devices;
 - (id)initSharedInstance;
 - (id)inputDevices;
 - (id)outputDevices;
-- (id)sendMessageSync:(char *)a3 arguments:(id)a4;
-- (int)registerForMutedTalkerNotifications:(id)a3;
-- (int)setMuteStateChangedEventHandler:(id)a3;
+- (id)sendMessageSync:(char *)sync arguments:(id)arguments;
+- (int)registerForMutedTalkerNotifications:(id)notifications;
+- (int)setMuteStateChangedEventHandler:(id)handler;
 - (int)unregisterFromMutedTalkerNotifications;
 - (void)cleanupMutedTalkerNotificationHandler;
 - (void)cleanupSecureMicrophoneEngagedHandler;
 - (void)cleanupXPCConnection;
 - (void)dealloc;
-- (void)dispatchedHandleMuteStateChangedEventWithXPCArguments:(id)a3;
-- (void)handleMutedTalkerNotificationWithXPCArguments:(id)a3;
+- (void)dispatchedHandleMuteStateChangedEventWithXPCArguments:(id)arguments;
+- (void)handleMutedTalkerNotificationWithXPCArguments:(id)arguments;
 - (void)initSharedInstance;
 - (void)registerBlocksForDelegateNotifications;
-- (void)registerSecureMicrophoneEngagedHandler:(id)a3;
+- (void)registerSecureMicrophoneEngagedHandler:(id)handler;
 - (void)resetAudioSessionOutputPortOverride;
 - (void)resetXPCConnection;
-- (void)sendMessageAsync:(char *)a3 arguments:(id)a4 reply:(id)a5;
-- (void)setAudioSessionProperties:(id)a3;
-- (void)setChangeListener:(id)a3;
-- (void)setFollowSystemInputEnabled:(BOOL)a3;
-- (void)setFollowSystemOutputEnabled:(BOOL)a3;
-- (void)setMicrophoneMuted:(BOOL)a3;
-- (void)setMixingVoiceWithMediaEnabled:(BOOL)a3;
-- (void)setMuteStateChangedHandlerInternal:(id)a3;
+- (void)sendMessageAsync:(char *)async arguments:(id)arguments reply:(id)reply;
+- (void)setAudioSessionProperties:(id)properties;
+- (void)setChangeListener:(id)listener;
+- (void)setFollowSystemInputEnabled:(BOOL)enabled;
+- (void)setFollowSystemOutputEnabled:(BOOL)enabled;
+- (void)setMicrophoneMuted:(BOOL)muted;
+- (void)setMixingVoiceWithMediaEnabled:(BOOL)enabled;
+- (void)setMuteStateChangedHandlerInternal:(id)internal;
 - (void)setupXPCConnection;
-- (void)startAudioSessionWithCompletionHandler:(id)a3;
+- (void)startAudioSessionWithCompletionHandler:(id)handler;
 - (void)stopAudioSession;
 - (void)unregisterBlocksForDelegateNotifications;
 @end
@@ -221,7 +221,7 @@ LABEL_8:
       v11 = 1024;
       v12 = 120;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "AVCAudioClient [%s] %s:%d @:@ AVAudioClient-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -370,13 +370,13 @@ LABEL_6:
   }
 }
 
-- (void)setMuteStateChangedHandlerInternal:(id)a3
+- (void)setMuteStateChangedHandlerInternal:(id)internal
 {
   muteStateChangedHandler = self->_muteStateChangedHandler;
-  if (muteStateChangedHandler != a3)
+  if (muteStateChangedHandler != internal)
   {
     _Block_release(muteStateChangedHandler);
-    self->_muteStateChangedHandler = _Block_copy(a3);
+    self->_muteStateChangedHandler = _Block_copy(internal);
   }
 }
 
@@ -391,7 +391,7 @@ LABEL_6:
   }
 }
 
-- (id)sendMessageSync:(char *)a3 arguments:(id)a4
+- (id)sendMessageSync:(char *)sync arguments:(id)arguments
 {
   v22 = *MEMORY[0x1E69E9840];
   xpcConnection = self->_xpcConnection;
@@ -399,7 +399,7 @@ LABEL_6:
   {
 LABEL_4:
 
-    return [(AVConferenceXPCClient *)xpcConnection sendMessageSync:a3 arguments:a4];
+    return [(AVConferenceXPCClient *)xpcConnection sendMessageSync:sync arguments:arguments];
   }
 
   if ([(AVAudioClient *)self setupXPCConnection])
@@ -431,7 +431,7 @@ LABEL_4:
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:&v13 forKeys:&v12 count:1];
 }
 
-- (void)sendMessageAsync:(char *)a3 arguments:(id)a4 reply:(id)a5
+- (void)sendMessageAsync:(char *)async arguments:(id)arguments reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
   xpcConnection = self->_xpcConnection;
@@ -439,7 +439,7 @@ LABEL_4:
   {
 LABEL_4:
 
-    [(AVConferenceXPCClient *)xpcConnection sendMessageAsync:a3 arguments:a4 reply:a5];
+    [(AVConferenceXPCClient *)xpcConnection sendMessageAsync:async arguments:arguments reply:reply];
     return;
   }
 
@@ -468,13 +468,13 @@ LABEL_4:
     }
   }
 
-  if (a5)
+  if (reply)
   {
-    (*(a5 + 2))(a5, 0, [MEMORY[0x1E696ABC0] AVConferenceServiceError:32002 detailCode:0 description:@"Failed to setup connection"]);
+    (*(reply + 2))(reply, 0, [MEMORY[0x1E696ABC0] AVConferenceServiceError:32002 detailCode:0 description:@"Failed to setup connection"]);
   }
 }
 
-- (void)startAudioSessionWithCompletionHandler:(id)a3
+- (void)startAudioSessionWithCompletionHandler:(id)handler
 {
   block[6] = *MEMORY[0x1E69E9840];
   clientAudioSessionQueue = self->_clientAudioSessionQueue;
@@ -483,7 +483,7 @@ LABEL_4:
   block[2] = __56__AVAudioClient_startAudioSessionWithCompletionHandler___block_invoke;
   block[3] = &unk_1E85F4E98;
   block[4] = self;
-  block[5] = a3;
+  block[5] = handler;
   dispatch_async(clientAudioSessionQueue, block);
 }
 
@@ -584,10 +584,10 @@ uint64_t __56__AVAudioClient_startAudioSessionWithCompletionHandler___block_invo
   return result;
 }
 
-- (void)setAudioSessionProperties:(id)a3
+- (void)setAudioSessionProperties:(id)properties
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (properties)
   {
     clientAudioSessionQueue = self->_clientAudioSessionQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -595,7 +595,7 @@ uint64_t __56__AVAudioClient_startAudioSessionWithCompletionHandler___block_invo
     block[2] = __43__AVAudioClient_setAudioSessionProperties___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = properties;
     dispatch_async(clientAudioSessionQueue, block);
   }
 }
@@ -774,7 +774,7 @@ uint64_t __52__AVAudioClient_resetAudioSessionOutputPortOverride__block_invoke(u
   return audioSessionIsActive;
 }
 
-- (void)setMicrophoneMuted:(BOOL)a3
+- (void)setMicrophoneMuted:(BOOL)muted
 {
   v6 = *MEMORY[0x1E69E9840];
   clientAudioSessionQueue = self->_clientAudioSessionQueue;
@@ -783,7 +783,7 @@ uint64_t __52__AVAudioClient_resetAudioSessionOutputPortOverride__block_invoke(u
   block[2] = __36__AVAudioClient_setMicrophoneMuted___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  mutedCopy = muted;
   dispatch_async(clientAudioSessionQueue, block);
 }
 
@@ -845,7 +845,7 @@ uint64_t __34__AVAudioClient_isMicrophoneMuted__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setMixingVoiceWithMediaEnabled:(BOOL)a3
+- (void)setMixingVoiceWithMediaEnabled:(BOOL)enabled
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -873,7 +873,7 @@ uint64_t __34__AVAudioClient_isMicrophoneMuted__block_invoke(uint64_t a1)
   v9[2] = __48__AVAudioClient_setMixingVoiceWithMediaEnabled___block_invoke;
   v9[3] = &unk_1E85F37A0;
   v9[4] = self;
-  v10 = a3;
+  enabledCopy = enabled;
   dispatch_async(clientAudioSessionQueue, v9);
 }
 
@@ -1011,10 +1011,10 @@ uint64_t __36__AVAudioClient_currentOutputDevice__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)setInputDevice:(id)a3
+- (BOOL)setInputDevice:(id)device
 {
   v14 = *MEMORY[0x1E69E9840];
-  if ([a3 UID])
+  if ([device UID])
   {
     v10 = 0;
     v11 = &v10;
@@ -1026,7 +1026,7 @@ uint64_t __36__AVAudioClient_currentOutputDevice__block_invoke(uint64_t a1)
     v9[2] = __32__AVAudioClient_setInputDevice___block_invoke;
     v9[3] = &unk_1E85F6638;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = device;
     v9[6] = &v10;
     dispatch_async(clientAudioSessionQueue, v9);
     v6 = *(v11 + 24);
@@ -1040,7 +1040,7 @@ uint64_t __36__AVAudioClient_currentOutputDevice__block_invoke(uint64_t a1)
       v7 = VRTraceErrorLogLevelToCSTR();
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        [(AVAudioClient *)v7 setInputDevice:a3];
+        [(AVAudioClient *)v7 setInputDevice:device];
       }
     }
 
@@ -1093,10 +1093,10 @@ void *__32__AVAudioClient_setInputDevice___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)setOutputDevice:(id)a3
+- (BOOL)setOutputDevice:(id)device
 {
   v14 = *MEMORY[0x1E69E9840];
-  if ([a3 UID])
+  if ([device UID])
   {
     v10 = 0;
     v11 = &v10;
@@ -1108,7 +1108,7 @@ void *__32__AVAudioClient_setInputDevice___block_invoke(uint64_t a1)
     v9[2] = __33__AVAudioClient_setOutputDevice___block_invoke;
     v9[3] = &unk_1E85F6638;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = device;
     v9[6] = &v10;
     dispatch_async(clientAudioSessionQueue, v9);
     v6 = *(v11 + 24);
@@ -1122,7 +1122,7 @@ void *__32__AVAudioClient_setInputDevice___block_invoke(uint64_t a1)
       v7 = VRTraceErrorLogLevelToCSTR();
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        [(AVAudioClient *)v7 setOutputDevice:a3];
+        [(AVAudioClient *)v7 setOutputDevice:device];
       }
     }
 
@@ -1175,7 +1175,7 @@ void *__33__AVAudioClient_setOutputDevice___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setFollowSystemInputEnabled:(BOOL)a3
+- (void)setFollowSystemInputEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   clientAudioSessionQueue = self->_clientAudioSessionQueue;
@@ -1184,7 +1184,7 @@ void *__33__AVAudioClient_setOutputDevice___block_invoke(uint64_t a1)
   block[2] = __45__AVAudioClient_setFollowSystemInputEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(clientAudioSessionQueue, block);
 }
 
@@ -1243,7 +1243,7 @@ void __45__AVAudioClient_setFollowSystemInputEnabled___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setFollowSystemOutputEnabled:(BOOL)a3
+- (void)setFollowSystemOutputEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   clientAudioSessionQueue = self->_clientAudioSessionQueue;
@@ -1252,7 +1252,7 @@ void __45__AVAudioClient_setFollowSystemInputEnabled___block_invoke(uint64_t a1)
   block[2] = __46__AVAudioClient_setFollowSystemOutputEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(clientAudioSessionQueue, block);
 }
 
@@ -1311,10 +1311,10 @@ void __46__AVAudioClient_setFollowSystemOutputEnabled___block_invoke(uint64_t a1
   }
 }
 
-- (int)registerForMutedTalkerNotifications:(id)a3
+- (int)registerForMutedTalkerNotifications:(id)notifications
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (notifications)
   {
     v7 = 0;
     v8 = &v7;
@@ -1325,7 +1325,7 @@ void __46__AVAudioClient_setFollowSystemOutputEnabled___block_invoke(uint64_t a1
     v6[1] = 3221225472;
     v6[2] = __53__AVAudioClient_registerForMutedTalkerNotifications___block_invoke;
     v6[3] = &unk_1E85F3840;
-    v6[5] = a3;
+    v6[5] = notifications;
     v6[6] = &v7;
     v6[4] = self;
     dispatch_sync(clientAudioSessionQueue, v6);
@@ -1468,10 +1468,10 @@ void __55__AVAudioClient_unregisterFromMutedTalkerNotifications__block_invoke(ui
   }
 }
 
-- (void)handleMutedTalkerNotificationWithXPCArguments:(id)a3
+- (void)handleMutedTalkerNotificationWithXPCArguments:(id)arguments
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"mutedTalkerNotificationType"];
+  v4 = [arguments objectForKeyedSubscript:@"mutedTalkerNotificationType"];
   v5 = v4;
   if (!self->_mutedTalkerNotificationHandler)
   {
@@ -1502,10 +1502,10 @@ void __55__AVAudioClient_unregisterFromMutedTalkerNotifications__block_invoke(ui
     goto LABEL_18;
   }
 
-  v6 = [v4 unsignedIntValue];
-  if (v6 != 1)
+  unsignedIntValue = [v4 unsignedIntValue];
+  if (unsignedIntValue != 1)
   {
-    if (!v6)
+    if (!unsignedIntValue)
     {
       (*(self->_mutedTalkerNotificationHandler + 2))();
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1578,7 +1578,7 @@ LABEL_18:
   }
 }
 
-- (int)setMuteStateChangedEventHandler:(id)a3
+- (int)setMuteStateChangedEventHandler:(id)handler
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -1591,7 +1591,7 @@ LABEL_18:
   v6[2] = __49__AVAudioClient_setMuteStateChangedEventHandler___block_invoke;
   v6[3] = &unk_1E85FA220;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = handler;
   v6[6] = &v7;
   dispatch_sync(clientAudioSessionQueue, v6);
   v4 = *(v8 + 6);
@@ -1599,12 +1599,12 @@ LABEL_18:
   return v4;
 }
 
-- (void)dispatchedHandleMuteStateChangedEventWithXPCArguments:(id)a3
+- (void)dispatchedHandleMuteStateChangedEventWithXPCArguments:(id)arguments
 {
   *&v31[5] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_clientAudioSessionQueue);
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"muteStateChangedMuteState", "BOOLValue"}];
-  v6 = [a3 objectForKeyedSubscript:@"muteStateChangedReason"];
+  v5 = [objc_msgSend(arguments objectForKeyedSubscript:{@"muteStateChangedMuteState", "BOOLValue"}];
+  v6 = [arguments objectForKeyedSubscript:@"muteStateChangedReason"];
   v7 = v6;
   if (!self->_muteStateChangedHandler)
   {
@@ -1639,10 +1639,10 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v8 = [v6 unsignedCharValue];
-  if (v8 != 1)
+  unsignedCharValue = [v6 unsignedCharValue];
+  if (unsignedCharValue != 1)
   {
-    if (!v8)
+    if (!unsignedCharValue)
     {
       (*(self->_muteStateChangedHandler + 2))();
       if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1731,7 +1731,7 @@ LABEL_18:
   }
 }
 
-- (void)registerSecureMicrophoneEngagedHandler:(id)a3
+- (void)registerSecureMicrophoneEngagedHandler:(id)handler
 {
   block[6] = *MEMORY[0x1E69E9840];
   clientAudioSessionQueue = self->_clientAudioSessionQueue;
@@ -1740,7 +1740,7 @@ LABEL_18:
   block[2] = __56__AVAudioClient_registerSecureMicrophoneEngagedHandler___block_invoke;
   block[3] = &unk_1E85F4E98;
   block[4] = self;
-  block[5] = a3;
+  block[5] = handler;
   dispatch_sync(clientAudioSessionQueue, block);
 }
 
@@ -1949,7 +1949,7 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
   [(AVConferenceXPCClient *)xpcConnection deregisterFromService:"mutedTalkerNotification"];
 }
 
-+ (void)startAudioSessionWithCompletionHandler:(id)a3
++ (void)startAudioSessionWithCompletionHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = +[AVAudioClient sharedInstance];
@@ -1972,7 +1972,7 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
     }
   }
 
-  [(AVAudioClient *)v4 startAudioSessionWithCompletionHandler:a3];
+  [(AVAudioClient *)v4 startAudioSessionWithCompletionHandler:handler];
 }
 
 + (void)startAudioSession
@@ -2002,7 +2002,7 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
   [(AVAudioClient *)v2 startAudioSessionWithCompletionHandler:0];
 }
 
-+ (void)setAudioSessionProperties:(id)a3
++ (void)setAudioSessionProperties:(id)properties
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = +[AVAudioClient sharedInstance];
@@ -2022,12 +2022,12 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
       v13 = 2048;
       v14 = v4;
       v15 = 2112;
-      v16 = a3;
+      propertiesCopy = properties;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioClient [%s] %s:%d @:@ AVAudioClient-setAudioSessionProperties (%p) audioParams=%@", &v7, 0x30u);
     }
   }
 
-  [(AVAudioClient *)v4 setAudioSessionProperties:a3];
+  [(AVAudioClient *)v4 setAudioSessionProperties:properties];
 }
 
 + (void)stopAudioSession
@@ -2089,9 +2089,9 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
   return [(AVAudioClient *)v2 hasActiveAudioSession];
 }
 
-+ (void)setMicrophoneMuted:(BOOL)a3
++ (void)setMicrophoneMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   v17 = *MEMORY[0x1E69E9840];
   v4 = +[AVAudioClient sharedInstance];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVAudioClient-setMicrophoneMuted");
@@ -2110,12 +2110,12 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
       v13 = 2048;
       v14 = v4;
       v15 = 1024;
-      v16 = v3;
+      v16 = mutedCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioClient [%s] %s:%d @:@ AVAudioClient-setMicrophoneMuted (%p) isMuted=%d", &v7, 0x2Cu);
     }
   }
 
-  [(AVAudioClient *)v4 setMicrophoneMuted:v3];
+  [(AVAudioClient *)v4 setMicrophoneMuted:mutedCopy];
 }
 
 + (BOOL)isMicrophoneMuted
@@ -2144,9 +2144,9 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
   return [(AVAudioClient *)v2 isMicrophoneMuted];
 }
 
-+ (void)setMixingVoiceWithMediaEnabled:(BOOL)a3
++ (void)setMixingVoiceWithMediaEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v17 = *MEMORY[0x1E69E9840];
   v4 = +[AVAudioClient sharedInstance];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVAudioClient-setMixingVoiceWithMediaEnabled");
@@ -2165,12 +2165,12 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
       v13 = 2048;
       v14 = v4;
       v15 = 1024;
-      v16 = v3;
+      v16 = enabledCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioClient [%s] %s:%d @:@ AVAudioClient-setMixingVoiceWithMediaEnabled (%p) isMixingVoiceWithMediaEnabled=%d", &v7, 0x2Cu);
     }
   }
 
-  [(AVAudioClient *)v4 setMixingVoiceWithMediaEnabled:v3];
+  [(AVAudioClient *)v4 setMixingVoiceWithMediaEnabled:enabledCopy];
 }
 
 + (BOOL)isMixingVoiceWithMediaEnabled
@@ -2251,7 +2251,7 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
   return [(AVAudioClient *)v2 currentOutputDevice];
 }
 
-+ (BOOL)setInputDevice:(id)a3
++ (BOOL)setInputDevice:(id)device
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[AVAudioClient sharedInstance];
@@ -2271,15 +2271,15 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
       v14 = 2048;
       v15 = v4;
       v16 = 2112;
-      v17 = a3;
+      deviceCopy = device;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioClient [%s] %s:%d @:@ AVAudioClient-setInputDevice (%p) inputDevice=%@", &v8, 0x30u);
     }
   }
 
-  return [(AVAudioClient *)v4 setInputDevice:a3];
+  return [(AVAudioClient *)v4 setInputDevice:device];
 }
 
-+ (BOOL)setOutputDevice:(id)a3
++ (BOOL)setOutputDevice:(id)device
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[AVAudioClient sharedInstance];
@@ -2299,17 +2299,17 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
       v14 = 2048;
       v15 = v4;
       v16 = 2112;
-      v17 = a3;
+      deviceCopy = device;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioClient [%s] %s:%d @:@ AVAudioClient-setOutputDevice (%p) outputDevice=%@", &v8, 0x30u);
     }
   }
 
-  return [(AVAudioClient *)v4 setOutputDevice:a3];
+  return [(AVAudioClient *)v4 setOutputDevice:device];
 }
 
-+ (void)setFollowSystemInputEnabled:(BOOL)a3
++ (void)setFollowSystemInputEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v17 = *MEMORY[0x1E69E9840];
   v4 = +[AVAudioClient sharedInstance];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVAudioClient-setFollowSystemInputEnabled");
@@ -2328,17 +2328,17 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
       v13 = 2048;
       v14 = v4;
       v15 = 1024;
-      v16 = v3;
+      v16 = enabledCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioClient [%s] %s:%d @:@ AVAudioClient-setFollowSystemInputEnabled (%p) enabled=%d", &v7, 0x2Cu);
     }
   }
 
-  [(AVAudioClient *)v4 setFollowSystemInputEnabled:v3];
+  [(AVAudioClient *)v4 setFollowSystemInputEnabled:enabledCopy];
 }
 
-+ (void)setFollowSystemOutputEnabled:(BOOL)a3
++ (void)setFollowSystemOutputEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v17 = *MEMORY[0x1E69E9840];
   v4 = +[AVAudioClient sharedInstance];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVAudioClient-setFollowSystemOutputEnabled");
@@ -2357,15 +2357,15 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
       v13 = 2048;
       v14 = v4;
       v15 = 1024;
-      v16 = v3;
+      v16 = enabledCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioClient [%s] %s:%d @:@ AVAudioClient-setFollowSystemOutputEnabled (%p) enabled=%d", &v7, 0x2Cu);
     }
   }
 
-  [(AVAudioClient *)v4 setFollowSystemOutputEnabled:v3];
+  [(AVAudioClient *)v4 setFollowSystemOutputEnabled:enabledCopy];
 }
 
-+ (int)registerForMutedTalkerNotifications:(id)a3
++ (int)registerForMutedTalkerNotifications:(id)notifications
 {
   v16 = *MEMORY[0x1E69E9840];
   v4 = +[AVAudioClient sharedInstance];
@@ -2388,7 +2388,7 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
     }
   }
 
-  return [(AVAudioClient *)v4 registerForMutedTalkerNotifications:a3];
+  return [(AVAudioClient *)v4 registerForMutedTalkerNotifications:notifications];
 }
 
 + (int)unregisterFromMutedTalkerNotifications
@@ -2417,7 +2417,7 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
   return [(AVAudioClient *)v2 unregisterFromMutedTalkerNotifications];
 }
 
-+ (int)setMuteStateChangedHandler:(id)a3
++ (int)setMuteStateChangedHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[AVAudioClient sharedInstance];
@@ -2437,15 +2437,15 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
       v14 = 2048;
       v15 = v4;
       v16 = 2048;
-      v17 = a3;
+      handlerCopy = handler;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVCAudioClient [%s] %s:%d @:@ AVAudioClient-setMuteStateChangedHandler (%p) handler=%p", &v8, 0x30u);
     }
   }
 
-  return [(AVAudioClient *)v4 setMuteStateChangedEventHandler:a3];
+  return [(AVAudioClient *)v4 setMuteStateChangedEventHandler:handler];
 }
 
-+ (void)registerSecureMicrophoneEngagedHandler:(id)a3
++ (void)registerSecureMicrophoneEngagedHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = +[AVAudioClient sharedInstance];
@@ -2468,13 +2468,13 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
     }
   }
 
-  [(AVAudioClient *)v4 registerSecureMicrophoneEngagedHandler:a3];
+  [(AVAudioClient *)v4 registerSecureMicrophoneEngagedHandler:handler];
 }
 
-- (void)setChangeListener:(id)a3
+- (void)setChangeListener:(id)listener
 {
   v14 = *MEMORY[0x1E69E9840];
-  [(AVAudioDeviceList *)[(AVAudioClient *)self deviceList] setChangeListener:a3];
+  [(AVAudioDeviceList *)[(AVAudioClient *)self deviceList] setChangeListener:listener];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVAudioClient-setChangeListener");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -2489,7 +2489,7 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
       v10 = 1024;
       v11 = 1001;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, "AVCAudioClient [%s] %s:%d @:@ AVAudioClient-setChangeListener (%p)", &v6, 0x26u);
     }
   }
@@ -2497,28 +2497,28 @@ uint64_t __55__AVAudioClient_registerBlocksForDelegateNotifications__block_invok
 
 - (id)changeListener
 {
-  v2 = [(AVAudioClient *)self deviceList];
+  deviceList = [(AVAudioClient *)self deviceList];
 
-  return [(AVAudioDeviceList *)v2 changeListener];
+  return [(AVAudioDeviceList *)deviceList changeListener];
 }
 
 - (id)devices
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAudioDeviceList *)[(AVAudioClient *)self deviceList] devices];
+  devices = [(AVAudioDeviceList *)[(AVAudioClient *)self deviceList] devices];
   if (VRTraceGetErrorLogLevelForModule() < 7)
   {
-    return v3;
+    return devices;
   }
 
   __str = 0;
   if (self)
   {
     v4 = [-[AVAudioClient description](self "description")];
-    if (v3)
+    if (devices)
     {
 LABEL_4:
-      v5 = [objc_msgSend(v3 "description")];
+      v5 = [objc_msgSend(devices "description")];
       goto LABEL_7;
     }
   }
@@ -2526,7 +2526,7 @@ LABEL_4:
   else
   {
     v4 = "<nil>";
-    if (v3)
+    if (devices)
     {
       goto LABEL_4;
     }
@@ -2569,26 +2569,26 @@ LABEL_7:
     free(__str);
   }
 
-  return v3;
+  return devices;
 }
 
 - (id)inputDevices
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAudioDeviceList *)[(AVAudioClient *)self deviceList] inputDevices];
+  inputDevices = [(AVAudioDeviceList *)[(AVAudioClient *)self deviceList] inputDevices];
   if (VRTraceGetErrorLogLevelForModule() < 7)
   {
-    return v3;
+    return inputDevices;
   }
 
   __str = 0;
   if (self)
   {
     v4 = [-[AVAudioClient description](self "description")];
-    if (v3)
+    if (inputDevices)
     {
 LABEL_4:
-      v5 = [objc_msgSend(v3 "description")];
+      v5 = [objc_msgSend(inputDevices "description")];
       goto LABEL_7;
     }
   }
@@ -2596,7 +2596,7 @@ LABEL_4:
   else
   {
     v4 = "<nil>";
-    if (v3)
+    if (inputDevices)
     {
       goto LABEL_4;
     }
@@ -2639,26 +2639,26 @@ LABEL_7:
     free(__str);
   }
 
-  return v3;
+  return inputDevices;
 }
 
 - (id)outputDevices
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(AVAudioDeviceList *)[(AVAudioClient *)self deviceList] outputDevices];
+  outputDevices = [(AVAudioDeviceList *)[(AVAudioClient *)self deviceList] outputDevices];
   if (VRTraceGetErrorLogLevelForModule() < 7)
   {
-    return v3;
+    return outputDevices;
   }
 
   __str = 0;
   if (self)
   {
     v4 = [-[AVAudioClient description](self "description")];
-    if (v3)
+    if (outputDevices)
     {
 LABEL_4:
-      v5 = [objc_msgSend(v3 "description")];
+      v5 = [objc_msgSend(outputDevices "description")];
       goto LABEL_7;
     }
   }
@@ -2666,7 +2666,7 @@ LABEL_4:
   else
   {
     v4 = "<nil>";
-    if (v3)
+    if (outputDevices)
     {
       goto LABEL_4;
     }
@@ -2709,7 +2709,7 @@ LABEL_7:
     free(__str);
   }
 
-  return v3;
+  return outputDevices;
 }
 
 - (BOOL)reregisterClientSideHandlersOverXPC
@@ -2717,12 +2717,12 @@ LABEL_7:
   v24 = *MEMORY[0x1E69E9840];
   if ([(AVAudioClient *)self reregisterMutedTalkerNotificationOverXPC])
   {
-    v3 = [(AVAudioClient *)self reregisterMuteStateChangedHandlerOverXPC];
+    reregisterMuteStateChangedHandlerOverXPC = [(AVAudioClient *)self reregisterMuteStateChangedHandlerOverXPC];
   }
 
   else
   {
-    v3 = 0;
+    reregisterMuteStateChangedHandlerOverXPC = 0;
   }
 
   if (objc_opt_class() == self)
@@ -2737,7 +2737,7 @@ LABEL_7:
         OUTLINED_FUNCTION_6();
         v17 = 209;
         v18 = v6;
-        LODWORD(v19) = v3;
+        LODWORD(v19) = reregisterMuteStateChangedHandlerOverXPC;
         v7 = "AVCAudioClient [%s] %s:%d Registering block handlers, status=%{BOOL}d";
         v8 = v5;
         v9 = 34;
@@ -2773,9 +2773,9 @@ LABEL_13:
         v18 = 2112;
         v19 = v4;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v22 = v12;
-        v23 = v3;
+        v23 = reregisterMuteStateChangedHandlerOverXPC;
         v7 = "AVCAudioClient [%s] %s:%d %@(%p) Registering block handlers, status=%{BOOL}d";
         v8 = v11;
         v9 = 54;
@@ -2784,7 +2784,7 @@ LABEL_13:
     }
   }
 
-  return v3;
+  return reregisterMuteStateChangedHandlerOverXPC;
 }
 
 void __49__AVAudioClient_setMuteStateChangedEventHandler___block_invoke(uint64_t a1)

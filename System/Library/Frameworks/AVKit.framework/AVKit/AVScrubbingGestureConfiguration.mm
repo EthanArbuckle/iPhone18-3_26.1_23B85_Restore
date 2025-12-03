@@ -1,19 +1,19 @@
 @interface AVScrubbingGestureConfiguration
-+ (AVScrubbingGestureConfiguration)configurationWithSyntheticFriction:(float)a3 usesNaturalDirection:(BOOL)a4 platformConfiguration:(id)a5;
++ (AVScrubbingGestureConfiguration)configurationWithSyntheticFriction:(float)friction usesNaturalDirection:(BOOL)direction platformConfiguration:(id)configuration;
 + (id)defaultConfiguration;
 @end
 
 @implementation AVScrubbingGestureConfiguration
 
-+ (AVScrubbingGestureConfiguration)configurationWithSyntheticFriction:(float)a3 usesNaturalDirection:(BOOL)a4 platformConfiguration:(id)a5
++ (AVScrubbingGestureConfiguration)configurationWithSyntheticFriction:(float)friction usesNaturalDirection:(BOOL)direction platformConfiguration:(id)configuration
 {
-  v7 = a5;
+  configurationCopy = configuration;
   v8 = objc_alloc_init(AVScrubbingGestureConfiguration);
-  v8->_syntheticFriction = a3;
-  v8->_usesNaturalDirection = a4;
+  v8->_syntheticFriction = friction;
+  v8->_usesNaturalDirection = direction;
   platformConfiguration = v8->_platformConfiguration;
-  v8->_platformConfiguration = v7;
-  v10 = v7;
+  v8->_platformConfiguration = configurationCopy;
+  v10 = configurationCopy;
 
   [(AVScrubbingGesturePlatformConfiguration *)v10 nonLinearity];
   v12 = v11;

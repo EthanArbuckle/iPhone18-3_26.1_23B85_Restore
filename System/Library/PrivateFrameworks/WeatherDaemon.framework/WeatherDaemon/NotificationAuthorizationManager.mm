@@ -1,15 +1,15 @@
 @interface NotificationAuthorizationManager
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4;
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings;
 @end
 
 @implementation NotificationAuthorizationManager
 
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10000EB84(v8, v7);
+  centerCopy = center;
+  settingsCopy = settings;
+  selfCopy = self;
+  sub_10000EB84(selfCopy, settingsCopy);
 }
 
 @end

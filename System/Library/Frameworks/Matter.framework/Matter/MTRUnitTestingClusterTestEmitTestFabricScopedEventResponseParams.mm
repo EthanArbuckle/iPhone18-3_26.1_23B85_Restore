@@ -1,9 +1,9 @@
 @interface MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct;
 - (MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams)init;
-- (MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams)initWithDecodableStruct:(const DecodableType *)a3;
+- (MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams)initWithDecodableStruct:(const DecodableType *)struct;
 - (MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,14 +27,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams);
-  v5 = [(MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams *)self value];
-  [(MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams *)v4 setValue:v5];
+  value = [(MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams *)self value];
+  [(MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams *)v4 setValue:value];
 
-  v6 = [(MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -93,7 +93,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams)initWithDecodableStruct:(const DecodableType *)a3
+- (MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams)initWithDecodableStruct:(const DecodableType *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams;
@@ -101,7 +101,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -117,9 +117,9 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*&a3->var0];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*&struct->var0];
   [(MTRUnitTestingClusterTestEmitTestFabricScopedEventResponseParams *)self setValue:v4];
 
   v5 = 0;

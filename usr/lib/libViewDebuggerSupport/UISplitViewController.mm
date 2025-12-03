@@ -1,6 +1,6 @@
 @interface UISplitViewController
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UISplitViewController
@@ -76,18 +76,18 @@
   return v8;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"displayModeButtonItem"] && objc_msgSend(v9, "style"))
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"displayModeButtonItem"] && objc_msgSend(objectCopy, "style"))
   {
-    a6 = 0;
+    error = 0;
     goto LABEL_25;
   }
 
-  v10 = v9;
-  v11 = v8;
+  v10 = objectCopy;
+  v11 = nameCopy;
   if (![v11 length])
   {
     goto LABEL_15;
@@ -98,18 +98,18 @@
   {
     if ([v11 length] < 2)
     {
-      v16 = [v11 uppercaseString];
+      uppercaseString = [v11 uppercaseString];
     }
 
     else
     {
       v13 = [v11 substringToIndex:1];
-      v14 = [v13 uppercaseString];
+      uppercaseString2 = [v13 uppercaseString];
       v15 = [v11 substringFromIndex:1];
-      v16 = [v14 stringByAppendingString:v15];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v15];
     }
 
-    v17 = [@"is" stringByAppendingString:v16];
+    v17 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v17);
     if (objc_opt_respondsToSelector())
     {
@@ -127,7 +127,7 @@
     }
 
 LABEL_15:
-    if (a6)
+    if (error)
     {
       v18 = v11;
       if (v10)
@@ -161,10 +161,10 @@ LABEL_15:
       v23 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v22];
 
       v24 = v23;
-      *a6 = v23;
+      *error = v23;
 
       v12 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -182,12 +182,12 @@ LABEL_15:
   }
 
 LABEL_7:
-  a6 = [v10 valueForKey:v12];
+  error = [v10 valueForKey:v12];
 LABEL_24:
 
 LABEL_25:
 
-  return a6;
+  return error;
 }
 
 @end

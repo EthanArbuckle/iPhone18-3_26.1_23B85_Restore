@@ -1,16 +1,16 @@
 @interface SUNavigationMenu
-- (SUNavigationMenu)initWithDictionary:(id)a3;
-- (id)_newMenuItemsFromArray:(id)a3;
-- (id)_newNavigationButtonsFromArray:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)navigationButtonForLocation:(id)a3;
-- (void)_loadFromDictionary:(id)a3;
+- (SUNavigationMenu)initWithDictionary:(id)dictionary;
+- (id)_newMenuItemsFromArray:(id)array;
+- (id)_newNavigationButtonsFromArray:(id)array;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)navigationButtonForLocation:(id)location;
+- (void)_loadFromDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
 @implementation SUNavigationMenu
 
-- (SUNavigationMenu)initWithDictionary:(id)a3
+- (SUNavigationMenu)initWithDictionary:(id)dictionary
 {
   v7.receiver = self;
   v7.super_class = SUNavigationMenu;
@@ -19,7 +19,7 @@
   if (v4)
   {
     v4->_initialSelectedIndex = -1;
-    [(SUNavigationMenu *)v4 _loadFromDictionary:a3];
+    [(SUNavigationMenu *)v4 _loadFromDictionary:dictionary];
     if (![(NSArray *)v5->_menuItems count]|| ![(NSString *)v5->_closedTitle length]&& ![(NSString *)v5->_openTitle length])
     {
 
@@ -37,20 +37,20 @@
   [(SUNavigationMenu *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v5[1] = [(NSString *)self->_cancelTitle copyWithZone:a3];
-  v5[2] = [(NSString *)self->_closedTitle copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v5[1] = [(NSString *)self->_cancelTitle copyWithZone:zone];
+  v5[2] = [(NSString *)self->_closedTitle copyWithZone:zone];
   v5[3] = self->_initialSelectedIndex;
   v5[4] = self->_location;
-  v5[5] = [(NSArray *)self->_menuItems copyWithZone:a3];
-  v5[6] = [(NSArray *)self->_navigationButtons copyWithZone:a3];
-  v5[7] = [(NSString *)self->_openTitle copyWithZone:a3];
+  v5[5] = [(NSArray *)self->_menuItems copyWithZone:zone];
+  v5[6] = [(NSArray *)self->_navigationButtons copyWithZone:zone];
+  v5[7] = [(NSString *)self->_openTitle copyWithZone:zone];
   return v5;
 }
 
-- (id)navigationButtonForLocation:(id)a3
+- (id)navigationButtonForLocation:(id)location
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -100,9 +100,9 @@ LABEL_9:
   return v9;
 }
 
-- (void)_loadFromDictionary:(id)a3
+- (void)_loadFromDictionary:(id)dictionary
 {
-  v5 = [a3 objectForKey:@"cancel-text"];
+  v5 = [dictionary objectForKey:@"cancel-text"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -110,7 +110,7 @@ LABEL_9:
     self->_cancelTitle = v5;
   }
 
-  v6 = [a3 objectForKey:@"button-title"];
+  v6 = [dictionary objectForKey:@"button-title"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -118,26 +118,26 @@ LABEL_9:
     self->_closedTitle = v6;
   }
 
-  v7 = [a3 objectForKey:@"selected-index"];
+  v7 = [dictionary objectForKey:@"selected-index"];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
   }
 
   else
   {
-    v8 = -1;
+    intValue = -1;
   }
 
-  self->_initialSelectedIndex = v8;
-  v9 = [a3 objectForKey:@"location"];
+  self->_initialSelectedIndex = intValue;
+  v9 = [dictionary objectForKey:@"location"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     self->_location = [(SUNavigationMenu *)self _locationForString:v9];
   }
 
-  v10 = [a3 objectForKey:@"items"];
+  v10 = [dictionary objectForKey:@"items"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -145,7 +145,7 @@ LABEL_9:
     self->_menuItems = [(SUNavigationMenu *)self _newMenuItemsFromArray:v10];
   }
 
-  v11 = [a3 objectForKey:@"navigation-buttons"];
+  v11 = [dictionary objectForKey:@"navigation-buttons"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -153,7 +153,7 @@ LABEL_9:
     self->_navigationButtons = [(SUNavigationMenu *)self _newNavigationButtonsFromArray:v11];
   }
 
-  v12 = [a3 objectForKey:@"nav-controller-title"];
+  v12 = [dictionary objectForKey:@"nav-controller-title"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -162,7 +162,7 @@ LABEL_9:
   }
 }
 
-- (id)_newMenuItemsFromArray:(id)a3
+- (id)_newMenuItemsFromArray:(id)array
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -170,7 +170,7 @@ LABEL_9:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [array countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -182,15 +182,15 @@ LABEL_9:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         v9 = [[SUNavigationMenuItem alloc] initWithDictionary:*(*(&v13 + 1) + 8 * v8)];
         if (v9)
         {
           v10 = v9;
-          v11 = [(SUNavigationMenuItem *)v9 contentRating];
-          if (![(SUItemContentRating *)v11 isRestricted]|| ![(SUItemContentRating *)v11 shouldHideWhenRestricted])
+          contentRating = [(SUNavigationMenuItem *)v9 contentRating];
+          if (![(SUItemContentRating *)contentRating isRestricted]|| ![(SUItemContentRating *)contentRating shouldHideWhenRestricted])
           {
             [v4 addObject:v10];
           }
@@ -200,7 +200,7 @@ LABEL_9:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [array countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -215,7 +215,7 @@ LABEL_9:
   return v4;
 }
 
-- (id)_newNavigationButtonsFromArray:(id)a3
+- (id)_newNavigationButtonsFromArray:(id)array
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -223,7 +223,7 @@ LABEL_9:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [array countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -235,7 +235,7 @@ LABEL_9:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -254,7 +254,7 @@ LABEL_9:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [array countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);

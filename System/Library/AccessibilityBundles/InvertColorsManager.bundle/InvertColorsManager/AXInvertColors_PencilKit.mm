@@ -1,24 +1,24 @@
 @interface AXInvertColors_PencilKit
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_PencilKit
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_PKColorAlphaSliderIOS"];
-  [v3 validateClass:@"_UITextAttachmentDrawingView"];
-  [v3 validateClass:@"PKColorMatrixView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_PKColorAlphaSliderIOS"];
+  [validationsCopy validateClass:@"_UITextAttachmentDrawingView"];
+  [validationsCopy validateClass:@"PKColorMatrixView"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"_PKColorAlphaSliderIOSInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PKColorMatrixViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"_UITextAttachmentDrawingViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"_PKColorAlphaSliderIOSInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PKColorMatrixViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"_UITextAttachmentDrawingViewInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

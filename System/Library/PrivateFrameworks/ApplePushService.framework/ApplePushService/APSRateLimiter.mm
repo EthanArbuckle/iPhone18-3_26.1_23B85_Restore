@@ -1,5 +1,5 @@
 @interface APSRateLimiter
-- (APSRateLimiter)initWithLimit:(int64_t)a3 timeLimit:(double)a4;
+- (APSRateLimiter)initWithLimit:(int64_t)limit timeLimit:(double)timeLimit;
 - (BOOL)_checkIsExpired;
 - (BOOL)isUnderLimit;
 - (BOOL)isUnset;
@@ -9,15 +9,15 @@
 
 @implementation APSRateLimiter
 
-- (APSRateLimiter)initWithLimit:(int64_t)a3 timeLimit:(double)a4
+- (APSRateLimiter)initWithLimit:(int64_t)limit timeLimit:(double)timeLimit
 {
   v7.receiver = self;
   v7.super_class = APSRateLimiter;
   result = [(APSRateLimiter *)&v7 init];
   if (result)
   {
-    result->_limit = a3;
-    result->_timeLimit = a4;
+    result->_limit = limit;
+    result->_timeLimit = timeLimit;
   }
 
   return result;

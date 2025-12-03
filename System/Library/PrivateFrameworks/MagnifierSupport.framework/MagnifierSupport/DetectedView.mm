@@ -1,6 +1,6 @@
 @interface DetectedView
 - (BOOL)accessibilityActivate;
-- (_TtC16MagnifierSupport12DetectedView)initWithFrame:(CGRect)a3;
+- (_TtC16MagnifierSupport12DetectedView)initWithFrame:(CGRect)frame;
 - (void)accessibilityElementDidBecomeFocused;
 - (void)updateTargetAnimation;
 @end
@@ -9,15 +9,15 @@
 
 - (void)updateTargetAnimation
 {
-  v2 = self;
+  selfCopy = self;
   sub_257DE7638();
 }
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_257ECF4C0();
-  [(DetectedView *)v2 setAccessibilityLabel:v3];
+  [(DetectedView *)selfCopy setAccessibilityLabel:v3];
 
   if (qword_281544FE0 != -1)
   {
@@ -34,11 +34,11 @@
 
 - (void)accessibilityElementDidBecomeFocused
 {
-  v2 = self;
+  selfCopy = self;
   sub_257DE7DE0();
 }
 
-- (_TtC16MagnifierSupport12DetectedView)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport12DetectedView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

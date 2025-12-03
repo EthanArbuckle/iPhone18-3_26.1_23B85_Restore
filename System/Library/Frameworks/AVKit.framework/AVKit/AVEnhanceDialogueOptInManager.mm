@@ -1,32 +1,32 @@
 @interface AVEnhanceDialogueOptInManager
 + (AVEnhanceDialogueOptInManager)sharedInstance;
 - (AVEnhanceDialogueOptInManager)init;
-- (BOOL)isEnhanceDialogueAllowedUsingController:(id)a3;
-- (void)optInEnhanceDialogueController:(id)a3;
-- (void)optOutEnhanceDialogueController:(id)a3;
-- (void)setAllowEnhanceDialogue:(BOOL)a3;
+- (BOOL)isEnhanceDialogueAllowedUsingController:(id)controller;
+- (void)optInEnhanceDialogueController:(id)controller;
+- (void)optOutEnhanceDialogueController:(id)controller;
+- (void)setAllowEnhanceDialogue:(BOOL)dialogue;
 @end
 
 @implementation AVEnhanceDialogueOptInManager
 
-- (void)setAllowEnhanceDialogue:(BOOL)a3
+- (void)setAllowEnhanceDialogue:(BOOL)dialogue
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (self->_allowEnhanceDialogue == a3)
+  if (self->_allowEnhanceDialogue == dialogue)
   {
     return;
   }
 
-  v3 = a3;
+  dialogueCopy = dialogue;
   v5 = +[AVKitGlobalSettings shared];
-  v6 = [v5 customMediaSelectionSchemeEnabled];
+  customMediaSelectionSchemeEnabled = [v5 customMediaSelectionSchemeEnabled];
 
-  v7 = [MEMORY[0x1E6958460] sharedInstance];
-  v8 = v7;
-  if (!v6)
+  mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+  v8 = mEMORY[0x1E6958460];
+  if (!customMediaSelectionSchemeEnabled)
   {
     v24 = 0;
-    v15 = [v7 setAllowEnhanceDialogue:v3 error:&v24];
+    v15 = [mEMORY[0x1E6958460] setAllowEnhanceDialogue:dialogueCopy error:&v24];
     v16 = v24;
 
     if ((v15 & 1) == 0)
@@ -34,15 +34,15 @@
       v17 = _AVLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v16 localizedDescription];
-        v21 = [v20 cStringUsingEncoding:4];
+        localizedDescription = [v16 localizedDescription];
+        v21 = [localizedDescription cStringUsingEncoding:4];
         *buf = 136315138;
         v27 = v21;
         _os_log_error_impl(&dword_18B49C000, v17, OS_LOG_TYPE_ERROR, "Unable to set allow Enhance Dialogue: %s", buf, 0xCu);
       }
     }
 
-    if (v3)
+    if (dialogueCopy)
     {
       v18 = 2;
     }
@@ -67,8 +67,8 @@
       goto LABEL_15;
     }
 
-    v12 = [v10 localizedDescription];
-    v22 = [v12 cStringUsingEncoding:4];
+    localizedDescription2 = [v10 localizedDescription];
+    v22 = [localizedDescription2 cStringUsingEncoding:4];
     *buf = 136315138;
     v27 = v22;
     v14 = "Unable to set Enhance Dialogue preference: %s";
@@ -76,7 +76,7 @@
   }
 
   v25 = 0;
-  v9 = [v7 setPrefersEnhanceDialogue:v3 error:&v25];
+  v9 = [mEMORY[0x1E6958460] setPrefersEnhanceDialogue:dialogueCopy error:&v25];
   v10 = v25;
 
   if ((v9 & 1) == 0)
@@ -89,8 +89,8 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v12 = [v10 localizedDescription];
-    v13 = [v12 cStringUsingEncoding:4];
+    localizedDescription2 = [v10 localizedDescription];
+    v13 = [localizedDescription2 cStringUsingEncoding:4];
     *buf = 136315138;
     v27 = v13;
     v14 = "Unable to set Prefers Enhance Dialogue: %s";
@@ -103,35 +103,35 @@ LABEL_21:
 LABEL_16:
   if (!v10)
   {
-    self->_allowEnhanceDialogue = v3;
+    self->_allowEnhanceDialogue = dialogueCopy;
   }
 }
 
-- (BOOL)isEnhanceDialogueAllowedUsingController:(id)a3
+- (BOOL)isEnhanceDialogueAllowedUsingController:(id)controller
 {
-  v4 = a3;
-  v5 = [(AVEnhanceDialogueOptInManager *)self enhanceDialogueControllers];
-  v6 = [v5 containsObject:v4];
+  controllerCopy = controller;
+  enhanceDialogueControllers = [(AVEnhanceDialogueOptInManager *)self enhanceDialogueControllers];
+  v6 = [enhanceDialogueControllers containsObject:controllerCopy];
 
   return v6;
 }
 
-- (void)optOutEnhanceDialogueController:(id)a3
+- (void)optOutEnhanceDialogueController:(id)controller
 {
-  v4 = a3;
-  v5 = [(AVEnhanceDialogueOptInManager *)self enhanceDialogueControllers];
-  [v5 removeObject:v4];
+  controllerCopy = controller;
+  enhanceDialogueControllers = [(AVEnhanceDialogueOptInManager *)self enhanceDialogueControllers];
+  [enhanceDialogueControllers removeObject:controllerCopy];
 
-  v7 = [(AVEnhanceDialogueOptInManager *)self enhanceDialogueControllers];
-  if ([v7 count])
+  enhanceDialogueControllers2 = [(AVEnhanceDialogueOptInManager *)self enhanceDialogueControllers];
+  if ([enhanceDialogueControllers2 count])
   {
   }
 
   else
   {
-    v6 = [(AVEnhanceDialogueOptInManager *)self allowEnhanceDialogue];
+    allowEnhanceDialogue = [(AVEnhanceDialogueOptInManager *)self allowEnhanceDialogue];
 
-    if (v6)
+    if (allowEnhanceDialogue)
     {
 
       [(AVEnhanceDialogueOptInManager *)self setAllowEnhanceDialogue:0];
@@ -139,18 +139,18 @@ LABEL_16:
   }
 }
 
-- (void)optInEnhanceDialogueController:(id)a3
+- (void)optInEnhanceDialogueController:(id)controller
 {
-  v4 = a3;
-  v5 = [(AVEnhanceDialogueOptInManager *)self enhanceDialogueControllers];
-  [v5 addObject:v4];
+  controllerCopy = controller;
+  enhanceDialogueControllers = [(AVEnhanceDialogueOptInManager *)self enhanceDialogueControllers];
+  [enhanceDialogueControllers addObject:controllerCopy];
 
-  v7 = [(AVEnhanceDialogueOptInManager *)self enhanceDialogueControllers];
-  if ([v7 count])
+  enhanceDialogueControllers2 = [(AVEnhanceDialogueOptInManager *)self enhanceDialogueControllers];
+  if ([enhanceDialogueControllers2 count])
   {
-    v6 = [(AVEnhanceDialogueOptInManager *)self allowEnhanceDialogue];
+    allowEnhanceDialogue = [(AVEnhanceDialogueOptInManager *)self allowEnhanceDialogue];
 
-    if (!v6)
+    if (!allowEnhanceDialogue)
     {
 
       [(AVEnhanceDialogueOptInManager *)self setAllowEnhanceDialogue:1];

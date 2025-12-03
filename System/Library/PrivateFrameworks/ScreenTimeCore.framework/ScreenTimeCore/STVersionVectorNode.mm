@@ -1,31 +1,31 @@
 @interface STVersionVectorNode
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNode:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNode:(id)node;
 - (NSDictionary)dictionaryRepresentation;
-- (STVersionVectorNode)initWithCoder:(id)a3;
-- (STVersionVectorNode)initWithDictionaryRepresentation:(id)a3;
-- (STVersionVectorNode)initWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (STVersionVectorNode)initWithCoder:(id)coder;
+- (STVersionVectorNode)initWithDictionaryRepresentation:(id)representation;
+- (STVersionVectorNode)initWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)increment;
-- (void)join:(id)a3;
+- (void)join:(id)join;
 @end
 
 @implementation STVersionVectorNode
 
-- (STVersionVectorNode)initWithIdentifier:(id)a3
+- (STVersionVectorNode)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = STVersionVectorNode;
   v5 = [(STVersionVectorNode *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -35,16 +35,16 @@
   return v5;
 }
 
-- (STVersionVectorNode)initWithDictionaryRepresentation:(id)a3
+- (STVersionVectorNode)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 allKeys];
-  v6 = [v5 firstObject];
+  representationCopy = representation;
+  allKeys = [representationCopy allKeys];
+  firstObject = [allKeys firstObject];
 
-  v7 = [(STVersionVectorNode *)self initWithIdentifier:v6];
+  v7 = [(STVersionVectorNode *)self initWithIdentifier:firstObject];
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:v6];
+    v8 = [representationCopy objectForKeyedSubscript:firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,8 +59,8 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(STVersionVectorNode *)self identifier];
-  v11 = v3;
+  identifier = [(STVersionVectorNode *)self identifier];
+  v11 = identifier;
   v9 = @"c";
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[STVersionVectorNode count](self, "count")}];
   v10 = v4;
@@ -80,16 +80,16 @@
   [(STVersionVectorNode *)self setCount:v3];
 }
 
-- (void)join:(id)a3
+- (void)join:(id)join
 {
-  v4 = a3;
-  v5 = [(STVersionVectorNode *)self identifier];
-  v6 = [v4 identifier];
-  v7 = [v5 isEqualToString:v6];
+  joinCopy = join;
+  identifier = [(STVersionVectorNode *)self identifier];
+  identifier2 = [joinCopy identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if (v7)
   {
-    v8 = [v4 count];
+    v8 = [joinCopy count];
     v9 = [(STVersionVectorNode *)self count];
     if (v8 <= v9)
     {
@@ -114,18 +114,18 @@
   }
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v5 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  v6 = [(STVersionVectorNode *)self identifier];
-  v7 = [v5 identifier];
-  v8 = [v6 isEqualToString:v7];
+  identifier = [(STVersionVectorNode *)self identifier];
+  identifier2 = [compareCopy identifier];
+  v8 = [identifier isEqualToString:identifier2];
 
   if ((v8 & 1) == 0)
   {
@@ -133,10 +133,10 @@
   }
 
   v9 = [(STVersionVectorNode *)self count];
-  if (v9 >= [v5 count])
+  if (v9 >= [compareCopy count])
   {
     v11 = [(STVersionVectorNode *)self count];
-    v10 = v11 > [v5 count];
+    v10 = v11 > [compareCopy count];
   }
 
   else
@@ -151,8 +151,8 @@ LABEL_5:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(STVersionVectorNode *)self identifier];
-  v5 = [v3 stringWithFormat:@"%@: %lu", v4, -[STVersionVectorNode count](self, "count")];
+  identifier = [(STVersionVectorNode *)self identifier];
+  v5 = [v3 stringWithFormat:@"%@: %lu", identifier, -[STVersionVectorNode count](self, "count")];
 
   return v5;
 }
@@ -161,26 +161,26 @@ LABEL_5:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(STVersionVectorNode *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p { identifier = %@, count = %lu }>", v4, self, v5, -[STVersionVectorNode count](self, "count")];
+  identifier = [(STVersionVectorNode *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p { identifier = %@, count = %lu }>", v4, self, identifier, -[STVersionVectorNode count](self, "count")];
 
   return v6;
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  nodeCopy = node;
+  v5 = nodeCopy;
+  if (nodeCopy == self)
   {
     v9 = 1;
   }
 
   else
   {
-    v6 = [(STVersionVectorNode *)v4 identifier];
-    v7 = [(STVersionVectorNode *)self identifier];
-    if ([v6 isEqual:v7])
+    identifier = [(STVersionVectorNode *)nodeCopy identifier];
+    identifier2 = [(STVersionVectorNode *)self identifier];
+    if ([identifier isEqual:identifier2])
     {
       v8 = [(STVersionVectorNode *)v5 count];
       v9 = v8 == [(STVersionVectorNode *)self count];
@@ -195,20 +195,20 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
   else
   {
-    v6 = [(STVersionVectorNode *)v4 identifier];
-    v7 = [(STVersionVectorNode *)self identifier];
-    v8 = [v6 isEqual:v7];
+    identifier = [(STVersionVectorNode *)equalCopy identifier];
+    identifier2 = [(STVersionVectorNode *)self identifier];
+    v8 = [identifier isEqual:identifier2];
   }
 
   return v8;
@@ -216,41 +216,41 @@ LABEL_5:
 
 - (unint64_t)hash
 {
-  v2 = [(STVersionVectorNode *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(STVersionVectorNode *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (STVersionVectorNode)initWithCoder:(id)a3
+- (STVersionVectorNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = STVersionVectorNode;
   v5 = [(STVersionVectorNode *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"count"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"count"];
     v5->_count = [v8 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_count];
-  [v5 encodeObject:v6 forKey:@"count"];
+  [coderCopy encodeObject:v6 forKey:@"count"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithIdentifier:self->_identifier];
   [v4 setCount:self->_count];

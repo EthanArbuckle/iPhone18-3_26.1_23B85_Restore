@@ -1,27 +1,27 @@
 @interface TUConversationVirtualParticipant
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConversationVirtualParticipant:(id)a3;
-- (TUConversationVirtualParticipant)initWithCoder:(id)a3;
-- (TUConversationVirtualParticipant)initWithIdentifier:(unint64_t)a3 pluginName:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConversationVirtualParticipant:(id)participant;
+- (TUConversationVirtualParticipant)initWithCoder:(id)coder;
+- (TUConversationVirtualParticipant)initWithIdentifier:(unint64_t)identifier pluginName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUConversationVirtualParticipant
 
-- (TUConversationVirtualParticipant)initWithIdentifier:(unint64_t)a3 pluginName:(id)a4
+- (TUConversationVirtualParticipant)initWithIdentifier:(unint64_t)identifier pluginName:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = TUConversationVirtualParticipant;
   v8 = [(TUConversationVirtualParticipant *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_identifier = a3;
-    objc_storeStrong(&v8->_pluginName, a4);
+    v8->_identifier = identifier;
+    objc_storeStrong(&v8->_pluginName, name);
   }
 
   return v9;
@@ -31,8 +31,8 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@" identifier=%llu", -[TUConversationVirtualParticipant identifier](self, "identifier")];
-  v4 = [(TUConversationVirtualParticipant *)self pluginName];
-  [v3 appendFormat:@" pluginName=%@", v4];
+  pluginName = [(TUConversationVirtualParticipant *)self pluginName];
+  [v3 appendFormat:@" pluginName=%@", pluginName];
 
   [v3 appendString:@">"];
   v5 = [v3 copy];
@@ -40,24 +40,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationVirtualParticipant *)self isEqualToConversationVirtualParticipant:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationVirtualParticipant *)self isEqualToConversationVirtualParticipant:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToConversationVirtualParticipant:(id)a3
+- (BOOL)isEqualToConversationVirtualParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [(TUConversationVirtualParticipant *)self identifier];
-  if (v5 == [v4 identifier])
+  participantCopy = participant;
+  identifier = [(TUConversationVirtualParticipant *)self identifier];
+  if (identifier == [participantCopy identifier])
   {
-    v6 = [(TUConversationVirtualParticipant *)self pluginName];
-    v7 = [v4 pluginName];
-    v8 = [v6 isEqualToString:v7];
+    pluginName = [(TUConversationVirtualParticipant *)self pluginName];
+    pluginName2 = [participantCopy pluginName];
+    v8 = [pluginName isEqualToString:pluginName2];
   }
 
   else
@@ -70,47 +70,47 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TUConversationVirtualParticipant *)self identifier];
-  v4 = [(TUConversationVirtualParticipant *)self pluginName];
-  v5 = [v4 hash];
+  identifier = [(TUConversationVirtualParticipant *)self identifier];
+  pluginName = [(TUConversationVirtualParticipant *)self pluginName];
+  v5 = [pluginName hash];
 
-  return v5 ^ v3;
+  return v5 ^ identifier;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(TUConversationVirtualParticipant *)self identifier];
-  v6 = [(TUConversationVirtualParticipant *)self pluginName];
-  v7 = [v4 initWithIdentifier:v5 pluginName:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(TUConversationVirtualParticipant *)self identifier];
+  pluginName = [(TUConversationVirtualParticipant *)self pluginName];
+  v7 = [v4 initWithIdentifier:identifier pluginName:pluginName];
 
   return v7;
 }
 
-- (TUConversationVirtualParticipant)initWithCoder:(id)a3
+- (TUConversationVirtualParticipant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_identifier);
-  v6 = [v4 decodeInt64ForKey:v5];
+  v6 = [coderCopy decodeInt64ForKey:v5];
 
   v7 = objc_opt_class();
   v8 = NSStringFromSelector(sel_pluginName);
-  v9 = [v4 decodeObjectOfClass:v7 forKey:v8];
+  v9 = [coderCopy decodeObjectOfClass:v7 forKey:v8];
 
   v10 = [(TUConversationVirtualParticipant *)self initWithIdentifier:v6 pluginName:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUConversationVirtualParticipant *)self identifier];
+  coderCopy = coder;
+  identifier = [(TUConversationVirtualParticipant *)self identifier];
   v6 = NSStringFromSelector(sel_identifier);
-  [v4 encodeInt64:v5 forKey:v6];
+  [coderCopy encodeInt64:identifier forKey:v6];
 
-  v8 = [(TUConversationVirtualParticipant *)self pluginName];
+  pluginName = [(TUConversationVirtualParticipant *)self pluginName];
   v7 = NSStringFromSelector(sel_pluginName);
-  [v4 encodeObject:v8 forKey:v7];
+  [coderCopy encodeObject:pluginName forKey:v7];
 }
 
 @end

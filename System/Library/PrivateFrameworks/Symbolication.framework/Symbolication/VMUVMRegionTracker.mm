@@ -1,12 +1,12 @@
 @interface VMUVMRegionTracker
 - (VMUVMRegionTracker)init;
-- (VMUVMRegionTracker)initWithCoder:(id)a3;
-- (VMUVMRegionTracker)initWithStackLogReader:(id)a3;
-- (id)vmRegionRangeInfoForRange:(_VMURange)a3;
-- (unint64_t)_regionIndexForAddress:(unint64_t)a3;
-- (unint64_t)handleStackLogType:(unsigned int)a3 address:(unint64_t)a4 size:(unint64_t)a5 stackID:(unint64_t)a6;
-- (void)convertStackIDs:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (VMUVMRegionTracker)initWithCoder:(id)coder;
+- (VMUVMRegionTracker)initWithStackLogReader:(id)reader;
+- (id)vmRegionRangeInfoForRange:(_VMURange)range;
+- (unint64_t)_regionIndexForAddress:(unint64_t)address;
+- (unint64_t)handleStackLogType:(unsigned int)type address:(unint64_t)address size:(unint64_t)size stackID:(unint64_t)d;
+- (void)convertStackIDs:(id)ds;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VMUVMRegionTracker
@@ -26,20 +26,20 @@
   return v2;
 }
 
-- (VMUVMRegionTracker)initWithStackLogReader:(id)a3
+- (VMUVMRegionTracker)initWithStackLogReader:(id)reader
 {
-  v4 = a3;
+  readerCopy = reader;
   v5 = [(VMUVMRegionTracker *)self init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_stackLogReader, v4);
+    v7 = objc_storeWeak(&v5->_stackLogReader, readerCopy);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __45__VMUVMRegionTracker_initWithStackLogReader___block_invoke;
     v9[3] = &unk_1E8278088;
     v10 = v6;
-    [v4 enumerateMSLRecordsAndPayloads:v9];
+    [readerCopy enumerateMSLRecordsAndPayloads:v9];
   }
 
   return v6;
@@ -53,12 +53,12 @@ uint64_t __45__VMUVMRegionTracker_initWithStackLogReader___block_invoke(uint64_t
   return [v9 handleStackLogType:a2 address:a3 size:a4 stackID:uniquing_table_index];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:1];
-  [v4 encodeObject:v5 forKey:@"classVersion"];
+  [coderCopy encodeObject:v5 forKey:@"classVersion"];
 
   v6 = objc_opt_new();
   [v6 serialize32:{-[VMUVMRegionTracker regionCount](self, "regionCount")}];
@@ -94,31 +94,31 @@ uint64_t __45__VMUVMRegionTracker_initWithStackLogReader___block_invoke(uint64_t
     while (v9);
   }
 
-  v13 = [v6 copyContiguousData];
-  [v4 encodeObject:v13 forKey:@"simpleSerializerData"];
+  copyContiguousData = [v6 copyContiguousData];
+  [coderCopy encodeObject:copyContiguousData forKey:@"simpleSerializerData"];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (VMUVMRegionTracker)initWithCoder:(id)a3
+- (VMUVMRegionTracker)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = VMUVMRegionTracker;
   v5 = [(VMUVMRegionTracker *)&v28 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"classVersion"];
-    v7 = [v6 unsignedIntValue];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"classVersion"];
+    unsignedIntValue = [v6 unsignedIntValue];
 
-    if (v7 != 1)
+    if (unsignedIntValue != 1)
     {
 LABEL_14:
       v21 = 0;
       goto LABEL_15;
     }
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"simpleSerializerData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"simpleSerializerData"];
     v9 = [[VMUSimpleDeserializer alloc] initWithData:v8];
     v27 = 0;
     v10 = [(VMUSimpleDeserializer *)v9 deserialize32WithError:&v27];
@@ -195,7 +195,7 @@ LABEL_15:
   return v21;
 }
 
-- (unint64_t)_regionIndexForAddress:(unint64_t)a3
+- (unint64_t)_regionIndexForAddress:(unint64_t)address
 {
   v5 = [(NSMutableArray *)self->_regionInfoArray count];
   if (!v5)
@@ -212,13 +212,13 @@ LABEL_15:
     v10 = v7 + (v6 >> 1);
     v8 = [(NSMutableArray *)self->_regionInfoArray objectAtIndexedSubscript:v10];
 
-    v11 = [v8 range];
-    if (a3 - v11 < v12)
+    range = [v8 range];
+    if (address - range < v12)
     {
       break;
     }
 
-    if (a3 >= v11)
+    if (address >= range)
     {
       v6 += ~(v6 >> 1);
     }
@@ -228,7 +228,7 @@ LABEL_15:
       v6 >>= 1;
     }
 
-    if (a3 >= v11)
+    if (address >= range)
     {
       v7 = v10 + 1;
     }
@@ -245,20 +245,20 @@ LABEL_13:
   return v7;
 }
 
-- (unint64_t)handleStackLogType:(unsigned int)a3 address:(unint64_t)a4 size:(unint64_t)a5 stackID:(unint64_t)a6
+- (unint64_t)handleStackLogType:(unsigned int)type address:(unint64_t)address size:(unint64_t)size stackID:(unint64_t)d
 {
-  if ((a3 & 0x30) == 0)
+  if ((type & 0x30) == 0)
   {
     return 0;
   }
 
-  v7 = a5;
-  if (a5 % *MEMORY[0x1E69E9AC8])
+  sizeCopy = size;
+  if (size % *MEMORY[0x1E69E9AC8])
   {
-    v7 = ~*MEMORY[0x1E69E9AB8] & (*MEMORY[0x1E69E9AB8] + a5);
+    sizeCopy = ~*MEMORY[0x1E69E9AB8] & (*MEMORY[0x1E69E9AB8] + size);
   }
 
-  v11 = [(VMUVMRegionTracker *)self _regionIndexForAddress:a4];
+  v11 = [(VMUVMRegionTracker *)self _regionIndexForAddress:address];
   if (v11 >= [(NSMutableArray *)self->_regionInfoArray count])
   {
     v14 = 0;
@@ -268,13 +268,13 @@ LABEL_13:
   else
   {
     v12 = 0;
-    v13 = v7 + a4;
+    v13 = sizeCopy + address;
     while (1)
     {
       v14 = [(NSMutableArray *)self->_regionInfoArray objectAtIndex:v11];
-      v15 = [v14 range];
-      v17 = VMURangeContainsRange(a4, v7, v15, v16);
-      v18 = [v14 range];
+      range = [v14 range];
+      v17 = VMURangeContainsRange(address, sizeCopy, range, v16);
+      range2 = [v14 range];
       if (!v17)
       {
         break;
@@ -290,30 +290,30 @@ LABEL_13:
       }
     }
 
-    if (VMURangeIntersectsRange(a4, v7, v18, v19))
+    if (VMURangeIntersectsRange(address, sizeCopy, range2, v19))
     {
-      v20 = [v14 range] - a4;
-      v21 = [v14 range];
-      if (v20 >= v7)
+      v20 = [v14 range] - address;
+      range3 = [v14 range];
+      if (v20 >= sizeCopy)
       {
-        if (v22 + ~a4 + v21 >= v7)
+        if (v22 + ~address + range3 >= sizeCopy)
         {
           v26 = objc_alloc_init(VMUVMRegionRangeInfo);
-          [(VMUVMRegionRangeInfo *)v26 setAddress:v7 + a4];
-          v27 = [v14 range];
-          [(VMUVMRegionRangeInfo *)v26 setSize:v28 - v13 + v27];
+          [(VMUVMRegionRangeInfo *)v26 setAddress:sizeCopy + address];
+          range4 = [v14 range];
+          [(VMUVMRegionRangeInfo *)v26 setSize:v28 - v13 + range4];
           -[VMUVMRegionRangeInfo setStackIdentifier:](v26, "setStackIdentifier:", [v14 stackIdentifier]);
           -[VMUVMRegionRangeInfo setUserTag:](v26, "setUserTag:", [v14 userTag]);
           [(NSMutableArray *)self->_regionInfoArray insertObject:v26 atIndex:++v11];
-          [v14 setSize:{objc_msgSend(v14, "range") - a4 + objc_msgSend(v14, "size")}];
+          [v14 setSize:{objc_msgSend(v14, "range") - address + objc_msgSend(v14, "size")}];
 
-          v23 = v7;
+          v23 = sizeCopy;
         }
 
         else
         {
-          v24 = [v14 range];
-          v23 = v25 - a4 + v24;
+          range5 = [v14 range];
+          v23 = v25 - address + range5;
           [v14 setSize:{objc_msgSend(v14, "size") - v23}];
           ++v11;
         }
@@ -321,7 +321,7 @@ LABEL_13:
 
       else
       {
-        v23 = v13 - v21;
+        v23 = v13 - range3;
         [v14 setAddress:{v23 + objc_msgSend(v14, "address")}];
         [v14 setSize:{objc_msgSend(v14, "size") - v23}];
       }
@@ -331,26 +331,26 @@ LABEL_13:
   }
 
 LABEL_18:
-  if ((a3 & 0x10) != 0)
+  if ((type & 0x10) != 0)
   {
     v29 = objc_alloc_init(VMUVMRegionRangeInfo);
 
-    [(VMUVMRegionRangeInfo *)v29 setAddress:a4];
-    [(VMUVMRegionRangeInfo *)v29 setSize:v7];
-    [(VMUVMRegionRangeInfo *)v29 setStackIdentifier:a6];
-    [(VMUVMRegionRangeInfo *)v29 setUserTag:HIBYTE(a3)];
+    [(VMUVMRegionRangeInfo *)v29 setAddress:address];
+    [(VMUVMRegionRangeInfo *)v29 setSize:sizeCopy];
+    [(VMUVMRegionRangeInfo *)v29 setStackIdentifier:d];
+    [(VMUVMRegionRangeInfo *)v29 setUserTag:HIBYTE(type)];
     [(NSMutableArray *)self->_regionInfoArray insertObject:v29 atIndex:v11];
-    v12 += v7;
+    v12 += sizeCopy;
     v14 = v29;
   }
 
   return v12;
 }
 
-- (void)convertStackIDs:(id)a3
+- (void)convertStackIDs:(id)ds
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -371,7 +371,7 @@ LABEL_18:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9) setStackIdentifier:{v4[2](v4, objc_msgSend(*(*(&v11 + 1) + 8 * v9), "stackIdentifier", v11))}];
+        [*(*(&v11 + 1) + 8 * v9) setStackIdentifier:{dsCopy[2](dsCopy, objc_msgSend(*(*(&v11 + 1) + 8 * v9), "stackIdentifier", v11))}];
         ++v9;
       }
 
@@ -385,10 +385,10 @@ LABEL_18:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)vmRegionRangeInfoForRange:(_VMURange)a3
+- (id)vmRegionRangeInfoForRange:(_VMURange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [(VMUVMRegionTracker *)self _regionIndexForAddress:?];
   if (v6 >= [(NSMutableArray *)self->_regionInfoArray count])
   {
@@ -398,8 +398,8 @@ LABEL_18:
   else
   {
     v7 = [(NSMutableArray *)self->_regionInfoArray objectAtIndexedSubscript:v6];
-    v8 = [v7 range];
-    if (VMURangeContainsRange(v8, v9, location, length) || (v10 = [v7 range], VMURangeIntersectsRange(v10, v11, location, length)))
+    range = [v7 range];
+    if (VMURangeContainsRange(range, v9, location, length) || (v10 = [v7 range], VMURangeIntersectsRange(v10, v11, location, length)))
     {
       v12 = v7;
     }

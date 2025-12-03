@@ -1,16 +1,16 @@
 @interface AXMLayoutNutritionLabel
-+ (id)region:(id)a3;
++ (id)region:(id)region;
 - (CGRect)frame;
 - (CGRect)normalizedFrame;
 @end
 
 @implementation AXMLayoutNutritionLabel
 
-+ (id)region:(id)a3
++ (id)region:(id)region
 {
-  v3 = a3;
+  regionCopy = region;
   v4 = objc_alloc_init(AXMLayoutNutritionLabel);
-  v5 = [MEMORY[0x1E695DF70] arrayWithObject:v3];
+  v5 = [MEMORY[0x1E695DF70] arrayWithObject:regionCopy];
 
   rows = v4->_rows;
   v4->_rows = v5;

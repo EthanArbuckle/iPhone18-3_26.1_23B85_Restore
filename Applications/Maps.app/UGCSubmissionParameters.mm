@@ -1,34 +1,34 @@
 @interface UGCSubmissionParameters
-- (UGCSubmissionParameters)initWithRequestParameters:(id)a3 attachedImages:(id)a4;
+- (UGCSubmissionParameters)initWithRequestParameters:(id)parameters attachedImages:(id)images;
 @end
 
 @implementation UGCSubmissionParameters
 
-- (UGCSubmissionParameters)initWithRequestParameters:(id)a3 attachedImages:(id)a4
+- (UGCSubmissionParameters)initWithRequestParameters:(id)parameters attachedImages:(id)images
 {
-  v7 = a3;
-  v8 = a4;
+  parametersCopy = parameters;
+  imagesCopy = images;
   v17.receiver = self;
   v17.super_class = UGCSubmissionParameters;
   v9 = [(UGCSubmissionParameters *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestParams, a3);
+    objc_storeStrong(&v9->_requestParams, parameters);
     v11 = +[MKMapService sharedService];
-    v12 = [v11 defaultTraits];
+    defaultTraits = [v11 defaultTraits];
     traits = v10->_traits;
-    v10->_traits = v12;
+    v10->_traits = defaultTraits;
 
     v14 = +[GEOPlatform sharedPlatform];
-    v15 = [v14 isInternalInstall];
+    isInternalInstall = [v14 isInternalInstall];
 
-    if (!v15 || (GEOConfigGetBOOL() & 1) == 0)
+    if (!isInternalInstall || (GEOConfigGetBOOL() & 1) == 0)
     {
       [(GEOMapServiceTraits *)v10->_traits setDeviceLocation:0];
     }
 
-    objc_storeStrong(&v10->_attachedImages, a4);
+    objc_storeStrong(&v10->_attachedImages, images);
   }
 
   return v10;

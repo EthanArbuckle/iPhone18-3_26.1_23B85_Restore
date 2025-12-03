@@ -1,15 +1,15 @@
 @interface _UIVectorLabelLayer
 + (void)initialize;
-- (BOOL)_isPathCompatible:(CGPath *)a3 with:(CGPath *)a4;
+- (BOOL)_isPathCompatible:(CGPath *)compatible with:(CGPath *)with;
 - (_UIVectorLabelLayer)init;
-- (id)_findSimilarLayer:(id)a3 inLayers:(id)a4;
-- (id)_layersForTextLayout:(id)a3;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (void)_applyTextLayoutChangeFrom:(id)a3 to:(id)a4;
+- (id)_findSimilarLayer:(id)layer inLayers:(id)layers;
+- (id)_layersForTextLayout:(id)layout;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (void)_applyTextLayoutChangeFrom:(id)from to:(id)to;
 - (void)_cleanupUnusedLayers;
-- (void)_transitionWithSetup:(id)a3 target:(id)a4;
-- (void)didChangeValueForKey:(id)a3;
-- (void)willChangeValueForKey:(id)a3;
+- (void)_transitionWithSetup:(id)setup target:(id)target;
+- (void)didChangeValueForKey:(id)key;
+- (void)willChangeValueForKey:(id)key;
 @end
 
 @implementation _UIVectorLabelLayer
@@ -35,55 +35,55 @@
   return v3;
 }
 
-- (void)willChangeValueForKey:(id)a3
+- (void)willChangeValueForKey:(id)key
 {
   v8.receiver = self;
   v8.super_class = _UIVectorLabelLayer;
-  v4 = a3;
-  [(_UIVectorLabelLayer *)&v8 willChangeValueForKey:v4];
-  v5 = [v4 isEqualToString:{_textLayoutKey, v8.receiver, v8.super_class}];
+  keyCopy = key;
+  [(_UIVectorLabelLayer *)&v8 willChangeValueForKey:keyCopy];
+  v5 = [keyCopy isEqualToString:{_textLayoutKey, v8.receiver, v8.super_class}];
 
   if (v5)
   {
-    v6 = [(_UIVectorLabelLayer *)self textLayout];
+    textLayout = [(_UIVectorLabelLayer *)self textLayout];
     currentTextLayout = self->_currentTextLayout;
-    self->_currentTextLayout = v6;
+    self->_currentTextLayout = textLayout;
   }
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v9.receiver = self;
   v9.super_class = _UIVectorLabelLayer;
-  v4 = a3;
-  [(_UIVectorLabelLayer *)&v9 didChangeValueForKey:v4];
-  v5 = [v4 isEqualToString:{_textLayoutKey, v9.receiver, v9.super_class}];
+  keyCopy = key;
+  [(_UIVectorLabelLayer *)&v9 didChangeValueForKey:keyCopy];
+  v5 = [keyCopy isEqualToString:{_textLayoutKey, v9.receiver, v9.super_class}];
 
   if (v5)
   {
     currentTextLayout = self->_currentTextLayout;
-    v7 = [(_UIVectorLabelLayer *)self textLayout];
-    [(_UIVectorLabelLayer *)self _applyTextLayoutChangeFrom:currentTextLayout to:v7];
+    textLayout = [(_UIVectorLabelLayer *)self textLayout];
+    [(_UIVectorLabelLayer *)self _applyTextLayoutChangeFrom:currentTextLayout to:textLayout];
 
     v8 = self->_currentTextLayout;
     self->_currentTextLayout = 0;
   }
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  layerCopy = layer;
+  keyCopy = key;
   if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
   {
-    v8 = [(_UIVectorLabelLayer *)self delegate];
+    delegate = [(_UIVectorLabelLayer *)self delegate];
     v9 = +[UIView _currentViewAnimationState];
-    v10 = [v9 actionForLayer:v6 forKey:v7 forView:v8];
+    v10 = [v9 actionForLayer:layerCopy forKey:keyCopy forView:delegate];
 
     if (v10 && +[UIView _isAnimationTracking])
     {
       v11 = +[UIView _currentViewAnimationState];
-      [v11 _trackAnimation:v10 withAnimationKey:v7 forKeyPath:v7 inLayer:v6];
+      [v11 _trackAnimation:v10 withAnimationKey:keyCopy forKeyPath:keyCopy inLayer:layerCopy];
     }
   }
 
@@ -102,8 +102,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(_UIVectorLabelLayer *)self sublayers];
-  v4 = [v3 copy];
+  sublayers = [(_UIVectorLabelLayer *)self sublayers];
+  v4 = [sublayers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
@@ -120,10 +120,10 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 _ui_layoutRun];
-        if (v10)
+        _ui_layoutRun = [v9 _ui_layoutRun];
+        if (_ui_layoutRun)
         {
-          v11 = v10;
+          v11 = _ui_layoutRun;
           v12 = [(NSArray *)self->_currentLayers containsObject:v9];
 
           if (!v12)
@@ -140,14 +140,14 @@
   }
 }
 
-- (void)_applyTextLayoutChangeFrom:(id)a3 to:(id)a4
+- (void)_applyTextLayoutChangeFrom:(id)from to:(id)to
 {
   v141 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   [(_UIVectorLabelLayer *)self _cleanupUnusedLayers];
-  v101 = v7;
-  v8 = [(_UIVectorLabelLayer *)self _layersForTextLayout:v7];
+  v101 = toCopy;
+  v8 = [(_UIVectorLabelLayer *)self _layersForTextLayout:toCopy];
   [(NSArray *)self->_currentLayers makeObjectsPerformSelector:sel_removeAllAnimations];
   if ([v8 count])
   {
@@ -164,14 +164,14 @@
     v16 = v15;
     v18 = v17;
     v19 = CFRetain([v9 path]);
-    v20 = [v9 fillColor];
+    fillColor = [v9 fillColor];
     if (-[_UIVectorLabelLayer _isPathCompatible:with:](self, "_isPathCompatible:with:", [v9 path], -[NSArray path](v10, "path")))
     {
       [v9 anchorPoint];
       [(NSArray *)v10 setAnchorPoint:?];
       [(NSArray *)v10 setFrame:v12, v14, v16, v18];
       [(NSArray *)v10 setPath:v19];
-      [(NSArray *)v10 setFillColor:v20];
+      [(NSArray *)v10 setFillColor:fillColor];
       [v8 replaceObjectAtIndex:0 withObject:v10];
     }
 
@@ -192,7 +192,7 @@
       v128 = v16;
       v129 = v18;
       v130 = v19;
-      v131 = v20;
+      v131 = fillColor;
       v125 = v134;
       [(_UIVectorLabelLayer *)self _transitionWithSetup:v132 target:v124];
     }
@@ -241,7 +241,7 @@
           v64 = v63;
           v66 = v65;
           v68 = v67;
-          [v6 size];
+          [fromCopy size];
           v70 = v69;
           v72 = v71;
           [v101 size];
@@ -326,7 +326,7 @@
           v30 = v29;
           v32 = v31;
           v34 = v33;
-          [v6 size];
+          [fromCopy size];
           v36 = v35;
           v38 = v37;
           [v101 size];
@@ -396,8 +396,8 @@ LABEL_48:
   v110 = 0u;
   v111 = 0u;
   v100 = v8;
-  v83 = [v8 reverseObjectEnumerator];
-  v84 = [v83 countByEnumeratingWithState:&v110 objects:v139 count:16];
+  reverseObjectEnumerator = [v8 reverseObjectEnumerator];
+  v84 = [reverseObjectEnumerator countByEnumeratingWithState:&v110 objects:v139 count:16];
   if (v84)
   {
     v85 = v84;
@@ -408,13 +408,13 @@ LABEL_48:
       {
         if (*v111 != v86)
         {
-          objc_enumerationMutation(v83);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v88 = *(*(&v110 + 1) + 8 * j);
-        v89 = [v88 superlayer];
+        superlayer = [v88 superlayer];
 
-        if (!v6 || v89)
+        if (!fromCopy || superlayer)
         {
           [v88 setDelegate:self];
           [(_UIVectorLabelLayer *)self insertSublayer:v88 atIndex:0];
@@ -437,7 +437,7 @@ LABEL_48:
           v108 = v94;
           v109 = v96;
           v104 = v101;
-          v105 = v6;
+          v105 = fromCopy;
           v102[0] = MEMORY[0x1E69E9820];
           v102[1] = 3221225472;
           v102[2] = __53___UIVectorLabelLayer__applyTextLayoutChangeFrom_to___block_invoke_6;
@@ -450,45 +450,45 @@ LABEL_48:
         }
       }
 
-      v85 = [v83 countByEnumeratingWithState:&v110 objects:v139 count:16];
+      v85 = [reverseObjectEnumerator countByEnumeratingWithState:&v110 objects:v139 count:16];
     }
 
     while (v85);
   }
 }
 
-- (void)_transitionWithSetup:(id)a3 target:(id)a4
+- (void)_transitionWithSetup:(id)setup target:(id)target
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E6979518] disableActions];
+  setupCopy = setup;
+  targetCopy = target;
+  disableActions = [MEMORY[0x1E6979518] disableActions];
   v8 = 0;
-  if (v9)
+  if (setupCopy)
   {
-    if ((v7 & 1) == 0)
+    if ((disableActions & 1) == 0)
     {
       [MEMORY[0x1E6979518] setDisableActions:1];
-      v8 = v9[2]();
+      v8 = setupCopy[2]();
       [MEMORY[0x1E6979518] setDisableActions:0];
       if (v8)
       {
         [v8 setDelegate:self];
         [(_UIVectorLabelLayer *)self insertSublayer:v8 atIndex:0];
-        if (v6)
+        if (targetCopy)
         {
-          v6[2](v6, v8);
+          targetCopy[2](targetCopy, v8);
         }
       }
     }
   }
 }
 
-- (BOOL)_isPathCompatible:(CGPath *)a3 with:(CGPath *)a4
+- (BOOL)_isPathCompatible:(CGPath *)compatible with:(CGPath *)with
 {
   v4 = 0;
-  if (a3 && a4)
+  if (compatible && with)
   {
-    if (CGPathEqualToPath(a3, a4))
+    if (CGPathEqualToPath(compatible, with))
     {
       return 1;
     }
@@ -504,7 +504,7 @@ LABEL_48:
       block[2] = __46___UIVectorLabelLayer__isPathCompatible_with___block_invoke;
       block[3] = &unk_1E712A170;
       block[4] = &v14;
-      CGPathApplyWithBlock(a3, block);
+      CGPathApplyWithBlock(compatible, block);
       v9 = 0;
       v10 = &v9;
       v11 = 0x2020000000;
@@ -514,7 +514,7 @@ LABEL_48:
       v8[2] = __46___UIVectorLabelLayer__isPathCompatible_with___block_invoke_2;
       v8[3] = &unk_1E712A170;
       v8[4] = &v9;
-      CGPathApplyWithBlock(a4, v8);
+      CGPathApplyWithBlock(with, v8);
       v4 = v15[3] == v10[3];
       _Block_object_dispose(&v9, 8);
       _Block_object_dispose(&v14, 8);
@@ -524,34 +524,34 @@ LABEL_48:
   return v4;
 }
 
-- (id)_findSimilarLayer:(id)a3 inLayers:(id)a4
+- (id)_findSimilarLayer:(id)layer inLayers:(id)layers
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _ui_layoutRun];
-  v8 = v7;
-  if (v7)
+  layerCopy = layer;
+  layersCopy = layers;
+  _ui_layoutRun = [layerCopy _ui_layoutRun];
+  v8 = _ui_layoutRun;
+  if (_ui_layoutRun)
   {
-    v50 = v5;
-    [v7 stringRange];
+    v50 = layerCopy;
+    [_ui_layoutRun stringRange];
     v10 = v9;
     [v8 usedRunRect];
     v12 = v11;
     v14 = v13;
-    v15 = [v8 font];
-    v53 = [v8 string];
+    font = [v8 font];
+    string = [v8 string];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v49 = v6;
-    v16 = v6;
+    v49 = layersCopy;
+    v16 = layersCopy;
     v17 = [v16 countByEnumeratingWithState:&v56 objects:v60 count:16];
     if (v17)
     {
       v18 = v17;
-      v51 = v15;
+      v51 = font;
       v52 = 0;
       v19 = v12 + v14 * 0.5;
       v20 = *v57;
@@ -567,18 +567,18 @@ LABEL_48:
           }
 
           v23 = *(*(&v56 + 1) + 8 * i);
-          v24 = [v23 _ui_layoutRun];
-          [v24 stringRange];
+          _ui_layoutRun2 = [v23 _ui_layoutRun];
+          [_ui_layoutRun2 stringRange];
           if (v25 == v10)
           {
-            [v24 usedRunRect];
+            [_ui_layoutRun2 usedRunRect];
             v28 = v27 + v26 * 0.5;
-            v29 = [v8 lineIndex];
-            v30 = [v24 lineIndex];
-            v31 = v29 - v30;
-            if (v29 - v30 < 0)
+            lineIndex = [v8 lineIndex];
+            lineIndex2 = [_ui_layoutRun2 lineIndex];
+            v31 = lineIndex - lineIndex2;
+            if (lineIndex - lineIndex2 < 0)
             {
-              v31 = v30 - v29;
+              v31 = lineIndex2 - lineIndex;
             }
 
             v32 = v19 - v28;
@@ -591,15 +591,15 @@ LABEL_48:
             if (v33 < v21)
             {
               v34 = v16;
-              [v24 font];
-              v36 = v35 = v15;
+              [_ui_layoutRun2 font];
+              v36 = v35 = font;
               [v35 pointSize];
               v37 = [v36 fontWithSize:?];
 
               [v35 lineHeight];
               v39 = v38;
-              v40 = [v24 font];
-              [v40 lineHeight];
+              font2 = [_ui_layoutRun2 font];
+              [font2 lineHeight];
               v42 = v41;
 
               if (v39 < v42)
@@ -610,8 +610,8 @@ LABEL_48:
               if (v33 < v39 * -[_UIVectorLabelLayer maxRenderedMoveDistance](self, "maxRenderedMoveDistance") && [v37 isEqual:v35])
               {
                 v43 = v8;
-                v44 = [v24 string];
-                v45 = [v44 isEqualToString:v53];
+                string2 = [_ui_layoutRun2 string];
+                v45 = [string2 isEqualToString:string];
 
                 if (v45)
                 {
@@ -622,7 +622,7 @@ LABEL_48:
                   {
 
                     v52 = v46;
-                    v15 = v51;
+                    font = v51;
                     v16 = v34;
                     goto LABEL_33;
                   }
@@ -636,12 +636,12 @@ LABEL_48:
                   v8 = v43;
                 }
 
-                v15 = v51;
+                font = v51;
               }
 
               else
               {
-                v15 = v35;
+                font = v35;
               }
 
               v16 = v34;
@@ -668,8 +668,8 @@ LABEL_48:
 
 LABEL_33:
 
-    v6 = v49;
-    v5 = v50;
+    layersCopy = v49;
+    layerCopy = v50;
     v47 = v52;
   }
 
@@ -681,19 +681,19 @@ LABEL_33:
   return v47;
 }
 
-- (id)_layersForTextLayout:(id)a3
+- (id)_layersForTextLayout:(id)layout
 {
-  v3 = a3;
-  if ([v3 numberOfRuns])
+  layoutCopy = layout;
+  if ([layoutCopy numberOfRuns])
   {
-    v4 = [v3 parameters];
-    v5 = [v4 traitCollection];
-    v6 = [UIGraphicsImageRendererFormat formatForTraitCollection:v5];
+    parameters = [layoutCopy parameters];
+    traitCollection = [parameters traitCollection];
+    v6 = [UIGraphicsImageRendererFormat formatForTraitCollection:traitCollection];
 
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "numberOfRuns")}];
-    [v3 lastLineBaseline];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(layoutCopy, "numberOfRuns")}];
+    [layoutCopy lastLineBaseline];
     v9 = v8;
-    [v3 size];
+    [layoutCopy size];
     v11 = v9 / v10;
     Mutable = CGPathCreateMutable();
     CFAutorelease(Mutable);
@@ -708,16 +708,16 @@ LABEL_33:
     v14 = v7;
     v29 = v14;
     v32 = Mutable;
-    [v3 enumerateRunsUsingBlock:v27];
+    [layoutCopy enumerateRunsUsingBlock:v27];
     if (!CGPathIsEmpty(Mutable))
     {
       v15 = objc_opt_new();
       [v15 setPath:Mutable];
-      v16 = [v3 parameters];
-      v17 = [v16 attributedText];
-      v18 = [v17 length];
+      parameters2 = [layoutCopy parameters];
+      attributedText = [parameters2 attributedText];
+      v18 = [attributedText length];
 
-      if (v18 && ([v3 parameters], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "attributedText"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "attribute:atIndex:effectiveRange:", *off_1E70EC920, 0, 0), v21 = objc_claimAutoreleasedReturnValue(), v20, v19, v21))
+      if (v18 && ([layoutCopy parameters], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "attributedText"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "attribute:atIndex:effectiveRange:", *off_1E70EC920, 0, 0), v21 = objc_claimAutoreleasedReturnValue(), v20, v19, v21))
       {
         v22 = 0;
         v23 = v21;
@@ -736,7 +736,7 @@ LABEL_33:
       }
 
       [v15 setAnchorPoint:{0.0, v11}];
-      [v3 usedBoundingRect];
+      [layoutCopy usedBoundingRect];
       [v15 setFrame:?];
       [v14 insertObject:v15 atIndex:0];
     }

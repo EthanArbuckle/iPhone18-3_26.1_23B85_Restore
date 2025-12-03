@@ -1,20 +1,20 @@
 @interface APXPCRemoteConnection
-+ (id)connectionFor:(id)a3;
-+ (id)connectionForMachService:(id)a3;
-+ (id)sharedConnectionFor:(id)a3;
++ (id)connectionFor:(id)for;
++ (id)connectionForMachService:(id)service;
++ (id)sharedConnectionFor:(id)for;
 + (id)sharedConnections;
-+ (void)addSharedConnection:(id)a3 forMachService:(id)a4;
-+ (void)removeSharedConnectionForMachService:(id)a3;
-- (APXPCRemoteConnection)initWithDelegate:(id)a3;
++ (void)addSharedConnection:(id)connection forMachService:(id)service;
++ (void)removeSharedConnectionForMachService:(id)service;
+- (APXPCRemoteConnection)initWithDelegate:(id)delegate;
 - (NSXPCConnection)xpcConnection;
-- (void)addDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
 - (void)dealloc;
 - (void)decreaseConnectionCount;
 - (void)increaseConnectionCount;
-- (void)invalidateForDelegate:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (void)invalidateForDelegate:(id)delegate;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation APXPCRemoteConnection
@@ -38,7 +38,7 @@ LABEL_19:
     *buf = 138478083;
     v108 = objc_opt_class();
     v109 = 2114;
-    v110 = self;
+    selfCopy = self;
     v13 = v108;
     _os_log_impl(&dword_1BADC1000, v12, OS_LOG_TYPE_INFO, "[%{private}@] Creating a new NSXPCConnection for %{public}@", buf, 0x16u);
   }
@@ -175,13 +175,13 @@ LABEL_20:
 
 - (void)connectionInvalidated
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v6 = objc_msgSend_delegates(v2, v3, v4, v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = objc_msgSend_delegates(selfCopy, v3, v4, v5);
   v10 = objc_msgSend_copy(v6, v7, v8, v9);
 
-  objc_sync_exit(v2);
-  queue = v2->_queue;
+  objc_sync_exit(selfCopy);
+  queue = selfCopy->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1BADC5534;
@@ -208,35 +208,35 @@ LABEL_20:
   [(APXPCRemoteConnection *)&v6 dealloc];
 }
 
-+ (id)connectionFor:(id)a3
++ (id)connectionFor:(id)for
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  forCopy = for;
   v4 = APLogForCategory(0x39uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v11 = 138543362;
-    v12 = v3;
+    v12 = forCopy;
     _os_log_impl(&dword_1BADC1000, v4, OS_LOG_TYPE_INFO, "A new connection will be established for %{public}@", &v11, 0xCu);
   }
 
   v5 = [APXPCRemoteConnection alloc];
-  v8 = objc_msgSend_initWithDelegate_(v5, v6, v3, v7);
+  v8 = objc_msgSend_initWithDelegate_(v5, v6, forCopy, v7);
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-+ (id)sharedConnectionFor:(id)a3
++ (id)sharedConnectionFor:(id)for
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  forCopy = for;
   v4 = APLogForCategory(0x39uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v25 = 138543362;
-    v26 = v3;
+    v26 = forCopy;
     _os_log_impl(&dword_1BADC1000, v4, OS_LOG_TYPE_INFO, "The shared connection will be used for %{public}@", &v25, 0xCu);
   }
 
@@ -247,13 +247,13 @@ LABEL_20:
   if (v13)
   {
     v16 = v13;
-    objc_msgSend_addDelegate_(v13, v14, v3, v15);
+    objc_msgSend_addDelegate_(v13, v14, forCopy, v15);
   }
 
   else
   {
     v17 = [APXPCRemoteConnection alloc];
-    v16 = objc_msgSend_initWithDelegate_(v17, v18, v3, v19);
+    v16 = objc_msgSend_initWithDelegate_(v17, v18, forCopy, v19);
     v20 = objc_opt_class();
     objc_msgSend_addSharedConnection_forMachService_(v20, v21, v16, v9);
   }
@@ -265,61 +265,61 @@ LABEL_20:
   return v22;
 }
 
-+ (void)addSharedConnection:(id)a3 forMachService:(id)a4
++ (void)addSharedConnection:(id)connection forMachService:(id)service
 {
-  v17 = a3;
-  v5 = a4;
+  connectionCopy = connection;
+  serviceCopy = service;
   v6 = objc_opt_class();
   v10 = objc_msgSend_sharedConnections(v6, v7, v8, v9);
   objc_sync_enter(v10);
   v11 = objc_opt_class();
   v15 = objc_msgSend_sharedConnections(v11, v12, v13, v14);
-  objc_msgSend_setObject_forKey_(v15, v16, v17, v5);
+  objc_msgSend_setObject_forKey_(v15, v16, connectionCopy, serviceCopy);
 
   objc_sync_exit(v10);
 }
 
-+ (id)connectionForMachService:(id)a3
++ (id)connectionForMachService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = objc_opt_class();
   v8 = objc_msgSend_sharedConnections(v4, v5, v6, v7);
   objc_sync_enter(v8);
   v9 = objc_opt_class();
   v13 = objc_msgSend_sharedConnections(v9, v10, v11, v12);
-  v16 = objc_msgSend_objectForKey_(v13, v14, v3, v15);
+  v16 = objc_msgSend_objectForKey_(v13, v14, serviceCopy, v15);
 
   objc_sync_exit(v8);
 
   return v16;
 }
 
-+ (void)removeSharedConnectionForMachService:(id)a3
++ (void)removeSharedConnectionForMachService:(id)service
 {
-  v15 = a3;
+  serviceCopy = service;
   v3 = objc_opt_class();
   v7 = objc_msgSend_sharedConnections(v3, v4, v5, v6);
   objc_sync_enter(v7);
   v8 = objc_opt_class();
   v12 = objc_msgSend_sharedConnections(v8, v9, v10, v11);
-  objc_msgSend_removeObjectForKey_(v12, v13, v15, v14);
+  objc_msgSend_removeObjectForKey_(v12, v13, serviceCopy, v14);
 
   objc_sync_exit(v7);
 }
 
-- (void)invalidateForDelegate:(id)a3
+- (void)invalidateForDelegate:(id)delegate
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = APLogForCategory(0x39uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v31 = 138543362;
-    v32 = v4;
+    v32 = delegateCopy;
     _os_log_impl(&dword_1BADC1000, v5, OS_LOG_TYPE_INFO, "Request to invalidate the connection from %{public}@", &v31, 0xCu);
   }
 
-  objc_msgSend_removeDelegate_(self, v6, v4, v7);
+  objc_msgSend_removeDelegate_(self, v6, delegateCopy, v7);
   if (!self->_numClients)
   {
     v8 = APLogForCategory(0x39uLL);
@@ -345,9 +345,9 @@ LABEL_20:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (APXPCRemoteConnection)initWithDelegate:(id)a3
+- (APXPCRemoteConnection)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v29.receiver = self;
   v29.super_class = APXPCRemoteConnection;
   v5 = [(APXPCRemoteConnection *)&v29 init];
@@ -374,41 +374,41 @@ LABEL_20:
     queue = v6->_queue;
     v6->_queue = v24;
 
-    objc_msgSend_addDelegate_(v6, v26, v4, v27);
+    objc_msgSend_addDelegate_(v6, v26, delegateCopy, v27);
   }
 
   return v6;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v10 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  objc_msgSend_addObject_(v4->_delegates, v5, v10, v6);
-  objc_msgSend_increaseConnectionCount(v4, v7, v8, v9);
-  objc_sync_exit(v4);
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_msgSend_addObject_(selfCopy->_delegates, v5, delegateCopy, v6);
+  objc_msgSend_increaseConnectionCount(selfCopy, v7, v8, v9);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v10 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  objc_msgSend_removeObject_(v4->_delegates, v5, v10, v6);
-  objc_msgSend_decreaseConnectionCount(v4, v7, v8, v9);
-  objc_sync_exit(v4);
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_msgSend_removeObject_(selfCopy->_delegates, v5, delegateCopy, v6);
+  objc_msgSend_decreaseConnectionCount(selfCopy, v7, v8, v9);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)connectionInterrupted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v6 = objc_msgSend_delegates(v2, v3, v4, v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = objc_msgSend_delegates(selfCopy, v3, v4, v5);
   v10 = objc_msgSend_copy(v6, v7, v8, v9);
 
-  objc_sync_exit(v2);
-  queue = v2->_queue;
+  objc_sync_exit(selfCopy);
+  queue = selfCopy->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1BAF1E95C;

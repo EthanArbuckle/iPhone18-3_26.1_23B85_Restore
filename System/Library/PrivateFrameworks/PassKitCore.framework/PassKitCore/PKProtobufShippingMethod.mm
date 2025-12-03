@@ -1,20 +1,20 @@
 @interface PKProtobufShippingMethod
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufShippingMethod
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -33,159 +33,159 @@
   v8.receiver = self;
   v8.super_class = PKProtobufShippingMethod;
   v4 = [(PKProtobufShippingMethod *)&v8 description];
-  v5 = [(PKProtobufShippingMethod *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufShippingMethod *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_amount];
-    [v3 setObject:v4 forKey:@"amount"];
+    [dictionary setObject:v4 forKey:@"amount"];
   }
 
   label = self->_label;
   if (label)
   {
-    [v3 setObject:label forKey:@"label"];
+    [dictionary setObject:label forKey:@"label"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_type];
-    [v3 setObject:v6 forKey:@"type"];
+    [dictionary setObject:v6 forKey:@"type"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   detail = self->_detail;
   if (detail)
   {
-    [v3 setObject:detail forKey:@"detail"];
+    [dictionary setObject:detail forKey:@"detail"];
   }
 
   customPrecisionAmount = self->_customPrecisionAmount;
   if (customPrecisionAmount)
   {
-    v10 = [(PKProtobufCustomPrecisionAmount *)customPrecisionAmount dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"custom_precision_amount"];
+    dictionaryRepresentation = [(PKProtobufCustomPrecisionAmount *)customPrecisionAmount dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"custom_precision_amount"];
   }
 
   decimalAmount = self->_decimalAmount;
   if (decimalAmount)
   {
-    v12 = [(PKProtobufNSDecimalNumber *)decimalAmount dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"decimal_amount"];
+    dictionaryRepresentation2 = [(PKProtobufNSDecimalNumber *)decimalAmount dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"decimal_amount"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteSint64Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_label)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_detail)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_customPrecisionAmount)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_decimalAmount)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_amount;
-    *(v4 + 60) |= 1u;
+    toCopy[1] = self->_amount;
+    *(toCopy + 60) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_label)
   {
-    [v4 setLabel:?];
-    v4 = v5;
+    [toCopy setLabel:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 14) = self->_type;
-    *(v4 + 60) |= 2u;
+    *(toCopy + 14) = self->_type;
+    *(toCopy + 60) |= 2u;
   }
 
   if (self->_identifier)
   {
     [v5 setIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_detail)
   {
     [v5 setDetail:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_customPrecisionAmount)
   {
     [v5 setCustomPrecisionAmount:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_decimalAmount)
   {
     [v5 setDecimalAmount:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -193,7 +193,7 @@
     *(v5 + 60) |= 1u;
   }
 
-  v7 = [(NSString *)self->_label copyWithZone:a3];
+  v7 = [(NSString *)self->_label copyWithZone:zone];
   v8 = *(v6 + 48);
   *(v6 + 48) = v7;
 
@@ -203,50 +203,50 @@
     *(v6 + 60) |= 2u;
   }
 
-  v9 = [(NSString *)self->_identifier copyWithZone:a3];
+  v9 = [(NSString *)self->_identifier copyWithZone:zone];
   v10 = *(v6 + 40);
   *(v6 + 40) = v9;
 
-  v11 = [(NSString *)self->_detail copyWithZone:a3];
+  v11 = [(NSString *)self->_detail copyWithZone:zone];
   v12 = *(v6 + 32);
   *(v6 + 32) = v11;
 
-  v13 = [(PKProtobufCustomPrecisionAmount *)self->_customPrecisionAmount copyWithZone:a3];
+  v13 = [(PKProtobufCustomPrecisionAmount *)self->_customPrecisionAmount copyWithZone:zone];
   v14 = *(v6 + 16);
   *(v6 + 16) = v13;
 
-  v15 = [(PKProtobufNSDecimalNumber *)self->_decimalAmount copyWithZone:a3];
+  v15 = [(PKProtobufNSDecimalNumber *)self->_decimalAmount copyWithZone:zone];
   v16 = *(v6 + 24);
   *(v6 + 24) = v15;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   has = self->_has;
-  v6 = *(v4 + 60);
+  v6 = *(equalCopy + 60);
   if (has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_amount != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_amount != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_23;
   }
 
   label = self->_label;
-  if (label | *(v4 + 6))
+  if (label | *(equalCopy + 6))
   {
     if (![(NSString *)label isEqual:?])
     {
@@ -256,12 +256,12 @@ LABEL_23:
     }
 
     has = self->_has;
-    v6 = *(v4 + 60);
+    v6 = *(equalCopy + 60);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_type != *(v4 + 14))
+    if ((v6 & 2) == 0 || self->_type != *(equalCopy + 14))
     {
       goto LABEL_23;
     }
@@ -273,13 +273,13 @@ LABEL_23:
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 5) && ![(NSString *)identifier isEqual:?])
+  if (identifier | *(equalCopy + 5) && ![(NSString *)identifier isEqual:?])
   {
     goto LABEL_23;
   }
 
   detail = self->_detail;
-  if (detail | *(v4 + 4))
+  if (detail | *(equalCopy + 4))
   {
     if (![(NSString *)detail isEqual:?])
     {
@@ -288,7 +288,7 @@ LABEL_23:
   }
 
   customPrecisionAmount = self->_customPrecisionAmount;
-  if (customPrecisionAmount | *(v4 + 2))
+  if (customPrecisionAmount | *(equalCopy + 2))
   {
     if (![(PKProtobufCustomPrecisionAmount *)customPrecisionAmount isEqual:?])
     {
@@ -297,7 +297,7 @@ LABEL_23:
   }
 
   decimalAmount = self->_decimalAmount;
-  if (decimalAmount | *(v4 + 3))
+  if (decimalAmount | *(equalCopy + 3))
   {
     v12 = [(PKProtobufNSDecimalNumber *)decimalAmount isEqual:?];
   }
@@ -342,18 +342,18 @@ LABEL_24:
   return v8 ^ v9 ^ [(PKProtobufNSDecimalNumber *)self->_decimalAmount hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 60))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 60))
   {
-    self->_amount = v4[1];
+    self->_amount = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  v10 = v4;
-  if (v4[6])
+  v10 = fromCopy;
+  if (fromCopy[6])
   {
     [(PKProtobufShippingMethod *)self setLabel:?];
     v5 = v10;

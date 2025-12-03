@@ -1,71 +1,71 @@
 @interface RTPModel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addFeature:(id)a3;
-- (void)addHashedFeature:(id)a3;
-- (void)addLabel:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFeature:(id)feature;
+- (void)addHashedFeature:(id)feature;
+- (void)addLabel:(id)label;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RTPModel
 
-- (void)addFeature:(id)a3
+- (void)addFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   features = self->_features;
-  v8 = v4;
+  v8 = featureCopy;
   if (!features)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_features;
     self->_features = v6;
 
-    v4 = v8;
+    featureCopy = v8;
     features = self->_features;
   }
 
-  [(NSMutableArray *)features addObject:v4];
+  [(NSMutableArray *)features addObject:featureCopy];
 }
 
-- (void)addLabel:(id)a3
+- (void)addLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   labels = self->_labels;
-  v8 = v4;
+  v8 = labelCopy;
   if (!labels)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_labels;
     self->_labels = v6;
 
-    v4 = v8;
+    labelCopy = v8;
     labels = self->_labels;
   }
 
-  [(NSMutableArray *)labels addObject:v4];
+  [(NSMutableArray *)labels addObject:labelCopy];
 }
 
-- (void)addHashedFeature:(id)a3
+- (void)addHashedFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   hashedFeatures = self->_hashedFeatures;
-  v8 = v4;
+  v8 = featureCopy;
   if (!hashedFeatures)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_hashedFeatures;
     self->_hashedFeatures = v6;
 
-    v4 = v8;
+    featureCopy = v8;
     hashedFeatures = self->_hashedFeatures;
   }
 
-  [(NSMutableArray *)hashedFeatures addObject:v4];
+  [(NSMutableArray *)hashedFeatures addObject:featureCopy];
 }
 
 - (id)description
@@ -73,8 +73,8 @@
   v7.receiver = self;
   v7.super_class = RTPModel;
   v3 = [(RTPModel *)&v7 description];
-  v4 = [(RTPModel *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RTPModel *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -116,9 +116,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_coremlModel)
   {
     PBDataWriterWriteDataField();
@@ -226,73 +226,73 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if (self->_coremlModel)
   {
-    [v16 setCoremlModel:?];
+    [toCopy setCoremlModel:?];
   }
 
   if (self->_xgboostModel)
   {
-    [v16 setXgboostModel:?];
+    [toCopy setXgboostModel:?];
   }
 
   if ([(RTPModel *)self featuresCount])
   {
-    [v16 clearFeatures];
-    v4 = [(RTPModel *)self featuresCount];
-    if (v4)
+    [toCopy clearFeatures];
+    featuresCount = [(RTPModel *)self featuresCount];
+    if (featuresCount)
     {
-      v5 = v4;
+      v5 = featuresCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(RTPModel *)self featureAtIndex:i];
-        [v16 addFeature:v7];
+        [toCopy addFeature:v7];
       }
     }
   }
 
   if ([(RTPModel *)self labelsCount])
   {
-    [v16 clearLabels];
-    v8 = [(RTPModel *)self labelsCount];
-    if (v8)
+    [toCopy clearLabels];
+    labelsCount = [(RTPModel *)self labelsCount];
+    if (labelsCount)
     {
-      v9 = v8;
+      v9 = labelsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(RTPModel *)self labelAtIndex:j];
-        [v16 addLabel:v11];
+        [toCopy addLabel:v11];
       }
     }
   }
 
   if ([(RTPModel *)self hashedFeaturesCount])
   {
-    [v16 clearHashedFeatures];
-    v12 = [(RTPModel *)self hashedFeaturesCount];
-    if (v12)
+    [toCopy clearHashedFeatures];
+    hashedFeaturesCount = [(RTPModel *)self hashedFeaturesCount];
+    if (hashedFeaturesCount)
     {
-      v13 = v12;
+      v13 = hashedFeaturesCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(RTPModel *)self hashedFeatureAtIndex:k];
-        [v16 addHashedFeature:v15];
+        [toCopy addHashedFeature:v15];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_coremlModel copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_coremlModel copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_xgboostModel copyWithZone:a3];
+  v8 = [(NSData *)self->_xgboostModel copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
@@ -316,7 +316,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v37 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v37 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addFeature:v15];
 
         v14 = v14 + 1;
@@ -349,7 +349,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v33 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v33 + 1) + 8 * v20) copyWithZone:zone];
         [v5 addLabel:v21];
 
         v20 = v20 + 1;
@@ -382,7 +382,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v29 + 1) + 8 * v26) copyWithZone:{a3, v29}];
+        v27 = [*(*(&v29 + 1) + 8 * v26) copyWithZone:{zone, v29}];
         [v5 addHashedFeature:v27];
 
         v26 = v26 + 1;
@@ -398,13 +398,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((coremlModel = self->_coremlModel, !(coremlModel | v4[1])) || -[NSData isEqual:](coremlModel, "isEqual:")) && ((xgboostModel = self->_xgboostModel, !(xgboostModel | v4[5])) || -[NSData isEqual:](xgboostModel, "isEqual:")) && ((features = self->_features, !(features | v4[2])) || -[NSMutableArray isEqual:](features, "isEqual:")) && ((labels = self->_labels, !(labels | v4[4])) || -[NSMutableArray isEqual:](labels, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((coremlModel = self->_coremlModel, !(coremlModel | equalCopy[1])) || -[NSData isEqual:](coremlModel, "isEqual:")) && ((xgboostModel = self->_xgboostModel, !(xgboostModel | equalCopy[5])) || -[NSData isEqual:](xgboostModel, "isEqual:")) && ((features = self->_features, !(features | equalCopy[2])) || -[NSMutableArray isEqual:](features, "isEqual:")) && ((labels = self->_labels, !(labels | equalCopy[4])) || -[NSMutableArray isEqual:](labels, "isEqual:")))
   {
     hashedFeatures = self->_hashedFeatures;
-    if (hashedFeatures | v4[3])
+    if (hashedFeatures | equalCopy[3])
     {
       v10 = [(NSMutableArray *)hashedFeatures isEqual:?];
     }
@@ -432,15 +432,15 @@
   return v6 ^ [(NSMutableArray *)self->_hashedFeatures hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(RTPModel *)self setCoremlModel:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(RTPModel *)self setXgboostModel:?];
   }
@@ -449,7 +449,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v6)
   {
@@ -477,7 +477,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = *(v4 + 4);
+  v10 = *(fromCopy + 4);
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v11)
   {
@@ -505,7 +505,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = *(v4 + 3);
+  v15 = *(fromCopy + 3);
   v16 = [v15 countByEnumeratingWithState:&v20 objects:v32 count:16];
   if (v16)
   {

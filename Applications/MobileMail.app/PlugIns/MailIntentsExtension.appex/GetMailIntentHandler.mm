@@ -1,9 +1,9 @@
 @interface GetMailIntentHandler
 + (id)log;
-- (BOOL)search:(id)a3 didFindResults:(id)a4;
-- (void)confirmGetMail:(id)a3 completion:(id)a4;
-- (void)handleGetMail:(id)a3 completion:(id)a4;
-- (void)search:(id)a3 didFinishWithError:(id)a4;
+- (BOOL)search:(id)search didFindResults:(id)results;
+- (void)confirmGetMail:(id)mail completion:(id)completion;
+- (void)handleGetMail:(id)mail completion:(id)completion;
+- (void)search:(id)search didFinishWithError:(id)error;
 @end
 
 @implementation GetMailIntentHandler
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_100003D88;
   block[3] = &unk_10000C3A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100011EE0 != -1)
   {
     dispatch_once(&qword_100011EE0, block);
@@ -25,24 +25,24 @@
   return v2;
 }
 
-- (void)confirmGetMail:(id)a3 completion:(id)a4
+- (void)confirmGetMail:(id)mail completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v4 = [[MSGetMailIntentResponse alloc] initWithCode:1 userActivity:0];
-  v5[2](v5, v4);
+  completionCopy[2](completionCopy, v4);
 }
 
-- (void)handleGetMail:(id)a3 completion:(id)a4
+- (void)handleGetMail:(id)mail completion:(id)completion
 {
-  v41 = a3;
-  v6 = a4;
+  mailCopy = mail;
+  completionCopy = completion;
   v7 = objc_alloc_init(NSMutableArray);
-  if ([v41 readStatus])
+  if ([mailCopy readStatus])
   {
     v8 = [MSCriterion alloc];
-    v9 = [v41 readStatus];
+    readStatus = [mailCopy readStatus];
     v10 = &MSCriterionExpressionRead;
-    if (v9 != 2)
+    if (readStatus != 2)
     {
       v10 = &MSCriterionExpressionUnread;
     }
@@ -51,81 +51,81 @@
     [v7 addObject:v11];
   }
 
-  v12 = [v41 sender];
-  v13 = [v12 personHandle];
-  v14 = [v13 value];
-  if (v14)
+  sender = [mailCopy sender];
+  personHandle = [sender personHandle];
+  value = [personHandle value];
+  if (value)
   {
-    v15 = [v41 sender];
-    v16 = [v15 personHandle];
-    v17 = [v16 type];
+    sender2 = [mailCopy sender];
+    personHandle2 = [sender2 personHandle];
+    type = [personHandle2 type];
 
-    if (v17 != 1)
+    if (type != 1)
     {
       goto LABEL_9;
     }
 
     v18 = [MSCriterion alloc];
-    v12 = [v41 sender];
-    v13 = [v12 personHandle];
-    v19 = [v13 value];
-    v20 = [v18 initWithType:MSCriterionTypeSender qualifier:MSCriterionQualifierContains expression:v19];
+    sender = [mailCopy sender];
+    personHandle = [sender personHandle];
+    value2 = [personHandle value];
+    v20 = [v18 initWithType:MSCriterionTypeSender qualifier:MSCriterionQualifierContains expression:value2];
     [v7 addObject:v20];
   }
 
 LABEL_9:
-  v21 = [v41 recipient];
-  v22 = [v21 personHandle];
-  v23 = [v22 value];
-  if (v23)
+  recipient = [mailCopy recipient];
+  personHandle3 = [recipient personHandle];
+  value3 = [personHandle3 value];
+  if (value3)
   {
-    v24 = [v41 recipient];
-    v25 = [v24 personHandle];
-    v26 = [v25 type];
+    recipient2 = [mailCopy recipient];
+    personHandle4 = [recipient2 personHandle];
+    type2 = [personHandle4 type];
 
-    if (v26 != 1)
+    if (type2 != 1)
     {
       goto LABEL_13;
     }
 
     v27 = [MSCriterion alloc];
-    v21 = [v41 recipient];
-    v22 = [v21 personHandle];
-    v28 = [v22 value];
-    v29 = [v27 initWithType:MSCriterionTypeAnyRecipient qualifier:MSCriterionQualifierContains expression:v28];
+    recipient = [mailCopy recipient];
+    personHandle3 = [recipient personHandle];
+    value4 = [personHandle3 value];
+    v29 = [v27 initWithType:MSCriterionTypeAnyRecipient qualifier:MSCriterionQualifierContains expression:value4];
     [v7 addObject:v29];
   }
 
 LABEL_13:
-  v30 = [v41 subject];
-  v31 = [v30 length];
+  subject = [mailCopy subject];
+  v31 = [subject length];
 
   if (v31)
   {
     v32 = [MSCriterion alloc];
-    v33 = [v41 subject];
-    v34 = [v32 initWithType:MSCriterionTypeSubject qualifier:MSCriterionQualifierContains expression:v33];
+    subject2 = [mailCopy subject];
+    v34 = [v32 initWithType:MSCriterionTypeSubject qualifier:MSCriterionQualifierContains expression:subject2];
     [v7 addObject:v34];
   }
 
   if ([v7 count] == 1)
   {
-    v35 = [v7 firstObject];
+    firstObject = [v7 firstObject];
   }
 
   else
   {
-    v35 = [[MSCriterion alloc] initWithCriteria:v7 allRequired:1];
+    firstObject = [[MSCriterion alloc] initWithCriteria:v7 allRequired:1];
   }
 
-  v36 = v35;
+  v36 = firstObject;
   v37 = [NSArray arrayWithObjects:MSResultsKeyMessageReference, MSResultsKeyDateSent, MSResultsKeySender, MSResultsKeyRecipientTo, MSResultsKeyRecipientCc, MSResultsKeyRecipientBcc, MSResultsKeySubject, MSResultsKeyBodySummary, 0];
   v38 = [MSSearch findMessageData:v37 matchingCriterion:v36 options:4 delegate:self];
 
   if (v38)
   {
     objc_storeStrong(&self->_currentSearch, v38);
-    v39 = objc_retainBlock(v6);
+    v39 = objc_retainBlock(completionCopy);
     completionHandler = self->_completionHandler;
     self->_completionHandler = v39;
   }
@@ -133,14 +133,14 @@ LABEL_13:
   else
   {
     completionHandler = [[MSGetMailIntentResponse alloc] initWithCode:5 userActivity:0];
-    (*(v6 + 2))(v6, completionHandler);
+    (*(completionCopy + 2))(completionCopy, completionHandler);
   }
 }
 
-- (BOOL)search:(id)a3 didFindResults:(id)a4
+- (BOOL)search:(id)search didFindResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  searchCopy = search;
+  resultsCopy = results;
   if (!self->_results)
   {
     v8 = objc_alloc_init(NSMutableArray);
@@ -152,7 +152,7 @@ LABEL_13:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = v7;
+  v10 = resultsCopy;
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
@@ -175,17 +175,17 @@ LABEL_13:
     while (v11);
   }
 
-  v14 = [(GetMailIntentHandler *)self results];
-  v15 = [v14 count] < 0x1A;
+  results = [(GetMailIntentHandler *)self results];
+  v15 = [results count] < 0x1A;
 
   return v15;
 }
 
-- (void)search:(id)a3 didFinishWithError:(id)a4
+- (void)search:(id)search didFinishWithError:(id)error
 {
-  v15 = a3;
-  v6 = a4;
-  if (v6)
+  searchCopy = search;
+  errorCopy = error;
+  if (errorCopy)
   {
     completionHandler = self->_completionHandler;
     v8 = [[MSGetMailIntentResponse alloc] initWithCode:5 userActivity:0];
@@ -195,11 +195,11 @@ LABEL_13:
   else
   {
     v8 = [[MSGetMailIntentResponse alloc] initWithCode:4 userActivity:0];
-    v9 = [(GetMailIntentHandler *)self results];
-    v10 = v9;
-    if (v9)
+    results = [(GetMailIntentHandler *)self results];
+    v10 = results;
+    if (results)
     {
-      v11 = [v9 ef_map:&stru_10000C6B8];
+      v11 = [results ef_map:&stru_10000C6B8];
       [v8 setMails:v11];
     }
 

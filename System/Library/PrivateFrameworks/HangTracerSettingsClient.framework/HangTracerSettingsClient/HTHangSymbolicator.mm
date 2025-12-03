@@ -1,11 +1,11 @@
 @interface HTHangSymbolicator
-+ (BOOL)isLogFileSymbolicated:(id)a3;
++ (BOOL)isLogFileSymbolicated:(id)symbolicated;
 + (HTHangSymbolicator)sharedSymbolicator;
-+ (id)symbolicatedLogURLForFile:(id)a3;
-- (BOOL)canSymbolicateLogFile:(id)a3;
++ (id)symbolicatedLogURLForFile:(id)file;
+- (BOOL)canSymbolicateLogFile:(id)file;
 - (HTHangSymbolicator)init;
-- (void)symbolicateLogFile:(id)a3 completion:(id)a4;
-- (void)symbolicateLogFiles:(id)a3 completion:(id)a4;
+- (void)symbolicateLogFile:(id)file completion:(id)completion;
+- (void)symbolicateLogFiles:(id)files completion:(id)completion;
 @end
 
 @implementation HTHangSymbolicator
@@ -52,45 +52,45 @@ uint64_t __40__HTHangSymbolicator_sharedSymbolicator__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)canSymbolicateLogFile:(id)a3
+- (BOOL)canSymbolicateLogFile:(id)file
 {
-  v4 = a3;
-  if (!-[HTDeveloperSettings isInternalBuild](self->_settings, "isInternalBuild") || +[HTHangSymbolicator isLogFileSymbolicated:](HTHangSymbolicator, "isLogFileSymbolicated:", v4) || (+[HTHangSymbolicator symbolicatedLogURLForFile:](HTHangSymbolicator, "symbolicatedLogURLForFile:", v4), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 checkResourceIsReachableAndReturnError:0], v5, (v6 & 1) != 0))
+  fileCopy = file;
+  if (!-[HTDeveloperSettings isInternalBuild](self->_settings, "isInternalBuild") || +[HTHangSymbolicator isLogFileSymbolicated:](HTHangSymbolicator, "isLogFileSymbolicated:", fileCopy) || (+[HTHangSymbolicator symbolicatedLogURLForFile:](HTHangSymbolicator, "symbolicatedLogURLForFile:", fileCopy), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 checkResourceIsReachableAndReturnError:0], v5, (v6 & 1) != 0))
   {
     v7 = 0;
   }
 
   else
   {
-    v9 = [v4 pathExtension];
-    if ([v9 isEqualToString:@"synced"])
+    pathExtension = [fileCopy pathExtension];
+    if ([pathExtension isEqualToString:@"synced"])
     {
-      v10 = [v4 URLByDeletingPathExtension];
-      v11 = [v10 pathExtension];
+      uRLByDeletingPathExtension = [fileCopy URLByDeletingPathExtension];
+      pathExtension2 = [uRLByDeletingPathExtension pathExtension];
 
-      v9 = v11;
+      pathExtension = pathExtension2;
     }
 
-    v7 = [v9 isEqualToString:@"ips"];
+    v7 = [pathExtension isEqualToString:@"ips"];
   }
 
   return v7;
 }
 
-- (void)symbolicateLogFile:(id)a3 completion:(id)a4
+- (void)symbolicateLogFile:(id)file completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__HTHangSymbolicator_symbolicateLogFile_completion___block_invoke;
   block[3] = &unk_2796A9048;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = fileCopy;
+  v9 = completionCopy;
+  v10 = fileCopy;
   dispatch_async(queue, block);
 }
 
@@ -340,13 +340,13 @@ void __52__HTHangSymbolicator_symbolicateLogFile_completion___block_invoke_12(ui
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)symbolicateLogFiles:(id)a3 completion:(id)a4
+- (void)symbolicateLogFiles:(id)files completion:(id)completion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v19 = a4;
+  filesCopy = files;
+  completionCopy = completion;
   group = dispatch_group_create();
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v46[0] = 0;
   v46[1] = v46;
   v46[2] = 0x3032000000;
@@ -362,7 +362,7 @@ void __52__HTHangSymbolicator_symbolicateLogFile_completion___block_invoke_12(ui
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v5;
+  obj = filesCopy;
   v7 = [obj countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v7)
   {
@@ -378,10 +378,10 @@ void __52__HTHangSymbolicator_symbolicateLogFile_completion___block_invoke_12(ui
         }
 
         v10 = *(*(&v39 + 1) + 8 * i);
-        v11 = [HTHangSymbolicator symbolicatedLogURLForFile:v10, v19, v20];
+        v11 = [HTHangSymbolicator symbolicatedLogURLForFile:v10, completionCopy, v20];
         if ([v11 checkResourceIsReachableAndReturnError:0])
         {
-          [v6 addObject:v11];
+          [array addObject:v11];
         }
 
         else
@@ -401,7 +401,7 @@ void __52__HTHangSymbolicator_symbolicateLogFile_completion___block_invoke_12(ui
           v29[1] = 3221225472;
           v29[2] = __53__HTHangSymbolicator_symbolicateLogFiles_completion___block_invoke_5;
           v29[3] = &unk_2796A9160;
-          v30 = v6;
+          v30 = array;
           v14 = v13;
           v32 = v14;
           v31 = v12;
@@ -421,13 +421,13 @@ void __52__HTHangSymbolicator_symbolicateLogFile_completion___block_invoke_12(ui
   block[1] = 3221225472;
   block[2] = __53__HTHangSymbolicator_symbolicateLogFiles_completion___block_invoke_7;
   block[3] = &unk_2796A9188;
-  v25 = v6;
+  v25 = array;
   v26 = obj;
-  v27 = v19;
+  v27 = completionCopy;
   v28 = v46;
   v15 = obj;
-  v16 = v6;
-  v17 = v19;
+  v16 = array;
+  v17 = completionCopy;
   dispatch_group_notify(group, MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&location);
@@ -612,49 +612,49 @@ uint64_t __53__HTHangSymbolicator_symbolicateLogFiles_completion___block_invoke_
   return v6(v2, v3, v5);
 }
 
-+ (id)symbolicatedLogURLForFile:(id)a3
++ (id)symbolicatedLogURLForFile:(id)file
 {
-  v3 = a3;
-  v4 = [v3 lastPathComponent];
-  v5 = [v4 pathExtension];
-  v6 = [v5 isEqualToString:@"synced"];
+  fileCopy = file;
+  lastPathComponent = [fileCopy lastPathComponent];
+  pathExtension = [lastPathComponent pathExtension];
+  v6 = [pathExtension isEqualToString:@"synced"];
 
   if (v6)
   {
-    v7 = [v4 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v4 = v7;
+    lastPathComponent = stringByDeletingPathExtension;
   }
 
-  v8 = [v4 pathExtension];
-  v9 = [v4 stringByDeletingPathExtension];
+  pathExtension2 = [lastPathComponent pathExtension];
+  stringByDeletingPathExtension2 = [lastPathComponent stringByDeletingPathExtension];
 
-  v10 = [v9 stringByAppendingString:@"_symbolicated"];
+  v10 = [stringByDeletingPathExtension2 stringByAppendingString:@"_symbolicated"];
 
-  v11 = [v10 stringByAppendingPathExtension:v8];
+  v11 = [v10 stringByAppendingPathExtension:pathExtension2];
 
-  v12 = [v3 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [fileCopy URLByDeletingLastPathComponent];
 
-  v13 = [v12 URLByAppendingPathComponent:v11];
+  v13 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v11];
 
   return v13;
 }
 
-+ (BOOL)isLogFileSymbolicated:(id)a3
++ (BOOL)isLogFileSymbolicated:(id)symbolicated
 {
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  v5 = [v4 isEqualToString:@"synced"];
+  symbolicatedCopy = symbolicated;
+  pathExtension = [symbolicatedCopy pathExtension];
+  v5 = [pathExtension isEqualToString:@"synced"];
 
-  v6 = v3;
+  uRLByDeletingPathExtension = symbolicatedCopy;
   if (v5)
   {
-    v6 = [v3 URLByDeletingPathExtension];
+    uRLByDeletingPathExtension = [symbolicatedCopy URLByDeletingPathExtension];
   }
 
-  v7 = [v3 URLByDeletingPathExtension];
-  v8 = [v7 lastPathComponent];
-  v9 = [v8 hasSuffix:@"_symbolicated"];
+  uRLByDeletingPathExtension2 = [symbolicatedCopy URLByDeletingPathExtension];
+  lastPathComponent = [uRLByDeletingPathExtension2 lastPathComponent];
+  v9 = [lastPathComponent hasSuffix:@"_symbolicated"];
 
   return v9;
 }

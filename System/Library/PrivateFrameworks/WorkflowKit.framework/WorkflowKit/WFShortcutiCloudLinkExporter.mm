@@ -1,17 +1,17 @@
 @interface WFShortcutiCloudLinkExporter
-- (void)exportWorkflowWithCompletion:(id)a3;
+- (void)exportWorkflowWithCompletion:(id)completion;
 @end
 
 @implementation WFShortcutiCloudLinkExporter
 
-- (void)exportWorkflowWithCompletion:(id)a3
+- (void)exportWorkflowWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8 = +[WFGallerySessionManager sharedManager];
-  v5 = [(WFShortcutExporter *)self workflowRecord];
-  v6 = [(WFShortcutExporter *)self workflowRecord];
-  v7 = [v6 name];
-  [v8 uploadWorkflow:v5 withName:v7 shortDescription:0 longDescription:0 private:1 completionHandler:v4];
+  workflowRecord = [(WFShortcutExporter *)self workflowRecord];
+  workflowRecord2 = [(WFShortcutExporter *)self workflowRecord];
+  name = [workflowRecord2 name];
+  [v8 uploadWorkflow:workflowRecord withName:name shortDescription:0 longDescription:0 private:1 completionHandler:completionCopy];
 }
 
 @end

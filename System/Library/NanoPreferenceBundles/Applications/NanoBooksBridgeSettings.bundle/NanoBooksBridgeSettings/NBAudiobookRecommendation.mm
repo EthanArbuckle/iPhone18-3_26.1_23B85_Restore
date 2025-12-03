@@ -1,30 +1,30 @@
 @interface NBAudiobookRecommendation
 + (id)_missingArtImage;
-+ (void)_fillArtworkMutableArray:(id)a3 toCount:(unint64_t)a4;
++ (void)_fillArtworkMutableArray:(id)array toCount:(unint64_t)count;
 - (MPArtworkCatalog)artworkCatalog;
-- (NBAudiobookRecommendation)initWithAdamIDs:(id)a3 type:(unint64_t)a4;
+- (NBAudiobookRecommendation)initWithAdamIDs:(id)ds type:(unint64_t)type;
 - (NSString)subtitle;
 - (NSString)title;
-- (id)_artworkCatalogsForAdamIDs:(id)a3;
-- (id)_debugStringForType:(unint64_t)a3;
-- (id)_tiledArtworkRequestForAdamIDs:(id)a3;
+- (id)_artworkCatalogsForAdamIDs:(id)ds;
+- (id)_debugStringForType:(unint64_t)type;
+- (id)_tiledArtworkRequestForAdamIDs:(id)ds;
 - (id)description;
 @end
 
 @implementation NBAudiobookRecommendation
 
-- (NBAudiobookRecommendation)initWithAdamIDs:(id)a3 type:(unint64_t)a4
+- (NBAudiobookRecommendation)initWithAdamIDs:(id)ds type:(unint64_t)type
 {
-  v6 = a3;
+  dsCopy = ds;
   v12.receiver = self;
   v12.super_class = NBAudiobookRecommendation;
   v7 = [(NBAudiobookRecommendation *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a4;
+    v7->_type = type;
     v7->_selected = 1;
-    v9 = [v6 copy];
+    v9 = [dsCopy copy];
     adamIDs = v8->_adamIDs;
     v8->_adamIDs = v9;
   }
@@ -86,30 +86,30 @@ LABEL_7:
 {
   if (!self->_artworkCatalog)
   {
-    v3 = [(NBAudiobookRecommendation *)self adamIDs];
-    v4 = [v3 count];
+    adamIDs = [(NBAudiobookRecommendation *)self adamIDs];
+    v4 = [adamIDs count];
 
     if (v4)
     {
-      v5 = [(NBAudiobookRecommendation *)self adamIDs];
-      v6 = [v5 count];
+      adamIDs2 = [(NBAudiobookRecommendation *)self adamIDs];
+      v6 = [adamIDs2 count];
 
-      v7 = [(NBAudiobookRecommendation *)self adamIDs];
-      v8 = v7;
+      adamIDs3 = [(NBAudiobookRecommendation *)self adamIDs];
+      v8 = adamIDs3;
       if (v6 < 4)
       {
-        v14 = [v7 firstObject];
-        v22 = v14;
+        firstObject = [adamIDs3 firstObject];
+        v22 = firstObject;
         v15 = [NSArray arrayWithObjects:&v22 count:1];
         v16 = [(NBAudiobookRecommendation *)self _artworkCatalogsForAdamIDs:v15];
-        v17 = [v16 firstObject];
+        firstObject2 = [v16 firstObject];
         artworkCatalog = self->_artworkCatalog;
-        self->_artworkCatalog = v17;
+        self->_artworkCatalog = firstObject2;
       }
 
       else
       {
-        v9 = [(NBAudiobookRecommendation *)self _tiledArtworkRequestForAdamIDs:v7];
+        v9 = [(NBAudiobookRecommendation *)self _tiledArtworkRequestForAdamIDs:adamIDs3];
 
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
@@ -151,51 +151,51 @@ LABEL_7:
   return v3;
 }
 
-+ (void)_fillArtworkMutableArray:(id)a3 toCount:(unint64_t)a4
++ (void)_fillArtworkMutableArray:(id)array toCount:(unint64_t)count
 {
-  v5 = a3;
-  if ([v5 count] < a4)
+  arrayCopy = array;
+  if ([arrayCopy count] < count)
   {
-    v6 = [objc_opt_class() _missingArtImage];
-    v7 = [MPArtworkCatalog staticArtworkCatalogWithImage:v6];
+    _missingArtImage = [objc_opt_class() _missingArtImage];
+    v7 = [MPArtworkCatalog staticArtworkCatalogWithImage:_missingArtImage];
 
     v8 = NBRecommendationsLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = 134218240;
-      v10 = [v5 count];
+      v10 = [arrayCopy count];
       v11 = 2048;
-      v12 = a4;
+      countCopy = count;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "Filling tiled artwork catalog %tu -> %tu", &v9, 0x16u);
     }
 
-    while ([v5 count] < a4)
+    while ([arrayCopy count] < count)
     {
-      [v5 addObject:v7];
+      [arrayCopy addObject:v7];
     }
   }
 }
 
-- (id)_artworkCatalogsForAdamIDs:(id)a3
+- (id)_artworkCatalogsForAdamIDs:(id)ds
 {
-  v3 = a3;
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  dsCopy = ds;
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dsCopy count]);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_62AC;
   v4 = v6[3] = &unk_20A10;
   v7 = v4;
-  [v3 enumerateAdamIDsUsingBlock:v6];
+  [dsCopy enumerateAdamIDsUsingBlock:v6];
 
   return v4;
 }
 
-- (id)_tiledArtworkRequestForAdamIDs:(id)a3
+- (id)_tiledArtworkRequestForAdamIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_alloc_init(MPTiledArtworkRequest);
   [v5 setTileSpacing:2.0];
-  if ([v4 count] <= 3)
+  if ([dsCopy count] <= 3)
   {
     v6 = 1;
   }
@@ -215,7 +215,7 @@ LABEL_7:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v4;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -251,15 +251,15 @@ LABEL_7:
   return v5;
 }
 
-- (id)_debugStringForType:(unint64_t)a3
+- (id)_debugStringForType:(unint64_t)type
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"Want to Read";
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }
@@ -272,10 +272,10 @@ LABEL_7:
 
 - (id)description
 {
-  v3 = [(NBAudiobookRecommendation *)self title];
-  v4 = [(NBAudiobookRecommendation *)self subtitle];
+  title = [(NBAudiobookRecommendation *)self title];
+  subtitle = [(NBAudiobookRecommendation *)self subtitle];
   v5 = [(NBAudiobookRecommendation *)self _debugStringForType:[(NBAudiobookRecommendation *)self type]];
-  v6 = [NSString stringWithFormat:@"%@ - %@ (type = %@, count = %lu, selected = %ld)", v3, v4, v5, [(NSArray *)self->_adamIDs count], self->_selected];
+  v6 = [NSString stringWithFormat:@"%@ - %@ (type = %@, count = %lu, selected = %ld)", title, subtitle, v5, [(NSArray *)self->_adamIDs count], self->_selected];
 
   return v6;
 }

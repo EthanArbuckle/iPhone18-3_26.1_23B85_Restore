@@ -1,14 +1,14 @@
 @interface GameServiceDelegateReference
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4;
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info;
 @end
 
 @implementation GameServiceDelegateReference
 
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info
 {
   v6 = sub_266039884();
-  v7 = self;
-  sub_266006264(a3, v6);
+  selfCopy = self;
+  sub_266006264(type, v6);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface HMDRVCOperationCompletionLogEvent
-+ (id)eventWithErrorCode:(id)a3 totalOperationalTime:(id)a4;
++ (id)eventWithErrorCode:(id)code totalOperationalTime:(id)time;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -7,26 +7,26 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDRVCOperationCompletionLogEvent *)self totalOperationalTime];
-  [v3 setObject:v4 forKeyedSubscript:@"totalOperationalTime"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  totalOperationalTime = [(HMDRVCOperationCompletionLogEvent *)self totalOperationalTime];
+  [dictionary setObject:totalOperationalTime forKeyedSubscript:@"totalOperationalTime"];
 
-  v5 = [(HMDRVCOperationCompletionLogEvent *)self errorCode];
-  [v3 setObject:v5 forKeyedSubscript:@"errorCode"];
+  errorCode = [(HMDRVCOperationCompletionLogEvent *)self errorCode];
+  [dictionary setObject:errorCode forKeyedSubscript:@"errorCode"];
 
-  v6 = [v3 copy];
+  v6 = [dictionary copy];
 
   return v6;
 }
 
-+ (id)eventWithErrorCode:(id)a3 totalOperationalTime:(id)a4
++ (id)eventWithErrorCode:(id)code totalOperationalTime:(id)time
 {
-  v5 = a4;
-  v6 = a3;
+  timeCopy = time;
+  codeCopy = code;
   v7 = objc_alloc_init(HMDRVCOperationCompletionLogEvent);
-  [(HMDRVCOperationCompletionLogEvent *)v7 setErrorCode:v6];
+  [(HMDRVCOperationCompletionLogEvent *)v7 setErrorCode:codeCopy];
 
-  [(HMDRVCOperationCompletionLogEvent *)v7 setTotalOperationalTime:v5];
+  [(HMDRVCOperationCompletionLogEvent *)v7 setTotalOperationalTime:timeCopy];
 
   return v7;
 }

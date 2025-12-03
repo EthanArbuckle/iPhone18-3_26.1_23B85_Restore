@@ -1,13 +1,13 @@
 @interface DashedLineView
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation DashedLineView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D75348] colorWithWhite:0.819607843 alpha:{1.0, a3.size.width, a3.size.height}];
+  v4 = [MEMORY[0x277D75348] colorWithWhite:0.819607843 alpha:{1.0, rect.size.width, rect.size.height}];
   [v4 set];
 
   v5 = objc_opt_new();

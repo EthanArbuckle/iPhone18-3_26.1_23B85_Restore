@@ -3,38 +3,38 @@
 + (id)logCategory;
 - (HMDIDSService)service;
 - (HMDIDSServiceManager)initWithDefaults;
-- (HMDIDSServiceManager)initWithNotificationCenter:(id)a3;
+- (HMDIDSServiceManager)initWithNotificationCenter:(id)center;
 - (dispatch_queue_t)applicationBundleIdentifiersThatNeedWakingMessages;
-- (id)serviceWithName:(id)a3;
-- (void)addProxyServiceLinkPreferencesAssertionHolder:(id)a3;
-- (void)handleProcessInfoStateChanged:(id)a3;
-- (void)retrieveFirewallWithQueue:(id)a3 completion:(id)a4;
-- (void)setActivityMonitorDataSource:(id)a3;
+- (id)serviceWithName:(id)name;
+- (void)addProxyServiceLinkPreferencesAssertionHolder:(id)holder;
+- (void)handleProcessInfoStateChanged:(id)changed;
+- (void)retrieveFirewallWithQueue:(id)queue completion:(id)completion;
+- (void)setActivityMonitorDataSource:(id)source;
 - (void)unconfigure;
 @end
 
 @implementation HMDIDSServiceManager
 
-- (void)retrieveFirewallWithQueue:(id)a3 completion:(id)a4
+- (void)retrieveFirewallWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDIDSServiceManager *)self service];
+  completionCopy = completion;
+  queueCopy = queue;
+  service = [(HMDIDSServiceManager *)self service];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__HMDIDSServiceManager_retrieveFirewallWithQueue_completion___block_invoke;
   v10[3] = &unk_2797215B8;
-  v11 = v6;
-  v9 = v6;
-  [v8 retrieveFirewallWithQueue:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [service retrieveFirewallWithQueue:queueCopy completion:v10];
 }
 
-- (void)handleProcessInfoStateChanged:(id)a3
+- (void)handleProcessInfoStateChanged:(id)changed
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"processInfo"];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"processInfo"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -51,8 +51,8 @@
 
   if (v8)
   {
-    v9 = [v8 bundleIdentifier];
-    if ([v9 length])
+    bundleIdentifier = [v8 bundleIdentifier];
+    if ([bundleIdentifier length])
     {
       if (self)
       {
@@ -70,14 +70,14 @@
       block[3] = &unk_279734960;
       block[4] = self;
       v21 = v8;
-      v22 = v9;
+      v22 = bundleIdentifier;
       dispatch_async(workQueue, block);
     }
 
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -85,7 +85,7 @@
         *buf = 138543618;
         v24 = v18;
         v25 = 2112;
-        v26 = v4;
+        v26 = changedCopy;
         _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_ERROR, "%{public}@Missing process info application bundle identifier: %@", buf, 0x16u);
       }
 
@@ -96,7 +96,7 @@
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -104,7 +104,7 @@
       *buf = 138543618;
       v24 = v14;
       v25 = 2112;
-      v26 = v4;
+      v26 = changedCopy;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_ERROR, "%{public}@Bad process info notification object: %@", buf, 0x16u);
     }
 
@@ -327,20 +327,20 @@ LABEL_37:
 
 - (dispatch_queue_t)applicationBundleIdentifiersThatNeedWakingMessages
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    dispatch_assert_queue_V2(a1[4]);
-    a1 = v2[1];
+    selfCopy = self;
+    dispatch_assert_queue_V2(self[4]);
+    self = selfCopy[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)addProxyServiceLinkPreferencesAssertionHolder:(id)a3
+- (void)addProxyServiceLinkPreferencesAssertionHolder:(id)holder
 {
-  v4 = a3;
+  holderCopy = holder;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -356,8 +356,8 @@ LABEL_37:
   v7[2] = __70__HMDIDSServiceManager_addProxyServiceLinkPreferencesAssertionHolder___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = holderCopy;
+  v6 = holderCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -385,29 +385,29 @@ void __70__HMDIDSServiceManager_addProxyServiceLinkPreferencesAssertionHolder___
 
 - (void)unconfigure
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_notificationCenter;
   }
 
-  [(HMDIDSServiceManager *)self removeObserver:v2];
+  [(HMDIDSServiceManager *)self removeObserver:selfCopy];
 }
 
-- (void)setActivityMonitorDataSource:(id)a3
+- (void)setActivityMonitorDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(HMDIDSServiceManager *)self activityObserver];
-  [v5 configureWithDataSource:v4];
+  sourceCopy = source;
+  activityObserver = [(HMDIDSServiceManager *)self activityObserver];
+  [activityObserver configureWithDataSource:sourceCopy];
 
-  v6 = [(HMDIDSServiceManager *)self activityBroadcaster];
-  [v6 configureWithDataSource:v4];
+  activityBroadcaster = [(HMDIDSServiceManager *)self activityBroadcaster];
+  [activityBroadcaster configureWithDataSource:sourceCopy];
 }
 
-- (HMDIDSServiceManager)initWithNotificationCenter:(id)a3
+- (HMDIDSServiceManager)initWithNotificationCenter:(id)center
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  centerCopy = center;
   v32.receiver = self;
   v32.super_class = HMDIDSServiceManager;
   v6 = [(HMDIDSServiceManager *)&v32 init];
@@ -421,8 +421,8 @@ void __70__HMDIDSServiceManager_addProxyServiceLinkPreferencesAssertionHolder___
       v7->_services = v8;
     }
 
-    v10 = [MEMORY[0x277D0F8E8] productInfo];
-    if (!v10)
+    productInfo = [MEMORY[0x277D0F8E8] productInfo];
+    if (!productInfo)
     {
       v11 = objc_autoreleasePoolPush();
       v12 = v7;
@@ -438,7 +438,7 @@ void __70__HMDIDSServiceManager_addProxyServiceLinkPreferencesAssertionHolder___
       objc_autoreleasePoolPop(v11);
     }
 
-    objc_storeStrong(&v7->_notificationCenter, a3);
+    objc_storeStrong(&v7->_notificationCenter, center);
     v15 = [MEMORY[0x277CBEB58] set];
     applicationBundleIdentifiersThatNeedWakingMessages = v7->_applicationBundleIdentifiersThatNeedWakingMessages;
     v7->_applicationBundleIdentifiersThatNeedWakingMessages = v15;
@@ -458,9 +458,9 @@ void __70__HMDIDSServiceManager_addProxyServiceLinkPreferencesAssertionHolder___
     v7->_activityObserver = v23;
 
     v25 = HMDispatchQueueNameString();
-    v26 = [v25 UTF8String];
+    uTF8String = [v25 UTF8String];
     v27 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v28 = dispatch_queue_create(v26, v27);
+    v28 = dispatch_queue_create(uTF8String, v27);
     workQueue = v7->_workQueue;
     v7->_workQueue = v28;
   }
@@ -476,10 +476,10 @@ void __70__HMDIDSServiceManager_addProxyServiceLinkPreferencesAssertionHolder___
   services = self->_services;
   self->_services = v3;
 
-  v5 = [MEMORY[0x277D0F8E8] productInfo];
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
   v6 = +[HMDIDSServiceManager sharedIDSServiceName];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -492,11 +492,11 @@ void __70__HMDIDSServiceManager_addProxyServiceLinkPreferencesAssertionHolder___
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HMDIDSServiceManager *)v8 serviceWithName:v6];
-  if (!v5)
+  v11 = [(HMDIDSServiceManager *)selfCopy serviceWithName:v6];
+  if (!productInfo)
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = v8;
+    v24 = selfCopy;
     v25 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -516,10 +516,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v5 productPlatform] == 3 || +[HMDDeviceCapabilities isCompanionCapable](HMDDeviceCapabilities, "isCompanionCapable"))
+  if ([productInfo productPlatform] == 3 || +[HMDDeviceCapabilities isCompanionCapable](HMDDeviceCapabilities, "isCompanionCapable"))
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v8;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -533,16 +533,16 @@ LABEL_15:
     v16 = [(HMDIDSServiceManager *)v13 serviceWithName:@"com.apple.private.alloy.willow.proxy"];
   }
 
-  v17 = [v5 productPlatform];
-  if ((v17 - 1) >= 5)
+  productPlatform = [productInfo productPlatform];
+  if ((productPlatform - 1) >= 5)
   {
-    if (v17)
+    if (productPlatform)
     {
       goto LABEL_17;
     }
 
     v23 = objc_autoreleasePoolPush();
-    v24 = v8;
+    v24 = selfCopy;
     v25 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -557,7 +557,7 @@ LABEL_15:
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = v8;
+  v19 = selfCopy;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
@@ -570,16 +570,16 @@ LABEL_15:
   objc_autoreleasePoolPop(v18);
   v22 = [(HMDIDSServiceManager *)v19 serviceWithName:@"com.apple.private.alloy.willow.stream"];
 LABEL_17:
-  v28 = [MEMORY[0x277CCAB98] defaultCenter];
-  v29 = [(HMDIDSServiceManager *)v8 initWithNotificationCenter:v28];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v29 = [(HMDIDSServiceManager *)selfCopy initWithNotificationCenter:defaultCenter];
 
   v30 = *MEMORY[0x277D85DE8];
   return v29;
 }
 
-- (id)serviceWithName:(id)a3
+- (id)serviceWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (self)
   {
     services = self->_services;
@@ -603,11 +603,11 @@ LABEL_17:
   }
 
   v8 = v7;
-  v9 = [(NSMutableDictionary *)v8 objectForKeyedSubscript:v4];
+  v9 = [(NSMutableDictionary *)v8 objectForKeyedSubscript:nameCopy];
 
   if (!v9)
   {
-    v9 = [objc_alloc(MEMORY[0x277D18778]) initWithService:v4];
+    v9 = [objc_alloc(MEMORY[0x277D18778]) initWithService:nameCopy];
     if (self)
     {
       v10 = self->_services;
@@ -619,7 +619,7 @@ LABEL_17:
     }
 
     v11 = v10;
-    [(NSMutableDictionary *)v11 setObject:v9 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)v11 setObject:v9 forKeyedSubscript:nameCopy];
   }
 
   objc_sync_exit(v6);
@@ -658,9 +658,9 @@ uint64_t __35__HMDIDSServiceManager_logCategory__block_invoke()
 + (HMDIDSServiceManager)sharedManager
 {
   v2 = +[HMDRegistry shared];
-  v3 = [v2 idsServiceManager];
+  idsServiceManager = [v2 idsServiceManager];
 
-  return v3;
+  return idsServiceManager;
 }
 
 @end

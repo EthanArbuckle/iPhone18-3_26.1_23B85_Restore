@@ -1,28 +1,28 @@
 @interface USPSchemaUSPMetric
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USPSchemaUSPMetric)initWithDictionary:(id)a3;
-- (USPSchemaUSPMetric)initWithJSON:(id)a3;
-- (double)iterationValuesAtIndex:(unint64_t)a3;
+- (USPSchemaUSPMetric)initWithDictionary:(id)dictionary;
+- (USPSchemaUSPMetric)initWithJSON:(id)n;
+- (double)iterationValuesAtIndex:(unint64_t)index;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addIterationValues:(double)a3;
-- (void)writeTo:(id)a3;
+- (void)addIterationValues:(double)values;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USPSchemaUSPMetric
 
-- (USPSchemaUSPMetric)initWithDictionary:(id)a3
+- (USPSchemaUSPMetric)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = USPSchemaUSPMetric;
   v5 = [(USPSchemaUSPMetric *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(USPSchemaUSPMetric *)v5 setName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"unit"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"unit"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(USPSchemaUSPMetric *)v5 setUnit:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"value"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(USPSchemaUSPMetric *)v5 setValue:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"iterationValues"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"iterationValues"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,30 +100,30 @@
   return v5;
 }
 
-- (USPSchemaUSPMetric)initWithJSON:(id)a3
+- (USPSchemaUSPMetric)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USPSchemaUSPMetric *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USPSchemaUSPMetric *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USPSchemaUSPMetric *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -136,26 +136,26 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_iterationValues count])
   {
-    v4 = [(USPSchemaUSPMetric *)self iterationValues];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"iterationValues"];
+    iterationValues = [(USPSchemaUSPMetric *)self iterationValues];
+    v5 = [iterationValues copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"iterationValues"];
   }
 
   if (self->_name)
   {
-    v6 = [(USPSchemaUSPMetric *)self name];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"name"];
+    name = [(USPSchemaUSPMetric *)self name];
+    v7 = [name copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"name"];
   }
 
   if (self->_unit)
   {
-    v8 = [(USPSchemaUSPMetric *)self unit];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"unit"];
+    unit = [(USPSchemaUSPMetric *)self unit];
+    v9 = [unit copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"unit"];
   }
 
   if (*&self->_has)
@@ -163,12 +163,12 @@
     v10 = MEMORY[0x1E696AD98];
     [(USPSchemaUSPMetric *)self value];
     v11 = [v10 numberWithDouble:?];
-    [v3 setObject:v11 forKeyedSubscript:@"value"];
+    [dictionary setObject:v11 forKeyedSubscript:@"value"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -211,28 +211,28 @@
   return v4 ^ v3 ^ v7 ^ [(NSArray *)self->_iterationValues hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(USPSchemaUSPMetric *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(USPSchemaUSPMetric *)self name];
+  name2 = [equalCopy name];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(USPSchemaUSPMetric *)self name];
-  if (v7)
+  name3 = [(USPSchemaUSPMetric *)self name];
+  if (name3)
   {
-    v8 = v7;
-    v9 = [(USPSchemaUSPMetric *)self name];
-    v10 = [v4 name];
-    v11 = [v9 isEqual:v10];
+    v8 = name3;
+    name4 = [(USPSchemaUSPMetric *)self name];
+    name5 = [equalCopy name];
+    v11 = [name4 isEqual:name5];
 
     if (!v11)
     {
@@ -244,20 +244,20 @@
   {
   }
 
-  v5 = [(USPSchemaUSPMetric *)self unit];
-  v6 = [v4 unit];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(USPSchemaUSPMetric *)self unit];
+  name2 = [equalCopy unit];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_19;
   }
 
-  v12 = [(USPSchemaUSPMetric *)self unit];
-  if (v12)
+  unit = [(USPSchemaUSPMetric *)self unit];
+  if (unit)
   {
-    v13 = v12;
-    v14 = [(USPSchemaUSPMetric *)self unit];
-    v15 = [v4 unit];
-    v16 = [v14 isEqual:v15];
+    v13 = unit;
+    unit2 = [(USPSchemaUSPMetric *)self unit];
+    unit3 = [equalCopy unit];
+    v16 = [unit2 isEqual:unit3];
 
     if (!v16)
     {
@@ -269,7 +269,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_20;
   }
@@ -277,19 +277,19 @@
   if (*&self->_has)
   {
     value = self->_value;
-    [v4 value];
+    [equalCopy value];
     if (value != v18)
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(USPSchemaUSPMetric *)self iterationValues];
-  v6 = [v4 iterationValues];
-  if ((v5 != 0) != (v6 == 0))
+  name = [(USPSchemaUSPMetric *)self iterationValues];
+  name2 = [equalCopy iterationValues];
+  if ((name != 0) != (name2 == 0))
   {
-    v19 = [(USPSchemaUSPMetric *)self iterationValues];
-    if (!v19)
+    iterationValues = [(USPSchemaUSPMetric *)self iterationValues];
+    if (!iterationValues)
     {
 
 LABEL_23:
@@ -297,10 +297,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v20 = v19;
-    v21 = [(USPSchemaUSPMetric *)self iterationValues];
-    v22 = [v4 iterationValues];
-    v23 = [v21 isEqual:v22];
+    v20 = iterationValues;
+    iterationValues2 = [(USPSchemaUSPMetric *)self iterationValues];
+    iterationValues3 = [equalCopy iterationValues];
+    v23 = [iterationValues2 isEqual:iterationValues3];
 
     if (v23)
     {
@@ -320,20 +320,20 @@ LABEL_21:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(USPSchemaUSPMetric *)self name];
+  toCopy = to;
+  name = [(USPSchemaUSPMetric *)self name];
 
-  if (v5)
+  if (name)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(USPSchemaUSPMetric *)self unit];
+  unit = [(USPSchemaUSPMetric *)self unit];
 
-  if (v6)
+  if (unit)
   {
     PBDataWriterWriteStringField();
   }
@@ -376,28 +376,28 @@ LABEL_21:
   }
 }
 
-- (double)iterationValuesAtIndex:(unint64_t)a3
+- (double)iterationValuesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_iterationValues objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_iterationValues objectAtIndexedSubscript:index];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addIterationValues:(double)a3
+- (void)addIterationValues:(double)values
 {
   iterationValues = self->_iterationValues;
   if (!iterationValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_iterationValues;
-    self->_iterationValues = v6;
+    self->_iterationValues = array;
 
     iterationValues = self->_iterationValues;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:values];
   [(NSArray *)iterationValues addObject:v8];
 }
 

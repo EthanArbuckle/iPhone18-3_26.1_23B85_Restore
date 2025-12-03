@@ -1,17 +1,17 @@
 @interface MTLRasterizationRateMapDescriptorInternal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLRasterizationRateMapDescriptorInternal)init;
-- (MTLRasterizationRateMapDescriptorInternal)initWithScreenSize:(id *)a3;
-- (const)layerPointer:(unint64_t *)a3;
+- (MTLRasterizationRateMapDescriptorInternal)initWithScreenSize:(id *)size;
+- (const)layerPointer:(unint64_t *)pointer;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
-- (id)layerAtIndex:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
+- (id)layerAtIndex:(unint64_t)index;
 - (unint64_t)hash;
 - (unint64_t)layerCount;
 - (void)dealloc;
-- (void)setLayer:(id)a3 atIndex:(unint64_t)a4;
-- (void)setScreenSize:(id *)a3;
+- (void)setLayer:(id)layer atIndex:(unint64_t)index;
+- (void)setScreenSize:(id *)size;
 @end
 
 @implementation MTLRasterizationRateMapDescriptorInternal
@@ -31,20 +31,20 @@
   return v2;
 }
 
-- (MTLRasterizationRateMapDescriptorInternal)initWithScreenSize:(id *)a3
+- (MTLRasterizationRateMapDescriptorInternal)initWithScreenSize:(id *)size
 {
   result = [(MTLRasterizationRateMapDescriptorInternal *)self init];
   if (result)
   {
-    var2 = a3->var2;
-    *&result->_screenSize.width = *&a3->var0;
+    var2 = size->var2;
+    *&result->_screenSize.width = *&size->var0;
     result->_screenSize.depth = var2;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[MTLRasterizationRateMapDescriptor allocWithZone:?]];
   v5 = *&self->_screenSize.width;
@@ -95,39 +95,39 @@
   [(MTLRasterizationRateMapDescriptorInternal *)&v6 dealloc];
 }
 
-- (id)layerAtIndex:(unint64_t)a3
+- (id)layerAtIndex:(unint64_t)index
 {
   begin = self->_layers.__begin_;
-  if (a3 >= self->_layers.var0 - begin)
+  if (index >= self->_layers.var0 - begin)
   {
     return 0;
   }
 
   else
   {
-    return begin[a3];
+    return begin[index];
   }
 }
 
-- (void)setLayer:(id)a3 atIndex:(unint64_t)a4
+- (void)setLayer:(id)layer atIndex:(unint64_t)index
 {
-  v7 = a3;
+  layerCopy = layer;
   p_layers = &self->_layers;
   begin = p_layers->__begin_;
-  if (a4 >= p_layers->var0 - p_layers->__begin_)
+  if (index >= p_layers->var0 - p_layers->__begin_)
   {
-    if (!a3)
+    if (!layer)
     {
       return;
     }
 
     v11 = 0;
-    std::vector<MTLRasterizationRateLayerDescriptor *>::resize(p_layers, a4 + 1, &v11);
+    std::vector<MTLRasterizationRateLayerDescriptor *>::resize(p_layers, index + 1, &v11);
     begin = p_layers->__begin_;
   }
 
-  v10 = begin[a4];
-  begin[a4] = a3;
+  v10 = begin[index];
+  begin[index] = layer;
 }
 
 - (unint64_t)layerCount
@@ -156,7 +156,7 @@
   return result;
 }
 
-- (const)layerPointer:(unint64_t *)a3
+- (const)layerPointer:(unint64_t *)pointer
 {
   p_layers = &self->_layers;
   result = self->_layers.__begin_;
@@ -174,12 +174,12 @@
     {
       if (v7 == ++v6)
       {
-        *a3 = v7;
+        *pointer = v7;
         return result;
       }
     }
 
-    *a3 = v6;
+    *pointer = v6;
     if (!v6)
     {
       return 0;
@@ -189,15 +189,15 @@
   else
   {
     result = 0;
-    *a3 = 0;
+    *pointer = 0;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v18) = 1;
   }
@@ -236,10 +236,10 @@
     }
 
     v31 = [(NSString *)label hash];
-    v12 = a3 + 40;
-    v27 = *(a3 + 8);
-    v14 = *(a3 + 5);
-    v13 = *(a3 + 6);
+    v12 = equal + 40;
+    v27 = *(equal + 8);
+    v14 = *(equal + 5);
+    v13 = *(equal + 6);
     v15 = v13 - v14;
     if (v13 == v14)
     {
@@ -266,7 +266,7 @@
     }
 
     v29 = v16;
-    v19 = [*(a3 + 4) hash];
+    v19 = [*(equal + 4) hash];
     v20 = v30 == v28 && *(&v30 + 1) == *(&v27 + 1);
     v21 = v20 && v9 == v29;
     if (v21 && v31 == v19)
@@ -356,10 +356,10 @@ LABEL_27:
   return v10;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v18[12] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v6 = v5;
   v18[0] = v5;
   v18[1] = @"label =";
@@ -395,7 +395,7 @@ LABEL_27:
         [v8 addObject:@" layers["];
         [v8 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v11)}];
         [v8 addObject:@"] = "];
-        [v8 addObject:{-[__end_ formattedDescription:](v12, "formattedDescription:", a3 + 4)}];
+        [v8 addObject:{-[__end_ formattedDescription:](v12, "formattedDescription:", description + 4)}];
         begin = self->_layers.__begin_;
         var0 = self->_layers.var0;
       }
@@ -414,10 +414,10 @@ LABEL_27:
   return v13;
 }
 
-- (void)setScreenSize:(id *)a3
+- (void)setScreenSize:(id *)size
 {
-  var2 = a3->var2;
-  *&self->_screenSize.width = *&a3->var0;
+  var2 = size->var2;
+  *&self->_screenSize.width = *&size->var0;
   self->_screenSize.depth = var2;
 }
 

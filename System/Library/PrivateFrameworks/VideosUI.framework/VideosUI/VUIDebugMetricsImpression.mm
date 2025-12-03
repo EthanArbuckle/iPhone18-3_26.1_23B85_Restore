@@ -4,15 +4,15 @@
 - (NSString)impressionIndex;
 - (NSString)name;
 - (NSString)parentId;
-- (VUIDebugMetricsImpression)initWithDictionary:(id)a3;
+- (VUIDebugMetricsImpression)initWithDictionary:(id)dictionary;
 @end
 
 @implementation VUIDebugMetricsImpression
 
-- (VUIDebugMetricsImpression)initWithDictionary:(id)a3
+- (VUIDebugMetricsImpression)initWithDictionary:(id)dictionary
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = VUIDebugMetricsImpression;
   v5 = [(VUIDebugMetricsImpression *)&v35 init];
@@ -38,7 +38,7 @@
           }
 
           v11 = *(*(&v31 + 1) + 8 * i);
-          v12 = [v4 objectForKeyedSubscript:v11];
+          v12 = [dictionaryCopy objectForKeyedSubscript:v11];
           [v6 setObject:v12 forKeyedSubscript:v11];
         }
 
@@ -49,8 +49,8 @@
     }
 
     objc_storeStrong(&v5->_mainValues, v6);
-    v13 = [v4 allKeys];
-    v14 = [v13 mutableCopy];
+    allKeys = [dictionaryCopy allKeys];
+    v14 = [allKeys mutableCopy];
 
     [v14 removeObjectsInArray:&unk_1F5E5EB98];
     v15 = objc_opt_new();
@@ -74,7 +74,7 @@
           }
 
           v21 = *(*(&v27 + 1) + 8 * j);
-          v22 = [v4 objectForKeyedSubscript:{v21, v27}];
+          v22 = [dictionaryCopy objectForKeyedSubscript:{v21, v27}];
           [(NSDictionary *)v15 setObject:v22 forKeyedSubscript:v21];
         }
 

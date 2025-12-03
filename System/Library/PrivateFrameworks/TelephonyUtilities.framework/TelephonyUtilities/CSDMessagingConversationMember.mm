@@ -1,68 +1,68 @@
 @interface CSDMessagingConversationMember
-+ (CSDMessagingConversationMember)memberWithTUConversationMember:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (CSDMessagingConversationMember)memberWithTUConversationMember:(id)member;
+- (BOOL)isEqual:(id)equal;
 - (TUConversationMember)tuConversationMember;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsValidationSource:(id)a3;
+- (int)StringAsValidationSource:(id)source;
 - (int)validationSource;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasValidationSource:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasValidationSource:(BOOL)source;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationMember
 
-+ (CSDMessagingConversationMember)memberWithTUConversationMember:(id)a3
++ (CSDMessagingConversationMember)memberWithTUConversationMember:(id)member
 {
-  v3 = a3;
+  memberCopy = member;
   v4 = objc_alloc_init(CSDMessagingConversationMember);
-  v5 = [v3 handle];
-  v6 = [CSDMessagingHandle handleWithTUHandle:v5];
+  handle = [memberCopy handle];
+  v6 = [CSDMessagingHandle handleWithTUHandle:handle];
   [(CSDMessagingConversationMember *)v4 setHandle:v6];
 
-  v7 = [v3 nickname];
-  [(CSDMessagingConversationMember *)v4 setNickname:v7];
+  nickname = [memberCopy nickname];
+  [(CSDMessagingConversationMember *)v4 setNickname:nickname];
 
-  v8 = [v3 lightweightPrimary];
+  lightweightPrimary = [memberCopy lightweightPrimary];
 
-  if (v8)
+  if (lightweightPrimary)
   {
-    v9 = [v3 lightweightPrimary];
-    v10 = [CSDMessagingHandle handleWithTUHandle:v9];
+    lightweightPrimary2 = [memberCopy lightweightPrimary];
+    v10 = [CSDMessagingHandle handleWithTUHandle:lightweightPrimary2];
     [(CSDMessagingConversationMember *)v4 setLightweightPrimary:v10];
 
-    -[CSDMessagingConversationMember setLightweightPrimaryParticipantID:](v4, "setLightweightPrimaryParticipantID:", [v3 lightweightPrimaryParticipantIdentifier]);
+    -[CSDMessagingConversationMember setLightweightPrimaryParticipantID:](v4, "setLightweightPrimaryParticipantID:", [memberCopy lightweightPrimaryParticipantIdentifier]);
   }
 
-  v11 = [v3 associationVoucher];
-  if (v11)
+  associationVoucher = [memberCopy associationVoucher];
+  if (associationVoucher)
   {
-    v12 = v11;
-    v13 = [v3 validationSource];
+    v12 = associationVoucher;
+    validationSource = [memberCopy validationSource];
 
-    if (v13 == 2)
+    if (validationSource == 2)
     {
       [(CSDMessagingConversationMember *)v4 setValidationSource:2];
-      v14 = [v3 associationVoucher];
-      v15 = [CSDMessagingVoucher voucherWithTUVoucher:v14];
+      associationVoucher2 = [memberCopy associationVoucher];
+      v15 = [CSDMessagingVoucher voucherWithTUVoucher:associationVoucher2];
       [(CSDMessagingConversationMember *)v4 setAssociationVoucher:v15];
     }
   }
 
-  v16 = [v3 stableDeviceIdentifier];
-  [(CSDMessagingConversationMember *)v4 setStableDeviceIdentifier:v16];
+  stableDeviceIdentifier = [memberCopy stableDeviceIdentifier];
+  [(CSDMessagingConversationMember *)v4 setStableDeviceIdentifier:stableDeviceIdentifier];
 
-  v17 = [v3 proposedParticipantCluster];
+  proposedParticipantCluster = [memberCopy proposedParticipantCluster];
 
-  if (v17)
+  if (proposedParticipantCluster)
   {
-    v18 = [v3 proposedParticipantCluster];
-    v19 = [CSDMessagingConversationParticipantCluster participantClusterWithTUConversationParticipantCluster:v18];
+    proposedParticipantCluster2 = [memberCopy proposedParticipantCluster];
+    v19 = [CSDMessagingConversationParticipantCluster participantClusterWithTUConversationParticipantCluster:proposedParticipantCluster2];
     [(CSDMessagingConversationMember *)v4 setProposedCluster:v19];
   }
 
@@ -71,51 +71,51 @@
 
 - (TUConversationMember)tuConversationMember
 {
-  v3 = [(CSDMessagingConversationMember *)self handle];
+  handle = [(CSDMessagingConversationMember *)self handle];
 
-  if (v3 && (-[CSDMessagingConversationMember handle](self, "handle"), v4 = objc_claimAutoreleasedReturnValue(), [v4 tuHandle], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
+  if (handle && (-[CSDMessagingConversationMember handle](self, "handle"), v4 = objc_claimAutoreleasedReturnValue(), [v4 tuHandle], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
   {
     v6 = [TUConversationMember alloc];
-    v7 = [(CSDMessagingConversationMember *)self nickname];
-    v8 = [v6 initWithHandle:v5 nickname:v7];
+    nickname = [(CSDMessagingConversationMember *)self nickname];
+    v8 = [v6 initWithHandle:v5 nickname:nickname];
 
-    v9 = [(CSDMessagingConversationMember *)self lightweightPrimary];
-    v10 = [v9 tuHandle];
-    [v8 setLightweightPrimary:v10];
+    lightweightPrimary = [(CSDMessagingConversationMember *)self lightweightPrimary];
+    tuHandle = [lightweightPrimary tuHandle];
+    [v8 setLightweightPrimary:tuHandle];
 
     [v8 setLightweightPrimaryParticipantIdentifier:{-[CSDMessagingConversationMember lightweightPrimaryParticipantID](self, "lightweightPrimaryParticipantID")}];
-    v11 = [v8 lightweightPrimary];
-    if (v11)
+    lightweightPrimary2 = [v8 lightweightPrimary];
+    if (lightweightPrimary2)
     {
-      v12 = v11;
-      v13 = [v8 lightweightPrimaryParticipantIdentifier];
+      v12 = lightweightPrimary2;
+      lightweightPrimaryParticipantIdentifier = [v8 lightweightPrimaryParticipantIdentifier];
 
-      if (v13)
+      if (lightweightPrimaryParticipantIdentifier)
       {
         [v8 setIsLightweightMember:1];
       }
     }
 
-    v14 = [(CSDMessagingConversationMember *)self associationVoucher];
-    v15 = [v14 tuVoucher];
+    associationVoucher = [(CSDMessagingConversationMember *)self associationVoucher];
+    tuVoucher = [associationVoucher tuVoucher];
 
-    if (v15 && [(CSDMessagingConversationMember *)self validationSource]== 2)
+    if (tuVoucher && [(CSDMessagingConversationMember *)self validationSource]== 2)
     {
       [v8 setValidationSource:2];
-      [v8 setAssociationVoucher:v15];
+      [v8 setAssociationVoucher:tuVoucher];
       v16 = [CSDMessagingMemberAssociationClaim alloc];
-      v17 = [v15 unsafeData];
-      v18 = [(CSDMessagingMemberAssociationClaim *)v16 initWithData:v17];
+      unsafeData = [tuVoucher unsafeData];
+      v18 = [(CSDMessagingMemberAssociationClaim *)v16 initWithData:unsafeData];
       v19 = [(CSDMessagingMemberAssociationClaim *)v18 tuAssociationForHandle:v5];
       [v8 setAssociation:v19];
     }
 
-    v20 = [(CSDMessagingConversationMember *)self stableDeviceIdentifier];
-    [v8 setStableDeviceIdentifier:v20];
+    stableDeviceIdentifier = [(CSDMessagingConversationMember *)self stableDeviceIdentifier];
+    [v8 setStableDeviceIdentifier:stableDeviceIdentifier];
 
-    v21 = [(CSDMessagingConversationMember *)self proposedCluster];
-    v22 = [v21 tuConversationParticipantCluster];
-    [v8 setProposedParticipantCluster:v22];
+    proposedCluster = [(CSDMessagingConversationMember *)self proposedCluster];
+    tuConversationParticipantCluster = [proposedCluster tuConversationParticipantCluster];
+    [v8 setProposedParticipantCluster:tuConversationParticipantCluster];
   }
 
   else
@@ -131,16 +131,16 @@
   v8.receiver = self;
   v8.super_class = CSDMessagingConversationMember;
   v3 = [(CSDMessagingConversationMember *)&v8 description];
-  v4 = [(CSDMessagingConversationMember *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(CSDMessagingConversationMember *)self dictionaryRepresentation];
   v5 = TULoggableStringForObject();
   v6 = [NSString stringWithFormat:@"%@ %@", v3, v5];
 
   return v6;
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -166,9 +166,9 @@
   }
 }
 
-- (void)setHasValidationSource:(BOOL)a3
+- (void)setHasValidationSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2;
   }
@@ -181,20 +181,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsValidationSource:(id)a3
+- (int)StringAsValidationSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Endorsement"])
+  else if ([sourceCopy isEqualToString:@"Endorsement"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Vouched"])
+  else if ([sourceCopy isEqualToString:@"Vouched"])
   {
     v4 = 2;
   }
@@ -219,8 +219,8 @@
   handle = self->_handle;
   if (handle)
   {
-    v6 = [(CSDMessagingHandle *)handle dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"handle"];
+    dictionaryRepresentation = [(CSDMessagingHandle *)handle dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"handle"];
   }
 
   nickname = self->_nickname;
@@ -232,8 +232,8 @@
   lightweightPrimary = self->_lightweightPrimary;
   if (lightweightPrimary)
   {
-    v9 = [(CSDMessagingHandle *)lightweightPrimary dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"lightweightPrimary"];
+    dictionaryRepresentation2 = [(CSDMessagingHandle *)lightweightPrimary dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"lightweightPrimary"];
   }
 
   has = self->_has;
@@ -264,8 +264,8 @@
   associationVoucher = self->_associationVoucher;
   if (associationVoucher)
   {
-    v15 = [(CSDMessagingVoucher *)associationVoucher dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"associationVoucher"];
+    dictionaryRepresentation3 = [(CSDMessagingVoucher *)associationVoucher dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"associationVoucher"];
   }
 
   stableDeviceIdentifier = self->_stableDeviceIdentifier;
@@ -277,40 +277,40 @@
   proposedCluster = self->_proposedCluster;
   if (proposedCluster)
   {
-    v18 = [(CSDMessagingConversationParticipantCluster *)proposedCluster dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"proposedCluster"];
+    dictionaryRepresentation4 = [(CSDMessagingConversationParticipantCluster *)proposedCluster dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"proposedCluster"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if ((*&self->_has & 4) != 0)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_handle)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_nickname)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_lightweightPrimary)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -318,7 +318,7 @@
   {
     lightweightPrimaryParticipantID = self->_lightweightPrimaryParticipantID;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -326,92 +326,92 @@
   {
     validationSource = self->_validationSource;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_associationVoucher)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_stableDeviceIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_proposedCluster)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[17] = self->_version;
-    *(v4 + 72) |= 4u;
+    toCopy[17] = self->_version;
+    *(toCopy + 72) |= 4u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_handle)
   {
-    [v4 setHandle:?];
-    v4 = v6;
+    [toCopy setHandle:?];
+    toCopy = v6;
   }
 
   if (self->_nickname)
   {
     [v6 setNickname:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_lightweightPrimary)
   {
     [v6 setLightweightPrimary:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_lightweightPrimaryParticipantID;
-    *(v4 + 72) |= 1u;
+    *(toCopy + 1) = self->_lightweightPrimaryParticipantID;
+    *(toCopy + 72) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[16] = self->_validationSource;
-    *(v4 + 72) |= 2u;
+    toCopy[16] = self->_validationSource;
+    *(toCopy + 72) |= 2u;
   }
 
   if (self->_associationVoucher)
   {
     [v6 setAssociationVoucher:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_stableDeviceIdentifier)
   {
     [v6 setStableDeviceIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_proposedCluster)
   {
     [v6 setProposedCluster:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -419,15 +419,15 @@
     *(v5 + 72) |= 4u;
   }
 
-  v7 = [(CSDMessagingHandle *)self->_handle copyWithZone:a3];
+  v7 = [(CSDMessagingHandle *)self->_handle copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
-  v9 = [(NSString *)self->_nickname copyWithZone:a3];
+  v9 = [(NSString *)self->_nickname copyWithZone:zone];
   v10 = v6[5];
   v6[5] = v9;
 
-  v11 = [(CSDMessagingHandle *)self->_lightweightPrimary copyWithZone:a3];
+  v11 = [(CSDMessagingHandle *)self->_lightweightPrimary copyWithZone:zone];
   v12 = v6[4];
   v6[4] = v11;
 
@@ -445,39 +445,39 @@
     *(v6 + 72) |= 2u;
   }
 
-  v14 = [(CSDMessagingVoucher *)self->_associationVoucher copyWithZone:a3];
+  v14 = [(CSDMessagingVoucher *)self->_associationVoucher copyWithZone:zone];
   v15 = v6[2];
   v6[2] = v14;
 
-  v16 = [(NSString *)self->_stableDeviceIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_stableDeviceIdentifier copyWithZone:zone];
   v17 = v6[7];
   v6[7] = v16;
 
-  v18 = [(CSDMessagingConversationParticipantCluster *)self->_proposedCluster copyWithZone:a3];
+  v18 = [(CSDMessagingConversationParticipantCluster *)self->_proposedCluster copyWithZone:zone];
   v19 = v6[6];
   v6[6] = v18;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(equalCopy + 72);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_version != *(v4 + 17))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_version != *(equalCopy + 17))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
 LABEL_29:
     v13 = 0;
@@ -485,13 +485,13 @@ LABEL_29:
   }
 
   handle = self->_handle;
-  if (handle | *(v4 + 3) && ![(CSDMessagingHandle *)handle isEqual:?])
+  if (handle | *(equalCopy + 3) && ![(CSDMessagingHandle *)handle isEqual:?])
   {
     goto LABEL_29;
   }
 
   nickname = self->_nickname;
-  if (nickname | *(v4 + 5))
+  if (nickname | *(equalCopy + 5))
   {
     if (![(NSString *)nickname isEqual:?])
     {
@@ -500,7 +500,7 @@ LABEL_29:
   }
 
   lightweightPrimary = self->_lightweightPrimary;
-  if (lightweightPrimary | *(v4 + 4))
+  if (lightweightPrimary | *(equalCopy + 4))
   {
     if (![(CSDMessagingHandle *)lightweightPrimary isEqual:?])
     {
@@ -508,41 +508,41 @@ LABEL_29:
     }
   }
 
-  v9 = *(v4 + 72);
+  v9 = *(equalCopy + 72);
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_lightweightPrimaryParticipantID != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_lightweightPrimaryParticipantID != *(equalCopy + 1))
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_validationSource != *(v4 + 16))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_validationSource != *(equalCopy + 16))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   associationVoucher = self->_associationVoucher;
-  if (associationVoucher | *(v4 + 2) && ![(CSDMessagingVoucher *)associationVoucher isEqual:?])
+  if (associationVoucher | *(equalCopy + 2) && ![(CSDMessagingVoucher *)associationVoucher isEqual:?])
   {
     goto LABEL_29;
   }
 
   stableDeviceIdentifier = self->_stableDeviceIdentifier;
-  if (stableDeviceIdentifier | *(v4 + 7))
+  if (stableDeviceIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)stableDeviceIdentifier isEqual:?])
     {
@@ -551,7 +551,7 @@ LABEL_29:
   }
 
   proposedCluster = self->_proposedCluster;
-  if (proposedCluster | *(v4 + 6))
+  if (proposedCluster | *(equalCopy + 6))
   {
     v13 = [(CSDMessagingConversationParticipantCluster *)proposedCluster isEqual:?];
   }
@@ -609,13 +609,13 @@ LABEL_9:
   return v11 ^ [(CSDMessagingConversationParticipantCluster *)self->_proposedCluster hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[18] & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[18] & 4) != 0)
   {
-    self->_version = v4[17];
+    self->_version = fromCopy[17];
     *&self->_has |= 4u;
   }
 

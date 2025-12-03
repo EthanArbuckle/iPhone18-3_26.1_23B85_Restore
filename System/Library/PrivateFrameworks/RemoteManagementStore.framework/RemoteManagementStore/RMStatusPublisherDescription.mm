@@ -1,20 +1,20 @@
 @interface RMStatusPublisherDescription
-+ (id)descriptionWithEventsDictionary:(id)a3;
-+ (id)descriptionWithServiceDictionary:(id)a3;
-- (BOOL)_validateStatusEvents:(id)a3;
-- (BOOL)_validateStatusKeysByNotification:(id)a3;
-- (BOOL)_validateStatusKeysWithoutNotification:(id)a3;
-- (RMStatusPublisherDescription)initWithDictionary:(id)a3;
-- (void)_loadDescription:(id)a3;
-- (void)_loadDescriptionFromStatusEvents:(id)a3 statusKeysByNotification:(id)a4 statusKeysWithoutNotification:(id)a5;
++ (id)descriptionWithEventsDictionary:(id)dictionary;
++ (id)descriptionWithServiceDictionary:(id)dictionary;
+- (BOOL)_validateStatusEvents:(id)events;
+- (BOOL)_validateStatusKeysByNotification:(id)notification;
+- (BOOL)_validateStatusKeysWithoutNotification:(id)notification;
+- (RMStatusPublisherDescription)initWithDictionary:(id)dictionary;
+- (void)_loadDescription:(id)description;
+- (void)_loadDescriptionFromStatusEvents:(id)events statusKeysByNotification:(id)notification statusKeysWithoutNotification:(id)withoutNotification;
 - (void)_loadManagedSettingsDescription;
 @end
 
 @implementation RMStatusPublisherDescription
 
-+ (id)descriptionWithEventsDictionary:(id)a3
++ (id)descriptionWithEventsDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"StatusPublisher"];
+  v3 = [dictionary objectForKeyedSubscript:@"StatusPublisher"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = [RMStatusPublisherDescription alloc];
@@ -33,9 +33,9 @@
   return v7;
 }
 
-+ (id)descriptionWithServiceDictionary:(id)a3
++ (id)descriptionWithServiceDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"StatusPublisher"];
+  v3 = [dictionary objectForKeyedSubscript:@"StatusPublisher"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = [RMStatusPublisherDescription alloc];
@@ -54,9 +54,9 @@
   return v7;
 }
 
-- (RMStatusPublisherDescription)initWithDictionary:(id)a3
+- (RMStatusPublisherDescription)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = RMStatusPublisherDescription;
   v5 = [(RMStatusPublisherDescription *)&v10 init];
@@ -69,16 +69,16 @@
     statusKeys = v6->_statusKeys;
     v6->_statusKeys = 0;
 
-    [(RMStatusPublisherDescription *)v6 _loadDescription:v4];
+    [(RMStatusPublisherDescription *)v6 _loadDescription:dictionaryCopy];
   }
 
   return v6;
 }
 
-- (void)_loadDescription:(id)a3
+- (void)_loadDescription:(id)description
 {
-  v8 = a3;
-  v4 = [v8 objectForKeyedSubscript:@"ManagedSettings"];
+  descriptionCopy = description;
+  v4 = [descriptionCopy objectForKeyedSubscript:@"ManagedSettings"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 BOOLValue])
   {
@@ -87,9 +87,9 @@
 
   else
   {
-    v5 = [v8 objectForKeyedSubscript:@"StatusEvents"];
-    v6 = [v8 objectForKeyedSubscript:@"StatusKeysByNotification"];
-    v7 = [v8 objectForKeyedSubscript:@"StatusKeysWithoutNotification"];
+    v5 = [descriptionCopy objectForKeyedSubscript:@"StatusEvents"];
+    v6 = [descriptionCopy objectForKeyedSubscript:@"StatusKeysByNotification"];
+    v7 = [descriptionCopy objectForKeyedSubscript:@"StatusKeysWithoutNotification"];
     if ([(RMStatusPublisherDescription *)self _validateStatusEvents:v5]&& [(RMStatusPublisherDescription *)self _validateStatusKeysByNotification:v6]&& [(RMStatusPublisherDescription *)self _validateStatusKeysWithoutNotification:v7])
     {
       [(RMStatusPublisherDescription *)self _loadDescriptionFromStatusEvents:v5 statusKeysByNotification:v6 statusKeysWithoutNotification:v7];
@@ -105,10 +105,10 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = [MEMORY[0x277D46050] managedSettingsSchemas];
-  v4 = [v3 allValues];
+  managedSettingsSchemas = [MEMORY[0x277D46050] managedSettingsSchemas];
+  allValues = [managedSettingsSchemas allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v5)
   {
     v6 = v5;
@@ -120,12 +120,12 @@
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        v9 = [*(*(&v27 + 1) + 8 * v8) managedSetting];
-        v10 = [v9 managedSettingKey];
-        v11 = [v10 componentsSeparatedByString:@"."];
+        managedSetting = [*(*(&v27 + 1) + 8 * v8) managedSetting];
+        managedSettingKey = [managedSetting managedSettingKey];
+        v11 = [managedSettingKey componentsSeparatedByString:@"."];
         v12 = [v11 objectAtIndexedSubscript:0];
 
         [v2 addObject:v12];
@@ -133,7 +133,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v6);
@@ -141,15 +141,15 @@
 
   v13 = MEMORY[0x277D45F88];
   v33 = @"SettingsGroups";
-  v14 = [v2 allObjects];
-  v34 = v14;
+  allObjects = [v2 allObjects];
+  v34 = allObjects;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
   v16 = [v13 newXPCEventForStream:@"com.apple.ManagedSettings.effective-settings.changed" notificationName:@"com.apple.remotemanagement.effective-settings.changed" descriptor:v15];
 
   v17 = MEMORY[0x277CBEB98];
-  v18 = [MEMORY[0x277D46050] managedSettingsSchemas];
-  v19 = [v18 allKeys];
-  v20 = [v17 setWithArray:v19];
+  managedSettingsSchemas2 = [MEMORY[0x277D46050] managedSettingsSchemas];
+  allKeys = [managedSettingsSchemas2 allKeys];
+  v20 = [v17 setWithArray:allKeys];
   statusKeys = self->_statusKeys;
   self->_statusKeys = v20;
 
@@ -163,25 +163,25 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_loadDescriptionFromStatusEvents:(id)a3 statusKeysByNotification:(id)a4 statusKeysWithoutNotification:(id)a5
+- (void)_loadDescriptionFromStatusEvents:(id)events statusKeysByNotification:(id)notification statusKeysWithoutNotification:(id)withoutNotification
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventsCopy = events;
+  notificationCopy = notification;
+  withoutNotificationCopy = withoutNotification;
   v11 = objc_opt_new();
   v12 = objc_opt_new();
-  if (v8)
+  if (eventsCopy)
   {
-    v28 = v10;
-    v29 = self;
-    v30 = v9;
-    v31 = v8;
+    v28 = withoutNotificationCopy;
+    selfCopy = self;
+    v30 = notificationCopy;
+    v31 = eventsCopy;
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v8;
+    obj = eventsCopy;
     v13 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v13)
     {
@@ -219,13 +219,13 @@
       while (v14);
     }
 
-    v9 = v30;
-    v8 = v31;
-    v10 = v28;
-    self = v29;
+    notificationCopy = v30;
+    eventsCopy = v31;
+    withoutNotificationCopy = v28;
+    self = selfCopy;
   }
 
-  if (v9)
+  if (notificationCopy)
   {
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
@@ -233,12 +233,12 @@
     v33[3] = &unk_279B05A38;
     v34 = v11;
     v35 = v12;
-    [v9 enumerateKeysAndObjectsUsingBlock:v33];
+    [notificationCopy enumerateKeysAndObjectsUsingBlock:v33];
   }
 
-  if (v10)
+  if (withoutNotificationCopy)
   {
-    [v12 addObjectsFromArray:v10];
+    [v12 addObjectsFromArray:withoutNotificationCopy];
   }
 
   if ([v11 count])
@@ -289,11 +289,11 @@ void __120__RMStatusPublisherDescription__loadDescriptionFromStatusEvents_status
   [*(a1 + 40) addObjectsFromArray:v6];
 }
 
-- (BOOL)_validateStatusEvents:(id)a3
+- (BOOL)_validateStatusEvents:(id)events
 {
   v63 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  eventsCopy = events;
+  if (eventsCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -302,12 +302,12 @@ void __120__RMStatusPublisherDescription__loadDescriptionFromStatusEvents_status
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v4 = v3;
-      v5 = [v4 countByEnumeratingWithState:&v55 objects:v62 count:16];
+      statusPublisherDescription7 = eventsCopy;
+      v5 = [statusPublisherDescription7 countByEnumeratingWithState:&v55 objects:v62 count:16];
       if (v5)
       {
         v6 = *v56;
-        v42 = v4;
+        v42 = statusPublisherDescription7;
         v37 = *v56;
         while (2)
         {
@@ -317,15 +317,15 @@ void __120__RMStatusPublisherDescription__loadDescriptionFromStatusEvents_status
           {
             if (*v56 != v6)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(statusPublisherDescription7);
             }
 
             v8 = *(*(&v55 + 1) + 8 * v7);
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v9 = [MEMORY[0x277D45F58] statusPublisherDescription];
-              if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+              statusPublisherDescription = [MEMORY[0x277D45F58] statusPublisherDescription];
+              if (os_log_type_enabled(statusPublisherDescription, OS_LOG_TYPE_ERROR))
               {
                 [RMStatusPublisherDescription _validateStatusEvents:];
               }
@@ -333,12 +333,12 @@ void __120__RMStatusPublisherDescription__loadDescriptionFromStatusEvents_status
               goto LABEL_50;
             }
 
-            v9 = [v8 objectForKeyedSubscript:@"XPCEvents"];
+            statusPublisherDescription = [v8 objectForKeyedSubscript:@"XPCEvents"];
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v10 = [MEMORY[0x277D45F58] statusPublisherDescription];
-              if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+              statusPublisherDescription2 = [MEMORY[0x277D45F58] statusPublisherDescription];
+              if (os_log_type_enabled(statusPublisherDescription2, OS_LOG_TYPE_ERROR))
               {
                 [RMStatusPublisherDescription _validateStatusEvents:];
               }
@@ -352,15 +352,15 @@ LABEL_45:
             v54 = 0u;
             v51 = 0u;
             v52 = 0u;
-            v10 = [v9 allValues];
-            v11 = [v10 countByEnumeratingWithState:&v51 objects:v61 count:16];
+            statusPublisherDescription2 = [statusPublisherDescription allValues];
+            v11 = [statusPublisherDescription2 countByEnumeratingWithState:&v51 objects:v61 count:16];
             v39 = v7;
             if (v11)
             {
               v12 = v11;
               v13 = *v52;
-              v40 = v9;
-              v41 = v10;
+              v40 = statusPublisherDescription;
+              v41 = statusPublisherDescription2;
               v36 = *v52;
               while (2)
               {
@@ -368,21 +368,21 @@ LABEL_45:
                 {
                   if (*v52 != v13)
                   {
-                    objc_enumerationMutation(v10);
+                    objc_enumerationMutation(statusPublisherDescription2);
                   }
 
                   v15 = *(*(&v51 + 1) + 8 * i);
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) == 0)
                   {
-                    v16 = [MEMORY[0x277D45F58] statusPublisherDescription];
-                    v4 = v42;
-                    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+                    statusPublisherDescription3 = [MEMORY[0x277D45F58] statusPublisherDescription];
+                    statusPublisherDescription7 = v42;
+                    if (os_log_type_enabled(statusPublisherDescription3, OS_LOG_TYPE_ERROR))
                     {
                       [RMStatusPublisherDescription _validateStatusEvents:];
                     }
 
-                    v9 = v40;
+                    statusPublisherDescription = v40;
 LABEL_44:
 
                     goto LABEL_45;
@@ -392,8 +392,8 @@ LABEL_44:
                   v50 = 0u;
                   v47 = 0u;
                   v48 = 0u;
-                  v16 = [v15 allValues];
-                  v17 = [v16 countByEnumeratingWithState:&v47 objects:v60 count:16];
+                  statusPublisherDescription3 = [v15 allValues];
+                  v17 = [statusPublisherDescription3 countByEnumeratingWithState:&v47 objects:v60 count:16];
                   if (v17)
                   {
                     v18 = v17;
@@ -404,27 +404,27 @@ LABEL_44:
                       {
                         if (*v48 != v19)
                         {
-                          objc_enumerationMutation(v16);
+                          objc_enumerationMutation(statusPublisherDescription3);
                         }
 
                         v21 = *(*(&v47 + 1) + 8 * j);
                         objc_opt_class();
                         if ((objc_opt_isKindOfClass() & 1) == 0)
                         {
-                          v31 = [MEMORY[0x277D45F58] statusPublisherDescription];
-                          v4 = v42;
-                          if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+                          statusPublisherDescription4 = [MEMORY[0x277D45F58] statusPublisherDescription];
+                          statusPublisherDescription7 = v42;
+                          if (os_log_type_enabled(statusPublisherDescription4, OS_LOG_TYPE_ERROR))
                           {
                             [RMStatusPublisherDescription _validateStatusEvents:];
                           }
 
-                          v9 = v40;
-                          v10 = v41;
+                          statusPublisherDescription = v40;
+                          statusPublisherDescription2 = v41;
                           goto LABEL_44;
                         }
                       }
 
-                      v18 = [v16 countByEnumeratingWithState:&v47 objects:v60 count:16];
+                      v18 = [statusPublisherDescription3 countByEnumeratingWithState:&v47 objects:v60 count:16];
                       if (v18)
                       {
                         continue;
@@ -434,12 +434,12 @@ LABEL_44:
                     }
                   }
 
-                  v10 = v41;
+                  statusPublisherDescription2 = v41;
                   v13 = v36;
                 }
 
                 v12 = [v41 countByEnumeratingWithState:&v51 objects:v61 count:16];
-                v9 = v40;
+                statusPublisherDescription = v40;
                 if (v12)
                 {
                   continue;
@@ -451,11 +451,11 @@ LABEL_44:
 
             v22 = [v8 objectForKeyedSubscript:@"StatusItems"];
             objc_opt_class();
-            v4 = v42;
+            statusPublisherDescription7 = v42;
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v35 = [MEMORY[0x277D45F58] statusPublisherDescription];
-              if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+              statusPublisherDescription5 = [MEMORY[0x277D45F58] statusPublisherDescription];
+              if (os_log_type_enabled(statusPublisherDescription5, OS_LOG_TYPE_ERROR))
               {
                 [RMStatusPublisherDescription _validateStatusEvents:];
               }
@@ -464,7 +464,7 @@ LABEL_50:
               goto LABEL_51;
             }
 
-            v23 = v9;
+            v23 = statusPublisherDescription;
             v45 = 0u;
             v46 = 0u;
             v43 = 0u;
@@ -488,13 +488,13 @@ LABEL_50:
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) == 0)
                   {
-                    v32 = [MEMORY[0x277D45F58] statusPublisherDescription];
-                    if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+                    statusPublisherDescription6 = [MEMORY[0x277D45F58] statusPublisherDescription];
+                    if (os_log_type_enabled(statusPublisherDescription6, OS_LOG_TYPE_ERROR))
                     {
                       [RMStatusPublisherDescription _validateStatusEvents:];
                     }
 
-                    v9 = v23;
+                    statusPublisherDescription = v23;
                     goto LABEL_50;
                   }
                 }
@@ -533,8 +533,8 @@ LABEL_50:
 
     else
     {
-      v4 = [MEMORY[0x277D45F58] statusPublisherDescription];
-      if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+      statusPublisherDescription7 = [MEMORY[0x277D45F58] statusPublisherDescription];
+      if (os_log_type_enabled(statusPublisherDescription7, OS_LOG_TYPE_ERROR))
       {
         [RMStatusPublisherDescription _validateStatusEvents:];
       }
@@ -553,11 +553,11 @@ LABEL_51:
   return v30;
 }
 
-- (BOOL)_validateStatusKeysByNotification:(id)a3
+- (BOOL)_validateStatusKeysByNotification:(id)notification
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -566,8 +566,8 @@ LABEL_51:
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v4 = [v3 allValues];
-      v5 = [v4 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      allValues = [notificationCopy allValues];
+      v5 = [allValues countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v5)
       {
         v6 = v5;
@@ -580,7 +580,7 @@ LABEL_51:
           {
             if (*v28 != v7)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(allValues);
             }
 
             v10 = *(*(&v27 + 1) + 8 * i);
@@ -588,8 +588,8 @@ LABEL_51:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v12 = [MEMORY[0x277D45F58] statusPublisherDescription];
-              if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+              statusPublisherDescription = [MEMORY[0x277D45F58] statusPublisherDescription];
+              if (os_log_type_enabled(statusPublisherDescription, OS_LOG_TYPE_ERROR))
               {
                 [RMStatusPublisherDescription _validateStatusEvents:];
               }
@@ -603,8 +603,8 @@ LABEL_26:
             v26 = 0u;
             v23 = 0u;
             v24 = 0u;
-            v12 = v10;
-            v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            statusPublisherDescription = v10;
+            v13 = [statusPublisherDescription countByEnumeratingWithState:&v23 objects:v31 count:16];
             if (v13)
             {
               v14 = v13;
@@ -615,15 +615,15 @@ LABEL_26:
                 {
                   if (*v24 != v15)
                   {
-                    objc_enumerationMutation(v12);
+                    objc_enumerationMutation(statusPublisherDescription);
                   }
 
                   v17 = *(*(&v23 + 1) + 8 * j);
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) == 0)
                   {
-                    v19 = [MEMORY[0x277D45F58] statusPublisherDescription];
-                    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+                    statusPublisherDescription2 = [MEMORY[0x277D45F58] statusPublisherDescription];
+                    if (os_log_type_enabled(statusPublisherDescription2, OS_LOG_TYPE_ERROR))
                     {
                       [RMStatusPublisherDescription _validateStatusEvents:];
                     }
@@ -632,7 +632,7 @@ LABEL_26:
                   }
                 }
 
-                v14 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+                v14 = [statusPublisherDescription countByEnumeratingWithState:&v23 objects:v31 count:16];
                 if (v14)
                 {
                   continue;
@@ -646,7 +646,7 @@ LABEL_26:
             v8 = 0x277CBE000;
           }
 
-          v6 = [v4 countByEnumeratingWithState:&v27 objects:v32 count:16];
+          v6 = [allValues countByEnumeratingWithState:&v27 objects:v32 count:16];
           v18 = 1;
           if (v6)
           {
@@ -665,8 +665,8 @@ LABEL_26:
 
     else
     {
-      v4 = [MEMORY[0x277D45F58] statusPublisherDescription];
-      if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+      allValues = [MEMORY[0x277D45F58] statusPublisherDescription];
+      if (os_log_type_enabled(allValues, OS_LOG_TYPE_ERROR))
       {
         [RMStatusPublisherDescription _validateStatusEvents:];
       }
@@ -685,11 +685,11 @@ LABEL_27:
   return v18;
 }
 
-- (BOOL)_validateStatusKeysWithoutNotification:(id)a3
+- (BOOL)_validateStatusKeysWithoutNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -698,8 +698,8 @@ LABEL_27:
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v4 = v3;
-      v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      statusPublisherDescription2 = notificationCopy;
+      v5 = [statusPublisherDescription2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         v6 = v5;
@@ -710,15 +710,15 @@ LABEL_27:
           {
             if (*v15 != v7)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(statusPublisherDescription2);
             }
 
             v9 = *(*(&v14 + 1) + 8 * i);
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v11 = [MEMORY[0x277D45F58] statusPublisherDescription];
-              if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+              statusPublisherDescription = [MEMORY[0x277D45F58] statusPublisherDescription];
+              if (os_log_type_enabled(statusPublisherDescription, OS_LOG_TYPE_ERROR))
               {
                 [RMStatusPublisherDescription _validateStatusEvents:];
               }
@@ -727,7 +727,7 @@ LABEL_27:
             }
           }
 
-          v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v6 = [statusPublisherDescription2 countByEnumeratingWithState:&v14 objects:v18 count:16];
           v10 = 1;
           if (v6)
           {
@@ -746,8 +746,8 @@ LABEL_27:
 
     else
     {
-      v4 = [MEMORY[0x277D45F58] statusPublisherDescription];
-      if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+      statusPublisherDescription2 = [MEMORY[0x277D45F58] statusPublisherDescription];
+      if (os_log_type_enabled(statusPublisherDescription2, OS_LOG_TYPE_ERROR))
       {
         [RMStatusPublisherDescription _validateStatusEvents:];
       }

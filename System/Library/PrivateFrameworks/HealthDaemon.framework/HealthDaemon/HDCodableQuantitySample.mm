@@ -1,30 +1,30 @@
 @interface HDCodableQuantitySample
-- (BOOL)applyToObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)applyToObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addQuantitySeriesData:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFinal:(BOOL)a3;
-- (void)setHasFrozen:(BOOL)a3;
-- (void)setHasMax:(BOOL)a3;
-- (void)setHasMin:(BOOL)a3;
-- (void)setHasMostRecent:(BOOL)a3;
-- (void)setHasMostRecentDate:(BOOL)a3;
-- (void)setHasMostRecentDuration:(BOOL)a3;
-- (void)setHasValueInCanonicalUnit:(BOOL)a3;
-- (void)setHasValueInOriginalUnit:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addQuantitySeriesData:(id)data;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFinal:(BOOL)final;
+- (void)setHasFrozen:(BOOL)frozen;
+- (void)setHasMax:(BOOL)max;
+- (void)setHasMin:(BOOL)min;
+- (void)setHasMostRecent:(BOOL)recent;
+- (void)setHasMostRecentDate:(BOOL)date;
+- (void)setHasMostRecentDuration:(BOOL)duration;
+- (void)setHasValueInCanonicalUnit:(BOOL)unit;
+- (void)setHasValueInOriginalUnit:(BOOL)unit;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableQuantitySample
 
-- (void)setHasValueInCanonicalUnit:(BOOL)a3
+- (void)setHasValueInCanonicalUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 64;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasValueInOriginalUnit:(BOOL)a3
+- (void)setHasValueInOriginalUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 128;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasFrozen:(BOOL)a3
+- (void)setHasFrozen:(BOOL)frozen
 {
-  if (a3)
+  if (frozen)
   {
     v3 = 512;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasFinal:(BOOL)a3
+- (void)setHasFinal:(BOOL)final
 {
-  if (a3)
+  if (final)
   {
     v3 = 256;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasMin:(BOOL)a3
+- (void)setHasMin:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 4;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasMax:(BOOL)a3
+- (void)setHasMax:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 2;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasMostRecent:(BOOL)a3
+- (void)setHasMostRecent:(BOOL)recent
 {
-  if (a3)
+  if (recent)
   {
     v3 = 8;
   }
@@ -127,9 +127,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasMostRecentDate:(BOOL)a3
+- (void)setHasMostRecentDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 16;
   }
@@ -142,27 +142,27 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)addQuantitySeriesData:(id)a3
+- (void)addQuantitySeriesData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   quantitySeriesDatas = self->_quantitySeriesDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!quantitySeriesDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_quantitySeriesDatas;
     self->_quantitySeriesDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     quantitySeriesDatas = self->_quantitySeriesDatas;
   }
 
-  [(NSMutableArray *)quantitySeriesDatas addObject:v4];
+  [(NSMutableArray *)quantitySeriesDatas addObject:dataCopy];
 }
 
-- (void)setHasMostRecentDuration:(BOOL)a3
+- (void)setHasMostRecentDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 32;
   }
@@ -181,8 +181,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableQuantitySample;
   v4 = [(HDCodableQuantitySample *)&v8 description];
-  v5 = [(HDCodableQuantitySample *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableQuantitySample *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -190,19 +190,19 @@
 - (id)dictionaryRepresentation
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   sample = self->_sample;
   if (sample)
   {
-    v5 = [(HDCodableSample *)sample dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"sample"];
+    dictionaryRepresentation = [(HDCodableSample *)sample dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"sample"];
   }
 
   has = self->_has;
   if ((has & 0x40) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_valueInCanonicalUnit];
-    [v3 setObject:v7 forKey:@"valueInCanonicalUnit"];
+    [dictionary setObject:v7 forKey:@"valueInCanonicalUnit"];
 
     has = self->_has;
   }
@@ -210,20 +210,20 @@
   if ((has & 0x80) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_valueInOriginalUnit];
-    [v3 setObject:v8 forKey:@"valueInOriginalUnit"];
+    [dictionary setObject:v8 forKey:@"valueInOriginalUnit"];
   }
 
   originalUnitString = self->_originalUnitString;
   if (originalUnitString)
   {
-    [v3 setObject:originalUnitString forKey:@"originalUnitString"];
+    [dictionary setObject:originalUnitString forKey:@"originalUnitString"];
   }
 
   v10 = self->_has;
   if ((v10 & 0x200) != 0)
   {
     v22 = [MEMORY[0x277CCABB0] numberWithBool:self->_frozen];
-    [v3 setObject:v22 forKey:@"frozen"];
+    [dictionary setObject:v22 forKey:@"frozen"];
 
     v10 = self->_has;
     if ((v10 & 1) == 0)
@@ -244,7 +244,7 @@ LABEL_11:
   }
 
   v23 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_count];
-  [v3 setObject:v23 forKey:@"count"];
+  [dictionary setObject:v23 forKey:@"count"];
 
   v10 = self->_has;
   if ((v10 & 0x100) == 0)
@@ -260,7 +260,7 @@ LABEL_12:
 
 LABEL_33:
   v24 = [MEMORY[0x277CCABB0] numberWithBool:self->_final];
-  [v3 setObject:v24 forKey:@"final"];
+  [dictionary setObject:v24 forKey:@"final"];
 
   v10 = self->_has;
   if ((v10 & 4) == 0)
@@ -276,7 +276,7 @@ LABEL_13:
 
 LABEL_34:
   v25 = [MEMORY[0x277CCABB0] numberWithDouble:self->_min];
-  [v3 setObject:v25 forKey:@"min"];
+  [dictionary setObject:v25 forKey:@"min"];
 
   v10 = self->_has;
   if ((v10 & 2) == 0)
@@ -292,7 +292,7 @@ LABEL_14:
 
 LABEL_35:
   v26 = [MEMORY[0x277CCABB0] numberWithDouble:self->_max];
-  [v3 setObject:v26 forKey:@"max"];
+  [dictionary setObject:v26 forKey:@"max"];
 
   v10 = self->_has;
   if ((v10 & 8) == 0)
@@ -308,13 +308,13 @@ LABEL_15:
 
 LABEL_36:
   v27 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mostRecent];
-  [v3 setObject:v27 forKey:@"mostRecent"];
+  [dictionary setObject:v27 forKey:@"mostRecent"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_16:
     v11 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mostRecentDate];
-    [v3 setObject:v11 forKey:@"mostRecentDate"];
+    [dictionary setObject:v11 forKey:@"mostRecentDate"];
   }
 
 LABEL_17:
@@ -340,8 +340,8 @@ LABEL_17:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -350,24 +350,24 @@ LABEL_17:
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"quantitySeriesData"];
+    [dictionary setObject:v12 forKey:@"quantitySeriesData"];
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
     v19 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mostRecentDuration];
-    [v3 setObject:v19 forKey:@"mostRecentDuration"];
+    [dictionary setObject:v19 forKey:@"mostRecentDuration"];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_sample)
   {
     PBDataWriterWriteSubmessage();
@@ -523,41 +523,41 @@ LABEL_17:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if (self->_sample)
   {
-    [v4 setSample:?];
-    v4 = v11;
+    [toCopy setSample:?];
+    toCopy = v11;
   }
 
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    *(v4 + 7) = *&self->_valueInCanonicalUnit;
-    *(v4 + 50) |= 0x40u;
+    *(toCopy + 7) = *&self->_valueInCanonicalUnit;
+    *(toCopy + 50) |= 0x40u;
     has = self->_has;
   }
 
   if ((has & 0x80) != 0)
   {
-    *(v4 + 8) = *&self->_valueInOriginalUnit;
-    *(v4 + 50) |= 0x80u;
+    *(toCopy + 8) = *&self->_valueInOriginalUnit;
+    *(toCopy + 50) |= 0x80u;
   }
 
   if (self->_originalUnitString)
   {
     [v11 setOriginalUnitString:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   v6 = self->_has;
   if ((v6 & 0x200) != 0)
   {
-    *(v4 + 97) = self->_frozen;
-    *(v4 + 50) |= 0x200u;
+    *(toCopy + 97) = self->_frozen;
+    *(toCopy + 50) |= 0x200u;
     v6 = self->_has;
     if ((v6 & 1) == 0)
     {
@@ -576,8 +576,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 1) = self->_count;
-  *(v4 + 50) |= 1u;
+  *(toCopy + 1) = self->_count;
+  *(toCopy + 50) |= 1u;
   v6 = self->_has;
   if ((v6 & 0x100) == 0)
   {
@@ -591,8 +591,8 @@ LABEL_12:
   }
 
 LABEL_28:
-  *(v4 + 96) = self->_final;
-  *(v4 + 50) |= 0x100u;
+  *(toCopy + 96) = self->_final;
+  *(toCopy + 50) |= 0x100u;
   v6 = self->_has;
   if ((v6 & 4) == 0)
   {
@@ -606,8 +606,8 @@ LABEL_13:
   }
 
 LABEL_29:
-  *(v4 + 3) = *&self->_min;
-  *(v4 + 50) |= 4u;
+  *(toCopy + 3) = *&self->_min;
+  *(toCopy + 50) |= 4u;
   v6 = self->_has;
   if ((v6 & 2) == 0)
   {
@@ -618,8 +618,8 @@ LABEL_14:
     }
 
 LABEL_31:
-    *(v4 + 4) = *&self->_mostRecent;
-    *(v4 + 50) |= 8u;
+    *(toCopy + 4) = *&self->_mostRecent;
+    *(toCopy + 50) |= 8u;
     if ((*&self->_has & 0x10) == 0)
     {
       goto LABEL_17;
@@ -629,8 +629,8 @@ LABEL_31:
   }
 
 LABEL_30:
-  *(v4 + 2) = *&self->_max;
-  *(v4 + 50) |= 2u;
+  *(toCopy + 2) = *&self->_max;
+  *(toCopy + 50) |= 2u;
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
@@ -641,18 +641,18 @@ LABEL_15:
   if ((v6 & 0x10) != 0)
   {
 LABEL_16:
-    *(v4 + 5) = *&self->_mostRecentDate;
-    *(v4 + 50) |= 0x10u;
+    *(toCopy + 5) = *&self->_mostRecentDate;
+    *(toCopy + 50) |= 0x10u;
   }
 
 LABEL_17:
   if ([(HDCodableQuantitySample *)self quantitySeriesDatasCount])
   {
     [v11 clearQuantitySeriesDatas];
-    v7 = [(HDCodableQuantitySample *)self quantitySeriesDatasCount];
-    if (v7)
+    quantitySeriesDatasCount = [(HDCodableQuantitySample *)self quantitySeriesDatasCount];
+    if (quantitySeriesDatasCount)
     {
-      v8 = v7;
+      v8 = quantitySeriesDatasCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(HDCodableQuantitySample *)self quantitySeriesDataAtIndex:i];
@@ -668,11 +668,11 @@ LABEL_17:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableSample *)self->_sample copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableSample *)self->_sample copyWithZone:zone];
   v7 = *(v5 + 88);
   *(v5 + 88) = v6;
 
@@ -690,7 +690,7 @@ LABEL_17:
     *(v5 + 100) |= 0x80u;
   }
 
-  v9 = [(NSString *)self->_originalUnitString copyWithZone:a3];
+  v9 = [(NSString *)self->_originalUnitString copyWithZone:zone];
   v10 = *(v5 + 72);
   *(v5 + 72) = v9;
 
@@ -806,7 +806,7 @@ LABEL_13:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{zone, v20}];
         [v5 addQuantitySeriesData:v17];
       }
 
@@ -826,16 +826,16 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_66;
   }
 
   sample = self->_sample;
-  if (sample | *(v4 + 11))
+  if (sample | *(equalCopy + 11))
   {
     if (![(HDCodableSample *)sample isEqual:?])
     {
@@ -844,10 +844,10 @@ LABEL_13:
   }
 
   has = self->_has;
-  v7 = *(v4 + 50);
+  v7 = *(equalCopy + 50);
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_valueInCanonicalUnit != *(v4 + 7))
+    if ((v7 & 0x40) == 0 || self->_valueInCanonicalUnit != *(equalCopy + 7))
     {
       goto LABEL_66;
     }
@@ -860,7 +860,7 @@ LABEL_13:
 
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_valueInOriginalUnit != *(v4 + 8))
+    if ((v7 & 0x80) == 0 || self->_valueInOriginalUnit != *(equalCopy + 8))
     {
       goto LABEL_66;
     }
@@ -872,7 +872,7 @@ LABEL_13:
   }
 
   originalUnitString = self->_originalUnitString;
-  if (originalUnitString | *(v4 + 9))
+  if (originalUnitString | *(equalCopy + 9))
   {
     if (![(NSString *)originalUnitString isEqual:?])
     {
@@ -880,7 +880,7 @@ LABEL_13:
     }
 
     has = self->_has;
-    v7 = *(v4 + 50);
+    v7 = *(equalCopy + 50);
   }
 
   if ((has & 0x200) != 0)
@@ -890,16 +890,16 @@ LABEL_13:
       goto LABEL_66;
     }
 
-    v9 = *(v4 + 97);
+    v9 = *(equalCopy + 97);
     if (self->_frozen)
     {
-      if ((*(v4 + 97) & 1) == 0)
+      if ((*(equalCopy + 97) & 1) == 0)
       {
         goto LABEL_66;
       }
     }
 
-    else if (*(v4 + 97))
+    else if (*(equalCopy + 97))
     {
       goto LABEL_66;
     }
@@ -912,7 +912,7 @@ LABEL_13:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_count != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_count != *(equalCopy + 1))
     {
       goto LABEL_66;
     }
@@ -930,16 +930,16 @@ LABEL_13:
       goto LABEL_66;
     }
 
-    v10 = *(v4 + 96);
+    v10 = *(equalCopy + 96);
     if (self->_final)
     {
-      if ((*(v4 + 96) & 1) == 0)
+      if ((*(equalCopy + 96) & 1) == 0)
       {
         goto LABEL_66;
       }
     }
 
-    else if (*(v4 + 96))
+    else if (*(equalCopy + 96))
     {
       goto LABEL_66;
     }
@@ -952,7 +952,7 @@ LABEL_13:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_min != *(v4 + 3))
+    if ((v7 & 4) == 0 || self->_min != *(equalCopy + 3))
     {
       goto LABEL_66;
     }
@@ -965,7 +965,7 @@ LABEL_13:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_max != *(v4 + 2))
+    if ((v7 & 2) == 0 || self->_max != *(equalCopy + 2))
     {
       goto LABEL_66;
     }
@@ -978,7 +978,7 @@ LABEL_13:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_mostRecent != *(v4 + 4))
+    if ((v7 & 8) == 0 || self->_mostRecent != *(equalCopy + 4))
     {
       goto LABEL_66;
     }
@@ -991,7 +991,7 @@ LABEL_13:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_mostRecentDate != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_mostRecentDate != *(equalCopy + 5))
     {
       goto LABEL_66;
     }
@@ -1003,12 +1003,12 @@ LABEL_13:
   }
 
   quantitySeriesDatas = self->_quantitySeriesDatas;
-  if (quantitySeriesDatas | *(v4 + 10))
+  if (quantitySeriesDatas | *(equalCopy + 10))
   {
     if ([(NSMutableArray *)quantitySeriesDatas isEqual:?])
     {
       has = self->_has;
-      v7 = *(v4 + 50);
+      v7 = *(equalCopy + 50);
       goto LABEL_61;
     }
 
@@ -1020,7 +1020,7 @@ LABEL_66:
 LABEL_61:
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_mostRecentDuration != *(v4 + 6))
+    if ((v7 & 0x20) == 0 || self->_mostRecentDuration != *(equalCopy + 6))
     {
       goto LABEL_66;
     }
@@ -1324,12 +1324,12 @@ LABEL_29:
   return v6 ^ v46 ^ v10 ^ v45 ^ v44 ^ v43 ^ v17 ^ v21 ^ v22 ^ v26 ^ v30 ^ v34 ^ v37;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   sample = self->_sample;
-  v6 = *(v4 + 11);
+  v6 = *(fromCopy + 11);
   if (sample)
   {
     if (v6)
@@ -1343,31 +1343,31 @@ LABEL_29:
     [(HDCodableQuantitySample *)self setSample:?];
   }
 
-  v7 = *(v4 + 50);
+  v7 = *(fromCopy + 50);
   if ((v7 & 0x40) != 0)
   {
-    self->_valueInCanonicalUnit = *(v4 + 7);
+    self->_valueInCanonicalUnit = *(fromCopy + 7);
     *&self->_has |= 0x40u;
-    v7 = *(v4 + 50);
+    v7 = *(fromCopy + 50);
   }
 
   if ((v7 & 0x80) != 0)
   {
-    self->_valueInOriginalUnit = *(v4 + 8);
+    self->_valueInOriginalUnit = *(fromCopy + 8);
     *&self->_has |= 0x80u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(HDCodableQuantitySample *)self setOriginalUnitString:?];
   }
 
-  v8 = *(v4 + 50);
+  v8 = *(fromCopy + 50);
   if ((v8 & 0x200) != 0)
   {
-    self->_frozen = *(v4 + 97);
+    self->_frozen = *(fromCopy + 97);
     *&self->_has |= 0x200u;
-    v8 = *(v4 + 50);
+    v8 = *(fromCopy + 50);
     if ((v8 & 1) == 0)
     {
 LABEL_14:
@@ -1385,9 +1385,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  self->_count = *(v4 + 1);
+  self->_count = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v8 = *(v4 + 50);
+  v8 = *(fromCopy + 50);
   if ((v8 & 0x100) == 0)
   {
 LABEL_15:
@@ -1400,9 +1400,9 @@ LABEL_15:
   }
 
 LABEL_32:
-  self->_final = *(v4 + 96);
+  self->_final = *(fromCopy + 96);
   *&self->_has |= 0x100u;
-  v8 = *(v4 + 50);
+  v8 = *(fromCopy + 50);
   if ((v8 & 4) == 0)
   {
 LABEL_16:
@@ -1415,9 +1415,9 @@ LABEL_16:
   }
 
 LABEL_33:
-  self->_min = *(v4 + 3);
+  self->_min = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v8 = *(v4 + 50);
+  v8 = *(fromCopy + 50);
   if ((v8 & 2) == 0)
   {
 LABEL_17:
@@ -1430,9 +1430,9 @@ LABEL_17:
   }
 
 LABEL_34:
-  self->_max = *(v4 + 2);
+  self->_max = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v8 = *(v4 + 50);
+  v8 = *(fromCopy + 50);
   if ((v8 & 8) == 0)
   {
 LABEL_18:
@@ -1445,12 +1445,12 @@ LABEL_18:
   }
 
 LABEL_35:
-  self->_mostRecent = *(v4 + 4);
+  self->_mostRecent = *(fromCopy + 4);
   *&self->_has |= 8u;
-  if ((*(v4 + 50) & 0x10) != 0)
+  if ((*(fromCopy + 50) & 0x10) != 0)
   {
 LABEL_19:
-    self->_mostRecentDate = *(v4 + 5);
+    self->_mostRecentDate = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
@@ -1459,7 +1459,7 @@ LABEL_20:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = *(v4 + 10);
+  v9 = *(fromCopy + 10);
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
@@ -1483,23 +1483,23 @@ LABEL_20:
     while (v11);
   }
 
-  if ((*(v4 + 50) & 0x20) != 0)
+  if ((*(fromCopy + 50) & 0x20) != 0)
   {
-    self->_mostRecentDuration = *(v4 + 6);
+    self->_mostRecentDuration = *(fromCopy + 6);
     *&self->_has |= 0x20u;
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)applyToObject:(id)a3
+- (BOOL)applyToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HDCodableQuantitySample *)self sample];
-    if (![v5 applyToObject:v4])
+    sample = [(HDCodableQuantitySample *)self sample];
+    if (![sample applyToObject:objectCopy])
     {
       v10 = 0;
 LABEL_33:
@@ -1507,7 +1507,7 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v6 = [v4 quantityType];
+    quantityType = [objectCopy quantityType];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1520,17 +1520,17 @@ LABEL_32:
     v7 = MEMORY[0x277CCD7E8];
     if ((*&self->_has & 0x40) != 0)
     {
-      v8 = [v6 canonicalUnit];
+      canonicalUnit = [quantityType canonicalUnit];
       v9 = &OBJC_IVAR___HDCodableQuantitySample__valueInCanonicalUnit;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CCDAB0] unitFromString:self->_originalUnitString];
+      canonicalUnit = [MEMORY[0x277CCDAB0] unitFromString:self->_originalUnitString];
       v9 = &OBJC_IVAR___HDCodableQuantitySample__valueInOriginalUnit;
     }
 
-    v11 = [v7 quantityWithUnit:v8 doubleValue:*(&self->super.super.isa + *v9)];
+    v11 = [v7 quantityWithUnit:canonicalUnit doubleValue:*(&self->super.super.isa + *v9)];
 
     v10 = v11 != 0;
     if (!v11)
@@ -1540,12 +1540,12 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    [v4 _setQuantity:v11];
+    [objectCopy _setQuantity:v11];
     v12 = (*&self->_has & 0x200) == 0 || self->_frozen;
-    [v4 _setFrozen:v12];
+    [objectCopy _setFrozen:v12];
     if (*&self->_has)
     {
-      [v4 _setCount:self->_count];
+      [objectCopy _setCount:self->_count];
     }
 
     objc_opt_class();
@@ -1554,20 +1554,20 @@ LABEL_31:
 LABEL_29:
       if (self->_quantitySeriesDatas)
       {
-        [v4 _setCodableQuantitySample:self];
+        [objectCopy _setCodableQuantitySample:self];
       }
 
       goto LABEL_31;
     }
 
-    v13 = v4;
-    v14 = [v13 quantity];
-    v15 = [v14 _unit];
+    v13 = objectCopy;
+    quantity = [v13 quantity];
+    _unit = [quantity _unit];
 
     has = self->_has;
     if ((has & 4) != 0)
     {
-      v17 = [MEMORY[0x277CCD7E8] quantityWithUnit:v15 doubleValue:self->_min];
+      v17 = [MEMORY[0x277CCD7E8] quantityWithUnit:_unit doubleValue:self->_min];
       [v13 _setMinimumQuantity:v17];
 
       has = self->_has;
@@ -1588,7 +1588,7 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    v18 = [MEMORY[0x277CCD7E8] quantityWithUnit:v15 doubleValue:self->_max];
+    v18 = [MEMORY[0x277CCD7E8] quantityWithUnit:_unit doubleValue:self->_max];
     [v13 _setMaximumQuantity:v18];
 
     has = self->_has;
@@ -1604,7 +1604,7 @@ LABEL_20:
     }
 
 LABEL_24:
-    v19 = [MEMORY[0x277CCD7E8] quantityWithUnit:v15 doubleValue:self->_mostRecent];
+    v19 = [MEMORY[0x277CCD7E8] quantityWithUnit:_unit doubleValue:self->_mostRecent];
     [v13 _setMostRecentQuantity:v19];
 
     if ((*&self->_has & 0x10) == 0)

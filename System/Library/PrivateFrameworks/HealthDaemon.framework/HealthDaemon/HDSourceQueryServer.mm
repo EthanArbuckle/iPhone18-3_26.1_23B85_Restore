@@ -1,20 +1,20 @@
 @interface HDSourceQueryServer
-- (HDSourceQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDSourceQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_start;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
 @end
 
 @implementation HDSourceQueryServer
 
-- (HDSourceQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDSourceQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = HDSourceQueryServer;
-  v11 = [(HDQueryServer *)&v13 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v13 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v11->_deliversUpdates = [v10 shouldDeactivateAfterInitialResults];
+    v11->_deliversUpdates = [configurationCopy shouldDeactivateAfterInitialResults];
   }
 
   return v11;
@@ -28,26 +28,26 @@
   [(HDQueryServer *)&v53 _queue_start];
   if (self)
   {
-    v3 = [(HDQueryServer *)self clientProxy];
+    clientProxy = [(HDQueryServer *)self clientProxy];
   }
 
   else
   {
-    v3 = 0;
+    clientProxy = 0;
   }
 
-  v4 = [(HDQueryServer *)self sampleType];
-  v5 = [(HDQueryServer *)self filter];
+  sampleType = [(HDQueryServer *)self sampleType];
+  filter = [(HDQueryServer *)self filter];
   v52 = 0;
-  v6 = v4;
-  v7 = v5;
+  v6 = sampleType;
+  v7 = filter;
   if (self)
   {
-    v8 = [(HDQueryServer *)self profile];
-    v9 = [v8 sourceManager];
+    profile = [(HDQueryServer *)self profile];
+    sourceManager = [profile sourceManager];
 
-    v10 = [(HDQueryServer *)self profile];
-    v11 = [v7 predicateWithProfile:v10];
+    profile2 = [(HDQueryServer *)self profile];
+    v11 = [v7 predicateWithProfile:profile2];
 
     v12 = [(HDQueryServer *)self authorizationStatusRecordForType:v6 error:&v52];
     v13 = v12;
@@ -78,9 +78,9 @@ LABEL_44:
     v51 = v13;
     v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v15 = [objc_msgSend(v6 "dataObjectClass")];
-    v16 = [(HDQueryServer *)self profile];
+    profile3 = [(HDQueryServer *)self profile];
     v61 = 0;
-    v17 = [v15 sourceIDsForSamplesWithType:v6 profile:v16 predicate:v11 error:&v61];
+    v17 = [v15 sourceIDsForSamplesWithType:v6 profile:profile3 predicate:v11 error:&v61];
     v18 = v61;
 
     if (!v17)
@@ -96,22 +96,22 @@ LABEL_44:
     aBlock[1] = 3221225472;
     aBlock[2] = __61__HDSourceQueryServer__sourcesForObjectsOfType_filter_error___block_invoke;
     aBlock[3] = &unk_278616EF0;
-    v59 = v9;
+    v59 = sourceManager;
     obj = v14;
     v48 = v14;
     v60 = v48;
     v19 = _Block_copy(aBlock);
-    v20 = [v51 restrictedSourceEntities];
+    restrictedSourceEntities = [v51 restrictedSourceEntities];
 
     v49 = v17;
-    if (v20)
+    if (restrictedSourceEntities)
     {
       v45 = v11;
-      v46 = v9;
+      v46 = sourceManager;
       v47 = v7;
-      v43 = v3;
-      v21 = [v51 restrictedSourceEntities];
-      [v21 hk_map:&__block_literal_global_31];
+      v43 = clientProxy;
+      restrictedSourceEntities2 = [v51 restrictedSourceEntities];
+      [restrictedSourceEntities2 hk_map:&__block_literal_global_31];
       v23 = v22 = v17;
 
       v56 = 0u;
@@ -146,7 +146,7 @@ LABEL_44:
         while (v26);
       }
 
-      v3 = v43;
+      clientProxy = v43;
     }
 
     else
@@ -164,7 +164,7 @@ LABEL_44:
 
       v32 = v31;
       v45 = v11;
-      v46 = v9;
+      v46 = sourceManager;
       v47 = v7;
       v33 = *v55;
 LABEL_31:
@@ -199,7 +199,7 @@ LABEL_31:
       }
     }
 
-    v9 = v46;
+    sourceManager = v46;
     v7 = v47;
     v11 = v45;
 LABEL_19:
@@ -252,31 +252,31 @@ LABEL_41:
 LABEL_46:
 
   v40 = v52;
-  v41 = [(HDQueryServer *)self queryUUID];
+  queryUUID = [(HDQueryServer *)self queryUUID];
   if (v40)
   {
-    [v3 client_deliverError:v40 forQuery:v41];
+    [clientProxy client_deliverError:v40 forQuery:queryUUID];
   }
 
   else
   {
-    [v3 client_deliverSources:v30 forQuery:v41];
+    [clientProxy client_deliverSources:v30 forQuery:queryUUID];
   }
 
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
-  v5 = a3;
+  addedCopy = added;
   if (![(HDQueryServer *)self _shouldStopProcessingQuery])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __43__HDSourceQueryServer_samplesAdded_anchor___block_invoke;
     v6[3] = &unk_278613920;
-    v7 = v5;
-    v8 = self;
+    v7 = addedCopy;
+    selfCopy = self;
     [(HDQueryServer *)self onQueue:v6];
   }
 }

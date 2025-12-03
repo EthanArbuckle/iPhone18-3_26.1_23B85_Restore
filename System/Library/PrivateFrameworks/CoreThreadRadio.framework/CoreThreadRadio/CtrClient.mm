@@ -28,22 +28,22 @@
 - (Result)updateHomeThreadInfo:(Result *__return_ptr)retstr;
 - (Result)updatePrimaryResident:(Result *__return_ptr)retstr isPrimaryResidentThreadCapable:primaryResidentInfo:;
 - (id).cxx_construct;
-- (id)init:(const char *)a3;
-- (void)provideExtendedMACAddress:(id)a3 completion:(id)a4;
-- (void)setEventHandler:(const void *)a3 EventBlock:(id)a4 dqueue:(queue)a5;
-- (void)startFWUpdate:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5;
-- (void)startPairingForExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5;
-- (void)stopFWUpdate:(id)a3;
-- (void)stopPairing:(id)a3;
-- (void)threadMeshInfoForHomeMetrics:(id)a3 completionHandler:(id)a4;
-- (void)threadStart:(id)a3 activeOperationalDataSet:(id)a4 geoAvailable:(BOOL)a5 routerMode:(BOOL)a6 eMAC:(id)a7 waitForSync:(BOOL)a8 completion:(id)a9;
-- (void)threadStart:(id)a3 geoAvailable:(BOOL)a4 isPrimaryUser:(BOOL)a5 waitForSync:(BOOL)a6 completion:(id)a7;
-- (void)threadStopWithCompletion:(id)a3;
+- (id)init:(const char *)init;
+- (void)provideExtendedMACAddress:(id)address completion:(id)completion;
+- (void)setEventHandler:(const void *)handler EventBlock:(id)block dqueue:(queue)dqueue;
+- (void)startFWUpdate:(id)update isWedDevice:(BOOL)device completion:(id)completion;
+- (void)startPairingForExtendedMACAddress:(id)address isWedDevice:(BOOL)device completion:(id)completion;
+- (void)stopFWUpdate:(id)update;
+- (void)stopPairing:(id)pairing;
+- (void)threadMeshInfoForHomeMetrics:(id)metrics completionHandler:(id)handler;
+- (void)threadStart:(id)start activeOperationalDataSet:(id)set geoAvailable:(BOOL)available routerMode:(BOOL)mode eMAC:(id)c waitForSync:(BOOL)sync completion:(id)completion;
+- (void)threadStart:(id)start geoAvailable:(BOOL)available isPrimaryUser:(BOOL)user waitForSync:(BOOL)sync completion:(id)completion;
+- (void)threadStopWithCompletion:(id)completion;
 @end
 
 @implementation CtrClient
 
-- (id)init:(const char *)a3
+- (id)init:(const char *)init
 {
   if (MGGetBoolAnswer())
   {
@@ -53,7 +53,7 @@
     v6 = v5;
     if (v5)
     {
-      [(CtrClient *)v5 createClient:a3];
+      [(CtrClient *)v5 createClient:init];
       cntrl = v6->CtrXPCClientPtr.__cntrl_;
       v6->CtrXPCClientPtr = v10;
       if (cntrl)
@@ -63,7 +63,7 @@
     }
 
     self = v6;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -73,24 +73,24 @@
       [CtrClient init:];
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)setEventHandler:(const void *)a3 EventBlock:(id)a4 dqueue:(queue)a5
+- (void)setEventHandler:(const void *)handler EventBlock:(id)block dqueue:(queue)dqueue
 {
-  v8 = a4;
+  blockCopy = block;
   ptr = self->CtrXPCClientPtr.__ptr_;
-  v10 = *a5.var0.var0;
+  v10 = *dqueue.var0.var0;
   object = v10;
   if (v10)
   {
     dispatch_retain(v10);
   }
 
-  CtrXPC::Client::setEventHandler(ptr, a3, v8, &object);
+  CtrXPC::Client::setEventHandler(ptr, handler, blockCopy, &object);
   if (object)
   {
     dispatch_release(object);
@@ -350,19 +350,19 @@
   return result;
 }
 
-- (void)threadMeshInfoForHomeMetrics:(id)a3 completionHandler:(id)a4
+- (void)threadMeshInfoForHomeMetrics:(id)metrics completionHandler:(id)handler
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  metricsCopy = metrics;
+  handlerCopy = handler;
   v7 = objc_autoreleasePoolPush();
-  if (v6)
+  if (handlerCopy)
   {
-    v8 = [v5 allObjects];
-    v9 = v8;
-    if (v8)
+    allObjects = [metricsCopy allObjects];
+    v9 = allObjects;
+    if (allObjects)
     {
-      v10 = [v8 count];
+      v10 = [allObjects count];
       if (v10)
       {
         v11 = 0;
@@ -383,9 +383,9 @@
         do
         {
           v13 = [v9 objectAtIndex:v12];
-          v14 = [v13 accessoryManufacturer];
-          v15 = v14;
-          std::string::basic_string[abi:ne200100]<0>(&v40, [v14 UTF8String]);
+          accessoryManufacturer = [v13 accessoryManufacturer];
+          v15 = accessoryManufacturer;
+          std::string::basic_string[abi:ne200100]<0>(&v40, [accessoryManufacturer UTF8String]);
           v16 = (buf + v11 * 8);
           if (*(&buf[2] + v11 * 8 + 7) < 0)
           {
@@ -397,9 +397,9 @@
           HIBYTE(v41) = 0;
           LOBYTE(v40) = 0;
 
-          v17 = [v13 accessoryModel];
-          v18 = v17;
-          std::string::basic_string[abi:ne200100]<0>(&v40, [v17 UTF8String]);
+          accessoryModel = [v13 accessoryModel];
+          v18 = accessoryModel;
+          std::string::basic_string[abi:ne200100]<0>(&v40, [accessoryModel UTF8String]);
           v19 = (buf + v11 * 8);
           if (*(&buf[3] + v11 * 8 + 15) < 0)
           {
@@ -411,9 +411,9 @@
           HIBYTE(v41) = 0;
           LOBYTE(v40) = 0;
 
-          v20 = [v13 hostName];
-          v21 = v20;
-          std::string::basic_string[abi:ne200100]<0>(&v40, [v20 UTF8String]);
+          hostName = [v13 hostName];
+          v21 = hostName;
+          std::string::basic_string[abi:ne200100]<0>(&v40, [hostName UTF8String]);
           v22 = (buf + v11 * 8);
           if (*(&buf[5] + v11 * 8 + 7) < 0)
           {
@@ -425,9 +425,9 @@
           HIBYTE(v41) = 0;
           LOBYTE(v40) = 0;
 
-          v23 = [v13 serviceInstanceName];
-          v24 = v23;
-          std::string::basic_string[abi:ne200100]<0>(&v40, [v23 UTF8String]);
+          serviceInstanceName = [v13 serviceInstanceName];
+          v24 = serviceInstanceName;
+          std::string::basic_string[abi:ne200100]<0>(&v40, [serviceInstanceName UTF8String]);
           v25 = (buf + v11 * 8);
           if (*(&buf[6] + v11 * 8 + 15) < 0)
           {
@@ -439,9 +439,9 @@
           HIBYTE(v41) = 0;
           LOBYTE(v40) = 0;
 
-          v26 = [v13 ipv6Address];
-          v27 = v26;
-          std::string::basic_string[abi:ne200100]<0>(&v40, [v26 UTF8String]);
+          ipv6Address = [v13 ipv6Address];
+          v27 = ipv6Address;
+          std::string::basic_string[abi:ne200100]<0>(&v40, [ipv6Address UTF8String]);
           v28 = (buf + v11 * 8);
           if (SHIBYTE(v48[v11]) < 0)
           {
@@ -477,7 +477,7 @@
         v38[1] = 3221225472;
         v38[2] = __60__CtrClient_threadMeshInfoForHomeMetrics_completionHandler___block_invoke_2;
         v38[3] = &unk_278EC02C0;
-        v39 = v6;
+        v39 = handlerCopy;
         CtrXPC::Client::threadMeshInfoForHomeMetrics(ptr, buf, v38);
 
         v30 = 368;
@@ -528,7 +528,7 @@
       v42[1] = 3221225472;
       v42[2] = __60__CtrClient_threadMeshInfoForHomeMetrics_completionHandler___block_invoke_14;
       v43 = &unk_278EC0298;
-      v44 = v6;
+      v44 = handlerCopy;
       dispatch_async(global_queue, v42);
     }
 
@@ -539,7 +539,7 @@
       block[1] = 3221225472;
       block[2] = __60__CtrClient_threadMeshInfoForHomeMetrics_completionHandler___block_invoke;
       block[3] = &unk_278EC0298;
-      v46 = v6;
+      v46 = handlerCopy;
       dispatch_async(v34, block);
     }
 
@@ -671,12 +671,12 @@ void __60__CtrClient_threadMeshInfoForHomeMetrics_completionHandler___block_invo
   if (v9)
   {
     v12 = v9;
-    v13 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
   }
 
   else
   {
-    v13 = 0;
+    uTF8String = 0;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -693,7 +693,7 @@ void __60__CtrClient_threadMeshInfoForHomeMetrics_completionHandler___block_invo
   v14 = *(v7 + 8);
   v17[0] = v6 != 0;
   v17[1] = v5 != 0;
-  *&v17[8] = v13;
+  *&v17[8] = uTF8String;
   CtrXPC::Client::updatePrimaryResident(v17, retstr);
   if (v11 < 0)
   {
@@ -734,14 +734,14 @@ void __60__CtrClient_threadMeshInfoForHomeMetrics_completionHandler___block_invo
   return result;
 }
 
-- (void)threadStart:(id)a3 geoAvailable:(BOOL)a4 isPrimaryUser:(BOOL)a5 waitForSync:(BOOL)a6 completion:(id)a7
+- (void)threadStart:(id)start geoAvailable:(BOOL)available isPrimaryUser:(BOOL)user waitForSync:(BOOL)sync completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
+  syncCopy = sync;
+  userCopy = user;
+  availableCopy = available;
   v50[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a7;
+  startCopy = start;
+  completionCopy = completion;
   v31 = 0;
   v32 = &v31;
   v33 = 0x6812000000;
@@ -754,21 +754,21 @@ void __60__CtrClient_threadMeshInfoForHomeMetrics_completionHandler___block_invo
   v42 = 0;
   v40 = 0;
   v41 = 0;
-  if (v12)
+  if (startCopy)
   {
-    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v12 encoding:4];
+    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:startCopy encoding:4];
     v15 = v14;
     if (v14)
     {
       v16 = v14;
-      v17 = [v15 UTF8String];
-      v32[10] = v17;
+      uTF8String = [v15 UTF8String];
+      v32[10] = uTF8String;
       v18 = xpc_dictionary_create(0, 0, 0);
       v19 = v32;
       v32[7] = v18;
-      *(v19 + 72) = v8;
-      *(v19 + 88) = v10;
-      *(v19 + 73) = v9;
+      *(v19 + 72) = syncCopy;
+      *(v19 + 88) = availableCopy;
+      *(v19 + 73) = userCopy;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         LODWORD(buf) = 138412290;
@@ -779,21 +779,21 @@ void __60__CtrClient_threadMeshInfoForHomeMetrics_completionHandler___block_invo
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         LODWORD(buf) = 67109120;
-        DWORD1(buf) = v8;
+        DWORD1(buf) = syncCopy;
         _os_log_impl(&dword_247A76000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "waitForSync flag : %d \n", &buf, 8u);
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         LODWORD(buf) = 67109120;
-        DWORD1(buf) = v10;
+        DWORD1(buf) = availableCopy;
         _os_log_impl(&dword_247A76000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "geoAvailable flag : %d\n", &buf, 8u);
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         LODWORD(buf) = 67109120;
-        DWORD1(buf) = v9;
+        DWORD1(buf) = userCopy;
         _os_log_impl(&dword_247A76000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "isPrimaryUser flag : %d\n", &buf, 8u);
       }
 
@@ -809,7 +809,7 @@ void __60__CtrClient_threadMeshInfoForHomeMetrics_completionHandler___block_invo
       v28[2] = __75__CtrClient_threadStart_geoAvailable_isPrimaryUser_waitForSync_completion___block_invoke;
       v28[3] = &unk_278EC02E8;
       v30 = &v31;
-      v29 = v13;
+      v29 = completionCopy;
       CtrXPC::Client::threadStartWithCompletion(ptr, &buf, v28);
     }
 
@@ -821,7 +821,7 @@ void __60__CtrClient_threadMeshInfoForHomeMetrics_completionHandler___block_invo
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
       v15 = [v25 errorWithDomain:@"com.threadradiod.ctr" code:1 userInfo:v26];
 
-      (*(v13 + 2))(v13, v15);
+      (*(completionCopy + 2))(completionCopy, v15);
     }
   }
 
@@ -833,7 +833,7 @@ void __60__CtrClient_threadMeshInfoForHomeMetrics_completionHandler___block_invo
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:&v49 count:1];
     v15 = [v23 errorWithDomain:@"com.threadradiod.ctr" code:1 userInfo:v24];
 
-    (*(v13 + 2))(v13, v15);
+    (*(completionCopy + 2))(completionCopy, v15);
   }
 
   _Block_object_dispose(&v31, 8);
@@ -877,16 +877,16 @@ void __75__CtrClient_threadStart_geoAvailable_isPrimaryUser_waitForSync_completi
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)threadStart:(id)a3 activeOperationalDataSet:(id)a4 geoAvailable:(BOOL)a5 routerMode:(BOOL)a6 eMAC:(id)a7 waitForSync:(BOOL)a8 completion:(id)a9
+- (void)threadStart:(id)start activeOperationalDataSet:(id)set geoAvailable:(BOOL)available routerMode:(BOOL)mode eMAC:(id)c waitForSync:(BOOL)sync completion:(id)completion
 {
-  v9 = a8;
-  v11 = a6;
-  v12 = a5;
+  syncCopy = sync;
+  modeCopy = mode;
+  availableCopy = available;
   v65[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a9;
+  startCopy = start;
+  setCopy = set;
+  cCopy = c;
+  completionCopy = completion;
   v46 = 0;
   v47 = &v46;
   v48 = 0x6812000000;
@@ -904,20 +904,20 @@ void __75__CtrClient_threadStart_geoAvailable_isPrimaryUser_waitForSync_completi
   v44[2] = 0x3032000000;
   v44[3] = __Block_byref_object_copy__42;
   v44[4] = __Block_byref_object_dispose__43;
-  v18 = v15;
+  v18 = setCopy;
   v45 = v18;
-  if (v14 | v18)
+  if (startCopy | v18)
   {
-    if (v16 || !v11)
+    if (cCopy || !modeCopy)
     {
-      if (v14)
+      if (startCopy)
       {
-        v24 = [v14 UUIDString];
-        if (v24)
+        uUIDString = [startCopy UUIDString];
+        if (uUIDString)
         {
-          v38 = v24;
-          v25 = v24;
-          v24 = [v38 UTF8String];
+          v38 = uUIDString;
+          v25 = uUIDString;
+          uUIDString = [v38 UTF8String];
         }
 
         else
@@ -929,43 +929,43 @@ void __75__CtrClient_threadStart_geoAvailable_isPrimaryUser_waitForSync_completi
       else
       {
         v38 = 0;
-        v24 = 0;
+        uUIDString = 0;
       }
 
-      v47[6] = v24;
+      v47[6] = uUIDString;
       v26 = xpc_dictionary_create(0, 0, 0);
-      v27 = 0;
+      uTF8String = 0;
       v28 = v47;
       v47[7] = v26;
-      *(v28 + 72) = v9;
-      *(v28 + 88) = v12;
-      *(v28 + 90) = v11;
+      *(v28 + 72) = syncCopy;
+      *(v28 + 88) = availableCopy;
+      *(v28 + 90) = modeCopy;
       v29 = 0;
-      if (v16 && v11)
+      if (cCopy && modeCopy)
       {
-        v30 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v16 encoding:4];
+        v30 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:cCopy encoding:4];
         v31 = v30;
-        v27 = [v30 UTF8String];
+        uTF8String = [v30 UTF8String];
         v28 = v47;
         v29 = v30;
       }
 
-      v28[12] = v27;
+      v28[12] = uTF8String;
       if (v18)
       {
         v21 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v18 encoding:4];
         v32 = v21;
-        v33 = [v21 UTF8String];
+        uTF8String2 = [v21 UTF8String];
         v28 = v47;
       }
 
       else
       {
-        v33 = 0;
+        uTF8String2 = 0;
         v21 = 0;
       }
 
-      v28[10] = v33;
+      v28[10] = uTF8String2;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
@@ -983,21 +983,21 @@ void __75__CtrClient_threadStart_geoAvailable_isPrimaryUser_waitForSync_completi
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        *&buf[4] = v9;
+        *&buf[4] = syncCopy;
         _os_log_impl(&dword_247A76000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "waitForSync flag : %d \n", buf, 8u);
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        *&buf[4] = v12;
+        *&buf[4] = availableCopy;
         _os_log_impl(&dword_247A76000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "geoAvailable flag : %d\n", buf, 8u);
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        *&buf[4] = v11;
+        *&buf[4] = modeCopy;
         _os_log_impl(&dword_247A76000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "routerMode flag : %d\n", buf, 8u);
       }
 
@@ -1011,7 +1011,7 @@ void __75__CtrClient_threadStart_geoAvailable_isPrimaryUser_waitForSync_completi
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *&buf[4] = v16;
+        *&buf[4] = cCopy;
         _os_log_impl(&dword_247A76000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "eMAC : %@\n", buf, 0xCu);
       }
 
@@ -1027,7 +1027,7 @@ void __75__CtrClient_threadStart_geoAvailable_isPrimaryUser_waitForSync_completi
       v40[2] = __102__CtrClient_threadStart_activeOperationalDataSet_geoAvailable_routerMode_eMAC_waitForSync_completion___block_invoke;
       v40[3] = &unk_278EC0310;
       v42 = &v46;
-      v41 = v17;
+      v41 = completionCopy;
       v43 = v44;
       CtrXPC::Client::threadStartWithCompletion(ptr, buf, v40);
     }
@@ -1040,7 +1040,7 @@ void __75__CtrClient_threadStart_geoAvailable_isPrimaryUser_waitForSync_completi
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
       v21 = [v19 errorWithDomain:@"com.threadradiod.ctr" code:1 userInfo:v20];
 
-      (*(v17 + 2))(v17, 0, v21);
+      (*(completionCopy + 2))(completionCopy, 0, v21);
     }
   }
 
@@ -1052,7 +1052,7 @@ void __75__CtrClient_threadStart_geoAvailable_isPrimaryUser_waitForSync_completi
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:&v64 count:1];
     v21 = [v22 errorWithDomain:@"com.threadradiod.ctr" code:1 userInfo:v23];
 
-    (*(v17 + 2))(v17, 0, v21);
+    (*(completionCopy + 2))(completionCopy, 0, v21);
   }
 
   _Block_object_dispose(v44, 8);
@@ -1125,10 +1125,10 @@ LABEL_19:
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)threadStopWithCompletion:(id)a3
+- (void)threadStopWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v17 = 0;
   *&v16[6] = 0;
   ptr = self->CtrXPCClientPtr.__ptr_;
@@ -1144,8 +1144,8 @@ LABEL_19:
   v8[1] = 3221225472;
   v8[2] = __38__CtrClient_threadStopWithCompletion___block_invoke;
   v8[3] = &unk_278EC0338;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   CtrXPC::Client::threadStopWithCompletion(ptr, v10, v8);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1168,23 +1168,23 @@ void __38__CtrClient_threadStopWithCompletion___block_invoke(uint64_t a1, _DWORD
   }
 }
 
-- (void)provideExtendedMACAddress:(id)a3 completion:(id)a4
+- (void)provideExtendedMACAddress:(id)address completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   *&v28[14] = 0;
   *&v28[6] = 0;
   v8 = xpc_dictionary_create(0, 0, 0);
-  if (v6)
+  if (addressCopy)
   {
-    v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
-    v10 = [v9 UTF8String];
+    v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:addressCopy encoding:4];
+    uTF8String = [v9 UTF8String];
   }
 
   else
   {
-    v10 = 0;
+    uTF8String = 0;
     v9 = 0;
   }
 
@@ -1195,7 +1195,7 @@ void __38__CtrClient_threadStopWithCompletion___block_invoke(uint64_t a1, _DWORD
   v24 = 256;
   v25 = *v28;
   v26 = *&v28[16];
-  v27 = v10;
+  v27 = uTF8String;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __50__CtrClient_provideExtendedMACAddress_completion___block_invoke;
@@ -1206,8 +1206,8 @@ void __38__CtrClient_threadStopWithCompletion___block_invoke(uint64_t a1, _DWORD
   v19 = 256;
   v21 = *&v28[16];
   v20 = *v28;
-  v22 = v10;
-  v12 = v7;
+  v22 = uTF8String;
+  v12 = completionCopy;
   v15 = v12;
   CtrXPC::Client::provideExtendedMACAddress(ptr, v23, v14);
 
@@ -1254,19 +1254,19 @@ void __50__CtrClient_provideExtendedMACAddress_completion___block_invoke(uint64_
   }
 }
 
-- (void)startPairingForExtendedMACAddress:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5
+- (void)startPairingForExtendedMACAddress:(id)address isWedDevice:(BOOL)device completion:(id)completion
 {
-  v6 = a4;
+  deviceCopy = device;
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  addressCopy = address;
+  completionCopy = completion;
   *&v31[13] = 0;
   *&v31[6] = 0;
-  if (v8 || !v6)
+  if (addressCopy || !deviceCopy)
   {
-    if (v8)
+    if (addressCopy)
     {
-      v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
+      v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:addressCopy encoding:4];
       v12 = v13;
       if (!v13)
       {
@@ -1276,16 +1276,16 @@ void __50__CtrClient_provideExtendedMACAddress_completion___block_invoke(uint64_
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
         v12 = [v16 errorWithDomain:@"com.threadradiod.ctr" code:1 userInfo:v17];
 
-        v9[2](v9, v12);
+        completionCopy[2](completionCopy, v12);
         goto LABEL_10;
       }
 
-      v14 = [v13 UTF8String];
+      uTF8String = [v13 UTF8String];
     }
 
     else
     {
-      v14 = 0;
+      uTF8String = 0;
       v12 = 0;
     }
 
@@ -1295,13 +1295,13 @@ void __50__CtrClient_provideExtendedMACAddress_completion___block_invoke(uint64_
     v22 = 256;
     v23 = *v31;
     v24 = v31[16];
-    v25 = v6;
-    v26 = v14;
+    v25 = deviceCopy;
+    v26 = uTF8String;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __70__CtrClient_startPairingForExtendedMACAddress_isWedDevice_completion___block_invoke;
     v19[3] = &unk_278EC0338;
-    v20 = v9;
+    v20 = completionCopy;
     CtrXPC::Client::startPairing(ptr, v21, v19);
   }
 
@@ -1313,7 +1313,7 @@ void __50__CtrClient_provideExtendedMACAddress_completion___block_invoke(uint64_
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     v12 = [v10 errorWithDomain:@"com.threadradiod.ctr" code:1 userInfo:v11];
 
-    v9[2](v9, v12);
+    completionCopy[2](completionCopy, v12);
   }
 
 LABEL_10:
@@ -1346,10 +1346,10 @@ void __70__CtrClient_startPairingForExtendedMACAddress_isWedDevice_completion___
   }
 }
 
-- (void)stopPairing:(id)a3
+- (void)stopPairing:(id)pairing
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pairingCopy = pairing;
   v16 = 0;
   *&v15[6] = 0;
   ptr = self->CtrXPCClientPtr.__ptr_;
@@ -1363,8 +1363,8 @@ void __70__CtrClient_startPairingForExtendedMACAddress_isWedDevice_completion___
   v8[1] = 3221225472;
   v8[2] = __25__CtrClient_stopPairing___block_invoke;
   v8[3] = &unk_278EC0338;
-  v9 = v4;
-  v6 = v4;
+  v9 = pairingCopy;
+  v6 = pairingCopy;
   CtrXPC::Client::stopPairing(ptr, v10, v8);
 
   v7 = *MEMORY[0x277D85DE8];
@@ -1395,19 +1395,19 @@ void __25__CtrClient_stopPairing___block_invoke(uint64_t a1, _DWORD *a2)
   }
 }
 
-- (void)startFWUpdate:(id)a3 isWedDevice:(BOOL)a4 completion:(id)a5
+- (void)startFWUpdate:(id)update isWedDevice:(BOOL)device completion:(id)completion
 {
-  v6 = a4;
+  deviceCopy = device;
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  updateCopy = update;
+  completionCopy = completion;
   *&v31[13] = 0;
   *&v31[6] = 0;
-  if (v8 || !v6)
+  if (updateCopy || !deviceCopy)
   {
-    if (v8)
+    if (updateCopy)
     {
-      v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
+      v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:updateCopy encoding:4];
       v12 = v13;
       if (!v13)
       {
@@ -1417,16 +1417,16 @@ void __25__CtrClient_stopPairing___block_invoke(uint64_t a1, _DWORD *a2)
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
         v12 = [v16 errorWithDomain:@"com.threadradiod.ctr" code:1 userInfo:v17];
 
-        v9[2](v9, v12);
+        completionCopy[2](completionCopy, v12);
         goto LABEL_10;
       }
 
-      v14 = [v13 UTF8String];
+      uTF8String = [v13 UTF8String];
     }
 
     else
     {
-      v14 = 0;
+      uTF8String = 0;
       v12 = 0;
     }
 
@@ -1436,13 +1436,13 @@ void __25__CtrClient_stopPairing___block_invoke(uint64_t a1, _DWORD *a2)
     v22 = 256;
     v23 = *v31;
     v24 = v31[16];
-    v25 = v6;
-    v26 = v14;
+    v25 = deviceCopy;
+    v26 = uTF8String;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __50__CtrClient_startFWUpdate_isWedDevice_completion___block_invoke;
     v19[3] = &unk_278EC0338;
-    v20 = v9;
+    v20 = completionCopy;
     CtrXPC::Client::startFWUpdate(ptr, v21, v19);
   }
 
@@ -1454,7 +1454,7 @@ void __25__CtrClient_stopPairing___block_invoke(uint64_t a1, _DWORD *a2)
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     v12 = [v10 errorWithDomain:@"com.threadradiod.ctr" code:1 userInfo:v11];
 
-    v9[2](v9, v12);
+    completionCopy[2](completionCopy, v12);
   }
 
 LABEL_10:
@@ -1487,10 +1487,10 @@ void __50__CtrClient_startFWUpdate_isWedDevice_completion___block_invoke(uint64_
   }
 }
 
-- (void)stopFWUpdate:(id)a3
+- (void)stopFWUpdate:(id)update
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v16 = 0;
   *&v15[6] = 0;
   ptr = self->CtrXPCClientPtr.__ptr_;
@@ -1504,8 +1504,8 @@ void __50__CtrClient_startFWUpdate_isWedDevice_completion___block_invoke(uint64_
   v8[1] = 3221225472;
   v8[2] = __26__CtrClient_stopFWUpdate___block_invoke;
   v8[3] = &unk_278EC0338;
-  v9 = v4;
-  v6 = v4;
+  v9 = updateCopy;
+  v6 = updateCopy;
   CtrXPC::Client::stopFWUpdate(ptr, v10, v8);
 
   v7 = *MEMORY[0x277D85DE8];

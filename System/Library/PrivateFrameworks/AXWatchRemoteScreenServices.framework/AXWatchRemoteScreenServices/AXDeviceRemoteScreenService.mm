@@ -41,7 +41,7 @@
 
 - (BOOL)startTwiceRemoteScreen
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXDeviceRemoteScreenService.startTwiceRemoteScreen()();
 
   return v3;
@@ -49,7 +49,7 @@
 
 - (BOOL)stopTwiceRemoteScreen
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXDeviceRemoteScreenService.stopTwiceRemoteScreen()();
 
   return v3;

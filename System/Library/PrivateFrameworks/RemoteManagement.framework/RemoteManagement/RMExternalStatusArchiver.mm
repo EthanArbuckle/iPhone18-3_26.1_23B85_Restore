@@ -1,14 +1,14 @@
 @interface RMExternalStatusArchiver
-+ (BOOL)persistStatusWithStoreIdentifier:(id)a3 status:(id)a4 error:(id *)a5;
-+ (id)_getPublishedStatusFileURLWithStoreIdentifier:(id)a3;
-+ (id)statusWithStoreIdentifier:(id)a3 error:(id *)a4;
++ (BOOL)persistStatusWithStoreIdentifier:(id)identifier status:(id)status error:(id *)error;
++ (id)_getPublishedStatusFileURLWithStoreIdentifier:(id)identifier;
++ (id)statusWithStoreIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation RMExternalStatusArchiver
 
-+ (id)statusWithStoreIdentifier:(id)a3 error:(id *)a4
++ (id)statusWithStoreIdentifier:(id)identifier error:(id *)error
 {
-  v5 = [RMExternalStatusArchiver _getPublishedStatusFileURLWithStoreIdentifier:a3];
+  v5 = [RMExternalStatusArchiver _getPublishedStatusFileURLWithStoreIdentifier:identifier];
   v18 = 0;
   v6 = [RMJSONUtilities deserializeJSONDictionaryAtFileURL:v5 error:&v18];
   v7 = v18;
@@ -43,7 +43,7 @@
         sub_10002A4CC(v14);
       }
 
-      if (!a4)
+      if (!error)
       {
         v10 = 0;
 LABEL_20:
@@ -56,7 +56,7 @@ LABEL_20:
       {
         v11 = v11;
         v10 = 0;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -75,11 +75,11 @@ LABEL_20:
   }
 
   v10 = 0;
-  if (a4 && v7)
+  if (error && v7)
   {
     v13 = v7;
     v10 = 0;
-    *a4 = v7;
+    *error = v7;
   }
 
 LABEL_21:
@@ -87,12 +87,12 @@ LABEL_21:
   return v10;
 }
 
-+ (BOOL)persistStatusWithStoreIdentifier:(id)a3 status:(id)a4 error:(id *)a5
++ (BOOL)persistStatusWithStoreIdentifier:(id)identifier status:(id)status error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v7 count]);
-  +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v7 count]);
+  statusCopy = status;
+  identifierCopy = identifier;
+  v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [statusCopy count]);
+  +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [statusCopy count]);
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10002A160;
@@ -100,9 +100,9 @@ LABEL_21:
   v22 = v10;
   v11 = v9;
   v23 = v11;
-  [v7 enumerateKeysAndObjectsUsingBlock:v21];
+  [statusCopy enumerateKeysAndObjectsUsingBlock:v21];
 
-  v12 = [RMExternalStatusArchiver _getPublishedStatusFileURLWithStoreIdentifier:v8];
+  v12 = [RMExternalStatusArchiver _getPublishedStatusFileURLWithStoreIdentifier:identifierCopy];
 
   v24[0] = @"ValidStatus";
   v24[1] = @"ErrorStatus";
@@ -129,26 +129,26 @@ LABEL_21:
       sub_10002A584();
     }
 
-    if (a5 && v15)
+    if (error && v15)
     {
       v18 = v15;
-      *a5 = v15;
+      *error = v15;
     }
   }
 
   return v14;
 }
 
-+ (id)_getPublishedStatusFileURLWithStoreIdentifier:(id)a3
++ (id)_getPublishedStatusFileURLWithStoreIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [RMLocations statusDirectoryURLCreateIfNeeded:1];
-  v5 = [v4 URLByAppendingPathComponent:v3 isDirectory:1];
+  v5 = [v4 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
   v15 = 0;
   v6 = +[NSFileManager defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7 isDirectory:&v15];
+  path = [v5 path];
+  v8 = [v6 fileExistsAtPath:path isDirectory:&v15];
 
   if ((v8 & 1) == 0)
   {

@@ -1,10 +1,10 @@
 @interface HFPinCodeDataStore
 - (HFPinCodeDataStore)init;
-- (id)guestPinCodeFromItem:(id)a3;
-- (id)pinCodeForCodeValue:(id)a3;
-- (id)pinCodeFromItem:(id)a3;
-- (void)mergeData:(id)a3;
-- (void)updateWithPinCode:(id)a3 forOldCodeValue:(id)a4;
+- (id)guestPinCodeFromItem:(id)item;
+- (id)pinCodeForCodeValue:(id)value;
+- (id)pinCodeFromItem:(id)item;
+- (void)mergeData:(id)data;
+- (void)updateWithPinCode:(id)code forOldCodeValue:(id)value;
 @end
 
 @implementation HFPinCodeDataStore
@@ -16,109 +16,109 @@
   v2 = [(HFPinCodeDataStore *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     userPINCodes = v2->_userPINCodes;
-    v2->_userPINCodes = v3;
+    v2->_userPINCodes = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     removedUserPINCodes = v2->_removedUserPINCodes;
-    v2->_removedUserPINCodes = v5;
+    v2->_removedUserPINCodes = dictionary2;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     guestPINCodes = v2->_guestPINCodes;
-    v2->_guestPINCodes = v7;
+    v2->_guestPINCodes = dictionary3;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     otherEcosystemGuestPINCodes = v2->_otherEcosystemGuestPINCodes;
-    v2->_otherEcosystemGuestPINCodes = v9;
+    v2->_otherEcosystemGuestPINCodes = dictionary4;
   }
 
   return v2;
 }
 
-- (void)mergeData:(id)a3
+- (void)mergeData:(id)data
 {
-  v12 = a3;
-  v4 = [(HFPinCodeDataStore *)self userPINCodes];
-  v5 = [v12 userPINCodes];
-  [v4 addEntriesFromDictionary:v5];
+  dataCopy = data;
+  userPINCodes = [(HFPinCodeDataStore *)self userPINCodes];
+  userPINCodes2 = [dataCopy userPINCodes];
+  [userPINCodes addEntriesFromDictionary:userPINCodes2];
 
-  v6 = [(HFPinCodeDataStore *)self removedUserPINCodes];
-  v7 = [v12 removedUserPINCodes];
-  [v6 addEntriesFromDictionary:v7];
+  removedUserPINCodes = [(HFPinCodeDataStore *)self removedUserPINCodes];
+  removedUserPINCodes2 = [dataCopy removedUserPINCodes];
+  [removedUserPINCodes addEntriesFromDictionary:removedUserPINCodes2];
 
-  v8 = [(HFPinCodeDataStore *)self guestPINCodes];
-  v9 = [v12 guestPINCodes];
-  [v8 addEntriesFromDictionary:v9];
+  guestPINCodes = [(HFPinCodeDataStore *)self guestPINCodes];
+  guestPINCodes2 = [dataCopy guestPINCodes];
+  [guestPINCodes addEntriesFromDictionary:guestPINCodes2];
 
-  v10 = [v12 currentUserPinCode];
+  currentUserPinCode = [dataCopy currentUserPinCode];
 
-  if (v10)
+  if (currentUserPinCode)
   {
-    v11 = [v12 currentUserPinCode];
-    [(HFPinCodeDataStore *)self setCurrentUserPinCode:v11];
+    currentUserPinCode2 = [dataCopy currentUserPinCode];
+    [(HFPinCodeDataStore *)self setCurrentUserPinCode:currentUserPinCode2];
   }
 }
 
-- (id)pinCodeFromItem:(id)a3
+- (id)pinCodeFromItem:(id)item
 {
-  v4 = a3;
-  if ([v4 isUnknownGuestFromMatter])
+  itemCopy = item;
+  if ([itemCopy isUnknownGuestFromMatter])
   {
-    v5 = [(HFPinCodeDataStore *)self otherEcosystemGuestPINCodes];
-    v6 = [v4 unknownMatterGuestUniqueID];
-    v7 = [v5 objectForKey:v6];
+    otherEcosystemGuestPINCodes = [(HFPinCodeDataStore *)self otherEcosystemGuestPINCodes];
+    unknownMatterGuestUniqueID = [itemCopy unknownMatterGuestUniqueID];
+    v7 = [otherEcosystemGuestPINCodes objectForKey:unknownMatterGuestUniqueID];
   }
 
   else
   {
-    v5 = [v4 pinCodeValue];
-    v7 = [(HFPinCodeDataStore *)self pinCodeForCodeValue:v5];
+    otherEcosystemGuestPINCodes = [itemCopy pinCodeValue];
+    v7 = [(HFPinCodeDataStore *)self pinCodeForCodeValue:otherEcosystemGuestPINCodes];
   }
 
   return v7;
 }
 
-- (id)pinCodeForCodeValue:(id)a3
+- (id)pinCodeForCodeValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HFPinCodeDataStore *)self guestPINCodes];
-  v6 = [v5 objectForKey:v4];
+  valueCopy = value;
+  guestPINCodes = [(HFPinCodeDataStore *)self guestPINCodes];
+  v6 = [guestPINCodes objectForKey:valueCopy];
 
   if (!v6)
   {
-    v7 = [(HFPinCodeDataStore *)self userPINCodes];
-    v6 = [v7 objectForKey:v4];
+    userPINCodes = [(HFPinCodeDataStore *)self userPINCodes];
+    v6 = [userPINCodes objectForKey:valueCopy];
   }
 
   return v6;
 }
 
-- (id)guestPinCodeFromItem:(id)a3
+- (id)guestPinCodeFromItem:(id)item
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFPinCodeDataStore *)self guestPINCodes];
-  v6 = [v4 pinCodeValue];
-  v7 = [v5 objectForKey:v6];
+  itemCopy = item;
+  guestPINCodes = [(HFPinCodeDataStore *)self guestPINCodes];
+  pinCodeValue = [itemCopy pinCodeValue];
+  v7 = [guestPINCodes objectForKey:pinCodeValue];
 
   if (!v7)
   {
-    if (![v4 isUnknownGuestFromMatter])
+    if (![itemCopy isUnknownGuestFromMatter])
     {
       goto LABEL_4;
     }
 
-    v8 = [(HFPinCodeDataStore *)self otherEcosystemGuestPINCodes];
-    v9 = [v4 unknownMatterGuestUniqueID];
-    v7 = [v8 objectForKey:v9];
+    otherEcosystemGuestPINCodes = [(HFPinCodeDataStore *)self otherEcosystemGuestPINCodes];
+    unknownMatterGuestUniqueID = [itemCopy unknownMatterGuestUniqueID];
+    v7 = [otherEcosystemGuestPINCodes objectForKey:unknownMatterGuestUniqueID];
 
     if (!v7)
     {
 LABEL_4:
-      v10 = [(HFPinCodeDataStore *)self userPINCodes];
-      v11 = [v4 pinCodeValue];
-      v12 = [v10 objectForKey:v11];
+      userPINCodes = [(HFPinCodeDataStore *)self userPINCodes];
+      pinCodeValue2 = [itemCopy pinCodeValue];
+      v12 = [userPINCodes objectForKey:pinCodeValue2];
 
       if (v12)
       {
@@ -140,35 +140,35 @@ LABEL_4:
   return v7;
 }
 
-- (void)updateWithPinCode:(id)a3 forOldCodeValue:(id)a4
+- (void)updateWithPinCode:(id)code forOldCodeValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  codeCopy = code;
+  valueCopy = value;
+  if (valueCopy)
   {
-    v8 = [v6 pinCodeValue];
+    pinCodeValue = [codeCopy pinCodeValue];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __56__HFPinCodeDataStore_updateWithPinCode_forOldCodeValue___block_invoke;
     aBlock[3] = &unk_277DFCC78;
-    v9 = v7;
+    v9 = valueCopy;
     v19 = v9;
-    v20 = v8;
-    v21 = v6;
-    v10 = v8;
+    v20 = pinCodeValue;
+    v21 = codeCopy;
+    v10 = pinCodeValue;
     v11 = _Block_copy(aBlock);
-    v12 = [(HFPinCodeDataStore *)self guestPINCodes];
-    v13 = [v12 objectForKey:v9];
+    guestPINCodes = [(HFPinCodeDataStore *)self guestPINCodes];
+    v13 = [guestPINCodes objectForKey:v9];
 
     if (v13)
     {
-      v14 = [(HFPinCodeDataStore *)self guestPINCodes];
+      guestPINCodes2 = [(HFPinCodeDataStore *)self guestPINCodes];
     }
 
     else
     {
-      v15 = [(HFPinCodeDataStore *)self userPINCodes];
-      v16 = [v15 objectForKey:v9];
+      userPINCodes = [(HFPinCodeDataStore *)self userPINCodes];
+      v16 = [userPINCodes objectForKey:v9];
 
       if (!v16)
       {
@@ -176,11 +176,11 @@ LABEL_4:
         goto LABEL_8;
       }
 
-      v14 = [(HFPinCodeDataStore *)self userPINCodes];
+      guestPINCodes2 = [(HFPinCodeDataStore *)self userPINCodes];
     }
 
-    v17 = v14;
-    v11[2](v11, v14);
+    v17 = guestPINCodes2;
+    v11[2](v11, guestPINCodes2);
 
 LABEL_8:
     goto LABEL_9;

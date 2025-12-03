@@ -1,10 +1,10 @@
 @interface ISOperation
-- (BOOL)copyAccountID:(id *)a3 credentialSource:(unint64_t *)a4 byAuthenticatingWithContext:(id)a5 returningError:(id *)a6;
-- (BOOL)copyAccountID:(id *)a3 credentialSource:(unint64_t *)a4 byHandlingAuthenticateResponse:(id)a5 returningError:(id *)a6;
-- (BOOL)loadSoftwareMapReturningError:(id *)a3;
-- (BOOL)loadURLBagWithContext:(id)a3 returningError:(id *)a4;
-- (BOOL)runSubOperation:(id)a3 onQueue:(id)a4 error:(id *)a5;
-- (BOOL)runSubOperation:(id)a3 returningError:(id *)a4;
+- (BOOL)copyAccountID:(id *)d credentialSource:(unint64_t *)source byAuthenticatingWithContext:(id)context returningError:(id *)error;
+- (BOOL)copyAccountID:(id *)d credentialSource:(unint64_t *)source byHandlingAuthenticateResponse:(id)response returningError:(id *)error;
+- (BOOL)loadSoftwareMapReturningError:(id *)error;
+- (BOOL)loadURLBagWithContext:(id)context returningError:(id *)error;
+- (BOOL)runSubOperation:(id)operation onQueue:(id)queue error:(id *)error;
+- (BOOL)runSubOperation:(id)operation returningError:(id *)error;
 - (BOOL)shouldMessageMainThread;
 - (BOOL)stopRunLoop;
 - (ISOperation)init;
@@ -14,26 +14,26 @@
 - (id)authenticatedAccountDSID;
 - (id)copyActivePowerAssertionIdentifiers;
 - (id)copySerializationLocks;
-- (id)loadedURLBagWithContext:(id)a3 accountDSID:(id)a4 returningError:(id *)a5;
+- (id)loadedURLBagWithContext:(id)context accountDSID:(id)d returningError:(id *)error;
 - (int)runRunLoopUntilStopped;
 - (unint64_t)authenticatedAccountCredentialSource;
-- (void)_addSubOperation:(id)a3;
+- (void)_addSubOperation:(id)operation;
 - (void)_failAfterException;
-- (void)_sendErrorToDelegate:(id)a3;
+- (void)_sendErrorToDelegate:(id)delegate;
 - (void)_sendSuccessToDelegate;
 - (void)_sendWillStartToDelegate;
 - (void)cancel;
-- (void)delegateDispatch:(id)a3;
+- (void)delegateDispatch:(id)dispatch;
 - (void)dispatchCompletionBlock;
 - (void)main;
-- (void)releasePowerAssertionsDuringBlock:(id)a3;
+- (void)releasePowerAssertionsDuringBlock:(id)block;
 - (void)run;
-- (void)run:(BOOL)a3;
+- (void)run:(BOOL)run;
 - (void)sendDidTakeSerializationLocks;
 - (void)sendProgressToDelegate;
-- (void)setDelegate:(id)a3;
-- (void)setSerializationLockIdentifiers:(id)a3;
-- (void)setShouldMessageMainThread:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setSerializationLockIdentifiers:(id)identifiers;
+- (void)setShouldMessageMainThread:(BOOL)thread;
 @end
 
 @implementation ISOperation
@@ -42,25 +42,25 @@
 {
   v79 = *MEMORY[0x277D85DE8];
   v74 = AMSGenerateLogCorrelationKey();
-  v3 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v3)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v3 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
-  if ([v3 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v4 |= 2u;
+    shouldLog |= 2u;
   }
 
-  v5 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v4 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (v4)
+  if (shouldLog)
   {
     v75 = 138543618;
     v76 = objc_opt_class();
@@ -84,11 +84,11 @@
   {
   }
 
-  v9 = [(ISOperation *)self uniqueKey];
-  if (v9)
+  uniqueKey = [(ISOperation *)self uniqueKey];
+  if (uniqueKey)
   {
-    v10 = [MEMORY[0x277CCABD8] currentQueue];
-    v11 = ISUniqueOperationLock(v9, self, v10);
+    currentQueue = [MEMORY[0x277CCABD8] currentQueue];
+    v11 = ISUniqueOperationLock(uniqueKey, self, currentQueue);
 
     if (!v11 || ([v11 success] & 1) != 0 || (objc_msgSend(v11, "error"), v12 = objc_claimAutoreleasedReturnValue(), v13 = -[ISOperation shouldFailAfterUniquePredecessorError:](self, "shouldFailAfterUniquePredecessorError:", v12), v12, !v13))
     {
@@ -96,25 +96,25 @@
       goto LABEL_27;
     }
 
-    v14 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v14)
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]2)
     {
-      v14 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
-    if ([v14 shouldLogToDisk])
+    shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+    if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
     {
-      v15 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    v16 = [v14 OSLogObject];
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
-      v15 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (v15)
+    if (shouldLog2)
     {
       v17 = objc_opt_class();
       v75 = 138412290;
@@ -128,8 +128,8 @@
       {
 LABEL_25:
 
-        v20 = [v11 error];
-        [(ISOperation *)self setError:v20];
+        error = [v11 error];
+        [(ISOperation *)self setError:error];
 
         v21 = 1;
 LABEL_27:
@@ -137,9 +137,9 @@ LABEL_27:
         goto LABEL_29;
       }
 
-      v16 = [MEMORY[0x277CCACA8] stringWithCString:v19 encoding:{4, &v75, v71}];
+      oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v19 encoding:{4, &v75, v71}];
       free(v19);
-      v68 = v16;
+      v68 = oSLogObject2;
       SSFileLog();
     }
 
@@ -148,11 +148,11 @@ LABEL_27:
 
   v21 = 0;
 LABEL_29:
-  v22 = [(ISOperation *)self powerAssertionIdentifier];
-  if (v22)
+  powerAssertionIdentifier = [(ISOperation *)self powerAssertionIdentifier];
+  if (powerAssertionIdentifier)
   {
     v23 = +[ISDevice sharedInstance];
-    v73 = [v23 takePowerAssertion:v22];
+    v73 = [v23 takePowerAssertion:powerAssertionIdentifier];
   }
 
   else
@@ -166,24 +166,24 @@ LABEL_29:
     goto LABEL_36;
   }
 
-  v53 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v53)
+  mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38]3)
   {
-    v53 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v54 = [v53 shouldLog];
-  if ([v53 shouldLogToDisk])
+  shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+  if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
   {
-    v54 |= 2u;
+    shouldLog3 |= 2u;
   }
 
-  v55 = [v53 OSLogObject];
-  v56 = os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG);
-  v57 = v54 & 2;
+  oSLogObject3 = [mEMORY[0x277D69B38]3 OSLogObject];
+  v56 = os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG);
+  v57 = shouldLog3 & 2;
   if (v56)
   {
-    v57 = v54;
+    v57 = shouldLog3;
   }
 
   if (!v57)
@@ -192,30 +192,30 @@ LABEL_29:
   }
 
   v58 = objc_opt_class();
-  v59 = v55;
-  v60 = v53;
+  v59 = oSLogObject3;
+  v60 = mEMORY[0x277D69B38]3;
   v61 = v24;
   v62 = MEMORY[0x277CCACC8];
   v72 = v58;
   v63 = v62;
   v24 = v61;
-  v53 = v60;
+  mEMORY[0x277D69B38]3 = v60;
   v64 = v59;
-  v65 = [v63 currentThread];
+  currentThread = [v63 currentThread];
   v75 = 138412546;
   v76 = v58;
   v77 = 2048;
-  v78 = v65;
+  v78 = currentThread;
   LODWORD(v71) = 22;
   v69 = &v75;
-  v66 = v65;
+  v66 = currentThread;
   v67 = _os_log_send_and_compose_impl();
 
   if (v67)
   {
-    v55 = [MEMORY[0x277CCACA8] stringWithCString:v67 encoding:{4, &v75, v71}];
+    oSLogObject3 = [MEMORY[0x277CCACA8] stringWithCString:v67 encoding:{4, &v75, v71}];
     free(v67);
-    v69 = v55;
+    v69 = oSLogObject3;
     SSFileLog();
 LABEL_83:
   }
@@ -226,44 +226,44 @@ LABEL_36:
   if (v73)
   {
     v26 = +[ISDevice sharedInstance];
-    [v26 releasePowerAssertion:v22];
+    [v26 releasePowerAssertion:powerAssertionIdentifier];
   }
 
   if (v25)
   {
-    v27 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v27)
+    mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]4)
     {
-      v27 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v28 = [v27 shouldLog];
-    v29 = [v27 shouldLogToDisk];
-    v30 = [v27 OSLogObject];
-    v31 = v30;
-    if (v29)
+    shouldLog4 = [mEMORY[0x277D69B38]4 shouldLog];
+    shouldLogToDisk = [mEMORY[0x277D69B38]4 shouldLogToDisk];
+    oSLogObject4 = [mEMORY[0x277D69B38]4 OSLogObject];
+    v31 = oSLogObject4;
+    if (shouldLogToDisk)
     {
-      v28 |= 2u;
+      shouldLog4 |= 2u;
     }
 
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEBUG))
     {
-      v32 = v28;
+      v32 = shouldLog4;
     }
 
     else
     {
-      v32 = v28 & 2;
+      v32 = shouldLog4 & 2;
     }
 
     if (v32)
     {
       v33 = objc_opt_class();
-      v34 = [MEMORY[0x277CCACC8] currentThread];
+      currentThread2 = [MEMORY[0x277CCACC8] currentThread];
       v75 = 138412546;
       v76 = v33;
       v77 = 2048;
-      v78 = v34;
+      v78 = currentThread2;
       LODWORD(v71) = 22;
       v70 = &v75;
       v35 = _os_log_send_and_compose_impl();
@@ -286,40 +286,40 @@ LABEL_50:
   }
 
 LABEL_51:
-  if (v9)
+  if (uniqueKey)
   {
-    v36 = [MEMORY[0x277CCABD8] currentQueue];
-    ISUniqueOperationUnlock(v9, self, v36);
+    currentQueue2 = [MEMORY[0x277CCABD8] currentQueue];
+    ISUniqueOperationUnlock(uniqueKey, self, currentQueue2);
   }
 
   v37 = +[ISUniqueOperationManager sharedInstance];
   [v37 checkOutOperation:self];
 
-  v38 = [(ISOperation *)self error];
+  error2 = [(ISOperation *)self error];
 
-  if (v38)
+  if (error2)
   {
-    v39 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v39)
+    mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]5)
     {
-      v39 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v40 = [v39 shouldLog];
-    v41 = [v39 shouldLogToDisk];
-    v42 = [v39 OSLogObject];
-    v43 = v42;
-    if (v41)
+    shouldLog5 = [mEMORY[0x277D69B38]5 shouldLog];
+    shouldLogToDisk2 = [mEMORY[0x277D69B38]5 shouldLogToDisk];
+    oSLogObject5 = [mEMORY[0x277D69B38]5 OSLogObject];
+    v43 = oSLogObject5;
+    if (shouldLogToDisk2)
     {
-      v40 |= 2u;
+      shouldLog5 |= 2u;
     }
 
-    if (!os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
     {
-      v40 &= 2u;
+      shouldLog5 &= 2u;
     }
 
-    if (!v40)
+    if (!shouldLog5)
     {
       goto LABEL_72;
     }
@@ -345,27 +345,27 @@ LABEL_72:
 
   else
   {
-    v39 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v39)
+    mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]5)
     {
-      v39 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v47 = [v39 shouldLog];
-    v48 = [v39 shouldLogToDisk];
-    v49 = [v39 OSLogObject];
-    v43 = v49;
-    if (v48)
+    shouldLog6 = [mEMORY[0x277D69B38]5 shouldLog];
+    shouldLogToDisk3 = [mEMORY[0x277D69B38]5 shouldLogToDisk];
+    oSLogObject6 = [mEMORY[0x277D69B38]5 OSLogObject];
+    v43 = oSLogObject6;
+    if (shouldLogToDisk3)
     {
-      v47 |= 2u;
+      shouldLog6 |= 2u;
     }
 
-    if (!os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
     {
-      v47 &= 2u;
+      shouldLog6 &= 2u;
     }
 
-    if (!v47)
+    if (!shouldLog6)
     {
       goto LABEL_72;
     }
@@ -399,30 +399,30 @@ LABEL_72:
 
 - (void)_sendWillStartToDelegate
 {
-  v3 = [(ISOperation *)self delegate];
+  delegate = [(ISOperation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __39__ISOperation__sendWillStartToDelegate__block_invoke;
     v4[3] = &unk_27A670868;
-    v5 = v3;
-    v6 = self;
+    v5 = delegate;
+    selfCopy = self;
     [(ISOperation *)self delegateDispatch:v4];
   }
 }
 
 - (void)_sendSuccessToDelegate
 {
-  v3 = [(ISOperation *)self delegate];
+  delegate = [(ISOperation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __37__ISOperation__sendSuccessToDelegate__block_invoke;
     v4[3] = &unk_27A670868;
-    v5 = v3;
-    v6 = self;
+    v5 = delegate;
+    selfCopy = self;
     [(ISOperation *)self delegateDispatch:v4];
   }
 }
@@ -477,63 +477,63 @@ LABEL_72:
   return v6;
 }
 
-- (BOOL)runSubOperation:(id)a3 returningError:(id *)a4
+- (BOOL)runSubOperation:(id)operation returningError:(id *)error
 {
-  v6 = a3;
-  if (([v6 isCancelled] & 1) == 0)
+  operationCopy = operation;
+  if (([operationCopy isCancelled] & 1) == 0)
   {
-    [v6 setParentOperation:self];
+    [operationCopy setParentOperation:self];
     [(ISOperation *)self lock];
-    [(ISOperation *)self _addSubOperation:v6];
+    [(ISOperation *)self _addSubOperation:operationCopy];
     [(ISOperation *)self unlock];
     v7 = +[ISUniqueOperationManager sharedInstance];
-    [v7 checkInOperation:v6];
+    [v7 checkInOperation:operationCopy];
 
-    [v6 main];
-    [v6 dispatchCompletionBlock];
-    [v6 setParentOperation:0];
+    [operationCopy main];
+    [operationCopy dispatchCompletionBlock];
+    [operationCopy setParentOperation:0];
     [(ISOperation *)self lock];
-    [(ISOperation *)self _removeSubOperation:v6];
+    [(ISOperation *)self _removeSubOperation:operationCopy];
     [(ISOperation *)self unlock];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [v6 error];
+    *error = [operationCopy error];
   }
 
-  v8 = [v6 success];
+  success = [operationCopy success];
 
-  return v8;
+  return success;
 }
 
-- (BOOL)runSubOperation:(id)a3 onQueue:(id)a4 error:(id *)a5
+- (BOOL)runSubOperation:(id)operation onQueue:(id)queue error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (([v8 isCancelled] & 1) == 0)
+  operationCopy = operation;
+  queueCopy = queue;
+  if (([operationCopy isCancelled] & 1) == 0)
   {
-    [v8 setParentOperation:self];
+    [operationCopy setParentOperation:self];
     [(ISOperation *)self lock];
-    [(ISOperation *)self _addSubOperation:v8];
+    [(ISOperation *)self _addSubOperation:operationCopy];
     [(ISOperation *)self unlock];
-    v10 = [MEMORY[0x277CBEA60] arrayWithObject:v8];
-    [v9 addOperations:v10 waitUntilFinished:1];
+    v10 = [MEMORY[0x277CBEA60] arrayWithObject:operationCopy];
+    [queueCopy addOperations:v10 waitUntilFinished:1];
 
-    [v8 setParentOperation:0];
+    [operationCopy setParentOperation:0];
     [(ISOperation *)self lock];
-    [(ISOperation *)self _removeSubOperation:v8];
+    [(ISOperation *)self _removeSubOperation:operationCopy];
     [(ISOperation *)self unlock];
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [v8 error];
+    *error = [operationCopy error];
   }
 
-  v11 = [v8 success];
+  success = [operationCopy success];
 
-  return v11;
+  return success;
 }
 
 - (BOOL)stopRunLoop
@@ -579,21 +579,21 @@ LABEL_72:
     }
   }
 
-  v9 = [(ISOperation *)self operationRunLoop];
-  v10 = v9;
-  v11 = v9 != 0;
-  if (v9)
+  operationRunLoop = [(ISOperation *)self operationRunLoop];
+  v10 = operationRunLoop;
+  v11 = operationRunLoop != 0;
+  if (operationRunLoop)
   {
-    v12 = [v9 getCFRunLoop];
+    getCFRunLoop = [operationRunLoop getCFRunLoop];
     v13 = *MEMORY[0x277CBF058];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __26__ISOperation_stopRunLoop__block_invoke;
     block[3] = &unk_27A670818;
     block[4] = self;
-    CFRunLoopPerformBlock(v12, v13, block);
-    CFRunLoopWakeUp(v12);
-    CFRunLoopStop(v12);
+    CFRunLoopPerformBlock(getCFRunLoop, v13, block);
+    CFRunLoopWakeUp(getCFRunLoop);
+    CFRunLoopStop(getCFRunLoop);
     v11 = 1;
   }
 
@@ -603,19 +603,19 @@ LABEL_12:
   return v11;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   [(ISOperation *)self lock];
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   [(ISOperation *)self unlock];
 }
 
-- (void)setShouldMessageMainThread:(BOOL)a3
+- (void)setShouldMessageMainThread:(BOOL)thread
 {
   [(ISOperation *)self lock];
-  self->_shouldMessageMainThread = a3;
+  self->_shouldMessageMainThread = thread;
 
   [(ISOperation *)self unlock];
 }
@@ -642,23 +642,23 @@ LABEL_12:
 
 - (id)copyActivePowerAssertionIdentifiers
 {
-  v3 = [(ISOperation *)self parentOperation];
-  v4 = v3;
-  if (v3)
+  parentOperation = [(ISOperation *)self parentOperation];
+  v4 = parentOperation;
+  if (parentOperation)
   {
-    v5 = [v3 copyActivePowerAssertionIdentifiers];
+    copyActivePowerAssertionIdentifiers = [parentOperation copyActivePowerAssertionIdentifiers];
   }
 
   else
   {
-    v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
+    copyActivePowerAssertionIdentifiers = objc_alloc_init(MEMORY[0x277CBEB18]);
   }
 
-  v6 = v5;
-  v7 = [(ISOperation *)self powerAssertionIdentifier];
-  if (v7)
+  v6 = copyActivePowerAssertionIdentifiers;
+  powerAssertionIdentifier = [(ISOperation *)self powerAssertionIdentifier];
+  if (powerAssertionIdentifier)
   {
-    [v6 addObject:v7];
+    [v6 addObject:powerAssertionIdentifier];
   }
 
   return v6;
@@ -667,8 +667,8 @@ LABEL_12:
 - (id)copySerializationLocks
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(ISOperation *)self serializationLockIdentifiers];
-  if ([v2 count])
+  serializationLockIdentifiers = [(ISOperation *)self serializationLockIdentifiers];
+  if ([serializationLockIdentifiers count])
   {
     v3 = +[ISUniqueOperationManager sharedInstance];
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -676,7 +676,7 @@ LABEL_12:
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v2;
+    v5 = serializationLockIdentifiers;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -715,30 +715,30 @@ LABEL_12:
   return v4;
 }
 
-- (void)delegateDispatch:(id)a3
+- (void)delegateDispatch:(id)dispatch
 {
-  v4 = a3;
+  dispatchCopy = dispatch;
   if ([(ISOperation *)self shouldMessageMainThread])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __32__ISOperation_delegateDispatch___block_invoke;
     block[3] = &unk_27A670840;
-    v6 = v4;
+    v6 = dispatchCopy;
     dispatch_sync(MEMORY[0x277D85CD0], block);
   }
 
   else
   {
-    v4[2](v4);
+    dispatchCopy[2](dispatchCopy);
   }
 }
 
 - (void)dispatchCompletionBlock
 {
-  v3 = [(ISOperation *)self completionBlock];
+  completionBlock = [(ISOperation *)self completionBlock];
 
-  if (v3)
+  if (completionBlock)
   {
     v4 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -761,31 +761,31 @@ void __38__ISOperation_dispatchCompletionBlock__block_invoke(uint64_t a1)
   }
 }
 
-- (void)releasePowerAssertionsDuringBlock:(id)a3
+- (void)releasePowerAssertionsDuringBlock:(id)block
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ISOperation *)self copyActivePowerAssertionIdentifiers];
+  blockCopy = block;
+  copyActivePowerAssertionIdentifiers = [(ISOperation *)self copyActivePowerAssertionIdentifiers];
   v6 = +[ISDevice sharedInstance];
-  v7 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v7)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v7 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
-  if ([v7 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v9 &= 2u;
   }
@@ -797,7 +797,7 @@ void __38__ISOperation_dispatchCompletionBlock__block_invoke(uint64_t a1)
     v36 = 138412546;
     v37 = v11;
     v38 = 2048;
-    v39 = [v5 count];
+    v39 = [copyActivePowerAssertionIdentifiers count];
     LODWORD(v25) = 22;
     v24 = &v36;
     v13 = _os_log_send_and_compose_impl();
@@ -819,7 +819,7 @@ void __38__ISOperation_dispatchCompletionBlock__block_invoke(uint64_t a1)
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v15 = v5;
+  v15 = copyActivePowerAssertionIdentifiers;
   v16 = [v15 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v16)
   {
@@ -842,7 +842,7 @@ void __38__ISOperation_dispatchCompletionBlock__block_invoke(uint64_t a1)
     while (v16);
   }
 
-  v4[2](v4);
+  blockCopy[2](blockCopy);
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -873,9 +873,9 @@ void __38__ISOperation_dispatchCompletionBlock__block_invoke(uint64_t a1)
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)run:(BOOL)a3
+- (void)run:(BOOL)run
 {
-  if (!a3)
+  if (!run)
   {
     [(ISOperation *)self run];
   }
@@ -883,22 +883,22 @@ void __38__ISOperation_dispatchCompletionBlock__block_invoke(uint64_t a1)
 
 - (void)sendDidTakeSerializationLocks
 {
-  v3 = [(ISOperation *)self delegate];
+  delegate = [(ISOperation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __44__ISOperation_sendDidTakeSerializationLocks__block_invoke;
     v4[3] = &unk_27A670868;
-    v5 = v3;
-    v6 = self;
+    v5 = delegate;
+    selfCopy = self;
     [(ISOperation *)self delegateDispatch:v4];
   }
 }
 
 - (void)sendProgressToDelegate
 {
-  v3 = [(ISOperation *)self delegate];
+  delegate = [(ISOperation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     [(ISOperation *)self lock];
@@ -908,8 +908,8 @@ void __38__ISOperation_dispatchCompletionBlock__block_invoke(uint64_t a1)
     v6[1] = 3221225472;
     v6[2] = __37__ISOperation_sendProgressToDelegate__block_invoke;
     v6[3] = &unk_27A670890;
-    v7 = v3;
-    v8 = self;
+    v7 = delegate;
+    selfCopy = self;
     v9 = v4;
     v5 = v4;
     [(ISOperation *)self delegateDispatch:v6];
@@ -925,13 +925,13 @@ void __38__ISOperation_dispatchCompletionBlock__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setSerializationLockIdentifiers:(id)a3
+- (void)setSerializationLockIdentifiers:(id)identifiers
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   [(ISOperation *)self lock];
-  if (self->_serializationLockIdentifiers != v6)
+  if (self->_serializationLockIdentifiers != identifiersCopy)
   {
-    v4 = [(NSArray *)v6 copy];
+    v4 = [(NSArray *)identifiersCopy copy];
     serializationLockIdentifiers = self->_serializationLockIdentifiers;
     self->_serializationLockIdentifiers = v4;
   }
@@ -939,107 +939,107 @@ void __38__ISOperation_dispatchCompletionBlock__block_invoke(uint64_t a1)
   [(ISOperation *)self unlock];
 }
 
-- (void)_addSubOperation:(id)a3
+- (void)_addSubOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   subOperations = self->_subOperations;
-  v8 = v4;
+  v8 = operationCopy;
   if (!subOperations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_subOperations;
     self->_subOperations = v6;
 
-    v4 = v8;
+    operationCopy = v8;
     subOperations = self->_subOperations;
   }
 
-  [(NSMutableArray *)subOperations addObject:v4];
+  [(NSMutableArray *)subOperations addObject:operationCopy];
 }
 
 - (void)_failAfterException
 {
-  v3 = [(ISOperation *)self error];
-  if (!v3)
+  error = [(ISOperation *)self error];
+  if (!error)
   {
     v4 = ISError(0, 0, 0);
     [(ISOperation *)self setError:v4];
-    v3 = v4;
+    error = v4;
   }
 
-  v5 = v3;
-  [(ISOperation *)self _sendErrorToDelegate:v3];
+  v5 = error;
+  [(ISOperation *)self _sendErrorToDelegate:error];
 }
 
-- (void)_sendErrorToDelegate:(id)a3
+- (void)_sendErrorToDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(ISOperation *)self delegate];
+  delegateCopy = delegate;
+  delegate = [(ISOperation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __36__ISOperation__sendErrorToDelegate___block_invoke;
     v6[3] = &unk_27A670890;
-    v7 = v5;
-    v8 = self;
-    v9 = v4;
+    v7 = delegate;
+    selfCopy = self;
+    v9 = delegateCopy;
     [(ISOperation *)self delegateDispatch:v6];
   }
 }
 
-- (id)loadedURLBagWithContext:(id)a3 accountDSID:(id)a4 returningError:(id *)a5
+- (id)loadedURLBagWithContext:(id)context accountDSID:(id)d returningError:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[ISLoadURLBagOperation alloc] initWithBagContext:v9];
+  dCopy = d;
+  contextCopy = context;
+  v10 = [[ISLoadURLBagOperation alloc] initWithBagContext:contextCopy];
 
-  [(ISLoadURLBagOperation *)v10 setAccountDSID:v8];
+  [(ISLoadURLBagOperation *)v10 setAccountDSID:dCopy];
   v15 = 0;
-  LODWORD(v8) = [(ISOperation *)self runSubOperation:v10 returningError:&v15];
+  LODWORD(dCopy) = [(ISOperation *)self runSubOperation:v10 returningError:&v15];
   v11 = v15;
-  v12 = 0;
-  if (v8)
+  uRLBag = 0;
+  if (dCopy)
   {
-    v12 = [(ISLoadURLBagOperation *)v10 URLBag];
+    uRLBag = [(ISLoadURLBagOperation *)v10 URLBag];
   }
 
-  if (a5 && !v12)
+  if (error && !uRLBag)
   {
     v13 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
-  return v12;
+  return uRLBag;
 }
 
-- (BOOL)loadURLBagWithContext:(id)a3 returningError:(id *)a4
+- (BOOL)loadURLBagWithContext:(id)context returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [[ISLoadURLBagOperation alloc] initWithBagContext:v6];
+  contextCopy = context;
+  v7 = [[ISLoadURLBagOperation alloc] initWithBagContext:contextCopy];
 
   v13 = 0;
   v8 = [(ISOperation *)self runSubOperation:v7 returningError:&v13];
   v9 = v13;
   v10 = v9;
-  if (a4)
+  if (error)
   {
     v11 = v9;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v8;
 }
 
-- (BOOL)loadSoftwareMapReturningError:(id *)a3
+- (BOOL)loadSoftwareMapReturningError:(id *)error
 {
   v8 = 0;
   v5 = objc_alloc_init(ISLoadSoftwareMapOperation);
   v6 = [(ISOperation *)self runSubOperation:v5 returningError:&v8];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v8;
+    *error = v8;
   }
 
   return v6;
@@ -1047,60 +1047,60 @@ void __38__ISOperation_dispatchCompletionBlock__block_invoke(uint64_t a1)
 
 - (unint64_t)authenticatedAccountCredentialSource
 {
-  v2 = [(ISOperation *)self parentOperation];
+  parentOperation = [(ISOperation *)self parentOperation];
 
-  return [(ISOperation *)v2 authenticatedAccountCredentialSource];
+  return [(ISOperation *)parentOperation authenticatedAccountCredentialSource];
 }
 
 - (id)authenticatedAccountDSID
 {
-  v2 = [(ISOperation *)self parentOperation];
+  parentOperation = [(ISOperation *)self parentOperation];
 
-  return [(ISOperation *)v2 authenticatedAccountDSID];
+  return [(ISOperation *)parentOperation authenticatedAccountDSID];
 }
 
-- (BOOL)copyAccountID:(id *)a3 credentialSource:(unint64_t *)a4 byAuthenticatingWithContext:(id)a5 returningError:(id *)a6
+- (BOOL)copyAccountID:(id *)d credentialSource:(unint64_t *)source byAuthenticatingWithContext:(id)context returningError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v22 = 0;
-  v10 = [[ISStoreAuthenticateOperation alloc] initWithAuthenticationContext:a5];
+  v10 = [[ISStoreAuthenticateOperation alloc] initWithAuthenticationContext:context];
   if (v10)
   {
     if ([(ISOperation *)self runSubOperation:v10 returningError:&v22])
     {
-      v11 = [(ISStoreAuthenticateOperation *)v10 authenticatedAccountDSID];
-      v12 = [(ISOperation *)v10 authenticatedAccountCredentialSource];
+      authenticatedAccountDSID = [(ISStoreAuthenticateOperation *)v10 authenticatedAccountDSID];
+      authenticatedAccountCredentialSource = [(ISOperation *)v10 authenticatedAccountCredentialSource];
       v13 = 1;
     }
 
     else
     {
-      v12 = 0;
-      v11 = 0;
+      authenticatedAccountCredentialSource = 0;
+      authenticatedAccountDSID = 0;
       v13 = 0;
     }
   }
 
   else
   {
-    v14 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-    if (!v14)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v14 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
-    if ([v14 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_ERROR))
     {
       v16 &= 2u;
     }
@@ -1120,16 +1120,16 @@ void __38__ISOperation_dispatchCompletionBlock__block_invoke(uint64_t a1)
       }
     }
 
-    v12 = 0;
-    v11 = 0;
+    authenticatedAccountCredentialSource = 0;
+    authenticatedAccountDSID = 0;
     v13 = 0;
     v22 = ISError(4, 0, 0);
   }
 
-  if (a3)
+  if (d)
   {
-    *a3 = v11;
-    if (!a4)
+    *d = authenticatedAccountDSID;
+    if (!source)
     {
       goto LABEL_19;
     }
@@ -1137,48 +1137,48 @@ void __38__ISOperation_dispatchCompletionBlock__block_invoke(uint64_t a1)
     goto LABEL_18;
   }
 
-  if (a4)
+  if (source)
   {
 LABEL_18:
-    *a4 = v12;
+    *source = authenticatedAccountCredentialSource;
   }
 
 LABEL_19:
-  if (a6)
+  if (error)
   {
-    *a6 = v22;
+    *error = v22;
   }
 
   v19 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
-- (BOOL)copyAccountID:(id *)a3 credentialSource:(unint64_t *)a4 byHandlingAuthenticateResponse:(id)a5 returningError:(id *)a6
+- (BOOL)copyAccountID:(id *)d credentialSource:(unint64_t *)source byHandlingAuthenticateResponse:(id)response returningError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
   v25 = 0;
-  v10 = [a5 responseDictionary];
+  responseDictionary = [response responseDictionary];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [MEMORY[0x277D69B38] sharedDaemonConfigOversize];
-    if (!v11)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedDaemonConfigOversize];
+    if (!mEMORY[0x277D69B38])
     {
-      v11 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
-    if ([v11 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v13 &= 2u;
     }
@@ -1188,7 +1188,7 @@ LABEL_19:
       v26 = 138412546;
       v27 = objc_opt_class();
       v28 = 2112;
-      v29 = v10;
+      v29 = responseDictionary;
       LODWORD(v24) = 22;
       v23 = &v26;
       v14 = _os_log_send_and_compose_impl();
@@ -1203,12 +1203,12 @@ LABEL_19:
     }
   }
 
-  v17 = [ISStoreAuthenticateOperation _copyErrorForAuthenticateResponse:a5 error:&v25, v23];
+  v17 = [ISStoreAuthenticateOperation _copyErrorForAuthenticateResponse:response error:&v25, v23];
   if (v17)
   {
-    v18 = [objc_msgSend(a5 "authenticatedAccount")];
-    v19 = [a5 credentialSource];
-    if (a3)
+    v18 = [objc_msgSend(response "authenticatedAccount")];
+    credentialSource = [response credentialSource];
+    if (d)
     {
       goto LABEL_14;
     }
@@ -1216,13 +1216,13 @@ LABEL_19:
 
   else
   {
-    v19 = 0;
+    credentialSource = 0;
     v18 = 0;
-    if (a3)
+    if (d)
     {
 LABEL_14:
-      *a3 = v18;
-      if (!a4)
+      *d = v18;
+      if (!source)
       {
         goto LABEL_16;
       }
@@ -1231,14 +1231,14 @@ LABEL_14:
     }
   }
 
-  if (a4)
+  if (source)
   {
 LABEL_15:
-    *a4 = v19;
+    *source = credentialSource;
   }
 
 LABEL_16:
-  if (a6)
+  if (error)
   {
     v20 = v17;
   }
@@ -1250,7 +1250,7 @@ LABEL_16:
 
   if ((v20 & 1) == 0)
   {
-    *a6 = v25;
+    *error = v25;
   }
 
   v21 = *MEMORY[0x277D85DE8];

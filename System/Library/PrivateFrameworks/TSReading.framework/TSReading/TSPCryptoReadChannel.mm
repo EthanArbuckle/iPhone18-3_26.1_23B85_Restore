@@ -1,72 +1,72 @@
 @interface TSPCryptoReadChannel
-- (TSPCryptoReadChannel)initWithReadChannel:(id)a3 decryptionKey:(id)a4;
+- (TSPCryptoReadChannel)initWithReadChannel:(id)channel decryptionKey:(id)key;
 - (void)close;
 - (void)dealloc;
-- (void)readWithQueue:(id)a3 handler:(id)a4;
+- (void)readWithQueue:(id)queue handler:(id)handler;
 @end
 
 @implementation TSPCryptoReadChannel
 
-- (TSPCryptoReadChannel)initWithReadChannel:(id)a3 decryptionKey:(id)a4
+- (TSPCryptoReadChannel)initWithReadChannel:(id)channel decryptionKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  channelCopy = channel;
+  keyCopy = key;
   v32.receiver = self;
   v32.super_class = TSPCryptoReadChannel;
   v9 = [(TSPCryptoReadChannel *)&v32 init];
   if (v9)
   {
-    if (!v7)
+    if (!channelCopy)
     {
-      v10 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoReadChannel initWithReadChannel:decryptionKey:]"];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoReadChannel.mm"];
-      [v10 handleFailureInFunction:v11 file:v12 lineNumber:39 description:{@"invalid nil value for '%s'", "readChannel"}];
+      [currentHandler handleFailureInFunction:v11 file:v12 lineNumber:39 description:{@"invalid nil value for '%s'", "readChannel"}];
     }
 
-    objc_storeStrong(&v9->_readChannel, a3);
-    if (!v8)
+    objc_storeStrong(&v9->_readChannel, channel);
+    if (!keyCopy)
     {
-      v13 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoReadChannel initWithReadChannel:decryptionKey:]"];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoReadChannel.mm"];
-      [v13 handleFailureInFunction:v14 file:v15 lineNumber:42 description:{@"invalid nil value for '%s'", "decryptionKey"}];
+      [currentHandler2 handleFailureInFunction:v14 file:v15 lineNumber:42 description:{@"invalid nil value for '%s'", "decryptionKey"}];
     }
 
-    objc_storeStrong(&v9->_decryptionKey, a4);
+    objc_storeStrong(&v9->_decryptionKey, key);
     v16 = dispatch_queue_create("TSPCryptoReadChannel.Read", 0);
     readChannelQueue = v9->_readChannelQueue;
     v9->_readChannelQueue = v16;
 
-    v18 = [v8 passphrase];
-    v19 = [v18 cStringUsingEncoding:4];
+    passphrase = [keyCopy passphrase];
+    v19 = [passphrase cStringUsingEncoding:4];
 
     if (!v19)
     {
-      v20 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoReadChannel initWithReadChannel:decryptionKey:]"];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoReadChannel.mm"];
-      [v20 handleFailureInFunction:v21 file:v22 lineNumber:49 description:@"Invalid passphrase"];
+      [currentHandler3 handleFailureInFunction:v21 file:v22 lineNumber:49 description:@"Invalid passphrase"];
     }
 
     v23 = malloc_type_malloc(0x10uLL, 0x100004077774924uLL);
     v9->_iv = v23;
     if (!v23)
     {
-      v24 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoReadChannel initWithReadChannel:decryptionKey:]"];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoReadChannel.mm"];
-      [v24 handleFailureInFunction:v25 file:v26 lineNumber:59 description:@"Failed to allocate space for IV"];
+      [currentHandler4 handleFailureInFunction:v25 file:v26 lineNumber:59 description:@"Failed to allocate space for IV"];
     }
 
     v27 = malloc_type_malloc(0x200000uLL, 0x100004077774924uLL);
     v9->_buffer = v27;
     if (!v27)
     {
-      v28 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler5 = [MEMORY[0x277D6C290] currentHandler];
       v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoReadChannel initWithReadChannel:decryptionKey:]"];
       v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoReadChannel.mm"];
-      [v28 handleFailureInFunction:v29 file:v30 lineNumber:62 description:@"Failed to allocate space for decryption buffer"];
+      [currentHandler5 handleFailureInFunction:v29 file:v30 lineNumber:62 description:@"Failed to allocate space for decryption buffer"];
     }
 
     if (!v9->_readChannel || !v19 || !v9->_decryptionKey || !v9->_iv || !v9->_buffer)
@@ -115,17 +115,17 @@
   self->_readChannel = 0;
 }
 
-- (void)readWithQueue:(id)a3 handler:(id)a4
+- (void)readWithQueue:(id)queue handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   readChannel = self->_readChannel;
   if (!readChannel)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPCryptoReadChannel readWithQueue:handler:]"];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPCryptoReadChannel.mm"];
-    [v9 handleFailureInFunction:v10 file:v11 lineNumber:96 description:@"Read channel is already closed"];
+    [currentHandler handleFailureInFunction:v10 file:v11 lineNumber:96 description:@"Read channel is already closed"];
 
     readChannel = self->_readChannel;
   }
@@ -135,10 +135,10 @@
   v15[1] = 3221225472;
   v15[2] = __46__TSPCryptoReadChannel_readWithQueue_handler___block_invoke;
   v15[3] = &unk_279D47468;
-  v13 = v6;
+  v13 = queueCopy;
   v16 = v13;
-  v14 = v7;
-  v17 = self;
+  v14 = handlerCopy;
+  selfCopy = self;
   v18 = v14;
   [(TSUStreamReadChannel *)readChannel readWithQueue:readChannelQueue handler:v15];
 }

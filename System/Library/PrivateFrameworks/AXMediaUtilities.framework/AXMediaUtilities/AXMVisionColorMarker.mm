@@ -1,19 +1,19 @@
 @interface AXMVisionColorMarker
 + (NSArray)allColorMarkers;
-+ (id)closestMarkerToColor:(id)a3 withMaximumThreshold:(double)a4;
-+ (id)colorWithHueDegrees:(double)a3 saturation:(double)a4 brightness:(double)a5 localizedName:(id)a6;
++ (id)closestMarkerToColor:(id)color withMaximumThreshold:(double)threshold;
++ (id)colorWithHueDegrees:(double)degrees saturation:(double)saturation brightness:(double)brightness localizedName:(id)name;
 - (id)description;
 @end
 
 @implementation AXMVisionColorMarker
 
-+ (id)colorWithHueDegrees:(double)a3 saturation:(double)a4 brightness:(double)a5 localizedName:(id)a6
++ (id)colorWithHueDegrees:(double)degrees saturation:(double)saturation brightness:(double)brightness localizedName:(id)name
 {
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___AXMVisionColorMarker;
-  v9 = a6;
-  v10 = objc_msgSendSuper2(&v12, sel_colorWithHueDegrees_saturation_brightness_, a3, a4, a5);
-  [v10 setLocalizedName:{v9, v12.receiver, v12.super_class}];
+  nameCopy = name;
+  v10 = objc_msgSendSuper2(&v12, sel_colorWithHueDegrees_saturation_brightness_, degrees, saturation, brightness);
+  [v10 setLocalizedName:{nameCopy, v12.receiver, v12.super_class}];
 
   return v10;
 }
@@ -118,18 +118,18 @@ void __39__AXMVisionColorMarker_allColorMarkers__block_invoke()
   allColorMarkers__ColorMarkers = v10;
 }
 
-+ (id)closestMarkerToColor:(id)a3 withMaximumThreshold:(double)a4
++ (id)closestMarkerToColor:(id)color withMaximumThreshold:(double)threshold
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = fmin(fmax(a4, 0.0), 1.0);
-  v8 = [MEMORY[0x1E695DF70] array];
+  colorCopy = color;
+  v7 = fmin(fmax(threshold, 0.0), 1.0);
+  array = [MEMORY[0x1E695DF70] array];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v9 = [a1 allColorMarkers];
-  v10 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  allColorMarkers = [self allColorMarkers];
+  v10 = [allColorMarkers countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v10)
   {
     v11 = v10;
@@ -140,18 +140,18 @@ void __39__AXMVisionColorMarker_allColorMarkers__block_invoke()
       {
         if (*v34 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allColorMarkers);
         }
 
         v14 = *(*(&v33 + 1) + 8 * i);
-        [v14 euclidianDistanceHS:v6];
+        [v14 euclidianDistanceHS:colorCopy];
         if (v15 < v7 + v7)
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v11 = [allColorMarkers countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v11);
@@ -163,7 +163,7 @@ void __39__AXMVisionColorMarker_allColorMarkers__block_invoke()
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v17 = v8;
+  v17 = array;
   v18 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v18)
   {
@@ -181,7 +181,7 @@ void __39__AXMVisionColorMarker_allColorMarkers__block_invoke()
         }
 
         v24 = *(*(&v29 + 1) + 8 * j);
-        [v24 euclidianDistanceHSV:{v6, v29}];
+        [v24 euclidianDistanceHSV:{colorCopy, v29}];
         if (v25 < v22)
         {
           v26 = v25;
@@ -219,8 +219,8 @@ void __39__AXMVisionColorMarker_allColorMarkers__block_invoke()
   v8.receiver = self;
   v8.super_class = AXMVisionColorMarker;
   v4 = [(AXMVisionColor *)&v8 description];
-  v5 = [(AXMVisionColorMarker *)self localizedName];
-  v6 = [v3 stringWithFormat:@"%@ name:%@", v4, v5];
+  localizedName = [(AXMVisionColorMarker *)self localizedName];
+  v6 = [v3 stringWithFormat:@"%@ name:%@", v4, localizedName];
 
   return v6;
 }

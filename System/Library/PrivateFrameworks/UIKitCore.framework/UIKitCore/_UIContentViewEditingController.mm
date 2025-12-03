@@ -1,33 +1,33 @@
 @interface _UIContentViewEditingController
 - (BOOL)isDisplayingEditedText;
-- (BOOL)makeTextInputFirstResponderWithInitialLayoutBlock:(id)a3;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldEndEditing:(id)a3;
+- (BOOL)makeTextInputFirstResponderWithInitialLayoutBlock:(id)block;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldEndEditing:(id)editing;
 - (NSString)description;
 - (UIView)contentView;
-- (_UIContentViewEditingController)initWithContentView:(id)a3 editableLabel:(id)a4;
+- (_UIContentViewEditingController)initWithContentView:(id)view editableLabel:(id)label;
 - (uint64_t)removeGestureRecognizer;
 - (uint64_t)tearDownTextInputView;
 - (void)dealloc;
-- (void)longPressRecognizerChanged:(id)a3;
+- (void)longPressRecognizerChanged:(id)changed;
 - (void)setupTextInputView;
 - (void)tearDownPassthroughInteraction;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)updateLabelProperties:(id)a3 editingConfiguration:(id)a4;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)updateLabelProperties:(id)properties editingConfiguration:(id)configuration;
 @end
 
 @implementation _UIContentViewEditingController
 
-- (_UIContentViewEditingController)initWithContentView:(id)a3 editableLabel:(id)a4
+- (_UIContentViewEditingController)initWithContentView:(id)view editableLabel:(id)label
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  viewCopy = view;
+  labelCopy = label;
+  v9 = labelCopy;
+  if (viewCopy)
   {
-    if (v8)
+    if (labelCopy)
     {
       goto LABEL_3;
     }
@@ -35,8 +35,8 @@
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIContentViewEditingController.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"contentView != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContentViewEditingController.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"contentView != nil"}];
 
     if (v9)
     {
@@ -48,8 +48,8 @@ LABEL_3:
     }
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"_UIContentViewEditingController.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"editableLabel != nil && !editableLabel.hidden"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIContentViewEditingController.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"editableLabel != nil && !editableLabel.hidden"}];
 
 LABEL_4:
   v15.receiver = self;
@@ -58,8 +58,8 @@ LABEL_4:
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_contentView, v7);
-    objc_storeStrong(&v11->_editableLabel, a4);
+    objc_storeWeak(&v10->_contentView, viewCopy);
+    objc_storeStrong(&v11->_editableLabel, label);
   }
 
   return v11;
@@ -70,17 +70,17 @@ LABEL_4:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_contentView);
-  v6 = [v3 stringWithFormat:@"<%@ %p contentView: %@>", v4, self, WeakRetained];
+  weakRetained = [v3 stringWithFormat:@"<%@ %p contentView: %@>", v4, self, WeakRetained];
 
-  return v6;
+  return weakRetained;
 }
 
-- (void)updateLabelProperties:(id)a3 editingConfiguration:(id)a4
+- (void)updateLabelProperties:(id)properties editingConfiguration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  objc_storeStrong(&self->_editingConfiguration, a4);
-  objc_storeStrong(&self->_labelProperties, a3);
+  propertiesCopy = properties;
+  configurationCopy = configuration;
+  objc_storeStrong(&self->_editingConfiguration, configuration);
+  objc_storeStrong(&self->_labelProperties, properties);
   textInputView = self->_textInputView;
   if (textInputView && ![(UIView *)textInputView isFirstResponder]&& ![(_UIContentViewEditingConfiguration *)self->_editingConfiguration useTextInputAsLabel])
   {
@@ -96,21 +96,21 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v8)
+  if (!propertiesCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_UIContentViewEditingController.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"labelProperties != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContentViewEditingController.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"labelProperties != nil"}];
 
     editingConfiguration = self->_editingConfiguration;
   }
 
-  v12 = [(_UIContentViewEditingConfiguration *)editingConfiguration useTextInputAsLabel];
+  useTextInputAsLabel = [(_UIContentViewEditingConfiguration *)editingConfiguration useTextInputAsLabel];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78___UIContentViewEditingController_updateLabelProperties_editingConfiguration___block_invoke;
   block[3] = &unk_1E70F35E0;
-  v19 = v12;
-  v13 = v8;
+  v19 = useTextInputAsLabel;
+  v13 = propertiesCopy;
   v18 = v13;
   if (updateLabelProperties_editingConfiguration__once != -1)
   {
@@ -122,7 +122,7 @@ LABEL_19:
     [(_UIListContentTextPropertiesInternal *)self->_labelProperties _applyToTextField:?];
   }
 
-  else if (v12)
+  else if (useTextInputAsLabel)
   {
     [(_UIContentViewEditingController *)&self->super.isa setupTextInputView];
   }
@@ -167,24 +167,24 @@ LABEL_20:
 
 - (void)setupTextInputView
 {
-  if (a1)
+  if (self)
   {
-    if (a1[6])
+    if (self[6])
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel_setupTextInputView object:a1 file:@"_UIContentViewEditingController.m" lineNumber:127 description:@"Attempting to set up a text input view while one already exists."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_setupTextInputView object:self file:@"_UIContentViewEditingController.m" lineNumber:127 description:@"Attempting to set up a text input view while one already exists."];
     }
 
-    [a1[5] frame];
+    [self[5] frame];
     v6 = [(UITextField *)[_UIContentViewEditingTextField alloc] initWithFrame:v2, v3, v4, v5];
-    v7 = a1[6];
-    a1[6] = v6;
+    v7 = self[6];
+    self[6] = v6;
 
-    [a1[6] setDelegate:a1];
-    [a1[8] _applyToTextField:a1[6]];
-    [a1[5] setAlpha:0.0];
-    WeakRetained = objc_loadWeakRetained(a1 + 4);
-    [WeakRetained addSubview:a1[6]];
+    [self[6] setDelegate:self];
+    [self[8] _applyToTextField:self[6]];
+    [self[5] setAlpha:0.0];
+    WeakRetained = objc_loadWeakRetained(self + 4);
+    [WeakRetained addSubview:self[6]];
   }
 }
 
@@ -193,8 +193,8 @@ LABEL_20:
   if (result)
   {
     v1 = result;
-    v2 = [*(result + 8) view];
-    [v2 removeGestureRecognizer:*(v1 + 8)];
+    view = [*(result + 8) view];
+    [view removeGestureRecognizer:*(v1 + 8)];
 
     v3 = *(v1 + 40);
 
@@ -212,9 +212,9 @@ LABEL_20:
   [(_UIContentViewEditingController *)&v3 dealloc];
 }
 
-- (void)longPressRecognizerChanged:(id)a3
+- (void)longPressRecognizerChanged:(id)changed
 {
-  if ([a3 state] == 1 && !-[UIView isFirstResponder](self->_textInputView, "isFirstResponder") && !-[_UIContentViewEditingController makeTextInputFirstResponderWithInitialLayoutBlock:](self, "makeTextInputFirstResponderWithInitialLayoutBlock:", &__block_literal_global_321))
+  if ([changed state] == 1 && !-[UIView isFirstResponder](self->_textInputView, "isFirstResponder") && !-[_UIContentViewEditingController makeTextInputFirstResponderWithInitialLayoutBlock:](self, "makeTextInputFirstResponderWithInitialLayoutBlock:", &__block_literal_global_321))
   {
 
     [(_UIContentViewEditingController *)self tearDownTextInputView];
@@ -223,17 +223,17 @@ LABEL_20:
 
 - (void)tearDownPassthroughInteraction
 {
-  if (a1 && *(a1 + 16))
+  if (self && *(self + 16))
   {
-    [*(a1 + 48) removeInteraction:?];
-    v2 = *(a1 + 16);
-    *(a1 + 16) = 0;
+    [*(self + 48) removeInteraction:?];
+    v2 = *(self + 16);
+    *(self + 16) = 0;
   }
 }
 
-- (BOOL)makeTextInputFirstResponderWithInitialLayoutBlock:(id)a3
+- (BOOL)makeTextInputFirstResponderWithInitialLayoutBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_editingConfiguration)
   {
     if (!self->_textInputView)
@@ -241,18 +241,18 @@ LABEL_20:
       [(_UIContentViewEditingController *)&self->super.isa setupTextInputView];
     }
 
-    if (v4)
+    if (blockCopy)
     {
-      [UIView performWithoutAnimation:v4];
+      [UIView performWithoutAnimation:blockCopy];
     }
 
     LODWORD(v5) = [(UITextField *)self->_textInputView becomeFirstResponder];
     if ([(_UIContentViewEditingConfiguration *)self->_editingConfiguration selectAllTextWhenEditingBegins]&& v5)
     {
       textInputView = self->_textInputView;
-      v7 = [(UITextField *)textInputView beginningOfDocument];
-      v8 = [(UITextField *)self->_textInputView endOfDocument];
-      v5 = [(UITextField *)textInputView textRangeFromPosition:v7 toPosition:v8];
+      beginningOfDocument = [(UITextField *)textInputView beginningOfDocument];
+      endOfDocument = [(UITextField *)self->_textInputView endOfDocument];
+      v5 = [(UITextField *)textInputView textRangeFromPosition:beginningOfDocument toPosition:endOfDocument];
       [(UITextField *)self->_textInputView setSelectedTextRange:v5];
 
       LOBYTE(v5) = 1;
@@ -280,33 +280,33 @@ LABEL_20:
   }
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  if ([v10 isEqualToString:@"\t"])
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"\t"])
   {
-    [v9 resignFirstResponder];
+    [fieldCopy resignFirstResponder];
     v11 = 0;
   }
 
   else
   {
-    v12 = [(_UIContentViewEditingConfiguration *)self->_editingConfiguration shouldChangeHandler];
-    if (v12)
+    shouldChangeHandler = [(_UIContentViewEditingConfiguration *)self->_editingConfiguration shouldChangeHandler];
+    if (shouldChangeHandler)
     {
       v13 = [_UIContentViewEditingState alloc];
-      v14 = [v9 text];
-      v15 = [(_UIContentViewEditingState *)v13 initWithText:v14 proposedReplacementText:v10 proposedReplacementRange:location, length];
+      text = [fieldCopy text];
+      v15 = [(_UIContentViewEditingState *)v13 initWithText:text proposedReplacementText:stringCopy proposedReplacementRange:location, length];
 
-      v16 = (v12)[2](v12, v15);
+      v16 = (shouldChangeHandler)[2](shouldChangeHandler, v15);
       v11 = [(_UIContentViewEditingState *)v15 isEqual:v16];
       if ((v11 & 1) == 0)
       {
-        v17 = [v16 text];
-        [v9 setText:v17];
+        text2 = [v16 text];
+        [fieldCopy setText:text2];
       }
     }
 
@@ -319,13 +319,13 @@ LABEL_20:
   return v11;
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  v3 = [(_UIContentViewEditingConfiguration *)self->_editingConfiguration shouldBeginHandler];
-  v4 = v3;
-  if (v3)
+  shouldBeginHandler = [(_UIContentViewEditingConfiguration *)self->_editingConfiguration shouldBeginHandler];
+  v4 = shouldBeginHandler;
+  if (shouldBeginHandler)
   {
-    v5 = (*(v3 + 16))(v3);
+    v5 = (*(shouldBeginHandler + 16))(shouldBeginHandler);
   }
 
   else
@@ -336,14 +336,14 @@ LABEL_20:
   return v5;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   if (self)
   {
     if (self->_passthroughInteraction)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel_setupPassthroughInteraction object:self file:@"_UIContentViewEditingController.m" lineNumber:180 description:@"Attempting to set up a passthrough interaction while one already exists"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_setupPassthroughInteraction object:self file:@"_UIContentViewEditingController.m" lineNumber:180 description:@"Attempting to set up a passthrough interaction while one already exists"];
     }
 
     v4 = objc_alloc_init(_UIPassthroughScrollInteraction);
@@ -358,20 +358,20 @@ LABEL_20:
   }
 }
 
-- (BOOL)textFieldShouldEndEditing:(id)a3
+- (BOOL)textFieldShouldEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(_UIContentViewEditingConfiguration *)self->_editingConfiguration shouldEndHandler];
-  if (v5 && (v6 = [_UIContentViewEditingState alloc], [v4 text], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[_UIContentViewEditingState initWithText:](v6, "initWithText:", v7), v7, LODWORD(v7) = (v5)[2](v5, v8), v8, !v7))
+  editingCopy = editing;
+  shouldEndHandler = [(_UIContentViewEditingConfiguration *)self->_editingConfiguration shouldEndHandler];
+  if (shouldEndHandler && (v6 = [_UIContentViewEditingState alloc], [editingCopy text], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[_UIContentViewEditingState initWithText:](v6, "initWithText:", v7), v7, LODWORD(v7) = (shouldEndHandler)[2](shouldEndHandler, v8), v8, !v7))
   {
     v12 = 0;
   }
 
   else
   {
-    v9 = [v4 text];
-    v10 = [(_UIListContentTextPropertiesInternal *)self->_labelProperties text];
-    v11 = [v9 isEqualToString:v10];
+    text = [editingCopy text];
+    text2 = [(_UIListContentTextPropertiesInternal *)self->_labelProperties text];
+    v11 = [text isEqualToString:text2];
 
     v12 = 1;
     if ((v11 & 1) == 0)
@@ -383,25 +383,25 @@ LABEL_20:
   return v12;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v11 = a3;
+  editingCopy = editing;
   [(_UIContentViewEditingController *)self tearDownPassthroughInteraction];
   v5 = self->_editingConfiguration;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIContentViewEditingController.m" lineNumber:265 description:{@"Text field ended editing, but we no longer have an editing configuration."}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContentViewEditingController.m" lineNumber:265 description:{@"Text field ended editing, but we no longer have an editing configuration."}];
   }
 
-  v6 = [(_UIContentViewEditingConfiguration *)v5 didEndHandler];
-  if (v6)
+  didEndHandler = [(_UIContentViewEditingConfiguration *)v5 didEndHandler];
+  if (didEndHandler)
   {
     v7 = [_UIContentViewEditingState alloc];
-    v8 = [v11 text];
-    v9 = [(_UIContentViewEditingState *)v7 initWithText:v8];
+    text = [editingCopy text];
+    v9 = [(_UIContentViewEditingState *)v7 initWithText:text];
 
-    (v6)[2](v6, v9);
+    (didEndHandler)[2](didEndHandler, v9);
   }
 
   if (!self->_hasEdits && ![(_UIContentViewEditingConfiguration *)v5 useTextInputAsLabel])

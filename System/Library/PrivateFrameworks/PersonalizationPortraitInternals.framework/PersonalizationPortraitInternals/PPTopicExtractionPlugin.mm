@@ -1,34 +1,34 @@
 @interface PPTopicExtractionPlugin
 + (id)sharedInstance;
 - (PPTopicExtractionPlugin)init;
-- (PPTopicExtractionPlugin)initWithTopicDissector:(id)a3;
-- (id)_topicContainersForText:(id)a3 isPlainText:(BOOL)a4 bundleId:(id)a5 groupId:(id)a6 documentId:(id)a7 contactHandles:(id)a8 weight:(double)a9 isOutgoing:(BOOL)a10;
-- (id)extractionsFromText:(id)a3 bundleId:(id)a4;
+- (PPTopicExtractionPlugin)initWithTopicDissector:(id)dissector;
+- (id)_topicContainersForText:(id)text isPlainText:(BOOL)plainText bundleId:(id)id groupId:(id)groupId documentId:(id)documentId contactHandles:(id)handles weight:(double)weight isOutgoing:(BOOL)self0;
+- (id)extractionsFromText:(id)text bundleId:(id)id;
 @end
 
 @implementation PPTopicExtractionPlugin
 
-- (id)extractionsFromText:(id)a3 bundleId:(id)a4
+- (id)extractionsFromText:(id)text bundleId:(id)id
 {
   v52 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v45 = a4;
+  textCopy = text;
+  idCopy = id;
   v8 = objc_opt_new();
   v9 = +[PPConfiguration sharedInstance];
-  v10 = [v9 isMultilingual];
+  isMultilingual = [v9 isMultilingual];
 
-  v46 = v7;
-  if (v10)
+  v46 = textCopy;
+  if (isMultilingual)
   {
     v11 = MEMORY[0x277D3A248];
-    v12 = [MEMORY[0x277D3A578] preferredLanguages];
-    v13 = [v11 detectLanguageFromTextHeuristicallyWithLanguages:v7 languages:v12 defaultLanguage:0];
+    preferredLanguages = [MEMORY[0x277D3A578] preferredLanguages];
+    v13 = [v11 detectLanguageFromTextHeuristicallyWithLanguages:textCopy languages:preferredLanguages defaultLanguage:0];
 
     v14 = MEMORY[0x277CBEAF8];
     if (v13)
     {
       v15 = 0;
-      v16 = v13;
+      languageCode = v13;
       goto LABEL_6;
     }
   }
@@ -38,12 +38,12 @@
     v14 = MEMORY[0x277CBEAF8];
   }
 
-  v4 = [v14 currentLocale];
-  v16 = [v4 languageCode];
+  currentLocale = [v14 currentLocale];
+  languageCode = [currentLocale languageCode];
   v13 = 0;
   v15 = 1;
 LABEL_6:
-  v17 = [v14 componentsFromLocaleIdentifier:v16];
+  v17 = [v14 componentsFromLocaleIdentifier:languageCode];
   v44 = [v17 objectForKeyedSubscript:*MEMORY[0x277CBE6C8]];
 
   if (v15)
@@ -52,15 +52,15 @@ LABEL_6:
 
   v18 = objc_alloc(MEMORY[0x277D3A4D8]);
   v19 = objc_opt_new();
-  v20 = [v19 UUIDString];
-  v21 = [MEMORY[0x277CBEAA8] date];
-  v22 = [v18 initWithBundleId:v45 groupId:0 documentId:v20 date:v21 relevanceDate:0 contactHandles:0 language:v44 metadata:0];
+  uUIDString = [v19 UUIDString];
+  date = [MEMORY[0x277CBEAA8] date];
+  v22 = [v18 initWithBundleId:idCopy groupId:0 documentId:uUIDString date:date relevanceDate:0 contactHandles:0 language:v44 metadata:0];
 
   v23 = +[PPConfiguration sharedInstance];
-  v24 = [v23 extractionAlgorithmsForBundleId:v45 sourceLanguage:v44 conservative:0 domain:0];
+  v24 = [v23 extractionAlgorithmsForBundleId:idCopy sourceLanguage:v44 conservative:0 domain:0];
 
   v25 = +[PPConfiguration sharedInstance];
-  v26 = [v25 extractionAlgorithmsForBundleId:v45 sourceLanguage:v44 conservative:0 domain:1];
+  v26 = [v25 extractionAlgorithmsForBundleId:idCopy sourceLanguage:v44 conservative:0 domain:1];
 
   v41 = v26;
   v42 = v24;
@@ -87,12 +87,12 @@ LABEL_6:
         }
 
         v33 = *(*(&v47 + 1) + 8 * v31);
-        v34 = [v33 topics];
-        if (v34)
+        topics = [v33 topics];
+        if (topics)
         {
-          v35 = [v33 topics];
-          v36 = [v33 source];
-          v37 = +[PPLocalTopicStore recordsForTopics:source:algorithm:](PPLocalTopicStore, "recordsForTopics:source:algorithm:", v35, v36, [v33 topicAlgorithm]);
+          topics2 = [v33 topics];
+          source = [v33 source];
+          v37 = +[PPLocalTopicStore recordsForTopics:source:algorithm:](PPLocalTopicStore, "recordsForTopics:source:algorithm:", topics2, source, [v33 topicAlgorithm]);
         }
 
         else
@@ -119,29 +119,29 @@ LABEL_6:
   return v8;
 }
 
-- (id)_topicContainersForText:(id)a3 isPlainText:(BOOL)a4 bundleId:(id)a5 groupId:(id)a6 documentId:(id)a7 contactHandles:(id)a8 weight:(double)a9 isOutgoing:(BOOL)a10
+- (id)_topicContainersForText:(id)text isPlainText:(BOOL)plainText bundleId:(id)id groupId:(id)groupId documentId:(id)documentId contactHandles:(id)handles weight:(double)weight isOutgoing:(BOOL)self0
 {
-  v41 = a4;
-  v15 = a3;
-  v16 = PPConfiguration;
-  v17 = a8;
-  v39 = a7;
-  v18 = a6;
-  v19 = a5;
+  plainTextCopy = plainText;
+  textCopy = text;
+  currentLocale = PPConfiguration;
+  handlesCopy = handles;
+  documentIdCopy = documentId;
+  groupIdCopy = groupId;
+  idCopy = id;
   v20 = +[PPConfiguration sharedInstance];
-  LOBYTE(a7) = [v20 isMultilingual];
+  LOBYTE(documentId) = [v20 isMultilingual];
 
-  if (a7)
+  if (documentId)
   {
     v21 = MEMORY[0x277D3A248];
-    v22 = [MEMORY[0x277D3A578] preferredLanguages];
-    v23 = [v21 detectLanguageFromTextHeuristicallyWithLanguages:v15 languages:v22 defaultLanguage:0];
+    preferredLanguages = [MEMORY[0x277D3A578] preferredLanguages];
+    v23 = [v21 detectLanguageFromTextHeuristicallyWithLanguages:textCopy languages:preferredLanguages defaultLanguage:0];
 
     v24 = MEMORY[0x277CBEAF8];
     if (v23)
     {
       v25 = 0;
-      v26 = v23;
+      languageCode = v23;
       goto LABEL_6;
     }
   }
@@ -151,35 +151,35 @@ LABEL_6:
     v24 = MEMORY[0x277CBEAF8];
   }
 
-  v16 = [v24 currentLocale];
-  v26 = [(__objc2_class *)v16 languageCode];
+  currentLocale = [v24 currentLocale];
+  languageCode = [(__objc2_class *)currentLocale languageCode];
   v23 = 0;
   v25 = 1;
 LABEL_6:
-  v27 = [v24 componentsFromLocaleIdentifier:v26];
+  v27 = [v24 componentsFromLocaleIdentifier:languageCode];
   v28 = [v27 objectForKeyedSubscript:*MEMORY[0x277CBE6C8]];
 
   if (v25)
   {
   }
 
-  if (a9 == 1.79769313e308)
+  if (weight == 1.79769313e308)
   {
-    a9 = 1.0;
+    weight = 1.0;
   }
 
-  v29 = [objc_alloc(MEMORY[0x277D3A4E0]) initWithDwellTimeSeconds:0 lengthSeconds:0 lengthCharacters:objc_msgSend(v15 donationCount:"length") contactHandleCount:0 flags:{objc_msgSend(v17, "count"), a10}];
+  v29 = [objc_alloc(MEMORY[0x277D3A4E0]) initWithDwellTimeSeconds:0 lengthSeconds:0 lengthCharacters:objc_msgSend(textCopy donationCount:"length") contactHandleCount:0 flags:{objc_msgSend(handlesCopy, "count"), outgoing}];
   v30 = objc_alloc(MEMORY[0x277D3A4D8]);
   v31 = objc_opt_new();
-  v32 = [v30 initWithBundleId:v19 groupId:v18 documentId:v39 date:v31 relevanceDate:0 contactHandles:v17 language:v28 metadata:v29];
+  v32 = [v30 initWithBundleId:idCopy groupId:groupIdCopy documentId:documentIdCopy date:v31 relevanceDate:0 contactHandles:handlesCopy language:v28 metadata:v29];
 
   v33 = +[PPConfiguration sharedInstance];
-  v34 = [v33 extractionAlgorithmsForBundleId:v19 sourceLanguage:v28 conservative:0 domain:0];
+  v34 = [v33 extractionAlgorithmsForBundleId:idCopy sourceLanguage:v28 conservative:0 domain:0];
 
   v35 = +[PPConfiguration sharedInstance];
-  v36 = [v35 extractionAlgorithmsForBundleId:v19 sourceLanguage:v28 conservative:0 domain:1];
+  v36 = [v35 extractionAlgorithmsForBundleId:idCopy sourceLanguage:v28 conservative:0 domain:1];
 
-  v37 = [(PPTopicDissector *)self->_dissector topicsInText:v15 isPlainText:v41 source:v32 cloudSync:1 language:v28 topicAlgorithms:v34 namedEntityAlgorithms:a9 weight:v36];
+  v37 = [(PPTopicDissector *)self->_dissector topicsInText:textCopy isPlainText:plainTextCopy source:v32 cloudSync:1 language:v28 topicAlgorithms:v34 namedEntityAlgorithms:weight weight:v36];
 
   return v37;
 }
@@ -192,16 +192,16 @@ LABEL_6:
   return v4;
 }
 
-- (PPTopicExtractionPlugin)initWithTopicDissector:(id)a3
+- (PPTopicExtractionPlugin)initWithTopicDissector:(id)dissector
 {
-  v5 = a3;
+  dissectorCopy = dissector;
   v9.receiver = self;
   v9.super_class = PPTopicExtractionPlugin;
   v6 = [(PPTopicExtractionPlugin *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dissector, a3);
+    objc_storeStrong(&v6->_dissector, dissector);
   }
 
   return v7;

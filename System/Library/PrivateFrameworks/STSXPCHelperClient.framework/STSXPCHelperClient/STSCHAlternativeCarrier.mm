@@ -1,36 +1,36 @@
 @interface STSCHAlternativeCarrier
-- (BOOL)isEqual:(id)a3;
-- (STSCHAlternativeCarrier)initWithCoder:(id)a3;
-- (STSCHAlternativeCarrier)initWithNdefRecordBundle:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STSCHAlternativeCarrier)initWithCoder:(id)coder;
+- (STSCHAlternativeCarrier)initWithNdefRecordBundle:(id)bundle;
 - (id)createAlternativeCarrierRecord;
 - (id)createNdefRecordBundle;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSCHAlternativeCarrier
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v9 = a3;
-  objc_msgSend_encodeInteger_forKey_(v9, v5, type, @"type");
-  objc_msgSend_encodeInteger_forKey_(v9, v6, self->_powerState, @"powerState");
-  objc_msgSend_encodeObject_forKey_(v9, v7, self->_carrierRecord, @"carrierRecord");
-  objc_msgSend_encodeObject_forKey_(v9, v8, self->_auxiliaryRecords, @"auxiliaryRecords");
+  coderCopy = coder;
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v5, type, @"type");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v6, self->_powerState, @"powerState");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_carrierRecord, @"carrierRecord");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->_auxiliaryRecords, @"auxiliaryRecords");
 }
 
-- (STSCHAlternativeCarrier)initWithCoder:(id)a3
+- (STSCHAlternativeCarrier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = STSCHAlternativeCarrier;
   v6 = [(STSCHAlternativeCarrier *)&v21 init];
   if (v6)
   {
-    v6->_type = objc_msgSend_decodeIntegerForKey_(v4, v5, @"type");
-    v6->_powerState = objc_msgSend_decodeIntegerForKey_(v4, v7, @"powerState");
+    v6->_type = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"type");
+    v6->_powerState = objc_msgSend_decodeIntegerForKey_(coderCopy, v7, @"powerState");
     v8 = objc_opt_class();
-    v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v9, v8, @"carrierRecord");
+    v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v9, v8, @"carrierRecord");
     carrierRecord = v6->_carrierRecord;
     v6->_carrierRecord = v10;
 
@@ -38,7 +38,7 @@
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v16 = objc_msgSend_setWithObjects_(v12, v15, v13, v14, 0);
-    v18 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v17, v16, @"auxiliaryRecords");
+    v18 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v17, v16, @"auxiliaryRecords");
     auxiliaryRecords = v6->_auxiliaryRecords;
     v6->_auxiliaryRecords = v18;
   }
@@ -46,15 +46,15 @@
   return v6;
 }
 
-- (STSCHAlternativeCarrier)initWithNdefRecordBundle:(id)a3
+- (STSCHAlternativeCarrier)initWithNdefRecordBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v35.receiver = self;
   v35.super_class = STSCHAlternativeCarrier;
   v7 = [(STSCHAlternativeCarrier *)&v35 init];
   if (v7)
   {
-    v8 = objc_msgSend_configurationRecord(v4, v5, v6);
+    v8 = objc_msgSend_configurationRecord(bundleCopy, v5, v6);
     isWiFiAwareConfigurationRecord = objc_msgSend_isWiFiAwareConfigurationRecord(v8, v9, v10);
 
     if (isWiFiAwareConfigurationRecord)
@@ -64,7 +64,7 @@
 
     else
     {
-      v15 = objc_msgSend_configurationRecord(v4, v12, v13);
+      v15 = objc_msgSend_configurationRecord(bundleCopy, v12, v13);
       isBluetoothLEConfigurationRecord = objc_msgSend_isBluetoothLEConfigurationRecord(v15, v16, v17);
 
       if (isBluetoothLEConfigurationRecord)
@@ -74,7 +74,7 @@
 
       else
       {
-        v19 = objc_msgSend_configurationRecord(v4, v12, v13);
+        v19 = objc_msgSend_configurationRecord(bundleCopy, v12, v13);
         isNfcConfigurationRecord = objc_msgSend_isNfcConfigurationRecord(v19, v20, v21);
 
         if (!isNfcConfigurationRecord)
@@ -89,14 +89,14 @@
 
     v7->_type = v14;
 LABEL_9:
-    v23 = objc_msgSend_alternativeRecord(v4, v12, v13);
+    v23 = objc_msgSend_alternativeRecord(bundleCopy, v12, v13);
     v7->_powerState = objc_msgSend_getCarrierPowerStateFromAlternativeCarrierRecord(v23, v24, v25);
 
-    v28 = objc_msgSend_configurationRecord(v4, v26, v27);
+    v28 = objc_msgSend_configurationRecord(bundleCopy, v26, v27);
     carrierRecord = v7->_carrierRecord;
     v7->_carrierRecord = v28;
 
-    v32 = objc_msgSend_auxiliaryRecords(v4, v30, v31);
+    v32 = objc_msgSend_auxiliaryRecords(bundleCopy, v30, v31);
     auxiliaryRecords = v7->_auxiliaryRecords;
     v7->_auxiliaryRecords = v32;
   }
@@ -104,16 +104,16 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v16 = 0;

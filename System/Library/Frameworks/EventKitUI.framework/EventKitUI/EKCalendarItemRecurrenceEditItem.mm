@@ -1,30 +1,30 @@
 @interface EKCalendarItemRecurrenceEditItem
 + (id)_neverLocalizedString;
-- (BOOL)_validateRecurrenceType:(id)a3;
-- (BOOL)canBeConfiguredForCalendarConstraints:(id)a3;
-- (BOOL)saveAndDismissWithForce:(BOOL)a3;
+- (BOOL)_validateRecurrenceType:(id)type;
+- (BOOL)canBeConfiguredForCalendarConstraints:(id)constraints;
+- (BOOL)saveAndDismissWithForce:(BOOL)force;
 - (EKCalendarItemRecurrenceEditItem)init;
 - (id)_newDatePicker;
 - (id)bestInitialEndDate;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)endRepeatPopupMenu;
 - (id)minRecurrenceEndDate;
 - (id)recurrenceDate;
-- (id)recurrenceRuleFromRepeatType:(int64_t)a3;
+- (id)recurrenceRuleFromRepeatType:(int64_t)type;
 - (id)recurrenceTimeZone;
 - (id)repeatPopupMenu;
-- (id)stringForDate:(id)a3;
-- (unint64_t)indexForSubitem:(unint64_t)a3;
+- (id)stringForDate:(id)date;
+- (unint64_t)indexForSubitem:(unint64_t)subitem;
 - (unint64_t)numberOfSubitems;
-- (unint64_t)subitemAtIndex:(unint64_t)a3;
-- (void)_datePickerChanged:(id)a3;
+- (unint64_t)subitemAtIndex:(unint64_t)index;
+- (void)_datePickerChanged:(id)changed;
 - (void)_updateMinRecurrenceEndDate;
-- (void)dateTimeCellDateTapped:(id)a3;
+- (void)dateTimeCellDateTapped:(id)tapped;
 - (void)dealloc;
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4;
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem;
 - (void)presentCustomRecurrenceVC;
 - (void)refreshFromCalendarItemAndStore;
-- (void)saveNewRepeatEndDate:(id)a3;
+- (void)saveNewRepeatEndDate:(id)date;
 @end
 
 @implementation EKCalendarItemRecurrenceEditItem
@@ -36,8 +36,8 @@
   v2 = [(EKCalendarItemRecurrenceEditItem *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__contentSizeCategoryChanged_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__contentSizeCategoryChanged_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v2;
@@ -45,38 +45,38 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = EKCalendarItemRecurrenceEditItem;
   [(EKCalendarItemRecurrenceEditItem *)&v4 dealloc];
 }
 
-- (BOOL)canBeConfiguredForCalendarConstraints:(id)a3
+- (BOOL)canBeConfiguredForCalendarConstraints:(id)constraints
 {
-  v4 = [a3 source];
-  v5 = [v4 constraints];
-  v6 = [v5 maxRecurrencesAllowed];
+  source = [constraints source];
+  constraints = [source constraints];
+  maxRecurrencesAllowed = [constraints maxRecurrencesAllowed];
 
-  if (!v6)
+  if (!maxRecurrencesAllowed)
   {
     return 0;
   }
 
-  v7 = [(EKCalendarItemEditItem *)self calendarItem];
-  if ([v7 isOrWasPartOfRecurringSeries])
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  if ([calendarItem isOrWasPartOfRecurringSeries])
   {
-    v8 = 1;
+    allowsRecurrenceModifications = 1;
   }
 
   else
   {
-    v9 = [(EKCalendarItemEditItem *)self calendarItem];
-    v8 = [v9 allowsRecurrenceModifications];
+    calendarItem2 = [(EKCalendarItemEditItem *)self calendarItem];
+    allowsRecurrenceModifications = [calendarItem2 allowsRecurrenceModifications];
   }
 
-  return v8;
+  return allowsRecurrenceModifications;
 }
 
 - (void)refreshFromCalendarItemAndStore
@@ -92,15 +92,15 @@
   customRepeatDescription = self->_customRepeatDescription;
   self->_customRepeatDescription = 0;
 
-  v6 = [(EKCalendarItemRecurrenceEditItem *)self recurrenceDate];
-  v28 = [(EKCalendarItemRecurrenceEditItem *)self recurrenceTimeZone];
+  recurrenceDate = [(EKCalendarItemRecurrenceEditItem *)self recurrenceDate];
+  recurrenceTimeZone = [(EKCalendarItemRecurrenceEditItem *)self recurrenceTimeZone];
   WeakRetained = objc_loadWeakRetained(&self->super._calendarItem);
-  v8 = [WeakRetained singleRecurrenceRule];
-  if (v8)
+  singleRecurrenceRule = [WeakRetained singleRecurrenceRule];
+  if (singleRecurrenceRule)
   {
     v26 = objc_loadWeakRetained(&self->super._calendarItem);
-    v25 = [v26 singleRecurrenceRule];
-    v33[0] = v25;
+    singleRecurrenceRule2 = [v26 singleRecurrenceRule];
+    v33[0] = singleRecurrenceRule2;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
   }
 
@@ -110,39 +110,39 @@
   }
 
   v10 = objc_loadWeakRetained(&self->super._calendarItem);
-  v11 = [v10 isFloating];
-  if (v11)
+  isFloating = [v10 isFloating];
+  if (isFloating)
   {
-    v12 = 0;
+    timeZone = 0;
   }
 
   else
   {
     v2 = objc_loadWeakRetained(&self->super._store);
-    v12 = [v2 timeZone];
+    timeZone = [v2 timeZone];
   }
 
   v31 = 0;
-  v27 = v6;
+  v27 = recurrenceDate;
   CUIKGetTypeAndEndDateForRecurrenceRules();
   v13 = 0;
-  if ((v11 & 1) == 0)
+  if ((isFloating & 1) == 0)
   {
   }
 
-  if (v8)
+  if (singleRecurrenceRule)
   {
   }
 
-  v14 = [(EKCalendarItemEditItem *)self calendarItem];
-  if ([v14 isFloating])
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  if ([calendarItem isFloating])
   {
     v15 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"GMT"];
   }
 
   else
   {
-    v15 = v28;
+    v15 = recurrenceTimeZone;
   }
 
   v16 = v15;
@@ -153,9 +153,9 @@
     v18 = [MEMORY[0x1E69930C8] calendarDateWithDate:v13 timeZone:v16];
     v19 = [v18 calendarDateInTimeZone:v17];
 
-    v20 = [v19 date];
+    date = [v19 date];
 
-    v13 = v20;
+    v13 = date;
   }
 
   objc_storeStrong(&self->_repeatEnd, v13);
@@ -164,13 +164,13 @@
   if (self->_originalRepeatType != repeatType)
   {
     self->_originalRepeatType = repeatType;
-    v22 = [(EKCalendarItemEditItem *)self delegate];
-    [v22 editItemWantsFooterTitlesToReload:self];
+    delegate = [(EKCalendarItemEditItem *)self delegate];
+    [delegate editItemWantsFooterTitlesToReload:self];
   }
 
   objc_storeStrong(&self->_originalRepeatEnd, self->_repeatEnd);
-  v23 = [(EKCalendarItemRecurrenceEditItem *)self minRecurrenceEndDate];
-  if ([(NSDate *)self->_repeatEnd compare:v23]== NSOrderedAscending)
+  minRecurrenceEndDate = [(EKCalendarItemRecurrenceEditItem *)self minRecurrenceEndDate];
+  if ([(NSDate *)self->_repeatEnd compare:minRecurrenceEndDate]== NSOrderedAscending)
   {
     v24 = dispatch_time(0, 0);
     block[0] = MEMORY[0x1E69E9820];
@@ -178,12 +178,12 @@
     block[2] = __67__EKCalendarItemRecurrenceEditItem_refreshFromCalendarItemAndStore__block_invoke;
     block[3] = &unk_1E843EFB8;
     block[4] = self;
-    v30 = v23;
+    v30 = minRecurrenceEndDate;
     dispatch_after(v24, MEMORY[0x1E69E96A0], block);
   }
 }
 
-- (BOOL)saveAndDismissWithForce:(BOOL)a3
+- (BOOL)saveAndDismissWithForce:(BOOL)force
 {
   if (self->_repeatType == self->_originalRepeatType)
   {
@@ -194,41 +194,41 @@
     }
   }
 
-  v6 = [(EKCalendarItemEditItem *)self calendarItem];
-  if ([v6 isOrWasPartOfRecurringSeries])
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  if ([calendarItem isOrWasPartOfRecurringSeries])
   {
-    v7 = [v6 singleRecurrenceRule];
+    singleRecurrenceRule = [calendarItem singleRecurrenceRule];
   }
 
   else
   {
-    v7 = 0;
+    singleRecurrenceRule = 0;
   }
 
   v8 = self->_repeatEnd;
   if (v8)
   {
-    v9 = [v7 recurrenceEnd];
-    v10 = [v9 endDate];
+    recurrenceEnd = [singleRecurrenceRule recurrenceEnd];
+    endDate = [recurrenceEnd endDate];
 
-    if (v8 != v10)
+    if (v8 != endDate)
     {
       v11 = [MEMORY[0x1E6966AB8] recurrenceEndWithEndDate:self->_repeatEnd];
-      [v7 setRecurrenceEnd:v11];
+      [singleRecurrenceRule setRecurrenceEnd:v11];
     }
   }
 
   else
   {
-    [v7 setRecurrenceEnd:0];
+    [singleRecurrenceRule setRecurrenceEnd:0];
   }
 
   return 1;
 }
 
-- (unint64_t)subitemAtIndex:(unint64_t)a3
+- (unint64_t)subitemAtIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
     v3 = self->_repeatType == 6;
   }
@@ -240,18 +240,18 @@
 
   if (v3)
   {
-    return a3;
+    return index;
   }
 
   else
   {
-    return a3 + 1;
+    return index + 1;
   }
 }
 
-- (unint64_t)indexForSubitem:(unint64_t)a3
+- (unint64_t)indexForSubitem:(unint64_t)subitem
 {
-  if (a3)
+  if (subitem)
   {
     v3 = self->_repeatType == 6;
   }
@@ -262,7 +262,7 @@
   }
 
   v4 = !v3;
-  return a3 - v4;
+  return subitem - v4;
 }
 
 - (unint64_t)numberOfSubitems
@@ -295,9 +295,9 @@
   return v4 + self->_showingDatePicker;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
-  v4 = [(EKCalendarItemRecurrenceEditItem *)self subitemAtIndex:a3];
+  v4 = [(EKCalendarItemRecurrenceEditItem *)self subitemAtIndex:index];
   v5 = 0;
   if (v4 <= 1)
   {
@@ -311,14 +311,14 @@
 
         v31 = EventKitUIBundle();
         v32 = [v31 localizedStringForKey:@"Repeat" value:&stru_1F4EF6790 table:0];
-        v33 = [(EKUIPopupTableViewCell *)self->_repeatCell textLabel];
-        [v33 setText:v32];
+        textLabel = [(EKUIPopupTableViewCell *)self->_repeatCell textLabel];
+        [textLabel setText:v32];
 
         [(EKUIPopupTableViewCell *)self->_repeatCell setAccessibilityIdentifier:@"repeat-cell"];
       }
 
-      v34 = [(EKCalendarItemRecurrenceEditItem *)self repeatPopupMenu];
-      [(EKUIPopupTableViewCell *)self->_repeatCell setPopupMenu:v34];
+      repeatPopupMenu = [(EKCalendarItemRecurrenceEditItem *)self repeatPopupMenu];
+      [(EKUIPopupTableViewCell *)self->_repeatCell setPopupMenu:repeatPopupMenu];
 
       v35 = self->_repeatCell;
 LABEL_22:
@@ -339,38 +339,38 @@ LABEL_22:
       self->_customCell = v7;
 
       v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
-      v10 = [(UITableViewCell *)self->_customCell textLabel];
-      [v10 setFont:v9];
+      textLabel2 = [(UITableViewCell *)self->_customCell textLabel];
+      [textLabel2 setFont:v9];
 
-      v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      v12 = [(UITableViewCell *)self->_customCell textLabel];
-      [v12 setTextColor:v11];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      textLabel3 = [(UITableViewCell *)self->_customCell textLabel];
+      [textLabel3 setTextColor:secondaryLabelColor];
 
       [(UITableViewCell *)self->_customCell setAccessoryType:1];
-      v13 = [(UITableViewCell *)self->_customCell textLabel];
-      [v13 setNumberOfLines:0];
+      textLabel4 = [(UITableViewCell *)self->_customCell textLabel];
+      [textLabel4 setNumberOfLines:0];
 
       customCell = self->_customCell;
     }
 
     v5 = customCell;
-    v14 = [(EKCalendarItemEditItem *)self calendarItem];
-    v15 = [v14 recurrenceRules];
-    v16 = [v15 firstObject];
-    v17 = v16;
-    if (v16)
+    calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+    recurrenceRules = [calendarItem recurrenceRules];
+    firstObject = [recurrenceRules firstObject];
+    v17 = firstObject;
+    if (firstObject)
     {
-      v18 = v16;
+      singleRecurrenceRule = firstObject;
     }
 
     else
     {
-      v56 = [(EKCalendarItemEditItem *)self calendarItem];
-      v18 = [v56 singleRecurrenceRule];
+      calendarItem2 = [(EKCalendarItemEditItem *)self calendarItem];
+      singleRecurrenceRule = [calendarItem2 singleRecurrenceRule];
     }
 
-    v57 = [(EKCalendarItemEditItem *)self calendarItem];
-    v58 = [v57 startDateForRecurrence];
+    calendarItem3 = [(EKCalendarItemEditItem *)self calendarItem];
+    startDateForRecurrence = [calendarItem3 startDateForRecurrence];
     v59 = CUIKStringForRecurrenceRule();
 
     v60 = MEMORY[0x1E696AEC0];
@@ -387,8 +387,8 @@ LABEL_22:
     }
 
     v64 = [v60 localizedStringWithFormat:v62, v63];
-    v65 = [(EKUIPopupTableViewCell *)v5 textLabel];
-    [v65 setText:v64];
+    textLabel5 = [(EKUIPopupTableViewCell *)v5 textLabel];
+    [textLabel5 setText:v64];
   }
 
   else
@@ -398,12 +398,12 @@ LABEL_22:
       v5 = [[EKUIPopupTableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
       v19 = EventKitUIBundle();
       v20 = [v19 localizedStringForKey:@"End Repeat" value:&stru_1F4EF6790 table:0];
-      v21 = [(EKUIPopupTableViewCell *)v5 textLabel];
-      [v21 setText:v20];
+      textLabel6 = [(EKUIPopupTableViewCell *)v5 textLabel];
+      [textLabel6 setText:v20];
 
       [(EKUIPopupTableViewCell *)v5 setAccessibilityIdentifier:@"end-repeat-cell"];
-      v22 = [(EKCalendarItemRecurrenceEditItem *)self endRepeatPopupMenu];
-      [(EKUIPopupTableViewCell *)v5 setPopupMenu:v22];
+      endRepeatPopupMenu = [(EKCalendarItemRecurrenceEditItem *)self endRepeatPopupMenu];
+      [(EKUIPopupTableViewCell *)v5 setPopupMenu:endRepeatPopupMenu];
 
       goto LABEL_29;
     }
@@ -421,30 +421,30 @@ LABEL_22:
         endDatePickerCell = self->_endDatePickerCell;
         self->_endDatePickerCell = v36;
 
-        v38 = [(EKCalendarItemRecurrenceEditItem *)self _newDatePicker];
+        _newDatePicker = [(EKCalendarItemRecurrenceEditItem *)self _newDatePicker];
         endDatePicker = self->_endDatePicker;
-        self->_endDatePicker = v38;
+        self->_endDatePicker = _newDatePicker;
 
-        v40 = [(EKUITableViewCell *)self->_endDatePickerCell contentView];
-        [v40 addSubview:self->_endDatePicker];
+        contentView = [(EKUITableViewCell *)self->_endDatePickerCell contentView];
+        [contentView addSubview:self->_endDatePicker];
 
         v68 = MEMORY[0x1E695DF70];
         v41 = MEMORY[0x1E696ACD8];
         v42 = self->_endDatePicker;
-        v69 = [(EKUITableViewCell *)self->_endDatePickerCell contentView];
-        v43 = [v41 constraintWithItem:v42 attribute:5 relatedBy:0 toItem:v69 attribute:5 multiplier:1.0 constant:0.0];
+        contentView2 = [(EKUITableViewCell *)self->_endDatePickerCell contentView];
+        v43 = [v41 constraintWithItem:v42 attribute:5 relatedBy:0 toItem:contentView2 attribute:5 multiplier:1.0 constant:0.0];
         v44 = MEMORY[0x1E696ACD8];
         v45 = self->_endDatePicker;
-        v67 = [(EKUITableViewCell *)self->_endDatePickerCell contentView];
-        v46 = [v44 constraintWithItem:v45 attribute:6 relatedBy:0 toItem:v67 attribute:6 multiplier:1.0 constant:0.0];
+        contentView3 = [(EKUITableViewCell *)self->_endDatePickerCell contentView];
+        v46 = [v44 constraintWithItem:v45 attribute:6 relatedBy:0 toItem:contentView3 attribute:6 multiplier:1.0 constant:0.0];
         v47 = MEMORY[0x1E696ACD8];
         v48 = self->_endDatePicker;
-        v49 = [(EKUITableViewCell *)self->_endDatePickerCell contentView];
-        v50 = [v47 constraintWithItem:v48 attribute:4 relatedBy:0 toItem:v49 attribute:4 multiplier:1.0 constant:0.0];
+        contentView4 = [(EKUITableViewCell *)self->_endDatePickerCell contentView];
+        v50 = [v47 constraintWithItem:v48 attribute:4 relatedBy:0 toItem:contentView4 attribute:4 multiplier:1.0 constant:0.0];
         v51 = MEMORY[0x1E696ACD8];
         v52 = self->_endDatePicker;
-        v53 = [(EKUITableViewCell *)self->_endDatePickerCell contentView];
-        v54 = [v51 constraintWithItem:v52 attribute:3 relatedBy:0 toItem:v53 attribute:3 multiplier:1.0 constant:0.0];
+        contentView5 = [(EKUITableViewCell *)self->_endDatePickerCell contentView];
+        v54 = [v51 constraintWithItem:v52 attribute:3 relatedBy:0 toItem:contentView5 attribute:3 multiplier:1.0 constant:0.0];
         v55 = [v68 arrayWithObjects:{v43, v46, v50, v54, 0}];
 
         [MEMORY[0x1E696ACD8] activateConstraints:v55];
@@ -470,10 +470,10 @@ LABEL_22:
       [(EKDateTimeCell *)v25 setTitle:v27];
     }
 
-    v28 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v18 = [v28 components:254 fromDate:self->_repeatEnd];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    singleRecurrenceRule = [currentCalendar components:254 fromDate:self->_repeatEnd];
 
-    [(EKDateTimeCell *)self->_endDateCell updateWithDate:v18 timeZone:0 allDay:1 needsStrikethrough:0];
+    [(EKDateTimeCell *)self->_endDateCell updateWithDate:singleRecurrenceRule timeZone:0 allDay:1 needsStrikethrough:0];
     v5 = self->_endDateCell;
   }
 
@@ -484,8 +484,8 @@ LABEL_29:
 
 - (id)repeatPopupMenu
 {
-  v19 = [MEMORY[0x1E695DF70] array];
-  v20 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   objc_initWeak(&location, self);
   v3 = 0;
   do
@@ -510,7 +510,7 @@ LABEL_29:
       [v6 setState:1];
     }
 
-    [v20 addObject:v6];
+    [array2 addObject:v6];
 
     objc_destroyWeak(v24);
     ++v3;
@@ -538,8 +538,8 @@ LABEL_29:
     [v13 setState:1];
   }
 
-  [v19 addObject:v13];
-  v17 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:0 options:1 children:v19];
+  [array addObject:v13];
+  v17 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:0 options:1 children:array];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -587,13 +587,13 @@ void __51__EKCalendarItemRecurrenceEditItem_repeatPopupMenu__block_invoke_2(uint
   v20[2] = *MEMORY[0x1E69E9840];
   objc_initWeak(&location, self);
   v3 = MEMORY[0x1E69DC628];
-  v4 = [objc_opt_class() _neverLocalizedString];
+  _neverLocalizedString = [objc_opt_class() _neverLocalizedString];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __54__EKCalendarItemRecurrenceEditItem_endRepeatPopupMenu__block_invoke;
   v17[3] = &unk_1E8441A90;
   objc_copyWeak(&v18, &location);
-  v5 = [v3 actionWithTitle:v4 image:0 identifier:0 handler:v17];
+  v5 = [v3 actionWithTitle:_neverLocalizedString image:0 identifier:0 handler:v17];
 
   v6 = EventKitUIBundle();
   v7 = [v6 localizedStringForKey:@"On Date" value:&stru_1F4EF6790 table:0];
@@ -647,9 +647,9 @@ void __54__EKCalendarItemRecurrenceEditItem_endRepeatPopupMenu__block_invoke_2(u
   [v3 setPreferredDatePickerStyle:3];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v3 setDatePickerMode:1];
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  [v4 setFirstWeekday:CUIKOneIndexedWeekStart()];
-  [v3 setCalendar:v4];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  [currentCalendar setFirstWeekday:CUIKOneIndexedWeekStart()];
+  [v3 setCalendar:currentCalendar];
   [v3 addTarget:self action:sel__datePickerChanged_ forControlEvents:4096];
 
   return v3;
@@ -663,73 +663,73 @@ void __54__EKCalendarItemRecurrenceEditItem_endRepeatPopupMenu__block_invoke_2(u
   return v3;
 }
 
-- (id)recurrenceRuleFromRepeatType:(int64_t)a3
+- (id)recurrenceRuleFromRepeatType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 == 6)
+    if (type == 6)
     {
-      v3 = 0;
+      singleRecurrenceRule = 0;
     }
 
     else
     {
       v6 = objc_alloc(MEMORY[0x1E6966AD0]);
       v7 = CUIKRecurrenceFrequencyForRepeatType();
-      v3 = [v6 initRecurrenceWithFrequency:v7 interval:CUIKIntervalForRepeatType() end:0];
+      singleRecurrenceRule = [v6 initRecurrenceWithFrequency:v7 interval:CUIKIntervalForRepeatType() end:0];
     }
   }
 
   else
   {
-    v5 = [(EKCalendarItemEditItem *)self calendarItem];
-    if ([v5 isMainOccurrence])
+    calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+    if ([calendarItem isMainOccurrence])
     {
-      v3 = 0;
+      singleRecurrenceRule = 0;
     }
 
     else
     {
-      v3 = [v5 singleRecurrenceRule];
-      v8 = [v5 endDate];
-      [(EKCalendarItemRecurrenceEditItem *)self saveNewRepeatEndDate:v8];
+      singleRecurrenceRule = [calendarItem singleRecurrenceRule];
+      endDate = [calendarItem endDate];
+      [(EKCalendarItemRecurrenceEditItem *)self saveNewRepeatEndDate:endDate];
     }
   }
 
-  return v3;
+  return singleRecurrenceRule;
 }
 
-- (void)_datePickerChanged:(id)a3
+- (void)_datePickerChanged:(id)changed
 {
-  v4 = [a3 date];
-  [(EKCalendarItemRecurrenceEditItem *)self saveNewRepeatEndDate:v4];
+  date = [changed date];
+  [(EKCalendarItemRecurrenceEditItem *)self saveNewRepeatEndDate:date];
 }
 
-- (void)saveNewRepeatEndDate:(id)a3
+- (void)saveNewRepeatEndDate:(id)date
 {
-  v20 = a3;
-  objc_storeStrong(&self->_repeatEnd, a3);
-  v5 = [(EKCalendarItemEditItem *)self calendarItem];
-  if ([v5 isOrWasPartOfRecurringSeries])
+  dateCopy = date;
+  objc_storeStrong(&self->_repeatEnd, date);
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  if ([calendarItem isOrWasPartOfRecurringSeries])
   {
-    v6 = [v5 singleRecurrenceRule];
+    singleRecurrenceRule = [calendarItem singleRecurrenceRule];
   }
 
   else
   {
-    v6 = 0;
+    singleRecurrenceRule = 0;
   }
 
   if (!self->_repeatEnd)
   {
-    [v6 setRecurrenceEnd:0];
+    [singleRecurrenceRule setRecurrenceEnd:0];
     goto LABEL_16;
   }
 
-  if (([v5 isAllDay] & 1) == 0)
+  if (([calendarItem isAllDay] & 1) == 0)
   {
-    v7 = [(EKCalendarItemEditItem *)self calendarItem];
-    if ([v7 isFloating])
+    calendarItem2 = [(EKCalendarItemEditItem *)self calendarItem];
+    if ([calendarItem2 isFloating])
     {
       [MEMORY[0x1E695DFE8] timeZoneWithName:@"GMT"];
     }
@@ -741,32 +741,32 @@ void __54__EKCalendarItemRecurrenceEditItem_endRepeatPopupMenu__block_invoke_2(u
     v8 = ;
 
     v9 = CalCopySystemTimeZone();
-    v10 = [MEMORY[0x1E69930C8] calendarDateWithDate:v20 timeZone:v9];
+    v10 = [MEMORY[0x1E69930C8] calendarDateWithDate:dateCopy timeZone:v9];
     v11 = [v10 calendarDateInTimeZone:v8];
 
-    v12 = [v11 date];
+    date = [v11 date];
 
-    v20 = v12;
+    dateCopy = date;
   }
 
-  v13 = [v6 recurrenceEnd];
-  v14 = [v13 endDate];
-  if (!v14)
+  recurrenceEnd = [singleRecurrenceRule recurrenceEnd];
+  endDate = [recurrenceEnd endDate];
+  if (!endDate)
   {
 
     goto LABEL_15;
   }
 
-  v15 = v14;
-  v16 = [v6 recurrenceEnd];
-  v17 = [v16 endDate];
-  v18 = [v20 isEqualToDate:v17];
+  v15 = endDate;
+  recurrenceEnd2 = [singleRecurrenceRule recurrenceEnd];
+  endDate2 = [recurrenceEnd2 endDate];
+  v18 = [dateCopy isEqualToDate:endDate2];
 
   if ((v18 & 1) == 0)
   {
 LABEL_15:
-    v19 = [MEMORY[0x1E6966AB8] recurrenceEndWithEndDate:v20];
-    [v6 setRecurrenceEnd:v19];
+    v19 = [MEMORY[0x1E6966AB8] recurrenceEndWithEndDate:dateCopy];
+    [singleRecurrenceRule setRecurrenceEnd:v19];
   }
 
 LABEL_16:
@@ -776,18 +776,18 @@ LABEL_16:
 
 - (void)_updateMinRecurrenceEndDate
 {
-  v3 = [(EKCalendarItemRecurrenceEditItem *)self minRecurrenceEndDate];
-  [(UIDatePicker *)self->_endDatePicker setMinimumDate:v3];
+  minRecurrenceEndDate = [(EKCalendarItemRecurrenceEditItem *)self minRecurrenceEndDate];
+  [(UIDatePicker *)self->_endDatePicker setMinimumDate:minRecurrenceEndDate];
 }
 
-- (BOOL)_validateRecurrenceType:(id)a3
+- (BOOL)_validateRecurrenceType:(id)type
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  typeCopy = type;
+  v5 = typeCopy;
+  if (typeCopy)
   {
-    v45[0] = v4;
+    v45[0] = typeCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
   }
 
@@ -796,8 +796,8 @@ LABEL_16:
     v6 = 0;
   }
 
-  v7 = [(EKCalendarItemRecurrenceEditItem *)self recurrenceDate];
-  v8 = [(EKCalendarItemRecurrenceEditItem *)self recurrenceTimeZone];
+  recurrenceDate = [(EKCalendarItemRecurrenceEditItem *)self recurrenceDate];
+  recurrenceTimeZone = [(EKCalendarItemRecurrenceEditItem *)self recurrenceTimeZone];
   WeakRetained = objc_loadWeakRetained(&self->super._calendarItem);
   if ([WeakRetained isFloating])
   {
@@ -808,7 +808,7 @@ LABEL_16:
   else
   {
     v11 = objc_loadWeakRetained(&self->super._store);
-    v12 = [v11 timeZone];
+    timeZone = [v11 timeZone];
     p_repeatType = &self->_repeatType;
     CUIKGetTypeAndEndDateForRecurrenceRules();
   }
@@ -821,12 +821,12 @@ LABEL_16:
   {
     if (*p_repeatType != 6)
     {
-      v22 = [(EKCalendarItemEditItem *)self calendarItem];
-      v15 = [v22 calendar];
+      calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+      calendar = [calendarItem calendar];
 
-      if (v15)
+      if (calendar)
       {
-        v17 = [(EKCalendarItemEditItem *)self calendarItem];
+        calendarItem2 = [(EKCalendarItemEditItem *)self calendarItem];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -835,21 +835,21 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v23 = [v15 source];
-        v24 = [v23 constraints];
-        v25 = [v24 eventDurationConstrainedToRecurrenceInterval];
+        source = [calendar source];
+        constraints = [source constraints];
+        eventDurationConstrainedToRecurrenceInterval = [constraints eventDurationConstrainedToRecurrenceInterval];
 
-        if (v25)
+        if (eventDurationConstrainedToRecurrenceInterval)
         {
-          v17 = [(EKCalendarItemEditItem *)self calendarItem];
+          calendarItem2 = [(EKCalendarItemEditItem *)self calendarItem];
           v26 = objc_loadWeakRetained(&self->super._store);
           [v26 timeZone];
 
-          v27 = [v17 startDate];
-          [v27 timeIntervalSinceReferenceDate];
+          startDate = [calendarItem2 startDate];
+          [startDate timeIntervalSinceReferenceDate];
 
-          v28 = [v17 endDateUnadjustedForLegacyClients];
-          [v28 timeIntervalSinceReferenceDate];
+          endDateUnadjustedForLegacyClients = [calendarItem2 endDateUnadjustedForLegacyClients];
+          [endDateUnadjustedForLegacyClients timeIntervalSinceReferenceDate];
           v30 = v29;
 
           v42 = 0u;
@@ -862,12 +862,12 @@ LABEL_20:
           CalAbsoluteTimeAddGregorianUnits();
           if (v31 < v30)
           {
-            v18 = [(EKCalendarItemEditItem *)self delegate];
-            v19 = [v18 viewControllerForEditItem:self];
-            v20 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:7];
-            v21 = [(EKCalendarItemEditItem *)self delegate];
-            v32 = [v21 defaultAlertTitleForEditItem:self];
-            PresentValidationAlertWithDefaultTitle(v19, v20, v32);
+            delegate = [(EKCalendarItemEditItem *)self delegate];
+            v19 = [delegate viewControllerForEditItem:self];
+            delegate3 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:7];
+            delegate2 = [(EKCalendarItemEditItem *)self delegate];
+            v32 = [delegate2 defaultAlertTitleForEditItem:self];
+            PresentValidationAlertWithDefaultTitle(v19, delegate3, v32);
 
             goto LABEL_19;
           }
@@ -881,23 +881,23 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v13 = [(EKCalendarItemEditItem *)self calendarItem];
+    calendarItem3 = [(EKCalendarItemEditItem *)self calendarItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v15 = [(EKCalendarItemEditItem *)self calendarItem];
+      calendar = [(EKCalendarItemEditItem *)self calendarItem];
       v39 = 0;
-      v16 = [v15 validateRecurrenceRule:v5 error:&v39];
-      v17 = v39;
+      v16 = [calendar validateRecurrenceRule:v5 error:&v39];
+      calendarItem2 = v39;
       if ((v16 & 1) == 0)
       {
-        v18 = [(EKCalendarItemEditItem *)self delegate];
-        v19 = [v18 viewControllerForEditItem:self];
-        v20 = [(EKCalendarItemEditItem *)self delegate];
-        v21 = [v20 defaultAlertTitleForEditItem:self];
-        PresentValidationAlertWithDefaultTitle(v19, v17, v21);
+        delegate = [(EKCalendarItemEditItem *)self delegate];
+        v19 = [delegate viewControllerForEditItem:self];
+        delegate3 = [(EKCalendarItemEditItem *)self delegate];
+        delegate2 = [delegate3 defaultAlertTitleForEditItem:self];
+        PresentValidationAlertWithDefaultTitle(v19, calendarItem2, delegate2);
 LABEL_19:
 
         v33 = 0;
@@ -918,15 +918,15 @@ LABEL_22:
     if (v5)
     {
       v44 = v5;
-      v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
-      v37 = [(EKCalendarItemEditItem *)self calendarItem];
-      [v37 setRecurrenceRules:v36];
+      calendarItem5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
+      calendarItem4 = [(EKCalendarItemEditItem *)self calendarItem];
+      [calendarItem4 setRecurrenceRules:calendarItem5];
     }
 
     else
     {
-      v36 = [(EKCalendarItemEditItem *)self calendarItem];
-      [v36 setRecurrenceRules:0];
+      calendarItem5 = [(EKCalendarItemEditItem *)self calendarItem];
+      [calendarItem5 setRecurrenceRules:0];
     }
 
     v33 = 1;
@@ -943,36 +943,36 @@ LABEL_30:
 
 - (void)presentCustomRecurrenceVC
 {
-  v3 = [(EKCalendarItemEditItem *)self calendarItem];
-  v4 = [v3 eventStore];
-  v5 = [v4 timeZone];
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  eventStore = [calendarItem eventStore];
+  timeZone = [eventStore timeZone];
 
-  v6 = [(EKCalendarItemEditItem *)self calendarItem];
-  if ([v6 isOrWasPartOfRecurringSeries])
+  calendarItem2 = [(EKCalendarItemEditItem *)self calendarItem];
+  if ([calendarItem2 isOrWasPartOfRecurringSeries])
   {
-    v7 = [(EKCalendarItemEditItem *)self calendarItem];
-    v8 = [v7 singleRecurrenceRule];
+    calendarItem3 = [(EKCalendarItemEditItem *)self calendarItem];
+    singleRecurrenceRule = [calendarItem3 singleRecurrenceRule];
   }
 
   else
   {
-    v8 = 0;
+    singleRecurrenceRule = 0;
   }
 
   v9 = [EKUICustomRecurrenceViewController alloc];
-  v10 = [(EKCalendarItemEditItem *)self calendarItem];
-  v11 = [v10 startDateForRecurrence];
-  v12 = [(EKUICustomRecurrenceViewController *)v9 initWithStartDate:v11 timeZone:v5 clearBackground:0];
+  calendarItem4 = [(EKCalendarItemEditItem *)self calendarItem];
+  startDateForRecurrence = [calendarItem4 startDateForRecurrence];
+  v12 = [(EKUICustomRecurrenceViewController *)v9 initWithStartDate:startDateForRecurrence timeZone:timeZone clearBackground:0];
 
-  [(EKUICustomRecurrenceViewController *)v12 setRecurrenceRule:v8];
-  v13 = [(EKCalendarItemEditItem *)self calendarItem];
-  v14 = [v13 calendar];
-  v15 = [v14 source];
-  v16 = [v15 constraints];
+  [(EKUICustomRecurrenceViewController *)v12 setRecurrenceRule:singleRecurrenceRule];
+  calendarItem5 = [(EKCalendarItemEditItem *)self calendarItem];
+  calendar = [calendarItem5 calendar];
+  source = [calendar source];
+  constraints = [source constraints];
 
-  -[EKUICustomRecurrenceViewController setProhibitsMultipleDaysInMonthlyRecurrence:](v12, "setProhibitsMultipleDaysInMonthlyRecurrence:", [v16 prohibitsMultipleDaysInMonthlyRecurrence]);
-  -[EKUICustomRecurrenceViewController setProhibitsMultipleMonthsInYearlyRecurrence:](v12, "setProhibitsMultipleMonthsInYearlyRecurrence:", [v16 prohibitsMultipleMonthsInYearlyRecurrence]);
-  -[EKUICustomRecurrenceViewController setProhibitsYearlyRecurrenceInterval:](v12, "setProhibitsYearlyRecurrenceInterval:", [v16 prohibitsYearlyRecurrenceInterval]);
+  -[EKUICustomRecurrenceViewController setProhibitsMultipleDaysInMonthlyRecurrence:](v12, "setProhibitsMultipleDaysInMonthlyRecurrence:", [constraints prohibitsMultipleDaysInMonthlyRecurrence]);
+  -[EKUICustomRecurrenceViewController setProhibitsMultipleMonthsInYearlyRecurrence:](v12, "setProhibitsMultipleMonthsInYearlyRecurrence:", [constraints prohibitsMultipleMonthsInYearlyRecurrence]);
+  -[EKUICustomRecurrenceViewController setProhibitsYearlyRecurrenceInterval:](v12, "setProhibitsYearlyRecurrenceInterval:", [constraints prohibitsYearlyRecurrenceInterval]);
   objc_initWeak(&location, self);
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
@@ -981,26 +981,26 @@ LABEL_30:
   objc_copyWeak(&v25, &location);
   [(EKUICustomRecurrenceViewController *)v12 setCompletionBlock:&v21];
   [(EKUICustomRecurrenceViewController *)v12 setModalPresentationStyle:7, v21, v22, v23, v24];
-  v17 = [(EKUICustomRecurrenceViewController *)v12 popoverPresentationController];
-  v18 = v17;
+  popoverPresentationController = [(EKUICustomRecurrenceViewController *)v12 popoverPresentationController];
+  v18 = popoverPresentationController;
   customCell = self->_customCell;
   if (!customCell)
   {
     customCell = self->_repeatCell;
   }
 
-  [v17 setSourceView:customCell];
+  [popoverPresentationController setSourceView:customCell];
   [v18 setPermittedArrowDirections:12];
   if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy(0) || EKUIUseLargeFormatPhoneUI())
   {
-    v20 = [(EKCalendarItemEditItem *)self delegate];
-    [v20 editItem:self wantsViewControllerPushed:v12];
+    delegate = [(EKCalendarItemEditItem *)self delegate];
+    [delegate editItem:self wantsViewControllerPushed:v12];
   }
 
   else
   {
-    v20 = [(EKCalendarItemEditItem *)self delegate];
-    [v20 editItem:self wantsViewControllerPresented:v12];
+    delegate = [(EKCalendarItemEditItem *)self delegate];
+    [delegate editItem:self wantsViewControllerPresented:v12];
   }
 
   objc_destroyWeak(&v25);
@@ -1020,9 +1020,9 @@ void __61__EKCalendarItemRecurrenceEditItem_presentCustomRecurrenceVC__block_inv
   }
 }
 
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem
 {
-  if ([(EKCalendarItemRecurrenceEditItem *)self subitemAtIndex:a4]== 1)
+  if ([(EKCalendarItemRecurrenceEditItem *)self subitemAtIndex:subitem]== 1)
   {
 
     [(EKCalendarItemRecurrenceEditItem *)self presentCustomRecurrenceVC];
@@ -1031,7 +1031,7 @@ void __61__EKCalendarItemRecurrenceEditItem_presentCustomRecurrenceVC__block_inv
 
 - (id)bestInitialEndDate
 {
-  v3 = [(EKCalendarItemRecurrenceEditItem *)self minRecurrenceEndDate];
+  minRecurrenceEndDate = [(EKCalendarItemRecurrenceEditItem *)self minRecurrenceEndDate];
   v4 = objc_alloc_init(MEMORY[0x1E695DF10]);
   v5 = v4;
   repeatType = self->_repeatType;
@@ -1081,18 +1081,18 @@ LABEL_11:
   }
 
 LABEL_17:
-  v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v10 = [v9 dateByAddingComponents:v5 toDate:v3 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v10 = [currentCalendar dateByAddingComponents:v5 toDate:minRecurrenceEndDate options:0];
 
   return v10;
 }
 
-- (void)dateTimeCellDateTapped:(id)a3
+- (void)dateTimeCellDateTapped:(id)tapped
 {
   self->_showingDatePicker ^= 1u;
   [(EKCalendarItemRecurrenceEditItem *)self _updateMinRecurrenceEndDate];
   v7 = [MEMORY[0x1E696AC90] indexSetWithIndex:{-[EKCalendarItemRecurrenceEditItem indexForSubitem:](self, "indexForSubitem:", 4)}];
-  v4 = [(EKCalendarItemEditItem *)self delegate];
+  delegate = [(EKCalendarItemEditItem *)self delegate];
   if (self->_showingDatePicker)
   {
     v5 = v7;
@@ -1113,7 +1113,7 @@ LABEL_17:
     v6 = v7;
   }
 
-  [v4 editItem:self wantsRowInsertions:v5 rowDeletions:v6];
+  [delegate editItem:self wantsRowInsertions:v5 rowDeletions:v6];
 }
 
 - (id)recurrenceDate
@@ -1132,7 +1132,7 @@ LABEL_17:
   return 0;
 }
 
-- (id)stringForDate:(id)a3
+- (id)stringForDate:(id)date
 {
   OUTLINED_FUNCTION_0_1();
   objc_opt_class();

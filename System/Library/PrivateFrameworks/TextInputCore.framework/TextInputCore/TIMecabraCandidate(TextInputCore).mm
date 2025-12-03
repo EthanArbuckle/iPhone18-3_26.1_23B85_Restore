@@ -16,7 +16,7 @@
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  v11 = [a1 initWithCandidate:v9 forInput:v8 mecabraCandidatePointerValue:v10 withFlags:FlagsForCandidate() deleteCount:0 cursorMovement:a5];
+  v11 = [self initWithCandidate:v9 forInput:v8 mecabraCandidatePointerValue:v10 withFlags:FlagsForCandidate() deleteCount:0 cursorMovement:a5];
 
   return v11;
 }
@@ -61,7 +61,7 @@ LABEL_21:
       goto LABEL_21;
     }
 
-    v9 = [a1 convertedInputFromMecabraCandidate:a3];
+    v9 = [self convertedInputFromMecabraCandidate:a3];
     if (v9)
     {
       v10 = v9;
@@ -95,17 +95,17 @@ LABEL_21:
               [v11 appendString:v6];
             }
 
-            v19 = [v18 unsignedIntegerValue];
+            unsignedIntegerValue = [v18 unsignedIntegerValue];
             v20 = [v10 length];
-            v14 = v19 + v17;
-            if (v19 > v20 || v14 > v20)
+            v14 = unsignedIntegerValue + v17;
+            if (unsignedIntegerValue > v20 || v14 > v20)
             {
 
               v7 = v36;
               goto LABEL_28;
             }
 
-            v22 = [v10 substringWithRange:{v17, v19}];
+            v22 = [v10 substringWithRange:{v17, unsignedIntegerValue}];
             [v11 appendString:v22];
 
             ++v16;

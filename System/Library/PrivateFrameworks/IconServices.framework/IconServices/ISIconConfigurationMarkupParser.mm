@@ -1,49 +1,49 @@
 @interface ISIconConfigurationMarkupParser
-- (ISIconConfigurationMarkupParser)initWithConfigurationDictionary:(id)a3;
+- (ISIconConfigurationMarkupParser)initWithConfigurationDictionary:(id)dictionary;
 - (NSString)symbolName;
-- (id)colorsForKey:(id)a3;
+- (id)colorsForKey:(id)key;
 @end
 
 @implementation ISIconConfigurationMarkupParser
 
 - (NSString)symbolName
 {
-  v2 = [(ISIconConfigurationMarkupParser *)self configDict];
-  v3 = [v2 _IF_stringForKey:@"ISSymbolName"];
+  configDict = [(ISIconConfigurationMarkupParser *)self configDict];
+  v3 = [configDict _IF_stringForKey:@"ISSymbolName"];
 
   return v3;
 }
 
-- (ISIconConfigurationMarkupParser)initWithConfigurationDictionary:(id)a3
+- (ISIconConfigurationMarkupParser)initWithConfigurationDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ISIconConfigurationMarkupParser;
   v6 = [(ISIconConfigurationMarkupParser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configDict, a3);
+    objc_storeStrong(&v6->_configDict, dictionary);
   }
 
   return v7;
 }
 
-- (id)colorsForKey:(id)a3
+- (id)colorsForKey:(id)key
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ISIconConfigurationMarkupParser *)self configDict];
+  keyCopy = key;
+  configDict = [(ISIconConfigurationMarkupParser *)self configDict];
 
-  if (v5)
+  if (configDict)
   {
-    v6 = [(ISIconConfigurationMarkupParser *)self configDict];
-    v7 = [v6 _IF_arrayForKey:v4];
+    configDict2 = [(ISIconConfigurationMarkupParser *)self configDict];
+    v7 = [configDict2 _IF_arrayForKey:keyCopy];
 
     if (!v7)
     {
-      v8 = [(ISIconConfigurationMarkupParser *)self configDict];
-      v9 = [v8 _IF_stringForKey:v4];
+      configDict3 = [(ISIconConfigurationMarkupParser *)self configDict];
+      v9 = [configDict3 _IF_stringForKey:keyCopy];
 
       if (v9)
       {
@@ -66,7 +66,7 @@
     if (v11)
     {
       v12 = v11;
-      v5 = 0;
+      configDict = 0;
       v13 = *v21;
       do
       {
@@ -81,12 +81,12 @@
           v16 = _ISColorForString(v15);
           if (v16)
           {
-            if (!v5)
+            if (!configDict)
             {
-              v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
+              configDict = objc_alloc_init(MEMORY[0x1E695DF70]);
             }
 
-            [v5 addObject:v16];
+            [configDict addObject:v16];
           }
 
           else
@@ -108,13 +108,13 @@
 
     else
     {
-      v5 = 0;
+      configDict = 0;
     }
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return configDict;
 }
 
 @end

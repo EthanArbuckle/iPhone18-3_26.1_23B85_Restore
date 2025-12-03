@@ -1,14 +1,14 @@
 @interface CSDEmergencyCallbackCapabilities
 - (BOOL)emergencyCallbackPossible;
 - (id)emergencyCallbackCapabilitiesDidChange;
-- (void)setEmergencyCallbackCapabilitiesDidChange:(id)a3;
+- (void)setEmergencyCallbackCapabilitiesDidChange:(id)change;
 @end
 
 @implementation CSDEmergencyCallbackCapabilities
 
 - (BOOL)emergencyCallbackPossible
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002A6034();
 
   return v3 & 1;
@@ -36,9 +36,9 @@
   return v4;
 }
 
-- (void)setEmergencyCallbackCapabilitiesDidChange:(id)a3
+- (void)setEmergencyCallbackCapabilitiesDidChange:(id)change
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(change);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -51,7 +51,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1002A62E0(v4, v5);
 }
 

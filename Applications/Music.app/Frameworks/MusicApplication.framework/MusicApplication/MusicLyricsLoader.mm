@@ -1,14 +1,14 @@
 @interface MusicLyricsLoader
-+ (BOOL)supportsLyricsFor:(id)a3;
++ (BOOL)supportsLyricsFor:(id)for;
 - (MusicLyricsLoader)init;
 @end
 
 @implementation MusicLyricsLoader
 
-+ (BOOL)supportsLyricsFor:(id)a3
++ (BOOL)supportsLyricsFor:(id)for
 {
-  v3 = a3;
-  v4 = _s11MusicCoreUI12LyricsLoaderC08supportsD03forSbSo11MPModelSongC_tFZ_0(v3);
+  forCopy = for;
+  v4 = _s11MusicCoreUI12LyricsLoaderC08supportsD03forSbSo11MPModelSongC_tFZ_0(forCopy);
 
   return v4 & 1;
 }

@@ -1,42 +1,42 @@
 @interface PKActivityItemProvider
-- (PKActivityItemProvider)initWithPass:(id)a3 passView:(id)a4 linkedApp:(id)a5 sharingMethod:(int64_t)a6;
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (PKActivityItemProvider)initWithPass:(id)pass passView:(id)view linkedApp:(id)app sharingMethod:(int64_t)method;
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 - (id)item;
 @end
 
 @implementation PKActivityItemProvider
 
-- (PKActivityItemProvider)initWithPass:(id)a3 passView:(id)a4 linkedApp:(id)a5 sharingMethod:(int64_t)a6
+- (PKActivityItemProvider)initWithPass:(id)pass passView:(id)view linkedApp:(id)app sharingMethod:(int64_t)method
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a6 == -1)
+  passCopy = pass;
+  viewCopy = view;
+  appCopy = app;
+  if (method == -1)
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
     v18.receiver = self;
     v18.super_class = PKActivityItemProvider;
-    v15 = [(UIActivityItemProvider *)&v18 initWithPlaceholderItem:v14];
+    v15 = [(UIActivityItemProvider *)&v18 initWithPlaceholderItem:data];
 
     if (v15)
     {
-      objc_storeStrong(&v15->_pass, a3);
-      objc_storeStrong(&v15->_passView, a4);
-      objc_storeStrong(&v15->_linkedApp, a5);
-      v15->_sharingMethod = a6;
+      objc_storeStrong(&v15->_pass, pass);
+      objc_storeStrong(&v15->_passView, view);
+      objc_storeStrong(&v15->_linkedApp, app);
+      v15->_sharingMethod = method;
     }
 
     self = v15;
-    v16 = self;
+    selfCopy = self;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (id)item
@@ -57,31 +57,31 @@
   return v4;
 }
 
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = [(PKPassView *)self->_passView suppressedContent:a3];
+  height = size.height;
+  width = size.width;
+  v8 = [(PKPassView *)self->_passView suppressedContent:controller];
   [(PKPassView *)self->_passView setSuppressedContent:70];
-  v9 = [(PKPassView *)self->_passView snapshotOfFrontFaceWithRequestedSize:width, height];
+  height = [(PKPassView *)self->_passView snapshotOfFrontFaceWithRequestedSize:width, height];
   [(PKPassView *)self->_passView setSuppressedContent:v8];
 
-  return v9;
+  return height;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = [(PKLinkedApplication *)self->_linkedApp iconImage];
-  if (v4)
+  iconImage = [(PKLinkedApplication *)self->_linkedApp iconImage];
+  if (iconImage)
   {
-    v5 = v4;
+    v5 = iconImage;
   }
 
   else
   {
     v6 = MEMORY[0x1E69DCAB8];
-    v7 = [(PKPass *)self->_pass iconImage];
-    v5 = [v6 imageWithPKImage:v7];
+    iconImage2 = [(PKPass *)self->_pass iconImage];
+    v5 = [v6 imageWithPKImage:iconImage2];
 
     if (!v5)
     {
@@ -97,17 +97,17 @@
   v12 = objc_alloc_init(MEMORY[0x1E696EC98]);
   [v12 setIcon:v11];
   v13 = objc_alloc_init(MEMORY[0x1E696ED18]);
-  v14 = [(PKPass *)self->_pass localizedDescription];
-  [v13 setName:v14];
+  localizedDescription = [(PKPass *)self->_pass localizedDescription];
+  [v13 setName:localizedDescription];
 
   [v13 setStyle:{-[PKPass style](self->_pass, "style")}];
   v15 = MEMORY[0x1E69B8A68];
-  v16 = [(PKPass *)self->_pass relevantDates];
-  v17 = [v15 findDateFromDates:v16 option:0];
+  relevantDates = [(PKPass *)self->_pass relevantDates];
+  v17 = [v15 findDateFromDates:relevantDates option:0];
   [v13 setEventDate:v17];
 
-  v18 = [(PKPass *)self->_pass expirationDate];
-  [v13 setExpirationDate:v18];
+  expirationDate = [(PKPass *)self->_pass expirationDate];
+  [v13 setExpirationDate:expirationDate];
 
   [v12 setSpecialization:v13];
 

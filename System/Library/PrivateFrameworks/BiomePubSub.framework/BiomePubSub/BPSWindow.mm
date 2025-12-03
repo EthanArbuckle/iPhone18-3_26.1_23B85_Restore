@@ -2,12 +2,12 @@
 - (BPSSubscriber)downstream;
 - (NSString)identifier;
 - (id)metadata;
-- (int64_t)receiveInput:(id)a3;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
 - (void)downstream;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
-- (void)requestDemand:(int64_t)a3;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
+- (void)requestDemand:(int64_t)demand;
 @end
 
 @implementation BPSWindow
@@ -50,7 +50,7 @@
   return 0;
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -58,7 +58,7 @@
   [v3 raise:v4 format:{@"Override method %@ in subclass %@", v5, objc_opt_class()}];
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -68,7 +68,7 @@
   return 0;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -84,7 +84,7 @@
   [v2 raise:v3 format:{@"Override method %@ in subclass %@", v4, objc_opt_class()}];
 }
 
-- (void)requestDemand:(int64_t)a3
+- (void)requestDemand:(int64_t)demand
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -94,8 +94,8 @@
 
 - (void)downstream
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"BPSWindowAssigner.m" lineNumber:25 description:@"Must set downstream before using BPSWindow"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"BPSWindowAssigner.m" lineNumber:25 description:@"Must set downstream before using BPSWindow"];
 
   *a4 = *a3;
 }

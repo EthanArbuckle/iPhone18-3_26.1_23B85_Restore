@@ -1,118 +1,118 @@
 @interface CPLEngineScopeStorage
-- (BOOL)_activateSharedScopeIfPresentWithError:(id *)a3;
-- (BOOL)_doesScopeContributeToGlobalStatus:(id)a3;
-- (BOOL)_dropSharingScopeIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_forceClientToPullScopeIfNecessary:(id)a3 error:(id *)a4;
-- (BOOL)_handledDisabledFeaturesForScopeIfNecessary:(id)a3 type:(int64_t)a4 error:(id *)a5;
-- (BOOL)_isAvailableSharingScope:(void *)a1;
-- (BOOL)_isValidSharingScope:(id)a3 forScopeIdentifier:(id)a4;
-- (BOOL)_isValidSharingScopeIdentifier:(id)a3 scopeType:(int64_t)a4 forScopeIdentifier:(id)a5;
-- (BOOL)_resetCompleteSyncStateForScope:(id)a3 error:(id *)a4;
-- (BOOL)_resetLocalSyncStateForScope:(id)a3 error:(id *)a4;
-- (BOOL)_setScopeType:(int64_t)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)_setSharingScopeIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)activateScope:(id)a3 error:(id *)a4;
-- (BOOL)addCleanupTasksForScope:(id)a3 error:(id *)a4;
-- (BOOL)addRewindSyncAnchor:(id)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)clearAllQuotaFlagsForMainScopeWithReason:(id)a3 error:(id *)a4;
-- (BOOL)clearTransportGroupsForScope:(id)a3 error:(id *)a4;
-- (BOOL)clientAcknowledgedScopeChanges:(id)a3 error:(id *)a4;
-- (BOOL)commitSyncAnchorForScope:(id)a3 error:(id *)a4;
-- (BOOL)deactivateScope:(id)a3 error:(id *)a4;
-- (BOOL)deleteScopeWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)didDropSomeRecordsForScope:(id)a3;
-- (BOOL)disableInitialQueriesForScope:(id)a3 error:(id *)a4;
-- (BOOL)disablePrimaryScopeWithError:(id *)a3;
-- (BOOL)discardStagedSyncAnchorForScope:(id)a3 error:(id *)a4;
-- (BOOL)discardStagedSyncAnchorWithScopeFilter:(id)a3 error:(id *)a4;
-- (BOOL)doScopesNeedMetadataSync:(id)a3;
-- (BOOL)doesScopeAllowCourtesyMingling:(id)a3;
-- (BOOL)doesScopeNeedToBePulledByClient:(id)a3;
-- (BOOL)doesScopeNeedToPullChangesFromTransport:(id)a3;
-- (BOOL)doesScopeNeedToPushChangesToTransport:(id)a3;
-- (BOOL)doesScopeNeedToUpdateTransport:(id)a3;
-- (BOOL)doesScopeNeedToUploadComputeState:(id)a3;
-- (BOOL)doesScopeSupportToBePulledByClient:(id)a3;
-- (BOOL)enablePrimaryScopeWithError:(id *)a3;
-- (BOOL)hasFinishedAFullSyncForScope:(id)a3;
-- (BOOL)hasFinishedInitialDownloadForScope:(id)a3;
-- (BOOL)hasFinishedInitialSyncForScope:(id)a3;
-- (BOOL)hasScopeFetchedInitialSyncAnchor:(id)a3;
+- (BOOL)_activateSharedScopeIfPresentWithError:(id *)error;
+- (BOOL)_doesScopeContributeToGlobalStatus:(id)status;
+- (BOOL)_dropSharingScopeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_forceClientToPullScopeIfNecessary:(id)necessary error:(id *)error;
+- (BOOL)_handledDisabledFeaturesForScopeIfNecessary:(id)necessary type:(int64_t)type error:(id *)error;
+- (BOOL)_isAvailableSharingScope:(void *)scope;
+- (BOOL)_isValidSharingScope:(id)scope forScopeIdentifier:(id)identifier;
+- (BOOL)_isValidSharingScopeIdentifier:(id)identifier scopeType:(int64_t)type forScopeIdentifier:(id)scopeIdentifier;
+- (BOOL)_resetCompleteSyncStateForScope:(id)scope error:(id *)error;
+- (BOOL)_resetLocalSyncStateForScope:(id)scope error:(id *)error;
+- (BOOL)_setScopeType:(int64_t)type forScope:(id)scope error:(id *)error;
+- (BOOL)_setSharingScopeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)activateScope:(id)scope error:(id *)error;
+- (BOOL)addCleanupTasksForScope:(id)scope error:(id *)error;
+- (BOOL)addRewindSyncAnchor:(id)anchor forScope:(id)scope error:(id *)error;
+- (BOOL)clearAllQuotaFlagsForMainScopeWithReason:(id)reason error:(id *)error;
+- (BOOL)clearTransportGroupsForScope:(id)scope error:(id *)error;
+- (BOOL)clientAcknowledgedScopeChanges:(id)changes error:(id *)error;
+- (BOOL)commitSyncAnchorForScope:(id)scope error:(id *)error;
+- (BOOL)deactivateScope:(id)scope error:(id *)error;
+- (BOOL)deleteScopeWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)didDropSomeRecordsForScope:(id)scope;
+- (BOOL)disableInitialQueriesForScope:(id)scope error:(id *)error;
+- (BOOL)disablePrimaryScopeWithError:(id *)error;
+- (BOOL)discardStagedSyncAnchorForScope:(id)scope error:(id *)error;
+- (BOOL)discardStagedSyncAnchorWithScopeFilter:(id)filter error:(id *)error;
+- (BOOL)doScopesNeedMetadataSync:(id)sync;
+- (BOOL)doesScopeAllowCourtesyMingling:(id)mingling;
+- (BOOL)doesScopeNeedToBePulledByClient:(id)client;
+- (BOOL)doesScopeNeedToPullChangesFromTransport:(id)transport;
+- (BOOL)doesScopeNeedToPushChangesToTransport:(id)transport;
+- (BOOL)doesScopeNeedToUpdateTransport:(id)transport;
+- (BOOL)doesScopeNeedToUploadComputeState:(id)state;
+- (BOOL)doesScopeSupportToBePulledByClient:(id)client;
+- (BOOL)enablePrimaryScopeWithError:(id *)error;
+- (BOOL)hasFinishedAFullSyncForScope:(id)scope;
+- (BOOL)hasFinishedInitialDownloadForScope:(id)scope;
+- (BOOL)hasFinishedInitialSyncForScope:(id)scope;
+- (BOOL)hasScopeFetchedInitialSyncAnchor:(id)anchor;
 - (BOOL)hasScopesNeedingToPullChangesFromTransport;
 - (BOOL)hasScopesNeedingToPushChangesToTransport;
 - (BOOL)hasScopesNeedingToPushHighPriorityChangesToTransport;
 - (BOOL)hasScopesNeedingToUploadComputeState;
-- (BOOL)hasStagedSyncAnchorForScope:(id)a3;
+- (BOOL)hasStagedSyncAnchorForScope:(id)scope;
 - (BOOL)hasStagedSyncAnchors;
-- (BOOL)markInitialQueryIsDoneForRecordsOfClass:(Class)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)noteDidCheckAssetWithServerWhenOverQuotaForScope:(id)a3 error:(id *)a4;
-- (BOOL)openWithError:(id *)a3;
-- (BOOL)resetCloudRecordsForScopeWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)resetCompleteSyncStateForScope:(id)a3 error:(id *)a4;
-- (BOOL)resetCompleteSyncStateIncludingIDMappingForScope:(id)a3 error:(id *)a4;
-- (BOOL)resetDidCheckAssetWithServerWhenOverQuotaForScope:(id)a3 error:(id *)a4;
-- (BOOL)resetInitialSyncAnchorForScope:(id)a3 error:(id *)a4;
-- (BOOL)resetLocalRecordsForScopeWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)resetLocalSyncStateForScope:(id)a3 error:(id *)a4;
-- (BOOL)resetStableRecordsForScopeWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)resetSyncAnchorForScope:(id)a3 error:(id *)a4;
-- (BOOL)resetSyncStateForScope:(id)a3 error:(id *)a4;
-- (BOOL)setAllScopesHasChangesToPullFromTransportWithError:(id *)a3;
-- (BOOL)setCloudScopeIndexOnChange:(id)a3;
-- (BOOL)setDeleteDate:(id)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)setDidDropSomeRecordsForScope:(id)a3 error:(id *)a4;
-- (BOOL)setDisabledDate:(id)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)setHasFinishedInitialDownloadForScope:(id)a3 error:(id *)a4;
-- (BOOL)setHasUpdatedScope:(id)a3 fromTransportWithError:(id *)a4;
-- (BOOL)setInitialSyncAnchor:(id)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)setLocalScopeIndexOnChange:(id)a3;
-- (BOOL)setPullFromTransportExpirationInterval:(double)a3 scope:(id)a4 error:(id *)a5;
-- (BOOL)setScope:(id)a3 hasCompletedInitialMinglingWithError:(id *)a4;
-- (BOOL)setScope:(id)a3 hasCompletedPullFromTransportTask:(int64_t)a4 error:(id *)a5;
-- (BOOL)setScope:(id)a3 hasCompletedPushToTransportTask:(int64_t)a4 error:(id *)a5;
-- (BOOL)setScope:(id)a3 hasCompletedTransportUpdate:(int64_t)a4 error:(id *)a5;
-- (BOOL)setScope:(id)a3 hasCompletedUploadComputeStateTask:(int64_t)a4 error:(id *)a5;
-- (BOOL)setScopeHasChangesToPullFromTransport:(id)a3 error:(id *)a4;
-- (BOOL)setScopeHasChangesToPushToTransport:(id)a3 changeTypes:(unint64_t)a4 error:(id *)a5;
-- (BOOL)setScopeNeedsToBePulledByClient:(id)a3 error:(id *)a4;
-- (BOOL)setScopeNeedsToUpdateTransport:(id)a3 error:(id *)a4;
-- (BOOL)setScopeNeedsToUploadComputeState:(id)a3 error:(id *)a4;
-- (BOOL)setScopeNeedsUpdateFromTransport:(id)a3 error:(id *)a4;
-- (BOOL)setSyncAnchor:(id)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)setTransportScope:(id)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)setupAnchorResetTransportGroupForScope:(id)a3 error:(id *)a4;
-- (BOOL)setupInitialSyncTransportGroupsForScope:(id)a3 error:(id *)a4;
-- (BOOL)setupResetSyncTransportGroupForScope:(id)a3 error:(id *)a4;
-- (BOOL)shouldAutoactivateScopeWithIdentifier:(id)a3 scopeType:(int64_t)a4;
-- (BOOL)shouldCheckAssetsWithServerWhenOverQuotaForScope:(id)a3;
-- (BOOL)shouldDropAllUploadsForScope:(id)a3 dropReason:(id *)a4 shouldQuarantineRecords:(BOOL *)a5;
-- (BOOL)shouldTrackAdditionalInitialSyncDatesForScope:(id)a3;
-- (BOOL)storeBusyState:(int64_t)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)storeEstimatedSize:(unint64_t)a3 estimatedAssetCount:(unint64_t)a4 forScope:(id)a5 error:(id *)a6;
-- (BOOL)storeLastDateOfClearedPushRepository:(id)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)storeRewindSyncAnchors:(id)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)storeScopeChange:(id)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)storeScopeListSyncAnchor:(id)a3 error:(id *)a4;
-- (BOOL)storeSupervisorInfo:(id)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)storeSupportedFeatureVersionInLastSync:(unint64_t)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)storeTransientSyncAnchor:(id)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)supportedFeatureVersionIsMostRecentForScope:(id)a3;
-- (BOOL)updateFlags:(id)a3 forScope:(id)a4 error:(id *)a5;
-- (BOOL)updateInitialSyncTransportGroupEstimatedSize:(unint64_t)a3 assetCount:(unint64_t)a4 forScope:(id)a5 error:(id *)a6;
-- (BOOL)updateScopeWithChange:(id)a3 error:(id *)a4;
-- (BOOL)upgradeScopesWithNewLibraryOptions:(unint64_t)a3 error:(id *)a4;
-- (BOOL)valueForFlag:(int64_t)a3 forScope:(id)a4;
-- (CPLEngineScopeStorage)initWithEngineStore:(id)a3 name:(id)a4;
-- (Class)classOfRecordsForInitialQueryForScope:(id)a3;
-- (id)_createScopeFromScopeChange:(id)a3 error:(id *)a4;
-- (id)_realScopeIdentifiersFromScopeIdentifiers:(id)a3;
-- (id)_scopeChangeToBePulledByClientForScope:(id)a3;
-- (id)_scopeWithIdentifier:(id)a3;
-- (id)activationDateForScope:(id)a3;
-- (id)createScopeWithIdentifier:(id)a3 scopeType:(int64_t)a4 flags:(int64_t)a5 transportScope:(id)a6 error:(id *)a7;
-- (id)deleteDateForScope:(id)a3;
-- (id)disabledDateForScope:(id)a3;
-- (id)downloadTransportGroupForScope:(id)a3;
+- (BOOL)markInitialQueryIsDoneForRecordsOfClass:(Class)class forScope:(id)scope error:(id *)error;
+- (BOOL)noteDidCheckAssetWithServerWhenOverQuotaForScope:(id)scope error:(id *)error;
+- (BOOL)openWithError:(id *)error;
+- (BOOL)resetCloudRecordsForScopeWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)resetCompleteSyncStateForScope:(id)scope error:(id *)error;
+- (BOOL)resetCompleteSyncStateIncludingIDMappingForScope:(id)scope error:(id *)error;
+- (BOOL)resetDidCheckAssetWithServerWhenOverQuotaForScope:(id)scope error:(id *)error;
+- (BOOL)resetInitialSyncAnchorForScope:(id)scope error:(id *)error;
+- (BOOL)resetLocalRecordsForScopeWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)resetLocalSyncStateForScope:(id)scope error:(id *)error;
+- (BOOL)resetStableRecordsForScopeWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)resetSyncAnchorForScope:(id)scope error:(id *)error;
+- (BOOL)resetSyncStateForScope:(id)scope error:(id *)error;
+- (BOOL)setAllScopesHasChangesToPullFromTransportWithError:(id *)error;
+- (BOOL)setCloudScopeIndexOnChange:(id)change;
+- (BOOL)setDeleteDate:(id)date forScope:(id)scope error:(id *)error;
+- (BOOL)setDidDropSomeRecordsForScope:(id)scope error:(id *)error;
+- (BOOL)setDisabledDate:(id)date forScope:(id)scope error:(id *)error;
+- (BOOL)setHasFinishedInitialDownloadForScope:(id)scope error:(id *)error;
+- (BOOL)setHasUpdatedScope:(id)scope fromTransportWithError:(id *)error;
+- (BOOL)setInitialSyncAnchor:(id)anchor forScope:(id)scope error:(id *)error;
+- (BOOL)setLocalScopeIndexOnChange:(id)change;
+- (BOOL)setPullFromTransportExpirationInterval:(double)interval scope:(id)scope error:(id *)error;
+- (BOOL)setScope:(id)scope hasCompletedInitialMinglingWithError:(id *)error;
+- (BOOL)setScope:(id)scope hasCompletedPullFromTransportTask:(int64_t)task error:(id *)error;
+- (BOOL)setScope:(id)scope hasCompletedPushToTransportTask:(int64_t)task error:(id *)error;
+- (BOOL)setScope:(id)scope hasCompletedTransportUpdate:(int64_t)update error:(id *)error;
+- (BOOL)setScope:(id)scope hasCompletedUploadComputeStateTask:(int64_t)task error:(id *)error;
+- (BOOL)setScopeHasChangesToPullFromTransport:(id)transport error:(id *)error;
+- (BOOL)setScopeHasChangesToPushToTransport:(id)transport changeTypes:(unint64_t)types error:(id *)error;
+- (BOOL)setScopeNeedsToBePulledByClient:(id)client error:(id *)error;
+- (BOOL)setScopeNeedsToUpdateTransport:(id)transport error:(id *)error;
+- (BOOL)setScopeNeedsToUploadComputeState:(id)state error:(id *)error;
+- (BOOL)setScopeNeedsUpdateFromTransport:(id)transport error:(id *)error;
+- (BOOL)setSyncAnchor:(id)anchor forScope:(id)scope error:(id *)error;
+- (BOOL)setTransportScope:(id)scope forScope:(id)forScope error:(id *)error;
+- (BOOL)setupAnchorResetTransportGroupForScope:(id)scope error:(id *)error;
+- (BOOL)setupInitialSyncTransportGroupsForScope:(id)scope error:(id *)error;
+- (BOOL)setupResetSyncTransportGroupForScope:(id)scope error:(id *)error;
+- (BOOL)shouldAutoactivateScopeWithIdentifier:(id)identifier scopeType:(int64_t)type;
+- (BOOL)shouldCheckAssetsWithServerWhenOverQuotaForScope:(id)scope;
+- (BOOL)shouldDropAllUploadsForScope:(id)scope dropReason:(id *)reason shouldQuarantineRecords:(BOOL *)records;
+- (BOOL)shouldTrackAdditionalInitialSyncDatesForScope:(id)scope;
+- (BOOL)storeBusyState:(int64_t)state forScope:(id)scope error:(id *)error;
+- (BOOL)storeEstimatedSize:(unint64_t)size estimatedAssetCount:(unint64_t)count forScope:(id)scope error:(id *)error;
+- (BOOL)storeLastDateOfClearedPushRepository:(id)repository forScope:(id)scope error:(id *)error;
+- (BOOL)storeRewindSyncAnchors:(id)anchors forScope:(id)scope error:(id *)error;
+- (BOOL)storeScopeChange:(id)change forScope:(id)scope error:(id *)error;
+- (BOOL)storeScopeListSyncAnchor:(id)anchor error:(id *)error;
+- (BOOL)storeSupervisorInfo:(id)info forScope:(id)scope error:(id *)error;
+- (BOOL)storeSupportedFeatureVersionInLastSync:(unint64_t)sync forScope:(id)scope error:(id *)error;
+- (BOOL)storeTransientSyncAnchor:(id)anchor forScope:(id)scope error:(id *)error;
+- (BOOL)supportedFeatureVersionIsMostRecentForScope:(id)scope;
+- (BOOL)updateFlags:(id)flags forScope:(id)scope error:(id *)error;
+- (BOOL)updateInitialSyncTransportGroupEstimatedSize:(unint64_t)size assetCount:(unint64_t)count forScope:(id)scope error:(id *)error;
+- (BOOL)updateScopeWithChange:(id)change error:(id *)error;
+- (BOOL)upgradeScopesWithNewLibraryOptions:(unint64_t)options error:(id *)error;
+- (BOOL)valueForFlag:(int64_t)flag forScope:(id)scope;
+- (CPLEngineScopeStorage)initWithEngineStore:(id)store name:(id)name;
+- (Class)classOfRecordsForInitialQueryForScope:(id)scope;
+- (id)_createScopeFromScopeChange:(id)change error:(id *)error;
+- (id)_realScopeIdentifiersFromScopeIdentifiers:(id)identifiers;
+- (id)_scopeChangeToBePulledByClientForScope:(id)scope;
+- (id)_scopeWithIdentifier:(id)identifier;
+- (id)activationDateForScope:(id)scope;
+- (id)createScopeWithIdentifier:(id)identifier scopeType:(int64_t)type flags:(int64_t)flags transportScope:(id)scope error:(id *)error;
+- (id)deleteDateForScope:(id)scope;
+- (id)disabledDateForScope:(id)scope;
+- (id)downloadTransportGroupForScope:(id)scope;
 - (id)enumeratorForDeletedStagedScopes;
 - (id)enumeratorForScopesNeedingToPullChangesFromTransport;
 - (id)enumeratorForScopesNeedingToPushChangesToTransport;
@@ -121,64 +121,64 @@
 - (id)enumeratorForScopesNeedingToUploadComputeState;
 - (id)enumeratorForScopesNeedingUpdateFromTransport;
 - (id)enumeratorForScopesWithMingling;
-- (id)filterForExcludedScopeIdentifiers:(id)a3;
-- (id)filterForIncludedScopeIdentifiers:(id)a3;
-- (id)flagsForScope:(id)a3;
-- (id)initialMetadataDownloadDateForScope:(id)a3;
-- (id)initialMetadataQueriesDateForScope:(id)a3;
-- (id)initialMingleDateForScope:(id)a3;
-- (id)initialSyncAnchorForScope:(id)a3;
-- (id)lastDateOfClearedPushRepositoryForScope:(id)a3;
-- (id)lastDateOfCompletedPullFromTransportForScope:(id)a3;
-- (id)mostCurrentChangesSyncAnchorForScope:(id)a3;
+- (id)filterForExcludedScopeIdentifiers:(id)identifiers;
+- (id)filterForIncludedScopeIdentifiers:(id)identifiers;
+- (id)flagsForScope:(id)scope;
+- (id)initialMetadataDownloadDateForScope:(id)scope;
+- (id)initialMetadataQueriesDateForScope:(id)scope;
+- (id)initialMingleDateForScope:(id)scope;
+- (id)initialSyncAnchorForScope:(id)scope;
+- (id)lastDateOfClearedPushRepositoryForScope:(id)scope;
+- (id)lastDateOfCompletedPullFromTransportForScope:(id)scope;
+- (id)mostCurrentChangesSyncAnchorForScope:(id)scope;
 - (id)primaryScope;
-- (id)remainingClassesForInitialQueryForScope:(id)a3;
-- (id)rewindSyncAnchorsForScope:(id)a3;
-- (id)scopeChangeForScope:(id)a3;
-- (id)scopeChangesNeedingToBePulledByClientWithMaximumCount:(unint64_t)a3;
-- (id)scopeForSharingScope:(id)a3;
-- (id)scopeIdentifierForCloudScopeIndex:(int64_t)a3;
-- (id)scopeIdentifierForLocalScopeIndex:(int64_t)a3;
+- (id)remainingClassesForInitialQueryForScope:(id)scope;
+- (id)rewindSyncAnchorsForScope:(id)scope;
+- (id)scopeChangeForScope:(id)scope;
+- (id)scopeChangesNeedingToBePulledByClientWithMaximumCount:(unint64_t)count;
+- (id)scopeForSharingScope:(id)scope;
+- (id)scopeIdentifierForCloudScopeIndex:(int64_t)index;
+- (id)scopeIdentifierForLocalScopeIndex:(int64_t)index;
 - (id)scopeListSyncAnchor;
-- (id)scopeWithCloudScopeIndex:(int64_t)a3;
-- (id)scopeWithLocalScopeIndex:(int64_t)a3;
-- (id)scopeWithStableIndex:(int64_t)a3;
-- (id)scopedIdentifierForCloudScopedIdentifier:(id)a3;
-- (id)scopedIdentifierForLocalScopedIdentifier:(id)a3;
-- (id)sharingScopeForScope:(id)a3;
-- (id)stagingScopeForScope:(id)a3;
+- (id)scopeWithCloudScopeIndex:(int64_t)index;
+- (id)scopeWithLocalScopeIndex:(int64_t)index;
+- (id)scopeWithStableIndex:(int64_t)index;
+- (id)scopedIdentifierForCloudScopedIdentifier:(id)identifier;
+- (id)scopedIdentifierForLocalScopedIdentifier:(id)identifier;
+- (id)sharingScopeForScope:(id)scope;
+- (id)stagingScopeForScope:(id)scope;
 - (id)status;
-- (id)statusDictionaryForScope:(id)a3;
-- (id)supervisorInfoForScope:(id)a3;
-- (id)syncAnchorForScope:(id)a3;
-- (id)transientSyncAnchorForScope:(id)a3;
-- (id)transportScopeForScope:(id)a3;
-- (id)updatedScopeFilter:(id)a3;
-- (id)uploadTransportGroupForScope:(id)a3;
+- (id)statusDictionaryForScope:(id)scope;
+- (id)supervisorInfoForScope:(id)scope;
+- (id)syncAnchorForScope:(id)scope;
+- (id)transientSyncAnchorForScope:(id)scope;
+- (id)transportScopeForScope:(id)scope;
+- (id)updatedScopeFilter:(id)filter;
+- (id)uploadTransportGroupForScope:(id)scope;
 - (id)validCloudScopeIndexes;
 - (id)validLocalScopeIndexes;
-- (int64_t)busyStateForScope:(id)a3;
-- (int64_t)indexForCloudScopeIdentifier:(id)a3;
-- (int64_t)indexForLocalScopeIdentifier:(id)a3;
-- (int64_t)pullFromTransportTaskForScope:(id)a3;
-- (int64_t)pushToTransportTaskForScope:(id)a3;
-- (int64_t)stableScopeIndexForScopeIdentifier:(id)a3;
-- (int64_t)transportUpdateTaskForScope:(id)a3;
-- (int64_t)uploadComputeStateTaskForScope:(id)a3;
-- (unint64_t)_indexOfCurrentClassForInitialQueriesForScope:(id)a3;
-- (unint64_t)estimatedAssetCountForScope:(id)a3;
-- (unint64_t)estimatedSizeForScope:(id)a3;
-- (unint64_t)supportedFeatureVersionInLastSyncForScope:(id)a3;
+- (int64_t)busyStateForScope:(id)scope;
+- (int64_t)indexForCloudScopeIdentifier:(id)identifier;
+- (int64_t)indexForLocalScopeIdentifier:(id)identifier;
+- (int64_t)pullFromTransportTaskForScope:(id)scope;
+- (int64_t)pushToTransportTaskForScope:(id)scope;
+- (int64_t)stableScopeIndexForScopeIdentifier:(id)identifier;
+- (int64_t)transportUpdateTaskForScope:(id)scope;
+- (int64_t)uploadComputeStateTaskForScope:(id)scope;
+- (unint64_t)_indexOfCurrentClassForInitialQueriesForScope:(id)scope;
+- (unint64_t)estimatedAssetCountForScope:(id)scope;
+- (unint64_t)estimatedSizeForScope:(id)scope;
+- (unint64_t)supportedFeatureVersionInLastSyncForScope:(id)scope;
 - (void)_checkSyncManagerPriorityBoost;
 - (void)_clearScopeCache;
 - (void)_fixGlobalStatus;
-- (void)_notifyScopeObserversForScope:(id)a3 flagsUpdate:(id)a4;
-- (void)_removeBrokenScope:(id)a3;
+- (void)_notifyScopeObserversForScope:(id)scope flagsUpdate:(id)update;
+- (void)_removeBrokenScope:(id)scope;
 - (void)_resetGlobalsForMainScope;
-- (void)_updateGlobalStatusWithScopeChange:(id)a3 forScope:(id)a4;
-- (void)addScopeFlagsObserver:(id)a3 withIdentifier:(id)a4;
-- (void)beginCreatingScopeWithIdentifier:(id)a3;
-- (void)endCreatingScopeWithIdentifier:(id)a3;
+- (void)_updateGlobalStatusWithScopeChange:(id)change forScope:(id)scope;
+- (void)addScopeFlagsObserver:(id)observer withIdentifier:(id)identifier;
+- (void)beginCreatingScopeWithIdentifier:(id)identifier;
+- (void)endCreatingScopeWithIdentifier:(id)identifier;
 - (void)writeTransactionDidFail;
 - (void)writeTransactionDidSucceed;
 @end
@@ -187,26 +187,26 @@
 
 - (id)enumeratorForScopesNeedingToUpdateTransport
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 enumeratorForScopesNeedingToUpdateTransport];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  enumeratorForScopesNeedingToUpdateTransport = [platformObject enumeratorForScopesNeedingToUpdateTransport];
 
-  return v3;
+  return enumeratorForScopesNeedingToUpdateTransport;
 }
 
 - (id)scopeListSyncAnchor
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 scopeListSyncAnchor];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  scopeListSyncAnchor = [platformObject scopeListSyncAnchor];
 
-  return v3;
+  return scopeListSyncAnchor;
 }
 
 - (BOOL)hasStagedSyncAnchors
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 hasStagedSyncAnchors];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  hasStagedSyncAnchors = [platformObject hasStagedSyncAnchors];
 
-  return v3;
+  return hasStagedSyncAnchors;
 }
 
 - (void)writeTransactionDidSucceed
@@ -223,69 +223,69 @@
 
   if (self->_scheduleATransportUpdate)
   {
-    v3 = [(CPLEngineStorage *)self engineStore];
-    v4 = [v3 engineLibrary];
-    v5 = [v4 scheduler];
-    [v5 noteTransportNeedsUpdate];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    engineLibrary = [engineStore engineLibrary];
+    scheduler = [engineLibrary scheduler];
+    [scheduler noteTransportNeedsUpdate];
 
     self->_scheduleATransportUpdate = 0;
   }
 
   if (self->_scheduleAScopeUpdate)
   {
-    v6 = [(CPLEngineStorage *)self engineStore];
-    v7 = [v6 engineLibrary];
-    v8 = [v7 scheduler];
-    [v8 noteScopeNeedsUpdate];
+    engineStore2 = [(CPLEngineStorage *)self engineStore];
+    engineLibrary2 = [engineStore2 engineLibrary];
+    scheduler2 = [engineLibrary2 scheduler];
+    [scheduler2 noteScopeNeedsUpdate];
 
     self->_scheduleAScopeUpdate = 0;
   }
 
   if (self->_schedulePushHighPriorityToTransportChangeTypes)
   {
-    v9 = [(CPLEngineStorage *)self engineStore];
-    v10 = [v9 engineLibrary];
-    v11 = [v10 scheduler];
-    [v11 noteScopeNeedsToPushHighPriorityToTransport];
+    engineStore3 = [(CPLEngineStorage *)self engineStore];
+    engineLibrary3 = [engineStore3 engineLibrary];
+    scheduler3 = [engineLibrary3 scheduler];
+    [scheduler3 noteScopeNeedsToPushHighPriorityToTransport];
 
     self->_schedulePushHighPriorityToTransportChangeTypes = 0;
   }
 
   if (self->_schedulePushToTransportChangeTypes)
   {
-    v12 = [(CPLEngineStorage *)self engineStore];
-    v13 = [v12 engineLibrary];
-    v14 = [v13 scheduler];
-    [v14 noteScopeNeedsToPushToTransportWithChangeTypes:self->_schedulePushToTransportChangeTypes];
+    engineStore4 = [(CPLEngineStorage *)self engineStore];
+    engineLibrary4 = [engineStore4 engineLibrary];
+    scheduler4 = [engineLibrary4 scheduler];
+    [scheduler4 noteScopeNeedsToPushToTransportWithChangeTypes:self->_schedulePushToTransportChangeTypes];
 
     self->_schedulePushToTransportChangeTypes = 0;
   }
 
   if (self->_schedulePullFromTransport)
   {
-    v15 = [(CPLEngineStorage *)self engineStore];
-    v16 = [v15 engineLibrary];
-    v17 = [v16 scheduler];
-    [v17 noteScopeNeedsToPullFromTransport];
+    engineStore5 = [(CPLEngineStorage *)self engineStore];
+    engineLibrary5 = [engineStore5 engineLibrary];
+    scheduler5 = [engineLibrary5 scheduler];
+    [scheduler5 noteScopeNeedsToPullFromTransport];
 
     self->_schedulePullFromTransport = 0;
   }
 
   if (self->_schedulePullFromClient)
   {
-    v18 = [(CPLEngineStorage *)self engineStore];
-    v19 = [v18 engineLibrary];
-    [v19 notifyAttachedObjectsPullQueueIsFull];
+    engineStore6 = [(CPLEngineStorage *)self engineStore];
+    engineLibrary6 = [engineStore6 engineLibrary];
+    [engineLibrary6 notifyAttachedObjectsPullQueueIsFull];
 
     self->_schedulePullFromClient = 0;
   }
 
   if (self->_shouldChangeSyncManagerPriorityBoost)
   {
-    v20 = [(CPLEngineStorage *)self engineStore];
-    v21 = [v20 engineLibrary];
-    v22 = [v21 syncManager];
-    [v22 setBoostPriority:self->_syncManagerPriorityBoost];
+    engineStore7 = [(CPLEngineStorage *)self engineStore];
+    engineLibrary7 = [engineStore7 engineLibrary];
+    syncManager = [engineLibrary7 syncManager];
+    [syncManager setBoostPriority:self->_syncManagerPriorityBoost];
 
     self->_shouldChangeSyncManagerPriorityBoost = 0;
   }
@@ -319,10 +319,10 @@
           }
 
           v29 = *(*(&v46 + 1) + 8 * i);
-          v30 = [(CPLEngineStorage *)self engineStore];
-          v31 = [v30 engineLibrary];
-          v32 = [v31 syncManager];
-          [v32 removeBrokenScope:v29];
+          engineStore8 = [(CPLEngineStorage *)self engineStore];
+          engineLibrary8 = [engineStore8 engineLibrary];
+          syncManager2 = [engineLibrary8 syncManager];
+          [syncManager2 removeBrokenScope:v29];
         }
 
         v26 = [(NSMutableArray *)v24 countByEnumeratingWithState:&v46 objects:v53 count:16];
@@ -338,11 +338,11 @@
   if (self->_shouldUpdateGlobalStatusAtEndOfTransaction)
   {
     self->_shouldUpdateGlobalStatusAtEndOfTransaction = 0;
-    v34 = [(CPLEngineStorage *)self engineStore];
-    v35 = [v34 engineLibrary];
+    engineStore9 = [(CPLEngineStorage *)self engineStore];
+    engineLibrary9 = [engineStore9 engineLibrary];
 
-    [v35 updateAssetCountsFromServer:self->_assetCountsToUpdate];
-    [v35 setServerFeatureCompatibleVersion:self->_serverFeatureCompatibleVersionToUpdate];
+    [engineLibrary9 updateAssetCountsFromServer:self->_assetCountsToUpdate];
+    [engineLibrary9 setServerFeatureCompatibleVersion:self->_serverFeatureCompatibleVersionToUpdate];
     self->_serverFeatureCompatibleVersionToUpdate = 0;
     assetCountsToUpdate = self->_assetCountsToUpdate;
     self->_assetCountsToUpdate = 0;
@@ -355,19 +355,19 @@
       v38 = __CPLStorageOSLogDomain_8656();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
-        v39 = [(NSCountedSet *)self->_scopeIdentifiersBeingCreated allObjects];
-        v40 = [v39 componentsJoinedByString:{@", "}];
+        allObjects = [(NSCountedSet *)self->_scopeIdentifiersBeingCreated allObjects];
+        v40 = [allObjects componentsJoinedByString:{@", "}];
         *buf = 138412290;
         v52 = v40;
         _os_log_impl(&dword_1DC05A000, v38, OS_LOG_TYPE_ERROR, "Missing calls to -endCreatingScopeWithIdentifier: for %@", buf, 0xCu);
       }
     }
 
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v42 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScopeStorage.m"];
-    v43 = [(NSCountedSet *)self->_scopeIdentifiersBeingCreated allObjects];
-    v44 = [v43 componentsJoinedByString:{@", "}];
-    [v41 handleFailureInMethod:a2 object:self file:v42 lineNumber:1396 description:{@"Missing calls to -endCreatingScopeWithIdentifier: for %@", v44}];
+    allObjects2 = [(NSCountedSet *)self->_scopeIdentifiersBeingCreated allObjects];
+    v44 = [allObjects2 componentsJoinedByString:{@", "}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v42 lineNumber:1396 description:{@"Missing calls to -endCreatingScopeWithIdentifier: for %@", v44}];
 
     abort();
   }
@@ -375,14 +375,14 @@
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldDropAllUploadsForScope:(id)a3 dropReason:(id *)a4 shouldQuarantineRecords:(BOOL *)a5
+- (BOOL)shouldDropAllUploadsForScope:(id)scope dropReason:(id *)reason shouldQuarantineRecords:(BOOL *)records
 {
-  v8 = a3;
+  scopeCopy = scope;
   if (CPLIsInTestReadonlyMode())
   {
     v9 = 0;
     v10 = @"test read-only mode";
-    if (!a5)
+    if (!records)
     {
       goto LABEL_18;
     }
@@ -390,15 +390,15 @@
     goto LABEL_17;
   }
 
-  v11 = [(CPLEngineStorage *)self engineStore];
-  v12 = [v11 engineLibrary];
-  v13 = [v12 iCloudLibraryClientVersionTooOld];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  engineLibrary = [engineStore engineLibrary];
+  iCloudLibraryClientVersionTooOld = [engineLibrary iCloudLibraryClientVersionTooOld];
 
-  if (v13)
+  if (iCloudLibraryClientVersionTooOld)
   {
     v9 = 0;
     v10 = @"client version is too old";
-    if (!a5)
+    if (!records)
     {
       goto LABEL_18;
     }
@@ -406,14 +406,14 @@
     goto LABEL_17;
   }
 
-  v14 = [(CPLEngineScopeStorage *)self flagsForScope:v8];
-  v15 = [v14 flags];
+  v14 = [(CPLEngineScopeStorage *)self flagsForScope:scopeCopy];
+  flags = [v14 flags];
 
-  if ((v15 & 4) != 0)
+  if ((flags & 4) != 0)
   {
     v9 = 0;
     v10 = @"scope has been deleted";
-    if (!a5)
+    if (!records)
     {
       goto LABEL_18;
     }
@@ -421,11 +421,11 @@
     goto LABEL_17;
   }
 
-  if ((v15 & 0x10) != 0)
+  if ((flags & 0x10) != 0)
   {
     v9 = 0;
     v10 = @"scope has been de-activated";
-    if (!a5)
+    if (!records)
     {
       goto LABEL_18;
     }
@@ -433,28 +433,28 @@
     goto LABEL_17;
   }
 
-  if (v15)
+  if (flags)
   {
     v9 = 1;
     v10 = @"scope is read-only";
-    if (!a5)
+    if (!records)
     {
 LABEL_18:
-      *a4 = v10;
+      *reason = v10;
       v16 = 1;
       goto LABEL_19;
     }
 
 LABEL_17:
-    *a5 = v9;
+    *records = v9;
     goto LABEL_18;
   }
 
-  if ((v15 & 8) != 0)
+  if ((flags & 8) != 0)
   {
     v9 = 1;
     v10 = @"scope has been disabled";
-    if (!a5)
+    if (!records)
     {
       goto LABEL_18;
     }
@@ -468,64 +468,64 @@ LABEL_19:
   return v16;
 }
 
-- (id)initialMingleDateForScope:(id)a3
+- (id)initialMingleDateForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 initialMingleDateForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject initialMingleDateForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)setScope:(id)a3 hasCompletedInitialMinglingWithError:(id *)a4
+- (BOOL)setScope:(id)scope hasCompletedInitialMinglingWithError:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [MEMORY[0x1E695DF00] date];
-  LOBYTE(a4) = [v7 storeInitialMingleDate:v8 forScope:v6 error:a4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  date = [MEMORY[0x1E695DF00] date];
+  LOBYTE(error) = [platformObject storeInitialMingleDate:date forScope:scopeCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)initialMetadataDownloadDateForScope:(id)a3
+- (id)initialMetadataDownloadDateForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 initialMetadataDownloadDateForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject initialMetadataDownloadDateForScope:scopeCopy];
 
   return v6;
 }
 
-- (id)initialMetadataQueriesDateForScope:(id)a3
+- (id)initialMetadataQueriesDateForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 initialMetadataQueriesDateForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject initialMetadataQueriesDateForScope:scopeCopy];
 
   return v6;
 }
 
-- (id)activationDateForScope:(id)a3
+- (id)activationDateForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 activationDateForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject activationDateForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)shouldTrackAdditionalInitialSyncDatesForScope:(id)a3
+- (BOOL)shouldTrackAdditionalInitialSyncDatesForScope:(id)scope
 {
-  v3 = [(CPLEngineScopeStorage *)self activationDateForScope:a3];
+  v3 = [(CPLEngineScopeStorage *)self activationDateForScope:scope];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)addScopeFlagsObserver:(id)a3 withIdentifier:(id)a4
+- (void)addScopeFlagsObserver:(id)observer withIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   if (!self->_scopeObservers)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -533,57 +533,57 @@ LABEL_19:
     self->_scopeObservers = v7;
   }
 
-  v9 = [v11 copy];
+  v9 = [observerCopy copy];
   v10 = MEMORY[0x1E128EBA0]();
-  [(NSMutableDictionary *)self->_scopeObservers setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_scopeObservers setObject:v10 forKeyedSubscript:identifierCopy];
 }
 
-- (BOOL)resetDidCheckAssetWithServerWhenOverQuotaForScope:(id)a3 error:(id *)a4
+- (BOOL)resetDidCheckAssetWithServerWhenOverQuotaForScope:(id)scope error:(id *)error
 {
-  v4 = [a3 scopeIdentifier];
-  v5 = [v4 isEqualToString:@"PrimarySync"];
+  scopeIdentifier = [scope scopeIdentifier];
+  v5 = [scopeIdentifier isEqualToString:@"PrimarySync"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v6 removeObjectForKey:@"_CPLLastAssetCheckOverQuotaDateForPrimarySync"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults removeObjectForKey:@"_CPLLastAssetCheckOverQuotaDateForPrimarySync"];
   }
 
   return 1;
 }
 
-- (BOOL)noteDidCheckAssetWithServerWhenOverQuotaForScope:(id)a3 error:(id *)a4
+- (BOOL)noteDidCheckAssetWithServerWhenOverQuotaForScope:(id)scope error:(id *)error
 {
-  v4 = [a3 scopeIdentifier];
-  v5 = [v4 isEqualToString:@"PrimarySync"];
+  scopeIdentifier = [scope scopeIdentifier];
+  v5 = [scopeIdentifier isEqualToString:@"PrimarySync"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v7 = [MEMORY[0x1E695DF00] date];
-    [v6 setObject:v7 forKey:@"_CPLLastAssetCheckOverQuotaDateForPrimarySync"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    date = [MEMORY[0x1E695DF00] date];
+    [standardUserDefaults setObject:date forKey:@"_CPLLastAssetCheckOverQuotaDateForPrimarySync"];
   }
 
   return 1;
 }
 
-- (BOOL)shouldCheckAssetsWithServerWhenOverQuotaForScope:(id)a3
+- (BOOL)shouldCheckAssetsWithServerWhenOverQuotaForScope:(id)scope
 {
-  v4 = [a3 scopeIdentifier];
-  v5 = [v4 isEqualToString:@"PrimarySync"];
+  scopeIdentifier = [scope scopeIdentifier];
+  v5 = [scopeIdentifier isEqualToString:@"PrimarySync"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v7 = [v6 objectForKey:@"_CPLLastAssetCheckOverQuotaDateForPrimarySync"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v7 = [standardUserDefaults objectForKey:@"_CPLLastAssetCheckOverQuotaDateForPrimarySync"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if (v7)
       {
-        v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-        v9 = [v8 objectForKey:@"CPLMinimumIntervalBetweenOverQuotaRechecks"];
+        standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+        v9 = [standardUserDefaults2 objectForKey:@"CPLMinimumIntervalBetweenOverQuotaRechecks"];
 
         if (v9)
         {
@@ -593,10 +593,10 @@ LABEL_19:
 
         else
         {
-          v13 = [(CPLEngineStorage *)self engineStore];
-          v14 = [v13 engineLibrary];
-          v15 = [v14 configuration];
-          v16 = [v15 objectForKeyedSubscript:@"over_quota.minimum_interval_between_rechecks.seconds"];
+          engineStore = [(CPLEngineStorage *)self engineStore];
+          engineLibrary = [engineStore engineLibrary];
+          configuration = [engineLibrary configuration];
+          v16 = [configuration objectForKeyedSubscript:@"over_quota.minimum_interval_between_rechecks.seconds"];
 
           if (v16)
           {
@@ -636,10 +636,10 @@ LABEL_14:
   return 1;
 }
 
-- (void)endCreatingScopeWithIdentifier:(id)a3
+- (void)endCreatingScopeWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  identifierCopy = identifier;
   if (([(NSCountedSet *)self->_scopeIdentifiersBeingCreated containsObject:?]& 1) == 0)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -651,38 +651,38 @@ LABEL_14:
         *buf = 138412546;
         v13 = v7;
         v14 = 2112;
-        v15 = v11;
+        v15 = identifierCopy;
         _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_ERROR, "Trying to call %@ for %@ too many times", buf, 0x16u);
       }
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScopeStorage.m"];
     v10 = NSStringFromSelector(a2);
-    [v8 handleFailureInMethod:a2 object:self file:v9 lineNumber:2835 description:{@"Trying to call %@ for %@ too many times", v10, v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v9 lineNumber:2835 description:{@"Trying to call %@ for %@ too many times", v10, identifierCopy}];
 
     abort();
   }
 
-  [(NSCountedSet *)self->_scopeIdentifiersBeingCreated removeObject:v11];
+  [(NSCountedSet *)self->_scopeIdentifiersBeingCreated removeObject:identifierCopy];
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)beginCreatingScopeWithIdentifier:(id)a3
+- (void)beginCreatingScopeWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v13 = v5;
+  identifierCopy = identifier;
+  v13 = identifierCopy;
   if (!self->_scopeIdentifiersBeingCreated)
   {
     v6 = objc_alloc_init(MEMORY[0x1E696AB50]);
     scopeIdentifiersBeingCreated = self->_scopeIdentifiersBeingCreated;
     self->_scopeIdentifiersBeingCreated = v6;
 
-    v5 = v13;
+    identifierCopy = v13;
   }
 
-  v8 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:v5];
+  v8 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:identifierCopy];
 
   if (v8)
   {
@@ -697,9 +697,9 @@ LABEL_14:
       }
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScopeStorage.m"];
-    [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:2829 description:{@"Begin creation of %@ but it is already present", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v12 lineNumber:2829 description:{@"Begin creation of %@ but it is already present", v13}];
 
     abort();
   }
@@ -708,93 +708,93 @@ LABEL_14:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)mostCurrentChangesSyncAnchorForScope:(id)a3
+- (id)mostCurrentChangesSyncAnchorForScope:(id)scope
 {
-  v4 = a3;
-  if ([(CPLEngineScopeStorage *)self classOfRecordsForInitialQueryForScope:v4])
+  scopeCopy = scope;
+  if ([(CPLEngineScopeStorage *)self classOfRecordsForInitialQueryForScope:scopeCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(CPLEngineStorage *)self platformObject];
-    v5 = [v6 transientSyncAnchorForScope:v4];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v5 = [platformObject transientSyncAnchorForScope:scopeCopy];
 
     if (!v5)
     {
       v9 = 0;
-      v7 = [(CPLEngineStorage *)self platformObject];
-      v5 = [v7 syncAnchorForScope:v4 isCommitted:&v9];
+      platformObject2 = [(CPLEngineStorage *)self platformObject];
+      v5 = [platformObject2 syncAnchorForScope:scopeCopy isCommitted:&v9];
     }
   }
 
   return v5;
 }
 
-- (id)supervisorInfoForScope:(id)a3
+- (id)supervisorInfoForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 supervisorInfoForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject supervisorInfoForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)storeSupervisorInfo:(id)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)storeSupervisorInfo:(id)info forScope:(id)scope error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a5) = [v10 storeSupervisorInfo:v9 forScope:v8 error:a5];
+  scopeCopy = scope;
+  infoCopy = info;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject storeSupervisorInfo:infoCopy forScope:scopeCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (int64_t)busyStateForScope:(id)a3
+- (int64_t)busyStateForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 busyStateForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject busyStateForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)storeBusyState:(int64_t)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)storeBusyState:(int64_t)state forScope:(id)scope error:(id *)error
 {
-  v8 = a4;
-  v9 = [(CPLEngineStorage *)self platformObject];
-  v10 = [v9 storeBusyState:a3 forScope:v8 error:a5];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v10 = [platformObject storeBusyState:state forScope:scopeCopy error:error];
 
   if (v10)
   {
-    v11 = [v8 scopeIdentifier];
-    v12 = [(CPLEngineStorage *)self mainScopeIdentifier];
-    v13 = [v11 isEqualToString:v12];
+    scopeIdentifier = [scopeCopy scopeIdentifier];
+    mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
+    v13 = [scopeIdentifier isEqualToString:mainScopeIdentifier];
 
     if (v13)
     {
-      v14 = [(CPLEngineStorage *)self engineStore];
-      v15 = [v14 engineLibrary];
-      [v15 setBusyState:a3];
+      engineStore = [(CPLEngineStorage *)self engineStore];
+      engineLibrary = [engineStore engineLibrary];
+      [engineLibrary setBusyState:state];
     }
   }
 
   return v10;
 }
 
-- (BOOL)addRewindSyncAnchor:(id)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)addRewindSyncAnchor:(id)anchor forScope:(id)scope error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CPLEngineStorage *)self platformObject];
-  v11 = [v10 rewindSyncAnchorsForScope:v9];
+  anchorCopy = anchor;
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v11 = [platformObject rewindSyncAnchorsForScope:scopeCopy];
 
   v12 = v11;
   v13 = v12;
   if (v12)
   {
-    if ([v12 containsObject:v8])
+    if ([v12 containsObject:anchorCopy])
     {
       v14 = 1;
       v15 = v13;
@@ -802,12 +802,12 @@ LABEL_14:
     }
 
     v15 = [v13 mutableCopy];
-    [v15 addObject:v8];
+    [v15 addObject:anchorCopy];
   }
 
   else
   {
-    v15 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v8, 0}];
+    v15 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{anchorCopy, 0}];
   }
 
   if (v15 == v13)
@@ -817,12 +817,12 @@ LABEL_14:
 
   else
   {
-    v16 = [(CPLEngineStorage *)self platformObject];
-    v17 = [v16 storeRewindSyncAnchors:v15 forScope:v9 error:a5];
+    platformObject2 = [(CPLEngineStorage *)self platformObject];
+    v17 = [platformObject2 storeRewindSyncAnchors:v15 forScope:scopeCopy error:error];
 
     if (v17)
     {
-      v14 = [(CPLEngineScopeStorage *)self setScopeHasChangesToPullFromTransport:v9 error:a5];
+      v14 = [(CPLEngineScopeStorage *)self setScopeHasChangesToPullFromTransport:scopeCopy error:error];
     }
 
     else
@@ -836,32 +836,32 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)storeRewindSyncAnchors:(id)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)storeRewindSyncAnchors:(id)anchors forScope:(id)scope error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a5) = [v10 storeRewindSyncAnchors:v9 forScope:v8 error:a5];
+  scopeCopy = scope;
+  anchorsCopy = anchors;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject storeRewindSyncAnchors:anchorsCopy forScope:scopeCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)rewindSyncAnchorsForScope:(id)a3
+- (id)rewindSyncAnchorsForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 rewindSyncAnchorsForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject rewindSyncAnchorsForScope:scopeCopy];
 
   return v6;
 }
 
-- (id)stagingScopeForScope:(id)a3
+- (id)stagingScopeForScope:(id)scope
 {
-  v4 = a3;
-  if ([(CPLEngineScopeStorage *)self valueForFlag:64 forScope:v4])
+  scopeCopy = scope;
+  if ([(CPLEngineScopeStorage *)self valueForFlag:64 forScope:scopeCopy])
   {
-    v5 = [(CPLEngineStorage *)self platformObject];
-    v6 = [v5 stagingScopeForScope:v4];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v6 = [platformObject stagingScopeForScope:scopeCopy];
   }
 
   else
@@ -872,25 +872,25 @@ LABEL_11:
   return v6;
 }
 
-- (id)scopeForSharingScope:(id)a3
+- (id)scopeForSharingScope:(id)scope
 {
-  v4 = a3;
-  if (([v4 scopeType] - 6) >= 0xFFFFFFFFFFFFFFFELL)
+  scopeCopy = scope;
+  if (([scopeCopy scopeType] - 6) >= 0xFFFFFFFFFFFFFFFELL)
   {
-    v6 = [(CPLEngineStorage *)self engineStore];
-    v7 = [v6 sharingScopeIdentifier];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    sharingScopeIdentifier = [engineStore sharingScopeIdentifier];
 
-    if (v7 && ([v4 scopeIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", v7), v8, v9))
+    if (sharingScopeIdentifier && ([scopeCopy scopeIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", sharingScopeIdentifier), v8, v9))
     {
-      v10 = [(CPLEngineScopeStorage *)self primaryScope];
-      if ([(CPLEngineScopeStorage *)self valueForFlag:16 forScope:v10]|| [(CPLEngineScopeStorage *)self valueForFlag:16 forScope:v4])
+      primaryScope = [(CPLEngineScopeStorage *)self primaryScope];
+      if ([(CPLEngineScopeStorage *)self valueForFlag:16 forScope:primaryScope]|| [(CPLEngineScopeStorage *)self valueForFlag:16 forScope:scopeCopy])
       {
         v5 = 0;
       }
 
       else
       {
-        v5 = v10;
+        v5 = primaryScope;
       }
     }
 
@@ -908,22 +908,22 @@ LABEL_11:
   return v5;
 }
 
-- (id)sharingScopeForScope:(id)a3
+- (id)sharingScopeForScope:(id)scope
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 scopeType] != 1)
+  scopeCopy = scope;
+  if ([scopeCopy scopeType] != 1)
   {
     v11 = 0;
     goto LABEL_26;
   }
 
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 sharingScopeIdentifier];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  sharingScopeIdentifier = [engineStore sharingScopeIdentifier];
 
-  if (!v6 || ([v4 scopeIdentifier], v7 = objc_claimAutoreleasedReturnValue(), -[CPLEngineStorage mainScopeIdentifier](self, "mainScopeIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, !v9))
+  if (!sharingScopeIdentifier || ([scopeCopy scopeIdentifier], v7 = objc_claimAutoreleasedReturnValue(), -[CPLEngineStorage mainScopeIdentifier](self, "mainScopeIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, !v9))
   {
-    v10 = [(CPLEngineScopeStorage *)self flagsForScope:v4];
+    v10 = [(CPLEngineScopeStorage *)self flagsForScope:scopeCopy];
     if (([v10 valueForFlag:4] & 1) == 0 && objc_msgSend(v10, "valueForFlag:", 16))
     {
       v25 = 0u;
@@ -935,7 +935,7 @@ LABEL_11:
       if (v13)
       {
         v14 = v13;
-        v22 = v6;
+        v22 = sharingScopeIdentifier;
         v15 = *v24;
         do
         {
@@ -947,8 +947,8 @@ LABEL_11:
             }
 
             v17 = *(*(&v23 + 1) + 8 * i);
-            v18 = [v4 scopeIdentifier];
-            if ([(CPLEngineScopeStorage *)self _isValidSharingScope:v17 forScopeIdentifier:v18])
+            scopeIdentifier = [scopeCopy scopeIdentifier];
+            if ([(CPLEngineScopeStorage *)self _isValidSharingScope:v17 forScopeIdentifier:scopeIdentifier])
             {
               v19 = [(CPLEngineScopeStorage *)self _isAvailableSharingScope:v17];
 
@@ -970,7 +970,7 @@ LABEL_11:
         while (v14);
         v11 = 0;
 LABEL_22:
-        v6 = v22;
+        sharingScopeIdentifier = v22;
       }
 
       else
@@ -984,7 +984,7 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  v10 = [(CPLEngineScopeStorage *)self scopeWithIdentifier:v6];
+  v10 = [(CPLEngineScopeStorage *)self scopeWithIdentifier:sharingScopeIdentifier];
   if (![(CPLEngineScopeStorage *)self _isAvailableSharingScope:v10])
   {
 LABEL_21:
@@ -1001,18 +1001,18 @@ LABEL_26:
   return v11;
 }
 
-- (BOOL)_isAvailableSharingScope:(void *)a1
+- (BOOL)_isAvailableSharingScope:(void *)scope
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (scope && v3)
   {
-    v6 = [a1 flagsForScope:v3];
+    v6 = [scope flagsForScope:v3];
     v5 = 1;
     if ([v6 valueForFlag:4])
     {
-      v7 = [a1 stagingScopeForScope:v4];
+      v7 = [scope stagingScopeForScope:v4];
 
       if (!v7)
       {
@@ -1024,16 +1024,16 @@ LABEL_26:
   return v5;
 }
 
-- (BOOL)doesScopeAllowCourtesyMingling:(id)a3
+- (BOOL)doesScopeAllowCourtesyMingling:(id)mingling
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 sharingScopeIdentifier];
+  minglingCopy = mingling;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  sharingScopeIdentifier = [engineStore sharingScopeIdentifier];
 
-  if (v6)
+  if (sharingScopeIdentifier)
   {
-    v7 = [v4 scopeIdentifier];
-    v8 = [v7 isEqualToString:v6];
+    scopeIdentifier = [minglingCopy scopeIdentifier];
+    v8 = [scopeIdentifier isEqualToString:sharingScopeIdentifier];
 
     v9 = v8 ^ 1;
   }
@@ -1046,14 +1046,14 @@ LABEL_26:
   return v9;
 }
 
-- (id)updatedScopeFilter:(id)a3
+- (id)updatedScopeFilter:(id)filter
 {
-  v5 = a3;
-  v6 = [v5 includedScopeIdentifiers];
-  if ([v6 count])
+  filterCopy = filter;
+  includedScopeIdentifiers = [filterCopy includedScopeIdentifiers];
+  if ([includedScopeIdentifiers count])
   {
-    v7 = [(CPLEngineScopeStorage *)self _realScopeIdentifiersFromScopeIdentifiers:v6];
-    if (v6 != v7)
+    v7 = [(CPLEngineScopeStorage *)self _realScopeIdentifiersFromScopeIdentifiers:includedScopeIdentifiers];
+    if (includedScopeIdentifiers != v7)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1068,64 +1068,64 @@ LABEL_26:
           }
         }
 
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScopeStorage.m"];
-        [v12 handleFailureInMethod:a2 object:self file:v13 lineNumber:2658 description:@"Unexpected new scope identifiers list"];
+        [currentHandler handleFailureInMethod:a2 object:self file:v13 lineNumber:2658 description:@"Unexpected new scope identifiers list"];
 
         abort();
       }
 
-      if (([v6 isEqualToSet:v7] & 1) == 0)
+      if (([includedScopeIdentifiers isEqualToSet:v7] & 1) == 0)
       {
-        v8 = [(CPLEngineStorage *)self platformObject];
-        v9 = [v8 filterForIncludedScopeIdentifiers:v7];
+        platformObject = [(CPLEngineStorage *)self platformObject];
+        v9 = [platformObject filterForIncludedScopeIdentifiers:v7];
 
-        v5 = v9;
+        filterCopy = v9;
       }
     }
   }
 
-  return v5;
+  return filterCopy;
 }
 
-- (id)filterForExcludedScopeIdentifiers:(id)a3
+- (id)filterForExcludedScopeIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 filterForExcludedScopeIdentifiers:v4];
+  identifiersCopy = identifiers;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject filterForExcludedScopeIdentifiers:identifiersCopy];
 
   return v6;
 }
 
-- (id)filterForIncludedScopeIdentifiers:(id)a3
+- (id)filterForIncludedScopeIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [(CPLEngineScopeStorage *)self _realScopeIdentifiersFromScopeIdentifiers:v4];
+  identifiersCopy = identifiers;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [(CPLEngineScopeStorage *)self _realScopeIdentifiersFromScopeIdentifiers:identifiersCopy];
 
-  v7 = [v5 filterForIncludedScopeIdentifiers:v6];
+  v7 = [platformObject filterForIncludedScopeIdentifiers:v6];
 
   return v7;
 }
 
-- (id)_realScopeIdentifiersFromScopeIdentifiers:(id)a3
+- (id)_realScopeIdentifiersFromScopeIdentifiers:(id)identifiers
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 sharingScopeIdentifier];
+  identifiersCopy = identifiers;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  sharingScopeIdentifier = [engineStore sharingScopeIdentifier];
 
-  if (v6)
+  if (sharingScopeIdentifier)
   {
-    v7 = [(CPLEngineScopeStorage *)self primaryScope];
-    if (!v7)
+    primaryScope = [(CPLEngineScopeStorage *)self primaryScope];
+    if (!primaryScope)
     {
 LABEL_16:
 
       goto LABEL_17;
     }
 
-    v8 = [(CPLEngineScopeStorage *)self sharingScopeForScope:v7];
+    v8 = [(CPLEngineScopeStorage *)self sharingScopeForScope:primaryScope];
     if (!v8)
     {
       goto LABEL_14;
@@ -1134,21 +1134,21 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [(CPLEngineStorage *)self mainScopeIdentifier];
-      if ([v4 containsObject:v9])
+      mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
+      if ([identifiersCopy containsObject:mainScopeIdentifier])
       {
-        v10 = [v8 scopeIdentifier];
-        v11 = [v4 containsObject:v10];
+        scopeIdentifier = [v8 scopeIdentifier];
+        v11 = [identifiersCopy containsObject:scopeIdentifier];
 
         if ((v11 & 1) == 0)
         {
-          v12 = [v8 scopeIdentifier];
-          v13 = [v4 arrayByAddingObject:v12];
+          scopeIdentifier2 = [v8 scopeIdentifier];
+          v13 = [identifiersCopy arrayByAddingObject:scopeIdentifier2];
 LABEL_12:
           v16 = v13;
 
 LABEL_15:
-          v4 = v16;
+          identifiersCopy = v16;
           goto LABEL_16;
         }
 
@@ -1161,13 +1161,13 @@ LABEL_15:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v30 = v7;
+        v30 = primaryScope;
         v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        obj = v4;
+        obj = identifiersCopy;
         v19 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
         if (v19)
         {
@@ -1185,15 +1185,15 @@ LABEL_15:
 
               v24 = *(*(&v32 + 1) + 8 * i);
               [v16 addObject:{v24, v30}];
-              v25 = [(CPLEngineStorage *)self mainScopeIdentifier];
-              v26 = [v24 isEqualToString:v25];
+              mainScopeIdentifier2 = [(CPLEngineStorage *)self mainScopeIdentifier];
+              v26 = [v24 isEqualToString:mainScopeIdentifier2];
 
               if (v26)
               {
                 if ((v21 & 1) == 0)
                 {
-                  v27 = [v8 scopeIdentifier];
-                  [v16 addObject:v27];
+                  scopeIdentifier3 = [v8 scopeIdentifier];
+                  [v16 addObject:scopeIdentifier3];
                 }
 
                 v21 = 1;
@@ -1201,8 +1201,8 @@ LABEL_15:
 
               else
               {
-                v28 = [v8 scopeIdentifier];
-                v29 = [v24 isEqualToString:v28];
+                scopeIdentifier4 = [v8 scopeIdentifier];
+                v29 = [v24 isEqualToString:scopeIdentifier4];
 
                 v21 |= v29;
               }
@@ -1214,25 +1214,25 @@ LABEL_15:
           while (v20);
         }
 
-        v7 = v30;
+        primaryScope = v30;
         goto LABEL_15;
       }
 
-      v9 = [(CPLEngineStorage *)self mainScopeIdentifier];
-      if ([v4 containsObject:v9])
+      mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
+      if ([identifiersCopy containsObject:mainScopeIdentifier])
       {
-        v14 = [v8 scopeIdentifier];
-        v15 = [v4 containsObject:v14];
+        scopeIdentifier5 = [v8 scopeIdentifier];
+        v15 = [identifiersCopy containsObject:scopeIdentifier5];
 
         if ((v15 & 1) == 0)
         {
-          v12 = [v8 scopeIdentifier];
-          v13 = [v4 setByAddingObject:v12];
+          scopeIdentifier2 = [v8 scopeIdentifier];
+          v13 = [identifiersCopy setByAddingObject:scopeIdentifier2];
           goto LABEL_12;
         }
 
 LABEL_14:
-        v16 = v4;
+        v16 = identifiersCopy;
         goto LABEL_15;
       }
     }
@@ -1243,16 +1243,16 @@ LABEL_14:
 LABEL_17:
   v17 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return identifiersCopy;
 }
 
-- (BOOL)storeScopeListSyncAnchor:(id)a3 error:(id *)a4
+- (BOOL)storeScopeListSyncAnchor:(id)anchor error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 storeScopeListSyncAnchor:v6 error:a4];
+  anchorCopy = anchor;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject storeScopeListSyncAnchor:anchorCopy error:error];
 
-  if (!v6 && v8)
+  if (!anchorCopy && v8)
   {
     self->_someScopeMightHaveToBePulledByClient = 1;
     self->_clearSomeScopeMightHaveToBePulledByClient = 0;
@@ -1262,11 +1262,11 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)shouldAutoactivateScopeWithIdentifier:(id)a3 scopeType:(int64_t)a4
+- (BOOL)shouldAutoactivateScopeWithIdentifier:(id)identifier scopeType:(int64_t)type
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (![CPLScopeChange shouldAutoActivateScopeWithType:a4])
+  identifierCopy = identifier;
+  if (![CPLScopeChange shouldAutoActivateScopeWithType:type])
   {
 LABEL_15:
     v7 = 0;
@@ -1279,17 +1279,17 @@ LABEL_15:
   }
 
   v7 = 1;
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 4 && (CPLAllowsInactiveSharedLibraryScope_allowsInactiveSharedLibraryScope & 1) == 0)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 4 && (CPLAllowsInactiveSharedLibraryScope_allowsInactiveSharedLibraryScope & 1) == 0)
   {
-    v8 = [(CPLEngineStorage *)self mainScopeIdentifier];
-    v9 = [(CPLEngineScopeStorage *)self _isValidSharingScopeIdentifier:v6 scopeType:a4 forScopeIdentifier:v8];
+    mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
+    v9 = [(CPLEngineScopeStorage *)self _isValidSharingScopeIdentifier:identifierCopy scopeType:type forScopeIdentifier:mainScopeIdentifier];
 
     if (v9)
     {
-      v10 = [(CPLEngineStorage *)self engineStore];
-      v11 = [v10 sharingScopeIdentifier];
+      engineStore = [(CPLEngineStorage *)self engineStore];
+      sharingScopeIdentifier = [engineStore sharingScopeIdentifier];
 
-      if (v11 && ([v11 isEqualToString:v6] & 1) == 0)
+      if (sharingScopeIdentifier && ([sharingScopeIdentifier isEqualToString:identifierCopy] & 1) == 0)
       {
         if (_CPLSilentLogging)
         {
@@ -1297,21 +1297,21 @@ LABEL_15:
           goto LABEL_22;
         }
 
-        v12 = __CPLStorageOSLogDomain_8656();
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        primaryScope = __CPLStorageOSLogDomain_8656();
+        if (os_log_type_enabled(primaryScope, OS_LOG_TYPE_DEFAULT))
         {
           v16 = 138543618;
-          v17 = v6;
+          v17 = identifierCopy;
           v18 = 2114;
-          v19 = v11;
-          _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_DEFAULT, "Won't auto-activate %{public}@ as %{public}@ is already in use", &v16, 0x16u);
+          v19 = sharingScopeIdentifier;
+          _os_log_impl(&dword_1DC05A000, primaryScope, OS_LOG_TYPE_DEFAULT, "Won't auto-activate %{public}@ as %{public}@ is already in use", &v16, 0x16u);
         }
       }
 
       else
       {
-        v12 = [(CPLEngineScopeStorage *)self primaryScope];
-        if (v12 && ![(CPLEngineScopeStorage *)self valueForFlag:16 forScope:v12])
+        primaryScope = [(CPLEngineScopeStorage *)self primaryScope];
+        if (primaryScope && ![(CPLEngineScopeStorage *)self valueForFlag:16 forScope:primaryScope])
         {
           goto LABEL_21;
         }
@@ -1322,7 +1322,7 @@ LABEL_15:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             v16 = 138543362;
-            v17 = v6;
+            v17 = identifierCopy;
             _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_DEFAULT, "Won't auto-activate %{public}@ as iCPL is off", &v16, 0xCu);
           }
         }
@@ -1344,11 +1344,11 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)deactivateScope:(id)a3 error:(id *)a4
+- (BOOL)deactivateScope:(id)scope error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CPLEngineScopeStorage *)self flagsForScope:v6];
+  scopeCopy = scope;
+  v7 = [(CPLEngineScopeStorage *)self flagsForScope:scopeCopy];
   if ([v7 valueForFlag:16])
   {
     v8 = 1;
@@ -1362,15 +1362,15 @@ LABEL_16:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412290;
-        v13 = v6;
+        v13 = scopeCopy;
         _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEFAULT, "Deactivating %@", &v12, 0xCu);
       }
     }
 
     [v7 setValue:1 forFlag:16];
-    if ([(CPLEngineScopeStorage *)self updateFlags:v7 forScope:v6 error:a4])
+    if ([(CPLEngineScopeStorage *)self updateFlags:v7 forScope:scopeCopy error:error])
     {
-      v8 = [(CPLEngineScopeStorage *)self _forceClientToPullScopeIfNecessary:v6 error:a4];
+      v8 = [(CPLEngineScopeStorage *)self _forceClientToPullScopeIfNecessary:scopeCopy error:error];
     }
 
     else
@@ -1383,11 +1383,11 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)activateScope:(id)a3 error:(id *)a4
+- (BOOL)activateScope:(id)scope error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CPLEngineScopeStorage *)self flagsForScope:v6];
+  scopeCopy = scope;
+  v7 = [(CPLEngineScopeStorage *)self flagsForScope:scopeCopy];
   if ([v7 valueForFlag:16])
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -1396,13 +1396,13 @@ LABEL_16:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412290;
-        v13 = v6;
+        v13 = scopeCopy;
         _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_DEFAULT, "Activating %@", &v12, 0xCu);
       }
     }
 
     [v7 setValue:0 forFlag:16];
-    v9 = [(CPLEngineScopeStorage *)self updateFlags:v7 forScope:v6 error:a4]&& [(CPLEngineScopeStorage *)self setTransportScope:0 forScope:v6 error:a4]&& [(CPLEngineScopeStorage *)self _forceClientToPullScopeIfNecessary:v6 error:a4];
+    v9 = [(CPLEngineScopeStorage *)self updateFlags:v7 forScope:scopeCopy error:error]&& [(CPLEngineScopeStorage *)self setTransportScope:0 forScope:scopeCopy error:error]&& [(CPLEngineScopeStorage *)self _forceClientToPullScopeIfNecessary:scopeCopy error:error];
   }
 
   else
@@ -1414,29 +1414,29 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)_forceClientToPullScopeIfNecessary:(id)a3 error:(id *)a4
+- (BOOL)_forceClientToPullScopeIfNecessary:(id)necessary error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self engineStore];
-  v8 = [v7 libraryOptions];
+  necessaryCopy = necessary;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  libraryOptions = [engineStore libraryOptions];
 
-  v9 = (v8 & 0x400) == 0 || [(CPLEngineScopeStorage *)self setScopeNeedsToBePulledByClient:v6 error:a4];
+  v9 = (libraryOptions & 0x400) == 0 || [(CPLEngineScopeStorage *)self setScopeNeedsToBePulledByClient:necessaryCopy error:error];
   return v9;
 }
 
-- (BOOL)disablePrimaryScopeWithError:(id *)a3
+- (BOOL)disablePrimaryScopeWithError:(id *)error
 {
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 libraryOptions];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  libraryOptions = [engineStore libraryOptions];
 
-  if (v6)
+  if (libraryOptions)
   {
-    v9 = [(CPLEngineStorage *)self platformObject];
-    v10 = [v9 primaryScope];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    primaryScope = [platformObject primaryScope];
 
-    if (v10)
+    if (primaryScope)
     {
-      v8 = [(CPLEngineScopeStorage *)self deactivateScope:v10 error:a3];
+      v8 = [(CPLEngineScopeStorage *)self deactivateScope:primaryScope error:error];
     }
 
     else
@@ -1457,10 +1457,10 @@ LABEL_16:
       }
     }
 
-    if (a3)
+    if (error)
     {
       [CPLErrors incorrectParametersErrorForParameter:@"libraryOptions"];
-      *a3 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -1472,35 +1472,35 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)enablePrimaryScopeWithError:(id *)a3
+- (BOOL)enablePrimaryScopeWithError:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 libraryOptions];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  libraryOptions = [engineStore libraryOptions];
 
-  if (v6)
+  if (libraryOptions)
   {
-    v9 = [(CPLEngineStorage *)self platformObject];
-    v10 = [v9 primaryScope];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    primaryScope = [platformObject primaryScope];
 
-    if (!v10)
+    if (!primaryScope)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
         v12 = __CPLStorageOSLogDomain_8656();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [(CPLEngineStorage *)self mainScopeIdentifier];
+          mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
           v21 = 138543362;
-          v22 = v13;
+          v22 = mainScopeIdentifier;
           _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_DEFAULT, "Creating %{public}@", &v21, 0xCu);
         }
       }
 
-      v14 = [(CPLEngineStorage *)self mainScopeIdentifier];
-      v15 = [(CPLEngineScopeStorage *)self createScopeWithIdentifier:v14 scopeType:1 flags:0 transportScope:0 error:a3];
+      mainScopeIdentifier2 = [(CPLEngineStorage *)self mainScopeIdentifier];
+      v15 = [(CPLEngineScopeStorage *)self createScopeWithIdentifier:mainScopeIdentifier2 scopeType:1 flags:0 transportScope:0 error:error];
 
-      v10 = 0;
+      primaryScope = 0;
       if (v15)
       {
         goto LABEL_35;
@@ -1509,7 +1509,7 @@ LABEL_16:
       goto LABEL_36;
     }
 
-    if ([v10 scopeType]== 1)
+    if ([primaryScope scopeType]== 1)
     {
       if (_CPLSilentLogging)
       {
@@ -1520,14 +1520,14 @@ LABEL_16:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138412290;
-        v22 = v10;
+        v22 = primaryScope;
         _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEFAULT, "Activating %@", &v21, 0xCu);
       }
     }
 
     else
     {
-      if ([v10 scopeType])
+      if ([primaryScope scopeType])
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -1535,15 +1535,15 @@ LABEL_16:
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
             v21 = 138412290;
-            v22 = v10;
+            v22 = primaryScope;
             _os_log_impl(&dword_1DC05A000, v16, OS_LOG_TYPE_ERROR, "Trying to enable main scope %@ but it is not a library", &v21, 0xCu);
           }
         }
 
-        if (a3)
+        if (error)
         {
           +[CPLErrors unknownError];
-          *a3 = v8 = 0;
+          *error = v8 = 0;
 LABEL_37:
 
           goto LABEL_38;
@@ -1559,27 +1559,27 @@ LABEL_37:
         {
           v18 = [CPLScopeChange descriptionForScopeType:1];
           v21 = 138412546;
-          v22 = v10;
+          v22 = primaryScope;
           v23 = 2112;
           v24 = v18;
           _os_log_impl(&dword_1DC05A000, v17, OS_LOG_TYPE_DEFAULT, "Found main scope %@ which has not been identified yet - forcing scope type to %@", &v21, 0x16u);
         }
       }
 
-      if (![(CPLEngineScopeStorage *)self _setScopeType:1 forScope:v10 error:a3])
+      if (![(CPLEngineScopeStorage *)self _setScopeType:1 forScope:primaryScope error:error])
       {
         goto LABEL_36;
       }
 
-      v11 = v10;
-      v10 = [v10 copyWithScopeType:1];
+      v11 = primaryScope;
+      primaryScope = [primaryScope copyWithScopeType:1];
     }
 
 LABEL_34:
-    if ([(CPLEngineScopeStorage *)self activateScope:v10 error:a3])
+    if ([(CPLEngineScopeStorage *)self activateScope:primaryScope error:error])
     {
 LABEL_35:
-      v8 = [(CPLEngineScopeStorage *)self _activateSharedScopeIfPresentWithError:a3];
+      v8 = [(CPLEngineScopeStorage *)self _activateSharedScopeIfPresentWithError:error];
       goto LABEL_37;
     }
 
@@ -1598,10 +1598,10 @@ LABEL_36:
     }
   }
 
-  if (a3)
+  if (error)
   {
     [CPLErrors incorrectParametersErrorForParameter:@"libraryOptions"];
-    *a3 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -1614,13 +1614,13 @@ LABEL_38:
   return v8;
 }
 
-- (BOOL)_activateSharedScopeIfPresentWithError:(id *)a3
+- (BOOL)_activateSharedScopeIfPresentWithError:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 sharingScopeIdentifier];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  sharingScopeIdentifier = [engineStore sharingScopeIdentifier];
 
-  if (v6)
+  if (sharingScopeIdentifier)
   {
     v7 = 1;
   }
@@ -1650,8 +1650,8 @@ LABEL_38:
           v13 = *(*(&v19 + 1) + 8 * i);
           if (([v13 scopeType] & 0xFFFFFFFFFFFFFFFELL) == 4)
           {
-            v14 = [v13 scopeIdentifier];
-            v15 = -[CPLEngineScopeStorage shouldAutoactivateScopeWithIdentifier:scopeType:](self, "shouldAutoactivateScopeWithIdentifier:scopeType:", v14, [v13 scopeType]);
+            scopeIdentifier = [v13 scopeIdentifier];
+            v15 = -[CPLEngineScopeStorage shouldAutoactivateScopeWithIdentifier:scopeType:](self, "shouldAutoactivateScopeWithIdentifier:scopeType:", scopeIdentifier, [v13 scopeType]);
 
             if (v15)
             {
@@ -1666,7 +1666,7 @@ LABEL_38:
                 }
               }
 
-              v7 = [(CPLEngineScopeStorage *)self activateScope:v13 error:a3];
+              v7 = [(CPLEngineScopeStorage *)self activateScope:v13 error:error];
               goto LABEL_18;
             }
           }
@@ -1693,25 +1693,25 @@ LABEL_18:
 
 - (id)primaryScope
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 primaryScope];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  primaryScope = [platformObject primaryScope];
 
-  return v3;
+  return primaryScope;
 }
 
-- (id)statusDictionaryForScope:(id)a3
+- (id)statusDictionaryForScope:(id)scope
 {
   v76[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  scopeCopy = scope;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = +[CPLScopeChange descriptionForScopeType:](CPLScopeChange, "descriptionForScopeType:", [v4 scopeType]);
+  v6 = +[CPLScopeChange descriptionForScopeType:](CPLScopeChange, "descriptionForScopeType:", [scopeCopy scopeType]);
   [v5 setObject:v6 forKeyedSubscript:@"scope type"];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "localIndex")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(scopeCopy, "localIndex")}];
   v76[0] = v7;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "cloudIndex")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(scopeCopy, "cloudIndex")}];
   v76[1] = v8;
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "stableIndex")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(scopeCopy, "stableIndex")}];
   v76[2] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:3];
   [v5 setObject:v10 forKeyedSubscript:@"indexes"];
@@ -1723,34 +1723,34 @@ LABEL_18:
   v72 = v5;
   v75 = v72;
   v11 = MEMORY[0x1E128EBA0](v74);
-  v12 = [(CPLEngineStorage *)self platformObject];
-  v13 = [(CPLEngineStorage *)self engineStore];
-  v14 = [v13 engineLibrary];
-  v15 = [v14 transport];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  engineLibrary = [engineStore engineLibrary];
+  transport = [engineLibrary transport];
 
-  v16 = [v4 creationDate];
-  (v11)[2](v11, @"creation date", v16);
+  creationDate = [scopeCopy creationDate];
+  (v11)[2](v11, @"creation date", creationDate);
 
-  v17 = [v12 flagsForScope:v4];
-  v18 = [v17 arrayDescription];
+  v17 = [platformObject flagsForScope:scopeCopy];
+  arrayDescription = [v17 arrayDescription];
 
-  if ([v18 count])
+  if ([arrayDescription count])
   {
-    (v11)[2](v11, @"flags", v18);
+    (v11)[2](v11, @"flags", arrayDescription);
   }
 
-  v19 = [v12 busyStateForScope:v4];
+  v19 = [platformObject busyStateForScope:scopeCopy];
   if (v19)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithInteger:v19];
     (v11)[2](v11, @"busyState", v20);
   }
 
-  v21 = [v12 transportScopeForScope:v4];
+  v21 = [platformObject transportScopeForScope:scopeCopy];
   v70 = v21;
   if (v21)
   {
-    v22 = [v15 scopeNameForTransportScope:v21];
+    v22 = [transport scopeNameForTransportScope:v21];
     (v11)[2](v11, @"zone", v22);
   }
 
@@ -1760,27 +1760,27 @@ LABEL_18:
   }
 
   v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v12 doesScopeNeedToPushChangesToTransport:v4])
+  if ([platformObject doesScopeNeedToPushChangesToTransport:scopeCopy])
   {
     [v23 addObject:@"push-to-transport"];
   }
 
-  if ([v12 doesScopeNeedToPullChangesFromTransport:v4])
+  if ([platformObject doesScopeNeedToPullChangesFromTransport:scopeCopy])
   {
     [v23 addObject:@"pull-from-transport"];
   }
 
-  if ([v12 doesScopeNeedToBePulledByClient:v4])
+  if ([platformObject doesScopeNeedToBePulledByClient:scopeCopy])
   {
     [v23 addObject:@"client-must-pull"];
   }
 
-  if ([v12 doesScopeNeedToUpdateTransport:v4])
+  if ([platformObject doesScopeNeedToUpdateTransport:scopeCopy])
   {
     [v23 addObject:@"must-update-transport"];
   }
 
-  if ([v12 doesScopeNeedToUploadComputeState:v4])
+  if ([platformObject doesScopeNeedToUploadComputeState:scopeCopy])
   {
     [v23 addObject:@"upload-compute-states"];
   }
@@ -1791,14 +1791,14 @@ LABEL_18:
   }
 
   v69 = v23;
-  v71 = v18;
-  v24 = [v12 disabledDateForScope:v4];
+  v71 = arrayDescription;
+  v24 = [platformObject disabledDateForScope:scopeCopy];
   (v11)[2](v11, @"disabled date", v24);
 
-  v25 = [v12 deleteDateForScope:v4];
+  v25 = [platformObject deleteDateForScope:scopeCopy];
   (v11)[2](v11, @"delete date", v25);
 
-  v26 = [v12 initialSyncDateForScope:v4];
+  v26 = [platformObject initialSyncDateForScope:scopeCopy];
   v68 = v26;
   if (v26)
   {
@@ -1807,42 +1807,42 @@ LABEL_18:
 
   else
   {
-    v27 = [(CPLEngineScopeStorage *)self estimatedSizeForScope:v4];
-    v28 = [(CPLEngineScopeStorage *)self estimatedAssetCountForScope:v4];
+    v27 = [(CPLEngineScopeStorage *)self estimatedSizeForScope:scopeCopy];
+    v28 = [(CPLEngineScopeStorage *)self estimatedAssetCountForScope:scopeCopy];
     if (v27 | v28)
     {
       v29 = v28;
-      v30 = self;
+      selfCopy = self;
       v31 = objc_alloc(MEMORY[0x1E696AEC0]);
       v32 = [MEMORY[0x1E696AAF0] stringFromByteCount:v27 countStyle:1];
       v33 = v31;
-      self = v30;
+      self = selfCopy;
       v34 = [v33 initWithFormat:@"%@ for %lu assets", v32, v29];
       (v11)[2](v11, @"init. est. size", v34);
     }
   }
 
-  v67 = [v12 initialDownloadDateForScope:v4];
+  v67 = [platformObject initialDownloadDateForScope:scopeCopy];
   (v11[2])(v11, @"initial client download");
-  v66 = [v12 activationDateForScope:v4];
+  v66 = [platformObject activationDateForScope:scopeCopy];
   (v11[2])(v11, @"activation");
-  v65 = [v12 initialMetadataQueriesDateForScope:v4];
+  v65 = [platformObject initialMetadataQueriesDateForScope:scopeCopy];
   (v11[2])(v11, @"initial metadata queries");
-  v64 = [v12 initialMetadataDownloadDateForScope:v4];
+  v64 = [platformObject initialMetadataDownloadDateForScope:scopeCopy];
   (v11[2])(v11, @"initial metadata download");
-  v35 = [(CPLEngineScopeStorage *)self sharingScopeForScope:v4];
+  v35 = [(CPLEngineScopeStorage *)self sharingScopeForScope:scopeCopy];
   if (v35)
   {
-    v36 = [v12 initialMetadataDownloadDateForScope:v35];
+    v36 = [platformObject initialMetadataDownloadDateForScope:v35];
     (v11)[2](v11, @"initial shared metadata download", v36);
   }
 
-  v62 = [v12 initialMingleDateForScope:v4];
+  v62 = [platformObject initialMingleDateForScope:scopeCopy];
   (v11[2])(v11, @"initial mingle");
-  v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CPLEngineScopeStorage supportedFeatureVersionInLastSyncForScope:](self, "supportedFeatureVersionInLastSyncForScope:", v4)}];
+  v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CPLEngineScopeStorage supportedFeatureVersionInLastSyncForScope:](self, "supportedFeatureVersionInLastSyncForScope:", scopeCopy)}];
   (v11)[2](v11, @"last supported feature version", v37);
 
-  v38 = [v12 lastScopeChangeUpdateDateForScope:v4];
+  v38 = [platformObject lastScopeChangeUpdateDateForScope:scopeCopy];
   v61 = v38;
   if (v38)
   {
@@ -1851,10 +1851,10 @@ LABEL_18:
 
   else
   {
-    v39 = [v12 scopeChangeForScope:v4];
-    v40 = [v39 libraryInfo];
+    v39 = [platformObject scopeChangeForScope:scopeCopy];
+    libraryInfo = [v39 libraryInfo];
 
-    if (v40)
+    if (libraryInfo)
     {
       v41 = @"needs update";
     }
@@ -1869,11 +1869,11 @@ LABEL_18:
 
   v63 = v35;
   v73 = 0;
-  v42 = [v12 syncAnchorForScope:v4 isCommitted:&v73];
+  v42 = [platformObject syncAnchorForScope:scopeCopy isCommitted:&v73];
   if (v42)
   {
-    v43 = v15;
-    v44 = [v15 simpleDescriptionForSyncAnchor:v42];
+    v43 = transport;
+    v44 = [transport simpleDescriptionForSyncAnchor:v42];
     v45 = objc_alloc(MEMORY[0x1E696AEC0]);
     if (v73)
     {
@@ -1891,34 +1891,34 @@ LABEL_18:
 
   else
   {
-    v43 = v15;
+    v43 = transport;
     (v11)[2](v11, @"anch", @"none");
   }
 
-  v48 = [(CPLEngineScopeStorage *)self remainingClassesForInitialQueryForScope:v4];
+  v48 = [(CPLEngineScopeStorage *)self remainingClassesForInitialQueryForScope:scopeCopy];
   if ([v48 count])
   {
     v49 = [v48 valueForKey:@"description"];
     (v11)[2](v11, @"queries", v49);
   }
 
-  v50 = [v12 transientSyncAnchorForScope:v4];
+  v50 = [platformObject transientSyncAnchorForScope:scopeCopy];
   if (v50)
   {
     v51 = [v43 simpleDescriptionForSyncAnchor:v50];
     (v11)[2](v11, @"transient", v51);
   }
 
-  v52 = [(CPLEngineScopeStorage *)self uploadTransportGroupForScope:v4];
+  v52 = [(CPLEngineScopeStorage *)self uploadTransportGroupForScope:scopeCopy];
   [v52 cplDebugDescription];
   v60 = v43;
   v54 = v53 = self;
   (v11)[2](v11, @"upload group", v54);
 
-  v55 = [(CPLEngineScopeStorage *)v53 downloadTransportGroupForScope:v4];
+  v55 = [(CPLEngineScopeStorage *)v53 downloadTransportGroupForScope:scopeCopy];
 
-  v56 = [v55 cplDebugDescription];
-  (v11)[2](v11, @"download group", v56);
+  cplDebugDescription = [v55 cplDebugDescription];
+  (v11)[2](v11, @"download group", cplDebugDescription);
 
   v57 = v72;
   v58 = *MEMORY[0x1E69E9840];
@@ -1936,9 +1936,9 @@ uint64_t __50__CPLEngineScopeStorage_statusDictionaryForScope___block_invoke(uin
   return result;
 }
 
-- (BOOL)upgradeScopesWithNewLibraryOptions:(unint64_t)a3 error:(id *)a4
+- (BOOL)upgradeScopesWithNewLibraryOptions:(unint64_t)options error:(id *)error
 {
-  if (!a3)
+  if (!options)
   {
     return 1;
   }
@@ -1946,57 +1946,57 @@ uint64_t __50__CPLEngineScopeStorage_statusDictionaryForScope___block_invoke(uin
   self->_someScopeMightHaveToBePulledByClient = 1;
   self->_clearSomeScopeMightHaveToBePulledByClient = 0;
   self->_schedulePullFromClient = 1;
-  v6 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v6 upgradeScopesWithNewLibraryOptions:a3 error:a4];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject upgradeScopesWithNewLibraryOptions:options error:error];
 
-  return a4;
+  return error;
 }
 
-- (unint64_t)estimatedAssetCountForScope:(id)a3
+- (unint64_t)estimatedAssetCountForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 estimatedAssetCountForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject estimatedAssetCountForScope:scopeCopy];
 
   return v6;
 }
 
-- (unint64_t)estimatedSizeForScope:(id)a3
+- (unint64_t)estimatedSizeForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 estimatedSizeForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject estimatedSizeForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)storeEstimatedSize:(unint64_t)a3 estimatedAssetCount:(unint64_t)a4 forScope:(id)a5 error:(id *)a6
+- (BOOL)storeEstimatedSize:(unint64_t)size estimatedAssetCount:(unint64_t)count forScope:(id)scope error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a5;
+  scopeCopy = scope;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v11 = __CPLStorageOSLogDomain_8656();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v10 scopeIdentifier];
-      v13 = [MEMORY[0x1E696AAF0] stringFromByteCount:a3 countStyle:1];
+      scopeIdentifier = [scopeCopy scopeIdentifier];
+      v13 = [MEMORY[0x1E696AAF0] stringFromByteCount:size countStyle:1];
       v19 = 138412802;
-      v20 = v12;
+      v20 = scopeIdentifier;
       v21 = 2112;
       v22 = v13;
       v23 = 2048;
-      v24 = a4;
+      countCopy = count;
       _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEFAULT, "Updating estimated size for %@ to %@ / %lu assets", &v19, 0x20u);
     }
   }
 
-  v14 = [(CPLEngineStorage *)self platformObject];
-  v15 = [v14 storeEstimatedSize:a3 estimatedAssetCount:a4 forScope:v10 error:a6];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v15 = [platformObject storeEstimatedSize:size estimatedAssetCount:count forScope:scopeCopy error:error];
 
   if (v15)
   {
-    v16 = [(CPLEngineScopeStorage *)self updateInitialSyncTransportGroupEstimatedSize:a3 assetCount:a4 forScope:v10 error:a6];
+    v16 = [(CPLEngineScopeStorage *)self updateInitialSyncTransportGroupEstimatedSize:size assetCount:count forScope:scopeCopy error:error];
   }
 
   else
@@ -2008,11 +2008,11 @@ uint64_t __50__CPLEngineScopeStorage_statusDictionaryForScope___block_invoke(uin
   return v16;
 }
 
-- (BOOL)supportedFeatureVersionIsMostRecentForScope:(id)a3
+- (BOOL)supportedFeatureVersionIsMostRecentForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 supportedFeatureVersionInLastSyncForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject supportedFeatureVersionInLastSyncForScope:scopeCopy];
 
   v7 = +[CPLFingerprintScheme supportsEPP];
   v8 = 21;
@@ -2026,91 +2026,91 @@ uint64_t __50__CPLEngineScopeStorage_statusDictionaryForScope___block_invoke(uin
   return v9;
 }
 
-- (BOOL)storeSupportedFeatureVersionInLastSync:(unint64_t)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)storeSupportedFeatureVersionInLastSync:(unint64_t)sync forScope:(id)scope error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  scopeCopy = scope;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v9 = __CPLStorageOSLogDomain_8656();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v8;
+      v15 = scopeCopy;
       v16 = 2048;
-      v17 = a3;
+      syncCopy = sync;
       _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEFAULT, "Set last supported feature version for %@ to %lu", &v14, 0x16u);
     }
   }
 
-  v10 = [(CPLEngineStorage *)self platformObject];
-  v11 = [v10 storeSupportedFeatureVersionInLastSync:a3 forScope:v8 error:a5];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v11 = [platformObject storeSupportedFeatureVersionInLastSync:sync forScope:scopeCopy error:error];
 
   v12 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (unint64_t)supportedFeatureVersionInLastSyncForScope:(id)a3
+- (unint64_t)supportedFeatureVersionInLastSyncForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 supportedFeatureVersionInLastSyncForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject supportedFeatureVersionInLastSyncForScope:scopeCopy];
 
   return v6;
 }
 
-- (id)lastDateOfCompletedPullFromTransportForScope:(id)a3
+- (id)lastDateOfCompletedPullFromTransportForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 lastDateOfCompletedPullFromTransportForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject lastDateOfCompletedPullFromTransportForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)storeLastDateOfClearedPushRepository:(id)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)storeLastDateOfClearedPushRepository:(id)repository forScope:(id)scope error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a5) = [v10 storeLastDateOfClearedPushRepository:v9 forScope:v8 error:a5];
+  scopeCopy = scope;
+  repositoryCopy = repository;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject storeLastDateOfClearedPushRepository:repositoryCopy forScope:scopeCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)lastDateOfClearedPushRepositoryForScope:(id)a3
+- (id)lastDateOfClearedPushRepositoryForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 lastDateOfClearedPushRepositoryForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject lastDateOfClearedPushRepositoryForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)hasFinishedAFullSyncForScope:(id)a3
+- (BOOL)hasFinishedAFullSyncForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasFinishedAFullSyncForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasFinishedAFullSyncForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)setHasFinishedInitialDownloadForScope:(id)a3 error:(id *)a4
+- (BOOL)setHasFinishedInitialDownloadForScope:(id)scope error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [MEMORY[0x1E695DF00] date];
-  LOBYTE(a4) = [v7 setInitialDownloadDate:v8 forScope:v6 error:a4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  date = [MEMORY[0x1E695DF00] date];
+  LOBYTE(error) = [platformObject setInitialDownloadDate:date forScope:scopeCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)hasFinishedInitialDownloadForScope:(id)a3
+- (BOOL)hasFinishedInitialDownloadForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 initialSyncDateForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject initialSyncDateForScope:scopeCopy];
   if (v6)
   {
     v7 = 1;
@@ -2118,27 +2118,27 @@ uint64_t __50__CPLEngineScopeStorage_statusDictionaryForScope___block_invoke(uin
 
   else
   {
-    v8 = [(CPLEngineStorage *)self platformObject];
-    v9 = [v8 initialDownloadDateForScope:v4];
+    platformObject2 = [(CPLEngineStorage *)self platformObject];
+    v9 = [platformObject2 initialDownloadDateForScope:scopeCopy];
     v7 = v9 != 0;
   }
 
   return v7;
 }
 
-- (BOOL)hasFinishedInitialSyncForScope:(id)a3
+- (BOOL)hasFinishedInitialSyncForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 initialSyncDateForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject initialSyncDateForScope:scopeCopy];
 
   return v6 != 0;
 }
 
-- (id)remainingClassesForInitialQueryForScope:(id)a3
+- (id)remainingClassesForInitialQueryForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineScopeStorage *)self _indexOfCurrentClassForInitialQueriesForScope:v4];
+  scopeCopy = scope;
+  v5 = [(CPLEngineScopeStorage *)self _indexOfCurrentClassForInitialQueriesForScope:scopeCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -2147,23 +2147,23 @@ uint64_t __50__CPLEngineScopeStorage_statusDictionaryForScope___block_invoke(uin
   else
   {
     v7 = v5;
-    v8 = _ClassesForInitialQueries([v4 scopeType]);
+    v8 = _ClassesForInitialQueries([scopeCopy scopeType]);
     v6 = [v8 subarrayWithRange:{v7, objc_msgSend(v8, "count") - v7}];
   }
 
   return v6;
 }
 
-- (BOOL)resetInitialSyncAnchorForScope:(id)a3 error:(id *)a4
+- (BOOL)resetInitialSyncAnchorForScope:(id)scope error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 setInitialSyncAnchor:0 forScope:v6 error:a4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject setInitialSyncAnchor:0 forScope:scopeCopy error:error];
 
-  if (v8 && (-[CPLEngineStorage platformObject](self, "platformObject"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 setClassNameOfRecordsForInitialQuery:0 forScope:v6 error:a4], v9, v10))
+  if (v8 && (-[CPLEngineStorage platformObject](self, "platformObject"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 setClassNameOfRecordsForInitialQuery:0 forScope:scopeCopy error:error], v9, v10))
   {
-    v11 = [(CPLEngineStorage *)self platformObject];
-    v12 = [v11 setHasFetchedInitialSyncAnchor:0 forScope:v6 error:a4];
+    platformObject2 = [(CPLEngineStorage *)self platformObject];
+    v12 = [platformObject2 setHasFetchedInitialSyncAnchor:0 forScope:scopeCopy error:error];
   }
 
   else
@@ -2174,47 +2174,47 @@ uint64_t __50__CPLEngineScopeStorage_statusDictionaryForScope___block_invoke(uin
   return v12;
 }
 
-- (id)initialSyncAnchorForScope:(id)a3
+- (id)initialSyncAnchorForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 initialSyncAnchorForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject initialSyncAnchorForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)setInitialSyncAnchor:(id)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)setInitialSyncAnchor:(id)anchor forScope:(id)scope error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a5) = [v10 setInitialSyncAnchor:v9 forScope:v8 error:a5];
+  scopeCopy = scope;
+  anchorCopy = anchor;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setInitialSyncAnchor:anchorCopy forScope:scopeCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)hasScopeFetchedInitialSyncAnchor:(id)a3
+- (BOOL)hasScopeFetchedInitialSyncAnchor:(id)anchor
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasScopeFetchedInitialSyncAnchor:v4];
+  anchorCopy = anchor;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasScopeFetchedInitialSyncAnchor:anchorCopy];
 
   return v6;
 }
 
-- (BOOL)markInitialQueryIsDoneForRecordsOfClass:(Class)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)markInitialQueryIsDoneForRecordsOfClass:(Class)class forScope:(id)scope error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = _ClassesForInitialQueries([v8 scopeType]);
+  scopeCopy = scope;
+  v9 = _ClassesForInitialQueries([scopeCopy scopeType]);
   if (![v9 count])
   {
     v21 = 1;
     goto LABEL_21;
   }
 
-  v10 = [(CPLEngineScopeStorage *)self _indexOfCurrentClassForInitialQueriesForScope:v8];
-  v11 = [v9 indexOfObject:a3];
+  v10 = [(CPLEngineScopeStorage *)self _indexOfCurrentClassForInitialQueriesForScope:scopeCopy];
+  v11 = [v9 indexOfObject:class];
   if (v11 != v10)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -2224,7 +2224,7 @@ uint64_t __50__CPLEngineScopeStorage_statusDictionaryForScope___block_invoke(uin
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v33 = a3;
+        classCopy = class;
         v34 = 2048;
         v35 = v22;
         v36 = 2048;
@@ -2233,10 +2233,10 @@ uint64_t __50__CPLEngineScopeStorage_statusDictionaryForScope___block_invoke(uin
       }
     }
 
-    v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Incorrect class %@ passed for initial queries", a3];
-    if (a5)
+    v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Incorrect class %@ passed for initial queries", class];
+    if (error)
     {
-      *a5 = [CPLErrors invalidCloudCacheErrorWithReason:v24];
+      *error = [CPLErrors invalidCloudCacheErrorWithReason:v24];
     }
 
     goto LABEL_20;
@@ -2245,14 +2245,14 @@ uint64_t __50__CPLEngineScopeStorage_statusDictionaryForScope___block_invoke(uin
   if (v10 + 1 != [v9 count])
   {
     v27 = [v9 objectAtIndex:v10 + 1];
-    v28 = [(CPLEngineStorage *)self platformObject];
+    platformObject = [(CPLEngineStorage *)self platformObject];
     v29 = NSStringFromClass(v27);
-    v30 = [v28 setClassNameOfRecordsForInitialQuery:v29 forScope:v8 error:a5];
+    v30 = [platformObject setClassNameOfRecordsForInitialQuery:v29 forScope:scopeCopy error:error];
 
     if (v30)
     {
-      v31 = [(CPLEngineStorage *)self platformObject];
-      v21 = [v31 storeTransientSyncAnchor:0 forScope:v8 error:a5];
+      platformObject2 = [(CPLEngineStorage *)self platformObject];
+      v21 = [platformObject2 storeTransientSyncAnchor:0 forScope:scopeCopy error:error];
 
       goto LABEL_21;
     }
@@ -2265,36 +2265,36 @@ uint64_t __50__CPLEngineScopeStorage_statusDictionaryForScope___block_invoke(uin
     v12 = __CPLStorageOSLogDomain_8656();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v8 scopeIdentifier];
+      scopeIdentifier = [scopeCopy scopeIdentifier];
       *buf = 138412290;
-      v33 = v13;
+      classCopy = scopeIdentifier;
       _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_DEFAULT, "All classes have been retrieved as part of the initial queries for %@. Moving to regular changes fetch", buf, 0xCu);
     }
   }
 
-  v14 = [(CPLEngineStorage *)self platformObject];
-  v15 = [v14 setClassNameOfRecordsForInitialQuery:&stru_1F57BD298 forScope:v8 error:a5];
+  platformObject3 = [(CPLEngineStorage *)self platformObject];
+  v15 = [platformObject3 setClassNameOfRecordsForInitialQuery:&stru_1F57BD298 forScope:scopeCopy error:error];
 
-  if (!v15 || -[CPLEngineScopeStorage shouldTrackAdditionalInitialSyncDatesForScope:](self, "shouldTrackAdditionalInitialSyncDatesForScope:", v8) && (-[CPLEngineStorage platformObject](self, "platformObject"), v16 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x1E695DF00] date], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "storeInitialMetadataQueriesDate:forScope:error:", v17, v8, a5), v17, v16, !v18))
+  if (!v15 || -[CPLEngineScopeStorage shouldTrackAdditionalInitialSyncDatesForScope:](self, "shouldTrackAdditionalInitialSyncDatesForScope:", scopeCopy) && (-[CPLEngineStorage platformObject](self, "platformObject"), v16 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x1E695DF00] date], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "storeInitialMetadataQueriesDate:forScope:error:", v17, scopeCopy, error), v17, v16, !v18))
   {
 LABEL_20:
     v21 = 0;
     goto LABEL_21;
   }
 
-  v19 = [(CPLEngineScopeStorage *)self initialSyncAnchorForScope:v8];
-  v20 = [(CPLEngineStorage *)self platformObject];
-  v21 = [v20 storeTransientSyncAnchor:v19 forScope:v8 error:a5];
+  v19 = [(CPLEngineScopeStorage *)self initialSyncAnchorForScope:scopeCopy];
+  platformObject4 = [(CPLEngineStorage *)self platformObject];
+  v21 = [platformObject4 storeTransientSyncAnchor:v19 forScope:scopeCopy error:error];
 
 LABEL_21:
   v25 = *MEMORY[0x1E69E9840];
   return v21;
 }
 
-- (Class)classOfRecordsForInitialQueryForScope:(id)a3
+- (Class)classOfRecordsForInitialQueryForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineScopeStorage *)self _indexOfCurrentClassForInitialQueriesForScope:v4];
+  scopeCopy = scope;
+  v5 = [(CPLEngineScopeStorage *)self _indexOfCurrentClassForInitialQueriesForScope:scopeCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -2303,22 +2303,22 @@ LABEL_21:
   else
   {
     v7 = v5;
-    v8 = _ClassesForInitialQueries([v4 scopeType]);
+    v8 = _ClassesForInitialQueries([scopeCopy scopeType]);
     v6 = [v8 objectAtIndex:v7];
   }
 
   return v6;
 }
 
-- (unint64_t)_indexOfCurrentClassForInitialQueriesForScope:(id)a3
+- (unint64_t)_indexOfCurrentClassForInitialQueriesForScope:(id)scope
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = _ClassesForInitialQueries([v4 scopeType]);
+  scopeCopy = scope;
+  v5 = _ClassesForInitialQueries([scopeCopy scopeType]);
   if ([v5 count])
   {
-    v6 = [(CPLEngineStorage *)self platformObject];
-    v7 = [v6 classNameOfRecordsForInitialQueryForScope:v4];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v7 = [platformObject classNameOfRecordsForInitialQueryForScope:scopeCopy];
 
     if (v7)
     {
@@ -2347,9 +2347,9 @@ LABEL_15:
         }
 
 LABEL_16:
-        v13 = [(CPLEngineStorage *)self engineStore];
-        v14 = [v13 engineLibrary];
-        [v14 reportLibraryCorrupted];
+        engineStore = [(CPLEngineStorage *)self engineStore];
+        engineLibrary = [engineStore engineLibrary];
+        [engineLibrary reportLibraryCorrupted];
 
         goto LABEL_17;
       }
@@ -2395,29 +2395,29 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)disableInitialQueriesForScope:(id)a3 error:(id *)a4
+- (BOOL)disableInitialQueriesForScope:(id)scope error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  scopeCopy = scope;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v7 = __CPLStorageOSLogDomain_8656();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 scopeIdentifier];
+      scopeIdentifier = [scopeCopy scopeIdentifier];
       v17 = 138412290;
-      v18 = v8;
+      v18 = scopeIdentifier;
       _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEFAULT, "Disabling initial queries for %@. Moving to regular changes fetch", &v17, 0xCu);
     }
   }
 
-  v9 = [(CPLEngineStorage *)self platformObject];
-  v10 = [v9 setClassNameOfRecordsForInitialQuery:&stru_1F57BD298 forScope:v6 error:a4];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v10 = [platformObject setClassNameOfRecordsForInitialQuery:&stru_1F57BD298 forScope:scopeCopy error:error];
 
-  if (v10 && (-[CPLEngineStorage platformObject](self, "platformObject"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 storeTransientSyncAnchor:0 forScope:v6 error:a4], v11, v12))
+  if (v10 && (-[CPLEngineStorage platformObject](self, "platformObject"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 storeTransientSyncAnchor:0 forScope:scopeCopy error:error], v11, v12))
   {
-    v13 = [(CPLEngineStorage *)self platformObject];
-    v14 = [v13 setHasFetchedInitialSyncAnchor:1 forScope:v6 error:a4];
+    platformObject2 = [(CPLEngineStorage *)self platformObject];
+    v14 = [platformObject2 setHasFetchedInitialSyncAnchor:1 forScope:scopeCopy error:error];
   }
 
   else
@@ -2429,138 +2429,138 @@ LABEL_19:
   return v14;
 }
 
-- (BOOL)storeTransientSyncAnchor:(id)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)storeTransientSyncAnchor:(id)anchor forScope:(id)scope error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a5) = [v10 storeTransientSyncAnchor:v9 forScope:v8 error:a5];
+  scopeCopy = scope;
+  anchorCopy = anchor;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject storeTransientSyncAnchor:anchorCopy forScope:scopeCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)transientSyncAnchorForScope:(id)a3
+- (id)transientSyncAnchorForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 transientSyncAnchorForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject transientSyncAnchorForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)hasStagedSyncAnchorForScope:(id)a3
+- (BOOL)hasStagedSyncAnchorForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasStagedSyncAnchorForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasStagedSyncAnchorForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)discardStagedSyncAnchorWithScopeFilter:(id)a3 error:(id *)a4
+- (BOOL)discardStagedSyncAnchorWithScopeFilter:(id)filter error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 discardStagedSyncAnchorWithScopeFilter:v6 error:a4];
+  filterCopy = filter;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject discardStagedSyncAnchorWithScopeFilter:filterCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)discardStagedSyncAnchorForScope:(id)a3 error:(id *)a4
+- (BOOL)discardStagedSyncAnchorForScope:(id)scope error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 discardStagedSyncAnchorForScope:v6 error:a4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject discardStagedSyncAnchorForScope:scopeCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)commitSyncAnchorForScope:(id)a3 error:(id *)a4
+- (BOOL)commitSyncAnchorForScope:(id)scope error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 commitSyncAnchorForScope:v6 error:a4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject commitSyncAnchorForScope:scopeCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)setSyncAnchor:(id)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)setSyncAnchor:(id)anchor forScope:(id)scope error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a5) = [v10 setSyncAnchor:v9 forScope:v8 error:a5];
+  scopeCopy = scope;
+  anchorCopy = anchor;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setSyncAnchor:anchorCopy forScope:scopeCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)syncAnchorForScope:(id)a3
+- (id)syncAnchorForScope:(id)scope
 {
   v8 = 0;
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 syncAnchorForScope:v4 isCommitted:&v8];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject syncAnchorForScope:scopeCopy isCommitted:&v8];
 
   return v6;
 }
 
-- (BOOL)setDidDropSomeRecordsForScope:(id)a3 error:(id *)a4
+- (BOOL)setDidDropSomeRecordsForScope:(id)scope error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 setDidDropSomeRecordsForScope:v6 error:a4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setDidDropSomeRecordsForScope:scopeCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)didDropSomeRecordsForScope:(id)a3
+- (BOOL)didDropSomeRecordsForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 didDropSomeRecordsForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject didDropSomeRecordsForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)storeScopeChange:(id)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)storeScopeChange:(id)change forScope:(id)scope error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([(CPLEngineScopeStorage *)self _doesScopeContributeToGlobalStatus:v9])
+  changeCopy = change;
+  scopeCopy = scope;
+  if ([(CPLEngineScopeStorage *)self _doesScopeContributeToGlobalStatus:scopeCopy])
   {
-    [(CPLEngineScopeStorage *)self _updateGlobalStatusWithScopeChange:v8 forScope:v9];
+    [(CPLEngineScopeStorage *)self _updateGlobalStatusWithScopeChange:changeCopy forScope:scopeCopy];
   }
 
-  v10 = [v9 scopeIdentifier];
-  v11 = [(CPLEngineStorage *)self mainScopeIdentifier];
-  v12 = [v10 isEqualToString:v11];
+  scopeIdentifier = [scopeCopy scopeIdentifier];
+  mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
+  v12 = [scopeIdentifier isEqualToString:mainScopeIdentifier];
 
   if (v12)
   {
-    v13 = [(CPLEngineStorage *)self engineStore];
-    v14 = [v13 engineLibrary];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    engineLibrary = [engineStore engineLibrary];
 
-    v15 = [v8 libraryInfo];
-    v16 = [v15 accountFlagsData];
-    if (v16)
+    libraryInfo = [changeCopy libraryInfo];
+    accountFlagsData = [libraryInfo accountFlagsData];
+    if (accountFlagsData)
     {
-      [v14 updateAccountFlagsData:v16];
+      [engineLibrary updateAccountFlagsData:accountFlagsData];
     }
 
-    [v14 setICloudLibraryClientVersionTooOld:0];
-    [v14 setIsStuckInExitForSharedLibrary:{objc_msgSend(v8, "hasProblematicFormerSharedScope")}];
+    [engineLibrary setICloudLibraryClientVersionTooOld:0];
+    [engineLibrary setIsStuckInExitForSharedLibrary:{objc_msgSend(changeCopy, "hasProblematicFormerSharedScope")}];
   }
 
   v34 = 0;
-  v17 = [v8 scopeType];
-  if (v17 != [v9 scopeType] && !-[CPLEngineScopeStorage _setScopeType:forScope:error:](self, "_setScopeType:forScope:error:", objc_msgSend(v8, "scopeType"), v9, a5))
+  scopeType = [changeCopy scopeType];
+  if (scopeType != [scopeCopy scopeType] && !-[CPLEngineScopeStorage _setScopeType:forScope:error:](self, "_setScopeType:forScope:error:", objc_msgSend(changeCopy, "scopeType"), scopeCopy, error))
   {
     goto LABEL_22;
   }
 
-  v18 = [(CPLEngineStorage *)self platformObject];
-  v19 = [v18 storeScopeChange:v8 forScope:v9 scopeChangeHasBeenUpdated:&v34 error:a5];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v19 = [platformObject storeScopeChange:changeCopy forScope:scopeCopy scopeChangeHasBeenUpdated:&v34 error:error];
 
   if (!v19)
   {
@@ -2569,8 +2569,8 @@ LABEL_19:
 
   if (v34 == 1)
   {
-    v20 = [(CPLEngineStorage *)self platformObject];
-    v21 = [v20 flagsForScope:v9];
+    platformObject2 = [(CPLEngineStorage *)self platformObject];
+    v21 = [platformObject2 flagsForScope:scopeCopy];
     v22 = [v21 valueForFlag:0x10000];
 
     if (!v22)
@@ -2584,14 +2584,14 @@ LABEL_19:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v36 = v10;
+        v36 = scopeIdentifier;
         v37 = 2112;
-        v38 = v8;
+        v38 = changeCopy;
         _os_log_impl(&dword_1DC05A000, v23, OS_LOG_TYPE_DEFAULT, "Scope change for %@ has been updated, notifying client: %@", buf, 0x16u);
       }
     }
 
-    if ([(CPLEngineScopeStorage *)self setScopeNeedsToBePulledByClient:v9 error:a5])
+    if ([(CPLEngineScopeStorage *)self setScopeNeedsToBePulledByClient:scopeCopy error:error])
     {
 LABEL_26:
       objc_opt_class();
@@ -2600,23 +2600,23 @@ LABEL_26:
         goto LABEL_20;
       }
 
-      if (![v8 isCurrentUserExiting])
+      if (![changeCopy isCurrentUserExiting])
       {
         goto LABEL_20;
       }
 
       v24 = MEMORY[0x1E696AEC0];
-      v25 = [v8 scopeIdentifier];
-      v26 = [v24 stringWithFormat:@"scope change with current user exiting, scopeIdentifier: %@", v25];
-      v27 = [(CPLEngineScopeStorage *)self clearAllQuotaFlagsForMainScopeWithReason:v26 error:a5];
+      scopeIdentifier2 = [changeCopy scopeIdentifier];
+      v26 = [v24 stringWithFormat:@"scope change with current user exiting, scopeIdentifier: %@", scopeIdentifier2];
+      v27 = [(CPLEngineScopeStorage *)self clearAllQuotaFlagsForMainScopeWithReason:v26 error:error];
 
       if (v27)
       {
 LABEL_20:
-        v28 = [(CPLEngineStorage *)self engineStore];
-        v29 = [v28 engineLibrary];
-        v30 = [v29 supervisor];
-        [v30 scopeStorage:self didUpdateScopeChange:v8 forScope:v9];
+        engineStore2 = [(CPLEngineStorage *)self engineStore];
+        engineLibrary2 = [engineStore2 engineLibrary];
+        supervisor = [engineLibrary2 supervisor];
+        [supervisor scopeStorage:self didUpdateScopeChange:changeCopy forScope:scopeCopy];
 
         goto LABEL_21;
       }
@@ -2635,28 +2635,28 @@ LABEL_23:
   return v31;
 }
 
-- (void)_updateGlobalStatusWithScopeChange:(id)a3 forScope:(id)a4
+- (void)_updateGlobalStatusWithScopeChange:(id)change forScope:(id)scope
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 libraryInfo];
-  v9 = [v8 assetCounts];
-  v10 = [v9 mutableCopy];
+  changeCopy = change;
+  scopeCopy = scope;
+  libraryInfo = [changeCopy libraryInfo];
+  assetCounts = [libraryInfo assetCounts];
+  v10 = [assetCounts mutableCopy];
 
-  v40 = v6;
-  v11 = v6;
-  v12 = self;
-  v13 = [v11 libraryInfo];
-  v14 = [v13 featureCompatibleVersion];
-  v41 = [v14 integerValue];
+  v40 = changeCopy;
+  v11 = changeCopy;
+  selfCopy = self;
+  libraryInfo2 = [v11 libraryInfo];
+  featureCompatibleVersion = [libraryInfo2 featureCompatibleVersion];
+  integerValue = [featureCompatibleVersion integerValue];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v15 = [(CPLEngineStorage *)self platformObject];
-  v16 = [v15 enumeratorForScopesIncludeInactive:0];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v16 = [platformObject enumeratorForScopesIncludeInactive:0];
 
   obj = v16;
   v17 = [v16 countByEnumeratingWithState:&v45 objects:v49 count:16];
@@ -2674,28 +2674,28 @@ LABEL_23:
         }
 
         v21 = *(*(&v45 + 1) + 8 * i);
-        v22 = [v21 scopeIdentifier];
-        v23 = [v7 scopeIdentifier];
-        if ([v22 isEqualToString:v23])
+        scopeIdentifier = [v21 scopeIdentifier];
+        scopeIdentifier2 = [scopeCopy scopeIdentifier];
+        if ([scopeIdentifier isEqualToString:scopeIdentifier2])
         {
         }
 
         else
         {
-          v24 = [(CPLEngineScopeStorage *)v12 _doesScopeContributeToGlobalStatus:v21];
+          v24 = [(CPLEngineScopeStorage *)selfCopy _doesScopeContributeToGlobalStatus:v21];
 
           if (!v24)
           {
             continue;
           }
 
-          v25 = v12;
-          v26 = [(CPLEngineStorage *)v12 platformObject];
-          v22 = [v26 scopeChangeForScope:v21];
+          v25 = selfCopy;
+          platformObject2 = [(CPLEngineStorage *)selfCopy platformObject];
+          scopeIdentifier = [platformObject2 scopeChangeForScope:v21];
 
-          v27 = [v22 libraryInfo];
-          v28 = [v27 assetCounts];
-          v29 = v28;
+          libraryInfo3 = [scopeIdentifier libraryInfo];
+          assetCounts2 = [libraryInfo3 assetCounts];
+          v29 = assetCounts2;
           if (v10)
           {
 
@@ -2707,27 +2707,27 @@ LABEL_23:
             v44 = v10;
             [(NSDictionary *)v29 enumerateKeysAndObjectsUsingBlock:v43];
             v30 = v44;
-            v27 = v29;
+            libraryInfo3 = v29;
           }
 
           else
           {
-            v10 = [(NSDictionary *)v28 mutableCopy];
+            v10 = [(NSDictionary *)assetCounts2 mutableCopy];
             v30 = v29;
           }
 
-          v31 = [v22 libraryInfo];
-          v32 = [v31 featureCompatibleVersion];
-          v33 = [v32 integerValue];
+          libraryInfo4 = [scopeIdentifier libraryInfo];
+          featureCompatibleVersion2 = [libraryInfo4 featureCompatibleVersion];
+          integerValue2 = [featureCompatibleVersion2 integerValue];
 
-          v34 = v41;
-          if (v41 <= v33)
+          v34 = integerValue;
+          if (integerValue <= integerValue2)
           {
-            v34 = v33;
+            v34 = integerValue2;
           }
 
-          v41 = v34;
-          v12 = v25;
+          integerValue = v34;
+          selfCopy = v25;
         }
       }
 
@@ -2737,13 +2737,13 @@ LABEL_23:
     while (v18);
   }
 
-  assetCountsToUpdate = v12->_assetCountsToUpdate;
-  v12->_assetCountsToUpdate = v10;
+  assetCountsToUpdate = selfCopy->_assetCountsToUpdate;
+  selfCopy->_assetCountsToUpdate = v10;
   v36 = v10;
-  v37 = v12;
+  v37 = selfCopy;
   v38 = v36;
 
-  v37->_serverFeatureCompatibleVersionToUpdate = v41;
+  v37->_serverFeatureCompatibleVersionToUpdate = integerValue;
   v37->_shouldUpdateGlobalStatusAtEndOfTransaction = 1;
 
   v39 = *MEMORY[0x1E69E9840];
@@ -2763,22 +2763,22 @@ void __69__CPLEngineScopeStorage__updateGlobalStatusWithScopeChange_forScope___b
   [*(a1 + 32) setObject:v11 forKeyedSubscript:v8];
 }
 
-- (BOOL)_doesScopeContributeToGlobalStatus:(id)a3
+- (BOOL)_doesScopeContributeToGlobalStatus:(id)status
 {
-  v4 = a3;
-  v5 = [v4 scopeIdentifier];
-  v6 = [(CPLEngineStorage *)self mainScopeIdentifier];
-  v7 = [v5 isEqualToString:v6];
+  statusCopy = status;
+  scopeIdentifier = [statusCopy scopeIdentifier];
+  mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
+  v7 = [scopeIdentifier isEqualToString:mainScopeIdentifier];
 
   if (v7)
   {
     v8 = 1;
   }
 
-  else if (([v4 scopeType] & 0xFFFFFFFFFFFFFFFELL) == 4)
+  else if (([statusCopy scopeType] & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    v9 = [(CPLEngineStorage *)self mainScopeIdentifier];
-    v8 = [(CPLEngineScopeStorage *)self _isValidSharingScope:v4 forScopeIdentifier:v9];
+    mainScopeIdentifier2 = [(CPLEngineStorage *)self mainScopeIdentifier];
+    v8 = [(CPLEngineScopeStorage *)self _isValidSharingScope:statusCopy forScopeIdentifier:mainScopeIdentifier2];
   }
 
   else
@@ -2789,23 +2789,23 @@ void __69__CPLEngineScopeStorage__updateGlobalStatusWithScopeChange_forScope___b
   return v8;
 }
 
-- (id)scopeChangeForScope:(id)a3
+- (id)scopeChangeForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 scopeChangeForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject scopeChangeForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)setTransportScope:(id)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)setTransportScope:(id)scope forScope:(id)forScope error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 scopeIdentifier];
-  v11 = [(CPLEngineStorage *)self mainScopeIdentifier];
-  v12 = [v10 isEqualToString:v11];
+  scopeCopy = scope;
+  forScopeCopy = forScope;
+  scopeIdentifier = [forScopeCopy scopeIdentifier];
+  mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
+  v12 = [scopeIdentifier isEqualToString:mainScopeIdentifier];
 
   if (v12)
   {
@@ -2814,38 +2814,38 @@ void __69__CPLEngineScopeStorage__updateGlobalStatusWithScopeChange_forScope___b
       v13 = __CPLStorageOSLogDomain_8656();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v9 scopeIdentifier];
+        scopeIdentifier2 = [forScopeCopy scopeIdentifier];
         v30 = 138412290;
-        v31 = v14;
+        v31 = scopeIdentifier2;
         _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_DEFAULT, "%@ transport scope exists", &v30, 0xCu);
       }
     }
 
-    v15 = [(CPLEngineStorage *)self engineStore];
-    v16 = [v15 engineLibrary];
-    [v16 setICloudLibraryExists:v8 != 0];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    engineLibrary = [engineStore engineLibrary];
+    [engineLibrary setICloudLibraryExists:scopeCopy != 0];
   }
 
-  if (!v8)
+  if (!scopeCopy)
   {
     goto LABEL_12;
   }
 
-  v17 = [(CPLEngineStorage *)self platformObject];
-  v18 = [v17 transportScopeForScope:v9];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v18 = [platformObject transportScopeForScope:forScopeCopy];
 
   if (!v18)
   {
 LABEL_11:
 
 LABEL_12:
-    v22 = [(CPLEngineStorage *)self platformObject];
-    v23 = [v22 setTransportScope:v8 forScope:v9 error:a5];
+    platformObject2 = [(CPLEngineStorage *)self platformObject];
+    v23 = [platformObject2 setTransportScope:scopeCopy forScope:forScopeCopy error:error];
 
-    if (v8 || !v23)
+    if (scopeCopy || !v23)
     {
       v24 = v23 ^ 1;
-      if (!v8)
+      if (!scopeCopy)
       {
         v24 = 1;
       }
@@ -2853,7 +2853,7 @@ LABEL_12:
       if ((v24 & 1) == 0)
       {
         LOBYTE(v23) = 1;
-        if ([(CPLEngineScopeStorage *)self doesScopeNeedToUpdateTransport:v9])
+        if ([(CPLEngineScopeStorage *)self doesScopeNeedToUpdateTransport:forScopeCopy])
         {
           self->_scheduleATransportUpdate = 1;
         }
@@ -2868,11 +2868,11 @@ LABEL_12:
     goto LABEL_25;
   }
 
-  v19 = [(CPLEngineStorage *)self engineStore];
-  v20 = [v19 engineLibrary];
-  v21 = [v20 transport];
+  engineStore2 = [(CPLEngineStorage *)self engineStore];
+  engineLibrary2 = [engineStore2 engineLibrary];
+  transport = [engineLibrary2 transport];
 
-  if ([v21 isNewTransportScope:v8 compatibleWithOldTransportScope:v18])
+  if ([transport isNewTransportScope:scopeCopy compatibleWithOldTransportScope:v18])
   {
 
     goto LABEL_11;
@@ -2883,8 +2883,8 @@ LABEL_12:
     v25 = __CPLStorageOSLogDomain_8656();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v21 descriptionForTransportScope:v18];
-      v27 = [v21 descriptionForTransportScope:v8];
+      v26 = [transport descriptionForTransportScope:v18];
+      v27 = [transport descriptionForTransportScope:scopeCopy];
       v30 = 138412546;
       v31 = v26;
       v32 = 2112;
@@ -2900,44 +2900,44 @@ LABEL_25:
   return v23;
 }
 
-- (id)transportScopeForScope:(id)a3
+- (id)transportScopeForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 transportScopeForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject transportScopeForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)setHasUpdatedScope:(id)a3 fromTransportWithError:(id *)a4
+- (BOOL)setHasUpdatedScope:(id)scope fromTransportWithError:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 setHasUpdatedScope:v6 fromTransportWithError:a4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setHasUpdatedScope:scopeCopy fromTransportWithError:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)setScopeNeedsUpdateFromTransport:(id)a3 error:(id *)a4
+- (BOOL)setScopeNeedsUpdateFromTransport:(id)transport error:(id *)error
 {
   self->_scheduleAScopeUpdate = 1;
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 setScopeNeedsUpdateFromTransport:v6 error:a4];
+  transportCopy = transport;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setScopeNeedsUpdateFromTransport:transportCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)clearTransportGroupsForScope:(id)a3 error:(id *)a4
+- (BOOL)clearTransportGroupsForScope:(id)scope error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 storeUploadTransportGroup:0 forScope:v6 error:a4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject storeUploadTransportGroup:0 forScope:scopeCopy error:error];
 
   if (v8)
   {
-    v9 = [(CPLEngineStorage *)self platformObject];
-    v10 = [v9 storeDownloadTransportGroup:0 forScope:v6 error:a4];
+    platformObject2 = [(CPLEngineStorage *)self platformObject];
+    v10 = [platformObject2 storeDownloadTransportGroup:0 forScope:scopeCopy error:error];
   }
 
   else
@@ -2948,43 +2948,43 @@ LABEL_25:
   return v10;
 }
 
-- (BOOL)setupAnchorResetTransportGroupForScope:(id)a3 error:(id *)a4
+- (BOOL)setupAnchorResetTransportGroupForScope:(id)scope error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(CPLEngineScopeStorage *)self hasFinishedInitialSyncForScope:v6])
+  scopeCopy = scope;
+  if ([(CPLEngineScopeStorage *)self hasFinishedInitialSyncForScope:scopeCopy])
   {
-    v7 = [(CPLEngineScopeStorage *)self downloadTransportGroupForScope:v6];
+    v7 = [(CPLEngineScopeStorage *)self downloadTransportGroupForScope:scopeCopy];
     if (v7)
     {
-      v8 = v7;
+      createGroupForInitialDownload = v7;
       v9 = 1;
     }
 
     else
     {
-      v10 = [(CPLEngineStorage *)self engineStore];
-      v11 = [v10 engineLibrary];
-      v12 = [v11 transport];
-      v8 = [v12 createGroupForInitialDownload];
+      engineStore = [(CPLEngineStorage *)self engineStore];
+      engineLibrary = [engineStore engineLibrary];
+      transport = [engineLibrary transport];
+      createGroupForInitialDownload = [transport createGroupForInitialDownload];
 
       if ((_CPLSilentLogging & 1) == 0)
       {
         v13 = __CPLStorageOSLogDomain_8656();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v6 scopeIdentifier];
-          v15 = [v8 cplDebugDescription];
+          scopeIdentifier = [scopeCopy scopeIdentifier];
+          cplDebugDescription = [createGroupForInitialDownload cplDebugDescription];
           v19 = 138412546;
-          v20 = v14;
+          v20 = scopeIdentifier;
           v21 = 2112;
-          v22 = v15;
+          v22 = cplDebugDescription;
           _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_DEFAULT, "Set up anchor reset download transport group for %@ to %@", &v19, 0x16u);
         }
       }
 
-      v16 = [(CPLEngineStorage *)self platformObject];
-      v9 = [v16 storeDownloadTransportGroup:v8 forScope:v6 error:a4];
+      platformObject = [(CPLEngineStorage *)self platformObject];
+      v9 = [platformObject storeDownloadTransportGroup:createGroupForInitialDownload forScope:scopeCopy error:error];
     }
   }
 
@@ -2997,71 +2997,71 @@ LABEL_25:
   return v9;
 }
 
-- (BOOL)setupResetSyncTransportGroupForScope:(id)a3 error:(id *)a4
+- (BOOL)setupResetSyncTransportGroupForScope:(id)scope error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(CPLEngineScopeStorage *)self hasFinishedInitialSyncForScope:v6])
+  scopeCopy = scope;
+  if ([(CPLEngineScopeStorage *)self hasFinishedInitialSyncForScope:scopeCopy])
   {
-    v7 = [(CPLEngineScopeStorage *)self uploadTransportGroupForScope:v6];
+    v7 = [(CPLEngineScopeStorage *)self uploadTransportGroupForScope:scopeCopy];
     if (v7)
     {
-      v8 = v7;
+      createGroupForInitialDownload = v7;
       v9 = 1;
     }
 
     else
     {
-      v10 = [(CPLEngineStorage *)self engineStore];
-      v11 = [v10 engineLibrary];
-      v12 = [v11 transport];
+      engineStore = [(CPLEngineStorage *)self engineStore];
+      engineLibrary = [engineStore engineLibrary];
+      transport = [engineLibrary transport];
 
-      v13 = [v12 createGroupForResetSync];
+      createGroupForResetSync = [transport createGroupForResetSync];
       if ((_CPLSilentLogging & 1) == 0)
       {
         v14 = __CPLStorageOSLogDomain_8656();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v6 scopeIdentifier];
-          v16 = [v13 cplDebugDescription];
+          scopeIdentifier = [scopeCopy scopeIdentifier];
+          cplDebugDescription = [createGroupForResetSync cplDebugDescription];
           v25 = 138412546;
-          v26 = v15;
+          v26 = scopeIdentifier;
           v27 = 2112;
-          v28 = v16;
+          v28 = cplDebugDescription;
           _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_DEFAULT, "Set up reset sync upload transport group for %@ to %@", &v25, 0x16u);
         }
       }
 
-      v17 = [(CPLEngineStorage *)self platformObject];
-      v18 = [v17 storeUploadTransportGroup:v13 forScope:v6 error:a4];
+      platformObject = [(CPLEngineStorage *)self platformObject];
+      v18 = [platformObject storeUploadTransportGroup:createGroupForResetSync forScope:scopeCopy error:error];
 
       if (v18)
       {
-        v8 = [v12 createGroupForInitialDownload];
+        createGroupForInitialDownload = [transport createGroupForInitialDownload];
 
         if ((_CPLSilentLogging & 1) == 0)
         {
           v19 = __CPLStorageOSLogDomain_8656();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [v6 scopeIdentifier];
-            v21 = [v8 cplDebugDescription];
+            scopeIdentifier2 = [scopeCopy scopeIdentifier];
+            cplDebugDescription2 = [createGroupForInitialDownload cplDebugDescription];
             v25 = 138412546;
-            v26 = v20;
+            v26 = scopeIdentifier2;
             v27 = 2112;
-            v28 = v21;
+            v28 = cplDebugDescription2;
             _os_log_impl(&dword_1DC05A000, v19, OS_LOG_TYPE_DEFAULT, "Set up reset sync download transport group for %@ to %@", &v25, 0x16u);
           }
         }
 
-        v22 = [(CPLEngineStorage *)self platformObject];
-        v9 = [v22 storeDownloadTransportGroup:v8 forScope:v6 error:a4];
+        platformObject2 = [(CPLEngineStorage *)self platformObject];
+        v9 = [platformObject2 storeDownloadTransportGroup:createGroupForInitialDownload forScope:scopeCopy error:error];
       }
 
       else
       {
         v9 = 0;
-        v8 = v13;
+        createGroupForInitialDownload = createGroupForResetSync;
       }
     }
   }
@@ -3075,11 +3075,11 @@ LABEL_25:
   return v9;
 }
 
-- (BOOL)updateInitialSyncTransportGroupEstimatedSize:(unint64_t)a3 assetCount:(unint64_t)a4 forScope:(id)a5 error:(id *)a6
+- (BOOL)updateInitialSyncTransportGroupEstimatedSize:(unint64_t)size assetCount:(unint64_t)count forScope:(id)scope error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = [(CPLEngineScopeStorage *)self uploadTransportGroupForScope:v10];
+  scopeCopy = scope;
+  v11 = [(CPLEngineScopeStorage *)self uploadTransportGroupForScope:scopeCopy];
   if (v11)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -3087,17 +3087,17 @@ LABEL_25:
       v12 = __CPLStorageOSLogDomain_8656();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v10 scopeIdentifier];
+        scopeIdentifier = [scopeCopy scopeIdentifier];
         v18 = 138412290;
-        v19 = v13;
+        v19 = scopeIdentifier;
         _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_DEFAULT, "Updating upload transfer group estimated upload sizes for %@", &v18, 0xCu);
       }
     }
 
-    [v11 setRoughCPLRecordCount:a4];
-    [v11 setRoughCPLUploadEstimatedSize:a3];
-    v14 = [(CPLEngineStorage *)self platformObject];
-    v15 = [v14 storeUploadTransportGroup:v11 forScope:v10 error:a6];
+    [v11 setRoughCPLRecordCount:count];
+    [v11 setRoughCPLUploadEstimatedSize:size];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v15 = [platformObject storeUploadTransportGroup:v11 forScope:scopeCopy error:error];
   }
 
   else
@@ -3109,25 +3109,25 @@ LABEL_25:
   return v15;
 }
 
-- (BOOL)setupInitialSyncTransportGroupsForScope:(id)a3 error:(id *)a4
+- (BOOL)setupInitialSyncTransportGroupsForScope:(id)scope error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CPLEngineScopeStorage *)self uploadTransportGroupForScope:v6];
+  scopeCopy = scope;
+  v7 = [(CPLEngineScopeStorage *)self uploadTransportGroupForScope:scopeCopy];
   if (v7)
   {
-    v8 = v7;
+    createGroupForInitialDownload = v7;
     if (_CPLSilentLogging)
     {
       v10 = 1;
       goto LABEL_22;
     }
 
-    v9 = __CPLStorageOSLogDomain_8656();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    transport = __CPLStorageOSLogDomain_8656();
+    if (os_log_type_enabled(transport, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v27) = 0;
-      _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_ERROR, "Initial upload group has already been set", &v27, 2u);
+      _os_log_impl(&dword_1DC05A000, transport, OS_LOG_TYPE_ERROR, "Initial upload group has already been set", &v27, 2u);
     }
 
     v10 = 1;
@@ -3135,21 +3135,21 @@ LABEL_25:
 
   else
   {
-    v11 = [(CPLEngineStorage *)self engineStore];
-    v12 = [v11 engineLibrary];
-    v9 = [v12 transport];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    engineLibrary = [engineStore engineLibrary];
+    transport = [engineLibrary transport];
 
-    v13 = [v9 createGroupForInitialUpload];
-    v14 = [(CPLEngineScopeStorage *)self estimatedSizeForScope:v6];
-    v15 = [(CPLEngineScopeStorage *)self estimatedAssetCountForScope:v6];
+    createGroupForInitialUpload = [transport createGroupForInitialUpload];
+    v14 = [(CPLEngineScopeStorage *)self estimatedSizeForScope:scopeCopy];
+    v15 = [(CPLEngineScopeStorage *)self estimatedAssetCountForScope:scopeCopy];
     if (v14)
     {
-      [v13 setRoughCPLUploadEstimatedSize:v14];
+      [createGroupForInitialUpload setRoughCPLUploadEstimatedSize:v14];
     }
 
     if (v15)
     {
-      [v13 setRoughCPLRecordCount:v15];
+      [createGroupForInitialUpload setRoughCPLRecordCount:v15];
     }
 
     if ((_CPLSilentLogging & 1) == 0)
@@ -3157,46 +3157,46 @@ LABEL_25:
       v16 = __CPLStorageOSLogDomain_8656();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v6 scopeIdentifier];
-        v18 = [v13 cplDebugDescription];
+        scopeIdentifier = [scopeCopy scopeIdentifier];
+        cplDebugDescription = [createGroupForInitialUpload cplDebugDescription];
         v27 = 138412546;
-        v28 = v17;
+        v28 = scopeIdentifier;
         v29 = 2112;
-        v30 = v18;
+        v30 = cplDebugDescription;
         _os_log_impl(&dword_1DC05A000, v16, OS_LOG_TYPE_DEFAULT, "Set up initial upload transport group for %@ to %@", &v27, 0x16u);
       }
     }
 
-    v19 = [(CPLEngineStorage *)self platformObject];
-    v20 = [v19 storeUploadTransportGroup:v13 forScope:v6 error:a4];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v20 = [platformObject storeUploadTransportGroup:createGroupForInitialUpload forScope:scopeCopy error:error];
 
     if (v20)
     {
-      v8 = [v9 createGroupForInitialDownload];
+      createGroupForInitialDownload = [transport createGroupForInitialDownload];
 
       if ((_CPLSilentLogging & 1) == 0)
       {
         v21 = __CPLStorageOSLogDomain_8656();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v6 scopeIdentifier];
-          v23 = [v8 cplDebugDescription];
+          scopeIdentifier2 = [scopeCopy scopeIdentifier];
+          cplDebugDescription2 = [createGroupForInitialDownload cplDebugDescription];
           v27 = 138412546;
-          v28 = v22;
+          v28 = scopeIdentifier2;
           v29 = 2112;
-          v30 = v23;
+          v30 = cplDebugDescription2;
           _os_log_impl(&dword_1DC05A000, v21, OS_LOG_TYPE_DEFAULT, "Set up initial download transport group for %@ to %@", &v27, 0x16u);
         }
       }
 
-      v24 = [(CPLEngineStorage *)self platformObject];
-      v10 = [v24 storeDownloadTransportGroup:v8 forScope:v6 error:a4];
+      platformObject2 = [(CPLEngineStorage *)self platformObject];
+      v10 = [platformObject2 storeDownloadTransportGroup:createGroupForInitialDownload forScope:scopeCopy error:error];
     }
 
     else
     {
       v10 = 0;
-      v8 = v13;
+      createGroupForInitialDownload = createGroupForInitialUpload;
     }
   }
 
@@ -3205,30 +3205,30 @@ LABEL_22:
   return v10;
 }
 
-- (id)downloadTransportGroupForScope:(id)a3
+- (id)downloadTransportGroupForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 downloadTransportGroupForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject downloadTransportGroupForScope:scopeCopy];
 
   return v6;
 }
 
-- (id)uploadTransportGroupForScope:(id)a3
+- (id)uploadTransportGroupForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 uploadTransportGroupForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject uploadTransportGroupForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)resetSyncStateForScope:(id)a3 error:(id *)a4
+- (BOOL)resetSyncStateForScope:(id)scope error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 resetSyncStateForScope:v6 error:a4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject resetSyncStateForScope:scopeCopy error:error];
 
   if (!v8)
   {
@@ -3240,20 +3240,20 @@ LABEL_22:
     v9 = __CPLStorageOSLogDomain_8656();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 scopeIdentifier];
+      scopeIdentifier = [scopeCopy scopeIdentifier];
       v17 = 138412290;
-      v18 = v10;
+      v18 = scopeIdentifier;
       _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEFAULT, "Disabling initial queries for %@ after a reset of sync anchor", &v17, 0xCu);
     }
   }
 
-  v11 = [(CPLEngineStorage *)self platformObject];
-  v12 = [v11 setClassNameOfRecordsForInitialQuery:&stru_1F57BD298 forScope:v6 error:a4];
+  platformObject2 = [(CPLEngineStorage *)self platformObject];
+  v12 = [platformObject2 setClassNameOfRecordsForInitialQuery:&stru_1F57BD298 forScope:scopeCopy error:error];
 
   if (v12)
   {
-    v13 = [(CPLEngineStorage *)self platformObject];
-    v14 = [v13 setHasFetchedInitialSyncAnchor:1 forScope:v6 error:a4];
+    platformObject3 = [(CPLEngineStorage *)self platformObject];
+    v14 = [platformObject3 setHasFetchedInitialSyncAnchor:1 forScope:scopeCopy error:error];
   }
 
   else
@@ -3266,99 +3266,99 @@ LABEL_8:
   return v14;
 }
 
-- (BOOL)setDeleteDate:(id)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)setDeleteDate:(id)date forScope:(id)scope error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 scopeIdentifier];
-  v11 = [(CPLEngineStorage *)self mainScopeIdentifier];
-  v12 = [v10 isEqualToString:v11];
+  dateCopy = date;
+  scopeCopy = scope;
+  scopeIdentifier = [scopeCopy scopeIdentifier];
+  mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
+  v12 = [scopeIdentifier isEqualToString:mainScopeIdentifier];
 
   if (v12)
   {
-    v13 = [(CPLEngineStorage *)self engineStore];
-    v14 = [v13 engineLibrary];
-    [v14 setExitDeleteTime:v8];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    engineLibrary = [engineStore engineLibrary];
+    [engineLibrary setExitDeleteTime:dateCopy];
   }
 
-  v15 = [(CPLEngineStorage *)self platformObject];
-  v16 = [v15 setDeleteDate:v8 forScope:v9 error:a5];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v16 = [platformObject setDeleteDate:dateCopy forScope:scopeCopy error:error];
 
   return v16;
 }
 
-- (id)deleteDateForScope:(id)a3
+- (id)deleteDateForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 deleteDateForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject deleteDateForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)setDisabledDate:(id)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)setDisabledDate:(id)date forScope:(id)scope error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a5) = [v10 setDisabledDate:v9 forScope:v8 error:a5];
+  scopeCopy = scope;
+  dateCopy = date;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setDisabledDate:dateCopy forScope:scopeCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)disabledDateForScope:(id)a3
+- (id)disabledDateForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 disabledDateForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject disabledDateForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)clearAllQuotaFlagsForMainScopeWithReason:(id)a3 error:(id *)a4
+- (BOOL)clearAllQuotaFlagsForMainScopeWithReason:(id)reason error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  reasonCopy = reason;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v7 = __CPLStorageOSLogDomain_8656();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138543362;
-      v21 = v6;
+      v21 = reasonCopy;
       _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEFAULT, "Clearing all over-quota flags for main scope optimistically, reason: %{public}@", &v20, 0xCu);
     }
   }
 
-  v8 = [(CPLEngineScopeStorage *)self primaryScope];
-  if (!v8)
+  primaryScope = [(CPLEngineScopeStorage *)self primaryScope];
+  if (!primaryScope)
   {
 LABEL_11:
-    v17 = [(CPLEngineStorage *)self engineStore];
-    v9 = [v17 engineLibrary];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    engineLibrary = [engineStore engineLibrary];
 
-    [v9 setIsExceedingQuota:0];
-    [v9 setIsExceedingSharedLibraryQuota:0];
+    [engineLibrary setIsExceedingQuota:0];
+    [engineLibrary setIsExceedingSharedLibraryQuota:0];
     goto LABEL_12;
   }
 
-  v9 = [(CPLEngineScopeStorage *)self flagsForScope:v8];
-  [v9 setValue:0 forFlag:2];
-  v10 = [(CPLEngineStorage *)self platformObject];
-  v11 = [v10 updateFlags:v9 forScope:v8 error:a4];
+  engineLibrary = [(CPLEngineScopeStorage *)self flagsForScope:primaryScope];
+  [engineLibrary setValue:0 forFlag:2];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v11 = [platformObject updateFlags:engineLibrary forScope:primaryScope error:error];
 
-  [(CPLEngineScopeStorage *)self _notifyScopeObserversForScope:v8 flagsUpdate:v9];
+  [(CPLEngineScopeStorage *)self _notifyScopeObserversForScope:primaryScope flagsUpdate:engineLibrary];
   if (v11)
   {
-    v12 = [(CPLEngineScopeStorage *)self sharingScopeForScope:v8];
+    v12 = [(CPLEngineScopeStorage *)self sharingScopeForScope:primaryScope];
     if (v12)
     {
       v13 = v12;
       v14 = [(CPLEngineScopeStorage *)self flagsForScope:v12];
 
       [v14 setValue:0 forFlag:2];
-      v15 = [(CPLEngineStorage *)self platformObject];
-      v16 = [v15 updateFlags:v14 forScope:v13 error:a4];
+      platformObject2 = [(CPLEngineStorage *)self platformObject];
+      v16 = [platformObject2 updateFlags:v14 forScope:v13 error:error];
 
       [(CPLEngineScopeStorage *)self _notifyScopeObserversForScope:v13 flagsUpdate:v14];
       if (!v16)
@@ -3381,85 +3381,85 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)valueForFlag:(int64_t)a3 forScope:(id)a4
+- (BOOL)valueForFlag:(int64_t)flag forScope:(id)scope
 {
-  v5 = [(CPLEngineScopeStorage *)self flagsForScope:a4];
-  LOBYTE(a3) = [v5 valueForFlag:a3];
+  v5 = [(CPLEngineScopeStorage *)self flagsForScope:scope];
+  LOBYTE(flag) = [v5 valueForFlag:flag];
 
-  return a3;
+  return flag;
 }
 
-- (BOOL)updateFlags:(id)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)updateFlags:(id)flags forScope:(id)scope error:(id *)error
 {
   v96 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 updatedFlagsMask];
-  v12 = [(CPLEngineScopeStorage *)self flagsForScope:v10];
+  flagsCopy = flags;
+  scopeCopy = scope;
+  updatedFlagsMask = [flagsCopy updatedFlagsMask];
+  v12 = [(CPLEngineScopeStorage *)self flagsForScope:scopeCopy];
   v13 = v12;
-  v91 = a5;
-  if ((v11 & 0x10) != 0)
+  errorCopy = error;
+  if ((updatedFlagsMask & 0x10) != 0)
   {
-    if ([v9 valueForFlag:16])
+    if ([flagsCopy valueForFlag:16])
     {
       v14 = 0;
     }
 
     else
     {
-      if (!+[CPLScopeChange supportsActivationOfScopeWithType:](CPLScopeChange, "supportsActivationOfScopeWithType:", [v10 scopeType]))
+      if (!+[CPLScopeChange supportsActivationOfScopeWithType:](CPLScopeChange, "supportsActivationOfScopeWithType:", [scopeCopy scopeType]))
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
           v83 = __CPLStorageOSLogDomain_8656();
           if (os_log_type_enabled(v83, OS_LOG_TYPE_ERROR))
           {
-            v84 = [v10 scopeIdentifier];
-            v85 = +[CPLScopeChange descriptionForScopeType:](CPLScopeChange, "descriptionForScopeType:", [v10 scopeType]);
+            scopeIdentifier = [scopeCopy scopeIdentifier];
+            v85 = +[CPLScopeChange descriptionForScopeType:](CPLScopeChange, "descriptionForScopeType:", [scopeCopy scopeType]);
             *buf = 138412546;
-            v93 = v84;
+            v93 = scopeIdentifier;
             v94 = 2112;
             v95 = v85;
             _os_log_impl(&dword_1DC05A000, v83, OS_LOG_TYPE_ERROR, "Trying to activate %@ (%@) but this is not supported by this engine", buf, 0x16u);
           }
         }
 
-        v86 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v87 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScopeStorage.m"];
-        v88 = [v10 scopeIdentifier];
-        v89 = +[CPLScopeChange descriptionForScopeType:](CPLScopeChange, "descriptionForScopeType:", [v10 scopeType]);
-        [v86 handleFailureInMethod:a2 object:self file:v87 lineNumber:1453 description:{@"Trying to activate %@ (%@) but this is not supported by this engine", v88, v89}];
+        scopeIdentifier2 = [scopeCopy scopeIdentifier];
+        v89 = +[CPLScopeChange descriptionForScopeType:](CPLScopeChange, "descriptionForScopeType:", [scopeCopy scopeType]);
+        [currentHandler handleFailureInMethod:a2 object:self file:v87 lineNumber:1453 description:{@"Trying to activate %@ (%@) but this is not supported by this engine", scopeIdentifier2, v89}];
 
         abort();
       }
 
-      if (![(CPLEngineScopeStorage *)self resetDidCheckAssetWithServerWhenOverQuotaForScope:v10 error:a5])
+      if (![(CPLEngineScopeStorage *)self resetDidCheckAssetWithServerWhenOverQuotaForScope:scopeCopy error:error])
       {
         goto LABEL_124;
       }
 
-      v17 = [(CPLEngineStorage *)self platformObject];
-      v18 = [MEMORY[0x1E695DF00] date];
-      v19 = [v17 storeActivationDate:v18 forScope:v10 error:a5];
+      platformObject = [(CPLEngineStorage *)self platformObject];
+      date = [MEMORY[0x1E695DF00] date];
+      v19 = [platformObject storeActivationDate:date forScope:scopeCopy error:error];
 
       if (!v19)
       {
         goto LABEL_124;
       }
 
-      v20 = [v10 scopeIdentifier];
-      v21 = [(CPLEngineStorage *)self mainScopeIdentifier];
-      v14 = [v20 isEqualToString:v21];
+      scopeIdentifier3 = [scopeCopy scopeIdentifier];
+      mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
+      v14 = [scopeIdentifier3 isEqualToString:mainScopeIdentifier];
     }
 
-    v15 = (v11 & 4) == 0;
-    v16 = v9;
+    v15 = (updatedFlagsMask & 4) == 0;
+    v16 = flagsCopy;
   }
 
   else
   {
     v14 = 0;
-    if ((v11 & 4) == 0)
+    if ((updatedFlagsMask & 4) == 0)
     {
       v90 = 0;
       v15 = 1;
@@ -3472,10 +3472,10 @@ LABEL_28:
     v15 = 0;
   }
 
-  v22 = [(CPLEngineStorage *)self engineStore];
-  v23 = [v22 libraryOptions];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  libraryOptions = [engineStore libraryOptions];
 
-  v24 = [v9 valueForFlag:0x10000];
+  v24 = [flagsCopy valueForFlag:0x10000];
   v25 = [v16 valueForFlag:16];
   if (v15)
   {
@@ -3484,30 +3484,30 @@ LABEL_28:
 
   else
   {
-    v26 = v9;
+    v26 = flagsCopy;
   }
 
   v27 = [v26 valueForFlag:4];
   if (v25 && v27)
   {
-    if ((v24 & ((v23 & 0x400) != 0)) != 0)
+    if ((v24 & ((libraryOptions & 0x400) != 0)) != 0)
     {
       v90 = v14;
-      v28 = [v10 scopeIdentifier];
-      v29 = [(CPLEngineScopeStorage *)self resetCloudRecordsForScopeWithIdentifier:v28 error:v91];
+      scopeIdentifier4 = [scopeCopy scopeIdentifier];
+      v29 = [(CPLEngineScopeStorage *)self resetCloudRecordsForScopeWithIdentifier:scopeIdentifier4 error:errorCopy];
 
       goto LABEL_29;
     }
 
-    v53 = v91;
+    v53 = errorCopy;
     if ((_CPLSilentLogging & 1) == 0)
     {
       v54 = __CPLStorageOSLogDomain_8656();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
-        v55 = [v10 scopeIdentifier];
+        scopeIdentifier5 = [scopeCopy scopeIdentifier];
         *buf = 138543362;
-        v93 = v55;
+        v93 = scopeIdentifier5;
         v56 = "Deleting inactive scope %{public}@";
 LABEL_115:
         _os_log_impl(&dword_1DC05A000, v54, OS_LOG_TYPE_DEFAULT, v56, buf, 0xCu);
@@ -3524,21 +3524,21 @@ LABEL_115:
   v90 = v14;
   if (!(v24 & 1 | ((v27 & 1) == 0)))
   {
-    v30 = [v10 scopeIdentifier];
-    v31 = [(CPLEngineStorage *)self mainScopeIdentifier];
-    v32 = [v30 isEqualToString:v31];
+    scopeIdentifier6 = [scopeCopy scopeIdentifier];
+    mainScopeIdentifier2 = [(CPLEngineStorage *)self mainScopeIdentifier];
+    v32 = [scopeIdentifier6 isEqualToString:mainScopeIdentifier2];
 
     if ((v32 & 1) == 0)
     {
-      v53 = v91;
+      v53 = errorCopy;
       if ((_CPLSilentLogging & 1) == 0)
       {
         v54 = __CPLStorageOSLogDomain_8656();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
         {
-          v55 = [v10 scopeIdentifier];
+          scopeIdentifier5 = [scopeCopy scopeIdentifier];
           *buf = 138543362;
-          v93 = v55;
+          v93 = scopeIdentifier5;
           v56 = "Deleting active scope %{public}@ because client does not care";
           goto LABEL_115;
         }
@@ -3547,8 +3547,8 @@ LABEL_116:
       }
 
 LABEL_117:
-      v74 = [v10 scopeIdentifier];
-      LOBYTE(v53) = [(CPLEngineScopeStorage *)self deleteScopeWithIdentifier:v74 error:v53];
+      scopeIdentifier7 = [scopeCopy scopeIdentifier];
+      LOBYTE(v53) = [(CPLEngineScopeStorage *)self deleteScopeWithIdentifier:scopeIdentifier7 error:v53];
 LABEL_129:
 
       goto LABEL_130;
@@ -3560,8 +3560,8 @@ LABEL_129:
     goto LABEL_28;
   }
 
-  v33 = [(CPLEngineStorage *)self platformObject];
-  v34 = [v33 activationDateForScope:v10];
+  platformObject2 = [(CPLEngineStorage *)self platformObject];
+  v34 = [platformObject2 activationDateForScope:scopeCopy];
 
   if (!v34)
   {
@@ -3574,59 +3574,59 @@ LABEL_129:
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v93 = v10;
+      v93 = scopeCopy;
       _os_log_impl(&dword_1DC05A000, v35, OS_LOG_TYPE_DEFAULT, "Clearing activation date for %@", buf, 0xCu);
     }
   }
 
-  v36 = [(CPLEngineStorage *)self platformObject];
-  v29 = [v36 storeActivationDate:0 forScope:v10 error:v91];
+  platformObject3 = [(CPLEngineStorage *)self platformObject];
+  v29 = [platformObject3 storeActivationDate:0 forScope:scopeCopy error:errorCopy];
 
 LABEL_29:
-  v37 = [v10 scopeIdentifier];
-  v38 = [(CPLEngineStorage *)self mainScopeIdentifier];
-  v39 = [v37 isEqualToString:v38];
+  scopeIdentifier8 = [scopeCopy scopeIdentifier];
+  mainScopeIdentifier3 = [(CPLEngineStorage *)self mainScopeIdentifier];
+  v39 = [scopeIdentifier8 isEqualToString:mainScopeIdentifier3];
 
   if (v39)
   {
-    v40 = [(CPLEngineStorage *)self engineStore];
-    v41 = [v40 engineLibrary];
+    engineStore2 = [(CPLEngineStorage *)self engineStore];
+    engineLibrary = [engineStore2 engineLibrary];
 
     if (!v15)
     {
-      [v41 setICloudLibraryHasBeenWiped:{objc_msgSend(v9, "valueForFlag:", 4)}];
+      [engineLibrary setICloudLibraryHasBeenWiped:{objc_msgSend(flagsCopy, "valueForFlag:", 4)}];
     }
 
-    v42 = v91;
-    if ((v11 & 2) != 0)
+    v42 = errorCopy;
+    if ((updatedFlagsMask & 2) != 0)
     {
-      [v41 setIsExceedingQuota:{objc_msgSend(v9, "valueForFlag:", 2)}];
+      [engineLibrary setIsExceedingQuota:{objc_msgSend(flagsCopy, "valueForFlag:", 2)}];
     }
   }
 
   else
   {
-    v43 = [(CPLEngineStorage *)self mainScopeIdentifier];
-    v44 = [(CPLEngineScopeStorage *)self _isValidSharingScope:v10 forScopeIdentifier:v43];
+    mainScopeIdentifier4 = [(CPLEngineStorage *)self mainScopeIdentifier];
+    v44 = [(CPLEngineScopeStorage *)self _isValidSharingScope:scopeCopy forScopeIdentifier:mainScopeIdentifier4];
 
-    v42 = v91;
+    v42 = errorCopy;
     if (!v44)
     {
       goto LABEL_38;
     }
 
-    v45 = [(CPLEngineStorage *)self engineStore];
-    v41 = [v45 engineLibrary];
+    engineStore3 = [(CPLEngineStorage *)self engineStore];
+    engineLibrary = [engineStore3 engineLibrary];
 
-    if ((v11 & 2) != 0)
+    if ((updatedFlagsMask & 2) != 0)
     {
-      [v41 setIsExceedingSharedLibraryQuota:{objc_msgSend(v9, "valueForFlag:", 2)}];
+      [engineLibrary setIsExceedingSharedLibraryQuota:{objc_msgSend(flagsCopy, "valueForFlag:", 2)}];
     }
   }
 
 LABEL_38:
   v46 = v29 ^ 1;
-  if ((v11 & 0x40) == 0)
+  if ((updatedFlagsMask & 0x40) == 0)
   {
     v46 = 1;
   }
@@ -3641,12 +3641,12 @@ LABEL_38:
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v93 = v10;
+          v93 = scopeCopy;
           _os_log_impl(&dword_1DC05A000, v52, OS_LOG_TYPE_DEFAULT, "%@ has been staged - reset sync anchor", buf, 0xCu);
         }
       }
 
-      v29 = [(CPLEngineScopeStorage *)self resetSyncAnchorForScope:v10 error:v42];
+      v29 = [(CPLEngineScopeStorage *)self resetSyncAnchorForScope:scopeCopy error:v42];
       if (!v29)
       {
         goto LABEL_49;
@@ -3664,9 +3664,9 @@ LABEL_38:
   }
 
 LABEL_44:
-  if ((v11 & 8) != 0)
+  if ((updatedFlagsMask & 8) != 0)
   {
-    if ([v9 valueForFlag:8] & 1) != 0 || !objc_msgSend(v13, "valueForFlag:", 8) || (objc_msgSend(v13, "valueForFlag:", 16))
+    if ([flagsCopy valueForFlag:8] & 1) != 0 || !objc_msgSend(v13, "valueForFlag:", 8) || (objc_msgSend(v13, "valueForFlag:", 16))
     {
       v29 = 1;
     }
@@ -3678,15 +3678,15 @@ LABEL_44:
         v75 = __CPLStorageOSLogDomain_8656();
         if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
         {
-          v76 = [v10 scopeIdentifier];
+          scopeIdentifier9 = [scopeCopy scopeIdentifier];
           *buf = 138412290;
-          v93 = v76;
+          v93 = scopeIdentifier9;
           _os_log_impl(&dword_1DC05A000, v75, OS_LOG_TYPE_ERROR, "%@ has been re-enabled - triggering a reset sync", buf, 0xCu);
         }
       }
 
-      v77 = [(CPLEngineStorage *)self engineStore];
-      v78 = [v77 resetLocalSyncStateWithCause:@"scope has been re-enabled" error:v42];
+      engineStore4 = [(CPLEngineStorage *)self engineStore];
+      v78 = [engineStore4 resetLocalSyncStateWithCause:@"scope has been re-enabled" error:v42];
 
       if (!v78)
       {
@@ -3699,22 +3699,22 @@ LABEL_44:
   }
 
 LABEL_49:
-  if ((v11 & 0x10) == 0 || !v29)
+  if ((updatedFlagsMask & 0x10) == 0 || !v29)
   {
     goto LABEL_77;
   }
 
-  v47 = [v9 valueForFlag:16];
+  v47 = [flagsCopy valueForFlag:16];
   v48 = [v13 valueForFlag:16];
   if (v47 && (v48 & 1) == 0)
   {
-    if ([(CPLEngineScopeStorage *)self resetCompleteSyncStateIncludingIDMappingForScope:v10 error:v42])
+    if ([(CPLEngineScopeStorage *)self resetCompleteSyncStateIncludingIDMappingForScope:scopeCopy error:v42])
     {
-      v49 = [(CPLEngineScopeStorage *)self sharingScopeForScope:v10];
+      v49 = [(CPLEngineScopeStorage *)self sharingScopeForScope:scopeCopy];
       if (!v49)
       {
-        v82 = [v10 scopeIdentifier];
-        v29 = [(CPLEngineScopeStorage *)self _dropSharingScopeIdentifier:v82 error:v42];
+        scopeIdentifier10 = [scopeCopy scopeIdentifier];
+        v29 = [(CPLEngineScopeStorage *)self _dropSharingScopeIdentifier:scopeIdentifier10 error:v42];
 
         if (!v29)
         {
@@ -3730,9 +3730,9 @@ LABEL_49:
       if (v51)
       {
 LABEL_132:
-        if ([(CPLEngineScopeStorage *)self _doesScopeContributeToGlobalStatus:v10])
+        if ([(CPLEngineScopeStorage *)self _doesScopeContributeToGlobalStatus:scopeCopy])
         {
-          [(CPLEngineScopeStorage *)self _updateGlobalStatusWithScopeChange:0 forScope:v10];
+          [(CPLEngineScopeStorage *)self _updateGlobalStatusWithScopeChange:0 forScope:scopeCopy];
         }
 
         goto LABEL_64;
@@ -3746,14 +3746,14 @@ LABEL_73:
 
   if (!(v47 & 1 | ((v48 & 1) == 0)))
   {
-    if ([(CPLEngineScopeStorage *)self _setSharingScopeIdentifier:v10 error:v42]&& [(CPLEngineScopeStorage *)self setScopeHasChangesToPullFromTransport:v10 error:v42]&& [(CPLEngineScopeStorage *)self setScopeNeedsToBePulledByClient:v10 error:v42])
+    if ([(CPLEngineScopeStorage *)self _setSharingScopeIdentifier:scopeCopy error:v42]&& [(CPLEngineScopeStorage *)self setScopeHasChangesToPullFromTransport:scopeCopy error:v42]&& [(CPLEngineScopeStorage *)self setScopeNeedsToBePulledByClient:scopeCopy error:v42])
     {
-      if ([(CPLEngineScopeStorage *)self _doesScopeContributeToGlobalStatus:v10])
+      if ([(CPLEngineScopeStorage *)self _doesScopeContributeToGlobalStatus:scopeCopy])
       {
-        v57 = [(CPLEngineStorage *)self platformObject];
-        v58 = [v57 scopeChangeForScope:v10];
+        platformObject4 = [(CPLEngineStorage *)self platformObject];
+        v58 = [platformObject4 scopeChangeForScope:scopeCopy];
 
-        [(CPLEngineScopeStorage *)self _updateGlobalStatusWithScopeChange:v58 forScope:v10];
+        [(CPLEngineScopeStorage *)self _updateGlobalStatusWithScopeChange:v58 forScope:scopeCopy];
       }
 
       goto LABEL_64;
@@ -3765,9 +3765,9 @@ LABEL_73:
 LABEL_64:
   v29 = 1;
 LABEL_74:
-  v59 = [v10 scopeIdentifier];
-  v60 = [(CPLEngineStorage *)self mainScopeIdentifier];
-  v61 = [v59 isEqualToString:v60];
+  scopeIdentifier11 = [scopeCopy scopeIdentifier];
+  mainScopeIdentifier5 = [(CPLEngineStorage *)self mainScopeIdentifier];
+  v61 = [scopeIdentifier11 isEqualToString:mainScopeIdentifier5];
 
   if (v61)
   {
@@ -3775,9 +3775,9 @@ LABEL_74:
   }
 
   [(CPLEngineScopeStorage *)self _clearScopeCache];
-  v42 = v91;
+  v42 = errorCopy;
 LABEL_77:
-  if (v29 && (v11 & 0x44) != 0)
+  if (v29 && (updatedFlagsMask & 0x44) != 0)
   {
     if ([v13 valueForFlag:4])
     {
@@ -3789,34 +3789,34 @@ LABEL_77:
       v62 = 0;
     }
 
-    v29 = ![v9 valueForFlag:4] || ((v62 | objc_msgSend(v9, "valueForFlag:", 64)) & 1) != 0 || -[CPLEngineScopeStorage addCleanupTasksForScope:error:](self, "addCleanupTasksForScope:error:", v10, v42);
+    v29 = ![flagsCopy valueForFlag:4] || ((v62 | objc_msgSend(flagsCopy, "valueForFlag:", 64)) & 1) != 0 || -[CPLEngineScopeStorage addCleanupTasksForScope:error:](self, "addCleanupTasksForScope:error:", scopeCopy, v42);
   }
 
-  if (((v15 | v29 ^ 1) & 1) == 0 && [v9 valueForFlag:4])
+  if (((v15 | v29 ^ 1) & 1) == 0 && [flagsCopy valueForFlag:4])
   {
-    v29 = [(CPLEngineScopeStorage *)self setScopeNeedsToBePulledByClient:v10 error:v42];
+    v29 = [(CPLEngineScopeStorage *)self setScopeNeedsToBePulledByClient:scopeCopy error:v42];
     if (v29)
     {
-      [(CPLEngineScopeStorage *)self _removeBrokenScope:v10];
+      [(CPLEngineScopeStorage *)self _removeBrokenScope:scopeCopy];
     }
 
-    v63 = [(CPLEngineScopeStorage *)self sharingScopeForScope:v10];
+    v63 = [(CPLEngineScopeStorage *)self sharingScopeForScope:scopeCopy];
     if (v63)
     {
       v29 = [(CPLEngineScopeStorage *)self setValue:1 forFlag:16 forScope:v63 error:v42];
     }
   }
 
-  if (v29 && (v11 & 0x20) != 0)
+  if (v29 && (updatedFlagsMask & 0x20) != 0)
   {
-    if ([v9 valueForFlag:32])
+    if ([flagsCopy valueForFlag:32])
     {
-      if (![(CPLEngineScopeStorage *)self setScopeNeedsToUpdateTransport:v10 error:v42])
+      if (![(CPLEngineScopeStorage *)self setScopeNeedsToUpdateTransport:scopeCopy error:v42])
       {
         goto LABEL_124;
       }
 
-      [(CPLEngineScopeStorage *)self _removeBrokenScope:v10];
+      [(CPLEngineScopeStorage *)self _removeBrokenScope:scopeCopy];
     }
 
     v29 = 1;
@@ -3824,16 +3824,16 @@ LABEL_77:
 
   if (v29)
   {
-    if ((v11 & 0x20000) != 0)
+    if ((updatedFlagsMask & 0x20000) != 0)
     {
-      if ([v9 valueForFlag:0x20000])
+      if ([flagsCopy valueForFlag:0x20000])
       {
-        v64 = [(CPLEngineStorage *)self engineStore];
-        v65 = [v64 pushRepository];
-        v66 = [v10 scopeIdentifier];
-        v67 = [v65 hasChangesInScopeWithIdentifier:v66];
+        engineStore5 = [(CPLEngineStorage *)self engineStore];
+        pushRepository = [engineStore5 pushRepository];
+        scopeIdentifier12 = [scopeCopy scopeIdentifier];
+        v67 = [pushRepository hasChangesInScopeWithIdentifier:scopeIdentifier12];
 
-        v42 = v91;
+        v42 = errorCopy;
         if (v67)
         {
           self->_schedulePushHighPriorityToTransportChangeTypes = 122;
@@ -3851,23 +3851,23 @@ LABEL_124:
   }
 
 LABEL_105:
-  v68 = [(CPLEngineStorage *)self platformObject];
-  v69 = [v68 updateFlags:v9 forScope:v10 error:v42];
+  platformObject5 = [(CPLEngineStorage *)self platformObject];
+  v69 = [platformObject5 updateFlags:flagsCopy forScope:scopeCopy error:v42];
 
-  [(CPLEngineScopeStorage *)self _notifyScopeObserversForScope:v10 flagsUpdate:v9];
+  [(CPLEngineScopeStorage *)self _notifyScopeObserversForScope:scopeCopy flagsUpdate:flagsCopy];
   if (!v69)
   {
     goto LABEL_124;
   }
 
   [(CPLEngineScopeStorage *)self _checkSyncManagerPriorityBoost];
-  v70 = [v10 scopeIdentifier];
-  v71 = [(CPLEngineStorage *)self mainScopeIdentifier];
-  if ([v70 isEqualToString:v71])
+  scopeIdentifier13 = [scopeCopy scopeIdentifier];
+  mainScopeIdentifier6 = [(CPLEngineStorage *)self mainScopeIdentifier];
+  if ([scopeIdentifier13 isEqualToString:mainScopeIdentifier6])
   {
 
     v72 = v90;
-    if ((v11 & 0x7C) != 0)
+    if ((updatedFlagsMask & 0x7C) != 0)
     {
       goto LABEL_108;
     }
@@ -3877,34 +3877,34 @@ LABEL_111:
     goto LABEL_127;
   }
 
-  v73 = [(CPLEngineStorage *)self mainScopeIdentifier];
+  mainScopeIdentifier7 = [(CPLEngineStorage *)self mainScopeIdentifier];
   v72 = v90;
-  if (![(CPLEngineScopeStorage *)self _isValidSharingScope:v10 forScopeIdentifier:v73])
+  if (![(CPLEngineScopeStorage *)self _isValidSharingScope:scopeCopy forScopeIdentifier:mainScopeIdentifier7])
   {
 
     LODWORD(v53) = 1;
     goto LABEL_126;
   }
 
-  v42 = v91;
-  if ((v11 & 0x7C) == 0)
+  v42 = errorCopy;
+  if ((updatedFlagsMask & 0x7C) == 0)
   {
     goto LABEL_111;
   }
 
 LABEL_108:
   v53 = MEMORY[0x1E696AEC0];
-  v70 = [v10 scopeIdentifier];
-  v71 = [v53 stringWithFormat:@"updated scope flags: %@, scopeIdentifier: %@", v9, v70];
-  LODWORD(v53) = [(CPLEngineScopeStorage *)self clearAllQuotaFlagsForMainScopeWithReason:v71 error:v42];
+  scopeIdentifier13 = [scopeCopy scopeIdentifier];
+  mainScopeIdentifier6 = [v53 stringWithFormat:@"updated scope flags: %@, scopeIdentifier: %@", flagsCopy, scopeIdentifier13];
+  LODWORD(v53) = [(CPLEngineScopeStorage *)self clearAllQuotaFlagsForMainScopeWithReason:mainScopeIdentifier6 error:v42];
 LABEL_126:
 
 LABEL_127:
   if ((v53 & v72) == 1)
   {
-    v74 = [(CPLEngineStorage *)self engineStore];
-    v79 = [v74 engineLibrary];
-    [v79 noteMainScopeHasBeenActivated];
+    scopeIdentifier7 = [(CPLEngineStorage *)self engineStore];
+    engineLibrary2 = [scopeIdentifier7 engineLibrary];
+    [engineLibrary2 noteMainScopeHasBeenActivated];
 
     LOBYTE(v53) = 1;
     goto LABEL_129;
@@ -3916,54 +3916,54 @@ LABEL_130:
   return v53;
 }
 
-- (void)_notifyScopeObserversForScope:(id)a3 flagsUpdate:(id)a4
+- (void)_notifyScopeObserversForScope:(id)scope flagsUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  scopeCopy = scope;
+  updateCopy = update;
   scopeObservers = self->_scopeObservers;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67__CPLEngineScopeStorage__notifyScopeObserversForScope_flagsUpdate___block_invoke;
   v11[3] = &unk_1E861CA50;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = scopeCopy;
+  v13 = updateCopy;
+  v9 = updateCopy;
+  v10 = scopeCopy;
   [(NSMutableDictionary *)scopeObservers enumerateKeysAndObjectsUsingBlock:v11];
 }
 
-- (BOOL)_isValidSharingScope:(id)a3 forScopeIdentifier:(id)a4
+- (BOOL)_isValidSharingScope:(id)scope forScopeIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 scopeIdentifier];
-  v9 = [v7 scopeType];
+  identifierCopy = identifier;
+  scopeCopy = scope;
+  scopeIdentifier = [scopeCopy scopeIdentifier];
+  scopeType = [scopeCopy scopeType];
 
-  LOBYTE(v7) = [(CPLEngineScopeStorage *)self _isValidSharingScopeIdentifier:v8 scopeType:v9 forScopeIdentifier:v6];
-  return v7;
+  LOBYTE(scopeCopy) = [(CPLEngineScopeStorage *)self _isValidSharingScopeIdentifier:scopeIdentifier scopeType:scopeType forScopeIdentifier:identifierCopy];
+  return scopeCopy;
 }
 
-- (BOOL)_isValidSharingScopeIdentifier:(id)a3 scopeType:(int64_t)a4 forScopeIdentifier:(id)a5
+- (BOOL)_isValidSharingScopeIdentifier:(id)identifier scopeType:(int64_t)type forScopeIdentifier:(id)scopeIdentifier
 {
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) != 4)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) != 4)
   {
     return 0;
   }
 
-  v7 = a5;
-  v8 = a3;
-  v9 = [(CPLEngineStorage *)self engineStore];
-  v10 = [v9 supportsSharingScopeWithIdentifier:v8 forScopeWithIdentifier:v7];
+  scopeIdentifierCopy = scopeIdentifier;
+  identifierCopy = identifier;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  v10 = [engineStore supportsSharingScopeWithIdentifier:identifierCopy forScopeWithIdentifier:scopeIdentifierCopy];
 
   return v10;
 }
 
-- (id)flagsForScope:(id)a3
+- (id)flagsForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 flagsForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject flagsForScope:scopeCopy];
 
   return v6;
 }
@@ -4001,37 +4001,37 @@ LABEL_130:
   v57 = *MEMORY[0x1E69E9840];
   v55.receiver = self;
   v55.super_class = CPLEngineScopeStorage;
-  v3 = [(CPLEngineStorage *)&v55 status];
-  v4 = [v3 mutableCopy];
+  status = [(CPLEngineStorage *)&v55 status];
+  v4 = [status mutableCopy];
 
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 shouldSyncScopeList];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  shouldSyncScopeList = [engineStore shouldSyncScopeList];
 
-  if (v6)
+  if (shouldSyncScopeList)
   {
-    v7 = [(CPLEngineScopeStorage *)self scopeListSyncAnchor];
-    if (v7)
+    scopeListSyncAnchor = [(CPLEngineScopeStorage *)self scopeListSyncAnchor];
+    if (scopeListSyncAnchor)
     {
-      v8 = [(CPLEngineStorage *)self engineStore];
-      v9 = [v8 engineLibrary];
-      v10 = [v9 transport];
-      v11 = [v10 simpleDescriptionForScopeListSyncAnchor:v7];
+      engineStore2 = [(CPLEngineStorage *)self engineStore];
+      engineLibrary = [engineStore2 engineLibrary];
+      transport = [engineLibrary transport];
+      v11 = [transport simpleDescriptionForScopeListSyncAnchor:scopeListSyncAnchor];
       [v4 appendFormat:@" - global sync anchor: %@", v11];
     }
   }
 
   if (self->_someScopeMightHaveToBePulledByClient)
   {
-    v12 = [(CPLEngineStorage *)self platformObject];
-    v13 = [v12 isEmpty];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    isEmpty = [platformObject isEmpty];
 
-    if ((v13 & 1) == 0)
+    if ((isEmpty & 1) == 0)
     {
       [v4 appendString:@" [client needs to pull some scopes]"];
     }
   }
 
-  v14 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   if (status_onceToken != -1)
   {
     dispatch_once(&status_onceToken, &__block_literal_global_8776);
@@ -4056,20 +4056,20 @@ LABEL_130:
   v38[3] = &unk_1E861CA28;
   v33 = v15;
   v39 = v33;
-  v40 = self;
+  selfCopy = self;
   v43 = &v50;
   v44 = &v46;
   v45 = v54;
-  v30 = v14;
+  v30 = date;
   v41 = v30;
   v31 = v4;
   v42 = v31;
   v16 = MEMORY[0x1E128EBA0](v38);
-  v32 = [(CPLEngineScopeStorage *)self primaryScope];
-  if (v32)
+  primaryScope = [(CPLEngineScopeStorage *)self primaryScope];
+  if (primaryScope)
   {
-    (v16)[2](v16, v32, 0);
-    v17 = [(CPLEngineScopeStorage *)self sharingScopeForScope:v32];
+    (v16)[2](v16, primaryScope, 0);
+    v17 = [(CPLEngineScopeStorage *)self sharingScopeForScope:primaryScope];
     if (v17)
     {
       (v16)[2](v16, v17, 0);
@@ -4096,8 +4096,8 @@ LABEL_130:
 
         v22 = *(*(&v34 + 1) + 8 * i);
         v23 = objc_autoreleasePoolPush();
-        v24 = [v22 scopeIdentifier];
-        v25 = [v33 containsObject:v24];
+        scopeIdentifier = [v22 scopeIdentifier];
+        v25 = [v33 containsObject:scopeIdentifier];
 
         if ((v25 & 1) == 0)
         {
@@ -4319,22 +4319,22 @@ uint64_t __31__CPLEngineScopeStorage_status__block_invoke()
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (BOOL)resetStableRecordsForScopeWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)resetStableRecordsForScopeWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineScopeStorage *)self stableScopeIndexForScopeIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(CPLEngineScopeStorage *)self stableScopeIndexForScopeIdentifier:identifierCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = v7;
     [(CPLEngineScopeStorage *)self _clearScopeCache];
-    v10 = [(CPLEngineStorage *)self platformObject];
-    v11 = [v10 bumpStableIndexForScopeWithIdentifier:v6 error:a4];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v11 = [platformObject bumpStableIndexForScopeWithIdentifier:identifierCopy error:error];
 
     if (v11)
     {
-      v12 = [(CPLEngineStorage *)self engineStore];
-      v13 = [v12 cleanupTasks];
-      v8 = [v13 addCleanupTaskForScopeWithIndex:v9 scopeIdentifier:v6 scopeType:3 error:a4];
+      engineStore = [(CPLEngineStorage *)self engineStore];
+      cleanupTasks = [engineStore cleanupTasks];
+      v8 = [cleanupTasks addCleanupTaskForScopeWithIndex:v9 scopeIdentifier:identifierCopy scopeType:3 error:error];
 
       goto LABEL_7;
     }
@@ -4344,34 +4344,34 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_6;
   }
 
-  [CPLErrors invalidScopeErrorWithScopeIdentifier:v6];
-  *a4 = v8 = 0;
+  [CPLErrors invalidScopeErrorWithScopeIdentifier:identifierCopy];
+  *error = v8 = 0;
 LABEL_7:
 
   return v8;
 }
 
-- (BOOL)resetCloudRecordsForScopeWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)resetCloudRecordsForScopeWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineScopeStorage *)self indexForCloudScopeIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(CPLEngineScopeStorage *)self indexForCloudScopeIdentifier:identifierCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = v7;
     [(CPLEngineScopeStorage *)self _clearScopeCache];
-    v10 = [(CPLEngineStorage *)self platformObject];
-    v11 = [v10 bumpCloudIndexForScopeWithIdentifier:v6 error:a4];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v11 = [platformObject bumpCloudIndexForScopeWithIdentifier:identifierCopy error:error];
 
     if (v11)
     {
-      v12 = [(CPLEngineStorage *)self engineStore];
-      v13 = [v12 cleanupTasks];
-      v8 = [v13 addCleanupTaskForScopeWithIndex:v9 scopeIdentifier:v6 scopeType:2 error:a4];
+      engineStore = [(CPLEngineStorage *)self engineStore];
+      cleanupTasks = [engineStore cleanupTasks];
+      v8 = [cleanupTasks addCleanupTaskForScopeWithIndex:v9 scopeIdentifier:identifierCopy scopeType:2 error:error];
 
       goto LABEL_7;
     }
@@ -4381,34 +4381,34 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_6;
   }
 
-  [CPLErrors invalidScopeErrorWithScopeIdentifier:v6];
-  *a4 = v8 = 0;
+  [CPLErrors invalidScopeErrorWithScopeIdentifier:identifierCopy];
+  *error = v8 = 0;
 LABEL_7:
 
   return v8;
 }
 
-- (BOOL)resetLocalRecordsForScopeWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)resetLocalRecordsForScopeWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineScopeStorage *)self indexForLocalScopeIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(CPLEngineScopeStorage *)self indexForLocalScopeIdentifier:identifierCopy];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = v7;
     [(CPLEngineScopeStorage *)self _clearScopeCache];
-    v10 = [(CPLEngineStorage *)self platformObject];
-    v11 = [v10 bumpLocalIndexForScopeWithIdentifier:v6 error:a4];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v11 = [platformObject bumpLocalIndexForScopeWithIdentifier:identifierCopy error:error];
 
     if (v11)
     {
-      v12 = [(CPLEngineStorage *)self engineStore];
-      v13 = [v12 cleanupTasks];
-      v14 = [v13 addCleanupTaskForScopeWithIndex:v9 scopeIdentifier:v6 scopeType:1 error:a4];
+      engineStore = [(CPLEngineStorage *)self engineStore];
+      cleanupTasks = [engineStore cleanupTasks];
+      v14 = [cleanupTasks addCleanupTaskForScopeWithIndex:v9 scopeIdentifier:identifierCopy scopeType:1 error:error];
 
       if (v14)
       {
@@ -4423,31 +4423,31 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_7;
   }
 
-  [CPLErrors invalidScopeErrorWithScopeIdentifier:v6];
-  *a4 = v8 = 0;
+  [CPLErrors invalidScopeErrorWithScopeIdentifier:identifierCopy];
+  *error = v8 = 0;
 LABEL_8:
 
   return v8;
 }
 
-- (BOOL)resetSyncAnchorForScope:(id)a3 error:(id *)a4
+- (BOOL)resetSyncAnchorForScope:(id)scope error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CPLEngineScopeStorage *)self doesScopeNeedToPushChangesToTransport:v6];
+  scopeCopy = scope;
+  v7 = [(CPLEngineScopeStorage *)self doesScopeNeedToPushChangesToTransport:scopeCopy];
   v25 = 0;
-  v8 = [(CPLEngineScopeStorage *)self resetSyncStateForScope:v6 error:&v25];
+  v8 = [(CPLEngineScopeStorage *)self resetSyncStateForScope:scopeCopy error:&v25];
   v9 = v25;
   v10 = v9;
   if (v8 && v7)
   {
     v24 = v9;
-    v11 = [(CPLEngineScopeStorage *)self setScopeHasChangesToPushToTransport:v6 changeTypes:122 error:&v24];
+    v11 = [(CPLEngineScopeStorage *)self setScopeHasChangesToPushToTransport:scopeCopy changeTypes:122 error:&v24];
     v12 = v24;
 
     v10 = v12;
@@ -4463,13 +4463,13 @@ LABEL_8:
   }
 
   v23 = v10;
-  v13 = [(CPLEngineScopeStorage *)self setupAnchorResetTransportGroupForScope:v6 error:&v23];
+  v13 = [(CPLEngineScopeStorage *)self setupAnchorResetTransportGroupForScope:scopeCopy error:&v23];
   v14 = v23;
 
   if (v13)
   {
     v22 = v14;
-    v15 = [(CPLEngineScopeStorage *)self setScopeHasChangesToPullFromTransport:v6 error:&v22];
+    v15 = [(CPLEngineScopeStorage *)self setScopeHasChangesToPullFromTransport:scopeCopy error:&v22];
     v10 = v22;
 
     if (v15)
@@ -4490,20 +4490,20 @@ LABEL_10:
     v17 = __CPLStorageOSLogDomain_8656();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v6 scopeIdentifier];
+      scopeIdentifier = [scopeCopy scopeIdentifier];
       *buf = 138412546;
-      v27 = v18;
+      v27 = scopeIdentifier;
       v28 = 2112;
       v29 = v10;
       _os_log_impl(&dword_1DC05A000, v17, OS_LOG_TYPE_ERROR, "Unable to reset sync anchor for %@: %@", buf, 0x16u);
     }
   }
 
-  if (a4)
+  if (error)
   {
     v19 = v10;
     v16 = 0;
-    *a4 = v10;
+    *error = v10;
   }
 
   else
@@ -4517,13 +4517,13 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)resetCompleteSyncStateIncludingIDMappingForScope:(id)a3 error:(id *)a4
+- (BOOL)resetCompleteSyncStateIncludingIDMappingForScope:(id)scope error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  scopeCopy = scope;
   scopeIdentifiersBeingCreated = self->_scopeIdentifiersBeingCreated;
-  v8 = [v6 scopeIdentifier];
-  LOBYTE(scopeIdentifiersBeingCreated) = [(NSCountedSet *)scopeIdentifiersBeingCreated containsObject:v8];
+  scopeIdentifier = [scopeCopy scopeIdentifier];
+  LOBYTE(scopeIdentifiersBeingCreated) = [(NSCountedSet *)scopeIdentifiersBeingCreated containsObject:scopeIdentifier];
 
   if (scopeIdentifiersBeingCreated)
   {
@@ -4533,9 +4533,9 @@ LABEL_17:
   else
   {
     v19 = 0;
-    v10 = [(CPLEngineScopeStorage *)self _resetCompleteSyncStateForScope:v6 error:&v19];
+    v10 = [(CPLEngineScopeStorage *)self _resetCompleteSyncStateForScope:scopeCopy error:&v19];
     v11 = v19;
-    if (v10 && ([v6 scopeIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = -[CPLEngineScopeStorage resetStableRecordsForScopeWithIdentifier:error:](self, "resetStableRecordsForScopeWithIdentifier:error:", v12, a4), v12, v13))
+    if (v10 && ([scopeCopy scopeIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = -[CPLEngineScopeStorage resetStableRecordsForScopeWithIdentifier:error:](self, "resetStableRecordsForScopeWithIdentifier:error:", v12, error), v12, v13))
     {
       v9 = 1;
     }
@@ -4547,20 +4547,20 @@ LABEL_17:
         v14 = __CPLStorageOSLogDomain_8656();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          v15 = [v6 scopeIdentifier];
+          scopeIdentifier2 = [scopeCopy scopeIdentifier];
           *buf = 138412546;
-          v21 = v15;
+          v21 = scopeIdentifier2;
           v22 = 2112;
           v23 = v11;
           _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_ERROR, "Unable to reset complete sync state, including ID mapping, for %@: %@", buf, 0x16u);
         }
       }
 
-      if (a4)
+      if (error)
       {
         v16 = v11;
         v9 = 0;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -4574,12 +4574,12 @@ LABEL_17:
   return v9;
 }
 
-- (BOOL)resetCompleteSyncStateForScope:(id)a3 error:(id *)a4
+- (BOOL)resetCompleteSyncStateForScope:(id)scope error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  scopeCopy = scope;
   v14 = 0;
-  v7 = [(CPLEngineScopeStorage *)self _resetCompleteSyncStateForScope:v6 error:&v14];
+  v7 = [(CPLEngineScopeStorage *)self _resetCompleteSyncStateForScope:scopeCopy error:&v14];
   v8 = v14;
   if (!v7)
   {
@@ -4588,19 +4588,19 @@ LABEL_17:
       v9 = __CPLStorageOSLogDomain_8656();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v6 scopeIdentifier];
+        scopeIdentifier = [scopeCopy scopeIdentifier];
         *buf = 138412546;
-        v16 = v10;
+        v16 = scopeIdentifier;
         v17 = 2112;
         v18 = v8;
         _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_ERROR, "Unable to reset complete sync state for %@: %@", buf, 0x16u);
       }
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -4608,17 +4608,17 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)_resetCompleteSyncStateForScope:(id)a3 error:(id *)a4
+- (BOOL)_resetCompleteSyncStateForScope:(id)scope error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineScopeStorage *)self _resetLocalSyncStateForScope:v6 error:a4];
-  v8 = [(CPLEngineStorage *)self engineStore];
-  v9 = [v6 scopeIdentifier];
+  scopeCopy = scope;
+  v7 = [(CPLEngineScopeStorage *)self _resetLocalSyncStateForScope:scopeCopy error:error];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  scopeIdentifier = [scopeCopy scopeIdentifier];
 
-  if (v7 && [(CPLEngineScopeStorage *)self resetCloudRecordsForScopeWithIdentifier:v9 error:a4])
+  if (v7 && [(CPLEngineScopeStorage *)self resetCloudRecordsForScopeWithIdentifier:scopeIdentifier error:error])
   {
-    v10 = [v8 idMapping];
-    v11 = [v10 resetAllFinalCloudIdentifiersForScopeWithIdentifier:v9 error:a4];
+    idMapping = [engineStore idMapping];
+    v11 = [idMapping resetAllFinalCloudIdentifiersForScopeWithIdentifier:scopeIdentifier error:error];
   }
 
   else
@@ -4629,18 +4629,18 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)resetLocalSyncStateForScope:(id)a3 error:(id *)a4
+- (BOOL)resetLocalSyncStateForScope:(id)scope error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  scopeCopy = scope;
   v17 = 0;
-  v7 = [(CPLEngineScopeStorage *)self _resetLocalSyncStateForScope:v6 error:&v17];
+  v7 = [(CPLEngineScopeStorage *)self _resetLocalSyncStateForScope:scopeCopy error:&v17];
   v8 = v17;
   if (v7)
   {
-    v9 = [(CPLEngineStorage *)self engineStore];
-    v10 = [v9 quarantinedRecords];
-    v11 = [v10 resetRejectedRecordsWithError:a4];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    quarantinedRecords = [engineStore quarantinedRecords];
+    v11 = [quarantinedRecords resetRejectedRecordsWithError:error];
   }
 
   else
@@ -4650,20 +4650,20 @@ LABEL_17:
       v12 = __CPLStorageOSLogDomain_8656();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v6 scopeIdentifier];
+        scopeIdentifier = [scopeCopy scopeIdentifier];
         *buf = 138412546;
-        v19 = v13;
+        v19 = scopeIdentifier;
         v20 = 2112;
         v21 = v8;
         _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_ERROR, "Unable to reset local sync state for %@: %@", buf, 0x16u);
       }
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v8;
       v11 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -4676,33 +4676,33 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)_resetLocalSyncStateForScope:(id)a3 error:(id *)a4
+- (BOOL)_resetLocalSyncStateForScope:(id)scope error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 scopeIdentifier];
-  v8 = [(CPLEngineStorage *)self engineStore];
-  if (![v8 forceApplyPendingChangeSessionUpdateWithError:a4])
+  scopeCopy = scope;
+  scopeIdentifier = [scopeCopy scopeIdentifier];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  if (![engineStore forceApplyPendingChangeSessionUpdateWithError:error])
   {
     goto LABEL_11;
   }
 
-  v9 = [v8 derivativesCache];
-  [v9 discardCache];
+  derivativesCache = [engineStore derivativesCache];
+  [derivativesCache discardCache];
 
-  v10 = [v8 cloudCache];
-  v11 = [v10 discardStagedChangesForScopeWithIdentifier:v7 error:a4];
+  cloudCache = [engineStore cloudCache];
+  v11 = [cloudCache discardStagedChangesForScopeWithIdentifier:scopeIdentifier error:error];
 
-  if (!v11 || ![(CPLEngineScopeStorage *)self resetSyncStateForScope:v6 error:a4])
+  if (!v11 || ![(CPLEngineScopeStorage *)self resetSyncStateForScope:scopeCopy error:error])
   {
     goto LABEL_11;
   }
 
   v12 = +[CPLFingerprintScheme supportsEPP]? 22 : 21;
-  if ([(CPLEngineScopeStorage *)self storeSupportedFeatureVersionInLastSync:v12 forScope:v6 error:a4]&& [(CPLEngineScopeStorage *)self setupResetSyncTransportGroupForScope:v6 error:a4]&& [(CPLEngineScopeStorage *)self resetLocalRecordsForScopeWithIdentifier:v7 error:a4])
+  if ([(CPLEngineScopeStorage *)self storeSupportedFeatureVersionInLastSync:v12 forScope:scopeCopy error:error]&& [(CPLEngineScopeStorage *)self setupResetSyncTransportGroupForScope:scopeCopy error:error]&& [(CPLEngineScopeStorage *)self resetLocalRecordsForScopeWithIdentifier:scopeIdentifier error:error])
   {
-    v13 = [(CPLEngineStorage *)self engineStore];
-    v14 = [v13 statusCenter];
-    [v14 resetTransientStatusesWithScopeIdentifier:v7];
+    engineStore2 = [(CPLEngineStorage *)self engineStore];
+    statusCenter = [engineStore2 statusCenter];
+    [statusCenter resetTransientStatusesWithScopeIdentifier:scopeIdentifier];
 
     v15 = 1;
   }
@@ -4716,57 +4716,57 @@ LABEL_11:
   return v15;
 }
 
-- (int64_t)stableScopeIndexForScopeIdentifier:(id)a3
+- (int64_t)stableScopeIndexForScopeIdentifier:(id)identifier
 {
-  v3 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:a3];
+  v3 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 stableIndex];
+    stableIndex = [v3 stableIndex];
   }
 
   else
   {
-    v5 = 0x7FFFFFFFFFFFFFFFLL;
+    stableIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v5;
+  return stableIndex;
 }
 
 - (id)validCloudScopeIndexes
 {
-  v3 = [(_CPLEngineScopeCache *)self->_scopeCache validCloudIndexes];
-  if (!v3)
+  validCloudIndexes = [(_CPLEngineScopeCache *)self->_scopeCache validCloudIndexes];
+  if (!validCloudIndexes)
   {
-    v4 = [(CPLEngineStorage *)self platformObject];
-    v3 = [v4 validCloudIndexes];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    validCloudIndexes = [platformObject validCloudIndexes];
 
-    [(_CPLEngineScopeCache *)self->_scopeCache cacheValidCloudIndexes:v3];
+    [(_CPLEngineScopeCache *)self->_scopeCache cacheValidCloudIndexes:validCloudIndexes];
   }
 
-  return v3;
+  return validCloudIndexes;
 }
 
 - (id)validLocalScopeIndexes
 {
-  v3 = [(_CPLEngineScopeCache *)self->_scopeCache validLocalIndexes];
-  if (!v3)
+  validLocalIndexes = [(_CPLEngineScopeCache *)self->_scopeCache validLocalIndexes];
+  if (!validLocalIndexes)
   {
-    v4 = [(CPLEngineStorage *)self platformObject];
-    v3 = [v4 validLocalIndexes];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    validLocalIndexes = [platformObject validLocalIndexes];
 
-    [(_CPLEngineScopeCache *)self->_scopeCache cacheValidLocalIndexes:v3];
+    [(_CPLEngineScopeCache *)self->_scopeCache cacheValidLocalIndexes:validLocalIndexes];
   }
 
-  return v3;
+  return validLocalIndexes;
 }
 
-- (BOOL)setCloudScopeIndexOnChange:(id)a3
+- (BOOL)setCloudScopeIndexOnChange:(id)change
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 scopedIdentifier];
-  if (!v6)
+  changeCopy = change;
+  scopedIdentifier = [changeCopy scopedIdentifier];
+  if (!scopedIdentifier)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -4778,24 +4778,24 @@ LABEL_11:
       }
     }
 
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScopeStorage.m"];
-    [v17 handleFailureInMethod:a2 object:self file:v18 lineNumber:981 description:@"invalid record"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v18 lineNumber:981 description:@"invalid record"];
 
     abort();
   }
 
-  v7 = v6;
-  v8 = [(CPLEngineScopeStorage *)self scopedIdentifierForCloudScopedIdentifier:v6];
+  v7 = scopedIdentifier;
+  v8 = [(CPLEngineScopeStorage *)self scopedIdentifierForCloudScopedIdentifier:scopedIdentifier];
 
-  if (v8 && [v5 supportsResources] && objc_msgSend(v5, "hasChangeType:", 8))
+  if (v8 && [changeCopy supportsResources] && objc_msgSend(changeCopy, "hasChangeType:", 8))
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 resources];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    resources = [changeCopy resources];
+    v10 = [resources countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -4806,13 +4806,13 @@ LABEL_11:
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(resources);
           }
 
           [*(*(&v19 + 1) + 8 * i) setItemScopedIdentifier:v8];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v11 = [resources countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v11);
@@ -4823,12 +4823,12 @@ LABEL_11:
   return v8 != 0;
 }
 
-- (BOOL)setLocalScopeIndexOnChange:(id)a3
+- (BOOL)setLocalScopeIndexOnChange:(id)change
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 scopedIdentifier];
-  if (!v6)
+  changeCopy = change;
+  scopedIdentifier = [changeCopy scopedIdentifier];
+  if (!scopedIdentifier)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -4840,24 +4840,24 @@ LABEL_11:
       }
     }
 
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScopeStorage.m"];
-    [v17 handleFailureInMethod:a2 object:self file:v18 lineNumber:964 description:@"invalid record"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v18 lineNumber:964 description:@"invalid record"];
 
     abort();
   }
 
-  v7 = v6;
-  v8 = [(CPLEngineScopeStorage *)self scopedIdentifierForLocalScopedIdentifier:v6];
+  v7 = scopedIdentifier;
+  v8 = [(CPLEngineScopeStorage *)self scopedIdentifierForLocalScopedIdentifier:scopedIdentifier];
 
-  if (v8 && [v5 supportsResources] && objc_msgSend(v5, "hasChangeType:", 8))
+  if (v8 && [changeCopy supportsResources] && objc_msgSend(changeCopy, "hasChangeType:", 8))
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 resources];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    resources = [changeCopy resources];
+    v10 = [resources countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -4868,13 +4868,13 @@ LABEL_11:
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(resources);
           }
 
           [*(*(&v19 + 1) + 8 * i) setItemScopedIdentifier:v8];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v11 = [resources countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v11);
@@ -4885,64 +4885,64 @@ LABEL_11:
   return v8 != 0;
 }
 
-- (id)scopeIdentifierForCloudScopeIndex:(int64_t)a3
+- (id)scopeIdentifierForCloudScopeIndex:(int64_t)index
 {
-  v3 = [(CPLEngineScopeStorage *)self scopeWithCloudScopeIndex:a3];
-  v4 = [v3 scopeIdentifier];
+  v3 = [(CPLEngineScopeStorage *)self scopeWithCloudScopeIndex:index];
+  scopeIdentifier = [v3 scopeIdentifier];
 
-  return v4;
+  return scopeIdentifier;
 }
 
-- (id)scopeIdentifierForLocalScopeIndex:(int64_t)a3
+- (id)scopeIdentifierForLocalScopeIndex:(int64_t)index
 {
-  v3 = [(CPLEngineScopeStorage *)self scopeWithLocalScopeIndex:a3];
-  v4 = [v3 scopeIdentifier];
+  v3 = [(CPLEngineScopeStorage *)self scopeWithLocalScopeIndex:index];
+  scopeIdentifier = [v3 scopeIdentifier];
 
-  return v4;
+  return scopeIdentifier;
 }
 
-- (int64_t)indexForCloudScopeIdentifier:(id)a3
+- (int64_t)indexForCloudScopeIdentifier:(id)identifier
 {
-  v3 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:a3];
+  v3 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 cloudIndex];
+    cloudIndex = [v3 cloudIndex];
   }
 
   else
   {
-    v5 = 0x7FFFFFFFFFFFFFFFLL;
+    cloudIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v5;
+  return cloudIndex;
 }
 
-- (int64_t)indexForLocalScopeIdentifier:(id)a3
+- (int64_t)indexForLocalScopeIdentifier:(id)identifier
 {
-  v3 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:a3];
+  v3 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 localIndex];
+    localIndex = [v3 localIndex];
   }
 
   else
   {
-    v5 = 0x7FFFFFFFFFFFFFFFLL;
+    localIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v5;
+  return localIndex;
 }
 
-- (id)scopedIdentifierForCloudScopedIdentifier:(id)a3
+- (id)scopedIdentifierForCloudScopedIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 scopeIndex];
-  v7 = [v5 scopeIdentifier];
-  v8 = [(CPLEngineScopeStorage *)self indexForCloudScopeIdentifier:v7];
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+  identifierCopy = identifier;
+  scopeIndex = [identifierCopy scopeIndex];
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v8 = [(CPLEngineScopeStorage *)self indexForCloudScopeIdentifier:scopeIdentifier];
+  if (scopeIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -4951,13 +4951,13 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    [v5 setScopeIndex:v8];
+    [identifierCopy setScopeIndex:v8];
   }
 
   else
   {
 
-    if (v6 != v8)
+    if (scopeIndex != v8)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -4965,20 +4965,20 @@ LABEL_11:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v16 = v5;
+          v16 = identifierCopy;
           _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_ERROR, "Incorrect index for cloud scoped identifier %@", buf, 0xCu);
         }
       }
 
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScopeStorage.m"];
-      [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:924 description:{@"Incorrect index for cloud scoped identifier %@", v5}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v12 lineNumber:924 description:{@"Incorrect index for cloud scoped identifier %@", identifierCopy}];
 
       abort();
     }
   }
 
-  v9 = v5;
+  v9 = identifierCopy;
 LABEL_12:
 
   v13 = *MEMORY[0x1E69E9840];
@@ -4986,14 +4986,14 @@ LABEL_12:
   return v9;
 }
 
-- (id)scopedIdentifierForLocalScopedIdentifier:(id)a3
+- (id)scopedIdentifierForLocalScopedIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 scopeIndex];
-  v7 = [v5 scopeIdentifier];
-  v8 = [(CPLEngineScopeStorage *)self indexForLocalScopeIdentifier:v7];
-  if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+  identifierCopy = identifier;
+  scopeIndex = [identifierCopy scopeIndex];
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v8 = [(CPLEngineScopeStorage *)self indexForLocalScopeIdentifier:scopeIdentifier];
+  if (scopeIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -5002,13 +5002,13 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    [v5 setScopeIndex:v8];
+    [identifierCopy setScopeIndex:v8];
   }
 
   else
   {
 
-    if (v6 != v8)
+    if (scopeIndex != v8)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -5016,20 +5016,20 @@ LABEL_12:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v16 = v5;
+          v16 = identifierCopy;
           _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_ERROR, "Incorrect index for local scoped identifier %@", buf, 0xCu);
         }
       }
 
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScopeStorage.m"];
-      [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:905 description:{@"Incorrect index for local scoped identifier %@", v5}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v12 lineNumber:905 description:{@"Incorrect index for local scoped identifier %@", identifierCopy}];
 
       abort();
     }
   }
 
-  v9 = v5;
+  v9 = identifierCopy;
 LABEL_12:
 
   v13 = *MEMORY[0x1E69E9840];
@@ -5037,20 +5037,20 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)_setScopeType:(int64_t)a3 forScope:(id)a4 error:(id *)a5
+- (BOOL)_setScopeType:(int64_t)type forScope:(id)scope error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 scopeType];
-  if (v9 == a3)
+  scopeCopy = scope;
+  scopeType = [scopeCopy scopeType];
+  if (scopeType == type)
   {
-    LOBYTE(a5) = 1;
+    LOBYTE(error) = 1;
   }
 
   else
   {
-    v10 = v9;
-    if (v9)
+    v10 = scopeType;
+    if (scopeType)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -5058,26 +5058,26 @@ LABEL_12:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
           v12 = [CPLScopeChange descriptionForScopeType:v10];
-          v13 = [CPLScopeChange descriptionForScopeType:a3];
-          v14 = [v8 scopeIdentifier];
+          v13 = [CPLScopeChange descriptionForScopeType:type];
+          scopeIdentifier = [scopeCopy scopeIdentifier];
           *buf = 138412802;
           v26 = v12;
           v27 = 2112;
           v28 = v13;
           v29 = 2112;
-          v30 = v14;
+          v30 = scopeIdentifier;
           _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_ERROR, "Trying to change scope type from %@ to %@ for %@", buf, 0x20u);
         }
       }
 
-      if (a5)
+      if (error)
       {
         v15 = [CPLScopeChange descriptionForScopeType:v10];
-        v16 = [CPLScopeChange descriptionForScopeType:a3];
-        v17 = [v8 scopeIdentifier];
-        *a5 = [CPLErrors cplErrorWithCode:50 description:@"Trying to change scope type from %@ to %@ for %@", v15, v16, v17];
+        v16 = [CPLScopeChange descriptionForScopeType:type];
+        scopeIdentifier2 = [scopeCopy scopeIdentifier];
+        *error = [CPLErrors cplErrorWithCode:50 description:@"Trying to change scope type from %@ to %@ for %@", v15, v16, scopeIdentifier2];
 
-        LOBYTE(a5) = 0;
+        LOBYTE(error) = 0;
       }
     }
 
@@ -5088,52 +5088,52 @@ LABEL_12:
         v18 = __CPLStorageOSLogDomain_8656();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [v8 scopeIdentifier];
-          v20 = [CPLScopeChange descriptionForScopeType:a3];
+          scopeIdentifier3 = [scopeCopy scopeIdentifier];
+          v20 = [CPLScopeChange descriptionForScopeType:type];
           *buf = 138412546;
-          v26 = v19;
+          v26 = scopeIdentifier3;
           v27 = 2112;
           v28 = v20;
           _os_log_impl(&dword_1DC05A000, v18, OS_LOG_TYPE_DEFAULT, "Upgrading scope type of %@ to %@", buf, 0x16u);
         }
       }
 
-      v21 = [(CPLEngineStorage *)self platformObject];
-      v22 = [v21 setScopeType:a3 forScope:v8 error:a5];
+      platformObject = [(CPLEngineStorage *)self platformObject];
+      v22 = [platformObject setScopeType:type forScope:scopeCopy error:error];
 
-      LOBYTE(a5) = v22 && [(CPLEngineScopeStorage *)self _handledDisabledFeaturesForScopeIfNecessary:v8 type:a3 error:a5]&& [(CPLEngineScopeStorage *)self setScopeNeedsToBePulledByClient:v8 error:a5];
+      LOBYTE(error) = v22 && [(CPLEngineScopeStorage *)self _handledDisabledFeaturesForScopeIfNecessary:scopeCopy type:type error:error]&& [(CPLEngineScopeStorage *)self setScopeNeedsToBePulledByClient:scopeCopy error:error];
       [(CPLEngineScopeStorage *)self _clearScopeCache];
     }
   }
 
   v23 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
-- (BOOL)deleteScopeWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteScopeWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:identifierCopy];
   if (!v7)
   {
     v11 = 1;
     goto LABEL_14;
   }
 
-  v8 = [(CPLEngineStorage *)self mainScopeIdentifier];
-  if (([v6 isEqualToString:v8] & 1) != 0 || objc_msgSend(v7, "scopeType") == 4)
+  mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
+  if (([identifierCopy isEqualToString:mainScopeIdentifier] & 1) != 0 || objc_msgSend(v7, "scopeType") == 4)
   {
 
     goto LABEL_5;
   }
 
-  v12 = [v7 scopeType];
+  scopeType = [v7 scopeType];
 
-  if (v12 == 5)
+  if (scopeType == 5)
   {
 LABEL_5:
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"scope deleted, scopeIdentifier: %@", v6];
-    v10 = [(CPLEngineScopeStorage *)self clearAllQuotaFlagsForMainScopeWithReason:v9 error:a4];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"scope deleted, scopeIdentifier: %@", identifierCopy];
+    v10 = [(CPLEngineScopeStorage *)self clearAllQuotaFlagsForMainScopeWithReason:identifierCopy error:error];
 
     if (!v10)
     {
@@ -5142,7 +5142,7 @@ LABEL_5:
     }
   }
 
-  if (-[CPLEngineScopeStorage addCleanupTasksForScope:error:](self, "addCleanupTasksForScope:error:", v7, a4) && (-[CPLEngineStorage platformObject](self, "platformObject"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 deleteScopeWithIdentifier:v6 error:a4], v13, v14))
+  if (-[CPLEngineScopeStorage addCleanupTasksForScope:error:](self, "addCleanupTasksForScope:error:", v7, error) && (-[CPLEngineStorage platformObject](self, "platformObject"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 deleteScopeWithIdentifier:identifierCopy error:error], v13, v14))
   {
     [(CPLEngineScopeStorage *)self _removeBrokenScope:v7];
     v11 = 1;
@@ -5155,8 +5155,8 @@ LABEL_5:
 
   [(CPLEngineScopeStorage *)self _clearScopeCache];
 LABEL_14:
-  v15 = [(CPLEngineStorage *)self mainScopeIdentifier];
-  v16 = [v6 isEqualToString:v15];
+  mainScopeIdentifier2 = [(CPLEngineStorage *)self mainScopeIdentifier];
+  v16 = [identifierCopy isEqualToString:mainScopeIdentifier2];
 
   if (v16)
   {
@@ -5178,14 +5178,14 @@ LABEL_14:
     }
 
 LABEL_22:
-    v19 = [(CPLEngineStorage *)self engineStore];
-    v20 = [v19 quarantinedRecords];
-    v18 = [v20 resetRejectedRecordsWithError:a4];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    quarantinedRecords = [engineStore quarantinedRecords];
+    v18 = [quarantinedRecords resetRejectedRecordsWithError:error];
 
     goto LABEL_23;
   }
 
-  if ([(CPLEngineScopeStorage *)self _dropSharingScopeIdentifier:v6 error:a4])
+  if ([(CPLEngineScopeStorage *)self _dropSharingScopeIdentifier:identifierCopy error:error])
   {
     goto LABEL_22;
   }
@@ -5197,18 +5197,18 @@ LABEL_23:
   return v18;
 }
 
-- (BOOL)addCleanupTasksForScope:(id)a3 error:(id *)a4
+- (BOOL)addCleanupTasksForScope:(id)scope error:(id *)error
 {
-  v6 = a3;
-  if ([v6 scopeType])
+  scopeCopy = scope;
+  if ([scopeCopy scopeType])
   {
-    v7 = [v6 scopeIdentifier];
-    v8 = [(CPLEngineStorage *)self engineStore];
-    v9 = [v8 cleanupTasks];
+    scopeIdentifier = [scopeCopy scopeIdentifier];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    cleanupTasks = [engineStore cleanupTasks];
 
-    if ([v9 addCleanupTaskForScopeWithIndex:objc_msgSend(v6 scopeIdentifier:"localIndex") scopeType:v7 error:{1, a4}] && objc_msgSend(v9, "addCleanupTaskForScopeWithIndex:scopeIdentifier:scopeType:error:", objc_msgSend(v6, "cloudIndex"), v7, 2, a4))
+    if ([cleanupTasks addCleanupTaskForScopeWithIndex:objc_msgSend(scopeCopy scopeIdentifier:"localIndex") scopeType:scopeIdentifier error:{1, error}] && objc_msgSend(cleanupTasks, "addCleanupTaskForScopeWithIndex:scopeIdentifier:scopeType:error:", objc_msgSend(scopeCopy, "cloudIndex"), scopeIdentifier, 2, error))
     {
-      v10 = [v9 addCleanupTaskForScopeWithIndex:objc_msgSend(v6 scopeIdentifier:"stableIndex") scopeType:v7 error:{3, a4}];
+      v10 = [cleanupTasks addCleanupTaskForScopeWithIndex:objc_msgSend(scopeCopy scopeIdentifier:"stableIndex") scopeType:scopeIdentifier error:{3, error}];
     }
 
     else
@@ -5225,20 +5225,20 @@ LABEL_23:
   return v10;
 }
 
-- (BOOL)_setSharingScopeIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_setSharingScopeIdentifier:(id)identifier error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self mainScopeIdentifier];
-  v8 = [(CPLEngineScopeStorage *)self _isValidSharingScope:v6 forScopeIdentifier:v7];
+  identifierCopy = identifier;
+  mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
+  v8 = [(CPLEngineScopeStorage *)self _isValidSharingScope:identifierCopy forScopeIdentifier:mainScopeIdentifier];
 
   if (v8)
   {
-    v9 = [(CPLEngineStorage *)self engineStore];
-    v10 = [v6 scopeIdentifier];
-    v11 = [v9 sharingScopeIdentifier];
-    v12 = v11;
-    if (v11 && ([v11 isEqualToString:v10] & 1) == 0)
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    scopeIdentifier = [identifierCopy scopeIdentifier];
+    sharingScopeIdentifier = [engineStore sharingScopeIdentifier];
+    v12 = sharingScopeIdentifier;
+    if (sharingScopeIdentifier && ([sharingScopeIdentifier isEqualToString:scopeIdentifier] & 1) == 0)
     {
       if (_CPLSilentLogging)
       {
@@ -5246,26 +5246,26 @@ LABEL_23:
         goto LABEL_20;
       }
 
-      v13 = __CPLStorageOSLogDomain_8656();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      primaryScope = __CPLStorageOSLogDomain_8656();
+      if (os_log_type_enabled(primaryScope, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
         v24 = v12;
         v25 = 2114;
-        v26 = v10;
-        _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ is already registered as sharing scope. Ignoring %{public}@", buf, 0x16u);
+        v26 = scopeIdentifier;
+        _os_log_impl(&dword_1DC05A000, primaryScope, OS_LOG_TYPE_DEFAULT, "%{public}@ is already registered as sharing scope. Ignoring %{public}@", buf, 0x16u);
       }
     }
 
     else
     {
-      v13 = [(CPLEngineScopeStorage *)self primaryScope];
-      if (!v13 || [(CPLEngineScopeStorage *)self valueForFlag:16 forScope:v13])
+      primaryScope = [(CPLEngineScopeStorage *)self primaryScope];
+      if (!primaryScope || [(CPLEngineScopeStorage *)self valueForFlag:16 forScope:primaryScope])
       {
-        if (a4)
+        if (error)
         {
-          v14 = [v6 scopeIdentifier];
-          *a4 = [CPLErrors incorrectMachineStateErrorWithReason:@"Can't use %@ as sharing scope when iCPL is off", v14];
+          scopeIdentifier2 = [identifierCopy scopeIdentifier];
+          *error = [CPLErrors incorrectMachineStateErrorWithReason:@"Can't use %@ as sharing scope when iCPL is off", scopeIdentifier2];
         }
 
         v15 = 0;
@@ -5278,18 +5278,18 @@ LABEL_23:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v24 = v6;
+          v24 = identifierCopy;
           _os_log_impl(&dword_1DC05A000, v16, OS_LOG_TYPE_DEFAULT, "Activating %@ as sharing scope. Informing store", buf, 0xCu);
         }
       }
 
-      v17 = [(CPLEngineStorage *)self engineStore];
-      [v17 storeSharingScopeIdentifier:v10];
+      engineStore2 = [(CPLEngineStorage *)self engineStore];
+      [engineStore2 storeSharingScopeIdentifier:scopeIdentifier];
 
-      v18 = [(CPLEngineStorage *)self engineStore];
-      v19 = [v18 engineLibrary];
-      v20 = [v19 supervisor];
-      [v20 scopeStorage:self didStoreSharingScopeIdentifier:v10];
+      engineStore3 = [(CPLEngineStorage *)self engineStore];
+      engineLibrary = [engineStore3 engineLibrary];
+      supervisor = [engineLibrary supervisor];
+      [supervisor scopeStorage:self didStoreSharingScopeIdentifier:scopeIdentifier];
     }
 
     v15 = 1;
@@ -5306,18 +5306,18 @@ LABEL_21:
   return v15;
 }
 
-- (BOOL)_dropSharingScopeIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_dropSharingScopeIdentifier:(id)identifier error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self engineStore];
-  v8 = v6;
-  v38 = v7;
-  v9 = [v7 sharingScopeIdentifier];
-  v10 = v9;
-  if (v8 && v9)
+  identifierCopy = identifier;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  v8 = identifierCopy;
+  v38 = engineStore;
+  sharingScopeIdentifier = [engineStore sharingScopeIdentifier];
+  v10 = sharingScopeIdentifier;
+  if (v8 && sharingScopeIdentifier)
   {
-    v11 = [v8 isEqual:v9];
+    v11 = [v8 isEqual:sharingScopeIdentifier];
 
     if ((v11 & 1) == 0)
     {
@@ -5348,14 +5348,14 @@ LABEL_4:
     }
   }
 
-  v15 = [(CPLEngineStorage *)self engineStore];
-  [v15 dropSharingScopeIdentifier:v8];
+  engineStore2 = [(CPLEngineStorage *)self engineStore];
+  [engineStore2 dropSharingScopeIdentifier:v8];
 
-  v16 = [(CPLEngineStorage *)self engineStore];
-  v17 = [v16 engineLibrary];
-  v18 = [v17 supervisor];
+  engineStore3 = [(CPLEngineStorage *)self engineStore];
+  engineLibrary = [engineStore3 engineLibrary];
+  supervisor = [engineLibrary supervisor];
   v37 = v8;
-  [v18 scopeStorage:self didDropSharingScopeIdentifier:v8];
+  [supervisor scopeStorage:self didDropSharingScopeIdentifier:v8];
 
   v43 = 0u;
   v44 = 0u;
@@ -5366,7 +5366,7 @@ LABEL_4:
   if (v20)
   {
     v21 = v20;
-    v36 = a4;
+    errorCopy = error;
     v39 = 0;
     v22 = *v42;
     while (2)
@@ -5380,8 +5380,8 @@ LABEL_4:
 
         v24 = *(*(&v41 + 1) + 8 * i);
         v25 = objc_autoreleasePoolPush();
-        v26 = [(CPLEngineStorage *)self platformObject];
-        v27 = [v26 flagsForScope:v24];
+        platformObject = [(CPLEngineStorage *)self platformObject];
+        v27 = [platformObject flagsForScope:v24];
 
         if ([v27 valueForFlag:16] && (objc_msgSend(v27, "valueForFlag:", 36) & 1) == 0 && (objc_msgSend(v24, "scopeType") & 0xFFFFFFFFFFFFFFFELL) == 4 && (objc_msgSend(v24, "scopeIdentifier"), v28 = objc_claimAutoreleasedReturnValue(), v29 = -[CPLEngineScopeStorage shouldAutoactivateScopeWithIdentifier:scopeType:](self, "shouldAutoactivateScopeWithIdentifier:scopeType:", v28, objc_msgSend(v24, "scopeType")), v28, v29))
         {
@@ -5391,12 +5391,12 @@ LABEL_4:
           if (v30)
           {
 
-            v31 = [(CPLEngineScopeStorage *)self primaryScope];
-            if (v31)
+            primaryScope = [(CPLEngineScopeStorage *)self primaryScope];
+            if (primaryScope)
             {
               v8 = v37;
-              v7 = v38;
-              if ([(CPLEngineScopeStorage *)self valueForFlag:16 forScope:v31])
+              engineStore = v38;
+              if ([(CPLEngineScopeStorage *)self valueForFlag:16 forScope:primaryScope])
               {
                 v12 = 0;
                 v13 = 1;
@@ -5429,14 +5429,14 @@ LABEL_4:
               v12 = 0;
               v13 = 1;
               v8 = v37;
-              v7 = v38;
+              engineStore = v38;
             }
 
-            if (v36 && !v13)
+            if (errorCopy && !v13)
             {
               v33 = v12;
               v13 = 0;
-              *v36 = v12;
+              *errorCopy = v12;
             }
 
             goto LABEL_39;
@@ -5470,44 +5470,44 @@ LABEL_4:
   v12 = 0;
   v13 = 1;
   v8 = v37;
-  v7 = v38;
+  engineStore = v38;
 LABEL_39:
 
   v34 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (id)createScopeWithIdentifier:(id)a3 scopeType:(int64_t)a4 flags:(int64_t)a5 transportScope:(id)a6 error:(id *)a7
+- (id)createScopeWithIdentifier:(id)identifier scopeType:(int64_t)type flags:(int64_t)flags transportScope:(id)scope error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:v13];
+  identifierCopy = identifier;
+  scopeCopy = scope;
+  v15 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:identifierCopy];
   v16 = v15;
-  if (a4 != 2)
+  if (type != 2)
   {
     if (!v15)
     {
       goto LABEL_15;
     }
 
-    if (!a4)
+    if (!type)
     {
 LABEL_9:
-      v20 = [(CPLEngineStorage *)self platformObject];
-      v21 = [v20 flagsForScope:v16];
+      platformObject = [(CPLEngineStorage *)self platformObject];
+      v21 = [platformObject flagsForScope:v16];
 
-      [v21 setValue:1 forFlag:a5];
-      if ((a5 & 0x10) == 0)
+      [v21 setValue:1 forFlag:flags];
+      if ((flags & 0x10) == 0)
       {
         [v21 setValue:0 forFlag:16];
       }
 
-      v22 = [(CPLEngineScopeStorage *)self updateFlags:v21 forScope:v16 error:a7];
+      v22 = [(CPLEngineScopeStorage *)self updateFlags:v21 forScope:v16 error:error];
 
-      if (v14 && v22)
+      if (scopeCopy && v22)
       {
-        if ([(CPLEngineScopeStorage *)self setTransportScope:v14 forScope:v16 error:a7])
+        if ([(CPLEngineScopeStorage *)self setTransportScope:scopeCopy forScope:v16 error:error])
         {
           goto LABEL_23;
         }
@@ -5525,10 +5525,10 @@ LABEL_22:
     }
 
 LABEL_8:
-    v19 = [v16 copyWithScopeType:a4];
+    v19 = [v16 copyWithScopeType:type];
 
     v16 = v19;
-    if (![(CPLEngineScopeStorage *)self _setScopeType:a4 forScope:v19 error:a7])
+    if (![(CPLEngineScopeStorage *)self _setScopeType:type forScope:v19 error:error])
     {
       goto LABEL_22;
     }
@@ -5536,12 +5536,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v17 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v18 = [v17 BOOLForKey:@"CPLOwnedMomentSharesAreHighPriority"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v18 = [standardUserDefaults BOOLForKey:@"CPLOwnedMomentSharesAreHighPriority"];
 
   if (v18)
   {
-    a5 |= 0x20000uLL;
+    flags |= 0x20000uLL;
   }
 
   if (v16)
@@ -5550,27 +5550,27 @@ LABEL_8:
   }
 
 LABEL_15:
-  v23 = [(CPLEngineStorage *)self platformObject];
-  v16 = [v23 addScopeWithIdentifier:v13 scopeType:a4 error:a7];
+  platformObject2 = [(CPLEngineStorage *)self platformObject];
+  v16 = [platformObject2 addScopeWithIdentifier:identifierCopy scopeType:type error:error];
 
   if (!v16)
   {
     goto LABEL_23;
   }
 
-  if (![(CPLEngineScopeStorage *)self _handledDisabledFeaturesForScopeIfNecessary:v16 type:a4 error:a7])
+  if (![(CPLEngineScopeStorage *)self _handledDisabledFeaturesForScopeIfNecessary:v16 type:type error:error])
   {
     goto LABEL_22;
   }
 
   [(CPLEngineScopeStorage *)self _clearScopeCache];
-  v24 = [(CPLEngineScopeStorage *)self setTransportScope:v14 forScope:v16 error:a7];
-  if (a5 && v24)
+  v24 = [(CPLEngineScopeStorage *)self setTransportScope:scopeCopy forScope:v16 error:error];
+  if (flags && v24)
   {
     v25 = [[CPLEngineScopeFlagsUpdate alloc] initWithFlags:0];
-    [(CPLEngineScopeFlagsUpdate *)v25 setValue:1 forFlag:a5];
-    v26 = [(CPLEngineStorage *)self platformObject];
-    v27 = [v26 updateFlags:v25 forScope:v16 error:a7];
+    [(CPLEngineScopeFlagsUpdate *)v25 setValue:1 forFlag:flags];
+    platformObject3 = [(CPLEngineStorage *)self platformObject];
+    v27 = [platformObject3 updateFlags:v25 forScope:v16 error:error];
 
     [(CPLEngineScopeStorage *)self _notifyScopeObserversForScope:v16 flagsUpdate:v25];
     if (!v27)
@@ -5597,14 +5597,14 @@ LABEL_38:
 
   if (overridesSharedLibraryFeatureFlag != 1 || (isSharedLibraryFeatureEnabled & 1) != 0)
   {
-    v32 = a5 & 0x10;
+    v32 = flags & 0x10;
   }
 
   else
   {
-    v31 = [v16 scopeType];
-    v32 = a5 & 0x10;
-    if ((a5 & 0x10) == 0 && (v31 & 0xFFFFFFFFFFFFFFFELL) == 4)
+    scopeType = [v16 scopeType];
+    v32 = flags & 0x10;
+    if ((flags & 0x10) == 0 && (scopeType & 0xFFFFFFFFFFFFFFFELL) == 4)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -5617,9 +5617,9 @@ LABEL_38:
         }
       }
 
-      v34 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v35 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScopeStorage.m"];
-      [v34 handleFailureInMethod:a2 object:self file:v35 lineNumber:706 description:{@"Trying to create an active shared library scope but the feature is disabled %@", v16}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v35 lineNumber:706 description:{@"Trying to create an active shared library scope but the feature is disabled %@", v16}];
 
       abort();
     }
@@ -5632,11 +5632,11 @@ LABEL_38:
 
   else
   {
-    if ([(CPLEngineScopeStorage *)self _setSharingScopeIdentifier:v16 error:a7])
+    if ([(CPLEngineScopeStorage *)self _setSharingScopeIdentifier:v16 error:error])
     {
-      v37 = [(CPLEngineStorage *)self platformObject];
-      v38 = [MEMORY[0x1E695DF00] date];
-      v36 = [v37 storeActivationDate:v38 forScope:v16 error:a7];
+      platformObject4 = [(CPLEngineStorage *)self platformObject];
+      date = [MEMORY[0x1E695DF00] date];
+      v36 = [platformObject4 storeActivationDate:date forScope:v16 error:error];
     }
 
     else
@@ -5644,20 +5644,20 @@ LABEL_38:
       v36 = 0;
     }
 
-    v39 = [(CPLEngineStorage *)self mainScopeIdentifier];
-    v40 = [v13 isEqualToString:v39];
+    mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
+    v40 = [identifierCopy isEqualToString:mainScopeIdentifier];
 
     if (v40)
     {
-      v41 = [(CPLEngineStorage *)self engineStore];
-      v42 = [v41 engineLibrary];
-      [v42 noteMainScopeHasBeenActivated];
+      engineStore = [(CPLEngineStorage *)self engineStore];
+      engineLibrary = [engineStore engineLibrary];
+      [engineLibrary noteMainScopeHasBeenActivated];
     }
   }
 
 LABEL_47:
-  v43 = [(CPLEngineStorage *)self mainScopeIdentifier];
-  v44 = [v13 isEqualToString:v43];
+  mainScopeIdentifier2 = [(CPLEngineStorage *)self mainScopeIdentifier];
+  v44 = [identifierCopy isEqualToString:mainScopeIdentifier2];
 
   if (v44)
   {
@@ -5677,20 +5677,20 @@ LABEL_23:
   return v16;
 }
 
-- (BOOL)_handledDisabledFeaturesForScopeIfNecessary:(id)a3 type:(int64_t)a4 error:(id *)a5
+- (BOOL)_handledDisabledFeaturesForScopeIfNecessary:(id)necessary type:(int64_t)type error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v7 = [(CPLEngineStorage *)self engineStore];
-  v8 = [v7 disabledFeatures];
+  necessaryCopy = necessary;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  disabledFeatures = [engineStore disabledFeatures];
 
-  if ([v8 count])
+  if ([disabledFeatures count])
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = v8;
+    v9 = disabledFeatures;
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v10)
     {
@@ -5708,8 +5708,8 @@ LABEL_23:
           v14 = [CPLFeature featureWithName:*(*(&v22 + 1) + 8 * i)];
           if (v14)
           {
-            v15 = [(CPLEngineStorage *)self engineStore];
-            v16 = [v14 handleScopeWhenFeatureIsDisabled:v21 scopeType:a4 store:v15 error:a5];
+            engineStore2 = [(CPLEngineStorage *)self engineStore];
+            v16 = [v14 handleScopeWhenFeatureIsDisabled:necessaryCopy scopeType:type store:engineStore2 error:error];
 
             if ((v16 & 1) == 0)
             {
@@ -5757,122 +5757,122 @@ LABEL_15:
     v3 = __CPLStorageOSLogDomain_8656();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(CPLEngineStorage *)self mainScopeIdentifier];
+      mainScopeIdentifier = [(CPLEngineStorage *)self mainScopeIdentifier];
       v8 = 138412290;
-      v9 = v4;
+      v9 = mainScopeIdentifier;
       _os_log_impl(&dword_1DC05A000, v3, OS_LOG_TYPE_DEFAULT, "Resetting global status for %@", &v8, 0xCu);
     }
   }
 
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 engineLibrary];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  engineLibrary = [engineStore engineLibrary];
 
-  [v6 setICloudLibraryHasBeenWiped:0];
-  [v6 setIsExceedingQuota:0];
-  [v6 setIsExceedingSharedLibraryQuota:0];
-  [v6 setExitDeleteTime:0];
-  [v6 updateInitialSyncDate:0];
-  [v6 updateAccountFlagsData:0];
-  [v6 setBusyState:0];
+  [engineLibrary setICloudLibraryHasBeenWiped:0];
+  [engineLibrary setIsExceedingQuota:0];
+  [engineLibrary setIsExceedingSharedLibraryQuota:0];
+  [engineLibrary setExitDeleteTime:0];
+  [engineLibrary updateInitialSyncDate:0];
+  [engineLibrary updateAccountFlagsData:0];
+  [engineLibrary setBusyState:0];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)doesScopeNeedToUploadComputeState:(id)a3
+- (BOOL)doesScopeNeedToUploadComputeState:(id)state
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 doesScopeNeedToUploadComputeState:v4];
+  stateCopy = state;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject doesScopeNeedToUploadComputeState:stateCopy];
 
   return v6;
 }
 
-- (BOOL)setScope:(id)a3 hasCompletedUploadComputeStateTask:(int64_t)a4 error:(id *)a5
+- (BOOL)setScope:(id)scope hasCompletedUploadComputeStateTask:(int64_t)task error:(id *)error
 {
-  v8 = a3;
-  v9 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a5) = [v9 setScope:v8 hasCompletedUploadComputeStateTask:a4 error:a5];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setScope:scopeCopy hasCompletedUploadComputeStateTask:task error:error];
 
-  return a5;
+  return error;
 }
 
-- (int64_t)uploadComputeStateTaskForScope:(id)a3
+- (int64_t)uploadComputeStateTaskForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 uploadComputeStateTaskForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject uploadComputeStateTaskForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)setScopeNeedsToUploadComputeState:(id)a3 error:(id *)a4
+- (BOOL)setScopeNeedsToUploadComputeState:(id)state error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 setScopeNeedsToUploadComputeState:v6 error:a4];
+  stateCopy = state;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setScopeNeedsToUploadComputeState:stateCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (BOOL)hasScopesNeedingToUploadComputeState
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 hasScopesNeedingToUploadComputeState];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  hasScopesNeedingToUploadComputeState = [platformObject hasScopesNeedingToUploadComputeState];
 
-  return v3;
+  return hasScopesNeedingToUploadComputeState;
 }
 
 - (id)enumeratorForScopesNeedingToUploadComputeState
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 enumeratorForScopesNeedingToUploadComputeState];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  enumeratorForScopesNeedingToUploadComputeState = [platformObject enumeratorForScopesNeedingToUploadComputeState];
 
-  return v3;
+  return enumeratorForScopesNeedingToUploadComputeState;
 }
 
-- (BOOL)doesScopeNeedToUpdateTransport:(id)a3
+- (BOOL)doesScopeNeedToUpdateTransport:(id)transport
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 doesScopeNeedToUpdateTransport:v4];
+  transportCopy = transport;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject doesScopeNeedToUpdateTransport:transportCopy];
 
   return v6;
 }
 
-- (BOOL)setScope:(id)a3 hasCompletedTransportUpdate:(int64_t)a4 error:(id *)a5
+- (BOOL)setScope:(id)scope hasCompletedTransportUpdate:(int64_t)update error:(id *)error
 {
-  v8 = a3;
-  v9 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a5) = [v9 setScope:v8 hasCompletedTransportUpdate:a4 error:a5];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setScope:scopeCopy hasCompletedTransportUpdate:update error:error];
 
-  return a5;
+  return error;
 }
 
-- (int64_t)transportUpdateTaskForScope:(id)a3
+- (int64_t)transportUpdateTaskForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 transportUpdateTaskForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject transportUpdateTaskForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)setScopeNeedsToUpdateTransport:(id)a3 error:(id *)a4
+- (BOOL)setScopeNeedsToUpdateTransport:(id)transport error:(id *)error
 {
   self->_scheduleATransportUpdate = 1;
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 setScopeNeedsToUpdateTransport:v6 error:a4];
+  transportCopy = transport;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setScopeNeedsToUpdateTransport:transportCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)updateScopeWithChange:(id)a3 error:(id *)a4
+- (BOOL)updateScopeWithChange:(id)change error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 scopeIdentifier];
-  v8 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:v7];
+  changeCopy = change;
+  scopeIdentifier = [changeCopy scopeIdentifier];
+  v8 = [(CPLEngineScopeStorage *)self _scopeWithIdentifier:scopeIdentifier];
   v40[0] = 0;
   v40[1] = v40;
   v40[2] = 0x2020000000;
@@ -5883,7 +5883,7 @@ LABEL_15:
   v37[3] = &unk_1E861F868;
   v39 = v40;
   v37[4] = self;
-  v9 = v7;
+  v9 = scopeIdentifier;
   v38 = v9;
   v10 = MEMORY[0x1E128EBA0](v37);
   v34[0] = MEMORY[0x1E69E9820];
@@ -5895,14 +5895,14 @@ LABEL_15:
   v11 = v9;
   v35 = v11;
   v12 = MEMORY[0x1E128EBA0](v34);
-  if ([v6 isDelete])
+  if ([changeCopy isDelete])
   {
-    if (!v8 || (v13 = [v8 scopeType]) == 0)
+    if (!v8 || (scopeType = [v8 scopeType]) == 0)
     {
-      v13 = [v6 scopeType];
+      scopeType = [changeCopy scopeType];
     }
 
-    if (!v13)
+    if (!scopeType)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -5915,7 +5915,7 @@ LABEL_15:
         }
       }
 
-      if (a4)
+      if (error)
       {
         goto LABEL_45;
       }
@@ -5923,7 +5923,7 @@ LABEL_15:
       goto LABEL_58;
     }
 
-    if (v13 == 1)
+    if (scopeType == 1)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -5936,11 +5936,11 @@ LABEL_15:
         }
       }
 
-      if (a4)
+      if (error)
       {
 LABEL_45:
         [CPLErrors invalidScopeErrorWithScopeIdentifier:v11];
-        *a4 = v21 = 0;
+        *error = v21 = 0;
         goto LABEL_67;
       }
 
@@ -5954,7 +5954,7 @@ LABEL_58:
   if (!v8)
   {
     v10[2](v10);
-    v8 = [(CPLEngineScopeStorage *)self _createScopeFromScopeChange:v6 error:a4];
+    v8 = [(CPLEngineScopeStorage *)self _createScopeFromScopeChange:changeCopy error:error];
     if (!v8)
     {
       goto LABEL_58;
@@ -5983,13 +5983,13 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (![(CPLEngineScopeStorage *)self deleteScopeWithIdentifier:v11 error:a4])
+  if (![(CPLEngineScopeStorage *)self deleteScopeWithIdentifier:v11 error:error])
   {
     goto LABEL_58;
   }
 
   v10[2](v10);
-  v16 = [(CPLEngineScopeStorage *)self _createScopeFromScopeChange:v6 error:a4];
+  v16 = [(CPLEngineScopeStorage *)self _createScopeFromScopeChange:changeCopy error:error];
 
   if (!v16)
   {
@@ -6016,7 +6016,7 @@ LABEL_25:
   v15 = 1;
   v8 = v16;
 LABEL_27:
-  if (![v6 isDelete])
+  if (![changeCopy isDelete])
   {
     if (v15)
     {
@@ -6031,12 +6031,12 @@ LABEL_27:
         }
       }
 
-      v19 = [(CPLEngineScopeStorage *)self setScopeNeedsToUpdateTransport:v8 error:a4];
+      v19 = [(CPLEngineScopeStorage *)self setScopeNeedsToUpdateTransport:v8 error:error];
       goto LABEL_39;
     }
 
-    v23 = [(CPLEngineStorage *)self platformObject];
-    v24 = [v23 flagsForScope:v8];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v24 = [platformObject flagsForScope:v8];
 
     if ([v24 valueForFlag:16])
     {
@@ -6046,16 +6046,16 @@ LABEL_66:
       goto LABEL_67;
     }
 
-    v25 = [(CPLEngineStorage *)self platformObject];
-    v32 = [v25 scopeChangeForScope:v8];
+    platformObject2 = [(CPLEngineStorage *)self platformObject];
+    v32 = [platformObject2 scopeChangeForScope:v8];
 
     v33 = 0;
-    [v32 updateScopeFromScopeChange:v6 direction:1 didHaveChanges:&v33];
+    [v32 updateScopeFromScopeChange:changeCopy direction:1 didHaveChanges:&v33];
     if (v33 == 1)
     {
       v33 = 0;
-      v26 = [(CPLEngineStorage *)self platformObject];
-      v27 = [v26 storeScopeChange:v32 forScope:v8 scopeChangeHasBeenUpdated:&v33 error:a4];
+      platformObject3 = [(CPLEngineStorage *)self platformObject];
+      v27 = [platformObject3 storeScopeChange:v32 forScope:v8 scopeChangeHasBeenUpdated:&v33 error:error];
 
       if (!v27)
       {
@@ -6075,9 +6075,9 @@ LABEL_66:
           }
         }
 
-        if ([(CPLEngineScopeStorage *)self setScopeNeedsToUpdateTransport:v8 error:a4, v32])
+        if ([(CPLEngineScopeStorage *)self setScopeNeedsToUpdateTransport:v8 error:error, v32])
         {
-          v21 = [(CPLEngineScopeStorage *)self setScopeNeedsUpdateFromTransport:v8 error:a4];
+          v21 = [(CPLEngineScopeStorage *)self setScopeNeedsUpdateFromTransport:v8 error:error];
 LABEL_65:
 
           goto LABEL_66;
@@ -6115,7 +6115,7 @@ LABEL_59:
     }
   }
 
-  v19 = [(CPLEngineScopeStorage *)self setValue:1 forFlag:48 forScope:v8 error:a4];
+  v19 = [(CPLEngineScopeStorage *)self setValue:1 forFlag:48 forScope:v8 error:error];
 LABEL_39:
   v21 = v19;
 LABEL_67:
@@ -6150,17 +6150,17 @@ uint64_t __53__CPLEngineScopeStorage_updateScopeWithChange_error___block_invoke_
   return result;
 }
 
-- (id)_createScopeFromScopeChange:(id)a3 error:(id *)a4
+- (id)_createScopeFromScopeChange:(id)change error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 scopeIdentifier];
-  v8 = -[CPLEngineScopeStorage createScopeWithIdentifier:scopeType:flags:transportScope:error:](self, "createScopeWithIdentifier:scopeType:flags:transportScope:error:", v7, [v6 scopeType], objc_msgSend(v6, "defaultFlags"), 0, a4);
+  changeCopy = change;
+  scopeIdentifier = [changeCopy scopeIdentifier];
+  v8 = -[CPLEngineScopeStorage createScopeWithIdentifier:scopeType:flags:transportScope:error:](self, "createScopeWithIdentifier:scopeType:flags:transportScope:error:", scopeIdentifier, [changeCopy scopeType], objc_msgSend(changeCopy, "defaultFlags"), 0, error);
 
   if (v8)
   {
     v12 = 0;
-    v9 = [(CPLEngineStorage *)self platformObject];
-    v10 = [v9 storeScopeChange:v6 forScope:v8 scopeChangeHasBeenUpdated:&v12 error:a4];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v10 = [platformObject storeScopeChange:changeCopy forScope:v8 scopeChangeHasBeenUpdated:&v12 error:error];
 
     if ((v10 & 1) == 0)
     {
@@ -6172,46 +6172,46 @@ uint64_t __53__CPLEngineScopeStorage_updateScopeWithChange_error___block_invoke_
   return v8;
 }
 
-- (BOOL)doesScopeSupportToBePulledByClient:(id)a3
+- (BOOL)doesScopeSupportToBePulledByClient:(id)client
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 doesScopeSupportToBePulledByClient:v4];
+  clientCopy = client;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject doesScopeSupportToBePulledByClient:clientCopy];
 
   return v6;
 }
 
-- (BOOL)doesScopeNeedToBePulledByClient:(id)a3
+- (BOOL)doesScopeNeedToBePulledByClient:(id)client
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 doesScopeNeedToBePulledByClient:v4];
+  clientCopy = client;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject doesScopeNeedToBePulledByClient:clientCopy];
 
   return v6;
 }
 
-- (BOOL)setScopeNeedsToBePulledByClient:(id)a3 error:(id *)a4
+- (BOOL)setScopeNeedsToBePulledByClient:(id)client error:(id *)error
 {
   self->_someScopeMightHaveToBePulledByClient = 1;
   self->_clearSomeScopeMightHaveToBePulledByClient = 0;
   self->_schedulePullFromClient = 1;
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 setScopeNeedsToBePulledByClient:v6 error:a4];
+  clientCopy = client;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setScopeNeedsToBePulledByClient:clientCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)clientAcknowledgedScopeChanges:(id)a3 error:(id *)a4
+- (BOOL)clientAcknowledgedScopeChanges:(id)changes error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  changesCopy = changes;
   objc_opt_class();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = v6;
+  v7 = changesCopy;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v8)
   {
@@ -6228,15 +6228,15 @@ uint64_t __53__CPLEngineScopeStorage_updateScopeWithChange_error___block_invoke_
         }
 
         v12 = *(*(&v29 + 1) + 8 * v11);
-        v13 = [v12 isScopeChange];
-        v14 = v13;
-        if (a4 && (v13 & 1) == 0)
+        isScopeChange = [v12 isScopeChange];
+        v14 = isScopeChange;
+        if (error && (isScopeChange & 1) == 0)
         {
-          *a4 = [CPLErrors cplErrorWithCode:50 description:@"incorrect change of class %@ in a batch of scope changes", objc_opt_class()];
+          *error = [CPLErrors cplErrorWithCode:50 description:@"incorrect change of class %@ in a batch of scope changes", objc_opt_class()];
         }
 
-        v15 = [v12 scope];
-        if (v15)
+        scope = [v12 scope];
+        if (scope)
         {
           v16 = 0;
         }
@@ -6248,10 +6248,10 @@ uint64_t __53__CPLEngineScopeStorage_updateScopeWithChange_error___block_invoke_
 
         if (v16 == 1)
         {
-          if (a4)
+          if (error)
           {
-            v17 = [v12 scopeIdentifier];
-            *a4 = [CPLErrors cplErrorWithCode:50 description:@"missing inner scope in scope change for %@", v17];
+            scopeIdentifier = [v12 scopeIdentifier];
+            *error = [CPLErrors cplErrorWithCode:50 description:@"missing inner scope in scope change for %@", scopeIdentifier];
 LABEL_30:
           }
 
@@ -6260,14 +6260,14 @@ LABEL_31:
           goto LABEL_32;
         }
 
-        v17 = v15;
+        scopeIdentifier = scope;
         if (!v14)
         {
           goto LABEL_30;
         }
 
-        v18 = [(CPLEngineStorage *)self platformObject];
-        v19 = [v18 setScope:v17 hasCompletedClientNeedsToPullTask:objc_msgSend(v12 error:{"pullTaskItem"), a4}];
+        platformObject = [(CPLEngineStorage *)self platformObject];
+        v19 = [platformObject setScope:scopeIdentifier hasCompletedClientNeedsToPullTask:objc_msgSend(v12 error:{"pullTaskItem"), error}];
 
         if (!v19)
         {
@@ -6276,13 +6276,13 @@ LABEL_31:
 
         if ([v12 isDelete])
         {
-          v20 = [(CPLEngineStorage *)self engineStore];
-          v21 = [v20 libraryOptions];
+          engineStore = [(CPLEngineStorage *)self engineStore];
+          libraryOptions = [engineStore libraryOptions];
 
-          if ((v21 & 0x400) != 0 || [(CPLEngineScopeStorage *)self valueForFlag:16 forScope:v17])
+          if ((libraryOptions & 0x400) != 0 || [(CPLEngineScopeStorage *)self valueForFlag:16 forScope:scopeIdentifier])
           {
-            v22 = [v12 scopeIdentifier];
-            v23 = [(CPLEngineScopeStorage *)self deleteScopeWithIdentifier:v22 error:a4];
+            scopeIdentifier2 = [v12 scopeIdentifier];
+            v23 = [(CPLEngineScopeStorage *)self deleteScopeWithIdentifier:scopeIdentifier2 error:error];
 
             if (!v23)
             {
@@ -6292,7 +6292,7 @@ LABEL_31:
 
           else
           {
-            v24 = [(CPLEngineScopeStorage *)self setValue:1 forFlag:16 forScope:v17 error:a4];
+            v24 = [(CPLEngineScopeStorage *)self setValue:1 forFlag:16 forScope:scopeIdentifier error:error];
 
             if (!v24)
             {
@@ -6328,7 +6328,7 @@ LABEL_32:
   return v26;
 }
 
-- (id)scopeChangesNeedingToBePulledByClientWithMaximumCount:(unint64_t)a3
+- (id)scopeChangesNeedingToBePulledByClientWithMaximumCount:(unint64_t)count
 {
   v30 = *MEMORY[0x1E69E9840];
   self->_clearSomeScopeMightHaveToBePulledByClient = 0;
@@ -6338,8 +6338,8 @@ LABEL_32:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = [(CPLEngineStorage *)self platformObject];
-    v7 = [v6 enumeratorForScopesNeedingToBePulledByClientWithMaximumCount:a3];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v7 = [platformObject enumeratorForScopesNeedingToBePulledByClientWithMaximumCount:count];
 
     v8 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
     if (v8)
@@ -6365,17 +6365,17 @@ LABEL_32:
               v18 = __CPLStorageOSLogDomain_8656();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
               {
-                v19 = [v13 scopeIdentifier];
+                scopeIdentifier = [v13 scopeIdentifier];
                 *buf = 138412290;
-                v28 = v19;
+                v28 = scopeIdentifier;
                 _os_log_impl(&dword_1DC05A000, v18, OS_LOG_TYPE_ERROR, "failed to create a scope change for %@", buf, 0xCu);
               }
             }
 
-            v20 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScopeStorage.m"];
-            v22 = [v13 scopeIdentifier];
-            [v20 handleFailureInMethod:a2 object:self file:v21 lineNumber:362 description:{@"failed to create a scope change for %@", v22}];
+            scopeIdentifier2 = [v13 scopeIdentifier];
+            [currentHandler handleFailureInMethod:a2 object:self file:v21 lineNumber:362 description:{@"failed to create a scope change for %@", scopeIdentifier2}];
 
             abort();
           }
@@ -6413,53 +6413,53 @@ LABEL_32:
   return v10;
 }
 
-- (id)_scopeChangeToBePulledByClientForScope:(id)a3
+- (id)_scopeChangeToBePulledByClientForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 flagsForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject flagsForScope:scopeCopy];
 
-  v7 = +[CPLScopeChange scopeChangeClassForType:](CPLScopeChange, "scopeChangeClassForType:", [v4 scopeType]);
+  v7 = +[CPLScopeChange scopeChangeClassForType:](CPLScopeChange, "scopeChangeClassForType:", [scopeCopy scopeType]);
   if ([v6 valueForFlag:4] && (objc_msgSend(v6, "valueForFlag:", 64) & 1) == 0)
   {
-    v8 = [v4 scopeIdentifier];
-    v9 = -[objc_class newDeleteScopeChangeWithScopeIdentifier:type:](v7, "newDeleteScopeChangeWithScopeIdentifier:type:", v8, [v4 scopeType]);
+    scopeIdentifier = [scopeCopy scopeIdentifier];
+    v9 = -[objc_class newDeleteScopeChangeWithScopeIdentifier:type:](v7, "newDeleteScopeChangeWithScopeIdentifier:type:", scopeIdentifier, [scopeCopy scopeType]);
   }
 
   else
   {
-    v8 = [(CPLEngineStorage *)self platformObject];
-    v9 = [v8 scopeChangeForScope:v4];
+    scopeIdentifier = [(CPLEngineStorage *)self platformObject];
+    v9 = [scopeIdentifier scopeChangeForScope:scopeCopy];
   }
 
   v10 = v9;
 
   if (v10)
   {
-    v11 = [(CPLEngineStorage *)self platformObject];
-    v12 = [v11 clientNeedsToPullTaskForScope:v4];
+    platformObject2 = [(CPLEngineStorage *)self platformObject];
+    v12 = [platformObject2 clientNeedsToPullTaskForScope:scopeCopy];
 
     [v10 setPullTaskItem:v12];
-    [v10 setScope:v4];
+    [v10 setScope:scopeCopy];
   }
 
   return v10;
 }
 
-- (BOOL)doScopesNeedMetadataSync:(id)a3
+- (BOOL)doScopesNeedMetadataSync:(id)sync
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  if ([v5 doScopesNeedMetadataSync:v4])
+  syncCopy = sync;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  if ([platformObject doScopesNeedMetadataSync:syncCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(CPLEngineStorage *)self engineStore];
-    v8 = [v7 transientPullRepository];
-    v6 = [v8 hasUnmingledOrStashedRecordsWithScopeFilter:v4];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    transientPullRepository = [engineStore transientPullRepository];
+    v6 = [transientPullRepository hasUnmingledOrStashedRecordsWithScopeFilter:syncCopy];
   }
 
   return v6;
@@ -6467,40 +6467,40 @@ LABEL_32:
 
 - (id)enumeratorForScopesWithMingling
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 enumeratorForScopesWithMingling];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  enumeratorForScopesWithMingling = [platformObject enumeratorForScopesWithMingling];
 
-  return v3;
+  return enumeratorForScopesWithMingling;
 }
 
-- (BOOL)setPullFromTransportExpirationInterval:(double)a3 scope:(id)a4 error:(id *)a5
+- (BOOL)setPullFromTransportExpirationInterval:(double)interval scope:(id)scope error:(id *)error
 {
-  v8 = a4;
-  v9 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a5) = [v9 setPullFromTransportExpirationInterval:v8 scope:a5 error:a3];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setPullFromTransportExpirationInterval:scopeCopy scope:error error:interval];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)doesScopeNeedToPullChangesFromTransport:(id)a3
+- (BOOL)doesScopeNeedToPullChangesFromTransport:(id)transport
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 doesScopeNeedToPullChangesFromTransport:v4];
+  transportCopy = transport;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject doesScopeNeedToPullChangesFromTransport:transportCopy];
 
   return v6;
 }
 
-- (BOOL)setScope:(id)a3 hasCompletedPullFromTransportTask:(int64_t)a4 error:(id *)a5
+- (BOOL)setScope:(id)scope hasCompletedPullFromTransportTask:(int64_t)task error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(CPLEngineStorage *)self platformObject];
-  LODWORD(a4) = [v9 setScope:v8 hasCompletedPullFromTransportTask:a4 error:a5];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LODWORD(task) = [platformObject setScope:scopeCopy hasCompletedPullFromTransportTask:task error:error];
 
-  if (a4)
+  if (task)
   {
-    if ([(CPLEngineScopeStorage *)self shouldTrackAdditionalInitialSyncDatesForScope:v8]&& ([(CPLEngineScopeStorage *)self initialMetadataDownloadDateForScope:v8], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+    if ([(CPLEngineScopeStorage *)self shouldTrackAdditionalInitialSyncDatesForScope:scopeCopy]&& ([(CPLEngineScopeStorage *)self initialMetadataDownloadDateForScope:scopeCopy], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -6508,14 +6508,14 @@ LABEL_32:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           v17 = 138412290;
-          v18 = v8;
+          v18 = scopeCopy;
           _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_DEFAULT, "Setting initial metadata download date for %@", &v17, 0xCu);
         }
       }
 
-      v15 = [(CPLEngineStorage *)self platformObject];
-      v16 = [MEMORY[0x1E695DF00] date];
-      v11 = [v15 storeInitialMetadataDownloadDate:v16 forScope:v8 error:a5];
+      platformObject2 = [(CPLEngineStorage *)self platformObject];
+      date = [MEMORY[0x1E695DF00] date];
+      v11 = [platformObject2 storeInitialMetadataDownloadDate:date forScope:scopeCopy error:error];
     }
 
     else
@@ -6533,45 +6533,45 @@ LABEL_32:
   return v11;
 }
 
-- (int64_t)pullFromTransportTaskForScope:(id)a3
+- (int64_t)pullFromTransportTaskForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 pullFromTransportTaskForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject pullFromTransportTaskForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)setAllScopesHasChangesToPullFromTransportWithError:(id *)a3
+- (BOOL)setAllScopesHasChangesToPullFromTransportWithError:(id *)error
 {
   self->_schedulePullFromTransport = 1;
-  v4 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a3) = [v4 setAllScopesHasChangesToPullFromTransportWithError:a3];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setAllScopesHasChangesToPullFromTransportWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)setScopeHasChangesToPullFromTransport:(id)a3 error:(id *)a4
+- (BOOL)setScopeHasChangesToPullFromTransport:(id)transport error:(id *)error
 {
-  v6 = a3;
-  if ([(CPLEngineScopeStorage *)self valueForFlag:16 forScope:v6])
+  transportCopy = transport;
+  if ([(CPLEngineScopeStorage *)self valueForFlag:16 forScope:transportCopy])
   {
-    v7 = [(CPLEngineScopeStorage *)self setScopeNeedsUpdateFromTransport:v6 error:a4];
+    v7 = [(CPLEngineScopeStorage *)self setScopeNeedsUpdateFromTransport:transportCopy error:error];
   }
 
   else
   {
     self->_schedulePullFromTransport = 1;
-    v8 = [(CPLEngineScopeStorage *)self scopeChangeForScope:v6];
-    if ([v8 shouldAlwaysUpdateScopeInfoWhenPossible] && !-[CPLEngineScopeStorage setScopeNeedsUpdateFromTransport:error:](self, "setScopeNeedsUpdateFromTransport:error:", v6, a4))
+    v8 = [(CPLEngineScopeStorage *)self scopeChangeForScope:transportCopy];
+    if ([v8 shouldAlwaysUpdateScopeInfoWhenPossible] && !-[CPLEngineScopeStorage setScopeNeedsUpdateFromTransport:error:](self, "setScopeNeedsUpdateFromTransport:error:", transportCopy, error))
     {
       v7 = 0;
     }
 
     else
     {
-      v9 = [(CPLEngineStorage *)self platformObject];
-      v7 = [v9 setScopeHasChangesToPullFromTransport:v6 error:a4];
+      platformObject = [(CPLEngineStorage *)self platformObject];
+      v7 = [platformObject setScopeHasChangesToPullFromTransport:transportCopy error:error];
     }
   }
 
@@ -6580,34 +6580,34 @@ LABEL_32:
 
 - (BOOL)hasScopesNeedingToPullChangesFromTransport
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 hasScopesNeedingToPullChangesFromTransport];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  hasScopesNeedingToPullChangesFromTransport = [platformObject hasScopesNeedingToPullChangesFromTransport];
 
-  return v3;
+  return hasScopesNeedingToPullChangesFromTransport;
 }
 
 - (id)enumeratorForScopesNeedingToPullChangesFromTransport
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 enumeratorForScopesNeedingToPullChangesFromTransport];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  enumeratorForScopesNeedingToPullChangesFromTransport = [platformObject enumeratorForScopesNeedingToPullChangesFromTransport];
 
-  return v3;
+  return enumeratorForScopesNeedingToPullChangesFromTransport;
 }
 
-- (BOOL)doesScopeNeedToPushChangesToTransport:(id)a3
+- (BOOL)doesScopeNeedToPushChangesToTransport:(id)transport
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 doesScopeNeedToPushChangesToTransport:v4];
+  transportCopy = transport;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject doesScopeNeedToPushChangesToTransport:transportCopy];
 
   return v6;
 }
 
-- (BOOL)setScope:(id)a3 hasCompletedPushToTransportTask:(int64_t)a4 error:(id *)a5
+- (BOOL)setScope:(id)scope hasCompletedPushToTransportTask:(int64_t)task error:(id *)error
 {
-  v8 = a3;
-  v9 = [(CPLEngineStorage *)self platformObject];
-  v10 = [v9 setScope:v8 hasCompletedPushToTransportTask:a4 error:a5];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v10 = [platformObject setScope:scopeCopy hasCompletedPushToTransportTask:task error:error];
 
   if (v10)
   {
@@ -6617,21 +6617,21 @@ LABEL_32:
   return v10;
 }
 
-- (int64_t)pushToTransportTaskForScope:(id)a3
+- (int64_t)pushToTransportTaskForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 pushToTransportTaskForScope:v4];
+  scopeCopy = scope;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject pushToTransportTaskForScope:scopeCopy];
 
   return v6;
 }
 
-- (BOOL)setScopeHasChangesToPushToTransport:(id)a3 changeTypes:(unint64_t)a4 error:(id *)a5
+- (BOOL)setScopeHasChangesToPushToTransport:(id)transport changeTypes:(unint64_t)types error:(id *)error
 {
-  v8 = a3;
-  if ((a4 & 0xFFFFFFFFFFFFFEFFLL) != 0)
+  transportCopy = transport;
+  if ((types & 0xFFFFFFFFFFFFFEFFLL) != 0)
   {
-    v9 = a4 & 0xFFFFFFFFFFFFFEFFLL;
+    v9 = types & 0xFFFFFFFFFFFFFEFFLL;
   }
 
   else
@@ -6639,8 +6639,8 @@ LABEL_32:
     v9 = 122;
   }
 
-  v10 = [(CPLEngineStorage *)self platformObject];
-  v11 = [v10 flagsForScope:v8];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v11 = [platformObject flagsForScope:transportCopy];
 
   if ([v11 valueForFlag:0x20000])
   {
@@ -6653,74 +6653,74 @@ LABEL_32:
     self->_schedulePushToTransportChangeTypes |= v9;
   }
 
-  v12 = [(CPLEngineStorage *)self platformObject];
-  v13 = [v12 setScopeHasChangesToPushToTransport:v8 error:a5];
+  platformObject2 = [(CPLEngineStorage *)self platformObject];
+  v13 = [platformObject2 setScopeHasChangesToPushToTransport:transportCopy error:error];
 
   return v13;
 }
 
 - (BOOL)hasScopesNeedingToPushChangesToTransport
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 hasScopesNeedingToPushChangesToTransport];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  hasScopesNeedingToPushChangesToTransport = [platformObject hasScopesNeedingToPushChangesToTransport];
 
-  return v3;
+  return hasScopesNeedingToPushChangesToTransport;
 }
 
 - (id)enumeratorForScopesNeedingToPushChangesToTransport
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 enumeratorForScopesNeedingToPushChangesToTransport];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  enumeratorForScopesNeedingToPushChangesToTransport = [platformObject enumeratorForScopesNeedingToPushChangesToTransport];
 
-  return v3;
+  return enumeratorForScopesNeedingToPushChangesToTransport;
 }
 
 - (BOOL)hasScopesNeedingToPushHighPriorityChangesToTransport
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 hasScopesNeedingToPushHighPriorityChangesToTransport];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  hasScopesNeedingToPushHighPriorityChangesToTransport = [platformObject hasScopesNeedingToPushHighPriorityChangesToTransport];
 
-  return v3;
+  return hasScopesNeedingToPushHighPriorityChangesToTransport;
 }
 
 - (id)enumeratorForScopesNeedingToPushHighPriorityChangesToTransport
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 enumeratorForScopesNeedingToPushHighPriorityChangesToTransport];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  enumeratorForScopesNeedingToPushHighPriorityChangesToTransport = [platformObject enumeratorForScopesNeedingToPushHighPriorityChangesToTransport];
 
-  return v3;
+  return enumeratorForScopesNeedingToPushHighPriorityChangesToTransport;
 }
 
 - (id)enumeratorForScopesNeedingUpdateFromTransport
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 enumeratorForScopesNeedingUpdateFromTransport];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  enumeratorForScopesNeedingUpdateFromTransport = [platformObject enumeratorForScopesNeedingUpdateFromTransport];
 
-  return v3;
+  return enumeratorForScopesNeedingUpdateFromTransport;
 }
 
 - (id)enumeratorForDeletedStagedScopes
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 enumeratorForDeletedStagedScopes];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  enumeratorForDeletedStagedScopes = [platformObject enumeratorForDeletedStagedScopes];
 
-  return v3;
+  return enumeratorForDeletedStagedScopes;
 }
 
 - (void)_checkSyncManagerPriorityBoost
 {
   self->_shouldChangeSyncManagerPriorityBoost = 1;
-  v3 = [(CPLEngineStorage *)self platformObject];
-  self->_syncManagerPriorityBoost = [v3 hasScopesNeedingToPushHighPriorityChangesToTransport];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  self->_syncManagerPriorityBoost = [platformObject hasScopesNeedingToPushHighPriorityChangesToTransport];
 }
 
-- (id)scopeWithStableIndex:(int64_t)a3
+- (id)scopeWithStableIndex:(int64_t)index
 {
   v5 = [(_CPLEngineScopeCache *)self->_scopeCache scopeWithStableIndex:?];
   if (!v5)
   {
-    v6 = [(CPLEngineStorage *)self platformObject];
-    v5 = [v6 scopeWithStableIndex:a3];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v5 = [platformObject scopeWithStableIndex:index];
 
     [(CPLEngineScopeStorage *)self _cacheScope:v5];
   }
@@ -6728,13 +6728,13 @@ LABEL_32:
   return v5;
 }
 
-- (id)scopeWithCloudScopeIndex:(int64_t)a3
+- (id)scopeWithCloudScopeIndex:(int64_t)index
 {
   v5 = [(_CPLEngineScopeCache *)self->_scopeCache scopeWithCloudIndex:?];
   if (!v5)
   {
-    v6 = [(CPLEngineStorage *)self platformObject];
-    v5 = [v6 scopeWithCloudIndex:a3];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v5 = [platformObject scopeWithCloudIndex:index];
 
     [(CPLEngineScopeStorage *)self _cacheScope:v5];
   }
@@ -6742,13 +6742,13 @@ LABEL_32:
   return v5;
 }
 
-- (id)scopeWithLocalScopeIndex:(int64_t)a3
+- (id)scopeWithLocalScopeIndex:(int64_t)index
 {
   v5 = [(_CPLEngineScopeCache *)self->_scopeCache scopeWithLocalIndex:?];
   if (!v5)
   {
-    v6 = [(CPLEngineStorage *)self platformObject];
-    v5 = [v6 scopeWithLocalIndex:a3];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v5 = [platformObject scopeWithLocalIndex:index];
 
     [(CPLEngineScopeStorage *)self _cacheScope:v5];
   }
@@ -6756,14 +6756,14 @@ LABEL_32:
   return v5;
 }
 
-- (id)_scopeWithIdentifier:(id)a3
+- (id)_scopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_CPLEngineScopeCache *)self->_scopeCache scopeWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(_CPLEngineScopeCache *)self->_scopeCache scopeWithIdentifier:identifierCopy];
   if (!v5)
   {
-    v6 = [(CPLEngineStorage *)self platformObject];
-    v5 = [v6 scopeWithIdentifier:v4];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    v5 = [platformObject scopeWithIdentifier:identifierCopy];
 
     [(CPLEngineScopeStorage *)self _cacheScope:v5];
   }
@@ -6771,22 +6771,22 @@ LABEL_32:
   return v5;
 }
 
-- (void)_removeBrokenScope:(id)a3
+- (void)_removeBrokenScope:(id)scope
 {
-  v4 = a3;
+  scopeCopy = scope;
   scopesToRemoveFromBrokenScopes = self->_scopesToRemoveFromBrokenScopes;
-  v8 = v4;
+  v8 = scopeCopy;
   if (!scopesToRemoveFromBrokenScopes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_scopesToRemoveFromBrokenScopes;
     self->_scopesToRemoveFromBrokenScopes = v6;
 
-    v4 = v8;
+    scopeCopy = v8;
     scopesToRemoveFromBrokenScopes = self->_scopesToRemoveFromBrokenScopes;
   }
 
-  [(NSMutableArray *)scopesToRemoveFromBrokenScopes addObject:v4];
+  [(NSMutableArray *)scopesToRemoveFromBrokenScopes addObject:scopeCopy];
 }
 
 - (void)_clearScopeCache
@@ -6800,10 +6800,10 @@ LABEL_32:
 
 - (void)_fixGlobalStatus
 {
-  v3 = [(CPLEngineScopeStorage *)self primaryScope];
-  if (v3)
+  primaryScope = [(CPLEngineScopeStorage *)self primaryScope];
+  if (primaryScope)
   {
-    v6 = v3;
+    v6 = primaryScope;
     v4 = [(CPLEngineScopeStorage *)self scopeChangeForScope:?];
     if (v4)
     {
@@ -6815,25 +6815,25 @@ LABEL_32:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (BOOL)openWithError:(id *)a3
+- (BOOL)openWithError:(id *)error
 {
   v7.receiver = self;
   v7.super_class = CPLEngineScopeStorage;
-  v4 = [(CPLEngineStorage *)&v7 openWithError:a3];
+  v4 = [(CPLEngineStorage *)&v7 openWithError:error];
   if (v4)
   {
-    v5 = [(CPLEngineStorage *)self engineStore];
-    self->_someScopeMightHaveToBePulledByClient = [v5 shouldSyncScopeList];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    self->_someScopeMightHaveToBePulledByClient = [engineStore shouldSyncScopeList];
   }
 
   return v4;
 }
 
-- (CPLEngineScopeStorage)initWithEngineStore:(id)a3 name:(id)a4
+- (CPLEngineScopeStorage)initWithEngineStore:(id)store name:(id)name
 {
   v8.receiver = self;
   v8.super_class = CPLEngineScopeStorage;
-  v4 = [(CPLEngineStorage *)&v8 initWithEngineStore:a3 name:a4];
+  v4 = [(CPLEngineStorage *)&v8 initWithEngineStore:store name:name];
   if (v4)
   {
     v5 = objc_alloc_init(_CPLEngineScopeCache);

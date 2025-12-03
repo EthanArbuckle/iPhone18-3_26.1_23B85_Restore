@@ -3,7 +3,7 @@
 - (void)dealloc;
 - (void)grestore;
 - (void)gsave;
-- (void)setColorReason:(id)a3;
+- (void)setColorReason:(id)reason;
 @end
 
 @implementation ColorInfo
@@ -41,47 +41,47 @@
   [(ColorInfo *)&v3 dealloc];
 }
 
-- (void)setColorReason:(id)a3
+- (void)setColorReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   colorReason = self->colorReason;
   p_colorReason = &self->colorReason;
   if (!colorReason)
   {
-    v8 = v5;
-    objc_storeStrong(p_colorReason, a3);
-    v5 = v8;
+    v8 = reasonCopy;
+    objc_storeStrong(p_colorReason, reason);
+    reasonCopy = v8;
   }
 }
 
 - (void)gsave
 {
   v6 = objc_alloc_init(GState);
-  v3 = [(ColorInfo *)self strokeColorspace];
-  [(GState *)v6 setStrokeColorspace:v3];
+  strokeColorspace = [(ColorInfo *)self strokeColorspace];
+  [(GState *)v6 setStrokeColorspace:strokeColorspace];
 
-  v4 = [(ColorInfo *)self nonStrokeColorspace];
-  [(GState *)v6 setNonStrokeColorspace:v4];
+  nonStrokeColorspace = [(ColorInfo *)self nonStrokeColorspace];
+  [(GState *)v6 setNonStrokeColorspace:nonStrokeColorspace];
 
-  v5 = [(ColorInfo *)self gstateStack];
-  [v5 addObject:v6];
+  gstateStack = [(ColorInfo *)self gstateStack];
+  [gstateStack addObject:v6];
 }
 
 - (void)grestore
 {
-  v3 = [(ColorInfo *)self gstateStack];
-  v7 = [v3 lastObject];
+  gstateStack = [(ColorInfo *)self gstateStack];
+  lastObject = [gstateStack lastObject];
 
-  if (v7)
+  if (lastObject)
   {
-    v4 = [v7 strokeColorspace];
-    [(ColorInfo *)self setStrokeColorspace:v4];
+    strokeColorspace = [lastObject strokeColorspace];
+    [(ColorInfo *)self setStrokeColorspace:strokeColorspace];
 
-    v5 = [v7 nonStrokeColorspace];
-    [(ColorInfo *)self setNonStrokeColorspace:v5];
+    nonStrokeColorspace = [lastObject nonStrokeColorspace];
+    [(ColorInfo *)self setNonStrokeColorspace:nonStrokeColorspace];
 
-    v6 = [(ColorInfo *)self gstateStack];
-    [v6 removeLastObject];
+    gstateStack2 = [(ColorInfo *)self gstateStack];
+    [gstateStack2 removeLastObject];
   }
 
   else

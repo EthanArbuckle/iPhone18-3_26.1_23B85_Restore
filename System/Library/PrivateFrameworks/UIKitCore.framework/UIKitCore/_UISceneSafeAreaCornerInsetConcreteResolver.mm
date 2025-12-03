@@ -1,7 +1,7 @@
 @interface _UISceneSafeAreaCornerInsetConcreteResolver
-- (_UICornerInsets)safeAreaCornerInsetsForOrientation:(SEL)a3;
+- (_UICornerInsets)safeAreaCornerInsetsForOrientation:(SEL)orientation;
 - (_UISceneSafeAreaCornerInsetConcreteResolver)init;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation _UISceneSafeAreaCornerInsetConcreteResolver
@@ -19,7 +19,7 @@
   return [(_UISceneSafeAreaCornerInsetResolver *)&v4 init];
 }
 
-- (_UICornerInsets)safeAreaCornerInsetsForOrientation:(SEL)a3
+- (_UICornerInsets)safeAreaCornerInsetsForOrientation:(SEL)orientation
 {
   v4 = *(&self->topLeft.width + OBJC_IVAR____UISceneSafeAreaCornerInsetConcreteResolver_safeAreaCornerInsets);
   v5 = *(&self->topLeft.height + OBJC_IVAR____UISceneSafeAreaCornerInsetConcreteResolver_safeAreaCornerInsets);
@@ -260,11 +260,11 @@
   return self;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  _UISceneSafeAreaCornerInsetConcreteResolver.encode(withBSXPCCoder:)(a3);
+  selfCopy = self;
+  _UISceneSafeAreaCornerInsetConcreteResolver.encode(withBSXPCCoder:)(coder);
   swift_unknownObjectRelease();
 }
 

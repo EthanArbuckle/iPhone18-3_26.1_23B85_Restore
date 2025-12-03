@@ -1,7 +1,7 @@
 @interface ActionOutput
 - (NSString)variableName;
 - (WFIcon)icon;
-- (id)variableWithProvider:(id)a3;
+- (id)variableWithProvider:(id)provider;
 @end
 
 @implementation ActionOutput
@@ -33,11 +33,11 @@
   return v4;
 }
 
-- (id)variableWithProvider:(id)a3
+- (id)variableWithProvider:(id)provider
 {
   swift_unknownObjectRetain();
 
-  v4 = sub_1CA36501C(a3);
+  v4 = sub_1CA36501C(provider);
   swift_unknownObjectRelease();
 
   return v4;

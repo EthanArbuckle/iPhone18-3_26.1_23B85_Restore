@@ -1,31 +1,31 @@
 @interface CHUISRemoteWidgetLaunchRequest
 - (CHUISRemoteWidgetLaunchRequest)init;
-- (CHUISRemoteWidgetLaunchRequest)initWithData:(id)a3;
-- (void)setAction:(id)a3;
-- (void)setExtensionIdentity:(id)a3;
+- (CHUISRemoteWidgetLaunchRequest)initWithData:(id)data;
+- (void)setAction:(id)action;
+- (void)setExtensionIdentity:(id)identity;
 @end
 
 @implementation CHUISRemoteWidgetLaunchRequest
 
-- (void)setExtensionIdentity:(id)a3
+- (void)setExtensionIdentity:(id)identity
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CHUISRemoteWidgetLaunchRequest_extensionIdentity);
-  *(&self->super.isa + OBJC_IVAR___CHUISRemoteWidgetLaunchRequest_extensionIdentity) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CHUISRemoteWidgetLaunchRequest_extensionIdentity) = identity;
+  identityCopy = identity;
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CHUISRemoteWidgetLaunchRequest_action);
-  *(&self->super.isa + OBJC_IVAR___CHUISRemoteWidgetLaunchRequest_action) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CHUISRemoteWidgetLaunchRequest_action) = action;
+  actionCopy = action;
 }
 
-- (CHUISRemoteWidgetLaunchRequest)initWithData:(id)a3
+- (CHUISRemoteWidgetLaunchRequest)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = a3;
+    dataCopy = data;
     v4 = sub_1D9326824();
     v6 = v5;
   }

@@ -1,12 +1,12 @@
 @interface PGConfiguration
 + (id)_persistedConfigurationPath;
 + (id)persistedConfiguration;
-- (PGConfiguration)initWithSources:(id)a3 version:(double)a4;
+- (PGConfiguration)initWithSources:(id)sources version:(double)version;
 - (id)_configurationDictionary;
 - (id)description;
 - (id)propertyKeys;
-- (id)propertyNamesForProperties:(objc_property *)a3 propertyCount:(unsigned int)a4;
-- (void)_configureWithSource:(id)a3 propertyKeys:(id)a4;
+- (id)propertyNamesForProperties:(objc_property *)properties propertyCount:(unsigned int)count;
+- (void)_configureWithSource:(id)source propertyKeys:(id)keys;
 - (void)deletePersistedConfiguration;
 - (void)persistConfiguration;
 @end
@@ -16,23 +16,23 @@
 - (void)deletePersistedConfiguration
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = [objc_opt_class() _persistedConfigurationPath];
+  _persistedConfigurationPath = [objc_opt_class() _persistedConfigurationPath];
   v3 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  if ([v3 fileExistsAtPath:v2 isDirectory:0])
+  if ([v3 fileExistsAtPath:_persistedConfigurationPath isDirectory:0])
   {
     v9 = 0;
-    v4 = [v3 removeItemAtPath:v2 error:&v9];
+    v4 = [v3 removeItemAtPath:_persistedConfigurationPath error:&v9];
     v5 = v9;
     if ((v4 & 1) == 0)
     {
       v6 = +[PGLogging sharedLogging];
-      v7 = [v6 loggingConnection];
+      loggingConnection = [v6 loggingConnection];
 
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v11 = v5;
-        _os_log_error_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_ERROR, "[PGConfiguration] Failed to delete persisted configuration dictionary (%@)", buf, 0xCu);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGConfiguration] Failed to delete persisted configuration dictionary (%@)", buf, 0xCu);
       }
     }
   }
@@ -43,13 +43,13 @@
 - (id)_configurationDictionary
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PGConfiguration *)self propertyKeys];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  propertyKeys = [(PGConfiguration *)self propertyKeys];
+  v5 = [propertyKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -60,15 +60,15 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(propertyKeys);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         v10 = [(PGConfiguration *)self valueForKey:v9];
-        [v3 setObject:v10 forKeyedSubscript:v9];
+        [dictionary setObject:v10 forKeyedSubscript:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [propertyKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -76,7 +76,7 @@
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (void)persistConfiguration
@@ -86,9 +86,9 @@
   v4 = 0;
   if ([v3 fileExistsAtPath:@"/var/mobile/Media/PhotoData/Configuration" isDirectory:0] & 1) != 0 || (v15 = 0, v5 = objc_msgSend(v3, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", @"/var/mobile/Media/PhotoData/Configuration", 1, 0, &v15), v4 = v15, (v5))
   {
-    v6 = [objc_opt_class() _persistedConfigurationPath];
-    v7 = [(PGConfiguration *)self _configurationDictionary];
-    v8 = [v7 writeToFile:v6 atomically:1];
+    _persistedConfigurationPath = [objc_opt_class() _persistedConfigurationPath];
+    _configurationDictionary = [(PGConfiguration *)self _configurationDictionary];
+    v8 = [_configurationDictionary writeToFile:_persistedConfigurationPath atomically:1];
 
     if (v8)
     {
@@ -99,25 +99,25 @@
   else
   {
     v9 = +[PGLogging sharedLogging];
-    v10 = [v9 loggingConnection];
+    loggingConnection = [v9 loggingConnection];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v17 = v4;
-      _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "[PGConfiguration] Failed to create Configuration directory (%@)", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGConfiguration] Failed to create Configuration directory (%@)", buf, 0xCu);
     }
   }
 
   v11 = +[PGLogging sharedLogging];
-  v12 = [v11 loggingConnection];
+  loggingConnection2 = [v11 loggingConnection];
 
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
   {
-    v14 = [objc_opt_class() name];
+    name = [objc_opt_class() name];
     *buf = 138412290;
-    v17 = v14;
-    _os_log_error_impl(&dword_22F0FC000, v12, OS_LOG_TYPE_ERROR, "[PGConfiguration] Failed to persist configuration dictionary for class %@", buf, 0xCu);
+    v17 = name;
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "[PGConfiguration] Failed to persist configuration dictionary for class %@", buf, 0xCu);
   }
 
 LABEL_11:
@@ -128,16 +128,16 @@ LABEL_11:
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAB68];
-  v4 = [objc_opt_class() name];
+  name = [objc_opt_class() name];
   [(PGConfiguration *)self version];
-  v6 = [v3 stringWithFormat:@"%@ (version: %.2f):", v4, v5];
+  v6 = [v3 stringWithFormat:@"%@ (version: %.2f):", name, v5];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(PGConfiguration *)self propertyKeys];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  propertyKeys = [(PGConfiguration *)self propertyKeys];
+  v8 = [propertyKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -148,7 +148,7 @@ LABEL_11:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(propertyKeys);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
@@ -156,7 +156,7 @@ LABEL_11:
         [v6 appendFormat:@"\n\t%@: %@", v12, v13];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [propertyKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -167,16 +167,16 @@ LABEL_11:
   return v6;
 }
 
-- (void)_configureWithSource:(id)a3 propertyKeys:(id)a4
+- (void)_configureWithSource:(id)source propertyKeys:(id)keys
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  keysCopy = keys;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [keysCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -187,18 +187,18 @@ LABEL_11:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keysCopy);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v6 objectForKey:v12];
+        v13 = [sourceCopy objectForKey:v12];
         if (v13)
         {
           [(PGConfiguration *)self setValue:v13 forKey:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [keysCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -207,25 +207,25 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)propertyNamesForProperties:(objc_property *)a3 propertyCount:(unsigned int)a4
+- (id)propertyNamesForProperties:(objc_property *)properties propertyCount:(unsigned int)count
 {
-  v6 = [MEMORY[0x277CBEB18] array];
-  if (a4)
+  array = [MEMORY[0x277CBEB18] array];
+  if (count)
   {
-    v7 = a4;
+    countCopy = count;
     do
     {
-      v8 = *a3++;
+      v8 = *properties++;
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:property_getName(v8)];
-      [v6 addObject:v9];
+      [array addObject:v9];
 
-      --v7;
+      --countCopy;
     }
 
-    while (v7);
+    while (countCopy);
   }
 
-  return v6;
+  return array;
 }
 
 - (id)propertyKeys
@@ -245,23 +245,23 @@ LABEL_11:
   return v3;
 }
 
-- (PGConfiguration)initWithSources:(id)a3 version:(double)a4
+- (PGConfiguration)initWithSources:(id)sources version:(double)version
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sourcesCopy = sources;
   v21.receiver = self;
   v21.super_class = PGConfiguration;
   v7 = [(PGConfiguration *)&v21 init];
   v8 = v7;
   if (v7)
   {
-    v7->_version = a4;
-    v9 = [(PGConfiguration *)v7 propertyKeys];
+    v7->_version = version;
+    propertyKeys = [(PGConfiguration *)v7 propertyKeys];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = v6;
+    v10 = sourcesCopy;
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v11)
     {
@@ -277,7 +277,7 @@ LABEL_11:
             objc_enumerationMutation(v10);
           }
 
-          [(PGConfiguration *)v8 _configureWithSource:*(*(&v17 + 1) + 8 * v14++) propertyKeys:v9, v17];
+          [(PGConfiguration *)v8 _configureWithSource:*(*(&v17 + 1) + 8 * v14++) propertyKeys:propertyKeys, v17];
         }
 
         while (v12 != v14);
@@ -295,8 +295,8 @@ LABEL_11:
 + (id)_persistedConfigurationPath
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 name];
-  v4 = [v2 stringWithFormat:@"%@/%@", @"/var/mobile/Media/PhotoData/Configuration", v3];
+  name = [self name];
+  v4 = [v2 stringWithFormat:@"%@/%@", @"/var/mobile/Media/PhotoData/Configuration", name];
 
   return v4;
 }
@@ -304,17 +304,17 @@ LABEL_11:
 + (id)persistedConfiguration
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v2 = [objc_opt_class() _persistedConfigurationPath];
-  v3 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfFile:v2];
+  _persistedConfigurationPath = [objc_opt_class() _persistedConfigurationPath];
+  v3 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfFile:_persistedConfigurationPath];
   if (v3)
   {
-    v4 = [[PGDictionaryConfigurationSource alloc] initWithDictionary:v3];
+    loggingConnection = [[PGDictionaryConfigurationSource alloc] initWithDictionary:v3];
     v5 = [v3 objectForKeyedSubscript:@"version"];
     [v5 doubleValue];
     v7 = v6;
 
     v8 = [PGConfiguration alloc];
-    v16[0] = v4;
+    v16[0] = loggingConnection;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
     v10 = [(PGConfiguration *)v8 initWithSources:v9 version:v7];
   }
@@ -322,13 +322,13 @@ LABEL_11:
   else
   {
     v11 = +[PGLogging sharedLogging];
-    v4 = [v11 loggingConnection];
+    loggingConnection = [v11 loggingConnection];
 
-    if (os_log_type_enabled(&v4->super, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(&loggingConnection->super, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v2;
-      _os_log_error_impl(&dword_22F0FC000, &v4->super, OS_LOG_TYPE_ERROR, "[PGConfiguration] No persisted configuration found at path %@", &v14, 0xCu);
+      v15 = _persistedConfigurationPath;
+      _os_log_error_impl(&dword_22F0FC000, &loggingConnection->super, OS_LOG_TYPE_ERROR, "[PGConfiguration] No persisted configuration found at path %@", &v14, 0xCu);
     }
 
     v10 = 0;

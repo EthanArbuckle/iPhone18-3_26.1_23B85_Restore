@@ -1,21 +1,21 @@
 @interface AEAnnotationTheme
-+ (double)highlightOpacityForPageTheme:(int64_t)a3;
-+ (id)blueTheme:(int64_t)a3;
-+ (id)colorForAnnotationStyle:(int)a3 propertyName:(id)a4 pageTheme:(int64_t)a5;
-+ (id)colorForThemeItem:(id)a3 pageTheme:(int64_t)a4;
-+ (id)greenTheme:(int64_t)a3;
-+ (id)highlightTextColor:(int64_t)a3;
-+ (id)objectForAnnotationStyle:(int)a3 propertyName:(id)a4 pageTheme:(int64_t)a5;
-+ (id)objectForThemeItem:(id)a3 pageTheme:(int64_t)a4;
-+ (id)pinkTheme:(int64_t)a3;
-+ (id)purpleTheme:(int64_t)a3;
-+ (id)theme:(int64_t)a3;
++ (double)highlightOpacityForPageTheme:(int64_t)theme;
++ (id)blueTheme:(int64_t)theme;
++ (id)colorForAnnotationStyle:(int)style propertyName:(id)name pageTheme:(int64_t)theme;
++ (id)colorForThemeItem:(id)item pageTheme:(int64_t)theme;
++ (id)greenTheme:(int64_t)theme;
++ (id)highlightTextColor:(int64_t)color;
++ (id)objectForAnnotationStyle:(int)style propertyName:(id)name pageTheme:(int64_t)theme;
++ (id)objectForThemeItem:(id)item pageTheme:(int64_t)theme;
++ (id)pinkTheme:(int64_t)theme;
++ (id)purpleTheme:(int64_t)theme;
++ (id)theme:(int64_t)theme;
 + (id)themeDescriptions;
-+ (id)themeForAnnotationStyle:(int)a3 pageTheme:(int64_t)a4;
-+ (id)themeForAnnotationStyle:(int)a3 pageTheme:(int64_t)a4 isUnderline:(BOOL)a5;
-+ (id)themeItemForAnnotationStyle:(int)a3 propertyName:(id)a4;
-+ (id)underlineTheme:(int64_t)a3;
-+ (id)yellowTheme:(int64_t)a3;
++ (id)themeForAnnotationStyle:(int)style pageTheme:(int64_t)theme;
++ (id)themeForAnnotationStyle:(int)style pageTheme:(int64_t)theme isUnderline:(BOOL)underline;
++ (id)themeItemForAnnotationStyle:(int)style propertyName:(id)name;
++ (id)underlineTheme:(int64_t)theme;
++ (id)yellowTheme:(int64_t)theme;
 - (CGSize)noteShadowOffset;
 - (UIColor)highlightColor;
 - (UIColor)noteBorderColor;
@@ -47,38 +47,38 @@
   return v3;
 }
 
-+ (id)themeItemForAnnotationStyle:(int)a3 propertyName:(id)a4
++ (id)themeItemForAnnotationStyle:(int)style propertyName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v7 = 0;
-  if (v6 && a3 <= 6)
+  if (nameCopy && style <= 6)
   {
-    v8 = off_2CD440[a3];
-    v9 = [a1 themeDescriptions];
-    v10 = [v9 objectForKey:@"themes"];
+    v8 = off_2CD440[style];
+    themeDescriptions = [self themeDescriptions];
+    v10 = [themeDescriptions objectForKey:@"themes"];
 
     v11 = [v10 objectForKey:v8];
-    v7 = [v11 objectForKey:v6];
+    v7 = [v11 objectForKey:nameCopy];
   }
 
   return v7;
 }
 
-+ (id)objectForThemeItem:(id)a3 pageTheme:(int64_t)a4
++ (id)objectForThemeItem:(id)item pageTheme:(int64_t)theme
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 > 0x10)
+  itemCopy = item;
+  v6 = itemCopy;
+  if (theme > 0x10)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v5 objectForKey:off_2CD478[a4]];
+    v7 = [itemCopy objectForKey:off_2CD478[theme]];
   }
 
-  if (a4 != 4 && !v7)
+  if (theme != 4 && !v7)
   {
     v7 = [v6 objectForKey:@"default"];
   }
@@ -86,9 +86,9 @@
   return v7;
 }
 
-+ (id)colorForThemeItem:(id)a3 pageTheme:(int64_t)a4
++ (id)colorForThemeItem:(id)item pageTheme:(int64_t)theme
 {
-  v4 = [a1 objectForThemeItem:a3 pageTheme:a4];
+  v4 = [self objectForThemeItem:item pageTheme:theme];
   if (v4)
   {
     v5 = [UIColor bc_colorWithSRGBDescription:v4];
@@ -102,12 +102,12 @@
   return v5;
 }
 
-+ (id)objectForAnnotationStyle:(int)a3 propertyName:(id)a4 pageTheme:(int64_t)a5
++ (id)objectForAnnotationStyle:(int)style propertyName:(id)name pageTheme:(int64_t)theme
 {
-  v7 = [a1 themeItemForAnnotationStyle:*&a3 propertyName:a4];
+  v7 = [self themeItemForAnnotationStyle:*&style propertyName:name];
   if (v7)
   {
-    v8 = [a1 objectForThemeItem:v7 pageTheme:a5];
+    v8 = [self objectForThemeItem:v7 pageTheme:theme];
   }
 
   else
@@ -118,9 +118,9 @@
   return v8;
 }
 
-+ (id)colorForAnnotationStyle:(int)a3 propertyName:(id)a4 pageTheme:(int64_t)a5
++ (id)colorForAnnotationStyle:(int)style propertyName:(id)name pageTheme:(int64_t)theme
 {
-  v5 = [a1 objectForAnnotationStyle:*&a3 propertyName:a4 pageTheme:a5];
+  v5 = [self objectForAnnotationStyle:*&style propertyName:name pageTheme:theme];
   if (v5)
   {
     v6 = [UIColor bc_colorWithSRGBDescription:v5];
@@ -207,11 +207,11 @@
   return v3;
 }
 
-+ (id)greenTheme:(int64_t)a3
++ (id)greenTheme:(int64_t)theme
 {
   v25 = v3;
   v26 = v4;
-  switch(a3)
+  switch(theme)
   {
     case 0:
       v24[0] = _NSConcreteStackBlock;
@@ -446,11 +446,11 @@ LABEL_56:
   return v6;
 }
 
-+ (id)blueTheme:(int64_t)a3
++ (id)blueTheme:(int64_t)theme
 {
   v25 = v3;
   v26 = v4;
-  switch(a3)
+  switch(theme)
   {
     case 0:
       v24[0] = _NSConcreteStackBlock;
@@ -685,11 +685,11 @@ LABEL_56:
   return v6;
 }
 
-+ (id)yellowTheme:(int64_t)a3
++ (id)yellowTheme:(int64_t)theme
 {
   v25 = v3;
   v26 = v4;
-  switch(a3)
+  switch(theme)
   {
     case 0:
       v24[0] = _NSConcreteStackBlock;
@@ -924,11 +924,11 @@ LABEL_56:
   return v6;
 }
 
-+ (id)pinkTheme:(int64_t)a3
++ (id)pinkTheme:(int64_t)theme
 {
   v25 = v3;
   v26 = v4;
-  switch(a3)
+  switch(theme)
   {
     case 0:
       v24[0] = _NSConcreteStackBlock;
@@ -1163,11 +1163,11 @@ LABEL_56:
   return v6;
 }
 
-+ (id)purpleTheme:(int64_t)a3
++ (id)purpleTheme:(int64_t)theme
 {
   v25 = v3;
   v26 = v4;
-  switch(a3)
+  switch(theme)
   {
     case 0:
       v24[0] = _NSConcreteStackBlock;
@@ -1402,11 +1402,11 @@ LABEL_56:
   return v6;
 }
 
-+ (id)underlineTheme:(int64_t)a3
++ (id)underlineTheme:(int64_t)theme
 {
   v25 = v3;
   v26 = v4;
-  switch(a3)
+  switch(theme)
   {
     case 0:
       v24[0] = _NSConcreteStackBlock;
@@ -1641,42 +1641,42 @@ LABEL_56:
   return v6;
 }
 
-+ (id)theme:(int64_t)a3
++ (id)theme:(int64_t)theme
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setPageTheme:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setPageTheme:theme];
 
   return v4;
 }
 
-+ (id)themeForAnnotationStyle:(int)a3 pageTheme:(int64_t)a4
++ (id)themeForAnnotationStyle:(int)style pageTheme:(int64_t)theme
 {
   v4 = 0;
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
-      v4 = [AEAnnotationTheme greenTheme:a4];
+      v4 = [AEAnnotationTheme greenTheme:theme];
     }
 
-    else if (a3 == 2)
+    else if (style == 2)
     {
-      v4 = [AEAnnotationTheme blueTheme:a4];
+      v4 = [AEAnnotationTheme blueTheme:theme];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(style)
     {
       case 3:
-        v4 = [AEAnnotationTheme yellowTheme:a4];
+        v4 = [AEAnnotationTheme yellowTheme:theme];
         break;
       case 4:
-        v4 = [AEAnnotationTheme pinkTheme:a4];
+        v4 = [AEAnnotationTheme pinkTheme:theme];
         break;
       case 5:
-        v4 = [AEAnnotationTheme purpleTheme:a4];
+        v4 = [AEAnnotationTheme purpleTheme:theme];
         break;
     }
   }
@@ -1684,18 +1684,18 @@ LABEL_56:
   return v4;
 }
 
-+ (id)themeForAnnotationStyle:(int)a3 pageTheme:(int64_t)a4 isUnderline:(BOOL)a5
++ (id)themeForAnnotationStyle:(int)style pageTheme:(int64_t)theme isUnderline:(BOOL)underline
 {
-  v7 = [a1 themeForAnnotationStyle:*&a3 pageTheme:?];
+  v7 = [self themeForAnnotationStyle:*&style pageTheme:?];
   v8 = v7;
-  if (v7 || !a5)
+  if (v7 || !underline)
   {
     v9 = v7;
   }
 
   else
   {
-    v9 = [AEAnnotationTheme underlineTheme:a4];
+    v9 = [AEAnnotationTheme underlineTheme:theme];
   }
 
   v10 = v9;
@@ -1703,29 +1703,29 @@ LABEL_56:
   return v10;
 }
 
-+ (double)highlightOpacityForPageTheme:(int64_t)a3
++ (double)highlightOpacityForPageTheme:(int64_t)theme
 {
   result = 1.0;
-  if (a3 <= 0x10)
+  if (theme <= 0x10)
   {
-    return dbl_2A3FA0[a3];
+    return dbl_2A3FA0[theme];
   }
 
   return result;
 }
 
-+ (id)highlightTextColor:(int64_t)a3
++ (id)highlightTextColor:(int64_t)color
 {
   v25 = v3;
   v26 = v4;
-  switch(a3)
+  switch(color)
   {
     case 0:
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_115B98;
       v23[3] = &unk_2CD360;
-      v23[4] = a1;
+      v23[4] = self;
       v23[5] = 0;
       if (qword_345CC8 != -1)
       {
@@ -1739,7 +1739,7 @@ LABEL_56:
       v22[1] = 3221225472;
       v22[2] = sub_115C4C;
       v22[3] = &unk_2CD360;
-      v22[4] = a1;
+      v22[4] = self;
       v22[5] = 1;
       if (qword_345CD8 != -1)
       {
@@ -1753,7 +1753,7 @@ LABEL_56:
       v21[1] = 3221225472;
       v21[2] = sub_115D00;
       v21[3] = &unk_2CD360;
-      v21[4] = a1;
+      v21[4] = self;
       v21[5] = 2;
       if (qword_345CE8 != -1)
       {
@@ -1767,7 +1767,7 @@ LABEL_56:
       v20[1] = 3221225472;
       v20[2] = sub_115DB4;
       v20[3] = &unk_2CD360;
-      v20[4] = a1;
+      v20[4] = self;
       v20[5] = 3;
       if (qword_345CF8 != -1)
       {
@@ -1781,7 +1781,7 @@ LABEL_56:
       v24[1] = 3221225472;
       v24[2] = sub_115AE4;
       v24[3] = &unk_2CD360;
-      v24[4] = a1;
+      v24[4] = self;
       v24[5] = 4;
       if (qword_345CB8 != -1)
       {
@@ -1795,7 +1795,7 @@ LABEL_56:
       v19[1] = 3221225472;
       v19[2] = sub_115E68;
       v19[3] = &unk_2CD360;
-      v19[4] = a1;
+      v19[4] = self;
       v19[5] = 5;
       if (qword_345D08 != -1)
       {
@@ -1809,7 +1809,7 @@ LABEL_56:
       v18[1] = 3221225472;
       v18[2] = sub_115F1C;
       v18[3] = &unk_2CD360;
-      v18[4] = a1;
+      v18[4] = self;
       v18[5] = 6;
       if (qword_345D18 != -1)
       {
@@ -1823,7 +1823,7 @@ LABEL_56:
       v17[1] = 3221225472;
       v17[2] = sub_115FD0;
       v17[3] = &unk_2CD360;
-      v17[4] = a1;
+      v17[4] = self;
       v17[5] = 7;
       if (qword_345D28 != -1)
       {
@@ -1837,7 +1837,7 @@ LABEL_56:
       v16[1] = 3221225472;
       v16[2] = sub_116084;
       v16[3] = &unk_2CD360;
-      v16[4] = a1;
+      v16[4] = self;
       v16[5] = 8;
       if (qword_345D38 != -1)
       {
@@ -1851,7 +1851,7 @@ LABEL_56:
       v15[1] = 3221225472;
       v15[2] = sub_116138;
       v15[3] = &unk_2CD360;
-      v15[4] = a1;
+      v15[4] = self;
       v15[5] = 9;
       if (qword_345D48 != -1)
       {
@@ -1865,7 +1865,7 @@ LABEL_56:
       v14[1] = 3221225472;
       v14[2] = sub_1161EC;
       v14[3] = &unk_2CD360;
-      v14[4] = a1;
+      v14[4] = self;
       v14[5] = 10;
       if (qword_345D58 != -1)
       {
@@ -1879,7 +1879,7 @@ LABEL_56:
       v13[1] = 3221225472;
       v13[2] = sub_1162A0;
       v13[3] = &unk_2CD360;
-      v13[4] = a1;
+      v13[4] = self;
       v13[5] = 11;
       if (qword_345D68 != -1)
       {
@@ -1893,7 +1893,7 @@ LABEL_56:
       v12[1] = 3221225472;
       v12[2] = sub_116354;
       v12[3] = &unk_2CD360;
-      v12[4] = a1;
+      v12[4] = self;
       v12[5] = 12;
       if (qword_345D78 != -1)
       {
@@ -1907,7 +1907,7 @@ LABEL_56:
       v11[1] = 3221225472;
       v11[2] = sub_116408;
       v11[3] = &unk_2CD360;
-      v11[4] = a1;
+      v11[4] = self;
       v11[5] = 13;
       if (qword_345D88 != -1)
       {
@@ -1921,7 +1921,7 @@ LABEL_56:
       block[1] = 3221225472;
       block[2] = sub_1164BC;
       block[3] = &unk_2CD360;
-      block[4] = a1;
+      block[4] = self;
       block[5] = 14;
       if (qword_345D98 != -1)
       {
@@ -1935,7 +1935,7 @@ LABEL_56:
       v9[1] = 3221225472;
       v9[2] = sub_116570;
       v9[3] = &unk_2CD360;
-      v9[4] = a1;
+      v9[4] = self;
       v9[5] = 15;
       if (qword_345DA8 != -1)
       {
@@ -1949,7 +1949,7 @@ LABEL_56:
       v8[1] = 3221225472;
       v8[2] = sub_116624;
       v8[3] = &unk_2CD360;
-      v8[4] = a1;
+      v8[4] = self;
       v8[5] = 16;
       if (qword_345DB8 != -1)
       {

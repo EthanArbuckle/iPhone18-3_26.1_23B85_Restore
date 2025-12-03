@@ -1,27 +1,27 @@
 @interface AVAudioInterruptionNotification
-- (AVAudioInterruptionNotification)initWithInternal:(id)a3;
+- (AVAudioInterruptionNotification)initWithInternal:(id)internal;
 @end
 
 @implementation AVAudioInterruptionNotification
 
-- (AVAudioInterruptionNotification)initWithInternal:(id)a3
+- (AVAudioInterruptionNotification)initWithInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   v11.receiver = self;
   v11.super_class = AVAudioInterruptionNotification;
   v5 = [(AVAudioInterruptionNotification *)&v11 init];
   if (v5)
   {
-    v5->_interruptionState = [v4 interruptionState];
-    v5->_sessionOwnerPID = [v4 sessionOwnerPID];
-    v5->_sourceSessionID = [v4 sourceSessionID];
-    v6 = [v4 nodeSessionID];
+    v5->_interruptionState = [internalCopy interruptionState];
+    v5->_sessionOwnerPID = [internalCopy sessionOwnerPID];
+    v5->_sourceSessionID = [internalCopy sourceSessionID];
+    nodeSessionID = [internalCopy nodeSessionID];
     nodeSessionID = v5->_nodeSessionID;
-    v5->_nodeSessionID = v6;
+    v5->_nodeSessionID = nodeSessionID;
 
-    v8 = [v4 interruptionInfo];
+    interruptionInfo = [internalCopy interruptionInfo];
     interruptionInfo = v5->_interruptionInfo;
-    v5->_interruptionInfo = v8;
+    v5->_interruptionInfo = interruptionInfo;
   }
 
   return v5;

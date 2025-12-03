@@ -1,15 +1,15 @@
 @interface NSPPrivacyProxyTokenAttester
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAuthType:(id)a3;
+- (int)StringAsAuthType:(id)type;
 - (int)authType;
 - (unint64_t)hash;
-- (void)addAssociatedIssuers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAssociatedIssuers:(id)issuers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyTokenAttester
@@ -27,30 +27,30 @@
   }
 }
 
-- (int)StringAsAuthType:(id)a3
+- (int)StringAsAuthType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BAA"])
+  else if ([typeCopy isEqualToString:@"BAA"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ANISETTE"])
+  else if ([typeCopy isEqualToString:@"ANISETTE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BAA_ANISETTE"])
+  else if ([typeCopy isEqualToString:@"BAA_ANISETTE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"TOKEN"])
+  else if ([typeCopy isEqualToString:@"TOKEN"])
   {
     v4 = 4;
   }
@@ -63,22 +63,22 @@
   return v4;
 }
 
-- (void)addAssociatedIssuers:(id)a3
+- (void)addAssociatedIssuers:(id)issuers
 {
-  v4 = a3;
+  issuersCopy = issuers;
   associatedIssuers = self->_associatedIssuers;
-  v8 = v4;
+  v8 = issuersCopy;
   if (!associatedIssuers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_associatedIssuers;
     self->_associatedIssuers = v6;
 
-    v4 = v8;
+    issuersCopy = v8;
     associatedIssuers = self->_associatedIssuers;
   }
 
-  [(NSMutableArray *)associatedIssuers addObject:v4];
+  [(NSMutableArray *)associatedIssuers addObject:issuersCopy];
 }
 
 - (id)description
@@ -87,8 +87,8 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyTokenAttester;
   v4 = [(NSPPrivacyProxyTokenAttester *)&v8 description];
-  v5 = [(NSPPrivacyProxyTokenAttester *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyTokenAttester *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -96,7 +96,7 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     authType = self->_authType;
@@ -110,13 +110,13 @@
       v5 = off_1E7A31060[authType];
     }
 
-    [v3 setObject:v5 forKey:@"authType"];
+    [dictionary setObject:v5 forKey:@"authType"];
   }
 
   attesterURL = self->_attesterURL;
   if (attesterURL)
   {
-    [v3 setObject:attesterURL forKey:@"attesterURL"];
+    [dictionary setObject:attesterURL forKey:@"attesterURL"];
   }
 
   if ([(NSMutableArray *)self->_associatedIssuers count])
@@ -141,8 +141,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -151,18 +151,18 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"associatedIssuers"];
+    [dictionary setObject:v7 forKey:@"associatedIssuers"];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     authType = self->_authType;
@@ -210,24 +210,24 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_authType;
-    *(v4 + 28) |= 1u;
+    toCopy[6] = self->_authType;
+    *(toCopy + 28) |= 1u;
   }
 
-  v9 = v4;
-  [v4 setAttesterURL:self->_attesterURL];
+  v9 = toCopy;
+  [toCopy setAttesterURL:self->_attesterURL];
   if ([(NSPPrivacyProxyTokenAttester *)self associatedIssuersCount])
   {
     [v9 clearAssociatedIssuers];
-    v5 = [(NSPPrivacyProxyTokenAttester *)self associatedIssuersCount];
-    if (v5)
+    associatedIssuersCount = [(NSPPrivacyProxyTokenAttester *)self associatedIssuersCount];
+    if (associatedIssuersCount)
     {
-      v6 = v5;
+      v6 = associatedIssuersCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NSPPrivacyProxyTokenAttester *)self associatedIssuersAtIndex:i];
@@ -237,10 +237,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -248,7 +248,7 @@
     *(v5 + 28) |= 1u;
   }
 
-  v7 = [(NSString *)self->_attesterURL copyWithZone:a3];
+  v7 = [(NSString *)self->_attesterURL copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
@@ -271,7 +271,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{a3, v17}];
+        v14 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{zone, v17}];
         [v6 addAssociatedIssuers:v14];
       }
 
@@ -285,24 +285,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_authType != *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_authType != *(equalCopy + 6))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_11:
     v8 = 0;
@@ -310,13 +310,13 @@ LABEL_11:
   }
 
   attesterURL = self->_attesterURL;
-  if (attesterURL | *(v4 + 2) && ![(NSString *)attesterURL isEqual:?])
+  if (attesterURL | *(equalCopy + 2) && ![(NSString *)attesterURL isEqual:?])
   {
     goto LABEL_11;
   }
 
   associatedIssuers = self->_associatedIssuers;
-  if (associatedIssuers | *(v4 + 1))
+  if (associatedIssuers | *(equalCopy + 1))
   {
     v8 = [(NSMutableArray *)associatedIssuers isEqual:?];
   }
@@ -347,18 +347,18 @@ LABEL_12:
   return v4 ^ [(NSMutableArray *)self->_associatedIssuers hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 28))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 28))
   {
-    self->_authType = *(v4 + 6);
+    self->_authType = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NSPPrivacyProxyTokenAttester *)self setAttesterURL:?];
   }

@@ -1,27 +1,27 @@
 @interface AMSMescal
 + (AMSBagKeySet)bagKeySet;
-+ (BOOL)_matchSignSapURL:(id)a3 bagDictionary:(id)a4;
-+ (BOOL)primeTheConnectionWithBag:(id)a3 error:(id *)a4;
-+ (BOOL)primeTheConnectionWithContract:(id)a3 error:(id *)a4;
-+ (BOOL)primeTheConnectionWithContract:(id)a3 logKey:(id)a4 error:(id *)a5;
-+ (BOOL)verifyTask:(id)a3 data:(id)a4 type:(int64_t)a5 bag:(id)a6 error:(id *)a7;
-+ (BOOL)verifyTask:(id)a3 data:(id)a4 type:(int64_t)a5 bagContract:(id)a6 error:(id *)a7;
-+ (BOOL)verifyTask:(id)a3 data:(id)a4 type:(int64_t)a5 bagContract:(id)a6 logKey:(id)a7 error:(id *)a8;
++ (BOOL)_matchSignSapURL:(id)l bagDictionary:(id)dictionary;
++ (BOOL)primeTheConnectionWithBag:(id)bag error:(id *)error;
++ (BOOL)primeTheConnectionWithContract:(id)contract error:(id *)error;
++ (BOOL)primeTheConnectionWithContract:(id)contract logKey:(id)key error:(id *)error;
++ (BOOL)verifyTask:(id)task data:(id)data type:(int64_t)type bag:(id)bag error:(id *)error;
++ (BOOL)verifyTask:(id)task data:(id)data type:(int64_t)type bagContract:(id)contract error:(id *)error;
++ (BOOL)verifyTask:(id)task data:(id)data type:(int64_t)type bagContract:(id)contract logKey:(id)key error:(id *)error;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
-+ (id)_DAAPActionsForURLBagActions:(id)a3;
-+ (id)_matchSignedActions:(id)a3 withURL:(id)a4;
-+ (id)_signedActionDataFromRequest:(id)a3 policy:(id)a4;
++ (id)_DAAPActionsForURLBagActions:(id)actions;
++ (id)_matchSignedActions:(id)actions withURL:(id)l;
++ (id)_signedActionDataFromRequest:(id)request policy:(id)policy;
 + (id)createBagForSubProfile;
-+ (id)signatureFromData:(id)a3 type:(int64_t)a4 bag:(id)a5 error:(id *)a6;
-+ (id)signatureFromData:(id)a3 type:(int64_t)a4 bagContract:(id)a5 error:(id *)a6;
-+ (id)signatureFromData:(id)a3 type:(int64_t)a4 bagContract:(id)a5 logKey:(id)a6 error:(id *)a7;
-+ (id)signaturePromiseFromData:(id)a3 type:(int64_t)a4 bag:(id)a5;
-+ (id)signaturePromiseFromRequest:(id)a3 type:(int64_t)a4 bag:(id)a5;
-+ (id)signatureUsingRequest:(id)a3 type:(int64_t)a4 bag:(id)a5 error:(id *)a6;
-+ (id)signatureUsingRequest:(id)a3 type:(int64_t)a4 bagContract:(id)a5 error:(id *)a6;
-+ (id)signatureUsingRequest:(id)a3 type:(int64_t)a4 bagContract:(id)a5 logKey:(id)a6 error:(id *)a7;
-+ (id)verificationPromiseForTask:(id)a3 data:(id)a4 type:(int64_t)a5 bag:(id)a6;
++ (id)signatureFromData:(id)data type:(int64_t)type bag:(id)bag error:(id *)error;
++ (id)signatureFromData:(id)data type:(int64_t)type bagContract:(id)contract error:(id *)error;
++ (id)signatureFromData:(id)data type:(int64_t)type bagContract:(id)contract logKey:(id)key error:(id *)error;
++ (id)signaturePromiseFromData:(id)data type:(int64_t)type bag:(id)bag;
++ (id)signaturePromiseFromRequest:(id)request type:(int64_t)type bag:(id)bag;
++ (id)signatureUsingRequest:(id)request type:(int64_t)type bag:(id)bag error:(id *)error;
++ (id)signatureUsingRequest:(id)request type:(int64_t)type bagContract:(id)contract error:(id *)error;
++ (id)signatureUsingRequest:(id)request type:(int64_t)type bagContract:(id)contract logKey:(id)key error:(id *)error;
++ (id)verificationPromiseForTask:(id)task data:(id)data type:(int64_t)type bag:(id)bag;
 @end
 
 @implementation AMSMescal
@@ -33,13 +33,13 @@
   return v2;
 }
 
-+ (id)signaturePromiseFromData:(id)a3 type:(int64_t)a4 bag:(id)a5
++ (id)signaturePromiseFromData:(id)data type:(int64_t)type bag:(id)bag
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [AMSMescalSession sessionWithType:a4];
+  dataCopy = data;
+  bagCopy = bag;
+  v10 = [AMSMescalSession sessionWithType:type];
   v16 = v10;
-  if (!v8)
+  if (!dataCopy)
   {
     v18 = @"Data not provided";
 LABEL_7:
@@ -49,7 +49,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!bagCopy)
   {
     v18 = @"Bag not provided";
     goto LABEL_7;
@@ -57,18 +57,18 @@ LABEL_7:
 
   if (v10)
   {
-    v17 = [v10 signData:v8 bag:v9];
+    v17 = [v10 signData:dataCopy bag:bagCopy];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __47__AMSMescal_signaturePromiseFromData_type_bag___block_invoke;
     v22[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-    v22[4] = a1;
+    v22[4] = self;
     [v17 addErrorBlock:v22];
   }
 
   else
   {
-    v21 = AMSErrorWithFormat(2, @"Mescal Signature Failed", @"Failed to locate session for type: %d", v11, v12, v13, v14, v15, a4);
+    v21 = AMSErrorWithFormat(2, @"Mescal Signature Failed", @"Failed to locate session for type: %d", v11, v12, v13, v14, v15, type);
     v17 = [AMSPromise promiseWithError:v21];
   }
 
@@ -119,29 +119,29 @@ void __47__AMSMescal_signaturePromiseFromData_type_bag___block_invoke(uint64_t a
   }
 }
 
-+ (id)signaturePromiseFromRequest:(id)a3 type:(int64_t)a4 bag:(id)a5
++ (id)signaturePromiseFromRequest:(id)request type:(int64_t)type bag:(id)bag
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4)
+  requestCopy = request;
+  bagCopy = bag;
+  v10 = bagCopy;
+  if (type)
   {
-    if (v9)
+    if (bagCopy)
     {
-      v11 = [v8 HTTPMethod];
-      v12 = [v11 isEqualToString:@"POST"];
+      hTTPMethod = [requestCopy HTTPMethod];
+      v12 = [hTTPMethod isEqualToString:@"POST"];
 
       if (v12)
       {
         v13 = [v10 dictionaryForKey:@"sign-sap-request"];
-        v14 = [v13 valuePromise];
+        valuePromise = [v13 valuePromise];
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
         v30[2] = __50__AMSMescal_signaturePromiseFromRequest_type_bag___block_invoke;
         v30[3] = &unk_1E73B9120;
-        v32 = a1;
-        v31 = v8;
-        v15 = [v14 thenWithBlock:v30];
+        selfCopy = self;
+        v31 = requestCopy;
+        v15 = [valuePromise thenWithBlock:v30];
       }
 
       else
@@ -156,16 +156,16 @@ void __47__AMSMescal_signaturePromiseFromData_type_bag___block_invoke(uint64_t a
       v26[3] = &unk_1E73B9148;
       v19 = v10;
       v27 = v19;
-      v29 = a1;
-      v28 = v8;
+      selfCopy2 = self;
+      v28 = requestCopy;
       v20 = [v15 thenWithBlock:v26];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __50__AMSMescal_signaturePromiseFromRequest_type_bag___block_invoke_4;
       v22[3] = &unk_1E73B9190;
-      v24 = a4;
+      typeCopy = type;
       v23 = v19;
-      v25 = a1;
+      selfCopy3 = self;
       v18 = [v20 thenWithBlock:v22];
 
       goto LABEL_10;
@@ -348,38 +348,38 @@ id __50__AMSMescal_signaturePromiseFromRequest_type_bag___block_invoke_5(uint64_
   return v4;
 }
 
-+ (id)verificationPromiseForTask:(id)a3 data:(id)a4 type:(int64_t)a5 bag:(id)a6
++ (id)verificationPromiseForTask:(id)task data:(id)data type:(int64_t)type bag:(id)bag
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
-  if (v12)
+  taskCopy = task;
+  dataCopy = data;
+  bagCopy = bag;
+  v13 = bagCopy;
+  if (bagCopy)
   {
-    if (a5 <= 1)
+    if (type <= 1)
     {
-      v14 = 1;
+      typeCopy = 1;
     }
 
     else
     {
-      v14 = a5;
+      typeCopy = type;
     }
 
-    v15 = [v12 dictionaryForKey:@"sign-sap-response"];
-    v16 = [v15 valuePromise];
+    v15 = [bagCopy dictionaryForKey:@"sign-sap-response"];
+    valuePromise = [v15 valuePromise];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __54__AMSMescal_verificationPromiseForTask_data_type_bag___block_invoke;
     v27[3] = &unk_1E73B91B8;
-    v31 = a1;
-    v28 = v10;
-    v32 = v14;
-    v29 = v11;
+    selfCopy = self;
+    v28 = taskCopy;
+    v32 = typeCopy;
+    v29 = dataCopy;
     v30 = v13;
-    v17 = [v16 continueWithBlock:v27];
-    v18 = [v17 binaryPromiseAdapter];
+    v17 = [valuePromise continueWithBlock:v27];
+    binaryPromiseAdapter = [v17 binaryPromiseAdapter];
   }
 
   else
@@ -390,8 +390,8 @@ id __50__AMSMescal_signaturePromiseFromRequest_type_bag___block_invoke_5(uint64_
       v19 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v19 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v19 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v21 = AMSLogKey();
       v22 = MEMORY[0x1E696AEC0];
@@ -399,29 +399,29 @@ id __50__AMSMescal_signaturePromiseFromRequest_type_bag___block_invoke_5(uint64_
       v24 = v23;
       if (v21)
       {
-        a1 = AMSLogKey();
-        [v22 stringWithFormat:@"%@: [%@] ", v24, a1];
+        self = AMSLogKey();
+        [v22 stringWithFormat:@"%@: [%@] ", v24, self];
       }
 
       else
       {
         [v22 stringWithFormat:@"%@: ", v23];
       }
-      v25 = ;
+      selfCopy2 = ;
       *buf = 138543362;
-      v34 = v25;
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@Mescal verification will be skipped as bag was not provided.", buf, 0xCu);
+      v34 = selfCopy2;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Mescal verification will be skipped as bag was not provided.", buf, 0xCu);
       if (v21)
       {
 
-        v25 = a1;
+        selfCopy2 = self;
       }
     }
 
-    v18 = +[AMSBinaryPromise promiseWithSuccess];
+    binaryPromiseAdapter = +[AMSBinaryPromise promiseWithSuccess];
   }
 
-  return v18;
+  return binaryPromiseAdapter;
 }
 
 id __54__AMSMescal_verificationPromiseForTask_data_type_bag___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -613,22 +613,22 @@ void __33__AMSMescal_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
-+ (id)_matchSignedActions:(id)a3 withURL:(id)a4
++ (id)_matchSignedActions:(id)actions withURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  actionsCopy = actions;
+  lCopy = l;
+  v7 = lCopy;
+  if (actionsCopy)
   {
-    v8 = [v6 path];
-    v9 = [v8 lastPathComponent];
+    path = [lCopy path];
+    lastPathComponent = [path lastPathComponent];
     v18 = 0;
     v19 = &v18;
     v20 = 0x3032000000;
@@ -639,12 +639,12 @@ void __33__AMSMescal_bagSubProfileVersion__block_invoke()
     v14[1] = 3221225472;
     v14[2] = __41__AMSMescal__matchSignedActions_withURL___block_invoke;
     v14[3] = &unk_1E73B91E0;
-    v10 = v8;
+    v10 = path;
     v15 = v10;
-    v11 = v9;
+    v11 = lastPathComponent;
     v16 = v11;
     v17 = &v18;
-    [v5 enumerateKeysAndObjectsUsingBlock:v14];
+    [actionsCopy enumerateKeysAndObjectsUsingBlock:v14];
     v12 = v19[5];
 
     _Block_object_dispose(&v18, 8);
@@ -675,14 +675,14 @@ void __41__AMSMescal__matchSignedActions_withURL___block_invoke(uint64_t a1, voi
   }
 }
 
-+ (BOOL)_matchSignSapURL:(id)a3 bagDictionary:(id)a4
++ (BOOL)_matchSignSapURL:(id)l bagDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  lCopy = l;
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v8 = [v6 absoluteString];
-    v9 = [v8 lastPathComponent];
+    absoluteString = [lCopy absoluteString];
+    lastPathComponent = [absoluteString lastPathComponent];
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
@@ -691,13 +691,13 @@ void __41__AMSMescal__matchSignedActions_withURL___block_invoke(uint64_t a1, voi
     v14[1] = 3221225472;
     v14[2] = __44__AMSMescal__matchSignSapURL_bagDictionary___block_invoke;
     v14[3] = &unk_1E73B9208;
-    v10 = v8;
+    v10 = absoluteString;
     v15 = v10;
     v17 = &v19;
-    v11 = v9;
+    v11 = lastPathComponent;
     v16 = v11;
-    v18 = a1;
-    [v7 enumerateKeysAndObjectsUsingBlock:v14];
+    selfCopy = self;
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v14];
     v12 = *(v20 + 24);
 
     _Block_object_dispose(&v19, 8);
@@ -801,17 +801,17 @@ LABEL_6:
   return v5;
 }
 
-+ (id)_DAAPActionsForURLBagActions:(id)a3
++ (id)_DAAPActionsForURLBagActions:(id)actions
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
+  actionsCopy = actions;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(actionsCopy, "count")}];
+  uppercaseLetterCharacterSet = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v3;
+  v6 = actionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -827,17 +827,17 @@ LABEL_6:
         }
 
         v11 = [*(*(&v16 + 1) + 8 * i) mutableCopy];
-        v12 = [v11 rangeOfCharacterFromSet:v5 options:0 range:{0, objc_msgSend(v11, "length")}];
+        v12 = [v11 rangeOfCharacterFromSet:uppercaseLetterCharacterSet options:0 range:{0, objc_msgSend(v11, "length")}];
         if (v12 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          for (j = v12; j != 0x7FFFFFFFFFFFFFFFLL; j = [v11 rangeOfCharacterFromSet:v5 options:0 range:{j + 2, objc_msgSend(v11, "length") - (j + 2)}])
+          for (j = v12; j != 0x7FFFFFFFFFFFFFFFLL; j = [v11 rangeOfCharacterFromSet:uppercaseLetterCharacterSet options:0 range:{j + 2, objc_msgSend(v11, "length") - (j + 2)}])
           {
             [v11 insertString:@"-" atIndex:j];
           }
         }
 
-        v14 = [v11 lowercaseString];
-        [v4 addObject:v14];
+        lowercaseString = [v11 lowercaseString];
+        [v4 addObject:lowercaseString];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -849,19 +849,19 @@ LABEL_6:
   return v4;
 }
 
-+ (id)_signedActionDataFromRequest:(id)a3 policy:(id)a4
++ (id)_signedActionDataFromRequest:(id)request policy:(id)policy
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6)
+  requestCopy = request;
+  policyCopy = policy;
+  v7 = policyCopy;
+  if (!policyCopy)
   {
     v35 = 0;
     goto LABEL_44;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"headers"];
+  v8 = [policyCopy objectForKeyedSubscript:@"headers"];
   v9 = v8;
   v38 = v8;
   if (v8 && (v45 = 0u, v46 = 0u, v43 = 0u, v44 = 0u, (v10 = [v8 countByEnumeratingWithState:&v43 objects:v48 count:16]) != 0))
@@ -878,7 +878,7 @@ LABEL_6:
           objc_enumerationMutation(v9);
         }
 
-        v15 = [v5 valueForHTTPHeaderField:*(*(&v43 + 1) + 8 * i)];
+        v15 = [requestCopy valueForHTTPHeaderField:*(*(&v43 + 1) + 8 * i)];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -913,8 +913,8 @@ LABEL_6:
   if (v18)
   {
     v37 = v7;
-    v19 = [v5 URL];
-    v20 = [v19 ams_parameters];
+    v19 = [requestCopy URL];
+    ams_parameters = [v19 ams_parameters];
 
     v41 = 0u;
     v42 = 0u;
@@ -935,7 +935,7 @@ LABEL_6:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [v20 objectForKeyedSubscript:*(*(&v39 + 1) + 8 * j)];
+          v26 = [ams_parameters objectForKeyedSubscript:*(*(&v39 + 1) + 8 * j)];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -963,25 +963,25 @@ LABEL_6:
     v9 = v38;
   }
 
-  v29 = [v7 objectForKeyedSubscript:@"path"];
+  path = [v7 objectForKeyedSubscript:@"path"];
   if (objc_opt_respondsToSelector())
   {
     v30 = [v7 objectForKeyedSubscript:@"path"];
-    v31 = [v30 BOOLValue];
+    bOOLValue = [v30 BOOLValue];
 
-    if (!v31)
+    if (!bOOLValue)
     {
       v9 = v38;
       goto LABEL_43;
     }
 
-    v32 = [v5 URL];
-    v29 = [v32 path];
+    v32 = [requestCopy URL];
+    path = [v32 path];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v33 = [v29 dataUsingEncoding:4];
+      v33 = [path dataUsingEncoding:4];
       if (v33)
       {
         v34 = v33;
@@ -1005,125 +1005,125 @@ LABEL_44:
   return v35;
 }
 
-+ (BOOL)primeTheConnectionWithBag:(id)a3 error:(id *)a4
++ (BOOL)primeTheConnectionWithBag:(id)bag error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = AMSError(12, @"Deprecated API", @"This API has been deprecated.", 0);
+    *error = AMSError(12, @"Deprecated API", @"This API has been deprecated.", 0);
   }
 
   return 0;
 }
 
-+ (BOOL)primeTheConnectionWithContract:(id)a3 error:(id *)a4
++ (BOOL)primeTheConnectionWithContract:(id)contract error:(id *)error
 {
-  v6 = a3;
+  contractCopy = contract;
   v7 = AMSGenerateLogCorrelationKey();
-  LOBYTE(a4) = [a1 primeTheConnectionWithContract:v6 logKey:v7 error:a4];
+  LOBYTE(error) = [self primeTheConnectionWithContract:contractCopy logKey:v7 error:error];
 
-  return a4;
+  return error;
 }
 
-+ (BOOL)primeTheConnectionWithContract:(id)a3 logKey:(id)a4 error:(id *)a5
++ (BOOL)primeTheConnectionWithContract:(id)contract logKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = AMSSetLogKey(a4);
-  v10 = [[AMSContractBagShim alloc] initWithBagContract:v8];
+  contractCopy = contract;
+  v9 = AMSSetLogKey(key);
+  v10 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
-  LOBYTE(a5) = [a1 primeTheConnectionWithBag:v10 error:a5];
-  return a5;
+  LOBYTE(error) = [self primeTheConnectionWithBag:v10 error:error];
+  return error;
 }
 
-+ (id)signatureFromData:(id)a3 type:(int64_t)a4 bagContract:(id)a5 error:(id *)a6
++ (id)signatureFromData:(id)data type:(int64_t)type bagContract:(id)contract error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
+  contractCopy = contract;
+  dataCopy = data;
   v12 = AMSGenerateLogCorrelationKey();
-  v13 = [a1 signatureFromData:v11 type:a4 bagContract:v10 logKey:v12 error:a6];
+  v13 = [self signatureFromData:dataCopy type:type bagContract:contractCopy logKey:v12 error:error];
 
   return v13;
 }
 
-+ (id)signatureFromData:(id)a3 type:(int64_t)a4 bagContract:(id)a5 logKey:(id)a6 error:(id *)a7
++ (id)signatureFromData:(id)data type:(int64_t)type bagContract:(id)contract logKey:(id)key error:(id *)error
 {
-  v12 = a5;
-  v13 = a3;
-  v14 = AMSSetLogKey(a6);
-  v15 = [[AMSContractBagShim alloc] initWithBagContract:v12];
+  contractCopy = contract;
+  dataCopy = data;
+  v14 = AMSSetLogKey(key);
+  v15 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
-  v16 = [a1 signatureFromData:v13 type:a4 bag:v15 error:a7];
+  v16 = [self signatureFromData:dataCopy type:type bag:v15 error:error];
 
   return v16;
 }
 
-+ (id)signatureUsingRequest:(id)a3 type:(int64_t)a4 bagContract:(id)a5 error:(id *)a6
++ (id)signatureUsingRequest:(id)request type:(int64_t)type bagContract:(id)contract error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
+  contractCopy = contract;
+  requestCopy = request;
   v12 = AMSGenerateLogCorrelationKey();
-  v13 = [a1 signatureUsingRequest:v11 type:a4 bagContract:v10 logKey:v12 error:a6];
+  v13 = [self signatureUsingRequest:requestCopy type:type bagContract:contractCopy logKey:v12 error:error];
 
   return v13;
 }
 
-+ (id)signatureUsingRequest:(id)a3 type:(int64_t)a4 bagContract:(id)a5 logKey:(id)a6 error:(id *)a7
++ (id)signatureUsingRequest:(id)request type:(int64_t)type bagContract:(id)contract logKey:(id)key error:(id *)error
 {
-  v12 = a5;
-  v13 = a3;
-  v14 = AMSSetLogKey(a6);
-  v15 = [[AMSContractBagShim alloc] initWithBagContract:v12];
+  contractCopy = contract;
+  requestCopy = request;
+  v14 = AMSSetLogKey(key);
+  v15 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
-  v16 = [a1 signatureUsingRequest:v13 type:a4 bag:v15 error:a7];
+  v16 = [self signatureUsingRequest:requestCopy type:type bag:v15 error:error];
 
   return v16;
 }
 
-+ (BOOL)verifyTask:(id)a3 data:(id)a4 type:(int64_t)a5 bagContract:(id)a6 error:(id *)a7
++ (BOOL)verifyTask:(id)task data:(id)data type:(int64_t)type bagContract:(id)contract error:(id *)error
 {
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
+  contractCopy = contract;
+  dataCopy = data;
+  taskCopy = task;
   v15 = AMSGenerateLogCorrelationKey();
-  LOBYTE(a7) = [a1 verifyTask:v14 data:v13 type:a5 bagContract:v12 logKey:v15 error:a7];
+  LOBYTE(error) = [self verifyTask:taskCopy data:dataCopy type:type bagContract:contractCopy logKey:v15 error:error];
 
-  return a7;
+  return error;
 }
 
-+ (BOOL)verifyTask:(id)a3 data:(id)a4 type:(int64_t)a5 bagContract:(id)a6 logKey:(id)a7 error:(id *)a8
++ (BOOL)verifyTask:(id)task data:(id)data type:(int64_t)type bagContract:(id)contract logKey:(id)key error:(id *)error
 {
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
-  v17 = AMSSetLogKey(a7);
-  v18 = [[AMSContractBagShim alloc] initWithBagContract:v14];
+  contractCopy = contract;
+  dataCopy = data;
+  taskCopy = task;
+  v17 = AMSSetLogKey(key);
+  v18 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
-  LOBYTE(a8) = [a1 verifyTask:v16 data:v15 type:a5 bag:v18 error:a8];
-  return a8;
+  LOBYTE(error) = [self verifyTask:taskCopy data:dataCopy type:type bag:v18 error:error];
+  return error;
 }
 
-+ (id)signatureUsingRequest:(id)a3 type:(int64_t)a4 bag:(id)a5 error:(id *)a6
++ (id)signatureUsingRequest:(id)request type:(int64_t)type bag:(id)bag error:(id *)error
 {
-  v7 = [a1 signaturePromiseFromRequest:a3 type:a4 bag:a5];
-  v8 = [v7 resultWithError:a6];
-  v9 = [v8 value];
+  v7 = [self signaturePromiseFromRequest:request type:type bag:bag];
+  v8 = [v7 resultWithError:error];
+  value = [v8 value];
 
-  return v9;
+  return value;
 }
 
-+ (id)signatureFromData:(id)a3 type:(int64_t)a4 bag:(id)a5 error:(id *)a6
++ (id)signatureFromData:(id)data type:(int64_t)type bag:(id)bag error:(id *)error
 {
-  v7 = [a1 signaturePromiseFromData:a3 type:a4 bag:a5];
-  v8 = [v7 resultWithError:a6];
+  v7 = [self signaturePromiseFromData:data type:type bag:bag];
+  v8 = [v7 resultWithError:error];
 
   return v8;
 }
 
-+ (BOOL)verifyTask:(id)a3 data:(id)a4 type:(int64_t)a5 bag:(id)a6 error:(id *)a7
++ (BOOL)verifyTask:(id)task data:(id)data type:(int64_t)type bag:(id)bag error:(id *)error
 {
-  v8 = [a1 verificationPromiseForTask:a3 data:a4 type:a5 bag:a6];
-  LOBYTE(a7) = [v8 resultWithError:a7];
+  v8 = [self verificationPromiseForTask:task data:data type:type bag:bag];
+  LOBYTE(error) = [v8 resultWithError:error];
 
-  return a7;
+  return error;
 }
 
 @end

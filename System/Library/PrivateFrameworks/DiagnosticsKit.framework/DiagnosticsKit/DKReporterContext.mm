@@ -1,8 +1,8 @@
 @interface DKReporterContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)completeWithReport:(id)a3 completion:(id)a4;
-- (void)startRemoteReportWithComponentIdentity:(id)a3 completion:(id)a4;
+- (void)completeWithReport:(id)report completion:(id)completion;
+- (void)startRemoteReportWithComponentIdentity:(id)identity completion:(id)completion;
 @end
 
 @implementation DKReporterContext
@@ -53,11 +53,11 @@ void __52__DKReporterContext__extensionAuxiliaryHostProtocol__block_invoke()
   [v2 setClasses:v3 forSelector:sel_completeRemoteWithReport_completion_ argumentIndex:0 ofReply:0];
 }
 
-- (void)completeWithReport:(id)a3 completion:(id)a4
+- (void)completeWithReport:(id)report completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  reportCopy = report;
+  completionCopy = completion;
   v8 = DiagnosticsKitLogHandleForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -66,33 +66,33 @@ void __52__DKReporterContext__extensionAuxiliaryHostProtocol__block_invoke()
     _os_log_impl(&dword_248B9D000, v8, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v9 = [(DKReporterContext *)self _auxiliaryConnection];
+  _auxiliaryConnection = [(DKReporterContext *)self _auxiliaryConnection];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __51__DKReporterContext_completeWithReport_completion___block_invoke;
   v14[3] = &unk_278F6BFA8;
   v14[4] = self;
-  v10 = [v9 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:v14];
 
-  v11 = [(DKReporterContext *)self _auxiliaryConnection];
-  [v11 setInterruptionHandler:&__block_literal_global_61_0];
+  _auxiliaryConnection2 = [(DKReporterContext *)self _auxiliaryConnection];
+  [_auxiliaryConnection2 setInterruptionHandler:&__block_literal_global_61_0];
 
-  v12 = [(DKReporterContext *)self _auxiliaryConnection];
-  [v12 setInvalidationHandler:&__block_literal_global_64_0];
+  _auxiliaryConnection3 = [(DKReporterContext *)self _auxiliaryConnection];
+  [_auxiliaryConnection3 setInvalidationHandler:&__block_literal_global_64_0];
 
-  if (!v7)
+  if (!completionCopy)
   {
-    v7 = &__block_literal_global_66;
+    completionCopy = &__block_literal_global_66;
   }
 
   if (v10)
   {
-    [v10 completeRemoteWithReport:v6 completion:v7];
+    [v10 completeRemoteWithReport:reportCopy completion:completionCopy];
   }
 
   else
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -123,11 +123,11 @@ void __51__DKReporterContext_completeWithReport_completion___block_invoke_2()
   [DKAnalytics sendAnalyticsWithEvent:1 error:v0];
 }
 
-- (void)startRemoteReportWithComponentIdentity:(id)a3 completion:(id)a4
+- (void)startRemoteReportWithComponentIdentity:(id)identity completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identityCopy = identity;
   v8 = DiagnosticsKitLogHandleForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -136,22 +136,22 @@ void __51__DKReporterContext_completeWithReport_completion___block_invoke_2()
     _os_log_impl(&dword_248B9D000, v8, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
-  v9 = [(DKReporterContext *)self _principalObject];
-  [v9 setComponentIdentity:v7];
+  _principalObject = [(DKReporterContext *)self _principalObject];
+  [_principalObject setComponentIdentity:identityCopy];
 
   v10 = dispatch_get_global_queue(21, 0);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __71__DKReporterContext_startRemoteReportWithComponentIdentity_completion___block_invoke;
   v13[3] = &unk_278F6C090;
-  v14 = v9;
-  v15 = self;
-  v11 = v9;
+  v14 = _principalObject;
+  selfCopy = self;
+  v11 = _principalObject;
   dispatch_async(v10, v13);
 
   v12 = *MEMORY[0x277D85DE8];

@@ -1,32 +1,32 @@
 @interface FAShowFamilyScreenTimeHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_showFamilyScreenTimeWithCompletion:(id)a3;
+- (void)_showFamilyScreenTimeWithCompletion:(id)completion;
 @end
 
 @implementation FAShowFamilyScreenTimeHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"family:showFamilyScreenTime"];
+  name = [element name];
+  v4 = [name isEqualToString:@"family:showFamilyScreenTime"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEC988]];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277CEC988]];
   v5 = [v4 isEqualToString:@"family:showFamilyScreenTime"];
 
   return v5;
 }
 
-- (void)_showFamilyScreenTimeWithCompletion:(id)a3
+- (void)_showFamilyScreenTimeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = [WeakRetained presentationContextForHook:self];
 
@@ -72,7 +72,7 @@
     }
 
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D080B8] code:-1000 userInfo:0];
-    v4[2](v4, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 }
 

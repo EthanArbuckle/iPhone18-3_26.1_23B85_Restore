@@ -1,11 +1,11 @@
 @interface SFDevice
 - (SFDevice)init;
-- (SFDevice)initWithCoder:(id)a3;
+- (SFDevice)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithBLEDevice:(id)a3;
-- (void)updateWithPairedPeer:(id)a3;
-- (void)updateWithRPIdentity:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithBLEDevice:(id)device;
+- (void)updateWithPairedPeer:(id)peer;
+- (void)updateWithRPIdentity:(id)identity;
 @end
 
 @implementation SFDevice
@@ -89,8 +89,8 @@ LABEL_10:
 
   if ([(SFBLEDevice *)self->_bleDevice rssi:identifier])
   {
-    v14 = [(SFBLEDevice *)self->_bleDevice rssi];
-    v15 = [(SFBLEDevice *)self->_bleDevice rssiEstimate];
+    rssi = [(SFBLEDevice *)self->_bleDevice rssi];
+    rssiEstimate = [(SFBLEDevice *)self->_bleDevice rssiEstimate];
     if ([(SFBLEDevice *)self->_bleDevice insideBubble])
     {
       v16 = 42;
@@ -147,8 +147,8 @@ LABEL_10:
 LABEL_38:
         v82 = v16;
         v83 = v18;
-        name = v14;
-        v80 = v15;
+        name = rssi;
+        v80 = rssiEstimate;
         NSAppendPrintF();
         v19 = v5;
 
@@ -595,9 +595,9 @@ LABEL_70:
   return v2;
 }
 
-- (SFDevice)initWithCoder:(id)a3
+- (SFDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = SFDevice;
   v5 = [(SFDevice *)&v39 init];
@@ -605,7 +605,7 @@ LABEL_70:
   if (v5)
   {
     v5->_deviceType = 1;
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -635,8 +635,8 @@ LABEL_70:
       bleDevice = v5->_bleDevice;
       v5->_bleDevice = v8;
 
-      v10 = [(SFBLEDevice *)v5->_bleDevice advertisementFields];
-      v11 = [v10 objectForKeyedSubscript:@"batteryInfo"];
+      advertisementFields = [(SFBLEDevice *)v5->_bleDevice advertisementFields];
+      v11 = [advertisementFields objectForKeyedSubscript:@"batteryInfo"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -835,275 +835,275 @@ LABEL_70:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   accountAltDSID = self->_accountAltDSID;
-  v24 = v4;
+  v24 = coderCopy;
   if (accountAltDSID)
   {
-    [v4 encodeObject:accountAltDSID forKey:@"altDSID"];
-    v4 = v24;
+    [coderCopy encodeObject:accountAltDSID forKey:@"altDSID"];
+    coderCopy = v24;
   }
 
   accountID = self->_accountID;
   if (accountID)
   {
     [v24 encodeObject:accountID forKey:@"aid"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   audioRoutingScore = self->_audioRoutingScore;
   if (audioRoutingScore)
   {
     [v24 encodeInteger:audioRoutingScore forKey:@"auRS"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_autoUnlockEnabled)
   {
     [v24 encodeBool:1 forKey:@"auE"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_autoUnlockWatch)
   {
     [v24 encodeBool:1 forKey:@"auW"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   bleDevice = self->_bleDevice;
   if (bleDevice)
   {
     [v24 encodeObject:bleDevice forKey:@"bleD"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   contactIdentifier = self->_contactIdentifier;
   if (contactIdentifier)
   {
     [v24 encodeObject:contactIdentifier forKey:@"cnID"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_deviceActionType)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_deviceClassCode)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   deviceFlags = self->_deviceFlags;
   if (deviceFlags)
   {
     [v24 encodeInt64:deviceFlags forKey:@"dFlg"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_deviceModelCode)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   deviceType = self->_deviceType;
   if (deviceType)
   {
     [v24 encodeInteger:deviceType forKey:@"devT"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   distance = self->_distance;
   if (distance)
   {
     [v24 encodeInteger:distance forKey:@"dist"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_duetSync)
   {
     [v24 encodeBool:1 forKey:@"ds"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_enhancedDiscovery)
   {
     [v24 encodeBool:1 forKey:@"enDi"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_hasProblem)
   {
     [v24 encodeBool:1 forKey:@"hp"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   hotspotInfo = self->_hotspotInfo;
   if (hotspotInfo)
   {
     [v24 encodeInt64:hotspotInfo forKey:@"hsi"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
     [v24 encodeObject:identifier forKey:@"ident"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   idsIdentifier = self->_idsIdentifier;
   if (idsIdentifier)
   {
     [v24 encodeObject:idsIdentifier forKey:@"idsID"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_idsIdentifierConflict)
   {
     [v24 encodeBool:1 forKey:@"idsc"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_inDiscoverySession)
   {
     [v24 encodeBool:1 forKey:@"iLagS"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_isBLEDeviceReplaced)
   {
     [v24 encodeBool:1 forKey:@"replace"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   mediaRemoteID = self->_mediaRemoteID;
   if (mediaRemoteID)
   {
     [v24 encodeObject:mediaRemoteID forKey:@"MRI"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   mediaRouteID = self->_mediaRouteID;
   if (mediaRouteID)
   {
     [v24 encodeObject:mediaRouteID forKey:@"MRtI"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   model = self->_model;
   if (model)
   {
     [v24 encodeObject:model forKey:@"model"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   name = self->_name;
   if (name)
   {
     [v24 encodeObject:name forKey:@"name"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_needsAWDL)
   {
     [v24 encodeBool:1 forKey:@"awdl"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_needsKeyboard)
   {
     [v24 encodeBool:1 forKey:@"kb"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_needsSetup)
   {
     [v24 encodeBool:1 forKey:@"setup"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_osVersion)
   {
     [v24 encodeInteger:? forKey:?];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_paired)
   {
     [v24 encodeBool:1 forKey:@"paired"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   problemFlags = self->_problemFlags;
   if (problemFlags)
   {
     [v24 encodeInt64:problemFlags forKey:@"pf"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   rapportIdentifier = self->_rapportIdentifier;
   if (rapportIdentifier)
   {
     [v24 encodeObject:rapportIdentifier forKey:@"rid"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   requestSSID = self->_requestSSID;
   if (requestSSID)
   {
     [v24 encodeObject:requestSSID forKey:@"rSSID"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   systemPairState = self->_systemPairState;
   if (systemPairState)
   {
     [v24 encodeInt64:systemPairState forKey:@"sps"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_testMode)
   {
     [v24 encodeBool:1 forKey:@"tm"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_watchLocked)
   {
     [v24 encodeBool:1 forKey:@"wl"];
-    v4 = v24;
+    coderCopy = v24;
   }
 
   if (self->_wifiP2P)
   {
     [v24 encodeBool:1 forKey:@"wp2p"];
-    v4 = v24;
+    coderCopy = v24;
   }
 }
 
-- (void)updateWithBLEDevice:(id)a3
+- (void)updateWithBLEDevice:(id)device
 {
-  v26 = a3;
-  v5 = [v26 advertisementFields];
-  v6 = [v26 identifier];
-  if (v6)
+  deviceCopy = device;
+  advertisementFields = [deviceCopy advertisementFields];
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    v7 = v6;
+    v7 = identifier;
     self->_autoUnlockEnabled = CFDictionaryGetInt64() != 0;
     self->_autoUnlockWatch = CFDictionaryGetInt64() != 0;
-    v8 = [v5 objectForKeyedSubscript:@"batteryInfo"];
+    v8 = [advertisementFields objectForKeyedSubscript:@"batteryInfo"];
     batteryInfo = self->_batteryInfo;
     self->_batteryInfo = v8;
 
-    v10 = [(SFBLEDevice *)self->_bleDevice decryptedActivityLevel];
-    objc_storeStrong(&self->_bleDevice, a3);
-    [(SFBLEDevice *)self->_bleDevice setDecryptedActivityLevel:v10];
+    decryptedActivityLevel = [(SFBLEDevice *)self->_bleDevice decryptedActivityLevel];
+    objc_storeStrong(&self->_bleDevice, device);
+    [(SFBLEDevice *)self->_bleDevice setDecryptedActivityLevel:decryptedActivityLevel];
     if ([(SFBLEDevice *)self->_bleDevice distance])
     {
       self->_distance = [(SFBLEDevice *)self->_bleDevice distance];
@@ -1138,10 +1138,10 @@ LABEL_70:
       objc_storeStrong(&self->_model, TypedValue);
     }
 
-    v14 = [v26 name];
-    if ([v14 length])
+    name = [deviceCopy name];
+    if ([name length])
     {
-      objc_storeStrong(&self->_name, v14);
+      objc_storeStrong(&self->_name, name);
     }
 
     self->_needsAWDL = CFDictionaryGetInt64() != 0;
@@ -1169,9 +1169,9 @@ LABEL_70:
     self->_deviceFlags = self->_deviceFlags & 0xFFFFDDFF | (((Int64Ranged >> 4) & 1) << 9) & 0xFFFFDFFF | (((Int64Ranged >> 3) & 1) << 13);
     self->_deviceFlags = self->_deviceFlags & 0xFFFFFEFF | ((CFDictionaryGetInt64Ranged() & 1) << 8);
     self->_deviceFlags = self->_deviceFlags & 0xFFFFF7FF | (((CFDictionaryGetInt64Ranged() >> 11) & 1) << 11);
-    v19 = [v26 tempPaired];
+    tempPaired = [deviceCopy tempPaired];
     v20 = 0;
-    if (v19)
+    if (tempPaired)
     {
       v21 = 4096;
     }
@@ -1199,39 +1199,39 @@ LABEL_70:
   }
 }
 
-- (void)updateWithPairedPeer:(id)a3
+- (void)updateWithPairedPeer:(id)peer
 {
-  v4 = a3;
-  v7 = v4;
+  peerCopy = peer;
+  v7 = peerCopy;
   if (self->_name)
   {
-    v5 = 0;
+    name = 0;
   }
 
   else
   {
-    v5 = [v4 name];
-    if (v5)
+    name = [peerCopy name];
+    if (name)
     {
-      objc_storeStrong(&self->_name, v5);
+      objc_storeStrong(&self->_name, name);
     }
 
-    v4 = v7;
+    peerCopy = v7;
   }
 
   if (!self->_model)
   {
-    v6 = [v4 model];
+    model = [peerCopy model];
 
-    if (v6)
+    if (model)
     {
-      objc_storeStrong(&self->_model, v6);
-      v5 = v6;
+      objc_storeStrong(&self->_model, model);
+      name = model;
     }
 
     else
     {
-      v5 = 0;
+      name = 0;
     }
   }
 
@@ -1241,49 +1241,49 @@ LABEL_70:
   }
 }
 
-- (void)updateWithRPIdentity:(id)a3
+- (void)updateWithRPIdentity:(id)identity
 {
-  v15 = a3;
+  identityCopy = identity;
   if (!self->_accountAltDSID && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v15 accountAltDSID];
-    if (v4)
+    accountAltDSID = [identityCopy accountAltDSID];
+    if (accountAltDSID)
     {
-      objc_storeStrong(&self->_accountAltDSID, v4);
+      objc_storeStrong(&self->_accountAltDSID, accountAltDSID);
     }
   }
 
   if (!self->_accountID)
   {
-    v5 = [v15 accountID];
-    if (v5)
+    accountID = [identityCopy accountID];
+    if (accountID)
     {
-      objc_storeStrong(&self->_accountID, v5);
+      objc_storeStrong(&self->_accountID, accountID);
     }
   }
 
   if (!self->_contactIdentifier)
   {
-    v6 = [v15 contactID];
-    if (v6)
+    contactID = [identityCopy contactID];
+    if (contactID)
     {
-      objc_storeStrong(&self->_contactIdentifier, v6);
+      objc_storeStrong(&self->_contactIdentifier, contactID);
     }
   }
 
-  v7 = [v15 type];
-  if (v7 > 8)
+  type = [identityCopy type];
+  if (type > 8)
   {
-    if (v7 > 12)
+    if (type > 12)
     {
-      if (v7 == 13)
+      if (type == 13)
       {
         v8 = 0x8000;
       }
 
       else
       {
-        if (v7 != 15)
+        if (type != 15)
         {
           goto LABEL_35;
         }
@@ -1292,14 +1292,14 @@ LABEL_70:
       }
     }
 
-    else if (v7 == 9)
+    else if (type == 9)
     {
       v8 = 64;
     }
 
     else
     {
-      if (v7 != 12)
+      if (type != 12)
       {
         goto LABEL_35;
       }
@@ -1308,16 +1308,16 @@ LABEL_70:
     }
   }
 
-  else if (v7 > 5)
+  else if (type > 5)
   {
-    if (v7 == 6)
+    if (type == 6)
     {
       v8 = 4;
     }
 
     else
     {
-      if (v7 != 8)
+      if (type != 8)
       {
         goto LABEL_35;
       }
@@ -1326,7 +1326,7 @@ LABEL_70:
     }
   }
 
-  else if (v7 == 2)
+  else if (type == 2)
   {
     if (!SFDeviceIsVirtualMachine())
     {
@@ -1338,7 +1338,7 @@ LABEL_70:
 
   else
   {
-    if (v7 != 4)
+    if (type != 4)
     {
       goto LABEL_35;
     }
@@ -1350,53 +1350,53 @@ LABEL_70:
 LABEL_35:
   if (!self->_idsIdentifier)
   {
-    v9 = [v15 idsDeviceID];
-    if (v9)
+    idsDeviceID = [identityCopy idsDeviceID];
+    if (idsDeviceID)
     {
-      objc_storeStrong(&self->_idsIdentifier, v9);
+      objc_storeStrong(&self->_idsIdentifier, idsDeviceID);
     }
   }
 
   if (!self->_mediaRemoteID && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v10 = [v15 mediaRemoteID];
-    if (v10)
+    mediaRemoteID = [identityCopy mediaRemoteID];
+    if (mediaRemoteID)
     {
-      objc_storeStrong(&self->_mediaRemoteID, v10);
+      objc_storeStrong(&self->_mediaRemoteID, mediaRemoteID);
     }
   }
 
   if (!self->_mediaRouteID && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v11 = [v15 mediaRouteID];
-    if (v11)
+    mediaRouteID = [identityCopy mediaRouteID];
+    if (mediaRouteID)
     {
-      objc_storeStrong(&self->_mediaRouteID, v11);
+      objc_storeStrong(&self->_mediaRouteID, mediaRouteID);
     }
   }
 
   if (!self->_model)
   {
-    v12 = [v15 model];
-    if (v12)
+    model = [identityCopy model];
+    if (model)
     {
-      objc_storeStrong(&self->_model, v12);
+      objc_storeStrong(&self->_model, model);
     }
   }
 
-  v13 = [v15 name];
-  if (v13)
+  name = [identityCopy name];
+  if (name)
   {
-    objc_storeStrong(&self->_name, v13);
+    objc_storeStrong(&self->_name, name);
   }
 
-  v14 = [v15 identifier];
-  if (v14)
+  identifier = [identityCopy identifier];
+  if (identifier)
   {
-    objc_storeStrong(&self->_rapportIdentifier, v14);
+    objc_storeStrong(&self->_rapportIdentifier, identifier);
   }
 
-  if (self->_systemPairState <= 0x13 && [v15 type] == 2)
+  if (self->_systemPairState <= 0x13 && [identityCopy type] == 2)
   {
     self->_systemPairState = 20;
   }

@@ -1,26 +1,26 @@
 @interface TRIClientFactorPackUtils
-+ (BOOL)_enumerateAssetFactorLevelsInFactorPack:(id)a3 trialAssetBlock:(id)a4 maAssetBlock:(id)a5;
-+ (BOOL)enumerateMetadataForAssetsInFactorPack:(id)a3 flatbufferFactorLevels:(id)a4 assetStore:(id)a5 maProvider:(id)a6 aliasToUnaliasMap:(id)a7 subscribedFactors:(id)a8 ckBlock:(id)a9 maBlock:(id)a10;
-+ (id)aliasesInNamespace:(id)a3;
-+ (id)requiredAssetsForInstallationWithFactorPack:(id)a3 assetStore:(id)a4 maProvider:(id)a5 subscriptionSettings:(id)a6 aliasToUnaliasMap:(id)a7;
-+ (id)uniqueAssets:(id)a3;
-+ (id)unlinkedOnDemandAssetsWithFactorPack:(id)a3 flatbufferFactorLevels:(id)a4 factorPackPath:(id)a5 assetStore:(id)a6 maProvider:(id)a7 aliasToUnaliasMap:(id)a8 subscribedFactors:(id)a9 unlinkedMAAssetsOnDisk:(id *)a10;
-+ (void)_enumerateAssetFactorLevelsInFlatBufferStorage:(id)a3 trialAssetBlock:(id)a4 maAssetBlock:(id)a5;
++ (BOOL)_enumerateAssetFactorLevelsInFactorPack:(id)pack trialAssetBlock:(id)block maAssetBlock:(id)assetBlock;
++ (BOOL)enumerateMetadataForAssetsInFactorPack:(id)pack flatbufferFactorLevels:(id)levels assetStore:(id)store maProvider:(id)provider aliasToUnaliasMap:(id)map subscribedFactors:(id)factors ckBlock:(id)block maBlock:(id)self0;
++ (id)aliasesInNamespace:(id)namespace;
++ (id)requiredAssetsForInstallationWithFactorPack:(id)pack assetStore:(id)store maProvider:(id)provider subscriptionSettings:(id)settings aliasToUnaliasMap:(id)map;
++ (id)uniqueAssets:(id)assets;
++ (id)unlinkedOnDemandAssetsWithFactorPack:(id)pack flatbufferFactorLevels:(id)levels factorPackPath:(id)path assetStore:(id)store maProvider:(id)provider aliasToUnaliasMap:(id)map subscribedFactors:(id)factors unlinkedMAAssetsOnDisk:(id *)self0;
++ (void)_enumerateAssetFactorLevelsInFlatBufferStorage:(id)storage trialAssetBlock:(id)block maAssetBlock:(id)assetBlock;
 @end
 
 @implementation TRIClientFactorPackUtils
 
-+ (BOOL)_enumerateAssetFactorLevelsInFactorPack:(id)a3 trialAssetBlock:(id)a4 maAssetBlock:(id)a5
++ (BOOL)_enumerateAssetFactorLevelsInFactorPack:(id)pack trialAssetBlock:(id)block maAssetBlock:(id)assetBlock
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  packCopy = pack;
+  blockCopy = block;
+  assetBlockCopy = assetBlock;
   v10 = objc_autoreleasePoolPush();
-  v11 = [v7 selectedNamespace];
-  v12 = [v11 hasName];
+  selectedNamespace = [packCopy selectedNamespace];
+  hasName = [selectedNamespace hasName];
 
-  if (v12)
+  if (hasName)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -30,10 +30,10 @@
     v19[1] = 3221225472;
     v19[2] = __97__TRIClientFactorPackUtils__enumerateAssetFactorLevelsInFactorPack_trialAssetBlock_maAssetBlock___block_invoke;
     v19[3] = &unk_279DE51B8;
-    v20 = v7;
+    v20 = packCopy;
     p_buf = &buf;
-    v21 = v8;
-    v22 = v9;
+    v21 = blockCopy;
+    v22 = assetBlockCopy;
     [v20 enumerateFactorLevelsWithBlock:v19];
     v13 = *(*(&buf + 1) + 24);
 
@@ -46,9 +46,9 @@
     v15 = TRILogCategory_Server();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v7 factorPackId];
+      factorPackId = [packCopy factorPackId];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v18;
+      *(&buf + 4) = factorPackId;
       _os_log_error_impl(&dword_26F567000, v15, OS_LOG_TYPE_ERROR, "Factor pack %{public}@ has missing namespace name.", &buf, 0xCu);
     }
 
@@ -150,22 +150,22 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_enumerateAssetFactorLevelsInFlatBufferStorage:(id)a3 trialAssetBlock:(id)a4 maAssetBlock:(id)a5
++ (void)_enumerateAssetFactorLevelsInFlatBufferStorage:(id)storage trialAssetBlock:(id)block maAssetBlock:(id)assetBlock
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  storageCopy = storage;
+  blockCopy = block;
+  assetBlockCopy = assetBlock;
   v10 = objc_autoreleasePoolPush();
-  v11 = [v7 levels];
+  levels = [storageCopy levels];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __104__TRIClientFactorPackUtils__enumerateAssetFactorLevelsInFlatBufferStorage_trialAssetBlock_maAssetBlock___block_invoke;
   v14[3] = &unk_279DE5208;
-  v12 = v8;
+  v12 = blockCopy;
   v15 = v12;
-  v13 = v9;
+  v13 = assetBlockCopy;
   v16 = v13;
-  [v11 enumerateObjectsUsingBlock:v14];
+  [levels enumerateObjectsUsingBlock:v14];
 
   objc_autoreleasePoolPop(v10);
 }
@@ -373,21 +373,21 @@ void __104__TRIClientFactorPackUtils__enumerateAssetFactorLevelsInFlatBufferStor
   [v4 setObject:v6 forKey:v5];
 }
 
-+ (BOOL)enumerateMetadataForAssetsInFactorPack:(id)a3 flatbufferFactorLevels:(id)a4 assetStore:(id)a5 maProvider:(id)a6 aliasToUnaliasMap:(id)a7 subscribedFactors:(id)a8 ckBlock:(id)a9 maBlock:(id)a10
++ (BOOL)enumerateMetadataForAssetsInFactorPack:(id)pack flatbufferFactorLevels:(id)levels assetStore:(id)store maProvider:(id)provider aliasToUnaliasMap:(id)map subscribedFactors:(id)factors ckBlock:(id)block maBlock:(id)self0
 {
   v91 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v44 = a5;
-  v48 = a6;
-  v18 = a7;
-  v19 = a8;
-  v45 = a9;
-  v46 = a10;
-  if (!(v16 | v17))
+  packCopy = pack;
+  levelsCopy = levels;
+  storeCopy = store;
+  providerCopy = provider;
+  mapCopy = map;
+  factorsCopy = factors;
+  blockCopy = block;
+  maBlockCopy = maBlock;
+  if (!(packCopy | levelsCopy))
   {
-    v41 = [MEMORY[0x277CCA890] currentHandler];
-    [v41 handleFailureInMethod:a2 object:a1 file:@"TRIClientFactorPackUtils.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"factorLevels != nil || factorPack != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientFactorPackUtils.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"factorLevels != nil || factorPack != nil"}];
   }
 
   context = objc_autoreleasePoolPush();
@@ -405,17 +405,17 @@ void __104__TRIClientFactorPackUtils__enumerateAssetFactorLevelsInFlatBufferStor
   v78 = __Block_byref_object_copy__59;
   v79 = __Block_byref_object_dispose__59;
   v80 = objc_opt_new();
-  if (v16)
+  if (packCopy)
   {
     v70[0] = MEMORY[0x277D85DD0];
     v70[1] = 3221225472;
     v70[2] = __164__TRIClientFactorPackUtils_enumerateMetadataForAssetsInFactorPack_flatbufferFactorLevels_assetStore_maProvider_aliasToUnaliasMap_subscribedFactors_ckBlock_maBlock___block_invoke;
     v70[3] = &unk_279DE5230;
-    v71 = v18;
-    v72 = v19;
-    v73 = v16;
+    v71 = mapCopy;
+    v72 = factorsCopy;
+    v73 = packCopy;
     v74 = &v81;
-    v21 = [a1 _enumerateAssetFactorLevelsInFactorPack:v73 trialAssetBlock:0 maAssetBlock:v70];
+    v21 = [self _enumerateAssetFactorLevelsInFactorPack:v73 trialAssetBlock:0 maAssetBlock:v70];
 
     if ((v21 & 1) == 0)
     {
@@ -423,17 +423,17 @@ void __104__TRIClientFactorPackUtils__enumerateAssetFactorLevelsInFlatBufferStor
     }
   }
 
-  if (((v17 != 0) & _os_feature_enabled_impl()) == 1)
+  if (((levelsCopy != 0) & _os_feature_enabled_impl()) == 1)
   {
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __164__TRIClientFactorPackUtils_enumerateMetadataForAssetsInFactorPack_flatbufferFactorLevels_assetStore_maProvider_aliasToUnaliasMap_subscribedFactors_ckBlock_maBlock___block_invoke_337;
     v66[3] = &unk_279DE5258;
-    v67 = v18;
-    v68 = v19;
+    v67 = mapCopy;
+    v68 = factorsCopy;
     v69 = v75;
-    [a1 _enumerateAssetFactorLevelsInFlatBufferStorage:v17 trialAssetBlock:0 maAssetBlock:v66];
-    if (v16 && ([v82[5] isEqualToSet:*(v76 + 5)] & 1) == 0)
+    [self _enumerateAssetFactorLevelsInFlatBufferStorage:levelsCopy trialAssetBlock:0 maAssetBlock:v66];
+    if (packCopy && ([v82[5] isEqualToSet:*(v76 + 5)] & 1) == 0)
     {
       v24 = TRILogCategory_Server();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -469,7 +469,7 @@ LABEL_13:
 LABEL_14:
   if (v82[5])
   {
-    v25 = [v48 installedAssetsMatchingFullAssetIds:?];
+    v25 = [providerCopy installedAssetsMatchingFullAssetIds:?];
     if (v25)
     {
       v64[0] = MEMORY[0x277D85DD0];
@@ -492,15 +492,15 @@ LABEL_14:
       v57[1] = 3221225472;
       v57[2] = __164__TRIClientFactorPackUtils_enumerateMetadataForAssetsInFactorPack_flatbufferFactorLevels_assetStore_maProvider_aliasToUnaliasMap_subscribedFactors_ckBlock_maBlock___block_invoke_2;
       v57[3] = &unk_279DE52A8;
-      v27 = v18;
+      v27 = mapCopy;
       v58 = v27;
-      v28 = v17;
+      v28 = levelsCopy;
       v59 = v28;
-      v29 = v16;
+      v29 = packCopy;
       v60 = v29;
       v63 = &v81;
-      v61 = v44;
-      v62 = v45;
+      v61 = storeCopy;
+      v62 = blockCopy;
       v30 = MEMORY[0x2743948D0](v57);
       v49[0] = MEMORY[0x277D85DD0];
       v49[1] = 3221225472;
@@ -508,23 +508,23 @@ LABEL_14:
       v49[3] = &unk_279DE52D0;
       v50 = v27;
       v55 = a2;
-      v56 = a1;
+      selfCopy = self;
       v31 = v28;
       v51 = v31;
       v32 = v29;
       v52 = v32;
       v53 = v26;
-      v54 = v46;
+      v54 = maBlockCopy;
       v33 = MEMORY[0x2743948D0](v49);
       v34 = _os_feature_enabled_impl() ^ 1;
-      if (!v17)
+      if (!levelsCopy)
       {
         LOBYTE(v34) = 1;
       }
 
       if ((v34 & 1) == 0)
       {
-        [a1 _enumerateAssetFactorLevelsInFlatBufferStorage:v31 trialAssetBlock:v30 maAssetBlock:v33];
+        [self _enumerateAssetFactorLevelsInFlatBufferStorage:v31 trialAssetBlock:v30 maAssetBlock:v33];
 LABEL_23:
         v35 = *(v82 + 24) ^ 1;
 LABEL_28:
@@ -533,9 +533,9 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      if (v16)
+      if (packCopy)
       {
-        if ([a1 _enumerateAssetFactorLevelsInFactorPack:v32 trialAssetBlock:v30 maAssetBlock:v33])
+        if ([self _enumerateAssetFactorLevelsInFactorPack:v32 trialAssetBlock:v30 maAssetBlock:v33])
         {
           goto LABEL_23;
         }
@@ -884,27 +884,27 @@ void __164__TRIClientFactorPackUtils_enumerateMetadataForAssetsInFactorPack_flat
   (*(*(a1 + 64) + 16))();
 }
 
-+ (id)requiredAssetsForInstallationWithFactorPack:(id)a3 assetStore:(id)a4 maProvider:(id)a5 subscriptionSettings:(id)a6 aliasToUnaliasMap:(id)a7
++ (id)requiredAssetsForInstallationWithFactorPack:(id)pack assetStore:(id)store maProvider:(id)provider subscriptionSettings:(id)settings aliasToUnaliasMap:(id)map
 {
   v43 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 selectedNamespace];
-  v18 = [v17 hasName];
+  packCopy = pack;
+  storeCopy = store;
+  providerCopy = provider;
+  settingsCopy = settings;
+  mapCopy = map;
+  selectedNamespace = [packCopy selectedNamespace];
+  hasName = [selectedNamespace hasName];
 
-  if (v18)
+  if (hasName)
   {
-    v34 = v13;
+    v34 = storeCopy;
     v19 = MEMORY[0x277CBEBF8];
-    v33 = a1;
-    if (v15)
+    selfCopy = self;
+    if (settingsCopy)
     {
-      v20 = [v12 selectedNamespace];
-      v21 = [v20 name];
-      v22 = [v15 subscribedFactorsForNamespaceName:v21];
+      selectedNamespace2 = [packCopy selectedNamespace];
+      name = [selectedNamespace2 name];
+      v22 = [settingsCopy subscribedFactorsForNamespaceName:name];
 
       if (v22)
       {
@@ -914,9 +914,9 @@ void __164__TRIClientFactorPackUtils_enumerateMetadataForAssetsInFactorPack_flat
 
     v23 = objc_opt_new();
     v24 = objc_opt_new();
-    if (v16)
+    if (mapCopy)
     {
-      v25 = v16;
+      v25 = mapCopy;
     }
 
     else
@@ -939,9 +939,9 @@ void __164__TRIClientFactorPackUtils_enumerateMetadataForAssetsInFactorPack_flat
     v36 = v27;
     v28 = v24;
     v37 = v28;
-    v13 = v34;
+    storeCopy = v34;
     v29 = 0;
-    if ([v33 enumerateMetadataForAssetsInFactorPack:v12 flatbufferFactorLevels:0 assetStore:v34 maProvider:v14 aliasToUnaliasMap:v25 subscribedFactors:v27 ckBlock:v38 maBlock:v35])
+    if ([selfCopy enumerateMetadataForAssetsInFactorPack:packCopy flatbufferFactorLevels:0 assetStore:v34 maProvider:providerCopy aliasToUnaliasMap:v25 subscribedFactors:v27 ckBlock:v38 maBlock:v35])
     {
       v29 = [[TRIGenericRequiredAssets alloc] initWithCloudKit:v26 mobileAsset:v28];
     }
@@ -952,9 +952,9 @@ void __164__TRIClientFactorPackUtils_enumerateMetadataForAssetsInFactorPack_flat
     v27 = TRILogCategory_Server();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v32 = [v12 factorPackId];
+      factorPackId = [packCopy factorPackId];
       *buf = 138543362;
-      v42 = v32;
+      v42 = factorPackId;
       _os_log_error_impl(&dword_26F567000, v27, OS_LOG_TYPE_ERROR, "Factor pack %{public}@ has missing namespace name.", buf, 0xCu);
     }
 
@@ -984,20 +984,20 @@ void __133__TRIClientFactorPackUtils_requiredAssetsForInstallationWithFactorPack
   }
 }
 
-+ (id)unlinkedOnDemandAssetsWithFactorPack:(id)a3 flatbufferFactorLevels:(id)a4 factorPackPath:(id)a5 assetStore:(id)a6 maProvider:(id)a7 aliasToUnaliasMap:(id)a8 subscribedFactors:(id)a9 unlinkedMAAssetsOnDisk:(id *)a10
++ (id)unlinkedOnDemandAssetsWithFactorPack:(id)pack flatbufferFactorLevels:(id)levels factorPackPath:(id)path assetStore:(id)store maProvider:(id)provider aliasToUnaliasMap:(id)map subscribedFactors:(id)factors unlinkedMAAssetsOnDisk:(id *)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v40 = a6;
-  v19 = a7;
-  v20 = a8;
-  v38 = a9;
-  v41 = v16;
-  if (!(v16 | v17))
+  packCopy = pack;
+  levelsCopy = levels;
+  pathCopy = path;
+  storeCopy = store;
+  providerCopy = provider;
+  mapCopy = map;
+  factorsCopy = factors;
+  v41 = packCopy;
+  if (!(packCopy | levelsCopy))
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:a1 file:@"TRIClientFactorPackUtils.m" lineNumber:448 description:{@"Invalid parameter not satisfying: %@", @"factorPack != nil || factorLevels != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientFactorPackUtils.m" lineNumber:448 description:{@"Invalid parameter not satisfying: %@", @"factorPack != nil || factorLevels != nil"}];
   }
 
   v21 = objc_opt_new();
@@ -1010,11 +1010,11 @@ void __133__TRIClientFactorPackUtils_requiredAssetsForInstallationWithFactorPack
   v50[3] = &unk_279DDF658;
   v24 = v23;
   v51 = v24;
-  [v20 enumerateKeysAndObjectsUsingBlock:v50];
-  v37 = v20;
-  if (v20)
+  [mapCopy enumerateKeysAndObjectsUsingBlock:v50];
+  v37 = mapCopy;
+  if (mapCopy)
   {
-    v25 = v20;
+    v25 = mapCopy;
   }
 
   else
@@ -1034,18 +1034,18 @@ void __133__TRIClientFactorPackUtils_requiredAssetsForInstallationWithFactorPack
   v42[3] = &unk_279DE5370;
   v27 = v24;
   v43 = v27;
-  v28 = v18;
+  v28 = pathCopy;
   v44 = v28;
-  v29 = v19;
+  v29 = providerCopy;
   v45 = v29;
   v30 = v22;
   v31 = v22;
   v46 = v31;
   v32 = v36;
   v47 = v32;
-  if ([a1 enumerateMetadataForAssetsInFactorPack:v41 flatbufferFactorLevels:v17 assetStore:v40 maProvider:v29 aliasToUnaliasMap:v25 subscribedFactors:v48 ckBlock:v42 maBlock:?])
+  if ([self enumerateMetadataForAssetsInFactorPack:v41 flatbufferFactorLevels:levelsCopy assetStore:storeCopy maProvider:v29 aliasToUnaliasMap:v25 subscribedFactors:v48 ckBlock:v42 maBlock:?])
   {
-    objc_storeStrong(a10, v30);
+    objc_storeStrong(disk, v30);
     v33 = [[TRIGenericRequiredAssets alloc] initWithCloudKit:v26 mobileAsset:v32];
   }
 
@@ -1221,21 +1221,21 @@ LABEL_33:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)uniqueAssets:(id)a3
++ (id)uniqueAssets:(id)assets
 {
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
-  v6 = [v3 cloudKit];
+  cloudKit = [assetsCopy cloudKit];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __41__TRIClientFactorPackUtils_uniqueAssets___block_invoke;
   v18[3] = &unk_279DE3F30;
   v19 = v4;
   v7 = v4;
-  [v6 enumerateObjectsUsingBlock:v18];
+  [cloudKit enumerateObjectsUsingBlock:v18];
 
-  v8 = [v3 mobileAsset];
+  mobileAsset = [assetsCopy mobileAsset];
 
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
@@ -1243,7 +1243,7 @@ LABEL_33:
   v16 = &unk_279DE3F58;
   v17 = v5;
   v9 = v5;
-  [v8 enumerateObjectsUsingBlock:&v13];
+  [mobileAsset enumerateObjectsUsingBlock:&v13];
 
   v10 = [TRIGenericUniqueRequiredAssets alloc];
   v11 = [(TRIGenericUniqueRequiredAssets *)v10 initWithCloudKit:v7 mobileAsset:v9, v13, v14, v15, v16];
@@ -1271,11 +1271,11 @@ void __41__TRIClientFactorPackUtils_uniqueAssets___block_invoke_2(uint64_t a1, v
   [v4 setObject:v6 forKeyedSubscript:v5];
 }
 
-+ (id)aliasesInNamespace:(id)a3
++ (id)aliasesInNamespace:(id)namespace
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  namespaceCopy = namespace;
+  if (!namespaceCopy)
   {
     v30 = TRILogCategory_Server();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1289,11 +1289,11 @@ void __41__TRIClientFactorPackUtils_uniqueAssets___block_invoke_2(uint64_t a1, v
 
   v4 = objc_autoreleasePoolPush();
   v5 = MEMORY[0x277D73750];
-  v6 = [MEMORY[0x277D737E0] sharedPaths];
-  v7 = [v6 namespaceDescriptorsDefaultDir];
-  v8 = [v5 loadWithNamespaceName:v3 fromDirectory:v7];
+  mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+  namespaceDescriptorsDefaultDir = [mEMORY[0x277D737E0] namespaceDescriptorsDefaultDir];
+  v8 = [v5 loadWithNamespaceName:namespaceCopy fromDirectory:namespaceDescriptorsDefaultDir];
 
-  if (!v8 || ([v8 namespaceName], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", v3), v9, !v10))
+  if (!v8 || ([v8 namespaceName], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", namespaceCopy), v9, !v10))
   {
 LABEL_27:
 
@@ -1311,7 +1311,7 @@ LABEL_28:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v51 = v3;
+      v51 = namespaceCopy;
       _os_log_error_impl(&dword_26F567000, v31, OS_LOG_TYPE_ERROR, "Unable to read factors URL for namespace: %{public}@", buf, 0xCu);
     }
 
@@ -1336,8 +1336,8 @@ LABEL_28:
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v17 = [v15 factorLevelArray];
-      v18 = [v17 countByEnumeratingWithState:&v43 objects:v49 count:16];
+      factorLevelArray = [v15 factorLevelArray];
+      v18 = [factorLevelArray countByEnumeratingWithState:&v43 objects:v49 count:16];
       if (!v18)
       {
         goto LABEL_21;
@@ -1349,7 +1349,7 @@ LABEL_28:
       v37 = v12;
       v38 = v8;
       v39 = v4;
-      v40 = v3;
+      v40 = namespaceCopy;
       v20 = *v44;
       while (1)
       {
@@ -1357,39 +1357,39 @@ LABEL_28:
         {
           if (*v44 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(factorLevelArray);
           }
 
           v22 = *(*(&v43 + 1) + 8 * i);
-          v23 = [v22 factor];
-          if ([v23 hasName])
+          factor = [v22 factor];
+          if ([factor hasName])
           {
-            v24 = [v22 factor];
-            if ([v24 hasAlias])
+            factor2 = [v22 factor];
+            if ([factor2 hasAlias])
             {
-              v25 = [v22 factor];
-              v26 = [v25 alias];
-              v27 = [v26 isEqualToString:&stru_287FA0430];
+              factor3 = [v22 factor];
+              alias = [factor3 alias];
+              v27 = [alias isEqualToString:&stru_287FA0430];
 
               if (v27)
               {
                 continue;
               }
 
-              v23 = [v22 factor];
-              v24 = [v23 name];
-              v28 = [v22 factor];
-              v29 = [v28 alias];
-              [v42 setObject:v24 forKey:v29];
+              factor = [v22 factor];
+              factor2 = [factor name];
+              factor4 = [v22 factor];
+              alias2 = [factor4 alias];
+              [v42 setObject:factor2 forKey:alias2];
             }
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v43 objects:v49 count:16];
+        v19 = [factorLevelArray countByEnumeratingWithState:&v43 objects:v49 count:16];
         if (!v19)
         {
           v4 = v39;
-          v3 = v40;
+          namespaceCopy = v40;
           v12 = v37;
           v8 = v38;
           v15 = v35;
@@ -1404,8 +1404,8 @@ LABEL_37:
       }
     }
 
-    v17 = TRILogCategory_Server();
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    factorLevelArray = TRILogCategory_Server();
+    if (!os_log_type_enabled(factorLevelArray, OS_LOG_TYPE_ERROR))
     {
       v30 = 0;
       goto LABEL_37;
@@ -1416,7 +1416,7 @@ LABEL_37:
     v52 = 2114;
     v14 = v41;
     v53 = v41;
-    _os_log_error_impl(&dword_26F567000, v17, OS_LOG_TYPE_ERROR, "Failed to parse treatment from file %{public}@: %{public}@", buf, 0x16u);
+    _os_log_error_impl(&dword_26F567000, factorLevelArray, OS_LOG_TYPE_ERROR, "Failed to parse treatment from file %{public}@: %{public}@", buf, 0x16u);
     v30 = 0;
 LABEL_38:
   }

@@ -1,53 +1,53 @@
 @interface UISIntentForwardingActionResponse
-+ (id)responseWithIntentForwardingActionResponse:(id)a3;
-+ (id)responseWithIntentResponse:(id)a3;
++ (id)responseWithIntentForwardingActionResponse:(id)response;
++ (id)responseWithIntentResponse:(id)response;
 - (INIntentForwardingActionResponse)intentForwardingActionResponse;
 - (INIntentResponse)intentResponse;
-- (UISIntentForwardingActionResponse)initWithIntentForwardingActionResponse:(id)a3;
-- (UISIntentForwardingActionResponse)initWithIntentResponse:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (UISIntentForwardingActionResponse)initWithIntentForwardingActionResponse:(id)response;
+- (UISIntentForwardingActionResponse)initWithIntentResponse:(id)response;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation UISIntentForwardingActionResponse
 
-- (UISIntentForwardingActionResponse)initWithIntentForwardingActionResponse:(id)a3
+- (UISIntentForwardingActionResponse)initWithIntentForwardingActionResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = objc_alloc_init(MEMORY[0x1E698E700]);
   v6 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-  [v6 encodeObject:v4 forKey:@"INIntentForwardingActionResponseObjectKey"];
-  v7 = [v6 encodedData];
-  [v5 setObject:v7 forSetting:4];
+  [v6 encodeObject:responseCopy forKey:@"INIntentForwardingActionResponseObjectKey"];
+  encodedData = [v6 encodedData];
+  [v5 setObject:encodedData forSetting:4];
 
   v8 = [(UISIntentForwardingActionResponse *)self initWithInfo:v5 error:0];
   return v8;
 }
 
-+ (id)responseWithIntentForwardingActionResponse:(id)a3
++ (id)responseWithIntentForwardingActionResponse:(id)response
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIntentForwardingActionResponse:v4];
+  responseCopy = response;
+  v5 = [[self alloc] initWithIntentForwardingActionResponse:responseCopy];
 
   return v5;
 }
 
-- (UISIntentForwardingActionResponse)initWithIntentResponse:(id)a3
+- (UISIntentForwardingActionResponse)initWithIntentResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = objc_alloc_init(MEMORY[0x1E698E700]);
   v6 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-  [v6 encodeObject:v4 forKey:@"INIntentResponseObjectKey"];
-  v7 = [v6 encodedData];
-  [v5 setObject:v7 forSetting:2];
+  [v6 encodeObject:responseCopy forKey:@"INIntentResponseObjectKey"];
+  encodedData = [v6 encodedData];
+  [v5 setObject:encodedData forSetting:2];
 
   v8 = [(UISIntentForwardingActionResponse *)self initWithInfo:v5 error:0];
   return v8;
 }
 
-+ (id)responseWithIntentResponse:(id)a3
++ (id)responseWithIntentResponse:(id)response
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIntentResponse:v4];
+  responseCopy = response;
+  v5 = [[self alloc] initWithIntentResponse:responseCopy];
 
   return v5;
 }
@@ -62,8 +62,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v4 = [(UISIntentForwardingActionResponse *)self info];
-  v5 = [v4 objectForSetting:2];
+  info = [(UISIntentForwardingActionResponse *)self info];
+  v5 = [info objectForSetting:2];
 
   if (v5)
   {
@@ -113,8 +113,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v4 = [(UISIntentForwardingActionResponse *)self info];
-  v5 = [v4 objectForSetting:4];
+  info = [(UISIntentForwardingActionResponse *)self info];
+  v5 = [info objectForSetting:4];
 
   if (v5)
   {
@@ -154,15 +154,15 @@ LABEL_7:
   return v11;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
   v3 = @"intent forwarding action response";
-  if (a3 != 4)
+  if (setting != 4)
   {
     v3 = 0;
   }
 
-  if (a3 == 2)
+  if (setting == 2)
   {
     return @"intent response";
   }

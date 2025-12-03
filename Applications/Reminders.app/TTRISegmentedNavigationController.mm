@@ -1,16 +1,16 @@
 @interface TTRISegmentedNavigationController
-- (_TtC9Reminders33TTRISegmentedNavigationController)initWithCoder:(id)a3;
-- (_TtC9Reminders33TTRISegmentedNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC9Reminders33TTRISegmentedNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9Reminders33TTRISegmentedNavigationController)initWithRootViewController:(id)a3;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (_TtC9Reminders33TTRISegmentedNavigationController)initWithCoder:(id)coder;
+- (_TtC9Reminders33TTRISegmentedNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC9Reminders33TTRISegmentedNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9Reminders33TTRISegmentedNavigationController)initWithRootViewController:(id)controller;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation TTRISegmentedNavigationController
 
-- (_TtC9Reminders33TTRISegmentedNavigationController)initWithCoder:(id)a3
+- (_TtC9Reminders33TTRISegmentedNavigationController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders33TTRISegmentedNavigationController_segmentedControl) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders33TTRISegmentedNavigationController_palette) = 0;
@@ -34,37 +34,37 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100407900();
 }
 
-- (_TtC9Reminders33TTRISegmentedNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC9Reminders33TTRISegmentedNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9Reminders33TTRISegmentedNavigationController)initWithRootViewController:(id)a3
+- (_TtC9Reminders33TTRISegmentedNavigationController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9Reminders33TTRISegmentedNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders33TTRISegmentedNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1004089B8(v8);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_1004089B8(viewControllerCopy);
 }
 
 @end

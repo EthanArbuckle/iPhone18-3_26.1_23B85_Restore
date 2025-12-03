@@ -2,37 +2,37 @@
 + (UIEdgeInsets)NavIndicatorsTouchInsets;
 - (ChromeOverlayHosting)host;
 - (_TtP4Maps32IOSRecenterButtonOverlayDelegate_)delegate;
-- (void)setHidden:(BOOL)a3;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHost:(id)a3;
-- (void)setRecenterButton:(id)a3;
+- (void)setHidden:(BOOL)hidden;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setHost:(id)host;
+- (void)setRecenterButton:(id)button;
 @end
 
 @implementation IOSRecenterButtonOverlay
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  *(self + OBJC_IVAR____TtC4Maps24IOSRecenterButtonOverlay_host) = a3;
+  *(self + OBJC_IVAR____TtC4Maps24IOSRecenterButtonOverlay_host) = host;
   swift_unknownObjectRetain_n();
-  v4 = self;
+  selfCopy = self;
   sub_10001BFB4();
   swift_unknownObjectRelease();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   v5 = *(self + OBJC_IVAR____TtC4Maps24IOSRecenterButtonOverlay_isHidden);
-  *(self + OBJC_IVAR____TtC4Maps24IOSRecenterButtonOverlay_isHidden) = a3;
-  v8 = self;
+  *(self + OBJC_IVAR____TtC4Maps24IOSRecenterButtonOverlay_isHidden) = hidden;
+  selfCopy = self;
   sub_10004DCE4(v5);
-  v6 = *(v8 + OBJC_IVAR____TtC4Maps24IOSRecenterButtonOverlay_recenterButton);
+  v6 = *(selfCopy + OBJC_IVAR____TtC4Maps24IOSRecenterButtonOverlay_recenterButton);
   if (v6)
   {
     v7 = v6;
-    [v7 setHidden:v4];
+    [v7 setHidden:hiddenCopy];
   }
 
   else
@@ -61,11 +61,11 @@
   return Strong;
 }
 
-- (void)setRecenterButton:(id)a3
+- (void)setRecenterButton:(id)button
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps24IOSRecenterButtonOverlay_recenterButton);
-  *(self + OBJC_IVAR____TtC4Maps24IOSRecenterButtonOverlay_recenterButton) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps24IOSRecenterButtonOverlay_recenterButton) = button;
+  buttonCopy = button;
 }
 
 - (ChromeOverlayHosting)host
@@ -75,11 +75,11 @@
   return v2;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v3 = *(self + OBJC_IVAR____TtC4Maps24IOSRecenterButtonOverlay_isHidden);
-  *(self + OBJC_IVAR____TtC4Maps24IOSRecenterButtonOverlay_isHidden) = a3;
-  v4 = self;
+  *(self + OBJC_IVAR____TtC4Maps24IOSRecenterButtonOverlay_isHidden) = hidden;
+  selfCopy = self;
   sub_10004DCE4(v3);
 }
 

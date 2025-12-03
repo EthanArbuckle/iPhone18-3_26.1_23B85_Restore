@@ -1,28 +1,28 @@
 @interface WLKCanonicalPlayablesSiriResponse
-+ (id)_parseChannelsFromPayload:(id)a3;
++ (id)_parseChannelsFromPayload:(id)payload;
 - (WLKCanonicalPlayablesSiriResponse)init;
-- (WLKCanonicalPlayablesSiriResponse)initWithDictionary:(id)a3;
-- (WLKCanonicalPlayablesSiriResponse)initWithDictionary:(id)a3 statsID:(id)a4;
+- (WLKCanonicalPlayablesSiriResponse)initWithDictionary:(id)dictionary;
+- (WLKCanonicalPlayablesSiriResponse)initWithDictionary:(id)dictionary statsID:(id)d;
 @end
 
 @implementation WLKCanonicalPlayablesSiriResponse
 
-- (WLKCanonicalPlayablesSiriResponse)initWithDictionary:(id)a3
+- (WLKCanonicalPlayablesSiriResponse)initWithDictionary:(id)dictionary
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v43.receiver = self;
   v43.super_class = WLKCanonicalPlayablesSiriResponse;
   v5 = [(WLKCanonicalPlayablesSiriResponse *)&v43 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionary = v5->_dictionary;
     v35 = v5;
     v5->_dictionary = v6;
 
-    v36 = v4;
-    v8 = [v4 wlk_dictionaryForKey:@"data"];
+    v36 = dictionaryCopy;
+    v8 = [dictionaryCopy wlk_dictionaryForKey:@"data"];
     v34 = [v8 wlk_dictionaryForKey:@"content"];
     v33 = [v8 wlk_dictionaryForKey:@"channels"];
     v37 = [v8 wlk_dictionaryForKey:@"contentPersonalizedInfo"];
@@ -60,10 +60,10 @@
     }
 
     v18 = +[WLKNetworkRequestUtilities isGDPRAccepted];
-    v19 = [MEMORY[0x277D6C478] activeAccount];
+    activeAccount = [MEMORY[0x277D6C478] activeAccount];
 
     v20 = [v37 wlk_BOOLForKey:@"isWatchlistEnabled" defaultValue:0] & v18;
-    if (!v19)
+    if (!activeAccount)
     {
       LOBYTE(v20) = 0;
     }
@@ -82,7 +82,7 @@
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v45 = v19 != 0;
+      v45 = activeAccount != 0;
       _os_log_impl(&dword_272A0F000, v22, OS_LOG_TYPE_DEFAULT, "WLKCanonicalPlayablesSiriResponse - isAccountPresent:%d", buf, 8u);
     }
 
@@ -111,31 +111,31 @@
     playables = v35->_playables;
     v35->_playables = v29;
 
-    v4 = v36;
+    dictionaryCopy = v36;
   }
 
   v31 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (WLKCanonicalPlayablesSiriResponse)initWithDictionary:(id)a3 statsID:(id)a4
+- (WLKCanonicalPlayablesSiriResponse)initWithDictionary:(id)dictionary statsID:(id)d
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  dCopy = d;
   v30.receiver = self;
   v30.super_class = WLKCanonicalPlayablesSiriResponse;
   v8 = [(WLKCanonicalPlayablesSiriResponse *)&v30 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_canonicalID, a4);
+    objc_storeStrong(&v8->_canonicalID, d);
     v9->_contentType = 5;
-    v10 = [v6 copy];
+    v10 = [dictionaryCopy copy];
     dictionary = v9->_dictionary;
     v9->_dictionary = v10;
 
-    v12 = [v6 wlk_dictionaryForKey:@"data"];
+    v12 = [dictionaryCopy wlk_dictionaryForKey:@"data"];
     v13 = [v12 wlk_dictionaryForKey:@"playables"];
     v14 = [v12 wlk_dictionaryForKey:@"channels"];
     v15 = v14;
@@ -152,10 +152,10 @@
       v28 = [v16 objectForKey:@"channelId"];
       v20 = [v15 wlk_dictionaryForKey:?];
       v21 = +[WLKNetworkRequestUtilities isGDPRAccepted];
-      v22 = [MEMORY[0x277D6C478] activeAccount];
+      activeAccount = [MEMORY[0x277D6C478] activeAccount];
 
       v23 = [v20 wlk_BOOLForKey:@"isWatchlistEnabled" defaultValue:0] & v21;
-      if (!v22)
+      if (!activeAccount)
       {
         LOBYTE(v23) = 0;
       }
@@ -173,7 +173,7 @@
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v32 = v22 != 0;
+        v32 = activeAccount != 0;
         _os_log_impl(&dword_272A0F000, v25, OS_LOG_TYPE_DEFAULT, "WLKCanonicalPlayablesSiriResponse - isAccountPresent:%d", buf, 8u);
       }
 
@@ -185,18 +185,18 @@
   return v9;
 }
 
-+ (id)_parseChannelsFromPayload:(id)a3
++ (id)_parseChannelsFromPayload:(id)payload
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  payloadCopy = payload;
+  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(payloadCopy, "count")}];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__WLKCanonicalPlayablesSiriResponse__parseChannelsFromPayload___block_invoke;
   v9[3] = &unk_279E5F2F8;
   v6 = v5;
   v10 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [payloadCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   if ([v6 count])
   {

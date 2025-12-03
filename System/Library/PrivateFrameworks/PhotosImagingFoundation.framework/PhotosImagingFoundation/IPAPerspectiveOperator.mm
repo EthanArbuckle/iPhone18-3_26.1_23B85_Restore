@@ -1,7 +1,7 @@
 @interface IPAPerspectiveOperator
-+ (id)operatorWithIdentifier:(id)a3 angleX:(double)a4 Y:(double)a5 dx:(double)a6 dy:(double)a7;
++ (id)operatorWithIdentifier:(id)identifier angleX:(double)x Y:(double)y dx:(double)dx dy:(double)dy;
 - (id)description;
-- (id)transformForGeometry:(id)a3;
+- (id)transformForGeometry:(id)geometry;
 @end
 
 @implementation IPAPerspectiveOperator
@@ -16,11 +16,11 @@
   return v6;
 }
 
-- (id)transformForGeometry:(id)a3
+- (id)transformForGeometry:(id)geometry
 {
   v171 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  geometryCopy = geometry;
+  v5 = geometryCopy;
   v143 = 0u;
   v144 = 0u;
   v142 = 1.0;
@@ -31,9 +31,9 @@
   v150 = 0u;
   v148 = 0x3FF0000000000000;
   v151 = 0x3FF0000000000000;
-  if (v4)
+  if (geometryCopy)
   {
-    [v4 imageQuad];
+    [geometryCopy imageQuad];
   }
 
   else
@@ -492,16 +492,16 @@ LABEL_43:
   v101 = *&v161[16];
   v102 = *&v161[32];
   v103 = v162;
-  v69 = [[IPAImageGeometry alloc] initWithIdentifier:@"perspectived" extent:&v138 imageQuad:v10, v64, width, height];
-  v70 = [[IPAPerspectiveTransform alloc] initWithInputGeometry:v5 intrinsicGeometry:v69 projectionTransform:v108 viewingTransform:&v100];
+  height = [[IPAImageGeometry alloc] initWithIdentifier:@"perspectived" extent:&v138 imageQuad:v10, v64, width, height];
+  v70 = [[IPAPerspectiveTransform alloc] initWithInputGeometry:v5 intrinsicGeometry:height projectionTransform:v108 viewingTransform:&v100];
 
   return v70;
 }
 
-+ (id)operatorWithIdentifier:(id)a3 angleX:(double)a4 Y:(double)a5 dx:(double)a6 dy:(double)a7
++ (id)operatorWithIdentifier:(id)identifier angleX:(double)x Y:(double)y dx:(double)dx dy:(double)dy
 {
-  v11 = a3;
-  if (fabs(a4) > 0.785398163 || fabs(a5) > 0.785398163 || fabs(a6) > 1.0 || fabs(a7) > 1.0)
+  identifierCopy = identifier;
+  if (fabs(x) > 0.785398163 || fabs(y) > 0.785398163 || fabs(dx) > 1.0 || fabs(dy) > 1.0)
   {
     result = _PFAssertFailHandler();
     __break(1u);
@@ -509,11 +509,11 @@ LABEL_43:
 
   else
   {
-    v12 = [(IPAGeometryOperator *)[IPAPerspectiveOperator alloc] initWithIdentifier:v11];
-    v12->_xAngle = a4;
-    v12->_yAngle = a5;
-    v12->_dx = a6;
-    v12->_dy = a7;
+    v12 = [(IPAGeometryOperator *)[IPAPerspectiveOperator alloc] initWithIdentifier:identifierCopy];
+    v12->_xAngle = x;
+    v12->_yAngle = y;
+    v12->_dx = dx;
+    v12->_dy = dy;
 
     return v12;
   }

@@ -1,27 +1,27 @@
 @interface TextSequenceTrain
-- (TextSequenceTrain)initWithLength:(unint64_t)a3;
-- (void)addWordWithInputId:(unint64_t)a3;
-- (void)addWordWithInputId:(unint64_t)a3 target:(unint64_t)a4 mask:(unint64_t)a5;
+- (TextSequenceTrain)initWithLength:(unint64_t)length;
+- (void)addWordWithInputId:(unint64_t)id;
+- (void)addWordWithInputId:(unint64_t)id target:(unint64_t)target mask:(unint64_t)mask;
 @end
 
 @implementation TextSequenceTrain
 
-- (TextSequenceTrain)initWithLength:(unint64_t)a3
+- (TextSequenceTrain)initWithLength:(unint64_t)length
 {
   v12.receiver = self;
   v12.super_class = TextSequenceTrain;
   v4 = [(TextSequenceTrain *)&v12 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:length];
     sequence = v4->_sequence;
     v4->_sequence = v5;
 
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:length];
     target = v4->_target;
     v4->_target = v7;
 
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:length];
     mask = v4->_mask;
     v4->_mask = v9;
   }
@@ -29,22 +29,22 @@
   return v4;
 }
 
-- (void)addWordWithInputId:(unint64_t)a3
+- (void)addWordWithInputId:(unint64_t)id
 {
   sequence = self->_sequence;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:id];
   [(NSMutableArray *)sequence addObject:?];
 }
 
-- (void)addWordWithInputId:(unint64_t)a3 target:(unint64_t)a4 mask:(unint64_t)a5
+- (void)addWordWithInputId:(unint64_t)id target:(unint64_t)target mask:(unint64_t)mask
 {
-  [(TextSequenceTrain *)self addWordWithInputId:a3];
+  [(TextSequenceTrain *)self addWordWithInputId:id];
   target = self->_target;
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:target];
   [(NSMutableArray *)target addObject:?];
 
   mask = self->_mask;
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a5];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:mask];
   [(NSMutableArray *)mask addObject:?];
 }
 

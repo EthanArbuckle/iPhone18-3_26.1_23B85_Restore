@@ -1,7 +1,7 @@
 @interface CNReputationCoreRecentsAdapter
 - (CNReputationCoreRecentsAdapter)init;
-- (CNReputationCoreRecentsAdapter)initWithRecentContactsLibrary:(id)a3;
-- (id)recentContactsForHandle:(id)a3;
+- (CNReputationCoreRecentsAdapter)initWithRecentContactsLibrary:(id)library;
+- (id)recentContactsForHandle:(id)handle;
 @end
 
 @implementation CNReputationCoreRecentsAdapter
@@ -26,32 +26,32 @@
 
   v4 = v3;
   _Block_object_dispose(&v9, 8);
-  v5 = [v3 defaultInstance];
-  v6 = [(CNReputationCoreRecentsAdapter *)self initWithRecentContactsLibrary:v5];
+  defaultInstance = [v3 defaultInstance];
+  v6 = [(CNReputationCoreRecentsAdapter *)self initWithRecentContactsLibrary:defaultInstance];
 
   return v6;
 }
 
-- (CNReputationCoreRecentsAdapter)initWithRecentContactsLibrary:(id)a3
+- (CNReputationCoreRecentsAdapter)initWithRecentContactsLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v10.receiver = self;
   v10.super_class = CNReputationCoreRecentsAdapter;
   v6 = [(CNReputationCoreRecentsAdapter *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_library, a3);
+    objc_storeStrong(&v6->_library, library);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)recentContactsForHandle:(id)a3
+- (id)recentContactsForHandle:(id)handle
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v42 = 0;
   v43 = &v42;
   v44 = 0x2050000000;
@@ -117,7 +117,7 @@
   v13 = *MEMORY[0x1E69964A8];
   v14 = *(*MEMORY[0x1E69964A8] + 16);
   v15 = *v10;
-  v16 = v14(v13, v4);
+  v16 = v14(v13, handleCopy);
   v17 = [v8 predicateForKey:v15 inCollection:v16];
 
   [v7 setSearchPredicate:v17];
@@ -209,13 +209,13 @@ LABEL_20:
 
   [v7 setDomains:v31];
   v32 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v33 = [(CNReputationCoreRecentsAdapter *)self library];
+  library = [(CNReputationCoreRecentsAdapter *)self library];
   v34 = [v32 completionHandlerAdapterWithDefaultValue:MEMORY[0x1E695E0F0]];
-  [v33 performRecentsSearch:v7 queue:0 completion:v34];
+  [library performRecentsSearch:v7 queue:0 completion:v34];
 
-  v35 = [v32 future];
+  future = [v32 future];
 
-  return v35;
+  return future;
 }
 
 @end

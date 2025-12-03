@@ -1,33 +1,33 @@
 @interface MADMovieBlastDoorAnalyzer
 - ($AFC8CF76A46F37F9FB23C20884F4FD99)timeRange;
-- (MADMovieBlastDoorAnalyzer)initWithMovieURL:(id)a3 analysisTypes:(unint64_t)a4 cancelBlock:(id)a5;
-- (id)analyzeAsset:(id *)a3;
+- (MADMovieBlastDoorAnalyzer)initWithMovieURL:(id)l analysisTypes:(unint64_t)types cancelBlock:(id)block;
+- (id)analyzeAsset:(id *)asset;
 - (int)configureAnalyzers;
-- (int)createPixelBufferPool:(__CVPixelBufferPool *)a3;
-- (int)finalizeAnalyzers:(id)a3 timeRange:(id *)a4;
-- (int)processFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5;
-- (int)processVideo:(id)a3;
-- (int)queryVideoProperties:(id)a3;
+- (int)createPixelBufferPool:(__CVPixelBufferPool *)pool;
+- (int)finalizeAnalyzers:(id)analyzers timeRange:(id *)range;
+- (int)processFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration;
+- (int)processVideo:(id)video;
+- (int)queryVideoProperties:(id)properties;
 @end
 
 @implementation MADMovieBlastDoorAnalyzer
 
-- (MADMovieBlastDoorAnalyzer)initWithMovieURL:(id)a3 analysisTypes:(unint64_t)a4 cancelBlock:(id)a5
+- (MADMovieBlastDoorAnalyzer)initWithMovieURL:(id)l analysisTypes:(unint64_t)types cancelBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = MADMovieBlastDoorAnalyzer;
   v11 = [(MADMovieBlastDoorAnalyzer *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_movieURL, a3);
-    v12->_analysisTypes = a4;
+    objc_storeStrong(&v11->_movieURL, l);
+    v12->_analysisTypes = types;
     v13 = MEMORY[0x1E6960C70];
     *(&v12->_orientation + 1) = *MEMORY[0x1E6960C70];
     *&v12->_timeRange.start.flags = *(v13 + 16);
-    v14 = _Block_copy(v10);
+    v14 = _Block_copy(blockCopy);
     cancelBlock = v12->_cancelBlock;
     v12->_cancelBlock = v14;
   }
@@ -50,9 +50,9 @@
 
   else
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     privateResults = self->_privateResults;
-    self->_privateResults = v4;
+    self->_privateResults = dictionary;
 
     v6 = [(NSMutableDictionary *)self->_privateResults objectForKey:@"OrientationResults"];
     analysisTypes = self->_analysisTypes;
@@ -118,10 +118,10 @@
   }
 }
 
-- (int)queryVideoProperties:(id)a3
+- (int)queryVideoProperties:(id)properties
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  propertiesCopy = properties;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -137,7 +137,7 @@
   v6 = v5;
   v33 = v6;
   v7 = _Block_copy(&v29);
-  [v4 generateMetadataforAttachmentWithfileURL:self->_movieURL resultHandler:{v7, v29, v30, v31, v32}];
+  [propertiesCopy generateMetadataforAttachmentWithfileURL:self->_movieURL resultHandler:{v7, v29, v30, v31, v32}];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v8 = v36[5];
   if (!v8)
@@ -196,9 +196,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v9 = [v36[5] rawOrientation];
+  rawOrientation = [v36[5] rawOrientation];
   v10 = v36[5];
-  if (v9 > 4)
+  if (rawOrientation > 4)
   {
     self->_height = [v10 rawPixelWidth];
     width = [v36[5] rawPixelHeight];
@@ -235,17 +235,17 @@ LABEL_17:
   self->_frameRate = v21;
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    v22 = [v36[5] rawPixelWidth];
-    v23 = [v36[5] rawPixelHeight];
+    rawPixelWidth = [v36[5] rawPixelWidth];
+    rawPixelHeight = [v36[5] rawPixelHeight];
     orientation = self->_orientation;
     [v36[5] videoDurationValue];
     v26 = v25;
     [v36[5] videoDurationTimescale];
     *buf = 67110144;
     frameRate = self->_frameRate;
-    *&buf[4] = v22;
+    *&buf[4] = rawPixelWidth;
     *&buf[8] = 1024;
-    *&buf[10] = v23;
+    *&buf[10] = rawPixelHeight;
     *&buf[14] = 1024;
     *v42 = orientation;
     *&v42[4] = 2048;
@@ -283,7 +283,7 @@ void __50__MADMovieBlastDoorAnalyzer_queryVideoProperties___block_invoke(uint64_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (int)processFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5
+- (int)processFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration
 {
   v41 = *MEMORY[0x1E69E9840];
   cancelBlock = self->_cancelBlock;
@@ -292,19 +292,19 @@ void __50__MADMovieBlastDoorAnalyzer_queryVideoProperties___block_invoke(uint64_
     return -128;
   }
 
-  if ((a4->var2 & 0x1D) == 1 && (a5->var2 & 0x1D) == 1)
+  if ((timestamp->var2 & 0x1D) == 1 && (duration->var2 & 0x1D) == 1)
   {
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      var1 = a4->var1;
-      *&time.duration.value = *&a4->var0;
+      var1 = timestamp->var1;
+      *&time.duration.value = *&timestamp->var0;
       value = time.duration.value;
-      time.duration.epoch = a4->var3;
+      time.duration.epoch = timestamp->var3;
       Seconds = CMTimeGetSeconds(&time.duration);
-      v15 = a5->var1;
-      *&time.duration.value = *&a5->var0;
+      v15 = duration->var1;
+      *&time.duration.value = *&duration->var0;
       v14 = time.duration.value;
-      time.duration.epoch = a5->var3;
+      time.duration.epoch = duration->var3;
       v16 = CMTimeGetSeconds(&time.duration);
       LODWORD(time.duration.value) = 134219264;
       *(&time.duration.value + 4) = value;
@@ -321,12 +321,12 @@ void __50__MADMovieBlastDoorAnalyzer_queryVideoProperties___block_invoke(uint64_
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "  Processing Frame - PTS: %lld/%d (%0.3fs) Duration: %lld/%d (%0.3fs)", &time, 0x36u);
     }
 
-    if ((self->_timeRange.start.timescale & 1) != 0 || (v17 = *&a4->var0, *&self->_timeRange.start.flags = a4->var3, *(&self->_orientation + 1) = v17, (v10 = [(MADMovieBlastDoorAnalyzer *)self configureAnalyzers]) == 0))
+    if ((self->_timeRange.start.timescale & 1) != 0 || (v17 = *&timestamp->var0, *&self->_timeRange.start.flags = timestamp->var3, *(&self->_orientation + 1) = v17, (v10 = [(MADMovieBlastDoorAnalyzer *)self configureAnalyzers]) == 0))
     {
       v18 = objc_alloc_init(VCPFrameAnalysisStats);
       v37 = 0;
       sceneClassifier = self->_sceneClassifier;
-      if (!sceneClassifier || (*&time.duration.value = *&a4->var0, time.duration.epoch = a4->var3, v36 = *a5, (v10 = [(VCPVideoSceneClassifier *)sceneClassifier analyzeFrame:a3 withTimestamp:&time andDuration:&v36 flags:&v37]) == 0))
+      if (!sceneClassifier || (*&time.duration.value = *&timestamp->var0, time.duration.epoch = timestamp->var3, v36 = *duration, (v10 = [(VCPVideoSceneClassifier *)sceneClassifier analyzeFrame:frame withTimestamp:&time andDuration:&v36 flags:&v37]) == 0))
       {
         if (!self->_safetyClassifier)
         {
@@ -334,9 +334,9 @@ void __50__MADMovieBlastDoorAnalyzer_queryVideoProperties___block_invoke(uint64_
         }
 
         sampleBufferOut = 0;
-        v36 = *a4;
+        v36 = *timestamp;
         formatDescriptionOut = 0;
-        if (CMVideoFormatDescriptionCreateForImageBuffer(0, a3, &formatDescriptionOut))
+        if (CMVideoFormatDescriptionCreateForImageBuffer(0, frame, &formatDescriptionOut))
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -356,7 +356,7 @@ LABEL_27:
         time.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
         time.presentationTimeStamp = v36;
         time.decodeTimeStamp = time.duration;
-        if (CMSampleBufferCreateReadyWithImageBuffer(*MEMORY[0x1E695E480], a3, formatDescriptionOut, &time, &sampleBufferOut))
+        if (CMSampleBufferCreateReadyWithImageBuffer(*MEMORY[0x1E695E480], frame, formatDescriptionOut, &time, &sampleBufferOut))
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -380,9 +380,9 @@ LABEL_28:
 
         CF<__CVBuffer *>::~CF(&formatDescriptionOut);
         safetyClassifier = self->_safetyClassifier;
-        *&time.duration.value = *&a4->var0;
-        time.duration.epoch = a4->var3;
-        v36 = *a5;
+        *&time.duration.value = *&timestamp->var0;
+        time.duration.epoch = timestamp->var3;
+        v36 = *duration;
         v10 = [(MADVideoSafetyClassifier *)safetyClassifier analyzeFrameWithSampleBuffer:sampleBufferOut timestamp:&time duration:&v36 andFlags:&v37];
         if (!v10)
         {
@@ -390,7 +390,7 @@ LABEL_31:
           CF<__CVBuffer *>::~CF(&sampleBufferOut);
 LABEL_32:
           humanActionAnalyzer = self->_humanActionAnalyzer;
-          if (!humanActionAnalyzer || (*&time.duration.value = *&a4->var0, time.duration.epoch = a4->var3, v36 = *a5, (v10 = [(VCPVideoHumanActionAnalyzer *)humanActionAnalyzer analyzeFrame:a3 timestamp:&time duration:&v36 frameStats:v18 flags:&v37]) == 0))
+          if (!humanActionAnalyzer || (*&time.duration.value = *&timestamp->var0, time.duration.epoch = timestamp->var3, v36 = *duration, (v10 = [(VCPVideoHumanActionAnalyzer *)humanActionAnalyzer analyzeFrame:frame timestamp:&time duration:&v36 frameStats:v18 flags:&v37]) == 0))
           {
             if (!self->_videoAnalysis)
             {
@@ -403,24 +403,24 @@ LABEL_32:
               if (v25)
               {
                 videoAnalysis = self->_videoAnalysis;
-                v27 = [(VCPVideoSceneClassifier *)v25 frameScenes];
-                [(VCPFullVideoAnalyzer *)videoAnalysis prepareVideoAnalysisByScenes:v27];
+                frameScenes = [(VCPVideoSceneClassifier *)v25 frameScenes];
+                [(VCPFullVideoAnalyzer *)videoAnalysis prepareVideoAnalysisByScenes:frameScenes];
               }
             }
 
-            v28 = [VCPSaliencyRegion salientRegionsFromPixelBuffer:a3];
-            [VCPSaliencyRegion attachSalientRegions:v28 toPixelBuffer:a3];
+            v28 = [VCPSaliencyRegion salientRegionsFromPixelBuffer:frame];
+            [VCPSaliencyRegion attachSalientRegions:v28 toPixelBuffer:frame];
 
             v29 = self->_videoAnalysis;
-            *&time.duration.value = *&a4->var0;
-            time.duration.epoch = a4->var3;
-            v36 = *a5;
-            v10 = [(VCPFullVideoAnalyzer *)v29 analyzeFrame:a3 timestamp:&time duration:&v36 frameStats:v18 flags:&v37 cancel:self->_cancelBlock];
+            *&time.duration.value = *&timestamp->var0;
+            time.duration.epoch = timestamp->var3;
+            v36 = *duration;
+            v10 = [(VCPFullVideoAnalyzer *)v29 analyzeFrame:frame timestamp:&time duration:&v36 frameStats:v18 flags:&v37 cancel:self->_cancelBlock];
             if (!v10)
             {
 LABEL_39:
               videoCNNAnalyzer = self->_videoCNNAnalyzer;
-              if (!videoCNNAnalyzer || (v31 = self->_videoAnalysis, v32 = self->_humanActionAnalyzer, *&time.duration.value = *&a4->var0, time.duration.epoch = a4->var3, (v10 = [(VCPVideoCNNAnalyzer *)videoCNNAnalyzer loadAnalysisResultsFrom:v31 actionAnalyzer:v32 atTime:&time]) == 0) && (v33 = self->_videoCNNAnalyzer, *&time.duration.value = *&a4->var0, time.duration.epoch = a4->var3, v36 = *a5, (v10 = [(VCPVideoCNNAnalyzer *)v33 analyzeFrame:a3 withTimestamp:&time andDuration:&v36 flags:&v37]) == 0))
+              if (!videoCNNAnalyzer || (v31 = self->_videoAnalysis, v32 = self->_humanActionAnalyzer, *&time.duration.value = *&timestamp->var0, time.duration.epoch = timestamp->var3, (v10 = [(VCPVideoCNNAnalyzer *)videoCNNAnalyzer loadAnalysisResultsFrom:v31 actionAnalyzer:v32 atTime:&time]) == 0) && (v33 = self->_videoCNNAnalyzer, *&time.duration.value = *&timestamp->var0, time.duration.epoch = timestamp->var3, v36 = *duration, (v10 = [(VCPVideoCNNAnalyzer *)v33 analyzeFrame:frame withTimestamp:&time andDuration:&v36 flags:&v37]) == 0))
               {
                 v10 = 0;
               }
@@ -451,7 +451,7 @@ LABEL_45:
   return v10;
 }
 
-- (int)createPixelBufferPool:(__CVPixelBufferPool *)a3
+- (int)createPixelBufferPool:(__CVPixelBufferPool *)pool
 {
   v12[4] = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E6966130];
@@ -468,14 +468,14 @@ LABEL_45:
   v12[3] = MEMORY[0x1E695E0F8];
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:4];
 
-  LODWORD(a3) = CVPixelBufferPoolCreate(0, 0, v9, a3);
-  return a3;
+  LODWORD(pool) = CVPixelBufferPoolCreate(0, 0, v9, pool);
+  return pool;
 }
 
-- (int)processVideo:(id)a3
+- (int)processVideo:(id)video
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  videoCopy = video;
   width = self->_width;
   height = self->_height;
   if (width >= height)
@@ -548,12 +548,12 @@ LABEL_45:
         CFRetain(pixelTransferSessionOut);
       }
 
-      v21 = self;
+      selfCopy = self;
       v23 = &v31;
       v24 = buf;
       v11 = _Block_copy(&aBlock);
       LOBYTE(v15) = 1;
-      [v4 generateMovieFramesForAttachmentWithFileURL:self->_movieURL targetPixelWidth:width targetPixelHeight:height frameLimit:-1 uniformSampling:0 framesPerSync:0 appliesPreferredTrackTransform:v15 resultHandler:{v11, aBlock, v17, v18, v19}];
+      [videoCopy generateMovieFramesForAttachmentWithFileURL:self->_movieURL targetPixelWidth:width targetPixelHeight:height frameLimit:-1 uniformSampling:0 framesPerSync:0 appliesPreferredTrackTransform:v15 resultHandler:{v11, aBlock, v17, v18, v19}];
       dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
       v12 = v32;
       v13 = v32[6];
@@ -702,75 +702,75 @@ LABEL_18:
 LABEL_19:
 }
 
-- (int)finalizeAnalyzers:(id)a3 timeRange:(id *)a4
+- (int)finalizeAnalyzers:(id)analyzers timeRange:(id *)range
 {
-  v6 = a3;
+  analyzersCopy = analyzers;
   sceneClassifier = self->_sceneClassifier;
   if (sceneClassifier)
   {
-    v8 = *&a4->var0.var3;
-    v24 = *&a4->var0.var0;
+    v8 = *&range->var0.var3;
+    v24 = *&range->var0.var0;
     v25 = v8;
-    v26 = *&a4->var1.var1;
+    v26 = *&range->var1.var1;
     v9 = [(VCPVideoSceneClassifier *)sceneClassifier finishAnalysisPass:&v24];
     if (v9)
     {
       goto LABEL_17;
     }
 
-    v10 = [(VCPVideoSceneClassifier *)self->_sceneClassifier results];
-    [v6 addEntriesFromDictionary:v10];
+    results = [(VCPVideoSceneClassifier *)self->_sceneClassifier results];
+    [analyzersCopy addEntriesFromDictionary:results];
   }
 
   safetyClassifier = self->_safetyClassifier;
   if (safetyClassifier)
   {
-    v12 = *&a4->var0.var3;
-    v24 = *&a4->var0.var0;
+    v12 = *&range->var0.var3;
+    v24 = *&range->var0.var0;
     v25 = v12;
-    v26 = *&a4->var1.var1;
+    v26 = *&range->var1.var1;
     v9 = [(MADVideoSafetyClassifier *)safetyClassifier finishAnalysisPass:&v24];
     if (v9)
     {
       goto LABEL_17;
     }
 
-    v13 = [(MADVideoSafetyClassifier *)self->_safetyClassifier results];
-    [v6 addEntriesFromDictionary:v13];
+    results2 = [(MADVideoSafetyClassifier *)self->_safetyClassifier results];
+    [analyzersCopy addEntriesFromDictionary:results2];
   }
 
   humanActionAnalyzer = self->_humanActionAnalyzer;
   if (humanActionAnalyzer)
   {
-    v15 = *&a4->var0.var3;
-    v24 = *&a4->var0.var0;
+    v15 = *&range->var0.var3;
+    v24 = *&range->var0.var0;
     v25 = v15;
-    v26 = *&a4->var1.var1;
+    v26 = *&range->var1.var1;
     v9 = [(VCPVideoHumanActionAnalyzer *)humanActionAnalyzer finishAnalysisPass:&v24];
     if (v9)
     {
       goto LABEL_17;
     }
 
-    v16 = [(VCPVideoHumanActionAnalyzer *)self->_humanActionAnalyzer results];
-    [v6 addEntriesFromDictionary:v16];
+    results3 = [(VCPVideoHumanActionAnalyzer *)self->_humanActionAnalyzer results];
+    [analyzersCopy addEntriesFromDictionary:results3];
   }
 
   videoAnalysis = self->_videoAnalysis;
   if (videoAnalysis)
   {
-    v18 = *&a4->var0.var3;
-    v24 = *&a4->var0.var0;
+    v18 = *&range->var0.var3;
+    v24 = *&range->var0.var0;
     v25 = v18;
-    v26 = *&a4->var1.var1;
+    v26 = *&range->var1.var1;
     v9 = [(VCPFullVideoAnalyzer *)videoAnalysis finishAnalysisPass:&v24];
     if (v9)
     {
       goto LABEL_17;
     }
 
-    v19 = [(VCPFullVideoAnalyzer *)self->_videoAnalysis results];
-    [v6 addEntriesFromDictionary:v19];
+    results4 = [(VCPFullVideoAnalyzer *)self->_videoAnalysis results];
+    [analyzersCopy addEntriesFromDictionary:results4];
   }
 
   videoCNNAnalyzer = self->_videoCNNAnalyzer;
@@ -781,15 +781,15 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v21 = *&a4->var0.var3;
-  v24 = *&a4->var0.var0;
+  v21 = *&range->var0.var3;
+  v24 = *&range->var0.var0;
   v25 = v21;
-  v26 = *&a4->var1.var1;
+  v26 = *&range->var1.var1;
   v9 = [(VCPVideoCNNAnalyzer *)videoCNNAnalyzer finishAnalysisPass:&v24];
   if (!v9)
   {
-    v22 = [(VCPVideoCNNAnalyzer *)self->_videoCNNAnalyzer results];
-    [v6 addEntriesFromDictionary:v22];
+    results5 = [(VCPVideoCNNAnalyzer *)self->_videoCNNAnalyzer results];
+    [analyzersCopy addEntriesFromDictionary:results5];
 
     goto LABEL_16;
   }
@@ -799,7 +799,7 @@ LABEL_17:
   return v9;
 }
 
-- (id)analyzeAsset:(id *)a3
+- (id)analyzeAsset:(id *)asset
 {
   v39[1] = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
@@ -824,17 +824,17 @@ LABEL_17:
   v8 = objc_alloc_init(v6);
   if ([(MADMovieBlastDoorAnalyzer *)self queryVideoProperties:v8])
   {
-    if (!a3)
+    if (!asset)
     {
       goto LABEL_8;
     }
 
     v9 = MEMORY[0x1E696ABC0];
     v38 = *MEMORY[0x1E696A578];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to query movie properties"];
-    v39[0] = v10;
+    dictionary = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to query movie properties"];
+    v39[0] = dictionary;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
-    *a3 = [v9 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v11];
+    *asset = [v9 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v11];
 
     goto LABEL_6;
   }
@@ -843,19 +843,19 @@ LABEL_17:
   v14 = v13;
   if (!v13)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v19 = *&self->_timeRange.start.flags;
     v25 = *(&self->_orientation + 1);
     v26 = v19;
     v27 = *(&self->_timeRange.duration.value + 4);
-    if (![(MADMovieBlastDoorAnalyzer *)self finalizeAnalyzers:v10 timeRange:&v25])
+    if (![(MADMovieBlastDoorAnalyzer *)self finalizeAnalyzers:dictionary timeRange:&v25])
     {
-      v10 = v10;
-      a3 = v10;
+      dictionary = dictionary;
+      asset = dictionary;
       goto LABEL_7;
     }
 
-    if (!a3)
+    if (!asset)
     {
 LABEL_7:
 
@@ -867,35 +867,35 @@ LABEL_7:
     v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to finalize video processing"];
     v33 = v21;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-    *a3 = [v20 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v22];
+    *asset = [v20 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v22];
 
 LABEL_6:
-    a3 = 0;
+    asset = 0;
     goto LABEL_7;
   }
 
-  if (a3)
+  if (asset)
   {
     v15 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E696A768];
     if (v13 == -128)
     {
       v36 = *MEMORY[0x1E696A578];
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video processing canceled"];
-      v37 = v10;
+      dictionary = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video processing canceled"];
+      v37 = dictionary;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
       v18 = [v15 errorWithDomain:v16 code:-128 userInfo:v17];
-      *a3 = v18;
+      *asset = v18;
     }
 
     else
     {
       v34 = *MEMORY[0x1E696A578];
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video processing failed"];
-      v35 = v10;
+      dictionary = [MEMORY[0x1E696AEC0] stringWithFormat:@"Video processing failed"];
+      v35 = dictionary;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
       v24 = [v15 errorWithDomain:v16 code:v14 userInfo:v23];
-      *a3 = v24;
+      *asset = v24;
     }
 
     goto LABEL_6;
@@ -905,7 +905,7 @@ LABEL_8:
 
   objc_autoreleasePoolPop(v5);
 
-  return a3;
+  return asset;
 }
 
 - ($AFC8CF76A46F37F9FB23C20884F4FD99)timeRange

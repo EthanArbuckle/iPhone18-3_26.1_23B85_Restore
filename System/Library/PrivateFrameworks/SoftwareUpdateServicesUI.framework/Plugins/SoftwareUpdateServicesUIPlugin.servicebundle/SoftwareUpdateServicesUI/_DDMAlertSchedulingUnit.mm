@@ -1,5 +1,5 @@
 @interface _DDMAlertSchedulingUnit
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -14,19 +14,19 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v8 = self;
+  selfCopy = self;
   v7[2] = a2;
-  v7[1] = a3;
+  v7[1] = zone;
   v7[0] = objc_alloc_init(_DDMAlertSchedulingUnit);
   if (v7[0])
   {
-    v5 = [(NSDate *)v8->_date copy];
+    v5 = [(NSDate *)selfCopy->_date copy];
     [v7[0] setDate:?];
 
-    [v7[0] setWindow:v8->_window];
-    v6 = [(NSString *)v8->_alertMsgFormat copy];
+    [v7[0] setWindow:selfCopy->_window];
+    v6 = [(NSString *)selfCopy->_alertMsgFormat copy];
     [v7[0] setAlertMsgFormat:?];
   }
 

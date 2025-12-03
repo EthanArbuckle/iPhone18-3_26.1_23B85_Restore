@@ -1,9 +1,9 @@
 @interface PFPathProvider
 + (PFPathProvider)scopedCurrentContainer;
 + (PFPathProvider)scopedSystemContainerForCurrentProcess;
-+ (id)providerFromProvider:(id)a3;
-- (id)initFromProvider:(id)a3;
-- (id)providerByAppendingPathComponent:(id)a3;
++ (id)providerFromProvider:(id)provider;
+- (id)initFromProvider:(id)provider;
+- (id)providerByAppendingPathComponent:(id)component;
 @end
 
 @implementation PFPathProvider
@@ -11,8 +11,8 @@
 + (PFPathProvider)scopedCurrentContainer
 {
   v2 = [PFPathProvider alloc];
-  v3 = [MEMORY[0x1E698E728] pathProviderForCurrentContainer];
-  v4 = [(PFPathProvider *)v2 initFromProvider:v3];
+  pathProviderForCurrentContainer = [MEMORY[0x1E698E728] pathProviderForCurrentContainer];
+  v4 = [(PFPathProvider *)v2 initFromProvider:pathProviderForCurrentContainer];
 
   v5 = [v4 providerByAppendingPathComponent:@"com.apple.PaperBoardUI"];
 
@@ -21,43 +21,43 @@
 
 + (PFPathProvider)scopedSystemContainerForCurrentProcess
 {
-  v2 = [MEMORY[0x1E698E620] tokenForCurrentProcess];
-  v3 = [v2 hasEntitlement:@"com.apple.security.system-container"];
+  tokenForCurrentProcess = [MEMORY[0x1E698E620] tokenForCurrentProcess];
+  v3 = [tokenForCurrentProcess hasEntitlement:@"com.apple.security.system-container"];
 
   if (v3)
   {
-    v4 = [MEMORY[0x1E698E728] pathProviderForSystemContainerForCurrentProcess];
-    v5 = v4;
-    if (v4)
+    pathProviderForSystemContainerForCurrentProcess = [MEMORY[0x1E698E728] pathProviderForSystemContainerForCurrentProcess];
+    v5 = pathProviderForSystemContainerForCurrentProcess;
+    if (pathProviderForSystemContainerForCurrentProcess)
     {
-      v6 = [v4 defaultPath];
+      defaultPath = [pathProviderForSystemContainerForCurrentProcess defaultPath];
 
-      if (v6)
+      if (defaultPath)
       {
         v7 = [[PFPathProvider alloc] initFromProvider:v5];
-        v6 = [v7 providerByAppendingPathComponent:@"com.apple.PaperBoardUI"];
+        defaultPath = [v7 providerByAppendingPathComponent:@"com.apple.PaperBoardUI"];
       }
     }
 
     else
     {
-      v6 = 0;
+      defaultPath = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    defaultPath = 0;
   }
 
-  return v6;
+  return defaultPath;
 }
 
-+ (id)providerFromProvider:(id)a3
++ (id)providerFromProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = providerCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -85,7 +85,7 @@
 
   else
   {
-    v9 = [[a1 alloc] initFromProvider:v6];
+    v9 = [[self alloc] initFromProvider:v6];
   }
 
   v10 = v9;
@@ -93,41 +93,41 @@
   return v10;
 }
 
-- (id)initFromProvider:(id)a3
+- (id)initFromProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = PFPathProvider;
   v5 = [(PFPathProvider *)&v13 init];
   if (v5)
   {
-    v6 = [v4 defaultPath];
+    defaultPath = [providerCopy defaultPath];
     defaultPath = v5->_defaultPath;
-    v5->_defaultPath = v6;
+    v5->_defaultPath = defaultPath;
 
-    v8 = [v4 libraryPath];
+    libraryPath = [providerCopy libraryPath];
     libraryPath = v5->_libraryPath;
-    v5->_libraryPath = v8;
+    v5->_libraryPath = libraryPath;
 
-    v10 = [v4 cachesPath];
+    cachesPath = [providerCopy cachesPath];
     cachesPath = v5->_cachesPath;
-    v5->_cachesPath = v10;
+    v5->_cachesPath = cachesPath;
   }
 
   return v5;
 }
 
-- (id)providerByAppendingPathComponent:(id)a3
+- (id)providerByAppendingPathComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v5 = objc_alloc_init(PFPathProvider);
-  v6 = [(NSURL *)self->_defaultPath URLByAppendingPathComponent:v4 isDirectory:1];
+  v6 = [(NSURL *)self->_defaultPath URLByAppendingPathComponent:componentCopy isDirectory:1];
   [(PFPathProvider *)v5 setDefaultPath:v6];
 
-  v7 = [(NSURL *)self->_libraryPath URLByAppendingPathComponent:v4 isDirectory:1];
+  v7 = [(NSURL *)self->_libraryPath URLByAppendingPathComponent:componentCopy isDirectory:1];
   [(PFPathProvider *)v5 setLibraryPath:v7];
 
-  v8 = [(NSURL *)self->_cachesPath URLByAppendingPathComponent:v4 isDirectory:1];
+  v8 = [(NSURL *)self->_cachesPath URLByAppendingPathComponent:componentCopy isDirectory:1];
 
   [(PFPathProvider *)v5 setCachesPath:v8];
 

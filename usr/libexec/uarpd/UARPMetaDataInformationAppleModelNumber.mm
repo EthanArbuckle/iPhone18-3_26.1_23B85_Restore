@@ -1,7 +1,7 @@
 @interface UARPMetaDataInformationAppleModelNumber
 - (UARPMetaDataInformationAppleModelNumber)init;
-- (UARPMetaDataInformationAppleModelNumber)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataInformationAppleModelNumber)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataInformationAppleModelNumber)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataInformationAppleModelNumber)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -24,16 +24,16 @@
   return v3;
 }
 
-- (UARPMetaDataInformationAppleModelNumber)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataInformationAppleModelNumber)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataInformationAppleModelNumber *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataInformationAppleModelNumber;
-    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:valueCopy];
     appleModelNumber = v7->_appleModelNumber;
     v7->_appleModelNumber = v8;
 
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (UARPMetaDataInformationAppleModelNumber)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataInformationAppleModelNumber)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataInformationAppleModelNumber *)self init];
   if (v6)
   {
-    v7 = [[NSString alloc] initWithBytes:a4 length:a3 encoding:4];
+    v7 = [[NSString alloc] initWithBytes:value length:length encoding:4];
     appleModelNumber = v6->_appleModelNumber;
     v6->_appleModelNumber = v7;
 
@@ -70,19 +70,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataInformationAppleModelNumber *)self appleModelNumber];
+  appleModelNumber = [(UARPMetaDataInformationAppleModelNumber *)self appleModelNumber];
   v6.receiver = self;
   v6.super_class = UARPMetaDataInformationAppleModelNumber;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithString:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithString:appleModelNumber];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataInformationAppleModelNumber *)self appleModelNumber];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  appleModelNumber = [(UARPMetaDataInformationAppleModelNumber *)self appleModelNumber];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, appleModelNumber];
 
   return v5;
 }

@@ -1,11 +1,11 @@
 @interface _CloseButton.Coordinator
 - (_TtCV12FinanceKitUIP33_749EBBE7CDDBA07A8878912459ED339212_CloseButton11Coordinator)init;
-- (void)doAction:(id)a3;
+- (void)doAction:(id)action;
 @end
 
 @implementation _CloseButton.Coordinator
 
-- (void)doAction:(id)a3
+- (void)doAction:(id)action
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -16,11 +16,11 @@
   }
 
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_23875F2E0();
   swift_unknownObjectRelease();
-  v6 = *(&v4->super.isa + OBJC_IVAR____TtCV12FinanceKitUIP33_749EBBE7CDDBA07A8878912459ED339212_CloseButton11Coordinator_configuration);
-  v5 = *&v4->configuration[OBJC_IVAR____TtCV12FinanceKitUIP33_749EBBE7CDDBA07A8878912459ED339212_CloseButton11Coordinator_configuration];
+  v6 = *(&selfCopy->super.isa + OBJC_IVAR____TtCV12FinanceKitUIP33_749EBBE7CDDBA07A8878912459ED339212_CloseButton11Coordinator_configuration);
+  v5 = *&selfCopy->configuration[OBJC_IVAR____TtCV12FinanceKitUIP33_749EBBE7CDDBA07A8878912459ED339212_CloseButton11Coordinator_configuration];
 
   v6(v7);
 

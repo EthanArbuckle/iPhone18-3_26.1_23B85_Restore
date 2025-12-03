@@ -1,29 +1,29 @@
 @interface NUNISceneUpdateDescription
-+ (id)descriptionWithVista:(unint64_t)a3 updateBlock:(id)a4;
-- (NUNISceneUpdateDescription)initWithVista:(unint64_t)a3 updateBlock:(id)a4;
++ (id)descriptionWithVista:(unint64_t)vista updateBlock:(id)block;
+- (NUNISceneUpdateDescription)initWithVista:(unint64_t)vista updateBlock:(id)block;
 @end
 
 @implementation NUNISceneUpdateDescription
 
-+ (id)descriptionWithVista:(unint64_t)a3 updateBlock:(id)a4
++ (id)descriptionWithVista:(unint64_t)vista updateBlock:(id)block
 {
-  v5 = a4;
-  v6 = [[NUNISceneUpdateDescription alloc] initWithVista:a3 updateBlock:v5];
+  blockCopy = block;
+  v6 = [[NUNISceneUpdateDescription alloc] initWithVista:vista updateBlock:blockCopy];
 
   return v6;
 }
 
-- (NUNISceneUpdateDescription)initWithVista:(unint64_t)a3 updateBlock:(id)a4
+- (NUNISceneUpdateDescription)initWithVista:(unint64_t)vista updateBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = NUNISceneUpdateDescription;
   v7 = [(NUNISceneUpdateDescription *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_vista = a3;
-    v9 = _Block_copy(v6);
+    v7->_vista = vista;
+    v9 = _Block_copy(blockCopy);
     updateBlock = v8->_updateBlock;
     v8->_updateBlock = v9;
   }

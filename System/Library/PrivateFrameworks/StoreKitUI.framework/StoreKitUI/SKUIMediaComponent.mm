@@ -1,19 +1,19 @@
 @interface SKUIMediaComponent
-- (SKUIMediaComponent)initWithArtwork:(id)a3;
-- (SKUIMediaComponent)initWithArtworkProvider:(id)a3 appearance:(int64_t)a4;
-- (SKUIMediaComponent)initWithCustomPageContext:(id)a3;
-- (SKUIMediaComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4;
+- (SKUIMediaComponent)initWithArtwork:(id)artwork;
+- (SKUIMediaComponent)initWithArtworkProvider:(id)provider appearance:(int64_t)appearance;
+- (SKUIMediaComponent)initWithCustomPageContext:(id)context;
+- (SKUIMediaComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind;
 - (id)bestThumbnailArtwork;
-- (id)bestThumbnailForWidth:(double)a3;
-- (id)valueForMetricsField:(id)a3;
+- (id)bestThumbnailForWidth:(double)width;
+- (id)valueForMetricsField:(id)field;
 @end
 
 @implementation SKUIMediaComponent
 
-- (SKUIMediaComponent)initWithArtwork:(id)a3
+- (SKUIMediaComponent)initWithArtwork:(id)artwork
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  artworkCopy = artwork;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -38,7 +38,7 @@
     v14->_thumbnailArtworkProvider = v15;
 
     v17 = v14->_thumbnailArtworkProvider;
-    v21[0] = v4;
+    v21[0] = artworkCopy;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
     [(SKUIArtworkProviding *)v17 setArtworks:v18];
   }
@@ -46,9 +46,9 @@
   return v14;
 }
 
-- (SKUIMediaComponent)initWithArtworkProvider:(id)a3 appearance:(int64_t)a4
+- (SKUIMediaComponent)initWithArtworkProvider:(id)provider appearance:(int64_t)appearance
 {
-  v6 = a3;
+  providerCopy = provider;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -67,9 +67,9 @@
   v16 = v15;
   if (v15)
   {
-    v15->_mediaAppearance = a4;
+    v15->_mediaAppearance = appearance;
     v15->_mediaType = 0;
-    v17 = [v6 copy];
+    v17 = [providerCopy copy];
     thumbnailArtworkProvider = v16->_thumbnailArtworkProvider;
     v16->_thumbnailArtworkProvider = v17;
   }
@@ -77,9 +77,9 @@
   return v16;
 }
 
-- (SKUIMediaComponent)initWithCustomPageContext:(id)a3
+- (SKUIMediaComponent)initWithCustomPageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -94,11 +94,11 @@
 
   v43.receiver = self;
   v43.super_class = SKUIMediaComponent;
-  v13 = [(SKUIPageComponent *)&v43 initWithCustomPageContext:v4];
+  v13 = [(SKUIPageComponent *)&v43 initWithCustomPageContext:contextCopy];
   if (v13)
   {
-    v14 = [v4 componentDictionary];
-    v15 = [v14 objectForKey:@"title"];
+    componentDictionary = [contextCopy componentDictionary];
+    v15 = [componentDictionary objectForKey:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,7 +107,7 @@
       v13->_accessibilityLabel = v16;
     }
 
-    v18 = [v14 objectForKey:@"align"];
+    v18 = [componentDictionary objectForKey:@"align"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -115,7 +115,7 @@
       v13->_alignment = SKUIPageComponentAlignmentForString(v18);
     }
 
-    v19 = [v14 objectForKey:@"duration"];
+    v19 = [componentDictionary objectForKey:@"duration"];
 
     if (objc_opt_respondsToSelector())
     {
@@ -123,26 +123,26 @@
       v13->_duration = v20;
     }
 
-    v21 = [v14 objectForKey:@"link"];
+    v21 = [componentDictionary objectForKey:@"link"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = [v4 copy];
+      v22 = [contextCopy copy];
       [v22 setComponentDictionary:v21];
       v23 = [[SKUILink alloc] initWithComponentContext:v22];
       link = v13->_link;
       v13->_link = v23;
     }
 
-    v25 = [v14 objectForKey:@"adamId"];
+    v25 = [componentDictionary objectForKey:@"adamId"];
 
     if (objc_opt_respondsToSelector())
     {
       v13->_mediaIdentifier = [v25 longLongValue];
     }
 
-    v26 = [v14 objectForKey:@"subType"];
+    v26 = [componentDictionary objectForKey:@"subType"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -160,14 +160,14 @@
       if (![v26 isEqualToString:@"video"])
       {
 LABEL_22:
-        v28 = [v14 objectForKey:@"url"];
+        v28 = [componentDictionary objectForKey:@"url"];
 
         if (!v28)
         {
-          v29 = [v14 objectForKey:@"audioUrl"];
+          v29 = [componentDictionary objectForKey:@"audioUrl"];
           if (!v29)
           {
-            v29 = [v14 objectForKey:@"videoUrl"];
+            v29 = [componentDictionary objectForKey:@"videoUrl"];
           }
 
           v28 = v29;
@@ -181,13 +181,13 @@ LABEL_22:
           v13->_mediaURLString = v30;
         }
 
-        v32 = [v14 objectForKey:@"artwork"];
+        v32 = [componentDictionary objectForKey:@"artwork"];
 
         v33 = [SKUIArtworkProvidingFactory artworkProviderForStoreResponse:v32];
         thumbnailArtworkProvider = v13->_thumbnailArtworkProvider;
         v13->_thumbnailArtworkProvider = v33;
 
-        v35 = [v14 objectForKey:@"title"];
+        v35 = [componentDictionary objectForKey:@"title"];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -197,7 +197,7 @@ LABEL_22:
           v13->_title = v36;
         }
 
-        v38 = [v14 objectForKey:@"titleSize"];
+        v38 = [componentDictionary objectForKey:@"titleSize"];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -216,7 +216,7 @@ LABEL_22:
         }
 
         v13->_titleFontSize = *&v39;
-        v41 = [v14 objectForKey:@"titleWeight"];
+        v41 = [componentDictionary objectForKey:@"titleWeight"];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -239,9 +239,9 @@ LABEL_37:
   return v13;
 }
 
-- (SKUIMediaComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4
+- (SKUIMediaComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind
 {
-  v6 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -256,11 +256,11 @@ LABEL_37:
 
   v21.receiver = self;
   v21.super_class = SKUIMediaComponent;
-  v15 = [(SKUIPageComponent *)&v21 initWithFeaturedContentContext:v6 kind:a4];
+  v15 = [(SKUIPageComponent *)&v21 initWithFeaturedContentContext:contextCopy kind:kind];
   if (v15)
   {
-    v16 = [v6 componentDictionary];
-    v17 = [v16 objectForKey:@"artwork"];
+    componentDictionary = [contextCopy componentDictionary];
+    v17 = [componentDictionary objectForKey:@"artwork"];
     v18 = [SKUIArtworkProvidingFactory artworkProviderForStoreResponse:v17];
     thumbnailArtworkProvider = v15->_thumbnailArtworkProvider;
     v15->_thumbnailArtworkProvider = v18;
@@ -273,8 +273,8 @@ LABEL_37:
 
 - (id)bestThumbnailArtwork
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = v4;
 
   thumbnailArtworkProvider = self->_thumbnailArtworkProvider;
@@ -292,35 +292,35 @@ LABEL_37:
   return v7;
 }
 
-- (id)bestThumbnailForWidth:(double)a3
+- (id)bestThumbnailForWidth:(double)width
 {
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
-  v7 = v6 * a3;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  v7 = v6 * width;
 
-  v8 = [(SKUIArtworkProviding *)self->_thumbnailArtworkProvider artworkForSize:v7];
-  if (!v8)
+  bestThumbnailArtwork = [(SKUIArtworkProviding *)self->_thumbnailArtworkProvider artworkForSize:v7];
+  if (!bestThumbnailArtwork)
   {
-    v8 = [(SKUIMediaComponent *)self bestThumbnailArtwork];
+    bestThumbnailArtwork = [(SKUIMediaComponent *)self bestThumbnailArtwork];
   }
 
-  return v8;
+  return bestThumbnailArtwork;
 }
 
-- (id)valueForMetricsField:(id)a3
+- (id)valueForMetricsField:(id)field
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D6A490]])
+  fieldCopy = field;
+  if ([fieldCopy isEqualToString:*MEMORY[0x277D6A490]])
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_mediaIdentifier];
+    title = [MEMORY[0x277CCABB0] numberWithLongLong:self->_mediaIdentifier];
 LABEL_6:
-    v6 = v5;
+    v6 = title;
     goto LABEL_7;
   }
 
-  if (([v4 isEqualToString:*MEMORY[0x277D6A4A0]] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277D6A4A8]))
+  if (([fieldCopy isEqualToString:*MEMORY[0x277D6A4A0]] & 1) != 0 || objc_msgSend(fieldCopy, "isEqualToString:", *MEMORY[0x277D6A4A8]))
   {
-    v5 = [(SKUIMediaComponent *)self title];
+    title = [(SKUIMediaComponent *)self title];
     goto LABEL_6;
   }
 

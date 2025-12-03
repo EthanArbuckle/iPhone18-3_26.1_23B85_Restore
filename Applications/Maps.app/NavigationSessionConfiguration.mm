@@ -1,5 +1,5 @@
 @interface NavigationSessionConfiguration
-- (NavigationSessionConfiguration)initWithStartNavigationDetails:(id)a3 routeCollection:(id)a4 traits:(id)a5 isETAOnlyMode:(BOOL)a6;
+- (NavigationSessionConfiguration)initWithStartNavigationDetails:(id)details routeCollection:(id)collection traits:(id)traits isETAOnlyMode:(BOOL)mode;
 - (SharedTripSuggestionsPrefetchContext)sharedTripPrefetchContext;
 - (id)description;
 @end
@@ -30,24 +30,24 @@
   return sharedTripPrefetchContext;
 }
 
-- (NavigationSessionConfiguration)initWithStartNavigationDetails:(id)a3 routeCollection:(id)a4 traits:(id)a5 isETAOnlyMode:(BOOL)a6
+- (NavigationSessionConfiguration)initWithStartNavigationDetails:(id)details routeCollection:(id)collection traits:(id)traits isETAOnlyMode:(BOOL)mode
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  detailsCopy = details;
+  collectionCopy = collection;
+  traitsCopy = traits;
   v19.receiver = self;
   v19.super_class = NavigationSessionConfiguration;
   v14 = [(NavigationSessionConfiguration *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_startNavigationDetails, a3);
-    objc_storeStrong(&v15->_routeCollection, a4);
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_startNavigationDetails, details);
+    objc_storeStrong(&v15->_routeCollection, collection);
+    v16 = [traitsCopy copy];
     traits = v15->_traits;
     v15->_traits = v16;
 
-    v15->_isETAOnlyMode = a6;
+    v15->_isETAOnlyMode = mode;
   }
 
   return v15;

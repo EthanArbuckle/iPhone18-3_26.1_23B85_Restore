@@ -1,36 +1,36 @@
 @interface ASDBox
-- (ASDBox)initWithBoxUID:(id)a3 withPlugin:(id)a4;
-- (ASDBox)initWithPlugin:(id)a3;
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8;
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3;
+- (ASDBox)initWithBoxUID:(id)d withPlugin:(id)plugin;
+- (ASDBox)initWithPlugin:(id)plugin;
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client;
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property;
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable;
 - (NSArray)audioDevices;
 - (id)systemHasPoweredOn;
 - (id)systemWillSleep;
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5;
-- (void)addAudioDevice:(id)a3;
-- (void)addClockDevice:(id)a3;
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data;
+- (void)addAudioDevice:(id)device;
+- (void)addClockDevice:(id)device;
 - (void)addDevicesToPlugin;
-- (void)doAddAudioDevice:(id)a3;
-- (void)doAddClockDevice:(id)a3;
+- (void)doAddAudioDevice:(id)device;
+- (void)doAddClockDevice:(id)device;
 - (void)doRemoveAllAudioDevices;
 - (void)doRemoveAllClockDevices;
-- (void)doRemoveAudioDevice:(id)a3;
-- (void)doRemoveClockDevice:(id)a3;
+- (void)doRemoveAudioDevice:(id)device;
+- (void)doRemoveClockDevice:(id)device;
 - (void)removeAllAudioDevices;
 - (void)removeAllClockDevices;
-- (void)removeAudioDevice:(id)a3;
-- (void)removeClockDevice:(id)a3;
+- (void)removeAudioDevice:(id)device;
+- (void)removeClockDevice:(id)device;
 - (void)removeDevicesFromPlugin;
-- (void)setAcquired:(BOOL)a3;
-- (void)setAcquisitionFailure:(int)a3;
-- (void)setBoxName:(id)a3;
-- (void)setIdentify:(BOOL)a3;
+- (void)setAcquired:(BOOL)acquired;
+- (void)setAcquisitionFailure:(int)failure;
+- (void)setBoxName:(id)name;
+- (void)setIdentify:(BOOL)identify;
 @end
 
 @implementation ASDBox
 
-- (ASDBox)initWithPlugin:(id)a3
+- (ASDBox)initWithPlugin:(id)plugin
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
@@ -40,16 +40,16 @@
   return 0;
 }
 
-- (ASDBox)initWithBoxUID:(id)a3 withPlugin:(id)a4
+- (ASDBox)initWithBoxUID:(id)d withPlugin:(id)plugin
 {
-  v7 = a3;
+  dCopy = d;
   v23.receiver = self;
   v23.super_class = ASDBox;
-  v8 = [(ASDObject *)&v23 initWithPlugin:a4];
+  v8 = [(ASDObject *)&v23 initWithPlugin:plugin];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_boxUID, a3);
+    objc_storeStrong(&v8->_boxUID, d);
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     audioDevices = v9->_audioDevices;
     v9->_audioDevices = v10;
@@ -59,13 +59,13 @@
     v9->_clockDevices = v12;
 
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v15 = [v14 bundleIdentifier];
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.box.%@.devices", v15, v9->_boxUID];
+    bundleIdentifier = [v14 bundleIdentifier];
+    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.box.%@.devices", bundleIdentifier, v9->_boxUID];
     v17 = dispatch_queue_create([v16 UTF8String], 0);
     deviceQueue = v9->_deviceQueue;
     v9->_deviceQueue = v17;
 
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.box.%@.acquire", v15, v9->_boxUID];
+    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.box.%@.acquire", bundleIdentifier, v9->_boxUID];
     v20 = dispatch_queue_create([v19 UTF8String], 0);
     acquireQueue = v9->_acquireQueue;
     v9->_acquireQueue = v20;
@@ -76,16 +76,16 @@
   return v9;
 }
 
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  mSelector = a3->mSelector;
+  mSelector = property->mSelector;
   result = 1;
-  if (a3->mSelector <= 1652060013)
+  if (property->mSelector <= 1652060013)
   {
     if (mSelector > 1651013224)
     {
@@ -188,16 +188,16 @@ LABEL_27:
   return result;
 }
 
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  mSelector = a3->mSelector;
+  mSelector = property->mSelector;
   v6 = 8;
-  if (a3->mSelector > 1719105133)
+  if (property->mSelector > 1719105133)
   {
     if (mSelector <= 1819173228)
     {
@@ -379,14 +379,14 @@ uint64_t __65__ASDBox_dataSizeForProperty_withQualifierSize_andQualifierData___b
   return result;
 }
 
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client
 {
-  v8 = self;
+  selfCopy = self;
   LOBYTE(self) = 0;
-  if (a3 && a6 && a7)
+  if (property && dataSize && andData)
   {
-    mSelector = a3->mSelector;
-    if (a3->mSelector > 1719105133)
+    mSelector = property->mSelector;
+    if (property->mSelector > 1719105133)
     {
       if (mSelector <= 1819173228)
       {
@@ -394,12 +394,12 @@ uint64_t __65__ASDBox_dataSizeForProperty_withQualifierSize_andQualifierData___b
         {
           if (mSelector == 1819107691)
           {
-            if (*a6 < 8)
+            if (*dataSize < 8)
             {
               goto LABEL_72;
             }
 
-            v18 = [(ASDBox *)v8 manufacturerName];
+            manufacturerName = [(ASDBox *)selfCopy manufacturerName];
           }
 
           else
@@ -409,12 +409,12 @@ uint64_t __65__ASDBox_dataSizeForProperty_withQualifierSize_andQualifierData___b
               goto LABEL_74;
             }
 
-            if (*a6 < 8)
+            if (*dataSize < 8)
             {
               goto LABEL_72;
             }
 
-            v18 = [(ASDBox *)v8 modelName];
+            manufacturerName = [(ASDBox *)selfCopy modelName];
           }
 
           goto LABEL_67;
@@ -422,12 +422,12 @@ uint64_t __65__ASDBox_dataSizeForProperty_withQualifierSize_andQualifierData___b
 
         if (mSelector == 1719105134)
         {
-          if (*a6 < 8)
+          if (*dataSize < 8)
           {
             goto LABEL_72;
           }
 
-          v18 = [(ASDBox *)v8 firmwareVersion];
+          manufacturerName = [(ASDBox *)selfCopy firmwareVersion];
           goto LABEL_67;
         }
 
@@ -436,20 +436,20 @@ uint64_t __65__ASDBox_dataSizeForProperty_withQualifierSize_andQualifierData___b
           goto LABEL_74;
         }
 
-        if (*a6 < 4)
+        if (*dataSize < 4)
         {
           goto LABEL_72;
         }
 
-        LODWORD(self) = [(ASDBox *)v8 supportsIdentify];
+        LODWORD(self) = [(ASDBox *)selfCopy supportsIdentify];
         if (!self)
         {
           return self;
         }
 
-        v15 = [(ASDBox *)v8 identify];
+        identify = [(ASDBox *)selfCopy identify];
 LABEL_63:
-        *a7 = v15;
+        *andData = identify;
         goto LABEL_64;
       }
 
@@ -457,12 +457,12 @@ LABEL_63:
       {
         if (mSelector == 1819173229)
         {
-          if (*a6 < 8)
+          if (*dataSize < 8)
           {
             goto LABEL_72;
           }
 
-          v18 = [(ASDBox *)v8 boxName];
+          manufacturerName = [(ASDBox *)selfCopy boxName];
         }
 
         else
@@ -472,12 +472,12 @@ LABEL_63:
             goto LABEL_74;
           }
 
-          if (*a6 < 8)
+          if (*dataSize < 8)
           {
             goto LABEL_72;
           }
 
-          v18 = [(ASDBox *)v8 modelUID];
+          manufacturerName = [(ASDBox *)selfCopy modelUID];
         }
 
         goto LABEL_67;
@@ -487,12 +487,12 @@ LABEL_63:
       {
         if (mSelector == 1936618861)
         {
-          if (*a6 < 8)
+          if (*dataSize < 8)
           {
             goto LABEL_72;
           }
 
-          v18 = [(ASDBox *)v8 serialNumber];
+          manufacturerName = [(ASDBox *)selfCopy serialNumber];
           goto LABEL_67;
         }
 
@@ -501,12 +501,12 @@ LABEL_63:
           goto LABEL_74;
         }
 
-        if (*a6 < 4)
+        if (*dataSize < 4)
         {
           goto LABEL_72;
         }
 
-        v15 = [(ASDBox *)v8 transportType];
+        identify = [(ASDBox *)selfCopy transportType];
         goto LABEL_63;
       }
 
@@ -514,15 +514,15 @@ LABEL_63:
       v26 = &v25;
       v27 = 0x2020000000;
       v28 = 0;
-      deviceQueue = v8->_deviceQueue;
+      deviceQueue = selfCopy->_deviceQueue;
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __81__ASDBox_getProperty_withQualifierSize_qualifierData_dataSize_andData_forClient___block_invoke_3;
       v24[3] = &unk_278CE3E50;
-      v24[4] = v8;
+      v24[4] = selfCopy;
       v24[5] = &v25;
-      v24[6] = a6;
-      v24[7] = a7;
+      v24[6] = dataSize;
+      v24[7] = andData;
       v17 = v24;
     }
 
@@ -536,16 +536,16 @@ LABEL_63:
           {
             if (mSelector == 1652060006)
             {
-              if (*a6 >= 4)
+              if (*dataSize >= 4)
               {
-                v12 = [(ASDBox *)v8 acquireQueue];
-                v13 = v12;
+                acquireQueue = [(ASDBox *)selfCopy acquireQueue];
+                v13 = acquireQueue;
                 block[0] = MEMORY[0x277D85DD0];
                 block[1] = 3221225472;
                 block[2] = __81__ASDBox_getProperty_withQualifierSize_qualifierData_dataSize_andData_forClient___block_invoke_2;
                 block[3] = &unk_278CE3F90;
-                block[4] = v8;
-                block[5] = a7;
+                block[4] = selfCopy;
+                block[5] = andData;
                 v14 = block;
                 goto LABEL_54;
               }
@@ -557,24 +557,24 @@ LABEL_72:
 
             if (mSelector == 1652060014)
             {
-              if (*a6 >= 4)
+              if (*dataSize >= 4)
               {
-                v12 = [(ASDBox *)v8 acquireQueue];
-                v13 = v12;
+                acquireQueue = [(ASDBox *)selfCopy acquireQueue];
+                v13 = acquireQueue;
                 v30[0] = MEMORY[0x277D85DD0];
                 v30[1] = 3221225472;
                 v30[2] = __81__ASDBox_getProperty_withQualifierSize_qualifierData_dataSize_andData_forClient___block_invoke;
                 v30[3] = &unk_278CE3F90;
-                v30[4] = v8;
-                v30[5] = a7;
+                v30[4] = selfCopy;
+                v30[5] = andData;
                 v14 = v30;
 LABEL_54:
-                dispatch_sync(v12, v14);
+                dispatch_sync(acquireQueue, v14);
 
 LABEL_64:
                 v19 = 4;
 LABEL_70:
-                *a6 = v19;
+                *dataSize = v19;
                 goto LABEL_71;
               }
 
@@ -582,24 +582,24 @@ LABEL_70:
             }
 
 LABEL_74:
-            v21.receiver = v8;
+            v21.receiver = selfCopy;
             v21.super_class = ASDBox;
             LOBYTE(self) = [ASDObject getProperty:sel_getProperty_withQualifierSize_qualifierData_dataSize_andData_forClient_ withQualifierSize:? qualifierData:? dataSize:? andData:? forClient:?];
             return self;
           }
 
-          if (*a6 < 8)
+          if (*dataSize < 8)
           {
             goto LABEL_72;
           }
 
-          v18 = [(ASDBox *)v8 boxUID];
+          manufacturerName = [(ASDBox *)selfCopy boxUID];
 LABEL_67:
-          *a7 = v18;
+          *andData = manufacturerName;
 
-          if (*a7)
+          if (*andData)
           {
-            CFRetain(*a7);
+            CFRetain(*andData);
           }
 
           v19 = 8;
@@ -608,12 +608,12 @@ LABEL_67:
 
         if (mSelector == 1651013225)
         {
-          if (*a6 < 4)
+          if (*dataSize < 4)
           {
             goto LABEL_72;
           }
 
-          v15 = [(ASDBox *)v8 hasVideo];
+          identify = [(ASDBox *)selfCopy hasVideo];
         }
 
         else
@@ -623,12 +623,12 @@ LABEL_67:
             goto LABEL_74;
           }
 
-          if (*a6 < 4)
+          if (*dataSize < 4)
           {
             goto LABEL_72;
           }
 
-          v15 = [(ASDBox *)v8 requiresAuthentication];
+          identify = [(ASDBox *)selfCopy requiresAuthentication];
         }
 
         goto LABEL_63;
@@ -638,12 +638,12 @@ LABEL_67:
       {
         if (mSelector == 1651007861)
         {
-          if (*a6 < 4)
+          if (*dataSize < 4)
           {
             goto LABEL_72;
           }
 
-          v15 = [(ASDBox *)v8 hasAudio];
+          identify = [(ASDBox *)selfCopy hasAudio];
         }
 
         else
@@ -653,12 +653,12 @@ LABEL_67:
             goto LABEL_74;
           }
 
-          if (*a6 < 4)
+          if (*dataSize < 4)
           {
             goto LABEL_72;
           }
 
-          v15 = [(ASDBox *)v8 hasMIDI];
+          identify = [(ASDBox *)selfCopy hasMIDI];
         }
 
         goto LABEL_63;
@@ -670,15 +670,15 @@ LABEL_67:
         v26 = &v25;
         v27 = 0x2020000000;
         v28 = 0;
-        deviceQueue = v8->_deviceQueue;
+        deviceQueue = selfCopy->_deviceQueue;
         v22[0] = MEMORY[0x277D85DD0];
         v22[1] = 3221225472;
         v22[2] = __81__ASDBox_getProperty_withQualifierSize_qualifierData_dataSize_andData_forClient___block_invoke_5;
         v22[3] = &unk_278CE3E50;
-        v22[4] = v8;
+        v22[4] = selfCopy;
         v22[5] = &v25;
-        v22[6] = a6;
-        v22[7] = a7;
+        v22[6] = dataSize;
+        v22[7] = andData;
         v17 = v22;
       }
 
@@ -693,21 +693,21 @@ LABEL_67:
         v26 = &v25;
         v27 = 0x2020000000;
         v28 = 0;
-        deviceQueue = v8->_deviceQueue;
+        deviceQueue = selfCopy->_deviceQueue;
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __81__ASDBox_getProperty_withQualifierSize_qualifierData_dataSize_andData_forClient___block_invoke_4;
         v23[3] = &unk_278CE3E50;
-        v23[4] = v8;
+        v23[4] = selfCopy;
         v23[5] = &v25;
-        v23[6] = a6;
-        v23[7] = a7;
+        v23[6] = dataSize;
+        v23[7] = andData;
         v17 = v23;
       }
     }
 
     dispatch_sync(deviceQueue, v17);
-    *a6 = 4 * *(v26 + 6);
+    *dataSize = 4 * *(v26 + 6);
     _Block_object_dispose(&v25, 8);
 LABEL_71:
     LOBYTE(self) = 1;
@@ -941,30 +941,30 @@ LABEL_6:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable
 {
-  if (a3)
+  if (settable)
   {
-    mSelector = a3->mSelector;
-    if (a3->mSelector == 1652060014)
+    mSelector = settable->mSelector;
+    if (settable->mSelector == 1652060014)
     {
 
-      LOBYTE(v5) = [(ASDBox *)self isAcquirable];
+      LOBYTE(canChangeBoxName) = [(ASDBox *)self isAcquirable];
     }
 
     else if (mSelector == 1768187246)
     {
 
-      LOBYTE(v5) = [(ASDBox *)self canSetIdentify];
+      LOBYTE(canChangeBoxName) = [(ASDBox *)self canSetIdentify];
     }
 
     else if (mSelector == 1819173229)
     {
-      v5 = [(ASDBox *)self canChangeBoxName];
-      if (v5)
+      canChangeBoxName = [(ASDBox *)self canChangeBoxName];
+      if (canChangeBoxName)
       {
 
-        LOBYTE(v5) = [(ASDBox *)self acquired];
+        LOBYTE(canChangeBoxName) = [(ASDBox *)self acquired];
       }
     }
 
@@ -972,48 +972,48 @@ LABEL_6:
     {
       v7.receiver = self;
       v7.super_class = ASDBox;
-      LOBYTE(v5) = [(ASDObject *)&v7 isPropertySettable:?];
+      LOBYTE(canChangeBoxName) = [(ASDObject *)&v7 isPropertySettable:?];
     }
   }
 
   else
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(canChangeBoxName) = 0;
   }
 
-  return v5;
+  return canChangeBoxName;
 }
 
-- (void)addAudioDevice:(id)a3
+- (void)addAudioDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(ASDObject *)self plugin];
-  v6 = [v5 powerNotificationQueue];
+  deviceCopy = device;
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __25__ASDBox_addAudioDevice___block_invoke;
   v8[3] = &unk_278CE3E78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = deviceCopy;
+  v7 = deviceCopy;
+  dispatch_sync(powerNotificationQueue, v8);
 }
 
-- (void)doAddAudioDevice:(id)a3
+- (void)doAddAudioDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(ASDObject *)self plugin];
-  v6 = [v5 powerNotificationQueue];
-  dispatch_assert_queue_V2(v6);
+  deviceCopy = device;
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
+  dispatch_assert_queue_V2(powerNotificationQueue);
 
   deviceQueue = self->_deviceQueue;
   block = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __27__ASDBox_doAddAudioDevice___block_invoke;
   v16 = &unk_278CE3E78;
-  v17 = self;
-  v18 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v18 = deviceCopy;
+  v8 = deviceCopy;
   dispatch_sync(deviceQueue, &block);
   [v8 setOwner:self];
   LODWORD(v12) = 0;
@@ -1021,40 +1021,40 @@ LABEL_6:
   [v9 changedProperty:&v11 forObject:self];
 
   LODWORD(v11) = 1870098020;
-  v10 = [(ASDObject *)self plugin];
-  [v10 changedProperty:&v11 forObject:self];
+  plugin2 = [(ASDObject *)self plugin];
+  [plugin2 changedProperty:&v11 forObject:self];
 }
 
-- (void)addClockDevice:(id)a3
+- (void)addClockDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(ASDObject *)self plugin];
-  v6 = [v5 powerNotificationQueue];
+  deviceCopy = device;
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __25__ASDBox_addClockDevice___block_invoke;
   v8[3] = &unk_278CE3E78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = deviceCopy;
+  v7 = deviceCopy;
+  dispatch_sync(powerNotificationQueue, v8);
 }
 
-- (void)doAddClockDevice:(id)a3
+- (void)doAddClockDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(ASDObject *)self plugin];
-  v6 = [v5 powerNotificationQueue];
-  dispatch_assert_queue_V2(v6);
+  deviceCopy = device;
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
+  dispatch_assert_queue_V2(powerNotificationQueue);
 
   deviceQueue = self->_deviceQueue;
   block = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __27__ASDBox_doAddClockDevice___block_invoke;
   v16 = &unk_278CE3E78;
-  v17 = self;
-  v18 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v18 = deviceCopy;
+  v8 = deviceCopy;
   dispatch_sync(deviceQueue, &block);
   [v8 setOwner:self];
   LODWORD(v12) = 0;
@@ -1062,107 +1062,107 @@ LABEL_6:
   [v9 changedProperty:&v11 forObject:self];
 
   LODWORD(v11) = 1870098020;
-  v10 = [(ASDObject *)self plugin];
-  [v10 changedProperty:&v11 forObject:self];
+  plugin2 = [(ASDObject *)self plugin];
+  [plugin2 changedProperty:&v11 forObject:self];
 }
 
-- (void)removeAudioDevice:(id)a3
+- (void)removeAudioDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(ASDObject *)self plugin];
-  v6 = [v5 powerNotificationQueue];
+  deviceCopy = device;
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __28__ASDBox_removeAudioDevice___block_invoke;
   v8[3] = &unk_278CE3E78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = deviceCopy;
+  v7 = deviceCopy;
+  dispatch_sync(powerNotificationQueue, v8);
 }
 
-- (void)doRemoveAudioDevice:(id)a3
+- (void)doRemoveAudioDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(ASDObject *)self plugin];
-  v6 = [v5 powerNotificationQueue];
-  dispatch_assert_queue_V2(v6);
+  deviceCopy = device;
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
+  dispatch_assert_queue_V2(powerNotificationQueue);
 
   deviceQueue = self->_deviceQueue;
   block = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __30__ASDBox_doRemoveAudioDevice___block_invoke;
   v16 = &unk_278CE3E78;
-  v17 = self;
-  v18 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v18 = deviceCopy;
+  v8 = deviceCopy;
   dispatch_sync(deviceQueue, &block);
   LODWORD(v12) = 0;
   v9 = [(ASDObject *)self plugin:0x676C6F6262647623];
   [v9 changedProperty:&v11 forObject:self];
 
   LODWORD(v11) = 1870098020;
-  v10 = [(ASDObject *)self plugin];
-  [v10 changedProperty:&v11 forObject:self];
+  plugin2 = [(ASDObject *)self plugin];
+  [plugin2 changedProperty:&v11 forObject:self];
 }
 
-- (void)removeClockDevice:(id)a3
+- (void)removeClockDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(ASDObject *)self plugin];
-  v6 = [v5 powerNotificationQueue];
+  deviceCopy = device;
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __28__ASDBox_removeClockDevice___block_invoke;
   v8[3] = &unk_278CE3E78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = deviceCopy;
+  v7 = deviceCopy;
+  dispatch_sync(powerNotificationQueue, v8);
 }
 
-- (void)doRemoveClockDevice:(id)a3
+- (void)doRemoveClockDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(ASDObject *)self plugin];
-  v6 = [v5 powerNotificationQueue];
-  dispatch_assert_queue_V2(v6);
+  deviceCopy = device;
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
+  dispatch_assert_queue_V2(powerNotificationQueue);
 
   deviceQueue = self->_deviceQueue;
   block = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __30__ASDBox_doRemoveClockDevice___block_invoke;
   v16 = &unk_278CE3E78;
-  v17 = self;
-  v18 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v18 = deviceCopy;
+  v8 = deviceCopy;
   dispatch_sync(deviceQueue, &block);
   LODWORD(v12) = 0;
   v9 = [(ASDObject *)self plugin:0x676C6F6262636C23];
   [v9 changedProperty:&v11 forObject:self];
 
   LODWORD(v11) = 1870098020;
-  v10 = [(ASDObject *)self plugin];
-  [v10 changedProperty:&v11 forObject:self];
+  plugin2 = [(ASDObject *)self plugin];
+  [plugin2 changedProperty:&v11 forObject:self];
 }
 
 - (void)removeAllAudioDevices
 {
-  v3 = [(ASDObject *)self plugin];
-  v4 = [v3 powerNotificationQueue];
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__ASDBox_removeAllAudioDevices__block_invoke;
   block[3] = &unk_278CE3FB8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(powerNotificationQueue, block);
 }
 
 - (void)doRemoveAllAudioDevices
 {
-  v3 = [(ASDObject *)self plugin];
-  v4 = [v3 powerNotificationQueue];
-  dispatch_assert_queue_V2(v4);
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
+  dispatch_assert_queue_V2(powerNotificationQueue);
 
   deviceQueue = self->_deviceQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1173,31 +1173,31 @@ LABEL_6:
   dispatch_sync(deviceQueue, block);
   v9 = 0;
   v8 = 0x676C6F6262647623;
-  v6 = [(ASDObject *)self plugin];
-  [v6 changedProperty:&v8 forObject:self];
+  plugin2 = [(ASDObject *)self plugin];
+  [plugin2 changedProperty:&v8 forObject:self];
 
   LODWORD(v8) = 1870098020;
-  v7 = [(ASDObject *)self plugin];
-  [v7 changedProperty:&v8 forObject:self];
+  plugin3 = [(ASDObject *)self plugin];
+  [plugin3 changedProperty:&v8 forObject:self];
 }
 
 - (void)removeAllClockDevices
 {
-  v3 = [(ASDObject *)self plugin];
-  v4 = [v3 powerNotificationQueue];
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__ASDBox_removeAllClockDevices__block_invoke;
   block[3] = &unk_278CE3FB8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(powerNotificationQueue, block);
 }
 
 - (void)doRemoveAllClockDevices
 {
-  v3 = [(ASDObject *)self plugin];
-  v4 = [v3 powerNotificationQueue];
-  dispatch_assert_queue_V2(v4);
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
+  dispatch_assert_queue_V2(powerNotificationQueue);
 
   deviceQueue = self->_deviceQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1208,24 +1208,24 @@ LABEL_6:
   dispatch_sync(deviceQueue, block);
   v9 = 0;
   v8 = 0x676C6F6262636C23;
-  v6 = [(ASDObject *)self plugin];
-  [v6 changedProperty:&v8 forObject:self];
+  plugin2 = [(ASDObject *)self plugin];
+  [plugin2 changedProperty:&v8 forObject:self];
 
   LODWORD(v8) = 1870098020;
-  v7 = [(ASDObject *)self plugin];
-  [v7 changedProperty:&v8 forObject:self];
+  plugin3 = [(ASDObject *)self plugin];
+  [plugin3 changedProperty:&v8 forObject:self];
 }
 
 - (void)addDevicesToPlugin
 {
-  v3 = [(ASDObject *)self plugin];
-  v4 = [v3 powerNotificationQueue];
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __28__ASDBox_addDevicesToPlugin__block_invoke;
   block[3] = &unk_278CE3FB8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(powerNotificationQueue, block);
 }
 
 void __28__ASDBox_addDevicesToPlugin__block_invoke(uint64_t a1)
@@ -1251,14 +1251,14 @@ void __28__ASDBox_addDevicesToPlugin__block_invoke_2(uint64_t a1)
 
 - (void)removeDevicesFromPlugin
 {
-  v3 = [(ASDObject *)self plugin];
-  v4 = [v3 powerNotificationQueue];
+  plugin = [(ASDObject *)self plugin];
+  powerNotificationQueue = [plugin powerNotificationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__ASDBox_removeDevicesFromPlugin__block_invoke;
   block[3] = &unk_278CE3FB8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(powerNotificationQueue, block);
 }
 
 void __33__ASDBox_removeDevicesFromPlugin__block_invoke(uint64_t a1)
@@ -1282,9 +1282,9 @@ void __33__ASDBox_removeDevicesFromPlugin__block_invoke_2(uint64_t a1)
   [v3 doRemoveClockDevices:*(*(a1 + 32) + 72)];
 }
 
-- (void)setBoxName:(id)a3
+- (void)setBoxName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   boxName = self->_boxName;
   self->_boxName = v4;
 
@@ -1293,27 +1293,27 @@ void __33__ASDBox_removeDevicesFromPlugin__block_invoke_2(uint64_t a1)
   [v6 changedProperty:&v7 forObject:self];
 }
 
-- (void)setAcquired:(BOOL)a3
+- (void)setAcquired:(BOOL)acquired
 {
-  if (self->_acquired != a3)
+  if (self->_acquired != acquired)
   {
     v9 = v3;
     v10 = v4;
-    self->_acquired = a3;
+    self->_acquired = acquired;
     LODWORD(v8) = 0;
     v6 = [(ASDObject *)self plugin:0x676C6F6262786F6ELL];
     [v6 changedProperty:&v7 forObject:self];
   }
 }
 
-- (void)setAcquisitionFailure:(int)a3
+- (void)setAcquisitionFailure:(int)failure
 {
-  if (self->_acquisitionFailure != a3)
+  if (self->_acquisitionFailure != failure)
   {
     v9 = v3;
     v10 = v4;
-    self->_acquisitionFailure = a3;
-    if (a3)
+    self->_acquisitionFailure = failure;
+    if (failure)
     {
       LODWORD(v8) = 0;
       v6 = [(ASDObject *)self plugin:0x676C6F6262786F66];
@@ -1322,13 +1322,13 @@ void __33__ASDBox_removeDevicesFromPlugin__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setIdentify:(BOOL)a3
+- (void)setIdentify:(BOOL)identify
 {
-  if (self->_identify != a3)
+  if (self->_identify != identify)
   {
     v9 = v3;
     v10 = v4;
-    self->_identify = a3;
+    self->_identify = identify;
     LODWORD(v8) = 0;
     v6 = [(ASDObject *)self plugin:0x676C6F626964656ELL];
     [v6 changedProperty:&v7 forObject:self];

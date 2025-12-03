@@ -1,7 +1,7 @@
 @interface OrgApacheLuceneSearchMultiTermQuery_TopTermsScoringBooleanQueryRewrite
-- (id)buildWithId:(id)a3;
+- (id)buildWithId:(id)id;
 - (id)getTopLevelBuilder;
-- (void)addClauseWithId:(id)a3 withOrgApacheLuceneIndexTerm:(id)a4 withInt:(int)a5 withFloat:(float)a6 withOrgApacheLuceneIndexTermContext:(id)a7;
+- (void)addClauseWithId:(id)id withOrgApacheLuceneIndexTerm:(id)term withInt:(int)int withFloat:(float)float withOrgApacheLuceneIndexTermContext:(id)context;
 @end
 
 @implementation OrgApacheLuceneSearchMultiTermQuery_TopTermsScoringBooleanQueryRewrite
@@ -13,22 +13,22 @@
   return v2;
 }
 
-- (id)buildWithId:(id)a3
+- (id)buildWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 build];
+  return [id build];
 }
 
-- (void)addClauseWithId:(id)a3 withOrgApacheLuceneIndexTerm:(id)a4 withInt:(int)a5 withFloat:(float)a6 withOrgApacheLuceneIndexTermContext:(id)a7
+- (void)addClauseWithId:(id)id withOrgApacheLuceneIndexTerm:(id)term withInt:(int)int withFloat:(float)float withOrgApacheLuceneIndexTermContext:(id)context
 {
-  v9 = new_OrgApacheLuceneSearchTermQuery_initWithOrgApacheLuceneIndexTerm_withOrgApacheLuceneIndexTermContext_(a4, a7);
-  *&v10 = a6;
+  v9 = new_OrgApacheLuceneSearchTermQuery_initWithOrgApacheLuceneIndexTerm_withOrgApacheLuceneIndexTermContext_(term, context);
+  *&v10 = float;
   [(OrgApacheLuceneSearchQuery *)v9 setBoostWithFloat:v10];
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -40,7 +40,7 @@
 
   v11 = qword_100557BA8;
 
-  [a3 addWithOrgApacheLuceneSearchQuery:v9 withOrgApacheLuceneSearchBooleanClause_OccurEnum:v11];
+  [id addWithOrgApacheLuceneSearchQuery:v9 withOrgApacheLuceneSearchBooleanClause_OccurEnum:v11];
 }
 
 @end

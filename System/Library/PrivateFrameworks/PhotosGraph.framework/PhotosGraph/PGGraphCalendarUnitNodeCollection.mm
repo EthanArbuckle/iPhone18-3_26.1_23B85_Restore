@@ -1,7 +1,7 @@
 @interface PGGraphCalendarUnitNodeCollection
 + (MARelation)dateOfCalendarUnit;
-+ (id)calendarUnitNodesForUnitValue:(int64_t)a3 inGraph:(id)a4;
-+ (id)calendarUnitNodesForUnitValues:(id)a3 inGraph:(id)a4;
++ (id)calendarUnitNodesForUnitValue:(int64_t)value inGraph:(id)graph;
++ (id)calendarUnitNodesForUnitValues:(id)values inGraph:(id)graph;
 + (id)filter;
 + (unint64_t)calendarUnit;
 - (PGGraphDateNodeCollection)dateNodes;
@@ -11,43 +11,43 @@
 
 - (PGGraphDateNodeCollection)dateNodes
 {
-  v3 = [objc_opt_class() dateOfCalendarUnit];
-  v4 = [(MANodeCollection *)PGGraphDateNodeCollection nodesRelatedToNodes:self withRelation:v3];
+  dateOfCalendarUnit = [objc_opt_class() dateOfCalendarUnit];
+  v4 = [(MANodeCollection *)PGGraphDateNodeCollection nodesRelatedToNodes:self withRelation:dateOfCalendarUnit];
 
   return v4;
 }
 
-+ (id)calendarUnitNodesForUnitValues:(id)a3 inGraph:(id)a4
++ (id)calendarUnitNodesForUnitValues:(id)values inGraph:(id)graph
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 filter];
+  graphCopy = graph;
+  valuesCopy = values;
+  filter = [self filter];
   v14 = @"name";
-  v15[0] = v7;
+  v15[0] = valuesCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
-  v10 = [v8 filterBySettingProperties:v9];
+  v10 = [filter filterBySettingProperties:v9];
 
-  v11 = [a1 nodesMatchingFilter:v10 inGraph:v6];
+  v11 = [self nodesMatchingFilter:v10 inGraph:graphCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-+ (id)calendarUnitNodesForUnitValue:(int64_t)a3 inGraph:(id)a4
++ (id)calendarUnitNodesForUnitValue:(int64_t)value inGraph:(id)graph
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a1 filter];
+  graphCopy = graph;
+  filter = [self filter];
   v14 = @"name";
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:value];
   v15[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  v10 = [v7 filterBySettingProperties:v9];
+  v10 = [filter filterBySettingProperties:v9];
 
-  v11 = [a1 nodesMatchingFilter:v10 inGraph:v6];
+  v11 = [self nodesMatchingFilter:v10 inGraph:graphCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -56,34 +56,34 @@
 
 + (MARelation)dateOfCalendarUnit
 {
-  v2 = [a1 calendarUnit];
-  if ((v2 - 1) > 5)
+  calendarUnit = [self calendarUnit];
+  if ((calendarUnit - 1) > 5)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = *off_278887328[v2 - 1];
+    v3 = *off_278887328[calendarUnit - 1];
   }
 
   v4 = [objc_alloc(MEMORY[0x277D22C20]) initWithLabel:v3 domain:400];
-  v5 = [v4 inRelation];
+  inRelation = [v4 inRelation];
 
-  return v5;
+  return inRelation;
 }
 
 + (id)filter
 {
-  v2 = [a1 calendarUnit];
-  if ((v2 - 1) > 5)
+  calendarUnit = [self calendarUnit];
+  if ((calendarUnit - 1) > 5)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = *off_2788872F8[v2 - 1];
+    v3 = *off_2788872F8[calendarUnit - 1];
   }
 
   v4 = [objc_alloc(MEMORY[0x277D22C78]) initWithLabel:v3 domain:400];
@@ -93,7 +93,7 @@
 
 + (unint64_t)calendarUnit
 {
-  v2 = PGAbstractMethodException(a1, a2);
+  v2 = PGAbstractMethodException(self, a2);
   objc_exception_throw(v2);
 }
 

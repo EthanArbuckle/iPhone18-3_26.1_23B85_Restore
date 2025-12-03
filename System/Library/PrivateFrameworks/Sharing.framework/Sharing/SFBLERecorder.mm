@@ -1,9 +1,9 @@
 @interface SFBLERecorder
-- (BOOL)recordDevice:(id)a3 data:(id)a4 rssi:(id)a5 info:(id)a6 error:(id *)a7;
+- (BOOL)recordDevice:(id)device data:(id)data rssi:(id)rssi info:(id)info error:(id *)error;
 - (BOOL)replayNextRecording;
-- (BOOL)saveToDirectory:(id)a3;
-- (SFBLERecorder)initWithPayloadType:(int64_t)a3;
-- (SFBLERecorder)initWithRecordingURL:(id)a3;
+- (BOOL)saveToDirectory:(id)directory;
+- (SFBLERecorder)initWithPayloadType:(int64_t)type;
+- (SFBLERecorder)initWithRecordingURL:(id)l;
 - (SFBLERecorderReplayDelegate)replayDelegate;
 @end
 
@@ -16,7 +16,7 @@
   return WeakRetained;
 }
 
-- (SFBLERecorder)initWithPayloadType:(int64_t)a3
+- (SFBLERecorder)initWithPayloadType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = SFBLERecorder;
@@ -24,7 +24,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_payloadType = a3;
+    v4->_payloadType = type;
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     recordings = v5->_recordings;
     v5->_recordings = v6;
@@ -35,15 +35,15 @@
   return v5;
 }
 
-- (SFBLERecorder)initWithRecordingURL:(id)a3
+- (SFBLERecorder)initWithRecordingURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = SFBLERecorder;
   v5 = [(SFBLERecorder *)&v14 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:v4];
+    v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfURL:lCopy];
     v7 = v6;
     if (v6)
     {
@@ -87,15 +87,15 @@
   return v12;
 }
 
-- (BOOL)recordDevice:(id)a3 data:(id)a4 rssi:(id)a5 info:(id)a6 error:(id *)a7
+- (BOOL)recordDevice:(id)device data:(id)data rssi:(id)rssi info:(id)info error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v15)
+  deviceCopy = device;
+  dataCopy = data;
+  rssiCopy = rssi;
+  infoCopy = info;
+  if (infoCopy)
   {
-    v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v15 requiringSecureCoding:1 error:a7];
+    v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:infoCopy requiringSecureCoding:1 error:error];
     if (!v16)
     {
       v17 = 0;
@@ -109,16 +109,16 @@
   }
 
   v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v13)
+  if (dataCopy)
   {
-    v19 = [v13 copy];
+    v19 = [dataCopy copy];
     [v18 setObject:v19 forKeyedSubscript:@"data"];
   }
 
-  if (v12)
+  if (deviceCopy)
   {
-    v20 = [v12 UUIDString];
-    [v18 setObject:v20 forKeyedSubscript:@"device"];
+    uUIDString = [deviceCopy UUIDString];
+    [v18 setObject:uUIDString forKeyedSubscript:@"device"];
   }
 
   if (v16)
@@ -126,9 +126,9 @@
     [v18 setObject:v16 forKeyedSubscript:@"infoData"];
   }
 
-  if (v14)
+  if (rssiCopy)
   {
-    [v18 setObject:v14 forKeyedSubscript:@"rssi"];
+    [v18 setObject:rssiCopy forKeyedSubscript:@"rssi"];
   }
 
   v21 = MEMORY[0x1E696AD98];
@@ -189,20 +189,20 @@ LABEL_14:
   return replayIndex < v4;
 }
 
-- (BOOL)saveToDirectory:(id)a3
+- (BOOL)saveToDirectory:(id)directory
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isFileURL] && -[NSMutableArray count](self->_recordings, "count"))
+  directoryCopy = directory;
+  if ([directoryCopy isFileURL] && -[NSMutableArray count](self->_recordings, "count"))
   {
     v29 = 0;
-    v5 = [v4 getResourceValue:&v29 forKey:*MEMORY[0x1E695DB78] error:0];
+    v5 = [directoryCopy getResourceValue:&v29 forKey:*MEMORY[0x1E695DB78] error:0];
     v6 = v29;
     v7 = v6;
     if (v5 && [v6 BOOLValue])
     {
-      v8 = [(NSMutableArray *)self->_recordings firstObject];
-      v9 = [v8 objectForKeyedSubscript:@"timestamp"];
+      firstObject = [(NSMutableArray *)self->_recordings firstObject];
+      v9 = [firstObject objectForKeyedSubscript:@"timestamp"];
 
       if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -218,7 +218,7 @@ LABEL_14:
         v15 = [v10 stringFromDate:v13];
         v16 = [v14 stringWithFormat:@"SFBLERecording_%@.xml", v15];
 
-        v17 = [v4 URLByAppendingPathComponent:v16];
+        v17 = [directoryCopy URLByAppendingPathComponent:v16];
         if (v17)
         {
           v30[0] = @"payloadType";
@@ -226,7 +226,7 @@ LABEL_14:
           v28 = v16;
           v18 = v13;
           v19 = v9;
-          v20 = v4;
+          v20 = directoryCopy;
           v22 = v21 = v7;
           v30[1] = @"recordings";
           v31[0] = v22;
@@ -236,7 +236,7 @@ LABEL_14:
           v25 = [v24 writeToURL:v17 atomically:1];
 
           v7 = v21;
-          v4 = v20;
+          directoryCopy = v20;
           v9 = v19;
           v13 = v18;
           v16 = v28;

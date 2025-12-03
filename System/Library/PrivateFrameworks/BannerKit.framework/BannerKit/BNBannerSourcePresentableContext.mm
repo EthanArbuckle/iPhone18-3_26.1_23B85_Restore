@@ -1,50 +1,50 @@
 @interface BNBannerSourcePresentableContext
-- (BNBannerSourcePresentableContext)initWithPresentableIdentification:(id)a3 contentBehavior:(int64_t)a4 serviceDomain:(id)a5;
+- (BNBannerSourcePresentableContext)initWithPresentableIdentification:(id)identification contentBehavior:(int64_t)behavior serviceDomain:(id)domain;
 - (BNBannerSourcePresentableContextDelegate)delegate;
-- (void)__setDraggingDismissalEnabled:(id)a3 error:(id *)a4;
-- (void)__setDraggingInteractionEnabled:(id)a3 error:(id *)a4;
-- (void)__setTouchOutsideDismissalEnabled:(id)a3 error:(id *)a4;
+- (void)__setDraggingDismissalEnabled:(id)enabled error:(id *)error;
+- (void)__setDraggingInteractionEnabled:(id)enabled error:(id *)error;
+- (void)__setTouchOutsideDismissalEnabled:(id)enabled error:(id *)error;
 - (void)dealloc;
-- (void)handlePresentableWillNotAppearWithReason:(id)a3;
-- (void)handleTemplateContentEvent:(int64_t)a3;
+- (void)handlePresentableWillNotAppearWithReason:(id)reason;
+- (void)handleTemplateContentEvent:(int64_t)event;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)updatePresentableAppearState:(int)a3 reason:(id)a4;
-- (void)updateUserInteractionWillBegin:(BOOL)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)updatePresentableAppearState:(int)state reason:(id)reason;
+- (void)updateUserInteractionWillBegin:(BOOL)begin;
 @end
 
 @implementation BNBannerSourcePresentableContext
 
-- (BNBannerSourcePresentableContext)initWithPresentableIdentification:(id)a3 contentBehavior:(int64_t)a4 serviceDomain:(id)a5
+- (BNBannerSourcePresentableContext)initWithPresentableIdentification:(id)identification contentBehavior:(int64_t)behavior serviceDomain:(id)domain
 {
-  v9 = a3;
-  v10 = a5;
+  identificationCopy = identification;
+  domainCopy = domain;
   v34.receiver = self;
   v34.super_class = BNBannerSourcePresentableContext;
   v11 = [(BNBannerSourcePresentableContext *)&v34 init];
   if (v11)
   {
-    if (!v9)
+    if (!identificationCopy)
     {
       [BNBannerSourcePresentableContext initWithPresentableIdentification:a2 contentBehavior:v11 serviceDomain:?];
     }
 
-    v12 = [v9 requesterIdentifier];
-    v13 = [v12 copy];
+    requesterIdentifier = [identificationCopy requesterIdentifier];
+    v13 = [requesterIdentifier copy];
     requesterIdentifier = v11->_requesterIdentifier;
     v11->_requesterIdentifier = v13;
 
-    v15 = [v9 requestIdentifier];
-    v16 = [v15 copy];
+    requestIdentifier = [identificationCopy requestIdentifier];
+    v16 = [requestIdentifier copy];
     requestIdentifier = v11->_requestIdentifier;
     v11->_requestIdentifier = v16;
 
-    v18 = [v9 uniquePresentableIdentifier];
-    v19 = [v18 copy];
+    uniquePresentableIdentifier = [identificationCopy uniquePresentableIdentifier];
+    v19 = [uniquePresentableIdentifier copy];
     uniquePresentableIdentifier = v11->_uniquePresentableIdentifier;
     v11->_uniquePresentableIdentifier = v19;
 
-    v11->_contentBehavior = a4;
+    v11->_contentBehavior = behavior;
     Serial = BSDispatchQueueCreateSerial();
     queue = v11->_queue;
     v11->_queue = Serial;
@@ -54,7 +54,7 @@
     v29 = 3221225472;
     v30 = __100__BNBannerSourcePresentableContext_initWithPresentableIdentification_contentBehavior_serviceDomain___block_invoke;
     v31 = &unk_1E81E4648;
-    v32 = v10;
+    v32 = domainCopy;
     v24 = v11;
     v33 = v24;
     v25 = [v23 listenerWithConfigurator:&v28];
@@ -89,22 +89,22 @@ void __100__BNBannerSourcePresentableContext_initWithPresentableIdentification_c
   [(BNBannerSourcePresentableContext *)&v3 dealloc];
 }
 
-- (void)handleTemplateContentEvent:(int64_t)a3
+- (void)handleTemplateContentEvent:(int64_t)event
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(BSServiceConnectionHost *)self->_connection remoteTarget];
-  if (v5)
+  remoteTarget = [(BSServiceConnectionHost *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
     if (self->_contentBehavior == 1)
     {
       objc_initWeak(location, self);
-      v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v6 = [MEMORY[0x1E696AD98] numberWithInteger:event];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __63__BNBannerSourcePresentableContext_handleTemplateContentEvent___block_invoke;
       v14[3] = &unk_1E81E4670;
       objc_copyWeak(&v15, location);
-      [v5 __handleTemplateContentEvent:v6 reply:v14];
+      [remoteTarget __handleTemplateContentEvent:v6 reply:v14];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(location);
@@ -113,9 +113,9 @@ void __100__BNBannerSourcePresentableContext_initWithPresentableIdentification_c
     else
     {
       objc_initWeak(&v13, self);
-      v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v7 = [MEMORY[0x1E696AD98] numberWithInteger:event];
       v12 = 0;
-      [v5 __handleTemplateContentEvent:v7 error:&v12];
+      [remoteTarget __handleTemplateContentEvent:v7 error:&v12];
       v8 = v12;
 
       if (v8)
@@ -152,13 +152,13 @@ void __63__BNBannerSourcePresentableContext_handleTemplateContentEvent___block_i
   }
 }
 
-- (void)updatePresentableAppearState:(int)a3 reason:(id)a4
+- (void)updatePresentableAppearState:(int)state reason:(id)reason
 {
-  v4 = *&a3;
+  v4 = *&state;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(BSServiceConnectionHost *)self->_connection remoteTarget];
-  if (v7)
+  reasonCopy = reason;
+  remoteTarget = [(BSServiceConnectionHost *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
     if (self->_contentBehavior == 1)
     {
@@ -169,7 +169,7 @@ void __63__BNBannerSourcePresentableContext_handleTemplateContentEvent___block_i
       v16[2] = __72__BNBannerSourcePresentableContext_updatePresentableAppearState_reason___block_invoke;
       v16[3] = &unk_1E81E4670;
       objc_copyWeak(&v17, location);
-      [v7 __setBannerAppearState:v8 reason:v6 reply:v16];
+      [remoteTarget __setBannerAppearState:v8 reason:reasonCopy reply:v16];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(location);
@@ -180,7 +180,7 @@ void __63__BNBannerSourcePresentableContext_handleTemplateContentEvent___block_i
       objc_initWeak(&v15, self);
       v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
       v14 = 0;
-      [v7 __setBannerAppearState:v9 reason:v6 error:&v14];
+      [remoteTarget __setBannerAppearState:v9 reason:reasonCopy error:&v14];
       v10 = v14;
 
       if (v10)
@@ -217,12 +217,12 @@ void __72__BNBannerSourcePresentableContext_updatePresentableAppearState_reason_
   }
 }
 
-- (void)handlePresentableWillNotAppearWithReason:(id)a3
+- (void)handlePresentableWillNotAppearWithReason:(id)reason
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BSServiceConnectionHost *)self->_connection remoteTarget];
-  if (v5)
+  reasonCopy = reason;
+  remoteTarget = [(BSServiceConnectionHost *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
     if (self->_contentBehavior == 1)
     {
@@ -232,7 +232,7 @@ void __72__BNBannerSourcePresentableContext_updatePresentableAppearState_reason_
       v12[2] = __77__BNBannerSourcePresentableContext_handlePresentableWillNotAppearWithReason___block_invoke;
       v12[3] = &unk_1E81E4670;
       objc_copyWeak(&v13, location);
-      [v5 __bannerWillNotAppearWithReason:v4 reply:v12];
+      [remoteTarget __bannerWillNotAppearWithReason:reasonCopy reply:v12];
       objc_destroyWeak(&v13);
       objc_destroyWeak(location);
     }
@@ -241,7 +241,7 @@ void __72__BNBannerSourcePresentableContext_updatePresentableAppearState_reason_
     {
       objc_initWeak(&v11, self);
       v10 = 0;
-      [v5 __bannerWillNotAppearWithReason:v4 error:&v10];
+      [remoteTarget __bannerWillNotAppearWithReason:reasonCopy error:&v10];
       v6 = v10;
       if (v6)
       {
@@ -277,23 +277,23 @@ void __77__BNBannerSourcePresentableContext_handlePresentableWillNotAppearWithRe
   }
 }
 
-- (void)updateUserInteractionWillBegin:(BOOL)a3
+- (void)updateUserInteractionWillBegin:(BOOL)begin
 {
-  v3 = a3;
+  beginCopy = begin;
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(BSServiceConnectionHost *)self->_connection remoteTarget];
-  if (v5)
+  remoteTarget = [(BSServiceConnectionHost *)self->_connection remoteTarget];
+  if (remoteTarget)
   {
     if (self->_contentBehavior == 1)
     {
       objc_initWeak(location, self);
-      v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      v6 = [MEMORY[0x1E696AD98] numberWithBool:beginCopy];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __67__BNBannerSourcePresentableContext_updateUserInteractionWillBegin___block_invoke;
       v14[3] = &unk_1E81E4670;
       objc_copyWeak(&v15, location);
-      [v5 __setUserInteractionWillBegin:v6 reply:v14];
+      [remoteTarget __setUserInteractionWillBegin:v6 reply:v14];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(location);
@@ -302,9 +302,9 @@ void __77__BNBannerSourcePresentableContext_handlePresentableWillNotAppearWithRe
     else
     {
       objc_initWeak(&v13, self);
-      v7 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      v7 = [MEMORY[0x1E696AD98] numberWithBool:beginCopy];
       v12 = 0;
-      [v5 __setUserInteractionWillBegin:v7 error:&v12];
+      [remoteTarget __setUserInteractionWillBegin:v7 error:&v12];
       v8 = v12;
 
       if (v8)
@@ -348,32 +348,32 @@ void __67__BNBannerSourcePresentableContext_updateUserInteractionWillBegin___blo
   self->_connectionListener = 0;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v9 remoteProcess];
+    remoteProcess = [connectionCopy remoteProcess];
     v18 = 0;
-    v13 = [WeakRetained bannerSourcePresentableContext:self isConnectingProcessAuthorized:v12 error:&v18];
+    v13 = [WeakRetained bannerSourcePresentableContext:self isConnectingProcessAuthorized:remoteProcess error:&v18];
     v14 = v18;
 
     if (v13)
     {
-      v15 = self;
-      objc_sync_enter(v15);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __78__BNBannerSourcePresentableContext_listener_didReceiveConnection_withContext___block_invoke;
       v17[3] = &unk_1E81E44F0;
-      v17[4] = v15;
-      [v9 configureConnection:v17];
-      objc_storeStrong(&v15->_connection, a4);
-      [(BSServiceConnectionHost *)v15->_connection activate];
-      objc_sync_exit(v15);
+      v17[4] = selfCopy;
+      [connectionCopy configureConnection:v17];
+      objc_storeStrong(&selfCopy->_connection, connection);
+      [(BSServiceConnectionHost *)selfCopy->_connection activate];
+      objc_sync_exit(selfCopy);
 
       goto LABEL_8;
     }
@@ -390,7 +390,7 @@ void __67__BNBannerSourcePresentableContext_updateUserInteractionWillBegin___blo
     [BNBannerSourcePresentableContext listener:v16 didReceiveConnection:self withContext:v14];
   }
 
-  [v9 invalidate];
+  [connectionCopy invalidate];
 LABEL_8:
 }
 
@@ -443,9 +443,9 @@ void __78__BNBannerSourcePresentableContext_listener_didReceiveConnection_withCo
   }
 }
 
-- (void)__setDraggingDismissalEnabled:(id)a3 error:(id *)a4
+- (void)__setDraggingDismissalEnabled:(id)enabled error:(id *)error
 {
-  self->_draggingDismissalEnabled = [a3 integerValue] != 0;
+  self->_draggingDismissalEnabled = [enabled integerValue] != 0;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -453,9 +453,9 @@ void __78__BNBannerSourcePresentableContext_listener_didReceiveConnection_withCo
   }
 }
 
-- (void)__setDraggingInteractionEnabled:(id)a3 error:(id *)a4
+- (void)__setDraggingInteractionEnabled:(id)enabled error:(id *)error
 {
-  self->_draggingInteractionEnabled = [a3 integerValue] != 0;
+  self->_draggingInteractionEnabled = [enabled integerValue] != 0;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -463,9 +463,9 @@ void __78__BNBannerSourcePresentableContext_listener_didReceiveConnection_withCo
   }
 }
 
-- (void)__setTouchOutsideDismissalEnabled:(id)a3 error:(id *)a4
+- (void)__setTouchOutsideDismissalEnabled:(id)enabled error:(id *)error
 {
-  self->_touchOutsideDismissalEnabled = [a3 integerValue] != 0;
+  self->_touchOutsideDismissalEnabled = [enabled integerValue] != 0;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {

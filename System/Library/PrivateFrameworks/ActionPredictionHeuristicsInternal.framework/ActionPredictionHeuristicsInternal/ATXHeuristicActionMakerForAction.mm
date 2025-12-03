@@ -1,23 +1,23 @@
 @interface ATXHeuristicActionMakerForAction
-- (ATXHeuristicActionMakerForAction)initWithAction:(id)a3;
-- (ATXHeuristicActionMakerForAction)initWithCoder:(id)a3;
+- (ATXHeuristicActionMakerForAction)initWithAction:(id)action;
+- (ATXHeuristicActionMakerForAction)initWithCoder:(id)coder;
 - (id)actionTypeName;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXHeuristicActionMakerForAction
 
-- (ATXHeuristicActionMakerForAction)initWithAction:(id)a3
+- (ATXHeuristicActionMakerForAction)initWithAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v9.receiver = self;
   v9.super_class = ATXHeuristicActionMakerForAction;
   v6 = [(ATXHeuristicActionMakerForAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_action, a3);
+    objc_storeStrong(&v6->_action, action);
   }
 
   return v7;
@@ -25,23 +25,23 @@
 
 - (id)actionTypeName
 {
-  v3 = [(ATXAction *)self->_action intent];
-  v4 = [v3 _className];
-  v5 = v4;
-  if (v4)
+  intent = [(ATXAction *)self->_action intent];
+  _className = [intent _className];
+  v5 = _className;
+  if (_className)
   {
-    v6 = v4;
+    v6 = _className;
   }
 
   else
   {
-    v7 = [(ATXAction *)self->_action userActivity];
-    v8 = [v7 activityType];
-    v9 = v8;
+    userActivity = [(ATXAction *)self->_action userActivity];
+    activityType = [userActivity activityType];
+    v9 = activityType;
     v10 = @"unknown";
-    if (v8)
+    if (activityType)
     {
-      v10 = v8;
+      v10 = activityType;
     }
 
     v6 = v10;
@@ -50,15 +50,15 @@
   return v6;
 }
 
-- (ATXHeuristicActionMakerForAction)initWithCoder:(id)a3
+- (ATXHeuristicActionMakerForAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = ATXHeuristicActionMakerForAction;
-  v5 = [(ATXHeuristicActionMaker *)&v17 initWithCoder:v4];
+  v5 = [(ATXHeuristicActionMaker *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     action = v5->_action;
     v5->_action = v6;
 
@@ -75,13 +75,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ATXHeuristicActionMakerForAction;
-  v4 = a3;
-  [(ATXHeuristicActionMaker *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_action forKey:{@"action", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(ATXHeuristicActionMaker *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_action forKey:{@"action", v5.receiver, v5.super_class}];
 }
 
 - (id)description

@@ -1,10 +1,10 @@
 @interface UserSessionConfiguration
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation UserSessionConfiguration
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   sub_2647164C0(v5);

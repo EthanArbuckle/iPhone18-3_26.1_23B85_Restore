@@ -1,15 +1,15 @@
 @interface FeedbackSubmission
 - (_TtC9feedbackd18FeedbackSubmission)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FeedbackSubmission
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_100007F6C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_100007F6C(coderCopy);
 }
 
 - (_TtC9feedbackd18FeedbackSubmission)init

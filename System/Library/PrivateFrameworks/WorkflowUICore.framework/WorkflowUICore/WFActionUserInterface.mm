@@ -1,9 +1,9 @@
 @interface WFActionUserInterface
 - (UIViewController)viewControllerForPresenting;
 - (UIWindow)presentationAnchor;
-- (WFActionUserInterface)initWithUserInterfaceType:(id)a3 attribution:(id)a4;
+- (WFActionUserInterface)initWithUserInterfaceType:(id)type attribution:(id)attribution;
 - (WFActionUserInterfaceDelegate)delegate;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFActionUserInterface
@@ -15,20 +15,20 @@
   return WeakRetained;
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v4 = [(UIViewController *)self->_viewControllerForPresenting presentedViewController];
+  presentedViewController = [(UIViewController *)self->_viewControllerForPresenting presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
-    [(UIViewController *)self->_viewControllerForPresenting dismissViewControllerAnimated:1 completion:v5];
+    [(UIViewController *)self->_viewControllerForPresenting dismissViewControllerAnimated:1 completion:handlerCopy];
   }
 
   else
   {
-    v5[2]();
+    handlerCopy[2]();
   }
 }
 
@@ -37,14 +37,14 @@
   viewControllerForPresenting = self->_viewControllerForPresenting;
   if (viewControllerForPresenting)
   {
-    v4 = [(UIViewController *)viewControllerForPresenting view];
-    [v4 window];
+    view = [(UIViewController *)viewControllerForPresenting view];
+    [view window];
   }
 
   else
   {
-    v4 = [(WFActionUserInterface *)self delegate];
-    [v4 presentationAnchorForActionUserInterface:self];
+    view = [(WFActionUserInterface *)self delegate];
+    [view presentationAnchorForActionUserInterface:self];
   }
   v5 = ;
 
@@ -56,8 +56,8 @@
   viewControllerForPresenting = self->_viewControllerForPresenting;
   if (!viewControllerForPresenting)
   {
-    v4 = [(WFActionUserInterface *)self delegate];
-    v5 = [v4 viewControllerForPresentingActionUserInterface:self];
+    delegate = [(WFActionUserInterface *)self delegate];
+    v5 = [delegate viewControllerForPresentingActionUserInterface:self];
     v6 = self->_viewControllerForPresenting;
     self->_viewControllerForPresenting = v5;
 
@@ -67,18 +67,18 @@
   return viewControllerForPresenting;
 }
 
-- (WFActionUserInterface)initWithUserInterfaceType:(id)a3 attribution:(id)a4
+- (WFActionUserInterface)initWithUserInterfaceType:(id)type attribution:(id)attribution
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  attributionCopy = attribution;
   v13.receiver = self;
   v13.super_class = WFActionUserInterface;
   v9 = [(WFActionUserInterface *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userInterfaceType, a3);
-    objc_storeStrong(&v10->_attribution, a4);
+    objc_storeStrong(&v9->_userInterfaceType, type);
+    objc_storeStrong(&v10->_attribution, attribution);
     v11 = v10;
   }
 

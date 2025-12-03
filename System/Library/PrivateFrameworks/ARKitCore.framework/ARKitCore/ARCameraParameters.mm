@@ -1,23 +1,23 @@
 @interface ARCameraParameters
-- (ARCameraParameters)initWithCoder:(id)a3;
-- (ARCameraParameters)initWithFocalLength:(CGPoint)a3 imageResolution:(CGSize)a4 principalPoint:(CGPoint)a5;
+- (ARCameraParameters)initWithCoder:(id)coder;
+- (ARCameraParameters)initWithFocalLength:(CGPoint)length imageResolution:(CGSize)resolution principalPoint:(CGPoint)point;
 - (CGPoint)focalLength;
 - (CGPoint)principalPoint;
 - (CGSize)imageResolution;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARCameraParameters
 
-- (ARCameraParameters)initWithFocalLength:(CGPoint)a3 imageResolution:(CGSize)a4 principalPoint:(CGPoint)a5
+- (ARCameraParameters)initWithFocalLength:(CGPoint)length imageResolution:(CGSize)resolution principalPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3.y;
-  v10 = a3.x;
+  y = point.y;
+  x = point.x;
+  height = resolution.height;
+  width = resolution.width;
+  v9 = length.y;
+  v10 = length.x;
   v12.receiver = self;
   v12.super_class = ARCameraParameters;
   result = [(ARCameraParameters *)&v12 init];
@@ -34,9 +34,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     [(ARCameraParameters *)self imageResolution];
@@ -53,43 +53,43 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
+  coderCopy = coder;
   [(ARCameraParameters *)self imageResolution];
   *&v5 = v4;
-  [v13 encodeFloat:@"resolutionHeight" forKey:v5];
+  [coderCopy encodeFloat:@"resolutionHeight" forKey:v5];
   [(ARCameraParameters *)self imageResolution];
   *&v6 = v6;
-  [v13 encodeFloat:@"resolutionWidth" forKey:v6];
+  [coderCopy encodeFloat:@"resolutionWidth" forKey:v6];
   [(ARCameraParameters *)self focalLength];
   *&v7 = v7;
-  [v13 encodeFloat:@"focalLengthX" forKey:v7];
+  [coderCopy encodeFloat:@"focalLengthX" forKey:v7];
   [(ARCameraParameters *)self focalLength];
   *&v9 = v8;
-  [v13 encodeFloat:@"focalLengthY" forKey:v9];
+  [coderCopy encodeFloat:@"focalLengthY" forKey:v9];
   [(ARCameraParameters *)self principalPoint];
   *&v10 = v10;
-  [v13 encodeFloat:@"principalPointX" forKey:v10];
+  [coderCopy encodeFloat:@"principalPointX" forKey:v10];
   [(ARCameraParameters *)self principalPoint];
   *&v12 = v11;
-  [v13 encodeFloat:@"principalPointY" forKey:v12];
+  [coderCopy encodeFloat:@"principalPointY" forKey:v12];
 }
 
-- (ARCameraParameters)initWithCoder:(id)a3
+- (ARCameraParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"resolutionHeight"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"resolutionHeight"];
   v6 = v5;
-  [v4 decodeFloatForKey:@"resolutionWidth"];
+  [coderCopy decodeFloatForKey:@"resolutionWidth"];
   v8 = v7;
-  [v4 decodeFloatForKey:@"focalLengthX"];
+  [coderCopy decodeFloatForKey:@"focalLengthX"];
   v10 = v9;
-  [v4 decodeFloatForKey:@"focalLengthY"];
+  [coderCopy decodeFloatForKey:@"focalLengthY"];
   v12 = v11;
-  [v4 decodeFloatForKey:@"principalPointX"];
+  [coderCopy decodeFloatForKey:@"principalPointX"];
   v14 = v13;
-  [v4 decodeFloatForKey:@"principalPointY"];
+  [coderCopy decodeFloatForKey:@"principalPointY"];
   v16 = v15;
 
   return [(ARCameraParameters *)self initWithFocalLength:v10 imageResolution:v12 principalPoint:v8, v6, v14, v16];

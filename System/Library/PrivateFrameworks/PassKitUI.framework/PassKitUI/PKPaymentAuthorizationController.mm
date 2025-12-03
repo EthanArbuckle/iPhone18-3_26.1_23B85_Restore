@@ -3,33 +3,33 @@
 + (BOOL)canMakePaymentsUsingNetworks:(NSArray *)supportedNetworks;
 + (BOOL)canMakePaymentsUsingNetworks:(NSArray *)supportedNetworks capabilities:(PKMerchantCapability)capabilties;
 + (BOOL)isPlatformSupported;
-+ (void)paymentServicesMerchantURLForAPIType:(int64_t)a3 completion:(id)a4;
++ (void)paymentServicesMerchantURLForAPIType:(int64_t)type completion:(id)completion;
 - (PKPaymentAuthorizationController)init;
-- (PKPaymentAuthorizationController)initWithCoder:(id)a3;
+- (PKPaymentAuthorizationController)initWithCoder:(id)coder;
 - (PKPaymentAuthorizationController)initWithDisbursementRequest:(PKDisbursementRequest *)request;
 - (PKPaymentAuthorizationController)initWithPaymentRequest:(PKPaymentRequest *)request;
 - (PKPaymentAuthorizationControllerPrivateDelegate)privateDelegate;
-- (id)_sceneIdentifierForPaymentAuthorizationCoordinator:(id)a3;
+- (id)_sceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator;
 - (id)delegate;
-- (id)presentationSceneBundleIdentifierForPaymentAuthorizationCoordinator:(id)a3;
+- (id)presentationSceneBundleIdentifierForPaymentAuthorizationCoordinator:(id)coordinator;
 - (void)dealloc;
 - (void)dismissWithCompletion:(void *)completion;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizeApplePayTrustSignature:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizeContextWithHandler:(id)a4;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePeerPaymentQuote:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePurchase:(id)a4 completion:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 didChangeCouponCode:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 didEncounterAuthorizationEvent:(unint64_t)a4;
-- (void)paymentAuthorizationCoordinator:(id)a3 didRequestMerchantSessionUpdate:(id)a4;
-- (void)paymentAuthorizationCoordinator:(id)a3 didRequestMerchantSessionWithURL:(id)a4 merchantSessionUpdate:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 didSelectPaymentMethod:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 didSelectShippingAddress:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 didSelectShippingMethod:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 didUpdateAccountServicePaymentMethod:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 willFinishWithError:(id)a4;
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3;
-- (void)paymentAuthorizationCoordinatorWillAuthorizePayment:(id)a3;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizeApplePayTrustSignature:(id)signature handler:(id)handler;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizeContextWithHandler:(id)handler;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePayment:(id)payment handler:(id)handler;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePeerPaymentQuote:(id)quote handler:(id)handler;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePurchase:(id)purchase completion:(id)completion;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didChangeCouponCode:(id)code handler:(id)handler;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didEncounterAuthorizationEvent:(unint64_t)event;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didRequestMerchantSessionUpdate:(id)update;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didRequestMerchantSessionWithURL:(id)l merchantSessionUpdate:(id)update;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didSelectPaymentMethod:(id)method handler:(id)handler;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didSelectShippingAddress:(id)address handler:(id)handler;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didSelectShippingMethod:(id)method handler:(id)handler;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didUpdateAccountServicePaymentMethod:(id)method handler:(id)handler;
+- (void)paymentAuthorizationCoordinator:(id)coordinator willFinishWithError:(id)error;
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish;
+- (void)paymentAuthorizationCoordinatorWillAuthorizePayment:(id)payment;
 - (void)presentWithCompletion:(void *)completion;
 @end
 
@@ -65,21 +65,21 @@ void __55__PKPaymentAuthorizationController_isPlatformSupported__block_invoke()
 
 + (BOOL)canMakePayments
 {
-  v2 = [a1 isPlatformSupported];
-  if (v2)
+  isPlatformSupported = [self isPlatformSupported];
+  if (isPlatformSupported)
   {
     v3 = MEMORY[0x1E69B8B60];
 
-    LOBYTE(v2) = [v3 canMakePayments];
+    LOBYTE(isPlatformSupported) = [v3 canMakePayments];
   }
 
-  return v2;
+  return isPlatformSupported;
 }
 
 + (BOOL)canMakePaymentsUsingNetworks:(NSArray *)supportedNetworks
 {
   v4 = supportedNetworks;
-  if ([a1 isPlatformSupported])
+  if ([self isPlatformSupported])
   {
     v5 = [MEMORY[0x1E69B8B60] canMakePaymentsUsingNetworks:v4 webDomain:0];
   }
@@ -95,7 +95,7 @@ void __55__PKPaymentAuthorizationController_isPlatformSupported__block_invoke()
 + (BOOL)canMakePaymentsUsingNetworks:(NSArray *)supportedNetworks capabilities:(PKMerchantCapability)capabilties
 {
   v6 = supportedNetworks;
-  if ([a1 isPlatformSupported])
+  if ([self isPlatformSupported])
   {
     v7 = [MEMORY[0x1E69B8B60] canMakePaymentsUsingNetworks:v6 capabilities:capabilties webDomain:0];
   }
@@ -118,17 +118,17 @@ void __55__PKPaymentAuthorizationController_isPlatformSupported__block_invoke()
   return v7;
 }
 
-+ (void)paymentServicesMerchantURLForAPIType:(int64_t)a3 completion:(id)a4
++ (void)paymentServicesMerchantURLForAPIType:(int64_t)type completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = objc_alloc_init(MEMORY[0x1E69B8960]);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __84__PKPaymentAuthorizationController_paymentServicesMerchantURLForAPIType_completion___block_invoke;
   v8[3] = &unk_1E801F750;
-  v9 = v5;
-  v7 = v5;
-  [v6 paymentServicesMerchantURLForAPIType:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [v6 paymentServicesMerchantURLForAPIType:type completion:v8];
 }
 
 void __84__PKPaymentAuthorizationController_paymentServicesMerchantURLForAPIType_completion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -155,7 +155,7 @@ void __84__PKPaymentAuthorizationController_paymentServicesMerchantURLForAPIType
   }
 }
 
-- (PKPaymentAuthorizationController)initWithCoder:(id)a3
+- (PKPaymentAuthorizationController)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"This class is not NSCoding compliant"];
 
@@ -329,7 +329,7 @@ uint64_t __58__PKPaymentAuthorizationController_dismissWithCompletion___block_in
   return [v5 _setPrivateDelegate:0];
 }
 
-- (void)paymentAuthorizationCoordinatorWillAuthorizePayment:(id)a3
+- (void)paymentAuthorizationCoordinatorWillAuthorizePayment:(id)payment
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -351,19 +351,19 @@ void __88__PKPaymentAuthorizationController_paymentAuthorizationCoordinatorWillA
   }
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePayment:(id)payment handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  paymentCopy = payment;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __96__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didAuthorizePayment_handler___block_invoke;
   block[3] = &unk_1E8012300;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = paymentCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = paymentCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -399,7 +399,7 @@ void __96__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didA
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -424,19 +424,19 @@ uint64_t __77__PKPaymentAuthorizationController_paymentAuthorizationCoordinatorD
   return [v5 _setPrivateDelegate:0];
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didSelectShippingMethod:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didSelectShippingMethod:(id)method handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  methodCopy = method;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __100__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didSelectShippingMethod_handler___block_invoke;
   block[3] = &unk_1E8012300;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = methodCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = methodCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -488,19 +488,19 @@ void __100__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_did
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didSelectShippingAddress:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didSelectShippingAddress:(id)address handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  addressCopy = address;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __101__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didSelectShippingAddress_handler___block_invoke;
   block[3] = &unk_1E8012300;
-  v12 = v7;
-  v13 = self;
-  v14 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = addressCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = addressCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -554,19 +554,19 @@ void __101__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_did
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didSelectPaymentMethod:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didSelectPaymentMethod:(id)method handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  methodCopy = method;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __99__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didSelectPaymentMethod_handler___block_invoke;
   block[3] = &unk_1E8012300;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = methodCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = methodCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -616,19 +616,19 @@ void __99__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didS
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didChangeCouponCode:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didChangeCouponCode:(id)code handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  codeCopy = code;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __96__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didChangeCouponCode_handler___block_invoke;
   block[3] = &unk_1E8012300;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = codeCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = codeCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -647,7 +647,7 @@ void __96__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didC
   }
 }
 
-- (id)presentationSceneBundleIdentifierForPaymentAuthorizationCoordinator:(id)a3
+- (id)presentationSceneBundleIdentifierForPaymentAuthorizationCoordinator:(id)coordinator
 {
   WeakRetained = objc_loadWeakRetained(&self->_privateDelegate);
   if (objc_opt_respondsToSelector())
@@ -663,16 +663,16 @@ void __96__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didC
   return v5;
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 willFinishWithError:(id)a4
+- (void)paymentAuthorizationCoordinator:(id)coordinator willFinishWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __88__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_willFinishWithError___block_invoke;
   v7[3] = &unk_1E8010A10;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -688,16 +688,16 @@ void __88__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_will
   }
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didRequestMerchantSessionUpdate:(id)a4
+- (void)paymentAuthorizationCoordinator:(id)coordinator didRequestMerchantSessionUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __100__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didRequestMerchantSessionUpdate___block_invoke;
   v7[3] = &unk_1E8010DD0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = updateCopy;
+  v6 = updateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -757,22 +757,22 @@ void __100__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_did
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didRequestMerchantSessionWithURL:(id)a4 merchantSessionUpdate:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didRequestMerchantSessionWithURL:(id)l merchantSessionUpdate:(id)update
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  coordinatorCopy = coordinator;
+  lCopy = l;
+  updateCopy = update;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __123__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didRequestMerchantSessionWithURL_merchantSessionUpdate___block_invoke;
   v14[3] = &unk_1E8014760;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v8;
-  v12 = v10;
-  v13 = v9;
+  v15 = lCopy;
+  v16 = coordinatorCopy;
+  v17 = updateCopy;
+  v11 = coordinatorCopy;
+  v12 = updateCopy;
+  v13 = lCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
@@ -797,16 +797,16 @@ void __123__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_did
   }
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizeContextWithHandler:(id)a4
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizeContextWithHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __99__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didAuthorizeContextWithHandler___block_invoke;
   v7[3] = &unk_1E8010DD0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -830,19 +830,19 @@ void __99__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didA
   }
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePurchase:(id)a4 completion:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePurchase:(id)purchase completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  purchaseCopy = purchase;
+  completionCopy = completion;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __100__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didAuthorizePurchase_completion___block_invoke;
   block[3] = &unk_1E8012300;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = purchaseCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = purchaseCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -865,19 +865,19 @@ void __100__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_did
   }
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePeerPaymentQuote:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePeerPaymentQuote:(id)quote handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  quoteCopy = quote;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __105__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didAuthorizePeerPaymentQuote_handler___block_invoke;
   block[3] = &unk_1E8012300;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = quoteCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = quoteCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -901,14 +901,14 @@ void __105__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_did
   }
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didEncounterAuthorizationEvent:(unint64_t)a4
+- (void)paymentAuthorizationCoordinator:(id)coordinator didEncounterAuthorizationEvent:(unint64_t)event
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __99__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didEncounterAuthorizationEvent___block_invoke;
   v4[3] = &unk_1E80119C8;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = event;
   dispatch_async(MEMORY[0x1E69E96A0], v4);
 }
 
@@ -924,19 +924,19 @@ void __99__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didE
   }
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didUpdateAccountServicePaymentMethod:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didUpdateAccountServicePaymentMethod:(id)method handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  methodCopy = method;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __113__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didUpdateAccountServicePaymentMethod_handler___block_invoke;
   block[3] = &unk_1E8012300;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = methodCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = methodCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -952,19 +952,19 @@ void __113__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_did
   }
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizeApplePayTrustSignature:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizeApplePayTrustSignature:(id)signature handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  signatureCopy = signature;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __111__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_didAuthorizeApplePayTrustSignature_handler___block_invoke;
   block[3] = &unk_1E8012300;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = signatureCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = signatureCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -980,7 +980,7 @@ void __111__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_did
   }
 }
 
-- (id)_sceneIdentifierForPaymentAuthorizationCoordinator:(id)a3
+- (id)_sceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -993,18 +993,18 @@ void __111__PKPaymentAuthorizationController_paymentAuthorizationCoordinator_did
     v5 = 0;
   }
 
-  v6 = [v5 windowScene];
-  v7 = [v6 _sceneIdentifier];
+  windowScene = [v5 windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
   v8 = objc_loadWeakRetained(&self->_privateDelegate);
-  if (![v7 length] && (objc_opt_respondsToSelector() & 1) != 0)
+  if (![_sceneIdentifier length] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v9 = [v8 presentationSceneIdentifierForPaymentAuthorizationController:self];
 
-    v7 = v9;
+    _sceneIdentifier = v9;
   }
 
-  return v7;
+  return _sceneIdentifier;
 }
 
 - (id)delegate

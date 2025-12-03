@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl
-- (BOOL)isEqual:(id)a3;
-- (id)appendWithJavaLangCharSequence:(id)a3;
-- (id)appendWithJavaLangStringBuilder:(id)a3;
-- (id)appendWithNSString:(id)a3;
-- (id)appendWithOrgApacheLuceneAnalysisTokenattributesCharTermAttribute:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)appendWithJavaLangCharSequence:(id)sequence;
+- (id)appendWithJavaLangStringBuilder:(id)builder;
+- (id)appendWithNSString:(id)string;
+- (id)appendWithOrgApacheLuceneAnalysisTokenattributesCharTermAttribute:(id)attribute;
 - (id)clone;
 - (id)getBytesRef;
 - (uint64_t)appendNull;
-- (void)copyToWithOrgApacheLuceneUtilAttributeImpl:(id)a3;
+- (void)copyToWithOrgApacheLuceneUtilAttributeImpl:(id)impl;
 - (void)dealloc;
-- (void)reflectWithWithOrgApacheLuceneUtilAttributeReflector:(id)a3;
+- (void)reflectWithWithOrgApacheLuceneUtilAttributeReflector:(id)reflector;
 @end
 
 @implementation OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl
@@ -28,11 +28,11 @@
   return [(OrgApacheLuceneUtilBytesRefBuilder *)v4 get];
 }
 
-- (id)appendWithJavaLangCharSequence:(id)a3
+- (id)appendWithJavaLangCharSequence:(id)sequence
 {
-  if (a3)
+  if (sequence)
   {
-    sub_1000BBD28(self, a3, 0, [a3 length]);
+    sub_1000BBD28(self, sequence, 0, [sequence length]);
   }
 
   else
@@ -45,15 +45,15 @@
 
 - (uint64_t)appendNull
 {
-  sub_1000BB87C(a1, *(a1 + 24) + 4, a3, a4, a5, a6, a7, a8);
-  v9 = *(a1 + 16);
+  sub_1000BB87C(self, *(self + 24) + 4, a3, a4, a5, a6, a7, a8);
+  v9 = *(self + 16);
   if (!v9)
   {
     JreThrowNullPointerException();
   }
 
-  v10 = *(a1 + 24);
-  *(a1 + 24) = v10 + 1;
+  v10 = *(self + 24);
+  *(self + 24) = v10 + 1;
   v11 = *(v9 + 8);
   if (v10 < 0 || v10 >= v11)
   {
@@ -61,9 +61,9 @@
   }
 
   *(v9 + 12 + 2 * v10) = 110;
-  v12 = *(a1 + 16);
-  v13 = *(a1 + 24);
-  *(a1 + 24) = v13 + 1;
+  v12 = *(self + 16);
+  v13 = *(self + 24);
+  *(self + 24) = v13 + 1;
   v14 = *(v12 + 8);
   if (v13 < 0 || v13 >= v14)
   {
@@ -71,9 +71,9 @@
   }
 
   *(v12 + 12 + 2 * v13) = 117;
-  v15 = *(a1 + 16);
-  v16 = *(a1 + 24);
-  *(a1 + 24) = v16 + 1;
+  v15 = *(self + 16);
+  v16 = *(self + 24);
+  *(self + 24) = v16 + 1;
   v17 = *(v15 + 8);
   if (v16 < 0 || v16 >= v17)
   {
@@ -81,9 +81,9 @@
   }
 
   *(v15 + 12 + 2 * v16) = 108;
-  v18 = *(a1 + 16);
-  v19 = *(a1 + 24);
-  *(a1 + 24) = v19 + 1;
+  v18 = *(self + 16);
+  v19 = *(self + 24);
+  *(self + 24) = v19 + 1;
   v20 = *(v18 + 8);
   if (v19 < 0 || v19 >= v20)
   {
@@ -91,15 +91,15 @@
   }
 
   *(v18 + 12 + 2 * v19) = 108;
-  return a1;
+  return self;
 }
 
-- (id)appendWithNSString:(id)a3
+- (id)appendWithNSString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v10 = [a3 length];
-    [a3 getChars:0 sourceEnd:v10 destination:sub_1000BB87C(self destinationBegin:{self->termLength_ + v10, v11, v12, v13, v14, v15, v16), self->termLength_}];
+    v10 = [string length];
+    [string getChars:0 sourceEnd:v10 destination:sub_1000BB87C(self destinationBegin:{self->termLength_ + v10, v11, v12, v13, v14, v15, v16), self->termLength_}];
     self->termLength_ += v10;
   }
 
@@ -111,12 +111,12 @@
   return self;
 }
 
-- (id)appendWithJavaLangStringBuilder:(id)a3
+- (id)appendWithJavaLangStringBuilder:(id)builder
 {
-  if (a3)
+  if (builder)
   {
-    v10 = [a3 length];
-    [a3 getCharsWithInt:0 withInt:v10 withCharArray:sub_1000BB87C(self withInt:{self->termLength_ + v10, v11, v12, v13, v14, v15, v16), self->termLength_}];
+    v10 = [builder length];
+    [builder getCharsWithInt:0 withInt:v10 withCharArray:sub_1000BB87C(self withInt:{self->termLength_ + v10, v11, v12, v13, v14, v15, v16), self->termLength_}];
     self->termLength_ += v10;
   }
 
@@ -128,14 +128,14 @@
   return self;
 }
 
-- (id)appendWithOrgApacheLuceneAnalysisTokenattributesCharTermAttribute:(id)a3
+- (id)appendWithOrgApacheLuceneAnalysisTokenattributesCharTermAttribute:(id)attribute
 {
-  if (a3)
+  if (attribute)
   {
-    v10 = [a3 length];
-    v11 = [a3 buffer];
+    v10 = [attribute length];
+    buffer = [attribute buffer];
     v18 = sub_1000BB87C(self, self->termLength_ + v10, v12, v13, v14, v15, v16, v17);
-    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(v11, 0, v18, self->termLength_, v10);
+    JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(buffer, 0, v18, self->termLength_, v10);
     self->termLength_ += v10;
   }
 
@@ -151,9 +151,9 @@
 {
   v6.receiver = self;
   v6.super_class = OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl;
-  v3 = [(OrgApacheLuceneUtilAttributeImpl *)&v6 clone];
+  clone = [(OrgApacheLuceneUtilAttributeImpl *)&v6 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     JreThrowNullPointerException();
   }
@@ -163,17 +163,17 @@
     JreThrowClassCastException();
   }
 
-  JreStrongAssignAndConsume(v3 + 2, [IOSCharArray newArrayWithLength:self->termLength_]);
-  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(self->termBuffer_, 0, v3[2], 0, self->termLength_);
+  JreStrongAssignAndConsume(clone + 2, [IOSCharArray newArrayWithLength:self->termLength_]);
+  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(self->termBuffer_, 0, clone[2], 0, self->termLength_);
   v4 = new_OrgApacheLuceneUtilBytesRefBuilder_init();
-  JreStrongAssignAndConsume(v3 + 1, v4);
-  [v3[1] copyBytesWithOrgApacheLuceneUtilBytesRef:{-[OrgApacheLuceneUtilBytesRefBuilder get](self->builder_, "get")}];
-  return v3;
+  JreStrongAssignAndConsume(clone + 1, v4);
+  [clone[1] copyBytesWithOrgApacheLuceneUtilBytesRef:{-[OrgApacheLuceneUtilBytesRefBuilder get](self->builder_, "get")}];
+  return clone;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -182,7 +182,7 @@
     }
 
     objc_opt_class();
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_19;
     }
@@ -193,7 +193,7 @@
     }
 
     termLength = self->termLength_;
-    if (termLength != *(a3 + 6))
+    if (termLength != *(equal + 6))
     {
       return 0;
     }
@@ -216,7 +216,7 @@
         }
 
         v9 = *(&termBuffer->super.size_ + v6 + 2);
-        v10 = *(a3 + 2);
+        v10 = *(equal + 2);
         v11 = *(v10 + 8);
         if (v6 >= v11)
         {
@@ -241,29 +241,29 @@ LABEL_19:
   return 1;
 }
 
-- (void)reflectWithWithOrgApacheLuceneUtilAttributeReflector:(id)a3
+- (void)reflectWithWithOrgApacheLuceneUtilAttributeReflector:(id)reflector
 {
-  if (!a3)
+  if (!reflector)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 reflectWithIOSClass:OrgApacheLuceneAnalysisTokenattributesCharTermAttribute_class_() withNSString:@"term" withId:{-[OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl description](self, "description")}];
+  [reflector reflectWithIOSClass:OrgApacheLuceneAnalysisTokenattributesCharTermAttribute_class_() withNSString:@"term" withId:{-[OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl description](self, "description")}];
   v5 = OrgApacheLuceneAnalysisTokenattributesTermToBytesRefAttribute_class_();
-  v6 = [(OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl *)self getBytesRef];
+  getBytesRef = [(OrgApacheLuceneAnalysisTokenattributesCharTermAttributeImpl *)self getBytesRef];
 
-  [a3 reflectWithIOSClass:v5 withNSString:@"bytes" withId:v6];
+  [reflector reflectWithIOSClass:v5 withNSString:@"bytes" withId:getBytesRef];
 }
 
-- (void)copyToWithOrgApacheLuceneUtilAttributeImpl:(id)a3
+- (void)copyToWithOrgApacheLuceneUtilAttributeImpl:(id)impl
 {
   v5 = OrgApacheLuceneAnalysisTokenattributesCharTermAttribute_class_();
-  if (!a3)
+  if (!impl)
   {
     JreThrowNullPointerException();
   }
 
-  if (([v5 isInstance:a3] & 1) == 0)
+  if (([v5 isInstance:impl] & 1) == 0)
   {
     JreThrowClassCastException();
   }
@@ -271,7 +271,7 @@ LABEL_19:
   termBuffer = self->termBuffer_;
   termLength = self->termLength_;
 
-  [a3 copyBufferWithCharArray:termBuffer withInt:0 withInt:termLength];
+  [impl copyBufferWithCharArray:termBuffer withInt:0 withInt:termLength];
 }
 
 - (void)dealloc

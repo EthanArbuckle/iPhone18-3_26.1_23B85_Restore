@@ -1,8 +1,8 @@
 @interface BKMousePointerRegion
-- (BKMousePointerRegion)initWithPointSize:(CGSize)a3 cornerRadius:(double)a4 scale:(double)a5 displayUUID:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BKMousePointerRegion)initWithPointSize:(CGSize)size cornerRadius:(double)radius scale:(double)scale displayUUID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)pointSize;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation BKMousePointerRegion
@@ -16,10 +16,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -34,19 +34,19 @@
 
     width = self->_pointSize.width;
     height = self->_pointSize.height;
-    v8 = v4->_pointSize.width;
-    v9 = v4->_pointSize.height;
+    v8 = equalCopy->_pointSize.width;
+    v9 = equalCopy->_pointSize.height;
     if (!BSSizeEqualToSize())
     {
       goto LABEL_7;
     }
 
     cornerRadius = self->_cornerRadius;
-    v11 = v4->_cornerRadius;
-    if (BSFloatEqualToFloat() && (scale = self->_scale, v13 = v4->_scale, BSFloatEqualToFloat()))
+    v11 = equalCopy->_cornerRadius;
+    if (BSFloatEqualToFloat() && (scale = self->_scale, v13 = equalCopy->_scale, BSFloatEqualToFloat()))
     {
       displayUUID = self->_displayUUID;
-      v15 = v4->_displayUUID;
+      v15 = equalCopy->_displayUUID;
       v16 = BSEqualObjects();
     }
 
@@ -60,23 +60,23 @@ LABEL_7:
   return v16;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100032C00;
   v5[3] = &unk_1000FD128;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  streamCopy = stream;
+  selfCopy = self;
+  v4 = streamCopy;
   [v4 appendProem:self block:v5];
 }
 
-- (BKMousePointerRegion)initWithPointSize:(CGSize)a3 cornerRadius:(double)a4 scale:(double)a5 displayUUID:(id)a6
+- (BKMousePointerRegion)initWithPointSize:(CGSize)size cornerRadius:(double)radius scale:(double)scale displayUUID:(id)d
 {
-  height = a3.height;
-  width = a3.width;
-  v12 = a6;
+  height = size.height;
+  width = size.width;
+  dCopy = d;
   v22.receiver = self;
   v22.super_class = BKMousePointerRegion;
   v13 = [(BKMousePointerRegion *)&v22 init];
@@ -114,9 +114,9 @@ LABEL_7:
 
     v13->_pointSize.width = width;
     v13->_pointSize.height = height;
-    v13->_cornerRadius = a4;
-    v13->_scale = a5;
-    v15 = [v12 copy];
+    v13->_cornerRadius = radius;
+    v13->_scale = scale;
+    v15 = [dCopy copy];
     displayUUID = v14->_displayUUID;
     v14->_displayUUID = v15;
   }

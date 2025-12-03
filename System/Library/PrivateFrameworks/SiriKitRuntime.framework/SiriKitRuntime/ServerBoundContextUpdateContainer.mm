@@ -1,22 +1,22 @@
 @interface ServerBoundContextUpdateContainer
 - (_TtC14SiriKitRuntime33ServerBoundContextUpdateContainer)init;
-- (_TtC14SiriKitRuntime33ServerBoundContextUpdateContainer)initWithSerializedBackingStore:(id)a3;
+- (_TtC14SiriKitRuntime33ServerBoundContextUpdateContainer)initWithSerializedBackingStore:(id)store;
 - (id)serializedBackingStore;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ServerBoundContextUpdateContainer
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC14SiriKitRuntime33ServerBoundContextUpdateContainer_contextUpdate);
-  v7 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = MEMORY[0x1E12A1410](0xD00000000000001ALL, 0x80000001DCA7A620);
-  [v7 encodeObject:v4 forKey:v6];
+  [coderCopy encodeObject:v4 forKey:v6];
 }
 
-- (_TtC14SiriKitRuntime33ServerBoundContextUpdateContainer)initWithSerializedBackingStore:(id)a3
+- (_TtC14SiriKitRuntime33ServerBoundContextUpdateContainer)initWithSerializedBackingStore:(id)store
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -26,7 +26,7 @@
 
 - (id)serializedBackingStore
 {
-  v2 = self;
+  selfCopy = self;
   ServerBoundContextUpdateContainer.serializedBackingStore()(v5);
 
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);

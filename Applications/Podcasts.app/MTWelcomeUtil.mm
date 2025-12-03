@@ -1,7 +1,7 @@
 @interface MTWelcomeUtil
-+ (BOOL)presentWelcomeIfNeededFromViewController:(id)a3 metricsSender:(id)a4 acknowledgementCompletionBlock:(id)a5;
++ (BOOL)presentWelcomeIfNeededFromViewController:(id)controller metricsSender:(id)sender acknowledgementCompletionBlock:(id)block;
 + (BOOL)shouldShowWelcome;
-+ (BOOL)shouldShowWelcomeIgnoringNewFeatures:(BOOL)a3;
++ (BOOL)shouldShowWelcomeIgnoringNewFeatures:(BOOL)features;
 + (void)markWelcomeAsShown;
 @end
 
@@ -20,10 +20,10 @@
     v4 = 0;
   }
 
-  return [a1 shouldShowWelcomeIgnoringNewFeatures:v4];
+  return [self shouldShowWelcomeIgnoringNewFeatures:v4];
 }
 
-+ (BOOL)shouldShowWelcomeIgnoringNewFeatures:(BOOL)a3
++ (BOOL)shouldShowWelcomeIgnoringNewFeatures:(BOOL)features
 {
   v4 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
   v5 = [v4 BOOLForKey:@"SuppressWelcomeScreen"];
@@ -50,9 +50,9 @@ LABEL_9:
   {
     v8 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
     v9 = [v8 objectForKey:@"MTWelcomeVersion"];
-    v10 = [v9 integerValue];
+    integerValue = [v9 integerValue];
 
-    if (!a3 && v10 != qword_1005726F0)
+    if (!features && integerValue != qword_1005726F0)
     {
       v11 = _MTLogCategoryPrivacy();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -60,7 +60,7 @@ LABEL_9:
         v22 = 138412546;
         v23 = @"MTWelcomeVersion";
         v24 = 2048;
-        v25 = v10;
+        v25 = integerValue;
         v12 = "shouldShowWelcome = YES. Reason: %@ = %ld";
         v13 = v11;
         v14 = 22;
@@ -126,64 +126,64 @@ LABEL_20:
 {
   v3 = [AMSAcknowledgePrivacyTask alloc];
   v4 = [v3 initWithPrivacyIdentifier:kMTPodcastsPrivacyIdentifier];
-  v5 = [v4 acknowledgePrivacy];
+  acknowledgePrivacy = [v4 acknowledgePrivacy];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10015FFC4;
   v6[3] = &unk_1004DDF88;
-  v6[4] = a1;
-  [v5 addFinishBlock:v6];
+  v6[4] = self;
+  [acknowledgePrivacy addFinishBlock:v6];
 }
 
-+ (BOOL)presentWelcomeIfNeededFromViewController:(id)a3 metricsSender:(id)a4 acknowledgementCompletionBlock:(id)a5
++ (BOOL)presentWelcomeIfNeededFromViewController:(id)controller metricsSender:(id)sender acknowledgementCompletionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([a1 shouldShowWelcome])
+  controllerCopy = controller;
+  senderCopy = sender;
+  blockCopy = block;
+  if ([self shouldShowWelcome])
   {
-    v11 = [v8 presentedViewController];
+    presentedViewController = [controllerCopy presentedViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v8 presentedViewController];
+      presentedViewController2 = [controllerCopy presentedViewController];
     }
 
     else
     {
-      v12 = 0;
+      presentedViewController2 = 0;
     }
 
-    v14 = [v12 viewControllers];
-    v15 = [v14 firstObject];
-    v16 = v15;
-    if (v15)
+    viewControllers = [presentedViewController2 viewControllers];
+    firstObject = [viewControllers firstObject];
+    v16 = firstObject;
+    if (firstObject)
     {
-      v17 = v15;
+      presentedViewController3 = firstObject;
     }
 
     else
     {
-      v17 = [v8 presentedViewController];
+      presentedViewController3 = [controllerCopy presentedViewController];
     }
 
-    v18 = v17;
+    v18 = presentedViewController3;
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if ((isKindOfClass & 1) == 0)
     {
-      v20 = [[MTWelcomeViewController alloc] initWithMetricsSender:v9];
+      v20 = [[MTWelcomeViewController alloc] initWithMetricsSender:senderCopy];
       [(MTWelcomeViewController *)v20 setModalPresentationStyle:2];
       objc_initWeak(&location, v20);
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_100160478;
       v22[3] = &unk_1004DDFB0;
-      v23 = v10;
+      v23 = blockCopy;
       objc_copyWeak(&v24, &location);
       [(MTWelcomeViewController *)v20 addAcknowledgementCompletionBlock:v22];
-      [v8 presentViewController:v20 animated:1 completion:0];
+      [controllerCopy presentViewController:v20 animated:1 completion:0];
       objc_destroyWeak(&v24);
 
       objc_destroyWeak(&location);

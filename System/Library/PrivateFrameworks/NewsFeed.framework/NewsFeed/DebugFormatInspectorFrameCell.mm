@@ -1,17 +1,17 @@
 @interface DebugFormatInspectorFrameCell
-- (_TtC8NewsFeed29DebugFormatInspectorFrameCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)didTapBorderButtonWithSender:(id)a3;
-- (void)didTapHiddenButtonWithSender:(id)a3;
+- (_TtC8NewsFeed29DebugFormatInspectorFrameCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)didTapBorderButtonWithSender:(id)sender;
+- (void)didTapHiddenButtonWithSender:(id)sender;
 - (void)layoutSubviews;
 @end
 
 @implementation DebugFormatInspectorFrameCell
 
-- (_TtC8NewsFeed29DebugFormatInspectorFrameCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8NewsFeed29DebugFormatInspectorFrameCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1D726207C();
+    identifier = sub_1D726207C();
     v6 = v5;
   }
 
@@ -20,27 +20,27 @@
     v6 = 0;
   }
 
-  return sub_1D6956B70(a3, a4, v6);
+  return sub_1D6956B70(style, identifier, v6);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6957660();
 }
 
-- (void)didTapBorderButtonWithSender:(id)a3
+- (void)didTapBorderButtonWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D69587DC(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1D69587DC(senderCopy);
 }
 
-- (void)didTapHiddenButtonWithSender:(id)a3
+- (void)didTapHiddenButtonWithSender:(id)sender
 {
   swift_getObjectType();
   v4 = qword_1EC87D5F8;
-  v5 = self;
+  selfCopy = self;
   if (v4 != -1)
   {
     swift_once();

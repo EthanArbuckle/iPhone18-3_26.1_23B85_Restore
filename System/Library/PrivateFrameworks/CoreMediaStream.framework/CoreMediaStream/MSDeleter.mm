@@ -1,16 +1,16 @@
 @interface MSDeleter
 + (BOOL)isInRetryState;
 + (id)_clearInstantiatedDeletersByPersonID;
-+ (id)deleterForPersonID:(id)a3;
++ (id)deleterForPersonID:(id)d;
 + (id)nextActivityDate;
-+ (id)nextActivityDateForPersonID:(id)a3;
++ (id)nextActivityDateForPersonID:(id)d;
 + (id)personIDsWithOutstandingActivities;
-+ (void)_setMasterNextActivityDate:(id)a3 forPersonID:(id)a4;
++ (void)_setMasterNextActivityDate:(id)date forPersonID:(id)d;
 + (void)abortAllActivities;
-+ (void)forgetPersonID:(id)a3;
++ (void)forgetPersonID:(id)d;
 + (void)stopAllActivities;
 - (BOOL)_isAllowedToDelete;
-- (MSDeleter)initWithPersonID:(id)a3 baseURL:(id)a4;
+- (MSDeleter)initWithPersonID:(id)d baseURL:(id)l;
 - (id)_abortedError;
 - (void)_abort;
 - (void)_forget;
@@ -19,9 +19,9 @@
 - (void)_updateMasterManifest;
 - (void)deactivate;
 - (void)dealloc;
-- (void)deleteAssetCollections:(id)a3;
-- (void)deleteProtocol:(id)a3 didFinishSuccessfulCollections:(id)a4 failedCollections:(id)a5 error:(id)a6;
-- (void)deleteProtocol:(id)a3 didReceiveAuthenticationError:(id)a4;
+- (void)deleteAssetCollections:(id)collections;
+- (void)deleteProtocol:(id)protocol didFinishSuccessfulCollections:(id)collections failedCollections:(id)failedCollections error:(id)error;
+- (void)deleteProtocol:(id)protocol didReceiveAuthenticationError:(id)error;
 - (void)performOutstandingActivities;
 @end
 
@@ -38,7 +38,7 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   [(MSDeleter *)self _stop];
-  v3 = [(MSDeleter *)self _abortedError];
+  _abortedError = [(MSDeleter *)self _abortedError];
   v4 = [(MSObjectQueue *)self->_deleteQueue allObjectWrappersMaxCount:5];
   while ([v4 count])
   {
@@ -63,8 +63,8 @@
           }
 
           delegate = self->_delegate;
-          v12 = [*(*(&v14 + 1) + 8 * i) object];
-          [(MSDeleterDelegate *)delegate deleter:self didFinishDeletingAssetCollection:v12 error:v3];
+          object = [*(*(&v14 + 1) + 8 * i) object];
+          [(MSDeleterDelegate *)delegate deleter:self didFinishDeletingAssetCollection:object error:_abortedError];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -110,62 +110,62 @@
   self->_state = 0;
 }
 
-- (void)deleteProtocol:(id)a3 didFinishSuccessfulCollections:(id)a4 failedCollections:(id)a5 error:(id)a6
+- (void)deleteProtocol:(id)protocol didFinishSuccessfulCollections:(id)collections failedCollections:(id)failedCollections error:(id)error
 {
   v91 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  protocolCopy = protocol;
+  collectionsCopy = collections;
+  failedCollectionsCopy = failedCollections;
+  errorCopy = error;
   state = self->_state;
   if (state == 3)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v46 = objc_opt_class();
-      v47 = v10;
+      v47 = protocolCopy;
       v48 = v46;
-      v49 = [(MSCupidStateMachine *)self personID];
+      personID = [(MSCupidStateMachine *)self personID];
       *buf = 138544130;
       *v85 = v46;
       *&v85[8] = 2112;
-      v86 = v49;
+      v86 = personID;
       v87 = 2114;
-      v88 = v11;
+      v88 = collectionsCopy;
       v89 = 2114;
-      v90 = v12;
+      v90 = failedCollectionsCopy;
       _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %@ Received delete response. Successful deletes: %{public}@\n\nFailed deletes: %{public}@", buf, 0x2Au);
 
-      v10 = v47;
+      protocolCopy = v47;
     }
 
     v15 = 0x27EE36000;
-    if (v13)
+    if (errorCopy)
     {
-      v16 = [v13 MSIsTemporaryNetworkError];
+      mSIsTemporaryNetworkError = [errorCopy MSIsTemporaryNetworkError];
       v17 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
-      if (v16)
+      if (mSIsTemporaryNetworkError)
       {
         if (v17)
         {
           v50 = objc_opt_class();
-          v51 = v10;
+          v51 = protocolCopy;
           v52 = v50;
-          v53 = [(MSCupidStateMachine *)self personID];
+          personID2 = [(MSCupidStateMachine *)self personID];
           *buf = 138543618;
           *v85 = v50;
           *&v85[8] = 2112;
-          v86 = v53;
+          v86 = personID2;
           _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Encountered temporary network issues during deletion. Will retry later.", buf, 0x16u);
 
           v15 = 0x27EE36000;
-          v10 = v51;
+          protocolCopy = v51;
         }
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
           *buf = 138543362;
-          *v85 = v13;
+          *v85 = errorCopy;
           _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "... Error: %{public}@", buf, 0xCu);
         }
 
@@ -178,35 +178,35 @@
         {
           v54 = objc_opt_class();
           v62 = v54;
-          v55 = [(MSCupidStateMachine *)self personID];
-          [v13 MSVerboseDescription];
-          v57 = v56 = v10;
+          personID3 = [(MSCupidStateMachine *)self personID];
+          [errorCopy MSVerboseDescription];
+          v57 = v56 = protocolCopy;
           *buf = 138543874;
           *v85 = v54;
           *&v85[8] = 2112;
-          v86 = v55;
+          v86 = personID3;
           v87 = 2114;
           v88 = v57;
           _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Error sending delete request: %{public}@", buf, 0x20u);
 
-          v10 = v56;
+          protocolCopy = v56;
           v15 = 0x27EE36000;
         }
 
-        v23 = [MEMORY[0x277CBEB18] array];
-        if ([v13 MSNeedsBackoff])
+        array = [MEMORY[0x277CBEB18] array];
+        if ([errorCopy MSNeedsBackoff])
         {
           [(MSCupidStateMachine *)self _backoffStreamsBackoffTimer];
         }
 
-        v66 = v12;
-        if ([v13 MSIsCounted])
+        v66 = failedCollectionsCopy;
+        if ([errorCopy MSIsCounted])
         {
           v75 = 0u;
           v76 = 0u;
           v73 = 0u;
           v74 = 0u;
-          v64 = v10;
+          v64 = protocolCopy;
           v24 = self->_requestedDeleteWrappers;
           v25 = [(NSMutableArray *)v24 countByEnumeratingWithState:&v73 objects:v82 count:16];
           if (v25)
@@ -226,7 +226,7 @@
                 [v29 setErrorCount:{objc_msgSend(v29, "errorCount") + 1}];
                 if ([v29 errorCount] >= self->_maxErrorCount)
                 {
-                  [v23 addObject:v29];
+                  [array addObject:v29];
                 }
               }
 
@@ -237,33 +237,33 @@
           }
 
           [(MSObjectQueue *)self->_deleteQueue commitErrorCountsForObjectWrappers:self->_requestedDeleteWrappers];
-          v10 = v64;
-          v12 = v66;
+          protocolCopy = v64;
+          failedCollectionsCopy = v66;
           v15 = 0x27EE36000;
         }
 
-        if ([v23 count])
+        if ([array count])
         {
-          v30 = v10;
+          v30 = protocolCopy;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
             v58 = objc_opt_class();
             v59 = v58;
-            v60 = [(MSCupidStateMachine *)self personID];
-            v61 = [v23 count];
+            personID4 = [(MSCupidStateMachine *)self personID];
+            v61 = [array count];
             *buf = 138543874;
             *v85 = v58;
             *&v85[8] = 2112;
-            v86 = v60;
+            v86 = personID4;
             v87 = 2048;
             v88 = v61;
             _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Giving up sending %lu delete requests.", buf, 0x20u);
           }
 
-          [(NSMutableArray *)self->_requestedDeleteWrappers removeObjectsInArray:v23];
-          [(MSObjectQueue *)self->_deleteQueue removeObjectWrappersFromQueue:v23];
+          [(NSMutableArray *)self->_requestedDeleteWrappers removeObjectsInArray:array];
+          [(MSObjectQueue *)self->_deleteQueue removeObjectWrappersFromQueue:array];
           [(MSDeleter *)self _updateMasterManifest];
-          v31 = [MSObjectWrapper objectsFromWrappers:v23];
+          v31 = [MSObjectWrapper objectsFromWrappers:array];
           v69 = 0u;
           v70 = 0u;
           v71 = 0u;
@@ -282,7 +282,7 @@
                   objc_enumerationMutation(v31);
                 }
 
-                [(MSDeleterDelegate *)self->_delegate deleter:self didFinishDeletingAssetCollection:*(*(&v69 + 1) + 8 * j) error:v13];
+                [(MSDeleterDelegate *)self->_delegate deleter:self didFinishDeletingAssetCollection:*(*(&v69 + 1) + 8 * j) error:errorCopy];
               }
 
               v33 = [v31 countByEnumeratingWithState:&v69 objects:v81 count:16];
@@ -291,8 +291,8 @@
             while (v33);
           }
 
-          v10 = v30;
-          v12 = v66;
+          protocolCopy = v30;
+          failedCollectionsCopy = v66;
           v15 = 0x27EE36000;
         }
 
@@ -304,19 +304,19 @@
 
     else
     {
-      v63 = v10;
-      v65 = v12;
-      v67 = v11;
+      v63 = protocolCopy;
+      v65 = failedCollectionsCopy;
+      v67 = collectionsCopy;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v19 = objc_opt_class();
         v20 = v19;
-        v21 = [(MSCupidStateMachine *)self personID];
+        personID5 = [(MSCupidStateMachine *)self personID];
         v22 = [(NSMutableArray *)self->_requestedDeleteWrappers count];
         *buf = 138543874;
         *v85 = v19;
         *&v85[8] = 2112;
-        v86 = v21;
+        v86 = personID5;
         v87 = 2048;
         v88 = v22;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ Successfully sent %lu delete requests.", buf, 0x20u);
@@ -341,8 +341,8 @@
               objc_enumerationMutation(v37);
             }
 
-            v42 = [*(*(&v77 + 1) + 8 * k) object];
-            [(MSDeleterDelegate *)self->_delegate deleter:self didFinishDeletingAssetCollection:v42 error:0];
+            object = [*(*(&v77 + 1) + 8 * k) object];
+            [(MSDeleterDelegate *)self->_delegate deleter:self didFinishDeletingAssetCollection:object error:0];
           }
 
           v39 = [(NSMutableArray *)v37 countByEnumeratingWithState:&v77 objects:v83 count:16];
@@ -356,14 +356,14 @@
       [(NSMutableArray *)self->_requestedDeleteWrappers removeAllObjects];
       v15 = 0x27EE36000uLL;
       daemon = self->_daemon;
-      v44 = [(MSCupidStateMachine *)self personID];
-      [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:v44];
+      personID6 = [(MSCupidStateMachine *)self personID];
+      [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationSuccessForPersonID:personID6];
 
       [(MSCupidStateMachine *)self _resetStreamsBackoffTimer];
       v18 = 0;
-      v10 = v63;
-      v12 = v65;
-      v11 = v67;
+      protocolCopy = v63;
+      failedCollectionsCopy = v65;
+      collectionsCopy = v67;
     }
 
     if ([*(&self->super.super.isa + *(v36 + 620)) count])
@@ -400,29 +400,29 @@
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteProtocol:(id)a3 didReceiveAuthenticationError:(id)a4
+- (void)deleteProtocol:(id)protocol didReceiveAuthenticationError:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v9 = objc_opt_class();
     v10 = v9;
-    v11 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     v12 = 138543874;
     v13 = v9;
     v14 = 2112;
-    v15 = v11;
+    v15 = personID;
     v16 = 2114;
-    v17 = v5;
+    v17 = errorCopy;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Found authentication error. Will try again later. %{public}@", &v12, 0x20u);
   }
 
   [(MSCupidStateMachine *)self _resetStreamsBackoffTimer];
   self->_state = 1;
   daemon = self->_daemon;
-  v7 = [(MSCupidStateMachine *)self personID];
-  [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:v7];
+  personID2 = [(MSCupidStateMachine *)self personID];
+  [(MSMediaStreamDaemon *)daemon didReceiveAuthenticationFailureForPersonID:personID2];
 
   [(MSDaemon *)self->_daemon releaseBusy];
   v8 = *MEMORY[0x277D85DE8];
@@ -451,11 +451,11 @@
     {
       v7 = objc_opt_class();
       v8 = v7;
-      v9 = [(MSCupidStateMachine *)self personID];
+      personID = [(MSCupidStateMachine *)self personID];
       *buf = 138543618;
       v13 = v7;
       v14 = 2112;
-      v15 = v9;
+      v15 = personID;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ No outstanding deletes to send.", buf, 0x16u);
     }
 
@@ -474,11 +474,11 @@
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v3 = objc_opt_class();
-      v4 = [(MSCupidStateMachine *)self personID];
+      personID = [(MSCupidStateMachine *)self personID];
       v7 = 138543618;
       v8 = v3;
       v9 = 2112;
-      v10 = v4;
+      v10 = personID;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Not deleting because we're shutting down.", &v7, 0x16u);
     }
 
@@ -499,30 +499,30 @@ LABEL_9:
   [(MSDeleter *)self _sendDeleteRequest];
 }
 
-- (void)deleteAssetCollections:(id)a3
+- (void)deleteAssetCollections:(id)collections
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectionsCopy = collections;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     *buf = 138543874;
     v23 = v5;
     v24 = 2112;
-    v25 = v7;
+    v25 = personID;
     v26 = 2114;
-    v27 = v4;
+    v27 = collectionsCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ Deleting asset collections: %{public}@", buf, 0x20u);
   }
 
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(collectionsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v4;
+  v9 = collectionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -573,9 +573,9 @@ LABEL_9:
   v6 = v5;
   if (v4)
   {
-    v7 = [v5 policyMaySendDelete];
+    policyMaySendDelete = [v5 policyMaySendDelete];
 
-    if ((v7 & 1) == 0)
+    if ((policyMaySendDelete & 1) == 0)
     {
       goto LABEL_6;
     }
@@ -583,17 +583,17 @@ LABEL_9:
 
   else
   {
-    v8 = [v5 policyMayUpload];
+    policyMayUpload = [v5 policyMayUpload];
 
-    if (!v8)
+    if (!policyMayUpload)
     {
       goto LABEL_6;
     }
   }
 
-  v9 = [(MSCupidStateMachine *)self _latestNextActivityDate];
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [v9 compare:v10];
+  _latestNextActivityDate = [(MSCupidStateMachine *)self _latestNextActivityDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  v11 = [_latestNextActivityDate compare:date];
 
   if (v11 != 1)
   {
@@ -608,11 +608,11 @@ LABEL_6:
   {
     v14 = objc_opt_class();
     v15 = v14;
-    v16 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     v18 = 138543618;
     v19 = v14;
     v20 = 2112;
-    v21 = v16;
+    v21 = personID;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Not sending delete request at this time.", &v18, 0x16u);
 
     result = 0;
@@ -625,12 +625,12 @@ LABEL_9:
 
 - (void)_updateMasterManifest
 {
-  v7 = [(MSCupidStateMachine *)self _latestNextActivityDate];
+  _latestNextActivityDate = [(MSCupidStateMachine *)self _latestNextActivityDate];
   v3 = [(MSObjectQueue *)self->_deleteQueue count];
-  v4 = [(MSCupidStateMachine *)self personID];
+  personID = [(MSCupidStateMachine *)self personID];
   if (v3)
   {
-    v5 = v7 == 0;
+    v5 = _latestNextActivityDate == 0;
   }
 
   else
@@ -645,10 +645,10 @@ LABEL_9:
 
   else
   {
-    v6 = v7;
+    v6 = _latestNextActivityDate;
   }
 
-  [MSDeleter _setMasterNextActivityDate:v6 forPersonID:v4];
+  [MSDeleter _setMasterNextActivityDate:v6 forPersonID:personID];
 
   _commitMasterManifest_3250();
 }
@@ -678,17 +678,17 @@ LABEL_9:
   [(MSCupidStateMachine *)&v6 deactivate];
 }
 
-- (MSDeleter)initWithPersonID:(id)a3 baseURL:(id)a4
+- (MSDeleter)initWithPersonID:(id)d baseURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = MSDeleter;
-  v8 = [(MSCupidStateMachine *)&v18 initWithPersonID:v6];
+  v8 = [(MSCupidStateMachine *)&v18 initWithPersonID:dCopy];
   if (v8)
   {
     v9 = [MSObjectQueue alloc];
-    v10 = MSPathDeleteQueueForPersonID(v6);
+    v10 = MSPathDeleteQueueForPersonID(dCopy);
     v11 = [(MSObjectQueue *)v9 initWithPath:v10];
     deleteQueue = v8->_deleteQueue;
     v8->_deleteQueue = v11;
@@ -697,7 +697,7 @@ LABEL_9:
     requestedDeleteWrappers = v8->_requestedDeleteWrappers;
     v8->_requestedDeleteWrappers = v13;
 
-    v15 = [[MSDeleteStreamsProtocol alloc] initWithPersonID:v6 baseURL:v7];
+    v15 = [[MSDeleteStreamsProtocol alloc] initWithPersonID:dCopy baseURL:lCopy];
     protocol = v8->_protocol;
     v8->_protocol = v15;
 
@@ -716,8 +716,8 @@ LABEL_9:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [_deleterByID allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [_deleterByID allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -727,7 +727,7 @@ LABEL_9:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) _isInRetryState])
@@ -737,7 +737,7 @@ LABEL_9:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -760,8 +760,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [_deleterByID allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [_deleterByID allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -773,14 +773,14 @@ LABEL_11:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) abort];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -796,8 +796,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [_deleterByID allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [_deleterByID allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -809,14 +809,14 @@ LABEL_11:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) stop];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -828,16 +828,16 @@ LABEL_11:
 + (id)personIDsWithOutstandingActivities
 {
   v2 = _masterNextActivityDateByPersonID_3275();
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-+ (id)nextActivityDateForPersonID:(id)a3
++ (id)nextActivityDateForPersonID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = _masterNextActivityDateByPersonID_3275();
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:dCopy];
 
   return v5;
 }
@@ -891,23 +891,23 @@ LABEL_11:
   return v5;
 }
 
-+ (void)_setMasterNextActivityDate:(id)a3 forPersonID:(id)a4
++ (void)_setMasterNextActivityDate:(id)date forPersonID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dateCopy = date;
+  dCopy = d;
+  if (dCopy)
   {
     v7 = _masterNextActivityDateByPersonID_3275();
     v8 = v7;
-    if (v5)
+    if (dateCopy)
     {
-      [v7 setObject:v5 forKey:v6];
+      [v7 setObject:dateCopy forKey:dCopy];
     }
 
     else
     {
-      [v7 removeObjectForKey:v6];
+      [v7 removeObjectForKey:dCopy];
     }
 
     _commitMasterManifest_3250();
@@ -926,15 +926,15 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)forgetPersonID:(id)a3
++ (void)forgetPersonID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v3 = [_deleterByID objectForKey:?];
   v4 = v3;
   if (v3)
   {
     [v3 forget];
-    [_deleterByID removeObjectForKey:v5];
+    [_deleterByID removeObjectForKey:dCopy];
   }
 }
 
@@ -948,10 +948,10 @@ LABEL_8:
   return v2;
 }
 
-+ (id)deleterForPersonID:(id)a3
++ (id)deleterForPersonID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v4 = _deleterByID;
     if (!_deleterByID)
@@ -963,15 +963,15 @@ LABEL_8:
       v4 = _deleterByID;
     }
 
-    v7 = [v4 objectForKey:v3];
+    v7 = [v4 objectForKey:dCopy];
     if (!v7)
     {
       v8 = [MSDeleter alloc];
       v9 = MSPlatform();
-      v10 = [v9 baseURLForPersonID:v3];
-      v7 = [(MSDeleter *)v8 initWithPersonID:v3 baseURL:v10];
+      v10 = [v9 baseURLForPersonID:dCopy];
+      v7 = [(MSDeleter *)v8 initWithPersonID:dCopy baseURL:v10];
 
-      [_deleterByID setObject:v7 forKey:v3];
+      [_deleterByID setObject:v7 forKey:dCopy];
     }
   }
 

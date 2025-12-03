@@ -1,6 +1,6 @@
 @interface _LSEmptyPropertyList
 + (id)sharedInstance;
-- (_LSEmptyPropertyList)initWithCoder:(id)a3;
+- (_LSEmptyPropertyList)initWithCoder:(id)coder;
 @end
 
 @implementation _LSEmptyPropertyList
@@ -17,7 +17,7 @@
   return v3;
 }
 
-- (_LSEmptyPropertyList)initWithCoder:(id)a3
+- (_LSEmptyPropertyList)initWithCoder:(id)coder
 {
   v4 = +[_LSEmptyPropertyList sharedInstance];
 

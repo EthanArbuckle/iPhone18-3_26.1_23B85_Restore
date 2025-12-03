@@ -1,30 +1,30 @@
 @interface ICTTTextStorageWithRange
 + (NSArray)writableTypeIdentifiersForItemProvider;
-- (ICTTTextStorageWithRange)initWithTextStorage:(id)a3 range:(_NSRange)a4 note:(id)a5;
+- (ICTTTextStorageWithRange)initWithTextStorage:(id)storage range:(_NSRange)range note:(id)note;
 - (NSArray)writableTypeIdentifiersForItemProvider;
 - (_NSRange)range;
-- (id)_loadFileRepresentationOfTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (int64_t)itemProviderVisibilityForRepresentationWithTypeIdentifier:(id)a3;
+- (id)_loadFileRepresentationOfTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (int64_t)itemProviderVisibilityForRepresentationWithTypeIdentifier:(id)identifier;
 - (void)prepareTextStorage;
 @end
 
 @implementation ICTTTextStorageWithRange
 
-- (ICTTTextStorageWithRange)initWithTextStorage:(id)a3 range:(_NSRange)a4 note:(id)a5
+- (ICTTTextStorageWithRange)initWithTextStorage:(id)storage range:(_NSRange)range note:(id)note
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3;
-  v11 = a5;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  noteCopy = note;
   v15.receiver = self;
   v15.super_class = ICTTTextStorageWithRange;
   v12 = [(ICTTTextStorageWithRange *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_note, a5);
-    objc_storeStrong(&v13->_textStorage, a3);
+    objc_storeStrong(&v12->_note, note);
+    objc_storeStrong(&v13->_textStorage, storage);
     v13->_range.location = location;
     v13->_range.length = length;
   }
@@ -49,15 +49,15 @@
   v11 = __Block_byref_object_copy__33;
   v12 = __Block_byref_object_dispose__33;
   v13 = 0;
-  v3 = [(ICTTTextStorageWithRange *)self note];
-  v4 = [v3 managedObjectContext];
+  note = [(ICTTTextStorageWithRange *)self note];
+  managedObjectContext = [note managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__ICTTTextStorageWithRange_writableTypeIdentifiersForItemProvider__block_invoke;
   v7[3] = &unk_1E8468FA8;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -74,9 +74,9 @@ void __66__ICTTTextStorageWithRange_writableTypeIdentifiersForItemProvider__bloc
   *(v3 + 40) = v2;
 }
 
-- (int64_t)itemProviderVisibilityForRepresentationWithTypeIdentifier:(id)a3
+- (int64_t)itemProviderVisibilityForRepresentationWithTypeIdentifier:(id)identifier
 {
-  if ([a3 isEqual:*MEMORY[0x1E69B7508]])
+  if ([identifier isEqual:*MEMORY[0x1E69B7508]])
   {
     return 3;
   }
@@ -89,22 +89,22 @@ void __66__ICTTTextStorageWithRange_writableTypeIdentifiersForItemProvider__bloc
 
 - (void)prepareTextStorage
 {
-  v3 = [(ICTTTextStorageWithRange *)self note];
-  v4 = [v3 objectID];
+  note = [(ICTTTextStorageWithRange *)self note];
+  objectID = [note objectID];
 
-  v5 = [MEMORY[0x1E69B7800] sharedContext];
-  v6 = [v5 workerManagedObjectContext];
-  [(ICTTTextStorageWithRange *)self setWorkerContext:v6];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
+  [(ICTTTextStorageWithRange *)self setWorkerContext:workerManagedObjectContext];
 
-  v7 = [(ICTTTextStorageWithRange *)self workerContext];
+  workerContext = [(ICTTTextStorageWithRange *)self workerContext];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__ICTTTextStorageWithRange_prepareTextStorage__block_invoke;
   v9[3] = &unk_1E8468F80;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 performBlock:v9];
+  v10 = objectID;
+  v8 = objectID;
+  [workerContext performBlock:v9];
 }
 
 void __46__ICTTTextStorageWithRange_prepareTextStorage__block_invoke(uint64_t a1)
@@ -130,32 +130,32 @@ void __46__ICTTTextStorageWithRange_prepareTextStorage__block_invoke(uint64_t a1
   }
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICTTTextStorageWithRange *)self range];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  range = [(ICTTTextStorageWithRange *)self range];
   v10 = v9;
-  v11 = [(ICTTTextStorageWithRange *)self workerContext];
+  workerContext = [(ICTTTextStorageWithRange *)self workerContext];
 
-  if (!v11)
+  if (!workerContext)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"self.workerContext != ((void*)0)" functionName:"-[ICTTTextStorageWithRange loadDataWithTypeIdentifier:forItemProviderCompletionHandler:]" simulateCrash:1 showAlert:0 format:@"Seems like prepareTextStorage was never called"];
   }
 
-  v12 = [(ICTTTextStorageWithRange *)self workerContext];
+  workerContext2 = [(ICTTTextStorageWithRange *)self workerContext];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __88__ICTTTextStorageWithRange_loadDataWithTypeIdentifier_forItemProviderCompletionHandler___block_invoke;
   v16[3] = &unk_1E846B648;
   v16[4] = self;
-  v17 = v6;
-  v19 = v8;
+  v17 = identifierCopy;
+  v19 = range;
   v20 = v10;
-  v18 = v7;
-  v13 = v7;
-  v14 = v6;
-  [v12 performBlock:v16];
+  v18 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = identifierCopy;
+  [workerContext2 performBlock:v16];
 
   return 0;
 }
@@ -194,32 +194,32 @@ void __88__ICTTTextStorageWithRange_loadDataWithTypeIdentifier_forItemProviderCo
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)_loadFileRepresentationOfTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)_loadFileRepresentationOfTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICTTTextStorageWithRange *)self range];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  range = [(ICTTTextStorageWithRange *)self range];
   v10 = v9;
-  v11 = [(ICTTTextStorageWithRange *)self workerContext];
+  workerContext = [(ICTTTextStorageWithRange *)self workerContext];
 
-  if (!v11)
+  if (!workerContext)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"self.workerContext != ((void*)0)" functionName:"-[ICTTTextStorageWithRange _loadFileRepresentationOfTypeIdentifier:forItemProviderCompletionHandler:]" simulateCrash:1 showAlert:0 format:@"Seems like prepareTextStorage was never called"];
   }
 
-  v12 = [(ICTTTextStorageWithRange *)self workerContext];
+  workerContext2 = [(ICTTTextStorageWithRange *)self workerContext];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __101__ICTTTextStorageWithRange__loadFileRepresentationOfTypeIdentifier_forItemProviderCompletionHandler___block_invoke;
   v16[3] = &unk_1E846B648;
-  v19 = v8;
+  v19 = range;
   v20 = v10;
   v16[4] = self;
-  v17 = v6;
-  v18 = v7;
-  v13 = v7;
-  v14 = v6;
-  [v12 performBlock:v16];
+  v17 = identifierCopy;
+  v18 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = identifierCopy;
+  [workerContext2 performBlock:v16];
 
   return 0;
 }

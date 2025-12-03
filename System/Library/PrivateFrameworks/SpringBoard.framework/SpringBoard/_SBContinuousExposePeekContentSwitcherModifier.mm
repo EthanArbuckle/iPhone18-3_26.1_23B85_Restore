@@ -1,30 +1,30 @@
 @interface _SBContinuousExposePeekContentSwitcherModifier
-- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (_SBContinuousExposePeekContentSwitcherModifier)initWithAppLayout:(id)a3 configuration:(int64_t)a4;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)handleTapAppLayoutEvent:(id)a3;
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5;
+- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (_SBContinuousExposePeekContentSwitcherModifier)initWithAppLayout:(id)layout configuration:(int64_t)configuration;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)handleTapAppLayoutEvent:(id)event;
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event;
 @end
 
 @implementation _SBContinuousExposePeekContentSwitcherModifier
 
-- (_SBContinuousExposePeekContentSwitcherModifier)initWithAppLayout:(id)a3 configuration:(int64_t)a4
+- (_SBContinuousExposePeekContentSwitcherModifier)initWithAppLayout:(id)layout configuration:(int64_t)configuration
 {
-  v8 = a3;
+  layoutCopy = layout;
   v15.receiver = self;
   v15.super_class = _SBContinuousExposePeekContentSwitcherModifier;
   v9 = [(SBSwitcherModifier *)&v15 init];
   if (v9)
   {
-    if (!v8)
+    if (!layoutCopy)
     {
       [_SBContinuousExposePeekContentSwitcherModifier initWithAppLayout:a2 configuration:v9];
     }
 
-    objc_storeStrong(&v9->_appLayout, a3);
-    v9->_configuration = a4;
+    objc_storeStrong(&v9->_appLayout, layout);
+    v9->_configuration = configuration;
     v10 = [[SBFullScreenContinuousExposeSwitcherModifier alloc] initWithFullScreenAppLayout:v9->_appLayout];
     fullScreenContinuousExposeAppLayoutModifier = v9->_fullScreenContinuousExposeAppLayoutModifier;
     v9->_fullScreenContinuousExposeAppLayoutModifier = v10;
@@ -44,11 +44,11 @@
   return v9;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v11.receiver = self;
   v11.super_class = _SBContinuousExposePeekContentSwitcherModifier;
-  v4 = [(_SBContinuousExposePeekContentSwitcherModifier *)&v11 adjustedAppLayoutsForAppLayouts:a3];
+  v4 = [(_SBContinuousExposePeekContentSwitcherModifier *)&v11 adjustedAppLayoutsForAppLayouts:layouts];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __82___SBContinuousExposePeekContentSwitcherModifier_adjustedAppLayoutsForAppLayouts___block_invoke;
@@ -66,24 +66,24 @@
   return v7;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   v29.receiver = self;
   v29.super_class = _SBContinuousExposePeekContentSwitcherModifier;
-  [(_SBContinuousExposePeekContentSwitcherModifier *)&v29 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+  [(_SBContinuousExposePeekContentSwitcherModifier *)&v29 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  if ([v11 isEqual:self->_appLayout])
+  if ([layoutCopy isEqual:self->_appLayout])
   {
-    v20 = [v11 itemForLayoutRole:a3];
-    [(SBSwitcherModifier *)self frameForContinuousExposePeekingDisplayItem:v20 inAppLayout:v11 bounds:x defaultFrameForLayoutRole:y, width, height, v13, v15, v17, v19];
+    v20 = [layoutCopy itemForLayoutRole:role];
+    [(SBSwitcherModifier *)self frameForContinuousExposePeekingDisplayItem:v20 inAppLayout:layoutCopy bounds:x defaultFrameForLayoutRole:y, width, height, v13, v15, v17, v19];
     v13 = v21;
     v15 = v22;
     v17 = v23;
@@ -101,25 +101,25 @@
   return result;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v7 = 1.0;
-  if (([v6 isEqual:self->_appLayout] & 1) == 0)
+  if (([layoutCopy isEqual:self->_appLayout] & 1) == 0)
   {
     v10.receiver = self;
     v10.super_class = _SBContinuousExposePeekContentSwitcherModifier;
-    [(_SBContinuousExposePeekContentSwitcherModifier *)&v10 scaleForLayoutRole:a3 inAppLayout:v6];
+    [(_SBContinuousExposePeekContentSwitcherModifier *)&v10 scaleForLayoutRole:role inAppLayout:layoutCopy];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([v6 isEqual:self->_appLayout])
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_appLayout])
   {
     v7 = 0;
   }
@@ -128,37 +128,37 @@
   {
     v9.receiver = self;
     v9.super_class = _SBContinuousExposePeekContentSwitcherModifier;
-    v7 = [(_SBContinuousExposePeekContentSwitcherModifier *)&v9 shouldAllowContentViewTouchesForLayoutRole:a3 inAppLayout:v6];
+    v7 = [(_SBContinuousExposePeekContentSwitcherModifier *)&v9 shouldAllowContentViewTouchesForLayoutRole:role inAppLayout:layoutCopy];
   }
 
   return v7;
 }
 
-- (id)handleTapAppLayoutEvent:(id)a3
+- (id)handleTapAppLayoutEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = _SBContinuousExposePeekContentSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v10 handleTapAppLayoutEvent:v4];
-  v6 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:v4, v10.receiver, v10.super_class];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v10 handleTapAppLayoutEvent:eventCopy];
+  v6 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:eventCopy, v10.receiver, v10.super_class];
   [v6 setPeekConfiguration:1];
   [v6 setRetainsSiri:{-[_SBContinuousExposePeekContentSwitcherModifier isSystemAssistantExperiencePersistentSiriEnabled](self, "isSystemAssistantExperiencePersistentSiriEnabled")}];
   v7 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v6 gestureInitiated:0];
   v8 = SBAppendSwitcherModifierResponse(v7, v5);
 
-  [v4 handleWithReason:@"Exiting out of peek"];
+  [eventCopy handleWithReason:@"Exiting out of peek"];
 
   return v8;
 }
 
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event
 {
-  v8 = a4;
-  v9 = a5;
+  modifierCopy = modifier;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = _SBContinuousExposePeekContentSwitcherModifier;
-  v10 = [(SBChainableModifier *)&v12 responseForProposedChildResponse:a3 childModifier:v8 event:v9];
-  if (self->_fullScreenContinuousExposeAppLayoutModifier == v8 && [v9 type] == 17 || self->_appSwitcherModifier == v8)
+  v10 = [(SBChainableModifier *)&v12 responseForProposedChildResponse:response childModifier:modifierCopy event:eventCopy];
+  if (self->_fullScreenContinuousExposeAppLayoutModifier == modifierCopy && [eventCopy type] == 17 || self->_appSwitcherModifier == modifierCopy)
   {
 
     v10 = 0;

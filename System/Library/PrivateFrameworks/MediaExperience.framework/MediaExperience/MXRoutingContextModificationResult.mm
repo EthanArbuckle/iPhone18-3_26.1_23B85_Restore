@@ -1,6 +1,6 @@
 @interface MXRoutingContextModificationResult
-- (MXRoutingContextModificationResult)initWithDictionary:(id)a3;
-- (MXRoutingContextModificationResult)initWithRouteConfigUpdatedReason:(id)a3 modificationMetrics:(id)a4 previousRouteDescriptors:(id)a5 currentRouteDescriptors:(id)a6;
+- (MXRoutingContextModificationResult)initWithDictionary:(id)dictionary;
+- (MXRoutingContextModificationResult)initWithRouteConfigUpdatedReason:(id)reason modificationMetrics:(id)metrics previousRouteDescriptors:(id)descriptors currentRouteDescriptors:(id)routeDescriptors;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (void)dealloc;
@@ -8,18 +8,18 @@
 
 @implementation MXRoutingContextModificationResult
 
-- (MXRoutingContextModificationResult)initWithRouteConfigUpdatedReason:(id)a3 modificationMetrics:(id)a4 previousRouteDescriptors:(id)a5 currentRouteDescriptors:(id)a6
+- (MXRoutingContextModificationResult)initWithRouteConfigUpdatedReason:(id)reason modificationMetrics:(id)metrics previousRouteDescriptors:(id)descriptors currentRouteDescriptors:(id)routeDescriptors
 {
   v13.receiver = self;
   v13.super_class = MXRoutingContextModificationResult;
   v10 = [(MXRoutingContextModificationResult *)&v13 init];
-  v11 = a4;
-  v10->_modificationMetrics = v11;
-  [(MXRoutingContextModificationMetrics *)v11 setPreviousRouteDescriptors:a5];
-  [(MXRoutingContextModificationMetrics *)v10->_modificationMetrics setCurrentRouteDescriptors:a6];
-  v10->_routeConfigUpdateReason = a3;
-  v10->_previousRouteDescriptors = a5;
-  v10->_currentRouteDescriptors = a6;
+  metricsCopy = metrics;
+  v10->_modificationMetrics = metricsCopy;
+  [(MXRoutingContextModificationMetrics *)metricsCopy setPreviousRouteDescriptors:descriptors];
+  [(MXRoutingContextModificationMetrics *)v10->_modificationMetrics setCurrentRouteDescriptors:routeDescriptors];
+  v10->_routeConfigUpdateReason = reason;
+  v10->_previousRouteDescriptors = descriptors;
+  v10->_currentRouteDescriptors = routeDescriptors;
   return v10;
 }
 
@@ -32,19 +32,19 @@
 
 - (id)description
 {
-  v2 = [(MXRoutingContextModificationResult *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(MXRoutingContextModificationResult *)self dictionaryRepresentation];
 
-  return [v2 description];
+  return [dictionaryRepresentation description];
 }
 
-- (MXRoutingContextModificationResult)initWithDictionary:(id)a3
+- (MXRoutingContextModificationResult)initWithDictionary:(id)dictionary
 {
   v9.receiver = self;
   v9.super_class = MXRoutingContextModificationResult;
   v4 = [(MXRoutingContextModificationResult *)&v9 init];
-  v5 = [a3 objectForKey:@"RouteConfigUpdatedReason"];
-  v6 = -[MXRoutingContextModificationMetrics initWithDictionary:]([MXRoutingContextModificationMetrics alloc], "initWithDictionary:", [a3 objectForKey:@"ModificationMetrics"]);
-  v7 = -[MXRoutingContextModificationResult initWithRouteConfigUpdatedReason:modificationMetrics:previousRouteDescriptors:currentRouteDescriptors:]([MXRoutingContextModificationResult alloc], "initWithRouteConfigUpdatedReason:modificationMetrics:previousRouteDescriptors:currentRouteDescriptors:", v5, v6, [a3 objectForKey:@"PreviousRouteDescriptors"], objc_msgSend(a3, "objectForKey:", @"CurrentRouteDescriptors"));
+  v5 = [dictionary objectForKey:@"RouteConfigUpdatedReason"];
+  v6 = -[MXRoutingContextModificationMetrics initWithDictionary:]([MXRoutingContextModificationMetrics alloc], "initWithDictionary:", [dictionary objectForKey:@"ModificationMetrics"]);
+  v7 = -[MXRoutingContextModificationResult initWithRouteConfigUpdatedReason:modificationMetrics:previousRouteDescriptors:currentRouteDescriptors:]([MXRoutingContextModificationResult alloc], "initWithRouteConfigUpdatedReason:modificationMetrics:previousRouteDescriptors:currentRouteDescriptors:", v5, v6, [dictionary objectForKey:@"PreviousRouteDescriptors"], objc_msgSend(dictionary, "objectForKey:", @"CurrentRouteDescriptors"));
 
   return v7;
 }

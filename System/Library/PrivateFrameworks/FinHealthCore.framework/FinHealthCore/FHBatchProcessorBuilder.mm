@@ -1,6 +1,6 @@
 @interface FHBatchProcessorBuilder
 - (FHBatchProcessorBuilder)init;
-- (void)addInternalState:(unint64_t)a3;
+- (void)addInternalState:(unint64_t)state;
 @end
 
 @implementation FHBatchProcessorBuilder
@@ -31,10 +31,10 @@
   return v3;
 }
 
-- (void)addInternalState:(unint64_t)a3
+- (void)addInternalState:(unint64_t)state
 {
   internalStates = self->_internalStates;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
   [(NSMutableSet *)internalStates addObject:v4];
 }
 

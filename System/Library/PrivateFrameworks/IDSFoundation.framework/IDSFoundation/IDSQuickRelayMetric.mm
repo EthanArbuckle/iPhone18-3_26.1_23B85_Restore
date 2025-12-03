@@ -1,5 +1,5 @@
 @interface IDSQuickRelayMetric
-- (IDSQuickRelayMetric)initWithType:(id)a3 eventSubType:(id)a4 duration:(id)a5 resultCode:(id)a6 providerType:(id)a7 transportType:(id)a8 interfaceType:(id)a9 skeEnabled:(id)a10 isInitiator:(id)a11 protocolVersion:(id)a12 retryCount:(id)a13 serviceName:(id)a14 subServiceName:(id)a15 participantCount:(id)a16;
+- (IDSQuickRelayMetric)initWithType:(id)type eventSubType:(id)subType duration:(id)duration resultCode:(id)code providerType:(id)providerType transportType:(id)transportType interfaceType:(id)interfaceType skeEnabled:(id)self0 isInitiator:(id)self1 protocolVersion:(id)self2 retryCount:(id)self3 serviceName:(id)self4 subServiceName:(id)self5 participantCount:(id)self6;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,131 +8,131 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSQuickRelayMetric *)self type];
-  if (v4)
+  type = [(IDSQuickRelayMetric *)self type];
+  if (type)
   {
-    CFDictionarySetValue(v3, @"type", v4);
+    CFDictionarySetValue(v3, @"type", type);
   }
 
-  v5 = [(IDSQuickRelayMetric *)self subType];
-  if (v5)
+  subType = [(IDSQuickRelayMetric *)self subType];
+  if (subType)
   {
-    CFDictionarySetValue(v3, @"subType", v5);
+    CFDictionarySetValue(v3, @"subType", subType);
   }
 
-  v6 = [(IDSQuickRelayMetric *)self duration];
-  if (v6)
+  duration = [(IDSQuickRelayMetric *)self duration];
+  if (duration)
   {
-    CFDictionarySetValue(v3, @"duration", v6);
+    CFDictionarySetValue(v3, @"duration", duration);
   }
 
-  v7 = [(IDSQuickRelayMetric *)self resultCode];
-  if (v7)
+  resultCode = [(IDSQuickRelayMetric *)self resultCode];
+  if (resultCode)
   {
-    CFDictionarySetValue(v3, @"resultCode", v7);
+    CFDictionarySetValue(v3, @"resultCode", resultCode);
   }
 
-  v8 = [(IDSQuickRelayMetric *)self providerType];
-  if (v8)
+  providerType = [(IDSQuickRelayMetric *)self providerType];
+  if (providerType)
   {
-    CFDictionarySetValue(v3, @"providerType", v8);
+    CFDictionarySetValue(v3, @"providerType", providerType);
   }
 
-  v9 = [(IDSQuickRelayMetric *)self transportType];
-  if (v9)
+  transportType = [(IDSQuickRelayMetric *)self transportType];
+  if (transportType)
   {
-    CFDictionarySetValue(v3, @"transportType", v9);
+    CFDictionarySetValue(v3, @"transportType", transportType);
   }
 
-  v10 = [(IDSQuickRelayMetric *)self interfaceType];
-  if (v10)
+  interfaceType = [(IDSQuickRelayMetric *)self interfaceType];
+  if (interfaceType)
   {
-    CFDictionarySetValue(v3, @"interfaceType", v10);
+    CFDictionarySetValue(v3, @"interfaceType", interfaceType);
   }
 
-  v11 = [(IDSQuickRelayMetric *)self skeEnabled];
-  if (v11)
+  skeEnabled = [(IDSQuickRelayMetric *)self skeEnabled];
+  if (skeEnabled)
   {
-    CFDictionarySetValue(v3, @"skeEnabled", v11);
+    CFDictionarySetValue(v3, @"skeEnabled", skeEnabled);
   }
 
-  v12 = [(IDSQuickRelayMetric *)self isInitiator];
-  if (v12)
+  isInitiator = [(IDSQuickRelayMetric *)self isInitiator];
+  if (isInitiator)
   {
-    CFDictionarySetValue(v3, @"isInitiator", v12);
+    CFDictionarySetValue(v3, @"isInitiator", isInitiator);
   }
 
-  v13 = [(IDSQuickRelayMetric *)self protocolVersion];
-  if (v13)
+  protocolVersion = [(IDSQuickRelayMetric *)self protocolVersion];
+  if (protocolVersion)
   {
-    CFDictionarySetValue(v3, @"protocolVersion", v13);
+    CFDictionarySetValue(v3, @"protocolVersion", protocolVersion);
   }
 
-  v14 = [(IDSQuickRelayMetric *)self retryCount];
-  if (v14)
+  retryCount = [(IDSQuickRelayMetric *)self retryCount];
+  if (retryCount)
   {
-    CFDictionarySetValue(v3, @"retryCount", v14);
+    CFDictionarySetValue(v3, @"retryCount", retryCount);
   }
 
-  v15 = [(IDSQuickRelayMetric *)self serviceName];
-  if (v15)
+  serviceName = [(IDSQuickRelayMetric *)self serviceName];
+  if (serviceName)
   {
-    CFDictionarySetValue(v3, @"serviceName", v15);
+    CFDictionarySetValue(v3, @"serviceName", serviceName);
   }
 
-  v16 = [(IDSQuickRelayMetric *)self subServiceName];
-  if (v16)
+  subServiceName = [(IDSQuickRelayMetric *)self subServiceName];
+  if (subServiceName)
   {
-    CFDictionarySetValue(v3, @"subServiceName", v16);
+    CFDictionarySetValue(v3, @"subServiceName", subServiceName);
   }
 
-  v17 = [(IDSQuickRelayMetric *)self participantCount];
-  if (v17)
+  participantCount = [(IDSQuickRelayMetric *)self participantCount];
+  if (participantCount)
   {
-    CFDictionarySetValue(v3, @"participantCount", v17);
+    CFDictionarySetValue(v3, @"participantCount", participantCount);
   }
 
   return v3;
 }
 
-- (IDSQuickRelayMetric)initWithType:(id)a3 eventSubType:(id)a4 duration:(id)a5 resultCode:(id)a6 providerType:(id)a7 transportType:(id)a8 interfaceType:(id)a9 skeEnabled:(id)a10 isInitiator:(id)a11 protocolVersion:(id)a12 retryCount:(id)a13 serviceName:(id)a14 subServiceName:(id)a15 participantCount:(id)a16
+- (IDSQuickRelayMetric)initWithType:(id)type eventSubType:(id)subType duration:(id)duration resultCode:(id)code providerType:(id)providerType transportType:(id)transportType interfaceType:(id)interfaceType skeEnabled:(id)self0 isInitiator:(id)self1 protocolVersion:(id)self2 retryCount:(id)self3 serviceName:(id)self4 subServiceName:(id)self5 participantCount:(id)self6
 {
-  v41 = a3;
-  v40 = a4;
-  v31 = a5;
-  v39 = a5;
-  v32 = a6;
-  v38 = a6;
-  v37 = a7;
-  v36 = a8;
-  v35 = a9;
-  v34 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
-  v24 = a14;
-  v25 = a15;
-  v26 = a16;
+  typeCopy = type;
+  subTypeCopy = subType;
+  durationCopy = duration;
+  durationCopy2 = duration;
+  codeCopy = code;
+  codeCopy2 = code;
+  providerTypeCopy = providerType;
+  transportTypeCopy = transportType;
+  interfaceTypeCopy = interfaceType;
+  enabledCopy = enabled;
+  initiatorCopy = initiator;
+  versionCopy = version;
+  countCopy = count;
+  nameCopy = name;
+  serviceNameCopy = serviceName;
+  participantCountCopy = participantCount;
   v42.receiver = self;
   v42.super_class = IDSQuickRelayMetric;
   v27 = [(IDSQuickRelayMetric *)&v42 init];
   v28 = v27;
   if (v27)
   {
-    objc_storeStrong(&v27->_type, a3);
-    objc_storeStrong(&v28->_subType, a4);
-    objc_storeStrong(&v28->_duration, v31);
-    objc_storeStrong(&v28->_resultCode, v32);
-    objc_storeStrong(&v28->_providerType, a7);
-    objc_storeStrong(&v28->_transportType, a8);
-    objc_storeStrong(&v28->_interfaceType, a9);
-    objc_storeStrong(&v28->_skeEnabled, a10);
-    objc_storeStrong(&v28->_isInitiator, a11);
-    objc_storeStrong(&v28->_protocolVersion, a12);
-    objc_storeStrong(&v28->_retryCount, a13);
-    objc_storeStrong(&v28->_serviceName, a14);
-    objc_storeStrong(&v28->_subServiceName, a15);
-    objc_storeStrong(&v28->_participantCount, a16);
+    objc_storeStrong(&v27->_type, type);
+    objc_storeStrong(&v28->_subType, subType);
+    objc_storeStrong(&v28->_duration, durationCopy);
+    objc_storeStrong(&v28->_resultCode, codeCopy);
+    objc_storeStrong(&v28->_providerType, providerType);
+    objc_storeStrong(&v28->_transportType, transportType);
+    objc_storeStrong(&v28->_interfaceType, interfaceType);
+    objc_storeStrong(&v28->_skeEnabled, enabled);
+    objc_storeStrong(&v28->_isInitiator, initiator);
+    objc_storeStrong(&v28->_protocolVersion, version);
+    objc_storeStrong(&v28->_retryCount, count);
+    objc_storeStrong(&v28->_serviceName, name);
+    objc_storeStrong(&v28->_subServiceName, serviceName);
+    objc_storeStrong(&v28->_participantCount, participantCount);
   }
 
   return v28;

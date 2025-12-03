@@ -1,16 +1,16 @@
 @interface VCPAV1Metal
 - (id).cxx_construct;
-- (id)compileFunction:(id)a3 constantValues:(id)a4;
-- (id)dstTexture:(__CVBuffer *)a3 forPlane:(int)a4 bitdepth:(int)a5;
-- (id)srcTexture:(__CVBuffer *)a3 forPlane:(int)a4 bitdepth:(int)a5;
-- (int)applyFilmGrain:(void *)a3 forPicture:(Dav1dPicture *)a4 toPixelBuffer:(__CVBuffer *)a5;
-- (int)compileBlitForPicture:(Dav1dPicture *)a3 andPixelBuffer:(__CVBuffer *)a4;
-- (int)compileFilmGrainForPicture:(Dav1dPicture *)a3 andPixelBuffer:(__CVBuffer *)a4;
-- (int)copyPicture:(Dav1dPicture *)a3 toPixelBuffer:(__CVBuffer *)a4;
-- (int)copyPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4;
+- (id)compileFunction:(id)function constantValues:(id)values;
+- (id)dstTexture:(__CVBuffer *)texture forPlane:(int)plane bitdepth:(int)bitdepth;
+- (id)srcTexture:(__CVBuffer *)texture forPlane:(int)plane bitdepth:(int)bitdepth;
+- (int)applyFilmGrain:(void *)grain forPicture:(Dav1dPicture *)picture toPixelBuffer:(__CVBuffer *)buffer;
+- (int)compileBlitForPicture:(Dav1dPicture *)picture andPixelBuffer:(__CVBuffer *)buffer;
+- (int)compileFilmGrainForPicture:(Dav1dPicture *)picture andPixelBuffer:(__CVBuffer *)buffer;
+- (int)copyPicture:(Dav1dPicture *)picture toPixelBuffer:(__CVBuffer *)buffer;
+- (int)copyPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer;
 - (int)openDevice;
-- (void)encodeBlit:(id)a3 forPicture:(Dav1dPicture *)a4 toPixelBuffer:(__CVBuffer *)a5 plane:(int)a6;
-- (void)updatePictureFormat:(Dav1dPicture *)a3 pixelBuffer:(__CVBuffer *)a4;
+- (void)encodeBlit:(id)blit forPicture:(Dav1dPicture *)picture toPixelBuffer:(__CVBuffer *)buffer plane:(int)plane;
+- (void)updatePictureFormat:(Dav1dPicture *)format pixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation VCPAV1Metal
@@ -22,12 +22,12 @@
   return self;
 }
 
-- (int)applyFilmGrain:(void *)a3 forPicture:(Dav1dPicture *)a4 toPixelBuffer:(__CVBuffer *)a5
+- (int)applyFilmGrain:(void *)grain forPicture:(Dav1dPicture *)picture toPixelBuffer:(__CVBuffer *)buffer
 {
   v68 = *MEMORY[0x277D85DE8];
-  var18 = a4->var18;
-  var1 = a4->var1;
-  v11 = [(VCPAV1Metal *)self compileFilmGrainForPicture:a4 andPixelBuffer:a5];
+  var18 = picture->var18;
+  var1 = picture->var1;
+  v11 = [(VCPAV1Metal *)self compileFilmGrainForPicture:picture andPixelBuffer:buffer];
   if (v11)
   {
     return v11;
@@ -35,10 +35,10 @@
 
   v54 = var18;
   v12 = [(MTLBuffer *)self->_grainPatch contents:sub_27758965C(v59];
-  sub_27758955C(a3, v59);
-  v13 = a3 + 0x8000;
-  (*(a3 + 4598))(v59, a3, v12);
-  v14 = [(MTLBuffer *)self->_scalingLUT contents];
+  sub_27758955C(grain, v59);
+  v13 = grain + 0x8000;
+  (*(grain + 4598))(v59, grain, v12);
+  contents = [(MTLBuffer *)self->_scalingLUT contents];
   v15 = [(MTLBuffer *)self->_scalingLUT length];
   v16 = v60 >> 13;
   v17 = 768 << v16;
@@ -65,7 +65,7 @@
             v22 = buf[v21] + (((1 << (v20 - 1)) + (buf[v21 + 1] - buf[v21]) * (v19 - (v21 << v20))) >> v20);
           }
 
-          *v14++ = v22;
+          *contents++ = v22;
           ++v19;
           v20 = v60 >> 13;
         }
@@ -81,8 +81,8 @@
     {
       for (i = 0; i != 3; ++i)
       {
-        (*(v13 + 503))(v59, v14, i);
-        v14 += 256;
+        (*(v13 + 503))(v59, contents, i);
+        contents += 256;
       }
     }
   }
@@ -102,10 +102,10 @@
     }
   }
 
-  (*(v13 + 504))([(MTLBuffer *)self->_offsets contents], self->_offsetsStride, ((a4->var4.var0 + 31) >> 5), ((a4->var4.var1 + 31) >> 5), *a4->var1);
-  v24 = a4->var1;
-  v25 = a4->var4.var3 - 8;
-  v26 = (256 << (LOBYTE(a4->var4.var3) - 8)) - 1;
+  (*(v13 + 504))([(MTLBuffer *)self->_offsets contents], self->_offsetsStride, ((picture->var4.var0 + 31) >> 5), ((picture->var4.var1 + 31) >> 5), *picture->var1);
+  v24 = picture->var1;
+  v25 = picture->var4.var3 - 8;
+  v26 = (256 << (LOBYTE(picture->var4.var3) - 8)) - 1;
   *buf = 0;
   LODWORD(v62) = v26;
   HIDWORD(v62) = v26;
@@ -113,7 +113,7 @@
   {
     *buf = 16 << v25;
     LODWORD(v62) = 235 << v25;
-    if (*(a4->var0 + 6))
+    if (*(picture->var0 + 6))
     {
       v27 = 240 << v25;
     }
@@ -157,12 +157,12 @@ LABEL_24:
 
 LABEL_25:
   gpuBitdepth = self->_gpuBitdepth;
-  v30 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v31 = v30;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v31 = commandBuffer;
   if (*(var1 + 1) != 0 || v29)
   {
-    v32 = [v30 blitCommandEncoder];
-    v33 = v32;
+    blitCommandEncoder = [commandBuffer blitCommandEncoder];
+    v33 = blitCommandEncoder;
     if (*(var1 + 1))
     {
       *v57 = vdupq_n_s64(0x40uLL);
@@ -171,7 +171,7 @@ LABEL_25:
       grainTextureY = self->_grainTextureY;
       v55 = 0uLL;
       v56 = 0;
-      [v32 copyFromBuffer:grainPatch sourceOffset:0 sourceBytesPerRow:128 sourceBytesPerImage:0x2000 sourceSize:v57 toTexture:grainTextureY destinationSlice:0 destinationLevel:0 destinationOrigin:&v55];
+      [blitCommandEncoder copyFromBuffer:grainPatch sourceOffset:0 sourceBytesPerRow:128 sourceBytesPerImage:0x2000 sourceSize:v57 toTexture:grainTextureY destinationSlice:0 destinationLevel:0 destinationOrigin:&v55];
     }
 
     if (v29)
@@ -190,12 +190,12 @@ LABEL_25:
 
   [v31 computeCommandEncoder];
   v39 = v38 = v54;
-  v40 = [(VCPAV1Metal *)self srcTexture:*v54 forPlane:0 bitdepth:a4->var4.var3];
+  v40 = [(VCPAV1Metal *)self srcTexture:*v54 forPlane:0 bitdepth:picture->var4.var3];
   if (*(var1 + 1))
   {
-    v41 = [(VCPAV1Metal *)self dstTexture:a5 forPlane:0 bitdepth:a4->var4.var3];
-    v42 = [v41 width];
-    v43 = [v41 height];
+    v41 = [(VCPAV1Metal *)self dstTexture:buffer forPlane:0 bitdepth:picture->var4.var3];
+    width = [v41 width];
+    height = [v41 height];
     [v39 setComputePipelineState:self->_filmGrainLuma];
     [v39 setTexture:v41 atIndex:0];
     [v39 setTexture:v40 atIndex:1];
@@ -205,8 +205,8 @@ LABEL_25:
     [v39 setBuffer:self->_scalingLUT offset:0 atIndex:1];
     if (self->_supportsNonUniformThreadgroup)
     {
-      *v57 = v42;
-      *&v57[8] = v43;
+      *v57 = width;
+      *&v57[8] = height;
       v58 = 1;
       v55 = vdupq_n_s64(0x10uLL);
       v56 = 1;
@@ -215,8 +215,8 @@ LABEL_25:
 
     else
     {
-      *v57 = (v42 + 15) >> 4;
-      *&v57[8] = (v43 + 15) >> 4;
+      *v57 = (width + 15) >> 4;
+      *&v57[8] = (height + 15) >> 4;
       v58 = 1;
       v55 = vdupq_n_s64(0x10uLL);
       v56 = 1;
@@ -228,18 +228,18 @@ LABEL_25:
 
   else
   {
-    [(VCPAV1Metal *)self encodeBlit:v39 forPicture:a4 toPixelBuffer:a5 plane:0];
+    [(VCPAV1Metal *)self encodeBlit:v39 forPicture:picture toPixelBuffer:buffer plane:0];
   }
 
-  if (a4->var4.var2)
+  if (picture->var4.var2)
   {
     if (v29)
     {
-      v44 = [(VCPAV1Metal *)self srcTexture:v38[1] forPlane:1 bitdepth:a4->var4.var3];
-      v45 = [(VCPAV1Metal *)self srcTexture:v38[2] forPlane:2 bitdepth:a4->var4.var3];
-      v46 = [(VCPAV1Metal *)self dstTexture:a5 forPlane:1 bitdepth:a4->var4.var3];
-      v47 = [v46 width];
-      v48 = [v46 height];
+      v44 = [(VCPAV1Metal *)self srcTexture:v38[1] forPlane:1 bitdepth:picture->var4.var3];
+      v45 = [(VCPAV1Metal *)self srcTexture:v38[2] forPlane:2 bitdepth:picture->var4.var3];
+      v46 = [(VCPAV1Metal *)self dstTexture:buffer forPlane:1 bitdepth:picture->var4.var3];
+      width2 = [v46 width];
+      height2 = [v46 height];
       [v39 setComputePipelineState:self->_filmGrainChroma];
       [v39 setTexture:v46 atIndex:0];
       [v39 setTexture:v40 atIndex:1];
@@ -252,8 +252,8 @@ LABEL_25:
       [v39 setBuffer:self->_scalingLUT offset:512 << (gpuBitdepth - 8) atIndex:2];
       if (self->_supportsNonUniformThreadgroup)
       {
-        *v57 = v47;
-        *&v57[8] = v48;
+        *v57 = width2;
+        *&v57[8] = height2;
         v58 = 1;
         v55 = vdupq_n_s64(0x10uLL);
         v56 = 1;
@@ -262,8 +262,8 @@ LABEL_25:
 
       else
       {
-        *v57 = (v47 + 15) >> 4;
-        *&v57[8] = (v48 + 15) >> 4;
+        *v57 = (width2 + 15) >> 4;
+        *&v57[8] = (height2 + 15) >> 4;
         v58 = 1;
         v55 = vdupq_n_s64(0x10uLL);
         v56 = 1;
@@ -273,15 +273,15 @@ LABEL_25:
 
     else
     {
-      [(VCPAV1Metal *)self encodeBlit:v39 forPicture:a4 toPixelBuffer:a5 plane:1];
+      [(VCPAV1Metal *)self encodeBlit:v39 forPicture:picture toPixelBuffer:buffer plane:1];
     }
   }
 
   [v39 endEncoding];
   [v31 commit];
   [v31 waitUntilCompleted];
-  v49 = [v31 error];
-  v50 = v49 == 0;
+  error = [v31 error];
+  v50 = error == 0;
 
   if (v50)
   {
@@ -292,9 +292,9 @@ LABEL_25:
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v52 = [v31 error];
+      error2 = [v31 error];
       *v57 = 138412290;
-      *&v57[4] = v52;
+      *&v57[4] = error2;
       _os_log_error_impl(&dword_27754B000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Error %@ in metal execution", v57, 0xCu);
     }
 
@@ -304,122 +304,122 @@ LABEL_25:
   return v11;
 }
 
-- (int)copyPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4
+- (int)copyPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer
 {
-  v5 = self;
+  selfCopy = self;
   v33 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v30 = self;
-  v6 = [(VCPAV1Metal *)self openDevice];
-  if (!v6)
+  bufferCopy = buffer;
+  selfCopy2 = self;
+  openDevice = [(VCPAV1Metal *)self openDevice];
+  if (!openDevice)
   {
-    if (!v5->_blitKernelUnorm)
+    if (!selfCopy->_blitKernelUnorm)
     {
       v7 = objc_opt_new();
-      [v7 setConstantValue:&v5->_supportsNonUniformThreadgroup type:33 atIndex:0];
-      v8 = [(VCPAV1Metal *)v30 compileFunction:@"BlitKernel_Unorm" constantValues:v7];
-      v5 = v30;
-      blitKernelUnorm = v30->_blitKernelUnorm;
-      v30->_blitKernelUnorm = v8;
+      [v7 setConstantValue:&selfCopy->_supportsNonUniformThreadgroup type:33 atIndex:0];
+      v8 = [(VCPAV1Metal *)selfCopy2 compileFunction:@"BlitKernel_Unorm" constantValues:v7];
+      selfCopy = selfCopy2;
+      blitKernelUnorm = selfCopy2->_blitKernelUnorm;
+      selfCopy2->_blitKernelUnorm = v8;
 
-      *&v5->_onePixelPerWrite = 1;
+      *&selfCopy->_onePixelPerWrite = 1;
     }
 
-    v28[0] = &v29;
-    v28[1] = &v30;
-    v10 = [(MTLCommandQueue *)v5->_commandQueue commandBuffer];
-    v11 = [v10 computeCommandEncoder];
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+    v28[0] = &bufferCopy;
+    v28[1] = &selfCopy2;
+    commandBuffer = [(MTLCommandQueue *)selfCopy->_commandQueue commandBuffer];
+    computeCommandEncoder = [commandBuffer computeCommandEncoder];
+    PixelFormatType = CVPixelBufferGetPixelFormatType(pixelBuffer);
     v13 = sub_2775846D4(PixelFormatType);
     v14 = sub_277590BFC(v28, 0);
     v25 = sub_277590BFC(v28, 1uLL);
-    v15 = [(VCPAV1Metal *)v30 dstTexture:a4 forPlane:0 bitdepth:v13];
-    v16 = [(VCPAV1Metal *)v30 dstTexture:a4 forPlane:1 bitdepth:v13];
-    v17 = [v15 width];
-    v18 = [v15 height];
-    v19 = [v16 width];
-    v20 = [v16 height];
-    [v11 setComputePipelineState:v30->_blitKernelUnorm];
-    [v11 setTexture:v15 atIndex:0];
-    [v11 setTexture:v14 atIndex:1];
-    *&buf = v17;
-    *(&buf + 1) = v18;
+    v15 = [(VCPAV1Metal *)selfCopy2 dstTexture:pixelBuffer forPlane:0 bitdepth:v13];
+    v16 = [(VCPAV1Metal *)selfCopy2 dstTexture:pixelBuffer forPlane:1 bitdepth:v13];
+    width = [v15 width];
+    height = [v15 height];
+    width2 = [v16 width];
+    height2 = [v16 height];
+    [computeCommandEncoder setComputePipelineState:selfCopy2->_blitKernelUnorm];
+    [computeCommandEncoder setTexture:v15 atIndex:0];
+    [computeCommandEncoder setTexture:v14 atIndex:1];
+    *&buf = width;
+    *(&buf + 1) = height;
     v32 = 1;
     v26 = vdupq_n_s64(0x10uLL);
     v27 = 1;
-    [v11 dispatchThreads:&buf threadsPerThreadgroup:&v26];
-    if (CVPixelBufferGetPlaneCount(a4) >= 2)
+    [computeCommandEncoder dispatchThreads:&buf threadsPerThreadgroup:&v26];
+    if (CVPixelBufferGetPlaneCount(pixelBuffer) >= 2)
     {
-      [v11 setComputePipelineState:v30->_blitKernelUnorm];
-      [v11 setTexture:v16 atIndex:0];
-      [v11 setTexture:v25 atIndex:1];
-      *&buf = v19;
-      *(&buf + 1) = v20;
+      [computeCommandEncoder setComputePipelineState:selfCopy2->_blitKernelUnorm];
+      [computeCommandEncoder setTexture:v16 atIndex:0];
+      [computeCommandEncoder setTexture:v25 atIndex:1];
+      *&buf = width2;
+      *(&buf + 1) = height2;
       v32 = 1;
       v26 = vdupq_n_s64(0x10uLL);
       v27 = 1;
-      [v11 dispatchThreads:&buf threadsPerThreadgroup:&v26];
+      [computeCommandEncoder dispatchThreads:&buf threadsPerThreadgroup:&v26];
     }
 
-    [v11 endEncoding];
-    [v10 commit];
-    [v10 waitUntilCompleted];
-    v21 = [v10 error];
-    v22 = v21 == 0;
+    [computeCommandEncoder endEncoding];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
+    error = [commandBuffer error];
+    v22 = error == 0;
 
     if (v22)
     {
-      v6 = 0;
+      openDevice = 0;
     }
 
     else
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        v24 = [v10 error];
+        error2 = [commandBuffer error];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v24;
+        *(&buf + 4) = error2;
         _os_log_error_impl(&dword_27754B000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Error %@ in metal execution", &buf, 0xCu);
       }
 
-      v6 = -12911;
+      openDevice = -12911;
     }
   }
 
-  return v6;
+  return openDevice;
 }
 
-- (int)copyPicture:(Dav1dPicture *)a3 toPixelBuffer:(__CVBuffer *)a4
+- (int)copyPicture:(Dav1dPicture *)picture toPixelBuffer:(__CVBuffer *)buffer
 {
   v16 = *MEMORY[0x277D85DE8];
-  var18 = a3->var18;
+  var18 = picture->var18;
   v8 = [VCPAV1Metal compileBlitForPicture:"compileBlitForPicture:andPixelBuffer:" andPixelBuffer:?];
   if (!v8)
   {
-    v9 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-    v10 = [v9 computeCommandEncoder];
+    commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    computeCommandEncoder = [commandBuffer computeCommandEncoder];
     if ((var18[24] & 1) == 0)
     {
-      [(VCPAV1Metal *)self encodeBlit:v10 forPicture:a3 toPixelBuffer:a4 plane:0];
+      [(VCPAV1Metal *)self encodeBlit:computeCommandEncoder forPicture:picture toPixelBuffer:buffer plane:0];
     }
 
-    if (a3->var4.var2)
+    if (picture->var4.var2)
     {
-      [(VCPAV1Metal *)self encodeBlit:v10 forPicture:a3 toPixelBuffer:a4 plane:1];
+      [(VCPAV1Metal *)self encodeBlit:computeCommandEncoder forPicture:picture toPixelBuffer:buffer plane:1];
     }
 
-    [v10 endEncoding];
-    [v9 commit];
-    [v9 waitUntilCompleted];
-    v11 = [v9 error];
+    [computeCommandEncoder endEncoding];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
+    error = [commandBuffer error];
 
-    if (v11)
+    if (error)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        v13 = [v9 error];
+        error2 = [commandBuffer error];
         v14 = 138412290;
-        v15 = v13;
+        v15 = error2;
         _os_log_error_impl(&dword_27754B000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Error %@ in metal execution", &v14, 0xCu);
       }
 
@@ -435,81 +435,81 @@ LABEL_25:
   return v8;
 }
 
-- (void)encodeBlit:(id)a3 forPicture:(Dav1dPicture *)a4 toPixelBuffer:(__CVBuffer *)a5 plane:(int)a6
+- (void)encodeBlit:(id)blit forPicture:(Dav1dPicture *)picture toPixelBuffer:(__CVBuffer *)buffer plane:(int)plane
 {
-  v10 = a3;
-  var18 = a4->var18;
-  if (a6)
+  blitCopy = blit;
+  var18 = picture->var18;
+  if (plane)
   {
-    v12 = [(VCPAV1Metal *)self srcTexture:var18[1] forPlane:1 bitdepth:a4->var4.var3];
-    v13 = [(VCPAV1Metal *)self srcTexture:var18[2] forPlane:2 bitdepth:a4->var4.var3];
-    v14 = [(VCPAV1Metal *)self dstTexture:a5 forPlane:1 bitdepth:a4->var4.var3];
-    v15 = [v14 width];
-    v16 = [v14 height];
-    [v10 setComputePipelineState:self->_blitKernelChroma];
-    [v10 setTexture:v14 atIndex:0];
-    [v10 setTexture:v12 atIndex:1];
-    [v10 setTexture:v13 atIndex:2];
+    v12 = [(VCPAV1Metal *)self srcTexture:var18[1] forPlane:1 bitdepth:picture->var4.var3];
+    v13 = [(VCPAV1Metal *)self srcTexture:var18[2] forPlane:2 bitdepth:picture->var4.var3];
+    v14 = [(VCPAV1Metal *)self dstTexture:buffer forPlane:1 bitdepth:picture->var4.var3];
+    width = [v14 width];
+    height = [v14 height];
+    [blitCopy setComputePipelineState:self->_blitKernelChroma];
+    [blitCopy setTexture:v14 atIndex:0];
+    [blitCopy setTexture:v12 atIndex:1];
+    [blitCopy setTexture:v13 atIndex:2];
     if (self->_supportsNonUniformThreadgroup)
     {
-      v21 = v15;
-      v22 = v16;
+      v21 = width;
+      v22 = height;
       v23 = 1;
       v19 = vdupq_n_s64(0x10uLL);
       v20 = 1;
-      [v10 dispatchThreads:&v21 threadsPerThreadgroup:&v19];
+      [blitCopy dispatchThreads:&v21 threadsPerThreadgroup:&v19];
     }
 
     else
     {
-      v21 = (v15 + 15) >> 4;
-      v22 = (v16 + 15) >> 4;
+      v21 = (width + 15) >> 4;
+      v22 = (height + 15) >> 4;
       v23 = 1;
       v19 = vdupq_n_s64(0x10uLL);
       v20 = 1;
-      [v10 dispatchThreadgroups:&v21 threadsPerThreadgroup:&v19];
+      [blitCopy dispatchThreadgroups:&v21 threadsPerThreadgroup:&v19];
     }
   }
 
   else
   {
-    v12 = [(VCPAV1Metal *)self srcTexture:*var18 forPlane:0 bitdepth:a4->var4.var3];
-    v13 = [(VCPAV1Metal *)self dstTexture:a5 forPlane:0 bitdepth:a4->var4.var3];
-    v17 = [v13 width];
-    v18 = [v13 height];
-    [v10 setComputePipelineState:self->_blitKernelLuma];
-    [v10 setTexture:v13 atIndex:0];
-    [v10 setTexture:v12 atIndex:1];
+    v12 = [(VCPAV1Metal *)self srcTexture:*var18 forPlane:0 bitdepth:picture->var4.var3];
+    v13 = [(VCPAV1Metal *)self dstTexture:buffer forPlane:0 bitdepth:picture->var4.var3];
+    width2 = [v13 width];
+    height2 = [v13 height];
+    [blitCopy setComputePipelineState:self->_blitKernelLuma];
+    [blitCopy setTexture:v13 atIndex:0];
+    [blitCopy setTexture:v12 atIndex:1];
     if (self->_supportsNonUniformThreadgroup)
     {
-      v21 = v17;
-      v22 = v18;
+      v21 = width2;
+      v22 = height2;
       v23 = 1;
       v19 = vdupq_n_s64(0x10uLL);
       v20 = 1;
-      [v10 dispatchThreads:&v21 threadsPerThreadgroup:&v19];
+      [blitCopy dispatchThreads:&v21 threadsPerThreadgroup:&v19];
     }
 
     else
     {
-      v21 = (v17 + 15) >> 4;
-      v22 = (v18 + 15) >> 4;
+      v21 = (width2 + 15) >> 4;
+      v22 = (height2 + 15) >> 4;
       v23 = 1;
       v19 = vdupq_n_s64(0x10uLL);
       v20 = 1;
-      [v10 dispatchThreadgroups:&v21 threadsPerThreadgroup:&v19];
+      [blitCopy dispatchThreadgroups:&v21 threadsPerThreadgroup:&v19];
     }
   }
 }
 
-- (id)dstTexture:(__CVBuffer *)a3 forPlane:(int)a4 bitdepth:(int)a5
+- (id)dstTexture:(__CVBuffer *)texture forPlane:(int)plane bitdepth:(int)bitdepth
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, a4);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, v9);
+  planeCopy = plane;
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(texture, plane);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(texture, planeCopy);
   v12 = 13;
-  if (a4)
+  if (plane)
   {
     v12 = 33;
   }
@@ -517,24 +517,24 @@ LABEL_25:
   if (self->_integerWrites)
   {
     v13 = 23;
-    if (a4)
+    if (plane)
     {
       v13 = 63;
     }
 
-    if (a5 > 8)
+    if (bitdepth > 8)
     {
       v12 = v13;
     }
 
     v14 = 113;
-    if (a5 == 8)
+    if (bitdepth == 8)
     {
       v14 = 73;
     }
 
     v15 = (WidthOfPlane + 1) >> 1;
-    if (!a4)
+    if (!plane)
     {
       v15 = (WidthOfPlane + 3) >> 2;
     }
@@ -557,15 +557,15 @@ LABEL_25:
 
   else
   {
-    v16 = sub_277590D84(a3, a4);
+    v16 = sub_277590D84(texture, plane);
   }
 
-  v17 = a4 != 0;
+  v17 = plane != 0;
   v22 = *MEMORY[0x277CC4D50];
   v23[0] = &unk_2886648D8;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
   image = 0;
-  if (CVMetalTextureCacheCreateTextureFromImage(0, self->_textureCacheDst[v17].value_, a3, v18, v16, WidthOfPlane, HeightOfPlane, v9, &image))
+  if (CVMetalTextureCacheCreateTextureFromImage(0, self->_textureCacheDst[v17].value_, texture, v18, v16, WidthOfPlane, HeightOfPlane, planeCopy, &image))
   {
     v19 = 0;
   }
@@ -580,31 +580,31 @@ LABEL_25:
   return v19;
 }
 
-- (id)srcTexture:(__CVBuffer *)a3 forPlane:(int)a4 bitdepth:(int)a5
+- (id)srcTexture:(__CVBuffer *)texture forPlane:(int)plane bitdepth:(int)bitdepth
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(texture);
+  Height = CVPixelBufferGetHeight(texture);
   v11 = 23;
-  if (a5 == 8)
+  if (bitdepth == 8)
   {
     v11 = 13;
   }
 
   v12 = 63;
-  if (a5 == 8)
+  if (bitdepth == 8)
   {
     v12 = 33;
   }
 
   v13 = (Width + 1) >> 1;
   v14 = 113;
-  if (a5 == 8)
+  if (bitdepth == 8)
   {
     v14 = 73;
   }
 
-  if (!a4)
+  if (!plane)
   {
     v12 = v14;
     v13 = (Width + 3) >> 2;
@@ -629,7 +629,7 @@ LABEL_25:
   v21[0] = &unk_2886648C0;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   image = 0;
-  if (CVMetalTextureCacheCreateTextureFromImage(0, self->_textureCacheSrc[a4 > 0].value_, a3, v16, v15, Width, Height, 0, &image))
+  if (CVMetalTextureCacheCreateTextureFromImage(0, self->_textureCacheSrc[plane > 0].value_, texture, v16, v15, Width, Height, 0, &image))
   {
     v17 = 0;
   }
@@ -644,24 +644,24 @@ LABEL_25:
   return v17;
 }
 
-- (int)compileFilmGrainForPicture:(Dav1dPicture *)a3 andPixelBuffer:(__CVBuffer *)a4
+- (int)compileFilmGrainForPicture:(Dav1dPicture *)picture andPixelBuffer:(__CVBuffer *)buffer
 {
-  v7 = [(VCPAV1Metal *)self openDevice];
-  if (v7)
+  openDevice = [(VCPAV1Metal *)self openDevice];
+  if (openDevice)
   {
-    return v7;
+    return openDevice;
   }
 
-  v7 = [(VCPAV1Metal *)self compileBlitForPicture:a3 andPixelBuffer:a4];
-  if (v7)
+  openDevice = [(VCPAV1Metal *)self compileBlitForPicture:picture andPixelBuffer:buffer];
+  if (openDevice)
   {
-    return v7;
+    return openDevice;
   }
 
-  var0 = a3->var4.var0;
+  var0 = picture->var4.var0;
   if (self->_width == var0)
   {
-    var1 = a3->var4.var1;
+    var1 = picture->var4.var1;
     if (self->_height == var1)
     {
       goto LABEL_10;
@@ -670,7 +670,7 @@ LABEL_25:
 
   else
   {
-    var1 = a3->var4.var1;
+    var1 = picture->var4.var1;
   }
 
   v12 = var0 + 31;
@@ -687,8 +687,8 @@ LABEL_25:
   offsetsTex = self->_offsetsTex;
   self->_offsetsTex = v18;
 
-  self->_width = a3->var4.var0;
-  self->_height = a3->var4.var1;
+  self->_width = picture->var4.var0;
+  self->_height = picture->var4.var1;
 
 LABEL_10:
   if (self->_filmGrainLuma && self->_filmGrainChroma)
@@ -696,7 +696,7 @@ LABEL_10:
     return 0;
   }
 
-  var2 = a3->var4.var2;
+  var2 = picture->var4.var2;
   v38 = var2 != 3;
   v39 = var2 == 1;
   v21 = objc_opt_new();
@@ -765,12 +765,12 @@ LABEL_10:
   return v8;
 }
 
-- (int)compileBlitForPicture:(Dav1dPicture *)a3 andPixelBuffer:(__CVBuffer *)a4
+- (int)compileBlitForPicture:(Dav1dPicture *)picture andPixelBuffer:(__CVBuffer *)buffer
 {
-  v7 = [(VCPAV1Metal *)self openDevice];
-  if (!v7)
+  openDevice = [(VCPAV1Metal *)self openDevice];
+  if (!openDevice)
   {
-    [(VCPAV1Metal *)self updatePictureFormat:a3 pixelBuffer:a4];
+    [(VCPAV1Metal *)self updatePictureFormat:picture pixelBuffer:buffer];
     if (self->_blitKernelLuma && self->_blitKernelChroma)
     {
       return 0;
@@ -811,7 +811,7 @@ LABEL_10:
 
       if (self->_blitKernelLuma && self->_blitKernelChroma)
       {
-        v7 = 0;
+        openDevice = 0;
       }
 
       else
@@ -823,19 +823,19 @@ LABEL_10:
           _os_log_impl(&dword_27754B000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to compile blit kernels", v15, 2u);
         }
 
-        v7 = -12911;
+        openDevice = -12911;
       }
     }
   }
 
-  return v7;
+  return openDevice;
 }
 
-- (void)updatePictureFormat:(Dav1dPicture *)a3 pixelBuffer:(__CVBuffer *)a4
+- (void)updatePictureFormat:(Dav1dPicture *)format pixelBuffer:(__CVBuffer *)buffer
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v7 = sub_277584BA4(PixelFormatType);
-  var1 = a3->var1;
+  var1 = format->var1;
   if (!*(var1 + 1) && !*(var1 + 10) && !*(var1 + 11))
   {
     if (!*(var1 + 54))
@@ -854,7 +854,7 @@ LABEL_10:
   v9 = 1;
 LABEL_5:
   v10 = v7 ^ 1;
-  if (self->_gpuBitdepth != a3->var4.var3 || self->_layout != a3->var4.var2 || self->_onePixelPerWrite != v9 || self->_integerWrites != v10)
+  if (self->_gpuBitdepth != format->var4.var3 || self->_layout != format->var4.var2 || self->_onePixelPerWrite != v9 || self->_integerWrites != v10)
   {
     blitKernelLuma = self->_blitKernelLuma;
     self->_blitKernelLuma = 0;
@@ -868,17 +868,17 @@ LABEL_5:
     filmGrainChroma = self->_filmGrainChroma;
     self->_filmGrainChroma = 0;
 
-    *&self->_gpuBitdepth = vrev64_s32(*&a3->var4.var2);
+    *&self->_gpuBitdepth = vrev64_s32(*&format->var4.var2);
     self->_onePixelPerWrite = v9;
     self->_integerWrites = v10;
   }
 }
 
-- (id)compileFunction:(id)a3 constantValues:(id)a4
+- (id)compileFunction:(id)function constantValues:(id)values
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  functionCopy = function;
+  valuesCopy = values;
   library = self->_library;
   if (!library)
   {
@@ -886,10 +886,10 @@ LABEL_5:
     goto LABEL_14;
   }
 
-  if (v7)
+  if (valuesCopy)
   {
     v16 = 0;
-    v9 = [(MTLLibrary *)library newFunctionWithName:v6 constantValues:v7 error:&v16];
+    v9 = [(MTLLibrary *)library newFunctionWithName:functionCopy constantValues:valuesCopy error:&v16];
     v10 = v16;
     if (v9)
     {
@@ -900,7 +900,7 @@ LABEL_10:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = functionCopy;
       _os_log_impl(&dword_27754B000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unable to find kernel %@", buf, 0xCu);
     }
 
@@ -909,7 +909,7 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v9 = [(MTLLibrary *)library newFunctionWithName:v6];
+  v9 = [(MTLLibrary *)library newFunctionWithName:functionCopy];
   v10 = 0;
   if (!v9)
   {
@@ -925,7 +925,7 @@ LABEL_4:
   if (!v12 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v18 = v6;
+    v18 = functionCopy;
     v19 = 2112;
     v20 = v13;
     _os_log_error_impl(&dword_27754B000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Failed compiling %@ with error %@", buf, 0x16u);
@@ -984,8 +984,8 @@ LABEL_14:
 
       self->_maximumTextureDimension = v8;
       v9 = self->_device;
-      v10 = [(MTLDevice *)v9 vendorName];
-      self->_broken444 = [v10 containsString:@"Intel"];
+      vendorName = [(MTLDevice *)v9 vendorName];
+      self->_broken444 = [vendorName containsString:@"Intel"];
 
       v11 = 0;
       v12 = 1;
@@ -1024,9 +1024,9 @@ LABEL_14:
         v11 = 1;
         if ((v13 & 1) == 0)
         {
-          v18 = [(MTLDevice *)self->_device newCommandQueue];
+          newCommandQueue = [(MTLDevice *)self->_device newCommandQueue];
           commandQueue = self->_commandQueue;
-          self->_commandQueue = v18;
+          self->_commandQueue = newCommandQueue;
 
           if (self->_commandQueue)
           {

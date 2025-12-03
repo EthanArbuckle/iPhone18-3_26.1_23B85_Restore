@@ -1,18 +1,18 @@
 @interface ACCCarPlayService
-- (void)carPlayAppLinksStateForCertSerial:(id)a3 withReply:(id)a4;
-- (void)carPlayIconStateForCertSerial:(id)a3 andAppCategories:(unint64_t)a4 withReply:(id)a5;
-- (void)carPlaySendConnectionTimeEvent:(unint64_t)a3 connectionType:(unint64_t)a4 eventTime:(id)a5 withReply:(id)a6;
-- (void)filterMatchingDigitalCarKeys:(id)a3 forAccessory:(id)a4 withReply:(id)a5;
-- (void)isCarPlayPairedWithCertSerial:(id)a3 withReply:(id)a4;
-- (void)isWirelessCarPlayAllowedForCertSerial:(id)a3 withReply:(id)a4;
+- (void)carPlayAppLinksStateForCertSerial:(id)serial withReply:(id)reply;
+- (void)carPlayIconStateForCertSerial:(id)serial andAppCategories:(unint64_t)categories withReply:(id)reply;
+- (void)carPlaySendConnectionTimeEvent:(unint64_t)event connectionType:(unint64_t)type eventTime:(id)time withReply:(id)reply;
+- (void)filterMatchingDigitalCarKeys:(id)keys forAccessory:(id)accessory withReply:(id)reply;
+- (void)isCarPlayPairedWithCertSerial:(id)serial withReply:(id)reply;
+- (void)isWirelessCarPlayAllowedForCertSerial:(id)serial withReply:(id)reply;
 @end
 
 @implementation ACCCarPlayService
 
-- (void)isCarPlayPairedWithCertSerial:(id)a3 withReply:(id)a4
+- (void)isCarPlayPairedWithCertSerial:(id)serial withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  serialCopy = serial;
+  replyCopy = reply;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -33,7 +33,7 @@
     v18 = &v19;
     v9 = v7;
     v17 = v9;
-    v8(v5, v16);
+    v8(serialCopy, v16);
     v10 = dispatch_time(0, 4000000000);
     if (dispatch_semaphore_wait(v9, v10))
     {
@@ -87,14 +87,14 @@
     }
   }
 
-  v6[2](v6, *(v20 + 24));
+  replyCopy[2](replyCopy, *(v20 + 24));
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)isWirelessCarPlayAllowedForCertSerial:(id)a3 withReply:(id)a4
+- (void)isWirelessCarPlayAllowedForCertSerial:(id)serial withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  serialCopy = serial;
+  replyCopy = reply;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -115,7 +115,7 @@
     v18 = &v19;
     v9 = v7;
     v17 = v9;
-    v8(v5, v16);
+    v8(serialCopy, v16);
     v10 = dispatch_time(0, 4000000000);
     if (dispatch_semaphore_wait(v9, v10))
     {
@@ -169,14 +169,14 @@
     }
   }
 
-  v6[2](v6, *(v20 + 24));
+  replyCopy[2](replyCopy, *(v20 + 24));
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)carPlayAppLinksStateForCertSerial:(id)a3 withReply:(id)a4
+- (void)carPlayAppLinksStateForCertSerial:(id)serial withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  serialCopy = serial;
+  replyCopy = reply;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -197,7 +197,7 @@
     v18 = &v19;
     v9 = v7;
     v17 = v9;
-    v8(v5, v16);
+    v8(serialCopy, v16);
     v10 = dispatch_time(0, 4000000000);
     if (dispatch_semaphore_wait(v9, v10))
     {
@@ -251,7 +251,7 @@
     }
   }
 
-  v6[2](v6, v20[3]);
+  replyCopy[2](replyCopy, v20[3]);
   _Block_object_dispose(&v19, 8);
 }
 
@@ -265,10 +265,10 @@ intptr_t __65__ACCCarPlayService_carPlayAppLinksStateForCertSerial_withReply___b
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)carPlayIconStateForCertSerial:(id)a3 andAppCategories:(unint64_t)a4 withReply:(id)a5
+- (void)carPlayIconStateForCertSerial:(id)serial andAppCategories:(unint64_t)categories withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  serialCopy = serial;
+  replyCopy = reply;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -287,7 +287,7 @@ intptr_t __65__ACCCarPlayService_carPlayAppLinksStateForCertSerial_withReply___b
     v20 = &v21;
     v12 = v9;
     v19 = v12;
-    [v11 exportIconStateForCertificateSerial:v7 categories:a4 completion:v18];
+    [v11 exportIconStateForCertificateSerial:serialCopy categories:categories completion:v18];
     v13 = dispatch_time(0, 4000000000);
     if (dispatch_semaphore_wait(v12, v13))
     {
@@ -339,7 +339,7 @@ intptr_t __65__ACCCarPlayService_carPlayAppLinksStateForCertSerial_withReply___b
     }
   }
 
-  v8[2](v8, v22[5]);
+  replyCopy[2](replyCopy, v22[5]);
   _Block_object_dispose(&v21, 8);
 }
 
@@ -350,11 +350,11 @@ void __78__ACCCarPlayService_carPlayIconStateForCertSerial_andAppCategories_with
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)filterMatchingDigitalCarKeys:(id)a3 forAccessory:(id)a4 withReply:(id)a5
+- (void)filterMatchingDigitalCarKeys:(id)keys forAccessory:(id)accessory withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keysCopy = keys;
+  accessoryCopy = accessory;
+  replyCopy = reply;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 7;
@@ -384,15 +384,15 @@ void __78__ACCCarPlayService_carPlayIconStateForCertSerial_andAppCategories_with
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v22 = v8;
+    v22 = accessoryCopy;
     v23 = 2112;
-    v24 = v7;
+    v24 = keysCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[#ACCCarPlayService] accessoryUUID: %@ filterMatchingDigitalCarKeys: %@", buf, 0x16u);
   }
 
   if (filterMatchingDigitalCarKeys_forAccessory_withReply__onceToken == -1)
   {
-    if (!v7)
+    if (!keysCopy)
     {
       goto LABEL_24;
     }
@@ -401,7 +401,7 @@ void __78__ACCCarPlayService_carPlayIconStateForCertSerial_andAppCategories_with
   else
   {
     [ACCCarPlayService filterMatchingDigitalCarKeys:forAccessory:withReply:];
-    if (!v7)
+    if (!keysCopy)
     {
 LABEL_24:
       if (gLogObjects && gNumLogObjects >= 7)
@@ -436,7 +436,7 @@ LABEL_24:
   }
 
   v20 = 0;
-  v13 = filterMatchingDigitalCarKeys_forAccessory_withReply___SESEndPointFilterDigitalCarKeys(v7, &v20);
+  v13 = filterMatchingDigitalCarKeys_forAccessory_withReply___SESEndPointFilterDigitalCarKeys(keysCopy, &v20);
   v14 = v20;
   if (!v13)
   {
@@ -489,31 +489,31 @@ LABEL_33:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[#ACCCarPlayService] matched keys: %@", buf, 0xCu);
   }
 
-  v9[2](v9, v13, v14);
+  replyCopy[2](replyCopy, v13, v14);
 }
 
-- (void)carPlaySendConnectionTimeEvent:(unint64_t)a3 connectionType:(unint64_t)a4 eventTime:(id)a5 withReply:(id)a6
+- (void)carPlaySendConnectionTimeEvent:(unint64_t)event connectionType:(unint64_t)type eventTime:(id)time withReply:(id)reply
 {
-  v9 = a5;
-  v10 = a6;
-  if (a3 - 1 > 4)
+  timeCopy = time;
+  replyCopy = reply;
+  if (event - 1 > 4)
   {
     v11 = @"iAP Connection Start";
   }
 
   else
   {
-    v11 = *(&off_100008678 + a3 - 1);
+    v11 = *(&off_100008678 + event - 1);
   }
 
-  if (a4 - 1 >= 3)
+  if (type - 1 >= 3)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = a4 + 4;
+    v12 = type + 4;
   }
 
   v13 = dispatch_semaphore_create(0);
@@ -555,21 +555,21 @@ LABEL_33:
       v42 = 2048;
       v43 = v12;
       v44 = 2112;
-      v45 = v9;
+      v45 = timeCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[#ACCCarPlayService] CarPlay Connection Event: preparing to send event: %@, %ld, %@", buf, 0x20u);
     }
 
-    v23 = [[v14 alloc] initForSystemDaemon];
-    v25 = [v18 eventWithName:v11 type:v12 date:v9 payload:0];
+    initForSystemDaemon = [[v14 alloc] initForSystemDaemon];
+    v25 = [v18 eventWithName:v11 type:v12 date:timeCopy payload:0];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = __87__ACCCarPlayService_carPlaySendConnectionTimeEvent_connectionType_eventTime_withReply___block_invoke;
     v32[3] = &unk_100008658;
     v33 = v11;
-    v34 = v9;
+    v34 = timeCopy;
     v26 = v13;
     v35 = v26;
-    [v23 sendConnectionEvent:v25 completion:v32];
+    [initForSystemDaemon sendConnectionEvent:v25 completion:v32];
     v27 = dispatch_time(0, 4000000000);
     if (dispatch_semaphore_wait(v26, v27))
     {
@@ -599,10 +599,10 @@ LABEL_33:
       v30 = [NSDictionary dictionaryWithObjects:&v39 forKeys:&v38 count:1];
       v31 = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:v30];
 
-      v10[2](v10, 0, v31);
+      replyCopy[2](replyCopy, 0, v31);
     }
 
-    v10[2](v10, 1, 0);
+    replyCopy[2](replyCopy, 1, 0);
   }
 
   else
@@ -632,9 +632,9 @@ LABEL_33:
     v36 = NSLocalizedDescriptionKey;
     v37 = @"Failed to link CARConnectionTimeStore";
     v22 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-    v23 = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:v22];
+    initForSystemDaemon = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:v22];
 
-    v10[2](v10, 0, v23);
+    replyCopy[2](replyCopy, 0, initForSystemDaemon);
   }
 }
 

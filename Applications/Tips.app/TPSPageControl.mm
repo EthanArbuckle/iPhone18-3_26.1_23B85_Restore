@@ -1,7 +1,7 @@
 @interface TPSPageControl
 - (TPSPageControl)init;
 - (TPSPageControlHudDelegate)hudDelegate;
-- (void)handleLongPressForAccessibilityHUDView:(id)a3;
+- (void)handleLongPressForAccessibilityHUDView:(id)view;
 @end
 
 @implementation TPSPageControl
@@ -21,40 +21,40 @@
   return v2;
 }
 
-- (void)handleLongPressForAccessibilityHUDView:(id)a3
+- (void)handleLongPressForAccessibilityHUDView:(id)view
 {
-  v4 = [a3 state];
-  if ((v4 - 3) >= 2)
+  state = [view state];
+  if ((state - 3) >= 2)
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       return;
     }
 
     if ([(TPSPageControl *)self currentPage]== 0x7FFFFFFFFFFFFFFFLL || [(TPSPageControl *)self numberOfPages]< 1)
     {
-      v6 = 0;
+      numberOfPages = 0;
       v5 = 0;
     }
 
     else
     {
       v5 = [(TPSPageControl *)self currentPage]+ 1;
-      v6 = [(TPSPageControl *)self numberOfPages];
+      numberOfPages = [(TPSPageControl *)self numberOfPages];
     }
 
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"TIP_NUMBER_X_OF_Y" value:&stru_1000A4A50 table:0];
-    v10 = [NSString localizedStringWithFormat:v8, v5, v6];
+    hudDelegate2 = [NSString localizedStringWithFormat:v8, v5, numberOfPages];
 
-    v9 = [(TPSPageControl *)self hudDelegate];
-    [v9 pageControlLongPressedForHUD:self withText:v10];
+    hudDelegate = [(TPSPageControl *)self hudDelegate];
+    [hudDelegate pageControlLongPressedForHUD:self withText:hudDelegate2];
   }
 
   else
   {
-    v10 = [(TPSPageControl *)self hudDelegate];
-    [v10 pageControlCancelLongPressedForHUD:self];
+    hudDelegate2 = [(TPSPageControl *)self hudDelegate];
+    [hudDelegate2 pageControlCancelLongPressedForHUD:self];
   }
 }
 

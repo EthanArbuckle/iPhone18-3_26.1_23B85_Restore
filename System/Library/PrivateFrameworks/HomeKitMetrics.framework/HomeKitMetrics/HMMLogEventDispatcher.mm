@@ -2,16 +2,16 @@
 + (id)logCategory;
 - (HMMLogEventDispatcher)init;
 - (HMMLogEventDispatchingDataSource)dataSource;
-- (id)_getOrCreateObserversForEventClass:(Class)a3;
+- (id)_getOrCreateObserversForEventClass:(Class)class;
 - (void)_checkPendingLogEventBuffer;
-- (void)addObserver:(id)a3 forEventClass:(Class)a4;
-- (void)addObserver:(id)a3 forEventClasses:(id)a4;
-- (void)addObserver:(id)a3 forProtocol:(id)a4;
-- (void)handleMemoryEvent:(int64_t)a3;
+- (void)addObserver:(id)observer forEventClass:(Class)class;
+- (void)addObserver:(id)observer forEventClasses:(id)classes;
+- (void)addObserver:(id)observer forProtocol:(id)protocol;
+- (void)handleMemoryEvent:(int64_t)event;
 - (void)processAndSubmitLogEvents;
-- (void)removeObserver:(id)a3;
-- (void)submitLogEvent:(id)a3;
-- (void)submitLogEvent:(id)a3 error:(id)a4;
+- (void)removeObserver:(id)observer;
+- (void)submitLogEvent:(id)event;
+- (void)submitLogEvent:(id)event error:(id)error;
 @end
 
 @implementation HMMLogEventDispatcher
@@ -41,7 +41,7 @@
   if (__ROR8__(0x1CAC083126E978D5 * [(NSMutableArray *)self->_pendingLogEvents count], 3) <= 0x4189374BC6A7EFuLL)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
@@ -71,7 +71,7 @@
   if ([v3 count] > 0x13)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if ([v3 count] <= 0x3E7)
     {
@@ -145,9 +145,9 @@ void __50__HMMLogEventDispatcher_processAndSubmitLogEvents__block_invoke(uint64_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMemoryEvent:(int64_t)a3
+- (void)handleMemoryEvent:(int64_t)event
 {
-  if (a3 == 5)
+  if (event == 5)
   {
     os_unfair_lock_lock_with_options();
     [(HMMLogEventDispatcher *)self _checkPendingLogEventBuffer];
@@ -156,21 +156,21 @@ void __50__HMMLogEventDispatcher_processAndSubmitLogEvents__block_invoke(uint64_
   }
 }
 
-- (void)submitLogEvent:(id)a3
+- (void)submitLogEvent:(id)event
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 markEndTime];
-  v5 = [(HMMLogEventDispatcher *)self dataSource];
-  v6 = v5;
-  if (!v5 || [v5 isSubmissionEnabled])
+  eventCopy = event;
+  [eventCopy markEndTime];
+  dataSource = [(HMMLogEventDispatcher *)self dataSource];
+  v6 = dataSource;
+  if (!dataSource || [dataSource isSubmissionEnabled])
   {
-    v7 = [v4 confirmSubmission];
+    confirmSubmission = [eventCopy confirmSubmission];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     v11 = v10;
-    if (v7)
+    if (confirmSubmission)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -184,25 +184,25 @@ void __50__HMMLogEventDispatcher_processAndSubmitLogEvents__block_invoke(uint64_
 
       objc_autoreleasePoolPop(v8);
       os_unfair_lock_lock_with_options();
-      [(NSMutableArray *)v9->_pendingLogEvents addObject:v4];
-      [(HMMLogEventDispatcher *)v9 _checkPendingLogEventBuffer];
-      if (v9->_isProcessingPending)
+      [(NSMutableArray *)selfCopy->_pendingLogEvents addObject:eventCopy];
+      [(HMMLogEventDispatcher *)selfCopy _checkPendingLogEventBuffer];
+      if (selfCopy->_isProcessingPending)
       {
-        os_unfair_lock_unlock(&v9->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       else
       {
-        v9->_isProcessingPending = 1;
-        os_unfair_lock_unlock(&v9->_lock);
-        v14 = [(HMMLogEventDispatcher *)v9 clientQueue];
+        selfCopy->_isProcessingPending = 1;
+        os_unfair_lock_unlock(&selfCopy->_lock);
+        clientQueue = [(HMMLogEventDispatcher *)selfCopy clientQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __40__HMMLogEventDispatcher_submitLogEvent___block_invoke;
         block[3] = &unk_2786F8F68;
-        block[4] = v9;
+        block[4] = selfCopy;
         v15 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_BACKGROUND, 0, block);
-        dispatch_async(v14, v15);
+        dispatch_async(clientQueue, v15);
       }
     }
 
@@ -225,25 +225,25 @@ void __50__HMMLogEventDispatcher_processAndSubmitLogEvents__block_invoke(uint64_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitLogEvent:(id)a3 error:(id)a4
+- (void)submitLogEvent:(id)event error:(id)error
 {
-  v6 = a3;
-  [v6 setError:a4];
-  [(HMMLogEventDispatcher *)self submitLogEvent:v6];
+  eventCopy = event;
+  [eventCopy setError:error];
+  [(HMMLogEventDispatcher *)self submitLogEvent:eventCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HMMLogEventDispatcher *)self clientQueue];
+  observerCopy = observer;
+  clientQueue = [(HMMLogEventDispatcher *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__HMMLogEventDispatcher_removeObserver___block_invoke;
   v7[3] = &unk_2786F9038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(clientQueue, v7);
 }
 
 void __40__HMMLogEventDispatcher_removeObserver___block_invoke(uint64_t a1)
@@ -344,21 +344,21 @@ void __40__HMMLogEventDispatcher_removeObserver___block_invoke(uint64_t a1)
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3 forProtocol:(id)a4
+- (void)addObserver:(id)observer forProtocol:(id)protocol
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMLogEventDispatcher *)self clientQueue];
+  observerCopy = observer;
+  protocolCopy = protocol;
+  clientQueue = [(HMMLogEventDispatcher *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__HMMLogEventDispatcher_addObserver_forProtocol___block_invoke;
   block[3] = &unk_2786F9060;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = observerCopy;
+  v13 = protocolCopy;
+  v9 = protocolCopy;
+  v10 = observerCopy;
+  dispatch_sync(clientQueue, block);
 }
 
 void __49__HMMLogEventDispatcher_addObserver_forProtocol___block_invoke(void *a1)
@@ -401,20 +401,20 @@ void __49__HMMLogEventDispatcher_addObserver_forProtocol___block_invoke(void *a1
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getOrCreateObserversForEventClass:(Class)a3
+- (id)_getOrCreateObserversForEventClass:(Class)class
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(NSMapTable *)self->_observersByClass objectForKey:?];
-  if (!v5)
+  weakObjectsHashTable = [(NSMapTable *)self->_observersByClass objectForKey:?];
+  if (!weakObjectsHashTable)
   {
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(NSMapTable *)self->_observersByClass setObject:v5 forKey:a3];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(NSMapTable *)self->_observersByClass setObject:weakObjectsHashTable forKey:class];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(NSMapTable *)self->_observersByProtocol keyEnumerator];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    keyEnumerator = [(NSMapTable *)self->_observersByProtocol keyEnumerator];
+    v7 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -425,46 +425,46 @@ void __49__HMMLogEventDispatcher_addObserver_forProtocol___block_invoke(void *a1
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          if ([(objc_class *)a3 conformsToProtocol:v11])
+          if ([(objc_class *)class conformsToProtocol:v11])
           {
             v12 = [(NSMapTable *)self->_observersByProtocol objectForKey:v11];
-            [v5 addObject:v12];
+            [weakObjectsHashTable addObject:v12];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
     }
   }
 
-  v13 = v5;
+  v13 = weakObjectsHashTable;
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (void)addObserver:(id)a3 forEventClasses:(id)a4
+- (void)addObserver:(id)observer forEventClasses:(id)classes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMLogEventDispatcher *)self clientQueue];
+  observerCopy = observer;
+  classesCopy = classes;
+  clientQueue = [(HMMLogEventDispatcher *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__HMMLogEventDispatcher_addObserver_forEventClasses___block_invoke;
   block[3] = &unk_2786F9060;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, block);
+  v12 = classesCopy;
+  selfCopy = self;
+  v14 = observerCopy;
+  v9 = observerCopy;
+  v10 = classesCopy;
+  dispatch_sync(clientQueue, block);
 }
 
 void __53__HMMLogEventDispatcher_addObserver_forEventClasses___block_invoke(uint64_t a1)
@@ -506,14 +506,14 @@ void __53__HMMLogEventDispatcher_addObserver_forEventClasses___block_invoke(uint
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3 forEventClass:(Class)a4
+- (void)addObserver:(id)observer forEventClass:(Class)class
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  classCopy = class;
   v5 = MEMORY[0x277CBEA60];
-  v6 = a3;
-  v7 = [v5 arrayWithObjects:&v9 count:1];
-  [(HMMLogEventDispatcher *)self addObserver:v6 forEventClasses:v7, v9, v10];
+  observerCopy = observer;
+  v7 = [v5 arrayWithObjects:&classCopy count:1];
+  [(HMMLogEventDispatcher *)self addObserver:observerCopy forEventClasses:v7, classCopy, v10];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -525,17 +525,17 @@ void __53__HMMLogEventDispatcher_addObserver_forEventClasses___block_invoke(uint
   v2 = [(HMMLogEventDispatcher *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     observersByClass = v2->_observersByClass;
-    v2->_observersByClass = v3;
+    v2->_observersByClass = strongToStrongObjectsMapTable;
 
-    v5 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     observersByProtocol = v2->_observersByProtocol;
-    v2->_observersByProtocol = v5;
+    v2->_observersByProtocol = strongToWeakObjectsMapTable;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     pendingLogEvents = v2->_pendingLogEvents;
-    v2->_pendingLogEvents = v7;
+    v2->_pendingLogEvents = array;
 
     v9 = HMMDispatchQueueName(v2, @"LogEventQueue");
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);

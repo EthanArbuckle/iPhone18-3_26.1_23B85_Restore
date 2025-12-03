@@ -1,22 +1,22 @@
 @interface _BSUIRenderModelReadingGoalsGauge
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGSize)size;
 - (unint64_t)hash;
 @end
 
 @implementation _BSUIRenderModelReadingGoalsGauge
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   objc_opt_class();
   v5 = BUDynamicCast();
 
   if (TUIRenderModelIsEqualToRenderModel())
   {
-    v6 = [(_BSUIRenderModelReadingGoalsGauge *)self metrics];
-    v7 = [v5 metrics];
-    v8 = [v6 isEqual:v7];
+    metrics = [(_BSUIRenderModelReadingGoalsGauge *)self metrics];
+    metrics2 = [v5 metrics];
+    v8 = [metrics isEqual:metrics2];
   }
 
   else
@@ -29,7 +29,7 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_BSUIRenderModelReadingGoalsGauge *)self identifier];
+  identifier = [(_BSUIRenderModelReadingGoalsGauge *)self identifier];
   v3 = TUIIdentifierHash();
 
   return v3;

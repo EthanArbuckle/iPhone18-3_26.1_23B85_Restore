@@ -1,23 +1,23 @@
 @interface TNChartFormulaTypeEnumerator
-- (TNChartFormulaTypeEnumerator)initWithChartFormulaStorage:(id)a3;
+- (TNChartFormulaTypeEnumerator)initWithChartFormulaStorage:(id)storage;
 - (unint64_t)nextFormulaType;
 @end
 
 @implementation TNChartFormulaTypeEnumerator
 
-- (TNChartFormulaTypeEnumerator)initWithChartFormulaStorage:(id)a3
+- (TNChartFormulaTypeEnumerator)initWithChartFormulaStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v17.receiver = self;
   v17.super_class = TNChartFormulaTypeEnumerator;
   v7 = [(TNChartFormulaTypeEnumerator *)&v17 init];
   if (v7)
   {
-    v8 = objc_msgSend_count(v4, v5, v6);
+    v8 = objc_msgSend_count(storageCopy, v5, v6);
     v7->_count = v8;
     if (v8)
     {
-      v11 = objc_msgSend_allKeys(v4[1], v9, v10);
+      v11 = objc_msgSend_allKeys(storageCopy[1], v9, v10);
       v14 = objc_msgSend_copy(v11, v12, v13);
       keys = v7->_keys;
       v7->_keys = v14;

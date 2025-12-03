@@ -1,7 +1,7 @@
 @interface VCPVideoMetaFocusAnalyzer
 - (VCPVideoMetaFocusAnalyzer)init;
 - (int)finalizeAnalysis;
-- (int)processFrameMetadata:(id)a3;
+- (int)processFrameMetadata:(id)metadata;
 - (void)addSegmentToResults;
 @end
 
@@ -14,9 +14,9 @@
   v2 = [(VCPVideoMetaFocusAnalyzer *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v4 = *(v2 + 2);
-    *(v2 + 2) = v3;
+    *(v2 + 2) = array;
 
     v5 = objc_alloc_init(VCPVideoMetaFocusSegment);
     v6 = *(v2 + 1);
@@ -48,35 +48,35 @@
   return v10;
 }
 
-- (int)processFrameMetadata:(id)a3
+- (int)processFrameMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"privAFSt"];
+  metadataCopy = metadata;
+  v5 = [metadataCopy objectForKeyedSubscript:@"privAFSt"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v7 = 4;
+    integerValue = 4;
   }
 
-  CMTimeRangeMakeFromDictionary(&v16, v4);
+  CMTimeRangeMakeFromDictionary(&v16, metadataCopy);
   v8 = *&v16.start.epoch;
   *&self->_frameTimeRange.start.value = *&v16.start.value;
   *&self->_frameTimeRange.start.epoch = v8;
   *&self->_frameTimeRange.duration.timescale = *&v16.duration.timescale;
   if ([(NSMutableArray *)self->_mutableResults count]|| [(VCPMetaSegment *)self->_activeSegment numOfFrames])
   {
-    v9 = [(VCPVideoMetaFocusSegment *)self->_activeSegment focusStatus];
+    focusStatus = [(VCPVideoMetaFocusSegment *)self->_activeSegment focusStatus];
     activeSegment = self->_activeSegment;
     *&v16.start.value = *&self->_frameTimeRange.start.value;
     v16.start.epoch = self->_frameTimeRange.start.epoch;
-    if (v7 == v9)
+    if (integerValue == focusStatus)
     {
-      [(VCPVideoMetaFocusSegment *)activeSegment updateSegment:v7 atTime:&v16];
+      [(VCPVideoMetaFocusSegment *)activeSegment updateSegment:integerValue atTime:&v16];
     }
 
     else
@@ -86,7 +86,7 @@
       v11 = [VCPVideoMetaFocusSegment alloc];
       *&v16.start.value = *&self->_frameTimeRange.start.value;
       v16.start.epoch = self->_frameTimeRange.start.epoch;
-      v12 = [(VCPVideoMetaFocusSegment *)v11 initWithFocusStatus:v7 atTime:&v16];
+      v12 = [(VCPVideoMetaFocusSegment *)v11 initWithFocusStatus:integerValue atTime:&v16];
       v13 = self->_activeSegment;
       self->_activeSegment = v12;
     }
@@ -97,7 +97,7 @@
     v14 = self->_activeSegment;
     *&v16.start.value = *&self->_frameTimeRange.start.value;
     v16.start.epoch = self->_frameTimeRange.start.epoch;
-    [(VCPVideoMetaFocusSegment *)v14 resetSegment:v7 atTime:&v16];
+    [(VCPVideoMetaFocusSegment *)v14 resetSegment:integerValue atTime:&v16];
   }
 
   return 0;

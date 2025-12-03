@@ -1,8 +1,8 @@
 @interface SDAirDropCompressor
-- (BOOL)readData:(char *)a3 length:(int64_t)a4 fromStream:(__CFReadStream *)a5;
+- (BOOL)readData:(char *)data length:(int64_t)length fromStream:(__CFReadStream *)stream;
 - (BOOL)readIncomingChunk;
-- (BOOL)writeData:(char *)a3 length:(int64_t)a4 toStream:(__CFWriteStream *)a5;
-- (SDAirDropCompressor)initWithReadStream:(__CFReadStream *)a3 writeStream:(__CFWriteStream *)a4;
+- (BOOL)writeData:(char *)data length:(int64_t)length toStream:(__CFWriteStream *)stream;
+- (SDAirDropCompressor)initWithReadStream:(__CFReadStream *)stream writeStream:(__CFWriteStream *)writeStream;
 - (__CFReadStream)copyReadStream;
 - (void)dealloc;
 - (void)executeReadWithAdaptiveCompression;
@@ -10,13 +10,13 @@
 - (void)fileComplete;
 - (void)openStreams;
 - (void)processCompressibilityStatistics;
-- (void)processNetworkStatistics:(double)a3;
-- (void)sendOutgoingChunk:(char *)a3 length:(int64_t)a4 compressed:(BOOL)a5;
+- (void)processNetworkStatistics:(double)statistics;
+- (void)sendOutgoingChunk:(char *)chunk length:(int64_t)length compressed:(BOOL)compressed;
 @end
 
 @implementation SDAirDropCompressor
 
-- (SDAirDropCompressor)initWithReadStream:(__CFReadStream *)a3 writeStream:(__CFWriteStream *)a4
+- (SDAirDropCompressor)initWithReadStream:(__CFReadStream *)stream writeStream:(__CFWriteStream *)writeStream
 {
   v11.receiver = self;
   v11.super_class = SDAirDropCompressor;
@@ -34,8 +34,8 @@
     v6->_numBlocksCompressed = 0;
     v6->_totalCompressedOutput = 0;
     v6->_keepingUpWithNetwork = 1;
-    v6->_readStream = CFRetain(a3);
-    v7->_writeStream = CFRetain(a4);
+    v6->_readStream = CFRetain(stream);
+    v7->_writeStream = CFRetain(writeStream);
     v8 = dispatch_queue_create("com.apple.sharingd.adjustment-queue", 0);
     adjustmentQueue = v7->_adjustmentQueue;
     v7->_adjustmentQueue = v8;
@@ -74,9 +74,9 @@
   return result;
 }
 
-- (BOOL)writeData:(char *)a3 length:(int64_t)a4 toStream:(__CFWriteStream *)a5
+- (BOOL)writeData:(char *)data length:(int64_t)length toStream:(__CFWriteStream *)stream
 {
-  if (a4 < 1)
+  if (length < 1)
   {
     return 1;
   }
@@ -84,14 +84,14 @@
   v9 = 0;
   while (1)
   {
-    v10 = CFWriteStreamWrite(a5, &a3[v9], a4 - v9);
+    v10 = CFWriteStreamWrite(stream, &data[v9], length - v9);
     if (v10 < 0)
     {
       break;
     }
 
     v9 += v10;
-    if (v9 >= a4)
+    if (v9 >= length)
     {
       return 1;
     }
@@ -107,9 +107,9 @@
   return 0;
 }
 
-- (BOOL)readData:(char *)a3 length:(int64_t)a4 fromStream:(__CFReadStream *)a5
+- (BOOL)readData:(char *)data length:(int64_t)length fromStream:(__CFReadStream *)stream
 {
-  if (a4 < 1)
+  if (length < 1)
   {
     return 1;
   }
@@ -117,19 +117,19 @@
   v9 = 0;
   while (1)
   {
-    if (CFReadStreamGetStatus(a5) > kCFStreamStatusWriting)
+    if (CFReadStreamGetStatus(stream) > kCFStreamStatusWriting)
     {
       return 1;
     }
 
-    v10 = CFReadStreamRead(a5, &a3[v9], a4 - v9);
+    v10 = CFReadStreamRead(stream, &data[v9], length - v9);
     if (v10 < 0)
     {
       break;
     }
 
     v9 += v10;
-    if (v9 >= a4)
+    if (v9 >= length)
     {
       return 1;
     }
@@ -187,17 +187,17 @@
   return v3;
 }
 
-- (void)sendOutgoingChunk:(char *)a3 length:(int64_t)a4 compressed:(BOOL)a5
+- (void)sendOutgoingChunk:(char *)chunk length:(int64_t)length compressed:(BOOL)compressed
 {
-  v8 = a4 | 0x80000000;
-  if (a5)
+  lengthCopy = length | 0x80000000;
+  if (compressed)
   {
-    v8 = a4;
+    lengthCopy = length;
   }
 
-  v9 = bswap32(v8);
+  v9 = bswap32(lengthCopy);
   [(SDAirDropCompressor *)self writeData:&v9 length:4 toStream:self->_writeStream];
-  [(SDAirDropCompressor *)self writeData:a3 length:a4 toStream:self->_writeStream];
+  [(SDAirDropCompressor *)self writeData:chunk length:length toStream:self->_writeStream];
 }
 
 - (void)openStreams
@@ -230,10 +230,10 @@
   }
 }
 
-- (void)processNetworkStatistics:(double)a3
+- (void)processNetworkStatistics:(double)statistics
 {
   keepingUpWithNetwork = self->_keepingUpWithNetwork;
-  if (a3 > 1.0 && !self->_keepingUpWithNetwork)
+  if (statistics > 1.0 && !self->_keepingUpWithNetwork)
   {
     v6 = airdrop_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -351,11 +351,11 @@ LABEL_22:
   {
     do
     {
-      v4 = [(SDAirDropCompressor *)self readIncomingChunk];
+      readIncomingChunk = [(SDAirDropCompressor *)self readIncomingChunk];
       Status = CFReadStreamGetStatus(self->_readStream);
     }
 
-    while (Status < kCFStreamStatusAtEnd && (v4 & 1) != 0);
+    while (Status < kCFStreamStatusAtEnd && (readIncomingChunk & 1) != 0);
   }
 
   if (Status <= kCFStreamStatusAtEnd)

@@ -1,15 +1,15 @@
 @interface SCUIAnalyticsContextWrapper
 - (SCUIAnalyticsContextWrapper)init;
-- (SCUIAnalyticsContextWrapper)initWithContextWrapper:(id)a3;
-- (SCUIAnalyticsContextWrapper)initWithInterventionType:(int64_t)a3 menuType:(int64_t)a4 actions:(id)a5;
-- (SCUIAnalyticsContextWrapper)initWithInterventionType:(int64_t)a3 menuType:(int64_t)a4 actions:(id)a5 authority:(id)a6;
-- (void)collectResourcesInteractionEventWithRequestedResource:(int64_t)a3;
+- (SCUIAnalyticsContextWrapper)initWithContextWrapper:(id)wrapper;
+- (SCUIAnalyticsContextWrapper)initWithInterventionType:(int64_t)type menuType:(int64_t)menuType actions:(id)actions;
+- (SCUIAnalyticsContextWrapper)initWithInterventionType:(int64_t)type menuType:(int64_t)menuType actions:(id)actions authority:(id)authority;
+- (void)collectResourcesInteractionEventWithRequestedResource:(int64_t)resource;
 - (void)collectResourcesShownEvent;
 @end
 
 @implementation SCUIAnalyticsContextWrapper
 
-- (SCUIAnalyticsContextWrapper)initWithInterventionType:(int64_t)a3 menuType:(int64_t)a4 actions:(id)a5 authority:(id)a6
+- (SCUIAnalyticsContextWrapper)initWithInterventionType:(int64_t)type menuType:(int64_t)menuType actions:(id)actions authority:(id)authority
 {
   v10 = type metadata accessor for AnalyticsUIContext(0);
   v11 = *(*(v10 - 8) + 64);
@@ -18,8 +18,8 @@
   sub_1BC66B0F8();
   v14 = sub_1BC75BD00();
   ObjectType = swift_getObjectType();
-  v16 = a6;
-  sub_1BC665400(a3, a4, v14, a6, v13);
+  authorityCopy = authority;
+  sub_1BC665400(type, menuType, v14, authority, v13);
   v17 = (*(ObjectType + 112))(v13);
 
   v18 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x30);
@@ -28,14 +28,14 @@
   return v17;
 }
 
-- (SCUIAnalyticsContextWrapper)initWithInterventionType:(int64_t)a3 menuType:(int64_t)a4 actions:(id)a5
+- (SCUIAnalyticsContextWrapper)initWithInterventionType:(int64_t)type menuType:(int64_t)menuType actions:(id)actions
 {
   sub_1BC66B0F8();
   v7 = sub_1BC75BD00();
-  return AnalyticsContextWrapper.init(interventionType:menuType:actions:)(a3, a4, v7);
+  return AnalyticsContextWrapper.init(interventionType:menuType:actions:)(type, menuType, v7);
 }
 
-- (SCUIAnalyticsContextWrapper)initWithContextWrapper:(id)a3
+- (SCUIAnalyticsContextWrapper)initWithContextWrapper:(id)wrapper
 {
   v5 = type metadata accessor for AnalyticsUIContext(0);
   v6 = *(*(v5 - 8) + 64);
@@ -45,8 +45,8 @@
   v11 = &v20 - v10;
   ObjectType = swift_getObjectType();
   v13 = MEMORY[0x1E69E7D40];
-  v14 = *((*MEMORY[0x1E69E7D40] & *a3) + 0x58);
-  v15 = a3;
+  v14 = *((*MEMORY[0x1E69E7D40] & *wrapper) + 0x58);
+  wrapperCopy = wrapper;
   v14();
   sub_1BC664BAC(v9, v11);
   v16 = (*(ObjectType + 112))(v11);
@@ -57,18 +57,18 @@
   return v16;
 }
 
-- (void)collectResourcesInteractionEventWithRequestedResource:(int64_t)a3
+- (void)collectResourcesInteractionEventWithRequestedResource:(int64_t)resource
 {
   v5 = type metadata accessor for AnalyticsUIContext(0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   v9 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x58);
-  v10 = self;
+  selfCopy = self;
   v9();
   type metadata accessor for SCUIAnalytics(0);
   isa = SCUIAnalytics.init()().super.isa;
-  sub_1BC653F90(v8, a3);
+  sub_1BC653F90(v8, resource);
 
   sub_1BC6689C4(v8, type metadata accessor for AnalyticsUIContext);
 }
@@ -80,7 +80,7 @@
   MEMORY[0x1EEE9AC00](v3 - 8);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v7 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x58);
-  v8 = self;
+  selfCopy = self;
   v7();
   type metadata accessor for SCUIAnalytics(0);
   isa = SCUIAnalytics.init()().super.isa;

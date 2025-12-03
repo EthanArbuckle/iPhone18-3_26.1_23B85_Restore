@@ -2,12 +2,12 @@
 + (id)sharedInstance;
 - (BOOL)_checkSpringBoardStarted;
 - (MTSpringboardStartMonitor)init;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)didReceiveSpringboardStarted:(BOOL)a3;
-- (void)removeObserver:(id)a3;
+- (void)didReceiveSpringboardStarted:(BOOL)started;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation MTSpringboardStartMonitor
@@ -63,12 +63,12 @@ uint64_t __43__MTSpringboardStartMonitor_sharedInstance__block_invoke()
   [(MTSpringboardStartMonitor *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     v4 = 0;
-    [(MTObserverStore *)self->_observers addObserver:a3 wasFirst:&v4];
+    [(MTObserverStore *)self->_observers addObserver:observer wasFirst:&v4];
     if (v4 == 1)
     {
       [(MTSpringboardStartMonitor *)self _startMonitoringWithQueue:self->_queue];
@@ -76,12 +76,12 @@ uint64_t __43__MTSpringboardStartMonitor_sharedInstance__block_invoke()
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     v4 = 0;
-    [(MTObserverStore *)self->_observers removeObserver:a3 wasLast:&v4];
+    [(MTObserverStore *)self->_observers removeObserver:observer wasLast:&v4];
     if (v4 == 1)
     {
       [(MTSpringboardStartMonitor *)self _stopMonitoring];
@@ -89,9 +89,9 @@ uint64_t __43__MTSpringboardStartMonitor_sharedInstance__block_invoke()
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     handler[0] = MEMORY[0x1E69E9820];
@@ -99,7 +99,7 @@ uint64_t __43__MTSpringboardStartMonitor_sharedInstance__block_invoke()
     handler[2] = __55__MTSpringboardStartMonitor__startMonitoringWithQueue___block_invoke;
     handler[3] = &unk_1E7B0DA10;
     handler[4] = self;
-    notify_register_dispatch("com.apple.springboard.finishedstartup", &self->_notifyToken, v4, handler);
+    notify_register_dispatch("com.apple.springboard.finishedstartup", &self->_notifyToken, queueCopy, handler);
     v5 = MTLogForCategory(1);
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -156,14 +156,14 @@ uint64_t __55__MTSpringboardStartMonitor__startMonitoringWithQueue___block_invok
   }
 }
 
-- (void)didReceiveSpringboardStarted:(BOOL)a3
+- (void)didReceiveSpringboardStarted:(BOOL)started
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __58__MTSpringboardStartMonitor_didReceiveSpringboardStarted___block_invoke;
   v3[3] = &unk_1E7B0DA38;
   v3[4] = self;
-  v4 = a3;
+  startedCopy = started;
   [(MTSpringboardStartMonitor *)self enumerateObservers:v3];
 }
 

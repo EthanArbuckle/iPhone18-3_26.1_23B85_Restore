@@ -1,47 +1,47 @@
 @interface AAUICDPCustodianHook
-- (AAUICDPCustodianHook)initWithAccountManager:(id)a3 contactsProvider:(id)a4;
-- (AAUICDPCustodianHook)initWithAccountManager:(id)a3 contactsProvider:(id)a4 cdpContext:(id)a5;
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (AAUICDPCustodianHook)initWithAccountManager:(id)manager contactsProvider:(id)provider;
+- (AAUICDPCustodianHook)initWithAccountManager:(id)manager contactsProvider:(id)provider cdpContext:(id)context;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
 - (id)_appleAccount;
 - (id)_custodianInlineSetupFlowNavigationController;
-- (void)_callSetupCompletionWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_callSetupCompletionWithSuccess:(BOOL)success error:(id)error;
 - (void)_custodianInlineSetupFlowNavigationController;
-- (void)_performInlineCustodianSetupWithIsADPUpsellFlow:(BOOL)a3 completion:(id)a4;
-- (void)custodianSetupFlowControllerDidFinish:(id)a3 withError:(id)a4;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_performInlineCustodianSetupWithIsADPUpsellFlow:(BOOL)flow completion:(id)completion;
+- (void)custodianSetupFlowControllerDidFinish:(id)finish withError:(id)error;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUICDPCustodianHook
 
-- (AAUICDPCustodianHook)initWithAccountManager:(id)a3 contactsProvider:(id)a4
+- (AAUICDPCustodianHook)initWithAccountManager:(id)manager contactsProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  managerCopy = manager;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [AAUICDPCustodianHook initWithAccountManager:contactsProvider:];
   }
 
-  v9 = [(AAUICDPCustodianHook *)self initWithAccountManager:v7 contactsProvider:v6 cdpContext:0];
+  v9 = [(AAUICDPCustodianHook *)self initWithAccountManager:managerCopy contactsProvider:providerCopy cdpContext:0];
   return v9;
 }
 
-- (AAUICDPCustodianHook)initWithAccountManager:(id)a3 contactsProvider:(id)a4 cdpContext:(id)a5
+- (AAUICDPCustodianHook)initWithAccountManager:(id)manager contactsProvider:(id)provider cdpContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  providerCopy = provider;
+  contextCopy = context;
   v24.receiver = self;
   v24.super_class = AAUICDPCustodianHook;
   v11 = [(AAUICDPCustodianHook *)&v24 init];
   if (v11)
   {
-    if (v8)
+    if (managerCopy)
     {
-      v12 = v8;
+      v12 = managerCopy;
       accountManager = v11->_accountManager;
       v11->_accountManager = v12;
     }
@@ -61,9 +61,9 @@
       v11->_accountManager = v16;
     }
 
-    if (v9)
+    if (providerCopy)
     {
-      v18 = v9;
+      v18 = providerCopy;
     }
 
     else
@@ -80,10 +80,10 @@
     contactsProvider = v11->_contactsProvider;
     v11->_contactsProvider = v18;
 
-    objc_storeStrong(&v11->_cdpContext, a5);
-    v21 = [MEMORY[0x1E696AAE8] mainBundle];
-    v22 = [v21 bundleIdentifier];
-    v11->_isOSUpgradeFlow = [v22 isEqualToString:@"com.apple.purplebuddy"];
+    objc_storeStrong(&v11->_cdpContext, context);
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v11->_isOSUpgradeFlow = [bundleIdentifier isEqualToString:@"com.apple.purplebuddy"];
 
     v11->_isInternalBuild = [MEMORY[0x1E698B890] isInternalBuild];
   }
@@ -93,27 +93,27 @@
 
 - (id)_appleAccount
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   return v3;
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"custodian:add"];
+  name = [element name];
+  v4 = [name isEqualToString:@"custodian:add"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   objc_opt_class();
-  v4 = [v3 clientInfo];
+  clientInfo = [modelCopy clientInfo];
 
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+  v5 = [clientInfo objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -128,14 +128,14 @@
   return v7;
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   objc_opt_class();
-  v8 = [v6 clientInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+  clientInfo = [modelCopy clientInfo];
+  v9 = [clientInfo objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -149,8 +149,8 @@
   if ([v10 isEqualToString:@"custodian:add"])
   {
     objc_opt_class();
-    v11 = [v6 clientInfo];
-    v12 = [v11 objectForKeyedSubscript:@"context"];
+    clientInfo2 = [modelCopy clientInfo];
+    v12 = [clientInfo2 objectForKeyedSubscript:@"context"];
     if (objc_opt_isKindOfClass())
     {
       v13 = v12;
@@ -176,7 +176,7 @@
       _os_log_impl(&dword_1C5355000, v18, OS_LOG_TYPE_DEFAULT, "isADPUpsellFlow=%{BOOL}d because clientContext=%@", v20, 0x12u);
     }
 
-    [(AAUICDPCustodianHook *)self _performInlineCustodianSetupWithIsADPUpsellFlow:v17 completion:v7];
+    [(AAUICDPCustodianHook *)self _performInlineCustodianSetupWithIsADPUpsellFlow:v17 completion:completionCopy];
   }
 
   else
@@ -192,77 +192,77 @@
   }
 }
 
-- (void)_performInlineCustodianSetupWithIsADPUpsellFlow:(BOOL)a3 completion:(id)a4
+- (void)_performInlineCustodianSetupWithIsADPUpsellFlow:(BOOL)flow completion:(id)completion
 {
-  v4 = a3;
-  v6 = [a4 copy];
+  flowCopy = flow;
+  v6 = [completion copy];
   [(AAUICDPCustodianHook *)self setSetupCompletion:v6];
 
   if (self->_isOSUpgradeFlow && [(NSString *)self->_hookClientContext isEqualToString:@"rcUpsell"])
   {
-    v31 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E698B768] code:-7001 userInfo:0];
-    [(AAUICDPCustodianHook *)self _callSetupCompletionWithSuccess:0 error:v31];
+    _custodianInlineSetupFlowNavigationController = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E698B768] code:-7001 userInfo:0];
+    [(AAUICDPCustodianHook *)self _callSetupCompletionWithSuccess:0 error:_custodianInlineSetupFlowNavigationController];
     v7 = MEMORY[0x1E6985DB0];
-    v8 = [(AAUICDPCustodianHook *)self _appleAccount];
-    v9 = [v8 aida_alternateDSID];
-    v10 = [v7 analyticsEventWithName:@"com.apple.appleaccount.custodian.setup.askedToPresentUpsellByServer" altDSID:v9 flowID:0];
+    _appleAccount = [(AAUICDPCustodianHook *)self _appleAccount];
+    aida_alternateDSID = [_appleAccount aida_alternateDSID];
+    setupFlowController4 = [v7 analyticsEventWithName:@"com.apple.appleaccount.custodian.setup.askedToPresentUpsellByServer" altDSID:aida_alternateDSID flowID:0];
 
-    [v10 setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E6985E40]];
-    [v10 updateTaskResultWithError:v31];
-    v11 = [MEMORY[0x1E698B810] reporter];
-    [v11 sendEvent:v10];
+    [setupFlowController4 setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E6985E40]];
+    [setupFlowController4 updateTaskResultWithError:_custodianInlineSetupFlowNavigationController];
+    reporter = [MEMORY[0x1E698B810] reporter];
+    [reporter sendEvent:setupFlowController4];
   }
 
   else
   {
-    v31 = [(AAUICDPCustodianHook *)self _custodianInlineSetupFlowNavigationController];
+    _custodianInlineSetupFlowNavigationController = [(AAUICDPCustodianHook *)self _custodianInlineSetupFlowNavigationController];
     v12 = objc_alloc(MEMORY[0x1E69DC708]);
     v13 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccountUI"];
     v14 = [v13 localizedStringForKey:@"BACK" value:&stru_1F447F790 table:@"Localizable"];
     v15 = [v12 initWithTitle:v14 style:0 target:0 action:0];
-    v16 = [v31 topViewController];
-    v17 = [v16 navigationItem];
-    [v17 setBackBarButtonItem:v15];
+    topViewController = [_custodianInlineSetupFlowNavigationController topViewController];
+    navigationItem = [topViewController navigationItem];
+    [navigationItem setBackBarButtonItem:v15];
 
     v18 = [AAUICustodianSetupFlowController alloc];
-    v19 = [(AAUICDPCustodianHook *)self accountManager];
-    v20 = [(AAUICustodianSetupFlowController *)v18 initWithAccountManager:v19 navigationController:v31 isADPUpsellFlow:v4 cdpContext:self->_cdpContext];
+    accountManager = [(AAUICDPCustodianHook *)self accountManager];
+    v20 = [(AAUICustodianSetupFlowController *)v18 initWithAccountManager:accountManager navigationController:_custodianInlineSetupFlowNavigationController isADPUpsellFlow:flowCopy cdpContext:self->_cdpContext];
     [(AAUICDPCustodianHook *)self setSetupFlowController:v20];
 
     if ([(NSString *)self->_hookClientContext isEqualToString:@"rcUpsell"]&& +[AAUIFeatureFlags isRCUpsellEnabled])
     {
-      v21 = [MEMORY[0x1E696AFB0] UUID];
-      v22 = [v21 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
       v23 = MEMORY[0x1E6985DB0];
-      v24 = [(AAUICDPCustodianHook *)self _appleAccount];
-      v25 = [v24 aida_alternateDSID];
-      v26 = [v23 analyticsEventWithName:@"com.apple.appleaccount.custodian.setup.askedToPresentUpsellByServer" altDSID:v25 flowID:v22];
+      _appleAccount2 = [(AAUICDPCustodianHook *)self _appleAccount];
+      aida_alternateDSID2 = [_appleAccount2 aida_alternateDSID];
+      v26 = [v23 analyticsEventWithName:@"com.apple.appleaccount.custodian.setup.askedToPresentUpsellByServer" altDSID:aida_alternateDSID2 flowID:uUIDString];
 
       [v26 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E6985E40]];
-      v27 = [MEMORY[0x1E698B810] reporter];
-      [v27 sendEvent:v26];
+      reporter2 = [MEMORY[0x1E698B810] reporter];
+      [reporter2 sendEvent:v26];
 
-      v28 = [(AAUICDPCustodianHook *)self setupFlowController];
-      [v28 setTelemetryFlowID:v22];
+      setupFlowController = [(AAUICDPCustodianHook *)self setupFlowController];
+      [setupFlowController setTelemetryFlowID:uUIDString];
 
-      v29 = [(AAUICDPCustodianHook *)self setupFlowController];
-      [v29 setUiVersion:1];
+      setupFlowController2 = [(AAUICDPCustodianHook *)self setupFlowController];
+      [setupFlowController2 setUiVersion:1];
     }
 
-    v30 = [(AAUICDPCustodianHook *)self setupFlowController];
-    [v30 setDelegate:self];
+    setupFlowController3 = [(AAUICDPCustodianHook *)self setupFlowController];
+    [setupFlowController3 setDelegate:self];
 
-    v10 = [(AAUICDPCustodianHook *)self setupFlowController];
-    [v10 start];
+    setupFlowController4 = [(AAUICDPCustodianHook *)self setupFlowController];
+    [setupFlowController4 start];
   }
 }
 
-- (void)custodianSetupFlowControllerDidFinish:(id)a3 withError:(id)a4
+- (void)custodianSetupFlowControllerDidFinish:(id)finish withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  finishCopy = finish;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = _AAUILogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -270,8 +270,8 @@
       [AAUICDPCustodianHook custodianSetupFlowControllerDidFinish:withError:];
     }
 
-    v9 = [v6 navigationController];
-    v10 = [v9 presentingViewController];
+    navigationController = [finishCopy navigationController];
+    presentingViewController = [navigationController presentingViewController];
 
     v11 = _AAUILogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -279,20 +279,20 @@
       [AAUICDPCustodianHook custodianSetupFlowControllerDidFinish:withError:];
     }
 
-    if (v10)
+    if (presentingViewController)
     {
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __72__AAUICDPCustodianHook_custodianSetupFlowControllerDidFinish_withError___block_invoke;
       v19[3] = &unk_1E820BEB8;
       v19[4] = self;
-      v20 = v7;
-      [v10 dismissViewControllerAnimated:1 completion:v19];
+      v20 = errorCopy;
+      [presentingViewController dismissViewControllerAnimated:1 completion:v19];
     }
 
     else
     {
-      [(AAUICDPCustodianHook *)self _callSetupCompletionWithSuccess:0 error:v7];
+      [(AAUICDPCustodianHook *)self _callSetupCompletionWithSuccess:0 error:errorCopy];
     }
   }
 
@@ -303,19 +303,19 @@
       [(AAUICDPCustodianHook *)self _callSetupCompletionWithSuccess:1 error:0];
     }
 
-    v12 = [(AAUICDPCustodianHook *)self contactsProvider];
+    contactsProvider = [(AAUICDPCustodianHook *)self contactsProvider];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
       objc_initWeak(&location, self);
-      v14 = [(AAUICDPCustodianHook *)self contactsProvider];
+      contactsProvider2 = [(AAUICDPCustodianHook *)self contactsProvider];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __72__AAUICDPCustodianHook_custodianSetupFlowControllerDidFinish_withError___block_invoke_73;
       v16[3] = &unk_1E820C770;
       objc_copyWeak(&v17, &location);
-      [v14 fetchWalrusEligibleCustodiansForExpansionCohortsWithCompletion:v16];
+      [contactsProvider2 fetchWalrusEligibleCustodiansForExpansionCohortsWithCompletion:v16];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);
@@ -413,17 +413,17 @@ LABEL_9:
     goto LABEL_18;
   }
 
-  v9 = [v4 navigationController];
+  navigationController = [v4 navigationController];
   v10 = _AAUILogSystem();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
-  if (v9)
+  if (navigationController)
   {
     if (v11)
     {
       [AAUICDPCustodianHook _custodianInlineSetupFlowNavigationController];
     }
 
-    v12 = v9;
+    v12 = navigationController;
   }
 
   else
@@ -443,23 +443,23 @@ LABEL_18:
   return v8;
 }
 
-- (void)_callSetupCompletionWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_callSetupCompletionWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(AAUICDPCustodianHook *)self setupCompletion];
+  successCopy = success;
+  errorCopy = error;
+  setupCompletion = [(AAUICDPCustodianHook *)self setupCompletion];
 
   v8 = _AAUILogSystem();
-  v9 = v8;
-  if (v7)
+  setupCompletion2 = v8;
+  if (setupCompletion)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(AAUICDPCustodianHook *)v4 _callSetupCompletionWithSuccess:v6 error:v9];
+      [(AAUICDPCustodianHook *)successCopy _callSetupCompletionWithSuccess:errorCopy error:setupCompletion2];
     }
 
-    v9 = [(AAUICDPCustodianHook *)self setupCompletion];
-    (*(v9 + 16))(v9, v4, v6);
+    setupCompletion2 = [(AAUICDPCustodianHook *)self setupCompletion];
+    (*(setupCompletion2 + 16))(setupCompletion2, successCopy, errorCopy);
   }
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))

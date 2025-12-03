@@ -1,7 +1,7 @@
 @interface _HDSleepScheduleEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -23,26 +23,26 @@
   v9[10] = @"bed_minute";
   v9[11] = @"override_day_index";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:12];
-  v4 = [(HDEntityEncoder *)self superclassEncoder];
-  v5 = [v4 orderedProperties];
-  v6 = [v3 arrayByAddingObjectsFromArray:v5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v6 = [v3 arrayByAddingObjectsFromArray:orderedProperties];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCD9E8]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCD9E8]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [(HDEntityEncoder *)self superclassEncoder];
-  v9 = [v8 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v9 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
   if (v9)
   {
@@ -99,11 +99,11 @@
   return v10;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if (v12)
   {
@@ -114,14 +114,14 @@
     HDSQLiteColumnWithNameAsBoolean();
     HDSQLiteColumnWithNameAsBoolean();
     HDSQLiteColumnWithNameAsBoolean();
-    [v10 _setWeekdays:HKSleepScheduleWeekdaysMake()];
+    [objectCopy _setWeekdays:HKSleepScheduleWeekdaysMake()];
     v13 = HDSQLiteColumnWithNameAsNumber();
     v14 = HDSQLiteColumnWithNameAsNumber();
     v15 = v14;
     if (v13 && v14)
     {
       v16 = [MEMORY[0x277CBEAB8] hk_componentsWithHour:objc_msgSend(v13 minute:{"integerValue"), objc_msgSend(v14, "integerValue")}];
-      [v10 _setWakeTimeComponents:v16];
+      [objectCopy _setWakeTimeComponents:v16];
     }
 
     v17 = HDSQLiteColumnWithNameAsNumber();
@@ -130,11 +130,11 @@
     if (v17 && v18)
     {
       v20 = [MEMORY[0x277CBEAB8] hk_componentsWithHour:objc_msgSend(v17 minute:{"integerValue"), objc_msgSend(v18, "integerValue")}];
-      [v10 _setBedTimeComponents:v20];
+      [objectCopy _setBedTimeComponents:v20];
     }
 
     v21 = HDSQLiteColumnWithNameAsNumber();
-    [v10 _setOverrideDayIndex:v21];
+    [objectCopy _setOverrideDayIndex:v21];
   }
 
   return v12;

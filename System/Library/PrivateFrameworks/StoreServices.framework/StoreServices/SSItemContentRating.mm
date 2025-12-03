@@ -1,6 +1,6 @@
 @interface SSItemContentRating
-+ (id)stringForRatingSystem:(int64_t)a3;
-+ (int64_t)ratingSystemFromString:(id)a3;
++ (id)stringForRatingSystem:(int64_t)system;
++ (int64_t)ratingSystemFromString:(id)string;
 - (BOOL)isRestricted;
 - (BOOL)shouldHideWhenRestricted;
 - (NSDictionary)contentRatingDictionary;
@@ -8,19 +8,19 @@
 - (NSString)ratingLabel;
 - (SSItemArtworkImage)ratingSystemLogo;
 - (SSItemContentRating)init;
-- (SSItemContentRating)initWithDictionary:(id)a3;
-- (SSItemContentRating)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSItemContentRating)initWithDictionary:(id)dictionary;
+- (SSItemContentRating)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (id)valueForProperty:(id)a3;
+- (id)valueForProperty:(id)property;
 - (int64_t)rank;
 - (int64_t)ratingSystem;
-- (void)_setValue:(id)a3 forProperty:(id)a4;
-- (void)_setValueCopy:(id)a3 forProperty:(id)a4;
+- (void)_setValue:(id)value forProperty:(id)property;
+- (void)_setValueCopy:(id)copy forProperty:(id)property;
 - (void)dealloc;
-- (void)setRank:(int64_t)a3;
-- (void)setRatingSystem:(int64_t)a3;
-- (void)setShouldHideWhenRestricted:(BOOL)a3;
+- (void)setRank:(int64_t)rank;
+- (void)setRatingSystem:(int64_t)system;
+- (void)setShouldHideWhenRestricted:(BOOL)restricted;
 @end
 
 @implementation SSItemContentRating
@@ -38,14 +38,14 @@
   return v2;
 }
 
-- (SSItemContentRating)initWithDictionary:(id)a3
+- (SSItemContentRating)initWithDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = SSItemContentRating;
   v4 = [(SSItemContentRating *)&v6 init];
   if (v4)
   {
-    v4->_dictionary = [a3 mutableCopy];
+    v4->_dictionary = [dictionary mutableCopy];
   }
 
   return v4;
@@ -58,29 +58,29 @@
   [(SSItemContentRating *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v5[1] = [(NSMutableDictionary *)self->_dictionary mutableCopyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v5[1] = [(NSMutableDictionary *)self->_dictionary mutableCopyWithZone:zone];
   return v5;
 }
 
 - (BOOL)isRestricted
 {
-  v3 = [(SSItemContentRating *)self ratingSystem];
-  if ([(SSItemContentRating *)self _isRatingSystemForApps:v3])
+  ratingSystem = [(SSItemContentRating *)self ratingSystem];
+  if ([(SSItemContentRating *)self _isRatingSystemForApps:ratingSystem])
   {
     v4 = 0;
   }
 
-  else if ([(SSItemContentRating *)self _isRatingSystemForMovies:v3])
+  else if ([(SSItemContentRating *)self _isRatingSystemForMovies:ratingSystem])
   {
     v4 = 1;
   }
 
   else
   {
-    if (![(SSItemContentRating *)self _isRatingSystemForTV:v3])
+    if (![(SSItemContentRating *)self _isRatingSystemForTV:ratingSystem])
     {
       goto LABEL_9;
     }
@@ -92,8 +92,8 @@
   if (v5)
   {
     v6 = v5;
-    v7 = [(SSItemContentRating *)self rank];
-    v8 = v7 > [v6 integerValue];
+    rank = [(SSItemContentRating *)self rank];
+    v8 = rank > [v6 integerValue];
 
     return v8;
   }
@@ -163,23 +163,23 @@ LABEL_9:
   return [v3 ratingSystemFromString:v2];
 }
 
-- (void)setRank:(int64_t)a3
+- (void)setRank:(int64_t)rank
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:rank];
 
   [(SSItemContentRating *)self _setValue:v4 forProperty:@"rank"];
 }
 
-- (void)setRatingSystem:(int64_t)a3
+- (void)setRatingSystem:(int64_t)system
 {
-  v4 = [objc_opt_class() stringForRatingSystem:a3];
+  v4 = [objc_opt_class() stringForRatingSystem:system];
 
   [(SSItemContentRating *)self _setValue:v4 forProperty:@"system"];
 }
 
-- (void)setShouldHideWhenRestricted:(BOOL)a3
+- (void)setShouldHideWhenRestricted:(BOOL)restricted
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:restricted];
 
   [(SSItemContentRating *)self _setValue:v4 forProperty:@"hide-item-if-restricted"];
 }
@@ -195,18 +195,18 @@ LABEL_9:
   return [v2 BOOLValue];
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v3 = [(NSMutableDictionary *)self->_dictionary objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_dictionary objectForKey:property];
 
   return v3;
 }
 
-+ (int64_t)ratingSystemFromString:(id)a3
++ (int64_t)ratingSystemFromString:(id)string
 {
   v4 = &qword_1E84AFE78;
   v5 = 96;
-  while ([*(v4 - 1) caseInsensitiveCompare:a3])
+  while ([*(v4 - 1) caseInsensitiveCompare:string])
   {
     v4 += 2;
     if (!--v5)
@@ -218,11 +218,11 @@ LABEL_9:
   return *v4;
 }
 
-+ (id)stringForRatingSystem:(int64_t)a3
++ (id)stringForRatingSystem:(int64_t)system
 {
   v3 = &qword_1E84AFE78;
   v4 = 96;
-  while (*v3 != a3)
+  while (*v3 != system)
   {
     v3 += 2;
     if (!--v4)
@@ -267,9 +267,9 @@ LABEL_5:
   return v3;
 }
 
-- (SSItemContentRating)initWithXPCEncoding:(id)a3
+- (SSItemContentRating)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v7.receiver = self;
     v7.super_class = SSItemContentRating;
@@ -277,7 +277,7 @@ LABEL_5:
     if (v5)
     {
       objc_opt_class();
-      v5->_dictionary = SSXPCDictionaryCopyCFObjectWithClass(a3, "0");
+      v5->_dictionary = SSXPCDictionaryCopyCFObjectWithClass(encoding, "0");
     }
   }
 
@@ -290,23 +290,23 @@ LABEL_5:
   return v5;
 }
 
-- (void)_setValueCopy:(id)a3 forProperty:(id)a4
+- (void)_setValueCopy:(id)copy forProperty:(id)property
 {
-  v6 = [a3 copy];
-  [(SSItemContentRating *)self _setValue:v6 forProperty:a4];
+  v6 = [copy copy];
+  [(SSItemContentRating *)self _setValue:v6 forProperty:property];
 }
 
-- (void)_setValue:(id)a3 forProperty:(id)a4
+- (void)_setValue:(id)value forProperty:(id)property
 {
   dictionary = self->_dictionary;
-  if (a3)
+  if (value)
   {
-    [(NSMutableDictionary *)dictionary setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)dictionary setObject:value forKey:property];
   }
 
   else
   {
-    [(NSMutableDictionary *)dictionary removeObjectForKey:a4];
+    [(NSMutableDictionary *)dictionary removeObjectForKey:property];
   }
 }
 

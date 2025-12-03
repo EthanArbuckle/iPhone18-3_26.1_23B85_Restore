@@ -1,17 +1,17 @@
 @interface CKConversationListCollectionView
-- (id)_indexPathForInsertionAtPoint:(CGPoint)a3 sourceIndexPath:(id)a4;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setScrollIndicatorInsets:(UIEdgeInsets)a3;
+- (id)_indexPathForInsertionAtPoint:(CGPoint)point sourceIndexPath:(id)path;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setScrollIndicatorInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation CKConversationListCollectionView
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   [(CKConversationListCollectionView *)self contentInset];
   if (v11 != left || v8 != top || v10 != right || v9 != bottom)
   {
@@ -21,12 +21,12 @@
   }
 }
 
-- (void)setScrollIndicatorInsets:(UIEdgeInsets)a3
+- (void)setScrollIndicatorInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(CKConversationListCollectionView *)self scrollIndicatorInsets];
   if (v11 != left || v8 != top || v10 != right || v9 != bottom)
   {
@@ -36,27 +36,27 @@
   }
 }
 
-- (id)_indexPathForInsertionAtPoint:(CGPoint)a3 sourceIndexPath:(id)a4
+- (id)_indexPathForInsertionAtPoint:(CGPoint)point sourceIndexPath:(id)path
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  pathCopy = path;
   if (IMGetCachedDomainBoolForKeyWithDefaultValue())
   {
-    v8 = [(CKConversationListCollectionView *)self collectionViewLayout];
-    v9 = [v8 _layoutAttributesForItemNearestPosition:x maximumDistance:{y, 1000.0}];
+    collectionViewLayout = [(CKConversationListCollectionView *)self collectionViewLayout];
+    v9 = [collectionViewLayout _layoutAttributesForItemNearestPosition:x maximumDistance:{y, 1000.0}];
 
-    v10 = [v9 indexPath];
+    indexPath = [v9 indexPath];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = CKConversationListCollectionView;
-    v10 = [(CKConversationListCollectionView *)&v12 _indexPathForInsertionAtPoint:v7 sourceIndexPath:x, y];
+    indexPath = [(CKConversationListCollectionView *)&v12 _indexPathForInsertionAtPoint:pathCopy sourceIndexPath:x, y];
   }
 
-  return v10;
+  return indexPath;
 }
 
 @end

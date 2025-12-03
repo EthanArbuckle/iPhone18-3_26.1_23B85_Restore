@@ -1,19 +1,19 @@
 @interface HMFConnectivityInfo
-+ (HMFConnectivityInfo)connectivityInfoWithAccessoryIdentifier:(id)a3 wakeConfiguration:(id)a4;
++ (HMFConnectivityInfo)connectivityInfoWithAccessoryIdentifier:(id)identifier wakeConfiguration:(id)configuration;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)woWLANSupportsBSP;
 - (BOOL)woWLANSupportsDarkPoll;
-- (HMFConnectivityInfo)initWithAccessoryIdentifier:(id)a3 woBLEInfo:(id)a4 woWLANInfos:(id)a5;
-- (HMFConnectivityInfo)initWithAccessoryIdentifier:(id)a3 woBLEInfo:(id)a4 woWLANInfos:(id)a5 darkPollMinimumInterval:(id)a6;
-- (HMFConnectivityInfo)initWithCoder:(id)a3;
+- (HMFConnectivityInfo)initWithAccessoryIdentifier:(id)identifier woBLEInfo:(id)info woWLANInfos:(id)infos;
+- (HMFConnectivityInfo)initWithAccessoryIdentifier:(id)identifier woBLEInfo:(id)info woWLANInfos:(id)infos darkPollMinimumInterval:(id)interval;
+- (HMFConnectivityInfo)initWithCoder:(id)coder;
 - (HMFWoWLANInfo)woWLANInfo;
 - (NSNumber)woWLANDarkPollMinimumIntervalInSeconds;
 - (id)description;
 - (int64_t)woWLANWakeUpTypeSupport;
 - (unint64_t)hash;
 - (unsigned)woWLANVersion;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFConnectivityInfo
@@ -23,21 +23,21 @@
   if ((_os_feature_enabled_impl() & 1) != 0 || CFPreferencesGetAppBooleanValue(@"WakeOnLanV2Enabled", @"/Library/Managed Preferences/mobile/com.apple.homed.plist", 0))
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [(HMFConnectivityInfo *)self accessoryIdentifier];
-    v5 = [(HMFConnectivityInfo *)self woBLEInfo];
-    v6 = [(HMFConnectivityInfo *)self woWLANInfos];
-    v7 = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
-    v8 = [(HMFConnectivityInfo *)self woWLANLastDarkPollDate];
-    v9 = [v3 stringWithFormat:@"Identifier: %@ BLEInfo: %@, WLANInfos: %@, DarkPollMinimumInterval: %@, LastDarkPollDate: %@", v4, v5, v6, v7, v8];
+    accessoryIdentifier = [(HMFConnectivityInfo *)self accessoryIdentifier];
+    woBLEInfo = [(HMFConnectivityInfo *)self woBLEInfo];
+    woWLANInfos = [(HMFConnectivityInfo *)self woWLANInfos];
+    woWLANDarkPollMinimumInterval = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
+    woWLANLastDarkPollDate = [(HMFConnectivityInfo *)self woWLANLastDarkPollDate];
+    v9 = [v3 stringWithFormat:@"Identifier: %@ BLEInfo: %@, WLANInfos: %@, DarkPollMinimumInterval: %@, LastDarkPollDate: %@", accessoryIdentifier, woBLEInfo, woWLANInfos, woWLANDarkPollMinimumInterval, woWLANLastDarkPollDate];
   }
 
   else
   {
     v11 = MEMORY[0x277CCACA8];
-    v4 = [(HMFConnectivityInfo *)self accessoryIdentifier];
-    v5 = [(HMFConnectivityInfo *)self woBLEInfo];
-    v6 = [(HMFConnectivityInfo *)self woWLANInfos];
-    v9 = [v11 stringWithFormat:@"Identifier: %@ BLEInfo: %@, WLANInfos: %@", v4, v5, v6];
+    accessoryIdentifier = [(HMFConnectivityInfo *)self accessoryIdentifier];
+    woBLEInfo = [(HMFConnectivityInfo *)self woBLEInfo];
+    woWLANInfos = [(HMFConnectivityInfo *)self woWLANInfos];
+    v9 = [v11 stringWithFormat:@"Identifier: %@ BLEInfo: %@, WLANInfos: %@", accessoryIdentifier, woBLEInfo, woWLANInfos];
   }
 
   return v9;
@@ -45,49 +45,49 @@
 
 - (BOOL)woWLANSupportsDarkPoll
 {
-  v2 = [(HMFConnectivityInfo *)self woWLANInfos];
-  v3 = [v2 firstObject];
+  woWLANInfos = [(HMFConnectivityInfo *)self woWLANInfos];
+  firstObject = [woWLANInfos firstObject];
 
-  LOBYTE(v2) = [v3 woWLANSupportsDarkPoll];
-  return v2;
+  LOBYTE(woWLANInfos) = [firstObject woWLANSupportsDarkPoll];
+  return woWLANInfos;
 }
 
 - (BOOL)woWLANSupportsBSP
 {
-  v2 = [(HMFConnectivityInfo *)self woWLANInfos];
-  v3 = [v2 firstObject];
+  woWLANInfos = [(HMFConnectivityInfo *)self woWLANInfos];
+  firstObject = [woWLANInfos firstObject];
 
-  LOBYTE(v2) = [v3 woWLANSupportsBSP];
-  return v2;
+  LOBYTE(woWLANInfos) = [firstObject woWLANSupportsBSP];
+  return woWLANInfos;
 }
 
 - (int64_t)woWLANWakeUpTypeSupport
 {
-  v2 = [(HMFConnectivityInfo *)self woWLANInfos];
-  v3 = [v2 firstObject];
+  woWLANInfos = [(HMFConnectivityInfo *)self woWLANInfos];
+  firstObject = [woWLANInfos firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 woWLANWakeUpTypeSupport];
+    woWLANWakeUpTypeSupport = [firstObject woWLANWakeUpTypeSupport];
   }
 
   else
   {
-    v4 = 1;
+    woWLANWakeUpTypeSupport = 1;
   }
 
-  return v4;
+  return woWLANWakeUpTypeSupport;
 }
 
 - (NSNumber)woWLANDarkPollMinimumIntervalInSeconds
 {
-  v3 = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
+  woWLANDarkPollMinimumInterval = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
 
-  if (v3)
+  if (woWLANDarkPollMinimumInterval)
   {
     v4 = objc_alloc(MEMORY[0x277CCABB0]);
-    v5 = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
-    v6 = [v4 initWithUnsignedLongLong:{60 * objc_msgSend(v5, "unsignedLongValue")}];
+    woWLANDarkPollMinimumInterval2 = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
+    v6 = [v4 initWithUnsignedLongLong:{60 * objc_msgSend(woWLANDarkPollMinimumInterval2, "unsignedLongValue")}];
   }
 
   else
@@ -100,33 +100,33 @@
 
 - (unsigned)woWLANVersion
 {
-  v2 = [(HMFConnectivityInfo *)self woWLANInfos];
-  v3 = [v2 firstObject];
+  woWLANInfos = [(HMFConnectivityInfo *)self woWLANInfos];
+  firstObject = [woWLANInfos firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 woWLANVersion];
+    woWLANVersion = [firstObject woWLANVersion];
   }
 
   else
   {
-    v4 = 0;
+    woWLANVersion = 0;
   }
 
-  return v4;
+  return woWLANVersion;
 }
 
-- (HMFConnectivityInfo)initWithCoder:(id)a3
+- (HMFConnectivityInfo)initWithCoder:(id)coder
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.ID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.ID"];
   v6 = MEMORY[0x277CBEB98];
   v27[0] = objc_opt_class();
   v27[1] = objc_opt_class();
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"HMFCI.woBLE"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"HMFCI.woBLE"];
 
   v10 = MEMORY[0x277CBEB98];
   v26[0] = objc_opt_class();
@@ -134,14 +134,14 @@
   v26[2] = objc_opt_class();
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:3];
   v12 = [v10 setWithArray:v11];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"HMFCI.woWLAN"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"HMFCI.woWLAN"];
 
   v14 = MEMORY[0x277CBEB98];
   v25[0] = objc_opt_class();
   v25[1] = objc_opt_class();
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
   v16 = [v14 setWithArray:v15];
-  v17 = [v4 decodeObjectOfClasses:v16 forKey:@"HMFCI.All.woWLAN"];
+  v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"HMFCI.All.woWLAN"];
 
   if (![v17 count] && v13)
   {
@@ -151,69 +151,69 @@
     v17 = v18;
   }
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.woWLAN.DarkPollMinimumInterval"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.woWLAN.DarkPollMinimumInterval"];
   v20 = [(HMFConnectivityInfo *)self initWithAccessoryIdentifier:v5 woBLEInfo:v9 woWLANInfos:v17 darkPollMinimumInterval:v19];
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.woWLAN.LastDarkPollDate"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.woWLAN.LastDarkPollDate"];
   [(HMFConnectivityInfo *)v20 setWoWLANLastDarkPollDate:v21];
 
   v22 = *MEMORY[0x277D85DE8];
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v16 = a3;
-  v4 = [(HMFConnectivityInfo *)self accessoryIdentifier];
-  [v16 encodeObject:v4 forKey:@"HMFCI.ID"];
+  coderCopy = coder;
+  accessoryIdentifier = [(HMFConnectivityInfo *)self accessoryIdentifier];
+  [coderCopy encodeObject:accessoryIdentifier forKey:@"HMFCI.ID"];
 
-  v5 = [(HMFConnectivityInfo *)self woBLEInfo];
+  woBLEInfo = [(HMFConnectivityInfo *)self woBLEInfo];
 
-  if (v5)
+  if (woBLEInfo)
   {
-    v6 = [(HMFConnectivityInfo *)self woBLEInfo];
-    [v16 encodeObject:v6 forKey:@"HMFCI.woBLE"];
+    woBLEInfo2 = [(HMFConnectivityInfo *)self woBLEInfo];
+    [coderCopy encodeObject:woBLEInfo2 forKey:@"HMFCI.woBLE"];
   }
 
-  v7 = [(HMFConnectivityInfo *)self woWLANInfo];
+  woWLANInfo = [(HMFConnectivityInfo *)self woWLANInfo];
 
-  if (v7)
+  if (woWLANInfo)
   {
-    v8 = [(HMFConnectivityInfo *)self woWLANInfo];
-    [v16 encodeObject:v8 forKey:@"HMFCI.woWLAN"];
+    woWLANInfo2 = [(HMFConnectivityInfo *)self woWLANInfo];
+    [coderCopy encodeObject:woWLANInfo2 forKey:@"HMFCI.woWLAN"];
   }
 
-  v9 = [(HMFConnectivityInfo *)self woWLANInfos];
+  woWLANInfos = [(HMFConnectivityInfo *)self woWLANInfos];
 
-  if (v9)
+  if (woWLANInfos)
   {
-    v10 = [(HMFConnectivityInfo *)self woWLANInfos];
-    [v16 encodeObject:v10 forKey:@"HMFCI.All.woWLAN"];
+    woWLANInfos2 = [(HMFConnectivityInfo *)self woWLANInfos];
+    [coderCopy encodeObject:woWLANInfos2 forKey:@"HMFCI.All.woWLAN"];
   }
 
-  v11 = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
+  woWLANDarkPollMinimumInterval = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
 
-  if (v11)
+  if (woWLANDarkPollMinimumInterval)
   {
-    v12 = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
-    [v16 encodeObject:v12 forKey:@"HMFCI.woWLAN.DarkPollMinimumInterval"];
+    woWLANDarkPollMinimumInterval2 = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
+    [coderCopy encodeObject:woWLANDarkPollMinimumInterval2 forKey:@"HMFCI.woWLAN.DarkPollMinimumInterval"];
   }
 
-  v13 = [(HMFConnectivityInfo *)self woWLANLastDarkPollDate];
+  woWLANLastDarkPollDate = [(HMFConnectivityInfo *)self woWLANLastDarkPollDate];
 
-  v14 = v16;
-  if (v13)
+  v14 = coderCopy;
+  if (woWLANLastDarkPollDate)
   {
-    v15 = [(HMFConnectivityInfo *)self woWLANLastDarkPollDate];
-    [v16 encodeObject:v15 forKey:@"HMFCI.woWLAN.LastDarkPollDate"];
+    woWLANLastDarkPollDate2 = [(HMFConnectivityInfo *)self woWLANLastDarkPollDate];
+    [coderCopy encodeObject:woWLANLastDarkPollDate2 forKey:@"HMFCI.woWLAN.LastDarkPollDate"];
 
-    v14 = v16;
+    v14 = coderCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v21 = 1;
   }
@@ -223,7 +223,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -237,8 +237,8 @@
       goto LABEL_11;
     }
 
-    v7 = [(HMFConnectivityInfo *)self accessoryIdentifier];
-    v8 = [(HMFConnectivityInfo *)v6 accessoryIdentifier];
+    accessoryIdentifier = [(HMFConnectivityInfo *)self accessoryIdentifier];
+    accessoryIdentifier2 = [(HMFConnectivityInfo *)v6 accessoryIdentifier];
     v9 = HMFEqualObjects();
 
     if (!v9)
@@ -246,8 +246,8 @@
       goto LABEL_11;
     }
 
-    v10 = [(HMFConnectivityInfo *)self woBLEInfo];
-    v11 = [(HMFConnectivityInfo *)v6 woBLEInfo];
+    woBLEInfo = [(HMFConnectivityInfo *)self woBLEInfo];
+    woBLEInfo2 = [(HMFConnectivityInfo *)v6 woBLEInfo];
     v12 = HMFEqualObjects();
 
     if (!v12)
@@ -255,8 +255,8 @@
       goto LABEL_11;
     }
 
-    v13 = [(HMFConnectivityInfo *)self woWLANInfos];
-    v14 = [(HMFConnectivityInfo *)v6 woWLANInfos];
+    woWLANInfos = [(HMFConnectivityInfo *)self woWLANInfos];
+    woWLANInfos2 = [(HMFConnectivityInfo *)v6 woWLANInfos];
     v15 = HMFEqualObjects();
 
     if (!v15)
@@ -264,14 +264,14 @@
       goto LABEL_11;
     }
 
-    v16 = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
-    v17 = [(HMFConnectivityInfo *)v6 woWLANDarkPollMinimumInterval];
+    woWLANDarkPollMinimumInterval = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
+    woWLANDarkPollMinimumInterval2 = [(HMFConnectivityInfo *)v6 woWLANDarkPollMinimumInterval];
     v18 = HMFEqualObjects();
 
     if (v18)
     {
-      v19 = [(HMFConnectivityInfo *)self woWLANLastDarkPollDate];
-      v20 = [(HMFConnectivityInfo *)v6 woWLANLastDarkPollDate];
+      woWLANLastDarkPollDate = [(HMFConnectivityInfo *)self woWLANLastDarkPollDate];
+      woWLANLastDarkPollDate2 = [(HMFConnectivityInfo *)v6 woWLANLastDarkPollDate];
       v21 = HMFEqualObjects();
     }
 
@@ -287,49 +287,49 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [(HMFConnectivityInfo *)self accessoryIdentifier];
-  v4 = [v3 hash];
-  v5 = [(HMFConnectivityInfo *)self woBLEInfo];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HMFConnectivityInfo *)self woWLANInfos];
-  v8 = [v7 hash];
-  v9 = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(HMFConnectivityInfo *)self woWLANLastDarkPollDate];
-  v12 = [v11 hash];
+  accessoryIdentifier = [(HMFConnectivityInfo *)self accessoryIdentifier];
+  v4 = [accessoryIdentifier hash];
+  woBLEInfo = [(HMFConnectivityInfo *)self woBLEInfo];
+  v6 = [woBLEInfo hash] ^ v4;
+  woWLANInfos = [(HMFConnectivityInfo *)self woWLANInfos];
+  v8 = [woWLANInfos hash];
+  woWLANDarkPollMinimumInterval = [(HMFConnectivityInfo *)self woWLANDarkPollMinimumInterval];
+  v10 = v6 ^ v8 ^ [woWLANDarkPollMinimumInterval hash];
+  woWLANLastDarkPollDate = [(HMFConnectivityInfo *)self woWLANLastDarkPollDate];
+  v12 = [woWLANLastDarkPollDate hash];
 
   return v10 ^ v12;
 }
 
 - (HMFWoWLANInfo)woWLANInfo
 {
-  v2 = [(HMFConnectivityInfo *)self woWLANInfos];
-  v3 = [v2 firstObject];
+  woWLANInfos = [(HMFConnectivityInfo *)self woWLANInfos];
+  firstObject = [woWLANInfos firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (HMFConnectivityInfo)initWithAccessoryIdentifier:(id)a3 woBLEInfo:(id)a4 woWLANInfos:(id)a5 darkPollMinimumInterval:(id)a6
+- (HMFConnectivityInfo)initWithAccessoryIdentifier:(id)identifier woBLEInfo:(id)info woWLANInfos:(id)infos darkPollMinimumInterval:(id)interval
 {
-  v11 = a6;
-  v12 = [(HMFConnectivityInfo *)self initWithAccessoryIdentifier:a3 woBLEInfo:a4 woWLANInfos:a5];
+  intervalCopy = interval;
+  v12 = [(HMFConnectivityInfo *)self initWithAccessoryIdentifier:identifier woBLEInfo:info woWLANInfos:infos];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_woWLANDarkPollMinimumInterval, a6);
+    objc_storeStrong(&v12->_woWLANDarkPollMinimumInterval, interval);
   }
 
   return v13;
 }
 
-- (HMFConnectivityInfo)initWithAccessoryIdentifier:(id)a3 woBLEInfo:(id)a4 woWLANInfos:(id)a5
+- (HMFConnectivityInfo)initWithAccessoryIdentifier:(id)identifier woBLEInfo:(id)info woWLANInfos:(id)infos
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9 && (v10 || [v11 count]))
+  identifierCopy = identifier;
+  infoCopy = info;
+  infosCopy = infos;
+  v12 = infosCopy;
+  if (identifierCopy && (infoCopy || [infosCopy count]))
   {
     v34.receiver = self;
     v34.super_class = HMFConnectivityInfo;
@@ -337,11 +337,11 @@ LABEL_11:
     v14 = v13;
     if (v13)
     {
-      objc_storeStrong(&v13->_accessoryIdentifier, a3);
-      objc_storeStrong(&v14->_woBLEInfo, a4);
+      objc_storeStrong(&v13->_accessoryIdentifier, identifier);
+      objc_storeStrong(&v14->_woBLEInfo, info);
       if (v12)
       {
-        v15 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
@@ -362,9 +362,9 @@ LABEL_11:
               }
 
               v21 = *(*(&v30 + 1) + 8 * i);
-              if (([v15 containsObject:{v21, v30}] & 1) == 0)
+              if (([array containsObject:{v21, v30}] & 1) == 0)
               {
-                [v15 addObject:v21];
+                [array addObject:v21];
               }
             }
 
@@ -374,14 +374,14 @@ LABEL_11:
           while (v18);
         }
 
-        v22 = [v15 copy];
+        v22 = [array copy];
         woWLANInfos = v14->_woWLANInfos;
         v14->_woWLANInfos = v22;
       }
     }
 
     self = v14;
-    v24 = self;
+    selfCopy = self;
   }
 
   else
@@ -394,16 +394,16 @@ LABEL_11:
       *buf = 138543618;
       v37 = v27;
       v38 = 2112;
-      v39 = v9;
+      v39 = identifierCopy;
       _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_ERROR, "%{public}@Returning nil for the invalid woBLEInfo and woWLANInfo of accessory: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v25);
-    v24 = 0;
+    selfCopy = 0;
   }
 
   v28 = *MEMORY[0x277D85DE8];
-  return v24;
+  return selfCopy;
 }
 
 + (id)shortDescription
@@ -413,20 +413,20 @@ LABEL_11:
   return NSStringFromClass(v2);
 }
 
-+ (HMFConnectivityInfo)connectivityInfoWithAccessoryIdentifier:(id)a3 wakeConfiguration:(id)a4
++ (HMFConnectivityInfo)connectivityInfoWithAccessoryIdentifier:(id)identifier wakeConfiguration:(id)configuration
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 custom1];
-  v8 = [v7 primaryIdentifier];
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  custom1 = [configurationCopy custom1];
+  primaryIdentifier = [custom1 primaryIdentifier];
 
-  if (v8)
+  if (primaryIdentifier)
   {
     v9 = [HMFWoBLEInfo alloc];
-    v10 = [v6 custom1];
-    v11 = [v10 primaryIdentifier];
-    v12 = [(HMFWoBLEInfo *)v9 initWithBLEIdentifier:v11];
+    custom12 = [configurationCopy custom1];
+    primaryIdentifier2 = [custom12 primaryIdentifier];
+    v12 = [(HMFWoBLEInfo *)v9 initWithBLEIdentifier:primaryIdentifier2];
   }
 
   else
@@ -434,24 +434,24 @@ LABEL_11:
     v12 = 0;
   }
 
-  v13 = [v6 custom2];
-  v14 = [v13 primaryIdentifier];
+  custom2 = [configurationCopy custom2];
+  primaryIdentifier3 = [custom2 primaryIdentifier];
 
-  if (v14)
+  if (primaryIdentifier3)
   {
     v15 = [HMFWoWLANInfo alloc];
-    v16 = [v6 custom2];
-    v17 = [v16 primaryIdentifier];
-    v18 = [v6 custom2];
-    v19 = [v18 secondaryIdentifier];
-    v20 = [(HMFWoWLANInfo *)v15 initWithPrimaryIdentifier:v17 wifiIdentifiers:v19];
+    custom22 = [configurationCopy custom2];
+    primaryIdentifier4 = [custom22 primaryIdentifier];
+    custom23 = [configurationCopy custom2];
+    secondaryIdentifier = [custom23 secondaryIdentifier];
+    v20 = [(HMFWoWLANInfo *)v15 initWithPrimaryIdentifier:primaryIdentifier4 wifiIdentifiers:secondaryIdentifier];
 
     v21 = [HMFConnectivityInfo alloc];
     if (v20)
     {
       v26[0] = v20;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-      v23 = [(HMFConnectivityInfo *)v21 initWithAccessoryIdentifier:v5 woBLEInfo:v12 woWLANInfos:v22];
+      v23 = [(HMFConnectivityInfo *)v21 initWithAccessoryIdentifier:identifierCopy woBLEInfo:v12 woWLANInfos:v22];
 
       goto LABEL_9;
     }
@@ -462,7 +462,7 @@ LABEL_11:
     v21 = [HMFConnectivityInfo alloc];
   }
 
-  v23 = [(HMFConnectivityInfo *)v21 initWithAccessoryIdentifier:v5 woBLEInfo:v12 woWLANInfos:0];
+  v23 = [(HMFConnectivityInfo *)v21 initWithAccessoryIdentifier:identifierCopy woBLEInfo:v12 woWLANInfos:0];
 LABEL_9:
 
   v24 = *MEMORY[0x277D85DE8];

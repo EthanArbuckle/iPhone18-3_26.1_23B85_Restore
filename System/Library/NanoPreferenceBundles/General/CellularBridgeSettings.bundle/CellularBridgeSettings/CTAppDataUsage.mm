@@ -7,14 +7,14 @@
 - (id)description
 {
   v3 = [NSMutableString stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTAppDataUsage *)self bundleId];
-  [v3 appendFormat:@", Bundle ID = %@", v4];
+  bundleId = [(CTAppDataUsage *)self bundleId];
+  [v3 appendFormat:@", Bundle ID = %@", bundleId];
 
-  v5 = [(CTAppDataUsage *)self displayName];
-  [v3 appendFormat:@", Display Name = %@", v5];
+  displayName = [(CTAppDataUsage *)self displayName];
+  [v3 appendFormat:@", Display Name = %@", displayName];
 
-  v6 = [(CTAppDataUsage *)self used];
-  [v3 appendFormat:@", Data Used = %@", v6];
+  used = [(CTAppDataUsage *)self used];
+  [v3 appendFormat:@", Data Used = %@", used];
 
   [v3 appendString:@">"];
   v7 = [v3 copy];

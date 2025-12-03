@@ -3,15 +3,15 @@
 - (id)bytes;
 - (id)toBytesRef;
 - (int)length;
-- (void)appendWithByte:(char)a3;
-- (void)appendWithOrgApacheLuceneUtilBytesRef:(id)a3;
-- (void)appendWithOrgApacheLuceneUtilBytesRefBuilder:(id)a3;
-- (void)copyBytesWithOrgApacheLuceneUtilBytesRef:(id)a3;
-- (void)copyBytesWithOrgApacheLuceneUtilBytesRefBuilder:(id)a3;
-- (void)copyCharsWithCharArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (void)copyCharsWithJavaLangCharSequence:(id)a3;
+- (void)appendWithByte:(char)byte;
+- (void)appendWithOrgApacheLuceneUtilBytesRef:(id)ref;
+- (void)appendWithOrgApacheLuceneUtilBytesRefBuilder:(id)builder;
+- (void)copyBytesWithOrgApacheLuceneUtilBytesRef:(id)ref;
+- (void)copyBytesWithOrgApacheLuceneUtilBytesRefBuilder:(id)builder;
+- (void)copyCharsWithCharArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (void)copyCharsWithJavaLangCharSequence:(id)sequence;
 - (void)dealloc;
-- (void)setLengthWithInt:(int)a3;
+- (void)setLengthWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneUtilBytesRefBuilder
@@ -45,7 +45,7 @@
   return ref->length_;
 }
 
-- (void)setLengthWithInt:(int)a3
+- (void)setLengthWithInt:(int)int
 {
   ref = self->ref_;
   if (!ref)
@@ -53,10 +53,10 @@
     JreThrowNullPointerException();
   }
 
-  ref->length_ = a3;
+  ref->length_ = int;
 }
 
-- (void)appendWithByte:(char)a3
+- (void)appendWithByte:(char)byte
 {
   ref = self->ref_;
   if (!ref || ([(OrgApacheLuceneUtilBytesRefBuilder *)self growWithInt:(ref->length_ + 1)], v6 = self->ref_, (bytes = v6->bytes_) == 0))
@@ -72,65 +72,65 @@
     IOSArray_throwOutOfBoundsWithMsg(size, length);
   }
 
-  *(&bytes->super.size_ + length + 4) = a3;
+  *(&bytes->super.size_ + length + 4) = byte;
 }
 
-- (void)appendWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (void)appendWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a3)
+  if (!ref)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 4);
-  v5 = *(a3 + 5);
-  v6 = *(a3 + 1);
+  v4 = *(ref + 4);
+  v5 = *(ref + 5);
+  v6 = *(ref + 1);
 
   [(OrgApacheLuceneUtilBytesRefBuilder *)self appendWithByteArray:v6 withInt:v4 withInt:v5];
 }
 
-- (void)appendWithOrgApacheLuceneUtilBytesRefBuilder:(id)a3
+- (void)appendWithOrgApacheLuceneUtilBytesRefBuilder:(id)builder
 {
-  if (!a3)
+  if (!builder)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 get];
+  v4 = [builder get];
 
   [(OrgApacheLuceneUtilBytesRefBuilder *)self appendWithOrgApacheLuceneUtilBytesRef:v4];
 }
 
-- (void)copyBytesWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (void)copyBytesWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   [(OrgApacheLuceneUtilBytesRefBuilder *)self clear];
 
-  [(OrgApacheLuceneUtilBytesRefBuilder *)self appendWithOrgApacheLuceneUtilBytesRef:a3];
+  [(OrgApacheLuceneUtilBytesRefBuilder *)self appendWithOrgApacheLuceneUtilBytesRef:ref];
 }
 
-- (void)copyBytesWithOrgApacheLuceneUtilBytesRefBuilder:(id)a3
+- (void)copyBytesWithOrgApacheLuceneUtilBytesRefBuilder:(id)builder
 {
   [(OrgApacheLuceneUtilBytesRefBuilder *)self clear];
 
-  [(OrgApacheLuceneUtilBytesRefBuilder *)self appendWithOrgApacheLuceneUtilBytesRefBuilder:a3];
+  [(OrgApacheLuceneUtilBytesRefBuilder *)self appendWithOrgApacheLuceneUtilBytesRefBuilder:builder];
 }
 
-- (void)copyCharsWithJavaLangCharSequence:(id)a3
+- (void)copyCharsWithJavaLangCharSequence:(id)sequence
 {
-  if (!a3)
+  if (!sequence)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 length];
+  v5 = [sequence length];
 
-  [(OrgApacheLuceneUtilBytesRefBuilder *)self copyCharsWithJavaLangCharSequence:a3 withInt:0 withInt:v5];
+  [(OrgApacheLuceneUtilBytesRefBuilder *)self copyCharsWithJavaLangCharSequence:sequence withInt:0 withInt:v5];
 }
 
-- (void)copyCharsWithCharArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)copyCharsWithCharArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  [(OrgApacheLuceneUtilBytesRefBuilder *)self growWithInt:(3 * a5)];
-  v9 = OrgApacheLuceneUtilUnicodeUtil_UTF16toUTF8WithCharArray_withInt_withInt_withByteArray_(a3, a4, a5, self->ref_->bytes_);
+  [(OrgApacheLuceneUtilBytesRefBuilder *)self growWithInt:(3 * withInt)];
+  v9 = OrgApacheLuceneUtilUnicodeUtil_UTF16toUTF8WithCharArray_withInt_withInt_withByteArray_(array, int, withInt, self->ref_->bytes_);
   ref = self->ref_;
   if (!ref)
   {

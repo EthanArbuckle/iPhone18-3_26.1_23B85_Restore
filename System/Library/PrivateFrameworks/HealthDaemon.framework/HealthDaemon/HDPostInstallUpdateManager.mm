@@ -1,23 +1,23 @@
 @interface HDPostInstallUpdateManager
 - (HDDaemon)daemon;
-- (HDPostInstallUpdateManager)initWithDaemon:(id)a3;
-- (void)_postInstallUpdateHandlerDidFire:(id)a3 completion:(id)a4;
-- (void)_triggerMigrationForProfile:(char)a3 protected:(void *)a4 completion:;
+- (HDPostInstallUpdateManager)initWithDaemon:(id)daemon;
+- (void)_postInstallUpdateHandlerDidFire:(id)fire completion:(id)completion;
+- (void)_triggerMigrationForProfile:(char)profile protected:(void *)protected completion:;
 - (void)start;
 @end
 
 @implementation HDPostInstallUpdateManager
 
-- (HDPostInstallUpdateManager)initWithDaemon:(id)a3
+- (HDPostInstallUpdateManager)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v14.receiver = self;
   v14.super_class = HDPostInstallUpdateManager;
   v5 = [(HDPostInstallUpdateManager *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_daemon, v4);
+    objc_storeWeak(&v5->_daemon, daemonCopy);
     v7 = HKCreateSerialDispatchQueue();
     monitoringQueue = v6->_monitoringQueue;
     v6->_monitoringQueue = v7;
@@ -54,13 +54,13 @@
     v6 = objc_alloc(MEMORY[0x277D10B00]);
     v7 = HKLogInfrastructure();
     WeakRetained = objc_loadWeakRetained(&self->_daemon);
-    v9 = [WeakRetained systemScheduler];
+    systemScheduler = [WeakRetained systemScheduler];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __35__HDPostInstallUpdateManager_start__block_invoke;
     v13[3] = &unk_278620518;
     objc_copyWeak(&v14, buf);
-    v10 = [v6 initWithName:@"com.apple.healthd.post-install-update.fastpass" loggingCategory:v7 scheduler:v9 handler:v13];
+    v10 = [v6 initWithName:@"com.apple.healthd.post-install-update.fastpass" loggingCategory:v7 scheduler:systemScheduler handler:v13];
     fastPassTask = self->_fastPassTask;
     self->_fastPassTask = v10;
 
@@ -82,20 +82,20 @@ void __35__HDPostInstallUpdateManager_start__block_invoke(uint64_t a1, void *a2,
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)_postInstallUpdateHandlerDidFire:(id)a3 completion:(id)a4
+- (void)_postInstallUpdateHandlerDidFire:(id)fire completion:(id)completion
 {
   v80 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v5 = a4;
+  fireCopy = fire;
+  completionCopy = completion;
   _HKInitializeLogging();
   v6 = HKLogInfrastructure();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     WeakRetained = objc_loadWeakRetained(&self->_daemon);
-    v8 = [WeakRetained behavior];
-    v9 = [v8 currentOSBuild];
+    behavior = [WeakRetained behavior];
+    currentOSBuild = [behavior currentOSBuild];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v9;
+    *(&buf + 4) = currentOSBuild;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "Updated to %{public}@; performing post-install update tasks.", &buf, 0xCu);
   }
 
@@ -110,14 +110,14 @@ void __35__HDPostInstallUpdateManager_start__block_invoke(uint64_t a1, void *a2,
   v69[3] = &unk_278620568;
   v69[4] = self;
   v71 = v72;
-  v46 = v5;
+  v46 = completionCopy;
   v70 = v46;
   [v48 setDidFinish:v69];
   v10 = objc_loadWeakRetained(&self->_daemon);
-  v11 = [v10 behavior];
-  v12 = [v11 isDeviceSupported];
+  behavior2 = [v10 behavior];
+  isDeviceSupported = [behavior2 isDeviceSupported];
 
-  if (v12)
+  if (isDeviceSupported)
   {
     [v48 beginTask];
     v66[0] = MEMORY[0x277D85DD0];
@@ -127,7 +127,7 @@ void __35__HDPostInstallUpdateManager_start__block_invoke(uint64_t a1, void *a2,
     v66[4] = self;
     v68 = v72;
     v67 = v46;
-    [v47 addExpirationHandler:v66];
+    [fireCopy addExpirationHandler:v66];
     [v48 beginTask];
     v64[0] = MEMORY[0x277D85DD0];
     v64[1] = 3221225472;
@@ -144,21 +144,21 @@ void __35__HDPostInstallUpdateManager_start__block_invoke(uint64_t a1, void *a2,
     }
 
     v16 = objc_loadWeakRetained(&self->_daemon);
-    v17 = [v16 primaryProfile];
-    v18 = [v17 medicalIDDataManager];
+    primaryProfile = [v16 primaryProfile];
+    medicalIDDataManager = [primaryProfile medicalIDDataManager];
     *&buf = MEMORY[0x277D85DD0];
     *(&buf + 1) = 3221225472;
     v77 = __76__HDPostInstallUpdateManager__migrateEmergencySOSIfNecessaryWithCompletion___block_invoke;
     v78 = &unk_2786130D8;
     v19 = v15;
     v79 = v19;
-    [v18 runEmergencyContactConsolidationWithCompletion:&buf];
+    [medicalIDDataManager runEmergencyContactConsolidationWithCompletion:&buf];
 
     v20 = objc_loadWeakRetained(&self->_daemon);
-    v21 = [v20 primaryProfile];
-    v22 = [v21 medicalIDDataManager];
+    primaryProfile2 = [v20 primaryProfile];
+    medicalIDDataManager2 = [primaryProfile2 medicalIDDataManager];
     v74 = 0;
-    v23 = [v22 fetchMedicalIDWithError:&v74];
+    v23 = [medicalIDDataManager2 fetchMedicalIDWithError:&v74];
     v24 = v74;
 
     if (!v23)
@@ -176,25 +176,25 @@ void __35__HDPostInstallUpdateManager_start__block_invoke(uint64_t a1, void *a2,
       }
     }
 
-    v26 = objc_loadWeakRetained(&self->_daemon);
-    v27 = [v26 behavior];
-    if ([v27 isiPad])
+    mEMORY[0x277D262A0]2 = objc_loadWeakRetained(&self->_daemon);
+    behavior3 = [mEMORY[0x277D262A0]2 behavior];
+    if ([behavior3 isiPad])
     {
-      v28 = [MEMORY[0x277D262A0] sharedConnection];
-      v29 = [v28 isSafetyDataSubmissionAllowed];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      isSafetyDataSubmissionAllowed = [mEMORY[0x277D262A0] isSafetyDataSubmissionAllowed];
 
-      if (!v29)
+      if (!isSafetyDataSubmissionAllowed)
       {
 LABEL_17:
         v31 = objc_loadWeakRetained(&self->_daemon);
-        v32 = [v31 profileManager];
+        profileManager = [v31 profileManager];
 
         v62 = 0u;
         v63 = 0u;
         v60 = 0u;
         v61 = 0u;
-        v33 = [v32 allProfileIdentifiers];
-        v34 = [v33 countByEnumeratingWithState:&v60 objects:v75 count:16];
+        allProfileIdentifiers = [profileManager allProfileIdentifiers];
+        v34 = [allProfileIdentifiers countByEnumeratingWithState:&v60 objects:v75 count:16];
         if (v34)
         {
           v35 = *v61;
@@ -205,10 +205,10 @@ LABEL_17:
             {
               if (*v61 != v35)
               {
-                objc_enumerationMutation(v33);
+                objc_enumerationMutation(allProfileIdentifiers);
               }
 
-              v37 = [v32 profileForIdentifier:*(*(&v60 + 1) + 8 * v36)];
+              v37 = [profileManager profileForIdentifier:*(*(&v60 + 1) + 8 * v36)];
               if (v37)
               {
                 [v13 beginTask];
@@ -232,7 +232,7 @@ LABEL_17:
             }
 
             while (v34 != v36);
-            v34 = [v33 countByEnumeratingWithState:&v60 objects:v75 count:16];
+            v34 = [allProfileIdentifiers countByEnumeratingWithState:&v60 objects:v75 count:16];
           }
 
           while (v34);
@@ -247,7 +247,7 @@ LABEL_17:
         v52[3] = &unk_2786205B8;
         v41 = v13;
         v53 = v41;
-        v54 = self;
+        selfCopy = self;
         v42 = v39;
         v55 = v42;
         [(HKObserverSet *)observers notifyObserversInGroup:v42 handler:v52];
@@ -264,8 +264,8 @@ LABEL_17:
         goto LABEL_27;
       }
 
-      v26 = [MEMORY[0x277D262A0] sharedConnection];
-      [v26 setSafetyDataSubmissionAllowed:0];
+      mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+      [mEMORY[0x277D262A0]2 setSafetyDataSubmissionAllowed:0];
     }
 
     else
@@ -374,21 +374,21 @@ uint64_t __74__HDPostInstallUpdateManager__postInstallUpdateHandlerDidFire_compl
   return result;
 }
 
-- (void)_triggerMigrationForProfile:(char)a3 protected:(void *)a4 completion:
+- (void)_triggerMigrationForProfile:(char)profile protected:(void *)protected completion:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  protectedCopy = protected;
+  if (self)
   {
-    v9 = [v7 database];
+    database = [v7 database];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __79__HDPostInstallUpdateManager__triggerMigrationForProfile_protected_completion___block_invoke;
     v10[3] = &unk_2786164B0;
-    v13 = a3;
+    profileCopy = profile;
     v11 = v7;
-    v12 = v8;
-    [v9 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:0 block:v10];
+    v12 = protectedCopy;
+    [database performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:0 block:v10];
   }
 }
 

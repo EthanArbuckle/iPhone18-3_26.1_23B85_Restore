@@ -1,15 +1,15 @@
 @interface PKPhysicsFieldCustomBlock
-+ (id)fieldWithCustomBatchBlock:(id)a3;
-+ (id)fieldWithCustomBlock:(id)a3;
-- (PKPhysicsFieldCustomBlock)initWithCustomBatchBlock:(id)a3;
-- (PKPhysicsFieldCustomBlock)initWithCustomBlock:(id)a3;
++ (id)fieldWithCustomBatchBlock:(id)block;
++ (id)fieldWithCustomBlock:(id)block;
+- (PKPhysicsFieldCustomBlock)initWithCustomBatchBlock:(id)block;
+- (PKPhysicsFieldCustomBlock)initWithCustomBlock:(id)block;
 @end
 
 @implementation PKPhysicsFieldCustomBlock
 
-- (PKPhysicsFieldCustomBlock)initWithCustomBlock:(id)a3
+- (PKPhysicsFieldCustomBlock)initWithCustomBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6.receiver = self;
   v6.super_class = PKPhysicsFieldCustomBlock;
   if ([(PKPhysicsField *)&v6 init])
@@ -20,17 +20,17 @@
   return 0;
 }
 
-+ (id)fieldWithCustomBlock:(id)a3
++ (id)fieldWithCustomBlock:(id)block
 {
-  v3 = a3;
-  v4 = [[PKPhysicsFieldCustomBlock alloc] initWithCustomBlock:v3];
+  blockCopy = block;
+  v4 = [[PKPhysicsFieldCustomBlock alloc] initWithCustomBlock:blockCopy];
 
   return v4;
 }
 
-- (PKPhysicsFieldCustomBlock)initWithCustomBatchBlock:(id)a3
+- (PKPhysicsFieldCustomBlock)initWithCustomBatchBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6.receiver = self;
   v6.super_class = PKPhysicsFieldCustomBlock;
   if ([(PKPhysicsField *)&v6 init])
@@ -41,10 +41,10 @@
   return 0;
 }
 
-+ (id)fieldWithCustomBatchBlock:(id)a3
++ (id)fieldWithCustomBatchBlock:(id)block
 {
-  v3 = a3;
-  v4 = [[PKPhysicsFieldCustomBlock alloc] initWithCustomBatchBlock:v3];
+  blockCopy = block;
+  v4 = [[PKPhysicsFieldCustomBlock alloc] initWithCustomBatchBlock:blockCopy];
 
   return v4;
 }

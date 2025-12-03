@@ -1,7 +1,7 @@
 @interface PHASEStringMetaParameter
 - (PHASEStringMetaParameter)init;
-- (PHASEStringMetaParameter)initWithUID:(id)a3 delegate:(id)a4;
-- (PHASEStringMetaParameter)initWithUID:(id)a3 value:(id)a4 delegate:(id)a5;
+- (PHASEStringMetaParameter)initWithUID:(id)d delegate:(id)delegate;
+- (PHASEStringMetaParameter)initWithUID:(id)d value:(id)value delegate:(id)delegate;
 @end
 
 @implementation PHASEStringMetaParameter
@@ -13,25 +13,25 @@
   return 0;
 }
 
-- (PHASEStringMetaParameter)initWithUID:(id)a3 delegate:(id)a4
+- (PHASEStringMetaParameter)initWithUID:(id)d delegate:(id)delegate
 {
-  [(PHASEStringMetaParameter *)self doesNotRecognizeSelector:a2, a4];
+  [(PHASEStringMetaParameter *)self doesNotRecognizeSelector:a2, delegate];
 
   return 0;
 }
 
-- (PHASEStringMetaParameter)initWithUID:(id)a3 value:(id)a4 delegate:(id)a5
+- (PHASEStringMetaParameter)initWithUID:(id)d value:(id)value delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  valueCopy = value;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = PHASEStringMetaParameter;
-  v11 = [(PHASEMetaParameter *)&v15 initWithUID:v8 delegate:v10];
+  v11 = [(PHASEMetaParameter *)&v15 initWithUID:dCopy delegate:delegateCopy];
   v12 = v11;
   if (v11)
   {
-    [(PHASEMetaParameter *)v11 setValue:v9];
+    [(PHASEMetaParameter *)v11 setValue:valueCopy];
     v13 = v12;
   }
 

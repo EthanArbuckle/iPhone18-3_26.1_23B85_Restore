@@ -1,16 +1,16 @@
 @interface ULMigrationMO
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4;
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context;
 - (optional<ULMigrationDO>)convertToDO;
 @end
 
 @implementation ULMigrationMO
 
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = [[ULMigrationMO alloc] initWithContext:v5];
-  [(ULMigrationMO *)v6 setTimestamp:*a3];
-  [(ULMigrationMO *)v6 setState:*(a3 + 2)];
+  contextCopy = context;
+  v6 = [[ULMigrationMO alloc] initWithContext:contextCopy];
+  [(ULMigrationMO *)v6 setTimestamp:*o];
+  [(ULMigrationMO *)v6 setState:*(o + 2)];
 
   return v6;
 }

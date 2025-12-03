@@ -1,11 +1,11 @@
 @interface WFHotspotDevice
-- (BOOL)_isEqualToHotspotDevice:(id)a3;
-- (BOOL)_isEqualToNetwork:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentRecord:(id)a3;
+- (BOOL)_isEqualToHotspotDevice:(id)device;
+- (BOOL)_isEqualToNetwork:(id)network;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentRecord:(id)record;
 - (NSString)description;
 - (WFHotspotDevice)init;
-- (WFHotspotDevice)initWithHotspotDevice:(id)a3;
+- (WFHotspotDevice)initWithHotspotDevice:(id)device;
 - (id)hotspotBatteryLife;
 - (id)hotspotCellularProtocol;
 - (id)hotspotSignalStrength;
@@ -24,19 +24,19 @@
 
 - (NSString)description
 {
-  v2 = [(WFHotspotDevice *)self hotspotDevice];
-  v3 = [v2 description];
+  hotspotDevice = [(WFHotspotDevice *)self hotspotDevice];
+  v3 = [hotspotDevice description];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WFHotspotDevice *)self _isEqualToHotspotDevice:v4];
+    v5 = [(WFHotspotDevice *)self _isEqualToHotspotDevice:equalCopy];
   }
 
   else
@@ -48,7 +48,7 @@
       goto LABEL_7;
     }
 
-    v5 = [(WFHotspotDevice *)self _isEqualToNetwork:v4];
+    v5 = [(WFHotspotDevice *)self _isEqualToNetwork:equalCopy];
   }
 
   v6 = v5;
@@ -57,30 +57,30 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_isEqualToHotspotDevice:(id)a3
+- (BOOL)_isEqualToHotspotDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(WFHotspotDevice *)self ssid];
-  v6 = [v4 ssid];
-  if ([v5 isEqualToString:v6])
+  deviceCopy = device;
+  ssid = [(WFHotspotDevice *)self ssid];
+  ssid2 = [deviceCopy ssid];
+  if ([ssid isEqualToString:ssid2])
   {
-    v7 = [(WFHotspotDevice *)self hotspotDevice];
-    v8 = [v7 deviceIdentifier];
-    v9 = [v4 hotspotDevice];
-    v10 = [v9 deviceIdentifier];
-    if ([v8 isEqualToString:v10])
+    hotspotDevice = [(WFHotspotDevice *)self hotspotDevice];
+    deviceIdentifier = [hotspotDevice deviceIdentifier];
+    hotspotDevice2 = [deviceCopy hotspotDevice];
+    deviceIdentifier2 = [hotspotDevice2 deviceIdentifier];
+    if ([deviceIdentifier isEqualToString:deviceIdentifier2])
     {
-      v20 = [(WFHotspotDevice *)self hotspotDevice];
-      v19 = [v20 signalStrength];
-      v11 = [v19 integerValue];
-      v18 = [v4 hotspotDevice];
-      v12 = [v18 signalStrength];
-      if (v11 == [v12 integerValue])
+      hotspotDevice3 = [(WFHotspotDevice *)self hotspotDevice];
+      signalStrength = [hotspotDevice3 signalStrength];
+      integerValue = [signalStrength integerValue];
+      hotspotDevice4 = [deviceCopy hotspotDevice];
+      signalStrength2 = [hotspotDevice4 signalStrength];
+      if (integerValue == [signalStrength2 integerValue])
       {
-        v17 = [(WFHotspotDevice *)self hotspotDevice];
-        v13 = [v17 networkType];
-        v14 = [v4 hotspotDevice];
-        v15 = v13 == [v14 networkType];
+        hotspotDevice5 = [(WFHotspotDevice *)self hotspotDevice];
+        networkType = [hotspotDevice5 networkType];
+        hotspotDevice6 = [deviceCopy hotspotDevice];
+        v15 = networkType == [hotspotDevice6 networkType];
       }
 
       else
@@ -103,15 +103,15 @@ LABEL_7:
   return v15;
 }
 
-- (BOOL)_isEqualToNetwork:(id)a3
+- (BOOL)_isEqualToNetwork:(id)network
 {
-  v4 = a3;
-  v5 = [(WFHotspotDevice *)self ssid];
-  v6 = [v4 ssid];
-  if ([v5 isEqualToString:v6])
+  networkCopy = network;
+  ssid = [(WFHotspotDevice *)self ssid];
+  ssid2 = [networkCopy ssid];
+  if ([ssid isEqualToString:ssid2])
   {
-    v7 = [(WFHotspotDevice *)self securityMode];
-    if (v7 == [v4 securityMode])
+    securityMode = [(WFHotspotDevice *)self securityMode];
+    if (securityMode == [networkCopy securityMode])
     {
 
 LABEL_7:
@@ -119,9 +119,9 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v9 = [v4 iOSHotspot];
+    iOSHotspot = [networkCopy iOSHotspot];
 
-    if (v9)
+    if (iOSHotspot)
     {
       goto LABEL_7;
     }
@@ -139,49 +139,49 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v3 = [(WFHotspotDevice *)self hotspotDevice];
-  v4 = [v3 deviceIdentifier];
-  v5 = [v4 hash];
+  hotspotDevice = [(WFHotspotDevice *)self hotspotDevice];
+  deviceIdentifier = [hotspotDevice deviceIdentifier];
+  v5 = [deviceIdentifier hash];
   v6 = [(WFHotspotDevice *)self securityMode]^ v5;
-  v7 = [(WFHotspotDevice *)self hotspotDevice];
-  v8 = [v7 signalStrength];
-  v9 = v6 ^ [v8 integerValue];
-  v10 = [(WFHotspotDevice *)self hotspotDevice];
-  v11 = [v10 networkType];
+  hotspotDevice2 = [(WFHotspotDevice *)self hotspotDevice];
+  signalStrength = [hotspotDevice2 signalStrength];
+  v9 = v6 ^ [signalStrength integerValue];
+  hotspotDevice3 = [(WFHotspotDevice *)self hotspotDevice];
+  networkType = [hotspotDevice3 networkType];
 
-  return v9 ^ v11;
+  return v9 ^ networkType;
 }
 
 - (id)title
 {
-  v2 = [(WFHotspotDevice *)self hotspotDevice];
-  v3 = [v2 deviceName];
+  hotspotDevice = [(WFHotspotDevice *)self hotspotDevice];
+  deviceName = [hotspotDevice deviceName];
 
-  return v3;
+  return deviceName;
 }
 
 - (id)hotspotBatteryLife
 {
-  v2 = [(WFHotspotDevice *)self hotspotDevice];
-  v3 = [v2 batteryLife];
+  hotspotDevice = [(WFHotspotDevice *)self hotspotDevice];
+  batteryLife = [hotspotDevice batteryLife];
 
-  return v3;
+  return batteryLife;
 }
 
 - (id)hotspotSignalStrength
 {
-  v2 = [(WFHotspotDevice *)self hotspotDevice];
-  v3 = [v2 signalStrength];
+  hotspotDevice = [(WFHotspotDevice *)self hotspotDevice];
+  signalStrength = [hotspotDevice signalStrength];
 
-  return v3;
+  return signalStrength;
 }
 
 - (id)hotspotCellularProtocol
 {
-  v2 = [(WFHotspotDevice *)self hotspotDevice];
-  v3 = [v2 cellularProtocolString];
+  hotspotDevice = [(WFHotspotDevice *)self hotspotDevice];
+  cellularProtocolString = [hotspotDevice cellularProtocolString];
 
-  return v3;
+  return cellularProtocolString;
 }
 
 - (unint64_t)signalBars
@@ -191,19 +191,19 @@ LABEL_8:
   return WFSignalBarsFromScaledRSSI();
 }
 
-- (BOOL)isEquivalentRecord:(id)a3
+- (BOOL)isEquivalentRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(WFHotspotDevice *)self ssid];
-    v7 = [v5 ssid];
-    if ([v6 isEqualToString:v7])
+    v5 = recordCopy;
+    ssid = [(WFHotspotDevice *)self ssid];
+    ssid2 = [v5 ssid];
+    if ([ssid isEqualToString:ssid2])
     {
-      v8 = [(WFHotspotDevice *)self uniqueIdentifier];
-      v9 = v8 == [v5 uniqueIdentifier];
+      uniqueIdentifier = [(WFHotspotDevice *)self uniqueIdentifier];
+      v9 = uniqueIdentifier == [v5 uniqueIdentifier];
     }
 
     else
@@ -220,26 +220,26 @@ LABEL_8:
   return v9;
 }
 
-- (WFHotspotDevice)initWithHotspotDevice:(id)a3
+- (WFHotspotDevice)initWithHotspotDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = WFHotspotDevice;
   v6 = [(WFHotspotDevice *)&v13 init];
   v7 = v6;
-  v8 = 0;
-  if (v5 && v6)
+  deviceName = 0;
+  if (deviceCopy && v6)
   {
-    objc_storeStrong(&v6->_hotspotDevice, a3);
-    v8 = [(SFRemoteHotspotDevice *)v7->_hotspotDevice deviceName];
-    if ([v8 length] >= 0x21)
+    objc_storeStrong(&v6->_hotspotDevice, device);
+    deviceName = [(SFRemoteHotspotDevice *)v7->_hotspotDevice deviceName];
+    if ([deviceName length] >= 0x21)
     {
-      v9 = [v8 substringWithRange:{0, 32}];
+      v9 = [deviceName substringWithRange:{0, 32}];
 
-      v8 = v9;
+      deviceName = v9;
     }
 
-    v10 = [v8 copy];
+    v10 = [deviceName copy];
     ssid = v7->_ssid;
     v7->_ssid = v10;
   }

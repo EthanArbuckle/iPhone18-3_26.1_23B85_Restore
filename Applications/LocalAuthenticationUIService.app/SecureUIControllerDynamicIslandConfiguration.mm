@@ -1,13 +1,13 @@
 @interface SecureUIControllerDynamicIslandConfiguration
 - (SecureUIControllerDynamicIslandConfiguration)init;
-- (SecureUIControllerDynamicIslandConfiguration)initWithLightweightMode:(int64_t)a3;
+- (SecureUIControllerDynamicIslandConfiguration)initWithLightweightMode:(int64_t)mode;
 @end
 
 @implementation SecureUIControllerDynamicIslandConfiguration
 
-- (SecureUIControllerDynamicIslandConfiguration)initWithLightweightMode:(int64_t)a3
+- (SecureUIControllerDynamicIslandConfiguration)initWithLightweightMode:(int64_t)mode
 {
-  *(&self->super.isa + OBJC_IVAR___SecureUIControllerDynamicIslandConfiguration_isForLightweightUI) = LACLightweightUIModeNone != a3;
+  *(&self->super.isa + OBJC_IVAR___SecureUIControllerDynamicIslandConfiguration_isForLightweightUI) = LACLightweightUIModeNone != mode;
   v4.receiver = self;
   v4.super_class = SecureUIControllerDynamicIslandConfiguration;
   return [(SecureUIControllerDynamicIslandConfiguration *)&v4 init];

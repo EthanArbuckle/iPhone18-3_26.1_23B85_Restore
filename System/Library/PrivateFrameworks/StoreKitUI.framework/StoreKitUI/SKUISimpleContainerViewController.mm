@@ -1,30 +1,30 @@
 @interface SKUISimpleContainerViewController
 - (void)loadView;
-- (void)setContentViewController:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)setContentViewController:(id)controller;
+- (void)setPreferredContentSize:(CGSize)size;
 @end
 
 @implementation SKUISimpleContainerViewController
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUISimpleContainerViewController setContentViewController:];
   }
 
   contentViewController = self->_contentViewController;
-  if (contentViewController != v5)
+  if (contentViewController != controllerCopy)
   {
     if ([(UIViewController *)contentViewController isViewLoaded])
     {
-      v7 = [(UIViewController *)self->_contentViewController view];
-      [v7 removeFromSuperview];
+      view = [(UIViewController *)self->_contentViewController view];
+      [view removeFromSuperview];
     }
 
     [(UIViewController *)self->_contentViewController removeFromParentViewController];
-    objc_storeStrong(&self->_contentViewController, a3);
+    objc_storeStrong(&self->_contentViewController, controller);
     if (self->_contentViewController)
     {
       [(SKUISimpleContainerViewController *)self addChildViewController:?];
@@ -33,12 +33,12 @@
       [(UIViewController *)v8 setPreferredContentSize:?];
       if ([(SKUISimpleContainerViewController *)self isViewLoaded])
       {
-        v9 = [(SKUISimpleContainerViewController *)self view];
-        v10 = [(UIViewController *)self->_contentViewController view];
-        [v10 setAutoresizingMask:18];
-        [v9 bounds];
-        [v10 setFrame:?];
-        [v9 addSubview:v10];
+        view2 = [(SKUISimpleContainerViewController *)self view];
+        view3 = [(UIViewController *)self->_contentViewController view];
+        [view3 setAutoresizingMask:18];
+        [view2 bounds];
+        [view3 setFrame:?];
+        [view2 addSubview:view3];
       }
     }
   }
@@ -51,10 +51,10 @@
   v1 = "[SKUISimpleContainerViewController loadView]";
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = SKUISimpleContainerViewController;
   [(SKUISimpleContainerViewController *)&v6 setPreferredContentSize:?];

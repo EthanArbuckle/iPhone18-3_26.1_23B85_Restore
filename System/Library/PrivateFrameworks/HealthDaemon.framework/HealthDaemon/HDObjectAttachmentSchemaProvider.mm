@@ -1,44 +1,44 @@
 @interface HDObjectAttachmentSchemaProvider
-- (BOOL)readAuthorizationForObjectIdentifier:(id)a3 client:(id)a4 profile:(id)a5 error:(id *)a6;
-- (BOOL)validateAttachment:(id)a3 forObjectWithIdentifier:(id)a4 metadata:(id)a5 profile:(id)a6 error:(id *)a7;
-- (BOOL)writeAuthorizationForObjectIdentifier:(id)a3 client:(id)a4 profile:(id)a5 error:(id *)a6;
-- (id)_objectWithIdentifier:(void *)a3 profile:(void *)a4 errorOut:;
-- (int64_t)schemaVersionForObjectIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
+- (BOOL)readAuthorizationForObjectIdentifier:(id)identifier client:(id)client profile:(id)profile error:(id *)error;
+- (BOOL)validateAttachment:(id)attachment forObjectWithIdentifier:(id)identifier metadata:(id)metadata profile:(id)profile error:(id *)error;
+- (BOOL)writeAuthorizationForObjectIdentifier:(id)identifier client:(id)client profile:(id)profile error:(id *)error;
+- (id)_objectWithIdentifier:(void *)identifier profile:(void *)profile errorOut:;
+- (int64_t)schemaVersionForObjectIdentifier:(id)identifier profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDObjectAttachmentSchemaProvider
 
-- (int64_t)schemaVersionForObjectIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
+- (int64_t)schemaVersionForObjectIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
   v12 = 0;
-  v7 = [(HDObjectAttachmentSchemaProvider *)self _objectWithIdentifier:a3 profile:a4 errorOut:&v12];
+  v7 = [(HDObjectAttachmentSchemaProvider *)self _objectWithIdentifier:identifier profile:profile errorOut:&v12];
   v8 = v12;
-  v9 = [v7 hd_sampleType];
+  hd_sampleType = [v7 hd_sampleType];
 
-  if (!v9)
+  if (!hd_sampleType)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 description:@"Failed to fetch object" underlyingError:v8];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Failed to fetch object" underlyingError:v8];
     goto LABEL_5;
   }
 
   if (!self)
   {
 LABEL_5:
-    v10 = 0;
+    attachmentSchemaVersion = 0;
     goto LABEL_6;
   }
 
-  v10 = [v9 attachmentSchemaVersion];
+  attachmentSchemaVersion = [hd_sampleType attachmentSchemaVersion];
 LABEL_6:
 
-  return v10;
+  return attachmentSchemaVersion;
 }
 
-- (id)_objectWithIdentifier:(void *)a3 profile:(void *)a4 errorOut:
+- (id)_objectWithIdentifier:(void *)identifier profile:(void *)profile errorOut:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
     v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
     if (v9)
@@ -49,17 +49,17 @@ LABEL_6:
       v26 = __Block_byref_object_copy__151;
       v27 = __Block_byref_object_dispose__151;
       v28 = 0;
-      v10 = [v8 database];
+      database = [identifierCopy database];
       v22 = 0;
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __75__HDObjectAttachmentSchemaProvider__objectWithIdentifier_profile_errorOut___block_invoke;
       v18[3] = &unk_278627B70;
-      v18[4] = a1;
+      v18[4] = self;
       v19 = v9;
       v21 = &v23;
-      v20 = v8;
-      [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:v10 error:&v22 block:v18];
+      v20 = identifierCopy;
+      [(HDHealthEntity *)HDDataEntity performReadTransactionWithHealthDatabase:database error:&v22 block:v18];
       v11 = v22;
 
       v12 = v24[5];
@@ -69,10 +69,10 @@ LABEL_6:
         v14 = v13;
         if (v13)
         {
-          if (a4)
+          if (profile)
           {
             v15 = v13;
-            *a4 = v14;
+            *profile = v14;
           }
 
           else
@@ -91,7 +91,7 @@ LABEL_6:
 
     else
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:118 format:{@"No object found with identifier '%@'", v7}];
+      [MEMORY[0x277CCA9B8] hk_assignError:profile code:118 format:{@"No object found with identifier '%@'", v7}];
       v16 = 0;
     }
   }
@@ -104,30 +104,30 @@ LABEL_6:
   return v16;
 }
 
-- (BOOL)validateAttachment:(id)a3 forObjectWithIdentifier:(id)a4 metadata:(id)a5 profile:(id)a6 error:(id *)a7
+- (BOOL)validateAttachment:(id)attachment forObjectWithIdentifier:(id)identifier metadata:(id)metadata profile:(id)profile error:(id *)error
 {
-  v11 = a3;
-  v12 = [(HDObjectAttachmentSchemaProvider *)self _objectWithIdentifier:a4 profile:a6 errorOut:a7];
+  attachmentCopy = attachment;
+  v12 = [(HDObjectAttachmentSchemaProvider *)self _objectWithIdentifier:identifier profile:profile errorOut:error];
   if (v12)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v12 sampleType];
-      v14 = [v11 contentType];
-      v15 = [v13 canAttachFileOfType:v14 size:objc_msgSend(v11 error:{"size"), a7}];
+      sampleType = [v12 sampleType];
+      contentType = [attachmentCopy contentType];
+      v15 = [sampleType canAttachFileOfType:contentType size:objc_msgSend(attachmentCopy error:{"size"), error}];
     }
 
     else
     {
-      v14 = [MEMORY[0x277CCA9B8] hk_error:3 format:@"The object type is not supported"];
-      if (v14)
+      contentType = [MEMORY[0x277CCA9B8] hk_error:3 format:@"The object type is not supported"];
+      if (contentType)
       {
-        if (a7)
+        if (error)
         {
-          v16 = v14;
+          v16 = contentType;
           v15 = 0;
-          *a7 = v14;
+          *error = contentType;
         }
 
         else
@@ -136,12 +136,12 @@ LABEL_6:
           v15 = 0;
         }
 
-        v13 = v14;
+        sampleType = contentType;
       }
 
       else
       {
-        v13 = 0;
+        sampleType = 0;
         v15 = 0;
       }
     }
@@ -155,14 +155,14 @@ LABEL_6:
   return v15;
 }
 
-- (BOOL)readAuthorizationForObjectIdentifier:(id)a3 client:(id)a4 profile:(id)a5 error:(id *)a6
+- (BOOL)readAuthorizationForObjectIdentifier:(id)identifier client:(id)client profile:(id)profile error:(id *)error
 {
-  v10 = a4;
-  v11 = [(HDObjectAttachmentSchemaProvider *)self _objectWithIdentifier:a3 profile:a5 errorOut:a6];
+  clientCopy = client;
+  v11 = [(HDObjectAttachmentSchemaProvider *)self _objectWithIdentifier:identifier profile:profile errorOut:error];
   if (v11)
   {
-    v12 = [v10 authorizationOracle];
-    v13 = [v12 isAuthorizedToReadObject:v11 error:a6];
+    authorizationOracle = [clientCopy authorizationOracle];
+    v13 = [authorizationOracle isAuthorizedToReadObject:v11 error:error];
   }
 
   else
@@ -173,37 +173,37 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)writeAuthorizationForObjectIdentifier:(id)a3 client:(id)a4 profile:(id)a5 error:(id *)a6
+- (BOOL)writeAuthorizationForObjectIdentifier:(id)identifier client:(id)client profile:(id)profile error:(id *)error
 {
-  v10 = a4;
-  v11 = [(HDObjectAttachmentSchemaProvider *)self _objectWithIdentifier:a3 profile:a5 errorOut:a6];
+  clientCopy = client;
+  v11 = [(HDObjectAttachmentSchemaProvider *)self _objectWithIdentifier:identifier profile:profile errorOut:error];
   if (!v11)
   {
     goto LABEL_5;
   }
 
-  v12 = [v10 sourceBundleIdentifier];
-  v13 = [v11 sourceRevision];
-  v14 = [v13 source];
-  v15 = [v14 bundleIdentifier];
-  v16 = [v12 isEqualToString:v15];
+  sourceBundleIdentifier = [clientCopy sourceBundleIdentifier];
+  sourceRevision = [v11 sourceRevision];
+  source = [sourceRevision source];
+  bundleIdentifier = [source bundleIdentifier];
+  v16 = [sourceBundleIdentifier isEqualToString:bundleIdentifier];
 
   if ((v16 & 1) == 0)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a6 code:4 format:@"Cannot write to an object from a different source"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:4 format:@"Cannot write to an object from a different source"];
 LABEL_5:
-    v20 = 0;
+    canWrite = 0;
     goto LABEL_6;
   }
 
-  v17 = [v10 authorizationOracle];
-  v18 = [v11 hd_sampleType];
-  v19 = [v17 authorizationStatusRecordForType:v18 error:a6];
+  authorizationOracle = [clientCopy authorizationOracle];
+  hd_sampleType = [v11 hd_sampleType];
+  v19 = [authorizationOracle authorizationStatusRecordForType:hd_sampleType error:error];
 
-  v20 = [v19 canWrite];
+  canWrite = [v19 canWrite];
 LABEL_6:
 
-  return v20;
+  return canWrite;
 }
 
 BOOL __75__HDObjectAttachmentSchemaProvider__objectWithIdentifier_profile_errorOut___block_invoke(uint64_t a1, void *a2, void *a3)

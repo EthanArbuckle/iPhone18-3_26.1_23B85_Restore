@@ -1,8 +1,8 @@
 @interface EDPersistedAttachmentID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (EDPersistedAttachmentID)init;
-- (EDPersistedAttachmentID)initWithDatabaseID:(int64_t)a3;
-- (EDPersistedAttachmentID)initWithString:(id)a3;
+- (EDPersistedAttachmentID)initWithDatabaseID:(int64_t)d;
+- (EDPersistedAttachmentID)initWithString:(id)string;
 - (NSString)description;
 - (NSString)stringValue;
 - (int64_t)hash;
@@ -20,9 +20,9 @@
   return v4;
 }
 
-- (EDPersistedAttachmentID)initWithDatabaseID:(int64_t)a3
+- (EDPersistedAttachmentID)initWithDatabaseID:(int64_t)d
 {
-  *(self + OBJC_IVAR___EDPersistedAttachmentID_databaseID) = a3;
+  *(self + OBJC_IVAR___EDPersistedAttachmentID_databaseID) = d;
   v4 = EFStringWithInt64();
   v5 = sub_1C645C874();
   v7 = v6;
@@ -35,31 +35,31 @@
   return [(EDPersistedAttachmentID *)&v10 init];
 }
 
-- (EDPersistedAttachmentID)initWithString:(id)a3
+- (EDPersistedAttachmentID)initWithString:(id)string
 {
-  v4 = [a3 longLongValue];
+  longLongValue = [string longLongValue];
 
-  return [(EDPersistedAttachmentID *)self initWithDatabaseID:v4];
+  return [(EDPersistedAttachmentID *)self initWithDatabaseID:longLongValue];
 }
 
 - (NSString)description
 {
-  v2 = self;
-  v3 = [(EDPersistedAttachmentID *)v2 stringValue];
-  if (!v3)
+  selfCopy = self;
+  stringValue = [(EDPersistedAttachmentID *)selfCopy stringValue];
+  if (!stringValue)
   {
     sub_1C645C874();
-    v3 = sub_1C645C844();
+    stringValue = sub_1C645C844();
   }
 
-  return v3;
+  return stringValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C645CC14();
     swift_unknownObjectRelease();
@@ -68,7 +68,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = EDPersistedAttachmentID.isEqual(_:)(v8);
@@ -79,8 +79,8 @@
 
 - (int64_t)hash
 {
-  v2 = self;
-  [(EDPersistedAttachmentID *)v2 databaseID];
+  selfCopy = self;
+  [(EDPersistedAttachmentID *)selfCopy databaseID];
   v3 = sub_1C645CFC4();
 
   return v3;

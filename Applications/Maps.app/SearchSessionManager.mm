@@ -4,24 +4,24 @@
 - (SearchSessionManager)init;
 - (SearchSessionManagerDelegate)delegate;
 - (SearchSessionTraitsProvider)traitsProvider;
-- (id)_spotlightMatchingSearchResult:(id)a3 searchInfo:(id)a4;
+- (id)_spotlightMatchingSearchResult:(id)result searchInfo:(id)info;
 - (int64_t)_userInterfaceIdiom;
 - (void)_clearSearchField;
-- (void)_handleSearchAlongRouteSearchSession:(id)a3;
-- (void)_handleUpdateSearchFieldWithSearchFieldItem:(id)a3;
-- (void)_presentLoadingResults:(id)a3;
-- (void)_searchSessionWillStart:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_handleSearchAlongRouteSearchSession:(id)session;
+- (void)_handleUpdateSearchFieldWithSearchFieldItem:(id)item;
+- (void)_presentLoadingResults:(id)results;
+- (void)_searchSessionWillStart:(id)start;
+- (void)addObserver:(id)observer;
 - (void)clearSearchSession;
-- (void)performSearchForSearchItem:(id)a3 withUserInfo:(id)a4 refinementsQuery:(id)a5 recentAutocompleteSessionData:(id)a6;
-- (void)refreshedEVChargersReceieved:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)restoreSearchForItem:(id)a3 withResults:(id)a4 sessionOrigin:(unint64_t)a5;
-- (void)searchSessionDidChangeSearchFieldItem:(id)a3;
-- (void)searchSessionDidChangeSearchResults:(id)a3;
-- (void)searchSessionDidFail:(id)a3;
-- (void)searchSessionDidInvalidate:(id)a3 reason:(unint64_t)a4;
-- (void)searchSessionWillPerformSearch:(id)a3;
+- (void)performSearchForSearchItem:(id)item withUserInfo:(id)info refinementsQuery:(id)query recentAutocompleteSessionData:(id)data;
+- (void)refreshedEVChargersReceieved:(id)receieved;
+- (void)removeObserver:(id)observer;
+- (void)restoreSearchForItem:(id)item withResults:(id)results sessionOrigin:(unint64_t)origin;
+- (void)searchSessionDidChangeSearchFieldItem:(id)item;
+- (void)searchSessionDidChangeSearchResults:(id)results;
+- (void)searchSessionDidFail:(id)fail;
+- (void)searchSessionDidInvalidate:(id)invalidate reason:(unint64_t)reason;
+- (void)searchSessionWillPerformSearch:(id)search;
 @end
 
 @implementation SearchSessionManager
@@ -65,18 +65,18 @@
   return WeakRetained;
 }
 
-- (id)_spotlightMatchingSearchResult:(id)a3 searchInfo:(id)a4
+- (id)_spotlightMatchingSearchResult:(id)result searchInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  resultCopy = result;
+  infoCopy = info;
   +[NSMutableArray array];
-  v27 = v26 = v5;
+  v27 = v26 = resultCopy;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = [v5 currentResults];
-  v8 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  currentResults = [resultCopy currentResults];
+  v8 = [currentResults countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v8)
   {
     v9 = v8;
@@ -87,33 +87,33 @@ LABEL_3:
     {
       if (*v29 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(currentResults);
       }
 
       v12 = *(*(&v28 + 1) + 8 * v11);
-      v13 = [v12 mapItem];
-      v14 = [v13 _identifier];
-      v15 = [v6 spotlightMapsIdentifier];
-      v16 = [v14 isEqual:v15];
+      mapItem = [v12 mapItem];
+      _identifier = [mapItem _identifier];
+      spotlightMapsIdentifier = [infoCopy spotlightMapsIdentifier];
+      v16 = [_identifier isEqual:spotlightMapsIdentifier];
 
       if (v16)
       {
         break;
       }
 
-      v17 = [v12 mapItem];
-      v18 = [v17 _identifier];
+      mapItem2 = [v12 mapItem];
+      _identifier2 = [mapItem2 _identifier];
 
-      if (v18)
+      if (_identifier2)
       {
-        v19 = [v12 mapItem];
-        v20 = [v19 _identifier];
-        [v27 addObject:v20];
+        mapItem3 = [v12 mapItem];
+        _identifier3 = [mapItem3 _identifier];
+        [v27 addObject:_identifier3];
       }
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v9 = [currentResults countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -144,9 +144,9 @@ LABEL_11:
   v23 = sub_100FD806C();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v6 spotlightMapsIdentifier];
+    spotlightMapsIdentifier2 = [infoCopy spotlightMapsIdentifier];
     *buf = 138478083;
-    v33 = v24;
+    v33 = spotlightMapsIdentifier2;
     v34 = 2113;
     v35 = v27;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Spotlight punch in search result doesn't have the requested muid in the response. MUID is %{private}@ And the search results identifiers are: %{private}@", buf, 0x16u);
@@ -158,41 +158,41 @@ LABEL_16:
   return v22;
 }
 
-- (void)_presentLoadingResults:(id)a3
+- (void)_presentLoadingResults:(id)results
 {
-  v5 = a3;
-  if (![v5 isSuggestionSearch] || (objc_msgSend(v5, "isRedoOrAutoRedoSearchType") & 1) == 0)
+  resultsCopy = results;
+  if (![resultsCopy isSuggestionSearch] || (objc_msgSend(resultsCopy, "isRedoOrAutoRedoSearchType") & 1) == 0)
   {
-    v4 = [(SearchSessionManager *)self coordinator];
-    [v4 presentLoadingResults];
+    coordinator = [(SearchSessionManager *)self coordinator];
+    [coordinator presentLoadingResults];
   }
 }
 
-- (void)_handleSearchAlongRouteSearchSession:(id)a3
+- (void)_handleSearchAlongRouteSearchSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 lastError];
+  sessionCopy = session;
+  lastError = [sessionCopy lastError];
 
   v6 = sub_100FD806C();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
-  if (v5)
+  if (lastError)
   {
     if (v7)
     {
-      v8 = [v4 lastError];
+      lastError2 = [sessionCopy lastError];
       v20 = 138412546;
-      v21 = v4;
+      v21 = sessionCopy;
       v22 = 2112;
-      v23 = v8;
+      v23 = lastError2;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "SAR: Received error for searchSession: %@, Error: %@", &v20, 0x16u);
     }
 
-    v9 = [(SearchSessionManager *)self coordinator];
-    v10 = [v9 appCoordinator];
-    v11 = [v10 navModeController];
-    v12 = [v11 navActionCoordinator];
-    v13 = [v4 lastError];
-    [v12 setCurrentSearchInfo:0 error:v13];
+    coordinator = [(SearchSessionManager *)self coordinator];
+    appCoordinator = [coordinator appCoordinator];
+    navModeController = [appCoordinator navModeController];
+    navActionCoordinator = [navModeController navActionCoordinator];
+    lastError3 = [sessionCopy lastError];
+    [navActionCoordinator setCurrentSearchInfo:0 error:lastError3];
   }
 
   else
@@ -200,60 +200,60 @@ LABEL_16:
     if (v7)
     {
       v20 = 138412290;
-      v21 = v4;
+      v21 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "SAR: Opening search session %@.", &v20, 0xCu);
     }
 
-    v9 = [v4 searchInfo];
-    [v9 setSearchAlongRoute:1];
-    v14 = [v4 searchFieldItem];
-    [v9 setSearchFieldItem:v14];
+    coordinator = [sessionCopy searchInfo];
+    [coordinator setSearchAlongRoute:1];
+    searchFieldItem = [sessionCopy searchFieldItem];
+    [coordinator setSearchFieldItem:searchFieldItem];
 
-    if ([v4 isSpotlightPunchInSearch])
+    if ([sessionCopy isSpotlightPunchInSearch])
     {
-      v15 = [(SearchSessionManager *)self _spotlightMatchingSearchResult:v4 searchInfo:v9];
-      v16 = [v9 results];
-      v17 = [v16 indexOfObject:v15];
+      v15 = [(SearchSessionManager *)self _spotlightMatchingSearchResult:sessionCopy searchInfo:coordinator];
+      results = [coordinator results];
+      v17 = [results indexOfObject:v15];
 
       if (v17 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v18 = [v9 results];
-        v19 = [v18 count];
+        results2 = [coordinator results];
+        v19 = [results2 count];
 
         if (v17 < v19)
         {
-          [v9 setSelectedIndex:v17];
+          [coordinator setSelectedIndex:v17];
         }
       }
     }
 
-    v10 = [(SearchSessionManager *)self coordinator];
-    v11 = [v10 appCoordinator];
-    v12 = [v11 navModeController];
-    v13 = [v12 navActionCoordinator];
-    [v13 setCurrentSearchInfo:v9];
+    appCoordinator = [(SearchSessionManager *)self coordinator];
+    navModeController = [appCoordinator appCoordinator];
+    navActionCoordinator = [navModeController navModeController];
+    lastError3 = [navActionCoordinator navActionCoordinator];
+    [lastError3 setCurrentSearchInfo:coordinator];
   }
 }
 
 - (BOOL)isSearchAlongTheRoute
 {
-  v3 = [(SearchSessionManager *)self coordinator];
-  v4 = [v3 appCoordinator];
-  if ([v4 isNavigationTurnByTurnOrStepping])
+  coordinator = [(SearchSessionManager *)self coordinator];
+  appCoordinator = [coordinator appCoordinator];
+  if ([appCoordinator isNavigationTurnByTurnOrStepping])
   {
-    v5 = [(SearchSessionManager *)self coordinator];
-    v6 = [v5 appCoordinator];
-    v7 = [v6 navModeController];
-    v8 = [v7 navActionCoordinator];
-    if ([v8 isSearchingAlongTheRoute])
+    coordinator2 = [(SearchSessionManager *)self coordinator];
+    appCoordinator2 = [coordinator2 appCoordinator];
+    navModeController = [appCoordinator2 navModeController];
+    navActionCoordinator = [navModeController navActionCoordinator];
+    if ([navActionCoordinator isSearchingAlongTheRoute])
     {
       v9 = 1;
     }
 
     else
     {
-      v10 = [(SearchSessionManager *)self currentSearchSession];
-      v9 = [v10 origin] == 1;
+      currentSearchSession = [(SearchSessionManager *)self currentSearchSession];
+      v9 = [currentSearchSession origin] == 1;
     }
   }
 
@@ -267,27 +267,27 @@ LABEL_16:
 
 - (int64_t)_userInterfaceIdiom
 {
-  v2 = [(SearchSessionManager *)self coordinator];
-  v3 = [v2 appCoordinator];
-  v4 = [v3 chromeViewController];
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  coordinator = [(SearchSessionManager *)self coordinator];
+  appCoordinator = [coordinator appCoordinator];
+  chromeViewController = [appCoordinator chromeViewController];
+  traitCollection = [chromeViewController traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  return v6;
+  return userInterfaceIdiom;
 }
 
 - (void)_clearSearchField
 {
-  v3 = [(SearchSessionManager *)self delegate];
+  delegate = [(SearchSessionManager *)self delegate];
   v2 = objc_alloc_init(SearchFieldItem);
-  [v3 updateSearchFieldWithSearchFieldItem:v2];
+  [delegate updateSearchFieldWithSearchFieldItem:v2];
 }
 
-- (void)_handleUpdateSearchFieldWithSearchFieldItem:(id)a3
+- (void)_handleUpdateSearchFieldWithSearchFieldItem:(id)item
 {
-  v5 = [(SearchSessionManager *)self delegate];
-  v4 = [(SearchSession *)self->_searchSession searchFieldItem];
-  [v5 updateSearchFieldWithSearchFieldItem:v4];
+  delegate = [(SearchSessionManager *)self delegate];
+  searchFieldItem = [(SearchSession *)self->_searchSession searchFieldItem];
+  [delegate updateSearchFieldWithSearchFieldItem:searchFieldItem];
 }
 
 - (void)clearSearchSession
@@ -313,43 +313,43 @@ LABEL_16:
   }
 }
 
-- (void)restoreSearchForItem:(id)a3 withResults:(id)a4 sessionOrigin:(unint64_t)a5
+- (void)restoreSearchForItem:(id)item withResults:(id)results sessionOrigin:(unint64_t)origin
 {
   searchSession = self->_searchSession;
-  v9 = a4;
-  v12 = a3;
+  resultsCopy = results;
+  itemCopy = item;
   [(SearchSession *)searchSession unregisterObserver:self];
   [(SearchSession *)self->_searchSession invalidate];
-  v10 = [[SearchSession alloc] initWithOrigin:a5];
+  v10 = [[SearchSession alloc] initWithOrigin:origin];
   v11 = self->_searchSession;
   self->_searchSession = v10;
 
   [(SearchSession *)self->_searchSession registerObserver:self];
-  [(SearchSession *)self->_searchSession restoreSearchForItem:v12 withResults:v9];
+  [(SearchSession *)self->_searchSession restoreSearchForItem:itemCopy withResults:resultsCopy];
 }
 
-- (void)performSearchForSearchItem:(id)a3 withUserInfo:(id)a4 refinementsQuery:(id)a5 recentAutocompleteSessionData:(id)a6
+- (void)performSearchForSearchItem:(id)item withUserInfo:(id)info refinementsQuery:(id)query recentAutocompleteSessionData:(id)data
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SearchSessionManager *)self coordinator];
-  v15 = [v14 newTraits];
+  itemCopy = item;
+  infoCopy = info;
+  queryCopy = query;
+  dataCopy = data;
+  coordinator = [(SearchSessionManager *)self coordinator];
+  newTraits = [coordinator newTraits];
 
-  if (!v15)
+  if (!newTraits)
   {
-    v16 = [(SearchSessionManager *)self traitsProvider];
+    traitsProvider = [(SearchSessionManager *)self traitsProvider];
 
-    if (v16)
+    if (traitsProvider)
     {
-      v17 = [(SearchSessionManager *)self traitsProvider];
-      v15 = [v17 currentTraits];
+      traitsProvider2 = [(SearchSessionManager *)self traitsProvider];
+      newTraits = [traitsProvider2 currentTraits];
     }
 
     else
     {
-      v15 = 0;
+      newTraits = 0;
     }
   }
 
@@ -357,56 +357,56 @@ LABEL_16:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v75 = v10;
+    v75 = itemCopy;
     v76 = 2112;
-    *v77 = v11;
+    *v77 = infoCopy;
     *&v77[8] = 2112;
-    *&v77[10] = v13;
+    *&v77[10] = dataCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Performing search for item: %@. dict: %@. session data: %@", buf, 0x20u);
   }
 
   v19 = sub_10079927C();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
-    v20 = [v15 timeSinceMapViewportChanged];
+    timeSinceMapViewportChanged = [newTraits timeSinceMapViewportChanged];
     *buf = 138412802;
-    v75 = v10;
+    v75 = itemCopy;
     v76 = 1024;
-    *v77 = v20;
+    *v77 = timeSinceMapViewportChanged;
     *&v77[4] = 2112;
-    *&v77[6] = v13;
+    *&v77[6] = dataCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Performing search for item: %@, timeSinceMapViewportChanged: %u,  session data: %@", buf, 0x1Cu);
   }
 
-  v21 = [v11 objectForKeyedSubscript:@"SearchSessionIsSuggestionSearch"];
-  v69 = [v21 BOOLValue];
+  v21 = [infoCopy objectForKeyedSubscript:@"SearchSessionIsSuggestionSearch"];
+  bOOLValue = [v21 BOOLValue];
 
-  v22 = [v11 objectForKeyedSubscript:@"SearchSessionIsAutoRedoSearch"];
-  v73 = [v22 BOOLValue];
+  v22 = [infoCopy objectForKeyedSubscript:@"SearchSessionIsAutoRedoSearch"];
+  bOOLValue2 = [v22 BOOLValue];
 
-  v23 = [v11 objectForKeyedSubscript:@"SearchSessionIsLowFuelSearch"];
-  v67 = [v23 BOOLValue];
+  v23 = [infoCopy objectForKeyedSubscript:@"SearchSessionIsLowFuelSearch"];
+  bOOLValue3 = [v23 BOOLValue];
 
-  v24 = [v11 objectForKeyedSubscript:@"SearchSessionShouldReuseSearchSession"];
-  v68 = [v24 BOOLValue];
+  v24 = [infoCopy objectForKeyedSubscript:@"SearchSessionShouldReuseSearchSession"];
+  bOOLValue4 = [v24 BOOLValue];
 
-  v25 = [v11 objectForKeyedSubscript:@"SearchSessionFromRefinementBar"];
-  v72 = [v25 BOOLValue];
+  v25 = [infoCopy objectForKeyedSubscript:@"SearchSessionFromRefinementBar"];
+  bOOLValue5 = [v25 BOOLValue];
 
-  v26 = [v11 objectForKeyedSubscript:@"SearchSessionIsSearchAlongRoute"];
-  v27 = [v26 BOOLValue];
+  v26 = [infoCopy objectForKeyedSubscript:@"SearchSessionIsSearchAlongRoute"];
+  bOOLValue6 = [v26 BOOLValue];
 
-  v28 = [v11 objectForKeyedSubscript:@"SearchSessionAddStopFromWaypointEditor"];
-  v71 = [v28 BOOLValue];
+  v28 = [infoCopy objectForKeyedSubscript:@"SearchSessionAddStopFromWaypointEditor"];
+  bOOLValue7 = [v28 BOOLValue];
 
-  v29 = [v11 objectForKeyedSubscript:@"SearchSessionAddStopReplacingServerProvidedWaypoint"];
-  v30 = [v29 BOOLValue];
+  v29 = [infoCopy objectForKeyedSubscript:@"SearchSessionAddStopReplacingServerProvidedWaypoint"];
+  bOOLValue8 = [v29 BOOLValue];
 
-  v31 = [v11 objectForKeyedSubscript:@"SearchSessionSuppressHistoryEntry"];
+  v31 = [infoCopy objectForKeyedSubscript:@"SearchSessionSuppressHistoryEntry"];
 
   if (v31)
   {
-    v32 = [v11 objectForKeyedSubscript:@"SearchSessionSuppressHistoryEntry"];
+    v32 = [infoCopy objectForKeyedSubscript:@"SearchSessionSuppressHistoryEntry"];
     v66 = [v32 BOOLValue] ^ 1;
   }
 
@@ -415,124 +415,124 @@ LABEL_16:
     v66 = 1;
   }
 
-  v70 = v12;
-  v33 = [v11 objectForKeyedSubscript:@"SearchSessionTraitsSource"];
+  v70 = queryCopy;
+  v33 = [infoCopy objectForKeyedSubscript:@"SearchSessionTraitsSource"];
 
   if (v33)
   {
-    v34 = [v11 objectForKeyedSubscript:@"SearchSessionTraitsSource"];
-    v35 = [v34 integerValue];
+    v34 = [infoCopy objectForKeyedSubscript:@"SearchSessionTraitsSource"];
+    integerValue = [v34 integerValue];
   }
 
   else
   {
-    v35 = 2;
+    integerValue = 2;
   }
 
-  v36 = [(SearchSessionManager *)self coordinator];
-  [v36 isTouristHere];
-  [v15 setIsTourist:?];
+  coordinator2 = [(SearchSessionManager *)self coordinator];
+  [coordinator2 isTouristHere];
+  [newTraits setIsTourist:?];
 
-  [v15 setNavigating:v27];
-  [v15 setSource:v35];
-  v37 = [v13 autocompleteSessionData];
-  [v15 setRecentAutocompleteSessionData:v37];
+  [newTraits setNavigating:bOOLValue6];
+  [newTraits setSource:integerValue];
+  autocompleteSessionData = [dataCopy autocompleteSessionData];
+  [newTraits setRecentAutocompleteSessionData:autocompleteSessionData];
 
-  v38 = [v11 objectForKeyedSubscript:@"SearchSessionTraits"];
+  v38 = [infoCopy objectForKeyedSubscript:@"SearchSessionTraits"];
 
   if (v38)
   {
-    v39 = [v11 objectForKeyedSubscript:@"SearchSessionTraits"];
+    v39 = [infoCopy objectForKeyedSubscript:@"SearchSessionTraits"];
 
-    v15 = v39;
+    newTraits = v39;
   }
 
-  [v15 setSearchOriginationType:0];
+  [newTraits setSearchOriginationType:0];
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
     if ([(SearchSessionManager *)self _userInterfaceIdiom]!= 5)
     {
-      v40 = [v11 objectForKeyedSubscript:@"IsRoutePlanningPresented"];
+      v40 = [infoCopy objectForKeyedSubscript:@"IsRoutePlanningPresented"];
 
       if (v40)
       {
-        v41 = [v11 objectForKeyedSubscript:@"IsRoutePlanningPresented"];
-        v42 = [v41 BOOLValue];
+        v41 = [infoCopy objectForKeyedSubscript:@"IsRoutePlanningPresented"];
+        bOOLValue9 = [v41 BOOLValue];
 
-        if (v42)
+        if (bOOLValue9)
         {
-          [v15 setSearchOriginationType:1];
+          [newTraits setSearchOriginationType:1];
         }
       }
     }
   }
 
-  if (v27)
+  if (bOOLValue6)
   {
-    [v15 setSearchOriginationType:2];
+    [newTraits setSearchOriginationType:2];
   }
 
-  if (!(v73 & 1 | (([v10 isSpotlightSearch] & 1) == 0) | v72 & 1))
+  if (!(bOOLValue2 & 1 | (([itemCopy isSpotlightSearch] & 1) == 0) | bOOLValue5 & 1))
   {
-    v43 = [v10 punchInDetails];
-    v44 = [v43 spotlightEncodedString];
-    [v15 setSpotlightSearchPunchinEncodedString:v44];
+    punchInDetails = [itemCopy punchInDetails];
+    spotlightEncodedString = [punchInDetails spotlightEncodedString];
+    [newTraits setSpotlightSearchPunchinEncodedString:spotlightEncodedString];
   }
 
-  v45 = [v11 objectForKeyedSubscript:@"SearchSessionIsSearchAlongRouteEVStationRequest"];
+  v45 = [infoCopy objectForKeyedSubscript:@"SearchSessionIsSearchAlongRouteEVStationRequest"];
 
   if (v45)
   {
-    [v15 setSearchOriginationType:3];
+    [newTraits setSearchOriginationType:3];
     v46 = objc_alloc_init(GEOSearchImplicitFilterInfo);
     [v46 setSearchImplicitType:1];
-    v47 = [v11 objectForKeyedSubscript:@"SearchSessionSearchAlongRouteImplicitRequestMUID"];
+    v47 = [infoCopy objectForKeyedSubscript:@"SearchSessionSearchAlongRouteImplicitRequestMUID"];
     [v46 setSearchAlongRouteMuid:v47];
 
-    [v15 setSearchImplicitFilterInfo:v46];
+    [newTraits setSearchImplicitFilterInfo:v46];
   }
 
-  if (v71)
+  if (bOOLValue7)
   {
-    [v15 setSearchOriginationType:1];
-    v48 = [(SearchSessionManager *)self searchOriginationPreviousLatlng];
+    [newTraits setSearchOriginationType:1];
+    searchOriginationPreviousLatlng = [(SearchSessionManager *)self searchOriginationPreviousLatlng];
 
-    if (!v48)
+    if (!searchOriginationPreviousLatlng)
     {
-      v49 = [v11 objectForKeyedSubscript:@"SearchSessionAddStopPreviousLatLng"];
+      v49 = [infoCopy objectForKeyedSubscript:@"SearchSessionAddStopPreviousLatLng"];
       [(SearchSessionManager *)self setSearchOriginationPreviousLatlng:v49];
     }
 
-    [v15 setSearchOriginationEditingServerWaypoints:v30];
-    v50 = [(SearchSessionManager *)self searchOriginationPreviousLatlng];
-    [v15 setSearchOriginationPreviousLatlng:v50];
+    [newTraits setSearchOriginationEditingServerWaypoints:bOOLValue8];
+    searchOriginationPreviousLatlng2 = [(SearchSessionManager *)self searchOriginationPreviousLatlng];
+    [newTraits setSearchOriginationPreviousLatlng:searchOriginationPreviousLatlng2];
   }
 
-  [v15 addSupportedSearchTierType:1];
+  [newTraits addSupportedSearchTierType:1];
   if (MapsFeature_IsEnabled_ShelbyvilleSearch())
   {
     Integer = GEOConfigGetInteger();
     if (Integer >= 1)
     {
       v52 = Integer;
-      [v15 addSupportedSearchTierType:2];
-      [v15 setAuxiliaryTierNumResults:v52];
+      [newTraits addSupportedSearchTierType:2];
+      [newTraits setAuxiliaryTierNumResults:v52];
     }
 
-    [v15 addKnownRefinementType:1];
-    [v15 addKnownRefinementType:3];
-    [v15 addKnownRefinementType:4];
+    [newTraits addKnownRefinementType:1];
+    [newTraits addKnownRefinementType:3];
+    [newTraits addKnownRefinementType:4];
     if (MapsFeature_IsEnabled_SearchAndDiscovery())
     {
-      [v15 addKnownRefinementType:5];
+      [newTraits addKnownRefinementType:5];
     }
 
-    [v15 addSupportedPlaceSummaryFormatType:1];
-    [v15 addSupportedPlaceSummaryFormatType:2];
-    [v15 addSupportedPlaceSummaryFormatType:3];
+    [newTraits addSupportedPlaceSummaryFormatType:1];
+    [newTraits addSupportedPlaceSummaryFormatType:2];
+    [newTraits addSupportedPlaceSummaryFormatType:3];
   }
 
-  [v15 useOnlineToOfflineFailoverRequestModeIfAllowed];
+  [newTraits useOnlineToOfflineFailoverRequestModeIfAllowed];
   if (MapsFeature_IsEnabled_VisitedPlaces())
   {
     v53 = 37;
@@ -543,163 +543,163 @@ LABEL_16:
     v53 = 35;
   }
 
-  [v15 setPlaceSummaryRevision:v53];
-  v54 = [(SearchSessionManager *)self lastSearchSessionViewport];
-  if (v54)
+  [newTraits setPlaceSummaryRevision:v53];
+  lastSearchSessionViewport = [(SearchSessionManager *)self lastSearchSessionViewport];
+  if (lastSearchSessionViewport)
   {
-    v55 = v54;
-    v56 = [(SearchSessionManager *)self lastSearchSessionViewport];
-    v57 = [v56 mapRegion];
-    v58 = [v57 isValid];
+    v55 = lastSearchSessionViewport;
+    lastSearchSessionViewport2 = [(SearchSessionManager *)self lastSearchSessionViewport];
+    mapRegion = [lastSearchSessionViewport2 mapRegion];
+    isValid = [mapRegion isValid];
 
-    if (v58)
+    if (isValid)
     {
-      v59 = [(SearchSessionManager *)self lastSearchSessionViewport];
-      [v15 setPreviousSearchViewport:v59];
+      lastSearchSessionViewport3 = [(SearchSessionManager *)self lastSearchSessionViewport];
+      [newTraits setPreviousSearchViewport:lastSearchSessionViewport3];
     }
   }
 
-  [v15 setResultRefinementQuery:v70];
-  if (v69)
+  [newTraits setResultRefinementQuery:v70];
+  if (bOOLValue)
   {
-    v60 = [v10 suggestion];
-    [(SearchSession *)self->_searchSession setSource:v35];
-    [(SearchSession *)self->_searchSession suggestionSearch:v60 withTraits:v15];
+    suggestion = [itemCopy suggestion];
+    [(SearchSession *)self->_searchSession setSource:integerValue];
+    [(SearchSession *)self->_searchSession suggestionSearch:suggestion withTraits:newTraits];
   }
 
-  else if (v73)
+  else if (bOOLValue2)
   {
-    [v15 setSearchRequestType:2];
-    [(SearchSession *)self->_searchSession setSource:v35];
-    [(SearchSession *)self->_searchSession redoSearchWithTraits:v15];
+    [newTraits setSearchRequestType:2];
+    [(SearchSession *)self->_searchSession setSource:integerValue];
+    [(SearchSession *)self->_searchSession redoSearchWithTraits:newTraits];
   }
 
   else
   {
     searchSession = self->_searchSession;
-    if (!v68 || !searchSession)
+    if (!bOOLValue4 || !searchSession)
     {
       [(SearchSession *)searchSession unregisterObserver:self];
       [(SearchSession *)self->_searchSession invalidateWithReason:1];
       v62 = self->_searchSession;
       self->_searchSession = 0;
 
-      v63 = [[SearchSession alloc] initWithOrigin:2 * (v35 == 1) options:v67];
+      v63 = [[SearchSession alloc] initWithOrigin:2 * (integerValue == 1) options:bOOLValue3];
       v64 = self->_searchSession;
       self->_searchSession = v63;
 
-      [(SearchSession *)self->_searchSession setTraits:v15];
-      [(SearchSession *)self->_searchSession setSource:v35];
+      [(SearchSession *)self->_searchSession setTraits:newTraits];
+      [(SearchSession *)self->_searchSession setSource:integerValue];
       [(SearchSession *)self->_searchSession setShouldCreateHistoryEntry:v66];
-      [(SearchSession *)self->_searchSession setIsResultRefinementsBarSearch:v72];
-      [(SearchSession *)self->_searchSession setIsAddStopFromWaypointEditor:v71];
-      v65 = [(SearchSessionManager *)self previousSearchSessionData];
-      [(SearchSession *)self->_searchSession setSearchSessionData:v65];
+      [(SearchSession *)self->_searchSession setIsResultRefinementsBarSearch:bOOLValue5];
+      [(SearchSession *)self->_searchSession setIsAddStopFromWaypointEditor:bOOLValue7];
+      previousSearchSessionData = [(SearchSessionManager *)self previousSearchSessionData];
+      [(SearchSession *)self->_searchSession setSearchSessionData:previousSearchSessionData];
 
       [(SearchSession *)self->_searchSession registerObserver:self];
       searchSession = self->_searchSession;
     }
 
-    [(SearchSession *)searchSession startSearch:v10];
+    [(SearchSession *)searchSession startSearch:itemCopy];
   }
 }
 
-- (void)searchSessionDidInvalidate:(id)a3 reason:(unint64_t)a4
+- (void)searchSessionDidInvalidate:(id)invalidate reason:(unint64_t)reason
 {
-  v6 = a3;
-  if (self->_searchSession == v6)
+  invalidateCopy = invalidate;
+  if (self->_searchSession == invalidateCopy)
   {
     v7 = sub_100FD806C();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v10 = 138412546;
-      v11 = v6;
+      v11 = invalidateCopy;
       v12 = 2048;
-      v13 = a4;
+      reasonCopy = reason;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "searchSessionDidInvalidate: %@. Reason: %lu", &v10, 0x16u);
     }
 
-    v8 = [(SearchSessionManager *)self coordinator];
-    [v8 clearSearch];
+    coordinator = [(SearchSessionManager *)self coordinator];
+    [coordinator clearSearch];
 
-    v9 = [(SearchSessionManager *)self observers];
-    [v9 searchSessionManagerSessionDidInvalidate];
+    observers = [(SearchSessionManager *)self observers];
+    [observers searchSessionManagerSessionDidInvalidate];
   }
 }
 
-- (void)searchSessionDidFail:(id)a3
+- (void)searchSessionDidFail:(id)fail
 {
-  v4 = a3;
+  failCopy = fail;
   v5 = sub_100FD806C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v18 = 138412290;
-    v19 = v4;
+    v19 = failCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "SearchSession did fail: %@", &v18, 0xCu);
   }
 
   if ([(SearchSessionManager *)self isSearchAlongTheRoute])
   {
-    [(SearchSessionManager *)self _handleSearchAlongRouteSearchSession:v4];
+    [(SearchSessionManager *)self _handleSearchAlongRouteSearchSession:failCopy];
     goto LABEL_16;
   }
 
-  v6 = [(SearchSessionManager *)self coordinator];
-  if (v6)
+  coordinator = [(SearchSessionManager *)self coordinator];
+  if (coordinator)
   {
   }
 
   else
   {
-    v17 = [(SearchSessionManager *)self traitsProvider];
+    traitsProvider = [(SearchSessionManager *)self traitsProvider];
 
-    if (v17)
+    if (traitsProvider)
     {
-      v16 = [(SearchSessionManager *)self observers];
-      [v16 searchSessionManagerSessionDidFail];
+      observers = [(SearchSessionManager *)self observers];
+      [observers searchSessionManagerSessionDidFail];
       goto LABEL_15;
     }
   }
 
   if ([(SearchSessionManager *)self _userInterfaceIdiom]== 5)
   {
-    v7 = [(SearchSessionManager *)self coordinator];
-    [v7 presentLoadingResults];
+    coordinator2 = [(SearchSessionManager *)self coordinator];
+    [coordinator2 presentLoadingResults];
 
 LABEL_11:
-    v12 = [(SearchSessionManager *)self observers];
-    [v12 searchSessionManagerSessionDidFail];
+    observers2 = [(SearchSessionManager *)self observers];
+    [observers2 searchSessionManagerSessionDidFail];
 
-    v13 = [(SearchSessionManager *)self delegate];
-    [v13 updateFloatingControlsWithSearchSession:v4];
+    delegate = [(SearchSessionManager *)self delegate];
+    [delegate updateFloatingControlsWithSearchSession:failCopy];
 
-    v14 = [v4 lastError];
-    v15 = [v14 code];
+    lastError = [failCopy lastError];
+    code = [lastError code];
 
-    if (v15 != -8)
+    if (code != -8)
     {
       goto LABEL_16;
     }
 
-    v16 = [(SearchSessionManager *)self coordinator];
-    [v16 clearSearchPins];
+    observers = [(SearchSessionManager *)self coordinator];
+    [observers clearSearchPins];
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v8 = [v4 traits];
-  v9 = [v8 searchOriginationType];
+  traits = [failCopy traits];
+  searchOriginationType = [traits searchOriginationType];
 
-  if (v9 == 1)
+  if (searchOriginationType == 1)
   {
     goto LABEL_11;
   }
 
-  v10 = [(SearchSessionManager *)self coordinator];
-  v11 = [v10 isRoutePlanningPresented];
+  coordinator3 = [(SearchSessionManager *)self coordinator];
+  isRoutePlanningPresented = [coordinator3 isRoutePlanningPresented];
 
-  if ((v11 & 1) == 0)
+  if ((isRoutePlanningPresented & 1) == 0)
   {
     goto LABEL_11;
   }
@@ -707,50 +707,50 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)searchSessionDidChangeSearchResults:(id)a3
+- (void)searchSessionDidChangeSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = sub_100FD806C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v84 = v4;
+    v84 = resultsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Received results for searchSession: %@", buf, 0xCu);
   }
 
-  v6 = [v4 searchInfo];
-  v7 = [v6 searchSessionData];
-  [(SearchSessionManager *)self setPreviousSearchSessionData:v7];
+  searchInfo = [resultsCopy searchInfo];
+  searchSessionData = [searchInfo searchSessionData];
+  [(SearchSessionManager *)self setPreviousSearchSessionData:searchSessionData];
 
   if (![(SearchSessionManager *)self isSearchAlongTheRoute])
   {
-    v8 = [(SearchSessionManager *)self coordinator];
-    if (v8)
+    coordinator = [(SearchSessionManager *)self coordinator];
+    if (coordinator)
     {
     }
 
     else
     {
-      v13 = [(SearchSessionManager *)self traitsProvider];
-      v14 = v13 == 0;
+      traitsProvider = [(SearchSessionManager *)self traitsProvider];
+      v14 = traitsProvider == 0;
 
       if (!v14)
       {
-        v15 = [(SearchSessionManager *)self observers];
-        [v15 searchSessionManagerSessionDidReceiveUpdate];
+        observers = [(SearchSessionManager *)self observers];
+        [observers searchSessionManagerSessionDidReceiveUpdate];
 
         goto LABEL_21;
       }
     }
 
-    v9 = [v4 searchInfo];
-    v10 = [v9 clientResolvedResult];
+    searchInfo2 = [resultsCopy searchInfo];
+    clientResolvedResult = [searchInfo2 clientResolvedResult];
 
-    if (v10)
+    if (clientResolvedResult)
     {
-      v11 = [(SearchSessionManager *)self coordinator];
-      v12 = [v9 clientResolvedResult];
-      [v11 viewController:0 selectClientResolvedItem:v12 fromSearchInfo:v9 withUserInfo:0];
+      coordinator2 = [(SearchSessionManager *)self coordinator];
+      clientResolvedResult2 = [searchInfo2 clientResolvedResult];
+      [coordinator2 viewController:0 selectClientResolvedItem:clientResolvedResult2 fromSearchInfo:searchInfo2 withUserInfo:0];
 LABEL_17:
 
       if ([(SearchSessionManager *)self _userInterfaceIdiom]!= 5)
@@ -760,122 +760,122 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v20 = [(SearchSessionManager *)self observers];
-      [v20 searchSessionManagerSessionDidReceiveUpdate];
+      observers2 = [(SearchSessionManager *)self observers];
+      [observers2 searchSessionManagerSessionDidReceiveUpdate];
 LABEL_19:
 
       goto LABEL_20;
     }
 
-    v16 = [v9 directionIntent];
+    directionIntent = [searchInfo2 directionIntent];
 
-    if (v16)
+    if (directionIntent)
     {
-      v11 = [(SearchSessionManager *)self coordinator];
-      v12 = [v9 directionIntent];
-      v17 = [v9 results];
-      [v11 viewController:0 doDirectionIntent:v12 withSearchResults:v17];
+      coordinator2 = [(SearchSessionManager *)self coordinator];
+      clientResolvedResult2 = [searchInfo2 directionIntent];
+      results = [searchInfo2 results];
+      [coordinator2 viewController:0 doDirectionIntent:clientResolvedResult2 withSearchResults:results];
 
       goto LABEL_17;
     }
 
-    if ([v9 singlePlaceCollection])
+    if ([searchInfo2 singlePlaceCollection])
     {
-      v11 = [(SearchSessionManager *)self coordinator];
-      v12 = [v9 placeCollections];
-      v18 = [v12 firstObject];
-      [v11 viewController:0 showFullyClientizedCuratedCollection:v18 replaceViewController:MapsFeature_IsEnabled_SearchAndDiscovery() ^ 1];
+      coordinator2 = [(SearchSessionManager *)self coordinator];
+      clientResolvedResult2 = [searchInfo2 placeCollections];
+      firstObject = [clientResolvedResult2 firstObject];
+      [coordinator2 viewController:0 showFullyClientizedCuratedCollection:firstObject replaceViewController:MapsFeature_IsEnabled_SearchAndDiscovery() ^ 1];
 
       goto LABEL_17;
     }
 
-    v19 = [v9 publisher];
+    publisher = [searchInfo2 publisher];
 
-    if (v19)
+    if (publisher)
     {
-      v11 = [(SearchSessionManager *)self coordinator];
-      v12 = [v9 publisher];
-      [v11 viewControllerShowPublisher:v12 replaceViewController:MapsFeature_IsEnabled_SearchAndDiscovery() ^ 1];
+      coordinator2 = [(SearchSessionManager *)self coordinator];
+      clientResolvedResult2 = [searchInfo2 publisher];
+      [coordinator2 viewControllerShowPublisher:clientResolvedResult2 replaceViewController:MapsFeature_IsEnabled_SearchAndDiscovery() ^ 1];
       goto LABEL_17;
     }
 
     v21 = sub_100FD806C();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v4 searchFieldItem];
+      searchFieldItem = [resultsCopy searchFieldItem];
       *buf = 138412546;
-      v84 = v22;
+      v84 = searchFieldItem;
       v85 = 2112;
-      v86 = v4;
+      v86 = resultsCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Processing search results for item: %@ session: %@", buf, 0x16u);
     }
 
-    if ([v4 isRedoOrAutoRedoSearchType])
+    if ([resultsCopy isRedoOrAutoRedoSearchType])
     {
-      v23 = 0;
+      shouldFrameMapViewport = 0;
     }
 
     else
     {
-      v24 = [v9 mapRegion];
-      v23 = v24 != 0;
+      mapRegion = [searchInfo2 mapRegion];
+      shouldFrameMapViewport = mapRegion != 0;
     }
 
-    v25 = [v4 isVenueQuery];
-    if ([v4 isSpotlightPunchInSearch])
+    isVenueQuery = [resultsCopy isVenueQuery];
+    if ([resultsCopy isSpotlightPunchInSearch])
     {
-      v20 = [(SearchSessionManager *)self _spotlightMatchingSearchResult:v4 searchInfo:v9];
-      if (v20)
+      observers2 = [(SearchSessionManager *)self _spotlightMatchingSearchResult:resultsCopy searchInfo:searchInfo2];
+      if (observers2)
       {
 LABEL_32:
-        if ([v4 isSpotlightPunchInSearch] && objc_msgSend(v4, "isSingleResultToShowAsPlacecard"))
+        if ([resultsCopy isSpotlightPunchInSearch] && objc_msgSend(resultsCopy, "isSingleResultToShowAsPlacecard"))
         {
           if ([(SearchSessionManager *)self _userInterfaceIdiom]== 5)
           {
-            [(SearchSessionManager *)self _presentLoadingResults:v4];
-            v27 = [(SearchSessionManager *)self observers];
-            [v27 searchSessionManagerSessionDidReceiveUpdate];
+            [(SearchSessionManager *)self _presentLoadingResults:resultsCopy];
+            observers3 = [(SearchSessionManager *)self observers];
+            [observers3 searchSessionManagerSessionDidReceiveUpdate];
           }
 
           else
           {
-            v50 = [v20 mapItem];
-            v51 = [v50 _identifier];
-            v52 = [v9 spotlightMapsIdentifier];
-            v53 = [v51 isEqual:v52];
+            mapItem = [observers2 mapItem];
+            _identifier = [mapItem _identifier];
+            spotlightMapsIdentifier = [searchInfo2 spotlightMapsIdentifier];
+            v53 = [_identifier isEqual:spotlightMapsIdentifier];
 
             if ((v53 & 1) == 0)
             {
               v54 = sub_100FD806C();
               if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
               {
-                v55 = [v9 spotlightMapsIdentifier];
-                v56 = [v20 mapItem];
-                v57 = [v56 _identifier];
+                spotlightMapsIdentifier2 = [searchInfo2 spotlightMapsIdentifier];
+                mapItem2 = [observers2 mapItem];
+                _identifier2 = [mapItem2 _identifier];
                 *buf = 138478083;
-                v84 = v55;
+                v84 = spotlightMapsIdentifier2;
                 v85 = 2113;
-                v86 = v57;
+                v86 = _identifier2;
               }
             }
 
-            v27 = [(SearchSessionManager *)self coordinator];
-            [v27 viewController:0 selectSearchResult:v20 addToHistory:1 source:8 saveSelectionState:1 replaceCurrentCard:1];
+            observers3 = [(SearchSessionManager *)self coordinator];
+            [observers3 viewController:0 selectSearchResult:observers2 addToHistory:1 source:8 saveSelectionState:1 replaceCurrentCard:1];
           }
 
-          v23 = 1;
+          shouldFrameMapViewport = 1;
         }
 
-        else if (v25)
+        else if (isVenueQuery)
         {
-          if (!v23)
+          if (!shouldFrameMapViewport)
           {
             goto LABEL_58;
           }
 
-          v27 = [v4 searchFieldItem];
-          v28 = [v27 venueCategoryItem];
-          v23 = [v28 shouldFrameMapViewport];
+          observers3 = [resultsCopy searchFieldItem];
+          venueCategoryItem = [observers3 venueCategoryItem];
+          shouldFrameMapViewport = [venueCategoryItem shouldFrameMapViewport];
         }
 
         else
@@ -883,81 +883,81 @@ LABEL_32:
           v29 = sub_100FD806C();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
-            v30 = [v4 searchFieldItem];
-            v31 = [v30 searchString];
+            searchFieldItem2 = [resultsCopy searchFieldItem];
+            searchString = [searchFieldItem2 searchString];
             *buf = 138412290;
-            v84 = v31;
+            v84 = searchString;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Processing no venue search results for Query %@", buf, 0xCu);
           }
 
-          if ([v4 isSingleResultToShowAsPlacecard])
+          if ([resultsCopy isSingleResultToShowAsPlacecard])
           {
-            v32 = [v9 results];
-            v33 = [v32 firstObject];
+            results2 = [searchInfo2 results];
+            firstObject2 = [results2 firstObject];
 
-            if ([v9 hasRelatedSearchSuggestion])
+            if ([searchInfo2 hasRelatedSearchSuggestion])
             {
               v34 = [RelatedSearchSuggestion alloc];
-              v35 = [v9 resultDisplayHeader];
-              v36 = [v9 substitutes];
-              [v9 dymSuggestionVisibleTime];
-              v38 = -[RelatedSearchSuggestion initWithResultDisplayHeader:substitutes:visibleTime:showCloseButton:](v34, "initWithResultDisplayHeader:substitutes:visibleTime:showCloseButton:", v35, v36, [v9 showDymSuggestionCloseButton], v37);
-              [v33 setRelatedSearchSuggestion:v38];
+              resultDisplayHeader = [searchInfo2 resultDisplayHeader];
+              substitutes = [searchInfo2 substitutes];
+              [searchInfo2 dymSuggestionVisibleTime];
+              v38 = -[RelatedSearchSuggestion initWithResultDisplayHeader:substitutes:visibleTime:showCloseButton:](v34, "initWithResultDisplayHeader:substitutes:visibleTime:showCloseButton:", resultDisplayHeader, substitutes, [searchInfo2 showDymSuggestionCloseButton], v37);
+              [firstObject2 setRelatedSearchSuggestion:v38];
             }
 
-            v39 = [(SearchSessionManager *)self delegate];
-            [v39 retainSearchQueryForSelectedSearchResult:v33];
+            delegate = [(SearchSessionManager *)self delegate];
+            [delegate retainSearchQueryForSelectedSearchResult:firstObject2];
 
-            v40 = [v4 shouldCreateHistoryEntry];
-            v41 = [v33 address];
-            if (v41)
+            shouldCreateHistoryEntry = [resultsCopy shouldCreateHistoryEntry];
+            address = [firstObject2 address];
+            if (address)
             {
-              v42 = [v33 address];
-              v43 = [v42 isMeCard];
+              address2 = [firstObject2 address];
+              isMeCard = [address2 isMeCard];
 
-              v40 &= v43 ^ 1;
+              shouldCreateHistoryEntry &= isMeCard ^ 1;
             }
 
-            v44 = [v9 autocompletePerson];
-            v45 = v44 == 0;
+            autocompletePerson = [searchInfo2 autocompletePerson];
+            v45 = autocompletePerson == 0;
 
-            v46 = [(SearchSessionManager *)self coordinator];
-            [v46 viewController:0 selectSearchResult:v33 addToHistory:v45 & v40 source:2 saveSelectionState:1 replaceCurrentCard:1];
+            coordinator3 = [(SearchSessionManager *)self coordinator];
+            [coordinator3 viewController:0 selectSearchResult:firstObject2 addToHistory:v45 & shouldCreateHistoryEntry source:2 saveSelectionState:1 replaceCurrentCard:1];
 
             v47 = +[MKMapService sharedService];
-            v48 = [v4 searchFieldItem];
-            v49 = [v48 searchString];
-            [v47 captureUserAction:2015 onTarget:101 queryString:v49];
+            searchFieldItem3 = [resultsCopy searchFieldItem];
+            searchString2 = [searchFieldItem3 searchString];
+            [v47 captureUserAction:2015 onTarget:101 queryString:searchString2];
 
-            v23 = 1;
+            shouldFrameMapViewport = 1;
           }
 
           else
           {
             if ([(SearchSessionManager *)self _userInterfaceIdiom]== 5)
             {
-              [(SearchSessionManager *)self _presentLoadingResults:v4];
+              [(SearchSessionManager *)self _presentLoadingResults:resultsCopy];
             }
 
-            v33 = v20;
+            firstObject2 = observers2;
           }
 
-          v27 = [(SearchSessionManager *)self observers];
-          [v27 searchSessionManagerSessionDidReceiveUpdate];
-          v20 = v33;
+          observers3 = [(SearchSessionManager *)self observers];
+          [observers3 searchSessionManagerSessionDidReceiveUpdate];
+          observers2 = firstObject2;
         }
 
 LABEL_58:
-        v58 = [v4 currentResultsSearchInfo];
-        v59 = [v58 shouldInjectSearchResults];
+        currentResultsSearchInfo = [resultsCopy currentResultsSearchInfo];
+        shouldInjectSearchResults = [currentResultsSearchInfo shouldInjectSearchResults];
 
-        if (!v59)
+        if (!shouldInjectSearchResults)
         {
-          if (([v4 singleResultMode] & 1) == 0)
+          if (([resultsCopy singleResultMode] & 1) == 0)
           {
-            v65 = [(SearchSessionManager *)self coordinator];
-            v66 = [v65 searchPinsManager];
-            [v66 clearSearchPins];
+            coordinator4 = [(SearchSessionManager *)self coordinator];
+            searchPinsManager = [coordinator4 searchPinsManager];
+            [searchPinsManager clearSearchPins];
           }
 
           goto LABEL_75;
@@ -970,19 +970,19 @@ LABEL_58:
         v81[3] = &unk_101660670;
         objc_copyWeak(&v82, buf);
         v80 = objc_retainBlock(v81);
-        if ([v4 singleResultMode])
+        if ([resultsCopy singleResultMode])
         {
-          v60 = [v9 autocompletePerson];
-          v61 = v60 == 0;
+          autocompletePerson2 = [searchInfo2 autocompletePerson];
+          v61 = autocompletePerson2 == 0;
 
-          v62 = [(SearchSessionManager *)self coordinator];
-          v63 = [v62 searchPinsManager];
-          v64 = [v4 currentResultsSearchInfo];
+          coordinator5 = [(SearchSessionManager *)self coordinator];
+          searchPinsManager2 = [coordinator5 searchPinsManager];
+          currentResultsSearchInfo2 = [resultsCopy currentResultsSearchInfo];
           if (v61)
           {
-            v69 = [v4 searchFieldItem];
-            v70 = [v69 historyItem];
-            [v63 setSingleSearchPinFromSearchInfo:v64 scrollToResults:v23 displayPlaceCardForResult:v20 historyItem:v70 animated:1 completion:v80];
+            searchFieldItem4 = [resultsCopy searchFieldItem];
+            historyItem = [searchFieldItem4 historyItem];
+            [searchPinsManager2 setSingleSearchPinFromSearchInfo:currentResultsSearchInfo2 scrollToResults:shouldFrameMapViewport displayPlaceCardForResult:observers2 historyItem:historyItem animated:1 completion:v80];
 
             goto LABEL_68;
           }
@@ -990,26 +990,26 @@ LABEL_58:
 
         else
         {
-          v67 = [v9 autocompletePerson];
-          v68 = v67 == 0;
+          autocompletePerson3 = [searchInfo2 autocompletePerson];
+          v68 = autocompletePerson3 == 0;
 
-          v62 = [(SearchSessionManager *)self coordinator];
-          v63 = [v62 searchPinsManager];
-          v64 = [v4 currentResultsSearchInfo];
+          coordinator5 = [(SearchSessionManager *)self coordinator];
+          searchPinsManager2 = [coordinator5 searchPinsManager];
+          currentResultsSearchInfo2 = [resultsCopy currentResultsSearchInfo];
           if (v68)
           {
-            [v63 setSearchPinsFromSearchInfo:v64 scrollToResults:v23 displayPlaceCardForResult:v20 animated:1 completion:v80];
+            [searchPinsManager2 setSearchPinsFromSearchInfo:currentResultsSearchInfo2 scrollToResults:shouldFrameMapViewport displayPlaceCardForResult:observers2 animated:1 completion:v80];
             goto LABEL_68;
           }
         }
 
-        [v63 setSearchPinsFromSearchInfo:v64 scrollToResults:v23 displayPlaceCardForResult:0 animated:1 completion:v80];
+        [searchPinsManager2 setSearchPinsFromSearchInfo:currentResultsSearchInfo2 scrollToResults:shouldFrameMapViewport displayPlaceCardForResult:0 animated:1 completion:v80];
 LABEL_68:
 
-        v71 = [v4 isSpotlightPunchInSearch];
-        if (v20)
+        isSpotlightPunchInSearch = [resultsCopy isSpotlightPunchInSearch];
+        if (observers2)
         {
-          v72 = v71;
+          v72 = isSpotlightPunchInSearch;
         }
 
         else
@@ -1017,174 +1017,174 @@ LABEL_68:
           v72 = 0;
         }
 
-        if (v72 == 1 && ([v4 isSingleResultToShowAsPlacecard] & 1) == 0)
+        if (v72 == 1 && ([resultsCopy isSingleResultToShowAsPlacecard] & 1) == 0)
         {
-          v73 = [(SearchSessionManager *)self coordinator];
-          v74 = [v73 searchPinsManager];
-          [v74 selectAndShowSearchResult:v20 animated:1];
+          coordinator6 = [(SearchSessionManager *)self coordinator];
+          searchPinsManager3 = [coordinator6 searchPinsManager];
+          [searchPinsManager3 selectAndShowSearchResult:observers2 animated:1];
         }
 
         objc_destroyWeak(&v82);
         objc_destroyWeak(buf);
 LABEL_75:
-        v75 = [(SearchSessionManager *)self delegate];
-        v76 = [v9 results];
-        v77 = [v4 searchFieldItem];
-        v78 = [v9 browseCategories];
-        [v75 handleVenueSearchResultsWithSelectedSearchResult:v76 searchFieldItem:v77 browseCategories:v78];
+        delegate2 = [(SearchSessionManager *)self delegate];
+        results3 = [searchInfo2 results];
+        searchFieldItem5 = [resultsCopy searchFieldItem];
+        browseCategories = [searchInfo2 browseCategories];
+        [delegate2 handleVenueSearchResultsWithSelectedSearchResult:results3 searchFieldItem:searchFieldItem5 browseCategories:browseCategories];
 
-        v79 = [(SearchSessionManager *)self delegate];
-        [v79 updateFloatingControlsWithSearchSession:v4];
+        delegate3 = [(SearchSessionManager *)self delegate];
+        [delegate3 updateFloatingControlsWithSearchSession:resultsCopy];
 
         goto LABEL_19;
       }
 
-      if ([v4 isSingleResultToShowAsPlacecard])
+      if ([resultsCopy isSingleResultToShowAsPlacecard])
       {
-        v26 = [v9 results];
-        v20 = [v26 firstObject];
+        results4 = [searchInfo2 results];
+        observers2 = [results4 firstObject];
 
         goto LABEL_32;
       }
     }
 
-    v20 = 0;
+    observers2 = 0;
     goto LABEL_32;
   }
 
-  [(SearchSessionManager *)self _handleSearchAlongRouteSearchSession:v4];
+  [(SearchSessionManager *)self _handleSearchAlongRouteSearchSession:resultsCopy];
 LABEL_21:
 }
 
-- (void)refreshedEVChargersReceieved:(id)a3
+- (void)refreshedEVChargersReceieved:(id)receieved
 {
-  v10 = a3;
-  v4 = [(SearchSessionManager *)self observers];
-  v5 = [v4 searchSessionShouldUpdateEVChargers];
+  receievedCopy = receieved;
+  observers = [(SearchSessionManager *)self observers];
+  searchSessionShouldUpdateEVChargers = [observers searchSessionShouldUpdateEVChargers];
 
-  if (v5)
+  if (searchSessionShouldUpdateEVChargers)
   {
-    v6 = [(SearchSessionManager *)self coordinator];
-    v7 = [v6 searchPinsManager];
-    [v7 setSearchPins:v10 selectedPin:0 animated:1];
+    coordinator = [(SearchSessionManager *)self coordinator];
+    searchPinsManager = [coordinator searchPinsManager];
+    [searchPinsManager setSearchPins:receievedCopy selectedPin:0 animated:1];
 
-    v8 = [(SearchSessionManager *)self observers];
-    [v8 searchSessionManagerReceiveEVChargersUpdate:v10];
+    observers2 = [(SearchSessionManager *)self observers];
+    [observers2 searchSessionManagerReceiveEVChargersUpdate:receievedCopy];
 
     if ([(SearchSession *)self->_searchSession isVenueQuery])
     {
-      v9 = [(SearchSessionManager *)self delegate];
-      [v9 receivedVenueEVChargersUpdate:v10];
+      delegate = [(SearchSessionManager *)self delegate];
+      [delegate receivedVenueEVChargersUpdate:receievedCopy];
     }
   }
 }
 
-- (void)searchSessionDidChangeSearchFieldItem:(id)a3
+- (void)searchSessionDidChangeSearchFieldItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = sub_100FD806C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = itemCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "searchSessionDidChangeSearchFieldItem: %@", &v8, 0xCu);
   }
 
   if ([(SearchSessionManager *)self isSearchAlongTheRoute])
   {
-    [(SearchSessionManager *)self _handleSearchAlongRouteSearchSession:v4];
+    [(SearchSessionManager *)self _handleSearchAlongRouteSearchSession:itemCopy];
   }
 
   else
   {
-    if (([v4 isVenueQuery] & 1) == 0)
+    if (([itemCopy isVenueQuery] & 1) == 0)
     {
-      v6 = [v4 searchFieldItem];
-      [(SearchSessionManager *)self _handleUpdateSearchFieldWithSearchFieldItem:v6];
+      searchFieldItem = [itemCopy searchFieldItem];
+      [(SearchSessionManager *)self _handleUpdateSearchFieldWithSearchFieldItem:searchFieldItem];
     }
 
-    v7 = [(SearchSessionManager *)self delegate];
-    [v7 updateFloatingControlsWithSearchSession:v4];
+    delegate = [(SearchSessionManager *)self delegate];
+    [delegate updateFloatingControlsWithSearchSession:itemCopy];
   }
 }
 
-- (void)searchSessionWillPerformSearch:(id)a3
+- (void)searchSessionWillPerformSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   v5 = sub_100FD806C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v14 = 138412290;
-    v15 = v4;
+    v15 = searchCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "searchSessionWillPerformSearch: %@", &v14, 0xCu);
   }
 
   if ([(SearchSessionManager *)self isSearchAlongTheRoute])
   {
-    [(SearchSessionManager *)self _handleSearchAlongRouteSearchSession:v4];
+    [(SearchSessionManager *)self _handleSearchAlongRouteSearchSession:searchCopy];
   }
 
   else
   {
-    v6 = [v4 isVenueQuery];
-    v7 = [v4 searchFieldItem];
-    if ((v6 & 1) == 0 && ([v4 restoreSingleResult] & 1) == 0)
+    isVenueQuery = [searchCopy isVenueQuery];
+    searchFieldItem = [searchCopy searchFieldItem];
+    if ((isVenueQuery & 1) == 0 && ([searchCopy restoreSingleResult] & 1) == 0)
     {
       if ([(SearchSessionManager *)self _userInterfaceIdiom]!= 5)
       {
-        v8 = [(SearchSessionManager *)self coordinator];
-        [v8 presentLoadingResults];
+        coordinator = [(SearchSessionManager *)self coordinator];
+        [coordinator presentLoadingResults];
 
-        v9 = [(SearchSessionManager *)self coordinator];
-        [v9 updateResultsViewContent];
+        coordinator2 = [(SearchSessionManager *)self coordinator];
+        [coordinator2 updateResultsViewContent];
       }
 
-      [(SearchSessionManager *)self _handleUpdateSearchFieldWithSearchFieldItem:v7];
-      v10 = [(SearchSessionManager *)self observers];
-      [v10 searchSessionManagerSessionWillPerformSearch];
+      [(SearchSessionManager *)self _handleUpdateSearchFieldWithSearchFieldItem:searchFieldItem];
+      observers = [(SearchSessionManager *)self observers];
+      [observers searchSessionManagerSessionWillPerformSearch];
     }
 
-    v11 = [(SearchSessionManager *)self delegate];
-    [v11 updateFloatingControlsWithSearchSession:v4];
+    delegate = [(SearchSessionManager *)self delegate];
+    [delegate updateFloatingControlsWithSearchSession:searchCopy];
 
-    v12 = [v7 venueCategoryItem];
-    v13 = [(SearchSessionManager *)self coordinator];
-    [v13 presentVenueCategoryWithVenueCategoryItem:v12];
+    venueCategoryItem = [searchFieldItem venueCategoryItem];
+    coordinator3 = [(SearchSessionManager *)self coordinator];
+    [coordinator3 presentVenueCategoryWithVenueCategoryItem:venueCategoryItem];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SearchSessionManager *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(SearchSessionManager *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SearchSessionManager *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(SearchSessionManager *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)_searchSessionWillStart:(id)a3
+- (void)_searchSessionWillStart:(id)start
 {
-  v4 = [a3 object];
-  v5 = v4;
-  if (v4)
+  object = [start object];
+  v5 = object;
+  if (object)
   {
-    if (self->_searchSession != v4)
+    if (self->_searchSession != object)
     {
-      obj = v4;
-      v6 = [(SearchSession *)v4 origin];
+      obj = object;
+      origin = [(SearchSession *)object origin];
       v5 = obj;
-      if (v6)
+      if (origin)
       {
-        v7 = [(SearchSession *)obj currentResultsSearchInfo];
-        v8 = [v7 isSearchAlongRoute];
+        currentResultsSearchInfo = [(SearchSession *)obj currentResultsSearchInfo];
+        isSearchAlongRoute = [currentResultsSearchInfo isSearchAlongRoute];
 
         v5 = obj;
-        if ((v8 & 1) == 0)
+        if ((isSearchAlongRoute & 1) == 0)
         {
           objc_storeStrong(&self->_searchSession, obj);
           [(SearchSession *)self->_searchSession registerObserver:self];

@@ -1,10 +1,10 @@
 @interface ATXDefaultWidgetSuggestion
-- (ATXDefaultWidgetSuggestion)initWithType:(int64_t)a3;
+- (ATXDefaultWidgetSuggestion)initWithType:(int64_t)type;
 @end
 
 @implementation ATXDefaultWidgetSuggestion
 
-- (ATXDefaultWidgetSuggestion)initWithType:(int64_t)a3
+- (ATXDefaultWidgetSuggestion)initWithType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = ATXDefaultWidgetSuggestion;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_widgetType = a3;
+    v4->_widgetType = type;
     v6 = v4;
   }
 

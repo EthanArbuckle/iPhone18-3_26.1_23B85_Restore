@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneStoreTrackingDirectoryWrapper
-- (id)createOutputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4;
-- (void)copyFromWithOrgApacheLuceneStoreDirectory:(id)a3 withNSString:(id)a4 withNSString:(id)a5 withOrgApacheLuceneStoreIOContext:(id)a6;
+- (id)createOutputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context;
+- (void)copyFromWithOrgApacheLuceneStoreDirectory:(id)directory withNSString:(id)string withNSString:(id)sString withOrgApacheLuceneStoreIOContext:(id)context;
 - (void)dealloc;
-- (void)deleteFileWithNSString:(id)a3;
-- (void)renameFileWithNSString:(id)a3 withNSString:(id)a4;
+- (void)deleteFileWithNSString:(id)string;
+- (void)renameFileWithNSString:(id)string withNSString:(id)sString;
 @end
 
 @implementation OrgApacheLuceneStoreTrackingDirectoryWrapper
 
-- (void)deleteFileWithNSString:(id)a3
+- (void)deleteFileWithNSString:(id)string
 {
   in = self->super.in_;
   if (!in || ([(OrgApacheLuceneStoreDirectory *)in deleteFileWithNSString:?], (createdFileNames = self->createdFileNames_) == 0))
@@ -16,33 +16,33 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilSet *)createdFileNames removeWithId:a3];
+  [(JavaUtilSet *)createdFileNames removeWithId:string];
 }
 
-- (id)createOutputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4
+- (id)createOutputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context
 {
   in = self->super.in_;
-  if (!in || (v7 = [(OrgApacheLuceneStoreDirectory *)in createOutputWithNSString:a3 withOrgApacheLuceneStoreIOContext:a4], (createdFileNames = self->createdFileNames_) == 0))
+  if (!in || (v7 = [(OrgApacheLuceneStoreDirectory *)in createOutputWithNSString:string withOrgApacheLuceneStoreIOContext:context], (createdFileNames = self->createdFileNames_) == 0))
   {
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilSet *)createdFileNames addWithId:a3];
+  [(JavaUtilSet *)createdFileNames addWithId:string];
   return v7;
 }
 
-- (void)copyFromWithOrgApacheLuceneStoreDirectory:(id)a3 withNSString:(id)a4 withNSString:(id)a5 withOrgApacheLuceneStoreIOContext:(id)a6
+- (void)copyFromWithOrgApacheLuceneStoreDirectory:(id)directory withNSString:(id)string withNSString:(id)sString withOrgApacheLuceneStoreIOContext:(id)context
 {
   in = self->super.in_;
-  if (!in || ([(OrgApacheLuceneStoreDirectory *)in copyFromWithOrgApacheLuceneStoreDirectory:a3 withNSString:a4 withNSString:a5 withOrgApacheLuceneStoreIOContext:a6], (createdFileNames = self->createdFileNames_) == 0))
+  if (!in || ([(OrgApacheLuceneStoreDirectory *)in copyFromWithOrgApacheLuceneStoreDirectory:directory withNSString:string withNSString:sString withOrgApacheLuceneStoreIOContext:context], (createdFileNames = self->createdFileNames_) == 0))
   {
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilSet *)createdFileNames addWithId:a5];
+  [(JavaUtilSet *)createdFileNames addWithId:sString];
 }
 
-- (void)renameFileWithNSString:(id)a3 withNSString:(id)a4
+- (void)renameFileWithNSString:(id)string withNSString:(id)sString
 {
   in = self->super.in_;
   if (!in)
@@ -59,8 +59,8 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilSet *)v9 addWithId:a4];
-  [(JavaUtilSet *)self->createdFileNames_ removeWithId:a3];
+  [(JavaUtilSet *)v9 addWithId:sString];
+  [(JavaUtilSet *)self->createdFileNames_ removeWithId:string];
 
   objc_sync_exit(createdFileNames);
 }

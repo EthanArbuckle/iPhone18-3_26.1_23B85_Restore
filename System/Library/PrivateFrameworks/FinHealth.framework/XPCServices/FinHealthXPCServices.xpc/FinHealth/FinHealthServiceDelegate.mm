@@ -1,12 +1,12 @@
 @interface FinHealthServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation FinHealthServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v63 = a4;
+  connectionCopy = connection;
   v64 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___FinHealthXPCServicesProtocol];
   v61 = objc_opt_class();
   v4 = objc_opt_class();
@@ -79,10 +79,10 @@
   v56 = [NSSet setWithObjects:v55, objc_opt_class(), 0];
   [v64 setClasses:v56 forSelector:"aggregateFeaturesWithProcessSource:completion:" argumentIndex:0 ofReply:0];
 
-  [v63 setExportedInterface:v64];
-  v57 = [[FinHealthXPCServices alloc] initWithConnection:v63];
-  [v63 setExportedObject:v57];
-  [v63 resume];
+  [connectionCopy setExportedInterface:v64];
+  v57 = [[FinHealthXPCServices alloc] initWithConnection:connectionCopy];
+  [connectionCopy setExportedObject:v57];
+  [connectionCopy resume];
 
   return 1;
 }

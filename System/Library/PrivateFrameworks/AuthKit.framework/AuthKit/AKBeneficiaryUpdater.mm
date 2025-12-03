@@ -1,17 +1,17 @@
 @interface AKBeneficiaryUpdater
 + (id)_beneficiaryWrappedKeyKeychainDescriptor;
-+ (id)removeWrappedKeyFrom:(id)a3;
-+ (id)saveWrappedKeyInKeychain:(id)a3;
++ (id)removeWrappedKeyFrom:(id)from;
++ (id)saveWrappedKeyInKeychain:(id)keychain;
 @end
 
 @implementation AKBeneficiaryUpdater
 
-+ (id)removeWrappedKeyFrom:(id)a3
++ (id)removeWrappedKeyFrom:(id)from
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, from);
   v7 = objc_alloc_init(NSMutableArray);
   v4 = location[0];
   v6 = _objc_retain(v7);
@@ -24,12 +24,12 @@
   return v5;
 }
 
-+ (id)saveWrappedKeyInKeychain:(id)a3
++ (id)saveWrappedKeyInKeychain:(id)keychain
 {
-  v44 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, keychain);
   v42 = objc_alloc_init(NSMutableArray);
   v41 = objc_alloc_init(NSMutableDictionary);
   v15 = location[0];
@@ -55,11 +55,11 @@
   v33 = 0;
   v32 = 0;
   v31 = objc_alloc_init(AAFKeychainManager);
-  v12 = [v44 _beneficiaryWrappedKeyKeychainDescriptor];
+  _beneficiaryWrappedKeyKeychainDescriptor = [selfCopy _beneficiaryWrappedKeyKeychainDescriptor];
   v30 = v34;
   [v31 deleteKeychainItemsForDescriptor:? error:?];
   objc_storeStrong(&v34, v30);
-  _objc_release(v12);
+  _objc_release(_beneficiaryWrappedKeyKeychainDescriptor);
   v29 = _AKLogSystem();
   v28 = OS_LOG_TYPE_ERROR;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -76,15 +76,15 @@
   if (v11)
   {
     v7 = [AAFKeychainItem alloc];
-    v8 = [v44 _beneficiaryWrappedKeyKeychainDescriptor];
+    _beneficiaryWrappedKeyKeychainDescriptor2 = [selfCopy _beneficiaryWrappedKeyKeychainDescriptor];
     v23 = [v7 initWithDescriptor:? value:?];
-    _objc_release(v8);
+    _objc_release(_beneficiaryWrappedKeyKeychainDescriptor2);
     v9 = v31;
-    v10 = [v23 descriptor];
+    descriptor = [v23 descriptor];
     v22 = v32;
     [v9 deleteKeychainItemsForDescriptor:? error:?];
     objc_storeStrong(&v32, v22);
-    _objc_release(v10);
+    _objc_release(descriptor);
     v21 = v32;
     [v31 addOrUpdateKeychainItem:v23 error:&v21];
     objc_storeStrong(&v32, v21);
@@ -149,7 +149,7 @@
 
 + (id)_beneficiaryWrappedKeyKeychainDescriptor
 {
-  v4[2] = a1;
+  v4[2] = self;
   v4[1] = a2;
   v4[0] = objc_alloc_init(AAFKeychainItemDescriptor);
   [v4[0] setItemClass:3];

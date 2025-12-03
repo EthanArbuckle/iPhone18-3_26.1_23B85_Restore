@@ -1,45 +1,45 @@
 @interface RMConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConfiguration:(id)a3;
-- (RMConfiguration)initWithCoder:(id)a3;
-- (RMConfiguration)initWithType:(id)a3 identifier:(id)a4 serverToken:(id)a5 content:(id)a6 channel:(id)a7 assetByIdentifier:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConfiguration:(id)configuration;
+- (RMConfiguration)initWithCoder:(id)coder;
+- (RMConfiguration)initWithType:(id)type identifier:(id)identifier serverToken:(id)token content:(id)content channel:(id)channel assetByIdentifier:(id)byIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RMConfiguration
 
-- (RMConfiguration)initWithType:(id)a3 identifier:(id)a4 serverToken:(id)a5 content:(id)a6 channel:(id)a7 assetByIdentifier:(id)a8
+- (RMConfiguration)initWithType:(id)type identifier:(id)identifier serverToken:(id)token content:(id)content channel:(id)channel assetByIdentifier:(id)byIdentifier
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  typeCopy = type;
+  identifierCopy = identifier;
+  tokenCopy = token;
+  contentCopy = content;
+  channelCopy = channel;
+  byIdentifierCopy = byIdentifier;
   v32.receiver = self;
   v32.super_class = RMConfiguration;
   v20 = [(RMConfiguration *)&v32 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [typeCopy copy];
     type = v20->_type;
     v20->_type = v21;
 
-    v23 = [v15 copy];
+    v23 = [identifierCopy copy];
     identifier = v20->_identifier;
     v20->_identifier = v23;
 
-    v25 = [v16 copy];
+    v25 = [tokenCopy copy];
     serverToken = v20->_serverToken;
     v20->_serverToken = v25;
 
-    v27 = [v17 copy];
+    v27 = [contentCopy copy];
     content = v20->_content;
     v20->_content = v27;
 
-    objc_storeStrong(&v20->_channel, a7);
-    v29 = [v19 copy];
+    objc_storeStrong(&v20->_channel, channel);
+    v29 = [byIdentifierCopy copy];
     assetByIdentifier = v20->_assetByIdentifier;
     v20->_assetByIdentifier = v29;
   }
@@ -47,50 +47,50 @@
   return v20;
 }
 
-- (RMConfiguration)initWithCoder:(id)a3
+- (RMConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverToken"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"content"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"channel"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverToken"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"content"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"channel"];
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v10 setWithObjects:{v11, v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"assetByIdentifier"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"assetByIdentifier"];
 
   v15 = [(RMConfiguration *)self initWithType:v5 identifier:v6 serverToken:v7 content:v8 channel:v9 assetByIdentifier:v14];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RMConfiguration *)self type];
-  [v4 encodeObject:v5 forKey:@"type"];
+  coderCopy = coder;
+  type = [(RMConfiguration *)self type];
+  [coderCopy encodeObject:type forKey:@"type"];
 
-  v6 = [(RMConfiguration *)self identifier];
-  [v4 encodeObject:v6 forKey:@"identifier"];
+  identifier = [(RMConfiguration *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v7 = [(RMConfiguration *)self serverToken];
-  [v4 encodeObject:v7 forKey:@"serverToken"];
+  serverToken = [(RMConfiguration *)self serverToken];
+  [coderCopy encodeObject:serverToken forKey:@"serverToken"];
 
-  v8 = [(RMConfiguration *)self content];
-  [v4 encodeObject:v8 forKey:@"content"];
+  content = [(RMConfiguration *)self content];
+  [coderCopy encodeObject:content forKey:@"content"];
 
-  v9 = [(RMConfiguration *)self channel];
-  [v4 encodeObject:v9 forKey:@"channel"];
+  channel = [(RMConfiguration *)self channel];
+  [coderCopy encodeObject:channel forKey:@"channel"];
 
-  v10 = [(RMConfiguration *)self assetByIdentifier];
-  [v4 encodeObject:v10 forKey:@"assetByIdentifier"];
+  assetByIdentifier = [(RMConfiguration *)self assetByIdentifier];
+  [coderCopy encodeObject:assetByIdentifier forKey:@"assetByIdentifier"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -98,48 +98,48 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMConfiguration *)self isEqualToConfiguration:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMConfiguration *)self isEqualToConfiguration:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToConfiguration:(id)a3
+- (BOOL)isEqualToConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(RMConfiguration *)self hash];
-  if (v5 == [v4 hash])
+  if (v5 == [configurationCopy hash])
   {
-    v6 = [(RMConfiguration *)self identifier];
-    v7 = [v4 identifier];
-    if ([v6 isEqualToString:v7])
+    identifier = [(RMConfiguration *)self identifier];
+    identifier2 = [configurationCopy identifier];
+    if ([identifier isEqualToString:identifier2])
     {
-      v8 = [(RMConfiguration *)self serverToken];
-      v9 = [v4 serverToken];
-      if ([v8 isEqualToString:v9])
+      serverToken = [(RMConfiguration *)self serverToken];
+      serverToken2 = [configurationCopy serverToken];
+      if ([serverToken isEqualToString:serverToken2])
       {
-        v10 = [(RMConfiguration *)self type];
-        v11 = [v4 type];
-        if ([v10 isEqualToString:v11])
+        type = [(RMConfiguration *)self type];
+        type2 = [configurationCopy type];
+        if ([type isEqualToString:type2])
         {
-          v12 = [(RMConfiguration *)self channel];
-          v13 = [v4 channel];
-          if ([v12 isEqualToChannel:v13])
+          channel = [(RMConfiguration *)self channel];
+          channel2 = [configurationCopy channel];
+          if ([channel isEqualToChannel:channel2])
           {
-            v29 = v12;
-            v14 = [(RMConfiguration *)self content];
-            [v4 content];
-            v28 = v30 = v14;
-            if ([v14 isEqualToData:?])
+            v29 = channel;
+            content = [(RMConfiguration *)self content];
+            [configurationCopy content];
+            v28 = v30 = content;
+            if ([content isEqualToData:?])
             {
-              v15 = [(RMConfiguration *)self assetByIdentifier];
-              v25 = [v4 assetByIdentifier];
-              v16 = v15;
-              v17 = v25;
+              assetByIdentifier = [(RMConfiguration *)self assetByIdentifier];
+              assetByIdentifier2 = [configurationCopy assetByIdentifier];
+              v16 = assetByIdentifier;
+              v17 = assetByIdentifier2;
               v18 = v17;
               v19 = v16;
               v20 = v16 == v17;
-              v12 = v29;
+              channel = v29;
               v27 = v19;
               if (v20)
               {
@@ -164,7 +164,7 @@
             else
             {
               v21 = 0;
-              v12 = v29;
+              channel = v29;
             }
           }
 
@@ -202,18 +202,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(RMConfiguration *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(RMConfiguration *)self serverToken];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RMConfiguration *)self content];
-  v8 = [v7 hash];
-  v9 = [(RMConfiguration *)self channel];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(RMConfiguration *)self type];
-  v12 = [v11 hash];
-  v13 = [(RMConfiguration *)self assetByIdentifier];
-  v14 = v12 ^ [v13 hash];
+  identifier = [(RMConfiguration *)self identifier];
+  v4 = [identifier hash];
+  serverToken = [(RMConfiguration *)self serverToken];
+  v6 = [serverToken hash] ^ v4;
+  content = [(RMConfiguration *)self content];
+  v8 = [content hash];
+  channel = [(RMConfiguration *)self channel];
+  v10 = v6 ^ v8 ^ [channel hash];
+  type = [(RMConfiguration *)self type];
+  v12 = [type hash];
+  assetByIdentifier = [(RMConfiguration *)self assetByIdentifier];
+  v14 = v12 ^ [assetByIdentifier hash];
 
   return v10 ^ v14;
 }

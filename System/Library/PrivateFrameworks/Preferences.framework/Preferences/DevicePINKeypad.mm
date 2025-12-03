@@ -12,9 +12,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(UIKeyboard *)v2 defaultTextInputTraits];
-    [v4 setDevicePasscodeEntry:1];
-    [(UIKeyboard *)v3 setDefaultTextInputTraits:v4];
+    defaultTextInputTraits = [(UIKeyboard *)v2 defaultTextInputTraits];
+    [defaultTextInputTraits setDevicePasscodeEntry:1];
+    [(UIKeyboard *)v3 setDefaultTextInputTraits:defaultTextInputTraits];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *v6 = 0;

@@ -2,55 +2,55 @@
 - (BOOL)_areAllHomePodsOffline;
 - (BOOL)_isHomeContext;
 - (BOOL)_isRoomContext;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (HUAnnounceRecordingViewController)initWithServiceContext:(id)a3 blurEffectStyle:(int64_t)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (HUAnnounceRecordingViewController)initWithServiceContext:(id)context blurEffectStyle:(int64_t)style;
 - (id)_contentViewBackgroundColor;
 - (id)_fontForTimeCodeLabel;
-- (id)_stringForDuration:(double)a3;
+- (id)_stringForDuration:(double)duration;
 - (id)_waveformColor;
 - (void)_commonInit;
 - (void)_deleteAudioFile;
-- (void)_deleteRecording:(id)a3;
-- (void)_didPan:(id)a3;
-- (void)_didTap:(id)a3;
-- (void)_dismissDownRecordingView:(id)a3;
-- (void)_dismissUpRecordingView:(id)a3;
-- (void)_dismissViewOrDisplayError:(id)a3;
+- (void)_deleteRecording:(id)recording;
+- (void)_didPan:(id)pan;
+- (void)_didTap:(id)tap;
+- (void)_dismissDownRecordingView:(id)view;
+- (void)_dismissUpRecordingView:(id)view;
+- (void)_dismissViewOrDisplayError:(id)error;
 - (void)_hideRecordingUI;
 - (void)_restoreRecordingUI;
-- (void)_submitAnalyticsForAnnounceRecordingCompletdSuccessfully:(BOOL)a3 interruptedByUser:(BOOL)a4;
+- (void)_submitAnalyticsForAnnounceRecordingCompletdSuccessfully:(BOOL)successfully interruptedByUser:(BOOL)user;
 - (void)_updateUIBasedOnReachabilityStatus;
-- (void)accessoryDidUpdateControllable:(id)a3;
-- (void)accessoryDidUpdateReachability:(id)a3;
-- (void)accessoryDidUpdateReachableTransports:(id)a3;
-- (void)audioRecorderDidStartRecording:(id)a3;
-- (void)audioRecorderFailedToFinishRecording:(id)a3;
-- (void)audioRecorderFinishedRecording:(id)a3 audioFile:(id)a4;
-- (void)beginRecording:(id)a3;
+- (void)accessoryDidUpdateControllable:(id)controllable;
+- (void)accessoryDidUpdateReachability:(id)reachability;
+- (void)accessoryDidUpdateReachableTransports:(id)transports;
+- (void)audioRecorderDidStartRecording:(id)recording;
+- (void)audioRecorderFailedToFinishRecording:(id)recording;
+- (void)audioRecorderFinishedRecording:(id)recording audioFile:(id)file;
+- (void)beginRecording:(id)recording;
 - (void)dealloc;
-- (void)didUpdateAveragePower:(float)a3;
-- (void)sendAnnouncement:(id)a3;
-- (void)stopRecordAndSend:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)didUpdateAveragePower:(float)power;
+- (void)sendAnnouncement:(id)announcement;
+- (void)stopRecordAndSend:(id)send;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation HUAnnounceRecordingViewController
 
-- (HUAnnounceRecordingViewController)initWithServiceContext:(id)a3 blurEffectStyle:(int64_t)a4
+- (HUAnnounceRecordingViewController)initWithServiceContext:(id)context blurEffectStyle:(int64_t)style
 {
-  v7 = a3;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = HUAnnounceRecordingViewController;
   v8 = [(HUAnnounceRecordingViewController *)&v19 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277D75210] effectWithStyle:a4];
+    v9 = [MEMORY[0x277D75210] effectWithStyle:style];
     blurEffect = v8->_blurEffect;
     v8->_blurEffect = v9;
 
-    objc_storeStrong(&v8->_serviceContext, a3);
+    objc_storeStrong(&v8->_serviceContext, context);
     v11 = objc_alloc_init(MEMORY[0x277D755F0]);
     feedbackGenerator = v8->_feedbackGenerator;
     v8->_feedbackGenerator = v11;
@@ -60,8 +60,8 @@
     v8->_tapGestureRecognizer = v13;
 
     [(UITapGestureRecognizer *)v8->_tapGestureRecognizer setDelegate:v8];
-    v15 = [(HUAnnounceRecordingViewController *)v8 view];
-    [v15 addGestureRecognizer:v8->_tapGestureRecognizer];
+    view = [(HUAnnounceRecordingViewController *)v8 view];
+    [view addGestureRecognizer:v8->_tapGestureRecognizer];
 
     v16 = objc_alloc_init(MEMORY[0x277CEAB30]);
     announce = v8->_announce;
@@ -75,19 +75,19 @@
 
 - (void)_commonInit
 {
-  v3 = [(HUAnnounceRecordingViewController *)self serviceContext];
-  v4 = [v3 homeIdentifier];
+  serviceContext = [(HUAnnounceRecordingViewController *)self serviceContext];
+  homeIdentifier = [serviceContext homeIdentifier];
 
-  v5 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v6 = [v5 allHomesFuture];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  allHomesFuture = [mEMORY[0x277D146E8] allHomesFuture];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __48__HUAnnounceRecordingViewController__commonInit__block_invoke;
   v9[3] = &unk_277DBE8D0;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
-  v8 = [v6 addCompletionBlock:v9];
+  v10 = homeIdentifier;
+  selfCopy = self;
+  v7 = homeIdentifier;
+  v8 = [allHomesFuture addCompletionBlock:v9];
 }
 
 void __48__HUAnnounceRecordingViewController__commonInit__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -150,32 +150,32 @@ uint64_t __48__HUAnnounceRecordingViewController__commonInit__block_invoke_2(uin
   v270.receiver = self;
   v270.super_class = HUAnnounceRecordingViewController;
   [(HUAnnounceRecordingViewController *)&v270 viewDidLoad];
-  v3 = [(HUAnnounceRecordingViewController *)self view];
-  [v3 setAlpha:0.0];
+  view = [(HUAnnounceRecordingViewController *)self view];
+  [view setAlpha:0.0];
 
   v4 = [objc_alloc(MEMORY[0x277D14428]) initWithAudioRecorderDelegate:self];
   [(HUAnnounceRecordingViewController *)self setAudioRecorder:v4];
 
-  v5 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-  [v5 prepareRecording];
+  audioRecorder = [(HUAnnounceRecordingViewController *)self audioRecorder];
+  [audioRecorder prepareRecording];
 
-  v6 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-  [v6 playAlertSoundForType:0 withCompletion:0];
+  audioRecorder2 = [(HUAnnounceRecordingViewController *)self audioRecorder];
+  [audioRecorder2 playAlertSoundForType:0 withCompletion:0];
 
-  v7 = [(HUAnnounceRecordingViewController *)self audioWaveformView];
-  [v7 clearPowerLevels];
+  audioWaveformView = [(HUAnnounceRecordingViewController *)self audioWaveformView];
+  [audioWaveformView clearPowerLevels];
 
   v8 = MEMORY[0x277D75D00];
-  v9 = [(HUAnnounceRecordingViewController *)self blurEffect];
-  v10 = [v8 effectForBlurEffect:v9 style:1];
+  blurEffect = [(HUAnnounceRecordingViewController *)self blurEffect];
+  v10 = [v8 effectForBlurEffect:blurEffect style:1];
 
   v266 = v10;
   v11 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v10];
   dismissLabelVisualEffectView = self->_dismissLabelVisualEffectView;
   self->_dismissLabelVisualEffectView = v11;
 
-  v13 = [(HUAnnounceRecordingViewController *)self view];
-  [v13 naui_addAutoLayoutSubview:self->_dismissLabelVisualEffectView];
+  view2 = [(HUAnnounceRecordingViewController *)self view];
+  [view2 naui_addAutoLayoutSubview:self->_dismissLabelVisualEffectView];
 
   v14 = objc_alloc_init(MEMORY[0x277D756B8]);
   dismissLabel = self->_dismissLabel;
@@ -190,34 +190,34 @@ uint64_t __48__HUAnnounceRecordingViewController__commonInit__block_invoke_2(uin
   [(UILabel *)v17 setText:v18];
 
   v19 = self->_dismissLabel;
-  v20 = [MEMORY[0x277D75348] whiteColor];
-  [(UILabel *)v19 setTextColor:v20];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(UILabel *)v19 setTextColor:whiteColor];
 
   [(UILabel *)self->_dismissLabel setAlpha:0.0];
-  v21 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView contentView];
-  [v21 naui_addAutoLayoutSubview:self->_dismissLabel];
+  contentView = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView contentView];
+  [contentView naui_addAutoLayoutSubview:self->_dismissLabel];
 
-  v22 = [(UILabel *)self->_dismissLabel text];
-  v23 = [(HUAnnounceRecordingViewController *)self view];
-  [v23 bounds];
+  text = [(UILabel *)self->_dismissLabel text];
+  view3 = [(HUAnnounceRecordingViewController *)self view];
+  [view3 bounds];
   v25 = v24;
   v271 = *MEMORY[0x277D740A8];
-  v26 = [(UILabel *)self->_dismissLabel font];
-  v272[0] = v26;
+  font = [(UILabel *)self->_dismissLabel font];
+  v272[0] = font;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v272 forKeys:&v271 count:1];
-  [v22 boundingRectWithSize:1 options:v27 attributes:0 context:{v25, 3.40282347e38}];
+  [text boundingRectWithSize:1 options:v27 attributes:0 context:{v25, 3.40282347e38}];
   v29 = v28;
 
   v30 = [MEMORY[0x277D75220] buttonWithType:7];
   closeButton = self->_closeButton;
   self->_closeButton = v30;
 
-  v32 = [MEMORY[0x277D75230] glassButtonConfiguration];
-  [(UIButton *)self->_closeButton setConfiguration:v32];
+  glassButtonConfiguration = [MEMORY[0x277D75230] glassButtonConfiguration];
+  [(UIButton *)self->_closeButton setConfiguration:glassButtonConfiguration];
 
   [(UIButton *)self->_closeButton addTarget:self action:sel__dismissDownRecordingView_ forControlEvents:64];
-  v33 = [(HUAnnounceRecordingViewController *)self view];
-  [v33 naui_addAutoLayoutSubview:self->_closeButton];
+  view4 = [(HUAnnounceRecordingViewController *)self view];
+  [view4 naui_addAutoLayoutSubview:self->_closeButton];
 
   v34 = objc_alloc(MEMORY[0x277D75D18]);
   v36 = *MEMORY[0x277CBF3A0];
@@ -229,13 +229,13 @@ uint64_t __48__HUAnnounceRecordingViewController__commonInit__block_invoke_2(uin
   self->_contentView = v39;
 
   v41 = self->_contentView;
-  v42 = [(HUAnnounceRecordingViewController *)self _contentViewBackgroundColor];
-  [(UIView *)v41 setBackgroundColor:v42];
+  _contentViewBackgroundColor = [(HUAnnounceRecordingViewController *)self _contentViewBackgroundColor];
+  [(UIView *)v41 setBackgroundColor:_contentViewBackgroundColor];
 
   [(UIView *)self->_contentView _setContinuousCornerRadius:26.0];
   [(UIView *)self->_contentView setAlpha:0.0];
-  v43 = [(HUAnnounceRecordingViewController *)self view];
-  [v43 naui_addAutoLayoutSubview:self->_contentView];
+  view5 = [(HUAnnounceRecordingViewController *)self view];
+  [view5 naui_addAutoLayoutSubview:self->_contentView];
 
   v265 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel__didPan_];
   [(UIView *)self->_contentView addGestureRecognizer:?];
@@ -251,8 +251,8 @@ uint64_t __48__HUAnnounceRecordingViewController__commonInit__block_invoke_2(uin
 
   [(UILabel *)self->_largeTitleLabel setTextAlignment:1];
   v49 = self->_largeTitleLabel;
-  v50 = [(HUAnnounceRecordingViewController *)self _largeTitleTextColor];
-  [(UILabel *)v49 setTextColor:v50];
+  _largeTitleTextColor = [(HUAnnounceRecordingViewController *)self _largeTitleTextColor];
+  [(UILabel *)v49 setTextColor:_largeTitleTextColor];
 
   [(UILabel *)self->_largeTitleLabel setAlpha:0.0];
   [(UILabel *)self->_largeTitleLabel setLineBreakMode:4];
@@ -264,33 +264,33 @@ uint64_t __48__HUAnnounceRecordingViewController__commonInit__block_invoke_2(uin
   v53 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769C0]];
   [(UILabel *)self->_subTitleLabel setFont:v53];
 
-  v54 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UILabel *)self->_subTitleLabel setTextColor:v54];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UILabel *)self->_subTitleLabel setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_subTitleLabel setTextAlignment:1];
   [(UILabel *)self->_subTitleLabel setAlpha:0.0];
   [(UIView *)self->_contentView naui_addAutoLayoutSubview:self->_subTitleLabel];
   v55 = [HUWaveformView alloc];
-  v56 = [(HUAnnounceRecordingViewController *)self _waveformColor];
-  v57 = [MEMORY[0x277D75348] systemGrayColor];
-  v58 = [(HUWaveformView *)v55 initWithFrame:v56 waveformColor:v57 backgroundColor:v36, v35, v38, v37];
+  _waveformColor = [(HUAnnounceRecordingViewController *)self _waveformColor];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  v58 = [(HUWaveformView *)v55 initWithFrame:_waveformColor waveformColor:systemGrayColor backgroundColor:v36, v35, v38, v37];
   audioWaveformView = self->_audioWaveformView;
   self->_audioWaveformView = v58;
 
   [(HUWaveformView *)self->_audioWaveformView setAlpha:0.0];
   [(UIView *)self->_contentView naui_addAutoLayoutSubview:self->_audioWaveformView];
-  v60 = [(HUAnnounceRecordingViewController *)self serviceContext];
-  v61 = [v60 roomName];
-  v62 = v61;
-  if (v61)
+  serviceContext = [(HUAnnounceRecordingViewController *)self serviceContext];
+  roomName = [serviceContext roomName];
+  v62 = roomName;
+  if (roomName)
   {
-    v63 = v61;
+    homeName = roomName;
   }
 
   else
   {
-    v64 = [(HUAnnounceRecordingViewController *)self serviceContext];
-    v63 = [v64 homeName];
+    serviceContext2 = [(HUAnnounceRecordingViewController *)self serviceContext];
+    homeName = [serviceContext2 homeName];
   }
 
   v65 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v36, v35, v38, v37}];
@@ -302,11 +302,11 @@ uint64_t __48__HUAnnounceRecordingViewController__commonInit__block_invoke_2(uin
   [(UILabel *)self->_announcementDeliveryFailureLabel setFont:v67];
 
   [(UILabel *)self->_announcementDeliveryFailureLabel setTextAlignment:1];
-  v68 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UILabel *)self->_announcementDeliveryFailureLabel setTextColor:v68];
+  secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UILabel *)self->_announcementDeliveryFailureLabel setTextColor:secondaryLabelColor2];
 
-  v264 = v63;
-  v75 = HULocalizedStringWithFormat(@"HUAnnounceNotDeliveredLabel_Description", @"%@", v69, v70, v71, v72, v73, v74, v63);
+  v264 = homeName;
+  v75 = HULocalizedStringWithFormat(@"HUAnnounceNotDeliveredLabel_Description", @"%@", v69, v70, v71, v72, v73, v74, homeName);
   [(UILabel *)self->_announcementDeliveryFailureLabel setText:v75];
 
   [(UILabel *)self->_announcementDeliveryFailureLabel setNumberOfLines:0];
@@ -327,8 +327,8 @@ uint64_t __48__HUAnnounceRecordingViewController__commonInit__block_invoke_2(uin
   v81 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
   [(UILabel *)self->_recordingStateChangeLabel setFont:v81];
 
-  v82 = [MEMORY[0x277D75348] systemGrayColor];
-  [(UILabel *)self->_recordingStateChangeLabel setTextColor:v82];
+  systemGrayColor2 = [MEMORY[0x277D75348] systemGrayColor];
+  [(UILabel *)self->_recordingStateChangeLabel setTextColor:systemGrayColor2];
 
   [(UILabel *)self->_recordingStateChangeLabel setTextAlignment:1];
   [(UILabel *)self->_recordingStateChangeLabel setAdjustsFontSizeToFitWidth:1];
@@ -342,120 +342,120 @@ uint64_t __48__HUAnnounceRecordingViewController__commonInit__block_invoke_2(uin
   v85 = [MEMORY[0x277D74300] preferredFontForTextStyle:v80];
   [(UILabel *)self->_errorStatusLabel setFont:v85];
 
-  v86 = [MEMORY[0x277D75348] systemRedColor];
-  [(UILabel *)self->_errorStatusLabel setTextColor:v86];
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  [(UILabel *)self->_errorStatusLabel setTextColor:systemRedColor];
 
   [(UILabel *)self->_errorStatusLabel setTextAlignment:1];
   [(UILabel *)self->_errorStatusLabel setNumberOfLines:0];
   [(UILabel *)self->_errorStatusLabel setAlpha:0.0];
   [(UIView *)self->_contentView naui_addAutoLayoutSubview:self->_errorStatusLabel];
   v87 = objc_opt_new();
-  v88 = [MEMORY[0x277D75418] currentDevice];
-  v89 = [v88 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v90 = self->_dismissLabelVisualEffectView;
-  if ((v89 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v91 = [(UIVisualEffectView *)v90 centerXAnchor];
-    v92 = [(UIView *)self->_contentView centerXAnchor];
-    v93 = [v91 constraintEqualToAnchor:v92];
-    [v87 addObject:v93];
+    centerXAnchor = [(UIVisualEffectView *)v90 centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_contentView centerXAnchor];
+    safeAreaLayoutGuide = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [v87 addObject:safeAreaLayoutGuide];
   }
 
   else
   {
-    v91 = [(UIVisualEffectView *)v90 leadingAnchor];
-    v92 = [(HUAnnounceRecordingViewController *)self view];
-    v93 = [v92 safeAreaLayoutGuide];
-    v94 = [v93 leadingAnchor];
-    v95 = [v91 constraintEqualToAnchor:v94];
+    centerXAnchor = [(UIVisualEffectView *)v90 leadingAnchor];
+    centerXAnchor2 = [(HUAnnounceRecordingViewController *)self view];
+    safeAreaLayoutGuide = [centerXAnchor2 safeAreaLayoutGuide];
+    leadingAnchor = [safeAreaLayoutGuide leadingAnchor];
+    v95 = [centerXAnchor constraintEqualToAnchor:leadingAnchor];
     [v87 addObject:v95];
   }
 
-  v96 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView trailingAnchor];
-  v97 = [(HUAnnounceRecordingViewController *)self view];
-  v98 = [v97 safeAreaLayoutGuide];
-  v99 = [v98 trailingAnchor];
-  v100 = [v96 constraintEqualToAnchor:v99];
+  trailingAnchor = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView trailingAnchor];
+  view6 = [(HUAnnounceRecordingViewController *)self view];
+  safeAreaLayoutGuide2 = [view6 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v100 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v87 addObject:v100];
 
-  v101 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView topAnchor];
-  v102 = [(HUAnnounceRecordingViewController *)self view];
-  v103 = [v102 safeAreaLayoutGuide];
-  v104 = [v103 topAnchor];
-  v105 = [v101 constraintEqualToAnchor:v104 constant:-25.0];
+  topAnchor = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView topAnchor];
+  view7 = [(HUAnnounceRecordingViewController *)self view];
+  safeAreaLayoutGuide3 = [view7 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v105 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-25.0];
   dismissLabelTopConstraint = self->_dismissLabelTopConstraint;
   self->_dismissLabelTopConstraint = v105;
 
   [v87 addObject:self->_dismissLabelTopConstraint];
-  v107 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView heightAnchor];
-  v108 = [v107 constraintEqualToConstant:v29];
+  heightAnchor = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView heightAnchor];
+  v108 = [heightAnchor constraintEqualToConstant:v29];
   [v87 addObject:v108];
 
-  v109 = [(UILabel *)self->_dismissLabel leadingAnchor];
-  v110 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView leadingAnchor];
-  v111 = [v109 constraintEqualToAnchor:v110];
+  leadingAnchor2 = [(UILabel *)self->_dismissLabel leadingAnchor];
+  leadingAnchor3 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView leadingAnchor];
+  v111 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
   [v87 addObject:v111];
 
-  v112 = [(UILabel *)self->_dismissLabel trailingAnchor];
-  v113 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView trailingAnchor];
-  v114 = [v112 constraintEqualToAnchor:v113];
+  trailingAnchor3 = [(UILabel *)self->_dismissLabel trailingAnchor];
+  trailingAnchor4 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView trailingAnchor];
+  v114 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v87 addObject:v114];
 
-  v115 = [(UILabel *)self->_dismissLabel topAnchor];
-  v116 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView topAnchor];
-  v117 = [v115 constraintEqualToAnchor:v116];
+  topAnchor3 = [(UILabel *)self->_dismissLabel topAnchor];
+  topAnchor4 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView topAnchor];
+  v117 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v87 addObject:v117];
 
-  v118 = [(UILabel *)self->_dismissLabel heightAnchor];
-  v119 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView heightAnchor];
-  v120 = [v118 constraintEqualToAnchor:v119];
+  heightAnchor2 = [(UILabel *)self->_dismissLabel heightAnchor];
+  heightAnchor3 = [(UIVisualEffectView *)self->_dismissLabelVisualEffectView heightAnchor];
+  v120 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   [v87 addObject:v120];
 
-  v121 = [(UIButton *)self->_closeButton topAnchor];
-  v122 = [(HUAnnounceRecordingViewController *)self view];
-  v123 = [v122 topAnchor];
-  v124 = [v121 constraintEqualToAnchor:v123 constant:30.0];
+  topAnchor5 = [(UIButton *)self->_closeButton topAnchor];
+  view8 = [(HUAnnounceRecordingViewController *)self view];
+  topAnchor6 = [view8 topAnchor];
+  v124 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:30.0];
   closeButtonTopConstraint = self->_closeButtonTopConstraint;
   self->_closeButtonTopConstraint = v124;
 
   [v87 addObject:self->_closeButtonTopConstraint];
-  v126 = [(UIButton *)self->_closeButton trailingAnchor];
-  v127 = [(HUAnnounceRecordingViewController *)self view];
-  v128 = [v127 safeAreaLayoutGuide];
-  v129 = [v128 trailingAnchor];
-  v130 = [v126 constraintEqualToAnchor:v129 constant:-16.0];
+  trailingAnchor5 = [(UIButton *)self->_closeButton trailingAnchor];
+  view9 = [(HUAnnounceRecordingViewController *)self view];
+  safeAreaLayoutGuide4 = [view9 safeAreaLayoutGuide];
+  trailingAnchor6 = [safeAreaLayoutGuide4 trailingAnchor];
+  v130 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
   [v87 addObject:v130];
 
-  v131 = [(UIButton *)self->_closeButton heightAnchor];
-  v132 = [v131 constraintEqualToConstant:44.0];
+  heightAnchor4 = [(UIButton *)self->_closeButton heightAnchor];
+  v132 = [heightAnchor4 constraintEqualToConstant:44.0];
   [v87 addObject:v132];
 
-  v133 = [(UIButton *)self->_closeButton widthAnchor];
-  v134 = [(UIButton *)self->_closeButton heightAnchor];
-  v135 = [v133 constraintEqualToAnchor:v134];
+  widthAnchor = [(UIButton *)self->_closeButton widthAnchor];
+  heightAnchor5 = [(UIButton *)self->_closeButton heightAnchor];
+  v135 = [widthAnchor constraintEqualToAnchor:heightAnchor5];
   [v87 addObject:v135];
 
-  v136 = [MEMORY[0x277D759A0] mainScreen];
-  [v136 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v138 = v137;
 
-  v139 = [MEMORY[0x277D75418] currentDevice];
-  v140 = [v139 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  v141 = v140 & 0xFFFFFFFFFFFFFFFBLL;
-  v142 = [(UIView *)self->_contentView topAnchor];
+  v141 = userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL;
+  topAnchor7 = [(UIView *)self->_contentView topAnchor];
   if (v141 == 1)
   {
-    v143 = [(HUAnnounceRecordingViewController *)self view];
-    v144 = [v143 topAnchor];
-    v145 = [v142 constraintEqualToAnchor:v144 constant:44.0];
+    view10 = [(HUAnnounceRecordingViewController *)self view];
+    topAnchor8 = [view10 topAnchor];
+    v145 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:44.0];
     contentViewTopConstraint = self->_contentViewTopConstraint;
     self->_contentViewTopConstraint = v145;
 
     [v87 addObject:self->_contentViewTopConstraint];
-    v147 = [(HUAnnounceRecordingViewController *)self serviceContext];
-    [v147 animationOriginRect];
+    serviceContext3 = [(HUAnnounceRecordingViewController *)self serviceContext];
+    [serviceContext3 animationOriginRect];
     v275.origin.x = v36;
     v275.origin.y = v35;
     v275.size.width = v38;
@@ -464,22 +464,22 @@ uint64_t __48__HUAnnounceRecordingViewController__commonInit__block_invoke_2(uin
 
     if (v148)
     {
-      v149 = [(UIView *)self->_contentView trailingAnchor];
-      v150 = [(UIButton *)self->_closeButton leadingAnchor];
-      v151 = [v149 constraintEqualToAnchor:v150 constant:-8.0];
-      [v87 addObject:v151];
+      trailingAnchor7 = [(UIView *)self->_contentView trailingAnchor];
+      leadingAnchor4 = [(UIButton *)self->_closeButton leadingAnchor];
+      safeAreaLayoutGuide5 = [trailingAnchor7 constraintEqualToAnchor:leadingAnchor4 constant:-8.0];
+      [v87 addObject:safeAreaLayoutGuide5];
 LABEL_12:
 
       goto LABEL_16;
     }
 
-    v158 = [(HUAnnounceRecordingViewController *)self serviceContext];
-    [v158 animationOriginRect];
+    serviceContext4 = [(HUAnnounceRecordingViewController *)self serviceContext];
+    [serviceContext4 animationOriginRect];
     v160 = v138 - v159 + 44.0;
 
-    v161 = [(UIView *)self->_contentView trailingAnchor];
-    v162 = [(UIButton *)self->_closeButton leadingAnchor];
-    v163 = [v161 constraintEqualToAnchor:v162 constant:v160];
+    trailingAnchor8 = [(UIView *)self->_contentView trailingAnchor];
+    leadingAnchor5 = [(UIButton *)self->_closeButton leadingAnchor];
+    v163 = [trailingAnchor8 constraintEqualToAnchor:leadingAnchor5 constant:v160];
     contentViewTrailingConstraint = self->_contentViewTrailingConstraint;
     self->_contentViewTrailingConstraint = v163;
 
@@ -488,12 +488,12 @@ LABEL_12:
 
   else
   {
-    v152 = [(UIButton *)self->_closeButton bottomAnchor];
-    v153 = [v142 constraintEqualToAnchor:v152 constant:8.0];
+    bottomAnchor = [(UIButton *)self->_closeButton bottomAnchor];
+    v153 = [topAnchor7 constraintEqualToAnchor:bottomAnchor constant:8.0];
     [v87 addObject:v153];
 
-    v154 = [(HUAnnounceRecordingViewController *)self serviceContext];
-    [v154 animationOriginRect];
+    serviceContext5 = [(HUAnnounceRecordingViewController *)self serviceContext];
+    [serviceContext5 animationOriginRect];
     v276.origin.x = v36;
     v276.origin.y = v35;
     v276.size.width = v38;
@@ -502,25 +502,25 @@ LABEL_12:
 
     if (v155)
     {
-      v149 = [(UIView *)self->_contentView trailingAnchor];
-      v150 = [(HUAnnounceRecordingViewController *)self view];
-      v151 = [v150 safeAreaLayoutGuide];
-      v156 = [v151 trailingAnchor];
-      v157 = [v149 constraintEqualToAnchor:v156 constant:-10.0];
+      trailingAnchor7 = [(UIView *)self->_contentView trailingAnchor];
+      leadingAnchor4 = [(HUAnnounceRecordingViewController *)self view];
+      safeAreaLayoutGuide5 = [leadingAnchor4 safeAreaLayoutGuide];
+      trailingAnchor9 = [safeAreaLayoutGuide5 trailingAnchor];
+      v157 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor9 constant:-10.0];
       [v87 addObject:v157];
 
       goto LABEL_12;
     }
 
-    v166 = [(HUAnnounceRecordingViewController *)self serviceContext];
-    [v166 animationOriginRect];
+    serviceContext6 = [(HUAnnounceRecordingViewController *)self serviceContext];
+    [serviceContext6 animationOriginRect];
     v168 = v138 - v167;
 
-    v169 = [(UIView *)self->_contentView trailingAnchor];
-    v170 = [(HUAnnounceRecordingViewController *)self view];
-    v171 = [v170 safeAreaLayoutGuide];
-    v172 = [v171 trailingAnchor];
-    v173 = [v169 constraintEqualToAnchor:v172 constant:-v168];
+    trailingAnchor10 = [(UIView *)self->_contentView trailingAnchor];
+    view11 = [(HUAnnounceRecordingViewController *)self view];
+    safeAreaLayoutGuide6 = [view11 safeAreaLayoutGuide];
+    trailingAnchor11 = [safeAreaLayoutGuide6 trailingAnchor];
+    v173 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11 constant:-v168];
     v174 = self->_contentViewTrailingConstraint;
     self->_contentViewTrailingConstraint = v173;
 
@@ -529,164 +529,164 @@ LABEL_12:
 
   [v87 addObject:v165];
 LABEL_16:
-  v175 = [(UIView *)self->_contentView widthAnchor];
-  v176 = [v175 constraintEqualToConstant:100.0];
+  widthAnchor2 = [(UIView *)self->_contentView widthAnchor];
+  v176 = [widthAnchor2 constraintEqualToConstant:100.0];
   contentViewWidthConstraint = self->_contentViewWidthConstraint;
   self->_contentViewWidthConstraint = v176;
 
   [v87 addObject:self->_contentViewWidthConstraint];
-  v178 = [(UIView *)self->_contentView heightAnchor];
-  v179 = [v178 constraintEqualToConstant:0.0];
+  heightAnchor6 = [(UIView *)self->_contentView heightAnchor];
+  v179 = [heightAnchor6 constraintEqualToConstant:0.0];
   contentViewHeightConstraint = self->_contentViewHeightConstraint;
   self->_contentViewHeightConstraint = v179;
 
   [v87 addObject:self->_contentViewHeightConstraint];
-  v181 = [(UILabel *)self->_largeTitleLabel topAnchor];
-  v182 = [(UIView *)self->_contentView topAnchor];
-  v183 = [v181 constraintEqualToAnchor:v182 constant:48.0];
+  topAnchor9 = [(UILabel *)self->_largeTitleLabel topAnchor];
+  topAnchor10 = [(UIView *)self->_contentView topAnchor];
+  v183 = [topAnchor9 constraintEqualToAnchor:topAnchor10 constant:48.0];
   [v87 addObject:v183];
 
-  v184 = [(UILabel *)self->_largeTitleLabel centerXAnchor];
-  v185 = [(UIView *)self->_contentView centerXAnchor];
-  v186 = [v184 constraintEqualToAnchor:v185];
+  centerXAnchor3 = [(UILabel *)self->_largeTitleLabel centerXAnchor];
+  centerXAnchor4 = [(UIView *)self->_contentView centerXAnchor];
+  v186 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v87 addObject:v186];
 
-  v187 = [(UILabel *)self->_largeTitleLabel leadingAnchor];
-  v188 = [(UIView *)self->_contentView leadingAnchor];
-  v189 = [v187 constraintEqualToAnchor:v188];
+  leadingAnchor6 = [(UILabel *)self->_largeTitleLabel leadingAnchor];
+  leadingAnchor7 = [(UIView *)self->_contentView leadingAnchor];
+  v189 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   [v87 addObject:v189];
 
-  v190 = [(UILabel *)self->_largeTitleLabel trailingAnchor];
-  v191 = [(UIView *)self->_contentView trailingAnchor];
-  v192 = [v190 constraintEqualToAnchor:v191];
+  trailingAnchor12 = [(UILabel *)self->_largeTitleLabel trailingAnchor];
+  trailingAnchor13 = [(UIView *)self->_contentView trailingAnchor];
+  v192 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13];
   [v87 addObject:v192];
 
-  v193 = [(UILabel *)self->_subTitleLabel topAnchor];
-  v194 = [(UILabel *)self->_largeTitleLabel bottomAnchor];
-  v195 = [v193 constraintEqualToAnchor:v194];
+  topAnchor11 = [(UILabel *)self->_subTitleLabel topAnchor];
+  bottomAnchor2 = [(UILabel *)self->_largeTitleLabel bottomAnchor];
+  v195 = [topAnchor11 constraintEqualToAnchor:bottomAnchor2];
   [v87 addObject:v195];
 
-  v196 = [(UILabel *)self->_subTitleLabel centerXAnchor];
-  v197 = [(UIView *)self->_contentView centerXAnchor];
-  v198 = [v196 constraintEqualToAnchor:v197];
+  centerXAnchor5 = [(UILabel *)self->_subTitleLabel centerXAnchor];
+  centerXAnchor6 = [(UIView *)self->_contentView centerXAnchor];
+  v198 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   [v87 addObject:v198];
 
-  v199 = [(HUWaveformView *)self->_audioWaveformView leadingAnchor];
-  v200 = [(UIView *)self->_contentView leadingAnchor];
-  v201 = [v199 constraintEqualToAnchor:v200];
+  leadingAnchor8 = [(HUWaveformView *)self->_audioWaveformView leadingAnchor];
+  leadingAnchor9 = [(UIView *)self->_contentView leadingAnchor];
+  v201 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
   [v87 addObject:v201];
 
-  v202 = [(HUWaveformView *)self->_audioWaveformView trailingAnchor];
-  v203 = [(UIView *)self->_contentView trailingAnchor];
-  v204 = [v202 constraintEqualToAnchor:v203];
+  trailingAnchor14 = [(HUWaveformView *)self->_audioWaveformView trailingAnchor];
+  trailingAnchor15 = [(UIView *)self->_contentView trailingAnchor];
+  v204 = [trailingAnchor14 constraintEqualToAnchor:trailingAnchor15];
   [v87 addObject:v204];
 
-  v205 = [(HUWaveformView *)self->_audioWaveformView centerYAnchor];
-  v206 = [(UIView *)self->_contentView centerYAnchor];
-  v207 = [v205 constraintEqualToAnchor:v206];
+  centerYAnchor = [(HUWaveformView *)self->_audioWaveformView centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_contentView centerYAnchor];
+  v207 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v87 addObject:v207];
 
-  v208 = [(HUWaveformView *)self->_audioWaveformView heightAnchor];
-  v209 = [v208 constraintEqualToConstant:100.0];
+  heightAnchor7 = [(HUWaveformView *)self->_audioWaveformView heightAnchor];
+  v209 = [heightAnchor7 constraintEqualToConstant:100.0];
   [v87 addObject:v209];
 
-  v210 = [(HUWaveformView *)self->_audioWaveformView topAnchor];
-  v211 = [(UILabel *)self->_subTitleLabel bottomAnchor];
-  v212 = [v210 constraintEqualToAnchor:v211 constant:20.0];
+  topAnchor12 = [(HUWaveformView *)self->_audioWaveformView topAnchor];
+  bottomAnchor3 = [(UILabel *)self->_subTitleLabel bottomAnchor];
+  v212 = [topAnchor12 constraintEqualToAnchor:bottomAnchor3 constant:20.0];
 
   LODWORD(v213) = 1132068864;
   [v212 setPriority:v213];
   [v87 addObject:v212];
-  v214 = [(UILabel *)self->_announcementDeliveryFailureLabel leadingAnchor];
-  v215 = [(UIView *)self->_contentView leadingAnchor];
-  v216 = [v214 constraintEqualToAnchor:v215];
+  leadingAnchor10 = [(UILabel *)self->_announcementDeliveryFailureLabel leadingAnchor];
+  leadingAnchor11 = [(UIView *)self->_contentView leadingAnchor];
+  v216 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
   [v87 addObject:v216];
 
-  v217 = [(UILabel *)self->_announcementDeliveryFailureLabel trailingAnchor];
-  v218 = [(UIView *)self->_contentView trailingAnchor];
-  v219 = [v217 constraintEqualToAnchor:v218];
+  trailingAnchor16 = [(UILabel *)self->_announcementDeliveryFailureLabel trailingAnchor];
+  trailingAnchor17 = [(UIView *)self->_contentView trailingAnchor];
+  v219 = [trailingAnchor16 constraintEqualToAnchor:trailingAnchor17];
   [v87 addObject:v219];
 
-  v220 = [(UILabel *)self->_announcementDeliveryFailureLabel centerYAnchor];
-  v221 = [(UIView *)self->_contentView centerYAnchor];
-  v222 = [v220 constraintEqualToAnchor:v221];
+  centerYAnchor3 = [(UILabel *)self->_announcementDeliveryFailureLabel centerYAnchor];
+  centerYAnchor4 = [(UIView *)self->_contentView centerYAnchor];
+  v222 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v87 addObject:v222];
 
-  v223 = [(HURecordingButton *)self->_recordButton topAnchor];
-  v224 = [(UILabel *)self->_announcementDeliveryFailureLabel bottomAnchor];
-  v225 = [v223 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v224 multiplier:1.0];
+  topAnchor13 = [(HURecordingButton *)self->_recordButton topAnchor];
+  bottomAnchor4 = [(UILabel *)self->_announcementDeliveryFailureLabel bottomAnchor];
+  v225 = [topAnchor13 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor4 multiplier:1.0];
   [v87 addObject:v225];
 
-  v226 = [(HURecordingButton *)self->_recordButton heightAnchor];
-  v227 = [v226 constraintEqualToConstant:64.0];
+  heightAnchor8 = [(HURecordingButton *)self->_recordButton heightAnchor];
+  v227 = [heightAnchor8 constraintEqualToConstant:64.0];
   [v87 addObject:v227];
 
-  v228 = [(HURecordingButton *)self->_recordButton widthAnchor];
-  v229 = [v228 constraintEqualToConstant:64.0];
+  widthAnchor3 = [(HURecordingButton *)self->_recordButton widthAnchor];
+  v229 = [widthAnchor3 constraintEqualToConstant:64.0];
   [v87 addObject:v229];
 
-  v230 = [(HURecordingButton *)self->_recordButton centerXAnchor];
-  v231 = [(UIView *)self->_contentView centerXAnchor];
-  v232 = [v230 constraintEqualToAnchor:v231];
+  centerXAnchor7 = [(HURecordingButton *)self->_recordButton centerXAnchor];
+  centerXAnchor8 = [(UIView *)self->_contentView centerXAnchor];
+  v232 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   [v87 addObject:v232];
 
-  v233 = [(UILabel *)self->_recordingStateChangeLabel centerXAnchor];
-  v234 = [(UIView *)self->_contentView centerXAnchor];
-  v235 = [v233 constraintEqualToAnchor:v234];
+  centerXAnchor9 = [(UILabel *)self->_recordingStateChangeLabel centerXAnchor];
+  centerXAnchor10 = [(UIView *)self->_contentView centerXAnchor];
+  v235 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
   [v87 addObject:v235];
 
-  v236 = [(UILabel *)self->_recordingStateChangeLabel topAnchor];
-  v237 = [(HURecordingButton *)self->_recordButton bottomAnchor];
-  v238 = [v236 constraintEqualToAnchor:v237 constant:8.0];
+  topAnchor14 = [(UILabel *)self->_recordingStateChangeLabel topAnchor];
+  bottomAnchor5 = [(HURecordingButton *)self->_recordButton bottomAnchor];
+  v238 = [topAnchor14 constraintEqualToAnchor:bottomAnchor5 constant:8.0];
   [v87 addObject:v238];
 
-  v239 = [(UILabel *)self->_recordingStateChangeLabel bottomAnchor];
-  v240 = [(UIView *)self->_contentView bottomAnchor];
-  v241 = [v239 constraintEqualToAnchor:v240 constant:-20.0];
+  bottomAnchor6 = [(UILabel *)self->_recordingStateChangeLabel bottomAnchor];
+  bottomAnchor7 = [(UIView *)self->_contentView bottomAnchor];
+  v241 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:-20.0];
   [v87 addObject:v241];
 
-  v242 = [(HURecordingButton *)self->_recordButton topAnchor];
-  v243 = [(UILabel *)self->_errorStatusLabel bottomAnchor];
-  v244 = [v242 constraintEqualToAnchor:v243 constant:20.0];
+  topAnchor15 = [(HURecordingButton *)self->_recordButton topAnchor];
+  bottomAnchor8 = [(UILabel *)self->_errorStatusLabel bottomAnchor];
+  v244 = [topAnchor15 constraintEqualToAnchor:bottomAnchor8 constant:20.0];
   [v87 addObject:v244];
 
-  v245 = [(UILabel *)self->_errorStatusLabel centerXAnchor];
-  v246 = [(UIView *)self->_contentView centerXAnchor];
-  v247 = [v245 constraintEqualToAnchor:v246];
+  centerXAnchor11 = [(UILabel *)self->_errorStatusLabel centerXAnchor];
+  centerXAnchor12 = [(UIView *)self->_contentView centerXAnchor];
+  v247 = [centerXAnchor11 constraintEqualToAnchor:centerXAnchor12];
   [v87 addObject:v247];
 
-  v248 = [(UILabel *)self->_errorStatusLabel leadingAnchor];
-  v249 = [(UIView *)self->_contentView leadingAnchor];
-  v250 = [v248 constraintEqualToAnchor:v249];
+  leadingAnchor12 = [(UILabel *)self->_errorStatusLabel leadingAnchor];
+  leadingAnchor13 = [(UIView *)self->_contentView leadingAnchor];
+  v250 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13];
   [v87 addObject:v250];
 
-  v251 = [(UILabel *)self->_errorStatusLabel trailingAnchor];
-  v252 = [(UIView *)self->_contentView trailingAnchor];
-  v253 = [v251 constraintEqualToAnchor:v252];
+  trailingAnchor18 = [(UILabel *)self->_errorStatusLabel trailingAnchor];
+  trailingAnchor19 = [(UIView *)self->_contentView trailingAnchor];
+  v253 = [trailingAnchor18 constraintEqualToAnchor:trailingAnchor19];
   [v87 addObject:v253];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v87];
-  v254 = [(HUAnnounceRecordingViewController *)self view];
-  [v254 layoutIfNeeded];
+  view12 = [(HUAnnounceRecordingViewController *)self view];
+  [view12 layoutIfNeeded];
 
-  v255 = [(HUAnnounceRecordingViewController *)self largeTitleLabel];
-  [v255 becomeFirstResponder];
+  largeTitleLabel = [(HUAnnounceRecordingViewController *)self largeTitleLabel];
+  [largeTitleLabel becomeFirstResponder];
 
-  v256 = [MEMORY[0x277D146E8] sharedDispatcher];
-  [v256 addAccessoryObserver:self];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  [mEMORY[0x277D146E8] addAccessoryObserver:self];
 
-  v257 = [(HUAnnounceRecordingViewController *)self serviceContext];
-  v258 = [v257 roomName];
-  v259 = v258;
-  if (v258)
+  serviceContext7 = [(HUAnnounceRecordingViewController *)self serviceContext];
+  roomName2 = [serviceContext7 roomName];
+  v259 = roomName2;
+  if (roomName2)
   {
-    v260 = v258;
+    homeName2 = roomName2;
   }
 
   else
   {
-    v261 = [(HUAnnounceRecordingViewController *)self serviceContext];
-    v260 = [v261 homeName];
+    serviceContext8 = [(HUAnnounceRecordingViewController *)self serviceContext];
+    homeName2 = [serviceContext8 homeName];
   }
 
   v262 = MEMORY[0x277D75D18];
@@ -696,12 +696,12 @@ LABEL_16:
   v268[2] = __48__HUAnnounceRecordingViewController_viewDidLoad__block_invoke;
   v268[3] = &unk_277DB7558;
   v268[4] = self;
-  v269 = v260;
+  v269 = homeName2;
   v267[0] = MEMORY[0x277D85DD0];
   v267[1] = 3221225472;
   v267[2] = __48__HUAnnounceRecordingViewController_viewDidLoad__block_invoke_3;
   v267[3] = &unk_277DB8C28;
-  v263 = v260;
+  v263 = homeName2;
   [v262 animateWithDuration:v268 animations:v267 completion:0.5];
 }
 
@@ -892,13 +892,13 @@ uint64_t __48__HUAnnounceRecordingViewController_viewDidLoad__block_invoke_3(uin
 
 - (void)dealloc
 {
-  v3 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-  v4 = [v3 isRecording];
+  audioRecorder = [(HUAnnounceRecordingViewController *)self audioRecorder];
+  isRecording = [audioRecorder isRecording];
 
-  if (v4)
+  if (isRecording)
   {
-    v5 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-    [v5 stopRecording];
+    audioRecorder2 = [(HUAnnounceRecordingViewController *)self audioRecorder];
+    [audioRecorder2 stopRecording];
   }
 
   [(HUAnnounceRecordingViewController *)self _deleteAudioFile];
@@ -907,73 +907,73 @@ uint64_t __48__HUAnnounceRecordingViewController_viewDidLoad__block_invoke_3(uin
   [(HUAnnounceRecordingViewController *)&v6 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [(HUAnnounceRecordingViewController *)self contentView];
-  v5 = [(HUAnnounceRecordingViewController *)self _contentViewBackgroundColor];
-  [v4 setBackgroundColor:v5];
+  contentView = [(HUAnnounceRecordingViewController *)self contentView];
+  _contentViewBackgroundColor = [(HUAnnounceRecordingViewController *)self _contentViewBackgroundColor];
+  [contentView setBackgroundColor:_contentViewBackgroundColor];
 
-  v6 = [(HUAnnounceRecordingViewController *)self largeTitleLabel];
-  v7 = [(HUAnnounceRecordingViewController *)self _largeTitleTextColor];
-  [v6 setTextColor:v7];
+  largeTitleLabel = [(HUAnnounceRecordingViewController *)self largeTitleLabel];
+  _largeTitleTextColor = [(HUAnnounceRecordingViewController *)self _largeTitleTextColor];
+  [largeTitleLabel setTextColor:_largeTitleTextColor];
 
-  v9 = [(HUAnnounceRecordingViewController *)self audioWaveformView];
-  v8 = [(HUAnnounceRecordingViewController *)self _waveformColor];
-  [v9 setWaveformColor:v8];
+  audioWaveformView = [(HUAnnounceRecordingViewController *)self audioWaveformView];
+  _waveformColor = [(HUAnnounceRecordingViewController *)self _waveformColor];
+  [audioWaveformView setWaveformColor:_waveformColor];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = HUAnnounceRecordingViewController;
-  [(HUAnnounceRecordingViewController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  [(HUAnnounceRecordingViewController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v7 = [(HUAnnounceRecordingViewController *)self contentViewWidthConstraint];
-    [v7 setConstant:395.0];
+    contentViewWidthConstraint = [(HUAnnounceRecordingViewController *)self contentViewWidthConstraint];
+    [contentViewWidthConstraint setConstant:395.0];
   }
 }
 
-- (void)beginRecording:(id)a3
+- (void)beginRecording:(id)recording
 {
-  v4 = [(HUAnnounceRecordingViewController *)self view];
-  [v4 layoutIfNeeded];
+  view = [(HUAnnounceRecordingViewController *)self view];
+  [view layoutIfNeeded];
 
-  v5 = [(HUAnnounceRecordingViewController *)self audioRecorder];
+  audioRecorder = [(HUAnnounceRecordingViewController *)self audioRecorder];
 
-  if (!v5)
+  if (!audioRecorder)
   {
     v6 = [objc_alloc(MEMORY[0x277D14428]) initWithAudioRecorderDelegate:self];
     [(HUAnnounceRecordingViewController *)self setAudioRecorder:v6];
 
-    v7 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-    [v7 prepareRecording];
+    audioRecorder2 = [(HUAnnounceRecordingViewController *)self audioRecorder];
+    [audioRecorder2 prepareRecording];
 
-    v8 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-    [v8 playAlertSoundForType:0 withCompletion:0];
+    audioRecorder3 = [(HUAnnounceRecordingViewController *)self audioRecorder];
+    [audioRecorder3 playAlertSoundForType:0 withCompletion:0];
 
-    v9 = [(HUAnnounceRecordingViewController *)self audioWaveformView];
-    [v9 clearPowerLevels];
+    audioWaveformView = [(HUAnnounceRecordingViewController *)self audioWaveformView];
+    [audioWaveformView clearPowerLevels];
   }
 
-  v10 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-  v11 = [v10 isRecording];
+  audioRecorder4 = [(HUAnnounceRecordingViewController *)self audioRecorder];
+  isRecording = [audioRecorder4 isRecording];
 
-  if ((v11 & 1) == 0)
+  if ((isRecording & 1) == 0)
   {
     v12 = objc_alloc_init(MEMORY[0x277CEAB30]);
     [v12 prewarmWithHandler:0];
-    v13 = [(HUAnnounceRecordingViewController *)self feedbackGenerator];
-    [v13 impactOccurredWithIntensity:1.0];
+    feedbackGenerator = [(HUAnnounceRecordingViewController *)self feedbackGenerator];
+    [feedbackGenerator impactOccurredWithIntensity:1.0];
 
-    v14 = [(HUAnnounceRecordingViewController *)self feedbackGenerator];
-    [v14 prepare];
+    feedbackGenerator2 = [(HUAnnounceRecordingViewController *)self feedbackGenerator];
+    [feedbackGenerator2 prepare];
 
-    v15 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-    [v15 setRecordingDurationLimit:60.0];
+    audioRecorder5 = [(HUAnnounceRecordingViewController *)self audioRecorder];
+    [audioRecorder5 setRecordingDurationLimit:60.0];
 
     v16 = HFLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -982,15 +982,15 @@ uint64_t __48__HUAnnounceRecordingViewController_viewDidLoad__block_invoke_3(uin
       _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "Calling startRecording", buf, 2u);
     }
 
-    v17 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-    [v17 startRecording];
+    audioRecorder6 = [(HUAnnounceRecordingViewController *)self audioRecorder];
+    [audioRecorder6 startRecording];
 
-    v18 = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
+    recordingStateChangeLabel = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
     v19 = _HULocalizedStringWithDefaultValue(@"HUAnnounceRecordingStopLabel_Title", @"HUAnnounceRecordingStopLabel_Title", 1);
-    [v18 setText:v19];
+    [recordingStateChangeLabel setText:v19];
 
-    v20 = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
-    [v20 setEnabled:1];
+    recordingStateChangeLabel2 = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
+    [recordingStateChangeLabel2 setEnabled:1];
 
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -998,8 +998,8 @@ uint64_t __48__HUAnnounceRecordingViewController_viewDidLoad__block_invoke_3(uin
     v22[3] = &unk_277DB8488;
     v22[4] = self;
     [MEMORY[0x277D75D18] animateWithDuration:v22 animations:0.25];
-    v21 = [(HUAnnounceRecordingViewController *)self recordButton];
-    [v21 startRecording];
+    recordButton = [(HUAnnounceRecordingViewController *)self recordButton];
+    [recordButton startRecording];
   }
 }
 
@@ -1025,57 +1025,57 @@ void __52__HUAnnounceRecordingViewController_beginRecording___block_invoke(uint6
   }
 }
 
-- (void)stopRecordAndSend:(id)a3
+- (void)stopRecordAndSend:(id)send
 {
-  v4 = [(HUAnnounceRecordingViewController *)self feedbackGenerator];
-  [v4 prepare];
+  feedbackGenerator = [(HUAnnounceRecordingViewController *)self feedbackGenerator];
+  [feedbackGenerator prepare];
 
-  v5 = [(HUAnnounceRecordingViewController *)self recordButton];
-  [v5 setEnabled:0];
+  recordButton = [(HUAnnounceRecordingViewController *)self recordButton];
+  [recordButton setEnabled:0];
 
-  v6 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-  [v6 stopRecording];
+  audioRecorder = [(HUAnnounceRecordingViewController *)self audioRecorder];
+  [audioRecorder stopRecording];
 }
 
-- (void)sendAnnouncement:(id)a3
+- (void)sendAnnouncement:(id)announcement
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = [(HUAnnounceRecordingViewController *)self serviceContext];
-  v5 = [v4 roomIdentifier];
+  serviceContext = [(HUAnnounceRecordingViewController *)self serviceContext];
+  roomIdentifier = [serviceContext roomIdentifier];
 
-  v6 = [(HUAnnounceRecordingViewController *)self announce];
-  v7 = [(HUAnnounceRecordingViewController *)self recordedAnnouncementURL];
+  announce = [(HUAnnounceRecordingViewController *)self announce];
+  recordedAnnouncementURL = [(HUAnnounceRecordingViewController *)self recordedAnnouncementURL];
   v8 = objc_alloc(MEMORY[0x277CCAD78]);
-  v9 = [(HUAnnounceRecordingViewController *)self serviceContext];
-  v10 = v9;
-  if (v5)
+  serviceContext2 = [(HUAnnounceRecordingViewController *)self serviceContext];
+  v10 = serviceContext2;
+  if (roomIdentifier)
   {
-    v11 = [v9 roomIdentifier];
-    v12 = [v8 initWithUUIDString:v11];
+    roomIdentifier2 = [serviceContext2 roomIdentifier];
+    v12 = [v8 initWithUUIDString:roomIdentifier2];
     v20[0] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     v14 = objc_alloc(MEMORY[0x277CCAD78]);
-    v15 = [(HUAnnounceRecordingViewController *)self serviceContext];
-    v16 = [v15 homeIdentifier];
-    v17 = [v14 initWithUUIDString:v16];
+    serviceContext3 = [(HUAnnounceRecordingViewController *)self serviceContext];
+    homeIdentifier = [serviceContext3 homeIdentifier];
+    v17 = [v14 initWithUUIDString:homeIdentifier];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __54__HUAnnounceRecordingViewController_sendAnnouncement___block_invoke;
     v19[3] = &unk_277DBE8F8;
     v19[4] = self;
-    [v6 sendAnnouncement:v7 toRoomsWithIDs:v13 andZonesWithIDs:MEMORY[0x277CBEBF8] inHomeWithID:v17 completion:v19];
+    [announce sendAnnouncement:recordedAnnouncementURL toRoomsWithIDs:v13 andZonesWithIDs:MEMORY[0x277CBEBF8] inHomeWithID:v17 completion:v19];
   }
 
   else
   {
-    v11 = [v9 homeIdentifier];
-    v12 = [v8 initWithUUIDString:v11];
+    roomIdentifier2 = [serviceContext2 homeIdentifier];
+    v12 = [v8 initWithUUIDString:roomIdentifier2];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __54__HUAnnounceRecordingViewController_sendAnnouncement___block_invoke_2;
     v18[3] = &unk_277DBE8F8;
     v18[4] = self;
-    [v6 sendAnnouncement:v7 toHomeWithID:v12 completion:v18];
+    [announce sendAnnouncement:recordedAnnouncementURL toHomeWithID:v12 completion:v18];
   }
 }
 
@@ -1137,15 +1137,15 @@ void __54__HUAnnounceRecordingViewController_sendAnnouncement___block_invoke_2(u
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = [a4 view];
-  v8 = [(HUAnnounceRecordingViewController *)self recordButton];
-  if (v7 == v8)
+  recognizerCopy = recognizer;
+  view = [touch view];
+  recordButton = [(HUAnnounceRecordingViewController *)self recordButton];
+  if (view == recordButton)
   {
-    v10 = [(HUAnnounceRecordingViewController *)self tapGestureRecognizer];
-    v9 = v10 != v6;
+    tapGestureRecognizer = [(HUAnnounceRecordingViewController *)self tapGestureRecognizer];
+    v9 = tapGestureRecognizer != recognizerCopy;
   }
 
   else
@@ -1156,19 +1156,19 @@ void __54__HUAnnounceRecordingViewController_sendAnnouncement___block_invoke_2(u
   return v9;
 }
 
-- (void)_didTap:(id)a3
+- (void)_didTap:(id)tap
 {
-  v4 = a3;
-  v5 = [(HUAnnounceRecordingViewController *)self view];
-  [v4 locationOfTouch:0 inView:v5];
+  tapCopy = tap;
+  view = [(HUAnnounceRecordingViewController *)self view];
+  [tapCopy locationOfTouch:0 inView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(HUAnnounceRecordingViewController *)self contentView];
-  [v10 frame];
+  contentView = [(HUAnnounceRecordingViewController *)self contentView];
+  [contentView frame];
   v12 = v11;
-  v13 = [(HUAnnounceRecordingViewController *)self contentView];
-  [v13 frame];
+  contentView2 = [(HUAnnounceRecordingViewController *)self contentView];
+  [contentView2 frame];
   if (v9 > v12 + v14)
   {
     v17 = 1;
@@ -1176,19 +1176,19 @@ void __54__HUAnnounceRecordingViewController_sendAnnouncement___block_invoke_2(u
 
   else
   {
-    v15 = [(HUAnnounceRecordingViewController *)self contentView];
-    [v15 frame];
+    contentView3 = [(HUAnnounceRecordingViewController *)self contentView];
+    [contentView3 frame];
     v17 = v9 < v16;
   }
 
-  v18 = [(HUAnnounceRecordingViewController *)self contentView];
-  [v18 frame];
+  contentView4 = [(HUAnnounceRecordingViewController *)self contentView];
+  [contentView4 frame];
   v20 = v7 < v19;
 
-  v21 = [MEMORY[0x277D75418] currentDevice];
-  v22 = [v21 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v22 & 0xFFFFFFFFFFFFFFFBLL) == 1 && (v17 || v20) || v17)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && (v17 || v20) || v17)
   {
     [(HUAnnounceRecordingViewController *)self _submitAnalyticsForAnnounceRecordingCompletdSuccessfully:1 interruptedByUser:1];
 
@@ -1196,18 +1196,18 @@ void __54__HUAnnounceRecordingViewController_sendAnnouncement___block_invoke_2(u
   }
 }
 
-- (void)_didPan:(id)a3
+- (void)_didPan:(id)pan
 {
-  v4 = a3;
-  v5 = [(HUAnnounceRecordingViewController *)self view];
-  [v4 translationInView:v5];
+  panCopy = pan;
+  view = [(HUAnnounceRecordingViewController *)self view];
+  [panCopy translationInView:view];
   v7 = v6;
 
-  v8 = [v4 state];
-  if (v8 == 3)
+  state = [panCopy state];
+  if (state == 3)
   {
-    v9 = [(HUAnnounceRecordingViewController *)self closeButtonTopConstraint];
-    [v9 constant];
+    closeButtonTopConstraint = [(HUAnnounceRecordingViewController *)self closeButtonTopConstraint];
+    [closeButtonTopConstraint constant];
     v11 = v10;
 
     if (v11 > 176.0)
@@ -1217,61 +1217,61 @@ void __54__HUAnnounceRecordingViewController_sendAnnouncement___block_invoke_2(u
       return;
     }
 
-    v22 = [MEMORY[0x277D75418] currentDevice];
-    v23 = [v22 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v23 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v24 = [(HUAnnounceRecordingViewController *)self contentViewTopConstraint];
-      [v24 setConstant:44.0];
+      contentViewTopConstraint = [(HUAnnounceRecordingViewController *)self contentViewTopConstraint];
+      [contentViewTopConstraint setConstant:44.0];
     }
 
-    v25 = [(HUAnnounceRecordingViewController *)self closeButtonTopConstraint];
-    [v25 setConstant:44.0];
+    closeButtonTopConstraint2 = [(HUAnnounceRecordingViewController *)self closeButtonTopConstraint];
+    [closeButtonTopConstraint2 setConstant:44.0];
 
     [(NSLayoutConstraint *)self->_dismissLabelTopConstraint setConstant:-25.0];
     [(UILabel *)self->_dismissLabel setAlpha:0.0];
-    v26 = [(HUAnnounceRecordingViewController *)self view];
-    [v26 setNeedsLayout];
+    view2 = [(HUAnnounceRecordingViewController *)self view];
+    [view2 setNeedsLayout];
     goto LABEL_15;
   }
 
   if (v7 > 49.0)
   {
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v14 = [(HUAnnounceRecordingViewController *)self contentViewTopConstraint];
-      [v14 setConstant:v7];
+      contentViewTopConstraint2 = [(HUAnnounceRecordingViewController *)self contentViewTopConstraint];
+      [contentViewTopConstraint2 setConstant:v7];
     }
 
-    v15 = [(HUAnnounceRecordingViewController *)self closeButtonTopConstraint];
-    [v15 setConstant:v7];
+    closeButtonTopConstraint3 = [(HUAnnounceRecordingViewController *)self closeButtonTopConstraint];
+    [closeButtonTopConstraint3 setConstant:v7];
 
     v16 = v7 + -25.0;
     [(NSLayoutConstraint *)self->_dismissLabelTopConstraint setConstant:v16];
-    v17 = [(HUAnnounceRecordingViewController *)self dismissLabel];
-    [v17 setAlpha:v16 / 176.0];
+    dismissLabel = [(HUAnnounceRecordingViewController *)self dismissLabel];
+    [dismissLabel setAlpha:v16 / 176.0];
 
-    v18 = [(HUAnnounceRecordingViewController *)self view];
-    [v18 layoutIfNeeded];
+    view3 = [(HUAnnounceRecordingViewController *)self view];
+    [view3 layoutIfNeeded];
 
-    v19 = [(HUAnnounceRecordingViewController *)self closeButtonTopConstraint];
-    [v19 constant];
+    closeButtonTopConstraint4 = [(HUAnnounceRecordingViewController *)self closeButtonTopConstraint];
+    [closeButtonTopConstraint4 constant];
     v21 = v20;
 
     if (v21 > 176.0)
     {
-      v26 = [(HUAnnounceRecordingViewController *)self feedbackGenerator];
-      [v26 impactOccurredWithIntensity:1.0];
+      view2 = [(HUAnnounceRecordingViewController *)self feedbackGenerator];
+      [view2 impactOccurredWithIntensity:1.0];
 LABEL_15:
     }
   }
 }
 
-- (void)_dismissUpRecordingView:(id)a3
+- (void)_dismissUpRecordingView:(id)view
 {
   v3[4] = self;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1374,7 +1374,7 @@ void __61__HUAnnounceRecordingViewController__dismissUpRecordingView___block_inv
   }
 }
 
-- (void)_dismissDownRecordingView:(id)a3
+- (void)_dismissDownRecordingView:(id)view
 {
   [(HUAnnounceRecordingViewController *)self _submitAnalyticsForAnnounceRecordingCompletdSuccessfully:1 interruptedByUser:1];
   v4[4] = self;
@@ -1505,7 +1505,7 @@ void __63__HUAnnounceRecordingViewController__dismissDownRecordingView___block_i
   return v8;
 }
 
-- (id)_stringForDuration:(double)a3
+- (id)_stringForDuration:(double)duration
 {
   if (qword_27C837F30 != -1)
   {
@@ -1514,7 +1514,7 @@ void __63__HUAnnounceRecordingViewController__dismissDownRecordingView___block_i
 
   v4 = _MergedGlobals_3_5;
 
-  return [v4 stringFromTimeInterval:a3];
+  return [v4 stringFromTimeInterval:duration];
 }
 
 uint64_t __56__HUAnnounceRecordingViewController__stringForDuration___block_invoke()
@@ -1534,24 +1534,24 @@ uint64_t __56__HUAnnounceRecordingViewController__stringForDuration___block_invo
 {
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v3 = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
+    recordingStateChangeLabel = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
     v4 = _HULocalizedStringWithDefaultValue(@"HUAnnounceBeginRecordingLabel_Title", @"HUAnnounceBeginRecordingLabel_Title", 1);
-    [v3 setText:v4];
+    [recordingStateChangeLabel setText:v4];
 
-    v5 = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
-    [v5 setAlpha:1.0];
+    recordingStateChangeLabel2 = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
+    [recordingStateChangeLabel2 setAlpha:1.0];
 
-    v6 = [(HUAnnounceRecordingViewController *)self audioWaveformView];
-    [v6 setAlpha:0.0];
+    audioWaveformView = [(HUAnnounceRecordingViewController *)self audioWaveformView];
+    [audioWaveformView setAlpha:0.0];
 
-    v7 = [(HUAnnounceRecordingViewController *)self view];
-    [v7 layoutIfNeeded];
+    view = [(HUAnnounceRecordingViewController *)self view];
+    [view layoutIfNeeded];
 
-    v8 = [(HUAnnounceRecordingViewController *)self recordButton];
-    [v8 setEnabled:1];
+    recordButton = [(HUAnnounceRecordingViewController *)self recordButton];
+    [recordButton setEnabled:1];
 
-    v9 = [(HUAnnounceRecordingViewController *)self recordButton];
-    [v9 stopRecording];
+    recordButton2 = [(HUAnnounceRecordingViewController *)self recordButton];
+    [recordButton2 stopRecording];
   }
 
   else
@@ -1577,12 +1577,12 @@ uint64_t __56__HUAnnounceRecordingViewController__stringForDuration___block_invo
       _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "Checking reachability for context Room", &v17, 2u);
     }
 
-    v4 = [(HUAnnounceRecordingViewController *)self currentHome];
+    currentHome = [(HUAnnounceRecordingViewController *)self currentHome];
     v5 = objc_alloc(MEMORY[0x277CCAD78]);
-    v6 = [(HUAnnounceRecordingViewController *)self serviceContext];
-    v7 = [v6 roomIdentifier];
-    v8 = [v5 initWithUUIDString:v7];
-    v9 = [v4 hf_roomWithIdentifier:v8];
+    serviceContext = [(HUAnnounceRecordingViewController *)self serviceContext];
+    roomIdentifier = [serviceContext roomIdentifier];
+    v8 = [v5 initWithUUIDString:roomIdentifier];
+    v9 = [currentHome hf_roomWithIdentifier:v8];
 
     v10 = [v9 hf_hasAtLeastOneReachableHomeMediaAccessory] ^ 1;
   }
@@ -1596,10 +1596,10 @@ uint64_t __56__HUAnnounceRecordingViewController__stringForDuration___block_invo
       _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "Checking reachability for context Home", &v17, 2u);
     }
 
-    v12 = [(HUAnnounceRecordingViewController *)self currentHome];
-    v13 = [v12 hf_hasAtLeastOneReachableHomeMediaAccessory];
+    currentHome2 = [(HUAnnounceRecordingViewController *)self currentHome];
+    hf_hasAtLeastOneReachableHomeMediaAccessory = [currentHome2 hf_hasAtLeastOneReachableHomeMediaAccessory];
 
-    v10 = v13 ^ 1;
+    v10 = hf_hasAtLeastOneReachableHomeMediaAccessory ^ 1;
   }
 
   else
@@ -1626,64 +1626,64 @@ uint64_t __56__HUAnnounceRecordingViewController__stringForDuration___block_invo
 
 - (void)_updateUIBasedOnReachabilityStatus
 {
-  v3 = [(HUAnnounceRecordingViewController *)self _areAllHomePodsOffline];
-  v4 = [(HUAnnounceRecordingViewController *)self recordedAnnouncementURL];
+  _areAllHomePodsOffline = [(HUAnnounceRecordingViewController *)self _areAllHomePodsOffline];
+  recordedAnnouncementURL = [(HUAnnounceRecordingViewController *)self recordedAnnouncementURL];
 
-  if (v3)
+  if (_areAllHomePodsOffline)
   {
-    if (v4)
+    if (recordedAnnouncementURL)
     {
       goto LABEL_7;
     }
 
-    v5 = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
+    recordingStateChangeLabel = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
     v6 = _HULocalizedStringWithDefaultValue(@"HUAnnounceButton_Title", @"HUAnnounceButton_Title", 1);
-    [v5 setText:v6];
+    [recordingStateChangeLabel setText:v6];
 
-    v7 = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
+    recordingStateChangeLabel2 = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
     v8 = 1.0;
-    [v7 setAlpha:1.0];
+    [recordingStateChangeLabel2 setAlpha:1.0];
 
-    v9 = [(HUAnnounceRecordingViewController *)self recordButton];
-    [v9 setEnabled:0];
+    recordButton = [(HUAnnounceRecordingViewController *)self recordButton];
+    [recordButton setEnabled:0];
 
-    v10 = [(HUAnnounceRecordingViewController *)self recordButton];
-    [v10 stopRecording];
+    recordButton2 = [(HUAnnounceRecordingViewController *)self recordButton];
+    [recordButton2 stopRecording];
 
-    v11 = [(HUAnnounceRecordingViewController *)self errorStatusLabel];
+    errorStatusLabel = [(HUAnnounceRecordingViewController *)self errorStatusLabel];
     v12 = _HULocalizedStringWithDefaultValue(@"HUAnnounceHomePodsUnavailable_Error_Message", @"HUAnnounceHomePodsUnavailable_Error_Message", 1);
-    [v11 setText:v12];
+    [errorStatusLabel setText:v12];
   }
 
   else
   {
-    if (v4)
+    if (recordedAnnouncementURL)
     {
       goto LABEL_7;
     }
 
-    v11 = [(HUAnnounceRecordingViewController *)self recordButton];
-    [v11 setEnabled:1];
+    errorStatusLabel = [(HUAnnounceRecordingViewController *)self recordButton];
+    [errorStatusLabel setEnabled:1];
     v8 = 0.0;
   }
 
-  v13 = [(HUAnnounceRecordingViewController *)self errorStatusLabel];
-  [v13 setAlpha:v8];
+  errorStatusLabel2 = [(HUAnnounceRecordingViewController *)self errorStatusLabel];
+  [errorStatusLabel2 setAlpha:v8];
 
 LABEL_7:
-  v14 = [(HUAnnounceRecordingViewController *)self view];
-  [v14 layoutIfNeeded];
+  view = [(HUAnnounceRecordingViewController *)self view];
+  [view layoutIfNeeded];
 }
 
 - (BOOL)_isRoomContext
 {
-  v3 = [(HUAnnounceRecordingViewController *)self serviceContext];
-  v4 = [v3 roomIdentifier];
-  if (v4)
+  serviceContext = [(HUAnnounceRecordingViewController *)self serviceContext];
+  roomIdentifier = [serviceContext roomIdentifier];
+  if (roomIdentifier)
   {
-    v5 = [(HUAnnounceRecordingViewController *)self serviceContext];
-    v6 = [v5 homeIdentifier];
-    v7 = v6 != 0;
+    serviceContext2 = [(HUAnnounceRecordingViewController *)self serviceContext];
+    homeIdentifier = [serviceContext2 homeIdentifier];
+    v7 = homeIdentifier != 0;
   }
 
   else
@@ -1696,28 +1696,28 @@ LABEL_7:
 
 - (BOOL)_isHomeContext
 {
-  v3 = [(HUAnnounceRecordingViewController *)self serviceContext];
-  v4 = [v3 roomIdentifier];
-  if (v4)
+  serviceContext = [(HUAnnounceRecordingViewController *)self serviceContext];
+  roomIdentifier = [serviceContext roomIdentifier];
+  if (roomIdentifier)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(HUAnnounceRecordingViewController *)self serviceContext];
-    v7 = [v6 homeIdentifier];
-    v5 = v7 != 0;
+    serviceContext2 = [(HUAnnounceRecordingViewController *)self serviceContext];
+    homeIdentifier = [serviceContext2 homeIdentifier];
+    v5 = homeIdentifier != 0;
   }
 
   return v5;
 }
 
-- (void)_deleteRecording:(id)a3
+- (void)_deleteRecording:(id)recording
 {
   [(HUAnnounceRecordingViewController *)self _deleteAudioFile];
-  v4 = [(HUAnnounceRecordingViewController *)self audioWaveformView];
-  [v4 clearPowerLevels];
+  audioWaveformView = [(HUAnnounceRecordingViewController *)self audioWaveformView];
+  [audioWaveformView clearPowerLevels];
 
   [(HUAnnounceRecordingViewController *)self _hideRecordingUI];
 }
@@ -1725,21 +1725,21 @@ LABEL_7:
 - (void)_deleteAudioFile
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HUAnnounceRecordingViewController *)self recordedAnnouncementURL];
-  if (v3)
+  recordedAnnouncementURL = [(HUAnnounceRecordingViewController *)self recordedAnnouncementURL];
+  if (recordedAnnouncementURL)
   {
-    v4 = v3;
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [(HUAnnounceRecordingViewController *)self recordedAnnouncementURL];
-    v7 = [v6 path];
-    v8 = [v5 fileExistsAtPath:v7];
+    v4 = recordedAnnouncementURL;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    recordedAnnouncementURL2 = [(HUAnnounceRecordingViewController *)self recordedAnnouncementURL];
+    path = [recordedAnnouncementURL2 path];
+    v8 = [defaultManager fileExistsAtPath:path];
 
     if (v8)
     {
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
-      v10 = [(HUAnnounceRecordingViewController *)self recordedAnnouncementURL];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      recordedAnnouncementURL3 = [(HUAnnounceRecordingViewController *)self recordedAnnouncementURL];
       v13 = 0;
-      [v9 removeItemAtURL:v10 error:&v13];
+      [defaultManager2 removeItemAtURL:recordedAnnouncementURL3 error:&v13];
       v11 = v13;
 
       if (v11)
@@ -1760,8 +1760,8 @@ LABEL_7:
 
 - (void)_hideRecordingUI
 {
-  v3 = [(HUAnnounceRecordingViewController *)self recordButton];
-  [v3 stopRecording];
+  recordButton = [(HUAnnounceRecordingViewController *)self recordButton];
+  [recordButton stopRecording];
 
   v4[4] = self;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1813,51 +1813,51 @@ void __53__HUAnnounceRecordingViewController__hideRecordingUI__block_invoke_2(ui
 
 - (id)_waveformColor
 {
-  v3 = [MEMORY[0x277D75348] systemBlackColor];
-  v4 = [(HUAnnounceRecordingViewController *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+  traitCollection = [(HUAnnounceRecordingViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v5 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v6 = [MEMORY[0x277D75348] systemWhiteColor];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
 
-    v3 = v6;
+    systemBlackColor = systemWhiteColor;
   }
 
-  return v3;
+  return systemBlackColor;
 }
 
 - (id)_contentViewBackgroundColor
 {
-  v3 = [MEMORY[0x277D75348] systemWhiteColor];
-  v4 = [(HUAnnounceRecordingViewController *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  traitCollection = [(HUAnnounceRecordingViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v5 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v6 = [MEMORY[0x277D75348] systemBlackColor];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
 
-    v3 = v6;
+    systemWhiteColor = systemBlackColor;
   }
 
-  return v3;
+  return systemWhiteColor;
 }
 
-- (void)_dismissViewOrDisplayError:(id)a3
+- (void)_dismissViewOrDisplayError:(id)error
 {
-  if (a3)
+  if (error)
   {
-    v4 = [(HUAnnounceRecordingViewController *)self audioWaveformView];
-    [v4 setAlpha:0.0];
+    audioWaveformView = [(HUAnnounceRecordingViewController *)self audioWaveformView];
+    [audioWaveformView setAlpha:0.0];
 
-    v5 = [(HUAnnounceRecordingViewController *)self announcementDeliveryFailureLabel];
-    [v5 setAlpha:1.0];
+    announcementDeliveryFailureLabel = [(HUAnnounceRecordingViewController *)self announcementDeliveryFailureLabel];
+    [announcementDeliveryFailureLabel setAlpha:1.0];
 
-    v6 = [(HUAnnounceRecordingViewController *)self errorStatusLabel];
-    [v6 setAlpha:0.0];
+    errorStatusLabel = [(HUAnnounceRecordingViewController *)self errorStatusLabel];
+    [errorStatusLabel setAlpha:0.0];
 
-    v7 = [(HUAnnounceRecordingViewController *)self recordButton];
-    [v7 setEnabled:1];
+    recordButton = [(HUAnnounceRecordingViewController *)self recordButton];
+    [recordButton setEnabled:1];
   }
 
   else
@@ -1867,85 +1867,85 @@ void __53__HUAnnounceRecordingViewController__hideRecordingUI__block_invoke_2(ui
   }
 }
 
-- (void)didUpdateAveragePower:(float)a3
+- (void)didUpdateAveragePower:(float)power
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HUAnnounceRecordingViewController.m" lineNumber:819 description:@"didUpdateAveragePower called from secondary thread"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAnnounceRecordingViewController.m" lineNumber:819 description:@"didUpdateAveragePower called from secondary thread"];
   }
 
-  v7 = [(HUAnnounceRecordingViewController *)self audioWaveformView];
-  [v7 appendPowerLevel:a3];
+  audioWaveformView = [(HUAnnounceRecordingViewController *)self audioWaveformView];
+  [audioWaveformView appendPowerLevel:power];
 }
 
-- (void)audioRecorderDidStartRecording:(id)a3
+- (void)audioRecorderDidStartRecording:(id)recording
 {
-  v4 = [(HUAnnounceRecordingViewController *)self feedbackGenerator];
-  [v4 impactOccurredWithIntensity:1.0];
+  feedbackGenerator = [(HUAnnounceRecordingViewController *)self feedbackGenerator];
+  [feedbackGenerator impactOccurredWithIntensity:1.0];
 
-  v5 = [(HUAnnounceRecordingViewController *)self recordButton];
-  [v5 setEnabled:1];
+  recordButton = [(HUAnnounceRecordingViewController *)self recordButton];
+  [recordButton setEnabled:1];
 
-  v6 = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
-  [v6 setEnabled:1];
+  recordingStateChangeLabel = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
+  [recordingStateChangeLabel setEnabled:1];
 
-  v7 = [(HUAnnounceRecordingViewController *)self recordButton];
-  [v7 removeTarget:self action:sel_beginRecording_ forControlEvents:64];
+  recordButton2 = [(HUAnnounceRecordingViewController *)self recordButton];
+  [recordButton2 removeTarget:self action:sel_beginRecording_ forControlEvents:64];
 
-  v8 = [(HUAnnounceRecordingViewController *)self recordButton];
-  [v8 addTarget:self action:sel_stopRecordAndSend_ forControlEvents:64];
+  recordButton3 = [(HUAnnounceRecordingViewController *)self recordButton];
+  [recordButton3 addTarget:self action:sel_stopRecordAndSend_ forControlEvents:64];
 }
 
-- (void)audioRecorderFailedToFinishRecording:(id)a3
+- (void)audioRecorderFailedToFinishRecording:(id)recording
 {
   [(HUAnnounceRecordingViewController *)self _submitAnalyticsForAnnounceRecordingCompletdSuccessfully:0 interruptedByUser:0];
 
   [(HUAnnounceRecordingViewController *)self _restoreRecordingUI];
 }
 
-- (void)audioRecorderFinishedRecording:(id)a3 audioFile:(id)a4
+- (void)audioRecorderFinishedRecording:(id)recording audioFile:(id)file
 {
-  v6 = a3;
-  v7 = a4;
+  recordingCopy = recording;
+  fileCopy = file;
   [(HUAnnounceRecordingViewController *)self _submitAnalyticsForAnnounceRecordingCompletdSuccessfully:1 interruptedByUser:0];
-  v8 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-  [v8 currentRecordedDuration];
+  audioRecorder = [(HUAnnounceRecordingViewController *)self audioRecorder];
+  [audioRecorder currentRecordedDuration];
   if (v9 <= 0.5)
   {
 
     goto LABEL_6;
   }
 
-  v10 = [v6 recordingStopSource];
+  recordingStopSource = [recordingCopy recordingStopSource];
 
-  if (v10)
+  if (recordingStopSource)
   {
 LABEL_6:
     [(HUAnnounceRecordingViewController *)self _deleteRecording:0];
     goto LABEL_7;
   }
 
-  v11 = [(HUAnnounceRecordingViewController *)self feedbackGenerator];
-  [v11 impactOccurredWithIntensity:1.0];
+  feedbackGenerator = [(HUAnnounceRecordingViewController *)self feedbackGenerator];
+  [feedbackGenerator impactOccurredWithIntensity:1.0];
 
-  [(HUAnnounceRecordingViewController *)self setRecordedAnnouncementURL:v7];
-  v12 = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
+  [(HUAnnounceRecordingViewController *)self setRecordedAnnouncementURL:fileCopy];
+  recordingStateChangeLabel = [(HUAnnounceRecordingViewController *)self recordingStateChangeLabel];
   v13 = _HULocalizedStringWithDefaultValue(@"HUAnnounceBeginRecordingLabel_Title", @"HUAnnounceBeginRecordingLabel_Title", 1);
-  [v12 setText:v13];
+  [recordingStateChangeLabel setText:v13];
 
-  v14 = [(HUAnnounceRecordingViewController *)self recordButton];
-  [v14 stopRecording];
+  recordButton = [(HUAnnounceRecordingViewController *)self recordButton];
+  [recordButton stopRecording];
 
-  v15 = [(HUAnnounceRecordingViewController *)self recordButton];
-  [v15 removeTarget:self action:sel_stopRecordAndSend_ forControlEvents:64];
+  recordButton2 = [(HUAnnounceRecordingViewController *)self recordButton];
+  [recordButton2 removeTarget:self action:sel_stopRecordAndSend_ forControlEvents:64];
 
-  v16 = [(HUAnnounceRecordingViewController *)self recordButton];
-  [v16 addTarget:self action:sel_beginRecording_ forControlEvents:64];
+  recordButton3 = [(HUAnnounceRecordingViewController *)self recordButton];
+  [recordButton3 addTarget:self action:sel_beginRecording_ forControlEvents:64];
 
   [(HUAnnounceRecordingViewController *)self sendAnnouncement:0];
-  v17 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-  [v17 currentRecordedDuration];
+  audioRecorder2 = [(HUAnnounceRecordingViewController *)self audioRecorder];
+  [audioRecorder2 currentRecordedDuration];
   v19 = v18;
 
   if (v19 >= 60.0)
@@ -1968,49 +1968,49 @@ void __78__HUAnnounceRecordingViewController_audioRecorderFinishedRecording_audi
   [v1 setEnabled:1];
 }
 
-- (void)accessoryDidUpdateReachability:(id)a3
+- (void)accessoryDidUpdateReachability:(id)reachability
 {
-  if ([a3 hf_isHomeMediaAccessory])
+  if ([reachability hf_isHomeMediaAccessory])
   {
 
     [(HUAnnounceRecordingViewController *)self _updateUIBasedOnReachabilityStatus];
   }
 }
 
-- (void)accessoryDidUpdateReachableTransports:(id)a3
+- (void)accessoryDidUpdateReachableTransports:(id)transports
 {
-  if ([a3 hf_isHomeMediaAccessory])
+  if ([transports hf_isHomeMediaAccessory])
   {
 
     [(HUAnnounceRecordingViewController *)self _updateUIBasedOnReachabilityStatus];
   }
 }
 
-- (void)accessoryDidUpdateControllable:(id)a3
+- (void)accessoryDidUpdateControllable:(id)controllable
 {
-  if ([a3 hf_isHomeMediaAccessory])
+  if ([controllable hf_isHomeMediaAccessory])
   {
 
     [(HUAnnounceRecordingViewController *)self _updateUIBasedOnReachabilityStatus];
   }
 }
 
-- (void)_submitAnalyticsForAnnounceRecordingCompletdSuccessfully:(BOOL)a3 interruptedByUser:(BOOL)a4
+- (void)_submitAnalyticsForAnnounceRecordingCompletdSuccessfully:(BOOL)successfully interruptedByUser:(BOOL)user
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-  v8 = [v7 recordingStopSource];
+  userCopy = user;
+  successfullyCopy = successfully;
+  audioRecorder = [(HUAnnounceRecordingViewController *)self audioRecorder];
+  recordingStopSource = [audioRecorder recordingStopSource];
 
-  v9 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-  [v9 currentRecordedDuration];
+  audioRecorder2 = [(HUAnnounceRecordingViewController *)self audioRecorder];
+  [audioRecorder2 currentRecordedDuration];
   v11 = v10;
 
   v25 = objc_opt_new();
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
   [v25 setObject:v12 forKey:*MEMORY[0x277D13428]];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithInt:!v5];
+  v13 = [MEMORY[0x277CCABB0] numberWithInt:!successfullyCopy];
   [v25 setObject:v13 forKey:*MEMORY[0x277D13430]];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[HUAnnounceRecordingViewController _isHomeContext](self, "_isHomeContext")}];
@@ -2019,23 +2019,23 @@ void __78__HUAnnounceRecordingViewController_audioRecorderFinishedRecording_audi
   v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[HUAnnounceRecordingViewController _isRoomContext](self, "_isRoomContext")}];
   [v25 setObject:v15 forKey:*MEMORY[0x277D13440]];
 
-  v16 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+  v16 = [MEMORY[0x277CCABB0] numberWithBool:userCopy];
   [v25 setObject:v16 forKey:*MEMORY[0x277D13458]];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithInt:(v8 - 1) < 2];
+  v17 = [MEMORY[0x277CCABB0] numberWithInt:(recordingStopSource - 1) < 2];
   [v25 setObject:v17 forKey:*MEMORY[0x277D13450]];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithInt:v8 == 3];
+  v18 = [MEMORY[0x277CCABB0] numberWithInt:recordingStopSource == 3];
   [v25 setObject:v18 forKey:*MEMORY[0x277D13448]];
 
-  v19 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-  v20 = [v19 routeChangeReason];
+  audioRecorder3 = [(HUAnnounceRecordingViewController *)self audioRecorder];
+  routeChangeReason = [audioRecorder3 routeChangeReason];
 
-  if (v20)
+  if (routeChangeReason)
   {
-    v21 = [(HUAnnounceRecordingViewController *)self audioRecorder];
-    v22 = [v21 routeChangeReason];
-    [v25 setObject:v22 forKey:*MEMORY[0x277D13690]];
+    audioRecorder4 = [(HUAnnounceRecordingViewController *)self audioRecorder];
+    routeChangeReason2 = [audioRecorder4 routeChangeReason];
+    [v25 setObject:routeChangeReason2 forKey:*MEMORY[0x277D13690]];
   }
 
   v23 = MEMORY[0x277D143D8];

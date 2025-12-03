@@ -1,6 +1,6 @@
 @interface MOTrendBundlerPredicateWorkoutTypePattern
 - (MOTrendBundlerPredicateWorkoutTypePattern)init;
-- (id)filterEvents:(id)a3;
+- (id)filterEvents:(id)events;
 @end
 
 @implementation MOTrendBundlerPredicateWorkoutTypePattern
@@ -19,16 +19,16 @@
   return v3;
 }
 
-- (id)filterEvents:(id)a3
+- (id)filterEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v51 = objc_opt_new();
   v4 = objc_opt_new();
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v45 = v4;
   v57 = [obj countByEnumeratingWithState:&v75 objects:v83 count:16];
   if (v57)
@@ -47,18 +47,18 @@
         }
 
         v7 = *(*(&v75 + 1) + 8 * v6);
-        v8 = [v7 category];
-        if (v8 == 2 && ([v7 patterns], v61 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v61, "objectForKeyedSubscript:", @"kEventPatternType"), v59 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v59, "intValue") == 1))
+        category = [v7 category];
+        if (category == 2 && ([v7 patterns], v61 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v61, "objectForKeyedSubscript:", @"kEventPatternType"), v59 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v59, "intValue") == 1))
         {
-          v54 = [v7 patterns];
-          v52 = [v54 objectForKeyedSubscript:@"kEventPatternTrendFeatureType"];
+          patterns = [v7 patterns];
+          v52 = [patterns objectForKeyedSubscript:@"kEventPatternTrendFeatureType"];
           if ([v52 intValue] == 1)
           {
-            v9 = [v7 patterns];
-            v10 = [v9 objectForKeyedSubscript:v44];
+            patterns2 = [v7 patterns];
+            v10 = [patterns2 objectForKeyedSubscript:v44];
             [v10 doubleValue];
             v46 = v10;
-            v47 = v9;
+            v47 = patterns2;
             if (v11 > 0.0)
             {
 
@@ -85,20 +85,20 @@
         }
 
         v13 = 0;
-        v14 = 0;
+        bOOLValue = 0;
         if ([v7 category] != 2)
         {
           goto LABEL_16;
         }
 
 LABEL_13:
-        v15 = [v7 patterns];
-        v16 = [v15 objectForKeyedSubscript:@"kEventPatternType"];
+        patterns3 = [v7 patterns];
+        v16 = [patterns3 objectForKeyedSubscript:@"kEventPatternType"];
         if ([v16 intValue] == 2)
         {
-          v17 = [v7 patterns];
-          v18 = [v17 objectForKeyedSubscript:@"kEventPatternRoutineStartingRoutine"];
-          v14 = [v18 BOOLValue];
+          patterns4 = [v7 patterns];
+          v18 = [patterns4 objectForKeyedSubscript:@"kEventPatternRoutineStartingRoutine"];
+          bOOLValue = [v18 BOOLValue];
 
           v4 = v45;
           if ((v13 & 1) == 0)
@@ -110,7 +110,7 @@ LABEL_13:
         else
         {
 
-          v14 = 0;
+          bOOLValue = 0;
           if (!v13)
           {
 LABEL_15:
@@ -134,23 +134,23 @@ LABEL_17:
         }
 
 LABEL_18:
-        if (v8 == 2)
+        if (category == 2)
         {
 
-          if ((v14 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
             goto LABEL_24;
           }
         }
 
-        else if (!v14)
+        else if (!bOOLValue)
         {
           goto LABEL_24;
         }
 
 LABEL_22:
-        v19 = [v7 patterns];
-        v20 = [v19 objectForKey:@"kEventPatternOverallWorkoutType"];
+        patterns5 = [v7 patterns];
+        v20 = [patterns5 objectForKey:@"kEventPatternOverallWorkoutType"];
 
         if (v20)
         {
@@ -191,8 +191,8 @@ LABEL_24:
             objc_enumerationMutation(v58);
           }
 
-          v27 = [*(*(&v71 + 1) + 8 * i) patterns];
-          v28 = [v27 objectForKeyedSubscript:@"kEventPatternOverallWorkoutType"];
+          patterns6 = [*(*(&v71 + 1) + 8 * i) patterns];
+          v28 = [patterns6 objectForKeyedSubscript:@"kEventPatternOverallWorkoutType"];
           [v22 addObject:v28];
         }
 
@@ -245,8 +245,8 @@ LABEL_24:
                 }
 
                 v36 = *(*(&v63 + 1) + 8 * j);
-                v37 = [v36 patterns];
-                v38 = [v37 objectForKeyedSubscript:@"kEventPatternOverallWorkoutType"];
+                patterns7 = [v36 patterns];
+                v38 = [patterns7 objectForKeyedSubscript:@"kEventPatternOverallWorkoutType"];
                 v39 = [v38 isEqualToString:v30];
 
                 if (v39)

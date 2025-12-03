@@ -1,22 +1,22 @@
 @interface PCDisplayContext
-- (BOOL)isEqual:(id)a3;
-- (PCDisplayContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PCDisplayContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PCDisplayContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 legacyAttachmentURL];
+    v5 = equalCopy;
+    legacyAttachmentURL = [v5 legacyAttachmentURL];
     legacyAttachmentURL = self->_legacyAttachmentURL;
-    v8 = v6;
+    v8 = legacyAttachmentURL;
     v9 = legacyAttachmentURL;
     v10 = v9;
     if (v8 == v9)
@@ -38,9 +38,9 @@
       }
     }
 
-    v13 = [v5 legacyBodyText];
+    legacyBodyText = [v5 legacyBodyText];
     legacyBodyText = self->_legacyBodyText;
-    v8 = v13;
+    v8 = legacyBodyText;
     v15 = legacyBodyText;
     v10 = v15;
     if (v8 == v15)
@@ -62,9 +62,9 @@
       }
     }
 
-    v17 = [v5 localizedPrimaryAltText];
+    localizedPrimaryAltText = [v5 localizedPrimaryAltText];
     localizedPrimaryAltText = self->_localizedPrimaryAltText;
-    v8 = v17;
+    v8 = localizedPrimaryAltText;
     v19 = localizedPrimaryAltText;
     v10 = v19;
     if (v8 == v19)
@@ -86,9 +86,9 @@
       }
     }
 
-    v21 = [v5 localizedSecondaryAltText];
+    localizedSecondaryAltText = [v5 localizedSecondaryAltText];
     localizedSecondaryAltText = self->_localizedSecondaryAltText;
-    v8 = v21;
+    v8 = localizedSecondaryAltText;
     v23 = localizedSecondaryAltText;
     v10 = v23;
     if (v8 == v23)
@@ -131,7 +131,7 @@ LABEL_25:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PCDisplayContext);
   [(PCDisplayContext *)v4 setInteractionBehavior:self->_interactionBehavior];
@@ -143,62 +143,62 @@ LABEL_25:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   interactionBehavior = self->_interactionBehavior;
-  v11 = v4;
+  v11 = coderCopy;
   if (interactionBehavior)
   {
-    [v4 encodeInteger:interactionBehavior forKey:@"be"];
-    v4 = v11;
+    [coderCopy encodeInteger:interactionBehavior forKey:@"be"];
+    coderCopy = v11;
   }
 
   interactionDirection = self->_interactionDirection;
   if (interactionDirection)
   {
     [v11 encodeInteger:interactionDirection forKey:@"dir"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   legacyAttachmentURL = self->_legacyAttachmentURL;
   if (legacyAttachmentURL)
   {
     [v11 encodeObject:legacyAttachmentURL forKey:@"lu"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   legacyBodyText = self->_legacyBodyText;
   if (legacyBodyText)
   {
     [v11 encodeObject:legacyBodyText forKey:@"lb"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   localizedPrimaryAltText = self->_localizedPrimaryAltText;
   if (localizedPrimaryAltText)
   {
     [v11 encodeObject:localizedPrimaryAltText forKey:@"prime"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   localizedSecondaryAltText = self->_localizedSecondaryAltText;
   if (localizedSecondaryAltText)
   {
     [v11 encodeObject:localizedSecondaryAltText forKey:@"sec"];
-    v4 = v11;
+    coderCopy = v11;
   }
 }
 
-- (PCDisplayContext)initWithCoder:(id)a3
+- (PCDisplayContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PCDisplayContext;
   v5 = [(PCDisplayContext *)&v9 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     if ([v6 containsValueForKey:@"be"])
     {
       v5->_interactionBehavior = [v6 decodeIntegerForKey:@"be"];

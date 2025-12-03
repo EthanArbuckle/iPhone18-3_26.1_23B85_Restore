@@ -1,26 +1,26 @@
 @interface MicaBackgroundAnimation
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (void)layoutSublayersOfLayer:(id)layer;
 @end
 
 @implementation MicaBackgroundAnimation
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
   v6 = sub_1BCE1D280();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  v11 = MicaBackgroundAnimation.action(for:forKey:)(v9, v6, v8);
+  layerCopy = layer;
+  selfCopy = self;
+  v11 = MicaBackgroundAnimation.action(for:forKey:)(layerCopy, v6, v8);
 
   return v11;
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
-  MicaBackgroundAnimation.layoutSublayers(of:)(v4);
+  layerCopy = layer;
+  selfCopy = self;
+  MicaBackgroundAnimation.layoutSublayers(of:)(layerCopy);
 }
 
 @end

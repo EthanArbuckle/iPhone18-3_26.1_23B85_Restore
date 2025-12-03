@@ -1,33 +1,33 @@
 @interface PGSyndicationProcessor
-- (BOOL)processSavedSyndicatedAssetsWithError:(id *)a3 progressReporter:(id)a4;
-- (BOOL)processSyndicatedAssetCurationWithError:(id *)a3 progressReporter:(id)a4;
-- (BOOL)processSyndicatedAssetGuestInferenceWithError:(id *)a3 progressReporter:(id)a4 shareBackSuggester:(id)a5;
-- (BOOL)processSyndicatedAssetRevGeoCodingWithError:(id *)a3 progressReporter:(id)a4;
-- (PGSyndicationProcessor)initWithWorkingContext:(id)a3;
-- (PGSyndicationProcessor)initWithWorkingContext:(id)a3 syndicationLibrary:(id)a4;
-- (id)_bestAssetUUIDInAssetCluster:(id)a3;
-- (id)duplicateAssetUUIDsForSuggesterResult:(id)a3 assetsInferredAsGuestAsset:(id)a4 syndicationLibrary:(id)a5 error:(id *)a6 progressBlock:(id)a7;
-- (id)guestAssetSenderIdentifiersByMomentUUIDForMomentUUIDs:(id)a3 inPhotoLibrary:(id)a4;
+- (BOOL)processSavedSyndicatedAssetsWithError:(id *)error progressReporter:(id)reporter;
+- (BOOL)processSyndicatedAssetCurationWithError:(id *)error progressReporter:(id)reporter;
+- (BOOL)processSyndicatedAssetGuestInferenceWithError:(id *)error progressReporter:(id)reporter shareBackSuggester:(id)suggester;
+- (BOOL)processSyndicatedAssetRevGeoCodingWithError:(id *)error progressReporter:(id)reporter;
+- (PGSyndicationProcessor)initWithWorkingContext:(id)context;
+- (PGSyndicationProcessor)initWithWorkingContext:(id)context syndicationLibrary:(id)library;
+- (id)_bestAssetUUIDInAssetCluster:(id)cluster;
+- (id)duplicateAssetUUIDsForSuggesterResult:(id)result assetsInferredAsGuestAsset:(id)asset syndicationLibrary:(id)library error:(id *)error progressBlock:(id)block;
+- (id)guestAssetSenderIdentifiersByMomentUUIDForMomentUUIDs:(id)ds inPhotoLibrary:(id)library;
 - (id)similarStacker;
-- (id)syndicationPhotoLibraryWithError:(id *)a3;
-- (void)_persistCurationScores:(id)a3 inPhotoLibrary:(id)a4;
+- (id)syndicationPhotoLibraryWithError:(id *)error;
+- (void)_persistCurationScores:(id)scores inPhotoLibrary:(id)library;
 @end
 
 @implementation PGSyndicationProcessor
 
-- (BOOL)processSyndicatedAssetRevGeoCodingWithError:(id *)a3 progressReporter:(id)a4
+- (BOOL)processSyndicatedAssetRevGeoCodingWithError:(id *)error progressReporter:(id)reporter
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  reporterCopy = reporter;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  v7 = [v6 isCancelledWithProgress:0.0];
+  v7 = [reporterCopy isCancelledWithProgress:0.0];
   *(v32 + 24) = v7;
   if (!v7)
   {
-    v9 = [(PGSyndicationProcessor *)self syndicationPhotoLibraryWithError:a3];
+    v9 = [(PGSyndicationProcessor *)self syndicationPhotoLibraryWithError:error];
     if (v9)
     {
       *buf = 0;
@@ -43,19 +43,19 @@
       v30[3] = &unk_27888A5C0;
       v30[4] = buf;
       [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v30];
-      v11 = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
+      loggingConnection = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
       v12 = [PGRevGeocodeProcessor alloc];
       v13 = *(v40 + 40);
-      v14 = [(PGManagerWorkingContext *)self->_workingContext locationCache];
-      v15 = [(PGRevGeocodeProcessor *)v12 initWithPhotoLibrary:v9 homeLocations:v13 loggingConnection:v11 locationCache:v14];
+      locationCache = [(PGManagerWorkingContext *)self->_workingContext locationCache];
+      v15 = [(PGRevGeocodeProcessor *)v12 initWithPhotoLibrary:v9 homeLocations:v13 loggingConnection:loggingConnection locationCache:locationCache];
 
-      v16 = [PGRevGeocodeProcessor momentsRequiringRevGeocodingWithUUIDs:0 inPhotoLibrary:v9 defaultToAllAssets:1 loggingConnection:v11];
+      v16 = [PGRevGeocodeProcessor momentsRequiringRevGeocodingWithUUIDs:0 inPhotoLibrary:v9 defaultToAllAssets:1 loggingConnection:loggingConnection];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __87__PGSyndicationProcessor_processSyndicatedAssetRevGeoCodingWithError_progressReporter___block_invoke_2;
       v27[3] = &unk_278889448;
       v29 = &v31;
-      v17 = v6;
+      v17 = reporterCopy;
       v28 = v17;
       v18 = [(PGRevGeocodeProcessor *)v15 revGeocodeMoments:v16 progressBlock:v27];
       if (*(v32 + 24) == 1)
@@ -75,13 +75,13 @@ LABEL_22:
       else
       {
         v8 = v18;
-        v20 = [v17 throughputReportBlock];
-        v21 = v20 == 0;
+        throughputReportBlock = [v17 throughputReportBlock];
+        v21 = throughputReportBlock == 0;
 
         if (!v21)
         {
-          v22 = [v17 throughputReportBlock];
-          (v22)[2](v22, [v16 count], @"revGeo");
+          throughputReportBlock2 = [v17 throughputReportBlock];
+          (throughputReportBlock2)[2](throughputReportBlock2, [v16 count], @"revGeo");
         }
 
         if (v32[3])
@@ -124,7 +124,7 @@ LABEL_24:
 
     else
     {
-      v23 = [v6 isCancelledWithProgress:1.0];
+      v23 = [reporterCopy isCancelledWithProgress:1.0];
       *(v32 + 24) = v23;
       if ((v23 & 1) == 0)
       {
@@ -215,15 +215,15 @@ uint64_t __87__PGSyndicationProcessor_processSyndicatedAssetRevGeoCodingWithErro
   return similarStacker;
 }
 
-- (id)_bestAssetUUIDInAssetCluster:(id)a3
+- (id)_bestAssetUUIDInAssetCluster:(id)cluster
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  clusterCopy = cluster;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v4 = [clusterCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -237,7 +237,7 @@ uint64_t __87__PGSyndicationProcessor_processSyndicatedAssetRevGeoCodingWithErro
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(clusterCopy);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
@@ -249,9 +249,9 @@ uint64_t __87__PGSyndicationProcessor_processSyndicatedAssetRevGeoCodingWithErro
           v15 = v14;
           if (v8 <= v14)
           {
-            v16 = [v11 uuid];
-            v17 = v16;
-            if (!v6 || (v13 == v9 ? (v18 = v8 == v15) : (v18 = 0), !v18 || [v16 compare:v6] == -1))
+            uuid = [v11 uuid];
+            v17 = uuid;
+            if (!v6 || (v13 == v9 ? (v18 = v8 == v15) : (v18 = 0), !v18 || [uuid compare:v6] == -1))
             {
               v19 = v17;
 
@@ -263,7 +263,7 @@ uint64_t __87__PGSyndicationProcessor_processSyndicatedAssetRevGeoCodingWithErro
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v5 = [clusterCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v5);
@@ -279,26 +279,26 @@ uint64_t __87__PGSyndicationProcessor_processSyndicatedAssetRevGeoCodingWithErro
   return v6;
 }
 
-- (id)duplicateAssetUUIDsForSuggesterResult:(id)a3 assetsInferredAsGuestAsset:(id)a4 syndicationLibrary:(id)a5 error:(id *)a6 progressBlock:(id)a7
+- (id)duplicateAssetUUIDsForSuggesterResult:(id)result assetsInferredAsGuestAsset:(id)asset syndicationLibrary:(id)library error:(id *)error progressBlock:(id)block
 {
   v159 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v112 = a4;
-  v111 = a5;
-  v118 = a7;
-  v121 = self;
+  resultCopy = result;
+  assetCopy = asset;
+  libraryCopy = library;
+  blockCopy = block;
+  selfCopy = self;
   oslog = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
   v122 = [MEMORY[0x277CBEB58] set];
-  v12 = [MEMORY[0x277CBEAA8] distantFuture];
-  v13 = [MEMORY[0x277CBEAA8] distantPast];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v14 = [MEMORY[0x277CBEB58] set];
   v142 = 0u;
   v143 = 0u;
   v144 = 0u;
   v145 = 0u;
-  v114 = v11;
-  v15 = [v11 suggesterInputs];
-  v16 = [v15 countByEnumeratingWithState:&v142 objects:v158 count:16];
+  v114 = resultCopy;
+  suggesterInputs = [resultCopy suggesterInputs];
+  v16 = [suggesterInputs countByEnumeratingWithState:&v142 objects:v158 count:16];
   if (v16)
   {
     v17 = v16;
@@ -309,25 +309,25 @@ uint64_t __87__PGSyndicationProcessor_processSyndicatedAssetRevGeoCodingWithErro
       {
         if (*v143 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(suggesterInputs);
         }
 
         v20 = *(*(&v142 + 1) + 8 * i);
-        v21 = [v20 asset];
-        if (v21)
+        asset = [v20 asset];
+        if (asset)
         {
-          [v14 addObject:v21];
-          v22 = [v20 creationDate];
-          v23 = [v12 earlierDate:v22];
+          [v14 addObject:asset];
+          creationDate = [v20 creationDate];
+          v23 = [distantFuture earlierDate:creationDate];
 
-          v24 = [v13 laterDate:v22];
+          v24 = [distantPast laterDate:creationDate];
 
-          v13 = v24;
-          v12 = v23;
+          distantPast = v24;
+          distantFuture = v23;
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v142 objects:v158 count:16];
+      v17 = [suggesterInputs countByEnumeratingWithState:&v142 objects:v158 count:16];
     }
 
     while (v17);
@@ -335,18 +335,18 @@ uint64_t __87__PGSyndicationProcessor_processSyndicatedAssetRevGeoCodingWithErro
 
   if ([v14 count])
   {
-    v25 = [v12 dateByAddingTimeInterval:-1.0];
+    v25 = [distantFuture dateByAddingTimeInterval:-1.0];
 
-    v26 = [v13 dateByAddingTimeInterval:1.0];
+    v26 = [distantPast dateByAddingTimeInterval:1.0];
 
     v27 = [MEMORY[0x277CCAC30] predicateWithFormat:@"creationDate >= %@ && creationDate <= %@", v25, v26];
     v108 = v26;
     v109 = v25;
     v110 = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated >= %@ && dateCreated <= %@", v25, v26];
-    v28 = [(PGManagerWorkingContext *)v121->_workingContext photoLibrary];
-    v29 = [v28 librarySpecificFetchOptions];
+    photoLibrary = [(PGManagerWorkingContext *)selfCopy->_workingContext photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v29 setIncludeGuestAssets:0];
+    [librarySpecificFetchOptions setIncludeGuestAssets:0];
     v31 = *MEMORY[0x277CD9B10];
     v156[0] = *MEMORY[0x277CD9B18];
     v30 = v156[0];
@@ -354,22 +354,22 @@ uint64_t __87__PGSyndicationProcessor_processSyndicatedAssetRevGeoCodingWithErro
     v157 = *MEMORY[0x277CD9AD0];
     v32 = v157;
     v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v156 count:3];
-    [v29 setFetchPropertySets:v33];
+    [librarySpecificFetchOptions setFetchPropertySets:v33];
 
-    [v29 setPredicate:v27];
-    v106 = v29;
-    v34 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v29];
+    [librarySpecificFetchOptions setPredicate:v27];
+    v106 = librarySpecificFetchOptions;
+    v34 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
     v107 = v27;
-    v35 = [v112 filteredSetUsingPredicate:v27];
+    v35 = [assetCopy filteredSetUsingPredicate:v27];
     v36 = [MEMORY[0x277D3B248] predicateForIncludeMask:objc_msgSend(MEMORY[0x277D3B248] useIndex:{"maskForGuestAsset"), 1}];
     v37 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %lu OR %K == %lu", @"mediaAnalysisAttributes.syndicationProcessingVersion", *MEMORY[0x277CD9B40], @"mediaAnalysisAttributes.syndicationProcessingVersion", *MEMORY[0x277CD9B48]];
-    v38 = [v111 librarySpecificFetchOptions];
-    [v38 setIncludeGuestAssets:1];
+    librarySpecificFetchOptions2 = [libraryCopy librarySpecificFetchOptions];
+    [librarySpecificFetchOptions2 setIncludeGuestAssets:1];
     v155[0] = v30;
     v155[1] = v31;
     v155[2] = v32;
     v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v155 count:3];
-    [v38 setFetchPropertySets:v39];
+    [librarySpecificFetchOptions2 setFetchPropertySets:v39];
 
     v40 = MEMORY[0x277CCA920];
     v154[0] = v110;
@@ -379,37 +379,37 @@ uint64_t __87__PGSyndicationProcessor_processSyndicatedAssetRevGeoCodingWithErro
     v154[2] = v37;
     v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v154 count:3];
     v42 = [v40 andPredicateWithSubpredicates:v41];
-    [v38 setInternalPredicate:v42];
+    [librarySpecificFetchOptions2 setInternalPredicate:v42];
 
-    v101 = v38;
-    v43 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v38];
+    v101 = librarySpecificFetchOptions2;
+    v43 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions2];
     v44 = MEMORY[0x277CBEB18];
-    v45 = [v14 allObjects];
-    v46 = [v44 arrayWithArray:v45];
+    allObjects = [v14 allObjects];
+    v46 = [v44 arrayWithArray:allObjects];
 
     v105 = v34;
-    v47 = [v34 fetchedObjects];
-    [v46 addObjectsFromArray:v47];
+    fetchedObjects = [v34 fetchedObjects];
+    [v46 addObjectsFromArray:fetchedObjects];
 
     v104 = v35;
-    v48 = [v35 allObjects];
-    [v46 addObjectsFromArray:v48];
+    allObjects2 = [v35 allObjects];
+    [v46 addObjectsFromArray:allObjects2];
 
     v100 = v43;
-    v49 = [v43 fetchedObjects];
-    [v46 addObjectsFromArray:v49];
+    fetchedObjects2 = [v43 fetchedObjects];
+    [v46 addObjectsFromArray:fetchedObjects2];
 
-    [(CLSCurationSession *)v121->_curationSession prepareAssets:v46];
+    [(CLSCurationSession *)selfCopy->_curationSession prepareAssets:v46];
     v50 = [objc_alloc(MEMORY[0x277D3AC30]) initWithDistanceBlock:&__block_literal_global_368];
     [v50 setMaximumDistance:1.0];
     [v50 setMinimumNumberOfObjects:2];
     v98 = v50;
     v99 = v46;
-    v51 = [v50 performWithDataset:v46 progressBlock:v118];
+    v51 = [v50 performWithDataset:v46 progressBlock:blockCopy];
     v97 = v51;
     if ([v51 count])
     {
-      v117 = [(PGSyndicationProcessor *)v121 similarStacker];
+      similarStacker = [(PGSyndicationProcessor *)selfCopy similarStacker];
       v138 = 0u;
       v139 = 0u;
       v140 = 0u;
@@ -436,8 +436,8 @@ uint64_t __87__PGSyndicationProcessor_processSyndicatedAssetRevGeoCodingWithErro
             v135 = 0u;
             v136 = 0u;
             v137 = 0u;
-            v54 = [v53 objects];
-            v55 = [v54 countByEnumeratingWithState:&v134 objects:v152 count:16];
+            objects = [v53 objects];
+            v55 = [objects countByEnumeratingWithState:&v134 objects:v152 count:16];
             if (v55)
             {
               v56 = v55;
@@ -448,24 +448,24 @@ LABEL_19:
               {
                 if (*v135 != v57)
                 {
-                  objc_enumerationMutation(v54);
+                  objc_enumerationMutation(objects);
                 }
 
                 v59 = *(*(&v134 + 1) + 8 * v58);
-                v60 = [v59 sceneAnalysisProperties];
-                v61 = [v60 sceneAnalysisVersion];
+                sceneAnalysisProperties = [v59 sceneAnalysisProperties];
+                sceneAnalysisVersion = [sceneAnalysisProperties sceneAnalysisVersion];
 
-                v62 = [MEMORY[0x277D3ACE8] currentSceneVersion];
-                v63 = [v62 intValue];
+                currentSceneVersion = [MEMORY[0x277D3ACE8] currentSceneVersion];
+                intValue = [currentSceneVersion intValue];
 
-                if (v63 > v61)
+                if (intValue > sceneAnalysisVersion)
                 {
                   break;
                 }
 
                 if (v56 == ++v58)
                 {
-                  v56 = [v54 countByEnumeratingWithState:&v134 objects:v152 count:16];
+                  v56 = [objects countByEnumeratingWithState:&v134 objects:v152 count:16];
                   if (v56)
                   {
                     goto LABEL_19;
@@ -477,9 +477,9 @@ LABEL_19:
 
               v64 = MEMORY[0x277CCA9B8];
               v65 = MEMORY[0x277CCACA8];
-              v66 = [v59 uuid];
-              v67 = [v65 stringWithFormat:@"Asset %@ has no scenes processed: could not dedupe guest asset for %@.", v66, v114];
-              v68 = [v64 errorWithDescription:v67];
+              uuid = [v59 uuid];
+              v114 = [v65 stringWithFormat:@"Asset %@ has no scenes processed: could not dedupe guest asset for %@.", uuid, v114];
+              v68 = [v64 errorWithDescription:v114];
 
               if (!v68)
               {
@@ -489,23 +489,23 @@ LABEL_19:
               objc_autoreleasePoolPop(context);
 
               v92 = v108;
-              if (a6)
+              if (error)
               {
                 v93 = v68;
-                *a6 = v68;
+                *error = v68;
               }
 
               v91 = 0;
               v89 = v122;
-              v12 = v109;
+              distantFuture = v109;
               goto LABEL_64;
             }
 
 LABEL_25:
 
 LABEL_27:
-            v69 = [v53 objects];
-            v70 = [v117 stackSimilarItems:v69 withSimilarity:2 timestampSupport:0 progressBlock:v118];
+            objects2 = [v53 objects];
+            v70 = [similarStacker stackSimilarItems:objects2 withSimilarity:2 timestampSupport:0 progressBlock:blockCopy];
 
             v132 = 0u;
             v133 = 0u;
@@ -533,7 +533,7 @@ LABEL_27:
                   if (v76 >= 2)
                   {
                     v77 = v76;
-                    v78 = [MEMORY[0x277CBEB18] array];
+                    array = [MEMORY[0x277CBEB18] array];
                     v126 = 0u;
                     v127 = 0u;
                     v128 = 0u;
@@ -556,8 +556,8 @@ LABEL_27:
                           v84 = *(*(&v126 + 1) + 8 * j);
                           if ([v14 containsObject:v84])
                           {
-                            v85 = [v84 uuid];
-                            [v78 addObject:v85];
+                            uuid2 = [v84 uuid];
+                            [array addObject:uuid2];
                           }
                         }
 
@@ -567,15 +567,15 @@ LABEL_27:
                       while (v81);
                     }
 
-                    v86 = [v78 count];
+                    v86 = [array count];
                     if (v86 == v77)
                     {
-                      v87 = [(PGSyndicationProcessor *)v121 _bestAssetUUIDInAssetCluster:v79];
-                      [v78 removeObject:v87];
+                      v87 = [(PGSyndicationProcessor *)selfCopy _bestAssetUUIDInAssetCluster:v79];
+                      [array removeObject:v87];
                       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
                       {
                         *buf = 138412546;
-                        v147 = v78;
+                        v147 = array;
                         v148 = 2112;
                         v149 = v87;
                         _os_log_debug_impl(&dword_22F0FC000, oslog, OS_LOG_TYPE_DEBUG, "PGSyndicationProcessor: Cluster only contains input items %@, selected best item: %@", buf, 0x16u);
@@ -585,11 +585,11 @@ LABEL_27:
                     v72 = v123;
                     if (v86)
                     {
-                      [v122 addObjectsFromArray:v78];
+                      [v122 addObjectsFromArray:array];
                       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
                       {
                         *buf = 138412290;
-                        v147 = v78;
+                        v147 = array;
                         _os_log_debug_impl(&dword_22F0FC000, oslog, OS_LOG_TYPE_DEBUG, "PGSyndicationProcessor: Found cluster of duplicates %@", buf, 0xCu);
                       }
                     }
@@ -635,10 +635,10 @@ LABEL_27:
 
     v91 = v122;
     v92 = v108;
-    v12 = v109;
+    distantFuture = v109;
 LABEL_64:
 
-    v13 = v92;
+    distantPast = v92;
   }
 
   else
@@ -668,40 +668,40 @@ void __130__PGSyndicationProcessor_duplicateAssetUUIDsForSuggesterResult_assetsI
   [v5 timeIntervalSinceDate:v6];
 }
 
-- (id)guestAssetSenderIdentifiersByMomentUUIDForMomentUUIDs:(id)a3 inPhotoLibrary:(id)a4
+- (id)guestAssetSenderIdentifiersByMomentUUIDForMomentUUIDs:(id)ds inPhotoLibrary:(id)library
 {
   v54[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  libraryCopy = library;
   oslog = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
-  v8 = [v7 librarySpecificFetchOptions];
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"moment.uuid", v6];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"moment.uuid", dsCopy];
   v10 = [MEMORY[0x277D3B248] predicateForIncludeMask:objc_msgSend(MEMORY[0x277D3B248] useIndex:{"maskForGuestAsset"), 1}];
   v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %lu OR %K == %lu", @"mediaAnalysisAttributes.syndicationProcessingVersion", *MEMORY[0x277CD9B40], @"mediaAnalysisAttributes.syndicationProcessingVersion", *MEMORY[0x277CD9B48]];
-  [v8 setIncludeGuestAssets:1];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
   v12 = *MEMORY[0x277CD9AD0];
   v54[0] = *MEMORY[0x277CD9A80];
   v54[1] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:2];
-  [v8 setFetchPropertySets:v13];
+  [librarySpecificFetchOptions setFetchPropertySets:v13];
 
   v14 = MEMORY[0x277CCA920];
-  v53[0] = v9;
+  v53[0] = dsCopy;
   v53[1] = v10;
   v53[2] = v11;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:3];
   v16 = [v14 andPredicateWithSubpredicates:v15];
-  [v8 setInternalPredicate:v16];
+  [librarySpecificFetchOptions setInternalPredicate:v16];
 
-  v17 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v8];
+  v17 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
   if ([v17 count])
   {
     v36 = v11;
     v37 = v10;
-    v38 = v9;
-    v39 = v8;
-    v40 = v7;
-    v41 = v6;
+    v38 = dsCopy;
+    v39 = librarySpecificFetchOptions;
+    v40 = libraryCopy;
+    v41 = dsCopy;
     v45 = [MEMORY[0x277CD97A8] senderIdentifierByAssetUUIDForAssets:v17];
     v44 = [MEMORY[0x277CD98F8] fetchMomentUUIDByAssetUUIDForAssets:v17 options:0];
     v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -727,21 +727,21 @@ void __130__PGSyndicationProcessor_duplicateAssetUUIDsForSuggesterResult_assetsI
 
           v23 = *(*(&v46 + 1) + 8 * i);
           v24 = objc_autoreleasePoolPush();
-          v25 = [v23 mediaAnalysisProperties];
-          v26 = [v25 syndicationProcessingValue] & 0x6EF0;
+          mediaAnalysisProperties = [v23 mediaAnalysisProperties];
+          v26 = [mediaAnalysisProperties syndicationProcessingValue] & 0x6EF0;
 
           if (v26)
           {
-            v27 = [v23 uuid];
-            v28 = [v44 objectForKeyedSubscript:v27];
-            v29 = [v45 objectForKeyedSubscript:v27];
+            uuid = [v23 uuid];
+            v28 = [v44 objectForKeyedSubscript:uuid];
+            v29 = [v45 objectForKeyedSubscript:uuid];
             if (!v29)
             {
               v29 = &stru_2843F5C58;
               if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
               {
                 *buf = 138412290;
-                v51 = v27;
+                v51 = uuid;
                 _os_log_fault_impl(&dword_22F0FC000, oslog, OS_LOG_TYPE_FAULT, "No sender identifier for %@, see: rdar://74551611 ([Hubble] Some syndicated assets have the same syndication identifier but different uuids)", buf, 0xCu);
               }
             }
@@ -769,10 +769,10 @@ void __130__PGSyndicationProcessor_duplicateAssetUUIDsForSuggesterResult_assetsI
       while (v20);
     }
 
-    v7 = v40;
-    v6 = v41;
-    v9 = v38;
-    v8 = v39;
+    libraryCopy = v40;
+    dsCopy = v41;
+    dsCopy = v38;
+    librarySpecificFetchOptions = v39;
     v11 = v36;
     v10 = v37;
     v17 = v35;
@@ -788,28 +788,28 @@ void __130__PGSyndicationProcessor_duplicateAssetUUIDsForSuggesterResult_assetsI
   return v18;
 }
 
-- (BOOL)processSyndicatedAssetGuestInferenceWithError:(id *)a3 progressReporter:(id)a4 shareBackSuggester:(id)a5
+- (BOOL)processSyndicatedAssetGuestInferenceWithError:(id *)error progressReporter:(id)reporter shareBackSuggester:(id)suggester
 {
   v123[7] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v79 = a5;
+  reporterCopy = reporter;
+  suggesterCopy = suggester;
   v114 = 0;
   v115 = &v114;
   v116 = 0x2020000000;
   v117 = 0;
-  v81 = v8;
+  v81 = reporterCopy;
   v9 = [v81 isCancelledWithProgress:0.0];
   *(v115 + 24) = v9;
   if (!v9)
   {
     oslog = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
-    v11 = [(PGSyndicationProcessor *)self syndicationPhotoLibraryWithError:a3];
+    v11 = [(PGSyndicationProcessor *)self syndicationPhotoLibraryWithError:error];
     v76 = v11;
     if (v11)
     {
-      v73 = a3;
-      v74 = self;
-      v78 = [v11 librarySpecificFetchOptions];
+      errorCopy = error;
+      selfCopy = self;
+      librarySpecificFetchOptions = [v11 librarySpecificFetchOptions];
       v12 = *MEMORY[0x277CD9A70];
       v123[0] = *MEMORY[0x277CD9A78];
       v123[1] = v12;
@@ -821,13 +821,13 @@ void __130__PGSyndicationProcessor_duplicateAssetUUIDsForSuggesterResult_assetsI
       v123[5] = v14;
       v123[6] = *MEMORY[0x277CD9AC0];
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v123 count:7];
-      [v78 setFetchPropertySets:v15];
+      [librarySpecificFetchOptions setFetchPropertySets:v15];
 
-      v16 = [MEMORY[0x277D3C7C0] internalPredicateToFilterSyndicatedAssetsEligibleForGuestInferenceProcessing];
-      [v78 setInternalPredicate:v16];
+      internalPredicateToFilterSyndicatedAssetsEligibleForGuestInferenceProcessing = [MEMORY[0x277D3C7C0] internalPredicateToFilterSyndicatedAssetsEligibleForGuestInferenceProcessing];
+      [librarySpecificFetchOptions setInternalPredicate:internalPredicateToFilterSyndicatedAssetsEligibleForGuestInferenceProcessing];
 
-      [v78 setIncludeGuestAssets:1];
-      v75 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v78];
+      [librarySpecificFetchOptions setIncludeGuestAssets:1];
+      v75 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
       v17 = [v75 count];
       v18 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
       if (!v17)
@@ -920,16 +920,16 @@ LABEL_71:
             }
 
             v28 = *(*(&v109 + 1) + 8 * i);
-            v29 = [v28 uuid];
-            v30 = [v86 objectForKeyedSubscript:v29];
-            v31 = [v85 objectForKeyedSubscript:v29];
+            uuid = [v28 uuid];
+            v30 = [v86 objectForKeyedSubscript:uuid];
+            v31 = [v85 objectForKeyedSubscript:uuid];
             if (!v31)
             {
               v31 = &stru_2843F5C58;
               if (os_log_type_enabled(log, OS_LOG_TYPE_FAULT))
               {
                 *buf = 138412290;
-                *&buf[4] = v29;
+                *&buf[4] = uuid;
                 _os_log_fault_impl(&dword_22F0FC000, log, OS_LOG_TYPE_FAULT, "No sender identifier for %@, see: rdar://74551611 ([Hubble] Some syndicated assets have the same syndication identifier but different uuids)", buf, 0xCu);
               }
             }
@@ -962,27 +962,27 @@ LABEL_71:
       }
 
       v36 = [MEMORY[0x277CBEB58] set];
-      v37 = [MEMORY[0x277CBEB38] dictionary];
-      v38 = [v86 allValues];
-      v39 = [(PGSyndicationProcessor *)v74 guestAssetSenderIdentifiersByMomentUUIDForMomentUUIDs:v38 inPhotoLibrary:v76];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      allValues = [v86 allValues];
+      v39 = [(PGSyndicationProcessor *)selfCopy guestAssetSenderIdentifiersByMomentUUIDForMomentUUIDs:allValues inPhotoLibrary:v76];
 
-      v40 = [(PGManagerWorkingContext *)v74->_workingContext serviceManager];
-      workingContext = v74->_workingContext;
+      serviceManager = [(PGManagerWorkingContext *)selfCopy->_workingContext serviceManager];
+      workingContext = selfCopy->_workingContext;
       v97[0] = MEMORY[0x277D85DD0];
       v97[1] = 3221225472;
       v97[2] = __108__PGSyndicationProcessor_processSyndicatedAssetGuestInferenceWithError_progressReporter_shareBackSuggester___block_invoke;
       v97[3] = &unk_278880AC8;
-      v98 = v79;
+      v98 = suggesterCopy;
       v42 = log;
       v99 = v42;
       v43 = v76;
       v100 = v43;
-      v101 = v74;
-      loga = v40;
+      v101 = selfCopy;
+      loga = serviceManager;
       v102 = loga;
       v44 = v24;
       v103 = v44;
-      v45 = v37;
+      v45 = dictionary;
       v104 = v45;
       v46 = v39;
       v105 = v46;
@@ -1050,23 +1050,23 @@ LABEL_71:
             _os_log_error_impl(&dword_22F0FC000, v49, OS_LOG_TYPE_ERROR, "PGSyndicationProcessor: Error saving guest asset inference to database: %@", v118, 0xCu);
           }
 
-          if (v73)
+          if (errorCopy)
           {
             v56 = v55;
-            *v73 = v55;
+            *errorCopy = v55;
           }
         }
 
         v45 = v53;
       }
 
-      v57 = [v48 throughputReportBlock];
-      v58 = v57 == 0;
+      throughputReportBlock = [v48 throughputReportBlock];
+      v58 = throughputReportBlock == 0;
 
       if (!v58)
       {
-        v59 = [v48 throughputReportBlock];
-        (v59)[2](v59, v52, @"guestInference");
+        throughputReportBlock2 = [v48 throughputReportBlock];
+        (throughputReportBlock2)[2](throughputReportBlock2, v52, @"guestInference");
       }
 
       v60 = mach_absolute_time();
@@ -1648,23 +1648,23 @@ uint64_t __108__PGSyndicationProcessor_processSyndicatedAssetGuestInferenceWithE
   return result;
 }
 
-- (BOOL)processSavedSyndicatedAssetsWithError:(id *)a3 progressReporter:(id)a4
+- (BOOL)processSavedSyndicatedAssetsWithError:(id *)error progressReporter:(id)reporter
 {
   v98[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  reporterCopy = reporter;
   v87 = 0;
   v88 = &v87;
   v89 = 0x2020000000;
   v90 = 0;
-  v7 = [v6 isCancelledWithProgress:0.0];
+  v7 = [reporterCopy isCancelledWithProgress:0.0];
   *(v88 + 24) = v7;
   if (!v7)
   {
-    v71 = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
-    v70 = [(PGSyndicationProcessor *)self syndicationPhotoLibraryWithError:a3];
+    loggingConnection = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
+    v70 = [(PGSyndicationProcessor *)self syndicationPhotoLibraryWithError:error];
     if (v70)
     {
-      v9 = v71;
+      v9 = loggingConnection;
       v10 = os_signpost_id_generate(v9);
       v11 = v9;
       v12 = v11;
@@ -1682,17 +1682,17 @@ uint64_t __108__PGSyndicationProcessor_processSyndicatedAssetGuestInferenceWithE
       mach_timebase_info(&info);
       v63 = mach_absolute_time();
       v69 = [MEMORY[0x277CCAC30] predicateWithFormat:@"additionalAttributes.syndicationIdentifier != nil"];
-      v13 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
-      v73 = [v13 librarySpecificFetchOptions];
+      photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-      [v73 setInternalPredicate:v69];
+      [librarySpecificFetchOptions setInternalPredicate:v69];
       v14 = *MEMORY[0x277CD9A80];
       v98[0] = *MEMORY[0x277CD9A80];
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v98 count:1];
-      [v73 setFetchPropertySets:v15];
+      [librarySpecificFetchOptions setFetchPropertySets:v15];
 
-      [v73 setIncludeGuestAssets:0];
-      v16 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v73];
+      [librarySpecificFetchOptions setIncludeGuestAssets:0];
+      v16 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
       v17 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v85 = 0u;
       v83 = 0u;
@@ -1712,12 +1712,12 @@ uint64_t __108__PGSyndicationProcessor_processSyndicatedAssetGuestInferenceWithE
               objc_enumerationMutation(v18);
             }
 
-            v22 = [*(*(&v82 + 1) + 8 * i) curationProperties];
-            v23 = [v22 syndicationIdentifier];
+            curationProperties = [*(*(&v82 + 1) + 8 * i) curationProperties];
+            syndicationIdentifier = [curationProperties syndicationIdentifier];
 
-            if ([v23 length])
+            if ([syndicationIdentifier length])
             {
-              [v17 addObject:v23];
+              [v17 addObject:syndicationIdentifier];
             }
           }
 
@@ -1742,7 +1742,7 @@ uint64_t __108__PGSyndicationProcessor_processSyndicatedAssetGuestInferenceWithE
 
         else
         {
-          v49 = [v6 isCancelledWithProgress:1.0];
+          v49 = [reporterCopy isCancelledWithProgress:1.0];
           *(v88 + 24) = v49;
           if ((v49 & 1) == 0)
           {
@@ -1788,24 +1788,24 @@ LABEL_66:
 
       v68 = [MEMORY[0x277CCAC30] predicateWithFormat:@"additionalAttributes.syndicationIdentifier IN %@", v17];
       v24 = [MEMORY[0x277D3B248] predicateForExcludeMask:objc_msgSend(MEMORY[0x277D3B248] useIndex:{"maskForGuestAsset"), 1}];
-      v67 = [MEMORY[0x277CD97A8] filterPredicateToIncludeOnlyReceivedSyndicatedAssets];
+      filterPredicateToIncludeOnlyReceivedSyndicatedAssets = [MEMORY[0x277CD97A8] filterPredicateToIncludeOnlyReceivedSyndicatedAssets];
       v66 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %d", @"thumbnailIndex", *MEMORY[0x277D3ADD8]];
-      v25 = [v70 librarySpecificFetchOptions];
+      librarySpecificFetchOptions2 = [v70 librarySpecificFetchOptions];
       v96 = v14;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v96 count:1];
-      [v25 setFetchPropertySets:v26];
+      [librarySpecificFetchOptions2 setFetchPropertySets:v26];
 
       v27 = MEMORY[0x277CCA920];
       v95[0] = v68;
       v95[1] = v24;
-      v95[2] = v67;
+      v95[2] = filterPredicateToIncludeOnlyReceivedSyndicatedAssets;
       v95[3] = v66;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v95 count:4];
       v29 = [v27 andPredicateWithSubpredicates:v28];
-      [v25 setInternalPredicate:v29];
+      [librarySpecificFetchOptions2 setInternalPredicate:v29];
 
-      [v25 setIncludeGuestAssets:0];
-      v30 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v25];
+      [librarySpecificFetchOptions2 setIncludeGuestAssets:0];
+      v30 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions2];
       v31 = [v30 count];
       v32 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
       if (!v31)
@@ -1823,7 +1823,7 @@ LABEL_66:
 
         else
         {
-          v50 = [v6 isCancelledWithProgress:1.0];
+          v50 = [reporterCopy isCancelledWithProgress:1.0];
           *(v88 + 24) = v50;
           if ((v50 & 1) == 0)
           {
@@ -1883,13 +1883,13 @@ LABEL_65:
       if (!v33)
       {
 LABEL_28:
-        v39 = [v6 throughputReportBlock];
-        v40 = v39 == 0;
+        throughputReportBlock = [reporterCopy throughputReportBlock];
+        v40 = throughputReportBlock == 0;
 
         if (!v40)
         {
-          v41 = [v6 throughputReportBlock];
-          (v41)[2](v41, v34, @"savedAssets");
+          throughputReportBlock2 = [reporterCopy throughputReportBlock];
+          (throughputReportBlock2)[2](throughputReportBlock2, v34, @"savedAssets");
         }
 
         v42 = mach_absolute_time();
@@ -1919,7 +1919,7 @@ LABEL_28:
 
         else
         {
-          v48 = [v6 isCancelledWithProgress:1.0];
+          v48 = [reporterCopy isCancelledWithProgress:1.0];
           *(v88 + 24) = v48;
           if (!v48)
           {
@@ -1953,7 +1953,7 @@ LABEL_64:
       v81 = 1.0 / v34;
       v78 = buf;
       v79 = &v87;
-      v77 = v6;
+      v77 = reporterCopy;
       v74 = 0;
       v36 = [v70 performChangesAndWait:v75 error:&v74];
       v37 = v74;
@@ -1964,7 +1964,7 @@ LABEL_64:
           *v91 = 138412290;
           *v92 = v37;
           _os_log_error_impl(&dword_22F0FC000, oslog, OS_LOG_TYPE_ERROR, "PGSyndicationProcessor: Error saving guest asset to database: %@", v91, 0xCu);
-          if (!a3)
+          if (!error)
           {
             goto LABEL_27;
           }
@@ -1972,11 +1972,11 @@ LABEL_64:
           goto LABEL_26;
         }
 
-        if (a3)
+        if (error)
         {
 LABEL_26:
           v38 = v37;
-          *a3 = v37;
+          *error = v37;
         }
       }
 
@@ -1993,7 +1993,7 @@ LABEL_27:
 
     else
     {
-      v47 = [v6 isCancelledWithProgress:1.0];
+      v47 = [reporterCopy isCancelledWithProgress:1.0];
       *(v88 + 24) = v47;
       if ((v47 & 1) == 0)
       {
@@ -2077,27 +2077,27 @@ void __81__PGSyndicationProcessor_processSavedSyndicatedAssetsWithError_progress
   }
 }
 
-- (void)_persistCurationScores:(id)a3 inPhotoLibrary:(id)a4
+- (void)_persistCurationScores:(id)scores inPhotoLibrary:(id)library
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  scoresCopy = scores;
+  libraryCopy = library;
+  if ([scoresCopy count])
   {
-    v8 = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
+    loggingConnection = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __64__PGSyndicationProcessor__persistCurationScores_inPhotoLibrary___block_invoke;
     v13[3] = &unk_27888A660;
-    v14 = v6;
+    v14 = scoresCopy;
     v12 = 0;
-    v9 = [v7 performChangesAndWait:v13 error:&v12];
+    v9 = [libraryCopy performChangesAndWait:v13 error:&v12];
     v10 = v12;
-    if ((v9 & 1) == 0 && os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if ((v9 & 1) == 0 && os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v16 = v10;
-      _os_log_error_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_ERROR, "PGSyndicationProcessor: Error saving curation scores to database: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "PGSyndicationProcessor: Error saving curation scores to database: %@", buf, 0xCu);
     }
   }
 
@@ -2122,11 +2122,11 @@ void __64__PGSyndicationProcessor__persistCurationScores_inPhotoLibrary___block_
   }
 }
 
-- (BOOL)processSyndicatedAssetCurationWithError:(id *)a3 progressReporter:(id)a4
+- (BOOL)processSyndicatedAssetCurationWithError:(id *)error progressReporter:(id)reporter
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([v6 isCancelledWithProgress:0.0])
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2142,34 +2142,34 @@ void __64__PGSyndicationProcessor__persistCurationScores_inPhotoLibrary___block_
 
   else
   {
-    v8 = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
-    v9 = [(PGSyndicationProcessor *)self syndicationPhotoLibraryWithError:a3];
+    loggingConnection = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
+    v9 = [(PGSyndicationProcessor *)self syndicationPhotoLibraryWithError:error];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 librarySpecificFetchOptions];
-      v12 = [MEMORY[0x277D3C7C0] internalPredicateToFilterSyndicatedAssetsEligibleForCurationProcessing];
-      [v11 setInternalPredicate:v12];
+      librarySpecificFetchOptions = [v9 librarySpecificFetchOptions];
+      internalPredicateToFilterSyndicatedAssetsEligibleForCurationProcessing = [MEMORY[0x277D3C7C0] internalPredicateToFilterSyndicatedAssetsEligibleForCurationProcessing];
+      [librarySpecificFetchOptions setInternalPredicate:internalPredicateToFilterSyndicatedAssetsEligibleForCurationProcessing];
 
       v13 = +[PGCurationManager assetPropertySetsForCuration];
-      [v11 setFetchPropertySets:v13];
+      [librarySpecificFetchOptions setFetchPropertySets:v13];
 
-      [v11 setIncludeGuestAssets:1];
-      v14 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v11];
+      [librarySpecificFetchOptions setIncludeGuestAssets:1];
+      v14 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
       v15 = [v14 count];
-      v16 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
+      v16 = os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT);
       if (v15)
       {
         if (v16)
         {
           *buf = 134217984;
           *v61 = v15;
-          _os_log_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_DEFAULT, "PGSyndicationProcessor: %tu asset(s) eligible for curation processing", buf, 0xCu);
+          _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PGSyndicationProcessor: %tu asset(s) eligible for curation processing", buf, 0xCu);
         }
 
-        v52 = v11;
-        v49 = v8;
-        v17 = v8;
+        v52 = librarySpecificFetchOptions;
+        v49 = loggingConnection;
+        v17 = loggingConnection;
         v18 = os_signpost_id_generate(v17);
         v19 = v17;
         v20 = v19;
@@ -2189,11 +2189,11 @@ void __64__PGSyndicationProcessor__persistCurationScores_inPhotoLibrary___block_
         v56 = [objc_alloc(MEMORY[0x277D3C790]) initWithPhotoLibrary:v10];
         v21 = 1.0 / v15;
         v51 = v14;
-        v57 = [v14 fetchedObjects];
+        fetchedObjects = [v14 fetchedObjects];
         v22 = 0;
         v23 = *MEMORY[0x277D3C778];
         v24 = 0.0;
-        v54 = self;
+        selfCopy = self;
         v55 = v10;
         v53 = v15;
         while (1)
@@ -2201,8 +2201,8 @@ void __64__PGSyndicationProcessor__persistCurationScores_inPhotoLibrary___block_
           context = objc_autoreleasePoolPush();
           v25 = v22 + 200;
           v26 = v22 + 200 <= v15 ? 200 : v15 - v22;
-          v27 = [v57 subarrayWithRange:{v22, v26, spid}];
-          v28 = [MEMORY[0x277CBEB38] dictionary];
+          v27 = [fetchedObjects subarrayWithRange:{v22, v26, spid}];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           [MEMORY[0x277CD97A8] prefetchOnAssets:v27 options:13 curationContext:v56];
           if ([v27 count])
           {
@@ -2211,19 +2211,19 @@ void __64__PGSyndicationProcessor__persistCurationScores_inPhotoLibrary___block_
 
 LABEL_22:
           v10 = v55;
-          [(PGSyndicationProcessor *)v54 _persistCurationScores:v28 inPhotoLibrary:v55];
+          [(PGSyndicationProcessor *)selfCopy _persistCurationScores:dictionary inPhotoLibrary:v55];
 
           objc_autoreleasePoolPop(context);
           v22 = v25;
           v15 = v53;
           if (v25 >= v53)
           {
-            v36 = [v6 throughputReportBlock];
+            throughputReportBlock = [reporterCopy throughputReportBlock];
 
-            if (v36)
+            if (throughputReportBlock)
             {
-              v37 = [v6 throughputReportBlock];
-              (v37)[2](v37, [v57 count], @"curationScore");
+              throughputReportBlock2 = [reporterCopy throughputReportBlock];
+              (throughputReportBlock2)[2](throughputReportBlock2, [fetchedObjects count], @"curationScore");
             }
 
             v38 = mach_absolute_time();
@@ -2239,7 +2239,7 @@ LABEL_22:
               _os_signpost_emit_with_name_impl(&dword_22F0FC000, v43, OS_SIGNPOST_INTERVAL_END, spid, "PGSyndicationProcessorAssetCuration", "", buf, 2u);
             }
 
-            v11 = v52;
+            librarySpecificFetchOptions = v52;
             if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
             {
               *buf = 136315394;
@@ -2249,9 +2249,9 @@ LABEL_22:
               _os_log_impl(&dword_22F0FC000, v43, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
             }
 
-            if ([v6 isCancelledWithProgress:1.0])
+            if ([reporterCopy isCancelledWithProgress:1.0])
             {
-              v8 = v49;
+              loggingConnection = v49;
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
               {
                 *buf = 67109378;
@@ -2267,7 +2267,7 @@ LABEL_22:
             else
             {
               v7 = 1;
-              v8 = v49;
+              loggingConnection = v49;
             }
 
             goto LABEL_41;
@@ -2279,8 +2279,8 @@ LABEL_22:
         {
           v30 = objc_autoreleasePoolPush();
           v31 = [v27 objectAtIndexedSubscript:v29];
-          v32 = [v31 curationModel];
-          v33 = [v32 isUtilityForSyndicationWithAsset:v31];
+          curationModel = [v31 curationModel];
+          v33 = [curationModel isUtilityForSyndicationWithAsset:v31];
           v34 = v23;
           if ((v33 & 1) == 0)
           {
@@ -2288,10 +2288,10 @@ LABEL_22:
           }
 
           v35 = [MEMORY[0x277CCABB0] numberWithDouble:v34];
-          [v28 setObject:v35 forKeyedSubscript:v31];
+          [dictionary setObject:v35 forKeyedSubscript:v31];
 
           v24 = v21 + v24;
-          if ([v6 isCancelledWithProgress:v24])
+          if ([reporterCopy isCancelledWithProgress:v24])
           {
             break;
           }
@@ -2315,11 +2315,11 @@ LABEL_22:
         objc_autoreleasePoolPop(v30);
         objc_autoreleasePoolPop(context);
         v7 = 0;
-        v8 = v49;
+        loggingConnection = v49;
         v41 = v50;
         v10 = v55;
         v14 = v51;
-        v11 = v52;
+        librarySpecificFetchOptions = v52;
 LABEL_41:
       }
 
@@ -2328,10 +2328,10 @@ LABEL_41:
         if (v16)
         {
           *buf = 0;
-          _os_log_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_DEFAULT, "PGSyndicationProcessor: No asset eligible for curation processing", buf, 2u);
+          _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PGSyndicationProcessor: No asset eligible for curation processing", buf, 2u);
         }
 
-        if ([v6 isCancelledWithProgress:1.0])
+        if ([reporterCopy isCancelledWithProgress:1.0])
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -2354,7 +2354,7 @@ LABEL_41:
 
     else
     {
-      if ([v6 isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+      if ([reporterCopy isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 67109378;
         *v61 = 93;
@@ -2371,7 +2371,7 @@ LABEL_41:
   return v7;
 }
 
-- (id)syndicationPhotoLibraryWithError:(id *)a3
+- (id)syndicationPhotoLibraryWithError:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
   syndicationLibrary = self->_syndicationLibrary;
@@ -2405,18 +2405,18 @@ LABEL_12:
   }
 
   v9 = v7;
-  v10 = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  loggingConnection = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v18 = v9;
-    _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "PGSyndicationProcessor: Failed to open syndicated library: %@", buf, 0xCu);
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "PGSyndicationProcessor: Failed to open syndicated library: %@", buf, 0xCu);
   }
 
-  if (a3)
+  if (error)
   {
     v11 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
   v12 = 0;
@@ -2426,29 +2426,29 @@ LABEL_13:
   return v12;
 }
 
-- (PGSyndicationProcessor)initWithWorkingContext:(id)a3 syndicationLibrary:(id)a4
+- (PGSyndicationProcessor)initWithWorkingContext:(id)context syndicationLibrary:(id)library
 {
-  v7 = a4;
-  v8 = [(PGSyndicationProcessor *)self initWithWorkingContext:a3];
+  libraryCopy = library;
+  v8 = [(PGSyndicationProcessor *)self initWithWorkingContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_syndicationLibrary, a4);
+    objc_storeStrong(&v8->_syndicationLibrary, library);
   }
 
   return v9;
 }
 
-- (PGSyndicationProcessor)initWithWorkingContext:(id)a3
+- (PGSyndicationProcessor)initWithWorkingContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = PGSyndicationProcessor;
   v6 = [(PGSyndicationProcessor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workingContext, a3);
+    objc_storeStrong(&v6->_workingContext, context);
     v8 = objc_alloc_init(MEMORY[0x277D3C7A0]);
     curationSession = v7->_curationSession;
     v7->_curationSession = v8;

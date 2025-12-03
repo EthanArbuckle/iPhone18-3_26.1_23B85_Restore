@@ -1,13 +1,13 @@
 @interface UICoreKeyboardTracking
 + (NSMapTable)windowMap;
-+ (void)addTrackingElement:(id)a3 window:(id)a4 keyboardDelegate:(id)a5;
-+ (void)removeTrackingElement:(id)a3 window:(id)a4 keyboardDelegate:(id)a5;
++ (void)addTrackingElement:(id)element window:(id)window keyboardDelegate:(id)delegate;
++ (void)removeTrackingElement:(id)element window:(id)window keyboardDelegate:(id)delegate;
 - (CGSize)trackingSize;
-- (UICoreKeyboardTracking)initWithWindow:(id)a3;
+- (UICoreKeyboardTracking)initWithWindow:(id)window;
 - (UIWindow)window;
 - (id)sceneForTracker;
 - (void)cleanupElements;
-- (void)trackingSizeWillChange:(CGSize)a3 inWindow:(id)a4 animationInfo:(id)a5;
+- (void)trackingSizeWillChange:(CGSize)change inWindow:(id)window animationInfo:(id)info;
 @end
 
 @implementation UICoreKeyboardTracking
@@ -33,10 +33,10 @@ void __35__UICoreKeyboardTracking_windowMap__block_invoke()
 
 - (id)sceneForTracker
 {
-  v2 = [(UICoreKeyboardTracking *)self window];
-  v3 = [v2 windowScene];
+  window = [(UICoreKeyboardTracking *)self window];
+  windowScene = [window windowScene];
 
-  return v3;
+  return windowScene;
 }
 
 - (UIWindow)window
@@ -48,9 +48,9 @@ void __35__UICoreKeyboardTracking_windowMap__block_invoke()
 
 - (void)cleanupElements
 {
-  v3 = [(UICoreKeyboardTracking *)self elements];
+  elements = [(UICoreKeyboardTracking *)self elements];
   v2 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_8_9];
-  [v3 filterUsingPredicate:v2];
+  [elements filterUsingPredicate:v2];
 }
 
 BOOL __41__UICoreKeyboardTracking_cleanupElements__block_invoke(uint64_t a1, void *a2)
@@ -61,44 +61,44 @@ BOOL __41__UICoreKeyboardTracking_cleanupElements__block_invoke(uint64_t a1, voi
   return v3;
 }
 
-+ (void)addTrackingElement:(id)a3 window:(id)a4 keyboardDelegate:(id)a5
++ (void)addTrackingElement:(id)element window:(id)window keyboardDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  elementCopy = element;
+  windowCopy = window;
+  delegateCopy = delegate;
   v10 = +[UICoreKeyboardTracking windowMap];
-  v11 = [v10 objectForKey:v8];
+  v11 = [v10 objectForKey:windowCopy];
   v12 = v11;
   if (v11)
   {
     [v11 trackingSize];
-    [v7 prepareKeyboardWithSize:v8 inWindow:?];
-    v13 = [v12 elements];
+    [elementCopy prepareKeyboardWithSize:windowCopy inWindow:?];
+    elements = [v12 elements];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __69__UICoreKeyboardTracking_addTrackingElement_window_keyboardDelegate___block_invoke;
     v21[3] = &unk_1E710B970;
-    v14 = v7;
+    v14 = elementCopy;
     v22 = v14;
-    v15 = [v13 indexOfObjectPassingTest:v21];
+    v15 = [elements indexOfObjectPassingTest:v21];
 
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v16 = [[UIWeakCoreKeyboardTracking alloc] initWithBase:v14];
-      v17 = [v12 elements];
-      [v17 addObject:v16];
+      elements2 = [v12 elements];
+      [elements2 addObject:v16];
     }
   }
 
   else
   {
-    v18 = [[UICoreKeyboardTracking alloc] initWithWindow:v8];
-    v19 = [[UIWeakCoreKeyboardTracking alloc] initWithBase:v7];
-    v20 = [(UICoreKeyboardTracking *)v18 elements];
-    [v20 addObject:v19];
+    v18 = [[UICoreKeyboardTracking alloc] initWithWindow:windowCopy];
+    v19 = [[UIWeakCoreKeyboardTracking alloc] initWithBase:elementCopy];
+    elements3 = [(UICoreKeyboardTracking *)v18 elements];
+    [elements3 addObject:v19];
 
-    [v10 setObject:v18 forKey:v8];
-    [v9 registerKeyboardTracker:v18];
+    [v10 setObject:v18 forKey:windowCopy];
+    [delegateCopy registerKeyboardTracker:v18];
   }
 }
 
@@ -110,35 +110,35 @@ BOOL __69__UICoreKeyboardTracking_addTrackingElement_window_keyboardDelegate___b
   return v4;
 }
 
-+ (void)removeTrackingElement:(id)a3 window:(id)a4 keyboardDelegate:(id)a5
++ (void)removeTrackingElement:(id)element window:(id)window keyboardDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  elementCopy = element;
+  windowCopy = window;
+  delegateCopy = delegate;
   v10 = +[UICoreKeyboardTracking windowMap];
-  v11 = [v10 objectForKey:v8];
+  v11 = [v10 objectForKey:windowCopy];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 elements];
+    elements = [v11 elements];
     v14 = MEMORY[0x1E696AE18];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __72__UICoreKeyboardTracking_removeTrackingElement_window_keyboardDelegate___block_invoke;
     v20[3] = &unk_1E710B998;
-    v21 = v7;
+    v21 = elementCopy;
     v15 = [v14 predicateWithBlock:v20];
-    v16 = [v13 filteredArrayUsingPredicate:v15];
+    v16 = [elements filteredArrayUsingPredicate:v15];
     v17 = [v16 mutableCopy];
     [v12 setElements:v17];
 
-    v18 = [v12 elements];
-    v19 = [v18 count];
+    elements2 = [v12 elements];
+    v19 = [elements2 count];
 
     if (!v19)
     {
-      [v9 removeKeyboardTracker:v12];
-      [v10 removeObjectForKey:v8];
+      [delegateCopy removeKeyboardTracker:v12];
+      [v10 removeObjectForKey:windowCopy];
     }
   }
 }
@@ -151,16 +151,16 @@ BOOL __72__UICoreKeyboardTracking_removeTrackingElement_window_keyboardDelegate_
   return v4;
 }
 
-- (UICoreKeyboardTracking)initWithWindow:(id)a3
+- (UICoreKeyboardTracking)initWithWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v10.receiver = self;
   v10.super_class = UICoreKeyboardTracking;
   v5 = [(UICoreKeyboardTracking *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_window, v4);
+    objc_storeWeak(&v5->_window, windowCopy);
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     elements = v6->_elements;
     v6->_elements = v7;
@@ -171,19 +171,19 @@ BOOL __72__UICoreKeyboardTracking_removeTrackingElement_window_keyboardDelegate_
   return v6;
 }
 
-- (void)trackingSizeWillChange:(CGSize)a3 inWindow:(id)a4 animationInfo:(id)a5
+- (void)trackingSizeWillChange:(CGSize)change inWindow:(id)window animationInfo:(id)info
 {
-  height = a3.height;
-  width = a3.width;
+  height = change.height;
+  width = change.width;
   v40 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  windowCopy = window;
+  infoCopy = info;
   [(UICoreKeyboardTracking *)self cleanupElements];
-  if (([v10 isLocalKeyboard] & 1) != 0 || (+[UIDevice currentDevice](UIDevice, "currentDevice"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "userInterfaceIdiom"), v11, v12))
+  if (([infoCopy isLocalKeyboard] & 1) != 0 || (+[UIDevice currentDevice](UIDevice, "currentDevice"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "userInterfaceIdiom"), v11, v12))
   {
     [(UICoreKeyboardTracking *)self setTrackingSize:width, height];
-    v13 = [(UICoreKeyboardTracking *)self elements];
-    v14 = [v13 copy];
+    elements = [(UICoreKeyboardTracking *)self elements];
+    v14 = [elements copy];
 
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v34 = 0u;
@@ -206,9 +206,9 @@ BOOL __72__UICoreKeyboardTracking_removeTrackingElement_window_keyboardDelegate_
           }
 
           v21 = *(*(&v34 + 1) + 8 * i);
-          v22 = [v21 base];
-          v23 = v22;
-          if (v22 && [v22 prepareKeyboardWithSize:v9 inWindow:{width, height}])
+          base = [v21 base];
+          v23 = base;
+          if (base && [base prepareKeyboardWithSize:windowCopy inWindow:{width, height}])
           {
             [v15 addObject:v21];
           }
@@ -239,8 +239,8 @@ BOOL __72__UICoreKeyboardTracking_removeTrackingElement_window_keyboardDelegate_
             objc_enumerationMutation(v24);
           }
 
-          v29 = [*(*(&v30 + 1) + 8 * j) base];
-          [v29 updateKeyboard];
+          base2 = [*(*(&v30 + 1) + 8 * j) base];
+          [base2 updateKeyboard];
         }
 
         v26 = [v24 countByEnumeratingWithState:&v30 objects:v38 count:16];

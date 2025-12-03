@@ -1,15 +1,15 @@
 @interface TCCDProcess
-- (BOOL)BOOLValueForEntitlement:(id)a3;
-- (BOOL)_initializeUsingTaskForAuditToken:(id *)a3;
-- (BOOL)hasEntitlement:(id)a3 containsService:(id)a4 options:(unint64_t)a5;
-- (BOOL)hasEntitlement:(id)a3 containsServiceAllOrService:(id)a4 options:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)BOOLValueForEntitlement:(id)entitlement;
+- (BOOL)_initializeUsingTaskForAuditToken:(id *)token;
+- (BOOL)hasEntitlement:(id)entitlement containsService:(id)service options:(unint64_t)options;
+- (BOOL)hasEntitlement:(id)entitlement containsServiceAllOrService:(id)service options:(unint64_t)options;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSystemPreferencesApp;
 - (NSString)responsiblePath;
-- (TCCDProcess)initWithAuditToken:(id *)a3 responsibleIdentity:(id)a4;
-- (id)arrayValueForEntitlement:(id)a3;
+- (TCCDProcess)initWithAuditToken:(id *)token responsibleIdentity:(id)identity;
+- (id)arrayValueForEntitlement:(id)entitlement;
 - (id)description;
-- (id)dictionaryValueForEntitlement:(id)a3;
+- (id)dictionaryValueForEntitlement:(id)entitlement;
 - (id)logHandle;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -22,16 +22,16 @@
 {
   v3 = objc_opt_new();
   v4 = objc_opt_class();
-  v5 = [(TCCDProcess *)self identifier];
-  [v3 appendFormat:@"%@: identifier=%@, pid=%d, auid=%d, euid=%d, ", v4, v5, -[TCCDProcess pid](self, "pid"), -[TCCDProcess auid](self, "auid"), -[TCCDProcess euid](self, "euid")];
+  identifier = [(TCCDProcess *)self identifier];
+  [v3 appendFormat:@"%@: identifier=%@, pid=%d, auid=%d, euid=%d, ", v4, identifier, -[TCCDProcess pid](self, "pid"), -[TCCDProcess auid](self, "auid"), -[TCCDProcess euid](self, "euid")];
 
   if (self->_responsiblePath)
   {
     [v3 appendFormat:@"responsible_path=%@, ", self->_responsiblePath];
   }
 
-  v6 = [(TCCDProcess *)self binaryPath];
-  [v3 appendFormat:@"binary_path=%@", v6];
+  binaryPath = [(TCCDProcess *)self binaryPath];
+  [v3 appendFormat:@"binary_path=%@", binaryPath];
 
   return v3;
 }
@@ -39,10 +39,10 @@
 - (id)logHandle
 {
   v2 = +[TCCDPlatform currentPlatform];
-  v3 = [v2 server];
-  v4 = [v3 logHandle];
+  server = [v2 server];
+  logHandle = [server logHandle];
 
-  return v4;
+  return logHandle;
 }
 
 - (void)dealloc
@@ -57,15 +57,15 @@
   responsiblePath = self->_responsiblePath;
   if (responsiblePath)
   {
-    v3 = responsiblePath;
+    binaryPath = responsiblePath;
   }
 
   else
   {
-    v3 = [(TCCDProcess *)self binaryPath];
+    binaryPath = [(TCCDProcess *)self binaryPath];
   }
 
-  return v3;
+  return binaryPath;
 }
 
 - (void)tccd_crash_fd_limit
@@ -77,27 +77,27 @@
     __break(1u);
   }
 
-  v3 = [(TCCDProcess *)self logHandle];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  logHandle = [(TCCDProcess *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
   {
     *v4 = 0;
-    _os_log_error_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "Too many open files", v4, 2u);
+    _os_log_error_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_ERROR, "Too many open files", v4, 2u);
   }
 
   exit(1);
 }
 
-- (TCCDProcess)initWithAuditToken:(id *)a3 responsibleIdentity:(id)a4
+- (TCCDProcess)initWithAuditToken:(id *)token responsibleIdentity:(id)identity
 {
-  v6 = a4;
+  identityCopy = identity;
   v23.receiver = self;
   v23.super_class = TCCDProcess;
   v7 = [(TCCDProcess *)&v23 init];
   p_isa = &v7->super.isa;
   if (v7)
   {
-    v9 = *&a3->var0[4];
-    *atoken.val = *a3->var0;
+    v9 = *&token->var0[4];
+    *atoken.val = *token->var0;
     *&atoken.val[4] = v9;
     [(TCCDProcess *)v7 setAuditToken:&atoken];
     *pidp = 0;
@@ -114,9 +114,9 @@
     [p_isa setAuid:pidp[0]];
     [p_isa setEuid:euidp];
     [p_isa setPidVersion:tidp];
-    if (v6)
+    if (identityCopy)
     {
-      if (([p_isa _initializeUsingResponsibleIdentity:v6] & 1) == 0)
+      if (([p_isa _initializeUsingResponsibleIdentity:identityCopy] & 1) == 0)
       {
         goto LABEL_18;
       }
@@ -124,8 +124,8 @@
 
     else
     {
-      v10 = *&a3->var0[4];
-      *atoken.val = *a3->var0;
+      v10 = *&token->var0[4];
+      *atoken.val = *token->var0;
       *&atoken.val[4] = v10;
       if (![p_isa _initializeUsingTaskForAuditToken:&atoken])
       {
@@ -136,10 +136,10 @@ LABEL_18:
     }
 
     bzero(&atoken, 0x400uLL);
-    if (proc_pidpath_audittoken(a3, &atoken, 0x400u) <= 0)
+    if (proc_pidpath_audittoken(token, &atoken, 0x400u) <= 0)
     {
-      v17 = [p_isa logHandle];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      logHandle = [p_isa logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
         sub_1000599F0(p_isa);
       }
@@ -156,8 +156,8 @@ LABEL_18:
 
     if (!p_isa[8])
     {
-      v15 = [p_isa logHandle];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      logHandle2 = [p_isa logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
       {
         sub_100059AAC();
       }
@@ -172,33 +172,33 @@ LABEL_19:
   return v16;
 }
 
-- (BOOL)BOOLValueForEntitlement:(id)a3
+- (BOOL)BOOLValueForEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(TCCDProcess *)self entitlements];
+  entitlementCopy = entitlement;
+  entitlements = [(TCCDProcess *)self entitlements];
 
-  if (!v5)
+  if (!entitlements)
   {
     goto LABEL_9;
   }
 
-  v6 = [(TCCDProcess *)self entitlements];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  entitlements2 = [(TCCDProcess *)self entitlements];
+  v7 = [entitlements2 objectForKeyedSubscript:entitlementCopy];
 
   if (!v7)
   {
 LABEL_8:
 
 LABEL_9:
-    v8 = 0;
+    bOOLValue = 0;
     goto LABEL_10;
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [(TCCDProcess *)self logHandle];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    logHandle = [(TCCDProcess *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_100059B20(self);
     }
@@ -206,18 +206,18 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
 LABEL_10:
-  return v8;
+  return bOOLValue;
 }
 
-- (id)arrayValueForEntitlement:(id)a3
+- (id)arrayValueForEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(TCCDProcess *)self entitlements];
+  entitlementCopy = entitlement;
+  entitlements = [(TCCDProcess *)self entitlements];
 
-  if (v5 && (-[TCCDProcess entitlements](self, "entitlements"), v6 = objc_claimAutoreleasedReturnValue(), [v6 objectForKeyedSubscript:v4], v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
+  if (entitlements && (-[TCCDProcess entitlements](self, "entitlements"), v6 = objc_claimAutoreleasedReturnValue(), [v6 objectForKeyedSubscript:entitlementCopy], v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -227,8 +227,8 @@ LABEL_10:
 
     else
     {
-      v9 = [(TCCDProcess *)self logHandle];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      logHandle = [(TCCDProcess *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
         sub_100059BBC(self);
       }
@@ -245,17 +245,17 @@ LABEL_10:
   return v8;
 }
 
-- (id)dictionaryValueForEntitlement:(id)a3
+- (id)dictionaryValueForEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(TCCDProcess *)self entitlements];
+  entitlementCopy = entitlement;
+  entitlements = [(TCCDProcess *)self entitlements];
 
-  if (v5)
+  if (entitlements)
   {
-    v6 = [(TCCDProcess *)self entitlements];
-    v5 = [v6 objectForKeyedSubscript:v4];
+    entitlements2 = [(TCCDProcess *)self entitlements];
+    entitlements = [entitlements2 objectForKeyedSubscript:entitlementCopy];
 
-    if (v5)
+    if (entitlements)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -270,50 +270,50 @@ LABEL_10:
       }
     }
 
-    v5 = 0;
+    entitlements = 0;
   }
 
 LABEL_8:
 
-  return v5;
+  return entitlements;
 }
 
-- (BOOL)hasEntitlement:(id)a3 containsService:(id)a4 options:(unint64_t)a5
+- (BOOL)hasEntitlement:(id)entitlement containsService:(id)service options:(unint64_t)options
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(TCCDProcess *)self arrayValueForEntitlement:v8];
+  optionsCopy = options;
+  entitlementCopy = entitlement;
+  serviceCopy = service;
+  v10 = [(TCCDProcess *)self arrayValueForEntitlement:entitlementCopy];
   if (!v10)
   {
     goto LABEL_11;
   }
 
-  v11 = [v9 name];
-  v12 = [v10 containsObject:v11];
+  name = [serviceCopy name];
+  v12 = [v10 containsObject:name];
 
   if ((v12 & 1) == 0)
   {
-    if (v5)
+    if (optionsCopy)
     {
-      v20 = [v9 macos_compositionParentService];
-      if (v20)
+      macos_compositionParentService = [serviceCopy macos_compositionParentService];
+      if (macos_compositionParentService)
       {
-        v21 = v20;
+        v21 = macos_compositionParentService;
         while (1)
         {
-          v22 = [v21 name];
-          v23 = [v10 containsObject:v22];
+          name2 = [v21 name];
+          v23 = [v10 containsObject:name2];
 
           if (v23)
           {
             break;
           }
 
-          v24 = [v21 macos_compositionParentService];
+          macos_compositionParentService2 = [v21 macos_compositionParentService];
 
-          v21 = v24;
-          if (!v24)
+          v21 = macos_compositionParentService2;
+          if (!macos_compositionParentService2)
           {
             goto LABEL_11;
           }
@@ -329,27 +329,27 @@ LABEL_11:
   }
 
 LABEL_3:
-  v13 = [(TCCDProcess *)self logHandle];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+  logHandle = [(TCCDProcess *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
     v14 = objc_opt_class();
-    v15 = [(TCCDProcess *)self identifier];
+    identifier = [(TCCDProcess *)self identifier];
     v16 = [(TCCDProcess *)self pid];
-    v17 = [v9 name];
-    v18 = [0 name];
+    name3 = [serviceCopy name];
+    name4 = [0 name];
     v26 = 138544642;
     v27 = v14;
     v28 = 2114;
-    v29 = v15;
+    v29 = identifier;
     v30 = 1024;
     v31 = v16;
     v32 = 2114;
-    v33 = v8;
+    v33 = entitlementCopy;
     v34 = 2114;
-    v35 = v17;
+    v35 = name3;
     v36 = 2114;
-    v37 = v18;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "<%{public}@: identifier=%{public}@, pid=%d> has the %{public}@ entitlement for service %{public}@ (composed to parent: %{public}@)", &v26, 0x3Au);
+    v37 = name4;
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_INFO, "<%{public}@: identifier=%{public}@, pid=%d> has the %{public}@ entitlement for service %{public}@ (composed to parent: %{public}@)", &v26, 0x3Au);
   }
 
   v19 = 1;
@@ -358,10 +358,10 @@ LABEL_12:
   return v19;
 }
 
-- (BOOL)hasEntitlement:(id)a3 containsServiceAllOrService:(id)a4 options:(unint64_t)a5
+- (BOOL)hasEntitlement:(id)entitlement containsServiceAllOrService:(id)service options:(unint64_t)options
 {
-  v8 = a3;
-  if ([(TCCDProcess *)self hasEntitlement:v8 containsService:a4 options:a5])
+  entitlementCopy = entitlement;
+  if ([(TCCDProcess *)self hasEntitlement:entitlementCopy containsService:service options:options])
   {
     v9 = 1;
   }
@@ -369,7 +369,7 @@ LABEL_12:
   else
   {
     v10 = +[TCCDService serviceAll];
-    v9 = [(TCCDProcess *)self hasEntitlement:v8 containsService:v10 options:a5];
+    v9 = [(TCCDProcess *)self hasEntitlement:entitlementCopy containsService:v10 options:options];
   }
 
   return v9;
@@ -377,25 +377,25 @@ LABEL_12:
 
 - (BOOL)isSystemPreferencesApp
 {
-  v3 = [(TCCDProcess *)self isPlatformBinary];
-  if (v3)
+  isPlatformBinary = [(TCCDProcess *)self isPlatformBinary];
+  if (isPlatformBinary)
   {
-    v4 = [(TCCDProcess *)self identifier];
-    v5 = [v4 isEqualToString:@"com.apple.Preferences"];
+    identifier = [(TCCDProcess *)self identifier];
+    v5 = [identifier isEqualToString:@"com.apple.Preferences"];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isPlatformBinary) = v5;
   }
 
-  return v3;
+  return isPlatformBinary;
 }
 
-- (BOOL)_initializeUsingTaskForAuditToken:(id *)a3
+- (BOOL)_initializeUsingTaskForAuditToken:(id *)token
 {
   v20 = 0;
   if (csops_audittoken())
   {
-    v5 = [(TCCDProcess *)self logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    logHandle = [(TCCDProcess *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_100059CF4();
     }
@@ -409,8 +409,8 @@ LABEL_12:
   }
 
   self->_codesignStatus = v6;
-  v7 = *&a3->var0[4];
-  *cf.val = *a3->var0;
+  v7 = *&token->var0[4];
+  *cf.val = *token->var0;
   *&cf.val[4] = v7;
   v8 = SecTaskCreateWithAuditToken(0, &cf);
   if (v8)
@@ -421,8 +421,8 @@ LABEL_12:
     {
       if (*cf.val)
       {
-        v10 = [(TCCDProcess *)self logHandle];
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        logHandle2 = [(TCCDProcess *)self logHandle];
+        if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
         {
           sub_100059DCC();
         }
@@ -435,12 +435,12 @@ LABEL_12:
     self->_entitlements = v9;
 
     *__error() = 0;
-    v12 = SecTaskCopySigningIdentifier(v8, &cf);
-    if (!v12)
+    identifierForInvalidCode = SecTaskCopySigningIdentifier(v8, &cf);
+    if (!identifierForInvalidCode)
     {
       v13 = *cf.val;
-      v14 = [(TCCDProcess *)self logHandle];
-      v15 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
+      logHandle3 = [(TCCDProcess *)self logHandle];
+      v15 = os_log_type_enabled(logHandle3, OS_LOG_TYPE_ERROR);
       if (v13)
       {
         if (v15)
@@ -454,11 +454,11 @@ LABEL_12:
         sub_100059ED4();
       }
 
-      v12 = [objc_opt_class() identifierForInvalidCode];
+      identifierForInvalidCode = [objc_opt_class() identifierForInvalidCode];
     }
 
     identifier = self->_identifier;
-    self->_identifier = v12;
+    self->_identifier = identifierForInvalidCode;
 
     CFRelease(v8);
     if (*cf.val)
@@ -469,8 +469,8 @@ LABEL_12:
 
   else
   {
-    v16 = [(TCCDProcess *)self logHandle];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    logHandle4 = [(TCCDProcess *)self logHandle];
+    if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_ERROR))
     {
       sub_100059D60();
     }
@@ -494,10 +494,10 @@ LABEL_12:
   return veor_s8(v8.i32[0], *&vextq_s8(v9, v9, 8uLL));
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -507,7 +507,7 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(TCCDProcess *)self auditToken];
       if (v5)
       {

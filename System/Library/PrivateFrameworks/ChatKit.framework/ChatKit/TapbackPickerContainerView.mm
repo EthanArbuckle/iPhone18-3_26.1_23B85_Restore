@@ -1,7 +1,7 @@
 @interface TapbackPickerContainerView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (UIColor)tintColor;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation TapbackPickerContainerView
@@ -10,21 +10,21 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for TapbackPickerContainerView();
-  v2 = [(TapbackPickerContainerView *)&v4 tintColor];
+  tintColor = [(TapbackPickerContainerView *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v6 = a3;
-  v5 = self;
-  sub_190C773FC(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_190C773FC(color);
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_190D56F10();
     v6 = v5;
@@ -36,7 +36,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_190C772C0(v4, v6);
 
   return v8 & 1;

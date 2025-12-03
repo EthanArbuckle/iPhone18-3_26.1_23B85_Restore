@@ -1,38 +1,38 @@
 @interface TSCHStyleOwnerPath
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-+ (id)styleOwnerPathForSemanticTag:(id)a3 ofChart:(id)a4;
-+ (id)styleOwnerPathForStyleOwner:(id)a3;
-+ (id)styleOwnerPathWithUUIDs:(id)a3;
-+ (id)verifiedUUIDs:(id)a3;
-+ (unsigned)styleOwnerPathTypeForStyleOwner:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
++ (id)styleOwnerPathForSemanticTag:(id)tag ofChart:(id)chart;
++ (id)styleOwnerPathForStyleOwner:(id)owner;
++ (id)styleOwnerPathWithUUIDs:(id)ds;
++ (id)verifiedUUIDs:(id)ds;
++ (unsigned)styleOwnerPathTypeForStyleOwner:(id)owner;
+- (BOOL)isEqual:(id)equal;
 - (Class)genericPropertyMapClass;
-- (TSCHStyleOwnerPath)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSCHStyleOwnerPath)initWithUUIDs:(id)a3;
+- (TSCHStyleOwnerPath)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSCHStyleOwnerPath)initWithUUIDs:(id)ds;
 - (id)TSUUUIDPath;
-- (id)p_axisStyleOwnerForChart:(id)a3;
+- (id)p_axisStyleOwnerForChart:(id)chart;
 - (id)p_createUUIDDecoder;
-- (id)p_referenceLineStyleOwnerForChart:(id)a3;
-- (id)p_seriesStyleOwnerForChart:(id)a3;
-- (id)pathByPrefixingWithUUIDs:(id)a3;
-- (id)styleOwnerForChart:(id)a3;
+- (id)p_referenceLineStyleOwnerForChart:(id)chart;
+- (id)p_seriesStyleOwnerForChart:(id)chart;
+- (id)pathByPrefixingWithUUIDs:(id)ds;
+- (id)styleOwnerForChart:(id)chart;
 - (int)styleOwnerType;
 - (unsigned)styleOwnerPathType;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSCHStyleOwnerPath
 
-+ (id)verifiedUUIDs:(id)a3
++ (id)verifiedUUIDs:(id)ds
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = a3;
-  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, v5, v6, v7, &v18, v22, 16);
-  v9 = v3;
+  dsCopy = ds;
+  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(dsCopy, v4, v5, v6, v7, &v18, v22, 16);
+  v9 = dsCopy;
   if (v8)
   {
     v10 = *v19;
@@ -42,7 +42,7 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dsCopy);
         }
 
         objc_opt_class();
@@ -53,7 +53,7 @@
         }
       }
 
-      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v12, v13, v14, v15, &v18, v22, 16);
+      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(dsCopy, v12, v13, v14, v15, &v18, v22, 16);
       if (v8)
       {
         continue;
@@ -62,7 +62,7 @@
       break;
     }
 
-    v9 = v3;
+    v9 = dsCopy;
   }
 
 LABEL_11:
@@ -71,25 +71,25 @@ LABEL_11:
   return v9;
 }
 
-+ (id)styleOwnerPathWithUUIDs:(id)a3
++ (id)styleOwnerPathWithUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithUUIDs_(v5, v6, v7, v8, v9, v4);
+  dsCopy = ds;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithUUIDs_(v5, v6, v7, v8, v9, dsCopy);
 
   return v10;
 }
 
-- (TSCHStyleOwnerPath)initWithUUIDs:(id)a3
+- (TSCHStyleOwnerPath)initWithUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v38.receiver = self;
   v38.super_class = TSCHStyleOwnerPath;
   v5 = [(TSCHStyleOwnerPath *)&v38 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v11 = objc_msgSend_verifiedUUIDs_(v6, v7, v8, v9, v10, v4);
+    v11 = objc_msgSend_verifiedUUIDs_(v6, v7, v8, v9, v10, dsCopy);
     if (objc_msgSend_count(v11, v12, v13, v14, v15))
     {
       v20 = objc_msgSend_copy(v11, v16, v17, v18, v19);
@@ -102,7 +102,7 @@ LABEL_11:
       v22 = MEMORY[0x277D81150];
       v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, v17, v18, v19, "[TSCHStyleOwnerPath initWithUUIDs:]");
       v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v24, v25, v26, v27, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHStyleOwnerPath.mm");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v22, v29, v30, v31, v32, v23, v28, 46, 0, "invalid uuids %@", v4);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v22, v29, v30, v31, v32, v23, v28, 46, 0, "invalid uuids %@", dsCopy);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v33, v34, v35, v36);
       uuids = v5;
@@ -113,10 +113,10 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -147,15 +147,15 @@ LABEL_11:
   return v8;
 }
 
-- (id)pathByPrefixingWithUUIDs:(id)a3
+- (id)pathByPrefixingWithUUIDs:(id)ds
 {
   v49 = *MEMORY[0x277D85DE8];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v3 = a3;
-  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, v5, v6, v7, &v44, v48, 16);
+  dsCopy = ds;
+  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(dsCopy, v4, v5, v6, v7, &v44, v48, 16);
   if (v8)
   {
     v9 = *v45;
@@ -165,7 +165,7 @@ LABEL_11:
       {
         if (*v45 != v9)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dsCopy);
         }
 
         v11 = *(*(&v44 + 1) + 8 * i);
@@ -175,43 +175,43 @@ LABEL_11:
           v16 = MEMORY[0x277D81150];
           v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, "[TSCHStyleOwnerPath pathByPrefixingWithUUIDs:]");
           v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, v19, v20, v21, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHStyleOwnerPath.mm");
-          objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v23, v24, v25, v26, v17, v22, 83, 0, "invalid object type for %@ in uuid array %@", v11, v3);
+          objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v23, v24, v25, v26, v17, v22, 83, 0, "invalid object type for %@ in uuid array %@", v11, dsCopy);
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
         }
       }
 
-      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v12, v13, v14, v15, &v44, v48, 16);
+      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(dsCopy, v12, v13, v14, v15, &v44, v48, 16);
     }
 
     while (v8);
   }
 
-  v35 = objc_msgSend_arrayByAddingObjectsFromArray_(v3, v31, v32, v33, v34, self->_uuids);
+  v35 = objc_msgSend_arrayByAddingObjectsFromArray_(dsCopy, v31, v32, v33, v34, self->_uuids);
   v36 = objc_opt_class();
   v41 = objc_msgSend_styleOwnerPathWithUUIDs_(v36, v37, v38, v39, v40, v35);
 
   return v41;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v7 = [a1 alloc];
-  v12 = objc_msgSend_initWithArchive_unarchiver_(v7, v8, v9, v10, v11, a3, v6);
+  unarchiverCopy = unarchiver;
+  v7 = [self alloc];
+  v12 = objc_msgSend_initWithArchive_unarchiver_(v7, v8, v9, v10, v11, archive, unarchiverCopy);
 
   return v12;
 }
 
-- (TSCHStyleOwnerPath)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCHStyleOwnerPath)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v44.receiver = self;
   v44.super_class = TSCHStyleOwnerPath;
-  v5 = [(TSCHStyleOwnerPath *)&v44 init:a3];
+  v5 = [(TSCHStyleOwnerPath *)&v44 init:archive];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CBEA60]);
-    v11 = objc_msgSend_tsp_initWithProtobufUUIDArray_(v6, v7, v8, v9, v10, a3 + 16);
+    v11 = objc_msgSend_tsp_initWithProtobufUUIDArray_(v6, v7, v8, v9, v10, archive + 16);
     v12 = objc_opt_class();
     v17 = objc_msgSend_verifiedUUIDs_(v12, v13, v14, v15, v16, v11);
     if (objc_msgSend_count(v17, v18, v19, v20, v21))
@@ -237,9 +237,9 @@ LABEL_11:
   return v5;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  if (!objc_msgSend_count(self->_uuids, a2, v4, v5, v6, a3, a4))
+  if (!objc_msgSend_count(self->_uuids, a2, v4, v5, v6, archive, archiver))
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, "[TSCHStyleOwnerPath(PersistenceAdditions) saveToArchive:archiver:]");
@@ -254,9 +254,9 @@ LABEL_11:
   MEMORY[0x2821F9670](uuids, sel_tsp_saveToProtobufUUIDArray_, v9, v10, v11);
 }
 
-+ (unsigned)styleOwnerPathTypeForStyleOwner:(id)a3
++ (unsigned)styleOwnerPathTypeForStyleOwner:(id)owner
 {
-  v3 = a3;
+  ownerCopy = owner;
   v5 = TSUCheckedProtocolCast();
   if (!v5)
   {
@@ -275,7 +275,7 @@ LABEL_11:
     v34 = MEMORY[0x277D81150];
     v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v29, v31, v32, v33, "+[TSCHStyleOwnerPath(TSCHStyleOwnerCollaborationSupporting) styleOwnerPathTypeForStyleOwner:]");
     v40 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v36, v37, v38, v39, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHStyleOwningImplementation.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v34, v41, v42, v43, v44, v35, v40, 964, 0, "no path found for style owner %@", v3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v34, v41, v42, v43, v44, v35, v40, 964, 0, "no path found for style owner %@", ownerCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v45, v46, v47, v48);
   }
@@ -283,20 +283,20 @@ LABEL_11:
   return v30;
 }
 
-+ (id)styleOwnerPathForSemanticTag:(id)a3 ofChart:(id)a4
++ (id)styleOwnerPathForSemanticTag:(id)tag ofChart:(id)chart
 {
   v170[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v12 = objc_msgSend_styleOwnerRefForSemanticTag_(v7, v8, v9, v10, v11, v6);
-  v18 = objc_msgSend_styleOwnerForRef_(v7, v13, v14, v15, v16, v12);
+  tagCopy = tag;
+  chartCopy = chart;
+  v12 = objc_msgSend_styleOwnerRefForSemanticTag_(chartCopy, v8, v9, v10, v11, tagCopy);
+  v18 = objc_msgSend_styleOwnerForRef_(chartCopy, v13, v14, v15, v16, v12);
   if (v18)
   {
-    v22 = objc_msgSend_styleOwnerPathForStyleOwner_(a1, v17, v19, v20, v21, v18);
+    v22 = objc_msgSend_styleOwnerPathForStyleOwner_(self, v17, v19, v20, v21, v18);
     goto LABEL_35;
   }
 
-  v23 = objc_msgSend_type(v6, v17, v19, v20, v21);
+  v23 = objc_msgSend_type(tagCopy, v17, v19, v20, v21);
   v24 = sub_2762E611C(v23);
   if (v24)
   {
@@ -314,7 +314,7 @@ LABEL_11:
           goto LABEL_31;
         }
 
-        v41 = objc_msgSend_index(v6, v31, v32, v33, v34);
+        v41 = objc_msgSend_index(tagCopy, v31, v32, v33, v34);
         objc_msgSend_encodeUInt64FromNSUInteger_(v35, v42, v43, v44, v45, v41);
         v36 = objc_msgSend_encodedUUID(v35, v46, v47, v48, v49);
         v167 = v36;
@@ -322,13 +322,13 @@ LABEL_11:
         goto LABEL_11;
       }
 
-      v107 = objc_msgSend_chartType(v7, v31, v32, v33, v34);
+      v107 = objc_msgSend_chartType(chartCopy, v31, v32, v33, v34);
       v36 = objc_msgSend_categoryAxisIDs(v107, v108, v109, v110, v111);
 
       v116 = objc_msgSend_count(v36, v112, v113, v114, v115);
-      if (v116 > objc_msgSend_index(v6, v117, v118, v119, v120))
+      if (v116 > objc_msgSend_index(tagCopy, v117, v118, v119, v120))
       {
-        v125 = objc_msgSend_index(v6, v121, v122, v123, v124);
+        v125 = objc_msgSend_index(tagCopy, v121, v122, v123, v124);
         v130 = objc_msgSend_objectAtIndexedSubscript_(v36, v126, v127, v128, v129, v125);
         if (v130)
         {
@@ -388,13 +388,13 @@ LABEL_31:
         goto LABEL_35;
       }
 
-      v55 = objc_msgSend_chartType(v7, v31, v32, v33, v34);
+      v55 = objc_msgSend_chartType(chartCopy, v31, v32, v33, v34);
       v36 = objc_msgSend_valueAxisIDs(v55, v56, v57, v58, v59);
 
       v64 = objc_msgSend_count(v36, v60, v61, v62, v63);
-      if (v64 > objc_msgSend_index(v6, v65, v66, v67, v68))
+      if (v64 > objc_msgSend_index(tagCopy, v65, v66, v67, v68))
       {
-        v73 = objc_msgSend_index(v6, v69, v70, v71, v72);
+        v73 = objc_msgSend_index(tagCopy, v69, v70, v71, v72);
         v78 = objc_msgSend_objectAtIndexedSubscript_(v36, v74, v75, v76, v77, v73);
         if (v78)
         {
@@ -441,17 +441,17 @@ LABEL_35:
   return v22;
 }
 
-+ (id)styleOwnerPathForStyleOwner:(id)a3
++ (id)styleOwnerPathForStyleOwner:(id)owner
 {
   v136[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v9 = objc_msgSend_styleOwnerPathTypeForStyleOwner_(a1, v5, v6, v7, v8, v4);
+  ownerCopy = owner;
+  v9 = objc_msgSend_styleOwnerPathTypeForStyleOwner_(self, v5, v6, v7, v8, ownerCopy);
   if (!v9)
   {
     v55 = MEMORY[0x277D81150];
     v56 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "+[TSCHStyleOwnerPath(TSCHStyleOwnerCollaborationSupporting) styleOwnerPathForStyleOwner:]");
     v61 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v57, v58, v59, v60, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHStyleOwningImplementation.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v55, v62, v63, v64, v65, v56, v61, 1029, 0, "no path found for style owner %@", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v55, v62, v63, v64, v65, v56, v61, 1029, 0, "no path found for style owner %@", ownerCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v66, v67, v68, v69);
     v20 = objc_msgSend_UUIDEncoderWithStyleOwnerPathType_(TSCHStyleOwnerUUIDEncoder, v70, v71, v72, v73, 0);
@@ -629,9 +629,9 @@ LABEL_21:
   return v30;
 }
 
-- (id)p_axisStyleOwnerForChart:(id)a3
+- (id)p_axisStyleOwnerForChart:(id)chart
 {
-  v4 = a3;
+  chartCopy = chart;
   v9 = objc_msgSend_p_createUUIDDecoder(self, v5, v6, v7, v8);
   v14 = objc_msgSend_decodeByte(v9, v10, v11, v12, v13);
   if (v14 - 3 >= 2)
@@ -648,16 +648,16 @@ LABEL_21:
   v35 = objc_msgSend_decodeByte(v9, v15, v16, v17, v18);
   v40 = objc_msgSend_decodeByte(v9, v36, v37, v38, v39);
   v45 = objc_msgSend_axisIDWithType_ordinal_(TSCHChartAxisID, v41, v42, v43, v44, v35, v40);
-  v50 = objc_msgSend_model(v4, v46, v47, v48, v49);
+  v50 = objc_msgSend_model(chartCopy, v46, v47, v48, v49);
 
   v55 = objc_msgSend_axisForID_(v50, v51, v52, v53, v54, v45);
 
   return v55;
 }
 
-- (id)p_seriesStyleOwnerForChart:(id)a3
+- (id)p_seriesStyleOwnerForChart:(id)chart
 {
-  v4 = a3;
+  chartCopy = chart;
   v9 = objc_msgSend_p_createUUIDDecoder(self, v5, v6, v7, v8);
   v14 = objc_msgSend_decodeByte(v9, v10, v11, v12, v13);
   if (v14 != 5)
@@ -672,7 +672,7 @@ LABEL_21:
   }
 
   v35 = objc_msgSend_decodeNSUIntegerFromUInt64(v9, v15, v16, v17, v18);
-  v40 = objc_msgSend_model(v4, v36, v37, v38, v39);
+  v40 = objc_msgSend_model(chartCopy, v36, v37, v38, v39);
 
   v45 = objc_msgSend_seriesList(v40, v41, v42, v43, v44);
 
@@ -689,10 +689,10 @@ LABEL_21:
   return v54;
 }
 
-- (id)p_referenceLineStyleOwnerForChart:(id)a3
+- (id)p_referenceLineStyleOwnerForChart:(id)chart
 {
   v125 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chartCopy = chart;
   v113 = objc_msgSend_p_createUUIDDecoder(self, v5, v6, v7, v8);
   v13 = objc_msgSend_decodeByte(v113, v9, v10, v11, v12);
   if (v13 != 6)
@@ -720,8 +720,8 @@ LABEL_21:
   v57 = objc_msgSend_objectAtIndexedSubscript_(self->_uuids, v53, v54, v55, v56, 1);
   v58 = TSUCheckedDynamicCast();
 
-  v114 = v4;
-  v63 = objc_msgSend_model(v4, v59, v60, v61, v62);
+  v114 = chartCopy;
+  v63 = objc_msgSend_model(chartCopy, v59, v60, v61, v62);
   v68 = objc_msgSend_referenceLinesMap(v63, v64, v65, v66, v67);
 
   v121 = 0u;
@@ -812,10 +812,10 @@ LABEL_23:
   return v89;
 }
 
-- (id)styleOwnerForChart:(id)a3
+- (id)styleOwnerForChart:(id)chart
 {
-  v5 = a3;
-  if (!v5)
+  chartCopy = chart;
+  if (!chartCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v6, v7, v8, "[TSCHStyleOwnerPath(TSCHStyleOwnerCollaborationSupporting) styleOwnerForChart:]");
@@ -831,7 +831,7 @@ LABEL_23:
   {
     if (v24 == 1)
     {
-      v30 = v5;
+      v30 = chartCopy;
     }
 
     else
@@ -841,18 +841,18 @@ LABEL_23:
         goto LABEL_15;
       }
 
-      v30 = objc_msgSend_legend(v5, v25, v26, v27, v28);
+      v30 = objc_msgSend_legend(chartCopy, v25, v26, v27, v28);
     }
   }
 
   else if ((v24 - 3) < 2)
   {
-    v30 = objc_msgSend_p_axisStyleOwnerForChart_(self, v25, v26, v27, v28, v5);
+    v30 = objc_msgSend_p_axisStyleOwnerForChart_(self, v25, v26, v27, v28, chartCopy);
   }
 
   else if (v24 == 5)
   {
-    v30 = objc_msgSend_p_seriesStyleOwnerForChart_(self, v25, v26, v27, v28, v5);
+    v30 = objc_msgSend_p_seriesStyleOwnerForChart_(self, v25, v26, v27, v28, chartCopy);
   }
 
   else
@@ -862,7 +862,7 @@ LABEL_23:
       goto LABEL_15;
     }
 
-    v30 = objc_msgSend_p_referenceLineStyleOwnerForChart_(self, v25, v26, v27, v28, v5);
+    v30 = objc_msgSend_p_referenceLineStyleOwnerForChart_(self, v25, v26, v27, v28, chartCopy);
   }
 
   v29 = v30;

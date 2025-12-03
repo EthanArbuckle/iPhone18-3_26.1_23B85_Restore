@@ -1,11 +1,11 @@
 @interface PGMeaningCriteriaEvaluator
 + (id)_allMeaningCriteriaClassArray;
-+ (id)meaningCriteriaEvaluatorsForMeaningLabel:(id)a3 withDictionary:(id)a4 serviceManager:(id)a5;
++ (id)meaningCriteriaEvaluatorsForMeaningLabel:(id)label withDictionary:(id)dictionary serviceManager:(id)manager;
 - (BOOL)allCriteriaIsValid;
-- (BOOL)allCriteriaPassForAssets:(id)a3;
-- (BOOL)allCriteriaPassForMomentNode:(id)a3 momentNodeCache:(id)a4;
+- (BOOL)allCriteriaPassForAssets:(id)assets;
+- (BOOL)allCriteriaPassForMomentNode:(id)node momentNodeCache:(id)cache;
 - (NSString)meaningLabel;
-- (PGMeaningCriteriaEvaluator)initWithDictionary:(id)a3 meaningCriteriaInfo:(id)a4 serviceManager:(id)a5;
+- (PGMeaningCriteriaEvaluator)initWithDictionary:(id)dictionary meaningCriteriaInfo:(id)info serviceManager:(id)manager;
 - (id)description;
 @end
 
@@ -14,12 +14,12 @@
 - (id)description
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(PGMeaningCriteriaEvaluator *)self meaningCriteriaInfo];
+  meaningCriteriaInfo = [(PGMeaningCriteriaEvaluator *)self meaningCriteriaInfo];
   v4 = MEMORY[0x277CCAB68];
-  v5 = [v3 meaningLabel];
-  v6 = [v4 stringWithFormat:@"=== %@Criteria%d ===\n\n", v5, objc_msgSend(v3, "criteriaNumber")];
+  meaningLabel = [meaningCriteriaInfo meaningLabel];
+  v6 = [v4 stringWithFormat:@"=== %@Criteria%d ===\n\n", meaningLabel, objc_msgSend(meaningCriteriaInfo, "criteriaNumber")];
 
-  [v3 version];
+  [meaningCriteriaInfo version];
   [v6 appendFormat:@"version: %f\n\n", v7];
   v20 = 0u;
   v21 = 0u;
@@ -41,8 +41,8 @@
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [objc_opt_class() criteriaKey];
-        [v6 appendFormat:@"*%@*\n", v14];
+        criteriaKey = [objc_opt_class() criteriaKey];
+        [v6 appendFormat:@"*%@*\n", criteriaKey];
 
         v15 = [v13 description];
         [v6 appendFormat:@"%@\n", v15];
@@ -111,25 +111,25 @@
 LABEL_12:
 
   v10 = +[PGLogging sharedLogging];
-  v11 = [v10 loggingConnection];
+  loggingConnection = [v10 loggingConnection];
 
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
     v19 = v7;
     v20 = 2112;
-    v21 = self;
-    _os_log_impl(&dword_22F0FC000, v11, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] PGMeaningCriteria %@ validation: \n%@", buf, 0x16u);
+    selfCopy = self;
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] PGMeaningCriteria %@ validation: \n%@", buf, 0x16u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (BOOL)allCriteriaPassForAssets:(id)a3
+- (BOOL)allCriteriaPassForAssets:(id)assets
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetsCopy = assets;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -149,7 +149,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        if (![*(*(&v13 + 1) + 8 * i) passesForAssets:{v4, v13}])
+        if (![*(*(&v13 + 1) + 8 * i) passesForAssets:{assetsCopy, v13}])
         {
           v10 = 0;
           goto LABEL_11;
@@ -173,11 +173,11 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)allCriteriaPassForMomentNode:(id)a3 momentNodeCache:(id)a4
+- (BOOL)allCriteriaPassForMomentNode:(id)node momentNodeCache:(id)cache
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  cacheCopy = cache;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -197,7 +197,7 @@ LABEL_11:
           objc_enumerationMutation(v8);
         }
 
-        if (![*(*(&v16 + 1) + 8 * i) passesForMomentNode:v6 momentNodeCache:{v7, v16}])
+        if (![*(*(&v16 + 1) + 8 * i) passesForMomentNode:nodeCopy momentNodeCache:{cacheCopy, v16}])
         {
           v13 = 0;
           goto LABEL_11;
@@ -223,27 +223,27 @@ LABEL_11:
 
 - (NSString)meaningLabel
 {
-  v2 = [(PGMeaningCriteriaEvaluator *)self meaningCriteriaInfo];
-  v3 = [v2 meaningLabel];
+  meaningCriteriaInfo = [(PGMeaningCriteriaEvaluator *)self meaningCriteriaInfo];
+  meaningLabel = [meaningCriteriaInfo meaningLabel];
 
-  return v3;
+  return meaningLabel;
 }
 
-- (PGMeaningCriteriaEvaluator)initWithDictionary:(id)a3 meaningCriteriaInfo:(id)a4 serviceManager:(id)a5
+- (PGMeaningCriteriaEvaluator)initWithDictionary:(id)dictionary meaningCriteriaInfo:(id)info serviceManager:(id)manager
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v33 = a5;
+  dictionaryCopy = dictionary;
+  infoCopy = info;
+  managerCopy = manager;
   v40.receiver = self;
   v40.super_class = PGMeaningCriteriaEvaluator;
   v10 = [(PGMeaningCriteriaEvaluator *)&v40 init];
   v11 = v10;
   if (v10)
   {
-    v32 = v9;
-    objc_storeStrong(&v10->_meaningCriteriaInfo, a4);
-    v12 = [MEMORY[0x277CBEB18] array];
+    v32 = infoCopy;
+    objc_storeStrong(&v10->_meaningCriteriaInfo, info);
+    array = [MEMORY[0x277CBEB18] array];
     v34 = v11;
     [objc_opt_class() _allMeaningCriteriaClassArray];
     v36 = 0u;
@@ -269,14 +269,14 @@ LABEL_11:
         }
 
         v17 = *(*(&v36 + 1) + 8 * v16);
-        v18 = [v17 criteriaKey];
-        v19 = [v8 objectForKeyedSubscript:v18];
+        criteriaKey = [v17 criteriaKey];
+        v19 = [dictionaryCopy objectForKeyedSubscript:criteriaKey];
         if (v19)
         {
           v20 = [v17 criteriaWithDictionary:v19];
-          [(NSArray *)v12 addObject:v20];
+          [(NSArray *)array addObject:v20];
           v21 = +[PGMeaningSceneCriteria criteriaKey];
-          v22 = [v18 isEqualToString:v21];
+          v22 = [criteriaKey isEqualToString:v21];
 
           if (v22)
           {
@@ -285,7 +285,7 @@ LABEL_11:
           }
 
           v24 = +[PGMeaningActionCriteria criteriaKey];
-          v25 = [v18 isEqualToString:v24];
+          v25 = [criteriaKey isEqualToString:v24];
 
           if (v25)
           {
@@ -297,11 +297,11 @@ LABEL_12:
           else
           {
             v26 = +[PGMeaningDurationCriteria criteriaKey];
-            v27 = [v18 isEqualToString:v26];
+            v27 = [criteriaKey isEqualToString:v26];
 
             if (v27)
             {
-              [v20 setServiceManager:v33];
+              [v20 setServiceManager:managerCopy];
             }
           }
         }
@@ -317,9 +317,9 @@ LABEL_12:
 LABEL_19:
         v11 = v34;
         allMeaningCriteriaArray = v34->_allMeaningCriteriaArray;
-        v34->_allMeaningCriteriaArray = v12;
+        v34->_allMeaningCriteriaArray = array;
 
-        v9 = v32;
+        infoCopy = v32;
         break;
       }
     }
@@ -349,32 +349,32 @@ LABEL_19:
   return v2;
 }
 
-+ (id)meaningCriteriaEvaluatorsForMeaningLabel:(id)a3 withDictionary:(id)a4 serviceManager:(id)a5
++ (id)meaningCriteriaEvaluatorsForMeaningLabel:(id)label withDictionary:(id)dictionary serviceManager:(id)manager
 {
   v39 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 objectForKeyedSubscript:@"version"];
+  labelCopy = label;
+  dictionaryCopy = dictionary;
+  managerCopy = manager;
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"version"];
   [v9 doubleValue];
   v11 = v10;
 
-  v27 = v7;
-  v12 = [v7 objectForKeyedSubscript:@"criteria"];
+  v27 = dictionaryCopy;
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"criteria"];
   v13 = [v12 count];
   v14 = +[PGLogging sharedLogging];
-  v15 = [v14 loggingConnection];
+  loggingConnection = [v14 loggingConnection];
 
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 67109378;
     v36 = v13;
     v37 = 2112;
-    v38 = v29;
-    _os_log_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] Creating %d criteria evaluators for meaning %@", buf, 0x12u);
+    v38 = labelCopy;
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[MEANING CRITERIA] Creating %d criteria evaluators for meaning %@", buf, 0x12u);
   }
 
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -397,11 +397,11 @@ LABEL_19:
 
         v22 = *(*(&v30 + 1) + 8 * i);
         v23 = objc_alloc_init(PGMeaningCriteriaInfo);
-        [(PGMeaningCriteriaInfo *)v23 setMeaningLabel:v29];
+        [(PGMeaningCriteriaInfo *)v23 setMeaningLabel:labelCopy];
         [(PGMeaningCriteriaInfo *)v23 setCriteriaNumber:v20];
         [(PGMeaningCriteriaInfo *)v23 setVersion:v11];
-        v24 = [[PGMeaningCriteriaEvaluator alloc] initWithDictionary:v22 meaningCriteriaInfo:v23 serviceManager:v8];
-        [v16 addObject:v24];
+        v24 = [[PGMeaningCriteriaEvaluator alloc] initWithDictionary:v22 meaningCriteriaInfo:v23 serviceManager:managerCopy];
+        [array addObject:v24];
         ++v20;
       }
 
@@ -413,7 +413,7 @@ LABEL_19:
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return array;
 }
 
 @end

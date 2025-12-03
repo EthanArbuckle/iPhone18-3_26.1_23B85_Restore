@@ -1,29 +1,29 @@
 @interface WBSPasswordRule
-+ (id)ruleWithType:(int64_t)a3 value:(id)a4;
-- (WBSPasswordRule)initWithPasswordRuleType:(int64_t)a3 value:(id)a4;
++ (id)ruleWithType:(int64_t)type value:(id)value;
+- (WBSPasswordRule)initWithPasswordRuleType:(int64_t)type value:(id)value;
 @end
 
 @implementation WBSPasswordRule
 
-+ (id)ruleWithType:(int64_t)a3 value:(id)a4
++ (id)ruleWithType:(int64_t)type value:(id)value
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithPasswordRuleType:a3 value:v6];
+  valueCopy = value;
+  v7 = [[self alloc] initWithPasswordRuleType:type value:valueCopy];
 
   return v7;
 }
 
-- (WBSPasswordRule)initWithPasswordRuleType:(int64_t)a3 value:(id)a4
+- (WBSPasswordRule)initWithPasswordRuleType:(int64_t)type value:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = WBSPasswordRule;
   v8 = [(WBSPasswordRule *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_value, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_value, value);
     v10 = v9;
   }
 

@@ -1,7 +1,7 @@
 @interface GTLaunchRequest
 - (GTLaunchRequest)init;
-- (GTLaunchRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTLaunchRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTLaunchRequest
@@ -50,9 +50,9 @@
   return v3;
 }
 
-- (GTLaunchRequest)initWithCoder:(id)a3
+- (GTLaunchRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v46.receiver = self;
   v46.super_class = GTLaunchRequest;
   v5 = [(GTLaunchRequest *)&v46 init];
@@ -62,7 +62,7 @@
   }
 
   v6 = objc_opt_class();
-  v7 = [v4 decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"environment"];
+  v7 = [coderCopy decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"environment"];
   environment = v5->_environment;
   v5->_environment = v7;
 
@@ -135,7 +135,7 @@ LABEL_17:
 
 LABEL_18:
 
-  v19 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"arguments"];
+  v19 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"arguments"];
   arguments = v5->_arguments;
   v5->_arguments = v19;
 
@@ -194,7 +194,7 @@ LABEL_18:
   v5->_arguments = &__NSArray0__struct;
 LABEL_32:
 
-  v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceUDID"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceUDID"];
   deviceUDID = v5->_deviceUDID;
   v5->_deviceUDID = v28;
 
@@ -205,7 +205,7 @@ LABEL_32:
     v5->_deviceUDID = v30;
   }
 
-  v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionUUID"];
+  v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionUUID"];
   sessionUUID = v5->_sessionUUID;
   v5->_sessionUUID = v32;
 
@@ -216,24 +216,24 @@ LABEL_32:
     v5->_sessionUUID = v34;
   }
 
-  v5->_preferXPCService = [v4 decodeInt64ForKey:{@"preferXPCService", v38}] != 0;
-  v5->_disableDisplay = [v4 decodeInt64ForKey:@"disableDisplay"] != 0;
+  v5->_preferXPCService = [coderCopy decodeInt64ForKey:{@"preferXPCService", v38}] != 0;
+  v5->_disableDisplay = [coderCopy decodeInt64ForKey:@"disableDisplay"] != 0;
   v36 = v5;
 LABEL_39:
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   environment = self->_environment;
-  v5 = a3;
-  [v5 encodeObject:environment forKey:@"environment"];
-  [v5 encodeObject:self->_arguments forKey:@"arguments"];
-  [v5 encodeObject:self->_deviceUDID forKey:@"deviceUDID"];
-  [v5 encodeObject:self->_sessionUUID forKey:@"sessionUUID"];
-  [v5 encodeInt64:self->_preferXPCService forKey:@"preferXPCService"];
-  [v5 encodeInt64:self->_disableDisplay forKey:@"disableDisplay"];
+  coderCopy = coder;
+  [coderCopy encodeObject:environment forKey:@"environment"];
+  [coderCopy encodeObject:self->_arguments forKey:@"arguments"];
+  [coderCopy encodeObject:self->_deviceUDID forKey:@"deviceUDID"];
+  [coderCopy encodeObject:self->_sessionUUID forKey:@"sessionUUID"];
+  [coderCopy encodeInt64:self->_preferXPCService forKey:@"preferXPCService"];
+  [coderCopy encodeInt64:self->_disableDisplay forKey:@"disableDisplay"];
 }
 
 @end

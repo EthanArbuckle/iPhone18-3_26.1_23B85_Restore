@@ -1,24 +1,24 @@
 @interface SBApplicationLaunchImageParameters
-+ (id)_sanitizedImageNameFromName:(void *)a3 withExtension:(void *)a4 actualExtension:;
-+ (id)launchImageParametersFromLaunchImagesInfo:(id)a3 withBundleIdentifier:(id)a4 isMonarchLinked:(BOOL)a5;
++ (id)_sanitizedImageNameFromName:(void *)name withExtension:(void *)extension actualExtension:;
++ (id)launchImageParametersFromLaunchImagesInfo:(id)info withBundleIdentifier:(id)identifier isMonarchLinked:(BOOL)linked;
 + (id)validInfoPlistOrientationKeys;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (id)_initWithDefaultPNGName:(void *)a3 extension:(void *)a4 minOSVersionString:(uint64_t)a5 size:(double)a6 interfaceOrientation:(double)a7;
+- (id)_initWithDefaultPNGName:(void *)name extension:(void *)extension minOSVersionString:(uint64_t)string size:(double)size interfaceOrientation:(double)orientation;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SBApplicationLaunchImageParameters
 
-+ (id)launchImageParametersFromLaunchImagesInfo:(id)a3 withBundleIdentifier:(id)a4 isMonarchLinked:(BOOL)a5
++ (id)launchImageParametersFromLaunchImagesInfo:(id)info withBundleIdentifier:(id)identifier isMonarchLinked:(BOOL)linked
 {
   v63 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v44 = a4;
-  if (!v44)
+  infoCopy = info;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    [SBApplicationLaunchImageParameters launchImageParametersFromLaunchImagesInfo:a2 withBundleIdentifier:a1 isMonarchLinked:?];
+    [SBApplicationLaunchImageParameters launchImageParametersFromLaunchImagesInfo:a2 withBundleIdentifier:self isMonarchLinked:?];
   }
 
   objc_opt_class();
@@ -28,12 +28,12 @@
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v9 = v8;
+    v9 = infoCopy;
     v10 = [v9 countByEnumeratingWithState:&v47 objects:v62 count:16];
     if (v10)
     {
       v12 = v10;
-      v40 = v8;
+      v40 = infoCopy;
       v42 = 0;
       v13 = *v48;
       v14 = *MEMORY[0x277CBF3A8];
@@ -85,7 +85,7 @@
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138544130;
-                  *&buf[4] = v44;
+                  *&buf[4] = identifierCopy;
                   v52 = 2114;
                   v53 = @"UILaunchImageOrientation";
                   v54 = 2114;
@@ -107,7 +107,7 @@
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138544130;
-                  *&buf[4] = v44;
+                  *&buf[4] = identifierCopy;
                   v52 = 2114;
                   v53 = @"UILaunchImageMinimumOSVersion";
                   v54 = 2114;
@@ -131,7 +131,7 @@
                   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
                   {
                     *buf = 138543874;
-                    *&buf[4] = v44;
+                    *&buf[4] = identifierCopy;
                     v52 = 2114;
                     v53 = v20;
                     v54 = 2114;
@@ -155,7 +155,7 @@ LABEL_50:
                 }
 
                 v33 = XBInterfaceOrientationForString();
-                if ((v33 - 5) < 0xFFFFFFFFFFFFFFFELL || a5 || !BSFloatLessThanFloat())
+                if ((v33 - 5) < 0xFFFFFFFFFFFFFFFELL || linked || !BSFloatLessThanFloat())
                 {
                   v46 = 0;
                   v41 = [SBApplicationLaunchImageParameters _sanitizedImageNameFromName:v26 withExtension:@"png" actualExtension:&v46];
@@ -186,7 +186,7 @@ LABEL_50:
                 }
 
                 *buf = v38;
-                *&buf[4] = v44;
+                *&buf[4] = identifierCopy;
                 v52 = 2114;
                 v53 = @"UILaunchImageOrientation";
                 v54 = 2114;
@@ -211,7 +211,7 @@ LABEL_50:
                 }
 
                 *buf = 138544130;
-                *&buf[4] = v44;
+                *&buf[4] = identifierCopy;
                 v52 = 2114;
                 v53 = @"UILaunchImageName";
                 v54 = 2114;
@@ -232,7 +232,7 @@ LABEL_41:
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138544130;
-              *&buf[4] = v44;
+              *&buf[4] = identifierCopy;
               v52 = 2114;
               v53 = @"UILaunchImageSize";
               v54 = 2114;
@@ -249,7 +249,7 @@ LABEL_41:
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138543618;
-            *&buf[4] = v44;
+            *&buf[4] = identifierCopy;
             v52 = 2114;
             v53 = v17;
             _os_log_debug_impl(&dword_21ED4E000, v32, OS_LOG_TYPE_DEBUG, "[.plist ingest] [%{public}@] Incorrect launchImageInfo format (requires NSDictionary) in ('%{public}@'), skipping...", buf, 0x16u);
@@ -259,7 +259,7 @@ LABEL_41:
         v12 = [v9 countByEnumeratingWithState:&v47 objects:v62 count:16];
         if (!v12)
         {
-          v8 = v40;
+          infoCopy = v40;
           v35 = v42;
           goto LABEL_58;
         }
@@ -269,7 +269,7 @@ LABEL_41:
 
   else
   {
-    if (!v8)
+    if (!infoCopy)
     {
       v35 = 0;
       goto LABEL_59;
@@ -278,7 +278,7 @@ LABEL_41:
     v9 = XBLogCapture();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [SBApplicationLaunchImageParameters launchImageParametersFromLaunchImagesInfo:v44 withBundleIdentifier:v8 isMonarchLinked:v9];
+      [SBApplicationLaunchImageParameters launchImageParametersFromLaunchImagesInfo:identifierCopy withBundleIdentifier:infoCopy isMonarchLinked:v9];
     }
   }
 
@@ -291,27 +291,27 @@ LABEL_59:
   return v36;
 }
 
-+ (id)_sanitizedImageNameFromName:(void *)a3 withExtension:(void *)a4 actualExtension:
++ (id)_sanitizedImageNameFromName:(void *)name withExtension:(void *)extension actualExtension:
 {
   v6 = a2;
-  v7 = a3;
+  nameCopy = name;
   objc_opt_self();
-  v8 = [v6 pathExtension];
-  v9 = v8;
-  if (v8 && [v8 length])
+  pathExtension = [v6 pathExtension];
+  v9 = pathExtension;
+  if (pathExtension && [pathExtension length])
   {
     v10 = v9;
 
     v11 = [v6 substringToIndex:{objc_msgSend(v6, "length") + ~objc_msgSend(v10, "length")}];
 
-    v7 = v10;
+    nameCopy = v10;
     v6 = v11;
   }
 
-  if (a4)
+  if (extension)
   {
-    v12 = v7;
-    *a4 = v7;
+    v12 = nameCopy;
+    *extension = nameCopy;
   }
 
   return v6;
@@ -334,27 +334,27 @@ LABEL_59:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_defaultPNGName];
-  v5 = [v3 appendObject:self->_extension];
-  v6 = [v3 appendObject:self->_minOSVersionString];
-  v7 = [v3 appendCGSize:{self->_size.width, self->_size.height}];
-  v8 = [v3 appendInteger:self->_interfaceOrientation];
-  v9 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_defaultPNGName];
+  v5 = [builder appendObject:self->_extension];
+  v6 = [builder appendObject:self->_minOSVersionString];
+  v7 = [builder appendCGSize:{self->_size.width, self->_size.height}];
+  v8 = [builder appendInteger:self->_interfaceOrientation];
+  v9 = [builder hash];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   defaultPNGName = self->_defaultPNGName;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __46__SBApplicationLaunchImageParameters_isEqual___block_invoke;
   v29[3] = &unk_2783B1D60;
-  v7 = v4;
+  v7 = equalCopy;
   v30 = v7;
   v8 = [v5 appendString:defaultPNGName counterpart:v29];
   extension = self->_extension;
@@ -401,12 +401,12 @@ LABEL_59:
   v10 = __49__SBApplicationLaunchImageParameters_description__block_invoke;
   v11 = &unk_2783A92D8;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v4 = v3;
   v5 = [v4 modifyProem:&v8];
-  v6 = [v4 build];
+  build = [v4 build];
 
-  return v6;
+  return build;
 }
 
 void __49__SBApplicationLaunchImageParameters_description__block_invoke(uint64_t a1)
@@ -429,43 +429,43 @@ void __49__SBApplicationLaunchImageParameters_description__block_invoke(uint64_t
   return result;
 }
 
-- (id)_initWithDefaultPNGName:(void *)a3 extension:(void *)a4 minOSVersionString:(uint64_t)a5 size:(double)a6 interfaceOrientation:(double)a7
+- (id)_initWithDefaultPNGName:(void *)name extension:(void *)extension minOSVersionString:(uint64_t)string size:(double)size interfaceOrientation:(double)orientation
 {
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  if (a1)
+  nameCopy = name;
+  extensionCopy = extension;
+  if (self)
   {
-    if ((a5 - 1) >= 4)
+    if ((string - 1) >= 4)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:sel__initWithDefaultPNGName_extension_minOSVersionString_size_interfaceOrientation_ object:a1 file:@"SBApplicationLaunchImageParameters.m" lineNumber:53 description:{@"orientation=%li is not a valid interfaceOrientation", a5}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithDefaultPNGName_extension_minOSVersionString_size_interfaceOrientation_ object:self file:@"SBApplicationLaunchImageParameters.m" lineNumber:53 description:{@"orientation=%li is not a valid interfaceOrientation", string}];
     }
 
-    v24.receiver = a1;
+    v24.receiver = self;
     v24.super_class = SBApplicationLaunchImageParameters;
-    a1 = objc_msgSendSuper2(&v24, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v24, sel_init);
+    if (self)
     {
       v17 = [v13 copy];
-      v18 = *(a1 + 1);
-      *(a1 + 1) = v17;
+      v18 = *(self + 1);
+      *(self + 1) = v17;
 
-      v19 = [v14 copy];
-      v20 = *(a1 + 2);
-      *(a1 + 2) = v19;
+      v19 = [nameCopy copy];
+      v20 = *(self + 2);
+      *(self + 2) = v19;
 
-      v21 = [v15 copy];
-      v22 = *(a1 + 3);
-      *(a1 + 3) = v21;
+      v21 = [extensionCopy copy];
+      v22 = *(self + 3);
+      *(self + 3) = v21;
 
-      *(a1 + 4) = a6;
-      *(a1 + 5) = a7;
-      *(a1 + 6) = a5;
+      *(self + 4) = size;
+      *(self + 5) = orientation;
+      *(self + 6) = string;
     }
   }
 
-  return a1;
+  return self;
 }
 
 + (void)launchImageParametersFromLaunchImagesInfo:(uint64_t)a1 withBundleIdentifier:(uint64_t)a2 isMonarchLinked:.cold.1(uint64_t a1, uint64_t a2)

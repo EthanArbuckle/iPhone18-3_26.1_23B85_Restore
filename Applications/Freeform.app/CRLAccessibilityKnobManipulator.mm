@@ -1,45 +1,45 @@
 @interface CRLAccessibilityKnobManipulator
-- (void)performMoveOfKnob:(id)a3 toUnscaledPosition:(CGPoint)a4 withTracker:(id)a5 rep:(id)a6 andICC:(id)a7;
+- (void)performMoveOfKnob:(id)knob toUnscaledPosition:(CGPoint)position withTracker:(id)tracker rep:(id)rep andICC:(id)c;
 @end
 
 @implementation CRLAccessibilityKnobManipulator
 
-- (void)performMoveOfKnob:(id)a3 toUnscaledPosition:(CGPoint)a4 withTracker:(id)a5 rep:(id)a6 andICC:(id)a7
+- (void)performMoveOfKnob:(id)knob toUnscaledPosition:(CGPoint)position withTracker:(id)tracker rep:(id)rep andICC:(id)c
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  objc_storeStrong(&self->_tracker, a5);
-  v17 = [v16 crlaxTarget];
-  v18 = [v17 tmCoordinator];
+  y = position.y;
+  x = position.x;
+  knobCopy = knob;
+  trackerCopy = tracker;
+  repCopy = rep;
+  cCopy = c;
+  objc_storeStrong(&self->_tracker, tracker);
+  crlaxTarget = [cCopy crlaxTarget];
+  tmCoordinator = [crlaxTarget tmCoordinator];
 
-  [v18 registerTrackerManipulator:self];
-  [v18 takeControlWithTrackerManipulator:self];
+  [tmCoordinator registerTrackerManipulator:self];
+  [tmCoordinator takeControlWithTrackerManipulator:self];
   v19 = objc_opt_class();
-  v20 = sub_100014370(v19, v14);
+  v20 = sub_100014370(v19, trackerCopy);
   [v20 setCurrentPosition:{x, y}];
 
-  v21 = [v16 crlaxTarget];
-  v22 = [v21 dynamicOperationController];
+  crlaxTarget2 = [cCopy crlaxTarget];
+  dynamicOperationController = [crlaxTarget2 dynamicOperationController];
 
-  [v22 beginOperation];
+  [dynamicOperationController beginOperation];
   v23 = [NSMutableSet alloc];
-  v24 = [NSSet setWithObject:v15];
+  v24 = [NSSet setWithObject:repCopy];
   v25 = [v23 initWithSet:v24];
 
-  v26 = [v15 crlaxTarget];
-  v27 = [v26 additionalRepsToResize];
-  [v25 unionSet:v27];
+  crlaxTarget3 = [repCopy crlaxTarget];
+  additionalRepsToResize = [crlaxTarget3 additionalRepsToResize];
+  [v25 unionSet:additionalRepsToResize];
 
-  [v22 startTransformingReps:v25];
-  v28 = [v14 crlaxTarget];
-  [v28 beginMovingKnob];
+  [dynamicOperationController startTransformingReps:v25];
+  crlaxTarget4 = [trackerCopy crlaxTarget];
+  [crlaxTarget4 beginMovingKnob];
 
   v33 = 0;
-  v29 = v14;
+  v29 = trackerCopy;
   v30 = objc_opt_class();
   v31 = __CRLAccessibilityCastAsClass(v30, v29, 1, &v33);
   if (v33 == 1)
@@ -49,10 +49,10 @@
 
   v32 = v31;
 
-  [v13 crlaxPosition];
+  [knobCopy crlaxPosition];
   [v32 moveKnobToCanvasPosition:?];
 
-  [v22 handleTrackerManipulator:self];
+  [dynamicOperationController handleTrackerManipulator:self];
 }
 
 @end

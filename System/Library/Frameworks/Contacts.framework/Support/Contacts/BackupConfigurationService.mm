@@ -1,7 +1,7 @@
 @interface BackupConfigurationService
 + (BOOL)checkBackupConfiguration;
-+ (BOOL)checkBackupConfigurationWithFileManager:(id)a3 url:(id)a4 tccServices:(id)a5;
-+ (BOOL)hasLocalContactsWithError:(id *)a3;
++ (BOOL)checkBackupConfigurationWithFileManager:(id)manager url:(id)url tccServices:(id)services;
++ (BOOL)hasLocalContactsWithError:(id *)error;
 + (void)run;
 @end
 
@@ -12,15 +12,15 @@
   v3 = +[CNContactsDaemonLogs backup];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    sub_10002D10C(a1);
+    sub_10002D10C(self);
   }
 
-  if (([a1 checkBackupConfiguration] & 1) == 0)
+  if (([self checkBackupConfiguration] & 1) == 0)
   {
     v4 = +[CNContactsDaemonLogs backup];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      sub_10002D1B0(a1);
+      sub_10002D1B0(self);
     }
   }
 }
@@ -30,19 +30,19 @@
   v3 = +[NSFileManager defaultManager];
   v4 = [NSURL fileURLWithPath:@"/var/mobile/Library/AddressBook"];
   v5 = +[CNTCCFactory defaultTCC];
-  LOBYTE(a1) = [a1 checkBackupConfigurationWithFileManager:v3 url:v4 tccServices:v5];
+  LOBYTE(self) = [self checkBackupConfigurationWithFileManager:v3 url:v4 tccServices:v5];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)checkBackupConfigurationWithFileManager:(id)a3 url:(id)a4 tccServices:(id)a5
++ (BOOL)checkBackupConfigurationWithFileManager:(id)manager url:(id)url tccServices:(id)services
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 checkAuthorizationStatusOfCurrentProcess];
-  if ((v9 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  managerCopy = manager;
+  urlCopy = url;
+  checkAuthorizationStatusOfCurrentProcess = [services checkAuthorizationStatusOfCurrentProcess];
+  if ((checkAuthorizationStatusOfCurrentProcess & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
-    v23 = v9;
+    v23 = checkAuthorizationStatusOfCurrentProcess;
     v14 = +[CNContactsDaemonLogs backup];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -55,8 +55,8 @@
     goto LABEL_13;
   }
 
-  v10 = [v8 path];
-  v11 = [v7 fileExistsAtPath:v10];
+  path = [urlCopy path];
+  v11 = [managerCopy fileExistsAtPath:path];
 
   if ((v11 & 1) == 0)
   {
@@ -75,19 +75,19 @@ LABEL_13:
   v28 = NSURLIsExcludedFromBackupKey;
   v12 = [NSArray arrayWithObjects:&v28 count:1];
   v27 = 0;
-  v13 = [v8 resourceValuesForKeys:v12 error:&v27];
+  v13 = [urlCopy resourceValuesForKeys:v12 error:&v27];
   v14 = v27;
 
   if (v13)
   {
     v15 = [v13 objectForKeyedSubscript:NSURLIsExcludedFromBackupKey];
-    v16 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
 
-    if (v16)
+    if (bOOLValue)
     {
       v17 = [NSNumber numberWithBool:0];
       v26 = v14;
-      v18 = [v8 setResourceValue:v17 forKey:NSURLIsExcludedFromBackupKey error:&v26];
+      v18 = [urlCopy setResourceValue:v17 forKey:NSURLIsExcludedFromBackupKey error:&v26];
       v19 = v26;
 
       v20 = +[CNContactsDaemonLogs backup];
@@ -96,7 +96,7 @@ LABEL_13:
       {
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          sub_10002D3B8(v8);
+          sub_10002D3B8(urlCopy);
         }
 
         v22 = 1;
@@ -106,7 +106,7 @@ LABEL_13:
       {
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          sub_10002D310(v8);
+          sub_10002D310(urlCopy);
         }
 
         v22 = 0;
@@ -120,7 +120,7 @@ LABEL_13:
       v21 = +[CNContactsDaemonLogs backup];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        sub_10002D254(v8);
+        sub_10002D254(urlCopy);
       }
 
       v22 = 1;
@@ -132,7 +132,7 @@ LABEL_13:
     v21 = +[CNContactsDaemonLogs backup];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      sub_10002D474(v8);
+      sub_10002D474(urlCopy);
     }
 
     v22 = 0;
@@ -142,7 +142,7 @@ LABEL_25:
   return v22;
 }
 
-+ (BOOL)hasLocalContactsWithError:(id *)a3
++ (BOOL)hasLocalContactsWithError:(id *)error
 {
   error = 0;
   v4 = ABAddressBookCreateWithOptions(0, &error);
@@ -155,11 +155,11 @@ LABEL_25:
 
   else
   {
-    v7 = error;
-    if (a3)
+    errorCopy = error;
+    if (error)
     {
-      v8 = error;
-      *a3 = v7;
+      errorCopy2 = error;
+      *error = errorCopy;
     }
 
     v9 = +[CNContactsDaemonLogs backup];

@@ -1,39 +1,39 @@
 @interface WBSSavePermissionsToStorageInformation
-- (BOOL)isEqual:(id)a3;
-- (WBSSavePermissionsToStorageInformation)initWithWebExtension:(id)a3 permissionsWereUpdatedDueToAnExternalChange:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (WBSSavePermissionsToStorageInformation)initWithWebExtension:(id)extension permissionsWereUpdatedDueToAnExternalChange:(BOOL)change;
 @end
 
 @implementation WBSSavePermissionsToStorageInformation
 
-- (WBSSavePermissionsToStorageInformation)initWithWebExtension:(id)a3 permissionsWereUpdatedDueToAnExternalChange:(BOOL)a4
+- (WBSSavePermissionsToStorageInformation)initWithWebExtension:(id)extension permissionsWereUpdatedDueToAnExternalChange:(BOOL)change
 {
-  v7 = a3;
+  extensionCopy = extension;
   v12.receiver = self;
   v12.super_class = WBSSavePermissionsToStorageInformation;
   v8 = [(WBSSavePermissionsToStorageInformation *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_webExtension, a3);
-    v9->_permissionsWereUpdatedDueToAnExternalChange = a4;
+    objc_storeStrong(&v8->_webExtension, extension);
+    v9->_permissionsWereUpdatedDueToAnExternalChange = change;
     v10 = v9;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,8 +50,8 @@
     if (v8 && (permissionsWereUpdatedDueToAnExternalChange = self->_permissionsWereUpdatedDueToAnExternalChange, permissionsWereUpdatedDueToAnExternalChange == [(WBSSavePermissionsToStorageInformation *)v8 permissionsWereUpdatedDueToAnExternalChange]))
     {
       webExtension = self->_webExtension;
-      v11 = [(WBSSavePermissionsToStorageInformation *)v8 webExtension];
-      v12 = [(WBSWebExtensionData *)webExtension isEqual:v11];
+      webExtension = [(WBSSavePermissionsToStorageInformation *)v8 webExtension];
+      v12 = [(WBSWebExtensionData *)webExtension isEqual:webExtension];
     }
 
     else

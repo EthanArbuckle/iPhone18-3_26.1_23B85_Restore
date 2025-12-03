@@ -27,9 +27,9 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(OrgApacheLuceneSearchConjunctionDISI *)conjunction nextDoc];
+  nextDoc = [(OrgApacheLuceneSearchConjunctionDISI *)conjunction nextDoc];
 
-  return sub_10000EDFC(self, v4);
+  return sub_10000EDFC(self, nextDoc);
 }
 
 - (int)docID
@@ -51,10 +51,10 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(OrgApacheLuceneSearchExactPhraseScorer *)self docID];
+  docID = [(OrgApacheLuceneSearchExactPhraseScorer *)self docID];
   *&v5 = self->freq_;
 
-  [(OrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer *)docScorer scoreWithInt:v4 withFloat:v5];
+  [(OrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer *)docScorer scoreWithInt:docID withFloat:v5];
   return result;
 }
 

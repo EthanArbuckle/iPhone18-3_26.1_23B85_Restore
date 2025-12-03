@@ -1,44 +1,44 @@
 @interface AAUIBeneficiaryClaimNotificationHook
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_beneficiaryContactNameForBeneficiaryID:(id)a3 completion:(id)a4;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_beneficiaryContactNameForBeneficiaryID:(id)d completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUIBeneficiaryClaimNotificationHook
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:@"action"];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:@"action"];
   v5 = [v4 isEqualToString:@"beneficiary:contactName"];
 
   return v5;
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
   v17[3] = __Block_byref_object_copy__5;
   v17[4] = __Block_byref_object_dispose__5;
-  v8 = [v6 pages];
-  v18 = [v8 firstObject];
+  pages = [modelCopy pages];
+  firstObject = [pages firstObject];
 
-  v9 = [v6 clientInfo];
-  v10 = [v9 objectForKeyedSubscript:@"beneficiaryUUID"];
+  clientInfo = [modelCopy clientInfo];
+  v10 = [clientInfo objectForKeyedSubscript:@"beneficiaryUUID"];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__AAUIBeneficiaryClaimNotificationHook_processObjectModel_completion___block_invoke;
   v13[3] = &unk_1E820C490;
-  v11 = v7;
+  v11 = completionCopy;
   v15 = v11;
   v16 = v17;
-  v12 = v6;
+  v12 = modelCopy;
   v14 = v12;
   [(AAUIBeneficiaryClaimNotificationHook *)self _beneficiaryContactNameForBeneficiaryID:v10 completion:v13];
 
@@ -111,19 +111,19 @@ uint64_t __70__AAUIBeneficiaryClaimNotificationHook_processObjectModel_completio
   return result;
 }
 
-- (void)_beneficiaryContactNameForBeneficiaryID:(id)a3 completion:(id)a4
+- (void)_beneficiaryContactNameForBeneficiaryID:(id)d completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x1E698B8E0]);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __91__AAUIBeneficiaryClaimNotificationHook__beneficiaryContactNameForBeneficiaryID_completion___block_invoke;
   v10[3] = &unk_1E820C4E0;
-  v11 = v5;
-  v12 = v6;
-  v8 = v5;
-  v9 = v6;
+  v11 = dCopy;
+  v12 = completionCopy;
+  v8 = dCopy;
+  v9 = completionCopy;
   [v7 fetchBeneficiariesWithCompletion:v10];
 }
 

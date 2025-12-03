@@ -1,15 +1,15 @@
 @interface PUOneUpFeedbackController
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUOneUpFeedbackController
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1B372BCC4(a3, a4);
+  modelCopy = model;
+  changeCopy = change;
+  selfCopy = self;
+  sub_1B372BCC4(model, change);
 }
 
 @end

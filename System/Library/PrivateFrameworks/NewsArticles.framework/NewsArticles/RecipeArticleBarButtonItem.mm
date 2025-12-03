@@ -1,6 +1,6 @@
 @interface RecipeArticleBarButtonItem
 - (_TtC12NewsArticles26RecipeArticleBarButtonItem)init;
-- (_TtC12NewsArticles26RecipeArticleBarButtonItem)initWithCoder:(id)a3;
+- (_TtC12NewsArticles26RecipeArticleBarButtonItem)initWithCoder:(id)coder;
 @end
 
 @implementation RecipeArticleBarButtonItem
@@ -12,12 +12,12 @@
   return [(RecipeArticleBarButtonItem *)&v3 init];
 }
 
-- (_TtC12NewsArticles26RecipeArticleBarButtonItem)initWithCoder:(id)a3
+- (_TtC12NewsArticles26RecipeArticleBarButtonItem)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(RecipeArticleBarButtonItem *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(RecipeArticleBarButtonItem *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

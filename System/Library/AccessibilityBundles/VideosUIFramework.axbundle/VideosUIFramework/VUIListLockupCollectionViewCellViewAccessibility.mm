@@ -1,5 +1,5 @@
 @interface VUIListLockupCollectionViewCellViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -8,21 +8,21 @@
 
 @implementation VUIListLockupCollectionViewCellViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIListLockupCollectionViewCellView" hasProperty:@"titleLabel" withType:"@"];
-  [v3 validateClass:@"VUIListLockupCollectionViewCellView" hasProperty:@"subTitleLabel" withType:"@"];
-  [v3 validateClass:@"VUIListLockupCollectionViewCellView" hasProperty:@"primaryButton" withType:"@"];
-  [v3 validateClass:@"VUIListLockupCollectionViewCellView" hasProperty:@"secondaryButton" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIListLockupCollectionViewCellView" hasProperty:@"titleLabel" withType:"@"];
+  [validationsCopy validateClass:@"VUIListLockupCollectionViewCellView" hasProperty:@"subTitleLabel" withType:"@"];
+  [validationsCopy validateClass:@"VUIListLockupCollectionViewCellView" hasProperty:@"primaryButton" withType:"@"];
+  [validationsCopy validateClass:@"VUIListLockupCollectionViewCellView" hasProperty:@"secondaryButton" withType:"@"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(VUIListLockupCollectionViewCellViewAccessibility *)self safeValueForKeyPath:@"titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(VUIListLockupCollectionViewCellViewAccessibility *)self safeValueForKeyPath:@"subTitleLabel"];
-  v8 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;
@@ -34,17 +34,17 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 accessibilityLabel];
+    accessibilityLabel = [v3 accessibilityLabel];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = VUIListLockupCollectionViewCellViewAccessibility;
-    v5 = [(VUIListLockupCollectionViewCellViewAccessibility *)&v8 accessibilityValue];
+    accessibilityLabel = [(VUIListLockupCollectionViewCellViewAccessibility *)&v8 accessibilityValue];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }
@@ -82,18 +82,18 @@
   v3 = [(VUIListLockupCollectionViewCellViewAccessibility *)self safeValueForKey:@"secondaryButton"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityLabel];
-  v6 = v5;
-  if (v4 && [v5 length])
+  accessibilityLabel = [v4 accessibilityLabel];
+  v6 = accessibilityLabel;
+  if (v4 && [accessibilityLabel length])
   {
     v17.receiver = self;
     v17.super_class = VUIListLockupCollectionViewCellViewAccessibility;
-    v7 = [(VUIListLockupCollectionViewCellViewAccessibility *)&v17 accessibilityCustomActions];
-    v8 = [v7 mutableCopy];
+    accessibilityCustomActions = [(VUIListLockupCollectionViewCellViewAccessibility *)&v17 accessibilityCustomActions];
+    array = [accessibilityCustomActions mutableCopy];
 
-    if (!v8)
+    if (!array)
     {
-      v8 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
     }
 
     v9 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -103,17 +103,17 @@
     v15 = &unk_29F31C430;
     v16 = v4;
     v10 = [v9 initWithName:v6 actionHandler:&v12];
-    [v8 addObject:{v10, v12, v13, v14, v15}];
+    [array addObject:{v10, v12, v13, v14, v15}];
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = VUIListLockupCollectionViewCellViewAccessibility;
-    v8 = [(VUIListLockupCollectionViewCellViewAccessibility *)&v18 accessibilityCustomActions];
+    array = [(VUIListLockupCollectionViewCellViewAccessibility *)&v18 accessibilityCustomActions];
   }
 
-  return v8;
+  return array;
 }
 
 @end

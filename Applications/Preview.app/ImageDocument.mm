@@ -1,26 +1,26 @@
 @interface ImageDocument
-- (BOOL)readFromURL:(id)a3 error:(id *)a4;
-- (BOOL)writeContents:(id)a3 toURL:(id)a4 forSaveOperation:(int64_t)a5 originalContentsURL:(id)a6 error:(id *)a7;
-- (_TtC17PreviewFoundation13ImageDocument)initWithFileURL:(id)a3;
+- (BOOL)readFromURL:(id)l error:(id *)error;
+- (BOOL)writeContents:(id)contents toURL:(id)l forSaveOperation:(int64_t)operation originalContentsURL:(id)rL error:(id *)error;
+- (_TtC17PreviewFoundation13ImageDocument)initWithFileURL:(id)l;
 @end
 
 @implementation ImageDocument
 
-- (BOOL)readFromURL:(id)a3 error:(id *)a4
+- (BOOL)readFromURL:(id)l error:(id *)error
 {
   v5 = type metadata accessor for URL();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_100178254(v8);
   (*(v6 + 8))(v8, v5);
 
   return 1;
 }
 
-- (BOOL)writeContents:(id)a3 toURL:(id)a4 forSaveOperation:(int64_t)a5 originalContentsURL:(id)a6 error:(id *)a7
+- (BOOL)writeContents:(id)contents toURL:(id)l forSaveOperation:(int64_t)operation originalContentsURL:(id)rL error:(id *)error
 {
   v10 = sub_1000FF5D8(&qword_10020DAA8);
   __chkstk_darwin(v10 - 8);
@@ -32,14 +32,14 @@
   __chkstk_darwin(v17);
   v19 = &v25[-v18];
   swift_unknownObjectRetain();
-  v20 = a4;
-  v21 = self;
-  v22 = a6;
+  lCopy = l;
+  selfCopy = self;
+  rLCopy = rL;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
 
-  if (v22)
+  if (rLCopy)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -61,7 +61,7 @@
   return 1;
 }
 
-- (_TtC17PreviewFoundation13ImageDocument)initWithFileURL:(id)a3
+- (_TtC17PreviewFoundation13ImageDocument)initWithFileURL:(id)l
 {
   ObjectType = swift_getObjectType();
   v5 = type metadata accessor for URL();

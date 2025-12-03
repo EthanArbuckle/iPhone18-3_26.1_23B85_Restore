@@ -1,11 +1,11 @@
 @interface CNSharingProfilePhotoPickerItemCell
 - (CGSize)originalSize;
-- (CNSharingProfilePhotoPickerItemCell)initWithFrame:(CGRect)a3;
+- (CNSharingProfilePhotoPickerItemCell)initWithFrame:(CGRect)frame;
 - (id)selectionBezierPath;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setPickerItem:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setPickerItem:(id)item;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CNSharingProfilePhotoPickerItemCell
@@ -37,47 +37,47 @@
   return [v2 bezierPathWithOvalInRect:{v6.origin.x, v6.origin.y, v6.size.width, v6.size.height}];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = CNSharingProfilePhotoPickerItemCell;
-  v4 = a3;
-  [(CNSharingProfilePhotoPickerItemCell *)&v9 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(CNSharingProfilePhotoPickerItemCell *)&v9 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(CNSharingProfilePhotoPickerItemCell *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(CNSharingProfilePhotoPickerItemCell *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    -[CAShapeLayer setStrokeColor:](self->_selectionStrokeLayer, "setStrokeColor:", [v8 CGColor]);
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    -[CAShapeLayer setStrokeColor:](self->_selectionStrokeLayer, "setStrokeColor:", [tertiaryLabelColor CGColor]);
   }
 }
 
-- (void)setPickerItem:(id)a3
+- (void)setPickerItem:(id)item
 {
-  v5 = a3;
-  if (self->_pickerItem != v5)
+  itemCopy = item;
+  if (self->_pickerItem != itemCopy)
   {
-    v18 = v5;
-    objc_storeStrong(&self->_pickerItem, a3);
-    v6 = [(CNSharingProfilePhotoPickerItem *)self->_pickerItem avatarItem];
+    v18 = itemCopy;
+    objc_storeStrong(&self->_pickerItem, item);
+    avatarItem = [(CNSharingProfilePhotoPickerItem *)self->_pickerItem avatarItem];
 
     imageView = self->_imageView;
-    if (v6)
+    if (avatarItem)
     {
       [(UIImageView *)imageView setContentMode:1];
       pickerItem = self->_pickerItem;
       [(CNSharingProfilePhotoPickerItemCell *)self bounds];
-      v11 = [(CNSharingProfilePhotoPickerItem *)pickerItem compositeImageWithSize:v9, v10];
-      [(CNSharingProfilePhotoPickerItemCell *)self updateWithImage:v11];
+      systemBlueColor = [(CNSharingProfilePhotoPickerItem *)pickerItem compositeImageWithSize:v9, v10];
+      [(CNSharingProfilePhotoPickerItemCell *)self updateWithImage:systemBlueColor];
     }
 
     else
     {
       [(UIImageView *)imageView setContentMode:4];
-      v11 = [MEMORY[0x1E69DC888] systemBlueColor];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
       if (self->_isSmallScreen)
       {
         v12 = 1;
@@ -90,15 +90,15 @@
 
       v13 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDD58] scale:v12];
       v14 = MEMORY[0x1E69DCAB8];
-      v15 = [(CNSharingProfilePhotoPickerItem *)self->_pickerItem symbolImageName];
-      v16 = [v14 systemImageNamed:v15 withConfiguration:v13];
+      symbolImageName = [(CNSharingProfilePhotoPickerItem *)self->_pickerItem symbolImageName];
+      v16 = [v14 systemImageNamed:symbolImageName withConfiguration:v13];
 
-      v17 = [v16 imageWithTintColor:v11 renderingMode:1];
+      v17 = [v16 imageWithTintColor:systemBlueColor renderingMode:1];
 
       [(UIImageView *)self->_imageView setImage:v17];
     }
 
-    v5 = v18;
+    itemCopy = v18;
   }
 }
 
@@ -112,8 +112,8 @@
   [(UIImageView *)self->_imageView setFrame:v15.origin.x, v15.origin.y, v15.size.width, v15.size.height];
   [(UIImageView *)self->_imageView bounds];
   v4 = v3 * 0.5;
-  v5 = [(CNSharingProfilePhotoPickerItemCell *)self _screen];
-  [v5 scale];
+  _screen = [(CNSharingProfilePhotoPickerItemCell *)self _screen];
+  [_screen scale];
   if (v6 == 0.0)
   {
     if (RoundToScale_onceToken != -1)
@@ -137,25 +137,25 @@
     v10 = v8;
   }
 
-  v11 = [(UIImageView *)self->_imageView layer];
-  [v11 setCornerRadius:v10];
+  layer = [(UIImageView *)self->_imageView layer];
+  [layer setCornerRadius:v10];
 
   [(CNSharingProfilePhotoPickerItemCell *)self bounds];
   [(CAShapeLayer *)self->_selectionStrokeLayer setFrame:?];
-  v12 = [(CNSharingProfilePhotoPickerItemCell *)self selectionBezierPath];
-  -[CAShapeLayer setPath:](self->_selectionStrokeLayer, "setPath:", [v12 CGPath]);
+  selectionBezierPath = [(CNSharingProfilePhotoPickerItemCell *)self selectionBezierPath];
+  -[CAShapeLayer setPath:](self->_selectionStrokeLayer, "setPath:", [selectionBezierPath CGPath]);
 }
 
-- (CNSharingProfilePhotoPickerItemCell)initWithFrame:(CGRect)a3
+- (CNSharingProfilePhotoPickerItemCell)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = CNSharingProfilePhotoPickerItemCell;
-  v3 = [(CNSharingProfilePhotoPickerItemCell *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNSharingProfilePhotoPickerItemCell *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CNSharingProfilePhotoPickerItemCell *)v3 contentView];
-    [v5 setClipsToBounds:0];
+    contentView = [(CNSharingProfilePhotoPickerItemCell *)v3 contentView];
+    [contentView setClipsToBounds:0];
 
     [(CNSharingProfilePhotoPickerItemCell *)v4 bounds];
     v4->_originalSize.width = v6;
@@ -165,33 +165,33 @@
     imageView = v4->_imageView;
     v4->_imageView = v9;
 
-    v11 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-    [(UIImageView *)v4->_imageView setBackgroundColor:v11];
+    tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+    [(UIImageView *)v4->_imageView setBackgroundColor:tertiarySystemFillColor];
 
     [(UIImageView *)v4->_imageView setClipsToBounds:1];
-    v12 = [(CNSharingProfilePhotoPickerItemCell *)v4 contentView];
-    [v12 addSubview:v4->_imageView];
+    contentView2 = [(CNSharingProfilePhotoPickerItemCell *)v4 contentView];
+    [contentView2 addSubview:v4->_imageView];
 
-    v13 = [MEMORY[0x1E69794A0] layer];
+    layer = [MEMORY[0x1E69794A0] layer];
     selectionStrokeLayer = v4->_selectionStrokeLayer;
-    v4->_selectionStrokeLayer = v13;
+    v4->_selectionStrokeLayer = layer;
 
     [(CNSharingProfilePhotoPickerItemCell *)v4 bounds];
     [(CAShapeLayer *)v4->_selectionStrokeLayer setFrame:?];
-    v15 = [(CNSharingProfilePhotoPickerItemCell *)v4 selectionBezierPath];
-    -[CAShapeLayer setPath:](v4->_selectionStrokeLayer, "setPath:", [v15 CGPath]);
+    selectionBezierPath = [(CNSharingProfilePhotoPickerItemCell *)v4 selectionBezierPath];
+    -[CAShapeLayer setPath:](v4->_selectionStrokeLayer, "setPath:", [selectionBezierPath CGPath]);
 
-    v16 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    -[CAShapeLayer setStrokeColor:](v4->_selectionStrokeLayer, "setStrokeColor:", [v16 CGColor]);
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    -[CAShapeLayer setStrokeColor:](v4->_selectionStrokeLayer, "setStrokeColor:", [tertiaryLabelColor CGColor]);
 
-    v17 = [MEMORY[0x1E69DC888] clearColor];
-    -[CAShapeLayer setFillColor:](v4->_selectionStrokeLayer, "setFillColor:", [v17 CGColor]);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    -[CAShapeLayer setFillColor:](v4->_selectionStrokeLayer, "setFillColor:", [clearColor CGColor]);
 
     [(CAShapeLayer *)v4->_selectionStrokeLayer setLineWidth:3.0];
     [(CAShapeLayer *)v4->_selectionStrokeLayer setHidden:1];
-    v18 = [(CNSharingProfilePhotoPickerItemCell *)v4 contentView];
-    v19 = [v18 layer];
-    [v19 addSublayer:v4->_selectionStrokeLayer];
+    contentView3 = [(CNSharingProfilePhotoPickerItemCell *)v4 contentView];
+    layer2 = [contentView3 layer];
+    [layer2 addSublayer:v4->_selectionStrokeLayer];
 
     v20 = v4;
   }

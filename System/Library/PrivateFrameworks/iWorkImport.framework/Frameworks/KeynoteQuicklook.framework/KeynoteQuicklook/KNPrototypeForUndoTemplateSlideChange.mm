@@ -1,26 +1,26 @@
 @interface KNPrototypeForUndoTemplateSlideChange
-+ (id)blobWithSlide:(id)a3;
-- (KNPrototypeForUndoTemplateSlideChange)initWithSlide:(id)a3;
++ (id)blobWithSlide:(id)slide;
+- (KNPrototypeForUndoTemplateSlideChange)initWithSlide:(id)slide;
 - (KNTemplateSlide)templateSlide;
 - (NSString)description;
-- (id)boxedObjectForProperty:(int)a3;
-- (id)objectForProperty:(int)a3;
-- (int)intValueForProperty:(int)a3;
+- (id)boxedObjectForProperty:(int)property;
+- (id)objectForProperty:(int)property;
+- (int)intValueForProperty:(int)property;
 - (void)dealloc;
 - (void)didInitFromSOS;
-- (void)loadFromUnarchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
 - (void)migrateStyles;
-- (void)rebuildChildInfosAndPlaceholdersFromMaster:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (void)rebuildChildInfosAndPlaceholdersFromMaster:(id)master;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation KNPrototypeForUndoTemplateSlideChange
 
-- (KNPrototypeForUndoTemplateSlideChange)initWithSlide:(id)a3
+- (KNPrototypeForUndoTemplateSlideChange)initWithSlide:(id)slide
 {
   v97 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!slide)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNPrototypeForUndoTemplateSlideChange initWithSlide:]");
@@ -29,14 +29,14 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
   }
 
-  v12 = objc_msgSend_context(a3, a2, a3);
+  v12 = objc_msgSend_context(slide, a2, slide);
   v93.receiver = self;
   v93.super_class = KNPrototypeForUndoTemplateSlideChange;
   v15 = [(KNPrototypeForUndoTemplateSlideChange *)&v93 initWithContext:v12];
   if (v15)
   {
-    v15->_style = objc_msgSend_style(a3, v13, v14);
-    v18 = objc_msgSend_templateSlide(a3, v16, v17);
+    v15->_style = objc_msgSend_style(slide, v13, v14);
+    v18 = objc_msgSend_templateSlide(slide, v16, v17);
     v83 = v15;
     v15->_templateSlideId = objc_msgSend_objectUUID(v18, v19, v20);
     v23 = objc_msgSend_array(MEMORY[0x277CBEB18], v21, v22);
@@ -47,7 +47,7 @@
     v90 = 0u;
     v91 = 0u;
     v92 = 0u;
-    v34 = objc_msgSend_childInfos(a3, v32, v33);
+    v34 = objc_msgSend_childInfos(slide, v32, v33);
     v36 = objc_msgSend_countByEnumeratingWithState_objects_count_(v34, v35, &v89, v96, 16);
     if (v36)
     {
@@ -63,11 +63,11 @@
           }
 
           v42 = *(*(&v89 + 1) + 8 * i);
-          if (objc_msgSend_parentInfo(v42, v37, v38) == a3)
+          if (objc_msgSend_parentInfo(v42, v37, v38) == slide)
           {
-            if (objc_msgSend_infoIsPlaceholder_(a3, v43, v42))
+            if (objc_msgSend_infoIsPlaceholder_(slide, v43, v42))
             {
-              v44 = objc_msgSend_tagForInfo_(a3, v37, v42);
+              v44 = objc_msgSend_tagForInfo_(slide, v37, v42);
               v47 = objc_msgSend_replicateForReinsertion(v42, v45, v46);
               objc_msgSend_addObject_(v26, v48, v47);
               objc_msgSend_addObject_(v23, v49, v47);
@@ -101,9 +101,9 @@
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v94[0] = objc_msgSend_titlePlaceholder(a3, v37, v38);
-    v94[1] = objc_msgSend_bodyPlaceholder(a3, v51, v52);
-    v94[2] = objc_msgSend_slideNumberPlaceholder(a3, v53, v54);
+    v94[0] = objc_msgSend_titlePlaceholder(slide, v37, v38);
+    v94[1] = objc_msgSend_bodyPlaceholder(slide, v51, v52);
+    v94[2] = objc_msgSend_slideNumberPlaceholder(slide, v53, v54);
     v56 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v55, v94, 3);
     v58 = objc_msgSend_countByEnumeratingWithState_objects_count_(v56, v57, &v85, v95, 16);
     if (v58)
@@ -120,7 +120,7 @@
           }
 
           v64 = *(*(&v85 + 1) + 8 * j);
-          v65 = objc_msgSend_childInfos(a3, v59, v60);
+          v65 = objc_msgSend_childInfos(slide, v59, v60);
           if ((objc_msgSend_containsObject_(v65, v66, v64) & 1) == 0)
           {
             v67 = objc_msgSend_replicateForReinsertion(v64, v59, v60);
@@ -163,17 +163,17 @@
   [(KNPrototypeForUndoTemplateSlideChange *)&v3 dealloc];
 }
 
-+ (id)blobWithSlide:(id)a3
++ (id)blobWithSlide:(id)slide
 {
   v4 = objc_alloc(objc_opt_class());
-  v6 = objc_msgSend_initWithSlide_(v4, v5, a3);
+  v6 = objc_msgSend_initWithSlide_(v4, v5, slide);
 
   return v6;
 }
 
-- (void)rebuildChildInfosAndPlaceholdersFromMaster:(id)a3
+- (void)rebuildChildInfosAndPlaceholdersFromMaster:(id)master
 {
-  v5 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, a3);
+  v5 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, master);
   v8 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v6, v7);
   placeholders = self->_placeholders;
   v14[0] = MEMORY[0x277D85DD0];
@@ -191,7 +191,7 @@
   v13[2] = sub_275D5E5F8;
   v13[3] = &unk_27A697DC8;
   v13[4] = v5;
-  v13[5] = a3;
+  v13[5] = master;
   self->_childInfos = objc_msgSend_tsu_arrayByMappingObjectsUsingBlock_(drawableInfoIdList, v12, v13);
 }
 
@@ -221,9 +221,9 @@
   MEMORY[0x2821F9670](v4, sel_migrateStylesInObjects_, v13);
 }
 
-- (id)boxedObjectForProperty:(int)a3
+- (id)boxedObjectForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v5 = String();
   if (v5 > 1)
   {
@@ -282,38 +282,38 @@
   }
 }
 
-- (id)objectForProperty:(int)a3
+- (id)objectForProperty:(int)property
 {
   v3 = 0;
-  if (a3 <= 4212)
+  if (property <= 4212)
   {
-    if (a3 == 515)
+    if (property == 515)
     {
       v4 = 64;
       return *(&self->super.super.isa + v4);
     }
 
-    if (a3 != 4212)
+    if (property != 4212)
     {
       return v3;
     }
 
-    v5 = objc_msgSend_templateSlide(self, a2, *&a3);
+    v5 = objc_msgSend_templateSlide(self, a2, *&property);
 
     return objc_msgSend_bodyParagraphStyles(v5, v6, v7);
   }
 
   else
   {
-    if (a3 != 4213)
+    if (property != 4213)
     {
-      if (a3 == 4214)
+      if (property == 4214)
       {
         v4 = 104;
         return *(&self->super.super.isa + v4);
       }
 
-      if (a3 == 4215)
+      if (property == 4215)
       {
         v4 = 112;
         return *(&self->super.super.isa + v4);
@@ -322,27 +322,27 @@
       return v3;
     }
 
-    v9 = objc_msgSend_templateSlide(self, a2, *&a3);
+    v9 = objc_msgSend_templateSlide(self, a2, *&property);
 
     return objc_msgSend_bodyListStyles(v9, v10, v11);
   }
 }
 
-- (int)intValueForProperty:(int)a3
+- (int)intValueForProperty:(int)property
 {
-  if (a3 != 4216)
+  if (property != 4216)
   {
     return 0x80000000;
   }
 
-  v3 = objc_msgSend_templateSlide(self, a2, *&a3);
+  v3 = objc_msgSend_templateSlide(self, a2, *&property);
   return objc_msgSend_slideObjectsLayerWithTemplate(v3, v4, v5);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(a3, v5, off_2812EA908[68]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiver, v5, off_2812EA908[68]);
   v7 = v6;
   if (*(v6 + 96))
   {
@@ -358,29 +358,29 @@
   v29 = 3221225472;
   v30 = sub_275D5EC10;
   v31 = &unk_27A697DF0;
-  v32 = self;
+  selfCopy = self;
   v9 = objc_opt_class();
-  objc_msgSend_readReferenceMessage_class_protocol_completion_(a3, v10, v8, v9, 0, &v28);
+  objc_msgSend_readReferenceMessage_class_protocol_completion_(unarchiver, v10, v8, v9, 0, &v28);
   if (*(v7 + 104))
   {
-    WeakObjectUUIDReferenceMessage = objc_msgSend_readWeakObjectUUIDReferenceMessage_(a3, v11, *(v7 + 104));
+    WeakObjectUUIDReferenceMessage = objc_msgSend_readWeakObjectUUIDReferenceMessage_(unarchiver, v11, *(v7 + 104));
   }
 
   else
   {
-    WeakObjectUUIDReferenceMessage = objc_msgSend_readWeakObjectUUIDReferenceMessage_(a3, v11, MEMORY[0x277D809E0]);
+    WeakObjectUUIDReferenceMessage = objc_msgSend_readWeakObjectUUIDReferenceMessage_(unarchiver, v11, MEMORY[0x277D809E0]);
   }
 
   self->_templateSlideId = WeakObjectUUIDReferenceMessage;
-  self->_drawableInfoIdList = objc_msgSend_readRepeatedWeakObjectUUIDReferenceMessage_(a3, v13, v7 + 24);
+  self->_drawableInfoIdList = objc_msgSend_readRepeatedWeakObjectUUIDReferenceMessage_(unarchiver, v13, v7 + 24);
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = sub_275D5EC44;
   v26 = &unk_27A697E18;
-  v27 = self;
+  selfCopy2 = self;
   v14 = objc_opt_class();
-  objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(a3, v15, v7 + 48, v14, 0, &v23);
-  v19 = objc_msgSend_array(MEMORY[0x277CBEB18], v16, v17, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32);
+  objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(unarchiver, v15, v7 + 48, v14, 0, &v23);
+  v19 = objc_msgSend_array(MEMORY[0x277CBEB18], v16, v17, v23, v24, v25, v26, selfCopy2, v28, v29, v30, v31, selfCopy);
   if (*(v7 + 80) >= 1)
   {
     v20 = 0;
@@ -397,51 +397,51 @@
   self->_placeholderTagsList = v19;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithNewFunction_descriptor_(a3, v5, sub_275D5F0B8, off_2812EA908[68]);
+  v7 = objc_msgSend_messageWithNewFunction_descriptor_(archiver, v5, sub_275D5F0B8, off_2812EA908[68]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v7, a3);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v7, archiver);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = objc_msgSend_slideStyle(self, a2, a3);
-  *(a3 + 4) |= 1u;
-  v9 = *(a3 + 12);
+  v8 = objc_msgSend_slideStyle(self, a2, archive);
+  *(archive + 4) |= 1u;
+  v9 = *(archive + 12);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(archive + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = MEMORY[0x277C8F050](v10);
-    *(a3 + 12) = v9;
+    *(archive + 12) = v9;
   }
 
-  objc_msgSend_setStrongReference_message_(a4, v7, v8, v9);
+  objc_msgSend_setStrongReference_message_(archiver, v7, v8, v9);
   templateSlideId = self->_templateSlideId;
-  *(a3 + 4) |= 2u;
-  v13 = *(a3 + 13);
+  *(archive + 4) |= 2u;
+  v13 = *(archive + 13);
   if (!v13)
   {
-    v14 = *(a3 + 1);
+    v14 = *(archive + 1);
     if (v14)
     {
       v14 = *(v14 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v13 = MEMORY[0x277C8F000](v14);
-    *(a3 + 13) = v13;
+    *(archive + 13) = v13;
   }
 
-  objc_msgSend_setWeakReferenceToObjectUUID_message_(a4, v11, templateSlideId, v13);
-  objc_msgSend_setWeakReferenceToObjectUUIDArray_message_(a4, v15, self->_drawableInfoIdList, a3 + 24);
-  objc_msgSend_setStrongReferenceArray_message_(a4, v16, self->_placeholders, a3 + 48);
+  objc_msgSend_setWeakReferenceToObjectUUID_message_(archiver, v11, templateSlideId, v13);
+  objc_msgSend_setWeakReferenceToObjectUUIDArray_message_(archiver, v15, self->_drawableInfoIdList, archive + 24);
+  objc_msgSend_setStrongReferenceArray_message_(archiver, v16, self->_placeholders, archive + 48);
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -461,34 +461,34 @@
         }
 
         v24 = objc_msgSend_UTF8String(*(*(&v31 + 1) + 8 * i), v19, v20);
-        v25 = *(a3 + 11);
+        v25 = *(archive + 11);
         if (!v25)
         {
           goto LABEL_19;
         }
 
-        v26 = *(a3 + 20);
+        v26 = *(archive + 20);
         v27 = *v25;
         if (v26 < *v25)
         {
-          *(a3 + 20) = v26 + 1;
+          *(archive + 20) = v26 + 1;
           v28 = *&v25[2 * v26 + 2];
           goto LABEL_21;
         }
 
-        if (v27 == *(a3 + 21))
+        if (v27 == *(archive + 21))
         {
 LABEL_19:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 72));
-          v25 = *(a3 + 11);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 72));
+          v25 = *(archive + 11);
           v27 = *v25;
         }
 
         *v25 = v27 + 1;
-        v28 = sub_275D5EFD8(*(a3 + 9));
-        v29 = *(a3 + 20);
-        v30 = *(a3 + 11) + 8 * v29;
-        *(a3 + 20) = v29 + 1;
+        v28 = sub_275D5EFD8(*(archive + 9));
+        v29 = *(archive + 20);
+        v30 = *(archive + 11) + 8 * v29;
+        *(archive + 20) = v29 + 1;
         *(v30 + 8) = v28;
 LABEL_21:
         MEMORY[0x277C8F920](v28, v24);

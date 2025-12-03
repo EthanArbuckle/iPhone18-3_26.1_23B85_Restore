@@ -1,6 +1,6 @@
 @interface FMHairlineConstraint
 - (double)pixelHeight;
-- (void)setPixelHeight:(double)a3;
+- (void)setPixelHeight:(double)height;
 @end
 
 @implementation FMHairlineConstraint
@@ -9,18 +9,18 @@
 {
   [(FMHairlineConstraint *)self constant];
   v3 = v2;
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = v3 * v5;
 
   return v6;
 }
 
-- (void)setPixelHeight:(double)a3
+- (void)setPixelHeight:(double)height
 {
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
-  [(FMHairlineConstraint *)self setConstant:a3 / v5];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  [(FMHairlineConstraint *)self setConstant:height / v5];
 }
 
 @end

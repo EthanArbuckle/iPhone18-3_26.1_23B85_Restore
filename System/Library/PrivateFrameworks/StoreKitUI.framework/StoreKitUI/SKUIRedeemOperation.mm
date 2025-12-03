@@ -1,19 +1,19 @@
 @interface SKUIRedeemOperation
-- (SKUIRedeemOperation)initWithCode:(id)a3;
+- (SKUIRedeemOperation)initWithCode:(id)code;
 - (id)_authenticationContext;
-- (id)_itemsForItemIdentifiers:(id)a3;
-- (id)_performRequestWithProperties:(id)a3 error:(id *)a4;
-- (id)_redeemForSuccessDictionary:(id)a3;
-- (id)_requestPropertiesForThankYouWithURL:(id)a3;
-- (void)_applyThankYouDictionary:(id)a3 toRedeem:(id)a4;
+- (id)_itemsForItemIdentifiers:(id)identifiers;
+- (id)_performRequestWithProperties:(id)properties error:(id *)error;
+- (id)_redeemForSuccessDictionary:(id)dictionary;
+- (id)_requestPropertiesForThankYouWithURL:(id)l;
+- (void)_applyThankYouDictionary:(id)dictionary toRedeem:(id)redeem;
 - (void)main;
 @end
 
 @implementation SKUIRedeemOperation
 
-- (SKUIRedeemOperation)initWithCode:(id)a3
+- (SKUIRedeemOperation)initWithCode:(id)code
 {
-  v5 = a3;
+  codeCopy = code;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIRedeemOperation initWithCode:];
@@ -25,7 +25,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_code, a3);
+    objc_storeStrong(&v6->_code, code);
   }
 
   return v7;
@@ -40,22 +40,22 @@
   v64 = __Block_byref_object_copy__99;
   v65 = __Block_byref_object_dispose__99;
   v66 = 0;
-  v3 = [MEMORY[0x277D69B38] sharedConfig];
-  v4 = [v3 shouldLog];
-  v5 = [v3 shouldLogToDisk];
-  v6 = [v3 OSLogObject];
-  v7 = v6;
-  if (v5)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  shouldLogToDisk = [mEMORY[0x277D69B38] shouldLogToDisk];
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  v7 = oSLogObject;
+  if (shouldLogToDisk)
   {
-    v4 |= 2u;
+    shouldLog |= 2u;
   }
 
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v4 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (!v4)
+  if (!shouldLog)
   {
     goto LABEL_8;
   }
@@ -97,8 +97,8 @@ LABEL_8:
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v69 count:1];
   v15 = [v13 initWithRedeemCodes:v14];
 
-  v16 = [(SKUIRedeemOperation *)self _authenticationContext];
-  [v15 setAuthenticationContext:v16];
+  _authenticationContext = [(SKUIRedeemOperation *)self _authenticationContext];
+  [v15 setAuthenticationContext:_authenticationContext];
 
   [v15 setCameraRecognized:self->_cameraRecognized];
   [v15 setHeadless:0];
@@ -136,12 +136,12 @@ LABEL_8:
     v20 = 0;
   }
 
-  v23 = [v20 redirectURL];
+  redirectURL = [v20 redirectURL];
 
-  if (v23)
+  if (redirectURL)
   {
-    v24 = [v20 redirectURL];
-    v25 = [(SKUIRedeemOperation *)self _requestPropertiesForThankYouWithURL:v24];
+    redirectURL2 = [v20 redirectURL];
+    v25 = [(SKUIRedeemOperation *)self _requestPropertiesForThankYouWithURL:redirectURL2];
 
     v26 = [(SKUIRedeemOperation *)self _performRequestWithProperties:v25 error:0];
     [v20 setThankYouDictionary:v26];
@@ -184,22 +184,22 @@ LABEL_46:
 
   if (v62[5])
   {
-    v34 = [MEMORY[0x277D69B38] sharedConfig];
-    v35 = [v34 shouldLog];
-    v36 = [v34 shouldLogToDisk];
-    v37 = [v34 OSLogObject];
-    v38 = v37;
-    if (v36)
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+    shouldLogToDisk2 = [mEMORY[0x277D69B38]2 shouldLogToDisk];
+    oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+    v38 = oSLogObject2;
+    if (shouldLogToDisk2)
     {
-      v35 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    if (!os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
-      v35 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (!v35)
+    if (!shouldLog2)
     {
       goto LABEL_42;
     }
@@ -229,22 +229,22 @@ LABEL_42:
 
   else
   {
-    v34 = [MEMORY[0x277D69B38] sharedConfig];
-    v44 = [v34 shouldLog];
-    v45 = [v34 shouldLogToDisk];
-    v46 = [v34 OSLogObject];
-    v38 = v46;
-    if (v45)
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog3 = [mEMORY[0x277D69B38]2 shouldLog];
+    shouldLogToDisk3 = [mEMORY[0x277D69B38]2 shouldLogToDisk];
+    oSLogObject3 = [mEMORY[0x277D69B38]2 OSLogObject];
+    v38 = oSLogObject3;
+    if (shouldLogToDisk3)
     {
-      v44 |= 2u;
+      shouldLog3 |= 2u;
     }
 
-    if (!os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
-      v44 &= 2u;
+      shouldLog3 &= 2u;
     }
 
-    if (!v44)
+    if (!shouldLog3)
     {
       goto LABEL_42;
     }
@@ -270,7 +270,7 @@ LABEL_42:
   block[2] = __27__SKUIRedeemOperation_main__block_invoke_13;
   block[3] = &unk_2781FDA50;
   v54 = v20;
-  v55 = self;
+  selfCopy = self;
   v56 = &v61;
   v50 = v20;
   dispatch_async(MEMORY[0x277D85CD0], block);
@@ -318,13 +318,13 @@ uint64_t __27__SKUIRedeemOperation_main__block_invoke_13(uint64_t a1)
 
 - (id)_authenticationContext
 {
-  v2 = [MEMORY[0x277D69A20] defaultStore];
-  v3 = [v2 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
   v4 = objc_alloc_init(MEMORY[0x277D7FCC8]);
-  if (v3 && ([v3 uniqueIdentifier], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "canPerformExtendedBiometricActionsForAccountIdentifier:", v5), v5, v6))
+  if (activeAccount && ([activeAccount uniqueIdentifier], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "canPerformExtendedBiometricActionsForAccountIdentifier:", v5), v5, v6))
   {
-    v7 = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:v3];
+    v7 = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:activeAccount];
     [v7 setShouldCreateNewSession:1];
   }
 
@@ -336,23 +336,23 @@ uint64_t __27__SKUIRedeemOperation_main__block_invoke_13(uint64_t a1)
   return v7;
 }
 
-- (id)_redeemForSuccessDictionary:(id)a3
+- (id)_redeemForSuccessDictionary:(id)dictionary
 {
   v112 = *MEMORY[0x277D85DE8];
-  v86 = a3;
-  v3 = [v86 objectForKey:@"status"];
+  dictionaryCopy = dictionary;
+  v3 = [dictionaryCopy objectForKey:@"status"];
   if ((objc_opt_respondsToSelector() & 1) == 0 || [v3 integerValue] < 0)
   {
     v39 = 0;
     goto LABEL_122;
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
-  v87 = [MEMORY[0x277CBEB18] array];
-  v5 = [v86 objectForKey:@"salables"];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  v5 = [dictionaryCopy objectForKey:@"salables"];
 
   objc_opt_class();
-  v90 = v4;
+  v90 = array;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v40 = 0;
@@ -411,7 +411,7 @@ uint64_t __27__SKUIRedeemOperation_main__block_invoke_13(uint64_t a1)
 
           if ([(SKUIRedeemItem *)v17 count])
           {
-            [v4 addObjectsFromArray:v17];
+            [array addObjectsFromArray:v17];
 LABEL_39:
 
             v37 = [v10 objectForKey:@"parentSalableName"];
@@ -451,9 +451,9 @@ LABEL_39:
             v19 = &unk_2828D2E70;
           }
 
-          v21 = [v19 integerValue];
+          integerValue = [v19 integerValue];
 
-          [(SKUIItem *)v17 setItemKind:v21];
+          [(SKUIItem *)v17 setItemKind:integerValue];
         }
 
         v22 = [v10 objectForKey:{@"parentSalableName", v85}];
@@ -522,11 +522,11 @@ LABEL_39:
             [(SKUIArtworkList *)v35 setArtworks:v36];
 
             [(SKUIRedeemItem *)v17 setArtworks:v35];
-            v4 = v90;
+            array = v90;
           }
         }
 
-        [v4 addObject:v17];
+        [array addObject:v17];
         goto LABEL_39;
       }
     }
@@ -541,7 +541,7 @@ LABEL_51:
   v5 = v85;
 LABEL_52:
   v89 = v40;
-  v41 = [v86 objectForKey:{@"downloads", v85}];
+  v41 = [dictionaryCopy objectForKey:{@"downloads", v85}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -578,8 +578,8 @@ LABEL_52:
               v50 = [MEMORY[0x277CBEA60] arrayWithObjects:&v107 count:1];
               v51 = [(SKUIRedeemOperation *)self _itemsForItemIdentifiers:v50];
 
-              [v87 addObjectsFromArray:v51];
-              v4 = v90;
+              [array2 addObjectsFromArray:v51];
+              array = v90;
             }
           }
         }
@@ -593,11 +593,11 @@ LABEL_52:
     v41 = v93;
   }
 
-  if ([v4 count])
+  if ([array count])
   {
-    if ([v4 count] == 1)
+    if ([array count] == 1)
     {
-      v52 = [v4 valueForKeyPath:@"itemIdentifier"];
+      v52 = [array valueForKeyPath:@"itemIdentifier"];
       v53 = v52;
       v54 = MEMORY[0x277CBEBF8];
       if (v52)
@@ -610,7 +610,7 @@ LABEL_52:
       v56 = [MEMORY[0x277CBEB98] setWithArray:v55];
       v57 = [v41 valueForKeyPath:@"songId"];
 
-      v58 = [MEMORY[0x277CBEB18] array];
+      array3 = [MEMORY[0x277CBEB18] array];
       v94 = 0u;
       v95 = 0u;
       v96 = 0u;
@@ -633,7 +633,7 @@ LABEL_52:
             v64 = *(*(&v94 + 1) + 8 * k);
             if (([v56 containsObject:v64] & 1) == 0)
             {
-              [v58 addObject:v64];
+              [array3 addObject:v64];
             }
           }
 
@@ -646,19 +646,19 @@ LABEL_52:
 
     else
     {
-      v58 = 0;
-      v55 = v87;
+      array3 = 0;
+      v55 = array2;
     }
   }
 
   else
   {
-    v58 = 0;
-    v55 = v4;
-    v4 = v87;
+    array3 = 0;
+    v55 = array;
+    array = array2;
   }
 
-  v65 = [v86 objectForKey:@"redeemedCredit"];
+  v65 = [dictionaryCopy objectForKey:@"redeemedCredit"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -699,7 +699,7 @@ LABEL_52:
     v67 = 0;
   }
 
-  v69 = [v86 objectForKey:@"totalCredit"];
+  v69 = [dictionaryCopy objectForKey:@"totalCredit"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -740,20 +740,20 @@ LABEL_52:
     v71 = 0;
   }
 
-  v73 = [v86 objectForKey:@"creditDisplay"];
+  v73 = [dictionaryCopy objectForKey:@"creditDisplay"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v74 = [v73 stringValue];
+    stringValue = [v73 stringValue];
   }
 
   else
   {
-    v74 = 0;
+    stringValue = 0;
   }
 
-  v75 = [v86 objectForKey:@"postRedemptionRedirectURL"];
+  v75 = [dictionaryCopy objectForKey:@"postRedemptionRedirectURL"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -766,7 +766,7 @@ LABEL_52:
     v76 = 0;
   }
 
-  v77 = [v86 objectForKey:@"customizedThankYouPageURL"];
+  v77 = [dictionaryCopy objectForKey:@"customizedThankYouPageURL"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -779,7 +779,7 @@ LABEL_52:
     v78 = 0;
   }
 
-  v3 = [v86 objectForKey:@"iTunesPassAlertInterval"];
+  v3 = [dictionaryCopy objectForKey:@"iTunesPassAlertInterval"];
 
   v79 = -1.0;
   if (objc_opt_respondsToSelector())
@@ -788,17 +788,17 @@ LABEL_52:
     v79 = v80;
   }
 
-  if ([v67 length] || objc_msgSend(v4, "count"))
+  if ([v67 length] || objc_msgSend(array, "count"))
   {
     v39 = objc_alloc_init(SKUIRedeem);
     [(SKUIRedeem *)v39 setBalance:v71];
     [(SKUIRedeem *)v39 setCredit:v67];
-    [(SKUIRedeem *)v39 setCreditDisplay:v74];
+    [(SKUIRedeem *)v39 setCreditDisplay:stringValue];
     v81 = v89;
     [(SKUIRedeem *)v39 setInAppPurchase:v89];
-    if ([v4 count])
+    if ([array count])
     {
-      v82 = v4;
+      v82 = array;
     }
 
     else
@@ -807,9 +807,9 @@ LABEL_52:
     }
 
     [(SKUIRedeem *)v39 setItems:v82];
-    if ([v58 count])
+    if ([array3 count])
     {
-      v83 = v58;
+      v83 = array3;
     }
 
     else
@@ -834,16 +834,16 @@ LABEL_122:
   return v39;
 }
 
-- (id)_itemsForItemIdentifiers:(id)a3
+- (id)_itemsForItemIdentifiers:(id)identifiers
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x277CBEB18] array];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v5 = v3;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v6)
   {
@@ -857,8 +857,8 @@ LABEL_122:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v40 + 1) + 8 * i) stringValue];
-        [v4 addObject:v9];
+        stringValue = [*(*(&v40 + 1) + 8 * i) stringValue];
+        [array addObject:stringValue];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v40 objects:v45 count:16];
@@ -869,7 +869,7 @@ LABEL_122:
 
   v26 = objc_alloc_init(MEMORY[0x277D69B50]);
   [v26 setKeyProfile:*MEMORY[0x277D6A2C8]];
-  [v26 setValue:v4 forRequestParameter:*MEMORY[0x277D6A2E0]];
+  [v26 setValue:array forRequestParameter:*MEMORY[0x277D6A2E0]];
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -887,13 +887,13 @@ LABEL_122:
   [v26 startWithLookupBlock:v31];
   v25 = v11;
   dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
-  v12 = [v35[5] allItems];
-  v13 = [MEMORY[0x277CBEB18] array];
+  allItems = [v35[5] allItems];
+  array2 = [MEMORY[0x277CBEB18] array];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v14 = v12;
+  v14 = allItems;
   v15 = [v14 countByEnumeratingWithState:&v27 objects:v44 count:16];
   if (v15)
   {
@@ -909,9 +909,9 @@ LABEL_122:
 
         v18 = *(*(&v27 + 1) + 8 * j);
         v19 = [SKUIItem alloc];
-        v20 = [v18 lookupDictionary];
-        v21 = [(SKUIItem *)v19 initWithLookupDictionary:v20];
-        [v13 addObject:v21];
+        lookupDictionary = [v18 lookupDictionary];
+        v21 = [(SKUIItem *)v19 initWithLookupDictionary:lookupDictionary];
+        [array2 addObject:v21];
       }
 
       v15 = [v14 countByEnumeratingWithState:&v27 objects:v44 count:16];
@@ -920,9 +920,9 @@ LABEL_122:
     while (v15);
   }
 
-  if ([v13 count])
+  if ([array2 count])
   {
-    v22 = v13;
+    v22 = array2;
   }
 
   else
@@ -944,11 +944,11 @@ void __48__SKUIRedeemOperation__itemsForItemIdentifiers___block_invoke(uint64_t 
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_applyThankYouDictionary:(id)a3 toRedeem:(id)a4
+- (void)_applyThankYouDictionary:(id)dictionary toRedeem:(id)redeem
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 objectForKey:@"typ"];
+  redeemCopy = redeem;
+  v6 = [dictionary objectForKey:@"typ"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -969,7 +969,7 @@ void __48__SKUIRedeemOperation__itemsForItemIdentifiers___block_invoke(uint64_t 
     if (v10)
     {
       v11 = v10;
-      v35 = v5;
+      v35 = redeemCopy;
       v12 = *v42;
       v13 = 1;
       do
@@ -990,7 +990,7 @@ void __48__SKUIRedeemOperation__itemsForItemIdentifiers___block_invoke(uint64_t 
 
       while (v11);
 
-      v5 = v35;
+      redeemCopy = v35;
       v8 = 0x277CBE000;
       if ((v13 & 1) == 0)
       {
@@ -1003,7 +1003,7 @@ void __48__SKUIRedeemOperation__itemsForItemIdentifiers___block_invoke(uint64_t 
     }
 
     v15 = [v9 componentsJoinedByString:@"\n"];
-    [v5 setMessage:v15];
+    [redeemCopy setMessage:v15];
   }
 
 LABEL_14:
@@ -1012,7 +1012,7 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setTitle:v16];
+    [redeemCopy setTitle:v16];
   }
 
   v17 = [v6 objectForKey:@"finalPageUrl"];
@@ -1021,7 +1021,7 @@ LABEL_14:
   if (objc_opt_isKindOfClass())
   {
     v18 = [MEMORY[0x277CBEBC0] URLWithString:v17];
-    [v5 setRedirectURL:v18];
+    [redeemCopy setRedirectURL:v18];
   }
 
   v19 = [v6 objectForKey:@"links"];
@@ -1029,8 +1029,8 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v36 = v5;
-    v20 = [MEMORY[0x277CBEB18] array];
+    v36 = redeemCopy;
+    array = [MEMORY[0x277CBEB18] array];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -1057,7 +1057,7 @@ LABEL_14:
             v27 = [[SKUILink alloc] initWithLinkDictionary:v26];
             if (v27)
             {
-              [v20 addObject:v27];
+              [array addObject:v27];
             }
           }
         }
@@ -1068,8 +1068,8 @@ LABEL_14:
       while (v23);
     }
 
-    v5 = v36;
-    [v36 setLinks:v20];
+    redeemCopy = v36;
+    [v36 setLinks:array];
 
     v8 = 0x277CBE000uLL;
   }
@@ -1095,7 +1095,7 @@ LABEL_14:
 
         if (v34)
         {
-          [v5 setHeaderArtworkProvider:v34];
+          [redeemCopy setHeaderArtworkProvider:v34];
         }
       }
     }
@@ -1109,11 +1109,11 @@ LABEL_14:
 LABEL_42:
 }
 
-- (id)_requestPropertiesForThankYouWithURL:(id)a3
+- (id)_requestPropertiesForThankYouWithURL:(id)l
 {
   v3 = MEMORY[0x277D69BD0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[v3 alloc] initWithURL:lCopy];
 
   [v5 setITunesStoreRequest:1];
   v6 = SSVDefaultUserAgent();
@@ -1124,9 +1124,9 @@ LABEL_42:
   return v5;
 }
 
-- (id)_performRequestWithProperties:(id)a3 error:(id *)a4
+- (id)_performRequestWithProperties:(id)properties error:(id *)error
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = dispatch_semaphore_create(0);
   v19 = 0;
   v20 = &v19;
@@ -1134,7 +1134,7 @@ LABEL_42:
   v22 = __Block_byref_object_copy__99;
   v23 = __Block_byref_object_dispose__99;
   v24 = 0;
-  v6 = [(SSURLConnectionRequest *)[SKUIURLConnectionRequest alloc] initWithRequestProperties:v4];
+  v6 = [(SSURLConnectionRequest *)[SKUIURLConnectionRequest alloc] initWithRequestProperties:propertiesCopy];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __59__SKUIRedeemOperation__performRequestWithProperties_error___block_invoke;
@@ -1144,11 +1144,11 @@ LABEL_42:
   v17 = v7;
   [(SKUIURLConnectionRequest *)v6 startWithConnectionResponseBlock:&v13];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  v8 = [v20[5] bodyData];
-  if (v8)
+  bodyData = [v20[5] bodyData];
+  if (bodyData)
   {
     v9 = +[(SSVURLDataConsumer *)SKUIJSONDataConsumer];
-    v10 = [v9 objectForData:v8 response:0 error:0];
+    v10 = [v9 objectForData:bodyData response:0 error:0];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())

@@ -1,6 +1,6 @@
 @interface SKRemoteEngagementContainerViewController
-- (_TtC8StoreKit41SKRemoteEngagementContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapView:(id)a3;
+- (_TtC8StoreKit41SKRemoteEngagementContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -8,25 +8,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B2506F50();
 }
 
-- (void)didTapView:(id)a3
+- (void)didTapView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1B25070C0();
 }
 
-- (_TtC8StoreKit41SKRemoteEngagementContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8StoreKit41SKRemoteEngagementContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1B256D9BC();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1B2507138();
 }
 

@@ -3,7 +3,7 @@
 + (unint64_t)command;
 - (BOOL)enable;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandSetTestLock)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandSetTestLock)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMXPCMessage)message;
 - (unint64_t)requestedLocks;
 - (void)execute;
@@ -40,9 +40,9 @@
   v35 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
   v4 = containermanager_copy_global_configuration();
-  v5 = [v4 isInternalImage];
+  isInternalImage = [v4 isInternalImage];
 
-  if (v5)
+  if (isInternalImage)
   {
     v6 = containermanager_copy_global_configuration();
     if ([v6 runmode] != 2)
@@ -51,22 +51,22 @@
       if ([v7 runmode] != 3)
       {
         v19 = containermanager_copy_global_configuration();
-        v20 = [v19 runmode];
+        runmode = [v19 runmode];
 
-        if (v20 != 4)
+        if (runmode != 4)
         {
           v10 = 0;
 LABEL_7:
-          v11 = [(MCMCommandSetTestLock *)self requestedLocks];
-          v12 = [(MCMCommandSetTestLock *)self enable];
-          v13 = v11 != 15 || v12;
-          if (v11 != 15 || v12)
+          requestedLocks = [(MCMCommandSetTestLock *)self requestedLocks];
+          enable = [(MCMCommandSetTestLock *)self enable];
+          v13 = requestedLocks != 15 || enable;
+          if (requestedLocks != 15 || enable)
           {
-            if (v11 < 0xF)
+            if (requestedLocks < 0xF)
             {
-              v21 = (1 << v11);
+              v21 = (1 << requestedLocks);
               v22 = execute_gLocksEnabled & v21;
-              if (v12)
+              if (enable)
               {
                 if (!v22)
                 {
@@ -76,7 +76,7 @@ LABEL_7:
                   [v23 setEnabled:1];
 
                   v24 = +[MCMTestLocks sharedInstance];
-                  [v24 acquireLock:v11];
+                  [v24 acquireLock:requestedLocks];
 
                   v14 = 0;
                   goto LABEL_26;
@@ -85,10 +85,10 @@ LABEL_7:
 
               else if (v22)
               {
-                v25 = v11 >= 2 ? ~v21 : -4;
+                v25 = requestedLocks >= 2 ? ~v21 : -4;
                 execute_gLocksEnabled &= v25;
                 v26 = +[MCMTestLocks sharedInstance];
-                [v26 releaseLock:v11];
+                [v26 releaseLock:requestedLocks];
 
                 if (!execute_gLocksEnabled)
                 {
@@ -122,9 +122,9 @@ LABEL_26:
         }
 
 LABEL_6:
-        v8 = [(MCMCommandSetTestLock *)self message];
-        v9 = [(MCMCommand *)self context];
-        v10 = [MCMCommand relayToPrivilegedDaemonMessage:v8 context:v9];
+        message = [(MCMCommandSetTestLock *)self message];
+        context = [(MCMCommand *)self context];
+        v10 = [MCMCommand relayToPrivilegedDaemonMessage:message context:context];
 
         goto LABEL_7;
       }
@@ -171,8 +171,8 @@ LABEL_27:
   }
 
   v30 = v29;
-  v31 = [(MCMCommand *)self resultPromise];
-  [v31 completeWithResult:v30];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v30];
 
   objc_autoreleasePoolPop(v3);
   v32 = *MEMORY[0x1E69E9840];
@@ -181,26 +181,26 @@ LABEL_27:
 - (BOOL)preflightClientAllowed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 isAllowedToTest];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  isAllowedToTest = [clientIdentity isAllowedToTest];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToTest;
 }
 
-- (MCMCommandSetTestLock)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandSetTestLock)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v14 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  messageCopy = message;
   v13.receiver = self;
   v13.super_class = MCMCommandSetTestLock;
-  v10 = [(MCMCommand *)&v13 initWithMessage:v9 context:a4 reply:a5];
+  v10 = [(MCMCommand *)&v13 initWithMessage:messageCopy context:context reply:reply];
   if (v10)
   {
-    v10->_requestedLocks = [v9 requestedLocks];
-    v10->_enable = [v9 enable];
-    objc_storeStrong(&v10->_message, a3);
+    v10->_requestedLocks = [messageCopy requestedLocks];
+    v10->_enable = [messageCopy enable];
+    objc_storeStrong(&v10->_message, message);
   }
 
   v11 = *MEMORY[0x1E69E9840];

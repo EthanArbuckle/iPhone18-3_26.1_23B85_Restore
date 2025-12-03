@@ -1,35 +1,35 @@
 @interface TextureProcessorMetalSession
-- (TextureProcessorMetalSession)initWithLoadingBundlePipelines:(BOOL)a3;
-- (id)createShaderRWTexture2DWithPixelFormat:(unint64_t)a3 width:(unint64_t)a4 height:(unint64_t)a5;
-- (id)createShaderRWTexture2DWithPixelFormat:(unint64_t)a3 width:(unint64_t)a4 height:(unint64_t)a5 mipmapLevelCount:(unint64_t)a6;
-- (id)makeAlchemistAnimationLoadingTextureFrom:(id)a3 blurSigma:(float)a4 resolution:(int)a5;
-- (id)makeAlchemistGlowrayTextureFrom:(id)a3 insetSamplePercent:(float)a4 cornerRadius:(float)a5;
-- (id)makeSpatialPhotoMixedLightSpillTextureFrom:(id)a3 blurSigma:(float)a4 resolution:(int)a5;
-- (int)blitStereoImageTextureIntoSeparateTextures:(id)a3 withCommandBuffer:(id)a4 outputLeftTexture:(id)a5 outputRightTexture:(id)a6;
+- (TextureProcessorMetalSession)initWithLoadingBundlePipelines:(BOOL)pipelines;
+- (id)createShaderRWTexture2DWithPixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height;
+- (id)createShaderRWTexture2DWithPixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height mipmapLevelCount:(unint64_t)count;
+- (id)makeAlchemistAnimationLoadingTextureFrom:(id)from blurSigma:(float)sigma resolution:(int)resolution;
+- (id)makeAlchemistGlowrayTextureFrom:(id)from insetSamplePercent:(float)percent cornerRadius:(float)radius;
+- (id)makeSpatialPhotoMixedLightSpillTextureFrom:(id)from blurSigma:(float)sigma resolution:(int)resolution;
+- (int)blitStereoImageTextureIntoSeparateTextures:(id)textures withCommandBuffer:(id)buffer outputLeftTexture:(id)texture outputRightTexture:(id)rightTexture;
 - (int)configureGPU;
 - (int)loadBundleShaderPipelines;
 @end
 
 @implementation TextureProcessorMetalSession
 
-- (TextureProcessorMetalSession)initWithLoadingBundlePipelines:(BOOL)a3
+- (TextureProcessorMetalSession)initWithLoadingBundlePipelines:(BOOL)pipelines
 {
-  v3 = a3;
+  pipelinesCopy = pipelines;
   v13.receiver = self;
   v13.super_class = TextureProcessorMetalSession;
   v4 = [(TextureProcessorMetalSession *)&v13 init];
   v5 = v4;
   if (v4)
   {
-    v6 = [(TextureProcessorMetalSession *)v4 configureGPU];
-    if (!v6)
+    configureGPU = [(TextureProcessorMetalSession *)v4 configureGPU];
+    if (!configureGPU)
     {
-      if (v3)
+      if (pipelinesCopy)
       {
-        v9 = [(TextureProcessorMetalSession *)v5 loadBundleShaderPipelines];
-        if (v9)
+        loadBundleShaderPipelines = [(TextureProcessorMetalSession *)v5 loadBundleShaderPipelines];
+        if (loadBundleShaderPipelines)
         {
-          v10 = *re::imagePresentationLogObjects(v9);
+          v10 = *re::imagePresentationLogObjects(loadBundleShaderPipelines);
           if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
           {
             *v12 = 0;
@@ -42,7 +42,7 @@
 
       else
       {
-        v11 = *re::imagePresentationLogObjects(v6);
+        v11 = *re::imagePresentationLogObjects(configureGPU);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *v12 = 0;
@@ -85,9 +85,9 @@ LABEL_14:
     return 1;
   }
 
-  v6 = [(MTLDevice *)v5 newCommandQueue];
+  newCommandQueue = [(MTLDevice *)v5 newCommandQueue];
   commandQueue = self->_commandQueue;
-  self->_commandQueue = v6;
+  self->_commandQueue = newCommandQueue;
 
   if (!self->_commandQueue)
   {
@@ -327,7 +327,7 @@ LABEL_37:
   return v21;
 }
 
-- (id)createShaderRWTexture2DWithPixelFormat:(unint64_t)a3 width:(unint64_t)a4 height:(unint64_t)a5
+- (id)createShaderRWTexture2DWithPixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height
 {
   v13 = self->_device;
   v8 = [objc_msgSend(MEMORY[0x1E69741C0] alloc)];
@@ -350,7 +350,7 @@ LABEL_37:
   return v10;
 }
 
-- (id)createShaderRWTexture2DWithPixelFormat:(unint64_t)a3 width:(unint64_t)a4 height:(unint64_t)a5 mipmapLevelCount:(unint64_t)a6
+- (id)createShaderRWTexture2DWithPixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height mipmapLevelCount:(unint64_t)count
 {
   v15 = self->_device;
   v10 = [objc_msgSend(MEMORY[0x1E69741C0] alloc)];
@@ -374,22 +374,22 @@ LABEL_37:
   return v12;
 }
 
-- (int)blitStereoImageTextureIntoSeparateTextures:(id)a3 withCommandBuffer:(id)a4 outputLeftTexture:(id)a5 outputRightTexture:(id)a6
+- (int)blitStereoImageTextureIntoSeparateTextures:(id)textures withCommandBuffer:(id)buffer outputLeftTexture:(id)texture outputRightTexture:(id)rightTexture
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 arrayLength];
-  if (v13 == 2)
+  texturesCopy = textures;
+  bufferCopy = buffer;
+  textureCopy = texture;
+  rightTextureCopy = rightTexture;
+  arrayLength = [texturesCopy arrayLength];
+  if (arrayLength == 2)
   {
-    v14 = [v9 width];
-    v15 = [v9 height];
-    v32 = v11;
-    v33[0] = v12;
-    v27 = v10;
-    v16 = [v10 blitCommandEncoder];
+    width = [texturesCopy width];
+    height = [texturesCopy height];
+    v32 = textureCopy;
+    v33[0] = rightTextureCopy;
+    v27 = bufferCopy;
+    blitCommandEncoder = [bufferCopy blitCommandEncoder];
     v17 = 0;
     v18 = &v32;
     v19 = 1;
@@ -398,36 +398,36 @@ LABEL_37:
       v20 = v19;
       buf = 0uLL;
       v31 = 0;
-      v29[0] = v14;
-      v29[1] = v15;
+      v29[0] = width;
+      v29[1] = height;
       v29[2] = 1;
       v21 = *v18;
       memset(v28, 0, sizeof(v28));
-      [v16 copyFromTexture:v9 sourceSlice:v17 sourceLevel:0 sourceOrigin:&buf sourceSize:v29 toTexture:v21 destinationSlice:0 destinationLevel:0 destinationOrigin:v28];
+      [blitCommandEncoder copyFromTexture:texturesCopy sourceSlice:v17 sourceLevel:0 sourceOrigin:&buf sourceSize:v29 toTexture:v21 destinationSlice:0 destinationLevel:0 destinationOrigin:v28];
       v19 = 0;
       v18 = v33;
       v17 = 1;
     }
 
     while ((v20 & 1) != 0);
-    [v16 endEncoding];
+    [blitCommandEncoder endEncoding];
 
     for (i = 1; i != -1; --i)
     {
     }
 
     v23 = 0;
-    v10 = v27;
+    bufferCopy = v27;
   }
 
   else
   {
-    v24 = *re::imagePresentationLogObjects(v13);
+    v24 = *re::imagePresentationLogObjects(arrayLength);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v26 = v24;
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = [v9 arrayLength];
+      *(&buf + 4) = [texturesCopy arrayLength];
       _os_log_error_impl(&dword_1E1C61000, v26, OS_LOG_TYPE_ERROR, "Failed to blit a stereoImageTexture into separate textures. Expecting a texture2d_array of length 2, but got length %lu.", &buf, 0xCu);
     }
 
@@ -437,12 +437,12 @@ LABEL_37:
   return v23;
 }
 
-- (id)makeSpatialPhotoMixedLightSpillTextureFrom:(id)a3 blurSigma:(float)a4 resolution:(int)a5
+- (id)makeSpatialPhotoMixedLightSpillTextureFrom:(id)from blurSigma:(float)sigma resolution:(int)resolution
 {
-  v8 = a3;
+  fromCopy = from;
   v37 = 0;
-  v9 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  if (!v9)
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  if (!commandBuffer)
   {
     v29 = *re::imagePresentationLogObjects(0);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -454,47 +454,47 @@ LABEL_37:
     goto LABEL_12;
   }
 
-  v10 = [v8 pixelFormat];
-  v11 = [(TextureProcessorMetalSession *)self createShaderRWTexture2DWithPixelFormat:v10 width:64 height:64];
+  pixelFormat = [fromCopy pixelFormat];
+  v11 = [(TextureProcessorMetalSession *)self createShaderRWTexture2DWithPixelFormat:pixelFormat width:64 height:64];
   v37 = v11;
-  v12 = [(TextureProcessorMetalSession *)self createShaderRWTexture2DWithPixelFormat:v10 width:64 height:64];
+  v12 = [(TextureProcessorMetalSession *)self createShaderRWTexture2DWithPixelFormat:pixelFormat width:64 height:64];
   v13 = v12;
   if (v11 && v12)
   {
-    v14 = [(TextureProcessorMetalSession *)self createShaderRWTexture2DWithPixelFormat:v10 width:a5 height:a5];
+    v14 = [(TextureProcessorMetalSession *)self createShaderRWTexture2DWithPixelFormat:pixelFormat width:resolution height:resolution];
     if (v14)
     {
       v15 = v14;
-      v16 = [v8 newTextureViewWithPixelFormat:objc_msgSend(v8 textureType:"pixelFormat") levels:2 slices:0, 1, 0, 1];
-      v17 = [v8 newTextureViewWithPixelFormat:objc_msgSend(v8 textureType:"pixelFormat") levels:2 slices:0, 1, 1, 1];
-      v18 = [v11 height];
-      v34 = (v18 / [v16 height]);
+      v16 = [fromCopy newTextureViewWithPixelFormat:objc_msgSend(fromCopy textureType:"pixelFormat") levels:2 slices:0, 1, 0, 1];
+      v17 = [fromCopy newTextureViewWithPixelFormat:objc_msgSend(fromCopy textureType:"pixelFormat") levels:2 slices:0, 1, 1, 1];
+      height = [v11 height];
+      v34 = (height / [v16 height]);
       v35 = 0;
       v36 = 0;
       [(MPSImageBilinearScale *)self->_bilinearScale setScaleTransform:&v33];
-      [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:v9 sourceTexture:v16 destinationTexture:v11];
-      [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:v9 sourceTexture:v17 destinationTexture:v13];
+      [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:commandBuffer sourceTexture:v16 destinationTexture:v11];
+      [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:commandBuffer sourceTexture:v17 destinationTexture:v13];
       LODWORD(v19) = 0.5;
       [(MPSImageAdd *)self->_mixKernel setPrimaryScale:v19];
       LODWORD(v20) = 0.5;
       [(MPSImageAdd *)self->_mixKernel setSecondaryScale:v20];
-      [(MPSImageAdd *)self->_mixKernel encodeToCommandBuffer:v9 inPlacePrimaryTexture:&v37 secondaryTexture:v13 fallbackCopyAllocator:0];
+      [(MPSImageAdd *)self->_mixKernel encodeToCommandBuffer:commandBuffer inPlacePrimaryTexture:&v37 secondaryTexture:v13 fallbackCopyAllocator:0];
       v21 = objc_alloc(MEMORY[0x1E69745C0]);
-      *&v22 = a4;
+      *&v22 = sigma;
       v23 = [v21 initWithDevice:self->_device sigma:v22];
-      [v23 encodeToCommandBuffer:v9 inPlaceTexture:&v37 fallbackCopyAllocator:0];
-      v24 = [v15 width];
-      v25 = (v24 / [v37 width]);
-      v26 = [v15 height];
-      v27 = [v37 height];
+      [v23 encodeToCommandBuffer:commandBuffer inPlaceTexture:&v37 fallbackCopyAllocator:0];
+      width = [v15 width];
+      v25 = (width / [v37 width]);
+      height2 = [v15 height];
+      height3 = [v37 height];
       v33 = v25;
-      v34 = (v26 / v27);
+      v34 = (height2 / height3);
       v35 = 0;
       v36 = 0;
       [(MPSImageBilinearScale *)self->_bilinearScale setScaleTransform:&v33];
-      [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:v9 sourceTexture:v37 destinationTexture:v15];
-      [v9 commit];
-      [v9 waitUntilScheduled];
+      [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:commandBuffer sourceTexture:v37 destinationTexture:v15];
+      [commandBuffer commit];
+      [commandBuffer waitUntilScheduled];
       v28 = v15;
 
       goto LABEL_13;
@@ -529,42 +529,42 @@ LABEL_13:
   return v28;
 }
 
-- (id)makeAlchemistAnimationLoadingTextureFrom:(id)a3 blurSigma:(float)a4 resolution:(int)a5
+- (id)makeAlchemistAnimationLoadingTextureFrom:(id)from blurSigma:(float)sigma resolution:(int)resolution
 {
-  v8 = a3;
+  fromCopy = from;
   v28 = 0;
-  v9 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  if (v9)
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  if (commandBuffer)
   {
-    v10 = [v8 pixelFormat];
-    v11 = -[TextureProcessorMetalSession createShaderRWTexture2DWithPixelFormat:width:height:](self, "createShaderRWTexture2DWithPixelFormat:width:height:", v10, [v8 width], objc_msgSend(v8, "height"));
-    v12 = [(TextureProcessorMetalSession *)self createShaderRWTexture2DWithPixelFormat:v10 width:a5 height:a5];
+    pixelFormat = [fromCopy pixelFormat];
+    v11 = -[TextureProcessorMetalSession createShaderRWTexture2DWithPixelFormat:width:height:](self, "createShaderRWTexture2DWithPixelFormat:width:height:", pixelFormat, [fromCopy width], objc_msgSend(fromCopy, "height"));
+    v12 = [(TextureProcessorMetalSession *)self createShaderRWTexture2DWithPixelFormat:pixelFormat width:resolution height:resolution];
     v28 = v12;
-    v13 = [v9 blitCommandEncoder];
+    blitCommandEncoder = [commandBuffer blitCommandEncoder];
     *buf = 0.0;
     v23 = 0.0;
     v24 = 0;
-    v27[0] = [v8 width];
-    v27[1] = [v8 height];
+    v27[0] = [fromCopy width];
+    v27[1] = [fromCopy height];
     v27[2] = 1;
     memset(v26, 0, sizeof(v26));
-    [v13 copyFromTexture:v8 sourceSlice:0 sourceLevel:0 sourceOrigin:buf sourceSize:v27 toTexture:v11 destinationSlice:0 destinationLevel:0 destinationOrigin:v26];
-    [v13 endEncoding];
-    v14 = [v12 width];
-    *buf = (v14 / [v11 width]);
-    v15 = [v12 height];
-    v23 = (v15 / [v11 height]);
+    [blitCommandEncoder copyFromTexture:fromCopy sourceSlice:0 sourceLevel:0 sourceOrigin:buf sourceSize:v27 toTexture:v11 destinationSlice:0 destinationLevel:0 destinationOrigin:v26];
+    [blitCommandEncoder endEncoding];
+    width = [v12 width];
+    *buf = (width / [v11 width]);
+    height = [v12 height];
+    v23 = (height / [v11 height]);
     v24 = 0;
     v25 = 0;
     [(MPSImageBilinearScale *)self->_bilinearScale setScaleTransform:buf];
-    [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:v9 sourceTexture:v11 destinationTexture:v12];
+    [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:commandBuffer sourceTexture:v11 destinationTexture:v12];
     v16 = objc_alloc(MEMORY[0x1E69745C0]);
-    *&v17 = a4;
+    *&v17 = sigma;
     v18 = [v16 initWithDevice:self->_device sigma:v17];
     [v18 setEdgeMode:1];
-    [v18 encodeToCommandBuffer:v9 inPlaceTexture:&v28 fallbackCopyAllocator:0];
-    [v9 commit];
-    [v9 waitUntilScheduled];
+    [v18 encodeToCommandBuffer:commandBuffer inPlaceTexture:&v28 fallbackCopyAllocator:0];
+    [commandBuffer commit];
+    [commandBuffer waitUntilScheduled];
     v19 = v28;
   }
 
@@ -583,13 +583,13 @@ LABEL_13:
   return v19;
 }
 
-- (id)makeAlchemistGlowrayTextureFrom:(id)a3 insetSamplePercent:(float)a4 cornerRadius:(float)a5
+- (id)makeAlchemistGlowrayTextureFrom:(id)from insetSamplePercent:(float)percent cornerRadius:(float)radius
 {
-  v8 = a3;
-  v29 = a5;
-  v30 = a4;
-  v9 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  if (!v9)
+  fromCopy = from;
+  radiusCopy = radius;
+  percentCopy = percent;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  if (!commandBuffer)
   {
     v21 = *re::imagePresentationLogObjects(0);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -604,27 +604,27 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  v10 = [v8 pixelFormat];
+  pixelFormat = [fromCopy pixelFormat];
   if (self->_glowrayPipeline)
   {
-    v11 = v10;
-    v12 = [(TextureProcessorMetalSession *)self createShaderRWTexture2DWithPixelFormat:v10 width:256 height:256];
-    v13 = [v9 computeCommandEncoder];
-    [v13 setTexture:v8 atIndex:0];
-    [v13 setTexture:v12 atIndex:1];
-    [v13 setBytes:&v30 length:4 atIndex:0];
-    [v13 setBytes:&v29 length:4 atIndex:1];
-    [v13 setComputePipelineState:self->_glowrayPipeline];
-    v14 = [(MTLComputePipelineState *)self->_glowrayPipeline threadExecutionWidth];
-    v15 = [(MTLComputePipelineState *)self->_glowrayPipeline maxTotalThreadsPerThreadgroup];
-    *&v24 = (v14 + 255) / v14;
-    *&v25 = (v15 / v14 + 255) / (v15 / v14);
+    v11 = pixelFormat;
+    v12 = [(TextureProcessorMetalSession *)self createShaderRWTexture2DWithPixelFormat:pixelFormat width:256 height:256];
+    computeCommandEncoder = [commandBuffer computeCommandEncoder];
+    [computeCommandEncoder setTexture:fromCopy atIndex:0];
+    [computeCommandEncoder setTexture:v12 atIndex:1];
+    [computeCommandEncoder setBytes:&percentCopy length:4 atIndex:0];
+    [computeCommandEncoder setBytes:&radiusCopy length:4 atIndex:1];
+    [computeCommandEncoder setComputePipelineState:self->_glowrayPipeline];
+    threadExecutionWidth = [(MTLComputePipelineState *)self->_glowrayPipeline threadExecutionWidth];
+    maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_glowrayPipeline maxTotalThreadsPerThreadgroup];
+    *&v24 = (threadExecutionWidth + 255) / threadExecutionWidth;
+    *&v25 = (maxTotalThreadsPerThreadgroup / threadExecutionWidth + 255) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth);
     v26 = 1;
-    v28[0] = v14;
-    v28[1] = (v15 / v14);
+    v28[0] = threadExecutionWidth;
+    v28[1] = (maxTotalThreadsPerThreadgroup / threadExecutionWidth);
     v28[2] = 1;
-    [v13 dispatchThreadgroups:&v24 threadsPerThreadgroup:v28];
-    [v13 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:&v24 threadsPerThreadgroup:v28];
+    [computeCommandEncoder endEncoding];
     v16 = [(TextureProcessorMetalSession *)self createShaderRWTexture2DWithPixelFormat:v11 width:64 height:64];
     v28[0] = v16;
     v24 = vcvts_n_f32_u64([v16 width], 8uLL);
@@ -632,20 +632,20 @@ LABEL_12:
     v26 = 0;
     v27 = 0;
     [(MPSImageBilinearScale *)self->_bilinearScale setScaleTransform:&v24];
-    [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:v9 sourceTexture:v12 destinationTexture:v16];
+    [(MPSImageBilinearScale *)self->_bilinearScale encodeToCommandBuffer:commandBuffer sourceTexture:v12 destinationTexture:v16];
     v17 = objc_alloc(MEMORY[0x1E69745C0]);
     LODWORD(v18) = 2.0;
     v19 = [v17 initWithDevice:self->_device sigma:v18];
     [v19 setEdgeMode:1];
-    [v19 encodeToCommandBuffer:v9 inPlaceTexture:v28 fallbackCopyAllocator:0];
-    [v9 commit];
-    [v9 waitUntilScheduled];
+    [v19 encodeToCommandBuffer:commandBuffer inPlaceTexture:v28 fallbackCopyAllocator:0];
+    [commandBuffer commit];
+    [commandBuffer waitUntilScheduled];
     v20 = v28[0];
 
     goto LABEL_8;
   }
 
-  v21 = *re::imagePresentationLogObjects(v10);
+  v21 = *re::imagePresentationLogObjects(pixelFormat);
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
     LOWORD(v24) = 0;

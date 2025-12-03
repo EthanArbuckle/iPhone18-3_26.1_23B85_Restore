@@ -1,15 +1,15 @@
 @interface AWDCoreRoutineMagicalMomentsIndividualMoment
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasExpertType:(BOOL)a3;
-- (void)setHasModelType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasExpertType:(BOOL)type;
+- (void)setHasModelType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineMagicalMomentsIndividualMoment
@@ -22,9 +22,9 @@
   [(AWDCoreRoutineMagicalMomentsIndividualMoment *)&v3 dealloc];
 }
 
-- (void)setHasModelType:(BOOL)a3
+- (void)setHasModelType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasExpertType:(BOOL)a3
+- (void)setHasExpertType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -61,11 +61,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -84,24 +84,24 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_modelType), @"modelType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_modelType), @"modelType"}];
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_expertType), @"expertType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_expertType), @"expertType"}];
   }
 
 LABEL_5:
   suggestionId = self->_suggestionId;
   if (suggestionId)
   {
-    [v3 setObject:suggestionId forKey:@"suggestionId"];
+    [dictionary setObject:suggestionId forKey:@"suggestionId"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -143,13 +143,13 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -168,26 +168,26 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 5) = self->_modelType;
-  *(a3 + 32) |= 4u;
+  *(to + 5) = self->_modelType;
+  *(to + 32) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    *(a3 + 4) = self->_expertType;
-    *(a3 + 32) |= 2u;
+    *(to + 4) = self->_expertType;
+    *(to + 32) |= 2u;
   }
 
 LABEL_5:
   suggestionId = self->_suggestionId;
   if (suggestionId)
   {
-    [a3 setSuggestionId:suggestionId];
+    [to setSuggestionId:suggestionId];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 1) == 0)
@@ -226,25 +226,25 @@ LABEL_4:
 
 LABEL_5:
 
-  v6[3] = [(NSString *)self->_suggestionId copyWithZone:a3];
+  v6[3] = [(NSString *)self->_suggestionId copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 32);
+    v6 = *(equal + 32);
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
 LABEL_19:
       LOBYTE(v5) = 0;
@@ -253,32 +253,32 @@ LABEL_19:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 32) & 4) == 0 || self->_modelType != *(a3 + 5))
+      if ((*(equal + 32) & 4) == 0 || self->_modelType != *(equal + 5))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 32) & 4) != 0)
+    else if ((*(equal + 32) & 4) != 0)
     {
       goto LABEL_19;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 32) & 2) == 0 || self->_expertType != *(a3 + 4))
+      if ((*(equal + 32) & 2) == 0 || self->_expertType != *(equal + 4))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 32) & 2) != 0)
+    else if ((*(equal + 32) & 2) != 0)
     {
       goto LABEL_19;
     }
 
     suggestionId = self->_suggestionId;
-    if (suggestionId | *(a3 + 3))
+    if (suggestionId | *(equal + 3))
     {
 
       LOBYTE(v5) = [(NSString *)suggestionId isEqual:?];
@@ -333,14 +333,14 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(NSString *)self->_suggestionId hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 32);
+    v3 = *(from + 32);
     if ((v3 & 4) == 0)
     {
 LABEL_3:
@@ -353,22 +353,22 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 32) & 4) == 0)
+  else if ((*(from + 32) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_modelType = *(a3 + 5);
+  self->_modelType = *(from + 5);
   *&self->_has |= 4u;
-  if ((*(a3 + 32) & 2) != 0)
+  if ((*(from + 32) & 2) != 0)
   {
 LABEL_4:
-    self->_expertType = *(a3 + 4);
+    self->_expertType = *(from + 4);
     *&self->_has |= 2u;
   }
 
 LABEL_5:
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDCoreRoutineMagicalMomentsIndividualMoment *)self setSuggestionId:?];
   }

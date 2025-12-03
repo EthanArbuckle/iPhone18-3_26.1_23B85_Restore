@@ -1,12 +1,12 @@
 @interface HDOntologyConfigurationProvider
-- (BOOL)isCountryCodeSupported:(id)a3;
-- (BOOL)isCountrySupported:(id)a3;
+- (BOOL)isCountryCodeSupported:(id)supported;
+- (BOOL)isCountrySupported:(id)supported;
 - (HDOntologyConfigurationProvider)init;
 - (HDProfile)profile;
 - (NSSet)allSupportedCountryCodes;
 - (NSSet)improveHealthRecordsGatedAnalyticsEnabledCountryCodes;
 - (NSSet)optInDataCollectionEnabledCountryCodes;
-- (id)ontologyConfigurationForCountryCode:(id)a3;
+- (id)ontologyConfigurationForCountryCode:(id)code;
 - (void)ontologyConfiguration;
 @end
 
@@ -29,31 +29,31 @@
 
 - (void)ontologyConfiguration
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[3];
+    v2 = self[3];
     if (!v2)
     {
-      v2 = a1[1];
+      v2 = self[1];
     }
 
-    a1 = v2;
+    self = v2;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isCountrySupported:(id)a3
+- (BOOL)isCountrySupported:(id)supported
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 countryCode];
+  supportedCopy = supported;
+  countryCode = [supportedCopy countryCode];
 
-  if (v5)
+  if (countryCode)
   {
-    v6 = [v4 countryCode];
-    v7 = [(HDOntologyConfigurationProvider *)self isCountryCodeSupported:v6];
+    countryCode2 = [supportedCopy countryCode];
+    v7 = [(HDOntologyConfigurationProvider *)self isCountryCodeSupported:countryCode2];
   }
 
   else
@@ -63,9 +63,9 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v11 = 138543618;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
-      v14 = v4;
+      v14 = supportedCopy;
       _os_log_error_impl(&dword_228986000, v8, OS_LOG_TYPE_ERROR, "%{public}@: passing a locale without country code (%{public}@) to isCountrySupported:, will return NO", &v11, 0x16u);
     }
 
@@ -76,9 +76,9 @@
   return v7;
 }
 
-- (BOOL)isCountryCodeSupported:(id)a3
+- (BOOL)isCountryCodeSupported:(id)supported
 {
-  v3 = [(HDOntologyConfigurationProvider *)self ontologyConfigurationForCountryCode:a3];
+  v3 = [(HDOntologyConfigurationProvider *)self ontologyConfigurationForCountryCode:supported];
   v4 = v3 != 0;
 
   return v4;
@@ -86,18 +86,18 @@
 
 - (NSSet)allSupportedCountryCodes
 {
-  v2 = [(HDOntologyConfigurationProvider *)self ontologyConfiguration];
-  v3 = [v2 allCountryConfigurations];
-  v4 = [v3 hk_mapToSet:&__block_literal_global_136];
+  ontologyConfiguration = [(HDOntologyConfigurationProvider *)self ontologyConfiguration];
+  allCountryConfigurations = [ontologyConfiguration allCountryConfigurations];
+  v4 = [allCountryConfigurations hk_mapToSet:&__block_literal_global_136];
 
   return v4;
 }
 
 - (NSSet)improveHealthRecordsGatedAnalyticsEnabledCountryCodes
 {
-  v2 = [(HDOntologyConfigurationProvider *)self ontologyConfiguration];
-  v3 = [v2 allCountryConfigurations];
-  v4 = [v3 hk_mapToSet:&__block_literal_global_294];
+  ontologyConfiguration = [(HDOntologyConfigurationProvider *)self ontologyConfiguration];
+  allCountryConfigurations = [ontologyConfiguration allCountryConfigurations];
+  v4 = [allCountryConfigurations hk_mapToSet:&__block_literal_global_294];
 
   return v4;
 }
@@ -120,9 +120,9 @@ id __88__HDOntologyConfigurationProvider_improveHealthRecordsGatedAnalyticsEnabl
 
 - (NSSet)optInDataCollectionEnabledCountryCodes
 {
-  v2 = [(HDOntologyConfigurationProvider *)self ontologyConfiguration];
-  v3 = [v2 allCountryConfigurations];
-  v4 = [v3 hk_mapToSet:&__block_literal_global_296_0];
+  ontologyConfiguration = [(HDOntologyConfigurationProvider *)self ontologyConfiguration];
+  allCountryConfigurations = [ontologyConfiguration allCountryConfigurations];
+  v4 = [allCountryConfigurations hk_mapToSet:&__block_literal_global_296_0];
 
   return v4;
 }
@@ -143,11 +143,11 @@ id __73__HDOntologyConfigurationProvider_optInDataCollectionEnabledCountryCodes_
   return v3;
 }
 
-- (id)ontologyConfigurationForCountryCode:(id)a3
+- (id)ontologyConfigurationForCountryCode:(id)code
 {
-  v4 = a3;
-  v5 = [(HDOntologyConfigurationProvider *)self ontologyConfiguration];
-  v6 = [v5 configurationForCountryCode:v4];
+  codeCopy = code;
+  ontologyConfiguration = [(HDOntologyConfigurationProvider *)self ontologyConfiguration];
+  v6 = [ontologyConfiguration configurationForCountryCode:codeCopy];
 
   return v6;
 }

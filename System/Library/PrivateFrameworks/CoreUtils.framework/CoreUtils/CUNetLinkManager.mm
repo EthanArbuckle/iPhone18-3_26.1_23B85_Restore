@@ -1,36 +1,36 @@
 @interface CUNetLinkManager
 - (CUNetLinkManager)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_invalidate;
 - (void)_invalidated;
 - (void)_monitorEnsureStarted;
 - (void)_monitorEnsureStopped;
-- (void)_monitorReadPacket:(int)a3;
-- (void)_monitorSendPacketToEndpoint:(id)a3;
-- (void)_monitorSetupSocket:(int)a3;
+- (void)_monitorReadPacket:(int)packet;
+- (void)_monitorSendPacketToEndpoint:(id)endpoint;
+- (void)_monitorSetupSocket:(int)socket;
 - (void)_update;
 - (void)_updateARP;
-- (void)_updateEndpoint:(id)a3 state:(int)a4;
+- (void)_updateEndpoint:(id)endpoint state:(int)state;
 - (void)_updateEndpoints;
 - (void)_updateNDP;
 - (void)activate;
-- (void)addEndpoint:(id)a3;
+- (void)addEndpoint:(id)endpoint;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeEndpoint:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)removeEndpoint:(id)endpoint;
+- (void)setLabel:(id)label;
 @end
 
 @implementation CUNetLinkManager
 
-- (void)_monitorSendPacketToEndpoint:(id)a3
+- (void)_monitorSendPacketToEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = *(v4 + 17) + 1;
-  *(v4 + 17) = v5;
+  endpointCopy = endpoint;
+  v5 = *(endpointCopy + 17) + 1;
+  *(endpointCopy + 17) = v5;
   v18 = v5;
-  v6 = (v4 + 8);
-  v7 = v4[9];
+  v6 = (endpointCopy + 8);
+  v7 = endpointCopy[9];
   if (v7 == 30)
   {
     v8 = 28;
@@ -97,13 +97,13 @@
 LABEL_19:
 }
 
-- (void)_monitorReadPacket:(int)a3
+- (void)_monitorReadPacket:(int)packet
 {
   v13 = 0;
   v12 = 0;
   memset(v10, 0, sizeof(v10));
   v11 = 0;
-  if (!SocketRecvFrom(a3, &v13, 4, &v12, v10, 0x1Cu, 0, 0, 0, 0))
+  if (!SocketRecvFrom(packet, &v13, 4, &v12, v10, 0x1Cu, 0, 0, 0, 0))
   {
     ++self->_rxCount;
     ucat = self->_ucat;
@@ -144,11 +144,11 @@ LABEL_4:
   }
 }
 
-- (void)_monitorSetupSocket:(int)a3
+- (void)_monitorSetupSocket:(int)socket
 {
-  v7 = *&a3;
+  v7 = *&socket;
   memset(v68, 0, 28);
-  if (a3 == 2)
+  if (socket == 2)
   {
     v9 = "IPv4";
     v10 = 40;
@@ -157,7 +157,7 @@ LABEL_4:
 
   else
   {
-    if (a3 != 30)
+    if (socket != 30)
     {
       ucat = self->_ucat;
       if (ucat->var0 > 90)
@@ -548,11 +548,11 @@ LABEL_12:
   }
 }
 
-- (void)_updateEndpoint:(id)a3 state:(int)a4
+- (void)_updateEndpoint:(id)endpoint state:(int)state
 {
-  v6 = a3;
-  v11 = v6;
-  if (*(v6 + 9) == a4)
+  endpointCopy = endpoint;
+  v11 = endpointCopy;
+  if (*(endpointCopy + 9) == state)
   {
     goto LABEL_10;
   }
@@ -579,7 +579,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  *(v11 + 9) = a4;
+  *(v11 + 9) = state;
   ++*(v11 + 18);
   v14 = _Block_copy(v11[5]);
   v15 = v14;
@@ -591,7 +591,7 @@ LABEL_7:
   v11 = v16;
 LABEL_10:
 
-  MEMORY[0x1EEE66BB8](v6, v11);
+  MEMORY[0x1EEE66BB8](endpointCopy, v11);
 }
 
 - (void)_updateNDP
@@ -1071,17 +1071,17 @@ LABEL_14:
   }
 }
 
-- (void)removeEndpoint:(id)a3
+- (void)removeEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__CUNetLinkManager_removeEndpoint___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = endpointCopy;
+  v6 = endpointCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1128,17 +1128,17 @@ LABEL_5:
   return [v15 _update];
 }
 
-- (void)addEndpoint:(id)a3
+- (void)addEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__CUNetLinkManager_addEndpoint___block_invoke;
   v7[3] = &unk_1E73A49F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = endpointCopy;
+  selfCopy = self;
+  v6 = endpointCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1344,17 +1344,17 @@ LABEL_5:
   return [v9 _update];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE9F38;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v46 = *MEMORY[0x1E69E9840];
   v44 = 0;
@@ -1362,7 +1362,7 @@ LABEL_5:
   NSAppendPrintF(&v44, "CUNetLinkManager %d EP(s), EPCh %u, PrRx/Tx/Err %u/%u/%u, Un/Re %u/%u", v6, v7, v8, v9, v10, v11, v5);
   v12 = v44;
   v19 = v12;
-  if (a3 <= 20)
+  if (level <= 20)
   {
     v43 = v12;
     NSAppendPrintF(&v43, "\n", v13, v14, v15, v16, v17, v18, v37);
@@ -1378,7 +1378,7 @@ LABEL_5:
     {
       v23 = v22;
       v24 = *v40;
-      if (a3 >= 11)
+      if (level >= 11)
       {
         v25 = 50;
       }

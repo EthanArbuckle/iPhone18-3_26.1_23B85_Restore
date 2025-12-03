@@ -8,7 +8,7 @@
 {
   v8.receiver = self;
   v8.super_class = CKSuggestedReplyBalloonViewAccessibility;
-  v3 = [(CKSuggestedReplyBalloonViewAccessibility *)&v8 accessibilityLabel];
+  accessibilityLabel = [(CKSuggestedReplyBalloonViewAccessibility *)&v8 accessibilityLabel];
   v4 = [(CKSuggestedReplyBalloonViewAccessibility *)self safeSwiftValueForKey:@"view"];
   v7 = UIAXStringForAllChildren();
   v5 = __UIAXStringForVariables();

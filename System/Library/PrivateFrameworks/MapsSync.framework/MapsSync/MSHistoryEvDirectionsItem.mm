@@ -1,20 +1,20 @@
 @interface MSHistoryEvDirectionsItem
 + (Class)managedClass;
-- (MSHistoryEvDirectionsItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
-- (MSHistoryEvDirectionsItem)initWithRequiredCharge:(double)a3 vehicleIdentifier:(id)a4;
-- (MSHistoryEvDirectionsItem)initWithStore:(id)a3 requiredCharge:(double)a4 vehicleIdentifier:(id)a5;
+- (MSHistoryEvDirectionsItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (MSHistoryEvDirectionsItem)initWithRequiredCharge:(double)charge vehicleIdentifier:(id)identifier;
+- (MSHistoryEvDirectionsItem)initWithStore:(id)store requiredCharge:(double)charge vehicleIdentifier:(id)identifier;
 - (NSString)vehicleIdentifier;
 - (double)requiredCharge;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
-- (void)setRequiredCharge:(double)a3;
-- (void)setVehicleIdentifier:(id)a3;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (void)setRequiredCharge:(double)charge;
+- (void)setVehicleIdentifier:(id)identifier;
 @end
 
 @implementation MSHistoryEvDirectionsItem
 
-- (MSHistoryEvDirectionsItem)initWithRequiredCharge:(double)a3 vehicleIdentifier:(id)a4
+- (MSHistoryEvDirectionsItem)initWithRequiredCharge:(double)charge vehicleIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_1B63BEBD4();
     v7 = v6;
@@ -41,14 +41,14 @@
     v9 = 0;
   }
 
-  v10 = [(MSHistoryEvDirectionsItem *)self initWithStore:v8 requiredCharge:v9 vehicleIdentifier:a3];
+  v10 = [(MSHistoryEvDirectionsItem *)self initWithStore:v8 requiredCharge:v9 vehicleIdentifier:charge];
 
   return v10;
 }
 
-- (MSHistoryEvDirectionsItem)initWithStore:(id)a3 requiredCharge:(double)a4 vehicleIdentifier:(id)a5
+- (MSHistoryEvDirectionsItem)initWithStore:(id)store requiredCharge:(double)charge vehicleIdentifier:(id)identifier
 {
-  if (a5)
+  if (identifier)
   {
     v7 = sub_1B63BEBD4();
     v9 = v8;
@@ -60,7 +60,7 @@
     v9 = 0;
   }
 
-  return HistoryEvDirectionsItem.init(store:requiredCharge:vehicleIdentifier:)(a3, v7, v9, a4);
+  return HistoryEvDirectionsItem.init(store:requiredCharge:vehicleIdentifier:)(store, v7, v9, charge);
 }
 
 + (Class)managedClass
@@ -70,34 +70,34 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v7 = a3;
-  v8 = self;
-  sub_1B62EF4B4(v7, a4);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B62EF4B4(objectCopy, load);
 }
 
 - (double)requiredCharge
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  v6 = *(&v5->super.super.super.super.isa + OBJC_IVAR___MSHistoryEvDirectionsItem__requiredCharge);
+  v6 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR___MSHistoryEvDirectionsItem__requiredCharge);
   [*(&self->super.super.super.super.isa + v3) unlock];
 
   return v6;
 }
 
-- (void)setRequiredCharge:(double)a3
+- (void)setRequiredCharge:(double)charge
 {
-  v4 = self;
-  sub_1B62EE5C4(a3);
+  selfCopy = self;
+  sub_1B62EE5C4(charge);
 }
 
 - (NSString)vehicleIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B62EE904();
   v4 = v3;
 
@@ -114,9 +114,9 @@
   return v5;
 }
 
-- (void)setVehicleIdentifier:(id)a3
+- (void)setVehicleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1B63BEBD4();
     v6 = v5;
@@ -128,14 +128,14 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1B62EED10(v4, v6);
 }
 
-- (MSHistoryEvDirectionsItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSHistoryEvDirectionsItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
+  parentCopy = parent;
+  loadCopy = load;
   *(&self->super.super.super.super.isa + OBJC_IVAR___MSHistoryEvDirectionsItem__requiredCharge) = 0;
   v10 = (&self->super.super.super.super.isa + OBJC_IVAR___MSHistoryEvDirectionsItem__vehicleIdentifier);
   *v10 = 0;
@@ -143,8 +143,8 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR___MSHistoryDirectionsItem__navigationInterrupted) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR___MSHistoryDirectionsItem__routeRequestStorage) = xmmword_1B63C3E40;
   *(&self->super.super.super.super.isa + OBJC_IVAR___MSHistoryDirectionsItem__sharedETAData) = xmmword_1B63C3E40;
-  v11 = a3;
-  return sub_1B62F0450(a3, a4, v7, v6);
+  objectCopy = object;
+  return sub_1B62F0450(object, store, loadCopy, parentCopy);
 }
 
 @end

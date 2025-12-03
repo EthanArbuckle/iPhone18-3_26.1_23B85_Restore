@@ -1,11 +1,11 @@
 @interface FlowClassification
-+ (FlowClassification)classificationWithDictionary:(id)a3;
++ (FlowClassification)classificationWithDictionary:(id)dictionary;
 + (FlowClassification)defaultInstance;
-+ (id)classFlagsToString:(unsigned int)a3;
++ (id)classFlagsToString:(unsigned int)string;
 + (id)undefinedInstance;
-+ (unsigned)dispositionFromDigest:(FlowClassificationDigest *)a3;
-- (BOOL)configure:(id)a3;
-- (BOOL)setOnExpiry:(id)a3;
++ (unsigned)dispositionFromDigest:(FlowClassificationDigest *)digest;
+- (BOOL)configure:(id)configure;
+- (BOOL)setOnExpiry:(id)expiry;
 - (id)description;
 - (id)dictionaryForm;
 @end
@@ -55,8 +55,8 @@
     [v3 appendFormat:@" prefBandwidth:%s", flowPropertyScaleString(-[FlowClassification preferredBandwidth](self, "preferredBandwidth"))];
   }
 
-  v4 = [(FlowClassification *)self disposition];
-  if (v4)
+  disposition = [(FlowClassification *)self disposition];
+  if (disposition)
   {
     v5 = &off_27898E140;
     v6 = "unknown";
@@ -70,7 +70,7 @@
 
       v8 = *(v5 - 2);
       v5 += 2;
-      if (v8 == v4)
+      if (v8 == disposition)
       {
         v6 = v7;
         break;
@@ -89,12 +89,12 @@
   {
     [(FlowClassification *)self expirationTime];
     [v3 appendFormat:@" expirationTime:%f", v10];
-    v11 = [(FlowClassification *)self nextClassification];
+    nextClassification = [(FlowClassification *)self nextClassification];
 
-    if (v11)
+    if (nextClassification)
     {
-      v12 = [(FlowClassification *)self nextClassification];
-      v13 = [v12 description];
+      nextClassification2 = [(FlowClassification *)self nextClassification];
+      v13 = [nextClassification2 description];
       [v3 appendFormat:@" next:%@", v13];
     }
   }
@@ -102,10 +102,10 @@
   return v3;
 }
 
-- (BOOL)configure:(id)a3
+- (BOOL)configure:(id)configure
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configureCopy = configure;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -120,7 +120,7 @@
     v24 = 0;
     if (objc_opt_isKindOfClass())
     {
-      v31 = dispositionFromString(v4);
+      v31 = dispositionFromString(configureCopy);
     }
 
     else
@@ -135,8 +135,8 @@
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v35 = v4;
-  v5 = v4;
+  v35 = configureCopy;
+  v5 = configureCopy;
   v6 = [v5 countByEnumeratingWithState:&v49 objects:v57 count:16];
   if (!v6)
   {
@@ -151,7 +151,7 @@
     goto LABEL_46;
   }
 
-  v37 = self;
+  selfCopy = self;
   v38 = 0;
   v39 = 0;
   v44 = 0;
@@ -279,7 +279,7 @@ LABEL_21:
           v12 = [v5 objectForKeyedSubscript:v11];
           v21 = objc_alloc_init(FlowClassification);
           [(FlowClassification *)v21 configure:v12];
-          [(FlowClassification *)v37 setNextClassification:v21];
+          [(FlowClassification *)selfCopy setNextClassification:v21];
 
           goto LABEL_21;
         }
@@ -322,10 +322,10 @@ LABEL_22:
   }
 
   v30 = v38 << 32;
-  self = v37;
+  self = selfCopy;
 LABEL_46:
 
-  v4 = v35;
+  configureCopy = v35;
   v31 = v43;
 LABEL_47:
   self->_condensedValues = v29 | v30 | v31 | v28 | v27 | v26 | v25 | v6 | v24;
@@ -334,65 +334,65 @@ LABEL_47:
   return 1;
 }
 
-- (BOOL)setOnExpiry:(id)a3
+- (BOOL)setOnExpiry:(id)expiry
 {
-  v4 = a3;
+  expiryCopy = expiry;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [(FlowClassification *)self setNextClassification:v4];
+    [(FlowClassification *)self setNextClassification:expiryCopy];
   }
 
   return isKindOfClass & 1;
 }
 
-+ (FlowClassification)classificationWithDictionary:(id)a3
++ (FlowClassification)classificationWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(FlowClassification);
-  v6 = [v4 objectForKeyedSubscript:@"disposition"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"disposition"];
   if (v6)
   {
     v7 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"disposition"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"disposition"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [v4 objectForKeyedSubscript:@"disposition"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"disposition"];
       -[FlowClassification setDisposition:](v5, "setDisposition:", [v10 unsignedIntValue]);
     }
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"nextClassification"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"nextClassification"];
   if (v11)
   {
     v12 = v11;
-    v13 = [v4 objectForKeyedSubscript:@"nextClassification"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"nextClassification"];
     objc_opt_class();
     v14 = objc_opt_isKindOfClass();
 
     if (v14)
     {
-      v15 = [v4 objectForKeyedSubscript:@"nextClassification"];
-      v16 = [a1 classificationWithDictionary:v15];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"nextClassification"];
+      v16 = [self classificationWithDictionary:v15];
       [(FlowClassification *)v5 setNextClassification:v16];
     }
   }
 
-  v17 = [v4 objectForKeyedSubscript:@"expirationTime"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"expirationTime"];
   if (v17)
   {
     v18 = v17;
-    v19 = [v4 objectForKeyedSubscript:@"expirationTime"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"expirationTime"];
     objc_opt_class();
     v20 = objc_opt_isKindOfClass();
 
     if (v20)
     {
-      v21 = [v4 objectForKeyedSubscript:@"expirationTime"];
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"expirationTime"];
       [v21 floatValue];
       [(FlowClassification *)v5 setExpirationTime:v22];
     }
@@ -403,31 +403,31 @@ LABEL_47:
 
 - (id)dictionaryForm
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   nextClassification = self->_nextClassification;
   if (nextClassification)
   {
-    v5 = [(FlowClassification *)nextClassification dictionaryForm];
-    [v3 setObject:v5 forKeyedSubscript:@"nextClassification"];
+    dictionaryForm = [(FlowClassification *)nextClassification dictionaryForm];
+    [dictionary setObject:dictionaryForm forKeyedSubscript:@"nextClassification"];
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[FlowClassification disposition](self, "disposition")}];
-  [v3 setObject:v6 forKeyedSubscript:@"disposition"];
+  [dictionary setObject:v6 forKeyedSubscript:@"disposition"];
 
   v7 = MEMORY[0x277CCABB0];
   [(FlowClassification *)self expirationTime];
   *&v8 = v8;
   v9 = [v7 numberWithFloat:v8];
-  [v3 setObject:v9 forKeyedSubscript:@"expirationTime"];
+  [dictionary setObject:v9 forKeyedSubscript:@"expirationTime"];
 
-  return v3;
+  return dictionary;
 }
 
-+ (unsigned)dispositionFromDigest:(FlowClassificationDigest *)a3
++ (unsigned)dispositionFromDigest:(FlowClassificationDigest *)digest
 {
-  if (a3)
+  if (digest)
   {
-    return a3->var0 != 0;
+    return digest->var0 != 0;
   }
 
   else
@@ -436,13 +436,13 @@ LABEL_47:
   }
 }
 
-+ (id)classFlagsToString:(unsigned int)a3
++ (id)classFlagsToString:(unsigned int)string
 {
-  v4 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v5 = 0;
   for (i = 0; i != 32; ++i)
   {
-    if ((a3 >> i))
+    if ((string >> i))
     {
       if (i)
       {
@@ -482,12 +482,12 @@ LABEL_10:
         v10 = @"%s";
       }
 
-      [v4 appendFormat:v10, v8];
+      [string appendFormat:v10, v8];
       v5 = 1;
     }
   }
 
-  return v4;
+  return string;
 }
 
 + (FlowClassification)defaultInstance
@@ -496,7 +496,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __37__FlowClassification_defaultInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultInstance_pred != -1)
   {
     dispatch_once(&defaultInstance_pred, block);
@@ -524,7 +524,7 @@ uint64_t __37__FlowClassification_defaultInstance__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__FlowClassification_undefinedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (undefinedInstance_pred != -1)
   {
     dispatch_once(&undefinedInstance_pred, block);

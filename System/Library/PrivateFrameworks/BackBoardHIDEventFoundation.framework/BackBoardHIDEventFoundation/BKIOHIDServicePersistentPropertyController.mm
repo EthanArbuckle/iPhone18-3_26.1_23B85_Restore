@@ -2,19 +2,19 @@
 + (id)digitizerServicePersistentPropertyController;
 + (id)sharedInstances;
 + (id)touchSensitiveButtonServicePersistentPropertyController;
-- (BKIOHIDServicePersistentPropertyController)initWithClientEntitlement:(id)a3 defaults:(id)a4 defaultsKey:(id)a5;
-- (id)allPersistentPropertiesForServicesMatchingDescriptor:(id)a3;
-- (id)persistentPropertiesForKeys:(id)a3 forSenderDescriptor:(id)a4;
-- (void)registerHandler:(id)a3;
-- (void)setPersistentProperties:(id)a3 forSenderDescriptor:(id)a4;
+- (BKIOHIDServicePersistentPropertyController)initWithClientEntitlement:(id)entitlement defaults:(id)defaults defaultsKey:(id)key;
+- (id)allPersistentPropertiesForServicesMatchingDescriptor:(id)descriptor;
+- (id)persistentPropertiesForKeys:(id)keys forSenderDescriptor:(id)descriptor;
+- (void)registerHandler:(id)handler;
+- (void)setPersistentProperties:(id)properties forSenderDescriptor:(id)descriptor;
 @end
 
 @implementation BKIOHIDServicePersistentPropertyController
 
-- (id)allPersistentPropertiesForServicesMatchingDescriptor:(id)a3
+- (id)allPersistentPropertiesForServicesMatchingDescriptor:(id)descriptor
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorCopy = descriptor;
   v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
   os_unfair_lock_lock(&self->_defaultsLock);
   v5 = [(BKSLocalDefaults *)self->_defaultsLock_defaults valueForKey:self->_defaultsKey defaultValueProvider:&__block_literal_global_33_2560];
@@ -39,7 +39,7 @@
         v10 = *(*(&v17 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"sender"];
         v12 = [objc_alloc(MEMORY[0x277CF06D0]) initFromPropertyList:v11];
-        if ([v4 matchesDescriptor:v12 failureReason:0])
+        if ([descriptorCopy matchesDescriptor:v12 failureReason:0])
         {
           v13 = [v10 objectForKeyedSubscript:@"props"];
           if ([v13 count])
@@ -62,13 +62,13 @@
   return v16;
 }
 
-- (id)persistentPropertiesForKeys:(id)a3 forSenderDescriptor:(id)a4
+- (id)persistentPropertiesForKeys:(id)keys forSenderDescriptor:(id)descriptor
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  descriptorCopy = descriptor;
   os_unfair_lock_lock(&self->_defaultsLock);
-  v8 = [v7 propertyListEncoded];
+  propertyListEncoded = [descriptorCopy propertyListEncoded];
   [(BKSLocalDefaults *)self->_defaultsLock_defaults valueForKey:self->_defaultsKey defaultValueProvider:&__block_literal_global_24_2570];
   v39 = 0u;
   v40 = 0u;
@@ -90,19 +90,19 @@
 
         v13 = *(*(&v39 + 1) + 8 * i);
         v14 = [v13 objectForKeyedSubscript:@"sender"];
-        if ([v14 isEqual:v8])
+        if ([v14 isEqual:propertyListEncoded])
         {
-          v30 = v8;
-          v31 = self;
-          v32 = v7;
+          v30 = propertyListEncoded;
+          selfCopy = self;
+          v32 = descriptorCopy;
           v16 = [v13 objectForKeyedSubscript:@"props"];
           v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
           v35 = 0u;
           v36 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v33 = v6;
-          v17 = v6;
+          v33 = keysCopy;
+          v17 = keysCopy;
           v18 = [v17 countByEnumeratingWithState:&v35 objects:v43 count:16];
           if (v18)
           {
@@ -133,10 +133,10 @@
             while (v19);
           }
 
-          v7 = v32;
-          v6 = v33;
-          v8 = v30;
-          self = v31;
+          descriptorCopy = v32;
+          keysCopy = v33;
+          propertyListEncoded = v30;
+          self = selfCopy;
           goto LABEL_20;
         }
       }
@@ -171,14 +171,14 @@ LABEL_20:
   return v26;
 }
 
-- (void)setPersistentProperties:(id)a3 forSenderDescriptor:(id)a4
+- (void)setPersistentProperties:(id)properties forSenderDescriptor:(id)descriptor
 {
   v71 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!CFPropertyListIsValid(v7, kCFPropertyListXMLFormat_v1_0))
+  propertiesCopy = properties;
+  descriptorCopy = descriptor;
+  if (!CFPropertyListIsValid(propertiesCopy, kCFPropertyListXMLFormat_v1_0))
   {
-    v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"non-plistable type in %@", v7];
+    propertiesCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"non-plistable type in %@", propertiesCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v45 = NSStringFromSelector(a2);
@@ -189,23 +189,23 @@ LABEL_20:
       *&buf[12] = 2114;
       *&buf[14] = v47;
       *&buf[22] = 2048;
-      v65 = self;
+      selfCopy = self;
       *v66 = 2114;
       *&v66[2] = @"BKIOHIDServicePersistentPropertyController.m";
       v67 = 1024;
       v68 = 141;
       v69 = 2114;
-      v70 = v44;
+      v70 = propertiesCopy;
       _os_log_error_impl(&dword_223CBE000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
     }
 
-    [v44 UTF8String];
+    [propertiesCopy UTF8String];
     _bs_set_crash_log_message();
     __break(0);
     JUMPOUT(0x223CE4934);
   }
 
-  v9 = v8;
+  v9 = descriptorCopy;
   if (self)
   {
     os_unfair_lock_lock(&self->_handlersLock);
@@ -214,7 +214,7 @@ LABEL_20:
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
     *&buf[16] = __75__BKIOHIDServicePersistentPropertyController__handlersForSenderDescriptor___block_invoke;
-    v65 = &unk_2784F6ED8;
+    selfCopy = &unk_2784F6ED8;
     *v66 = v9;
     v11 = [v10 bs_filter:buf];
   }
@@ -228,11 +228,11 @@ LABEL_20:
   v54[1] = 3221225472;
   v54[2] = __90__BKIOHIDServicePersistentPropertyController_setPersistentProperties_forSenderDescriptor___block_invoke;
   v54[3] = &unk_2784F6F00;
-  v12 = v7;
+  v12 = propertiesCopy;
   v55 = v12;
   v13 = v9;
   v56 = v13;
-  v57 = self;
+  selfCopy2 = self;
   v14 = [v11 bs_filter:v54];
 
   v15 = [v14 count];
@@ -249,13 +249,13 @@ LABEL_20:
       *&buf[12] = 2114;
       *&buf[14] = v19;
       *&buf[22] = 2114;
-      v65 = v13;
+      selfCopy = v13;
       _os_log_impl(&dword_223CBE000, v16, OS_LOG_TYPE_DEFAULT, "setPersistentProperties(%{public}@): %{public}@ forServicesMatching:(%{public}@)", buf, 0x20u);
     }
 
     os_unfair_lock_lock(&self->_defaultsLock);
     v51 = v13;
-    v20 = [(BKIOHIDServicePersistentPropertyController *)v13 propertyListEncoded];
+    propertyListEncoded = [(BKIOHIDServicePersistentPropertyController *)v13 propertyListEncoded];
     v21 = [(BKSLocalDefaults *)self->_defaultsLock_defaults valueForKey:self->_defaultsKey defaultValueProvider:&__block_literal_global_22];
     v22 = objc_opt_class();
     v23 = v21;
@@ -278,7 +278,7 @@ LABEL_20:
     }
 
     v50 = v14;
-    v53 = self;
+    selfCopy3 = self;
     v26 = v24;
 
     v27 = [v26 mutableCopy];
@@ -287,7 +287,7 @@ LABEL_20:
       v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
     }
 
-    v16 = v20;
+    v16 = propertyListEncoded;
     v52 = v12;
     v48 = v12;
     v49 = v27;
@@ -372,8 +372,8 @@ LABEL_20:
     [v29 addObject:v42];
 LABEL_33:
 
-    [(BKSLocalDefaults *)v53->_defaultsLock_defaults setValue:v29 forKey:v53->_defaultsKey];
-    os_unfair_lock_unlock(&v53->_defaultsLock);
+    [(BKSLocalDefaults *)selfCopy3->_defaultsLock_defaults setValue:v29 forKey:selfCopy3->_defaultsKey];
+    os_unfair_lock_unlock(&selfCopy3->_defaultsLock);
 
     v13 = v51;
     v12 = v52;
@@ -447,9 +447,9 @@ LABEL_10:
   return v9;
 }
 
-- (void)registerHandler:(id)a3
+- (void)registerHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_handlersLock);
   handlersLock_handlers = self->_handlersLock_handlers;
   if (!handlersLock_handlers)
@@ -461,24 +461,24 @@ LABEL_10:
     handlersLock_handlers = self->_handlersLock_handlers;
   }
 
-  [(NSMutableArray *)handlersLock_handlers addObject:v7];
+  [(NSMutableArray *)handlersLock_handlers addObject:handlerCopy];
   os_unfair_lock_unlock(&self->_handlersLock);
 }
 
-- (BKIOHIDServicePersistentPropertyController)initWithClientEntitlement:(id)a3 defaults:(id)a4 defaultsKey:(id)a5
+- (BKIOHIDServicePersistentPropertyController)initWithClientEntitlement:(id)entitlement defaults:(id)defaults defaultsKey:(id)key
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  entitlementCopy = entitlement;
+  defaultsCopy = defaults;
+  keyCopy = key;
   v15.receiver = self;
   v15.super_class = BKIOHIDServicePersistentPropertyController;
   v12 = [(BKIOHIDServicePersistentPropertyController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientEntitlement, a3);
-    objc_storeStrong(&v13->_defaultsLock_defaults, a4);
-    objc_storeStrong(&v13->_defaultsKey, a5);
+    objc_storeStrong(&v12->_clientEntitlement, entitlement);
+    objc_storeStrong(&v13->_defaultsLock_defaults, defaults);
+    objc_storeStrong(&v13->_defaultsKey, key);
     *&v13->_handlersLock._os_unfair_lock_opaque = 0;
   }
 
@@ -533,7 +533,7 @@ void __90__BKIOHIDServicePersistentPropertyController_digitizerServicePersistent
   block[1] = 3221225472;
   block[2] = __61__BKIOHIDServicePersistentPropertyController_sharedInstances__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstances_onceToken != -1)
   {
     dispatch_once(&sharedInstances_onceToken, block);

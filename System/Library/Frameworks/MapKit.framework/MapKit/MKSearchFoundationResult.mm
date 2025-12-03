@@ -1,7 +1,7 @@
 @interface MKSearchFoundationResult
-+ (id)styledStringFromStringArray:(id)a3;
++ (id)styledStringFromStringArray:(id)array;
 - (BOOL)_isSmallerScreen;
-- (MKSearchFoundationResult)initWithMapsData:(id)a3 iconSize:(unint64_t)a4 bundleID:(id)a5;
+- (MKSearchFoundationResult)initWithMapsData:(id)data iconSize:(unint64_t)size bundleID:(id)d;
 - (id)_appleRatingsDescription;
 - (id)_brandURL;
 - (id)_businessAddress;
@@ -9,42 +9,42 @@
 - (id)_businessHoursAndDistance;
 - (id)_businessReviewText;
 - (id)_defaultRichTextItems;
-- (id)_populateAppClipData:(id)a3;
-- (id)_populateButtonItem:(id)a3 imageName:(id)a4 command:(id)a5;
+- (id)_populateAppClipData:(id)data;
+- (id)_populateButtonItem:(id)item imageName:(id)name command:(id)command;
 - (id)_populateButtonItemsAndCommands;
 - (void)_commonInit;
 - (void)_locationApprovalDidChange;
 - (void)dealloc;
-- (void)locationManagerUpdatedLocation:(id)a3;
+- (void)locationManagerUpdatedLocation:(id)location;
 @end
 
 @implementation MKSearchFoundationResult
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v11 = a3;
-  v4 = [v11 lastLocation];
+  locationCopy = location;
+  lastLocation = [locationCopy lastLocation];
 
-  if (v4)
+  if (lastLocation)
   {
-    v5 = [v11 lastLocation];
+    lastLocation2 = [locationCopy lastLocation];
     v6 = objc_alloc(MEMORY[0x1E6985C40]);
     [(MKMapItem *)self->_mapItem _coordinate];
     v8 = v7;
     [(MKMapItem *)self->_mapItem _coordinate];
     v9 = [v6 initWithLatitude:v8 longitude:?];
-    [v5 distanceFromLocation:v9];
+    [lastLocation2 distanceFromLocation:v9];
     v10 = [MEMORY[0x1E696AEC0] _navigation_localizedStringForDistance:0 detail:self->_optionSmallerScreen unitFormat:0 locale:0 useMetric:0 useYards:?];
     [(MKSearchFoundationBusinessHoursAndDistanceRichText *)self->_thirdLineDisplayedText resolveDistanceString:v10 lines:self->_thirdLineText];
-    [v11 stopLocationUpdateWithObserver:self];
+    [locationCopy stopLocationUpdateWithObserver:self];
   }
 }
 
 - (void)_locationApprovalDidChange
 {
-  v3 = [(MKLocationManager *)self->_locationManager isLocationServicesAvailable];
+  isLocationServicesAvailable = [(MKLocationManager *)self->_locationManager isLocationServicesAvailable];
   locationManager = self->_locationManager;
-  if (v3)
+  if (isLocationServicesAvailable)
   {
 
     [(MKLocationManager *)locationManager startLocationUpdateWithObserver:self];
@@ -59,8 +59,8 @@
 
 - (BOOL)_isSmallerScreen
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3 <= 375.0;
 
   return v4;
@@ -69,9 +69,9 @@
 - (id)_businessHoursAndDistance
 {
   v3 = [(MKSearchFoundationRichText *)[MKSearchFoundationBusinessHoursAndDistanceRichText alloc] initWithString:&stru_1F15B23C0];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   thirdLineText = self->_thirdLineText;
-  self->_thirdLineText = v4;
+  self->_thirdLineText = array;
 
   [(MKSearchFoundationBusinessHoursAndDistanceRichText *)v3 resolveBusinessHoursByMapItem:self->_mapItem lines:self->_thirdLineText];
 
@@ -81,11 +81,11 @@
 - (id)_brandURL
 {
   v2 = [(MKMapItem *)self->_mapItem url];
-  v3 = [v2 host];
+  host = [v2 host];
 
-  if ([v3 length])
+  if ([host length])
   {
-    v4 = [(MKSearchFoundationRichText *)[MKSearchFoundationBusinessHoursAndDistanceRichText alloc] initWithString:v3];
+    v4 = [(MKSearchFoundationRichText *)[MKSearchFoundationBusinessHoursAndDistanceRichText alloc] initWithString:host];
   }
 
   else
@@ -99,14 +99,14 @@
 - (id)_businessCategory
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MKMapItem *)self->_mapItem _firstLocalizedCategoryName];
-  v4 = [v3 length];
+  _firstLocalizedCategoryName = [(MKMapItem *)self->_mapItem _firstLocalizedCategoryName];
+  v4 = [_firstLocalizedCategoryName length];
 
   if (v4)
   {
     v5 = [MKSearchFoundationRichText alloc];
-    v6 = [(MKMapItem *)self->_mapItem _firstLocalizedCategoryName];
-    v11[0] = v6;
+    _firstLocalizedCategoryName2 = [(MKMapItem *)self->_mapItem _firstLocalizedCategoryName];
+    v11[0] = _firstLocalizedCategoryName2;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     v8 = [MKSearchFoundationResult styledStringFromStringArray:v7];
     v9 = [(MKSearchFoundationRichText *)v5 initWithString:v8];
@@ -123,21 +123,21 @@
 - (id)_businessAddress
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(MKMapItem *)self->_mapItem _shortAddress];
-  v4 = [(MKMapItem *)self->_mapItem _geoAddress];
-  v5 = [v4 singleLineAddress];
+  _shortAddress = [(MKMapItem *)self->_mapItem _shortAddress];
+  _geoAddress = [(MKMapItem *)self->_mapItem _geoAddress];
+  singleLineAddress = [_geoAddress singleLineAddress];
 
   v6 = MKGetMKSearchFoundationResultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v14 = v5;
+    v14 = singleLineAddress;
     _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_INFO, "MapItem single line address: %{private}@", buf, 0xCu);
   }
 
-  if ([v3 length] && (objc_msgSend(v3, "isEqualToString:", v5) & 1) == 0)
+  if ([_shortAddress length] && (objc_msgSend(_shortAddress, "isEqualToString:", singleLineAddress) & 1) == 0)
   {
-    v12 = v3;
+    v12 = _shortAddress;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
   }
 
@@ -167,44 +167,44 @@
   v3 = [(MKSearchFoundationRichText *)[MKSearchFoundationBusinessReviewRichText alloc] initWithString:&stru_1F15B23C0];
   if (-[MKMapItem _hasUserRatingScore](self->_mapItem, "_hasUserRatingScore") && (-[MKMapItem _geoMapItem](self->_mapItem, "_geoMapItem"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 _hasAppleRatings], v4, v5))
   {
-    v6 = [(MKSearchFoundationResult *)self _appleRatingsDescription];
-    [(MKSearchFoundationRichText *)v3 setText:v6];
+    _appleRatingsDescription = [(MKSearchFoundationResult *)self _appleRatingsDescription];
+    [(MKSearchFoundationRichText *)v3 setText:_appleRatingsDescription];
 
-    v7 = objc_alloc_init(MEMORY[0x1E69CA4C8]);
-    [v7 setSymbolName:@"hand.thumbsup.fill"];
-    [v7 setIsTemplate:1];
-    v34[0] = v7;
+    array = objc_alloc_init(MEMORY[0x1E69CA4C8]);
+    [array setSymbolName:@"hand.thumbsup.fill"];
+    [array setIsTemplate:1];
+    v34[0] = array;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
     [(SFRichText *)v3 setIcons:v8];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if ([(MKMapItem *)self->_mapItem _hasUserRatingScore])
     {
       [(MKMapItem *)self->_mapItem _normalizedUserRatingScore];
       [(SFRichText *)v3 setStarRating:v9];
-      v10 = [(MKMapItem *)self->_mapItem _reviewsAttribution];
-      v11 = [v10 providerName];
-      v12 = [v11 length];
+      _reviewsAttribution = [(MKMapItem *)self->_mapItem _reviewsAttribution];
+      providerName = [_reviewsAttribution providerName];
+      v12 = [providerName length];
 
       v13 = MEMORY[0x1E696AEC0];
       if (v12)
       {
         v14 = _MKLocalizedStringFromThisBundle(@"Place_Reviews_On_Provider");
-        v15 = [(MKMapItem *)self->_mapItem _sampleSizeForUserRatingScore];
-        v16 = [(MKMapItem *)self->_mapItem _reviewsDisplayName];
-        v17 = [v13 localizedStringWithFormat:v14, v15, v16];
+        _sampleSizeForUserRatingScore = [(MKMapItem *)self->_mapItem _sampleSizeForUserRatingScore];
+        _reviewsDisplayName = [(MKMapItem *)self->_mapItem _reviewsDisplayName];
+        v17 = [v13 localizedStringWithFormat:v14, _sampleSizeForUserRatingScore, _reviewsDisplayName];
 
-        if ([v7 count])
+        if ([array count])
         {
-          [v7 insertObject:v17 atIndex:0];
+          [array insertObject:v17 atIndex:0];
         }
 
         else
         {
-          [v7 addObject:v17];
+          [array addObject:v17];
         }
 
         [(MKSearchFoundationBusinessReviewRichText *)v3 setReviewResolved:1];
@@ -215,21 +215,21 @@
         v18 = _MKLocalizedStringFromThisBundle(@"Place_Reviews_Number_Parsec");
         v19 = [v13 localizedStringWithFormat:v18, -[MKMapItem _sampleSizeForUserRatingScore](self->_mapItem, "_sampleSizeForUserRatingScore")];
 
-        [v7 addObject:v19];
+        [array addObject:v19];
         objc_initWeak(&location, self);
-        v20 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         mapItem = self->_mapItem;
-        v22 = [MEMORY[0x1E696ADC8] mainQueue];
+        mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __47__MKSearchFoundationResult__businessReviewText__block_invoke;
         v28[3] = &unk_1E76CA2D0;
         objc_copyWeak(&v32, &location);
         v29 = v3;
-        v30 = v7;
+        v30 = array;
         v23 = v19;
         v31 = v23;
-        v24 = [v20 addObserverForName:@"MKMapItemDidResolveAttribution" object:mapItem queue:v22 usingBlock:v28];
+        v24 = [defaultCenter addObserverForName:@"MKMapItemDidResolveAttribution" object:mapItem queue:mainQueue usingBlock:v28];
         attributionObserver = self->_attributionObserver;
         self->_attributionObserver = v24;
 
@@ -238,9 +238,9 @@
       }
     }
 
-    if ([v7 count])
+    if ([array count])
     {
-      v8 = [MKSearchFoundationResult styledStringFromStringArray:v7];
+      v8 = [MKSearchFoundationResult styledStringFromStringArray:array];
       [(MKSearchFoundationRichText *)v3 setText:v8];
     }
 
@@ -293,15 +293,15 @@ void __47__MKSearchFoundationResult__businessReviewText__block_invoke(uint64_t a
   v3 = _MKLocalizedStringFromThisBundle(@"%lu Recommend [UGC]");
   v4 = _MKLocalizedStringFromThisBundle(@"(number of people)");
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(MKMapItem *)v2 _geoMapItem];
-  v7 = [v6 _overallAppleRating];
-  [v7 percentage];
+  _geoMapItem = [(MKMapItem *)v2 _geoMapItem];
+  _overallAppleRating = [_geoMapItem _overallAppleRating];
+  [_overallAppleRating percentage];
   v9 = [v5 localizedStringWithFormat:v3, (v8 * 100.0)];
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(MKMapItem *)v2 _geoMapItem];
-  v12 = [v11 _overallAppleRating];
-  v13 = +[MKFirstPartyRatingFormatter stringFromCount:](MKFirstPartyRatingFormatter, "stringFromCount:", [v12 numberOfRatingsUsedForScore]);
+  _geoMapItem2 = [(MKMapItem *)v2 _geoMapItem];
+  _overallAppleRating2 = [_geoMapItem2 _overallAppleRating];
+  v13 = +[MKFirstPartyRatingFormatter stringFromCount:](MKFirstPartyRatingFormatter, "stringFromCount:", [_overallAppleRating2 numberOfRatingsUsedForScore]);
   v14 = [v10 localizedStringWithFormat:v4, v13];
 
   v18[0] = v9;
@@ -314,26 +314,26 @@ void __47__MKSearchFoundationResult__businessReviewText__block_invoke(uint64_t a
 
 - (id)_defaultRichTextItems
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(MKMapItem *)self->_mapItem _isMapItemTypeBrand];
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  _isMapItemTypeBrand = [(MKMapItem *)self->_mapItem _isMapItemTypeBrand];
+  if (_isMapItemTypeBrand)
   {
-    v5 = 0;
+    _businessAddress = 0;
   }
 
   else
   {
-    v5 = [(MKSearchFoundationResult *)self _businessAddress];
+    _businessAddress = [(MKSearchFoundationResult *)self _businessAddress];
   }
 
-  objc_storeStrong(&self->_secondLineDisplayedText, v5);
-  if (!v4)
+  objc_storeStrong(&self->_secondLineDisplayedText, _businessAddress);
+  if (!_isMapItemTypeBrand)
   {
   }
 
   if (self->_secondLineDisplayedText)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if ([(MKMapItem *)self->_mapItem _isMapItemTypeBrand])
@@ -342,27 +342,27 @@ void __47__MKSearchFoundationResult__businessReviewText__block_invoke(uint64_t a
 
     if (v6)
     {
-      v7 = [(MKSearchFoundationResult *)self _brandURL];
+      _brandURL = [(MKSearchFoundationResult *)self _brandURL];
       thirdLineDisplayedText = self->_thirdLineDisplayedText;
-      self->_thirdLineDisplayedText = v7;
+      self->_thirdLineDisplayedText = _brandURL;
 
-      [v3 addObject:self->_thirdLineDisplayedText];
+      [array addObject:self->_thirdLineDisplayedText];
     }
   }
 
   else
   {
-    v9 = [(MKSearchFoundationResult *)self _businessHoursAndDistance];
+    _businessHoursAndDistance = [(MKSearchFoundationResult *)self _businessHoursAndDistance];
     v10 = self->_thirdLineDisplayedText;
-    self->_thirdLineDisplayedText = v9;
+    self->_thirdLineDisplayedText = _businessHoursAndDistance;
 
     if (self->_thirdLineDisplayedText)
     {
-      [v3 addObject:?];
+      [array addObject:?];
     }
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:self selector:sel__locationApprovalDidChange name:MKLocationManagerApprovalDidChangeNotification object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__locationApprovalDidChange name:MKLocationManagerApprovalDidChangeNotification object:0];
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -372,7 +372,7 @@ void __47__MKSearchFoundationResult__businessReviewText__block_invoke(uint64_t a
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
-  return v3;
+  return array;
 }
 
 uint64_t __49__MKSearchFoundationResult__defaultRichTextItems__block_invoke(uint64_t a1)
@@ -392,33 +392,33 @@ uint64_t __49__MKSearchFoundationResult__defaultRichTextItems__block_invoke(uint
   return [v7 startLocationUpdateWithObserver:?];
 }
 
-- (id)_populateButtonItem:(id)a3 imageName:(id)a4 command:(id)a5
+- (id)_populateButtonItem:(id)item imageName:(id)name command:(id)command
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  nameCopy = name;
+  commandCopy = command;
   v10 = objc_alloc_init(MEMORY[0x1E69C9F90]);
   v11 = v10;
-  if (v7)
+  if (itemCopy)
   {
-    [v10 setTitle:v7];
+    [v10 setTitle:itemCopy];
   }
 
-  if (v8)
+  if (nameCopy)
   {
     v12 = objc_opt_new();
-    [v12 setSymbolName:v8];
+    [v12 setSymbolName:nameCopy];
     [v12 setIsTemplate:1];
     [v11 setImage:v12];
   }
 
-  [v11 setCommand:v9];
+  [v11 setCommand:commandCopy];
   v13 = MKGetMKSearchFoundationResultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v20 = 138477827;
-    v21 = v7;
+    v21 = itemCopy;
     _os_log_impl(&dword_1A2EA0000, v13, OS_LOG_TYPE_INFO, "Title: %{private}@", &v20, 0xCu);
   }
 
@@ -426,7 +426,7 @@ uint64_t __49__MKSearchFoundationResult__defaultRichTextItems__block_invoke(uint
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v20 = 138477827;
-    v21 = v8;
+    v21 = nameCopy;
     _os_log_impl(&dword_1A2EA0000, v14, OS_LOG_TYPE_INFO, "Image name: %{private}@", &v20, 0xCu);
   }
 
@@ -436,7 +436,7 @@ uint64_t __49__MKSearchFoundationResult__defaultRichTextItems__block_invoke(uint
     v15 = MKGetMKSearchFoundationResultLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [v9 url];
+      v16 = [commandCopy url];
       v20 = 138477827;
       v21 = v16;
       _os_log_impl(&dword_1A2EA0000, v15, OS_LOG_TYPE_INFO, "Url: %{private}@", &v20, 0xCu);
@@ -445,9 +445,9 @@ uint64_t __49__MKSearchFoundationResult__defaultRichTextItems__block_invoke(uint
     v17 = MKGetMKSearchFoundationResultLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [v9 applicationBundleIdentifier];
+      applicationBundleIdentifier = [commandCopy applicationBundleIdentifier];
       v20 = 138477827;
-      v21 = v18;
+      v21 = applicationBundleIdentifier;
       _os_log_impl(&dword_1A2EA0000, v17, OS_LOG_TYPE_INFO, "Application bundle identifier: %{private}@", &v20, 0xCu);
     }
   }
@@ -455,15 +455,15 @@ uint64_t __49__MKSearchFoundationResult__defaultRichTextItems__block_invoke(uint
   return v11;
 }
 
-- (id)_populateAppClipData:(id)a3
+- (id)_populateAppClipData:(id)data
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = MKGetMKSearchFoundationResultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134283521;
-    v36 = [v4 count];
+    v36 = [dataCopy count];
     _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "Link count : %{private}ld", buf, 0xCu);
   }
 
@@ -471,12 +471,12 @@ uint64_t __49__MKSearchFoundationResult__defaultRichTextItems__block_invoke(uint
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v4;
+  v6 = dataCopy;
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v7)
   {
     v8 = v7;
-    v29 = self;
+    selfCopy = self;
     v9 = *v31;
     while (2)
     {
@@ -490,33 +490,33 @@ uint64_t __49__MKSearchFoundationResult__defaultRichTextItems__block_invoke(uint
         v11 = *(*(&v30 + 1) + 8 * i);
         if ([v11 type] == 2)
         {
-          v12 = [v11 bundleID];
+          bundleID = [v11 bundleID];
 
-          if (v12)
+          if (bundleID)
           {
             v18 = objc_alloc_init(MEMORY[0x1E69CA350]);
             v19 = MEMORY[0x1E695DFF8];
-            v20 = [v11 URLString];
-            v21 = [v19 URLWithString:v20];
+            uRLString = [v11 URLString];
+            v21 = [v19 URLWithString:uRLString];
             [v18 setUrl:v21];
 
-            v22 = [v11 bundleID];
-            [v18 setApplicationBundleIdentifier:v22];
+            bundleID2 = [v11 bundleID];
+            [v18 setApplicationBundleIdentifier:bundleID2];
 
-            v23 = [v11 imageName];
+            imageName = [v11 imageName];
             v24 = MKGetMKSearchFoundationResultLog();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
-              v25 = [v11 type];
+              type = [v11 type];
               *buf = 134283521;
-              v36 = v25;
+              v36 = type;
               _os_log_impl(&dword_1A2EA0000, v24, OS_LOG_TYPE_INFO, "Returning Link type : %{private}ld", buf, 0xCu);
             }
 
-            v26 = [v11 title];
-            if (v23)
+            title = [v11 title];
+            if (imageName)
             {
-              v27 = v23;
+              v27 = imageName;
             }
 
             else
@@ -524,7 +524,7 @@ uint64_t __49__MKSearchFoundationResult__defaultRichTextItems__block_invoke(uint
               v27 = @"appclip";
             }
 
-            v17 = [(MKSearchFoundationResult *)v29 _populateButtonItem:v26 imageName:v27 command:v18];
+            v17 = [(MKSearchFoundationResult *)selfCopy _populateButtonItem:title imageName:v27 command:v18];
 
             goto LABEL_23;
           }
@@ -533,18 +533,18 @@ uint64_t __49__MKSearchFoundationResult__defaultRichTextItems__block_invoke(uint
         v13 = MKGetMKSearchFoundationResultLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
-          v14 = [v11 type];
+          type2 = [v11 type];
           *buf = 134283521;
-          v36 = v14;
+          v36 = type2;
           _os_log_impl(&dword_1A2EA0000, v13, OS_LOG_TYPE_INFO, "Link type : %{private}ld", buf, 0xCu);
         }
 
         v15 = MKGetMKSearchFoundationResultLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
-          v16 = [v11 URLString];
+          uRLString2 = [v11 URLString];
           *buf = 138477827;
-          v36 = v16;
+          v36 = uRLString2;
           _os_log_impl(&dword_1A2EA0000, v15, OS_LOG_TYPE_INFO, "Link : %{private}@", buf, 0xCu);
         }
       }
@@ -569,13 +569,13 @@ LABEL_23:
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(MKMapItem *)self->_mapItem phoneNumber];
+  phoneNumber = [(MKMapItem *)self->_mapItem phoneNumber];
 
-  if (v4)
+  if (phoneNumber)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69C9EF8]);
-    v6 = [(MKMapItem *)self->_mapItem phoneNumber];
-    [v5 setPhoneNumber:v6];
+    phoneNumber2 = [(MKMapItem *)self->_mapItem phoneNumber];
+    [v5 setPhoneNumber:phoneNumber2];
 
     v7 = [(MKSearchFoundationResult *)self _populateButtonItem:0 imageName:0 command:v5];
     [v3 addObject:v7];
@@ -590,16 +590,16 @@ LABEL_23:
     [v3 addObject:v10];
   }
 
-  v11 = [(MKMapItem *)self->_mapItem _messageURLString];
+  _messageURLString = [(MKMapItem *)self->_mapItem _messageURLString];
 
-  if (v11)
+  if (_messageURLString)
   {
     v12 = _MKLocalizedStringFromThisBundle(@"Message");
     v13 = objc_alloc_init(MEMORY[0x1E69CA2A0]);
     v14 = MEMORY[0x1E69CA320];
     v15 = MEMORY[0x1E695DFF8];
-    v16 = [(MKMapItem *)self->_mapItem _messageURLString];
-    v17 = [v15 URLWithString:v16];
+    _messageURLString2 = [(MKMapItem *)self->_mapItem _messageURLString];
+    v17 = [v15 URLWithString:_messageURLString2];
     v18 = [v14 punchoutWithURL:v17];
     [v13 setPunchout:v18];
 
@@ -607,13 +607,13 @@ LABEL_23:
     [v3 addObject:v19];
   }
 
-  v20 = [(MKMapItem *)self->_mapItem _quickLinks];
-  v21 = [v20 count];
+  _quickLinks = [(MKMapItem *)self->_mapItem _quickLinks];
+  v21 = [_quickLinks count];
 
   if (v21)
   {
-    v22 = [(MKMapItem *)self->_mapItem _quickLinks];
-    v23 = [(MKSearchFoundationResult *)self _populateAppClipData:v22];
+    _quickLinks2 = [(MKMapItem *)self->_mapItem _quickLinks];
+    v23 = [(MKSearchFoundationResult *)self _populateAppClipData:_quickLinks2];
 
     if (v23)
     {
@@ -636,9 +636,9 @@ LABEL_23:
 {
   v15[1] = *MEMORY[0x1E69E9840];
   self->_optionSmallerScreen = [(MKSearchFoundationResult *)self _isSmallerScreen];
-  v3 = [(MKMapItem *)self->_mapItem _hasMUID];
+  _hasMUID = [(MKMapItem *)self->_mapItem _hasMUID];
   v4 = 1;
-  if (!v3)
+  if (!_hasMUID)
   {
     v4 = 2;
   }
@@ -648,8 +648,8 @@ LABEL_23:
   v6 = [[MKSearchFoundationRichText alloc] initRichTextTitleWithMapItem:self->_mapItem resultsType:self->_mksfResultType];
   [v5 setTitle:v6];
 
-  v7 = [(MKSearchFoundationResult *)self _defaultRichTextItems];
-  [v5 setDescriptions:v7];
+  _defaultRichTextItems = [(MKSearchFoundationResult *)self _defaultRichTextItems];
+  [v5 setDescriptions:_defaultRichTextItems];
 
   if ([(MKMapItem *)self->_mapItem _isMapItemTypeBrand])
   {
@@ -670,28 +670,28 @@ LABEL_23:
   v10 = [MKSearchFoundationActionItem defaultActionItemDestinationMapItemData:self->_mapsData mapItem:self->_mapItem];
   [v5 setAction:v10];
 
-  v11 = [(MKSearchFoundationResult *)self _populateButtonItemsAndCommands];
-  [v5 setButtonItems:v11];
+  _populateButtonItemsAndCommands = [(MKSearchFoundationResult *)self _populateButtonItemsAndCommands];
+  [v5 setButtonItems:_populateButtonItemsAndCommands];
 
   v12 = objc_opt_new();
   [(MKSearchFoundationResult *)self setInlineCard:v12];
 
   v15[0] = v5;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v14 = [(MKSearchFoundationResult *)self inlineCard];
-  [v14 setCardSections:v13];
+  inlineCard = [(MKSearchFoundationResult *)self inlineCard];
+  [inlineCard setCardSections:v13];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:MKLocationManagerApprovalDidChangeNotification object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:MKLocationManagerApprovalDidChangeNotification object:0];
 
   [(MKLocationManager *)self->_locationManager stopLocationUpdateWithObserver:self];
   if (self->_attributionObserver)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self->_attributionObserver];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self->_attributionObserver];
   }
 
   v5.receiver = self;
@@ -699,62 +699,62 @@ LABEL_23:
   [(MKSearchFoundationResult *)&v5 dealloc];
 }
 
-- (MKSearchFoundationResult)initWithMapsData:(id)a3 iconSize:(unint64_t)a4 bundleID:(id)a5
+- (MKSearchFoundationResult)initWithMapsData:(id)data iconSize:(unint64_t)size bundleID:(id)d
 {
-  v9 = a3;
-  v10 = a5;
+  dataCopy = data;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = MKSearchFoundationResult;
   v11 = [(MKSearchFoundationResult *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mapsData, a3);
-    v13 = [MKMapItem mapItemWithSerializedPlaceData:v9];
+    objc_storeStrong(&v11->_mapsData, data);
+    v13 = [MKMapItem mapItemWithSerializedPlaceData:dataCopy];
     mapItem = v12->_mapItem;
     v12->_mapItem = v13;
 
-    v12->_iconSize = a4;
-    objc_storeStrong(&v12->_bundleID, a5);
+    v12->_iconSize = size;
+    objc_storeStrong(&v12->_bundleID, d);
     [(MKSearchFoundationResult *)v12 _commonInit];
   }
 
   return v12;
 }
 
-+ (id)styledStringFromStringArray:(id)a3
++ (id)styledStringFromStringArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 count];
+  arrayCopy = array;
+  v4 = [arrayCopy count];
   if (v4)
   {
     if (v4 == 1)
     {
-      v5 = [v3 objectEnumerator];
+      objectEnumerator = [arrayCopy objectEnumerator];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E69DC668] sharedApplication];
-      if ([v7 userInterfaceLayoutDirection] == 1)
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      if ([mEMORY[0x1E69DC668] userInterfaceLayoutDirection] == 1)
       {
-        [v3 reverseObjectEnumerator];
+        [arrayCopy reverseObjectEnumerator];
       }
 
       else
       {
-        [v3 objectEnumerator];
+        [arrayCopy objectEnumerator];
       }
-      v5 = ;
+      objectEnumerator = ;
     }
 
     v8 = _MKLocalizedStringFromThisBundle(@"BULLET_STRING_COMPONENT_KEY");
     v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v9 = [v5 nextObject];
-    [(__CFString *)v6 appendString:v9];
-    v10 = [v5 nextObject];
+    nextObject = [objectEnumerator nextObject];
+    [(__CFString *)v6 appendString:nextObject];
+    nextObject2 = [objectEnumerator nextObject];
 
-    if (v10)
+    if (nextObject2)
     {
       do
       {
@@ -762,15 +762,15 @@ LABEL_23:
         v11 = [(__CFString *)v6 rangeOfString:@"%@"];
         if (v11 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [(__CFString *)v6 replaceCharactersInRange:v11 withString:v12, v10];
+          [(__CFString *)v6 replaceCharactersInRange:v11 withString:v12, nextObject2];
         }
 
-        v13 = [v5 nextObject];
+        nextObject3 = [objectEnumerator nextObject];
 
-        v10 = v13;
+        nextObject2 = nextObject3;
       }
 
-      while (v13);
+      while (nextObject3);
     }
   }
 

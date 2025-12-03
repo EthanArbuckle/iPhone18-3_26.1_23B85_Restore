@@ -1,18 +1,18 @@
 @interface CNContactProperty
-+ (CNContactProperty)contactPropertyWithContact:(id)a3 propertyKey:(id)a4 identifier:(id)a5;
-+ (CNContactProperty)contactPropertyWithContactNoCopy:(id)a3 propertyKey:(id)a4 identifier:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (CNContactProperty)initWithCoder:(id)a3;
++ (CNContactProperty)contactPropertyWithContact:(id)contact propertyKey:(id)key identifier:(id)identifier;
++ (CNContactProperty)contactPropertyWithContactNoCopy:(id)copy propertyKey:(id)key identifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (CNContactProperty)initWithCoder:(id)coder;
 - (NSString)label;
 - (id)description;
 - (id)labeledValue;
-- (id)labeledValueForContact:(void *)a1;
+- (id)labeledValueForContact:(void *)contact;
 - (id)primitiveValue;
 - (id)sourceContact;
 - (id)value;
 - (int)multiValueIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)isMultiValueProperty;
 @end
 
@@ -20,34 +20,34 @@
 
 - (NSString)label
 {
-  v2 = [(CNContactProperty *)self labeledValue];
-  v3 = [v2 label];
+  labeledValue = [(CNContactProperty *)self labeledValue];
+  label = [labeledValue label];
 
-  return v3;
+  return label;
 }
 
 - (id)labeledValue
 {
-  v3 = [(CNContactProperty *)self contact];
-  v4 = [(CNContactProperty *)self labeledValueForContact:v3];
+  contact = [(CNContactProperty *)self contact];
+  v4 = [(CNContactProperty *)self labeledValueForContact:contact];
 
   return v4;
 }
 
 - (id)primitiveValue
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = +[CN contactPropertiesByKey];
-    v3 = [v1 key];
+    v3 = [selfCopy key];
     v4 = [v2 objectForKeyedSubscript:v3];
 
-    v5 = [v1 contact];
-    v1 = [v4 CNValueForContact:v5];
+    contact = [selfCopy contact];
+    selfCopy = [v4 CNValueForContact:contact];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)isMultiValueProperty
@@ -59,8 +59,8 @@
     v3 = [v1 key];
     v4 = [v2 objectForKeyedSubscript:v3];
 
-    v5 = [v4 isMultiValue];
-    return v5;
+    isMultiValue = [v4 isMultiValue];
+    return isMultiValue;
   }
 
   return result;
@@ -70,37 +70,37 @@
 {
   if ([(CNContactProperty *)self isMultiValueProperty])
   {
-    v3 = [(CNContactProperty *)self labeledValue];
-    v4 = [v3 value];
+    labeledValue = [(CNContactProperty *)self labeledValue];
+    value = [labeledValue value];
   }
 
   else
   {
-    v4 = [(CNContactProperty *)self primitiveValue];
+    value = [(CNContactProperty *)self primitiveValue];
   }
 
-  return v4;
+  return value;
 }
 
-- (CNContactProperty)initWithCoder:(id)a3
+- (CNContactProperty)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CNContactProperty;
   v5 = [(CNContactProperty *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_internalContact"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_internalContact"];
     v7 = [v6 copy];
     internalContact = v5->_internalContact;
     v5->_internalContact = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_key"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_key"];
     v10 = [v9 copy];
     key = v5->_key;
     v5->_key = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     v13 = [v12 copy];
     identifier = v5->_identifier;
     v5->_identifier = v13;
@@ -111,18 +111,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   internalContact = self->_internalContact;
-  v5 = a3;
-  [v5 encodeObject:internalContact forKey:@"_internalContact"];
-  [v5 encodeObject:self->_key forKey:@"_key"];
-  [v5 encodeObject:self->_identifier forKey:@"_identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:internalContact forKey:@"_internalContact"];
+  [coderCopy encodeObject:self->_key forKey:@"_key"];
+  [coderCopy encodeObject:self->_identifier forKey:@"_identifier"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v6 = objc_opt_class();
   v16[0] = MEMORY[0x1E69E9820];
@@ -130,7 +130,7 @@
   v16[2] = __29__CNContactProperty_isEqual___block_invoke;
   v16[3] = &unk_1E7412228;
   v16[4] = self;
-  v17 = v4;
+  v17 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __29__CNContactProperty_isEqual___block_invoke_2;
@@ -229,8 +229,8 @@ uint64_t __25__CNContactProperty_hash__block_invoke_3(uint64_t a1)
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNContact *)self->_internalContact identifier];
-  v5 = [v3 appendName:@"contact identifier" object:v4];
+  identifier = [(CNContact *)self->_internalContact identifier];
+  v5 = [v3 appendName:@"contact identifier" object:identifier];
 
   internalContact = self->_internalContact;
   v7 = [CNContactFormatter descriptorForRequiredKeysForStyle:0];
@@ -255,21 +255,21 @@ uint64_t __25__CNContactProperty_hash__block_invoke_3(uint64_t a1)
     v12 = [v3 appendName:@"identifier" object:?];
   }
 
-  v13 = [(CNContactProperty *)self value];
-  v14 = [v3 appendName:@"value" object:v13];
+  value = [(CNContactProperty *)self value];
+  v14 = [v3 appendName:@"value" object:value];
 
-  v15 = [v3 build];
+  build = [v3 build];
 
-  return v15;
+  return build;
 }
 
 - (id)sourceContact
 {
-  v3 = [(CNContactProperty *)self value];
-  v4 = [(CNContactProperty *)self identifier];
+  value = [(CNContactProperty *)self value];
+  identifier = [(CNContactProperty *)self identifier];
   v5 = [(CNContactProperty *)self key];
-  v6 = [(CNContactProperty *)self contact];
-  v7 = [CN sourceContactForValue:v3 labeledValueIdentifier:v4 propertyKey:v5 inUnifiedContact:v6];
+  contact = [(CNContactProperty *)self contact];
+  v7 = [CN sourceContactForValue:value labeledValueIdentifier:identifier propertyKey:v5 inUnifiedContact:contact];
 
   return v7;
 }
@@ -285,67 +285,67 @@ uint64_t __44__CNContactProperty_labeledValueForContact___block_invoke(uint64_t 
 
 - (int)multiValueIdentifier
 {
-  v3 = [(CNContactProperty *)self contact];
-  v4 = [v3 isUnified];
+  contact = [(CNContactProperty *)self contact];
+  isUnified = [contact isUnified];
 
-  if (v4)
+  if (isUnified)
   {
-    v7 = [(CNContactProperty *)self sourceContact];
-    v5 = [(CNContactProperty *)self labeledValueForContact:v7];
+    sourceContact = [(CNContactProperty *)self sourceContact];
+    labeledValue = [(CNContactProperty *)self labeledValueForContact:sourceContact];
 
-    if (v5)
+    if (labeledValue)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v6 = -1;
+    iOSLegacyIdentifier = -1;
     goto LABEL_6;
   }
 
-  v5 = [(CNContactProperty *)self labeledValue];
-  if (!v5)
+  labeledValue = [(CNContactProperty *)self labeledValue];
+  if (!labeledValue)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v6 = [v5 iOSLegacyIdentifier];
+  iOSLegacyIdentifier = [labeledValue iOSLegacyIdentifier];
 LABEL_6:
 
-  return v6;
+  return iOSLegacyIdentifier;
 }
 
-+ (CNContactProperty)contactPropertyWithContact:(id)a3 propertyKey:(id)a4 identifier:(id)a5
++ (CNContactProperty)contactPropertyWithContact:(id)contact propertyKey:(id)key identifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = objc_alloc_init(a1);
-  v12 = [v10 copy];
+  keyCopy = key;
+  identifierCopy = identifier;
+  contactCopy = contact;
+  v11 = objc_alloc_init(self);
+  v12 = [contactCopy copy];
 
   [(CNChangesNotifierProxy *)v11 setRemovalBlocks:v12];
   if (v11)
   {
-    objc_setProperty_nonatomic_copy(v11, v13, v8, 8);
-    objc_setProperty_nonatomic_copy(v11, v14, v9, 16);
+    objc_setProperty_nonatomic_copy(v11, v13, keyCopy, 8);
+    objc_setProperty_nonatomic_copy(v11, v14, identifierCopy, 16);
   }
 
   return v11;
 }
 
-+ (CNContactProperty)contactPropertyWithContactNoCopy:(id)a3 propertyKey:(id)a4 identifier:(id)a5
++ (CNContactProperty)contactPropertyWithContactNoCopy:(id)copy propertyKey:(id)key identifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = objc_alloc_init(a1);
-  [(CNChangesNotifierProxy *)v11 setRemovalBlocks:v10];
+  keyCopy = key;
+  identifierCopy = identifier;
+  copyCopy = copy;
+  v11 = objc_alloc_init(self);
+  [(CNChangesNotifierProxy *)v11 setRemovalBlocks:copyCopy];
 
   if (v11)
   {
-    objc_setProperty_nonatomic_copy(v11, v12, v8, 8);
-    objc_setProperty_nonatomic_copy(v11, v13, v9, 16);
+    objc_setProperty_nonatomic_copy(v11, v12, keyCopy, 8);
+    objc_setProperty_nonatomic_copy(v11, v13, identifierCopy, 16);
   }
 
   return v11;
@@ -367,27 +367,27 @@ uint64_t __25__CNContactProperty_hash__block_invoke(uint64_t a1)
   return [MEMORY[0x1E6996730] objectHash:v2];
 }
 
-- (id)labeledValueForContact:(void *)a1
+- (id)labeledValueForContact:(void *)contact
 {
   v3 = a2;
-  if (a1)
+  if (contact)
   {
     v4 = *MEMORY[0x1E6996568];
-    v5 = [a1 identifier];
-    LOBYTE(v4) = (*(v4 + 16))(v4, v5);
+    identifier = [contact identifier];
+    LOBYTE(v4) = (*(v4 + 16))(v4, identifier);
 
     if (v4)
     {
-      a1 = 0;
+      contact = 0;
     }
 
     else
     {
       objc_opt_class();
-      v7 = [(CNContactProperty *)a1 primitiveValue];
+      primitiveValue = [(CNContactProperty *)contact primitiveValue];
       if (objc_opt_isKindOfClass())
       {
-        v8 = v7;
+        v8 = primitiveValue;
       }
 
       else
@@ -401,12 +401,12 @@ uint64_t __25__CNContactProperty_hash__block_invoke(uint64_t a1)
       v10[1] = 3221225472;
       v10[2] = __44__CNContactProperty_labeledValueForContact___block_invoke;
       v10[3] = &unk_1E7413588;
-      v10[4] = a1;
-      a1 = [v9 _cn_firstObjectPassingTest:v10];
+      v10[4] = contact;
+      contact = [v9 _cn_firstObjectPassingTest:v10];
     }
   }
 
-  return a1;
+  return contact;
 }
 
 @end

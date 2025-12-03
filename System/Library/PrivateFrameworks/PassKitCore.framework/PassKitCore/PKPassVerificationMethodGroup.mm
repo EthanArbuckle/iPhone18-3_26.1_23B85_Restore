@@ -1,34 +1,34 @@
 @interface PKPassVerificationMethodGroup
-+ (id)methodGroupFromLegacyChannel:(id)a3;
++ (id)methodGroupFromLegacyChannel:(id)channel;
 - (BOOL)isCardReadOnly;
 - (BOOL)isSMSOTP;
 - (BOOL)needsServerRequest;
 - (BOOL)requiresUserInteraction;
 - (BOOL)supportedOnCurrentDevice;
 - (PKPassVerificationMethod)onlyMethod;
-- (PKPassVerificationMethodGroup)initWithCoder:(id)a3;
-- (PKPassVerificationMethodGroup)initWithDictionary:(id)a3;
-- (PKPassVerificationMethodGroup)initWithIdentifier:(id)a3 methods:(id)a4;
-- (id)_localizedShortDescriptionForMethod:(id)a3 pass:(id)a4;
+- (PKPassVerificationMethodGroup)initWithCoder:(id)coder;
+- (PKPassVerificationMethodGroup)initWithDictionary:(id)dictionary;
+- (PKPassVerificationMethodGroup)initWithIdentifier:(id)identifier methods:(id)methods;
+- (id)_localizedShortDescriptionForMethod:(id)method pass:(id)pass;
 - (id)description;
 - (id)legacyChannelRepresentation;
-- (id)localizedShortDescriptionWithPass:(id)a3;
+- (id)localizedShortDescriptionWithPass:(id)pass;
 - (id)localizedTitle;
 - (unint64_t)type;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassVerificationMethodGroup
 
-- (PKPassVerificationMethodGroup)initWithDictionary:(id)a3
+- (PKPassVerificationMethodGroup)initWithDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"identifier"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"identifier"];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v7 = [v4 PKArrayContaining:objc_opt_class() forKey:@"methods"];
+    v7 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"methods"];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -78,11 +78,11 @@
   return v13;
 }
 
-- (PKPassVerificationMethodGroup)initWithIdentifier:(id)a3 methods:(id)a4
+- (PKPassVerificationMethodGroup)initWithIdentifier:(id)identifier methods:(id)methods
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 count])
+  identifierCopy = identifier;
+  methodsCopy = methods;
+  if ([methodsCopy count])
   {
     v12.receiver = self;
     v12.super_class = PKPassVerificationMethodGroup;
@@ -90,8 +90,8 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_identifier, a3);
-      objc_storeStrong(&v10->_methods, a4);
+      objc_storeStrong(&v9->_identifier, identifier);
+      objc_storeStrong(&v10->_methods, methods);
     }
   }
 
@@ -104,15 +104,15 @@
   return v10;
 }
 
-+ (id)methodGroupFromLegacyChannel:(id)a3
++ (id)methodGroupFromLegacyChannel:(id)channel
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [PKPassVerificationMethod methodFromLegacyChannel:a3];
+  v3 = [PKPassVerificationMethod methodFromLegacyChannel:channel];
   if (v3)
   {
     v4 = [PKPassVerificationMethodGroup alloc];
-    v5 = [v3 identifier];
-    v6 = [v5 stringByAppendingString:@"-Group"];
+    identifier = [v3 identifier];
+    v6 = [identifier stringByAppendingString:@"-Group"];
     v10[0] = v3;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     v8 = [(PKPassVerificationMethodGroup *)v4 initWithIdentifier:v6 methods:v7];
@@ -131,15 +131,15 @@
   if ([(NSArray *)self->_methods count]== 1)
   {
     v3 = [(NSArray *)self->_methods objectAtIndexedSubscript:0];
-    v4 = [v3 legacyChannelRepresentation];
+    legacyChannelRepresentation = [v3 legacyChannelRepresentation];
   }
 
   else
   {
-    v4 = 0;
+    legacyChannelRepresentation = 0;
   }
 
-  return v4;
+  return legacyChannelRepresentation;
 }
 
 - (BOOL)requiresUserInteraction
@@ -394,19 +394,19 @@ uint64_t __37__PKPassVerificationMethodGroup_type__block_invoke(uint64_t a1, voi
 
 - (id)localizedTitle
 {
-  v2 = [(NSArray *)self->_methods firstObject];
-  v3 = [v2 typeDescription];
+  firstObject = [(NSArray *)self->_methods firstObject];
+  typeDescription = [firstObject typeDescription];
 
-  return v3;
+  return typeDescription;
 }
 
-- (id)localizedShortDescriptionWithPass:(id)a3
+- (id)localizedShortDescriptionWithPass:(id)pass
 {
-  v4 = a3;
-  v5 = [(PKPassVerificationMethodGroup *)self type];
-  if (v5 >= 2)
+  passCopy = pass;
+  type = [(PKPassVerificationMethodGroup *)self type];
+  if (type >= 2)
   {
-    if (v5 == 2)
+    if (type == 2)
     {
       self = PKLocalizedPaymentString(&cfstr_VerificationCh.isa, 0);
     }
@@ -415,42 +415,42 @@ uint64_t __37__PKPassVerificationMethodGroup_type__block_invoke(uint64_t a1, voi
   else
   {
     v6 = [(NSArray *)self->_methods objectAtIndexedSubscript:0];
-    self = [(PKPassVerificationMethodGroup *)self _localizedShortDescriptionForMethod:v6 pass:v4];
+    self = [(PKPassVerificationMethodGroup *)self _localizedShortDescriptionForMethod:v6 pass:passCopy];
   }
 
   return self;
 }
 
-- (id)_localizedShortDescriptionForMethod:(id)a3 pass:(id)a4
+- (id)_localizedShortDescriptionForMethod:(id)method pass:(id)pass
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 supplementalTypeDescription];
-  if (!v7)
+  methodCopy = method;
+  passCopy = pass;
+  supplementalTypeDescription = [methodCopy supplementalTypeDescription];
+  if (!supplementalTypeDescription)
   {
-    if ([v5 type] == 2 && objc_msgSend(v5, "direction") == 1)
+    if ([methodCopy type] == 2 && objc_msgSend(methodCopy, "direction") == 1)
     {
-      v7 = [v6 localizedValueForFieldKey:@"contactNumber"];
+      supplementalTypeDescription = [passCopy localizedValueForFieldKey:@"contactNumber"];
     }
 
     else
     {
-      v7 = 0;
+      supplementalTypeDescription = 0;
     }
   }
 
-  return v7;
+  return supplementalTypeDescription;
 }
 
-- (PKPassVerificationMethodGroup)initWithCoder:(id)a3
+- (PKPassVerificationMethodGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKPassVerificationMethodGroup;
   v5 = [(PKPassVerificationMethodGroup *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -464,7 +464,7 @@ uint64_t __37__PKPassVerificationMethodGroup_type__block_invoke(uint64_t a1, voi
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v20 initWithObjects:{v8, v9, v10, v11, v12, v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"methods"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"methods"];
     methods = v5->_methods;
     v5->_methods = v17;
   }
@@ -472,12 +472,12 @@ uint64_t __37__PKPassVerificationMethodGroup_type__block_invoke(uint64_t a1, voi
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_methods forKey:@"methods"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_methods forKey:@"methods"];
 }
 
 - (id)description

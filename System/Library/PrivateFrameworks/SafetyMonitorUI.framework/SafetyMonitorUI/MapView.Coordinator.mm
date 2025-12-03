@@ -1,16 +1,16 @@
 @interface MapView.Coordinator
 - (_TtCV15SafetyMonitorUI7MapView11Coordinator)init;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (void)longPressActionWithSender:(id)a3;
-- (void)mapView:(id)a3 annotationView:(id)a4 didChangeDragState:(unint64_t)a5 fromOldState:(unint64_t)a6;
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4;
-- (void)mapViewDidChangeVisibleRegion:(id)a3;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (void)longPressActionWithSender:(id)sender;
+- (void)mapView:(id)view annotationView:(id)annotationView didChangeDragState:(unint64_t)state fromOldState:(unint64_t)oldState;
+- (void)mapView:(id)view didAddAnnotationViews:(id)views;
+- (void)mapViewDidChangeVisibleRegion:(id)region;
 @end
 
 @implementation MapView.Coordinator
 
-- (void)mapViewDidChangeVisibleRegion:(id)a3
+- (void)mapViewDidChangeVisibleRegion:(id)region
 {
   v4 = *&self->parent[OBJC_IVAR____TtCV15SafetyMonitorUI7MapView11Coordinator_parent + 128];
   v20 = *&self->parent[OBJC_IVAR____TtCV15SafetyMonitorUI7MapView11Coordinator_parent + 112];
@@ -28,10 +28,10 @@
   v8 = *&self->parent[OBJC_IVAR____TtCV15SafetyMonitorUI7MapView11Coordinator_parent + 32];
   v14 = *&self->parent[OBJC_IVAR____TtCV15SafetyMonitorUI7MapView11Coordinator_parent + 16];
   v15 = v8;
-  v9 = a3;
-  v10 = self;
+  regionCopy = region;
+  selfCopy = self;
   sub_264686F50(&v12, v11);
-  [v9 region];
+  [regionCopy region];
   v11[0] = v12;
   v11[1] = v13;
   v11[2] = v14;
@@ -42,52 +42,52 @@
   sub_2646870F0(&v12);
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_264687120(a4);
+  selfCopy = self;
+  v8 = sub_264687120(overlay);
 
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_264687224(v6, a4);
+  selfCopy = self;
+  v8 = sub_264687224(viewCopy, annotation);
 
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4
+- (void)mapView:(id)view didAddAnnotationViews:(id)views
 {
   sub_264659B70(0, &unk_27FF769B0, 0x277CD4D98);
   v6 = sub_2647857F4();
-  v7 = a3;
-  v8 = self;
-  sub_26468736C(v7, v6);
+  viewCopy = view;
+  selfCopy = self;
+  sub_26468736C(viewCopy, v6);
 }
 
-- (void)mapView:(id)a3 annotationView:(id)a4 didChangeDragState:(unint64_t)a5 fromOldState:(unint64_t)a6
+- (void)mapView:(id)view annotationView:(id)annotationView didChangeDragState:(unint64_t)state fromOldState:(unint64_t)oldState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_2646874A8(v9, v10, a5);
+  viewCopy = view;
+  annotationViewCopy = annotationView;
+  selfCopy = self;
+  sub_2646874A8(viewCopy, annotationViewCopy, state);
 }
 
-- (void)longPressActionWithSender:(id)a3
+- (void)longPressActionWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_264685388(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_264685388(senderCopy);
 }
 
 - (_TtCV15SafetyMonitorUI7MapView11Coordinator)init

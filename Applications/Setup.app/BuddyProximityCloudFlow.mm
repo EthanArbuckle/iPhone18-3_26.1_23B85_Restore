@@ -1,43 +1,43 @@
 @interface BuddyProximityCloudFlow
 + (id)allowedFlowItems;
-- (BuddyProximityCloudFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (BuddyProximityCloudFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation BuddyProximityCloudFlow
 
-- (BuddyProximityCloudFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6
+- (BuddyProximityCloudFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, delegate);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
+  objc_storeStrong(&v15, starter);
   v14 = 0;
-  objc_storeStrong(&v14, a6);
-  v9 = v18;
-  v18 = 0;
+  objc_storeStrong(&v14, injector);
+  v9 = selfCopy;
+  selfCopy = 0;
   v13.receiver = v9;
   v13.super_class = BuddyProximityCloudFlow;
-  v18 = [(BuddyProximityCloudFlow *)&v13 initWithNavigationController:location[0] flowDelegate:v16 flowStarter:v15 dependencyInjector:v14];
-  objc_storeStrong(&v18, v18);
-  if (v18)
+  selfCopy = [(BuddyProximityCloudFlow *)&v13 initWithNavigationController:location[0] flowDelegate:v16 flowStarter:v15 dependencyInjector:v14];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v19[0] = objc_opt_class();
     v19[1] = objc_opt_class();
     v10 = [NSArray arrayWithObjects:v19 count:2];
-    [v18 setClassList:v10];
+    [selfCopy setClassList:v10];
   }
 
-  v11 = v18;
+  v11 = selfCopy;
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
@@ -48,14 +48,14 @@
   return [NSArray arrayWithObjects:v3 count:2];
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyProximityCloudFlow *)v38 managedConfiguration];
-  v4 = [(MCProfileConnection *)v3 effectiveBoolValueForSetting:MCFeatureAccountModificationAllowed];
+  objc_storeStrong(location, completion);
+  managedConfiguration = [(BuddyProximityCloudFlow *)selfCopy managedConfiguration];
+  v4 = [(MCProfileConnection *)managedConfiguration effectiveBoolValueForSetting:MCFeatureAccountModificationAllowed];
 
   if (v4 == 2)
   {
@@ -76,8 +76,8 @@
 
   else
   {
-    v7 = [(BuddyProximityCloudFlow *)v38 networkProvider];
-    v8 = ![(BuddyNetworkProvider *)v7 networkReachable];
+    networkProvider = [(BuddyProximityCloudFlow *)selfCopy networkProvider];
+    v8 = ![(BuddyNetworkProvider *)networkProvider networkReachable];
 
     if (v8)
     {
@@ -98,21 +98,21 @@
 
     else
     {
-      v11 = [(BuddyProximityCloudFlow *)v38 proximitySetupController];
-      v12 = [(ProximitySetupController *)v11 information];
-      v13 = [(SASProximityInformation *)v12 appleID];
-      v14 = v13 != 0;
+      proximitySetupController = [(BuddyProximityCloudFlow *)selfCopy proximitySetupController];
+      information = [(ProximitySetupController *)proximitySetupController information];
+      appleID = [(SASProximityInformation *)information appleID];
+      v14 = appleID != 0;
 
       v29 = v14;
-      v15 = [(BuddyProximityCloudFlow *)v38 proximitySetupController];
-      LOBYTE(v12) = [(ProximitySetupController *)v15 hasConnection];
+      proximitySetupController2 = [(BuddyProximityCloudFlow *)selfCopy proximitySetupController];
+      LOBYTE(information) = [(ProximitySetupController *)proximitySetupController2 hasConnection];
 
-      v28 = v12 & 1;
+      v28 = information & 1;
       v16 = +[ACAccountStore defaultStore];
-      v17 = [v16 aa_primaryAppleAccount];
-      LOBYTE(v12) = v17 != 0;
+      aa_primaryAppleAccount = [v16 aa_primaryAppleAccount];
+      LOBYTE(information) = aa_primaryAppleAccount != 0;
 
-      v27 = v12 & 1;
+      v27 = information & 1;
       v18 = 0;
       if (v14)
       {
@@ -126,10 +126,10 @@
       v26 = v18 & 1;
       if (v18)
       {
-        v19 = [(BuddyProximityCloudFlow *)v38 miscState];
-        v25 = [(BuddyMiscState *)v19 migrationManager];
+        miscState = [(BuddyProximityCloudFlow *)selfCopy miscState];
+        migrationManager = [(BuddyMiscState *)miscState migrationManager];
 
-        if ([v25 requiresUpdateToMigrate] & 1) != 0 && (objc_msgSend(v25, "willMigrate"))
+        if ([migrationManager requiresUpdateToMigrate] & 1) != 0 && (objc_msgSend(migrationManager, "willMigrate"))
         {
           v24 = _BYLoggingFacility();
           v23 = OS_LOG_TYPE_DEFAULT;
@@ -145,7 +145,7 @@
           v26 = 0;
         }
 
-        objc_storeStrong(&v25, 0);
+        objc_storeStrong(&migrationManager, 0);
       }
 
       (*(location[0] + 2))(location[0], v26 & 1);

@@ -1,51 +1,51 @@
 @interface EMFQuery
-- (EMFQuery)initWithQueryString:(id)a3 andLocale:(id)a4;
-- (EMFQuery)initWithQueryString:(id)a3 andQueryTokens:(id)a4 andLocale:(id)a5;
+- (EMFQuery)initWithQueryString:(id)string andLocale:(id)locale;
+- (EMFQuery)initWithQueryString:(id)string andQueryTokens:(id)tokens andLocale:(id)locale;
 - (NSArray)tokens;
 - (NSString)normalizedQueryString;
 - (NSString)trimmedQueryString;
-- (id)_finalTokenAnalyzed:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_finalTokenAnalyzed:(BOOL)analyzed;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)tokenCounts;
-- (void)setQueryString:(id)a3;
-- (void)setTokens:(id)a3;
+- (void)setQueryString:(id)string;
+- (void)setTokens:(id)tokens;
 - (void)tokens;
 @end
 
 @implementation EMFQuery
 
-- (EMFQuery)initWithQueryString:(id)a3 andLocale:(id)a4
+- (EMFQuery)initWithQueryString:(id)string andLocale:(id)locale
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = _createNormalizedString(v7, v6);
+  localeCopy = locale;
+  stringCopy = string;
+  v8 = _createNormalizedString(stringCopy, localeCopy);
   normalizedString = self->_normalizedString;
   self->_normalizedString = v8;
 
-  v10 = [(EMFQuery *)self initWithQueryString:v7 andQueryTokens:0 andLocale:v6];
+  v10 = [(EMFQuery *)self initWithQueryString:stringCopy andQueryTokens:0 andLocale:localeCopy];
   return v10;
 }
 
-- (EMFQuery)initWithQueryString:(id)a3 andQueryTokens:(id)a4 andLocale:(id)a5
+- (EMFQuery)initWithQueryString:(id)string andQueryTokens:(id)tokens andLocale:(id)locale
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  tokensCopy = tokens;
+  localeCopy = locale;
   v17.receiver = self;
   v17.super_class = EMFQuery;
   v11 = [(EMFQuery *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [stringCopy copy];
     queryString = v11->_queryString;
     v11->_queryString = v12;
 
-    v14 = [v9 copy];
+    v14 = [tokensCopy copy];
     queryTokens = v11->_queryTokens;
     v11->_queryTokens = v14;
 
     objc_storeStrong(&v11->_queryTokensAnalyzed, v11->_queryTokens);
-    objc_storeStrong(&v11->_locale, a5);
+    objc_storeStrong(&v11->_locale, locale);
   }
 
   return v11;
@@ -53,29 +53,29 @@
 
 - (NSString)trimmedQueryString
 {
-  v2 = [(EMFQuery *)self queryString];
-  v3 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  queryString = [(EMFQuery *)self queryString];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v4 = [queryString stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v4;
 }
 
 - (NSString)normalizedQueryString
 {
-  v3 = [(EMFQuery *)self trimmedQueryString];
-  v4 = _createNormalizedString(v3, self->_locale);
+  trimmedQueryString = [(EMFQuery *)self trimmedQueryString];
+  v4 = _createNormalizedString(trimmedQueryString, self->_locale);
 
   return v4;
 }
 
-- (void)setQueryString:(id)a3
+- (void)setQueryString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  stringCopy = string;
+  v5 = [stringCopy copy];
   queryString = self->_queryString;
   self->_queryString = v5;
 
-  v7 = _createNormalizedString(v4, self->_locale);
+  v7 = _createNormalizedString(stringCopy, self->_locale);
 
   normalizedString = self->_normalizedString;
   self->_normalizedString = v7;
@@ -84,20 +84,20 @@
   self->_queryTokens = 0;
 }
 
-- (void)setTokens:(id)a3
+- (void)setTokens:(id)tokens
 {
-  if (a3)
+  if (tokens)
   {
-    v4 = a3;
+    tokensCopy = tokens;
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    tokensCopy = MEMORY[0x1E695E0F0];
   }
 
-  objc_storeStrong(&self->_queryTokens, v4);
-  v6 = v4;
+  objc_storeStrong(&self->_queryTokens, tokensCopy);
+  v6 = tokensCopy;
   queryTokensAnalyzed = self->_queryTokensAnalyzed;
   self->_queryTokensAnalyzed = 0;
 }
@@ -190,8 +190,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(EMFQuery *)self tokens];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  tokens = [(EMFQuery *)self tokens];
+  v5 = [tokens countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -202,7 +202,7 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tokens);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -222,7 +222,7 @@
         [v3 setObject:v12 forKey:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [tokens countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -231,23 +231,23 @@
   return v3;
 }
 
-- (id)_finalTokenAnalyzed:(BOOL)a3
+- (id)_finalTokenAnalyzed:(BOOL)analyzed
 {
-  if (a3)
+  if (analyzed)
   {
-    v3 = [(EMFQuery *)self tokens];
-    v4 = [v3 lastObject];
+    tokens = [(EMFQuery *)self tokens];
+    lastObject = [tokens lastObject];
   }
 
   else
   {
-    v4 = [(NSArray *)self->_queryTokens lastObject];
+    lastObject = [(NSArray *)self->_queryTokens lastObject];
   }
 
-  return v4;
+  return lastObject;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithQueryString:self->_queryString andQueryTokens:self->_queryTokens andLocale:self->_locale];
   [v4 setStringStemmer:self->_stringStemmer];
@@ -257,9 +257,9 @@
 - (void)tokens
 {
   v4 = *MEMORY[0x1E69E9840];
-  v1 = [*a1 localeIdentifier];
+  localeIdentifier = [*self localeIdentifier];
   v2 = 138412290;
-  v3 = v1;
+  v3 = localeIdentifier;
   _os_log_error_impl(&dword_1AF04E000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Stemming failed for locale %@", &v2, 0xCu);
 }
 

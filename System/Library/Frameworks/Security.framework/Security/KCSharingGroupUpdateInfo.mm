@@ -1,38 +1,38 @@
 @interface KCSharingGroupUpdateInfo
-- (KCSharingGroupUpdateInfo)initWithCoder:(id)a3;
-- (KCSharingGroupUpdateInfo)initWithDepartedGroupID:(id)a3;
-- (KCSharingGroupUpdateInfo)initWithGroup:(id)a3 addedParticipants:(id)a4;
+- (KCSharingGroupUpdateInfo)initWithCoder:(id)coder;
+- (KCSharingGroupUpdateInfo)initWithDepartedGroupID:(id)d;
+- (KCSharingGroupUpdateInfo)initWithGroup:(id)group addedParticipants:(id)participants;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KCSharingGroupUpdateInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   updateType = self->_updateType;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithLongLong:updateType];
-  [v7 encodeObject:v6 forKey:@"updateType"];
+  [coderCopy encodeObject:v6 forKey:@"updateType"];
 
-  [v7 encodeObject:self->_updatedGroup forKey:@"updatedGroup"];
-  [v7 encodeObject:self->_addedParticipants forKey:@"addedParticipants"];
-  [v7 encodeObject:self->_departedGroupID forKey:@"departedGroupID"];
+  [coderCopy encodeObject:self->_updatedGroup forKey:@"updatedGroup"];
+  [coderCopy encodeObject:self->_addedParticipants forKey:@"addedParticipants"];
+  [coderCopy encodeObject:self->_departedGroupID forKey:@"departedGroupID"];
 }
 
-- (KCSharingGroupUpdateInfo)initWithCoder:(id)a3
+- (KCSharingGroupUpdateInfo)initWithCoder:(id)coder
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = KCSharingGroupUpdateInfo;
   v5 = [(KCSharingGroupUpdateInfo *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updateType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updateType"];
     v5->_updateType = [v6 integerValue];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updatedGroup"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updatedGroup"];
     updatedGroup = v5->_updatedGroup;
     v5->_updatedGroup = v7;
 
@@ -42,11 +42,11 @@
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     v11 = [v9 setWithArray:v10];
 
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"addedParticipants"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"addedParticipants"];
     addedParticipants = v5->_addedParticipants;
     v5->_addedParticipants = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"departedGroupID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"departedGroupID"];
     departedGroupID = v5->_departedGroupID;
     v5->_departedGroupID = v14;
   }
@@ -71,17 +71,17 @@
   else
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(KCSharingGroup *)self->_updatedGroup groupID];
-    v6 = [(KCSharingGroup *)self->_updatedGroup displayName];
-    v7 = [v4 stringWithFormat:@"KCSharingGroupUpdateInfo(%@, name: %@, new participants: %@)", v5, v6, self->_addedParticipants];
+    groupID = [(KCSharingGroup *)self->_updatedGroup groupID];
+    displayName = [(KCSharingGroup *)self->_updatedGroup displayName];
+    v7 = [v4 stringWithFormat:@"KCSharingGroupUpdateInfo(%@, name: %@, new participants: %@)", groupID, displayName, self->_addedParticipants];
   }
 
   return v7;
 }
 
-- (KCSharingGroupUpdateInfo)initWithDepartedGroupID:(id)a3
+- (KCSharingGroupUpdateInfo)initWithDepartedGroupID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = KCSharingGroupUpdateInfo;
   v5 = [(KCSharingGroupUpdateInfo *)&v10 init];
@@ -89,7 +89,7 @@
   if (v5)
   {
     v5->_updateType = 1;
-    v7 = [v4 copy];
+    v7 = [dCopy copy];
     departedGroupID = v6->_departedGroupID;
     v6->_departedGroupID = v7;
   }
@@ -97,10 +97,10 @@
   return v6;
 }
 
-- (KCSharingGroupUpdateInfo)initWithGroup:(id)a3 addedParticipants:(id)a4
+- (KCSharingGroupUpdateInfo)initWithGroup:(id)group addedParticipants:(id)participants
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  participantsCopy = participants;
   v15.receiver = self;
   v15.super_class = KCSharingGroupUpdateInfo;
   v8 = [(KCSharingGroupUpdateInfo *)&v15 init];
@@ -108,11 +108,11 @@
   if (v8)
   {
     v8->_updateType = 0;
-    v10 = [v6 copy];
+    v10 = [groupCopy copy];
     updatedGroup = v9->_updatedGroup;
     v9->_updatedGroup = v10;
 
-    v12 = [v7 copy];
+    v12 = [participantsCopy copy];
     addedParticipants = v9->_addedParticipants;
     v9->_addedParticipants = v12;
   }

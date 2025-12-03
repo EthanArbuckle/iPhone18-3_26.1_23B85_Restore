@@ -1,8 +1,8 @@
 @interface _EFKeyValueObserverHandler
-- (_EFKeyValueObserverHandler)initWithObject:(id)a3 keyPath:(id)a4 usingBlock:(id)a5;
+- (_EFKeyValueObserverHandler)initWithObject:(id)object keyPath:(id)path usingBlock:(id)block;
 - (void)cancel;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _EFKeyValueObserverHandler
@@ -24,23 +24,23 @@
   [(_EFKeyValueObserverHandler *)&v3 dealloc];
 }
 
-- (_EFKeyValueObserverHandler)initWithObject:(id)a3 keyPath:(id)a4 usingBlock:(id)a5
+- (_EFKeyValueObserverHandler)initWithObject:(id)object keyPath:(id)path usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  pathCopy = path;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = _EFKeyValueObserverHandler;
   v11 = [(_EFKeyValueObserverHandler *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    v11->_object = v8;
-    v13 = [v9 copy];
+    v11->_object = objectCopy;
+    v13 = [pathCopy copy];
     keyPath = v12->_keyPath;
     v12->_keyPath = v13;
 
-    v15 = [v10 copy];
+    v15 = [blockCopy copy];
     block = v12->_block;
     v12->_block = v15;
 
@@ -50,12 +50,12 @@
   return v12;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (sHandlerContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (sHandlerContext == context)
   {
     (*(self->_block + 2))();
   }
@@ -64,7 +64,7 @@
   {
     v13.receiver = self;
     v13.super_class = _EFKeyValueObserverHandler;
-    [(_EFKeyValueObserverHandler *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(_EFKeyValueObserverHandler *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

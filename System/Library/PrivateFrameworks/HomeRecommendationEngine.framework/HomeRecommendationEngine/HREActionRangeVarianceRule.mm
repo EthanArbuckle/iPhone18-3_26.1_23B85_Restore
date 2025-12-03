@@ -1,23 +1,23 @@
 @interface HREActionRangeVarianceRule
-+ (id)rangeVarianceWithType:(id)a3 max:(unint64_t)a4;
-+ (id)rangeVarianceWithType:(id)a3 min:(unint64_t)a4;
-+ (id)rangeVarianceWithType:(id)a3 min:(unint64_t)a4 max:(unint64_t)a5;
-+ (id)rangeVarianceWithType:(id)a3 range:(_NSRange)a4;
-- (BOOL)passesForAction:(id)a3;
-- (BOOL)passesWithTargetValue:(id)a3;
++ (id)rangeVarianceWithType:(id)type max:(unint64_t)max;
++ (id)rangeVarianceWithType:(id)type min:(unint64_t)min;
++ (id)rangeVarianceWithType:(id)type min:(unint64_t)min max:(unint64_t)max;
++ (id)rangeVarianceWithType:(id)type range:(_NSRange)range;
+- (BOOL)passesForAction:(id)action;
+- (BOOL)passesWithTargetValue:(id)value;
 - (_NSRange)allowedTargetValues;
-- (id)_initWithType:(id)a3 range:(_NSRange)a4;
+- (id)_initWithType:(id)type range:(_NSRange)range;
 @end
 
 @implementation HREActionRangeVarianceRule
 
-- (id)_initWithType:(id)a3 range:(_NSRange)a4
+- (id)_initWithType:(id)type range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v7.receiver = self;
   v7.super_class = HREActionRangeVarianceRule;
-  result = [(HRECharacteristicActionVarianceRule *)&v7 _initWithType:a3];
+  result = [(HRECharacteristicActionVarianceRule *)&v7 _initWithType:type];
   if (result)
   {
     *(result + 3) = location;
@@ -27,49 +27,49 @@
   return result;
 }
 
-+ (id)rangeVarianceWithType:(id)a3 range:(_NSRange)a4
++ (id)rangeVarianceWithType:(id)type range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithType:v7 range:{location, length}];
+  length = range.length;
+  location = range.location;
+  typeCopy = type;
+  v8 = [[self alloc] _initWithType:typeCopy range:{location, length}];
 
   return v8;
 }
 
-+ (id)rangeVarianceWithType:(id)a3 max:(unint64_t)a4
++ (id)rangeVarianceWithType:(id)type max:(unint64_t)max
 {
-  v6 = a3;
-  v7 = [[a1 alloc] _initWithType:v6 range:{0, a4 + 1}];
+  typeCopy = type;
+  v7 = [[self alloc] _initWithType:typeCopy range:{0, max + 1}];
 
   return v7;
 }
 
-+ (id)rangeVarianceWithType:(id)a3 min:(unint64_t)a4
++ (id)rangeVarianceWithType:(id)type min:(unint64_t)min
 {
-  v6 = a3;
-  v7 = [[a1 alloc] _initWithType:v6 range:{a4, -1}];
+  typeCopy = type;
+  v7 = [[self alloc] _initWithType:typeCopy range:{min, -1}];
 
   return v7;
 }
 
-+ (id)rangeVarianceWithType:(id)a3 min:(unint64_t)a4 max:(unint64_t)a5
++ (id)rangeVarianceWithType:(id)type min:(unint64_t)min max:(unint64_t)max
 {
-  v8 = a3;
-  v9 = [[a1 alloc] _initWithType:v8 range:{a4, a5 - a4 + 1}];
+  typeCopy = type;
+  v9 = [[self alloc] _initWithType:typeCopy range:{min, max - min + 1}];
 
   return v9;
 }
 
-- (BOOL)passesForAction:(id)a3
+- (BOOL)passesForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v8.receiver = self;
   v8.super_class = HREActionRangeVarianceRule;
-  if ([(HRECharacteristicActionVarianceRule *)&v8 passesForAction:v4])
+  if ([(HRECharacteristicActionVarianceRule *)&v8 passesForAction:actionCopy])
   {
-    v5 = [v4 targetValue];
-    v6 = [(HREActionRangeVarianceRule *)self passesWithTargetValue:v5];
+    targetValue = [actionCopy targetValue];
+    v6 = [(HREActionRangeVarianceRule *)self passesWithTargetValue:targetValue];
   }
 
   else
@@ -80,11 +80,11 @@
   return v6;
 }
 
-- (BOOL)passesWithTargetValue:(id)a3
+- (BOOL)passesWithTargetValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
-  v5 = v4;
+  v5 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -99,9 +99,9 @@
 
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
-    v9 = [(HREActionRangeVarianceRule *)self allowedTargetValues];
-    v12 = v8 >= v9 && v8 - v9 < v10;
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
+    allowedTargetValues = [(HREActionRangeVarianceRule *)self allowedTargetValues];
+    v12 = unsignedIntegerValue >= allowedTargetValues && unsignedIntegerValue - allowedTargetValues < v10;
   }
 
   else

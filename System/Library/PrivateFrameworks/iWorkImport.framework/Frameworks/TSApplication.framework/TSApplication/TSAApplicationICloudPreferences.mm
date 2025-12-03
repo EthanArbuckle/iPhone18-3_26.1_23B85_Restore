@@ -1,23 +1,23 @@
 @interface TSAApplicationICloudPreferences
 - (BOOL)hasIWorkAuthorName;
-- (BOOL)isICloudDocumentPreference:(id)a3 validForKey:(id)a4;
-- (id)collaboratorNameForDocumentInfo:(id)a3 firstName:(id *)a4 lastName:(id *)a5;
+- (BOOL)isICloudDocumentPreference:(id)preference validForKey:(id)key;
+- (id)collaboratorNameForDocumentInfo:(id)info firstName:(id *)name lastName:(id *)lastName;
 - (id)documentPreferenceKeyPrefix;
-- (id)iCloudDocumentPreferenceKeyForKvsDocumentKey:(id)a3 isMatchingKey:(BOOL *)a4;
+- (id)iCloudDocumentPreferenceKeyForKvsDocumentKey:(id)key isMatchingKey:(BOOL *)matchingKey;
 - (id)iWorkAuthorName;
 - (id)iWorkAuthorPrivateIDsAndMetadata;
-- (id)preferencesForKvsDocumentKey:(id)a3;
-- (id)validICloudPreferencesForPreferences:(id)a3 invalidKeys:(id *)a4;
-- (unint64_t)collaboratorColorIndexForKvsDocumentKey:(id)a3;
+- (id)preferencesForKvsDocumentKey:(id)key;
+- (id)validICloudPreferencesForPreferences:(id)preferences invalidKeys:(id *)keys;
+- (unint64_t)collaboratorColorIndexForKvsDocumentKey:(id)key;
 - (unint64_t)iWorkAuthorColorIndex;
 - (void)clearICloudDocumentPreferences;
 - (void)clearIWorkAuthorPrivateID;
-- (void)p_ubiquitousKeyValueStoreDidChange:(id)a3;
+- (void)p_ubiquitousKeyValueStoreDidChange:(id)change;
 - (void)registerICloudPreferences;
-- (void)setIWorkAuthorColorIndex:(unint64_t)a3;
-- (void)setIWorkAuthorName:(id)a3;
-- (void)setIWorkAuthorPrivateIDsAndMetadata:(id)a3;
-- (void)setPreferences:(id)a3 forKvsDocumentKey:(id)a4;
+- (void)setIWorkAuthorColorIndex:(unint64_t)index;
+- (void)setIWorkAuthorName:(id)name;
+- (void)setIWorkAuthorPrivateIDsAndMetadata:(id)metadata;
+- (void)setPreferences:(id)preferences forKvsDocumentKey:(id)key;
 @end
 
 @implementation TSAApplicationICloudPreferences
@@ -58,9 +58,9 @@
   }
 }
 
-- (id)collaboratorNameForDocumentInfo:(id)a3 firstName:(id *)a4 lastName:(id *)a5
+- (id)collaboratorNameForDocumentInfo:(id)info firstName:(id *)name lastName:(id *)lastName
 {
-  if (objc_msgSend_length(0, a2, a3, a4, a5))
+  if (objc_msgSend_length(0, a2, info, name, lastName))
   {
     goto LABEL_2;
   }
@@ -77,9 +77,9 @@ LABEL_2:
   return v9;
 }
 
-- (unint64_t)collaboratorColorIndexForKvsDocumentKey:(id)a3
+- (unint64_t)collaboratorColorIndexForKvsDocumentKey:(id)key
 {
-  v5 = objc_msgSend_preferencesForKvsDocumentKey_(self, a2, a3, v3);
+  v5 = objc_msgSend_preferencesForKvsDocumentKey_(self, a2, key, v3);
   objc_opt_class();
   v8 = objc_msgSend_objectForKeyedSubscript_(v5, v6, @"TSAICloudDocumentPreferenceAuthorColorIndexKey", v7);
   v9 = TSUDynamicCast();
@@ -92,12 +92,12 @@ LABEL_2:
   return v13;
 }
 
-- (id)iCloudDocumentPreferenceKeyForKvsDocumentKey:(id)a3 isMatchingKey:(BOOL *)a4
+- (id)iCloudDocumentPreferenceKeyForKvsDocumentKey:(id)key isMatchingKey:(BOOL *)matchingKey
 {
-  v69 = a3;
-  if (objc_msgSend_length(v69, v6, v7, v8))
+  keyCopy = key;
+  if (objc_msgSend_length(keyCopy, v6, v7, v8))
   {
-    v63 = a4;
+    matchingKeyCopy = matchingKey;
     v68 = objc_msgSend_defaultStore(MEMORY[0x277CCAD80], v9, v10, v11);
     v65 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], v12, v13, v14);
     v20 = objc_msgSend_documentPreferenceKeyPrefix(self, v15, v16, v17);
@@ -132,7 +132,7 @@ LABEL_2:
       v39 = objc_msgSend_objectForKeyedSubscript_(v32, v37, @"TSAICloudDocumentPreferenceTimestampKey", v38);
       v40 = TSUDynamicCast();
 
-      if (objc_msgSend_isEqualToString_(v69, v41, v36, v42))
+      if (objc_msgSend_isEqualToString_(keyCopy, v41, v36, v42))
       {
         if (!v23 || objc_msgSend_compare_(v23, v43, v40, v44) == -1)
         {
@@ -175,9 +175,9 @@ LABEL_18:
 
       if (++v21 == 20)
       {
-        if (v63)
+        if (matchingKeyCopy)
         {
-          *v63 = v67 != 0;
+          *matchingKeyCopy = v67 != 0;
         }
 
         if (v67)
@@ -214,9 +214,9 @@ LABEL_17:
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v59, v60, v61);
   v52 = 0;
-  if (a4)
+  if (matchingKey)
   {
-    *a4 = 0;
+    *matchingKey = 0;
   }
 
 LABEL_29:
@@ -224,10 +224,10 @@ LABEL_29:
   return v52;
 }
 
-- (BOOL)isICloudDocumentPreference:(id)a3 validForKey:(id)a4
+- (BOOL)isICloudDocumentPreference:(id)preference validForKey:(id)key
 {
-  v6 = a3;
-  if (objc_msgSend_isEqualToString_(a4, v7, @"TSAICloudDocumentPreferenceAuthorColorIndexKey", v8))
+  preferenceCopy = preference;
+  if (objc_msgSend_isEqualToString_(key, v7, @"TSAICloudDocumentPreferenceAuthorColorIndexKey", v8))
   {
     objc_opt_class();
     v9 = TSUDynamicCast();
@@ -252,13 +252,13 @@ LABEL_29:
   return isValidIWorkAuthorColorIndex;
 }
 
-- (id)validICloudPreferencesForPreferences:(id)a3 invalidKeys:(id *)a4
+- (id)validICloudPreferencesForPreferences:(id)preferences invalidKeys:(id *)keys
 {
-  v6 = a3;
+  preferencesCopy = preferences;
   v7 = MEMORY[0x277CBEB38];
-  v11 = objc_msgSend_count(v6, v8, v9, v10);
+  v11 = objc_msgSend_count(preferencesCopy, v8, v9, v10);
   v17 = objc_msgSend_dictionaryWithCapacity_(v7, v12, v11, v13);
-  if (a4)
+  if (keys)
   {
     v18 = objc_msgSend_array(MEMORY[0x277CBEB18], v14, v15, v16);
   }
@@ -277,11 +277,11 @@ LABEL_29:
   v28 = v19;
   v20 = v18;
   v29 = v20;
-  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v6, v21, v27, v22);
-  if (a4)
+  objc_msgSend_enumerateKeysAndObjectsUsingBlock_(preferencesCopy, v21, v27, v22);
+  if (keys)
   {
     v23 = v20;
-    *a4 = v20;
+    *keys = v20;
   }
 
   v24 = v29;
@@ -290,13 +290,13 @@ LABEL_29:
   return v19;
 }
 
-- (id)preferencesForKvsDocumentKey:(id)a3
+- (id)preferencesForKvsDocumentKey:(id)key
 {
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6, v7))
+  keyCopy = key;
+  if (objc_msgSend_length(keyCopy, v5, v6, v7))
   {
     v32 = 0;
-    v9 = objc_msgSend_iCloudDocumentPreferenceKeyForKvsDocumentKey_isMatchingKey_(self, v8, v4, &v32);
+    v9 = objc_msgSend_iCloudDocumentPreferenceKeyForKvsDocumentKey_isMatchingKey_(self, v8, keyCopy, &v32);
     v13 = v9;
     if (v32 == 1 && objc_msgSend_length(v9, v10, v11, v12))
     {
@@ -331,25 +331,25 @@ LABEL_29:
   return v26;
 }
 
-- (void)setPreferences:(id)a3 forKvsDocumentKey:(id)a4
+- (void)setPreferences:(id)preferences forKvsDocumentKey:(id)key
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_length(v7, v8, v9, v10))
+  preferencesCopy = preferences;
+  keyCopy = key;
+  if (objc_msgSend_length(keyCopy, v8, v9, v10))
   {
     v78 = 0;
-    v12 = objc_msgSend_validICloudPreferencesForPreferences_invalidKeys_(self, v11, v6, &v78);
+    v12 = objc_msgSend_validICloudPreferencesForPreferences_invalidKeys_(self, v11, preferencesCopy, &v78);
     v13 = v78;
     v77 = 0;
-    v18 = objc_msgSend_iCloudDocumentPreferenceKeyForKvsDocumentKey_isMatchingKey_(self, v14, v7, &v77);
+    v18 = objc_msgSend_iCloudDocumentPreferenceKeyForKvsDocumentKey_isMatchingKey_(self, v14, keyCopy, &v77);
     if (v18)
     {
       v19 = objc_msgSend_defaultStore(MEMORY[0x277CCAD80], v15, v16, v17);
       v25 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], v20, v21, v22);
-      if (v6)
+      if (preferencesCopy)
       {
-        objc_msgSend_setObject_forKeyedSubscript_(v12, v23, v7, @"TSAICloudDocumentPreferenceShareIDKey");
+        objc_msgSend_setObject_forKeyedSubscript_(v12, v23, keyCopy, @"TSAICloudDocumentPreferenceShareIDKey");
         v26 = MEMORY[0x277CCABB0];
         v30 = objc_msgSend_date(MEMORY[0x277CBEAA8], v27, v28, v29);
         objc_msgSend_timeIntervalSince1970(v30, v31, v32, v33);
@@ -428,10 +428,10 @@ LABEL_29:
   }
 }
 
-- (void)setIWorkAuthorName:(id)a3
+- (void)setIWorkAuthorName:(id)name
 {
   v50[2] = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_normalizedAuthorNameForAuthorName_(MEMORY[0x277D80608], a2, a3, v3);
+  v5 = objc_msgSend_normalizedAuthorNameForAuthorName_(MEMORY[0x277D80608], a2, name, v3);
   v9 = objc_msgSend_iWorkAuthorName(self, v6, v7, v8);
   v10 = v9;
   v11 = &stru_288512028;
@@ -576,14 +576,14 @@ LABEL_9:
   return v24;
 }
 
-- (void)setIWorkAuthorColorIndex:(unint64_t)a3
+- (void)setIWorkAuthorColorIndex:(unint64_t)index
 {
-  v17 = objc_msgSend_defaultStore(MEMORY[0x277CCAD80], a2, a3, v3);
+  v17 = objc_msgSend_defaultStore(MEMORY[0x277CCAD80], a2, index, v3);
   v9 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], v6, v7, v8);
-  if (objc_msgSend_isValidIWorkAuthorColorIndex_(self, v10, a3, v11))
+  if (objc_msgSend_isValidIWorkAuthorColorIndex_(self, v10, index, v11))
   {
-    objc_msgSend_setLongLong_forKey_(v17, v12, a3, @"TSAICloudAuthorColorIndexKey");
-    objc_msgSend_setInteger_forKey_(v9, v14, a3, @"TSAICloudAuthorColorIndexKey");
+    objc_msgSend_setLongLong_forKey_(v17, v12, index, @"TSAICloudAuthorColorIndexKey");
+    objc_msgSend_setInteger_forKey_(v9, v14, index, @"TSAICloudAuthorColorIndexKey");
   }
 
   else
@@ -613,20 +613,20 @@ LABEL_9:
   return v8;
 }
 
-- (void)setIWorkAuthorPrivateIDsAndMetadata:(id)a3
+- (void)setIWorkAuthorPrivateIDsAndMetadata:(id)metadata
 {
   v3 = MEMORY[0x277CCAD80];
-  v4 = a3;
+  metadataCopy = metadata;
   v12 = objc_msgSend_defaultStore(v3, v5, v6, v7);
-  objc_msgSend_setObject_forKey_(v12, v8, v4, @"TSAICloudAuthorPrivateIDKey");
+  objc_msgSend_setObject_forKey_(v12, v8, metadataCopy, @"TSAICloudAuthorPrivateIDKey");
 
   objc_msgSend_tsk_coalescedSynchronizeForDefaultStore(MEMORY[0x277CCAD80], v9, v10, v11);
 }
 
-- (void)p_ubiquitousKeyValueStoreDidChange:(id)a3
+- (void)p_ubiquitousKeyValueStoreDidChange:(id)change
 {
   v102[2] = *MEMORY[0x277D85DE8];
-  v4 = objc_msgSend_userInfo(a3, a2, a3, v3);
+  v4 = objc_msgSend_userInfo(change, a2, change, v3);
   v7 = objc_msgSend_objectForKey_(v4, v5, *MEMORY[0x277CCA7B0], v6);
   v11 = v7;
   if (v7)
@@ -667,7 +667,7 @@ LABEL_9:
           block[1] = 3221225472;
           v96 = sub_2760BD514;
           v97 = &unk_27A6B0248;
-          v98 = self;
+          selfCopy = self;
           v99 = v39;
           v43 = MEMORY[0x277CCACC8];
           v44 = v39;

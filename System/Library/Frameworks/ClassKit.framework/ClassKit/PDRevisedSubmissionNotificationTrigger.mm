@@ -1,18 +1,18 @@
 @interface PDRevisedSubmissionNotificationTrigger
-- (BOOL)shouldTriggerNotificationFromCurrentState:(id)a3 toNextState:(id)a4;
-- (PDRevisedSubmissionNotificationTrigger)initWithDatabase:(id)a3;
-- (id)getStudentNameFromID:(id)a3;
-- (void)collaborationStateWillChange:(id)a3;
+- (BOOL)shouldTriggerNotificationFromCurrentState:(id)state toNextState:(id)nextState;
+- (PDRevisedSubmissionNotificationTrigger)initWithDatabase:(id)database;
+- (id)getStudentNameFromID:(id)d;
+- (void)collaborationStateWillChange:(id)change;
 - (void)dealloc;
 @end
 
 @implementation PDRevisedSubmissionNotificationTrigger
 
-- (PDRevisedSubmissionNotificationTrigger)initWithDatabase:(id)a3
+- (PDRevisedSubmissionNotificationTrigger)initWithDatabase:(id)database
 {
   v6.receiver = self;
   v6.super_class = PDRevisedSubmissionNotificationTrigger;
-  v3 = [(PDUserNotificationTrigger *)&v6 initWithDatabase:a3];
+  v3 = [(PDUserNotificationTrigger *)&v6 initWithDatabase:database];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -32,11 +32,11 @@
   [(PDRevisedSubmissionNotificationTrigger *)&v4 dealloc];
 }
 
-- (void)collaborationStateWillChange:(id)a3
+- (void)collaborationStateWillChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"newEntity"];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"newEntity"];
 
   CLSInitLog();
   v7 = CLSLogNotifications;
@@ -49,40 +49,40 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s.%s.", buf, 0x16u);
   }
 
-  v8 = [v4 object];
+  object = [changeCopy object];
 
-  if (sub_100050844(v8))
+  if (sub_100050844(object))
   {
     v9 = objc_opt_class();
-    v10 = [v6 objectID];
-    v11 = [v8 select:v9 identity:v10];
+    objectID = [v6 objectID];
+    v11 = [object select:v9 identity:objectID];
 
     if ([(PDRevisedSubmissionNotificationTrigger *)self shouldTriggerNotificationFromCurrentState:v11 toNextState:v6])
     {
       v12 = [NSBundle bundleForClass:objc_opt_class()];
       v50 = [v12 localizedStringForKey:@"NOTIFICATION_TEACHER_REVIEW_REVISED_WORK_TITLE" value:&stru_100206880 table:@"ClassKit"];
 
-      v13 = [v6 senderPersonID];
-      v14 = [(PDRevisedSubmissionNotificationTrigger *)self getStudentNameFromID:v13];
+      senderPersonID = [v6 senderPersonID];
+      v14 = [(PDRevisedSubmissionNotificationTrigger *)self getStudentNameFromID:senderPersonID];
 
-      v15 = [(PDUserNotificationTrigger *)self database];
+      database = [(PDUserNotificationTrigger *)self database];
       v16 = objc_opt_class();
-      v17 = [v6 parentObjectID];
-      v18 = [v15 select:v16 identity:v17];
+      parentObjectID = [v6 parentObjectID];
+      v18 = [database select:v16 identity:parentObjectID];
 
       if (v18)
       {
         v49 = v14;
-        v19 = [v18 title];
+        title = [v18 title];
         newValue = [v18 objectID];
-        v20 = [(PDUserNotificationTrigger *)self database];
+        database2 = [(PDUserNotificationTrigger *)self database];
         v21 = objc_opt_class();
-        v22 = [v18 parentObjectID];
-        v23 = [v20 select:v21 identity:v22];
+        parentObjectID2 = [v18 parentObjectID];
+        v23 = [database2 select:v21 identity:parentObjectID2];
 
         if (v23)
         {
-          v24 = [v23 objectID];
+          objectID2 = [v23 objectID];
           v25 = [(PDUserNotificationTrigger *)self classIDFromHandout:v23];
         }
 
@@ -95,24 +95,24 @@
             v43 = v28;
             v44 = objc_opt_class();
             v47 = v44;
-            v45 = [v18 parentObjectID];
+            parentObjectID3 = [v18 parentObjectID];
             *buf = 138543618;
             v52 = v44;
             v53 = 2112;
-            v54 = v45;
+            v54 = parentObjectID3;
             _os_log_error_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "'%{public}@': Failed to find handout with object ID: %@", buf, 0x16u);
           }
 
           v25 = 0;
-          v24 = 0;
+          objectID2 = 0;
         }
 
         v14 = v49;
-        if (v49 && v19)
+        if (v49 && title)
         {
           v29 = [NSBundle bundleForClass:objc_opt_class()];
           v30 = [v29 localizedStringForKey:@"NOTIFICATION_TEACHER_REVIEW_REVISED_WORK_MESSAGE_FORMAT" value:&stru_100206880 table:@"ClassKit"];
-          v31 = v19;
+          v31 = title;
           v32 = v30;
           v46 = v31;
           v33 = [NSString stringWithFormat:v30, v49, v31];
@@ -121,7 +121,7 @@
           v36 = v34;
           if (v34)
           {
-            objc_setProperty_nonatomic_copy(v34, v35, v24, 24);
+            objc_setProperty_nonatomic_copy(v34, v35, objectID2, 24);
             objc_setProperty_nonatomic_copy(v36, v37, v25, 32);
             objc_setProperty_nonatomic_copy(v36, v38, newValue, 48);
           }
@@ -129,7 +129,7 @@
           [(PDUserNotificationTrigger *)self fireTriggerWithNotificationData:v36];
 
           v14 = v49;
-          v19 = v46;
+          title = v46;
         }
 
         v27 = newValue;
@@ -144,16 +144,16 @@
           v39 = v26;
           v40 = objc_opt_class();
           v41 = v40;
-          v42 = [v6 parentObjectID];
+          parentObjectID4 = [v6 parentObjectID];
           *buf = 138543618;
           v52 = v40;
           v53 = 2112;
-          v54 = v42;
+          v54 = parentObjectID4;
           _os_log_error_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "'%{public}@': Failed to find attachment from Collaboration State parent object ID: %@", buf, 0x16u);
         }
 
-        v19 = 0;
-        v24 = 0;
+        title = 0;
+        objectID2 = 0;
         v25 = 0;
         v27 = 0;
       }
@@ -161,30 +161,30 @@
   }
 }
 
-- (BOOL)shouldTriggerNotificationFromCurrentState:(id)a3 toNextState:(id)a4
+- (BOOL)shouldTriggerNotificationFromCurrentState:(id)state toNextState:(id)nextState
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 domain];
-  v9 = [v7 state] != 2 || (objc_msgSend(v7, "flags") & 1) == 0;
-  v10 = [v6 state] == 1 && (objc_msgSend(v6, "flags") & 2) != 0 && (objc_msgSend(v6, "flags") & 1) == 0;
-  v11 = [v7 senderPersonID];
-  v12 = [(PDUserNotificationTrigger *)self database];
-  v13 = sub_1000712CC(v12);
-  v14 = [v13 isEqualToString:v11];
+  stateCopy = state;
+  nextStateCopy = nextState;
+  domain = [nextStateCopy domain];
+  v9 = [nextStateCopy state] != 2 || (objc_msgSend(nextStateCopy, "flags") & 1) == 0;
+  v10 = [stateCopy state] == 1 && (objc_msgSend(stateCopy, "flags") & 2) != 0 && (objc_msgSend(stateCopy, "flags") & 1) == 0;
+  senderPersonID = [nextStateCopy senderPersonID];
+  database = [(PDUserNotificationTrigger *)self database];
+  v13 = sub_1000712CC(database);
+  v14 = [v13 isEqualToString:senderPersonID];
 
   CLSInitLog();
   v15 = CLSLogNotifications;
   if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
   {
     v18 = 138412546;
-    v19 = v6;
+    v19 = stateCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = nextStateCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "PDRevisedSubmissionNotificationTrigger.shouldTriggerNotificationFromCurrentState. CurrentState: %@ NextState: %@", &v18, 0x16u);
   }
 
-  if (v8 != 1 || v9)
+  if (domain != 1 || v9)
   {
     v16 = 0;
   }
@@ -197,24 +197,24 @@
   return v16;
 }
 
-- (id)getStudentNameFromID:(id)a3
+- (id)getStudentNameFromID:(id)d
 {
-  v4 = a3;
-  v5 = [(PDUserNotificationTrigger *)self database];
+  dCopy = d;
+  database = [(PDUserNotificationTrigger *)self database];
   v6 = objc_opt_class();
-  v22 = v4;
+  v22 = dCopy;
   v7 = [NSArray arrayWithObjects:&v22 count:1];
-  v8 = [v5 select:v6 where:@"objectID = ?" bindings:v7];
+  v8 = [database select:v6 where:@"objectID = ?" bindings:v7];
 
   if (v8)
   {
-    v9 = [v8 familyName];
-    v10 = [v8 givenName];
-    v11 = v10;
+    familyName = [v8 familyName];
+    givenName = [v8 givenName];
+    v11 = givenName;
     if (self)
     {
-      v12 = v10;
-      v13 = v9;
+      v12 = givenName;
+      v13 = familyName;
       v14 = objc_alloc_init(NSPersonNameComponentsFormatter);
       [v14 setStyle:2];
       v15 = objc_alloc_init(NSPersonNameComponents);

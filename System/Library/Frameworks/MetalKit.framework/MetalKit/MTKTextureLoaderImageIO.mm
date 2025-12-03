@@ -1,11 +1,11 @@
 @interface MTKTextureLoaderImageIO
-- (BOOL)decodeCGImage:(CGImage *)a3 options:(id)a4;
-- (BOOL)decodeCGImageDataProvider:(CGImage *)a3 options:(id)a4;
-- (BOOL)decodeCGImageImageProvider:(CGImage *)a3 CGImageProvider:(CGImageProvider *)a4 options:(id)a5;
-- (BOOL)determineCGImageBlockFormatWithComponentType:(int)a3 alphaInfo:(unsigned int)a4 andPixelSizeBytes:(unint64_t)a5 andColorSpace:(CGColorSpace *)a6 isOptimized:(BOOL)a7 options:(id)a8;
-- (MTKTextureLoaderImageIO)initWithCGImage:(CGImage *)a3 options:(id)a4 error:(id *)a5;
-- (MTKTextureLoaderImageIO)initWithData:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)getDataForArrayElement:(unint64_t)a3 face:(unint64_t)a4 level:(unint64_t)a5 depthPlane:(unint64_t)a6 bytesPerRow:(unint64_t *)a7 bytesPerImage:(unint64_t *)a8;
+- (BOOL)decodeCGImage:(CGImage *)image options:(id)options;
+- (BOOL)decodeCGImageDataProvider:(CGImage *)provider options:(id)options;
+- (BOOL)decodeCGImageImageProvider:(CGImage *)provider CGImageProvider:(CGImageProvider *)imageProvider options:(id)options;
+- (BOOL)determineCGImageBlockFormatWithComponentType:(int)type alphaInfo:(unsigned int)info andPixelSizeBytes:(unint64_t)bytes andColorSpace:(CGColorSpace *)space isOptimized:(BOOL)optimized options:(id)options;
+- (MTKTextureLoaderImageIO)initWithCGImage:(CGImage *)image options:(id)options error:(id *)error;
+- (MTKTextureLoaderImageIO)initWithData:(id)data options:(id)options error:(id *)error;
+- (id)getDataForArrayElement:(unint64_t)element face:(unint64_t)face level:(unint64_t)level depthPlane:(unint64_t)plane bytesPerRow:(unint64_t *)row bytesPerImage:(unint64_t *)image;
 - (void)dealloc;
 @end
 
@@ -32,19 +32,19 @@
   [(MTKTextureLoaderData *)&v4 dealloc];
 }
 
-- (MTKTextureLoaderImageIO)initWithData:(id)a3 options:(id)a4 error:(id *)a5
+- (MTKTextureLoaderImageIO)initWithData:(id)data options:(id)options error:(id *)error
 {
   v24.receiver = self;
   v24.super_class = MTKTextureLoaderImageIO;
   v8 = [(MTKTextureLoaderData *)&v24 init];
   if (v8)
   {
-    v9 = CGImageSourceCreateWithData(a3, 0);
+    v9 = CGImageSourceCreateWithData(data, 0);
     if (!v9)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = _newMTKTextureErrorWithCodeAndErrorString(0, @"Image decoding failed");
+        *error = _newMTKTextureErrorWithCodeAndErrorString(0, @"Image decoding failed");
       }
 
       return 0;
@@ -54,9 +54,9 @@
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E528], MEMORY[0x1E695E9E8]);
     if (!Mutable)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = _newMTKTextureErrorWithCodeAndErrorString(0, @"Image decoding failed");
+        *error = _newMTKTextureErrorWithCodeAndErrorString(0, @"Image decoding failed");
       }
 
       goto LABEL_40;
@@ -67,9 +67,9 @@
     v13 = CGImageSourceCopyPropertiesAtIndex(v10, 0, v12);
     if (!v13)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = _newMTKTextureErrorWithCodeAndErrorString(0, @"Image decoding failed");
+        *error = _newMTKTextureErrorWithCodeAndErrorString(0, @"Image decoding failed");
       }
 
       goto LABEL_39;
@@ -89,7 +89,7 @@
       {
         if (v16 != 4)
         {
-          if (a5)
+          if (error)
           {
             v21 = @"Unsupported image orientation";
             goto LABEL_32;
@@ -116,9 +116,9 @@ LABEL_40:
     if (ImageAtIndex)
     {
       v19 = ImageAtIndex;
-      if ([(MTKTextureLoaderImageIO *)v8 decodeCGImage:ImageAtIndex options:a4])
+      if ([(MTKTextureLoaderImageIO *)v8 decodeCGImage:ImageAtIndex options:options])
       {
-        if (![a4 objectForKey:@"MTKTextureLoaderOptionCubeLayout"])
+        if (![options objectForKey:@"MTKTextureLoaderOptionCubeLayout"])
         {
 LABEL_25:
           CGImageRelease(v19);
@@ -128,8 +128,8 @@ LABEL_25:
           return v8;
         }
 
-        v20 = [(MTKTextureLoaderData *)v8 height];
-        if (v20 == 6 * [(MTKTextureLoaderData *)v8 width])
+        height = [(MTKTextureLoaderData *)v8 height];
+        if (height == 6 * [(MTKTextureLoaderData *)v8 width])
         {
           [(MTKTextureLoaderData *)v8 setHeight:[(MTKTextureLoaderData *)v8 width]];
           [(MTKTextureLoaderData *)v8 setNumFaces:6];
@@ -137,7 +137,7 @@ LABEL_25:
           goto LABEL_25;
         }
 
-        if (!a5)
+        if (!error)
         {
           goto LABEL_37;
         }
@@ -147,7 +147,7 @@ LABEL_25:
 
       else
       {
-        if (!a5)
+        if (!error)
         {
 LABEL_37:
 
@@ -158,15 +158,15 @@ LABEL_37:
         v22 = @"Image decoding failed";
       }
 
-      *a5 = _newMTKTextureErrorWithCodeAndErrorString(0, v22);
+      *error = _newMTKTextureErrorWithCodeAndErrorString(0, v22);
       goto LABEL_37;
     }
 
-    if (a5)
+    if (error)
     {
       v21 = @"Image decoding failed";
 LABEL_32:
-      *a5 = _newMTKTextureErrorWithCodeAndErrorString(0, v21);
+      *error = _newMTKTextureErrorWithCodeAndErrorString(0, v21);
       goto LABEL_33;
     }
 
@@ -176,7 +176,7 @@ LABEL_32:
   return v8;
 }
 
-- (MTKTextureLoaderImageIO)initWithCGImage:(CGImage *)a3 options:(id)a4 error:(id *)a5
+- (MTKTextureLoaderImageIO)initWithCGImage:(CGImage *)image options:(id)options error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = MTKTextureLoaderImageIO;
@@ -184,12 +184,12 @@ LABEL_32:
   v9 = v8;
   if (v8)
   {
-    if (![(MTKTextureLoaderImageIO *)v8 decodeCGImage:a3 options:a4])
+    if (![(MTKTextureLoaderImageIO *)v8 decodeCGImage:image options:options])
     {
       v9 = 0;
-      if (a5)
+      if (error)
       {
-        *a5 = _newMTKTextureErrorWithCodeAndErrorString(0, @"Image decoding failed");
+        *error = _newMTKTextureErrorWithCodeAndErrorString(0, @"Image decoding failed");
       }
     }
   }
@@ -197,35 +197,35 @@ LABEL_32:
   return v9;
 }
 
-- (id)getDataForArrayElement:(unint64_t)a3 face:(unint64_t)a4 level:(unint64_t)a5 depthPlane:(unint64_t)a6 bytesPerRow:(unint64_t *)a7 bytesPerImage:(unint64_t *)a8
+- (id)getDataForArrayElement:(unint64_t)element face:(unint64_t)face level:(unint64_t)level depthPlane:(unint64_t)plane bytesPerRow:(unint64_t *)row bytesPerImage:(unint64_t *)image
 {
   bytesPerRow = self->_bytesPerRow;
-  v13 = [(MTKTextureLoaderData *)self height:a3]* bytesPerRow;
-  *a7 = self->_bytesPerRow;
-  *a8 = v13;
+  v13 = [(MTKTextureLoaderData *)self height:element]* bytesPerRow;
+  *row = self->_bytesPerRow;
+  *image = v13;
   v14 = MEMORY[0x1E695DEF0];
-  v15 = [(NSData *)self->_imageData bytes]+ v13 * a4;
+  v15 = [(NSData *)self->_imageData bytes]+ v13 * face;
 
   return [v14 dataWithBytesNoCopy:v15 length:v13 freeWhenDone:0];
 }
 
-- (BOOL)decodeCGImage:(CGImage *)a3 options:(id)a4
+- (BOOL)decodeCGImage:(CGImage *)image options:(id)options
 {
   ImageProvider = CGImageGetImageProvider();
   if (ImageProvider)
   {
 
-    return [(MTKTextureLoaderImageIO *)self decodeCGImageImageProvider:a3 CGImageProvider:ImageProvider options:a4];
+    return [(MTKTextureLoaderImageIO *)self decodeCGImageImageProvider:image CGImageProvider:ImageProvider options:options];
   }
 
   else
   {
 
-    return [(MTKTextureLoaderImageIO *)self decodeCGImageDataProvider:a3 options:a4];
+    return [(MTKTextureLoaderImageIO *)self decodeCGImageDataProvider:image options:options];
   }
 }
 
-- (BOOL)decodeCGImageImageProvider:(CGImage *)a3 CGImageProvider:(CGImageProvider *)a4 options:(id)a5
+- (BOOL)decodeCGImageImageProvider:(CGImage *)provider CGImageProvider:(CGImageProvider *)imageProvider options:(id)options
 {
   ColorSpace = CGImageProviderGetColorSpace();
   if (CGColorSpaceGetModel(ColorSpace) > kCGColorSpaceModelRGB)
@@ -241,10 +241,10 @@ LABEL_32:
   {
     v11 = *MEMORY[0x1E695E4D0];
     CFDictionarySetValue(Mutable, @"kCGImageBlockSingletonRequest", *MEMORY[0x1E695E4D0]);
-    CGImageGetBitsPerPixel(a3);
-    BitsPerComponent = CGImageGetBitsPerComponent(a3);
-    AlphaInfo = CGImageGetAlphaInfo(a3);
-    CGImageGetBitmapInfo(a3);
+    CGImageGetBitsPerPixel(provider);
+    BitsPerComponent = CGImageGetBitsPerComponent(provider);
+    AlphaInfo = CGImageGetAlphaInfo(provider);
+    CGImageGetBitmapInfo(provider);
     if (BitsPerComponent == 8)
     {
       CFDictionarySetValue(v9, @"kCGImageBlockIOSurfaceOptimizedRequest", v11);
@@ -271,7 +271,7 @@ LABEL_32:
         v22 = self->_blockSet;
         PixelSize = CGImageBlockSetGetPixelSize();
         v24 = v14 && PixelSize == 3 ? 4 : PixelSize;
-        if ([(MTKTextureLoaderImageIO *)self determineCGImageBlockFormatWithComponentType:ComponentType alphaInfo:AlphaInfo andPixelSizeBytes:v24 andColorSpace:ColorSpace isOptimized:v14 options:a5])
+        if ([(MTKTextureLoaderImageIO *)self determineCGImageBlockFormatWithComponentType:ComponentType alphaInfo:AlphaInfo andPixelSizeBytes:v24 andColorSpace:ColorSpace isOptimized:v14 options:options])
         {
           expandRGBToRGBA = self->_expandRGBToRGBA;
           if (!expandRGBToRGBA)
@@ -358,21 +358,21 @@ LABEL_19:
   return result;
 }
 
-- (BOOL)decodeCGImageDataProvider:(CGImage *)a3 options:(id)a4
+- (BOOL)decodeCGImageDataProvider:(CGImage *)provider options:(id)options
 {
-  BitmapInfo = CGImageGetBitmapInfo(a3);
-  ColorSpace = CGImageGetColorSpace(a3);
+  BitmapInfo = CGImageGetBitmapInfo(provider);
+  ColorSpace = CGImageGetColorSpace(provider);
   Model = CGColorSpaceGetModel(ColorSpace);
-  BitsPerPixel = CGImageGetBitsPerPixel(a3);
+  BitsPerPixel = CGImageGetBitsPerPixel(provider);
   v10 = BitsPerPixel;
   if (BitsPerPixel != 32 && BitsPerPixel != 8 || ColorSpace && Model > kCGColorSpaceModelRGB)
   {
     goto LABEL_11;
   }
 
-  self->_bytesPerRow = CGImageGetBytesPerRow(a3);
-  [(MTKTextureLoaderData *)self setWidth:CGImageGetWidth(a3)];
-  [(MTKTextureLoaderData *)self setHeight:CGImageGetHeight(a3)];
+  self->_bytesPerRow = CGImageGetBytesPerRow(provider);
+  [(MTKTextureLoaderData *)self setWidth:CGImageGetWidth(provider)];
+  [(MTKTextureLoaderData *)self setHeight:CGImageGetHeight(provider)];
   if (v10 == 8)
   {
     if ((BitmapInfo & 0x1F) == 7 || ColorSpace == 0)
@@ -427,7 +427,7 @@ LABEL_20:
   *&self->_pixelFormatInfo.castClass = v19;
   *&self->_pixelFormatInfo.type.compressed.blockWidth = v20;
   self->_pixelFormatInfo.type.normal.pixelBytesRenderMSAA = v21;
-  DataProvider = CGImageGetDataProvider(a3);
+  DataProvider = CGImageGetDataProvider(provider);
   v13 = CGDataProviderCopyData(DataProvider);
   self->_cfData = v13;
   if (v13)
@@ -450,31 +450,31 @@ LABEL_20:
   return v13;
 }
 
-- (BOOL)determineCGImageBlockFormatWithComponentType:(int)a3 alphaInfo:(unsigned int)a4 andPixelSizeBytes:(unint64_t)a5 andColorSpace:(CGColorSpace *)a6 isOptimized:(BOOL)a7 options:(id)a8
+- (BOOL)determineCGImageBlockFormatWithComponentType:(int)type alphaInfo:(unsigned int)info andPixelSizeBytes:(unint64_t)bytes andColorSpace:(CGColorSpace *)space isOptimized:(BOOL)optimized options:(id)options
 {
-  v9 = a7;
+  optimizedCopy = optimized;
   self->_expandRGBToRGBA = 0;
   v14 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);
   v15 = 0;
   if (_mtkLinkedOnOrAfter(0))
   {
-    v15 = CFEqual(a6, v14) != 0;
+    v15 = CFEqual(space, v14) != 0;
   }
 
   CFRelease(v14);
-  if ([a8 objectForKey:@"MTKTextureLoaderOptionSRGB"])
+  if ([options objectForKey:@"MTKTextureLoaderOptionSRGB"])
   {
-    v15 = [objc_msgSend(a8 objectForKey:{@"MTKTextureLoaderOptionSRGB", "BOOLValue"}];
+    v15 = [objc_msgSend(options objectForKey:{@"MTKTextureLoaderOptionSRGB", "BOOLValue"}];
   }
 
   result = 0;
-  if (a3 > 2)
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         result = 0;
-        v19 = __ROR8__(a5 - 4, 2);
+        v19 = __ROR8__(bytes - 4, 2);
         if (v19 <= 1)
         {
           if (v19)
@@ -484,13 +484,13 @@ LABEL_20:
               return result;
             }
 
-            v17 = self;
+            selfCopy19 = self;
             v18 = 103;
           }
 
           else
           {
-            v17 = self;
+            selfCopy19 = self;
             v18 = 53;
           }
 
@@ -504,17 +504,17 @@ LABEL_20:
             return result;
           }
 
-          v17 = self;
+          selfCopy19 = self;
           v18 = 123;
           goto LABEL_62;
         }
 
-        v21 = self;
+        selfCopy16 = self;
         v22 = 123;
         break;
       case 4:
         result = 0;
-        v20 = __ROR8__(a5 - 4, 2);
+        v20 = __ROR8__(bytes - 4, 2);
         if (v20 <= 1)
         {
           if (v20)
@@ -524,13 +524,13 @@ LABEL_20:
               return result;
             }
 
-            v17 = self;
+            selfCopy19 = self;
             v18 = 105;
           }
 
           else
           {
-            v17 = self;
+            selfCopy19 = self;
             v18 = 55;
           }
 
@@ -544,51 +544,51 @@ LABEL_20:
             return result;
           }
 
-          v17 = self;
+          selfCopy19 = self;
           v18 = 125;
           goto LABEL_62;
         }
 
-        v21 = self;
+        selfCopy16 = self;
         v22 = 125;
         break;
       case 5:
         result = 0;
-        if (a5 <= 5)
+        if (bytes <= 5)
         {
-          if (a5 == 2)
+          if (bytes == 2)
           {
-            v17 = self;
+            selfCopy19 = self;
             v18 = 25;
           }
 
           else
           {
-            if (a5 != 4)
+            if (bytes != 4)
             {
               return result;
             }
 
-            v17 = self;
+            selfCopy19 = self;
             v18 = 65;
           }
 
           goto LABEL_62;
         }
 
-        if (a5 != 6)
+        if (bytes != 6)
         {
-          if (a5 != 8)
+          if (bytes != 8)
           {
             return result;
           }
 
-          v17 = self;
+          selfCopy19 = self;
           v18 = 115;
           goto LABEL_62;
         }
 
-        v21 = self;
+        selfCopy16 = self;
         v22 = 115;
         break;
       default:
@@ -598,59 +598,59 @@ LABEL_20:
     goto LABEL_58;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       return result;
     }
 
     result = 0;
-    if (a5 <= 5)
+    if (bytes <= 5)
     {
-      if (a5 == 2)
+      if (bytes == 2)
       {
-        v17 = self;
+        selfCopy19 = self;
         v18 = 20;
       }
 
       else
       {
-        if (a5 != 4)
+        if (bytes != 4)
         {
           return result;
         }
 
-        v17 = self;
+        selfCopy19 = self;
         v18 = 60;
       }
 
       goto LABEL_62;
     }
 
-    if (a5 != 6)
+    if (bytes != 6)
     {
-      if (a5 != 8)
+      if (bytes != 8)
       {
         return result;
       }
 
-      v17 = self;
+      selfCopy19 = self;
       v18 = 110;
       goto LABEL_62;
     }
 
-    v21 = self;
+    selfCopy16 = self;
     v22 = 110;
 LABEL_58:
-    [(MTKTextureLoaderData *)v21 setPixelFormat:v22];
+    [(MTKTextureLoaderData *)selfCopy16 setPixelFormat:v22];
     self->_expandRGBToRGBA = 1;
     goto LABEL_63;
   }
 
-  if (a5 == 1)
+  if (bytes == 1)
   {
-    v17 = self;
+    selfCopy19 = self;
     if (v15)
     {
       v18 = 11;
@@ -664,9 +664,9 @@ LABEL_58:
     goto LABEL_62;
   }
 
-  if (a5 == 2)
+  if (bytes == 2)
   {
-    v17 = self;
+    selfCopy19 = self;
     if (v15)
     {
       v18 = 31;
@@ -680,14 +680,14 @@ LABEL_58:
     goto LABEL_62;
   }
 
-  if (a5 != 4)
+  if (bytes != 4)
   {
     return 0;
   }
 
-  if (v9)
+  if (optimizedCopy)
   {
-    v17 = self;
+    selfCopy19 = self;
     if (v15)
     {
       v18 = 81;
@@ -699,7 +699,7 @@ LABEL_58:
     }
 
 LABEL_62:
-    [(MTKTextureLoaderData *)v17 setPixelFormat:v18];
+    [(MTKTextureLoaderData *)selfCopy19 setPixelFormat:v18];
   }
 
 LABEL_63:

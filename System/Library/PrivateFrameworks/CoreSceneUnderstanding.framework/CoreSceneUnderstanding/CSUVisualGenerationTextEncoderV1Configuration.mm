@@ -1,28 +1,28 @@
 @interface CSUVisualGenerationTextEncoderV1Configuration
-+ (id)VisualGenerationTextEncoderV1ConfigurationForRevision:(int64_t)a3 error:(id *)a4;
++ (id)VisualGenerationTextEncoderV1ConfigurationForRevision:(int64_t)revision error:(id *)error;
 + (id)availableRevisions;
-+ (id)pathForResource:(id)a3 ofType:(id)a4 inDirectory:(id)a5;
-- (id)initVisualGenerationTextEncoderV1ConfigurationForRevision:(int64_t)a3 vocabularyModelPath:(id)a4 tokenEmbeddingNetworkPath:(id)a5 textEncoderNetworkPath:(id)a6;
++ (id)pathForResource:(id)resource ofType:(id)type inDirectory:(id)directory;
+- (id)initVisualGenerationTextEncoderV1ConfigurationForRevision:(int64_t)revision vocabularyModelPath:(id)path tokenEmbeddingNetworkPath:(id)networkPath textEncoderNetworkPath:(id)encoderNetworkPath;
 - (int)espressoExecutionEngine;
 @end
 
 @implementation CSUVisualGenerationTextEncoderV1Configuration
 
-+ (id)pathForResource:(id)a3 ofType:(id)a4 inDirectory:(id)a5
++ (id)pathForResource:(id)resource ofType:(id)type inDirectory:(id)directory
 {
   v72[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  resourceCopy = resource;
+  typeCopy = type;
+  directoryCopy = directory;
   v10 = MEMORY[0x1E696AAE8];
-  v63 = v7;
-  v64 = v8;
+  v63 = resourceCopy;
+  v64 = typeCopy;
   v11 = objc_opt_class();
   v65 = objc_msgSend_bundleForClass_(v10, v12, v11, v13, v14);
-  v18 = objc_msgSend_stringByAppendingPathComponent_(v9, v15, v7, v16, v17);
-  v66 = objc_msgSend_stringByAppendingPathExtension_(v18, v19, v8, v20, v21);
+  v18 = objc_msgSend_stringByAppendingPathComponent_(directoryCopy, v15, resourceCopy, v16, v17);
+  v66 = objc_msgSend_stringByAppendingPathExtension_(v18, v19, typeCopy, v20, v21);
 
-  v23 = objc_msgSend_pathForResource_ofType_inDirectory_(v65, v22, v7, v8, v9);
+  v23 = objc_msgSend_pathForResource_ofType_inDirectory_(v65, v22, resourceCopy, typeCopy, directoryCopy);
   v27 = v23;
   if (v23)
   {
@@ -31,7 +31,7 @@
 
   else
   {
-    v29 = objc_msgSend_stringByAppendingPathComponent_(@"/Library/Application Support/com.apple.CoreSceneUnderstanding", v24, v66, v25, v26, v7, v8);
+    v29 = objc_msgSend_stringByAppendingPathComponent_(@"/Library/Application Support/com.apple.CoreSceneUnderstanding", v24, v66, v25, v26, resourceCopy, typeCopy);
     v72[0] = v29;
     v30 = NSHomeDirectory();
     v34 = objc_msgSend_stringByAppendingPathComponent_(@"Library/Application Support/com.apple.CoreSceneUnderstanding", v31, v66, v32, v33);
@@ -93,29 +93,29 @@ LABEL_11:
   return v28;
 }
 
-+ (id)VisualGenerationTextEncoderV1ConfigurationForRevision:(int64_t)a3 error:(id *)a4
++ (id)VisualGenerationTextEncoderV1ConfigurationForRevision:(int64_t)revision error:(id *)error
 {
   v7 = MEMORY[0x1E696AAE8];
   v8 = objc_opt_class();
   v12 = objc_msgSend_bundleForClass_(v7, v9, v8, v10, v11);
-  if (objc_msgSend__resolvedRevision_(a1, v13, a3, v14, v15) == 1)
+  if (objc_msgSend__resolvedRevision_(self, v13, revision, v14, v15) == 1)
   {
-    v19 = objc_msgSend_pathForResource_ofType_inDirectory_(a1, v16, @"spiece", @"model", @"models/VisualGeneration/v1.0/");
-    v21 = objc_msgSend_pathForResource_ofType_inDirectory_(a1, v20, @"dreamotorch_2kbcv9xagr_100_clip_embedder", @"espresso.net", @"models/VisualGeneration/v1.0/");
-    v22 = [a1 alloc];
+    v19 = objc_msgSend_pathForResource_ofType_inDirectory_(self, v16, @"spiece", @"model", @"models/VisualGeneration/v1.0/");
+    v21 = objc_msgSend_pathForResource_ofType_inDirectory_(self, v20, @"dreamotorch_2kbcv9xagr_100_clip_embedder", @"espresso.net", @"models/VisualGeneration/v1.0/");
+    v22 = [self alloc];
     inited = objc_msgSend_initVisualGenerationTextEncoderV1ConfigurationForRevision_vocabularyModelPath_tokenEmbeddingNetworkPath_textEncoderNetworkPath_(v22, v23, 1, v19, 0, v21);
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (a4)
+  if (error)
   {
     v25 = MEMORY[0x1E696AEC0];
-    v19 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v16, a3, v17, v18);
+    v19 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v16, revision, v17, v18);
     v21 = objc_msgSend_stringWithFormat_(v25, v26, @"Unsupported VisualGenerationTextEncoderV1 revision %@", v27, v28, v19);
     objc_msgSend_errorForUnsupportedRevision_(CSUError, v29, v21, v30, v31);
-    *a4 = inited = 0;
+    *error = inited = 0;
     goto LABEL_5;
   }
 
@@ -125,18 +125,18 @@ LABEL_6:
   return inited;
 }
 
-- (id)initVisualGenerationTextEncoderV1ConfigurationForRevision:(int64_t)a3 vocabularyModelPath:(id)a4 tokenEmbeddingNetworkPath:(id)a5 textEncoderNetworkPath:(id)a6
+- (id)initVisualGenerationTextEncoderV1ConfigurationForRevision:(int64_t)revision vocabularyModelPath:(id)path tokenEmbeddingNetworkPath:(id)networkPath textEncoderNetworkPath:(id)encoderNetworkPath
 {
-  v9 = a4;
-  v10 = a6;
+  pathCopy = path;
+  encoderNetworkPathCopy = encoderNetworkPath;
   v30.receiver = self;
   v30.super_class = CSUVisualGenerationTextEncoderV1Configuration;
   v11 = [(CSUVisualGenerationTextEncoderV1Configuration *)&v30 init];
   v16 = v11;
   if (v11)
   {
-    v11->_revision = a3;
-    v17 = objc_msgSend_copy(v9, v12, v13, v14, v15);
+    v11->_revision = revision;
+    v17 = objc_msgSend_copy(pathCopy, v12, v13, v14, v15);
     vocabularyModelPath = v16->_vocabularyModelPath;
     v16->_vocabularyModelPath = v17;
 
@@ -145,7 +145,7 @@ LABEL_6:
     inputTextIDTensorName = v16->_inputTextIDTensorName;
     v16->_inputTextIDTensorName = @"ids";
 
-    v24 = objc_msgSend_copy(v10, v20, v21, v22, v23);
+    v24 = objc_msgSend_copy(encoderNetworkPathCopy, v20, v21, v22, v23);
     textEncoderNetworkPath = v16->_textEncoderNetworkPath;
     v16->_textEncoderNetworkPath = v24;
 

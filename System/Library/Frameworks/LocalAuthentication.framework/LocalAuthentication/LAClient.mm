@@ -1,59 +1,59 @@
 @interface LAClient
 + (id)_queue;
-+ (id)createConnection:(const unsigned int *)a3 legacyService:(BOOL)a4;
-+ (void)_performInvalidationBlocks:(id)a3;
-- (BOOL)_setPermanentError:(id)a3;
-- (BOOL)setServerPropertyForOption:(int64_t)a3 value:(id)a4 error:(id *)a5;
-- (LAClient)initWithExternalizedContext:(id)a3 userSession:(const unsigned int *)a4 flags:(int64_t)a5 context:(id)a6;
-- (LAClient)initWithUUID:(id)a3 token:(id)a4 senderAuditTokenData:(id)a5 context:(id)a6;
++ (id)createConnection:(const unsigned int *)connection legacyService:(BOOL)service;
++ (void)_performInvalidationBlocks:(id)blocks;
+- (BOOL)_setPermanentError:(id)error;
+- (BOOL)setServerPropertyForOption:(int64_t)option value:(id)value error:(id *)error;
+- (LAClient)initWithExternalizedContext:(id)context userSession:(const unsigned int *)session flags:(int64_t)flags context:(id)a6;
+- (LAClient)initWithUUID:(id)d token:(id)token senderAuditTokenData:(id)data context:(id)context;
 - (LAContext)context;
 - (LAUIDelegate)uiDelegate;
 - (NSData)externalizedContext;
-- (id)_resolveUIDelegateFromDelegate:(id)a3;
-- (id)_updateOptions:(id)a3;
-- (id)serverPropertyForOption:(int64_t)a3 error:(id *)a4;
-- (id)synchronousExternalizedContextWithError:(id *)a3;
-- (void)_checkIdResultForTCC:(id)a3 synchronous:(BOOL)a4 error:(id)a5 retryBlock:(id)a6 finally:(id)a7;
-- (void)_handleConnectionResult:(id)a3 uuid:(id)a4 proxyId:(id)a5 error:(id)a6;
-- (void)_invalidateCachedExternalizedContextWithError:(id)a3;
-- (void)_performSynchronous:(BOOL)a3 callId:(id)a4 finally:(id)a5;
+- (id)_resolveUIDelegateFromDelegate:(id)delegate;
+- (id)_updateOptions:(id)options;
+- (id)serverPropertyForOption:(int64_t)option error:(id *)error;
+- (id)synchronousExternalizedContextWithError:(id *)error;
+- (void)_checkIdResultForTCC:(id)c synchronous:(BOOL)synchronous error:(id)error retryBlock:(id)block finally:(id)finally;
+- (void)_handleConnectionResult:(id)result uuid:(id)uuid proxyId:(id)id error:(id)error;
+- (void)_invalidateCachedExternalizedContextWithError:(id)error;
+- (void)_performSynchronous:(BOOL)synchronous callId:(id)id finally:(id)finally;
 - (void)_recoverConnectionIfNeeded;
 - (void)_scheduleRecovery;
-- (void)_serializedInvalidateWithMessage:(id)a3;
-- (void)_synchronousRemoteObjectProxy:(const unsigned int *)a3 performCall:(id)a4;
-- (void)allowTransferToProcess:(int)a3 receiverAuditTokenData:(id)a4 reply:(id)a5;
-- (void)authMethodWithReply:(id)a3;
-- (void)bootstrapServiceType:(id)a3 completionHandler:(id)a4;
-- (void)credentialEncodingSeedWithReply:(id)a3;
-- (void)credentialOfType:(int64_t)a3 reply:(id)a4;
-- (void)credentialsUUIDWithReply:(id)a3;
+- (void)_serializedInvalidateWithMessage:(id)message;
+- (void)_synchronousRemoteObjectProxy:(const unsigned int *)proxy performCall:(id)call;
+- (void)allowTransferToProcess:(int)process receiverAuditTokenData:(id)data reply:(id)reply;
+- (void)authMethodWithReply:(id)reply;
+- (void)bootstrapServiceType:(id)type completionHandler:(id)handler;
+- (void)credentialEncodingSeedWithReply:(id)reply;
+- (void)credentialOfType:(int64_t)type reply:(id)reply;
+- (void)credentialsUUIDWithReply:(id)reply;
 - (void)dealloc;
-- (void)evaluateACL:(id)a3 operation:(id)a4 options:(id)a5 reply:(id)a6;
-- (void)evaluateACL:(id)a3 operation:(id)a4 options:(id)a5 uiDelegate:(id)a6 synchronous:(BOOL)a7 reply:(id)a8;
-- (void)evaluatePolicy:(int64_t)a3 options:(id)a4 reply:(id)a5;
-- (void)externalizedContextWithReply:(id)a3;
-- (void)failProcessedEvent:(int64_t)a3 failureError:(id)a4 reply:(id)a5;
-- (void)invalidateWithMessage:(id)a3;
-- (void)invalidateWithReply:(id)a3;
-- (void)invalidatedWithError:(id)a3;
-- (void)isCredentialSet:(int64_t)a3 reply:(id)a4;
-- (void)notifyEvent:(int64_t)a3 options:(id)a4 reply:(id)a5;
-- (void)optionsForInternalOperation:(int64_t)a3 reply:(id)a4;
-- (void)pauseProcessedEvent:(int64_t)a3 pause:(BOOL)a4 reply:(id)a5;
-- (void)prearmTouchIdWithReply:(id)a3;
-- (void)resetProcessedEvent:(int64_t)a3 reply:(id)a4;
-- (void)resetWithReply:(id)a3;
-- (void)retryProcessedEvent:(int64_t)a3 reply:(id)a4;
-- (void)serverPropertyForOption:(int64_t)a3 reply:(id)a4;
-- (void)setCredential:(id)a3 forProcessedEvent:(int64_t)a4 credentialType:(int64_t)a5 reply:(id)a6;
-- (void)setCredential:(id)a3 type:(int64_t)a4 options:(id)a5 reply:(id)a6;
-- (void)setCredentialsUUID:(id)a3 reply:(id)a4;
-- (void)setOptions:(id)a3 forInternalOperation:(int64_t)a4 reply:(id)a5;
-- (void)setRemoteContext:(id)a3;
-- (void)setServerPropertyForOption:(int64_t)a3 value:(id)a4 reply:(id)a5;
-- (void)setShowingCoachingHint:(BOOL)a3 event:(int64_t)a4 reply:(id)a5;
-- (void)tokenForTransferToUnknownProcess:(id)a3;
-- (void)verifyFileVaultUser:(id)a3 volumeUuid:(id)a4 options:(unint64_t)a5 reply:(id)a6;
+- (void)evaluateACL:(id)l operation:(id)operation options:(id)options reply:(id)reply;
+- (void)evaluateACL:(id)l operation:(id)operation options:(id)options uiDelegate:(id)delegate synchronous:(BOOL)synchronous reply:(id)reply;
+- (void)evaluatePolicy:(int64_t)policy options:(id)options reply:(id)reply;
+- (void)externalizedContextWithReply:(id)reply;
+- (void)failProcessedEvent:(int64_t)event failureError:(id)error reply:(id)reply;
+- (void)invalidateWithMessage:(id)message;
+- (void)invalidateWithReply:(id)reply;
+- (void)invalidatedWithError:(id)error;
+- (void)isCredentialSet:(int64_t)set reply:(id)reply;
+- (void)notifyEvent:(int64_t)event options:(id)options reply:(id)reply;
+- (void)optionsForInternalOperation:(int64_t)operation reply:(id)reply;
+- (void)pauseProcessedEvent:(int64_t)event pause:(BOOL)pause reply:(id)reply;
+- (void)prearmTouchIdWithReply:(id)reply;
+- (void)resetProcessedEvent:(int64_t)event reply:(id)reply;
+- (void)resetWithReply:(id)reply;
+- (void)retryProcessedEvent:(int64_t)event reply:(id)reply;
+- (void)serverPropertyForOption:(int64_t)option reply:(id)reply;
+- (void)setCredential:(id)credential forProcessedEvent:(int64_t)event credentialType:(int64_t)type reply:(id)reply;
+- (void)setCredential:(id)credential type:(int64_t)type options:(id)options reply:(id)reply;
+- (void)setCredentialsUUID:(id)d reply:(id)reply;
+- (void)setOptions:(id)options forInternalOperation:(int64_t)operation reply:(id)reply;
+- (void)setRemoteContext:(id)context;
+- (void)setServerPropertyForOption:(int64_t)option value:(id)value reply:(id)reply;
+- (void)setShowingCoachingHint:(BOOL)hint event:(int64_t)event reply:(id)reply;
+- (void)tokenForTransferToUnknownProcess:(id)process;
+- (void)verifyFileVaultUser:(id)user volumeUuid:(id)uuid options:(unint64_t)options reply:(id)reply;
 @end
 
 @implementation LAClient
@@ -95,10 +95,10 @@ void __18__LAClient__queue__block_invoke()
 
 - (NSData)externalizedContext
 {
-  v3 = [(LAClient *)self cachedExternalizedContext];
-  v4 = [v3 externalizedContext];
+  cachedExternalizedContext = [(LAClient *)self cachedExternalizedContext];
+  externalizedContext = [cachedExternalizedContext externalizedContext];
 
-  if (![v4 length])
+  if (![externalizedContext length])
   {
     usleep(0x1388u);
     v5 = LALogForCategory();
@@ -107,13 +107,13 @@ void __18__LAClient__queue__block_invoke()
       [(LAClient *)v5 externalizedContext];
     }
 
-    v6 = [(LAClient *)self cachedExternalizedContext];
-    v7 = [v6 externalizedContext];
+    cachedExternalizedContext2 = [(LAClient *)self cachedExternalizedContext];
+    externalizedContext2 = [cachedExternalizedContext2 externalizedContext];
 
-    v4 = v7;
+    externalizedContext = externalizedContext2;
   }
 
-  return v4;
+  return externalizedContext;
 }
 
 - (void)_recoverConnectionIfNeeded
@@ -125,18 +125,18 @@ void __18__LAClient__queue__block_invoke()
     v3 = LALogForCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(LAClient *)self context];
+      context = [(LAClient *)self context];
       *buf = 138543362;
-      v12 = v4;
+      v12 = context;
       _os_log_impl(&dword_1A784E000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ is recovering connection to server", buf, 0xCu);
     }
 
-    v5 = [(LAClient *)self userSession];
-    v6 = [v5 unsignedIntValue];
+    userSession = [(LAClient *)self userSession];
+    unsignedIntValue = [userSession unsignedIntValue];
 
-    *buf = v6;
-    v7 = [(LAClient *)self userSession];
-    if (v7)
+    *buf = unsignedIntValue;
+    userSession2 = [(LAClient *)self userSession];
+    if (userSession2)
     {
       v8 = buf;
     }
@@ -159,17 +159,17 @@ void __18__LAClient__queue__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(LAClient *)self serverConnection];
-  v4 = [(LAClient *)self invalidations];
+  serverConnection = [(LAClient *)self serverConnection];
+  invalidations = [(LAClient *)self invalidations];
   v5 = +[LAClient _queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __19__LAClient_dealloc__block_invoke;
   block[3] = &unk_1E77CBA88;
-  v10 = v3;
-  v11 = v4;
-  v6 = v4;
-  v7 = v3;
+  v10 = serverConnection;
+  v11 = invalidations;
+  v6 = invalidations;
+  v7 = serverConnection;
   dispatch_async(v5, block);
 
   v8.receiver = self;
@@ -185,9 +185,9 @@ uint64_t __19__LAClient_dealloc__block_invoke(uint64_t a1)
   return [LAClient _performInvalidationBlocks:v2];
 }
 
-- (LAClient)initWithExternalizedContext:(id)a3 userSession:(const unsigned int *)a4 flags:(int64_t)a5 context:(id)a6
+- (LAClient)initWithExternalizedContext:(id)context userSession:(const unsigned int *)session flags:(int64_t)flags context:(id)a6
 {
-  v11 = a3;
+  contextCopy = context;
   v12 = a6;
   v27.receiver = self;
   v27.super_class = LAClient;
@@ -195,12 +195,12 @@ uint64_t __19__LAClient_dealloc__block_invoke(uint64_t a1)
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_existingContext, a3);
+    objc_storeStrong(&v13->_existingContext, context);
     objc_storeWeak(&v14->_context, v12);
     v15 = objc_alloc(MEMORY[0x1E69AD230]);
-    if (v11)
+    if (contextCopy)
     {
-      v16 = [v15 initWithExternalizedContext:v11];
+      v16 = [v15 initWithExternalizedContext:contextCopy];
     }
 
     else
@@ -215,9 +215,9 @@ uint64_t __19__LAClient_dealloc__block_invoke(uint64_t a1)
     invalidations = v14->_invalidations;
     v14->_invalidations = v18;
 
-    if (a4)
+    if (session)
     {
-      v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*a4];
+      v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*session];
       userSession = v14->_userSession;
       v14->_userSession = v20;
     }
@@ -226,10 +226,10 @@ uint64_t __19__LAClient_dealloc__block_invoke(uint64_t a1)
     v23[1] = 3221225472;
     v23[2] = __66__LAClient_initWithExternalizedContext_userSession_flags_context___block_invoke;
     v23[3] = &unk_1E77CBA10;
-    v24 = v11;
+    v24 = contextCopy;
     v25 = v14;
-    v26 = a5;
-    [(LAClient *)v25 _synchronousRemoteObjectProxy:a4 performCall:v23];
+    flagsCopy = flags;
+    [(LAClient *)v25 _synchronousRemoteObjectProxy:session performCall:v23];
   }
 
   return v14;
@@ -251,12 +251,12 @@ void __66__LAClient_initWithExternalizedContext_userSession_flags_context___bloc
   [v5 connectToExistingContext:v3 callback:v4 clientId:v7 flags:v8 reply:v9];
 }
 
-- (LAClient)initWithUUID:(id)a3 token:(id)a4 senderAuditTokenData:(id)a5 context:(id)a6
+- (LAClient)initWithUUID:(id)d token:(id)token senderAuditTokenData:(id)data context:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  tokenCopy = token;
+  dataCopy = data;
+  contextCopy = context;
   v26.receiver = self;
   v26.super_class = LAClient;
   v15 = [(LAClient *)&v26 init];
@@ -270,16 +270,16 @@ void __66__LAClient_initWithExternalizedContext_userSession_flags_context___bloc
     invalidations = v15->_invalidations;
     v15->_invalidations = v18;
 
-    objc_storeStrong(&v15->_uuid, a3);
-    objc_storeWeak(&v15->_context, v14);
+    objc_storeStrong(&v15->_uuid, d);
+    objc_storeWeak(&v15->_context, contextCopy);
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __60__LAClient_initWithUUID_token_senderAuditTokenData_context___block_invoke;
     v21[3] = &unk_1E77CBA60;
-    v22 = v11;
+    v22 = dCopy;
     v23 = v15;
-    v24 = v12;
-    v25 = v13;
+    v24 = tokenCopy;
+    v25 = dataCopy;
     [(LAClient *)v23 _synchronousRemoteObjectProxy:0 performCall:v21];
   }
 
@@ -304,13 +304,13 @@ void __60__LAClient_initWithUUID_token_senderAuditTokenData_context___block_invo
   [v5 connectToContextWithUUID:v3 callback:v4 clientId:v7 token:v8 senderAuditTokenData:v9 reply:v10];
 }
 
-+ (id)createConnection:(const unsigned int *)a3 legacyService:(BOOL)a4
++ (id)createConnection:(const unsigned int *)connection legacyService:(BOOL)service
 {
-  v4 = a4;
+  serviceCopy = service;
   v23 = *MEMORY[0x1E69E9840];
   v6 = LALogForCategory();
   v7 = @"com.apple.CoreAuthentication.daemon";
-  if (v4)
+  if (serviceCopy)
   {
     v7 = @"com.apple.CoreAuthentication.daemon.libxpc";
   }
@@ -331,7 +331,7 @@ void __60__LAClient_initWithUUID_token_senderAuditTokenData_context___block_invo
   {
     *v18 = 0;
     foreground_uid = xpc_user_sessions_get_foreground_uid();
-    v12 = [v10 _xpcConnection];
+    _xpcConnection = [v10 _xpcConnection];
     xpc_connection_set_target_user_session_uid();
 
     v13 = v6;
@@ -344,9 +344,9 @@ void __60__LAClient_initWithUUID_token_senderAuditTokenData_context___block_invo
   v14 = v6;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    if (a3)
+    if (connection)
     {
-      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*a3];
+      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*connection];
     }
 
     else
@@ -361,7 +361,7 @@ void __60__LAClient_initWithUUID_token_senderAuditTokenData_context___block_invo
     v21 = 2114;
     v22 = v15;
     _os_log_impl(&dword_1A784E000, v14, OS_LOG_TYPE_INFO, "Connecting to %{public}@, flags:%x, uid:%{public}@", v18, 0x1Cu);
-    if (a3)
+    if (connection)
     {
     }
   }
@@ -413,27 +413,27 @@ void __67__LAClient__connectToServerWithRecovery_userSession_legacyService___blo
   [WeakRetained _scheduleRecovery];
 }
 
-- (void)_synchronousRemoteObjectProxy:(const unsigned int *)a3 performCall:(id)a4
+- (void)_synchronousRemoteObjectProxy:(const unsigned int *)proxy performCall:(id)call
 {
-  v6 = a4;
+  callCopy = call;
   [(LAClient *)self setWillRetryOnInterruptedConnection:1];
-  [(LAClient *)self _connectToServerWithRecovery:1 userSession:a3 legacyService:0];
-  v7 = [(LAClient *)self serverConnection];
+  [(LAClient *)self _connectToServerWithRecovery:1 userSession:proxy legacyService:0];
+  serverConnection = [(LAClient *)self serverConnection];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __54__LAClient__synchronousRemoteObjectProxy_performCall___block_invoke;
   v21[3] = &unk_1E77CBAD8;
   v21[4] = self;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v21];
+  v8 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v21];
 
-  v6[2](v6, v8);
-  v9 = [(NSError *)self->_permanentError domain];
+  callCopy[2](callCopy, v8);
+  domain = [(NSError *)self->_permanentError domain];
   v10 = *MEMORY[0x1E696A250];
-  if ([v9 isEqualToString:*MEMORY[0x1E696A250]])
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v11 = [(NSError *)self->_permanentError code];
+    code = [(NSError *)self->_permanentError code];
 
-    if (v11 == 4097)
+    if (code == 4097)
     {
       v12 = LALogForCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -441,16 +441,16 @@ void __67__LAClient__connectToServerWithRecovery_userSession_legacyService___blo
         [LAClient _synchronousRemoteObjectProxy:v12 performCall:?];
       }
 
-      [(LAClient *)self _connectToServerWithRecovery:1 userSession:a3 legacyService:0];
-      v13 = [(LAClient *)self serverConnection];
+      [(LAClient *)self _connectToServerWithRecovery:1 userSession:proxy legacyService:0];
+      serverConnection2 = [(LAClient *)self serverConnection];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __54__LAClient__synchronousRemoteObjectProxy_performCall___block_invoke_48;
       v20[3] = &unk_1E77CBAD8;
       v20[4] = self;
-      v14 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v20];
+      v14 = [serverConnection2 synchronousRemoteObjectProxyWithErrorHandler:v20];
 
-      v6[2](v6, v14);
+      callCopy[2](callCopy, v14);
     }
   }
 
@@ -459,23 +459,23 @@ void __67__LAClient__connectToServerWithRecovery_userSession_legacyService___blo
   }
 
   [(LAClient *)self setWillRetryOnInterruptedConnection:0];
-  v15 = [(NSError *)self->_permanentError domain];
-  if ([v15 isEqualToString:v10])
+  domain2 = [(NSError *)self->_permanentError domain];
+  if ([domain2 isEqualToString:v10])
   {
-    v16 = [(NSError *)self->_permanentError code];
+    code2 = [(NSError *)self->_permanentError code];
 
-    if (v16 == 4099)
+    if (code2 == 4099)
     {
-      [(LAClient *)self _connectToServerWithRecovery:1 userSession:a3 legacyService:1];
-      v17 = [(LAClient *)self serverConnection];
+      [(LAClient *)self _connectToServerWithRecovery:1 userSession:proxy legacyService:1];
+      serverConnection3 = [(LAClient *)self serverConnection];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __54__LAClient__synchronousRemoteObjectProxy_performCall___block_invoke_2;
       v19[3] = &unk_1E77CBAD8;
       v19[4] = self;
-      v18 = [v17 synchronousRemoteObjectProxyWithErrorHandler:v19];
+      v18 = [serverConnection3 synchronousRemoteObjectProxyWithErrorHandler:v19];
 
-      v6[2](v6, v18);
+      callCopy[2](callCopy, v18);
       v8 = v18;
     }
   }
@@ -485,13 +485,13 @@ void __67__LAClient__connectToServerWithRecovery_userSession_legacyService___blo
   }
 }
 
-- (void)_handleConnectionResult:(id)a3 uuid:(id)a4 proxyId:(id)a5 error:(id)a6
+- (void)_handleConnectionResult:(id)result uuid:(id)uuid proxyId:(id)id error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  resultCopy = result;
+  uuidCopy = uuid;
+  idCopy = id;
+  errorCopy = error;
+  if (!resultCopy)
   {
     v14 = LALogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -499,22 +499,22 @@ void __67__LAClient__connectToServerWithRecovery_userSession_legacyService___blo
       [LAClient _handleConnectionResult:? uuid:? proxyId:? error:?];
     }
 
-    [(LAClient *)self _invalidateCachedExternalizedContextWithError:v13];
+    [(LAClient *)self _invalidateCachedExternalizedContextWithError:errorCopy];
   }
 
-  [(LAClient *)self setRemoteContext:v10];
-  [(LAClient *)self setUuid:v11];
-  [(LAClient *)self setProxyId:v12];
-  [(LAClient *)self setPermanentError:v13];
+  [(LAClient *)self setRemoteContext:resultCopy];
+  [(LAClient *)self setUuid:uuidCopy];
+  [(LAClient *)self setProxyId:idCopy];
+  [(LAClient *)self setPermanentError:errorCopy];
 }
 
-- (void)_invalidateCachedExternalizedContextWithError:(id)a3
+- (void)_invalidateCachedExternalizedContextWithError:(id)error
 {
-  v7 = a3;
-  v4 = [v7 domain];
-  if ([v4 isEqualToString:*MEMORY[0x1E696A250]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v5 = [v7 code] == 4099;
+    v5 = [errorCopy code] == 4099;
   }
 
   else
@@ -522,23 +522,23 @@ void __67__LAClient__connectToServerWithRecovery_userSession_legacyService___blo
     v5 = 0;
   }
 
-  v6 = [(LAClient *)self cachedExternalizedContext];
-  [v6 invalidateBecauseOfInvalidConnection:v5];
+  cachedExternalizedContext = [(LAClient *)self cachedExternalizedContext];
+  [cachedExternalizedContext invalidateBecauseOfInvalidConnection:v5];
 }
 
-- (void)setRemoteContext:(id)a3
+- (void)setRemoteContext:(id)context
 {
-  v5 = a3;
-  objc_storeStrong(&self->_remoteContext, a3);
-  if (v5)
+  contextCopy = context;
+  objc_storeStrong(&self->_remoteContext, context);
+  if (contextCopy)
   {
-    v6 = [(LAClient *)self remoteContext];
+    remoteContext = [(LAClient *)self remoteContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __29__LAClient_setRemoteContext___block_invoke;
     v10[3] = &unk_1E77CBAD8;
     v10[4] = self;
-    v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v10];
+    v7 = [remoteContext synchronousRemoteObjectProxyWithErrorHandler:v10];
     synchronousRemoteContext = self->_synchronousRemoteContext;
     self->_synchronousRemoteContext = v7;
   }
@@ -590,18 +590,18 @@ void __38__LAClient__recoverConnectionIfNeeded__block_invoke(uint64_t a1, void *
   [v4 connectToExistingContext:v5 callback:v6 clientId:v8 flags:0 reply:v9];
 }
 
-- (void)allowTransferToProcess:(int)a3 receiverAuditTokenData:(id)a4 reply:(id)a5
+- (void)allowTransferToProcess:(int)process receiverAuditTokenData:(id)data reply:(id)reply
 {
-  v8 = a4;
+  dataCopy = data;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__LAClient_allowTransferToProcess_receiverAuditTokenData_reply___block_invoke;
   v10[3] = &unk_1E77CBB28;
-  v12 = a3;
+  processCopy = process;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [(LAClient *)self _performCallBool:v10 finally:a5];
+  v11 = dataCopy;
+  v9 = dataCopy;
+  [(LAClient *)self _performCallBool:v10 finally:reply];
 }
 
 void __64__LAClient_allowTransferToProcess_receiverAuditTokenData_reply___block_invoke(uint64_t a1, void *a2)
@@ -612,14 +612,14 @@ void __64__LAClient_allowTransferToProcess_receiverAuditTokenData_reply___block_
   [v5 allowTransferToProcess:*(a1 + 48) receiverAuditTokenData:*(a1 + 40) reply:v4];
 }
 
-- (void)tokenForTransferToUnknownProcess:(id)a3
+- (void)tokenForTransferToUnknownProcess:(id)process
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __45__LAClient_tokenForTransferToUnknownProcess___block_invoke;
   v3[3] = &unk_1E77CBB50;
   v3[4] = self;
-  [(LAClient *)self _performCallId:v3 finally:a3];
+  [(LAClient *)self _performCallId:v3 finally:process];
 }
 
 void __45__LAClient_tokenForTransferToUnknownProcess___block_invoke(uint64_t a1, void *a2)
@@ -630,9 +630,9 @@ void __45__LAClient_tokenForTransferToUnknownProcess___block_invoke(uint64_t a1,
   [v4 tokenForTransferToUnknownProcess:v3];
 }
 
-- (void)invalidatedWithError:(id)a3
+- (void)invalidatedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = LALogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -645,14 +645,14 @@ void __45__LAClient_tokenForTransferToUnknownProcess___block_invoke(uint64_t a1,
   v8[2] = __33__LAClient_invalidatedWithError___block_invoke;
   v8[3] = &unk_1E77CBA88;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(v6, v8);
 }
 
-- (void)invalidateWithMessage:(id)a3
+- (void)invalidateWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   objc_initWeak(&location, self);
   v5 = +[LAClient _queue];
   block[0] = MEMORY[0x1E69E9820];
@@ -660,8 +660,8 @@ void __45__LAClient_tokenForTransferToUnknownProcess___block_invoke(uint64_t a1,
   block[2] = __34__LAClient_invalidateWithMessage___block_invoke;
   block[3] = &unk_1E77CBB78;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = messageCopy;
+  v6 = messageCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);
@@ -674,29 +674,29 @@ void __34__LAClient_invalidateWithMessage___block_invoke(uint64_t a1)
   [WeakRetained _serializedInvalidateWithMessage:*(a1 + 32)];
 }
 
-- (void)_serializedInvalidateWithMessage:(id)a3
+- (void)_serializedInvalidateWithMessage:(id)message
 {
   serverConnection = self->_serverConnection;
-  v5 = a3;
+  messageCopy = message;
   [(NSXPCConnection *)serverConnection invalidate];
   v6 = self->_serverConnection;
   self->_serverConnection = 0;
 
-  v7 = [MEMORY[0x1E696EE88] errorWithCode:-9 message:v5];
+  v7 = [MEMORY[0x1E696EE88] errorWithCode:-9 message:messageCopy];
 
   [(LAClient *)self _setPermanentError:v7];
   v8 = [MEMORY[0x1E696EE88] errorWithCode:-10 message:@"Invalid context."];
   [(LAClient *)self setPermanentError:v8];
 }
 
-- (void)invalidateWithReply:(id)a3
+- (void)invalidateWithReply:(id)reply
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __32__LAClient_invalidateWithReply___block_invoke;
   v3[3] = &unk_1E77CBBA0;
   v3[4] = self;
-  [(LAClient *)self _performCallBool:v3 finally:a3];
+  [(LAClient *)self _performCallBool:v3 finally:reply];
 }
 
 uint64_t __32__LAClient_invalidateWithReply___block_invoke(uint64_t a1, void *a2)
@@ -711,15 +711,15 @@ uint64_t __32__LAClient_invalidateWithReply___block_invoke(uint64_t a1, void *a2
   return [v6 _serializedInvalidateWithMessage:@"invalidate called"];
 }
 
-+ (void)_performInvalidationBlocks:(id)a3
++ (void)_performInvalidationBlocks:(id)blocks
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  blocksCopy = blocks;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [blocksCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -731,55 +731,55 @@ uint64_t __32__LAClient_invalidateWithReply___block_invoke(uint64_t a1, void *a2
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(blocksCopy);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) invoke];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [blocksCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  [v3 removeAllObjects];
+  [blocksCopy removeAllObjects];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_checkIdResultForTCC:(id)a3 synchronous:(BOOL)a4 error:(id)a5 retryBlock:(id)a6 finally:(id)a7
+- (void)_checkIdResultForTCC:(id)c synchronous:(BOOL)synchronous error:(id)error retryBlock:(id)block finally:(id)finally
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(LAClient *)self context];
-  v16 = [v15 description];
+  cCopy = c;
+  errorCopy = error;
+  blockCopy = block;
+  finallyCopy = finally;
+  context = [(LAClient *)self context];
+  v16 = [context description];
 
-  if (v11 || ![MEMORY[0x1E696EE88] error:v12 hasCode:-1018] || (objc_msgSend(v12, "userInfo"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "objectForKeyedSubscript:", @"TCCServerPrompt"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "BOOLValue"), v18, v17, (v19 & 1) != 0))
+  if (cCopy || ![MEMORY[0x1E696EE88] error:errorCopy hasCode:-1018] || (objc_msgSend(errorCopy, "userInfo"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "objectForKeyedSubscript:", @"TCCServerPrompt"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "BOOLValue"), v18, v17, (v19 & 1) != 0))
   {
-    v14[2](v14, v11, v12);
+    finallyCopy[2](finallyCopy, cCopy, errorCopy);
   }
 
   else
   {
-    v20 = [v12 userInfo];
-    v21 = [v20 objectForKeyedSubscript:@"TCCService"];
+    userInfo = [errorCopy userInfo];
+    v21 = [userInfo objectForKeyedSubscript:@"TCCService"];
 
-    v22 = [MEMORY[0x1E69AD2B8] sharedInstance];
+    mEMORY[0x1E69AD2B8] = [MEMORY[0x1E69AD2B8] sharedInstance];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __70__LAClient__checkIdResultForTCC_synchronous_error_retryBlock_finally___block_invoke;
     v24[3] = &unk_1E77CBBC8;
     v25 = v16;
     v26 = v21;
-    v28 = v13;
-    v29 = v14;
-    v27 = v12;
+    v28 = blockCopy;
+    v29 = finallyCopy;
+    v27 = errorCopy;
     v23 = v21;
-    [v22 requestAuthorizationForService:v23 completion:v24];
+    [mEMORY[0x1E69AD2B8] requestAuthorizationForService:v23 completion:v24];
   }
 }
 
@@ -816,25 +816,25 @@ uint64_t __70__LAClient__checkIdResultForTCC_synchronous_error_retryBlock_finall
   return result;
 }
 
-- (void)_performSynchronous:(BOOL)a3 callId:(id)a4 finally:(id)a5
+- (void)_performSynchronous:(BOOL)synchronous callId:(id)id finally:(id)finally
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  synchronousCopy = synchronous;
+  idCopy = id;
+  finallyCopy = finally;
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __47__LAClient__performSynchronous_callId_finally___block_invoke;
   v18 = &unk_1E77CBC68;
-  v19 = self;
-  v10 = v9;
+  selfCopy = self;
+  v10 = finallyCopy;
   v20 = v10;
-  v11 = v8;
+  v11 = idCopy;
   v21 = v11;
-  v22 = v6;
+  v22 = synchronousCopy;
   v12 = MEMORY[0x1AC55C260](&v15);
   v13 = [LAClient _queue:v15];
   v14 = v13;
-  if (v6)
+  if (synchronousCopy)
   {
     dispatch_sync(v13, v12);
   }
@@ -976,10 +976,10 @@ void __49__LAClient__performSynchronous_callBool_finally___block_invoke_3(uint64
   (*(v4 + 16))(v4, [a2 BOOLValue], v5);
 }
 
-- (BOOL)_setPermanentError:(id)a3
+- (BOOL)_setPermanentError:(id)error
 {
-  v4 = a3;
-  if (([MEMORY[0x1E696EE88] error:v4 hasCode:-9] & 1) == 0)
+  errorCopy = error;
+  if (([MEMORY[0x1E696EE88] error:errorCopy hasCode:-9] & 1) == 0)
   {
     v5 = LALogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -988,36 +988,36 @@ void __49__LAClient__performSynchronous_callBool_finally___block_invoke_3(uint64
     }
   }
 
-  v6 = [(LAClient *)self permanentError];
+  permanentError = [(LAClient *)self permanentError];
 
-  if (!v6)
+  if (!permanentError)
   {
-    v7 = [(LAClient *)self cachedExternalizedContext];
-    v8 = [v7 cachedExternalizedContext];
-    [(LAClient *)self setExistingContext:v8];
+    cachedExternalizedContext = [(LAClient *)self cachedExternalizedContext];
+    v7CachedExternalizedContext = [cachedExternalizedContext cachedExternalizedContext];
+    [(LAClient *)self setExistingContext:v7CachedExternalizedContext];
 
-    [(LAClient *)self _invalidateCachedExternalizedContextWithError:v4];
+    [(LAClient *)self _invalidateCachedExternalizedContextWithError:errorCopy];
     [(LAClient *)self setRemoteContext:0];
-    [(LAClient *)self setPermanentError:v4];
-    v9 = self;
-    objc_sync_enter(v9);
-    v10 = [(LAClient *)v9 invalidations];
-    [LAClient _performInvalidationBlocks:v10];
+    [(LAClient *)self setPermanentError:errorCopy];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    invalidations = [(LAClient *)selfCopy invalidations];
+    [LAClient _performInvalidationBlocks:invalidations];
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
-  return v6 == 0;
+  return permanentError == 0;
 }
 
-- (id)_updateOptions:(id)a3
+- (id)_updateOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:&unk_1F1A6FC38];
-  v5 = v3;
+  optionsCopy = options;
+  v4 = [optionsCopy objectForKeyedSubscript:&unk_1F1A6FC38];
+  v5 = optionsCopy;
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v3];
+    v5 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:optionsCopy];
     v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
     [v5 setObject:v6 forKey:&unk_1F1A6FC38];
   }
@@ -1039,12 +1039,12 @@ void __56__LAClient_getDomainStateWithOptions_synchronous_reply___block_invoke(u
   [v4 getDomainStateWithOptions:v5 reply:v7];
 }
 
-- (void)evaluatePolicy:(int64_t)a3 options:(id)a4 reply:(id)a5
+- (void)evaluatePolicy:(int64_t)policy options:(id)options reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(LAClient *)self uiDelegate];
-  [(LAClient *)self evaluatePolicy:a3 options:v9 uiDelegate:v10 reply:v8];
+  replyCopy = reply;
+  optionsCopy = options;
+  uiDelegate = [(LAClient *)self uiDelegate];
+  [(LAClient *)self evaluatePolicy:policy options:optionsCopy uiDelegate:uiDelegate reply:replyCopy];
 }
 
 void __64__LAClient_evaluatePolicy_options_uiDelegate_synchronous_reply___block_invoke(uint64_t a1, void *a2)
@@ -1093,49 +1093,49 @@ void __64__LAClient_evaluatePolicy_options_uiDelegate_synchronous_reply___block_
   [v5 evaluatePolicy:a1[7] options:a1[5] uiDelegate:a1[6] reply:v4];
 }
 
-- (void)evaluateACL:(id)a3 operation:(id)a4 options:(id)a5 reply:(id)a6
+- (void)evaluateACL:(id)l operation:(id)operation options:(id)options reply:(id)reply
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(LAClient *)self uiDelegate];
-  [(LAClient *)self evaluateACL:v13 operation:v12 options:v11 uiDelegate:v14 reply:v10];
+  replyCopy = reply;
+  optionsCopy = options;
+  operationCopy = operation;
+  lCopy = l;
+  uiDelegate = [(LAClient *)self uiDelegate];
+  [(LAClient *)self evaluateACL:lCopy operation:operationCopy options:optionsCopy uiDelegate:uiDelegate reply:replyCopy];
 }
 
-- (void)evaluateACL:(id)a3 operation:(id)a4 options:(id)a5 uiDelegate:(id)a6 synchronous:(BOOL)a7 reply:(id)a8
+- (void)evaluateACL:(id)l operation:(id)operation options:(id)options uiDelegate:(id)delegate synchronous:(BOOL)synchronous reply:(id)reply
 {
-  v27 = a7;
-  v13 = a3;
-  v14 = a4;
-  v15 = a8;
-  v16 = a6;
-  v17 = [(LAClient *)self _updateOptions:a5];
+  synchronousCopy = synchronous;
+  lCopy = l;
+  operationCopy = operation;
+  replyCopy = reply;
+  delegateCopy = delegate;
+  v17 = [(LAClient *)self _updateOptions:options];
   v18 = MEMORY[0x1E696EE88];
   v19 = [MEMORY[0x1E69AD298] checkOptions:v17];
   [v18 raiseExceptionOnError:v19];
 
   v20 = MEMORY[0x1E696EE88];
-  v21 = [MEMORY[0x1E69AD298] checkACL:v13];
+  v21 = [MEMORY[0x1E69AD298] checkACL:lCopy];
   [v20 raiseExceptionOnError:v21];
 
-  v22 = [(LAClient *)self _resolveUIDelegateFromDelegate:v16];
+  v22 = [(LAClient *)self _resolveUIDelegateFromDelegate:delegateCopy];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __71__LAClient_evaluateACL_operation_options_uiDelegate_synchronous_reply___block_invoke;
   v28[3] = &unk_1E77CBDF8;
   v28[4] = self;
-  v29 = v13;
-  v30 = v14;
+  v29 = lCopy;
+  v30 = operationCopy;
   v31 = v17;
   v32 = v22;
-  v33 = v27;
+  v33 = synchronousCopy;
   v23 = v22;
   v24 = v17;
-  v25 = v14;
-  v26 = v13;
-  [(LAClient *)self _performSynchronous:v27 callId:v28 finally:v15];
+  v25 = operationCopy;
+  v26 = lCopy;
+  [(LAClient *)self _performSynchronous:synchronousCopy callId:v28 finally:replyCopy];
 }
 
 void __71__LAClient_evaluateACL_operation_options_uiDelegate_synchronous_reply___block_invoke(uint64_t a1, void *a2)
@@ -1191,24 +1191,24 @@ void __71__LAClient_evaluateACL_operation_options_uiDelegate_synchronous_reply__
   [v5 evaluateACL:a1[5] operation:a1[6] options:a1[7] uiDelegate:a1[8] reply:v4];
 }
 
-- (void)failProcessedEvent:(int64_t)a3 failureError:(id)a4 reply:(id)a5
+- (void)failProcessedEvent:(int64_t)event failureError:(id)error reply:(id)reply
 {
-  v8 = a4;
+  errorCopy = error;
   v9 = MEMORY[0x1E696EE88];
   v10 = MEMORY[0x1E69AD298];
-  v11 = a5;
-  v12 = [v10 checkEvent:a3];
+  replyCopy = reply;
+  v12 = [v10 checkEvent:event];
   [v9 raiseExceptionOnError:v12];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__LAClient_failProcessedEvent_failureError_reply___block_invoke;
   v14[3] = &unk_1E77CBE20;
-  v15 = v8;
-  v16 = a3;
+  v15 = errorCopy;
+  eventCopy = event;
   v14[4] = self;
-  v13 = v8;
-  [(LAClient *)self _performCallBool:v14 finally:v11];
+  v13 = errorCopy;
+  [(LAClient *)self _performCallBool:v14 finally:replyCopy];
 }
 
 void __50__LAClient_failProcessedEvent_failureError_reply___block_invoke(void *a1, void *a2)
@@ -1219,12 +1219,12 @@ void __50__LAClient_failProcessedEvent_failureError_reply___block_invoke(void *a
   [v5 failProcessedEvent:a1[6] failureError:a1[5] reply:v4];
 }
 
-- (void)retryProcessedEvent:(int64_t)a3 reply:(id)a4
+- (void)retryProcessedEvent:(int64_t)event reply:(id)reply
 {
   v6 = MEMORY[0x1E696EE88];
   v7 = MEMORY[0x1E69AD298];
-  v8 = a4;
-  v9 = [v7 checkEvent:a3];
+  replyCopy = reply;
+  v9 = [v7 checkEvent:event];
   [v6 raiseExceptionOnError:v9];
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -1232,8 +1232,8 @@ void __50__LAClient_failProcessedEvent_failureError_reply___block_invoke(void *a
   v10[2] = __38__LAClient_retryProcessedEvent_reply___block_invoke;
   v10[3] = &unk_1E77CBE48;
   v10[4] = self;
-  v10[5] = a3;
-  [(LAClient *)self _performCallBool:v10 finally:v8];
+  v10[5] = event;
+  [(LAClient *)self _performCallBool:v10 finally:replyCopy];
 }
 
 void __38__LAClient_retryProcessedEvent_reply___block_invoke(uint64_t a1, void *a2)
@@ -1244,12 +1244,12 @@ void __38__LAClient_retryProcessedEvent_reply___block_invoke(uint64_t a1, void *
   [v5 retryProcessedEvent:*(a1 + 40) reply:v4];
 }
 
-- (void)resetProcessedEvent:(int64_t)a3 reply:(id)a4
+- (void)resetProcessedEvent:(int64_t)event reply:(id)reply
 {
   v6 = MEMORY[0x1E696EE88];
   v7 = MEMORY[0x1E69AD298];
-  v8 = a4;
-  v9 = [v7 checkEvent:a3];
+  replyCopy = reply;
+  v9 = [v7 checkEvent:event];
   [v6 raiseExceptionOnError:v9];
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -1257,8 +1257,8 @@ void __38__LAClient_retryProcessedEvent_reply___block_invoke(uint64_t a1, void *
   v10[2] = __38__LAClient_resetProcessedEvent_reply___block_invoke;
   v10[3] = &unk_1E77CBE48;
   v10[4] = self;
-  v10[5] = a3;
-  [(LAClient *)self _performCallBool:v10 finally:v8];
+  v10[5] = event;
+  [(LAClient *)self _performCallBool:v10 finally:replyCopy];
 }
 
 void __38__LAClient_resetProcessedEvent_reply___block_invoke(uint64_t a1, void *a2)
@@ -1269,12 +1269,12 @@ void __38__LAClient_resetProcessedEvent_reply___block_invoke(uint64_t a1, void *
   [v5 resetProcessedEvent:*(a1 + 40) reply:v4];
 }
 
-- (void)pauseProcessedEvent:(int64_t)a3 pause:(BOOL)a4 reply:(id)a5
+- (void)pauseProcessedEvent:(int64_t)event pause:(BOOL)pause reply:(id)reply
 {
   v8 = MEMORY[0x1E696EE88];
   v9 = MEMORY[0x1E69AD298];
-  v10 = a5;
-  v11 = [v9 checkEvent:a3];
+  replyCopy = reply;
+  v11 = [v9 checkEvent:event];
   [v8 raiseExceptionOnError:v11];
 
   v12[0] = MEMORY[0x1E69E9820];
@@ -1282,9 +1282,9 @@ void __38__LAClient_resetProcessedEvent_reply___block_invoke(uint64_t a1, void *
   v12[2] = __44__LAClient_pauseProcessedEvent_pause_reply___block_invoke;
   v12[3] = &unk_1E77CBE70;
   v12[4] = self;
-  v12[5] = a3;
-  v13 = a4;
-  [(LAClient *)self _performCallBool:v12 finally:v10];
+  v12[5] = event;
+  pauseCopy = pause;
+  [(LAClient *)self _performCallBool:v12 finally:replyCopy];
 }
 
 void __44__LAClient_pauseProcessedEvent_pause_reply___block_invoke(uint64_t a1, void *a2)
@@ -1295,17 +1295,17 @@ void __44__LAClient_pauseProcessedEvent_pause_reply___block_invoke(uint64_t a1, 
   [v5 pauseProcessedEvent:*(a1 + 40) pause:*(a1 + 48) reply:v4];
 }
 
-- (void)setCredential:(id)a3 forProcessedEvent:(int64_t)a4 credentialType:(int64_t)a5 reply:(id)a6
+- (void)setCredential:(id)credential forProcessedEvent:(int64_t)event credentialType:(int64_t)type reply:(id)reply
 {
-  v10 = a3;
+  credentialCopy = credential;
   v11 = MEMORY[0x1E696EE88];
   v12 = MEMORY[0x1E69AD298];
-  v13 = a6;
-  v14 = [v12 checkEvent:a4];
+  replyCopy = reply;
+  v14 = [v12 checkEvent:event];
   [v11 raiseExceptionOnError:v14];
 
   v15 = MEMORY[0x1E696EE88];
-  v16 = [MEMORY[0x1E69AD298] checkCredentialType:a5];
+  v16 = [MEMORY[0x1E69AD298] checkCredentialType:type];
   [v15 raiseExceptionOnError:v16];
 
   v18[0] = MEMORY[0x1E69E9820];
@@ -1313,11 +1313,11 @@ void __44__LAClient_pauseProcessedEvent_pause_reply___block_invoke(uint64_t a1, 
   v18[2] = __65__LAClient_setCredential_forProcessedEvent_credentialType_reply___block_invoke;
   v18[3] = &unk_1E77CBE98;
   v18[4] = self;
-  v19 = v10;
-  v20 = a4;
-  v21 = a5;
-  v17 = v10;
-  [(LAClient *)self _performCallBool:v18 finally:v13];
+  v19 = credentialCopy;
+  eventCopy = event;
+  typeCopy = type;
+  v17 = credentialCopy;
+  [(LAClient *)self _performCallBool:v18 finally:replyCopy];
 }
 
 void __65__LAClient_setCredential_forProcessedEvent_credentialType_reply___block_invoke(void *a1, void *a2)
@@ -1328,12 +1328,12 @@ void __65__LAClient_setCredential_forProcessedEvent_credentialType_reply___block
   [v5 setCredential:a1[5] forProcessedEvent:a1[6] credentialType:a1[7] reply:v4];
 }
 
-- (void)isCredentialSet:(int64_t)a3 reply:(id)a4
+- (void)isCredentialSet:(int64_t)set reply:(id)reply
 {
   v6 = MEMORY[0x1E696EE88];
   v7 = MEMORY[0x1E69AD298];
-  v8 = a4;
-  v9 = [v7 checkCredentialType:a3];
+  replyCopy = reply;
+  v9 = [v7 checkCredentialType:set];
   [v6 raiseExceptionOnError:v9];
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -1341,8 +1341,8 @@ void __65__LAClient_setCredential_forProcessedEvent_credentialType_reply___block
   v10[2] = __34__LAClient_isCredentialSet_reply___block_invoke;
   v10[3] = &unk_1E77CBE48;
   v10[4] = self;
-  v10[5] = a3;
-  [(LAClient *)self _performCallBool:v10 finally:v8];
+  v10[5] = set;
+  [(LAClient *)self _performCallBool:v10 finally:replyCopy];
 }
 
 void __34__LAClient_isCredentialSet_reply___block_invoke(uint64_t a1, void *a2)
@@ -1353,17 +1353,17 @@ void __34__LAClient_isCredentialSet_reply___block_invoke(uint64_t a1, void *a2)
   [v5 isCredentialSet:*(a1 + 40) reply:v4];
 }
 
-- (void)setCredential:(id)a3 type:(int64_t)a4 options:(id)a5 reply:(id)a6
+- (void)setCredential:(id)credential type:(int64_t)type options:(id)options reply:(id)reply
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(LAClient *)self _updateOptions:a5];
+  credentialCopy = credential;
+  replyCopy = reply;
+  v12 = [(LAClient *)self _updateOptions:options];
   v13 = MEMORY[0x1E696EE88];
   v14 = [MEMORY[0x1E69AD298] checkOptions:v12];
   [v13 raiseExceptionOnError:v14];
 
   v15 = MEMORY[0x1E696EE88];
-  v16 = [MEMORY[0x1E69AD298] checkCredentialType:a4];
+  v16 = [MEMORY[0x1E69AD298] checkCredentialType:type];
   [v15 raiseExceptionOnError:v16];
 
   v19[0] = MEMORY[0x1E69E9820];
@@ -1371,12 +1371,12 @@ void __34__LAClient_isCredentialSet_reply___block_invoke(uint64_t a1, void *a2)
   v19[2] = __45__LAClient_setCredential_type_options_reply___block_invoke;
   v19[3] = &unk_1E77CBEC0;
   v19[4] = self;
-  v20 = v10;
+  v20 = credentialCopy;
   v21 = v12;
-  v22 = a4;
+  typeCopy = type;
   v17 = v12;
-  v18 = v10;
-  [(LAClient *)self _performCallBool:v19 finally:v11];
+  v18 = credentialCopy;
+  [(LAClient *)self _performCallBool:v19 finally:replyCopy];
 }
 
 void __45__LAClient_setCredential_type_options_reply___block_invoke(void *a1, void *a2)
@@ -1387,12 +1387,12 @@ void __45__LAClient_setCredential_type_options_reply___block_invoke(void *a1, vo
   [v5 setCredential:a1[5] type:a1[7] options:a1[6] reply:v4];
 }
 
-- (void)credentialOfType:(int64_t)a3 reply:(id)a4
+- (void)credentialOfType:(int64_t)type reply:(id)reply
 {
   v6 = MEMORY[0x1E696EE88];
   v7 = MEMORY[0x1E69AD298];
-  v8 = a4;
-  v9 = [v7 checkCredentialType:a3];
+  replyCopy = reply;
+  v9 = [v7 checkCredentialType:type];
   [v6 raiseExceptionOnError:v9];
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -1400,8 +1400,8 @@ void __45__LAClient_setCredential_type_options_reply___block_invoke(void *a1, vo
   v10[2] = __35__LAClient_credentialOfType_reply___block_invoke;
   v10[3] = &unk_1E77CBEE8;
   v10[4] = self;
-  v10[5] = a3;
-  [(LAClient *)self _performCallId:v10 finally:v8];
+  v10[5] = type;
+  [(LAClient *)self _performCallId:v10 finally:replyCopy];
 }
 
 void __35__LAClient_credentialOfType_reply___block_invoke(uint64_t a1, void *a2)
@@ -1412,14 +1412,14 @@ void __35__LAClient_credentialOfType_reply___block_invoke(uint64_t a1, void *a2)
   [v5 credentialOfType:*(a1 + 40) reply:v4];
 }
 
-- (void)credentialsUUIDWithReply:(id)a3
+- (void)credentialsUUIDWithReply:(id)reply
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __37__LAClient_credentialsUUIDWithReply___block_invoke;
   v3[3] = &unk_1E77CBB50;
   v3[4] = self;
-  [(LAClient *)self _performCallId:v3 finally:a3];
+  [(LAClient *)self _performCallId:v3 finally:reply];
 }
 
 void __37__LAClient_credentialsUUIDWithReply___block_invoke(uint64_t a1, void *a2)
@@ -1430,17 +1430,17 @@ void __37__LAClient_credentialsUUIDWithReply___block_invoke(uint64_t a1, void *a
   [v4 credentialsUUIDWithReply:v3];
 }
 
-- (void)setCredentialsUUID:(id)a3 reply:(id)a4
+- (void)setCredentialsUUID:(id)d reply:(id)reply
 {
-  v6 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __37__LAClient_setCredentialsUUID_reply___block_invoke;
   v8[3] = &unk_1E77CBF10;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(LAClient *)self _performCallBool:v8 finally:a4];
+  v9 = dCopy;
+  v7 = dCopy;
+  [(LAClient *)self _performCallBool:v8 finally:reply];
 }
 
 void __37__LAClient_setCredentialsUUID_reply___block_invoke(uint64_t a1, void *a2)
@@ -1451,14 +1451,14 @@ void __37__LAClient_setCredentialsUUID_reply___block_invoke(uint64_t a1, void *a
   [v5 setCredentialsUUID:*(a1 + 40) reply:v4];
 }
 
-- (void)credentialEncodingSeedWithReply:(id)a3
+- (void)credentialEncodingSeedWithReply:(id)reply
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __44__LAClient_credentialEncodingSeedWithReply___block_invoke;
   v3[3] = &unk_1E77CBB50;
   v3[4] = self;
-  [(LAClient *)self _performCallId:v3 finally:a3];
+  [(LAClient *)self _performCallId:v3 finally:reply];
 }
 
 void __44__LAClient_credentialEncodingSeedWithReply___block_invoke(uint64_t a1, void *a2)
@@ -1469,13 +1469,13 @@ void __44__LAClient_credentialEncodingSeedWithReply___block_invoke(uint64_t a1, 
   [v4 credentialEncodingSeedWithReply:v3];
 }
 
-- (void)setOptions:(id)a3 forInternalOperation:(int64_t)a4 reply:(id)a5
+- (void)setOptions:(id)options forInternalOperation:(int64_t)operation reply:(id)reply
 {
-  v8 = a3;
+  optionsCopy = options;
   v9 = MEMORY[0x1E696EE88];
   v10 = MEMORY[0x1E69AD298];
-  v11 = a5;
-  v12 = [v10 checkInternalOperation:a4 options:v8];
+  replyCopy = reply;
+  v12 = [v10 checkInternalOperation:operation options:optionsCopy];
   [v9 raiseExceptionOnError:v12];
 
   v14[0] = MEMORY[0x1E69E9820];
@@ -1483,10 +1483,10 @@ void __44__LAClient_credentialEncodingSeedWithReply___block_invoke(uint64_t a1, 
   v14[2] = __50__LAClient_setOptions_forInternalOperation_reply___block_invoke;
   v14[3] = &unk_1E77CBE20;
   v14[4] = self;
-  v15 = v8;
-  v16 = a4;
-  v13 = v8;
-  [(LAClient *)self _performCallBool:v14 finally:v11];
+  v15 = optionsCopy;
+  operationCopy = operation;
+  v13 = optionsCopy;
+  [(LAClient *)self _performCallBool:v14 finally:replyCopy];
 }
 
 void __50__LAClient_setOptions_forInternalOperation_reply___block_invoke(void *a1, void *a2)
@@ -1497,12 +1497,12 @@ void __50__LAClient_setOptions_forInternalOperation_reply___block_invoke(void *a
   [v5 setOptions:a1[5] forInternalOperation:a1[6] reply:v4];
 }
 
-- (void)optionsForInternalOperation:(int64_t)a3 reply:(id)a4
+- (void)optionsForInternalOperation:(int64_t)operation reply:(id)reply
 {
   v6 = MEMORY[0x1E696EE88];
   v7 = MEMORY[0x1E69AD298];
-  v8 = a4;
-  v9 = [v7 checkInternalOperation:a3 options:0];
+  replyCopy = reply;
+  v9 = [v7 checkInternalOperation:operation options:0];
   [v6 raiseExceptionOnError:v9];
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -1510,8 +1510,8 @@ void __50__LAClient_setOptions_forInternalOperation_reply___block_invoke(void *a
   v10[2] = __46__LAClient_optionsForInternalOperation_reply___block_invoke;
   v10[3] = &unk_1E77CBEE8;
   v10[4] = self;
-  v10[5] = a3;
-  [(LAClient *)self _performCallId:v10 finally:v8];
+  v10[5] = operation;
+  [(LAClient *)self _performCallId:v10 finally:replyCopy];
 }
 
 void __46__LAClient_optionsForInternalOperation_reply___block_invoke(uint64_t a1, void *a2)
@@ -1522,21 +1522,21 @@ void __46__LAClient_optionsForInternalOperation_reply___block_invoke(uint64_t a1
   [v5 optionsForInternalOperation:*(a1 + 40) reply:v4];
 }
 
-- (void)verifyFileVaultUser:(id)a3 volumeUuid:(id)a4 options:(unint64_t)a5 reply:(id)a6
+- (void)verifyFileVaultUser:(id)user volumeUuid:(id)uuid options:(unint64_t)options reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
+  userCopy = user;
+  uuidCopy = uuid;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __57__LAClient_verifyFileVaultUser_volumeUuid_options_reply___block_invoke;
   v14[3] = &unk_1E77CBEC0;
   v14[4] = self;
-  v15 = v10;
-  v16 = v11;
-  v17 = a5;
-  v12 = v11;
-  v13 = v10;
-  [(LAClient *)self _performCallBool:v14 finally:a6];
+  v15 = userCopy;
+  v16 = uuidCopy;
+  optionsCopy = options;
+  v12 = uuidCopy;
+  v13 = userCopy;
+  [(LAClient *)self _performCallBool:v14 finally:reply];
 }
 
 void __57__LAClient_verifyFileVaultUser_volumeUuid_options_reply___block_invoke(void *a1, void *a2)
@@ -1547,15 +1547,15 @@ void __57__LAClient_verifyFileVaultUser_volumeUuid_options_reply___block_invoke(
   [v5 verifyFileVaultUser:a1[5] volumeUuid:a1[6] options:a1[7] reply:v4];
 }
 
-- (void)serverPropertyForOption:(int64_t)a3 reply:(id)a4
+- (void)serverPropertyForOption:(int64_t)option reply:(id)reply
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __42__LAClient_serverPropertyForOption_reply___block_invoke;
   v4[3] = &unk_1E77CBEE8;
   v4[4] = self;
-  v4[5] = a3;
-  [(LAClient *)self _performCallId:v4 finally:a4];
+  v4[5] = option;
+  [(LAClient *)self _performCallId:v4 finally:reply];
 }
 
 void __42__LAClient_serverPropertyForOption_reply___block_invoke(uint64_t a1, void *a2)
@@ -1566,18 +1566,18 @@ void __42__LAClient_serverPropertyForOption_reply___block_invoke(uint64_t a1, vo
   [v5 serverPropertyForOption:*(a1 + 40) reply:v4];
 }
 
-- (void)setServerPropertyForOption:(int64_t)a3 value:(id)a4 reply:(id)a5
+- (void)setServerPropertyForOption:(int64_t)option value:(id)value reply:(id)reply
 {
-  v8 = a4;
+  valueCopy = value;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__LAClient_setServerPropertyForOption_value_reply___block_invoke;
   v10[3] = &unk_1E77CBE20;
-  v11 = v8;
-  v12 = a3;
+  v11 = valueCopy;
+  optionCopy = option;
   v10[4] = self;
-  v9 = v8;
-  [(LAClient *)self _performCallBool:v10 finally:a5];
+  v9 = valueCopy;
+  [(LAClient *)self _performCallBool:v10 finally:reply];
 }
 
 void __51__LAClient_setServerPropertyForOption_value_reply___block_invoke(void *a1, void *a2)
@@ -1588,7 +1588,7 @@ void __51__LAClient_setServerPropertyForOption_value_reply___block_invoke(void *
   [v5 setServerPropertyForOption:a1[6] value:a1[5] reply:v4];
 }
 
-- (id)serverPropertyForOption:(int64_t)a3 error:(id *)a4
+- (id)serverPropertyForOption:(int64_t)option error:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -1608,10 +1608,10 @@ void __51__LAClient_setServerPropertyForOption_value_reply___block_invoke(void *
   v7[3] = &unk_1E77CBF38;
   v7[4] = &v14;
   v7[5] = &v8;
-  [(LAClient *)self serverPropertyForOption:a3 reply:v7];
-  if (a4)
+  [(LAClient *)self serverPropertyForOption:option reply:v7];
+  if (error)
   {
-    *a4 = v9[5];
+    *error = v9[5];
   }
 
   v5 = v15[5];
@@ -1636,9 +1636,9 @@ void __42__LAClient_serverPropertyForOption_error___block_invoke(uint64_t a1, vo
   *(v9 + 40) = v6;
 }
 
-- (BOOL)setServerPropertyForOption:(int64_t)a3 value:(id)a4 error:(id *)a5
+- (BOOL)setServerPropertyForOption:(int64_t)option value:(id)value error:(id *)error
 {
-  v8 = a4;
+  valueCopy = value;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -1655,10 +1655,10 @@ void __42__LAClient_serverPropertyForOption_error___block_invoke(uint64_t a1, vo
   v11[3] = &unk_1E77CBF60;
   v11[4] = &v18;
   v11[5] = &v12;
-  [(LAClient *)self setServerPropertyForOption:a3 value:v8 reply:v11];
-  if (a5)
+  [(LAClient *)self setServerPropertyForOption:option value:valueCopy reply:v11];
+  if (error)
   {
-    *a5 = v13[5];
+    *error = v13[5];
   }
 
   v9 = *(v19 + 24);
@@ -1668,14 +1668,14 @@ void __42__LAClient_serverPropertyForOption_error___block_invoke(uint64_t a1, vo
   return v9;
 }
 
-- (void)externalizedContextWithReply:(id)a3
+- (void)externalizedContextWithReply:(id)reply
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __41__LAClient_externalizedContextWithReply___block_invoke;
   v3[3] = &unk_1E77CBB50;
   v3[4] = self;
-  [(LAClient *)self _performCallId:v3 finally:a3];
+  [(LAClient *)self _performCallId:v3 finally:reply];
 }
 
 void __41__LAClient_externalizedContextWithReply___block_invoke(uint64_t a1, void *a2)
@@ -1686,7 +1686,7 @@ void __41__LAClient_externalizedContextWithReply___block_invoke(uint64_t a1, voi
   [v4 externalizedContextWithReply:v3];
 }
 
-- (id)synchronousExternalizedContextWithError:(id *)a3
+- (id)synchronousExternalizedContextWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -1712,9 +1712,9 @@ void __41__LAClient_externalizedContextWithReply___block_invoke(uint64_t a1, voi
   v6[4] = &v14;
   v6[5] = &v8;
   [(LAClient *)self _performCallId:v7 finally:v6];
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   v4 = v15[5];
@@ -1747,14 +1747,14 @@ void __52__LAClient_synchronousExternalizedContextWithError___block_invoke_2(uin
   *(v9 + 40) = v6;
 }
 
-- (void)authMethodWithReply:(id)a3
+- (void)authMethodWithReply:(id)reply
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __32__LAClient_authMethodWithReply___block_invoke;
   v3[3] = &unk_1E77CBB50;
   v3[4] = self;
-  [(LAClient *)self _performCallId:v3 finally:a3];
+  [(LAClient *)self _performCallId:v3 finally:reply];
 }
 
 void __32__LAClient_authMethodWithReply___block_invoke(uint64_t a1, void *a2)
@@ -1765,14 +1765,14 @@ void __32__LAClient_authMethodWithReply___block_invoke(uint64_t a1, void *a2)
   [v4 authMethodWithReply:v3];
 }
 
-- (void)prearmTouchIdWithReply:(id)a3
+- (void)prearmTouchIdWithReply:(id)reply
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __35__LAClient_prearmTouchIdWithReply___block_invoke;
   v3[3] = &unk_1E77CBB50;
   v3[4] = self;
-  [(LAClient *)self _performCallId:v3 finally:a3];
+  [(LAClient *)self _performCallId:v3 finally:reply];
 }
 
 void __35__LAClient_prearmTouchIdWithReply___block_invoke(uint64_t a1, void *a2)
@@ -1789,14 +1789,14 @@ void __35__LAClient_prearmTouchIdWithReply___block_invoke(uint64_t a1, void *a2)
   [v6 prearmTouchIdWithReply:v5];
 }
 
-- (void)resetWithReply:(id)a3
+- (void)resetWithReply:(id)reply
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __27__LAClient_resetWithReply___block_invoke;
   v3[3] = &unk_1E77CBBA0;
   v3[4] = self;
-  [(LAClient *)self _performCallBool:v3 finally:a3];
+  [(LAClient *)self _performCallBool:v3 finally:reply];
 }
 
 void __27__LAClient_resetWithReply___block_invoke(uint64_t a1, void *a2)
@@ -1807,20 +1807,20 @@ void __27__LAClient_resetWithReply___block_invoke(uint64_t a1, void *a2)
   [v4 resetProcessedEvent:0 reply:v3];
 }
 
-- (void)notifyEvent:(int64_t)a3 options:(id)a4 reply:(id)a5
+- (void)notifyEvent:(int64_t)event options:(id)options reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  replyCopy = reply;
   [(LAClient *)self _connectToServerWithRecovery:0 userSession:0 legacyService:0];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __38__LAClient_notifyEvent_options_reply___block_invoke;
   v11[3] = &unk_1E77CBE20;
-  v12 = v8;
-  v13 = a3;
+  v12 = optionsCopy;
+  eventCopy = event;
   v11[4] = self;
-  v10 = v8;
-  [(LAClient *)self _performSynchronous:0 callBool:v11 finally:v9];
+  v10 = optionsCopy;
+  [(LAClient *)self _performSynchronous:0 callBool:v11 finally:replyCopy];
 }
 
 void __38__LAClient_notifyEvent_options_reply___block_invoke(uint64_t a1, void *a2)
@@ -1837,16 +1837,16 @@ void __38__LAClient_notifyEvent_options_reply___block_invoke(uint64_t a1, void *
   [v6 notifyEvent:*(a1 + 48) options:*(a1 + 40) reply:v5];
 }
 
-- (void)setShowingCoachingHint:(BOOL)a3 event:(int64_t)a4 reply:(id)a5
+- (void)setShowingCoachingHint:(BOOL)hint event:(int64_t)event reply:(id)reply
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__LAClient_setShowingCoachingHint_event_reply___block_invoke;
   v5[3] = &unk_1E77CBE70;
-  v6 = a3;
+  hintCopy = hint;
   v5[4] = self;
-  v5[5] = a4;
-  [(LAClient *)self _performCallBool:v5 finally:a5];
+  v5[5] = event;
+  [(LAClient *)self _performCallBool:v5 finally:reply];
 }
 
 void __47__LAClient_setShowingCoachingHint_event_reply___block_invoke(uint64_t a1, void *a2)
@@ -1857,37 +1857,37 @@ void __47__LAClient_setShowingCoachingHint_event_reply___block_invoke(uint64_t a
   [v5 setShowingCoachingHint:*(a1 + 48) event:*(a1 + 40) reply:v4];
 }
 
-- (void)bootstrapServiceType:(id)a3 completionHandler:(id)a4
+- (void)bootstrapServiceType:(id)type completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LAClient *)self serverConnection];
+  handlerCopy = handler;
+  typeCopy = type;
+  serverConnection = [(LAClient *)self serverConnection];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __51__LAClient_bootstrapServiceType_completionHandler___block_invoke;
   v18 = &unk_1E77CBFB0;
-  v19 = v6;
-  v9 = v6;
-  v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&v15];
+  v19 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&v15];
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [MEMORY[0x1E696AE30] processInfo];
-  v13 = [v12 processIdentifier];
-  v14 = [v11 stringWithFormat:@"%d", v13, v15, v16, v17, v18];
-  [v10 bootstrapSessionServiceType:v7 serviceClientID:v14 completionHandler:v9];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processIdentifier = [processInfo processIdentifier];
+  v14 = [v11 stringWithFormat:@"%d", processIdentifier, v15, v16, v17, v18];
+  [v10 bootstrapSessionServiceType:typeCopy serviceClientID:v14 completionHandler:v9];
 }
 
-- (id)_resolveUIDelegateFromDelegate:(id)a3
+- (id)_resolveUIDelegateFromDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   if (![MEMORY[0x1E69AD280] releaseUIDelegate])
   {
-    v4 = v3;
+    v4 = delegateCopy;
     goto LABEL_5;
   }
 
-  if (v3)
+  if (delegateCopy)
   {
-    v4 = [(LACWeakBox *)[LAUIDelegateWeakBox alloc] initWithReceiver:v3];
+    v4 = [(LACWeakBox *)[LAUIDelegateWeakBox alloc] initWithReceiver:delegateCopy];
 LABEL_5:
     v5 = v4;
     goto LABEL_6;

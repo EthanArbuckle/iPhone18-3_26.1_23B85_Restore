@@ -1,28 +1,28 @@
 @interface NSWritingToolsProofreadingSuggestion
-- (NSWritingToolsProofreadingSuggestion)initWithUUID:(id)a3 originalRange:(_NSRange)a4 replacementString:(id)a5 state:(int64_t)a6;
+- (NSWritingToolsProofreadingSuggestion)initWithUUID:(id)d originalRange:(_NSRange)range replacementString:(id)string state:(int64_t)state;
 - (_NSRange)originalRange;
 @end
 
 @implementation NSWritingToolsProofreadingSuggestion
 
-- (NSWritingToolsProofreadingSuggestion)initWithUUID:(id)a3 originalRange:(_NSRange)a4 replacementString:(id)a5 state:(int64_t)a6
+- (NSWritingToolsProofreadingSuggestion)initWithUUID:(id)d originalRange:(_NSRange)range replacementString:(id)string state:(int64_t)state
 {
-  length = a4.length;
-  location = a4.location;
-  v12 = a3;
-  v13 = a5;
+  length = range.length;
+  location = range.location;
+  dCopy = d;
+  stringCopy = string;
   v17.receiver = self;
   v17.super_class = NSWritingToolsProofreadingSuggestion;
   v14 = [(NSWritingToolsProofreadingSuggestion *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_uuid, a3);
+    objc_storeStrong(&v14->_uuid, d);
     v15->_originalRange.location = location;
     v15->_originalRange.length = length;
-    objc_storeStrong(&v15->_replacementString, a5);
-    v15->_lengthDelta = [v13 length] - length;
-    v15->_state = a6;
+    objc_storeStrong(&v15->_replacementString, string);
+    v15->_lengthDelta = [stringCopy length] - length;
+    v15->_state = state;
   }
 
   return v15;

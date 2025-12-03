@@ -1,32 +1,32 @@
 @interface LNFullyQualifiedActionIdentifier
-- (BOOL)isEqual:(id)a3;
-- (LNFullyQualifiedActionIdentifier)initWithActionIdentifier:(id)a3 bundleIdentifier:(id)a4;
-- (LNFullyQualifiedActionIdentifier)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNFullyQualifiedActionIdentifier)initWithActionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (LNFullyQualifiedActionIdentifier)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNFullyQualifiedActionIdentifier
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(LNFullyQualifiedActionIdentifier *)self actionIdentifier];
-  v6 = [(LNFullyQualifiedActionIdentifier *)self bundleIdentifier];
-  v7 = [v4 initWithActionIdentifier:v5 bundleIdentifier:v6];
+  actionIdentifier = [(LNFullyQualifiedActionIdentifier *)self actionIdentifier];
+  bundleIdentifier = [(LNFullyQualifiedActionIdentifier *)self bundleIdentifier];
+  v7 = [v4 initWithActionIdentifier:actionIdentifier bundleIdentifier:bundleIdentifier];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -35,10 +35,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNFullyQualifiedActionIdentifier *)self actionIdentifier];
-    v8 = [(LNFullyQualifiedActionIdentifier *)v6 actionIdentifier];
-    v9 = v7;
-    v10 = v8;
+    actionIdentifier = [(LNFullyQualifiedActionIdentifier *)self actionIdentifier];
+    actionIdentifier2 = [(LNFullyQualifiedActionIdentifier *)v6 actionIdentifier];
+    v9 = actionIdentifier;
+    v10 = actionIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -65,10 +65,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNFullyQualifiedActionIdentifier *)self bundleIdentifier];
-    v16 = [(LNFullyQualifiedActionIdentifier *)v6 bundleIdentifier];
-    v14 = v15;
-    v17 = v16;
+    bundleIdentifier = [(LNFullyQualifiedActionIdentifier *)self bundleIdentifier];
+    bundleIdentifier2 = [(LNFullyQualifiedActionIdentifier *)v6 bundleIdentifier];
+    v14 = bundleIdentifier;
+    v17 = bundleIdentifier2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -95,10 +95,10 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(LNFullyQualifiedActionIdentifier *)self actionIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNFullyQualifiedActionIdentifier *)self bundleIdentifier];
-  v6 = [v5 hash];
+  actionIdentifier = [(LNFullyQualifiedActionIdentifier *)self actionIdentifier];
+  v4 = [actionIdentifier hash];
+  bundleIdentifier = [(LNFullyQualifiedActionIdentifier *)self bundleIdentifier];
+  v6 = [bundleIdentifier hash];
 
   return v6 ^ v4;
 }
@@ -108,18 +108,18 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNFullyQualifiedActionIdentifier *)self bundleIdentifier];
-  v7 = [(LNFullyQualifiedActionIdentifier *)self actionIdentifier];
-  v8 = [v3 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, actionIdentifier: %@>", v5, self, v6, v7];
+  bundleIdentifier = [(LNFullyQualifiedActionIdentifier *)self bundleIdentifier];
+  actionIdentifier = [(LNFullyQualifiedActionIdentifier *)self actionIdentifier];
+  v8 = [v3 stringWithFormat:@"<%@: %p, bundleIdentifier: %@, actionIdentifier: %@>", v5, self, bundleIdentifier, actionIdentifier];
 
   return v8;
 }
 
-- (LNFullyQualifiedActionIdentifier)initWithCoder:(id)a3
+- (LNFullyQualifiedActionIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
 
   if (v5)
   {
@@ -133,36 +133,36 @@ LABEL_21:
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LNFullyQualifiedActionIdentifier *)self initWithActionIdentifier:v5 bundleIdentifier:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNFullyQualifiedActionIdentifier *)self actionIdentifier];
-  [v4 encodeObject:v5 forKey:@"actionIdentifier"];
+  coderCopy = coder;
+  actionIdentifier = [(LNFullyQualifiedActionIdentifier *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
 
-  v6 = [(LNFullyQualifiedActionIdentifier *)self bundleIdentifier];
-  [v4 encodeObject:v6 forKey:@"bundleIdentifier"];
+  bundleIdentifier = [(LNFullyQualifiedActionIdentifier *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 }
 
-- (LNFullyQualifiedActionIdentifier)initWithActionIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (LNFullyQualifiedActionIdentifier)initWithActionIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  v9 = bundleIdentifierCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (bundleIdentifierCopy)
     {
       goto LABEL_3;
     }
@@ -170,8 +170,8 @@ LABEL_21:
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNFullyQualifiedActionIdentifier.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNFullyQualifiedActionIdentifier.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
 
     if (v9)
     {
@@ -179,8 +179,8 @@ LABEL_21:
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"LNFullyQualifiedActionIdentifier.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNFullyQualifiedActionIdentifier.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -188,7 +188,7 @@ LABEL_3:
   v10 = [(LNFullyQualifiedActionIdentifier *)&v19 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     actionIdentifier = v10->_actionIdentifier;
     v10->_actionIdentifier = v11;
 

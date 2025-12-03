@@ -7,9 +7,9 @@
 - (id)hf_demoModeAccessories
 {
   v0 = +[HFDemoModeAccessoryManager sharedManager];
-  v1 = [v0 accessories];
+  accessories = [v0 accessories];
 
-  return v1;
+  return accessories;
 }
 
 @end

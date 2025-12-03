@@ -1,24 +1,24 @@
 @interface _CNObservableSkipUntilSignalObserver
 - (NSString)description;
-- (_CNObservableSkipUntilSignalObserver)initWithDelegate:(id)a3;
+- (_CNObservableSkipUntilSignalObserver)initWithDelegate:(id)delegate;
 - (_CNObservableSkipUntilSignalObserverDelegate)delegate;
 - (void)observerDidComplete;
-- (void)observerDidFailWithError:(id)a3;
-- (void)observerDidReceiveResult:(id)a3;
+- (void)observerDidFailWithError:(id)error;
+- (void)observerDidReceiveResult:(id)result;
 @end
 
 @implementation _CNObservableSkipUntilSignalObserver
 
-- (_CNObservableSkipUntilSignalObserver)initWithDelegate:(id)a3
+- (_CNObservableSkipUntilSignalObserver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = _CNObservableSkipUntilSignalObserver;
   v5 = [(_CNObservableSkipUntilSignalObserver *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = v6;
   }
 
@@ -28,30 +28,30 @@
 - (NSString)description
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
-  v4 = [(_CNObservableSkipUntilSignalObserver *)self delegate];
-  v5 = [v3 appendName:@"delegate" object:v4];
+  delegate = [(_CNObservableSkipUntilSignalObserver *)self delegate];
+  v5 = [v3 appendName:@"delegate" object:delegate];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)observerDidReceiveResult:(id)a3
+- (void)observerDidReceiveResult:(id)result
 {
-  v3 = [(_CNObservableSkipUntilSignalObserver *)self delegate];
-  [v3 signalDidGenerateEvent];
+  delegate = [(_CNObservableSkipUntilSignalObserver *)self delegate];
+  [delegate signalDidGenerateEvent];
 }
 
 - (void)observerDidComplete
 {
-  v2 = [(_CNObservableSkipUntilSignalObserver *)self delegate];
-  [v2 signalDidGenerateEvent];
+  delegate = [(_CNObservableSkipUntilSignalObserver *)self delegate];
+  [delegate signalDidGenerateEvent];
 }
 
-- (void)observerDidFailWithError:(id)a3
+- (void)observerDidFailWithError:(id)error
 {
-  v3 = [(_CNObservableSkipUntilSignalObserver *)self delegate];
-  [v3 signalDidGenerateEvent];
+  delegate = [(_CNObservableSkipUntilSignalObserver *)self delegate];
+  [delegate signalDidGenerateEvent];
 }
 
 - (_CNObservableSkipUntilSignalObserverDelegate)delegate

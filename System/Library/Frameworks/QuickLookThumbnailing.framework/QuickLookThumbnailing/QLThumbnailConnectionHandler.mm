@@ -1,9 +1,9 @@
 @interface QLThumbnailConnectionHandler
 + (id)hostXPCInterface;
 + (id)serviceXPCInterface;
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
-- (QLThumbnailConnectionHandler)initWithPrincipalObject:(id)a3;
-- (void)generateThumbnailForRequest:(id)a3 completionHandler:(id)a4;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
+- (QLThumbnailConnectionHandler)initWithPrincipalObject:(id)object;
+- (void)generateThumbnailForRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation QLThumbnailConnectionHandler
@@ -54,16 +54,16 @@ uint64_t __48__QLThumbnailConnectionHandler_hostXPCInterface__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (QLThumbnailConnectionHandler)initWithPrincipalObject:(id)a3
+- (QLThumbnailConnectionHandler)initWithPrincipalObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v16.receiver = self;
   v16.super_class = QLThumbnailConnectionHandler;
   v6 = [(QLThumbnailConnectionHandler *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_principalObject, a3);
+    objc_storeStrong(&v6->_principalObject, object);
     v8 = MEMORY[0x1E69E96A8];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x1E69E96A8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("com.apple.quicklook.thumbnail.connectionhandler.generation", v9);
@@ -79,38 +79,38 @@ uint64_t __48__QLThumbnailConnectionHandler_hostXPCInterface__block_invoke()
   return v7;
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[QLThumbnailConnectionHandler serviceXPCInterface];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
-  [v4 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v6 = +[QLThumbnailConnectionHandler hostXPCInterface];
-  [v4 setRemoteObjectInterface:v6];
+  [connectionCopy setRemoteObjectInterface:v6];
 
-  [v4 activate];
+  [connectionCopy activate];
   return 1;
 }
 
-- (void)generateThumbnailForRequest:(id)a3 completionHandler:(id)a4
+- (void)generateThumbnailForRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696B0B8] currentConnection];
-  v9 = [(QLThumbnailConnectionHandler *)self generationQueue];
+  requestCopy = request;
+  handlerCopy = handler;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  generationQueue = [(QLThumbnailConnectionHandler *)self generationQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78__QLThumbnailConnectionHandler_generateThumbnailForRequest_completionHandler___block_invoke;
   v13[3] = &unk_1E836A1E8;
-  v14 = v6;
-  v15 = self;
-  v16 = v8;
-  v17 = v7;
-  v10 = v8;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v9, v13);
+  v14 = requestCopy;
+  selfCopy = self;
+  v16 = currentConnection;
+  v17 = handlerCopy;
+  v10 = currentConnection;
+  v11 = handlerCopy;
+  v12 = requestCopy;
+  dispatch_async(generationQueue, v13);
 }
 
 void __78__QLThumbnailConnectionHandler_generateThumbnailForRequest_completionHandler___block_invoke(id *a1)

@@ -1,15 +1,15 @@
 @interface STMutableLocationStatusDomainData
-- (BOOL)applyDiff:(id)a3;
+- (BOOL)applyDiff:(id)diff;
 - (STMutableListData)locationAttributionListData;
-- (STMutableLocationStatusDomainData)initWithLocationAttributionListData:(id)a3 activeDisplayModes:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addAttribution:(id)a3;
-- (void)addLocationAttribution:(id)a3;
-- (void)removeAttribution:(id)a3;
-- (void)removeLocationAttribution:(id)a3;
-- (void)setActiveDisplayModes:(unint64_t)a3;
-- (void)setAttributions:(id)a3;
-- (void)setLocationAttributions:(id)a3;
+- (STMutableLocationStatusDomainData)initWithLocationAttributionListData:(id)data activeDisplayModes:(unint64_t)modes;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addAttribution:(id)attribution;
+- (void)addLocationAttribution:(id)attribution;
+- (void)removeAttribution:(id)attribution;
+- (void)removeLocationAttribution:(id)attribution;
+- (void)setActiveDisplayModes:(unint64_t)modes;
+- (void)setAttributions:(id)attributions;
+- (void)setLocationAttributions:(id)attributions;
 @end
 
 @implementation STMutableLocationStatusDomainData
@@ -18,61 +18,61 @@
 {
   v4.receiver = self;
   v4.super_class = STMutableLocationStatusDomainData;
-  v2 = [(STLocationStatusDomainData *)&v4 locationAttributionListData];
+  locationAttributionListData = [(STLocationStatusDomainData *)&v4 locationAttributionListData];
 
-  return v2;
+  return locationAttributionListData;
 }
 
-- (STMutableLocationStatusDomainData)initWithLocationAttributionListData:(id)a3 activeDisplayModes:(unint64_t)a4
+- (STMutableLocationStatusDomainData)initWithLocationAttributionListData:(id)data activeDisplayModes:(unint64_t)modes
 {
-  v6 = [a3 mutableCopy];
+  v6 = [data mutableCopy];
   v9.receiver = self;
   v9.super_class = STMutableLocationStatusDomainData;
-  v7 = [(STLocationStatusDomainData *)&v9 _initWithLocationAttributionListData:v6 activeDisplayModes:a4];
+  v7 = [(STLocationStatusDomainData *)&v9 _initWithLocationAttributionListData:v6 activeDisplayModes:modes];
 
   return v7;
 }
 
-- (void)setAttributions:(id)a3
+- (void)setAttributions:(id)attributions
 {
-  if (a3)
+  if (attributions)
   {
-    v4 = a3;
-    v5 = [(STMutableLocationStatusDomainData *)self locationAttributionListData];
-    [v5 setObjects:v4];
+    attributionsCopy = attributions;
+    locationAttributionListData = [(STMutableLocationStatusDomainData *)self locationAttributionListData];
+    [locationAttributionListData setObjects:attributionsCopy];
   }
 }
 
-- (void)addAttribution:(id)a3
+- (void)addAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableLocationStatusDomainData *)self locationAttributionListData];
-    [v5 addObject:v4];
+    attributionCopy = attribution;
+    locationAttributionListData = [(STMutableLocationStatusDomainData *)self locationAttributionListData];
+    [locationAttributionListData addObject:attributionCopy];
   }
 }
 
-- (void)removeAttribution:(id)a3
+- (void)removeAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableLocationStatusDomainData *)self locationAttributionListData];
-    [v5 removeObject:v4];
+    attributionCopy = attribution;
+    locationAttributionListData = [(STMutableLocationStatusDomainData *)self locationAttributionListData];
+    [locationAttributionListData removeObject:attributionCopy];
   }
 }
 
-- (void)setLocationAttributions:(id)a3
+- (void)setLocationAttributions:(id)attributions
 {
-  if (a3)
+  if (attributions)
   {
-    v4 = a3;
-    v5 = [(STLocationStatusDomainData *)self attributions];
-    v8 = [v5 bs_filter:&__block_literal_global_121];
+    attributionsCopy = attributions;
+    attributions = [(STLocationStatusDomainData *)self attributions];
+    v8 = [attributions bs_filter:&__block_literal_global_121];
 
     v6 = [v8 mutableCopy];
-    v7 = [v4 bs_map:&__block_literal_global_124];
+    v7 = [attributionsCopy bs_map:&__block_literal_global_124];
 
     [v6 addObjectsFromArray:v7];
     [(STMutableLocationStatusDomainData *)self setAttributions:v6];
@@ -87,51 +87,51 @@ STLocationStatusDomainLocationAttribution *__61__STMutableLocationStatusDomainDa
   return v3;
 }
 
-- (void)addLocationAttribution:(id)a3
+- (void)addLocationAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [[STLocationStatusDomainLocationAttribution alloc] initWithLocationState:1 activityAttribution:v4];
+    attributionCopy = attribution;
+    v5 = [[STLocationStatusDomainLocationAttribution alloc] initWithLocationState:1 activityAttribution:attributionCopy];
 
     [(STMutableLocationStatusDomainData *)self addAttribution:v5];
   }
 }
 
-- (void)removeLocationAttribution:(id)a3
+- (void)removeLocationAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [[STLocationStatusDomainLocationAttribution alloc] initWithLocationState:1 activityAttribution:v4];
+    attributionCopy = attribution;
+    v5 = [[STLocationStatusDomainLocationAttribution alloc] initWithLocationState:1 activityAttribution:attributionCopy];
 
     [(STMutableLocationStatusDomainData *)self removeAttribution:v5];
   }
 }
 
-- (void)setActiveDisplayModes:(unint64_t)a3
+- (void)setActiveDisplayModes:(unint64_t)modes
 {
-  if (self->super._activeDisplayModes != a3)
+  if (self->super._activeDisplayModes != modes)
   {
-    self->super._activeDisplayModes = a3;
+    self->super._activeDisplayModes = modes;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STLocationStatusDomainData allocWithZone:a3];
+  v4 = [STLocationStatusDomainData allocWithZone:zone];
 
   return [(STLocationStatusDomainData *)v4 initWithData:self];
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableData:self];
+    [diffCopy applyToMutableData:self];
   }
 
   return isKindOfClass & 1;

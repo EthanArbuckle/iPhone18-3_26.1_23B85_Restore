@@ -1,8 +1,8 @@
 @interface SharingArticleURLActivityItemSource
 - (_TtC8NewsFeed35SharingArticleURLActivityItemSource)init;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerLinkMetadata:(id)a3;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation SharingArticleURLActivityItemSource
@@ -14,10 +14,10 @@
   return result;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
+  itemCopy = item;
+  selfCopy = self;
   SharingArticleURLActivityItemSource.activityViewControllerPlaceholderItem(_:)(v8);
 
   __swift_project_boxed_opaque_existential_1(v8, v8[3]);
@@ -27,12 +27,12 @@
   return v6;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  SharingArticleURLActivityItemSource.activityViewController(_:itemForActivityType:)(a4, v17);
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
+  SharingArticleURLActivityItemSource.activityViewController(_:itemForActivityType:)(type, v17);
 
   v9 = v18;
   if (v18)
@@ -55,22 +55,22 @@
   return v15;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC8NewsFeed35SharingArticleURLActivityItemSource_linkPresentationSource))
   {
-    v3 = self;
+    selfCopy = self;
     sub_1D725B77C();
-    v4 = [v6 linkMetadata];
+    linkMetadata = [v6 linkMetadata];
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v4 = 0;
+    linkMetadata = 0;
   }
 
-  return v4;
+  return linkMetadata;
 }
 
 @end

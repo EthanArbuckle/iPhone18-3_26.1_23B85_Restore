@@ -1,11 +1,11 @@
 @interface BPSAnimationControllingBuilder
-+ (id)animationControllerWithFileName:(id)a3 fileExtension:(id)a4 fileType:(id)a5 initialState:(id)a6 targetState:(id)a7 bundle:(id)a8 autoStart:(BOOL)a9 startDelay:(double)a10;
++ (id)animationControllerWithFileName:(id)name fileExtension:(id)extension fileType:(id)type initialState:(id)state targetState:(id)targetState bundle:(id)bundle autoStart:(BOOL)start startDelay:(double)self0;
 - (BPSAnimationControllingBuilder)init;
 @end
 
 @implementation BPSAnimationControllingBuilder
 
-+ (id)animationControllerWithFileName:(id)a3 fileExtension:(id)a4 fileType:(id)a5 initialState:(id)a6 targetState:(id)a7 bundle:(id)a8 autoStart:(BOOL)a9 startDelay:(double)a10
++ (id)animationControllerWithFileName:(id)name fileExtension:(id)extension fileType:(id)type initialState:(id)state targetState:(id)targetState bundle:(id)bundle autoStart:(BOOL)start startDelay:(double)self0
 {
   sub_241EA9E38();
   sub_241EA9E28();
@@ -17,18 +17,18 @@
 
   v31 = sub_241EA9D38();
   v17 = v16;
-  if (a4)
+  if (extension)
   {
     v30 = sub_241EA9D38();
-    a4 = v18;
-    if (a5)
+    extension = v18;
+    if (type)
     {
       goto LABEL_5;
     }
 
 LABEL_8:
     v19 = 0;
-    if (a6)
+    if (state)
     {
       goto LABEL_6;
     }
@@ -37,28 +37,28 @@ LABEL_8:
   }
 
   v30 = 0;
-  if (!a5)
+  if (!type)
   {
     goto LABEL_8;
   }
 
 LABEL_5:
   v19 = sub_241EA9D38();
-  a5 = v20;
-  if (a6)
+  type = v20;
+  if (state)
   {
 LABEL_6:
     v21 = sub_241EA9D38();
-    a6 = v22;
+    state = v22;
     goto LABEL_10;
   }
 
 LABEL_9:
   v21 = 0;
 LABEL_10:
-  v23 = a7;
-  v24 = a8;
-  if (v23)
+  targetStateCopy = targetState;
+  bundleCopy = bundle;
+  if (targetStateCopy)
   {
     v25 = sub_241EA9D38();
     v27 = v26;
@@ -70,7 +70,7 @@ LABEL_10:
     v27 = 0;
   }
 
-  v28 = sub_241EA93A4(v31, v17, v30, a4, v19, a5, v21, a6, a10, v25, v27, v24, a9);
+  v28 = sub_241EA93A4(v31, v17, v30, extension, v19, type, v21, state, delay, v25, v27, bundleCopy, start);
 
   return v28;
 }

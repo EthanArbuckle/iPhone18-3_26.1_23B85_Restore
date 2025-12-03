@@ -2,24 +2,24 @@
 - (STSCategoryViewController)init;
 - (STSCategoryViewControllerDelegate)selectionDelegate;
 - (UIEdgeInsets)contentInset;
-- (id)_searchResultIdentifierForSuggestion:(id)a3 recent:(BOOL)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (id)_searchResultIdentifierForSuggestion:(id)suggestion recent:(BOOL)recent;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (void)_commitClearRecents;
-- (void)_reportFeedbackDisplayedResultsDidScroll:(BOOL)a3;
-- (void)clearButton:(id)a3 pressedForCategoryResult:(id)a4;
+- (void)_reportFeedbackDisplayedResultsDidScroll:(BOOL)scroll;
+- (void)clearButton:(id)button pressedForCategoryResult:(id)result;
 - (void)reload;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 - (void)sendRankSectionsFeedback;
 - (void)sendVisibleResultsFeedback;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateContentOffset:(double)a3;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateContentOffset:(double)offset;
 - (void)updateModel;
-- (void)updateRecents:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateRecents:(id)recents;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation STSCategoryViewController
@@ -44,20 +44,20 @@
 
     v2->_isScrolling = 0;
     v8 = objc_alloc_init(STSCategoryView);
-    v9 = [(STSCategoryView *)v8 tableView];
-    [v9 setDataSource:v2];
+    tableView = [(STSCategoryView *)v8 tableView];
+    [tableView setDataSource:v2];
 
-    v10 = [(STSCategoryView *)v8 tableView];
-    [v10 setDelegate:v2];
+    tableView2 = [(STSCategoryView *)v8 tableView];
+    [tableView2 setDelegate:v2];
 
-    v11 = [(STSCategoryView *)v8 tableView];
-    [v11 registerClass:objc_opt_class() forCellReuseIdentifier:@"CategoryCell"];
+    tableView3 = [(STSCategoryView *)v8 tableView];
+    [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"CategoryCell"];
 
-    v12 = [(STSCategoryView *)v8 tableView];
-    [v12 registerClass:objc_opt_class() forCellReuseIdentifier:@"CategoryTitleCell"];
+    tableView4 = [(STSCategoryView *)v8 tableView];
+    [tableView4 registerClass:objc_opt_class() forCellReuseIdentifier:@"CategoryTitleCell"];
 
-    v13 = [(STSCategoryView *)v8 tableView];
-    [v13 setSeparatorStyle:1];
+    tableView5 = [(STSCategoryView *)v8 tableView];
+    [tableView5 setSeparatorStyle:1];
 
     [(STSCategoryViewController *)v2 setView:v8];
     v14 = dispatch_get_global_queue(9, 0);
@@ -80,15 +80,15 @@
   [(STSCategoryViewController *)self updateModel];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v5 = [(STSCategoryViewController *)self view];
-  v3 = [v5 tableView];
+  view = [(STSCategoryViewController *)self view];
+  tableView = [view tableView];
   v4 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-  [v3 scrollToRowAtIndexPath:v4 atScrollPosition:1 animated:0];
+  [tableView scrollToRowAtIndexPath:v4 atScrollPosition:1 animated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   if ([(STSCategoryViewController *)self sendFeedbackOnViewDidAppear])
   {
@@ -100,8 +100,8 @@
 
 - (UIEdgeInsets)contentInset
 {
-  v2 = [(STSCategoryViewController *)self view];
-  [v2 contentInset];
+  view = [(STSCategoryViewController *)self view];
+  [view contentInset];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -118,33 +118,33 @@
   return result;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(STSCategoryViewController *)self view];
-  v7 = [v8 tableView];
-  [v7 setContentInset:{top, left, bottom, right}];
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  view = [(STSCategoryViewController *)self view];
+  tableView = [view tableView];
+  [tableView setContentInset:{top, left, bottom, right}];
 }
 
-- (void)updateContentOffset:(double)a3
+- (void)updateContentOffset:(double)offset
 {
-  v9 = [(STSCategoryViewController *)self view];
-  v5 = [v9 tableView];
-  v6 = [(STSCategoryViewController *)self view];
-  v7 = [v6 tableView];
-  [v7 contentInset];
-  [v5 setContentOffset:{-v8, a3}];
+  view = [(STSCategoryViewController *)self view];
+  tableView = [view tableView];
+  view2 = [(STSCategoryViewController *)self view];
+  tableView2 = [view2 tableView];
+  [tableView2 contentInset];
+  [tableView setContentOffset:{-v8, offset}];
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v4 = MEMORY[0x277D75D18];
-  v5 = a3;
+  viewCopy = view;
   v6 = [v4 alloc];
-  [v5 bounds];
+  [viewCopy bounds];
   v8 = v7;
 
   v9 = [v6 initWithFrame:{0.0, 0.0, v8, 0.0}];
@@ -152,25 +152,25 @@
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndex:](self->_model, "objectAtIndex:", [v7 row]);
-  v9 = [v8 type];
-  if (v9 >= 2)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSMutableArray objectAtIndex:](self->_model, "objectAtIndex:", [pathCopy row]);
+  type = [v8 type];
+  if (type >= 2)
   {
-    if (v9 == 2)
+    if (type == 2)
     {
-      v10 = [v6 dequeueReusableCellWithIdentifier:@"CategoryTitleCell" forIndexPath:v7];
+      v10 = [viewCopy dequeueReusableCellWithIdentifier:@"CategoryTitleCell" forIndexPath:pathCopy];
       [v10 setSelectionStyle:0];
-      v23 = [v10 textLabel];
-      v24 = [v8 title];
-      [v23 setText:v24];
+      textLabel = [v10 textLabel];
+      title = [v8 title];
+      [textLabel setText:title];
 
-      v25 = [MEMORY[0x277D75348] sts_defaultBackgroundColor];
-      [v10 setBackgroundColor:v25];
+      sts_defaultBackgroundColor = [MEMORY[0x277D75348] sts_defaultBackgroundColor];
+      [v10 setBackgroundColor:sts_defaultBackgroundColor];
 
       [v10 setClearButtonHidden:{objc_msgSend(v8, "clearButtonHidden")}];
       [v10 setResult:v8];
@@ -185,32 +185,32 @@
 
   else
   {
-    v10 = [v6 dequeueReusableCellWithIdentifier:@"CategoryCell" forIndexPath:v7];
-    v11 = [v10 textLabel];
-    v12 = [v8 title];
-    [v11 setText:v12];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"CategoryCell" forIndexPath:pathCopy];
+    textLabel2 = [v10 textLabel];
+    title2 = [v8 title];
+    [textLabel2 setText:title2];
 
-    v13 = [v10 textLabel];
-    v14 = [MEMORY[0x277D75348] systemPinkColor];
-    [v13 setTextColor:v14];
+    textLabel3 = [v10 textLabel];
+    systemPinkColor = [MEMORY[0x277D75348] systemPinkColor];
+    [textLabel3 setTextColor:systemPinkColor];
 
-    v15 = [v10 textLabel];
+    textLabel4 = [v10 textLabel];
     v16 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A28]];
-    [v15 setFont:v16];
+    [textLabel4 setFont:v16];
 
-    v17 = [MEMORY[0x277D75348] sts_defaultBackgroundColor];
-    [v10 setBackgroundColor:v17];
+    sts_defaultBackgroundColor2 = [MEMORY[0x277D75348] sts_defaultBackgroundColor];
+    [v10 setBackgroundColor:sts_defaultBackgroundColor2];
 
-    v18 = [v8 searchResult];
-    if (v18)
+    searchResult = [v8 searchResult];
+    if (searchResult)
     {
       isScrolling = self->_isScrolling;
 
       if (isScrolling)
       {
         v20 = +[STSFeedbackReporter sharedInstance];
-        v21 = [v8 searchResult];
-        v27[0] = v21;
+        searchResult2 = [v8 searchResult];
+        v27[0] = searchResult2;
         v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
         [v20 didShowResults:v22 scrolling:1];
       }
@@ -220,17 +220,17 @@
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = -[NSMutableArray objectAtIndex:](self->_model, "objectAtIndex:", [a4 row]);
+  v13 = -[NSMutableArray objectAtIndex:](self->_model, "objectAtIndex:", [path row]);
   if ([v13 type] == 1)
   {
-    v5 = [v13 suggestion];
-    v6 = [v5 prediction];
+    suggestion = [v13 suggestion];
+    prediction = [suggestion prediction];
 
-    v7 = [(STSCategoryViewController *)self selectionDelegate];
-    v8 = [v13 title];
-    [v7 categoryViewController:self didSelectCategory:v8 suggested:v6 != 0];
+    selectionDelegate = [(STSCategoryViewController *)self selectionDelegate];
+    title = [v13 title];
+    [selectionDelegate categoryViewController:self didSelectCategory:title suggested:prediction != 0];
   }
 
   else
@@ -240,20 +240,20 @@
       goto LABEL_6;
     }
 
-    v7 = [(STSCategoryViewController *)self selectionDelegate];
-    v8 = [v13 title];
-    [v7 categoryViewController:self didSelectRecent:v8];
+    selectionDelegate = [(STSCategoryViewController *)self selectionDelegate];
+    title = [v13 title];
+    [selectionDelegate categoryViewController:self didSelectRecent:title];
   }
 
 LABEL_6:
-  v9 = [v13 searchResult];
+  searchResult = [v13 searchResult];
 
-  if (v9)
+  if (searchResult)
   {
     v10 = +[STSFeedbackReporter sharedInstance];
-    v11 = [v13 searchResult];
-    v12 = [v13 suggestion];
-    [v10 didEngageCategoryResult:v11 suggestion:v12];
+    searchResult2 = [v13 searchResult];
+    suggestion2 = [v13 suggestion];
+    [v10 didEngageCategoryResult:searchResult2 suggestion:suggestion2];
   }
 }
 
@@ -287,8 +287,8 @@ LABEL_6:
 
   [(STSCategoryResult *)v7 setClearButtonHidden:1];
   [(NSMutableArray *)self->_model addObject:v7];
-  v9 = [(STSSearchModel *)self->_searchModel categoryList];
-  v10 = [v9 copy];
+  categoryList = [(STSSearchModel *)self->_searchModel categoryList];
+  v10 = [categoryList copy];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -370,13 +370,13 @@ void __40__STSCategoryViewController_updateModel__block_invoke_2(uint64_t a1, vo
   }
 }
 
-- (void)clearButton:(id)a3 pressedForCategoryResult:(id)a4
+- (void)clearButton:(id)button pressedForCategoryResult:(id)result
 {
-  v5 = a3;
+  buttonCopy = button;
   v6 = [STSAlertController alertControllerWithTitle:0 message:0 preferredStyle:0];
-  v7 = [v6 view];
-  v8 = [MEMORY[0x277D75348] systemPinkColor];
-  [v7 setTintColor:v8];
+  view = [v6 view];
+  systemPinkColor = [MEMORY[0x277D75348] systemPinkColor];
+  [view setTintColor:systemPinkColor];
 
   v9 = MEMORY[0x277D750F8];
   v10 = STSLocalizedString(@"CLEAR_RECENTS_ACTION_TITLE");
@@ -400,12 +400,12 @@ void __40__STSCategoryViewController_updateModel__block_invoke_2(uint64_t a1, vo
   [v14 addAction:{v11, v18, v19, v20, v21}];
   [v14 addAction:v15];
   [v14 setModalPresentationStyle:7];
-  v16 = [v14 popoverPresentationController];
-  [v5 bounds];
-  [v16 setSourceRect:?];
+  popoverPresentationController = [v14 popoverPresentationController];
+  [buttonCopy bounds];
+  [popoverPresentationController setSourceRect:?];
 
-  v17 = [v14 popoverPresentationController];
-  [v17 setSourceView:v5];
+  popoverPresentationController2 = [v14 popoverPresentationController];
+  [popoverPresentationController2 setSourceView:buttonCopy];
 
   [(STSCategoryViewController *)self presentViewController:v14 animated:1 completion:0];
 }
@@ -416,9 +416,9 @@ void __40__STSCategoryViewController_updateModel__block_invoke_2(uint64_t a1, vo
   self->_recents = MEMORY[0x277CBEBF8];
 
   [(STSCategoryViewController *)self updateModel];
-  v4 = [(STSCategoryViewController *)self view];
-  v5 = [v4 tableView];
-  [v5 reloadData];
+  view = [(STSCategoryViewController *)self view];
+  tableView = [view tableView];
+  [tableView reloadData];
 
   [(STSCategoryViewController *)self sendRankSectionsFeedback];
   [(STSCategoryViewController *)self sendVisibleResultsFeedback];
@@ -426,17 +426,17 @@ void __40__STSCategoryViewController_updateModel__block_invoke_2(uint64_t a1, vo
   [WeakRetained categoryViewControllerDidSelectClearRecentsButton:self];
 }
 
-- (void)updateRecents:(id)a3
+- (void)updateRecents:(id)recents
 {
-  v4 = a3;
-  if ([v4 count] < 4)
+  recentsCopy = recents;
+  if ([recentsCopy count] < 4)
   {
-    v5 = [v4 copy];
+    v5 = [recentsCopy copy];
   }
 
   else
   {
-    v5 = [v4 subarrayWithRange:{0, 3}];
+    v5 = [recentsCopy subarrayWithRange:{0, 3}];
   }
 
   v6 = v5;
@@ -468,9 +468,9 @@ void __40__STSCategoryViewController_updateModel__block_invoke_2(uint64_t a1, vo
   objc_storeStrong(&self->_recents, v6);
   [(STSCategoryViewController *)self updateModel];
 LABEL_9:
-  v8 = [(STSCategoryViewController *)self view];
-  v9 = [v8 tableView];
-  [v9 reloadData];
+  view = [(STSCategoryViewController *)self view];
+  tableView = [view tableView];
+  [tableView reloadData];
 
   _Block_object_dispose(&v11, 8);
 }
@@ -490,12 +490,12 @@ void __43__STSCategoryViewController_updateRecents___block_invoke(uint64_t a1, v
 
 - (void)reload
 {
-  v3 = [(STSCategoryViewController *)self view];
-  v2 = [v3 tableView];
-  [v2 reloadData];
+  view = [(STSCategoryViewController *)self view];
+  tableView = [view tableView];
+  [tableView reloadData];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   self->_isScrolling = 1;
   WeakRetained = objc_loadWeakRetained(&self->_selectionDelegate);
@@ -504,13 +504,13 @@ void __43__STSCategoryViewController_updateRecents___block_invoke(uint64_t a1, v
   [(STSCategoryViewController *)self _reportFeedbackDisplayedResultsDidScroll:0];
 }
 
-- (id)_searchResultIdentifierForSuggestion:(id)a3 recent:(BOOL)a4
+- (id)_searchResultIdentifierForSuggestion:(id)suggestion recent:(BOOL)recent
 {
-  v4 = a4;
-  v5 = a3;
-  if ([v5 length])
+  recentCopy = recent;
+  suggestionCopy = suggestion;
+  if ([suggestionCopy length])
   {
-    if (v4)
+    if (recentCopy)
     {
       v6 = @"msgscat-recent:%@";
     }
@@ -520,15 +520,15 @@ void __43__STSCategoryViewController_updateRecents___block_invoke(uint64_t a1, v
       v6 = @"msgscat-cat:%@";
     }
 
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:v6, v5];
+    suggestionCopy = [MEMORY[0x277CCACA8] stringWithFormat:v6, suggestionCopy];
   }
 
   else
   {
-    v7 = 0;
+    suggestionCopy = 0;
   }
 
-  return v7;
+  return suggestionCopy;
 }
 
 - (void)sendRankSectionsFeedback
@@ -569,19 +569,19 @@ void __53__STSCategoryViewController_sendRankSectionsFeedback__block_invoke(uint
 
 - (void)sendVisibleResultsFeedback
 {
-  v3 = [(STSCategoryViewController *)self view];
-  v4 = [v3 tableView];
-  v5 = [v4 indexPathsForVisibleRows];
+  view = [(STSCategoryViewController *)self view];
+  tableView = [view tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __55__STSCategoryViewController_sendVisibleResultsFeedback__block_invoke;
   v12 = &unk_279B8AA78;
-  v13 = self;
+  selfCopy = self;
   v7 = v6;
   v14 = v7;
-  [v5 enumerateObjectsUsingBlock:&v9];
+  [indexPathsForVisibleRows enumerateObjectsUsingBlock:&v9];
   if ([v7 count])
   {
     v8 = +[STSFeedbackReporter sharedInstance];
@@ -600,14 +600,14 @@ void __55__STSCategoryViewController_sendVisibleResultsFeedback__block_invoke(ui
   }
 }
 
-- (void)_reportFeedbackDisplayedResultsDidScroll:(BOOL)a3
+- (void)_reportFeedbackDisplayedResultsDidScroll:(BOOL)scroll
 {
-  v3 = a3;
+  scrollCopy = scroll;
   if ([(NSMutableArray *)self->_displayedResults count])
   {
     v5 = +[STSFeedbackReporter sharedInstance];
     v6 = [(NSMutableArray *)self->_displayedResults copy];
-    [v5 didShowResults:v6 scrolling:v3];
+    [v5 didShowResults:v6 scrolling:scrollCopy];
 
     displayedResults = self->_displayedResults;
 

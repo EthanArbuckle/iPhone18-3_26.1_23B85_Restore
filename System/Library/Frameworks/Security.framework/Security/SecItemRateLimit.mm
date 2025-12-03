@@ -1,12 +1,12 @@
 @interface SecItemRateLimit
 + (id)instance;
 + (void)resetStaticRateLimit;
-- (BOOL)consumeTokenFromBucket:(BOOL)a3;
+- (BOOL)consumeTokenFromBucket:(BOOL)bucket;
 - (BOOL)isModifyingAPICallWithinLimits;
 - (BOOL)isReadOnlyAPICallWithinLimits;
 - (BOOL)shouldCountAPICalls;
 - (SecItemRateLimit)init;
-- (void)forceEnabled:(BOOL)a3;
+- (void)forceEnabled:(BOOL)enabled;
 @end
 
 @implementation SecItemRateLimit
@@ -175,7 +175,7 @@ LABEL_8:
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)consumeTokenFromBucket:(BOOL)a3
+- (BOOL)consumeTokenFromBucket:(BOOL)bucket
 {
   if ([(SecItemRateLimit *)self shouldCountAPICalls]|| self->_forceEnabled)
   {
@@ -188,7 +188,7 @@ LABEL_8:
     block[1] = 3221225472;
     block[2] = __43__SecItemRateLimit_consumeTokenFromBucket___block_invoke;
     block[3] = &unk_1E70DDDD8;
-    v9 = a3;
+    bucketCopy = bucket;
     block[4] = self;
     block[5] = &v10;
     dispatch_sync(dataQueue, block);
@@ -261,15 +261,15 @@ void __43__SecItemRateLimit_consumeTokenFromBucket___block_invoke(uint64_t a1)
   }
 }
 
-- (void)forceEnabled:(BOOL)a3
+- (void)forceEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v12 = *MEMORY[0x1E69E9840];
-  self->_forceEnabled = a3;
+  self->_forceEnabled = enabled;
   v5 = secLogObjForScope("secitemratelimit");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3)
+    if (enabledCopy)
     {
       v6 = "F";
     }
@@ -282,7 +282,7 @@ void __43__SecItemRateLimit_consumeTokenFromBucket___block_invoke(uint64_t a1)
     v8 = 136315394;
     v9 = v6;
     v10 = 1024;
-    v11 = [(SecItemRateLimit *)self isEnabled];
+    isEnabled = [(SecItemRateLimit *)self isEnabled];
     _os_log_impl(&dword_1887D2000, v5, OS_LOG_TYPE_DEFAULT, "%sorcing SIRL to be enabled (effective: %i)", &v8, 0x12u);
   }
 

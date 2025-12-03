@@ -1,105 +1,105 @@
 @interface CUIKAttachmentDownloadController
-+ (BOOL)_attachmentIsViewable:(id)a3;
-+ (id)_keyForAttachment:(id)a3;
-- (CUIKAttachmentDownloadController)initWithAttachment:(id)a3;
++ (BOOL)_attachmentIsViewable:(id)viewable;
++ (id)_keyForAttachment:(id)attachment;
+- (CUIKAttachmentDownloadController)initWithAttachment:(id)attachment;
 - (CUIKAttachmentDownloadControllerDelegate)delegate;
 - (id)attachmentFilename;
 - (id)attachmentIdentifier;
 - (id)event;
 - (void)cellSelected;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)startAttachmentDownload;
 - (void)tearDown;
 @end
 
 @implementation CUIKAttachmentDownloadController
 
-+ (BOOL)_attachmentIsViewable:(id)a3
++ (BOOL)_attachmentIsViewable:(id)viewable
 {
-  v3 = a3;
-  v4 = [v3 UUID];
-  if (v4)
+  viewableCopy = viewable;
+  uUID = [viewableCopy UUID];
+  if (uUID)
   {
   }
 
   else
   {
-    v5 = [v3 URLForPendingFileCopy];
+    uRLForPendingFileCopy = [viewableCopy URLForPendingFileCopy];
 
-    if (!v5)
+    if (!uRLForPendingFileCopy)
     {
       goto LABEL_7;
     }
   }
 
-  v6 = [v3 localURL];
+  localURL = [viewableCopy localURL];
 
-  if (v6 || ([v3 URL], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if (localURL || ([viewableCopy URL], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(uRLForPendingFileCopy) = 1;
   }
 
   else
   {
-    v9 = [v3 URLForPendingFileCopy];
-    v5 = v9 != 0;
+    uRLForPendingFileCopy2 = [viewableCopy URLForPendingFileCopy];
+    uRLForPendingFileCopy = uRLForPendingFileCopy2 != 0;
   }
 
 LABEL_7:
 
-  return v5;
+  return uRLForPendingFileCopy;
 }
 
-+ (id)_keyForAttachment:(id)a3
++ (id)_keyForAttachment:(id)attachment
 {
-  v3 = a3;
-  v4 = [v3 UUID];
+  attachmentCopy = attachment;
+  uUID = [attachmentCopy UUID];
 
-  if (v4)
+  if (uUID)
   {
-    v5 = [v3 UUID];
+    uUID2 = [attachmentCopy UUID];
   }
 
   else
   {
-    v5 = [v3 URLForPendingFileCopy];
+    uUID2 = [attachmentCopy URLForPendingFileCopy];
 
-    if (v5)
+    if (uUID2)
     {
-      v6 = [v3 URLForPendingFileCopy];
-      v5 = [v6 absoluteString];
+      uRLForPendingFileCopy = [attachmentCopy URLForPendingFileCopy];
+      uUID2 = [uRLForPendingFileCopy absoluteString];
     }
   }
 
-  return v5;
+  return uUID2;
 }
 
-- (CUIKAttachmentDownloadController)initWithAttachment:(id)a3
+- (CUIKAttachmentDownloadController)initWithAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v8.receiver = self;
   v8.super_class = CUIKAttachmentDownloadController;
   v5 = [(CUIKAttachmentDownloadController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CUIKAttachmentDownloadController *)v5 setAttachment:v4];
+    [(CUIKAttachmentDownloadController *)v5 setAttachment:attachmentCopy];
   }
 
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  obj = v4;
-  if (!v4)
+  delegateCopy = delegate;
+  obj = delegateCopy;
+  if (!delegateCopy)
   {
     [(CUIKAttachmentDownloadController *)self tearDown];
-    v4 = 0;
+    delegateCopy = 0;
   }
 
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 }
 
 - (void)tearDown
@@ -131,11 +131,11 @@ void __44__CUIKAttachmentDownloadController_tearDown__block_invoke(uint64_t a1)
 
 - (id)attachmentFilename
 {
-  v2 = [(EKAttachment *)self->_attachment fileName];
-  v3 = v2;
-  if (v2)
+  fileName = [(EKAttachment *)self->_attachment fileName];
+  v3 = fileName;
+  if (fileName)
   {
-    v4 = v2;
+    v4 = fileName;
   }
 
   else
@@ -176,9 +176,9 @@ void __44__CUIKAttachmentDownloadController_tearDown__block_invoke(uint64_t a1)
 
 - (void)cellSelected
 {
-  v3 = [(EKAttachment *)self->_attachment localURL];
+  localURL = [(EKAttachment *)self->_attachment localURL];
   attachment = self->_attachment;
-  if (v3)
+  if (localURL)
   {
     [(EKAttachment *)attachment localURL];
   }
@@ -191,28 +191,28 @@ void __44__CUIKAttachmentDownloadController_tearDown__block_invoke(uint64_t a1)
 
   if (v5)
   {
-    v6 = [v5 scheme];
+    scheme = [v5 scheme];
 
-    if (!v6)
+    if (!scheme)
     {
       v7 = MEMORY[0x1E695DFF8];
-      v8 = [v5 path];
-      v9 = [v7 fileURLWithPath:v8];
+      path = [v5 path];
+      v9 = [v7 fileURLWithPath:path];
 
       v5 = v9;
     }
   }
 
-  v10 = [(CUIKAttachmentDownloadController *)self attachmentFilename];
-  v11 = [v10 pathExtension];
-  v12 = [(EKAttachment *)self->_attachment UUID];
-  v13 = [(CUIKAttachmentDownloadController *)self event];
-  v14 = [v13 calendar];
-  v15 = [v14 source];
-  v16 = [v15 constraints];
-  v17 = [v16 requiresOpeningAttachmentAsLink];
+  attachmentFilename = [(CUIKAttachmentDownloadController *)self attachmentFilename];
+  pathExtension = [attachmentFilename pathExtension];
+  uUID = [(EKAttachment *)self->_attachment UUID];
+  event = [(CUIKAttachmentDownloadController *)self event];
+  calendar = [event calendar];
+  source = [calendar source];
+  constraints = [source constraints];
+  requiresOpeningAttachmentAsLink = [constraints requiresOpeningAttachmentAsLink];
 
-  if (v17)
+  if (requiresOpeningAttachmentAsLink)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v19 = [(EKAttachment *)self->_attachment URL];
@@ -222,22 +222,22 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v20 = [v5 pathExtension];
-  if ([v20 isEqualToString:@"zip"])
+  pathExtension2 = [v5 pathExtension];
+  if ([pathExtension2 isEqualToString:@"zip"])
   {
-    v21 = [v11 isEqualToString:@"zip"];
+    v21 = [pathExtension isEqualToString:@"zip"];
 
     if ((v21 & 1) == 0)
     {
-      WeakRetained = [MEMORY[0x1E6966960] createTempDestinationURLWithExtension:v11];
-      v22 = [v5 path];
-      v23 = [WeakRetained path];
+      WeakRetained = [MEMORY[0x1E6966960] createTempDestinationURLWithExtension:pathExtension];
+      path2 = [v5 path];
+      path3 = [WeakRetained path];
       v24 = UnzipArchive();
 
       if (v24)
       {
         v25 = objc_loadWeakRetained(&self->_delegate);
-        [v25 presentPreviewWithURL:WeakRetained fileName:v10 ekAttachment:self->_attachment];
+        [v25 presentPreviewWithURL:WeakRetained fileName:attachmentFilename ekAttachment:self->_attachment];
       }
 
       goto LABEL_17;
@@ -251,11 +251,11 @@ LABEL_17:
   if (v5)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained presentPreviewWithURL:v5 fileName:v10 ekAttachment:self->_attachment];
+    [WeakRetained presentPreviewWithURL:v5 fileName:attachmentFilename ekAttachment:self->_attachment];
     goto LABEL_17;
   }
 
-  if (v12)
+  if (uUID)
   {
     v26 = [(EKAttachment *)self->_attachment URL];
     if (v26)
@@ -264,16 +264,16 @@ LABEL_17:
 
       if (!downloadID)
       {
-        v28 = [v13 calendar];
-        v29 = [v28 source];
-        v30 = [v29 externalID];
+        calendar2 = [event calendar];
+        source2 = [calendar2 source];
+        externalID = [source2 externalID];
 
-        v31 = [v13 calendar];
-        LODWORD(v29) = [v31 isSubscribed];
+        calendar3 = [event calendar];
+        LODWORD(source2) = [calendar3 isSubscribed];
 
-        if (v29)
+        if (source2)
         {
-          v32 = [v30 compare:@"Subscribed Calendars"] == 0;
+          v32 = [externalID compare:@"Subscribed Calendars"] == 0;
         }
 
         else
@@ -281,17 +281,17 @@ LABEL_17:
           v32 = 0;
         }
 
-        if (!v30 || v32)
+        if (!externalID || v32)
         {
-          v49 = [v13 calendar];
-          v33 = [v49 eventStore];
-          [v33 defaultCalendarForNewEvents];
-          v34 = v51 = v30;
-          v35 = [v34 source];
-          v36 = [v35 externalID];
+          calendar4 = [event calendar];
+          eventStore = [calendar4 eventStore];
+          [eventStore defaultCalendarForNewEvents];
+          v34 = v51 = externalID;
+          source3 = [v34 source];
+          externalID2 = [source3 externalID];
 
-          v30 = v36;
-          if (!v36)
+          externalID = externalID2;
+          if (!externalID2)
           {
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
@@ -303,10 +303,10 @@ LABEL_17:
           }
         }
 
-        v37 = [v13 calendar];
-        v38 = [v37 source];
+        calendar5 = [event calendar];
+        source4 = [calendar5 source];
 
-        if ([v38 sourceType] == 1)
+        if ([source4 sourceType] == 1)
         {
           v39 = 0;
           v40 = 0;
@@ -314,13 +314,13 @@ LABEL_17:
 
         else
         {
-          v52 = v30;
+          v52 = externalID;
           v50 = [(EKAttachment *)self->_attachment URL];
-          v41 = [v38 serverUsesSSL];
-          v42 = [v38 serverHost];
+          serverUsesSSL = [source4 serverUsesSSL];
+          serverHost = [source4 serverHost];
           v43 = objc_alloc_init(MEMORY[0x1E696AF20]);
           v44 = v43;
-          if (v41)
+          if (serverUsesSSL)
           {
             v45 = @"https";
           }
@@ -331,7 +331,7 @@ LABEL_17:
           }
 
           [v43 setScheme:v45];
-          [v44 setHost:v42];
+          [v44 setHost:serverHost];
           v40 = [v44 URL];
 
           v39 = v50;
@@ -339,20 +339,20 @@ LABEL_17:
           {
             v48 = objc_loadWeakRetained(&self->_delegate);
             v46 = [(EKAttachment *)self->_attachment URL];
-            v47 = [v46 host];
+            host = [v46 host];
             v53[0] = MEMORY[0x1E69E9820];
             v53[1] = 3221225472;
             v53[2] = __48__CUIKAttachmentDownloadController_cellSelected__block_invoke_2;
             v53[3] = &unk_1E8399BD8;
             v53[4] = self;
-            [v48 promptToDownloadAttachmentFromHost:v47 promptToDownloadCallBack:v53];
+            [v48 promptToDownloadAttachmentFromHost:host promptToDownloadCallBack:v53];
 
             v39 = v50;
-            v30 = v52;
+            externalID = v52;
             goto LABEL_37;
           }
 
-          v30 = v52;
+          externalID = v52;
         }
 
         [(CUIKAttachmentDownloadController *)self startAttachmentDownload];
@@ -373,8 +373,8 @@ void __48__CUIKAttachmentDownloadController_cellSelected__block_invoke(uint64_t 
 - (void)startAttachmentDownload
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(CUIKAttachmentDownloadController *)self attachmentIdentifier];
-  [WeakRetained updateAttachmentStatusWithIdentifier:v4 isLoading:1];
+  attachmentIdentifier = [(CUIKAttachmentDownloadController *)self attachmentIdentifier];
+  [WeakRetained updateAttachmentStatusWithIdentifier:attachmentIdentifier isLoading:1];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -382,23 +382,23 @@ void __48__CUIKAttachmentDownloadController_cellSelected__block_invoke(uint64_t 
   aBlock[3] = &unk_1E8399C00;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  v6 = [(CUIKAttachmentDownloadController *)self event];
+  event = [(CUIKAttachmentDownloadController *)self event];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __59__CUIKAttachmentDownloadController_startAttachmentDownload__block_invoke_2;
   v17[3] = &unk_1E8399C28;
   v17[4] = self;
-  v18 = v6;
-  v7 = v6;
+  v18 = event;
+  v7 = event;
   v8 = _Block_copy(v17);
-  v9 = [v7 calendar];
-  v10 = [v9 source];
-  v11 = [v10 externalID];
+  calendar = [v7 calendar];
+  source = [calendar source];
+  externalID = [source externalID];
 
-  v12 = [MEMORY[0x1E69998A8] sharedConnection];
-  v13 = [(EKAttachment *)self->_attachment UUID];
+  mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+  uUID = [(EKAttachment *)self->_attachment UUID];
   v14 = dispatch_get_global_queue(0, 0);
-  v15 = [v12 beginDownloadingAttachmentWithUUID:v13 accountID:v11 queue:v14 progressBlock:v5 completionBlock:v8];
+  v15 = [mEMORY[0x1E69998A8] beginDownloadingAttachmentWithUUID:uUID accountID:externalID queue:v14 progressBlock:v5 completionBlock:v8];
   downloadID = self->_downloadID;
   self->_downloadID = v15;
 }

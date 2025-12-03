@@ -2,14 +2,14 @@
 + (NSString)ImportLibraryNotification;
 + (NSString)ImportLibraryNotificationKeyPath;
 - (MTMigrationPresenter)migrationPresenter;
-- (void)performMigrationIfNecessaryWithOptionKeyDown:(BOOL)a3 :(id)a4;
-- (void)setMigrationPresenter:(id)a3;
-- (void)syncablePlayheadDidChangeForEpisodeUuid:(id)a3 isSignificant:(BOOL)a4;
+- (void)performMigrationIfNecessaryWithOptionKeyDown:(BOOL)down :(id)a4;
+- (void)setMigrationPresenter:(id)presenter;
+- (void)syncablePlayheadDidChangeForEpisodeUuid:(id)uuid isSignificant:(BOOL)significant;
 @end
 
 @implementation PlatformContentController
 
-- (void)setMigrationPresenter:(id)a3
+- (void)setMigrationPresenter:(id)presenter
 {
   v5 = self + OBJC_IVAR____TtC8Podcasts25PlatformContentController_platformImpl;
   swift_beginAccess();
@@ -18,23 +18,23 @@
   sub_100010C38(v5, v6);
   v8 = *(v7 + 24);
   swift_unknownObjectRetain();
-  v9 = self;
-  v8(a3, v6, v7);
+  selfCopy = self;
+  v8(presenter, v6, v7);
   swift_endAccess();
 }
 
-- (void)performMigrationIfNecessaryWithOptionKeyDown:(BOOL)a3 :(id)a4
+- (void)performMigrationIfNecessaryWithOptionKeyDown:(BOOL)down :(id)a4
 {
   v5 = _Block_copy(a4);
   _Block_copy(v5);
   v6 = qword_1005727E0;
-  v7 = self;
+  selfCopy = self;
   if (v6 != -1)
   {
     swift_once();
   }
 
-  sub_100046900(v7, v5);
+  sub_100046900(selfCopy, v5);
   _Block_release(v5);
 
   _Block_release(v5);
@@ -64,10 +64,10 @@
   return v3;
 }
 
-- (void)syncablePlayheadDidChangeForEpisodeUuid:(id)a3 isSignificant:(BOOL)a4
+- (void)syncablePlayheadDidChangeForEpisodeUuid:(id)uuid isSignificant:(BOOL)significant
 {
-  v5 = a3;
-  v6 = self;
+  uuidCopy = uuid;
+  selfCopy = self;
   sub_100286960();
 }
 

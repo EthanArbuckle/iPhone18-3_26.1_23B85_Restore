@@ -1,25 +1,25 @@
 @interface NTKCircularWellnessUtilityComplicationView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (NTKCircularWellnessUtilityComplicationView)initWithFrame:(CGRect)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (NTKCircularWellnessUtilityComplicationView)initWithFrame:(CGRect)frame;
 - (id)_ringColor;
 - (void)_applyForegroundAlpha;
 - (void)_layoutContentView;
 - (void)_setLayoutEmptyRings;
 - (void)_updateForTemplateChange;
 - (void)_updateRingColors;
-- (void)applyFaceColorPalette:(id)a3 units:(unint64_t)a4;
-- (void)setForegroundColor:(id)a3;
+- (void)applyFaceColorPalette:(id)palette units:(unint64_t)units;
+- (void)setForegroundColor:(id)color;
 @end
 
 @implementation NTKCircularWellnessUtilityComplicationView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 isCompatibleWithFamily:2];
+    v4 = [templateCopy isCompatibleWithFamily:2];
   }
 
   else
@@ -30,16 +30,16 @@
   return v4;
 }
 
-- (NTKCircularWellnessUtilityComplicationView)initWithFrame:(CGRect)a3
+- (NTKCircularWellnessUtilityComplicationView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = NTKCircularWellnessUtilityComplicationView;
-  v3 = [(NTKUtilityCircularComplicationView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKUtilityCircularComplicationView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(NTKUtilityComplicationView *)v3 device];
-    ___LayoutConstants_block_invoke_70(v5, v16);
+    device = [(NTKUtilityComplicationView *)v3 device];
+    ___LayoutConstants_block_invoke_70(device, v16);
     v6 = v17;
 
     v7 = +[NTKRingsAndDotsView emptyFillFractions];
@@ -54,37 +54,37 @@
 
     [(NTKRingsAndDotsView *)v4->_ringsView setRingsFillFractions:v4->_ringsFillFractions];
     [(NTKCircularWellnessUtilityComplicationView *)v4 _updateRingColors];
-    v13 = [(NTKUtilityCircularComplicationView *)v4 contentView];
-    [v13 addSubview:v4->_ringsView];
+    contentView = [(NTKUtilityCircularComplicationView *)v4 contentView];
+    [contentView addSubview:v4->_ringsView];
   }
 
   return v4;
 }
 
-- (void)applyFaceColorPalette:(id)a3 units:(unint64_t)a4
+- (void)applyFaceColorPalette:(id)palette units:(unint64_t)units
 {
   v5.receiver = self;
   v5.super_class = NTKCircularWellnessUtilityComplicationView;
-  [(NTKUtilityComplicationView *)&v5 applyFaceColorPalette:a3 units:a4];
+  [(NTKUtilityComplicationView *)&v5 applyFaceColorPalette:palette units:units];
   [(NTKCircularWellnessUtilityComplicationView *)self _updateRingColors];
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = NTKCircularWellnessUtilityComplicationView;
-  [(NTKUtilityComplicationView *)&v4 setForegroundColor:a3];
+  [(NTKUtilityComplicationView *)&v4 setForegroundColor:color];
   [(NTKCircularWellnessUtilityComplicationView *)self _updateRingColors];
 }
 
 - (void)_updateRingColors
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v3 = [(NTKUtilityComplicationView *)self colorScheme];
-  v4 = [v3 containsOverrideFaceColor];
+  colorScheme = [(NTKUtilityComplicationView *)self colorScheme];
+  containsOverrideFaceColor = [colorScheme containsOverrideFaceColor];
 
   ringsView = self->_ringsView;
-  if (v4)
+  if (containsOverrideFaceColor)
   {
     v6 = NTKMoveNonGradientTextColor();
     v11[0] = v6;
@@ -98,15 +98,15 @@
 
   else
   {
-    v10 = [(NTKCircularWellnessUtilityComplicationView *)self _ringColor];
+    _ringColor = [(NTKCircularWellnessUtilityComplicationView *)self _ringColor];
     [(NTKRingsAndDotsView *)ringsView setForegroundColor:?];
   }
 }
 
 - (void)_layoutContentView
 {
-  v3 = [(NTKUtilityCircularComplicationView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKUtilityCircularComplicationView *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -137,9 +137,9 @@
 
 - (id)_ringColor
 {
-  v3 = [(NTKUtilityComplicationView *)self _computedForegroundColor];
+  _computedForegroundColor = [(NTKUtilityComplicationView *)self _computedForegroundColor];
   [(NTKUtilityComplicationView *)self foregroundAlpha];
-  v4 = [v3 colorWithAlphaComponent:?];
+  v4 = [_computedForegroundColor colorWithAlphaComponent:?];
 
   return v4;
 }
@@ -149,11 +149,11 @@
   v20.receiver = self;
   v20.super_class = NTKCircularWellnessUtilityComplicationView;
   [(NTKUtilityComplicationView *)&v20 _updateForTemplateChange];
-  v3 = [(NTKUtilityComplicationView *)self complicationTemplate];
-  if (![v3 dotsAreHidden])
+  complicationTemplate = [(NTKUtilityComplicationView *)self complicationTemplate];
+  if (![complicationTemplate dotsAreHidden])
   {
     v4 = MEMORY[0x277CCABB0];
-    [v3 movePercentComplete];
+    [complicationTemplate movePercentComplete];
     if (v5 < 0.00000011920929)
     {
       v5 = 0.00000011920929;
@@ -169,7 +169,7 @@
     }
 
     v9 = MEMORY[0x277CCABB0];
-    [v3 exercisePercentComplete];
+    [complicationTemplate exercisePercentComplete];
     if (v10 < 0.00000011920929)
     {
       v10 = 0.00000011920929;
@@ -191,7 +191,7 @@
     }
 
     v15 = MEMORY[0x277CCABB0];
-    [v3 standPercentComplete];
+    [complicationTemplate standPercentComplete];
     if (v16 < 0.00000011920929)
     {
       v16 = 0.00000011920929;

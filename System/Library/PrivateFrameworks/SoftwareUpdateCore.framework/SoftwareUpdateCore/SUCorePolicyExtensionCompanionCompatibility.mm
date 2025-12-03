@@ -1,17 +1,17 @@
 @interface SUCorePolicyExtensionCompanionCompatibility
 + (id)sharedInstance;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SUCorePolicyExtensionCompanionCompatibility)init;
-- (SUCorePolicyExtensionCompanionCompatibility)initWithCoder:(id)a3;
+- (SUCorePolicyExtensionCompanionCompatibility)initWithCoder:(id)coder;
 - (id)description;
-- (id)filterSoftwareUpdateAssetArray:(id)a3;
+- (id)filterSoftwareUpdateAssetArray:(id)array;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
-- (void)extendMASoftwareUpdateAssetDownloadOptions:(id)a3;
-- (void)setAllowSameVersionUpdates:(BOOL)a3;
-- (void)setCompatibilityVersionRange:(id)a3 maxCompatibilityVersion:(id)a4;
-- (void)setPreferFullReplacement:(BOOL)a3;
-- (void)setSuAssetDownloadOptions:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)extendMASoftwareUpdateAssetDownloadOptions:(id)options;
+- (void)setAllowSameVersionUpdates:(BOOL)updates;
+- (void)setCompatibilityVersionRange:(id)range maxCompatibilityVersion:(id)version;
+- (void)setPreferFullReplacement:(BOOL)replacement;
+- (void)setSuAssetDownloadOptions:(id)options;
 @end
 
 @implementation SUCorePolicyExtensionCompanionCompatibility
@@ -72,35 +72,35 @@ uint64_t __61__SUCorePolicyExtensionCompanionCompatibility_sharedInstance__block
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setSuAssetDownloadOptions:(id)a3
+- (void)setSuAssetDownloadOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(SUCorePolicyExtensionCompanionCompatibility *)self operationsQueue];
+  optionsCopy = options;
+  operationsQueue = [(SUCorePolicyExtensionCompanionCompatibility *)self operationsQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__SUCorePolicyExtensionCompanionCompatibility_setSuAssetDownloadOptions___block_invoke;
   v7[3] = &unk_27892D478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = optionsCopy;
+  v6 = optionsCopy;
+  dispatch_sync(operationsQueue, v7);
 }
 
-- (void)setCompatibilityVersionRange:(id)a3 maxCompatibilityVersion:(id)a4
+- (void)setCompatibilityVersionRange:(id)range maxCompatibilityVersion:(id)version
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCorePolicyExtensionCompanionCompatibility *)self operationsQueue];
+  rangeCopy = range;
+  versionCopy = version;
+  operationsQueue = [(SUCorePolicyExtensionCompanionCompatibility *)self operationsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __100__SUCorePolicyExtensionCompanionCompatibility_setCompatibilityVersionRange_maxCompatibilityVersion___block_invoke;
   block[3] = &unk_27892D340;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = rangeCopy;
+  v13 = versionCopy;
+  selfCopy = self;
+  v9 = versionCopy;
+  v10 = rangeCopy;
+  dispatch_sync(operationsQueue, block);
 }
 
 void __100__SUCorePolicyExtensionCompanionCompatibility_setCompatibilityVersionRange_maxCompatibilityVersion___block_invoke(void *a1)
@@ -130,33 +130,33 @@ void __100__SUCorePolicyExtensionCompanionCompatibility_setCompatibilityVersionR
   }
 }
 
-- (void)setAllowSameVersionUpdates:(BOOL)a3
+- (void)setAllowSameVersionUpdates:(BOOL)updates
 {
-  v5 = [(SUCorePolicyExtensionCompanionCompatibility *)self operationsQueue];
+  operationsQueue = [(SUCorePolicyExtensionCompanionCompatibility *)self operationsQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __74__SUCorePolicyExtensionCompanionCompatibility_setAllowSameVersionUpdates___block_invoke;
   v6[3] = &unk_27892D4A0;
   v6[4] = self;
-  v7 = a3;
-  dispatch_sync(v5, v6);
+  updatesCopy = updates;
+  dispatch_sync(operationsQueue, v6);
 }
 
-- (void)setPreferFullReplacement:(BOOL)a3
+- (void)setPreferFullReplacement:(BOOL)replacement
 {
-  v5 = [(SUCorePolicyExtensionCompanionCompatibility *)self operationsQueue];
+  operationsQueue = [(SUCorePolicyExtensionCompanionCompatibility *)self operationsQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __72__SUCorePolicyExtensionCompanionCompatibility_setPreferFullReplacement___block_invoke;
   v6[3] = &unk_27892D4A0;
   v6[4] = self;
-  v7 = a3;
-  dispatch_sync(v5, v6);
+  replacementCopy = replacement;
+  dispatch_sync(operationsQueue, v6);
 }
 
-- (id)filterSoftwareUpdateAssetArray:(id)a3
+- (id)filterSoftwareUpdateAssetArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -168,10 +168,10 @@ void __100__SUCorePolicyExtensionCompanionCompatibility_setCompatibilityVersionR
   block[1] = 3221225472;
   block[2] = __78__SUCorePolicyExtensionCompanionCompatibility_filterSoftwareUpdateAssetArray___block_invoke;
   block[3] = &unk_27892D4E8;
-  v10 = v4;
+  v10 = arrayCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = arrayCopy;
   dispatch_sync(operationsQueue, block);
   v7 = v13[5];
 
@@ -669,17 +669,17 @@ LABEL_11:
   return v13;
 }
 
-- (void)extendMASoftwareUpdateAssetDownloadOptions:(id)a3
+- (void)extendMASoftwareUpdateAssetDownloadOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   operationsQueue = self->_operationsQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __90__SUCorePolicyExtensionCompanionCompatibility_extendMASoftwareUpdateAssetDownloadOptions___block_invoke;
   v7[3] = &unk_27892D478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_sync(operationsQueue, v7);
 }
 
@@ -765,62 +765,62 @@ void __90__SUCorePolicyExtensionCompanionCompatibility_extendMASoftwareUpdateAss
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (SUCorePolicyExtensionCompanionCompatibility)initWithCoder:(id)a3
+- (SUCorePolicyExtensionCompanionCompatibility)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SUCorePolicyExtensionCompanionCompatibility;
   v5 = [(SUCorePolicyExtension *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MinCompatibility"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MinCompatibility"];
     minCompatibility = v5->_minCompatibility;
     v5->_minCompatibility = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MaxCompatibility"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MaxCompatibility"];
     maxCompatibility = v5->_maxCompatibility;
     v5->_maxCompatibility = v8;
 
-    v5->_allowSameVersionUpdates = [v4 decodeBoolForKey:@"AllowsSameVersionUpdates"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUAssetDownloadOptions"];
+    v5->_allowSameVersionUpdates = [coderCopy decodeBoolForKey:@"AllowsSameVersionUpdates"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUAssetDownloadOptions"];
     suAssetDownloadOptions = v5->_suAssetDownloadOptions;
     v5->_suAssetDownloadOptions = v10;
 
-    v5->_assetOutOfCompatibilityRange = [v4 decodeBoolForKey:@"AssetOutOfCompatibilityRange"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BuildVersion"];
+    v5->_assetOutOfCompatibilityRange = [coderCopy decodeBoolForKey:@"AssetOutOfCompatibilityRange"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BuildVersion"];
     buildVersion = v5->_buildVersion;
     v5->_buildVersion = v12;
 
-    v5->_preferFullReplacement = [v4 decodeBoolForKey:@"PreferFullReplacement"];
+    v5->_preferFullReplacement = [coderCopy decodeBoolForKey:@"PreferFullReplacement"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(SUCorePolicyExtensionCompanionCompatibility *)self minCompatibility];
-  [v8 encodeObject:v4 forKey:@"MinCompatibility"];
+  coderCopy = coder;
+  minCompatibility = [(SUCorePolicyExtensionCompanionCompatibility *)self minCompatibility];
+  [coderCopy encodeObject:minCompatibility forKey:@"MinCompatibility"];
 
-  v5 = [(SUCorePolicyExtensionCompanionCompatibility *)self maxCompatibility];
-  [v8 encodeObject:v5 forKey:@"MaxCompatibility"];
+  maxCompatibility = [(SUCorePolicyExtensionCompanionCompatibility *)self maxCompatibility];
+  [coderCopy encodeObject:maxCompatibility forKey:@"MaxCompatibility"];
 
-  [v8 encodeBool:-[SUCorePolicyExtensionCompanionCompatibility allowSameVersionUpdates](self forKey:{"allowSameVersionUpdates"), @"AllowsSameVersionUpdates"}];
-  v6 = [(SUCorePolicyExtensionCompanionCompatibility *)self suAssetDownloadOptions];
-  [v8 encodeObject:v6 forKey:@"SUAssetDownloadOptions"];
+  [coderCopy encodeBool:-[SUCorePolicyExtensionCompanionCompatibility allowSameVersionUpdates](self forKey:{"allowSameVersionUpdates"), @"AllowsSameVersionUpdates"}];
+  suAssetDownloadOptions = [(SUCorePolicyExtensionCompanionCompatibility *)self suAssetDownloadOptions];
+  [coderCopy encodeObject:suAssetDownloadOptions forKey:@"SUAssetDownloadOptions"];
 
-  [v8 encodeBool:-[SUCorePolicyExtensionCompanionCompatibility assetOutOfCompatibilityRange](self forKey:{"assetOutOfCompatibilityRange"), @"AssetOutOfCompatibilityRange"}];
-  v7 = [(SUCorePolicyExtensionCompanionCompatibility *)self buildVersion];
-  [v8 encodeObject:v7 forKey:@"BuildVersion"];
+  [coderCopy encodeBool:-[SUCorePolicyExtensionCompanionCompatibility assetOutOfCompatibilityRange](self forKey:{"assetOutOfCompatibilityRange"), @"AssetOutOfCompatibilityRange"}];
+  buildVersion = [(SUCorePolicyExtensionCompanionCompatibility *)self buildVersion];
+  [coderCopy encodeObject:buildVersion forKey:@"BuildVersion"];
 
-  [v8 encodeBool:-[SUCorePolicyExtensionCompanionCompatibility preferFullReplacement](self forKey:{"preferFullReplacement"), @"PreferFullReplacement"}];
+  [coderCopy encodeBool:-[SUCorePolicyExtensionCompanionCompatibility preferFullReplacement](self forKey:{"preferFullReplacement"), @"PreferFullReplacement"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v13) = 1;
   }
@@ -830,19 +830,19 @@ void __90__SUCorePolicyExtensionCompanionCompatibility_extendMASoftwareUpdateAss
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = MEMORY[0x277D643F8];
-      v7 = [(SUCorePolicyExtensionCompanionCompatibility *)v5 minCompatibility];
-      v8 = [(SUCorePolicyExtensionCompanionCompatibility *)self minCompatibility];
-      if ([v6 numberIsEqual:v7 to:v8])
+      minCompatibility = [(SUCorePolicyExtensionCompanionCompatibility *)v5 minCompatibility];
+      minCompatibility2 = [(SUCorePolicyExtensionCompanionCompatibility *)self minCompatibility];
+      if ([v6 numberIsEqual:minCompatibility to:minCompatibility2])
       {
         v9 = MEMORY[0x277D643F8];
-        v10 = [(SUCorePolicyExtensionCompanionCompatibility *)v5 maxCompatibility];
-        v11 = [(SUCorePolicyExtensionCompanionCompatibility *)self maxCompatibility];
-        if ([v9 numberIsEqual:v10 to:v11] && (v12 = -[SUCorePolicyExtensionCompanionCompatibility preferFullReplacement](v5, "preferFullReplacement"), v12 == -[SUCorePolicyExtensionCompanionCompatibility preferFullReplacement](self, "preferFullReplacement")))
+        maxCompatibility = [(SUCorePolicyExtensionCompanionCompatibility *)v5 maxCompatibility];
+        maxCompatibility2 = [(SUCorePolicyExtensionCompanionCompatibility *)self maxCompatibility];
+        if ([v9 numberIsEqual:maxCompatibility to:maxCompatibility2] && (v12 = -[SUCorePolicyExtensionCompanionCompatibility preferFullReplacement](v5, "preferFullReplacement"), v12 == -[SUCorePolicyExtensionCompanionCompatibility preferFullReplacement](self, "preferFullReplacement")))
         {
-          v14 = [(SUCorePolicyExtensionCompanionCompatibility *)v5 allowSameVersionUpdates];
-          v13 = v14 ^ [(SUCorePolicyExtensionCompanionCompatibility *)self allowSameVersionUpdates]^ 1;
+          allowSameVersionUpdates = [(SUCorePolicyExtensionCompanionCompatibility *)v5 allowSameVersionUpdates];
+          v13 = allowSameVersionUpdates ^ [(SUCorePolicyExtensionCompanionCompatibility *)self allowSameVersionUpdates]^ 1;
         }
 
         else
@@ -868,13 +868,13 @@ void __90__SUCorePolicyExtensionCompanionCompatibility_extendMASoftwareUpdateAss
 
 - (id)summary
 {
-  v3 = [(SUCorePolicyExtensionCompanionCompatibility *)self minCompatibility];
+  minCompatibility = [(SUCorePolicyExtensionCompanionCompatibility *)self minCompatibility];
 
-  if (v3)
+  if (minCompatibility)
   {
     v4 = objc_alloc(MEMORY[0x277CCACA8]);
-    v5 = [(SUCorePolicyExtensionCompanionCompatibility *)self minCompatibility];
-    v6 = [v4 initWithFormat:@"|minCompatibility=%@", v5];
+    minCompatibility2 = [(SUCorePolicyExtensionCompanionCompatibility *)self minCompatibility];
+    v6 = [v4 initWithFormat:@"|minCompatibility=%@", minCompatibility2];
     v7 = [&stru_28469CC48 stringByAppendingString:v6];
   }
 
@@ -883,13 +883,13 @@ void __90__SUCorePolicyExtensionCompanionCompatibility_extendMASoftwareUpdateAss
     v7 = &stru_28469CC48;
   }
 
-  v8 = [(SUCorePolicyExtensionCompanionCompatibility *)self maxCompatibility];
+  maxCompatibility = [(SUCorePolicyExtensionCompanionCompatibility *)self maxCompatibility];
 
-  if (v8)
+  if (maxCompatibility)
   {
     v9 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = [(SUCorePolicyExtensionCompanionCompatibility *)self maxCompatibility];
-    v11 = [v9 initWithFormat:@"|maxCompatibility=%@", v10];
+    maxCompatibility2 = [(SUCorePolicyExtensionCompanionCompatibility *)self maxCompatibility];
+    v11 = [v9 initWithFormat:@"|maxCompatibility=%@", maxCompatibility2];
     v12 = [(__CFString *)v7 stringByAppendingString:v11];
 
     v7 = v12;
@@ -932,8 +932,8 @@ void __90__SUCorePolicyExtensionCompanionCompatibility_extendMASoftwareUpdateAss
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(SUCorePolicyExtensionCompanionCompatibility *)self extensionName];
-  v5 = [v3 initWithFormat:@"%@", v4];
+  extensionName = [(SUCorePolicyExtensionCompanionCompatibility *)self extensionName];
+  v5 = [v3 initWithFormat:@"%@", extensionName];
 
   return v5;
 }

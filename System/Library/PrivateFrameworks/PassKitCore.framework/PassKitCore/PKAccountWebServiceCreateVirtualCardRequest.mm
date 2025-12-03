@@ -1,14 +1,14 @@
 @interface PKAccountWebServiceCreateVirtualCardRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceCreateVirtualCardRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   if (!self->_baseURL)
   {
     v7 = PKLogFacilityTypeGetObject(0xFuLL);
@@ -29,7 +29,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v7 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -108,24 +108,24 @@ LABEL_24:
   v8 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:self->_baseURL endpointComponents:v7 queryParameters:0 appleAccountInformation:v5];
   [v8 setHTTPMethod:@"POST"];
   [v8 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v9 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   type = self->_type;
   if (type)
   {
     v11 = PKAccountVirtualCardTypeToString(type);
-    [v9 setObject:v11 forKey:@"type"];
+    [dictionary setObject:v11 forKey:@"type"];
   }
 
   encryptionFields = self->_encryptionFields;
   if (encryptionFields)
   {
-    v13 = [(PKVirtualCardEncryptionFields *)encryptionFields dictionaryRepresentation];
-    [v9 setObject:v13 forKey:@"encryptionFields"];
+    dictionaryRepresentation = [(PKVirtualCardEncryptionFields *)encryptionFields dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"encryptionFields"];
   }
 
-  if (v9)
+  if (dictionary)
   {
-    v14 = [objc_opt_class() _HTTPBodyWithDictionary:v9];
+    v14 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
     [v8 setHTTPBody:v14];
   }
 

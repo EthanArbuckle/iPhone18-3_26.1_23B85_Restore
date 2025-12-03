@@ -3,11 +3,11 @@
 - (ChromeViewController)chromeViewController;
 - (NSArray)carFocusOrderSequences;
 - (id)desiredCards;
-- (void)_updateCollections:(id)a3;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)collectionListCard:(id)a3 didSelectCollection:(id)a4;
-- (void)configureCard:(id)a3 forKey:(id)a4;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)_updateCollections:(id)collections;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)collectionListCard:(id)card didSelectCollection:(id)collection;
+- (void)configureCard:(id)card forKey:(id)key;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 @end
 
 @implementation CarCollectionListModeController
@@ -21,11 +21,11 @@
 
 - (NSArray)carFocusOrderSequences
 {
-  v3 = [(CarCollectionListModeController *)self chromeViewController];
-  v4 = [v3 itemRepresentingStatusBanner];
-  v5 = [(CarCollectionListModeController *)self chromeViewController];
-  v6 = [v5 itemRepresentingOverlays];
-  v11[1] = v6;
+  chromeViewController = [(CarCollectionListModeController *)self chromeViewController];
+  itemRepresentingStatusBanner = [chromeViewController itemRepresentingStatusBanner];
+  chromeViewController2 = [(CarCollectionListModeController *)self chromeViewController];
+  itemRepresentingOverlays = [chromeViewController2 itemRepresentingOverlays];
+  v11[1] = itemRepresentingOverlays;
   v7 = [NSArray arrayWithObjects:v11 count:2];
   v8 = [CarFocusOrderSequence sequenceWithItems:v7 options:5];
   v12 = v8;
@@ -34,47 +34,47 @@
   return v9;
 }
 
-- (void)collectionListCard:(id)a3 didSelectCollection:(id)a4
+- (void)collectionListCard:(id)card didSelectCollection:(id)collection
 {
-  v4 = a4;
+  collectionCopy = collection;
   v5 = sub_100006E1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = collectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "searchCategoriesCard:didSelectCollection: %@", &v7, 0xCu);
   }
 
   v6 = +[CarChromeModeCoordinator sharedInstance];
-  [v6 displaySearchResultsWithCollection:v4];
+  [v6 displaySearchResultsWithCollection:collectionCopy];
 }
 
-- (void)_updateCollections:(id)a3
+- (void)_updateCollections:(id)collections
 {
-  v8 = a3;
-  v4 = [(CarCollectionListModeController *)self collections];
-  v5 = [v8 isEqualToArray:v4];
+  collectionsCopy = collections;
+  collections = [(CarCollectionListModeController *)self collections];
+  v5 = [collectionsCopy isEqualToArray:collections];
 
   if ((v5 & 1) == 0)
   {
-    [(CarCollectionListModeController *)self setCollections:v8];
-    v6 = [(CarCollectionListModeController *)self collectionListCard];
-    v7 = [(CarCollectionListModeController *)self collections];
-    [v6 setCollections:v7];
+    [(CarCollectionListModeController *)self setCollections:collectionsCopy];
+    collectionListCard = [(CarCollectionListModeController *)self collectionListCard];
+    collections2 = [(CarCollectionListModeController *)self collections];
+    [collectionListCard setCollections:collections2];
   }
 }
 
-- (void)configureCard:(id)a3 forKey:(id)a4
+- (void)configureCard:(id)card forKey:(id)key
 {
-  v17 = a3;
-  if ([a4 isEqualToString:@"primary"])
+  cardCopy = card;
+  if ([key isEqualToString:@"primary"])
   {
-    v6 = [(CarCollectionListModeController *)self collectionListCard];
-    [v17 setContent:v6];
+    collectionListCard = [(CarCollectionListModeController *)self collectionListCard];
+    [cardCopy setContent:collectionListCard];
 
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"CarPlay_Guides_List_Title" value:@"localized string not found" table:0];
-    [v17 setTitle:v8];
+    [cardCopy setTitle:v8];
 
     v9 = objc_alloc_init(CarCardLayout);
     [(CarCardLayout *)v9 setEdgePosition:0];
@@ -90,11 +90,11 @@
     [(CarCardLayout *)v9 setMargins:*&qword_10193E338, *&qword_10193E338, *&qword_10193E338, *&qword_10193E338];
     [(CarCardLayout *)v9 setFlipForRightHandDrive:1];
     v12 = v9;
-    v13 = [(CarCardLayout *)v12 primaryAxis];
-    v14 = [(CarCardLayout *)v12 cornerPosition];
-    if (v13 == 1)
+    primaryAxis = [(CarCardLayout *)v12 primaryAxis];
+    cornerPosition = [(CarCardLayout *)v12 cornerPosition];
+    if (primaryAxis == 1)
     {
-      if (v14 == 4 || [(CarCardLayout *)v12 cornerPosition]== 1 || [(CarCardLayout *)v12 edgePosition]== 2)
+      if (cornerPosition == 4 || [(CarCardLayout *)v12 cornerPosition]== 1 || [(CarCardLayout *)v12 edgePosition]== 2)
       {
         v15 = 8;
       }
@@ -119,7 +119,7 @@
 
     else
     {
-      v16 = v14 == 4 || [(CarCardLayout *)v12 cornerPosition]== 8 || [(CarCardLayout *)v12 edgePosition]== 4;
+      v16 = cornerPosition == 4 || [(CarCardLayout *)v12 cornerPosition]== 8 || [(CarCardLayout *)v12 edgePosition]== 4;
       if ([(CarCardLayout *)v12 cornerPosition]== 1 || [(CarCardLayout *)v12 cornerPosition]== 2 || [(CarCardLayout *)v12 edgePosition]== 1)
       {
         v16 |= 4uLL;
@@ -138,9 +138,9 @@
 
     [(CarCardLayout *)v12 setEdgesAffectingMapInsets:v16];
     [(CarCardLayout *)v12 setHorizontallyCenterMapInsets:0];
-    [v17 setLayout:v12];
+    [cardCopy setLayout:v12];
 
-    [v17 setAccessoryType:1];
+    [cardCopy setAccessoryType:1];
   }
 }
 
@@ -152,17 +152,17 @@
   return v2;
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = [CollectionManager sharedManager:a3];
+  v5 = [CollectionManager sharedManager:controller];
   [v5 removeObserver:self];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v5 = [CarCollectionListCardViewController alloc];
-  v6 = [(CarCollectionListModeController *)self collections];
-  v7 = [(CarCollectionListCardViewController *)v5 initWithCollections:v6 delegate:self];
+  collections = [(CarCollectionListModeController *)self collections];
+  v7 = [(CarCollectionListCardViewController *)v5 initWithCollections:collections delegate:self];
   [(CarCollectionListModeController *)self setCollectionListCard:v7];
 
   v8 = +[CollectionManager sharedManager];
@@ -177,9 +177,9 @@
   if (v2)
   {
     v3 = +[CollectionManager sharedManager];
-    v4 = [v3 currentCollectionsForCarPlay];
+    currentCollectionsForCarPlay = [v3 currentCollectionsForCarPlay];
     collections = v2->_collections;
-    v2->_collections = v4;
+    v2->_collections = currentCollectionsForCarPlay;
   }
 
   return v2;

@@ -1,6 +1,6 @@
 @interface MTRBasicInformationClusterLeaveEvent
 - (MTRBasicInformationClusterLeaveEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRBasicInformationClusterLeaveEvent);
-  v5 = [(MTRBasicInformationClusterLeaveEvent *)self fabricIndex];
-  [(MTRBasicInformationClusterLeaveEvent *)v4 setFabricIndex:v5];
+  fabricIndex = [(MTRBasicInformationClusterLeaveEvent *)self fabricIndex];
+  [(MTRBasicInformationClusterLeaveEvent *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

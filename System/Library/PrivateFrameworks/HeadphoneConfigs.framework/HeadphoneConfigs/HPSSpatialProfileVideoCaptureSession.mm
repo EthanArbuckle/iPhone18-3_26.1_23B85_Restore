@@ -31,12 +31,12 @@
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   v4 = [v2 discoverySessionWithDeviceTypes:v3 mediaType:*MEMORY[0x277CE5EA8] position:2];
 
-  v5 = [v4 devices];
-  v6 = [v5 firstObject];
+  devices = [v4 devices];
+  firstObject = [devices firstObject];
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return firstObject;
 }
 
 - (BKUIVideoCaptureSesssionDelegate)delegate

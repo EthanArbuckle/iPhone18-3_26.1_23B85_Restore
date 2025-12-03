@@ -102,7 +102,7 @@ LABEL_30:
       v12 = 3840;
       v13 = 2160;
       v9 = v10;
-      return [a1 cam_supportsFrameRate:v12 width:v13 height:a4 colorSpace:a5 enableProResVideo:a6 requireVideoBinned:v9];
+      return [self cam_supportsFrameRate:v12 width:v13 height:a4 colorSpace:a5 enableProResVideo:a6 requireVideoBinned:v9];
     }
   }
 
@@ -122,14 +122,14 @@ LABEL_24:
   {
     v12 = 1920;
     v13 = 1080;
-    return [a1 cam_supportsFrameRate:v12 width:v13 height:a4 colorSpace:a5 enableProResVideo:a6 requireVideoBinned:v9];
+    return [self cam_supportsFrameRate:v12 width:v13 height:a4 colorSpace:a5 enableProResVideo:a6 requireVideoBinned:v9];
   }
 
   if (((1 << a3) & 0x4C) != 0)
   {
     v12 = 1280;
     v13 = 720;
-    return [a1 cam_supportsFrameRate:v12 width:v13 height:a4 colorSpace:a5 enableProResVideo:a6 requireVideoBinned:v9];
+    return [self cam_supportsFrameRate:v12 width:v13 height:a4 colorSpace:a5 enableProResVideo:a6 requireVideoBinned:v9];
   }
 
 LABEL_33:
@@ -153,13 +153,13 @@ LABEL_33:
     v12 = 0;
   }
 
-  return [a1 cam_supportsFrameRate:v12 width:v13 height:a4 colorSpace:a5 enableProResVideo:a6 requireVideoBinned:v9];
+  return [self cam_supportsFrameRate:v12 width:v13 height:a4 colorSpace:a5 enableProResVideo:a6 requireVideoBinned:v9];
 }
 
 - (uint64_t)cam_supportsFrameRate:()CAMCaptureEngine width:height:colorSpace:enableProResVideo:requireVideoBinned:
 {
-  v15 = [a1 formatDescription];
-  if (CMFormatDescriptionGetMediaType(v15) != 1986618469)
+  formatDescription = [self formatDescription];
+  if (CMFormatDescriptionGetMediaType(formatDescription) != 1986618469)
   {
     return 0;
   }
@@ -169,9 +169,9 @@ LABEL_33:
   if (v24 == 1)
   {
     v17 = v16;
-    v18 = [a1 supportedColorSpaces];
+    supportedColorSpaces = [self supportedColorSpaces];
     v19 = [MEMORY[0x1E696AD98] numberWithInteger:v17];
-    v20 = [v18 containsObject:v19];
+    v20 = [supportedColorSpaces containsObject:v19];
 
     if (!v20)
     {
@@ -206,33 +206,33 @@ LABEL_33:
     }
   }
 
-  result = [a1 isVideoBinned];
+  result = [self isVideoBinned];
   if (!result)
   {
     return result;
   }
 
 LABEL_12:
-  if (CMFormatDescriptionGetMediaSubType(v15) != v21)
+  if (CMFormatDescriptionGetMediaSubType(formatDescription) != v21)
   {
     return 0;
   }
 
   if (!a4)
   {
-    return [a1 cam_supportsFrameRate:a2];
+    return [self cam_supportsFrameRate:a2];
   }
 
   if (!a5)
   {
-    return [a1 cam_supportsFrameRate:a2];
+    return [self cam_supportsFrameRate:a2];
   }
 
-  Dimensions = CMVideoFormatDescriptionGetDimensions(v15);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(formatDescription);
   result = 0;
   if (a5 == Dimensions >> 32 && Dimensions == a4)
   {
-    return [a1 cam_supportsFrameRate:a2];
+    return [self cam_supportsFrameRate:a2];
   }
 
   return result;
@@ -244,14 +244,14 @@ LABEL_12:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [a1 videoSupportedFrameRateRanges];
+  videoSupportedFrameRateRanges = [self videoSupportedFrameRateRanges];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__AVCaptureDeviceFormat_CAMCaptureEngine__cam_supportsFrameRate___block_invoke;
   v6[3] = &unk_1E76FE1A0;
   *&v6[5] = a2;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [videoSupportedFrameRateRanges enumerateObjectsUsingBlock:v6];
 
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -264,7 +264,7 @@ LABEL_12:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v4 = [a1 videoSupportedFrameRateRanges];
+  videoSupportedFrameRateRanges = [self videoSupportedFrameRateRanges];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__AVCaptureDeviceFormat_CAMCaptureEngine__cam_supportsFrameDuration___block_invoke;
@@ -272,7 +272,7 @@ LABEL_12:
   v8 = *a3;
   v9 = *(a3 + 2);
   v7[4] = &v10;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [videoSupportedFrameRateRanges enumerateObjectsUsingBlock:v7];
 
   v5 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
@@ -282,22 +282,22 @@ LABEL_12:
 - (uint64_t)cam_supportsPanoramaConfiguration:()CAMCaptureEngine
 {
   v4 = a3;
-  v5 = [a1 formatDescription];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(v5);
-  if ([v4 sampleBufferWidth] == Dimensions && objc_msgSend(v4, "sampleBufferHeight") == Dimensions >> 32 && CMFormatDescriptionGetMediaSubType(v5) == 875704422)
+  formatDescription = [self formatDescription];
+  Dimensions = CMVideoFormatDescriptionGetDimensions(formatDescription);
+  if ([v4 sampleBufferWidth] == Dimensions && objc_msgSend(v4, "sampleBufferHeight") == Dimensions >> 32 && CMFormatDescriptionGetMediaSubType(formatDescription) == 875704422)
   {
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
-    v7 = [a1 videoSupportedFrameRateRanges];
+    videoSupportedFrameRateRanges = [self videoSupportedFrameRateRanges];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __77__AVCaptureDeviceFormat_CAMCaptureEngine__cam_supportsPanoramaConfiguration___block_invoke;
     v10[3] = &unk_1E76FE1F0;
     v11 = v4;
     v12 = &v13;
-    [v7 enumerateObjectsUsingBlock:v10];
+    [videoSupportedFrameRateRanges enumerateObjectsUsingBlock:v10];
     v8 = *(v14 + 24);
 
     _Block_object_dispose(&v13, 8);
@@ -313,14 +313,14 @@ LABEL_12:
 
 - (BOOL)cam_supportsPortraitFrontFacingZoomed
 {
-  v2 = [a1 formatDescription];
-  if (CMVideoFormatDescriptionGetDimensions(v2) != 0x90C00000C10 || CMFormatDescriptionGetMediaSubType(v2) != 875704422)
+  formatDescription = [self formatDescription];
+  if (CMVideoFormatDescriptionGetDimensions(formatDescription) != 0x90C00000C10 || CMFormatDescriptionGetMediaSubType(formatDescription) != 875704422)
   {
     return 0;
   }
 
-  v3 = [a1 supportedDepthDataFormats];
-  v4 = [v3 count] != 0;
+  supportedDepthDataFormats = [self supportedDepthDataFormats];
+  v4 = [supportedDepthDataFormats count] != 0;
 
   return v4;
 }
@@ -328,12 +328,12 @@ LABEL_12:
 - (uint64_t)cam_compareUsingDimensions:()CAMCaptureEngine
 {
   v4 = a3;
-  Dimensions = CMVideoFormatDescriptionGetDimensions([a1 formatDescription]);
+  Dimensions = CMVideoFormatDescriptionGetDimensions([self formatDescription]);
   v6 = Dimensions;
   v7 = HIDWORD(Dimensions);
-  v8 = [v4 formatDescription];
+  formatDescription = [v4 formatDescription];
 
-  v9 = CMVideoFormatDescriptionGetDimensions(v8);
+  v9 = CMVideoFormatDescriptionGetDimensions(formatDescription);
   v10 = v7 < v9.height && v6 < v9.width;
   v11 = v7 <= v9.height || v6 <= v9.width;
   v12 = v10 << 63 >> 63;
@@ -351,10 +351,10 @@ LABEL_12:
 - (uint64_t)cam_compareUsingQuality:()CAMCaptureEngine
 {
   v4 = a3;
-  v5 = [a1 cam_compareUsingBinning:v4];
+  v5 = [self cam_compareUsingBinning:v4];
   if (!v5)
   {
-    v5 = [a1 cam_compareUsingMaximumFramerate:v4];
+    v5 = [self cam_compareUsingMaximumFramerate:v4];
   }
 
   return v5;
@@ -363,24 +363,24 @@ LABEL_12:
 - (uint64_t)cam_compareUsingBinning:()CAMCaptureEngine
 {
   v4 = a3;
-  LODWORD(a1) = [a1 isVideoBinned];
-  v5 = [v4 isVideoBinned];
+  LODWORD(self) = [self isVideoBinned];
+  isVideoBinned = [v4 isVideoBinned];
 
-  if (a1)
+  if (self)
   {
-    return v5 - 1;
+    return isVideoBinned - 1;
   }
 
   else
   {
-    return v5 & 1;
+    return isVideoBinned & 1;
   }
 }
 
 - (uint64_t)cam_compareUsingMaximumFramerate:()CAMCaptureEngine
 {
   v4 = a3;
-  [a1 cam_maximumFrameRate];
+  [self cam_maximumFrameRate];
   v6 = v5;
   [v4 cam_maximumFrameRate];
   v8 = v7;
@@ -408,13 +408,13 @@ LABEL_12:
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v1 = [a1 videoSupportedFrameRateRanges];
+  videoSupportedFrameRateRanges = [self videoSupportedFrameRateRanges];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __63__AVCaptureDeviceFormat_CAMCaptureEngine__cam_maximumFrameRate__block_invoke;
   v4[3] = &unk_1E76FE218;
   v4[4] = &v5;
-  [v1 enumerateObjectsUsingBlock:v4];
+  [videoSupportedFrameRateRanges enumerateObjectsUsingBlock:v4];
 
   v2 = v6[3];
   _Block_object_dispose(&v5, 8);
@@ -517,7 +517,7 @@ LABEL_12:
         {
           if (a3 != 3)
           {
-            return [a1 cam_supportsFrameRate:v12 width:v11 height:a4 colorSpace:a5 enableProResVideo:a8 requireVideoBinned:v17];
+            return [self cam_supportsFrameRate:v12 width:v11 height:a4 colorSpace:a5 enableProResVideo:a8 requireVideoBinned:v17];
           }
 
           goto LABEL_31;
@@ -546,15 +546,15 @@ LABEL_31:
         v18 = 0x406E000000000000;
 LABEL_47:
         v17 = *&v18;
-        return [a1 cam_supportsFrameRate:v12 width:v11 height:a4 colorSpace:a5 enableProResVideo:a8 requireVideoBinned:v17];
+        return [self cam_supportsFrameRate:v12 width:v11 height:a4 colorSpace:a5 enableProResVideo:a8 requireVideoBinned:v17];
       }
 
-      return [a1 cam_supportsFrameRate:v12 width:v11 height:a4 colorSpace:a5 enableProResVideo:a8 requireVideoBinned:v17];
+      return [self cam_supportsFrameRate:v12 width:v11 height:a4 colorSpace:a5 enableProResVideo:a8 requireVideoBinned:v17];
     }
 
 LABEL_39:
     v17 = 30.0;
-    return [a1 cam_supportsFrameRate:v12 width:v11 height:a4 colorSpace:a5 enableProResVideo:a8 requireVideoBinned:v17];
+    return [self cam_supportsFrameRate:v12 width:v11 height:a4 colorSpace:a5 enableProResVideo:a8 requireVideoBinned:v17];
   }
 
   if (a3 > 12)
@@ -572,7 +572,7 @@ LABEL_39:
 
     if (a3 != 10003)
     {
-      return [a1 cam_supportsFrameRate:v12 width:v11 height:a4 colorSpace:a5 enableProResVideo:a8 requireVideoBinned:v17];
+      return [self cam_supportsFrameRate:v12 width:v11 height:a4 colorSpace:a5 enableProResVideo:a8 requireVideoBinned:v17];
     }
 
     goto LABEL_39;
@@ -596,7 +596,7 @@ LABEL_39:
     }
   }
 
-  return [a1 cam_supportsFrameRate:v12 width:v11 height:a4 colorSpace:a5 enableProResVideo:a8 requireVideoBinned:v17];
+  return [self cam_supportsFrameRate:v12 width:v11 height:a4 colorSpace:a5 enableProResVideo:a8 requireVideoBinned:v17];
 }
 
 @end

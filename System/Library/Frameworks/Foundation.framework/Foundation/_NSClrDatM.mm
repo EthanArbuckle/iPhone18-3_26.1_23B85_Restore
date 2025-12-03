@@ -1,6 +1,6 @@
 @interface _NSClrDatM
 - (void)_freeBytes;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSClrDatM
@@ -14,7 +14,7 @@
   [(NSConcreteMutableData *)&v3 _freeBytes];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = *MEMORY[0x1E69E9840];
   v4.receiver = self;
@@ -23,7 +23,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 encodeBool:1 forKey:@"NS.zeroing"];
+    [coder encodeBool:1 forKey:@"NS.zeroing"];
   }
 }
 

@@ -1,30 +1,30 @@
 @interface CPLDerivativesFilter
-- (BOOL)_isValidDropDerivativeRecipeWithUTI:(id)a3 sourceType:(unint64_t)a4 derivativeTypes:(id)a5 changeType:(unint64_t)a6;
-- (BOOL)addServerDropDerivativesRecipe:(id)a3;
-- (BOOL)addServerDropDerivativesRecipes:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mightDropSomeDerivativesForSourceType:(unint64_t)a3 forChangeType:(unint64_t)a4;
-- (BOOL)shouldDropDerivativeWithDropDerivativeRecipe:(id)a3;
+- (BOOL)_isValidDropDerivativeRecipeWithUTI:(id)i sourceType:(unint64_t)type derivativeTypes:(id)types changeType:(unint64_t)changeType;
+- (BOOL)addServerDropDerivativesRecipe:(id)recipe;
+- (BOOL)addServerDropDerivativesRecipes:(id)recipes;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mightDropSomeDerivativesForSourceType:(unint64_t)type forChangeType:(unint64_t)changeType;
+- (BOOL)shouldDropDerivativeWithDropDerivativeRecipe:(id)recipe;
 - (CPLDerivativesFilter)init;
-- (CPLDerivativesFilter)initWithCoder:(id)a3;
+- (CPLDerivativesFilter)initWithCoder:(id)coder;
 - (NSArray)plistDescription;
-- (id)_descriptionForStoredResponse:(id)a3 recordType:(unint64_t)a4;
-- (id)_getTargetDictionaryForChangeType:(unint64_t)a3;
+- (id)_descriptionForStoredResponse:(id)response recordType:(unint64_t)type;
+- (id)_getTargetDictionaryForChangeType:(unint64_t)type;
 - (id)description;
-- (void)_enumerateDropDerivativeRules:(id)a3 ofType:(unint64_t)a4 withBlock:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateDropDerivativeRulesWithBlock:(id)a3;
+- (void)_enumerateDropDerivativeRules:(id)rules ofType:(unint64_t)type withBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateDropDerivativeRulesWithBlock:(id)block;
 - (void)reset;
 @end
 
 @implementation CPLDerivativesFilter
 
-- (void)enumerateDropDerivativeRulesWithBlock:(id)a3
+- (void)enumerateDropDerivativeRulesWithBlock:(id)block
 {
   skipInfoForMasterChange = self->_skipInfoForMasterChange;
-  v5 = a3;
-  [(CPLDerivativesFilter *)self _enumerateDropDerivativeRules:skipInfoForMasterChange ofType:1 withBlock:v5];
-  [(CPLDerivativesFilter *)self _enumerateDropDerivativeRules:self->_skipInfoForAssetChange ofType:2 withBlock:v5];
+  blockCopy = block;
+  [(CPLDerivativesFilter *)self _enumerateDropDerivativeRules:skipInfoForMasterChange ofType:1 withBlock:blockCopy];
+  [(CPLDerivativesFilter *)self _enumerateDropDerivativeRules:self->_skipInfoForAssetChange ofType:2 withBlock:blockCopy];
 }
 
 - (id)description
@@ -72,10 +72,10 @@ void __40__CPLDerivativesFilter_plistDescription__block_invoke(uint64_t a1, void
   [v2 addObject:v3];
 }
 
-- (id)_descriptionForStoredResponse:(id)a3 recordType:(unint64_t)a4
+- (id)_descriptionForStoredResponse:(id)response recordType:(unint64_t)type
 {
   v6 = MEMORY[0x1E695DF70];
-  v7 = a3;
+  responseCopy = response;
   v8 = objc_alloc_init(v6);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -83,7 +83,7 @@ void __40__CPLDerivativesFilter_plistDescription__block_invoke(uint64_t a1, void
   v12[3] = &unk_1E861D0A0;
   v13 = v8;
   v9 = v8;
-  [(CPLDerivativesFilter *)self _enumerateDropDerivativeRules:v7 ofType:a4 withBlock:v12];
+  [(CPLDerivativesFilter *)self _enumerateDropDerivativeRules:responseCopy ofType:type withBlock:v12];
 
   v10 = [v9 componentsJoinedByString:@"\n"];
 
@@ -103,10 +103,10 @@ void __40__CPLDerivativesFilter_plistDescription__block_invoke(uint64_t a1, void
   MEMORY[0x1EEE66BB8](v5, skipInfoForMasterChange);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -116,7 +116,7 @@ void __40__CPLDerivativesFilter_plistDescription__block_invoke(uint64_t a1, void
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSMutableDictionary *)self->_skipInfoForAssetChange isEqualToDictionary:v5->_skipInfoForAssetChange])
       {
         v6 = [(NSMutableDictionary *)self->_skipInfoForMasterChange isEqualToDictionary:v5->_skipInfoForMasterChange];
@@ -137,17 +137,17 @@ void __40__CPLDerivativesFilter_plistDescription__block_invoke(uint64_t a1, void
   return v6;
 }
 
-- (void)_enumerateDropDerivativeRules:(id)a3 ofType:(unint64_t)a4 withBlock:(id)a5
+- (void)_enumerateDropDerivativeRules:(id)rules ofType:(unint64_t)type withBlock:(id)block
 {
-  v7 = a5;
+  blockCopy = block;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __71__CPLDerivativesFilter__enumerateDropDerivativeRules_ofType_withBlock___block_invoke;
   v9[3] = &unk_1E861D078;
-  v10 = v7;
-  v11 = a4;
-  v8 = v7;
-  [a3 enumerateKeysAndObjectsUsingBlock:v9];
+  v10 = blockCopy;
+  typeCopy = type;
+  v8 = blockCopy;
+  [rules enumerateKeysAndObjectsUsingBlock:v9];
 }
 
 void __71__CPLDerivativesFilter__enumerateDropDerivativeRules_ofType_withBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -221,20 +221,20 @@ void __71__CPLDerivativesFilter__enumerateDropDerivativeRules_ofType_withBlock__
   [*(a1 + 32) setObject:v8 forKeyedSubscript:v4];
 }
 
-- (BOOL)shouldDropDerivativeWithDropDerivativeRecipe:(id)a3
+- (BOOL)shouldDropDerivativeWithDropDerivativeRecipe:(id)recipe
 {
-  v4 = a3;
-  v5 = [v4 uti];
-  v6 = [v4 sourceResourceType];
-  v7 = [v4 changeType];
-  v8 = [v4 derivativeTypes];
-  if (-[CPLDerivativesFilter _isValidDropDerivativeRecipeWithUTI:sourceType:derivativeTypes:changeType:](self, "_isValidDropDerivativeRecipeWithUTI:sourceType:derivativeTypes:changeType:", v5, v6, v8, v7) && [v8 count] == 1)
+  recipeCopy = recipe;
+  v5 = [recipeCopy uti];
+  sourceResourceType = [recipeCopy sourceResourceType];
+  changeType = [recipeCopy changeType];
+  derivativeTypes = [recipeCopy derivativeTypes];
+  if (-[CPLDerivativesFilter _isValidDropDerivativeRecipeWithUTI:sourceType:derivativeTypes:changeType:](self, "_isValidDropDerivativeRecipeWithUTI:sourceType:derivativeTypes:changeType:", v5, sourceResourceType, derivativeTypes, changeType) && [derivativeTypes count] == 1)
   {
-    v9 = [(CPLDerivativesFilter *)self _getTargetDictionaryForChangeType:v7];
-    v10 = [v8 firstObject];
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
+    v9 = [(CPLDerivativesFilter *)self _getTargetDictionaryForChangeType:changeType];
+    firstObject = [derivativeTypes firstObject];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:sourceResourceType];
     v12 = [v9 objectForKey:v11];
-    v13 = [v12 objectForKey:v10];
+    v13 = [v12 objectForKey:firstObject];
 
     v14 = [MEMORY[0x1E69C08F0] typeWithIdentifier:v5];
     v21 = 0;
@@ -275,31 +275,31 @@ void __69__CPLDerivativesFilter_shouldDropDerivativeWithDropDerivativeRecipe___b
   }
 }
 
-- (BOOL)mightDropSomeDerivativesForSourceType:(unint64_t)a3 forChangeType:(unint64_t)a4
+- (BOOL)mightDropSomeDerivativesForSourceType:(unint64_t)type forChangeType:(unint64_t)changeType
 {
-  v5 = [(CPLDerivativesFilter *)self _getTargetDictionaryForChangeType:a4];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [(CPLDerivativesFilter *)self _getTargetDictionaryForChangeType:changeType];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   v7 = [v5 objectForKey:v6];
   v8 = v7 != 0;
 
   return v8;
 }
 
-- (BOOL)addServerDropDerivativesRecipe:(id)a3
+- (BOOL)addServerDropDerivativesRecipe:(id)recipe
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 uti];
-  v6 = [v4 sourceResourceType];
-  v7 = [v4 changeType];
-  v8 = [v4 derivativeTypes];
-  if ([(CPLDerivativesFilter *)self _isValidDropDerivativeRecipeWithUTI:v5 sourceType:v6 derivativeTypes:v8 changeType:v7])
+  recipeCopy = recipe;
+  v5 = [recipeCopy uti];
+  sourceResourceType = [recipeCopy sourceResourceType];
+  changeType = [recipeCopy changeType];
+  derivativeTypes = [recipeCopy derivativeTypes];
+  if ([(CPLDerivativesFilter *)self _isValidDropDerivativeRecipeWithUTI:v5 sourceType:sourceResourceType derivativeTypes:derivativeTypes changeType:changeType])
   {
-    v9 = [(CPLDerivativesFilter *)self _getTargetDictionaryForChangeType:v7];
+    v9 = [(CPLDerivativesFilter *)self _getTargetDictionaryForChangeType:changeType];
     v10 = v9 != 0;
     if (v9)
     {
-      v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
+      v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:sourceResourceType];
       v11 = [v9 objectForKeyedSubscript:?];
       v12 = v11;
       if (v11)
@@ -322,10 +322,10 @@ void __69__CPLDerivativesFilter_shouldDropDerivativeWithDropDerivativeRecipe___b
       v27 = v16;
       v17 = v5;
       v28 = v17;
-      v30 = v6;
-      v18 = v8;
+      v30 = sourceResourceType;
+      v18 = derivativeTypes;
       v29 = v18;
-      v31 = v7;
+      v31 = changeType;
       [v18 enumerateObjectsUsingBlock:v26];
       [v9 setObject:v16 forKeyedSubscript:v25];
       if ((_CPLSilentLogging & 1) == 0)
@@ -333,9 +333,9 @@ void __69__CPLDerivativesFilter_shouldDropDerivativeWithDropDerivativeRecipe___b
         v19 = __CPLDerivativesOSLogDomain();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [CPLResource shortDescriptionForResourceType:v6];
+          v20 = [CPLResource shortDescriptionForResourceType:sourceResourceType];
           v21 = _shortDescriptionForArrayOfCPLResourceTypes(v18);
-          v22 = [CPLDropDerivativesRecipe shortDescriptionForResourceChangeRecordType:v7];
+          v22 = [CPLDropDerivativesRecipe shortDescriptionForResourceChangeRecordType:changeType];
           *buf = 138413058;
           v33 = v20;
           v34 = 2112;
@@ -362,7 +362,7 @@ LABEL_18:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v33 = v7;
+        v33 = changeType;
         _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_ERROR, "Invalid derivative dropping rule. Record change type not supported: %lu", buf, 0xCu);
       }
 
@@ -384,7 +384,7 @@ LABEL_18:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v33 = v4;
+      v33 = recipeCopy;
       _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_ERROR, "Invalid derivative dropping rule: %@", buf, 0xCu);
     }
   }
@@ -479,9 +479,9 @@ void __55__CPLDerivativesFilter_addServerDropDerivativesRecipe___block_invoke_2(
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)addServerDropDerivativesRecipes:(id)a3
+- (BOOL)addServerDropDerivativesRecipes:(id)recipes
 {
-  v4 = a3;
+  recipesCopy = recipes;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -492,7 +492,7 @@ void __55__CPLDerivativesFilter_addServerDropDerivativesRecipe___block_invoke_2(
   v6[3] = &unk_1E861CF60;
   v6[4] = self;
   v6[5] = &v7;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [recipesCopy enumerateObjectsUsingBlock:v6];
   LOBYTE(self) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -506,17 +506,17 @@ uint64_t __56__CPLDerivativesFilter_addServerDropDerivativesRecipes___block_invo
   return result;
 }
 
-- (BOOL)_isValidDropDerivativeRecipeWithUTI:(id)a3 sourceType:(unint64_t)a4 derivativeTypes:(id)a5 changeType:(unint64_t)a6
+- (BOOL)_isValidDropDerivativeRecipeWithUTI:(id)i sourceType:(unint64_t)type derivativeTypes:(id)types changeType:(unint64_t)changeType
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = [MEMORY[0x1E69C08F0] typeWithIdentifier:v9];
+  iCopy = i;
+  typesCopy = types;
+  v11 = [MEMORY[0x1E69C08F0] typeWithIdentifier:iCopy];
   v12 = v11;
-  if (a4 && v11 && [v10 count])
+  if (type && v11 && [typesCopy count])
   {
 
-    if (a6)
+    if (changeType)
     {
       v13 = 1;
       goto LABEL_12;
@@ -532,13 +532,13 @@ uint64_t __56__CPLDerivativesFilter_addServerDropDerivativesRecipes___block_invo
     v14 = __CPLDerivativesOSLogDomain();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [CPLResource shortDescriptionForResourceType:a4];
-      v16 = _shortDescriptionForArrayOfCPLResourceTypes(v10);
-      v17 = [CPLDropDerivativesRecipe shortDescriptionForResourceChangeRecordType:a6];
+      v15 = [CPLResource shortDescriptionForResourceType:type];
+      v16 = _shortDescriptionForArrayOfCPLResourceTypes(typesCopy);
+      v17 = [CPLDropDerivativesRecipe shortDescriptionForResourceChangeRecordType:changeType];
       v20 = 138413058;
       v21 = v15;
       v22 = 2112;
-      v23 = v9;
+      v23 = iCopy;
       v24 = 2112;
       v25 = v16;
       v26 = 2112;
@@ -554,16 +554,16 @@ LABEL_12:
   return v13;
 }
 
-- (id)_getTargetDictionaryForChangeType:(unint64_t)a3
+- (id)_getTargetDictionaryForChangeType:(unint64_t)type
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = 16;
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = 8;
 LABEL_5:
@@ -576,7 +576,7 @@ LABEL_5:
     v6 = __CPLDerivativesOSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [CPLDropDerivativesRecipe shortDescriptionForResourceChangeRecordType:a3];
+      v7 = [CPLDropDerivativesRecipe shortDescriptionForResourceChangeRecordType:type];
       v10 = 138412290;
       v11 = v7;
       _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_ERROR, "Unknown upload skip record type: %@", &v10, 0xCu);
@@ -590,17 +590,17 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   skipInfoForAssetChange = self->_skipInfoForAssetChange;
-  v5 = a3;
-  [v5 encodeObject:skipInfoForAssetChange forKey:@"dropForAssetChange"];
-  [v5 encodeObject:self->_skipInfoForMasterChange forKey:@"dropForMasterChange"];
+  coderCopy = coder;
+  [coderCopy encodeObject:skipInfoForAssetChange forKey:@"dropForAssetChange"];
+  [coderCopy encodeObject:self->_skipInfoForMasterChange forKey:@"dropForMasterChange"];
 }
 
-- (CPLDerivativesFilter)initWithCoder:(id)a3
+- (CPLDerivativesFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CPLDerivativesFilter;
   v5 = [(CPLDerivativesFilter *)&v21 init];
@@ -611,7 +611,7 @@ LABEL_11:
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"dropForAssetChange"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"dropForAssetChange"];
     skipInfoForAssetChange = v5->_skipInfoForAssetChange;
     v5->_skipInfoForAssetChange = v11;
 
@@ -620,7 +620,7 @@ LABEL_11:
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v13 setWithObjects:{v14, v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"dropForMasterChange"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"dropForMasterChange"];
     skipInfoForMasterChange = v5->_skipInfoForMasterChange;
     v5->_skipInfoForMasterChange = v18;
   }

@@ -1,8 +1,8 @@
 @interface RMUIKeyValueViewModel
 - (RMUIKeyValueViewModel)init;
-- (RMUIKeyValueViewModel)initWithCoder:(id)a3;
+- (RMUIKeyValueViewModel)initWithCoder:(id)coder;
 - (void)clearModel;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RMUIKeyValueViewModel
@@ -39,8 +39,8 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(RMUIKeyValueViewModel *)self detailViewModels];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  detailViewModels = [(RMUIKeyValueViewModel *)self detailViewModels];
+  v4 = [detailViewModels countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -52,14 +52,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(detailViewModels);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) clearModel];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [detailViewModels countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -68,82 +68,82 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithShort:{-[RMUIKeyValueViewModel symbol](self, "symbol")}];
-  [v5 encodeObject:v6 forKey:@"symbol"];
+  [coderCopy encodeObject:v6 forKey:@"symbol"];
 
-  v7 = [(RMUIKeyValueViewModel *)self title];
-  [v5 encodeObject:v7 forKey:@"title"];
+  title = [(RMUIKeyValueViewModel *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v8 = [(RMUIKeyValueViewModel *)self declaration];
-  [v5 encodeObject:v8 forKey:@"declaration"];
+  declaration = [(RMUIKeyValueViewModel *)self declaration];
+  [coderCopy encodeObject:declaration forKey:@"declaration"];
 
-  v9 = [(RMUIKeyValueViewModel *)self declarationIdentifier];
-  [v5 encodeObject:v9 forKey:@"declarationIdentifier"];
+  declarationIdentifier = [(RMUIKeyValueViewModel *)self declarationIdentifier];
+  [coderCopy encodeObject:declarationIdentifier forKey:@"declarationIdentifier"];
 
-  v10 = [(RMUIKeyValueViewModel *)self declarationServerToken];
-  [v5 encodeObject:v10 forKey:@"declarationServerToken"];
+  declarationServerToken = [(RMUIKeyValueViewModel *)self declarationServerToken];
+  [coderCopy encodeObject:declarationServerToken forKey:@"declarationServerToken"];
 
-  v11 = [(RMUIKeyValueViewModel *)self declarationType];
-  [v5 encodeObject:v11 forKey:@"declarationType"];
+  declarationType = [(RMUIKeyValueViewModel *)self declarationType];
+  [coderCopy encodeObject:declarationType forKey:@"declarationType"];
 
-  v12 = [(RMUIKeyValueViewModel *)self detailViewModels];
-  [v5 encodeObject:v12 forKey:@"detailViewModels"];
+  detailViewModels = [(RMUIKeyValueViewModel *)self detailViewModels];
+  [coderCopy encodeObject:detailViewModels forKey:@"detailViewModels"];
 
-  v13 = [(RMUIKeyValueViewModel *)self hiddenDetails];
-  [v5 encodeObject:v13 forKey:@"hiddenDetails"];
+  hiddenDetails = [(RMUIKeyValueViewModel *)self hiddenDetails];
+  [coderCopy encodeObject:hiddenDetails forKey:@"hiddenDetails"];
 }
 
-- (RMUIKeyValueViewModel)initWithCoder:(id)a3
+- (RMUIKeyValueViewModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = RMUIKeyValueViewModel;
   v5 = [(RMUIKeyValueViewModel *)&v33 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbol"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbol"];
     v5->_symbol = [v6 integerValue];
 
     v7 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
     v10 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"declaration"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"declaration"];
     declaration = v5->_declaration;
     v5->_declaration = v11;
 
     v13 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"declarationIdentifier"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"declarationIdentifier"];
     declarationIdentifier = v5->_declarationIdentifier;
     v5->_declarationIdentifier = v14;
 
     v16 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"declarationServerToken"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"declarationServerToken"];
     declarationServerToken = v5->_declarationServerToken;
     v5->_declarationServerToken = v17;
 
     v19 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"declarationType"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"declarationType"];
     declarationType = v5->_declarationType;
     v5->_declarationType = v20;
 
     v22 = MEMORY[0x277CBEB98];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"detailViewModels"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"detailViewModels"];
     detailViewModels = v5->_detailViewModels;
     v5->_detailViewModels = v25;
 
     v27 = MEMORY[0x277CBEB98];
     v28 = objc_opt_class();
     v29 = [v27 setWithObjects:{v28, objc_opt_class(), 0}];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"hiddenDetails"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"hiddenDetails"];
     hiddenDetails = v5->_hiddenDetails;
     v5->_hiddenDetails = v30;
   }

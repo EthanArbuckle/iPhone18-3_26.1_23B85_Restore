@@ -1,41 +1,41 @@
 @interface PXEditLivePhotoToggleAction
 - (BOOL)_isLoopingVideo;
-- (PXEditLivePhotoToggleAction)initWithCompositionController:(id)a3 livePhotoModel:(id)a4;
-- (void)performAction:(id)a3;
-- (void)performRedo:(id)a3;
-- (void)performUndo:(id)a3;
+- (PXEditLivePhotoToggleAction)initWithCompositionController:(id)controller livePhotoModel:(id)model;
+- (void)performAction:(id)action;
+- (void)performRedo:(id)redo;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXEditLivePhotoToggleAction
 
-- (void)performRedo:(id)a3
+- (void)performRedo:(id)redo
 {
   livePhotoModel = self->_livePhotoModel;
-  v5 = a3;
+  redoCopy = redo;
   [(PXEditLivePhotoModel *)self->_livePhotoModel setVideoEnabled:[(PXEditLivePhotoModel *)livePhotoModel isVideoEnabled]^ 1];
   v6.receiver = self;
   v6.super_class = PXEditLivePhotoToggleAction;
-  [(PXEditCompositionAction *)&v6 performRedo:v5];
+  [(PXEditCompositionAction *)&v6 performRedo:redoCopy];
 }
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   livePhotoModel = self->_livePhotoModel;
-  v5 = a3;
+  undoCopy = undo;
   [(PXEditLivePhotoModel *)self->_livePhotoModel setVideoEnabled:[(PXEditLivePhotoModel *)livePhotoModel isVideoEnabled]^ 1];
   v6.receiver = self;
   v6.super_class = PXEditLivePhotoToggleAction;
-  [(PXEditCompositionAction *)&v6 performUndo:v5];
+  [(PXEditCompositionAction *)&v6 performUndo:undoCopy];
 }
 
 - (BOOL)_isLoopingVideo
 {
-  v2 = [(PXEditCompositionAction *)self compositionController];
-  v3 = [v2 autoLoopAdjustmentController];
+  compositionController = [(PXEditCompositionAction *)self compositionController];
+  autoLoopAdjustmentController = [compositionController autoLoopAdjustmentController];
 
-  if (v3)
+  if (autoLoopAdjustmentController)
   {
-    v4 = [v3 flavor];
+    flavor = [autoLoopAdjustmentController flavor];
     v5 = PIAutoLoopFlavorFromString();
 
     v6 = (v5 - 1) < 2;
@@ -49,44 +49,44 @@
   return v6;
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXEditCompositionAction *)self compositionController];
-  v6 = [v5 composition];
+  actionCopy = action;
+  compositionController = [(PXEditCompositionAction *)self compositionController];
+  composition = [compositionController composition];
   sourceComposition = self->_sourceComposition;
-  self->_sourceComposition = v6;
+  self->_sourceComposition = composition;
 
-  v8 = [(PXEditLivePhotoModel *)self->_livePhotoModel isVideoEnabled];
+  isVideoEnabled = [(PXEditLivePhotoModel *)self->_livePhotoModel isVideoEnabled];
   if ([(PXEditLivePhotoToggleAction *)self _isLoopingVideo])
   {
-    v9 = [v5 adjustmentConstants];
-    v10 = [v9 PIAutoLoopAdjustmentKey];
+    adjustmentConstants = [compositionController adjustmentConstants];
+    pIAutoLoopAdjustmentKey = [adjustmentConstants PIAutoLoopAdjustmentKey];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __45__PXEditLivePhotoToggleAction_performAction___block_invoke;
     v13[3] = &__block_descriptor_33_e40_v16__0__PIAutoLoopAdjustmentController_8l;
-    v14 = v8;
-    [v5 modifyAdjustmentWithKey:v10 modificationBlock:v13];
+    v14 = isVideoEnabled;
+    [compositionController modifyAdjustmentWithKey:pIAutoLoopAdjustmentKey modificationBlock:v13];
   }
 
-  v11 = [v5 composition];
+  composition2 = [compositionController composition];
   targetComposition = self->_targetComposition;
-  self->_targetComposition = v11;
+  self->_targetComposition = composition2;
 
-  [(PXEditLivePhotoModel *)self->_livePhotoModel setVideoEnabled:v8 ^ 1u];
-  v4[2](v4, 1, 0);
+  [(PXEditLivePhotoModel *)self->_livePhotoModel setVideoEnabled:isVideoEnabled ^ 1u];
+  actionCopy[2](actionCopy, 1, 0);
 }
 
-- (PXEditLivePhotoToggleAction)initWithCompositionController:(id)a3 livePhotoModel:(id)a4
+- (PXEditLivePhotoToggleAction)initWithCompositionController:(id)controller livePhotoModel:(id)model
 {
-  v7 = a4;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = PXEditLivePhotoToggleAction;
-  v8 = [(PXEditCompositionAction *)&v11 initWithCompositionController:a3];
+  v8 = [(PXEditCompositionAction *)&v11 initWithCompositionController:controller];
   if (v8)
   {
-    if ([v7 isVideoEnabled])
+    if ([modelCopy isVideoEnabled])
     {
       v9 = @"PXLivePhotoDisableAction";
     }
@@ -97,7 +97,7 @@
     }
 
     [(PXEditCompositionAction *)v8 setActionNameLocalizationKey:v9];
-    objc_storeStrong(&v8->_livePhotoModel, a4);
+    objc_storeStrong(&v8->_livePhotoModel, model);
   }
 
   return v8;

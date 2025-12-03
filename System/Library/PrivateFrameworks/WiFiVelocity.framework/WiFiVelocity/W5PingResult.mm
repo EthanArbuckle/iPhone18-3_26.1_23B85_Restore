@@ -1,10 +1,10 @@
 @interface W5PingResult
-- (BOOL)conformsToProtocol:(id)a3;
-- (W5PingResult)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (W5PingResult)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation W5PingResult
@@ -43,22 +43,22 @@
   return v5;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v5.receiver = self;
   v5.super_class = W5PingResult;
-  if (-[W5PingResult conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([a3 isEqual:&unk_288343878] & 1) != 0)
+  if (-[W5PingResult conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([protocol isEqual:&unk_288343878] & 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:&unk_2883436F0];
+    return [protocol isEqual:&unk_2883436F0];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5PingResult allocWithZone:?]];
   [(W5PingResult *)v4 setAddress:self->_address];
@@ -81,63 +81,63 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_address forKey:@"_address"];
-  [a3 encodeObject:self->_interfaceName forKey:@"_interfaceName"];
-  [a3 encodeInteger:self->_count forKey:@"_count"];
-  [a3 encodeDouble:@"_timeout" forKey:self->_timeout];
-  [a3 encodeDouble:@"_wait" forKey:self->_wait];
-  [a3 encodeDouble:@"_interval" forKey:self->_interval];
-  [a3 encodeDouble:@"_packetLoss" forKey:self->_packetLoss];
-  [a3 encodeDouble:@"_min" forKey:self->_min];
-  [a3 encodeDouble:@"_max" forKey:self->_max];
-  [a3 encodeDouble:@"_avg" forKey:self->_avg];
-  [a3 encodeDouble:@"_stddev" forKey:self->_stddev];
-  [a3 encodeDouble:@"_startedAt" forKey:self->_startedAt];
-  [a3 encodeDouble:@"_endedAt" forKey:self->_endedAt];
-  [a3 encodeInteger:self->_trafficClass forKey:@"_trafficClass"];
-  [a3 encodeInteger:self->_dataLength forKey:@"_dataLength"];
-  [a3 encodeObject:self->_command forKey:@"_command"];
+  [coder encodeObject:self->_address forKey:@"_address"];
+  [coder encodeObject:self->_interfaceName forKey:@"_interfaceName"];
+  [coder encodeInteger:self->_count forKey:@"_count"];
+  [coder encodeDouble:@"_timeout" forKey:self->_timeout];
+  [coder encodeDouble:@"_wait" forKey:self->_wait];
+  [coder encodeDouble:@"_interval" forKey:self->_interval];
+  [coder encodeDouble:@"_packetLoss" forKey:self->_packetLoss];
+  [coder encodeDouble:@"_min" forKey:self->_min];
+  [coder encodeDouble:@"_max" forKey:self->_max];
+  [coder encodeDouble:@"_avg" forKey:self->_avg];
+  [coder encodeDouble:@"_stddev" forKey:self->_stddev];
+  [coder encodeDouble:@"_startedAt" forKey:self->_startedAt];
+  [coder encodeDouble:@"_endedAt" forKey:self->_endedAt];
+  [coder encodeInteger:self->_trafficClass forKey:@"_trafficClass"];
+  [coder encodeInteger:self->_dataLength forKey:@"_dataLength"];
+  [coder encodeObject:self->_command forKey:@"_command"];
   output = self->_output;
 
-  [a3 encodeObject:output forKey:@"_output"];
+  [coder encodeObject:output forKey:@"_output"];
 }
 
-- (W5PingResult)initWithCoder:(id)a3
+- (W5PingResult)initWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = W5PingResult;
   v4 = [(W5PingResult *)&v16 init];
   if (v4)
   {
-    v4->_address = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_address", "copy"}];
-    v4->_interfaceName = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_interfaceName", "copy"}];
-    v4->_count = [a3 decodeIntegerForKey:@"_count"];
-    [a3 decodeDoubleForKey:@"_timeout"];
+    v4->_address = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_address", "copy"}];
+    v4->_interfaceName = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_interfaceName", "copy"}];
+    v4->_count = [coder decodeIntegerForKey:@"_count"];
+    [coder decodeDoubleForKey:@"_timeout"];
     v4->_timeout = v5;
-    [a3 decodeDoubleForKey:@"_wait"];
+    [coder decodeDoubleForKey:@"_wait"];
     v4->_wait = v6;
-    [a3 decodeDoubleForKey:@"_interval"];
+    [coder decodeDoubleForKey:@"_interval"];
     v4->_interval = v7;
-    [a3 decodeDoubleForKey:@"_packetLoss"];
+    [coder decodeDoubleForKey:@"_packetLoss"];
     v4->_packetLoss = v8;
-    [a3 decodeDoubleForKey:@"_min"];
+    [coder decodeDoubleForKey:@"_min"];
     v4->_min = v9;
-    [a3 decodeDoubleForKey:@"_max"];
+    [coder decodeDoubleForKey:@"_max"];
     v4->_max = v10;
-    [a3 decodeDoubleForKey:@"_avg"];
+    [coder decodeDoubleForKey:@"_avg"];
     v4->_avg = v11;
-    [a3 decodeDoubleForKey:@"_stddev"];
+    [coder decodeDoubleForKey:@"_stddev"];
     v4->_stddev = v12;
-    [a3 decodeDoubleForKey:@"_startedAt"];
+    [coder decodeDoubleForKey:@"_startedAt"];
     v4->_startedAt = v13;
-    [a3 decodeDoubleForKey:@"_endedAt"];
+    [coder decodeDoubleForKey:@"_endedAt"];
     v4->_endedAt = v14;
-    v4->_trafficClass = [a3 decodeIntegerForKey:@"_trafficClass"];
-    v4->_dataLength = [a3 decodeIntegerForKey:@"_dataLength"];
-    v4->_command = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_command", "copy"}];
-    v4->_output = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_output", "copy"}];
+    v4->_trafficClass = [coder decodeIntegerForKey:@"_trafficClass"];
+    v4->_dataLength = [coder decodeIntegerForKey:@"_dataLength"];
+    v4->_command = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_command", "copy"}];
+    v4->_output = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_output", "copy"}];
   }
 
   return v4;

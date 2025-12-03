@@ -19,7 +19,7 @@
 
 - (BOOL)isEmpty
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CalBlockListWrapper.isEmpty.getter();
 
   return v3 & 1;

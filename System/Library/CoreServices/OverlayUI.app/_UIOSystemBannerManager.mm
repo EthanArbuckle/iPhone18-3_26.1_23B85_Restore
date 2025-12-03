@@ -1,9 +1,9 @@
 @interface _UIOSystemBannerManager
 + (id)sharedInstance;
-- (void)bannerSourceDidInvalidate:(id)a3;
-- (void)beginDismissalTimerWithInterval:(double)a3;
-- (void)postBannerWithRequest:(id)a3;
-- (void)presentable:(id)a3 willDisappearWithReason:(id)a4;
+- (void)bannerSourceDidInvalidate:(id)invalidate;
+- (void)beginDismissalTimerWithInterval:(double)interval;
+- (void)postBannerWithRequest:(id)request;
+- (void)presentable:(id)presentable willDisappearWithReason:(id)reason;
 @end
 
 @implementation _UIOSystemBannerManager
@@ -20,9 +20,9 @@
   return v3;
 }
 
-- (void)postBannerWithRequest:(id)a3
+- (void)postBannerWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (!self->_bannerSource)
   {
     v40 = 0;
@@ -44,20 +44,20 @@
     v6 = v5;
     _Block_object_dispose(&v40, 8);
     v7 = +[NSBundle mainBundle];
-    v8 = [v7 bundleIdentifier];
-    v9 = [v5 bannerSourceForDestination:0 forRequesterIdentifier:v8];
+    bundleIdentifier = [v7 bundleIdentifier];
+    v9 = [v5 bannerSourceForDestination:0 forRequesterIdentifier:bundleIdentifier];
     bannerSource = self->_bannerSource;
     self->_bannerSource = v9;
 
     [(BNBannerSource *)self->_bannerSource setDelegate:self];
   }
 
-  v11 = [(_UIOSystemBannerViewController *)self->_currentlyPresentedBanner request];
-  v12 = [v11 isEqual:v4];
+  request = [(_UIOSystemBannerViewController *)self->_currentlyPresentedBanner request];
+  v12 = [request isEqual:requestCopy];
 
   if (v12)
   {
-    [v4 bannerTimeoutDuration];
+    [requestCopy bannerTimeoutDuration];
     [(_UIOSystemBannerManager *)self beginDismissalTimerWithInterval:?];
   }
 
@@ -69,7 +69,7 @@
     v15 = v39;
     if (v14)
     {
-      v16 = [[_UIOSystemBannerViewController alloc] initWithBannerRequest:v4];
+      v16 = [[_UIOSystemBannerViewController alloc] initWithBannerRequest:requestCopy];
       [(_UIOSystemBannerViewController *)v16 setDelegate:self];
       [v14 presentationSize];
       v18 = v17;
@@ -78,21 +78,21 @@
       [(_UIOSystemBannerViewController *)v16 preferredContentSizeWithPresentationSize:v18 containerSize:v20, v21, v22];
       [(_UIOSystemBannerViewController *)v16 setPreferredContentSize:?];
       v44[0] = @"com.apple.DragUI.druid.DRPasteAnnouncementAccessibilityDescriptionKey";
-      v23 = [v4 primaryTitleText];
-      v45[0] = v23;
+      primaryTitleText = [requestCopy primaryTitleText];
+      v45[0] = primaryTitleText;
       v44[1] = _UISystemBannerAccessibilityValueKey;
-      v24 = [v4 primaryTitleText];
-      v45[1] = v24;
+      primaryTitleText2 = [requestCopy primaryTitleText];
+      v45[1] = primaryTitleText2;
       v44[2] = @"SBUIPresentableShouldBypassScreenSharingUserInfoKey";
       v45[2] = &__kCFBooleanTrue;
       v25 = [NSDictionary dictionaryWithObjects:v45 forKeys:v44 count:3];
 
       v26 = self->_bannerSource;
       v38 = 0;
-      LODWORD(v24) = [(BNBannerSource *)v26 postPresentable:v16 options:1 userInfo:0 error:&v38];
+      LODWORD(primaryTitleText2) = [(BNBannerSource *)v26 postPresentable:v16 options:1 userInfo:0 error:&v38];
       v27 = v38;
 
-      if (v24)
+      if (primaryTitleText2)
       {
         CategoryCachedImpl = __UILogGetCategoryCachedImpl();
         if (*CategoryCachedImpl)
@@ -101,15 +101,15 @@
           if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
           {
             v36 = v35;
-            v37 = [v4 primaryTitleText];
+            primaryTitleText3 = [requestCopy primaryTitleText];
             LODWORD(buf) = 138543362;
-            *(&buf + 4) = v37;
+            *(&buf + 4) = primaryTitleText3;
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "Posting system banner with title: %{public}@", &buf, 0xCu);
           }
         }
 
         objc_storeStrong(&self->_currentlyPresentedBanner, v16);
-        [v4 bannerTimeoutDuration];
+        [requestCopy bannerTimeoutDuration];
         [(_UIOSystemBannerManager *)self beginDismissalTimerWithInterval:?];
       }
 
@@ -119,9 +119,9 @@
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
           v33 = v32;
-          v34 = [v27 localizedDescription];
+          localizedDescription = [v27 localizedDescription];
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v34;
+          *(&buf + 4) = localizedDescription;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Unable to post banner: %@", &buf, 0xCu);
         }
       }
@@ -133,9 +133,9 @@
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         v30 = v29;
-        v31 = [v15 localizedDescription];
+        localizedDescription2 = [v15 localizedDescription];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v31;
+        *(&buf + 4) = localizedDescription2;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Unable to get banner source layout: %@", &buf, 0xCu);
       }
 
@@ -144,7 +144,7 @@
   }
 }
 
-- (void)beginDismissalTimerWithInterval:(double)a3
+- (void)beginDismissalTimerWithInterval:(double)interval
 {
   [(BSAbsoluteMachTimer *)self->_bannerTimeoutTimer invalidate];
   v5 = [[BSAbsoluteMachTimer alloc] initWithIdentifier:@"com.apple.UIKit.OverlayUI._UIOSystemBannerManager"];
@@ -159,16 +159,16 @@
   v9[2] = sub_1000014E4;
   v9[3] = &unk_100008300;
   objc_copyWeak(&v10, &location);
-  [(BSAbsoluteMachTimer *)v7 scheduleWithFireInterval:&_dispatch_main_q leewayInterval:v9 queue:a3 handler:0.0];
+  [(BSAbsoluteMachTimer *)v7 scheduleWithFireInterval:&_dispatch_main_q leewayInterval:v9 queue:interval handler:0.0];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)presentable:(id)a3 willDisappearWithReason:(id)a4
+- (void)presentable:(id)presentable willDisappearWithReason:(id)reason
 {
   currentlyPresentedBanner = self->_currentlyPresentedBanner;
-  if (currentlyPresentedBanner == a3)
+  if (currentlyPresentedBanner == presentable)
   {
     self->_currentlyPresentedBanner = 0;
 
@@ -178,9 +178,9 @@
   }
 }
 
-- (void)bannerSourceDidInvalidate:(id)a3
+- (void)bannerSourceDidInvalidate:(id)invalidate
 {
-  if (self->_bannerSource == a3)
+  if (self->_bannerSource == invalidate)
   {
     self->_bannerSource = 0;
     _objc_release_x1();

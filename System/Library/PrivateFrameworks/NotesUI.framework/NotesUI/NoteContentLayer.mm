@@ -1,91 +1,91 @@
 @interface NoteContentLayer
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)canInsertImagesInNoteHTMLEditorView:(id)a3;
+- (BOOL)canInsertImagesInNoteHTMLEditorView:(id)view;
 - (BOOL)canResignFirstResponder;
 - (BOOL)contentContainsValuableContent;
 - (BOOL)isEditable;
 - (BOOL)isFirstResponder;
-- (BOOL)isNoteHTMLEditorViewVisible:(id)a3;
-- (BOOL)isNoteManagedForNoteHTMLEditorView:(id)a3;
-- (BOOL)noteHTMLEditorView:(id)a3 acceptContentsFromPasteboard:(id)a4;
-- (BOOL)noteHTMLEditorView:(id)a3 canAddAttachmentItemProviders:(id)a4;
-- (BOOL)noteHTMLEditorViewShouldBeginEditing:(id)a3 isUserInitiated:(BOOL)a4;
-- (BOOL)noteHTMLEditorViewShouldPaste:(id)a3;
-- (BOOL)processMapAttachmentItemProvider:(id)a3;
+- (BOOL)isNoteHTMLEditorViewVisible:(id)visible;
+- (BOOL)isNoteManagedForNoteHTMLEditorView:(id)view;
+- (BOOL)noteHTMLEditorView:(id)view acceptContentsFromPasteboard:(id)pasteboard;
+- (BOOL)noteHTMLEditorView:(id)view canAddAttachmentItemProviders:(id)providers;
+- (BOOL)noteHTMLEditorViewShouldBeginEditing:(id)editing isUserInitiated:(BOOL)initiated;
+- (BOOL)noteHTMLEditorViewShouldPaste:(id)paste;
+- (BOOL)processMapAttachmentItemProvider:(id)provider;
 - (BOOL)resignFirstResponder;
-- (BOOL)shouldRenderAsAttachment:(id)a3;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
+- (BOOL)shouldRenderAsAttachment:(id)attachment;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (CGPoint)contentOffset;
-- (CGRect)rectForDOMNode:(id)a3;
+- (CGRect)rectForDOMNode:(id)node;
 - (ICTextBackgroundView)backgroundView;
 - (NSString)title;
-- (NoteContentLayer)initWithFrame:(CGRect)a3;
-- (NoteContentLayer)initWithFrame:(CGRect)a3 forPreview:(BOOL)a4;
+- (NoteContentLayer)initWithFrame:(CGRect)frame;
+- (NoteContentLayer)initWithFrame:(CGRect)frame forPreview:(BOOL)preview;
 - (NoteContentLayerAttachmentPresentationDelegate)attachmentPresentationDelegate;
 - (NoteContentLayerDelegate)delegate;
 - (NoteHTMLEditorView)noteHTMLEditorView;
 - (UILabel)dateLabel;
-- (id)contentAsPlainText:(BOOL)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)contentAsPlainText:(BOOL)text;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)keyCommands;
-- (id)noteHTMLEditorView:(id)a3 attachmentPresentationForContentID:(id)a4;
-- (id)noteHTMLEditorView:(id)a3 createAttachmentPresentationWithFileWrapper:(id)a4 mimeType:(id)a5;
-- (id)noteHTMLEditorView:(id)a3 fileURLForAttachmentWithContentID:(id)a4;
-- (id)noteHTMLEditorView:(id)a3 updateAttachments:(id)a4;
-- (id)readerDelegateInNoteHTMLEditorView:(id)a3;
+- (id)noteHTMLEditorView:(id)view attachmentPresentationForContentID:(id)d;
+- (id)noteHTMLEditorView:(id)view createAttachmentPresentationWithFileWrapper:(id)wrapper mimeType:(id)type;
+- (id)noteHTMLEditorView:(id)view fileURLForAttachmentWithContentID:(id)d;
+- (id)noteHTMLEditorView:(id)view updateAttachments:(id)attachments;
+- (id)readerDelegateInNoteHTMLEditorView:(id)view;
 - (id)viewPrintFormatter;
 - (id)webArchive;
-- (void)chosenUTI:(id *)a3 andChosenMIMEType:(id *)a4 forItemProvider:(id)a5;
+- (void)chosenUTI:(id *)i andChosenMIMEType:(id *)type forItemProvider:(id)provider;
 - (void)copyNoteHTMLToPasteboard;
 - (void)createLayout;
 - (void)dealloc;
 - (void)flashScrollIndicators;
-- (void)getRectForSelectionWithCompletion:(id)a3;
-- (void)insertImageInNoteHTMLEditorView:(id)a3;
-- (void)noteHTMLEditorView:(id)a3 didAddAttachmentForMimeType:(id)a4 filename:(id)a5 data:(id)a6;
-- (void)noteHTMLEditorView:(id)a3 didInvokeFormattingCalloutOption:(int64_t)a4;
-- (void)noteHTMLEditorView:(id)a3 didInvokeStyleFormattingOption:(int64_t)a4;
-- (void)noteHTMLEditorView:(id)a3 openURL:(id)a4;
-- (void)noteHTMLEditorView:(id)a3 showShareSheetForAttachment:(id)a4 atPoint:(CGPoint)a5;
-- (void)noteHTMLEditorViewDidBeginEditing:(id)a3;
-- (void)noteHTMLEditorViewDidChange:(id)a3;
-- (void)noteHTMLEditorViewDidEndEditing:(id)a3;
-- (void)noteHTMLEditorViewNeedsContentReload:(id)a3;
-- (void)noteHTMLEditorViewWillChange:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)processAttachmentItemProviders:(id)a3;
+- (void)getRectForSelectionWithCompletion:(id)completion;
+- (void)insertImageInNoteHTMLEditorView:(id)view;
+- (void)noteHTMLEditorView:(id)view didAddAttachmentForMimeType:(id)type filename:(id)filename data:(id)data;
+- (void)noteHTMLEditorView:(id)view didInvokeFormattingCalloutOption:(int64_t)option;
+- (void)noteHTMLEditorView:(id)view didInvokeStyleFormattingOption:(int64_t)option;
+- (void)noteHTMLEditorView:(id)view openURL:(id)l;
+- (void)noteHTMLEditorView:(id)view showShareSheetForAttachment:(id)attachment atPoint:(CGPoint)point;
+- (void)noteHTMLEditorViewDidBeginEditing:(id)editing;
+- (void)noteHTMLEditorViewDidChange:(id)change;
+- (void)noteHTMLEditorViewDidEndEditing:(id)editing;
+- (void)noteHTMLEditorViewNeedsContentReload:(id)reload;
+- (void)noteHTMLEditorViewWillChange:(id)change;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)processAttachmentItemProviders:(id)providers;
 - (void)registerForTraitChanges;
-- (void)replaceSelectionWithAttachmentPresentation:(id)a3;
-- (void)scrollSelectionToVisible:(BOOL)a3;
-- (void)scrollToTopAnimated:(BOOL)a3;
-- (void)setContent:(id)a3 isPlainText:(BOOL)a4 attachments:(id)a5;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setEditable:(BOOL)a3;
-- (void)setScrollIndicatorInsets:(UIEdgeInsets)a3;
+- (void)replaceSelectionWithAttachmentPresentation:(id)presentation;
+- (void)scrollSelectionToVisible:(BOOL)visible;
+- (void)scrollToTopAnimated:(BOOL)animated;
+- (void)setContent:(id)content isPlainText:(BOOL)text attachments:(id)attachments;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setEditable:(BOOL)editable;
+- (void)setScrollIndicatorInsets:(UIEdgeInsets)insets;
 - (void)setSelectionToStart;
-- (void)setTimestampDate:(id)a3;
+- (void)setTimestampDate:(id)date;
 - (void)updateContentInsets;
 - (void)updateObscuredInsets;
 @end
 
 @implementation NoteContentLayer
 
-- (NoteContentLayer)initWithFrame:(CGRect)a3 forPreview:(BOOL)a4
+- (NoteContentLayer)initWithFrame:(CGRect)frame forPreview:(BOOL)preview
 {
   v11.receiver = self;
   v11.super_class = NoteContentLayer;
-  v5 = [(NoteContentLayer *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(NoteContentLayer *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_forPreview = a4;
+    v5->_forPreview = preview;
     [(NoteContentLayer *)v5 setPreservesSuperviewLayoutMargins:1];
     [(NoteContentLayer *)v6 createLayout];
-    v7 = [(NoteContentLayer *)v6 noteHTMLEditorView];
-    v8 = [v7 webView];
-    v9 = [v8 scrollView];
-    [v9 ic_addObserver:v6 forKeyPath:@"contentSize" context:compoundliteral];
+    noteHTMLEditorView = [(NoteContentLayer *)v6 noteHTMLEditorView];
+    webView = [noteHTMLEditorView webView];
+    scrollView = [webView scrollView];
+    [scrollView ic_addObserver:v6 forKeyPath:@"contentSize" context:compoundliteral];
 
     [(NoteContentLayer *)v6 updateContentInsets];
   }
@@ -93,30 +93,30 @@
   return v6;
 }
 
-- (NoteContentLayer)initWithFrame:(CGRect)a3
+- (NoteContentLayer)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x1E69DC668] shouldMakeUIForDefaultPNG];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  shouldMakeUIForDefaultPNG = [MEMORY[0x1E69DC668] shouldMakeUIForDefaultPNG];
 
-  return [(NoteContentLayer *)self initWithFrame:v8 forPreview:x, y, width, height];
+  return [(NoteContentLayer *)self initWithFrame:shouldMakeUIForDefaultPNG forPreview:x, y, width, height];
 }
 
 - (void)dealloc
 {
-  v3 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v4 = [v3 webView];
-  v5 = [v4 scrollView];
-  [v5 ic_removeObserver:self forKeyPath:@"contentSize" context:compoundliteral];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  webView = [noteHTMLEditorView webView];
+  scrollView = [webView scrollView];
+  [scrollView ic_removeObserver:self forKeyPath:@"contentSize" context:compoundliteral];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v7 = [(NoteHTMLEditorView *)self->_noteHTMLEditorView webView];
-  v8 = [v7 scrollView];
-  [v8 setDelegate:0];
+  webView2 = [(NoteHTMLEditorView *)self->_noteHTMLEditorView webView];
+  scrollView2 = [webView2 scrollView];
+  [scrollView2 setDelegate:0];
 
   [(NoteHTMLEditorView *)self->_noteHTMLEditorView setDelegate:0];
   [(NoteHTMLEditorView *)self->_noteHTMLEditorView setActionDelegate:0];
@@ -129,62 +129,62 @@
 - (void)createLayout
 {
   v62[4] = *MEMORY[0x1E69E9840];
-  v3 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v4 = [v3 superview];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  superview = [noteHTMLEditorView superview];
 
-  if (!v4)
+  if (!superview)
   {
-    v5 = [(NoteContentLayer *)self noteHTMLEditorView];
-    [(NoteContentLayer *)self addSubview:v5];
+    noteHTMLEditorView2 = [(NoteContentLayer *)self noteHTMLEditorView];
+    [(NoteContentLayer *)self addSubview:noteHTMLEditorView2];
 
-    v6 = [(NoteContentLayer *)self noteHTMLEditorView];
-    [v6 ic_addConstraintsToFillSuperview];
+    noteHTMLEditorView3 = [(NoteContentLayer *)self noteHTMLEditorView];
+    [noteHTMLEditorView3 ic_addConstraintsToFillSuperview];
   }
 
-  v7 = [(NoteContentLayer *)self isForPreview];
+  isForPreview = [(NoteContentLayer *)self isForPreview];
   v8 = 0x1E69DC000;
-  if (!v7)
+  if (!isForPreview)
   {
-    v9 = [(NoteContentLayer *)self noteHTMLEditorView];
-    v10 = [v9 webView];
-    v11 = [v10 scrollView];
-    v12 = [(NoteContentLayer *)self backgroundView];
-    [v11 insertSubview:v12 atIndex:0];
+    noteHTMLEditorView4 = [(NoteContentLayer *)self noteHTMLEditorView];
+    webView = [noteHTMLEditorView4 webView];
+    scrollView = [webView scrollView];
+    backgroundView = [(NoteContentLayer *)self backgroundView];
+    [scrollView insertSubview:backgroundView atIndex:0];
 
-    v13 = [(NoteContentLayer *)self noteHTMLEditorView];
-    v14 = [v13 webView];
-    v15 = [v14 scrollView];
-    v16 = [(NoteContentLayer *)self dateLabel];
-    [v15 addSubview:v16];
+    noteHTMLEditorView5 = [(NoteContentLayer *)self noteHTMLEditorView];
+    webView2 = [noteHTMLEditorView5 webView];
+    scrollView2 = [webView2 scrollView];
+    dateLabel = [(NoteContentLayer *)self dateLabel];
+    [scrollView2 addSubview:dateLabel];
 
-    v59 = [(NoteContentLayer *)self backgroundView];
-    v53 = [v59 leadingAnchor];
-    v57 = [(NoteContentLayer *)self noteHTMLEditorView];
-    v55 = [v57 webView];
-    v51 = [v55 scrollView];
-    v49 = [v51 leadingAnchor];
-    v48 = [v53 constraintEqualToAnchor:v49];
+    backgroundView2 = [(NoteContentLayer *)self backgroundView];
+    leadingAnchor = [backgroundView2 leadingAnchor];
+    noteHTMLEditorView6 = [(NoteContentLayer *)self noteHTMLEditorView];
+    webView3 = [noteHTMLEditorView6 webView];
+    scrollView3 = [webView3 scrollView];
+    leadingAnchor2 = [scrollView3 leadingAnchor];
+    v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v62[0] = v48;
-    v47 = [(NoteContentLayer *)self backgroundView];
-    v44 = [v47 topAnchor];
-    v46 = [(NoteContentLayer *)self noteHTMLEditorView];
-    v45 = [v46 webView];
-    v43 = [v45 scrollView];
-    v42 = [v43 topAnchor];
-    v41 = [v44 constraintEqualToAnchor:v42];
+    backgroundView3 = [(NoteContentLayer *)self backgroundView];
+    topAnchor = [backgroundView3 topAnchor];
+    noteHTMLEditorView7 = [(NoteContentLayer *)self noteHTMLEditorView];
+    webView4 = [noteHTMLEditorView7 webView];
+    scrollView4 = [webView4 scrollView];
+    topAnchor2 = [scrollView4 topAnchor];
+    v41 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v62[1] = v41;
-    v40 = [(NoteContentLayer *)self backgroundView];
-    v17 = [v40 widthAnchor];
-    v18 = [(NoteContentLayer *)self noteHTMLEditorView];
-    v19 = [v18 webView];
-    v20 = [v19 scrollView];
-    v21 = [v20 widthAnchor];
-    v22 = [v17 constraintEqualToAnchor:v21];
+    backgroundView4 = [(NoteContentLayer *)self backgroundView];
+    widthAnchor = [backgroundView4 widthAnchor];
+    noteHTMLEditorView8 = [(NoteContentLayer *)self noteHTMLEditorView];
+    webView5 = [noteHTMLEditorView8 webView];
+    scrollView5 = [webView5 scrollView];
+    widthAnchor2 = [scrollView5 widthAnchor];
+    v22 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v62[2] = v22;
-    v23 = [(NoteContentLayer *)self backgroundView];
-    v24 = [v23 heightAnchor];
+    backgroundView5 = [(NoteContentLayer *)self backgroundView];
+    heightAnchor = [backgroundView5 heightAnchor];
     [(NoteContentLayer *)self bounds];
-    v26 = [v24 constraintEqualToConstant:v25 + v25];
+    v26 = [heightAnchor constraintEqualToConstant:v25 + v25];
     backgroundHeightConstraint = self->_backgroundHeightConstraint;
     self->_backgroundHeightConstraint = v26;
 
@@ -202,21 +202,21 @@
       v29 = 0.0;
     }
 
-    v60 = [(NoteContentLayer *)self dateLabel];
-    v54 = [v60 centerXAnchor];
-    v58 = [(NoteContentLayer *)self noteHTMLEditorView];
-    v56 = [v58 webView];
-    v52 = [v56 scrollView];
-    v50 = [v52 centerXAnchor];
-    v30 = [v54 constraintEqualToAnchor:v50];
+    dateLabel2 = [(NoteContentLayer *)self dateLabel];
+    centerXAnchor = [dateLabel2 centerXAnchor];
+    noteHTMLEditorView9 = [(NoteContentLayer *)self noteHTMLEditorView];
+    webView6 = [noteHTMLEditorView9 webView];
+    scrollView6 = [webView6 scrollView];
+    centerXAnchor2 = [scrollView6 centerXAnchor];
+    v30 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v61[0] = v30;
-    v31 = [(NoteContentLayer *)self dateLabel];
-    v32 = [v31 firstBaselineAnchor];
-    v33 = [(NoteContentLayer *)self noteHTMLEditorView];
-    v34 = [v33 webView];
-    v35 = [v34 scrollView];
-    v36 = [v35 topAnchor];
-    v37 = [v32 constraintEqualToAnchor:v36 constant:v29];
+    dateLabel3 = [(NoteContentLayer *)self dateLabel];
+    firstBaselineAnchor = [dateLabel3 firstBaselineAnchor];
+    noteHTMLEditorView10 = [(NoteContentLayer *)self noteHTMLEditorView];
+    webView7 = [noteHTMLEditorView10 webView];
+    scrollView7 = [webView7 scrollView];
+    topAnchor3 = [scrollView7 topAnchor];
+    v37 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:v29];
     v61[1] = v37;
     v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:2];
     [(NoteContentLayer *)self addConstraints:v38];
@@ -226,24 +226,24 @@
 
   if ([*(v8 + 2360) ic_isVision])
   {
-    v39 = [MEMORY[0x1E69DC888] ic_noteEditorBackgroundColor];
-    [(NoteContentLayer *)self setBackgroundColor:v39];
+    ic_noteEditorBackgroundColor = [MEMORY[0x1E69DC888] ic_noteEditorBackgroundColor];
+    [(NoteContentLayer *)self setBackgroundColor:ic_noteEditorBackgroundColor];
   }
 }
 
 - (void)updateContentInsets
 {
-  v3 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v4 = [v3 webView];
-  v5 = [v4 scrollView];
-  [v5 contentInset];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  webView = [noteHTMLEditorView webView];
+  scrollView = [webView scrollView];
+  [scrollView contentInset];
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(NoteContentLayer *)self dateLabel];
-  v13 = [v12 font];
-  [v13 lineHeight];
+  dateLabel = [(NoteContentLayer *)self dateLabel];
+  font = [dateLabel font];
+  [font lineHeight];
   v15 = v14;
 
   if ([MEMORY[0x1E69DC938] ic_isVision])
@@ -251,10 +251,10 @@
     v15 = v15 + 12.0;
   }
 
-  v18 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v16 = [v18 webView];
-  v17 = [v16 scrollView];
-  [v17 setContentInset:{v15, v7, v9, v11}];
+  noteHTMLEditorView2 = [(NoteContentLayer *)self noteHTMLEditorView];
+  webView2 = [noteHTMLEditorView2 webView];
+  scrollView2 = [webView2 scrollView];
+  [scrollView2 setContentInset:{v15, v7, v9, v11}];
 }
 
 - (void)updateObscuredInsets
@@ -264,9 +264,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v12 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v11 = [v12 webView];
-  [v11 _setObscuredInsets:{v4, v6, v8, v10}];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  webView = [noteHTMLEditorView webView];
+  [webView _setObscuredInsets:{v4, v6, v8, v10}];
 }
 
 - (NoteHTMLEditorView)noteHTMLEditorView
@@ -283,9 +283,9 @@
     [(NoteHTMLEditorView *)self->_noteHTMLEditorView setDelegate:self];
     [(NoteHTMLEditorView *)self->_noteHTMLEditorView setActionDelegate:self];
     [(NoteHTMLEditorView *)self->_noteHTMLEditorView setLayoutDelegate:self];
-    v6 = [(NoteHTMLEditorView *)self->_noteHTMLEditorView webView];
-    v7 = [v6 scrollView];
-    [v7 setAlwaysBounceVertical:1];
+    webView = [(NoteHTMLEditorView *)self->_noteHTMLEditorView webView];
+    scrollView = [webView scrollView];
+    [scrollView setAlwaysBounceVertical:1];
 
     noteHTMLEditorView = self->_noteHTMLEditorView;
   }
@@ -320,12 +320,12 @@
     self->_dateLabel = v4;
 
     [(UILabel *)self->_dateLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(NoteContentLayer *)self timestampDate];
-    v7 = [v6 userFriendlyStringWithTime];
-    [(UILabel *)self->_dateLabel setText:v7];
+    timestampDate = [(NoteContentLayer *)self timestampDate];
+    userFriendlyStringWithTime = [timestampDate userFriendlyStringWithTime];
+    [(UILabel *)self->_dateLabel setText:userFriendlyStringWithTime];
 
-    v8 = [MEMORY[0x1E69DC888] ic_noteEditorSecondaryLabelColor];
-    [(UILabel *)self->_dateLabel setTextColor:v8];
+    ic_noteEditorSecondaryLabelColor = [MEMORY[0x1E69DC888] ic_noteEditorSecondaryLabelColor];
+    [(UILabel *)self->_dateLabel setTextColor:ic_noteEditorSecondaryLabelColor];
 
     v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
     [(UILabel *)self->_dateLabel setFont:v9];
@@ -338,63 +338,63 @@
   return dateLabel;
 }
 
-- (void)setTimestampDate:(id)a3
+- (void)setTimestampDate:(id)date
 {
-  objc_storeStrong(&self->_timestampDate, a3);
-  v6 = [(NoteContentLayer *)self timestampDate];
-  v4 = [v6 userFriendlyStringWithTime];
-  v5 = [(NoteContentLayer *)self dateLabel];
-  [v5 setText:v4];
+  objc_storeStrong(&self->_timestampDate, date);
+  timestampDate = [(NoteContentLayer *)self timestampDate];
+  userFriendlyStringWithTime = [timestampDate userFriendlyStringWithTime];
+  dateLabel = [(NoteContentLayer *)self dateLabel];
+  [dateLabel setText:userFriendlyStringWithTime];
 }
 
-- (void)setContent:(id)a3 isPlainText:(BOOL)a4 attachments:(id)a5
+- (void)setContent:(id)content isPlainText:(BOOL)text attachments:(id)attachments
 {
-  v5 = a4;
-  v11 = a5;
-  v8 = a3;
-  v9 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v10 = v9;
-  if (v5)
+  textCopy = text;
+  attachmentsCopy = attachments;
+  contentCopy = content;
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  v10 = noteHTMLEditorView;
+  if (textCopy)
   {
-    [v9 setText:v8];
+    [noteHTMLEditorView setText:contentCopy];
   }
 
   else
   {
-    [v9 setHtmlString:v8 attachments:v11];
+    [noteHTMLEditorView setHtmlString:contentCopy attachments:attachmentsCopy];
   }
 }
 
 - (BOOL)isEditable
 {
-  v2 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v3 = [v2 isEditable];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  isEditable = [noteHTMLEditorView isEditable];
 
-  return v3;
+  return isEditable;
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  v3 = a3;
-  v4 = [(NoteContentLayer *)self noteHTMLEditorView];
-  [v4 setEditable:v3];
+  editableCopy = editable;
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  [noteHTMLEditorView setEditable:editableCopy];
 }
 
-- (id)contentAsPlainText:(BOOL)a3
+- (id)contentAsPlainText:(BOOL)text
 {
-  v3 = a3;
+  textCopy = text;
   if ([(NoteContentLayer *)self contentContainsValuableContent])
   {
-    v5 = [(NoteContentLayer *)self noteHTMLEditorView];
-    v6 = v5;
-    if (v3)
+    noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+    v6 = noteHTMLEditorView;
+    if (textCopy)
     {
-      [v5 text];
+      [noteHTMLEditorView text];
     }
 
     else
     {
-      [v5 htmlString];
+      [noteHTMLEditorView htmlString];
     }
     v7 = ;
   }
@@ -409,111 +409,111 @@
 
 - (NSString)title
 {
-  v2 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v3 = [v2 title];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  title = [noteHTMLEditorView title];
 
-  return v3;
+  return title;
 }
 
 - (BOOL)contentContainsValuableContent
 {
-  v3 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v4 = [v3 title];
-  if ([v4 length])
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  title = [noteHTMLEditorView title];
+  if ([title length])
   {
-    v5 = 1;
+    hasAttachments = 1;
   }
 
   else
   {
-    v6 = [(NoteContentLayer *)self noteHTMLEditorView];
-    v5 = [v6 hasAttachments];
+    noteHTMLEditorView2 = [(NoteContentLayer *)self noteHTMLEditorView];
+    hasAttachments = [noteHTMLEditorView2 hasAttachments];
   }
 
-  return v5;
+  return hasAttachments;
 }
 
 - (void)flashScrollIndicators
 {
-  v4 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v2 = [v4 webView];
-  v3 = [v2 scrollView];
-  [v3 flashScrollIndicators];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  webView = [noteHTMLEditorView webView];
+  scrollView = [webView scrollView];
+  [scrollView flashScrollIndicators];
 }
 
-- (void)setScrollIndicatorInsets:(UIEdgeInsets)a3
+- (void)setScrollIndicatorInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v7 = [v9 webView];
-  v8 = [v7 scrollView];
-  [v8 setScrollIndicatorInsets:{top, left, bottom, right}];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  webView = [noteHTMLEditorView webView];
+  scrollView = [webView scrollView];
+  [scrollView setScrollIndicatorInsets:{top, left, bottom, right}];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(NoteContentLayer *)self delegate];
-  [v8 noteContentLayer:self willHitTestWithEvent:v7];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  delegate = [(NoteContentLayer *)self delegate];
+  [delegate noteContentLayer:self willHitTestWithEvent:eventCopy];
 
   v11.receiver = self;
   v11.super_class = NoteContentLayer;
-  v9 = [(NoteContentLayer *)&v11 hitTest:v7 withEvent:x, y];
+  v9 = [(NoteContentLayer *)&v11 hitTest:eventCopy withEvent:x, y];
 
   return v9;
 }
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v3 = [v2 canBecomeFirstResponder];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  canBecomeFirstResponder = [noteHTMLEditorView canBecomeFirstResponder];
 
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)canResignFirstResponder
 {
-  v2 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v3 = [v2 canResignFirstResponder];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  canResignFirstResponder = [noteHTMLEditorView canResignFirstResponder];
 
-  return v3;
+  return canResignFirstResponder;
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v3 = [v2 becomeFirstResponder];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  becomeFirstResponder = [noteHTMLEditorView becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v2 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v3 = [v2 resignFirstResponder];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  resignFirstResponder = [noteHTMLEditorView resignFirstResponder];
 
-  return v3;
+  return resignFirstResponder;
 }
 
 - (BOOL)isFirstResponder
 {
-  v2 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v3 = [v2 isFirstResponder];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  isFirstResponder = [noteHTMLEditorView isFirstResponder];
 
-  return v3;
+  return isFirstResponder;
 }
 
 - (CGPoint)contentOffset
 {
-  v2 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v3 = [v2 webView];
-  v4 = [v3 scrollView];
-  [v4 contentOffset];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  webView = [noteHTMLEditorView webView];
+  scrollView = [webView scrollView];
+  [scrollView contentOffset];
   v6 = v5;
   v8 = v7;
 
@@ -524,33 +524,33 @@
   return result;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v7 = [v6 webView];
-  v8 = [v7 scrollView];
-  [v8 layoutIfNeeded];
+  y = offset.y;
+  x = offset.x;
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  webView = [noteHTMLEditorView webView];
+  scrollView = [webView scrollView];
+  [scrollView layoutIfNeeded];
 
-  v11 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v9 = [v11 webView];
-  v10 = [v9 scrollView];
-  [v10 setContentOffset:{x, y}];
+  noteHTMLEditorView2 = [(NoteContentLayer *)self noteHTMLEditorView];
+  webView2 = [noteHTMLEditorView2 webView];
+  scrollView2 = [webView2 scrollView];
+  [scrollView2 setContentOffset:{x, y}];
 }
 
-- (void)getRectForSelectionWithCompletion:(id)a3
+- (void)getRectForSelectionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NoteContentLayer *)self noteHTMLEditorView];
+  completionCopy = completion;
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__NoteContentLayer_getRectForSelectionWithCompletion___block_invoke;
   v7[3] = &unk_1E846ABC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 getRectForSelectionWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [noteHTMLEditorView getRectForSelectionWithCompletion:v7];
 }
 
 void __54__NoteContentLayer_getRectForSelectionWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -586,7 +586,7 @@ uint64_t __54__NoteContentLayer_getRectForSelectionWithCompletion___block_invoke
   return result;
 }
 
-- (CGRect)rectForDOMNode:(id)a3
+- (CGRect)rectForDOMNode:(id)node
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -599,88 +599,88 @@ uint64_t __54__NoteContentLayer_getRectForSelectionWithCompletion___block_invoke
   return result;
 }
 
-- (void)replaceSelectionWithAttachmentPresentation:(id)a3
+- (void)replaceSelectionWithAttachmentPresentation:(id)presentation
 {
-  v4 = a3;
-  v5 = [(NoteContentLayer *)self noteHTMLEditorView];
-  [v5 replaceSelectionWithAttachmentPresentation:v4];
+  presentationCopy = presentation;
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  [noteHTMLEditorView replaceSelectionWithAttachmentPresentation:presentationCopy];
 }
 
 - (id)webArchive
 {
-  v2 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v3 = [v2 webArchive];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  webArchive = [noteHTMLEditorView webArchive];
 
-  return v3;
+  return webArchive;
 }
 
 - (void)copyNoteHTMLToPasteboard
 {
-  v2 = [(NoteContentLayer *)self noteHTMLEditorView];
-  [v2 copyNoteHTMLToPasteboard];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  [noteHTMLEditorView copyNoteHTMLToPasteboard];
 }
 
 - (id)viewPrintFormatter
 {
-  v2 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v3 = [v2 viewPrintFormatter];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  viewPrintFormatter = [noteHTMLEditorView viewPrintFormatter];
 
-  return v3;
+  return viewPrintFormatter;
 }
 
 - (void)setSelectionToStart
 {
-  v2 = [(NoteContentLayer *)self noteHTMLEditorView];
-  [v2 setSelectionToStart];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  [noteHTMLEditorView setSelectionToStart];
 }
 
-- (void)scrollToTopAnimated:(BOOL)a3
+- (void)scrollToTopAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v6 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v4 = [v6 webView];
-  v5 = [v4 scrollView];
-  [v5 scrollRectToVisible:v3 animated:{0.0, 0.0, 1.0, 1.0}];
+  animatedCopy = animated;
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  webView = [noteHTMLEditorView webView];
+  scrollView = [webView scrollView];
+  [scrollView scrollRectToVisible:animatedCopy animated:{0.0, 0.0, 1.0, 1.0}];
 }
 
-- (void)scrollSelectionToVisible:(BOOL)a3
+- (void)scrollSelectionToVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(NoteContentLayer *)self noteHTMLEditorView];
-  [v4 scrollSelectionToVisible:v3];
+  visibleCopy = visible;
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  [noteHTMLEditorView scrollSelectionToVisible:visibleCopy];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([(NoteContentLayer *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotesSupport/Ironcade/SharedUI/iOS/EmbeddedMobileNotes/NoteContentLayer.m"]& 1) != 0)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([(NoteContentLayer *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotesSupport/Ironcade/SharedUI/iOS/EmbeddedMobileNotes/NoteContentLayer.m"]& 1) != 0)
   {
-    v13 = [(NoteContentLayer *)self ic_shouldIgnoreObserveValue:v12 ofObject:v11 forKeyPath:v10];
+    v13 = [(NoteContentLayer *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == compoundliteral && (v13 & 1) == 0)
+    if (context == compoundliteral && (v13 & 1) == 0)
     {
-      v14 = [(NoteContentLayer *)self noteHTMLEditorView];
-      v15 = [v14 webView];
-      v16 = [v15 scrollView];
-      v17 = v16;
-      if (v16 == v11)
+      noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+      webView = [noteHTMLEditorView webView];
+      scrollView = [webView scrollView];
+      v17 = scrollView;
+      if (scrollView == objectCopy)
       {
-        v18 = [v10 isEqualToString:@"contentSize"];
+        v18 = [pathCopy isEqualToString:@"contentSize"];
 
         if (v18)
         {
-          v19 = [(NoteContentLayer *)self noteHTMLEditorView];
-          v20 = [v19 webView];
-          v21 = [v20 scrollView];
-          [v21 contentSize];
+          noteHTMLEditorView2 = [(NoteContentLayer *)self noteHTMLEditorView];
+          webView2 = [noteHTMLEditorView2 webView];
+          scrollView2 = [webView2 scrollView];
+          [scrollView2 contentSize];
           v23 = v22;
 
-          v24 = [(NoteContentLayer *)self noteHTMLEditorView];
-          v25 = [v24 webView];
-          v26 = [v25 scrollView];
-          [v26 bounds];
+          noteHTMLEditorView3 = [(NoteContentLayer *)self noteHTMLEditorView];
+          webView3 = [noteHTMLEditorView3 webView];
+          scrollView3 = [webView3 scrollView];
+          [scrollView3 bounds];
           v28 = v27;
 
           if (v23 < v28)
@@ -690,8 +690,8 @@ uint64_t __54__NoteContentLayer_getRectForSelectionWithCompletion___block_invoke
 
           [(NoteContentLayer *)self bounds];
           v30 = v23 + v29;
-          v31 = [(NoteContentLayer *)self backgroundHeightConstraint];
-          [v31 setConstant:v30];
+          backgroundHeightConstraint = [(NoteContentLayer *)self backgroundHeightConstraint];
+          [backgroundHeightConstraint setConstant:v30];
         }
       }
 
@@ -705,22 +705,22 @@ uint64_t __54__NoteContentLayer_getRectForSelectionWithCompletion___block_invoke
   {
     v32.receiver = self;
     v32.super_class = NoteContentLayer;
-    [(NoteContentLayer *)&v32 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(NoteContentLayer *)&v32 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
 - (void)registerForTraitChanges
 {
-  v4 = [MEMORY[0x1E69DD1B8] ic_traitsAffectingSize];
-  v3 = [(NoteContentLayer *)self registerForTraitChanges:v4 withAction:sel_updateContentInsets];
+  ic_traitsAffectingSize = [MEMORY[0x1E69DD1B8] ic_traitsAffectingSize];
+  v3 = [(NoteContentLayer *)self registerForTraitChanges:ic_traitsAffectingSize withAction:sel_updateContentInsets];
 }
 
 - (id)keyCommands
 {
-  v3 = [(NoteContentLayer *)self noteHTMLEditorView];
-  v4 = [v3 isEditing];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  isEditing = [noteHTMLEditorView isEditing];
 
-  if (v4)
+  if (isEditing)
   {
     if (keyCommands_predicate != -1)
     {
@@ -730,8 +730,8 @@ uint64_t __54__NoteContentLayer_getRectForSelectionWithCompletion___block_invoke
     v5 = keyCommands_keyCommands;
     v9.receiver = self;
     v9.super_class = NoteContentLayer;
-    v6 = [(NoteContentLayer *)&v9 keyCommands];
-    v7 = [v5 arrayByAddingObjectsFromArray:v6];
+    keyCommands = [(NoteContentLayer *)&v9 keyCommands];
+    v7 = [v5 arrayByAddingObjectsFromArray:keyCommands];
   }
 
   else
@@ -761,15 +761,15 @@ void __31__NoteContentLayer_keyCommands__block_invoke()
   keyCommands_keyCommands = v9;
 }
 
-- (BOOL)noteHTMLEditorView:(id)a3 canAddAttachmentItemProviders:(id)a4
+- (BOOL)noteHTMLEditorView:(id)view canAddAttachmentItemProviders:(id)providers
 {
   v47 = *MEMORY[0x1E69E9840];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  providersCopy = providers;
+  v6 = [providersCopy countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (!v6)
   {
 LABEL_15:
@@ -789,7 +789,7 @@ LABEL_3:
   {
     if (*v42 != v8)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(providersCopy);
     }
 
     v12 = *(*(&v41 + 1) + 8 * v11);
@@ -817,18 +817,18 @@ LABEL_3:
     }
 
     v16 = v10;
-    v17 = v5;
+    v17 = providersCopy;
     v18 = [*(v16 + 3136) typeWithIdentifier:v13];
     if (([v18 conformsToType:v32] & 1) == 0)
     {
       break;
     }
 
-    v33 = [(NoteContentLayer *)self allowsAttachments];
+    allowsAttachments = [(NoteContentLayer *)self allowsAttachments];
 
-    v5 = v17;
+    providersCopy = v17;
     v10 = 0x1E6982000;
-    if (!v33)
+    if (!allowsAttachments)
     {
       goto LABEL_19;
     }
@@ -837,7 +837,7 @@ LABEL_13:
 
     if (v7 == ++v11)
     {
-      v7 = [v5 countByEnumeratingWithState:&v41 objects:v46 count:16];
+      v7 = [providersCopy countByEnumeratingWithState:&v41 objects:v46 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -847,7 +847,7 @@ LABEL_13:
     }
   }
 
-  v5 = v17;
+  providersCopy = v17;
   v10 = 0x1E6982000uLL;
 LABEL_19:
 
@@ -861,7 +861,7 @@ LABEL_19:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v20 = v5;
+  v20 = providersCopy;
   v21 = [v20 countByEnumeratingWithState:&v36 objects:v45 count:16];
   if (v21)
   {
@@ -891,8 +891,8 @@ LABEL_19:
         {
 
 LABEL_33:
-          v30 = [(NoteContentLayer *)self delegate];
-          [v30 showAttachmentsUnsupportedAlertForNoteContentLayer:self];
+          delegate = [(NoteContentLayer *)self delegate];
+          [delegate showAttachmentsUnsupportedAlertForNoteContentLayer:self];
 
           goto LABEL_34;
         }
@@ -928,37 +928,37 @@ LABEL_36:
   return v19;
 }
 
-- (id)noteHTMLEditorView:(id)a3 createAttachmentPresentationWithFileWrapper:(id)a4 mimeType:(id)a5
+- (id)noteHTMLEditorView:(id)view createAttachmentPresentationWithFileWrapper:(id)wrapper mimeType:(id)type
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(NoteContentLayer *)self delegate];
-  v10 = [v8 regularFileContents];
-  v11 = [v8 preferredFilename];
+  typeCopy = type;
+  wrapperCopy = wrapper;
+  delegate = [(NoteContentLayer *)self delegate];
+  regularFileContents = [wrapperCopy regularFileContents];
+  preferredFilename = [wrapperCopy preferredFilename];
 
-  v12 = [v9 noteContentLayer:self createAttachmentPresentationWithData:v10 mimeType:v7 filename:v11];
+  v12 = [delegate noteContentLayer:self createAttachmentPresentationWithData:regularFileContents mimeType:typeCopy filename:preferredFilename];
 
   return v12;
 }
 
-- (void)noteHTMLEditorView:(id)a3 didAddAttachmentForMimeType:(id)a4 filename:(id)a5 data:(id)a6
+- (void)noteHTMLEditorView:(id)view didAddAttachmentForMimeType:(id)type filename:(id)filename data:(id)data
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(NoteContentLayer *)self delegate];
-  [v12 noteContentLayer:self didAddAttachmentForMimeType:v11 filename:v10 data:v9];
+  dataCopy = data;
+  filenameCopy = filename;
+  typeCopy = type;
+  delegate = [(NoteContentLayer *)self delegate];
+  [delegate noteContentLayer:self didAddAttachmentForMimeType:typeCopy filename:filenameCopy data:dataCopy];
 }
 
-- (BOOL)noteHTMLEditorViewShouldBeginEditing:(id)a3 isUserInitiated:(BOOL)a4
+- (BOOL)noteHTMLEditorViewShouldBeginEditing:(id)editing isUserInitiated:(BOOL)initiated
 {
-  v4 = a4;
+  initiatedCopy = initiated;
   [(NoteContentLayer *)self setNeedsLayout];
-  v6 = [(NoteContentLayer *)self delegate];
-  if (v6)
+  delegate = [(NoteContentLayer *)self delegate];
+  if (delegate)
   {
-    v7 = [(NoteContentLayer *)self delegate];
-    v8 = [v7 noteContentLayerShouldBeginEditing:self isUserInitiated:v4];
+    delegate2 = [(NoteContentLayer *)self delegate];
+    v8 = [delegate2 noteContentLayerShouldBeginEditing:self isUserInitiated:initiatedCopy];
   }
 
   else
@@ -969,98 +969,98 @@ LABEL_36:
   return v8;
 }
 
-- (void)noteHTMLEditorViewDidChange:(id)a3
+- (void)noteHTMLEditorViewDidChange:(id)change
 {
-  v4 = [(NoteContentLayer *)self delegate];
-  [v4 noteContentLayerContentDidChange:self updatedTitle:1 fromDrop:0];
+  delegate = [(NoteContentLayer *)self delegate];
+  [delegate noteContentLayerContentDidChange:self updatedTitle:1 fromDrop:0];
 }
 
-- (void)noteHTMLEditorViewWillChange:(id)a3
+- (void)noteHTMLEditorViewWillChange:(id)change
 {
-  v4 = [(NoteContentLayer *)self delegate];
-  [v4 noteContentLayerContentWillChange:self];
+  delegate = [(NoteContentLayer *)self delegate];
+  [delegate noteContentLayerContentWillChange:self];
 }
 
-- (void)noteHTMLEditorViewDidBeginEditing:(id)a3
+- (void)noteHTMLEditorViewDidBeginEditing:(id)editing
 {
-  v4 = [(NoteContentLayer *)self delegate];
-  [v4 noteContentLayer:self setEditing:1 animated:1];
+  delegate = [(NoteContentLayer *)self delegate];
+  [delegate noteContentLayer:self setEditing:1 animated:1];
 }
 
-- (void)noteHTMLEditorViewDidEndEditing:(id)a3
+- (void)noteHTMLEditorViewDidEndEditing:(id)editing
 {
-  v4 = [(NoteContentLayer *)self delegate];
-  [v4 noteContentLayer:self setEditing:0 animated:1];
+  delegate = [(NoteContentLayer *)self delegate];
+  [delegate noteContentLayer:self setEditing:0 animated:1];
 
   [(NoteContentLayer *)self setNeedsLayout];
 }
 
-- (void)noteHTMLEditorView:(id)a3 openURL:(id)a4
+- (void)noteHTMLEditorView:(id)view openURL:(id)l
 {
-  v5 = a4;
-  v6 = [(NoteContentLayer *)self delegate];
-  [v6 noteContentLayer:self openURL:v5];
+  lCopy = l;
+  delegate = [(NoteContentLayer *)self delegate];
+  [delegate noteContentLayer:self openURL:lCopy];
 }
 
-- (id)noteHTMLEditorView:(id)a3 fileURLForAttachmentWithContentID:(id)a4
+- (id)noteHTMLEditorView:(id)view fileURLForAttachmentWithContentID:(id)d
 {
-  v5 = a4;
-  v6 = [(NoteContentLayer *)self attachmentPresentationDelegate];
-  v7 = [v6 noteContentLayer:self fileURLForAttachmentWithContentID:v5];
+  dCopy = d;
+  attachmentPresentationDelegate = [(NoteContentLayer *)self attachmentPresentationDelegate];
+  v7 = [attachmentPresentationDelegate noteContentLayer:self fileURLForAttachmentWithContentID:dCopy];
 
   return v7;
 }
 
-- (id)noteHTMLEditorView:(id)a3 attachmentPresentationForContentID:(id)a4
+- (id)noteHTMLEditorView:(id)view attachmentPresentationForContentID:(id)d
 {
-  v5 = a4;
-  v6 = [(NoteContentLayer *)self attachmentPresentationDelegate];
-  v7 = [v6 noteContentLayer:self attachmentPresentationForContentID:v5];
+  dCopy = d;
+  attachmentPresentationDelegate = [(NoteContentLayer *)self attachmentPresentationDelegate];
+  v7 = [attachmentPresentationDelegate noteContentLayer:self attachmentPresentationForContentID:dCopy];
 
   return v7;
 }
 
-- (BOOL)isNoteManagedForNoteHTMLEditorView:(id)a3
+- (BOOL)isNoteManagedForNoteHTMLEditorView:(id)view
 {
-  v3 = self;
-  v4 = [(NoteContentLayer *)self delegate];
-  LOBYTE(v3) = [v4 isNoteManagedForNoteContentLayer:v3];
+  selfCopy = self;
+  delegate = [(NoteContentLayer *)self delegate];
+  LOBYTE(selfCopy) = [delegate isNoteManagedForNoteContentLayer:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)noteHTMLEditorView:(id)a3 didInvokeFormattingCalloutOption:(int64_t)a4
+- (void)noteHTMLEditorView:(id)view didInvokeFormattingCalloutOption:(int64_t)option
 {
-  v6 = [(NoteContentLayer *)self delegate];
-  [v6 noteContentLayer:self didInvokeFormattingCalloutOption:a4];
+  delegate = [(NoteContentLayer *)self delegate];
+  [delegate noteContentLayer:self didInvokeFormattingCalloutOption:option];
 }
 
-- (void)noteHTMLEditorView:(id)a3 didInvokeStyleFormattingOption:(int64_t)a4
+- (void)noteHTMLEditorView:(id)view didInvokeStyleFormattingOption:(int64_t)option
 {
-  v6 = [(NoteContentLayer *)self delegate];
-  [v6 noteContentLayer:self didInvokeStyleFormattingOption:a4];
+  delegate = [(NoteContentLayer *)self delegate];
+  [delegate noteContentLayer:self didInvokeStyleFormattingOption:option];
 }
 
-- (id)noteHTMLEditorView:(id)a3 updateAttachments:(id)a4
+- (id)noteHTMLEditorView:(id)view updateAttachments:(id)attachments
 {
-  v5 = a4;
-  v6 = [(NoteContentLayer *)self delegate];
-  v7 = [v6 noteContentLayer:self updateAttachments:v5];
+  attachmentsCopy = attachments;
+  delegate = [(NoteContentLayer *)self delegate];
+  v7 = [delegate noteContentLayer:self updateAttachments:attachmentsCopy];
 
   return v7;
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a5;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   [(NoteContentLayer *)self setUpdatedTitleRange:location <= *MEMORY[0x1E69B7120]];
-  if (-[NoteContentLayer tracksMaximumContentLength](self, "tracksMaximumContentLength") && [v8 length] > length)
+  if (-[NoteContentLayer tracksMaximumContentLength](self, "tracksMaximumContentLength") && [textCopy length] > length)
   {
-    v9 = [v8 substringFromIndex:length];
-    v10 = [(NoteContentLayer *)self delegate];
-    v11 = [v10 noteContentLayer:self acceptStringIncreasingContentLength:v9];
+    v9 = [textCopy substringFromIndex:length];
+    delegate = [(NoteContentLayer *)self delegate];
+    v11 = [delegate noteContentLayer:self acceptStringIncreasingContentLength:v9];
   }
 
   else
@@ -1071,22 +1071,22 @@ LABEL_36:
   return v11;
 }
 
-- (BOOL)canInsertImagesInNoteHTMLEditorView:(id)a3
+- (BOOL)canInsertImagesInNoteHTMLEditorView:(id)view
 {
-  v3 = self;
-  v4 = [(NoteContentLayer *)self delegate];
-  LOBYTE(v3) = [v4 canInsertImagesInNoteContentLayer:v3];
+  selfCopy = self;
+  delegate = [(NoteContentLayer *)self delegate];
+  LOBYTE(selfCopy) = [delegate canInsertImagesInNoteContentLayer:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)insertImageInNoteHTMLEditorView:(id)a3
+- (void)insertImageInNoteHTMLEditorView:(id)view
 {
-  v4 = [(NoteContentLayer *)self delegate];
-  [v4 insertImageInNoteContentLayer:self];
+  delegate = [(NoteContentLayer *)self delegate];
+  [delegate insertImageInNoteContentLayer:self];
 }
 
-- (void)noteHTMLEditorViewNeedsContentReload:(id)a3
+- (void)noteHTMLEditorViewNeedsContentReload:(id)reload
 {
   backgroundView = self->_backgroundView;
   self->_backgroundView = 0;
@@ -1095,63 +1095,63 @@ LABEL_36:
   self->_dateLabel = 0;
 
   [(NoteContentLayer *)self createLayout];
-  v6 = [(NoteContentLayer *)self noteHTMLEditorView];
-  [v6 setNeedsDisplay];
+  noteHTMLEditorView = [(NoteContentLayer *)self noteHTMLEditorView];
+  [noteHTMLEditorView setNeedsDisplay];
 
   [(NoteContentLayer *)self setNeedsLayout];
-  v7 = [(NoteContentLayer *)self delegate];
-  [v7 noteContentLayerNeedsContentReload:self];
+  delegate = [(NoteContentLayer *)self delegate];
+  [delegate noteContentLayerNeedsContentReload:self];
 }
 
-- (BOOL)noteHTMLEditorView:(id)a3 acceptContentsFromPasteboard:(id)a4
+- (BOOL)noteHTMLEditorView:(id)view acceptContentsFromPasteboard:(id)pasteboard
 {
-  v5 = a4;
-  v6 = [(NoteContentLayer *)self delegate];
-  LOBYTE(self) = [v6 noteContentLayer:self acceptContentsFromPasteboard:v5];
+  pasteboardCopy = pasteboard;
+  delegate = [(NoteContentLayer *)self delegate];
+  LOBYTE(self) = [delegate noteContentLayer:self acceptContentsFromPasteboard:pasteboardCopy];
 
   return self;
 }
 
-- (id)readerDelegateInNoteHTMLEditorView:(id)a3
+- (id)readerDelegateInNoteHTMLEditorView:(id)view
 {
-  v4 = [(NoteContentLayer *)self delegate];
-  v5 = [v4 readerDelegateForNoteContentLayer:self];
+  delegate = [(NoteContentLayer *)self delegate];
+  v5 = [delegate readerDelegateForNoteContentLayer:self];
 
   return v5;
 }
 
-- (BOOL)shouldRenderAsAttachment:(id)a3
+- (BOOL)shouldRenderAsAttachment:(id)attachment
 {
   v3 = *MEMORY[0x1E6983020];
-  v4 = a3;
-  v5 = [v3 identifier];
-  v6 = [v4 hasItemConformingToTypeIdentifier:v5];
+  attachmentCopy = attachment;
+  identifier = [v3 identifier];
+  v6 = [attachmentCopy hasItemConformingToTypeIdentifier:identifier];
 
-  v7 = [v4 preferredPresentationStyle];
-  return v7 == 2 || (v6 & 1) == 0;
+  preferredPresentationStyle = [attachmentCopy preferredPresentationStyle];
+  return preferredPresentationStyle == 2 || (v6 & 1) == 0;
 }
 
-- (void)noteHTMLEditorView:(id)a3 showShareSheetForAttachment:(id)a4 atPoint:(CGPoint)a5
+- (void)noteHTMLEditorView:(id)view showShareSheetForAttachment:(id)attachment atPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
-  v9 = [(NoteContentLayer *)self delegate];
-  [v9 noteContentLayer:self showShareSheetForAttachment:v8 atPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  attachmentCopy = attachment;
+  delegate = [(NoteContentLayer *)self delegate];
+  [delegate noteContentLayer:self showShareSheetForAttachment:attachmentCopy atPoint:{x, y}];
 }
 
-- (BOOL)noteHTMLEditorViewShouldPaste:(id)a3
+- (BOOL)noteHTMLEditorViewShouldPaste:(id)paste
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  v5 = [v4 itemProviders];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  itemProviders = [generalPasteboard itemProviders];
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v5;
+  v7 = itemProviders;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -1169,7 +1169,7 @@ LABEL_36:
         v12 = *(*(&v17 + 1) + 8 * i);
         if ([(NoteContentLayer *)self shouldRenderAsAttachment:v12, v17])
         {
-          [v6 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -1179,19 +1179,19 @@ LABEL_36:
     while (v9);
   }
 
-  if ([v6 count])
+  if ([array count])
   {
     if ([(NoteContentLayer *)self allowsAttachments])
     {
-      [(NoteContentLayer *)self processAttachmentItemProviders:v6];
-      v13 = [v6 count];
+      [(NoteContentLayer *)self processAttachmentItemProviders:array];
+      v13 = [array count];
       v14 = v13 != [v7 count];
     }
 
     else
     {
-      v15 = [(NoteContentLayer *)self delegate];
-      [v15 showAttachmentsUnsupportedAlertForNoteContentLayer:self];
+      delegate = [(NoteContentLayer *)self delegate];
+      [delegate showAttachmentsUnsupportedAlertForNoteContentLayer:self];
 
       v14 = 0;
     }
@@ -1205,30 +1205,30 @@ LABEL_36:
   return v14;
 }
 
-- (BOOL)isNoteHTMLEditorViewVisible:(id)a3
+- (BOOL)isNoteHTMLEditorViewVisible:(id)visible
 {
-  v3 = self;
-  v4 = [(NoteContentLayer *)self delegate];
-  LOBYTE(v3) = [v4 isNoteContentLayerVisible:v3];
+  selfCopy = self;
+  delegate = [(NoteContentLayer *)self delegate];
+  LOBYTE(selfCopy) = [delegate isNoteContentLayerVisible:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)chosenUTI:(id *)a3 andChosenMIMEType:(id *)a4 forItemProvider:(id)a5
+- (void)chosenUTI:(id *)i andChosenMIMEType:(id *)type forItemProvider:(id)provider
 {
-  v29 = a3;
-  v30 = a4;
+  iCopy = i;
+  typeCopy = type;
   v38[2] = *MEMORY[0x1E69E9840];
-  v5 = a5;
-  v6 = [*MEMORY[0x1E6982F98] identifier];
-  v38[0] = v6;
-  v7 = [*MEMORY[0x1E6982E18] identifier];
-  v38[1] = v7;
+  providerCopy = provider;
+  identifier = [*MEMORY[0x1E6982F98] identifier];
+  v38[0] = identifier;
+  identifier2 = [*MEMORY[0x1E6982E18] identifier];
+  v38[1] = identifier2;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
 
   v9 = MEMORY[0x1E695DF70];
-  v10 = [v5 registeredTypeIdentifiers];
-  v11 = [v9 arrayWithArray:v10];
+  registeredTypeIdentifiers = [providerCopy registeredTypeIdentifiers];
+  v11 = [v9 arrayWithArray:registeredTypeIdentifiers];
 
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
@@ -1257,10 +1257,10 @@ LABEL_3:
       }
 
       v18 = *(*(&v31 + 1) + 8 * v17);
-      v19 = [MEMORY[0x1E6982C40] typeWithIdentifier:{v18, v29, v30, v31}];
-      v20 = [v19 preferredMIMEType];
+      v19 = [MEMORY[0x1E6982C40] typeWithIdentifier:{v18, iCopy, typeCopy, v31}];
+      preferredMIMEType = [v19 preferredMIMEType];
 
-      if (v20)
+      if (preferredMIMEType)
       {
         break;
       }
@@ -1277,11 +1277,11 @@ LABEL_3:
       }
     }
 
-    v23 = v18;
+    firstObject2 = v18;
 
-    v22 = v29;
-    v21 = v30;
-    if (v23)
+    v22 = iCopy;
+    v21 = typeCopy;
+    if (firstObject2)
     {
       goto LABEL_13;
     }
@@ -1291,17 +1291,17 @@ LABEL_3:
   {
 LABEL_9:
 
-    v20 = 0;
-    v22 = v29;
-    v21 = v30;
+    preferredMIMEType = 0;
+    v22 = iCopy;
+    v21 = typeCopy;
   }
 
-  v24 = [v13 firstObject];
-  v25 = [v12 containsObject:v24];
+  firstObject = [v13 firstObject];
+  v25 = [v12 containsObject:firstObject];
 
   if (v25)
   {
-    v23 = [v13 firstObject];
+    firstObject2 = [v13 firstObject];
 LABEL_13:
     if (v22)
     {
@@ -1311,21 +1311,21 @@ LABEL_13:
 
   else
   {
-    v28 = [v5 registeredTypeIdentifiers];
-    v23 = [v28 firstObject];
+    registeredTypeIdentifiers2 = [providerCopy registeredTypeIdentifiers];
+    firstObject2 = [registeredTypeIdentifiers2 firstObject];
 
     if (v22)
     {
 LABEL_14:
-      v26 = v23;
-      *v22 = v23;
+      v26 = firstObject2;
+      *v22 = firstObject2;
     }
   }
 
   if (v21)
   {
-    v27 = v20;
-    *v21 = v20;
+    v27 = preferredMIMEType;
+    *v21 = preferredMIMEType;
   }
 }
 
@@ -1344,16 +1344,16 @@ uint64_t __64__NoteContentLayer_chosenUTI_andChosenMIMEType_forItemProvider___bl
   return v12;
 }
 
-- (void)processAttachmentItemProviders:(id)a3
+- (void)processAttachmentItemProviders:(id)providers
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  providersCopy = providers;
   objc_initWeak(&location, self);
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v4;
+  obj = providersCopy;
   v5 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v5)
   {
@@ -1369,8 +1369,8 @@ uint64_t __64__NoteContentLayer_chosenUTI_andChosenMIMEType_forItemProvider___bl
         }
 
         v9 = *(*(&v26 + 1) + 8 * i);
-        v10 = [v9 registeredTypeIdentifiers];
-        v11 = [v10 containsObject:v7];
+        registeredTypeIdentifiers = [v9 registeredTypeIdentifiers];
+        v11 = [registeredTypeIdentifiers containsObject:v7];
 
         if (!v11 || ![(NoteContentLayer *)self processMapAttachmentItemProvider:v9])
         {
@@ -1386,7 +1386,7 @@ uint64_t __64__NoteContentLayer_chosenUTI_andChosenMIMEType_forItemProvider___bl
           objc_copyWeak(&v23, &location);
           v14 = v12;
           v19 = v14;
-          v20 = self;
+          selfCopy = self;
           v21 = v9;
           v15 = v13;
           v22 = v15;
@@ -1479,9 +1479,9 @@ void __51__NoteContentLayer_processAttachmentItemProviders___block_invoke_67(uin
 LABEL_11:
 }
 
-- (BOOL)processMapAttachmentItemProvider:(id)a3
+- (BOOL)processMapAttachmentItemProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -1498,7 +1498,7 @@ LABEL_11:
   v30 = &v31;
   v7 = v5;
   v29 = v7;
-  v8 = [v4 loadObjectOfClass:v6 completionHandler:v28];
+  v8 = [providerCopy loadObjectOfClass:v6 completionHandler:v28];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1514,11 +1514,11 @@ LABEL_11:
   v21 = &v22;
   v10 = v7;
   v20 = v10;
-  v11 = [v4 loadObjectOfClass:v9 completionHandler:v19];
+  v11 = [providerCopy loadObjectOfClass:v9 completionHandler:v19];
   dispatch_group_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-  v12 = [v23[5] absoluteString];
-  v13 = v12;
-  if (!v12 || ![v12 length])
+  absoluteString = [v23[5] absoluteString];
+  v13 = absoluteString;
+  if (!absoluteString || ![absoluteString length])
   {
     v16 = 0;
     goto LABEL_9;

@@ -1,39 +1,39 @@
 @interface CalendarUtil
-+ (void)showErrorForPresenter:(id)a3 withError:(id)a4 callback:(id)a5;
++ (void)showErrorForPresenter:(id)presenter withError:(id)error callback:(id)callback;
 @end
 
 @implementation CalendarUtil
 
-+ (void)showErrorForPresenter:(id)a3 withError:(id)a4 callback:(id)a5
++ (void)showErrorForPresenter:(id)presenter withError:(id)error callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  presenterCopy = presenter;
+  errorCopy = error;
+  callbackCopy = callback;
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"CALENDAR_GENERIC_ERROR_MESSAGE" value:&stru_14AB8 table:@"calendarSettings"];
   v12 = [UIAlertController alertControllerWithTitle:0 message:v11 preferredStyle:1];
 
-  v13 = [v8 userInfo];
+  userInfo = [errorCopy userInfo];
 
-  if (v13)
+  if (userInfo)
   {
-    v14 = [v8 userInfo];
-    v15 = [v14 objectForKeyedSubscript:@"errorTitle"];
+    userInfo2 = [errorCopy userInfo];
+    v15 = [userInfo2 objectForKeyedSubscript:@"errorTitle"];
 
     if (v15)
     {
-      v16 = [v8 userInfo];
-      v17 = [v16 objectForKeyedSubscript:@"errorTitle"];
+      userInfo3 = [errorCopy userInfo];
+      v17 = [userInfo3 objectForKeyedSubscript:@"errorTitle"];
       [v12 setTitle:v17];
     }
 
-    v18 = [v8 userInfo];
-    v19 = [v18 objectForKeyedSubscript:@"errorDescription"];
+    userInfo4 = [errorCopy userInfo];
+    v19 = [userInfo4 objectForKeyedSubscript:@"errorDescription"];
 
     if (v19)
     {
-      v20 = [v8 userInfo];
-      v21 = [v20 objectForKeyedSubscript:@"errorDescription"];
+      userInfo5 = [errorCopy userInfo];
+      v21 = [userInfo5 objectForKeyedSubscript:@"errorDescription"];
       [v12 setMessage:v21];
     }
   }
@@ -44,8 +44,8 @@
   v31[1] = 3221225472;
   v31[2] = sub_9400;
   v31[3] = &unk_148C0;
-  v32 = v9;
-  v24 = v9;
+  v32 = callbackCopy;
+  v24 = callbackCopy;
   v25 = [UIAlertAction actionWithTitle:v23 style:1 handler:v31];
 
   [v12 addAction:v25];
@@ -53,10 +53,10 @@
   block[1] = 3221225472;
   block[2] = sub_9418;
   block[3] = &unk_148E8;
-  v29 = v7;
+  v29 = presenterCopy;
   v30 = v12;
   v26 = v12;
-  v27 = v7;
+  v27 = presenterCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 

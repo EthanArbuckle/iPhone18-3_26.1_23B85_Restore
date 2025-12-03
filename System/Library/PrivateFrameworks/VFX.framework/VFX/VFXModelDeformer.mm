@@ -1,27 +1,27 @@
 @interface VFXModelDeformer
-- (VFXModelDeformer)initWithCoder:(id)a3;
-- (void)_enumerateDependencyNodesUsingBlock:(id)a3;
+- (VFXModelDeformer)initWithCoder:(id)coder;
+- (void)_enumerateDependencyNodesUsingBlock:(id)block;
 @end
 
 @implementation VFXModelDeformer
 
-- (VFXModelDeformer)initWithCoder:(id)a3
+- (VFXModelDeformer)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = VFXModelDeformer;
   return [(VFXModelDeformer *)&v4 init];
 }
 
-- (void)_enumerateDependencyNodesUsingBlock:(id)a3
+- (void)_enumerateDependencyNodesUsingBlock:(id)block
 {
   v13 = 0;
-  v8 = objc_msgSend_requiredInputs(self, a2, a3, v3);
+  v8 = objc_msgSend_requiredInputs(self, a2, block, v3);
   if ((v8 & 0x38) != 0)
   {
     v9 = objc_msgSend_dependencyNodeAtIndex_(self, v6, 0, v7);
     if (v9)
     {
-      (*(a3 + 2))(a3, 0, v9, v8, &v13);
+      (*(block + 2))(block, 0, v9, v8, &v13);
     }
 
     else if ((byte_1EB658658 & 1) == 0)
@@ -40,7 +40,7 @@
     v11 = objc_msgSend_dependencyNodeAtIndex_(self, v6, 1, v7);
     if (v11)
     {
-      (*(a3 + 2))(a3, 1, v11, v8, &v13);
+      (*(block + 2))(block, 1, v11, v8, &v13);
     }
 
     else if ((byte_1EB658659 & 1) == 0)

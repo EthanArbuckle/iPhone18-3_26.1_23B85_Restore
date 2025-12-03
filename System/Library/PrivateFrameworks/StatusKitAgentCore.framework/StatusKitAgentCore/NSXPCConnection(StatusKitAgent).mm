@@ -9,7 +9,7 @@
 - (id)sk_stringArrayValueForEntitlement:()StatusKitAgent
 {
   v17 = *MEMORY[0x277D85DE8];
-  v1 = [a1 valueForEntitlement:?];
+  v1 = [self valueForEntitlement:?];
   v2 = objc_alloc_init(MEMORY[0x277CBEB18]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -57,23 +57,23 @@
 
 - (uint64_t)sk_BOOLeanValueForEntitlement:()StatusKitAgent
 {
-  v1 = [a1 valueForEntitlement:?];
+  v1 = [self valueForEntitlement:?];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (id)sk_stringValueForEntitlement:()StatusKitAgent
 {
-  v1 = [a1 valueForEntitlement:?];
+  v1 = [self valueForEntitlement:?];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v2 = v1;

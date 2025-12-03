@@ -1,6 +1,6 @@
 @interface MTLDebugLocation
 - (MTLDebugLocation)inlinedAt;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
 - (void)releaseInternal;
 @end
@@ -20,10 +20,10 @@
   }
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v13[9] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%u", -[MTLDebugSubProgram filename](-[MTLDebugLocation scope](self, "scope"), "filename"), -[MTLDebugLocation line](self, "line")];
   if ([(MTLDebugLocation *)self inlinedAt])
   {
@@ -35,7 +35,7 @@
     v13[5] = @"column =";
     v13[6] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MTLDebugLocation column](self, "column")}];
     v13[7] = @"inlinedAt";
-    v13[8] = [[(MTLDebugLocation *)self inlinedAt] formattedDescription:a3 + 4];
+    v13[8] = [[(MTLDebugLocation *)self inlinedAt] formattedDescription:description + 4];
     v7 = MEMORY[0x1E695DEC8];
     v8 = v13;
     v9 = 9;

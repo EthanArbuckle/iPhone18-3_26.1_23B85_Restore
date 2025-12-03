@@ -1,34 +1,34 @@
 @interface BWMattingV2InferenceProvider
-- (BWMattingV2InferenceProvider)initWithConfiguration:(id)a3;
+- (BWMattingV2InferenceProvider)initWithConfiguration:(id)configuration;
 - (NSArray)cloneVideoRequirements;
-- (id)bindMattingInput:(id)a3 fromAttachedMediaUsingKey:(id)a4 preparedByAttachedMediaKey:(id)a5 withVideoFormatProvider:(id)a6;
-- (id)bindMattingInput:(id)a3 fromAttachedMediaUsingKey:(id)a4 withVideoFormat:(id)a5;
-- (id)bindMattingInput:(id)a3 fromMetadataUsingKeys:(id)a4;
-- (id)bindMattingOutput:(id)a3 asMetadataUsingKeys:(id)a4;
-- (id)bindMattingOutput:(id)a3 fromAttachedMediaUsingKey:(id)a4 preparedByAttachedMediaKey:(id)a5 withVideoFormatProvider:(id)a6;
+- (id)bindMattingInput:(id)input fromAttachedMediaUsingKey:(id)key preparedByAttachedMediaKey:(id)mediaKey withVideoFormatProvider:(id)provider;
+- (id)bindMattingInput:(id)input fromAttachedMediaUsingKey:(id)key withVideoFormat:(id)format;
+- (id)bindMattingInput:(id)input fromMetadataUsingKeys:(id)keys;
+- (id)bindMattingOutput:(id)output asMetadataUsingKeys:(id)keys;
+- (id)bindMattingOutput:(id)output fromAttachedMediaUsingKey:(id)key preparedByAttachedMediaKey:(id)mediaKey withVideoFormatProvider:(id)provider;
 - (id)newStorage;
-- (int)prepareForSubmissionWithWorkQueue:(id)a3;
-- (int)prewarmUsingLimitedMemory:(BOOL)a3;
-- (int)reconcileWithPlaceholderProvider:(id)a3;
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7;
+- (int)prepareForSubmissionWithWorkQueue:(id)queue;
+- (int)prewarmUsingLimitedMemory:(BOOL)memory;
+- (int)reconcileWithPlaceholderProvider:(id)provider;
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler;
 - (uint64_t)_loadMattingProcessor;
 - (unsigned)allowedPixelBufferCompressionDirection;
 - (void)_configureMattingProcessor;
-- (void)_outputPixelBufferForOutputVideoRequirement:(void *)a3 storage:(int)a4 isMatte:;
+- (void)_outputPixelBufferForOutputVideoRequirement:(void *)requirement storage:(int)storage isMatte:;
 - (void)_processorOptions;
 - (void)dealloc;
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6;
-- (void)propagateMattingOutputToSampleBuffer:(void *)a3 storage:;
-- (void)setCustomInferenceIdentifier:(id)a3;
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer;
+- (void)propagateMattingOutputToSampleBuffer:(void *)buffer storage:;
+- (void)setCustomInferenceIdentifier:(id)identifier;
 @end
 
 @implementation BWMattingV2InferenceProvider
 
 - (unsigned)allowedPixelBufferCompressionDirection
 {
-  v2 = [(BWMattingV2InferenceProvider *)self executionTarget];
+  executionTarget = [(BWMattingV2InferenceProvider *)self executionTarget];
 
-  return [BWInferenceEngine allowedBufferCompressionDirectionForExecutionTarget:v2];
+  return [BWInferenceEngine allowedBufferCompressionDirectionForExecutionTarget:executionTarget];
 }
 
 - (NSArray)cloneVideoRequirements
@@ -42,14 +42,14 @@
   return [MEMORY[0x1E695DEC8] arrayWithObjects:&lowResSegmentationCloneOutputVideoRequirement count:1];
 }
 
-- (BWMattingV2InferenceProvider)initWithConfiguration:(id)a3
+- (BWMattingV2InferenceProvider)initWithConfiguration:(id)configuration
 {
   v10.receiver = self;
   v10.super_class = BWMattingV2InferenceProvider;
   v4 = [(BWMattingV2InferenceProvider *)&v10 init];
   if (v4)
   {
-    if (!a3 || ([a3 mainImageDownscalingFactor], v5 == 0.0))
+    if (!configuration || ([configuration mainImageDownscalingFactor], v5 == 0.0))
     {
 
       return 0;
@@ -57,28 +57,28 @@
 
     else
     {
-      v4->_type = [a3 inferenceType];
-      v4->_sensorConfigurationsByPortType = [a3 sensorConfigurationsByPortType];
-      v6 = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters mattingVersion];
-      if (!v6)
+      v4->_type = [configuration inferenceType];
+      v4->_sensorConfigurationsByPortType = [configuration sensorConfigurationsByPortType];
+      mattingVersion = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters mattingVersion];
+      if (!mattingVersion)
       {
-        v7 = [(NSArray *)[(NSDictionary *)v4->_sensorConfigurationsByPortType allValues] firstObject];
-        v6 = -[FigCaptureCameraParameters mattingVersionForPortType:sensorIDString:](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "mattingVersionForPortType:sensorIDString:", [v7 portType], objc_msgSend(v7, "sensorIDString"));
+        firstObject = [(NSArray *)[(NSDictionary *)v4->_sensorConfigurationsByPortType allValues] firstObject];
+        mattingVersion = -[FigCaptureCameraParameters mattingVersionForPortType:sensorIDString:](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "mattingVersionForPortType:sensorIDString:", [firstObject portType], objc_msgSend(firstObject, "sensorIDString"));
       }
 
-      v4->_mattingProcessorVersion = v6;
-      v4->_mattingTuningConfiguration = [a3 tuningConfiguration];
-      v4->_submitWithoutSynchronization = [a3 submitWithoutSynchronization];
-      v4->_appliesFinalCropRect = [a3 appliesFinalCropRect];
-      [a3 mainImageDownscalingFactor];
+      v4->_mattingProcessorVersion = mattingVersion;
+      v4->_mattingTuningConfiguration = [configuration tuningConfiguration];
+      v4->_submitWithoutSynchronization = [configuration submitWithoutSynchronization];
+      v4->_appliesFinalCropRect = [configuration appliesFinalCropRect];
+      [configuration mainImageDownscalingFactor];
       v4->_mainImageDownscalingFactor = v8;
-      v4->_enabledMattes = [a3 enabledMattes];
+      v4->_enabledMattes = [configuration enabledMattes];
       v4->_inputVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
       v4->_outputVideoRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
       v4->_inputMetadataRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
       v4->_outputMetadataRequirements = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v4->_metalCommandQueue = [a3 metalCommandQueue];
-      v4->_sdofRenderingTuningParameters = [a3 sdofRenderingTuningParameters];
+      v4->_metalCommandQueue = [configuration metalCommandQueue];
+      v4->_sdofRenderingTuningParameters = [configuration sdofRenderingTuningParameters];
     }
   }
 
@@ -102,34 +102,34 @@
 
 - (id)newStorage
 {
-  v3 = [(BWMattingV2InferenceProvider *)self cloneVideoRequirements];
-  v4 = [MEMORY[0x1E695DF70] array];
-  [v4 addObjectsFromArray:self->_inputVideoRequirements];
-  [v4 addObjectsFromArray:self->_outputVideoRequirements];
-  if ([(NSArray *)v3 count])
+  cloneVideoRequirements = [(BWMattingV2InferenceProvider *)self cloneVideoRequirements];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObjectsFromArray:self->_inputVideoRequirements];
+  [array addObjectsFromArray:self->_outputVideoRequirements];
+  if ([(NSArray *)cloneVideoRequirements count])
   {
-    [v4 addObjectsFromArray:v3];
+    [array addObjectsFromArray:cloneVideoRequirements];
   }
 
-  v5 = [MEMORY[0x1E695DF70] array];
-  [v5 addObjectsFromArray:self->_outputVideoRequirements];
-  if ([(NSArray *)v3 count])
+  array2 = [MEMORY[0x1E695DF70] array];
+  [array2 addObjectsFromArray:self->_outputVideoRequirements];
+  if ([(NSArray *)cloneVideoRequirements count])
   {
-    [v5 addObjectsFromArray:v3];
+    [array2 addObjectsFromArray:cloneVideoRequirements];
   }
 
   v6 = [BWMattingInferenceStorage alloc];
 
-  return [(BWInferenceProviderStorage *)v6 initWithRequirementsNeedingPixelBuffers:v4 requirementsNeedingPixelBufferPools:v5];
+  return [(BWInferenceProviderStorage *)v6 initWithRequirementsNeedingPixelBuffers:array requirementsNeedingPixelBufferPools:array2];
 }
 
-- (void)setCustomInferenceIdentifier:(id)a3
+- (void)setCustomInferenceIdentifier:(id)identifier
 {
   customInferenceIdentifier = self->_customInferenceIdentifier;
-  if (customInferenceIdentifier != a3)
+  if (customInferenceIdentifier != identifier)
   {
 
-    self->_customInferenceIdentifier = a3;
+    self->_customInferenceIdentifier = identifier;
   }
 }
 
@@ -151,7 +151,7 @@ uint64_t __114__BWMattingV2InferenceProvider_submitForSampleBuffer_usingStorage_
   return result;
 }
 
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer
 {
   v10 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -159,7 +159,7 @@ uint64_t __114__BWMattingV2InferenceProvider_submitForSampleBuffer_usingStorage_
     kdebug_trace();
   }
 
-  [(BWMattingV2InferenceProvider *)self propagateMattingOutputToSampleBuffer:a6 storage:a4];
+  [(BWMattingV2InferenceProvider *)self propagateMattingOutputToSampleBuffer:sampleBuffer storage:storage];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
@@ -180,8 +180,8 @@ uint64_t __114__BWMattingV2InferenceProvider_submitForSampleBuffer_usingStorage_
           objc_enumerationMutation(outputMetadataRequirements);
         }
 
-        v16 = [a4 newMetadataDictionarySatisfyingRequirement:*(*(&v18 + 1) + 8 * v15)];
-        [a3 addEntriesFromDictionary:v16];
+        v16 = [storage newMetadataDictionarySatisfyingRequirement:*(*(&v18 + 1) + 8 * v15)];
+        [dictionary addEntriesFromDictionary:v16];
 
         ++v15;
       }
@@ -199,94 +199,94 @@ uint64_t __114__BWMattingV2InferenceProvider_submitForSampleBuffer_usingStorage_
   }
 }
 
-- (id)bindMattingInput:(id)a3 fromAttachedMediaUsingKey:(id)a4 withVideoFormat:(id)a5
+- (id)bindMattingInput:(id)input fromAttachedMediaUsingKey:(id)key withVideoFormat:(id)format
 {
-  v6 = [[BWInferenceVideoRequirement alloc] initWithAttachedMediaKey:a4 videoFormat:a5];
+  v6 = [[BWInferenceVideoRequirement alloc] initWithAttachedMediaKey:key videoFormat:format];
   [(NSMutableArray *)self->_inputVideoRequirements addObject:v6];
 
   return v6;
 }
 
-- (id)bindMattingInput:(id)a3 fromAttachedMediaUsingKey:(id)a4 preparedByAttachedMediaKey:(id)a5 withVideoFormatProvider:(id)a6
+- (id)bindMattingInput:(id)input fromAttachedMediaUsingKey:(id)key preparedByAttachedMediaKey:(id)mediaKey withVideoFormatProvider:(id)provider
 {
-  v7 = [[BWInferenceLazyVideoRequirement alloc] initWithAttachedMediaKey:a4 preparedByAttachedMediaKey:a5 videoFormatProvider:a6];
+  v7 = [[BWInferenceLazyVideoRequirement alloc] initWithAttachedMediaKey:key preparedByAttachedMediaKey:mediaKey videoFormatProvider:provider];
   [(NSMutableArray *)self->_inputVideoRequirements addObject:v7];
 
   return v7;
 }
 
-- (id)bindMattingOutput:(id)a3 fromAttachedMediaUsingKey:(id)a4 preparedByAttachedMediaKey:(id)a5 withVideoFormatProvider:(id)a6
+- (id)bindMattingOutput:(id)output fromAttachedMediaUsingKey:(id)key preparedByAttachedMediaKey:(id)mediaKey withVideoFormatProvider:(id)provider
 {
-  v7 = [[BWInferenceLazyVideoRequirement alloc] initWithAttachedMediaKey:a4 preparedByAttachedMediaKey:a5 videoFormatProvider:a6];
+  v7 = [[BWInferenceLazyVideoRequirement alloc] initWithAttachedMediaKey:key preparedByAttachedMediaKey:mediaKey videoFormatProvider:provider];
   [(NSMutableArray *)self->_outputVideoRequirements addObject:v7];
 
   return v7;
 }
 
-- (id)bindMattingInput:(id)a3 fromMetadataUsingKeys:(id)a4
+- (id)bindMattingInput:(id)input fromMetadataUsingKeys:(id)keys
 {
-  v5 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:a4];
+  v5 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:keys];
   [(NSMutableArray *)self->_inputMetadataRequirements addObject:v5];
 
   return v5;
 }
 
-- (id)bindMattingOutput:(id)a3 asMetadataUsingKeys:(id)a4
+- (id)bindMattingOutput:(id)output asMetadataUsingKeys:(id)keys
 {
-  v5 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:a4];
+  v5 = [[BWInferenceMetadataRequirement alloc] initWithMetadataKeys:keys];
   [(NSMutableArray *)self->_outputMetadataRequirements addObject:v5];
 
   return v5;
 }
 
-- (int)reconcileWithPlaceholderProvider:(id)a3
+- (int)reconcileWithPlaceholderProvider:(id)provider
 {
   type = self->_type;
-  if (type != [a3 type])
+  if (type != [provider type])
   {
     return -31783;
   }
 
-  [a3 customInferenceIdentifier];
+  [provider customInferenceIdentifier];
   if (![OUTLINED_FUNCTION_8() isEqualToString:?])
   {
     return -31783;
   }
 
   [(NSMutableArray *)self->_inputVideoRequirements removeAllObjects];
-  [a3 inputVideoRequirements];
+  [provider inputVideoRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_inputMetadataRequirements removeAllObjects];
-  [a3 inputMetadataRequirements];
+  [provider inputMetadataRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_outputVideoRequirements removeAllObjects];
-  [a3 outputVideoRequirements];
+  [provider outputVideoRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
   [(NSMutableArray *)self->_outputMetadataRequirements removeAllObjects];
-  [a3 outputMetadataRequirements];
+  [provider outputMetadataRequirements];
   [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
 
-  self->_primaryFormatInputVideoRequirement = [a3 primaryFormatInputVideoRequirement];
-  self->_depthInputVideoRequirement = [a3 depthInputVideoRequirement];
+  self->_primaryFormatInputVideoRequirement = [provider primaryFormatInputVideoRequirement];
+  self->_depthInputVideoRequirement = [provider depthInputVideoRequirement];
 
-  self->_disparityInputVideoRequirement = [a3 disparityInputVideoRequirement];
-  self->_segmentationInputVideoRequirement = [a3 segmentationInputVideoRequirement];
+  self->_disparityInputVideoRequirement = [provider disparityInputVideoRequirement];
+  self->_segmentationInputVideoRequirement = [provider segmentationInputVideoRequirement];
 
-  self->_segmentationOutputVideoRequirement = [a3 segmentationOutputVideoRequirement];
-  self->_lowResSegmentationCloneOutputVideoRequirement = [a3 lowResSegmentationCloneOutputVideoRequirement];
+  self->_segmentationOutputVideoRequirement = [provider segmentationOutputVideoRequirement];
+  self->_lowResSegmentationCloneOutputVideoRequirement = [provider lowResSegmentationCloneOutputVideoRequirement];
 
-  self->_refinedDepthOutputVideoRequirement = [a3 refinedDepthOutputVideoRequirement];
-  self->_faceSegmentsWithLandmarksMetadataRequirement = [a3 faceSegmentsWithLandmarksMetadataRequirement];
+  self->_refinedDepthOutputVideoRequirement = [provider refinedDepthOutputVideoRequirement];
+  self->_faceSegmentsWithLandmarksMetadataRequirement = [provider faceSegmentsWithLandmarksMetadataRequirement];
 
-  self->_outputMasksContainsValidContentRequirement = [a3 outputMasksContainsValidContentRequirement];
+  self->_outputMasksContainsValidContentRequirement = [provider outputMasksContainsValidContentRequirement];
   [(NSMutableDictionary *)self->_semanticMatteInputVideoRequirementsByMattingOutputType removeAllObjects];
-  -[NSMutableDictionary addEntriesFromDictionary:](self->_semanticMatteInputVideoRequirementsByMattingOutputType, "addEntriesFromDictionary:", [a3 semanticMatteInputVideoRequirementsByMattingOutputType]);
+  -[NSMutableDictionary addEntriesFromDictionary:](self->_semanticMatteInputVideoRequirementsByMattingOutputType, "addEntriesFromDictionary:", [provider semanticMatteInputVideoRequirementsByMattingOutputType]);
   [(NSMutableDictionary *)self->_semanticMatteOutputVideoRequirementsByMattingOutputType removeAllObjects];
-  -[NSMutableDictionary addEntriesFromDictionary:](self->_semanticMatteOutputVideoRequirementsByMattingOutputType, "addEntriesFromDictionary:", [a3 semanticMatteOutputVideoRequirementsByMattingOutputType]);
+  -[NSMutableDictionary addEntriesFromDictionary:](self->_semanticMatteOutputVideoRequirementsByMattingOutputType, "addEntriesFromDictionary:", [provider semanticMatteOutputVideoRequirementsByMattingOutputType]);
   return 0;
 }
 
-- (int)prepareForSubmissionWithWorkQueue:(id)a3
+- (int)prepareForSubmissionWithWorkQueue:(id)queue
 {
   v4 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -319,15 +319,15 @@ uint64_t __114__BWMattingV2InferenceProvider_submitForSampleBuffer_usingStorage_
 
 - (uint64_t)_loadMattingProcessor
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (BWLoadProcessorBundle(@"Matting", *(a1 + 40)))
+  if (BWLoadProcessorBundle(@"Matting", *(self + 40)))
   {
-    v2 = [objc_alloc(NSClassFromString(&cfstr_Figmatting.isa)) initWithCommandQueue:*(a1 + 184)];
-    *(a1 + 32) = v2;
+    v2 = [objc_alloc(NSClassFromString(&cfstr_Figmatting.isa)) initWithCommandQueue:*(self + 184)];
+    *(self + 32) = v2;
     if (v2)
     {
       return 0;
@@ -355,8 +355,8 @@ uint64_t __114__BWMattingV2InferenceProvider_submitForSampleBuffer_usingStorage_
     if ([(BWMattingV2InferenceProvider *)result _processorOptions])
     {
       [OUTLINED_FUNCTION_3_70() setOptions:?];
-      v2 = [v1[11] videoFormat];
-      if (!v2)
+      videoFormat = [v1[11] videoFormat];
+      if (!videoFormat)
       {
 LABEL_44:
         fig_log_get_emitter();
@@ -365,12 +365,12 @@ LABEL_44:
         return 0;
       }
 
-      v10 = v2;
+      v10 = videoFormat;
       v11 = v1[12];
       if (v11)
       {
-        v12 = [v11 videoFormat];
-        if (!v12)
+        videoFormat2 = [v11 videoFormat];
+        if (!videoFormat2)
         {
           goto LABEL_44;
         }
@@ -378,15 +378,15 @@ LABEL_44:
 
       else
       {
-        v12 = 0;
+        videoFormat2 = 0;
       }
 
-      v13 = v1[14];
-      if (v13)
+      videoFormat3 = v1[14];
+      if (videoFormat3)
       {
-        v13 = [v13 videoFormat];
-        v14 = v13;
-        if (!v13)
+        videoFormat3 = [videoFormat3 videoFormat];
+        v14 = videoFormat3;
+        if (!videoFormat3)
         {
           goto LABEL_44;
         }
@@ -403,7 +403,7 @@ LABEL_44:
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v17 = OUTLINED_FUNCTION_10_36(v13, v3, v4, v5, v6, v7, v8, v9, v41, v43);
+      v17 = OUTLINED_FUNCTION_10_36(videoFormat3, v3, v4, v5, v6, v7, v8, v9, v41, v43);
       if (v17)
       {
         v18 = v17;
@@ -426,11 +426,11 @@ LABEL_14:
           }
 
           v14 = result;
-          v22 = [v21 intValue];
+          intValue = [v21 intValue];
           if (!(!v31 & v30))
           {
             v32 = 0;
-            switch(v22)
+            switch(intValue)
             {
               case 1:
               case 2:
@@ -447,18 +447,18 @@ LABEL_14:
             }
           }
 
-          if (v22 == 16 || v22 == 32)
+          if (intValue == 16 || intValue == 32)
           {
 LABEL_34:
-            v32 = v22;
+            v32 = intValue;
           }
 
           else
           {
-            v32 = v22;
-            if (v22 != 64)
+            v32 = intValue;
+            if (intValue != 64)
             {
-              switch(v22)
+              switch(intValue)
               {
                 case 0x200:
                   v32 = 128;
@@ -474,7 +474,7 @@ LABEL_34:
                   break;
                 default:
                   v32 = 0;
-                  if (v22 == 0x2000)
+                  if (intValue == 0x2000)
                   {
                     v32 = 2048;
                   }
@@ -488,7 +488,7 @@ LABEL_35:
           v16 |= v32;
           if (v18 == ++v20)
           {
-            v18 = OUTLINED_FUNCTION_10_36(v22, v23, v24, v25, v26, v27, v28, v29, v42, v44);
+            v18 = OUTLINED_FUNCTION_10_36(intValue, v23, v24, v25, v26, v27, v28, v29, v42, v44);
             if (v18)
             {
               goto LABEL_14;
@@ -503,20 +503,20 @@ LABEL_35:
       else
       {
 LABEL_38:
-        v33 = [v10 width];
-        v34 = [v10 height];
-        v35 = [v12 width];
-        v36 = [v12 height];
-        v37 = [v14 width];
-        v38 = [v14 height];
+        width = [v10 width];
+        height = [v10 height];
+        width2 = [videoFormat2 width];
+        height2 = [videoFormat2 height];
+        width3 = [v14 width];
+        height3 = [v14 height];
         v39 = *(v1 + 11);
         v40 = v1[4];
-        v46[0] = v33;
-        v46[1] = v34;
-        v46[2] = v35;
-        v46[3] = v36;
-        v46[4] = v37;
-        v46[5] = v38;
+        v46[0] = width;
+        v46[1] = height;
+        v46[2] = width2;
+        v46[3] = height2;
+        v46[4] = width3;
+        v46[5] = height3;
         v46[6] = v16;
         v46[7] = v39;
         [v40 setConfig:v46];
@@ -543,7 +543,7 @@ LABEL_38:
   return result;
 }
 
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler
 {
   v12 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -560,7 +560,7 @@ LABEL_38:
     goto LABEL_7;
   }
 
-  v15 = [a4 pixelBufferForRequirement:self->_primaryFormatInputVideoRequirement];
+  v15 = [storage pixelBufferForRequirement:self->_primaryFormatInputVideoRequirement];
   if (!v15)
   {
     goto LABEL_7;
@@ -569,7 +569,7 @@ LABEL_38:
   v22 = v15;
   if (self->_depthInputVideoRequirement)
   {
-    v23 = [a4 pixelBufferForRequirement:?];
+    v23 = [storage pixelBufferForRequirement:?];
     if (!v23)
     {
 LABEL_7:
@@ -589,7 +589,7 @@ LABEL_79:
 
   if (self->_disparityInputVideoRequirement)
   {
-    v24 = [a4 pixelBufferForRequirement:?];
+    v24 = [storage pixelBufferForRequirement:?];
     if (!v24)
     {
       goto LABEL_7;
@@ -607,7 +607,7 @@ LABEL_79:
   rect.size = v25;
   if (self->_refinedDepthOutputVideoRequirement)
   {
-    v26 = CMGetAttachment(a3, *off_1E798D340, 0);
+    v26 = CMGetAttachment(buffer, *off_1E798D340, 0);
     if (!v26)
     {
       goto LABEL_7;
@@ -631,7 +631,7 @@ LABEL_79:
     goto LABEL_24;
   }
 
-  v28 = [a4 pixelBufferForRequirement:v7];
+  v28 = [storage pixelBufferForRequirement:v7];
   if (!v28)
   {
     goto LABEL_78;
@@ -652,7 +652,7 @@ LABEL_79:
     goto LABEL_21;
   }
 
-  v24 = [(BWMattingV2InferenceProvider *)self _outputPixelBufferForOutputVideoRequirement:a4 storage:0 isMatte:?];
+  v24 = [(BWMattingV2InferenceProvider *)self _outputPixelBufferForOutputVideoRequirement:storage storage:0 isMatte:?];
   if (!v24)
   {
 LABEL_78:
@@ -695,7 +695,7 @@ LABEL_24:
   v131 = 0u;
   v132 = 0u;
   enabledSemanticMattingOutputTypes = self->_enabledSemanticMattingOutputTypes;
-  v33 = OUTLINED_FUNCTION_9_42(v24, lowResSegmentationCloneOutputVideoRequirement, segmentationInputVideoRequirement, v17, v18, v19, v20, v21, v79, destinationBuffer, v84, v86, v23, v22, v90, a7, v93, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125, v126, *(&v126 + 1), v127, *(&v127 + 1), v128, *(&v128 + 1), v129, *(&v129 + 1), v130);
+  v33 = OUTLINED_FUNCTION_9_42(v24, lowResSegmentationCloneOutputVideoRequirement, segmentationInputVideoRequirement, v17, v18, v19, v20, v21, v79, destinationBuffer, v84, v86, v23, v22, v90, handler, v93, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, selfCopy, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125, v126, *(&v126 + 1), v127, *(&v127 + 1), v128, *(&v128 + 1), v129, *(&v129 + 1), v130);
   if (v33)
   {
     v34 = v33;
@@ -710,12 +710,12 @@ LABEL_24:
         }
 
         [*(*(&v131 + 1) + 8 * i) intValue];
-        v37 = [a4 pixelBufferForRequirement:{-[NSMutableDictionary objectForKeyedSubscript:](self->_semanticMatteInputVideoRequirementsByMattingOutputType, "objectForKeyedSubscript:", OUTLINED_FUNCTION_13_31())}];
+        v37 = [storage pixelBufferForRequirement:{-[NSMutableDictionary objectForKeyedSubscript:](self->_semanticMatteInputVideoRequirementsByMattingOutputType, "objectForKeyedSubscript:", OUTLINED_FUNCTION_13_31())}];
         if (!v37 || ([v13 setObject:v37 forKeyedSubscript:OUTLINED_FUNCTION_13_31()], v38 = -[NSMutableDictionary objectForKeyedSubscript:](self->_semanticMatteOutputVideoRequirementsByMattingOutputType, "objectForKeyedSubscript:", OUTLINED_FUNCTION_13_31()), (v39 = OUTLINED_FUNCTION_6_52(v38, v38)) == 0))
         {
           v73 = 0;
           v74 = 4294935578;
-          a7 = v92;
+          handler = v92;
           v12 = MEMORY[0x1E695FF58];
           goto LABEL_56;
         }
@@ -723,7 +723,7 @@ LABEL_24:
         v40 = [v95 setObject:v39 forKeyedSubscript:OUTLINED_FUNCTION_13_31()];
       }
 
-      v34 = OUTLINED_FUNCTION_9_42(v40, v41, v42, v43, v44, v45, v46, v47, v80, destinationBuffera, v85, v87, v88, v89, v91, v92, v94, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125, v126, *(&v126 + 1), v127, *(&v127 + 1), v128, *(&v128 + 1), v129, *(&v129 + 1), v130);
+      v34 = OUTLINED_FUNCTION_9_42(v40, v41, v42, v43, v44, v45, v46, v47, v80, destinationBuffera, v85, v87, v88, v89, v91, v92, v94, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, selfCopy, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125, v126, *(&v126 + 1), v127, *(&v127 + 1), v128, *(&v128 + 1), v129, *(&v129 + 1), v130);
       if (v34)
       {
         continue;
@@ -733,10 +733,10 @@ LABEL_24:
     }
   }
 
-  v48 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_outputMasksContainsValidContentRequirement)
   {
-    v56 = v48;
+    v56 = dictionary;
     v57 = v94;
     if (v94)
     {
@@ -747,7 +747,7 @@ LABEL_24:
     v129 = 0u;
     v126 = 0u;
     v127 = 0u;
-    v58 = OUTLINED_FUNCTION_12_35(v57, v49, v50, v51, v52, v53, v54, v55, v80, destinationBuffera, v85, v87, v88, v89, v91, v92, v94, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125, 0);
+    v58 = OUTLINED_FUNCTION_12_35(v57, v49, v50, v51, v52, v53, v54, v55, v80, destinationBuffera, v85, v87, v88, v89, v91, v92, v94, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, selfCopy, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125, 0);
     if (v58)
     {
       v59 = v58;
@@ -774,7 +774,7 @@ LABEL_24:
           }
         }
 
-        v59 = OUTLINED_FUNCTION_12_35(v63, v64, v65, v66, v67, v68, v69, v70, v81, destinationBuffera, v85, v87, v88, v89, v91, v92, v94, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125, v126);
+        v59 = OUTLINED_FUNCTION_12_35(v63, v64, v65, v66, v67, v68, v69, v70, v81, destinationBuffera, v85, v87, v88, v89, v91, v92, v94, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104, selfCopy, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, v118, v119, v120, v121, v122, v123, v124, v125, v126);
       }
 
       while (v59);
@@ -784,7 +784,7 @@ LABEL_24:
     {
       v108 = 0x1F219E710;
       v109 = v56;
-      [a4 setDictionary:objc_msgSend(MEMORY[0x1E695DF20] forMetadataRequirement:{"dictionaryWithObjects:forKeys:count:", &v109, &v108, 1), self->_outputMasksContainsValidContentRequirement}];
+      [storage setDictionary:objc_msgSend(MEMORY[0x1E695DF20] forMetadataRequirement:{"dictionaryWithObjects:forKeys:count:", &v109, &v108, 1), self->_outputMasksContainsValidContentRequirement}];
     }
   }
 
@@ -815,10 +815,10 @@ LABEL_24:
   [OUTLINED_FUNCTION_3_70() setOutputSemanticsGlassesPixelBuffer:?];
   [v95 objectForKeyedSubscript:&unk_1F2245298];
   [OUTLINED_FUNCTION_3_70() setOutputSemanticsSkyPixelBuffer:?];
-  v72 = [(FigMatting *)self->_mattingProcessor process];
-  a7 = v92;
+  process = [(FigMatting *)self->_mattingProcessor process];
+  handler = v92;
   v12 = MEMORY[0x1E695FF58];
-  if (v72)
+  if (process)
   {
     fig_log_get_emitter();
     v74 = FigSignalErrorAtGM();
@@ -843,7 +843,7 @@ LABEL_56:
       v103 = __114__BWMattingV2InferenceProvider_submitForSampleBuffer_usingStorage_withSubmissionTime_workQueue_completionHandler___block_invoke;
       v104 = &unk_1E7999708;
       LODWORD(v107) = 0;
-      v105 = self;
+      selfCopy = self;
       v106 = v92;
       if (self->_submitWithoutSynchronization)
       {
@@ -855,15 +855,15 @@ LABEL_56:
         metalCommandQueue = self->_metalCommandQueue;
         if (metalCommandQueue)
         {
-          v76 = [(MTLCommandQueue *)metalCommandQueue commandBuffer];
-          [v76 setLabel:@"inference_matting_async_completion"];
+          commandBuffer = [(MTLCommandQueue *)metalCommandQueue commandBuffer];
+          [commandBuffer setLabel:@"inference_matting_async_completion"];
           v96 = MEMORY[0x1E69E9820];
           v97 = 3221225472;
           v98 = __114__BWMattingV2InferenceProvider_submitForSampleBuffer_usingStorage_withSubmissionTime_workQueue_completionHandler___block_invoke_2;
           v99 = &unk_1E7998320;
           v100 = &v101;
-          [v76 addScheduledHandler:&v96];
-          [v76 commit];
+          [commandBuffer addScheduledHandler:&v96];
+          [commandBuffer commit];
         }
 
         else
@@ -906,7 +906,7 @@ LABEL_61:
     kdebug_trace();
   }
 
-  if (a7)
+  if (handler)
   {
     v77 = v73;
   }
@@ -918,31 +918,31 @@ LABEL_61:
 
   if ((v77 & 1) == 0)
   {
-    (*(a7 + 2))(a7, v74, self);
+    (*(handler + 2))(handler, v74, self);
   }
 
   return v74;
 }
 
-- (void)_outputPixelBufferForOutputVideoRequirement:(void *)a3 storage:(int)a4 isMatte:
+- (void)_outputPixelBufferForOutputVideoRequirement:(void *)requirement storage:(int)storage isMatte:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v7 = [a3 pixelBufferForRequirement:a2];
+  v7 = [requirement pixelBufferForRequirement:a2];
   if (!v7)
   {
-    v7 = [objc_msgSend(a3 pixelBufferPoolForRequirement:{a2), "newPixelBuffer"}];
-    [a3 setPixelBuffer:v7 forRequirement:a2];
+    v7 = [objc_msgSend(requirement pixelBufferPoolForRequirement:{a2), "newPixelBuffer"}];
+    [requirement setPixelBuffer:v7 forRequirement:a2];
     if (v7)
     {
       CFRelease(v7);
     }
   }
 
-  if (a4)
+  if (storage)
   {
     CVBufferSetAttachment(v7, *MEMORY[0x1E6965F30], *MEMORY[0x1E6965F60], kCVAttachmentMode_ShouldPropagate);
   }
@@ -950,16 +950,16 @@ LABEL_61:
   return v7;
 }
 
-- (void)propagateMattingOutputToSampleBuffer:(void *)a3 storage:
+- (void)propagateMattingOutputToSampleBuffer:(void *)buffer storage:
 {
-  v114 = a3;
-  if (!a1)
+  bufferCopy = buffer;
+  if (!self)
   {
     return;
   }
 
   v5 = off_1E798A3C8;
-  if (!*(a1 + 120))
+  if (!*(self + 120))
   {
     v42 = off_1E798A788;
     v43 = off_1E798A5C8;
@@ -970,7 +970,7 @@ LABEL_61:
   }
 
   BWSampleBufferRemoveAttachedMedia(a2, 0x1F219E750);
-  v13 = OUTLINED_FUNCTION_14_29(v6, v7, *(a1 + 120), v8, v9, v10, v11, v12, v83, v84, v85, cf, v89, v92, v95, obj, v101, v104, v107, v110, v111, v114);
+  v13 = OUTLINED_FUNCTION_14_29(v6, v7, *(self + 120), v8, v9, v10, v11, v12, v83, v84, v85, cf, v89, v92, v95, obj, v101, v104, v107, v110, v111, bufferCopy);
   if (!v13)
   {
     fig_log_get_emitter();
@@ -980,12 +980,12 @@ LABEL_61:
   }
 
   v14 = v13;
-  v15 = (*(a1 + 40) - 1) | 0x10000u;
+  v15 = (*(self + 40) - 1) | 0x10000u;
   v124 = *off_1E798D218;
   v125 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v15];
   CMSetAttachment(v14, *off_1E798D2D8, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v125 forKeys:&v124 count:1], 1u);
   v16 = BWCMSampleBufferCopyReattachAndReturnMutableMetadata(v14);
-  if (*(a1 + 53) == 1)
+  if (*(self + 53) == 1)
   {
     v17 = BWPixelBufferDimensionsFromSampleBuffer(a2);
     CMGetAttachment(a2, *off_1E798A3C8, 0);
@@ -1013,7 +1013,7 @@ LABEL_61:
     v5 = off_1E798A3C8;
   }
 
-  if (*(a1 + 208) != 0.0)
+  if (*(self + 208) != 0.0)
   {
     [objc_msgSend(CMGetAttachment(a2 *v5];
     *&v32 = OUTLINED_FUNCTION_7_50(v31);
@@ -1021,10 +1021,10 @@ LABEL_61:
   }
 
   BWSampleBufferSetAttachedMedia(a2, 0x1F21AABB0, v14);
-  v40 = *(a1 + 136);
+  v40 = *(self + 136);
   if (v40)
   {
-    v41 = OUTLINED_FUNCTION_14_29(v33, v34, v40, v35, v36, v37, v38, v39, v83, v84, v85, cfa, v90, v93, v96, obja, v102, v105, v108, v110, v112, v114);
+    v41 = OUTLINED_FUNCTION_14_29(v33, v34, v40, v35, v36, v37, v38, v39, v83, v84, v85, cfa, v90, v93, v96, obja, v102, v105, v108, v110, v112, bufferCopy);
     if (!v41)
     {
       fig_log_get_emitter();
@@ -1041,7 +1041,7 @@ LABEL_61:
     v41 = 0;
   }
 
-  v44 = *(a1 + 128);
+  v44 = *(self + 128);
   v91 = v41;
   v94 = v14;
   if (!v44)
@@ -1050,12 +1050,12 @@ LABEL_61:
     v43 = off_1E798A5C8;
     cfb = 0;
 LABEL_19:
-    v46 = *(a1 + 40);
+    v46 = *(self + 40);
     v118 = 0u;
     v119 = 0u;
     v120 = 0u;
     v121 = 0u;
-    objb = *(a1 + 144);
+    objb = *(self + 144);
     v47 = [objb countByEnumeratingWithState:&v118 objects:v117 count:16];
     if (v47)
     {
@@ -1081,12 +1081,12 @@ LABEL_19:
             objc_enumerationMutation(objb);
           }
 
-          v56 = [*(*(&v118 + 1) + 8 * i) intValue];
-          v57 = mv2ip_inputAttachedMediaKeyForMattingOutputType(v56);
-          v58 = mv2ip_outputAttachedMediaKeyForMattingOutputType(v56);
+          intValue = [*(*(&v118 + 1) + 8 * i) intValue];
+          v57 = mv2ip_inputAttachedMediaKeyForMattingOutputType(intValue);
+          v58 = mv2ip_outputAttachedMediaKeyForMattingOutputType(intValue);
           BWSampleBufferRemoveAttachedMedia(a2, v57);
-          v59 = [*(a1 + 160) objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v56)}];
-          v66 = OUTLINED_FUNCTION_14_29(v59, v60, v59, v61, v62, v63, v64, v65, v83, v84, v85, cfb, v91, v94, v97, objb, v103, v106, v109, v110, v113, v114);
+          v59 = [*(self + 160) objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", intValue)}];
+          v66 = OUTLINED_FUNCTION_14_29(v59, v60, v59, v61, v62, v63, v64, v65, v83, v84, v85, cfb, v91, v94, v97, objb, v103, v106, v109, v110, v113, bufferCopy);
           if (v66)
           {
             v67 = v66;
@@ -1094,7 +1094,7 @@ LABEL_19:
             v116 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:HIDWORD(v110)];
             CMSetAttachment(v67, v49, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v116 forKeys:&v115 count:1], 1u);
             v68 = BWCMSampleBufferCopyReattachAndReturnMutableMetadata(v67);
-            if (*(a1 + 53) == 1)
+            if (*(self + 53) == 1)
             {
               v69 = BWPixelBufferDimensionsFromSampleBuffer(a2);
               CMGetAttachment(a2, v50, 0);
@@ -1118,7 +1118,7 @@ LABEL_19:
               OUTLINED_FUNCTION_11_35(v68, v69, v79, v71, v72, v73, v74);
             }
 
-            if (*(a1 + 208) != 0.0)
+            if (*(self + 208) != 0.0)
             {
               [objc_msgSend(CMGetAttachment(a2 v50];
               *&v81 = OUTLINED_FUNCTION_7_50(v80);
@@ -1147,7 +1147,7 @@ LABEL_19:
     goto LABEL_35;
   }
 
-  v45 = OUTLINED_FUNCTION_14_29(v33, v34, v44, v35, v36, v37, v38, v39, v83, v84, v85, cfa, v41, v14, v96, obja, v102, v105, v108, v110, v112, v114);
+  v45 = OUTLINED_FUNCTION_14_29(v33, v34, v44, v35, v36, v37, v38, v39, v83, v84, v85, cfa, v41, v14, v96, obja, v102, v105, v108, v110, v112, bufferCopy);
   if (v45)
   {
     v42 = off_1E798A788;
@@ -1173,15 +1173,15 @@ LABEL_36:
   }
 }
 
-- (int)prewarmUsingLimitedMemory:(BOOL)a3
+- (int)prewarmUsingLimitedMemory:(BOOL)memory
 {
   result = [(BWMattingV2InferenceProvider *)self _loadMattingProcessor];
   if (!result)
   {
-    v5 = [(BWMattingV2InferenceProvider *)self _processorOptions];
-    if (v5)
+    _processorOptions = [(BWMattingV2InferenceProvider *)self _processorOptions];
+    if (_processorOptions)
     {
-      [(FigMatting *)self->_mattingProcessor setOptions:v5];
+      [(FigMatting *)self->_mattingProcessor setOptions:_processorOptions];
       mattingProcessor = self->_mattingProcessor;
 
       return [(FigMatting *)mattingProcessor prewarmWithTuningParameters:0];
@@ -1202,13 +1202,13 @@ LABEL_36:
   {
     v1 = result;
     v2 = result[17];
-    v3 = [MEMORY[0x1E695DF90] dictionary];
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v5 = *off_1E798A9D0;
-    [v3 setObject:v4 forKeyedSubscript:*off_1E798A9D0];
+    [dictionary setObject:dictionary2 forKeyedSubscript:*off_1E798A9D0];
     if (v2)
     {
-      [v3 setObject:v1[25] forKeyedSubscript:@"SDOFRenderingParameters"];
+      [dictionary setObject:v1[25] forKeyedSubscript:@"SDOFRenderingParameters"];
     }
 
     v18 = 0u;
@@ -1238,7 +1238,7 @@ LABEL_6:
           break;
         }
 
-        [objc_msgSend(v3 objectForKeyedSubscript:{v5), "setObject:forKeyedSubscript:", v12, v10}];
+        [objc_msgSend(dictionary objectForKeyedSubscript:{v5), "setObject:forKeyedSubscript:", v12, v10}];
         if (v7 == ++v9)
         {
           v7 = [obj countByEnumeratingWithState:&v16 objects:v15 count:16];
@@ -1252,9 +1252,9 @@ LABEL_6:
       }
     }
 
-    if ([v3 count])
+    if ([dictionary count])
     {
-      v13 = v3;
+      v13 = dictionary;
     }
 
     else

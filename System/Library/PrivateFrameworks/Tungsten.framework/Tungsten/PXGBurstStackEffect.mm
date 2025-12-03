@@ -1,14 +1,14 @@
 @interface PXGBurstStackEffect
-- (PXGBurstStackEffect)initWithEntityManager:(id)a3;
-- (id)createSiblingsTextureForMainSpriteTexture:(id)a3;
-- (void)configureSiblingSprites:(id *)a3 siblingsSpriteIndexRange:(_PXGSpriteIndexRange)a4 siblingsTexture:(id)a5 forMainRenderSpriteRef:(id *)a6 mainPresentationSpriteRef:(id *)a7 mainSpriteIndex:(unsigned int)a8 mainSpriteTexture:(id)a9 screenScale:(double)a10;
+- (PXGBurstStackEffect)initWithEntityManager:(id)manager;
+- (id)createSiblingsTextureForMainSpriteTexture:(id)texture;
+- (void)configureSiblingSprites:(id *)sprites siblingsSpriteIndexRange:(_PXGSpriteIndexRange)range siblingsTexture:(id)texture forMainRenderSpriteRef:(id *)ref mainPresentationSpriteRef:(id *)spriteRef mainSpriteIndex:(unsigned int)index mainSpriteTexture:(id)spriteTexture screenScale:(double)self0;
 @end
 
 @implementation PXGBurstStackEffect
 
-- (void)configureSiblingSprites:(id *)a3 siblingsSpriteIndexRange:(_PXGSpriteIndexRange)a4 siblingsTexture:(id)a5 forMainRenderSpriteRef:(id *)a6 mainPresentationSpriteRef:(id *)a7 mainSpriteIndex:(unsigned int)a8 mainSpriteTexture:(id)a9 screenScale:(double)a10
+- (void)configureSiblingSprites:(id *)sprites siblingsSpriteIndexRange:(_PXGSpriteIndexRange)range siblingsTexture:(id)texture forMainRenderSpriteRef:(id *)ref mainPresentationSpriteRef:(id *)spriteRef mainSpriteIndex:(unsigned int)index mainSpriteTexture:(id)spriteTexture screenScale:(double)self0
 {
-  v15 = a5;
+  textureCopy = texture;
   PXFloatRoundToPixel();
   v17 = v16;
   PXFloatRoundToPixel();
@@ -21,9 +21,9 @@
   }
 
   v68 = v21;
-  var0 = a3->var0;
+  var0 = sprites->var0;
   PXRectWithCenterAndSize();
-  v23 = *(a7->var1 + 2);
+  v23 = *(spriteRef->var1 + 2);
   v65 = v24;
   v66 = v17 * var0;
   PXRectRoundToPixel();
@@ -31,7 +31,7 @@
   y = v73.origin.y;
   width = v73.size.width;
   height = v73.size.height;
-  var1 = a6->var1;
+  var1 = ref->var1;
   MidX = CGRectGetMidX(v73);
   v74.origin.x = x;
   v74.origin.y = y;
@@ -67,7 +67,7 @@
       y = y - v17;
       x = v17 + x;
       width = width + -v17 * 2.0;
-      v39 = (a3->var2 + v37);
+      v39 = (sprites->var2 + v37);
       v77.origin.x = x;
       v77.origin.y = y;
       v77.size.width = width;
@@ -94,8 +94,8 @@
       v39[1] = v41;
       v39[2] = v32;
       *(v39 + 3) = vcvt_f32_f64(v43);
-      v44 = (a3->var3 + v35);
-      var2 = a7->var2;
+      v44 = (sprites->var3 + v35);
+      var2 = spriteRef->var2;
       v46 = *(var2 + 1);
       *v44 = *var2;
       v44[1] = v46;
@@ -113,19 +113,19 @@
       v44[9] = v50;
       v44[6] = v52;
       v44[7] = v51;
-      v53 = (a3->var3 + 4 * v36);
+      v53 = (sprites->var3 + 4 * v36);
       *&v42 = *v53 * 0.6;
       *v53 = *&v42;
       *&v42 = v67 * v53[4];
       v53[4] = *&v42;
-      v54 = a3->var4 + v36;
-      var3 = a7->var3;
+      v54 = sprites->var4 + v36;
+      var3 = spriteRef->var3;
       v56 = *(var3 + 4);
       v57 = *(var3 + 1);
       *v54 = *var3;
       *(v54 + 1) = v57;
       *(v54 + 4) = v56;
-      *(a3->var4 + v36 + 24) = a8;
+      *(sprites->var4 + v36 + 24) = index;
       v37 += 32;
       v36 += 40;
       v35 += 160;
@@ -134,7 +134,7 @@
     while (v38 != v37);
   }
 
-  v71 = v15;
+  v71 = textureCopy;
   if (v71)
   {
     objc_opt_class();
@@ -143,39 +143,39 @@
       goto LABEL_8;
     }
 
-    v58 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v61 = objc_opt_class();
     v60 = NSStringFromClass(v61);
-    v62 = [v71 px_descriptionForAssertionMessage];
-    [v58 handleFailureInMethod:a2 object:self file:@"PXGBurstStackEffect.m" lineNumber:85 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"siblingsTexture", v60, v62}];
+    px_descriptionForAssertionMessage = [v71 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGBurstStackEffect.m" lineNumber:85 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"siblingsTexture", v60, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v58 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v59 = objc_opt_class();
     v60 = NSStringFromClass(v59);
-    [v58 handleFailureInMethod:a2 object:self file:@"PXGBurstStackEffect.m" lineNumber:85 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"siblingsTexture", v60}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGBurstStackEffect.m" lineNumber:85 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"siblingsTexture", v60}];
   }
 
 LABEL_8:
-  [v71 addSpriteIndexRange:{a4.location, HIDWORD(*&a4)}];
+  [v71 addSpriteIndexRange:{range.location, HIDWORD(*&range)}];
 }
 
-- (id)createSiblingsTextureForMainSpriteTexture:(id)a3
+- (id)createSiblingsTextureForMainSpriteTexture:(id)texture
 {
-  v3 = a3;
+  textureCopy = texture;
   v4 = +[PXGEffectWrappingTexture createTexture];
-  [v4 setParent:v3];
+  [v4 setParent:textureCopy];
 
   return v4;
 }
 
-- (PXGBurstStackEffect)initWithEntityManager:(id)a3
+- (PXGBurstStackEffect)initWithEntityManager:(id)manager
 {
   v6.receiver = self;
   v6.super_class = PXGBurstStackEffect;
-  v3 = [(PXGEffect *)&v6 initWithEntityManager:a3];
+  v3 = [(PXGEffect *)&v6 initWithEntityManager:manager];
   v4 = v3;
   if (v3)
   {

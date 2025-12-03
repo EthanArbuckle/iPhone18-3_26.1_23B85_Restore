@@ -29,7 +29,7 @@
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_213FB568C(self + OBJC_IVAR___BlastDoorLiteTapback_liteTapback, v7, type metadata accessor for LiteTapback);
   v8 = v7[*(v4 + 28)];
-  v9 = self;
+  selfCopy = self;
   sub_213FB5844(v7, type metadata accessor for LiteTapback);
   if (v8 == 15)
   {

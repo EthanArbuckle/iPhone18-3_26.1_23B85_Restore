@@ -1,12 +1,12 @@
 @interface HMBCloudZoneConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)attributeDescriptions;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMBCloudZoneConfiguration
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[HMBMutableCloudZoneConfiguration allocWithZone:?]];
   [(HMBCloudZoneConfiguration *)v4 setShouldRebuildOnManateeKeyLoss:[(HMBCloudZoneConfiguration *)self shouldRebuildOnManateeKeyLoss]];
@@ -14,13 +14,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -31,8 +31,8 @@
   v6 = v5;
   if (v6 && (v7 = -[HMBCloudZoneConfiguration shouldRebuildOnManateeKeyLoss](self, "shouldRebuildOnManateeKeyLoss"), v7 == [v6 shouldRebuildOnManateeKeyLoss]))
   {
-    v9 = [(HMBCloudZoneConfiguration *)self shouldSkipCloudPulls];
-    v8 = v9 ^ [v6 shouldSkipCloudPulls] ^ 1;
+    shouldSkipCloudPulls = [(HMBCloudZoneConfiguration *)self shouldSkipCloudPulls];
+    v8 = shouldSkipCloudPulls ^ [v6 shouldSkipCloudPulls] ^ 1;
   }
 
   else

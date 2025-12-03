@@ -1,22 +1,22 @@
 @interface MPSGraphPackage
-+ (void)readResources:(id)a3 fromURL:(id)a4 error:(id *)a5 usingAllocator:(function_ref<char *)(llvm:(unsigned long)long :(unsigned long)long StringRef;
-- (MPSGraphPackage)initWithPackageURL:(id)a3 temporaryPackageURL:(id)a4 append:(BOOL)a5;
-- (MPSGraphPackage)initWithSourcePackageURL:(id)a3;
-- (MPSGraphPackage)initWithSourcePackageURL:(id)a3 error:(id *)a4;
++ (void)readResources:(id)resources fromURL:(id)l error:(id *)error usingAllocator:(function_ref<char *)(llvm:(unsigned long)long :(unsigned long)long StringRef;
+- (MPSGraphPackage)initWithPackageURL:(id)l temporaryPackageURL:(id)rL append:(BOOL)append;
+- (MPSGraphPackage)initWithSourcePackageURL:(id)l;
+- (MPSGraphPackage)initWithSourcePackageURL:(id)l error:(id *)error;
 - (id).cxx_construct;
-- (id)addBinaryResourceFile:(id)a3 withFileType:(unint64_t)a4 toBinaryResourceFileDict:(id)a5;
+- (id)addBinaryResourceFile:(id)file withFileType:(unint64_t)type toBinaryResourceFileDict:(id)dict;
 - (id)createFileHandle;
 - (id)findLatestPackage;
 - (id)findLatestPackageKey;
 - (id)getMLIRLibrary;
-- (id)getPackageKeyForPlatform:(unint64_t)a3 andMinimumDeploymentTarget:(optional<MPSGraphOperatingSystemVersion> *)a4;
+- (id)getPackageKeyForPlatform:(unint64_t)platform andMinimumDeploymentTarget:(optional<MPSGraphOperatingSystemVersion> *)target;
 - (id)getPlistData;
-- (id)writeResources:(ArrayRef<mlir::mps::MPSResourceBlobEntry *>)a3;
+- (id)writeResources:(ArrayRef<mlir::mps::MPSResourceBlobEntry *>)resources;
 - (void)commonInit;
-- (void)copyDataFiles:(ArrayRef<std:(id)a4 :(Location)a5 string>)a3 currentBasePath:location:;
-- (void)createBytecodeFromMlirModule:(ModuleOp)a3 fileHandle:(id)a4 resourceStorageMode:(unint64_t)a5;
-- (void)createVersionedBytecodeFromMlirModule:(ModuleOp)a3 packageKey:(id)a4 fileHandle:(id)a5 resourceStorageMode:(unint64_t)a6 downgradedModuleCallback:(function_ref<void)(mlir::mps::serialization::ModuleOp;
-- (void)setMLIRLibrary:(id)a3 withPackageKey:(id)a4;
+- (void)copyDataFiles:(ArrayRef<std:(id)files :(Location)a5 string>)a3 currentBasePath:location:;
+- (void)createBytecodeFromMlirModule:(ModuleOp)module fileHandle:(id)handle resourceStorageMode:(unint64_t)mode;
+- (void)createVersionedBytecodeFromMlirModule:(ModuleOp)module packageKey:(id)key fileHandle:(id)handle resourceStorageMode:(unint64_t)mode downgradedModuleCallback:(function_ref<void)(mlir::mps::serialization::ModuleOp;
+- (void)setMLIRLibrary:(id)library withPackageKey:(id)key;
 @end
 
 @implementation MPSGraphPackage
@@ -36,18 +36,18 @@
   self->_perExtensionFileCounts = v6;
 }
 
-- (MPSGraphPackage)initWithSourcePackageURL:(id)a3 error:(id *)a4
+- (MPSGraphPackage)initWithSourcePackageURL:(id)l error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  lCopy = l;
   v30.receiver = self;
   v30.super_class = MPSGraphPackage;
   v8 = [(MPSGraphPackage *)&v30 init];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   fileManager = v8->_fileManager;
-  v8->_fileManager = v9;
+  v8->_fileManager = defaultManager;
 
-  objc_storeStrong(&v8->_packageURL, a3);
+  objc_storeStrong(&v8->_packageURL, l);
   temporaryPackageURL = v8->_temporaryPackageURL;
   v8->_temporaryPackageURL = 0;
 
@@ -69,12 +69,12 @@
 
   v29 = 0;
   v14 = v8->_fileManager;
-  v15 = [(NSURL *)v8->_packageURL path];
-  LODWORD(v14) = [(NSFileManager *)v14 fileExistsAtPath:v15 isDirectory:&v29];
+  path = [(NSURL *)v8->_packageURL path];
+  LODWORD(v14) = [(NSFileManager *)v14 fileExistsAtPath:path isDirectory:&v29];
 
   if (!v14)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -82,20 +82,20 @@
     v21 = MEMORY[0x1E696ABC0];
     v31 = *MEMORY[0x1E696A578];
     v22 = MEMORY[0x1E696AEC0];
-    v23 = [(NSURL *)v8->_packageURL absoluteString];
-    v24 = [v22 stringWithFormat:@"Error: did not find file at url: %@", v23];
+    absoluteString = [(NSURL *)v8->_packageURL absoluteString];
+    v24 = [v22 stringWithFormat:@"Error: did not find file at url: %@", absoluteString];
     v32 = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-    *a4 = [v21 errorWithDomain:@"com.apple.mps" code:-19 userInfo:v25];
+    *error = [v21 errorWithDomain:@"com.apple.mps" code:-19 userInfo:v25];
 
 LABEL_14:
-    a4 = 0;
+    error = 0;
     goto LABEL_15;
   }
 
   if ((v29 & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -104,13 +104,13 @@ LABEL_14:
     v33 = *MEMORY[0x1E696A578];
     v34[0] = @"Error: file is unexpectedly not a directory";
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-    *a4 = [v26 errorWithDomain:@"com.apple.mps" code:-19 userInfo:v27];
+    *error = [v26 errorWithDomain:@"com.apple.mps" code:-19 userInfo:v27];
 
     goto LABEL_14;
   }
 
   v16 = [(NSURL *)v8->_packageURL URLByAppendingPathComponent:@"manifest.plist"];
-  v17 = loadPlistAtURL(v16, a4);
+  v17 = loadPlistAtURL(v16, error);
   v18 = v17;
   if (!v17)
   {
@@ -122,19 +122,19 @@ LABEL_14:
   plistRoot = v8->_plistRoot;
   v8->_plistRoot = v19;
 
-  a4 = v8;
+  error = v8;
 LABEL_15:
 
-  return a4;
+  return error;
 }
 
-- (MPSGraphPackage)initWithSourcePackageURL:(id)a3
+- (MPSGraphPackage)initWithSourcePackageURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = MPSGraphPackage;
   v10 = 0;
-  v5 = [[(MPSGraphPackage *)&v11 init] initWithSourcePackageURL:v4 error:&v10];
+  v5 = [[(MPSGraphPackage *)&v11 init] initWithSourcePackageURL:lCopy error:&v10];
   v6 = v10;
   v7 = v6;
   if (!v5)
@@ -145,7 +145,7 @@ LABEL_15:
 
       if (MTLReportFailureTypeEnabled())
       {
-        v9 = [v7 localizedDescription];
+        localizedDescription = [v7 localizedDescription];
         MTLReportFailure();
       }
     }
@@ -159,19 +159,19 @@ LABEL_15:
   return v5;
 }
 
-- (MPSGraphPackage)initWithPackageURL:(id)a3 temporaryPackageURL:(id)a4 append:(BOOL)a5
+- (MPSGraphPackage)initWithPackageURL:(id)l temporaryPackageURL:(id)rL append:(BOOL)append
 {
   v27 = *MEMORY[0x1E69E9840];
-  a3;
-  v22 = a4;
+  l;
+  rLCopy = rL;
   v26.receiver = self;
   v26.super_class = MPSGraphPackage;
   v23 = [(MPSGraphPackage *)&v26 init];
-  objc_storeStrong(&v23->_packageURL, a3);
-  objc_storeStrong(&v23->_temporaryPackageURL, a4);
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  objc_storeStrong(&v23->_packageURL, l);
+  objc_storeStrong(&v23->_temporaryPackageURL, rL);
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   fileManager = v23->_fileManager;
-  v23->_fileManager = v8;
+  v23->_fileManager = defaultManager;
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   plistRoot = v23->_plistRoot;
@@ -181,8 +181,8 @@ LABEL_15:
   [(NSMutableDictionary *)v23->_plistRoot setObject:v12 forKeyedSubscript:@"Package Version"];
 
   [(MPSGraphPackage *)v23 commonInit];
-  v13 = [v22 path];
-  v21 = [v13 stringByAppendingString:@".lock"];
+  path = [rLCopy path];
+  v21 = [path stringByAppendingString:@".lock"];
 
   v14 = v21;
   v15 = [v21 cStringUsingEncoding:4];
@@ -223,7 +223,7 @@ LABEL_15:
   std::string::__throw_length_error[abi:ne200100]();
 }
 
-- (id)getPackageKeyForPlatform:(unint64_t)a3 andMinimumDeploymentTarget:(optional<MPSGraphOperatingSystemVersion> *)a4
+- (id)getPackageKeyForPlatform:(unint64_t)platform andMinimumDeploymentTarget:(optional<MPSGraphOperatingSystemVersion> *)target
 {
   v38 = *MEMORY[0x1E69E9840];
   if (qword_1ECE75318 != -1)
@@ -233,19 +233,19 @@ LABEL_15:
 
   v6 = _MergedGlobals_7;
   v27 = v6;
-  if (a3 >= 4)
+  if (platform >= 4)
   {
     if (MTLReportFailureTypeEnabled())
     {
-      v25 = a3;
+      platformCopy = platform;
       MTLReportFailure();
     }
   }
 
   else
   {
-    var1 = qword_1E09A7140[a3];
-    var0 = qword_1E09A7160[a3];
+    var1 = qword_1E09A7140[platform];
+    var0 = qword_1E09A7160[platform];
   }
 
   v35 = 0u;
@@ -312,14 +312,14 @@ LABEL_13:
 
 LABEL_20:
 
-      if (v14 == a3)
+      if (v14 == platform)
       {
         v15 = [v10 objectAtIndexedSubscript:1];
         MPSGraphOperatingSystemVersion::MPSGraphOperatingSystemVersion(&v32, v15);
 
         if (v32.var0 > var0 || v32.var0 == var0 && (v32.var1 > var1 || v32.var1 == var1 && v32.var2 > var2))
         {
-          if (!a4->var1 || v32.var0 < a4->var0.var1.var0 || v32.var0 == a4->var0.var1.var0 && ((v16 = a4->var0.var1.var1, v32.var1 < v16) || v32.var1 == v16 && v32.var2 <= a4->var0.var1.var2))
+          if (!target->var1 || v32.var0 < target->var0.var1.var0 || v32.var0 == target->var0.var1.var0 && ((v16 = target->var0.var1.var1, v32.var1 < v16) || v32.var1 == v16 && v32.var2 <= target->var0.var1.var2))
           {
             var2 = v32.var2;
             var1 = v32.var1;
@@ -344,7 +344,7 @@ LABEL_41:
   v32.var2 = var2;
   v18 = objc_alloc_init(MEMORY[0x1E696AEC0]);
   v19 = v18;
-  if (a3 >= 4)
+  if (platform >= 4)
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -354,7 +354,7 @@ LABEL_41:
 
   else
   {
-    v20 = [v18 stringByAppendingString:off_1E86D4AF8[a3]];
+    v20 = [v18 stringByAppendingString:off_1E86D4AF8[platform]];
 
     v19 = v20;
   }
@@ -371,20 +371,20 @@ LABEL_41:
   return v23;
 }
 
-- (void)createVersionedBytecodeFromMlirModule:(ModuleOp)a3 packageKey:(id)a4 fileHandle:(id)a5 resourceStorageMode:(unint64_t)a6 downgradedModuleCallback:(function_ref<void)(mlir::mps::serialization::ModuleOp
+- (void)createVersionedBytecodeFromMlirModule:(ModuleOp)module packageKey:(id)key fileHandle:(id)handle resourceStorageMode:(unint64_t)mode downgradedModuleCallback:(function_ref<void)(mlir::mps::serialization::ModuleOp
 {
   v43 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  handleCopy = handle;
   if (qword_1ECE75328 != -1)
   {
     dispatch_once(&qword_1ECE75328, &__block_literal_global_173);
   }
 
-  v11 = [qword_1ECE75320 objectForKey:v9];
+  v11 = [qword_1ECE75320 objectForKey:keyCopy];
   if (!v11 && MTLReportFailureTypeEnabled())
   {
-    __src = v9;
+    __src = keyCopy;
     MTLReportFailure();
   }
 
@@ -416,9 +416,9 @@ LABEL_41:
     MTLReportFailure();
   }
 
-  v17 = [(NSURL *)self->_temporaryPackageURL URLByAppendingPathComponent:v10, __srcb];
-  v18 = [v17 path];
-  v19 = [v18 cStringUsingEncoding:4];
+  __srcb = [(NSURL *)self->_temporaryPackageURL URLByAppendingPathComponent:handleCopy, __srcb];
+  path = [__srcb path];
+  v19 = [path cStringUsingEncoding:4];
   v20 = strlen(v19);
   if (v20 < 0x7FFFFFFFFFFFFFF8)
   {
@@ -507,11 +507,11 @@ LABEL_41:
   std::string::__throw_length_error[abi:ne200100]();
 }
 
-- (void)createBytecodeFromMlirModule:(ModuleOp)a3 fileHandle:(id)a4 resourceStorageMode:(unint64_t)a5
+- (void)createBytecodeFromMlirModule:(ModuleOp)module fileHandle:(id)handle resourceStorageMode:(unint64_t)mode
 {
-  v7 = [(NSURL *)self->_temporaryPackageURL URLByAppendingPathComponent:a4];
-  v8 = [v7 path];
-  v9 = [v8 cStringUsingEncoding:4];
+  v7 = [(NSURL *)self->_temporaryPackageURL URLByAppendingPathComponent:handle];
+  path = [v7 path];
+  v9 = [path cStringUsingEncoding:4];
   v10 = strlen(v9);
   if (v10 < 0x7FFFFFFFFFFFFFF8)
   {
@@ -575,12 +575,12 @@ LABEL_41:
       v25.var0 = "MLIR20.0.0git";
       v25.var1 = 13;
       mlir::BytecodeWriterConfig::BytecodeWriterConfig(v18, v25);
-      if (a5 == 1)
+      if (mode == 1)
       {
         mlir::BytecodeWriterConfig::setElideResourceDataFlag(v18, 1);
       }
 
-      mlir::writeBytecodeToFile(a3.state, *(v19 + 17), v18, v15);
+      mlir::writeBytecodeToFile(module.state, *(v19 + 17), v18, v15);
     }
 
     operator new();
@@ -592,20 +592,20 @@ LABEL_41:
 - (id)createFileHandle
 {
   v3 = [(NSMutableDictionary *)self->_perExtensionFileCounts objectForKeyedSubscript:@"mpsgraph"];
-  v4 = [v3 unsignedLongValue];
+  unsignedLongValue = [v3 unsignedLongValue];
 
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"model_%lu.mpsgraph", v4];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v4 + 1];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"model_%lu.mpsgraph", unsignedLongValue];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:unsignedLongValue + 1];
   [(NSMutableDictionary *)self->_perExtensionFileCounts setObject:v6 forKeyedSubscript:@"mpsgraph"];
 
   v7 = [(NSURL *)self->_temporaryPackageURL URLByAppendingPathComponent:v5];
   fileManager = self->_fileManager;
-  v9 = [v7 path];
-  [(NSFileManager *)fileManager fileExistsAtPath:v9];
+  path = [v7 path];
+  [(NSFileManager *)fileManager fileExistsAtPath:path];
 
   v10 = self->_fileManager;
-  v11 = [v7 path];
-  LODWORD(v10) = [(NSFileManager *)v10 fileExistsAtPath:v11];
+  path2 = [v7 path];
+  LODWORD(v10) = [(NSFileManager *)v10 fileExistsAtPath:path2];
 
   if (v10 && MTLReportFailureTypeEnabled())
   {
@@ -615,12 +615,12 @@ LABEL_41:
   return v5;
 }
 
-- (id)addBinaryResourceFile:(id)a3 withFileType:(unint64_t)a4 toBinaryResourceFileDict:(id)a5
+- (id)addBinaryResourceFile:(id)file withFileType:(unint64_t)type toBinaryResourceFileDict:(id)dict
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v8 = a5;
-  if (a4)
+  fileCopy = file;
+  dictCopy = dict;
+  if (type)
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -648,12 +648,12 @@ LABEL_41:
 
   v13 = [(NSURL *)self->_temporaryPackageURL URLByAppendingPathComponent:v11];
   fileManager = self->_fileManager;
-  v15 = [v13 path];
-  [(NSFileManager *)fileManager fileExistsAtPath:v15];
+  path = [v13 path];
+  [(NSFileManager *)fileManager fileExistsAtPath:path];
 
   v16 = self->_fileManager;
-  v17 = [v13 path];
-  LODWORD(v16) = [(NSFileManager *)v16 fileExistsAtPath:v17];
+  path2 = [v13 path];
+  LODWORD(v16) = [(NSFileManager *)v16 fileExistsAtPath:path2];
 
   if (v16 && MTLReportFailureTypeEnabled())
   {
@@ -661,7 +661,7 @@ LABEL_41:
   }
 
   v18 = self->_fileManager;
-  v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:v29];
+  v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:fileCopy];
   v30 = 0;
   LOBYTE(v18) = [(NSFileManager *)v18 copyItemAtURL:v19 toURL:v13 error:&v30];
   v20 = v30;
@@ -670,28 +670,28 @@ LABEL_41:
   {
     [v20 debugDescription];
     v28 = v27 = v13;
-    v26 = v29;
+    v26 = fileCopy;
     MTLReportFailure();
   }
 
-  v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", objc_msgSend(v8, "count", v26, v27, v28)];
+  v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", objc_msgSend(dictCopy, "count", v26, v27, v28)];
   v31[0] = @"Type";
-  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:type];
   v31[1] = @"File Name";
   v32[0] = v22;
   v32[1] = v11;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:2];
-  [v8 setObject:v23 forKeyedSubscript:v21];
+  [dictCopy setObject:v23 forKeyedSubscript:v21];
 
   return v21;
 }
 
-- (id)writeResources:(ArrayRef<mlir::mps::MPSResourceBlobEntry *>)a3
+- (id)writeResources:(ArrayRef<mlir::mps::MPSResourceBlobEntry *>)resources
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = resources.var1;
+  var0 = resources.var0;
   v82[60] = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:a3.var1];
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:resources.var1];
   v7 = v6;
   if (!var1)
   {
@@ -699,7 +699,7 @@ LABEL_41:
     goto LABEL_100;
   }
 
-  v66 = self;
+  selfCopy = self;
   v67 = v6;
   v80 = v82;
   v81 = 0xA00000000;
@@ -838,12 +838,12 @@ LABEL_41:
   }
 
   while (v19);
-  temporaryPackageURL = v66->_temporaryPackageURL;
+  temporaryPackageURL = selfCopy->_temporaryPackageURL;
   v32 = +[MPSGraphPackage getResourceFileName];
   v33 = [(NSURL *)temporaryPackageURL URLByAppendingPathComponent:v32];
-  v34 = [v33 path];
-  v35 = v34;
-  v36 = [v34 cStringUsingEncoding:4];
+  path = [v33 path];
+  v35 = path;
+  v36 = [path cStringUsingEncoding:4];
   v37 = strlen(v36);
   if (v37 > 0x7FFFFFFFFFFFFFF7)
   {
@@ -1095,17 +1095,17 @@ LABEL_100:
   return v7;
 }
 
-+ (void)readResources:(id)a3 fromURL:(id)a4 error:(id *)a5 usingAllocator:(function_ref<char *)(llvm:(unsigned long)long :(unsigned long)long StringRef
++ (void)readResources:(id)resources fromURL:(id)l error:(id *)error usingAllocator:(function_ref<char *)(llvm:(unsigned long)long :(unsigned long)long StringRef
 {
   v76 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v56 = v7;
-  if ([v7 count])
+  resourcesCopy = resources;
+  lCopy = l;
+  v56 = resourcesCopy;
+  if ([resourcesCopy count])
   {
-    v53 = v8;
-    v9 = [v8 path];
-    v10 = [v9 cStringUsingEncoding:4];
+    v53 = lCopy;
+    path = [lCopy path];
+    v10 = [path cStringUsingEncoding:4];
     v11 = strlen(v10);
     if (v11 >= 0x7FFFFFFFFFFFFFF8)
     {
@@ -1136,7 +1136,7 @@ LABEL_100:
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v13 = v7;
+    v13 = resourcesCopy;
     v14 = [v13 countByEnumeratingWithState:&v60 objects:v75 count:16];
     if (v14)
     {
@@ -1153,13 +1153,13 @@ LABEL_100:
 
           v16 = *(*(&v60 + 1) + 8 * v15);
           v59 = [v13 objectForKeyedSubscript:v16];
-          v17 = [v59 unsignedLongLongValue];
+          unsignedLongLongValue = [v59 unsignedLongLongValue];
           v18 = v16;
-          v19 = [v16 UTF8String];
-          v21 = v19;
-          if (v19)
+          uTF8String = [v16 UTF8String];
+          v21 = uTF8String;
+          if (uTF8String)
           {
-            v22 = strlen(v19);
+            v22 = strlen(uTF8String);
           }
 
           else
@@ -1183,7 +1183,7 @@ LABEL_100:
 
           buffer = llvm::allocate_buffer(v22 + 17, 8uLL);
           v28 = buffer;
-          v58 = v17;
+          v58 = unsignedLongLongValue;
           v29 = v14;
           v30 = v13;
           v31 = (buffer + 2);
@@ -1200,7 +1200,7 @@ LABEL_100:
           v13 = v30;
           v32 = llvm::StringMapImpl::RehashTable(&v64, v24);
           v14 = v29;
-          v17 = v58;
+          unsignedLongLongValue = v58;
           v33 = (v64 + 8 * v32);
           v26 = *v33;
           if (*v33)
@@ -1235,7 +1235,7 @@ LABEL_100:
           }
 
 LABEL_18:
-          *(v26 + 8) = v17;
+          *(v26 + 8) = unsignedLongLongValue;
 
           ++v15;
         }
@@ -1292,7 +1292,7 @@ LABEL_52:
       if (SHIBYTE(v68) < 0)
       {
         operator delete(__p[0]);
-        v8 = v53;
+        lCopy = v53;
         if ((v70 & 0x80000000) == 0)
         {
           goto LABEL_63;
@@ -1301,7 +1301,7 @@ LABEL_52:
 
       else
       {
-        v8 = v53;
+        lCopy = v53;
         if ((v70 & 0x80000000) == 0)
         {
           goto LABEL_63;
@@ -1324,7 +1324,7 @@ LABEL_52:
       v74 = v51;
       _os_log_error_impl(&dword_1DF9BF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%s", buf, 0xCu);
       v40 = 0x1E696A000;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_47;
       }
@@ -1333,7 +1333,7 @@ LABEL_52:
     else
     {
       v40 = 0x1E696A000uLL;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_47;
       }
@@ -1357,7 +1357,7 @@ LABEL_52:
     v45 = [*(v40 + 3776) stringWithFormat:@"%s:%d:: %@ ", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/MPSGraphComputePackage.mm", 814, v43];
     v72 = v45;
     v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-    *a5 = [v44 errorWithDomain:@"MPSGraph" code:-1 userInfo:v46];
+    *error = [v44 errorWithDomain:@"MPSGraph" code:-1 userInfo:v46];
 
 LABEL_47:
     if (MTLReportFailureTypeEnabled())
@@ -1382,15 +1382,15 @@ LABEL_47:
 LABEL_63:
 }
 
-- (void)setMLIRLibrary:(id)a3 withPackageKey:(id)a4
+- (void)setMLIRLibrary:(id)library withPackageKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(MPSGraphPackage *)self getMLIRLibrary];
-  [v7 updateWithMLIRLibrary:v10];
-  v8 = [v7 getDict];
+  libraryCopy = library;
+  keyCopy = key;
+  getMLIRLibrary = [(MPSGraphPackage *)self getMLIRLibrary];
+  [getMLIRLibrary updateWithMLIRLibrary:libraryCopy];
+  getDict = [getMLIRLibrary getDict];
   v9 = [(NSMutableDictionary *)self->_plistRoot objectForKeyedSubscript:@"Package Version"];
-  [v9 setObject:v8 forKeyedSubscript:v6];
+  [v9 setObject:getDict forKeyedSubscript:keyCopy];
 }
 
 - (id)findLatestPackageKey
@@ -1468,8 +1468,8 @@ LABEL_33:
   v3 = [(NSMutableDictionary *)self->_plistRoot objectForKeyedSubscript:@"Package Version"];
   if (v3)
   {
-    v4 = [(MPSGraphPackage *)self findLatestPackageKey];
-    v5 = [v3 objectForKeyedSubscript:v4];
+    findLatestPackageKey = [(MPSGraphPackage *)self findLatestPackageKey];
+    v5 = [v3 objectForKeyedSubscript:findLatestPackageKey];
   }
 
   else
@@ -1482,10 +1482,10 @@ LABEL_33:
 
 - (id)getMLIRLibrary
 {
-  v2 = [(MPSGraphPackage *)self findLatestPackage];
-  if (v2)
+  findLatestPackage = [(MPSGraphPackage *)self findLatestPackage];
+  if (findLatestPackage)
   {
-    v3 = [[MPSGraphPackageMLIRLibrary alloc] initWithMLIRLibraryDict:v2];
+    v3 = [[MPSGraphPackageMLIRLibrary alloc] initWithMLIRLibraryDict:findLatestPackage];
   }
 
   else
@@ -1512,16 +1512,16 @@ LABEL_33:
   return v3;
 }
 
-- (void)copyDataFiles:(ArrayRef<std:(id)a4 :(Location)a5 string>)a3 currentBasePath:location:
+- (void)copyDataFiles:(ArrayRef<std:(id)files :(Location)a5 string>)a3 currentBasePath:location:
 {
   var1 = a3.var1;
   var0 = a3.var0;
-  v17 = a4;
-  v9 = [v17 UTF8String];
-  v10 = v9;
-  if (v9)
+  filesCopy = files;
+  uTF8String = [filesCopy UTF8String];
+  v10 = uTF8String;
+  if (uTF8String)
   {
-    v11 = strlen(v9);
+    v11 = strlen(uTF8String);
   }
 
   else
@@ -1529,12 +1529,12 @@ LABEL_33:
     v11 = 0;
   }
 
-  v12 = [(NSURL *)self->_temporaryPackageURL path];
-  v13 = [v12 UTF8String];
-  v14 = v13;
-  if (v13)
+  path = [(NSURL *)self->_temporaryPackageURL path];
+  uTF8String2 = [path UTF8String];
+  v14 = uTF8String2;
+  if (uTF8String2)
   {
-    v15 = strlen(v13);
+    v15 = strlen(uTF8String2);
   }
 
   else

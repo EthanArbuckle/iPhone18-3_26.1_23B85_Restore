@@ -1,6 +1,6 @@
 @interface HMDHH2AutoMigrationEligibilityResult
-- (BOOL)isEqual:(id)a3;
-- (HMDHH2AutoMigrationEligibilityResult)initWithStatus:(unint64_t)a3 iCloudAccountStatus:(unint64_t)a4 unsupportedDevices:(unint64_t)a5 hasOnlyEmptyHomes:(BOOL)a6 numberOwnedNonEmptyHomes:(unint64_t)a7 numberUnownedSharedHomes:(unint64_t)a8 numberOwnedSharedHomes:(unint64_t)a9;
+- (BOOL)isEqual:(id)equal;
+- (HMDHH2AutoMigrationEligibilityResult)initWithStatus:(unint64_t)status iCloudAccountStatus:(unint64_t)accountStatus unsupportedDevices:(unint64_t)devices hasOnlyEmptyHomes:(BOOL)homes numberOwnedNonEmptyHomes:(unint64_t)emptyHomes numberUnownedSharedHomes:(unint64_t)sharedHomes numberOwnedSharedHomes:(unint64_t)ownedSharedHomes;
 - (id)attributeDescriptions;
 @end
 
@@ -50,13 +50,13 @@
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -67,8 +67,8 @@
   v6 = v5;
   if (v6 && (v7 = -[HMDHH2AutoMigrationEligibilityResult status](self, "status"), v7 == [v6 status]) && (v8 = -[HMDHH2AutoMigrationEligibilityResult iCloudAccountStatus](self, "iCloudAccountStatus"), v8 == objc_msgSend(v6, "iCloudAccountStatus")) && (v9 = -[HMDHH2AutoMigrationEligibilityResult unsupportedDevices](self, "unsupportedDevices"), v9 == objc_msgSend(v6, "unsupportedDevices")) && (v10 = -[HMDHH2AutoMigrationEligibilityResult hasOnlyEmptyHomes](self, "hasOnlyEmptyHomes"), v10 == objc_msgSend(v6, "hasOnlyEmptyHomes")) && (v11 = -[HMDHH2AutoMigrationEligibilityResult numberOwnedNonEmptyHomes](self, "numberOwnedNonEmptyHomes"), v11 == objc_msgSend(v6, "numberOwnedNonEmptyHomes")) && (v12 = -[HMDHH2AutoMigrationEligibilityResult numberUnownedSharedHomes](self, "numberUnownedSharedHomes"), v12 == objc_msgSend(v6, "numberUnownedSharedHomes")) && (v13 = -[HMDHH2AutoMigrationEligibilityResult numberOwnedSharedHomes](self, "numberOwnedSharedHomes"), v13 == objc_msgSend(v6, "numberOwnedSharedHomes")))
   {
-    v14 = [(HMDHH2AutoMigrationEligibilityResult *)self isEligible];
-    v15 = v14 ^ [v6 isEligible] ^ 1;
+    isEligible = [(HMDHH2AutoMigrationEligibilityResult *)self isEligible];
+    v15 = isEligible ^ [v6 isEligible] ^ 1;
   }
 
   else
@@ -79,21 +79,21 @@
   return v15;
 }
 
-- (HMDHH2AutoMigrationEligibilityResult)initWithStatus:(unint64_t)a3 iCloudAccountStatus:(unint64_t)a4 unsupportedDevices:(unint64_t)a5 hasOnlyEmptyHomes:(BOOL)a6 numberOwnedNonEmptyHomes:(unint64_t)a7 numberUnownedSharedHomes:(unint64_t)a8 numberOwnedSharedHomes:(unint64_t)a9
+- (HMDHH2AutoMigrationEligibilityResult)initWithStatus:(unint64_t)status iCloudAccountStatus:(unint64_t)accountStatus unsupportedDevices:(unint64_t)devices hasOnlyEmptyHomes:(BOOL)homes numberOwnedNonEmptyHomes:(unint64_t)emptyHomes numberUnownedSharedHomes:(unint64_t)sharedHomes numberOwnedSharedHomes:(unint64_t)ownedSharedHomes
 {
   v16.receiver = self;
   v16.super_class = HMDHH2AutoMigrationEligibilityResult;
   result = [(HMDHH2AutoMigrationEligibilityResult *)&v16 init];
   if (result)
   {
-    result->_status = a3;
-    result->_iCloudAccountStatus = a4;
-    result->_unsupportedDevices = a5;
-    result->_hasOnlyEmptyHomes = a6;
-    result->_numberOwnedNonEmptyHomes = a7;
-    result->_numberUnownedSharedHomes = a8;
-    result->_numberOwnedSharedHomes = a9;
-    result->_eligible = a3 == 0;
+    result->_status = status;
+    result->_iCloudAccountStatus = accountStatus;
+    result->_unsupportedDevices = devices;
+    result->_hasOnlyEmptyHomes = homes;
+    result->_numberOwnedNonEmptyHomes = emptyHomes;
+    result->_numberUnownedSharedHomes = sharedHomes;
+    result->_numberOwnedSharedHomes = ownedSharedHomes;
+    result->_eligible = status == 0;
   }
 
   return result;

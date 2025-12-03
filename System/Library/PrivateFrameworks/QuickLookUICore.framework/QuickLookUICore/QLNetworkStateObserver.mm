@@ -5,24 +5,24 @@
 - (BOOL)isWifiCapable;
 - (QLNetworkStateObserver)init;
 - (void)_commonInit;
-- (void)_setNetworkState:(unint64_t)a3;
+- (void)_setNetworkState:(unint64_t)state;
 - (void)_unregisterReachability;
 - (void)_update;
 - (void)_updateCompletionBlocks;
 - (void)_updateNetworkActivityIndicator;
-- (void)_updateNetworkStateWithFlags:(unsigned int)a3;
-- (void)_updateNetworkStateWithNotifyToken:(int)a3;
+- (void)_updateNetworkStateWithFlags:(unsigned int)flags;
+- (void)_updateNetworkStateWithNotifyToken:(int)token;
 - (void)_updateRemoteObserver;
 - (void)airplaneModeChanged;
 - (void)dealloc;
-- (void)networkStateWithCompletionBlock:(id)a3;
+- (void)networkStateWithCompletionBlock:(id)block;
 - (void)popOperation;
 - (void)pushOperation;
-- (void)setNetworkState:(unint64_t)a3;
-- (void)setRemoteObserver:(id)a3;
+- (void)setNetworkState:(unint64_t)state;
+- (void)setRemoteObserver:(id)observer;
 - (void)startObserving;
 - (void)stopObserving;
-- (void)updateState:(unint64_t)a3;
+- (void)updateState:(unint64_t)state;
 @end
 
 @implementation QLNetworkStateObserver
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = __40__QLNetworkStateObserver_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -101,17 +101,17 @@ uint64_t __37__QLNetworkStateObserver__commonInit__block_invoke(uint64_t a1)
   return [v5 setDelegate:?];
 }
 
-- (void)setRemoteObserver:(id)a3
+- (void)setRemoteObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  remoteObserver = v5->_remoteObserver;
-  v5->_remoteObserver = v4;
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  remoteObserver = selfCopy->_remoteObserver;
+  selfCopy->_remoteObserver = observerCopy;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  [(QLNetworkStateObserver *)v5 _updateRemoteObserver];
+  [(QLNetworkStateObserver *)selfCopy _updateRemoteObserver];
 }
 
 - (void)pushOperation
@@ -132,11 +132,11 @@ uint64_t __37__QLNetworkStateObserver__commonInit__block_invoke(uint64_t a1)
   objc_sync_exit(obj);
 }
 
-- (void)_updateNetworkStateWithNotifyToken:(int)a3
+- (void)_updateNetworkStateWithNotifyToken:(int)token
 {
   v12 = *MEMORY[0x277D85DE8];
   state64 = 0;
-  state = notify_get_state(a3, &state64);
+  state = notify_get_state(token, &state64);
   if (state)
   {
     v5 = state;
@@ -375,18 +375,18 @@ void __39__QLNetworkStateObserver_stopObserving__block_invoke(uint64_t a1)
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  [v2 setNetworkActivityIndicatorVisible:obj->_stack != 0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setNetworkActivityIndicatorVisible:obj->_stack != 0];
 
   objc_sync_exit(obj);
 }
 
-- (void)_setNetworkState:(unint64_t)a3
+- (void)_setNetworkState:(unint64_t)state
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_networkState != a3)
+  if (self->_networkState != state)
   {
-    self->_networkState = a3;
+    self->_networkState = state;
     v4 = MEMORY[0x277D43EF8];
     v5 = *MEMORY[0x277D43EF8];
     if (!*MEMORY[0x277D43EF8])
@@ -420,7 +420,7 @@ void __39__QLNetworkStateObserver_stopObserving__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateNetworkStateWithFlags:(unsigned int)a3
+- (void)_updateNetworkStateWithFlags:(unsigned int)flags
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -428,7 +428,7 @@ void __39__QLNetworkStateObserver_stopObserving__block_invoke(uint64_t a1)
   v4[2] = __55__QLNetworkStateObserver__updateNetworkStateWithFlags___block_invoke;
   v4[3] = &unk_279AE11A8;
   v4[4] = self;
-  v5 = a3;
+  flagsCopy = flags;
   dispatch_async(queue, v4);
 }
 
@@ -490,21 +490,21 @@ uint64_t __55__QLNetworkStateObserver__updateNetworkStateWithFlags___block_invok
   return result;
 }
 
-- (void)setNetworkState:(unint64_t)a3
+- (void)setNetworkState:(unint64_t)state
 {
-  self->_networkState = a3;
-  if (a3)
+  self->_networkState = state;
+  if (state)
   {
     [(QLNetworkStateObserver *)self _updateCompletionBlocks];
   }
 }
 
-- (void)networkStateWithCompletionBlock:(id)a3
+- (void)networkStateWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v8 = v4;
+    v8 = blockCopy;
     if ([(QLNetworkStateObserver *)self networkState])
     {
       v8[2](v8, self->_networkState);
@@ -521,7 +521,7 @@ uint64_t __55__QLNetworkStateObserver__updateNetworkStateWithFlags___block_invok
       objc_sync_exit(v5);
     }
 
-    v4 = v8;
+    blockCopy = v8;
   }
 }
 
@@ -594,7 +594,7 @@ uint64_t __45__QLNetworkStateObserver_airplaneModeChanged__block_invoke(uint64_t
   }
 }
 
-- (void)updateState:(unint64_t)a3
+- (void)updateState:(unint64_t)state
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D43EF8];
@@ -607,14 +607,14 @@ uint64_t __45__QLNetworkStateObserver_airplaneModeChanged__block_invoke(uint64_t
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    if (a3 > 4)
+    if (state > 4)
     {
       v7 = @"Undefined QLNetworkState";
     }
 
     else
     {
-      v7 = off_279AE11C8[a3];
+      v7 = off_279AE11C8[state];
     }
 
     *v10 = 138412290;
@@ -623,24 +623,24 @@ uint64_t __45__QLNetworkStateObserver_airplaneModeChanged__block_invoke(uint64_t
     _os_log_impl(&dword_261653000, v8, OS_LOG_TYPE_INFO, "Network state update from host %@ #Downloading", v10, 0xCu);
   }
 
-  [(QLNetworkStateObserver *)self _setNetworkState:a3, *v10];
+  [(QLNetworkStateObserver *)self _setNetworkState:state, *v10];
   v9 = *MEMORY[0x277D85DE8];
 }
 
 + (BOOL)usingRemoteNetworkObserver
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"com.apple.quicklook.UIExtension"];
-  return v2;
+  LOBYTE(mainBundle) = [bundleIdentifier isEqualToString:@"com.apple.quicklook.UIExtension"];
+  return mainBundle;
 }
 
 + (BOOL)networkAccessShouldGoThroughCloudDocsDaemon
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.iCloudDriveApp"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.iCloudDriveApp"];
 
   return v4;
 }

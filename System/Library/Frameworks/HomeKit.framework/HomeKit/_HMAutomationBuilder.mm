@@ -1,22 +1,22 @@
 @interface _HMAutomationBuilder
-+ (void)adoptExternalCategoriesFromClasses:(Class)a3;
-- (_HMAutomationBuilder)initWithContext:(id)a3 home:(id)a4;
++ (void)adoptExternalCategoriesFromClasses:(Class)classes;
+- (_HMAutomationBuilder)initWithContext:(id)context home:(id)home;
 @end
 
 @implementation _HMAutomationBuilder
 
-- (_HMAutomationBuilder)initWithContext:(id)a3 home:(id)a4
+- (_HMAutomationBuilder)initWithContext:(id)context home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  contextCopy = context;
+  homeCopy = home;
+  if (!contextCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = homeCopy;
+  if (!homeCopy)
   {
 LABEL_7:
     v14 = _HMFPreconditionFailure();
@@ -33,19 +33,19 @@ LABEL_7:
     uniqueIdentifier = v10->_uniqueIdentifier;
     v10->_uniqueIdentifier = v11;
 
-    objc_storeStrong(&v10->_context, a3);
-    objc_storeStrong(&v10->_home, a4);
+    objc_storeStrong(&v10->_context, context);
+    objc_storeStrong(&v10->_home, home);
   }
 
   return v10;
 }
 
-+ (void)adoptExternalCategoriesFromClasses:(Class)a3
++ (void)adoptExternalCategoriesFromClasses:(Class)classes
 {
   v47 = *MEMORY[0x1E69E9840];
   v36 = &v48;
-  v30[0] = [a1 methodForSelector:a2];
-  if (a3)
+  v30[0] = [self methodForSelector:a2];
+  if (classes)
   {
     v6 = 0;
     v34 = 0;
@@ -54,7 +54,7 @@ LABEL_7:
     do
     {
       outCount = 0;
-      v7 = class_copyMethodList(a3, &outCount);
+      v7 = class_copyMethodList(classes, &outCount);
       if (outCount)
       {
         v8 = v7;
@@ -89,7 +89,7 @@ LABEL_7:
         if (outCount)
         {
           v32 = v13;
-          v33 = a3;
+          classesCopy = classes;
           v16 = 0;
           v17 = v13 + 3;
           do
@@ -99,7 +99,7 @@ LABEL_7:
               Name = method_getName(v8[v16]);
               v19 = *&v10[8 * v16];
               TypeEncoding = method_getTypeEncoding(v8[v16]);
-              if (!class_addMethod(a1, Name, v19, TypeEncoding))
+              if (!class_addMethod(self, Name, v19, TypeEncoding))
               {
                 v21 = *v17;
                 if (*v17 != v6)
@@ -119,9 +119,9 @@ LABEL_7:
                   *buf = v31;
                   v38 = v26;
                   v39 = 2112;
-                  v40 = a1;
+                  selfCopy = self;
                   v41 = 2112;
-                  v42 = v33;
+                  v42 = classesCopy;
                   v43 = 2112;
                   v44 = v27;
                   v45 = 2080;
@@ -148,7 +148,7 @@ LABEL_7:
       }
 
       v28 = v36++;
-      a3 = *v28;
+      classes = *v28;
     }
 
     while (*v28);

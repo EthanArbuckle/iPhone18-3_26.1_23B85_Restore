@@ -1,18 +1,18 @@
 @interface MSMessage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MSMessage)init;
-- (MSMessage)initWithCoder:(id)a3;
+- (MSMessage)initWithCoder:(id)coder;
 - (MSMessage)initWithSession:(MSSession *)session;
-- (id)_payloadDataFromAppIconData:(id)a3 appName:(id)a4 adamID:(id)a5 allowDataPayloads:(BOOL)a6;
-- (id)_pluginPayloadWithAppIconData:(id)a3 appName:(id)a4 adamID:(id)a5 allowDataPayloads:(BOOL)a6;
+- (id)_payloadDataFromAppIconData:(id)data appName:(id)name adamID:(id)d allowDataPayloads:(BOOL)payloads;
+- (id)_pluginPayloadWithAppIconData:(id)data appName:(id)name adamID:(id)d allowDataPayloads:(BOOL)payloads;
 - (id)_sanitizedCopy;
 - (id)_shallowCopy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_mergeSanitizedDataFromMessage:(id)a3;
-- (void)_mergeSanitizedKeepingModifiedMessage:(id)a3;
+- (void)_mergeSanitizedDataFromMessage:(id)message;
+- (void)_mergeSanitizedKeepingModifiedMessage:(id)message;
 - (void)_sanitize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setURL:(NSURL *)URL;
 @end
 
@@ -33,40 +33,40 @@
   return v7;
 }
 
-- (MSMessage)initWithCoder:(id)a3
+- (MSMessage)initWithCoder:(id)coder
 {
   v40[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MSMessage *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"session"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"session"];
     session = v5->_session;
     v5->_session = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityLabel"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityLabel"];
     accessibilityLabel = v5->_accessibilityLabel;
     v5->_accessibilityLabel = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     URL = v5->_URL;
     v5->_URL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statusText"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statusText"];
     statusText = v5->_statusText;
     v5->_statusText = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"summaryText"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"summaryText"];
     summaryText = v5->_summaryText;
     v5->_summaryText = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"breadcrumbText"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"breadcrumbText"];
     breadcrumbText = v5->_breadcrumbText;
     v5->_breadcrumbText = v16;
 
-    v5->_shouldExpire = [v4 decodeBoolForKey:@"shouldExpire"];
-    v5->_pending = [v4 decodeBoolForKey:@"pending"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"time"];
+    v5->_shouldExpire = [coderCopy decodeBoolForKey:@"shouldExpire"];
+    v5->_pending = [coderCopy decodeBoolForKey:@"pending"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"time"];
     time = v5->_time;
     v5->_time = v18;
 
@@ -77,25 +77,25 @@
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:3];
     v22 = [v20 setWithArray:v21];
 
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"balloonLayout"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"balloonLayout"];
     layout = v5->_layout;
     v5->_layout = v23;
 
-    v5->_isFromMe = [v4 decodeBoolForKey:@"isFromMe"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderPID"];
+    v5->_isFromMe = [coderCopy decodeBoolForKey:@"isFromMe"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderPID"];
     senderParticipantIdentifier = v5->_senderParticipantIdentifier;
     v5->_senderParticipantIdentifier = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderAddress"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderAddress"];
     senderAddress = v5->_senderAddress;
     v5->_senderAddress = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"guid"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"guid"];
     guid = v5->_guid;
     v5->_guid = v29;
 
-    v5->_requiresValidation = [v4 decodeBoolForKey:@"requiresValidation"];
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v5->_requiresValidation = [coderCopy decodeBoolForKey:@"requiresValidation"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     data = v5->__data;
     v5->__data = v31;
 
@@ -104,7 +104,7 @@
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
     v35 = [v33 setWithArray:v34];
 
-    v36 = [v4 decodeArrayOfObjectsOfClasses:v35 forKey:@"customAcknowledgements"];
+    v36 = [coderCopy decodeArrayOfObjectsOfClasses:v35 forKey:@"customAcknowledgements"];
     customAcknowledgements = v5->_customAcknowledgements;
     v5->_customAcknowledgements = v36;
   }
@@ -112,73 +112,73 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   session = self->_session;
-  v5 = a3;
-  [v5 encodeObject:session forKey:@"session"];
-  [v5 encodeObject:self->_accessibilityLabel forKey:@"accessibilityLabel"];
-  [v5 encodeObject:self->_URL forKey:@"URL"];
-  [v5 encodeObject:self->_statusText forKey:@"statusText"];
-  [v5 encodeObject:self->_summaryText forKey:@"summaryText"];
-  [v5 encodeObject:self->_breadcrumbText forKey:@"breadcrumbText"];
-  [v5 encodeObject:self->_layout forKey:@"balloonLayout"];
-  [v5 encodeBool:self->_shouldExpire forKey:@"shouldExpire"];
-  [v5 encodeBool:self->_pending forKey:@"pending"];
-  [v5 encodeObject:self->_time forKey:@"time"];
-  [v5 encodeBool:self->_isFromMe forKey:@"isFromMe"];
-  [v5 encodeObject:self->_senderParticipantIdentifier forKey:@"senderPID"];
-  [v5 encodeObject:self->_senderAddress forKey:@"senderAddress"];
-  [v5 encodeObject:self->_guid forKey:@"guid"];
-  [v5 encodeBool:self->_requiresValidation forKey:@"requiresValidation"];
-  [v5 encodeObject:self->__data forKey:@"data"];
-  [v5 encodeObject:self->_customAcknowledgements forKey:@"customAcknowledgements"];
+  coderCopy = coder;
+  [coderCopy encodeObject:session forKey:@"session"];
+  [coderCopy encodeObject:self->_accessibilityLabel forKey:@"accessibilityLabel"];
+  [coderCopy encodeObject:self->_URL forKey:@"URL"];
+  [coderCopy encodeObject:self->_statusText forKey:@"statusText"];
+  [coderCopy encodeObject:self->_summaryText forKey:@"summaryText"];
+  [coderCopy encodeObject:self->_breadcrumbText forKey:@"breadcrumbText"];
+  [coderCopy encodeObject:self->_layout forKey:@"balloonLayout"];
+  [coderCopy encodeBool:self->_shouldExpire forKey:@"shouldExpire"];
+  [coderCopy encodeBool:self->_pending forKey:@"pending"];
+  [coderCopy encodeObject:self->_time forKey:@"time"];
+  [coderCopy encodeBool:self->_isFromMe forKey:@"isFromMe"];
+  [coderCopy encodeObject:self->_senderParticipantIdentifier forKey:@"senderPID"];
+  [coderCopy encodeObject:self->_senderAddress forKey:@"senderAddress"];
+  [coderCopy encodeObject:self->_guid forKey:@"guid"];
+  [coderCopy encodeBool:self->_requiresValidation forKey:@"requiresValidation"];
+  [coderCopy encodeObject:self->__data forKey:@"data"];
+  [coderCopy encodeObject:self->_customAcknowledgements forKey:@"customAcknowledgements"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [MSMessage allocWithZone:?];
-  v6 = [(MSMessage *)self session];
-  v7 = [(MSMessage *)v5 initWithSession:v6];
+  session = [(MSMessage *)self session];
+  v7 = [(MSMessage *)v5 initWithSession:session];
 
-  v8 = [(NSString *)self->_accessibilityLabel copyWithZone:a3];
+  v8 = [(NSString *)self->_accessibilityLabel copyWithZone:zone];
   [(MSMessage *)v7 setAccessibilityLabel:v8];
 
-  v9 = [(NSURL *)self->_URL copyWithZone:a3];
+  v9 = [(NSURL *)self->_URL copyWithZone:zone];
   [(MSMessage *)v7 setURL:v9];
 
-  v10 = [(MSMessageLayout *)self->_layout copyWithZone:a3];
+  v10 = [(MSMessageLayout *)self->_layout copyWithZone:zone];
   [(MSMessage *)v7 setLayout:v10];
 
-  v11 = [(NSString *)self->_statusText copyWithZone:a3];
+  v11 = [(NSString *)self->_statusText copyWithZone:zone];
   [(MSMessage *)v7 setStatusText:v11];
 
-  v12 = [(NSString *)self->_summaryText copyWithZone:a3];
+  v12 = [(NSString *)self->_summaryText copyWithZone:zone];
   [(MSMessage *)v7 setSummaryText:v12];
 
-  v13 = [(NSString *)self->_breadcrumbText copyWithZone:a3];
+  v13 = [(NSString *)self->_breadcrumbText copyWithZone:zone];
   [(MSMessage *)v7 setBreadcrumbText:v13];
 
   [(MSMessage *)v7 setShouldExpire:self->_shouldExpire];
   [(MSMessage *)v7 setPending:self->_pending];
-  v14 = [(NSDate *)self->_time copyWithZone:a3];
+  v14 = [(NSDate *)self->_time copyWithZone:zone];
   [(MSMessage *)v7 setTime:v14];
 
-  v15 = [(NSUUID *)self->_senderParticipantIdentifier copyWithZone:a3];
+  v15 = [(NSUUID *)self->_senderParticipantIdentifier copyWithZone:zone];
   [(MSMessage *)v7 setSenderParticipantIdentifier:v15];
 
-  v16 = [(NSString *)self->_senderAddress copyWithZone:a3];
+  v16 = [(NSString *)self->_senderAddress copyWithZone:zone];
   [(MSMessage *)v7 setSenderAddress:v16];
 
-  v17 = [(NSString *)self->_guid copyWithZone:a3];
+  v17 = [(NSString *)self->_guid copyWithZone:zone];
   [(MSMessage *)v7 setGuid:v17];
 
   [(MSMessage *)v7 setIsFromMe:self->_isFromMe];
   [(MSMessage *)v7 setRequiresValidation:self->_requiresValidation];
-  v18 = [(NSData *)self->__data copyWithZone:a3];
+  v18 = [(NSData *)self->__data copyWithZone:zone];
   [(MSMessage *)v7 set_data:v18];
 
-  v19 = [(NSArray *)self->_customAcknowledgements copyWithZone:a3];
+  v19 = [(NSArray *)self->_customAcknowledgements copyWithZone:zone];
   [(MSMessage *)v7 setCustomAcknowledgements:v19];
 
   return v7;
@@ -207,10 +207,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v47 = 1;
   }
@@ -220,57 +220,57 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       session = self->_session;
-      v7 = [(MSMessage *)v5 session];
-      if (session == v7 || [(MSSession *)session isEqual:v7])
+      session = [(MSMessage *)v5 session];
+      if (session == session || [(MSSession *)session isEqual:session])
       {
         URL = self->_URL;
         v9 = [(MSMessage *)v5 URL];
         if (URL == v9 || [(NSURL *)URL isEqual:v9])
         {
           accessibilityLabel = self->_accessibilityLabel;
-          v11 = [(MSMessage *)v5 accessibilityLabel];
-          if (accessibilityLabel == v11 || [(NSString *)accessibilityLabel isEqualToString:v11])
+          accessibilityLabel = [(MSMessage *)v5 accessibilityLabel];
+          if (accessibilityLabel == accessibilityLabel || [(NSString *)accessibilityLabel isEqualToString:accessibilityLabel])
           {
             layout = self->_layout;
-            v13 = [(MSMessage *)v5 layout];
-            if (layout == v13 || [(MSMessageLayout *)layout isEqual:v13])
+            layout = [(MSMessage *)v5 layout];
+            if (layout == layout || [(MSMessageLayout *)layout isEqual:layout])
             {
               statusText = self->_statusText;
-              v15 = [(MSMessage *)v5 statusText];
-              if (statusText == v15 || [(NSString *)statusText isEqualToString:v15])
+              statusText = [(MSMessage *)v5 statusText];
+              if (statusText == statusText || [(NSString *)statusText isEqualToString:statusText])
               {
                 summaryText = self->_summaryText;
-                v17 = [(MSMessage *)v5 summaryText];
-                if ((summaryText == v17 || [(NSString *)summaryText isEqualToString:v17]) && (shouldExpire = self->_shouldExpire, shouldExpire == [(MSMessage *)v5 shouldExpire]) && (pending = self->_pending, pending == [(MSMessage *)v5 isPending]))
+                summaryText = [(MSMessage *)v5 summaryText];
+                if ((summaryText == summaryText || [(NSString *)summaryText isEqualToString:summaryText]) && (shouldExpire = self->_shouldExpire, shouldExpire == [(MSMessage *)v5 shouldExpire]) && (pending = self->_pending, pending == [(MSMessage *)v5 isPending]))
                 {
                   senderParticipantIdentifier = self->_senderParticipantIdentifier;
-                  v21 = [(MSMessage *)v5 senderParticipantIdentifier];
-                  if (senderParticipantIdentifier == v21 || (v22 = senderParticipantIdentifier, v23 = v21, v24 = [(NSUUID *)v22 isEqual:v21], v21 = v23, v24))
+                  senderParticipantIdentifier = [(MSMessage *)v5 senderParticipantIdentifier];
+                  if (senderParticipantIdentifier == senderParticipantIdentifier || (v22 = senderParticipantIdentifier, v23 = senderParticipantIdentifier, v24 = [(NSUUID *)v22 isEqual:senderParticipantIdentifier], senderParticipantIdentifier = v23, v24))
                   {
-                    v51 = v21;
+                    v51 = senderParticipantIdentifier;
                     senderAddress = self->_senderAddress;
-                    v26 = [(MSMessage *)v5 senderAddress];
-                    if (senderAddress == v26 || (v27 = senderAddress, v28 = v26, v29 = [(NSString *)v27 isEqual:v26], v26 = v28, v29))
+                    senderAddress = [(MSMessage *)v5 senderAddress];
+                    if (senderAddress == senderAddress || (v27 = senderAddress, v28 = senderAddress, v29 = [(NSString *)v27 isEqual:senderAddress], senderAddress = v28, v29))
                     {
-                      v50 = v26;
+                      v50 = senderAddress;
                       guid = self->_guid;
-                      v31 = [(MSMessage *)v5 guid];
-                      if (guid == v31 || (v32 = guid, v33 = v31, v34 = [(NSString *)v32 isEqual:v31], v31 = v33, v34))
+                      guid = [(MSMessage *)v5 guid];
+                      if (guid == guid || (v32 = guid, v33 = guid, v34 = [(NSString *)v32 isEqual:guid], guid = v33, v34))
                       {
-                        v49 = v31;
+                        v49 = guid;
                         requiresValidation = self->_requiresValidation;
                         if (requiresValidation == [(MSMessage *)v5 requiresValidation])
                         {
                           data = self->__data;
-                          v37 = [(MSMessage *)v5 _data];
-                          if (data == v37 || (v38 = data, v39 = v37, v40 = [(NSData *)v38 isEqual:v37], v37 = v39, v40))
+                          _data = [(MSMessage *)v5 _data];
+                          if (data == _data || (v38 = data, v39 = _data, v40 = [(NSData *)v38 isEqual:_data], _data = v39, v40))
                           {
-                            v41 = v37;
+                            v41 = _data;
                             customAcknowledgements = self->_customAcknowledgements;
-                            v43 = [(MSMessage *)v5 customAcknowledgements];
-                            if (customAcknowledgements == v43)
+                            customAcknowledgements = [(MSMessage *)v5 customAcknowledgements];
+                            if (customAcknowledgements == customAcknowledgements)
                             {
                               v47 = 1;
                             }
@@ -278,13 +278,13 @@
                             else
                             {
                               v44 = customAcknowledgements;
-                              v45 = v43;
-                              v46 = [(NSArray *)v44 isEqual:v43];
-                              v43 = v45;
+                              v45 = customAcknowledgements;
+                              v46 = [(NSArray *)v44 isEqual:customAcknowledgements];
+                              customAcknowledgements = v45;
                               v47 = v46;
                             }
 
-                            v37 = v41;
+                            _data = v41;
                           }
 
                           else
@@ -298,7 +298,7 @@
                           v47 = 0;
                         }
 
-                        v31 = v49;
+                        guid = v49;
                       }
 
                       else
@@ -306,7 +306,7 @@
                         v47 = 0;
                       }
 
-                      v26 = v50;
+                      senderAddress = v50;
                     }
 
                     else
@@ -314,7 +314,7 @@
                       v47 = 0;
                     }
 
-                    v21 = v51;
+                    senderParticipantIdentifier = v51;
                   }
 
                   else
@@ -398,35 +398,35 @@
   v17 = v5;
   if (([(NSURL *)v7 isEqual:?]& 1) == 0)
   {
-    v8 = [(NSURL *)v17 scheme];
-    if (!v8)
+    scheme = [(NSURL *)v17 scheme];
+    if (!scheme)
     {
 LABEL_7:
       objc_storeStrong(p_URL, URL);
       goto LABEL_8;
     }
 
-    v9 = v8;
-    v10 = [(NSURL *)v17 scheme];
-    v11 = [v10 lowercaseString];
-    if ([v11 isEqualToString:@"http"])
+    v9 = scheme;
+    scheme2 = [(NSURL *)v17 scheme];
+    lowercaseString = [scheme2 lowercaseString];
+    if ([lowercaseString isEqualToString:@"http"])
     {
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    v12 = [(NSURL *)v17 scheme];
-    v13 = [v12 lowercaseString];
-    if ([v13 isEqualToString:@"https"])
+    scheme3 = [(NSURL *)v17 scheme];
+    lowercaseString2 = [scheme3 lowercaseString];
+    if ([lowercaseString2 isEqualToString:@"https"])
     {
 
       goto LABEL_6;
     }
 
-    v14 = [(NSURL *)v17 scheme];
-    v15 = [v14 lowercaseString];
-    v16 = [v15 isEqualToString:@"data"];
+    scheme4 = [(NSURL *)v17 scheme];
+    lowercaseString3 = [scheme4 lowercaseString];
+    v16 = [lowercaseString3 isEqualToString:@"data"];
 
     if (v16)
     {
@@ -439,31 +439,31 @@ LABEL_8:
 
 - (id)_sanitizedCopy
 {
-  v2 = [(MSMessage *)self _shallowCopy];
-  [v2 _sanitize];
+  _shallowCopy = [(MSMessage *)self _shallowCopy];
+  [_shallowCopy _sanitize];
 
-  return v2;
+  return _shallowCopy;
 }
 
 - (void)_sanitize
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(MSMessage *)self layout];
-  v4 = [v3 _sanitizedCopy];
-  [(MSMessage *)self setLayout:v4];
+  layout = [(MSMessage *)self layout];
+  _sanitizedCopy = [layout _sanitizedCopy];
+  [(MSMessage *)self setLayout:_sanitizedCopy];
 
   [(MSMessage *)self setStatusText:0];
   [(MSMessage *)self setSummaryText:0];
   [(MSMessage *)self setAccessibilityLabel:0];
   [(MSMessage *)self setSenderAddress:0];
   [(MSMessage *)self setGuid:0];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(MSMessage *)self customAcknowledgements];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  customAcknowledgements = [(MSMessage *)self customAcknowledgements];
+  v7 = [customAcknowledgements countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -475,118 +475,118 @@ LABEL_8:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(customAcknowledgements);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v10) _sanitizedCopy];
-        [v5 addObject:v11];
+        _sanitizedCopy2 = [*(*(&v12 + 1) + 8 * v10) _sanitizedCopy];
+        [array addObject:_sanitizedCopy2];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [customAcknowledgements countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 
-  [(MSMessage *)self setCustomAcknowledgements:v5];
+  [(MSMessage *)self setCustomAcknowledgements:array];
 }
 
-- (void)_mergeSanitizedDataFromMessage:(id)a3
+- (void)_mergeSanitizedDataFromMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 layout];
-  [(MSMessage *)self setLayout:v5];
+  messageCopy = message;
+  layout = [messageCopy layout];
+  [(MSMessage *)self setLayout:layout];
 
-  v6 = [v4 statusText];
-  [(MSMessage *)self setStatusText:v6];
+  statusText = [messageCopy statusText];
+  [(MSMessage *)self setStatusText:statusText];
 
-  v7 = [v4 summaryText];
-  [(MSMessage *)self setSummaryText:v7];
+  summaryText = [messageCopy summaryText];
+  [(MSMessage *)self setSummaryText:summaryText];
 
-  v8 = [v4 accessibilityLabel];
-  [(MSMessage *)self setAccessibilityLabel:v8];
+  accessibilityLabel = [messageCopy accessibilityLabel];
+  [(MSMessage *)self setAccessibilityLabel:accessibilityLabel];
 
-  v9 = [v4 senderAddress];
-  [(MSMessage *)self setSenderAddress:v9];
+  senderAddress = [messageCopy senderAddress];
+  [(MSMessage *)self setSenderAddress:senderAddress];
 
-  v10 = [v4 guid];
-  [(MSMessage *)self setGuid:v10];
+  guid = [messageCopy guid];
+  [(MSMessage *)self setGuid:guid];
 
-  v11 = [v4 customAcknowledgements];
+  customAcknowledgements = [messageCopy customAcknowledgements];
 
-  [(MSMessage *)self setCustomAcknowledgements:v11];
+  [(MSMessage *)self setCustomAcknowledgements:customAcknowledgements];
 }
 
-- (void)_mergeSanitizedKeepingModifiedMessage:(id)a3
+- (void)_mergeSanitizedKeepingModifiedMessage:(id)message
 {
-  v18 = a3;
-  v4 = [(MSMessage *)self layout];
+  messageCopy = message;
+  layout = [(MSMessage *)self layout];
 
-  if (!v4)
+  if (!layout)
   {
-    v5 = [v18 layout];
-    [(MSMessage *)self setLayout:v5];
+    layout2 = [messageCopy layout];
+    [(MSMessage *)self setLayout:layout2];
   }
 
-  v6 = [(MSMessage *)self statusText];
+  statusText = [(MSMessage *)self statusText];
 
-  if (!v6)
+  if (!statusText)
   {
-    v7 = [v18 statusText];
-    [(MSMessage *)self setStatusText:v7];
+    statusText2 = [messageCopy statusText];
+    [(MSMessage *)self setStatusText:statusText2];
   }
 
-  v8 = [(MSMessage *)self summaryText];
+  summaryText = [(MSMessage *)self summaryText];
 
-  if (!v8)
+  if (!summaryText)
   {
-    v9 = [v18 summaryText];
-    [(MSMessage *)self setSummaryText:v9];
+    summaryText2 = [messageCopy summaryText];
+    [(MSMessage *)self setSummaryText:summaryText2];
   }
 
-  v10 = [(MSMessage *)self accessibilityLabel];
+  accessibilityLabel = [(MSMessage *)self accessibilityLabel];
 
-  if (!v10)
+  if (!accessibilityLabel)
   {
-    v11 = [v18 accessibilityLabel];
-    [(MSMessage *)self setAccessibilityLabel:v11];
+    accessibilityLabel2 = [messageCopy accessibilityLabel];
+    [(MSMessage *)self setAccessibilityLabel:accessibilityLabel2];
   }
 
-  v12 = [(MSMessage *)self senderAddress];
+  senderAddress = [(MSMessage *)self senderAddress];
 
-  if (!v12)
+  if (!senderAddress)
   {
-    v13 = [v18 senderAddress];
-    [(MSMessage *)self setSenderAddress:v13];
+    senderAddress2 = [messageCopy senderAddress];
+    [(MSMessage *)self setSenderAddress:senderAddress2];
   }
 
-  v14 = [(MSMessage *)self guid];
+  guid = [(MSMessage *)self guid];
 
-  if (!v14)
+  if (!guid)
   {
-    v15 = [v18 guid];
-    [(MSMessage *)self setGuid:v15];
+    guid2 = [messageCopy guid];
+    [(MSMessage *)self setGuid:guid2];
   }
 
-  v16 = [(MSMessage *)self customAcknowledgements];
+  customAcknowledgements = [(MSMessage *)self customAcknowledgements];
 
-  if (!v16)
+  if (!customAcknowledgements)
   {
-    v17 = [v18 customAcknowledgements];
-    [(MSMessage *)self setCustomAcknowledgements:v17];
+    customAcknowledgements2 = [messageCopy customAcknowledgements];
+    [(MSMessage *)self setCustomAcknowledgements:customAcknowledgements2];
   }
 }
 
-- (id)_pluginPayloadWithAppIconData:(id)a3 appName:(id)a4 adamID:(id)a5 allowDataPayloads:(BOOL)a6
+- (id)_pluginPayloadWithAppIconData:(id)data appName:(id)name adamID:(id)d allowDataPayloads:(BOOL)payloads
 {
-  v6 = a6;
+  payloadsCopy = payloads;
   v42[1] = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v36 = a4;
-  v10 = a5;
+  dataCopy = data;
+  nameCopy = name;
+  dCopy = d;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2050000000;
@@ -603,7 +603,7 @@ LABEL_8:
     v11 = v39[3];
   }
 
-  v12 = v6;
+  v12 = payloadsCopy;
   v13 = v11;
   _Block_object_dispose(&v38, 8);
   v14 = IMLogHandleForCategory();
@@ -622,109 +622,109 @@ LABEL_8:
   }
 
   v16 = objc_alloc_init(v11);
-  v17 = [(MSMessage *)self layout];
-  v18 = [(MSMessage *)self layout];
+  layout = [(MSMessage *)self layout];
+  layout2 = [(MSMessage *)self layout];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v20 = [v17 alternateLayout];
+    alternateLayout = [layout alternateLayout];
 LABEL_12:
-    v21 = v20;
+    v21 = alternateLayout;
     goto LABEL_14;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = v17;
+    alternateLayout = layout;
     goto LABEL_12;
   }
 
   v21 = 0;
 LABEL_14:
-  v22 = [v21 image];
+  image = [v21 image];
 
-  if (!v22)
+  if (!image)
   {
-    v27 = [v21 mediaFileURL];
+    mediaFileURL = [v21 mediaFileURL];
 
-    if (!v27)
+    if (!mediaFileURL)
     {
-      v26 = 0;
+      mediaFileURL2 = 0;
       goto LABEL_21;
     }
 
-    v26 = [v21 mediaFileURL];
-    if (!v26)
+    mediaFileURL2 = [v21 mediaFileURL];
+    if (!mediaFileURL2)
     {
       goto LABEL_21;
     }
 
 LABEL_19:
-    v42[0] = v26;
+    v42[0] = mediaFileURL2;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:1];
     [v16 setAttachments:v28];
 
     goto LABEL_21;
   }
 
-  v23 = [v21 image];
-  v24 = UIImageJPEGRepresentation(v23, 0.5);
+  image2 = [v21 image];
+  v24 = UIImageJPEGRepresentation(image2, 0.5);
   v25 = +[_MSTempFileManager sharedInstance];
-  v26 = [v25 writeTemporaryFileWithData:v24 type:*MEMORY[0x1E6963808]];
+  mediaFileURL2 = [v25 writeTemporaryFileWithData:v24 type:*MEMORY[0x1E6963808]];
 
-  if (v26)
+  if (mediaFileURL2)
   {
     goto LABEL_19;
   }
 
 LABEL_21:
-  v29 = [(MSMessage *)self _payloadDataFromAppIconData:v35 appName:v36 adamID:v10 allowDataPayloads:v12];
+  v29 = [(MSMessage *)self _payloadDataFromAppIconData:dataCopy appName:nameCopy adamID:dCopy allowDataPayloads:v12];
   if (v29)
   {
     [v16 setData:v29];
   }
 
-  v30 = [(MSMessage *)self summaryText];
-  [v16 setBreadcrumbText:v30];
+  summaryText = [(MSMessage *)self summaryText];
+  [v16 setBreadcrumbText:summaryText];
 
-  v31 = [(MSMessage *)self statusText];
-  [v16 setStatusText:v31];
+  statusText = [(MSMessage *)self statusText];
+  [v16 setStatusText:statusText];
 
   [v16 setShouldExpire:{-[MSMessage shouldExpire](self, "shouldExpire")}];
   [v16 setRequiresValidation:{-[MSMessage requiresValidation](self, "requiresValidation")}];
-  v32 = [(MSMessage *)self layout];
+  layout3 = [(MSMessage *)self layout];
   objc_opt_class();
-  LOBYTE(v31) = objc_opt_isKindOfClass();
+  LOBYTE(statusText) = objc_opt_isKindOfClass();
 
-  if (v31)
+  if (statusText)
   {
-    v33 = [(MSMessage *)self layout];
-    [v16 setLiveEditableInEntryView:{objc_msgSend(v33, "liveEditableInEntryView")}];
+    layout4 = [(MSMessage *)self layout];
+    [v16 setLiveEditableInEntryView:{objc_msgSend(layout4, "liveEditableInEntryView")}];
   }
 
   return v16;
 }
 
-- (id)_payloadDataFromAppIconData:(id)a3 appName:(id)a4 adamID:(id)a5 allowDataPayloads:(BOOL)a6
+- (id)_payloadDataFromAppIconData:(id)data appName:(id)name adamID:(id)d allowDataPayloads:(BOOL)payloads
 {
-  v6 = a6;
+  payloadsCopy = payloads;
   v83[6] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E695DF90] dictionary];
-  v14 = [(MSMessage *)self layout];
-  v15 = [(MSMessage *)self session];
-  v16 = [v15 identifier];
+  dataCopy = data;
+  nameCopy = name;
+  dCopy = d;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  layout = [(MSMessage *)self layout];
+  session = [(MSMessage *)self session];
+  identifier = [session identifier];
 
-  if (v16)
+  if (identifier)
   {
-    v17 = [(MSMessage *)self session];
-    v18 = [v17 identifier];
-    [v13 setObject:v18 forKey:*MEMORY[0x1E69A6F18]];
+    session2 = [(MSMessage *)self session];
+    identifier2 = [session2 identifier];
+    [dictionary setObject:identifier2 forKey:*MEMORY[0x1E69A6F18]];
   }
 
   v19 = [(MSMessage *)self URL];
@@ -732,81 +732,81 @@ LABEL_21:
   if (v19)
   {
     v20 = [(MSMessage *)self URL];
-    [v13 setObject:v20 forKey:*MEMORY[0x1E69A6F10]];
+    [dictionary setObject:v20 forKey:*MEMORY[0x1E69A6F10]];
   }
 
-  if (v6)
+  if (payloadsCopy)
   {
-    v21 = [(MSMessage *)self _data];
+    _data = [(MSMessage *)self _data];
 
-    if (v21)
+    if (_data)
     {
-      v22 = [(MSMessage *)self _data];
-      [v13 setObject:v22 forKey:*MEMORY[0x1E69A6EE0]];
+      _data2 = [(MSMessage *)self _data];
+      [dictionary setObject:_data2 forKey:*MEMORY[0x1E69A6EE0]];
     }
   }
 
-  v23 = [(MSMessage *)self accessibilityLabel];
+  accessibilityLabel = [(MSMessage *)self accessibilityLabel];
 
-  if (v23)
+  if (accessibilityLabel)
   {
-    v24 = [(MSMessage *)self accessibilityLabel];
-    [v13 setObject:v24 forKey:*MEMORY[0x1E69A6EA8]];
+    accessibilityLabel2 = [(MSMessage *)self accessibilityLabel];
+    [dictionary setObject:accessibilityLabel2 forKey:*MEMORY[0x1E69A6EA8]];
   }
 
-  if (v10)
+  if (dataCopy)
   {
-    v25 = [v10 _FTCopyGzippedData];
-    [v13 setObject:v25 forKey:*MEMORY[0x1E69A6EB8]];
+    _FTCopyGzippedData = [dataCopy _FTCopyGzippedData];
+    [dictionary setObject:_FTCopyGzippedData forKey:*MEMORY[0x1E69A6EB8]];
   }
 
-  if (v11)
+  if (nameCopy)
   {
-    [v13 setObject:v11 forKey:*MEMORY[0x1E69A6EC0]];
+    [dictionary setObject:nameCopy forKey:*MEMORY[0x1E69A6EC0]];
   }
 
-  if (v12)
+  if (dCopy)
   {
-    [v13 setObject:v12 forKey:*MEMORY[0x1E69A6EB0]];
+    [dictionary setObject:dCopy forKey:*MEMORY[0x1E69A6EB0]];
   }
 
   else
   {
-    v26 = [(MSMessage *)self overriddenAdamID];
+    overriddenAdamID = [(MSMessage *)self overriddenAdamID];
 
-    if (v26)
+    if (overriddenAdamID)
     {
-      v27 = [(MSMessage *)self overriddenAdamID];
-      [v13 setObject:v27 forKey:*MEMORY[0x1E69A6EB0]];
+      overriddenAdamID2 = [(MSMessage *)self overriddenAdamID];
+      [dictionary setObject:overriddenAdamID2 forKey:*MEMORY[0x1E69A6EB0]];
     }
   }
 
-  v28 = [(MSMessage *)self statusText];
+  statusText = [(MSMessage *)self statusText];
 
-  if (v28)
+  if (statusText)
   {
-    v29 = [(MSMessage *)self statusText];
-    [v13 setObject:v29 forKey:*MEMORY[0x1E69A6F08]];
+    statusText2 = [(MSMessage *)self statusText];
+    [dictionary setObject:statusText2 forKey:*MEMORY[0x1E69A6F08]];
   }
 
-  v30 = [(MSMessage *)self summaryText];
+  summaryText = [(MSMessage *)self summaryText];
 
-  if (v30)
+  if (summaryText)
   {
-    v31 = [(MSMessage *)self summaryText];
-    [v13 setObject:v31 forKey:*MEMORY[0x1E69A6EF0]];
+    summaryText2 = [(MSMessage *)self summaryText];
+    [dictionary setObject:summaryText2 forKey:*MEMORY[0x1E69A6EF0]];
   }
 
   objc_opt_class();
-  v77 = v11;
-  v78 = v10;
-  v76 = v12;
+  v77 = nameCopy;
+  v78 = dataCopy;
+  v76 = dCopy;
   if (objc_opt_isKindOfClass())
   {
-    v32 = v14;
+    v32 = layout;
 LABEL_28:
-    v73 = 0;
-    v74 = 0;
+    sendAlternateLayoutAsText = 0;
+    linkMetadata = 0;
     v75 = 0;
     goto LABEL_34;
   }
@@ -818,13 +818,13 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v33 = [v14 alternateLayout];
-  v34 = [v14 requiredCapabilities];
-  v73 = [v14 sendAlternateLayoutAsText];
+  alternateLayout = [layout alternateLayout];
+  requiredCapabilities = [layout requiredCapabilities];
+  sendAlternateLayoutAsText = [layout sendAlternateLayoutAsText];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v74 = [v33 linkMetadata];
+    linkMetadata = [alternateLayout linkMetadata];
     v32 = objc_alloc_init(MSMessageTemplateLayout);
   }
 
@@ -833,7 +833,7 @@ LABEL_28:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v32 = v33;
+      v32 = alternateLayout;
     }
 
     else
@@ -841,19 +841,19 @@ LABEL_28:
       v32 = 0;
     }
 
-    v74 = 0;
+    linkMetadata = 0;
   }
 
-  v75 = v34;
+  v75 = requiredCapabilities;
 
 LABEL_34:
-  v35 = v14;
+  v35 = layout;
   v82[0] = *MEMORY[0x1E69A6940];
-  v36 = [(MSMessageTemplateLayout *)v32 caption];
-  v37 = v36;
-  if (v36)
+  caption = [(MSMessageTemplateLayout *)v32 caption];
+  v37 = caption;
+  if (caption)
   {
-    v38 = v36;
+    v38 = caption;
   }
 
   else
@@ -863,11 +863,11 @@ LABEL_34:
 
   v83[0] = v38;
   v82[1] = *MEMORY[0x1E69A6960];
-  v39 = [(MSMessageTemplateLayout *)v32 subcaption];
-  v40 = v39;
-  if (v39)
+  subcaption = [(MSMessageTemplateLayout *)v32 subcaption];
+  v40 = subcaption;
+  if (subcaption)
   {
-    v41 = v39;
+    v41 = subcaption;
   }
 
   else
@@ -877,11 +877,11 @@ LABEL_34:
 
   v83[1] = v41;
   v82[2] = *MEMORY[0x1E69A6958];
-  v42 = [(MSMessageTemplateLayout *)v32 trailingCaption];
-  v43 = v42;
-  if (v42)
+  trailingCaption = [(MSMessageTemplateLayout *)v32 trailingCaption];
+  v43 = trailingCaption;
+  if (trailingCaption)
   {
-    v44 = v42;
+    v44 = trailingCaption;
   }
 
   else
@@ -891,11 +891,11 @@ LABEL_34:
 
   v83[2] = v44;
   v82[3] = *MEMORY[0x1E69A6968];
-  v45 = [(MSMessageTemplateLayout *)v32 trailingSubcaption];
-  v46 = v45;
-  if (v45)
+  trailingSubcaption = [(MSMessageTemplateLayout *)v32 trailingSubcaption];
+  v46 = trailingSubcaption;
+  if (trailingSubcaption)
   {
-    v47 = v45;
+    v47 = trailingSubcaption;
   }
 
   else
@@ -905,11 +905,11 @@ LABEL_34:
 
   v83[3] = v47;
   v82[4] = *MEMORY[0x1E69A6950];
-  v48 = [(MSMessageTemplateLayout *)v32 imageTitle];
-  v49 = v48;
-  if (v48)
+  imageTitle = [(MSMessageTemplateLayout *)v32 imageTitle];
+  v49 = imageTitle;
+  if (imageTitle)
   {
-    v50 = v48;
+    v50 = imageTitle;
   }
 
   else
@@ -919,11 +919,11 @@ LABEL_34:
 
   v83[4] = v50;
   v82[5] = *MEMORY[0x1E69A6948];
-  v51 = [(MSMessageTemplateLayout *)v32 imageSubtitle];
-  v52 = v51;
-  if (v51)
+  imageSubtitle = [(MSMessageTemplateLayout *)v32 imageSubtitle];
+  v52 = imageSubtitle;
+  if (imageSubtitle)
   {
-    v53 = v51;
+    v53 = imageSubtitle;
   }
 
   else
@@ -937,24 +937,24 @@ LABEL_34:
   v55 = objc_opt_class();
   v56 = NSStringFromClass(v55);
   v57 = *MEMORY[0x1E69A6EC8];
-  [v13 setObject:v56 forKey:*MEMORY[0x1E69A6EC8]];
+  [dictionary setObject:v56 forKey:*MEMORY[0x1E69A6EC8]];
   v58 = *MEMORY[0x1E69A6ED0];
-  [v13 setObject:v54 forKey:*MEMORY[0x1E69A6ED0]];
+  [dictionary setObject:v54 forKey:*MEMORY[0x1E69A6ED0]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v59 = [MEMORY[0x1E695DF90] dictionary];
-    [v59 setObject:MEMORY[0x1E695E0F8] forKey:v58];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary2 setObject:MEMORY[0x1E695E0F8] forKey:v58];
     v60 = objc_opt_class();
     v61 = NSStringFromClass(v60);
-    [v59 setObject:v61 forKey:v57];
+    [dictionary2 setObject:v61 forKey:v57];
 
     v81 = 0;
-    v62 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v59 requiringSecureCoding:1 error:&v81];
+    v62 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dictionary2 requiringSecureCoding:1 error:&v81];
     v63 = v81;
     if (v62)
     {
-      [v13 setObject:v62 forKey:*MEMORY[0x1E69A6ED8]];
+      [dictionary setObject:v62 forKey:*MEMORY[0x1E69A6ED8]];
     }
 
     else
@@ -967,16 +967,16 @@ LABEL_34:
     }
   }
 
-  if (v74)
+  if (linkMetadata)
   {
     v80 = 0;
-    v65 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v74 requiringSecureCoding:1 error:&v80];
+    v65 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:linkMetadata requiringSecureCoding:1 error:&v80];
     v66 = v80;
     if (v65)
     {
       if ([v65 length])
       {
-        [v13 setObject:v65 forKey:*MEMORY[0x1E69A6EE8]];
+        [dictionary setObject:v65 forKey:*MEMORY[0x1E69A6EE8]];
 LABEL_68:
 
         goto LABEL_69;
@@ -1032,16 +1032,16 @@ LABEL_69:
     goto LABEL_78;
   }
 
-  [v13 setObject:v68 forKey:*MEMORY[0x1E69A6EF8]];
-  if (v73)
+  [dictionary setObject:v68 forKey:*MEMORY[0x1E69A6EF8]];
+  if (sendAlternateLayoutAsText)
   {
     v70 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v13 setObject:v70 forKey:*MEMORY[0x1E69A6F00]];
+    [dictionary setObject:v70 forKey:*MEMORY[0x1E69A6F00]];
 LABEL_78:
   }
 
 LABEL_80:
-  v71 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:0];
+  v71 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dictionary requiringSecureCoding:1 error:0];
 
   return v71;
 }

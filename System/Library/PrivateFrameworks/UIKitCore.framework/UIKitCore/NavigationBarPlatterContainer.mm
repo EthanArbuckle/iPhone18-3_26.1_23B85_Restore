@@ -1,11 +1,11 @@
 @interface NavigationBarPlatterContainer
-- (_TtC5UIKit29NavigationBarPlatterContainer)initWithCoder:(id)a3;
-- (_TtC5UIKit29NavigationBarPlatterContainer)initWithFrame:(CGRect)a3;
+- (_TtC5UIKit29NavigationBarPlatterContainer)initWithCoder:(id)coder;
+- (_TtC5UIKit29NavigationBarPlatterContainer)initWithFrame:(CGRect)frame;
 @end
 
 @implementation NavigationBarPlatterContainer
 
-- (_TtC5UIKit29NavigationBarPlatterContainer)initWithCoder:(id)a3
+- (_TtC5UIKit29NavigationBarPlatterContainer)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69E7CC0];
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit29NavigationBarPlatterContainer_platters) = MEMORY[0x1E69E7CC0];
@@ -17,7 +17,7 @@
   return result;
 }
 
-- (_TtC5UIKit29NavigationBarPlatterContainer)initWithFrame:(CGRect)a3
+- (_TtC5UIKit29NavigationBarPlatterContainer)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

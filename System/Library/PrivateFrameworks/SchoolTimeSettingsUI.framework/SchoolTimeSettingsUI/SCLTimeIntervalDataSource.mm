@@ -1,42 +1,42 @@
 @interface SCLTimeIntervalDataSource
 - (NSArray)timeIntervals;
-- (SCLTimeIntervalDataSource)initWithListController:(id)a3 timeIntervals:(id)a4;
+- (SCLTimeIntervalDataSource)initWithListController:(id)controller timeIntervals:(id)intervals;
 - (SCLTimeIntervalDataSourceDelegate)delegate;
-- (id)createSpecifiersForIntervalsAtIndex:(unint64_t)a3;
+- (id)createSpecifiersForIntervalsAtIndex:(unint64_t)index;
 - (id)intervalSpecifiers;
-- (unint64_t)modelIndexForSpecifier:(id)a3;
-- (void)addInterval:(id)a3;
+- (unint64_t)modelIndexForSpecifier:(id)specifier;
+- (void)addInterval:(id)interval;
 - (void)applySpecifiers;
-- (void)configureSpecifier:(id)a3 forIndex:(unint64_t)a4;
+- (void)configureSpecifier:(id)specifier forIndex:(unint64_t)index;
 - (void)loadSpecifiers;
-- (void)model:(id)a3 didAddIntervalAtIndexes:(id)a4;
-- (void)model:(id)a3 didDeleteIntervalAtIndex:(unint64_t)a4;
-- (void)model:(id)a3 didUpdateIntervalAtIndex:(unint64_t)a4;
+- (void)model:(id)model didAddIntervalAtIndexes:(id)indexes;
+- (void)model:(id)model didDeleteIntervalAtIndex:(unint64_t)index;
+- (void)model:(id)model didUpdateIntervalAtIndex:(unint64_t)index;
 - (void)notifyDelegateOfModelUpdate;
 - (void)reconfigureAllSpecifiers;
-- (void)removeIntervalForSpecifier:(id)a3;
-- (void)setTimeInterval:(id)a3 forSpecifier:(id)a4;
-- (void)setTimeIntervals:(id)a3;
+- (void)removeIntervalForSpecifier:(id)specifier;
+- (void)setTimeInterval:(id)interval forSpecifier:(id)specifier;
+- (void)setTimeIntervals:(id)intervals;
 @end
 
 @implementation SCLTimeIntervalDataSource
 
-- (SCLTimeIntervalDataSource)initWithListController:(id)a3 timeIntervals:(id)a4
+- (SCLTimeIntervalDataSource)initWithListController:(id)controller timeIntervals:(id)intervals
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  intervalsCopy = intervals;
   v8 = objc_alloc_init(SCLSettingsViewModel);
   v17.receiver = self;
   v17.super_class = SCLTimeIntervalDataSource;
-  v9 = [(SCLSpecifierDataSource *)&v17 initWithListController:v6 viewModel:v8];
+  v9 = [(SCLSpecifierDataSource *)&v17 initWithListController:controllerCopy viewModel:v8];
 
   if (v9)
   {
-    v10 = [[SCLTimeIntervalModel alloc] initWithTimeIntervals:v7];
+    v10 = [[SCLTimeIntervalModel alloc] initWithTimeIntervals:intervalsCopy];
     model = v9->_model;
     v9->_model = v10;
 
-    [v6 setWantsEditingMode:1];
+    [controllerCopy setWantsEditingMode:1];
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     intervalGroupSpecifiers = v9->_intervalGroupSpecifiers;
     v9->_intervalGroupSpecifiers = v12;
@@ -53,29 +53,29 @@
 
 - (NSArray)timeIntervals
 {
-  v2 = [(SCLTimeIntervalDataSource *)self model];
-  v3 = [v2 timeIntervals];
+  model = [(SCLTimeIntervalDataSource *)self model];
+  timeIntervals = [model timeIntervals];
 
-  return v3;
+  return timeIntervals;
 }
 
-- (void)setTimeIntervals:(id)a3
+- (void)setTimeIntervals:(id)intervals
 {
-  v11 = a3;
-  v4 = [(SCLTimeIntervalModel *)self->_model timeIntervals];
-  v5 = [v11 isEqual:v4];
+  intervalsCopy = intervals;
+  timeIntervals = [(SCLTimeIntervalModel *)self->_model timeIntervals];
+  v5 = [intervalsCopy isEqual:timeIntervals];
 
   if ((v5 & 1) == 0)
   {
-    [(SCLTimeIntervalModel *)self->_model setTimeIntervals:v11];
+    [(SCLTimeIntervalModel *)self->_model setTimeIntervals:intervalsCopy];
     [(NSMutableArray *)self->_intervalGroupSpecifiers removeAllObjects];
-    v6 = [(SCLTimeIntervalDataSource *)self model];
-    v7 = [v6 timeIntervals];
-    v8 = [v7 count];
+    model = [(SCLTimeIntervalDataSource *)self model];
+    timeIntervals2 = [model timeIntervals];
+    v8 = [timeIntervals2 count];
 
-    v9 = [(SCLTimeIntervalDataSource *)self model];
+    model2 = [(SCLTimeIntervalDataSource *)self model];
     v10 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, v8}];
-    [(SCLTimeIntervalDataSource *)self model:v9 didAddIntervalAtIndexes:v10];
+    [(SCLTimeIntervalDataSource *)self model:model2 didAddIntervalAtIndexes:v10];
 
     [(SCLTimeIntervalDataSource *)self applySpecifiers];
   }
@@ -101,13 +101,13 @@
   addIntervalGroupSpecifiers = self->_addIntervalGroupSpecifiers;
   self->_addIntervalGroupSpecifiers = v8;
 
-  v10 = [(SCLTimeIntervalDataSource *)self model];
-  v11 = [v10 timeIntervals];
-  v12 = [v11 count];
+  model = [(SCLTimeIntervalDataSource *)self model];
+  timeIntervals = [model timeIntervals];
+  v12 = [timeIntervals count];
 
-  v13 = [(SCLTimeIntervalDataSource *)self model];
+  model2 = [(SCLTimeIntervalDataSource *)self model];
   v14 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, v12}];
-  [(SCLTimeIntervalDataSource *)self model:v13 didAddIntervalAtIndexes:v14];
+  [(SCLTimeIntervalDataSource *)self model:model2 didAddIntervalAtIndexes:v14];
 
   [(SCLTimeIntervalDataSource *)self applySpecifiers];
   v15 = *MEMORY[0x277D85DE8];
@@ -121,23 +121,23 @@
   [(SCLSpecifierDataSource *)self setSpecifiers:v3];
 }
 
-- (id)createSpecifiersForIntervalsAtIndex:(unint64_t)a3
+- (id)createSpecifiersForIntervalsAtIndex:(unint64_t)index
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Group-%@", v6];
+  v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Group-%@", uUIDString];
   v20 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:v21];
   v7 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:self set:sel_setTimeInterval_forSpecifier_ get:0 detail:0 cell:-1 edit:0];
   [v7 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Interval-%@", v6];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Interval-%@", uUIDString];
   [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x277D3FFB8]];
 
   [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FF38]];
   [v7 setObject:self->_scheduleTimeFormatter forKeyedSubscript:@"SCLTimeIntervalTableViewCellScheduleTimeFormatter"];
   [v7 setObject:self->_model forKeyedSubscript:@"SCLTimeIntervalTableViewCellDateConverter"];
-  [(SCLTimeIntervalDataSource *)self configureSpecifier:v7 forIndex:a3];
+  [(SCLTimeIntervalDataSource *)self configureSpecifier:v7 forIndex:index];
   objc_initWeak(&location, self);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -257,38 +257,38 @@ void __65__SCLTimeIntervalDataSource_createSpecifiersForIntervalsAtIndex___block
 
 - (void)reconfigureAllSpecifiers
 {
-  v3 = [(SCLTimeIntervalDataSource *)self intervalSpecifiers];
+  intervalSpecifiers = [(SCLTimeIntervalDataSource *)self intervalSpecifiers];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__SCLTimeIntervalDataSource_reconfigureAllSpecifiers__block_invoke;
   v4[3] = &unk_279B6F128;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [intervalSpecifiers enumerateObjectsUsingBlock:v4];
 }
 
-- (void)configureSpecifier:(id)a3 forIndex:(unint64_t)a4
+- (void)configureSpecifier:(id)specifier forIndex:(unint64_t)index
 {
   model = self->_model;
-  v7 = a3;
-  v8 = [(SCLTimeIntervalModel *)model timeIntervals];
-  v12 = [v8 objectAtIndexedSubscript:a4];
+  specifierCopy = specifier;
+  timeIntervals = [(SCLTimeIntervalModel *)model timeIntervals];
+  v12 = [timeIntervals objectAtIndexedSubscript:index];
 
-  v9 = [(SCLTimeIntervalModel *)self->_model constraintIntervals];
-  v10 = [v9 objectAtIndexedSubscript:a4];
+  constraintIntervals = [(SCLTimeIntervalModel *)self->_model constraintIntervals];
+  v10 = [constraintIntervals objectAtIndexedSubscript:index];
 
-  [v7 setObject:v12 forKeyedSubscript:*MEMORY[0x277D401A8]];
+  [specifierCopy setObject:v12 forKeyedSubscript:*MEMORY[0x277D401A8]];
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[SCLTimeIntervalModel canRemoveTimeIntervals](self->_model, "canRemoveTimeIntervals")}];
-  [v7 setObject:v11 forKeyedSubscript:@"SCLListControllerEditingEnabled"];
+  [specifierCopy setObject:v11 forKeyedSubscript:@"SCLListControllerEditingEnabled"];
 
-  [v7 setObject:&unk_28762D868 forKeyedSubscript:@"SCLListControllerCellEditingStyle"];
-  [v7 setObject:v10 forKeyedSubscript:@"SCLTimeIntervalTableViewCellConstrainingInterval"];
+  [specifierCopy setObject:&unk_28762D868 forKeyedSubscript:@"SCLListControllerCellEditingStyle"];
+  [specifierCopy setObject:v10 forKeyedSubscript:@"SCLTimeIntervalTableViewCellConstrainingInterval"];
 }
 
-- (unint64_t)modelIndexForSpecifier:(id)a3
+- (unint64_t)modelIndexForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(SCLTimeIntervalDataSource *)self intervalSpecifiers];
-  v6 = [v5 indexOfObject:v4];
+  specifierCopy = specifier;
+  intervalSpecifiers = [(SCLTimeIntervalDataSource *)self intervalSpecifiers];
+  v6 = [intervalSpecifiers indexOfObject:specifierCopy];
 
   return v6;
 }
@@ -311,76 +311,76 @@ uint64_t __47__SCLTimeIntervalDataSource_intervalSpecifiers__block_invoke(uint64
   return isKindOfClass & 1;
 }
 
-- (void)addInterval:(id)a3
+- (void)addInterval:(id)interval
 {
-  v4 = [(SCLTimeIntervalDataSource *)self model];
-  v5 = [v4 canAppendTimeInterval];
+  model = [(SCLTimeIntervalDataSource *)self model];
+  canAppendTimeInterval = [model canAppendTimeInterval];
 
-  if (v5)
+  if (canAppendTimeInterval)
   {
-    v6 = [(SCLTimeIntervalDataSource *)self model];
-    v13 = [v6 nextProposedTimeInterval];
+    model2 = [(SCLTimeIntervalDataSource *)self model];
+    nextProposedTimeInterval = [model2 nextProposedTimeInterval];
 
-    if (v13)
+    if (nextProposedTimeInterval)
     {
-      v7 = [(SCLTimeIntervalDataSource *)self model];
-      [v7 appendTimeInterval:v13];
+      model3 = [(SCLTimeIntervalDataSource *)self model];
+      [model3 appendTimeInterval:nextProposedTimeInterval];
 
-      v8 = [(SCLTimeIntervalDataSource *)self model];
-      v9 = [v8 timeIntervals];
-      v10 = [v9 count] - 1;
+      model4 = [(SCLTimeIntervalDataSource *)self model];
+      timeIntervals = [model4 timeIntervals];
+      v10 = [timeIntervals count] - 1;
 
-      v11 = [(SCLTimeIntervalDataSource *)self model];
+      model5 = [(SCLTimeIntervalDataSource *)self model];
       v12 = [MEMORY[0x277CCAA78] indexSetWithIndex:v10];
-      [(SCLTimeIntervalDataSource *)self model:v11 didAddIntervalAtIndexes:v12];
+      [(SCLTimeIntervalDataSource *)self model:model5 didAddIntervalAtIndexes:v12];
     }
   }
 }
 
-- (void)setTimeInterval:(id)a3 forSpecifier:(id)a4
+- (void)setTimeInterval:(id)interval forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [(SCLTimeIntervalDataSource *)self modelIndexForSpecifier:a4];
-  [(SCLTimeIntervalModel *)self->_model replaceTimeIntervalAtIndex:v7 withTimeInterval:v6];
+  intervalCopy = interval;
+  v7 = [(SCLTimeIntervalDataSource *)self modelIndexForSpecifier:specifier];
+  [(SCLTimeIntervalModel *)self->_model replaceTimeIntervalAtIndex:v7 withTimeInterval:intervalCopy];
 
-  v8 = [(SCLTimeIntervalDataSource *)self model];
-  [(SCLTimeIntervalDataSource *)self model:v8 didUpdateIntervalAtIndex:v7];
+  model = [(SCLTimeIntervalDataSource *)self model];
+  [(SCLTimeIntervalDataSource *)self model:model didUpdateIntervalAtIndex:v7];
 }
 
-- (void)removeIntervalForSpecifier:(id)a3
+- (void)removeIntervalForSpecifier:(id)specifier
 {
-  v4 = [(SCLTimeIntervalDataSource *)self modelIndexForSpecifier:a3];
-  v5 = [(SCLTimeIntervalDataSource *)self model];
-  [v5 removeTimeIntervalAtIndex:v4];
+  v4 = [(SCLTimeIntervalDataSource *)self modelIndexForSpecifier:specifier];
+  model = [(SCLTimeIntervalDataSource *)self model];
+  [model removeTimeIntervalAtIndex:v4];
 
-  v6 = [(SCLTimeIntervalDataSource *)self model];
-  [(SCLTimeIntervalDataSource *)self model:v6 didDeleteIntervalAtIndex:v4];
+  model2 = [(SCLTimeIntervalDataSource *)self model];
+  [(SCLTimeIntervalDataSource *)self model:model2 didDeleteIntervalAtIndex:v4];
 }
 
 - (void)notifyDelegateOfModelUpdate
 {
-  v4 = [(SCLTimeIntervalDataSource *)self delegate];
-  v3 = [(SCLTimeIntervalDataSource *)self timeIntervals];
-  [v4 timeIntervalDataSource:self didUpdateTimeIntervals:v3];
+  delegate = [(SCLTimeIntervalDataSource *)self delegate];
+  timeIntervals = [(SCLTimeIntervalDataSource *)self timeIntervals];
+  [delegate timeIntervalDataSource:self didUpdateTimeIntervals:timeIntervals];
 }
 
-- (void)model:(id)a3 didAddIntervalAtIndexes:(id)a4
+- (void)model:(id)model didAddIntervalAtIndexes:(id)indexes
 {
-  v5 = a4;
-  v6 = [(SCLSpecifierDataSource *)self listController];
-  [v6 beginUpdates];
+  indexesCopy = indexes;
+  listController = [(SCLSpecifierDataSource *)self listController];
+  [listController beginUpdates];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__SCLTimeIntervalDataSource_model_didAddIntervalAtIndexes___block_invoke;
   v8[3] = &unk_279B6F170;
   v8[4] = self;
-  [v5 enumerateIndexesUsingBlock:v8];
+  [indexesCopy enumerateIndexesUsingBlock:v8];
 
   [(SCLTimeIntervalDataSource *)self reconfigureAllSpecifiers];
   [(SCLTimeIntervalDataSource *)self applySpecifiers];
-  v7 = [(SCLSpecifierDataSource *)self listController];
-  [v7 endUpdates];
+  listController2 = [(SCLSpecifierDataSource *)self listController];
+  [listController2 endUpdates];
 
   [(SCLTimeIntervalDataSource *)self notifyDelegateOfModelUpdate];
 }
@@ -391,17 +391,17 @@ void __59__SCLTimeIntervalDataSource_model_didAddIntervalAtIndexes___block_invok
   [*(*(a1 + 32) + 64) addObjectsFromArray:v3];
 }
 
-- (void)model:(id)a3 didDeleteIntervalAtIndex:(unint64_t)a4
+- (void)model:(id)model didDeleteIntervalAtIndex:(unint64_t)index
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v6 = [(SCLSpecifierDataSource *)self listController];
-  [v6 beginUpdates];
+  listController = [(SCLSpecifierDataSource *)self listController];
+  [listController beginUpdates];
 
-  v7 = [(SCLTimeIntervalDataSource *)self intervalSpecifiers];
-  v8 = [v7 objectAtIndex:a4];
+  intervalSpecifiers = [(SCLTimeIntervalDataSource *)self intervalSpecifiers];
+  v8 = [intervalSpecifiers objectAtIndex:index];
 
-  v9 = [(SCLSpecifierDataSource *)self listController];
-  v10 = [v9 getGroupSpecifierForSpecifier:v8];
+  listController2 = [(SCLSpecifierDataSource *)self listController];
+  v10 = [listController2 getGroupSpecifierForSpecifier:v8];
 
   intervalGroupSpecifiers = self->_intervalGroupSpecifiers;
   v15[0] = v8;
@@ -411,26 +411,26 @@ void __59__SCLTimeIntervalDataSource_model_didAddIntervalAtIndexes___block_invok
 
   [(SCLTimeIntervalDataSource *)self reconfigureAllSpecifiers];
   [(SCLTimeIntervalDataSource *)self applySpecifiers];
-  v13 = [(SCLSpecifierDataSource *)self listController];
-  [v13 endUpdates];
+  listController3 = [(SCLSpecifierDataSource *)self listController];
+  [listController3 endUpdates];
 
   [(SCLTimeIntervalDataSource *)self notifyDelegateOfModelUpdate];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)model:(id)a3 didUpdateIntervalAtIndex:(unint64_t)a4
+- (void)model:(id)model didUpdateIntervalAtIndex:(unint64_t)index
 {
-  v6 = [(SCLSpecifierDataSource *)self listController];
-  [v6 beginUpdates];
+  listController = [(SCLSpecifierDataSource *)self listController];
+  [listController beginUpdates];
 
   [(SCLTimeIntervalDataSource *)self reconfigureAllSpecifiers];
-  v7 = [(SCLTimeIntervalDataSource *)self intervalSpecifiers];
-  v10 = [v7 objectAtIndexedSubscript:a4];
+  intervalSpecifiers = [(SCLTimeIntervalDataSource *)self intervalSpecifiers];
+  v10 = [intervalSpecifiers objectAtIndexedSubscript:index];
 
   v8 = [v10 objectForKeyedSubscript:*MEMORY[0x277D40148]];
   [v8 reloadWithSpecifier:v10 animated:0];
-  v9 = [(SCLSpecifierDataSource *)self listController];
-  [v9 endUpdates];
+  listController2 = [(SCLSpecifierDataSource *)self listController];
+  [listController2 endUpdates];
 
   [(SCLTimeIntervalDataSource *)self notifyDelegateOfModelUpdate];
 }

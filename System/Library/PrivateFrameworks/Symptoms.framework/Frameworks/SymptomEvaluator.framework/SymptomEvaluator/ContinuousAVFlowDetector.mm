@@ -1,6 +1,6 @@
 @interface ContinuousAVFlowDetector
 - (ContinuousAVFlowDetector)init;
-- (int)possibleAVFlowScore:(id)a3 result:(AVFlowDetectionResult *)a4;
+- (int)possibleAVFlowScore:(id)score result:(AVFlowDetectionResult *)result;
 - (void)setDefaults;
 @end
 
@@ -30,10 +30,10 @@
   return v3;
 }
 
-- (int)possibleAVFlowScore:(id)a3 result:(AVFlowDetectionResult *)a4
+- (int)possibleAVFlowScore:(id)score result:(AVFlowDetectionResult *)result
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  scoreCopy = score;
   v37 = 0.0;
   v38 = 0;
   v35 = 0.0;
@@ -47,14 +47,14 @@
   v27 = 0.0;
   v28 = 0.0;
   v7 = 0.0;
-  if (![v6 statisticsForSampleCount:&v38 sampleDuration:&v37 minRxTput:&v36 avgRxTput:&v32 maxRxTput:&v34 avgCeilingRxTput:&v30 normalizedRxStdDeviation:&v28 minTxTput:&v35 avgTxTput:&v31 maxTxTput:&v33 avgCeilingTxTput:&v29 normalizedTxStdDeviation:&v27 requiredMinSampleCount:3])
+  if (![scoreCopy statisticsForSampleCount:&v38 sampleDuration:&v37 minRxTput:&v36 avgRxTput:&v32 maxRxTput:&v34 avgCeilingRxTput:&v30 normalizedRxStdDeviation:&v28 minTxTput:&v35 avgTxTput:&v31 maxTxTput:&v33 avgCeilingTxTput:&v29 normalizedTxStdDeviation:&v27 requiredMinSampleCount:3])
   {
     v11 = 0;
     v12 = @"ContinuousAVFlowDetector-no-stats";
     goto LABEL_24;
   }
 
-  if ([v6 flowIsUDP])
+  if ([scoreCopy flowIsUDP])
   {
     v8 = &OBJC_IVAR___ContinuousAVFlowDetector__minUDPFlowDuplexThroughputForAudioVideoDetermination;
     v9 = &OBJC_IVAR___ContinuousAVFlowDetector__minUDPFlowElapsedTimeForAudioVideoDetermination;
@@ -63,7 +63,7 @@
 
   else
   {
-    if (([v6 flowIsTCP] & 1) == 0 && !objc_msgSend(v6, "flowIsQUIC"))
+    if (([scoreCopy flowIsTCP] & 1) == 0 && !objc_msgSend(scoreCopy, "flowIsQUIC"))
     {
       v13 = -1;
       v15 = 1000000.0;
@@ -84,13 +84,13 @@ LABEL_9:
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v17 = v16;
-    v18 = [v6 createdBy];
-    v19 = [v6 flowType];
-    v20 = trafficClassToString([v6 trafficClass]);
+    createdBy = [scoreCopy createdBy];
+    flowType = [scoreCopy flowType];
+    v20 = trafficClassToString([scoreCopy trafficClass]);
     *buf = 138415106;
-    v40 = v18;
+    v40 = createdBy;
     v41 = 2112;
-    v42 = v19;
+    v42 = flowType;
     v43 = 2112;
     v44 = v20;
     v45 = 2048;
@@ -129,7 +129,7 @@ LABEL_9:
       v7 = v33;
     }
 
-    if ([v6 trafficClassIsAudioVideo])
+    if ([scoreCopy trafficClassIsAudioVideo])
     {
       v22 = 60;
     }
@@ -154,12 +154,12 @@ LABEL_9:
   }
 
 LABEL_24:
-  if (a4 && v11 > a4->var0)
+  if (result && v11 > result->var0)
   {
-    a4->var1 = v7;
-    a4->var0 = v11;
-    var2 = a4->var2;
-    a4->var2 = v12;
+    result->var1 = v7;
+    result->var0 = v11;
+    var2 = result->var2;
+    result->var2 = v12;
   }
 
   v25 = *MEMORY[0x277D85DE8];

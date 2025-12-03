@@ -17,8 +17,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [(IDSAccount *)self aliasStrings];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    aliasStrings = [(IDSAccount *)self aliasStrings];
+    v5 = [aliasStrings countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -31,7 +31,7 @@ LABEL_5:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(aliasStrings);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v8);
@@ -46,7 +46,7 @@ LABEL_5:
         v9 = v3;
         if (v6 == v8)
         {
-          v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v6 = [aliasStrings countByEnumeratingWithState:&v14 objects:v18 count:16];
           if (v6)
           {
             goto LABEL_5;
@@ -65,8 +65,8 @@ LABEL_5:
 
   if (![v3 length])
   {
-    v11 = [(IDSAccount *)self regionBasePhoneNumber];
-    if (v11)
+    regionBasePhoneNumber = [(IDSAccount *)self regionBasePhoneNumber];
+    if (regionBasePhoneNumber)
     {
       v12 = IMCountryCodeForNumber();
 

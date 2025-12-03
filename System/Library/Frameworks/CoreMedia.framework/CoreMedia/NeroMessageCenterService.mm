@@ -1,15 +1,15 @@
 @interface NeroMessageCenterService
-- (BOOL)sendMemoryBlock:(void *)a3 withLength:(unint64_t)a4;
-- (NeroMessageCenterService)initWithIDSService:(id)a3 connection:(OpaqueFigTransportConnection *)a4;
+- (BOOL)sendMemoryBlock:(void *)block withLength:(unint64_t)length;
+- (NeroMessageCenterService)initWithIDSService:(id)service connection:(OpaqueFigTransportConnection *)connection;
 - (int)activateConnection;
 - (void)deactivateConnection;
 - (void)dealloc;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
 @end
 
 @implementation NeroMessageCenterService
 
-- (NeroMessageCenterService)initWithIDSService:(id)a3 connection:(OpaqueFigTransportConnection *)a4
+- (NeroMessageCenterService)initWithIDSService:(id)service connection:(OpaqueFigTransportConnection *)connection
 {
   v11.receiver = self;
   v11.super_class = NeroMessageCenterService;
@@ -17,8 +17,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_connection = a4;
-    v6->_service = a3;
+    v6->_connection = connection;
+    v6->_service = service;
     v8 = dispatch_queue_create([@"FigTransportConnectionIDS.delegate" UTF8String], 0);
     v7->_options = 0;
     v7->_serviceQueue = v8;
@@ -48,10 +48,10 @@ void __48__NeroMessageCenterService_deactivateConnection__block_invoke(uint64_t 
   *(*(a1 + 32) + 40) = 0;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v9 = [a5 bytes];
-  v10 = [a5 length];
+  bytes = [data bytes];
+  v10 = [data length];
   DerivedStorage = CMBaseObjectGetDerivedStorage(self->_connection);
   if (self->_isActive && v10 != 0)
   {
@@ -66,7 +66,7 @@ void __48__NeroMessageCenterService_deactivateConnection__block_invoke(uint64_t 
       {
         if (!v17)
         {
-          v18 = *v9;
+          v18 = *bytes;
           self->_incomingPackageSize = v18;
           if (CMBlockBufferCreateWithMemoryBlock(v16, 0, v18, *(v13 + 64), 0, 0, v18, 1u, &self->_incomingPackage))
           {
@@ -93,7 +93,7 @@ void __48__NeroMessageCenterService_deactivateConnection__block_invoke(uint64_t 
         v20 = v10;
       }
 
-      if (CMBlockBufferReplaceDataBytes(v9, v17, numBytesReceivedForIncomingPackage, v20))
+      if (CMBlockBufferReplaceDataBytes(bytes, v17, numBytesReceivedForIncomingPackage, v20))
       {
         break;
       }
@@ -190,7 +190,7 @@ void __48__NeroMessageCenterService_deactivateConnection__block_invoke(uint64_t 
   }
 }
 
-- (BOOL)sendMemoryBlock:(void *)a3 withLength:(unint64_t)a4
+- (BOOL)sendMemoryBlock:(void *)block withLength:(unint64_t)length
 {
   v9 = 0;
   v10 = 0;
@@ -200,7 +200,7 @@ void __48__NeroMessageCenterService_deactivateConnection__block_invoke(uint64_t 
     return 1;
   }
 
-  -[IDSService sendData:toDestinations:priority:options:identifier:error:](self->_service, "sendData:toDestinations:priority:options:identifier:error:", [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:a3 length:a4 freeWhenDone:1], v7, 300, self->_options, &v10, &v9);
+  -[IDSService sendData:toDestinations:priority:options:identifier:error:](self->_service, "sendData:toDestinations:priority:options:identifier:error:", [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:block length:length freeWhenDone:1], v7, 300, self->_options, &v10, &v9);
   [v9 code];
   return v9 == 0;
 }

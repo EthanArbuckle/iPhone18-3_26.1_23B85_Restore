@@ -1,29 +1,29 @@
 @interface VNFaceDetectorPrivateRevisionLegacyFaceCore
-+ (id)_convertVNOptionsToFaceCoreDetectOptions:(id)a3;
-+ (id)_convertVNOptionsToFaceCoreExtractOptions:(id)a3;
-+ (id)_convertVNOptionsToFaceCoreOptions:(id)a3 optionsMap:(id)a4;
-+ (id)_convertVNOptionsToFaceCoreSetupOptions:(id)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4;
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8;
++ (id)_convertVNOptionsToFaceCoreDetectOptions:(id)options;
++ (id)_convertVNOptionsToFaceCoreExtractOptions:(id)options;
++ (id)_convertVNOptionsToFaceCoreOptions:(id)options optionsMap:(id)map;
++ (id)_convertVNOptionsToFaceCoreSetupOptions:(id)options;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error;
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNFaceDetectorPrivateRevisionLegacyFaceCore
 
-+ (id)_convertVNOptionsToFaceCoreOptions:(id)a3 optionsMap:(id)a4
++ (id)_convertVNOptionsToFaceCoreOptions:(id)options optionsMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  optionsCopy = options;
+  mapCopy = map;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __93__VNFaceDetectorPrivateRevisionLegacyFaceCore__convertVNOptionsToFaceCoreOptions_optionsMap___block_invoke;
   v13[3] = &unk_1E77B37F0;
-  v8 = v7;
+  v8 = dictionary;
   v14 = v8;
-  v9 = v5;
+  v9 = optionsCopy;
   v15 = v9;
-  [v6 enumerateKeysAndObjectsUsingBlock:v13];
+  [mapCopy enumerateKeysAndObjectsUsingBlock:v13];
   v10 = v15;
   v11 = v8;
 
@@ -37,10 +37,10 @@ void __93__VNFaceDetectorPrivateRevisionLegacyFaceCore__convertVNOptionsToFaceCo
   [*(a1 + 32) setObject:v5 forKeyedSubscript:v6];
 }
 
-+ (id)_convertVNOptionsToFaceCoreExtractOptions:(id)a3
++ (id)_convertVNOptionsToFaceCoreExtractOptions:(id)options
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v5 = *MEMORY[0x1E6984A60];
   v10[0] = @"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_EnhanceEyesAndMouthLocalization";
   v10[1] = @"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_ExtractBlink";
@@ -50,15 +50,15 @@ void __93__VNFaceDetectorPrivateRevisionLegacyFaceCore__convertVNOptionsToFaceCo
   v10[2] = @"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_ExtractSmile";
   v11[2] = *MEMORY[0x1E6984A70];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:3];
-  v8 = [a1 _convertVNOptionsToFaceCoreOptions:v4 optionsMap:v7];
+  v8 = [self _convertVNOptionsToFaceCoreOptions:optionsCopy optionsMap:v7];
 
   return v8;
 }
 
-+ (id)_convertVNOptionsToFaceCoreDetectOptions:(id)a3
++ (id)_convertVNOptionsToFaceCoreDetectOptions:(id)options
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v5 = *MEMORY[0x1E6984A40];
   v10[0] = @"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_ROIs";
   v10[1] = @"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_InitialAngle";
@@ -68,19 +68,19 @@ void __93__VNFaceDetectorPrivateRevisionLegacyFaceCore__convertVNOptionsToFaceCo
   v10[2] = @"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_EnhanceEyesAndMouthLocalization";
   v11[2] = *MEMORY[0x1E6984A48];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:3];
-  v8 = [a1 _convertVNOptionsToFaceCoreOptions:v4 optionsMap:v7];
+  v8 = [self _convertVNOptionsToFaceCoreOptions:optionsCopy optionsMap:v7];
 
   return v8;
 }
 
-+ (id)_convertVNOptionsToFaceCoreSetupOptions:(id)a3
++ (id)_convertVNOptionsToFaceCoreSetupOptions:(id)options
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v21 = 0;
   v22 = 0;
-  v6 = [VNValidationUtilities getNSUIntegerValue:&v22 forKey:@"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_Type" inOptions:v4 error:&v21];
+  v6 = [VNValidationUtilities getNSUIntegerValue:&v22 forKey:@"VNFaceDetectorPrivateRevisionLegacyFaceCoreProcessOption_Type" inOptions:optionsCopy error:&v21];
   v7 = v21;
   v14 = v7;
   if (!v6)
@@ -132,13 +132,13 @@ LABEL_14:
   v24[0] = v16;
   v24[1] = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
-  v19 = [a1 _convertVNOptionsToFaceCoreOptions:v4 optionsMap:v18];
+  v19 = [self _convertVNOptionsToFaceCoreOptions:optionsCopy optionsMap:v18];
   [v5 addEntriesFromDictionary:v19];
 
   return v5;
 }
 
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v4 = [[VNSizeRange alloc] initWithMinimumDimension:0 maximumDimension:-1 idealDimension:0];
@@ -149,27 +149,27 @@ LABEL_14:
   return v6;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v77 = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v49 = v14;
-  v15 = [(VNDetector *)self validatedImageBufferFromOptions:v14 error:a7];
+  optionsCopy = options;
+  v49 = optionsCopy;
+  v15 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v16 = v15;
   if (!v15)
   {
@@ -178,13 +178,13 @@ LABEL_14:
   }
 
   v48 = v15;
-  v51 = [v15 width];
-  v17 = [v16 height];
+  width = [v15 width];
+  height = [v16 height];
   v18 = objc_opt_class();
-  v19 = [v18 _convertVNOptionsToFaceCoreSetupOptions:v14];
-  v20 = [v18 _convertVNOptionsToFaceCoreDetectOptions:v14];
+  v19 = [v18 _convertVNOptionsToFaceCoreSetupOptions:optionsCopy];
+  v20 = [v18 _convertVNOptionsToFaceCoreDetectOptions:optionsCopy];
   v46 = v20;
-  v47 = [v18 _convertVNOptionsToFaceCoreExtractOptions:v14];
+  v47 = [v18 _convertVNOptionsToFaceCoreExtractOptions:optionsCopy];
   v80.origin.x = 0.0;
   v80.origin.y = 0.0;
   v80.size.width = 1.0;
@@ -195,10 +195,10 @@ LABEL_14:
   v79.size.height = height;
   if (!CGRectEqualToRect(v79, v80))
   {
-    v75[0] = x * v51;
-    v75[1] = (1.0 - y - height) * v17;
-    v75[2] = width * v51;
-    v75[3] = height * v17;
+    v75[0] = x * width;
+    v75[1] = (1.0 - y - height) * height;
+    v75[2] = width * width;
+    v75[3] = height * height;
     v21 = [MEMORY[0x1E696B098] valueWithBytes:v75 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
     [v20 setObject:v21 forKeyedSubscript:*MEMORY[0x1E6984A40]];
   }
@@ -220,11 +220,11 @@ LABEL_14:
     v64 = y;
     v65 = width;
     v66 = height;
-    v67 = v51;
-    v68 = v17;
+    v67 = width;
+    v68 = height;
     v23 = v22;
     v57 = v48;
-    v24 = v14;
+    v24 = optionsCopy;
     v58 = v24;
     v62 = &v69;
     v44 = v23;
@@ -232,9 +232,9 @@ LABEL_14:
     v60 = v20;
     v61 = v47;
     v45 = _Block_copy(aBlock);
-    if (VNExecuteBlock(v45, a7))
+    if (VNExecuteBlock(v45, error))
     {
-      v25 = [VNValidationUtilities originatingRequestSpecifierInOptions:v24 error:a7];
+      v25 = [VNValidationUtilities originatingRequestSpecifierInOptions:v24 error:error];
       if (v25)
       {
         v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v70[5], "count")}];
@@ -247,8 +247,8 @@ LABEL_14:
         if (v27)
         {
           v28 = *v53;
-          v29 = v51;
-          v30 = v17;
+          v29 = width;
+          v30 = height;
           do
           {
             for (i = 0; i != v27; ++i)
@@ -263,14 +263,14 @@ LABEL_14:
               v37 = 0.0;
               v38 = 0.0;
               v39 = 0.0;
-              if (v51)
+              if (width)
               {
                 v38 = v33 / v29;
                 v39 = v35 / v29;
               }
 
               v40 = 0.0;
-              if (v17)
+              if (height)
               {
                 v37 = v34 / v30;
                 v40 = v36 / v30;
@@ -307,11 +307,11 @@ LABEL_14:
     goto LABEL_27;
   }
 
-  if (a7)
+  if (error)
   {
     v44 = 0;
     [VNError errorForInternalErrorWithLocalizedDescription:@"Failed to create detector"];
-    *a7 = v26 = 0;
+    *error = v26 = 0;
 LABEL_27:
     v22 = v44;
     goto LABEL_28;

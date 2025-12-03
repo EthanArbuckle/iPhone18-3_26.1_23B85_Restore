@@ -1,73 +1,73 @@
 @interface CAMTapToRadarUtilities
-+ (id)writeDictionary:(id)a3 toPlistFileWithName:(id)a4;
-+ (void)fileRadarWithTitle:(id)a3 description:(id)a4 classification:(id)a5 reproducibility:(id)a6 componentID:(id)a7 componentName:(id)a8 componentVersion:(id)a9 keywordIdsString:(id)a10 attachmentURLs:(id)a11 includeSysDiagnose:(BOOL)a12 includePhotosDiagnose:(BOOL)a13 includeHIDContinuousRecordings:(BOOL)a14;
++ (id)writeDictionary:(id)dictionary toPlistFileWithName:(id)name;
++ (void)fileRadarWithTitle:(id)title description:(id)description classification:(id)classification reproducibility:(id)reproducibility componentID:(id)d componentName:(id)name componentVersion:(id)version keywordIdsString:(id)self0 attachmentURLs:(id)self1 includeSysDiagnose:(BOOL)self2 includePhotosDiagnose:(BOOL)self3 includeHIDContinuousRecordings:(BOOL)self4;
 @end
 
 @implementation CAMTapToRadarUtilities
 
-+ (void)fileRadarWithTitle:(id)a3 description:(id)a4 classification:(id)a5 reproducibility:(id)a6 componentID:(id)a7 componentName:(id)a8 componentVersion:(id)a9 keywordIdsString:(id)a10 attachmentURLs:(id)a11 includeSysDiagnose:(BOOL)a12 includePhotosDiagnose:(BOOL)a13 includeHIDContinuousRecordings:(BOOL)a14
++ (void)fileRadarWithTitle:(id)title description:(id)description classification:(id)classification reproducibility:(id)reproducibility componentID:(id)d componentName:(id)name componentVersion:(id)version keywordIdsString:(id)self0 attachmentURLs:(id)self1 includeSysDiagnose:(BOOL)self2 includePhotosDiagnose:(BOOL)self3 includeHIDContinuousRecordings:(BOOL)self4
 {
   v81 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a4;
-  v65 = a5;
-  v21 = a6;
-  v64 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
+  titleCopy = title;
+  descriptionCopy = description;
+  classificationCopy = classification;
+  reproducibilityCopy = reproducibility;
+  dCopy = d;
+  nameCopy = name;
+  versionCopy = version;
+  stringCopy = string;
+  lsCopy = ls;
   v26 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v78 = v22;
+    v78 = nameCopy;
     v79 = 2114;
-    v80 = v19;
+    v80 = titleCopy;
     _os_log_impl(&dword_1A3640000, v26, OS_LOG_TYPE_DEFAULT, "Tap-to-Radar initiated for component: %{public}@, title: %{public}@", buf, 0x16u);
   }
 
   v27 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v27 setObject:@"1" forKeyedSubscript:@"IncludeDevicePrefixInTitle"];
-  [v27 setObject:v19 forKeyedSubscript:@"Title"];
-  [v27 setObject:v65 forKeyedSubscript:@"Classification"];
-  [v27 setObject:v21 forKeyedSubscript:@"Reproducibility"];
-  [v27 setObject:v64 forKeyedSubscript:@"ComponentID"];
-  v60 = v22;
-  [v27 setObject:v22 forKeyedSubscript:@"ComponentName"];
-  [v27 setObject:v23 forKeyedSubscript:@"ComponentVersion"];
-  [v27 setObject:v20 forKeyedSubscript:@"Description"];
-  v28 = [MEMORY[0x1E695DF00] date];
+  [v27 setObject:titleCopy forKeyedSubscript:@"Title"];
+  [v27 setObject:classificationCopy forKeyedSubscript:@"Classification"];
+  [v27 setObject:reproducibilityCopy forKeyedSubscript:@"Reproducibility"];
+  [v27 setObject:dCopy forKeyedSubscript:@"ComponentID"];
+  v60 = nameCopy;
+  [v27 setObject:nameCopy forKeyedSubscript:@"ComponentName"];
+  [v27 setObject:versionCopy forKeyedSubscript:@"ComponentVersion"];
+  [v27 setObject:descriptionCopy forKeyedSubscript:@"Description"];
+  date = [MEMORY[0x1E695DF00] date];
   v29 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v29 setDateFormat:@"yyyy.MM.dd_HH-mm-ss"];
   v56 = v29;
-  v57 = v28;
-  v55 = [v29 stringFromDate:v28];
+  v57 = date;
+  v55 = [v29 stringFromDate:date];
   [v27 setObject:? forKeyedSubscript:?];
-  if ([v24 length])
+  if ([stringCopy length])
   {
-    [v27 setObject:v24 forKeyedSubscript:@"Keywords"];
+    [v27 setObject:stringCopy forKeyedSubscript:@"Keywords"];
   }
 
-  v61 = v21;
-  if (!a12)
+  v61 = reproducibilityCopy;
+  if (!diagnose)
   {
     [v27 setObject:@"0" forKeyedSubscript:@"AutoDiagnostics"];
   }
 
-  v30 = [MEMORY[0x1E695DF70] array];
-  v31 = v30;
-  if (a13)
+  array = [MEMORY[0x1E695DF70] array];
+  v31 = array;
+  if (photosDiagnose)
   {
-    [v30 addObject:@"com.apple.PhotoLibraryServices.PhotosDiagnostics"];
+    [array addObject:@"com.apple.PhotoLibraryServices.PhotosDiagnostics"];
   }
 
-  if (a14)
+  if (recordings)
   {
     [v31 addObject:@"com.apple.DiagnosticExtensions.HIDContinuousRecordings"];
   }
 
-  v58 = v24;
+  v58 = stringCopy;
   if ([v31 count])
   {
     v32 = [v31 componentsJoinedByString:{@", "}];
@@ -80,7 +80,7 @@
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  obj = v25;
+  obj = lsCopy;
   v34 = [obj countByEnumeratingWithState:&v71 objects:v76 count:16];
   if (v34)
   {
@@ -95,10 +95,10 @@
           objc_enumerationMutation(obj);
         }
 
-        v38 = [*(*(&v71 + 1) + 8 * i) path];
-        if (v38)
+        path = [*(*(&v71 + 1) + 8 * i) path];
+        if (path)
         {
-          [v33 addObject:v38];
+          [v33 addObject:path];
         }
       }
 
@@ -108,9 +108,9 @@
     while (v35);
   }
 
-  v59 = v23;
-  v62 = v20;
-  v63 = v19;
+  v59 = versionCopy;
+  v62 = descriptionCopy;
+  v63 = titleCopy;
 
   v39 = [v33 componentsJoinedByString:{@", "}];
   if ([v39 length])
@@ -165,21 +165,21 @@
   }
 }
 
-+ (id)writeDictionary:(id)a3 toPlistFileWithName:(id)a4
++ (id)writeDictionary:(id)dictionary toPlistFileWithName:(id)name
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (dictionary)
   {
-    v5 = a4;
-    v6 = a3;
+    nameCopy = name;
+    dictionaryCopy = dictionary;
     v7 = NSTemporaryDirectory();
-    v8 = [v5 stringByAppendingString:@".plist"];
+    v8 = [nameCopy stringByAppendingString:@".plist"];
 
     v9 = [v7 stringByAppendingPathComponent:v8];
 
     v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9];
     v14 = 0;
-    LOBYTE(v7) = [v6 writeToURL:v10 error:&v14];
+    LOBYTE(v7) = [dictionaryCopy writeToURL:v10 error:&v14];
 
     v11 = v14;
     if ((v7 & 1) == 0)

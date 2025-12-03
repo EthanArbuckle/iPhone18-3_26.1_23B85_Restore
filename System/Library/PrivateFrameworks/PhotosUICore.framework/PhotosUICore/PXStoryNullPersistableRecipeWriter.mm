@@ -1,29 +1,29 @@
 @interface PXStoryNullPersistableRecipeWriter
-- (PXStoryNullPersistableRecipeWriter)initWithError:(id)a3;
-- (id)writePersistableRecipe:(id)a3 assetEdits:(id)a4 undoManager:(id)a5 resultHandler:(id)a6;
+- (PXStoryNullPersistableRecipeWriter)initWithError:(id)error;
+- (id)writePersistableRecipe:(id)recipe assetEdits:(id)edits undoManager:(id)manager resultHandler:(id)handler;
 @end
 
 @implementation PXStoryNullPersistableRecipeWriter
 
-- (id)writePersistableRecipe:(id)a3 assetEdits:(id)a4 undoManager:(id)a5 resultHandler:(id)a6
+- (id)writePersistableRecipe:(id)recipe assetEdits:(id)edits undoManager:(id)manager resultHandler:(id)handler
 {
-  v8 = a6;
-  v9 = [(PXStoryNullPersistableRecipeWriter *)self error];
-  (*(a6 + 2))(v8, 0, 0, v9);
+  handlerCopy = handler;
+  error = [(PXStoryNullPersistableRecipeWriter *)self error];
+  (*(handler + 2))(handlerCopy, 0, 0, error);
 
   return 0;
 }
 
-- (PXStoryNullPersistableRecipeWriter)initWithError:(id)a3
+- (PXStoryNullPersistableRecipeWriter)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = PXStoryNullPersistableRecipeWriter;
   v6 = [(PXStoryNullPersistableRecipeWriter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
   }
 
   return v7;

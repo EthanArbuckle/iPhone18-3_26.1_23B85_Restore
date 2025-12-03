@@ -1,22 +1,22 @@
 @interface PKDateSelectorCollectionViewCell
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDateSelectorCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDateSelectorCollectionViewCell)initWithFrame:(CGRect)frame;
 - (PKDateSelectorCollectionViewCellDelegate)delegate;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)_didUpdateDate:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)_didUpdateDate:(id)date;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDate:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setDate:(id)date;
 @end
 
 @implementation PKDateSelectorCollectionViewCell
 
-- (PKDateSelectorCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKDateSelectorCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PKDateSelectorCollectionViewCell;
-  v3 = [(PKDateSelectorCollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDateSelectorCollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DC920]);
@@ -27,45 +27,45 @@
     [(UIDatePicker *)v3->_datePicker setPreferredDatePickerStyle:3];
     [(UIDatePicker *)v3->_datePicker addTarget:v3 action:sel__didUpdateDate_ forControlEvents:4096];
     [(UIDatePicker *)v3->_datePicker setAccessibilityIdentifier:*MEMORY[0x1E69B9698]];
-    v6 = [(PKDateSelectorCollectionViewCell *)v3 contentView];
-    [v6 addSubview:v3->_datePicker];
+    contentView = [(PKDateSelectorCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_datePicker];
   }
 
   return v3;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  objc_storeStrong(&self->_date, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_date, date);
+  dateCopy = date;
   [(UIDatePicker *)self->_datePicker setDate:self->_date];
 }
 
-- (void)_didUpdateDate:(id)a3
+- (void)_didUpdateDate:(id)date
 {
-  v4 = [a3 date];
+  date = [date date];
   date = self->_date;
-  self->_date = v4;
+  self->_date = date;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained dateSelectorCollectionViewCell:self didUpdateDate:self->_date];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = PKDateSelectorCollectionViewCell;
-  v4 = a3;
-  [(PKDateSelectorCollectionViewCell *)&v6 setBackgroundColor:v4];
+  colorCopy = color;
+  [(PKDateSelectorCollectionViewCell *)&v6 setBackgroundColor:colorCopy];
   v5 = [(PKDateSelectorCollectionViewCell *)self contentView:v6.receiver];
-  [v5 setBackgroundColor:v4];
+  [v5 setBackgroundColor:colorCopy];
 
-  [(UIDatePicker *)self->_datePicker setBackgroundColor:v4];
+  [(UIDatePicker *)self->_datePicker setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKDateSelectorCollectionViewCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKDateSelectorCollectionViewCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -76,17 +76,17 @@
   v4.receiver = self;
   v4.super_class = PKDateSelectorCollectionViewCell;
   [(PKDateSelectorCollectionViewCell *)&v4 layoutSubviews];
-  v3 = [(PKDateSelectorCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKDateSelectorCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(PKDateSelectorCollectionViewCell *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  width = a3.size.width;
-  [(UIDatePicker *)self->_datePicker sizeThatFits:a3.size.width, 1.79769313e308];
+  width = bounds.size.width;
+  [(UIDatePicker *)self->_datePicker sizeThatFits:bounds.size.width, 1.79769313e308];
   v8 = v7;
-  if (!a4)
+  if (!layout)
   {
     PKSizeAlignedInRect();
     [(UIDatePicker *)self->_datePicker setFrame:?];
@@ -99,11 +99,11 @@
   return result;
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v17.receiver = self;
   v17.super_class = PKDateSelectorCollectionViewCell;
-  v4 = [(PKDateSelectorCollectionViewCell *)&v17 preferredLayoutAttributesFittingAttributes:a3];
+  v4 = [(PKDateSelectorCollectionViewCell *)&v17 preferredLayoutAttributesFittingAttributes:attributes];
   [v4 frame];
   v6 = v5;
   v8 = v7;

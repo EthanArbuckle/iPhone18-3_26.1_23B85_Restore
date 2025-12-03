@@ -1,16 +1,16 @@
 @interface SSScreenshotsWindowRootViewController
-- (SSScreenshotsWindowRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setManagedViewController:(id)a3;
+- (SSScreenshotsWindowRootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setManagedViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation SSScreenshotsWindowRootViewController
 
-- (SSScreenshotsWindowRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SSScreenshotsWindowRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = SSScreenshotsWindowRootViewController;
-  v4 = [(SSScreenshotsWindowRootViewController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(SSScreenshotsWindowRootViewController *)&v6 initWithNibName:name bundle:bundle];
   [(SSScreenshotsWindowRootViewController *)v4 _setIgnoreAppSupportedOrientations:1];
   return v4;
 }
@@ -20,35 +20,35 @@
   v5.receiver = self;
   v5.super_class = SSScreenshotsWindowRootViewController;
   [(SSScreenshotsWindowRootViewController *)&v5 viewDidLoad];
-  v3 = [(SSScreenshotsWindowRootViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SSScreenshotsWindowRootViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
-- (void)setManagedViewController:(id)a3
+- (void)setManagedViewController:(id)controller
 {
-  v11 = a3;
+  controllerCopy = controller;
   [(UIViewController *)self->_managedViewController willMoveToParentViewController:0];
-  v5 = [(UIViewController *)self->_managedViewController view];
-  [v5 removeFromSuperview];
+  view = [(UIViewController *)self->_managedViewController view];
+  [view removeFromSuperview];
 
   [(UIViewController *)self->_managedViewController removeFromParentViewController];
   managedViewController = self->_managedViewController;
   self->_managedViewController = 0;
 
-  objc_storeStrong(&self->_managedViewController, a3);
+  objc_storeStrong(&self->_managedViewController, controller);
   if (self->_managedViewController)
   {
     [(SSScreenshotsWindowRootViewController *)self addChildViewController:?];
-    v7 = [(SSScreenshotsWindowRootViewController *)self view];
-    v8 = [(UIViewController *)self->_managedViewController view];
-    [v7 addSubview:v8];
+    view2 = [(SSScreenshotsWindowRootViewController *)self view];
+    view3 = [(UIViewController *)self->_managedViewController view];
+    [view2 addSubview:view3];
 
     [(UIViewController *)self->_managedViewController didMoveToParentViewController:self];
-    v9 = [(UIViewController *)self->_managedViewController view];
-    v10 = [(SSScreenshotsWindowRootViewController *)self view];
-    [v10 bounds];
-    [v9 setFrame:?];
+    view4 = [(UIViewController *)self->_managedViewController view];
+    view5 = [(SSScreenshotsWindowRootViewController *)self view];
+    [view5 bounds];
+    [view4 setFrame:?];
   }
 }
 

@@ -1,13 +1,13 @@
 @interface CLCameraController
-- (id)isCapturePhotosEnabled:(id)a3;
-- (id)isCaptureSelfieEnabled:(id)a3;
-- (id)isCaptureSelfieVideoEnabled:(id)a3;
-- (id)isCaptureVideosEnabled:(id)a3;
+- (id)isCapturePhotosEnabled:(id)enabled;
+- (id)isCaptureSelfieEnabled:(id)enabled;
+- (id)isCaptureSelfieVideoEnabled:(id)enabled;
+- (id)isCaptureVideosEnabled:(id)enabled;
 - (id)specifiers;
-- (void)setCapturePhotosEnabled:(id)a3 specifier:(id)a4;
-- (void)setCaptureSelfieEnabled:(id)a3 specifier:(id)a4;
-- (void)setCaptureSelfieVideoEnabled:(id)a3 specifier:(id)a4;
-- (void)setCaptureVideosEnabled:(id)a3 specifier:(id)a4;
+- (void)setCapturePhotosEnabled:(id)enabled specifier:(id)specifier;
+- (void)setCaptureSelfieEnabled:(id)enabled specifier:(id)specifier;
+- (void)setCaptureSelfieVideoEnabled:(id)enabled specifier:(id)specifier;
+- (void)setCaptureVideosEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation CLCameraController
@@ -29,7 +29,7 @@
   return v4;
 }
 
-- (id)isCapturePhotosEnabled:(id)a3
+- (id)isCapturePhotosEnabled:(id)enabled
 {
   v3 = +[CLFCameraSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 allowPhotoCapture]);
@@ -37,14 +37,14 @@
   return v4;
 }
 
-- (void)setCapturePhotosEnabled:(id)a3 specifier:(id)a4
+- (void)setCapturePhotosEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFCameraSettings sharedInstance];
-  [v5 setAllowPhotoCapture:v4];
+  [v5 setAllowPhotoCapture:bOOLValue];
 }
 
-- (id)isCaptureVideosEnabled:(id)a3
+- (id)isCaptureVideosEnabled:(id)enabled
 {
   v3 = +[CLFCameraSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 allowVideoCapture]);
@@ -52,14 +52,14 @@
   return v4;
 }
 
-- (void)setCaptureVideosEnabled:(id)a3 specifier:(id)a4
+- (void)setCaptureVideosEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFCameraSettings sharedInstance];
-  [v5 setAllowVideoCapture:v4];
+  [v5 setAllowVideoCapture:bOOLValue];
 }
 
-- (id)isCaptureSelfieEnabled:(id)a3
+- (id)isCaptureSelfieEnabled:(id)enabled
 {
   v3 = +[CLFCameraSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 allowSelfieCapture]);
@@ -67,14 +67,14 @@
   return v4;
 }
 
-- (void)setCaptureSelfieEnabled:(id)a3 specifier:(id)a4
+- (void)setCaptureSelfieEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFCameraSettings sharedInstance];
-  [v5 setAllowSelfieCapture:v4];
+  [v5 setAllowSelfieCapture:bOOLValue];
 }
 
-- (id)isCaptureSelfieVideoEnabled:(id)a3
+- (id)isCaptureSelfieVideoEnabled:(id)enabled
 {
   v3 = +[CLFCameraSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 allowSelfieVideoCapture]);
@@ -82,11 +82,11 @@
   return v4;
 }
 
-- (void)setCaptureSelfieVideoEnabled:(id)a3 specifier:(id)a4
+- (void)setCaptureSelfieVideoEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFCameraSettings sharedInstance];
-  [v5 setAllowSelfieVideoCapture:v4];
+  [v5 setAllowSelfieVideoCapture:bOOLValue];
 }
 
 @end

@@ -7,9 +7,9 @@
 - (UIImage)image;
 - (UITextDragPreviewRenderer)initWithLayoutManager:(NSLayoutManager *)layoutManager range:(NSRange)range unifyRects:(BOOL)unifyRects;
 - (void)_calculate;
-- (void)_calculateRectsUsingLayoutManager:(id)a3;
-- (void)addRenderingAttributes:(id)a3;
-- (void)removeRenderingAttributes:(id)a3;
+- (void)_calculateRectsUsingLayoutManager:(id)manager;
+- (void)addRenderingAttributes:(id)attributes;
+- (void)removeRenderingAttributes:(id)attributes;
 @end
 
 @implementation UITextDragPreviewRenderer
@@ -99,14 +99,14 @@
     self->_lastRect.origin = v3;
     self->_lastRect.size = v4;
     v5 = !self->_excludeBackground;
-    v6 = [(UITextDragPreviewRenderer *)self layoutManager];
+    layoutManager = [(UITextDragPreviewRenderer *)self layoutManager];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __39__UITextDragPreviewRenderer__calculate__block_invoke;
     v7[3] = &unk_1E7124800;
     v7[4] = self;
     v8 = v5;
-    [v6 coordinateAccess:v7];
+    [layoutManager coordinateAccess:v7];
   }
 }
 
@@ -171,9 +171,9 @@ uint64_t __39__UITextDragPreviewRenderer__calculate__block_invoke_2(uint64_t a1)
   return [v2 drawGlyphsForGlyphRange:v4 atPoint:{v5, v6, v7}];
 }
 
-- (void)_calculateRectsUsingLayoutManager:(id)a3
+- (void)_calculateRectsUsingLayoutManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v54[0] = 0;
   v54[1] = v54;
   v54[2] = 0x4010000000;
@@ -182,7 +182,7 @@ uint64_t __39__UITextDragPreviewRenderer__calculate__block_invoke_2(uint64_t a1)
   v55 = *MEMORY[0x1E695F050];
   v56 = v5;
   v6 = objc_opt_new();
-  v7 = [v4 glyphRangeForCharacterRange:self->_range.location actualCharacterRange:{self->_range.length, 0}];
+  v7 = [managerCopy glyphRangeForCharacterRange:self->_range.location actualCharacterRange:{self->_range.length, 0}];
   v9 = v8;
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
@@ -191,16 +191,16 @@ uint64_t __39__UITextDragPreviewRenderer__calculate__block_invoke_2(uint64_t a1)
   v52 = v7;
   v53 = v8;
   v48[4] = self;
-  v10 = v4;
+  v10 = managerCopy;
   v49 = v10;
   v11 = v6;
   v50 = v11;
   v51 = v54;
   [v10 enumerateLineFragmentsForGlyphRange:v7 usingBlock:{v9, v48}];
-  v12 = [v10 textStorage];
-  v13 = [v12 _ui_containsTables];
+  textStorage = [v10 textStorage];
+  _ui_containsTables = [textStorage _ui_containsTables];
 
-  if (v13)
+  if (_ui_containsTables)
   {
     v42 = MEMORY[0x1E69E9820];
     v43 = 3221225472;
@@ -213,8 +213,8 @@ uint64_t __39__UITextDragPreviewRenderer__calculate__block_invoke_2(uint64_t a1)
 
   if ([v11 count] == 1)
   {
-    v14 = [v11 firstObject];
-    [v14 CGRectValue];
+    firstObject = [v11 firstObject];
+    [firstObject CGRectValue];
     self->_middleRect.origin.x = v15;
     self->_middleRect.origin.y = v16;
     self->_middleRect.size.width = v17;
@@ -223,15 +223,15 @@ uint64_t __39__UITextDragPreviewRenderer__calculate__block_invoke_2(uint64_t a1)
 
   else if ([v11 count])
   {
-    v19 = [v11 firstObject];
-    [v19 CGRectValue];
+    firstObject2 = [v11 firstObject];
+    [firstObject2 CGRectValue];
     self->_firstRect.origin.x = v20;
     self->_firstRect.origin.y = v21;
     self->_firstRect.size.width = v22;
     self->_firstRect.size.height = v23;
 
-    v24 = [v11 lastObject];
-    [v24 CGRectValue];
+    lastObject = [v11 lastObject];
+    [lastObject CGRectValue];
     self->_lastRect.origin.x = v25;
     self->_lastRect.origin.y = v26;
     self->_lastRect.size.width = v27;
@@ -522,22 +522,22 @@ void __63__UITextDragPreviewRenderer__calculateRectsUsingLayoutManager___block_i
   return result;
 }
 
-- (void)addRenderingAttributes:(id)a3
+- (void)addRenderingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(UITextDragPreviewRenderer *)self layoutManager];
-  [v5 addTemporaryAttributes:v4 forCharacterRange:{self->_range.location, self->_range.length}];
+  attributesCopy = attributes;
+  layoutManager = [(UITextDragPreviewRenderer *)self layoutManager];
+  [layoutManager addTemporaryAttributes:attributesCopy forCharacterRange:{self->_range.location, self->_range.length}];
 }
 
-- (void)removeRenderingAttributes:(id)a3
+- (void)removeRenderingAttributes:(id)attributes
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [attributesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -549,18 +549,18 @@ void __63__UITextDragPreviewRenderer__calculateRectsUsingLayoutManager___block_i
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attributesCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(UITextDragPreviewRenderer *)self layoutManager];
-        [v10 removeTemporaryAttribute:v9 forCharacterRange:{self->_range.location, self->_range.length}];
+        layoutManager = [(UITextDragPreviewRenderer *)self layoutManager];
+        [layoutManager removeTemporaryAttribute:v9 forCharacterRange:{self->_range.location, self->_range.length}];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [attributesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

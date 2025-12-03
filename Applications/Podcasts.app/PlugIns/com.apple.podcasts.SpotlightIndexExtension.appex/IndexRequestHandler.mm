@@ -1,40 +1,40 @@
 @interface IndexRequestHandler
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4;
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5;
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
 @end
 
 @implementation IndexRequestHandler
 
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  v7 = a3;
-  v5 = a4;
+  indexCopy = index;
+  handlerCopy = handler;
   if (+[MTDB canExtensionOpenDatabase])
   {
     v6 = +[MTCoreSpotlightController sharedInstance];
-    [v6 searchableIndex:v7 reindexAllSearchableItemsWithAcknowledgementHandler:v5];
+    [v6 searchableIndex:indexCopy reindexAllSearchableItemsWithAcknowledgementHandler:handlerCopy];
   }
 
   else
   {
-    v5[2](v5);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
+  indexCopy = index;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   if (+[MTDB canExtensionOpenDatabase])
   {
     v9 = +[MTCoreSpotlightController sharedInstance];
-    [v9 searchableIndex:v10 reindexSearchableItemsWithIdentifiers:v7 acknowledgementHandler:v8];
+    [v9 searchableIndex:indexCopy reindexSearchableItemsWithIdentifiers:identifiersCopy acknowledgementHandler:handlerCopy];
   }
 
   else
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 

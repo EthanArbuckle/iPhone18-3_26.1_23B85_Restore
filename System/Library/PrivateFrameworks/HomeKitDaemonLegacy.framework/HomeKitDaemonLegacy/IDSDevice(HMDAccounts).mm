@@ -13,8 +13,8 @@
   v4 = a3;
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
   v6 = objc_alloc(MEMORY[0x277CCAD78]);
-  v7 = [a1 uniqueIDOverride];
-  v8 = [v6 initWithUUIDString:v7];
+  uniqueIDOverride = [self uniqueIDOverride];
+  v8 = [v6 initWithUUIDString:uniqueIDOverride];
 
   if (v8)
   {
@@ -25,11 +25,11 @@
       [v5 addObject:v10];
     }
 
-    v11 = [a1 pushToken];
-    v12 = [v4 hmd_preferredHandle];
-    if (v11 && ([v11 hmf_isZeroed] & 1) == 0 && v12)
+    pushToken = [self pushToken];
+    hmd_preferredHandle = [v4 hmd_preferredHandle];
+    if (pushToken && ([pushToken hmf_isZeroed] & 1) == 0 && hmd_preferredHandle)
     {
-      v13 = [[_HMDGlobalDeviceHandle alloc] initWithPushToken:v11 accountHandle:v12];
+      v13 = [[_HMDGlobalDeviceHandle alloc] initWithPushToken:pushToken accountHandle:hmd_preferredHandle];
       if (!v13)
       {
 LABEL_12:
@@ -61,7 +61,7 @@ LABEL_11:
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = a1;
+  selfCopy = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
@@ -83,27 +83,27 @@ LABEL_16:
 - (HMDDeviceCapabilities)hmd_capabilities
 {
   v2 = [HMDDeviceCapabilities alloc];
-  v3 = [a1 hmd_productInfo];
-  v4 = [(HMDDeviceCapabilities *)v2 initWithProductInfo:v3];
+  hmd_productInfo = [self hmd_productInfo];
+  v4 = [(HMDDeviceCapabilities *)v2 initWithProductInfo:hmd_productInfo];
 
   return v4;
 }
 
 - (id)hmd_version
 {
-  v2 = [a1 hmd_productInfo];
-  [a1 operatingSystemVersion];
-  v3 = [v2 productPlatform];
-  if (v3 <= 2)
+  hmd_productInfo = [self hmd_productInfo];
+  [self operatingSystemVersion];
+  productPlatform = [hmd_productInfo productPlatform];
+  if (productPlatform <= 2)
   {
-    if (v3 != 1)
+    if (productPlatform != 1)
     {
-      if (v3 != 2)
+      if (productPlatform != 2)
       {
         goto LABEL_126;
       }
 
-      if ([v2 productClass] == 4)
+      if ([hmd_productInfo productClass] == 4)
       {
         v25 = *MEMORY[0x277D0F350];
         v186 = *(MEMORY[0x277D0F350] + 16);
@@ -670,7 +670,7 @@ LABEL_150:
     goto LABEL_127;
   }
 
-  if (v3 == 3)
+  if (productPlatform == 3)
   {
     v68 = *MEMORY[0x277D0F260];
     v229 = *(MEMORY[0x277D0F260] + 16);
@@ -982,9 +982,9 @@ LABEL_150:
     goto LABEL_150;
   }
 
-  if (v3 != 4)
+  if (productPlatform != 4)
   {
-    if (v3 == 5)
+    if (productPlatform == 5)
     {
       v24 = *MEMORY[0x277D0F270];
       v185 = *(MEMORY[0x277D0F270] + 16);
@@ -1302,11 +1302,11 @@ LABEL_127:
 - (id)hmd_productInfo
 {
   v30 = *MEMORY[0x277D85DE8];
-  v2 = [a1 productName];
+  productName = [self productName];
   v3 = HMFProductPlatformFromString();
 
-  v4 = [a1 modelIdentifier];
-  v5 = [v4 lowercaseString];
+  modelIdentifier = [self modelIdentifier];
+  lowercaseString = [modelIdentifier lowercaseString];
 
   v6 = HMFProductClassFromString();
   if (v3)
@@ -1320,18 +1320,18 @@ LABEL_127:
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = a1;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v8 productName];
+    productName2 = [selfCopy productName];
     v24 = 138543874;
     v25 = v10;
     v26 = 2112;
-    v27 = v11;
+    v27 = productName2;
     v28 = 2112;
-    v29 = v8;
+    v29 = selfCopy;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Could not determine product platform from product name '%@' for device: %@", &v24, 0x20u);
   }
 
@@ -1340,18 +1340,18 @@ LABEL_127:
   {
 LABEL_7:
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [v13 modelIdentifier];
+      modelIdentifier2 = [selfCopy2 modelIdentifier];
       v24 = 138543874;
       v25 = v15;
       v26 = 2112;
-      v27 = v16;
+      v27 = modelIdentifier2;
       v28 = 2112;
-      v29 = v13;
+      v29 = selfCopy2;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Could not determine product class from model identifier '%@' for device: %@", &v24, 0x20u);
     }
 
@@ -1361,10 +1361,10 @@ LABEL_7:
 LABEL_10:
   v17 = objc_alloc(MEMORY[0x277D0F8E8]);
   v18 = objc_alloc(MEMORY[0x277D0F8F8]);
-  [a1 operatingSystemVersion];
+  [self operatingSystemVersion];
   v19 = [v18 initWithOperatingSystemVersion:&v24];
-  v20 = [a1 modelIdentifier];
-  v21 = [v17 initWithPlatform:v3 class:v6 softwareVersion:v19 modelIdentifier:v20];
+  modelIdentifier3 = [self modelIdentifier];
+  v21 = [v17 initWithPlatform:v3 class:v6 softwareVersion:v19 modelIdentifier:modelIdentifier3];
 
   v22 = *MEMORY[0x277D85DE8];
 

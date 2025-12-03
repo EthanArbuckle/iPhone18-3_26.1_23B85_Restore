@@ -1,12 +1,12 @@
 @interface SKUIJSMediaSocialAuthor
-- (SKUIJSMediaSocialAuthor)initWithSKUIMediaSocialAuthor:(id)a3;
+- (SKUIJSMediaSocialAuthor)initWithSKUIMediaSocialAuthor:(id)author;
 @end
 
 @implementation SKUIJSMediaSocialAuthor
 
-- (SKUIJSMediaSocialAuthor)initWithSKUIMediaSocialAuthor:(id)a3
+- (SKUIJSMediaSocialAuthor)initWithSKUIMediaSocialAuthor:(id)author
 {
-  v5 = a3;
+  authorCopy = author;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIJSMediaSocialAuthor initWithSKUIMediaSocialAuthor:];
@@ -18,7 +18,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaSocialAuthor, a3);
+    objc_storeStrong(&v6->_mediaSocialAuthor, author);
   }
 
   return v7;

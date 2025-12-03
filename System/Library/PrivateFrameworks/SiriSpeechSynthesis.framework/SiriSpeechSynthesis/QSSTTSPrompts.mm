@@ -1,9 +1,9 @@
 @interface QSSTTSPrompts
 - (NSArray)prompts;
-- (Offset<siri::speech::schema_fb::TTSPrompts>)addObjectToBuffer:(void *)a3;
-- (QSSTTSPrompts)initWithFlatbuffData:(id)a3 root:(const TTSPrompts *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::TTSPrompts>)addObjectToBuffer:(void *)buffer;
+- (QSSTTSPrompts)initWithFlatbuffData:(id)data root:(const TTSPrompts *)root verify:(BOOL)verify;
 - (id)flatbuffData;
-- (void)prompts_v2:(id)a3;
+- (void)prompts_v2:(id)prompts_v2;
 @end
 
 @implementation QSSTTSPrompts
@@ -37,19 +37,19 @@ flatbuffers::DetachedBuffer *__29__QSSTTSPrompts_flatbuffData__block_invoke(uint
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TTSPrompts>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TTSPrompts>)addObjectToBuffer:(void *)buffer
 {
   v35 = *MEMORY[0x277D85DE8];
   memset(&v33, 0, sizeof(v33));
-  v5 = [(QSSTTSPrompts *)self prompts];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v33, [v5 count]);
+  prompts = [(QSSTTSPrompts *)self prompts];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v33, [prompts count]);
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [(QSSTTSPrompts *)self prompts];
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  prompts2 = [(QSSTTSPrompts *)self prompts];
+  v7 = [prompts2 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
     v8 = *v30;
@@ -59,16 +59,16 @@ flatbuffers::DetachedBuffer *__29__QSSTTSPrompts_flatbuffData__block_invoke(uint
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(prompts2);
         }
 
-        v10 = [*(*(&v29 + 1) + 8 * i) UTF8String];
-        v11 = strlen(v10);
-        LODWORD(v22) = flatbuffers::FlatBufferBuilder::CreateString(a3, v10, v11);
+        uTF8String = [*(*(&v29 + 1) + 8 * i) UTF8String];
+        v11 = strlen(uTF8String);
+        LODWORD(v22) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v11);
         std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v33, &v22);
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v7 = [prompts2 countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v7);
@@ -85,7 +85,7 @@ flatbuffers::DetachedBuffer *__29__QSSTTSPrompts_flatbuffData__block_invoke(uint
     v13 = v33.__begin_;
   }
 
-  v14 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(a3, v13, v33.__end_ - v33.__begin_);
+  v14 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(buffer, v13, v33.__end_ - v33.__begin_);
   v22 = 0;
   v23 = &v22;
   v24 = 0x3812000000;
@@ -98,16 +98,16 @@ flatbuffers::DetachedBuffer *__29__QSSTTSPrompts_flatbuffData__block_invoke(uint
   v21[2] = __35__QSSTTSPrompts_addObjectToBuffer___block_invoke;
   v21[3] = &unk_279C4C2C8;
   v21[4] = &v22;
-  v21[5] = a3;
+  v21[5] = buffer;
   [(QSSTTSPrompts *)self prompts_v2:v21];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v15 = *(a3 + 8);
-  v16 = *(a3 + 12);
-  v17 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v14);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, *(v23 + 12));
-  v18.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v15 - v16 + v17);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v15 = *(buffer + 8);
+  v16 = *(buffer + 12);
+  v17 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, v14);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, *(v23 + 12));
+  v18.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v15 - v16 + v17);
   _Block_object_dispose(&v22, 8);
   if (begin)
   {
@@ -125,22 +125,22 @@ uint64_t __35__QSSTTSPrompts_addObjectToBuffer___block_invoke(uint64_t a1, const
   return result;
 }
 
-- (void)prompts_v2:(id)a3
+- (void)prompts_v2:(id)prompts_v2
 {
   root = self->_root;
   v5 = &root[-*root->var0];
-  v6 = a3;
+  prompts_v2Copy = prompts_v2;
   v7 = *root[*v5[6].var0 + *root[*v5[6].var0].var0].var0;
-  v8 = v6;
-  (*(a3 + 2))();
+  v8 = prompts_v2Copy;
+  (*(prompts_v2 + 2))();
 }
 
 - (NSArray)prompts
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"prompts"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"prompts"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 5u)
@@ -157,7 +157,7 @@ uint64_t __35__QSSTTSPrompts_addObjectToBuffer___block_invoke(uint64_t a1, const
           do
           {
             v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:&v10[*v10->var0 + 4] length:*v10[*v10->var0].var0 encoding:4];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -168,48 +168,48 @@ uint64_t __35__QSSTTSPrompts_addObjectToBuffer___block_invoke(uint64_t a1, const
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"prompts"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"prompts"];
   }
 
-  return v3;
+  return array;
 }
 
-- (QSSTTSPrompts)initWithFlatbuffData:(id)a3 root:(const TTSPrompts *)a4 verify:(BOOL)a5
+- (QSSTTSPrompts)initWithFlatbuffData:(id)data root:(const TTSPrompts *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSTTSPrompts;
   v10 = [(QSSTTSPrompts *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -231,9 +231,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

@@ -1,10 +1,10 @@
 @interface HKContactsPrescription
-+ (BOOL)_validateBaseCurve:(id)a3 error:(id *)a4;
-+ (BOOL)_validateDiameter:(id)a3 error:(id *)a4;
++ (BOOL)_validateBaseCurve:(id)curve error:(id *)error;
++ (BOOL)_validateDiameter:(id)diameter error:(id *)error;
 + (HKContactsPrescription)prescriptionWithRightEyeSpecification:(HKContactsLensSpecification *)rightEyeSpecification leftEyeSpecification:(HKContactsLensSpecification *)leftEyeSpecification brand:(NSString *)brand dateIssued:(NSDate *)dateIssued expirationDate:(NSDate *)expirationDate device:(HKDevice *)device metadata:(NSDictionary *)metadata;
-- (BOOL)_validateContactsFieldsWithError:(id *)a3;
-- (HKContactsPrescription)initWithCoder:(id)a3;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (BOOL)_validateContactsFieldsWithError:(id *)error;
+- (HKContactsPrescription)initWithCoder:(id)coder;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)description;
 - (id)leftAddPower;
 - (id)leftAxis;
@@ -14,10 +14,10 @@
 - (id)rightAxis;
 - (id)rightCylinder;
 - (id)rightSphere;
-- (void)_setBrand:(id)a3;
-- (void)_setLeftEyeSpecification:(id)a3;
-- (void)_setRightEyeSpecification:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setBrand:(id)brand;
+- (void)_setLeftEyeSpecification:(id)specification;
+- (void)_setRightEyeSpecification:(id)specification;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKContactsPrescription
@@ -30,9 +30,9 @@
   v17 = expirationDate;
   v18 = metadata;
   v19 = device;
-  v20 = dateIssued;
+  distantFuture = dateIssued;
   v21 = +[HKObjectType visionPrescriptionType];
-  [(NSDate *)v20 timeIntervalSinceReferenceDate];
+  [(NSDate *)distantFuture timeIntervalSinceReferenceDate];
   v23 = v22;
 
   if (v17)
@@ -42,8 +42,8 @@
 
   else
   {
-    v20 = [MEMORY[0x1E695DF00] distantFuture];
-    [(NSDate *)v20 timeIntervalSinceReferenceDate];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    [(NSDate *)distantFuture timeIntervalSinceReferenceDate];
   }
 
   v25 = v24;
@@ -54,7 +54,7 @@
   v34 = v14;
   v35 = v15;
   v36 = v16;
-  v32.receiver = a1;
+  v32.receiver = self;
   v32.super_class = &OBJC_METACLASS___HKContactsPrescription;
   v26 = v16;
   v27 = v15;
@@ -98,27 +98,27 @@ void __133__HKContactsPrescription_prescriptionWithRightEyeSpecification_leftEye
   return v7;
 }
 
-- (void)_setRightEyeSpecification:(id)a3
+- (void)_setRightEyeSpecification:(id)specification
 {
-  v4 = [a3 copy];
+  v4 = [specification copy];
   rightEye = self->_rightEye;
   self->_rightEye = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setLeftEyeSpecification:(id)a3
+- (void)_setLeftEyeSpecification:(id)specification
 {
-  v4 = [a3 copy];
+  v4 = [specification copy];
   leftEye = self->_leftEye;
   self->_leftEye = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setBrand:(id)a3
+- (void)_setBrand:(id)brand
 {
-  v4 = [a3 copy];
+  v4 = [brand copy];
   brand = self->_brand;
   self->_brand = v4;
 
@@ -127,96 +127,96 @@ void __133__HKContactsPrescription_prescriptionWithRightEyeSpecification_leftEye
 
 - (id)leftSphere
 {
-  v2 = [(HKContactsPrescription *)self leftEye];
-  v3 = [v2 sphere];
+  leftEye = [(HKContactsPrescription *)self leftEye];
+  sphere = [leftEye sphere];
 
-  return v3;
+  return sphere;
 }
 
 - (id)rightSphere
 {
-  v2 = [(HKContactsPrescription *)self rightEye];
-  v3 = [v2 sphere];
+  rightEye = [(HKContactsPrescription *)self rightEye];
+  sphere = [rightEye sphere];
 
-  return v3;
+  return sphere;
 }
 
 - (id)leftCylinder
 {
-  v2 = [(HKContactsPrescription *)self leftEye];
-  v3 = [v2 cylinder];
+  leftEye = [(HKContactsPrescription *)self leftEye];
+  cylinder = [leftEye cylinder];
 
-  return v3;
+  return cylinder;
 }
 
 - (id)rightCylinder
 {
-  v2 = [(HKContactsPrescription *)self rightEye];
-  v3 = [v2 cylinder];
+  rightEye = [(HKContactsPrescription *)self rightEye];
+  cylinder = [rightEye cylinder];
 
-  return v3;
+  return cylinder;
 }
 
 - (id)leftAxis
 {
-  v2 = [(HKContactsPrescription *)self leftEye];
-  v3 = [v2 axis];
+  leftEye = [(HKContactsPrescription *)self leftEye];
+  axis = [leftEye axis];
 
-  return v3;
+  return axis;
 }
 
 - (id)rightAxis
 {
-  v2 = [(HKContactsPrescription *)self rightEye];
-  v3 = [v2 axis];
+  rightEye = [(HKContactsPrescription *)self rightEye];
+  axis = [rightEye axis];
 
-  return v3;
+  return axis;
 }
 
 - (id)leftAddPower
 {
-  v2 = [(HKContactsPrescription *)self leftEye];
-  v3 = [v2 addPower];
+  leftEye = [(HKContactsPrescription *)self leftEye];
+  addPower = [leftEye addPower];
 
-  return v3;
+  return addPower;
 }
 
 - (id)rightAddPower
 {
-  v2 = [(HKContactsPrescription *)self rightEye];
-  v3 = [v2 addPower];
+  rightEye = [(HKContactsPrescription *)self rightEye];
+  addPower = [rightEye addPower];
 
-  return v3;
+  return addPower;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKContactsPrescription;
-  v4 = a3;
-  [(HKVisionPrescription *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_leftEye forKey:{@"LeftEye", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_rightEye forKey:@"RightEye"];
-  [v4 encodeObject:self->_brand forKey:@"Brand"];
+  coderCopy = coder;
+  [(HKVisionPrescription *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_leftEye forKey:{@"LeftEye", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_rightEye forKey:@"RightEye"];
+  [coderCopy encodeObject:self->_brand forKey:@"Brand"];
 }
 
-- (HKContactsPrescription)initWithCoder:(id)a3
+- (HKContactsPrescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HKContactsPrescription;
-  v5 = [(HKVisionPrescription *)&v13 initWithCoder:v4];
+  v5 = [(HKVisionPrescription *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LeftEye"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LeftEye"];
     leftEye = v5->_leftEye;
     v5->_leftEye = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RightEye"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RightEye"];
     rightEye = v5->_rightEye;
     v5->_rightEye = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Brand"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Brand"];
     brand = v5->_brand;
     v5->_brand = v10;
   }
@@ -224,11 +224,11 @@ void __133__HKContactsPrescription_prescriptionWithRightEyeSpecification_leftEye
   return v5;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v9.receiver = self;
   v9.super_class = HKContactsPrescription;
-  v4 = [(HKVisionPrescription *)&v9 _validateWithConfiguration:a3.var0, a3.var1];
+  v4 = [(HKVisionPrescription *)&v9 _validateWithConfiguration:configuration.var0, configuration.var1];
   if (v4 || (v8 = 0, v5 = [(HKContactsPrescription *)self _validateContactsFieldsWithError:&v8], v4 = v8, v6 = 0, !v5))
   {
     v4 = v4;
@@ -238,29 +238,29 @@ void __133__HKContactsPrescription_prescriptionWithRightEyeSpecification_leftEye
   return v6;
 }
 
-- (BOOL)_validateContactsFieldsWithError:(id *)a3
+- (BOOL)_validateContactsFieldsWithError:(id *)error
 {
-  v6 = [(HKContactsPrescription *)self leftSphere];
-  if (v6)
+  leftSphere = [(HKContactsPrescription *)self leftSphere];
+  if (leftSphere)
   {
   }
 
   else
   {
-    v7 = [(HKContactsPrescription *)self rightSphere];
+    rightSphere = [(HKContactsPrescription *)self rightSphere];
 
-    if (!v7)
+    if (!rightSphere)
     {
       v17 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"Requires atleast one sphere value for left or right eye"];
-      v11 = v17;
+      baseCurve2 = v17;
       v16 = v17 == 0;
       if (v17)
       {
-        if (a3)
+        if (error)
         {
           v18 = v17;
           v16 = 0;
-          *a3 = v11;
+          *error = baseCurve2;
         }
 
         else
@@ -270,40 +270,40 @@ void __133__HKContactsPrescription_prescriptionWithRightEyeSpecification_leftEye
         }
       }
 
-      v9 = v11;
+      baseCurve = baseCurve2;
       goto LABEL_24;
     }
   }
 
-  v8 = [(HKContactsPrescription *)self leftEye];
-  v9 = [v8 baseCurve];
+  leftEye = [(HKContactsPrescription *)self leftEye];
+  baseCurve = [leftEye baseCurve];
 
-  if (!v9 || [objc_opt_class() _validateBaseCurve:v9 error:a3])
+  if (!baseCurve || [objc_opt_class() _validateBaseCurve:baseCurve error:error])
   {
-    v10 = [(HKContactsPrescription *)self rightEye];
-    v11 = [v10 baseCurve];
+    rightEye = [(HKContactsPrescription *)self rightEye];
+    baseCurve2 = [rightEye baseCurve];
 
-    if (v11 && ![objc_opt_class() _validateBaseCurve:v11 error:a3])
+    if (baseCurve2 && ![objc_opt_class() _validateBaseCurve:baseCurve2 error:error])
     {
       v16 = 0;
     }
 
     else
     {
-      v12 = [(HKContactsPrescription *)self leftEye];
-      v13 = [v12 diameter];
+      leftEye2 = [(HKContactsPrescription *)self leftEye];
+      diameter = [leftEye2 diameter];
 
-      if (v13 && ![objc_opt_class() _validateDiameter:v13 error:a3])
+      if (diameter && ![objc_opt_class() _validateDiameter:diameter error:error])
       {
         v16 = 0;
       }
 
       else
       {
-        v14 = [(HKContactsPrescription *)self rightEye];
-        v15 = [v14 diameter];
+        rightEye2 = [(HKContactsPrescription *)self rightEye];
+        diameter2 = [rightEye2 diameter];
 
-        v16 = !v15 || [objc_opt_class() _validateDiameter:v15 error:a3];
+        v16 = !diameter2 || [objc_opt_class() _validateDiameter:diameter2 error:error];
       }
     }
 
@@ -318,11 +318,11 @@ LABEL_25:
   return v16;
 }
 
-+ (BOOL)_validateBaseCurve:(id)a3 error:(id *)a4
++ (BOOL)_validateBaseCurve:(id)curve error:(id *)error
 {
-  v6 = a3;
+  curveCopy = curve;
   v7 = +[HKUnit meterUnit];
-  v8 = [v6 isCompatibleWithUnit:v7];
+  v8 = [curveCopy isCompatibleWithUnit:v7];
 
   if (v8)
   {
@@ -334,10 +334,10 @@ LABEL_25:
   v9 = v10 == 0;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -349,11 +349,11 @@ LABEL_25:
   return v9;
 }
 
-+ (BOOL)_validateDiameter:(id)a3 error:(id *)a4
++ (BOOL)_validateDiameter:(id)diameter error:(id *)error
 {
-  v6 = a3;
+  diameterCopy = diameter;
   v7 = +[HKUnit meterUnit];
-  v8 = [v6 isCompatibleWithUnit:v7];
+  v8 = [diameterCopy isCompatibleWithUnit:v7];
 
   if (v8)
   {
@@ -365,10 +365,10 @@ LABEL_25:
   v9 = v10 == 0;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else

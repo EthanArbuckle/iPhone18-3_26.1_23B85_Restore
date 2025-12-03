@@ -1,39 +1,39 @@
 @interface GCSCopilotFusedController
 + (id)archivalClasses;
-- (GCSCopilotFusedController)initWithCoder:(id)a3;
-- (GCSCopilotFusedController)initWithFusedControllerIdentifier:(id)a3 pilotIdentifier:(id)a4 copilotIdentifier:(id)a5;
-- (GCSCopilotFusedController)initWithJSONObject:(id)a3;
+- (GCSCopilotFusedController)initWithCoder:(id)coder;
+- (GCSCopilotFusedController)initWithFusedControllerIdentifier:(id)identifier pilotIdentifier:(id)pilotIdentifier copilotIdentifier:(id)copilotIdentifier;
+- (GCSCopilotFusedController)initWithJSONObject:(id)object;
 - (GCSJSONObject)jsonObject;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCSCopilotFusedController
 
-- (GCSCopilotFusedController)initWithFusedControllerIdentifier:(id)a3 pilotIdentifier:(id)a4 copilotIdentifier:(id)a5
+- (GCSCopilotFusedController)initWithFusedControllerIdentifier:(id)identifier pilotIdentifier:(id)pilotIdentifier copilotIdentifier:(id)copilotIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  pilotIdentifierCopy = pilotIdentifier;
+  copilotIdentifierCopy = copilotIdentifier;
   v21.receiver = self;
   v21.super_class = GCSCopilotFusedController;
   v11 = [(GCSCopilotFusedController *)&v21 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     fusedControllerIdentifier = v11->_fusedControllerIdentifier;
     v11->_fusedControllerIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [pilotIdentifierCopy copy];
     pilotIdentifier = v11->_pilotIdentifier;
     v11->_pilotIdentifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [copilotIdentifierCopy copy];
     copilotIdentifier = v11->_copilotIdentifier;
     v11->_copilotIdentifier = v16;
 
-    v18 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     modifiedDate = v11->_modifiedDate;
-    v11->_modifiedDate = v18;
+    v11->_modifiedDate = date;
   }
 
   return v11;
@@ -46,27 +46,27 @@
   return [v2 setWithObjects:{v3, objc_opt_class(), 0}];
 }
 
-- (GCSCopilotFusedController)initWithCoder:(id)a3
+- (GCSCopilotFusedController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = GCSCopilotFusedController;
   v5 = [(GCSCopilotFusedController *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fusedControllerIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fusedControllerIdentifier"];
     fusedControllerIdentifier = v5->_fusedControllerIdentifier;
     v5->_fusedControllerIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_pilotIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_pilotIdentifier"];
     pilotIdentifier = v5->_pilotIdentifier;
     v5->_pilotIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_copilotIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_copilotIdentifier"];
     copilotIdentifier = v5->_copilotIdentifier;
     v5->_copilotIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_modifiedDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_modifiedDate"];
     modifiedDate = v5->_modifiedDate;
     v5->_modifiedDate = v12;
   }
@@ -74,23 +74,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fusedControllerIdentifier = self->_fusedControllerIdentifier;
-  v5 = a3;
-  [v5 encodeObject:fusedControllerIdentifier forKey:@"_fusedControllerIdentifier"];
-  [v5 encodeObject:self->_pilotIdentifier forKey:@"_pilotIdentifier"];
-  [v5 encodeObject:self->_copilotIdentifier forKey:@"_copilotIdentifier"];
-  [v5 encodeObject:self->_modifiedDate forKey:@"_modifiedDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:fusedControllerIdentifier forKey:@"_fusedControllerIdentifier"];
+  [coderCopy encodeObject:self->_pilotIdentifier forKey:@"_pilotIdentifier"];
+  [coderCopy encodeObject:self->_copilotIdentifier forKey:@"_copilotIdentifier"];
+  [coderCopy encodeObject:self->_modifiedDate forKey:@"_modifiedDate"];
 }
 
-- (GCSCopilotFusedController)initWithJSONObject:(id)a3
+- (GCSCopilotFusedController)initWithJSONObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v19.receiver = self;
     v19.super_class = GCSCopilotFusedController;
     v6 = [(GCSCopilotFusedController *)&v19 init];
@@ -112,29 +112,29 @@
       v14 = v13;
       if (v13)
       {
-        v15 = v13;
+        date = v13;
       }
 
       else
       {
-        v15 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
       }
 
       modifiedDate = v6->_modifiedDate;
-      v6->_modifiedDate = v15;
+      v6->_modifiedDate = date;
     }
 
     self = v6;
 
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (GCSJSONObject)jsonObject
@@ -153,8 +153,8 @@
   modifiedDate = self->_modifiedDate;
   if (modifiedDate)
   {
-    v8 = [(NSDate *)modifiedDate jsonObject];
-    [v6 setObject:v8 forKeyedSubscript:@"modifiedDate"];
+    jsonObject = [(NSDate *)modifiedDate jsonObject];
+    [v6 setObject:jsonObject forKeyedSubscript:@"modifiedDate"];
   }
 
   v9 = *MEMORY[0x277D85DE8];

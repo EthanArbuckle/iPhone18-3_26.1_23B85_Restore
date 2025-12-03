@@ -1,11 +1,11 @@
 @interface _PASNotificationTracker
-- (BOOL)_deregisterHandlerWithToken:(id)a3 waitOnPending:(BOOL)a4;
-- (BOOL)deregisterHandlerAsyncWithToken:(id)a3;
-- (BOOL)deregisterHandlerWithToken:(id)a3;
+- (BOOL)_deregisterHandlerWithToken:(id)token waitOnPending:(BOOL)pending;
+- (BOOL)deregisterHandlerAsyncWithToken:(id)token;
+- (BOOL)deregisterHandlerWithToken:(id)token;
 - (_PASNotificationTracker)init;
-- (id)registerWithQueue:(id)a3 handler:(id)a4;
+- (id)registerWithQueue:(id)queue handler:(id)handler;
 - (void)dealloc;
-- (void)issueNotificationAsyncWithContext:(id)a3 callback:(id)a4;
+- (void)issueNotificationAsyncWithContext:(id)context callback:(id)callback;
 @end
 
 @implementation _PASNotificationTracker
@@ -28,10 +28,10 @@
   return v3;
 }
 
-- (void)issueNotificationAsyncWithContext:(id)a3 callback:(id)a4
+- (void)issueNotificationAsyncWithContext:(id)context callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  callbackCopy = callback;
   v8 = dispatch_group_create();
   pthread_mutex_lock(&self->_lock);
   observers = self->_observers;
@@ -41,49 +41,49 @@
   v13[3] = &unk_1E77F1468;
   v10 = v8;
   v14 = v10;
-  v15 = v6;
-  v11 = v6;
+  v15 = contextCopy;
+  v11 = contextCopy;
   [(NSMutableDictionary *)observers enumerateKeysAndObjectsUsingBlock:v13];
   pthread_mutex_unlock(&self->_lock);
-  if (v7)
+  if (callbackCopy)
   {
     v12 = dispatch_get_global_queue(17, 0);
-    dispatch_group_notify(v10, v12, v7);
+    dispatch_group_notify(v10, v12, callbackCopy);
   }
 }
 
-- (BOOL)deregisterHandlerAsyncWithToken:(id)a3
+- (BOOL)deregisterHandlerAsyncWithToken:(id)token
 {
-  v5 = a3;
-  if (!v5)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_PASNotificationTracker.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"token"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASNotificationTracker.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"token"}];
   }
 
-  v6 = [(_PASNotificationTracker *)self _deregisterHandlerWithToken:v5 waitOnPending:0];
+  v6 = [(_PASNotificationTracker *)self _deregisterHandlerWithToken:tokenCopy waitOnPending:0];
 
   return v6;
 }
 
-- (BOOL)deregisterHandlerWithToken:(id)a3
+- (BOOL)deregisterHandlerWithToken:(id)token
 {
-  v5 = a3;
-  if (!v5)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_PASNotificationTracker.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"token"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASNotificationTracker.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"token"}];
   }
 
-  v6 = [(_PASNotificationTracker *)self _deregisterHandlerWithToken:v5 waitOnPending:1];
+  v6 = [(_PASNotificationTracker *)self _deregisterHandlerWithToken:tokenCopy waitOnPending:1];
 
   return v6;
 }
 
-- (BOOL)_deregisterHandlerWithToken:(id)a3 waitOnPending:(BOOL)a4
+- (BOOL)_deregisterHandlerWithToken:(id)token waitOnPending:(BOOL)pending
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(a3, "token")}];
+  pendingCopy = pending;
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(token, "token")}];
   pthread_mutex_lock(&self->_lock);
   v7 = [(NSMutableDictionary *)self->_observers objectForKeyedSubscript:v6];
   [(NSMutableDictionary *)self->_observers removeObjectForKey:v6];
@@ -91,24 +91,24 @@
   if (v7)
   {
     atomic_store(1u, v7 + 8);
-    if (v4)
+    if (pendingCopy)
     {
-      v8 = [v7 group];
-      dispatch_group_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
+      group = [v7 group];
+      dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL);
     }
   }
 
   return v7 != 0;
 }
 
-- (id)registerWithQueue:(id)a3 handler:(id)a4
+- (id)registerWithQueue:(id)queue handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (queueCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -116,8 +116,8 @@
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_PASNotificationTracker.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASNotificationTracker.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
     if (v9)
     {
@@ -125,12 +125,12 @@
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"_PASNotificationTracker.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASNotificationTracker.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
 
 LABEL_3:
   v10 = objc_opt_new();
-  [v10 setQueue:v7];
+  [v10 setQueue:queueCopy];
   v11 = dispatch_group_create();
   [v10 setGroup:v11];
 

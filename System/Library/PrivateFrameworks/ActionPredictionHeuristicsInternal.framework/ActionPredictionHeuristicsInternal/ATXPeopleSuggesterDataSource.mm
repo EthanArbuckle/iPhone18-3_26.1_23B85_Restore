@@ -1,45 +1,45 @@
 @interface ATXPeopleSuggesterDataSource
-- (ATXPeopleSuggesterDataSource)initWithDevice:(id)a3;
-- (void)peopleSuggestionsWithCallback:(id)a3;
+- (ATXPeopleSuggesterDataSource)initWithDevice:(id)device;
+- (void)peopleSuggestionsWithCallback:(id)callback;
 @end
 
 @implementation ATXPeopleSuggesterDataSource
 
-- (ATXPeopleSuggesterDataSource)initWithDevice:(id)a3
+- (ATXPeopleSuggesterDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXPeopleSuggesterDataSource;
   v6 = [(ATXPeopleSuggesterDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)peopleSuggestionsWithCallback:(id)a3
+- (void)peopleSuggestionsWithCallback:(id)callback
 {
-  v3 = a3;
+  callbackCopy = callback;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA3C8))
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [MEMORY[0x277CFE0E0] peopleSuggester];
+    peopleSuggester = [MEMORY[0x277CFE0E0] peopleSuggester];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __62__ATXPeopleSuggesterDataSource_peopleSuggestionsWithCallback___block_invoke;
     v6[3] = &unk_278C3D570;
-    v7 = v3;
-    [v5 suggestPeopleWithCompletionHandler:v6];
+    v7 = callbackCopy;
+    [peopleSuggester suggestPeopleWithCompletionHandler:v6];
 
     objc_autoreleasePoolPop(v4);
   }
 
   else
   {
-    (*(v3 + 2))(v3, MEMORY[0x277CBEBF8], 0);
+    (*(callbackCopy + 2))(callbackCopy, MEMORY[0x277CBEBF8], 0);
   }
 }
 

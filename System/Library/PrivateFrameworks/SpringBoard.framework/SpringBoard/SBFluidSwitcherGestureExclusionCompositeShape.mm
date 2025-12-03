@@ -1,19 +1,19 @@
 @interface SBFluidSwitcherGestureExclusionCompositeShape
-+ (id)exclusionCompositeShapeWithRects:(id)a3 allowHorizontalSwipes:(BOOL)a4;
-- (BOOL)shouldBeginGestureAtStartingPoint:(CGPoint)a3 velocity:(CGPoint)a4 bounds:(CGRect)a5;
++ (id)exclusionCompositeShapeWithRects:(id)rects allowHorizontalSwipes:(BOOL)swipes;
+- (BOOL)shouldBeginGestureAtStartingPoint:(CGPoint)point velocity:(CGPoint)velocity bounds:(CGRect)bounds;
 - (id)debugView;
 @end
 
 @implementation SBFluidSwitcherGestureExclusionCompositeShape
 
-+ (id)exclusionCompositeShapeWithRects:(id)a3 allowHorizontalSwipes:(BOOL)a4
++ (id)exclusionCompositeShapeWithRects:(id)rects allowHorizontalSwipes:(BOOL)swipes
 {
-  v4 = a4;
-  v5 = a3;
+  swipesCopy = swipes;
+  rectsCopy = rects;
   v6 = objc_alloc_init(SBFluidSwitcherGestureExclusionCompositeShape);
-  [(SBFluidSwitcherGestureExclusionCompositeShape *)v6 setRects:v5];
+  [(SBFluidSwitcherGestureExclusionCompositeShape *)v6 setRects:rectsCopy];
 
-  [(SBFluidSwitcherGestureExclusionCompositeShape *)v6 setAllowHorizontalSwipesInsideShapes:v4];
+  [(SBFluidSwitcherGestureExclusionCompositeShape *)v6 setAllowHorizontalSwipesInsideShapes:swipesCopy];
 
   return v6;
 }
@@ -21,8 +21,8 @@
 - (id)debugView
 {
   v3 = objc_alloc_init(_SBFluidSwitcherGestureExclusionCompositeShapeDebugView);
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [(_SBFluidSwitcherGestureExclusionCompositeShapeDebugView *)v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(_SBFluidSwitcherGestureExclusionCompositeShapeDebugView *)v3 setBackgroundColor:clearColor];
 
   [(_SBFluidSwitcherGestureExclusionCompositeShapeDebugView *)v3 bs_setHitTestingDisabled:1];
   [(_SBFluidSwitcherGestureExclusionCompositeShapeDebugView *)v3 setCompositeShape:self];
@@ -30,12 +30,12 @@
   return v3;
 }
 
-- (BOOL)shouldBeginGestureAtStartingPoint:(CGPoint)a3 velocity:(CGPoint)a4 bounds:(CGRect)a5
+- (BOOL)shouldBeginGestureAtStartingPoint:(CGPoint)point velocity:(CGPoint)velocity bounds:(CGRect)bounds
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v35 = *MEMORY[0x277D85DE8];
-  if (fabs(a4.x) > fabs(a4.y) && self->_allowHorizontalSwipesInsideShapes)
+  if (fabs(velocity.x) > fabs(velocity.y) && self->_allowHorizontalSwipesInsideShapes)
   {
     return 1;
   }

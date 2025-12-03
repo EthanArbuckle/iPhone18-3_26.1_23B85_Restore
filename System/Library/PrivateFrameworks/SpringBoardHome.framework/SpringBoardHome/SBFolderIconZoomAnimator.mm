@@ -1,32 +1,32 @@
 @interface SBFolderIconZoomAnimator
 - (CGRect)_zoomedFrame;
 - (SBFFluidBehaviorSettings)dockAnimationSettings;
-- (SBFolderIconZoomAnimator)initWithAnimationContainer:(id)a3 innerFolderController:(id)a4 folderIcon:(id)a5;
+- (SBFolderIconZoomAnimator)initWithAnimationContainer:(id)container innerFolderController:(id)controller folderIcon:(id)icon;
 - (SBIconView)targetIconView;
 - (unint64_t)_numberOfSignificantAnimations;
 - (void)_cleanupAnimation;
-- (void)_performAnimationToFraction:(double)a3 withCentralAnimationSettings:(id)a4 delay:(double)a5 alreadyAnimating:(BOOL)a6 sharedCompletion:(id)a7;
+- (void)_performAnimationToFraction:(double)fraction withCentralAnimationSettings:(id)settings delay:(double)delay alreadyAnimating:(BOOL)animating sharedCompletion:(id)completion;
 - (void)_prepareAnimation;
-- (void)_setAnimationFraction:(double)a3;
-- (void)_setupCounterDockMatchMoveAnimationWithOffset:(double)a3 layer:(id)a4 additive:(BOOL)a5;
+- (void)_setAnimationFraction:(double)fraction;
+- (void)_setupCounterDockMatchMoveAnimationWithOffset:(double)offset layer:(id)layer additive:(BOOL)additive;
 - (void)_setupMatchMoveAnimation;
 - (void)_setupMatchMoveWithDock;
-- (void)_setupMatchMoveWithDockWithTargetIconCenter:(CGPoint)a3 targetIconAnchor:(CGPoint)a4;
-- (void)_updateDockMatchMoveWithFraction:(double)a3;
+- (void)_setupMatchMoveWithDockWithTargetIconCenter:(CGPoint)center targetIconAnchor:(CGPoint)anchor;
+- (void)_updateDockMatchMoveWithFraction:(double)fraction;
 - (void)_visuallyCompleteAnimationImmediately;
 - (void)dealloc;
-- (void)searchGesture:(id)a3 startedShowing:(BOOL)a4;
+- (void)searchGesture:(id)gesture startedShowing:(BOOL)showing;
 @end
 
 @implementation SBFolderIconZoomAnimator
 
 - (void)_prepareAnimation
 {
-  v3 = [(SBFolderController *)self->_innerFolderController contentView];
+  contentView = [(SBFolderController *)self->_innerFolderController contentView];
   v4 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v3;
+    v5 = contentView;
   }
 
   else
@@ -39,19 +39,19 @@
   v13.receiver = self;
   v13.super_class = SBFolderIconZoomAnimator;
   [(SBScaleIconZoomAnimator *)&v13 _prepareAnimation];
-  v6 = [(SBFolderIconZoomAnimator *)self targetIconView];
-  [v6 prepareToCrossfadeWithFloatyFolderView:self->_innerFolderView allowFolderInteraction:{-[SBFolderController isOpen](self->_innerFolderController, "isOpen")}];
-  [v6 setIconGridImageAlpha:0.0];
+  targetIconView = [(SBFolderIconZoomAnimator *)self targetIconView];
+  [targetIconView prepareToCrossfadeWithFloatyFolderView:self->_innerFolderView allowFolderInteraction:{-[SBFolderController isOpen](self->_innerFolderController, "isOpen")}];
+  [targetIconView setIconGridImageAlpha:0.0];
   v7 = [_SBInnerFolderIconZoomAnimator alloc];
   innerFolderController = self->_innerFolderController;
   [(SBScaleIconZoomAnimator *)self zoomScaleDimension];
-  v9 = [(_SBInnerFolderIconZoomAnimator *)v7 initWithFolderController:innerFolderController iconView:v6 iconZoomScaleDimension:?];
+  v9 = [(_SBInnerFolderIconZoomAnimator *)v7 initWithFolderController:innerFolderController iconView:targetIconView iconZoomScaleDimension:?];
   innerZoomAnimator = self->_innerZoomAnimator;
   self->_innerZoomAnimator = v9;
 
   v11 = self->_innerZoomAnimator;
-  v12 = [(SBIconAnimator *)self settings];
-  [(SBIconAnimator *)v11 setSettings:v12];
+  settings = [(SBIconAnimator *)self settings];
+  [(SBIconAnimator *)v11 setSettings:settings];
 
   [(SBIconAnimator *)self->_innerZoomAnimator prepare];
 }
@@ -60,18 +60,18 @@
 {
   v7.receiver = self;
   v7.super_class = SBFolderIconZoomAnimator;
-  v3 = [(SBScaleIconZoomAnimator *)&v7 targetIconView];
-  v4 = [(SBScaleIconZoomAnimator *)self referenceIconView];
-  v5 = [v4 visibleMiniIconListIndex];
-  if ([v3 visibleMiniIconListIndex] != v5)
+  targetIconView = [(SBScaleIconZoomAnimator *)&v7 targetIconView];
+  referenceIconView = [(SBScaleIconZoomAnimator *)self referenceIconView];
+  visibleMiniIconListIndex = [referenceIconView visibleMiniIconListIndex];
+  if ([targetIconView visibleMiniIconListIndex] != visibleMiniIconListIndex)
   {
-    [v3 scrollToTopOfPage:v5 animated:0];
+    [targetIconView scrollToTopOfPage:visibleMiniIconListIndex animated:0];
   }
 
-  [v4 iconContentScale];
-  [v3 setIconContentScale:?];
+  [referenceIconView iconContentScale];
+  [targetIconView setIconContentScale:?];
 
-  return v3;
+  return targetIconView;
 }
 
 - (CGRect)_zoomedFrame
@@ -86,51 +86,51 @@
 
 - (void)_cleanupAnimation
 {
-  v3 = [(SBFolderIconZoomAnimator *)self targetIconView];
-  [v3 cleanupAfterFloatyFolderCrossfade];
-  [v3 setIconGridImageAlpha:1.0];
+  targetIconView = [(SBFolderIconZoomAnimator *)self targetIconView];
+  [targetIconView cleanupAfterFloatyFolderCrossfade];
+  [targetIconView setIconGridImageAlpha:1.0];
   [(SBIconAnimator *)self->_innerZoomAnimator cleanup];
   innerZoomAnimator = self->_innerZoomAnimator;
   self->_innerZoomAnimator = 0;
 
-  v5 = [(SBFolderIconZoomAnimator *)self searchGesture];
-  [v5 removeObserver:self];
+  searchGesture = [(SBFolderIconZoomAnimator *)self searchGesture];
+  [searchGesture removeObserver:self];
 
   [(SBFolderIconZoomAnimator *)self setSearchGesture:0];
-  v6 = [(SBFolderIconZoomAnimator *)self defaultTargetIconContainerView];
-  v7 = [v6 _outermostLayer];
-  [v7 removeAnimationForKey:@"SBFolderSourceViewTrackingMatchMoveAnimation"];
+  defaultTargetIconContainerView = [(SBFolderIconZoomAnimator *)self defaultTargetIconContainerView];
+  _outermostLayer = [defaultTargetIconContainerView _outermostLayer];
+  [_outermostLayer removeAnimationForKey:@"SBFolderSourceViewTrackingMatchMoveAnimation"];
 
   v8.receiver = self;
   v8.super_class = SBFolderIconZoomAnimator;
   [(SBScaleIconZoomAnimator *)&v8 _cleanupAnimation];
 }
 
-- (SBFolderIconZoomAnimator)initWithAnimationContainer:(id)a3 innerFolderController:(id)a4 folderIcon:(id)a5
+- (SBFolderIconZoomAnimator)initWithAnimationContainer:(id)container innerFolderController:(id)controller folderIcon:(id)icon
 {
-  v8 = a3;
-  v9 = a4;
+  containerCopy = container;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = SBFolderIconZoomAnimator;
-  v10 = [(SBScaleIconZoomAnimator *)&v17 initWithAnimationContainer:v8 targetIcon:a5];
+  v10 = [(SBScaleIconZoomAnimator *)&v17 initWithAnimationContainer:containerCopy targetIcon:icon];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_innerFolderController, a4);
+    objc_storeStrong(&v10->_innerFolderController, controller);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v8 searchGesture];
+      searchGesture = [containerCopy searchGesture];
       searchGesture = v11->_searchGesture;
-      v11->_searchGesture = v12;
+      v11->_searchGesture = searchGesture;
 
       [(SBSearchGesture *)v11->_searchGesture addObserver:v11];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v8 searchPresenter];
+      searchPresenter = [containerCopy searchPresenter];
       searchPresenter = v11->_searchPresenter;
-      v11->_searchPresenter = v14;
+      v11->_searchPresenter = searchPresenter;
 
       [(SBHSearchPresenting *)v11->_searchPresenter addSearchPresenterObserver:v11];
     }
@@ -148,7 +148,7 @@
   [(SBIconZoomAnimator *)&v3 dealloc];
 }
 
-- (void)_updateDockMatchMoveWithFraction:(double)a3
+- (void)_updateDockMatchMoveWithFraction:(double)fraction
 {
   if (BSFloatIsZero())
   {
@@ -158,43 +158,43 @@
 
   else
   {
-    v4 = [(SBScaleIconZoomAnimator *)self targetIconPositioningView];
-    v21 = [v4 _outermostLayer];
+    targetIconPositioningView = [(SBScaleIconZoomAnimator *)self targetIconPositioningView];
+    _outermostLayer = [targetIconPositioningView _outermostLayer];
 
-    v5 = [v21 animationForKey:@"SBDockIconZoomDownMatchMoveKey"];
+    v5 = [_outermostLayer animationForKey:@"SBDockIconZoomDownMatchMoveKey"];
 
-    v6 = v21;
+    v6 = _outermostLayer;
     if (v5)
     {
-      [v21 removeAnimationForKey:@"SBDockIconZoomDownMatchMoveKey"];
-      v7 = [(SBScaleIconZoomAnimator *)self referenceIconView];
-      v8 = [v7 _outermostLayer];
+      [_outermostLayer removeAnimationForKey:@"SBDockIconZoomDownMatchMoveKey"];
+      referenceIconView = [(SBScaleIconZoomAnimator *)self referenceIconView];
+      _outermostLayer2 = [referenceIconView _outermostLayer];
 
       [(SBScaleIconZoomAnimator *)self _referenceIconImageCenter];
       v10 = v9;
       v12 = v11;
-      v13 = [(SBScaleIconZoomAnimator *)self targetIconContainerView];
-      v14 = [v13 _outermostLayer];
-      [v8 convertPoint:v14 toLayer:{v10, v12}];
+      targetIconContainerView = [(SBScaleIconZoomAnimator *)self targetIconContainerView];
+      _outermostLayer3 = [targetIconContainerView _outermostLayer];
+      [_outermostLayer2 convertPoint:_outermostLayer3 toLayer:{v10, v12}];
       v16 = v15;
 
       [(SBScaleIconZoomAnimator *)self targetIconCenter];
       v18 = v17 - v16;
       if ((BSFloatIsZero() & 1) == 0)
       {
-        v19 = [(SBScaleIconZoomAnimator *)self targetIconPositioningView];
-        v20 = [v19 _outermostLayer];
-        [(SBFolderIconZoomAnimator *)self _setupCounterDockMatchMoveAnimationWithOffset:v20 layer:0 additive:v18];
+        targetIconPositioningView2 = [(SBScaleIconZoomAnimator *)self targetIconPositioningView];
+        _outermostLayer4 = [targetIconPositioningView2 _outermostLayer];
+        [(SBFolderIconZoomAnimator *)self _setupCounterDockMatchMoveAnimationWithOffset:_outermostLayer4 layer:0 additive:v18];
       }
 
-      v6 = v21;
+      v6 = _outermostLayer;
     }
   }
 }
 
 - (void)_setupMatchMoveWithDock
 {
-  v18 = [(SBScaleIconZoomAnimator *)self targetIconContainerView];
+  targetIconContainerView = [(SBScaleIconZoomAnimator *)self targetIconContainerView];
   [(SBScaleIconZoomAnimator *)self targetIconCenter];
   v4 = v3;
   v6 = v5;
@@ -204,23 +204,23 @@
   [(SBScaleIconZoomAnimator *)self zoomScaleDimension];
   v12 = _SBScaleIconZoomAnimatorCameraPositionToScaleModelPointToTargetPoint(v4, v6, v8, v10, v11);
   v14 = v13;
-  [v18 bounds];
+  [targetIconContainerView bounds];
   v16 = v12 / v15;
-  [v18 bounds];
+  [targetIconContainerView bounds];
   [(SBFolderIconZoomAnimator *)self _setupMatchMoveWithDockWithTargetIconCenter:v4 targetIconAnchor:v6, v16, v14 / v17];
 }
 
-- (void)_setupMatchMoveWithDockWithTargetIconCenter:(CGPoint)a3 targetIconAnchor:(CGPoint)a4
+- (void)_setupMatchMoveWithDockWithTargetIconCenter:(CGPoint)center targetIconAnchor:(CGPoint)anchor
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v5 = [(SBScaleIconZoomAnimator *)self referenceIconView:a3.x];
-  v6 = [(SBScaleIconZoomAnimator *)self targetIconPositioningView];
-  v7 = [v5 location];
-  v8 = SBIconLocationGroupContainsLocation(@"SBIconLocationGroupDock", v7);
+  v5 = [(SBScaleIconZoomAnimator *)self referenceIconView:center.x];
+  targetIconPositioningView = [(SBScaleIconZoomAnimator *)self targetIconPositioningView];
+  location = [v5 location];
+  v8 = SBIconLocationGroupContainsLocation(@"SBIconLocationGroupDock", location);
 
   if (v8)
   {
-    v9 = v6 == 0;
+    v9 = targetIconPositioningView == 0;
   }
 
   else
@@ -230,57 +230,57 @@
 
   if (!v9)
   {
-    v10 = [v5 _outermostLayer];
-    v11 = [v6 _outermostLayer];
-    v12 = [MEMORY[0x1E69793B8] animation];
-    [v12 setSourceLayer:v10];
-    [v12 setDuration:INFINITY];
-    [v12 setFillMode:*MEMORY[0x1E69797E0]];
-    [v12 setRemovedOnCompletion:0];
-    [v12 setAppliesY:1];
-    [v12 setAppliesX:1];
-    v13 = [(SBScaleIconZoomAnimator *)self targetIconContainerView];
+    _outermostLayer = [v5 _outermostLayer];
+    _outermostLayer2 = [targetIconPositioningView _outermostLayer];
+    animation = [MEMORY[0x1E69793B8] animation];
+    [animation setSourceLayer:_outermostLayer];
+    [animation setDuration:INFINITY];
+    [animation setFillMode:*MEMORY[0x1E69797E0]];
+    [animation setRemovedOnCompletion:0];
+    [animation setAppliesY:1];
+    [animation setAppliesX:1];
+    targetIconContainerView = [(SBScaleIconZoomAnimator *)self targetIconContainerView];
     [(SBScaleIconZoomAnimator *)self _referenceIconImageCenter];
     v15 = v14;
     v17 = v16;
-    v18 = [v13 _outermostLayer];
-    [v10 convertPoint:v18 toLayer:{v15, v17}];
+    _outermostLayer3 = [targetIconContainerView _outermostLayer];
+    [_outermostLayer convertPoint:_outermostLayer3 toLayer:{v15, v17}];
     v20 = v19;
     v22 = v21;
 
     [v5 bounds];
     v24 = v20 + v23 * -0.5;
-    [v13 bounds];
+    [targetIconContainerView bounds];
     v26 = v24 + v25 * -0.5;
     [v5 bounds];
     v28 = v22 + v27 * -0.5;
-    [v13 bounds];
+    [targetIconContainerView bounds];
     v30 = v28 + v29 * -0.5;
-    [v11 anchorPoint];
+    [_outermostLayer2 anchorPoint];
     v32 = v31;
     v34 = v33;
-    [v13 bounds];
+    [targetIconContainerView bounds];
     v36 = -(v26 - v35 * (v32 + -0.5));
-    [v13 bounds];
+    [targetIconContainerView bounds];
     v38 = -(v30 - v37 * (v34 + -0.5));
     [(SBScaleIconZoomAnimator *)self targetIconCenter];
     v40 = v39 - v22;
     v42 = [MEMORY[0x1E696B098] valueWithCGPoint:{v36 - (v41 - v20), v38 - v40}];
     v45[0] = v42;
     v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
-    [v12 setSourcePoints:v43];
+    [animation setSourcePoints:v43];
 
-    v44 = [v11 animationForKey:@"SBDockIconZoomDownMatchMoveKey"];
+    v44 = [_outermostLayer2 animationForKey:@"SBDockIconZoomDownMatchMoveKey"];
 
     if (v44)
     {
-      [v11 removeAnimationForKey:@"SBDockIconZoomDownMatchMoveKey"];
+      [_outermostLayer2 removeAnimationForKey:@"SBDockIconZoomDownMatchMoveKey"];
     }
 
-    [v11 addAnimation:v12 forKey:@"SBDockIconZoomDownMatchMoveKey"];
+    [_outermostLayer2 addAnimation:animation forKey:@"SBDockIconZoomDownMatchMoveKey"];
     if ((BSFloatIsZero() & 1) == 0)
     {
-      [(SBFolderIconZoomAnimator *)self _setupCounterDockMatchMoveAnimationWithOffset:v11 layer:1 additive:v40];
+      [(SBFolderIconZoomAnimator *)self _setupCounterDockMatchMoveAnimationWithOffset:_outermostLayer2 layer:1 additive:v40];
     }
   }
 }
@@ -301,13 +301,13 @@
   return v3;
 }
 
-- (void)_setupCounterDockMatchMoveAnimationWithOffset:(double)a3 layer:(id)a4 additive:(BOOL)a5
+- (void)_setupCounterDockMatchMoveAnimationWithOffset:(double)offset layer:(id)layer additive:(BOOL)additive
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [(SBFolderIconZoomAnimator *)self dockAnimationSettings];
-  [v9 dampingRatio];
-  [v9 response];
+  additiveCopy = additive;
+  layerCopy = layer;
+  dockAnimationSettings = [(SBFolderIconZoomAnimator *)self dockAnimationSettings];
+  [dockAnimationSettings dampingRatio];
+  [dockAnimationSettings response];
   convertDampingRatioAndResponseToTensionAndFriction();
   v10 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"position.y"];
   [v10 setMass:1.0];
@@ -317,9 +317,9 @@
   [v10 setDuration:?];
   [v10 setRemovedOnCompletion:1];
   v11 = MEMORY[0x1E696AD98];
-  if (v5)
+  if (additiveCopy)
   {
-    v12 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithDouble:offset];
     [v10 setFromValue:v12];
 
     [v10 setToValue:&unk_1F3DB2630];
@@ -328,29 +328,29 @@
 
   else
   {
-    [v8 position];
-    v14 = [v11 numberWithDouble:v13 - a3];
-    [v10 setFromValue:v14];
+    [layerCopy position];
+    offset = [v11 numberWithDouble:v13 - offset];
+    [v10 setFromValue:offset];
   }
 
-  v15 = [v8 animationForKey:@"SBDockIconZoomDownCounterSnapKey"];
+  v15 = [layerCopy animationForKey:@"SBDockIconZoomDownCounterSnapKey"];
 
   if (v15)
   {
-    [v8 removeAnimationForKey:@"SBDockIconZoomDownCounterSnapKey"];
+    [layerCopy removeAnimationForKey:@"SBDockIconZoomDownCounterSnapKey"];
   }
 
-  [v8 addAnimation:v10 forKey:@"SBDockIconZoomDownCounterSnapKey"];
+  [layerCopy addAnimation:v10 forKey:@"SBDockIconZoomDownCounterSnapKey"];
 }
 
 - (void)_setupMatchMoveAnimation
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SBIconAnimator *)self animationContainer];
+  animationContainer = [(SBIconAnimator *)self animationContainer];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SBFolderIconZoomAnimator *)self targetIconView];
-    v5 = [v3 matchMoveSourceViewForIconView:v4];
+    targetIconView = [(SBFolderIconZoomAnimator *)self targetIconView];
+    v5 = [animationContainer matchMoveSourceViewForIconView:targetIconView];
 
     if (v5)
     {
@@ -358,17 +358,17 @@
       [v6 setDuration:INFINITY];
       [v6 setFillMode:*MEMORY[0x1E69797E0]];
       [v6 setRemovedOnCompletion:0];
-      v7 = [v5 _outermostLayer];
-      [v6 setSourceLayer:v7];
+      _outermostLayer = [v5 _outermostLayer];
+      [v6 setSourceLayer:_outermostLayer];
 
-      v8 = [v5 window];
-      [v8 bounds];
+      window = [v5 window];
+      [window bounds];
       v10 = v9;
       v12 = v11;
       v14 = v13;
       v16 = v15;
 
-      v17 = [v5 window];
+      window2 = [v5 window];
       v28.origin.x = v10;
       v28.origin.y = v12;
       v28.size.width = v14;
@@ -378,7 +378,7 @@
       v29.origin.y = v12;
       v29.size.width = v14;
       v29.size.height = v16;
-      [v17 convertPoint:v5 toView:{v18, CGRectGetHeight(v29) * 0.5}];
+      [window2 convertPoint:v5 toView:{v18, CGRectGetHeight(v29) * 0.5}];
       v20 = v19;
       v22 = v21;
 
@@ -387,22 +387,22 @@
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
       [v6 setSourcePoints:v24];
 
-      v25 = [(SBFolderIconZoomAnimator *)self defaultTargetIconContainerView];
-      v26 = [v25 _outermostLayer];
-      [v26 addAnimation:v6 forKey:@"SBFolderSourceViewTrackingMatchMoveAnimation"];
+      defaultTargetIconContainerView = [(SBFolderIconZoomAnimator *)self defaultTargetIconContainerView];
+      _outermostLayer2 = [defaultTargetIconContainerView _outermostLayer];
+      [_outermostLayer2 addAnimation:v6 forKey:@"SBFolderSourceViewTrackingMatchMoveAnimation"];
     }
   }
 }
 
-- (void)_setAnimationFraction:(double)a3
+- (void)_setAnimationFraction:(double)fraction
 {
   v6.receiver = self;
   v6.super_class = SBFolderIconZoomAnimator;
   [(SBScaleIconZoomAnimator *)&v6 _setAnimationFraction:?];
-  v5 = [(SBFolderIconZoomAnimator *)self targetIconView];
-  [v5 setFloatyFolderCrossfadeFraction:a3];
+  targetIconView = [(SBFolderIconZoomAnimator *)self targetIconView];
+  [targetIconView setFloatyFolderCrossfadeFraction:fraction];
 
-  [(SBIconAnimator *)self->_innerZoomAnimator setFraction:1.0 - a3];
+  [(SBIconAnimator *)self->_innerZoomAnimator setFraction:1.0 - fraction];
 }
 
 - (unint64_t)_numberOfSignificantAnimations
@@ -412,34 +412,34 @@
   return [(SBScaleIconZoomAnimator *)&v3 _numberOfSignificantAnimations]+ 2;
 }
 
-- (void)_performAnimationToFraction:(double)a3 withCentralAnimationSettings:(id)a4 delay:(double)a5 alreadyAnimating:(BOOL)a6 sharedCompletion:(id)a7
+- (void)_performAnimationToFraction:(double)fraction withCentralAnimationSettings:(id)settings delay:(double)delay alreadyAnimating:(BOOL)animating sharedCompletion:(id)completion
 {
-  v7 = a6;
+  animatingCopy = animating;
   v23.receiver = self;
   v23.super_class = SBFolderIconZoomAnimator;
-  v12 = a7;
-  [(SBScaleIconZoomAnimator *)&v23 _performAnimationToFraction:a4 withCentralAnimationSettings:v7 delay:v12 alreadyAnimating:a3 sharedCompletion:a5];
+  completionCopy = completion;
+  [(SBScaleIconZoomAnimator *)&v23 _performAnimationToFraction:settings withCentralAnimationSettings:animatingCopy delay:completionCopy alreadyAnimating:fraction sharedCompletion:delay];
   if (BSFloatIsZero())
   {
     [(SBFolderIconZoomAnimator *)self _setupMatchMoveAnimation];
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:@"SBIconZoomContractionAnimationWillBeginNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"SBIconZoomContractionAnimationWillBeginNotification" object:self];
   }
 
   if (BSFloatIsOne())
   {
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 postNotificationName:@"SBIconZoomExpansionAnimationWillBeginNotification" object:self];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"SBIconZoomExpansionAnimationWillBeginNotification" object:self];
   }
 
   if ([(SBFolderIconZoomAnimator *)self shouldMatchMoveWithDock])
   {
-    [(SBFolderIconZoomAnimator *)self _updateDockMatchMoveWithFraction:a3];
+    [(SBFolderIconZoomAnimator *)self _updateDockMatchMoveWithFraction:fraction];
   }
 
-  v15 = [(SBIconAnimator *)self settings];
-  v16 = v15;
-  if (v7)
+  settings = [(SBIconAnimator *)self settings];
+  v16 = settings;
+  if (animatingCopy)
   {
     v17 = 6;
   }
@@ -450,9 +450,9 @@
   }
 
   v18 = MEMORY[0x1E698E7D0];
-  v19 = [v15 effectiveCrossfadeAnimationSettings];
-  v20 = [v19 BSAnimationSettings];
-  v21 = [v18 factoryWithSettings:v20];
+  effectiveCrossfadeAnimationSettings = [settings effectiveCrossfadeAnimationSettings];
+  bSAnimationSettings = [effectiveCrossfadeAnimationSettings BSAnimationSettings];
+  v21 = [v18 factoryWithSettings:bSAnimationSettings];
 
   [v21 setAllowsAdditiveAnimations:1];
   v22[0] = MEMORY[0x1E69E9820];
@@ -460,9 +460,9 @@
   v22[2] = __125__SBFolderIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke;
   v22[3] = &unk_1E8088CB8;
   v22[4] = self;
-  *&v22[5] = a3;
-  [MEMORY[0x1E698E7D0] animateWithFactory:v21 additionalDelay:v17 options:v22 actions:v12 completion:a5];
-  [(SBIconAnimator *)self->_innerZoomAnimator animateToFraction:v12 afterDelay:1.0 - a3 withCompletion:a5];
+  *&v22[5] = fraction;
+  [MEMORY[0x1E698E7D0] animateWithFactory:v21 additionalDelay:v17 options:v22 actions:completionCopy completion:delay];
+  [(SBIconAnimator *)self->_innerZoomAnimator animateToFraction:completionCopy afterDelay:1.0 - fraction withCompletion:delay];
 }
 
 void __125__SBFolderIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke(uint64_t a1)
@@ -471,9 +471,9 @@ void __125__SBFolderIconZoomAnimator__performAnimationToFraction_withCentralAnim
   [v2 setFloatyFolderCrossfadeFraction:*(a1 + 40)];
 }
 
-- (void)searchGesture:(id)a3 startedShowing:(BOOL)a4
+- (void)searchGesture:(id)gesture startedShowing:(BOOL)showing
 {
-  if (a4)
+  if (showing)
   {
     [(SBFolderIconZoomAnimator *)self _visuallyCompleteAnimationImmediately];
   }
@@ -481,11 +481,11 @@ void __125__SBFolderIconZoomAnimator__performAnimationToFraction_withCentralAnim
 
 - (void)_visuallyCompleteAnimationImmediately
 {
-  v3 = [(SBFolderIconZoomAnimator *)self targetIconView];
-  [v3 setHidden:1];
+  targetIconView = [(SBFolderIconZoomAnimator *)self targetIconView];
+  [targetIconView setHidden:1];
 
-  v4 = [(SBScaleIconZoomAnimator *)self referenceIconView];
-  [v4 setAllIconElementsButLabelHidden:0];
+  referenceIconView = [(SBScaleIconZoomAnimator *)self referenceIconView];
+  [referenceIconView setAllIconElementsButLabelHidden:0];
 }
 
 @end

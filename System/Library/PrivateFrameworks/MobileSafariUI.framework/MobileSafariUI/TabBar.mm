@@ -1,86 +1,86 @@
 @interface TabBar
 - (BOOL)_isScrollable;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)shouldPinItemsDroppedAtPoint:(CGPoint)a3;
-- (CGRect)_frameForItemAtIndex:(unint64_t)a3;
-- (CGRect)_initialFrameForItemAtIndex:(unint64_t)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)shouldPinItemsDroppedAtPoint:(CGPoint)point;
+- (CGRect)_frameForItemAtIndex:(unint64_t)index;
+- (CGRect)_initialFrameForItemAtIndex:(unint64_t)index;
 - (CGRect)_scrollableItemArea;
-- (CGRect)frameForItem:(id)a3;
-- (TabBar)initWithFrame:(CGRect)a3;
+- (CGRect)frameForItem:(id)item;
+- (TabBar)initWithFrame:(CGRect)frame;
 - (TabBarDelegate)delegate;
 - (UIEdgeInsets)_pinnedItemInsets;
-- (double)_horizontalPositionForItemAtIndex:(unint64_t)a3 withSlowingFactor:(double)a4 pinned:(BOOL)a5;
+- (double)_horizontalPositionForItemAtIndex:(unint64_t)index withSlowingFactor:(double)factor pinned:(BOOL)pinned;
 - (double)_itemWidth;
 - (double)_pinnedItemsWidth;
 - (double)_scrollableWidth;
-- (id)_firstVisibleItemAfterIndex:(unint64_t)a3;
-- (id)_itemAtLocation:(CGPoint)a3;
-- (id)_itemForTouch:(id)a3;
+- (id)_firstVisibleItemAfterIndex:(unint64_t)index;
+- (id)_itemAtLocation:(CGPoint)location;
+- (id)_itemForTouch:(id)touch;
 - (id)_overflowPinnedItemsMenuElements;
 - (id)_requestReusableTabBarItemView;
-- (id)dragPreviewForItem:(id)a3 pinned:(BOOL)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)targetItemForDropAtPoint:(CGPoint)a3;
-- (id)targetedDragPreviewForLiftingItem:(id)a3;
-- (id)viewForItem:(id)a3;
-- (unint64_t)_effectiveIndexForIndex:(unint64_t)a3 ofItems:(id)a4 currentItems:(id)a5;
+- (id)dragPreviewForItem:(id)item pinned:(BOOL)pinned;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)targetItemForDropAtPoint:(CGPoint)point;
+- (id)targetedDragPreviewForLiftingItem:(id)item;
+- (id)viewForItem:(id)item;
+- (unint64_t)_effectiveIndexForIndex:(unint64_t)index ofItems:(id)items currentItems:(id)currentItems;
 - (unint64_t)_lastVisiblePinnedItemIndex;
 - (unint64_t)indexOfCenterItem;
-- (unsigned)_edgeToAlignWithPreviewForItem:(id)a3;
-- (void)_activateItemIfNeeded:(id)a3;
+- (unsigned)_edgeToAlignWithPreviewForItem:(id)item;
+- (void)_activateItemIfNeeded:(id)needed;
 - (void)_didCompleteScrolling;
-- (void)_hover:(id)a3;
-- (void)_itemDidPressCloseButton:(id)a3;
+- (void)_hover:(id)_hover;
+- (void)_itemDidPressCloseButton:(id)button;
 - (void)_layOutPinnedOverflowButton;
 - (void)_layoutContainers;
-- (void)_layoutIndexes:(id)a3 ofItems:(id)a4 currentItems:(id)a5;
-- (void)_layoutItem:(id)a3 atIndex:(unint64_t)a4 inRect:(CGRect)a5 itemCount:(unint64_t)a6 beforeActiveItem:(BOOL)a7;
-- (void)_relinquishReusableTabBarItemView:(id)a3;
-- (void)_reorder:(id)a3;
-- (void)_scrollToItemIfNeeded:(id)a3;
-- (void)_scrollTowardItem:(id)a3 byAmount:(double)a4;
-- (void)_tap:(id)a3;
-- (void)_toggleMediaStateMutedForItem:(id)a3;
+- (void)_layoutIndexes:(id)indexes ofItems:(id)items currentItems:(id)currentItems;
+- (void)_layoutItem:(id)item atIndex:(unint64_t)index inRect:(CGRect)rect itemCount:(unint64_t)count beforeActiveItem:(BOOL)activeItem;
+- (void)_relinquishReusableTabBarItemView:(id)view;
+- (void)_reorder:(id)_reorder;
+- (void)_scrollToItemIfNeeded:(id)needed;
+- (void)_scrollTowardItem:(id)item byAmount:(double)amount;
+- (void)_tap:(id)_tap;
+- (void)_toggleMediaStateMutedForItem:(id)item;
 - (void)_updateBackground;
 - (void)_updatePinnedItemCount;
 - (void)_updateReorderRecognizer;
-- (void)addInteraction:(id)a3;
-- (void)cleanUpDragPreviewForItem:(id)a3;
+- (void)addInteraction:(id)interaction;
+- (void)cleanUpDragPreviewForItem:(id)item;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)scrollToItem:(id)a3 animated:(BOOL)a4;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setHidesTitles:(BOOL)a3;
-- (void)setItems:(id)a3 animated:(BOOL)a4;
-- (void)setTintStyle:(int64_t)a3;
+- (void)scrollToItem:(id)item animated:(BOOL)animated;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setHidesTitles:(BOOL)titles;
+- (void)setItems:(id)items animated:(BOOL)animated;
+- (void)setTintStyle:(int64_t)style;
 - (void)updatePinnedItems;
 @end
 
 @implementation TabBar
 
-- (TabBar)initWithFrame:(CGRect)a3
+- (TabBar)initWithFrame:(CGRect)frame
 {
   v52.receiver = self;
   v52.super_class = TabBar;
-  v3 = [(TabBar *)&v52 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TabBar *)&v52 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
     tabBarItemViewReuseStack = v3->_tabBarItemViewReuseStack;
     v3->_tabBarItemViewReuseStack = v4;
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v3 selector:sel__didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
 
     [(TabBar *)v3 setMultipleTouchEnabled:0];
     [(TabBar *)v3 setExclusiveTouch:1];
-    v7 = [(TabBar *)v3 layer];
-    [v7 setAnchorPoint:{0.5, 0.0}];
+    layer = [(TabBar *)v3 layer];
+    [layer setAnchorPoint:{0.5, 0.0}];
 
-    v8 = [(TabBar *)v3 layer];
-    [v8 setAllowsGroupOpacity:0];
+    layer2 = [(TabBar *)v3 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
     v9 = objc_alloc_init(MEMORY[0x277D75D18]);
     leadingContainer = v3->_leadingContainer;
@@ -94,34 +94,34 @@
     [(UIView *)v3->_trailingContainer setClipsToBounds:1];
     [(TabBar *)v3 addSubview:v3->_leadingContainer];
     [(TabBar *)v3 addSubview:v3->_trailingContainer];
-    v13 = [(UIView *)v3->_leadingContainer layer];
-    v14 = [(UIView *)v3->_trailingContainer layer];
-    [v13 setAllowsGroupOpacity:0];
-    [v14 setAllowsGroupOpacity:0];
-    [v13 setAllowsGroupBlending:0];
-    [v14 setAllowsGroupBlending:0];
-    [v13 setAllowsEdgeAntialiasing:0];
-    [v14 setAllowsEdgeAntialiasing:0];
-    v15 = [(TabBar *)v3 _sf_usesLeftToRightLayout];
-    [v13 setAnchorPoint:{v15, 0.5}];
-    [v14 setAnchorPoint:{(v15 ^ 1), 0.5}];
+    layer3 = [(UIView *)v3->_leadingContainer layer];
+    layer4 = [(UIView *)v3->_trailingContainer layer];
+    [layer3 setAllowsGroupOpacity:0];
+    [layer4 setAllowsGroupOpacity:0];
+    [layer3 setAllowsGroupBlending:0];
+    [layer4 setAllowsGroupBlending:0];
+    [layer3 setAllowsEdgeAntialiasing:0];
+    [layer4 setAllowsEdgeAntialiasing:0];
+    _sf_usesLeftToRightLayout = [(TabBar *)v3 _sf_usesLeftToRightLayout];
+    [layer3 setAnchorPoint:{_sf_usesLeftToRightLayout, 0.5}];
+    [layer4 setAnchorPoint:{(_sf_usesLeftToRightLayout ^ 1), 0.5}];
     v3->_tintStyle = 1;
     v16 = objc_alloc_init(MEMORY[0x277D75D68]);
     leadingVibrancyEffectView = v3->_leadingVibrancyEffectView;
     v3->_leadingVibrancyEffectView = v16;
 
-    v18 = [MEMORY[0x277D75348] whiteColor];
-    v19 = [(UIVisualEffectView *)v3->_leadingVibrancyEffectView contentView];
-    [v19 setBackgroundColor:v18];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    contentView = [(UIVisualEffectView *)v3->_leadingVibrancyEffectView contentView];
+    [contentView setBackgroundColor:whiteColor];
 
     [(UIVisualEffectView *)v3->_leadingVibrancyEffectView _setOverrideUserInterfaceStyle:1];
     v20 = objc_alloc_init(MEMORY[0x277D75D68]);
     trailingVibrancyEffectView = v3->_trailingVibrancyEffectView;
     v3->_trailingVibrancyEffectView = v20;
 
-    v22 = [MEMORY[0x277D75348] whiteColor];
-    v23 = [(UIVisualEffectView *)v3->_trailingVibrancyEffectView contentView];
-    [v23 setBackgroundColor:v22];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    contentView2 = [(UIVisualEffectView *)v3->_trailingVibrancyEffectView contentView];
+    [contentView2 setBackgroundColor:whiteColor2];
 
     [(UIVisualEffectView *)v3->_trailingVibrancyEffectView _setOverrideUserInterfaceStyle:1];
     [(UIView *)v3->_leadingContainer addSubview:v3->_leadingVibrancyEffectView];
@@ -137,9 +137,9 @@
     [(UIScrollView *)v3->_scrollView setContentInsetAdjustmentBehavior:2];
     [(UIScrollView *)v3->_scrollView setTracksImmediatelyWhileDecelerating:0];
     [(TabBar *)v3 addSubview:v3->_scrollView];
-    v26 = [(UIScrollView *)v3->_scrollView panGestureRecognizer];
-    [v26 _setCanPanVertically:0];
-    [(TabBar *)v3 addGestureRecognizer:v26];
+    panGestureRecognizer = [(UIScrollView *)v3->_scrollView panGestureRecognizer];
+    [panGestureRecognizer _setCanPanVertically:0];
+    [(TabBar *)v3 addGestureRecognizer:panGestureRecognizer];
     [(UIScrollView *)v3->_scrollView _setAutoScrollTouchInsets:0.0, -128.0, 0.0, -128.0];
     v27 = objc_alloc_init(MEMORY[0x277D75D18]);
     dragPreviewContainer = v3->_dragPreviewContainer;
@@ -154,8 +154,8 @@
     [(UITapGestureRecognizer *)v3->_tapRecognizer setEnabled:1];
     [(TabBar *)v3 addGestureRecognizer:v3->_tapRecognizer];
     [TabCollectionViewSpringLoadingBehavior addSpringLoadedInteractionToTabView:v3];
-    v31 = [MEMORY[0x277CBEA60] array];
-    [(TabBar *)v3 setItems:v31];
+    array = [MEMORY[0x277CBEA60] array];
+    [(TabBar *)v3 setItems:array];
 
     v32 = WBSMakeAccessibilityIdentifier();
     [(TabBar *)v3 setAccessibilityIdentifier:v32];
@@ -184,9 +184,9 @@
     v3->_tabHoverPreviewController = v39;
 
     [(SFTabHoverPreviewController *)v3->_tabHoverPreviewController setHoverRecognizer:v3->_hoverRecognizer];
-    v41 = [MEMORY[0x277CCAA78] indexSet];
+    indexSet = [MEMORY[0x277CCAA78] indexSet];
     overflowPinnedItemIndexes = v3->_overflowPinnedItemIndexes;
-    v3->_overflowPinnedItemIndexes = v41;
+    v3->_overflowPinnedItemIndexes = indexSet;
 
     v43 = objc_alloc_init(PinnedTabsOverflowButton);
     pinnedOverflowButton = v3->_pinnedOverflowButton;
@@ -232,12 +232,12 @@ void *__24__TabBar_initWithFrame___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if ([v7 type] == 9 && (-[TabBar bounds](self, "bounds"), v14.size.height = 70.0, v13.x = x, v13.y = y, CGRectContainsPoint(v14, v13)))
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if ([eventCopy type] == 9 && (-[TabBar bounds](self, "bounds"), v14.size.height = 70.0, v13.x = x, v13.y = y, CGRectContainsPoint(v14, v13)))
   {
     v8 = self->_scrollView;
   }
@@ -246,7 +246,7 @@ void *__24__TabBar_initWithFrame___block_invoke(uint64_t a1)
   {
     v11.receiver = self;
     v11.super_class = TabBar;
-    v8 = [(TabBar *)&v11 hitTest:v7 withEvent:x, y];
+    v8 = [(TabBar *)&v11 hitTest:eventCopy withEvent:x, y];
   }
 
   v9 = v8;
@@ -269,42 +269,42 @@ void *__24__TabBar_initWithFrame___block_invoke(uint64_t a1)
   [(UIVisualEffectView *)self->_trailingVibrancyEffectView setEffect:v3];
 }
 
-- (void)_itemDidPressCloseButton:(id)a3
+- (void)_itemDidPressCloseButton:(id)button
 {
   tabHoverPreviewController = self->_tabHoverPreviewController;
-  v5 = a3;
+  buttonCopy = button;
   [(SFTabHoverPreviewController *)tabHoverPreviewController dismiss];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained tabCollectionView:self closeItem:v5];
+  [WeakRetained tabCollectionView:self closeItem:buttonCopy];
 
-  v7 = [MEMORY[0x277D499B8] sharedLogger];
-  [v7 didCloseTabWithTrigger:0 tabCollectionViewType:1];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didCloseTabWithTrigger:0 tabCollectionViewType:1];
 }
 
-- (void)_toggleMediaStateMutedForItem:(id)a3
+- (void)_toggleMediaStateMutedForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained tabBar:self toggleMediaStateMutedForItem:v4];
+  [WeakRetained tabBar:self toggleMediaStateMutedForItem:itemCopy];
 }
 
-- (void)_layoutItem:(id)a3 atIndex:(unint64_t)a4 inRect:(CGRect)a5 itemCount:(unint64_t)a6 beforeActiveItem:(BOOL)a7
+- (void)_layoutItem:(id)item atIndex:(unint64_t)index inRect:(CGRect)rect itemCount:(unint64_t)count beforeActiveItem:(BOOL)activeItem
 {
-  v7 = a7;
-  rect_16 = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  rect_24 = a3;
-  v13 = [rect_24 isActive];
-  v72 = [rect_24 isPlaceholder];
-  v14 = [(TabBar *)self _itemAtIndexIsPinned:a4];
+  activeItemCopy = activeItem;
+  rect_16 = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  rect_24 = item;
+  isActive = [rect_24 isActive];
+  isPlaceholder = [rect_24 isPlaceholder];
+  v14 = [(TabBar *)self _itemAtIndexIsPinned:index];
   [(TabBar *)self _scrollableItemArea];
   v19 = v15;
   v20 = v16;
   v21 = v17;
   v22 = v18;
-  if (v13)
+  if (isActive)
   {
     v23 = 1;
   }
@@ -315,7 +315,7 @@ void *__24__TabBar_initWithFrame___block_invoke(uint64_t a1)
     v93.origin.y = y;
     v93.size.width = width;
     v93.size.height = rect_16;
-    v23 = (CGRectIntersectsRect(*&v15, v93) || v14) && v7;
+    v23 = (CGRectIntersectsRect(*&v15, v93) || v14) && activeItemCopy;
   }
 
   v80.origin.x = v19;
@@ -328,34 +328,34 @@ void *__24__TabBar_initWithFrame___block_invoke(uint64_t a1)
   v94.size.height = rect_16;
   rect = v14;
   v24 = CGRectIntersectsRect(v80, v94) || v14;
-  rect_8 = a4;
-  v25 = ![(NSIndexSet *)self->_overflowPinnedItemIndexes containsIndex:a4];
+  rect_8 = index;
+  v25 = ![(NSIndexSet *)self->_overflowPinnedItemIndexes containsIndex:index];
   v26 = v25 & v24;
   v27 = v25 & v24 & (v23 ^ 1u);
   v28 = v23 & v25;
-  v29 = [rect_24 layoutInfo];
-  v30 = v29;
+  layoutInfo = [rect_24 layoutInfo];
+  v30 = layoutInfo;
   LOBYTE(v31) = self->_newTabVisibleInTabBar;
   if ((v31 & 1) == 0 && v23 & v25 | v27)
   {
-    v31 = [v29 isVisibleInTabBar] ^ 1;
+    v31 = [layoutInfo isVisibleInTabBar] ^ 1;
   }
 
   self->_newTabVisibleInTabBar = v31;
   [v30 setVisibleInTabBar:v28 | v27];
   [v30 setTrailingActiveItem:v27];
-  v32 = [v30 tabBarItemView];
-  v33 = [rect_24 dragState];
+  tabBarItemView = [v30 tabBarItemView];
+  dragState = [rect_24 dragState];
   v34 = 1.0;
-  if (v33 == 1)
+  if (dragState == 1)
   {
     v34 = 0.5;
   }
 
-  [v32 setAlpha:v34];
-  if (v13)
+  [tabBarItemView setAlpha:v34];
+  if (isActive)
   {
-    [(TabBar *)self addSubview:v32];
+    [(TabBar *)self addSubview:tabBarItemView];
     v35 = 0;
     v36 = 0;
     v37 = rect_8;
@@ -382,10 +382,10 @@ void *__24__TabBar_initWithFrame___block_invoke(uint64_t a1)
         v39 = &OBJC_IVAR___TabBar__leadingContainer;
       }
 
-      [*(&self->super.super.super.isa + *v39) addSubview:v32];
+      [*(&self->super.super.super.isa + *v39) addSubview:tabBarItemView];
     }
 
-    if (v72)
+    if (isPlaceholder)
     {
       v35 = 0;
     }
@@ -394,7 +394,7 @@ void *__24__TabBar_initWithFrame___block_invoke(uint64_t a1)
     {
       if (rect_8)
       {
-        v35 = v13 ^ 1;
+        v35 = isActive ^ 1;
       }
 
       else
@@ -402,9 +402,9 @@ void *__24__TabBar_initWithFrame___block_invoke(uint64_t a1)
         v35 = 0;
       }
 
-      if ((v13 & 1) == 0)
+      if ((isActive & 1) == 0)
       {
-        v36 = a6 - 1 != rect_8;
+        v36 = count - 1 != rect_8;
         goto LABEL_26;
       }
     }
@@ -473,8 +473,8 @@ LABEL_37:
     v84.size.width = v53;
     v84.size.height = v55;
     v60 = MaxX < CGRectGetMaxX(v84);
-    v61 = [(TabBar *)self _sf_usesLeftToRightLayout];
-    if (v61)
+    _sf_usesLeftToRightLayout = [(TabBar *)self _sf_usesLeftToRightLayout];
+    if (_sf_usesLeftToRightLayout)
     {
       v62 = v58;
     }
@@ -485,7 +485,7 @@ LABEL_37:
     }
 
     v43 = v43 & v62;
-    if (v61)
+    if (_sf_usesLeftToRightLayout)
     {
       v63 = v60;
     }
@@ -579,23 +579,23 @@ LABEL_37:
   [(TabBar *)self _pinnedItemsWidth];
   v5 = v4;
   minimumTabWidth = self->_minimumTabWidth;
-  v7 = [(TabBar *)self _scrollableItemCount];
-  v8 = 1.0;
-  if (v7 >= 2)
+  _scrollableItemCount = [(TabBar *)self _scrollableItemCount];
+  _scrollableItemCount2 = 1.0;
+  if (_scrollableItemCount >= 2)
   {
-    v8 = [(TabBar *)self _scrollableItemCount];
+    _scrollableItemCount2 = [(TabBar *)self _scrollableItemCount];
   }
 
-  return fmax(minimumTabWidth, (Width - v5) / v8);
+  return fmax(minimumTabWidth, (Width - v5) / _scrollableItemCount2);
 }
 
 - (double)_scrollableWidth
 {
   [(TabBar *)self _itemWidth];
   v4 = v3;
-  v5 = [(TabBar *)self _scrollableItemCount];
+  _scrollableItemCount = [(TabBar *)self _scrollableItemCount];
   [(TabBar *)self _pinnedItemsWidth];
-  return v6 + v4 * v5;
+  return v6 + v4 * _scrollableItemCount;
 }
 
 - (BOOL)_isScrollable
@@ -606,13 +606,13 @@ LABEL_37:
   return v4 > CGRectGetWidth(v6);
 }
 
-- (void)_scrollToItemIfNeeded:(id)a3
+- (void)_scrollToItemIfNeeded:(id)needed
 {
-  v23 = a3;
-  v4 = [(TabBar *)self _isScrollable];
-  if (v23)
+  neededCopy = needed;
+  _isScrollable = [(TabBar *)self _isScrollable];
+  if (neededCopy)
   {
-    if (v4 && ([v23 isPinned] & 1) == 0)
+    if (_isScrollable && ([neededCopy isPinned] & 1) == 0)
     {
       [(TabBar *)self _sf_safeAreaBounds];
       v6 = v5;
@@ -621,7 +621,7 @@ LABEL_37:
       v12 = v11;
       [(TabBar *)self _itemWidth];
       v14 = v13;
-      v15 = [(NSArray *)self->_items indexOfObject:v23];
+      v15 = [(NSArray *)self->_items indexOfObject:neededCopy];
       if (v15 < [(NSArray *)self->_items count])
       {
         if ([(TabBar *)self _sf_usesLeftToRightLayout])
@@ -647,11 +647,11 @@ LABEL_37:
   }
 }
 
-- (void)scrollToItem:(id)a3 animated:(BOOL)a4
+- (void)scrollToItem:(id)item animated:(BOOL)animated
 {
   v33 = *MEMORY[0x277D85DE8];
-  [(TabBar *)self _scrollToItemIfNeeded:a3];
-  if (a4)
+  [(TabBar *)self _scrollToItemIfNeeded:item];
+  if (animated)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v27 = 0u;
@@ -673,10 +673,10 @@ LABEL_37:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v27 + 1) + 8 * i) layoutInfo];
-          if ([v12 isVisibleInTabBar])
+          layoutInfo = [*(*(&v27 + 1) + 8 * i) layoutInfo];
+          if ([layoutInfo isVisibleInTabBar])
           {
-            [v6 addObject:v12];
+            [v6 addObject:layoutInfo];
           }
         }
 
@@ -771,10 +771,10 @@ void __32__TabBar_scrollToItem_animated___block_invoke_2(uint64_t a1)
   }
 }
 
-- (CGRect)frameForItem:(id)a3
+- (CGRect)frameForItem:(id)item
 {
-  v3 = [a3 layoutInfo];
-  [v3 frame];
+  layoutInfo = [item layoutInfo];
+  [layoutInfo frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -791,17 +791,17 @@ void __32__TabBar_scrollToItem_animated___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (id)viewForItem:(id)a3
+- (id)viewForItem:(id)item
 {
-  v3 = [a3 layoutInfo];
-  v4 = [v3 tabBarItemView];
+  layoutInfo = [item layoutInfo];
+  tabBarItemView = [layoutInfo tabBarItemView];
 
-  return v4;
+  return tabBarItemView;
 }
 
-- (id)targetItemForDropAtPoint:(CGPoint)a3
+- (id)targetItemForDropAtPoint:(CGPoint)point
 {
-  x = a3.x;
+  x = point.x;
   v31 = *MEMORY[0x277D85DE8];
   v26 = 0u;
   v27 = 0u;
@@ -825,10 +825,10 @@ void __32__TabBar_scrollToItem_animated___block_invoke_2(uint64_t a1)
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v12 layoutInfo];
-        if ([v13 hasViews])
+        layoutInfo = [v12 layoutInfo];
+        if ([layoutInfo hasViews])
         {
-          [v13 frame];
+          [layoutInfo frame];
           v14 = v33.origin.x;
           y = v33.origin.y;
           width = v33.size.width;
@@ -871,10 +871,10 @@ void __32__TabBar_scrollToItem_animated___block_invoke_2(uint64_t a1)
   return v8;
 }
 
-- (unsigned)_edgeToAlignWithPreviewForItem:(id)a3
+- (unsigned)_edgeToAlignWithPreviewForItem:(id)item
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [(NSArray *)self->_items indexOfObjectIdenticalTo:a3];
+  v4 = [(NSArray *)self->_items indexOfObjectIdenticalTo:item];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -937,17 +937,17 @@ LABEL_12:
   }
 }
 
-- (id)targetedDragPreviewForLiftingItem:(id)a3
+- (id)targetedDragPreviewForLiftingItem:(id)item
 {
-  v4 = a3;
-  v5 = [(TabBar *)self viewForItem:v4];
+  itemCopy = item;
+  v5 = [(TabBar *)self viewForItem:itemCopy];
   if (v5)
   {
-    v6 = v4;
-    v7 = [v6 layoutInfo];
-    v8 = [v7 viewForDragPreview];
+    v6 = itemCopy;
+    layoutInfo = [v6 layoutInfo];
+    viewForDragPreview = [layoutInfo viewForDragPreview];
 
-    [v8 frame];
+    [viewForDragPreview frame];
     x = v41.origin.x;
     y = v41.origin.y;
     height = v41.size.height;
@@ -962,7 +962,7 @@ LABEL_12:
       [(TabBar *)self itemWidth];
     }
 
-    [v8 setFrame:{x, y, fmax(Width, v13), height}];
+    [viewForDragPreview setFrame:{x, y, fmax(Width, v13), height}];
     [v5 center];
     v16 = v15;
     [v5 frame];
@@ -970,7 +970,7 @@ LABEL_12:
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    [v8 frame];
+    [viewForDragPreview frame];
     v25 = CGRectGetWidth(v42);
     v26 = [(TabBar *)self _edgeToAlignWithPreviewForItem:v6];
     v27 = v25 * 0.5;
@@ -991,15 +991,15 @@ LABEL_12:
     v33 = objc_alloc_init(MEMORY[0x277D75480]);
     if (_SFIsDarkTintStyle())
     {
-      v34 = [MEMORY[0x277D75348] darkGrayColor];
-      [v33 setBackgroundColor:v34];
+      darkGrayColor = [MEMORY[0x277D75348] darkGrayColor];
+      [v33 setBackgroundColor:darkGrayColor];
     }
 
     v35 = objc_alloc(MEMORY[0x277D75B88]);
     v36 = objc_alloc(MEMORY[0x277D75488]);
-    v37 = [v5 superview];
-    v38 = [v36 initWithContainer:v37 center:{v32, v16}];
-    v14 = [v35 initWithView:v8 parameters:v33 target:v38];
+    superview = [v5 superview];
+    v38 = [v36 initWithContainer:superview center:{v32, v16}];
+    v14 = [v35 initWithView:viewForDragPreview parameters:v33 target:v38];
   }
 
   else
@@ -1010,14 +1010,14 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)shouldPinItemsDroppedAtPoint:(CGPoint)a3
+- (BOOL)shouldPinItemsDroppedAtPoint:(CGPoint)point
 {
-  x = a3.x;
-  [(TabBar *)self _pinnedItemsWidth:a3.x];
+  x = point.x;
+  [(TabBar *)self _pinnedItemsWidth:point.x];
   v6 = v5 + self->_minimumTabWidth * 0.33;
-  v7 = [(TabBar *)self _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [(TabBar *)self _sf_usesLeftToRightLayout];
   [(TabBar *)self _sf_safeAreaBounds];
-  if (v7)
+  if (_sf_usesLeftToRightLayout)
   {
     return x < v6 + CGRectGetMinX(*&v8);
   }
@@ -1028,17 +1028,17 @@ LABEL_12:
   }
 }
 
-- (id)dragPreviewForItem:(id)a3 pinned:(BOOL)a4
+- (id)dragPreviewForItem:(id)item pinned:(BOOL)pinned
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 setTabBar:self];
-  v7 = [v6 layoutInfo];
+  pinnedCopy = pinned;
+  itemCopy = item;
+  [itemCopy setTabBar:self];
+  layoutInfo = [itemCopy layoutInfo];
 
-  v8 = [v7 tabBarItemPreviewView];
+  tabBarItemPreviewView = [layoutInfo tabBarItemPreviewView];
 
-  [v8 setPinned:v4];
-  if (v4 && !self->_allowsScrollingPinnedItems)
+  [tabBarItemPreviewView setPinned:pinnedCopy];
+  if (pinnedCopy && !self->_allowsScrollingPinnedItems)
   {
     v10 = 36.0;
   }
@@ -1050,12 +1050,12 @@ LABEL_12:
   }
 
   [(TabBar *)self bounds];
-  [v8 setFrame:{0.0, 0.0, v10, CGRectGetHeight(v21)}];
-  [v8 setTitleLayoutWidth:v10];
-  if (v4)
+  [tabBarItemPreviewView setFrame:{0.0, 0.0, v10, CGRectGetHeight(v21)}];
+  [tabBarItemPreviewView setTitleLayoutWidth:v10];
+  if (pinnedCopy)
   {
-    v11 = [v8 closeButton];
-    [v11 setHidden:0];
+    closeButton = [tabBarItemPreviewView closeButton];
+    [closeButton setHidden:0];
   }
 
   v12 = MEMORY[0x277D75D18];
@@ -1063,15 +1063,15 @@ LABEL_12:
   v18[1] = 3221225472;
   v18[2] = __36__TabBar_dragPreviewForItem_pinned___block_invoke;
   v18[3] = &unk_2781D4D40;
-  v13 = v8;
+  v13 = tabBarItemPreviewView;
   v19 = v13;
   [v12 performWithoutAnimation:v18];
   [(UIView *)self->_dragPreviewContainer addSubview:v13];
   v14 = objc_alloc_init(MEMORY[0x277D75480]);
   if (_SFIsDarkTintStyle())
   {
-    v15 = [MEMORY[0x277D75348] darkGrayColor];
-    [v14 setBackgroundColor:v15];
+    darkGrayColor = [MEMORY[0x277D75348] darkGrayColor];
+    [v14 setBackgroundColor:darkGrayColor];
   }
 
   v16 = [objc_alloc(MEMORY[0x277D75478]) initWithView:v13 parameters:v14];
@@ -1079,30 +1079,30 @@ LABEL_12:
   return v16;
 }
 
-- (void)cleanUpDragPreviewForItem:(id)a3
+- (void)cleanUpDragPreviewForItem:(id)item
 {
-  v6 = a3;
-  v4 = [v6 layoutInfo];
-  [v4 clearPreviewView];
+  itemCopy = item;
+  layoutInfo = [itemCopy layoutInfo];
+  [layoutInfo clearPreviewView];
 
-  if (![(NSArray *)self->_items containsObject:v6])
+  if (![(NSArray *)self->_items containsObject:itemCopy])
   {
-    v5 = [v6 tabBar];
+    tabBar = [itemCopy tabBar];
 
-    if (v5 == self)
+    if (tabBar == self)
     {
-      [v6 setTabBar:0];
+      [itemCopy setTabBar:0];
     }
   }
 }
 
-- (void)_scrollTowardItem:(id)a3 byAmount:(double)a4
+- (void)_scrollTowardItem:(id)item byAmount:(double)amount
 {
-  v6 = [(NSArray *)self->_items indexOfObject:a3];
+  v6 = [(NSArray *)self->_items indexOfObject:item];
   if (v6 < [(NSArray *)self->_items count])
   {
-    v7 = [(TabBar *)self _sf_usesLeftToRightLayout];
-    if (v7)
+    _sf_usesLeftToRightLayout = [(TabBar *)self _sf_usesLeftToRightLayout];
+    if (_sf_usesLeftToRightLayout)
     {
       [(TabBar *)self _totalPinnedItemCount];
     }
@@ -1112,7 +1112,7 @@ LABEL_12:
     [(TabBar *)self _itemWidth];
     _SFRoundFloatToPixels();
     v11 = v10;
-    if (v7)
+    if (_sf_usesLeftToRightLayout)
     {
       [(TabBar *)self _pinnedItemsWidth];
       v11 = v11 + v12;
@@ -1122,8 +1122,8 @@ LABEL_12:
     v14 = v13 + v9 * 0.5;
     [(UIScrollView *)self->_scrollView contentOffset];
     v16 = v15;
-    v18 = v17 + v9 * a4;
-    v19 = v17 - v9 * a4;
+    v18 = v17 + v9 * amount;
+    v19 = v17 - v9 * amount;
     if (v11 <= v14)
     {
       v20 = v19;
@@ -1153,23 +1153,23 @@ LABEL_12:
   }
 }
 
-- (double)_horizontalPositionForItemAtIndex:(unint64_t)a3 withSlowingFactor:(double)a4 pinned:(BOOL)a5
+- (double)_horizontalPositionForItemAtIndex:(unint64_t)index withSlowingFactor:(double)factor pinned:(BOOL)pinned
 {
-  v5 = a3;
-  if (a5)
+  indexCopy = index;
+  if (pinned)
   {
-    v7 = (a3 - [(NSIndexSet *)self->_overflowPinnedItemIndexes countOfIndexesInRange:0, a3, a4]) * 36.0;
+    v7 = (index - [(NSIndexSet *)self->_overflowPinnedItemIndexes countOfIndexesInRange:0, index, factor]) * 36.0;
     [(TabBar *)self _sf_safeAreaBounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(TabBar *)self _sf_usesLeftToRightLayout];
+    _sf_usesLeftToRightLayout = [(TabBar *)self _sf_usesLeftToRightLayout];
     v17 = v9;
     v18 = v11;
     v19 = v13;
     v20 = v15;
-    if (v16)
+    if (_sf_usesLeftToRightLayout)
     {
       return v7 + CGRectGetMinX(*&v17);
     }
@@ -1189,12 +1189,12 @@ LABEL_12:
     v27 = v26;
     if (![(TabBar *)self _sf_usesLeftToRightLayout])
     {
-      v5 = v25 - v5;
+      indexCopy = v25 - indexCopy;
     }
 
     if ([(TabBar *)self _sf_usesLeftToRightLayout])
     {
-      v5 -= [(TabBar *)self _totalPinnedItemCount];
+      indexCopy -= [(TabBar *)self _totalPinnedItemCount];
     }
 
     [(TabBar *)self _pinnedItemInsets];
@@ -1206,9 +1206,9 @@ LABEL_12:
       [(UIScrollView *)self->_scrollView contentOffset];
       v32 = v31;
       v33 = v29 + v27 * [(TabBar *)self _scrollableItemCount];
-      v34 = v30 + v5 * v27;
-      itemOffsetForSlowingOffset(v33 - v34, v33 - v24 - v32, a4);
-      itemOffsetForSlowingOffset(v34 - v29, v32, a4);
+      v34 = v30 + indexCopy * v27;
+      itemOffsetForSlowingOffset(v33 - v34, v33 - v24 - v32, factor);
+      itemOffsetForSlowingOffset(v34 - v29, v32, factor);
     }
 
     _SFRoundFloatToPixels();
@@ -1217,17 +1217,17 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)_frameForItemAtIndex:(unint64_t)a3
+- (CGRect)_frameForItemAtIndex:(unint64_t)index
 {
   v5 = [(TabBar *)self _itemAtIndexIsPinned:?];
-  if ([(NSIndexSet *)self->_overflowPinnedItemIndexes containsIndex:a3])
+  if ([(NSIndexSet *)self->_overflowPinnedItemIndexes containsIndex:index])
   {
-    a3 = [(TabBar *)self _lastVisiblePinnedItemIndex];
+    index = [(TabBar *)self _lastVisiblePinnedItemIndex];
   }
 
-  [(TabBar *)self _horizontalPositionForItemAtIndex:a3 withSlowingFactor:v5 pinned:64.0];
+  [(TabBar *)self _horizontalPositionForItemAtIndex:index withSlowingFactor:v5 pinned:64.0];
   v7 = v6;
-  [(TabBar *)self _horizontalPositionForItemAtIndex:a3 + 1 withSlowingFactor:v5 pinned:64.0];
+  [(TabBar *)self _horizontalPositionForItemAtIndex:index + 1 withSlowingFactor:v5 pinned:64.0];
   v9 = v8;
   [(TabBar *)self _sf_usesLeftToRightLayout];
   [(TabBar *)self bounds];
@@ -1240,7 +1240,7 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)_initialFrameForItemAtIndex:(unint64_t)a3
+- (CGRect)_initialFrameForItemAtIndex:(unint64_t)index
 {
   v5 = [(NSArray *)self->_items count]- 1;
   [(TabBar *)self _sf_safeAreaBounds];
@@ -1256,7 +1256,7 @@ LABEL_12:
   }
 
   v8 = fmax(self->_minimumTabWidth, Width / v7);
-  v9 = [(TabBar *)self _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [(TabBar *)self _sf_usesLeftToRightLayout];
   if (v8 * v5 <= Width)
   {
     [(TabBar *)self _sf_safeAreaBounds];
@@ -1265,7 +1265,7 @@ LABEL_12:
 
   else
   {
-    [(TabBar *)self _horizontalPositionForItemAtIndex:(v9 ^ 1u) + a3];
+    [(TabBar *)self _horizontalPositionForItemAtIndex:(_sf_usesLeftToRightLayout ^ 1u) + index];
   }
 
   [(TabBar *)self bounds];
@@ -1278,18 +1278,18 @@ LABEL_12:
   return result;
 }
 
-- (unint64_t)_effectiveIndexForIndex:(unint64_t)a3 ofItems:(id)a4 currentItems:(id)a5
+- (unint64_t)_effectiveIndexForIndex:(unint64_t)index ofItems:(id)items currentItems:(id)currentItems
 {
-  v8 = a4;
-  v9 = a5;
+  itemsCopy = items;
+  currentItemsCopy = currentItems;
   v10 = 0;
-  v11 = a3;
+  indexCopy = index;
   while (1)
   {
-    if (v11 < [v8 count])
+    if (indexCopy < [itemsCopy count])
     {
-      v12 = [v8 objectAtIndex:v11];
-      v13 = v9 ? v9 : self->_items;
+      v12 = [itemsCopy objectAtIndex:indexCopy];
+      v13 = currentItemsCopy ? currentItemsCopy : self->_items;
       v14 = [(NSArray *)v13 indexOfObject:v12];
 
       if (v14 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1299,26 +1299,26 @@ LABEL_12:
     }
 
     ++v10;
-    --v11;
-    if (v10 > a3)
+    --indexCopy;
+    if (v10 > index)
     {
       goto LABEL_10;
     }
   }
 
-  a3 = v14 + v10;
+  index = v14 + v10;
 LABEL_10:
 
-  return a3;
+  return index;
 }
 
 - (void)_layoutContainers
 {
   v70 = *MEMORY[0x277D85DE8];
-  v3 = [(TabBar *)self _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [(TabBar *)self _sf_usesLeftToRightLayout];
   v61 = 0.0;
   MaxX = 0.0;
-  if (v3)
+  if (_sf_usesLeftToRightLayout)
   {
     [(TabBar *)self bounds];
     MaxX = CGRectGetMaxX(v71);
@@ -1348,9 +1348,9 @@ LABEL_10:
         v11 = *(*(&v65 + 1) + 8 * i);
         if ([v11 isActive])
         {
-          v12 = [v11 layoutInfo];
-          v13 = [v12 tabBarItemView];
-          [v13 frame];
+          layoutInfo = [v11 layoutInfo];
+          tabBarItemView = [layoutInfo tabBarItemView];
+          [tabBarItemView frame];
           MaxX = v14;
           v59 = v16;
           v61 = v15;
@@ -1375,7 +1375,7 @@ LABEL_10:
 LABEL_13:
   rect = MaxX;
 
-  if (v3)
+  if (_sf_usesLeftToRightLayout)
   {
     v18 = &OBJC_IVAR___TabBar__leadingContainer;
   }
@@ -1386,7 +1386,7 @@ LABEL_13:
   }
 
   v19 = *(&self->super.super.super.isa + *v18);
-  if (v3)
+  if (_sf_usesLeftToRightLayout)
   {
     v20 = &OBJC_IVAR___TabBar__trailingContainer;
   }
@@ -1408,7 +1408,7 @@ LABEL_13:
   rect_16 = v33;
   v35 = v31;
   v36 = v32;
-  if (v3)
+  if (_sf_usesLeftToRightLayout)
   {
     v37 = v26;
   }
@@ -1419,7 +1419,7 @@ LABEL_13:
   }
 
   v51 = v31;
-  if (v3)
+  if (_sf_usesLeftToRightLayout)
   {
     v38 = v30;
   }
@@ -1464,7 +1464,7 @@ LABEL_13:
   v43 = fmax(fmin(CGRectGetWidth(v78), v42 - rect_16), 0.0);
   v44 = rect_16 + v43;
   v45 = rect_8 - v43;
-  if (v3)
+  if (_sf_usesLeftToRightLayout)
   {
     v46 = rect_8 - v43;
   }
@@ -1474,7 +1474,7 @@ LABEL_13:
     v46 = v40;
   }
 
-  if (v3)
+  if (_sf_usesLeftToRightLayout)
   {
     v47 = rect_16 + v43;
   }
@@ -1485,7 +1485,7 @@ LABEL_13:
   }
 
   rect_24a = v47;
-  if (v3)
+  if (_sf_usesLeftToRightLayout)
   {
     v26 = v51;
     v48 = v36;
@@ -1498,7 +1498,7 @@ LABEL_13:
 
   v60 = v48;
   v62 = v46;
-  if (!v3)
+  if (!_sf_usesLeftToRightLayout)
   {
     v40 = v45;
     v24 = v44;
@@ -1522,12 +1522,12 @@ LABEL_13:
   [(UIVisualEffectView *)self->_trailingVibrancyEffectView setFrame:rect_24a, v26, v62, v60];
 }
 
-- (void)_layoutIndexes:(id)a3 ofItems:(id)a4 currentItems:(id)a5
+- (void)_layoutIndexes:(id)indexes ofItems:(id)items currentItems:(id)currentItems
 {
-  rect2_8 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 count];
+  rect2_8 = indexes;
+  itemsCopy = items;
+  currentItemsCopy = currentItems;
+  v10 = [itemsCopy count];
   if (v10)
   {
     v11 = v10;
@@ -1539,24 +1539,24 @@ LABEL_13:
     v16 = 1;
     do
     {
-      v17 = [v8 objectAtIndexedSubscript:{v12, *&rect2}];
+      v17 = [itemsCopy objectAtIndexedSubscript:{v12, *&rect2}];
       [v17 setTabBar:self];
-      v18 = [v17 layoutInfo];
+      layoutInfo = [v17 layoutInfo];
       if (self->_hidesTitles)
       {
-        v19 = 1;
+        isPlaceholder = 1;
       }
 
       else
       {
-        v19 = [v17 isPlaceholder];
+        isPlaceholder = [v17 isPlaceholder];
       }
 
-      [v18 setHidesTitleText:v19];
+      [layoutInfo setHidesTitleText:isPlaceholder];
       if ([rect2_8 containsIndex:v12])
       {
-        v20 = [(TabBar *)self _effectiveIndexForIndex:v12 ofItems:v8 currentItems:v9];
-        if (!v9 || ([v18 frame], v46.origin.x = rect2, v46.origin.y = v13, v46.size.width = v14, v46.size.height = v15, !CGRectEqualToRect(v44, v46)) || (objc_msgSend(v17, "isActive") & 1) != 0 || (objc_msgSend(v17, "isPlaceholder") & 1) != 0 || v20 >= -[NSArray count](self->_items, "count"))
+        v20 = [(TabBar *)self _effectiveIndexForIndex:v12 ofItems:itemsCopy currentItems:currentItemsCopy];
+        if (!currentItemsCopy || ([layoutInfo frame], v46.origin.x = rect2, v46.origin.y = v13, v46.size.width = v14, v46.size.height = v15, !CGRectEqualToRect(v44, v46)) || (objc_msgSend(v17, "isActive") & 1) != 0 || (objc_msgSend(v17, "isPlaceholder") & 1) != 0 || v20 >= -[NSArray count](self->_items, "count"))
         {
           [(TabBar *)self _frameForItemAtIndex:v20];
         }
@@ -1570,9 +1570,9 @@ LABEL_13:
         v26 = v22;
         v27 = v23;
         v28 = v24;
-        v29 = [(TabBar *)self _isScrollable];
+        _isScrollable = [(TabBar *)self _isScrollable];
         v30 = 0.0;
-        if (v29)
+        if (_isScrollable)
         {
           [(TabBar *)self _horizontalPositionForItemAtIndex:v20 withSlowingFactor:52.0];
           v32 = v31;
@@ -1580,7 +1580,7 @@ LABEL_13:
           v30 = vabdd_f64(v32, v33);
         }
 
-        [v18 setTitleAnchorAdditionalOffset:v30];
+        [layoutInfo setTitleAnchorAdditionalOffset:v30];
         [(TabBar *)self _layoutItem:v17 atIndex:v12 inRect:v11 itemCount:v16 & 1 beforeActiveItem:v25, v26, v27, v28];
       }
 
@@ -1643,13 +1643,13 @@ LABEL_13:
   [(TabBar *)self _layOutPinnedOverflowButton];
 }
 
-- (void)setTintStyle:(int64_t)a3
+- (void)setTintStyle:(int64_t)style
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (self->_tintStyle != a3 || ([(UIVisualEffectView *)self->_leadingVibrancyEffectView effect], (v5 = objc_claimAutoreleasedReturnValue()) == 0) || (v6 = v5, [(UIVisualEffectView *)self->_trailingVibrancyEffectView effect], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  if (self->_tintStyle != style || ([(UIVisualEffectView *)self->_leadingVibrancyEffectView effect], (v5 = objc_claimAutoreleasedReturnValue()) == 0) || (v6 = v5, [(UIVisualEffectView *)self->_trailingVibrancyEffectView effect], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
-    self->_tintStyle = a3;
-    [(TabBar *)self _setOverrideUserInterfaceStyle:2 * (a3 == 4)];
+    self->_tintStyle = style;
+    [(TabBar *)self _setOverrideUserInterfaceStyle:2 * (style == 4)];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -1670,8 +1670,8 @@ LABEL_13:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v23 + 1) + 8 * v12) layoutInfo];
-          [v13 updateTabBarStyle];
+          layoutInfo = [*(*(&v23 + 1) + 8 * v12) layoutInfo];
+          [layoutInfo updateTabBarStyle];
 
           ++v12;
         }
@@ -1713,19 +1713,19 @@ LABEL_13:
       while (v16);
     }
 
-    [(PinnedTabsOverflowButton *)self->_pinnedOverflowButton setTintStyle:a3];
+    [(PinnedTabsOverflowButton *)self->_pinnedOverflowButton setTintStyle:style];
     [(TabBar *)self _updateBackground];
     [(TabBar *)self setNeedsLayout];
   }
 }
 
-- (void)setHidesTitles:(BOOL)a3
+- (void)setHidesTitles:(BOOL)titles
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_hidesTitles != a3)
+  if (self->_hidesTitles != titles)
   {
-    v3 = a3;
-    self->_hidesTitles = a3;
+    titlesCopy = titles;
+    self->_hidesTitles = titles;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -1746,8 +1746,8 @@ LABEL_13:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v10 + 1) + 8 * v8) layoutInfo];
-          [v9 setHidesTitleText:v3];
+          layoutInfo = [*(*(&v10 + 1) + 8 * v8) layoutInfo];
+          [layoutInfo setHidesTitleText:titlesCopy];
 
           ++v8;
         }
@@ -1761,15 +1761,15 @@ LABEL_13:
   }
 }
 
-- (void)setItems:(id)a3 animated:(BOOL)a4
+- (void)setItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v58 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (self->_items != v6 && ![(NSArray *)v6 isEqualToArray:?])
+  itemsCopy = items;
+  v7 = itemsCopy;
+  if (self->_items != itemsCopy && ![(NSArray *)itemsCopy isEqualToArray:?])
   {
-    v35 = v4;
+    v35 = animatedCopy;
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
@@ -1790,8 +1790,8 @@ LABEL_13:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v52 + 1) + 8 * i) layoutInfo];
-          [v13 setRemovedFromTabBar:0];
+          layoutInfo = [*(*(&v52 + 1) + 8 * i) layoutInfo];
+          [layoutInfo setRemovedFromTabBar:0];
         }
 
         v10 = [(NSArray *)v8 countByEnumeratingWithState:&v52 objects:v57 count:16];
@@ -1823,8 +1823,8 @@ LABEL_13:
           v20 = *(*(&v48 + 1) + 8 * j);
           if (([v14 containsObject:v20] & 1) == 0)
           {
-            v21 = [v20 layoutInfo];
-            [v21 setRemovedFromTabBar:1];
+            layoutInfo2 = [v20 layoutInfo];
+            [layoutInfo2 setRemovedFromTabBar:1];
 
             [v20 setTabBar:0];
           }
@@ -1921,9 +1921,9 @@ uint64_t __28__TabBar_setItems_animated___block_invoke_3(uint64_t a1, void *a2, 
   return v6;
 }
 
-- (id)_itemAtLocation:(CGPoint)a3
+- (id)_itemAtLocation:(CGPoint)location
 {
-  x = a3.x;
+  x = location.x;
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
@@ -1944,10 +1944,10 @@ uint64_t __28__TabBar_setItems_animated___block_invoke_3(uint64_t a1, void *a2, 
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 layoutInfo];
-        if ([v9 hasViews])
+        layoutInfo = [v8 layoutInfo];
+        if ([layoutInfo hasViews])
         {
-          [v9 frame];
+          [layoutInfo frame];
           v10 = v22.origin.x;
           y = v22.origin.y;
           width = v22.size.width;
@@ -1983,20 +1983,20 @@ LABEL_13:
   return v5;
 }
 
-- (void)_activateItemIfNeeded:(id)a3
+- (void)_activateItemIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  neededCopy = needed;
+  v5 = neededCopy;
+  if (neededCopy)
   {
-    v9 = v4;
-    v6 = [v4 isActive];
+    v9 = neededCopy;
+    isActive = [neededCopy isActive];
     v5 = v9;
-    if ((v6 & 1) == 0)
+    if ((isActive & 1) == 0)
     {
-      v7 = [v9 isPlaceholder];
+      isPlaceholder = [v9 isPlaceholder];
       v5 = v9;
-      if ((v7 & 1) == 0)
+      if ((isPlaceholder & 1) == 0)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         [WeakRetained tabCollectionView:self didSelectItem:v9];
@@ -2007,26 +2007,26 @@ LABEL_13:
   }
 }
 
-- (id)_itemForTouch:(id)a3
+- (id)_itemForTouch:(id)touch
 {
-  [a3 locationInView:self];
+  [touch locationInView:self];
 
   return [(TabBar *)self _itemAtLocation:?];
 }
 
-- (void)_tap:(id)a3
+- (void)_tap:(id)_tap
 {
-  [a3 locationInView:self];
+  [_tap locationInView:self];
   v4 = [(TabBar *)self _itemAtLocation:?];
   v11 = v4;
   if (v4)
   {
-    v5 = [(TabBar *)self _isScrollable];
+    _isScrollable = [(TabBar *)self _isScrollable];
     v4 = v11;
-    if (v5)
+    if (_isScrollable)
     {
-      v6 = [v11 layoutInfo];
-      [v6 frame];
+      layoutInfo = [v11 layoutInfo];
+      [layoutInfo frame];
       v8 = v7;
       [(TabBar *)self _itemWidth];
       if (v8 >= v9 * 0.8)
@@ -2037,10 +2037,10 @@ LABEL_13:
 
       else
       {
-        v10 = [v11 isPinned];
+        isPinned = [v11 isPinned];
 
         v4 = v11;
-        if ((v10 & 1) == 0)
+        if ((isPinned & 1) == 0)
         {
           [(TabBar *)self _scrollTowardItem:v11 byAmount:0.25];
           goto LABEL_8;
@@ -2053,24 +2053,24 @@ LABEL_13:
 LABEL_8:
 }
 
-- (void)addInteraction:(id)a3
+- (void)addInteraction:(id)interaction
 {
-  v5 = a3;
+  interactionCopy = interaction;
   v6.receiver = self;
   v6.super_class = TabBar;
-  [(TabBar *)&v6 addInteraction:v5];
+  [(TabBar *)&v6 addInteraction:interactionCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_dragInteraction, a3);
+    objc_storeStrong(&self->_dragInteraction, interaction);
   }
 }
 
-- (void)_reorder:(id)a3
+- (void)_reorder:(id)_reorder
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 state] - 3) >= 0xFFFFFFFFFFFFFFFELL)
+  _reorderCopy = _reorder;
+  if (([_reorderCopy state] - 3) >= 0xFFFFFFFFFFFFFFFELL)
   {
     [(UIPanGestureRecognizer *)self->_reorderRecognizer translationInView:self];
     if (v6 != *MEMORY[0x277CBF348] || v5 != *(MEMORY[0x277CBF348] + 8))
@@ -2079,8 +2079,8 @@ LABEL_8:
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v8 = [v4 _activeEvents];
-      v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      _activeEvents = [_reorderCopy _activeEvents];
+      v9 = [_activeEvents countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         v10 = v9;
@@ -2091,26 +2091,26 @@ LABEL_8:
           {
             if (*v17 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(_activeEvents);
             }
 
             v13 = *(*(&v16 + 1) + 8 * i);
             if (![v13 type])
             {
-              v14 = [v4 _activeTouchesForEvent:v13];
-              v15 = [v14 anyObject];
+              v14 = [_reorderCopy _activeTouchesForEvent:v13];
+              anyObject = [v14 anyObject];
 
-              if (v15)
+              if (anyObject)
               {
 
-                [(UIDragInteraction *)self->_dragInteraction _immediatelyBeginDragWithTouch:v15 completion:0];
-                v8 = v15;
+                [(UIDragInteraction *)self->_dragInteraction _immediatelyBeginDragWithTouch:anyObject completion:0];
+                _activeEvents = anyObject;
                 goto LABEL_17;
               }
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v10 = [_activeEvents countByEnumeratingWithState:&v16 objects:v20 count:16];
           if (v10)
           {
             continue;
@@ -2122,21 +2122,21 @@ LABEL_8:
 
 LABEL_17:
 
-      [v4 setEnabled:0];
-      [v4 setEnabled:1];
+      [_reorderCopy setEnabled:0];
+      [_reorderCopy setEnabled:1];
     }
   }
 }
 
-- (void)_hover:(id)a3
+- (void)_hover:(id)_hover
 {
-  v4 = a3;
-  [v4 locationInView:self];
+  _hoverCopy = _hover;
+  [_hoverCopy locationInView:self];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 state];
+  state = [_hoverCopy state];
 
-  if ((v9 - 1) > 1)
+  if ((state - 1) > 1)
   {
     tabHoverPreviewController = self->_tabHoverPreviewController;
 
@@ -2176,8 +2176,8 @@ LABEL_17:
   do
   {
     v8 = [(NSArray *)self->_items objectAtIndexedSubscript:v7];
-    v9 = [v8 layoutInfo];
-    [v9 frame];
+    layoutInfo = [v8 layoutInfo];
+    [layoutInfo frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -2206,8 +2206,8 @@ LABEL_17:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TabBar;
@@ -2236,9 +2236,9 @@ LABEL_17:
 {
   v29 = *MEMORY[0x277D85DE8];
   self->_visiblePinnedItemCount = 0;
-  v3 = [MEMORY[0x277CCAA78] indexSet];
+  indexSet = [MEMORY[0x277CCAA78] indexSet];
   overflowPinnedItemIndexes = self->_overflowPinnedItemIndexes;
-  self->_overflowPinnedItemIndexes = v3;
+  self->_overflowPinnedItemIndexes = indexSet;
 
   if (!self->_allowsScrollingPinnedItems)
   {
@@ -2324,13 +2324,13 @@ LABEL_17:
   }
 }
 
-- (id)_firstVisibleItemAfterIndex:(unint64_t)a3
+- (id)_firstVisibleItemAfterIndex:(unint64_t)index
 {
-  while (++a3 < [(NSArray *)self->_items count])
+  while (++index < [(NSArray *)self->_items count])
   {
-    if (![(NSIndexSet *)self->_overflowPinnedItemIndexes containsIndex:a3])
+    if (![(NSIndexSet *)self->_overflowPinnedItemIndexes containsIndex:index])
     {
-      v5 = [(NSArray *)self->_items objectAtIndexedSubscript:a3];
+      v5 = [(NSArray *)self->_items objectAtIndexedSubscript:index];
       goto LABEL_5;
     }
   }
@@ -2401,14 +2401,14 @@ LABEL_5:
     v4 = *(MEMORY[0x277D768C8] + 8);
     v5 = *(MEMORY[0x277D768C8] + 16);
     v6 = *(MEMORY[0x277D768C8] + 24);
-    v7 = [(TabBar *)self _sf_usesLeftToRightLayout];
+    _sf_usesLeftToRightLayout = [(TabBar *)self _sf_usesLeftToRightLayout];
     [(TabBar *)self safeAreaInsets];
     v9 = v8;
     v11 = v10;
     [(TabBar *)self _pinnedItemsWidth];
     v13 = v9 + v12;
     v14 = v11 + v12;
-    if (v7)
+    if (_sf_usesLeftToRightLayout)
     {
       v15 = v6;
     }
@@ -2418,7 +2418,7 @@ LABEL_5:
       v15 = v14;
     }
 
-    if (v7)
+    if (_sf_usesLeftToRightLayout)
     {
       v16 = v13;
     }
@@ -2451,9 +2451,9 @@ LABEL_5:
 {
   v3 = [(NSIndexSet *)self->_overflowPinnedItemIndexes count];
   [(PinnedTabsOverflowButton *)self->_pinnedOverflowButton setHidden:v3 == 0];
-  v4 = [(TabBar *)self _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [(TabBar *)self _sf_usesLeftToRightLayout];
   [(TabBar *)self _sf_safeAreaBounds];
-  if (v4)
+  if (_sf_usesLeftToRightLayout)
   {
     MinX = CGRectGetMinX(*&v5);
     visiblePinnedItemCount = self->_visiblePinnedItemCount;
@@ -2470,15 +2470,15 @@ LABEL_5:
   v12 = MinX + visiblePinnedItemCount * v11;
   [(TabBar *)self bounds];
   [(PinnedTabsOverflowButton *)self->_pinnedOverflowButton setFrame:v12, 0.0, 36.0, CGRectGetHeight(v18)];
-  v13 = [(TabBar *)self _totalPinnedItemCount];
-  if (v13 >= [(NSArray *)self->_items count])
+  _totalPinnedItemCount = [(TabBar *)self _totalPinnedItemCount];
+  if (_totalPinnedItemCount >= [(NSArray *)self->_items count])
   {
     LOBYTE(v15) = 1;
   }
 
   else
   {
-    v14 = [(NSArray *)self->_items objectAtIndexedSubscript:v13];
+    v14 = [(NSArray *)self->_items objectAtIndexedSubscript:_totalPinnedItemCount];
     v15 = [v14 isActive] ^ 1;
   }
 
@@ -2525,26 +2525,26 @@ void __42__TabBar__overflowPinnedItemsMenuElements__block_invoke_2(uint64_t a1, 
   [WeakRetained _activateItemIfNeeded:v3];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v4 = [(TabBar *)self _itemForTouch:a4];
+  v4 = [(TabBar *)self _itemForTouch:touch];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   reorderRecognizer = self->_reorderRecognizer;
-  if (reorderRecognizer == v4 && ([(UIPanGestureRecognizer *)reorderRecognizer translationInView:self], v6 < 0.0))
+  if (reorderRecognizer == beginCopy && ([(UIPanGestureRecognizer *)reorderRecognizer translationInView:self], v6 < 0.0))
   {
     v7 = 0;
   }
 
   else
   {
-    [(UIPanGestureRecognizer *)v4 locationInView:self];
+    [(UIPanGestureRecognizer *)beginCopy locationInView:self];
     v8 = [(TabBar *)self _itemAtLocation:?];
     if (v8)
     {
@@ -2561,7 +2561,7 @@ void __42__TabBar__overflowPinnedItemsMenuElements__block_invoke_2(uint64_t a1, 
   return v7;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(UIHoverGestureRecognizer *)self->_hoverRecognizer setEnabled:0];
   tabHoverPreviewController = self->_tabHoverPreviewController;
@@ -2569,9 +2569,9 @@ void __42__TabBar__overflowPinnedItemsMenuElements__block_invoke_2(uint64_t a1, 
   [(SFTabHoverPreviewController *)tabHoverPreviewController cancel];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(TabBar *)self _didCompleteScrolling];
   }
@@ -2589,12 +2589,12 @@ void __42__TabBar__overflowPinnedItemsMenuElements__block_invoke_2(uint64_t a1, 
 
 - (id)_requestReusableTabBarItemView
 {
-  v3 = [(NSMutableArray *)self->_tabBarItemViewReuseStack lastObject];
-  if (v3)
+  lastObject = [(NSMutableArray *)self->_tabBarItemViewReuseStack lastObject];
+  if (lastObject)
   {
     [(NSMutableArray *)self->_tabBarItemViewReuseStack removeLastObject];
-    [v3 setHidden:0];
-    v4 = v3;
+    [lastObject setHidden:0];
+    v4 = lastObject;
   }
 
   else
@@ -2607,13 +2607,13 @@ void __42__TabBar__overflowPinnedItemsMenuElements__block_invoke_2(uint64_t a1, 
   return v5;
 }
 
-- (void)_relinquishReusableTabBarItemView:(id)a3
+- (void)_relinquishReusableTabBarItemView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v4 = a3;
-    [v4 setHidden:1];
-    [(NSMutableArray *)self->_tabBarItemViewReuseStack addObject:v4];
+    viewCopy = view;
+    [viewCopy setHidden:1];
+    [(NSMutableArray *)self->_tabBarItemViewReuseStack addObject:viewCopy];
   }
 }
 

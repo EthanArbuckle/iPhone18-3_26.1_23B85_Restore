@@ -1,16 +1,16 @@
 @interface ASDInstallAttribution
 + (id)sharedInstance;
 - (ASDInstallAttribution)init;
-- (id)_initWithServiceBroker:(id)a3;
-- (void)addInstallAttributionParamsWithConfig:(id)a3 completionHandler:(id)a4;
-- (void)endImpressionWithConfig:(id)a3 completionHandler:(id)a4;
-- (void)registerInstallAttributionPingbackForApp:(id)a3 completionHandler:(id)a4;
-- (void)startGhostFetchTaskWithCompletionHandler:(id)a3;
-- (void)startImpressionWithConfig:(id)a3 completionHandler:(id)a4;
-- (void)startPingbackTaskWithCompletionHandler:(id)a3;
-- (void)updateConversionValueForInstallAttributionPingbackForApp:(id)a3 conversionValue:(id)a4 completionHandler:(id)a5;
-- (void)updatePostbackConversionValuesForApp:(id)a3 fineConversionValue:(id)a4 coarseConversionValue:(id)a5 completionHandler:(id)a6;
-- (void)updatePostbackConversionValuesForApp:(id)a3 fineConversionValue:(id)a4 coarseConversionValue:(id)a5 lockWindow:(BOOL)a6 completionHandler:(id)a7;
+- (id)_initWithServiceBroker:(id)broker;
+- (void)addInstallAttributionParamsWithConfig:(id)config completionHandler:(id)handler;
+- (void)endImpressionWithConfig:(id)config completionHandler:(id)handler;
+- (void)registerInstallAttributionPingbackForApp:(id)app completionHandler:(id)handler;
+- (void)startGhostFetchTaskWithCompletionHandler:(id)handler;
+- (void)startImpressionWithConfig:(id)config completionHandler:(id)handler;
+- (void)startPingbackTaskWithCompletionHandler:(id)handler;
+- (void)updateConversionValueForInstallAttributionPingbackForApp:(id)app conversionValue:(id)value completionHandler:(id)handler;
+- (void)updatePostbackConversionValuesForApp:(id)app fineConversionValue:(id)value coarseConversionValue:(id)conversionValue completionHandler:(id)handler;
+- (void)updatePostbackConversionValuesForApp:(id)app fineConversionValue:(id)value coarseConversionValue:(id)conversionValue lockWindow:(BOOL)window completionHandler:(id)handler;
 @end
 
 @implementation ASDInstallAttribution
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __39__ASDInstallAttribution_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D5C0 != -1)
   {
     dispatch_once(&qword_1ED90D5C0, block);
@@ -47,35 +47,35 @@ uint64_t __39__ASDInstallAttribution_sharedInstance__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)_initWithServiceBroker:(id)a3
+- (id)_initWithServiceBroker:(id)broker
 {
-  v5 = a3;
+  brokerCopy = broker;
   v9.receiver = self;
   v9.super_class = ASDInstallAttribution;
   v6 = [(ASDInstallAttribution *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceBroker, a3);
+    objc_storeStrong(&v6->_serviceBroker, broker);
   }
 
   return v7;
 }
 
-- (void)startImpressionWithConfig:(id)a3 completionHandler:(id)a4
+- (void)startImpressionWithConfig:(id)config completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  handlerCopy = handler;
   v8 = ASDLogHandleForCategory(32);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 sourceAppAdamId];
-    v10 = [v6 sourceAppBundleId];
+    sourceAppAdamId = [configCopy sourceAppAdamId];
+    sourceAppBundleId = [configCopy sourceAppBundleId];
     *buf = 138543618;
-    v19 = v9;
+    v19 = sourceAppAdamId;
     v20 = 2114;
-    v21 = v10;
+    v21 = sourceAppBundleId;
     _os_log_impl(&dword_1B8220000, v8, OS_LOG_TYPE_DEFAULT, "Starting impression as requested from adamID: %{public}@ bundleID: %{public}@", buf, 0x16u);
   }
 
@@ -84,10 +84,10 @@ uint64_t __39__ASDInstallAttribution_sharedInstance__block_invoke(uint64_t a1)
   v15[1] = 3221225472;
   v15[2] = __69__ASDInstallAttribution_startImpressionWithConfig_completionHandler___block_invoke;
   v15[3] = &unk_1E7CDD120;
-  v16 = v6;
-  v17 = v7;
-  v12 = v6;
-  v13 = v7;
+  v16 = configCopy;
+  v17 = handlerCopy;
+  v12 = configCopy;
+  v13 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getInstallAttributionServiceWithCompletionHandler:v15];
 
   v14 = *MEMORY[0x1E69E9840];
@@ -140,20 +140,20 @@ void __69__ASDInstallAttribution_startImpressionWithConfig_completionHandler___b
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)endImpressionWithConfig:(id)a3 completionHandler:(id)a4
+- (void)endImpressionWithConfig:(id)config completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  handlerCopy = handler;
   v8 = ASDLogHandleForCategory(32);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 sourceAppAdamId];
-    v10 = [v6 sourceAppBundleId];
+    sourceAppAdamId = [configCopy sourceAppAdamId];
+    sourceAppBundleId = [configCopy sourceAppBundleId];
     *buf = 138543618;
-    v19 = v9;
+    v19 = sourceAppAdamId;
     v20 = 2114;
-    v21 = v10;
+    v21 = sourceAppBundleId;
     _os_log_impl(&dword_1B8220000, v8, OS_LOG_TYPE_DEFAULT, "Ending impression as requested from adamID: %{public}@ bundleID: %{public}@", buf, 0x16u);
   }
 
@@ -162,10 +162,10 @@ void __69__ASDInstallAttribution_startImpressionWithConfig_completionHandler___b
   v15[1] = 3221225472;
   v15[2] = __67__ASDInstallAttribution_endImpressionWithConfig_completionHandler___block_invoke;
   v15[3] = &unk_1E7CDD120;
-  v16 = v6;
-  v17 = v7;
-  v12 = v6;
-  v13 = v7;
+  v16 = configCopy;
+  v17 = handlerCopy;
+  v12 = configCopy;
+  v13 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getInstallAttributionServiceWithCompletionHandler:v15];
 
   v14 = *MEMORY[0x1E69E9840];
@@ -218,9 +218,9 @@ void __67__ASDInstallAttribution_endImpressionWithConfig_completionHandler___blo
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startPingbackTaskWithCompletionHandler:(id)a3
+- (void)startPingbackTaskWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ASDLogHandleForCategory(32);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -233,8 +233,8 @@ void __67__ASDInstallAttribution_endImpressionWithConfig_completionHandler___blo
   v8[1] = 3221225472;
   v8[2] = __64__ASDInstallAttribution_startPingbackTaskWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7CDD148;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getInstallAttributionServiceWithCompletionHandler:v8];
 }
 
@@ -279,9 +279,9 @@ void __64__ASDInstallAttribution_startPingbackTaskWithCompletionHandler___block_
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startGhostFetchTaskWithCompletionHandler:(id)a3
+- (void)startGhostFetchTaskWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ASDLogHandleForCategory(32);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -294,8 +294,8 @@ void __64__ASDInstallAttribution_startPingbackTaskWithCompletionHandler___block_
   v8[1] = 3221225472;
   v8[2] = __66__ASDInstallAttribution_startGhostFetchTaskWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7CDD148;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getInstallAttributionServiceWithCompletionHandler:v8];
 }
 
@@ -358,20 +358,20 @@ void __63__ASDInstallAttribution_addInstallAttributionParamsWithConfig___block_i
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addInstallAttributionParamsWithConfig:(id)a3 completionHandler:(id)a4
+- (void)addInstallAttributionParamsWithConfig:(id)config completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  handlerCopy = handler;
   v8 = ASDLogHandleForCategory(32);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 sourceAppBundleId];
-    v10 = [v6 sourceAppAdamId];
+    sourceAppBundleId = [configCopy sourceAppBundleId];
+    sourceAppAdamId = [configCopy sourceAppAdamId];
     *buf = 138543618;
-    v19 = v9;
+    v19 = sourceAppBundleId;
     v20 = 2114;
-    v21 = v10;
+    v21 = sourceAppAdamId;
     _os_log_impl(&dword_1B8220000, v8, OS_LOG_TYPE_DEFAULT, "Adding install attribution params from bundleID: %{public}@ adamID: %{public}@", buf, 0x16u);
   }
 
@@ -380,10 +380,10 @@ void __63__ASDInstallAttribution_addInstallAttributionParamsWithConfig___block_i
   v15[1] = 3221225472;
   v15[2] = __81__ASDInstallAttribution_addInstallAttributionParamsWithConfig_completionHandler___block_invoke;
   v15[3] = &unk_1E7CDD120;
-  v16 = v6;
-  v17 = v7;
-  v12 = v6;
-  v13 = v7;
+  v16 = configCopy;
+  v17 = handlerCopy;
+  v12 = configCopy;
+  v13 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getInstallAttributionServiceWithCompletionHandler:v15];
 
   v14 = *MEMORY[0x1E69E9840];
@@ -432,10 +432,10 @@ void __81__ASDInstallAttribution_addInstallAttributionParamsWithConfig_completio
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerInstallAttributionPingbackForApp:(id)a3 completionHandler:(id)a4
+- (void)registerInstallAttributionPingbackForApp:(id)app completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  handlerCopy = handler;
   v8 = ASDLogHandleForCategory(32);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -448,10 +448,10 @@ void __81__ASDInstallAttribution_addInstallAttributionParamsWithConfig_completio
   v12[1] = 3221225472;
   v12[2] = __84__ASDInstallAttribution_registerInstallAttributionPingbackForApp_completionHandler___block_invoke;
   v12[3] = &unk_1E7CDD120;
-  v13 = v6;
-  v14 = v7;
-  v10 = v6;
-  v11 = v7;
+  v13 = appCopy;
+  v14 = handlerCopy;
+  v10 = appCopy;
+  v11 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getInstallAttributionServiceWithCompletionHandler:v12];
 }
 
@@ -498,11 +498,11 @@ void __84__ASDInstallAttribution_registerInstallAttributionPingbackForApp_comple
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateConversionValueForInstallAttributionPingbackForApp:(id)a3 conversionValue:(id)a4 completionHandler:(id)a5
+- (void)updateConversionValueForInstallAttributionPingbackForApp:(id)app conversionValue:(id)value completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appCopy = app;
+  valueCopy = value;
+  handlerCopy = handler;
   v11 = ASDLogHandleForCategory(32);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -515,12 +515,12 @@ void __84__ASDInstallAttribution_registerInstallAttributionPingbackForApp_comple
   v16[1] = 3221225472;
   v16[2] = __116__ASDInstallAttribution_updateConversionValueForInstallAttributionPingbackForApp_conversionValue_completionHandler___block_invoke;
   v16[3] = &unk_1E7CDD170;
-  v18 = v9;
-  v19 = v10;
-  v17 = v8;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  v18 = valueCopy;
+  v19 = handlerCopy;
+  v17 = appCopy;
+  v13 = valueCopy;
+  v14 = appCopy;
+  v15 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getInstallAttributionServiceWithCompletionHandler:v16];
 }
 
@@ -567,12 +567,12 @@ void __116__ASDInstallAttribution_updateConversionValueForInstallAttributionPing
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePostbackConversionValuesForApp:(id)a3 fineConversionValue:(id)a4 coarseConversionValue:(id)a5 completionHandler:(id)a6
+- (void)updatePostbackConversionValuesForApp:(id)app fineConversionValue:(id)value coarseConversionValue:(id)conversionValue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  appCopy = app;
+  valueCopy = value;
+  conversionValueCopy = conversionValue;
+  handlerCopy = handler;
   v14 = ASDLogHandleForCategory(32);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -585,14 +585,14 @@ void __116__ASDInstallAttribution_updateConversionValueForInstallAttributionPing
   v20[1] = 3221225472;
   v20[2] = __122__ASDInstallAttribution_updatePostbackConversionValuesForApp_fineConversionValue_coarseConversionValue_completionHandler___block_invoke;
   v20[3] = &unk_1E7CDD198;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  v19 = v13;
+  v21 = appCopy;
+  v22 = valueCopy;
+  v23 = conversionValueCopy;
+  v24 = handlerCopy;
+  v16 = conversionValueCopy;
+  v17 = valueCopy;
+  v18 = appCopy;
+  v19 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getInstallAttributionServiceWithCompletionHandler:v20];
 }
 
@@ -639,12 +639,12 @@ void __122__ASDInstallAttribution_updatePostbackConversionValuesForApp_fineConve
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePostbackConversionValuesForApp:(id)a3 fineConversionValue:(id)a4 coarseConversionValue:(id)a5 lockWindow:(BOOL)a6 completionHandler:(id)a7
+- (void)updatePostbackConversionValuesForApp:(id)app fineConversionValue:(id)value coarseConversionValue:(id)conversionValue lockWindow:(BOOL)window completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  appCopy = app;
+  valueCopy = value;
+  conversionValueCopy = conversionValue;
+  handlerCopy = handler;
   v16 = ASDLogHandleForCategory(32);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -657,15 +657,15 @@ void __122__ASDInstallAttribution_updatePostbackConversionValuesForApp_fineConve
   v22[1] = 3221225472;
   v22[2] = __133__ASDInstallAttribution_updatePostbackConversionValuesForApp_fineConversionValue_coarseConversionValue_lockWindow_completionHandler___block_invoke;
   v22[3] = &unk_1E7CDD1C0;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v27 = a6;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  v21 = v15;
+  v23 = appCopy;
+  v24 = valueCopy;
+  v25 = conversionValueCopy;
+  v26 = handlerCopy;
+  windowCopy = window;
+  v18 = conversionValueCopy;
+  v19 = valueCopy;
+  v20 = appCopy;
+  v21 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getInstallAttributionServiceWithCompletionHandler:v22];
 }
 

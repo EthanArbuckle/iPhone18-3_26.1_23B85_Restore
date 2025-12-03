@@ -1,35 +1,35 @@
 @interface TSPDescriptionGenerator
-+ (BOOL)dumpMessagesForDocumentURL:(id)a3 supportURL:(id)a4 decryptionKey:(id)a5 toURL:(id)a6;
-+ (id)directoryForDocumentUUID:(id)a3 versionUUID:(id)a4;
-- (BOOL)dumpComponentMessages:(id)a3 printNewLine:(BOOL)a4 withPrinter:(void *)a5 outputStream:(void *)a6;
-- (BOOL)dumpMessagesToFilePath:(id)a3;
++ (BOOL)dumpMessagesForDocumentURL:(id)l supportURL:(id)rL decryptionKey:(id)key toURL:(id)uRL;
++ (id)directoryForDocumentUUID:(id)d versionUUID:(id)iD;
+- (BOOL)dumpComponentMessages:(id)messages printNewLine:(BOOL)line withPrinter:(void *)printer outputStream:(void *)stream;
+- (BOOL)dumpMessagesToFilePath:(id)path;
 - (TSPDescriptionGenerator)init;
-- (TSPDescriptionGenerator)initWithContext:(id)a3 options:(unint64_t)a4;
+- (TSPDescriptionGenerator)initWithContext:(id)context options:(unint64_t)options;
 - (id).cxx_construct;
-- (id)descriptionForIdentifier:(int64_t)a3;
-- (void)_messageAlternateMapFromArchivableContent:(id)a3;
-- (void)_strongReferencesFromArchiver:(id)a3;
-- (void)addArchiver:(id)a3;
-- (void)addComponent:(id)a3;
-- (void)addObject:(id)a3;
-- (void)addUUIDMapEntriesForComponent:(id)a3;
-- (void)processPackageMetadataMessage:(shared_ptr<google::protobuf::Message>)a3;
+- (id)descriptionForIdentifier:(int64_t)identifier;
+- (void)_messageAlternateMapFromArchivableContent:(id)content;
+- (void)_strongReferencesFromArchiver:(id)archiver;
+- (void)addArchiver:(id)archiver;
+- (void)addComponent:(id)component;
+- (void)addObject:(id)object;
+- (void)addUUIDMapEntriesForComponent:(id)component;
+- (void)processPackageMetadataMessage:(shared_ptr<google::protobuf::Message>)message;
 @end
 
 @implementation TSPDescriptionGenerator
 
-+ (id)directoryForDocumentUUID:(id)a3 versionUUID:(id)a4
++ (id)directoryForDocumentUUID:(id)d versionUUID:(id)iD
 {
   v27[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v7 = MEMORY[0x277CCACA8];
   v8 = NSTemporaryDirectory();
   v27[0] = v8;
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
   v27[1] = v10;
-  v13 = objc_msgSend_UUIDString(v5, v11, v12);
+  v13 = objc_msgSend_UUIDString(dCopy, v11, v12);
   v16 = v13;
   v17 = @"UnknownDocumentUUID";
   if (v13)
@@ -38,7 +38,7 @@
   }
 
   v27[2] = v17;
-  v18 = objc_msgSend_UUIDString(v6, v14, v15);
+  v18 = objc_msgSend_UUIDString(iDCopy, v14, v15);
   v20 = v18;
   v21 = @"UnknownVersionUUID";
   if (v18)
@@ -71,17 +71,17 @@
   objc_exception_throw(v13);
 }
 
-- (TSPDescriptionGenerator)initWithContext:(id)a3 options:(unint64_t)a4
+- (TSPDescriptionGenerator)initWithContext:(id)context options:(unint64_t)options
 {
-  v6 = a3;
+  contextCopy = context;
   v39.receiver = self;
   v39.super_class = TSPDescriptionGenerator;
   v7 = [(TSPDescriptionGenerator *)&v39 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_context, v6);
-    v8->_options = a4;
+    objc_storeWeak(&v7->_context, contextCopy);
+    v8->_options = options;
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("TSPDescriptionGenerator.Access", v9);
     accessQueue = v8->_accessQueue;
@@ -139,9 +139,9 @@
   return v8;
 }
 
-- (void)_strongReferencesFromArchiver:(id)a3
+- (void)_strongReferencesFromArchiver:(id)archiver
 {
-  v3 = objc_msgSend_strongReferences(a3, a2, a3);
+  v3 = objc_msgSend_strongReferences(archiver, a2, archiver);
   if (objc_msgSend_count(v3, v4, v5))
   {
     operator new();
@@ -150,23 +150,23 @@
   return 0;
 }
 
-- (void)_messageAlternateMapFromArchivableContent:(id)a3
+- (void)_messageAlternateMapFromArchivableContent:(id)content
 {
   v5 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contentCopy = content;
   operator new();
 }
 
-- (void)addArchiver:(id)a3
+- (void)addArchiver:(id)archiver
 {
-  v4 = a3;
-  v7 = objc_msgSend_object(v4, v5, v6);
+  archiverCopy = archiver;
+  v7 = objc_msgSend_object(archiverCopy, v5, v6);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     if ((self->_options & 4) == 0)
     {
-      objc_msgSend_objectUUID(v4, v8, v9);
+      objc_msgSend_objectUUID(archiverCopy, v8, v9);
       objc_claimAutoreleasedReturnValue();
     }
 
@@ -174,9 +174,9 @@
   }
 }
 
-- (void)processPackageMetadataMessage:(shared_ptr<google::protobuf::Message>)a3
+- (void)processPackageMetadataMessage:(shared_ptr<google::protobuf::Message>)message
 {
-  var0 = a3.var0->var0;
+  var0 = message.var0->var0;
   if (!self->_dataMap)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -208,9 +208,9 @@
   }
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -221,7 +221,7 @@
 
     else
     {
-      v7 = objc_msgSend_objectUUID(v4, v5, v6);
+      v7 = objc_msgSend_objectUUID(objectCopy, v5, v6);
     }
 
     accessQueue = self->_accessQueue;
@@ -229,45 +229,45 @@
     block[1] = 3221225472;
     block[2] = sub_276A4E964;
     block[3] = &unk_27A6E29B0;
-    v11 = v4;
-    v12 = self;
+    v11 = objectCopy;
+    selfCopy = self;
     v13 = v7;
     v9 = v7;
     dispatch_async(accessQueue, block);
   }
 }
 
-- (void)addComponent:(id)a3
+- (void)addComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276A4EB20;
   v7[3] = &unk_27A6E2898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = componentCopy;
+  v6 = componentCopy;
   dispatch_async(accessQueue, v7);
 }
 
-- (void)addUUIDMapEntriesForComponent:(id)a3
+- (void)addUUIDMapEntriesForComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276A4EC1C;
   v7[3] = &unk_27A6E2898;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = componentCopy;
+  selfCopy = self;
+  v6 = componentCopy;
   dispatch_async(accessQueue, v7);
 }
 
-- (BOOL)dumpMessagesToFilePath:(id)a3
+- (BOOL)dumpMessagesToFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -277,9 +277,9 @@
   v8[2] = sub_276A4F018;
   v8[3] = &unk_27A6E3818;
   v8[4] = self;
-  v9 = v4;
+  v9 = pathCopy;
   v10 = &v11;
-  v5 = v4;
+  v5 = pathCopy;
   objc_msgSend_performPrintOperationBlock_(self, v6, v8);
   LOBYTE(self) = *(v12 + 24);
 
@@ -287,10 +287,10 @@
   return self;
 }
 
-- (BOOL)dumpComponentMessages:(id)a3 printNewLine:(BOOL)a4 withPrinter:(void *)a5 outputStream:(void *)a6
+- (BOOL)dumpComponentMessages:(id)messages printNewLine:(BOOL)line withPrinter:(void *)printer outputStream:(void *)stream
 {
-  v10 = a3;
-  v13 = objc_msgSend_identifier(v10, v11, v12);
+  messagesCopy = messages;
+  v13 = objc_msgSend_identifier(messagesCopy, v11, v12);
   v14 = v13;
   left = self->_messageMap.__tree_.__end_node_.__left_;
   if (left)
@@ -316,7 +316,7 @@
         sub_2769C1430(v80);
       }
 
-      if (a4)
+      if (line)
       {
         v46 = objc_alloc(MEMORY[0x277CCAB68]);
         v48 = objc_msgSend_initWithString_(v46, v47, @"\n");
@@ -349,10 +349,10 @@
         objc_msgSend_appendFormat_(v49, v64, @" uuid: %@", v63);
       }
 
-      v65 = objc_msgSend_locator(v10, v61, v62);
+      v65 = objc_msgSend_locator(messagesCopy, v61, v62);
       objc_msgSend_appendFormat_(v49, v66, @" component: %@", v65);
 
-      v69 = objc_msgSend_packageIdentifier(v10, v67, v68);
+      v69 = objc_msgSend_packageIdentifier(messagesCopy, v67, v68);
       v71 = sub_276AC69B4(v69, v70);
       objc_msgSend_appendFormat_(v49, v72, @" package: %@", v71);
 
@@ -360,15 +360,15 @@
       aBlock[1] = 3221225472;
       aBlock[2] = sub_276A4F70C;
       aBlock[3] = &unk_27A6E4D30;
-      aBlock[4] = v10;
+      aBlock[4] = messagesCopy;
       v73 = _Block_copy(aBlock);
       v74 = v49;
       v77 = objc_msgSend_UTF8String(v74, v75, v76);
-      sub_276A52F20(a5, v77, &p_end_node->_messageMap, a6, v73);
+      sub_276A52F20(printer, v77, &p_end_node->_messageMap, stream, v73);
     }
   }
 
-  if (a4)
+  if (line)
   {
     v17 = objc_alloc(MEMORY[0x277CCAB68]);
     v19 = objc_msgSend_initWithString_(v17, v18, @"\n");
@@ -392,21 +392,21 @@
     objc_msgSend_appendFormat_(v21, v31, @" uuid: %@", v30);
   }
 
-  v32 = objc_msgSend_locator(v10, v28, v29);
+  v32 = objc_msgSend_locator(messagesCopy, v28, v29);
   objc_msgSend_appendFormat_(v21, v33, @" component: %@", v32);
 
-  v36 = objc_msgSend_packageIdentifier(v10, v34, v35);
+  v36 = objc_msgSend_packageIdentifier(messagesCopy, v34, v35);
   v38 = sub_276AC69B4(v36, v37);
   objc_msgSend_appendFormat_(v21, v39, @" package: %@", v38);
 
   v40 = v21;
   v43 = objc_msgSend_UTF8String(v40, v41, v42);
-  sub_276A53164(a5, a6, v43);
+  sub_276A53164(printer, stream, v43);
 
   return 1;
 }
 
-- (id)descriptionForIdentifier:(int64_t)a3
+- (id)descriptionForIdentifier:(int64_t)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -420,7 +420,7 @@
   block[2] = sub_276A4F840;
   block[3] = &unk_27A6E4D78;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = identifier;
   block[4] = self;
   dispatch_sync(accessQueue, block);
   v4 = v8[5];
@@ -429,20 +429,20 @@
   return v4;
 }
 
-+ (BOOL)dumpMessagesForDocumentURL:(id)a3 supportURL:(id)a4 decryptionKey:(id)a5 toURL:(id)a6
++ (BOOL)dumpMessagesForDocumentURL:(id)l supportURL:(id)rL decryptionKey:(id)key toURL:(id)uRL
 {
   v180 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v146 = a4;
-  v145 = a5;
-  v138 = a6;
-  v144 = v9;
+  lCopy = l;
+  rLCopy = rL;
+  keyCopy = key;
+  uRLCopy = uRL;
+  v144 = lCopy;
   v10 = [TSPTemporaryFileCoordinatorDelegate alloc];
-  v142 = objc_msgSend_initWithURL_(v10, v11, v9);
-  if (v146)
+  v142 = objc_msgSend_initWithURL_(v10, v11, lCopy);
+  if (rLCopy)
   {
     v13 = [TSPTemporaryFileCoordinatorDelegate alloc];
-    v139 = objc_msgSend_initWithURL_(v13, v14, v146);
+    v139 = objc_msgSend_initWithURL_(v13, v14, rLCopy);
   }
 
   else
@@ -451,14 +451,14 @@
   }
 
   v178 = 0;
-  v15 = objc_msgSend_newPackageWithURL_options_packageIdentifier_decryptionKey_fileCoordinatorDelegate_error_(TSPPackage, v12, v9, 0, 1, v145, v142, &v178);
+  v15 = objc_msgSend_newPackageWithURL_options_packageIdentifier_decryptionKey_fileCoordinatorDelegate_error_(TSPPackage, v12, lCopy, 0, 1, keyCopy, v142, &v178);
   v16 = v178;
   v17 = v16;
   v153 = v15;
   if (v15)
   {
 
-    if (!v146)
+    if (!rLCopy)
     {
       v21 = 0;
       v152 = 0;
@@ -466,7 +466,7 @@
     }
 
     v177 = 0;
-    v19 = objc_msgSend_newPackageWithURL_options_packageIdentifier_decryptionKey_fileCoordinatorDelegate_error_(TSPPackage, v18, v146, 0, 2, v145, v139, &v177);
+    v19 = objc_msgSend_newPackageWithURL_options_packageIdentifier_decryptionKey_fileCoordinatorDelegate_error_(TSPPackage, v18, rLCopy, 0, 2, keyCopy, v139, &v177);
     v20 = v177;
     v17 = v20;
     v152 = v19;
@@ -481,7 +481,7 @@ LABEL_12:
 
       v27 = [TSPPackageReadCoordinator alloc];
       v176 = v21;
-      ValidationPolicy = objc_msgSend_initWithContext_package_packageURL_finalizeHandlerQueue_areExternalDataReferencesAllowed_skipDocumentUpgrade_documentLoadValidationPolicy_(v27, v28, InternalMetadataObject, v153, v9, 0, 0, 1, 0);
+      ValidationPolicy = objc_msgSend_initWithContext_package_packageURL_finalizeHandlerQueue_areExternalDataReferencesAllowed_skipDocumentUpgrade_documentLoadValidationPolicy_(v27, v28, InternalMetadataObject, v153, lCopy, 0, 0, 1, 0);
       v141 = objc_msgSend_readPackageMetadataWithError_(ValidationPolicy, v29, &v176);
       v17 = v176;
 
@@ -492,7 +492,7 @@ LABEL_12:
         v150 = 0;
 LABEL_27:
         v62 = objc_msgSend_documentRevision(ValidationPolicy, v32, v33);
-        v65 = objc_msgSend_passphrase(v145, v63, v64);
+        v65 = objc_msgSend_passphrase(keyCopy, v63, v64);
         objc_msgSend_prepareForDocumentDumpWithDocumentPackage_supportPackage_documentRevision_passphrase_(InternalMetadataObject, v66, v153, v152, v62, v65);
 
         objc_msgSend_close(InternalMetadataObject, v67, v68);
@@ -631,7 +631,7 @@ LABEL_27:
           v154[2] = sub_276A509DC;
           v154[3] = &unk_27A6E29B0;
           v154[4] = v149;
-          v155 = v138;
+          v155 = uRLCopy;
           v156 = obj;
           objc_msgSend_performPrintOperationBlock_(v149, v129, v154);
 
@@ -648,7 +648,7 @@ LABEL_27:
       }
 
       v34 = [TSPPackageReadCoordinator alloc];
-      v36 = objc_msgSend_initWithContext_package_packageURL_finalizeHandlerQueue_areExternalDataReferencesAllowed_skipDocumentUpgrade_documentLoadValidationPolicy_(v34, v35, InternalMetadataObject, v152, v146, 0, 0, 1, 0);
+      v36 = objc_msgSend_initWithContext_package_packageURL_finalizeHandlerQueue_areExternalDataReferencesAllowed_skipDocumentUpgrade_documentLoadValidationPolicy_(v34, v35, InternalMetadataObject, v152, rLCopy, 0, 0, 1, 0);
       v175 = v17;
       v38 = objc_msgSend_readPackageMetadataWithError_(v36, v37, &v175);
       v148 = v175;

@@ -1,24 +1,24 @@
 @interface _SFBrowserDocumentActivityItemProvider
-- (_SFBrowserDocumentActivityItemProvider)initWithBrowserDocument:(id)a3;
+- (_SFBrowserDocumentActivityItemProvider)initWithBrowserDocument:(id)document;
 @end
 
 @implementation _SFBrowserDocumentActivityItemProvider
 
-- (_SFBrowserDocumentActivityItemProvider)initWithBrowserDocument:(id)a3
+- (_SFBrowserDocumentActivityItemProvider)initWithBrowserDocument:(id)document
 {
-  v5 = a3;
-  v6 = [v5 webView];
-  v7 = [v6 URL];
-  v8 = [v5 webView];
-  v9 = [v8 title];
-  v10 = [v5 webView];
+  documentCopy = document;
+  webView = [documentCopy webView];
+  v7 = [webView URL];
+  webView2 = [documentCopy webView];
+  title = [webView2 title];
+  webView3 = [documentCopy webView];
   v14.receiver = self;
   v14.super_class = _SFBrowserDocumentActivityItemProvider;
-  v11 = [(_SFActivityItemProvider *)&v14 initWithPlaceholderItem:v5 URL:v7 pageTitle:v9 webView:v10];
+  v11 = [(_SFActivityItemProvider *)&v14 initWithPlaceholderItem:documentCopy URL:v7 pageTitle:title webView:webView3];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_browserDocument, a3);
+    objc_storeStrong(&v11->_browserDocument, document);
     v12 = v11;
   }
 

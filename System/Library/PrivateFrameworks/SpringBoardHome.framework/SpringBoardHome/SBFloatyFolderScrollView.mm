@@ -1,24 +1,24 @@
 @interface SBFloatyFolderScrollView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 @end
 
 @implementation SBFloatyFolderScrollView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  v7 = [(SBFloatyFolderScrollView *)self superview];
-  [(SBFloatyFolderScrollView *)v6 convertPoint:v7 toView:x, y];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  superview = [(SBFloatyFolderScrollView *)self superview];
+  [(SBFloatyFolderScrollView *)selfCopy convertPoint:superview toView:x, y];
   v9 = v8;
   v11 = v10;
-  [v7 bounds];
+  [superview bounds];
   v13.x = v9;
   v13.y = v11;
-  LOBYTE(v6) = CGRectContainsPoint(v14, v13);
+  LOBYTE(selfCopy) = CGRectContainsPoint(v14, v13);
 
-  return v6;
+  return selfCopy;
 }
 
 @end

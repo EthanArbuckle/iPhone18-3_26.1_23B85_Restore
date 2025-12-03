@@ -1,11 +1,11 @@
 @interface PowerlogSubkeyController
 - (id)cacheArray;
-- (id)initForSubkey:(__CFString *)a3;
-- (void)logHIPStatusToPowerlogLite:(id)a3;
-- (void)logToPowerlog:(__CFString *)a3;
+- (id)initForSubkey:(__CFString *)subkey;
+- (void)logHIPStatusToPowerlogLite:(id)lite;
+- (void)logToPowerlog:(__CFString *)powerlog;
 - (void)logToPowerlogLite;
 - (void)printPowerLogDictionary;
-- (void)setIntValue:(int)a3 forKey:(__CFString *)a4;
+- (void)setIntValue:(int)value forKey:(__CFString *)key;
 @end
 
 @implementation PowerlogSubkeyController
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (id)initForSubkey:(__CFString *)a3
+- (id)initForSubkey:(__CFString *)subkey
 {
   v6.receiver = self;
   v6.super_class = PowerlogSubkeyController;
@@ -31,26 +31,26 @@
   {
     v4->_state = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     v4->_stateLastLogged = 0;
-    v4->_subkey = a3;
+    v4->_subkey = subkey;
   }
 
   return v4;
 }
 
-- (void)setIntValue:(int)a3 forKey:(__CFString *)a4
+- (void)setIntValue:(int)value forKey:(__CFString *)key
 {
-  valuePtr = a3;
-  if (a4)
+  valuePtr = value;
+  if (key)
   {
     state = self->_state;
     if (state)
     {
-      sub_100002FB4(state, a4, kCFNumberIntType, &valuePtr);
+      sub_100002FB4(state, key, kCFNumberIntType, &valuePtr);
     }
   }
 }
 
-- (void)logToPowerlog:(__CFString *)a3
+- (void)logToPowerlog:(__CFString *)powerlog
 {
   if (self->_subkey)
   {
@@ -88,9 +88,9 @@
             }
 
             self->_stateLastLogged = CFDictionaryCreateCopy(kCFAllocatorDefault, self->_state);
-            if (a3)
+            if (powerlog)
             {
-              CFDictionarySetValue(self->_state, @"Time", a3);
+              CFDictionarySetValue(self->_state, @"Time", powerlog);
             }
 
             v10 = self->_subkey;
@@ -145,8 +145,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(PowerlogSubkeyController *)self cacheArray];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
+    cacheArray = [(PowerlogSubkeyController *)self cacheArray];
+    v5 = [cacheArray countByEnumeratingWithState:&v13 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -158,7 +158,7 @@
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(cacheArray);
           }
 
           v9 = *(*(&v13 + 1) + 8 * v8);
@@ -179,7 +179,7 @@
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
+        v6 = [cacheArray countByEnumeratingWithState:&v13 objects:v19 count:16];
       }
 
       while (v6);
@@ -201,17 +201,17 @@
   }
 }
 
-- (void)logHIPStatusToPowerlogLite:(id)a3
+- (void)logHIPStatusToPowerlogLite:(id)lite
 {
   subkey = self->_subkey;
   if (PLShouldLogRegisteredEvent())
   {
     v9[0] = @"Time";
-    v10[0] = [a3 objectAtIndex:0];
+    v10[0] = [lite objectAtIndex:0];
     v9[1] = @"status";
-    v10[1] = [a3 objectAtIndex:1];
+    v10[1] = [lite objectAtIndex:1];
     v9[2] = @"client";
-    v10[2] = [a3 objectAtIndex:2];
+    v10[2] = [lite objectAtIndex:2];
     [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:3];
     v6 = self->_subkey;
     PLLogRegisteredEvent();

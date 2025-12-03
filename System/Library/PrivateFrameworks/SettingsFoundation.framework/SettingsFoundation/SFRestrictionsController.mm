@@ -3,7 +3,7 @@
 + (id)restrictionSpecifiers;
 + (void)resetRestrictions;
 + (void)resetRestrictionsPassword;
-+ (void)setSpringBoardCapability:(id)a3 enabled:(BOOL)a4;
++ (void)setSpringBoardCapability:(id)capability enabled:(BOOL)enabled;
 @end
 
 @implementation SFRestrictionsController
@@ -92,23 +92,23 @@
   return v7;
 }
 
-+ (void)setSpringBoardCapability:(id)a3 enabled:(BOOL)a4
++ (void)setSpringBoardCapability:(id)capability enabled:(BOOL)enabled
 {
-  v11 = a3;
+  capabilityCopy = capability;
   v5 = CFPreferencesCopyAppValue(@"SBParentalControlsCapabilities", @"com.apple.springboard");
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v5];
-  v7 = [v6 containsObject:v11];
-  if (a4)
+  v7 = [v6 containsObject:capabilityCopy];
+  if (enabled)
   {
     if (v7)
     {
-      [v6 removeObject:v11];
+      [v6 removeObject:capabilityCopy];
     }
   }
 
   else if ((v7 & 1) == 0)
   {
-    [v6 addObject:v11];
+    [v6 addObject:capabilityCopy];
   }
 
   v8 = [v6 count];
@@ -127,7 +127,7 @@
 {
   v62 = *MEMORY[0x277D85DE8];
   v2 = +[SFRestrictionsController restrictionSpecifiers];
-  v49 = [MEMORY[0x277D262A0] sharedConnection];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   v46 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v2, "count") + 1}];
   v47 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v2, "count")}];
   v54 = 0u;
@@ -158,11 +158,11 @@
         if (v8)
         {
           v11 = [v7 objectForKey:@"MCFeatureIsBool"];
-          v12 = [v11 BOOLValue];
+          bOOLValue = [v11 BOOLValue];
 
-          if (v12)
+          if (bOOLValue)
           {
-            v13 = [v49 defaultParametersForBoolSetting:v8];
+            v13 = [mEMORY[0x277D262A0] defaultParametersForBoolSetting:v8];
             if (v13)
             {
               [v46 setObject:v13 forKey:v8];
@@ -177,13 +177,13 @@
 
             else
             {
-              [v49 removeBoolSetting:v8];
+              [mEMORY[0x277D262A0] removeBoolSetting:v8];
             }
           }
 
           else
           {
-            v13 = [v49 defaultParametersForValueSetting:v8];
+            v13 = [mEMORY[0x277D262A0] defaultParametersForValueSetting:v8];
             v14 = v47;
             v15 = v13;
             v16 = v8;
@@ -244,33 +244,33 @@ LABEL_19:
   }
 
   v24 = *MEMORY[0x277D260E0];
-  v25 = [v49 defaultParametersForBoolSetting:*MEMORY[0x277D260E0]];
+  v25 = [mEMORY[0x277D262A0] defaultParametersForBoolSetting:*MEMORY[0x277D260E0]];
   [v46 setObject:v25 forKeyedSubscript:v24];
 
-  v26 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v27 = *MEMORY[0x277D260E8];
-  v28 = [v49 defaultParametersForIntersectionSetting:*MEMORY[0x277D260E8]];
-  [v26 setObject:v28 forKeyedSubscript:v27];
+  v28 = [mEMORY[0x277D262A0] defaultParametersForIntersectionSetting:*MEMORY[0x277D260E8]];
+  [dictionary setObject:v28 forKeyedSubscript:v27];
 
-  v29 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v30 = *MEMORY[0x277D260F0];
-  v31 = [v49 defaultParametersForUnionSetting:*MEMORY[0x277D260F0]];
-  [v29 setObject:v31 forKeyedSubscript:v30];
+  v31 = [mEMORY[0x277D262A0] defaultParametersForUnionSetting:*MEMORY[0x277D260F0]];
+  [dictionary2 setObject:v31 forKeyedSubscript:v30];
 
   v32 = *MEMORY[0x277D25D40];
-  v33 = [v49 defaultParametersForBoolSetting:*MEMORY[0x277D25D40]];
+  v33 = [mEMORY[0x277D262A0] defaultParametersForBoolSetting:*MEMORY[0x277D25D40]];
   [v46 setObject:v33 forKeyedSubscript:v32];
 
   v34 = *MEMORY[0x277D25D38];
-  v35 = [v49 defaultParametersForBoolSetting:*MEMORY[0x277D25D38]];
+  v35 = [mEMORY[0x277D262A0] defaultParametersForBoolSetting:*MEMORY[0x277D25D38]];
   [v46 setObject:v35 forKeyedSubscript:v34];
 
   v36 = *MEMORY[0x277D25D10];
-  v37 = [v49 defaultParametersForBoolSetting:*MEMORY[0x277D25D10]];
+  v37 = [mEMORY[0x277D262A0] defaultParametersForBoolSetting:*MEMORY[0x277D25D10]];
   [v46 setObject:v37 forKeyedSubscript:v36];
 
   v38 = *MEMORY[0x277D25DC8];
-  v39 = [v49 defaultParametersForBoolSetting:*MEMORY[0x277D25DC8]];
+  v39 = [mEMORY[0x277D262A0] defaultParametersForBoolSetting:*MEMORY[0x277D25DC8]];
   [v46 setObject:v39 forKeyedSubscript:v38];
 
   v40 = *MEMORY[0x277D26168];
@@ -281,10 +281,10 @@ LABEL_19:
   v41 = *MEMORY[0x277D26198];
   v58[2] = *MEMORY[0x277D26110];
   v58[3] = v41;
-  v59[2] = v26;
-  v59[3] = v29;
+  v59[2] = dictionary;
+  v59[3] = dictionary2;
   v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:4];
-  [v49 setParametersForSettingsByType:v42];
+  [mEMORY[0x277D262A0] setParametersForSettingsByType:v42];
 
   v43 = *MEMORY[0x277D85DE8];
 }

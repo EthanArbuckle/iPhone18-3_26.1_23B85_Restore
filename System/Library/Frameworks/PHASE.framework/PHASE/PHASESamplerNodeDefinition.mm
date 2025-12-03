@@ -46,16 +46,16 @@
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:@"API Misuse" format:@"Cannot create a sampler with a nil soundAssetUID"];
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

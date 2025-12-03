@@ -1,24 +1,24 @@
 @interface RCConfigurationManager
-- (BOOL)_areAllConfigurationResourcesAvailable:(id)a3 requestKeys:(id)a4;
-- (BOOL)_areAllConfigurationResourcesExpired:(id)a3 allowedToReachEndpoint:(BOOL)a4 configurationSettings:(id)a5 requestKeys:(id)a6;
-- (BOOL)_areAllConfigurationResourcesInvalid:(id)a3 configurationSettings:(id)a4 allowedToReachEndpoint:(BOOL)a5 requestKeys:(id)a6;
-- (BOOL)_isAllowedToReachEndpointWithSettings:(id)a3 configurationResource:(id)a4 endpointURL:(id)a5;
-- (BOOL)_isValidConfigurationResource:(id)a3 configurationSettings:(id)a4 allowedToReachEndpoint:(BOOL)a5 cachePolicy:(id)a6;
-- (RCConfigurationManager)initWithContentDirectoryURL:(id)a3;
-- (id)_decodeConfigurationResource:(id)a3;
-- (id)_endpointURLForEndpointConfig:(id)a3 overrideEnvironment:(unint64_t)a4 overrideEnabled:(BOOL)a5;
-- (id)_endpointURLForEnvironment:(unint64_t)a3 requestKey:(id)a4;
-- (void)_fetchConfigurationFromFallbackURLWithSettings:(id)a3 completion:(id)a4;
-- (void)_fetchMultiConfigurationFromEndpointURL:(id)a3 settings:(id)a4 networkActivityBlock:(id)a5 changeTagsByRequestKey:(id)a6 completion:(id)a7;
+- (BOOL)_areAllConfigurationResourcesAvailable:(id)available requestKeys:(id)keys;
+- (BOOL)_areAllConfigurationResourcesExpired:(id)expired allowedToReachEndpoint:(BOOL)endpoint configurationSettings:(id)settings requestKeys:(id)keys;
+- (BOOL)_areAllConfigurationResourcesInvalid:(id)invalid configurationSettings:(id)settings allowedToReachEndpoint:(BOOL)endpoint requestKeys:(id)keys;
+- (BOOL)_isAllowedToReachEndpointWithSettings:(id)settings configurationResource:(id)resource endpointURL:(id)l;
+- (BOOL)_isValidConfigurationResource:(id)resource configurationSettings:(id)settings allowedToReachEndpoint:(BOOL)endpoint cachePolicy:(id)policy;
+- (RCConfigurationManager)initWithContentDirectoryURL:(id)l;
+- (id)_decodeConfigurationResource:(id)resource;
+- (id)_endpointURLForEndpointConfig:(id)config overrideEnvironment:(unint64_t)environment overrideEnabled:(BOOL)enabled;
+- (id)_endpointURLForEnvironment:(unint64_t)environment requestKey:(id)key;
+- (void)_fetchConfigurationFromFallbackURLWithSettings:(id)settings completion:(id)completion;
+- (void)_fetchMultiConfigurationFromEndpointURL:(id)l settings:(id)settings networkActivityBlock:(id)block changeTagsByRequestKey:(id)key completion:(id)completion;
 - (void)_loadConfigurationResourcesFromStore;
-- (void)_processConfigurationCompletionWithResources:(id)a3 configurationSettings:(id)a4 processedConfigurationDataByRequestKey:(id *)a5 processedTreatmentIDs:(id *)a6 processedSegmentSetIDs:(id *)a7 error:(id *)a8;
-- (void)_removeConfigurationResourceForRequestKey:(id)a3;
-- (void)_saveConfigurationResource:(id)a3;
-- (void)cancelAllTasksOnBackgroundSessionWithSettings:(id)a3 completion:(id)a4;
-- (void)fetchConfigurationWithSettings:(id)a3 completionQueue:(id)a4 completion:(id)a5;
-- (void)fetchMultiConfigurationWithSettings:(id)a3 networkActivityBlock:(id)a4 completionQueue:(id)a5 completion:(id)a6;
-- (void)fetchSingleConfigurationWithSettings:(id)a3 networkActivityBlock:(id)a4 completionQueue:(id)a5 completion:(id)a6;
-- (void)reestablishBackgroundSessionWithSettings:(id)a3 sessionCompletionHandler:(id)a4;
+- (void)_processConfigurationCompletionWithResources:(id)resources configurationSettings:(id)settings processedConfigurationDataByRequestKey:(id *)key processedTreatmentIDs:(id *)ds processedSegmentSetIDs:(id *)iDs error:(id *)error;
+- (void)_removeConfigurationResourceForRequestKey:(id)key;
+- (void)_saveConfigurationResource:(id)resource;
+- (void)cancelAllTasksOnBackgroundSessionWithSettings:(id)settings completion:(id)completion;
+- (void)fetchConfigurationWithSettings:(id)settings completionQueue:(id)queue completion:(id)completion;
+- (void)fetchMultiConfigurationWithSettings:(id)settings networkActivityBlock:(id)block completionQueue:(id)queue completion:(id)completion;
+- (void)fetchSingleConfigurationWithSettings:(id)settings networkActivityBlock:(id)block completionQueue:(id)queue completion:(id)completion;
+- (void)reestablishBackgroundSessionWithSettings:(id)settings sessionCompletionHandler:(id)handler;
 @end
 
 @implementation RCConfigurationManager
@@ -26,16 +26,16 @@
 - (void)_loadConfigurationResourcesFromStore
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(RCConfigurationManager *)self setConfigResourceByRequestKey:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(RCConfigurationManager *)self setConfigResourceByRequestKey:dictionary];
 
-  v4 = [(RCConfigurationManager *)self localStore];
+  localStore = [(RCConfigurationManager *)self localStore];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [v4 allKeys];
-  v26 = [v5 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  allKeys = [localStore allKeys];
+  v26 = [allKeys countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v26)
   {
     v6 = *v28;
@@ -47,29 +47,29 @@
       {
         if (*v28 != v6)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v27 + 1) + 8 * v8);
         v10 = *(v7 + 2704);
         v11 = objc_opt_class();
-        v12 = [v4 objectForKey:v9];
+        v12 = [localStore objectForKey:v9];
         v13 = RCDynamicCast(v11, v12);
 
         v14 = [(RCConfigurationManager *)self _decodeConfigurationResource:v13];
         v15 = v14;
         if (v14)
         {
-          v16 = [v14 configurationData];
-          v17 = v16;
-          if (v16 && [v16 length])
+          configurationData = [v14 configurationData];
+          v17 = configurationData;
+          if (configurationData && [configurationData length])
           {
             v18 = v6;
-            v19 = v4;
-            v20 = v5;
-            v21 = [(RCConfigurationManager *)self configResourceByRequestKey];
-            v22 = [v15 requestKey];
-            [v21 setObject:v15 forKeyedSubscript:v22];
+            v19 = localStore;
+            v20 = allKeys;
+            configResourceByRequestKey = [(RCConfigurationManager *)self configResourceByRequestKey];
+            requestKey = [v15 requestKey];
+            [configResourceByRequestKey setObject:v15 forKeyedSubscript:requestKey];
 
             v23 = RCSharedLog();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -82,8 +82,8 @@
               _os_log_impl(&dword_2179FC000, v23, OS_LOG_TYPE_DEFAULT, "loaded configuration resource: %{public}@ size: %lu", buf, 0x16u);
             }
 
-            v5 = v20;
-            v4 = v19;
+            allKeys = v20;
+            localStore = v19;
             v6 = v18;
             v7 = 0x277CBE000;
           }
@@ -104,7 +104,7 @@
       }
 
       while (v26 != v8);
-      v26 = [v5 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v26 = [allKeys countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v26);
@@ -113,37 +113,37 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (RCConfigurationManager)initWithContentDirectoryURL:(id)a3
+- (RCConfigurationManager)initWithContentDirectoryURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v23.receiver = self;
   v23.super_class = RCConfigurationManager;
   v6 = [(RCConfigurationManager *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentDirectoryURL, a3);
+    objc_storeStrong(&v6->_contentDirectoryURL, l);
     v8 = [[RCAsyncSerialQueue alloc] initWithQualityOfService:25];
     configRequestSerialQueue = v7->_configRequestSerialQueue;
     v7->_configRequestSerialQueue = v8;
 
     v10 = [RCKeyValueStore alloc];
-    v11 = [v5 relativePath];
-    v12 = [(RCKeyValueStore *)v10 initWithName:@"remote-configuration" directory:v11 version:3 options:0];
+    relativePath = [lCopy relativePath];
+    v12 = [(RCKeyValueStore *)v10 initWithName:@"remote-configuration" directory:relativePath version:3 options:0];
     localStore = v7->_localStore;
     v7->_localStore = v12;
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     runningOperations = v7->_runningOperations;
-    v7->_runningOperations = v14;
+    v7->_runningOperations = array;
 
     v16 = objc_alloc_init(RCUnfairLock);
     runningOperationsLock = v7->_runningOperationsLock;
     v7->_runningOperationsLock = v16;
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     backgroundURLSessionHandlers = v7->_backgroundURLSessionHandlers;
-    v7->_backgroundURLSessionHandlers = v18;
+    v7->_backgroundURLSessionHandlers = dictionary;
 
     v20 = objc_alloc_init(RCUnfairLock);
     backgroundURLSessionHandlersLock = v7->_backgroundURLSessionHandlersLock;
@@ -155,19 +155,19 @@
   return v7;
 }
 
-- (void)fetchSingleConfigurationWithSettings:(id)a3 networkActivityBlock:(id)a4 completionQueue:(id)a5 completion:(id)a6
+- (void)fetchSingleConfigurationWithSettings:(id)settings networkActivityBlock:(id)block completionQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  settingsCopy = settings;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __111__RCConfigurationManager_fetchSingleConfigurationWithSettings_networkActivityBlock_completionQueue_completion___block_invoke;
   v14[3] = &unk_27822F480;
-  v15 = v10;
-  v16 = v11;
-  v12 = v11;
-  v13 = v10;
-  [(RCConfigurationManager *)self fetchMultiConfigurationWithSettings:v13 networkActivityBlock:a4 completionQueue:a5 completion:v14];
+  v15 = settingsCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = settingsCopy;
+  [(RCConfigurationManager *)self fetchMultiConfigurationWithSettings:v13 networkActivityBlock:block completionQueue:queue completion:v14];
 }
 
 void __111__RCConfigurationManager_fetchSingleConfigurationWithSettings_networkActivityBlock_completionQueue_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -190,19 +190,19 @@ void __111__RCConfigurationManager_fetchSingleConfigurationWithSettings_networkA
   }
 }
 
-- (void)fetchConfigurationWithSettings:(id)a3 completionQueue:(id)a4 completion:(id)a5
+- (void)fetchConfigurationWithSettings:(id)settings completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  settingsCopy = settings;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __84__RCConfigurationManager_fetchConfigurationWithSettings_completionQueue_completion___block_invoke;
   v12[3] = &unk_27822F480;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(RCConfigurationManager *)self fetchMultiConfigurationWithSettings:v11 completionQueue:a4 completion:v12];
+  v13 = settingsCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = settingsCopy;
+  [(RCConfigurationManager *)self fetchMultiConfigurationWithSettings:v11 completionQueue:queue completion:v12];
 }
 
 void __84__RCConfigurationManager_fetchConfigurationWithSettings_completionQueue_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -229,55 +229,55 @@ void __84__RCConfigurationManager_fetchConfigurationWithSettings_completionQueue
   }
 }
 
-- (void)fetchMultiConfigurationWithSettings:(id)a3 networkActivityBlock:(id)a4 completionQueue:(id)a5 completion:(id)a6
+- (void)fetchMultiConfigurationWithSettings:(id)settings networkActivityBlock:(id)block completionQueue:(id)queue completion:(id)completion
 {
   v119 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v78 = a4;
-  v11 = a5;
-  v74 = a6;
+  settingsCopy = settings;
+  blockCopy = block;
+  queueCopy = queue;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __110__RCConfigurationManager_fetchMultiConfigurationWithSettings_networkActivityBlock_completionQueue_completion___block_invoke;
   aBlock[3] = &unk_27822F518;
   aBlock[4] = self;
   v12 = _Block_copy(aBlock);
-  v13 = [v10 requestInfos];
-  v14 = [v13 rc_arrayByTransformingWithBlock:&__block_literal_global_91];
+  requestInfos = [settingsCopy requestInfos];
+  v14 = [requestInfos rc_arrayByTransformingWithBlock:&__block_literal_global_91];
 
-  v15 = [(RCConfigurationManager *)self configResourceByRequestKey];
-  v16 = [v15 rc_subdictionaryForKeys:v14];
+  configResourceByRequestKey = [(RCConfigurationManager *)self configResourceByRequestKey];
+  v16 = [configResourceByRequestKey rc_subdictionaryForKeys:v14];
 
   v17 = [v16 rc_dictionaryByTransformingValuesWithKeyAndValueBlock:&__block_literal_global_94];
   v80 = v14;
   [v14 firstObject];
   v79 = v83 = v16;
   v81 = [v16 objectForKeyedSubscript:?];
-  v18 = [v10 requestInfos];
-  LODWORD(v14) = [v18 rc_containsObjectPassingTest:&__block_literal_global_97];
+  requestInfos2 = [settingsCopy requestInfos];
+  LODWORD(v14) = [requestInfos2 rc_containsObjectPassingTest:&__block_literal_global_97];
 
-  v19 = [v10 requestInfos];
-  v20 = [v19 rc_containsObjectPassingTest:&__block_literal_global_99];
+  requestInfos3 = [settingsCopy requestInfos];
+  v20 = [requestInfos3 rc_containsObjectPassingTest:&__block_literal_global_99];
 
-  v75 = v11;
+  v75 = queueCopy;
   if (v14)
   {
-    v21 = [(RCConfigurationManager *)self configResourceByRequestKey];
-    v22 = [v21 objectForKeyedSubscript:@"appConfigRequest"];
+    configResourceByRequestKey2 = [(RCConfigurationManager *)self configResourceByRequestKey];
+    endpointURLString = [configResourceByRequestKey2 objectForKeyedSubscript:@"appConfigRequest"];
 
-    v23 = [v22 userSegmentationConfiguration];
-    v24 = [v23 widgetEndpointURLString];
+    userSegmentationConfiguration = [endpointURLString userSegmentationConfiguration];
+    widgetEndpointURLString = [userSegmentationConfiguration widgetEndpointURLString];
 
-    if (!-[__CFString length](v24, "length") || ([MEMORY[0x277CBEBC0] URLWithString:v24], (v82 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!-[__CFString length](widgetEndpointURLString, "length") || ([MEMORY[0x277CBEBC0] URLWithString:widgetEndpointURLString], (rc_endpointURLNotAvailableError = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v25 = [v10 debugOverrides];
-      v26 = [v25 debugEnvironment];
+      debugOverrides = [settingsCopy debugOverrides];
+      debugEnvironment = [debugOverrides debugEnvironment];
       v27 = RCRequestWidgetConfigurationKey;
 LABEL_15:
       v39 = *v27;
-      v40 = self;
+      selfCopy2 = self;
 LABEL_16:
-      v82 = [(RCConfigurationManager *)v40 _endpointURLForEnvironment:v26 requestKey:v39];
+      rc_endpointURLNotAvailableError = [(RCConfigurationManager *)selfCopy2 _endpointURLForEnvironment:debugEnvironment requestKey:v39];
       v30 = v83;
 
       goto LABEL_17;
@@ -288,16 +288,16 @@ LABEL_16:
 
   if (v20)
   {
-    v28 = [(RCConfigurationManager *)self configResourceByRequestKey];
-    v22 = [v28 objectForKeyedSubscript:@"appConfigRequest"];
+    configResourceByRequestKey3 = [(RCConfigurationManager *)self configResourceByRequestKey];
+    endpointURLString = [configResourceByRequestKey3 objectForKeyedSubscript:@"appConfigRequest"];
 
-    v29 = [v22 userSegmentationConfiguration];
-    v24 = [v29 todayEndpointURLString];
+    userSegmentationConfiguration2 = [endpointURLString userSegmentationConfiguration];
+    widgetEndpointURLString = [userSegmentationConfiguration2 todayEndpointURLString];
 
-    if (!-[__CFString length](v24, "length") || ([MEMORY[0x277CBEBC0] URLWithString:v24], (v82 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!-[__CFString length](widgetEndpointURLString, "length") || ([MEMORY[0x277CBEBC0] URLWithString:widgetEndpointURLString], (rc_endpointURLNotAvailableError = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v25 = [v10 debugOverrides];
-      v26 = [v25 debugEnvironment];
+      debugOverrides = [settingsCopy debugOverrides];
+      debugEnvironment = [debugOverrides debugEnvironment];
       v27 = RCRequestTodayConfigurationKey;
       goto LABEL_15;
     }
@@ -309,20 +309,20 @@ LABEL_17:
 LABEL_18:
 LABEL_19:
     v41 = [v30 objectForKeyedSubscript:{v79, v17}];
-    v77 = [v41 treatmentIDs];
+    treatmentIDs = [v41 treatmentIDs];
 
     v42 = [v30 objectForKeyedSubscript:v79];
-    v76 = [v42 segmentSetIDs];
+    segmentSetIDs = [v42 segmentSetIDs];
 
-    v43 = [(RCConfigurationManager *)self _isAllowedToReachEndpointWithSettings:v10 configurationResource:v81 endpointURL:v82];
+    v43 = [(RCConfigurationManager *)self _isAllowedToReachEndpointWithSettings:settingsCopy configurationResource:v81 endpointURL:rc_endpointURLNotAvailableError];
     v44 = [MEMORY[0x277CBEB98] setWithArray:v80];
-    v45 = [v10 requestInfos];
-    v46 = [v45 rc_containsObjectPassingTest:&__block_literal_global_104];
+    requestInfos4 = [settingsCopy requestInfos];
+    v46 = [requestInfos4 rc_containsObjectPassingTest:&__block_literal_global_104];
 
     if (!v43)
     {
-      v47 = [v10 requestInfos];
-      v48 = [v47 rc_arrayByTransformingWithBlock:&__block_literal_global_107];
+      requestInfos5 = [settingsCopy requestInfos];
+      v48 = [requestInfos5 rc_arrayByTransformingWithBlock:&__block_literal_global_107];
 
       v49 = [MEMORY[0x277CBEB98] setWithArray:v48];
 
@@ -334,7 +334,7 @@ LABEL_19:
     {
       v50 = [(RCConfigurationManager *)self _areAllConfigurationResourcesAvailable:v30 requestKeys:v44];
       v51 = v44;
-      v52 = [(RCConfigurationManager *)self _areAllConfigurationResourcesInvalid:v30 configurationSettings:v10 allowedToReachEndpoint:v43 requestKeys:v44];
+      v52 = [(RCConfigurationManager *)self _areAllConfigurationResourcesInvalid:v30 configurationSettings:settingsCopy allowedToReachEndpoint:v43 requestKeys:v44];
       v53 = RCSharedLog();
       v54 = v53;
       if (!v50 || v52)
@@ -344,46 +344,46 @@ LABEL_19:
           [RCConfigurationManager fetchMultiConfigurationWithSettings:v80 networkActivityBlock:? completionQueue:? completion:?];
         }
 
-        v65 = [MEMORY[0x277CCA9B8] rc_notCachedError];
-        v38 = v74;
+        rc_notCachedError = [MEMORY[0x277CCA9B8] rc_notCachedError];
+        v38 = completionCopy;
         v37 = v75;
         v17 = v73;
-        v60 = v76;
+        v60 = segmentSetIDs;
         if (v75)
         {
-          if (v74)
+          if (completionCopy)
           {
             v101[0] = MEMORY[0x277D85DD0];
             v101[1] = 3221225472;
             v101[2] = __110__RCConfigurationManager_fetchMultiConfigurationWithSettings_networkActivityBlock_completionQueue_completion___block_invoke_109;
             v101[3] = &unk_27822F350;
-            v103 = v74;
-            v102 = v65;
+            v103 = completionCopy;
+            v102 = rc_notCachedError;
             dispatch_async(v75, v101);
           }
         }
 
-        else if (v74)
+        else if (completionCopy)
         {
-          (*(v74 + 2))(v74, 0, 0, 0, v65);
+          (*(completionCopy + 2))(completionCopy, 0, 0, 0, rc_notCachedError);
         }
 
-        v59 = v77;
+        v59 = treatmentIDs;
         goto LABEL_61;
       }
 
       if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
       {
-        v55 = [v83 allKeys];
-        v56 = [v55 rc_description];
-        v57 = [v77 rc_description];
-        v58 = [v76 rc_description];
+        allKeys = [v83 allKeys];
+        rc_description = [allKeys rc_description];
+        rc_description2 = [treatmentIDs rc_description];
+        rc_description3 = [segmentSetIDs rc_description];
         *buf = 138543874;
-        v114 = v56;
+        v114 = rc_description;
         v115 = 2114;
-        v116 = v57;
+        v116 = rc_description2;
         v117 = 2114;
-        v118 = v58;
+        v118 = rc_description3;
         _os_log_impl(&dword_2179FC000, v54, OS_LOG_TYPE_DEFAULT, "cache-only policy: returning cached configuration for requestKeys: %{public}@ treatmentIDs: %{public}@ segmentSetIDs: %{public}@", buf, 0x20u);
       }
 
@@ -391,22 +391,22 @@ LABEL_19:
       if (!v75)
       {
         v17 = v73;
-        v38 = v74;
-        v60 = v76;
-        v59 = v77;
-        if (v74)
+        v38 = completionCopy;
+        v60 = segmentSetIDs;
+        v59 = treatmentIDs;
+        if (completionCopy)
         {
-          (*(v74 + 2))(v74, v73, v77, v76, 0);
+          (*(completionCopy + 2))(completionCopy, v73, treatmentIDs, segmentSetIDs, 0);
         }
 
         goto LABEL_61;
       }
 
       v17 = v73;
-      v38 = v74;
-      v60 = v76;
-      v59 = v77;
-      if (!v74)
+      v38 = completionCopy;
+      v60 = segmentSetIDs;
+      v59 = treatmentIDs;
+      if (!completionCopy)
       {
 LABEL_61:
 
@@ -417,10 +417,10 @@ LABEL_61:
       v104[1] = 3221225472;
       v104[2] = __110__RCConfigurationManager_fetchMultiConfigurationWithSettings_networkActivityBlock_completionQueue_completion___block_invoke_108;
       v104[3] = &unk_27822F5A0;
-      v108 = v74;
+      v108 = completionCopy;
       v105 = v73;
-      v106 = v77;
-      v107 = v76;
+      v106 = treatmentIDs;
+      v107 = segmentSetIDs;
       dispatch_async(v75, v104);
 
       v61 = v108;
@@ -429,8 +429,8 @@ LABEL_56:
       goto LABEL_61;
     }
 
-    v62 = [v10 debugOverrides];
-    if (([v62 ignoreCache] & 1) != 0 || !-[RCConfigurationManager _areAllConfigurationResourcesAvailable:requestKeys:](self, "_areAllConfigurationResourcesAvailable:requestKeys:", v30, v44) || -[RCConfigurationManager _areAllConfigurationResourcesInvalid:configurationSettings:allowedToReachEndpoint:requestKeys:](self, "_areAllConfigurationResourcesInvalid:configurationSettings:allowedToReachEndpoint:requestKeys:", v30, v10, v43, v44))
+    debugOverrides2 = [settingsCopy debugOverrides];
+    if (([debugOverrides2 ignoreCache] & 1) != 0 || !-[RCConfigurationManager _areAllConfigurationResourcesAvailable:requestKeys:](self, "_areAllConfigurationResourcesAvailable:requestKeys:", v30, v44) || -[RCConfigurationManager _areAllConfigurationResourcesInvalid:configurationSettings:allowedToReachEndpoint:requestKeys:](self, "_areAllConfigurationResourcesInvalid:configurationSettings:allowedToReachEndpoint:requestKeys:", v30, settingsCopy, v43, v44))
     {
       v51 = v44;
 
@@ -440,7 +440,7 @@ LABEL_56:
     else
     {
       v51 = v44;
-      v69 = [(RCConfigurationManager *)self _areAllConfigurationResourcesExpired:v30 allowedToReachEndpoint:v43 configurationSettings:v10 requestKeys:v44];
+      v69 = [(RCConfigurationManager *)self _areAllConfigurationResourcesExpired:v30 allowedToReachEndpoint:v43 configurationSettings:settingsCopy requestKeys:v44];
 
       v17 = v73;
       if (!v69)
@@ -450,14 +450,14 @@ LABEL_56:
         v94[2] = __110__RCConfigurationManager_fetchMultiConfigurationWithSettings_networkActivityBlock_completionQueue_completion___block_invoke_2_110;
         v94[3] = &unk_27822F5C8;
         v95 = v30;
-        v59 = v77;
-        v96 = v77;
-        v60 = v76;
-        v97 = v76;
+        v59 = treatmentIDs;
+        v96 = treatmentIDs;
+        v60 = segmentSetIDs;
+        v97 = segmentSetIDs;
         v37 = v75;
         v98 = v75;
-        v38 = v74;
-        v100 = v74;
+        v38 = completionCopy;
+        v100 = completionCopy;
         v99 = v73;
         __110__RCConfigurationManager_fetchMultiConfigurationWithSettings_networkActivityBlock_completionQueue_completion___block_invoke_2_110(v94);
 
@@ -480,29 +480,29 @@ LABEL_56:
       v89[2] = __110__RCConfigurationManager_fetchMultiConfigurationWithSettings_networkActivityBlock_completionQueue_completion___block_invoke_112;
       v89[3] = &unk_27822F5F0;
       v92 = v12;
-      v90 = v10;
+      v90 = settingsCopy;
       v37 = v75;
       v91 = v75;
-      v38 = v74;
-      v93 = v74;
+      v38 = completionCopy;
+      v93 = completionCopy;
       __110__RCConfigurationManager_fetchMultiConfigurationWithSettings_networkActivityBlock_completionQueue_completion___block_invoke_112(v89);
 
 LABEL_60:
-      v60 = v76;
-      v59 = v77;
+      v60 = segmentSetIDs;
+      v59 = treatmentIDs;
       goto LABEL_61;
     }
 
-    v64 = [v10 debugOverrides];
-    v38 = v74;
+    debugOverrides3 = [settingsCopy debugOverrides];
+    v38 = completionCopy;
     v37 = v75;
-    if ([v64 ignoreCache])
+    if ([debugOverrides3 ignoreCache])
     {
     }
 
     else
     {
-      v66 = [(RCConfigurationManager *)self _areAllConfigurationResourcesInvalid:v83 configurationSettings:v10 allowedToReachEndpoint:1 requestKeys:v51];
+      v66 = [(RCConfigurationManager *)self _areAllConfigurationResourcesInvalid:v83 configurationSettings:settingsCopy allowedToReachEndpoint:1 requestKeys:v51];
 
       if (!v66)
       {
@@ -518,79 +518,79 @@ LABEL_59:
     v84[2] = __110__RCConfigurationManager_fetchMultiConfigurationWithSettings_networkActivityBlock_completionQueue_completion___block_invoke_2_118;
     v84[3] = &unk_27822F660;
     v85 = v75;
-    v87 = v74;
-    v86 = v10;
+    v87 = completionCopy;
+    v86 = settingsCopy;
     v88 = v12;
-    [(RCConfigurationManager *)self _fetchMultiConfigurationFromEndpointURL:v82 settings:v86 networkActivityBlock:v78 changeTagsByRequestKey:v67 completion:v84];
+    [(RCConfigurationManager *)self _fetchMultiConfigurationFromEndpointURL:rc_endpointURLNotAvailableError settings:v86 networkActivityBlock:blockCopy changeTagsByRequestKey:v67 completion:v84];
 
     goto LABEL_60;
   }
 
-  v31 = [v10 endpointConfig];
+  endpointConfig = [settingsCopy endpointConfig];
 
-  if (!v31)
+  if (!endpointConfig)
   {
-    v68 = [v81 userSegmentationConfiguration];
-    v22 = [v68 endpointURLString];
+    userSegmentationConfiguration3 = [v81 userSegmentationConfiguration];
+    endpointURLString = [userSegmentationConfiguration3 endpointURLString];
 
-    if ([v22 length])
+    if ([endpointURLString length])
     {
-      v82 = [MEMORY[0x277CBEBC0] URLWithString:v22];
-      if (v82)
+      rc_endpointURLNotAvailableError = [MEMORY[0x277CBEBC0] URLWithString:endpointURLString];
+      if (rc_endpointURLNotAvailableError)
       {
         v30 = v83;
         goto LABEL_18;
       }
     }
 
-    v70 = [v10 requestInfos];
-    v71 = [v70 firstObject];
-    v24 = [v71 requestKey];
+    requestInfos6 = [settingsCopy requestInfos];
+    firstObject = [requestInfos6 firstObject];
+    widgetEndpointURLString = [firstObject requestKey];
 
-    v25 = [v10 debugOverrides];
-    v26 = [v25 debugEnvironment];
-    v40 = self;
-    v39 = v24;
+    debugOverrides = [settingsCopy debugOverrides];
+    debugEnvironment = [debugOverrides debugEnvironment];
+    selfCopy2 = self;
+    v39 = widgetEndpointURLString;
     goto LABEL_16;
   }
 
-  v32 = [v10 endpointConfig];
-  v33 = [v10 debugOverrides];
-  v34 = [v33 debugEnvironment];
-  v35 = [v10 debugOverrides];
-  v36 = [(RCConfigurationManager *)self _endpointURLForEndpointConfig:v32 overrideEnvironment:v34 overrideEnabled:v35 != 0];
+  endpointConfig2 = [settingsCopy endpointConfig];
+  debugOverrides4 = [settingsCopy debugOverrides];
+  debugEnvironment2 = [debugOverrides4 debugEnvironment];
+  debugOverrides5 = [settingsCopy debugOverrides];
+  v36 = [(RCConfigurationManager *)self _endpointURLForEndpointConfig:endpointConfig2 overrideEnvironment:debugEnvironment2 overrideEnabled:debugOverrides5 != 0];
 
   v30 = v83;
-  v82 = v36;
+  rc_endpointURLNotAvailableError = v36;
   if (v36)
   {
     goto LABEL_19;
   }
 
-  v82 = [MEMORY[0x277CCA9B8] rc_endpointURLNotAvailableError];
+  rc_endpointURLNotAvailableError = [MEMORY[0x277CCA9B8] rc_endpointURLNotAvailableError];
   v37 = v75;
   if (v75)
   {
-    v38 = v74;
-    if (v74)
+    v38 = completionCopy;
+    if (completionCopy)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __110__RCConfigurationManager_fetchMultiConfigurationWithSettings_networkActivityBlock_completionQueue_completion___block_invoke_6;
       block[3] = &unk_27822F350;
-      v111 = v74;
-      v82 = v82;
-      v110 = v82;
+      v111 = completionCopy;
+      rc_endpointURLNotAvailableError = rc_endpointURLNotAvailableError;
+      v110 = rc_endpointURLNotAvailableError;
       dispatch_async(v75, block);
     }
   }
 
   else
   {
-    v38 = v74;
-    if (v74)
+    v38 = completionCopy;
+    if (completionCopy)
     {
-      (*(v74 + 2))(v74, 0, 0, 0, v82);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0, rc_endpointURLNotAvailableError);
     }
   }
 
@@ -910,47 +910,47 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)reestablishBackgroundSessionWithSettings:(id)a3 sessionCompletionHandler:(id)a4
+- (void)reestablishBackgroundSessionWithSettings:(id)settings sessionCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 backgroundFetchConfiguration];
+  settingsCopy = settings;
+  handlerCopy = handler;
+  backgroundFetchConfiguration = [settingsCopy backgroundFetchConfiguration];
 
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!backgroundFetchConfiguration && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationManager reestablishBackgroundSessionWithSettings:sessionCompletionHandler:];
   }
 
-  v9 = [v6 backgroundFetchConfiguration];
-  v10 = [v9 sessionIdentifier];
+  backgroundFetchConfiguration2 = [settingsCopy backgroundFetchConfiguration];
+  sessionIdentifier = [backgroundFetchConfiguration2 sessionIdentifier];
 
-  v11 = [(RCConfigurationManager *)self backgroundURLSessionHandlersLock];
-  [v11 lock];
+  backgroundURLSessionHandlersLock = [(RCConfigurationManager *)self backgroundURLSessionHandlersLock];
+  [backgroundURLSessionHandlersLock lock];
 
-  v12 = [(RCConfigurationManager *)self backgroundURLSessionHandlers];
-  v13 = [v12 objectForKeyedSubscript:v10];
+  backgroundURLSessionHandlers = [(RCConfigurationManager *)self backgroundURLSessionHandlers];
+  v13 = [backgroundURLSessionHandlers objectForKeyedSubscript:sessionIdentifier];
 
   if (!v13)
   {
     v13 = objc_alloc_init(RCBackgroundURLSessionHandler);
-    v14 = [(RCConfigurationManager *)self backgroundURLSessionHandlers];
-    [v14 setObject:v13 forKeyedSubscript:v10];
+    backgroundURLSessionHandlers2 = [(RCConfigurationManager *)self backgroundURLSessionHandlers];
+    [backgroundURLSessionHandlers2 setObject:v13 forKeyedSubscript:sessionIdentifier];
   }
 
-  v15 = [(RCConfigurationManager *)self backgroundURLSessionHandlersLock];
-  [v15 unlock];
+  backgroundURLSessionHandlersLock2 = [(RCConfigurationManager *)self backgroundURLSessionHandlersLock];
+  [backgroundURLSessionHandlersLock2 unlock];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __92__RCConfigurationManager_reestablishBackgroundSessionWithSettings_sessionCompletionHandler___block_invoke;
   v19[3] = &unk_27822F688;
   v19[4] = self;
-  v20 = v6;
-  v21 = v10;
-  v22 = v7;
-  v16 = v10;
-  v17 = v7;
-  v18 = v6;
+  v20 = settingsCopy;
+  v21 = sessionIdentifier;
+  v22 = handlerCopy;
+  v16 = sessionIdentifier;
+  v17 = handlerCopy;
+  v18 = settingsCopy;
   [(RCBackgroundURLSessionHandler *)v13 reestablishBackgroundSessionWithConfigurationSettings:v18 sessionCompletionHandler:v19];
 }
 
@@ -1026,35 +1026,35 @@ void __92__RCConfigurationManager_reestablishBackgroundSessionWithSettings_sessi
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelAllTasksOnBackgroundSessionWithSettings:(id)a3 completion:(id)a4
+- (void)cancelAllTasksOnBackgroundSessionWithSettings:(id)settings completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 backgroundFetchConfiguration];
+  settingsCopy = settings;
+  completionCopy = completion;
+  backgroundFetchConfiguration = [settingsCopy backgroundFetchConfiguration];
 
-  if (!v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!backgroundFetchConfiguration && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCConfigurationManager cancelAllTasksOnBackgroundSessionWithSettings:completion:];
   }
 
-  v8 = [v5 backgroundFetchConfiguration];
-  [RCURLSession cancelAllTasksOnBackgroundSessionWithFetchConfig:v8 completion:v6];
+  backgroundFetchConfiguration2 = [settingsCopy backgroundFetchConfiguration];
+  [RCURLSession cancelAllTasksOnBackgroundSessionWithFetchConfig:backgroundFetchConfiguration2 completion:completionCopy];
 }
 
-- (void)_processConfigurationCompletionWithResources:(id)a3 configurationSettings:(id)a4 processedConfigurationDataByRequestKey:(id *)a5 processedTreatmentIDs:(id *)a6 processedSegmentSetIDs:(id *)a7 error:(id *)a8
+- (void)_processConfigurationCompletionWithResources:(id)resources configurationSettings:(id)settings processedConfigurationDataByRequestKey:(id *)key processedTreatmentIDs:(id *)ds processedSegmentSetIDs:(id *)iDs error:(id *)error
 {
   v79 = *MEMORY[0x277D85DE8];
-  v61 = a3;
-  v11 = a4;
-  v12 = [MEMORY[0x277CBEB38] dictionary];
+  resourcesCopy = resources;
+  settingsCopy = settings;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v50 = v11;
-  obj = [v11 requestInfos];
+  v50 = settingsCopy;
+  obj = [settingsCopy requestInfos];
   v62 = [obj countByEnumeratingWithState:&v66 objects:v78 count:16];
-  v14 = 0;
+  segmentSetIDs3 = 0;
   if (!v62)
   {
     v65 = 0;
@@ -1065,135 +1065,135 @@ void __92__RCConfigurationManager_reestablishBackgroundSessionWithSettings_sessi
   v58 = *v67;
   *&v13 = 138544130;
   v49 = v13;
-  v15 = a5;
-  v54 = a6;
-  v55 = a5;
-  v59 = v12;
+  keyCopy = key;
+  dsCopy = ds;
+  keyCopy2 = key;
+  v59 = dictionary;
   do
   {
     v16 = 0;
     do
     {
-      v64 = v14;
+      v64 = segmentSetIDs3;
       if (*v67 != v58)
       {
         objc_enumerationMutation(obj);
       }
 
       v17 = *(*(&v66 + 1) + 8 * v16);
-      v18 = [v17 requestCacheKey];
-      v19 = [v61 objectForKeyedSubscript:v18];
+      requestCacheKey = [v17 requestCacheKey];
+      v19 = [resourcesCopy objectForKeyedSubscript:requestCacheKey];
 
-      v20 = [(RCConfigurationManager *)self configResourceByRequestKey];
-      v21 = [v17 requestCacheKey];
-      v22 = [v20 objectForKeyedSubscript:v21];
+      configResourceByRequestKey = [(RCConfigurationManager *)self configResourceByRequestKey];
+      requestCacheKey2 = [v17 requestCacheKey];
+      v22 = [configResourceByRequestKey objectForKeyedSubscript:requestCacheKey2];
 
       if (!v22)
       {
-        v23 = RCSharedLog();
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+        contentHash = RCSharedLog();
+        if (os_log_type_enabled(contentHash, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [v17 requestKey];
+          requestKey = [v17 requestKey];
           *buf = 138543362;
-          v71 = v24;
-          _os_log_impl(&dword_2179FC000, v23, OS_LOG_TYPE_DEFAULT, "cached configuration not available for requestKey: %{public}@, skip updating last fetch date, treatmentIDs and segmentSetIDs", buf, 0xCu);
+          v71 = requestKey;
+          _os_log_impl(&dword_2179FC000, contentHash, OS_LOG_TYPE_DEFAULT, "cached configuration not available for requestKey: %{public}@, skip updating last fetch date, treatmentIDs and segmentSetIDs", buf, 0xCu);
 LABEL_14:
         }
 
         goto LABEL_16;
       }
 
-      v23 = [v22 contentHash];
-      v24 = [v19 contentHash];
-      if (([v23 isEqualToString:v24]& 1) == 0)
+      contentHash = [v22 contentHash];
+      requestKey = [v19 contentHash];
+      if (([contentHash isEqualToString:requestKey]& 1) == 0)
       {
         goto LABEL_14;
       }
 
-      v25 = [v22 userID];
-      v26 = [v19 userID];
-      if (![v25 isEqualToString:v26])
+      userID = [v22 userID];
+      userID2 = [v19 userID];
+      if (![userID isEqualToString:userID2])
       {
 
-        a6 = v54;
+        ds = dsCopy;
         goto LABEL_16;
       }
 
       v52 = v17;
-      v27 = [v22 storefrontID];
-      v28 = [v19 storefrontID];
-      if (![v27 isEqualToString:v28])
+      storefrontID = [v22 storefrontID];
+      storefrontID2 = [v19 storefrontID];
+      if (![storefrontID isEqualToString:storefrontID2])
       {
 
-        a6 = v54;
-        v12 = v59;
+        ds = dsCopy;
+        dictionary = v59;
         v17 = v52;
         goto LABEL_17;
       }
 
-      v29 = [v50 debugOverrides];
-      v51 = [v29 ignoreCache];
+      debugOverrides = [v50 debugOverrides];
+      ignoreCache = [debugOverrides ignoreCache];
 
       v17 = v52;
-      if ((v51 & 1) == 0)
+      if ((ignoreCache & 1) == 0)
       {
         v38 = RCSharedLog();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
-          v39 = [v52 requestKey];
-          v53 = [v19 treatmentIDs];
-          v40 = [v53 rc_description];
-          v41 = [v19 segmentSetIDs];
-          v42 = [v41 rc_description];
-          v43 = [v22 contentHash];
+          requestKey2 = [v52 requestKey];
+          treatmentIDs = [v19 treatmentIDs];
+          rc_description = [treatmentIDs rc_description];
+          segmentSetIDs = [v19 segmentSetIDs];
+          rc_description2 = [segmentSetIDs rc_description];
+          contentHash2 = [v22 contentHash];
           *buf = v49;
-          v71 = v39;
+          v71 = requestKey2;
           v72 = 2114;
-          v73 = v40;
+          v73 = rc_description;
           v74 = 2114;
-          v75 = v42;
+          v75 = rc_description2;
           v76 = 2114;
-          v77 = v43;
+          v77 = contentHash2;
           _os_log_impl(&dword_2179FC000, v38, OS_LOG_TYPE_DEFAULT, "matched contentHash, returning cached configuration for requestKey: %{public}@ treatmentIDs: %{public}@ segmentSetIDs: %{public}@ contentHash: %{public}@", buf, 0x2Au);
         }
 
-        v44 = [MEMORY[0x277CBEAA8] date];
-        [v22 setLastFetchedDate:v44];
+        date = [MEMORY[0x277CBEAA8] date];
+        [v22 setLastFetchedDate:date];
 
-        v45 = [v19 treatmentIDs];
-        [v22 setTreatmentIDs:v45];
+        treatmentIDs2 = [v19 treatmentIDs];
+        [v22 setTreatmentIDs:treatmentIDs2];
 
-        v46 = [v19 segmentSetIDs];
-        [v22 setSegmentSetIDs:v46];
+        segmentSetIDs2 = [v19 segmentSetIDs];
+        [v22 setSegmentSetIDs:segmentSetIDs2];
 
-        v23 = v19;
+        contentHash = v19;
         v19 = v22;
-        a6 = v54;
-        v15 = v55;
+        ds = dsCopy;
+        keyCopy = keyCopy2;
 LABEL_16:
-        v12 = v59;
+        dictionary = v59;
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      a6 = v54;
-      v15 = v55;
-      v12 = v59;
+      ds = dsCopy;
+      keyCopy = keyCopy2;
+      dictionary = v59;
 LABEL_18:
-      v30 = [v19 configurationData];
-      v31 = v30;
-      if (v30 && [v30 length])
+      configurationData = [v19 configurationData];
+      v31 = configurationData;
+      if (configurationData && [configurationData length])
       {
         [(RCConfigurationManager *)self _saveConfigurationResource:v19];
-        v32 = [v17 requestCacheKey];
-        [v12 setObject:v31 forKeyedSubscript:v32];
+        requestCacheKey3 = [v17 requestCacheKey];
+        [dictionary setObject:v31 forKeyedSubscript:requestCacheKey3];
 
-        v33 = [v19 treatmentIDs];
+        treatmentIDs3 = [v19 treatmentIDs];
 
-        v14 = [v19 segmentSetIDs];
+        segmentSetIDs3 = [v19 segmentSetIDs];
 
-        v34 = v55;
+        v34 = keyCopy2;
       }
 
       else
@@ -1206,19 +1206,19 @@ LABEL_18:
           _os_log_error_impl(&dword_2179FC000, v35, OS_LOG_TYPE_ERROR, "endpoint: missing data in configuration resource %{public}@", buf, 0xCu);
         }
 
-        *a8 = [MEMORY[0x277CCA9B8] rc_notAvailableError];
-        v14 = v64;
-        v33 = v65;
-        v34 = v15;
+        *error = [MEMORY[0x277CCA9B8] rc_notAvailableError];
+        segmentSetIDs3 = v64;
+        treatmentIDs3 = v65;
+        v34 = keyCopy;
       }
 
-      v15 = v34;
-      *v34 = [v12 copy];
-      v36 = v33;
-      v65 = v33;
-      *a6 = v33;
-      v37 = v14;
-      *a7 = v14;
+      keyCopy = v34;
+      *v34 = [dictionary copy];
+      v36 = treatmentIDs3;
+      v65 = treatmentIDs3;
+      *ds = treatmentIDs3;
+      v37 = segmentSetIDs3;
+      *iDs = segmentSetIDs3;
 
       ++v16;
     }
@@ -1234,31 +1234,31 @@ LABEL_33:
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_areAllConfigurationResourcesAvailable:(id)a3 requestKeys:(id)a4
+- (BOOL)_areAllConfigurationResourcesAvailable:(id)available requestKeys:(id)keys
 {
   v5 = MEMORY[0x277CBEB98];
-  v6 = a4;
-  v7 = [a3 allKeys];
-  v8 = [v5 setWithArray:v7];
+  keysCopy = keys;
+  allKeys = [available allKeys];
+  v8 = [v5 setWithArray:allKeys];
 
-  LOBYTE(v7) = [v8 isEqualToSet:v6];
-  return v7;
+  LOBYTE(allKeys) = [v8 isEqualToSet:keysCopy];
+  return allKeys;
 }
 
-- (BOOL)_areAllConfigurationResourcesInvalid:(id)a3 configurationSettings:(id)a4 allowedToReachEndpoint:(BOOL)a5 requestKeys:(id)a6
+- (BOOL)_areAllConfigurationResourcesInvalid:(id)invalid configurationSettings:(id)settings allowedToReachEndpoint:(BOOL)endpoint requestKeys:(id)keys
 {
-  v10 = a4;
+  settingsCopy = settings;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __120__RCConfigurationManager__areAllConfigurationResourcesInvalid_configurationSettings_allowedToReachEndpoint_requestKeys___block_invoke;
   v15[3] = &unk_27822F6B0;
-  v16 = v10;
-  v17 = self;
-  v18 = a5;
-  v11 = v10;
-  v12 = a6;
-  v13 = [a3 keysOfEntriesPassingTest:v15];
-  LOBYTE(self) = [v13 isEqualToSet:v12];
+  v16 = settingsCopy;
+  selfCopy = self;
+  endpointCopy = endpoint;
+  v11 = settingsCopy;
+  keysCopy = keys;
+  v13 = [invalid keysOfEntriesPassingTest:v15];
+  LOBYTE(self) = [v13 isEqualToSet:keysCopy];
 
   return self;
 }
@@ -1285,20 +1285,20 @@ uint64_t __120__RCConfigurationManager__areAllConfigurationResourcesInvalid_conf
   return v12 ^ 1u;
 }
 
-- (BOOL)_areAllConfigurationResourcesExpired:(id)a3 allowedToReachEndpoint:(BOOL)a4 configurationSettings:(id)a5 requestKeys:(id)a6
+- (BOOL)_areAllConfigurationResourcesExpired:(id)expired allowedToReachEndpoint:(BOOL)endpoint configurationSettings:(id)settings requestKeys:(id)keys
 {
-  v10 = a5;
+  settingsCopy = settings;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __120__RCConfigurationManager__areAllConfigurationResourcesExpired_allowedToReachEndpoint_configurationSettings_requestKeys___block_invoke;
   v15[3] = &unk_27822F6B0;
-  v17 = a4;
+  endpointCopy = endpoint;
   v15[4] = self;
-  v16 = v10;
-  v11 = v10;
-  v12 = a6;
-  v13 = [a3 keysOfEntriesPassingTest:v15];
-  LOBYTE(self) = [v13 isEqualToSet:v12];
+  v16 = settingsCopy;
+  v11 = settingsCopy;
+  keysCopy = keys;
+  v13 = [expired keysOfEntriesPassingTest:v15];
+  LOBYTE(self) = [v13 isEqualToSet:keysCopy];
 
   return self;
 }
@@ -1315,21 +1315,21 @@ uint64_t __120__RCConfigurationManager__areAllConfigurationResourcesExpired_allo
   return v5 ^ 1;
 }
 
-- (BOOL)_isValidConfigurationResource:(id)a3 configurationSettings:(id)a4 allowedToReachEndpoint:(BOOL)a5 cachePolicy:(id)a6
+- (BOOL)_isValidConfigurationResource:(id)resource configurationSettings:(id)settings allowedToReachEndpoint:(BOOL)endpoint cachePolicy:(id)policy
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (!v9)
+  resourceCopy = resource;
+  settingsCopy = settings;
+  policyCopy = policy;
+  if (!resourceCopy)
   {
     goto LABEL_15;
   }
 
   v12 = MEMORY[0x277CCACA8];
-  v13 = [v9 userID];
-  v14 = [v10 userID];
-  LOBYTE(v12) = [v12 rc_string:v13 isEqualToString:v14];
+  userID = [resourceCopy userID];
+  userID2 = [settingsCopy userID];
+  LOBYTE(v12) = [v12 rc_string:userID isEqualToString:userID2];
 
   if ((v12 & 1) == 0)
   {
@@ -1339,17 +1339,17 @@ uint64_t __120__RCConfigurationManager__areAllConfigurationResourcesExpired_allo
       goto LABEL_14;
     }
 
-    v24 = [v10 userID];
+    userID3 = [settingsCopy userID];
     v35 = 138543362;
-    v36 = v24;
+    v36 = userID3;
     v25 = "configuration resource no longer valid because the userID changed: %{public}@";
     goto LABEL_12;
   }
 
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v9 storefrontID];
-  v17 = [v10 storefrontID];
-  LOBYTE(v15) = [v15 rc_string:v16 isEqualToString:v17];
+  storefrontID = [resourceCopy storefrontID];
+  storefrontID2 = [settingsCopy storefrontID];
+  LOBYTE(v15) = [v15 rc_string:storefrontID isEqualToString:storefrontID2];
 
   if ((v15 & 1) == 0)
   {
@@ -1359,9 +1359,9 @@ uint64_t __120__RCConfigurationManager__areAllConfigurationResourcesExpired_allo
       goto LABEL_14;
     }
 
-    v24 = [v10 storefrontID];
+    userID3 = [settingsCopy storefrontID];
     v35 = 138543362;
-    v36 = v24;
+    v36 = userID3;
     v25 = "configuration resource no longer valid because the storefrontID changed: %{public}@";
 LABEL_12:
     _os_log_impl(&dword_2179FC000, v22, OS_LOG_TYPE_DEFAULT, v25, &v35, 0xCu);
@@ -1370,10 +1370,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v18 = [v9 preferredLanguages];
-  v19 = [v10 deviceInfo];
-  v20 = [v19 preferredLanguages];
-  v21 = [v18 isEqualToArray:v20];
+  preferredLanguages = [resourceCopy preferredLanguages];
+  deviceInfo = [settingsCopy deviceInfo];
+  preferredLanguages2 = [deviceInfo preferredLanguages];
+  v21 = [preferredLanguages isEqualToArray:preferredLanguages2];
 
   if ((v21 & 1) == 0)
   {
@@ -1383,24 +1383,24 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v24 = [v10 deviceInfo];
-    v29 = [v24 preferredLanguages];
+    userID3 = [settingsCopy deviceInfo];
+    preferredLanguages3 = [userID3 preferredLanguages];
     v35 = 138543362;
-    v36 = v29;
+    v36 = preferredLanguages3;
     _os_log_impl(&dword_2179FC000, v22, OS_LOG_TYPE_DEFAULT, "configuration resource no longer valid because preferredLanguages changed: %{public}@", &v35, 0xCu);
 
     goto LABEL_13;
   }
 
-  if ([v11 requestCachePolicy] != 1)
+  if ([policyCopy requestCachePolicy] != 1)
   {
-    if (!a5 && ![v10 requestMode])
+    if (!endpoint && ![settingsCopy requestMode])
     {
       goto LABEL_23;
     }
 
-    v30 = [v10 endpointConfig];
-    if (!v30 || (v31 = v30, v32 = [v9 environment], objc_msgSend(v10, "endpointConfig"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "environment"), v33, v31, v32 == v34))
+    endpointConfig = [settingsCopy endpointConfig];
+    if (!endpointConfig || (v31 = endpointConfig, v32 = [resourceCopy environment], objc_msgSend(settingsCopy, "endpointConfig"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "environment"), v33, v31, v32 == v34))
     {
 LABEL_23:
       v26 = 1;
@@ -1414,7 +1414,7 @@ LABEL_23:
     }
 
     v35 = 138543362;
-    v36 = v9;
+    v36 = resourceCopy;
     v23 = "configuration resource not valid due to mismatched environments: %{public}@";
     goto LABEL_26;
   }
@@ -1423,7 +1423,7 @@ LABEL_23:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     v35 = 138543362;
-    v36 = v9;
+    v36 = resourceCopy;
     v23 = "configuration resource not valid due to ignore cache policy: %{public}@";
 LABEL_26:
     _os_log_impl(&dword_2179FC000, v22, OS_LOG_TYPE_DEFAULT, v23, &v35, 0xCu);
@@ -1439,18 +1439,18 @@ LABEL_16:
   return v26;
 }
 
-- (BOOL)_isAllowedToReachEndpointWithSettings:(id)a3 configurationResource:(id)a4 endpointURL:(id)a5
+- (BOOL)_isAllowedToReachEndpointWithSettings:(id)settings configurationResource:(id)resource endpointURL:(id)l
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  settingsCopy = settings;
+  resourceCopy = resource;
+  lCopy = l;
+  if (lCopy)
   {
-    v10 = [v7 debugOverrides];
-    v11 = [v10 configurationSource];
+    debugOverrides = [settingsCopy debugOverrides];
+    configurationSource = [debugOverrides configurationSource];
 
-    if (v11 == 1)
+    if (configurationSource == 1)
     {
       v12 = __98__RCConfigurationManager__isAllowedToReachEndpointWithSettings_configurationResource_endpointURL___block_invoke_2();
 LABEL_7:
@@ -1458,16 +1458,16 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v14 = [v7 debugOverrides];
-    v15 = [v14 configurationSource];
+    debugOverrides2 = [settingsCopy debugOverrides];
+    configurationSource2 = [debugOverrides2 configurationSource];
 
-    if (v15 == 2)
+    if (configurationSource2 == 2)
     {
       v12 = __98__RCConfigurationManager__isAllowedToReachEndpointWithSettings_configurationResource_endpointURL___block_invoke_138();
       goto LABEL_7;
     }
 
-    if ([v7 requestMode] == 2)
+    if ([settingsCopy requestMode] == 2)
     {
       v18 = RCSharedLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1481,20 +1481,20 @@ LABEL_7:
 
     else
     {
-      v19 = [v7 userID];
-      v20 = [v19 length];
+      userID = [settingsCopy userID];
+      v20 = [userID length];
 
-      if (v8 && v20)
+      if (resourceCopy && v20)
       {
-        v21 = [v7 userID];
-        v22 = [v8 userSegmentationConfiguration];
-        v23 = [v22 modThreshold];
+        userID2 = [settingsCopy userID];
+        userSegmentationConfiguration = [resourceCopy userSegmentationConfiguration];
+        modThreshold = [userSegmentationConfiguration modThreshold];
 
-        v24 = [v8 userSegmentationConfiguration];
-        v25 = [v24 modMax];
+        userSegmentationConfiguration2 = [resourceCopy userSegmentationConfiguration];
+        modMax = [userSegmentationConfiguration2 modMax];
 
-        v26 = [v21 hash] % v25;
-        v13 = v26 < v23;
+        v26 = [userID2 hash] % modMax;
+        v13 = v26 < modThreshold;
         v27 = RCSharedLog();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
@@ -1505,20 +1505,20 @@ LABEL_7:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109888;
-          v31 = v26 < v23;
+          v31 = v26 < modThreshold;
           v32 = 2048;
           v33 = v26;
           v34 = 2048;
-          v35 = v25;
+          v35 = modMax;
           v36 = 2048;
-          v37 = v23;
+          v37 = modThreshold;
           _os_log_impl(&dword_2179FC000, v28, OS_LOG_TYPE_DEFAULT, "client allowedToReachEndpoint: %d with moddedHash: %lu modMax: %lu modThreshold: %lu", buf, 0x26u);
         }
       }
 
       else
       {
-        v29 = v7;
+        v29 = settingsCopy;
         v13 = ([v29 requestMode] - 1) < 2;
       }
     }
@@ -1559,39 +1559,39 @@ uint64_t __98__RCConfigurationManager__isAllowedToReachEndpointWithSettings_conf
   return 0;
 }
 
-- (void)_fetchMultiConfigurationFromEndpointURL:(id)a3 settings:(id)a4 networkActivityBlock:(id)a5 changeTagsByRequestKey:(id)a6 completion:(id)a7
+- (void)_fetchMultiConfigurationFromEndpointURL:(id)l settings:(id)settings networkActivityBlock:(id)block changeTagsByRequestKey:(id)key completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  settingsCopy = settings;
+  blockCopy = block;
+  keyCopy = key;
+  completionCopy = completion;
   v17 = RCSharedLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v33 = v13;
+    v33 = settingsCopy;
     _os_log_impl(&dword_2179FC000, v17, OS_LOG_TYPE_DEFAULT, "enqueuing configuration fetch from endpoint with settings: %{public}@", buf, 0xCu);
   }
 
-  v18 = [(RCConfigurationManager *)self configRequestSerialQueue];
+  configRequestSerialQueue = [(RCConfigurationManager *)self configRequestSerialQueue];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __130__RCConfigurationManager__fetchMultiConfigurationFromEndpointURL_settings_networkActivityBlock_changeTagsByRequestKey_completion___block_invoke;
   v25[3] = &unk_27822F778;
-  v26 = v13;
-  v27 = v15;
-  v28 = v12;
-  v29 = self;
-  v30 = v14;
-  v31 = v16;
-  v19 = v16;
-  v20 = v14;
-  v21 = v12;
-  v22 = v15;
-  v23 = v13;
-  [v18 enqueueBlock:v25];
+  v26 = settingsCopy;
+  v27 = keyCopy;
+  v28 = lCopy;
+  selfCopy = self;
+  v30 = blockCopy;
+  v31 = completionCopy;
+  v19 = completionCopy;
+  v20 = blockCopy;
+  v21 = lCopy;
+  v22 = keyCopy;
+  v23 = settingsCopy;
+  [configRequestSerialQueue enqueueBlock:v25];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -1769,30 +1769,30 @@ void __130__RCConfigurationManager__fetchMultiConfigurationFromEndpointURL_setti
   [v2 addObject:*(a1 + 40)];
 }
 
-- (id)_endpointURLForEnvironment:(unint64_t)a3 requestKey:(id)a4
+- (id)_endpointURLForEnvironment:(unint64_t)environment requestKey:(id)key
 {
-  v5 = a4;
-  if (([v5 isEqualToString:@"appConfigRequest"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"magazinesConfigRequest") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"audioConfigRequest") || objc_msgSend(v5, "isEqualToString:", @"widgetConfigRequest"))
+  keyCopy = key;
+  if (([keyCopy isEqualToString:@"appConfigRequest"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"magazinesConfigRequest") & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"audioConfigRequest") || objc_msgSend(keyCopy, "isEqualToString:", @"widgetConfigRequest"))
   {
     goto LABEL_5;
   }
 
-  if ([v5 isEqualToString:@"todayConfigRequest"])
+  if ([keyCopy isEqualToString:@"todayConfigRequest"])
   {
-    if (a3 >= 5)
+    if (environment >= 5)
     {
       goto LABEL_22;
     }
 
     v8 = off_27822F810;
 LABEL_18:
-    v6 = &v8[a3];
+    v6 = &v8[environment];
     goto LABEL_7;
   }
 
-  if ([v5 isEqualToString:@"stocksConfigRequest"])
+  if ([keyCopy isEqualToString:@"stocksConfigRequest"])
   {
-    if (a3 >= 5)
+    if (environment >= 5)
     {
       goto LABEL_22;
     }
@@ -1801,9 +1801,9 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (([v5 isEqualToString:@"weatherConfigRequest"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"weather2ConfigRequest"))
+  if (([keyCopy isEqualToString:@"weatherConfigRequest"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"weather2ConfigRequest"))
   {
-    if (a3 >= 5)
+    if (environment >= 5)
     {
       goto LABEL_22;
     }
@@ -1812,9 +1812,9 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ([v5 isEqualToString:@"booksConfigRequest"])
+  if ([keyCopy isEqualToString:@"booksConfigRequest"])
   {
-    if (a3 >= 5)
+    if (environment >= 5)
     {
       goto LABEL_22;
     }
@@ -1830,9 +1830,9 @@ LABEL_18:
   }
 
 LABEL_5:
-  if (a3 - 1 < 4)
+  if (environment - 1 < 4)
   {
-    v6 = &off_27822F8B0[a3 - 1];
+    v6 = &off_27822F8B0[environment - 1];
 LABEL_7:
     v7 = *v6;
     goto LABEL_23;
@@ -1846,12 +1846,12 @@ LABEL_23:
   return v9;
 }
 
-- (id)_endpointURLForEndpointConfig:(id)a3 overrideEnvironment:(unint64_t)a4 overrideEnabled:(BOOL)a5
+- (id)_endpointURLForEndpointConfig:(id)config overrideEnvironment:(unint64_t)environment overrideEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = v7;
-  if (!v7)
+  enabledCopy = enabled;
+  configCopy = config;
+  v8 = configCopy;
+  if (!configCopy)
   {
     v12 = RCSharedLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1863,55 +1863,55 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v9 = [v7 environment];
-  if (v5)
+  environment = [configCopy environment];
+  if (enabledCopy)
   {
-    v10 = a4;
+    environmentCopy = environment;
   }
 
   else
   {
-    v10 = v9;
+    environmentCopy = environment;
   }
 
-  if (v10 <= 1)
+  if (environmentCopy <= 1)
   {
-    if (v10)
+    if (environmentCopy)
     {
-      if (v10 != 1)
+      if (environmentCopy != 1)
       {
         goto LABEL_21;
       }
 
-      v11 = [v8 stagingURL];
+      stagingURL = [v8 stagingURL];
     }
 
     else
     {
-      v11 = [v8 productionURL];
+      stagingURL = [v8 productionURL];
     }
   }
 
   else
   {
-    switch(v10)
+    switch(environmentCopy)
     {
       case 2:
-        v11 = [v8 qaURL];
+        stagingURL = [v8 qaURL];
         break;
       case 3:
-        v11 = [v8 develURL];
+        stagingURL = [v8 develURL];
         break;
       case 4:
-        v11 = [v8 testURL];
+        stagingURL = [v8 testURL];
         break;
       default:
         goto LABEL_21;
     }
   }
 
-  v13 = v11;
-  if (!v11)
+  v13 = stagingURL;
+  if (!stagingURL)
   {
 LABEL_21:
     v12 = RCSharedLog();
@@ -1936,21 +1936,21 @@ LABEL_24:
   return v13;
 }
 
-- (void)_fetchConfigurationFromFallbackURLWithSettings:(id)a3 completion:(id)a4
+- (void)_fetchConfigurationFromFallbackURLWithSettings:(id)settings completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RCConfigurationManager *)self configRequestSerialQueue];
+  settingsCopy = settings;
+  completionCopy = completion;
+  configRequestSerialQueue = [(RCConfigurationManager *)self configRequestSerialQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __84__RCConfigurationManager__fetchConfigurationFromFallbackURLWithSettings_completion___block_invoke;
   v11[3] = &unk_27822F7F0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 enqueueBlock:v11];
+  v12 = settingsCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = settingsCopy;
+  [configRequestSerialQueue enqueueBlock:v11];
 }
 
 void __84__RCConfigurationManager__fetchConfigurationFromFallbackURLWithSettings_completion___block_invoke(id *a1, void *a2)
@@ -2248,37 +2248,37 @@ void __84__RCConfigurationManager__fetchConfigurationFromFallbackURLWithSettings
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)_saveConfigurationResource:(id)a3
+- (void)_saveConfigurationResource:(id)resource
 {
-  v9 = a3;
-  v4 = [(RCConfigurationManager *)self configResourceByRequestKey];
-  v5 = [v9 requestKey];
-  [v4 setObject:v9 forKeyedSubscript:v5];
+  resourceCopy = resource;
+  configResourceByRequestKey = [(RCConfigurationManager *)self configResourceByRequestKey];
+  requestKey = [resourceCopy requestKey];
+  [configResourceByRequestKey setObject:resourceCopy forKeyedSubscript:requestKey];
 
-  v6 = [(RCConfigurationManager *)self _encodeConfigurationResource:v9];
+  v6 = [(RCConfigurationManager *)self _encodeConfigurationResource:resourceCopy];
   if (v6)
   {
-    v7 = [(RCConfigurationManager *)self localStore];
-    v8 = [v9 requestKey];
-    [v7 setObject:v6 forKey:v8];
+    localStore = [(RCConfigurationManager *)self localStore];
+    requestKey2 = [resourceCopy requestKey];
+    [localStore setObject:v6 forKey:requestKey2];
   }
 }
 
-- (void)_removeConfigurationResourceForRequestKey:(id)a3
+- (void)_removeConfigurationResourceForRequestKey:(id)key
 {
-  v4 = a3;
-  v5 = [(RCConfigurationManager *)self configResourceByRequestKey];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  configResourceByRequestKey = [(RCConfigurationManager *)self configResourceByRequestKey];
+  [configResourceByRequestKey removeObjectForKey:keyCopy];
 
-  v6 = [(RCConfigurationManager *)self localStore];
-  [v6 removeObjectForKey:v4];
+  localStore = [(RCConfigurationManager *)self localStore];
+  [localStore removeObjectForKey:keyCopy];
 }
 
-- (id)_decodeConfigurationResource:(id)a3
+- (id)_decodeConfigurationResource:(id)resource
 {
   v3 = MEMORY[0x277CCAAC8];
-  v4 = a3;
-  v5 = [[v3 alloc] initForReadingFromData:v4 error:0];
+  resourceCopy = resource;
+  v5 = [[v3 alloc] initForReadingFromData:resourceCopy error:0];
 
   v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCA308]];
 

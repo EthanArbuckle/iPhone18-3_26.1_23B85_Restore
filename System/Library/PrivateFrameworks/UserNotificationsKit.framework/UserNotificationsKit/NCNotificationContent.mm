@@ -2,15 +2,15 @@
 - (BOOL)isAirDrop;
 - (BOOL)isCallType;
 - (BOOL)isCommunicationType;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMessagingType;
-- (NCNotificationContent)initWithNotificationContent:(id)a3;
+- (NCNotificationContent)initWithNotificationContent:(id)content;
 - (NSArray)carPlayIcons;
 - (NSArray)fullScreenIcons;
 - (NSString)header;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
@@ -39,95 +39,95 @@
   return v17 + dateAllDay + [(NSTimeZone *)self->_timeZone hash];
 }
 
-- (NCNotificationContent)initWithNotificationContent:(id)a3
+- (NCNotificationContent)initWithNotificationContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v54.receiver = self;
   v54.super_class = NCNotificationContent;
   v5 = [(NCNotificationContent *)&v54 init];
   if (v5)
   {
-    v6 = [v4 contentType];
-    v7 = [v6 copy];
+    contentType = [contentCopy contentType];
+    v7 = [contentType copy];
     contentType = v5->_contentType;
     v5->_contentType = v7;
 
-    v9 = [v4 customHeader];
-    v10 = [v9 copy];
+    customHeader = [contentCopy customHeader];
+    v10 = [customHeader copy];
     customHeader = v5->_customHeader;
     v5->_customHeader = v10;
 
-    v12 = [v4 defaultHeader];
-    v13 = [v12 copy];
+    defaultHeader = [contentCopy defaultHeader];
+    v13 = [defaultHeader copy];
     defaultHeader = v5->_defaultHeader;
     v5->_defaultHeader = v13;
 
-    v15 = [v4 title];
-    v16 = [v15 copy];
+    title = [contentCopy title];
+    v16 = [title copy];
     title = v5->_title;
     v5->_title = v16;
 
-    v18 = [v4 subtitle];
-    v19 = [v18 copy];
+    subtitle = [contentCopy subtitle];
+    v19 = [subtitle copy];
     subtitle = v5->_subtitle;
     v5->_subtitle = v19;
 
-    v21 = [v4 attributedMessage];
-    v22 = [v21 copy];
+    attributedMessage = [contentCopy attributedMessage];
+    v22 = [attributedMessage copy];
     attributedMessage = v5->_attributedMessage;
     v5->_attributedMessage = v22;
 
-    v24 = [v4 summary];
-    v25 = [v24 copy];
+    summary = [contentCopy summary];
+    v25 = [summary copy];
     summary = v5->_summary;
     v5->_summary = v25;
 
-    v27 = [v4 threadSummary];
-    v28 = [v27 copy];
+    threadSummary = [contentCopy threadSummary];
+    v28 = [threadSummary copy];
     threadSummary = v5->_threadSummary;
     v5->_threadSummary = v28;
 
-    v30 = [v4 spotlightIdentifier];
-    v31 = [v30 copy];
+    spotlightIdentifier = [contentCopy spotlightIdentifier];
+    v31 = [spotlightIdentifier copy];
     spotlightIdentifier = v5->_spotlightIdentifier;
     v5->_spotlightIdentifier = v31;
 
-    v33 = [v4 footer];
-    v34 = [v33 copy];
+    footer = [contentCopy footer];
+    v34 = [footer copy];
     footer = v5->_footer;
     v5->_footer = v34;
 
-    v36 = [v4 hiddenPreviewsBodyPlaceholder];
-    v37 = [v36 copy];
+    hiddenPreviewsBodyPlaceholder = [contentCopy hiddenPreviewsBodyPlaceholder];
+    v37 = [hiddenPreviewsBodyPlaceholder copy];
     hiddenPreviewsBodyPlaceholder = v5->_hiddenPreviewsBodyPlaceholder;
     v5->_hiddenPreviewsBodyPlaceholder = v37;
 
-    v39 = [v4 categorySummaryFormat];
-    v40 = [v39 copy];
+    categorySummaryFormat = [contentCopy categorySummaryFormat];
+    v40 = [categorySummaryFormat copy];
     categorySummaryFormat = v5->_categorySummaryFormat;
     v5->_categorySummaryFormat = v40;
 
-    v42 = [v4 communicationContext];
-    v43 = [v42 copy];
+    communicationContext = [contentCopy communicationContext];
+    v43 = [communicationContext copy];
     communicationContext = v5->_communicationContext;
     v5->_communicationContext = v43;
 
-    v45 = [v4 icons];
+    icons = [contentCopy icons];
     icons = v5->_icons;
-    v5->_icons = v45;
+    v5->_icons = icons;
 
-    v47 = [v4 attachmentImage];
+    attachmentImage = [contentCopy attachmentImage];
     attachmentImage = v5->_attachmentImage;
-    v5->_attachmentImage = v47;
+    v5->_attachmentImage = attachmentImage;
 
-    v49 = [v4 date];
+    date = [contentCopy date];
     date = v5->_date;
-    v5->_date = v49;
+    v5->_date = date;
 
-    v5->_dateAllDay = [v4 isDateAllDay];
-    v51 = [v4 timeZone];
+    v5->_dateAllDay = [contentCopy isDateAllDay];
+    timeZone = [contentCopy timeZone];
     timeZone = v5->_timeZone;
-    v5->_timeZone = v51;
+    v5->_timeZone = timeZone;
   }
 
   return v5;
@@ -135,16 +135,16 @@
 
 - (BOOL)isMessagingType
 {
-  v3 = [(NCNotificationContent *)self contentType];
-  if ([v3 isEqualToString:*MEMORY[0x277CE2158]])
+  contentType = [(NCNotificationContent *)self contentType];
+  if ([contentType isEqualToString:*MEMORY[0x277CE2158]])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(NCNotificationContent *)self contentType];
-    v4 = [v5 isEqualToString:*MEMORY[0x277CE2160]];
+    contentType2 = [(NCNotificationContent *)self contentType];
+    v4 = [contentType2 isEqualToString:*MEMORY[0x277CE2160]];
   }
 
   return v4;
@@ -152,32 +152,32 @@
 
 - (BOOL)isCallType
 {
-  v3 = [(NCNotificationContent *)self contentType];
-  if ([v3 isEqualToString:*MEMORY[0x277CE2148]])
+  contentType = [(NCNotificationContent *)self contentType];
+  if ([contentType isEqualToString:*MEMORY[0x277CE2148]])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(NCNotificationContent *)self contentType];
-    if ([v5 isEqualToString:*MEMORY[0x277CE2168]])
+    contentType2 = [(NCNotificationContent *)self contentType];
+    if ([contentType2 isEqualToString:*MEMORY[0x277CE2168]])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(NCNotificationContent *)self contentType];
-      if ([v6 isEqualToString:*MEMORY[0x277CE2170]])
+      contentType3 = [(NCNotificationContent *)self contentType];
+      if ([contentType3 isEqualToString:*MEMORY[0x277CE2170]])
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(NCNotificationContent *)self contentType];
-        v4 = [v7 isEqualToString:*MEMORY[0x277CE2138]];
+        contentType4 = [(NCNotificationContent *)self contentType];
+        v4 = [contentType4 isEqualToString:*MEMORY[0x277CE2138]];
       }
     }
   }
@@ -187,8 +187,8 @@
 
 - (BOOL)isAirDrop
 {
-  v2 = [(NCNotificationContent *)self contentType];
-  v3 = [v2 isEqualToString:*MEMORY[0x277CE2130]];
+  contentType = [(NCNotificationContent *)self contentType];
+  v3 = [contentType isEqualToString:*MEMORY[0x277CE2130]];
 
   return v3;
 }
@@ -203,9 +203,9 @@
   return [(NCNotificationContent *)self isAirDrop];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -219,180 +219,180 @@ LABEL_22:
     }
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if (!v5)
   {
     goto LABEL_22;
   }
 
-  v6 = [(NCNotificationContent *)self contentType];
-  v7 = [v5 contentType];
-  v8 = NCIsEqual(v6, v7);
+  contentType = [(NCNotificationContent *)self contentType];
+  contentType2 = [v5 contentType];
+  v8 = NCIsEqual(contentType, contentType2);
 
   if (!v8)
   {
     goto LABEL_22;
   }
 
-  v9 = [(NCNotificationContent *)self customHeader];
-  v10 = [v5 customHeader];
-  v11 = NCIsEqual(v9, v10);
+  customHeader = [(NCNotificationContent *)self customHeader];
+  customHeader2 = [v5 customHeader];
+  v11 = NCIsEqual(customHeader, customHeader2);
 
   if (!v11)
   {
     goto LABEL_22;
   }
 
-  v12 = [(NCNotificationContent *)self defaultHeader];
-  v13 = [v5 defaultHeader];
-  v14 = NCIsEqual(v12, v13);
+  defaultHeader = [(NCNotificationContent *)self defaultHeader];
+  defaultHeader2 = [v5 defaultHeader];
+  v14 = NCIsEqual(defaultHeader, defaultHeader2);
 
   if (!v14)
   {
     goto LABEL_22;
   }
 
-  v15 = [(NCNotificationContent *)self title];
-  v16 = [v5 title];
-  v17 = NCIsEqual(v15, v16);
+  title = [(NCNotificationContent *)self title];
+  title2 = [v5 title];
+  v17 = NCIsEqual(title, title2);
 
   if (!v17)
   {
     goto LABEL_22;
   }
 
-  v18 = [(NCNotificationContent *)self subtitle];
-  v19 = [v5 subtitle];
-  v20 = NCIsEqual(v18, v19);
+  subtitle = [(NCNotificationContent *)self subtitle];
+  subtitle2 = [v5 subtitle];
+  v20 = NCIsEqual(subtitle, subtitle2);
 
   if (!v20)
   {
     goto LABEL_22;
   }
 
-  v21 = [(NCNotificationContent *)self message];
-  v22 = [v5 message];
-  v23 = NCIsEqual(v21, v22);
+  message = [(NCNotificationContent *)self message];
+  message2 = [v5 message];
+  v23 = NCIsEqual(message, message2);
 
   if (!v23)
   {
     goto LABEL_22;
   }
 
-  v24 = [(NCNotificationContent *)self attributedMessage];
-  v25 = [v5 attributedMessage];
-  v26 = NCIsEqual(v24, v25);
+  attributedMessage = [(NCNotificationContent *)self attributedMessage];
+  attributedMessage2 = [v5 attributedMessage];
+  v26 = NCIsEqual(attributedMessage, attributedMessage2);
 
   if (!v26)
   {
     goto LABEL_22;
   }
 
-  v27 = [(NCNotificationContent *)self summary];
-  v28 = [v5 summary];
-  v29 = NCIsEqual(v27, v28);
+  summary = [(NCNotificationContent *)self summary];
+  summary2 = [v5 summary];
+  v29 = NCIsEqual(summary, summary2);
 
   if (!v29)
   {
     goto LABEL_22;
   }
 
-  v30 = [(NCNotificationContent *)self threadSummary];
-  v31 = [v5 threadSummary];
-  v32 = NCIsEqual(v30, v31);
+  threadSummary = [(NCNotificationContent *)self threadSummary];
+  threadSummary2 = [v5 threadSummary];
+  v32 = NCIsEqual(threadSummary, threadSummary2);
 
   if (!v32)
   {
     goto LABEL_22;
   }
 
-  v33 = [(NCNotificationContent *)self spotlightIdentifier];
-  v34 = [v5 spotlightIdentifier];
-  v35 = NCIsEqual(v33, v34);
+  spotlightIdentifier = [(NCNotificationContent *)self spotlightIdentifier];
+  spotlightIdentifier2 = [v5 spotlightIdentifier];
+  v35 = NCIsEqual(spotlightIdentifier, spotlightIdentifier2);
 
   if (!v35)
   {
     goto LABEL_22;
   }
 
-  v36 = [(NCNotificationContent *)self footer];
-  v37 = [v5 footer];
-  v38 = NCIsEqual(v36, v37);
+  footer = [(NCNotificationContent *)self footer];
+  footer2 = [v5 footer];
+  v38 = NCIsEqual(footer, footer2);
 
   if (!v38)
   {
     goto LABEL_22;
   }
 
-  v39 = [(NCNotificationContent *)self hiddenPreviewsBodyPlaceholder];
-  v40 = [v5 hiddenPreviewsBodyPlaceholder];
-  v41 = NCIsEqual(v39, v40);
+  hiddenPreviewsBodyPlaceholder = [(NCNotificationContent *)self hiddenPreviewsBodyPlaceholder];
+  hiddenPreviewsBodyPlaceholder2 = [v5 hiddenPreviewsBodyPlaceholder];
+  v41 = NCIsEqual(hiddenPreviewsBodyPlaceholder, hiddenPreviewsBodyPlaceholder2);
 
   if (!v41)
   {
     goto LABEL_22;
   }
 
-  v42 = [(NCNotificationContent *)self categorySummaryFormat];
-  v43 = [v5 categorySummaryFormat];
-  v44 = NCIsEqual(v42, v43);
+  categorySummaryFormat = [(NCNotificationContent *)self categorySummaryFormat];
+  categorySummaryFormat2 = [v5 categorySummaryFormat];
+  v44 = NCIsEqual(categorySummaryFormat, categorySummaryFormat2);
 
   if (!v44)
   {
     goto LABEL_22;
   }
 
-  v45 = [(NCNotificationContent *)self communicationContext];
-  v46 = [v5 communicationContext];
-  v47 = NCIsEqual(v45, v46);
+  communicationContext = [(NCNotificationContent *)self communicationContext];
+  communicationContext2 = [v5 communicationContext];
+  v47 = NCIsEqual(communicationContext, communicationContext2);
 
   if (!v47)
   {
     goto LABEL_22;
   }
 
-  v48 = [(NCNotificationContent *)self date];
-  v49 = [v5 date];
-  v50 = NCIsEqual(v48, v49);
+  date = [(NCNotificationContent *)self date];
+  date2 = [v5 date];
+  v50 = NCIsEqual(date, date2);
 
   if (!v50)
   {
     goto LABEL_22;
   }
 
-  v51 = [(NCNotificationContent *)self isDateAllDay];
-  if (v51 != [v5 isDateAllDay])
+  isDateAllDay = [(NCNotificationContent *)self isDateAllDay];
+  if (isDateAllDay != [v5 isDateAllDay])
   {
     goto LABEL_22;
   }
 
-  v52 = [(NCNotificationContent *)self timeZone];
-  v53 = [v5 timeZone];
-  v54 = NCIsEqual(v52, v53);
+  timeZone = [(NCNotificationContent *)self timeZone];
+  timeZone2 = [v5 timeZone];
+  v54 = NCIsEqual(timeZone, timeZone2);
 
 LABEL_23:
   return v54;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [NCMutableNotificationContent alloc];
 
   return [(NCNotificationContent *)v4 initWithNotificationContent:self];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(NCNotificationContent *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(NCNotificationContent *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -400,8 +400,8 @@ LABEL_23:
   v10[3] = &unk_279E0D9F0;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -490,17 +490,17 @@ void __63__NCNotificationContent_descriptionBuilderWithMultilinePrefix___block_i
 
 - (id)succinctDescription
 {
-  v2 = [(NCNotificationContent *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(NCNotificationContent *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NCNotificationContent *)self date];
-  v5 = [v3 appendObject:v4 withName:@"date"];
+  date = [(NCNotificationContent *)self date];
+  v5 = [v3 appendObject:date withName:@"date"];
 
   return v3;
 }

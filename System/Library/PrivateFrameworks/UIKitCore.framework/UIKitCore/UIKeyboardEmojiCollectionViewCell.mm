@@ -1,25 +1,25 @@
 @interface UIKeyboardEmojiCollectionViewCell
 - (BOOL)_dragAllowed;
 - (NSString)debugDescription;
-- (UIKeyboardEmojiCollectionViewCell)initWithFrame:(CGRect)a3;
+- (UIKeyboardEmojiCollectionViewCell)initWithFrame:(CGRect)frame;
 - (int64_t)emojiFontSize;
 - (void)layoutSubviews;
-- (void)setCurrentEmojiFontSize:(int64_t)a3;
-- (void)setEmoji:(id)a3;
-- (void)setEmojiFontSize:(int64_t)a3;
-- (void)setNoResultsCell:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setUnreleasedHighlight:(BOOL)a3;
-- (void)triggerUsageSignal:(id)a3 payload:(id)a4;
+- (void)setCurrentEmojiFontSize:(int64_t)size;
+- (void)setEmoji:(id)emoji;
+- (void)setEmojiFontSize:(int64_t)size;
+- (void)setNoResultsCell:(BOOL)cell;
+- (void)setSelected:(BOOL)selected;
+- (void)setUnreleasedHighlight:(BOOL)highlight;
+- (void)triggerUsageSignal:(id)signal payload:(id)payload;
 @end
 
 @implementation UIKeyboardEmojiCollectionViewCell
 
-- (UIKeyboardEmojiCollectionViewCell)initWithFrame:(CGRect)a3
+- (UIKeyboardEmojiCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = UIKeyboardEmojiCollectionViewCell;
-  v3 = [(UICollectionViewCell *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionViewCell *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIKeyboardEmojiDraggableView alloc];
@@ -37,8 +37,8 @@
     v3->_emoji = v8;
 
     v3->_highlightPadding = 2.0;
-    v10 = [(UICollectionViewCell *)v3 contentView];
-    [v10 addSubview:v3->_emojiLabel];
+    contentView = [(UICollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_emojiLabel];
   }
 
   return v3;
@@ -55,38 +55,38 @@
   v4 = v3;
   if (v3 >= [(UIKeyboardEmojiCollectionViewCell *)self desiredFontSize])
   {
-    v6 = [(UIKeyboardEmojiCollectionViewCell *)self emojiFontSize];
-    if (v6 == [(UIKeyboardEmojiCollectionViewCell *)self desiredFontSize])
+    emojiFontSize = [(UIKeyboardEmojiCollectionViewCell *)self emojiFontSize];
+    if (emojiFontSize == [(UIKeyboardEmojiCollectionViewCell *)self desiredFontSize])
     {
       return;
     }
 
-    v5 = [(UIKeyboardEmojiCollectionViewCell *)self desiredFontSize];
+    desiredFontSize = [(UIKeyboardEmojiCollectionViewCell *)self desiredFontSize];
   }
 
   else
   {
-    v5 = v4;
+    desiredFontSize = v4;
   }
 
-  [(UIKeyboardEmojiCollectionViewCell *)self setCurrentEmojiFontSize:v5];
+  [(UIKeyboardEmojiCollectionViewCell *)self setCurrentEmojiFontSize:desiredFontSize];
 }
 
-- (void)setEmoji:(id)a3
+- (void)setEmoji:(id)emoji
 {
-  v4 = a3;
+  emojiCopy = emoji;
   if (self->_noResultsCell)
   {
     [(UIKeyboardEmojiCollectionViewCell *)self setNoResultsCell:0];
   }
 
   emoji = self->_emoji;
-  self->_emoji = v4;
-  v8 = v4;
+  self->_emoji = emojiCopy;
+  v8 = emojiCopy;
 
   emojiLabel = self->_emojiLabel;
-  v7 = [(UIKeyboardEmoji *)self->_emoji emojiString];
-  [(UIKeyboardEmojiDraggableView *)emojiLabel setText:v7];
+  emojiString = [(UIKeyboardEmoji *)self->_emoji emojiString];
+  [(UIKeyboardEmojiDraggableView *)emojiLabel setText:emojiString];
 
   [(UIKeyboardEmojiDraggableView *)self->_emojiLabel setDragEnabled:[(UIKeyboardEmojiCollectionViewCell *)self _dragAllowed]];
 }
@@ -102,10 +102,10 @@
   return v3;
 }
 
-- (void)setCurrentEmojiFontSize:(int64_t)a3
+- (void)setCurrentEmojiFontSize:(int64_t)size
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  if (_MergedGlobals_1_17 != a3 || *algn_1ED499398 == 0)
+  if (_MergedGlobals_1_17 != size || *algn_1ED499398 == 0)
   {
     v6 = *MEMORY[0x1E6965670];
     v10[0] = *off_1E70ECCA0;
@@ -115,9 +115,9 @@
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
     v8 = [off_1E70ECC20 fontDescriptorWithFontAttributes:v7];
 
-    v9 = [off_1E70ECC18 fontWithDescriptor:v8 size:a3];
+    v9 = [off_1E70ECC18 fontWithDescriptor:v8 size:size];
     objc_storeStrong(algn_1ED499398, v9);
-    _MergedGlobals_1_17 = a3;
+    _MergedGlobals_1_17 = size;
   }
 
   else
@@ -128,33 +128,33 @@
   [(UIKeyboardEmojiDraggableView *)self->_emojiLabel setFont:v9];
 }
 
-- (void)setEmojiFontSize:(int64_t)a3
+- (void)setEmojiFontSize:(int64_t)size
 {
-  [(UIKeyboardEmojiCollectionViewCell *)self setDesiredFontSize:a3];
-  v4 = [(UIKeyboardEmojiCollectionViewCell *)self desiredFontSize];
+  [(UIKeyboardEmojiCollectionViewCell *)self setDesiredFontSize:size];
+  desiredFontSize = [(UIKeyboardEmojiCollectionViewCell *)self desiredFontSize];
 
-  [(UIKeyboardEmojiCollectionViewCell *)self setCurrentEmojiFontSize:v4];
+  [(UIKeyboardEmojiCollectionViewCell *)self setCurrentEmojiFontSize:desiredFontSize];
 }
 
 - (int64_t)emojiFontSize
 {
-  v2 = [(UIKeyboardEmojiDraggableView *)self->_emojiLabel font];
-  [v2 pointSize];
+  font = [(UIKeyboardEmojiDraggableView *)self->_emojiLabel font];
+  [font pointSize];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setUnreleasedHighlight:(BOOL)a3
+- (void)setUnreleasedHighlight:(BOOL)highlight
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (highlight)
   {
     if (os_variant_has_internal_diagnostics())
     {
-      v21 = [(UIKeyboardEmojiCollectionViewCell *)self unreleasedBanner];
+      unreleasedBanner = [(UIKeyboardEmojiCollectionViewCell *)self unreleasedBanner];
 
-      if (!v21)
+      if (!unreleasedBanner)
       {
         v22 = [UILabel alloc];
         [(UIView *)self bounds];
@@ -179,79 +179,79 @@
         v28 = self->_unreleasedBanner;
         v38 = v39;
         [(UIView *)v28 setTransform:&v38];
-        v29 = [(UICollectionViewCell *)self contentView];
-        [v29 addSubview:self->_unreleasedBanner];
+        contentView = [(UICollectionViewCell *)self contentView];
+        [contentView addSubview:self->_unreleasedBanner];
 
         [(UIView *)self->_unreleasedBanner setTranslatesAutoresizingMaskIntoConstraints:0];
         v30 = MEMORY[0x1E69977A0];
-        v31 = [(UIView *)self centerXAnchor];
-        v32 = [(UIView *)self->_unreleasedBanner centerXAnchor];
-        v33 = [v31 constraintEqualToAnchor:v32];
+        centerXAnchor = [(UIView *)self centerXAnchor];
+        centerXAnchor2 = [(UIView *)self->_unreleasedBanner centerXAnchor];
+        v33 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v40[0] = v33;
-        v34 = [(UIView *)self centerYAnchor];
-        v35 = [(UIView *)self->_unreleasedBanner centerYAnchor];
-        v36 = [v34 constraintEqualToAnchor:v35];
+        centerYAnchor = [(UIView *)self centerYAnchor];
+        centerYAnchor2 = [(UIView *)self->_unreleasedBanner centerYAnchor];
+        v36 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v40[1] = v36;
         v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
         [v30 activateConstraints:v37];
       }
     }
 
-    v4 = [(UIKeyboardEmojiCollectionViewCell *)self unreleasedBanner];
-    [v4 setHidden:0];
+    unreleasedBanner2 = [(UIKeyboardEmojiCollectionViewCell *)self unreleasedBanner];
+    [unreleasedBanner2 setHidden:0];
 
-    v5 = [(UIView *)self layer];
-    [v5 setShadowOffset:{3.0, 0.0}];
+    layer = [(UIView *)self layer];
+    [layer setShadowOffset:{3.0, 0.0}];
 
-    v6 = [(UIView *)self layer];
-    [v6 setShadowRadius:3.0];
+    layer2 = [(UIView *)self layer];
+    [layer2 setShadowRadius:3.0];
 
     v7 = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.3];
-    v8 = [v7 CGColor];
-    v9 = [(UIView *)self layer];
-    [v9 setShadowColor:v8];
+    cGColor = [v7 CGColor];
+    layer3 = [(UIView *)self layer];
+    [layer3 setShadowColor:cGColor];
 
-    v10 = [(UIView *)self layer];
-    v11 = v10;
+    layer4 = [(UIView *)self layer];
+    v11 = layer4;
     LODWORD(v12) = 0.5;
   }
 
   else
   {
-    v13 = [(UIKeyboardEmojiCollectionViewCell *)self unreleasedBanner];
-    [v13 setHidden:1];
+    unreleasedBanner3 = [(UIKeyboardEmojiCollectionViewCell *)self unreleasedBanner];
+    [unreleasedBanner3 setHidden:1];
 
     v14 = *MEMORY[0x1E695F060];
     v15 = *(MEMORY[0x1E695F060] + 8);
-    v16 = [(UIView *)self layer];
-    [v16 setShadowOffset:{v14, v15}];
+    layer5 = [(UIView *)self layer];
+    [layer5 setShadowOffset:{v14, v15}];
 
-    v17 = [(UIView *)self layer];
-    [v17 setShadowRadius:0.0];
+    layer6 = [(UIView *)self layer];
+    [layer6 setShadowRadius:0.0];
 
     v18 = +[UIColor clearColor];
-    v19 = [v18 CGColor];
-    v20 = [(UIView *)self layer];
-    [v20 setShadowColor:v19];
+    cGColor2 = [v18 CGColor];
+    layer7 = [(UIView *)self layer];
+    [layer7 setShadowColor:cGColor2];
 
-    v10 = [(UIView *)self layer];
-    v11 = v10;
+    layer4 = [(UIView *)self layer];
+    v11 = layer4;
     LODWORD(v12) = 1.0;
   }
 
-  [v10 setShadowOpacity:v12];
+  [layer4 setShadowOpacity:v12];
 
   [(UIView *)self setNeedsDisplay];
 }
 
-- (void)setNoResultsCell:(BOOL)a3
+- (void)setNoResultsCell:(BOOL)cell
 {
-  v3 = a3;
+  cellCopy = cell;
   v24[4] = *MEMORY[0x1E69E9840];
-  if (self->_noResultsCell != a3)
+  if (self->_noResultsCell != cell)
   {
-    self->_noResultsCell = a3;
-    if (a3 && !self->_noResultsLabel)
+    self->_noResultsCell = cell;
+    if (cell && !self->_noResultsLabel)
     {
       v5 = objc_alloc_init(UILabel);
       noResultsLabel = self->_noResultsLabel;
@@ -270,28 +270,28 @@
 
       [(UIView *)self addSubview:self->_noResultsLabel];
       v18 = MEMORY[0x1E69977A0];
-      v23 = [(UIView *)self->_noResultsLabel topAnchor];
-      v22 = [(UIView *)self topAnchor];
-      v21 = [v23 constraintEqualToAnchor:v22];
+      topAnchor = [(UIView *)self->_noResultsLabel topAnchor];
+      topAnchor2 = [(UIView *)self topAnchor];
+      v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v24[0] = v21;
-      v20 = [(UIView *)self->_noResultsLabel leadingAnchor];
-      v19 = [(UIView *)self leadingAnchor];
-      v17 = [v20 constraintEqualToAnchor:v19];
+      leadingAnchor = [(UIView *)self->_noResultsLabel leadingAnchor];
+      leadingAnchor2 = [(UIView *)self leadingAnchor];
+      v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v24[1] = v17;
-      v10 = [(UIView *)self bottomAnchor];
-      v11 = [(UIView *)self->_noResultsLabel bottomAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      bottomAnchor = [(UIView *)self bottomAnchor];
+      bottomAnchor2 = [(UIView *)self->_noResultsLabel bottomAnchor];
+      v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v24[2] = v12;
-      v13 = [(UIView *)self trailingAnchor];
-      v14 = [(UIView *)self->_noResultsLabel trailingAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      trailingAnchor = [(UIView *)self trailingAnchor];
+      trailingAnchor2 = [(UIView *)self->_noResultsLabel trailingAnchor];
+      v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v24[3] = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
       [v18 activateConstraints:v16];
     }
   }
 
-  [(UIView *)self->_noResultsLabel setHidden:!v3];
+  [(UIView *)self->_noResultsLabel setHidden:!cellCopy];
 }
 
 id __54__UIKeyboardEmojiCollectionViewCell_setNoResultsCell___block_invoke(uint64_t a1, void *a2)
@@ -310,49 +310,49 @@ id __54__UIKeyboardEmojiCollectionViewCell_setNoResultsCell___block_invoke(uint6
   return v2;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v33[4] = *MEMORY[0x1E69E9840];
-  v5 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
+  navigationHighlightView = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
 
-  if (!v5)
+  if (!navigationHighlightView)
   {
     v8 = objc_alloc_init(UIView);
     [(UIKeyboardEmojiCollectionViewCell *)self setNavigationHighlightView:v8];
 
-    v9 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    navigationHighlightView2 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
+    [navigationHighlightView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(UICollectionViewCell *)self contentView];
+    contentView = [(UICollectionViewCell *)self contentView];
     [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
-    v11 = v32 = v3;
-    [v10 insertSubview:v11 belowSubview:self->_emojiLabel];
+    v11 = v32 = selectedCopy;
+    [contentView insertSubview:v11 belowSubview:self->_emojiLabel];
 
-    v12 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
-    v13 = [v12 layer];
-    [v13 setCornerRadius:5.0];
+    navigationHighlightView3 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
+    layer = [navigationHighlightView3 layer];
+    [layer setCornerRadius:5.0];
 
     v24 = MEMORY[0x1E69977A0];
-    v30 = [(UIView *)self leadingAnchor];
-    v31 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
-    v29 = [v31 leadingAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29 constant:self->_highlightPadding];
+    leadingAnchor = [(UIView *)self leadingAnchor];
+    navigationHighlightView4 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
+    leadingAnchor2 = [navigationHighlightView4 leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:self->_highlightPadding];
     v33[0] = v28;
-    v27 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
-    v26 = [v27 trailingAnchor];
-    v25 = [(UIView *)self trailingAnchor];
-    v23 = [v26 constraintEqualToAnchor:v25 constant:self->_highlightPadding];
+    navigationHighlightView5 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
+    trailingAnchor = [navigationHighlightView5 trailingAnchor];
+    trailingAnchor2 = [(UIView *)self trailingAnchor];
+    v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:self->_highlightPadding];
     v33[1] = v23;
-    v14 = [(UIView *)self topAnchor];
-    v15 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
-    v16 = [v15 topAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16 constant:self->_highlightPadding];
+    topAnchor = [(UIView *)self topAnchor];
+    navigationHighlightView6 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
+    topAnchor2 = [navigationHighlightView6 topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:self->_highlightPadding];
     v33[2] = v17;
-    v18 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
-    v19 = [v18 bottomAnchor];
-    v20 = [(UIView *)self bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:self->_highlightPadding];
+    navigationHighlightView7 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
+    bottomAnchor = [navigationHighlightView7 bottomAnchor];
+    bottomAnchor2 = [(UIView *)self bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:self->_highlightPadding];
     v33[3] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
     [v24 activateConstraints:v22];
@@ -363,20 +363,20 @@ id __54__UIKeyboardEmojiCollectionViewCell_setNoResultsCell___block_invoke(uint6
     }
 
 LABEL_5:
-    v6 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
-    [v6 setBackgroundColor:0];
+    navigationHighlightView8 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
+    [navigationHighlightView8 setBackgroundColor:0];
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!selectedCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v6 = +[UIColor systemBlueColor];
-  v7 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
-  [v7 setBackgroundColor:v6];
+  navigationHighlightView8 = +[UIColor systemBlueColor];
+  navigationHighlightView9 = [(UIKeyboardEmojiCollectionViewCell *)self navigationHighlightView];
+  [navigationHighlightView9 setBackgroundColor:navigationHighlightView8];
 
 LABEL_6:
   [(UIView *)self setNeedsDisplay];
@@ -387,36 +387,36 @@ LABEL_6:
   v8.receiver = self;
   v8.super_class = UIKeyboardEmojiCollectionViewCell;
   v3 = [(UIView *)&v8 debugDescription];
-  v4 = [(UIKeyboardEmojiCollectionViewCell *)self emoji];
-  v5 = [v4 emojiString];
-  v6 = [v3 stringByAppendingFormat:@"emojiString = %@", v5];
+  emoji = [(UIKeyboardEmojiCollectionViewCell *)self emoji];
+  emojiString = [emoji emojiString];
+  v6 = [v3 stringByAppendingFormat:@"emojiString = %@", emojiString];
 
   return v3;
 }
 
-- (void)triggerUsageSignal:(id)a3 payload:(id)a4
+- (void)triggerUsageSignal:(id)signal payload:(id)payload
 {
-  v12 = a4;
-  v5 = [(UIKeyboardEmojiCollectionViewCell *)self usageSource];
+  payloadCopy = payload;
+  usageSource = [(UIKeyboardEmojiCollectionViewCell *)self usageSource];
 
-  if (v5)
+  if (usageSource)
   {
     usageSource = self->_usageSource;
     v7 = +[_UISignalAnalytics getIAPayloadKeyGenmojiUsageSource];
-    [v12 setObject:usageSource forKeyedSubscript:v7];
+    [payloadCopy setObject:usageSource forKeyedSubscript:v7];
   }
 
-  v8 = [(UIKeyboardEmojiCollectionViewCell *)self bundleID];
+  bundleID = [(UIKeyboardEmojiCollectionViewCell *)self bundleID];
 
-  if (v8)
+  if (bundleID)
   {
     bundleID = self->_bundleID;
     v10 = +[_UISignalAnalytics getIAPayloadKeyGenmojiBundleID];
-    [v12 setObject:bundleID forKeyedSubscript:v10];
+    [payloadCopy setObject:bundleID forKeyedSubscript:v10];
   }
 
   v11 = +[_UISignalAnalytics getIASignalGenmojiUsage];
-  [_UISignalAnalytics sendGenmojiSignal:v11 payload:v12];
+  [_UISignalAnalytics sendGenmojiSignal:v11 payload:payloadCopy];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface HDConceptIndexEntity
-+ (BOOL)enumerateConceptIndexEntriesWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (BOOL)insertConceptIndexEntries:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)removeAllConceptIndexEntriesWithProfile:(id)a3 error:(id *)a4;
-+ (id)conceptIndexEntriesForSampleUUID:(id)a3 type:(unint64_t)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)enumerateConceptIndexEntriesWithPredicate:(id)predicate profile:(id)profile error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)insertConceptIndexEntries:(id)entries profile:(id)profile error:(id *)error;
++ (BOOL)removeAllConceptIndexEntriesWithProfile:(id)profile error:(id *)error;
++ (id)conceptIndexEntriesForSampleUUID:(id)d type:(unint64_t)type profile:(id)profile error:(id *)error;
 + (id)foreignKeys;
 + (id)indices;
-+ (id)joinClausesForProperty:(id)a3;
-+ (id)numberOfIndexedConceptsWithProfile:(id)a3 error:(id *)a4;
-+ (id)unitTesting_allConceptIndexEntriesWithProfile:(id)a3 error:(id *)a4;
++ (id)joinClausesForProperty:(id)property;
++ (id)numberOfIndexedConceptsWithProfile:(id)profile error:(id *)error;
++ (id)unitTesting_allConceptIndexEntriesWithProfile:(id)profile error:(id *)error;
 @end
 
 @implementation HDConceptIndexEntity
@@ -48,37 +48,37 @@
   return v3;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"uuid"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"uuid"])
   {
     v5 = MEMORY[0x277CBEB98];
     v6 = MEMORY[0x277D10B50];
-    v7 = [a1 disambiguatedDatabaseTable];
-    v8 = [v6 innerJoinClauseFromTable:v7 toTargetEntity:objc_opt_class() as:0 localReference:@"object_id" targetKey:@"data_id"];
+    disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+    v8 = [v6 innerJoinClauseFromTable:disambiguatedDatabaseTable toTargetEntity:objc_opt_class() as:0 localReference:@"object_id" targetKey:@"data_id"];
     v9 = [v5 setWithObject:v8];
   }
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___HDConceptIndexEntity;
-    v9 = objc_msgSendSuper2(&v11, sel_joinClausesForProperty_, v4);
+    v9 = objc_msgSendSuper2(&v11, sel_joinClausesForProperty_, propertyCopy);
   }
 
   return v9;
 }
 
-+ (BOOL)insertConceptIndexEntries:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)insertConceptIndexEntries:(id)entries profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  entriesCopy = entries;
+  profileCopy = profile;
+  v11 = profileCopy;
+  if (!entriesCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"HDConceptIndexEntity.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"conceptIndexEntries"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDConceptIndexEntity.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"conceptIndexEntries"}];
 
     if (v11)
     {
@@ -86,27 +86,27 @@
     }
 
 LABEL_5:
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"HDConceptIndexEntity.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDConceptIndexEntity.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!profileCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v12 = [v11 database];
+  database = [v11 database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __64__HDConceptIndexEntity_insertConceptIndexEntries_profile_error___block_invoke;
   v18[3] = &unk_278619348;
-  v19 = v9;
-  v20 = a1;
-  v13 = v9;
-  v14 = [a1 performWriteTransactionWithHealthDatabase:v12 error:a5 block:v18];
+  v19 = entriesCopy;
+  selfCopy = self;
+  v13 = entriesCopy;
+  v14 = [self performWriteTransactionWithHealthDatabase:database error:error block:v18];
 
   return v14;
 }
@@ -219,22 +219,22 @@ LABEL_21:
   return v20;
 }
 
-+ (BOOL)removeAllConceptIndexEntriesWithProfile:(id)a3 error:(id *)a4
++ (BOOL)removeAllConceptIndexEntriesWithProfile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  profileCopy = profile;
+  if (!profileCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"HDConceptIndexEntity.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDConceptIndexEntity.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
   }
 
-  v8 = [v7 database];
+  database = [profileCopy database];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__HDConceptIndexEntity_removeAllConceptIndexEntriesWithProfile_error___block_invoke;
   v12[3] = &__block_descriptor_40_e35_B24__0__HDDatabaseTransaction_8__16l;
-  v12[4] = a1;
-  v9 = [a1 performWriteTransactionWithHealthDatabase:v8 error:a4 block:v12];
+  v12[4] = self;
+  v9 = [self performWriteTransactionWithHealthDatabase:database error:error block:v12];
 
   return v9;
 }
@@ -252,14 +252,14 @@ uint64_t __70__HDConceptIndexEntity_removeAllConceptIndexEntriesWithProfile_erro
   return v9;
 }
 
-+ (id)conceptIndexEntriesForSampleUUID:(id)a3 type:(unint64_t)a4 profile:(id)a5 error:(id *)a6
++ (id)conceptIndexEntriesForSampleUUID:(id)d type:(unint64_t)type profile:(id)profile error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = v12;
-  if (v11)
+  dCopy = d;
+  profileCopy = profile;
+  v13 = profileCopy;
+  if (dCopy)
   {
-    if (v12)
+    if (profileCopy)
     {
       goto LABEL_3;
     }
@@ -267,8 +267,8 @@ uint64_t __70__HDConceptIndexEntity_removeAllConceptIndexEntriesWithProfile_erro
 
   else
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"HDConceptIndexEntity.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"sampleUUID"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDConceptIndexEntity.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"sampleUUID"}];
 
     if (v13)
     {
@@ -276,13 +276,13 @@ uint64_t __70__HDConceptIndexEntity_removeAllConceptIndexEntriesWithProfile_erro
     }
   }
 
-  v25 = [MEMORY[0x277CCA890] currentHandler];
-  [v25 handleFailureInMethod:a2 object:a1 file:@"HDConceptIndexEntity.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDConceptIndexEntity.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
 
 LABEL_3:
-  v14 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" equalToValue:v11];
+  v14 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" equalToValue:dCopy];
   v15 = MEMORY[0x277D10B18];
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v17 = [v15 predicateWithProperty:@"type" equalToValue:v16];
 
   v18 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v14 otherPredicate:v17];
@@ -293,7 +293,7 @@ LABEL_3:
   v26[3] = &unk_27861C490;
   v27 = v19;
   v20 = v19;
-  if ([a1 enumerateConceptIndexEntriesWithPredicate:v18 profile:v13 error:a6 enumerationHandler:v26])
+  if ([self enumerateConceptIndexEntriesWithPredicate:v18 profile:v13 error:error enumerationHandler:v26])
   {
     v21 = v20;
   }
@@ -308,23 +308,23 @@ LABEL_3:
   return v21;
 }
 
-+ (BOOL)enumerateConceptIndexEntriesWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)enumerateConceptIndexEntriesWithPredicate:(id)predicate profile:(id)profile error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [a4 database];
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  database = [profile database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __99__HDConceptIndexEntity_enumerateConceptIndexEntriesWithPredicate_profile_error_enumerationHandler___block_invoke;
   v16[3] = &unk_27861B6E8;
-  v18 = v11;
-  v19 = a1;
-  v17 = v10;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a5) = [a1 performReadTransactionWithHealthDatabase:v12 error:a5 block:v16];
+  v18 = handlerCopy;
+  selfCopy = self;
+  v17 = predicateCopy;
+  v13 = handlerCopy;
+  v14 = predicateCopy;
+  LOBYTE(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a5;
+  return error;
 }
 
 uint64_t __99__HDConceptIndexEntity_enumerateConceptIndexEntriesWithPredicate_profile_error_enumerationHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -385,25 +385,25 @@ LABEL_3:
   return v16;
 }
 
-+ (id)numberOfIndexedConceptsWithProfile:(id)a3 error:(id *)a4
++ (id)numberOfIndexedConceptsWithProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
+  profileCopy = profile;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__63;
   v16 = __Block_byref_object_dispose__63;
   v17 = 0;
-  v7 = [v6 database];
+  database = [profileCopy database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__HDConceptIndexEntity_numberOfIndexedConceptsWithProfile_error___block_invoke;
   v11[3] = &unk_27861C1A0;
   v11[4] = &v12;
-  v11[5] = a1;
-  LODWORD(a4) = [a1 performReadTransactionWithHealthDatabase:v7 error:a4 block:v11];
+  v11[5] = self;
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v11];
 
-  if (a4)
+  if (error)
   {
     v8 = v13[5];
   }
@@ -456,13 +456,13 @@ uint64_t __65__HDConceptIndexEntity_numberOfIndexedConceptsWithProfile_error___b
   return 1;
 }
 
-+ (id)unitTesting_allConceptIndexEntriesWithProfile:(id)a3 error:(id *)a4
++ (id)unitTesting_allConceptIndexEntriesWithProfile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  profileCopy = profile;
+  if (!profileCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"HDConceptIndexEntity.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDConceptIndexEntity.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -472,7 +472,7 @@ uint64_t __65__HDConceptIndexEntity_numberOfIndexedConceptsWithProfile_error___b
   v14[3] = &unk_27861C490;
   v15 = v8;
   v9 = v8;
-  if ([a1 enumerateConceptIndexEntriesWithPredicate:0 profile:v7 error:a4 enumerationHandler:v14])
+  if ([self enumerateConceptIndexEntriesWithPredicate:0 profile:profileCopy error:error enumerationHandler:v14])
   {
     v10 = v9;
   }

@@ -1,15 +1,15 @@
 @interface CSLPRFAppViewImageProvider
-- (void)retrieveImageForLauncherViewMode:(int64_t)a3 size:(CGSize)a4 completion:(id)a5;
+- (void)retrieveImageForLauncherViewMode:(int64_t)mode size:(CGSize)size completion:(id)completion;
 @end
 
 @implementation CSLPRFAppViewImageProvider
 
-- (void)retrieveImageForLauncherViewMode:(int64_t)a3 size:(CGSize)a4 completion:(id)a5
+- (void)retrieveImageForLauncherViewMode:(int64_t)mode size:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v19.width = width;
@@ -20,15 +20,15 @@
     _os_log_impl(&dword_22CE92000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, ">>>> calling getAppViewListImage %@", buf, 0xCu);
   }
 
-  v10 = [MEMORY[0x277D2BD60] sharedInstance];
+  mEMORY[0x277D2BD60] = [MEMORY[0x277D2BD60] sharedInstance];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __79__CSLPRFAppViewImageProvider_retrieveImageForLauncherViewMode_size_completion___block_invoke;
   v13[3] = &unk_278744B60;
-  v14 = v8;
-  v15 = a3;
-  v11 = v8;
-  [v10 getAppViewListImage:v13 completion:{width, height}];
+  v14 = completionCopy;
+  modeCopy = mode;
+  v11 = completionCopy;
+  [mEMORY[0x277D2BD60] getAppViewListImage:v13 completion:{width, height}];
 
   v12 = *MEMORY[0x277D85DE8];
 }

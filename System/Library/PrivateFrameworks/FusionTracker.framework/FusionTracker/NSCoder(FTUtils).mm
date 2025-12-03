@@ -13,7 +13,7 @@
   v8 = *a3;
   v6 = a4;
   v7 = CMTimeCopyAsDictionary(&v8, v5);
-  [a1 encodeObject:v7 forKey:{v6, *&v8.value, v8.epoch}];
+  [self encodeObject:v7 forKey:{v6, *&v8.value, v8.epoch}];
 
   CFRelease(v7);
 }
@@ -28,7 +28,7 @@
   v12 = objc_opt_class();
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:3];
   v8 = [v5 setWithArray:{v7, v10, v11}];
-  v9 = [a1 decodeObjectOfClasses:v8 forKey:v6];
+  v9 = [self decodeObjectOfClasses:v8 forKey:v6];
 
   CMTimeMakeFromDictionary(a3, v9);
 }
@@ -41,7 +41,7 @@
   v15.size.width = a4;
   v15.size.height = a5;
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v15);
-  [a1 encodeObject:DictionaryRepresentation forKey:v12];
+  [self encodeObject:DictionaryRepresentation forKey:v12];
 
   CFRelease(DictionaryRepresentation);
 }
@@ -57,7 +57,7 @@
   v11[2] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:3];
   v7 = [v4 setWithArray:v6];
-  v8 = [a1 decodeObjectOfClasses:v7 forKey:v5];
+  v8 = [self decodeObjectOfClasses:v7 forKey:v5];
 
   CGRectMakeWithDictionaryRepresentation(v8, &v10);
   return v10.origin.x;

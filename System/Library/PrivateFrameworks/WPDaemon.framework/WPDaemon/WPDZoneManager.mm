@@ -1,57 +1,57 @@
 @interface WPDZoneManager
 - (BOOL)updateScanner;
-- (WPDZoneManager)initWithServer:(id)a3;
-- (id)addZoneTrackingRequest:(id)a3 forClient:(id)a4;
+- (WPDZoneManager)initWithServer:(id)server;
+- (id)addZoneTrackingRequest:(id)request forClient:(id)client;
 - (id)generateStateDumpStrings;
 - (id)getAllZones;
-- (void)addSingleZoneTrackingRequest:(id)a3 forClient:(id)a4;
+- (void)addSingleZoneTrackingRequest:(id)request forClient:(id)client;
 - (void)cancelExitTimer;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didLoseZone:(id)a4 mask:(id)a5;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didLoseZone:(id)zone mask:(id)mask;
 - (void)cleanup;
 - (void)exitTimerFired;
 - (void)printTrackedZones;
 - (void)startExitTimer;
 - (void)unregisterAllZones;
-- (void)unregisterZones:(id)a3 forClient:(id)a4;
-- (void)unregisterZonesForClient:(id)a3 updateScanner:(BOOL)a4;
+- (void)unregisterZones:(id)zones forClient:(id)client;
+- (void)unregisterZonesForClient:(id)client updateScanner:(BOOL)scanner;
 - (void)update;
 - (void)updateScanner;
 @end
 
 @implementation WPDZoneManager
 
-- (WPDZoneManager)initWithServer:(id)a3
+- (WPDZoneManager)initWithServer:(id)server
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serverCopy = server;
   v25.receiver = self;
   v25.super_class = WPDZoneManager;
-  v5 = [(WPDManager *)&v25 initWithServer:v4 Name:@"Zone Central"];
+  v5 = [(WPDManager *)&v25 initWithServer:serverCopy Name:@"Zone Central"];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CBDFF8]);
-    v7 = [v4 serverQueue];
+    serverQueue = [serverCopy serverQueue];
     v26 = *MEMORY[0x277CBDF08];
     v27[0] = MEMORY[0x277CBEC38];
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-    v9 = [v6 initWithDelegate:v5 queue:v7 options:v8];
+    v9 = [v6 initWithDelegate:v5 queue:serverQueue options:v8];
     centralManager = v5->_centralManager;
     v5->_centralManager = v9;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     trackedZones = v5->_trackedZones;
-    v5->_trackedZones = v11;
+    v5->_trackedZones = dictionary;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     trackRequests = v5->_trackRequests;
-    v5->_trackRequests = v13;
+    v5->_trackRequests = dictionary2;
 
     zoneExitTimeout = v5->_zoneExitTimeout;
     v5->_zoneExitTimeout = &unk_2882019E8;
 
-    v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v17 = [v16 persistentDomainForName:@"com.apple.MobileBluetooth.debug"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v17 = [standardUserDefaults persistentDomainForName:@"com.apple.MobileBluetooth.debug"];
     v18 = [v17 objectForKeyedSubscript:@"WIPROX"];
 
     v19 = [v18 objectForKeyedSubscript:@"ZoneTrackerTimeout"];
@@ -76,8 +76,8 @@
     v21 = [MEMORY[0x277CBEB98] setWithObject:v5->_centralManager];
     [(WPDManager *)v5 setCbManagers:v21];
 
-    v22 = [v4 wpdState];
-    [v22 registerManager:v5->_centralManager];
+    wpdState = [serverCopy wpdState];
+    [wpdState registerManager:v5->_centralManager];
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -98,15 +98,15 @@
   v3 = MEMORY[0x277CBEB18];
   v22.receiver = self;
   v22.super_class = WPDZoneManager;
-  v4 = [(WPDManager *)&v22 generateStateDumpStrings];
-  v5 = [v3 arrayWithArray:v4];
+  generateStateDumpStrings = [(WPDManager *)&v22 generateStateDumpStrings];
+  v5 = [v3 arrayWithArray:generateStateDumpStrings];
 
   if ([(WPDManager *)self isInternalBuild])
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(WPDZoneManager *)self scanAllowlisted];
+    scanAllowlisted = [(WPDZoneManager *)self scanAllowlisted];
     v8 = "no";
-    if (v7)
+    if (scanAllowlisted)
     {
       v8 = "yes";
     }
@@ -116,23 +116,23 @@
   }
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(WPDZoneManager *)self trackRequests];
-  v12 = [v10 stringWithFormat:@"trackRequests (%ld):\n", objc_msgSend(v11, "count")];
+  trackRequests = [(WPDZoneManager *)self trackRequests];
+  v12 = [v10 stringWithFormat:@"trackRequests (%ld):\n", objc_msgSend(trackRequests, "count")];
   [v5 addObject:v12];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [(WPDZoneManager *)self trackedZones];
-  v15 = [v13 stringWithFormat:@"trackedZones (%ld):\n", objc_msgSend(v14, "count")];
+  trackedZones = [(WPDZoneManager *)self trackedZones];
+  v15 = [v13 stringWithFormat:@"trackedZones (%ld):\n", objc_msgSend(trackedZones, "count")];
   [v5 addObject:v15];
 
-  v16 = [(WPDZoneManager *)self trackedZones];
+  trackedZones2 = [(WPDZoneManager *)self trackedZones];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __42__WPDZoneManager_generateStateDumpStrings__block_invoke;
   v20[3] = &unk_279E59448;
   v21 = v5;
   v17 = v5;
-  [v16 enumerateKeysAndObjectsUsingBlock:v20];
+  [trackedZones2 enumerateKeysAndObjectsUsingBlock:v20];
 
   v18 = [MEMORY[0x277CBEA60] arrayWithArray:v17];
 
@@ -149,12 +149,12 @@ void __42__WPDZoneManager_generateStateDumpStrings__block_invoke(uint64_t a1, ui
 - (void)update
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(WPDManager *)self state];
-  if (v3 <= 1)
+  state = [(WPDManager *)self state];
+  if (state <= 1)
   {
-    if (v3)
+    if (state)
     {
-      if (v3 == 1)
+      if (state == 1)
       {
         if (WPLogInitOnce != -1)
         {
@@ -185,18 +185,18 @@ LABEL_10:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(WPDZoneManager *)self centralManager];
+      centralManager = [(WPDZoneManager *)self centralManager];
       v10[0] = 67109120;
-      v10[1] = [v8 state];
+      v10[1] = [centralManager state];
       _os_log_impl(&dword_272965000, v7, OS_LOG_TYPE_DEFAULT, "Zone Central manager is  unknown, powered off, unauthorized or not supported (%d)", v10, 8u);
     }
 
     goto LABEL_19;
   }
 
-  if (v3 != 3)
+  if (state != 3)
   {
-    if (v3 != 2)
+    if (state != 2)
     {
       goto LABEL_19;
     }
@@ -221,23 +221,23 @@ LABEL_19:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a6;
-  v11 = [a5 objectForKeyedSubscript:*MEMORY[0x277CBDD10]];
+  peripheralCopy = peripheral;
+  iCopy = i;
+  v11 = [data objectForKeyedSubscript:*MEMORY[0x277CBDD10]];
   v12 = v11;
   if (v11)
   {
     if ([v11 length] > 3)
     {
-      v15 = [v12 bytes];
-      if (*v15 == 76 && !v15[1] && v15[2] == 2)
+      bytes = [v12 bytes];
+      if (*bytes == 76 && !bytes[1] && bytes[2] == 2)
       {
-        v16 = v15 + 4;
+        v16 = bytes + 4;
         v17 = [v12 length] - 4;
-        if ([v10 integerValue] < -87 || objc_msgSend(v10, "integerValue") == 127)
+        if ([iCopy integerValue] < -87 || objc_msgSend(iCopy, "integerValue") == 127)
         {
           if (WPLogInitOnce != -1)
           {
@@ -248,10 +248,10 @@ LABEL_19:
           if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
           {
             v14 = v18;
-            v19 = [v10 intValue];
+            intValue = [iCopy intValue];
             v20 = [MEMORY[0x277CBEA90] dataWithBytes:v16 length:v17];
             *buf = 67109378;
-            *v33 = v19;
+            *v33 = intValue;
             *&v33[4] = 2112;
             *&v33[6] = v20;
             _os_log_debug_impl(&dword_272965000, v14, OS_LOG_TYPE_DEBUG, "RSSI invalid for zone entry (%d dBm - %@)", buf, 0x12u);
@@ -271,10 +271,10 @@ LABEL_19:
           if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
           {
             v24 = v21;
-            v25 = [v9 name];
+            name = [peripheralCopy name];
             v26 = [MEMORY[0x277CBEA90] dataWithBytes:v16 length:v17];
             *buf = 138412802;
-            *v33 = v25;
+            *v33 = name;
             *&v33[8] = 2112;
             *&v33[10] = v26;
             v34 = 2048;
@@ -282,16 +282,16 @@ LABEL_19:
             _os_log_debug_impl(&dword_272965000, v24, OS_LOG_TYPE_DEBUG, "Discovered a zone peripheral %@ with data (%@) of length (%lu)", buf, 0x20u);
           }
 
-          v22 = [(WPDZoneManager *)self trackedZones];
+          trackedZones = [(WPDZoneManager *)self trackedZones];
           v27[0] = MEMORY[0x277D85DD0];
           v27[1] = 3221225472;
           v27[2] = __78__WPDZoneManager_centralManager_didDiscoverPeripheral_advertisementData_RSSI___block_invoke_181;
           v27[3] = &unk_279E59470;
           v30 = v17;
           v31 = v16;
-          v28 = v9;
-          v29 = self;
-          [v22 enumerateKeysAndObjectsUsingBlock:v27];
+          v28 = peripheralCopy;
+          selfCopy = self;
+          [trackedZones enumerateKeysAndObjectsUsingBlock:v27];
         }
       }
     }
@@ -424,12 +424,12 @@ void __78__WPDZoneManager_centralManager_didDiscoverPeripheral_advertisementData
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManager:(id)a3 didLoseZone:(id)a4 mask:(id)a5
+- (void)centralManager:(id)manager didLoseZone:(id)zone mask:(id)mask
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 bytes];
-  v10 = [v7 bytes];
+  zoneCopy = zone;
+  maskCopy = mask;
+  bytes = [maskCopy bytes];
+  bytes2 = [zoneCopy bytes];
   if (WPLogInitOnce != -1)
   {
     [WPDZoneManager centralManager:didLoseZone:mask:];
@@ -438,22 +438,22 @@ void __78__WPDZoneManager_centralManager_didDiscoverPeripheral_advertisementData
   v11 = WiProxLog;
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
-    [WPDZoneManager centralManager:v11 didLoseZone:v7 mask:?];
+    [WPDZoneManager centralManager:v11 didLoseZone:zoneCopy mask:?];
   }
 
-  v12 = [(WPDZoneManager *)self trackedZones];
+  trackedZones = [(WPDZoneManager *)self trackedZones];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __50__WPDZoneManager_centralManager_didLoseZone_mask___block_invoke_194;
   v15[3] = &unk_279E59498;
-  v19 = v9;
-  v20 = v10;
-  v16 = v8;
-  v17 = self;
-  v18 = v7;
-  v13 = v7;
-  v14 = v8;
-  [v12 enumerateKeysAndObjectsUsingBlock:v15];
+  v19 = bytes;
+  v20 = bytes2;
+  v16 = maskCopy;
+  selfCopy = self;
+  v18 = zoneCopy;
+  v13 = zoneCopy;
+  v14 = maskCopy;
+  [trackedZones enumerateKeysAndObjectsUsingBlock:v15];
 
   [(WPDZoneManager *)self printTrackedZones];
 }
@@ -594,8 +594,8 @@ LABEL_39:
 
 - (void)printTrackedZones
 {
-  v2 = [(WPDZoneManager *)self trackedZones];
-  [v2 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_210_0];
+  trackedZones = [(WPDZoneManager *)self trackedZones];
+  [trackedZones enumerateKeysAndObjectsUsingBlock:&__block_literal_global_210_0];
 }
 
 void __35__WPDZoneManager_printTrackedZones__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -628,9 +628,9 @@ void __35__WPDZoneManager_printTrackedZones__block_invoke(uint64_t a1, void *a2,
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v28 = v27;
-      v29 = [(WPDZoneManager *)self centralManager];
+      centralManager = [(WPDZoneManager *)self centralManager];
       *buf = 67109120;
-      LODWORD(v60) = [v29 state];
+      LODWORD(v60) = [centralManager state];
       _os_log_impl(&dword_272965000, v28, OS_LOG_TYPE_DEFAULT, "Zones: updateScanner - central is not powered on: %d", buf, 8u);
     }
 
@@ -655,11 +655,11 @@ void __35__WPDZoneManager_printTrackedZones__block_invoke(uint64_t a1, void *a2,
     goto LABEL_47;
   }
 
-  v3 = [(WPDZoneManager *)self centralManager];
-  [v3 stopScan];
+  centralManager2 = [(WPDZoneManager *)self centralManager];
+  [centralManager2 stopScan];
 
-  v4 = [(WPDZoneManager *)self trackedZones];
-  v5 = [v4 count];
+  trackedZones = [(WPDZoneManager *)self trackedZones];
+  v5 = [trackedZones count];
 
   if (!v5)
   {
@@ -679,24 +679,24 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [(WPDZoneManager *)self trackedZones];
+  array = [MEMORY[0x277CBEB18] array];
+  trackedZones2 = [(WPDZoneManager *)self trackedZones];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __31__WPDZoneManager_updateScanner__block_invoke_227;
   v57[3] = &unk_279E59448;
-  v8 = v6;
+  v8 = array;
   v58 = v8;
-  [v7 enumerateKeysAndObjectsUsingBlock:v57];
+  [trackedZones2 enumerateKeysAndObjectsUsingBlock:v57];
 
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v9 = [(WPDZoneManager *)self trackRequests];
-  v10 = [v9 allValues];
+  trackRequests = [(WPDZoneManager *)self trackRequests];
+  allValues = [trackRequests allValues];
 
-  v43 = [v10 countByEnumeratingWithState:&v53 objects:v66 count:16];
+  v43 = [allValues countByEnumeratingWithState:&v53 objects:v66 count:16];
   if (!v43)
   {
 
@@ -704,7 +704,7 @@ LABEL_47:
   }
 
   v40 = v8;
-  obj = v10;
+  obj = allValues;
   v42 = *v54;
   v11 = 0xFFFFLL;
   v12 = 0xFFFFLL;
@@ -724,8 +724,8 @@ LABEL_47:
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v15 = [v14 allValues];
-      v16 = [v15 countByEnumeratingWithState:&v49 objects:v65 count:16];
+      allValues2 = [v14 allValues];
+      v16 = [allValues2 countByEnumeratingWithState:&v49 objects:v65 count:16];
       if (v16)
       {
         v17 = v16;
@@ -736,12 +736,12 @@ LABEL_47:
           {
             if (*v50 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allValues2);
             }
 
             v20 = *(*(&v49 + 1) + 8 * i);
-            v21 = [(WPDManager *)self server];
-            if ([v21 screenOff])
+            server = [(WPDManager *)self server];
+            if ([server screenOff])
             {
               v22 = &v47;
               if (!v20)
@@ -787,7 +787,7 @@ LABEL_23:
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v49 objects:v65 count:16];
+          v17 = [allValues2 countByEnumeratingWithState:&v49 objects:v65 count:16];
         }
 
         while (v17);
@@ -843,7 +843,7 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  v34 = [(WPDZoneManager *)self centralManager];
+  centralManager3 = [(WPDZoneManager *)self centralManager];
   v35 = *MEMORY[0x277CBDEF8];
   v63[0] = *MEMORY[0x277CBDE70];
   v63[1] = v35;
@@ -856,7 +856,7 @@ LABEL_55:
   v37 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
   v64[3] = v37;
   v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v64 forKeys:v63 count:4];
-  [v34 scanForPeripheralsWithServices:0 options:v38];
+  [centralManager3 scanForPeripheralsWithServices:0 options:v38];
 
   if (WPLogInitOnce != -1)
   {
@@ -899,10 +899,10 @@ void __31__WPDZoneManager_updateScanner__block_invoke_227(uint64_t a1, uint64_t 
 - (void)startExitTimer
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 lastTimeScannerStarted];
+  selfCopy = self;
+  lastTimeScannerStarted = [a2 lastTimeScannerStarted];
   OUTLINED_FUNCTION_2();
-  _os_log_error_impl(&dword_272965000, v3, OS_LOG_TYPE_ERROR, "startExitTimer failed to start: (%@)", v6, 0xCu);
+  _os_log_error_impl(&dword_272965000, selfCopy, OS_LOG_TYPE_ERROR, "startExitTimer failed to start: (%@)", v6, 0xCu);
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -921,17 +921,17 @@ void __32__WPDZoneManager_startExitTimer__block_invoke(uint64_t a1)
 
 - (void)cancelExitTimer
 {
-  v3 = [(WPDZoneManager *)self exitTimer];
+  exitTimer = [(WPDZoneManager *)self exitTimer];
 
-  if (v3)
+  if (exitTimer)
   {
-    v4 = [(WPDZoneManager *)self exitTimer];
-    v5 = dispatch_source_testcancel(v4);
+    exitTimer2 = [(WPDZoneManager *)self exitTimer];
+    v5 = dispatch_source_testcancel(exitTimer2);
 
     if (!v5)
     {
-      v6 = [(WPDZoneManager *)self exitTimer];
-      dispatch_source_cancel(v6);
+      exitTimer3 = [(WPDZoneManager *)self exitTimer];
+      dispatch_source_cancel(exitTimer3);
     }
 
     [(WPDZoneManager *)self setExitTimer:0];
@@ -942,8 +942,8 @@ void __32__WPDZoneManager_startExitTimer__block_invoke(uint64_t a1)
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = [a3 lastTimeScannerStarted];
-  [a1 timeIntervalSinceDate:v6];
+  lastTimeScannerStarted = [a3 lastTimeScannerStarted];
+  [self timeIntervalSinceDate:lastTimeScannerStarted];
   OUTLINED_FUNCTION_4();
   _os_log_debug_impl(v7, v8, v9, v10, v11, 0x16u);
 
@@ -1024,14 +1024,14 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSingleZoneTrackingRequest:(id)a3 forClient:(id)a4
+- (void)addSingleZoneTrackingRequest:(id)request forClient:(id)client
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 zones];
-  v9 = [v8 anyObject];
-  v10 = [v9 description];
+  requestCopy = request;
+  clientCopy = client;
+  zones = [requestCopy zones];
+  anyObject = [zones anyObject];
+  v10 = [anyObject description];
 
   if (WPLogInitOnce != -1)
   {
@@ -1046,24 +1046,24 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
     _os_log_impl(&dword_272965000, v11, OS_LOG_TYPE_DEFAULT, "Adding zone %@", buf, 0xCu);
   }
 
-  v12 = [(WPDZoneManager *)self trackRequests];
-  v13 = [v12 objectForKeyedSubscript:v7];
+  trackRequests = [(WPDZoneManager *)self trackRequests];
+  dictionary = [trackRequests objectForKeyedSubscript:clientCopy];
 
-  if (!v13)
+  if (!dictionary)
   {
-    v13 = [MEMORY[0x277CBEB38] dictionary];
-    v14 = [(WPDZoneManager *)self trackRequests];
-    [v14 setObject:v13 forKey:v7];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    trackRequests2 = [(WPDZoneManager *)self trackRequests];
+    [trackRequests2 setObject:dictionary forKey:clientCopy];
   }
 
-  [v13 setObject:v6 forKey:v10];
-  v15 = [(WPDZoneManager *)self trackedZones];
-  v16 = [v15 objectForKeyedSubscript:v10];
+  [dictionary setObject:requestCopy forKey:v10];
+  trackedZones = [(WPDZoneManager *)self trackedZones];
+  v16 = [trackedZones objectForKeyedSubscript:v10];
 
   if (v16)
   {
     v17 = [v16 objectForKeyedSubscript:@"kWPClientUUIDs"];
-    [v17 addObject:v7];
+    [v17 addObject:clientCopy];
 
     if (WPLogInitOnce != -1)
     {
@@ -1074,28 +1074,28 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      v20 = [(WPDZoneManager *)self trackedZones];
-      v21 = [v20 count];
-      v22 = [(WPDZoneManager *)self trackedZones];
+      trackedZones2 = [(WPDZoneManager *)self trackedZones];
+      v21 = [trackedZones2 count];
+      trackedZones3 = [(WPDZoneManager *)self trackedZones];
       *buf = 138413058;
-      v38 = v7;
+      v38 = clientCopy;
       v39 = 2114;
       v40 = v10;
       v41 = 2048;
       v42 = v21;
       v43 = 2114;
-      v44 = v22;
+      v44 = trackedZones3;
       _os_log_impl(&dword_272965000, v19, OS_LOG_TYPE_DEFAULT, "Added client %@ to zone %{public}@. Currently tracking %ld zones %{public}@", buf, 0x2Au);
     }
   }
 
   else
   {
-    v23 = [MEMORY[0x277CBEB58] setWithObject:v7];
+    v23 = [MEMORY[0x277CBEB58] setWithObject:clientCopy];
     v24 = MEMORY[0x277CBEB38];
-    v25 = [v6 zones];
-    v26 = [v25 anyObject];
-    v36[0] = v26;
+    zones2 = [requestCopy zones];
+    anyObject2 = [zones2 anyObject];
+    v36[0] = anyObject2;
     v36[1] = MEMORY[0x277CBEC28];
     v35[1] = @"kInZone";
     v35[2] = @"kWPClientUUIDs";
@@ -1103,8 +1103,8 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:3];
     v16 = [v24 dictionaryWithDictionary:v27];
 
-    v28 = [(WPDZoneManager *)self trackedZones];
-    [v28 setObject:v16 forKey:v10];
+    trackedZones4 = [(WPDZoneManager *)self trackedZones];
+    [trackedZones4 setObject:v16 forKey:v10];
 
     if (WPLogInitOnce != -1)
     {
@@ -1115,17 +1115,17 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v30 = v29;
-      v31 = [(WPDZoneManager *)self trackedZones];
-      v32 = [v31 count];
-      v33 = [(WPDZoneManager *)self trackedZones];
+      trackedZones5 = [(WPDZoneManager *)self trackedZones];
+      v32 = [trackedZones5 count];
+      trackedZones6 = [(WPDZoneManager *)self trackedZones];
       *buf = 138544130;
       v38 = v10;
       v39 = 2112;
-      v40 = v7;
+      v40 = clientCopy;
       v41 = 2048;
       v42 = v32;
       v43 = 2114;
-      v44 = v33;
+      v44 = trackedZones6;
       _os_log_impl(&dword_272965000, v30, OS_LOG_TYPE_DEFAULT, "Added zone %{public}@ for client %@. Currently tracking %ld zones %{public}@", buf, 0x2Au);
     }
   }
@@ -1133,25 +1133,25 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addZoneTrackingRequest:(id)a3 forClient:(id)a4
+- (id)addZoneTrackingRequest:(id)request forClient:(id)client
 {
   v77[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  clientCopy = client;
   if ([(WPDManager *)self state]== 3)
   {
-    v54 = self;
+    selfCopy = self;
     v8 = objc_alloc(MEMORY[0x277CBEB58]);
-    v9 = [v6 zones];
-    v10 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+    zones = [requestCopy zones];
+    v10 = [v8 initWithCapacity:{objc_msgSend(zones, "count")}];
 
-    v11 = [v6 zones];
-    v12 = [v11 count];
+    zones2 = [requestCopy zones];
+    v12 = [zones2 count];
 
     v13 = v10;
     if (v12 == 1)
     {
-      [v10 addObject:v6];
+      [v10 addObject:requestCopy];
     }
 
     else
@@ -1165,9 +1165,9 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
       {
         v19 = v18;
-        v20 = [v6 zones];
+        zones3 = [requestCopy zones];
         *buf = 134217984;
-        *&buf[4] = [v20 count];
+        *&buf[4] = [zones3 count];
         _os_log_impl(&dword_272965000, v19, OS_LOG_TYPE_DEFAULT, "Multiple zones in one request, breaking down into %ld one-zone-per-request", buf, 0xCu);
       }
 
@@ -1175,8 +1175,8 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
       v68 = 0u;
       v65 = 0u;
       v66 = 0u;
-      v21 = [v6 zones];
-      v22 = [v21 countByEnumeratingWithState:&v65 objects:v75 count:16];
+      zones4 = [requestCopy zones];
+      v22 = [zones4 countByEnumeratingWithState:&v65 objects:v75 count:16];
       if (v22)
       {
         v23 = v22;
@@ -1187,15 +1187,15 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
           {
             if (*v66 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(zones4);
             }
 
             v26 = *(*(&v65 + 1) + 8 * i);
             v27 = objc_opt_new();
-            [v27 setClientType:{objc_msgSend(v6, "clientType")}];
-            if (v6)
+            [v27 setClientType:{objc_msgSend(requestCopy, "clientType")}];
+            if (requestCopy)
             {
-              [v6 scanningRates];
+              [requestCopy scanningRates];
             }
 
             else
@@ -1213,24 +1213,24 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
             [v10 addObject:v27];
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v65 objects:v75 count:16];
+          v23 = [zones4 countByEnumeratingWithState:&v65 objects:v75 count:16];
         }
 
         while (v23);
       }
 
-      v7 = v53;
+      clientCopy = v53;
     }
 
-    v29 = [(WPDZoneManager *)v54 trackedZones];
-    v30 = [v29 allKeys];
+    trackedZones = [(WPDZoneManager *)selfCopy trackedZones];
+    allKeys = [trackedZones allKeys];
 
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v31 = [v6 zones];
-    v32 = [v31 countByEnumeratingWithState:&v59 objects:v74 count:16];
+    zones5 = [requestCopy zones];
+    v32 = [zones5 countByEnumeratingWithState:&v59 objects:v74 count:16];
     if (v32)
     {
       v33 = v32;
@@ -1242,14 +1242,14 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
         {
           if (*v60 != v35)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(zones5);
           }
 
           v37 = [*(*(&v59 + 1) + 8 * j) description];
-          v34 += [v30 containsObject:v37] ^ 1;
+          v34 += [allKeys containsObject:v37] ^ 1;
         }
 
-        v33 = [v31 countByEnumeratingWithState:&v59 objects:v74 count:16];
+        v33 = [zones5 countByEnumeratingWithState:&v59 objects:v74 count:16];
       }
 
       while (v33);
@@ -1260,8 +1260,8 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
       v34 = 0;
     }
 
-    v38 = [(WPDZoneManager *)v54 trackedZones];
-    v39 = 30 - [v38 count];
+    trackedZones2 = [(WPDZoneManager *)selfCopy trackedZones];
+    v39 = 30 - [trackedZones2 count];
 
     if (v39 >= v34)
     {
@@ -1285,7 +1285,7 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
               objc_enumerationMutation(v46);
             }
 
-            [(WPDZoneManager *)v54 addSingleZoneTrackingRequest:*(*(&v55 + 1) + 8 * k) forClient:v7];
+            [(WPDZoneManager *)selfCopy addSingleZoneTrackingRequest:*(*(&v55 + 1) + 8 * k) forClient:clientCopy];
           }
 
           v48 = [v46 countByEnumeratingWithState:&v55 objects:v69 count:16];
@@ -1294,7 +1294,7 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
         while (v48);
       }
 
-      [(WPDZoneManager *)v54 updateScanner];
+      [(WPDZoneManager *)selfCopy updateScanner];
       v16 = 0;
     }
 
@@ -1316,9 +1316,9 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
       if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
       {
         v44 = v43;
-        v45 = [v6 zones];
+        zones6 = [requestCopy zones];
         *buf = 138543874;
-        *&buf[4] = v45;
+        *&buf[4] = zones6;
         *&buf[12] = 2048;
         *&buf[14] = v34;
         *&buf[22] = 2048;
@@ -1353,12 +1353,12 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
   return v16;
 }
 
-- (void)unregisterZones:(id)a3 forClient:(id)a4
+- (void)unregisterZones:(id)zones forClient:(id)client
 {
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v48 = a4;
-  if (v6 && [v6 count])
+  zonesCopy = zones;
+  clientCopy = client;
+  if (zonesCopy && [zonesCopy count])
   {
     if (WPLogInitOnce != -1)
     {
@@ -1369,14 +1369,14 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v58 = v6;
+      v58 = zonesCopy;
       v59 = 2112;
-      v60 = v48;
+      v60 = clientCopy;
       _os_log_impl(&dword_272965000, v7, OS_LOG_TYPE_DEFAULT, "Unregistering zones: %{public}@ for client %@", buf, 0x16u);
     }
 
-    v8 = [(WPDZoneManager *)self trackRequests];
-    v9 = [v8 objectForKeyedSubscript:v48];
+    trackRequests = [(WPDZoneManager *)self trackRequests];
+    v9 = [trackRequests objectForKeyedSubscript:clientCopy];
 
     if (v9)
     {
@@ -1384,7 +1384,7 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
       v56 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v10 = v6;
+      v10 = zonesCopy;
       v11 = [v10 countByEnumeratingWithState:&v53 objects:v66 count:16];
       if (v11)
       {
@@ -1411,18 +1411,18 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
 
       if (![v9 count])
       {
-        v16 = [(WPDZoneManager *)self trackRequests];
-        [v16 removeObjectForKey:v48];
+        trackRequests2 = [(WPDZoneManager *)self trackRequests];
+        [trackRequests2 removeObjectForKey:clientCopy];
       }
     }
 
     v44 = v9;
-    v45 = v6;
+    v45 = zonesCopy;
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    obj = v6;
+    obj = zonesCopy;
     v17 = [obj countByEnumeratingWithState:&v49 objects:v65 count:16];
     if (v17)
     {
@@ -1440,8 +1440,8 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
           }
 
           v21 = [*(*(&v49 + 1) + 8 * v20) description];
-          v22 = [(WPDZoneManager *)self trackedZones];
-          v23 = [v22 objectForKeyedSubscript:v21];
+          trackedZones = [(WPDZoneManager *)self trackedZones];
+          v23 = [trackedZones objectForKeyedSubscript:v21];
 
           if (v23)
           {
@@ -1452,7 +1452,7 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
               goto LABEL_29;
             }
 
-            [v24 removeObject:v48];
+            [v24 removeObject:clientCopy];
             if (WPLogInitOnce != -1)
             {
               [WPDZoneManager unregisterZones:forClient:];
@@ -1462,26 +1462,26 @@ void __32__WPDZoneManager_exitTimerFired__block_invoke_244(uint64_t a1, uint64_t
             if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
             {
               v27 = v26;
-              v28 = [(WPDZoneManager *)self trackedZones];
-              v29 = [v28 count];
-              v30 = [(WPDZoneManager *)self trackedZones];
+              trackedZones2 = [(WPDZoneManager *)self trackedZones];
+              v29 = [trackedZones2 count];
+              trackedZones3 = [(WPDZoneManager *)self trackedZones];
               *buf = 138413058;
-              v58 = v48;
+              v58 = clientCopy;
               v59 = 2114;
               v60 = v21;
               v61 = 2048;
               v62 = v29;
               v19 = v46;
               v63 = 2114;
-              v64 = v30;
+              v64 = trackedZones3;
               _os_log_impl(&dword_272965000, v27, OS_LOG_TYPE_DEFAULT, "Removed client %@ from zone (%{public}@), currently tracking %ld zones %{public}@ ", buf, 0x2Au);
             }
 
             if (![v25 count])
             {
 LABEL_29:
-              v31 = [(WPDZoneManager *)self trackedZones];
-              [v31 removeObjectForKey:v21];
+              trackedZones4 = [(WPDZoneManager *)self trackedZones];
+              [trackedZones4 removeObjectForKey:v21];
 
               if (WPLogInitOnce != -1)
               {
@@ -1492,16 +1492,16 @@ LABEL_29:
               if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
               {
                 v33 = v32;
-                v34 = [(WPDZoneManager *)self trackedZones];
-                v35 = [v34 count];
-                v36 = [(WPDZoneManager *)self trackedZones];
+                trackedZones5 = [(WPDZoneManager *)self trackedZones];
+                v35 = [trackedZones5 count];
+                trackedZones6 = [(WPDZoneManager *)self trackedZones];
                 *buf = 138543874;
                 v58 = v21;
                 v59 = 2048;
                 v60 = v35;
                 v19 = v46;
                 v61 = 2114;
-                v62 = v36;
+                v62 = trackedZones6;
                 _os_log_impl(&dword_272965000, v33, OS_LOG_TYPE_DEFAULT, "Removed zone (%{public}@), currently tracking %ld zones %{public}@ ", buf, 0x20u);
               }
             }
@@ -1523,18 +1523,18 @@ LABEL_29:
     }
 
     v37 = v44;
-    v6 = v45;
+    zonesCopy = v45;
     v38 = WiProxLog;
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v39 = v38;
-      v40 = [(WPDZoneManager *)self trackedZones];
-      v41 = [v40 count];
-      v42 = [(WPDZoneManager *)self trackedZones];
+      trackedZones7 = [(WPDZoneManager *)self trackedZones];
+      v41 = [trackedZones7 count];
+      trackedZones8 = [(WPDZoneManager *)self trackedZones];
       *buf = 134218242;
       v58 = v41;
       v59 = 2114;
-      v60 = v42;
+      v60 = trackedZones8;
       _os_log_impl(&dword_272965000, v39, OS_LOG_TYPE_DEFAULT, "Now tracking %ld zones: %{public}@", buf, 0x16u);
     }
 
@@ -1544,11 +1544,11 @@ LABEL_29:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterZonesForClient:(id)a3 updateScanner:(BOOL)a4
+- (void)unregisterZonesForClient:(id)client updateScanner:(BOOL)scanner
 {
-  v21 = a4;
+  scannerCopy = scanner;
   v41 = *MEMORY[0x277D85DE8];
-  v22 = a3;
+  clientCopy = client;
   if (WPLogInitOnce != -1)
   {
     [WPDZoneManager unregisterZonesForClient:updateScanner:];
@@ -1559,8 +1559,8 @@ LABEL_29:
     [WPDZoneManager unregisterZonesForClient:updateScanner:];
   }
 
-  v5 = [(WPDZoneManager *)self trackRequests];
-  v6 = [v5 count] == 0;
+  trackRequests = [(WPDZoneManager *)self trackRequests];
+  v6 = [trackRequests count] == 0;
 
   if (v6)
   {
@@ -1577,8 +1577,8 @@ LABEL_29:
 
   else
   {
-    v7 = [(WPDZoneManager *)self trackRequests];
-    [v7 removeObjectForKey:v22];
+    trackRequests2 = [(WPDZoneManager *)self trackRequests];
+    [trackRequests2 removeObjectForKey:clientCopy];
 
     v30 = 0;
     v31 = &v30;
@@ -1586,14 +1586,14 @@ LABEL_29:
     v33 = __Block_byref_object_copy__1;
     v34 = __Block_byref_object_dispose__1;
     v35 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v8 = [(WPDZoneManager *)self trackedZones];
+    trackedZones = [(WPDZoneManager *)self trackedZones];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __57__WPDZoneManager_unregisterZonesForClient_updateScanner___block_invoke_288;
     v27[3] = &unk_279E59508;
-    v28 = v22;
+    v28 = clientCopy;
     v29 = &v30;
-    [v8 enumerateKeysAndObjectsUsingBlock:v27];
+    [trackedZones enumerateKeysAndObjectsUsingBlock:v27];
 
     v25 = 0u;
     v26 = 0u;
@@ -1615,8 +1615,8 @@ LABEL_29:
           }
 
           v13 = *(*(&v23 + 1) + 8 * v12);
-          v14 = [(WPDZoneManager *)self trackedZones];
-          [v14 removeObjectForKey:v13];
+          trackedZones2 = [(WPDZoneManager *)self trackedZones];
+          [trackedZones2 removeObjectForKey:v13];
 
           if (WPLogInitOnce != -1)
           {
@@ -1649,17 +1649,17 @@ LABEL_29:
     v16 = WiProxLog;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(WPDZoneManager *)self trackedZones];
-      v18 = [v17 count];
-      v19 = [(WPDZoneManager *)self trackedZones];
+      trackedZones3 = [(WPDZoneManager *)self trackedZones];
+      v18 = [trackedZones3 count];
+      trackedZones4 = [(WPDZoneManager *)self trackedZones];
       *buf = 134218242;
       v37 = v18;
       v38 = 2114;
-      v39 = v19;
+      v39 = trackedZones4;
       _os_log_impl(&dword_272965000, v16, OS_LOG_TYPE_DEFAULT, "Now tracking %ld zones: %{public}@", buf, 0x16u);
     }
 
-    if (v21)
+    if (scannerCopy)
     {
       [(WPDZoneManager *)self updateScanner];
     }
@@ -1710,8 +1710,8 @@ LABEL_7:
 - (id)getAllZones
 {
   v2 = MEMORY[0x277CBEAC0];
-  v3 = [(WPDZoneManager *)self trackedZones];
-  v4 = [v2 dictionaryWithDictionary:v3];
+  trackedZones = [(WPDZoneManager *)self trackedZones];
+  v4 = [v2 dictionaryWithDictionary:trackedZones];
 
   return v4;
 }

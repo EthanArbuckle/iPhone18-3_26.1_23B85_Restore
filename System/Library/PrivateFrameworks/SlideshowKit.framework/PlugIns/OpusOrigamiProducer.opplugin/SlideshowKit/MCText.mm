@@ -1,22 +1,22 @@
 @interface MCText
-- (MCText)initWithImprint:(id)a3 andMontage:(id)a4;
+- (MCText)initWithImprint:(id)imprint andMontage:(id)montage;
 - (id)attributedStringWithCTAttributes;
 - (id)imprint;
 - (void)demolish;
-- (void)setAttributedString:(id)a3;
+- (void)setAttributedString:(id)string;
 @end
 
 @implementation MCText
 
-- (MCText)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCText)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v8.receiver = self;
   v8.super_class = MCText;
-  v5 = [(MCObject *)&v8 initWithImprint:a3 andMontage:a4];
+  v5 = [(MCObject *)&v8 initWithImprint:imprint andMontage:montage];
   if (v5)
   {
-    v5->mIndex = [objc_msgSend(a3 objectForKey:{@"index", "unsignedIntegerValue"}];
-    v6 = [a3 objectForKey:@"attributedString"];
+    v5->mIndex = [objc_msgSend(imprint objectForKey:{@"index", "unsignedIntegerValue"}];
+    v6 = [imprint objectForKey:@"attributedString"];
     if (v6)
     {
       v5->mStringAttributes = v6;
@@ -39,27 +39,27 @@
 {
   v6.receiver = self;
   v6.super_class = MCText;
-  v3 = [(MCObject *)&v6 imprint];
-  [v3 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->mIndex), @"index"}];
+  imprint = [(MCObject *)&v6 imprint];
+  [imprint setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->mIndex), @"index"}];
   mStringAttributes = self->mStringAttributes;
   if (mStringAttributes)
   {
-    [v3 setObject:mStringAttributes forKey:@"attributedString"];
+    [imprint setObject:mStringAttributes forKey:@"attributedString"];
   }
 
-  return v3;
+  return imprint;
 }
 
 - (id)attributedStringWithCTAttributes
 {
-  v2 = [(MCText *)self stringAttributes];
+  stringAttributes = [(MCText *)self stringAttributes];
 
-  return [MCTextConversion attributedStringWithCTAttributesFromStringAttributes:v2];
+  return [MCTextConversion attributedStringWithCTAttributesFromStringAttributes:stringAttributes];
 }
 
-- (void)setAttributedString:(id)a3
+- (void)setAttributedString:(id)string
 {
-  v4 = [+[MCTextConversion stringAttributesWithAttributedString:](MCTextConversion stringAttributesWithAttributedString:{a3), "mutableCopy"}];
+  v4 = [+[MCTextConversion stringAttributesWithAttributedString:](MCTextConversion stringAttributesWithAttributedString:{string), "mutableCopy"}];
 
   [(MCText *)self setStringAttributes:v4];
 }

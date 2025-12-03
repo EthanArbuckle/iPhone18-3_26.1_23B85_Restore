@@ -1,30 +1,30 @@
 @interface SSRSpeakerProfileEmbedding
-- (SSRSpeakerProfileEmbedding)initWithCoder:(id)a3;
-- (SSRSpeakerProfileEmbedding)initWithSiriSharedUserId:(id)a3 embeddings:(id)a4 numEmbedding:(unsigned int)a5 dimension:(unsigned int)a6 speakerRecognizerType:(unint64_t)a7;
-- (SSRSpeakerProfileEmbedding)initWithVoiceProfileId:(id)a3 embeddings:(id)a4 numEmbedding:(unsigned int)a5 dimension:(unsigned int)a6 speakerRecognizerType:(unint64_t)a7;
+- (SSRSpeakerProfileEmbedding)initWithCoder:(id)coder;
+- (SSRSpeakerProfileEmbedding)initWithSiriSharedUserId:(id)id embeddings:(id)embeddings numEmbedding:(unsigned int)embedding dimension:(unsigned int)dimension speakerRecognizerType:(unint64_t)type;
+- (SSRSpeakerProfileEmbedding)initWithVoiceProfileId:(id)id embeddings:(id)embeddings numEmbedding:(unsigned int)embedding dimension:(unsigned int)dimension speakerRecognizerType:(unint64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSRSpeakerProfileEmbedding
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  [v3 appendFormat:@"[siriSharedUserId = %@]", self->_siriSharedUserId];
-  [v3 appendFormat:@"[voiceProfileId = %@]", self->_voiceProfileId];
-  [v3 appendFormat:@"[embeddings = %@]", self->_embeddings];
-  [v3 appendFormat:@"[numEmbedding = %u]", self->_numEmbedding];
-  [v3 appendFormat:@"[dimension = %u]", self->_dimension];
-  [v3 appendFormat:@"[speakerRecognizerType = %lu]", self->_speakerRecognizerType];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendFormat:@"[siriSharedUserId = %@]", self->_siriSharedUserId];
+  [string appendFormat:@"[voiceProfileId = %@]", self->_voiceProfileId];
+  [string appendFormat:@"[embeddings = %@]", self->_embeddings];
+  [string appendFormat:@"[numEmbedding = %u]", self->_numEmbedding];
+  [string appendFormat:@"[dimension = %u]", self->_dimension];
+  [string appendFormat:@"[speakerRecognizerType = %lu]", self->_speakerRecognizerType];
 
-  return v3;
+  return string;
 }
 
-- (SSRSpeakerProfileEmbedding)initWithCoder:(id)a3
+- (SSRSpeakerProfileEmbedding)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277D015D8];
   v6 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -34,9 +34,9 @@
     _os_log_impl(&dword_225E12000, v6, OS_LOG_TYPE_DEFAULT, "%s init with coder:", &v27, 0xCu);
   }
 
-  if ([v4 containsValueForKey:@"siriSharedUserId"])
+  if ([coderCopy containsValueForKey:@"siriSharedUserId"])
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"siriSharedUserId"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"siriSharedUserId"];
     v8 = *v5;
     if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -53,9 +53,9 @@
     v7 = 0;
   }
 
-  if ([v4 containsValueForKey:@"voiceProfileId"])
+  if ([coderCopy containsValueForKey:@"voiceProfileId"])
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"voiceProfileId"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"voiceProfileId"];
     v10 = *v5;
     if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -72,8 +72,8 @@
     v9 = 0;
   }
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numEmbeddings"];
-  v12 = [v11 unsignedIntValue];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numEmbeddings"];
+  unsignedIntValue = [v11 unsignedIntValue];
 
   v13 = *v5;
   if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
@@ -81,12 +81,12 @@
     v27 = 136315394;
     v28 = "[SSRSpeakerProfileEmbedding initWithCoder:]";
     v29 = 1024;
-    LODWORD(v30) = v12;
+    LODWORD(v30) = unsignedIntValue;
     _os_log_impl(&dword_225E12000, v13, OS_LOG_TYPE_DEFAULT, "%s Num Embeddings = %d", &v27, 0x12u);
   }
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dimension"];
-  v15 = [v14 unsignedIntValue];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dimension"];
+  unsignedIntValue2 = [v14 unsignedIntValue];
 
   v16 = *v5;
   if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
@@ -94,13 +94,13 @@
     v27 = 136315394;
     v28 = "[SSRSpeakerProfileEmbedding initWithCoder:]";
     v29 = 1024;
-    LODWORD(v30) = v15;
+    LODWORD(v30) = unsignedIntValue2;
     _os_log_impl(&dword_225E12000, v16, OS_LOG_TYPE_DEFAULT, "%s dimensions = %d", &v27, 0x12u);
   }
 
-  if ([v4 containsValueForKey:@"embeddings"])
+  if ([coderCopy containsValueForKey:@"embeddings"])
   {
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"embeddings"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"embeddings"];
   }
 
   else
@@ -120,37 +120,37 @@
     _os_log_impl(&dword_225E12000, v19, OS_LOG_TYPE_DEFAULT, "%s Embeddings = %d", &v27, 0x12u);
   }
 
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recognitionType"];
-  v22 = [v21 unsignedIntValue];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recognitionType"];
+  unsignedIntValue3 = [v21 unsignedIntValue];
 
   if (v7)
   {
-    v23 = [(SSRSpeakerProfileEmbedding *)self initWithSiriSharedUserId:v7 embeddings:v17 numEmbedding:v12 dimension:v15 speakerRecognizerType:v22];
+    v23 = [(SSRSpeakerProfileEmbedding *)self initWithSiriSharedUserId:v7 embeddings:v17 numEmbedding:unsignedIntValue dimension:unsignedIntValue2 speakerRecognizerType:unsignedIntValue3];
   }
 
   else
   {
     if (!v9)
     {
-      v24 = 0;
+      selfCopy = 0;
       goto LABEL_25;
     }
 
-    v23 = [(SSRSpeakerProfileEmbedding *)self initWithVoiceProfileId:v9 embeddings:v17 numEmbedding:v12 dimension:v15 speakerRecognizerType:v22];
+    v23 = [(SSRSpeakerProfileEmbedding *)self initWithVoiceProfileId:v9 embeddings:v17 numEmbedding:unsignedIntValue dimension:unsignedIntValue2 speakerRecognizerType:unsignedIntValue3];
   }
 
   self = v23;
-  v24 = self;
+  selfCopy = self;
 LABEL_25:
 
   v25 = *MEMORY[0x277D85DE8];
-  return v24;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277D015D8];
   v6 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -174,7 +174,7 @@ LABEL_25:
       siriSharedUserId = self->_siriSharedUserId;
     }
 
-    [v4 encodeObject:siriSharedUserId forKey:@"siriSharedUserId"];
+    [coderCopy encodeObject:siriSharedUserId forKey:@"siriSharedUserId"];
   }
 
   voiceProfileId = self->_voiceProfileId;
@@ -191,7 +191,7 @@ LABEL_25:
       voiceProfileId = self->_voiceProfileId;
     }
 
-    [v4 encodeObject:voiceProfileId forKey:@"voiceProfileId"];
+    [coderCopy encodeObject:voiceProfileId forKey:@"voiceProfileId"];
   }
 
   embeddings = self->_embeddings;
@@ -211,56 +211,56 @@ LABEL_25:
       embeddings = self->_embeddings;
     }
 
-    [v4 encodeObject:embeddings forKey:@"embeddings"];
+    [coderCopy encodeObject:embeddings forKey:@"embeddings"];
   }
 
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_numEmbedding];
-  [v4 encodeObject:v15 forKey:@"numEmbeddings"];
+  [coderCopy encodeObject:v15 forKey:@"numEmbeddings"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_dimension];
-  [v4 encodeObject:v16 forKey:@"dimension"];
+  [coderCopy encodeObject:v16 forKey:@"dimension"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_speakerRecognizerType];
-  [v4 encodeObject:v17 forKey:@"recognitionType"];
+  [coderCopy encodeObject:v17 forKey:@"recognitionType"];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (SSRSpeakerProfileEmbedding)initWithVoiceProfileId:(id)a3 embeddings:(id)a4 numEmbedding:(unsigned int)a5 dimension:(unsigned int)a6 speakerRecognizerType:(unint64_t)a7
+- (SSRSpeakerProfileEmbedding)initWithVoiceProfileId:(id)id embeddings:(id)embeddings numEmbedding:(unsigned int)embedding dimension:(unsigned int)dimension speakerRecognizerType:(unint64_t)type
 {
-  v13 = a3;
-  v14 = a4;
+  idCopy = id;
+  embeddingsCopy = embeddings;
   v18.receiver = self;
   v18.super_class = SSRSpeakerProfileEmbedding;
   v15 = [(SSRSpeakerProfileEmbedding *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_voiceProfileId, a3);
-    objc_storeStrong(&v16->_embeddings, a4);
-    v16->_numEmbedding = a5;
-    v16->_dimension = a6;
-    v16->_speakerRecognizerType = a7;
+    objc_storeStrong(&v15->_voiceProfileId, id);
+    objc_storeStrong(&v16->_embeddings, embeddings);
+    v16->_numEmbedding = embedding;
+    v16->_dimension = dimension;
+    v16->_speakerRecognizerType = type;
   }
 
   return v16;
 }
 
-- (SSRSpeakerProfileEmbedding)initWithSiriSharedUserId:(id)a3 embeddings:(id)a4 numEmbedding:(unsigned int)a5 dimension:(unsigned int)a6 speakerRecognizerType:(unint64_t)a7
+- (SSRSpeakerProfileEmbedding)initWithSiriSharedUserId:(id)id embeddings:(id)embeddings numEmbedding:(unsigned int)embedding dimension:(unsigned int)dimension speakerRecognizerType:(unint64_t)type
 {
-  v13 = a3;
-  v14 = a4;
+  idCopy = id;
+  embeddingsCopy = embeddings;
   v18.receiver = self;
   v18.super_class = SSRSpeakerProfileEmbedding;
   v15 = [(SSRSpeakerProfileEmbedding *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_siriSharedUserId, a3);
-    objc_storeStrong(&v16->_embeddings, a4);
-    v16->_numEmbedding = a5;
-    v16->_dimension = a6;
-    v16->_speakerRecognizerType = a7;
+    objc_storeStrong(&v15->_siriSharedUserId, id);
+    objc_storeStrong(&v16->_embeddings, embeddings);
+    v16->_numEmbedding = embedding;
+    v16->_dimension = dimension;
+    v16->_speakerRecognizerType = type;
   }
 
   return v16;

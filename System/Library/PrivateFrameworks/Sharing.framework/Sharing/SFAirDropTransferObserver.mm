@@ -3,8 +3,8 @@
 - (SFAirDropTransferObserverDelegate)delegate;
 - (void)activate;
 - (void)invalidate;
-- (void)removedTransfer:(id)a3;
-- (void)updatedTransfer:(id)a3;
+- (void)removedTransfer:(id)transfer;
+- (void)updatedTransfer:(id)transfer;
 @end
 
 @implementation SFAirDropTransferObserver
@@ -89,23 +89,23 @@ void __61___SFAirDropTransferObserver_updateActionHandlersOnTransfer___block_inv
   [v3 activate];
 }
 
-- (void)updatedTransfer:(id)a3
+- (void)updatedTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = [(SFAirDropTransferObserver *)self delegate];
-  [v5 updatedTransfer:v4];
+  transferCopy = transfer;
+  delegate = [(SFAirDropTransferObserver *)self delegate];
+  [delegate updatedTransfer:transferCopy];
 }
 
-- (void)removedTransfer:(id)a3
+- (void)removedTransfer:(id)transfer
 {
-  v7 = a3;
-  v4 = [(SFAirDropTransferObserver *)self delegate];
+  transferCopy = transfer;
+  delegate = [(SFAirDropTransferObserver *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SFAirDropTransferObserver *)self delegate];
-    [v6 removedTransfer:v7];
+    delegate2 = [(SFAirDropTransferObserver *)self delegate];
+    [delegate2 removedTransfer:transferCopy];
   }
 }
 

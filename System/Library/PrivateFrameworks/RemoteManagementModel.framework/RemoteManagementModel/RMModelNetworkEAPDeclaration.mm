@@ -1,12 +1,12 @@
 @interface RMModelNetworkEAPDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 EAPUUID:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 EAPUUID:(id)a4 acceptEAPTypes:(id)a5 useOneTimePassword:(id)a6 userPasswordAssetReference:(id)a7 privateAccessToken:(id)a8 EAPFAST:(id)a9 TLS:(id)a10 outerIdentity:(id)a11 ttlsInnerAuthentication:(id)a12 systemModeCredentialsSource:(id)a13 extensibleSSOProvider:(id)a14 EAPSIMAKA:(id)a15;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier EAPUUID:(id)d;
++ (id)buildWithIdentifier:(id)identifier EAPUUID:(id)d acceptEAPTypes:(id)types useOneTimePassword:(id)password userPasswordAssetReference:(id)reference privateAccessToken:(id)token EAPFAST:(id)t TLS:(id)self0 outerIdentity:(id)self1 ttlsInnerAuthentication:(id)self2 systemModeCredentialsSource:(id)self3 extensibleSSOProvider:(id)self4 EAPSIMAKA:(id)self5;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelNetworkEAPDeclaration
@@ -62,53 +62,53 @@ void __47__RMModelNetworkEAPDeclaration_assetReferences__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 EAPUUID:(id)a4 acceptEAPTypes:(id)a5 useOneTimePassword:(id)a6 userPasswordAssetReference:(id)a7 privateAccessToken:(id)a8 EAPFAST:(id)a9 TLS:(id)a10 outerIdentity:(id)a11 ttlsInnerAuthentication:(id)a12 systemModeCredentialsSource:(id)a13 extensibleSSOProvider:(id)a14 EAPSIMAKA:(id)a15
++ (id)buildWithIdentifier:(id)identifier EAPUUID:(id)d acceptEAPTypes:(id)types useOneTimePassword:(id)password userPasswordAssetReference:(id)reference privateAccessToken:(id)token EAPFAST:(id)t TLS:(id)self0 outerIdentity:(id)self1 ttlsInnerAuthentication:(id)self2 systemModeCredentialsSource:(id)self3 extensibleSSOProvider:(id)self4 EAPSIMAKA:(id)self5
 {
-  v43 = a3;
-  v42 = a15;
-  v41 = a14;
-  v40 = a13;
-  v17 = a12;
-  v39 = a11;
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = v43;
+  identifierCopy = identifier;
+  aCopy = a;
+  providerCopy = provider;
+  sourceCopy = source;
+  authenticationCopy = authentication;
+  identityCopy = identity;
+  sCopy = s;
+  tCopy = t;
+  tokenCopy = token;
+  referenceCopy = reference;
+  passwordCopy = password;
+  typesCopy = types;
+  dCopy = d;
+  v25 = identifierCopy;
   v26 = objc_opt_new();
   [v26 setDeclarationType:@"com.apple.configuration.network.eap"];
-  if (v43)
+  if (identifierCopy)
   {
-    [v26 setDeclarationIdentifier:v43];
+    [v26 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v27 = [MEMORY[0x277CCAD78] UUID];
-    [v27 UUIDString];
-    v38 = v20;
-    v28 = v17;
-    v29 = v19;
-    v31 = v30 = v18;
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [uUID UUIDString];
+    v38 = tokenCopy;
+    v28 = authenticationCopy;
+    v29 = tCopy;
+    v31 = v30 = sCopy;
     [v26 setDeclarationIdentifier:v31];
 
-    v18 = v30;
-    v19 = v29;
-    v17 = v28;
-    v20 = v38;
+    sCopy = v30;
+    tCopy = v29;
+    authenticationCopy = v28;
+    tokenCopy = v38;
 
     v25 = 0;
   }
 
-  [v26 setPayloadEAPUUID:{v24, a6}];
+  [v26 setPayloadEAPUUID:{dCopy, password}];
 
-  [v26 setPayloadAcceptEAPTypes:v23];
-  if (v22)
+  [v26 setPayloadAcceptEAPTypes:typesCopy];
+  if (passwordCopy)
   {
-    v32 = v22;
+    v32 = passwordCopy;
   }
 
   else
@@ -118,16 +118,16 @@ void __47__RMModelNetworkEAPDeclaration_assetReferences__block_invoke()
 
   [v26 setPayloadUseOneTimePassword:v32];
 
-  [v26 setPayloadUserPasswordAssetReference:v21];
-  [v26 setPayloadPrivateAccessToken:v20];
+  [v26 setPayloadUserPasswordAssetReference:referenceCopy];
+  [v26 setPayloadPrivateAccessToken:tokenCopy];
 
-  [v26 setPayloadEAPFAST:v19];
-  [v26 setPayloadTLS:v18];
+  [v26 setPayloadEAPFAST:tCopy];
+  [v26 setPayloadTLS:sCopy];
 
-  [v26 setPayloadOuterIdentity:v39];
-  if (v17)
+  [v26 setPayloadOuterIdentity:identityCopy];
+  if (authenticationCopy)
   {
-    v33 = v17;
+    v33 = authenticationCopy;
   }
 
   else
@@ -137,34 +137,34 @@ void __47__RMModelNetworkEAPDeclaration_assetReferences__block_invoke()
 
   [v26 setPayloadTTLSInnerAuthentication:v33];
 
-  [v26 setPayloadSystemModeCredentialsSource:v40];
-  [v26 setPayloadExtensibleSSOProvider:v41];
+  [v26 setPayloadSystemModeCredentialsSource:sourceCopy];
+  [v26 setPayloadExtensibleSSOProvider:providerCopy];
 
-  [v26 setPayloadEAPSIMAKA:v42];
+  [v26 setPayloadEAPSIMAKA:aCopy];
   [v26 updateServerToken];
 
   return v26;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 EAPUUID:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier EAPUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.network.eap"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadEAPUUID:v6];
+  [v7 setPayloadEAPUUID:dCopy];
 
   [v7 updateServerToken];
 
@@ -235,12 +235,12 @@ void __47__RMModelNetworkEAPDeclaration_assetReferences__block_invoke()
   return v14;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelNetworkEAPDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -248,10 +248,10 @@ void __47__RMModelNetworkEAPDeclaration_assetReferences__block_invoke()
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"EAPUUID" forKeyPath:@"payloadEAPUUID" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"AcceptEAPTypes" forKeyPath:@"payloadAcceptEAPTypes" validator:&__block_literal_global_174 isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"UseOneTimePassword" forKeyPath:@"payloadUseOneTimePassword" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"UserPasswordAssetReference" forKeyPath:@"payloadUserPasswordAssetReference" isRequired:0 defaultValue:0 error:a5]&& (LOWORD(v16) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"PrivateAccessToken" forKeyPath:@"payloadPrivateAccessToken" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:a5]) && (LOWORD(v17) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"EAPFAST" forKeyPath:@"payloadEAPFAST" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:a5]) && (LOWORD(v18) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"TLS" forKeyPath:@"payloadTLS" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:a5]) && [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"OuterIdentity" forKeyPath:@"payloadOuterIdentity" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"TTLSInnerAuthentication" forKeyPath:@"payloadTTLSInnerAuthentication" isRequired:0 defaultValue:@"MSCHAPv2" error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"SystemModeCredentialsSource" forKeyPath:@"payloadSystemModeCredentialsSource" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"ExtensibleSSOProvider" forKeyPath:@"payloadExtensibleSSOProvider" isRequired:0 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"EAPUUID" forKeyPath:@"payloadEAPUUID" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"AcceptEAPTypes" forKeyPath:@"payloadAcceptEAPTypes" validator:&__block_literal_global_174 isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"UseOneTimePassword" forKeyPath:@"payloadUseOneTimePassword" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"UserPasswordAssetReference" forKeyPath:@"payloadUserPasswordAssetReference" isRequired:0 defaultValue:0 error:error]&& (LOWORD(v16) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"PrivateAccessToken" forKeyPath:@"payloadPrivateAccessToken" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:error]) && (LOWORD(v17) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"EAPFAST" forKeyPath:@"payloadEAPFAST" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v17 error:error]) && (LOWORD(v18) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"TLS" forKeyPath:@"payloadTLS" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:error]) && [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"OuterIdentity" forKeyPath:@"payloadOuterIdentity" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"TTLSInnerAuthentication" forKeyPath:@"payloadTTLSInnerAuthentication" isRequired:0 defaultValue:@"MSCHAPv2" error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"SystemModeCredentialsSource" forKeyPath:@"payloadSystemModeCredentialsSource" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ExtensibleSSOProvider" forKeyPath:@"payloadExtensibleSSOProvider" isRequired:0 defaultValue:0 error:error])
   {
-    LOWORD(v19) = a4;
-    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"EAPSIMAKA" forKeyPath:@"payloadEAPSIMAKA" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v19 error:a5];
+    LOWORD(v19) = type;
+    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"EAPSIMAKA" forKeyPath:@"payloadEAPSIMAKA" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v19 error:error];
   }
 
   else
@@ -271,75 +271,75 @@ uint64_t __82__RMModelNetworkEAPDeclaration_loadPayloadFromDictionary_serializat
   return isKindOfClass & 1;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelNetworkEAPDeclaration *)self payloadEAPUUID];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"EAPUUID" value:v6 isRequired:1 defaultValue:0];
+  payloadEAPUUID = [(RMModelNetworkEAPDeclaration *)self payloadEAPUUID];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"EAPUUID" value:payloadEAPUUID isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelNetworkEAPDeclaration *)self payloadAcceptEAPTypes];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"AcceptEAPTypes" value:v7 itemSerializer:&__block_literal_global_213 isRequired:0 defaultValue:0];
+  payloadAcceptEAPTypes = [(RMModelNetworkEAPDeclaration *)self payloadAcceptEAPTypes];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"AcceptEAPTypes" value:payloadAcceptEAPTypes itemSerializer:&__block_literal_global_213 isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelNetworkEAPDeclaration *)self payloadUseOneTimePassword];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"UseOneTimePassword" value:v8 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  payloadUseOneTimePassword = [(RMModelNetworkEAPDeclaration *)self payloadUseOneTimePassword];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"UseOneTimePassword" value:payloadUseOneTimePassword isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v9 = [(RMModelNetworkEAPDeclaration *)self payloadUserPasswordAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"UserPasswordAssetReference" value:v9 isRequired:0 defaultValue:0];
+  payloadUserPasswordAssetReference = [(RMModelNetworkEAPDeclaration *)self payloadUserPasswordAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"UserPasswordAssetReference" value:payloadUserPasswordAssetReference isRequired:0 defaultValue:0];
 
-  v10 = [(RMModelNetworkEAPDeclaration *)self payloadPrivateAccessToken];
+  payloadPrivateAccessToken = [(RMModelNetworkEAPDeclaration *)self payloadPrivateAccessToken];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __57__RMModelNetworkEAPDeclaration_serializePayloadWithType___block_invoke_2;
   v26[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v27 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"PrivateAccessToken" value:v10 dictSerializer:v26 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"PrivateAccessToken" value:payloadPrivateAccessToken dictSerializer:v26 isRequired:0 defaultValue:0];
 
-  v11 = [(RMModelNetworkEAPDeclaration *)self payloadEAPFAST];
+  payloadEAPFAST = [(RMModelNetworkEAPDeclaration *)self payloadEAPFAST];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __57__RMModelNetworkEAPDeclaration_serializePayloadWithType___block_invoke_3;
   v24[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v25 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"EAPFAST" value:v11 dictSerializer:v24 isRequired:0 defaultValue:0];
+  typeCopy2 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"EAPFAST" value:payloadEAPFAST dictSerializer:v24 isRequired:0 defaultValue:0];
 
-  v12 = [(RMModelNetworkEAPDeclaration *)self payloadTLS];
+  payloadTLS = [(RMModelNetworkEAPDeclaration *)self payloadTLS];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __57__RMModelNetworkEAPDeclaration_serializePayloadWithType___block_invoke_4;
   v22[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v23 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"TLS" value:v12 dictSerializer:v22 isRequired:0 defaultValue:0];
+  typeCopy3 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"TLS" value:payloadTLS dictSerializer:v22 isRequired:0 defaultValue:0];
 
-  v13 = [(RMModelNetworkEAPDeclaration *)self payloadOuterIdentity];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"OuterIdentity" value:v13 isRequired:0 defaultValue:0];
+  payloadOuterIdentity = [(RMModelNetworkEAPDeclaration *)self payloadOuterIdentity];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"OuterIdentity" value:payloadOuterIdentity isRequired:0 defaultValue:0];
 
-  v14 = [(RMModelNetworkEAPDeclaration *)self payloadTTLSInnerAuthentication];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"TTLSInnerAuthentication" value:v14 isRequired:0 defaultValue:@"MSCHAPv2"];
+  payloadTTLSInnerAuthentication = [(RMModelNetworkEAPDeclaration *)self payloadTTLSInnerAuthentication];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"TTLSInnerAuthentication" value:payloadTTLSInnerAuthentication isRequired:0 defaultValue:@"MSCHAPv2"];
 
-  v15 = [(RMModelNetworkEAPDeclaration *)self payloadSystemModeCredentialsSource];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"SystemModeCredentialsSource" value:v15 isRequired:0 defaultValue:0];
+  payloadSystemModeCredentialsSource = [(RMModelNetworkEAPDeclaration *)self payloadSystemModeCredentialsSource];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"SystemModeCredentialsSource" value:payloadSystemModeCredentialsSource isRequired:0 defaultValue:0];
 
-  v16 = [(RMModelNetworkEAPDeclaration *)self payloadExtensibleSSOProvider];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"ExtensibleSSOProvider" value:v16 isRequired:0 defaultValue:0];
+  payloadExtensibleSSOProvider = [(RMModelNetworkEAPDeclaration *)self payloadExtensibleSSOProvider];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"ExtensibleSSOProvider" value:payloadExtensibleSSOProvider isRequired:0 defaultValue:0];
 
-  v17 = [(RMModelNetworkEAPDeclaration *)self payloadEAPSIMAKA];
+  payloadEAPSIMAKA = [(RMModelNetworkEAPDeclaration *)self payloadEAPSIMAKA];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __57__RMModelNetworkEAPDeclaration_serializePayloadWithType___block_invoke_5;
   v20[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v21 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"EAPSIMAKA" value:v17 dictSerializer:v20 isRequired:0 defaultValue:0];
+  typeCopy4 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"EAPSIMAKA" value:payloadEAPSIMAKA dictSerializer:v20 isRequired:0 defaultValue:0];
 
   v18 = [v5 copy];
 
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30.receiver = self;
   v30.super_class = RMModelNetworkEAPDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v30 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v30 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadEAPUUID copy];
   v6 = v4[6];
   v4[6] = v5;

@@ -26,8 +26,8 @@
 - (NSString)speech_id;
 - (NSString)task_name;
 - (NSString)udm_host;
-- (Offset<siri::speech::schema_fb::StartSpeechRequest>)addObjectToBuffer:(void *)a3;
-- (QSSStartSpeechRequest)initWithFlatbuffData:(id)a3 root:(const StartSpeechRequest *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::StartSpeechRequest>)addObjectToBuffer:(void *)buffer;
+- (QSSStartSpeechRequest)initWithFlatbuffData:(id)data root:(const StartSpeechRequest *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int)start_audio_bookmark;
 - (int)udm_port;
@@ -70,248 +70,248 @@ flatbuffers::DetachedBuffer *__37__QSSStartSpeechRequest_flatbuffData__block_inv
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::StartSpeechRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::StartSpeechRequest>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSStartSpeechRequest *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(QSSStartSpeechRequest *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(QSSStartSpeechRequest *)self session_id];
-  v11 = v10;
-  if (!v10)
+  session_id = [(QSSStartSpeechRequest *)self session_id];
+  v11 = session_id;
+  if (!session_id)
   {
-    v10 = &stru_2879AE8E0;
+    session_id = &stru_2879AE8E0;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = flatbuffers::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v15 = [(QSSStartSpeechRequest *)self language];
-  v16 = v15;
-  if (!v15)
+  language = [(QSSStartSpeechRequest *)self language];
+  v16 = language;
+  if (!language)
   {
-    v15 = &stru_2879AE8E0;
+    language = &stru_2879AE8E0;
   }
 
-  v17 = [(__CFString *)v15 UTF8String];
-  v18 = strlen(v17);
-  v19 = flatbuffers::FlatBufferBuilder::CreateString(a3, v17, v18);
+  uTF8String3 = [(__CFString *)language UTF8String];
+  v18 = strlen(uTF8String3);
+  v19 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v18);
 
-  v20 = [(QSSStartSpeechRequest *)self task_name];
-  v21 = v20;
-  if (!v20)
+  task_name = [(QSSStartSpeechRequest *)self task_name];
+  v21 = task_name;
+  if (!task_name)
   {
-    v20 = &stru_2879AE8E0;
+    task_name = &stru_2879AE8E0;
   }
 
-  v22 = [(__CFString *)v20 UTF8String];
-  v23 = strlen(v22);
-  v109 = flatbuffers::FlatBufferBuilder::CreateString(a3, v22, v23);
+  uTF8String4 = [(__CFString *)task_name UTF8String];
+  v23 = strlen(uTF8String4);
+  v109 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String4, v23);
 
-  v108 = [(QSSStartSpeechRequest *)self codec];
-  v24 = [(QSSStartSpeechRequest *)self stream_results];
-  v25 = [(QSSStartSpeechRequest *)self enable_server_side_endpoint];
-  v26 = [(QSSStartSpeechRequest *)self device_type];
-  v27 = v26;
-  if (!v26)
+  codec = [(QSSStartSpeechRequest *)self codec];
+  stream_results = [(QSSStartSpeechRequest *)self stream_results];
+  enable_server_side_endpoint = [(QSSStartSpeechRequest *)self enable_server_side_endpoint];
+  device_type = [(QSSStartSpeechRequest *)self device_type];
+  v27 = device_type;
+  if (!device_type)
   {
-    v26 = &stru_2879AE8E0;
+    device_type = &stru_2879AE8E0;
   }
 
-  v28 = [(__CFString *)v26 UTF8String];
-  v29 = strlen(v28);
-  v107 = flatbuffers::FlatBufferBuilder::CreateString(a3, v28, v29);
+  uTF8String5 = [(__CFString *)device_type UTF8String];
+  v29 = strlen(uTF8String5);
+  v107 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String5, v29);
 
-  v30 = [(QSSStartSpeechRequest *)self device_os];
-  v31 = v30;
-  if (!v30)
+  device_os = [(QSSStartSpeechRequest *)self device_os];
+  v31 = device_os;
+  if (!device_os)
   {
-    v30 = &stru_2879AE8E0;
+    device_os = &stru_2879AE8E0;
   }
 
-  v32 = [(__CFString *)v30 UTF8String];
-  v33 = strlen(v32);
-  v106 = flatbuffers::FlatBufferBuilder::CreateString(a3, v32, v33);
+  uTF8String6 = [(__CFString *)device_os UTF8String];
+  v33 = strlen(uTF8String6);
+  v106 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String6, v33);
 
-  v34 = [(QSSStartSpeechRequest *)self mic_type];
-  v35 = v34;
-  if (!v34)
+  mic_type = [(QSSStartSpeechRequest *)self mic_type];
+  v35 = mic_type;
+  if (!mic_type)
   {
-    v34 = &stru_2879AE8E0;
+    mic_type = &stru_2879AE8E0;
   }
 
-  v36 = [(__CFString *)v34 UTF8String];
-  v37 = strlen(v36);
-  v105 = flatbuffers::FlatBufferBuilder::CreateString(a3, v36, v37);
+  uTF8String7 = [(__CFString *)mic_type UTF8String];
+  v37 = strlen(uTF8String7);
+  v105 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String7, v37);
 
-  v38 = [(QSSStartSpeechRequest *)self udm_host];
-  v39 = v38;
-  if (!v38)
+  udm_host = [(QSSStartSpeechRequest *)self udm_host];
+  v39 = udm_host;
+  if (!udm_host)
   {
-    v38 = &stru_2879AE8E0;
+    udm_host = &stru_2879AE8E0;
   }
 
-  v40 = [(__CFString *)v38 UTF8String];
-  v41 = strlen(v40);
-  v104 = flatbuffers::FlatBufferBuilder::CreateString(a3, v40, v41);
+  uTF8String8 = [(__CFString *)udm_host UTF8String];
+  v41 = strlen(uTF8String8);
+  v104 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String8, v41);
 
-  v100 = [(QSSStartSpeechRequest *)self udm_port];
-  v101 = [(QSSStartSpeechRequest *)self tandem_mode];
-  v102 = [(QSSStartSpeechRequest *)self store_audio];
-  v103 = [(QSSStartSpeechRequest *)self stream_unstable_results];
-  v42 = [(QSSStartSpeechRequest *)self request_locale];
-  v43 = v42;
-  if (!v42)
+  udm_port = [(QSSStartSpeechRequest *)self udm_port];
+  tandem_mode = [(QSSStartSpeechRequest *)self tandem_mode];
+  store_audio = [(QSSStartSpeechRequest *)self store_audio];
+  stream_unstable_results = [(QSSStartSpeechRequest *)self stream_unstable_results];
+  request_locale = [(QSSStartSpeechRequest *)self request_locale];
+  v43 = request_locale;
+  if (!request_locale)
   {
-    v42 = &stru_2879AE8E0;
+    request_locale = &stru_2879AE8E0;
   }
 
-  v44 = [(__CFString *)v42 UTF8String];
-  v45 = strlen(v44);
-  v99 = flatbuffers::FlatBufferBuilder::CreateString(a3, v44, v45);
+  uTF8String9 = [(__CFString *)request_locale UTF8String];
+  v45 = strlen(uTF8String9);
+  v99 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String9, v45);
 
-  v91 = [(QSSStartSpeechRequest *)self end_point_mode];
-  v92 = [(QSSStartSpeechRequest *)self start_audio_bookmark];
-  v93 = [(QSSStartSpeechRequest *)self is_far_field];
-  v94 = [(QSSStartSpeechRequest *)self enable_utterance_detection];
-  v95 = [(QSSStartSpeechRequest *)self enable_endpoint_candidate];
-  v96 = [(QSSStartSpeechRequest *)self start_recognition_at];
-  v97 = [(QSSStartSpeechRequest *)self start_endpointing_at];
-  v98 = [(QSSStartSpeechRequest *)self enable_hybrid_endpoint];
-  v46 = [(QSSStartSpeechRequest *)self client_endpointer_model_version];
-  v47 = v46;
-  if (!v46)
+  end_point_mode = [(QSSStartSpeechRequest *)self end_point_mode];
+  start_audio_bookmark = [(QSSStartSpeechRequest *)self start_audio_bookmark];
+  is_far_field = [(QSSStartSpeechRequest *)self is_far_field];
+  enable_utterance_detection = [(QSSStartSpeechRequest *)self enable_utterance_detection];
+  enable_endpoint_candidate = [(QSSStartSpeechRequest *)self enable_endpoint_candidate];
+  start_recognition_at = [(QSSStartSpeechRequest *)self start_recognition_at];
+  start_endpointing_at = [(QSSStartSpeechRequest *)self start_endpointing_at];
+  enable_hybrid_endpoint = [(QSSStartSpeechRequest *)self enable_hybrid_endpoint];
+  client_endpointer_model_version = [(QSSStartSpeechRequest *)self client_endpointer_model_version];
+  v47 = client_endpointer_model_version;
+  if (!client_endpointer_model_version)
   {
-    v46 = &stru_2879AE8E0;
+    client_endpointer_model_version = &stru_2879AE8E0;
   }
 
-  v48 = [(__CFString *)v46 UTF8String];
-  v49 = strlen(v48);
-  v90 = flatbuffers::FlatBufferBuilder::CreateString(a3, v48, v49);
+  uTF8String10 = [(__CFString *)client_endpointer_model_version UTF8String];
+  v49 = strlen(uTF8String10);
+  v90 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String10, v49);
 
-  v50 = [(QSSStartSpeechRequest *)self keyboard_identifier];
-  v51 = v50;
-  if (!v50)
+  keyboard_identifier = [(QSSStartSpeechRequest *)self keyboard_identifier];
+  v51 = keyboard_identifier;
+  if (!keyboard_identifier)
   {
-    v50 = &stru_2879AE8E0;
+    keyboard_identifier = &stru_2879AE8E0;
   }
 
-  v52 = [(__CFString *)v50 UTF8String];
-  v53 = strlen(v52);
-  v89 = flatbuffers::FlatBufferBuilder::CreateString(a3, v52, v53);
-  v88 = v24;
+  uTF8String11 = [(__CFString *)keyboard_identifier UTF8String];
+  v53 = strlen(uTF8String11);
+  v89 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String11, v53);
+  v88 = stream_results;
 
-  v54 = [(QSSStartSpeechRequest *)self input_origin];
-  v55 = v54;
-  if (!v54)
+  input_origin = [(QSSStartSpeechRequest *)self input_origin];
+  v55 = input_origin;
+  if (!input_origin)
   {
-    v54 = &stru_2879AE8E0;
+    input_origin = &stru_2879AE8E0;
   }
 
-  v56 = [(__CFString *)v54 UTF8String];
-  v57 = strlen(v56);
-  v85 = flatbuffers::FlatBufferBuilder::CreateString(a3, v56, v57);
+  uTF8String12 = [(__CFString *)input_origin UTF8String];
+  v57 = strlen(uTF8String12);
+  v85 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String12, v57);
 
-  v84 = [(QSSStartSpeechRequest *)self initial_recognition_candidate_id];
-  v86 = [(QSSStartSpeechRequest *)self disable_auto_punctuation];
-  v87 = [(QSSStartSpeechRequest *)self keyboard_dictation];
-  v58 = [(QSSStartSpeechRequest *)self experiment_id];
-  v59 = v58;
-  if (!v58)
+  initial_recognition_candidate_id = [(QSSStartSpeechRequest *)self initial_recognition_candidate_id];
+  disable_auto_punctuation = [(QSSStartSpeechRequest *)self disable_auto_punctuation];
+  keyboard_dictation = [(QSSStartSpeechRequest *)self keyboard_dictation];
+  experiment_id = [(QSSStartSpeechRequest *)self experiment_id];
+  v59 = experiment_id;
+  if (!experiment_id)
   {
-    v58 = &stru_2879AE8E0;
+    experiment_id = &stru_2879AE8E0;
   }
 
-  v60 = [(__CFString *)v58 UTF8String];
-  v61 = strlen(v60);
-  v83 = flatbuffers::FlatBufferBuilder::CreateString(a3, v60, v61);
-  v62 = v25;
+  uTF8String13 = [(__CFString *)experiment_id UTF8String];
+  v61 = strlen(uTF8String13);
+  v83 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String13, v61);
+  v62 = enable_server_side_endpoint;
   v63 = v19;
   v64 = v14;
 
-  v82 = [(QSSStartSpeechRequest *)self speech_request_source];
-  v65 = [(QSSStartSpeechRequest *)self fork_id];
-  v66 = v65;
-  if (!v65)
+  speech_request_source = [(QSSStartSpeechRequest *)self speech_request_source];
+  fork_id = [(QSSStartSpeechRequest *)self fork_id];
+  v66 = fork_id;
+  if (!fork_id)
   {
-    v65 = &stru_2879AE8E0;
+    fork_id = &stru_2879AE8E0;
   }
 
-  v67 = [(__CFString *)v65 UTF8String];
-  v68 = strlen(v67);
-  v69 = flatbuffers::FlatBufferBuilder::CreateString(a3, v67, v68);
+  uTF8String14 = [(__CFString *)fork_id UTF8String];
+  v68 = strlen(uTF8String14);
+  v69 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String14, v68);
 
-  v70 = [(QSSStartSpeechRequest *)self application_name];
-  v71 = v70;
-  if (!v70)
+  application_name = [(QSSStartSpeechRequest *)self application_name];
+  v71 = application_name;
+  if (!application_name)
   {
-    v70 = &stru_2879AE8E0;
+    application_name = &stru_2879AE8E0;
   }
 
-  v72 = [(__CFString *)v70 UTF8String];
-  v73 = strlen(v72);
-  v74 = flatbuffers::FlatBufferBuilder::CreateString(a3, v72, v73);
+  uTF8String15 = [(__CFString *)application_name UTF8String];
+  v73 = strlen(uTF8String15);
+  v74 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String15, v73);
 
-  v75 = [(QSSStartSpeechRequest *)self metadata];
-  v76 = v75;
-  if (!v75)
+  metadata = [(QSSStartSpeechRequest *)self metadata];
+  v76 = metadata;
+  if (!metadata)
   {
-    v75 = &stru_2879AE8E0;
+    metadata = &stru_2879AE8E0;
   }
 
-  v77 = [(__CFString *)v75 UTF8String];
-  v78 = strlen(v77);
-  LODWORD(v77) = flatbuffers::FlatBufferBuilder::CreateString(a3, v77, v78);
+  uTF8String16 = [(__CFString *)metadata UTF8String];
+  v78 = strlen(uTF8String16);
+  LODWORD(uTF8String16) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String16, v78);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v79 = *(a3 + 10);
-  v80 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v64);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v63);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 10, v109);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 12, v108);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 14, v88);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 16, v62);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 18, v107);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 20, v106);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 22, v105);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 24, v104);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 26, v100);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 28, v101);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 30, v102);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 32, v103);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 34, v99);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 36, v91);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 38, v92);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 40, v93);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 42, v94);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 44, v95);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned long long>(a3, 46, v96);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned long long>(a3, 48, v97);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 50, v98);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 52, v90);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 54, v89);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 56, v85);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 58, v84);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 60, v86);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 62, v87);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 64, v83);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 66, v82);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 68, v69);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 70, v74);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 72, v77);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v79 = *(buffer + 10);
+  v80 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v64);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, v63);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 10, v109);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 12, codec);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 14, v88);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 16, v62);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 18, v107);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 20, v106);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 22, v105);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 24, v104);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 26, udm_port);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 28, tandem_mode);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 30, store_audio);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 32, stream_unstable_results);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 34, v99);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 36, end_point_mode);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 38, start_audio_bookmark);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 40, is_far_field);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 42, enable_utterance_detection);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 44, enable_endpoint_candidate);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 46, start_recognition_at);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 48, start_endpointing_at);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 50, enable_hybrid_endpoint);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 52, v90);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 54, v89);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 56, v85);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 58, initial_recognition_candidate_id);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 60, disable_auto_punctuation);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 62, keyboard_dictation);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 64, v83);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 66, speech_request_source);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 68, v69);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 70, v74);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 72, uTF8String16);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v80 + v79);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v80 + v79);
 }
 
 - (NSString)metadata
@@ -879,42 +879,42 @@ flatbuffers::DetachedBuffer *__37__QSSStartSpeechRequest_flatbuffData__block_inv
   return v6;
 }
 
-- (QSSStartSpeechRequest)initWithFlatbuffData:(id)a3 root:(const StartSpeechRequest *)a4 verify:(BOOL)a5
+- (QSSStartSpeechRequest)initWithFlatbuffData:(id)data root:(const StartSpeechRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSStartSpeechRequest;
   v10 = [(QSSStartSpeechRequest *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -936,9 +936,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

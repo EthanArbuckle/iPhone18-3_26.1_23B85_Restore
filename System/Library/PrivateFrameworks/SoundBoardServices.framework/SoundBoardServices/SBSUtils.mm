@@ -1,45 +1,45 @@
 @interface SBSUtils
-+ (id)connectionWithExportedObject:(id)a3;
-+ (id)createProxyConnectionForRapportTarget:(id)a3;
-+ (id)createProxyConnectionForXPCWithExportedObject:(id)a3 connection:(id *)a4;
++ (id)connectionWithExportedObject:(id)object;
++ (id)createProxyConnectionForRapportTarget:(id)target;
++ (id)createProxyConnectionForXPCWithExportedObject:(id)object connection:(id *)connection;
 @end
 
 @implementation SBSUtils
 
-+ (id)createProxyConnectionForRapportTarget:(id)a3
++ (id)createProxyConnectionForRapportTarget:(id)target
 {
-  v3 = a3;
-  v4 = [[SBSRemoteDeviceSender alloc] initWithDevice:v3];
+  targetCopy = target;
+  v4 = [[SBSRemoteDeviceSender alloc] initWithDevice:targetCopy];
 
   return v4;
 }
 
-+ (id)connectionWithExportedObject:(id)a3
++ (id)connectionWithExportedObject:(id)object
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  objectCopy = object;
   v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.soundboardservices.server" options:4096];
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287BCB3C8];
   [v4 setRemoteObjectInterface:v5];
 
-  if (v3)
+  if (objectCopy)
   {
     v6 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287BCD1E0];
     [v4 setExportedInterface:v6];
 
-    [v4 setExportedObject:v3];
+    [v4 setExportedObject:objectCopy];
   }
 
-  v7 = [v4 remoteObjectInterface];
-  v8 = [v7 classesForSelector:sel_getAllSyncedAlarmsAndTimers_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface = [v4 remoteObjectInterface];
+  v8 = [remoteObjectInterface classesForSelector:sel_getAllSyncedAlarmsAndTimers_ argumentIndex:0 ofReply:1];
   v9 = [v8 mutableCopy];
 
   v14[0] = objc_opt_class();
   v14[1] = objc_opt_class();
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
   [v9 addObjectsFromArray:v10];
-  v11 = [v4 remoteObjectInterface];
-  [v11 setClasses:v9 forSelector:sel_getAllSyncedAlarmsAndTimers_ argumentIndex:0 ofReply:1];
+  remoteObjectInterface2 = [v4 remoteObjectInterface];
+  [remoteObjectInterface2 setClasses:v9 forSelector:sel_getAllSyncedAlarmsAndTimers_ argumentIndex:0 ofReply:1];
 
   [v4 setInterruptionHandler:&__block_literal_global_541];
   [v4 setInvalidationHandler:&__block_literal_global_158];
@@ -78,17 +78,17 @@ void __41__SBSUtils_connectionWithExportedObject___block_invoke()
   v1 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createProxyConnectionForXPCWithExportedObject:(id)a3 connection:(id *)a4
++ (id)createProxyConnectionForXPCWithExportedObject:(id)object connection:(id *)connection
 {
-  v5 = [SBSUtils connectionWithExportedObject:a3];
-  if (a4)
+  v5 = [SBSUtils connectionWithExportedObject:object];
+  if (connection)
   {
-    objc_storeStrong(a4, v5);
+    objc_storeStrong(connection, v5);
   }
 
-  v6 = [v5 remoteObjectProxy];
+  remoteObjectProxy = [v5 remoteObjectProxy];
 
-  return v6;
+  return remoteObjectProxy;
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface NDOManagerSupportAppUtilities
-+ (id)ndoDeviceInfoFromCoverageInfoData:(id)a3 withSerialNumber:(id)a4;
++ (id)ndoDeviceInfoFromCoverageInfoData:(id)data withSerialNumber:(id)number;
 - (NDOManagerSupportAppUtilities)init;
 @end
 
 @implementation NDOManagerSupportAppUtilities
 
-+ (id)ndoDeviceInfoFromCoverageInfoData:(id)a3 withSerialNumber:(id)a4
++ (id)ndoDeviceInfoFromCoverageInfoData:(id)data withSerialNumber:(id)number
 {
-  v5 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v6 = a4;
-    v7 = v5;
-    v5 = sub_25BD796A8();
+    numberCopy = number;
+    v7 = dataCopy;
+    dataCopy = sub_25BD796A8();
     v9 = v8;
   }
 
   else
   {
-    v10 = a4;
+    numberCopy2 = number;
     v9 = 0xF000000000000000;
   }
 
   v11 = sub_25BD797B8();
   v13 = v12;
 
-  v14 = sub_25BD74DB0(v5, v9, v11, v13);
+  v14 = sub_25BD74DB0(dataCopy, v9, v11, v13);
 
-  sub_25BD54D60(v5, v9);
+  sub_25BD54D60(dataCopy, v9);
 
   return v14;
 }

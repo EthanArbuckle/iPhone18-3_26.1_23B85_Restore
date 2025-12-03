@@ -1,11 +1,11 @@
 @interface _UIDirectionalRotationLayer
-- (void)addAnimation:(id)a3 forKey:(id)a4;
-- (void)setTransform:(CATransform3D *)a3;
+- (void)addAnimation:(id)animation forKey:(id)key;
+- (void)setTransform:(CATransform3D *)transform;
 @end
 
 @implementation _UIDirectionalRotationLayer
 
-- (void)setTransform:(CATransform3D *)a3
+- (void)setTransform:(CATransform3D *)transform
 {
   p_previousTransform = &self->_previousTransform;
   [(_UIDirectionalRotationLayer *)self transform];
@@ -23,17 +23,17 @@
   *&p_previousTransform->m23 = v9;
   v19.receiver = self;
   v19.super_class = _UIDirectionalRotationLayer;
-  v10 = *&a3->m33;
-  v24 = *&a3->m31;
+  v10 = *&transform->m33;
+  v24 = *&transform->m31;
   v25 = v10;
-  v11 = *&a3->m43;
-  v26 = *&a3->m41;
+  v11 = *&transform->m43;
+  v26 = *&transform->m41;
   v27 = v11;
-  v12 = *&a3->m13;
-  v20 = *&a3->m11;
+  v12 = *&transform->m13;
+  v20 = *&transform->m11;
   v21 = v12;
-  v13 = *&a3->m23;
-  v22 = *&a3->m21;
+  v13 = *&transform->m23;
+  v22 = *&transform->m21;
   v23 = v13;
   [(_UIDirectionalRotationLayer *)&v19 setTransform:&v20];
   v14 = MEMORY[0x1E69792E8];
@@ -51,15 +51,15 @@
   *&p_previousTransform->m23 = v18;
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  animationCopy = animation;
+  keyCopy = key;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 isEqualToString:@"transform"])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [keyCopy isEqualToString:@"transform"])
   {
-    v8 = [(_UIDirectionalRotationLayer *)self presentationLayer];
-    v9 = v8;
+    presentationLayer = [(_UIDirectionalRotationLayer *)self presentationLayer];
+    v9 = presentationLayer;
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
@@ -68,9 +68,9 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    if (v8)
+    if (presentationLayer)
     {
-      [v8 transform];
+      [presentationLayer transform];
     }
 
     else
@@ -116,12 +116,12 @@
     v19 = v35;
     v20 = v36;
     v15 = _UIInterfaceOrientationFromCATransform3D(&v17);
-    _UIMakeBasicTransformAnimationUnambiguousWithOrientations(v6, v15, v14, [(_UIDirectionalRotationLayer *)self isCounterTransformLayer], [(_UIDirectionalRotationLayer *)self isInverseTransformLayer]);
+    _UIMakeBasicTransformAnimationUnambiguousWithOrientations(animationCopy, v15, v14, [(_UIDirectionalRotationLayer *)self isCounterTransformLayer], [(_UIDirectionalRotationLayer *)self isInverseTransformLayer]);
   }
 
   v16.receiver = self;
   v16.super_class = _UIDirectionalRotationLayer;
-  [(_UIDirectionalRotationLayer *)&v16 addAnimation:v6 forKey:v7];
+  [(_UIDirectionalRotationLayer *)&v16 addAnimation:animationCopy forKey:keyCopy];
 }
 
 @end

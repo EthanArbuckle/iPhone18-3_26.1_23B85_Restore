@@ -1,18 +1,18 @@
 @interface AWDSafariSetAutoFillQuickTypeSuggestionEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCategory:(id)a3;
-- (int)StringAsFormProperty:(id)a3;
+- (int)StringAsCategory:(id)category;
+- (int)StringAsFormProperty:(id)property;
 - (int)category;
 - (int)formProperty;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCategory:(BOOL)a3;
-- (void)setHasFormProperty:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCategory:(BOOL)category;
+- (void)setHasFormProperty:(BOOL)property;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSafariSetAutoFillQuickTypeSuggestionEvent
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasCategory:(BOOL)a3
+- (void)setHasCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 2;
   }
@@ -45,24 +45,24 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsCategory:(id)a3
+- (int)StringAsCategory:(id)category
 {
-  if ([a3 isEqualToString:@"CREDIT_CARD"])
+  if ([category isEqualToString:@"CREDIT_CARD"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"PASSWORD"])
+  if ([category isEqualToString:@"PASSWORD"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"CONTACT"])
+  if ([category isEqualToString:@"CONTACT"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"UNKNOWN_CATEGORY"])
+  if ([category isEqualToString:@"UNKNOWN_CATEGORY"])
   {
     return 3;
   }
@@ -83,9 +83,9 @@
   }
 }
 
-- (void)setHasFormProperty:(BOOL)a3
+- (void)setHasFormProperty:(BOOL)property
 {
-  if (a3)
+  if (property)
   {
     v3 = 4;
   }
@@ -98,64 +98,64 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsFormProperty:(id)a3
+- (int)StringAsFormProperty:(id)property
 {
-  if ([a3 isEqualToString:@"FIRST_NAME"])
+  if ([property isEqualToString:@"FIRST_NAME"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"LAST_NAME"])
+  if ([property isEqualToString:@"LAST_NAME"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"FULL_NAME"])
+  if ([property isEqualToString:@"FULL_NAME"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"BIRTHDAY"])
+  if ([property isEqualToString:@"BIRTHDAY"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"EMAIL"])
+  if ([property isEqualToString:@"EMAIL"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"PHONE_NUMBER"])
+  if ([property isEqualToString:@"PHONE_NUMBER"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"ADDRESS"])
+  if ([property isEqualToString:@"ADDRESS"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"INSTANT_MESSAGE"])
+  if ([property isEqualToString:@"INSTANT_MESSAGE"])
   {
     return 7;
   }
 
-  if ([a3 isEqualToString:@"ORGANIZATION"])
+  if ([property isEqualToString:@"ORGANIZATION"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"LOGIN_CREDENTIAL"])
+  if ([property isEqualToString:@"LOGIN_CREDENTIAL"])
   {
     return 9;
   }
 
-  if ([a3 isEqualToString:@"CREDIT_CARD_FORM"])
+  if ([property isEqualToString:@"CREDIT_CARD_FORM"])
   {
     return 10;
   }
 
-  if ([a3 isEqualToString:@"UNKNOWN_PROPERTY"])
+  if ([property isEqualToString:@"UNKNOWN_PROPERTY"])
   {
     return 11;
   }
@@ -172,18 +172,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
 LABEL_3:
       if ((has & 4) == 0)
       {
-        return v3;
+        return dictionary;
       }
 
       goto LABEL_10;
@@ -206,7 +206,7 @@ LABEL_3:
     v6 = off_29EE32DF8[category];
   }
 
-  [v3 setObject:v6 forKey:@"category"];
+  [dictionary setObject:v6 forKey:@"category"];
   if ((*&self->_has & 4) != 0)
   {
 LABEL_10:
@@ -221,13 +221,13 @@ LABEL_10:
       v8 = off_29EE32E18[formProperty];
     }
 
-    [v3 setObject:v8 forKey:@"formProperty"];
+    [dictionary setObject:v8 forKey:@"formProperty"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 1) == 0)
@@ -268,13 +268,13 @@ LABEL_7:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 24) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 24) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -285,8 +285,8 @@ LABEL_3:
       }
 
 LABEL_7:
-      *(a3 + 5) = self->_formProperty;
-      *(a3 + 24) |= 4u;
+      *(to + 5) = self->_formProperty;
+      *(to + 24) |= 4u;
       return;
     }
   }
@@ -296,17 +296,17 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_category;
-  *(a3 + 24) |= 2u;
+  *(to + 4) = self->_category;
+  *(to + 24) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -343,20 +343,20 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 24) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 24) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_16;
       }
     }
 
-    else if (*(a3 + 24))
+    else if (*(equal + 24))
     {
 LABEL_16:
       LOBYTE(v5) = 0;
@@ -365,21 +365,21 @@ LABEL_16:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 24) & 2) == 0 || self->_category != *(a3 + 4))
+      if ((*(equal + 24) & 2) == 0 || self->_category != *(equal + 4))
       {
         goto LABEL_16;
       }
     }
 
-    else if ((*(a3 + 24) & 2) != 0)
+    else if ((*(equal + 24) & 2) != 0)
     {
       goto LABEL_16;
     }
 
-    LOBYTE(v5) = (*(a3 + 24) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 24) & 4) == 0;
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 24) & 4) == 0 || self->_formProperty != *(a3 + 5))
+      if ((*(equal + 24) & 4) == 0 || self->_formProperty != *(equal + 5))
       {
         goto LABEL_16;
       }
@@ -431,14 +431,14 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 24);
+    v3 = *(from + 24);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -448,20 +448,20 @@ LABEL_3:
       }
 
 LABEL_7:
-      self->_formProperty = *(a3 + 5);
+      self->_formProperty = *(from + 5);
       *&self->_has |= 4u;
       return;
     }
   }
 
-  else if ((*(a3 + 24) & 2) == 0)
+  else if ((*(from + 24) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_category = *(a3 + 4);
+  self->_category = *(from + 4);
   *&self->_has |= 2u;
-  if ((*(a3 + 24) & 4) != 0)
+  if ((*(from + 24) & 4) != 0)
   {
     goto LABEL_7;
   }

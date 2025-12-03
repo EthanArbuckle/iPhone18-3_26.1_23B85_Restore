@@ -18,8 +18,8 @@ LABEL_8:
 
   v1 = v0;
   v2 = MEMORY[0x277CCA8D8];
-  v3 = [v0 localizations];
-  v4 = [v2 preferredLocalizationsFromArray:v3 forPreferences:0];
+  localizations = [v0 localizations];
+  v4 = [v2 preferredLocalizationsFromArray:localizations forPreferences:0];
 
   if ([v4 count])
   {

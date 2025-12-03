@@ -1,11 +1,11 @@
 @interface NearbySuggestionController
 - (_TtC44com_apple_NeighborhoodActivityConduitService26NearbySuggestionController)init;
-- (void)conversationManager:(id)a3 avModeChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 presentationContextChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4 fromOldConversation:(id)a5;
+- (void)conversationManager:(id)manager avModeChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager presentationContextChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation;
 - (void)dealloc;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateContext:(id)a4;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateContext:(id)context;
 @end
 
 @implementation NearbySuggestionController
@@ -22,11 +22,11 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_100022960(0, 0, v6, &unk_1000F1690, v8);
 
   v10 = type metadata accessor for NearbySuggestionController();
-  v11.receiver = v9;
+  v11.receiver = selfCopy;
   v11.super_class = v10;
   [(NearbySuggestionController *)&v11 dealloc];
 }
@@ -38,32 +38,32 @@
   return result;
 }
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4 fromOldConversation:(id)a5
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_10003AD34(v9);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  oldConversationCopy = oldConversation;
+  selfCopy = self;
+  sub_10003AD34(conversationCopy);
 }
 
-- (void)conversationManager:(id)a3 presentationContextChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager presentationContextChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10003B20C(v7);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_10003B20C(conversationCopy);
 }
 
-- (void)conversationManager:(id)a3 avModeChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager avModeChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10003B66C(v7);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_10003B66C(conversationCopy);
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
   v6 = sub_10000ADE4(&unk_10011EA50, &qword_1000F0D30);
   v7 = *(*(v6 - 8) + 64);
@@ -72,10 +72,10 @@
   v10 = sub_1000E2538();
   (*(*(v10 - 8) + 56))(v9, 1, 1, v10);
   v11 = qword_10011DC08;
-  v12 = a4;
-  v13 = self;
-  v14 = v12;
-  v16 = v13;
+  errorCopy = error;
+  selfCopy = self;
+  v14 = errorCopy;
+  v16 = selfCopy;
   if (v11 != -1)
   {
     swift_once();
@@ -92,7 +92,7 @@
   sub_100022960(0, 0, v9, &unk_1000F15E0, v19);
 }
 
-- (void)session:(id)a3 didUpdateContext:(id)a4
+- (void)session:(id)session didUpdateContext:(id)context
 {
   v5 = sub_10000ADE4(&unk_10011EA50, &qword_1000F0D30);
   v6 = *(*(v5 - 8) + 64);
@@ -103,7 +103,7 @@
   v10 = sub_1000E2538();
   (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   v11 = qword_10011DC08;
-  v13 = self;
+  selfCopy = self;
   if (v11 != -1)
   {
     swift_once();
@@ -115,7 +115,7 @@
   v16[2] = v14;
   v16[3] = v15;
   v16[4] = v9;
-  v16[5] = v13;
+  v16[5] = selfCopy;
 
   sub_100022960(0, 0, v8, &unk_1000F15B8, v16);
 }

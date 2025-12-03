@@ -28,11 +28,11 @@
 
 - (uint64_t)pbf_isSnapshotBundle
 {
-  result = [a1 pbf_isDirectory];
+  result = [self pbf_isDirectory];
   if (result)
   {
-    v3 = [a1 lastPathComponent];
-    v4 = [v3 containsString:@"SnapshotCache.cachedb"];
+    lastPathComponent = [self lastPathComponent];
+    v4 = [lastPathComponent containsString:@"SnapshotCache.cachedb"];
 
     return v4;
   }
@@ -42,9 +42,9 @@
 
 - (BOOL)pbf_isWithinScratchDirectory
 {
-  v1 = [a1 path];
-  v2 = v1;
-  if (!v1 || (v3 = [v1 rangeOfString:@"/versions/"], v3 == 0x7FFFFFFFFFFFFFFFLL) || ((v5 = v3 + v4, v6 = objc_msgSend(v2, "rangeOfString:options:range:", @"/scratch/", 0, v5, objc_msgSend(v2, "length") - v5), v6 != 0x7FFFFFFFFFFFFFFFLL) ? (v7 = v6 == v5) : (v7 = 1), v7))
+  path = [self path];
+  v2 = path;
+  if (!path || (v3 = [path rangeOfString:@"/versions/"], v3 == 0x7FFFFFFFFFFFFFFFLL) || ((v5 = v3 + v4, v6 = objc_msgSend(v2, "rangeOfString:options:range:", @"/scratch/", 0, v5, objc_msgSend(v2, "length") - v5), v6 != 0x7FFFFFFFFFFFFFFFLL) ? (v7 = v6 == v5) : (v7 = 1), v7))
   {
     v12 = 0;
   }
@@ -52,9 +52,9 @@
   else
   {
     v9 = [v2 substringWithRange:{v5, v6 - v5}];
-    v10 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-    v11 = [v10 invertedSet];
-    v12 = [v9 rangeOfCharacterFromSet:v11] == 0x7FFFFFFFFFFFFFFFLL;
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    invertedSet = [decimalDigitCharacterSet invertedSet];
+    v12 = [v9 rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v12;
@@ -62,21 +62,21 @@
 
 - (uint64_t)pbf_isLegacyPosterSnapshot
 {
-  v2 = [a1 lastPathComponent];
-  v3 = [v2 hasPrefix:@"RuntimeSnapshot"];
-  if (([v2 hasPrefix:@"SNAPSHOT"] & 1) != 0 || v3)
+  lastPathComponent = [self lastPathComponent];
+  v3 = [lastPathComponent hasPrefix:@"RuntimeSnapshot"];
+  if (([lastPathComponent hasPrefix:@"SNAPSHOT"] & 1) != 0 || v3)
   {
-    v5 = [v2 pathExtension];
-    v6 = [MEMORY[0x277D3EF60] defaultFormat];
-    v7 = [v6 filenameExtension];
-    v8 = [v5 caseInsensitiveCompare:v7];
+    pathExtension = [lastPathComponent pathExtension];
+    defaultFormat = [MEMORY[0x277D3EF60] defaultFormat];
+    filenameExtension = [defaultFormat filenameExtension];
+    v8 = [pathExtension caseInsensitiveCompare:filenameExtension];
 
     if (v8)
     {
       v4 = 0;
     }
 
-    else if ((v3 & 1) != 0 || ([a1 pbf_snapshotDefinitionForPosterSnapshotURL], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+    else if ((v3 & 1) != 0 || ([self pbf_snapshotDefinitionForPosterSnapshotURL], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
     {
       v4 = 1;
     }
@@ -92,11 +92,11 @@
 
 - (id)pbf_snapshotDefinitionForPosterSnapshotURL
 {
-  v1 = [a1 lastPathComponent];
-  v2 = [v1 componentsSeparatedByString:@"-"];
-  v3 = [v2 firstObject];
+  lastPathComponent = [self lastPathComponent];
+  v2 = [lastPathComponent componentsSeparatedByString:@"-"];
+  firstObject = [v2 firstObject];
 
-  v4 = PBFSnapshotDefinitionForIdentifier(v3);
+  v4 = PBFSnapshotDefinitionForIdentifier(firstObject);
 
   return v4;
 }
@@ -104,12 +104,12 @@
 - (uint64_t)pbf_URLIsReachableAndConformsToAttributeValues:()PBFAdditions error:
 {
   v6 = a3;
-  if ([a1 checkResourceIsReachableAndReturnError:a4])
+  if ([self checkResourceIsReachableAndReturnError:a4])
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [a1 path];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [self path];
     v21 = 0;
-    v9 = [v7 attributesOfItemAtPath:v8 error:&v21];
+    v9 = [defaultManager attributesOfItemAtPath:path error:&v21];
     v10 = v21;
 
     if (v10)
@@ -164,8 +164,8 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = [v6 allKeys];
-    v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    allKeys = [v6 allKeys];
+    v8 = [allKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v8)
     {
       v9 = v8;
@@ -177,14 +177,14 @@
         {
           if (*v25 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = *(*(&v24 + 1) + 8 * i);
           v13 = [v6 objectForKeyedSubscript:v12];
           v22 = 0;
           v23 = 0;
-          v14 = [a1 getResourceValue:&v23 forKey:v12 error:&v22];
+          v14 = [self getResourceValue:&v23 forKey:v12 error:&v22];
           v15 = v23;
           v16 = v22;
           v17 = v16;
@@ -211,7 +211,7 @@ LABEL_17:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v9)
         {
           continue;
@@ -237,7 +237,7 @@ LABEL_18:
 {
   v49 = *MEMORY[0x277D85DE8];
   v8 = a3;
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -263,11 +263,11 @@ LABEL_18:
   v41 = v10;
   aBlock[4] = &v42;
   v11 = _Block_copy(aBlock);
-  if ([a1 checkResourceIsReachableAndReturnError:a5] & 1) != 0 && (objc_msgSend(a1, "pbf_URLIsReachableAndConformsToAttributeValues:error:", v8, a5))
+  if ([self checkResourceIsReachableAndReturnError:a5] & 1) != 0 && (objc_msgSend(self, "pbf_URLIsReachableAndConformsToAttributeValues:error:", v8, a5))
   {
     v39 = 0;
     v12 = *MEMORY[0x277CBE868];
-    v13 = [a1 getResourceValue:&v39 forKey:*MEMORY[0x277CBE868] error:a5];
+    v13 = [self getResourceValue:&v39 forKey:*MEMORY[0x277CBE868] error:a5];
     v14 = v39;
     v15 = v14;
     if (v13)
@@ -281,16 +281,16 @@ LABEL_18:
         v37 = __Block_byref_object_dispose__5;
         v38 = 0;
         v27 = [MEMORY[0x277CBEB58] setWithObject:v12];
-        v16 = [v8 allKeys];
-        [v27 addObjectsFromArray:v16];
+        allKeys = [v8 allKeys];
+        [v27 addObjectsFromArray:allKeys];
 
-        v17 = [v27 allObjects];
+        allObjects = [v27 allObjects];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __130__NSURL_PBFAdditions__pbf_recursivelyValidateContentsAreReachableAndConformToAttributeValues_URLsNotConformingToAttributes_error___block_invoke_2;
         v32[3] = &unk_2782C7570;
         v32[4] = &v33;
-        v18 = [v9 enumeratorAtURL:a1 includingPropertiesForKeys:v17 options:0 errorHandler:v32];
+        v18 = [defaultManager enumeratorAtURL:self includingPropertiesForKeys:allObjects options:0 errorHandler:v32];
 
         v30 = 0u;
         v31 = 0u;
@@ -360,14 +360,14 @@ LABEL_25:
 
     else
     {
-      (v11)[2](v11, a1);
+      (v11)[2](v11, self);
       v25 = 0;
     }
   }
 
   else
   {
-    (v11)[2](v11, a1);
+    (v11)[2](v11, self);
     v25 = 0;
   }
 
@@ -379,7 +379,7 @@ LABEL_25:
 {
   v24 = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -391,7 +391,7 @@ LABEL_25:
   v20[2] = __65__NSURL_PBFAdditions__pbf_recursivelyUpdateFileAttributes_error___block_invoke;
   v20[3] = &unk_2782C7570;
   v20[4] = v21;
-  [v7 enumeratorAtURL:a1 includingPropertiesForKeys:0 options:1 errorHandler:v20];
+  [defaultManager enumeratorAtURL:self includingPropertiesForKeys:0 options:1 errorHandler:v20];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -410,8 +410,8 @@ LABEL_25:
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * v11) path];
-        v13 = [v7 setAttributes:v6 ofItemAtPath:v12 error:a4];
+        path = [*(*(&v16 + 1) + 8 * v11) path];
+        v13 = [defaultManager setAttributes:v6 ofItemAtPath:path error:a4];
 
         if ((v13 & 1) == 0)
         {
@@ -444,9 +444,9 @@ LABEL_11:
 {
   v6 = MEMORY[0x277CCAA00];
   v7 = a3;
-  v8 = [v6 defaultManager];
-  v9 = [a1 path];
-  v10 = [v8 setAttributes:v7 ofItemAtPath:v9 error:a4];
+  defaultManager = [v6 defaultManager];
+  path = [self path];
+  v10 = [defaultManager setAttributes:v7 ofItemAtPath:path error:a4];
 
   return v10;
 }
@@ -454,7 +454,7 @@ LABEL_11:
 - (uint64_t)pbf_URLIsReachableAndConformToResourceValues:()PBFAdditions error:
 {
   v6 = a3;
-  if ([a1 checkResourceIsReachableAndReturnError:a4])
+  if ([self checkResourceIsReachableAndReturnError:a4])
   {
     v16 = 0;
     v17 = &v16;
@@ -470,7 +470,7 @@ LABEL_11:
     v11[1] = 3221225472;
     v11[2] = __74__NSURL_PBFAdditions__pbf_URLIsReachableAndConformToResourceValues_error___block_invoke;
     v11[3] = &unk_2782C7F80;
-    v11[4] = a1;
+    v11[4] = self;
     v11[5] = &v16;
     v11[6] = &v12;
     [v6 enumerateKeysAndObjectsUsingBlock:v11];
@@ -504,7 +504,7 @@ LABEL_11:
 {
   v49 = *MEMORY[0x277D85DE8];
   v8 = a3;
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -530,11 +530,11 @@ LABEL_11:
   v41 = v10;
   aBlock[4] = &v42;
   v11 = _Block_copy(aBlock);
-  if ([a1 checkResourceIsReachableAndReturnError:a5] & 1) != 0 && (objc_msgSend(a1, "pbf_URLIsReachableAndConformToResourceValues:error:", v8, a5))
+  if ([self checkResourceIsReachableAndReturnError:a5] & 1) != 0 && (objc_msgSend(self, "pbf_URLIsReachableAndConformToResourceValues:error:", v8, a5))
   {
     v39 = 0;
     v12 = *MEMORY[0x277CBE868];
-    v13 = [a1 getResourceValue:&v39 forKey:*MEMORY[0x277CBE868] error:a5];
+    v13 = [self getResourceValue:&v39 forKey:*MEMORY[0x277CBE868] error:a5];
     v14 = v39;
     v15 = v14;
     if (v13)
@@ -548,16 +548,16 @@ LABEL_11:
         v37 = __Block_byref_object_dispose__5;
         v38 = 0;
         v27 = [MEMORY[0x277CBEB58] setWithObject:v12];
-        v16 = [v8 allKeys];
-        [v27 addObjectsFromArray:v16];
+        allKeys = [v8 allKeys];
+        [v27 addObjectsFromArray:allKeys];
 
-        v17 = [v27 allObjects];
+        allObjects = [v27 allObjects];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __129__NSURL_PBFAdditions__pbf_recursivelyValidateContentsAreReachableAndConformToResourceValues_URLsNotConformingToAttributes_error___block_invoke_2;
         v32[3] = &unk_2782C7570;
         v32[4] = &v33;
-        v18 = [v9 enumeratorAtURL:a1 includingPropertiesForKeys:v17 options:0 errorHandler:v32];
+        v18 = [defaultManager enumeratorAtURL:self includingPropertiesForKeys:allObjects options:0 errorHandler:v32];
 
         v30 = 0u;
         v31 = 0u;
@@ -627,14 +627,14 @@ LABEL_25:
 
     else
     {
-      (v11)[2](v11, a1);
+      (v11)[2](v11, self);
       v25 = 0;
     }
   }
 
   else
   {
-    (v11)[2](v11, a1);
+    (v11)[2](v11, self);
     v25 = 0;
   }
 
@@ -646,7 +646,7 @@ LABEL_25:
 {
   v26 = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
@@ -658,7 +658,7 @@ LABEL_25:
   v22[2] = __65__NSURL_PBFAdditions__pbf_recursivelyUpdateResourceValues_error___block_invoke;
   v22[3] = &unk_2782C7570;
   v22[4] = v23;
-  [v7 enumeratorAtURL:a1 includingPropertiesForKeys:0 options:0 errorHandler:v22];
+  [defaultManager enumeratorAtURL:self includingPropertiesForKeys:0 options:0 errorHandler:v22];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
@@ -719,11 +719,11 @@ LABEL_13:
   if (a4 > 2)
   {
     v10 = a3;
-    v7 = [a1 pbf_dataStoreVersionContainingURLForBaseURL:v10];
+    v7 = [self pbf_dataStoreVersionContainingURLForBaseURL:v10];
 
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    v11 = [v6 stringValue];
-    v8 = [v7 URLByAppendingPathComponent:v11 isDirectory:1];
+    stringValue = [v6 stringValue];
+    v8 = [v7 URLByAppendingPathComponent:stringValue isDirectory:1];
   }
 
   else
@@ -739,15 +739,15 @@ LABEL_13:
 
 + (id)pbf_dataStoreExtensionContainerURLForBaseURL:()PBFAdditions version:
 {
-  v2 = [a1 pbf_dataStoreURLForBaseURL:? version:?];
-  v3 = [a1 pbf_dataStoreExtensionContainerURLForVersionDataStoreURL:v2];
+  v2 = [self pbf_dataStoreURLForBaseURL:? version:?];
+  v3 = [self pbf_dataStoreExtensionContainerURLForVersionDataStoreURL:v2];
 
   return v3;
 }
 
 + (id)pbf_galleryCacheURLForBaseURL:()PBFAdditions version:
 {
-  v1 = [a1 pbf_dataStoreURLForBaseURL:? version:?];
+  v1 = [self pbf_dataStoreURLForBaseURL:? version:?];
   v2 = [v1 URLByAppendingPathComponent:@"GalleryCache" isDirectory:1];
 
   return v2;
@@ -769,8 +769,8 @@ LABEL_13:
 {
   if (a4 >= 0x3C)
   {
-    v6 = [a1 pbf_dataStoreURLForBaseURL:? version:?];
-    v4 = [a1 pbf_dataStoreSQLiteDatabaseURLForDataStoreURL:v6];
+    v6 = [self pbf_dataStoreURLForBaseURL:? version:?];
+    v4 = [self pbf_dataStoreSQLiteDatabaseURLForDataStoreURL:v6];
   }
 
   else
@@ -791,8 +791,8 @@ LABEL_13:
 
 + (id)pbf_switcherConfigurationOrderingURLForBaseURL:()PBFAdditions version:
 {
-  v2 = [a1 pbf_dataStoreURLForBaseURL:? version:?];
-  v3 = [a1 pbf_switcherConfigurationOrderingURLForDataStoreURL:v2];
+  v2 = [self pbf_dataStoreURLForBaseURL:? version:?];
+  v3 = [self pbf_switcherConfigurationOrderingURLForDataStoreURL:v2];
 
   return v3;
 }
@@ -807,8 +807,8 @@ LABEL_13:
 
 + (id)pbf_switcherSelectedConfigurationURLForBaseURL:()PBFAdditions version:
 {
-  v2 = [a1 pbf_dataStoreURLForBaseURL:? version:?];
-  v3 = [a1 pbf_switcherSelectedConfigurationURLForDataStoreURL:v2];
+  v2 = [self pbf_dataStoreURLForBaseURL:? version:?];
+  v3 = [self pbf_switcherSelectedConfigurationURLForDataStoreURL:v2];
 
   return v3;
 }
@@ -827,13 +827,13 @@ LABEL_13:
   v5 = a3;
   v6 = a4;
   v24 = objc_opt_new();
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v23 = v6;
-  v8 = [v6 URLByStandardizingPath];
+  uRLByStandardizingPath = [v6 URLByStandardizingPath];
   v9 = *MEMORY[0x277CBE868];
   v31[0] = *MEMORY[0x277CBE868];
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
-  v11 = [v7 enumeratorAtURL:v8 includingPropertiesForKeys:v10 options:16 errorHandler:0];
+  v11 = [defaultManager enumeratorAtURL:uRLByStandardizingPath includingPropertiesForKeys:v10 options:16 errorHandler:0];
 
   v28 = 0u;
   v29 = 0u;
@@ -860,8 +860,8 @@ LABEL_13:
         v18 = v25;
         if (([v18 BOOLValue] & 1) == 0)
         {
-          v19 = [v17 lastPathComponent];
-          v20 = [v19 isEqualToString:v5];
+          lastPathComponent = [v17 lastPathComponent];
+          v20 = [lastPathComponent isEqualToString:v5];
 
           if (v20)
           {
@@ -878,15 +878,15 @@ LABEL_13:
 
   if ([v24 count])
   {
-    v21 = [v24 array];
+    array = [v24 array];
   }
 
   else
   {
-    v21 = 0;
+    array = 0;
   }
 
-  return v21;
+  return array;
 }
 
 @end

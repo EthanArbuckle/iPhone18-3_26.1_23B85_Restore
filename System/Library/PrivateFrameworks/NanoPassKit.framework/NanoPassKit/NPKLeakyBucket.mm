@@ -1,31 +1,31 @@
 @interface NPKLeakyBucket
-+ (id)throttleWithEventsTimeInterval:(double)a3 description:(id)a4;
-- (BOOL)addEvent:(id)a3;
-- (NPKLeakyBucket)initWithEventsTimeInterval:(double)a3 maxBucketSize:(unint64_t)a4 description:(id)a5;
-- (void)_insideLock_scheduleNextEventLeakFromReferenceDate:(id)a3;
++ (id)throttleWithEventsTimeInterval:(double)interval description:(id)description;
+- (BOOL)addEvent:(id)event;
+- (NPKLeakyBucket)initWithEventsTimeInterval:(double)interval maxBucketSize:(unint64_t)size description:(id)description;
+- (void)_insideLock_scheduleNextEventLeakFromReferenceDate:(id)date;
 - (void)dealloc;
 - (void)flush;
 @end
 
 @implementation NPKLeakyBucket
 
-- (NPKLeakyBucket)initWithEventsTimeInterval:(double)a3 maxBucketSize:(unint64_t)a4 description:(id)a5
+- (NPKLeakyBucket)initWithEventsTimeInterval:(double)interval maxBucketSize:(unint64_t)size description:(id)description
 {
-  v8 = a5;
+  descriptionCopy = description;
   v15.receiver = self;
   v15.super_class = NPKLeakyBucket;
   v9 = [(NPKLeakyBucket *)&v15 init];
   if (v9)
   {
-    if (a3 <= 0.0)
+    if (interval <= 0.0)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"drop time interval must be longer than 0.0"];
     }
 
     v9->_lock._os_unfair_lock_opaque = 0;
-    v9->_eventsTimeInterval = a3;
-    v9->_maxBucketSize = a4;
-    v10 = [v8 copy];
+    v9->_eventsTimeInterval = interval;
+    v9->_maxBucketSize = size;
+    v10 = [descriptionCopy copy];
     description = v9->_description;
     v9->_description = v10;
 
@@ -37,10 +37,10 @@
   return v9;
 }
 
-+ (id)throttleWithEventsTimeInterval:(double)a3 description:(id)a4
++ (id)throttleWithEventsTimeInterval:(double)interval description:(id)description
 {
-  v5 = a4;
-  v6 = [objc_alloc(objc_opt_class()) initWithEventsTimeInterval:0 maxBucketSize:v5 description:a3];
+  descriptionCopy = description;
+  v6 = [objc_alloc(objc_opt_class()) initWithEventsTimeInterval:0 maxBucketSize:descriptionCopy description:interval];
 
   return v6;
 }
@@ -53,9 +53,9 @@
   [(NPKLeakyBucket *)&v3 dealloc];
 }
 
-- (BOOL)addEvent:(id)a3
+- (BOOL)addEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -64,8 +64,8 @@
   v8[1] = 3221225472;
   v9 = __27__NPKLeakyBucket_addEvent___block_invoke;
   v10 = &unk_2799475E8;
-  v11 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = eventCopy;
   v12 = v5;
   v13 = &v14;
   v6 = v8;
@@ -214,10 +214,10 @@ uint64_t __23__NPKLeakyBucket_flush__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)_insideLock_scheduleNextEventLeakFromReferenceDate:(id)a3
+- (void)_insideLock_scheduleNextEventLeakFromReferenceDate:(id)date
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = self->_eventTimer == 0;
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -240,7 +240,7 @@ uint64_t __23__NPKLeakyBucket_flush__block_invoke(uint64_t result)
     }
 
     objc_initWeak(buf, self);
-    v13 = [v4 dateByAddingTimeInterval:self->_eventsTimeInterval];
+    v13 = [dateCopy dateByAddingTimeInterval:self->_eventsTimeInterval];
     [v13 timeIntervalSinceNow];
     v15 = v14;
     v16 = MEMORY[0x277CBEBB8];

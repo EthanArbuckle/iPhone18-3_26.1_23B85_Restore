@@ -1,6 +1,6 @@
 @interface HMDDoorbellChimeControllerContext
 - (BOOL)isCurrentDevicePrimaryResident;
-- (HMDDoorbellChimeControllerContext)initWithWorkQueue:(id)a3 accessory:(id)a4;
+- (HMDDoorbellChimeControllerContext)initWithWorkQueue:(id)queue accessory:(id)accessory;
 - (HMDHAPAccessory)accessory;
 - (double)doorbellChimeMaximumAnnounceDelay;
 @end
@@ -16,11 +16,11 @@
 
 - (double)doorbellChimeMaximumAnnounceDelay
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"doorbellChimeMaximumAnnounceDelay"];
-  v4 = [v3 numberValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"doorbellChimeMaximumAnnounceDelay"];
+  numberValue = [v3 numberValue];
 
-  [v4 doubleValue];
+  [numberValue doubleValue];
   v6 = v5;
 
   return v6;
@@ -28,31 +28,31 @@
 
 - (BOOL)isCurrentDevicePrimaryResident
 {
-  v2 = [(HMDDoorbellChimeControllerContext *)self accessory];
-  v3 = [v2 home];
-  v4 = [v3 isCurrentDeviceConfirmedPrimaryResident];
+  accessory = [(HMDDoorbellChimeControllerContext *)self accessory];
+  home = [accessory home];
+  isCurrentDeviceConfirmedPrimaryResident = [home isCurrentDeviceConfirmedPrimaryResident];
 
-  return v4;
+  return isCurrentDeviceConfirmedPrimaryResident;
 }
 
-- (HMDDoorbellChimeControllerContext)initWithWorkQueue:(id)a3 accessory:(id)a4
+- (HMDDoorbellChimeControllerContext)initWithWorkQueue:(id)queue accessory:(id)accessory
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  queueCopy = queue;
+  accessoryCopy = accessory;
+  if (!accessoryCopy)
   {
     _HMFPreconditionFailure();
 LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  if (!v7)
+  if (!queueCopy)
   {
     goto LABEL_7;
   }
 
-  v9 = v8;
+  v9 = accessoryCopy;
   v20.receiver = self;
   v20.super_class = HMDDoorbellChimeControllerContext;
   v10 = [(HMDDoorbellChimeControllerContext *)&v20 init];
@@ -60,7 +60,7 @@ LABEL_7:
   if (v10)
   {
     objc_storeWeak(&v10->_accessory, v9);
-    objc_storeStrong(&v11->_workQueue, a3);
+    objc_storeStrong(&v11->_workQueue, queue);
     v12 = objc_alloc_init(HMDDoorbellBulletinUtilities);
     doorbellBulletinUtilities = v11->_doorbellBulletinUtilities;
     v11->_doorbellBulletinUtilities = v12;
@@ -70,7 +70,7 @@ LABEL_7:
     v22[0] = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
 
-    v16 = [[HMDCharacteristicsAvailabilityListener alloc] initWithAccessory:v9 workQueue:v7 interestedCharacteristicTypesByServiceType:v15];
+    v16 = [[HMDCharacteristicsAvailabilityListener alloc] initWithAccessory:v9 workQueue:queueCopy interestedCharacteristicTypesByServiceType:v15];
     listener = v11->_listener;
     v11->_listener = v16;
   }

@@ -1,19 +1,19 @@
 @interface LTSchemaMTClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (LTSchemaASRSpeechTranslationEvent)asrSpeechTranslationEvent;
 - (LTSchemaBatchTranslationEvent)batchTranslationEvent;
 - (LTSchemaDisambiguationSpeechTranslationEvent)disambiguationSpeechTranslationEvent;
 - (LTSchemaLIDSpeechTranslationEvent)lidSpeechTranslationEvent;
-- (LTSchemaMTClientEvent)initWithDictionary:(id)a3;
-- (LTSchemaMTClientEvent)initWithJSON:(id)a3;
+- (LTSchemaMTClientEvent)initWithDictionary:(id)dictionary;
+- (LTSchemaMTClientEvent)initWithJSON:(id)n;
 - (LTSchemaMTSpeechTranslationEvent)mtSpeechTranslationEvent;
 - (LTSchemaSafariFeedbackEvent)safariFeedbackEvent;
 - (LTSchemaSpeechTranslationEvent)speechTranslationEvent;
 - (LTSchemaTTSSpeechTranslationEvent)ttsspeechTranslationEvent;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
@@ -26,28 +26,28 @@
 - (void)deleteSafariFeedbackEvent;
 - (void)deleteSpeechTranslationEvent;
 - (void)deleteTtsspeechTranslationEvent;
-- (void)setAsrSpeechTranslationEvent:(id)a3;
-- (void)setBatchTranslationEvent:(id)a3;
-- (void)setDisambiguationSpeechTranslationEvent:(id)a3;
-- (void)setLidSpeechTranslationEvent:(id)a3;
-- (void)setMtSpeechTranslationEvent:(id)a3;
-- (void)setSafariFeedbackEvent:(id)a3;
-- (void)setSpeechTranslationEvent:(id)a3;
-- (void)setTtsspeechTranslationEvent:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAsrSpeechTranslationEvent:(id)event;
+- (void)setBatchTranslationEvent:(id)event;
+- (void)setDisambiguationSpeechTranslationEvent:(id)event;
+- (void)setLidSpeechTranslationEvent:(id)event;
+- (void)setMtSpeechTranslationEvent:(id)event;
+- (void)setSafariFeedbackEvent:(id)event;
+- (void)setSpeechTranslationEvent:(id)event;
+- (void)setTtsspeechTranslationEvent:(id)event;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LTSchemaMTClientEvent
 
-- (LTSchemaMTClientEvent)initWithDictionary:(id)a3
+- (LTSchemaMTClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = LTSchemaMTClientEvent;
   v5 = [(LTSchemaMTClientEvent *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"safariFeedbackEvent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"safariFeedbackEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
     }
 
     v24 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"batchTranslationEvent"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"batchTranslationEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       [(LTSchemaMTClientEvent *)v5 setBatchTranslationEvent:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"speechTranslationEvent"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"speechTranslationEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
       [(LTSchemaMTClientEvent *)v5 setSpeechTranslationEvent:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"lidSpeechTranslationEvent"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"lidSpeechTranslationEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,7 +80,7 @@
       [(LTSchemaMTClientEvent *)v5 setLidSpeechTranslationEvent:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"disambiguationSpeechTranslationEvent"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"disambiguationSpeechTranslationEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,7 +88,7 @@
       [(LTSchemaMTClientEvent *)v5 setDisambiguationSpeechTranslationEvent:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"asrSpeechTranslationEvent"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"asrSpeechTranslationEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
       [(LTSchemaMTClientEvent *)v5 setAsrSpeechTranslationEvent:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"mtSpeechTranslationEvent"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"mtSpeechTranslationEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,7 +104,7 @@
       [(LTSchemaMTClientEvent *)v5 setMtSpeechTranslationEvent:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"ttsspeechTranslationEvent"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"ttsspeechTranslationEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -118,30 +118,30 @@
   return v5;
 }
 
-- (LTSchemaMTClientEvent)initWithJSON:(id)a3
+- (LTSchemaMTClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LTSchemaMTClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LTSchemaMTClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LTSchemaMTClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -154,138 +154,138 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_asrSpeechTranslationEvent)
   {
-    v4 = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    asrSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
+    dictionaryRepresentation = [asrSpeechTranslationEvent dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"asrSpeechTranslationEvent"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"asrSpeechTranslationEvent"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"asrSpeechTranslationEvent"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"asrSpeechTranslationEvent"];
     }
   }
 
   if (self->_batchTranslationEvent)
   {
-    v7 = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    batchTranslationEvent = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
+    dictionaryRepresentation2 = [batchTranslationEvent dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"batchTranslationEvent"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"batchTranslationEvent"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"batchTranslationEvent"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"batchTranslationEvent"];
     }
   }
 
   if (self->_disambiguationSpeechTranslationEvent)
   {
-    v10 = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    disambiguationSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
+    dictionaryRepresentation3 = [disambiguationSpeechTranslationEvent dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"disambiguationSpeechTranslationEvent"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"disambiguationSpeechTranslationEvent"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"disambiguationSpeechTranslationEvent"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"disambiguationSpeechTranslationEvent"];
     }
   }
 
   if (self->_lidSpeechTranslationEvent)
   {
-    v13 = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    lidSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
+    dictionaryRepresentation4 = [lidSpeechTranslationEvent dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"lidSpeechTranslationEvent"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"lidSpeechTranslationEvent"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"lidSpeechTranslationEvent"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"lidSpeechTranslationEvent"];
     }
   }
 
   if (self->_mtSpeechTranslationEvent)
   {
-    v16 = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    mtSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
+    dictionaryRepresentation5 = [mtSpeechTranslationEvent dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"mtSpeechTranslationEvent"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"mtSpeechTranslationEvent"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"mtSpeechTranslationEvent"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"mtSpeechTranslationEvent"];
     }
   }
 
   if (self->_safariFeedbackEvent)
   {
-    v19 = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    safariFeedbackEvent = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
+    dictionaryRepresentation6 = [safariFeedbackEvent dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"safariFeedbackEvent"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"safariFeedbackEvent"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"safariFeedbackEvent"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"safariFeedbackEvent"];
     }
   }
 
   if (self->_speechTranslationEvent)
   {
-    v22 = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    speechTranslationEvent = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
+    dictionaryRepresentation7 = [speechTranslationEvent dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"speechTranslationEvent"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"speechTranslationEvent"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"speechTranslationEvent"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"speechTranslationEvent"];
     }
   }
 
   if (self->_ttsspeechTranslationEvent)
   {
-    v25 = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    ttsspeechTranslationEvent = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
+    dictionaryRepresentation8 = [ttsspeechTranslationEvent dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"ttsspeechTranslationEvent"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"ttsspeechTranslationEvent"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"ttsspeechTranslationEvent"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"ttsspeechTranslationEvent"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -300,34 +300,34 @@
   return v9 ^ [(LTSchemaTTSSpeechTranslationEvent *)self->_ttsspeechTranslationEvent hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_43;
   }
 
-  v6 = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
-  v7 = [v4 safariFeedbackEvent];
-  if ((v6 != 0) == (v7 == 0))
+  safariFeedbackEvent = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
+  safariFeedbackEvent2 = [equalCopy safariFeedbackEvent];
+  if ((safariFeedbackEvent != 0) == (safariFeedbackEvent2 == 0))
   {
     goto LABEL_42;
   }
 
-  v8 = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
-  if (v8)
+  safariFeedbackEvent3 = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
+  if (safariFeedbackEvent3)
   {
-    v9 = v8;
-    v10 = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
-    v11 = [v4 safariFeedbackEvent];
-    v12 = [v10 isEqual:v11];
+    v9 = safariFeedbackEvent3;
+    safariFeedbackEvent4 = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
+    safariFeedbackEvent5 = [equalCopy safariFeedbackEvent];
+    v12 = [safariFeedbackEvent4 isEqual:safariFeedbackEvent5];
 
     if (!v12)
     {
@@ -339,20 +339,20 @@
   {
   }
 
-  v6 = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
-  v7 = [v4 batchTranslationEvent];
-  if ((v6 != 0) == (v7 == 0))
+  safariFeedbackEvent = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
+  safariFeedbackEvent2 = [equalCopy batchTranslationEvent];
+  if ((safariFeedbackEvent != 0) == (safariFeedbackEvent2 == 0))
   {
     goto LABEL_42;
   }
 
-  v13 = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
-  if (v13)
+  batchTranslationEvent = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
+  if (batchTranslationEvent)
   {
-    v14 = v13;
-    v15 = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
-    v16 = [v4 batchTranslationEvent];
-    v17 = [v15 isEqual:v16];
+    v14 = batchTranslationEvent;
+    batchTranslationEvent2 = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
+    batchTranslationEvent3 = [equalCopy batchTranslationEvent];
+    v17 = [batchTranslationEvent2 isEqual:batchTranslationEvent3];
 
     if (!v17)
     {
@@ -364,20 +364,20 @@
   {
   }
 
-  v6 = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
-  v7 = [v4 speechTranslationEvent];
-  if ((v6 != 0) == (v7 == 0))
+  safariFeedbackEvent = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
+  safariFeedbackEvent2 = [equalCopy speechTranslationEvent];
+  if ((safariFeedbackEvent != 0) == (safariFeedbackEvent2 == 0))
   {
     goto LABEL_42;
   }
 
-  v18 = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
-  if (v18)
+  speechTranslationEvent = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
+  if (speechTranslationEvent)
   {
-    v19 = v18;
-    v20 = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
-    v21 = [v4 speechTranslationEvent];
-    v22 = [v20 isEqual:v21];
+    v19 = speechTranslationEvent;
+    speechTranslationEvent2 = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
+    speechTranslationEvent3 = [equalCopy speechTranslationEvent];
+    v22 = [speechTranslationEvent2 isEqual:speechTranslationEvent3];
 
     if (!v22)
     {
@@ -389,20 +389,20 @@
   {
   }
 
-  v6 = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
-  v7 = [v4 lidSpeechTranslationEvent];
-  if ((v6 != 0) == (v7 == 0))
+  safariFeedbackEvent = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
+  safariFeedbackEvent2 = [equalCopy lidSpeechTranslationEvent];
+  if ((safariFeedbackEvent != 0) == (safariFeedbackEvent2 == 0))
   {
     goto LABEL_42;
   }
 
-  v23 = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
-  if (v23)
+  lidSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
+  if (lidSpeechTranslationEvent)
   {
-    v24 = v23;
-    v25 = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
-    v26 = [v4 lidSpeechTranslationEvent];
-    v27 = [v25 isEqual:v26];
+    v24 = lidSpeechTranslationEvent;
+    lidSpeechTranslationEvent2 = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
+    lidSpeechTranslationEvent3 = [equalCopy lidSpeechTranslationEvent];
+    v27 = [lidSpeechTranslationEvent2 isEqual:lidSpeechTranslationEvent3];
 
     if (!v27)
     {
@@ -414,20 +414,20 @@
   {
   }
 
-  v6 = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
-  v7 = [v4 disambiguationSpeechTranslationEvent];
-  if ((v6 != 0) == (v7 == 0))
+  safariFeedbackEvent = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
+  safariFeedbackEvent2 = [equalCopy disambiguationSpeechTranslationEvent];
+  if ((safariFeedbackEvent != 0) == (safariFeedbackEvent2 == 0))
   {
     goto LABEL_42;
   }
 
-  v28 = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
-  if (v28)
+  disambiguationSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
+  if (disambiguationSpeechTranslationEvent)
   {
-    v29 = v28;
-    v30 = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
-    v31 = [v4 disambiguationSpeechTranslationEvent];
-    v32 = [v30 isEqual:v31];
+    v29 = disambiguationSpeechTranslationEvent;
+    disambiguationSpeechTranslationEvent2 = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
+    disambiguationSpeechTranslationEvent3 = [equalCopy disambiguationSpeechTranslationEvent];
+    v32 = [disambiguationSpeechTranslationEvent2 isEqual:disambiguationSpeechTranslationEvent3];
 
     if (!v32)
     {
@@ -439,20 +439,20 @@
   {
   }
 
-  v6 = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
-  v7 = [v4 asrSpeechTranslationEvent];
-  if ((v6 != 0) == (v7 == 0))
+  safariFeedbackEvent = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
+  safariFeedbackEvent2 = [equalCopy asrSpeechTranslationEvent];
+  if ((safariFeedbackEvent != 0) == (safariFeedbackEvent2 == 0))
   {
     goto LABEL_42;
   }
 
-  v33 = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
-  if (v33)
+  asrSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
+  if (asrSpeechTranslationEvent)
   {
-    v34 = v33;
-    v35 = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
-    v36 = [v4 asrSpeechTranslationEvent];
-    v37 = [v35 isEqual:v36];
+    v34 = asrSpeechTranslationEvent;
+    asrSpeechTranslationEvent2 = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
+    asrSpeechTranslationEvent3 = [equalCopy asrSpeechTranslationEvent];
+    v37 = [asrSpeechTranslationEvent2 isEqual:asrSpeechTranslationEvent3];
 
     if (!v37)
     {
@@ -464,20 +464,20 @@
   {
   }
 
-  v6 = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
-  v7 = [v4 mtSpeechTranslationEvent];
-  if ((v6 != 0) == (v7 == 0))
+  safariFeedbackEvent = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
+  safariFeedbackEvent2 = [equalCopy mtSpeechTranslationEvent];
+  if ((safariFeedbackEvent != 0) == (safariFeedbackEvent2 == 0))
   {
     goto LABEL_42;
   }
 
-  v38 = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
-  if (v38)
+  mtSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
+  if (mtSpeechTranslationEvent)
   {
-    v39 = v38;
-    v40 = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
-    v41 = [v4 mtSpeechTranslationEvent];
-    v42 = [v40 isEqual:v41];
+    v39 = mtSpeechTranslationEvent;
+    mtSpeechTranslationEvent2 = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
+    mtSpeechTranslationEvent3 = [equalCopy mtSpeechTranslationEvent];
+    v42 = [mtSpeechTranslationEvent2 isEqual:mtSpeechTranslationEvent3];
 
     if (!v42)
     {
@@ -489,12 +489,12 @@
   {
   }
 
-  v6 = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
-  v7 = [v4 ttsspeechTranslationEvent];
-  if ((v6 != 0) != (v7 == 0))
+  safariFeedbackEvent = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
+  safariFeedbackEvent2 = [equalCopy ttsspeechTranslationEvent];
+  if ((safariFeedbackEvent != 0) != (safariFeedbackEvent2 == 0))
   {
-    v43 = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
-    if (!v43)
+    ttsspeechTranslationEvent = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
+    if (!ttsspeechTranslationEvent)
     {
 
 LABEL_46:
@@ -502,10 +502,10 @@ LABEL_46:
       goto LABEL_44;
     }
 
-    v44 = v43;
-    v45 = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
-    v46 = [v4 ttsspeechTranslationEvent];
-    v47 = [v45 isEqual:v46];
+    v44 = ttsspeechTranslationEvent;
+    ttsspeechTranslationEvent2 = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
+    ttsspeechTranslationEvent3 = [equalCopy ttsspeechTranslationEvent];
+    v47 = [ttsspeechTranslationEvent2 isEqual:ttsspeechTranslationEvent3];
 
     if (v47)
     {
@@ -525,74 +525,74 @@ LABEL_44:
   return v48;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v21 = a3;
-  v4 = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
+  toCopy = to;
+  safariFeedbackEvent = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
 
-  if (v4)
+  if (safariFeedbackEvent)
   {
-    v5 = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
+    safariFeedbackEvent2 = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
+  batchTranslationEvent = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
 
-  if (v6)
+  if (batchTranslationEvent)
   {
-    v7 = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
+    batchTranslationEvent2 = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
+  speechTranslationEvent = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
 
-  if (v8)
+  if (speechTranslationEvent)
   {
-    v9 = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
+    speechTranslationEvent2 = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
+  lidSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
 
-  if (v10)
+  if (lidSpeechTranslationEvent)
   {
-    v11 = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
+    lidSpeechTranslationEvent2 = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
+  disambiguationSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
 
-  if (v12)
+  if (disambiguationSpeechTranslationEvent)
   {
-    v13 = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
+    disambiguationSpeechTranslationEvent2 = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
+  asrSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
 
-  if (v14)
+  if (asrSpeechTranslationEvent)
   {
-    v15 = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
+    asrSpeechTranslationEvent2 = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
+  mtSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
 
-  if (v16)
+  if (mtSpeechTranslationEvent)
   {
-    v17 = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
+    mtSpeechTranslationEvent2 = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
+  ttsspeechTranslationEvent = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
 
-  v19 = v21;
-  if (v18)
+  v19 = toCopy;
+  if (ttsspeechTranslationEvent)
   {
-    v20 = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
+    ttsspeechTranslationEvent2 = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
     PBDataWriterWriteSubmessage();
 
-    v19 = v21;
+    v19 = toCopy;
   }
 }
 
@@ -621,9 +621,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setTtsspeechTranslationEvent:(id)a3
+- (void)setTtsspeechTranslationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   safariFeedbackEvent = self->_safariFeedbackEvent;
   self->_safariFeedbackEvent = 0;
 
@@ -646,14 +646,14 @@ LABEL_44:
   self->_mtSpeechTranslationEvent = 0;
 
   v12 = 108;
-  if (!v4)
+  if (!eventCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   ttsspeechTranslationEvent = self->_ttsspeechTranslationEvent;
-  self->_ttsspeechTranslationEvent = v4;
+  self->_ttsspeechTranslationEvent = eventCopy;
 }
 
 - (void)deleteMtSpeechTranslationEvent
@@ -681,9 +681,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setMtSpeechTranslationEvent:(id)a3
+- (void)setMtSpeechTranslationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   safariFeedbackEvent = self->_safariFeedbackEvent;
   self->_safariFeedbackEvent = 0;
 
@@ -706,14 +706,14 @@ LABEL_44:
   self->_ttsspeechTranslationEvent = 0;
 
   v12 = 107;
-  if (!v4)
+  if (!eventCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   mtSpeechTranslationEvent = self->_mtSpeechTranslationEvent;
-  self->_mtSpeechTranslationEvent = v4;
+  self->_mtSpeechTranslationEvent = eventCopy;
 }
 
 - (void)deleteAsrSpeechTranslationEvent
@@ -741,9 +741,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setAsrSpeechTranslationEvent:(id)a3
+- (void)setAsrSpeechTranslationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   safariFeedbackEvent = self->_safariFeedbackEvent;
   self->_safariFeedbackEvent = 0;
 
@@ -766,14 +766,14 @@ LABEL_44:
   self->_ttsspeechTranslationEvent = 0;
 
   v12 = 106;
-  if (!v4)
+  if (!eventCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   asrSpeechTranslationEvent = self->_asrSpeechTranslationEvent;
-  self->_asrSpeechTranslationEvent = v4;
+  self->_asrSpeechTranslationEvent = eventCopy;
 }
 
 - (void)deleteDisambiguationSpeechTranslationEvent
@@ -801,9 +801,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setDisambiguationSpeechTranslationEvent:(id)a3
+- (void)setDisambiguationSpeechTranslationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   safariFeedbackEvent = self->_safariFeedbackEvent;
   self->_safariFeedbackEvent = 0;
 
@@ -826,14 +826,14 @@ LABEL_44:
   self->_ttsspeechTranslationEvent = 0;
 
   v12 = 105;
-  if (!v4)
+  if (!eventCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   disambiguationSpeechTranslationEvent = self->_disambiguationSpeechTranslationEvent;
-  self->_disambiguationSpeechTranslationEvent = v4;
+  self->_disambiguationSpeechTranslationEvent = eventCopy;
 }
 
 - (void)deleteLidSpeechTranslationEvent
@@ -861,9 +861,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setLidSpeechTranslationEvent:(id)a3
+- (void)setLidSpeechTranslationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   safariFeedbackEvent = self->_safariFeedbackEvent;
   self->_safariFeedbackEvent = 0;
 
@@ -886,14 +886,14 @@ LABEL_44:
   self->_ttsspeechTranslationEvent = 0;
 
   v12 = 104;
-  if (!v4)
+  if (!eventCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   lidSpeechTranslationEvent = self->_lidSpeechTranslationEvent;
-  self->_lidSpeechTranslationEvent = v4;
+  self->_lidSpeechTranslationEvent = eventCopy;
 }
 
 - (void)deleteSpeechTranslationEvent
@@ -921,9 +921,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setSpeechTranslationEvent:(id)a3
+- (void)setSpeechTranslationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   safariFeedbackEvent = self->_safariFeedbackEvent;
   self->_safariFeedbackEvent = 0;
 
@@ -946,14 +946,14 @@ LABEL_44:
   self->_ttsspeechTranslationEvent = 0;
 
   v12 = 103;
-  if (!v4)
+  if (!eventCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   speechTranslationEvent = self->_speechTranslationEvent;
-  self->_speechTranslationEvent = v4;
+  self->_speechTranslationEvent = eventCopy;
 }
 
 - (void)deleteBatchTranslationEvent
@@ -981,9 +981,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setBatchTranslationEvent:(id)a3
+- (void)setBatchTranslationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   safariFeedbackEvent = self->_safariFeedbackEvent;
   self->_safariFeedbackEvent = 0;
 
@@ -1006,14 +1006,14 @@ LABEL_44:
   self->_ttsspeechTranslationEvent = 0;
 
   v12 = 102;
-  if (!v4)
+  if (!eventCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   batchTranslationEvent = self->_batchTranslationEvent;
-  self->_batchTranslationEvent = v4;
+  self->_batchTranslationEvent = eventCopy;
 }
 
 - (void)deleteSafariFeedbackEvent
@@ -1041,9 +1041,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setSafariFeedbackEvent:(id)a3
+- (void)setSafariFeedbackEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   batchTranslationEvent = self->_batchTranslationEvent;
   self->_batchTranslationEvent = 0;
 
@@ -1066,104 +1066,104 @@ LABEL_44:
   self->_ttsspeechTranslationEvent = 0;
 
   v12 = 101;
-  if (!v4)
+  if (!eventCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   safariFeedbackEvent = self->_safariFeedbackEvent;
-  self->_safariFeedbackEvent = v4;
+  self->_safariFeedbackEvent = eventCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(LTSchemaMTClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 7)
+  whichEvent_Type = [(LTSchemaMTClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 7)
   {
     return @"com.apple.aiml.mi.translation.MTClientEvent";
   }
 
   else
   {
-    return off_1E78D8D48[v2 - 101];
+    return off_1E78D8D48[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v31.receiver = self;
   v31.super_class = LTSchemaMTClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v31 applySensitiveConditionsPolicy:v4];
-  v6 = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v31 applySensitiveConditionsPolicy:policyCopy];
+  safariFeedbackEvent = [(LTSchemaMTClientEvent *)self safariFeedbackEvent];
+  v7 = [safariFeedbackEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(LTSchemaMTClientEvent *)self deleteSafariFeedbackEvent];
   }
 
-  v9 = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  batchTranslationEvent = [(LTSchemaMTClientEvent *)self batchTranslationEvent];
+  v10 = [batchTranslationEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(LTSchemaMTClientEvent *)self deleteBatchTranslationEvent];
   }
 
-  v12 = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  speechTranslationEvent = [(LTSchemaMTClientEvent *)self speechTranslationEvent];
+  v13 = [speechTranslationEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(LTSchemaMTClientEvent *)self deleteSpeechTranslationEvent];
   }
 
-  v15 = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  lidSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self lidSpeechTranslationEvent];
+  v16 = [lidSpeechTranslationEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(LTSchemaMTClientEvent *)self deleteLidSpeechTranslationEvent];
   }
 
-  v18 = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  disambiguationSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self disambiguationSpeechTranslationEvent];
+  v19 = [disambiguationSpeechTranslationEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(LTSchemaMTClientEvent *)self deleteDisambiguationSpeechTranslationEvent];
   }
 
-  v21 = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  asrSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self asrSpeechTranslationEvent];
+  v22 = [asrSpeechTranslationEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(LTSchemaMTClientEvent *)self deleteAsrSpeechTranslationEvent];
   }
 
-  v24 = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  mtSpeechTranslationEvent = [(LTSchemaMTClientEvent *)self mtSpeechTranslationEvent];
+  v25 = [mtSpeechTranslationEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(LTSchemaMTClientEvent *)self deleteMtSpeechTranslationEvent];
   }
 
-  v27 = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  ttsspeechTranslationEvent = [(LTSchemaMTClientEvent *)self ttsspeechTranslationEvent];
+  v28 = [ttsspeechTranslationEvent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(LTSchemaMTClientEvent *)self deleteTtsspeechTranslationEvent];
   }
@@ -1181,30 +1181,30 @@ LABEL_44:
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(LTSchemaMTClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 7)
+  whichEvent_Type = [(LTSchemaMTClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 7)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E9F28[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E9F28[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 7)
+  if (tag - 101 > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E9F68[a3 - 101];
+    return off_1E78E9F68[tag - 101];
   }
 }
 

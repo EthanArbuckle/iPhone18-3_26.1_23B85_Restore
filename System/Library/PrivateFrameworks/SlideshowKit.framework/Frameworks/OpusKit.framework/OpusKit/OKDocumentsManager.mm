@@ -1,17 +1,17 @@
 @interface OKDocumentsManager
 + (id)defaultManager;
-- (BOOL)deleteFileURL:(id)a3 error:(id *)a4;
+- (BOOL)deleteFileURL:(id)l error:(id *)error;
 - (OKDocumentsManager)init;
-- (id)documentURLs:(id *)a3;
-- (id)documentURLsAtDirectoryURL:(id)a3 error:(id *)a4;
-- (id)duplicateFileURL:(id)a3 error:(id *)a4;
-- (id)importFileURL:(id)a3 error:(id *)a4;
-- (id)importFileURL:(id)a3 toDirectoryURL:(id)a4 copy:(BOOL)a5 error:(id *)a6;
+- (id)documentURLs:(id *)ls;
+- (id)documentURLsAtDirectoryURL:(id)l error:(id *)error;
+- (id)duplicateFileURL:(id)l error:(id *)error;
+- (id)importFileURL:(id)l error:(id *)error;
+- (id)importFileURL:(id)l toDirectoryURL:(id)rL copy:(BOOL)copy error:(id *)error;
 - (id)localDocumentsDirectoryURL;
-- (id)renameFileURL:(id)a3 toFileName:(id)a4 error:(id *)a5;
-- (id)uniqueFileURLForFileName:(id)a3 error:(id *)a4;
-- (id)uniqueFileURLForFileName:(id)a3 inDirectoryURL:(id)a4 error:(id *)a5;
-- (void)_performAsynchronousFileAccessUsingBlock:(id)a3;
+- (id)renameFileURL:(id)l toFileName:(id)name error:(id *)error;
+- (id)uniqueFileURLForFileName:(id)name error:(id *)error;
+- (id)uniqueFileURLForFileName:(id)name inDirectoryURL:(id)l error:(id *)error;
+- (void)_performAsynchronousFileAccessUsingBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -64,9 +64,9 @@ OKDocumentsManager *__36__OKDocumentsManager_defaultManager__block_invoke()
   [(OKDocumentsManager *)&v4 dealloc];
 }
 
-- (void)_performAsynchronousFileAccessUsingBlock:(id)a3
+- (void)_performAsynchronousFileAccessUsingBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     documentsAccessQueue = self->_documentsAccessQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -74,7 +74,7 @@ OKDocumentsManager *__36__OKDocumentsManager_defaultManager__block_invoke()
     block[2] = __63__OKDocumentsManager__performAsynchronousFileAccessUsingBlock___block_invoke;
     block[3] = &unk_279C8E670;
     block[4] = self;
-    block[5] = a3;
+    block[5] = block;
     dispatch_async(documentsAccessQueue, block);
   }
 
@@ -101,14 +101,14 @@ id __48__OKDocumentsManager_localDocumentsDirectoryURL__block_invoke()
   return result;
 }
 
-- (id)documentURLs:(id *)a3
+- (id)documentURLs:(id *)ls
 {
-  v5 = [(OKDocumentsManager *)self documentsDirectoryURL];
+  documentsDirectoryURL = [(OKDocumentsManager *)self documentsDirectoryURL];
 
-  return [(OKDocumentsManager *)self documentURLsAtDirectoryURL:v5 error:a3];
+  return [(OKDocumentsManager *)self documentURLsAtDirectoryURL:documentsDirectoryURL error:ls];
 }
 
-- (id)documentURLsAtDirectoryURL:(id)a3 error:(id *)a4
+- (id)documentURLsAtDirectoryURL:(id)l error:(id *)error
 {
   v7 = pthread_main_np();
   v8 = MEMORY[0x277D62808];
@@ -117,31 +117,31 @@ id __48__OKDocumentsManager_localDocumentsDirectoryURL__block_invoke()
     [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:132 andFormat:@"%@ MUST not be called from the main thread", NSStringFromSelector(a2)];
   }
 
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v10 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:0];
-  v12[4] = v9;
+  v12[4] = array;
   v13 = 0;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__OKDocumentsManager_documentURLsAtDirectoryURL_error___block_invoke;
   v12[3] = &unk_279C8E698;
-  [v10 coordinateReadingItemAtURL:a3 options:1 error:&v13 byAccessor:v12];
+  [v10 coordinateReadingItemAtURL:l options:1 error:&v13 byAccessor:v12];
 
   if (v13)
   {
     if (*v8 >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:170 andFormat:@"An error occured listing documents in %@: %@", a3, objc_msgSend(v13, "localizedDescription")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:170 andFormat:@"An error occured listing documents in %@: %@", l, objc_msgSend(v13, "localizedDescription")];
     }
 
-    v9 = 0;
-    if (a4)
+    array = 0;
+    if (error)
     {
-      *a4 = v13;
+      *error = v13;
     }
   }
 
-  return v9;
+  return array;
 }
 
 void __55__OKDocumentsManager_documentURLsAtDirectoryURL_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -195,7 +195,7 @@ void __55__OKDocumentsManager_documentURLsAtDirectoryURL_error___block_invoke(ui
   }
 }
 
-- (id)uniqueFileURLForFileName:(id)a3 inDirectoryURL:(id)a4 error:(id *)a5
+- (id)uniqueFileURLForFileName:(id)name inDirectoryURL:(id)l error:(id *)error
 {
   v9 = pthread_main_np();
   v10 = MEMORY[0x277D62808];
@@ -216,9 +216,9 @@ void __55__OKDocumentsManager_documentURLsAtDirectoryURL_error___block_invoke(ui
   v16[1] = 3221225472;
   v16[2] = __68__OKDocumentsManager_uniqueFileURLForFileName_inDirectoryURL_error___block_invoke;
   v16[3] = &unk_279C8E6C0;
-  v16[4] = a3;
+  v16[4] = name;
   v16[5] = &v17;
-  [v11 coordinateReadingItemAtURL:a4 options:1 error:&v23 byAccessor:v16];
+  [v11 coordinateReadingItemAtURL:l options:1 error:&v23 byAccessor:v16];
 
   v12 = v18[5];
   if (v23)
@@ -231,19 +231,19 @@ void __55__OKDocumentsManager_documentURLsAtDirectoryURL_error___block_invoke(ui
 
     if (*v10 >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:215 andFormat:@"An error occured finding unique document URL for %@: %@", a3, objc_msgSend(v23, "localizedDescription")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:215 andFormat:@"An error occured finding unique document URL for %@: %@", name, objc_msgSend(v23, "localizedDescription")];
     }
 
     v13 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v23;
+      *error = v23;
     }
   }
 
   else
   {
-    v13 = [a4 URLByAppendingPathComponent:v12 isDirectory:0];
+    v13 = [l URLByAppendingPathComponent:v12 isDirectory:0];
     v14 = v18[5];
     if (v14)
     {
@@ -262,21 +262,21 @@ void __68__OKDocumentsManager_uniqueFileURLForFileName_inDirectoryURL_error___bl
   *(*(*(a1 + 40) + 8) + 40) = [objc_msgSend(v4 incrementalURLInDirectory:a2 withFilename:objc_msgSend(*(a1 + 32) andExtension:{"stringByDeletingPathExtension"), objc_msgSend(*(a1 + 32), "pathExtension")), "lastPathComponent"}];
 }
 
-- (id)uniqueFileURLForFileName:(id)a3 error:(id *)a4
+- (id)uniqueFileURLForFileName:(id)name error:(id *)error
 {
-  v7 = [(OKDocumentsManager *)self documentsDirectoryURL];
+  documentsDirectoryURL = [(OKDocumentsManager *)self documentsDirectoryURL];
 
-  return [(OKDocumentsManager *)self uniqueFileURLForFileName:a3 inDirectoryURL:v7 error:a4];
+  return [(OKDocumentsManager *)self uniqueFileURLForFileName:name inDirectoryURL:documentsDirectoryURL error:error];
 }
 
-- (id)importFileURL:(id)a3 error:(id *)a4
+- (id)importFileURL:(id)l error:(id *)error
 {
-  v7 = [(OKDocumentsManager *)self documentsDirectoryURL];
+  documentsDirectoryURL = [(OKDocumentsManager *)self documentsDirectoryURL];
 
-  return [(OKDocumentsManager *)self importFileURL:a3 toDirectoryURL:v7 copy:1 error:a4];
+  return [(OKDocumentsManager *)self importFileURL:l toDirectoryURL:documentsDirectoryURL copy:1 error:error];
 }
 
-- (id)importFileURL:(id)a3 toDirectoryURL:(id)a4 copy:(BOOL)a5 error:(id *)a6
+- (id)importFileURL:(id)l toDirectoryURL:(id)rL copy:(BOOL)copy error:(id *)error
 {
   v11 = pthread_main_np();
   v12 = MEMORY[0x277D62808];
@@ -307,12 +307,12 @@ void __68__OKDocumentsManager_uniqueFileURLForFileName_inDirectoryURL_error___bl
   v18[1] = 3221225472;
   v18[2] = __62__OKDocumentsManager_importFileURL_toDirectoryURL_copy_error___block_invoke;
   v18[3] = &unk_279C8E6E8;
-  v18[4] = a3;
+  v18[4] = l;
   v18[5] = &v20;
-  v19 = a5;
+  copyCopy = copy;
   v18[6] = &v26;
   v18[7] = &v30;
-  [v13 coordinateReadingItemAtURL:a3 options:0 writingItemAtURL:a4 options:8 error:&v36 byAccessor:v18];
+  [v13 coordinateReadingItemAtURL:l options:0 writingItemAtURL:rL options:8 error:&v36 byAccessor:v18];
 
   v14 = v36;
   if (!*(v27 + 24) || v36 || v31[5])
@@ -336,13 +336,13 @@ void __68__OKDocumentsManager_uniqueFileURLForFileName_inDirectoryURL_error___bl
 
     if (*v12 >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:287 andFormat:@"Couldn't import file %@ to %@: %@", a3, v21[5], objc_msgSend(v14, "localizedDescription")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:287 andFormat:@"Couldn't import file %@ to %@: %@", l, v21[5], objc_msgSend(v14, "localizedDescription")];
     }
 
     v16 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v14;
+      *error = v14;
     }
   }
 
@@ -350,7 +350,7 @@ void __68__OKDocumentsManager_uniqueFileURLForFileName_inDirectoryURL_error___bl
   {
     if (*v12 >= 5)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:301 andFormat:@"Imported document %@ to %@", a3, v21[5]];
+      [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:301 andFormat:@"Imported document %@ to %@", l, v21[5]];
     }
 
     v16 = v21[5];
@@ -382,14 +382,14 @@ void __62__OKDocumentsManager_importFileURL_toDirectoryURL_copy_error___block_in
   *(*(*(a1 + 48) + 8) + 24) = v9;
 }
 
-- (id)duplicateFileURL:(id)a3 error:(id *)a4
+- (id)duplicateFileURL:(id)l error:(id *)error
 {
-  v7 = [a3 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
 
-  return [(OKDocumentsManager *)self importFileURL:a3 toDirectoryURL:v7 copy:1 error:a4];
+  return [(OKDocumentsManager *)self importFileURL:l toDirectoryURL:uRLByDeletingLastPathComponent copy:1 error:error];
 }
 
-- (id)renameFileURL:(id)a3 toFileName:(id)a4 error:(id *)a5
+- (id)renameFileURL:(id)l toFileName:(id)name error:(id *)error
 {
   v9 = pthread_main_np();
   v10 = MEMORY[0x277D62808];
@@ -416,16 +416,16 @@ void __62__OKDocumentsManager_importFileURL_toDirectoryURL_copy_error___block_in
   v23 = __Block_byref_object_copy_;
   v24 = __Block_byref_object_dispose_;
   v25 = 0;
-  v12 = [a3 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __53__OKDocumentsManager_renameFileURL_toFileName_error___block_invoke;
   v19[3] = &unk_279C8E710;
-  v19[4] = a4;
+  v19[4] = name;
   v19[5] = &v20;
   v19[6] = &v26;
   v19[7] = &v30;
-  [v11 coordinateWritingItemAtURL:a3 options:2 writingItemAtURL:v12 options:0 error:&v36 byAccessor:v19];
+  [v11 coordinateWritingItemAtURL:l options:2 writingItemAtURL:uRLByDeletingLastPathComponent options:0 error:&v36 byAccessor:v19];
 
   v13 = v36;
   if (!*(v27 + 24) || v36 || v31[5])
@@ -449,13 +449,13 @@ void __62__OKDocumentsManager_importFileURL_toDirectoryURL_copy_error___block_in
 
     if (*v10 >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:347 andFormat:@"Couldn't rename file %@ to %@: %@", a3, a4, objc_msgSend(v13, "localizedDescription")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:347 andFormat:@"Couldn't rename file %@ to %@: %@", l, name, objc_msgSend(v13, "localizedDescription")];
     }
 
     v15 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -464,8 +464,8 @@ void __62__OKDocumentsManager_importFileURL_toDirectoryURL_copy_error___block_in
     if (*v10 >= 5)
     {
       v16 = MEMORY[0x277D627B8];
-      v17 = [a3 lastPathComponent];
-      [v16 logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:361 andFormat:@"Renamed document %@ to %@", v17, objc_msgSend(v21[5], "lastPathComponent")];
+      lastPathComponent = [l lastPathComponent];
+      [v16 logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:361 andFormat:@"Renamed document %@ to %@", lastPathComponent, objc_msgSend(v21[5], "lastPathComponent")];
     }
 
     v15 = v21[5];
@@ -484,7 +484,7 @@ void __53__OKDocumentsManager_renameFileURL_toFileName_error___block_invoke(uint
   *(*(*(a1 + 48) + 8) + 24) = [v6 moveItemAtURL:a2 toURL:*(*(*(a1 + 40) + 8) + 40) error:*(*(a1 + 56) + 8) + 40];
 }
 
-- (BOOL)deleteFileURL:(id)a3 error:(id *)a4
+- (BOOL)deleteFileURL:(id)l error:(id *)error
 {
   v7 = pthread_main_np();
   v8 = MEMORY[0x277D62808];
@@ -511,7 +511,7 @@ void __53__OKDocumentsManager_renameFileURL_toFileName_error___block_invoke(uint
   v13[3] = &unk_279C8E738;
   v13[4] = &v14;
   v13[5] = &v18;
-  [v9 coordinateWritingItemAtURL:a3 options:1 error:&v24 byAccessor:v13];
+  [v9 coordinateWritingItemAtURL:l options:1 error:&v24 byAccessor:v13];
 
   v10 = v24;
   if (!*(v15 + 24) || v24)
@@ -533,7 +533,7 @@ void __53__OKDocumentsManager_renameFileURL_toFileName_error___block_invoke(uint
     {
       if (*v8 >= 5)
       {
-        [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:406 andFormat:@"Deleted document %@", a3];
+        [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:406 andFormat:@"Deleted document %@", l];
       }
 
       v11 = 1;
@@ -543,13 +543,13 @@ void __53__OKDocumentsManager_renameFileURL_toFileName_error___block_invoke(uint
 
   if (*v8 >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:392 andFormat:@"Couldn't delete file %@: %@", a3, objc_msgSend(v10, "localizedDescription")];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocumentsManager.m" line:392 andFormat:@"Couldn't delete file %@: %@", l, objc_msgSend(v10, "localizedDescription")];
   }
 
   v11 = 0;
-  if (a4)
+  if (error)
   {
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_17:

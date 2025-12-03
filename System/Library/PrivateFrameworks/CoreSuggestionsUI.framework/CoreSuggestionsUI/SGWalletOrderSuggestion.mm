@@ -4,11 +4,11 @@
 - (id)suggestionAttributedSubtitle;
 - (id)suggestionCategory;
 - (id)suggestionCategoryImage;
-- (id)suggestionCategorySubtitleForItems:(id)a3;
+- (id)suggestionCategorySubtitleForItems:(id)items;
 - (id)suggestionPrimaryAction;
 - (id)suggestionSubtitle;
 - (id)suggestionTitle;
-- (void)setSuggestionDelegate:(id)a3;
+- (void)setSuggestionDelegate:(id)delegate;
 @end
 
 @implementation SGWalletOrderSuggestion
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (void)setSuggestionDelegate:(id)a3
+- (void)setSuggestionDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1B81B5ABC();
 }
 
@@ -36,7 +36,7 @@
 
 - (id)suggestionTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B81B6C70();
 
   v3 = sub_1B81F8F58();
@@ -46,7 +46,7 @@
 
 - (id)suggestionSubtitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B81B6DEC();
   v4 = v3;
 
@@ -65,7 +65,7 @@
 
 - (id)suggestionAttributedSubtitle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81B6F6C();
 
   return v3;
@@ -73,7 +73,7 @@
 
 - (id)suggestionPrimaryAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81B7024();
 
   return v3;
@@ -81,17 +81,17 @@
 
 - (id)suggestionCategoryImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81B7758();
 
   return v3;
 }
 
-- (id)suggestionCategorySubtitleForItems:(id)a3
+- (id)suggestionCategorySubtitleForItems:(id)items
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBA7CBD0);
   v4 = sub_1B81F90C8();
-  v5 = self;
+  selfCopy = self;
   sub_1B81B7970(v4);
   v7 = v6;
 
@@ -110,7 +110,7 @@
 
 - (id)realtimeSuggestion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81B7CE8();
 
   return v3;

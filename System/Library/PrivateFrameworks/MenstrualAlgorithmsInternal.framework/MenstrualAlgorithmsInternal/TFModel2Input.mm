@@ -1,28 +1,28 @@
 @interface TFModel2Input
-- (TFModel2Input)initWithIn:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (TFModel2Input)initWithIn:(id)in;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation TFModel2Input
 
-- (TFModel2Input)initWithIn:(id)a3
+- (TFModel2Input)initWithIn:(id)in
 {
-  v5 = a3;
+  inCopy = in;
   v9.receiver = self;
   v9.super_class = TFModel2Input;
   v6 = [(TFModel2Input *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_in_, a3);
+    objc_storeStrong(&v6->_in_, in);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"in"])
+  if ([name isEqualToString:@"in"])
   {
     v4 = MEMORY[0x277CBFEF8];
     v5 = [(TFModel2Input *)self in];

@@ -1,7 +1,7 @@
 @interface HFZoneBuilder
 + (id)na_identity;
-- (BOOL)isEqual:(id)a3;
-- (HFZoneBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HFZoneBuilder)initWithExistingObject:(id)object inHome:(id)home;
 - (NSSet)rooms;
 - (id)_createZone;
 - (id)_performValidation;
@@ -9,26 +9,26 @@
 - (id)_updateRooms;
 - (id)commitItem;
 - (unint64_t)hash;
-- (void)addRoom:(id)a3;
-- (void)removeRoom:(id)a3;
+- (void)addRoom:(id)room;
+- (void)removeRoom:(id)room;
 @end
 
 @implementation HFZoneBuilder
 
-- (HFZoneBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFZoneBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
   v17.receiver = self;
   v17.super_class = HFZoneBuilder;
-  v5 = [(HFItemBuilder *)&v17 initWithExistingObject:a3 inHome:a4];
+  v5 = [(HFItemBuilder *)&v17 initWithExistingObject:object inHome:home];
   v6 = v5;
   if (v5)
   {
     v7 = [(HFZoneBuilder *)v5 zone];
-    v8 = [v7 name];
-    v9 = v8;
-    if (v8)
+    name = [v7 name];
+    v9 = name;
+    if (name)
     {
-      v10 = v8;
+      v10 = name;
     }
 
     else
@@ -38,11 +38,11 @@
 
     objc_storeStrong(&v6->_name, v10);
 
-    if (a3)
+    if (object)
     {
       v11 = [(HFZoneBuilder *)v6 zone];
-      v12 = [v11 rooms];
-      v13 = HFHomeKitObjectUniqueIdentifiers(v12);
+      rooms = [v11 rooms];
+      v13 = HFHomeKitObjectUniqueIdentifiers(rooms);
     }
 
     else
@@ -58,48 +58,48 @@
   return v6;
 }
 
-- (void)addRoom:(id)a3
+- (void)addRoom:(id)room
 {
-  v10 = a3;
-  v4 = [(HFZoneBuilder *)self roomUUIDs];
-  v5 = [v4 toSet];
-  v6 = [v10 uniqueIdentifier];
-  v7 = [v5 containsObject:v6];
+  roomCopy = room;
+  roomUUIDs = [(HFZoneBuilder *)self roomUUIDs];
+  toSet = [roomUUIDs toSet];
+  uniqueIdentifier = [roomCopy uniqueIdentifier];
+  v7 = [toSet containsObject:uniqueIdentifier];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(HFZoneBuilder *)self roomUUIDs];
-    v9 = [v10 uniqueIdentifier];
-    [v8 addObject:v9];
+    roomUUIDs2 = [(HFZoneBuilder *)self roomUUIDs];
+    uniqueIdentifier2 = [roomCopy uniqueIdentifier];
+    [roomUUIDs2 addObject:uniqueIdentifier2];
   }
 }
 
-- (void)removeRoom:(id)a3
+- (void)removeRoom:(id)room
 {
-  v10 = a3;
-  v4 = [(HFZoneBuilder *)self roomUUIDs];
-  v5 = [v4 toSet];
-  v6 = [v10 uniqueIdentifier];
-  v7 = [v5 containsObject:v6];
+  roomCopy = room;
+  roomUUIDs = [(HFZoneBuilder *)self roomUUIDs];
+  toSet = [roomUUIDs toSet];
+  uniqueIdentifier = [roomCopy uniqueIdentifier];
+  v7 = [toSet containsObject:uniqueIdentifier];
 
   if (v7)
   {
-    v8 = [(HFZoneBuilder *)self roomUUIDs];
-    v9 = [v10 uniqueIdentifier];
-    [v8 deleteObject:v9];
+    roomUUIDs2 = [(HFZoneBuilder *)self roomUUIDs];
+    uniqueIdentifier2 = [roomCopy uniqueIdentifier];
+    [roomUUIDs2 deleteObject:uniqueIdentifier2];
   }
 }
 
 - (NSSet)rooms
 {
-  v3 = [(HFZoneBuilder *)self roomUUIDs];
-  v4 = [v3 toSet];
+  roomUUIDs = [(HFZoneBuilder *)self roomUUIDs];
+  toSet = [roomUUIDs toSet];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __22__HFZoneBuilder_rooms__block_invoke;
   v7[3] = &unk_277DF5E10;
   v7[4] = self;
-  v5 = [v4 na_map:v7];
+  v5 = [toSet na_map:v7];
 
   return v5;
 }
@@ -120,8 +120,8 @@ id __22__HFZoneBuilder_rooms__block_invoke(uint64_t a1, void *a2)
   v3 = MEMORY[0x277D2C900];
   v4 = [(HFItemBuilder *)self lazy_verifyPropertyIsSet:@"name"];
   v11[0] = v4;
-  v5 = [(HFZoneBuilder *)self name];
-  v6 = [(HFItemBuilder *)self lazy_verifyNameIsNotEmpty:v5];
+  name = [(HFZoneBuilder *)self name];
+  v6 = [(HFItemBuilder *)self lazy_verifyNameIsNotEmpty:name];
   v11[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v8 = [v3 chainFutures:v7];
@@ -139,7 +139,7 @@ id __22__HFZoneBuilder_rooms__block_invoke(uint64_t a1, void *a2)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "HFZoneBuilder: Starting a commit %@", buf, 0xCu);
   }
 
@@ -152,13 +152,13 @@ id __22__HFZoneBuilder_rooms__block_invoke(uint64_t a1, void *a2)
 
   v6 = *v5;
 
-  v7 = [(HFZoneBuilder *)self _performValidation];
+  _performValidation = [(HFZoneBuilder *)self _performValidation];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __27__HFZoneBuilder_commitItem__block_invoke;
   v22[3] = &unk_277DF3D10;
   objc_copyWeak(&v23, &location);
-  v8 = [v7 flatMap:v22];
+  v8 = [_performValidation flatMap:v22];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __27__HFZoneBuilder_commitItem__block_invoke_2;
@@ -359,19 +359,19 @@ void __28__HFZoneBuilder__createZone__block_invoke_20(uint64_t a1, void *a2)
   v3 = HFLogForCategory(0x2BuLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HFZoneBuilder *)self name];
-    v5 = [(HFItemBuilder *)self home];
+    name = [(HFZoneBuilder *)self name];
+    home = [(HFItemBuilder *)self home];
     *buf = 138412546;
-    v19 = v4;
+    v19 = name;
     v20 = 2112;
-    v21 = v5;
+    v21 = home;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "HFZoneBuilder: Updating zone with name %@ in home %@", buf, 0x16u);
   }
 
   v6 = [(HFZoneBuilder *)self zone];
-  v7 = [v6 name];
-  v8 = [(HFZoneBuilder *)self name];
-  v9 = [v7 isEqualToString:v8];
+  name2 = [v6 name];
+  name3 = [(HFZoneBuilder *)self name];
+  v9 = [name2 isEqualToString:name3];
 
   if (v9)
   {
@@ -483,12 +483,12 @@ void __28__HFZoneBuilder__updateName__block_invoke_32(uint64_t a1, void *a2)
   v12[3] = &unk_277E01190;
   objc_copyWeak(&v13, &location);
   v4 = _Block_copy(v12);
-  v5 = [(HFZoneBuilder *)self roomUUIDs];
+  roomUUIDs = [(HFZoneBuilder *)self roomUUIDs];
   v6 = [(HFZoneBuilder *)self zone];
   v7 = v3[2](v3, v6);
   v8 = [(HFZoneBuilder *)self zone];
   v9 = v4[2](v4, v8);
-  v10 = [(HFItemBuilder *)self commitSetDiff:v5 addBlock:v7 updateBlock:&__block_literal_global_61_6 deleteBlock:v9];
+  v10 = [(HFItemBuilder *)self commitSetDiff:roomUUIDs addBlock:v7 updateBlock:&__block_literal_global_61_6 deleteBlock:v9];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v15);
@@ -818,17 +818,17 @@ id __28__HFZoneBuilder_na_identity__block_invoke_5(uint64_t a1, void *a2)
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }

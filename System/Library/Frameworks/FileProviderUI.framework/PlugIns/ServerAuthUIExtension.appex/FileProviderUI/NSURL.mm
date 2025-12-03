@@ -20,10 +20,10 @@
 
 - (id)serverAuthUI_protocolFromScheme
 {
-  v2 = [(NSURL *)self scheme];
-  v3 = [v2 lowercaseString];
+  scheme = [(NSURL *)self scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if ([v3 isEqualToString:@"smb"])
+  if ([lowercaseString isEqualToString:@"smb"])
   {
     v4 = kSecAttrProtocolSMB;
   }

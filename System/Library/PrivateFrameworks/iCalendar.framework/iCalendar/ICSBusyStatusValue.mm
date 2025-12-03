@@ -1,15 +1,15 @@
 @interface ICSBusyStatusValue
-+ (id)busyStatusTypeFromCode:(int)a3;
-+ (id)busyStatusValueFromICSString:(id)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
++ (id)busyStatusTypeFromCode:(int)code;
++ (id)busyStatusValueFromICSString:(id)string;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
 @end
 
 @implementation ICSBusyStatusValue
 
-+ (id)busyStatusValueFromICSString:(id)a3
++ (id)busyStatusValueFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BUSY"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"BUSY"])
   {
     v4 = 1;
 LABEL_9:
@@ -17,19 +17,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"FREE"])
+  if ([stringCopy isEqualToString:@"FREE"])
   {
     v4 = 2;
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"TENTATIVE"])
+  if ([stringCopy isEqualToString:@"TENTATIVE"])
   {
     v4 = 3;
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"OOF"])
+  if ([stringCopy isEqualToString:@"OOF"])
   {
     v4 = 4;
     goto LABEL_9;
@@ -41,17 +41,17 @@ LABEL_10:
   return v5;
 }
 
-+ (id)busyStatusTypeFromCode:(int)a3
++ (id)busyStatusTypeFromCode:(int)code
 {
-  v3 = [(ICSPredefinedValue *)[ICSBusyStatusValue alloc] initWithLong:a3];
+  v3 = [(ICSPredefinedValue *)[ICSBusyStatusValue alloc] initWithLong:code];
 
   return v3;
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v4 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  stringCopy = string;
   v6 = [(ICSPredefinedValue *)self longValue]- 2;
   if (v6 > 2)
   {
@@ -63,7 +63,7 @@ LABEL_10:
     v7 = off_27A64C158[v6];
   }
 
-  iCalendarAppendStringToStringWithOptions(v7, v8, v4);
+  iCalendarAppendStringToStringWithOptions(v7, stringCopy, optionsCopy);
 }
 
 @end

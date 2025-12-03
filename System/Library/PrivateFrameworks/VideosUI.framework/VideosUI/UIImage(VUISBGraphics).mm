@@ -7,7 +7,7 @@
 + (id)vui_imageFromContextWithSize:()VUISBGraphics scale:type:pool:drawing:encapsulation:
 {
   context = objc_autoreleasePoolPush();
-  v15 = vcvtpd_u64_f64(a1 * a3);
+  v15 = vcvtpd_u64_f64(self * a3);
   v16 = 32;
   if (a6 == 2)
   {

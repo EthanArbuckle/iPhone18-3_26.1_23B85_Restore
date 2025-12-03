@@ -1,9 +1,9 @@
 @interface SBSplashBoardMigrationController
 - (SBSplashBoardMigrationController)init;
-- (id)launchRequestsForApplication:(id)a3 withCompatibilityInfo:(id)a4 defaultLaunchRequests:(id)a5;
+- (id)launchRequestsForApplication:(id)application withCompatibilityInfo:(id)info defaultLaunchRequests:(id)requests;
 - (id)systemAppsNeedingMigrationLaunchImages;
 - (void)performCleanupAfterDifferentDeviceMigration;
-- (void)performSystemAppMigrationRecreating:(id)a3;
+- (void)performSystemAppMigrationRecreating:(id)recreating;
 @end
 
 @implementation SBSplashBoardMigrationController
@@ -39,9 +39,9 @@
     else
     {
       v11 = +[UIDevice currentDevice];
-      v12 = [v11 userInterfaceIdiom];
+      userInterfaceIdiom = [v11 userInterfaceIdiom];
 
-      if (v12 == &dword_0 + 1)
+      if (userInterfaceIdiom == &dword_0 + 1)
       {
 LABEL_7:
 
@@ -58,8 +58,8 @@ LABEL_7:
 
 - (id)systemAppsNeedingMigrationLaunchImages
 {
-  v3 = [(XBApplicationProviding *)self->_applicationProvider splashBoardSystemApplications];
-  v4 = [(XBApplicationController *)self->_splashBoardController findRecentlyUsedOfApplications:v3];
+  splashBoardSystemApplications = [(XBApplicationProviding *)self->_applicationProvider splashBoardSystemApplications];
+  v4 = [(XBApplicationController *)self->_splashBoardController findRecentlyUsedOfApplications:splashBoardSystemApplications];
   if ([v4 count])
   {
     v5 = SBLogCommon();
@@ -75,7 +75,7 @@ LABEL_7:
 
   else
   {
-    v6 = v3;
+    v6 = splashBoardSystemApplications;
 
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -89,12 +89,12 @@ LABEL_7:
   return v6;
 }
 
-- (void)performSystemAppMigrationRecreating:(id)a3
+- (void)performSystemAppMigrationRecreating:(id)recreating
 {
   applicationProvider = self->_applicationProvider;
-  v5 = a3;
-  v6 = [(XBApplicationProviding *)applicationProvider splashBoardSystemApplications];
-  [(XBApplicationController *)self->_splashBoardController removeCachedLaunchImagesForApplications:v6 forgettingApps:0];
+  recreatingCopy = recreating;
+  splashBoardSystemApplications = [(XBApplicationProviding *)applicationProvider splashBoardSystemApplications];
+  [(XBApplicationController *)self->_splashBoardController removeCachedLaunchImagesForApplications:splashBoardSystemApplications forgettingApps:0];
   v7 = dispatch_semaphore_create(0);
   splashBoardController = self->_splashBoardController;
   v12[0] = _NSConcreteStackBlock;
@@ -103,7 +103,7 @@ LABEL_7:
   v12[3] = &unk_18680;
   v13 = v7;
   v9 = v7;
-  [(XBApplicationController *)splashBoardController captureOrUpdateLaunchImagesForApplications:v5 firstImageIsReady:0 completion:v12];
+  [(XBApplicationController *)splashBoardController captureOrUpdateLaunchImagesForApplications:recreatingCopy firstImageIsReady:0 completion:v12];
 
   v10 = dispatch_time(0, 300000000000);
   dispatch_semaphore_wait(v9, v10);
@@ -134,12 +134,12 @@ LABEL_7:
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 bundleIdentifier];
+        bundleIdentifier = [v7 bundleIdentifier];
         v9 = +[XBApplicationDataStore sharedInstance];
-        [v9 _clearCompatibilityInfoForBundleIdentifier:v8];
+        [v9 _clearCompatibilityInfoForBundleIdentifier:bundleIdentifier];
         v10 = [[XBApplicationSnapshotManifest alloc] initWithApplicationInfo:v7];
         [v10 deleteAllSnapshots];
-        v11 = [FBSApplicationDataStore storeForApplication:v8];
+        v11 = [FBSApplicationDataStore storeForApplication:bundleIdentifier];
         [v11 removeObjectForKey:v5];
       }
 
@@ -150,12 +150,12 @@ LABEL_7:
   }
 }
 
-- (id)launchRequestsForApplication:(id)a3 withCompatibilityInfo:(id)a4 defaultLaunchRequests:(id)a5
+- (id)launchRequestsForApplication:(id)application withCompatibilityInfo:(id)info defaultLaunchRequests:(id)requests
 {
-  v6 = a3;
-  v7 = a5;
+  applicationCopy = application;
+  requestsCopy = requests;
   v8 = +[NSMutableArray array];
-  if ([v6 supportsDeviceFamily:2])
+  if ([applicationCopy supportsDeviceFamily:2])
   {
     v9 = SBLayoutSupportsSideLayoutRole();
   }
@@ -169,7 +169,7 @@ LABEL_7:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v7;
+  v10 = requestsCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {

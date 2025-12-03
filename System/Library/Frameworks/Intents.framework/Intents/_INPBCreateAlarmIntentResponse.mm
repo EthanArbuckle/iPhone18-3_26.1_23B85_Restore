@@ -1,41 +1,41 @@
 @interface _INPBCreateAlarmIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBCreateAlarmIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCreateAlarmIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsSuccessCode:(id)a3;
+- (int)StringAsSuccessCode:(id)code;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSuccessCode:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSuccessCode:(int)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCreateAlarmIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBCreateAlarmIntentResponse *)self createdAlarm];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"createdAlarm"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  createdAlarm = [(_INPBCreateAlarmIntentResponse *)self createdAlarm];
+  dictionaryRepresentation = [createdAlarm dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"createdAlarm"];
 
   if ([(_INPBCreateAlarmIntentResponse *)self hasSuccessCode])
   {
-    v6 = [(_INPBCreateAlarmIntentResponse *)self successCode];
-    if (v6 >= 3)
+    successCode = [(_INPBCreateAlarmIntentResponse *)self successCode];
+    if (successCode >= 3)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", successCode];
     }
 
     else
     {
-      v7 = off_1E72881E0[v6];
+      v7 = off_1E72881E0[successCode];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"successCode"];
+    [dictionary setObject:v7 forKeyedSubscript:@"successCode"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -54,26 +54,26 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = [(_INPBCreateAlarmIntentResponse *)self createdAlarm];
-  v6 = [v4 createdAlarm];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  createdAlarm = [(_INPBCreateAlarmIntentResponse *)self createdAlarm];
+  createdAlarm2 = [equalCopy createdAlarm];
+  v7 = createdAlarm2;
+  if ((createdAlarm != 0) != (createdAlarm2 == 0))
   {
-    v8 = [(_INPBCreateAlarmIntentResponse *)self createdAlarm];
-    if (v8)
+    createdAlarm3 = [(_INPBCreateAlarmIntentResponse *)self createdAlarm];
+    if (createdAlarm3)
     {
-      v9 = v8;
-      v10 = [(_INPBCreateAlarmIntentResponse *)self createdAlarm];
-      v11 = [v4 createdAlarm];
-      v12 = [v10 isEqual:v11];
+      v9 = createdAlarm3;
+      createdAlarm4 = [(_INPBCreateAlarmIntentResponse *)self createdAlarm];
+      createdAlarm5 = [equalCopy createdAlarm];
+      v12 = [createdAlarm4 isEqual:createdAlarm5];
 
       if (!v12)
       {
@@ -85,10 +85,10 @@
     {
     }
 
-    v13 = [(_INPBCreateAlarmIntentResponse *)self hasSuccessCode];
-    if (v13 == [v4 hasSuccessCode])
+    hasSuccessCode = [(_INPBCreateAlarmIntentResponse *)self hasSuccessCode];
+    if (hasSuccessCode == [equalCopy hasSuccessCode])
     {
-      if (!-[_INPBCreateAlarmIntentResponse hasSuccessCode](self, "hasSuccessCode") || ![v4 hasSuccessCode] || (successCode = self->_successCode, successCode == objc_msgSend(v4, "successCode")))
+      if (!-[_INPBCreateAlarmIntentResponse hasSuccessCode](self, "hasSuccessCode") || ![equalCopy hasSuccessCode] || (successCode = self->_successCode, successCode == objc_msgSend(equalCopy, "successCode")))
       {
         v14 = 1;
         goto LABEL_10;
@@ -107,10 +107,10 @@ LABEL_10:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCreateAlarmIntentResponse allocWithZone:](_INPBCreateAlarmIntentResponse init];
-  v6 = [(_INPBAlarm *)self->_createdAlarm copyWithZone:a3];
+  v6 = [(_INPBAlarm *)self->_createdAlarm copyWithZone:zone];
   [(_INPBCreateAlarmIntentResponse *)v5 setCreatedAlarm:v6];
 
   if ([(_INPBCreateAlarmIntentResponse *)self hasSuccessCode])
@@ -121,38 +121,38 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCreateAlarmIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBCreateAlarmIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCreateAlarmIntentResponse)initWithCoder:(id)a3
+- (_INPBCreateAlarmIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCreateAlarmIntentResponse *)self initWithData:v6];
+    self = [(_INPBCreateAlarmIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_INPBCreateAlarmIntentResponse *)self createdAlarm];
+  toCopy = to;
+  createdAlarm = [(_INPBCreateAlarmIntentResponse *)self createdAlarm];
 
-  if (v4)
+  if (createdAlarm)
   {
-    v5 = [(_INPBCreateAlarmIntentResponse *)self createdAlarm];
+    createdAlarm2 = [(_INPBCreateAlarmIntentResponse *)self createdAlarm];
     PBDataWriterWriteSubmessage();
   }
 
@@ -163,20 +163,20 @@ LABEL_10:
   }
 }
 
-- (int)StringAsSuccessCode:(id)a3
+- (int)StringAsSuccessCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ALARM_CREATED"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"ALARM_CREATED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DUPLICATE_ALARM_EXISTS"])
+  else if ([codeCopy isEqualToString:@"DUPLICATE_ALARM_EXISTS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DUPLICATE_ALARM_ENABLED"])
+  else if ([codeCopy isEqualToString:@"DUPLICATE_ALARM_ENABLED"])
   {
     v4 = 2;
   }
@@ -189,10 +189,10 @@ LABEL_10:
   return v4;
 }
 
-- (void)setSuccessCode:(int)a3
+- (void)setSuccessCode:(int)code
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (code == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -200,7 +200,7 @@ LABEL_10:
   else
   {
     *&self->_has = has | 1;
-    self->_successCode = a3;
+    self->_successCode = code;
   }
 }
 

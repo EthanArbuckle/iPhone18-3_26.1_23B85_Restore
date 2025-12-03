@@ -1,29 +1,29 @@
 @interface ICHashtag
-+ (void)undoablyMarkForDeletion:(BOOL)a3 standardizedContent:(id)a4 account:(id)a5;
++ (void)undoablyMarkForDeletion:(BOOL)deletion standardizedContent:(id)content account:(id)account;
 @end
 
 @implementation ICHashtag
 
-+ (void)undoablyMarkForDeletion:(BOOL)a3 standardizedContent:(id)a4 account:(id)a5
++ (void)undoablyMarkForDeletion:(BOOL)deletion standardizedContent:(id)content account:(id)account
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  deletionCopy = deletion;
+  contentCopy = content;
+  accountCopy = account;
   v10 = +[NSUndoManager shared];
-  v11 = [v10 prepareWithInvocationTarget:a1];
-  [v11 undoablyMarkForDeletion:!v6 standardizedContent:v8 account:v9];
+  v11 = [v10 prepareWithInvocationTarget:self];
+  [v11 undoablyMarkForDeletion:!deletionCopy standardizedContent:contentCopy account:accountCopy];
 
-  [v9 managedObjectContext];
+  [accountCopy managedObjectContext];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100139E90;
   v15[3] = &unk_100645ED0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v19 = v6;
+  v16 = contentCopy;
+  v17 = accountCopy;
+  v18 = v19 = deletionCopy;
   v12 = v18;
-  v13 = v9;
-  v14 = v8;
+  v13 = accountCopy;
+  v14 = contentCopy;
   [v12 performBlockAndWait:v15];
 }
 

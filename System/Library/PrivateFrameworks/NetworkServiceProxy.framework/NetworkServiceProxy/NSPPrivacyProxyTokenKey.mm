@@ -1,22 +1,22 @@
 @interface NSPPrivacyProxyTokenKey
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMetadataSize:(BOOL)a3;
-- (void)setHasRotation:(BOOL)a3;
-- (void)setHasTokenType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMetadataSize:(BOOL)size;
+- (void)setHasRotation:(BOOL)rotation;
+- (void)setHasTokenType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyTokenKey
 
-- (void)setHasRotation:(BOOL)a3
+- (void)setHasRotation:(BOOL)rotation
 {
-  if (a3)
+  if (rotation)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTokenType:(BOOL)a3
+- (void)setHasTokenType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMetadataSize:(BOOL)a3
+- (void)setHasMetadataSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 4;
   }
@@ -65,20 +65,20 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyTokenKey;
   v4 = [(NSPPrivacyProxyTokenKey *)&v8 description];
-  v5 = [(NSPPrivacyProxyTokenKey *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyTokenKey *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   has = self->_has;
@@ -136,15 +136,15 @@ LABEL_8:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_key)
   {
     __assert_rtn("[NSPPrivacyProxyTokenKey writeTo:]", "NSPPrivacyProxyTokenKey.m", 183, "nil != self->_key");
   }
 
-  v11 = v4;
+  v11 = toCopy;
   PBDataWriterWriteDataField();
   has = self->_has;
   if (has)
@@ -178,15 +178,15 @@ LABEL_8:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setKey:self->_key];
+  toCopy = to;
+  [toCopy setKey:self->_key];
   has = self->_has;
   if (has)
   {
-    *(v5 + 1) = self->_expiration;
-    *(v5 + 40) |= 1u;
+    *(toCopy + 1) = self->_expiration;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -205,8 +205,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v5 + 2) = self->_rotation;
-  *(v5 + 40) |= 2u;
+  *(toCopy + 2) = self->_rotation;
+  *(toCopy + 40) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -220,22 +220,22 @@ LABEL_4:
   }
 
 LABEL_11:
-  *(v5 + 9) = self->_tokenType;
-  *(v5 + 40) |= 8u;
+  *(toCopy + 9) = self->_tokenType;
+  *(toCopy + 40) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
-    *(v5 + 8) = self->_metadataSize;
-    *(v5 + 40) |= 4u;
+    *(toCopy + 8) = self->_metadataSize;
+    *(toCopy + 40) |= 4u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_key copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -289,16 +289,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   key = self->_key;
-  if (key | *(v4 + 3))
+  if (key | *(equalCopy + 3))
   {
     if (![(NSData *)key isEqual:?])
     {
@@ -308,13 +308,13 @@ LABEL_5:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_expiration != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_expiration != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_23:
     v6 = 0;
@@ -323,34 +323,34 @@ LABEL_23:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_rotation != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_rotation != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0 || self->_tokenType != *(v4 + 9))
+    if ((*(equalCopy + 40) & 8) == 0 || self->_tokenType != *(equalCopy + 9))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 40) & 8) != 0)
+  else if ((*(equalCopy + 40) & 8) != 0)
   {
     goto LABEL_23;
   }
 
-  v6 = (*(v4 + 40) & 4) == 0;
+  v6 = (*(equalCopy + 40) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_metadataSize != *(v4 + 8))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_metadataSize != *(equalCopy + 8))
     {
       goto LABEL_23;
     }
@@ -418,22 +418,22 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(NSPPrivacyProxyTokenKey *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if (v5)
   {
-    self->_expiration = *(v4 + 1);
+    self->_expiration = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -446,14 +446,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 40) & 2) == 0)
+  else if ((*(fromCopy + 40) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_rotation = *(v4 + 2);
+  self->_rotation = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -466,12 +466,12 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_tokenType = *(v4 + 9);
+  self->_tokenType = *(fromCopy + 9);
   *&self->_has |= 8u;
-  if ((*(v4 + 40) & 4) != 0)
+  if ((*(fromCopy + 40) & 4) != 0)
   {
 LABEL_7:
-    self->_metadataSize = *(v4 + 8);
+    self->_metadataSize = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 

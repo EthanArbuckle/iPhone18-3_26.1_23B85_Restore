@@ -1,23 +1,23 @@
 @interface VFXBidirectionalRemapTable
 - (VFXBidirectionalRemapTable)init;
-- (int64_t)presentationEntityFromModel:(int64_t)a3;
-- (void)add:(int64_t)a3 :(int64_t)a4;
+- (int64_t)presentationEntityFromModel:(int64_t)model;
+- (void)add:(int64_t)add :(int64_t)a4;
 @end
 
 @implementation VFXBidirectionalRemapTable
 
-- (int64_t)presentationEntityFromModel:(int64_t)a3
+- (int64_t)presentationEntityFromModel:(int64_t)model
 {
-  v4 = self;
-  v5 = sub_1AFCE2EB8(a3);
+  selfCopy = self;
+  v5 = sub_1AFCE2EB8(model);
 
   return v5;
 }
 
-- (void)add:(int64_t)a3 :(int64_t)a4
+- (void)add:(int64_t)add :(int64_t)a4
 {
-  v6 = self;
-  sub_1AFCE2FB4(a3, a4);
+  selfCopy = self;
+  sub_1AFCE2FB4(add, a4);
 }
 
 - (VFXBidirectionalRemapTable)init

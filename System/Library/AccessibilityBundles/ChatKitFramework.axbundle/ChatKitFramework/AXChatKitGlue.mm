@@ -1,5 +1,5 @@
 @interface AXChatKitGlue
-+ (void)_handleMessageReceived:(id)a3;
++ (void)_handleMessageReceived:(id)received;
 + (void)accessibilityInitializeBundle;
 @end
 
@@ -9,33 +9,33 @@
 {
   if (!_Failover)
   {
-    v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v2 performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_454 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_463];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_454 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_463];
 
-    v3 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v3 installSafeCategories:&__block_literal_global_1020 afterDelay:@"ChatKit AX Bundle" validationTargetName:@"ChatKit" overrideProcessName:1.0];
+    mEMORY[0x29EDBD6E8]2 = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8]2 installSafeCategories:&__block_literal_global_1020 afterDelay:@"ChatKit AX Bundle" validationTargetName:@"ChatKit" overrideProcessName:1.0];
 
     AXPerformBlockOnMainThreadAfterDelay();
-    v4 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v4 addHandler:&__block_literal_global_1031 forBundleName:@"MSMessageExtensionBalloonPlugin"];
+    mEMORY[0x29EDBD690] = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690] addHandler:&__block_literal_global_1031 forBundleName:@"MSMessageExtensionBalloonPlugin"];
 
-    v5 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v5 addHandler:&__block_literal_global_1058 forBundleName:@"HandwritingProvider"];
+    mEMORY[0x29EDBD690]2 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]2 addHandler:&__block_literal_global_1058 forBundleName:@"HandwritingProvider"];
 
-    v6 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v6 addHandler:&__block_literal_global_1093 forFramework:@"ElectricTouch"];
+    mEMORY[0x29EDBD690]3 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]3 addHandler:&__block_literal_global_1093 forFramework:@"ElectricTouch"];
 
-    v7 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v7 addHandler:&__block_literal_global_1110 forFramework:@"ClipServices"];
+    mEMORY[0x29EDBD690]4 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]4 addHandler:&__block_literal_global_1110 forFramework:@"ClipServices"];
 
-    v8 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v8 addHandler:&__block_literal_global_1127 forFramework:@"LinkPresentation"];
+    mEMORY[0x29EDBD690]5 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]5 addHandler:&__block_literal_global_1127 forFramework:@"LinkPresentation"];
 
-    v9 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v9 addHandler:&__block_literal_global_1148 forBundleID:@"com.apple.Jellyfish.MessagesExtension"];
+    mEMORY[0x29EDBD690]6 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]6 addHandler:&__block_literal_global_1148 forBundleID:@"com.apple.Jellyfish.MessagesExtension"];
 
-    v10 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v10 addHandler:&__block_literal_global_1156 forBundleName:@"UIKit.axbundle"];
+    mEMORY[0x29EDBD690]7 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]7 addHandler:&__block_literal_global_1156 forBundleName:@"UIKit.axbundle"];
   }
 }
 
@@ -410,7 +410,7 @@ uint64_t __46__AXChatKitGlue_accessibilityInitializeBundle__block_invoke_30(uint
   return 1;
 }
 
-+ (void)_handleMessageReceived:(id)a3
++ (void)_handleMessageReceived:(id)received
 {
   v37[1] = *MEMORY[0x29EDCA608];
   v30 = 0;
@@ -419,7 +419,7 @@ uint64_t __46__AXChatKitGlue_accessibilityInitializeBundle__block_invoke_30(uint
   v33 = __Block_byref_object_copy_;
   v34 = __Block_byref_object_dispose_;
   v35 = 0;
-  v3 = a3;
+  receivedCopy = received;
   AXPerformSafeBlock();
   v4 = v31[5];
 
@@ -427,7 +427,7 @@ uint64_t __46__AXChatKitGlue_accessibilityInitializeBundle__block_invoke_30(uint
   if (([v4 safeBoolForKey:@"isMuted"] & 1) == 0)
   {
     LOBYTE(v30) = 0;
-    v5 = [v3 safeValueForKey:@"lastIncomingMessage"];
+    v5 = [receivedCopy safeValueForKey:@"lastIncomingMessage"];
     v6 = __UIAccessibilitySafeClass();
 
     if (v30 == 1)
@@ -435,27 +435,27 @@ uint64_t __46__AXChatKitGlue_accessibilityInitializeBundle__block_invoke_30(uint
       abort();
     }
 
-    v7 = [v6 sender];
-    v8 = [v7 firstName];
+    sender = [v6 sender];
+    firstName = [sender firstName];
 
-    if (v8 || ([v6 sender], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "name"), v8 = objc_claimAutoreleasedReturnValue(), v9, v8) || (objc_msgSend(v6, "safeValueForKey:", @"sender"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "safeValueForKey:", @"nameAndEmail"), v8 = objc_claimAutoreleasedReturnValue(), v10, v8))
+    if (firstName || ([v6 sender], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "name"), firstName = objc_claimAutoreleasedReturnValue(), v9, firstName) || (objc_msgSend(v6, "safeValueForKey:", @"sender"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "safeValueForKey:", @"nameAndEmail"), firstName = objc_claimAutoreleasedReturnValue(), v10, firstName))
     {
-      v11 = [v6 descriptionForPurpose:0 inChat:v3 senderDisplayName:v8];
+      v11 = [v6 descriptionForPurpose:0 inChat:receivedCopy senderDisplayName:firstName];
       v12 = MEMORY[0x29EDBA0F8];
       v13 = accessibilityLocalizedString(@"message.from.format");
-      v14 = [v12 stringWithFormat:v13, v8];
+      v14 = [v12 stringWithFormat:v13, firstName];
       v15 = __UIAXStringForVariables();
 
-      v16 = [v6 fileTransferGUIDs];
-      v17 = [v16 firstObject];
+      fileTransferGUIDs = [v6 fileTransferGUIDs];
+      firstObject = [fileTransferGUIDs firstObject];
 
-      if ([v17 length])
+      if ([firstObject length])
       {
-        v18 = [MEMORY[0x29EDC5528] sharedInstance];
-        v19 = [v18 transferForGUID:v17];
+        mEMORY[0x29EDC5528] = [MEMORY[0x29EDC5528] sharedInstance];
+        v19 = [mEMORY[0x29EDC5528] transferForGUID:firstObject];
 
-        v20 = [v19 attributionInfo];
-        v21 = [v20 objectForKey:*MEMORY[0x29EDC5560]];
+        attributionInfo = [v19 attributionInfo];
+        v21 = [attributionInfo objectForKey:*MEMORY[0x29EDC5560]];
 
         if ([v21 length])
         {

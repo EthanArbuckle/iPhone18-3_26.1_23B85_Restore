@@ -1,20 +1,20 @@
 @interface ATXPBContactModeEntityMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumUniqueOutgoingInteractionRecipients:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumUniqueOutgoingInteractionRecipients:(BOOL)recipients;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBContactModeEntityMetrics
 
-- (void)setHasNumUniqueOutgoingInteractionRecipients:(BOOL)a3
+- (void)setHasNumUniqueOutgoingInteractionRecipients:(BOOL)recipients
 {
-  if (a3)
+  if (recipients)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBContactModeEntityMetrics;
   v4 = [(ATXPBContactModeEntityMetrics *)&v8 description];
-  v5 = [(ATXPBContactModeEntityMetrics *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBContactModeEntityMetrics *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundleId"];
+    [dictionary setObject:bundleId forKey:@"bundleId"];
   }
 
   has = self->_has;
@@ -73,14 +73,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_bundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -88,7 +88,7 @@
   {
     numUniqueOutgoingInteractionRecipients = self->_numUniqueOutgoingInteractionRecipients;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -96,51 +96,51 @@
   {
     numUniqueIncomingInteractionSenders = self->_numUniqueIncomingInteractionSenders;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_activityState)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_bundleId)
   {
-    [v4 setBundleId:?];
-    v4 = v6;
+    [toCopy setBundleId:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 7) = self->_numUniqueOutgoingInteractionRecipients;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 7) = self->_numUniqueOutgoingInteractionRecipients;
+    *(toCopy + 32) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 6) = self->_numUniqueIncomingInteractionSenders;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 6) = self->_numUniqueIncomingInteractionSenders;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_activityState)
   {
     [v6 setActivityState:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bundleId copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -158,23 +158,23 @@
     *(v5 + 32) |= 1u;
   }
 
-  v9 = [(NSString *)self->_activityState copyWithZone:a3];
+  v9 = [(NSString *)self->_activityState copyWithZone:zone];
   v10 = *(v5 + 8);
   *(v5 + 8) = v9;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   bundleId = self->_bundleId;
-  if (bundleId | *(v4 + 2))
+  if (bundleId | *(equalCopy + 2))
   {
     if (![(NSString *)bundleId isEqual:?])
     {
@@ -182,16 +182,16 @@
     }
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_numUniqueOutgoingInteractionRecipients != *(v4 + 7))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_numUniqueOutgoingInteractionRecipients != *(equalCopy + 7))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
 LABEL_16:
     v8 = 0;
@@ -200,19 +200,19 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_numUniqueIncomingInteractionSenders != *(v4 + 6))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_numUniqueIncomingInteractionSenders != *(equalCopy + 6))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_16;
   }
 
   activityState = self->_activityState;
-  if (activityState | *(v4 + 1))
+  if (activityState | *(equalCopy + 1))
   {
     v8 = [(NSString *)activityState isEqual:?];
   }
@@ -254,34 +254,34 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_activityState hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(ATXPBContactModeEntityMetrics *)self setBundleId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) != 0)
   {
-    self->_numUniqueOutgoingInteractionRecipients = v4[7];
+    self->_numUniqueOutgoingInteractionRecipients = fromCopy[7];
     *&self->_has |= 2u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
   }
 
   if (v5)
   {
-    self->_numUniqueIncomingInteractionSenders = v4[6];
+    self->_numUniqueIncomingInteractionSenders = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ATXPBContactModeEntityMetrics *)self setActivityState:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

@@ -1,15 +1,15 @@
 @interface VSSpeechSynthesizerPreference
 + (id)availableLanguages;
-+ (id)fallbackLanguageForLanguage:(id)a3;
++ (id)fallbackLanguageForLanguage:(id)language;
 @end
 
 @implementation VSSpeechSynthesizerPreference
 
-+ (id)fallbackLanguageForLanguage:(id)a3
++ (id)fallbackLanguageForLanguage:(id)language
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
-  v5 = [a1 availableLanguages];
-  v6 = [v5 containsObject:v4];
+  v4 = [language stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  availableLanguages = [self availableLanguages];
+  v6 = [availableLanguages containsObject:v4];
 
   if (v6)
   {
@@ -23,7 +23,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __61__VSSpeechSynthesizerPreference_fallbackLanguageForLanguage___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (fallbackLanguageForLanguage__onceToken != -1)
   {
     dispatch_once(&fallbackLanguageForLanguage__onceToken, block);
@@ -77,7 +77,7 @@ void __61__VSSpeechSynthesizerPreference_fallbackLanguageForLanguage___block_inv
   block[1] = 3221225472;
   block[2] = __51__VSSpeechSynthesizerPreference_availableLanguages__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (availableLanguages_onceToken != -1)
   {
     dispatch_once(&availableLanguages_onceToken, block);

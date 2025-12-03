@@ -55,13 +55,13 @@
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
         {
           v11 = v14;
-          v12 = [v8 localizedDescription];
+          localizedDescription = [v8 localizedDescription];
           *buf = 136315650;
           v18 = "[CSCoreSpeechDKeepAliveHandler _enableCoreSpeechDaemonKeepAlive]";
           v19 = 2114;
           v20 = v2;
           v21 = 2114;
-          v22 = v12;
+          v22 = localizedDescription;
           _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s Cannot create directory at : %{public}@ : %{public}@", buf, 0x20u);
           goto LABEL_14;
         }
@@ -93,16 +93,16 @@ LABEL_11:
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
       v11 = v10;
-      v12 = [v8 localizedDescription];
-      v13 = [v8 localizedRecoverySuggestion];
+      localizedDescription = [v8 localizedDescription];
+      localizedRecoverySuggestion = [v8 localizedRecoverySuggestion];
       *buf = 136315906;
       v18 = "[CSCoreSpeechDKeepAliveHandler _enableCoreSpeechDaemonKeepAlive]";
       v19 = 2114;
       v20 = v3;
       v21 = 2114;
-      v22 = v12;
+      v22 = localizedDescription;
       v23 = 2114;
-      v24 = v13;
+      v24 = localizedRecoverySuggestion;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s Failed to make CoreSpeechDaemon as KeepAlive : Cannot create file at %{public}@, error : %{public}@, %{public}@", buf, 0x2Au);
 
 LABEL_14:

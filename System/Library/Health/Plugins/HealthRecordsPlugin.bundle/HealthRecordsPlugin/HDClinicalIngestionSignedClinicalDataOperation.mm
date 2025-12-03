@@ -1,9 +1,9 @@
 @interface HDClinicalIngestionSignedClinicalDataOperation
-- (id)_askForAccessCredentialsWithError:(id *)a3;
-- (id)runFeatureWithCredential:(id)a3 error:(id *)a4;
-- (void)cancelWithError:(id)a3;
+- (id)_askForAccessCredentialsWithError:(id *)error;
+- (id)runFeatureWithCredential:(id)credential error:(id *)error;
+- (void)cancelWithError:(id)error;
 - (void)main;
-- (void)storeDataFromParsingResult:(id)a3 existingAccountIdentifier:(id)a4;
+- (void)storeDataFromParsingResult:(id)result existingAccountIdentifier:(id)identifier;
 @end
 
 @implementation HDClinicalIngestionSignedClinicalDataOperation
@@ -35,9 +35,9 @@
     v11 = v18;
     if (v10)
     {
-      v12 = [(HDClinicalIngestionPerAccountOperation *)self account];
-      v13 = [v12 identifier];
-      [(HDClinicalIngestionSignedClinicalDataOperation *)self storeDataFromParsingResult:v10 existingAccountIdentifier:v13];
+      account = [(HDClinicalIngestionPerAccountOperation *)self account];
+      identifier = [account identifier];
+      [(HDClinicalIngestionSignedClinicalDataOperation *)self storeDataFromParsingResult:v10 existingAccountIdentifier:identifier];
 
       _HKInitializeLogging();
       v14 = HKLogHealthRecords;
@@ -105,10 +105,10 @@ LABEL_9:
 LABEL_19:
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v5 = a3;
-  if (!v5)
+  errorCopy = error;
+  if (!errorCopy)
   {
     sub_9FD7C(a2, self);
   }
@@ -119,12 +119,12 @@ LABEL_19:
     sub_9FDF8();
   }
 
-  [(HDClinicalIngestionOperation *)self setOperationError:v5];
+  [(HDClinicalIngestionOperation *)self setOperationError:errorCopy];
   [(NSOperationQueue *)self->_operationQueue cancelAllOperations];
   [(HDClinicalIngestionSignedClinicalDataOperation *)self cancel];
 }
 
-- (id)_askForAccessCredentialsWithError:(id *)a3
+- (id)_askForAccessCredentialsWithError:(id *)error
 {
   _HKInitializeLogging();
   v5 = HKLogHealthRecords;
@@ -133,8 +133,8 @@ LABEL_19:
     sub_9FEA8(v5, self);
   }
 
-  v6 = [(HDClinicalIngestionPerAccountOperation *)self account];
-  v7 = [v6 connectionInformationWithError:a3];
+  account = [(HDClinicalIngestionPerAccountOperation *)self account];
+  v7 = [account connectionInformationWithError:error];
 
   if (v7)
   {
@@ -150,18 +150,18 @@ LABEL_19:
     v29 = sub_2B4E4;
     v30 = sub_2B4F4;
     v31 = 0;
-    v8 = [(HDClinicalIngestionOperation *)self profileExtension];
-    v9 = [v8 createHealthRecordsLegacyIngestionServiceClient];
+    profileExtension = [(HDClinicalIngestionOperation *)self profileExtension];
+    createHealthRecordsLegacyIngestionServiceClient = [profileExtension createHealthRecordsLegacyIngestionServiceClient];
 
     v10 = [HKAsynchronousOperation alloc];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_2B4FC;
     v20[3] = &unk_106BE0;
-    v11 = v9;
+    v11 = createHealthRecordsLegacyIngestionServiceClient;
     v21 = v11;
     v22 = v7;
-    v23 = self;
+    selfCopy = self;
     v24 = &v32;
     v25 = &v26;
     v12 = [v10 initWithName:@"foo" operationBlock:v20];
@@ -174,10 +174,10 @@ LABEL_19:
       v15 = v14;
       if (v14)
       {
-        if (a3)
+        if (error)
         {
           v16 = v14;
-          *a3 = v15;
+          *error = v15;
         }
 
         else
@@ -210,9 +210,9 @@ LABEL_19:
   return v18;
 }
 
-- (id)runFeatureWithCredential:(id)a3 error:(id *)a4
+- (id)runFeatureWithCredential:(id)credential error:(id *)error
 {
-  v6 = a3;
+  credentialCopy = credential;
   _HKInitializeLogging();
   v7 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
@@ -220,8 +220,8 @@ LABEL_19:
     sub_A0080(v7);
   }
 
-  v8 = [(HDClinicalIngestionPerAccountOperation *)self account];
-  v9 = [v8 connectionInformationWithCredential:v6 error:a4];
+  account = [(HDClinicalIngestionPerAccountOperation *)self account];
+  v9 = [account connectionInformationWithCredential:credentialCopy error:error];
 
   if (!v9)
   {
@@ -236,13 +236,13 @@ LABEL_19:
     sub_A0118(v10);
   }
 
-  v11 = [(HDClinicalIngestionOperation *)self profileExtension];
-  v12 = [v11 isImproveHealthRecordsDataSubmissionAllowed];
+  profileExtension = [(HDClinicalIngestionOperation *)self profileExtension];
+  isImproveHealthRecordsDataSubmissionAllowed = [profileExtension isImproveHealthRecordsDataSubmissionAllowed];
 
   _HKInitializeLogging();
   v13 = HKLogHealthRecords;
   v14 = os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT);
-  if (!v12)
+  if (!isImproveHealthRecordsDataSubmissionAllowed)
   {
     if (v14)
     {
@@ -259,7 +259,7 @@ LABEL_19:
     goto LABEL_16;
   }
 
-  v42 = a4;
+  errorCopy = error;
   if (v14)
   {
     v15 = v13;
@@ -272,20 +272,20 @@ LABEL_19:
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ ingestion analytics collection %{public}@", buf, 0x16u);
   }
 
-  v18 = [(HDClinicalIngestionOperation *)self profileExtension];
-  v19 = [v18 profile];
-  v20 = [v19 daemon];
-  v21 = [v20 ontologyConfigurationProvider];
-  v22 = [v21 improveHealthRecordsGatedAnalyticsEnabledCountryCodes];
-  v23 = [(HDClinicalIngestionGatewayFeatureOperation *)self gateway];
-  v24 = [v23 country];
-  v25 = [v22 containsObject:v24];
+  profileExtension2 = [(HDClinicalIngestionOperation *)self profileExtension];
+  profile = [profileExtension2 profile];
+  daemon = [profile daemon];
+  ontologyConfigurationProvider = [daemon ontologyConfigurationProvider];
+  improveHealthRecordsGatedAnalyticsEnabledCountryCodes = [ontologyConfigurationProvider improveHealthRecordsGatedAnalyticsEnabledCountryCodes];
+  gateway = [(HDClinicalIngestionGatewayFeatureOperation *)self gateway];
+  country = [gateway country];
+  v25 = [improveHealthRecordsGatedAnalyticsEnabledCountryCodes containsObject:country];
 
   if ((v25 & 1) == 0)
   {
     _HKInitializeLogging();
     v31 = HKLogHealthRecords;
-    a4 = v42;
+    error = errorCopy;
     if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
     {
       sub_A01D8(v31, self);
@@ -297,18 +297,18 @@ LABEL_16:
   }
 
   v26 = 1;
-  a4 = v42;
+  error = errorCopy;
 LABEL_17:
   v32 = [HKClinicalIngestionContext alloc];
-  v33 = [(HDClinicalIngestionGatewayFeatureOperation *)self queryMode];
-  v34 = [(HDClinicalIngestionPerAccountOperation *)self account];
-  v35 = [v34 lastFetchDate];
-  v36 = [v32 initWithAccountConnectionInformation:v9 queryMode:v33 options:v26 lastFetchDate:v35];
+  queryMode = [(HDClinicalIngestionGatewayFeatureOperation *)self queryMode];
+  account2 = [(HDClinicalIngestionPerAccountOperation *)self account];
+  lastFetchDate = [account2 lastFetchDate];
+  v36 = [v32 initWithAccountConnectionInformation:v9 queryMode:queryMode options:v26 lastFetchDate:lastFetchDate];
 
-  v37 = [(HDClinicalIngestionOperation *)self task];
-  v38 = [v37 healthRecordsIngestionServiceClient];
-  v39 = [(HDClinicalIngestionGatewayFeatureOperation *)self feature];
-  v27 = [v38 handleSignedClinicalDataFeature:v39 context:v36 error:a4];
+  task = [(HDClinicalIngestionOperation *)self task];
+  healthRecordsIngestionServiceClient = [task healthRecordsIngestionServiceClient];
+  feature = [(HDClinicalIngestionGatewayFeatureOperation *)self feature];
+  v27 = [healthRecordsIngestionServiceClient handleSignedClinicalDataFeature:feature context:v36 error:error];
 
   _HKInitializeLogging();
   v40 = HKLogHealthRecords;
@@ -322,20 +322,20 @@ LABEL_20:
   return v27;
 }
 
-- (void)storeDataFromParsingResult:(id)a3 existingAccountIdentifier:(id)a4
+- (void)storeDataFromParsingResult:(id)result existingAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  identifierCopy = identifier;
   _HKInitializeLogging();
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
   {
     sub_A0364();
   }
 
-  v8 = [(HDClinicalIngestionOperation *)self profileExtension];
-  v9 = [v8 signedClinicalDataManager];
+  profileExtension = [(HDClinicalIngestionOperation *)self profileExtension];
+  signedClinicalDataManager = [profileExtension signedClinicalDataManager];
 
-  if (!v9)
+  if (!signedClinicalDataManager)
   {
     _HKInitializeLogging();
     v10 = HKLogHealthRecords;
@@ -346,7 +346,7 @@ LABEL_20:
   }
 
   v15 = 0;
-  v11 = [v9 storeDataFromParsingResult:v6 existingAccountIdentifier:v7 insertOriginalRecords:1 allRecordsWereDuplicates:0 error:&v15];
+  v11 = [signedClinicalDataManager storeDataFromParsingResult:resultCopy existingAccountIdentifier:identifierCopy insertOriginalRecords:1 allRecordsWereDuplicates:0 error:&v15];
   v12 = v15;
   _HKInitializeLogging();
   v13 = HKLogHealthRecords;

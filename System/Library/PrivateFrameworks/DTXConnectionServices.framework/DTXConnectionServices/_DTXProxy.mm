@@ -1,26 +1,26 @@
 @interface _DTXProxy
-- (_DTXProxy)initWithChannel:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (_DTXProxy)initWithChannel:(id)channel;
+- (id)methodSignatureForSelector:(SEL)selector;
 @end
 
 @implementation _DTXProxy
 
-- (_DTXProxy)initWithChannel:(id)a3
+- (_DTXProxy)initWithChannel:(id)channel
 {
-  v5 = a3;
+  channelCopy = channel;
   v9.receiver = self;
   v9.super_class = _DTXProxy;
   v6 = [(_DTXProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_proxyChannel, a3);
+    objc_storeStrong(&v6->_proxyChannel, channel);
   }
 
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v23.receiver = self;
   v23.super_class = _DTXProxy;
@@ -34,13 +34,13 @@
   else
   {
     v10 = objc_msgSend_remoteInterface(self->_proxyChannel, v6, v7);
-    MethodDescription = protocol_getMethodDescription(v10, a3, 1, 1);
+    MethodDescription = protocol_getMethodDescription(v10, selector, 1, 1);
 
     if (!MethodDescription.name)
     {
       v13 = MEMORY[0x277CBEAD8];
       v14 = *MEMORY[0x277CBE648];
-      v15 = NSStringFromSelector(a3);
+      v15 = NSStringFromSelector(selector);
       v18 = objc_msgSend_remoteInterface(self->_proxyChannel, v16, v17);
       Name = protocol_getName(v18);
       objc_msgSend_raise_format_(v13, v20, v14, @"Selector %@ is not part of the remote interface %s", v15, Name);

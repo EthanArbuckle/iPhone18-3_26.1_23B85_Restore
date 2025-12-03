@@ -1,25 +1,25 @@
 @interface AVTAvatarUpdaterFactory
-+ (id)updaterForAggregatingUpdaters:(id)a3;
-+ (id)updaterForClearingColorsForCategory:(int64_t)a3 destination:(int64_t)a4;
-+ (id)updaterForColor:(id)a3 variationOverride:(id)a4 colorsState:(id)a5 pairedColors:(id)a6 additionalColor:(id)a7 saveToColorsState:(BOOL)a8;
-+ (id)updaterForPairingCategory:(id)a3 colorsState:(id)a4;
-+ (id)updaterForPreset:(id)a3 pairedPreset:(id)a4;
++ (id)updaterForAggregatingUpdaters:(id)updaters;
++ (id)updaterForClearingColorsForCategory:(int64_t)category destination:(int64_t)destination;
++ (id)updaterForColor:(id)color variationOverride:(id)override colorsState:(id)state pairedColors:(id)colors additionalColor:(id)additionalColor saveToColorsState:(BOOL)colorsState;
++ (id)updaterForPairingCategory:(id)category colorsState:(id)state;
++ (id)updaterForPreset:(id)preset pairedPreset:(id)pairedPreset;
 @end
 
 @implementation AVTAvatarUpdaterFactory
 
-+ (id)updaterForPreset:(id)a3 pairedPreset:(id)a4
++ (id)updaterForPreset:(id)preset pairedPreset:(id)pairedPreset
 {
-  v5 = a3;
-  v6 = a4;
+  presetCopy = preset;
+  pairedPresetCopy = pairedPreset;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__AVTAvatarUpdaterFactory_updaterForPreset_pairedPreset___block_invoke;
   v11[3] = &unk_1E7F3C888;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = presetCopy;
+  v13 = pairedPresetCopy;
+  v7 = pairedPresetCopy;
+  v8 = presetCopy;
   v9 = [v11 copy];
 
   return v9;
@@ -35,28 +35,28 @@ void __57__AVTAvatarUpdaterFactory_updaterForPreset_pairedPreset___block_invoke(
   }
 }
 
-+ (id)updaterForColor:(id)a3 variationOverride:(id)a4 colorsState:(id)a5 pairedColors:(id)a6 additionalColor:(id)a7 saveToColorsState:(BOOL)a8
++ (id)updaterForColor:(id)color variationOverride:(id)override colorsState:(id)state pairedColors:(id)colors additionalColor:(id)additionalColor saveToColorsState:(BOOL)colorsState
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  colorCopy = color;
+  overrideCopy = override;
+  stateCopy = state;
+  colorsCopy = colors;
+  additionalColorCopy = additionalColor;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __120__AVTAvatarUpdaterFactory_updaterForColor_variationOverride_colorsState_pairedColors_additionalColor_saveToColorsState___block_invoke;
   v25[3] = &unk_1E7F3C8D8;
-  v26 = v14;
-  v27 = v13;
-  v31 = a8;
-  v28 = v15;
-  v29 = v16;
-  v30 = v17;
-  v18 = v17;
-  v19 = v16;
-  v20 = v15;
-  v21 = v13;
-  v22 = v14;
+  v26 = overrideCopy;
+  v27 = colorCopy;
+  colorsStateCopy = colorsState;
+  v28 = stateCopy;
+  v29 = colorsCopy;
+  v30 = additionalColorCopy;
+  v18 = additionalColorCopy;
+  v19 = colorsCopy;
+  v20 = stateCopy;
+  v21 = colorCopy;
+  v22 = overrideCopy;
   v23 = [v25 copy];
 
   return v23;
@@ -191,19 +191,19 @@ void __120__AVTAvatarUpdaterFactory_updaterForColor_variationOverride_colorsStat
   [*(a1 + 56) addColorPreset:v8];
 }
 
-+ (id)updaterForPairingCategory:(id)a3 colorsState:(id)a4
++ (id)updaterForPairingCategory:(id)category colorsState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  stateCopy = state;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__AVTAvatarUpdaterFactory_updaterForPairingCategory_colorsState___block_invoke;
   v12[3] = &unk_1E7F3C900;
-  v14 = v7;
-  v15 = a1;
-  v13 = v6;
-  v8 = v7;
-  v9 = v6;
+  v14 = stateCopy;
+  selfCopy = self;
+  v13 = categoryCopy;
+  v8 = stateCopy;
+  v9 = categoryCopy;
   v10 = [v12 copy];
 
   return v10;
@@ -248,28 +248,28 @@ void __65__AVTAvatarUpdaterFactory_updaterForPairingCategory_colorsState___block
   }
 }
 
-+ (id)updaterForClearingColorsForCategory:(int64_t)a3 destination:(int64_t)a4
++ (id)updaterForClearingColorsForCategory:(int64_t)category destination:(int64_t)destination
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __75__AVTAvatarUpdaterFactory_updaterForClearingColorsForCategory_destination___block_invoke;
   v6[3] = &__block_descriptor_48_e32_v16__0__AVTAvatarConfiguration_8l;
-  v6[4] = a3;
-  v6[5] = a4;
+  v6[4] = category;
+  v6[5] = destination;
   v4 = [v6 copy];
 
   return v4;
 }
 
-+ (id)updaterForAggregatingUpdaters:(id)a3
++ (id)updaterForAggregatingUpdaters:(id)updaters
 {
-  v3 = a3;
+  updatersCopy = updaters;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__AVTAvatarUpdaterFactory_updaterForAggregatingUpdaters___block_invoke;
   v7[3] = &unk_1E7F3C948;
-  v8 = v3;
-  v4 = v3;
+  v8 = updatersCopy;
+  v4 = updatersCopy;
   v5 = [v7 copy];
 
   return v5;

@@ -1,19 +1,19 @@
 @interface TTKKeyboardLayout
-- (TTKKeyboardLayout)initWithUIKBTree:(id)a3;
+- (TTKKeyboardLayout)initWithUIKBTree:(id)tree;
 @end
 
 @implementation TTKKeyboardLayout
 
-- (TTKKeyboardLayout)initWithUIKBTree:(id)a3
+- (TTKKeyboardLayout)initWithUIKBTree:(id)tree
 {
-  v5 = a3;
+  treeCopy = tree;
   v9.receiver = self;
   v9.super_class = TTKKeyboardLayout;
   v6 = [(TTKKeyboardLayout *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_layout, a3);
+    objc_storeStrong(&v6->_layout, tree);
   }
 
   return v7;

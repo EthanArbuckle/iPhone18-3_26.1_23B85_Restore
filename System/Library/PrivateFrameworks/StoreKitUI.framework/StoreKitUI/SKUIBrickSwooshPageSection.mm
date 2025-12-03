@@ -1,27 +1,27 @@
 @interface SKUIBrickSwooshPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SKUIBrickSwooshPageSection)initWithPageComponent:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SKUIBrickSwooshPageSection)initWithPageComponent:(id)component;
 - (id)_artworkLoader;
 - (id)_missingItemLoader;
 - (id)_swooshViewController;
-- (id)cellForIndexPath:(id)a3;
-- (id)swoosh:(id)a3 imageForCellAtIndex:(int64_t)a4;
-- (void)_addImpressionForIndex:(int64_t)a3 toSession:(id)a4;
-- (void)_loadMissingItemsFromIndex:(int64_t)a3 withReason:(int64_t)a4;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
+- (id)cellForIndexPath:(id)path;
+- (id)swoosh:(id)swoosh imageForCellAtIndex:(int64_t)index;
+- (void)_addImpressionForIndex:(int64_t)index toSession:(id)session;
+- (void)_loadMissingItemsFromIndex:(int64_t)index withReason:(int64_t)reason;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
 - (void)dealloc;
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5;
-- (void)prefetchResourcesWithReason:(int64_t)a3;
-- (void)swoosh:(id)a3 didSelectCellAtIndex:(int64_t)a4;
-- (void)swoosh:(id)a3 willDisplayCellAtIndex:(int64_t)a4;
-- (void)willAppearInContext:(id)a3;
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers;
+- (void)prefetchResourcesWithReason:(int64_t)reason;
+- (void)swoosh:(id)swoosh didSelectCellAtIndex:(int64_t)index;
+- (void)swoosh:(id)swoosh willDisplayCellAtIndex:(int64_t)index;
+- (void)willAppearInContext:(id)context;
 @end
 
 @implementation SKUIBrickSwooshPageSection
 
-- (SKUIBrickSwooshPageSection)initWithPageComponent:(id)a3
+- (SKUIBrickSwooshPageSection)initWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIBrickSwooshPageSection initWithPageComponent:];
@@ -29,7 +29,7 @@
 
   v7.receiver = self;
   v7.super_class = SKUIBrickSwooshPageSection;
-  v5 = [(SKUIStorePageSection *)&v7 initWithPageComponent:v4];
+  v5 = [(SKUIStorePageSection *)&v7 initWithPageComponent:componentCopy];
 
   return v5;
 }
@@ -43,14 +43,14 @@
   [(SKUIStorePageSection *)&v3 dealloc];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKUIStorePageSection *)self pageComponent];
-  v9 = [v8 viewElement];
-  [v7 addItemViewElement:v9];
+  pathCopy = path;
+  sessionCopy = session;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 
   [(SKUIBrickSwooshViewController *)self->_swooshViewController indexPathsForVisibleItems];
   v17 = 0u;
@@ -74,7 +74,7 @@
 
         v15 = *(*(&v17 + 1) + 8 * v14);
         v16 = objc_autoreleasePoolPush();
-        -[SKUIBrickSwooshPageSection _addImpressionForIndex:toSession:](self, "_addImpressionForIndex:toSession:", [v15 item], v7);
+        -[SKUIBrickSwooshPageSection _addImpressionForIndex:toSession:](self, "_addImpressionForIndex:toSession:", [v15 item], sessionCopy);
         objc_autoreleasePoolPop(v16);
         ++v14;
       }
@@ -87,47 +87,47 @@
   }
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v3 = [a3 collectionView];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIBrickSwooshPageSectionReuseIdentifier"];
+  collectionView = [context collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIBrickSwooshPageSectionReuseIdentifier"];
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  pathCopy = path;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"SKUIBrickSwooshPageSectionReuseIdentifier" forIndexPath:v4];
-  v8 = [(SKUIBrickSwooshPageSection *)self _swooshViewController];
-  v9 = [v8 view];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SKUIBrickSwooshPageSectionReuseIdentifier" forIndexPath:pathCopy];
+  _swooshViewController = [(SKUIBrickSwooshPageSection *)self _swooshViewController];
+  view = [_swooshViewController view];
 
-  v10 = [v7 contentChildView];
+  contentChildView = [v7 contentChildView];
 
-  if (v9 != v10)
+  if (view != contentChildView)
   {
-    v11 = [(SKUIStorePageSection *)self backgroundColorForIndexPath:v4];
-    [v9 setBackgroundColor:v11];
+    v11 = [(SKUIStorePageSection *)self backgroundColorForIndexPath:pathCopy];
+    [view setBackgroundColor:v11];
 
-    [v7 setContentChildView:v9];
+    [v7 setContentChildView:view];
     [v7 setContentInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
   }
 
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = [(SKUIStorePageSection *)self context];
-  v5 = [v4 collectionView];
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v6 = [(SKUIBrickSwooshPageSection *)self _swooshViewController];
-  v7 = [v6 view];
+  _swooshViewController = [(SKUIBrickSwooshPageSection *)self _swooshViewController];
+  view = [_swooshViewController view];
 
-  [v7 frame];
+  [view frame];
   v9 = v8;
-  [v5 bounds];
+  [collectionView bounds];
   v11 = v10;
 
   v12 = v11;
@@ -137,101 +137,101 @@
   return result;
 }
 
-- (void)prefetchResourcesWithReason:(int64_t)a3
+- (void)prefetchResourcesWithReason:(int64_t)reason
 {
-  v5 = [(SKUIBrickSwooshPageSection *)self _artworkLoader];
-  [v5 loadImagesForNextPageWithReason:a3];
+  _artworkLoader = [(SKUIBrickSwooshPageSection *)self _artworkLoader];
+  [_artworkLoader loadImagesForNextPageWithReason:reason];
 
-  [(SKUIBrickSwooshPageSection *)self _loadMissingItemsFromIndex:0 withReason:a3];
+  [(SKUIBrickSwooshPageSection *)self _loadMissingItemsFromIndex:0 withReason:reason];
 }
 
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers
 {
-  v10 = a4;
-  if ([v10 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v6 = [(SKUIStorePageSection *)self pageComponent];
-    [v6 _updateBricksWithItems:v10];
-    v7 = [(SKUIBrickSwooshPageSection *)self _swooshViewController];
-    v8 = [v6 bricks];
-    [v7 setBricks:v8];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    [pageComponent _updateBricksWithItems:itemsCopy];
+    _swooshViewController = [(SKUIBrickSwooshPageSection *)self _swooshViewController];
+    bricks = [pageComponent bricks];
+    [_swooshViewController setBricks:bricks];
 
-    v9 = [(SKUIBrickSwooshPageSection *)self _artworkLoader];
-    [v9 loadImagesForNextPageWithReason:0];
+    _artworkLoader = [(SKUIBrickSwooshPageSection *)self _artworkLoader];
+    [_artworkLoader loadImagesForNextPageWithReason:0];
   }
 }
 
-- (void)swoosh:(id)a3 didSelectCellAtIndex:(int64_t)a4
+- (void)swoosh:(id)swoosh didSelectCellAtIndex:(int64_t)index
 {
-  v20 = a3;
-  v6 = [v20 bricks];
-  v7 = [v6 objectAtIndex:a4];
+  swooshCopy = swoosh;
+  bricks = [swooshCopy bricks];
+  v7 = [bricks objectAtIndex:index];
 
-  v8 = [v7 link];
-  v9 = [(SKUIStorePageSection *)self clickEventWithLink:v8 elementName:*MEMORY[0x277D6A4C8] index:a4];
+  link = [v7 link];
+  v9 = [(SKUIStorePageSection *)self clickEventWithLink:link elementName:*MEMORY[0x277D6A4C8] index:index];
   if (v9)
   {
-    [v20 frameForItemAtIndex:a4];
+    [swooshCopy frameForItemAtIndex:index];
     SKUIMetricsSetClickEventPositionWithPoint(v9, v10, v11);
-    v12 = [(SKUIStorePageSection *)self context];
-    v13 = [v12 metricsController];
-    [v13 recordEvent:v9];
+    context = [(SKUIStorePageSection *)self context];
+    metricsController = [context metricsController];
+    [metricsController recordEvent:v9];
   }
 
-  v14 = [(SKUIStorePageSection *)self context];
-  v15 = [v14 parentViewController];
+  context2 = [(SKUIStorePageSection *)self context];
+  parentViewController = [context2 parentViewController];
 
-  v16 = [v15 navigationController];
-  v17 = [v16 topViewController];
+  navigationController = [parentViewController navigationController];
+  topViewController = [navigationController topViewController];
 
-  [(SKUIStorePageSection *)self showPageWithLink:v8];
-  v18 = [v15 navigationController];
-  v19 = [v18 topViewController];
+  [(SKUIStorePageSection *)self showPageWithLink:link];
+  navigationController2 = [parentViewController navigationController];
+  topViewController2 = [navigationController2 topViewController];
 
-  if (v19 == v17)
+  if (topViewController2 == topViewController)
   {
-    [v20 deselectAllItems];
+    [swooshCopy deselectAllItems];
   }
 }
 
-- (id)swoosh:(id)a3 imageForCellAtIndex:(int64_t)a4
+- (id)swoosh:(id)swoosh imageForCellAtIndex:(int64_t)index
 {
-  v6 = [a3 bricks];
-  v7 = [v6 objectAtIndex:a4];
+  bricks = [swoosh bricks];
+  v7 = [bricks objectAtIndex:index];
 
-  v8 = [(SKUIBrickSwooshArtworkLoader *)self->_artworkLoader cachedImageForBrick:v7];
-  if (!v8)
+  placeholderImage = [(SKUIBrickSwooshArtworkLoader *)self->_artworkLoader cachedImageForBrick:v7];
+  if (!placeholderImage)
   {
-    v9 = [(SKUIBrickSwooshPageSection *)self _artworkLoader];
-    [v9 loadImageForBrick:v7 reason:1];
-    v8 = [v9 placeholderImage];
+    _artworkLoader = [(SKUIBrickSwooshPageSection *)self _artworkLoader];
+    [_artworkLoader loadImageForBrick:v7 reason:1];
+    placeholderImage = [_artworkLoader placeholderImage];
   }
 
-  return v8;
+  return placeholderImage;
 }
 
-- (void)swoosh:(id)a3 willDisplayCellAtIndex:(int64_t)a4
+- (void)swoosh:(id)swoosh willDisplayCellAtIndex:(int64_t)index
 {
-  v6 = [(SKUIStorePageSection *)self context];
-  v7 = [v6 metricsController];
-  v8 = [v7 activeImpressionsSession];
+  context = [(SKUIStorePageSection *)self context];
+  metricsController = [context metricsController];
+  activeImpressionsSession = [metricsController activeImpressionsSession];
 
-  if (v8)
+  if (activeImpressionsSession)
   {
-    [(SKUIBrickSwooshPageSection *)self _addImpressionForIndex:a4 toSession:v8];
+    [(SKUIBrickSwooshPageSection *)self _addImpressionForIndex:index toSession:activeImpressionsSession];
   }
 
-  [(SKUIBrickSwooshPageSection *)self _loadMissingItemsFromIndex:a4 withReason:1];
+  [(SKUIBrickSwooshPageSection *)self _loadMissingItemsFromIndex:index withReason:1];
 }
 
-- (void)_addImpressionForIndex:(int64_t)a3 toSession:(id)a4
+- (void)_addImpressionForIndex:(int64_t)index toSession:(id)session
 {
   swooshViewController = self->_swooshViewController;
-  v6 = a4;
-  v7 = [(SKUIBrickSwooshViewController *)swooshViewController bricks];
-  v8 = [v7 objectAtIndex:a3];
+  sessionCopy = session;
+  bricks = [(SKUIBrickSwooshViewController *)swooshViewController bricks];
+  v8 = [bricks objectAtIndex:index];
 
-  [v6 addItemIdentifier:{objc_msgSend(v8, "brickIdentifier")}];
+  [sessionCopy addItemIdentifier:{objc_msgSend(v8, "brickIdentifier")}];
 }
 
 - (id)_artworkLoader
@@ -239,17 +239,17 @@
   artworkLoader = self->_artworkLoader;
   if (!artworkLoader)
   {
-    v4 = [(SKUIStorePageSection *)self context];
+    context = [(SKUIStorePageSection *)self context];
     v5 = [SKUIBrickSwooshArtworkLoader alloc];
-    v6 = [v4 resourceLoader];
-    v7 = [(SKUIBrickSwooshPageSection *)self _swooshViewController];
-    v8 = [(SKUIBrickSwooshArtworkLoader *)v5 initWithArtworkLoader:v6 swoosh:v7];
+    resourceLoader = [context resourceLoader];
+    _swooshViewController = [(SKUIBrickSwooshPageSection *)self _swooshViewController];
+    v8 = [(SKUIBrickSwooshArtworkLoader *)v5 initWithArtworkLoader:resourceLoader swoosh:_swooshViewController];
     v9 = self->_artworkLoader;
     self->_artworkLoader = v8;
 
     v10 = self->_artworkLoader;
-    v11 = [v4 colorScheme];
-    [(SKUISwooshArtworkLoader *)v10 setPlaceholderColorWithColorScheme:v11];
+    colorScheme = [context colorScheme];
+    [(SKUISwooshArtworkLoader *)v10 setPlaceholderColorWithColorScheme:colorScheme];
 
     artworkLoader = self->_artworkLoader;
   }
@@ -257,13 +257,13 @@
   return artworkLoader;
 }
 
-- (void)_loadMissingItemsFromIndex:(int64_t)a3 withReason:(int64_t)a4
+- (void)_loadMissingItemsFromIndex:(int64_t)index withReason:(int64_t)reason
 {
-  v8 = [(SKUIStorePageSection *)self pageComponent];
-  if ([v8 isMissingItemData])
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  if ([pageComponent isMissingItemData])
   {
-    v7 = [(SKUIBrickSwooshPageSection *)self _missingItemLoader];
-    [v7 loadItemsForPageComponent:v8 startIndex:a3 reason:a4];
+    _missingItemLoader = [(SKUIBrickSwooshPageSection *)self _missingItemLoader];
+    [_missingItemLoader loadItemsForPageComponent:pageComponent startIndex:index reason:reason];
   }
 }
 
@@ -273,9 +273,9 @@
   if (!missingItemLoader)
   {
     v4 = [SKUIMissingItemLoader alloc];
-    v5 = [(SKUIStorePageSection *)self context];
-    v6 = [v5 resourceLoader];
-    v7 = [(SKUIMissingItemLoader *)v4 initWithResourceLoader:v6];
+    context = [(SKUIStorePageSection *)self context];
+    resourceLoader = [context resourceLoader];
+    v7 = [(SKUIMissingItemLoader *)v4 initWithResourceLoader:resourceLoader];
     v8 = self->_missingItemLoader;
     self->_missingItemLoader = v7;
 
@@ -291,26 +291,26 @@
   swooshViewController = self->_swooshViewController;
   if (!swooshViewController)
   {
-    v4 = [(SKUIStorePageSection *)self context];
-    v5 = [v4 parentViewController];
+    context = [(SKUIStorePageSection *)self context];
+    parentViewController = [context parentViewController];
 
     v6 = [SKUIBrickSwooshViewController alloc];
-    v7 = [(SKUIStorePageSection *)self pageComponent];
-    v8 = [(SKUIBrickSwooshViewController *)v6 initWithSwoosh:v7];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    v8 = [(SKUIBrickSwooshViewController *)v6 initWithSwoosh:pageComponent];
     v9 = self->_swooshViewController;
     self->_swooshViewController = v8;
 
     v10 = self->_swooshViewController;
-    v11 = [v5 clientContext];
-    [(SKUIBrickSwooshViewController *)v10 setClientContext:v11];
+    clientContext = [parentViewController clientContext];
+    [(SKUIBrickSwooshViewController *)v10 setClientContext:clientContext];
 
     v12 = self->_swooshViewController;
-    v13 = [(SKUIStorePageSection *)self context];
-    v14 = [v13 colorScheme];
-    [(SKUIBrickSwooshViewController *)v12 setColorScheme:v14];
+    context2 = [(SKUIStorePageSection *)self context];
+    colorScheme = [context2 colorScheme];
+    [(SKUIBrickSwooshViewController *)v12 setColorScheme:colorScheme];
 
     [(SKUIBrickSwooshViewController *)self->_swooshViewController setDelegate:self];
-    [v5 addChildViewController:self->_swooshViewController];
+    [parentViewController addChildViewController:self->_swooshViewController];
 
     swooshViewController = self->_swooshViewController;
   }

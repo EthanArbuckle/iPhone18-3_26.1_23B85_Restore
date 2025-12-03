@@ -1,89 +1,89 @@
 @interface EKEventAttendeePicker
-+ (BOOL)_participantHasResponded:(id)a3;
-+ (id)_addressForRecipient:(id)a3;
++ (BOOL)_participantHasResponded:(id)responded;
++ (id)_addressForRecipient:(id)recipient;
 - (BOOL)_zeroKeyworkSearchEnabled;
 - (BOOL)showAvailability;
-- (EKEventAttendeePicker)initWithFrame:(CGRect)a3 event:(id)a4 calendar:(id)a5 overriddenEventStartDate:(id)a6 overriddenEventEndDate:(id)a7;
+- (EKEventAttendeePicker)initWithFrame:(CGRect)frame event:(id)event calendar:(id)calendar overriddenEventStartDate:(id)date overriddenEventEndDate:(id)endDate;
 - (EKEventAttendeePickerDelegate)addressValidationDelegate;
 - (NSArray)recipients;
 - (double)_maxScrollerHeight;
-- (id)_lookUpRecipientForAddress:(id)a3;
+- (id)_lookUpRecipientForAddress:(id)address;
 - (id)_searchManager;
 - (id)_searchResultsView;
-- (id)composeRecipientView:(id)a3 composeRecipientForAddress:(id)a4;
+- (id)composeRecipientView:(id)view composeRecipientForAddress:(id)address;
 - (id)peoplePickerPrompt;
 - (id)predicateForContactWithBlockedAddress;
-- (unint64_t)presentationOptionsForRecipient:(id)a3;
+- (unint64_t)presentationOptionsForRecipient:(id)recipient;
 - (void)_adjustLayoutOfSubviews;
 - (void)_copyRecipientsFromComposeView;
-- (void)_hideSearchResultsViewAndCancelOutstandingSearches:(BOOL)a3;
+- (void)_hideSearchResultsViewAndCancelOutstandingSearches:(BOOL)searches;
 - (void)_refreshSearchResults;
-- (void)_requestAvailabilityForRecipients:(id)a3;
-- (void)_setAtomPresentationOption:(unint64_t)a3 forRecipient:(id)a4;
+- (void)_requestAvailabilityForRecipients:(id)recipients;
+- (void)_setAtomPresentationOption:(unint64_t)option forRecipient:(id)recipient;
 - (void)_setRecipientsOnComposeView;
 - (void)_showSearchResultsView;
 - (void)_updateFetchContextChosenAddresses;
-- (void)autocompleteResultsController:(id)a3 didRequestInfoAboutRecipient:(id)a4;
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5;
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4;
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4;
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4;
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4;
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4;
-- (void)composeRecipientViewDidFinishPickingRecipient:(id)a3;
-- (void)composeRecipientViewRequestAddRecipient:(id)a3;
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4;
-- (void)consumeCorecipientSearchResults:(id)a3 taskID:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4;
-- (void)contactViewControllerDidExecuteClearRecentsDataAction:(id)a3;
+- (void)autocompleteResultsController:(id)controller didRequestInfoAboutRecipient:(id)recipient;
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index;
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size;
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient;
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address;
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient;
+- (void)composeRecipientView:(id)view textDidChange:(id)change;
+- (void)composeRecipientViewDidFinishPickingRecipient:(id)recipient;
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient;
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d;
+- (void)consumeCorecipientSearchResults:(id)results taskID:(id)d;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property;
+- (void)contactViewControllerDidExecuteClearRecentsDataAction:(id)action;
 - (void)dealloc;
 - (void)finishedSearchingForAutocompleteResults;
 - (void)finishedSearchingForCorecipients;
-- (void)finishedTaskWithID:(id)a3;
+- (void)finishedTaskWithID:(id)d;
 - (void)loadView;
 - (void)scrollComposeViewToEnd;
 - (void)searchForCorecipients;
-- (void)searchWithText:(id)a3;
-- (void)setRecipients:(id)a3;
+- (void)searchWithText:(id)text;
+- (void)setRecipients:(id)recipients;
 - (void)updateMaxAttendeeInfoText;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation EKEventAttendeePicker
 
-- (EKEventAttendeePicker)initWithFrame:(CGRect)a3 event:(id)a4 calendar:(id)a5 overriddenEventStartDate:(id)a6 overriddenEventEndDate:(id)a7
+- (EKEventAttendeePicker)initWithFrame:(CGRect)frame event:(id)event calendar:(id)calendar overriddenEventStartDate:(id)date overriddenEventEndDate:(id)endDate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  eventCopy = event;
+  calendarCopy = calendar;
+  dateCopy = date;
+  endDateCopy = endDate;
   v51.receiver = self;
   v51.super_class = EKEventAttendeePicker;
   v20 = [(EKEventAttendeePicker *)&v51 init];
   v21 = v20;
   if (v20)
   {
-    v50 = v19;
+    v50 = endDateCopy;
     v20->_initialFrame.origin.x = x;
     v20->_initialFrame.origin.y = y;
     v20->_initialFrame.size.width = width;
     v20->_initialFrame.size.height = height;
-    objc_storeStrong(&v20->_event, a4);
+    objc_storeStrong(&v20->_event, event);
     v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
     recipientAddressesToRecipients = v21->_recipientAddressesToRecipients;
     v21->_recipientAddressesToRecipients = v22;
 
-    objc_storeStrong(&v21->_overriddenEventStartDate, a6);
-    objc_storeStrong(&v21->_overriddenEventEndDate, a7);
+    objc_storeStrong(&v21->_overriddenEventStartDate, date);
+    objc_storeStrong(&v21->_overriddenEventEndDate, endDate);
     v21->_hasChanges = 0;
     v24 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     availabilityQueue = v21->_availabilityQueue;
@@ -91,66 +91,66 @@
 
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
-    v49 = [v16 title];
-    v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@-%@", v27, v49];
+    title = [eventCopy title];
+    v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@-%@", v27, title];
     [(NSOperationQueue *)v21->_availabilityQueue setName:v28];
     EKWeakLinkClass();
     v29 = objc_opt_new();
     fetchContext = v21->_fetchContext;
     v21->_fetchContext = v29;
 
-    v31 = [v16 title];
-    [(CNAutocompleteFetchContext *)v21->_fetchContext setTitle:v31];
+    title2 = [eventCopy title];
+    [(CNAutocompleteFetchContext *)v21->_fetchContext setTitle:title2];
 
-    if (v18)
+    if (dateCopy)
     {
-      [(CNAutocompleteFetchContext *)v21->_fetchContext setDate:v18];
+      [(CNAutocompleteFetchContext *)v21->_fetchContext setDate:dateCopy];
     }
 
     else
     {
-      v32 = [v16 startDate];
-      [(CNAutocompleteFetchContext *)v21->_fetchContext setDate:v32];
+      startDate = [eventCopy startDate];
+      [(CNAutocompleteFetchContext *)v21->_fetchContext setDate:startDate];
     }
 
-    v33 = [v16 location];
-    [(CNAutocompleteFetchContext *)v21->_fetchContext setLocationUUID:v33];
+    location = [eventCopy location];
+    [(CNAutocompleteFetchContext *)v21->_fetchContext setLocationUUID:location];
 
-    v34 = v17;
-    if (v16)
+    v34 = calendarCopy;
+    if (eventCopy)
     {
-      v35 = [v16 calendar];
+      calendar = [eventCopy calendar];
     }
 
     else
     {
-      v35 = v17;
+      calendar = calendarCopy;
     }
 
-    v36 = v35;
-    v37 = [v35 source];
-    v38 = [v37 sourceIdentifier];
-    [(CNAutocompleteFetchContext *)v21->_fetchContext setSendingAddressAccountIdentifier:v38];
+    v36 = calendar;
+    source = [calendar source];
+    sourceIdentifier = [source sourceIdentifier];
+    [(CNAutocompleteFetchContext *)v21->_fetchContext setSendingAddressAccountIdentifier:sourceIdentifier];
 
-    v39 = [v36 selfIdentityEmail];
-    [(CNAutocompleteFetchContext *)v21->_fetchContext setSendingAddress:v39];
+    selfIdentityEmail = [v36 selfIdentityEmail];
+    [(CNAutocompleteFetchContext *)v21->_fetchContext setSendingAddress:selfIdentityEmail];
 
     v40 = objc_opt_new();
     searchResults = v21->_searchResults;
     v21->_searchResults = v40;
 
-    v42 = [(EKEvent *)v21->_event calendar];
-    v43 = [v42 maxAttendees];
-    v44 = [(EKEvent *)v21->_event roomAttendees];
-    v21->_maxNumberOfAttendees = v43 + ~[v44 count];
+    calendar2 = [(EKEvent *)v21->_event calendar];
+    maxAttendees = [calendar2 maxAttendees];
+    roomAttendees = [(EKEvent *)v21->_event roomAttendees];
+    v21->_maxNumberOfAttendees = maxAttendees + ~[roomAttendees count];
 
-    v45 = [v16 eventStore];
-    v46 = [v45 blockList];
+    eventStore = [eventCopy eventStore];
+    blockList = [eventStore blockList];
     blockList = v21->_blockList;
-    v21->_blockList = v46;
+    v21->_blockList = blockList;
 
-    v17 = v34;
-    v19 = v50;
+    calendarCopy = v34;
+    endDateCopy = v50;
   }
 
   return v21;
@@ -175,8 +175,8 @@
   objc_initWeak(&location, self);
   v3 = [[EKEventAttendeePickerBGView alloc] initWithFrame:self->_initialFrame.origin.x, self->_initialFrame.origin.y, self->_initialFrame.size.width, self->_initialFrame.size.height];
   [(EKEventAttendeePickerBGView *)v3 setAutoresizingMask:18];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(EKEventAttendeePickerBGView *)v3 setBackgroundColor:v4];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(EKEventAttendeePickerBGView *)v3 setBackgroundColor:systemBackgroundColor];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -216,12 +216,12 @@
   self->_composeRecipientView = v12;
 
   [(CNComposeRecipientTextView *)self->_composeRecipientView setAutoresizingMask:2];
-  v14 = [MEMORY[0x1E69DC888] clearColor];
-  [(CNComposeRecipientTextView *)self->_composeRecipientView setBackgroundColor:v14];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(CNComposeRecipientTextView *)self->_composeRecipientView setBackgroundColor:clearColor];
 
   v15 = self->_composeRecipientView;
-  v16 = [MEMORY[0x1E695DEC8] array];
-  [(CNComposeRecipientTextView *)v15 setAddresses:v16];
+  array = [MEMORY[0x1E695DEC8] array];
+  [(CNComposeRecipientTextView *)v15 setAddresses:array];
 
   [(CNComposeRecipientTextView *)self->_composeRecipientView setDelegate:self];
   v17 = self->_composeRecipientView;
@@ -418,8 +418,8 @@ LABEL_16:
   v4.receiver = self;
   v4.super_class = EKEventAttendeePicker;
   [(EKEventAttendeePicker *)&v4 viewLayoutMarginsDidChange];
-  v3 = [(EKEventAttendeePicker *)self view];
-  [v3 layoutMargins];
+  view = [(EKEventAttendeePicker *)self view];
+  [view layoutMargins];
   [(CNComposeRecipientTextView *)self->_composeRecipientView setLayoutMargins:?];
 }
 
@@ -431,42 +431,42 @@ LABEL_16:
   [(EKEventAttendeePicker *)self _adjustLayoutOfSubviews];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(CNComposeRecipientTextView *)self->_composeRecipientView becomeFirstResponder];
   v5.receiver = self;
   v5.super_class = EKEventAttendeePicker;
-  [(EKEventAttendeePicker *)&v5 viewWillAppear:v3];
+  [(EKEventAttendeePicker *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(EKEventAttendeePicker *)self scrollComposeViewToEnd];
   v5.receiver = self;
   v5.super_class = EKEventAttendeePicker;
-  [(EKEventAttendeePicker *)&v5 viewDidAppear:v3];
+  [(EKEventAttendeePicker *)&v5 viewDidAppear:appearCopy];
 }
 
 - (NSArray)recipients
 {
   if (self->_composeRecipientView)
   {
-    v2 = [(CNComposeRecipientTextView *)self->_composeRecipientView recipients];
+    recipients = [(CNComposeRecipientTextView *)self->_composeRecipientView recipients];
   }
 
   else
   {
-    v2 = [(NSArray *)self->_recipients copy];
+    recipients = [(NSArray *)self->_recipients copy];
   }
 
-  return v2;
+  return recipients;
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v4 = [a3 copy];
+  v4 = [recipients copy];
   recipients = self->_recipients;
   self->_recipients = v4;
 
@@ -517,7 +517,7 @@ LABEL_16:
   [(NSMutableDictionary *)self->_recipientAddressesToRecipients removeAllObjects];
   [(NSOperationQueue *)self->_availabilityQueue cancelAllOperations];
   [(EKEventAttendeePicker *)self _requestAvailabilityForRecipients:self->_recipients];
-  v8 = [(CNComposeRecipientTextView *)self->_composeRecipientView uncommentedAddresses];
+  uncommentedAddresses = [(CNComposeRecipientTextView *)self->_composeRecipientView uncommentedAddresses];
   v9 = kEKUILogHandle;
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -530,14 +530,14 @@ LABEL_16:
     v23 = 2112;
     v24 = fetchContext;
     v25 = 2112;
-    v26 = v8;
+    v26 = uncommentedAddresses;
     _os_log_impl(&dword_1D3400000, v10, OS_LOG_TYPE_DEBUG, "[%@] Setting fetch context [%@] otherAddressesAlreadyChosen to [%@]", buf, 0x20u);
   }
 
-  v14 = [(EKEvent *)self->_event attendees];
-  v15 = [v14 CalMap:&__block_literal_global_58];
+  attendees = [(EKEvent *)self->_event attendees];
+  v15 = [attendees CalMap:&__block_literal_global_58];
 
-  v16 = [v8 arrayByAddingObjectsFromArray:v15];
+  v16 = [uncommentedAddresses arrayByAddingObjectsFromArray:v15];
   [(CNAutocompleteFetchContext *)self->_fetchContext setOtherAddressesAlreadyChosen:v16];
 
   [(EKEventAttendeePicker *)self updateMaxAttendeeInfoText];
@@ -552,10 +552,10 @@ id __52__EKEventAttendeePicker__setRecipientsOnComposeView__block_invoke(uint64_
   return v3;
 }
 
-- (id)_lookUpRecipientForAddress:(id)a3
+- (id)_lookUpRecipientForAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_recipientAddressesToRecipients objectForKey:v4];
+  addressCopy = address;
+  v5 = [(NSMutableDictionary *)self->_recipientAddressesToRecipients objectForKey:addressCopy];
   if (!v5)
   {
     v6 = EKUtils_AdjustedAttendeeAddress();
@@ -565,13 +565,13 @@ id __52__EKEventAttendeePicker__setRecipientsOnComposeView__block_invoke(uint64_
   return v5;
 }
 
-- (void)_requestAvailabilityForRecipients:(id)a3
+- (void)_requestAvailabilityForRecipients:(id)recipients
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recipientsCopy = recipients;
   if ([(EKEventAttendeePicker *)self showAvailability])
   {
-    if (v4 && [v4 count])
+    if (recipientsCopy && [recipientsCopy count])
     {
       suppressAvailabilityRequests = self->_suppressAvailabilityRequests;
       v6 = kEKUILogHandle;
@@ -597,33 +597,33 @@ LABEL_11:
           _os_log_impl(&dword_1D3400000, v6, OS_LOG_TYPE_DEBUG, "Preparing to request availability for recipients.", buf, 2u);
         }
 
-        v13 = [v4 count];
+        v13 = [recipientsCopy count];
         v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v13];
         if (([(EKEvent *)self->_event isStartDateDirty]& 1) != 0)
         {
-          v15 = 1;
+          isEndDateDirty = 1;
         }
 
         else
         {
-          v15 = [(EKEvent *)self->_event isEndDateDirty];
+          isEndDateDirty = [(EKEvent *)self->_event isEndDateDirty];
         }
 
-        v16 = [(EKEvent *)self->_event calendar];
-        v17 = [v16 source];
-        v18 = [v17 constraints];
-        v19 = [v18 supportsIgnoringEventsInAvailabilityRequests];
+        calendar = [(EKEvent *)self->_event calendar];
+        source = [calendar source];
+        constraints = [source constraints];
+        supportsIgnoringEventsInAvailabilityRequests = [constraints supportsIgnoringEventsInAvailabilityRequests];
 
         v43[0] = MEMORY[0x1E69E9820];
         v43[1] = 3221225472;
         v43[2] = __59__EKEventAttendeePicker__requestAvailabilityForRecipients___block_invoke;
         v43[3] = &unk_1E84427A0;
         v43[4] = self;
-        v45 = v15;
-        v46 = v19;
+        v45 = isEndDateDirty;
+        v46 = supportsIgnoringEventsInAvailabilityRequests;
         v20 = v14;
         v44 = v20;
-        [v4 enumerateObjectsUsingBlock:v43];
+        [recipientsCopy enumerateObjectsUsingBlock:v43];
         [(EKEventAttendeePicker *)self _invalidateAtomPresentationOptionsForAllRecipients];
         if ([v20 count])
         {
@@ -636,31 +636,31 @@ LABEL_11:
           overriddenEventStartDate = self->_overriddenEventStartDate;
           if (overriddenEventStartDate)
           {
-            v23 = overriddenEventStartDate;
+            startDate = overriddenEventStartDate;
           }
 
           else
           {
-            v23 = [(EKEvent *)self->_event startDate];
+            startDate = [(EKEvent *)self->_event startDate];
           }
 
-          v25 = v23;
+          v25 = startDate;
           overriddenEventEndDate = self->_overriddenEventEndDate;
           if (overriddenEventEndDate)
           {
-            v27 = overriddenEventEndDate;
+            endDateUnadjustedForLegacyClients = overriddenEventEndDate;
           }
 
           else
           {
-            v27 = [(EKEvent *)self->_event endDateUnadjustedForLegacyClients];
+            endDateUnadjustedForLegacyClients = [(EKEvent *)self->_event endDateUnadjustedForLegacyClients];
           }
 
-          v28 = v27;
+          v28 = endDateUnadjustedForLegacyClients;
           v29 = objc_alloc(MEMORY[0x1E6966AE0]);
-          v30 = [(EKEvent *)self->_event calendar];
-          v31 = [v30 source];
-          v32 = [v29 initWithSource:v31 startDate:v25 endDate:v28 ignoredEvent:self->_event addresses:v20 resultsBlock:v21];
+          calendar2 = [(EKEvent *)self->_event calendar];
+          source2 = [calendar2 source];
+          v32 = [v29 initWithSource:source2 startDate:v25 endDate:v28 ignoredEvent:self->_event addresses:v20 resultsBlock:v21];
 
           objc_initWeak(&location, v32);
           v34 = MEMORY[0x1E69E9820];
@@ -669,13 +669,13 @@ LABEL_11:
           v37 = &unk_1E8440DE0;
           objc_copyWeak(&v40, &location);
           v38 = v20;
-          v39 = self;
+          selfCopy = self;
           [(EKEventAttendeePicker *)v32 setCompletionBlock:&v34];
           v33 = kEKUILogHandle;
           if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v48 = v32;
+            selfCopy2 = v32;
             _os_log_impl(&dword_1D3400000, v33, OS_LOG_TYPE_DEBUG, "Adding availability operation: [%@]", buf, 0xCu);
           }
 
@@ -716,7 +716,7 @@ LABEL_11:
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v48 = self;
+      selfCopy2 = self;
       v8 = "[%@] says not to show availability.  Will not look up availability for recipients.";
       v9 = v10;
       v11 = 12;
@@ -978,48 +978,48 @@ LABEL_8:
   return [*(a1 + 48) _invalidateAtomPresentationOptionsForAllRecipients];
 }
 
-+ (id)_addressForRecipient:(id)a3
++ (id)_addressForRecipient:(id)recipient
 {
-  v3 = a3;
-  v4 = objc_getAssociatedObject(v3, &kEKUI_CNComposeReciepentParticipantKey_0);
+  recipientCopy = recipient;
+  v4 = objc_getAssociatedObject(recipientCopy, &kEKUI_CNComposeReciepentParticipantKey_0);
   v5 = v4;
   if (v4)
   {
     v6 = [v4 URL];
-    v7 = [v6 absoluteString];
+    absoluteString = [v6 absoluteString];
 
     goto LABEL_8;
   }
 
-  v7 = [v3 normalizedAddress];
-  if (v7)
+  absoluteString = [recipientCopy normalizedAddress];
+  if (absoluteString)
   {
-    if (![v3 kind] || objc_msgSend(v3, "kind") == 1)
+    if (![recipientCopy kind] || objc_msgSend(recipientCopy, "kind") == 1)
     {
 
 LABEL_7:
-      v7 = [v3 normalizedAddress];
+      absoluteString = [recipientCopy normalizedAddress];
       goto LABEL_8;
     }
 
-    v9 = [v3 kind];
+    kind = [recipientCopy kind];
 
-    if (v9 == 4)
+    if (kind == 4)
     {
       goto LABEL_7;
     }
 
-    v7 = 0;
+    absoluteString = 0;
   }
 
 LABEL_8:
 
-  return v7;
+  return absoluteString;
 }
 
-+ (BOOL)_participantHasResponded:(id)a3
++ (BOOL)_participantHasResponded:(id)responded
 {
-  v3 = objc_getAssociatedObject(a3, &kEKUI_CNComposeReciepentParticipantKey_0);
+  v3 = objc_getAssociatedObject(responded, &kEKUI_CNComposeReciepentParticipantKey_0);
   v4 = v3;
   if (v3)
   {
@@ -1034,10 +1034,10 @@ LABEL_8:
   return HasResponded;
 }
 
-- (void)_setAtomPresentationOption:(unint64_t)a3 forRecipient:(id)a4
+- (void)_setAtomPresentationOption:(unint64_t)option forRecipient:(id)recipient
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  recipientCopy = recipient;
   atomPresentationOptionsByRecipient = self->_atomPresentationOptionsByRecipient;
   if (!atomPresentationOptionsByRecipient)
   {
@@ -1048,16 +1048,16 @@ LABEL_8:
     atomPresentationOptionsByRecipient = self->_atomPresentationOptionsByRecipient;
   }
 
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [(NSMutableDictionary *)atomPresentationOptionsByRecipient setObject:v10 forKey:v6];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:option];
+  [(NSMutableDictionary *)atomPresentationOptionsByRecipient setObject:v10 forKey:recipientCopy];
 
   v11 = kEKUILogHandle;
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
   {
     v12 = v11;
-    v13 = [EKUIMailUtilities atomPresentationOptionsAsString:a3];
+    v13 = [EKUIMailUtilities atomPresentationOptionsAsString:option];
     v14 = 138412546;
-    v15 = v6;
+    v15 = recipientCopy;
     v16 = 2112;
     v17 = v13;
     _os_log_impl(&dword_1D3400000, v12, OS_LOG_TYPE_DEBUG, "Atom presentation of recipient [%@] set to [%@]", &v14, 0x16u);
@@ -1066,8 +1066,8 @@ LABEL_8:
 
 - (void)_copyRecipientsFromComposeView
 {
-  v5 = [(CNComposeRecipientTextView *)self->_composeRecipientView recipients];
-  v3 = [v5 copy];
+  recipients = [(CNComposeRecipientTextView *)self->_composeRecipientView recipients];
+  v3 = [recipients copy];
   recipients = self->_recipients;
   self->_recipients = v3;
 }
@@ -1077,16 +1077,16 @@ LABEL_8:
   searchResultsView = self->_searchResultsView;
   if (!searchResultsView)
   {
-    v4 = [(EKEventAttendeePicker *)self view];
-    [v4 bounds];
+    view = [(EKEventAttendeePicker *)self view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
 
     [getCNComposeRecipientTextViewClass() preferredHeight];
     v10 = v9;
-    v11 = [(CNAutocompleteResultsTableViewController *)self->_autocompleteTableViewController tableView];
+    tableView = [(CNAutocompleteResultsTableViewController *)self->_autocompleteTableViewController tableView];
     v12 = self->_searchResultsView;
-    self->_searchResultsView = v11;
+    self->_searchResultsView = tableView;
 
     [(UITableView *)self->_searchResultsView setFrame:0.0, v10, v6, v8 - v10];
     [(UITableView *)self->_searchResultsView setAutoresizingMask:18];
@@ -1097,9 +1097,9 @@ LABEL_8:
   return searchResultsView;
 }
 
-- (void)_hideSearchResultsViewAndCancelOutstandingSearches:(BOOL)a3
+- (void)_hideSearchResultsViewAndCancelOutstandingSearches:(BOOL)searches
 {
-  v3 = a3;
+  searchesCopy = searches;
   v14 = *MEMORY[0x1E69E9840];
   v5 = kEKUILogHandle;
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
@@ -1119,10 +1119,10 @@ LABEL_8:
   objc_sync_exit(v9);
 
   [(CNAutocompleteResultsTableViewController *)self->_autocompleteTableViewController invalidatePreferredRecipients];
-  if (v3 && self->_lastSearchId)
+  if (searchesCopy && self->_lastSearchId)
   {
-    v10 = [(EKEventAttendeePicker *)self _searchManager];
-    [v10 cancelTaskWithID:self->_lastSearchId];
+    _searchManager = [(EKEventAttendeePicker *)self _searchManager];
+    [_searchManager cancelTaskWithID:self->_lastSearchId];
 
     lastSearchId = self->_lastSearchId;
     self->_lastSearchId = 0;
@@ -1148,13 +1148,13 @@ LABEL_8:
   }
 
   self->_showingSearchField = 1;
-  v7 = [(EKEventAttendeePicker *)self _searchResultsView];
-  v8 = [v7 superview];
+  _searchResultsView = [(EKEventAttendeePicker *)self _searchResultsView];
+  superview = [_searchResultsView superview];
 
-  if (!v8)
+  if (!superview)
   {
-    v9 = [(EKEventAttendeePicker *)self view];
-    [v9 addSubview:v7];
+    view = [(EKEventAttendeePicker *)self view];
+    [view addSubview:_searchResultsView];
   }
 
   [(CNComposeRecipientTextView *)self->_composeRecipientView setSeparatorHidden:1];
@@ -1163,8 +1163,8 @@ LABEL_8:
 
 - (double)_maxScrollerHeight
 {
-  v3 = [(EKEventAttendeePicker *)self view];
-  [v3 bounds];
+  view = [(EKEventAttendeePicker *)self view];
+  [view bounds];
   Height = CGRectGetHeight(v8);
 
   if (![(UIViewController *)self isPresentedInsidePopover])
@@ -1182,24 +1182,24 @@ LABEL_8:
 
 - (BOOL)_zeroKeyworkSearchEnabled
 {
-  v3 = [(EKEventAttendeePicker *)self recipients];
-  if ([v3 count])
+  recipients = [(EKEventAttendeePicker *)self recipients];
+  if ([recipients count])
   {
     IsCompact = 1;
   }
 
   else
   {
-    v5 = [(EKEventAttendeePicker *)self view];
-    if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy(v5))
+    view = [(EKEventAttendeePicker *)self view];
+    if (EKUICurrentWidthSizeClassIsCompactInViewHierarchy(view))
     {
       IsCompact = 1;
     }
 
     else
     {
-      v6 = [(EKEventAttendeePicker *)self view];
-      IsCompact = EKUICurrentHeightSizeClassIsCompact(v6);
+      view2 = [(EKEventAttendeePicker *)self view];
+      IsCompact = EKUICurrentHeightSizeClassIsCompact(view2);
     }
   }
 
@@ -1209,8 +1209,8 @@ LABEL_8:
 - (void)updateMaxAttendeeInfoText
 {
   maxNumberOfAttendees = self->_maxNumberOfAttendees;
-  v4 = [(CNComposeRecipientTextView *)self->_composeRecipientView recipients];
-  v5 = [v4 count];
+  recipients = [(CNComposeRecipientTextView *)self->_composeRecipientView recipients];
+  v5 = [recipients count];
 
   if (maxNumberOfAttendees < 1 || maxNumberOfAttendees * 0.9 >= v5)
   {
@@ -1225,8 +1225,8 @@ LABEL_8:
     v10 = [v6 localizedStringForKey:@"(%d / %d) invitees" value:&stru_1F4EF6790 table:0];
 
     v7 = self->_composeRecipientView;
-    v8 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v10, v5, maxNumberOfAttendees];
-    [(CNComposeRecipientTextView *)v7 setComposeFieldInfoText:v8];
+    maxNumberOfAttendees = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v10, v5, maxNumberOfAttendees];
+    [(CNComposeRecipientTextView *)v7 setComposeFieldInfoText:maxNumberOfAttendees];
   }
 }
 
@@ -1360,19 +1360,19 @@ LABEL_7:
   return v8;
 }
 
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  dCopy = d;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__EKEventAttendeePicker_consumeAutocompleteSearchResults_taskID___block_invoke;
   block[3] = &unk_1E843EC38;
-  v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = dCopy;
+  selfCopy = self;
+  v13 = resultsCopy;
+  v8 = resultsCopy;
+  v9 = dCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1422,19 +1422,19 @@ void __65__EKEventAttendeePicker_consumeAutocompleteSearchResults_taskID___block
   }
 }
 
-- (void)consumeCorecipientSearchResults:(id)a3 taskID:(id)a4
+- (void)consumeCorecipientSearchResults:(id)results taskID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  dCopy = d;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__EKEventAttendeePicker_consumeCorecipientSearchResults_taskID___block_invoke;
   block[3] = &unk_1E843EC38;
-  v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = dCopy;
+  selfCopy = self;
+  v13 = resultsCopy;
+  v8 = resultsCopy;
+  v9 = dCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1568,16 +1568,16 @@ _BYTE *__57__EKEventAttendeePicker_finishedSearchingForCorecipients__block_invok
   return result;
 }
 
-- (void)finishedTaskWithID:(id)a3
+- (void)finishedTaskWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke;
   v6[3] = &unk_1E843EFB8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = dCopy;
+  selfCopy = self;
+  v5 = dCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -1616,10 +1616,10 @@ void __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke(uint64_t a1)
   [(CNAutocompleteResultsTableViewController *)self->_autocompleteTableViewController setRecipients:self->_searchResults];
 }
 
-- (void)searchWithText:(id)a3
+- (void)searchWithText:(id)text
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   v5 = kEKUILogHandle;
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -1630,7 +1630,7 @@ void __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke(uint64_t a1)
     v15 = 138412802;
     v16 = v8;
     v17 = 2112;
-    v18 = v4;
+    v18 = textCopy;
     v19 = 2112;
     v20 = fetchContext;
     _os_log_impl(&dword_1D3400000, v6, OS_LOG_TYPE_DEBUG, "[%@] Beginning text search with text [%@] context [%@]", &v15, 0x20u);
@@ -1638,8 +1638,8 @@ void __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke(uint64_t a1)
 
   if (self->_lastSearchId)
   {
-    v10 = [(EKEventAttendeePicker *)self _searchManager];
-    [v10 cancelTaskWithID:self->_lastSearchId];
+    _searchManager = [(EKEventAttendeePicker *)self _searchManager];
+    [_searchManager cancelTaskWithID:self->_lastSearchId];
   }
 
   v11 = self->_searchResults;
@@ -1647,8 +1647,8 @@ void __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke(uint64_t a1)
   [(NSMutableArray *)self->_searchResults removeAllObjects];
   objc_sync_exit(v11);
 
-  v12 = [(EKEventAttendeePicker *)self _searchManager];
-  v13 = [v12 searchForText:v4 withAutocompleteFetchContext:self->_fetchContext consumer:self];
+  _searchManager2 = [(EKEventAttendeePicker *)self _searchManager];
+  v13 = [_searchManager2 searchForText:textCopy withAutocompleteFetchContext:self->_fetchContext consumer:self];
   lastSearchId = self->_lastSearchId;
   self->_lastSearchId = v13;
 }
@@ -1672,8 +1672,8 @@ void __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke(uint64_t a1)
 
   if (self->_lastSearchId)
   {
-    v8 = [(EKEventAttendeePicker *)self _searchManager];
-    [v8 cancelTaskWithID:self->_lastSearchId];
+    _searchManager = [(EKEventAttendeePicker *)self _searchManager];
+    [_searchManager cancelTaskWithID:self->_lastSearchId];
 
     lastSearchId = self->_lastSearchId;
     self->_lastSearchId = 0;
@@ -1686,8 +1686,8 @@ void __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke(uint64_t a1)
 
   if ([(EKEventAttendeePicker *)self _zeroKeyworkSearchEnabled])
   {
-    v11 = [(EKEventAttendeePicker *)self _searchManager];
-    v12 = [v11 searchForCorecipientsWithAutocompleteFetchContext:self->_fetchContext consumer:self];
+    _searchManager2 = [(EKEventAttendeePicker *)self _searchManager];
+    v12 = [_searchManager2 searchForCorecipientsWithAutocompleteFetchContext:self->_fetchContext consumer:self];
     v13 = self->_lastSearchId;
     self->_lastSearchId = v12;
   }
@@ -1698,15 +1698,15 @@ void __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke(uint64_t a1)
   }
 }
 
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  recipientCopy = recipient;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a4;
-  v7 = [v5 arrayWithObjects:&v8 count:1];
+  recipientCopy2 = recipient;
+  v7 = [v5 arrayWithObjects:&recipientCopy count:1];
 
-  [(EKEventAttendeePicker *)self _requestAvailabilityForRecipients:v7, v8, v9];
+  [(EKEventAttendeePicker *)self _requestAvailabilityForRecipients:v7, recipientCopy, v9];
   [(EKEventAttendeePicker *)self _updateFetchContextChosenAddresses];
   [(EKEventAttendeePicker *)self scrollComposeViewToEnd];
   [(EKEventAttendeePicker *)self updateMaxAttendeeInfoText];
@@ -1719,9 +1719,9 @@ void __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke(uint64_t a1)
   self->_hasChanges = 1;
 }
 
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient
 {
-  [a3 removeRecipient:a4];
+  [view removeRecipient:recipient];
   [(EKEventAttendeePicker *)self _updateFetchContextChosenAddresses];
   [(EKEventAttendeePicker *)self updateMaxAttendeeInfoText];
   [(EKEventAttendeePicker *)self _copyRecipientsFromComposeView];
@@ -1729,13 +1729,13 @@ void __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke(uint64_t a1)
   [(EKEventAttendeePicker *)self _invalidateAtomPresentationOptionsForAllRecipients];
 }
 
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 clearText];
+  addressCopy = address;
+  viewCopy = view;
+  [viewCopy clearText];
   [(EKEventAttendeePicker *)self _hideSearchResultsViewAndCancelOutstandingSearches:1];
-  [v7 addAddress:v6];
+  [viewCopy addAddress:addressCopy];
 }
 
 - (void)_adjustLayoutOfSubviews
@@ -1761,21 +1761,21 @@ void __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke(uint64_t a1)
     v8 = v5;
   }
 
-  v9 = [(EKEventAttendeePicker *)self view];
-  [v9 safeAreaInsets];
+  view = [(EKEventAttendeePicker *)self view];
+  [view safeAreaInsets];
   v11 = v8 + v10;
 
   [(UIScrollView *)self->_recipientScrollView frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(EKEventAttendeePicker *)self _searchResultsView];
-  [v18 setAlpha:0.0];
-  v19 = [v18 superview];
+  _searchResultsView = [(EKEventAttendeePicker *)self _searchResultsView];
+  [_searchResultsView setAlpha:0.0];
+  superview = [_searchResultsView superview];
 
-  if (v19)
+  if (superview)
   {
-    [v18 frame];
+    [_searchResultsView frame];
     MaxY = CGRectGetMaxY(v35);
     v36.origin.x = v13;
     v36.origin.y = v15;
@@ -1783,8 +1783,8 @@ void __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke(uint64_t a1)
     v36.size.height = v11;
     if (MaxY <= CGRectGetMaxY(v36))
     {
-      v21 = [(EKEventAttendeePicker *)self view];
-      [v21 frame];
+      view2 = [(EKEventAttendeePicker *)self view];
+      [view2 frame];
       MaxY = v22;
     }
 
@@ -1807,7 +1807,7 @@ void __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke(uint64_t a1)
     v40.origin.y = v15;
     v40.size.width = v17;
     v40.size.height = v11;
-    [v18 setFrame:{MinX, v24, Width, MaxY - CGRectGetMaxY(v40)}];
+    [_searchResultsView setFrame:{MinX, v24, Width, MaxY - CGRectGetMaxY(v40)}];
   }
 
   v26 = MEMORY[0x1E69DD250];
@@ -1820,8 +1820,8 @@ void __44__EKEventAttendeePicker_finishedTaskWithID___block_invoke(uint64_t a1)
   v32 = v17;
   v33 = v11;
   v28[4] = self;
-  v29 = v18;
-  v27 = v18;
+  v29 = _searchResultsView;
+  v27 = _searchResultsView;
   [v26 animateWithDuration:v28 animations:0.2];
 }
 
@@ -1840,17 +1840,17 @@ uint64_t __48__EKEventAttendeePicker__adjustLayoutOfSubviews__block_invoke(uint6
   return [v9 setAlpha:1.0];
 }
 
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   [(CNComposeRecipientTextView *)self->_composeRecipientView bounds];
   v7 = CGRectGetHeight(v16);
   v9 = 3221225472;
   v8 = MEMORY[0x1E69E9820];
   v10 = __57__EKEventAttendeePicker_composeHeaderView_didChangeSize___block_invoke;
   v11 = &unk_1E8442818;
-  v12 = self;
+  selfCopy = self;
   v13 = width;
   v14 = height;
   v15 = height > v7;
@@ -1873,12 +1873,12 @@ uint64_t __57__EKEventAttendeePicker_composeHeaderView_didChangeSize___block_inv
   return result;
 }
 
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4
+- (void)composeRecipientView:(id)view textDidChange:(id)change
 {
-  v5 = a4;
-  if ([v5 length])
+  changeCopy = change;
+  if ([changeCopy length])
   {
-    [(EKEventAttendeePicker *)self searchWithText:v5];
+    [(EKEventAttendeePicker *)self searchWithText:changeCopy];
   }
 
   else
@@ -1897,25 +1897,25 @@ uint64_t __57__EKEventAttendeePicker_composeHeaderView_didChangeSize___block_inv
 
 - (BOOL)showAvailability
 {
-  v2 = [(EKEvent *)self->_event calendar];
-  v3 = [v2 source];
-  v4 = [v3 constraints];
-  v5 = [v4 supportsAvailabilityRequests];
+  calendar = [(EKEvent *)self->_event calendar];
+  source = [calendar source];
+  constraints = [source constraints];
+  supportsAvailabilityRequests = [constraints supportsAvailabilityRequests];
 
-  return v5;
+  return supportsAvailabilityRequests;
 }
 
-- (void)composeRecipientViewRequestAddRecipient:(id)a3
+- (void)composeRecipientViewRequestAddRecipient:(id)recipient
 {
   [(EKEventAttendeePicker *)self _CNContactPickerViewController];
   v14 = objc_opt_new();
   [v14 setDelegate:self];
   [v14 setModalPresentationStyle:18];
-  v4 = [(EKEvent *)self->_event calendar];
-  v5 = [v4 constraints];
-  v6 = [v5 supportsPhoneNumbers];
+  calendar = [(EKEvent *)self->_event calendar];
+  constraints = [calendar constraints];
+  supportsPhoneNumbers = [constraints supportsPhoneNumbers];
 
-  if (v6)
+  if (supportsPhoneNumbers)
   {
     v7 = @"emailAddresses.@count > 0 || phoneNumbers.@count > 0";
   }
@@ -1925,7 +1925,7 @@ uint64_t __57__EKEventAttendeePicker_composeHeaderView_didChangeSize___block_inv
     v7 = @"emailAddresses.@count > 0";
   }
 
-  if (v6)
+  if (supportsPhoneNumbers)
   {
     v8 = @"(emailAddresses.@count == 1) || (emailAddresses.@count == 0 && phoneNumbers.@count == 1)";
   }
@@ -1935,7 +1935,7 @@ uint64_t __57__EKEventAttendeePicker_composeHeaderView_didChangeSize___block_inv
     v8 = @"emailAddresses.@count == 1";
   }
 
-  if (v6)
+  if (supportsPhoneNumbers)
   {
     v9 = @"(key == 'emailAddresses') || (key == 'phoneNumbers')";
   }
@@ -1954,44 +1954,44 @@ uint64_t __57__EKEventAttendeePicker_composeHeaderView_didChangeSize___block_inv
   v12 = [MEMORY[0x1E696AE18] predicateWithFormat:v9];
   [v14 setPredicateForSelectionOfProperty:v12];
 
-  v13 = [(EKEventAttendeePicker *)self navigationController];
-  [v13 presentModalViewController:v14 withTransition:8];
+  navigationController = [(EKEventAttendeePicker *)self navigationController];
+  [navigationController presentModalViewController:v14 withTransition:8];
 }
 
-- (void)composeRecipientViewDidFinishPickingRecipient:(id)a3
+- (void)composeRecipientViewDidFinishPickingRecipient:(id)recipient
 {
-  v4 = [(EKEventAttendeePicker *)self navigationController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(EKEventAttendeePicker *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 
   composeRecipientView = self->_composeRecipientView;
 
   [(CNComposeRecipientTextView *)composeRecipientView becomeFirstResponder];
 }
 
-- (id)composeRecipientView:(id)a3 composeRecipientForAddress:(id)a4
+- (id)composeRecipientView:(id)view composeRecipientForAddress:(id)address
 {
-  v4 = a4;
-  v5 = [objc_alloc(getCNComposeRecipientClass_1()) initWithContact:0 address:v4 kind:{objc_msgSend(v4, "cal_isPhoneNumber")}];
+  addressCopy = address;
+  v5 = [objc_alloc(getCNComposeRecipientClass_1()) initWithContact:0 address:addressCopy kind:{objc_msgSend(addressCopy, "cal_isPhoneNumber")}];
 
   return v5;
 }
 
-- (unint64_t)presentationOptionsForRecipient:(id)a3
+- (unint64_t)presentationOptionsForRecipient:(id)recipient
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_atomPresentationOptionsByRecipient objectForKey:v4];
+  recipientCopy = recipient;
+  unsignedIntegerValue = [(NSMutableDictionary *)self->_atomPresentationOptionsByRecipient objectForKey:recipientCopy];
 
-  if (v5)
+  if (unsignedIntegerValue)
   {
-    v6 = [(NSMutableDictionary *)self->_atomPresentationOptionsByRecipient objectForKey:v4];
-    v5 = [v6 unsignedIntegerValue];
+    v6 = [(NSMutableDictionary *)self->_atomPresentationOptionsByRecipient objectForKey:recipientCopy];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   maxNumberOfAttendees = self->_maxNumberOfAttendees;
-  if ([(NSArray *)self->_recipients count]> maxNumberOfAttendees && [(NSArray *)self->_recipients indexOfObject:v4 inRange:maxNumberOfAttendees, [(NSArray *)self->_recipients count]- maxNumberOfAttendees]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSArray *)self->_recipients count]> maxNumberOfAttendees && [(NSArray *)self->_recipients indexOfObject:recipientCopy inRange:maxNumberOfAttendees, [(NSArray *)self->_recipients count]- maxNumberOfAttendees]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = 1;
+    unsignedIntegerValue = 1;
     goto LABEL_14;
   }
 
@@ -2000,8 +2000,8 @@ uint64_t __57__EKEventAttendeePicker_composeHeaderView_didChangeSize___block_inv
   if (WeakRetained)
   {
     v9 = objc_loadWeakRetained(&self->_addressValidationDelegate);
-    v10 = [v4 normalizedAddress];
-    v11 = [v9 eventAttendeePicker:self getValidationStatusForAddress:v10];
+    normalizedAddress = [recipientCopy normalizedAddress];
+    v11 = [v9 eventAttendeePicker:self getValidationStatusForAddress:normalizedAddress];
 
     switch(v11)
     {
@@ -2011,13 +2011,13 @@ uint64_t __57__EKEventAttendeePicker_composeHeaderView_didChangeSize___block_inv
         break;
       case 1:
 LABEL_9:
-        v5 |= 8uLL;
+        unsignedIntegerValue |= 8uLL;
         break;
       default:
-        v5 |= 8uLL;
+        unsignedIntegerValue |= 8uLL;
         v12 = objc_loadWeakRetained(&self->_addressValidationDelegate);
-        v13 = [v4 normalizedAddress];
-        [v12 eventAttendeePicker:self cacheValidationStatus:1 forAddress:v13];
+        normalizedAddress2 = [recipientCopy normalizedAddress];
+        [v12 eventAttendeePicker:self cacheValidationStatus:1 forAddress:normalizedAddress2];
 
         break;
     }
@@ -2027,90 +2027,90 @@ LABEL_9:
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
   {
     v15 = v14;
-    v16 = [EKUIMailUtilities atomPresentationOptionsAsString:v5];
+    v16 = [EKUIMailUtilities atomPresentationOptionsAsString:unsignedIntegerValue];
     v18 = 138412546;
     v19 = v16;
     v20 = 2112;
-    v21 = v4;
+    v21 = recipientCopy;
     _os_log_impl(&dword_1D3400000, v15, OS_LOG_TYPE_DEBUG, "Returning presentation options [%@] for recipient: [%@]", &v18, 0x16u);
   }
 
 LABEL_14:
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (void)autocompleteResultsController:(id)a3 didRequestInfoAboutRecipient:(id)a4
+- (void)autocompleteResultsController:(id)controller didRequestInfoAboutRecipient:(id)recipient
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 contact];
-  if (!v6)
+  recipientCopy = recipient;
+  contact = [recipientCopy contact];
+  if (!contact)
   {
     v7 = MEMORY[0x1E6993018];
-    v8 = [v5 displayString];
-    v9 = [v7 personNameComponentsFromString:v8];
+    displayString = [recipientCopy displayString];
+    v9 = [v7 personNameComponentsFromString:displayString];
 
-    v6 = objc_alloc_init(MEMORY[0x1E695CF18]);
-    v10 = [v9 familyName];
-    [v6 setFamilyName:v10];
+    contact = objc_alloc_init(MEMORY[0x1E695CF18]);
+    familyName = [v9 familyName];
+    [contact setFamilyName:familyName];
 
-    v11 = [v9 givenName];
-    [v6 setGivenName:v11];
+    givenName = [v9 givenName];
+    [contact setGivenName:givenName];
 
     v12 = MEMORY[0x1E695CEE0];
     v13 = *MEMORY[0x1E695CB68];
-    v14 = [v5 address];
-    v15 = [v12 labeledValueWithLabel:v13 value:v14];
+    address = [recipientCopy address];
+    v15 = [v12 labeledValueWithLabel:v13 value:address];
     v30[0] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
-    [v6 setEmailAddresses:v16];
+    [contact setEmailAddresses:v16];
   }
 
   v17 = objc_alloc_init(MEMORY[0x1E695CE28]);
   [v17 setIncludeIncludeManagedAppleIDs:1];
   [v17 setIncludeSuggestedContacts:1];
   v18 = [objc_alloc(MEMORY[0x1E695CE18]) initWithConfiguration:v17];
-  v19 = [(objc_class *)[(EKEventAttendeePicker *)self _CNContactViewController] viewControllerForUnknownContact:v6];
+  v19 = [(objc_class *)[(EKEventAttendeePicker *)self _CNContactViewController] viewControllerForUnknownContact:contact];
   [v19 setContactStore:v18];
   [v19 setHidesBottomBarWhenPushed:1];
   [v19 setModalPresentationStyle:3];
   [v19 setDisplayMode:1];
   [v19 setAllowsEditing:0];
-  [v5 sourceType];
-  v20 = [v5 autocompleteResult];
-  v21 = [v20 recentsIdentifier];
+  [recipientCopy sourceType];
+  autocompleteResult = [recipientCopy autocompleteResult];
+  recentsIdentifier = [autocompleteResult recentsIdentifier];
 
-  if (v21)
+  if (recentsIdentifier)
   {
     v22 = EKWeakLinkClass();
     v23 = EKWeakLinkStringConstant();
     v24 = [v22 alloc];
-    v25 = [v5 autocompleteResult];
-    v26 = [v25 recentsIdentifier];
-    v27 = [v24 initWithRecentContactID:v26 domain:v23];
+    autocompleteResult2 = [recipientCopy autocompleteResult];
+    recentsIdentifier2 = [autocompleteResult2 recentsIdentifier];
+    v27 = [v24 initWithRecentContactID:recentsIdentifier2 domain:v23];
     [v19 setRecentsData:v27];
 
     [v19 setDelegate:self];
   }
 
   displayedRecipient = self->_displayedRecipient;
-  self->_displayedRecipient = v5;
+  self->_displayedRecipient = recipientCopy;
 
-  v29 = [(EKEventAttendeePicker *)self navigationController];
-  [v29 pushViewController:v19 animated:1];
+  navigationController = [(EKEventAttendeePicker *)self navigationController];
+  [navigationController pushViewController:v19 animated:1];
 }
 
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index
 {
-  if (a4)
+  if (recipient)
   {
     composeRecipientView = self->_composeRecipientView;
-    v8 = a4;
+    recipientCopy = recipient;
     [(CNComposeRecipientTextView *)composeRecipientView clearText];
-    [(CNComposeRecipientTextView *)self->_composeRecipientView addRecipient:v8];
-    v9 = [(EKEventAttendeePicker *)self _searchManager];
-    [v9 didSelectRecipient:v8 atIndex:a5];
+    [(CNComposeRecipientTextView *)self->_composeRecipientView addRecipient:recipientCopy];
+    _searchManager = [(EKEventAttendeePicker *)self _searchManager];
+    [_searchManager didSelectRecipient:recipientCopy atIndex:index];
 
     [(EKEventAttendeePicker *)self _hideSearchResultsViewAndCancelOutstandingSearches:1];
     [(EKEventAttendeePicker *)self _updateFetchContextChosenAddresses];
@@ -2121,67 +2121,67 @@ LABEL_14:
 
 - (void)_updateFetchContextChosenAddresses
 {
-  v3 = [(CNComposeRecipientTextView *)self->_composeRecipientView uncommentedAddresses];
-  [(CNAutocompleteFetchContext *)self->_fetchContext setOtherAddressesAlreadyChosen:v3];
+  uncommentedAddresses = [(CNComposeRecipientTextView *)self->_composeRecipientView uncommentedAddresses];
+  [(CNAutocompleteFetchContext *)self->_fetchContext setOtherAddressesAlreadyChosen:uncommentedAddresses];
 }
 
-- (void)contactViewControllerDidExecuteClearRecentsDataAction:(id)a3
+- (void)contactViewControllerDidExecuteClearRecentsDataAction:(id)action
 {
   [(CNAutocompleteResultsTableViewController *)self->_autocompleteTableViewController invalidateSearchResultRecipient:self->_displayedRecipient];
   displayedRecipient = self->_displayedRecipient;
   self->_displayedRecipient = 0;
 
-  v6 = [(EKEventAttendeePicker *)self navigationController];
-  v5 = [v6 popViewControllerAnimated:1];
+  navigationController = [(EKEventAttendeePicker *)self navigationController];
+  v5 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v19 = a4;
-  v5 = [v19 emailAddresses];
-  v6 = [v5 count];
+  contactCopy = contact;
+  emailAddresses = [contactCopy emailAddresses];
+  v6 = [emailAddresses count];
 
   if (v6 == 1)
   {
-    v7 = [v19 emailAddresses];
-    v8 = [v7 firstObject];
+    emailAddresses2 = [contactCopy emailAddresses];
+    firstObject = [emailAddresses2 firstObject];
 
     v9 = objc_alloc(getCNComposeRecipientClass_1());
-    v10 = [v8 value];
-    v11 = [v9 initWithContact:v19 address:v10 kind:0];
+    value = [firstObject value];
+    phoneNumbers = [v9 initWithContact:contactCopy address:value kind:0];
 LABEL_3:
 
-    if (!v11)
+    if (!phoneNumbers)
     {
       goto LABEL_9;
     }
 
-    v12 = [v19 CalDisplayName];
-    [v11 setDisplayString:v12];
+    calDisplayName = [contactCopy CalDisplayName];
+    [phoneNumbers setDisplayString:calDisplayName];
 
-    [(CNComposeRecipientTextView *)self->_composeRecipientView addRecipient:v11];
+    [(CNComposeRecipientTextView *)self->_composeRecipientView addRecipient:phoneNumbers];
     goto LABEL_8;
   }
 
-  v11 = [v19 phoneNumbers];
-  if ([v11 count] == 1)
+  phoneNumbers = [contactCopy phoneNumbers];
+  if ([phoneNumbers count] == 1)
   {
-    v13 = [(EKEvent *)self->_event calendar];
-    v14 = [v13 constraints];
-    v15 = [v14 supportsPhoneNumbers];
+    calendar = [(EKEvent *)self->_event calendar];
+    constraints = [calendar constraints];
+    supportsPhoneNumbers = [constraints supportsPhoneNumbers];
 
-    if (!v15)
+    if (!supportsPhoneNumbers)
     {
       goto LABEL_9;
     }
 
-    v16 = [v19 phoneNumbers];
-    v8 = [v16 firstObject];
+    phoneNumbers2 = [contactCopy phoneNumbers];
+    firstObject = [phoneNumbers2 firstObject];
 
-    v10 = [v8 value];
+    value = [firstObject value];
     v17 = objc_alloc(getCNComposeRecipientClass_1());
-    v18 = [v10 stringValue];
-    v11 = [v17 initWithContact:v19 address:v18 kind:1];
+    stringValue = [value stringValue];
+    phoneNumbers = [v17 initWithContact:contactCopy address:stringValue kind:1];
 
     goto LABEL_3;
   }
@@ -2192,18 +2192,18 @@ LABEL_9:
   [(EKEventAttendeePicker *)self composeRecipientViewDidFinishPickingRecipient:self->_composeRecipientView];
 }
 
-- (void)contactPicker:(id)a3 didSelectContactProperty:(id)a4
+- (void)contactPicker:(id)picker didSelectContactProperty:(id)property
 {
-  v18 = a4;
-  v5 = [v18 key];
+  propertyCopy = property;
+  v5 = [propertyCopy key];
   v6 = [v5 isEqualToString:*MEMORY[0x1E695C208]];
 
   if (v6)
   {
     v7 = objc_alloc(getCNComposeRecipientClass_1());
-    v8 = [v18 contact];
-    v9 = [v18 value];
-    v10 = [v7 initWithContact:v8 address:v9 kind:0];
+    contact = [propertyCopy contact];
+    value = [propertyCopy value];
+    v10 = [v7 initWithContact:contact address:value kind:0];
 LABEL_3:
 
     if (!v10)
@@ -2211,31 +2211,31 @@ LABEL_3:
       goto LABEL_9;
     }
 
-    v11 = [v18 contact];
-    v12 = [v11 CalDisplayName];
-    [v10 setDisplayString:v12];
+    contact2 = [propertyCopy contact];
+    calDisplayName = [contact2 CalDisplayName];
+    [v10 setDisplayString:calDisplayName];
 
     [(CNComposeRecipientTextView *)self->_composeRecipientView addRecipient:v10];
     goto LABEL_8;
   }
 
-  v10 = [v18 key];
+  v10 = [propertyCopy key];
   if ([v10 isEqualToString:*MEMORY[0x1E695C330]])
   {
-    v13 = [(EKEvent *)self->_event calendar];
-    v14 = [v13 constraints];
-    v15 = [v14 supportsPhoneNumbers];
+    calendar = [(EKEvent *)self->_event calendar];
+    constraints = [calendar constraints];
+    supportsPhoneNumbers = [constraints supportsPhoneNumbers];
 
-    if (!v15)
+    if (!supportsPhoneNumbers)
     {
       goto LABEL_9;
     }
 
-    v8 = [v18 value];
+    contact = [propertyCopy value];
     v16 = objc_alloc(getCNComposeRecipientClass_1());
-    v9 = [v18 contact];
-    v17 = [v8 stringValue];
-    v10 = [v16 initWithContact:v9 address:v17 kind:1];
+    value = [propertyCopy contact];
+    stringValue = [contact stringValue];
+    v10 = [v16 initWithContact:value address:stringValue kind:1];
 
     goto LABEL_3;
   }

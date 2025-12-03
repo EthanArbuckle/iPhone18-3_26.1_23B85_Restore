@@ -1,10 +1,10 @@
 @interface VoiceOverTypingController
-- (id)_keyboardTimeoutStart:(id)a3;
-- (id)cursorOutput:(id)a3;
-- (id)phoneticsEnabled:(id)a3;
+- (id)_keyboardTimeoutStart:(id)start;
+- (id)cursorOutput:(id)output;
+- (id)phoneticsEnabled:(id)enabled;
 - (id)specifiers;
-- (id)typingMode:(id)a3;
-- (id)voModifierKey:(id)a3;
+- (id)typingMode:(id)mode;
+- (id)voModifierKey:(id)key;
 - (void)viewDidLoad;
 @end
 
@@ -176,7 +176,7 @@ void __39__VoiceOverTypingController_specifiers__block_invoke_4(id a1, id a2)
   [v3 setVoiceOverPhoneticsFeedback:v2];
 }
 
-- (id)_keyboardTimeoutStart:(id)a3
+- (id)_keyboardTimeoutStart:(id)start
 {
   v3 = +[AXSettings sharedInstance];
   [v3 voiceOverContinuousPathKeyboardStartTimeout];
@@ -185,7 +185,7 @@ void __39__VoiceOverTypingController_specifiers__block_invoke_4(id a1, id a2)
   return v4;
 }
 
-- (id)voModifierKey:(id)a3
+- (id)voModifierKey:(id)key
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[VoiceOverModifierKeyController modifierShortStringDescription:](VoiceOverModifierKeyController, "modifierShortStringDescription:", [v3 voiceOverKeyboardModifierChoice]);
@@ -193,18 +193,18 @@ void __39__VoiceOverTypingController_specifiers__block_invoke_4(id a1, id a2)
   return v4;
 }
 
-- (id)cursorOutput:(id)a3
+- (id)cursorOutput:(id)output
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverCursorOutputStyle];
+  voiceOverCursorOutputStyle = [v3 voiceOverCursorOutputStyle];
 
-  if (v4 == &dword_0 + 1)
+  if (voiceOverCursorOutputStyle == &dword_0 + 1)
   {
     v5 = @"CURSOR_OUTPUT_PASS";
     goto LABEL_5;
   }
 
-  if (v4 == &dword_0 + 2)
+  if (voiceOverCursorOutputStyle == &dword_0 + 2)
   {
     v5 = @"CURSOR_OUTPUT_TORIGHT";
 LABEL_5:
@@ -218,32 +218,32 @@ LABEL_7:
   return v6;
 }
 
-- (id)typingMode:(id)a3
+- (id)typingMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   objc_opt_class();
-  v4 = [v3 propertyForKey:PSValidValuesKey];
+  v4 = [modeCopy propertyForKey:PSValidValuesKey];
   v5 = __UIAccessibilityCastAsClass();
 
   v6 = [NSNumber numberWithLong:_AXSVoiceOverTouchTypingMode()];
   v7 = [v5 indexOfObject:v6];
 
   objc_opt_class();
-  v8 = [v3 propertyForKey:PSValidTitlesKey];
+  v8 = [modeCopy propertyForKey:PSValidTitlesKey];
   v9 = __UIAccessibilityCastAsClass();
 
   v10 = [v9 objectAtIndexedSubscript:v7];
-  v11 = [v3 propertyForKey:PSStringsKey];
+  v11 = [modeCopy propertyForKey:PSStringsKey];
   v12 = settingsLocString(v10, v11);
 
   return v12;
 }
 
-- (id)phoneticsEnabled:(id)a3
+- (id)phoneticsEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   objc_opt_class();
-  v4 = [v3 propertyForKey:PSValidValuesKey];
+  v4 = [enabledCopy propertyForKey:PSValidValuesKey];
   v5 = __UIAccessibilityCastAsClass();
 
   v6 = +[AXSettings sharedInstance];
@@ -251,11 +251,11 @@ LABEL_7:
   v8 = [v5 indexOfObject:v7];
 
   objc_opt_class();
-  v9 = [v3 propertyForKey:PSValidTitlesKey];
+  v9 = [enabledCopy propertyForKey:PSValidTitlesKey];
   v10 = __UIAccessibilityCastAsClass();
 
   v11 = [v10 objectAtIndexedSubscript:v8];
-  v12 = [v3 propertyForKey:PSStringsKey];
+  v12 = [enabledCopy propertyForKey:PSStringsKey];
   v13 = settingsLocString(v11, v12);
 
   return v13;

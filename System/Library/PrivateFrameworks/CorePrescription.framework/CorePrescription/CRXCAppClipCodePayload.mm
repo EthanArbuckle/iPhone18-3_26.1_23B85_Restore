@@ -1,6 +1,6 @@
 @interface CRXCAppClipCodePayload
 - (CRXCAppClipCodePayload)init;
-- (CRXCAppClipCodePayload)initWithVersion:(unint64_t)a3 lensType:(int64_t)a4 left:(id)a5 right:(id)a6 lensColorCode:(unint64_t)a7 secret:(id)a8 randomBits:(unsigned int)a9;
+- (CRXCAppClipCodePayload)initWithVersion:(unint64_t)version lensType:(int64_t)type left:(id)left right:(id)right lensColorCode:(unint64_t)code secret:(id)secret randomBits:(unsigned int)bits;
 - (CRXCPrescriptionInfo)left;
 - (CRXCPrescriptionInfo)right;
 - (NSData)secret;
@@ -8,12 +8,12 @@
 - (unint64_t)lensColorCode;
 - (unint64_t)version;
 - (unsigned)randomBits;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLensColorCode:(unint64_t)a3;
-- (void)setLensType:(int64_t)a3;
-- (void)setRandomBits:(unsigned int)a3;
-- (void)setSecret:(id)a3;
-- (void)setVersion:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLensColorCode:(unint64_t)code;
+- (void)setLensType:(int64_t)type;
+- (void)setRandomBits:(unsigned int)bits;
+- (void)setSecret:(id)secret;
+- (void)setVersion:(unint64_t)version;
 @end
 
 @implementation CRXCAppClipCodePayload
@@ -25,11 +25,11 @@
   return *(self + v3);
 }
 
-- (void)setVersion:(unint64_t)a3
+- (void)setVersion:(unint64_t)version
 {
   v5 = OBJC_IVAR___CRXCAppClipCodePayload_version;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = version;
 }
 
 - (int64_t)lensType
@@ -39,11 +39,11 @@
   return *(self + v3);
 }
 
-- (void)setLensType:(int64_t)a3
+- (void)setLensType:(int64_t)type
 {
   v5 = OBJC_IVAR___CRXCAppClipCodePayload_lensType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (CRXCPrescriptionInfo)left
@@ -67,11 +67,11 @@
   return *(self + v3);
 }
 
-- (void)setLensColorCode:(unint64_t)a3
+- (void)setLensColorCode:(unint64_t)code
 {
   v5 = OBJC_IVAR___CRXCAppClipCodePayload_lensColorCode;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = code;
 }
 
 - (NSData)secret
@@ -87,14 +87,14 @@
   return v5;
 }
 
-- (void)setSecret:(id)a3
+- (void)setSecret:(id)secret
 {
-  v4 = a3;
-  v5 = self;
+  secretCopy = secret;
+  selfCopy = self;
   v6 = sub_247365B44();
   v8 = v7;
 
-  v9 = (v5 + OBJC_IVAR___CRXCAppClipCodePayload_secret);
+  v9 = (selfCopy + OBJC_IVAR___CRXCAppClipCodePayload_secret);
   swift_beginAccess();
   v10 = *v9;
   v11 = v9[1];
@@ -110,32 +110,32 @@
   return *(self + v3);
 }
 
-- (void)setRandomBits:(unsigned int)a3
+- (void)setRandomBits:(unsigned int)bits
 {
   v5 = OBJC_IVAR___CRXCAppClipCodePayload_randomBits;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = bits;
 }
 
-- (CRXCAppClipCodePayload)initWithVersion:(unint64_t)a3 lensType:(int64_t)a4 left:(id)a5 right:(id)a6 lensColorCode:(unint64_t)a7 secret:(id)a8 randomBits:(unsigned int)a9
+- (CRXCAppClipCodePayload)initWithVersion:(unint64_t)version lensType:(int64_t)type left:(id)left right:(id)right lensColorCode:(unint64_t)code secret:(id)secret randomBits:(unsigned int)bits
 {
-  v22 = a5;
-  v21 = a6;
-  v15 = a8;
+  leftCopy = left;
+  rightCopy = right;
+  secretCopy = secret;
   v16 = sub_247365B44();
   v18 = v17;
 
-  v19 = sub_2473478D4(a3, a4, a5, a6, a7, v16, v18, a9);
+  v19 = sub_2473478D4(version, type, left, right, code, v16, v18, bits);
   sub_247347880(v16, v18);
 
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2473460E4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2473460E4(coderCopy);
 }
 
 - (CRXCAppClipCodePayload)init

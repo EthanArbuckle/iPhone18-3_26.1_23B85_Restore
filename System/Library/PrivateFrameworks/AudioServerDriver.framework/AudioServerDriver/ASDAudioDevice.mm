@@ -1,66 +1,66 @@
 @interface ASDAudioDevice
-- (ASDAudioDevice)initWithDeviceUID:(id)a3 withPlugin:(id)a4;
-- (ASDAudioDevice)initWithPlugin:(id)a3;
+- (ASDAudioDevice)initWithDeviceUID:(id)d withPlugin:(id)plugin;
+- (ASDAudioDevice)initWithPlugin:(id)plugin;
 - (ASDDeviceConfigurationChangeDelegate)configurationChangeDelegate;
 - (BOOL)hasInput;
 - (BOOL)hasOutput;
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)supportsSamplingRate:(double)a3;
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property;
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable;
+- (BOOL)supportsSamplingRate:(double)rate;
 - (NSArray)samplingRateRanges;
 - (NSArray)samplingRates;
 - (double)samplingRate;
 - (id)controls;
-- (id)getProperty:(id)a3;
+- (id)getProperty:(id)property;
 - (id)inputStreams;
 - (id)outputStreams;
 - (int)performStartIO;
 - (int)performStopIO;
-- (int)startIOForClient:(unsigned int)a3;
-- (int)stopIOForClient:(unsigned int)a3;
-- (unsigned)numberOfChannelsInLayoutForScope:(unsigned int)a3;
-- (void)addControl:(id)a3;
-- (void)addInputStream:(id)a3;
-- (void)addOutputStream:(id)a3;
+- (int)startIOForClient:(unsigned int)client;
+- (int)stopIOForClient:(unsigned int)client;
+- (unsigned)numberOfChannelsInLayoutForScope:(unsigned int)scope;
+- (void)addControl:(id)control;
+- (void)addInputStream:(id)stream;
+- (void)addOutputStream:(id)stream;
 - (void)dealloc;
-- (void)ioThreadStateChange:(id)a3;
-- (void)performConfigurationChange:(void *)a3;
+- (void)ioThreadStateChange:(id)change;
+- (void)performConfigurationChange:(void *)change;
 - (void)performStartIO;
 - (void)performStopIO;
-- (void)preferredChannelDescriptions:(AudioChannelDescription *)a3 numberOfChannels:(unsigned int)a4 forScope:(unsigned int)a5;
-- (void)preferredChannelsForLeft:(unsigned int *)a3 andRight:(unsigned int *)a4;
-- (void)removeControl:(id)a3;
-- (void)removeInputStream:(id)a3;
-- (void)removeOutputStream:(id)a3;
-- (void)requestConfigurationChange:(id)a3;
-- (void)setBeginIOOperationBlock:(id)a3;
-- (void)setClientDescription:(id)a3;
-- (void)setClockAlgorithm:(unsigned int)a3;
-- (void)setClockDomain:(unsigned int)a3;
-- (void)setClockIsStable:(BOOL)a3;
-- (void)setDeviceDescription:(id)a3;
-- (void)setDeviceName:(id)a3;
-- (void)setEndIOOperationBlock:(id)a3;
-- (void)setExternalSecureMute:(BOOL)a3;
-- (void)setGetZeroTimestampBlock:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setInputLatency:(unsigned int)a3;
-- (void)setInputSafetyOffset:(unsigned int)a3;
-- (void)setOutputLatency:(unsigned int)a3;
-- (void)setOutputSafetyOffset:(unsigned int)a3;
-- (void)setSamplingRate:(double)a3;
-- (void)setSamplingRateRanges:(id)a3;
-- (void)setSamplingRates:(id)a3;
-- (void)setTimestampPeriod:(unsigned int)a3;
-- (void)setTransportType:(unsigned int)a3;
-- (void)setWillDoConvertInputBlock:(id)a3;
-- (void)setWillDoConvertMixBlock:(id)a3;
-- (void)setWillDoMixOutputBlock:(id)a3;
-- (void)setWillDoProcessInputBlock:(id)a3;
-- (void)setWillDoProcessMixBlock:(id)a3;
-- (void)setWillDoProcessOutputBlock:(id)a3;
-- (void)setWillDoReadInputBlock:(id)a3;
-- (void)setWillDoWriteMixBlock:(id)a3;
+- (void)preferredChannelDescriptions:(AudioChannelDescription *)descriptions numberOfChannels:(unsigned int)channels forScope:(unsigned int)scope;
+- (void)preferredChannelsForLeft:(unsigned int *)left andRight:(unsigned int *)right;
+- (void)removeControl:(id)control;
+- (void)removeInputStream:(id)stream;
+- (void)removeOutputStream:(id)stream;
+- (void)requestConfigurationChange:(id)change;
+- (void)setBeginIOOperationBlock:(id)block;
+- (void)setClientDescription:(id)description;
+- (void)setClockAlgorithm:(unsigned int)algorithm;
+- (void)setClockDomain:(unsigned int)domain;
+- (void)setClockIsStable:(BOOL)stable;
+- (void)setDeviceDescription:(id)description;
+- (void)setDeviceName:(id)name;
+- (void)setEndIOOperationBlock:(id)block;
+- (void)setExternalSecureMute:(BOOL)mute;
+- (void)setGetZeroTimestampBlock:(id)block;
+- (void)setHidden:(BOOL)hidden;
+- (void)setInputLatency:(unsigned int)latency;
+- (void)setInputSafetyOffset:(unsigned int)offset;
+- (void)setOutputLatency:(unsigned int)latency;
+- (void)setOutputSafetyOffset:(unsigned int)offset;
+- (void)setSamplingRate:(double)rate;
+- (void)setSamplingRateRanges:(id)ranges;
+- (void)setSamplingRates:(id)rates;
+- (void)setTimestampPeriod:(unsigned int)period;
+- (void)setTransportType:(unsigned int)type;
+- (void)setWillDoConvertInputBlock:(id)block;
+- (void)setWillDoConvertMixBlock:(id)block;
+- (void)setWillDoMixOutputBlock:(id)block;
+- (void)setWillDoProcessInputBlock:(id)block;
+- (void)setWillDoProcessMixBlock:(id)block;
+- (void)setWillDoProcessOutputBlock:(id)block;
+- (void)setWillDoReadInputBlock:(id)block;
+- (void)setWillDoWriteMixBlock:(id)block;
 - (void)systemHasPoweredOn;
 - (void)systemWillSleep;
 - (void)updateTimestampPeriod;
@@ -131,68 +131,68 @@ uint64_t __26__ASDAudioDevice_hasInput__block_invoke(uint64_t a1)
     [ASDAudioDevice performStartIO];
   }
 
-  v3 = [(ASDAudioDevice *)self getZeroTimestampBlock];
-  v4 = [v3 copy];
+  getZeroTimestampBlock = [(ASDAudioDevice *)self getZeroTimestampBlock];
+  v4 = [getZeroTimestampBlock copy];
   getZeroTimestampBlock = self->_getZeroTimestampBlock;
   self->_getZeroTimestampBlock = v4;
 
   self->_getZeroTimestampBlockUnretained = self->_getZeroTimestampBlock;
-  v6 = [(ASDAudioDevice *)self willDoReadInputBlock];
-  v7 = [v6 copy];
+  willDoReadInputBlock = [(ASDAudioDevice *)self willDoReadInputBlock];
+  v7 = [willDoReadInputBlock copy];
   willDoReadInputBlock = self->_willDoReadInputBlock;
   self->_willDoReadInputBlock = v7;
 
   self->_willDoReadInputBlockUnretained = self->_willDoReadInputBlock;
-  v9 = [(ASDAudioDevice *)self willDoConvertInputBlock];
-  v10 = [v9 copy];
+  willDoConvertInputBlock = [(ASDAudioDevice *)self willDoConvertInputBlock];
+  v10 = [willDoConvertInputBlock copy];
   willDoConvertInputBlock = self->_willDoConvertInputBlock;
   self->_willDoConvertInputBlock = v10;
 
   self->_willDoConvertInputBlockUnretained = self->_willDoConvertInputBlock;
-  v12 = [(ASDAudioDevice *)self willDoProcessInputBlock];
-  v13 = [v12 copy];
+  willDoProcessInputBlock = [(ASDAudioDevice *)self willDoProcessInputBlock];
+  v13 = [willDoProcessInputBlock copy];
   willDoProcessInputBlock = self->_willDoProcessInputBlock;
   self->_willDoProcessInputBlock = v13;
 
   self->_willDoProcessInputBlockUnretained = self->_willDoProcessInputBlock;
-  v15 = [(ASDAudioDevice *)self willDoProcessOutputBlock];
-  v16 = [v15 copy];
+  willDoProcessOutputBlock = [(ASDAudioDevice *)self willDoProcessOutputBlock];
+  v16 = [willDoProcessOutputBlock copy];
   willDoProcessOutputBlock = self->_willDoProcessOutputBlock;
   self->_willDoProcessOutputBlock = v16;
 
   self->_willDoProcessOutputBlockUnretained = self->_willDoProcessOutputBlock;
-  v18 = [(ASDAudioDevice *)self willDoMixOutputBlock];
-  v19 = [v18 copy];
+  willDoMixOutputBlock = [(ASDAudioDevice *)self willDoMixOutputBlock];
+  v19 = [willDoMixOutputBlock copy];
   willDoMixOutputBlock = self->_willDoMixOutputBlock;
   self->_willDoMixOutputBlock = v19;
 
   self->_willDoMixOutputBlockUnretained = self->_willDoMixOutputBlock;
-  v21 = [(ASDAudioDevice *)self willDoProcessMixBlock];
-  v22 = [v21 copy];
+  willDoProcessMixBlock = [(ASDAudioDevice *)self willDoProcessMixBlock];
+  v22 = [willDoProcessMixBlock copy];
   willDoProcessMixBlock = self->_willDoProcessMixBlock;
   self->_willDoProcessMixBlock = v22;
 
   self->_willDoProcessMixBlockUnretained = self->_willDoProcessMixBlock;
-  v24 = [(ASDAudioDevice *)self willDoConvertMixBlock];
-  v25 = [v24 copy];
+  willDoConvertMixBlock = [(ASDAudioDevice *)self willDoConvertMixBlock];
+  v25 = [willDoConvertMixBlock copy];
   willDoConvertMixBlock = self->_willDoConvertMixBlock;
   self->_willDoConvertMixBlock = v25;
 
   self->_willDoConvertMixBlockUnretained = self->_willDoConvertMixBlock;
-  v27 = [(ASDAudioDevice *)self willDoWriteMixBlock];
-  v28 = [v27 copy];
+  willDoWriteMixBlock = [(ASDAudioDevice *)self willDoWriteMixBlock];
+  v28 = [willDoWriteMixBlock copy];
   willDoWriteMixBlock = self->_willDoWriteMixBlock;
   self->_willDoWriteMixBlock = v28;
 
   self->_willDoWriteMixBlockUnretained = self->_willDoWriteMixBlock;
-  v30 = [(ASDAudioDevice *)self beginIOOperationBlock];
-  v31 = [v30 copy];
+  beginIOOperationBlock = [(ASDAudioDevice *)self beginIOOperationBlock];
+  v31 = [beginIOOperationBlock copy];
   beginIOOperationBlock = self->_beginIOOperationBlock;
   self->_beginIOOperationBlock = v31;
 
   self->_beginIOOperationBlockUnretained = self->_beginIOOperationBlock;
-  v33 = [(ASDAudioDevice *)self endIOOperationBlock];
-  v34 = [v33 copy];
+  endIOOperationBlock = [(ASDAudioDevice *)self endIOOperationBlock];
+  v34 = [endIOOperationBlock copy];
   endIOOperationBlock = self->_endIOOperationBlock;
   self->_endIOOperationBlock = v34;
 
@@ -467,7 +467,7 @@ void __31__ASDAudioDevice_performStopIO__block_invoke_2(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (ASDAudioDevice)initWithPlugin:(id)a3
+- (ASDAudioDevice)initWithPlugin:(id)plugin
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
@@ -477,13 +477,13 @@ void __31__ASDAudioDevice_performStopIO__block_invoke_2(uint64_t a1)
   return 0;
 }
 
-- (ASDAudioDevice)initWithDeviceUID:(id)a3 withPlugin:(id)a4
+- (ASDAudioDevice)initWithDeviceUID:(id)d withPlugin:(id)plugin
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  pluginCopy = plugin;
   v40.receiver = self;
   v40.super_class = ASDAudioDevice;
-  v9 = [(ASDObject *)&v40 initWithPlugin:v8];
+  v9 = [(ASDObject *)&v40 initWithPlugin:pluginCopy];
   v10 = v9;
   if (v9)
   {
@@ -494,15 +494,15 @@ void __31__ASDAudioDevice_performStopIO__block_invoke_2(uint64_t a1)
     v9->_allowAutoRoute = 1;
     v9->_wantsDisplayRouting = 0;
     v9->_supportsHeySiri = 0;
-    objc_storeStrong(&v9->_deviceUID, a3);
-    objc_storeWeak(&v10->_configurationChangeDelegate, v8);
+    objc_storeStrong(&v9->_deviceUID, d);
+    objc_storeWeak(&v10->_configurationChangeDelegate, pluginCopy);
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v12 = [v11 bundleIdentifier];
+    bundleIdentifier = [v11 bundleIdentifier];
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     inputStreams = v10->_inputStreams;
     v10->_inputStreams = v13;
 
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.device.%@.inputStreams", v12, v10->_deviceUID];
+    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.device.%@.inputStreams", bundleIdentifier, v10->_deviceUID];
     v16 = dispatch_queue_create([v15 UTF8String], 0);
     inputStreamQueue = v10->_inputStreamQueue;
     v10->_inputStreamQueue = v16;
@@ -511,7 +511,7 @@ void __31__ASDAudioDevice_performStopIO__block_invoke_2(uint64_t a1)
     outputStreams = v10->_outputStreams;
     v10->_outputStreams = v18;
 
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.device.%@.outputStreams", v12, v10->_deviceUID];
+    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.device.%@.outputStreams", bundleIdentifier, v10->_deviceUID];
     v21 = dispatch_queue_create([v20 UTF8String], 0);
     outputStreamQueue = v10->_outputStreamQueue;
     v10->_outputStreamQueue = v21;
@@ -520,7 +520,7 @@ void __31__ASDAudioDevice_performStopIO__block_invoke_2(uint64_t a1)
     controls = v10->_controls;
     v10->_controls = v23;
 
-    v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.device.%@.controls", v12, v10->_deviceUID];
+    v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.device.%@.controls", bundleIdentifier, v10->_deviceUID];
     v26 = dispatch_queue_create([v25 UTF8String], 0);
     controlQueue = v10->_controlQueue;
     v10->_controlQueue = v26;
@@ -529,12 +529,12 @@ void __31__ASDAudioDevice_performStopIO__block_invoke_2(uint64_t a1)
     samplingRateRanges = v10->_samplingRateRanges;
     v10->_samplingRateRanges = v28;
 
-    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.device.%@.sampleRate", v12, v10->_deviceUID];
+    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.device.%@.sampleRate", bundleIdentifier, v10->_deviceUID];
     v31 = dispatch_queue_create([v30 UTF8String], 0);
     sampleRateQueue = v10->_sampleRateQueue;
     v10->_sampleRateQueue = v31;
 
-    v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.device.%@.ioReference", v12, v10->_deviceUID];
+    v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.device.%@.ioReference", bundleIdentifier, v10->_deviceUID];
     v34 = dispatch_queue_create([v33 UTF8String], 0);
     ioReferenceQueue = v10->_ioReferenceQueue;
     v10->_ioReferenceQueue = v34;
@@ -552,19 +552,19 @@ void __31__ASDAudioDevice_performStopIO__block_invoke_2(uint64_t a1)
   return v10;
 }
 
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property
 {
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  if (!a3)
+  if (!property)
   {
     goto LABEL_64;
   }
 
-  mSelector = a3->mSelector;
-  if (a3->mSelector <= 1818452845)
+  mSelector = property->mSelector;
+  if (property->mSelector <= 1818452845)
   {
     if (mSelector <= 1668575851)
     {
@@ -595,8 +595,8 @@ void __31__ASDAudioDevice_performStopIO__block_invoke_2(uint64_t a1)
       {
         if (mSelector == 1667330160)
         {
-          v13 = [(ASDAudioDevice *)self configurationBundleID];
-          *(v18 + 24) = v13 != 0;
+          configurationBundleID = [(ASDAudioDevice *)self configurationBundleID];
+          *(v18 + 24) = configurationBundleID != 0;
 
           goto LABEL_64;
         }
@@ -642,13 +642,13 @@ LABEL_51:
 LABEL_68:
         v14.receiver = self;
         v14.super_class = ASDAudioDevice;
-        v12 = [(ASDObject *)&v14 hasProperty:?];
+        supportsExternalSecureMute = [(ASDObject *)&v14 hasProperty:?];
         goto LABEL_69;
       }
 
 LABEL_52:
-      mScope = a3->mScope;
-      if ((mScope == 1869968496 || mScope == 1768845428) && !a3->mElement)
+      mScope = property->mScope;
+      if ((mScope == 1869968496 || mScope == 1768845428) && !property->mElement)
       {
         goto LABEL_63;
       }
@@ -678,9 +678,9 @@ LABEL_52:
       goto LABEL_62;
     }
 
-    v12 = [(ASDAudioDevice *)self supportsExternalSecureMute];
+    supportsExternalSecureMute = [(ASDAudioDevice *)self supportsExternalSecureMute];
 LABEL_69:
-    *(v18 + 24) = v12;
+    *(v18 + 24) = supportsExternalSecureMute;
     goto LABEL_64;
   }
 
@@ -725,7 +725,7 @@ LABEL_69:
       goto LABEL_51;
     }
 
-    v12 = [(ASDAudioDevice *)self supportsIsolatedIO];
+    supportsExternalSecureMute = [(ASDAudioDevice *)self supportsIsolatedIO];
     goto LABEL_69;
   }
 
@@ -778,9 +778,9 @@ LABEL_62:
     goto LABEL_68;
   }
 
-  if (a3->mElement)
+  if (property->mElement)
   {
-    v6 = a3->mScope;
+    v6 = property->mScope;
     if (v6 == 1869968496)
     {
       outputStreamQueue = self->_outputStreamQueue;
@@ -790,7 +790,7 @@ LABEL_62:
       block[3] = &unk_278CE4030;
       block[4] = self;
       block[5] = &v17;
-      block[6] = a3;
+      block[6] = property;
       v8 = block;
     }
 
@@ -808,7 +808,7 @@ LABEL_62:
       v16[3] = &unk_278CE4030;
       v16[4] = self;
       v16[5] = &v17;
-      v16[6] = a3;
+      v16[6] = property;
       v8 = v16;
     }
 
@@ -1951,16 +1951,16 @@ LABEL_18:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable
 {
-  if (!a3)
+  if (!settable)
   {
     return 0;
   }
 
-  mSelector = a3->mSelector;
+  mSelector = settable->mSelector;
   v6 = 1;
-  if (a3->mSelector <= 1819173228)
+  if (settable->mSelector <= 1819173228)
   {
     if (mSelector != 1667523955)
     {
@@ -1994,11 +1994,11 @@ LABEL_14:
   return [(ASDAudioDevice *)self canChangeDeviceName];
 }
 
-- (void)addInputStream:(id)a3
+- (void)addInputStream:(id)stream
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  streamCopy = stream;
+  v6 = streamCopy;
+  if (streamCopy)
   {
     inputStreamQueue = self->_inputStreamQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -2006,7 +2006,7 @@ LABEL_14:
     block[2] = __33__ASDAudioDevice_addInputStream___block_invoke;
     block[3] = &unk_278CE3EA0;
     block[4] = self;
-    v8 = v5;
+    v8 = streamCopy;
     v17 = v8;
     v18 = a2;
     dispatch_sync(inputStreamQueue, block);
@@ -2025,12 +2025,12 @@ LABEL_14:
 
     v15 = 0;
     v14 = 0x696E707473746D23;
-    v12 = [(ASDObject *)self propertyChangedDelegate];
-    [v12 changedProperty:&v14 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v14 forObject:self];
 
     v14 = 0x676C6F626F776E64;
-    v13 = [(ASDObject *)self propertyChangedDelegate];
-    [v13 changedProperty:&v14 forObject:self];
+    propertyChangedDelegate2 = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate2 changedProperty:&v14 forObject:self];
   }
 }
 
@@ -2046,11 +2046,11 @@ void __33__ASDAudioDevice_addInputStream___block_invoke(uint64_t a1)
   [v2 addStreamRealTimeOperations:*(a1 + 40)];
 }
 
-- (void)removeInputStream:(id)a3
+- (void)removeInputStream:(id)stream
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  streamCopy = stream;
+  v6 = streamCopy;
+  if (streamCopy)
   {
     inputStreamQueue = self->_inputStreamQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -2058,17 +2058,17 @@ void __33__ASDAudioDevice_addInputStream___block_invoke(uint64_t a1)
     block[2] = __36__ASDAudioDevice_removeInputStream___block_invoke;
     block[3] = &unk_278CE3EA0;
     block[4] = self;
-    v13 = v5;
+    v13 = streamCopy;
     v14 = a2;
     dispatch_sync(inputStreamQueue, block);
     v11 = 0;
     v10 = 0x696E707473746D23;
-    v8 = [(ASDObject *)self propertyChangedDelegate];
-    [v8 changedProperty:&v10 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v10 forObject:self];
 
     v10 = 0x676C6F626F776E64;
-    v9 = [(ASDObject *)self propertyChangedDelegate];
-    [v9 changedProperty:&v10 forObject:self];
+    propertyChangedDelegate2 = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate2 changedProperty:&v10 forObject:self];
   }
 }
 
@@ -2120,11 +2120,11 @@ uint64_t __30__ASDAudioDevice_inputStreams__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)addOutputStream:(id)a3
+- (void)addOutputStream:(id)stream
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  streamCopy = stream;
+  v6 = streamCopy;
+  if (streamCopy)
   {
     outputStreamQueue = self->_outputStreamQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -2132,7 +2132,7 @@ uint64_t __30__ASDAudioDevice_inputStreams__block_invoke(uint64_t a1)
     block[2] = __34__ASDAudioDevice_addOutputStream___block_invoke;
     block[3] = &unk_278CE3EA0;
     block[4] = self;
-    v8 = v5;
+    v8 = streamCopy;
     v17 = v8;
     v18 = a2;
     dispatch_sync(outputStreamQueue, block);
@@ -2151,12 +2151,12 @@ uint64_t __30__ASDAudioDevice_inputStreams__block_invoke(uint64_t a1)
 
     v15 = 0;
     v14 = 0x6F75747073746D23;
-    v12 = [(ASDObject *)self propertyChangedDelegate];
-    [v12 changedProperty:&v14 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v14 forObject:self];
 
     v14 = 0x676C6F626F776E64;
-    v13 = [(ASDObject *)self propertyChangedDelegate];
-    [v13 changedProperty:&v14 forObject:self];
+    propertyChangedDelegate2 = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate2 changedProperty:&v14 forObject:self];
   }
 }
 
@@ -2172,11 +2172,11 @@ void __34__ASDAudioDevice_addOutputStream___block_invoke(uint64_t a1)
   [v2 addStreamRealTimeOperations:*(a1 + 40)];
 }
 
-- (void)removeOutputStream:(id)a3
+- (void)removeOutputStream:(id)stream
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  streamCopy = stream;
+  v6 = streamCopy;
+  if (streamCopy)
   {
     outputStreamQueue = self->_outputStreamQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -2184,17 +2184,17 @@ void __34__ASDAudioDevice_addOutputStream___block_invoke(uint64_t a1)
     block[2] = __37__ASDAudioDevice_removeOutputStream___block_invoke;
     block[3] = &unk_278CE3EA0;
     block[4] = self;
-    v13 = v5;
+    v13 = streamCopy;
     v14 = a2;
     dispatch_sync(outputStreamQueue, block);
     v11 = 0;
     v10 = 0x6F75747073746D23;
-    v8 = [(ASDObject *)self propertyChangedDelegate];
-    [v8 changedProperty:&v10 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v10 forObject:self];
 
     v10 = 0x676C6F626F776E64;
-    v9 = [(ASDObject *)self propertyChangedDelegate];
-    [v9 changedProperty:&v10 forObject:self];
+    propertyChangedDelegate2 = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate2 changedProperty:&v10 forObject:self];
   }
 }
 
@@ -2246,19 +2246,19 @@ uint64_t __31__ASDAudioDevice_outputStreams__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)addControl:(id)a3
+- (void)addControl:(id)control
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  controlCopy = control;
+  v5 = controlCopy;
+  if (controlCopy)
   {
     controlQueue = self->_controlQueue;
     block = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __29__ASDAudioDevice_addControl___block_invoke;
     v15 = &unk_278CE3E78;
-    v16 = self;
-    v7 = v4;
+    selfCopy = self;
+    v7 = controlCopy;
     v17 = v7;
     dispatch_sync(controlQueue, &block);
     [v7 setOwner:self];
@@ -2266,31 +2266,31 @@ uint64_t __31__ASDAudioDevice_outputStreams__block_invoke(uint64_t a1)
     v8 = [(ASDObject *)self propertyChangedDelegate:0x676C6F626374726CLL];
     [v8 changedProperty:&v10 forObject:self];
 
-    v9 = [(ASDObject *)self propertyChangedDelegate];
-    [v9 changedProperty:&v10 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v10 forObject:self];
   }
 }
 
-- (void)removeControl:(id)a3
+- (void)removeControl:(id)control
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  controlCopy = control;
+  v5 = controlCopy;
+  if (controlCopy)
   {
     controlQueue = self->_controlQueue;
     block = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __32__ASDAudioDevice_removeControl___block_invoke;
     v14 = &unk_278CE3E78;
-    v15 = self;
-    v16 = v4;
+    selfCopy = self;
+    v16 = controlCopy;
     dispatch_sync(controlQueue, &block);
     LODWORD(v10) = 0;
     v7 = [(ASDObject *)self propertyChangedDelegate:0x676C6F626374726CLL];
     [v7 changedProperty:&v9 forObject:self];
 
-    v8 = [(ASDObject *)self propertyChangedDelegate];
-    [v8 changedProperty:&v9 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v9 forObject:self];
   }
 }
 
@@ -2326,38 +2326,38 @@ uint64_t __26__ASDAudioDevice_controls__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)requestConfigurationChange:(id)a3
+- (void)requestConfigurationChange:(id)change
 {
-  v4 = a3;
-  v5 = [(ASDAudioDevice *)self configurationChangeDelegate];
-  [v5 requestConfigurationChangeForDevice:self withBlock:v4];
+  changeCopy = change;
+  configurationChangeDelegate = [(ASDAudioDevice *)self configurationChangeDelegate];
+  [configurationChangeDelegate requestConfigurationChangeForDevice:self withBlock:changeCopy];
 }
 
-- (void)performConfigurationChange:(void *)a3
+- (void)performConfigurationChange:(void *)change
 {
-  (*(a3 + 2))(a3, a2);
+  (*(change + 2))(change, a2);
 }
 
-- (void)preferredChannelsForLeft:(unsigned int *)a3 andRight:(unsigned int *)a4
+- (void)preferredChannelsForLeft:(unsigned int *)left andRight:(unsigned int *)right
 {
-  if (a3)
+  if (left)
   {
-    *a3 = 1;
+    *left = 1;
   }
 
-  if (a4)
+  if (right)
   {
-    *a4 = 2;
+    *right = 2;
   }
 }
 
-- (unsigned)numberOfChannelsInLayoutForScope:(unsigned int)a3
+- (unsigned)numberOfChannelsInLayoutForScope:(unsigned int)scope
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  if (a3 == 1869968496)
+  if (scope == 1869968496)
   {
     outputStreamQueue = self->_outputStreamQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -2370,7 +2370,7 @@ uint64_t __26__ASDAudioDevice_controls__block_invoke(uint64_t a1)
     goto LABEL_5;
   }
 
-  if (a3 == 1768845428)
+  if (scope == 1768845428)
   {
     outputStreamQueue = self->_inputStreamQueue;
     v8[0] = MEMORY[0x277D85DD0];
@@ -2471,24 +2471,24 @@ void __51__ASDAudioDevice_numberOfChannelsInLayoutForScope___block_invoke_2(uint
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)preferredChannelDescriptions:(AudioChannelDescription *)a3 numberOfChannels:(unsigned int)a4 forScope:(unsigned int)a5
+- (void)preferredChannelDescriptions:(AudioChannelDescription *)descriptions numberOfChannels:(unsigned int)channels forScope:(unsigned int)scope
 {
-  if (a5 == 1869968496)
+  if (scope == 1869968496)
   {
     outputStreamQueue = self->_outputStreamQueue;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __73__ASDAudioDevice_preferredChannelDescriptions_numberOfChannels_forScope___block_invoke_48;
     v7[3] = &unk_278CE40F8;
-    v8 = a4;
+    channelsCopy = channels;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = descriptions;
     v6 = v7;
   }
 
   else
   {
-    if (a5 != 1768845428)
+    if (scope != 1768845428)
     {
       return;
     }
@@ -2498,9 +2498,9 @@ void __51__ASDAudioDevice_numberOfChannelsInLayoutForScope___block_invoke_2(uint
     v9[1] = 3221225472;
     v9[2] = __73__ASDAudioDevice_preferredChannelDescriptions_numberOfChannels_forScope___block_invoke;
     v9[3] = &unk_278CE40F8;
-    v10 = a4;
+    channelsCopy2 = channels;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = descriptions;
     v6 = v9;
   }
 
@@ -2677,7 +2677,7 @@ void __73__ASDAudioDevice_preferredChannelDescriptions_numberOfChannels_forScope
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (int)startIOForClient:(unsigned int)a3
+- (int)startIOForClient:(unsigned int)client
 {
   v7 = 0;
   v8 = &v7;
@@ -2711,7 +2711,7 @@ void __35__ASDAudioDevice_startIOForClient___block_invoke(uint64_t a1)
   }
 }
 
-- (int)stopIOForClient:(unsigned int)a3
+- (int)stopIOForClient:(unsigned int)client
 {
   v7 = 0;
   v8 = &v7;
@@ -2749,21 +2749,21 @@ void __34__ASDAudioDevice_stopIOForClient___block_invoke(uint64_t a1)
   }
 }
 
-- (void)ioThreadStateChange:(id)a3
+- (void)ioThreadStateChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   ioReferenceQueue = self->_ioReferenceQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__ASDAudioDevice_ioThreadStateChange___block_invoke;
   v7[3] = &unk_278CE3E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_sync(ioReferenceQueue, v7);
 }
 
-- (void)setSamplingRate:(double)a3
+- (void)setSamplingRate:(double)rate
 {
   sampleRateQueue = self->_sampleRateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2771,7 +2771,7 @@ void __34__ASDAudioDevice_stopIOForClient___block_invoke(uint64_t a1)
   block[2] = __34__ASDAudioDevice_setSamplingRate___block_invoke;
   block[3] = &unk_278CE3F90;
   block[4] = self;
-  *&block[5] = a3;
+  *&block[5] = rate;
   dispatch_sync(sampleRateQueue, block);
   LODWORD(v7) = 0;
   v5 = [(ASDObject *)self propertyChangedDelegate:0x676C6F626E737274];
@@ -2881,17 +2881,17 @@ void __34__ASDAudioDevice_setSamplingRate___block_invoke_3(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)supportsSamplingRate:(double)a3
+- (BOOL)supportsSamplingRate:(double)rate
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = [(ASDAudioDevice *)self samplingRateRanges];
+  samplingRateRanges = [(ASDAudioDevice *)self samplingRateRanges];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ASDAudioDevice *)self deviceName];
+    deviceName = [(ASDAudioDevice *)self deviceName];
     *buf = 138412546;
-    v22 = v6;
+    v22 = deviceName;
     v23 = 2048;
-    v24 = COERCE_DOUBLE([v5 count]);
+    rateCopy = COERCE_DOUBLE([samplingRateRanges count]);
     _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%@: supportsSamplingRate: looking at %lu rate ranges", buf, 0x16u);
   }
 
@@ -2899,7 +2899,7 @@ void __34__ASDAudioDevice_setSamplingRate___block_invoke_3(uint64_t a1)
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = samplingRateRanges;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v27 count:16];
   if (v8)
   {
@@ -2915,10 +2915,10 @@ void __34__ASDAudioDevice_setSamplingRate___block_invoke_3(uint64_t a1)
 
         v11 = *(*(&v17 + 1) + 8 * i);
         [v11 minimum];
-        if (v12 + -0.001 <= a3)
+        if (v12 + -0.001 <= rate)
         {
           [v11 maximum];
-          if (v13 + 0.001 >= a3)
+          if (v13 + 0.001 >= rate)
           {
             LODWORD(v8) = 1;
             goto LABEL_14;
@@ -2940,11 +2940,11 @@ LABEL_14:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(ASDAudioDevice *)self deviceName];
+    deviceName2 = [(ASDAudioDevice *)self deviceName];
     *buf = 138412802;
-    v22 = v14;
+    v22 = deviceName2;
     v23 = 2048;
-    v24 = a3;
+    rateCopy = rate;
     v25 = 1024;
     v26 = v8;
     _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%@: supportsSamplingRate (%f) returning (%d)", buf, 0x1Cu);
@@ -2954,16 +2954,16 @@ LABEL_14:
   return v8;
 }
 
-- (void)setSamplingRates:(id)a3
+- (void)setSamplingRates:(id)rates
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  ratesCopy = rates;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = ratesCopy;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
@@ -2998,7 +2998,7 @@ LABEL_14:
   v19 = 3221225472;
   v20 = __35__ASDAudioDevice_setSamplingRates___block_invoke;
   v21 = &unk_278CE3E78;
-  v22 = self;
+  selfCopy = self;
   v23 = v5;
   v13 = v5;
   dispatch_sync(sampleRateQueue, &block);
@@ -3017,17 +3017,17 @@ void __35__ASDAudioDevice_setSamplingRates___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)setSamplingRateRanges:(id)a3
+- (void)setSamplingRateRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   sampleRateQueue = self->_sampleRateQueue;
   block = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __40__ASDAudioDevice_setSamplingRateRanges___block_invoke;
   v13 = &unk_278CE3E78;
-  v14 = self;
-  v15 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v15 = rangesCopy;
+  v6 = rangesCopy;
   dispatch_sync(sampleRateQueue, &block);
   LODWORD(v9) = 0;
   v7 = [(ASDObject *)self propertyChangedDelegate:0x676C6F626E737223];
@@ -3135,17 +3135,17 @@ uint64_t __31__ASDAudioDevice_samplingRates__block_invoke(uint64_t a1)
   dispatch_sync(sampleRateQueue, block);
   if (![v25[5] count])
   {
-    v4 = [(ASDAudioDevice *)self samplingRates];
-    if ([v4 count])
+    samplingRates = [(ASDAudioDevice *)self samplingRates];
+    if ([samplingRates count])
     {
       v5 = MEMORY[0x277D86220];
       v6 = MEMORY[0x277D86220];
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(ASDAudioDevice *)self deviceName];
-        v8 = [v4 count];
+        deviceName = [(ASDAudioDevice *)self deviceName];
+        v8 = [samplingRates count];
         *buf = 138412546;
-        v32 = v7;
+        v32 = deviceName;
         v33 = 2048;
         v34 = v8;
         _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%@: building samplingRateRanges from %lu discreet rates", buf, 0x16u);
@@ -3156,7 +3156,7 @@ uint64_t __31__ASDAudioDevice_samplingRates__block_invoke(uint64_t a1)
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v10 = v4;
+      v10 = samplingRates;
       v11 = [v10 countByEnumeratingWithState:&v19 objects:v30 count:16];
       if (v11)
       {
@@ -3204,9 +3204,9 @@ uint64_t __36__ASDAudioDevice_samplingRateRanges__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setDeviceName:(id)a3
+- (void)setDeviceName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   deviceName = self->_deviceName;
   self->_deviceName = v4;
 
@@ -3215,9 +3215,9 @@ uint64_t __36__ASDAudioDevice_samplingRateRanges__block_invoke(uint64_t a1)
   [v6 changedProperty:&v7 forObject:self];
 }
 
-- (void)setClientDescription:(id)a3
+- (void)setClientDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   clientDescription = self->_clientDescription;
   self->_clientDescription = v4;
 
@@ -3226,9 +3226,9 @@ uint64_t __36__ASDAudioDevice_samplingRateRanges__block_invoke(uint64_t a1)
   [v6 changedProperty:&v7 forObject:self];
 }
 
-- (void)setDeviceDescription:(id)a3
+- (void)setDeviceDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   deviceDescription = self->_deviceDescription;
   self->_deviceDescription = v4;
 
@@ -3237,13 +3237,13 @@ uint64_t __36__ASDAudioDevice_samplingRateRanges__block_invoke(uint64_t a1)
   [v6 changedProperty:&v7 forObject:self];
 }
 
-- (void)setTimestampPeriod:(unsigned int)a3
+- (void)setTimestampPeriod:(unsigned int)period
 {
-  if (self->_timestampPeriod != a3)
+  if (self->_timestampPeriod != period)
   {
     v9 = v3;
     v10 = v4;
-    self->_timestampPeriod = a3;
+    self->_timestampPeriod = period;
     LODWORD(v8) = 0;
     v6 = [(ASDObject *)self propertyChangedDelegate:0x676C6F6272696E67];
     [v6 changedProperty:&v7 forObject:self];
@@ -3299,237 +3299,237 @@ uint64_t __27__ASDAudioDevice_hasOutput__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setInputLatency:(unsigned int)a3
+- (void)setInputLatency:(unsigned int)latency
 {
-  self->_inputLatency = a3;
+  self->_inputLatency = latency;
   LODWORD(v6) = 0;
   v4 = [(ASDObject *)self propertyChangedDelegate:0x696E70746C746E63];
   [v4 changedProperty:&v5 forObject:self];
 }
 
-- (void)setOutputLatency:(unsigned int)a3
+- (void)setOutputLatency:(unsigned int)latency
 {
-  self->_outputLatency = a3;
+  self->_outputLatency = latency;
   LODWORD(v6) = 0;
   v4 = [(ASDObject *)self propertyChangedDelegate:0x6F7574706C746E63];
   [v4 changedProperty:&v5 forObject:self];
 }
 
-- (void)setInputSafetyOffset:(unsigned int)a3
+- (void)setInputSafetyOffset:(unsigned int)offset
 {
-  self->_inputSafetyOffset = a3;
+  self->_inputSafetyOffset = offset;
   LODWORD(v6) = 0;
   v4 = [(ASDObject *)self propertyChangedDelegate:0x696E707473616674];
   [v4 changedProperty:&v5 forObject:self];
 }
 
-- (void)setOutputSafetyOffset:(unsigned int)a3
+- (void)setOutputSafetyOffset:(unsigned int)offset
 {
-  self->_outputSafetyOffset = a3;
+  self->_outputSafetyOffset = offset;
   LODWORD(v6) = 0;
   v4 = [(ASDObject *)self propertyChangedDelegate:0x6F75747073616674];
   [v4 changedProperty:&v5 forObject:self];
 }
 
-- (void)setClockDomain:(unsigned int)a3
+- (void)setClockDomain:(unsigned int)domain
 {
-  self->_clockDomain = a3;
+  self->_clockDomain = domain;
   LODWORD(v6) = 0;
   v4 = [(ASDObject *)self propertyChangedDelegate:0x676C6F62636C6B64];
   [v4 changedProperty:&v5 forObject:self];
 }
 
-- (void)setClockAlgorithm:(unsigned int)a3
+- (void)setClockAlgorithm:(unsigned int)algorithm
 {
-  self->_clockAlgorithm = a3;
+  self->_clockAlgorithm = algorithm;
   LODWORD(v6) = 0;
   v4 = [(ASDObject *)self propertyChangedDelegate:0x676C6F62636C6F6BLL];
   [v4 changedProperty:&v5 forObject:self];
 }
 
-- (void)setClockIsStable:(BOOL)a3
+- (void)setClockIsStable:(BOOL)stable
 {
-  self->_clockIsStable = a3;
+  self->_clockIsStable = stable;
   LODWORD(v6) = 0;
   v4 = [(ASDObject *)self propertyChangedDelegate:0x676C6F6263737462];
   [v4 changedProperty:&v5 forObject:self];
 }
 
-- (void)setTransportType:(unsigned int)a3
+- (void)setTransportType:(unsigned int)type
 {
-  self->_transportType = a3;
+  self->_transportType = type;
   LODWORD(v6) = 0;
   v4 = [(ASDObject *)self propertyChangedDelegate:0x676C6F627472616ELL];
   [v4 changedProperty:&v5 forObject:self];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  self->_hidden = a3;
+  self->_hidden = hidden;
   LODWORD(v6) = 0;
   v4 = [(ASDObject *)self propertyChangedDelegate:0x676C6F626869646ELL];
   [v4 changedProperty:&v5 forObject:self];
 }
 
-- (void)setGetZeroTimestampBlock:(id)a3
+- (void)setGetZeroTimestampBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if ([(ASDAudioDevice *)self isRunning])
   {
     [ASDAudioDevice setGetZeroTimestampBlock:];
   }
 
-  v4 = [v6 copy];
+  v4 = [blockCopy copy];
   getZeroTimestampBlock = self->_getZeroTimestampBlock;
   self->_getZeroTimestampBlock = v4;
 
   self->_getZeroTimestampBlockUnretained = self->_getZeroTimestampBlock;
 }
 
-- (void)setWillDoReadInputBlock:(id)a3
+- (void)setWillDoReadInputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if ([(ASDAudioDevice *)self isRunning])
   {
     [ASDAudioDevice setWillDoReadInputBlock:];
   }
 
-  v4 = [v6 copy];
+  v4 = [blockCopy copy];
   willDoReadInputBlock = self->_willDoReadInputBlock;
   self->_willDoReadInputBlock = v4;
 
   self->_willDoReadInputBlockUnretained = self->_willDoReadInputBlock;
 }
 
-- (void)setWillDoConvertInputBlock:(id)a3
+- (void)setWillDoConvertInputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if ([(ASDAudioDevice *)self isRunning])
   {
     [ASDAudioDevice setWillDoConvertInputBlock:];
   }
 
-  v4 = [v6 copy];
+  v4 = [blockCopy copy];
   willDoConvertInputBlock = self->_willDoConvertInputBlock;
   self->_willDoConvertInputBlock = v4;
 
   self->_willDoConvertInputBlockUnretained = self->_willDoConvertInputBlock;
 }
 
-- (void)setWillDoProcessInputBlock:(id)a3
+- (void)setWillDoProcessInputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if ([(ASDAudioDevice *)self isRunning])
   {
     [ASDAudioDevice setWillDoProcessInputBlock:];
   }
 
-  v4 = [v6 copy];
+  v4 = [blockCopy copy];
   willDoProcessInputBlock = self->_willDoProcessInputBlock;
   self->_willDoProcessInputBlock = v4;
 
   self->_willDoProcessInputBlockUnretained = self->_willDoProcessInputBlock;
 }
 
-- (void)setWillDoProcessOutputBlock:(id)a3
+- (void)setWillDoProcessOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if ([(ASDAudioDevice *)self isRunning])
   {
     [ASDAudioDevice setWillDoProcessOutputBlock:];
   }
 
-  v4 = [v6 copy];
+  v4 = [blockCopy copy];
   willDoProcessOutputBlock = self->_willDoProcessOutputBlock;
   self->_willDoProcessOutputBlock = v4;
 
   self->_willDoProcessOutputBlockUnretained = self->_willDoProcessOutputBlock;
 }
 
-- (void)setWillDoMixOutputBlock:(id)a3
+- (void)setWillDoMixOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if ([(ASDAudioDevice *)self isRunning])
   {
     [ASDAudioDevice setWillDoMixOutputBlock:];
   }
 
-  v4 = [v6 copy];
+  v4 = [blockCopy copy];
   willDoMixOutputBlock = self->_willDoMixOutputBlock;
   self->_willDoMixOutputBlock = v4;
 
   self->_willDoMixOutputBlockUnretained = self->_willDoMixOutputBlock;
 }
 
-- (void)setWillDoProcessMixBlock:(id)a3
+- (void)setWillDoProcessMixBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if ([(ASDAudioDevice *)self isRunning])
   {
     [ASDAudioDevice setWillDoProcessMixBlock:];
   }
 
-  v4 = [v6 copy];
+  v4 = [blockCopy copy];
   willDoProcessMixBlock = self->_willDoProcessMixBlock;
   self->_willDoProcessMixBlock = v4;
 
   self->_willDoProcessMixBlockUnretained = self->_willDoProcessMixBlock;
 }
 
-- (void)setWillDoConvertMixBlock:(id)a3
+- (void)setWillDoConvertMixBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if ([(ASDAudioDevice *)self isRunning])
   {
     [ASDAudioDevice setWillDoConvertMixBlock:];
   }
 
-  v4 = [v6 copy];
+  v4 = [blockCopy copy];
   willDoConvertMixBlock = self->_willDoConvertMixBlock;
   self->_willDoConvertMixBlock = v4;
 
   self->_willDoConvertMixBlockUnretained = self->_willDoConvertMixBlock;
 }
 
-- (void)setWillDoWriteMixBlock:(id)a3
+- (void)setWillDoWriteMixBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if ([(ASDAudioDevice *)self isRunning])
   {
     [ASDAudioDevice setWillDoWriteMixBlock:];
   }
 
-  v4 = [v6 copy];
+  v4 = [blockCopy copy];
   willDoWriteMixBlock = self->_willDoWriteMixBlock;
   self->_willDoWriteMixBlock = v4;
 
   self->_willDoWriteMixBlockUnretained = self->_willDoWriteMixBlock;
 }
 
-- (void)setBeginIOOperationBlock:(id)a3
+- (void)setBeginIOOperationBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if ([(ASDAudioDevice *)self isRunning])
   {
     [ASDAudioDevice setBeginIOOperationBlock:];
   }
 
-  v4 = [v6 copy];
+  v4 = [blockCopy copy];
   beginIOOperationBlock = self->_beginIOOperationBlock;
   self->_beginIOOperationBlock = v4;
 
   self->_beginIOOperationBlockUnretained = self->_beginIOOperationBlock;
 }
 
-- (void)setEndIOOperationBlock:(id)a3
+- (void)setEndIOOperationBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if ([(ASDAudioDevice *)self isRunning])
   {
     [ASDAudioDevice setEndIOOperationBlock:];
   }
 
-  v4 = [v6 copy];
+  v4 = [blockCopy copy];
   endIOOperationBlock = self->_endIOOperationBlock;
   self->_endIOOperationBlock = v4;
 
@@ -3605,8 +3605,8 @@ intptr_t __33__ASDAudioDevice_systemWillSleep__block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v25 + 1) + 8 * v9);
-        v11 = [(ASDObject *)self plugin];
-        [v11 removeStreamRealTimeOperations:v10];
+        plugin = [(ASDObject *)self plugin];
+        [plugin removeStreamRealTimeOperations:v10];
 
         ++v9;
       }
@@ -3639,8 +3639,8 @@ intptr_t __33__ASDAudioDevice_systemWillSleep__block_invoke(uint64_t a1)
         }
 
         v17 = *(*(&v21 + 1) + 8 * v16);
-        v18 = [(ASDObject *)self plugin];
-        [v18 removeStreamRealTimeOperations:v17];
+        plugin2 = [(ASDObject *)self plugin];
+        [plugin2 removeStreamRealTimeOperations:v17];
 
         ++v16;
       }
@@ -3658,94 +3658,94 @@ intptr_t __33__ASDAudioDevice_systemWillSleep__block_invoke(uint64_t a1)
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setExternalSecureMute:(BOOL)a3
+- (void)setExternalSecureMute:(BOOL)mute
 {
-  if (self->_externalSecureMute != a3)
+  if (self->_externalSecureMute != mute)
   {
     v9 = v3;
     v10 = v4;
-    self->_externalSecureMute = a3;
+    self->_externalSecureMute = mute;
     LODWORD(v8) = 0;
     v6 = [(ASDObject *)self plugin:0x676C6F626578736DLL];
     [v6 changedProperty:&v7 forObject:self];
   }
 }
 
-- (id)getProperty:(id)a3
+- (id)getProperty:(id)property
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 selector];
-  if (v6 <= 1819107690)
+  propertyCopy = property;
+  selector = [propertyCopy selector];
+  if (selector <= 1819107690)
   {
-    if (v6 <= 1684434035)
+    if (selector <= 1684434035)
     {
-      if (v6 <= 1668050794)
+      if (selector <= 1668050794)
       {
-        if (v6 == 1634429294)
+        if (selector == 1634429294)
         {
           goto LABEL_52;
         }
 
-        if (v6 != 1667523955)
+        if (selector != 1667523955)
         {
-          if (v6 == 1668049764)
+          if (selector == 1668049764)
           {
             v7 = objc_alloc(MEMORY[0x277CCABB0]);
-            v8 = [(ASDAudioDevice *)self clockDomain];
+            clockDomain = [(ASDAudioDevice *)self clockDomain];
             goto LABEL_101;
           }
 
           goto LABEL_90;
         }
 
-        v12 = [(ASDAudioDevice *)self clientDescription];
+        clientDescription = [(ASDAudioDevice *)self clientDescription];
         goto LABEL_102;
       }
 
-      if (v6 > 1684236337)
+      if (selector > 1684236337)
       {
-        if (v6 == 1684236338)
+        if (selector == 1684236338)
         {
           goto LABEL_52;
         }
 
-        if (v6 != 1684301171)
+        if (selector != 1684301171)
         {
           goto LABEL_90;
         }
 
-        v12 = [(ASDAudioDevice *)self deviceDescription];
+        clientDescription = [(ASDAudioDevice *)self deviceDescription];
         goto LABEL_102;
       }
 
-      if (v6 == 1668050795)
+      if (selector == 1668050795)
       {
         v7 = objc_alloc(MEMORY[0x277CCABB0]);
-        v8 = [(ASDAudioDevice *)self clockAlgorithm];
+        clockDomain = [(ASDAudioDevice *)self clockAlgorithm];
         goto LABEL_101;
       }
 
-      if (v6 != 1668510818)
+      if (selector != 1668510818)
       {
         goto LABEL_90;
       }
 
       v9 = objc_alloc(MEMORY[0x277CCABB0]);
-      v10 = [(ASDAudioDevice *)self clockIsStable];
+      clockIsStable = [(ASDAudioDevice *)self clockIsStable];
 LABEL_87:
-      v24 = v10;
+      v24 = clockIsStable;
       v25 = v9;
 LABEL_88:
-      v12 = [v25 initWithBool:v24];
+      clientDescription = [v25 initWithBool:v24];
       goto LABEL_102;
     }
 
-    if (v6 > 1818452845)
+    if (selector > 1818452845)
     {
-      if (v6 > 1818455661)
+      if (selector > 1818455661)
       {
-        if (v6 == 1818455662)
+        if (selector == 1818455662)
         {
           goto LABEL_52;
         }
@@ -3755,7 +3755,7 @@ LABEL_88:
 
       else
       {
-        if (v6 == 1818452846)
+        if (selector == 1818452846)
         {
           goto LABEL_52;
         }
@@ -3764,113 +3764,113 @@ LABEL_88:
       }
 
 LABEL_51:
-      if (v6 != v11)
+      if (selector != v11)
       {
         goto LABEL_90;
       }
 
 LABEL_52:
       v13 = MEMORY[0x277CCACA8];
-      if ([v5 selector] < 0x20000000 || objc_msgSend(v5, "selector") > 2130706431)
+      if ([propertyCopy selector] < 0x20000000 || objc_msgSend(propertyCopy, "selector") > 2130706431)
       {
         v14 = 32;
       }
 
       else
       {
-        v14 = ([v5 selector] >> 24);
+        v14 = ([propertyCopy selector] >> 24);
       }
 
-      if (([v5 selector] << 8) < 0x20000000 || (objc_msgSend(v5, "selector") << 8) > 2130706431)
+      if (([propertyCopy selector] << 8) < 0x20000000 || (objc_msgSend(propertyCopy, "selector") << 8) > 2130706431)
       {
         v15 = 32;
       }
 
       else
       {
-        v15 = (([v5 selector] << 8) >> 24);
+        v15 = (([propertyCopy selector] << 8) >> 24);
       }
 
-      if ([v5 selector] < 0x2000 || objc_msgSend(v5, "selector") > 32511)
+      if ([propertyCopy selector] < 0x2000 || objc_msgSend(propertyCopy, "selector") > 32511)
       {
         v16 = 32;
       }
 
       else
       {
-        v16 = ([v5 selector] >> 8);
+        v16 = ([propertyCopy selector] >> 8);
       }
 
-      if ([v5 selector] < 32 || objc_msgSend(v5, "selector") == 127)
+      if ([propertyCopy selector] < 32 || objc_msgSend(propertyCopy, "selector") == 127)
       {
-        v17 = 32;
+        selector2 = 32;
       }
 
       else
       {
-        v17 = [v5 selector];
+        selector2 = [propertyCopy selector];
       }
 
-      v18 = [v13 stringWithFormat:@"Property %c%c%c%c not supported yet", v14, v15, v16, v17];
-      v19 = [MEMORY[0x277CCA890] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"ASDAudioDevice+ASDProperties.m" lineNumber:167 description:v18];
+      v18 = [v13 stringWithFormat:@"Property %c%c%c%c not supported yet", v14, v15, v16, selector2];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ASDAudioDevice+ASDProperties.m" lineNumber:167 description:v18];
 
       goto LABEL_69;
     }
 
-    if (v6 != 1684434036)
+    if (selector != 1684434036)
     {
-      if (v6 == 1735354734)
+      if (selector == 1735354734)
       {
         v9 = objc_alloc(MEMORY[0x277CCABB0]);
-        v10 = [(ASDAudioDevice *)self isRunning];
+        clockIsStable = [(ASDAudioDevice *)self isRunning];
       }
 
       else
       {
-        if (v6 != 1751737454)
+        if (selector != 1751737454)
         {
           goto LABEL_90;
         }
 
         v9 = objc_alloc(MEMORY[0x277CCABB0]);
-        v10 = [(ASDAudioDevice *)self isHidden];
+        clockIsStable = [(ASDAudioDevice *)self isHidden];
       }
 
       goto LABEL_87;
     }
 
-    v22 = [v5 scope];
-    switch(v22)
+    scope = [propertyCopy scope];
+    switch(scope)
     {
       case 1869968496:
-        v23 = [(ASDAudioDevice *)self canBeDefaultOutputDevice];
+        canBeDefaultOutputDevice = [(ASDAudioDevice *)self canBeDefaultOutputDevice];
         break;
       case 1768845428:
-        v23 = [(ASDAudioDevice *)self canBeDefaultInputDevice];
+        canBeDefaultOutputDevice = [(ASDAudioDevice *)self canBeDefaultInputDevice];
         break;
       case 1735159650:
-        v23 = [(ASDAudioDevice *)self canBeDefaultDevice];
+        canBeDefaultOutputDevice = [(ASDAudioDevice *)self canBeDefaultDevice];
         break;
       default:
         v31 = 0;
         goto LABEL_110;
     }
 
-    v31 = v23;
+    v31 = canBeDefaultOutputDevice;
 LABEL_110:
     v25 = objc_alloc(MEMORY[0x277CCABB0]);
     v24 = v31;
     goto LABEL_88;
   }
 
-  if (v6 <= 1919512166)
+  if (selector <= 1919512166)
   {
-    if (v6 > 1836411235)
+    if (selector > 1836411235)
     {
-      if (v6 > 1853059699)
+      if (selector > 1853059699)
       {
-        if (v6 != 1853059700)
+        if (selector != 1853059700)
         {
           v11 = 1870098020;
           goto LABEL_51;
@@ -3878,213 +3878,213 @@ LABEL_110:
 
         v21 = objc_alloc(MEMORY[0x277CCABB0]);
         [(ASDAudioDevice *)self samplingRate];
-        v12 = [v21 initWithDouble:?];
+        clientDescription = [v21 initWithDouble:?];
       }
 
-      else if (v6 == 1836411236)
+      else if (selector == 1836411236)
       {
-        v12 = [(ASDAudioDevice *)self modelUID];
+        clientDescription = [(ASDAudioDevice *)self modelUID];
       }
 
       else
       {
-        if (v6 != 1853059619)
+        if (selector != 1853059619)
         {
           goto LABEL_90;
         }
 
-        v12 = [(ASDAudioDevice *)self samplingRates];
+        clientDescription = [(ASDAudioDevice *)self samplingRates];
       }
 
 LABEL_102:
-      v20 = v12;
+      value = clientDescription;
       goto LABEL_103;
     }
 
-    if (v6 == 1819107691)
+    if (selector == 1819107691)
     {
-      v12 = [(ASDAudioDevice *)self manufacturerName];
+      clientDescription = [(ASDAudioDevice *)self manufacturerName];
       goto LABEL_102;
     }
 
-    if (v6 == 1819173229)
+    if (selector == 1819173229)
     {
-      v12 = [(ASDAudioDevice *)self deviceName];
+      clientDescription = [(ASDAudioDevice *)self deviceName];
       goto LABEL_102;
     }
 
-    if (v6 != 1819569763)
+    if (selector != 1819569763)
     {
       goto LABEL_90;
     }
 
-    if ([v5 scope] == 1768845428)
+    if ([propertyCopy scope] == 1768845428)
     {
       v7 = objc_alloc(MEMORY[0x277CCABB0]);
       goto LABEL_41;
     }
 
-    if ([v5 scope] == 1869968496)
+    if ([propertyCopy scope] == 1869968496)
     {
       v7 = objc_alloc(MEMORY[0x277CCABB0]);
     }
 
     else
     {
-      if ([v5 scope] != 1735159650)
+      if ([propertyCopy scope] != 1735159650)
       {
         goto LABEL_69;
       }
 
       v7 = objc_alloc(MEMORY[0x277CCABB0]);
-      v32 = [(ASDAudioDevice *)self inputLatency];
-      if (v32 > [(ASDAudioDevice *)self outputLatency])
+      inputLatency = [(ASDAudioDevice *)self inputLatency];
+      if (inputLatency > [(ASDAudioDevice *)self outputLatency])
       {
 LABEL_41:
-        v8 = [(ASDAudioDevice *)self inputLatency];
+        clockDomain = [(ASDAudioDevice *)self inputLatency];
         goto LABEL_101;
       }
     }
 
-    v8 = [(ASDAudioDevice *)self outputLatency];
+    clockDomain = [(ASDAudioDevice *)self outputLatency];
     goto LABEL_101;
   }
 
-  if (v6 > 1937007733)
+  if (selector > 1937007733)
   {
-    if (v6 > 1953653101)
+    if (selector > 1953653101)
     {
-      if (v6 == 1953653102)
+      if (selector == 1953653102)
       {
         v7 = objc_alloc(MEMORY[0x277CCABB0]);
-        v8 = [(ASDAudioDevice *)self transportType];
+        clockDomain = [(ASDAudioDevice *)self transportType];
         goto LABEL_101;
       }
 
-      if (v6 != 1969841184)
+      if (selector != 1969841184)
       {
         goto LABEL_90;
       }
 
-      v12 = [(ASDAudioDevice *)self deviceUID];
+      clientDescription = [(ASDAudioDevice *)self deviceUID];
     }
 
     else
     {
-      if (v6 != 1937007734)
+      if (selector != 1937007734)
       {
         v11 = 1937009955;
         goto LABEL_51;
       }
 
-      v12 = [(ASDObject *)self owner];
+      clientDescription = [(ASDObject *)self owner];
     }
 
     goto LABEL_102;
   }
 
-  if (v6 > 1936092275)
+  if (selector > 1936092275)
   {
-    if (v6 != 1936092276)
+    if (selector != 1936092276)
     {
       v11 = 1936879204;
       goto LABEL_51;
     }
 
     v9 = objc_alloc(MEMORY[0x277CCABB0]);
-    v10 = [(ASDAudioDevice *)self canBeDefaultSystemDevice];
+    clockIsStable = [(ASDAudioDevice *)self canBeDefaultSystemDevice];
     goto LABEL_87;
   }
 
-  if (v6 == 1919512167)
+  if (selector == 1919512167)
   {
     v7 = objc_alloc(MEMORY[0x277CCABB0]);
-    v8 = [(ASDAudioDevice *)self timestampPeriod];
+    clockDomain = [(ASDAudioDevice *)self timestampPeriod];
     goto LABEL_101;
   }
 
-  if (v6 == 1935763060)
+  if (selector == 1935763060)
   {
-    if ([v5 scope] == 1768845428)
+    if ([propertyCopy scope] == 1768845428)
     {
       v7 = objc_alloc(MEMORY[0x277CCABB0]);
 LABEL_9:
-      v8 = [(ASDAudioDevice *)self inputSafetyOffset];
+      clockDomain = [(ASDAudioDevice *)self inputSafetyOffset];
 LABEL_101:
-      v12 = [v7 initWithUnsignedInt:v8];
+      clientDescription = [v7 initWithUnsignedInt:clockDomain];
       goto LABEL_102;
     }
 
-    if ([v5 scope] == 1869968496)
+    if ([propertyCopy scope] == 1869968496)
     {
       v7 = objc_alloc(MEMORY[0x277CCABB0]);
       goto LABEL_100;
     }
 
-    if ([v5 scope] == 1735159650)
+    if ([propertyCopy scope] == 1735159650)
     {
       v7 = objc_alloc(MEMORY[0x277CCABB0]);
-      v33 = [(ASDAudioDevice *)self inputSafetyOffset];
-      if (v33 > [(ASDAudioDevice *)self outputSafetyOffset])
+      inputSafetyOffset = [(ASDAudioDevice *)self inputSafetyOffset];
+      if (inputSafetyOffset > [(ASDAudioDevice *)self outputSafetyOffset])
       {
         goto LABEL_9;
       }
 
 LABEL_100:
-      v8 = [(ASDAudioDevice *)self outputSafetyOffset];
+      clockDomain = [(ASDAudioDevice *)self outputSafetyOffset];
       goto LABEL_101;
     }
 
 LABEL_69:
-    v20 = 0;
+    value = 0;
     goto LABEL_103;
   }
 
 LABEL_90:
-  v37 = [v5 audioObjectPropertyAddress];
+  audioObjectPropertyAddress = [propertyCopy audioObjectPropertyAddress];
   v38 = v26;
-  v27 = [(ASDObject *)self customPropertyWithAddress:&v37];
-  v20 = [v27 value];
-  if (!v20 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  v27 = [(ASDObject *)self customPropertyWithAddress:&audioObjectPropertyAddress];
+  value = [v27 value];
+  if (!value && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    if ([v5 selector] < 0x20000000 || objc_msgSend(v5, "selector") > 2130706431)
+    if ([propertyCopy selector] < 0x20000000 || objc_msgSend(propertyCopy, "selector") > 2130706431)
     {
       v28 = 32;
     }
 
     else
     {
-      v28 = [v5 selector] >> 24;
+      v28 = [propertyCopy selector] >> 24;
     }
 
-    if (([v5 selector] << 8) < 0x20000000 || (objc_msgSend(v5, "selector") << 8) > 2130706431)
+    if (([propertyCopy selector] << 8) < 0x20000000 || (objc_msgSend(propertyCopy, "selector") << 8) > 2130706431)
     {
       v34 = 32;
     }
 
     else
     {
-      v34 = ([v5 selector] << 8) >> 24;
+      v34 = ([propertyCopy selector] << 8) >> 24;
     }
 
-    if ([v5 selector] < 0x2000 || objc_msgSend(v5, "selector") > 32511)
+    if ([propertyCopy selector] < 0x2000 || objc_msgSend(propertyCopy, "selector") > 32511)
     {
       v35 = 32;
     }
 
     else
     {
-      v35 = [v5 selector] >> 8;
+      v35 = [propertyCopy selector] >> 8;
     }
 
-    if ([v5 selector] < 32 || objc_msgSend(v5, "selector") == 127)
+    if ([propertyCopy selector] < 32 || objc_msgSend(propertyCopy, "selector") == 127)
     {
-      v36 = 32;
+      selector3 = 32;
     }
 
     else
     {
-      v36 = [v5 selector];
+      selector3 = [propertyCopy selector];
     }
 
     *buf = 67109888;
@@ -4094,14 +4094,14 @@ LABEL_90:
     v43 = 1024;
     v44 = v35;
     v45 = 1024;
-    v46 = v36;
+    v46 = selector3;
     _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Property %c%c%c%c not found", buf, 0x1Au);
   }
 
 LABEL_103:
   v29 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return value;
 }
 
 - (void)addInputStream:(uint64_t)a1 .cold.1(uint64_t a1)
@@ -4152,7 +4152,7 @@ void __37__ASDAudioDevice_removeOutputStream___block_invoke_cold_1()
 - (void)performStartIO
 {
   OUTLINED_FUNCTION_2_0();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_1_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -4160,7 +4160,7 @@ void __37__ASDAudioDevice_removeOutputStream___block_invoke_cold_1()
 - (void)performStopIO
 {
   OUTLINED_FUNCTION_2_0();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_1_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

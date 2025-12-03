@@ -7,7 +7,7 @@
 
 + (id)itk_preferredFontWithTextStyle:()ITKUtilities weight:
 {
-  v3 = [a1 preferredFontForTextStyle:?];
+  v3 = [self preferredFontForTextStyle:?];
   v4 = [v3 itk_fontWithWeight:a2];
 
   return v4;
@@ -24,11 +24,11 @@
   v13[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-  v5 = [a1 fontDescriptor];
-  v6 = [v5 fontDescriptorByAddingAttributes:v4];
+  fontDescriptor = [self fontDescriptor];
+  v6 = [fontDescriptor fontDescriptorByAddingAttributes:v4];
 
   v7 = MEMORY[0x277D74300];
-  [a1 pointSize];
+  [self pointSize];
   v8 = [v7 fontWithDescriptor:v6 size:?];
 
   return v8;

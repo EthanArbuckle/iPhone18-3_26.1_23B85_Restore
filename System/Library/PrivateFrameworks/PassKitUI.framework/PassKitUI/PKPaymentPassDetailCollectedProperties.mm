@@ -1,31 +1,31 @@
 @interface PKPaymentPassDetailCollectedProperties
-- (PKPaymentPassDetailCollectedProperties)initWithPass:(id)a3 transitPassProperties:(id)a4 transitBalanceModel:(id)a5 balances:(id)a6 actionForBalanceIdentifier:(id)a7 transitPropertiesBalanceReminder:(id)a8 reminderForBalanceIdentifier:(id)a9;
+- (PKPaymentPassDetailCollectedProperties)initWithPass:(id)pass transitPassProperties:(id)properties transitBalanceModel:(id)model balances:(id)balances actionForBalanceIdentifier:(id)identifier transitPropertiesBalanceReminder:(id)reminder reminderForBalanceIdentifier:(id)balanceIdentifier;
 @end
 
 @implementation PKPaymentPassDetailCollectedProperties
 
-- (PKPaymentPassDetailCollectedProperties)initWithPass:(id)a3 transitPassProperties:(id)a4 transitBalanceModel:(id)a5 balances:(id)a6 actionForBalanceIdentifier:(id)a7 transitPropertiesBalanceReminder:(id)a8 reminderForBalanceIdentifier:(id)a9
+- (PKPaymentPassDetailCollectedProperties)initWithPass:(id)pass transitPassProperties:(id)properties transitBalanceModel:(id)model balances:(id)balances actionForBalanceIdentifier:(id)identifier transitPropertiesBalanceReminder:(id)reminder reminderForBalanceIdentifier:(id)balanceIdentifier
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  passCopy = pass;
+  propertiesCopy = properties;
+  modelCopy = model;
+  balancesCopy = balances;
+  identifierCopy = identifier;
+  reminderCopy = reminder;
+  balanceIdentifierCopy = balanceIdentifier;
   v26.receiver = self;
   v26.super_class = PKPaymentPassDetailCollectedProperties;
   v18 = [(PKPaymentPassDetailCollectedProperties *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_pass, a3);
-    objc_storeStrong(&v19->_transitPassProperties, a4);
-    objc_storeStrong(&v19->_transitBalanceModel, a5);
-    objc_storeStrong(&v19->_balances, a6);
-    objc_storeStrong(&v19->_actionForBalanceIdentifier, a7);
-    objc_storeStrong(&v19->_transitPropertiesBalanceReminder, a8);
-    objc_storeStrong(&v19->_reminderForBalanceIdentifier, a9);
+    objc_storeStrong(&v18->_pass, pass);
+    objc_storeStrong(&v19->_transitPassProperties, properties);
+    objc_storeStrong(&v19->_transitBalanceModel, model);
+    objc_storeStrong(&v19->_balances, balances);
+    objc_storeStrong(&v19->_actionForBalanceIdentifier, identifier);
+    objc_storeStrong(&v19->_transitPropertiesBalanceReminder, reminder);
+    objc_storeStrong(&v19->_reminderForBalanceIdentifier, balanceIdentifier);
   }
 
   return v19;

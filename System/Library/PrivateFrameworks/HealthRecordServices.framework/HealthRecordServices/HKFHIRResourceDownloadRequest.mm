@@ -1,37 +1,37 @@
 @interface HKFHIRResourceDownloadRequest
-- (BOOL)isEqual:(id)a3;
-- (HKFHIRResourceDownloadRequest)initWithCoder:(id)a3;
-- (HKFHIRResourceDownloadRequest)initWithResourceType:(id)a3 resourceSchemaDefinition:(id)a4 fullRequestURL:(id)a5 context:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HKFHIRResourceDownloadRequest)initWithCoder:(id)coder;
+- (HKFHIRResourceDownloadRequest)initWithResourceType:(id)type resourceSchemaDefinition:(id)definition fullRequestURL:(id)l context:(id)context;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFHIRResourceDownloadRequest
 
-- (HKFHIRResourceDownloadRequest)initWithResourceType:(id)a3 resourceSchemaDefinition:(id)a4 fullRequestURL:(id)a5 context:(id)a6
+- (HKFHIRResourceDownloadRequest)initWithResourceType:(id)type resourceSchemaDefinition:(id)definition fullRequestURL:(id)l context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  definitionCopy = definition;
+  lCopy = l;
+  contextCopy = context;
   v24.receiver = self;
   v24.super_class = HKFHIRResourceDownloadRequest;
   v14 = [(HKFHIRResourceDownloadRequest *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [typeCopy copy];
     resourceType = v14->_resourceType;
     v14->_resourceType = v15;
 
-    v17 = [v11 copy];
+    v17 = [definitionCopy copy];
     resourceSchemaDefinition = v14->_resourceSchemaDefinition;
     v14->_resourceSchemaDefinition = v17;
 
-    v19 = [v12 copy];
+    v19 = [lCopy copy];
     fullRequestURL = v14->_fullRequestURL;
     v14->_fullRequestURL = v19;
 
-    v21 = [v13 copy];
+    v21 = [contextCopy copy];
     context = v14->_context;
     v14->_context = v21;
   }
@@ -39,126 +39,126 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      LOBYTE(v13) = 0;
+      LOBYTE(resourceSchemaDefinition3) = 0;
 LABEL_42:
 
       goto LABEL_43;
     }
 
     resourceType = self->_resourceType;
-    v9 = [(HKFHIRResourceDownloadRequest *)v7 resourceType];
-    if (resourceType != v9)
+    resourceType = [(HKFHIRResourceDownloadRequest *)v7 resourceType];
+    if (resourceType != resourceType)
     {
-      v10 = [(HKFHIRResourceDownloadRequest *)v7 resourceType];
-      if (!v10)
+      resourceType2 = [(HKFHIRResourceDownloadRequest *)v7 resourceType];
+      if (!resourceType2)
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(resourceSchemaDefinition3) = 0;
         goto LABEL_41;
       }
 
-      v3 = v10;
+      v3 = resourceType2;
       v11 = self->_resourceType;
-      v12 = [(HKFHIRResourceDownloadRequest *)v7 resourceType];
-      if (![(NSString *)v11 isEqualToString:v12])
+      resourceType3 = [(HKFHIRResourceDownloadRequest *)v7 resourceType];
+      if (![(NSString *)v11 isEqualToString:resourceType3])
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(resourceSchemaDefinition3) = 0;
 LABEL_40:
 
         goto LABEL_41;
       }
 
-      v41 = v12;
+      v41 = resourceType3;
     }
 
     resourceSchemaDefinition = self->_resourceSchemaDefinition;
-    v15 = [(HKFHIRResourceDownloadRequest *)v7 resourceSchemaDefinition];
+    resourceSchemaDefinition = [(HKFHIRResourceDownloadRequest *)v7 resourceSchemaDefinition];
     v42 = resourceSchemaDefinition;
-    if (resourceSchemaDefinition != v15)
+    if (resourceSchemaDefinition != resourceSchemaDefinition)
     {
-      v16 = [(HKFHIRResourceDownloadRequest *)v7 resourceSchemaDefinition];
-      if (!v16)
+      resourceSchemaDefinition2 = [(HKFHIRResourceDownloadRequest *)v7 resourceSchemaDefinition];
+      if (!resourceSchemaDefinition2)
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(resourceSchemaDefinition3) = 0;
         goto LABEL_38;
       }
 
-      v17 = v16;
+      v17 = resourceSchemaDefinition2;
       v18 = self->_resourceSchemaDefinition;
-      v13 = [(HKFHIRResourceDownloadRequest *)v7 resourceSchemaDefinition];
-      if (([(NSDictionary *)v18 isEqual:v13]& 1) == 0)
+      resourceSchemaDefinition3 = [(HKFHIRResourceDownloadRequest *)v7 resourceSchemaDefinition];
+      if (([(NSDictionary *)v18 isEqual:resourceSchemaDefinition3]& 1) == 0)
       {
 
-        LOBYTE(v13) = 0;
+        LOBYTE(resourceSchemaDefinition3) = 0;
         goto LABEL_39;
       }
 
-      v38 = v13;
+      v38 = resourceSchemaDefinition3;
       v39 = v17;
     }
 
     fullRequestURL = self->_fullRequestURL;
-    v40 = [(HKFHIRResourceDownloadRequest *)v7 fullRequestURL];
-    if (fullRequestURL == v40)
+    fullRequestURL = [(HKFHIRResourceDownloadRequest *)v7 fullRequestURL];
+    if (fullRequestURL == fullRequestURL)
     {
       v37 = v3;
     }
 
     else
     {
-      v13 = [(HKFHIRResourceDownloadRequest *)v7 fullRequestURL];
-      if (!v13)
+      resourceSchemaDefinition3 = [(HKFHIRResourceDownloadRequest *)v7 fullRequestURL];
+      if (!resourceSchemaDefinition3)
       {
         v31 = v38;
         v32 = v39;
-        v30 = v40;
+        v30 = fullRequestURL;
         goto LABEL_30;
       }
 
       v20 = self->_fullRequestURL;
-      v21 = [(HKFHIRResourceDownloadRequest *)v7 fullRequestURL];
+      fullRequestURL2 = [(HKFHIRResourceDownloadRequest *)v7 fullRequestURL];
       v22 = v20;
-      v23 = v21;
-      if (([(NSURL *)v22 isEqual:v21]& 1) == 0)
+      v23 = fullRequestURL2;
+      if (([(NSURL *)v22 isEqual:fullRequestURL2]& 1) == 0)
       {
 
-        LOBYTE(v13) = 0;
-        v29 = v42 == v15;
+        LOBYTE(resourceSchemaDefinition3) = 0;
+        v29 = v42 == resourceSchemaDefinition;
         goto LABEL_33;
       }
 
       v34 = v23;
-      v36 = v13;
+      v36 = resourceSchemaDefinition3;
       v37 = v3;
     }
 
     context = self->_context;
-    v25 = [(HKFHIRResourceDownloadRequest *)v7 context];
-    LOBYTE(v13) = context == v25;
-    if (context != v25)
+    context = [(HKFHIRResourceDownloadRequest *)v7 context];
+    LOBYTE(resourceSchemaDefinition3) = context == context;
+    if (context != context)
     {
-      v26 = [(HKFHIRResourceDownloadRequest *)v7 context];
-      if (v26)
+      context2 = [(HKFHIRResourceDownloadRequest *)v7 context];
+      if (context2)
       {
-        v27 = v26;
-        v13 = self->_context;
-        v28 = [(HKFHIRResourceDownloadRequest *)v7 context];
-        LOBYTE(v13) = [v13 isEqual:v28];
+        v27 = context2;
+        resourceSchemaDefinition3 = self->_context;
+        context3 = [(HKFHIRResourceDownloadRequest *)v7 context];
+        LOBYTE(resourceSchemaDefinition3) = [resourceSchemaDefinition3 isEqual:context3];
 
-        if (fullRequestURL != v40)
+        if (fullRequestURL != fullRequestURL)
         {
         }
 
-        v29 = v42 == v15;
+        v29 = v42 == resourceSchemaDefinition;
         v3 = v37;
 LABEL_33:
         v32 = v39;
@@ -171,8 +171,8 @@ LABEL_37:
 LABEL_38:
 
 LABEL_39:
-        v12 = v41;
-        if (resourceType != v9)
+        resourceType3 = v41;
+        if (resourceType != resourceType)
         {
           goto LABEL_40;
         }
@@ -183,14 +183,14 @@ LABEL_41:
       }
     }
 
-    v30 = v40;
-    if (fullRequestURL == v40)
+    v30 = fullRequestURL;
+    if (fullRequestURL == fullRequestURL)
     {
 
       v3 = v37;
       v31 = v38;
       v32 = v39;
-      if (v42 == v15)
+      if (v42 == resourceSchemaDefinition)
       {
         goto LABEL_38;
       }
@@ -205,7 +205,7 @@ LABEL_36:
     v32 = v39;
 LABEL_30:
 
-    if (v42 == v15)
+    if (v42 == resourceSchemaDefinition)
     {
       goto LABEL_38;
     }
@@ -213,10 +213,10 @@ LABEL_30:
     goto LABEL_36;
   }
 
-  LOBYTE(v13) = 1;
+  LOBYTE(resourceSchemaDefinition3) = 1;
 LABEL_43:
 
-  return v13;
+  return resourceSchemaDefinition3;
 }
 
 - (id)description
@@ -232,25 +232,25 @@ LABEL_43:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   resourceType = self->_resourceType;
-  v5 = a3;
-  [v5 encodeObject:resourceType forKey:@"resourceType"];
-  [v5 encodeObject:self->_resourceSchemaDefinition forKey:@"resourceSchemaDefinition"];
-  [v5 encodeObject:self->_fullRequestURL forKey:@"fullRequestURL"];
-  [v5 encodeObject:self->_context forKey:@"context"];
+  coderCopy = coder;
+  [coderCopy encodeObject:resourceType forKey:@"resourceType"];
+  [coderCopy encodeObject:self->_resourceSchemaDefinition forKey:@"resourceSchemaDefinition"];
+  [coderCopy encodeObject:self->_fullRequestURL forKey:@"fullRequestURL"];
+  [coderCopy encodeObject:self->_context forKey:@"context"];
 }
 
-- (HKFHIRResourceDownloadRequest)initWithCoder:(id)a3
+- (HKFHIRResourceDownloadRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resourceType"];
-  v6 = [MEMORY[0x277CCAAA0] hk_JSONObjectSecureCodingClasses];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"resourceSchemaDefinition"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resourceType"];
+  hk_JSONObjectSecureCodingClasses = [MEMORY[0x277CCAAA0] hk_JSONObjectSecureCodingClasses];
+  v7 = [coderCopy decodeObjectOfClasses:hk_JSONObjectSecureCodingClasses forKey:@"resourceSchemaDefinition"];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullRequestURL"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullRequestURL"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
   v10 = v9;
   if (v5)
   {
@@ -264,17 +264,17 @@ LABEL_43:
 
   if (v11)
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v12 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HKFHIRResourceDownloadRequest *)self initWithResourceType:v5 resourceSchemaDefinition:v7 fullRequestURL:v8 context:v9];
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

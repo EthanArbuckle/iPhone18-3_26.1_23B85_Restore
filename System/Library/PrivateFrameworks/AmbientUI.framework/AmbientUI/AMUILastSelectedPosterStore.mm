@@ -1,38 +1,38 @@
 @interface AMUILastSelectedPosterStore
 + (id)new;
 - (AMUILastSelectedPosterStore)init;
-- (AMUILastSelectedPosterStore)initWithAmbientDefaults:(id)a3;
-- (id)lastSelectedConfigurationUUIDForChargerIdentifier:(id)a3 providerBundleIdentifier:(id)a4;
-- (void)_performWithSelectedConfigurationsForChargerIdentifier:(id)a3 onlyIfPresent:(BOOL)a4 block:(id)a5;
+- (AMUILastSelectedPosterStore)initWithAmbientDefaults:(id)defaults;
+- (id)lastSelectedConfigurationUUIDForChargerIdentifier:(id)identifier providerBundleIdentifier:(id)bundleIdentifier;
+- (void)_performWithSelectedConfigurationsForChargerIdentifier:(id)identifier onlyIfPresent:(BOOL)present block:(id)block;
 - (void)_synchronize;
-- (void)setLastSelectedConfigurationUUID:(id)a3 forChargerIdentifier:(id)a4 providerBundleIdentifier:(id)a5;
+- (void)setLastSelectedConfigurationUUID:(id)d forChargerIdentifier:(id)identifier providerBundleIdentifier:(id)bundleIdentifier;
 @end
 
 @implementation AMUILastSelectedPosterStore
 
-- (AMUILastSelectedPosterStore)initWithAmbientDefaults:(id)a3
+- (AMUILastSelectedPosterStore)initWithAmbientDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v17.receiver = self;
   v17.super_class = AMUILastSelectedPosterStore;
   v6 = [(AMUILastSelectedPosterStore *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ambientDefaults, a3);
-    v8 = [(AMAmbientDefaults *)v7->_ambientDefaults lastSelectedConfigurations];
-    v9 = v8;
-    if (!v8)
+    objc_storeStrong(&v6->_ambientDefaults, defaults);
+    lastSelectedConfigurations = [(AMAmbientDefaults *)v7->_ambientDefaults lastSelectedConfigurations];
+    v9 = lastSelectedConfigurations;
+    if (!lastSelectedConfigurations)
     {
-      v8 = MEMORY[0x277CBEC10];
+      lastSelectedConfigurations = MEMORY[0x277CBEC10];
     }
 
-    v10 = [v8 mutableCopy];
+    v10 = [lastSelectedConfigurations mutableCopy];
     cachedLastSelectedConfigurations = v7->_cachedLastSelectedConfigurations;
     v7->_cachedLastSelectedConfigurations = v10;
 
-    v12 = [MEMORY[0x277CF0C18] serial];
-    v13 = [v12 serviceClass:17];
+    serial = [MEMORY[0x277CF0C18] serial];
+    v13 = [serial serviceClass:17];
     v14 = BSDispatchQueueCreate();
     persistenceQueue = v7->_persistenceQueue;
     v7->_persistenceQueue = v14;
@@ -54,7 +54,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"AMUILastSelectedPosterStore.m";
     v17 = 1024;
@@ -83,7 +83,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"AMUILastSelectedPosterStore.m";
     v17 = 1024;
@@ -99,10 +99,10 @@
   return result;
 }
 
-- (id)lastSelectedConfigurationUUIDForChargerIdentifier:(id)a3 providerBundleIdentifier:(id)a4
+- (id)lastSelectedConfigurationUUIDForChargerIdentifier:(id)identifier providerBundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -114,9 +114,9 @@
   v11[2] = __106__AMUILastSelectedPosterStore_lastSelectedConfigurationUUIDForChargerIdentifier_providerBundleIdentifier___block_invoke;
   v11[3] = &unk_278C76388;
   v13 = &v14;
-  v8 = v7;
+  v8 = bundleIdentifierCopy;
   v12 = v8;
-  [(AMUILastSelectedPosterStore *)self _performWithSelectedConfigurationsForChargerIdentifier:v6 onlyIfPresent:1 block:v11];
+  [(AMUILastSelectedPosterStore *)self _performWithSelectedConfigurationsForChargerIdentifier:identifierCopy onlyIfPresent:1 block:v11];
   v9 = v15[5];
 
   _Block_object_dispose(&v14, 8);
@@ -134,27 +134,27 @@ uint64_t __106__AMUILastSelectedPosterStore_lastSelectedConfigurationUUIDForChar
   return MEMORY[0x2821F96F8](v3, v5);
 }
 
-- (void)setLastSelectedConfigurationUUID:(id)a3 forChargerIdentifier:(id)a4 providerBundleIdentifier:(id)a5
+- (void)setLastSelectedConfigurationUUID:(id)d forChargerIdentifier:(id)identifier providerBundleIdentifier:(id)bundleIdentifier
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  bundleIdentifierCopy = bundleIdentifier;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __110__AMUILastSelectedPosterStore_setLastSelectedConfigurationUUID_forChargerIdentifier_providerBundleIdentifier___block_invoke;
   v12[3] = &unk_278C763B0;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(AMUILastSelectedPosterStore *)self _performWithSelectedConfigurationsForChargerIdentifier:a4 block:v12];
+  v13 = dCopy;
+  v14 = bundleIdentifierCopy;
+  v10 = bundleIdentifierCopy;
+  v11 = dCopy;
+  [(AMUILastSelectedPosterStore *)self _performWithSelectedConfigurationsForChargerIdentifier:identifier block:v12];
 }
 
-- (void)_performWithSelectedConfigurationsForChargerIdentifier:(id)a3 onlyIfPresent:(BOOL)a4 block:(id)a5
+- (void)_performWithSelectedConfigurationsForChargerIdentifier:(id)identifier onlyIfPresent:(BOOL)present block:(id)block
 {
   *(&v37[1] + 4) = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v27 = a5;
-  v8 = [(NSMutableDictionary *)self->_cachedLastSelectedConfigurations objectForKeyedSubscript:v26];
+  identifierCopy = identifier;
+  blockCopy = block;
+  v8 = [(NSMutableDictionary *)self->_cachedLastSelectedConfigurations objectForKeyedSubscript:identifierCopy];
   v9 = v8 == 0;
   if (v8)
   {
@@ -171,7 +171,7 @@ uint64_t __106__AMUILastSelectedPosterStore_lastSelectedConfigurationUUIDForChar
   {
     v12 = objc_alloc_init(AMUISelectedConfigurations);
 LABEL_8:
-    if (a4)
+    if (present)
     {
       goto LABEL_17;
     }
@@ -187,9 +187,9 @@ LABEL_8:
 
 LABEL_9:
   v13 = v12;
-  v27[2](v27, v12);
-  v14 = [(AMUISelectedConfigurations *)v13 dictionaryRepresentation];
-  [(NSMutableDictionary *)self->_cachedLastSelectedConfigurations setObject:v14 forKeyedSubscript:v26];
+  blockCopy[2](blockCopy, v12);
+  dictionaryRepresentation = [(AMUISelectedConfigurations *)v13 dictionaryRepresentation];
+  [(NSMutableDictionary *)self->_cachedLastSelectedConfigurations setObject:dictionaryRepresentation forKeyedSubscript:identifierCopy];
 
   if ([(NSMutableDictionary *)self->_cachedLastSelectedConfigurations count]>= 0x33)
   {
@@ -219,10 +219,10 @@ LABEL_9:
       v17 = *(v32[0] + 40);
       if (!v17)
       {
-        v18 = [(NSMutableDictionary *)self->_cachedLastSelectedConfigurations allKeys];
-        v19 = [v18 lastObject];
+        allKeys = [(NSMutableDictionary *)self->_cachedLastSelectedConfigurations allKeys];
+        lastObject = [allKeys lastObject];
         v20 = *(v32[0] + 40);
-        *(v32[0] + 40) = v19;
+        *(v32[0] + 40) = lastObject;
 
         v21 = AMUILogSwitcher();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))

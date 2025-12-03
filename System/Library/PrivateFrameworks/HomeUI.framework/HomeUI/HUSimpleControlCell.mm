@@ -2,7 +2,7 @@
 - (id)allControlViews;
 - (void)_updateSliderConstraints;
 - (void)prepareForReuse;
-- (void)setControlView:(id)a3;
+- (void)setControlView:(id)view;
 @end
 
 @implementation HUSimpleControlCell
@@ -10,76 +10,76 @@
 - (id)allControlViews
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUSimpleControlCell *)self controlView];
-  v4 = [v2 na_setWithSafeObject:v3];
+  controlView = [(HUSimpleControlCell *)self controlView];
+  v4 = [v2 na_setWithSafeObject:controlView];
 
   return v4;
 }
 
-- (void)setControlView:(id)a3
+- (void)setControlView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   controlView = self->_controlView;
-  if (controlView != v5)
+  if (controlView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(HUControlView *)controlView removeFromSuperview];
-    objc_storeStrong(&self->_controlView, a3);
+    objc_storeStrong(&self->_controlView, view);
     [(HUControlView *)self->_controlView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(HUSimpleControlCell *)self contentView];
-    [v7 addSubview:self->_controlView];
+    contentView = [(HUSimpleControlCell *)self contentView];
+    [contentView addSubview:self->_controlView];
 
     [(HUSimpleControlCell *)self _updateSliderConstraints];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
 - (void)_updateSliderConstraints
 {
-  v3 = [(HUSimpleControlCell *)self controlViewConstraints];
+  controlViewConstraints = [(HUSimpleControlCell *)self controlViewConstraints];
 
-  if (v3)
+  if (controlViewConstraints)
   {
     v4 = MEMORY[0x277CCAAD0];
-    v5 = [(HUSimpleControlCell *)self controlViewConstraints];
-    [v4 deactivateConstraints:v5];
+    controlViewConstraints2 = [(HUSimpleControlCell *)self controlViewConstraints];
+    [v4 deactivateConstraints:controlViewConstraints2];
   }
 
-  v25 = [MEMORY[0x277CBEB18] array];
-  v6 = [(HUSimpleControlCell *)self controlView];
+  array = [MEMORY[0x277CBEB18] array];
+  controlView = [(HUSimpleControlCell *)self controlView];
 
-  if (v6)
+  if (controlView)
   {
-    v7 = [(HUSimpleControlCell *)self contentView];
-    v8 = [v7 layoutMarginsGuide];
+    contentView = [(HUSimpleControlCell *)self contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
 
-    v9 = [(HUSimpleControlCell *)self controlView];
-    v10 = [v9 widthAnchor];
-    v11 = [v8 widthAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
-    [v25 addObject:v12];
+    controlView2 = [(HUSimpleControlCell *)self controlView];
+    widthAnchor = [controlView2 widthAnchor];
+    widthAnchor2 = [layoutMarginsGuide widthAnchor];
+    v12 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+    [array addObject:v12];
 
-    v13 = [(HUSimpleControlCell *)self controlView];
-    v14 = [v13 leftAnchor];
-    v15 = [v8 leftAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
-    [v25 addObject:v16];
+    controlView3 = [(HUSimpleControlCell *)self controlView];
+    leftAnchor = [controlView3 leftAnchor];
+    leftAnchor2 = [layoutMarginsGuide leftAnchor];
+    v16 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
+    [array addObject:v16];
 
-    v17 = [(HUSimpleControlCell *)self controlView];
-    v18 = [v17 topAnchor];
-    v19 = [v8 topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
-    [v25 addObject:v20];
+    controlView4 = [(HUSimpleControlCell *)self controlView];
+    topAnchor = [controlView4 topAnchor];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v20];
 
-    v21 = [(HUSimpleControlCell *)self controlView];
-    v22 = [v21 heightAnchor];
-    v23 = [v8 heightAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
-    [v25 addObject:v24];
+    controlView5 = [(HUSimpleControlCell *)self controlView];
+    heightAnchor = [controlView5 heightAnchor];
+    heightAnchor2 = [layoutMarginsGuide heightAnchor];
+    v24 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
+    [array addObject:v24];
   }
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v25];
-  [(HUSimpleControlCell *)self setControlViewConstraints:v25];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
+  [(HUSimpleControlCell *)self setControlViewConstraints:array];
 }
 
 - (void)prepareForReuse

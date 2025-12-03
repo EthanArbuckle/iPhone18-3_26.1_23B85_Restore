@@ -1,10 +1,10 @@
 @interface FCCKContentFetchOperation
 - (BOOL)validateOperation;
 - (FCCKContentFetchOperation)init;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
-- (void)setDatabase:(uint64_t)a1;
-- (void)setRecordIDsToETags:(uint64_t)a1;
+- (void)setDatabase:(uint64_t)database;
+- (void)setRecordIDsToETags:(uint64_t)tags;
 @end
 
 @implementation FCCKContentFetchOperation
@@ -24,9 +24,9 @@
 
 - (BOOL)validateOperation
 {
-  v2 = self;
+  selfCopy = self;
   v17 = *MEMORY[0x1E69E9840];
-  if (!self || (v3 = self->_database) == 0 || (recordIDs = v2->_recordIDs, v3, !recordIDs))
+  if (!self || (v3 = self->_database) == 0 || (recordIDs = selfCopy->_recordIDs, v3, !recordIDs))
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -41,32 +41,32 @@
       v16 = v8;
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v9, 0x26u);
 
-      if (!v2)
+      if (!selfCopy)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!v2)
+    else if (!selfCopy)
     {
       goto LABEL_9;
     }
   }
 
-  v5 = v2->_database;
+  v5 = selfCopy->_database;
   if (v5)
   {
-    LOBYTE(v2) = v2->_recordIDs != 0;
+    LOBYTE(selfCopy) = selfCopy->_recordIDs != 0;
   }
 
   else
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(selfCopy) = 0;
   }
 
 LABEL_9:
   v6 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (void)performOperation
@@ -96,7 +96,7 @@ LABEL_9:
       newValue = [v3 initWithRecordIDs:self->_recordIDs];
       [newValue setRecordIDsToETags:self->_recordIDsToETags];
       [newValue setDesiredKeys:self->_desiredKeys];
-      v4 = self;
+      selfCopy = self;
       perRecordCompletionBlock = self->_perRecordCompletionBlock;
     }
 
@@ -106,10 +106,10 @@ LABEL_9:
       [newValue setRecordIDsToETags:0];
       [newValue setDesiredKeys:0];
       perRecordCompletionBlock = 0;
-      v4 = 0;
+      selfCopy = 0;
     }
 
-    v6 = v4 == 0;
+    v6 = selfCopy == 0;
     [newValue setPerRecordCompletionBlock:perRecordCompletionBlock];
     [newValue setAdditionalRequestHTTPHeaders:v66];
     v88[0] = MEMORY[0x1E69E9820];
@@ -146,7 +146,7 @@ LABEL_9:
   }
 
   newValue = [MEMORY[0x1E695DF70] array];
-  v69 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v84 = 0u;
   v85 = 0u;
   v82 = 0u;
@@ -184,29 +184,29 @@ LABEL_9:
           [v10 setRequest:v11];
 
           v12 = CKCreateGUID();
-          v13 = [v10 request];
-          [v13 setOperationUUID:v12];
+          request = [v10 request];
+          [request setOperationUUID:v12];
 
-          v14 = [v10 request];
-          [v14 setType:211];
+          request2 = [v10 request];
+          [request2 setType:211];
 
           v15 = objc_opt_new();
           [v10 setRecordRetrieveRequest:v15];
 
           v16 = +[FCCKProtocolTranslator sharedInstance];
           v17 = [(FCCKProtocolTranslator *)v16 pRecordIdentifierFromRecordID:v73];
-          v18 = [v10 recordRetrieveRequest];
-          [v18 setRecordIdentifier:v17];
+          recordRetrieveRequest = [v10 recordRetrieveRequest];
+          [recordRetrieveRequest setRecordIdentifier:v17];
 
           v19 = [(NSDictionary *)self->_recordIDsToETags objectForKeyedSubscript:v73];
-          v20 = [v10 recordRetrieveRequest];
-          [v20 setClientVersionETag:v19];
+          recordRetrieveRequest2 = [v10 recordRetrieveRequest];
+          [recordRetrieveRequest2 setClientVersionETag:v19];
 
           if (self->_desiredKeys)
           {
             v21 = objc_opt_new();
-            v22 = [v10 recordRetrieveRequest];
-            [v22 setRequestedFields:v21];
+            recordRetrieveRequest3 = [v10 recordRetrieveRequest];
+            [recordRetrieveRequest3 setRequestedFields:v21];
 
             v92 = 0u;
             v93 = 0u;
@@ -229,9 +229,9 @@ LABEL_9:
                   v27 = *(*(&v90 + 1) + 8 * i);
                   v28 = objc_opt_new();
                   [v28 setName:v27];
-                  v29 = [v10 recordRetrieveRequest];
-                  v30 = [v29 requestedFields];
-                  [v30 addFields:v28];
+                  recordRetrieveRequest4 = [v10 recordRetrieveRequest];
+                  requestedFields = [recordRetrieveRequest4 requestedFields];
+                  [requestedFields addFields:v28];
                 }
 
                 v24 = [(NSArray *)v23 countByEnumeratingWithState:&v90 objects:location count:16];
@@ -248,9 +248,9 @@ LABEL_9:
         }
 
         [newValue addObject:v10];
-        v31 = [v10 request];
-        v32 = [v31 operationUUID];
-        [v69 setObject:v73 forKey:v32];
+        request3 = [v10 request];
+        operationUUID = [request3 operationUUID];
+        [dictionary setObject:v73 forKey:operationUUID];
 
         ++v9;
       }
@@ -274,8 +274,8 @@ LABEL_9:
     v35 = 0;
   }
 
-  v36 = [(FCCKContentDatabase *)v35 networkReachability];
-  v37 = [(FCCKDirectRequestOperation *)v34 initWithNetworkReachability:v36];
+  networkReachability = [(FCCKContentDatabase *)v35 networkReachability];
+  v37 = [(FCCKDirectRequestOperation *)v34 initWithNetworkReachability:networkReachability];
 
   if (v37)
   {
@@ -284,10 +284,10 @@ LABEL_9:
 
   if (self)
   {
-    v39 = [(FCCKContentDatabase *)self->_database baseURLForRecordFetch];
+    baseURLForRecordFetch = [(FCCKContentDatabase *)self->_database baseURLForRecordFetch];
     if (v37)
     {
-      objc_setProperty_nonatomic_copy(v37, v38, v39, 392);
+      objc_setProperty_nonatomic_copy(v37, v38, baseURLForRecordFetch, 392);
     }
 
     v40 = self->_database;
@@ -295,52 +295,52 @@ LABEL_9:
 
   else
   {
-    v61 = [0 baseURLForRecordFetch];
+    baseURLForRecordFetch2 = [0 baseURLForRecordFetch];
     if (v37)
     {
-      objc_setProperty_nonatomic_copy(v37, v60, v61, 392);
+      objc_setProperty_nonatomic_copy(v37, v60, baseURLForRecordFetch2, 392);
     }
 
     v40 = 0;
   }
 
-  v42 = [(FCCKContentDatabase *)v40 containerIdentifier];
+  containerIdentifier = [(FCCKContentDatabase *)v40 containerIdentifier];
   if (v37)
   {
-    objc_setProperty_nonatomic_copy(v37, v41, v42, 400);
+    objc_setProperty_nonatomic_copy(v37, v41, containerIdentifier, 400);
   }
 
   if (self)
   {
-    v43 = [(FCCKContentDatabase *)self->_database isProductionEnvironment];
+    isProductionEnvironment = [(FCCKContentDatabase *)self->_database isProductionEnvironment];
     if (v37)
     {
-      *(v37 + 376) = v43;
+      *(v37 + 376) = isProductionEnvironment;
       objc_setProperty_nonatomic_copy(v37, v44, newValue, 384);
       objc_setProperty_nonatomic_copy(v37, v45, v66, 416);
     }
 
-    v46 = self;
+    selfCopy2 = self;
     v47 = self->_database;
   }
 
   else
   {
-    v62 = [0 isProductionEnvironment];
+    isProductionEnvironment2 = [0 isProductionEnvironment];
     if (v37)
     {
-      *(v37 + 376) = v62;
+      *(v37 + 376) = isProductionEnvironment2;
       objc_setProperty_nonatomic_copy(v37, v63, newValue, 384);
       objc_setProperty_nonatomic_copy(v37, v64, v66, 416);
     }
 
     v47 = 0;
-    v46 = 0;
+    selfCopy2 = 0;
   }
 
-  v48 = v46 == 0;
-  v49 = [(FCCKContentDatabase *)v47 networkBehaviorMonitor];
-  [(FCCKDirectRequestOperation *)v37 setNetworkBehaviorMonitor:v49];
+  v48 = selfCopy2 == 0;
+  networkBehaviorMonitor = [(FCCKContentDatabase *)v47 networkBehaviorMonitor];
+  [(FCCKDirectRequestOperation *)v37 setNetworkBehaviorMonitor:networkBehaviorMonitor];
 
   if (v48)
   {
@@ -364,14 +364,14 @@ LABEL_47:
   }
 
 LABEL_48:
-  v52 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v79[0] = MEMORY[0x1E69E9820];
   v79[1] = 3221225472;
   v79[2] = __45__FCCKContentFetchOperation_performOperation__block_invoke_8;
   v79[3] = &unk_1E7C47AD0;
-  v54 = v52;
+  v54 = dictionary2;
   v80 = v54;
-  v81 = self;
+  selfCopy3 = self;
   if (v37)
   {
     objc_setProperty_nonatomic_copy(v37, v53, v79, 456);
@@ -382,9 +382,9 @@ LABEL_48:
   v74[1] = 3221225472;
   v74[2] = __45__FCCKContentFetchOperation_performOperation__block_invoke_10;
   v74[3] = &unk_1E7C47AF8;
-  v55 = v69;
+  v55 = dictionary;
   v75 = v55;
-  v76 = self;
+  selfCopy4 = self;
   v56 = v54;
   v77 = v56;
   objc_copyWeak(&v78, location);
@@ -396,8 +396,8 @@ LABEL_48:
   [(FCOperation *)self associateChildOperation:v37];
   if ([(FCOperation *)self relativePriority]< 1)
   {
-    v58 = [MEMORY[0x1E696ADC8] fc_throttledCKRequestOperationQueue];
-    [v58 addOperation:v37];
+    fc_throttledCKRequestOperationQueue = [MEMORY[0x1E696ADC8] fc_throttledCKRequestOperationQueue];
+    [fc_throttledCKRequestOperationQueue addOperation:v37];
   }
 
   else
@@ -665,12 +665,12 @@ LABEL_12:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E695B778]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:*MEMORY[0x1E695B778]];
 
   if (v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -704,7 +704,7 @@ LABEL_4:
   database = self->_database;
 LABEL_5:
   [(FCCKContentDatabase *)database maximumRetryAfterForCK];
-  v8 = [v4 fc_errorWithMaximumRetryAfter:?];
+  v8 = [errorCopy fc_errorWithMaximumRetryAfter:?];
 
   if (self)
   {
@@ -718,19 +718,19 @@ LABEL_5:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDatabase:(uint64_t)a1
+- (void)setDatabase:(uint64_t)database
 {
-  if (a1)
+  if (database)
   {
-    objc_storeStrong((a1 + 376), a2);
+    objc_storeStrong((database + 376), a2);
   }
 }
 
-- (void)setRecordIDsToETags:(uint64_t)a1
+- (void)setRecordIDsToETags:(uint64_t)tags
 {
-  if (a1)
+  if (tags)
   {
-    objc_storeStrong((a1 + 392), a2);
+    objc_storeStrong((tags + 392), a2);
   }
 }
 

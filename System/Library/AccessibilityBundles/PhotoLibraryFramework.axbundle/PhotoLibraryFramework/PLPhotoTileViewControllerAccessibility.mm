@@ -1,19 +1,19 @@
 @interface PLPhotoTileViewControllerAccessibility
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_configureViews;
-- (void)_setPhoto:(id)a3;
+- (void)_setPhoto:(id)photo;
 @end
 
 @implementation PLPhotoTileViewControllerAccessibility
 
-- (void)_setPhoto:(id)a3
+- (void)_setPhoto:(id)photo
 {
   v7.receiver = self;
   v7.super_class = PLPhotoTileViewControllerAccessibility;
-  v4 = a3;
-  [(PLPhotoTileViewControllerAccessibility *)&v7 _setPhoto:v4];
+  photoCopy = photo;
+  [(PLPhotoTileViewControllerAccessibility *)&v7 _setPhoto:photoCopy];
   v5 = [(PLPhotoTileViewControllerAccessibility *)self safeValueForKey:@"_imageView", v7.receiver, v7.super_class];
-  v6 = [v4 safeValueForKey:@"mainFileURL"];
+  v6 = [photoCopy safeValueForKey:@"mainFileURL"];
 
   [v5 _accessibilitySetRetainedValue:v6 forKey:@"AXAssetURL"];
 }

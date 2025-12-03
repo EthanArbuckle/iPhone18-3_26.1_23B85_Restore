@@ -21,10 +21,10 @@
 
 - (BOOL)hdsp_isInsufficientSleepDataError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"HDSPWakeUpResultsNotificationErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"HDSPWakeUpResultsNotificationErrorDomain"])
   {
-    v3 = [a1 code] == 1;
+    v3 = [self code] == 1;
   }
 
   else

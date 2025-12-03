@@ -1,16 +1,16 @@
 @interface PKSEConsistencyCheckPassCredential
 - (PKAppletSubcredential)subcredential;
 - (PKPaymentApplication)paymentApplication;
-- (PKSEConsistencyCheckPassCredential)initWithPassCredential:(id)a3 address:(id)a4 paymentMethod:(unint64_t)a5;
+- (PKSEConsistencyCheckPassCredential)initWithPassCredential:(id)credential address:(id)address paymentMethod:(unint64_t)method;
 - (id)description;
 @end
 
 @implementation PKSEConsistencyCheckPassCredential
 
-- (PKSEConsistencyCheckPassCredential)initWithPassCredential:(id)a3 address:(id)a4 paymentMethod:(unint64_t)a5
+- (PKSEConsistencyCheckPassCredential)initWithPassCredential:(id)credential address:(id)address paymentMethod:(unint64_t)method
 {
-  v9 = a3;
-  v10 = a4;
+  credentialCopy = credential;
+  addressCopy = address;
   v16.receiver = self;
   v16.super_class = PKSEConsistencyCheckPassCredential;
   v11 = [(PKSEConsistencyCheckPassCredential *)&v16 init];
@@ -20,11 +20,11 @@
     if (objc_opt_isKindOfClass())
     {
       v11->_type = 0;
-      v12 = v9;
+      v12 = credentialCopy;
       v11->_state = [v12 state];
-      v13 = [v12 subcredentials];
+      subcredentials = [v12 subcredentials];
 
-      v11->_containsSubkeys = [v13 count] != 0;
+      v11->_containsSubkeys = [subcredentials count] != 0;
     }
 
     else
@@ -37,12 +37,12 @@
       }
 
       v11->_type = 1;
-      v11->_state = [v9 state];
+      v11->_state = [credentialCopy state];
     }
 
-    objc_storeStrong(&v11->_underlyingpassCredential, a3);
-    objc_storeStrong(&v11->_address, a4);
-    v11->_paymentMethod = a5;
+    objc_storeStrong(&v11->_underlyingpassCredential, credential);
+    objc_storeStrong(&v11->_address, address);
+    v11->_paymentMethod = method;
   }
 
   v14 = v11;
@@ -99,8 +99,8 @@ LABEL_8:
   v6 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
   [v6 appendFormat:@"type: '%@'; ", v5];
   [v6 appendFormat:@"state: '%lu'; ", self->_state];
-  v7 = [(PKSECredentialAddress *)self->_address shortDescription];
-  [v6 appendFormat:@"address: '%@'; ", v7];
+  shortDescription = [(PKSECredentialAddress *)self->_address shortDescription];
+  [v6 appendFormat:@"address: '%@'; ", shortDescription];
 
   if (self->_containsSubkeys)
   {

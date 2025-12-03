@@ -1,63 +1,63 @@
 @interface STMessageReactorCoreComponent
-+ (BOOL)_shouldSendLocalDeviceStateGivenTargetableFamilyMembers:(id)a3;
-+ (id)_userIDFromMessageContent:(id)a3;
-+ (id)buildCheckinResponseMessageEnvelopeForUser:(id)a3 targetableFamilyMembers:(id)a4 localDeviceStateChange:(id)a5 settingsChanges:(id)a6 downtimeChanges:(id)a7 communicationLimitsChanges:(id)a8 alwaysAllowedChanges:(id)a9 restrictionsChanges:(id)a10 managedUserChanges:(id)a11;
-+ (id)configurationChangeFromMessageContent:(id)a3;
-+ (id)deviceStateChangeFromMessageContent:(id)a3;
-+ (id)reactorDirectiveForMessageContentType:(int64_t)a3 messageContent:(id)a4 targetableFamilyMembers:(id)a5 communicationConfigurationByUserID:(id)a6 screenTimeCapabilities:(id)a7;
-+ (void)_addConfigurationChanges:(id)a3 toMessageContentTypes:(id)a4 messageContents:(id)a5;
++ (BOOL)_shouldSendLocalDeviceStateGivenTargetableFamilyMembers:(id)members;
++ (id)_userIDFromMessageContent:(id)content;
++ (id)buildCheckinResponseMessageEnvelopeForUser:(id)user targetableFamilyMembers:(id)members localDeviceStateChange:(id)change settingsChanges:(id)changes downtimeChanges:(id)downtimeChanges communicationLimitsChanges:(id)limitsChanges alwaysAllowedChanges:(id)allowedChanges restrictionsChanges:(id)self0 managedUserChanges:(id)self1;
++ (id)configurationChangeFromMessageContent:(id)content;
++ (id)deviceStateChangeFromMessageContent:(id)content;
++ (id)reactorDirectiveForMessageContentType:(int64_t)type messageContent:(id)content targetableFamilyMembers:(id)members communicationConfigurationByUserID:(id)d screenTimeCapabilities:(id)capabilities;
++ (void)_addConfigurationChanges:(id)changes toMessageContentTypes:(id)types messageContents:(id)contents;
 @end
 
 @implementation STMessageReactorCoreComponent
 
-+ (id)deviceStateChangeFromMessageContent:(id)a3
++ (id)deviceStateChangeFromMessageContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 deviceStateChange];
+    deviceStateChange = [contentCopy deviceStateChange];
   }
 
   else
   {
-    v4 = 0;
+    deviceStateChange = 0;
   }
 
-  return v4;
+  return deviceStateChange;
 }
 
-+ (id)configurationChangeFromMessageContent:(id)a3
++ (id)configurationChangeFromMessageContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 configurationChange];
+    configurationChange = [contentCopy configurationChange];
   }
 
   else
   {
-    v4 = 0;
+    configurationChange = 0;
   }
 
-  return v4;
+  return configurationChange;
 }
 
-+ (id)reactorDirectiveForMessageContentType:(int64_t)a3 messageContent:(id)a4 targetableFamilyMembers:(id)a5 communicationConfigurationByUserID:(id)a6 screenTimeCapabilities:(id)a7
++ (id)reactorDirectiveForMessageContentType:(int64_t)type messageContent:(id)content targetableFamilyMembers:(id)members communicationConfigurationByUserID:(id)d screenTimeCapabilities:(id)capabilities
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if ((a3 - 1) > 4)
+  contentCopy = content;
+  membersCopy = members;
+  dCopy = d;
+  capabilitiesCopy = capabilities;
+  if ((type - 1) > 4)
   {
     v15 = @"Unknown";
   }
 
   else
   {
-    v15 = off_1001A4408[a3 - 1];
+    v15 = off_1001A4408[type - 1];
   }
 
   v16 = objc_opt_class();
@@ -74,7 +74,7 @@
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[v2]       <<< transport message content contained messageContentType: %{public}@, messageContentClass: %{public}@, %s", buf, 0x20u);
   }
 
-  if ([v14 supportedInfrastructure] == 1)
+  if ([capabilitiesCopy supportedInfrastructure] == 1)
   {
     v19 = +[STLog familyMessaging];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -93,9 +93,9 @@ LABEL_41:
     goto LABEL_51;
   }
 
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 0:
         v19 = +[STLog familyMessaging];
@@ -106,7 +106,7 @@ LABEL_41:
 
         goto LABEL_40;
       case 1:
-        v20 = [STMessageReactorCoreComponent configurationChangeFromMessageContent:v11];
+        v20 = [STMessageReactorCoreComponent configurationChangeFromMessageContent:contentCopy];
         v38 = +[STLog familyMessaging];
         v22 = v38;
         if (v20)
@@ -134,7 +134,7 @@ LABEL_41:
 
         break;
       case 2:
-        v20 = [STMessageReactorCoreComponent deviceStateChangeFromMessageContent:v11];
+        v20 = [STMessageReactorCoreComponent deviceStateChangeFromMessageContent:contentCopy];
         v21 = +[STLog familyMessaging];
         v22 = v21;
         if (v20)
@@ -172,11 +172,11 @@ LABEL_49:
     goto LABEL_48;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
-    if (a3 != 4)
+    if (type != 4)
     {
-      if (a3 != 5)
+      if (type != 5)
       {
         goto LABEL_51;
       }
@@ -194,7 +194,7 @@ LABEL_49:
       goto LABEL_41;
     }
 
-    v20 = [STMessageReactorCoreComponent _userIDFromMessageContent:v11];
+    v20 = [STMessageReactorCoreComponent _userIDFromMessageContent:contentCopy];
     v39 = +[STLog familyMessaging];
     v22 = v39;
     if (v20)
@@ -239,12 +239,12 @@ LABEL_48:
     goto LABEL_40;
   }
 
-  v28 = v11;
-  v29 = [v28 messageContentTypes];
+  v28 = contentCopy;
+  messageContentTypes = [v28 messageContentTypes];
   v30 = +[STLog familyMessaging];
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v29 count];
+    v31 = [messageContentTypes count];
     *buf = 138543618;
     v51 = v15;
     v52 = 2050;
@@ -253,10 +253,10 @@ LABEL_48:
   }
 
   [v28 messageContents];
-  v32 = v42 = v29;
+  v32 = v42 = messageContentTypes;
   v33 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v32 count]);
 
-  v34 = [v28 messageContents];
+  messageContents = [v28 messageContents];
 
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
@@ -264,13 +264,13 @@ LABEL_48:
   v43[3] = &unk_1001A43E8;
   v44 = v42;
   v45 = v33;
-  v46 = v12;
-  v47 = v13;
-  v48 = v14;
+  v46 = membersCopy;
+  v47 = dCopy;
+  v48 = capabilitiesCopy;
   v49 = v15;
   v35 = v33;
   v20 = v42;
-  [v34 enumerateObjectsUsingBlock:v43];
+  [messageContents enumerateObjectsUsingBlock:v43];
 
   v36 = [STReactorDirective alloc];
   v37 = [v35 copy];
@@ -282,79 +282,79 @@ LABEL_51:
   return v18;
 }
 
-+ (id)_userIDFromMessageContent:(id)a3
++ (id)_userIDFromMessageContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 userID];
+    userID = [contentCopy userID];
   }
 
   else
   {
-    v4 = 0;
+    userID = 0;
   }
 
-  return v4;
+  return userID;
 }
 
-+ (id)buildCheckinResponseMessageEnvelopeForUser:(id)a3 targetableFamilyMembers:(id)a4 localDeviceStateChange:(id)a5 settingsChanges:(id)a6 downtimeChanges:(id)a7 communicationLimitsChanges:(id)a8 alwaysAllowedChanges:(id)a9 restrictionsChanges:(id)a10 managedUserChanges:(id)a11
++ (id)buildCheckinResponseMessageEnvelopeForUser:(id)user targetableFamilyMembers:(id)members localDeviceStateChange:(id)change settingsChanges:(id)changes downtimeChanges:(id)downtimeChanges communicationLimitsChanges:(id)limitsChanges alwaysAllowedChanges:(id)allowedChanges restrictionsChanges:(id)self0 managedUserChanges:(id)self1
 {
-  v42 = a3;
-  v16 = a5;
-  v17 = a6;
-  v41 = a7;
-  v40 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v21 = a4;
+  userCopy = user;
+  changeCopy = change;
+  changesCopy = changes;
+  downtimeChangesCopy = downtimeChanges;
+  limitsChangesCopy = limitsChanges;
+  allowedChangesCopy = allowedChanges;
+  restrictionsChangesCopy = restrictionsChanges;
+  userChangesCopy = userChanges;
+  membersCopy = members;
   v22 = objc_opt_new();
   v23 = objc_opt_new();
-  LODWORD(a8) = [STMessageReactorCoreComponent _shouldSendLocalDeviceStateGivenTargetableFamilyMembers:v21];
+  LODWORD(limitsChanges) = [STMessageReactorCoreComponent _shouldSendLocalDeviceStateGivenTargetableFamilyMembers:membersCopy];
 
-  if (!a8)
+  if (!limitsChanges)
   {
     goto LABEL_4;
   }
 
-  if (v16)
+  if (changeCopy)
   {
     v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", +[STDeviceStateChangeContent contentType]);
     [v22 addObject:v24];
 
-    v25 = [[STDeviceStateChangeContent alloc] initWithDeviceStateChange:v16];
+    v25 = [[STDeviceStateChangeContent alloc] initWithDeviceStateChange:changeCopy];
     [v23 addObject:v25];
 
 LABEL_4:
-    [STMessageReactorCoreComponent _addConfigurationChanges:v17 toMessageContentTypes:v22 messageContents:v23];
-    [STMessageReactorCoreComponent _addConfigurationChanges:v41 toMessageContentTypes:v22 messageContents:v23];
-    [STMessageReactorCoreComponent _addConfigurationChanges:v40 toMessageContentTypes:v22 messageContents:v23];
-    [STMessageReactorCoreComponent _addConfigurationChanges:v18 toMessageContentTypes:v22 messageContents:v23];
-    [STMessageReactorCoreComponent _addConfigurationChanges:v19 toMessageContentTypes:v22 messageContents:v23];
-    [STMessageReactorCoreComponent _addConfigurationChanges:v20 toMessageContentTypes:v22 messageContents:v23];
+    [STMessageReactorCoreComponent _addConfigurationChanges:changesCopy toMessageContentTypes:v22 messageContents:v23];
+    [STMessageReactorCoreComponent _addConfigurationChanges:downtimeChangesCopy toMessageContentTypes:v22 messageContents:v23];
+    [STMessageReactorCoreComponent _addConfigurationChanges:limitsChangesCopy toMessageContentTypes:v22 messageContents:v23];
+    [STMessageReactorCoreComponent _addConfigurationChanges:allowedChangesCopy toMessageContentTypes:v22 messageContents:v23];
+    [STMessageReactorCoreComponent _addConfigurationChanges:restrictionsChangesCopy toMessageContentTypes:v22 messageContents:v23];
+    [STMessageReactorCoreComponent _addConfigurationChanges:userChangesCopy toMessageContentTypes:v22 messageContents:v23];
     v38 = [[STCompoundContent alloc] initWithMessageContentTypes:v22 messageContents:v23];
     v37 = objc_opt_new();
-    v39 = v17;
+    v39 = changesCopy;
     v26 = [[STMessageTransportMessage alloc] initWithIdentifier:v37 content:v38];
-    v27 = v18;
-    v28 = v16;
+    v27 = allowedChangesCopy;
+    v28 = changeCopy;
     v29 = [STMessageTransportMessageAddress alloc];
-    [v42 dsid];
-    v31 = v30 = v20;
+    [userCopy dsid];
+    v31 = v30 = userChangesCopy;
     v32 = [(STMessageTransportMessageAddress *)v29 initWithUserDSID:v31];
     [NSSet setWithObject:v32];
-    v34 = v33 = v19;
+    v34 = v33 = restrictionsChangesCopy;
 
-    v16 = v28;
-    v18 = v27;
+    changeCopy = v28;
+    allowedChangesCopy = v27;
 
-    v20 = v30;
+    userChangesCopy = v30;
     v35 = [[STTransportEnvoyMessageEnvelope alloc] initWithMessage:v26 addresses:v34];
 
-    v19 = v33;
-    v17 = v39;
+    restrictionsChangesCopy = v33;
+    changesCopy = v39;
 
     goto LABEL_5;
   }
@@ -365,16 +365,16 @@ LABEL_5:
   return v35;
 }
 
-+ (void)_addConfigurationChanges:(id)a3 toMessageContentTypes:(id)a4 messageContents:(id)a5
++ (void)_addConfigurationChanges:(id)changes toMessageContentTypes:(id)types messageContents:(id)contents
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  changesCopy = changes;
+  typesCopy = types;
+  contentsCopy = contents;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [changesCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -386,35 +386,35 @@ LABEL_5:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(changesCopy);
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
         v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", +[STOrganizationControllerConfigurationChangeContent contentType]);
-        [v8 addObject:v15];
+        [typesCopy addObject:v15];
 
         v16 = [[STOrganizationControllerConfigurationChangeContent alloc] initWithConfigurationChange:v14];
-        [v9 addObject:v16];
+        [contentsCopy addObject:v16];
 
         v13 = v13 + 1;
       }
 
       while (v11 != v13);
-      v11 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [changesCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
   }
 }
 
-+ (BOOL)_shouldSendLocalDeviceStateGivenTargetableFamilyMembers:(id)a3
++ (BOOL)_shouldSendLocalDeviceStateGivenTargetableFamilyMembers:(id)members
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  membersCopy = members;
+  v4 = [membersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -425,7 +425,7 @@ LABEL_5:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(membersCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -436,7 +436,7 @@ LABEL_5:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [membersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;

@@ -1,21 +1,21 @@
 @interface PXGenerativeStoryTTRWorkflowBuilder
-+ (void)presentViewController:(id)a3 memory:(id)a4 attachmentFileUrls:(id)a5;
++ (void)presentViewController:(id)controller memory:(id)memory attachmentFileUrls:(id)urls;
 - (PXGenerativeStoryTTRWorkflowBuilder)init;
 @end
 
 @implementation PXGenerativeStoryTTRWorkflowBuilder
 
-+ (void)presentViewController:(id)a3 memory:(id)a4 attachmentFileUrls:(id)a5
++ (void)presentViewController:(id)controller memory:(id)memory attachmentFileUrls:(id)urls
 {
-  v5 = a5;
-  if (a5)
+  urlsCopy = urls;
+  if (urls)
   {
     sub_1A5240E64();
-    v5 = sub_1A524CA34();
+    urlsCopy = sub_1A524CA34();
   }
 
   swift_getObjCClassMetadata();
-  static GenerativeStoryTTRWorkflowBuilder.presentWorkflow(in:memory:attachmentFileURLs:)(a3, a4, v5);
+  static GenerativeStoryTTRWorkflowBuilder.presentWorkflow(in:memory:attachmentFileURLs:)(controller, memory, urlsCopy);
 }
 
 - (PXGenerativeStoryTTRWorkflowBuilder)init

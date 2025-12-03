@@ -1,34 +1,34 @@
 @interface RPNearFieldAuthenticationPayload
-+ (id)_authTagWithSelfIdentity:(id)a3 data:(id)a4;
-+ (id)_signatureWithSelfIdentity:(id)a3 data:(id)a4;
++ (id)_authTagWithSelfIdentity:(id)identity data:(id)data;
++ (id)_signatureWithSelfIdentity:(id)identity data:(id)data;
 - (BOOL)isValidTimeStamp;
-- (BOOL)verifyWithIdentity:(id)a3;
-- (RPNearFieldAuthenticationPayload)initWithDictionary:(id)a3;
-- (RPNearFieldAuthenticationPayload)initWithTimeStamp:(id)a3 pkData:(id)a4 bonjourListenerUUID:(id)a5 selfIdentity:(id)a6;
+- (BOOL)verifyWithIdentity:(id)identity;
+- (RPNearFieldAuthenticationPayload)initWithDictionary:(id)dictionary;
+- (RPNearFieldAuthenticationPayload)initWithTimeStamp:(id)stamp pkData:(id)data bonjourListenerUUID:(id)d selfIdentity:(id)identity;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation RPNearFieldAuthenticationPayload
 
-- (RPNearFieldAuthenticationPayload)initWithTimeStamp:(id)a3 pkData:(id)a4 bonjourListenerUUID:(id)a5 selfIdentity:(id)a6
+- (RPNearFieldAuthenticationPayload)initWithTimeStamp:(id)stamp pkData:(id)data bonjourListenerUUID:(id)d selfIdentity:(id)identity
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  stampCopy = stamp;
+  dataCopy = data;
+  dCopy = d;
+  identityCopy = identity;
   v34.receiver = self;
   v34.super_class = RPNearFieldAuthenticationPayload;
   v15 = [(RPNearFieldMessagePayload *)&v34 initWithType:1];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_timeStamp, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_timeStamp, stamp);
+    v17 = [dataCopy copy];
     pkData = v16->_pkData;
     v16->_pkData = v17;
 
-    objc_storeStrong(&v16->_bonjourListenerUUID, a5);
-    v19 = [objc_opt_class() _authTagWithSelfIdentity:v14 data:v16->_pkData];
+    objc_storeStrong(&v16->_bonjourListenerUUID, d);
+    v19 = [objc_opt_class() _authTagWithSelfIdentity:identityCopy data:v16->_pkData];
     authTag = v16->_authTag;
     v16->_authTag = v19;
 
@@ -48,7 +48,7 @@
     [v26 appendData:v25];
     [v26 appendData:v29];
 
-    v30 = [objc_opt_class() _signatureWithSelfIdentity:v14 data:v26];
+    v30 = [objc_opt_class() _signatureWithSelfIdentity:identityCopy data:v26];
     signatureData = v16->_signatureData;
     v16->_signatureData = v30;
 
@@ -58,14 +58,14 @@
   return v16;
 }
 
-- (RPNearFieldAuthenticationPayload)initWithDictionary:(id)a3
+- (RPNearFieldAuthenticationPayload)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = CFDictionaryGetCFDataOfLength();
   v6 = v5;
   if (!v5)
   {
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
@@ -101,7 +101,7 @@ LABEL_12:
       {
         CFDataGetTypeID();
         v13 = CFDictionaryGetTypedValue();
-        if (v13 && (v23.receiver = self, v23.super_class = RPNearFieldAuthenticationPayload, v14 = [(RPNearFieldMessagePayload *)&v23 initWithDictionary:v4], (self = v14) != 0))
+        if (v13 && (v23.receiver = self, v23.super_class = RPNearFieldAuthenticationPayload, v14 = [(RPNearFieldMessagePayload *)&v23 initWithDictionary:dictionaryCopy], (self = v14) != 0))
         {
           objc_storeStrong(&v14->_timeStamp, v8);
           v15 = [v9 copy];
@@ -118,34 +118,34 @@ LABEL_12:
           self->_signatureData = v19;
 
           self = self;
-          v21 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v21 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v21 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v21 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v21 = 0;
+    selfCopy = 0;
   }
 
 LABEL_21:
-  return v21;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
@@ -173,8 +173,8 @@ LABEL_21:
 
   v12.receiver = self;
   v12.super_class = RPNearFieldAuthenticationPayload;
-  v9 = [(RPNearFieldMessagePayload *)&v12 dictionaryRepresentation];
-  v10 = [NSMutableDictionary dictionaryWithDictionary:v9];
+  dictionaryRepresentation = [(RPNearFieldMessagePayload *)&v12 dictionaryRepresentation];
+  v10 = [NSMutableDictionary dictionaryWithDictionary:dictionaryRepresentation];
 
   [v10 addEntriesFromDictionary:v8];
 
@@ -189,16 +189,16 @@ LABEL_21:
   return self;
 }
 
-- (BOOL)verifyWithIdentity:(id)a3
+- (BOOL)verifyWithIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [v4 edPKData];
-  if (v5)
+  identityCopy = identity;
+  edPKData = [identityCopy edPKData];
+  if (edPKData)
   {
     authTag = self->_authTag;
     pkData = self->_pkData;
     v25 = 0;
-    v8 = [v4 verifyAuthTag:authTag data:pkData type:4 error:&v25];
+    v8 = [identityCopy verifyAuthTag:authTag data:pkData type:4 error:&v25];
     v9 = v25;
     v10 = v9;
     if (v8)
@@ -221,7 +221,7 @@ LABEL_21:
 
       signatureData = self->_signatureData;
       v24 = v10;
-      v21 = [v4 verifySignature:signatureData data:v16 error:&v24];
+      v21 = [identityCopy verifySignature:signatureData data:v16 error:&v24];
       v22 = v24;
 
       if ((v21 & 1) == 0 && dword_1001D38D8 <= 90 && (dword_1001D38D8 != -1 || _LogCategory_Initialize()))
@@ -245,10 +245,10 @@ LABEL_21:
   return v21;
 }
 
-+ (id)_authTagWithSelfIdentity:(id)a3 data:(id)a4
++ (id)_authTagWithSelfIdentity:(id)identity data:(id)data
 {
   v9 = 0;
-  v4 = [a3 authTagForData:a4 type:4 error:&v9];
+  v4 = [identity authTagForData:data type:4 error:&v9];
   v5 = v9;
   if (v5 && dword_1001D38D8 < 91 && (dword_1001D38D8 != -1 || _LogCategory_Initialize()))
   {
@@ -270,10 +270,10 @@ LABEL_21:
   return v7;
 }
 
-+ (id)_signatureWithSelfIdentity:(id)a3 data:(id)a4
++ (id)_signatureWithSelfIdentity:(id)identity data:(id)data
 {
   v9 = 0;
-  v4 = [a3 signData:a4 error:&v9];
+  v4 = [identity signData:data error:&v9];
   v5 = v9;
   if (v5 && dword_1001D38D8 <= 90 && (dword_1001D38D8 != -1 || _LogCategory_Initialize()))
   {

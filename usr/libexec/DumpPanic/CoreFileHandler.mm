@@ -1,18 +1,18 @@
 @interface CoreFileHandler
-- (BOOL)getCorefileLogInfo:(unint64_t *)a3 :(unint64_t *)a4 :(unsigned int *)a5;
+- (BOOL)getCorefileLogInfo:(unint64_t *)info :(unint64_t *)a4 :(unsigned int *)a5;
 - (BOOL)privateKeyChecking;
-- (BOOL)saveCoreDumpAtOffset:(unint64_t)a3 withLength:(unint64_t)a4 named:(id)a5 encryptedWithPublicKey:(id)a6 toFileName:(id)a7 flags:(unsigned int)a8;
-- (BOOL)saveCoreDumpWithIndex:(unint64_t)a3 named:(id)a4 toFileName:(id *)a5;
-- (CoreFileHandler)initWithCoreFilePath:(char *)a3 :(BOOL)a4 :(id)a5 :(unint64_t)a6 :(void *)a7 :(unint64_t)a8;
-- (const)getCoreDumpNameWithIndex:(unint64_t)a3;
-- (id)getCoreDumpContentsWithOffset:(unint64_t)a3 AndLength:(unint64_t)a4;
-- (id)getCoreDumpEncryptionKey:(unint64_t)a3;
+- (BOOL)saveCoreDumpAtOffset:(unint64_t)offset withLength:(unint64_t)length named:(id)named encryptedWithPublicKey:(id)key toFileName:(id)name flags:(unsigned int)flags;
+- (BOOL)saveCoreDumpWithIndex:(unint64_t)index named:(id)named toFileName:(id *)name;
+- (CoreFileHandler)initWithCoreFilePath:(char *)path :(BOOL)a4 :(id)a5 :(unint64_t)a6 :(void *)a7 :(unint64_t)a8;
+- (const)getCoreDumpNameWithIndex:(unint64_t)index;
+- (id)getCoreDumpContentsWithOffset:(unint64_t)offset AndLength:(unint64_t)length;
+- (id)getCoreDumpEncryptionKey:(unint64_t)key;
 - (id)getCorefileLogEncryptionKey;
 - (id)getCorefileZeroRanges;
 - (id)getPanicRegion;
 - (unint64_t)getNumCoreDumps;
 - (void)dealloc;
-- (void)getCoreDumpInfoWithIndex:(unint64_t)a3 :(unint64_t *)a4 :(unint64_t *)a5 :(unsigned int *)a6;
+- (void)getCoreDumpInfoWithIndex:(unint64_t)index :(unint64_t *)a4 :(unint64_t *)a5 :(unsigned int *)a6;
 @end
 
 @implementation CoreFileHandler
@@ -26,7 +26,7 @@
   objc_exception_throw(v3);
 }
 
-- (id)getCoreDumpEncryptionKey:(unint64_t)a3
+- (id)getCoreDumpEncryptionKey:(unint64_t)key
 {
   v3 = [NSString stringWithFormat:@"%s must be overridden in a subclass/category", "[CoreFileHandler getCoreDumpEncryptionKey:]"];
   v4 = [NSException exceptionWithName:NSInvalidArgumentException reason:v3 userInfo:0];
@@ -35,7 +35,7 @@
   objc_exception_throw(v4);
 }
 
-- (BOOL)getCorefileLogInfo:(unint64_t *)a3 :(unint64_t *)a4 :(unsigned int *)a5
+- (BOOL)getCorefileLogInfo:(unint64_t *)info :(unint64_t *)a4 :(unsigned int *)a5
 {
   v5 = [NSString stringWithFormat:@"%s must be overridden in a subclass/category", a4, a5, "[CoreFileHandler getCorefileLogInfo:::]"];
   v6 = [NSException exceptionWithName:NSInvalidArgumentException reason:v5 userInfo:0];
@@ -44,7 +44,7 @@
   objc_exception_throw(v6);
 }
 
-- (void)getCoreDumpInfoWithIndex:(unint64_t)a3 :(unint64_t *)a4 :(unint64_t *)a5 :(unsigned int *)a6
+- (void)getCoreDumpInfoWithIndex:(unint64_t)index :(unint64_t *)a4 :(unint64_t *)a5 :(unsigned int *)a6
 {
   v6 = [NSString stringWithFormat:@"%s must be overridden in a subclass/category", a4, a5, a6, "[CoreFileHandler getCoreDumpInfoWithIndex::::]"];
   v7 = [NSException exceptionWithName:NSInvalidArgumentException reason:v6 userInfo:0];
@@ -53,7 +53,7 @@
   objc_exception_throw(v7);
 }
 
-- (const)getCoreDumpNameWithIndex:(unint64_t)a3
+- (const)getCoreDumpNameWithIndex:(unint64_t)index
 {
   v3 = [NSString stringWithFormat:@"%s must be overridden in a subclass/category", "[CoreFileHandler getCoreDumpNameWithIndex:]"];
   v4 = [NSException exceptionWithName:NSInvalidArgumentException reason:v3 userInfo:0];
@@ -142,13 +142,13 @@
 
 - (id)getPanicRegion
 {
-  v3 = [(CoreFileHandler *)self getNumCoreDumps];
-  if (v3)
+  getNumCoreDumps = [(CoreFileHandler *)self getNumCoreDumps];
+  if (getNumCoreDumps)
   {
     v4 = 0;
     while (strncmp([(CoreFileHandler *)self getCoreDumpNameWithIndex:v4], "panic_region", 0xCuLL))
     {
-      if (v3 == ++v4)
+      if (getNumCoreDumps == ++v4)
       {
         goto LABEL_5;
       }
@@ -176,9 +176,9 @@
         if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
         {
           v14 = v12;
-          v15 = [v11 localizedDescription];
+          localizedDescription = [v11 localizedDescription];
           *v21 = 138412290;
-          v22 = v15;
+          v22 = localizedDescription;
           _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to read the file contents for panic region file. Error: %@", v21, 0xCu);
         }
       }
@@ -195,7 +195,7 @@ LABEL_5:
     if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      *&buf[4] = v3;
+      *&buf[4] = getNumCoreDumps;
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "failed to find panic region in corefile with %llu files", buf, 0xCu);
     }
 
@@ -205,33 +205,33 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)saveCoreDumpWithIndex:(unint64_t)a3 named:(id)a4 toFileName:(id *)a5
+- (BOOL)saveCoreDumpWithIndex:(unint64_t)index named:(id)named toFileName:(id *)name
 {
-  v20 = a4;
+  namedCopy = named;
   v22 = 0;
   v23 = 0;
   v21 = 0;
-  [(CoreFileHandler *)self getCoreDumpInfoWithIndex:a3];
+  [(CoreFileHandler *)self getCoreDumpInfoWithIndex:index];
   v8 = 0;
   if ((v21 & 4) != 0)
   {
-    v8 = [(CoreFileHandler *)self getCoreDumpEncryptionKey:a3];
+    v8 = [(CoreFileHandler *)self getCoreDumpEncryptionKey:index];
   }
 
   v18 = v8;
-  v19 = self;
-  if (![*a5 hasSuffix:@".gz"])
+  selfCopy = self;
+  if (![*name hasSuffix:@".gz"])
   {
     goto LABEL_11;
   }
 
-  if ([*a5 containsString:@"cp.core.gz"])
+  if ([*name containsString:@"cp.core.gz"])
   {
-    *a5 = [*a5 stringByReplacingOccurrencesOfString:@"cp.core.gz" withString:@"coproc.core.gz"];
+    *name = [*name stringByReplacingOccurrencesOfString:@"cp.core.gz" withString:@"coproc.core.gz"];
   }
 
   v9 = +[NSFileManager defaultManager];
-  v10 = [v9 fileExistsAtPath:*a5];
+  v10 = [v9 fileExistsAtPath:*name];
 
   if (v10)
   {
@@ -239,7 +239,7 @@ LABEL_5:
     while (1)
     {
       v12 = [NSString stringWithFormat:@"core.%llu.gz", v11];
-      v13 = [*a5 rangeOfString:@"core"];
+      v13 = [*name rangeOfString:@"core"];
       if (v13 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -250,11 +250,11 @@ LABEL_5:
         goto LABEL_13;
       }
 
-      *a5 = [*a5 stringByReplacingCharactersInRange:v13 withString:{objc_msgSend(*a5, "length") - v13, v12}];
+      *name = [*name stringByReplacingCharactersInRange:v13 withString:{objc_msgSend(*name, "length") - v13, v12}];
       ++v11;
 
       v14 = +[NSFileManager defaultManager];
-      v15 = [v14 fileExistsAtPath:*a5];
+      v15 = [v14 fileExistsAtPath:*name];
 
       if ((v15 & 1) == 0)
       {
@@ -274,7 +274,7 @@ LABEL_13:
   else
   {
 LABEL_11:
-    v16 = [(CoreFileHandler *)v19 saveCoreDumpAtOffset:v23 withLength:v22 named:v20 encryptedWithPublicKey:v18 toFileName:*a5 flags:v21];
+    v16 = [(CoreFileHandler *)selfCopy saveCoreDumpAtOffset:v23 withLength:v22 named:namedCopy encryptedWithPublicKey:v18 toFileName:*name flags:v21];
 
     return v16;
   }
@@ -282,27 +282,27 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)saveCoreDumpAtOffset:(unint64_t)a3 withLength:(unint64_t)a4 named:(id)a5 encryptedWithPublicKey:(id)a6 toFileName:(id)a7 flags:(unsigned int)a8
+- (BOOL)saveCoreDumpAtOffset:(unint64_t)offset withLength:(unint64_t)length named:(id)named encryptedWithPublicKey:(id)key toFileName:(id)name flags:(unsigned int)flags
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  namedCopy = named;
+  keyCopy = key;
+  nameCopy = name;
   v17 = qword_100042AF8;
   if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v112 = v14;
+    offsetCopy2 = namedCopy;
     v113 = 2048;
-    v114 = a3;
+    offsetCopy = offset;
     v115 = 2048;
-    v116 = a4;
+    lengthCopy = length;
     v117 = 1024;
-    v118 = a8;
+    flagsCopy = flags;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Found %@: offset: 0x%llx, length: 0x%llx, flags: 0x%x. Writing to disk", buf, 0x26u);
   }
 
-  v18 = a8;
-  if (a8)
+  flagsCopy2 = flags;
+  if (flags)
   {
     v42 = qword_100042AF8;
     if (!os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
@@ -342,9 +342,9 @@ LABEL_30:
     goto LABEL_47;
   }
 
-  s = v14;
-  v19 = v16;
-  v20 = v15;
+  s = namedCopy;
+  v19 = nameCopy;
+  v20 = keyCopy;
   corefile_fd = self->_corefile_fd;
   scratchBuf = self->_scratchBuf;
   scratchBufSize = self->_scratchBufSize;
@@ -352,9 +352,9 @@ LABEL_30:
   if (!v24)
   {
     v44 = qword_100042AF8;
-    v15 = v20;
-    v16 = v19;
-    v14 = s;
+    keyCopy = v20;
+    nameCopy = v19;
+    namedCopy = s;
     if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -366,23 +366,23 @@ LABEL_30:
   }
 
   v25 = v24;
-  if (lseek(corefile_fd, a3, 0) == -1)
+  if (lseek(corefile_fd, offset, 0) == -1)
   {
     v46 = qword_100042AF8;
     if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v112 = a3;
+      offsetCopy2 = offset;
       _os_log_error_impl(&_mh_execute_header, v46, OS_LOG_TYPE_ERROR, "Failed to seek to offset %lld in kernelcore.", buf, 0xCu);
     }
 
     free(v25);
-    v15 = v20;
+    keyCopy = v20;
     goto LABEL_29;
   }
 
   *v25 = corefile_fd;
-  v25[1] = a4;
+  v25[1] = length;
   v25[2] = scratchBuf;
   v25[4] = 0;
   v25[5] = 0;
@@ -391,7 +391,7 @@ LABEL_30:
   if (!v26)
   {
     v47 = qword_100042AF8;
-    v15 = v20;
+    keyCopy = v20;
     if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -400,8 +400,8 @@ LABEL_30:
 
     free(v25);
 LABEL_29:
-    v16 = v19;
-    v14 = s;
+    nameCopy = v19;
+    namedCopy = s;
     goto LABEL_30;
   }
 
@@ -410,17 +410,17 @@ LABEL_29:
   AACustomByteStreamSetReadProc(v27, sub_100012638);
   AACustomByteStreamSetCloseProc(v27, sub_10001261C);
   v109 = v27;
-  v15 = v20;
-  if ((v18 & 4) != 0)
+  keyCopy = v20;
+  if ((flagsCopy2 & 4) != 0)
   {
     v50 = [(ReadOnlyKeyStore *)self->_keystore getMatchingPrivateKey:1];
     v51 = v50;
-    v16 = v19;
+    nameCopy = v19;
     v52 = &unk_100042000;
     if (!v50)
     {
       v65 = qword_100042AF8;
-      v14 = s;
+      namedCopy = s;
       if (!os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
       {
 LABEL_117:
@@ -441,7 +441,7 @@ LABEL_119:
     if (!v54)
     {
       v72 = qword_100042AF8;
-      v14 = s;
+      namedCopy = s;
       if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
@@ -457,7 +457,7 @@ LABEL_119:
     if (v56)
     {
       v57 = AEAContextSetFieldBlob(v56, 0xBu, 1u, [v53 bytes], objc_msgSend(v53, "length"));
-      v14 = s;
+      namedCopy = s;
       if (v57 < 0)
       {
         v79 = v57;
@@ -465,7 +465,7 @@ LABEL_119:
         if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
         {
           *buf = 67109120;
-          LODWORD(v112) = v79;
+          LODWORD(offsetCopy2) = v79;
           _os_log_error_impl(&_mh_execute_header, v80, OS_LOG_TYPE_ERROR, "Failed to set the private key. Error %d", buf, 8u);
         }
       }
@@ -487,7 +487,7 @@ LABEL_119:
             v108 = v28;
             v29 = &v108;
             v30 = v28;
-            if ((v18 & 2) == 0)
+            if ((flagsCopy2 & 2) == 0)
             {
               goto LABEL_10;
             }
@@ -542,7 +542,7 @@ LABEL_116:
     }
 
     v75 = qword_100042AF8;
-    v14 = s;
+    namedCopy = s;
     if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -557,9 +557,9 @@ LABEL_115:
   v28 = 0;
   v29 = &v109;
   v30 = v27;
-  v16 = v19;
-  v14 = s;
-  if ((v18 & 2) == 0)
+  nameCopy = v19;
+  namedCopy = s;
+  if ((flagsCopy2 & 2) == 0)
   {
 LABEL_10:
     v31 = 0;
@@ -590,9 +590,9 @@ LABEL_40:
             v107 = v31;
             v29 = &v107;
 LABEL_11:
-            v32 = [v16 hasSuffix:@".gz"];
-            v33 = [v16 UTF8String];
-            v34 = v33;
+            v32 = [nameCopy hasSuffix:@".gz"];
+            uTF8String = [nameCopy UTF8String];
+            v34 = uTF8String;
             if (v32)
             {
               v35 = malloc_type_calloc(1uLL, 8uLL, 0x2004093837F09uLL);
@@ -637,9 +637,9 @@ LABEL_11:
                     v102 = __error();
                     v103 = strerror(*v102);
                     *buf = 136315394;
-                    v112 = v34;
+                    offsetCopy2 = v34;
                     v113 = 2080;
-                    v114 = v103;
+                    offsetCopy = v103;
                     _os_log_error_impl(&_mh_execute_header, v101, OS_LOG_TYPE_ERROR, "gzopen(%s, wb) error: %s", buf, 0x16u);
                   }
 
@@ -670,7 +670,7 @@ LABEL_11:
 
             else
             {
-              v67 = AAFileStreamOpenWithPath(v33, 1537, 0x1B6u);
+              v67 = AAFileStreamOpenWithPath(uTF8String, 1537, 0x1B6u);
               if (v67)
               {
                 v40 = v67;
@@ -687,7 +687,7 @@ LABEL_52:
                   if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 134217984;
-                    v112 = v70;
+                    offsetCopy2 = v70;
                     _os_log_error_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "Failed to process the coredump through the byte streams. Error %lld", buf, 0xCu);
                   }
                 }
@@ -805,8 +805,8 @@ LABEL_95:
   AAByteStreamClose(v27);
   if (v71)
   {
-    v87 = [v16 UTF8String];
-    v88 = open(v87, 0);
+    uTF8String2 = [nameCopy UTF8String];
+    v88 = open(uTF8String2, 0);
     if (v88 < 0)
     {
       v91 = qword_100042AF8;
@@ -816,9 +816,9 @@ LABEL_95:
         v99 = __error();
         v100 = strerror(*v99);
         *buf = 136315394;
-        v112 = v87;
+        offsetCopy2 = uTF8String2;
         v113 = 2080;
-        v114 = v100;
+        offsetCopy = v100;
         _os_log_error_impl(&_mh_execute_header, v98, OS_LOG_TYPE_ERROR, "Failed to open %s to mark as purgeable. Error: %s", buf, 0x16u);
       }
     }
@@ -842,9 +842,9 @@ LABEL_108:
         v96 = __error();
         v97 = strerror(*v96);
         *buf = 136315394;
-        v112 = v87;
+        offsetCopy2 = uTF8String2;
         v113 = 2080;
-        v114 = v97;
+        offsetCopy = v97;
         _os_log_error_impl(&_mh_execute_header, v95, OS_LOG_TYPE_ERROR, "Failed to mark %s as purgeable. Error: %s", buf, 0x16u);
       }
 
@@ -868,10 +868,10 @@ LABEL_32:
   return v48;
 }
 
-- (id)getCoreDumpContentsWithOffset:(unint64_t)a3 AndLength:(unint64_t)a4
+- (id)getCoreDumpContentsWithOffset:(unint64_t)offset AndLength:(unint64_t)length
 {
   v4 = qword_100042AF8;
-  if (!a4)
+  if (!length)
   {
     if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
     {
@@ -885,39 +885,39 @@ LABEL_32:
   if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v26 = a4;
+    offsetCopy4 = length;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "copying %llu bytes", buf, 0xCu);
   }
 
-  if (lseek(self->_corefile_fd, a3, 0) != -1)
+  if (lseek(self->_corefile_fd, offset, 0) != -1)
   {
-    v8 = [[NSMutableData alloc] initWithLength:a4];
-    v9 = [v8 mutableBytes];
+    v8 = [[NSMutableData alloc] initWithLength:length];
+    mutableBytes = [v8 mutableBytes];
     v10 = 0;
     while (1)
     {
-      v11 = self->_scratchBufSize >= ((a4 - v10 + vm_page_size - 1) & -vm_page_size) ? (a4 - v10 + vm_page_size - 1) & -vm_page_size : self->_scratchBufSize;
+      v11 = self->_scratchBufSize >= ((length - v10 + vm_page_size - 1) & -vm_page_size) ? (length - v10 + vm_page_size - 1) & -vm_page_size : self->_scratchBufSize;
       v12 = read(self->_corefile_fd, self->_scratchBuf, v11);
       if (v12 != v11)
       {
         break;
       }
 
-      if (v11 >= a4 - v10)
+      if (v11 >= length - v10)
       {
-        v11 = a4 - v10;
+        v11 = length - v10;
       }
 
-      memmove(v9, self->_scratchBuf, v11);
+      memmove(mutableBytes, self->_scratchBuf, v11);
       v10 += v11;
-      v9 += v11;
-      if (v10 >= a4)
+      mutableBytes += v11;
+      if (v10 >= length)
       {
         v13 = qword_100042AF8;
         if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v26 = a3;
+          offsetCopy4 = offset;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Finished extracting core file data from file offset %llu\n", buf, 0xCu);
         }
 
@@ -935,13 +935,13 @@ LABEL_32:
         v23 = v20;
         v24 = *__error();
         *buf = 134219008;
-        v26 = v11;
+        offsetCopy4 = v11;
         v27 = 2048;
         v28 = v10;
         v29 = 2048;
-        v30 = a3;
+        offsetCopy3 = offset;
         v31 = 2048;
-        v32 = a4;
+        lengthCopy3 = length;
         v33 = 1024;
         LODWORD(v34) = v24;
         _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Read of %lu bytes from dataOffset %llu (file offset from %llu)(total length %llu) failed with error %{errno}d", buf, 0x30u);
@@ -956,13 +956,13 @@ LABEL_32:
     }
 
     *buf = 134219008;
-    v26 = v11;
+    offsetCopy4 = v11;
     v27 = 2048;
     v28 = v10;
     v29 = 2048;
-    v30 = a3;
+    offsetCopy3 = offset;
     v31 = 2048;
-    v32 = a4;
+    lengthCopy3 = length;
     v33 = 2048;
     v34 = v19;
     v16 = "Read of %lu bytes from dataOffset %llu (file offset from %llu)(total length %llu) only read %lu bytes";
@@ -981,7 +981,7 @@ LABEL_25:
     v8 = v14;
     v15 = *__error();
     *buf = 134218240;
-    v26 = a3;
+    offsetCopy4 = offset;
     v27 = 1024;
     LODWORD(v28) = v15;
     v16 = "lseek() to file offset 0x%llx returned -1 (%{errno}d)";
@@ -999,12 +999,12 @@ LABEL_27:
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   close(self->_corefile_fd);
-  free(v2->_scratchBuf);
-  if (v2->_zero_on_close)
+  free(selfCopy->_scratchBuf);
+  if (selfCopy->_zero_on_close)
   {
-    v3 = [(CoreFileHandler *)v2 getCorefileZeroRanges];
+    getCorefileZeroRanges = [(CoreFileHandler *)selfCopy getCorefileZeroRanges];
     v4 = malloc_type_calloc(1uLL, 0x100000uLL, 0x538426AuLL);
     if (!v4)
     {
@@ -1014,13 +1014,13 @@ LABEL_27:
     }
 
     v5 = v4;
-    v6 = open_dprotected_np([(NSString *)v2->_corefilePath UTF8String], 2, 0, 0);
+    v6 = open_dprotected_np([(NSString *)selfCopy->_corefilePath UTF8String], 2, 0, 0);
     if (v6 == -1)
     {
       v27 = qword_100042AF8;
       if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
       {
-        corefilePath = v2->_corefilePath;
+        corefilePath = selfCopy->_corefilePath;
         v31 = v27;
         v32 = *__error();
         *buf = 138412546;
@@ -1036,14 +1036,14 @@ LABEL_27:
     else
     {
       v7 = v6;
-      v34 = v2;
+      v34 = selfCopy;
       fcntl(v6, 48, 1);
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v33 = v3;
-      v8 = v3;
+      v33 = getCorefileZeroRanges;
+      v8 = getCorefileZeroRanges;
       v9 = [v8 countByEnumeratingWithState:&v36 objects:v44 count:16];
       if (v9)
       {
@@ -1060,12 +1060,12 @@ LABEL_27:
 
             v13 = *(*(&v36 + 1) + 8 * i);
             v14 = [v13 objectAtIndexedSubscript:0];
-            v15 = [v14 unsignedLongLongValue];
+            unsignedLongLongValue = [v14 unsignedLongLongValue];
 
             v16 = [v13 objectAtIndexedSubscript:1];
-            v17 = [v16 unsignedLongLongValue];
+            unsignedLongLongValue2 = [v16 unsignedLongLongValue];
 
-            if (lseek(v7, v15, 0) == -1)
+            if (lseek(v7, unsignedLongLongValue, 0) == -1)
             {
               v25 = qword_100042AF8;
               if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_ERROR))
@@ -1073,7 +1073,7 @@ LABEL_27:
                 v28 = v25;
                 v29 = *__error();
                 *buf = 134218240;
-                v41 = v15;
+                v41 = unsignedLongLongValue;
                 v42 = 1024;
                 LODWORD(v43) = v29;
                 _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "lseek() to file offset 0x%llx returned -1 (%{errno}d)", buf, 0x12u);
@@ -1082,19 +1082,19 @@ LABEL_27:
               goto LABEL_27;
             }
 
-            if (v17)
+            if (unsignedLongLongValue2)
             {
               while (1)
               {
-                v18 = v17 >= 0x100000 ? 0x100000 : v17;
+                v18 = unsignedLongLongValue2 >= 0x100000 ? 0x100000 : unsignedLongLongValue2;
                 v19 = write(v7, v5, v18);
                 if (v19 != v18)
                 {
                   break;
                 }
 
-                v17 -= v18;
-                if (!v17)
+                unsignedLongLongValue2 -= v18;
+                if (!unsignedLongLongValue2)
                 {
                   goto LABEL_22;
                 }
@@ -1147,8 +1147,8 @@ LABEL_27:
       close(v7);
       free(v5);
       v26 = qword_100042AF8;
-      v3 = v33;
-      v2 = v34;
+      getCorefileZeroRanges = v33;
+      selfCopy = v34;
       if (os_log_type_enabled(qword_100042AF8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
@@ -1157,12 +1157,12 @@ LABEL_27:
     }
   }
 
-  v35.receiver = v2;
+  v35.receiver = selfCopy;
   v35.super_class = CoreFileHandler;
   [(CoreFileHandler *)&v35 dealloc];
 }
 
-- (CoreFileHandler)initWithCoreFilePath:(char *)a3 :(BOOL)a4 :(id)a5 :(unint64_t)a6 :(void *)a7 :(unint64_t)a8
+- (CoreFileHandler)initWithCoreFilePath:(char *)path :(BOOL)a4 :(id)a5 :(unint64_t)a6 :(void *)a7 :(unint64_t)a8
 {
   v14 = a5;
   v47.receiver = self;
@@ -1203,7 +1203,7 @@ LABEL_34:
   v16->_keystore = v18;
 
   v16->_zero_on_close = a4;
-  v21 = [NSString stringWithUTF8String:a3];
+  v21 = [NSString stringWithUTF8String:path];
   corefilePath = v16->_corefilePath;
   v16->_corefilePath = v21;
 

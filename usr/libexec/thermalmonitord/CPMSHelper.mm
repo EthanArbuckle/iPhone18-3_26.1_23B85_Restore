@@ -1,15 +1,15 @@
 @interface CPMSHelper
 + (id)sharedInstance;
-- (BOOL)isCPMSSupportedClient:(int)a3;
+- (BOOL)isCPMSSupportedClient:(int)client;
 - (CPMSHelper)init;
-- (int)getMitigationTypeForClientID:(unsigned __int8)a3;
-- (unsigned)getMaxPowerForComponent:(int)a3;
-- (unsigned)getMinPowerForComponent:(int)a3;
+- (int)getMitigationTypeForClientID:(unsigned __int8)d;
+- (unsigned)getMaxPowerForComponent:(int)component;
+- (unsigned)getMinPowerForComponent:(int)component;
 - (void)dealloc;
 - (void)publishDetailedMitigationArrayToCPMS;
-- (void)requestCurrentPowerCallbackForComponent:(int)a3;
-- (void)setPowerBudget:(unsigned int)a3 withDetails:(unint64_t)a4 forCPMSClient:(unsigned __int8)a5 atIdx:(int)a6;
-- (void)updateCPMSClientState:(int)a3;
+- (void)requestCurrentPowerCallbackForComponent:(int)component;
+- (void)setPowerBudget:(unsigned int)budget withDetails:(unint64_t)details forCPMSClient:(unsigned __int8)client atIdx:(int)idx;
+- (void)updateCPMSClientState:(int)state;
 @end
 
 @implementation CPMSHelper
@@ -143,31 +143,31 @@
   [(CPMSHelper *)&v5 dealloc];
 }
 
-- (BOOL)isCPMSSupportedClient:(int)a3
+- (BOOL)isCPMSSupportedClient:(int)client
 {
-  if (byte_100085740[24 * a3] == 255)
+  if (byte_100085740[24 * client] == 255)
   {
     return 0;
   }
 
   else
   {
-    return byte_1000A24F8[1568 * byte_100085740[24 * a3] + 280];
+    return byte_1000A24F8[1568 * byte_100085740[24 * client] + 280];
   }
 }
 
-- (void)setPowerBudget:(unsigned int)a3 withDetails:(unint64_t)a4 forCPMSClient:(unsigned __int8)a5 atIdx:(int)a6
+- (void)setPowerBudget:(unsigned int)budget withDetails:(unint64_t)details forCPMSClient:(unsigned __int8)client atIdx:(int)idx
 {
-  v6 = self + 16 * a6;
-  v6[16] = a5;
-  *(v6 + 5) = a3;
-  *(v6 + 3) = a4;
+  v6 = self + 16 * idx;
+  v6[16] = client;
+  *(v6 + 5) = budget;
+  *(v6 + 3) = details;
   ++self->detailMitigationArray.count;
 }
 
-- (unsigned)getMaxPowerForComponent:(int)a3
+- (unsigned)getMaxPowerForComponent:(int)component
 {
-  v3 = &byte_100085740[24 * a3];
+  v3 = &byte_100085740[24 * component];
   if (*v3 == 255)
   {
     goto LABEL_10;
@@ -217,9 +217,9 @@ LABEL_10:
   return v5;
 }
 
-- (unsigned)getMinPowerForComponent:(int)a3
+- (unsigned)getMinPowerForComponent:(int)component
 {
-  v3 = &byte_100085740[24 * a3];
+  v3 = &byte_100085740[24 * component];
   if (*v3 == 255)
   {
     goto LABEL_10;
@@ -269,11 +269,11 @@ LABEL_10:
   return v5;
 }
 
-- (void)requestCurrentPowerCallbackForComponent:(int)a3
+- (void)requestCurrentPowerCallbackForComponent:(int)component
 {
-  if ((a3 - 15) >= 3)
+  if ((component - 15) >= 3)
   {
-    v3 = &byte_100085740[24 * a3];
+    v3 = &byte_100085740[24 * component];
     input = *v3;
     if (input == 255)
     {
@@ -289,7 +289,7 @@ LABEL_10:
       v19 = 0u;
       v20 = 0u;
       reference[1] = sub_100018FCC;
-      v18 = self;
+      selfCopy = self;
       connect = self->connect;
       MachPort = IONotificationPortGetMachPort([(CPMSHelper *)self notificationPort]);
       v6 = IOConnectCallAsyncScalarMethod(connect, 0x20u, MachPort, reference, 8u, &input, 1u, 0, 0);
@@ -313,9 +313,9 @@ LABEL_10:
   }
 }
 
-- (void)updateCPMSClientState:(int)a3
+- (void)updateCPMSClientState:(int)state
 {
-  v3 = &byte_100085740[24 * a3];
+  v3 = &byte_100085740[24 * state];
   v4 = *v3;
   input = v4;
   if (v4 != 255)
@@ -328,7 +328,7 @@ LABEL_10:
       {
         v8 = *(v3 + 1);
         *buf = 67109634;
-        v12 = a3;
+        stateCopy = state;
         v13 = 2080;
         v14 = v8;
         v15 = 2048;
@@ -347,7 +347,7 @@ LABEL_10:
   }
 }
 
-- (int)getMitigationTypeForClientID:(unsigned __int8)a3
+- (int)getMitigationTypeForClientID:(unsigned __int8)d
 {
   v3 = 0;
   v4 = byte_100085740;
@@ -355,7 +355,7 @@ LABEL_10:
   {
     v5 = *v4;
     v4 += 24;
-    if (v5 == a3)
+    if (v5 == d)
     {
       break;
     }

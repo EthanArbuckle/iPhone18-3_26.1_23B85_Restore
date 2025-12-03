@@ -1,10 +1,10 @@
 @interface MFMessageContentLoadingView
 - (BOOL)isLoadingIndicatorVisible;
-- (MFMessageContentLoadingView)initWithFrame:(CGRect)a3;
+- (MFMessageContentLoadingView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setLoadingIndicatorVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setLoadingTitle:(id)a3;
+- (void)setLoadingIndicatorVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setLoadingTitle:(id)title;
 @end
 
 @implementation MFMessageContentLoadingView
@@ -17,29 +17,29 @@
   [(MFMessageContentLoadingView *)&v3 dealloc];
 }
 
-- (MFMessageContentLoadingView)initWithFrame:(CGRect)a3
+- (MFMessageContentLoadingView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = MFMessageContentLoadingView;
-  v3 = [(MFMessageContentLoadingView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFMessageContentLoadingView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 localizedStringForKey:@"LOADING_ALL_CAPS" value:&stru_1F3CF3758 table:@"Main"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v5 = [mainBundle localizedStringForKey:@"LOADING_ALL_CAPS" value:&stru_1F3CF3758 table:@"Main"];
     [(MFMessageContentLoadingView *)v3 setLoadingTitle:v5];
 
     [(MFMessageContentLoadingView *)v3 setUserInteractionEnabled:0];
-    v6 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
-    [(MFMessageContentLoadingView *)v3 setBackgroundColor:v6];
+    tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+    [(MFMessageContentLoadingView *)v3 setBackgroundColor:tertiarySystemBackgroundColor];
   }
 
   return v3;
 }
 
-- (void)setLoadingTitle:(id)a3
+- (void)setLoadingTitle:(id)title
 {
-  v7 = a3;
-  v4 = [v7 copy];
+  titleCopy = title;
+  v4 = [titleCopy copy];
   loadingTitle = self->_loadingTitle;
   self->_loadingTitle = v4;
 
@@ -52,8 +52,8 @@
 
 - (BOOL)isLoadingIndicatorVisible
 {
-  v3 = [(UILabel *)self->_loadingLabel superview];
-  if (v3)
+  superview = [(UILabel *)self->_loadingLabel superview];
+  if (superview)
   {
     [(UILabel *)self->_loadingLabel alpha];
     v5 = v4 == 1.0;
@@ -67,13 +67,13 @@
   return v5;
 }
 
-- (void)setLoadingIndicatorVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setLoadingIndicatorVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(MFMessageContentLoadingView *)self isLoadingIndicatorVisible]!= a3)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  if ([(MFMessageContentLoadingView *)self isLoadingIndicatorVisible]!= visible)
   {
-    if (v5)
+    if (visibleCopy)
     {
       v7 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
       activityIndicatorView = self->_activityIndicatorView;
@@ -87,11 +87,11 @@
       self->_loadingLabel = v10;
 
       v12 = v10;
-      v13 = [(MFMessageContentLoadingView *)self loadingTitle];
-      [(UILabel *)self->_loadingLabel setText:v13];
+      loadingTitle = [(MFMessageContentLoadingView *)self loadingTitle];
+      [(UILabel *)self->_loadingLabel setText:loadingTitle];
 
-      v14 = [MEMORY[0x1E69DC888] grayColor];
-      [(UILabel *)self->_loadingLabel setTextColor:v14];
+      grayColor = [MEMORY[0x1E69DC888] grayColor];
+      [(UILabel *)self->_loadingLabel setTextColor:grayColor];
 
       v15 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
       [(UILabel *)self->_loadingLabel setFont:v15];
@@ -155,7 +155,7 @@
       self->_loadingLabel = 0;
     }
 
-    if (v4)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] animateWithDuration:v20 animations:v23 completion:0.6];
     }
@@ -203,13 +203,13 @@ uint64_t __67__MFMessageContentLoadingView_setLoadingIndicatorVisible_animated__
   [(MFMessageContentLoadingView *)&v28 layoutSubviews];
   [(MFMessageContentLoadingView *)self bounds];
   v4 = v3;
-  v5 = [(MFMessageContentLoadingView *)self activityIndicatorView];
-  [v5 bounds];
+  activityIndicatorView = [(MFMessageContentLoadingView *)self activityIndicatorView];
+  [activityIndicatorView bounds];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(MFMessageContentLoadingView *)self loadingLabel];
-  [v10 bounds];
+  loadingLabel = [(MFMessageContentLoadingView *)self loadingLabel];
+  [loadingLabel bounds];
   v27 = v11;
   v13 = v12;
 
@@ -219,8 +219,8 @@ uint64_t __67__MFMessageContentLoadingView_setLoadingIndicatorVisible_animated__
   v17 = v16;
   if (v4 >= 135.0)
   {
-    v20 = [(MFMessageContentLoadingView *)self loadingLabel];
-    [v20 _firstBaselineOffsetFromTop];
+    loadingLabel2 = [(MFMessageContentLoadingView *)self loadingLabel];
+    [loadingLabel2 _firstBaselineOffsetFromTop];
     UIRoundToViewScale();
     v19 = v21;
   }
@@ -231,15 +231,15 @@ uint64_t __67__MFMessageContentLoadingView_setLoadingIndicatorVisible_animated__
     v19 = v18;
   }
 
-  v22 = [(MFMessageContentLoadingView *)self loadingLabel];
-  [v22 _firstBaselineOffsetFromTop];
+  loadingLabel3 = [(MFMessageContentLoadingView *)self loadingLabel];
+  [loadingLabel3 _firstBaselineOffsetFromTop];
   v24 = v23;
 
-  v25 = [(MFMessageContentLoadingView *)self activityIndicatorView];
-  [v25 setFrame:{v15, v19, v7, v9}];
+  activityIndicatorView2 = [(MFMessageContentLoadingView *)self activityIndicatorView];
+  [activityIndicatorView2 setFrame:{v15, v19, v7, v9}];
 
-  v26 = [(MFMessageContentLoadingView *)self loadingLabel];
-  [v26 setFrame:{v17, v9 + 18.0 + v19 - v24, v13, v27}];
+  loadingLabel4 = [(MFMessageContentLoadingView *)self loadingLabel];
+  [loadingLabel4 setFrame:{v17, v9 + 18.0 + v19 - v24, v13, v27}];
 }
 
 @end

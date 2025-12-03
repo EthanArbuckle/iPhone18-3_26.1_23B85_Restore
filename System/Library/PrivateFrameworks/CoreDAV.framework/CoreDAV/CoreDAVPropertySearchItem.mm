@@ -1,19 +1,19 @@
 @interface CoreDAVPropertySearchItem
-- (CoreDAVPropertySearchItem)initWithSearchPropertyNameSpace:(id)a3 andName:(id)a4;
+- (CoreDAVPropertySearchItem)initWithSearchPropertyNameSpace:(id)space andName:(id)name;
 - (id)description;
-- (void)write:(id)a3;
+- (void)write:(id)write;
 @end
 
 @implementation CoreDAVPropertySearchItem
 
-- (CoreDAVPropertySearchItem)initWithSearchPropertyNameSpace:(id)a3 andName:(id)a4
+- (CoreDAVPropertySearchItem)initWithSearchPropertyNameSpace:(id)space andName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  spaceCopy = space;
+  nameCopy = name;
   v8 = [(CoreDAVPropertySearchItem *)self init];
   if (v8)
   {
-    v9 = [(CoreDAVItem *)[CoreDAVLeafItem alloc] initWithNameSpace:v6 andName:v7];
+    v9 = [(CoreDAVItem *)[CoreDAVLeafItem alloc] initWithNameSpace:spaceCopy andName:nameCopy];
     prop = v8->_prop;
     v8->_prop = v9;
   }
@@ -29,55 +29,55 @@
   v4 = [(CoreDAVItem *)&v9 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVPropertySearchItem *)self prop];
-  [v3 appendFormat:@"\n  Prop: [%@]", v5];
+  prop = [(CoreDAVPropertySearchItem *)self prop];
+  [v3 appendFormat:@"\n  Prop: [%@]", prop];
 
-  v6 = [(CoreDAVPropertySearchItem *)self match];
-  [v3 appendFormat:@"\n  Match: [%@]", v6];
+  match = [(CoreDAVPropertySearchItem *)self match];
+  [v3 appendFormat:@"\n  Match: [%@]", match];
 
-  v7 = [(CoreDAVPropertySearchItem *)self matchTypeAttribute];
-  [v3 appendFormat:@"\n  MatchTypeAttribute: [%@]", v7];
+  matchTypeAttribute = [(CoreDAVPropertySearchItem *)self matchTypeAttribute];
+  [v3 appendFormat:@"\n  MatchTypeAttribute: [%@]", matchTypeAttribute];
 
   return v3;
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
-  v16 = a3;
-  v4 = [(CoreDAVItem *)self name];
-  v5 = [(CoreDAVItem *)self nameSpace];
-  [v16 startElement:v4 inNamespace:v5 withAttributeNamesAndValues:0];
+  writeCopy = write;
+  name = [(CoreDAVItem *)self name];
+  nameSpace = [(CoreDAVItem *)self nameSpace];
+  [writeCopy startElement:name inNamespace:nameSpace withAttributeNamesAndValues:0];
 
-  [v16 startElement:@"prop" inNamespace:@"DAV:" withAttributeNamesAndValues:0];
-  v6 = [(CoreDAVPropertySearchItem *)self prop];
-  v7 = [v6 name];
-  v8 = [(CoreDAVPropertySearchItem *)self prop];
-  v9 = [v8 nameSpace];
-  [v16 appendElement:v7 inNamespace:v9 withStringContent:0 withAttributeNamesAndValues:0];
+  [writeCopy startElement:@"prop" inNamespace:@"DAV:" withAttributeNamesAndValues:0];
+  prop = [(CoreDAVPropertySearchItem *)self prop];
+  name2 = [prop name];
+  prop2 = [(CoreDAVPropertySearchItem *)self prop];
+  nameSpace2 = [prop2 nameSpace];
+  [writeCopy appendElement:name2 inNamespace:nameSpace2 withStringContent:0 withAttributeNamesAndValues:0];
 
-  [v16 endElement:@"prop" inNamespace:@"DAV:"];
-  v10 = [(CoreDAVPropertySearchItem *)self match];
+  [writeCopy endElement:@"prop" inNamespace:@"DAV:"];
+  match = [(CoreDAVPropertySearchItem *)self match];
 
-  if (v10)
+  if (match)
   {
-    v11 = [(CoreDAVPropertySearchItem *)self matchTypeAttribute];
+    matchTypeAttribute = [(CoreDAVPropertySearchItem *)self matchTypeAttribute];
 
-    v12 = [(CoreDAVPropertySearchItem *)self match];
-    if (v11)
+    match2 = [(CoreDAVPropertySearchItem *)self match];
+    if (matchTypeAttribute)
     {
-      v13 = [(CoreDAVPropertySearchItem *)self matchTypeAttribute];
-      [v16 appendElement:@"match" inNamespace:@"DAV:" withStringContent:v12 withAttributeNamesAndValues:{@"match-type", v13, 0}];
+      matchTypeAttribute2 = [(CoreDAVPropertySearchItem *)self matchTypeAttribute];
+      [writeCopy appendElement:@"match" inNamespace:@"DAV:" withStringContent:match2 withAttributeNamesAndValues:{@"match-type", matchTypeAttribute2, 0}];
     }
 
     else
     {
-      [v16 appendElement:@"match" inNamespace:@"DAV:" withStringContent:v12 withAttributeNamesAndValues:0];
+      [writeCopy appendElement:@"match" inNamespace:@"DAV:" withStringContent:match2 withAttributeNamesAndValues:0];
     }
   }
 
-  v14 = [(CoreDAVItem *)self name];
-  v15 = [(CoreDAVItem *)self nameSpace];
-  [v16 endElement:v14 inNamespace:v15];
+  name3 = [(CoreDAVItem *)self name];
+  nameSpace3 = [(CoreDAVItem *)self nameSpace];
+  [writeCopy endElement:name3 inNamespace:nameSpace3];
 }
 
 @end

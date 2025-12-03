@@ -1,26 +1,26 @@
 @interface VNGuidedUpsamplingGenerator
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)_renderCIImage:(id)a3 toBuffer:(void *)a4 width:(unint64_t)a5 height:(unint64_t)a6 rowBytes:(unint64_t)a7 format:(unsigned int)a8 vnciContextManager:(id)a9 error:(id *)a10;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (__CVBuffer)_renderCIImage:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 format:(unsigned int)a6 vnciContextManager:(id)a7 error:(id *)a8;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)computeStagesToBindForConfigurationOptions:(id)options;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)_renderCIImage:(id)image toBuffer:(void *)buffer width:(unint64_t)width height:(unint64_t)height rowBytes:(unint64_t)bytes format:(unsigned int)format vnciContextManager:(id)manager error:(id *)self0;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (__CVBuffer)_renderCIImage:(id)image width:(unint64_t)width height:(unint64_t)height format:(unsigned int)format vnciContextManager:(id)manager error:(id *)error;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNGuidedUpsamplingGenerator
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allGPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allGPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3
++ (id)computeStagesToBindForConfigurationOptions:(id)options
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = @"VNComputeStageMain";
@@ -29,25 +29,25 @@
   return v3;
 }
 
-- (__CVBuffer)_renderCIImage:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 format:(unsigned int)a6 vnciContextManager:(id)a7 error:(id *)a8
+- (__CVBuffer)_renderCIImage:(id)image width:(unint64_t)width height:(unint64_t)height format:(unsigned int)format vnciContextManager:(id)manager error:(id *)error
 {
-  v10 = *&a6;
-  v14 = a3;
-  v15 = a7;
-  v16 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:a8];
+  v10 = *&format;
+  imageCopy = image;
+  managerCopy = manager;
+  v16 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:error];
   if (v16)
   {
-    v17 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:a4 height:a5 pixelFormatType:v10 error:a8];
+    v17 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:width height:height pixelFormatType:v10 error:error];
     if (v17)
     {
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __91__VNGuidedUpsamplingGenerator__renderCIImage_width_height_format_vnciContextManager_error___block_invoke;
       v20[3] = &unk_1E77B4AC8;
-      v21 = v14;
+      v21 = imageCopy;
       v22 = v17;
       v18 = _Block_copy(v20);
-      if (([(VNCIContextManager *)v15 performBlock:v18 usingAvailableContextForComputeDevice:v16 error:a8]& 1) == 0)
+      if (([(VNCIContextManager *)managerCopy performBlock:v18 usingAvailableContextForComputeDevice:v16 error:error]& 1) == 0)
       {
         CVPixelBufferRelease(v17);
         v17 = 0;
@@ -81,25 +81,25 @@ uint64_t __91__VNGuidedUpsamplingGenerator__renderCIImage_width_height_format_vn
   return 1;
 }
 
-- (BOOL)_renderCIImage:(id)a3 toBuffer:(void *)a4 width:(unint64_t)a5 height:(unint64_t)a6 rowBytes:(unint64_t)a7 format:(unsigned int)a8 vnciContextManager:(id)a9 error:(id *)a10
+- (BOOL)_renderCIImage:(id)image toBuffer:(void *)buffer width:(unint64_t)width height:(unint64_t)height rowBytes:(unint64_t)bytes format:(unsigned int)format vnciContextManager:(id)manager error:(id *)self0
 {
-  v16 = a3;
-  v17 = a9;
-  v18 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:a10];
+  imageCopy = image;
+  managerCopy = manager;
+  v18 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:error];
   if (v18)
   {
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __109__VNGuidedUpsamplingGenerator__renderCIImage_toBuffer_width_height_rowBytes_format_vnciContextManager_error___block_invoke;
     v22[3] = &unk_1E77B3AF8;
-    v24 = a4;
-    v25 = a6;
-    v26 = a5;
-    v27 = a7;
-    v23 = v16;
-    v28 = a8;
+    bufferCopy = buffer;
+    heightCopy = height;
+    widthCopy = width;
+    bytesCopy = bytes;
+    v23 = imageCopy;
+    formatCopy = format;
     v19 = _Block_copy(v22);
-    v20 = [(VNCIContextManager *)v17 performBlock:v19 usingAvailableContextForComputeDevice:v18 error:a10];
+    v20 = [(VNCIContextManager *)managerCopy performBlock:v19 usingAvailableContextForComputeDevice:v18 error:error];
   }
 
   else
@@ -119,15 +119,15 @@ uint64_t __109__VNGuidedUpsamplingGenerator__renderCIImage_toBuffer_width_height
   return [(VNCIContext *)a2 renderCIImage:v4 buffer:&v6 format:*(a1 + 72) error:a3];
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v81 = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  v63 = a7;
-  v64 = a9;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
   p_superclass = VNDetector.superclass;
-  v66 = v14;
-  v16 = [VNValidationUtilities requiredArrayForKey:@"VNGuidedUpsamplingGeneratorOption_LowResImages" inOptions:v14 withElementsOfClass:objc_opt_class() error:a8];
+  v66 = optionsCopy;
+  v16 = [VNValidationUtilities requiredArrayForKey:@"VNGuidedUpsamplingGeneratorOption_LowResImages" inOptions:optionsCopy withElementsOfClass:objc_opt_class() error:error];
   if (!v16)
   {
     v49 = 0;
@@ -135,7 +135,7 @@ uint64_t __109__VNGuidedUpsamplingGenerator__renderCIImage_toBuffer_width_height
   }
 
   v17 = VNValidationUtilities;
-  v61 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNGuidedUpsamplingGeneratorOption_OutputPixelFormat" inOptions:v14 error:a8];
+  v61 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNGuidedUpsamplingGeneratorOption_OutputPixelFormat" inOptions:optionsCopy error:error];
   if (!v61)
   {
     v49 = 0;
@@ -143,7 +143,7 @@ uint64_t __109__VNGuidedUpsamplingGenerator__renderCIImage_toBuffer_width_height
   }
 
   v18 = [v16 count];
-  v59 = [VNValidationUtilities originatingRequestSpecifierInOptions:v14 error:a8];
+  v59 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (!v59)
   {
 LABEL_46:
@@ -151,13 +151,13 @@ LABEL_46:
     goto LABEL_54;
   }
 
-  v19 = [v61 unsignedIntValue];
-  if ((v19 - 1278226488) > 0x30 || ((1 << (v19 - 56)) & 0x1400000000001) == 0)
+  unsignedIntValue = [v61 unsignedIntValue];
+  if ((unsignedIntValue - 1278226488) > 0x30 || ((1 << (unsignedIntValue - 56)) & 0x1400000000001) == 0)
   {
-    if (a8)
+    if (error)
     {
       [VNError errorForInternalErrorWithLocalizedDescription:@"unsupported output pixel format"];
-      *a8 = v49 = 0;
+      *error = v49 = 0;
       goto LABEL_54;
     }
 
@@ -165,31 +165,31 @@ LABEL_46:
   }
 
   std::vector<unsigned int>::vector[abi:ne200100](__p, v18);
-  pixelBuffer = a4;
+  pixelBuffer = buffer;
   v67 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v18];
   if (v18)
   {
     for (i = 0; i != v18; ++i)
     {
-      *(__p[0] + i) = v19;
+      *(__p[0] + i) = unsignedIntValue;
       v21 = [v16 objectAtIndexedSubscript:i];
-      v22 = [v21 featureName];
-      if (v22)
+      featureName = [v21 featureName];
+      if (featureName)
       {
         p_superclass = [v16 objectAtIndexedSubscript:i];
-        v23 = [(__objc2_class *)p_superclass featureName];
-        v9 = v23;
+        featureName2 = [(__objc2_class *)p_superclass featureName];
+        v9 = featureName2;
       }
 
       else
       {
-        v23 = [MEMORY[0x1E695DFB0] null];
-        v17 = v23;
+        featureName2 = [MEMORY[0x1E695DFB0] null];
+        v17 = featureName2;
       }
 
-      [v67 setObject:v23 atIndexedSubscript:i];
+      [v67 setObject:featureName2 atIndexedSubscript:i];
       v24 = v17;
-      if (v22)
+      if (featureName)
       {
 
         v24 = p_superclass;
@@ -197,7 +197,7 @@ LABEL_46:
     }
   }
 
-  v25 = [VNValidationUtilities requiredSessionInOptions:v66 error:a8];
+  v25 = [VNValidationUtilities requiredSessionInOptions:v66 error:error];
   if (!v25)
   {
     v49 = 0;
@@ -205,14 +205,14 @@ LABEL_46:
   }
 
   v54 = v25;
-  v26 = [v25 vnciContextManager];
+  vnciContextManager = [v25 vnciContextManager];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __129__VNGuidedUpsamplingGenerator_processRegionOfInterest_croppedPixelBuffer_options_qosClass_warningRecorder_error_progressHandler___block_invoke;
   aBlock[3] = &unk_1E77B3AA8;
   v78 = 1278226534;
   aBlock[4] = self;
-  v58 = v26;
+  v58 = vnciContextManager;
   v77 = v58;
   v27 = _Block_copy(aBlock);
   v65 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v18];
@@ -234,7 +234,7 @@ LABEL_46:
           objc_enumerationMutation(obj);
         }
 
-        v31 = v27[2](v27, *(*(&v72 + 1) + 8 * j), a8);
+        v31 = v27[2](v27, *(*(&v72 + 1) + 8 * j), error);
         if (!v31)
         {
           goto LABEL_42;
@@ -258,7 +258,7 @@ LABEL_46:
     v35 = v18;
     while (1)
     {
-      v36 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v34 height:1278226534 pixelFormatType:a8 error:?];
+      v36 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v34 height:1278226534 pixelFormatType:error error:?];
       if (!v36)
       {
         break;
@@ -288,7 +288,7 @@ LABEL_27:
   v70 = v56;
   v71 = pixelBuffer;
   v51 = _Block_copy(v68);
-  if ((VNExecuteBlock(v51, a8) & 1) == 0)
+  if ((VNExecuteBlock(v51, error) & 1) == 0)
   {
     v49 = 0;
     goto LABEL_50;
@@ -320,8 +320,8 @@ LABEL_39:
 LABEL_33:
     v42 = [VNPixelBufferObservation alloc];
     v43 = [v67 objectAtIndexedSubscript:v37];
-    v44 = [MEMORY[0x1E695DFB0] null];
-    v45 = [v43 isEqual:v44];
+    null = [MEMORY[0x1E695DFB0] null];
+    v45 = [v43 isEqual:null];
     if (v45)
     {
       v46 = 0;
@@ -348,7 +348,7 @@ LABEL_33:
   }
 
   v41 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:v38];
-  v40 = [(VNGuidedUpsamplingGenerator *)self _renderCIImage:v41 width:v53 height:v52 format:*(__p[0] + v37) vnciContextManager:v58 error:a8];
+  v40 = [(VNGuidedUpsamplingGenerator *)self _renderCIImage:v41 width:v53 height:v52 format:*(__p[0] + v37) vnciContextManager:v58 error:error];
 
   if (v40)
   {
@@ -501,24 +501,24 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
   v24 = 0;
-  if ([VNValidationUtilities getOSTypeValue:&v24 forKey:@"VNGuidedUpsamplingGeneratorOption_InputPixelFormat" inOptions:v16 error:a8])
+  if ([VNValidationUtilities getOSTypeValue:&v24 forKey:@"VNGuidedUpsamplingGeneratorOption_InputPixelFormat" inOptions:optionsCopy error:error])
   {
-    v17 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a8];
+    v17 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 width];
-      v20 = [v18 height];
-      v21 = [v18 croppedBufferWithWidth:(width * v19) height:(height * v20) format:v24 cropRect:v16 options:a8 error:{x * v19, y * v20}];
-      *a7 = v21;
+      width = [v17 width];
+      height = [v18 height];
+      v21 = [v18 croppedBufferWithWidth:(width * width) height:(height * height) format:v24 cropRect:optionsCopy options:error error:{x * width, y * height}];
+      *buffer = v21;
       v22 = v21 != 0;
     }
 

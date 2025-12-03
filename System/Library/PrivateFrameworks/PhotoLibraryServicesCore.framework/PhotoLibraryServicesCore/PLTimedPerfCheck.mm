@@ -1,16 +1,16 @@
 @interface PLTimedPerfCheck
 + (id)start;
 - (PLTimedPerfCheck)init;
-- (PLUnitMultiplier)perfUnitsFromPerfCheckInfo:(SEL)a3;
+- (PLUnitMultiplier)perfUnitsFromPerfCheckInfo:(SEL)info;
 - (id)endSessionAndReturnPerfCheckExtraInformation;
-- (id)perfCheckLogStringWithPerfCheckInfo:(id)a3;
+- (id)perfCheckLogStringWithPerfCheckInfo:(id)info;
 - (void)dealloc;
 - (void)setup;
 @end
 
 @implementation PLTimedPerfCheck
 
-- (PLUnitMultiplier)perfUnitsFromPerfCheckInfo:(SEL)a3
+- (PLUnitMultiplier)perfUnitsFromPerfCheckInfo:(SEL)info
 {
   *retstr = *byte_1E7932018;
   v5 = a4;
@@ -48,13 +48,13 @@
   return result;
 }
 
-- (id)perfCheckLogStringWithPerfCheckInfo:(id)a3
+- (id)perfCheckLogStringWithPerfCheckInfo:(id)info
 {
-  v4 = a3;
-  if (v4 || ([(PLTimedPerfCheck *)self stop], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  infoCopy = info;
+  if (infoCopy || ([(PLTimedPerfCheck *)self stop], (infoCopy = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = v4;
-    [(PLTimedPerfCheck *)self perfUnitsFromPerfCheckInfo:v4];
+    v5 = infoCopy;
+    [(PLTimedPerfCheck *)self perfUnitsFromPerfCheckInfo:infoCopy];
     v27 = MEMORY[0x1E696AEC0];
     v28 = [v5 objectForKeyedSubscript:@"processMemoryPeakKiloBytesInitial"];
     [v28 doubleValue];

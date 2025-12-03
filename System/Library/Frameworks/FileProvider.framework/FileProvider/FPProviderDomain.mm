@@ -1,37 +1,37 @@
 @interface FPProviderDomain
 + (BOOL)hasProviderDomainAccess;
-+ (FPProviderDomain)providerDomainWithID:(id)a3 cachePolicy:(unint64_t)a4 completionHandler:(id)a5;
-+ (FPProviderDomain)providerDomainWithID:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5;
-+ (id)__providerDomainForItemBuggyNullability:(id)a3 error:(id *)a4;
-+ (id)_generateDomainIDFromDSID:(id)a3;
-+ (id)beginMonitoringProviderDomainChangesWithHandler:(id)a3;
-+ (id)cachedProviderDomainWithID:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5;
++ (FPProviderDomain)providerDomainWithID:(id)d cachePolicy:(unint64_t)policy completionHandler:(id)handler;
++ (FPProviderDomain)providerDomainWithID:(id)d cachePolicy:(unint64_t)policy error:(id *)error;
++ (id)__providerDomainForItemBuggyNullability:(id)nullability error:(id *)error;
++ (id)_generateDomainIDFromDSID:(id)d;
++ (id)beginMonitoringProviderDomainChangesWithHandler:(id)handler;
++ (id)cachedProviderDomainWithID:(id)d cachePolicy:(unint64_t)policy error:(id *)error;
 + (id)mainICloudDriveDomainID;
 + (id)projectedFPFSMainICloudDriveDomainID;
-+ (id)providerDomainForItem:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5;
-+ (id)providerDomainForItem:(id)a3 error:(id *)a4;
-+ (id)providerDomainForURL:(id)a3 error:(id *)a4;
-+ (id)providerDomainsWithError:(id *)a3;
-+ (id)rootURLForProviderDomainID:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5;
++ (id)providerDomainForItem:(id)item cachePolicy:(unint64_t)policy error:(id *)error;
++ (id)providerDomainForItem:(id)item error:(id *)error;
++ (id)providerDomainForURL:(id)l error:(id *)error;
++ (id)providerDomainsWithError:(id *)error;
++ (id)rootURLForProviderDomainID:(id)d cachePolicy:(unint64_t)policy error:(id *)error;
 + (void)_t_discardCache;
 + (void)_t_forceReadCacheFromDisk;
-+ (void)accumulatedSizeOfItemsInDomain:(id)a3 completion:(id)a4;
-+ (void)accumulatedSizeOfPinnedItemsInDomain:(id)a3 completion:(id)a4;
-+ (void)endMonitoringProviderDomainChanges:(id)a3;
-+ (void)fetchProviderDomainForItem:(id)a3 cachePolicy:(unint64_t)a4 completionHandler:(id)a5;
-+ (void)fetchProviderDomainWithID:(id)a3 completionHandler:(id)a4;
-+ (void)removeDomainAndPreserveDataWithID:(id)a3 mode:(unint64_t)a4 completionHandler:(id)a5;
-+ (void)removeDomainWithID:(id)a3 mode:(unint64_t)a4 completionHandler:(id)a5;
++ (void)accumulatedSizeOfItemsInDomain:(id)domain completion:(id)completion;
++ (void)accumulatedSizeOfPinnedItemsInDomain:(id)domain completion:(id)completion;
++ (void)endMonitoringProviderDomainChanges:(id)changes;
++ (void)fetchProviderDomainForItem:(id)item cachePolicy:(unint64_t)policy completionHandler:(id)handler;
++ (void)fetchProviderDomainWithID:(id)d completionHandler:(id)handler;
++ (void)removeDomainAndPreserveDataWithID:(id)d mode:(unint64_t)mode completionHandler:(id)handler;
++ (void)removeDomainWithID:(id)d mode:(unint64_t)mode completionHandler:(id)handler;
 - (BOOL)isDataSeparatedDomain;
 - (BOOL)isDefaultDomain;
 - (BOOL)isEnterpriseDomain;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHidden;
 - (BOOL)isMainiCloudDriveDomain;
 - (BOOL)usesDSCopyEngine;
 - (FPProviderDomain)init;
-- (FPProviderDomain)initWithCoder:(id)a3;
-- (FPProviderDomain)initWithProviderID:(id)a3 domain:(id)a4;
+- (FPProviderDomain)initWithCoder:(id)coder;
+- (FPProviderDomain)initWithProviderID:(id)d domain:(id)domain;
 - (NSString)domainDisplayName;
 - (NSString)domainFullDisplayName;
 - (NSString)localizedDisconnectionBannerText;
@@ -41,9 +41,9 @@
 - (id)description;
 - (id)storageURL;
 - (void)domainFullDisplayName;
-- (void)domainStateWithCompletionHandler:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)reconnectAndReimportDomainWithCompletionHandler:(id)a3;
+- (void)domainStateWithCompletionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
+- (void)reconnectAndReimportDomainWithCompletionHandler:(id)handler;
 @end
 
 @implementation FPProviderDomain
@@ -52,28 +52,28 @@
 {
   if ([(NSString *)self->_providerID isEqualToString:@"com.apple.filesystems.UserFS.FileProvider"])
   {
-    v3 = [(NSFileProviderDomain *)self->_domain identifier];
+    identifier = [(NSFileProviderDomain *)self->_domain identifier];
   }
 
   else
   {
-    v3 = 0;
+    identifier = 0;
   }
 
-  return v3;
+  return identifier;
 }
 
 - (id)description
 {
   v86 = *MEMORY[0x1E69E9840];
-  v3 = [(FPProviderDomain *)self testingModes];
-  v4 = [(NSFileProviderDomain *)self->_domain backingStoreIdentity];
+  testingModes = [(FPProviderDomain *)self testingModes];
+  backingStoreIdentity = [(NSFileProviderDomain *)self->_domain backingStoreIdentity];
 
-  if (v4)
+  if (backingStoreIdentity)
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v6 = [(NSFileProviderDomain *)self->_domain backingStoreIdentity];
-    v80 = [v5 initWithData:v6 encoding:4];
+    backingStoreIdentity2 = [(NSFileProviderDomain *)self->_domain backingStoreIdentity];
+    v80 = [v5 initWithData:backingStoreIdentity2 encoding:4];
   }
 
   else
@@ -117,8 +117,8 @@
           [v7 appendString:{@", "}];
         }
 
-        v14 = [v13 fp_shortDescription];
-        [v7 appendString:v14];
+        fp_shortDescription = [v13 fp_shortDescription];
+        [v7 appendString:fp_shortDescription];
       }
 
       v10 = [(NSArray *)v8 countByEnumeratingWithState:&v81 objects:v85 count:16];
@@ -129,8 +129,8 @@
 
   v15 = MEMORY[0x1E696AEC0];
   v16 = objc_opt_class();
-  v17 = [(NSString *)self->_identifier fp_obfuscatedProviderDomainID];
-  v18 = [(NSString *)self->_providerDisplayName fp_obfuscatedFilename];
+  fp_obfuscatedProviderDomainID = [(NSString *)self->_identifier fp_obfuscatedProviderDomainID];
+  fp_obfuscatedFilename = [(NSString *)self->_providerDisplayName fp_obfuscatedFilename];
   v19 = [(NSArray *)self->_storageURLs count];
   if (self->_enabled)
   {
@@ -154,9 +154,9 @@
   v74 = v19;
   v21 = self->_disconnectionState - 1;
   v77 = v15;
-  v78 = v17;
+  v78 = fp_obfuscatedProviderDomainID;
   v75 = v16;
-  v76 = v18;
+  v76 = fp_obfuscatedFilename;
   if (v21 > 8)
   {
     v22 = ",unknown";
@@ -223,7 +223,7 @@
 
   v67 = v26;
   v68 = v27;
-  if (v3)
+  if (testingModes)
   {
     v28 = ",test:alwaysEnabled";
   }
@@ -234,7 +234,7 @@
   }
 
   v29 = ",test:interactive";
-  if ((v3 & 2) == 0)
+  if ((testingModes & 2) == 0)
   {
     v29 = "";
   }
@@ -454,9 +454,9 @@
 
 - (NSString)domainFullDisplayName
 {
-  v3 = [(FPProviderDomain *)self providerDisplayName];
-  v4 = [(FPProviderDomain *)self domainDisplayName];
-  if (!v3)
+  providerDisplayName = [(FPProviderDomain *)self providerDisplayName];
+  domainDisplayName = [(FPProviderDomain *)self domainDisplayName];
+  if (!providerDisplayName)
   {
     v5 = fp_current_or_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -465,15 +465,15 @@
     }
   }
 
-  if ([v3 length])
+  if ([providerDisplayName length])
   {
-    if ([v4 length])
+    if ([domainDisplayName length])
     {
-      if (v3)
+      if (providerDisplayName)
       {
         if (!self->_shouldHideDomainDisplayName)
         {
-          v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", v3, v4];
+          v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", providerDisplayName, domainDisplayName];
           goto LABEL_15;
         }
 
@@ -481,7 +481,7 @@
       }
 
 LABEL_13:
-      v6 = v4;
+      v6 = domainDisplayName;
       goto LABEL_15;
     }
   }
@@ -494,14 +494,14 @@ LABEL_13:
       [(FPProviderDomain *)self domainFullDisplayName];
     }
 
-    if ([v4 length])
+    if ([domainDisplayName length])
     {
       goto LABEL_13;
     }
   }
 
 LABEL_14:
-  v6 = v3;
+  v6 = providerDisplayName;
 LABEL_15:
   v8 = v6;
 
@@ -512,15 +512,15 @@ LABEL_15:
 {
   if (self->_shouldHideExtensionName)
   {
-    v2 = [(NSFileProviderDomain *)self->_domain displayName];
+    displayName = [(NSFileProviderDomain *)self->_domain displayName];
   }
 
   else
   {
-    v2 = self->_providerDisplayName;
+    displayName = self->_providerDisplayName;
   }
 
-  return v2;
+  return displayName;
 }
 
 - (NSString)domainDisplayName
@@ -532,10 +532,10 @@ LABEL_15:
 
   else
   {
-    v3 = [(NSFileProviderDomain *)self->_domain displayName];
-    if ([v3 length])
+    displayName = [(NSFileProviderDomain *)self->_domain displayName];
+    if ([displayName length])
     {
-      v2 = v3;
+      v2 = displayName;
     }
 
     else
@@ -549,24 +549,24 @@ LABEL_15:
 
 - (NSString)personaIdentifier
 {
-  v2 = [(FPProviderDomain *)self domain];
-  v3 = [v2 personaIdentifier];
+  domain = [(FPProviderDomain *)self domain];
+  personaIdentifier = [domain personaIdentifier];
 
-  return v3;
+  return personaIdentifier;
 }
 
 - (BOOL)isDataSeparatedDomain
 {
-  v2 = [(FPProviderDomain *)self domain];
-  v3 = [v2 isDataSeparatedDomain];
+  domain = [(FPProviderDomain *)self domain];
+  isDataSeparatedDomain = [domain isDataSeparatedDomain];
 
-  return v3;
+  return isDataSeparatedDomain;
 }
 
 + (id)mainICloudDriveDomainID
 {
-  v3 = [MEMORY[0x1E695DFF8] fp_lmdURL];
-  v4 = [v3 fp_fpfsProviderDomainID:0];
+  fp_lmdURL = [MEMORY[0x1E695DFF8] fp_lmdURL];
+  v4 = [fp_lmdURL fp_fpfsProviderDomainID:0];
   v5 = v4;
   if (v4)
   {
@@ -575,7 +575,7 @@ LABEL_15:
 
   else
   {
-    v6 = [a1 _generateDomainIDFromDSID:v3];
+    v6 = [self _generateDomainIDFromDSID:fp_lmdURL];
   }
 
   v7 = v6;
@@ -585,16 +585,16 @@ LABEL_15:
 
 - (BOOL)isEnterpriseDomain
 {
-  v2 = [(FPProviderDomain *)self domain];
-  v3 = [v2 isEnterpriseDomain];
+  domain = [(FPProviderDomain *)self domain];
+  isEnterpriseDomain = [domain isEnterpriseDomain];
 
-  return v3;
+  return isEnterpriseDomain;
 }
 
 - (BOOL)isDefaultDomain
 {
-  v2 = [(NSFileProviderDomain *)self->_domain identifier];
-  v3 = [v2 isEqualToString:@"NSFileProviderDomainDefaultIdentifier"];
+  identifier = [(NSFileProviderDomain *)self->_domain identifier];
+  v3 = [identifier isEqualToString:@"NSFileProviderDomainDefaultIdentifier"];
 
   return v3;
 }
@@ -663,40 +663,40 @@ void __43__FPProviderDomain_hasProviderDomainAccess__block_invoke()
     return 1;
   }
 
-  v4 = [(FPProviderDomain *)self providerID];
-  if ([v4 isEqualToString:@"com.apple.FileProvider.LocalStorage"])
+  providerID = [(FPProviderDomain *)self providerID];
+  if ([providerID isEqualToString:@"com.apple.FileProvider.LocalStorage"])
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [(FPProviderDomain *)self providerID];
-    if ([v5 isEqualToString:@"com.apple.filesystems.UserFS.FileProvider"])
+    providerID2 = [(FPProviderDomain *)self providerID];
+    if ([providerID2 isEqualToString:@"com.apple.filesystems.UserFS.FileProvider"])
     {
       v3 = 1;
     }
 
     else
     {
-      v6 = [(FPProviderDomain *)self providerID];
-      if ([v6 isEqualToString:@"com.apple.SMBClientProvider.FileProvider"])
+      providerID3 = [(FPProviderDomain *)self providerID];
+      if ([providerID3 isEqualToString:@"com.apple.SMBClientProvider.FileProvider"])
       {
         v3 = 1;
       }
 
       else
       {
-        v7 = [(FPProviderDomain *)self providerID];
-        if ([v7 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"])
+        providerID4 = [(FPProviderDomain *)self providerID];
+        if ([providerID4 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"])
         {
           v3 = 1;
         }
 
         else
         {
-          v8 = [(FPProviderDomain *)self providerID];
-          v3 = [v8 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"];
+          providerID5 = [(FPProviderDomain *)self providerID];
+          v3 = [providerID5 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"];
         }
       }
     }
@@ -707,10 +707,10 @@ void __43__FPProviderDomain_hasProviderDomainAccess__block_invoke()
 
 - (id)storageURL
 {
-  v2 = [(FPProviderDomain *)self storageURLs];
-  v3 = [v2 firstObject];
+  storageURLs = [(FPProviderDomain *)self storageURLs];
+  firstObject = [storageURLs firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (FPProviderDomain)init
@@ -720,25 +720,25 @@ void __43__FPProviderDomain_hasProviderDomainAccess__block_invoke()
   return [(FPProviderDomain *)&v3 init];
 }
 
-+ (id)beginMonitoringProviderDomainChangesWithHandler:(id)a3
++ (id)beginMonitoringProviderDomainChangesWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[FPProviderDomainChangesReceiver sharedChangesReceiver];
-  v5 = [v4 addChangesHandler:v3];
+  v5 = [v4 addChangesHandler:handlerCopy];
 
   return v5;
 }
 
-+ (void)endMonitoringProviderDomainChanges:(id)a3
++ (void)endMonitoringProviderDomainChanges:(id)changes
 {
-  v4 = a3;
-  if (!v4)
+  changesCopy = changes;
+  if (!changesCopy)
   {
     +[FPProviderDomain endMonitoringProviderDomainChanges:];
   }
 
   v3 = +[FPProviderDomainChangesReceiver sharedChangesReceiver];
-  [v3 removeChangesHandlerToken:v4];
+  [v3 removeChangesHandlerToken:changesCopy];
 }
 
 + (void)_t_discardCache
@@ -753,11 +753,11 @@ void __43__FPProviderDomain_hasProviderDomainAccess__block_invoke()
   [v2 _t_forceReadCacheFromDisk];
 }
 
-- (FPProviderDomain)initWithProviderID:(id)a3 domain:(id)a4
+- (FPProviderDomain)initWithProviderID:(id)d domain:(id)domain
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  domainCopy = domain;
+  if (!dCopy)
   {
     [FPProviderDomain initWithProviderID:domain:];
   }
@@ -768,11 +768,11 @@ void __43__FPProviderDomain_hasProviderDomainAccess__block_invoke()
   if (v9)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [v8 identifier];
-    v12 = v11;
-    if (v11)
+    identifier = [domainCopy identifier];
+    v12 = identifier;
+    if (identifier)
     {
-      v13 = v11;
+      v13 = identifier;
     }
 
     else
@@ -780,20 +780,20 @@ void __43__FPProviderDomain_hasProviderDomainAccess__block_invoke()
       v13 = @"NSFileProviderDomainDefaultIdentifier";
     }
 
-    v14 = [v10 fp_providerDomainIDFromProviderID:v7 domainIdentifier:v13];
+    v14 = [v10 fp_providerDomainIDFromProviderID:dCopy domainIdentifier:v13];
     identifier = v9->_identifier;
     v9->_identifier = v14;
 
-    objc_storeStrong(&v9->_domain, a4);
-    objc_storeStrong(&v9->_providerID, a3);
-    v9->_hiddenByUser = [v8 isHiddenByUser];
-    v9->_hiddenByProvider = [v8 isHidden];
-    if (v8)
+    objc_storeStrong(&v9->_domain, domain);
+    objc_storeStrong(&v9->_providerID, d);
+    v9->_hiddenByUser = [domainCopy isHiddenByUser];
+    v9->_hiddenByProvider = [domainCopy isHidden];
+    if (domainCopy)
     {
-      v9->_supportsSyncingTrash = [v8 supportsSyncingTrash];
-      v9->_supportsSearch = [v8 supportsSearch];
-      v9->_supportsSearchOnServer = [v8 supportsStringSearchRequest];
-      v9->_supportsRemoteVersions = [v8 supportsRemoteVersions];
+      v9->_supportsSyncingTrash = [domainCopy supportsSyncingTrash];
+      v9->_supportsSearch = [domainCopy supportsSearch];
+      v9->_supportsSearchOnServer = [domainCopy supportsStringSearchRequest];
+      v9->_supportsRemoteVersions = [domainCopy supportsRemoteVersions];
     }
 
     else
@@ -807,154 +807,154 @@ void __43__FPProviderDomain_hasProviderDomainAccess__block_invoke()
   return v9;
 }
 
-- (FPProviderDomain)initWithCoder:(id)a3
+- (FPProviderDomain)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = FPProviderDomain;
   v5 = [(FPProviderDomain *)&v41 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_providerID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_providerID"];
     providerID = v5->_providerID;
     v5->_providerID = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_domain"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_domain"];
     domain = v5->_domain;
     v5->_domain = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_providerDisplayName"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_providerDisplayName"];
     providerDisplayName = v5->_providerDisplayName;
     v5->_providerDisplayName = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_extensionBundleURL"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_extensionBundleURL"];
     extensionBundleURL = v5->_extensionBundleURL;
     v5->_extensionBundleURL = v15;
 
     v17 = MEMORY[0x1E695DFD8];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"_supportedFileTypes"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"_supportedFileTypes"];
     supportedFileTypes = v5->_supportedFileTypes;
     v5->_supportedFileTypes = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_topLevelBundleIdentifier"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_topLevelBundleIdentifier"];
     topLevelBundleIdentifier = v5->_topLevelBundleIdentifier;
     v5->_topLevelBundleIdentifier = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_topLevelBundleURL"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_topLevelBundleURL"];
     topLevelBundleURL = v5->_topLevelBundleURL;
     v5->_topLevelBundleURL = v24;
 
     v26 = MEMORY[0x1E695DFD8];
     v27 = objc_opt_class();
     v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"_storageURLs"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"_storageURLs"];
     storageURLs = v5->_storageURLs;
     v5->_storageURLs = v29;
 
-    v5->_storageURLsAreInTransientState = [v4 decodeBoolForKey:@"_storageURLsAreInTransientState"];
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_version"];
+    v5->_storageURLsAreInTransientState = [coderCopy decodeBoolForKey:@"_storageURLsAreInTransientState"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_version"];
     version = v5->_version;
     v5->_version = v31;
 
-    v5->_isAvailableSystemWide = [v4 decodeBoolForKey:@"_isAvailableSystemWide"];
-    v5->_supportsEnumeration = [v4 decodeBoolForKey:@"_supportsEnumeration"];
-    v5->_supportsSearchOnServer = [v4 decodeBoolForKey:@"_supportsSearchOnServer"];
-    v5->_enabled = [v4 decodeBoolForKey:@"_enabled"];
-    v5->_canDisable = [v4 decodeBoolForKey:@"_canDisable"];
-    v5->_shouldHideExtensionName = [v4 decodeBoolForKey:@"_shouldHideExtensionName"];
-    v5->_shouldHideDomainDisplayName = [v4 decodeBoolForKey:@"_shouldHideDomainDisplayName"];
-    v5->_ejectable = [v4 decodeBoolForKey:@"_ejectable"];
-    v5->_readOnly = [v4 decodeBoolForKey:@"_readOnly"];
+    v5->_isAvailableSystemWide = [coderCopy decodeBoolForKey:@"_isAvailableSystemWide"];
+    v5->_supportsEnumeration = [coderCopy decodeBoolForKey:@"_supportsEnumeration"];
+    v5->_supportsSearchOnServer = [coderCopy decodeBoolForKey:@"_supportsSearchOnServer"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"_enabled"];
+    v5->_canDisable = [coderCopy decodeBoolForKey:@"_canDisable"];
+    v5->_shouldHideExtensionName = [coderCopy decodeBoolForKey:@"_shouldHideExtensionName"];
+    v5->_shouldHideDomainDisplayName = [coderCopy decodeBoolForKey:@"_shouldHideDomainDisplayName"];
+    v5->_ejectable = [coderCopy decodeBoolForKey:@"_ejectable"];
+    v5->_readOnly = [coderCopy decodeBoolForKey:@"_readOnly"];
     v33 = MEMORY[0x1E695DFD8];
     v34 = objc_opt_class();
     v35 = [v33 setWithObjects:{v34, objc_opt_class(), 0}];
-    v36 = [v4 decodeObjectOfClasses:v35 forKey:@"_supportedSearchFilters"];
+    v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"_supportedSearchFilters"];
     supportedSearchFilters = v5->_supportedSearchFilters;
     v5->_supportedSearchFilters = v36;
 
-    v5->_usesUniqueItemIdentifiersAcrossDevices = [v4 decodeBoolForKey:@"_usesUniqueItemIdentifiersAcrossDevices"];
-    v5->_hiddenByProvider = [v4 decodeBoolForKey:@"_hiddenByProvider"];
-    v5->_hiddenByUser = [v4 decodeBoolForKey:@"_hiddenByUser"];
-    v5->_supportsPickingFolders = [v4 decodeBoolForKey:@"_supportsPickingFolders"];
-    v5->_needsAuthentication = [v4 decodeBoolForKey:@"_needsAuthentication"];
-    v38 = [v4 fp_safeDecodeNSDictionaryForKey:@"_domainUserInfo"];
+    v5->_usesUniqueItemIdentifiersAcrossDevices = [coderCopy decodeBoolForKey:@"_usesUniqueItemIdentifiersAcrossDevices"];
+    v5->_hiddenByProvider = [coderCopy decodeBoolForKey:@"_hiddenByProvider"];
+    v5->_hiddenByUser = [coderCopy decodeBoolForKey:@"_hiddenByUser"];
+    v5->_supportsPickingFolders = [coderCopy decodeBoolForKey:@"_supportsPickingFolders"];
+    v5->_needsAuthentication = [coderCopy decodeBoolForKey:@"_needsAuthentication"];
+    v38 = [coderCopy fp_safeDecodeNSDictionaryForKey:@"_domainUserInfo"];
     domainUserInfo = v5->_domainUserInfo;
     v5->_domainUserInfo = v38;
 
-    v5->_allowsUserControlledEviction = [v4 decodeBoolForKey:@"_allowsUserControlledEviction"];
-    v5->_allowsSystemDeleteAlerts = [v4 decodeBoolForKey:@"_allowsSystemDeleteAlerts"];
-    v5->_allowsContextualMenuDownloadEntry = [v4 decodeBoolForKey:@"_allowsContextualMenuDownloadEntry"];
-    v5->_supportsSyncingTrash = [v4 decodeBoolForKey:@"_supportsSyncingTrash"];
-    v5->_supportsSearch = [v4 decodeBoolForKey:@"_supportsSearch"];
-    v5->_disconnectionState = [v4 decodeIntegerForKey:@"_disconnectionState"];
-    v5->_useFPFS = [v4 decodeBoolForKey:@"_useFPFS"];
-    v5->_appliesChangesAtomically = [v4 decodeBoolForKey:@"_appliesChangesAtomically"];
-    v5->_backgroundActivityIsPaused = [v4 decodeBoolForKey:@"_backgroundActivityIsPaused"];
-    v5->_errorGenerationCount = [v4 decodeIntegerForKey:@"_errorGenerationCount"];
-    v5->_isIndexed = [v4 decodeBoolForKey:@"_isIndexed"];
-    v5->_owningApplicationIsHidden = [v4 decodeBoolForKey:@"_owningApplicationIsHidden"];
-    v5->_supportedKnownFolders = [v4 decodeIntegerForKey:@"_supportedKnownFolders"];
-    v5->_supportsRemoteVersions = [v4 decodeBoolForKey:@"_supportsRemoteVersions"];
-    v5->_isOnMainVolume = [v4 decodeBoolForKey:@"_isOnMainVolume"];
+    v5->_allowsUserControlledEviction = [coderCopy decodeBoolForKey:@"_allowsUserControlledEviction"];
+    v5->_allowsSystemDeleteAlerts = [coderCopy decodeBoolForKey:@"_allowsSystemDeleteAlerts"];
+    v5->_allowsContextualMenuDownloadEntry = [coderCopy decodeBoolForKey:@"_allowsContextualMenuDownloadEntry"];
+    v5->_supportsSyncingTrash = [coderCopy decodeBoolForKey:@"_supportsSyncingTrash"];
+    v5->_supportsSearch = [coderCopy decodeBoolForKey:@"_supportsSearch"];
+    v5->_disconnectionState = [coderCopy decodeIntegerForKey:@"_disconnectionState"];
+    v5->_useFPFS = [coderCopy decodeBoolForKey:@"_useFPFS"];
+    v5->_appliesChangesAtomically = [coderCopy decodeBoolForKey:@"_appliesChangesAtomically"];
+    v5->_backgroundActivityIsPaused = [coderCopy decodeBoolForKey:@"_backgroundActivityIsPaused"];
+    v5->_errorGenerationCount = [coderCopy decodeIntegerForKey:@"_errorGenerationCount"];
+    v5->_isIndexed = [coderCopy decodeBoolForKey:@"_isIndexed"];
+    v5->_owningApplicationIsHidden = [coderCopy decodeBoolForKey:@"_owningApplicationIsHidden"];
+    v5->_supportedKnownFolders = [coderCopy decodeIntegerForKey:@"_supportedKnownFolders"];
+    v5->_supportsRemoteVersions = [coderCopy decodeBoolForKey:@"_supportsRemoteVersions"];
+    v5->_isOnMainVolume = [coderCopy decodeBoolForKey:@"_isOnMainVolume"];
     objc_autoreleasePoolPop(v6);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"_identifier"];
-  [v5 encodeObject:self->_providerID forKey:@"_providerID"];
-  [v5 encodeObject:self->_domain forKey:@"_domain"];
-  [v5 encodeObject:self->_providerDisplayName forKey:@"_providerDisplayName"];
-  [v5 encodeObject:self->_extensionBundleURL forKey:@"_extensionBundleURL"];
-  [v5 encodeObject:self->_supportedFileTypes forKey:@"_supportedFileTypes"];
-  [v5 encodeObject:self->_topLevelBundleIdentifier forKey:@"_topLevelBundleIdentifier"];
-  [v5 encodeObject:self->_topLevelBundleURL forKey:@"_topLevelBundleURL"];
-  [v5 encodeObject:self->_storageURLs forKey:@"_storageURLs"];
-  [v5 encodeBool:self->_storageURLsAreInTransientState forKey:@"_storageURLsAreInTransientState"];
-  [v5 encodeObject:self->_version forKey:@"_version"];
-  [v5 encodeBool:self->_isAvailableSystemWide forKey:@"_isAvailableSystemWide"];
-  [v5 encodeBool:self->_supportsEnumeration forKey:@"_supportsEnumeration"];
-  [v5 encodeBool:self->_supportsSearchOnServer forKey:@"_supportsSearchOnServer"];
-  [v5 encodeBool:self->_enabled forKey:@"_enabled"];
-  [v5 encodeBool:self->_canDisable forKey:@"_canDisable"];
-  [v5 encodeBool:self->_shouldHideExtensionName forKey:@"_shouldHideExtensionName"];
-  [v5 encodeBool:self->_shouldHideDomainDisplayName forKey:@"_shouldHideDomainDisplayName"];
-  [v5 encodeBool:self->_ejectable forKey:@"_ejectable"];
-  [v5 encodeBool:self->_readOnly forKey:@"_readOnly"];
-  [v5 encodeObject:self->_supportedSearchFilters forKey:@"_supportedSearchFilters"];
-  [v5 encodeBool:self->_usesUniqueItemIdentifiersAcrossDevices forKey:@"_usesUniqueItemIdentifiersAcrossDevices"];
-  [v5 encodeBool:self->_hiddenByUser forKey:@"_hiddenByUser"];
-  [v5 encodeBool:self->_hiddenByProvider forKey:@"_hiddenByProvider"];
-  [v5 encodeBool:self->_supportsPickingFolders forKey:@"_supportsPickingFolders"];
-  [v5 encodeBool:self->_needsAuthentication forKey:@"_needsAuthentication"];
-  [v5 encodeObject:self->_domainUserInfo forKey:@"_domainUserInfo"];
-  [v5 encodeBool:self->_allowsUserControlledEviction forKey:@"_allowsUserControlledEviction"];
-  [v5 encodeBool:self->_allowsSystemDeleteAlerts forKey:@"_allowsSystemDeleteAlerts"];
-  [v5 encodeBool:self->_allowsContextualMenuDownloadEntry forKey:@"_allowsContextualMenuDownloadEntry"];
-  [v5 encodeBool:self->_supportsSyncingTrash forKey:@"_supportsSyncingTrash"];
-  [v5 encodeBool:self->_supportsSearch forKey:@"_supportsSearch"];
-  [v5 encodeInteger:self->_disconnectionState forKey:@"_disconnectionState"];
-  [v5 encodeBool:self->_useFPFS forKey:@"_useFPFS"];
-  [v5 encodeBool:self->_appliesChangesAtomically forKey:@"_appliesChangesAtomically"];
-  [v5 encodeBool:self->_backgroundActivityIsPaused forKey:@"_backgroundActivityIsPaused"];
-  [v5 encodeInteger:self->_errorGenerationCount forKey:@"_errorGenerationCount"];
-  [v5 encodeBool:self->_isIndexed forKey:@"_isIndexed"];
-  [v5 encodeBool:self->_owningApplicationIsHidden forKey:@"_owningApplicationIsHidden"];
-  [v5 encodeInteger:self->_supportedKnownFolders forKey:@"_supportedKnownFolders"];
-  [v5 encodeBool:self->_supportsRemoteVersions forKey:@"_supportsRemoteVersions"];
-  [v5 encodeBool:self->_isOnMainVolume forKey:@"_isOnMainVolume"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"_identifier"];
+  [coderCopy encodeObject:self->_providerID forKey:@"_providerID"];
+  [coderCopy encodeObject:self->_domain forKey:@"_domain"];
+  [coderCopy encodeObject:self->_providerDisplayName forKey:@"_providerDisplayName"];
+  [coderCopy encodeObject:self->_extensionBundleURL forKey:@"_extensionBundleURL"];
+  [coderCopy encodeObject:self->_supportedFileTypes forKey:@"_supportedFileTypes"];
+  [coderCopy encodeObject:self->_topLevelBundleIdentifier forKey:@"_topLevelBundleIdentifier"];
+  [coderCopy encodeObject:self->_topLevelBundleURL forKey:@"_topLevelBundleURL"];
+  [coderCopy encodeObject:self->_storageURLs forKey:@"_storageURLs"];
+  [coderCopy encodeBool:self->_storageURLsAreInTransientState forKey:@"_storageURLsAreInTransientState"];
+  [coderCopy encodeObject:self->_version forKey:@"_version"];
+  [coderCopy encodeBool:self->_isAvailableSystemWide forKey:@"_isAvailableSystemWide"];
+  [coderCopy encodeBool:self->_supportsEnumeration forKey:@"_supportsEnumeration"];
+  [coderCopy encodeBool:self->_supportsSearchOnServer forKey:@"_supportsSearchOnServer"];
+  [coderCopy encodeBool:self->_enabled forKey:@"_enabled"];
+  [coderCopy encodeBool:self->_canDisable forKey:@"_canDisable"];
+  [coderCopy encodeBool:self->_shouldHideExtensionName forKey:@"_shouldHideExtensionName"];
+  [coderCopy encodeBool:self->_shouldHideDomainDisplayName forKey:@"_shouldHideDomainDisplayName"];
+  [coderCopy encodeBool:self->_ejectable forKey:@"_ejectable"];
+  [coderCopy encodeBool:self->_readOnly forKey:@"_readOnly"];
+  [coderCopy encodeObject:self->_supportedSearchFilters forKey:@"_supportedSearchFilters"];
+  [coderCopy encodeBool:self->_usesUniqueItemIdentifiersAcrossDevices forKey:@"_usesUniqueItemIdentifiersAcrossDevices"];
+  [coderCopy encodeBool:self->_hiddenByUser forKey:@"_hiddenByUser"];
+  [coderCopy encodeBool:self->_hiddenByProvider forKey:@"_hiddenByProvider"];
+  [coderCopy encodeBool:self->_supportsPickingFolders forKey:@"_supportsPickingFolders"];
+  [coderCopy encodeBool:self->_needsAuthentication forKey:@"_needsAuthentication"];
+  [coderCopy encodeObject:self->_domainUserInfo forKey:@"_domainUserInfo"];
+  [coderCopy encodeBool:self->_allowsUserControlledEviction forKey:@"_allowsUserControlledEviction"];
+  [coderCopy encodeBool:self->_allowsSystemDeleteAlerts forKey:@"_allowsSystemDeleteAlerts"];
+  [coderCopy encodeBool:self->_allowsContextualMenuDownloadEntry forKey:@"_allowsContextualMenuDownloadEntry"];
+  [coderCopy encodeBool:self->_supportsSyncingTrash forKey:@"_supportsSyncingTrash"];
+  [coderCopy encodeBool:self->_supportsSearch forKey:@"_supportsSearch"];
+  [coderCopy encodeInteger:self->_disconnectionState forKey:@"_disconnectionState"];
+  [coderCopy encodeBool:self->_useFPFS forKey:@"_useFPFS"];
+  [coderCopy encodeBool:self->_appliesChangesAtomically forKey:@"_appliesChangesAtomically"];
+  [coderCopy encodeBool:self->_backgroundActivityIsPaused forKey:@"_backgroundActivityIsPaused"];
+  [coderCopy encodeInteger:self->_errorGenerationCount forKey:@"_errorGenerationCount"];
+  [coderCopy encodeBool:self->_isIndexed forKey:@"_isIndexed"];
+  [coderCopy encodeBool:self->_owningApplicationIsHidden forKey:@"_owningApplicationIsHidden"];
+  [coderCopy encodeInteger:self->_supportedKnownFolders forKey:@"_supportedKnownFolders"];
+  [coderCopy encodeBool:self->_supportsRemoteVersions forKey:@"_supportsRemoteVersions"];
+  [coderCopy encodeBool:self->_isOnMainVolume forKey:@"_isOnMainVolume"];
 }
 
 - (NSString)localizedDisconnectionBannerText
@@ -995,8 +995,8 @@ void __43__FPProviderDomain_hasProviderDomainAccess__block_invoke()
       goto LABEL_21;
     }
 
-    v13 = [(FPProviderDomain *)self providerDisplayName];
-    FPLoc(@"DISCONNECTION_EXTERNAL_REJECTED_%@", v23, v24, v25, v26, v27, v28, v29, v13);
+    providerDisplayName = [(FPProviderDomain *)self providerDisplayName];
+    FPLoc(@"DISCONNECTION_EXTERNAL_REJECTED_%@", v23, v24, v25, v26, v27, v28, v29, providerDisplayName);
   }
 
   else
@@ -1014,40 +1014,40 @@ void __43__FPProviderDomain_hasProviderDomainAccess__block_invoke()
         goto LABEL_26;
       }
 
-      v11 = [(NSFileProviderDomain *)self->_domain _disconnectionReason];
+      _disconnectionReason = [(NSFileProviderDomain *)self->_domain _disconnectionReason];
 
-      if (!v11)
+      if (!_disconnectionReason)
       {
         v12 = @"DISCONNECTION_REASON_TEMPORARY";
 LABEL_21:
-        v22 = FPLoc(v12, a2, v2, v3, v4, v5, v6, v7, v38);
+        _disconnectionReason2 = FPLoc(v12, a2, v2, v3, v4, v5, v6, v7, v38);
         goto LABEL_22;
       }
 
 LABEL_19:
-      v22 = [(NSFileProviderDomain *)self->_domain _disconnectionReason];
+      _disconnectionReason2 = [(NSFileProviderDomain *)self->_domain _disconnectionReason];
 LABEL_22:
-      v9 = v22;
+      v9 = _disconnectionReason2;
       goto LABEL_26;
     }
 
     if (disconnectionState == 4)
     {
-      v21 = [(NSFileProviderDomain *)self->_domain _disconnectionReason];
+      _disconnectionReason3 = [(NSFileProviderDomain *)self->_domain _disconnectionReason];
 
-      if (v21)
+      if (_disconnectionReason3)
       {
         goto LABEL_19;
       }
 
-      v13 = [(FPProviderDomain *)self providerDisplayName];
-      FPLoc(@"DISCONNECTION_REASON_PERMANENT_%@", v30, v31, v32, v33, v34, v35, v36, v13);
+      providerDisplayName = [(FPProviderDomain *)self providerDisplayName];
+      FPLoc(@"DISCONNECTION_REASON_PERMANENT_%@", v30, v31, v32, v33, v34, v35, v36, providerDisplayName);
     }
 
     else
     {
-      v13 = [(FPProviderDomain *)self providerDisplayName];
-      FPLoc(@"DISCONNECTION_REASON_ORPHANED_%@", v14, v15, v16, v17, v18, v19, v20, v13);
+      providerDisplayName = [(FPProviderDomain *)self providerDisplayName];
+      FPLoc(@"DISCONNECTION_REASON_ORPHANED_%@", v14, v15, v16, v17, v18, v19, v20, providerDisplayName);
     }
   }
   v9 = ;
@@ -1074,15 +1074,15 @@ void __93__FPProviderDomain_selectNewProviderDomain_knownFolders_skipReleaseProm
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     identifier = self->_identifier;
-    v6 = [v4 identifier];
-    v7 = [(NSString *)identifier isEqual:v6];
+    identifier = [equalCopy identifier];
+    v7 = [(NSString *)identifier isEqual:identifier];
   }
 
   else
@@ -1097,8 +1097,8 @@ void __93__FPProviderDomain_selectNewProviderDomain_knownFolders_skipReleaseProm
 {
   if ([(FPProviderDomain *)self isiCloudDriveProvider])
   {
-    v3 = [(FPProviderDomain *)self domain];
-    v4 = [v3 isEnterpriseDomain] ^ 1;
+    domain = [(FPProviderDomain *)self domain];
+    v4 = [domain isEnterpriseDomain] ^ 1;
   }
 
   else
@@ -1109,9 +1109,9 @@ void __93__FPProviderDomain_selectNewProviderDomain_knownFolders_skipReleaseProm
   return v4;
 }
 
-+ (id)providerDomainForURL:(id)a3 error:(id *)a4
++ (id)providerDomainForURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1124,9 +1124,9 @@ void __93__FPProviderDomain_selectNewProviderDomain_knownFolders_skipReleaseProm
   v14 = __Block_byref_object_copy__14;
   v15 = __Block_byref_object_dispose__14;
   v16 = 0;
-  if ([v5 fp_matchesFileProviderHeuristics:geteuid()])
+  if ([lCopy fp_matchesFileProviderHeuristics:geteuid()])
   {
-    FPPrecheckTCCReadAccess(v5);
+    FPPrecheckTCCReadAccess(lCopy);
     v6 = +[FPDaemonConnection synchronousSharedConnectionProxy];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -1134,12 +1134,12 @@ void __93__FPProviderDomain_selectNewProviderDomain_knownFolders_skipReleaseProm
     v10[3] = &unk_1E793C480;
     v10[4] = &v17;
     v10[5] = &v11;
-    [v6 providerDomainForURL:v5 completionHandler:v10];
+    [v6 providerDomainForURL:lCopy completionHandler:v10];
 
     v7 = v12[5];
-    if (a4 && !v7)
+    if (error && !v7)
     {
-      *a4 = v18[5];
+      *error = v18[5];
       v7 = v12[5];
     }
 
@@ -1168,13 +1168,13 @@ void __47__FPProviderDomain_providerDomainForURL_error___block_invoke(uint64_t a
   *(v6 + 40) = v5;
 }
 
-+ (void)fetchProviderDomainWithID:(id)a3 completionHandler:(id)a4
++ (void)fetchProviderDomainWithID:(id)d completionHandler:(id)handler
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (dCopy)
   {
-    if (v6)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -1183,7 +1183,7 @@ void __47__FPProviderDomain_providerDomainForURL_error___block_invoke(uint64_t a
   else
   {
     +[FPProviderDomain fetchProviderDomainWithID:completionHandler:];
-    if (v6)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -1191,80 +1191,80 @@ void __47__FPProviderDomain_providerDomainForURL_error___block_invoke(uint64_t a
 
   +[FPProviderDomain fetchProviderDomainWithID:completionHandler:];
 LABEL_3:
-  [a1 providerDomainWithID:v7 cachePolicy:0 completionHandler:v6];
+  [self providerDomainWithID:dCopy cachePolicy:0 completionHandler:handlerCopy];
 }
 
-+ (id)cachedProviderDomainWithID:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5
++ (id)cachedProviderDomainWithID:(id)d cachePolicy:(unint64_t)policy error:(id *)error
 {
-  v7 = a3;
+  dCopy = d;
   v8 = +[FPProviderDomainChangesReceiver sharedChangesReceiverIfAvailable];
-  v9 = [v8 cachedProviderDomainsByID];
+  cachedProviderDomainsByID = [v8 cachedProviderDomainsByID];
 
-  if (a4 != 3 || v9)
+  if (policy != 3 || cachedProviderDomainsByID)
   {
-    v11 = [v9 objectForKeyedSubscript:v7];
+    v11 = [cachedProviderDomainsByID objectForKeyedSubscript:dCopy];
     v10 = v11;
     if (v11)
     {
       v18 = v11;
     }
 
-    else if (a4 == 3 || a4 == 2 && v9)
+    else if (policy == 3 || policy == 2 && cachedProviderDomainsByID)
     {
-      *a5 = FPProviderNotFoundError(v7, 1uLL, v12, v13, v14, v15, v16, v17);
+      *error = FPProviderNotFoundError(dCopy, 1uLL, v12, v13, v14, v15, v16, v17);
     }
   }
 
   else
   {
     v10 = 0;
-    *a5 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"NSFileProviderInternalErrorDomain" code:19 userInfo:0];
+    *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"NSFileProviderInternalErrorDomain" code:19 userInfo:0];
   }
 
   return v10;
 }
 
-+ (FPProviderDomain)providerDomainWithID:(id)a3 cachePolicy:(unint64_t)a4 completionHandler:(id)a5
++ (FPProviderDomain)providerDomainWithID:(id)d cachePolicy:(unint64_t)policy completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (!a4)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!policy)
   {
     goto LABEL_7;
   }
 
   v14 = 0;
-  v10 = [a1 cachedProviderDomainWithID:v8 cachePolicy:a4 error:&v14];
+  v10 = [self cachedProviderDomainWithID:dCopy cachePolicy:policy error:&v14];
   v11 = v14;
   v12 = v11;
   if (!v10)
   {
     if (v11)
     {
-      v9[2](v9, 0, v11);
+      handlerCopy[2](handlerCopy, 0, v11);
       goto LABEL_6;
     }
 
 LABEL_7:
     v12 = +[FPDaemonConnection sharedConnectionProxy];
-    [v12 providerDomainForIdentifier:v8 completionHandler:v9];
+    [v12 providerDomainForIdentifier:dCopy completionHandler:handlerCopy];
     goto LABEL_8;
   }
 
-  (v9)[2](v9, v10, 0);
+  (handlerCopy)[2](handlerCopy, v10, 0);
 LABEL_6:
 
 LABEL_8:
   return result;
 }
 
-+ (FPProviderDomain)providerDomainWithID:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5
++ (FPProviderDomain)providerDomainWithID:(id)d cachePolicy:(unint64_t)policy error:(id *)error
 {
-  v8 = a3;
-  if (a4)
+  dCopy = d;
+  if (policy)
   {
     v30 = 0;
-    v9 = [a1 cachedProviderDomainWithID:v8 cachePolicy:a4 error:&v30];
+    v9 = [self cachedProviderDomainWithID:dCopy cachePolicy:policy error:&v30];
     v10 = v30;
     v11 = v10;
     if (v9)
@@ -1277,10 +1277,10 @@ LABEL_4:
 
     if (v10)
     {
-      if (a5)
+      if (error)
       {
         v13 = v10;
-        *a5 = v11;
+        *error = v11;
       }
 
       goto LABEL_4;
@@ -1306,12 +1306,12 @@ LABEL_4:
   v17[3] = &unk_1E793C480;
   v17[4] = &v18;
   v17[5] = &v24;
-  [v14 providerDomainForIdentifier:v8 completionHandler:v17];
+  [v14 providerDomainForIdentifier:dCopy completionHandler:v17];
 
   v15 = v19[5];
-  if (a5 && !v15)
+  if (error && !v15)
   {
-    *a5 = v25[5];
+    *error = v25[5];
     v15 = v19[5];
   }
 
@@ -1338,7 +1338,7 @@ void __59__FPProviderDomain_providerDomainWithID_cachePolicy_error___block_invok
   *(v9 + 40) = v6;
 }
 
-+ (id)providerDomainsWithError:(id *)a3
++ (id)providerDomainsWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -1362,9 +1362,9 @@ void __59__FPProviderDomain_providerDomainWithID_cachePolicy_error___block_invok
   [v4 providerDomainsCompletionHandler:v8];
 
   v5 = v10[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v16[5];
+    *error = v16[5];
     v5 = v10[5];
   }
 
@@ -1388,49 +1388,49 @@ void __45__FPProviderDomain_providerDomainsWithError___block_invoke(uint64_t a1,
   *(v8 + 40) = v7;
 }
 
-+ (id)providerDomainForItem:(id)a3 error:(id *)a4
++ (id)providerDomainForItem:(id)item error:(id *)error
 {
-  v6 = [a3 providerDomainID];
-  v7 = [a1 providerDomainWithID:v6 cachePolicy:0 error:a4];
+  providerDomainID = [item providerDomainID];
+  v7 = [self providerDomainWithID:providerDomainID cachePolicy:0 error:error];
 
   return v7;
 }
 
-+ (id)providerDomainForItem:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5
++ (id)providerDomainForItem:(id)item cachePolicy:(unint64_t)policy error:(id *)error
 {
-  v8 = [a3 providerDomainID];
-  v9 = [a1 providerDomainWithID:v8 cachePolicy:a4 error:a5];
+  providerDomainID = [item providerDomainID];
+  v9 = [self providerDomainWithID:providerDomainID cachePolicy:policy error:error];
 
   return v9;
 }
 
-+ (id)__providerDomainForItemBuggyNullability:(id)a3 error:(id *)a4
++ (id)__providerDomainForItemBuggyNullability:(id)nullability error:(id *)error
 {
-  v6 = [a3 providerDomainID];
-  v7 = [a1 providerDomainWithID:v6 cachePolicy:0 error:a4];
+  providerDomainID = [nullability providerDomainID];
+  v7 = [self providerDomainWithID:providerDomainID cachePolicy:0 error:error];
 
   return v7;
 }
 
-+ (void)fetchProviderDomainForItem:(id)a3 cachePolicy:(unint64_t)a4 completionHandler:(id)a5
++ (void)fetchProviderDomainForItem:(id)item cachePolicy:(unint64_t)policy completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [a3 providerDomainID];
-  [a1 providerDomainWithID:v9 cachePolicy:a4 completionHandler:v8];
+  handlerCopy = handler;
+  providerDomainID = [item providerDomainID];
+  [self providerDomainWithID:providerDomainID cachePolicy:policy completionHandler:handlerCopy];
 }
 
-+ (void)removeDomainAndPreserveDataWithID:(id)a3 mode:(unint64_t)a4 completionHandler:(id)a5
++ (void)removeDomainAndPreserveDataWithID:(id)d mode:(unint64_t)mode completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   v9 = +[FPDaemonConnection sharedConnectionProxy];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__FPProviderDomain_removeDomainAndPreserveDataWithID_mode_completionHandler___block_invoke;
   v11[3] = &unk_1E793C4D0;
-  v12 = v7;
-  v10 = v7;
-  [v9 removeDomainAndPreserveDataWithID:v8 mode:a4 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [v9 removeDomainAndPreserveDataWithID:dCopy mode:mode completionHandler:v11];
 }
 
 void __77__FPProviderDomain_removeDomainAndPreserveDataWithID_mode_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1441,30 +1441,30 @@ void __77__FPProviderDomain_removeDomainAndPreserveDataWithID_mode_completionHan
   (*(v4 + 16))(v4, v6, v5);
 }
 
-+ (void)removeDomainWithID:(id)a3 mode:(unint64_t)a4 completionHandler:(id)a5
++ (void)removeDomainWithID:(id)d mode:(unint64_t)mode completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__FPProviderDomain_removeDomainWithID_mode_completionHandler___block_invoke;
   v10[3] = &unk_1E793A3D0;
-  v11 = v8;
-  v9 = v8;
-  [a1 removeDomainAndPreserveDataWithID:a3 mode:a4 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [self removeDomainAndPreserveDataWithID:d mode:mode completionHandler:v10];
 }
 
-- (void)domainStateWithCompletionHandler:(id)a3
+- (void)domainStateWithCompletionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DF068] sharedManager];
-  v6 = [v5 currentPersona];
+  handlerCopy = handler;
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v32 = 0;
-  v7 = [v6 userPersonaUniqueString];
-  v8 = [(FPProviderDomain *)self personaIdentifier];
-  v9 = v8;
-  if (v7 == v8)
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  personaIdentifier = [(FPProviderDomain *)self personaIdentifier];
+  v9 = personaIdentifier;
+  if (userPersonaUniqueString == personaIdentifier)
   {
 
 LABEL_13:
@@ -1472,8 +1472,8 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v10 = [(FPProviderDomain *)self personaIdentifier];
-  v11 = [v7 isEqualToString:v10];
+  personaIdentifier2 = [(FPProviderDomain *)self personaIdentifier];
+  v11 = [userPersonaUniqueString isEqualToString:personaIdentifier2];
 
   if ((v11 & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
   {
@@ -1481,7 +1481,7 @@ LABEL_13:
   }
 
   v31 = 0;
-  v12 = [v6 copyCurrentPersonaContextWithError:&v31];
+  v12 = [currentPersona copyCurrentPersonaContextWithError:&v31];
   v13 = v31;
   v14 = v32;
   v32 = v12;
@@ -1495,16 +1495,16 @@ LABEL_13:
     }
   }
 
-  v16 = [(FPProviderDomain *)self personaIdentifier];
-  v17 = [v6 generateAndRestorePersonaContextWithPersonaUniqueString:v16];
+  personaIdentifier3 = [(FPProviderDomain *)self personaIdentifier];
+  v17 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:personaIdentifier3];
 
   if (v17)
   {
     v18 = fp_current_or_default_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(FPProviderDomain *)self personaIdentifier];
-      [(FPProviderDomain *)v19 domainStateWithCompletionHandler:v17, buf, v18];
+      personaIdentifier4 = [(FPProviderDomain *)self personaIdentifier];
+      [(FPProviderDomain *)personaIdentifier4 domainStateWithCompletionHandler:v17, buf, v18];
     }
   }
 
@@ -1513,10 +1513,10 @@ LABEL_14:
   v29[1] = 3221225472;
   v29[2] = __53__FPProviderDomain_domainStateWithCompletionHandler___block_invoke;
   v29[3] = &unk_1E7939EA8;
-  v20 = v4;
+  v20 = handlerCopy;
   v30 = v20;
   v21 = [FPFrameworkOverridesIterator newIteratorWithNotFoundHandler:v29];
-  v22 = [(FPProviderDomain *)self identifier];
+  identifier = [(FPProviderDomain *)self identifier];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __53__FPProviderDomain_domainStateWithCompletionHandler___block_invoke_2;
@@ -1525,7 +1525,7 @@ LABEL_14:
   v27 = v23;
   v24 = v20;
   v28 = v24;
-  [v23 FPStateForDomainWithID:v22 completionHandler:v26];
+  [v23 FPStateForDomainWithID:identifier completionHandler:v26];
 
   _FPRestorePersona(&v32);
   v25 = *MEMORY[0x1E69E9840];
@@ -1563,35 +1563,35 @@ void __53__FPProviderDomain_domainStateWithCompletionHandler___block_invoke_2(ui
   }
 }
 
-- (void)reconnectAndReimportDomainWithCompletionHandler:(id)a3
+- (void)reconnectAndReimportDomainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(NSFileProviderDomain *)self->_domain copy];
   [v5 setDisconnected:0];
   [v5 _setDisconnectionReason:0];
   [v5 _setDisconnectionOptions:0];
   v6 = +[FPDaemonConnection sharedConnectionProxy];
-  v7 = [(FPProviderDomain *)self providerID];
+  providerID = [(FPProviderDomain *)self providerID];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__FPProviderDomain_reconnectAndReimportDomainWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E793C520;
-  v10 = v4;
-  v8 = v4;
-  [v6 addDomain:v5 forProviderIdentifier:v7 byImportingDirectoryAtURL:0 nonWrappedURL:0 userAllowedDBDrop:1 knownFolders:MEMORY[0x1E695E0F0] completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [v6 addDomain:v5 forProviderIdentifier:providerID byImportingDirectoryAtURL:0 nonWrappedURL:0 userAllowedDBDrop:1 knownFolders:MEMORY[0x1E695E0F0] completionHandler:v9];
 }
 
-+ (id)_generateDomainIDFromDSID:(id)a3
++ (id)_generateDomainIDFromDSID:(id)d
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   v4 = fp_current_or_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(FPProviderDomain *)v3 _generateDomainIDFromDSID:v4];
+    [(FPProviderDomain *)dCopy _generateDomainIDFromDSID:v4];
   }
 
-  v5 = open([v3 fileSystemRepresentation], 1048836);
+  v5 = open([dCopy fileSystemRepresentation], 1048836);
   if (v5 < 0)
   {
     v13 = fp_current_or_default_log();
@@ -1641,22 +1641,22 @@ LABEL_13:
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = [MEMORY[0x1E6959A48] defaultStore];
-  v19 = [v18 accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E69597F8]];
-  [v18 accountsWithAccountType:v19];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  v19 = [defaultStore accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E69597F8]];
+  [defaultStore accountsWithAccountType:v19];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v20 = v32 = 0u;
-  v21 = [v20 countByEnumeratingWithState:&v29 objects:v33 count:16];
-  if (v21)
+  identifier = [v20 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  if (identifier)
   {
     v27 = v19;
     v28 = v17;
     v22 = *v30;
     while (2)
     {
-      for (i = 0; i != v21; i = i + 1)
+      for (i = 0; i != identifier; i = i + 1)
       {
         if (*v30 != v22)
         {
@@ -1664,18 +1664,18 @@ LABEL_13:
         }
 
         v24 = *(*(&v29 + 1) + 8 * i);
-        v25 = [v24 aa_personID];
-        v26 = [v25 isEqualToString:v12];
+        aa_personID = [v24 aa_personID];
+        v26 = [aa_personID isEqualToString:v12];
 
         if (v26)
         {
-          v21 = [v24 identifier];
+          identifier = [v24 identifier];
           goto LABEL_31;
         }
       }
 
-      v21 = [v20 countByEnumeratingWithState:&v29 objects:v33 count:16];
-      if (v21)
+      identifier = [v20 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      if (identifier)
       {
         continue;
       }
@@ -1689,9 +1689,9 @@ LABEL_31:
   }
 
   objc_autoreleasePoolPop(v17);
-  if (v21)
+  if (identifier)
   {
-    v14 = [MEMORY[0x1E696AEC0] fp_providerDomainIDFromProviderID:@"com.apple.CloudDocs.iCloudDriveFileProvider" domainIdentifier:v21];
+    v14 = [MEMORY[0x1E696AEC0] fp_providerDomainIDFromProviderID:@"com.apple.CloudDocs.iCloudDriveFileProvider" domainIdentifier:identifier];
   }
 
   else
@@ -1707,8 +1707,8 @@ LABEL_14:
 
 + (id)projectedFPFSMainICloudDriveDomainID
 {
-  v3 = [MEMORY[0x1E695DFF8] fp_lmdURL];
-  v4 = [v3 fp_fpfsProviderDomainID:0];
+  fp_lmdURL = [MEMORY[0x1E695DFF8] fp_lmdURL];
+  v4 = [fp_lmdURL fp_fpfsProviderDomainID:0];
   if (v4)
   {
     v5 = 0;
@@ -1716,27 +1716,27 @@ LABEL_14:
 
   else
   {
-    v5 = [a1 _generateDomainIDFromDSID:v3];
+    v5 = [self _generateDomainIDFromDSID:fp_lmdURL];
   }
 
   return v5;
 }
 
-+ (id)rootURLForProviderDomainID:(id)a3 cachePolicy:(unint64_t)a4 error:(id *)a5
++ (id)rootURLForProviderDomainID:(id)d cachePolicy:(unint64_t)policy error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 fp_toProviderID];
-  if ([v8 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"])
+  dCopy = d;
+  fp_toProviderID = [dCopy fp_toProviderID];
+  if ([fp_toProviderID isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProvider"])
   {
-    v9 = [FPProviderDomain providerDomainWithID:v7 cachePolicy:3 error:0];
+    v9 = [FPProviderDomain providerDomainWithID:dCopy cachePolicy:3 error:0];
     if (v9)
     {
       goto LABEL_6;
     }
 
-    v10 = [MEMORY[0x1E695DFF8] fp_lmdURL];
-    v11 = [v10 fp_fpfsProviderDomainID:0];
-    v12 = [v11 isEqualToString:v7];
+    fp_lmdURL = [MEMORY[0x1E695DFF8] fp_lmdURL];
+    v11 = [fp_lmdURL fp_fpfsProviderDomainID:0];
+    v12 = [v11 isEqualToString:dCopy];
 
     if (v12)
     {
@@ -1744,46 +1744,46 @@ LABEL_14:
     }
   }
 
-  v9 = [FPProviderDomain providerDomainWithID:v7 cachePolicy:a4 error:a5];
+  v9 = [FPProviderDomain providerDomainWithID:dCopy cachePolicy:policy error:error];
   if (!v9)
   {
-    v10 = 0;
+    fp_lmdURL = 0;
     goto LABEL_8;
   }
 
 LABEL_6:
-  v13 = [v9 storageURLs];
-  v10 = [v13 firstObject];
+  storageURLs = [v9 storageURLs];
+  fp_lmdURL = [storageURLs firstObject];
 
 LABEL_8:
 LABEL_9:
 
-  return v10;
+  return fp_lmdURL;
 }
 
-+ (void)accumulatedSizeOfPinnedItemsInDomain:(id)a3 completion:(id)a4
++ (void)accumulatedSizeOfPinnedItemsInDomain:(id)domain completion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
-  if (FPPinningIsEnabledForDomainID(v7))
+  domainCopy = domain;
+  completionCopy = completion;
+  if (FPPinningIsEnabledForDomainID(domainCopy))
   {
     v6 = +[FPDaemonConnection sharedConnectionProxy];
-    [v6 accumulatedSizeOfPinnedItemsInDomain:v7 completion:v5];
+    [v6 accumulatedSizeOfPinnedItemsInDomain:domainCopy completion:completionCopy];
   }
 
   else
   {
     v6 = FPNotSupportedError();
-    v5[2](v5, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
   }
 }
 
-+ (void)accumulatedSizeOfItemsInDomain:(id)a3 completion:(id)a4
++ (void)accumulatedSizeOfItemsInDomain:(id)domain completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  domainCopy = domain;
   v7 = +[FPDaemonConnection sharedConnectionProxy];
-  [v7 accumulatedSizeOfItemsInDomain:v6 completion:v5];
+  [v7 accumulatedSizeOfItemsInDomain:domainCopy completion:completionCopy];
 }
 
 + (void)endMonitoringProviderDomainChanges:.cold.1()
@@ -1805,7 +1805,7 @@ LABEL_9:
 - (void)domainFullDisplayName
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 64);
+  v2 = *(self + 64);
   v4 = 138543362;
   v5 = v2;
   _os_log_fault_impl(&dword_1AAAE1000, a2, OS_LOG_TYPE_FAULT, "[CRIT] providerDisplayName was empty in domainFullDisplayName, providerId: %{public}@", &v4, 0xCu);

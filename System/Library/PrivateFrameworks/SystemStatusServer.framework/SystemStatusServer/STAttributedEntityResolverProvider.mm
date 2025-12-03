@@ -1,8 +1,8 @@
 @interface STAttributedEntityResolverProvider
 - (STAttributedEntityResolverProvider)init;
-- (STAttributedEntityResolverProvider)initWithIdentityResolver:(id)a3;
-- (id)resolverForPreferredLocalizations:(id)a3;
-- (void)setDynamicAttributions:(id)a3;
+- (STAttributedEntityResolverProvider)initWithIdentityResolver:(id)resolver;
+- (id)resolverForPreferredLocalizations:(id)localizations;
+- (void)setDynamicAttributions:(id)attributions;
 @end
 
 @implementation STAttributedEntityResolverProvider
@@ -15,30 +15,30 @@
   return v4;
 }
 
-- (STAttributedEntityResolverProvider)initWithIdentityResolver:(id)a3
+- (STAttributedEntityResolverProvider)initWithIdentityResolver:(id)resolver
 {
-  v5 = a3;
+  resolverCopy = resolver;
   v11.receiver = self;
   v11.super_class = STAttributedEntityResolverProvider;
   v6 = [(STAttributedEntityResolverProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identityResolver, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_identityResolver, resolver);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     entityResolversByLocalization = v7->_entityResolversByLocalization;
-    v7->_entityResolversByLocalization = v8;
+    v7->_entityResolversByLocalization = dictionary;
   }
 
   return v7;
 }
 
-- (void)setDynamicAttributions:(id)a3
+- (void)setDynamicAttributions:(id)attributions
 {
-  v4 = a3;
-  if (![(NSArray *)self->_dynamicAttributions isEqualToArray:v4])
+  attributionsCopy = attributions;
+  if (![(NSArray *)self->_dynamicAttributions isEqualToArray:attributionsCopy])
   {
-    v5 = [v4 copy];
+    v5 = [attributionsCopy copy];
     dynamicAttributions = self->_dynamicAttributions;
     self->_dynamicAttributions = v5;
 
@@ -47,14 +47,14 @@
     v8[1] = 3221225472;
     v8[2] = __61__STAttributedEntityResolverProvider_setDynamicAttributions___block_invoke;
     v8[3] = &unk_279D35570;
-    v9 = v4;
+    v9 = attributionsCopy;
     [(NSMutableDictionary *)entityResolversByLocalization enumerateKeysAndObjectsUsingBlock:v8];
   }
 }
 
-- (id)resolverForPreferredLocalizations:(id)a3
+- (id)resolverForPreferredLocalizations:(id)localizations
 {
-  v4 = a3;
+  localizationsCopy = localizations;
   if (self)
   {
     entityResolversByLocalization = self->_entityResolversByLocalization;
@@ -66,7 +66,7 @@
   }
 
   v6 = entityResolversByLocalization;
-  v7 = [(NSMutableDictionary *)v6 objectForKey:v4];
+  v7 = [(NSMutableDictionary *)v6 objectForKey:localizationsCopy];
   if (!v7)
   {
     v8 = [STAttributedEntityResolver alloc];
@@ -80,9 +80,9 @@
       identityResolver = 0;
     }
 
-    v7 = [(STAttributedEntityResolver *)v8 initWithPreferredLocalizations:v4 identityResolver:identityResolver];
-    v10 = [(STAttributedEntityResolverProvider *)self dynamicAttributions];
-    [(STAttributedEntityResolver *)v7 setDynamicAttributions:v10];
+    v7 = [(STAttributedEntityResolver *)v8 initWithPreferredLocalizations:localizationsCopy identityResolver:identityResolver];
+    dynamicAttributions = [(STAttributedEntityResolverProvider *)self dynamicAttributions];
+    [(STAttributedEntityResolver *)v7 setDynamicAttributions:dynamicAttributions];
 
     if (self)
     {
@@ -94,7 +94,7 @@
       v11 = 0;
     }
 
-    [(NSMutableDictionary *)v11 setObject:v7 forKey:v4];
+    [(NSMutableDictionary *)v11 setObject:v7 forKey:localizationsCopy];
   }
 
   return v7;

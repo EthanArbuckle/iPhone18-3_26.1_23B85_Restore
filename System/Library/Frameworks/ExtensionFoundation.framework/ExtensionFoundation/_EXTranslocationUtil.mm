@@ -1,14 +1,14 @@
 @interface _EXTranslocationUtil
-+ (id)makeSecureDirectoryForURL:(id)a3 error:(id *)a4;
++ (id)makeSecureDirectoryForURL:(id)l error:(id *)error;
 @end
 
 @implementation _EXTranslocationUtil
 
-+ (id)makeSecureDirectoryForURL:(id)a3 error:(id *)a4
++ (id)makeSecureDirectoryForURL:(id)l error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] _EX_unimplementedError];
+    *error = [MEMORY[0x1E696ABC0] _EX_unimplementedError];
   }
 
   return 0;

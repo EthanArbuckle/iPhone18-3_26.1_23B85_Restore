@@ -1,24 +1,24 @@
 @interface PLSpotlightTranslatorUtilities
-+ (id)contentRatingFromScenes:(id)a3 algorithmVersion:(signed __int16)a4;
-+ (id)seasonsForDate:(id)a3 calendar:(id)a4;
-+ (id)spotlightAudioClassificationsFromScenes:(id)a3;
-+ (id)spotlightPersonFromPLPerson:(id)a3 face:(id)a4 fetchHelper:(id)a5;
-+ (id)spotlightScenesFromDetectionTraits:(id)a3 thumbnailMap:(id)a4;
-+ (id)spotlightScenesFromScenes:(id)a3 sceneTaxonomy:(id)a4 thumbnailMap:(id)a5 includeDogScenes:(BOOL)a6;
-+ (int64_t)CSSceneTypeForPLSceneClassificationType:(int64_t)a3;
-+ (void)tagCSSearchableItem:(id)a3 entityInstanceIdentifier:(id)a4 typeIdentifier:(id)a5 typeDisplayName:(id)a6 displayTitle:(id)a7 displaySubtitle:(id)a8;
++ (id)contentRatingFromScenes:(id)scenes algorithmVersion:(signed __int16)version;
++ (id)seasonsForDate:(id)date calendar:(id)calendar;
++ (id)spotlightAudioClassificationsFromScenes:(id)scenes;
++ (id)spotlightPersonFromPLPerson:(id)person face:(id)face fetchHelper:(id)helper;
++ (id)spotlightScenesFromDetectionTraits:(id)traits thumbnailMap:(id)map;
++ (id)spotlightScenesFromScenes:(id)scenes sceneTaxonomy:(id)taxonomy thumbnailMap:(id)map includeDogScenes:(BOOL)dogScenes;
++ (int64_t)CSSceneTypeForPLSceneClassificationType:(int64_t)type;
++ (void)tagCSSearchableItem:(id)item entityInstanceIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier typeDisplayName:(id)name displayTitle:(id)title displaySubtitle:(id)subtitle;
 @end
 
 @implementation PLSpotlightTranslatorUtilities
 
-+ (void)tagCSSearchableItem:(id)a3 entityInstanceIdentifier:(id)a4 typeIdentifier:(id)a5 typeDisplayName:(id)a6 displayTitle:(id)a7 displaySubtitle:(id)a8
++ (void)tagCSSearchableItem:(id)item entityInstanceIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier typeDisplayName:(id)name displayTitle:(id)title displaySubtitle:(id)subtitle
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  itemCopy = item;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  nameCopy = name;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2050000000;
@@ -37,29 +37,29 @@
 
   v20 = v19;
   _Block_object_dispose(&v22, 8);
-  [v19 tagCSSearchableItem:v13 entityInstanceIdentifier:v14 typeIdentifier:v15 displayTitle:v17 displaySubtitle:v18 displaySynonyms:0 typeDisplayName:v16 typeDisplaySynonyms:0 propertyDictionary:0 priority:&unk_1F0FBC7C0];
+  [v19 tagCSSearchableItem:itemCopy entityInstanceIdentifier:identifierCopy typeIdentifier:typeIdentifierCopy displayTitle:titleCopy displaySubtitle:subtitleCopy displaySynonyms:0 typeDisplayName:nameCopy typeDisplaySynonyms:0 propertyDictionary:0 priority:&unk_1F0FBC7C0];
 }
 
-+ (int64_t)CSSceneTypeForPLSceneClassificationType:(int64_t)a3
++ (int64_t)CSSceneTypeForPLSceneClassificationType:(int64_t)type
 {
-  if (a3 > 7)
+  if (type > 7)
   {
     return 4;
   }
 
   else
   {
-    return qword_19C60BCF8[a3];
+    return qword_19C60BCF8[type];
   }
 }
 
-+ (id)seasonsForDate:(id)a3 calendar:(id)a4
++ (id)seasonsForDate:(id)date calendar:(id)calendar
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  dateCopy = date;
+  calendarCopy = calendar;
+  if (calendarCopy)
   {
-    if (v7)
+    if (dateCopy)
     {
 LABEL_3:
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -69,7 +69,7 @@ LABEL_3:
       v14[3] = &unk_1E756D000;
       v15 = v9;
       v10 = v9;
-      PLSearchSeasonStringsForDate(v7, v8, v14);
+      PLSearchSeasonStringsForDate(dateCopy, calendarCopy, v14);
       v11 = [v10 copy];
 
       goto LABEL_6;
@@ -78,10 +78,10 @@ LABEL_3:
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PLSpotlightTranslatorUtilities.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"calendar"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSpotlightTranslatorUtilities.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"calendar"}];
 
-    if (v7)
+    if (dateCopy)
     {
       goto LABEL_3;
     }
@@ -104,9 +104,9 @@ void __58__PLSpotlightTranslatorUtilities_seasonsForDate_calendar___block_invoke
   [v8 addObjectsFromArray:v9];
 }
 
-+ (id)contentRatingFromScenes:(id)a3 algorithmVersion:(signed __int16)a4
++ (id)contentRatingFromScenes:(id)scenes algorithmVersion:(signed __int16)version
 {
-  v4 = PLSearchImageSensitivityForSceneClassifications(a3, a4);
+  v4 = PLSearchImageSensitivityForSceneClassifications(scenes, version);
   v5 = &unk_1F0FC0468;
   if (v4 != 1)
   {
@@ -124,20 +124,20 @@ void __58__PLSpotlightTranslatorUtilities_seasonsForDate_calendar___block_invoke
   }
 }
 
-+ (id)spotlightScenesFromDetectionTraits:(id)a3 thumbnailMap:(id)a4
++ (id)spotlightScenesFromDetectionTraits:(id)traits thumbnailMap:(id)map
 {
-  v5 = a4;
-  v6 = a3;
+  mapCopy = map;
+  traitsCopy = traits;
   v7 = objc_opt_new();
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __82__PLSpotlightTranslatorUtilities_spotlightScenesFromDetectionTraits_thumbnailMap___block_invoke;
   v15 = &unk_1E756C498;
   v16 = v7;
-  v17 = v5;
-  v8 = v5;
+  v17 = mapCopy;
+  v8 = mapCopy;
   v9 = v7;
-  PLSearchEnumerateSearchStringsForDetectionTraits(v6, &v12);
+  PLSearchEnumerateSearchStringsForDetectionTraits(traitsCopy, &v12);
 
   v10 = [v9 copy];
 
@@ -169,9 +169,9 @@ void __82__PLSpotlightTranslatorUtilities_spotlightScenesFromDetectionTraits_thu
   }
 }
 
-+ (id)spotlightAudioClassificationsFromScenes:(id)a3
++ (id)spotlightAudioClassificationsFromScenes:(id)scenes
 {
-  v3 = a3;
+  scenesCopy = scenes;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -179,7 +179,7 @@ void __82__PLSpotlightTranslatorUtilities_spotlightScenesFromDetectionTraits_thu
   v7[3] = &unk_1E756CF60;
   v5 = v4;
   v8 = v5;
-  PLSearchEnumerateSearchStringsForAudioClassifications(v3, v7);
+  PLSearchEnumerateSearchStringsForAudioClassifications(scenesCopy, v7);
 
   return v5;
 }
@@ -201,22 +201,22 @@ void __74__PLSpotlightTranslatorUtilities_spotlightAudioClassificationsFromScene
   [*(a1 + 32) addObject:v14];
 }
 
-+ (id)spotlightScenesFromScenes:(id)a3 sceneTaxonomy:(id)a4 thumbnailMap:(id)a5 includeDogScenes:(BOOL)a6
++ (id)spotlightScenesFromScenes:(id)scenes sceneTaxonomy:(id)taxonomy thumbnailMap:(id)map includeDogScenes:(BOOL)dogScenes
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dogScenesCopy = dogScenes;
+  scenesCopy = scenes;
+  taxonomyCopy = taxonomy;
+  mapCopy = map;
   v12 = objc_opt_new();
-  if ([v9 count])
+  if ([scenesCopy count])
   {
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __104__PLSpotlightTranslatorUtilities_spotlightScenesFromScenes_sceneTaxonomy_thumbnailMap_includeDogScenes___block_invoke;
     v18 = &unk_1E756C470;
     v19 = v12;
-    v20 = v11;
-    [v10 enumerateKeywordAndSynonymsForScenes:v9 includeDogScenes:v6 usingBlock:&v15];
+    v20 = mapCopy;
+    [taxonomyCopy enumerateKeywordAndSynonymsForScenes:scenesCopy includeDogScenes:dogScenesCopy usingBlock:&v15];
   }
 
   v13 = [v12 copy];
@@ -297,27 +297,27 @@ void __104__PLSpotlightTranslatorUtilities_spotlightScenesFromScenes_sceneTaxono
   }
 }
 
-+ (id)spotlightPersonFromPLPerson:(id)a3 face:(id)a4 fetchHelper:(id)a5
++ (id)spotlightPersonFromPLPerson:(id)person face:(id)face fetchHelper:(id)helper
 {
   v56 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v46 = a4;
-  v10 = a5;
-  if (!v9)
+  personCopy = person;
+  faceCopy = face;
+  helperCopy = helper;
+  if (!personCopy)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:a1 file:@"PLSpotlightTranslatorUtilities.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSpotlightTranslatorUtilities.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"person"}];
   }
 
-  v45 = v10;
-  v44 = [v9 personUUID];
-  v11 = [v9 displayName];
-  v12 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v13 = [v11 stringByTrimmingCharactersInSet:v12];
+  v45 = helperCopy;
+  personUUID = [personCopy personUUID];
+  displayName = [personCopy displayName];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v13 = [displayName stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  v14 = [v9 fullName];
-  v15 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v16 = [v14 stringByTrimmingCharactersInSet:v15];
+  fullName = [personCopy fullName];
+  whitespaceAndNewlineCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v16 = [fullName stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
   v17 = [v13 length];
   v18 = [v16 isEqualToString:v13];
@@ -344,15 +344,15 @@ void __104__PLSpotlightTranslatorUtilities_spotlightScenesFromScenes_sceneTaxono
   }
 
   v23 = v22;
-  v24 = [v9 detectionType];
-  if (((v24 - 1) & 0xFFFC) != 0)
+  detectionType = [personCopy detectionType];
+  if (((detectionType - 1) & 0xFFFC) != 0)
   {
     v25 = 0;
   }
 
   else
   {
-    v25 = (v24 - 1) + 1;
+    v25 = (detectionType - 1) + 1;
   }
 
   v26 = objc_opt_new();
@@ -396,17 +396,17 @@ void __104__PLSpotlightTranslatorUtilities_spotlightScenesFromScenes_sceneTaxono
     }
   }
 
-  if (v46)
+  if (faceCopy)
   {
     v33 = objc_opt_new();
-    v34 = [v46 ageType];
+    ageType = [faceCopy ageType];
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __79__PLSpotlightTranslatorUtilities_spotlightPersonFromPLPerson_face_fetchHelper___block_invoke;
     v49[3] = &unk_1E756CFD8;
     v35 = v33;
     v50 = v35;
-    PLSearchSearchStringsForPersonAgeType(v34, v49);
+    PLSearchSearchStringsForPersonAgeType(ageType, v49);
   }
 
   else
@@ -423,18 +423,18 @@ void __104__PLSpotlightTranslatorUtilities_spotlightScenesFromScenes_sceneTaxono
   v37 = _Block_copy(aBlock);
   if (v45)
   {
-    [v45 enumerateSearchEntityRelationsForPerson:v9 block:v37];
+    [v45 enumerateSearchEntityRelationsForPerson:personCopy block:v37];
   }
 
   else
   {
-    [v9 enumerateAssetSearchEntityPersonRelationsWithBlock:v37];
+    [personCopy enumerateAssetSearchEntityPersonRelationsWithBlock:v37];
   }
 
   v38 = objc_alloc(MEMORY[0x1E6964E50]);
-  v39 = [v38 initWithDisplayName:v21 handles:MEMORY[0x1E695E0F0] handleIdentifier:0 photosPersonIdentifier:v44 isPhotosPerson:1 personType:v25 nameAlternatives:v36 faceAttributes:v35];
-  v40 = [v9 personUri];
-  [v39 setContactIdentifier:v40];
+  v39 = [v38 initWithDisplayName:v21 handles:MEMORY[0x1E695E0F0] handleIdentifier:0 photosPersonIdentifier:personUUID isPhotosPerson:1 personType:v25 nameAlternatives:v36 faceAttributes:v35];
+  personUri = [personCopy personUri];
+  [v39 setContactIdentifier:personUri];
 
   return v39;
 }

@@ -1,16 +1,16 @@
 @interface VSJSApp
 + (id)currentContext;
-- (VSJSApp)initWithScriptURL:(id)a3;
+- (VSJSApp)initWithScriptURL:(id)l;
 - (VSJSAppDelegate)delegate;
-- (id)_errorWithCode:(int64_t)a3 underlyingError:(id)a4;
-- (id)_exceptionErrorWithCode:(int64_t)a3;
-- (void)_configureWatchdogWithSeconds:(unint64_t)a3;
+- (id)_errorWithCode:(int64_t)code underlyingError:(id)error;
+- (id)_exceptionErrorWithCode:(int64_t)code;
+- (void)_configureWatchdogWithSeconds:(unint64_t)seconds;
 - (void)_initializeContext;
 - (void)_invokeOnExit;
 - (void)_invokeOnLaunch;
-- (void)evaluateScript:(id)a3 withSourceURL:(id)a4;
-- (void)evaluateWithBlock:(id)a3;
-- (void)setExceptionWithMessage:(id)a3;
+- (void)evaluateScript:(id)script withSourceURL:(id)l;
+- (void)evaluateWithBlock:(id)block;
+- (void)setExceptionWithMessage:(id)message;
 - (void)start;
 - (void)stop;
 - (void)transitionToErrorState;
@@ -24,16 +24,16 @@
 
 @implementation VSJSApp
 
-- (VSJSApp)initWithScriptURL:(id)a3
+- (VSJSApp)initWithScriptURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v25.receiver = self;
   v25.super_class = VSJSApp;
   v6 = [(VSJSApp *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v8 = v7;
     v9 = [[VSSingleThreadDispatchQueue alloc] initWithName:@"VSJSContext JS"];
     jsSingleThreadQueue = v8->_jsSingleThreadQueue;
@@ -90,43 +90,43 @@
   v2 = VSDefaultLogObject();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [MEMORY[0x277CCACC8] currentThread];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
     v8 = 138412290;
-    v9 = v3;
+    v9 = currentThread;
     _os_log_impl(&dword_23AB8E000, v2, OS_LOG_TYPE_DEFAULT, "currentContext thread=%@", &v8, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [v4 threadDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"VSJSContextThread"];
+  currentThread2 = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread2 threadDictionary];
+  v6 = [threadDictionary objectForKeyedSubscript:@"VSJSContextThread"];
 
   return v6;
 }
 
-- (void)setExceptionWithMessage:(id)a3
+- (void)setExceptionWithMessage:(id)message
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v9];
+  messageCopy = message;
+  v6 = [[v4 alloc] initWithFormat:messageCopy arguments:&v9];
 
-  v7 = [(VSJSApp *)self context];
-  v8 = [MEMORY[0x277CD4658] valueWithNewErrorFromMessage:v6 inContext:v7];
-  [v7 setException:v8];
+  context = [(VSJSApp *)self context];
+  v8 = [MEMORY[0x277CD4658] valueWithNewErrorFromMessage:v6 inContext:context];
+  [context setException:v8];
 }
 
-- (void)evaluateWithBlock:(id)a3
+- (void)evaluateWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  v5 = [(VSJSApp *)self jsSingleThreadQueue];
+  jsSingleThreadQueue = [(VSJSApp *)self jsSingleThreadQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__VSJSApp_evaluateWithBlock___block_invoke;
   v7[3] = &unk_278B74628;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
-  [v5 dispatchBlock:v7];
+  [jsSingleThreadQueue dispatchBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -146,18 +146,18 @@ uint64_t __29__VSJSApp_evaluateWithBlock___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](WeakRetained, v3);
 }
 
-- (void)evaluateScript:(id)a3 withSourceURL:(id)a4
+- (void)evaluateScript:(id)script withSourceURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  scriptCopy = script;
+  lCopy = l;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__VSJSApp_evaluateScript_withSourceURL___block_invoke;
   v10[3] = &unk_278B75478;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = scriptCopy;
+  v12 = lCopy;
+  v8 = lCopy;
+  v9 = scriptCopy;
   [(VSJSApp *)self evaluateWithBlock:v10];
 }
 
@@ -179,13 +179,13 @@ void __40__VSJSApp_evaluateScript_withSourceURL___block_invoke(uint64_t a1, void
   }
 
   [(VSJSApp *)self setState:1];
-  v4 = [(VSJSApp *)self jsSingleThreadQueue];
+  jsSingleThreadQueue = [(VSJSApp *)self jsSingleThreadQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __16__VSJSApp_start__block_invoke;
   v5[3] = &unk_278B754A0;
   v5[4] = self;
-  [v4 startWithCompletionHandler:v5];
+  [jsSingleThreadQueue startWithCompletionHandler:v5];
 }
 
 void __16__VSJSApp_start__block_invoke(uint64_t a1, void *a2)
@@ -201,20 +201,20 @@ void __16__VSJSApp_start__block_invoke(uint64_t a1, void *a2)
 
 - (void)stop
 {
-  v2 = [(VSJSApp *)self stateMachine];
-  [v2 enqueueEvent:@"Stop"];
+  stateMachine = [(VSJSApp *)self stateMachine];
+  [stateMachine enqueueEvent:@"Stop"];
 }
 
 - (void)_initializeContext
 {
   objc_initWeak(&location, self);
-  v3 = [(VSJSApp *)self jsSingleThreadQueue];
+  jsSingleThreadQueue = [(VSJSApp *)self jsSingleThreadQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __29__VSJSApp__initializeContext__block_invoke;
   v4[3] = &unk_278B74110;
   objc_copyWeak(&v5, &location);
-  [v3 dispatchBlockSync:v4];
+  [jsSingleThreadQueue dispatchBlockSync:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -406,8 +406,8 @@ LABEL_11:
 
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v5 = [(VSJSApp *)self url];
-  v6 = [v5 absoluteString];
-  v7 = v6 == 0;
+  absoluteString = [v5 absoluteString];
+  v7 = absoluteString == 0;
 
   if (v7)
   {
@@ -415,9 +415,9 @@ LABEL_11:
   }
 
   v8 = [(VSJSApp *)self url];
-  v9 = [v8 absoluteString];
+  absoluteString2 = [v8 absoluteString];
 
-  [v4 setObject:v9 forKey:@"location"];
+  [v4 setObject:absoluteString2 forKey:@"location"];
   objc_initWeak(buf, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -570,32 +570,32 @@ void __24__VSJSApp__invokeOnExit__block_invoke_2(uint64_t a1)
   [v3 enqueueEvent:@"Received OnExit Callback"];
 }
 
-- (void)_configureWatchdogWithSeconds:(unint64_t)a3
+- (void)_configureWatchdogWithSeconds:(unint64_t)seconds
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(VSJSApp *)self watchdog];
+  watchdog = [(VSJSApp *)self watchdog];
   v6 = VSDefaultLogObject();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (a3)
+  if (seconds)
   {
     if (v7)
     {
       *buf = 134217984;
-      v15 = a3;
+      secondsCopy = seconds;
       _os_log_impl(&dword_23AB8E000, v6, OS_LOG_TYPE_DEFAULT, "Configuring watchdog timer for %lu seconds", buf, 0xCu);
     }
 
-    if (v5)
+    if (watchdog)
     {
-      dispatch_source_cancel(v5);
+      dispatch_source_cancel(watchdog);
       [(VSJSApp *)self setWatchdog:0];
     }
 
-    v8 = [(VSJSApp *)self privateQueue];
-    v9 = [v8 underlyingQueue];
-    v10 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v9);
+    privateQueue = [(VSJSApp *)self privateQueue];
+    underlyingQueue = [privateQueue underlyingQueue];
+    v10 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, underlyingQueue);
 
-    v11 = dispatch_time(0, 1000000000 * a3);
+    v11 = dispatch_time(0, 1000000000 * seconds);
     dispatch_source_set_timer(v10, v11, 0xFFFFFFFFFFFFFFFFLL, 0);
     objc_initWeak(buf, self);
     handler[0] = MEMORY[0x277D85DD0];
@@ -617,11 +617,11 @@ void __24__VSJSApp__invokeOnExit__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_23AB8E000, v6, OS_LOG_TYPE_DEFAULT, "Cancelling watchdog timer", buf, 2u);
   }
 
-  if (v5)
+  if (watchdog)
   {
-    dispatch_source_cancel(v5);
+    dispatch_source_cancel(watchdog);
     [(VSJSApp *)self setWatchdog:0];
-    v10 = v5;
+    v10 = watchdog;
 LABEL_11:
   }
 }
@@ -671,11 +671,11 @@ void __41__VSJSApp__configureWatchdogWithSeconds___block_invoke(uint64_t a1)
   v16 = v8;
   v9 = [v7 blockOperationWithBlock:&v12];
   [v9 addDependency:{v8, v12, v13, v14, v15}];
-  v10 = [(VSJSApp *)self privateQueue];
-  [v10 addOperation:v8];
+  privateQueue = [(VSJSApp *)self privateQueue];
+  [privateQueue addOperation:v8];
 
-  v11 = [(VSJSApp *)self privateQueue];
-  [v11 addOperation:v9];
+  privateQueue2 = [(VSJSApp *)self privateQueue];
+  [privateQueue2 addOperation:v9];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -753,15 +753,15 @@ void __45__VSJSApp_transitionToWaitingForBootUrlState__block_invoke_126(uint64_t
   [v2 app:*(a1 + 32) didFailToStartWithError:*(a1 + 40)];
 }
 
-- (id)_errorWithCode:(int64_t)a3 underlyingError:(id)a4
+- (id)_errorWithCode:(int64_t)code underlyingError:(id)error
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (errorCopy)
   {
     v10 = *MEMORY[0x277CCA7E8];
-    v11[0] = v5;
+    v11[0] = errorCopy;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 
@@ -770,19 +770,19 @@ void __45__VSJSApp_transitionToWaitingForBootUrlState__block_invoke_126(uint64_t
     v7 = 0;
   }
 
-  v8 = [MEMORY[0x277CCA9B8] errorWithDomain:VSJSAppErrorDomain code:a3 userInfo:v7];
+  v8 = [MEMORY[0x277CCA9B8] errorWithDomain:VSJSAppErrorDomain code:code userInfo:v7];
 
   return v8;
 }
 
-- (id)_exceptionErrorWithCode:(int64_t)a3
+- (id)_exceptionErrorWithCode:(int64_t)code
 {
   v4 = MEMORY[0x277CCA9B8];
   v5 = VSJSAppErrorDomain;
-  v6 = [(VSJSApp *)self context];
-  v7 = [v6 exception];
-  v8 = [v7 toDictionary];
-  v9 = [v4 errorWithDomain:v5 code:a3 userInfo:v8];
+  context = [(VSJSApp *)self context];
+  exception = [context exception];
+  toDictionary = [exception toDictionary];
+  v9 = [v4 errorWithDomain:v5 code:code userInfo:toDictionary];
 
   return v9;
 }
@@ -798,24 +798,24 @@ void __45__VSJSApp_transitionToWaitingForBootUrlState__block_invoke_126(uint64_t
     _os_log_impl(&dword_23AB8E000, v3, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  v4 = [(VSJSApp *)self effectiveURL];
-  v5 = v4 == 0;
+  effectiveURL = [(VSJSApp *)self effectiveURL];
+  v5 = effectiveURL == 0;
 
   if (v5)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self effectiveURL] parameter must not be nil."];
   }
 
-  v6 = [(VSJSApp *)self effectiveURL];
-  v7 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  v8 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v7 delegate:0 delegateQueue:0];
+  effectiveURL2 = [(VSJSApp *)self effectiveURL];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  v8 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration delegate:0 delegateQueue:0];
   objc_initWeak(buf, self);
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __48__VSJSApp_transitionToWaitingForBootScriptState__block_invoke;
   v14 = &unk_278B74F80;
   objc_copyWeak(&v16, buf);
-  v9 = v6;
+  v9 = effectiveURL2;
   v15 = v9;
   v10 = [v8 dataTaskWithURL:v9 completionHandler:&v11];
   [v10 resume];
@@ -1074,8 +1074,8 @@ void __33__VSJSApp_transitionToReadyState__block_invoke(uint64_t a1)
 
 - (void)transitionToStoppedState
 {
-  v3 = [(VSJSApp *)self jsSingleThreadQueue];
-  [v3 stop];
+  jsSingleThreadQueue = [(VSJSApp *)self jsSingleThreadQueue];
+  [jsSingleThreadQueue stop];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

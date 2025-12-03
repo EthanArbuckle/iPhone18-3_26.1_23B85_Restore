@@ -1,23 +1,23 @@
 @interface CRLMiniShapePickerHelper
-+ (void)dismissMiniShapePickerForEditor:(id)a3;
-+ (void)showMiniShapePickerToAddShapeToConnectionLineWithUnscaledPopoverAnchorPoint:(CGPoint)a3 forEditor:(id)a4;
++ (void)dismissMiniShapePickerForEditor:(id)editor;
++ (void)showMiniShapePickerToAddShapeToConnectionLineWithUnscaledPopoverAnchorPoint:(CGPoint)point forEditor:(id)editor;
 - (_TtC8Freeform24CRLMiniShapePickerHelper)init;
 @end
 
 @implementation CRLMiniShapePickerHelper
 
-+ (void)showMiniShapePickerToAddShapeToConnectionLineWithUnscaledPopoverAnchorPoint:(CGPoint)a3 forEditor:(id)a4
++ (void)showMiniShapePickerToAddShapeToConnectionLineWithUnscaledPopoverAnchorPoint:(CGPoint)point forEditor:(id)editor
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  sub_100A6620C(v6, x, y);
+  y = point.y;
+  x = point.x;
+  editorCopy = editor;
+  sub_100A6620C(editorCopy, x, y);
 }
 
-+ (void)dismissMiniShapePickerForEditor:(id)a3
++ (void)dismissMiniShapePickerForEditor:(id)editor
 {
-  v4 = a3;
-  sub_100D42600(a3);
+  editorCopy = editor;
+  sub_100D42600(editor);
 }
 
 - (_TtC8Freeform24CRLMiniShapePickerHelper)init

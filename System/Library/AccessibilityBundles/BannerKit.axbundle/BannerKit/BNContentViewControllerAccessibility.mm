@@ -1,23 +1,23 @@
 @interface BNContentViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axPresentableForViewController:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axPresentableForViewController:(id)controller;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axMarkupBannerVC:(id)a3;
-- (void)addChildViewController:(id)a3;
-- (void)presentPresentable:(id)a3 withOptions:(unint64_t)a4 userInfo:(id)a5;
+- (void)_axMarkupBannerVC:(id)c;
+- (void)addChildViewController:(id)controller;
+- (void)presentPresentable:(id)presentable withOptions:(unint64_t)options userInfo:(id)info;
 @end
 
 @implementation BNContentViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BNContentViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"BNContentViewController" hasInstanceVariable:@"_presentables" withType:"BNTieredArray"];
-  [v3 validateClass:@"BNTieredArray" hasInstanceMethod:@"allObjects" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"BNPresentable" hasOptionalInstanceMethod:@"viewController"];
-  [v3 validateClass:@"BNContentViewController" hasInstanceMethod:@"_dismissPresentable:withReason:animated:userInfo:" withFullSignature:{"v", "@", "@", "B", "@", 0}];
-  [v3 validateClass:@"BNContentViewController" hasInstanceMethod:@"presentPresentable:withOptions:userInfo:" withFullSignature:{"v", "@", "Q", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BNContentViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"BNContentViewController" hasInstanceVariable:@"_presentables" withType:"BNTieredArray"];
+  [validationsCopy validateClass:@"BNTieredArray" hasInstanceMethod:@"allObjects" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"BNPresentable" hasOptionalInstanceMethod:@"viewController"];
+  [validationsCopy validateClass:@"BNContentViewController" hasInstanceMethod:@"_dismissPresentable:withReason:animated:userInfo:" withFullSignature:{"v", "@", "@", "B", "@", 0}];
+  [validationsCopy validateClass:@"BNContentViewController" hasInstanceMethod:@"presentPresentable:withOptions:userInfo:" withFullSignature:{"v", "@", "Q", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -33,8 +33,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 childViewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  childViewControllers = [v3 childViewControllers];
+  v5 = [childViewControllers countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -45,13 +45,13 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childViewControllers);
         }
 
         [(BNContentViewControllerAccessibility *)self _axMarkupBannerVC:*(*(&v10 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v6 = [childViewControllers countByEnumeratingWithState:&v10 objects:v16 count:16];
     }
 
     while (v6);
@@ -60,57 +60,57 @@
   v9 = *MEMORY[0x29EDCA608];
 }
 
-- (void)addChildViewController:(id)a3
+- (void)addChildViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = BNContentViewControllerAccessibility;
-  v4 = a3;
-  [(BNContentViewControllerAccessibility *)&v5 addChildViewController:v4];
-  [(BNContentViewControllerAccessibility *)self _axMarkupBannerVC:v4, v5.receiver, v5.super_class];
+  controllerCopy = controller;
+  [(BNContentViewControllerAccessibility *)&v5 addChildViewController:controllerCopy];
+  [(BNContentViewControllerAccessibility *)self _axMarkupBannerVC:controllerCopy, v5.receiver, v5.super_class];
 }
 
-- (void)presentPresentable:(id)a3 withOptions:(unint64_t)a4 userInfo:(id)a5
+- (void)presentPresentable:(id)presentable withOptions:(unint64_t)options userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 objectForKey:@"com.apple.DragUI.druid.DRPasteAnnouncementAccessibilityDescriptionKey"];
+  presentableCopy = presentable;
+  infoCopy = info;
+  v10 = [infoCopy objectForKey:@"com.apple.DragUI.druid.DRPasteAnnouncementAccessibilityDescriptionKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 setAccessibilityLabel:v10];
+    [presentableCopy setAccessibilityLabel:v10];
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v10);
   }
 
   v11.receiver = self;
   v11.super_class = BNContentViewControllerAccessibility;
-  [(BNContentViewControllerAccessibility *)&v11 presentPresentable:v8 withOptions:a4 userInfo:v9];
+  [(BNContentViewControllerAccessibility *)&v11 presentPresentable:presentableCopy withOptions:options userInfo:infoCopy];
 }
 
-- (void)_axMarkupBannerVC:(id)a3
+- (void)_axMarkupBannerVC:(id)c
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v5 _setAccessibilityAutomationType:8];
+  cCopy = c;
+  view = [cCopy view];
+  [view _setAccessibilityAutomationType:8];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v4);
-  v6 = [v4 view];
+  objc_initWeak(&from, cCopy);
+  view2 = [cCopy view];
   v12 = MEMORY[0x29EDCA5F8];
   v13 = 3221225472;
   v14 = __58__BNContentViewControllerAccessibility__axMarkupBannerVC___block_invoke;
   v15 = &unk_29F2A71D8;
   objc_copyWeak(&v16, &location);
   objc_copyWeak(&v17, &from);
-  [v6 _setAccessibilityPerformEscapeBlock:&v12];
+  [view2 _setAccessibilityPerformEscapeBlock:&v12];
 
-  v7 = [(BNContentViewControllerAccessibility *)self _axPresentableForViewController:v4, v12, v13, v14, v15];
-  v8 = [v4 view];
-  v9 = [v7 accessibilityLabel];
-  [v8 setIsAccessibilityElement:{objc_msgSend(v9, "length") != 0}];
+  v7 = [(BNContentViewControllerAccessibility *)self _axPresentableForViewController:cCopy, v12, v13, v14, v15];
+  view3 = [cCopy view];
+  accessibilityLabel = [v7 accessibilityLabel];
+  [view3 setIsAccessibilityElement:{objc_msgSend(accessibilityLabel, "length") != 0}];
 
-  v10 = [v4 view];
-  v11 = [v7 accessibilityLabel];
-  [v10 setAccessibilityLabel:v11];
+  view4 = [cCopy view];
+  accessibilityLabel2 = [v7 accessibilityLabel];
+  [view4 setAccessibilityLabel:accessibilityLabel2];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v16);
@@ -139,9 +139,9 @@ void __58__BNContentViewControllerAccessibility__axMarkupBannerVC___block_invoke
   [v1 _dismissPresentable:v2 withReason:@"Accessibility" animated:1 userInfo:0];
 }
 
-- (id)_axPresentableForViewController:(id)a3
+- (id)_axPresentableForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -154,7 +154,7 @@ void __58__BNContentViewControllerAccessibility__axMarkupBannerVC___block_invoke
   v10[1] = 3221225472;
   v10[2] = __72__BNContentViewControllerAccessibility__axPresentableForViewController___block_invoke;
   v10[3] = &unk_29F2A7200;
-  v7 = v4;
+  v7 = controllerCopy;
   v11 = v7;
   v12 = &v13;
   [v6 enumerateObjectsUsingBlock:v10];

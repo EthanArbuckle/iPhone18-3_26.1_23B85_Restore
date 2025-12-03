@@ -1,7 +1,7 @@
 @interface CPLAdjustments
-- (CPLAdjustments)initWithCoder:(id)a3;
+- (CPLAdjustments)initWithCoder:(id)coder;
 - (id)adjustmentSimpleDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CPLAdjustments
@@ -42,23 +42,23 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ on %@ (%@)", self->_adjustmentType, v7, v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 cplCopyPropertiesFromObject:self withCopyBlock:0];
   return v4;
 }
 
-- (CPLAdjustments)initWithCoder:(id)a3
+- (CPLAdjustments)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CPLAdjustments;
   v5 = [(CPLAdjustments *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [v5 cplDecodePropertiesFromCoder:v4];
+    [v5 cplDecodePropertiesFromCoder:coderCopy];
   }
 
   return v6;

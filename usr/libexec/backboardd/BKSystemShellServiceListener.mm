@@ -1,43 +1,43 @@
 @interface BKSystemShellServiceListener
-- (BKSystemShellServiceListener)initWithSentinel:(id)a3;
-- (BOOL)_remoteProcessIsAlreadyConnected:(id)a3;
-- (BOOL)_validateConnection:(id)a3 withContext:(id)a4 forListenerLabel:(id)a5;
-- (void)_activateConnection:(id)a3 withContext:(id)a4;
-- (void)_dataMigrationCheckInListener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)_shellListener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (BKSystemShellServiceListener)initWithSentinel:(id)sentinel;
+- (BOOL)_remoteProcessIsAlreadyConnected:(id)connected;
+- (BOOL)_validateConnection:(id)connection withContext:(id)context forListenerLabel:(id)label;
+- (void)_activateConnection:(id)connection withContext:(id)context;
+- (void)_dataMigrationCheckInListener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)_shellListener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation BKSystemShellServiceListener
 
-- (void)_shellListener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)_shellListener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v7 = a4;
-  v8 = a5;
-  if ([(BKSystemShellServiceListener *)self _validateConnection:v7 withContext:v8 forListenerLabel:@"Shell"])
+  connectionCopy = connection;
+  contextCopy = context;
+  if ([(BKSystemShellServiceListener *)self _validateConnection:connectionCopy withContext:contextCopy forListenerLabel:@"Shell"])
   {
     v10 = _NSConcreteStackBlock;
     v11 = 3221225472;
     v12 = sub_100014DE4;
     v13 = &unk_1000F9F10;
-    v9 = v7;
+    v9 = connectionCopy;
     v14 = v9;
-    v15 = self;
+    selfCopy = self;
     [v9 configureConnection:&v10];
-    [(BKSystemShellServiceListener *)self _activateConnection:v9 withContext:v8, v10, v11, v12, v13];
+    [(BKSystemShellServiceListener *)self _activateConnection:v9 withContext:contextCopy, v10, v11, v12, v13];
   }
 
   else
   {
-    [v7 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
-- (void)_dataMigrationCheckInListener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)_dataMigrationCheckInListener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
-  v7 = [v6 remoteProcess];
-  v8 = [(BKSystemShellServiceListener *)self _remoteProcessIsAlreadyConnected:v7];
+  connectionCopy = connection;
+  remoteProcess = [connectionCopy remoteProcess];
+  v8 = [(BKSystemShellServiceListener *)self _remoteProcessIsAlreadyConnected:remoteProcess];
 
   if (v8)
   {
@@ -45,9 +45,9 @@
     v13 = 3221225472;
     v14 = sub_100015330;
     v15 = &unk_1000F9F10;
-    v9 = v6;
+    v9 = connectionCopy;
     v16 = v9;
-    v17 = self;
+    selfCopy = self;
     [v9 configureConnection:&v12];
     [v9 activate];
   }
@@ -57,29 +57,29 @@
     v10 = BKLogSystemShell();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v6 remoteProcess];
+      remoteProcess2 = [connectionCopy remoteProcess];
       *buf = 138543362;
-      v19 = v11;
+      v19 = remoteProcess2;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "[DataMigrationCheckIn] unknown system shell:'%{public}@'", buf, 0xCu);
     }
 
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
-- (BOOL)_validateConnection:(id)a3 withContext:(id)a4 forListenerLabel:(id)a5
+- (BOOL)_validateConnection:(id)connection withContext:(id)context forListenerLabel:(id)label
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [v6 remoteProcess];
-  v9 = [v8 pid];
+  connectionCopy = connection;
+  labelCopy = label;
+  remoteProcess = [connectionCopy remoteProcess];
+  v9 = [remoteProcess pid];
   v10 = BKLogSystemShell();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v15 = 138543874;
-    v16 = v7;
+    v16 = labelCopy;
     v17 = 2114;
-    *v18 = v6;
+    *v18 = connectionCopy;
     *&v18[8] = 1024;
     *&v18[10] = v9;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "[%{public}@] received connection -- %{public}@ pid:%d", &v15, 0x1Cu);
@@ -91,27 +91,27 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v15 = 138543874;
-      v16 = v7;
+      v16 = labelCopy;
       v17 = 1024;
       *v18 = v9;
       *&v18[4] = 2114;
-      *&v18[6] = v6;
+      *&v18[6] = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "[%{public}@] dropping connection with junk pid (%d) -- %{public}@, ", &v15, 0x1Cu);
     }
 
-    [v6 invalidate];
+    [connectionCopy invalidate];
     goto LABEL_12;
   }
 
-  if (([v8 hasEntitlement:BKBackBoardClientEntitlement] & 1) == 0)
+  if (([remoteProcess hasEntitlement:BKBackBoardClientEntitlement] & 1) == 0)
   {
     v13 = BKLogSystemShell();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v15 = 138543618;
-      v16 = v7;
+      v16 = labelCopy;
       v17 = 2114;
-      *v18 = v8;
+      *v18 = remoteProcess;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "[%{public}@] '%{public}@' is not a system shell", &v15, 0x16u);
     }
 
@@ -126,17 +126,17 @@ LABEL_13:
   return v11;
 }
 
-- (void)_activateConnection:(id)a3 withContext:(id)a4
+- (void)_activateConnection:(id)connection withContext:(id)context
 {
-  v6 = a3;
+  connectionCopy = connection;
   v7 = BKSSystemShellConnectionContextKeyLaunchJobLabel;
-  v8 = a4;
-  v9 = [v8 decodeStringForKey:v7];
-  v10 = [v8 decodeStringForKey:BKSSystemShellConnectionContextKeyBundlePath];
-  v11 = [v8 decodeStringForKey:BKSSystemShellConnectionContextKeyBundleID];
-  [v8 decodeDoubleForKey:BKSSystemShellConnectionContextKeyIdleSleepInterval];
+  contextCopy = context;
+  v9 = [contextCopy decodeStringForKey:v7];
+  v10 = [contextCopy decodeStringForKey:BKSSystemShellConnectionContextKeyBundlePath];
+  v11 = [contextCopy decodeStringForKey:BKSSystemShellConnectionContextKeyBundleID];
+  [contextCopy decodeDoubleForKey:BKSSystemShellConnectionContextKeyIdleSleepInterval];
   v13 = v12;
-  v14 = [v8 decodeInt64ForKey:BKSSystemShellConnectionContextKeyWatchdogType];
+  v14 = [contextCopy decodeInt64ForKey:BKSSystemShellConnectionContextKeyWatchdogType];
 
   if (!v9)
   {
@@ -181,7 +181,7 @@ LABEL_13:
     if (v14 < 2)
     {
 LABEL_17:
-      [v6 invalidate];
+      [connectionCopy invalidate];
       goto LABEL_18;
     }
 
@@ -212,7 +212,7 @@ LABEL_14:
   v24 = v9;
   v26 = v13;
   v27 = v14;
-  v15 = v6;
+  v15 = connectionCopy;
   v25 = v15;
   v16 = [BKSystemShellDescriptor build:v21];
   [(BKSystemShellSentinel *)self->_systemShellSentinel systemShellDidConnect:v16 connection:v15];
@@ -221,15 +221,15 @@ LABEL_14:
 LABEL_18:
 }
 
-- (BOOL)_remoteProcessIsAlreadyConnected:(id)a3
+- (BOOL)_remoteProcessIsAlreadyConnected:(id)connected
 {
-  v4 = [a3 auditToken];
-  v5 = v4;
+  auditToken = [connected auditToken];
+  v5 = auditToken;
   v8 = 0u;
   v9 = 0u;
-  if (v4)
+  if (auditToken)
   {
-    [v4 realToken];
+    [auditToken realToken];
   }
 
   v6 = [(BKSystemShellSentinel *)self->_systemShellSentinel auditTokenRepresentsSystemApp:&v8];
@@ -237,18 +237,18 @@ LABEL_18:
   return v6;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v15 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_connectionListener == v15)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
+  if (self->_connectionListener == listenerCopy)
   {
     [BKSystemShellServiceListener _shellListener:"_shellListener:didReceiveConnection:withContext:" didReceiveConnection:? withContext:?];
     goto LABEL_5;
   }
 
-  if (self->_dataMigrationCheckInListener == v15)
+  if (self->_dataMigrationCheckInListener == listenerCopy)
   {
     [BKSystemShellServiceListener _dataMigrationCheckInListener:"_dataMigrationCheckInListener:didReceiveConnection:withContext:" didReceiveConnection:? withContext:?];
 LABEL_5:
@@ -267,7 +267,7 @@ LABEL_5:
     v18 = 2114;
     v19 = v14;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = @"BKSystemShellServiceListener.m";
     v24 = 1024;
@@ -282,9 +282,9 @@ LABEL_5:
   __break(0);
 }
 
-- (BKSystemShellServiceListener)initWithSentinel:(id)a3
+- (BKSystemShellServiceListener)initWithSentinel:(id)sentinel
 {
-  v5 = a3;
+  sentinelCopy = sentinel;
   v22.receiver = self;
   v22.super_class = BKSystemShellServiceListener;
   v6 = [(BKSystemShellServiceListener *)&v22 init];
@@ -296,7 +296,7 @@ LABEL_5:
     queue = v6->_queue;
     v6->_queue = v9;
 
-    objc_storeStrong(&v6->_systemShellSentinel, a3);
+    objc_storeStrong(&v6->_systemShellSentinel, sentinel);
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100016038;

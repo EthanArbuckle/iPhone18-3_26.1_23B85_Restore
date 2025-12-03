@@ -1,12 +1,12 @@
 @interface FMSymbolBulletedListView
-- (_TtC21FindMyRemoteUIService24FMSymbolBulletedListView)initWithCoder:(id)a3;
-- (_TtC21FindMyRemoteUIService24FMSymbolBulletedListView)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC21FindMyRemoteUIService24FMSymbolBulletedListView)initWithCoder:(id)coder;
+- (_TtC21FindMyRemoteUIService24FMSymbolBulletedListView)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMSymbolBulletedListView
 
-- (_TtC21FindMyRemoteUIService24FMSymbolBulletedListView)initWithCoder:(id)a3
+- (_TtC21FindMyRemoteUIService24FMSymbolBulletedListView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC21FindMyRemoteUIService24FMSymbolBulletedListView_headerView;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for FMSymbolBulletedListHeaderView()) init];
@@ -16,13 +16,13 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = type metadata accessor for FMSymbolBulletedListView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v11.receiver;
-  [(FMSymbolBulletedListView *)&v11 traitCollectionDidChange:v4];
+  [(FMSymbolBulletedListView *)&v11 traitCollectionDidChange:changeCopy];
   if (qword_100086D98 != -1)
   {
     swift_once();
@@ -37,7 +37,7 @@
   [v5 setSpacing:v10];
 }
 
-- (_TtC21FindMyRemoteUIService24FMSymbolBulletedListView)initWithFrame:(CGRect)a3
+- (_TtC21FindMyRemoteUIService24FMSymbolBulletedListView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

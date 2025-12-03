@@ -1,7 +1,7 @@
 @interface CUIMutableThemeRendition
-- (CUIMutableThemeRendition)initWithCGImage:(CGImage *)a3 withDescription:(id)a4 forKey:(const _renditionkeytoken *)a5;
+- (CUIMutableThemeRendition)initWithCGImage:(CGImage *)image withDescription:(id)description forKey:(const _renditionkeytoken *)key;
 - (void)dealloc;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation CUIMutableThemeRendition
@@ -16,28 +16,28 @@
   [(CUIThemeRendition *)&v3 dealloc];
 }
 
-- (CUIMutableThemeRendition)initWithCGImage:(CGImage *)a3 withDescription:(id)a4 forKey:(const _renditionkeytoken *)a5
+- (CUIMutableThemeRendition)initWithCGImage:(CGImage *)image withDescription:(id)description forKey:(const _renditionkeytoken *)key
 {
   v47.receiver = self;
   v47.super_class = CUIMutableThemeRendition;
   v9 = [(CUIMutableThemeRendition *)&v47 init];
-  v10 = CGImageRetain(a3);
+  v10 = CGImageRetain(image);
   v9->_image = v10;
   Width = CGImageGetWidth(v10);
   Height = CGImageGetHeight(v9->_image);
-  v13 = [a4 resizingMode];
-  -[CUIThemeRendition setExifOrientation:](v9, "setExifOrientation:", [a4 exifOrientation]);
-  v14 = CUIRenditionKeyTokenCount(a5);
+  resizingMode = [description resizingMode];
+  -[CUIThemeRendition setExifOrientation:](v9, "setExifOrientation:", [description exifOrientation]);
+  v14 = CUIRenditionKeyTokenCount(key);
   v15 = v14 + 1;
   v16 = malloc_type_calloc((v14 + 1), 4uLL, 0x100004052888210uLL);
   v9->_renditionKey = v16;
-  CUIRenditionKeyCopy(v16, a5, v15);
+  CUIRenditionKeyCopy(v16, key, v15);
   [(CUIThemeRendition *)v9 setInternalScale:CUIRenditionKeyValueForAttribute(&v9->_renditionKey->identifier, 12)];
-  LODWORD(a5) = [(CUIThemeRendition *)v9 internalScale];
-  [a4 scale];
-  if (a5 != v17)
+  LODWORD(key) = [(CUIThemeRendition *)v9 internalScale];
+  [description scale];
+  if (key != v17)
   {
-    [CUIMutableThemeRendition initWithCGImage:v9 withDescription:a4 forKey:a2];
+    [CUIMutableThemeRendition initWithCGImage:v9 withDescription:description forKey:a2];
   }
 
   if (![(CUIThemeRendition *)v9 internalScale])
@@ -45,17 +45,17 @@
     [CUIMutableThemeRendition initWithCGImage:a2 withDescription:v9 forKey:?];
   }
 
-  -[CUIThemeRendition setInternalTemplateRenderingMode:](v9, "setInternalTemplateRenderingMode:", [a4 templateRenderingMode]);
-  -[CUIThemeRendition setBlendMode:](v9, "setBlendMode:", [a4 blendMode]);
-  v18 = [a4 imageType];
-  if (v18 > 2)
+  -[CUIThemeRendition setInternalTemplateRenderingMode:](v9, "setInternalTemplateRenderingMode:", [description templateRenderingMode]);
+  -[CUIThemeRendition setBlendMode:](v9, "setBlendMode:", [description blendMode]);
+  imageType = [description imageType];
+  if (imageType > 2)
   {
-    switch(v18)
+    switch(imageType)
     {
       case 3:
         [(CUIThemeRendition *)v9 setType:3];
         v19 = v9;
-        if (v13 == 1)
+        if (resizingMode == 1)
         {
           v20 = 31;
         }
@@ -82,12 +82,12 @@
     goto LABEL_28;
   }
 
-  switch(v18)
+  switch(imageType)
   {
     case 0:
       [(CUIThemeRendition *)v9 setType:0];
       v19 = v9;
-      if (v13 == 1)
+      if (resizingMode == 1)
       {
         v20 = 12;
       }
@@ -101,7 +101,7 @@
     case 1:
       [(CUIThemeRendition *)v9 setType:1];
       v19 = v9;
-      if (v13 == 1)
+      if (resizingMode == 1)
       {
         v20 = 21;
       }
@@ -115,7 +115,7 @@
     case 2:
       [(CUIThemeRendition *)v9 setType:2];
       v19 = v9;
-      if (v13 == 1)
+      if (resizingMode == 1)
       {
         v20 = 24;
       }
@@ -132,9 +132,9 @@ LABEL_27:
 
 LABEL_28:
   y = NSZeroRect.origin.y;
-  [a4 edgeInsets];
+  [description edgeInsets];
   v9->_sliceInformation = [[CUIRenditionSliceInformation alloc] initWithRenditionType:[(CUIThemeRendition *)v9 type] destinationRect:NSZeroRect.origin.x topLeftInset:y bottomRightInset:Width, Height, v25 * [(CUIThemeRendition *)v9 internalScale], v24 * [(CUIThemeRendition *)v9 internalScale], v27 * [(CUIThemeRendition *)v9 internalScale], v26 * [(CUIThemeRendition *)v9 internalScale]];
-  [a4 alignmentEdgeInsets];
+  [description alignmentEdgeInsets];
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -143,17 +143,17 @@ LABEL_28:
   v37 = v29 * [(CUIThemeRendition *)v9 internalScale];
   v38 = v33 * [(CUIThemeRendition *)v9 internalScale];
   v39 = [CUIRenditionMetrics alloc];
-  v40 = [(CUIThemeRendition *)v9 internalScale];
-  v9->_renditionMetrics = [(CUIRenditionMetrics *)v39 initWithImageSize:0 defaultImageSize:Width edgeBottomLeft:Height edgeTopRight:Width contentBottomLeft:Height contentTopRight:v37 baseline:v36 auxiliary1BottomLeft:v38 auxiliary1TopRight:v35 auxiliary2BottomLeft:v41 auxiliary2TopRight:v42 scalesVertically:v43 scalesHorizontally:v44 scale:v45, *&NSZeroSize.width, *&NSZeroSize.height, *&NSZeroSize.width, *&NSZeroSize.height, 0, *&NSZeroSize.width, *&NSZeroSize.height, *&NSZeroSize.width, *&NSZeroSize.height, *&NSZeroSize.width, *&NSZeroSize.height, *&NSZeroSize.width, *&NSZeroSize.height, COERCE__INT64(v40)];
+  internalScale = [(CUIThemeRendition *)v9 internalScale];
+  v9->_renditionMetrics = [(CUIRenditionMetrics *)v39 initWithImageSize:0 defaultImageSize:Width edgeBottomLeft:Height edgeTopRight:Width contentBottomLeft:Height contentTopRight:v37 baseline:v36 auxiliary1BottomLeft:v38 auxiliary1TopRight:v35 auxiliary2BottomLeft:v41 auxiliary2TopRight:v42 scalesVertically:v43 scalesHorizontally:v44 scale:v45, *&NSZeroSize.width, *&NSZeroSize.height, *&NSZeroSize.width, *&NSZeroSize.height, 0, *&NSZeroSize.width, *&NSZeroSize.height, *&NSZeroSize.width, *&NSZeroSize.height, *&NSZeroSize.width, *&NSZeroSize.height, *&NSZeroSize.width, *&NSZeroSize.height, COERCE__INT64(internalScale)];
   return v9;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  if ([(CUIThemeRendition *)self internalName]!= a3)
+  if ([(CUIThemeRendition *)self internalName]!= name)
   {
 
-    [(CUIThemeRendition *)self setInternalName:a3];
+    [(CUIThemeRendition *)self setInternalName:name];
   }
 }
 

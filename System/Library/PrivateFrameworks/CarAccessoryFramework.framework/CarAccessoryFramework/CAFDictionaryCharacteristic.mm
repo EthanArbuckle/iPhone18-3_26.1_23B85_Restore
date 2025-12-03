@@ -2,14 +2,14 @@
 + (void)load;
 - (NSDictionary)dictionaryValue;
 - (id)formattedValue;
-- (void)setDictionaryValue:(id)a3;
+- (void)setDictionaryValue:(id)value;
 @end
 
 @implementation CAFDictionaryCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFDictionaryCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -17,10 +17,10 @@
 - (NSDictionary)dictionaryValue
 {
   objc_opt_class();
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  value = [(CAFCharacteristic *)self value];
+  if (value && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = value;
   }
 
   else
@@ -31,19 +31,19 @@
   return v4;
 }
 
-- (void)setDictionaryValue:(id)a3
+- (void)setDictionaryValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   [(CAFCharacteristic *)self setValue:v4];
 }
 
 - (id)formattedValue
 {
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3)
+  value = [(CAFCharacteristic *)self value];
+  if (value)
   {
-    v4 = [(CAFDictionaryCharacteristic *)self dictionaryValue];
-    v5 = [v4 description];
+    dictionaryValue = [(CAFDictionaryCharacteristic *)self dictionaryValue];
+    v5 = [dictionaryValue description];
   }
 
   else

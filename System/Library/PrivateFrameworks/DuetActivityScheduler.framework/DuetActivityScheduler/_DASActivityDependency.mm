@@ -1,59 +1,59 @@
 @interface _DASActivityDependency
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSatisfiedByResult:(id)a3;
-- (_DASActivityDependency)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSatisfiedByResult:(id)result;
+- (_DASActivityDependency)initWithCoder:(id)coder;
 - (id)description;
 - (id)dictionary;
-- (id)initActivityCompletionDependencyWithIdentifier:(id)a3;
-- (id)initResultDependencyWithIdentifier:(id)a3 batchSize:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)initActivityCompletionDependencyWithIdentifier:(id)identifier;
+- (id)initResultDependencyWithIdentifier:(id)identifier batchSize:(int64_t)size;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DASActivityDependency
 
-- (id)initResultDependencyWithIdentifier:(id)a3 batchSize:(int64_t)a4
+- (id)initResultDependencyWithIdentifier:(id)identifier batchSize:(int64_t)size
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = _DASActivityDependency;
   v8 = [(_DASActivityDependency *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_batchSize = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_batchSize = size;
   }
 
   return v9;
 }
 
-- (id)initActivityCompletionDependencyWithIdentifier:(id)a3
+- (id)initActivityCompletionDependencyWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = _DASActivityDependency;
   v6 = [(_DASActivityDependency *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v7->_batchSize = -1;
   }
 
   return v7;
 }
 
-- (BOOL)isSatisfiedByResult:(id)a3
+- (BOOL)isSatisfiedByResult:(id)result
 {
-  v4 = [a3 count];
+  v4 = [result count];
 
   return [(_DASActivityDependency *)self isSatisfiedByAvailableResultCount:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -63,9 +63,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_DASActivityDependency *)v5 identifier];
-      if ([v6 isEqual:self->_identifier])
+      v5 = equalCopy;
+      identifier = [(_DASActivityDependency *)v5 identifier];
+      if ([identifier isEqual:self->_identifier])
       {
         v7 = [(_DASActivityDependency *)v5 batchSize]== self->_batchSize;
       }
@@ -91,9 +91,9 @@
   v4 = objc_opt_class();
   identifier = self->_identifier;
   batchSize = self->_batchSize;
-  v7 = [(_DASActivityDependency *)self isActivityCompletionBased];
+  isActivityCompletionBased = [(_DASActivityDependency *)self isActivityCompletionBased];
   v8 = @"NO";
-  if (v7)
+  if (isActivityCompletionBased)
   {
     v8 = @"YES";
   }
@@ -101,20 +101,20 @@
   return [v3 stringWithFormat:@"<%@: %@: batchSize: %ld, isActivityCompletion: %@>", v4, identifier, batchSize, v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_batchSize];
-  [v5 encodeObject:v6 forKey:@"batchSize"];
+  [coderCopy encodeObject:v6 forKey:@"batchSize"];
 }
 
-- (_DASActivityDependency)initWithCoder:(id)a3
+- (_DASActivityDependency)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"batchSize"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"batchSize"];
 
   if (v5)
   {
@@ -133,9 +133,9 @@
 
   else
   {
-    v9 = [v6 intValue];
+    intValue = [v6 intValue];
     v10 = objc_alloc(objc_opt_class());
-    if (v9 == -1)
+    if (intValue == -1)
     {
       v11 = [v10 initActivityCompletionDependencyWithIdentifier:v5];
     }
@@ -154,9 +154,9 @@
 - (id)dictionary
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_DASActivityDependency *)self isActivityCompletionBased];
+  isActivityCompletionBased = [(_DASActivityDependency *)self isActivityCompletionBased];
   identifier = self->_identifier;
-  if (v3)
+  if (isActivityCompletionBased)
   {
     v14 = self->_identifier;
     v15[0] = &unk_1F2ED4908;

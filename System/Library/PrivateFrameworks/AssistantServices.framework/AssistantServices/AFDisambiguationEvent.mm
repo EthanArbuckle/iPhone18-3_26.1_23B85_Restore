@@ -1,7 +1,7 @@
 @interface AFDisambiguationEvent
-- (AFDisambiguationEvent)initWithCoder:(id)a3;
+- (AFDisambiguationEvent)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFDisambiguationEvent
@@ -22,29 +22,29 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"Identifier: %@, Selection Type: %@, Date: %@", self->_itemIdentifier, v3, self->_date];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemIdentifier = self->_itemIdentifier;
-  v5 = a3;
-  [v5 encodeObject:itemIdentifier forKey:@"_itemIdentifier"];
-  [v5 encodeInteger:self->_selectionType forKey:@"_selectionType"];
-  [v5 encodeObject:self->_date forKey:@"_date"];
+  coderCopy = coder;
+  [coderCopy encodeObject:itemIdentifier forKey:@"_itemIdentifier"];
+  [coderCopy encodeInteger:self->_selectionType forKey:@"_selectionType"];
+  [coderCopy encodeObject:self->_date forKey:@"_date"];
 }
 
-- (AFDisambiguationEvent)initWithCoder:(id)a3
+- (AFDisambiguationEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AFDisambiguationEvent;
   v5 = [(AFDisambiguationEvent *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_itemIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_itemIdentifier"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v6;
 
-    v5->_selectionType = [v4 decodeIntegerForKey:@"_selectionType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_date"];
+    v5->_selectionType = [coderCopy decodeIntegerForKey:@"_selectionType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_date"];
     date = v5->_date;
     v5->_date = v8;
   }

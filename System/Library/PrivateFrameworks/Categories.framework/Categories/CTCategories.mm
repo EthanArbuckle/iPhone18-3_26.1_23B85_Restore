@@ -1,23 +1,23 @@
 @interface CTCategories
 + (CTCategories)sharedCategories;
-+ (id)supportedWebBrowserBundleIdentifiersForDeviceFamily:(int64_t)a3;
-+ (id)systemBlockableBundleIdentifiersForDeviceFamily:(int64_t)a3;
-+ (id)systemHiddenBundleIdentifiersForDeviceFamily:(int64_t)a3;
-+ (id)systemUnblockableBundleIdentifiersForDeviceFamily:(int64_t)a3;
++ (id)supportedWebBrowserBundleIdentifiersForDeviceFamily:(int64_t)family;
++ (id)systemBlockableBundleIdentifiersForDeviceFamily:(int64_t)family;
++ (id)systemHiddenBundleIdentifiersForDeviceFamily:(int64_t)family;
++ (id)systemUnblockableBundleIdentifiersForDeviceFamily:(int64_t)family;
 + (int64_t)currentIOSDevice;
 + (void)initialize;
 - (CTCategories)init;
 - (NSArray)availableCategoryIDs;
-- (void)_emptySharedCache:(id)a3;
-- (void)categoriesForBundleIDs:(id)a3 platform:(id)a4 completionHandler:(id)a5;
-- (void)categoriesForDomainNames:(id)a3 completionHandler:(id)a4;
-- (void)categoriesForDomainURLs:(id)a3 completionHandler:(id)a4;
-- (void)categoryForBundleID:(id)a3 completionHandler:(id)a4;
-- (void)categoryForBundleID:(id)a3 platform:(id)a4 completionHandler:(id)a5;
-- (void)categoryForDomainName:(id)a3 completionHandler:(id)a4;
-- (void)categoryForDomainURL:(id)a3 completionHandler:(id)a4;
+- (void)_emptySharedCache:(id)cache;
+- (void)categoriesForBundleIDs:(id)ds platform:(id)platform completionHandler:(id)handler;
+- (void)categoriesForDomainNames:(id)names completionHandler:(id)handler;
+- (void)categoriesForDomainURLs:(id)ls completionHandler:(id)handler;
+- (void)categoryForBundleID:(id)d completionHandler:(id)handler;
+- (void)categoryForBundleID:(id)d platform:(id)platform completionHandler:(id)handler;
+- (void)categoryForDomainName:(id)name completionHandler:(id)handler;
+- (void)categoryForDomainURL:(id)l completionHandler:(id)handler;
 - (void)dealloc;
-- (void)unCategorizedDomainsFromDomains:(id)a3 withCompletionHandler:(id)a4;
+- (void)unCategorizedDomainsFromDomains:(id)domains withCompletionHandler:(id)handler;
 @end
 
 @implementation CTCategories
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __32__CTCategories_sharedCategories__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCategories_onceToken != -1)
   {
     dispatch_once(&sharedCategories_onceToken, block);
@@ -118,7 +118,7 @@ void __32__CTCategories_sharedCategories__block_invoke(uint64_t a1)
   _ctSharedCache = v3;
 }
 
-- (void)_emptySharedCache:(id)a3
+- (void)_emptySharedCache:(id)cache
 {
   [(NSLock *)self->_lookupLock lock];
   [_ctSharedCache removeAllObjects];
@@ -130,27 +130,27 @@ void __32__CTCategories_sharedCategories__block_invoke(uint64_t a1)
 - (NSArray)availableCategoryIDs
 {
   v2 = +[CTCategory _DHIDtoCategoryDisplayNameMap];
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-- (void)categoryForBundleID:(id)a3 platform:(id)a4 completionHandler:(id)a5
+- (void)categoryForBundleID:(id)d platform:(id)platform completionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v17[0] = a3;
+  handlerCopy = handler;
+  v17[0] = d;
   v9 = MEMORY[0x277CBEA60];
-  v10 = a4;
-  v11 = a3;
+  platformCopy = platform;
+  dCopy = d;
   v12 = [v9 arrayWithObjects:v17 count:1];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__CTCategories_categoryForBundleID_platform_completionHandler___block_invoke;
   v15[3] = &unk_278DAACD8;
-  v16 = v8;
-  v13 = v8;
-  [(CTCategories *)self categoriesForBundleIDs:v12 platform:v10 completionHandler:v15];
+  v16 = handlerCopy;
+  v13 = handlerCopy;
+  [(CTCategories *)self categoriesForBundleIDs:v12 platform:platformCopy completionHandler:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -174,20 +174,20 @@ void __63__CTCategories_categoryForBundleID_platform_completionHandler___block_i
   }
 }
 
-- (void)categoryForBundleID:(id)a3 completionHandler:(id)a4
+- (void)categoryForBundleID:(id)d completionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v14[0] = a3;
+  handlerCopy = handler;
+  v14[0] = d;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a3;
+  dCopy = d;
   v9 = [v7 arrayWithObjects:v14 count:1];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __54__CTCategories_categoryForBundleID_completionHandler___block_invoke;
   v12[3] = &unk_278DAACD8;
-  v13 = v6;
-  v10 = v6;
+  v13 = handlerCopy;
+  v10 = handlerCopy;
   [(CTCategories *)self categoriesForBundleIDs:v9 platform:@"CTOSPlatformAll" completionHandler:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -212,12 +212,12 @@ void __54__CTCategories_categoryForBundleID_completionHandler___block_invoke(uin
   }
 }
 
-- (void)categoriesForBundleIDs:(id)a3 platform:(id)a4 completionHandler:(id)a5
+- (void)categoriesForBundleIDs:(id)ds platform:(id)platform completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  dsCopy = ds;
+  platformCopy = platform;
+  handlerCopy = handler;
+  selfCopy = self;
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v27[0] = 0;
@@ -234,10 +234,10 @@ void __54__CTCategories_categoryForBundleID_completionHandler___block_invoke(uin
   v25 = v14;
   v15 = v12;
   v26 = v15;
-  [v8 enumerateObjectsUsingBlock:v24];
+  [dsCopy enumerateObjectsUsingBlock:v24];
   if ([v15 count])
   {
-    v16 = v9;
+    v16 = platformCopy;
     v17 = v16;
     if (v16 == @"CTOSPlatformCurrent")
     {
@@ -255,14 +255,14 @@ void __54__CTCategories_categoryForBundleID_completionHandler___block_invoke(uin
     v19[3] = &unk_278DAAD50;
     v20 = v14;
     v23 = v27;
-    v21 = v11;
-    v22 = v10;
+    v21 = selfCopy;
+    v22 = handlerCopy;
     [CTCategory categoryForBundleIdentifiers:v15 platform:v17 withCompletionHandler:v19];
   }
 
   else
   {
-    (*(v10 + 2))(v10, v14, 0);
+    (*(handlerCopy + 2))(handlerCopy, v14, 0);
   }
 
   _Block_object_dispose(v27, 8);
@@ -353,20 +353,20 @@ uint64_t __66__CTCategories_categoriesForBundleIDs_platform_completionHandler___
   return [v8 unlock];
 }
 
-- (void)categoryForDomainName:(id)a3 completionHandler:(id)a4
+- (void)categoryForDomainName:(id)name completionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v14[0] = a3;
+  handlerCopy = handler;
+  v14[0] = name;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a3;
+  nameCopy = name;
   v9 = [v7 arrayWithObjects:v14 count:1];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__CTCategories_categoryForDomainName_completionHandler___block_invoke;
   v12[3] = &unk_278DAACD8;
-  v13 = v6;
-  v10 = v6;
+  v13 = handlerCopy;
+  v10 = handlerCopy;
   [(CTCategories *)self categoriesForDomainNames:v9 completionHandler:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -391,14 +391,14 @@ void __56__CTCategories_categoryForDomainName_completionHandler___block_invoke(u
   }
 }
 
-- (void)categoryForDomainURL:(id)a3 completionHandler:(id)a4
+- (void)categoryForDomainURL:(id)l completionHandler:(id)handler
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  lCopy = l;
+  handlerCopy = handler;
+  if (lCopy)
   {
-    v13[0] = v6;
+    v13[0] = lCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   }
 
@@ -411,8 +411,8 @@ void __56__CTCategories_categoryForDomainName_completionHandler___block_invoke(u
   v11[1] = 3221225472;
   v11[2] = __55__CTCategories_categoryForDomainURL_completionHandler___block_invoke;
   v11[3] = &unk_278DAACD8;
-  v12 = v7;
-  v9 = v7;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
   [(CTCategories *)self categoriesForDomainURLs:v8 completionHandler:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -437,18 +437,18 @@ void __55__CTCategories_categoryForDomainURL_completionHandler___block_invoke(ui
   }
 }
 
-- (void)categoriesForDomainNames:(id)a3 completionHandler:(id)a4
+- (void)categoriesForDomainNames:(id)names completionHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  namesCopy = names;
+  handlerCopy = handler;
+  selfCopy = self;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "[CTCategories categoriesForDomainNames:completionHandler:]";
     *&buf[12] = 2048;
-    *&buf[14] = [v6 count];
+    *&buf[14] = [namesCopy count];
     _os_log_impl(&dword_24331E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "START %s :: %ld", buf, 0x16u);
   }
 
@@ -468,7 +468,7 @@ void __55__CTCategories_categoryForDomainURL_completionHandler___block_invoke(ui
   v26 = v11;
   v12 = v9;
   v27 = v12;
-  [v6 enumerateObjectsUsingBlock:v25];
+  [namesCopy enumerateObjectsUsingBlock:v25];
   v13 = [v12 count];
   v14 = MEMORY[0x277D86220];
   v15 = MEMORY[0x277D86220];
@@ -489,9 +489,9 @@ void __55__CTCategories_categoryForDomainURL_completionHandler___block_invoke(ui
     v20[3] = &unk_278DAAD50;
     v21 = v11;
     v24 = buf;
-    v22 = v8;
-    v23 = v7;
-    [CTCategory categoryForDomainNames:v6 withCompletionHandler:v20];
+    v22 = selfCopy;
+    v23 = handlerCopy;
+    [CTCategory categoryForDomainNames:namesCopy withCompletionHandler:v20];
   }
 
   else
@@ -504,7 +504,7 @@ void __55__CTCategories_categoryForDomainURL_completionHandler___block_invoke(ui
       _os_log_impl(&dword_24331E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "DONE categoriesForDomainNames cachedCategories :%lu", v28, 0xCu);
     }
 
-    (*(v7 + 2))(v7, v11, 0);
+    (*(handlerCopy + 2))(handlerCopy, v11, 0);
   }
 
   _Block_object_dispose(buf, 8);
@@ -614,18 +614,18 @@ uint64_t __59__CTCategories_categoriesForDomainNames_completionHandler___block_i
   return [v8 unlock];
 }
 
-- (void)categoriesForDomainURLs:(id)a3 completionHandler:(id)a4
+- (void)categoriesForDomainURLs:(id)ls completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  lsCopy = ls;
+  handlerCopy = handler;
+  selfCopy = self;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "[CTCategories categoriesForDomainURLs:completionHandler:]";
     *&buf[12] = 2048;
-    *&buf[14] = [v6 count];
+    *&buf[14] = [lsCopy count];
     _os_log_impl(&dword_24331E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "START %s :: %ld", buf, 0x16u);
   }
 
@@ -645,7 +645,7 @@ uint64_t __59__CTCategories_categoriesForDomainNames_completionHandler___block_i
   v26 = v11;
   v12 = v9;
   v27 = v12;
-  [v6 enumerateObjectsUsingBlock:v25];
+  [lsCopy enumerateObjectsUsingBlock:v25];
   v13 = [v12 count];
   v14 = MEMORY[0x277D86220];
   v15 = MEMORY[0x277D86220];
@@ -666,8 +666,8 @@ uint64_t __59__CTCategories_categoriesForDomainNames_completionHandler___block_i
     v20[3] = &unk_278DAAD50;
     v21 = v11;
     v24 = buf;
-    v22 = v8;
-    v23 = v7;
+    v22 = selfCopy;
+    v23 = handlerCopy;
     [CTCategory categoryForDomainURLs:v12 withCompletionHandler:v20];
   }
 
@@ -683,7 +683,7 @@ uint64_t __59__CTCategories_categoriesForDomainNames_completionHandler___block_i
       _os_log_impl(&dword_24331E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "DONE %s :: cachedCategories %lu", v28, 0x16u);
     }
 
-    (*(v7 + 2))(v7, v11, 0);
+    (*(handlerCopy + 2))(handlerCopy, v11, 0);
   }
 
   _Block_object_dispose(buf, 8);
@@ -786,11 +786,11 @@ uint64_t __58__CTCategories_categoriesForDomainURLs_completionHandler___block_in
   return [v10 unlock];
 }
 
-- (void)unCategorizedDomainsFromDomains:(id)a3 withCompletionHandler:(id)a4
+- (void)unCategorizedDomainsFromDomains:(id)domains withCompletionHandler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  domainsCopy = domains;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 0;
@@ -804,13 +804,13 @@ uint64_t __58__CTCategories_categoriesForDomainURLs_completionHandler___block_in
   v36 = __Block_byref_object_dispose_;
   v37 = 0;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v18 = v6;
+  v18 = handlerCopy;
   v8 = dispatch_group_create();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v5;
+  obj = domainsCopy;
   v9 = [obj countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v9)
   {
@@ -926,14 +926,14 @@ uint64_t __70__CTCategories_unCategorizedDomainsFromDomains_withCompletionHandle
   return (*(v2 + 16))(v2, v3);
 }
 
-+ (id)systemBlockableBundleIdentifiersForDeviceFamily:(int64_t)a3
++ (id)systemBlockableBundleIdentifiersForDeviceFamily:(int64_t)family
 {
   v5 = [MEMORY[0x277CBEB98] set];
-  if (a3 <= 4)
+  if (family <= 4)
   {
-    if ((a3 - 2) >= 3)
+    if ((family - 2) >= 3)
     {
-      if (a3 != 1)
+      if (family != 1)
       {
         goto LABEL_27;
       }
@@ -950,9 +950,9 @@ uint64_t __70__CTCategories_unCategorizedDomainsFromDomains_withCompletionHandle
     goto LABEL_25;
   }
 
-  if (a3 <= 6)
+  if (family <= 6)
   {
-    if (a3 == 5)
+    if (family == 5)
     {
       v14 = [MEMORY[0x277CBEB98] set];
       goto LABEL_25;
@@ -962,20 +962,20 @@ uint64_t __70__CTCategories_unCategorizedDomainsFromDomains_withCompletionHandle
     goto LABEL_24;
   }
 
-  switch(a3)
+  switch(family)
   {
     case 7:
       v14 = objc_opt_new();
       break;
     case 101:
-      v14 = [a1 systemBlockableBundleIdentifiersForDeviceFamily:{objc_msgSend(a1, "currentIOSDevice")}];
+      v14 = [self systemBlockableBundleIdentifiersForDeviceFamily:{objc_msgSend(self, "currentIOSDevice")}];
       break;
     case 102:
-      v6 = [a1 systemBlockableBundleIdentifiersForDeviceFamily:2];
-      v7 = [a1 systemBlockableBundleIdentifiersForDeviceFamily:6];
-      v8 = [a1 systemBlockableBundleIdentifiersForDeviceFamily:1];
-      v9 = [a1 systemBlockableBundleIdentifiersForDeviceFamily:5];
-      v10 = [a1 systemBlockableBundleIdentifiersForDeviceFamily:7];
+      v6 = [self systemBlockableBundleIdentifiersForDeviceFamily:2];
+      v7 = [self systemBlockableBundleIdentifiersForDeviceFamily:6];
+      v8 = [self systemBlockableBundleIdentifiersForDeviceFamily:1];
+      v9 = [self systemBlockableBundleIdentifiersForDeviceFamily:5];
+      v10 = [self systemBlockableBundleIdentifiersForDeviceFamily:7];
       v11 = [MEMORY[0x277CBEB58] set];
       v12 = v11;
       if (v6)
@@ -1031,14 +1031,14 @@ LABEL_27:
   return v5;
 }
 
-+ (id)systemUnblockableBundleIdentifiersForDeviceFamily:(int64_t)a3
++ (id)systemUnblockableBundleIdentifiersForDeviceFamily:(int64_t)family
 {
   v5 = [MEMORY[0x277CBEB98] set];
-  if (a3 <= 4)
+  if (family <= 4)
   {
-    if ((a3 - 2) >= 3)
+    if ((family - 2) >= 3)
     {
-      if (a3 != 1)
+      if (family != 1)
       {
         goto LABEL_28;
       }
@@ -1054,9 +1054,9 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  if (a3 <= 6)
+  if (family <= 6)
   {
-    if (a3 == 5)
+    if (family == 5)
     {
       goto LABEL_22;
     }
@@ -1066,25 +1066,25 @@ LABEL_27:
     goto LABEL_26;
   }
 
-  if (a3 == 7)
+  if (family == 7)
   {
 LABEL_22:
     v14 = [MEMORY[0x277CBEB98] set];
     goto LABEL_26;
   }
 
-  if (a3 != 101)
+  if (family != 101)
   {
-    if (a3 != 102)
+    if (family != 102)
     {
       goto LABEL_28;
     }
 
-    v6 = [a1 systemUnblockableBundleIdentifiersForDeviceFamily:2];
-    v7 = [a1 systemUnblockableBundleIdentifiersForDeviceFamily:6];
-    v8 = [a1 systemUnblockableBundleIdentifiersForDeviceFamily:1];
-    v9 = [a1 systemUnblockableBundleIdentifiersForDeviceFamily:5];
-    v10 = [a1 systemUnblockableBundleIdentifiersForDeviceFamily:7];
+    v6 = [self systemUnblockableBundleIdentifiersForDeviceFamily:2];
+    v7 = [self systemUnblockableBundleIdentifiersForDeviceFamily:6];
+    v8 = [self systemUnblockableBundleIdentifiersForDeviceFamily:1];
+    v9 = [self systemUnblockableBundleIdentifiersForDeviceFamily:5];
+    v10 = [self systemUnblockableBundleIdentifiersForDeviceFamily:7];
     v11 = [MEMORY[0x277CBEB58] set];
     v12 = v11;
     if (v6)
@@ -1128,7 +1128,7 @@ LABEL_22:
     goto LABEL_27;
   }
 
-  v14 = [a1 systemUnblockableBundleIdentifiersForDeviceFamily:{objc_msgSend(a1, "currentIOSDevice")}];
+  v14 = [self systemUnblockableBundleIdentifiersForDeviceFamily:{objc_msgSend(self, "currentIOSDevice")}];
 LABEL_26:
   v6 = v5;
   v5 = v14;
@@ -1139,14 +1139,14 @@ LABEL_28:
   return v5;
 }
 
-+ (id)systemHiddenBundleIdentifiersForDeviceFamily:(int64_t)a3
++ (id)systemHiddenBundleIdentifiersForDeviceFamily:(int64_t)family
 {
   v3 = 0;
-  if (a3 <= 4)
+  if (family <= 4)
   {
-    if ((a3 - 2) >= 3)
+    if ((family - 2) >= 3)
     {
-      if (a3 != 1)
+      if (family != 1)
       {
         goto LABEL_27;
       }
@@ -1162,9 +1162,9 @@ LABEL_28:
     goto LABEL_25;
   }
 
-  if (a3 <= 6)
+  if (family <= 6)
   {
-    if (a3 == 5)
+    if (family == 5)
     {
       goto LABEL_22;
     }
@@ -1174,7 +1174,7 @@ LABEL_28:
     goto LABEL_26;
   }
 
-  switch(a3)
+  switch(family)
   {
     case 7:
 LABEL_22:
@@ -1183,14 +1183,14 @@ LABEL_26:
       v3 = v13;
       break;
     case 101:
-      v13 = [a1 systemHiddenBundleIdentifiersForDeviceFamily:{objc_msgSend(a1, "currentIOSDevice")}];
+      v13 = [self systemHiddenBundleIdentifiersForDeviceFamily:{objc_msgSend(self, "currentIOSDevice")}];
       goto LABEL_26;
     case 102:
-      v5 = [a1 systemHiddenBundleIdentifiersForDeviceFamily:2];
-      v6 = [a1 systemHiddenBundleIdentifiersForDeviceFamily:6];
-      v7 = [a1 systemHiddenBundleIdentifiersForDeviceFamily:1];
-      v8 = [a1 systemHiddenBundleIdentifiersForDeviceFamily:5];
-      v9 = [a1 systemHiddenBundleIdentifiersForDeviceFamily:7];
+      v5 = [self systemHiddenBundleIdentifiersForDeviceFamily:2];
+      v6 = [self systemHiddenBundleIdentifiersForDeviceFamily:6];
+      v7 = [self systemHiddenBundleIdentifiersForDeviceFamily:1];
+      v8 = [self systemHiddenBundleIdentifiersForDeviceFamily:5];
+      v9 = [self systemHiddenBundleIdentifiersForDeviceFamily:7];
       v10 = [MEMORY[0x277CBEB58] set];
       v11 = v10;
       if (v5)
@@ -1238,14 +1238,14 @@ LABEL_27:
   return v3;
 }
 
-+ (id)supportedWebBrowserBundleIdentifiersForDeviceFamily:(int64_t)a3
++ (id)supportedWebBrowserBundleIdentifiersForDeviceFamily:(int64_t)family
 {
   v3 = 0;
-  if (a3 <= 4)
+  if (family <= 4)
   {
-    if ((a3 - 2) >= 3)
+    if ((family - 2) >= 3)
     {
-      if (a3 != 1)
+      if (family != 1)
       {
         goto LABEL_23;
       }
@@ -1261,7 +1261,7 @@ LABEL_27:
     goto LABEL_22;
   }
 
-  if (a3 < 8)
+  if (family < 8)
   {
     v11 = objc_opt_new();
 LABEL_22:
@@ -1269,19 +1269,19 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a3 == 101)
+  if (family == 101)
   {
-    v11 = [a1 supportedWebBrowserBundleIdentifiersForDeviceFamily:{objc_msgSend(a1, "currentIOSDevice")}];
+    v11 = [self supportedWebBrowserBundleIdentifiersForDeviceFamily:{objc_msgSend(self, "currentIOSDevice")}];
     goto LABEL_22;
   }
 
-  if (a3 == 102)
+  if (family == 102)
   {
-    v5 = [a1 supportedWebBrowserBundleIdentifiersForDeviceFamily:2];
-    v6 = [a1 supportedWebBrowserBundleIdentifiersForDeviceFamily:6];
-    v7 = [a1 supportedWebBrowserBundleIdentifiersForDeviceFamily:1];
-    v8 = [a1 supportedWebBrowserBundleIdentifiersForDeviceFamily:5];
-    v9 = [a1 supportedWebBrowserBundleIdentifiersForDeviceFamily:7];
+    v5 = [self supportedWebBrowserBundleIdentifiersForDeviceFamily:2];
+    v6 = [self supportedWebBrowserBundleIdentifiersForDeviceFamily:6];
+    v7 = [self supportedWebBrowserBundleIdentifiersForDeviceFamily:1];
+    v8 = [self supportedWebBrowserBundleIdentifiersForDeviceFamily:5];
+    v9 = [self supportedWebBrowserBundleIdentifiersForDeviceFamily:7];
     v10 = objc_opt_new();
     v3 = v10;
     if (v5)

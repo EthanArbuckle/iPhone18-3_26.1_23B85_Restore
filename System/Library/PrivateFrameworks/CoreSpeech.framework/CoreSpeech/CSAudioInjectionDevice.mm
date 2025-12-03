@@ -1,10 +1,10 @@
 @interface CSAudioInjectionDevice
-- (BOOL)speakAudio:(id)a3;
-- (BOOL)speakAudio:(id)a3 withScaleFactor:(float)a4 outASBD:(AudioStreamBasicDescription *)a5 playbackStarted:(id)a6 completion:(id)a7;
-- (BOOL)speakAudio:(id)a3 withScaleFactor:(float)a4 outASBD:(AudioStreamBasicDescription *)a5 playbackStarted:(id)a6 userIntentOptions:(id)a7 completion:(id)a8;
-- (BOOL)speakAudio:(id)a3 withScaleFactor:(float)a4 playbackStarted:(id)a5 completion:(id)a6;
-- (CSAudioInjectionDevice)initWithDeviceType:(int64_t)a3 bundlePath:(id)a4 deviceName:(id)a5 deviceID:(id)a6 productID:(id)a7;
-- (CSAudioInjectionDevice)initWithDeviceType:(int64_t)a3 deviceName:(id)a4 deviceID:(id)a5 productID:(id)a6;
+- (BOOL)speakAudio:(id)audio;
+- (BOOL)speakAudio:(id)audio withScaleFactor:(float)factor outASBD:(AudioStreamBasicDescription *)d playbackStarted:(id)started completion:(id)completion;
+- (BOOL)speakAudio:(id)audio withScaleFactor:(float)factor outASBD:(AudioStreamBasicDescription *)d playbackStarted:(id)started userIntentOptions:(id)options completion:(id)completion;
+- (BOOL)speakAudio:(id)audio withScaleFactor:(float)factor playbackStarted:(id)started completion:(id)completion;
+- (CSAudioInjectionDevice)initWithDeviceType:(int64_t)type bundlePath:(id)path deviceName:(id)name deviceID:(id)d productID:(id)iD;
+- (CSAudioInjectionDevice)initWithDeviceType:(int64_t)type deviceName:(id)name deviceID:(id)d productID:(id)iD;
 - (CSAudioInjectionEngineProtocol)injectionEngine;
 @end
 
@@ -17,12 +17,12 @@
   return WeakRetained;
 }
 
-- (BOOL)speakAudio:(id)a3 withScaleFactor:(float)a4 outASBD:(AudioStreamBasicDescription *)a5 playbackStarted:(id)a6 userIntentOptions:(id)a7 completion:(id)a8
+- (BOOL)speakAudio:(id)audio withScaleFactor:(float)factor outASBD:(AudioStreamBasicDescription *)d playbackStarted:(id)started userIntentOptions:(id)options completion:(id)completion
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  audioCopy = audio;
+  startedCopy = started;
+  optionsCopy = options;
+  completionCopy = completion;
   if ([(CSAudioInjectionDevice *)self isBundleDevice])
   {
     v18 = CSLogContextFacilityCoreSpeech;
@@ -38,25 +38,25 @@
 
   else
   {
-    v20 = [(CSAudioInjectionDevice *)self injectionEngine];
-    [v20 setUserIntentOptions:v16];
+    injectionEngine = [(CSAudioInjectionDevice *)self injectionEngine];
+    [injectionEngine setUserIntentOptions:optionsCopy];
 
-    v21 = [(CSAudioInjectionDevice *)self injectionEngine];
-    v22 = *&a5->mBytesPerPacket;
-    v24[0] = *&a5->mSampleRate;
+    injectionEngine2 = [(CSAudioInjectionDevice *)self injectionEngine];
+    v22 = *&d->mBytesPerPacket;
+    v24[0] = *&d->mSampleRate;
     v24[1] = v22;
-    v25 = *&a5->mBitsPerChannel;
-    v19 = [v21 injectAudio:v14 withScaleFactor:v24 outASBD:v15 playbackStarted:v17 completion:{COERCE_DOUBLE(__PAIR64__(DWORD1(v24[0]), LODWORD(a4)))}];
+    v25 = *&d->mBitsPerChannel;
+    v19 = [injectionEngine2 injectAudio:audioCopy withScaleFactor:v24 outASBD:startedCopy playbackStarted:completionCopy completion:{COERCE_DOUBLE(__PAIR64__(DWORD1(v24[0]), LODWORD(factor)))}];
   }
 
   return v19;
 }
 
-- (BOOL)speakAudio:(id)a3 withScaleFactor:(float)a4 outASBD:(AudioStreamBasicDescription *)a5 playbackStarted:(id)a6 completion:(id)a7
+- (BOOL)speakAudio:(id)audio withScaleFactor:(float)factor outASBD:(AudioStreamBasicDescription *)d playbackStarted:(id)started completion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  audioCopy = audio;
+  startedCopy = started;
+  completionCopy = completion;
   if ([(CSAudioInjectionDevice *)self isBundleDevice])
   {
     v15 = CSLogContextFacilityCoreSpeech;
@@ -72,22 +72,22 @@
 
   else
   {
-    v17 = [(CSAudioInjectionDevice *)self injectionEngine];
-    v18 = *&a5->mBytesPerPacket;
-    v20[0] = *&a5->mSampleRate;
+    injectionEngine = [(CSAudioInjectionDevice *)self injectionEngine];
+    v18 = *&d->mBytesPerPacket;
+    v20[0] = *&d->mSampleRate;
     v20[1] = v18;
-    v21 = *&a5->mBitsPerChannel;
-    v16 = [v17 injectAudio:v12 withScaleFactor:v20 outASBD:v13 playbackStarted:v14 completion:{COERCE_DOUBLE(__PAIR64__(DWORD1(v20[0]), LODWORD(a4)))}];
+    v21 = *&d->mBitsPerChannel;
+    v16 = [injectionEngine injectAudio:audioCopy withScaleFactor:v20 outASBD:startedCopy playbackStarted:completionCopy completion:{COERCE_DOUBLE(__PAIR64__(DWORD1(v20[0]), LODWORD(factor)))}];
   }
 
   return v16;
 }
 
-- (BOOL)speakAudio:(id)a3 withScaleFactor:(float)a4 playbackStarted:(id)a5 completion:(id)a6
+- (BOOL)speakAudio:(id)audio withScaleFactor:(float)factor playbackStarted:(id)started completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  audioCopy = audio;
+  startedCopy = started;
+  completionCopy = completion;
   if ([(CSAudioInjectionDevice *)self isBundleDevice])
   {
     v13 = CSLogContextFacilityCoreSpeech;
@@ -103,17 +103,17 @@
 
   else
   {
-    v15 = [(CSAudioInjectionDevice *)self injectionEngine];
-    *&v16 = a4;
-    v14 = [v15 injectAudio:v10 withScaleFactor:v11 playbackStarted:v12 completion:v16];
+    injectionEngine = [(CSAudioInjectionDevice *)self injectionEngine];
+    *&v16 = factor;
+    v14 = [injectionEngine injectAudio:audioCopy withScaleFactor:startedCopy playbackStarted:completionCopy completion:v16];
   }
 
   return v14;
 }
 
-- (BOOL)speakAudio:(id)a3
+- (BOOL)speakAudio:(id)audio
 {
-  v4 = a3;
+  audioCopy = audio;
   if ([(CSAudioInjectionDevice *)self isBundleDevice])
   {
     v5 = CSLogContextFacilityCoreSpeech;
@@ -129,37 +129,37 @@
 
   else
   {
-    v7 = [(CSAudioInjectionDevice *)self injectionEngine];
-    v6 = [v7 injectAudio:v4];
+    injectionEngine = [(CSAudioInjectionDevice *)self injectionEngine];
+    v6 = [injectionEngine injectAudio:audioCopy];
   }
 
   return v6;
 }
 
-- (CSAudioInjectionDevice)initWithDeviceType:(int64_t)a3 bundlePath:(id)a4 deviceName:(id)a5 deviceID:(id)a6 productID:(id)a7
+- (CSAudioInjectionDevice)initWithDeviceType:(int64_t)type bundlePath:(id)path deviceName:(id)name deviceID:(id)d productID:(id)iD
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  pathCopy = path;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
   v33.receiver = self;
   v33.super_class = CSAudioInjectionDevice;
   v17 = [(CSAudioInjectionDevice *)&v33 init];
   v18 = v17;
   if (v17)
   {
-    v17->_deviceType = a3;
-    objc_storeStrong(&v17->_bundlePath, a4);
-    v19 = [v14 copy];
+    v17->_deviceType = type;
+    objc_storeStrong(&v17->_bundlePath, path);
+    v19 = [nameCopy copy];
     v20 = [NSString stringWithFormat:@"%@_%@", v19, @"injectionDevice"];
     deviceName = v18->_deviceName;
     v18->_deviceName = v20;
 
-    v22 = [v15 copy];
+    v22 = [dCopy copy];
     deviceID = v18->_deviceID;
     v18->_deviceID = v22;
 
-    v24 = [v16 copy];
+    v24 = [iDCopy copy];
     productIdentifier = v18->_productIdentifier;
     v18->_productIdentifier = v24;
 
@@ -179,11 +179,11 @@
       v36 = 2048;
       v37 = deviceType;
       v38 = 2112;
-      v39 = v14;
+      v39 = nameCopy;
       v40 = 2112;
-      v41 = v15;
+      v41 = dCopy;
       v42 = 2112;
-      v43 = v16;
+      v43 = iDCopy;
       v44 = 2112;
       v45 = v30;
       v46 = 2112;
@@ -195,28 +195,28 @@
   return v18;
 }
 
-- (CSAudioInjectionDevice)initWithDeviceType:(int64_t)a3 deviceName:(id)a4 deviceID:(id)a5 productID:(id)a6
+- (CSAudioInjectionDevice)initWithDeviceType:(int64_t)type deviceName:(id)name deviceID:(id)d productID:(id)iD
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
   v27.receiver = self;
   v27.super_class = CSAudioInjectionDevice;
   v13 = [(CSAudioInjectionDevice *)&v27 init];
   v14 = v13;
   if (v13)
   {
-    v13->_deviceType = a3;
-    v15 = [v10 copy];
+    v13->_deviceType = type;
+    v15 = [nameCopy copy];
     v16 = [NSString stringWithFormat:@"%@_%@", v15, @"injectionDevice"];
     deviceName = v14->_deviceName;
     v14->_deviceName = v16;
 
-    v18 = [v11 copy];
+    v18 = [dCopy copy];
     deviceID = v14->_deviceID;
     v14->_deviceID = v18;
 
-    v20 = [v12 copy];
+    v20 = [iDCopy copy];
     productIdentifier = v14->_productIdentifier;
     v14->_productIdentifier = v20;
 
@@ -232,13 +232,13 @@
       *buf = 136316418;
       v29 = "[CSAudioInjectionDevice initWithDeviceType:deviceName:deviceID:productID:]";
       v30 = 2048;
-      v31 = a3;
+      typeCopy = type;
       v32 = 2112;
-      v33 = v10;
+      v33 = nameCopy;
       v34 = 2112;
-      v35 = v11;
+      v35 = dCopy;
       v36 = 2112;
-      v37 = v12;
+      v37 = iDCopy;
       v38 = 2112;
       v39 = v25;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%s Creating Injection Device - Type: %lu, deviceName: %@, deviceId: %@, productId: %@, deviceUID: %@", buf, 0x3Eu);

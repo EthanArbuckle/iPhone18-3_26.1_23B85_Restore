@@ -21,7 +21,7 @@
   y = v20.origin.y;
   width = v20.size.width;
   height = v20.size.height;
-  v14 = [(CIPointillize *)self _CIPointillize];
+  _CIPointillize = [(CIPointillize *)self _CIPointillize];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __28__CIPointillize_outputImage__block_invoke;
@@ -30,7 +30,7 @@
   v18[0] = self->inputImage;
   v18[1] = +[CIImage noiseImageNearest];
   v18[2] = [CIVector vectorWithX:v7 Y:v9 Z:v5 W:(1.0 / v5)];
-  return [v14 applyWithExtent:v16 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v18, 3), x, y, width, height}];
+  return [_CIPointillize applyWithExtent:v16 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v18, 3), x, y, width, height}];
 }
 
 double __28__CIPointillize_outputImage__block_invoke(uint64_t a1, int a2, double a3)

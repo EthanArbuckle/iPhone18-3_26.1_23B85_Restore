@@ -1,10 +1,10 @@
 @interface NPKAudioPlayer
-+ (void)_playSoundsWithIdentifier:(unsigned int)a3;
++ (void)_playSoundsWithIdentifier:(unsigned int)identifier;
 @end
 
 @implementation NPKAudioPlayer
 
-+ (void)_playSoundsWithIdentifier:(unsigned int)a3
++ (void)_playSoundsWithIdentifier:(unsigned int)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = pk_General_log();
@@ -16,7 +16,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v12 = a3;
+      identifierCopy = identifier;
       _os_log_impl(&dword_25B300000, v6, OS_LOG_TYPE_DEFAULT, "Notice: Audio player playing sound %u", buf, 8u);
     }
   }

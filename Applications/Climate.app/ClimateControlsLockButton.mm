@@ -1,6 +1,6 @@
 @interface ClimateControlsLockButton
 - (_TtC7Climate25ClimateControlsLockButton)init;
-- (void)climateControlsLockedService:(id)a3 didUpdateLockState:(unsigned __int8)a4;
+- (void)climateControlsLockedService:(id)service didUpdateLockState:(unsigned __int8)state;
 @end
 
 @implementation ClimateControlsLockButton
@@ -12,9 +12,9 @@
   return result;
 }
 
-- (void)climateControlsLockedService:(id)a3 didUpdateLockState:(unsigned __int8)a4
+- (void)climateControlsLockedService:(id)service didUpdateLockState:(unsigned __int8)state
 {
-  v4 = self;
+  selfCopy = self;
   sub_1000AC3B0();
 }
 

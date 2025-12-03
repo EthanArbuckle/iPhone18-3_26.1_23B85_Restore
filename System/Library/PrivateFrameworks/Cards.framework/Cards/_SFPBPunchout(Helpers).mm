@@ -10,9 +10,9 @@
   v4 = a3;
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc_init(MEMORY[0x277D4C7E8]);
-  v7 = [v4 absoluteString];
+  absoluteString = [v4 absoluteString];
 
-  [v6 setAddress:v7];
+  [v6 setAddress:absoluteString];
   [v5 addUrls:v6];
 
   return v5;

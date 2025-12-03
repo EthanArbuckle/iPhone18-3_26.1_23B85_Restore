@@ -1,29 +1,29 @@
 @interface SPComplicationData
-- (SPComplicationData)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPComplicationData)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPComplicationData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeObject:timestamp forKey:@"_TimestampKey"];
-  [v5 encodeDouble:@"_TimeToLiveKey" forKey:self->_timeToLive];
+  coderCopy = coder;
+  [coderCopy encodeObject:timestamp forKey:@"_TimestampKey"];
+  [coderCopy encodeDouble:@"_TimeToLiveKey" forKey:self->_timeToLive];
 }
 
-- (SPComplicationData)initWithCoder:(id)a3
+- (SPComplicationData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SPComplicationData *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_TimestampKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_TimestampKey"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v6;
 
-    [v4 decodeDoubleForKey:@"_TimeToLiveKey"];
+    [coderCopy decodeDoubleForKey:@"_TimeToLiveKey"];
     v5->_timeToLive = v8;
   }
 

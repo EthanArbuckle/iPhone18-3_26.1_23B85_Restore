@@ -7,16 +7,16 @@
 
 - (id)mt_syncingFileName
 {
-  v1 = [a1 recordName];
-  v2 = [v1 stringByAppendingString:@".local"];
+  recordName = [self recordName];
+  v2 = [recordName stringByAppendingString:@".local"];
 
   return v2;
 }
 
 - (id)mt_syncedFileName
 {
-  v1 = [a1 recordName];
-  v2 = [v1 stringByAppendingString:@".cloud"];
+  recordName = [self recordName];
+  v2 = [recordName stringByAppendingString:@".cloud"];
 
   return v2;
 }

@@ -2,29 +2,29 @@
 + (id)sharedService;
 - (MSVArtworkService)init;
 - (void)dealloc;
-- (void)sendRequest:(id)a3 completion:(id)a4;
-- (void)sendRequest:(id)a3 completionHandler:(id)a4;
+- (void)sendRequest:(id)request completion:(id)completion;
+- (void)sendRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation MSVArtworkService
 
-- (void)sendRequest:(id)a3 completion:(id)a4
+- (void)sendRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = [MSVAsyncBlockOperation alloc];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __44__MSVArtworkService_sendRequest_completion___block_invoke;
   v13[3] = &unk_1E7981908;
-  v14 = v6;
-  v15 = v7;
+  v14 = requestCopy;
+  v15 = completionCopy;
   v13[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = requestCopy;
+  v10 = completionCopy;
   v11 = [(MSVAsyncBlockOperation *)v8 initWithStartHandler:v13];
-  v12 = [(MSVArtworkService *)self serviceColorAnalysisOperationQueue];
-  [v12 addOperation:v11];
+  serviceColorAnalysisOperationQueue = [(MSVArtworkService *)self serviceColorAnalysisOperationQueue];
+  [serviceColorAnalysisOperationQueue addOperation:v11];
 }
 
 void __44__MSVArtworkService_sendRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -79,23 +79,23 @@ void __44__MSVArtworkService_sendRequest_completion___block_invoke_3(uint64_t a1
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (void)sendRequest:(id)a3 completionHandler:(id)a4
+- (void)sendRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = [MSVAsyncBlockOperation alloc];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__MSVArtworkService_sendRequest_completionHandler___block_invoke;
   v13[3] = &unk_1E7981908;
-  v14 = v6;
-  v15 = v7;
+  v14 = requestCopy;
+  v15 = handlerCopy;
   v13[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = requestCopy;
+  v10 = handlerCopy;
   v11 = [(MSVAsyncBlockOperation *)v8 initWithStartHandler:v13];
-  v12 = [(MSVArtworkService *)self serviceThrottlingOperationQueue];
-  [v12 addOperation:v11];
+  serviceThrottlingOperationQueue = [(MSVArtworkService *)self serviceThrottlingOperationQueue];
+  [serviceThrottlingOperationQueue addOperation:v11];
 }
 
 void __51__MSVArtworkService_sendRequest_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -152,8 +152,8 @@ void __51__MSVArtworkService_sendRequest_completionHandler___block_invoke_3(uint
 
 - (void)dealloc
 {
-  v3 = [(MSVArtworkService *)self serverConnection];
-  [v3 invalidate];
+  serverConnection = [(MSVArtworkService *)self serverConnection];
+  [serverConnection invalidate];
 
   v4.receiver = self;
   v4.super_class = MSVArtworkService;
@@ -170,14 +170,14 @@ void __51__MSVArtworkService_sendRequest_completionHandler___block_invoke_3(uint
     v3 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     [(MSVArtworkService *)v2 setServiceThrottlingOperationQueue:v3];
 
-    v4 = [(MSVArtworkService *)v2 serviceThrottlingOperationQueue];
-    [v4 setMaxConcurrentOperationCount:5];
+    serviceThrottlingOperationQueue = [(MSVArtworkService *)v2 serviceThrottlingOperationQueue];
+    [serviceThrottlingOperationQueue setMaxConcurrentOperationCount:5];
 
     v5 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     [(MSVArtworkService *)v2 setServiceColorAnalysisOperationQueue:v5];
 
-    v6 = [(MSVArtworkService *)v2 serviceColorAnalysisOperationQueue];
-    [v6 setMaxConcurrentOperationCount:5];
+    serviceColorAnalysisOperationQueue = [(MSVArtworkService *)v2 serviceColorAnalysisOperationQueue];
+    [serviceColorAnalysisOperationQueue setMaxConcurrentOperationCount:5];
 
     v7 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.mediaartworkd.xpc" options:0];
     [(MSVArtworkService *)v2 setServerConnection:v7];
@@ -186,11 +186,11 @@ void __51__MSVArtworkService_sendRequest_completionHandler___block_invoke_3(uint
     v9 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
     [v8 setClasses:v9 forSelector:sel_processArtworkColorAnalysisRequest_withReply_ argumentIndex:0 ofReply:1];
 
-    v10 = [(MSVArtworkService *)v2 serverConnection];
-    [v10 setRemoteObjectInterface:v8];
+    serverConnection = [(MSVArtworkService *)v2 serverConnection];
+    [serverConnection setRemoteObjectInterface:v8];
 
-    v11 = [(MSVArtworkService *)v2 serverConnection];
-    [v11 resume];
+    serverConnection2 = [(MSVArtworkService *)v2 serverConnection];
+    [serverConnection2 resume];
   }
 
   return v2;

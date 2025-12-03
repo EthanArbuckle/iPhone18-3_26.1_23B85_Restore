@@ -1,45 +1,45 @@
 @interface PXPhotoKitAssetCollectionShowPersonInfoActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)createStandardActionForAssetCollectionReference:(id)a3 withInput:(id)a4 handler:(id)a5;
-+ (int64_t)actionTypeForPerson:(id)a3 outContact:(id *)a4;
-+ (void)_createPersonInfoActionForPerson:(id)a3 traitCollection:(id)a4 handler:(id)a5 completion:(id)a6;
-+ (void)getLocalizedTitle:(id *)a3 subtitle:(id *)a4 forActionType:(int64_t)a5 person:(id)a6 contact:(id)a7;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)createStandardActionForAssetCollectionReference:(id)reference withInput:(id)input handler:(id)handler;
++ (int64_t)actionTypeForPerson:(id)person outContact:(id *)contact;
++ (void)_createPersonInfoActionForPerson:(id)person traitCollection:(id)collection handler:(id)handler completion:(id)completion;
++ (void)getLocalizedTitle:(id *)title subtitle:(id *)subtitle forActionType:(int64_t)type person:(id)person contact:(id)contact;
 - (CNContactViewController)pushedContactViewController;
-- (void)_handleUnlinkContactButton:(id)a3;
-- (void)_performUserInteractionTaskWithType:(int64_t)a3 contact:(id)a4;
+- (void)_handleUnlinkContactButton:(id)button;
+- (void)_performUserInteractionTaskWithType:(int64_t)type contact:(id)contact;
 - (void)_popContactViewController;
-- (void)_showContactDetailViewControllerForContact:(id)a3;
+- (void)_showContactDetailViewControllerForContact:(id)contact;
 - (void)_showContactPicker;
 - (void)_showNamingView;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAssetCollectionShowPersonInfoActionPerformer
 
-+ (void)_createPersonInfoActionForPerson:(id)a3 traitCollection:(id)a4 handler:(id)a5 completion:(id)a6
++ (void)_createPersonInfoActionForPerson:(id)person traitCollection:(id)collection handler:(id)handler completion:(id)completion
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  personCopy = person;
+  collectionCopy = collection;
+  handlerCopy = handler;
+  completionCopy = completion;
   v43 = 0;
-  v14 = [a1 actionTypeForPerson:v10 outContact:&v43];
+  v14 = [self actionTypeForPerson:personCopy outContact:&v43];
   v15 = v43;
   v42 = 0;
   v41 = 0;
-  [a1 getLocalizedTitle:&v42 subtitle:&v41 forActionType:v14 person:v10 contact:v15];
+  [self getLocalizedTitle:&v42 subtitle:&v41 forActionType:v14 person:personCopy contact:v15];
   v16 = v42;
   v17 = v41;
   if (v14 > 1)
   {
     if (v14 == 3)
     {
-      if (v11)
+      if (collectionCopy)
       {
-        [v11 displayScale];
+        [collectionCopy displayScale];
         v28 = v27;
       }
 
@@ -53,10 +53,10 @@
       v29[2] = __126__PXPhotoKitAssetCollectionShowPersonInfoActionPerformer__createPersonInfoActionForPerson_traitCollection_handler_completion___block_invoke_2;
       v29[3] = &unk_1E7735918;
       v30 = v16;
-      v31 = v12;
+      v31 = handlerCopy;
       v33 = 3;
-      v32 = v13;
-      [PXActivityUtilities requestImageFromPeopleAlbumForPerson:v10 targetSize:1 displayScale:v29 highQualityFormat:48.0 completion:48.0, v28];
+      v32 = completionCopy;
+      [PXActivityUtilities requestImageFromPeopleAlbumForPerson:personCopy targetSize:1 displayScale:v29 highQualityFormat:48.0 completion:48.0, v28];
 
       v18 = v30;
       goto LABEL_20;
@@ -64,11 +64,11 @@
 
     if (v14 == 2)
     {
-      if (v11)
+      if (collectionCopy)
       {
-        [v11 displayScale];
+        [collectionCopy displayScale];
         v23 = v22;
-        v24 = [v11 layoutDirection] == 1;
+        v24 = [collectionCopy layoutDirection] == 1;
       }
 
       else
@@ -82,11 +82,11 @@
       v34[2] = __126__PXPhotoKitAssetCollectionShowPersonInfoActionPerformer__createPersonInfoActionForPerson_traitCollection_handler_completion___block_invoke;
       v34[3] = &unk_1E77358F0;
       v35 = v16;
-      v38 = v12;
+      v38 = handlerCopy;
       v40 = 2;
       v36 = v15;
       v37 = v17;
-      v39 = v13;
+      v39 = completionCopy;
       [PXActivityUtilities requestImageForContact:v36 targetSize:v24 displayScale:1 isRTL:v34 deliverOnce:48.0 completion:48.0, v23];
 
       v18 = v35;
@@ -98,7 +98,7 @@
   {
     if (!v14)
     {
-      if ([v10 px_isHuman])
+      if ([personCopy px_isHuman])
       {
         v25 = @"person.crop.circle.badge.plus";
       }
@@ -109,7 +109,7 @@
       }
 
       v18 = [MEMORY[0x1E69DCAB8] systemImageNamed:v25];
-      v19 = [PXPhotoKitAssetCollectionShowPersonInfoAction actionWithTitle:v16 image:v18 identifier:0 handler:v12];
+      v19 = [PXPhotoKitAssetCollectionShowPersonInfoAction actionWithTitle:v16 image:v18 identifier:0 handler:handlerCopy];
       [v19 setType:0];
       v44 = v19;
       v20 = MEMORY[0x1E695DEC8];
@@ -120,14 +120,14 @@
     if (v14 == 1)
     {
       v18 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"person.crop.circle.badge.plus"];
-      v19 = [PXPhotoKitAssetCollectionShowPersonInfoAction actionWithTitle:v16 image:v18 identifier:0 handler:v12];
+      v19 = [PXPhotoKitAssetCollectionShowPersonInfoAction actionWithTitle:v16 image:v18 identifier:0 handler:handlerCopy];
       [v19 setType:1];
       v45[0] = v19;
       v20 = MEMORY[0x1E695DEC8];
       v21 = v45;
 LABEL_13:
       v26 = [v20 arrayWithObjects:v21 count:1];
-      (*(v13 + 2))(v13, v26);
+      (*(completionCopy + 2))(completionCopy, v26);
 
 LABEL_20:
     }
@@ -171,99 +171,99 @@ void __126__PXPhotoKitAssetCollectionShowPersonInfoActionPerformer__createPerson
   (*(v10 + 16))(v10, v11);
 }
 
-+ (void)getLocalizedTitle:(id *)a3 subtitle:(id *)a4 forActionType:(int64_t)a5 person:(id)a6 contact:(id)a7
++ (void)getLocalizedTitle:(id *)title subtitle:(id *)subtitle forActionType:(int64_t)type person:(id)person contact:(id)contact
 {
-  v23 = a6;
-  v11 = a7;
-  v12 = v11;
-  v13 = 0;
-  if (a5 <= 1)
+  personCopy = person;
+  contactCopy = contact;
+  v12 = contactCopy;
+  value = 0;
+  if (type <= 1)
   {
-    if (a5)
+    if (type)
     {
       v14 = 0;
-      if (a5 != 1)
+      if (type != 1)
       {
         goto LABEL_10;
       }
 
-      v15 = PXLocalizedStringFromTable(@"PXPeopleInfoLinkContactInfoAction", @"PhotosUICore");
+      px_localizedName = PXLocalizedStringFromTable(@"PXPeopleInfoLinkContactInfoAction", @"PhotosUICore");
     }
 
     else
     {
-      v15 = PXLocalizedStringForPersonOrPetAndVisibility(v23, 0, @"PXPeopleInfoNameThisPerson");
+      px_localizedName = PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, @"PXPeopleInfoNameThisPerson");
     }
 
 LABEL_9:
-    v14 = v15;
-    v13 = 0;
+    v14 = px_localizedName;
+    value = 0;
     goto LABEL_10;
   }
 
-  if (a5 != 2)
+  if (type != 2)
   {
     v14 = 0;
-    if (a5 != 3)
+    if (type != 3)
     {
       goto LABEL_10;
     }
 
-    v15 = [v23 px_localizedName];
+    px_localizedName = [personCopy px_localizedName];
     goto LABEL_9;
   }
 
-  if (v11)
+  if (contactCopy)
   {
-    v14 = [MEMORY[0x1E6978980] fullNameFromContact:v11];
-    v18 = [v12 emailAddresses];
-    v19 = [v18 firstObject];
+    v14 = [MEMORY[0x1E6978980] fullNameFromContact:contactCopy];
+    emailAddresses = [v12 emailAddresses];
+    firstObject = [emailAddresses firstObject];
 
-    if (v19)
+    if (firstObject)
     {
-      v13 = [v19 value];
+      value = [firstObject value];
     }
 
     else
     {
-      v20 = [v12 phoneNumbers];
-      v21 = [v20 firstObject];
-      v22 = [v21 value];
+      phoneNumbers = [v12 phoneNumbers];
+      firstObject2 = [phoneNumbers firstObject];
+      value2 = [firstObject2 value];
 
-      v13 = [v22 stringValue];
+      value = [value2 stringValue];
     }
   }
 
   else
   {
-    v13 = 0;
+    value = 0;
     v14 = 0;
   }
 
 LABEL_10:
-  if (a3)
+  if (title)
   {
     v16 = v14;
-    *a3 = v14;
+    *title = v14;
   }
 
-  if (a4)
+  if (subtitle)
   {
-    v17 = v13;
-    *a4 = v13;
+    v17 = value;
+    *subtitle = value;
   }
 }
 
-+ (int64_t)actionTypeForPerson:(id)a3 outContact:(id *)a4
++ (int64_t)actionTypeForPerson:(id)person outContact:(id *)contact
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 px_isHuman] && (objc_msgSend(MEMORY[0x1E695CD80], "descriptorForRequiredKeysForStyle:", 0), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E695D148], "descriptorForRequiredKeys", v6), v7 = objc_claimAutoreleasedReturnValue(), v8 = *MEMORY[0x1E695C400], v15[1] = v7, v15[2] = v8, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v15, 3), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "linkedContactWithKeysToFetch:", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, v7, v6, v10))
+  personCopy = person;
+  if ([personCopy px_isHuman] && (objc_msgSend(MEMORY[0x1E695CD80], "descriptorForRequiredKeysForStyle:", 0), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E695D148], "descriptorForRequiredKeys", v6), v7 = objc_claimAutoreleasedReturnValue(), v8 = *MEMORY[0x1E695C400], v15[1] = v7, v15[2] = v8, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v15, 3), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(personCopy, "linkedContactWithKeysToFetch:", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, v7, v6, v10))
   {
-    if (a4)
+    if (contact)
     {
       v11 = v10;
-      *a4 = v10;
+      *contact = v10;
     }
 
     v12 = 2;
@@ -271,13 +271,13 @@ LABEL_10:
 
   else
   {
-    v13 = [v5 px_localizedName];
-    v10 = [v13 length];
+    px_localizedName = [personCopy px_localizedName];
+    v10 = [px_localizedName length];
 
     if (v10)
     {
       v10 = 0;
-      if ([v5 px_isHuman])
+      if ([personCopy px_isHuman])
       {
         v12 = 1;
       }
@@ -297,46 +297,46 @@ LABEL_10:
   return v12;
 }
 
-+ (id)createStandardActionForAssetCollectionReference:(id)a3 withInput:(id)a4 handler:(id)a5
++ (id)createStandardActionForAssetCollectionReference:(id)reference withInput:(id)input handler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 people];
-  v10 = [v9 firstObject];
+  handlerCopy = handler;
+  inputCopy = input;
+  people = [inputCopy people];
+  firstObject = [people firstObject];
 
-  v11 = [v8 traitEnvironment];
+  traitEnvironment = [inputCopy traitEnvironment];
 
-  v12 = [v11 traitCollection];
+  traitCollection = [traitEnvironment traitCollection];
 
   v13 = MEMORY[0x1E69DC928];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __124__PXPhotoKitAssetCollectionShowPersonInfoActionPerformer_createStandardActionForAssetCollectionReference_withInput_handler___block_invoke;
   v19[3] = &unk_1E77358C8;
-  v20 = v10;
-  v21 = v12;
-  v22 = v7;
-  v23 = a1;
-  v14 = v7;
-  v15 = v12;
-  v16 = v10;
+  v20 = firstObject;
+  v21 = traitCollection;
+  v22 = handlerCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v15 = traitCollection;
+  v16 = firstObject;
   v17 = [v13 elementWithUncachedProvider:v19];
 
   return v17;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v5 = a4;
-  v6 = [v5 people];
-  v7 = [v6 count];
+  inputsCopy = inputs;
+  people = [inputsCopy people];
+  v7 = [people count];
 
   if (v7 == 1)
   {
-    v8 = [v5 people];
-    v9 = [v8 firstObject];
+    people2 = [inputsCopy people];
+    firstObject = [people2 firstObject];
 
-    v10 = [a1 actionTypeForPerson:v9 outContact:0] == 1;
+    v10 = [self actionTypeForPerson:firstObject outContact:0] == 1;
   }
 
   else
@@ -354,9 +354,9 @@ LABEL_10:
   return WeakRetained;
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v5 = a4;
+  contactCopy = contact;
   v6 = PLUIGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -364,13 +364,13 @@ LABEL_10:
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "User selected contact for person from info action", v11, 2u);
   }
 
-  v7 = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
-  v8 = [v7 firstObject];
+  people = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
+  firstObject = [people firstObject];
 
-  if (v8)
+  if (firstObject)
   {
-    v9 = [v8 photoLibrary];
-    [PXPeopleBootstrap nameAndVerifyPerson:v8 toContact:v5 photoLibrary:v9 completionHandler:&__block_literal_global_78590];
+    photoLibrary = [firstObject photoLibrary];
+    [PXPeopleBootstrap nameAndVerifyPerson:firstObject toContact:contactCopy photoLibrary:photoLibrary completionHandler:&__block_literal_global_78590];
 
     [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
   }
@@ -398,7 +398,7 @@ void __89__PXPhotoKitAssetCollectionShowPersonInfoActionPerformer_contactPicker_
   }
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   v4 = PLUIGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -412,13 +412,13 @@ void __89__PXPhotoKitAssetCollectionShowPersonInfoActionPerformer_contactPicker_
 
 - (void)_popContactViewController
 {
-  v2 = [(PXPhotoKitAssetCollectionShowPersonInfoActionPerformer *)self pushedContactViewController];
-  v3 = [v2 navigationController];
-  v4 = [v3 topViewController];
+  pushedContactViewController = [(PXPhotoKitAssetCollectionShowPersonInfoActionPerformer *)self pushedContactViewController];
+  navigationController = [pushedContactViewController navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v4 == v2)
+  if (topViewController == pushedContactViewController)
   {
-    v6 = [v3 popViewControllerAnimated:1];
+    v6 = [navigationController popViewControllerAnimated:1];
   }
 
   else
@@ -432,14 +432,14 @@ void __89__PXPhotoKitAssetCollectionShowPersonInfoActionPerformer_contactPicker_
   }
 }
 
-- (void)_handleUnlinkContactButton:(id)a3
+- (void)_handleUnlinkContactButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   [(PXPhotoKitAssetCollectionShowPersonInfoActionPerformer *)self pushedContactViewController];
   [objc_claimAutoreleasedReturnValue() contact];
   objc_claimAutoreleasedReturnValue();
-  v5 = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
-  [v5 firstObject];
+  people = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
+  [people firstObject];
   objc_claimAutoreleasedReturnValue();
 
   objc_initWeak(&location, self);
@@ -452,9 +452,9 @@ void __85__PXPhotoKitAssetCollectionShowPersonInfoActionPerformer__handleUnlinkC
   [WeakRetained _popContactViewController];
 }
 
-- (void)_showContactDetailViewControllerForContact:(id)a3
+- (void)_showContactDetailViewControllerForContact:(id)contact
 {
-  v5 = [PXPeopleUtilities contactViewControllerForContact:a3 target:self selector:sel__handleUnlinkContactButton_];
+  v5 = [PXPeopleUtilities contactViewControllerForContact:contact target:self selector:sel__handleUnlinkContactButton_];
   objc_setAssociatedObject(v5, sel__showContactDetailViewControllerForContact_, self, 1);
   if ([(PXActionPerformer *)self pushViewController:v5])
   {
@@ -482,11 +482,11 @@ void __85__PXPhotoKitAssetCollectionShowPersonInfoActionPerformer__handleUnlinkC
 
 - (void)_showNamingView
 {
-  v3 = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
-  v9 = [v3 firstObject];
+  people = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
+  firstObject = [people firstObject];
 
-  v4 = [(PXActionPerformer *)self presentationEnvironment];
-  v5 = [PXPeopleNamingCreator namingViewControllerFor:v9 presentationEnvironment:v4];
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+  v5 = [PXPeopleNamingCreator namingViewControllerFor:firstObject presentationEnvironment:presentationEnvironment];
 
   if ([(PXActionPerformer *)self presentViewController:v5])
   {
@@ -496,68 +496,68 @@ void __85__PXPhotoKitAssetCollectionShowPersonInfoActionPerformer__handleUnlinkC
   else
   {
     v6 = MEMORY[0x1E696ABC0];
-    v7 = [v9 localIdentifier];
-    v8 = [v6 px_genericErrorWithDebugDescription:{@"Failed to present people naming view for person: %@", v7}];
+    localIdentifier = [firstObject localIdentifier];
+    v8 = [v6 px_genericErrorWithDebugDescription:{@"Failed to present people naming view for person: %@", localIdentifier}];
     [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:0 error:v8];
   }
 }
 
-- (void)_performUserInteractionTaskWithType:(int64_t)a3 contact:(id)a4
+- (void)_performUserInteractionTaskWithType:(int64_t)type contact:(id)contact
 {
-  v6 = a4;
-  if (a3 > 1)
+  contactCopy = contact;
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v7 = v6;
-      [(PXPhotoKitAssetCollectionShowPersonInfoActionPerformer *)self _showContactDetailViewControllerForContact:v6];
+      v7 = contactCopy;
+      [(PXPhotoKitAssetCollectionShowPersonInfoActionPerformer *)self _showContactDetailViewControllerForContact:contactCopy];
       goto LABEL_9;
     }
 
-    if (a3 != 3)
+    if (type != 3)
     {
       goto LABEL_10;
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_10;
     }
 
-    v7 = v6;
+    v7 = contactCopy;
     [(PXPhotoKitAssetCollectionShowPersonInfoActionPerformer *)self _showContactPicker];
     goto LABEL_9;
   }
 
-  v7 = v6;
+  v7 = contactCopy;
   [(PXPhotoKitAssetCollectionShowPersonInfoActionPerformer *)self _showNamingView];
 LABEL_9:
-  v6 = v7;
+  contactCopy = v7;
 LABEL_10:
 }
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitAssetCollectionActionPerformer *)self sendingAction];
+  sendingAction = [(PXPhotoKitAssetCollectionActionPerformer *)self sendingAction];
   if (!objc_opt_class() || (objc_opt_isKindOfClass() & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v4 = v3;
+  v4 = sendingAction;
 
   if (!v4)
   {
 LABEL_6:
-    v7 = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
-    v8 = [v7 firstObject];
+    people = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
+    firstObject = [people firstObject];
 
     v11 = 0;
-    v9 = [objc_opt_class() actionTypeForPerson:v8 outContact:&v11];
+    v9 = [objc_opt_class() actionTypeForPerson:firstObject outContact:&v11];
     v10 = v11;
     [(PXPhotoKitAssetCollectionShowPersonInfoActionPerformer *)self _performUserInteractionTaskWithType:v9 contact:v10];
 
@@ -565,9 +565,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v5 = [v4 type];
-  v6 = [v4 contact];
-  [(PXPhotoKitAssetCollectionShowPersonInfoActionPerformer *)self _performUserInteractionTaskWithType:v5 contact:v6];
+  type = [v4 type];
+  contact = [v4 contact];
+  [(PXPhotoKitAssetCollectionShowPersonInfoActionPerformer *)self _performUserInteractionTaskWithType:type contact:contact];
 
 LABEL_7:
 }

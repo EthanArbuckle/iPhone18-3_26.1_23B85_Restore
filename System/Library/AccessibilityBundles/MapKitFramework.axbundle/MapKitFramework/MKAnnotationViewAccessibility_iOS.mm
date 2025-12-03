@@ -1,7 +1,7 @@
 @interface MKAnnotationViewAccessibility_iOS
 + (id)_disclosureCalloutButton;
 - (BOOL)isAccessibilityElement;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityLocality;
@@ -34,56 +34,56 @@
 {
   v13.receiver = self;
   v13.super_class = MKAnnotationViewAccessibility_iOS;
-  v3 = [(MKAnnotationViewAccessibility_iOS *)&v13 accessibilityLabel];
-  if (!v3)
+  accessibilityLabel = [(MKAnnotationViewAccessibility_iOS *)&v13 accessibilityLabel];
+  if (!accessibilityLabel)
   {
-    v4 = [(MKAnnotationViewAccessibility_iOS *)self annotation];
+    annotation = [(MKAnnotationViewAccessibility_iOS *)self annotation];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 title];
-      v6 = [v5 accessibilityLabel];
+      title = [annotation title];
+      accessibilityLabel2 = [title accessibilityLabel];
 
-      if (v6)
+      if (accessibilityLabel2)
       {
-        v7 = [v5 accessibilityLabel];
+        accessibilityLabel3 = [title accessibilityLabel];
 
-        v5 = v7;
+        title = accessibilityLabel3;
       }
     }
 
     else
     {
-      v5 = 0;
+      title = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v4 subtitle];
-      v9 = [v8 accessibilityLabel];
+      subtitle = [annotation subtitle];
+      accessibilityLabel4 = [subtitle accessibilityLabel];
 
-      if (v9)
+      if (accessibilityLabel4)
       {
-        v10 = [v8 accessibilityLabel];
+        accessibilityLabel5 = [subtitle accessibilityLabel];
 
-        v8 = v10;
+        subtitle = accessibilityLabel5;
       }
     }
 
     else
     {
-      v8 = 0;
+      subtitle = 0;
     }
 
-    v3 = __UIAXStringForVariables();
-    if (![v3 length])
+    accessibilityLabel = __UIAXStringForVariables();
+    if (![accessibilityLabel length])
     {
       v11 = AXMapKitLocString(@"MAP_PIN_TITLE");
 
-      v3 = v11;
+      accessibilityLabel = v11;
     }
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
@@ -95,39 +95,39 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(MKAnnotationViewAccessibility_iOS *)self isAccessibilityUserDefinedElement];
-  v3 = v2;
-  if (v2)
+  isAccessibilityUserDefinedElement = [(MKAnnotationViewAccessibility_iOS *)self isAccessibilityUserDefinedElement];
+  v3 = isAccessibilityUserDefinedElement;
+  if (isAccessibilityUserDefinedElement)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [isAccessibilityUserDefinedElement BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if ([(MKAnnotationViewAccessibility_iOS *)self isAccessibilityElement]&& [(MKAnnotationViewAccessibility_iOS *)self pointInside:v7 withEvent:x, y])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if ([(MKAnnotationViewAccessibility_iOS *)self isAccessibilityElement]&& [(MKAnnotationViewAccessibility_iOS *)self pointInside:eventCopy withEvent:x, y])
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = MKAnnotationViewAccessibility_iOS;
-    v8 = [(MKAnnotationViewAccessibility_iOS *)&v11 _accessibilityHitTest:v7 withEvent:x, y];
+    selfCopy = [(MKAnnotationViewAccessibility_iOS *)&v11 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
-  v9 = v8;
+  v9 = selfCopy;
 
   return v9;
 }
@@ -136,27 +136,27 @@
 {
   v6.receiver = self;
   v6.super_class = MKAnnotationViewAccessibility_iOS;
-  v3 = [(MKAnnotationViewAccessibility_iOS *)&v6 accessibilityValue];
-  if (!v3)
+  accessibilityValue = [(MKAnnotationViewAccessibility_iOS *)&v6 accessibilityValue];
+  if (!accessibilityValue)
   {
-    v4 = [(MKAnnotationViewAccessibility_iOS *)self annotation];
-    v3 = [v4 _accessibilityValueForKey:@"AccessibilityDeterminedLocation"];
+    annotation = [(MKAnnotationViewAccessibility_iOS *)self annotation];
+    accessibilityValue = [annotation _accessibilityValueForKey:@"AccessibilityDeterminedLocation"];
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityLocality
 {
-  v2 = [(MKAnnotationViewAccessibility_iOS *)self annotation];
-  v3 = [v2 _accessibilityValueForKey:@"AccessibilityDeterminedLocality"];
+  annotation = [(MKAnnotationViewAccessibility_iOS *)self annotation];
+  v3 = [annotation _accessibilityValueForKey:@"AccessibilityDeterminedLocality"];
 
   return v3;
 }
 
 + (id)_disclosureCalloutButton
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___MKAnnotationViewAccessibility_iOS;
   v2 = objc_msgSendSuper2(&v4, sel__disclosureCalloutButton);
   [v2 setAccessibilityIdentifier:@"AccessibilityMoreInfoButtonIdentifier"];

@@ -1,13 +1,13 @@
 @interface PFMessagesStackLayoutFrameSolver
 - (PFMessagesStackLayoutFrameSolver)init;
-- (void)getGeometries:(id *)a3 count:(unint64_t)a4;
+- (void)getGeometries:(id *)geometries count:(unint64_t)count;
 @end
 
 @implementation PFMessagesStackLayoutFrameSolver
 
-- (void)getGeometries:(id *)a3 count:(unint64_t)a4
+- (void)getGeometries:(id *)geometries count:(unint64_t)count
 {
-  v6 = [(PFMessagesStackLayoutFrameSolver *)self stackedItemsCount:a3];
+  v6 = [(PFMessagesStackLayoutFrameSolver *)self stackedItemsCount:geometries];
   v7 = 2 * v6;
   [(PFMessagesStackLayoutFrameSolver *)self normalizedVerticalInsets];
   v9 = v8;
@@ -34,7 +34,7 @@
   __x = v18;
   [(PFMessagesStackLayoutFrameSolver *)self rotationAngle];
   v54 = v19;
-  v20 = [(PFMessagesStackLayoutFrameSolver *)self normalizedHorizontalOffsets];
+  normalizedHorizontalOffsets = [(PFMessagesStackLayoutFrameSolver *)self normalizedHorizontalOffsets];
   v60 = [MEMORY[0x1E695DF70] arrayWithCapacity:v6];
   if (v6)
   {
@@ -42,9 +42,9 @@
     v22 = 0.0;
     do
     {
-      if (v21 < [v20 count])
+      if (v21 < [normalizedHorizontalOffsets count])
       {
-        v23 = [v20 objectAtIndexedSubscript:v21];
+        v23 = [normalizedHorizontalOffsets objectAtIndexedSubscript:v21];
         [v23 doubleValue];
         v10 = v24;
       }
@@ -65,7 +65,7 @@
     v26 = -v6;
     v27 = (v6 * 5.0);
     v28 = v7 + 1;
-    p_var6 = &a3[1].var6;
+    p_var6 = &geometries[1].var6;
     __asm { FMOV            V0.2D, #1.0 }
 
     v57 = _Q0;
@@ -133,20 +133,20 @@
     while (v28);
   }
 
-  v47 = *&a3[1].var6;
-  *&a3->var4 = *&a3[1].var4;
-  *&a3->var6 = v47;
-  v48 = *&a3[1].var2;
-  a3->var1 = a3[1].var1;
-  *&a3->var2 = v48;
-  a3->var0 = a3[1].var0;
-  v49 = a3->var6 * 0.9;
-  a3->var4 = 0.0;
-  a3->var2 = a3->var2 + 5.0;
-  a3->var5 = a3[1].var5;
-  a3->var6 = v49;
-  v50 = &a3[v7 + 2];
-  v51 = &a3[v7];
+  v47 = *&geometries[1].var6;
+  *&geometries->var4 = *&geometries[1].var4;
+  *&geometries->var6 = v47;
+  v48 = *&geometries[1].var2;
+  geometries->var1 = geometries[1].var1;
+  *&geometries->var2 = v48;
+  geometries->var0 = geometries[1].var0;
+  v49 = geometries->var6 * 0.9;
+  geometries->var4 = 0.0;
+  geometries->var2 = geometries->var2 + 5.0;
+  geometries->var5 = geometries[1].var5;
+  geometries->var6 = v49;
+  v50 = &geometries[v7 + 2];
+  v51 = &geometries[v7];
   v52 = *&v51[1].var6;
   *&v50->var4 = *&v51[1].var4;
   *&v50->var6 = v52;

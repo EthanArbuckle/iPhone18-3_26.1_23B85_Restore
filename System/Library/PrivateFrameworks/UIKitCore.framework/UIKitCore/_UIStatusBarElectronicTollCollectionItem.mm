@@ -1,37 +1,37 @@
 @interface _UIStatusBarElectronicTollCollectionItem
-- (id)imageForUpdate:(id)a3;
+- (id)imageForUpdate:(id)update;
 @end
 
 @implementation _UIStatusBarElectronicTollCollectionItem
 
-- (id)imageForUpdate:(id)a3
+- (id)imageForUpdate:(id)update
 {
-  v3 = a3;
-  v4 = [v3 data];
-  v5 = [v4 electronicTollCollectionEntry];
+  updateCopy = update;
+  data = [updateCopy data];
+  electronicTollCollectionEntry = [data electronicTollCollectionEntry];
 
   v6 = MEMORY[0x1E696AAE8];
   v7 = _UIKitResourceBundlePath(@"CarPlayArtwork.bundle");
   v8 = [v6 bundleWithPath:v7];
 
-  v9 = [v3 styleAttributes];
-  v10 = [v9 traitCollection];
-  v11 = [UIImage imageNamed:@"Black_JapanETC" inBundle:v8 compatibleWithTraitCollection:v10];
+  styleAttributes = [updateCopy styleAttributes];
+  traitCollection = [styleAttributes traitCollection];
+  v11 = [UIImage imageNamed:@"Black_JapanETC" inBundle:v8 compatibleWithTraitCollection:traitCollection];
 
   v12 = [v11 imageWithRenderingMode:2];
 
-  v13 = [v3 styleAttributes];
+  styleAttributes2 = [updateCopy styleAttributes];
 
-  v14 = [v13 imageTintColor];
+  imageTintColor = [styleAttributes2 imageTintColor];
 
-  if (([v5 BOOLValue] & 1) == 0)
+  if (([electronicTollCollectionEntry BOOLValue] & 1) == 0)
   {
-    v15 = [v14 colorWithAlphaComponent:0.4];
+    v15 = [imageTintColor colorWithAlphaComponent:0.4];
 
-    v14 = v15;
+    imageTintColor = v15;
   }
 
-  v16 = [v12 _flatImageWithColor:v14];
+  v16 = [v12 _flatImageWithColor:imageTintColor];
 
   return v16;
 }

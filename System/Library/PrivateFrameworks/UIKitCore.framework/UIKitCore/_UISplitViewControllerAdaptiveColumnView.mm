@@ -4,27 +4,27 @@
 - (UIView)containerView;
 - (UIView)contentView;
 - (_UISplitViewControllerAdaptiveColumnInteractionDelegate)interactionDelegate;
-- (_UISplitViewControllerAdaptiveColumnView)initWithFrame:(CGRect)a3;
+- (_UISplitViewControllerAdaptiveColumnView)initWithFrame:(CGRect)frame;
 - (_UIViewMaterial)background;
 - (id)prepareClippingView;
 - (id)prepareDimmingView;
 - (id)prepareScrollPocketCollectorInteraction;
-- (id)prepareScrollPocketInteractionWithEdge:(unint64_t)a3;
+- (id)prepareScrollPocketInteractionWithEdge:(unint64_t)edge;
 - (void)layoutSubviews;
-- (void)setBackground:(id)a3;
-- (void)setClippingView:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)setDimmingLevel:(double)a3;
-- (void)setDimmingView:(id)a3;
-- (void)setFallbackCornerRadius:(double)a3;
-- (void)setLeftScrollPocketInteraction:(id)a3;
-- (void)setLevel:(int64_t)a3;
-- (void)setMaskedCorners:(unint64_t)a3;
-- (void)setOwnedContentView:(id)a3;
-- (void)setRightScrollPocketInteraction:(id)a3;
-- (void)setScrollPocketCollectorInteraction:(id)a3;
-- (void)setScrollPocketInsets:(UIEdgeInsets)a3;
-- (void)tapGestureDidChange:(id)a3;
+- (void)setBackground:(id)background;
+- (void)setClippingView:(id)view;
+- (void)setContentView:(id)view;
+- (void)setDimmingLevel:(double)level;
+- (void)setDimmingView:(id)view;
+- (void)setFallbackCornerRadius:(double)radius;
+- (void)setLeftScrollPocketInteraction:(id)interaction;
+- (void)setLevel:(int64_t)level;
+- (void)setMaskedCorners:(unint64_t)corners;
+- (void)setOwnedContentView:(id)view;
+- (void)setRightScrollPocketInteraction:(id)interaction;
+- (void)setScrollPocketCollectorInteraction:(id)interaction;
+- (void)setScrollPocketInsets:(UIEdgeInsets)insets;
+- (void)tapGestureDidChange:(id)change;
 - (void)updateCornerConfiguration;
 - (void)updateDimmingView;
 - (void)updatePlatterIfNeeded;
@@ -38,7 +38,7 @@
 
 - (UIView)contentView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188B1B108();
 
   return v3;
@@ -46,85 +46,85 @@
 
 - (UIView)containerView
 {
-  v2 = self;
-  if ([(_UISplitViewControllerAdaptiveColumnView *)v2 maskedCorners])
+  selfCopy = self;
+  if ([(_UISplitViewControllerAdaptiveColumnView *)selfCopy maskedCorners])
   {
-    v3 = [(_UISplitViewControllerAdaptiveColumnView *)v2 prepareClippingView];
+    prepareClippingView = [(_UISplitViewControllerAdaptiveColumnView *)selfCopy prepareClippingView];
 
-    v2 = v3;
+    selfCopy = prepareClippingView;
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setOwnedContentView:(id)a3
+- (void)setOwnedContentView:(id)view
 {
   v4 = *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_ownedContentView);
-  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_ownedContentView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_ownedContentView) = view;
+  viewCopy = view;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188B1ADC4(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188B1ADC4(view);
 }
 
-- (void)setBackground:(id)a3
+- (void)setBackground:(id)background
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_188BB43E4(a3);
+  selfCopy = self;
+  sub_188BB43E4(background);
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
   v3 = *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_maskedCorners);
-  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_maskedCorners) = a3;
-  if (v3 != a3)
+  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_maskedCorners) = corners;
+  if (v3 != corners)
   {
     [(_UISplitViewControllerAdaptiveColumnView *)self updateSubviewsForChangeInMaskedCorners];
   }
 }
 
-- (void)setFallbackCornerRadius:(double)a3
+- (void)setFallbackCornerRadius:(double)radius
 {
   v3 = *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_fallbackCornerRadius);
-  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_fallbackCornerRadius) = a3;
-  if (v3 != a3)
+  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_fallbackCornerRadius) = radius;
+  if (v3 != radius)
   {
     [(UIView *)self setNeedsUpdateProperties];
   }
 }
 
-- (void)setScrollPocketInsets:(UIEdgeInsets)a3
+- (void)setScrollPocketInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = self;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  selfCopy = self;
   v7.f64[0] = top;
   v8.f64[0] = bottom;
   sub_188BB5660(v7, left, v8, right);
 }
 
-- (void)setDimmingLevel:(double)a3
+- (void)setDimmingLevel:(double)level
 {
   v3 = *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_dimmingLevel);
-  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_dimmingLevel) = a3;
-  if (v3 != a3)
+  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_dimmingLevel) = level;
+  if (v3 != level)
   {
     [(_UISplitViewControllerAdaptiveColumnView *)self updateDimmingView];
   }
 }
 
-- (void)setLevel:(int64_t)a3
+- (void)setLevel:(int64_t)level
 {
   v3 = *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_level);
-  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_level) = a3;
-  if (v3 != a3)
+  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_level) = level;
+  if (v3 != level)
   {
     [(_UISplitViewControllerAdaptiveColumnView *)self updateTraitTransformsForChangeInLevel];
   }
@@ -132,7 +132,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188C320FC();
 }
 
@@ -140,13 +140,13 @@
 {
   v3.receiver = self;
   v3.super_class = _UISplitViewControllerAdaptiveColumnView;
-  v2 = self;
+  selfCopy = self;
   [(UIView *)&v3 updateProperties];
-  [(UIView *)v2 _setBackground:[(_UISplitViewControllerAdaptiveColumnView *)v2 background:v3.receiver]];
+  [(UIView *)selfCopy _setBackground:[(_UISplitViewControllerAdaptiveColumnView *)selfCopy background:v3.receiver]];
   swift_unknownObjectRelease();
-  [(_UISplitViewControllerAdaptiveColumnView *)v2 updateCornerConfiguration];
-  [(_UISplitViewControllerAdaptiveColumnView *)v2 updateScrollPocketInteractions];
-  [(_UISplitViewControllerAdaptiveColumnView *)v2 updatePlatterIfNeeded];
+  [(_UISplitViewControllerAdaptiveColumnView *)selfCopy updateCornerConfiguration];
+  [(_UISplitViewControllerAdaptiveColumnView *)selfCopy updateScrollPocketInteractions];
+  [(_UISplitViewControllerAdaptiveColumnView *)selfCopy updatePlatterIfNeeded];
 }
 
 - (_UIViewMaterial)background
@@ -158,7 +158,7 @@
 
 - (void)updateScrollPocketInteractions
 {
-  v2 = self;
+  selfCopy = self;
   sub_188C32364();
 }
 
@@ -177,11 +177,11 @@
 
 - (void)updatePlatterIfNeeded
 {
-  v3 = self;
-  if (![(_UISplitViewControllerAdaptiveColumnView *)v3 splitViewControllerColumn])
+  selfCopy = self;
+  if (![(_UISplitViewControllerAdaptiveColumnView *)selfCopy splitViewControllerColumn])
   {
-    v2 = [(UIView *)v3 traitCollection];
-    [(UITraitCollection *)v2 userInterfaceIdiom];
+    traitCollection = [(UIView *)selfCopy traitCollection];
+    [(UITraitCollection *)traitCollection userInterfaceIdiom];
   }
 }
 
@@ -192,51 +192,51 @@
   return Strong;
 }
 
-- (void)setClippingView:(id)a3
+- (void)setClippingView:(id)view
 {
   v4 = *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_clippingView);
-  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_clippingView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_clippingView) = view;
+  viewCopy = view;
 }
 
-- (void)setDimmingView:(id)a3
+- (void)setDimmingView:(id)view
 {
   v4 = *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_dimmingView);
-  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_dimmingView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_dimmingView) = view;
+  viewCopy = view;
 }
 
-- (void)setScrollPocketCollectorInteraction:(id)a3
+- (void)setScrollPocketCollectorInteraction:(id)interaction
 {
   v4 = *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_scrollPocketCollectorInteraction);
-  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_scrollPocketCollectorInteraction) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_scrollPocketCollectorInteraction) = interaction;
+  interactionCopy = interaction;
 }
 
-- (void)setLeftScrollPocketInteraction:(id)a3
+- (void)setLeftScrollPocketInteraction:(id)interaction
 {
   v4 = *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_leftScrollPocketInteraction);
-  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_leftScrollPocketInteraction) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_leftScrollPocketInteraction) = interaction;
+  interactionCopy = interaction;
 }
 
-- (void)setRightScrollPocketInteraction:(id)a3
+- (void)setRightScrollPocketInteraction:(id)interaction
 {
   v4 = *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_rightScrollPocketInteraction);
-  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_rightScrollPocketInteraction) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UISplitViewControllerAdaptiveColumnView_rightScrollPocketInteraction) = interaction;
+  interactionCopy = interaction;
 }
 
-- (void)tapGestureDidChange:(id)a3
+- (void)tapGestureDidChange:(id)change
 {
-  v4 = a3;
-  v6 = self;
-  if ([v4 state] == 3)
+  changeCopy = change;
+  selfCopy = self;
+  if ([changeCopy state] == 3)
   {
-    v5 = [(_UISplitViewControllerAdaptiveColumnView *)v6 interactionDelegate];
-    if (v5)
+    interactionDelegate = [(_UISplitViewControllerAdaptiveColumnView *)selfCopy interactionDelegate];
+    if (interactionDelegate)
     {
-      [(_UISplitViewControllerAdaptiveColumnInteractionDelegate *)v5 splitViewControllerColumnDidRequestToBecomeVisible:[(_UISplitViewControllerAdaptiveColumnView *)v6 splitViewControllerColumn]];
+      [(_UISplitViewControllerAdaptiveColumnInteractionDelegate *)interactionDelegate splitViewControllerColumnDidRequestToBecomeVisible:[(_UISplitViewControllerAdaptiveColumnView *)selfCopy splitViewControllerColumn]];
       swift_unknownObjectRelease();
     }
   }
@@ -244,78 +244,78 @@
 
 - (void)updateCornerConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F7EEE0();
 }
 
 - (void)updateSubviewsForChangeInMaskedCorners
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F7F0E0();
 }
 
 - (void)updateTraitTransformsForChangeInLevel
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F7F25C();
 }
 
 - (void)updateDimmingView
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F7F444();
 }
 
 - (id)prepareClippingView
 {
-  v2 = self;
-  v3 = [(_UISplitViewControllerAdaptiveColumnView *)v2 clippingView];
-  if (!v3)
+  selfCopy = self;
+  clippingView = [(_UISplitViewControllerAdaptiveColumnView *)selfCopy clippingView];
+  if (!clippingView)
   {
-    [(UIView *)v2 bounds];
-    v8 = [objc_allocWithZone(_s12ClippingViewCMa()) initWithFrame_];
-    [(UIView *)v2 addSubview:v8];
-    v3 = v8;
-    [(_UISplitViewControllerAdaptiveColumnView *)v2 setClippingView:v3];
+    [(UIView *)selfCopy bounds];
+    initWithFrame_ = [objc_allocWithZone(_s12ClippingViewCMa()) initWithFrame_];
+    [(UIView *)selfCopy addSubview:initWithFrame_];
+    clippingView = initWithFrame_;
+    [(_UISplitViewControllerAdaptiveColumnView *)selfCopy setClippingView:clippingView];
   }
 
-  return v3;
+  return clippingView;
 }
 
 - (id)prepareDimmingView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F7F638();
 
   return v3;
 }
 
-- (id)prepareScrollPocketInteractionWithEdge:(unint64_t)a3
+- (id)prepareScrollPocketInteractionWithEdge:(unint64_t)edge
 {
-  v4 = self;
-  v5 = sub_188F7F890(a3);
+  selfCopy = self;
+  v5 = sub_188F7F890(edge);
 
   return v5;
 }
 
 - (id)prepareScrollPocketCollectorInteraction
 {
-  v2 = self;
-  v3 = [(_UISplitViewControllerAdaptiveColumnView *)v2 scrollPocketCollectorInteraction];
-  if (!v3)
+  selfCopy = self;
+  scrollPocketCollectorInteraction = [(_UISplitViewControllerAdaptiveColumnView *)selfCopy scrollPocketCollectorInteraction];
+  if (!scrollPocketCollectorInteraction)
   {
     v4 = [objc_allocWithZone(_UIScrollPocketCollectorInteraction) init];
-    [(UIView *)v2 addInteraction:v4];
-    v3 = v4;
-    [(_UISplitViewControllerAdaptiveColumnView *)v2 setScrollPocketCollectorInteraction:v3];
+    [(UIView *)selfCopy addInteraction:v4];
+    scrollPocketCollectorInteraction = v4;
+    [(_UISplitViewControllerAdaptiveColumnView *)selfCopy setScrollPocketCollectorInteraction:scrollPocketCollectorInteraction];
   }
 
-  return v3;
+  return scrollPocketCollectorInteraction;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F7FB74();
 
   v3 = sub_18A4A7258();
@@ -323,7 +323,7 @@
   return v3;
 }
 
-- (_UISplitViewControllerAdaptiveColumnView)initWithFrame:(CGRect)a3
+- (_UISplitViewControllerAdaptiveColumnView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

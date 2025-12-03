@@ -1,7 +1,7 @@
 @interface RESharedResourcePayload
 - (NSObject)clientObject;
 - (RESharedResourcePayload)init;
-- (RESharedResourcePayload)initWithCoder:(id)a3;
+- (RESharedResourcePayload)initWithCoder:(id)coder;
 @end
 
 @implementation RESharedResourcePayload
@@ -13,7 +13,7 @@
   return [(RESharedResourcePayload *)&v3 init];
 }
 
-- (RESharedResourcePayload)initWithCoder:(id)a3
+- (RESharedResourcePayload)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = RESharedResourcePayload;

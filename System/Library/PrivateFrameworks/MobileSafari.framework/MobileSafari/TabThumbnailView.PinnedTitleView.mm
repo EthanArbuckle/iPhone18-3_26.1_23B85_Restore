@@ -8,9 +8,9 @@
 - (void)contentSizeCategoryDidChange
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtCC12MobileSafari16TabThumbnailView15PinnedTitleView_titleLabel);
-  v7 = self;
-  v3 = [(TabThumbnailView.PinnedTitleView *)v7 traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  selfCopy = self;
+  traitCollection = [(TabThumbnailView.PinnedTitleView *)selfCopy traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   v5 = sub_18BC21438();
 
   if (v5)
@@ -28,7 +28,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BAB782C();
 }
 

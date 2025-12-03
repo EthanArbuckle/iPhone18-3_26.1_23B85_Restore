@@ -1,18 +1,18 @@
 @interface FIUIChartDataGroup
 - (FIUIChartDataGroupDataSource)dataSource;
-- (id)_dataSetAtIndexCreateIfNecessary:(unint64_t)a3;
-- (id)_labelsForSetAtIndex:(unint64_t)a3;
-- (id)_pointForSetAtIndex:(unint64_t)a3 pointIndex:(unint64_t)a4;
-- (id)dataSet:(id)a3 chartPointForIndex:(unint64_t)a4;
-- (id)dataSetAtIndex:(unint64_t)a3;
-- (id)labelsForSet:(id)a3;
+- (id)_dataSetAtIndexCreateIfNecessary:(unint64_t)necessary;
+- (id)_labelsForSetAtIndex:(unint64_t)index;
+- (id)_pointForSetAtIndex:(unint64_t)index pointIndex:(unint64_t)pointIndex;
+- (id)dataSet:(id)set chartPointForIndex:(unint64_t)index;
+- (id)dataSetAtIndex:(unint64_t)index;
+- (id)labelsForSet:(id)set;
 - (id)maxXValue;
 - (id)maxYValue;
 - (id)minXValue;
 - (id)minYValue;
-- (unint64_t)_numberOfDataPointsInSetAtIndex:(unint64_t)a3;
+- (unint64_t)_numberOfDataPointsInSetAtIndex:(unint64_t)index;
 - (unint64_t)_numberOfDataSets;
-- (unint64_t)numberOfDataPointsForDataSet:(id)a3;
+- (unint64_t)numberOfDataPointsForDataSet:(id)set;
 - (void)reloadData;
 @end
 
@@ -21,7 +21,7 @@
 - (id)minYValue
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -41,10 +41,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) minYValue];
-        if (v9)
+        minYValue = [*(*(&v12 + 1) + 8 * i) minYValue];
+        if (minYValue)
         {
-          [v3 addObject:v9];
+          [array addObject:minYValue];
         }
       }
 
@@ -54,7 +54,7 @@
     while (v6);
   }
 
-  v10 = FUArraySmallestValue(v3);
+  v10 = FUArraySmallestValue(array);
 
   return v10;
 }
@@ -62,7 +62,7 @@
 - (id)maxYValue
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -82,10 +82,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) maxYValue];
-        if (v9)
+        maxYValue = [*(*(&v12 + 1) + 8 * i) maxYValue];
+        if (maxYValue)
         {
-          [v3 addObject:v9];
+          [array addObject:maxYValue];
         }
       }
 
@@ -95,7 +95,7 @@
     while (v6);
   }
 
-  v10 = FUArrayLargestValue(v3);
+  v10 = FUArrayLargestValue(array);
 
   return v10;
 }
@@ -103,7 +103,7 @@
 - (id)minXValue
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -124,11 +124,11 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 minXValue];
-        if (v10)
+        minXValue = [v9 minXValue];
+        if (minXValue)
         {
-          v11 = [v9 minXValue];
-          [v3 addObject:v11];
+          minXValue2 = [v9 minXValue];
+          [array addObject:minXValue2];
         }
       }
 
@@ -138,7 +138,7 @@
     while (v6);
   }
 
-  v12 = FUArraySmallestValue(v3);
+  v12 = FUArraySmallestValue(array);
 
   return v12;
 }
@@ -146,7 +146,7 @@
 - (id)maxXValue
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -166,10 +166,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) maxXValue];
-        if (v9)
+        maxXValue = [*(*(&v12 + 1) + 8 * i) maxXValue];
+        if (maxXValue)
         {
-          [v3 addObject:v9];
+          [array addObject:maxXValue];
         }
       }
 
@@ -179,21 +179,21 @@
     while (v6);
   }
 
-  v10 = FUArrayLargestValue(v3);
+  v10 = FUArrayLargestValue(array);
 
   return v10;
 }
 
-- (id)dataSetAtIndex:(unint64_t)a3
+- (id)dataSetAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_dataSets count]<= a3)
+  if ([(NSArray *)self->_dataSets count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_dataSets objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_dataSets objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -201,53 +201,53 @@
 
 - (void)reloadData
 {
-  v3 = [(FIUIChartDataGroup *)self _numberOfDataSets];
-  v8 = [MEMORY[0x1E695DF70] array];
-  if (v3)
+  _numberOfDataSets = [(FIUIChartDataGroup *)self _numberOfDataSets];
+  array = [MEMORY[0x1E695DF70] array];
+  if (_numberOfDataSets)
   {
-    for (i = 0; i != v3; ++i)
+    for (i = 0; i != _numberOfDataSets; ++i)
     {
       v5 = [(FIUIChartDataGroup *)self _dataSetAtIndexCreateIfNecessary:i];
       [v5 reloadData];
-      [v8 addObject:v5];
+      [array addObject:v5];
     }
   }
 
-  v6 = [MEMORY[0x1E695DEC8] arrayWithArray:v8];
+  v6 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   dataSets = self->_dataSets;
   self->_dataSets = v6;
 }
 
-- (id)_dataSetAtIndexCreateIfNecessary:(unint64_t)a3
+- (id)_dataSetAtIndexCreateIfNecessary:(unint64_t)necessary
 {
   v5 = [(FIUIChartDataGroup *)self dataSetAtIndex:?];
   if (!v5)
   {
     v5 = objc_alloc_init(FIUIChartDataSet);
     [(FIUIChartDataSet *)v5 setDataSource:self];
-    [(FIUIChartDataSet *)v5 setTag:a3];
+    [(FIUIChartDataSet *)v5 setTag:necessary];
   }
 
   return v5;
 }
 
-- (unint64_t)numberOfDataPointsForDataSet:(id)a3
+- (unint64_t)numberOfDataPointsForDataSet:(id)set
 {
-  v4 = [a3 tag];
+  v4 = [set tag];
 
   return [(FIUIChartDataGroup *)self _numberOfDataPointsInSetAtIndex:v4];
 }
 
-- (id)dataSet:(id)a3 chartPointForIndex:(unint64_t)a4
+- (id)dataSet:(id)set chartPointForIndex:(unint64_t)index
 {
-  v6 = [a3 tag];
+  v6 = [set tag];
 
-  return [(FIUIChartDataGroup *)self _pointForSetAtIndex:v6 pointIndex:a4];
+  return [(FIUIChartDataGroup *)self _pointForSetAtIndex:v6 pointIndex:index];
 }
 
-- (id)labelsForSet:(id)a3
+- (id)labelsForSet:(id)set
 {
-  v4 = [a3 tag];
+  v4 = [set tag];
 
   return [(FIUIChartDataGroup *)self _labelsForSetAtIndex:v4];
 }
@@ -260,23 +260,23 @@
   return v4;
 }
 
-- (unint64_t)_numberOfDataPointsInSetAtIndex:(unint64_t)a3
+- (unint64_t)_numberOfDataPointsInSetAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [WeakRetained dataGroup:self numberOfPointsInSetAtIndex:a3];
+  v6 = [WeakRetained dataGroup:self numberOfPointsInSetAtIndex:index];
 
   return v6;
 }
 
-- (id)_pointForSetAtIndex:(unint64_t)a3 pointIndex:(unint64_t)a4
+- (id)_pointForSetAtIndex:(unint64_t)index pointIndex:(unint64_t)pointIndex
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v8 = [WeakRetained dataGroup:self pointForSetAtIndex:a3 pointIndex:a4];
+  v8 = [WeakRetained dataGroup:self pointForSetAtIndex:index pointIndex:pointIndex];
 
   return v8;
 }
 
-- (id)_labelsForSetAtIndex:(unint64_t)a3
+- (id)_labelsForSetAtIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v6 = objc_opt_respondsToSelector();
@@ -284,7 +284,7 @@
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_dataSource);
-    v8 = [v7 dataGroup:self labelsForSetAtIndex:a3];
+    v8 = [v7 dataGroup:self labelsForSetAtIndex:index];
   }
 
   else

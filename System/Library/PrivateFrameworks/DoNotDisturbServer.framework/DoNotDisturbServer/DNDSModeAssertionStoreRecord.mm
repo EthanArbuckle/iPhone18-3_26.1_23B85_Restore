@@ -1,43 +1,43 @@
 @interface DNDSModeAssertionStoreRecord
-+ (id)recordForAssertionStore:(id)a3;
-+ (id)recordForDictionary:(id)a3 keys:(id *)a4;
-- (id)dictionaryWithKeys:(id *)a3 options:(unint64_t)a4;
++ (id)recordForAssertionStore:(id)store;
++ (id)recordForDictionary:(id)dictionary keys:(id *)keys;
+- (id)dictionaryWithKeys:(id *)keys options:(unint64_t)options;
 - (id)object;
 @end
 
 @implementation DNDSModeAssertionStoreRecord
 
-+ (id)recordForDictionary:(id)a3 keys:(id *)a4
++ (id)recordForDictionary:(id)dictionary keys:(id *)keys
 {
-  if (a3)
+  if (dictionary)
   {
-    v5 = a3;
+    dictionaryCopy = dictionary;
     v6 = objc_alloc_init(DNDSModeAssertionStoreRecord);
-    v7 = [v5 bs_safeArrayForKey:a4->var0.var0];
+    v7 = [dictionaryCopy bs_safeArrayForKey:keys->var0.var0];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __69__DNDSModeAssertionStoreRecord_Dictionary__recordForDictionary_keys___block_invoke;
     v16[3] = &__block_descriptor_40_e33___DNDSModeAssertionRecord_16__0_8l;
-    v16[4] = a4;
+    v16[4] = keys;
     v8 = [v7 bs_mapNoNulls:v16];
 
     [(DNDSModeAssertionStoreRecord *)v6 setAssertions:v8];
-    v9 = [v5 bs_safeArrayForKey:a4->var0.var1];
+    v9 = [dictionaryCopy bs_safeArrayForKey:keys->var0.var1];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __69__DNDSModeAssertionStoreRecord_Dictionary__recordForDictionary_keys___block_invoke_2;
     v15[3] = &__block_descriptor_40_e45___DNDSModeAssertionInvalidationRecord_16__0_8l;
-    v15[4] = a4;
+    v15[4] = keys;
     v10 = [v9 bs_mapNoNulls:v15];
 
     [(DNDSModeAssertionStoreRecord *)v6 setInvalidations:v10];
-    v11 = [v5 bs_safeArrayForKey:a4->var0.var2];
+    v11 = [dictionaryCopy bs_safeArrayForKey:keys->var0.var2];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __69__DNDSModeAssertionStoreRecord_Dictionary__recordForDictionary_keys___block_invoke_3;
     v14[3] = &__block_descriptor_40_e52___DNDSModeAssertionInvalidationRequestRecord_16__0_8l;
-    v14[4] = a4;
+    v14[4] = keys;
     v12 = [v11 bs_mapNoNulls:v14];
 
     [(DNDSModeAssertionStoreRecord *)v6 setInvalidationRequests:v12];
@@ -141,67 +141,67 @@ id __69__DNDSModeAssertionStoreRecord_Dictionary__recordForDictionary_keys___blo
   return v8;
 }
 
-- (id)dictionaryWithKeys:(id *)a3 options:(unint64_t)a4
+- (id)dictionaryWithKeys:(id *)keys options:(unint64_t)options
 {
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [(DNDSModeAssertionStoreRecord *)self assertions];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  assertions = [(DNDSModeAssertionStoreRecord *)self assertions];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __71__DNDSModeAssertionStoreRecord_Dictionary__dictionaryWithKeys_options___block_invoke;
   v17[3] = &__block_descriptor_48_e47___NSDictionary_16__0__DNDSModeAssertionRecord_8l;
-  v17[4] = a3;
-  v17[5] = a4;
-  v9 = [v8 bs_mapNoNulls:v17];
+  v17[4] = keys;
+  v17[5] = options;
+  v9 = [assertions bs_mapNoNulls:v17];
 
-  [v7 bs_setSafeObject:v9 forKey:a3->var0.var0];
-  v10 = [(DNDSModeAssertionStoreRecord *)self invalidations];
+  [dictionary bs_setSafeObject:v9 forKey:keys->var0.var0];
+  invalidations = [(DNDSModeAssertionStoreRecord *)self invalidations];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __71__DNDSModeAssertionStoreRecord_Dictionary__dictionaryWithKeys_options___block_invoke_2;
   v16[3] = &__block_descriptor_48_e59___NSDictionary_16__0__DNDSModeAssertionInvalidationRecord_8l;
-  v16[4] = a3;
-  v16[5] = a4;
-  v11 = [v10 bs_mapNoNulls:v16];
+  v16[4] = keys;
+  v16[5] = options;
+  v11 = [invalidations bs_mapNoNulls:v16];
 
-  [v7 bs_setSafeObject:v11 forKey:a3->var0.var1];
-  v12 = [(DNDSModeAssertionStoreRecord *)self invalidationRequests];
+  [dictionary bs_setSafeObject:v11 forKey:keys->var0.var1];
+  invalidationRequests = [(DNDSModeAssertionStoreRecord *)self invalidationRequests];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__DNDSModeAssertionStoreRecord_Dictionary__dictionaryWithKeys_options___block_invoke_3;
   v15[3] = &__block_descriptor_48_e66___NSDictionary_16__0__DNDSModeAssertionInvalidationRequestRecord_8l;
-  v15[4] = a3;
-  v15[5] = a4;
-  v13 = [v12 bs_mapNoNulls:v15];
+  v15[4] = keys;
+  v15[5] = options;
+  v13 = [invalidationRequests bs_mapNoNulls:v15];
 
-  [v7 bs_setSafeObject:v13 forKey:a3->var0.var2];
+  [dictionary bs_setSafeObject:v13 forKey:keys->var0.var2];
 
-  return v7;
+  return dictionary;
 }
 
-+ (id)recordForAssertionStore:(id)a3
++ (id)recordForAssertionStore:(id)store
 {
-  v3 = a3;
-  if (v3)
+  storeCopy = store;
+  if (storeCopy)
   {
     v4 = objc_alloc_init(DNDSModeAssertionStoreRecord);
-    v5 = [v3 assertions];
-    v6 = [v5 bs_mapNoNulls:&__block_literal_global_27];
+    assertions = [storeCopy assertions];
+    v6 = [assertions bs_mapNoNulls:&__block_literal_global_27];
 
     if ([v6 count])
     {
       [(DNDSModeAssertionStoreRecord *)v4 setAssertions:v6];
     }
 
-    v7 = [v3 invalidations];
-    v8 = [v7 bs_mapNoNulls:&__block_literal_global_58_1];
+    invalidations = [storeCopy invalidations];
+    v8 = [invalidations bs_mapNoNulls:&__block_literal_global_58_1];
 
     if ([v8 count])
     {
       [(DNDSModeAssertionStoreRecord *)v4 setInvalidations:v8];
     }
 
-    v9 = [v3 invalidationRequests];
-    v10 = [v9 bs_mapNoNulls:&__block_literal_global_62];
+    invalidationRequests = [storeCopy invalidationRequests];
+    v10 = [invalidationRequests bs_mapNoNulls:&__block_literal_global_62];
 
     if ([v10 count])
     {
@@ -220,24 +220,24 @@ id __69__DNDSModeAssertionStoreRecord_Dictionary__recordForDictionary_keys___blo
 - (id)object
 {
   v3 = objc_alloc_init(DNDSMutableModeAssertionStore);
-  v4 = [(DNDSModeAssertionStoreRecord *)self assertions];
-  if ([v4 count])
+  assertions = [(DNDSModeAssertionStoreRecord *)self assertions];
+  if ([assertions count])
   {
-    v5 = [v4 bs_mapNoNulls:&__block_literal_global_67];
+    v5 = [assertions bs_mapNoNulls:&__block_literal_global_67];
     [(DNDSMutableModeAssertionStore *)v3 setAssertions:v5];
   }
 
-  v6 = [(DNDSModeAssertionStoreRecord *)self invalidations];
-  if ([v6 count])
+  invalidations = [(DNDSModeAssertionStoreRecord *)self invalidations];
+  if ([invalidations count])
   {
-    v7 = [v6 bs_mapNoNulls:&__block_literal_global_70];
+    v7 = [invalidations bs_mapNoNulls:&__block_literal_global_70];
     [(DNDSMutableModeAssertionStore *)v3 setInvalidations:v7];
   }
 
-  v8 = [(DNDSModeAssertionStoreRecord *)self invalidationRequests];
-  if ([v8 count])
+  invalidationRequests = [(DNDSModeAssertionStoreRecord *)self invalidationRequests];
+  if ([invalidationRequests count])
   {
-    v9 = [v8 bs_mapNoNulls:&__block_literal_global_73_0];
+    v9 = [invalidationRequests bs_mapNoNulls:&__block_literal_global_73_0];
     [(DNDSMutableModeAssertionStore *)v3 setInvalidationRequests:v9];
   }
 

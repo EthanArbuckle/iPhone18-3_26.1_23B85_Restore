@@ -1,10 +1,10 @@
 @interface DebugLifecycleMetricsHelper
-- (void)trackImpressionWithStartDate:(id)a3 endDate:(id)a4;
+- (void)trackImpressionWithStartDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation DebugLifecycleMetricsHelper
 
-- (void)trackImpressionWithStartDate:(id)a3 endDate:(id)a4
+- (void)trackImpressionWithStartDate:(id)date endDate:(id)endDate
 {
   v4 = sub_1D7702F50();
   v5 = *(v4 - 8);

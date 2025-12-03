@@ -1,27 +1,27 @@
 @interface HKInteractiveChartCategoryValueData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation HKInteractiveChartCategoryValueData
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(HKInteractiveChartCategoryValueData *)self value];
-    if (v6 == [v5 value])
+    v5 = equalCopy;
+    value = [(HKInteractiveChartCategoryValueData *)self value];
+    if (value == [v5 value])
     {
-      v7 = [(HKInteractiveChartCategoryValueData *)self startDate];
-      v8 = [v5 startDate];
-      if (v7 == v8)
+      startDate = [(HKInteractiveChartCategoryValueData *)self startDate];
+      startDate2 = [v5 startDate];
+      if (startDate == startDate2)
       {
-        v10 = [(HKInteractiveChartCategoryValueData *)self endDate];
-        v11 = [v5 endDate];
-        v9 = v10 == v11;
+        endDate = [(HKInteractiveChartCategoryValueData *)self endDate];
+        endDate2 = [v5 endDate];
+        v9 = endDate == endDate2;
       }
 
       else
@@ -46,13 +46,13 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HKInteractiveChartCategoryValueData *)self startDate];
-  v4 = [v3 hash];
-  v5 = [(HKInteractiveChartCategoryValueData *)self endDate];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HKInteractiveChartCategoryValueData *)self value];
+  startDate = [(HKInteractiveChartCategoryValueData *)self startDate];
+  v4 = [startDate hash];
+  endDate = [(HKInteractiveChartCategoryValueData *)self endDate];
+  v6 = [endDate hash] ^ v4;
+  value = [(HKInteractiveChartCategoryValueData *)self value];
 
-  return v6 ^ v7;
+  return v6 ^ value;
 }
 
 @end

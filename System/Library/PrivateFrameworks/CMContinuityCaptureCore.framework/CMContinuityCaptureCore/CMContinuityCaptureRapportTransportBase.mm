@@ -1,23 +1,23 @@
 @interface CMContinuityCaptureRapportTransportBase
-- (CMContinuityCaptureRapportTransportBase)initWithRapportDevice:(id)a3 queue:(id)a4 taskDelegate:(id)a5;
+- (CMContinuityCaptureRapportTransportBase)initWithRapportDevice:(id)device queue:(id)queue taskDelegate:(id)delegate;
 - (id)incomingStreamRequestHandler;
-- (void)_bindClock:(unint64_t)a3 peerAddress:(id)a4 retries:(int64_t)a5 completion:(id)a6;
-- (void)_enqueueResponse:(id)a3 identifier:(id)a4;
-- (void)createTimeSyncClockWithPeerAddress:(id)a3 completion:(id)a4;
+- (void)_bindClock:(unint64_t)clock peerAddress:(id)address retries:(int64_t)retries completion:(id)completion;
+- (void)_enqueueResponse:(id)response identifier:(id)identifier;
+- (void)createTimeSyncClockWithPeerAddress:(id)address completion:(id)completion;
 - (void)disposeTimeSyncClock;
-- (void)enqueueResponse:(id)a3 identifier:(id)a4;
-- (void)setIncomingStreamRequestHandler:(id)a3;
-- (void)setTaskDelegate:(id)a3;
+- (void)enqueueResponse:(id)response identifier:(id)identifier;
+- (void)setIncomingStreamRequestHandler:(id)handler;
+- (void)setTaskDelegate:(id)delegate;
 @end
 
 @implementation CMContinuityCaptureRapportTransportBase
 
-- (void)setIncomingStreamRequestHandler:(id)a3
+- (void)setIncomingStreamRequestHandler:(id)handler
 {
   obj = self;
-  v4 = a3;
+  handlerCopy = handler;
   objc_sync_enter(obj);
-  v5 = MEMORY[0x245D12020](v4);
+  v5 = MEMORY[0x245D12020](handlerCopy);
 
   incomingStreamRequestHandler = obj->_incomingStreamRequestHandler;
   obj->_incomingStreamRequestHandler = v5;
@@ -27,19 +27,19 @@
 
 - (id)incomingStreamRequestHandler
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = MEMORY[0x245D12020](v2->_incomingStreamRequestHandler);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = MEMORY[0x245D12020](selfCopy->_incomingStreamRequestHandler);
+  objc_sync_exit(selfCopy);
 
   v4 = MEMORY[0x245D12020](v3);
 
   return v4;
 }
 
-- (void)setTaskDelegate:(id)a3
+- (void)setTaskDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   if ([(CMContinuityCaptureTransportRapportDevice *)self->_device remote])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"%@ ContinuityCapture error : can't update task delegate for client", self}];
@@ -48,10 +48,10 @@
   objc_storeWeak(&self->_delegate, obj);
 }
 
-- (void)enqueueResponse:(id)a3 identifier:(id)a4
+- (void)enqueueResponse:(id)response identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -59,10 +59,10 @@
   v11[2] = __70__CMContinuityCaptureRapportTransportBase_enqueueResponse_identifier___block_invoke;
   v11[3] = &unk_278D5C120;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = responseCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = responseCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -80,23 +80,23 @@ void __70__CMContinuityCaptureRapportTransportBase_enqueueResponse_identifier___
   }
 }
 
-- (void)_enqueueResponse:(id)a3 identifier:(id)a4
+- (void)_enqueueResponse:(id)response identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
     objc_initWeak(location, self);
     dispatch_assert_queue_V2(self->_queue);
-    v9 = [v6 objectForKeyedSubscript:@"ContinuityCaptureSelector"];
+    v9 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureSelector"];
     if (v9)
     {
-      v10 = [v6 objectForKeyedSubscript:@"ContinuityCaptureArgs"];
+      v10 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureArgs"];
 
       if (v10)
       {
-        v11 = [v6 objectForKeyedSubscript:@"ContinuityCaptureSelector"];
+        v11 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureSelector"];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -105,12 +105,12 @@ void __70__CMContinuityCaptureRapportTransportBase_enqueueResponse_identifier___
           v13 = CMContinuityCaptureLog(2);
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v6 objectForKeyedSubscript:@"ContinuityCaptureSelector"];
-            v15 = [v6 objectForKeyedSubscript:@"ContinuityCaptureGID"];
+            v14 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureSelector"];
+            v15 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureGID"];
             *buf = 138544130;
-            v135 = self;
+            selfCopy9 = self;
             v136 = 2114;
-            *v137 = v7;
+            *v137 = identifierCopy;
             *&v137[8] = 2114;
             v138 = v14;
             v139 = 2114;
@@ -118,21 +118,21 @@ void __70__CMContinuityCaptureRapportTransportBase_enqueueResponse_identifier___
             _os_log_impl(&dword_242545000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ enqueueResponse identifier:%{public}@ selector %{public}@ gid %{public}@", buf, 0x2Au);
           }
 
-          v16 = [v6 objectForKeyedSubscript:@"ContinuityCaptureArgs"];
+          v16 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureArgs"];
           objc_opt_class();
           v17 = objc_opt_isKindOfClass();
 
           if (v17)
           {
-            v18 = [v6 objectForKeyedSubscript:@"ContinuityCaptureArgs"];
-            if (![v7 isEqualToString:@"ContinuityCaptureCommand"])
+            v18 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureArgs"];
+            if (![identifierCopy isEqualToString:@"ContinuityCaptureCommand"])
             {
-              if ([v7 isEqualToString:@"ContinuityCaptureControl"])
+              if ([identifierCopy isEqualToString:@"ContinuityCaptureControl"])
               {
-                v23 = [v6 objectForKeyedSubscript:@"ContinuityCaptureSelector"];
-                v24 = [v23 unsignedIntegerValue];
+                v23 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureSelector"];
+                unsignedIntegerValue = [v23 unsignedIntegerValue];
 
-                if (v24 == 2)
+                if (unsignedIntegerValue == 2)
                 {
                   if ([v18 count] == 2)
                   {
@@ -149,9 +149,9 @@ void __70__CMContinuityCaptureRapportTransportBase_enqueueResponse_identifier___
                       if (v59)
                       {
                         v60 = [v18 objectAtIndexedSubscript:0];
-                        v61 = [v60 unsignedIntValue];
+                        unsignedIntValue = [v60 unsignedIntValue];
                         v62 = [v18 objectAtIndexedSubscript:1];
-                        [WeakRetained handleAVCNegotiation:v61 data:v62];
+                        [WeakRetained handleAVCNegotiation:unsignedIntValue data:v62];
                       }
                     }
                   }
@@ -159,7 +159,7 @@ void __70__CMContinuityCaptureRapportTransportBase_enqueueResponse_identifier___
                   goto LABEL_107;
                 }
 
-                if (v24 == 1)
+                if (unsignedIntegerValue == 1)
                 {
                   if (v18)
                   {
@@ -184,7 +184,7 @@ void __70__CMContinuityCaptureRapportTransportBase_enqueueResponse_identifier___
                           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
                           {
                             *buf = 138543618;
-                            v135 = self;
+                            selfCopy9 = self;
                             v136 = 2114;
                             *v137 = v10;
                             _os_log_impl(&dword_242545000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ dispatch update for %{public}@", buf, 0x16u);
@@ -203,13 +203,13 @@ void __70__CMContinuityCaptureRapportTransportBase_enqueueResponse_identifier___
                 }
               }
 
-              else if ([v7 isEqualToString:@"ContinuityCaptureData"])
+              else if ([identifierCopy isEqualToString:@"ContinuityCaptureData"])
               {
-                v31 = [v6 objectForKeyedSubscript:@"ContinuityCaptureSelector"];
-                v32 = [v31 unsignedIntegerValue];
+                v31 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureSelector"];
+                unsignedIntegerValue2 = [v31 unsignedIntegerValue];
 
                 v10 = 0;
-                if (v32 || !v18)
+                if (unsignedIntegerValue2 || !v18)
                 {
                   goto LABEL_55;
                 }
@@ -268,15 +268,15 @@ LABEL_107:
               goto LABEL_108;
             }
 
-            v19 = [v6 objectForKeyedSubscript:@"ContinuityCaptureSelector"];
-            v20 = [v19 unsignedIntegerValue];
+            v19 = [responseCopy objectForKeyedSubscript:@"ContinuityCaptureSelector"];
+            unsignedIntegerValue3 = [v19 unsignedIntegerValue];
 
             v10 = 0;
-            if (v20 <= 3)
+            if (unsignedIntegerValue3 <= 3)
             {
-              if (v20 != 1)
+              if (unsignedIntegerValue3 != 1)
               {
-                if (v20 == 2)
+                if (unsignedIntegerValue3 == 2)
                 {
                   if ([v18 count] == 3)
                   {
@@ -302,30 +302,30 @@ LABEL_107:
                           if (os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT))
                           {
                             v98 = [v18 objectAtIndexedSubscript:0];
-                            v99 = [v98 unsignedIntValue];
+                            unsignedIntValue2 = [v98 unsignedIntValue];
                             v100 = [v18 objectAtIndexedSubscript:1];
-                            v101 = [v100 unsignedIntValue];
+                            unsignedIntValue3 = [v100 unsignedIntValue];
                             *buf = 138543874;
-                            v135 = self;
+                            selfCopy9 = self;
                             v136 = 1024;
-                            *v137 = v99;
+                            *v137 = unsignedIntValue2;
                             *&v137[4] = 1024;
-                            *&v137[6] = v101;
+                            *&v137[6] = unsignedIntValue3;
                             _os_log_impl(&dword_242545000, v97, OS_LOG_TYPE_DEFAULT, "%{public}@ StopStream entity %u option %u", buf, 0x18u);
                           }
 
-                          v102 = [(CMContinuityCaptureRapportTransportBase *)self incomingStreamRequestHandler];
+                          incomingStreamRequestHandler = [(CMContinuityCaptureRapportTransportBase *)self incomingStreamRequestHandler];
 
-                          if (v102)
+                          if (incomingStreamRequestHandler)
                           {
-                            v103 = [(CMContinuityCaptureRapportTransportBase *)self incomingStreamRequestHandler];
-                            v103[2](v103, 0);
+                            incomingStreamRequestHandler2 = [(CMContinuityCaptureRapportTransportBase *)self incomingStreamRequestHandler];
+                            incomingStreamRequestHandler2[2](incomingStreamRequestHandler2, 0);
                           }
 
                           v104 = [v18 objectAtIndexedSubscript:0];
-                          v105 = [v104 unsignedIntValue];
+                          unsignedIntValue4 = [v104 unsignedIntValue];
                           v106 = [v18 objectAtIndexedSubscript:1];
-                          v107 = [v106 unsignedIntValue];
+                          unsignedIntValue5 = [v106 unsignedIntValue];
                           v121[0] = MEMORY[0x277D85DD0];
                           v121[1] = 3221225472;
                           v121[2] = __71__CMContinuityCaptureRapportTransportBase__enqueueResponse_identifier___block_invoke_390;
@@ -333,7 +333,7 @@ LABEL_107:
                           objc_copyWeak(&v123, location);
                           v18 = v18;
                           v122 = v18;
-                          [WeakRetained stopStream:v105 option:v107 completion:v121];
+                          [WeakRetained stopStream:unsignedIntValue4 option:unsignedIntValue5 completion:v121];
 
                           objc_destroyWeak(&v123);
                         }
@@ -344,7 +344,7 @@ LABEL_107:
                   goto LABEL_107;
                 }
 
-                if (v20 == 3)
+                if (unsignedIntegerValue3 == 3)
                 {
                   if (v18)
                   {
@@ -369,7 +369,7 @@ LABEL_107:
                             if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
                             {
                               *buf = 138543618;
-                              v135 = self;
+                              selfCopy9 = self;
                               v136 = 2114;
                               *v137 = WeakRetained;
                               _os_log_impl(&dword_242545000, v46, OS_LOG_TYPE_DEFAULT, "%{public}@ Session Interrupted for %{public}@", buf, 0x16u);
@@ -382,12 +382,12 @@ LABEL_107:
                           else
                           {
                             v108 = [v18 objectAtIndexedSubscript:1];
-                            v109 = [v108 unsignedIntValue];
+                            unsignedIntValue6 = [v108 unsignedIntValue];
                             v132 = @"CMContinuityCaptureStateMachineEventDataKeyPostTime";
                             v110 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:mach_continuous_time()];
                             v133 = v110;
                             v111 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v133 forKeys:&v132 count:1];
-                            [WeakRetained postEvent:v9 entity:v109 data:v111];
+                            [WeakRetained postEvent:v9 entity:unsignedIntValue6 data:v111];
                           }
 
                           v10 = 0;
@@ -454,26 +454,26 @@ LABEL_107:
               if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
               {
                 v74 = [v18 objectAtIndexedSubscript:1];
-                v75 = [v74 unsignedIntValue];
+                unsignedIntValue7 = [v74 unsignedIntValue];
                 *buf = 138543874;
-                v135 = self;
+                selfCopy9 = self;
                 v136 = 2114;
                 *v137 = v72;
                 *&v137[8] = 1024;
-                LODWORD(v138) = v75;
+                LODWORD(v138) = unsignedIntValue7;
                 _os_log_impl(&dword_242545000, v73, OS_LOG_TYPE_DEFAULT, "%{public}@ StartStream Configuration %{public}@ option %u", buf, 0x1Cu);
               }
 
-              v76 = [(CMContinuityCaptureRapportTransportBase *)self incomingStreamRequestHandler];
+              incomingStreamRequestHandler3 = [(CMContinuityCaptureRapportTransportBase *)self incomingStreamRequestHandler];
 
-              if (v76)
+              if (incomingStreamRequestHandler3)
               {
-                v77 = [(CMContinuityCaptureRapportTransportBase *)self incomingStreamRequestHandler];
-                v77[2](v77, 1);
+                incomingStreamRequestHandler4 = [(CMContinuityCaptureRapportTransportBase *)self incomingStreamRequestHandler];
+                incomingStreamRequestHandler4[2](incomingStreamRequestHandler4, 1);
               }
 
               v78 = [v18 objectAtIndexedSubscript:1];
-              v79 = [v78 unsignedIntValue];
+              unsignedIntValue8 = [v78 unsignedIntValue];
               v124[0] = MEMORY[0x277D85DD0];
               v124[1] = 3221225472;
               v124[2] = __71__CMContinuityCaptureRapportTransportBase__enqueueResponse_identifier___block_invoke_389;
@@ -481,22 +481,22 @@ LABEL_107:
               objc_copyWeak(&v126, location);
               v40 = v72;
               v125 = v40;
-              [WeakRetained startStream:v40 option:v79 completion:v124];
+              [WeakRetained startStream:v40 option:unsignedIntValue8 completion:v124];
 
               v80 = &v126;
             }
 
             else
             {
-              if (v20 <= 5)
+              if (unsignedIntegerValue3 <= 5)
               {
-                if (v20 != 4)
+                if (unsignedIntegerValue3 != 4)
                 {
                   v21 = CMContinuityCaptureLog(2);
                   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138543362;
-                    v135 = self;
+                    selfCopy9 = self;
                     _os_log_impl(&dword_242545000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ SynchronizeAudioClockComplete", buf, 0xCu);
                   }
 
@@ -539,7 +539,7 @@ LABEL_107:
                 {
                   v115 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v113, "unsignedLongLongValue")}];
                   *buf = 138544130;
-                  v135 = self;
+                  selfCopy9 = self;
                   v136 = 2112;
                   *v137 = v52;
                   *&v137[8] = 2112;
@@ -555,9 +555,9 @@ LABEL_106:
                 goto LABEL_107;
               }
 
-              if (v20 != 6)
+              if (unsignedIntegerValue3 != 6)
               {
-                if (v20 == 9)
+                if (unsignedIntegerValue3 == 9)
                 {
                   if (!v18)
                   {
@@ -589,21 +589,21 @@ LABEL_106:
 
                   v52 = [v18 objectAtIndexedSubscript:0];
                   v53 = [v18 objectAtIndexedSubscript:1];
-                  v54 = [v53 unsignedIntValue];
+                  unsignedIntValue9 = [v53 unsignedIntValue];
 
                   v55 = CMContinuityCaptureLog(2);
                   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138543874;
-                    v135 = self;
+                    selfCopy9 = self;
                     v136 = 2112;
                     *v137 = v52;
                     *&v137[8] = 2048;
-                    v138 = v54;
+                    v138 = unsignedIntValue9;
                     _os_log_impl(&dword_242545000, v55, OS_LOG_TYPE_DEFAULT, "%{public}@ EnqueueReactionEffect %@ entity %ld", buf, 0x20u);
                   }
 
-                  [WeakRetained enqueueReactionEffect:v52 entity:v54];
+                  [WeakRetained enqueueReactionEffect:v52 entity:unsignedIntValue9];
                   goto LABEL_106;
                 }
 
@@ -659,17 +659,17 @@ LABEL_112:
               }
 
               v88 = [v18 objectAtIndexedSubscript:1];
-              v89 = [v88 unsignedIntValue];
+              unsignedIntValue10 = [v88 unsignedIntValue];
 
               v90 = CMContinuityCaptureLog(2);
               if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543874;
-                v135 = self;
+                selfCopy9 = self;
                 v136 = 2112;
                 *v137 = v40;
                 *&v137[8] = 2048;
-                v138 = v89;
+                v138 = unsignedIntValue10;
                 _os_log_impl(&dword_242545000, v90, OS_LOG_TYPE_DEFAULT, "%{public}@ CaptureStillImage %@ entity %ld", buf, 0x20u);
               }
 
@@ -679,8 +679,8 @@ LABEL_112:
               v128[3] = &unk_278D5CAC8;
               objc_copyWeak(v130, location);
               v129 = v40;
-              v130[1] = v89;
-              [WeakRetained captureStillImage:v129 entity:v89 completion:v128];
+              v130[1] = unsignedIntValue10;
+              [WeakRetained captureStillImage:v129 entity:unsignedIntValue10 completion:v128];
 
               v80 = v130;
             }
@@ -765,20 +765,20 @@ void __71__CMContinuityCaptureRapportTransportBase__enqueueResponse_identifier__
   }
 }
 
-- (void)createTimeSyncClockWithPeerAddress:(id)a3 completion:(id)a4
+- (void)createTimeSyncClockWithPeerAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CMContinuityCaptureTransportRapportDevice *)self->_device deviceModelType];
+  addressCopy = address;
+  completionCopy = completion;
+  deviceModelType = [(CMContinuityCaptureTransportRapportDevice *)self->_device deviceModelType];
   v9 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543875;
-    v20 = self;
+    selfCopy = self;
     v21 = 2113;
-    v22 = v6;
+    v22 = addressCopy;
     v23 = 2048;
-    v24 = v8;
+    v24 = deviceModelType;
     _os_log_impl(&dword_242545000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ create timesync for %{private}@ remoteType %ld", buf, 0x20u);
   }
 
@@ -790,10 +790,10 @@ void __71__CMContinuityCaptureRapportTransportBase__enqueueResponse_identifier__
   v14[2] = __89__CMContinuityCaptureRapportTransportBase_createTimeSyncClockWithPeerAddress_completion___block_invoke;
   v14[3] = &unk_278D5DA58;
   objc_copyWeak(&v17, buf);
-  v12 = v7;
+  v12 = completionCopy;
   v16 = v12;
   v18 = v10;
-  v13 = v6;
+  v13 = addressCopy;
   v15 = v13;
   [v11 notifyWhenClockManagerIsAvailable:v14];
 
@@ -1012,7 +1012,7 @@ void __89__CMContinuityCaptureRapportTransportBase_createTimeSyncClockWithPeerAd
     {
       clockIdentifier = self->_clockIdentifier;
       *buf = 138543618;
-      v9 = self;
+      selfCopy = self;
       v10 = 2048;
       v11 = clockIdentifier;
       _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ disposing timesync for %lld", buf, 0x16u);
@@ -1080,15 +1080,15 @@ void __63__CMContinuityCaptureRapportTransportBase_disposeTimeSyncClock__block_i
   }
 }
 
-- (void)_bindClock:(unint64_t)a3 peerAddress:(id)a4 retries:(int64_t)a5 completion:(id)a6
+- (void)_bindClock:(unint64_t)clock peerAddress:(id)address retries:(int64_t)retries completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  addressCopy = address;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   memset(v46, 0, sizeof(v46));
   memset(v45, 170, 20);
   v44[3] = 0xAAAAAAAAAAAAAAAALL;
-  if ([v10 getCString:v46 maxLength:64 encoding:4])
+  if ([addressCopy getCString:v46 maxLength:64 encoding:4])
   {
     v12 = StringToSockAddr();
     if (v12)
@@ -1097,11 +1097,11 @@ void __63__CMContinuityCaptureRapportTransportBase_disposeTimeSyncClock__block_i
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543875;
-        v36 = self;
+        selfCopy7 = self;
         v37 = 2113;
-        v38 = v10;
+        clockCopy2 = addressCopy;
         v39 = 1024;
-        LODWORD(v40) = v12;
+        LODWORD(grandmasterIdentity) = v12;
         v14 = "%{public}@ Failed to parse peer address %{private}@. Error: %{errno}d";
 LABEL_39:
         _os_log_error_impl(&dword_242545000, v13, OS_LOG_TYPE_ERROR, v14, buf, 0x1Cu);
@@ -1118,23 +1118,23 @@ LABEL_39:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543875;
-        v36 = self;
+        selfCopy7 = self;
         v37 = 2113;
-        v38 = v10;
+        clockCopy2 = addressCopy;
         v39 = 1024;
-        LODWORD(v40) = v16;
+        LODWORD(grandmasterIdentity) = v16;
         v14 = "%{public}@ Failed to convert peer address %{private}@ to IPv6. Error: %{errno}d";
         goto LABEL_39;
       }
 
 LABEL_10:
 
-      v11[2](v11, 0);
+      completionCopy[2](completionCopy, 0);
       goto LABEL_11;
     }
 
-    v17 = [MEMORY[0x277D714D0] sharedClockManager];
-    v18 = [v17 clockWithClockIdentifier:a3];
+    mEMORY[0x277D714D0] = [MEMORY[0x277D714D0] sharedClockManager];
+    v18 = [mEMORY[0x277D714D0] clockWithClockIdentifier:clock];
 
     if (v18)
     {
@@ -1142,11 +1142,11 @@ LABEL_10:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v36 = self;
+        selfCopy7 = self;
         v37 = 2048;
-        v38 = a3;
+        clockCopy2 = clock;
         v39 = 2048;
-        v40 = [v18 grandmasterIdentity];
+        grandmasterIdentity = [v18 grandmasterIdentity];
         _os_log_impl(&dword_242545000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ Clock %llu available, grandmaster %llu", buf, 0x20u);
       }
 
@@ -1158,9 +1158,9 @@ LABEL_10:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v36 = self;
+          selfCopy7 = self;
           v37 = 2114;
-          v38 = v20;
+          clockCopy2 = v20;
           _os_log_impl(&dword_242545000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ Binding clock to %{public}@", buf, 0x16u);
         }
 
@@ -1173,11 +1173,11 @@ LABEL_10:
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v36 = self;
+            selfCopy7 = self;
             _os_log_impl(&dword_242545000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ Clock binding completed.", buf, 0xCu);
           }
 
-          (v11)[2](v11, v18);
+          (completionCopy)[2](completionCopy, v18);
         }
 
         else
@@ -1185,17 +1185,17 @@ LABEL_10:
           v30 = CMContinuityCaptureLog(2);
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
-            v31 = [v23 localizedDescription];
+            localizedDescription = [v23 localizedDescription];
             *buf = 138543875;
-            v36 = self;
+            selfCopy7 = self;
             v37 = 2113;
-            v38 = v10;
+            clockCopy2 = addressCopy;
             v39 = 2114;
-            v40 = v31;
+            grandmasterIdentity = localizedDescription;
             _os_log_error_impl(&dword_242545000, v30, OS_LOG_TYPE_ERROR, "%{public}@ Failed to add UDPv6 peer address %{private}@. Error: %{public}@", buf, 0x20u);
           }
 
-          v11[2](v11, 0);
+          completionCopy[2](completionCopy, 0);
         }
       }
 
@@ -1207,21 +1207,21 @@ LABEL_10:
           [CMContinuityCaptureRapportTransportBase _bindClock:peerAddress:retries:completion:];
         }
 
-        v11[2](v11, 0);
+        completionCopy[2](completionCopy, 0);
         v20 = 0;
         v23 = 0;
       }
     }
 
-    else if (a5)
+    else if (retries)
     {
       v26 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v36 = self;
+        selfCopy7 = self;
         v37 = 2048;
-        v38 = a3;
+        clockCopy2 = clock;
         _os_log_impl(&dword_242545000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ Clock %llu not available, retry with delay", buf, 0x16u);
       }
 
@@ -1232,10 +1232,10 @@ LABEL_10:
       block[2] = __85__CMContinuityCaptureRapportTransportBase__bindClock_peerAddress_retries_completion___block_invoke;
       block[3] = &unk_278D5DA80;
       objc_copyWeak(v44, &location);
-      v44[1] = a3;
-      v42 = v10;
-      v44[2] = a5;
-      v43 = v11;
+      v44[1] = clock;
+      v42 = addressCopy;
+      v44[2] = retries;
+      v43 = completionCopy;
       dispatch_after(v27, v28, block);
 
       objc_destroyWeak(v44);
@@ -1249,7 +1249,7 @@ LABEL_10:
         [CMContinuityCaptureRapportTransportBase _bindClock:peerAddress:retries:completion:];
       }
 
-      v11[2](v11, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -1261,7 +1261,7 @@ LABEL_10:
       [CMContinuityCaptureRapportTransportBase _bindClock:peerAddress:retries:completion:];
     }
 
-    v11[2](v11, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_11:
@@ -1279,20 +1279,20 @@ void __85__CMContinuityCaptureRapportTransportBase__bindClock_peerAddress_retrie
   }
 }
 
-- (CMContinuityCaptureRapportTransportBase)initWithRapportDevice:(id)a3 queue:(id)a4 taskDelegate:(id)a5
+- (CMContinuityCaptureRapportTransportBase)initWithRapportDevice:(id)device queue:(id)queue taskDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  deviceCopy = device;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = CMContinuityCaptureRapportTransportBase;
   v12 = [(CMContinuityCaptureRapportTransportBase *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a4);
-    objc_storeStrong(&v13->_device, a3);
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeStrong(&v12->_queue, queue);
+    objc_storeStrong(&v13->_device, device);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v13->_clockIdentifier = *MEMORY[0x277D714F0];
     v14 = v13;
   }

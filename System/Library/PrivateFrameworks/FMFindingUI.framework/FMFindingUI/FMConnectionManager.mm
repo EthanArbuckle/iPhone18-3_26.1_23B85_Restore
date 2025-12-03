@@ -8,9 +8,9 @@
 - (void)dealloc
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x98);
-  v3 = self;
+  selfCopy = self;
   v2();
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for FMConnectionManager();
   [(FMConnectionManager *)&v4 dealloc];
 }

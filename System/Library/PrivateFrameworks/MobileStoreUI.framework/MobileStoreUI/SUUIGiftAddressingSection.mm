@@ -1,24 +1,24 @@
 @interface SUUIGiftAddressingSection
-- (SUUIGiftAddressingSection)initWithGiftConfiguration:(id)a3;
+- (SUUIGiftAddressingSection)initWithGiftConfiguration:(id)configuration;
 - (SUUIGiftTextTableViewCell)messageCell;
-- (double)heightForCellInTableView:(id)a3 indexPath:(id)a4;
-- (id)_attributedPlaceholderWithString:(id)a3;
+- (double)heightForCellInTableView:(id)view indexPath:(id)path;
+- (id)_attributedPlaceholderWithString:(id)string;
 - (id)_footerString;
 - (id)_recipientTableViewCell;
-- (id)_textFieldTableViewCellForTableView:(id)a3 indexPath:(id)a4;
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4;
-- (void)beginEditingMessageForTableView:(id)a3 indexPath:(id)a4;
-- (void)endEditingMessageForTableView:(id)a3 indexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forIndexPath:(id)a5;
+- (id)_textFieldTableViewCellForTableView:(id)view indexPath:(id)path;
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path;
+- (void)beginEditingMessageForTableView:(id)view indexPath:(id)path;
+- (void)endEditingMessageForTableView:(id)view indexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forIndexPath:(id)path;
 @end
 
 @implementation SUUIGiftAddressingSection
 
-- (SUUIGiftAddressingSection)initWithGiftConfiguration:(id)a3
+- (SUUIGiftAddressingSection)initWithGiftConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = SUUIGiftAddressingSection;
-  result = [(SUUIGiftTableViewSection *)&v4 initWithGiftConfiguration:a3];
+  result = [(SUUIGiftTableViewSection *)&v4 initWithGiftConfiguration:configuration];
   if (result)
   {
     result->_textViewCellHeight = 46.0;
@@ -27,17 +27,17 @@
   return result;
 }
 
-- (void)beginEditingMessageForTableView:(id)a3 indexPath:(id)a4
+- (void)beginEditingMessageForTableView:(id)view indexPath:(id)path
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (([(UITextView *)self->_messagingTextView isFirstResponder]& 1) == 0)
   {
     self->_textViewCellHeight = 137.0;
-    v9[0] = v7;
+    v9[0] = pathCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-    [v6 reloadRowsAtIndexPaths:v8 withRowAnimation:5];
+    [viewCopy reloadRowsAtIndexPaths:v8 withRowAnimation:5];
 
     [(UITextView *)self->_messagingTextView setEditable:1];
     [(UITextView *)self->_messagingTextView setUserInteractionEnabled:1];
@@ -45,14 +45,14 @@
   }
 }
 
-- (void)endEditingMessageForTableView:(id)a3 indexPath:(id)a4
+- (void)endEditingMessageForTableView:(id)view indexPath:(id)path
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  pathCopy = path;
   messagingTextView = self->_messagingTextView;
-  v8 = a3;
-  v9 = [(UITextView *)messagingTextView text];
-  v10 = [v9 length];
+  viewCopy = view;
+  text = [(UITextView *)messagingTextView text];
+  v10 = [text length];
 
   if (v10)
   {
@@ -68,17 +68,17 @@
   }
 
   self->_textViewCellHeight = v15;
-  v17[0] = v6;
+  v17[0] = pathCopy;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  [v8 reloadRowsAtIndexPaths:v16 withRowAnimation:5];
+  [viewCopy reloadRowsAtIndexPaths:v16 withRowAnimation:5];
 
   [(UITextView *)self->_messagingTextView setEditable:0];
   [(UITextView *)self->_messagingTextView setUserInteractionEnabled:0];
 }
 
-- (double)heightForCellInTableView:(id)a3 indexPath:(id)a4
+- (double)heightForCellInTableView:(id)view indexPath:(id)path
 {
-  v5 = [a4 row];
+  v5 = [path row];
   if (v5 == 2)
   {
     return self->_textViewCellHeight;
@@ -95,14 +95,14 @@
     if (footerHeight < 0.00000011920929)
     {
       v12 = [[SUUIGiftFooterLabelTableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
-      v13 = [(SUUIGiftAddressingSection *)self _footerString];
-      [(SUUIGiftFooterLabelTableViewCell *)v12 setFooterLabel:v13];
+      _footerString = [(SUUIGiftAddressingSection *)self _footerString];
+      [(SUUIGiftFooterLabelTableViewCell *)v12 setFooterLabel:_footerString];
 
-      v14 = [MEMORY[0x277D75418] currentDevice];
-      v15 = [v14 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
       v16 = 320.0;
-      if ((v15 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v16 = 540.0;
       }
@@ -116,17 +116,17 @@
 
   else
   {
-    v6 = [(SUUIGiftAddressingSection *)self _recipientTableViewCell];
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    _recipientTableViewCell = [(SUUIGiftAddressingSection *)self _recipientTableViewCell];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
     v9 = 320.0;
-    if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v9 = 540.0;
     }
 
-    [v6 sizeThatFits:{v9, 1.79769313e308}];
+    [_recipientTableViewCell sizeThatFits:{v9, 1.79769313e308}];
     if (v10 >= 46.0)
     {
       footerHeight = v10;
@@ -141,70 +141,70 @@
   return footerHeight;
 }
 
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
   switch(v8)
   {
     case 2:
-      v9 = [(SUUIGiftAddressingSection *)self messageCell];
+      messageCell = [(SUUIGiftAddressingSection *)self messageCell];
       goto LABEL_7;
     case 1:
-      v9 = [(SUUIGiftAddressingSection *)self _textFieldTableViewCellForTableView:v6 indexPath:v7];
+      messageCell = [(SUUIGiftAddressingSection *)self _textFieldTableViewCellForTableView:viewCopy indexPath:pathCopy];
       goto LABEL_7;
     case 0:
-      v9 = [(SUUIGiftAddressingSection *)self _recipientTableViewCell];
+      messageCell = [(SUUIGiftAddressingSection *)self _recipientTableViewCell];
 LABEL_7:
-      v10 = v9;
+      v10 = messageCell;
       goto LABEL_11;
   }
 
-  v10 = [v6 dequeueReusableCellWithIdentifier:@"GF"];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:@"GF"];
   if (!v10)
   {
     v10 = [[SUUIGiftFooterLabelTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"GF"];
     [(SUUIGiftFooterLabelTableViewCell *)v10 setSelectionStyle:0];
   }
 
-  v11 = [(SUUIGiftAddressingSection *)self _footerString];
-  [(SUUIGiftFooterLabelTableViewCell *)v10 setFooterLabel:v11];
+  _footerString = [(SUUIGiftAddressingSection *)self _footerString];
+  [(SUUIGiftFooterLabelTableViewCell *)v10 setFooterLabel:_footerString];
 
 LABEL_11:
 
   return v10;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forIndexPath:(id)path
 {
-  v9 = a3;
-  v7 = a4;
-  if ([a5 row] == 3)
+  viewCopy = view;
+  cellCopy = cell;
+  if ([path row] == 3)
   {
-    v8 = [v9 backgroundColor];
-    [v7 setBackgroundColor:v8];
+    backgroundColor = [viewCopy backgroundColor];
+    [cellCopy setBackgroundColor:backgroundColor];
   }
 }
 
-- (id)_attributedPlaceholderWithString:(id)a3
+- (id)_attributedPlaceholderWithString:(id)string
 {
   v3 = MEMORY[0x277CCAB48];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithString:v4];
-  v6 = [v4 length];
+  stringCopy = string;
+  v5 = [[v3 alloc] initWithString:stringCopy];
+  v6 = [stringCopy length];
 
   v7 = *MEMORY[0x277D740A8];
   v8 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
   [v5 addAttribute:v7 value:v8 range:{0, v6}];
 
   v9 = *MEMORY[0x277D740C0];
-  v10 = [MEMORY[0x277D75348] placeholderTextColor];
-  [v5 addAttribute:v9 value:v10 range:{0, v6}];
+  placeholderTextColor = [MEMORY[0x277D75348] placeholderTextColor];
+  [v5 addAttribute:v9 value:placeholderTextColor range:{0, v6}];
 
   v11 = *MEMORY[0x277D74068];
-  v12 = [MEMORY[0x277D75348] clearColor];
-  [v5 addAttribute:v11 value:v12 range:{0, v6}];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v5 addAttribute:v11 value:clearColor range:{0, v6}];
 
   return v5;
 }
@@ -214,12 +214,12 @@ LABEL_11:
   footerString = self->_footerString;
   if (!footerString)
   {
-    v4 = [(SUUIGiftTableViewSection *)self giftConfiguration];
-    v5 = [v4 clientContext];
-    v6 = v5;
-    if (v5)
+    giftConfiguration = [(SUUIGiftTableViewSection *)self giftConfiguration];
+    clientContext = [giftConfiguration clientContext];
+    v6 = clientContext;
+    if (clientContext)
     {
-      [v5 localizedStringForKey:@"GIFTING_STOREFRONT_WARNING" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_STOREFRONT_WARNING" inTable:@"Gifting"];
     }
 
     else
@@ -229,8 +229,8 @@ LABEL_11:
     v7 = ;
 
     v8 = MEMORY[0x277CCACA8];
-    v9 = [v4 storeFrontName];
-    v10 = [v8 stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, v9];
+    storeFrontName = [giftConfiguration storeFrontName];
+    v10 = [v8 stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, storeFrontName];
     v11 = self->_footerString;
     self->_footerString = v10;
 
@@ -245,17 +245,17 @@ LABEL_11:
   recipientTableViewCell = self->_recipientTableViewCell;
   if (!recipientTableViewCell)
   {
-    v4 = [(SUUIGiftTableViewSection *)self giftConfiguration];
-    v5 = [v4 clientContext];
+    giftConfiguration = [(SUUIGiftTableViewSection *)self giftConfiguration];
+    clientContext = [giftConfiguration clientContext];
 
     v6 = [[SUUIGiftRecipientTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"GRF"];
     v7 = self->_recipientTableViewCell;
     self->_recipientTableViewCell = v6;
 
     v8 = self->_recipientTableViewCell;
-    if (v5)
+    if (clientContext)
     {
-      [v5 localizedStringForKey:@"GIFTING_PLACEHOLDER_EMAIL" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_PLACEHOLDER_EMAIL" inTable:@"Gifting"];
     }
 
     else
@@ -267,9 +267,9 @@ LABEL_11:
     [(SUUIGiftRecipientTableViewCell *)v8 setAttributedPlaceholder:v10];
 
     v11 = self->_recipientTableViewCell;
-    if (v5)
+    if (clientContext)
     {
-      [v5 localizedStringForKey:@"GIFTING_FIELD_LABEL_RECIPIENT" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_FIELD_LABEL_RECIPIENT" inTable:@"Gifting"];
     }
 
     else
@@ -280,8 +280,8 @@ LABEL_11:
     [(SUUIGiftRecipientTableViewCell *)v11 setLabel:v12];
 
     v13 = self->_recipientTableViewCell;
-    v14 = [(SUUIGift *)self->_gift recipientAddresses];
-    [(SUUIGiftRecipientTableViewCell *)v13 setRecipientAddresses:v14];
+    recipientAddresses = [(SUUIGift *)self->_gift recipientAddresses];
+    [(SUUIGiftRecipientTableViewCell *)v13 setRecipientAddresses:recipientAddresses];
 
     [(SUUIGiftRecipientTableViewCell *)self->_recipientTableViewCell setSelectionStyle:0];
     recipientTableViewCell = self->_recipientTableViewCell;
@@ -290,21 +290,21 @@ LABEL_11:
   return recipientTableViewCell;
 }
 
-- (id)_textFieldTableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)_textFieldTableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:{@"GTF", a4}];
+  v5 = [view dequeueReusableCellWithIdentifier:{@"GTF", path}];
   if (!v5)
   {
     v5 = [[SUUIGiftTextFieldTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"GTF"];
     [(SUUIGiftTextFieldTableViewCell *)v5 setSelectionStyle:0];
   }
 
-  v6 = [(SUUIGiftTableViewSection *)self giftConfiguration];
-  v7 = [v6 clientContext];
+  giftConfiguration = [(SUUIGiftTableViewSection *)self giftConfiguration];
+  clientContext = [giftConfiguration clientContext];
 
-  if (v7)
+  if (clientContext)
   {
-    [v7 localizedStringForKey:@"GIFTING_PLACEHOLDER_NAME" inTable:@"Gifting"];
+    [clientContext localizedStringForKey:@"GIFTING_PLACEHOLDER_NAME" inTable:@"Gifting"];
   }
 
   else
@@ -317,9 +317,9 @@ LABEL_11:
 
   [(SUUIGiftTextFieldTableViewCell *)v5 setEnabled:1];
   [(SUUIGiftTextFieldTableViewCell *)v5 setKeyboardType:0];
-  if (v7)
+  if (clientContext)
   {
-    [v7 localizedStringForKey:@"GIFTING_FIELD_LABEL_SENDER_NAME" inTable:@"Gifting"];
+    [clientContext localizedStringForKey:@"GIFTING_FIELD_LABEL_SENDER_NAME" inTable:@"Gifting"];
   }
 
   else
@@ -330,8 +330,8 @@ LABEL_11:
   [(SUUIGiftTextFieldTableViewCell *)v5 setLabel:v10];
 
   [(SUUIGiftTextFieldTableViewCell *)v5 setTextFieldDelegate:self->_textFieldDelegate];
-  v11 = [(SUUIGift *)self->_gift senderName];
-  [(SUUIGiftTextFieldTableViewCell *)v5 setValue:v11];
+  senderName = [(SUUIGift *)self->_gift senderName];
+  [(SUUIGiftTextFieldTableViewCell *)v5 setValue:senderName];
 
   return v5;
 }
@@ -342,17 +342,17 @@ LABEL_11:
   if (!messageCell)
   {
     v4 = [[SUUIGiftTextTableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
-    v5 = [(SUUIGiftTableViewSection *)self giftConfiguration];
-    v6 = [v5 maximumMessageLength];
+    giftConfiguration = [(SUUIGiftTableViewSection *)self giftConfiguration];
+    maximumMessageLength = [giftConfiguration maximumMessageLength];
 
-    [(SUUIGiftTextTableViewCell *)v4 setMaximumCharacterCount:v6];
+    [(SUUIGiftTextTableViewCell *)v4 setMaximumCharacterCount:maximumMessageLength];
     [(SUUIGiftTextTableViewCell *)v4 setSelectionStyle:0];
-    v7 = [(SUUIGiftTableViewSection *)self giftConfiguration];
-    v8 = [v7 clientContext];
+    giftConfiguration2 = [(SUUIGiftTableViewSection *)self giftConfiguration];
+    clientContext = [giftConfiguration2 clientContext];
 
-    if (v8)
+    if (clientContext)
     {
-      [v8 localizedStringForKey:@"GIFTING_CONFIRM_MESSAGE_LABEL" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_CONFIRM_MESSAGE_LABEL" inTable:@"Gifting"];
     }
 
     else
@@ -362,9 +362,9 @@ LABEL_11:
     v9 = ;
     [(SUUIGiftTextTableViewCell *)v4 setLabel:v9];
 
-    if (v8)
+    if (clientContext)
     {
-      [v8 localizedStringForKey:@"GIFTING_PLACEHOLDER_MESSAGE" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_PLACEHOLDER_MESSAGE" inTable:@"Gifting"];
     }
 
     else
@@ -375,7 +375,7 @@ LABEL_11:
     v11 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v11 setNumberStyle:1];
     v12 = MEMORY[0x277CCACA8];
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:maximumMessageLength];
     v14 = [v11 stringFromNumber:v13];
     v15 = [v12 stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:0, v14];
     [(SUUIGiftTextTableViewCell *)v4 setPlaceholder:v15];

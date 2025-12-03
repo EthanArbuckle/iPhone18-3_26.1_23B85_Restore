@@ -1,16 +1,16 @@
 @interface SBIndirectTouchLifecycleMonitor
-- (CGPoint)systemGestureHoverLocationInView:(id)a3;
-- (SBIndirectTouchLifecycleMonitor)initWithSystemGestureManager:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)handleHoverEvent:(id)a3;
-- (void)removeObserver:(id)a3;
+- (CGPoint)systemGestureHoverLocationInView:(id)view;
+- (SBIndirectTouchLifecycleMonitor)initWithSystemGestureManager:(id)manager;
+- (void)addObserver:(id)observer;
+- (void)handleHoverEvent:(id)event;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBIndirectTouchLifecycleMonitor
 
-- (SBIndirectTouchLifecycleMonitor)initWithSystemGestureManager:(id)a3
+- (SBIndirectTouchLifecycleMonitor)initWithSystemGestureManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = SBIndirectTouchLifecycleMonitor;
   v5 = [(SBIndirectTouchLifecycleMonitor *)&v11 init];
@@ -21,20 +21,20 @@
     v5->_hoverGestureRecognizer = v6;
 
     [(UIHoverGestureRecognizer *)v5->_hoverGestureRecognizer setDelegate:v5];
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v5->_observers;
-    v5->_observers = v8;
+    v5->_observers = weakObjectsHashTable;
 
-    [v4 addGestureRecognizer:v5->_hoverGestureRecognizer withType:112];
+    [managerCopy addGestureRecognizer:v5->_hoverGestureRecognizer withType:112];
   }
 
   return v5;
 }
 
-- (void)handleHoverEvent:(id)a3
+- (void)handleHoverEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 _activeEventOfType:11];
+  v4 = [event _activeEventOfType:11];
   [v4 _hidEvent];
   if (SBPointerHIDSubEventFromEvent())
   {
@@ -80,7 +80,7 @@
   }
 }
 
-- (CGPoint)systemGestureHoverLocationInView:(id)a3
+- (CGPoint)systemGestureHoverLocationInView:(id)view
 {
   _UISystemGestureLocationInView();
   result.y = v4;
@@ -88,21 +88,21 @@
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (![(NSHashTable *)self->_observers containsObject:?])
   {
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if ([(NSHashTable *)self->_observers containsObject:?])
   {
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
   }
 }
 

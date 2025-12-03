@@ -1,15 +1,15 @@
 @interface HKQuantityType
-+ (id)_quantityTypeWithCode:(int64_t)a3;
++ (id)_quantityTypeWithCode:(int64_t)code;
 - (BOOL)isCompatibleWithUnit:(HKUnit *)unit;
-- (BOOL)supportsStatisticOptions:(unint64_t)a3;
-- (HKQuantityType)initWithIdentifier:(id)a3;
+- (BOOL)supportsStatisticOptions:(unint64_t)options;
+- (HKQuantityType)initWithIdentifier:(id)identifier;
 - (HKUnit)canonicalUnit;
 - (_HKDimension)dimension;
-- (id)_initWithCode:(int64_t)a3;
-- (id)defaultUnitForLocale:(id)a3 version:(int64_t)a4;
-- (void)validateUnit:(id)a3;
-- (void)validateUnitForStatistic:(id)a3;
-- (void)validateUnitFromString:(id)a3;
+- (id)_initWithCode:(int64_t)code;
+- (id)defaultUnitForLocale:(id)locale version:(int64_t)version;
+- (void)validateUnit:(id)unit;
+- (void)validateUnitForStatistic:(id)statistic;
+- (void)validateUnitFromString:(id)string;
 @end
 
 @implementation HKQuantityType
@@ -30,18 +30,18 @@
   return v5;
 }
 
-- (id)defaultUnitForLocale:(id)a3 version:(int64_t)a4
+- (id)defaultUnitForLocale:(id)locale version:(int64_t)version
 {
-  v6 = a3;
-  v7 = [(HKObjectType *)self code];
-  if (v7 <= 187)
+  localeCopy = locale;
+  code = [(HKObjectType *)self code];
+  if (code <= 187)
   {
-    switch(v7)
+    switch(code)
     {
       case 2:
-        v9 = [v6 objectForKey:*MEMORY[0x1E695DA08]];
-        v18 = [v9 BOOLValue];
-        if (v18 && ([v6 localeIdentifier], v4 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v4, "isEqual:", @"en_GB") & 1) == 0))
+        v9 = [localeCopy objectForKey:*MEMORY[0x1E695DA08]];
+        bOOLValue = [v9 BOOLValue];
+        if (bOOLValue && ([localeCopy localeIdentifier], v4 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v4, "isEqual:", @"en_GB") & 1) == 0))
         {
           v14 = [HKUnit meterUnitWithMetricPrefix:5];
         }
@@ -49,7 +49,7 @@
         else
         {
           v14 = +[HKUnit footUnit];
-          if (!v18)
+          if (!bOOLValue)
           {
             goto LABEL_41;
           }
@@ -58,8 +58,8 @@
         break;
       case 3:
       case 4:
-        v9 = [v6 objectForKey:*MEMORY[0x1E695DA08]];
-        v10 = [v9 BOOLValue];
+        v9 = [localeCopy objectForKey:*MEMORY[0x1E695DA08]];
+        bOOLValue2 = [v9 BOOLValue];
         v11 = @"lb";
         v12 = @"kg";
         goto LABEL_37;
@@ -141,10 +141,10 @@
       case 9:
       case 10:
       case 29:
-        v13 = _HKEnergyUnitForLocale(v6);
+        canonicalUnit = _HKEnergyUnitForLocale(localeCopy);
         goto LABEL_10;
       case 15:
-        v13 = _HKBloodGlucoseUnitForLocale(v6);
+        canonicalUnit = _HKBloodGlucoseUnitForLocale(localeCopy);
         goto LABEL_10;
       case 24:
       case 25:
@@ -189,19 +189,19 @@
         v8 = @"count";
         goto LABEL_9;
       case 110:
-        v9 = [v6 objectForKey:*MEMORY[0x1E695DA08]];
-        v10 = [v9 BOOLValue];
+        v9 = [localeCopy objectForKey:*MEMORY[0x1E695DA08]];
+        bOOLValue2 = [v9 BOOLValue];
         v11 = @"yd";
         goto LABEL_36;
       case 114:
         goto LABEL_32;
       default:
-        if (v7 == 138)
+        if (code == 138)
         {
           goto LABEL_24;
         }
 
-        if (v7 != 187)
+        if (code != 187)
         {
           goto LABEL_34;
         }
@@ -212,10 +212,10 @@
     goto LABEL_41;
   }
 
-  if (v7 > 273)
+  if (code > 273)
   {
-    v15 = v7 - 25;
-    if ((v7 - 281) <= 0x16)
+    v15 = code - 25;
+    if ((code - 281) <= 0x16)
     {
       if (((1 << v15) & 0x700001) != 0)
       {
@@ -225,55 +225,55 @@
       if (((1 << v15) & 0x1A000) != 0)
       {
 LABEL_24:
-        v9 = [v6 objectForKey:*MEMORY[0x1E695DA08]];
-        v10 = [v9 BOOLValue];
+        v9 = [localeCopy objectForKey:*MEMORY[0x1E695DA08]];
+        bOOLValue2 = [v9 BOOLValue];
         v11 = @"mi";
         v12 = @"km";
         goto LABEL_37;
       }
 
-      if (v7 == 295)
+      if (code == 295)
       {
         v8 = @"km";
         goto LABEL_9;
       }
     }
 
-    if (v7 != 274)
+    if (code != 274)
     {
-      if (v7 != 277)
+      if (code != 277)
       {
 LABEL_34:
-        v13 = [(HKQuantityType *)self canonicalUnit];
+        canonicalUnit = [(HKQuantityType *)self canonicalUnit];
         goto LABEL_10;
       }
 
 LABEL_27:
-      v9 = [v6 objectForKey:*MEMORY[0x1E695DA08]];
-      v10 = [v9 BOOLValue];
+      v9 = [localeCopy objectForKey:*MEMORY[0x1E695DA08]];
+      bOOLValue2 = [v9 BOOLValue];
       v11 = @"degF";
       v12 = @"degC";
       goto LABEL_37;
     }
 
 LABEL_28:
-    v9 = [v6 objectForKey:*MEMORY[0x1E695DA08]];
-    v10 = [v9 BOOLValue];
+    v9 = [localeCopy objectForKey:*MEMORY[0x1E695DA08]];
+    bOOLValue2 = [v9 BOOLValue];
     v11 = @"mi/hr";
     v12 = @"km/hr";
     goto LABEL_37;
   }
 
-  if (v7 > 196)
+  if (code > 196)
   {
-    if (v7 != 197)
+    if (code != 197)
     {
-      if (v7 != 256)
+      if (code != 256)
       {
-        if (v7 == 269)
+        if (code == 269)
         {
-          v9 = [v6 objectForKey:*MEMORY[0x1E695DA08]];
-          v10 = [v9 BOOLValue];
+          v9 = [localeCopy objectForKey:*MEMORY[0x1E695DA08]];
+          bOOLValue2 = [v9 BOOLValue];
           v11 = @"ft";
 LABEL_36:
           v12 = @"m";
@@ -288,19 +288,19 @@ LABEL_36:
 
     v8 = @"hr";
 LABEL_9:
-    v13 = [HKUnit unitFromString:v8];
+    canonicalUnit = [HKUnit unitFromString:v8];
 LABEL_10:
-    v14 = v13;
+    v14 = canonicalUnit;
     goto LABEL_42;
   }
 
-  if ((v7 - 195) >= 2)
+  if ((code - 195) >= 2)
   {
-    if (v7 == 188)
+    if (code == 188)
     {
 LABEL_32:
-      v9 = [v6 objectForKey:*MEMORY[0x1E695DA08]];
-      v10 = [v9 BOOLValue];
+      v9 = [localeCopy objectForKey:*MEMORY[0x1E695DA08]];
+      bOOLValue2 = [v9 BOOLValue];
       v11 = @"in";
       v12 = @"cm";
       goto LABEL_37;
@@ -309,12 +309,12 @@ LABEL_32:
     goto LABEL_34;
   }
 
-  v9 = [v6 objectForKey:*MEMORY[0x1E695DA08]];
-  v10 = [v9 BOOLValue];
+  v9 = [localeCopy objectForKey:*MEMORY[0x1E695DA08]];
+  bOOLValue2 = [v9 BOOLValue];
   v11 = @"ft/s";
   v12 = @"m/s";
 LABEL_37:
-  if (v10)
+  if (bOOLValue2)
   {
     v16 = v12;
   }
@@ -332,28 +332,28 @@ LABEL_42:
   return v14;
 }
 
-- (BOOL)supportsStatisticOptions:(unint64_t)a3
+- (BOOL)supportsStatisticOptions:(unint64_t)options
 {
-  v5 = [(HKQuantityType *)self aggregationStyle];
-  if ((v5 - 1) >= 3)
+  aggregationStyle = [(HKQuantityType *)self aggregationStyle];
+  if ((aggregationStyle - 1) >= 3)
   {
-    if (v5 == HKQuantityAggregationStyleCumulative)
+    if (aggregationStyle == HKQuantityAggregationStyleCumulative)
     {
-      if ((a3 & 2) != 0)
+      if ((options & 2) != 0)
       {
         v7 = MEMORY[0x1E695DF30];
         v8 = *MEMORY[0x1E695D940];
         v9 = @"HKStatisticsOptionDiscreteAverage";
       }
 
-      else if ((a3 & 4) != 0)
+      else if ((options & 4) != 0)
       {
         v7 = MEMORY[0x1E695DF30];
         v8 = *MEMORY[0x1E695D940];
         v9 = @"HKStatisticsOptionDiscreteMin";
       }
 
-      else if ((a3 & 8) != 0)
+      else if ((options & 8) != 0)
       {
         v7 = MEMORY[0x1E695DF30];
         v8 = *MEMORY[0x1E695D940];
@@ -362,7 +362,7 @@ LABEL_42:
 
       else
       {
-        v6 = _HKStatisticsOptionPercentile() & a3;
+        v6 = _HKStatisticsOptionPercentile() & options;
         if (v6 != _HKStatisticsOptionPercentile())
         {
           return 1;
@@ -380,7 +380,7 @@ LABEL_42:
     return 1;
   }
 
-  if ((a3 & 0x10) == 0)
+  if ((options & 0x10) == 0)
   {
     return 1;
   }
@@ -389,23 +389,23 @@ LABEL_42:
   return 0;
 }
 
-- (void)validateUnitForStatistic:(id)a3
+- (void)validateUnitForStatistic:(id)statistic
 {
-  v6 = a3;
-  v4 = [(HKSampleType *)self _unitForChangeInCanonicalUnit];
-  v5 = [v4 _isCompatibleWithUnit:v6];
+  statisticCopy = statistic;
+  _unitForChangeInCanonicalUnit = [(HKSampleType *)self _unitForChangeInCanonicalUnit];
+  v5 = [_unitForChangeInCanonicalUnit _isCompatibleWithUnit:statisticCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(HKQuantityType *)self validateUnit:v6];
+    [(HKQuantityType *)self validateUnit:statisticCopy];
   }
 }
 
-- (id)_initWithCode:(int64_t)a3
+- (id)_initWithCode:(int64_t)code
 {
   v4.receiver = self;
   v4.super_class = HKQuantityType;
-  result = [(HKObjectType *)&v4 _initWithCode:a3];
+  result = [(HKObjectType *)&v4 _initWithCode:code];
   if (result)
   {
     *(result + 8) = 0;
@@ -414,14 +414,14 @@ LABEL_42:
   return result;
 }
 
-- (HKQuantityType)initWithIdentifier:(id)a3
+- (HKQuantityType)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [HKObjectType quantityTypeForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [HKObjectType quantityTypeForIdentifier:identifierCopy];
 
   if (!v5)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid %@ identifier %@", objc_opt_class(), v4}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid %@ identifier %@", objc_opt_class(), identifierCopy}];
   }
 
   return v5;
@@ -430,47 +430,47 @@ LABEL_42:
 - (BOOL)isCompatibleWithUnit:(HKUnit *)unit
 {
   v4 = unit;
-  v5 = [(HKQuantityType *)self canonicalUnit];
-  v6 = [v5 _isCompatibleWithUnit:v4];
+  canonicalUnit = [(HKQuantityType *)self canonicalUnit];
+  v6 = [canonicalUnit _isCompatibleWithUnit:v4];
 
   return v6;
 }
 
 - (_HKDimension)dimension
 {
-  v2 = [(HKQuantityType *)self canonicalUnit];
-  v3 = [v2 dimension];
+  canonicalUnit = [(HKQuantityType *)self canonicalUnit];
+  dimension = [canonicalUnit dimension];
 
-  return v3;
+  return dimension;
 }
 
-- (void)validateUnit:(id)a3
+- (void)validateUnit:(id)unit
 {
-  v10 = a3;
-  v4 = [(HKQuantityType *)self canonicalUnit];
-  v5 = [v10 _isCompatibleWithUnit:v4];
+  unitCopy = unit;
+  canonicalUnit = [(HKQuantityType *)self canonicalUnit];
+  v5 = [unitCopy _isCompatibleWithUnit:canonicalUnit];
 
   if ((v5 & 1) == 0)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
     v8 = objc_opt_class();
-    v9 = [(HKQuantityType *)self dimension];
-    [v6 raise:v7 format:{@"%@ %@ requires unit of type %@. Incompatible unit: %@", v8, self, v9, v10}];
+    dimension = [(HKQuantityType *)self dimension];
+    [v6 raise:v7 format:{@"%@ %@ requires unit of type %@. Incompatible unit: %@", v8, self, dimension, unitCopy}];
   }
 }
 
-- (void)validateUnitFromString:(id)a3
+- (void)validateUnitFromString:(id)string
 {
-  v4 = [HKUnit unitFromString:a3];
+  v4 = [HKUnit unitFromString:string];
   [(HKQuantityType *)self validateUnit:v4];
 }
 
-+ (id)_quantityTypeWithCode:(int64_t)a3
++ (id)_quantityTypeWithCode:(int64_t)code
 {
   v5 = objc_opt_class();
 
-  return [a1 _dataTypeWithCode:a3 expectedClass:v5];
+  return [self _dataTypeWithCode:code expectedClass:v5];
 }
 
 @end

@@ -7,10 +7,10 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(WADeviceAnalyticsDatedRecord *)self entity];
-  v5 = [v4 name];
-  v6 = [(WADeviceAnalyticsDatedRecord *)self date];
-  v7 = [v3 stringWithFormat:@"%@ at %@", v5, v6];
+  entity = [(WADeviceAnalyticsDatedRecord *)self entity];
+  name = [entity name];
+  date = [(WADeviceAnalyticsDatedRecord *)self date];
+  v7 = [v3 stringWithFormat:@"%@ at %@", name, date];
 
   return v7;
 }

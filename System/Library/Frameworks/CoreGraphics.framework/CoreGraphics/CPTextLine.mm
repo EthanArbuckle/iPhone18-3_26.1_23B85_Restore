@@ -1,46 +1,46 @@
 @interface CPTextLine
 - ($F82BA7CF80F7A1221027BFFB2739E57F)firstWord;
 - ($F82BA7CF80F7A1221027BFFB2739E57F)lastWord;
-- ($F82BA7CF80F7A1221027BFFB2739E57F)wordArrayOfSize:(unsigned int)a3;
-- ($F82BA7CF80F7A1221027BFFB2739E57F)wordAtIndex:(unsigned int)a3;
-- (BOOL)changesFontAt:(id)a3;
+- ($F82BA7CF80F7A1221027BFFB2739E57F)wordArrayOfSize:(unsigned int)size;
+- ($F82BA7CF80F7A1221027BFFB2739E57F)wordAtIndex:(unsigned int)index;
+- (BOOL)changesFontAt:(id)at;
 - (BOOL)hasDropCap;
-- (BOOL)mapToWordPairs:(void *)a3 passing:(void *)a4;
-- (BOOL)mapToWordPairsWithIndex:(void *)a3 passing:(void *)a4;
-- (BOOL)mapToWords:(void *)a3 passing:(void *)a4;
-- (BOOL)mapToWordsWithIndex:(void *)a3 passing:(void *)a4;
-- (BOOL)overlapsHorizontally:(CGRect)a3;
-- (BOOL)overlapsWith:(id)a3;
-- (BOOL)removeTextLines:(id)a3 whereTrue:(void *)a4 passing:(void *)a5;
-- (BOOL)styleIsUniform:(CPPDFStyle *)a3 styleFlags:(unsigned __int16)a4;
+- (BOOL)mapToWordPairs:(void *)pairs passing:(void *)passing;
+- (BOOL)mapToWordPairsWithIndex:(void *)index passing:(void *)passing;
+- (BOOL)mapToWords:(void *)words passing:(void *)passing;
+- (BOOL)mapToWordsWithIndex:(void *)index passing:(void *)passing;
+- (BOOL)overlapsHorizontally:(CGRect)horizontally;
+- (BOOL)overlapsWith:(id)with;
+- (BOOL)removeTextLines:(id)lines whereTrue:(void *)true passing:(void *)passing;
+- (BOOL)styleIsUniform:(CPPDFStyle *)uniform styleFlags:(unsigned __int16)flags;
 - (CGPoint)anchor;
 - (CGRect)bounds;
-- (CGRect)boundsOfWordAtIndex:(unsigned int)a3;
+- (CGRect)boundsOfWordAtIndex:(unsigned int)index;
 - (CGRect)normalizedBounds;
 - (CPTextLine)init;
 - (double)baseline;
 - (double)medianFontSize;
 - (double)monospaceWidth;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newTextLineFromWordAt:(unsigned int)a3 lengthInWords:(unsigned int)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newTextLineFromWordAt:(unsigned int)at lengthInWords:(unsigned int)words;
 - (int)align;
-- (int64_t)baseLineAscending:(id)a3;
-- (int64_t)baseLineDescending:(id)a3;
-- (int64_t)baseLineDescendingApprox:(id)a3;
-- (int64_t)topIsAbove:(id)a3;
+- (int64_t)baseLineAscending:(id)ascending;
+- (int64_t)baseLineDescending:(id)descending;
+- (int64_t)baseLineDescendingApprox:(id)approx;
+- (int64_t)topIsAbove:(id)above;
 - (int64_t)zOrder;
 - (unsigned)inlineCount;
-- (unsigned)spacesBeforeWordAtIndex:(unsigned int)a3;
-- (void)anchorChunk:(id)a3 atWordIndex:(unsigned int)a4;
+- (unsigned)spacesBeforeWordAtIndex:(unsigned int)index;
+- (void)anchorChunk:(id)chunk atWordIndex:(unsigned int)index;
 - (void)dealloc;
 - (void)dispose;
 - (void)finalize;
 - (void)recomputeBaseline;
 - (void)recomputeLevels;
-- (void)setCharSequence:(id)a3;
-- (void)setColumnBreaks:(id)a3;
-- (void)setSpaces:(unsigned int)a3 beforeWordAtIndex:(unsigned int)a4;
-- (void)translateObjectYBy:(double)a3;
+- (void)setCharSequence:(id)sequence;
+- (void)setColumnBreaks:(id)breaks;
+- (void)setSpaces:(unsigned int)spaces beforeWordAtIndex:(unsigned int)index;
+- (void)translateObjectYBy:(double)by;
 @end
 
 @implementation CPTextLine
@@ -224,7 +224,7 @@
   return var11 > v9 + v9 || v9 > var11 + var11;
 }
 
-- (int64_t)topIsAbove:(id)a3
+- (int64_t)topIsAbove:(id)above
 {
   [(CPCharSequence *)self->charSequence bounds];
   v8 = v5;
@@ -236,7 +236,7 @@
     v9 = v11;
   }
 
-  [*(a3 + 16) bounds];
+  [*(above + 16) bounds];
   if (v14 < 0.0 || v15 < 0.0)
   {
     *(&v13 - 1) = CGRectStandardize(*&v12);
@@ -269,14 +269,14 @@
   }
 }
 
-- (void)setSpaces:(unsigned int)a3 beforeWordAtIndex:(unsigned int)a4
+- (void)setSpaces:(unsigned int)spaces beforeWordAtIndex:(unsigned int)index
 {
   wordCount = self->wordCount;
-  if (wordCount > a4)
+  if (wordCount > index)
   {
-    if (a4)
+    if (index)
     {
-      v7 = a3 == 0;
+      v7 = spaces == 0;
     }
 
     else
@@ -286,12 +286,12 @@
 
     if (v7)
     {
-      v8 = 1;
+      spacesCopy = 1;
     }
 
     else
     {
-      v8 = a3;
+      spacesCopy = spaces;
     }
 
     spacesBefore = self->spacesBefore;
@@ -300,9 +300,9 @@
       goto LABEL_9;
     }
 
-    if (a4)
+    if (index)
     {
-      v10 = v8 == 1;
+      v10 = spacesCopy == 1;
     }
 
     else
@@ -311,7 +311,7 @@
     }
 
     v11 = v10;
-    if (v8 | a4 && (v11 & 1) == 0)
+    if (spacesCopy | index && (v11 & 1) == 0)
     {
       spacesBefore = malloc_type_malloc(4 * wordCount, 0x100004052888210uLL);
       self->spacesBefore = spacesBefore;
@@ -328,14 +328,14 @@
       }
 
 LABEL_9:
-      spacesBefore[a4] = v8;
+      spacesBefore[index] = spacesCopy;
     }
   }
 }
 
-- (unsigned)spacesBeforeWordAtIndex:(unsigned int)a3
+- (unsigned)spacesBeforeWordAtIndex:(unsigned int)index
 {
-  if (self->wordCount <= a3)
+  if (self->wordCount <= index)
   {
     return 0;
   }
@@ -343,12 +343,12 @@ LABEL_9:
   spacesBefore = self->spacesBefore;
   if (spacesBefore)
   {
-    return spacesBefore[a3];
+    return spacesBefore[index];
   }
 
   else
   {
-    return a3 != 0;
+    return index != 0;
   }
 }
 
@@ -395,26 +395,26 @@ LABEL_9:
   return monospaceWidth;
 }
 
-- (BOOL)styleIsUniform:(CPPDFStyle *)a3 styleFlags:(unsigned __int16)a4
+- (BOOL)styleIsUniform:(CPPDFStyle *)uniform styleFlags:(unsigned __int16)flags
 {
   uniformStyle = self->uniformStyle;
-  if (uniformStyle && self->uniformStyleFlags == a4)
+  if (uniformStyle && self->uniformStyleFlags == flags)
   {
-    if (a3)
+    if (uniform)
     {
-      *a3 = uniformStyle;
+      *uniform = uniformStyle;
     }
 
     return 1;
   }
 
-  self->uniformStyleFlags = a4;
+  self->uniformStyleFlags = flags;
   if (![(CPCharSequence *)self->charSequence length])
   {
     self->uniformStyle = 0;
-    if (a3)
+    if (uniform)
     {
-      *a3 = 0;
+      *uniform = 0;
     }
 
     return 1;
@@ -431,9 +431,9 @@ LABEL_9:
     self->uniformStyle = 0;
   }
 
-  if (a3)
+  if (uniform)
   {
-    *a3 = self->uniformStyle;
+    *uniform = self->uniformStyle;
   }
 
   return result;
@@ -483,12 +483,12 @@ LABEL_9:
   }
 }
 
-- (void)translateObjectYBy:(double)a3
+- (void)translateObjectYBy:(double)by
 {
   v5.receiver = self;
   v5.super_class = CPTextLine;
   [(CPTextObject *)&v5 translateObjectYBy:?];
-  self->baseline = self->baseline + a3;
+  self->baseline = self->baseline + by;
 }
 
 - (double)baseline
@@ -542,12 +542,12 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)overlapsHorizontally:(CGRect)a3
+- (BOOL)overlapsHorizontally:(CGRect)horizontally
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  rect = a3.origin.y;
-  x = a3.origin.x;
+  height = horizontally.size.height;
+  width = horizontally.size.width;
+  rect = horizontally.origin.y;
+  x = horizontally.origin.x;
   [(CPTextLine *)self bounds];
   v10 = v6;
   v11 = v7;
@@ -600,20 +600,20 @@ LABEL_9:
   return v10 <= x + width;
 }
 
-- (BOOL)overlapsWith:(id)a3
+- (BOOL)overlapsWith:(id)with
 {
-  [a3 bounds];
+  [with bounds];
 
   return [(CPTextLine *)self overlapsHorizontally:?];
 }
 
-- (int64_t)baseLineDescendingApprox:(id)a3
+- (int64_t)baseLineDescendingApprox:(id)approx
 {
   [(CPChunk *)self->super.super.super.page bounds];
   v6 = v5;
   [(CPTextLine *)self baseline];
   v8 = v7;
-  [a3 baseline];
+  [approx baseline];
   if (vabdd_f64(v8, v9) >= v6 * 0.005)
   {
     if (v8 < v9)
@@ -636,7 +636,7 @@ LABEL_9:
       *&v14 = CGRectStandardize(*&v10);
     }
 
-    [a3 normalizedBounds];
+    [approx normalizedBounds];
     if (v17 < 0.0 || v18 < 0.0)
     {
       *&v15 = CGRectStandardize(*&v15);
@@ -654,11 +654,11 @@ LABEL_9:
   }
 }
 
-- (int64_t)baseLineDescending:(id)a3
+- (int64_t)baseLineDescending:(id)descending
 {
   [(CPTextLine *)self baseline];
   v5 = v4;
-  [a3 baseline];
+  [descending baseline];
   v7 = -1;
   if (v5 < v6)
   {
@@ -676,11 +676,11 @@ LABEL_9:
   }
 }
 
-- (int64_t)baseLineAscending:(id)a3
+- (int64_t)baseLineAscending:(id)ascending
 {
   [(CPTextLine *)self baseline];
   v5 = v4;
-  [a3 baseline];
+  [ascending baseline];
   v7 = -1;
   if (v5 >= v6)
   {
@@ -739,17 +739,17 @@ LABEL_9:
   return result;
 }
 
-- (void)setColumnBreaks:(id)a3
+- (void)setColumnBreaks:(id)breaks
 {
   columnBreaks = self->columnBreaks;
-  if (columnBreaks != a3)
+  if (columnBreaks != breaks)
   {
 
-    self->columnBreaks = a3;
+    self->columnBreaks = breaks;
   }
 }
 
-- (BOOL)mapToWordPairsWithIndex:(void *)a3 passing:(void *)a4
+- (BOOL)mapToWordPairsWithIndex:(void *)index passing:(void *)passing
 {
   wordCount = self->wordCount;
   if (wordCount >= 2)
@@ -759,7 +759,7 @@ LABEL_9:
     v11 = &wordArray[wordCount];
     do
     {
-      v5 = (a3)(v9, wordArray, &wordArray[1], self->charSequence, a4);
+      v5 = (index)(v9, wordArray, &wordArray[1], self->charSequence, passing);
       v9 = (v9 + 1);
       if (v5)
       {
@@ -785,7 +785,7 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)mapToWordPairs:(void *)a3 passing:(void *)a4
+- (BOOL)mapToWordPairs:(void *)pairs passing:(void *)passing
 {
   wordCount = self->wordCount;
   if (wordCount >= 2)
@@ -794,7 +794,7 @@ LABEL_9:
     v10 = &wordArray[wordCount];
     do
     {
-      v5 = (a3)(wordArray, &wordArray[1], self->charSequence, a4);
+      v5 = (pairs)(wordArray, &wordArray[1], self->charSequence, passing);
       if (v5)
       {
         v11 = &wordArray[2] >= v10;
@@ -819,7 +819,7 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)mapToWordsWithIndex:(void *)a3 passing:(void *)a4
+- (BOOL)mapToWordsWithIndex:(void *)index passing:(void *)passing
 {
   if (self->wordCount)
   {
@@ -827,7 +827,7 @@ LABEL_9:
     wordArray = self->wordArray;
     do
     {
-      v9 = (a3)(v7, wordArray, self->charSequence, a4);
+      v9 = (index)(v7, wordArray, self->charSequence, passing);
       if (!v9)
       {
         break;
@@ -848,7 +848,7 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)mapToWords:(void *)a3 passing:(void *)a4
+- (BOOL)mapToWords:(void *)words passing:(void *)passing
 {
   wordCount = self->wordCount;
   if (wordCount)
@@ -857,7 +857,7 @@ LABEL_9:
     v9 = &wordArray[wordCount];
     do
     {
-      v10 = (a3)(wordArray++, self->charSequence, a4);
+      v10 = (words)(wordArray++, self->charSequence, passing);
       if (v10)
       {
         v11 = wordArray >= v9;
@@ -880,7 +880,7 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)removeTextLines:(id)a3 whereTrue:(void *)a4 passing:(void *)a5
+- (BOOL)removeTextLines:(id)lines whereTrue:(void *)true passing:(void *)passing
 {
   if (self->wordCount < 2)
   {
@@ -898,7 +898,7 @@ LABEL_9:
     v14 = v10;
     v15 = v9;
     v16 = v8 + 1;
-    v17 = (a4)(&self->wordArray[v12 - 1], &self->wordArray[v12], a5);
+    v17 = (true)(&self->wordArray[v12 - 1], &self->wordArray[v12], passing);
     if (v17)
     {
       v11 = v16;
@@ -926,7 +926,7 @@ LABEL_9:
       if (v18)
       {
         v19 = v18;
-        [a3 addObject:v18];
+        [lines addObject:v18];
         [v19 recomputeBaseline];
       }
 
@@ -950,7 +950,7 @@ LABEL_9:
   if (v21)
   {
     v22 = v21;
-    [a3 addObject:v21];
+    [lines addObject:v21];
     [v22 recomputeBaseline];
   }
 
@@ -968,14 +968,14 @@ LABEL_9:
   return 1;
 }
 
-- (id)newTextLineFromWordAt:(unsigned int)a3 lengthInWords:(unsigned int)a4
+- (id)newTextLineFromWordAt:(unsigned int)at lengthInWords:(unsigned int)words
 {
   if (!self->wordArray)
   {
     return 0;
   }
 
-  v4 = *&a4;
+  v4 = *&words;
   v7 = objc_alloc_init(CPTextLine);
   [(CPObject *)v7 setPage:self->super.super.super.page];
   v8 = [CPCharSequence newSubsequenceFrom:"newSubsequenceFrom:length:" length:?];
@@ -984,11 +984,11 @@ LABEL_9:
   v9 = [(CPTextLine *)v7 wordArrayOfSize:v4];
   if (v4)
   {
-    var0 = self->wordArray[a3].var0;
+    var0 = self->wordArray[at].var0;
     v11 = v4;
     do
     {
-      v12 = &self->wordArray[a3];
+      v12 = &self->wordArray[at];
       size = v12->var4.size;
       v14 = *&v12->var0;
       v9->var4.origin = v12->var4.origin;
@@ -996,7 +996,7 @@ LABEL_9:
       *&v9->var0 = v14;
       v9->var0 -= var0;
       ++v9;
-      ++a3;
+      ++at;
       --v11;
     }
 
@@ -1012,10 +1012,10 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)changesFontAt:(id)a3
+- (BOOL)changesFontAt:(id)at
 {
   v5 = [(CPCharSequence *)self->charSequence length];
-  v6 = [*(a3 + 16) length];
+  v6 = [*(at + 16) length];
   if (v5)
   {
     v7 = v6 == 0;
@@ -1030,7 +1030,7 @@ LABEL_9:
   if (!v7)
   {
     v8 = [(CPCharSequence *)self->charSequence charAtIndex:v5 - 1];
-    v9 = [*(a3 + 16) charAtIndex:0];
+    v9 = [*(at + 16) charAtIndex:0];
     var7 = v8->var7;
     v11 = *(v9 + 160);
     if (var7 != v11)
@@ -1053,12 +1053,12 @@ LABEL_9:
 
 - (int)align
 {
-  v3 = [(CPTextLine *)self firstWord];
-  v4 = [(CPTextLine *)self lastWord];
-  if (!v3)
+  firstWord = [(CPTextLine *)self firstWord];
+  lastWord = [(CPTextLine *)self lastWord];
+  if (!firstWord)
   {
     v5 = 0;
-    if (v4)
+    if (lastWord)
     {
       goto LABEL_3;
     }
@@ -1068,14 +1068,14 @@ LABEL_5:
     return v6 | v5;
   }
 
-  v5 = v3->var3 & 0x55;
-  if (!v4)
+  v5 = firstWord->var3 & 0x55;
+  if (!lastWord)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v6 = v4->var3 & 0xAA;
+  v6 = lastWord->var3 & 0xAA;
   return v6 | v5;
 }
 
@@ -1087,30 +1087,30 @@ LABEL_3:
   return *p_zOrder;
 }
 
-- (void)anchorChunk:(id)a3 atWordIndex:(unsigned int)a4
+- (void)anchorChunk:(id)chunk atWordIndex:(unsigned int)index
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([a3 anchoringTextLine])
+    if ([chunk anchoringTextLine])
     {
       return;
     }
 
-    [a3 setAnchoringTextLine:self];
+    [chunk setAnchoringTextLine:self];
   }
 
   v7 = malloc_type_malloc(0x18uLL, 0x10A0040C385777EuLL);
-  v7->var0 = a4;
-  v7->var1 = a3;
+  v7->var0 = index;
+  v7->var1 = chunk;
   v7->var2 = 0;
-  [a3 anchor];
+  [chunk anchor];
   p_inlineList = &self->inlineList;
   var2 = *p_inlineList;
   if (*p_inlineList)
   {
     var0 = var2->var0;
-    if (var2->var0 <= a4)
+    if (var2->var0 <= index)
     {
       v13 = v8;
       v14 = v9;
@@ -1118,7 +1118,7 @@ LABEL_3:
       while (1)
       {
         v16 = var2;
-        if (var0 == a4)
+        if (var0 == index)
         {
           [var2->var1 anchor];
           v18 = v13 != v17;
@@ -1138,7 +1138,7 @@ LABEL_3:
         {
           var0 = var2->var0;
           v15 = v16;
-          if (var2->var0 <= a4)
+          if (var2->var0 <= index)
           {
             continue;
           }
@@ -1219,24 +1219,24 @@ LABEL_20:
   }
 }
 
-- ($F82BA7CF80F7A1221027BFFB2739E57F)wordAtIndex:(unsigned int)a3
+- ($F82BA7CF80F7A1221027BFFB2739E57F)wordAtIndex:(unsigned int)index
 {
-  if (self->wordCount <= a3)
+  if (self->wordCount <= index)
   {
     __assert_rtn("[CPTextLine wordAtIndex:]", "CPTextLine.m", 166, "index < wordCount");
   }
 
-  return &self->wordArray[a3];
+  return &self->wordArray[index];
 }
 
-- (CGRect)boundsOfWordAtIndex:(unsigned int)a3
+- (CGRect)boundsOfWordAtIndex:(unsigned int)index
 {
-  if (self->wordCount <= a3)
+  if (self->wordCount <= index)
   {
     __assert_rtn("[CPTextLine boundsOfWordAtIndex:]", "CPTextLine.m", 160, "index < wordCount");
   }
 
-  v3 = &self->wordArray[a3];
+  v3 = &self->wordArray[index];
   x = v3->var4.origin.x;
   y = v3->var4.origin.y;
   width = v3->var4.size.width;
@@ -1248,44 +1248,44 @@ LABEL_20:
   return result;
 }
 
-- ($F82BA7CF80F7A1221027BFFB2739E57F)wordArrayOfSize:(unsigned int)a3
+- ($F82BA7CF80F7A1221027BFFB2739E57F)wordArrayOfSize:(unsigned int)size
 {
   result = self->wordArray;
   if (!result)
   {
-    if (!a3)
+    if (!size)
     {
       result = 0;
       goto LABEL_8;
     }
 
-    result = malloc_type_malloc(48 * a3, 0x1000040EED21634uLL);
+    result = malloc_type_malloc(48 * size, 0x1000040EED21634uLL);
     goto LABEL_6;
   }
 
-  if (self->wordCount < a3)
+  if (self->wordCount < size)
   {
-    result = malloc_type_realloc(result, 48 * a3, 0x1000040EED21634uLL);
+    result = malloc_type_realloc(result, 48 * size, 0x1000040EED21634uLL);
 LABEL_6:
     self->wordArray = result;
   }
 
 LABEL_8:
-  self->wordCount = a3;
+  self->wordCount = size;
   return result;
 }
 
-- (void)setCharSequence:(id)a3
+- (void)setCharSequence:(id)sequence
 {
   charSequence = self->charSequence;
-  if (charSequence != a3)
+  if (charSequence != sequence)
   {
 
-    self->charSequence = a3;
+    self->charSequence = sequence;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = CPTextLine;
@@ -1295,7 +1295,7 @@ LABEL_8:
   {
     v5[1] = 0;
     v5[28] = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:self->columnBreaks];
-    v6[16] = [(CPCharSequence *)self->charSequence copyWithZone:a3];
+    v6[16] = [(CPCharSequence *)self->charSequence copyWithZone:zone];
     wordCount = self->wordCount;
     if (wordCount)
     {

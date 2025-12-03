@@ -1,32 +1,32 @@
 @interface CALNUNNotificationSoundMapper
-+ (id)calnNotificationSoundFromUNNotificationSound:(id)a3;
-+ (id)unNotificationSoundFromCALNNotificationSound:(id)a3;
++ (id)calnNotificationSoundFromUNNotificationSound:(id)sound;
++ (id)unNotificationSoundFromCALNNotificationSound:(id)sound;
 @end
 
 @implementation CALNUNNotificationSoundMapper
 
-+ (id)unNotificationSoundFromCALNNotificationSound:(id)a3
++ (id)unNotificationSoundFromCALNNotificationSound:(id)sound
 {
   v3 = MEMORY[0x277CE1FE0];
-  v4 = a3;
-  v5 = [v3 soundWithAlertType:{objc_msgSend(v4, "alertType")}];
+  soundCopy = sound;
+  v5 = [v3 soundWithAlertType:{objc_msgSend(soundCopy, "alertType")}];
   v6 = [v5 mutableCopy];
 
-  v7 = [v4 alertTopic];
+  alertTopic = [soundCopy alertTopic];
 
-  [v6 setAlertTopic:v7];
+  [v6 setAlertTopic:alertTopic];
   v8 = [v6 copy];
 
   return v8;
 }
 
-+ (id)calnNotificationSoundFromUNNotificationSound:(id)a3
++ (id)calnNotificationSoundFromUNNotificationSound:(id)sound
 {
-  v3 = a3;
-  v4 = [v3 alertType];
-  v5 = [v3 alertTopic];
+  soundCopy = sound;
+  alertType = [soundCopy alertType];
+  alertTopic = [soundCopy alertTopic];
 
-  v6 = [(CALNNotificationSound *)CALNMutableNotificationSound soundWithAlertType:v4 alertTopic:v5];
+  v6 = [(CALNNotificationSound *)CALNMutableNotificationSound soundWithAlertType:alertType alertTopic:alertTopic];
 
   return v6;
 }

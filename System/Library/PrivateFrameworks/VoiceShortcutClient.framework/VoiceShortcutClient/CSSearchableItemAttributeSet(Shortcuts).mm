@@ -10,8 +10,8 @@
   v5 = a3;
   if (!v5)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"WFContextualAction+Spotlight.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContextualAction+Spotlight.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
   v19 = 0;
@@ -19,14 +19,14 @@
   v7 = v19;
   if (v6)
   {
-    v8 = [v6 bundleIdentifier];
-    [a1 setRelatedAppBundleIdentifier:v8];
+    bundleIdentifier = [v6 bundleIdentifier];
+    [self setRelatedAppBundleIdentifier:bundleIdentifier];
 
-    v9 = [a1 alternateNames];
-    v10 = v9;
-    if (v9)
+    alternateNames = [self alternateNames];
+    v10 = alternateNames;
+    if (alternateNames)
     {
-      v11 = v9;
+      v11 = alternateNames;
     }
 
     else
@@ -34,13 +34,13 @@
       v11 = MEMORY[0x1E695E0F0];
     }
 
-    v12 = [v6 localizedName];
-    v20[0] = v12;
-    v13 = [v6 localizedShortName];
-    v20[1] = v13;
+    localizedName = [v6 localizedName];
+    v20[0] = localizedName;
+    localizedShortName = [v6 localizedShortName];
+    v20[1] = localizedShortName;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v15 = [v11 arrayByAddingObjectsFromArray:v14];
-    [a1 setAlternateNames:v15];
+    [self setAlternateNames:v15];
   }
 
   else

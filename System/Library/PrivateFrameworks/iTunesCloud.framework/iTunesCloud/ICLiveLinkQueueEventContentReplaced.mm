@@ -1,18 +1,18 @@
 @interface ICLiveLinkQueueEventContentReplaced
-- (ICLiveLinkQueueEventContentReplaced)initWithStartItemIdentifier:(id)a3;
+- (ICLiveLinkQueueEventContentReplaced)initWithStartItemIdentifier:(id)identifier;
 @end
 
 @implementation ICLiveLinkQueueEventContentReplaced
 
-- (ICLiveLinkQueueEventContentReplaced)initWithStartItemIdentifier:(id)a3
+- (ICLiveLinkQueueEventContentReplaced)initWithStartItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = ICLiveLinkQueueEventContentReplaced;
   v5 = [(ICLiveLinkQueueEventContentReplaced *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     startItemIdentifier = v5->_startItemIdentifier;
     v5->_startItemIdentifier = v6;
   }

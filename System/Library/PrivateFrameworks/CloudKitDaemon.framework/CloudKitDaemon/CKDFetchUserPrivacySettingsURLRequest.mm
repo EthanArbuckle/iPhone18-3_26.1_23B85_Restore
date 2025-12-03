@@ -1,17 +1,17 @@
 @interface CKDFetchUserPrivacySettingsURLRequest
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
 @end
 
 @implementation CKDFetchUserPrivacySettingsURLRequest
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v3.receiver = self;
   v3.super_class = CKDFetchUserPrivacySettingsURLRequest;
-  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:a3];
+  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:builder];
 }
 
 - (id)requestOperationClasses
@@ -40,18 +40,18 @@
   return v10;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_msgSend_setUserPrivacySettings_(self, v5, 0);
-  if (objc_msgSend_hasUserPrivacySettingsRetrieveResponse(v4, v6, v7))
+  if (objc_msgSend_hasUserPrivacySettingsRetrieveResponse(objectCopy, v6, v7))
   {
-    v10 = objc_msgSend_userPrivacySettingsRetrieveResponse(v4, v8, v9);
+    v10 = objc_msgSend_userPrivacySettingsRetrieveResponse(objectCopy, v8, v9);
     hasUserPrivacySettings = objc_msgSend_hasUserPrivacySettings(v10, v11, v12);
 
     if (hasUserPrivacySettings)
     {
-      v16 = objc_msgSend_userPrivacySettingsRetrieveResponse(v4, v14, v15);
+      v16 = objc_msgSend_userPrivacySettingsRetrieveResponse(objectCopy, v14, v15);
       v19 = objc_msgSend_userPrivacySettings(v16, v17, v18);
       objc_msgSend_setUserPrivacySettings_(self, v20, v19);
     }

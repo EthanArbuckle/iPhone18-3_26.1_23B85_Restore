@@ -1,15 +1,15 @@
 @interface BackgroundGradientWithTopSeparatorDecorationView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 @end
 
 @implementation BackgroundGradientWithTopSeparatorDecorationView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  sub_1E3DD5E5C(a4, width, height);
+  height = subviews.height;
+  width = subviews.width;
+  selfCopy = self;
+  sub_1E3DD5E5C(only, width, height);
   v9 = v8;
   v11 = v10;
 

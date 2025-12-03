@@ -3,68 +3,68 @@
 - (id)minRecurrenceEndDate;
 - (id)recurrenceDate;
 - (id)recurrenceTimeZone;
-- (void)setCalendarItem:(id)a3 store:(id)a4;
+- (void)setCalendarItem:(id)item store:(id)store;
 @end
 
 @implementation EKEventRecurrenceEditItem
 
-- (void)setCalendarItem:(id)a3 store:(id)a4
+- (void)setCalendarItem:(id)item store:(id)store
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  itemCopy = item;
+  storeCopy = store;
+  if (itemCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(EKEventRecurrenceEditItem *)a2 setCalendarItem:v7 store:?];
+      [(EKEventRecurrenceEditItem *)a2 setCalendarItem:itemCopy store:?];
     }
   }
 
   v9.receiver = self;
   v9.super_class = EKEventRecurrenceEditItem;
-  [(EKCalendarItemEditItem *)&v9 setCalendarItem:v7 store:v8];
+  [(EKCalendarItemEditItem *)&v9 setCalendarItem:itemCopy store:storeCopy];
 }
 
 - (id)event
 {
   v4.receiver = self;
   v4.super_class = EKEventRecurrenceEditItem;
-  v2 = [(EKCalendarItemEditItem *)&v4 calendarItem];
+  calendarItem = [(EKCalendarItemEditItem *)&v4 calendarItem];
 
-  return v2;
+  return calendarItem;
 }
 
 - (id)recurrenceDate
 {
-  v2 = [(EKEventRecurrenceEditItem *)self event];
-  v3 = [v2 startDate];
+  event = [(EKEventRecurrenceEditItem *)self event];
+  startDate = [event startDate];
 
-  return v3;
+  return startDate;
 }
 
 - (id)recurrenceTimeZone
 {
-  v2 = [(EKEventRecurrenceEditItem *)self event];
-  v3 = [v2 timeZone];
+  event = [(EKEventRecurrenceEditItem *)self event];
+  timeZone = [event timeZone];
 
-  return v3;
+  return timeZone;
 }
 
 - (id)minRecurrenceEndDate
 {
-  v3 = [(EKEventRecurrenceEditItem *)self event];
-  v4 = [v3 singleRecurrenceRule];
+  event = [(EKEventRecurrenceEditItem *)self event];
+  singleRecurrenceRule = [event singleRecurrenceRule];
 
-  v5 = [v4 recurrenceEnd];
-  v6 = [v5 endDate];
+  recurrenceEnd = [singleRecurrenceRule recurrenceEnd];
+  endDate = [recurrenceEnd endDate];
 
-  v7 = [(EKEventRecurrenceEditItem *)self event];
-  v8 = [v7 endDateUnadjustedForLegacyClients];
+  event2 = [(EKEventRecurrenceEditItem *)self event];
+  endDateUnadjustedForLegacyClients = [event2 endDateUnadjustedForLegacyClients];
 
-  if (!v6 || (v9 = [v6 CalIsBeforeDate:v8], v10 = v6, (v9 & 1) == 0))
+  if (!endDate || (v9 = [endDate CalIsBeforeDate:endDateUnadjustedForLegacyClients], v10 = endDate, (v9 & 1) == 0))
   {
-    v10 = v8;
+    v10 = endDateUnadjustedForLegacyClients;
   }
 
   v11 = v10;

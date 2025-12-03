@@ -1,24 +1,24 @@
 @interface CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleMonth
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleMonth)initWithIndex:(id)a3 isLeap:(id)a4 error:(id *)a5;
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleMonth)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleMonth)initWithIndex:(id)index isLeap:(id)leap error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleMonth)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleMonth
 
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleMonth)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleMonth)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"index"];
-    v10 = [v6 objectForKeyedSubscript:@"isLeap"];
-    v11 = [[CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleMonth alloc] initWithIndex:v9 isLeap:v10 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"index"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isLeap"];
+    v11 = [[CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleMonth alloc] initWithIndex:v9 isLeap:v10 error:error];
   }
 
   else
@@ -50,27 +50,27 @@
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v8 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x1E69939A8];
   if (self->_hasIndex)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] int64Value:self->_index];
-    v8[2](v8, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_hasIsLeap)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 BOOLValue:self->_isLeap];
-    v8[2](v8, v7);
+    blockCopy[2](blockCopy, v7);
   }
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -81,7 +81,7 @@
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v51 = self;
+  selfCopy = self;
   while (2)
   {
     if (*&v7[*v10])
@@ -208,14 +208,14 @@ LABEL_50:
           {
             v41 = objc_opt_class();
             NSStringFromClass(v41);
-            v42 = a4;
-            v44 = v43 = v6;
+            errorCopy = error;
+            v44 = v43 = dataCopy;
             v45 = *&v7[*v10];
             v11 = CCSkipFieldErrorForMessage();
 
-            v6 = v43;
-            a4 = v42;
-            self = v51;
+            dataCopy = v43;
+            error = errorCopy;
+            self = selfCopy;
           }
 
 LABEL_53:
@@ -310,15 +310,15 @@ LABEL_60:
   return v49;
 }
 
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleMonth)initWithIndex:(id)a3 isLeap:(id)a4 error:(id *)a5
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleMonth)initWithIndex:(id)index isLeap:(id)leap error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  indexCopy = index;
+  leapCopy = leap;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!indexCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!leapCopy)
     {
       goto LABEL_8;
     }
@@ -332,12 +332,12 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
 
-    [v9 BOOLValue];
+    [leapCopy BOOLValue];
     CCPBDataWriterWriteBOOLField();
     v12 = v14;
     goto LABEL_8;
@@ -349,25 +349,25 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
-  [v8 longLongValue];
+  [indexCopy longLongValue];
   CCPBDataWriterWriteInt64Field();
-  if (v9)
+  if (leapCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v15 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

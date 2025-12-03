@@ -10,36 +10,36 @@
 
 - (void)fc_setLocalDataHintIfNeeded:()FCAccountActionQueue
 {
-  v5 = [a1 objectForKeyedSubscript:@"FCFileCoordinatedAccountActionQueueActionTypesKey"];
+  v5 = [self objectForKeyedSubscript:@"FCFileCoordinatedAccountActionQueueActionTypesKey"];
   v6 = [v5 count];
 
   if (!v6)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    [a1 setObject:v7 forKeyedSubscript:@"FCFileCoordinatedAccountActionQueueLocalDataHintKey"];
+    [self setObject:v7 forKeyedSubscript:@"FCFileCoordinatedAccountActionQueueLocalDataHintKey"];
   }
 }
 
 - (uint64_t)fc_enqueueActionType:()FCAccountActionQueue
 {
-  v3 = 0;
+  bOOLValue = 0;
   if (a3 <= 6)
   {
     if (((1 << a3) & 0x26) != 0)
     {
-      v6 = [a1 objectForKeyedSubscript:@"FCFileCoordinatedAccountActionQueueLocalDataHintKey"];
-      v3 = [v6 BOOLValue];
+      v6 = [self objectForKeyedSubscript:@"FCFileCoordinatedAccountActionQueueLocalDataHintKey"];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else if (((1 << a3) & 0x48) == 0)
     {
-      return v3;
+      return bOOLValue;
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [a1 setObject:v7 forKeyedSubscript:@"FCFileCoordinatedAccountActionQueueLocalDataHintKey"];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
+    [self setObject:v7 forKeyedSubscript:@"FCFileCoordinatedAccountActionQueueLocalDataHintKey"];
 
-    v8 = [a1 objectForKeyedSubscript:@"FCFileCoordinatedAccountActionQueueActionTypesKey"];
+    v8 = [self objectForKeyedSubscript:@"FCFileCoordinatedAccountActionQueueActionTypesKey"];
     v9 = v8;
     v10 = MEMORY[0x1E695E0F0];
     if (v8)
@@ -53,21 +53,21 @@
     v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
     [v12 addObject:v13];
 
-    [a1 setObject:v12 forKeyedSubscript:@"FCFileCoordinatedAccountActionQueueActionTypesKey"];
+    [self setObject:v12 forKeyedSubscript:@"FCFileCoordinatedAccountActionQueueActionTypesKey"];
     return 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)fc_popActionTypesUpToCount:()FCAccountActionQueue
 {
   v5 = MEMORY[0x1E695DF70];
-  v6 = [a1 objectForKeyedSubscript:@"FCFileCoordinatedAccountActionQueueActionTypesKey"];
+  v6 = [self objectForKeyedSubscript:@"FCFileCoordinatedAccountActionQueueActionTypesKey"];
   v7 = [v5 arrayWithArray:v6];
 
   [v7 removeObjectsInRange:{0, a3}];
-  [a1 setObject:v7 forKeyedSubscript:@"FCFileCoordinatedAccountActionQueueActionTypesKey"];
+  [self setObject:v7 forKeyedSubscript:@"FCFileCoordinatedAccountActionQueueActionTypesKey"];
 }
 
 - (void)fc_enqueueTransaction:()FCAccountActionQueue withMaxTransactionCount:
@@ -88,7 +88,7 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v7 = [a1 objectForKeyedSubscript:@"a"];
+  v7 = [self objectForKeyedSubscript:@"a"];
   v8 = v7;
   v9 = MEMORY[0x1E695E0F0];
   if (v7)
@@ -113,14 +113,14 @@
     [v11 fc_trimFromFrontToMaxCount:a4];
   }
 
-  [a1 setObject:v11 forKeyedSubscript:@"a"];
+  [self setObject:v11 forKeyedSubscript:@"a"];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
 - (id)fc_dequeueTransactions
 {
-  v2 = [a1 objectForKeyedSubscript:@"a"];
+  v2 = [self objectForKeyedSubscript:@"a"];
   v3 = v2;
   v4 = MEMORY[0x1E695E0F0];
   if (v2)
@@ -130,7 +130,7 @@
 
   v5 = v4;
 
-  [a1 removeObjectForKey:@"a"];
+  [self removeObjectForKey:@"a"];
 
   return v5;
 }

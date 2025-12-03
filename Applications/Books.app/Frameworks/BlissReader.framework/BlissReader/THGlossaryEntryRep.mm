@@ -1,13 +1,13 @@
 @interface THGlossaryEntryRep
 - (id)childRepsForHitTesting;
-- (id)fontNameForLabelControl:(id)a3;
+- (id)fontNameForLabelControl:(id)control;
 - (id)p_newTitleLayer;
-- (id)stringForLabelControl:(id)a3;
-- (id)textColorForLabelControl:(id)a3;
-- (void)addAdditionalChildLayersToArray:(id)a3;
+- (id)stringForLabelControl:(id)control;
+- (id)textColorForLabelControl:(id)control;
+- (void)addAdditionalChildLayersToArray:(id)array;
 - (void)dealloc;
-- (void)didUpdateLayer:(id)a3;
-- (void)drawInLayerContext:(CGContext *)a3;
+- (void)didUpdateLayer:(id)layer;
+- (void)drawInLayerContext:(CGContext *)context;
 @end
 
 @implementation THGlossaryEntryRep
@@ -20,7 +20,7 @@
   [(THGlossaryEntryRep *)&v3 dealloc];
 }
 
-- (void)drawInLayerContext:(CGContext *)a3
+- (void)drawInLayerContext:(CGContext *)context
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THGlossaryEntryRep drawInLayerContext:]"];
@@ -47,7 +47,7 @@
   return v3;
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
   if (([-[THGlossaryEntryRep info](self "info")] & 1) == 0)
   {
@@ -60,15 +60,15 @@
     [(CATextLayer *)self->mTitleLayer setFrame:?];
     mTitleLayer = self->mTitleLayer;
 
-    [a3 addObject:mTitleLayer];
+    [array addObject:mTitleLayer];
   }
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v4 = [objc_msgSend(objc_msgSend(-[THGlossaryEntryRep layout](self "layout")];
 
-  [a3 setBackgroundColor:v4];
+  [layer setBackgroundColor:v4];
 }
 
 - (id)childRepsForHitTesting
@@ -78,8 +78,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(THGlossaryEntryRep *)self childReps];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  childReps = [(THGlossaryEntryRep *)self childReps];
+  v5 = [childReps countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -91,7 +91,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childReps);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -105,7 +105,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [childReps countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -114,11 +114,11 @@
   return v3;
 }
 
-- (id)stringForLabelControl:(id)a3
+- (id)stringForLabelControl:(id)control
 {
-  if ([objc_msgSend(a3 "layout")])
+  if ([objc_msgSend(control "layout")])
   {
-    if ([objc_msgSend(a3 "layout")] != &dword_0 + 1)
+    if ([objc_msgSend(control "layout")] != &dword_0 + 1)
     {
       return 0;
     }
@@ -136,18 +136,18 @@
   return [v5 localizedStringForKey:v4 value:&stru_471858 table:0];
 }
 
-- (id)fontNameForLabelControl:(id)a3
+- (id)fontNameForLabelControl:(id)control
 {
-  v3 = [TSUFont systemFontOfSize:a3, 15.0];
+  v3 = [TSUFont systemFontOfSize:control, 15.0];
 
   return [v3 fontName];
 }
 
-- (id)textColorForLabelControl:(id)a3
+- (id)textColorForLabelControl:(id)control
 {
-  v3 = [-[THGlossaryEntryRep layout](self layout];
+  layout = [-[THGlossaryEntryRep layout](self layout];
 
-  return [v3 glossaryEntryLayoutForegroundColor];
+  return [layout glossaryEntryLayoutForegroundColor];
 }
 
 @end

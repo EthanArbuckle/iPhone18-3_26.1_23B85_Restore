@@ -1,38 +1,38 @@
 @interface SYCompressedFileInputStream
 - (BOOL)hasBytesAvailable;
-- (SYCompressedFileInputStream)initWithFileAtPath:(id)a3;
-- (SYCompressedFileInputStream)initWithURL:(id)a3;
+- (SYCompressedFileInputStream)initWithFileAtPath:(id)path;
+- (SYCompressedFileInputStream)initWithURL:(id)l;
 - (id)delegate;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
-- (void)_postEventToDelegate:(unint64_t)a3;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
+- (void)_postEventToDelegate:(unint64_t)delegate;
 - (void)close;
 - (void)dealloc;
 - (void)open;
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
+- (void)setDelegate:(id)delegate;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation SYCompressedFileInputStream
 
-- (SYCompressedFileInputStream)initWithFileAtPath:(id)a3
+- (SYCompressedFileInputStream)initWithFileAtPath:(id)path
 {
-  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3];
+  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:path];
   v5 = [(SYCompressedFileInputStream *)self initWithURL:v4];
 
   return v5;
 }
 
-- (SYCompressedFileInputStream)initWithURL:(id)a3
+- (SYCompressedFileInputStream)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = SYCompressedFileInputStream;
   v5 = [(SYCompressedFileInputStream *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
 
@@ -62,31 +62,31 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  if (!v4)
+  selfCopy = delegate;
+  if (!selfCopy)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  v5 = v4;
-  objc_storeWeak(&self->_internal->_delegate, v4);
+  v5 = selfCopy;
+  objc_storeWeak(&self->_internal->_delegate, selfCopy);
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
-  v13 = a3;
-  v6 = a4;
+  loopCopy = loop;
+  modeCopy = mode;
   internal = self->_internal;
   if (!internal->_runloopSource)
   {
     [(_SYStreamGuts *)internal createRunloopSourceForStream:self];
   }
 
-  v8 = [v13 getCFRunLoop];
+  getCFRunLoop = [loopCopy getCFRunLoop];
   runloopSource = self->_internal->_runloopSource;
-  v10 = [(__CFString *)v6 isEqualToString:*MEMORY[0x1E695D918]];
+  v10 = [(__CFString *)modeCopy isEqualToString:*MEMORY[0x1E695D918]];
   v11 = *MEMORY[0x1E695E8E0];
   if (v10)
   {
@@ -95,19 +95,19 @@
 
   else
   {
-    v12 = v6;
+    v12 = modeCopy;
   }
 
-  CFRunLoopAddSource(v8, runloopSource, v12);
+  CFRunLoopAddSource(getCFRunLoop, runloopSource, v12);
 }
 
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode
 {
-  v6 = a4;
+  modeCopy = mode;
   if (self->_internal->_runloopSource)
   {
-    v12 = v6;
-    v7 = [a3 getCFRunLoop];
+    v12 = modeCopy;
+    getCFRunLoop = [loop getCFRunLoop];
     runloopSource = self->_internal->_runloopSource;
     v9 = [(__CFString *)v12 isEqualToString:*MEMORY[0x1E695D918]];
     v10 = *MEMORY[0x1E695E8E0];
@@ -121,15 +121,15 @@
       v11 = v12;
     }
 
-    CFRunLoopRemoveSource(v7, runloopSource, v11);
-    v6 = v12;
+    CFRunLoopRemoveSource(getCFRunLoop, runloopSource, v11);
+    modeCopy = v12;
   }
 }
 
-- (void)_postEventToDelegate:(unint64_t)a3
+- (void)_postEventToDelegate:(unint64_t)delegate
 {
   WeakRetained = objc_loadWeakRetained(&self->_internal->_delegate);
-  [WeakRetained stream:self handleEvent:a3];
+  [WeakRetained stream:self handleEvent:delegate];
 }
 
 - (void)open
@@ -139,9 +139,9 @@
     return;
   }
 
-  v3 = [(NSURL *)self->_url filePathURL];
-  v4 = [v3 absoluteURL];
-  self->_file = gzopen([v4 fileSystemRepresentation], "r");
+  filePathURL = [(NSURL *)self->_url filePathURL];
+  absoluteURL = [filePathURL absoluteURL];
+  self->_file = gzopen([absoluteURL fileSystemRepresentation], "r");
 
   internal = self->_internal;
   if (self->_file)
@@ -198,17 +198,17 @@ LABEL_8:
 
 - (void)close
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  file = v2->_file;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  file = selfCopy->_file;
   if (file)
   {
-    gzclose(v2->_file);
-    v2->_file = 0;
-    v2->_internal->_status = 6;
-    v7 = MEMORY[0x1E12E11B0](v2->_onClose);
-    onClose = v2->_onClose;
-    v2->_onClose = 0;
+    gzclose(selfCopy->_file);
+    selfCopy->_file = 0;
+    selfCopy->_internal->_status = 6;
+    v7 = MEMORY[0x1E12E11B0](selfCopy->_onClose);
+    onClose = selfCopy->_onClose;
+    selfCopy->_onClose = 0;
   }
 
   else
@@ -216,7 +216,7 @@ LABEL_8:
     v7 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = v7;
   if (file)
@@ -231,17 +231,17 @@ LABEL_8:
 
   if (!v6)
   {
-    (*(v7 + 16))(v7, v2);
+    (*(v7 + 16))(v7, selfCopy);
     v5 = v7;
   }
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
-  v4 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  internal = v6->_internal;
+  lengthCopy = length;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  internal = selfCopy->_internal;
   if (internal->_status != 2)
   {
     v9 = 0;
@@ -249,9 +249,9 @@ LABEL_8:
   }
 
   internal->_status = 3;
-  v8 = gzread(v6->_file, a3, v4);
+  v8 = gzread(selfCopy->_file, read, lengthCopy);
   LODWORD(v9) = v8;
-  v6->_internal->_status = 2;
+  selfCopy->_internal->_status = 2;
   if (!v8)
   {
     goto LABEL_7;
@@ -259,56 +259,56 @@ LABEL_8:
 
   if (v8 == -1)
   {
-    v10 = CreateGzfileError(v6->_file);
-    v11 = v6->_internal;
+    v10 = CreateGzfileError(selfCopy->_file);
+    v11 = selfCopy->_internal;
     error = v11->_error;
     v11->_error = v10;
 
-    v6->_internal->_status = 7;
-    [(_SYStreamGuts *)v6->_internal postStreamEvent:8 forStream:v6];
+    selfCopy->_internal->_status = 7;
+    [(_SYStreamGuts *)selfCopy->_internal postStreamEvent:8 forStream:selfCopy];
     v9 = -1;
     goto LABEL_14;
   }
 
-  if (gzeof(v6->_file) == 1)
+  if (gzeof(selfCopy->_file) == 1)
   {
 LABEL_7:
-    v6->_internal->_status = 5;
-    [(_SYStreamGuts *)v6->_internal postStreamEvent:16 forStream:v6];
+    selfCopy->_internal->_status = 5;
+    [(_SYStreamGuts *)selfCopy->_internal postStreamEvent:16 forStream:selfCopy];
   }
 
   if (v9 >= 1)
   {
-    v6->_byteCount += v9;
-    progress = v6->_progress;
+    selfCopy->_byteCount += v9;
+    progress = selfCopy->_progress;
     if (progress)
     {
       [(NSProgress *)progress setCompletedUnitCount:?];
     }
   }
 
-  if ([(SYCompressedFileInputStream *)v6 hasBytesAvailable])
+  if ([(SYCompressedFileInputStream *)selfCopy hasBytesAvailable])
   {
-    [(_SYStreamGuts *)v6->_internal postStreamEvent:2 forStream:v6];
+    [(_SYStreamGuts *)selfCopy->_internal postStreamEvent:2 forStream:selfCopy];
   }
 
   v9 = v9;
 LABEL_14:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
 - (BOOL)hasBytesAvailable
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_internal->_status != 2 || gzeof(v2->_file) == 1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_internal->_status != 2 || gzeof(selfCopy->_file) == 1)
   {
     goto LABEL_3;
   }
 
-  file = v2->_file;
+  file = selfCopy->_file;
   if (file->have)
   {
     --file->have;
@@ -318,7 +318,7 @@ LABEL_14:
     file->pos = v6;
     v7 = *next;
 LABEL_7:
-    gzungetc(v7, v2->_file);
+    gzungetc(v7, selfCopy->_file);
     v3 = 1;
     goto LABEL_8;
   }
@@ -332,26 +332,26 @@ LABEL_7:
 LABEL_3:
   v3 = 0;
 LABEL_8:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  if (v6 == self)
+  streamCopy = stream;
+  if (streamCopy == self)
   {
-    if (a4 <= 3)
+    if (event <= 3)
     {
-      if (a4 == 1)
+      if (event == 1)
       {
         v7 = 160;
       }
 
       else
       {
-        if (a4 != 2)
+        if (event != 2)
         {
           goto LABEL_17;
         }
@@ -362,7 +362,7 @@ LABEL_8:
 
     else
     {
-      switch(a4)
+      switch(event)
       {
         case 4uLL:
           v7 = 176;

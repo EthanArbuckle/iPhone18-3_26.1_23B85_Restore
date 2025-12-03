@@ -1,71 +1,71 @@
 @interface UNSDefaultDataProvider
 - (BOOL)_isAppProtectionActive;
-- (BOOL)_isResourceValidForPath:(id)a3 withContainerPath:(id)a4;
-- (BOOL)_isTCCUserAvailabilityGrantedForBundleId:(id)a3;
-- (BOOL)_queue_supportsCriticalAlertsForSubsectionIDs:(id)a3;
-- (BOOL)_queue_supportsTimeSensitiveAlertsforSubsectionIDs:(id)a3;
+- (BOOL)_isResourceValidForPath:(id)path withContainerPath:(id)containerPath;
+- (BOOL)_isTCCUserAvailabilityGrantedForBundleId:(id)id;
+- (BOOL)_queue_supportsCriticalAlertsForSubsectionIDs:(id)ds;
+- (BOOL)_queue_supportsTimeSensitiveAlertsforSubsectionIDs:(id)ds;
 - (BSCFBundle)bundle;
-- (UNSDefaultDataProvider)initWithNotificationSourceDescription:(id)a3 applicationLauncher:(id)a4 daemonLauncher:(id)a5 categoryRepository:(id)a6 notificationRepository:(id)a7 topicRepository:(id)a8 attachmentsService:(id)a9 localizationService:(id)a10 summaryService:(id)a11 queue:(id)a12;
-- (id)_actionFromActionRecord:(id)a3;
-- (id)_actionsFromActionRecords:(id)a3;
-- (id)_allBulletinsWithMaxCount:(unint64_t)a3 sinceDate:(id)a4;
+- (UNSDefaultDataProvider)initWithNotificationSourceDescription:(id)description applicationLauncher:(id)launcher daemonLauncher:(id)daemonLauncher categoryRepository:(id)repository notificationRepository:(id)notificationRepository topicRepository:(id)topicRepository attachmentsService:(id)service localizationService:(id)self0 summaryService:(id)self1 queue:(id)self2;
+- (id)_actionFromActionRecord:(id)record;
+- (id)_actionsFromActionRecords:(id)records;
+- (id)_allBulletinsWithMaxCount:(unint64_t)count sinceDate:(id)date;
 - (id)_allCategories;
-- (id)_bbContactFromUNContact:(id)a3;
-- (id)_bbContentTypeFromUNContentType:(id)a3 toneAlertType:(int64_t)a4;
-- (id)_categoryForIdentifier:(id)a3;
-- (id)_categoryForNotification:(id)a3;
-- (id)_defaultActionWithNotification:(id)a3;
-- (id)_dismissActionForCategory:(id)a3;
-- (id)_followActivityActionForCategory:(id)a3;
-- (id)_localizeClientString:(id)a3 inBundle:(id)a4;
-- (id)_pathForSoundName:(id)a3;
-- (id)_queue_applicableSectionInfosForSubsectionIDs:(id)a3;
-- (id)_queue_bulletinForNotification:(id)a3;
-- (id)_safeAttributedMessageWithAttributedMessage:(id)a3 contentType:(id)a4;
-- (id)_sectionIconForNotificationSourceDescription:(id)a3;
-- (id)_sectionIconVariantForApplicationIdentifier:(id)a3 format:(int64_t)a4;
-- (id)_sectionIconVariantForUTI:(id)a3 format:(int64_t)a4;
-- (id)_silenceActionForCategory:(id)a3;
-- (id)_soundsDirectoryPathForContainerBasePath:(id)a3;
-- (id)_supplementaryActionsForForCategoryRecord:(id)a3;
-- (id)_topicForIdentifier:(id)a3;
-- (id)_unarchiveNotificationFromData:(id)a3;
+- (id)_bbContactFromUNContact:(id)contact;
+- (id)_bbContentTypeFromUNContentType:(id)type toneAlertType:(int64_t)alertType;
+- (id)_categoryForIdentifier:(id)identifier;
+- (id)_categoryForNotification:(id)notification;
+- (id)_defaultActionWithNotification:(id)notification;
+- (id)_dismissActionForCategory:(id)category;
+- (id)_followActivityActionForCategory:(id)category;
+- (id)_localizeClientString:(id)string inBundle:(id)bundle;
+- (id)_pathForSoundName:(id)name;
+- (id)_queue_applicableSectionInfosForSubsectionIDs:(id)ds;
+- (id)_queue_bulletinForNotification:(id)notification;
+- (id)_safeAttributedMessageWithAttributedMessage:(id)message contentType:(id)type;
+- (id)_sectionIconForNotificationSourceDescription:(id)description;
+- (id)_sectionIconVariantForApplicationIdentifier:(id)identifier format:(int64_t)format;
+- (id)_sectionIconVariantForUTI:(id)i format:(int64_t)format;
+- (id)_silenceActionForCategory:(id)category;
+- (id)_soundsDirectoryPathForContainerBasePath:(id)path;
+- (id)_supplementaryActionsForForCategoryRecord:(id)record;
+- (id)_topicForIdentifier:(id)identifier;
+- (id)_unarchiveNotificationFromData:(id)data;
 - (id)_userAvailabilityTCCApprovedBundleIds;
-- (id)bulletinsWithRequestParameters:(id)a3 lastCleared:(id)a4;
-- (id)clearedInfoAndBulletinsForClearingAllBulletinsWithLimit:(unint64_t)a3 lastClearedInfo:(id)a4;
-- (id)clearedInfoForBulletins:(id)a3 lastClearedInfo:(id)a4;
+- (id)bulletinsWithRequestParameters:(id)parameters lastCleared:(id)cleared;
+- (id)clearedInfoAndBulletinsForClearingAllBulletinsWithLimit:(unint64_t)limit lastClearedInfo:(id)info;
+- (id)clearedInfoForBulletins:(id)bulletins lastClearedInfo:(id)info;
 - (id)defaultSectionInfo;
 - (id)defaultSubsectionInfos;
-- (id)displayNameForSubsectionID:(id)a3;
+- (id)displayNameForSubsectionID:(id)d;
 - (id)notificationRecords;
 - (id)sectionBundlePath;
 - (id)sectionParameters;
 - (id)sortDescriptors;
-- (unint64_t)_bulletinInterruptionLevelForInterruptionLevel:(unint64_t)a3;
-- (unint64_t)_bulletinPriorityStatusForNotificationPriorityStatus:(unint64_t)a3;
-- (unint64_t)_bulletinSummaryStatusForNotificationSummaryStatus:(unint64_t)a3;
-- (unint64_t)_destinationsForNotification:(id)a3;
-- (unint64_t)_notificationRecordPriorityStatusForBulletinStatus:(unint64_t)a3;
-- (unint64_t)_notificationRecordSummaryStatusForBulletinStatus:(unint64_t)a3;
-- (void)_addAttachments:(id)a3 toBulletinRequest:(id)a4;
-- (void)_handleBulletinActionResponse:(id)a3 withCompletion:(id)a4;
-- (void)_queue_addBulletinForNotification:(id)a3 shouldRepost:(BOOL)a4;
-- (void)_queue_fetchBulletinForNotification:(id)a3;
-- (void)_queue_modifyBulletinForNotification:(id)a3;
-- (void)_queue_notificationRepositoryDidPerformUpdates:(id)a3;
-- (void)_queue_withdrawBulletinForNotification:(id)a3 shouldSync:(BOOL)a4;
-- (void)_setNotificationSourceDescription:(id)a3;
-- (void)categoryRepository:(id)a3 didChangeCategoriesForBundleIdentifier:(id)a4;
+- (unint64_t)_bulletinInterruptionLevelForInterruptionLevel:(unint64_t)level;
+- (unint64_t)_bulletinPriorityStatusForNotificationPriorityStatus:(unint64_t)status;
+- (unint64_t)_bulletinSummaryStatusForNotificationSummaryStatus:(unint64_t)status;
+- (unint64_t)_destinationsForNotification:(id)notification;
+- (unint64_t)_notificationRecordPriorityStatusForBulletinStatus:(unint64_t)status;
+- (unint64_t)_notificationRecordSummaryStatusForBulletinStatus:(unint64_t)status;
+- (void)_addAttachments:(id)attachments toBulletinRequest:(id)request;
+- (void)_handleBulletinActionResponse:(id)response withCompletion:(id)completion;
+- (void)_queue_addBulletinForNotification:(id)notification shouldRepost:(BOOL)repost;
+- (void)_queue_fetchBulletinForNotification:(id)notification;
+- (void)_queue_modifyBulletinForNotification:(id)notification;
+- (void)_queue_notificationRepositoryDidPerformUpdates:(id)updates;
+- (void)_queue_withdrawBulletinForNotification:(id)notification shouldSync:(BOOL)sync;
+- (void)_setNotificationSourceDescription:(id)description;
+- (void)categoryRepository:(id)repository didChangeCategoriesForBundleIdentifier:(id)identifier;
 - (void)dataProviderDidLoad;
 - (void)dealloc;
-- (void)handleBulletinActionResponse:(id)a3 withCompletion:(id)a4;
+- (void)handleBulletinActionResponse:(id)response withCompletion:(id)completion;
 - (void)invalidate;
-- (void)notificationRepository:(id)a3 didDiscoverContentOnFirstUnlockForBundleIdentifier:(id)a4;
-- (void)notificationRepository:(id)a3 didPerformUpdates:(id)a4 forBundleIdentifier:(id)a5;
-- (void)setEffectiveSectionInfo:(id)a3;
-- (void)setNotificationSourceDescription:(id)a3;
-- (void)summaryServiceAdapter:(id)a3 didReceiveGroupSummariesForNotificationIdentifiers:(id)a4;
-- (void)topicRepository:(id)a3 didChangeTopicsForBundleIdentifier:(id)a4;
+- (void)notificationRepository:(id)repository didDiscoverContentOnFirstUnlockForBundleIdentifier:(id)identifier;
+- (void)notificationRepository:(id)repository didPerformUpdates:(id)updates forBundleIdentifier:(id)identifier;
+- (void)setEffectiveSectionInfo:(id)info;
+- (void)setNotificationSourceDescription:(id)description;
+- (void)summaryServiceAdapter:(id)adapter didReceiveGroupSummariesForNotificationIdentifiers:(id)identifiers;
+- (void)topicRepository:(id)repository didChangeTopicsForBundleIdentifier:(id)identifier;
 - (void)uninstall;
 - (void)unloadBundle;
 @end
@@ -81,8 +81,8 @@
     if (bundle)
     {
       localizationService = self->_localizationService;
-      v5 = [(BSCFBundle *)bundle bundleIdentifier];
-      v6 = [(UNCLocalizationService *)localizationService bundleWithIdentifier:v5];
+      bundleIdentifier = [(BSCFBundle *)bundle bundleIdentifier];
+      v6 = [(UNCLocalizationService *)localizationService bundleWithIdentifier:bundleIdentifier];
       v7 = self->_bundle;
       self->_bundle = v6;
 
@@ -93,59 +93,59 @@
   return bundle;
 }
 
-- (UNSDefaultDataProvider)initWithNotificationSourceDescription:(id)a3 applicationLauncher:(id)a4 daemonLauncher:(id)a5 categoryRepository:(id)a6 notificationRepository:(id)a7 topicRepository:(id)a8 attachmentsService:(id)a9 localizationService:(id)a10 summaryService:(id)a11 queue:(id)a12
+- (UNSDefaultDataProvider)initWithNotificationSourceDescription:(id)description applicationLauncher:(id)launcher daemonLauncher:(id)daemonLauncher categoryRepository:(id)repository notificationRepository:(id)notificationRepository topicRepository:(id)topicRepository attachmentsService:(id)service localizationService:(id)self0 summaryService:(id)self1 queue:(id)self2
 {
-  v34 = a3;
-  v33 = a4;
-  v32 = a5;
-  v31 = a6;
-  v30 = a7;
-  v29 = a8;
-  v28 = a9;
-  v27 = a10;
-  v26 = a11;
-  v25 = a12;
+  descriptionCopy = description;
+  launcherCopy = launcher;
+  daemonLauncherCopy = daemonLauncher;
+  repositoryCopy = repository;
+  notificationRepositoryCopy = notificationRepository;
+  topicRepositoryCopy = topicRepository;
+  serviceCopy = service;
+  localizationServiceCopy = localizationService;
+  summaryServiceCopy = summaryService;
+  queueCopy = queue;
   v35.receiver = self;
   v35.super_class = UNSDefaultDataProvider;
   v18 = [(UNSDefaultDataProvider *)&v35 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_queue, a12);
-    objc_storeStrong(&v19->_appLauncher, a4);
-    objc_storeStrong(&v19->_daemonLauncher, a5);
-    objc_storeStrong(&v19->_categoryRepository, a6);
-    objc_storeStrong(&v19->_topicRepository, a8);
-    objc_storeStrong(&v19->_notificationRepository, a7);
-    objc_storeStrong(&v19->_attachmentsService, a9);
-    objc_storeStrong(&v19->_localizationService, a10);
-    objc_storeStrong(&v19->_summaryService, a11);
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v18->_queue, queue);
+    objc_storeStrong(&v19->_appLauncher, launcher);
+    objc_storeStrong(&v19->_daemonLauncher, daemonLauncher);
+    objc_storeStrong(&v19->_categoryRepository, repository);
+    objc_storeStrong(&v19->_topicRepository, topicRepository);
+    objc_storeStrong(&v19->_notificationRepository, notificationRepository);
+    objc_storeStrong(&v19->_attachmentsService, service);
+    objc_storeStrong(&v19->_localizationService, localizationService);
+    objc_storeStrong(&v19->_summaryService, summaryService);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     categoryToParamSubType = v19->_categoryToParamSubType;
-    v19->_categoryToParamSubType = v20;
+    v19->_categoryToParamSubType = dictionary;
 
-    [(UNSDefaultDataProvider *)v19 _setNotificationSourceDescription:v34];
-    v22 = [(UNSDefaultDataProvider *)v19 sectionParameters];
-    v23 = [v34 bundleIdentifier];
-    [(UNCNotificationRepository *)v19->_notificationRepository addObserver:v19 forBundleIdentifier:v23];
-    [(UNSNotificationCategoryRepository *)v19->_categoryRepository addObserver:v19 forBundleIdentifier:v23];
-    [(UNCNotificationTopicRepository *)v19->_topicRepository addObserver:v19 forBundleIdentifier:v23];
-    [(UNSSummaryServiceAdapter *)v19->_summaryService addObserver:v19 forBundleIdentifier:v23];
+    [(UNSDefaultDataProvider *)v19 _setNotificationSourceDescription:descriptionCopy];
+    sectionParameters = [(UNSDefaultDataProvider *)v19 sectionParameters];
+    bundleIdentifier = [descriptionCopy bundleIdentifier];
+    [(UNCNotificationRepository *)v19->_notificationRepository addObserver:v19 forBundleIdentifier:bundleIdentifier];
+    [(UNSNotificationCategoryRepository *)v19->_categoryRepository addObserver:v19 forBundleIdentifier:bundleIdentifier];
+    [(UNCNotificationTopicRepository *)v19->_topicRepository addObserver:v19 forBundleIdentifier:bundleIdentifier];
+    [(UNSSummaryServiceAdapter *)v19->_summaryService addObserver:v19 forBundleIdentifier:bundleIdentifier];
   }
 
   return v19;
 }
 
-- (void)_setNotificationSourceDescription:(id)a3
+- (void)_setNotificationSourceDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(UNSDefaultDataProvider *)self _sectionIconForNotificationSourceDescription:v4];
+  descriptionCopy = description;
+  v5 = [(UNSDefaultDataProvider *)self _sectionIconForNotificationSourceDescription:descriptionCopy];
   sectionIcon = self->_sectionIcon;
   self->_sectionIcon = v5;
 
   notificationSourceDescription = self->_notificationSourceDescription;
-  self->_notificationSourceDescription = v4;
-  v8 = v4;
+  self->_notificationSourceDescription = descriptionCopy;
+  v8 = descriptionCopy;
 
   LOBYTE(notificationSourceDescription) = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription suppressUserAuthorizationPrompt];
   self->_suppressUserAuthorizationPrompt = notificationSourceDescription;
@@ -154,47 +154,47 @@
 - (void)unloadBundle
 {
   localizationService = self->_localizationService;
-  v4 = [(BSCFBundle *)self->_bundle bundleIdentifier];
-  [(UNCLocalizationService *)localizationService unloadBundleWithIdentifier:v4];
+  bundleIdentifier = [(BSCFBundle *)self->_bundle bundleIdentifier];
+  [(UNCLocalizationService *)localizationService unloadBundleWithIdentifier:bundleIdentifier];
 
   bundle = self->_bundle;
   self->_bundle = 0;
 }
 
-- (void)setNotificationSourceDescription:(id)a3
+- (void)setNotificationSourceDescription:(id)description
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptionCopy = description;
   [(UNSDefaultDataProvider *)self unloadBundle];
-  v5 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription isRestricted];
-  v6 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowTimeSensitive];
-  v7 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowMessages];
-  [(UNSDefaultDataProvider *)self _setNotificationSourceDescription:v4];
-  v8 = [v4 isRestricted];
-  v9 = [v4 allowTimeSensitive];
-  v10 = [v4 allowMessages];
+  isRestricted = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription isRestricted];
+  allowTimeSensitive = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowTimeSensitive];
+  allowMessages = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowMessages];
+  [(UNSDefaultDataProvider *)self _setNotificationSourceDescription:descriptionCopy];
+  isRestricted2 = [descriptionCopy isRestricted];
+  allowTimeSensitive2 = [descriptionCopy allowTimeSensitive];
+  allowMessages2 = [descriptionCopy allowMessages];
 
-  if (v5 != v8 || ((v6 ^ v9) & 1) != 0 || v7 != v10)
+  if (isRestricted != isRestricted2 || ((allowTimeSensitive ^ allowTimeSensitive2) & 1) != 0 || allowMessages != allowMessages2)
   {
     v11 = *MEMORY[0x277CE2080];
     if (os_log_type_enabled(*MEMORY[0x277CE2080], OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+      sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
       *buf = 138544898;
-      v18 = v13;
+      v18 = sectionIdentifier;
       v19 = 1024;
-      v20 = v5;
+      v20 = isRestricted;
       v21 = 1024;
-      v22 = v8;
+      v22 = isRestricted2;
       v23 = 1024;
-      v24 = v6;
+      v24 = allowTimeSensitive;
       v25 = 1024;
-      v26 = v9;
+      v26 = allowTimeSensitive2;
       v27 = 1024;
-      v28 = v7;
+      v28 = allowMessages;
       v29 = 1024;
-      v30 = v10;
+      v30 = allowMessages2;
       _os_log_impl(&dword_270AA8000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] defaultSectionInfo changed [ isRestricted %{BOOL}d -> %{BOOL}d, allowTimeSensitive %{BOOL}d -> %{BOOL}d, allowMessages %{BOOL}d -> %{BOOL}d]", buf, 0x30u);
     }
 
@@ -225,9 +225,9 @@
   if (os_log_type_enabled(*MEMORY[0x277CE2080], OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+    sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
     v7 = 138543362;
-    v8 = v5;
+    v8 = sectionIdentifier;
     _os_log_impl(&dword_270AA8000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] data provider loaded", &v7, 0xCu);
   }
 
@@ -239,44 +239,44 @@
 {
   [(UNSDefaultDataProvider *)self invalidate];
   notificationRepository = self->_notificationRepository;
-  v4 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-  [(UNCNotificationRepository *)notificationRepository removeStoreForBundleIdentifier:v4];
+  sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+  [(UNCNotificationRepository *)notificationRepository removeStoreForBundleIdentifier:sectionIdentifier];
 }
 
 - (void)invalidate
 {
   notificationRepository = self->_notificationRepository;
-  v4 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-  [(UNCNotificationRepository *)notificationRepository removeObserver:self forBundleIdentifier:v4];
+  sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+  [(UNCNotificationRepository *)notificationRepository removeObserver:self forBundleIdentifier:sectionIdentifier];
 
   summaryService = self->_summaryService;
-  v6 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-  [(UNSSummaryServiceAdapter *)summaryService removeObserver:self forBundleIdentifier:v6];
+  sectionIdentifier2 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+  [(UNSSummaryServiceAdapter *)summaryService removeObserver:self forBundleIdentifier:sectionIdentifier2];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   proxy = self->_proxy;
   self->_proxy = 0;
 }
 
-- (id)_localizeClientString:(id)a3 inBundle:(id)a4
+- (id)_localizeClientString:(id)string inBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  bundleCopy = bundle;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 un_localizedStringKey];
-    v8 = [v5 un_localizedStringArguments];
-    [v6 cfBundle];
-    v9 = [v5 un_localizedStringValue];
+    un_localizedStringKey = [stringCopy un_localizedStringKey];
+    un_localizedStringArguments = [stringCopy un_localizedStringArguments];
+    [bundleCopy cfBundle];
+    un_localizedStringValue = [stringCopy un_localizedStringValue];
     v10 = UNFormatLocalizedStringInBundleWithDefaultValue();
   }
 
   else
   {
-    v10 = [v6 localizedStringForKey:v5 value:&stru_288095958 table:0];
+    v10 = [bundleCopy localizedStringForKey:stringCopy value:&stru_288095958 table:0];
   }
 
   return v10;
@@ -299,11 +299,11 @@
 
   [v3 setMessageNumberOfLines:v4];
   v25 = v3;
-  v5 = [v3 defaultSubtypeParameters];
-  [v5 setSuppressesAlertsWhenAppIsActive:0];
-  [v5 setSuppressesTitle:1];
-  v23 = v5;
-  [v5 setIPodOutAlertType:3];
+  defaultSubtypeParameters = [v3 defaultSubtypeParameters];
+  [defaultSubtypeParameters setSuppressesAlertsWhenAppIsActive:0];
+  [defaultSubtypeParameters setSuppressesTitle:1];
+  v23 = defaultSubtypeParameters;
+  [defaultSubtypeParameters setIPodOutAlertType:3];
   [(UNSDefaultDataProvider *)self _allCategories];
   v28 = 0u;
   v29 = 0u;
@@ -324,22 +324,22 @@
         }
 
         v8 = *(*(&v28 + 1) + 8 * i);
-        v9 = [v8 identifier];
-        if (v9)
+        identifier = [v8 identifier];
+        if (identifier)
         {
           categoryToParamSubType = self->_categoryToParamSubType;
           v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:v6];
-          [(NSMutableDictionary *)categoryToParamSubType setObject:v11 forKey:v9];
+          [(NSMutableDictionary *)categoryToParamSubType setObject:v11 forKey:identifier];
 
           v12 = [v25 parametersForSubtype:v6];
-          v13 = [v8 privateBody];
-          v14 = [(UNSDefaultDataProvider *)self bundle];
-          v15 = [(UNSDefaultDataProvider *)self _localizeClientString:v13 inBundle:v14];
+          privateBody = [v8 privateBody];
+          bundle = [(UNSDefaultDataProvider *)self bundle];
+          v15 = [(UNSDefaultDataProvider *)self _localizeClientString:privateBody inBundle:bundle];
 
           [v12 setHiddenPreviewsBodyPlaceholder:v15];
-          v16 = [v8 summaryFormat];
-          v17 = [(UNSDefaultDataProvider *)self bundle];
-          v18 = [(UNSDefaultDataProvider *)self _localizeClientString:v16 inBundle:v17];
+          summaryFormat = [v8 summaryFormat];
+          bundle2 = [(UNSDefaultDataProvider *)self bundle];
+          v18 = [(UNSDefaultDataProvider *)self _localizeClientString:summaryFormat inBundle:bundle2];
 
           [v12 setSubtypeSummaryFormat:v18];
           if ([(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowPrivateProperties])
@@ -357,15 +357,15 @@
             [v12 setSuppressPresentationInAmbient:{objc_msgSend(v8, "suppressPresentationInAmbient")}];
           }
 
-          v19 = [v8 privacyOptionShowTitle];
+          privacyOptionShowTitle = [v8 privacyOptionShowTitle];
           if ([v8 privacyOptionShowSubtitle])
           {
-            v20 = v19 | 2;
+            v20 = privacyOptionShowTitle | 2;
           }
 
           else
           {
-            v20 = v19;
+            v20 = privacyOptionShowTitle;
           }
 
           [v12 setPrivacySettings:v20];
@@ -386,24 +386,24 @@
 
 - (id)defaultSectionInfo
 {
-  v3 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-  v4 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription isRestricted];
-  v5 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription suppressUserAuthorizationPrompt];
-  v6 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription automaticallyShowSettings];
-  v7 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription hideSettings];
+  sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+  isRestricted = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription isRestricted];
+  suppressUserAuthorizationPrompt = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription suppressUserAuthorizationPrompt];
+  automaticallyShowSettings = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription automaticallyShowSettings];
+  hideSettings = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription hideSettings];
   if (_os_feature_enabled_impl())
   {
     goto LABEL_2;
   }
 
-  v9 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription defaultTopics];
-  if ([v9 count])
+  defaultTopics = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription defaultTopics];
+  if ([defaultTopics count])
   {
   }
 
   else
   {
-    v10 = [(UNCNotificationTopicRepository *)self->_topicRepository topicsForBundleIdentifier:v3];
+    v10 = [(UNCNotificationTopicRepository *)self->_topicRepository topicsForBundleIdentifier:sectionIdentifier];
     v11 = [v10 count];
 
     if (!v11)
@@ -417,10 +417,10 @@ LABEL_2:
   v8 = -1;
 LABEL_7:
   v12 = [MEMORY[0x277CF3568] defaultSectionInfoForType:0];
-  [v12 setSectionID:v3];
-  [v12 setIsRestricted:v4];
+  [v12 setSectionID:sectionIdentifier];
+  [v12 setIsRestricted:isRestricted];
   [v12 setIsAppClip:{-[UNCNotificationSourceDescription isAppClip](self->_notificationSourceDescription, "isAppClip")}];
-  if ((v5 & (v7 | v6)) != 0)
+  if ((suppressUserAuthorizationPrompt & (hideSettings | automaticallyShowSettings)) != 0)
   {
     v13 = 2;
   }
@@ -431,15 +431,15 @@ LABEL_7:
   }
 
   [v12 setAuthorizationStatus:v13];
-  [v12 setSuppressFromSettings:v7];
+  [v12 setSuppressFromSettings:hideSettings];
   [v12 setSuppressedSettings:v8];
-  v14 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription customSettingsBundle];
-  [v12 setCustomSettingsBundle:v14];
+  customSettingsBundle = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription customSettingsBundle];
+  [v12 setCustomSettingsBundle:customSettingsBundle];
 
-  v15 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription customSettingsDetailControllerClass];
-  [v12 setCustomSettingsDetailControllerClass:v15];
+  customSettingsDetailControllerClass = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription customSettingsDetailControllerClass];
+  [v12 setCustomSettingsDetailControllerClass:customSettingsDetailControllerClass];
 
-  v16 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription defaultSettings];
+  defaultSettings = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription defaultSettings];
   if ([(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowTimeSensitive])
   {
     v17 = 2;
@@ -467,9 +467,9 @@ LABEL_7:
     [v12 setAnnounceSetting:2];
   }
 
-  if (v16)
+  if (defaultSettings)
   {
-    [v12 uns_setPropertiesFromSourceSettingsDescription:v16];
+    [v12 uns_setPropertiesFromSourceSettingsDescription:defaultSettings];
   }
 
   return v12;
@@ -478,16 +478,16 @@ LABEL_7:
 - (id)defaultSubsectionInfos
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription defaultTopics];
-  if ([v4 count])
+  defaultTopics = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription defaultTopics];
+  if ([defaultTopics count])
   {
-    v5 = [v4 bs_map:&__block_literal_global_6];
+    v5 = [defaultTopics bs_map:&__block_literal_global_6];
     [v3 addObjectsFromArray:v5];
   }
 
   topicRepository = self->_topicRepository;
-  v7 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-  v8 = [(UNCNotificationTopicRepository *)topicRepository topicsForBundleIdentifier:v7];
+  sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+  v8 = [(UNCNotificationTopicRepository *)topicRepository topicsForBundleIdentifier:sectionIdentifier];
 
   v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_15];
   if (-[UNCNotificationSourceDescription allowPrivateProperties](self->_notificationSourceDescription, "allowPrivateProperties") && [v9 count])
@@ -561,11 +561,11 @@ id __48__UNSDefaultDataProvider_defaultSubsectionInfos__block_invoke_3(uint64_t 
   return v5;
 }
 
-- (id)_topicForIdentifier:(id)a3
+- (id)_topicForIdentifier:(id)identifier
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     [(UNCNotificationSourceDescription *)self->_notificationSourceDescription defaultTopics];
     v31 = 0u;
@@ -587,8 +587,8 @@ id __48__UNSDefaultDataProvider_defaultSubsectionInfos__block_invoke_3(uint64_t 
           }
 
           v10 = *(*(&v31 + 1) + 8 * i);
-          v11 = [v10 identifier];
-          v12 = [v4 isEqual:v11];
+          identifier = [v10 identifier];
+          v12 = [identifierCopy isEqual:identifier];
 
           if (v12)
           {
@@ -609,8 +609,8 @@ id __48__UNSDefaultDataProvider_defaultSubsectionInfos__block_invoke_3(uint64_t 
     }
 
     topicRepository = self->_topicRepository;
-    v14 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-    v15 = [(UNCNotificationTopicRepository *)topicRepository topicsForBundleIdentifier:v14];
+    sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+    v15 = [(UNCNotificationTopicRepository *)topicRepository topicsForBundleIdentifier:sectionIdentifier];
 
     v29 = 0u;
     v30 = 0u;
@@ -632,8 +632,8 @@ id __48__UNSDefaultDataProvider_defaultSubsectionInfos__block_invoke_3(uint64_t 
           }
 
           v21 = *(*(&v27 + 1) + 8 * j);
-          v22 = [v21 identifier];
-          v23 = [v4 isEqual:v22];
+          identifier2 = [v21 identifier];
+          v23 = [identifierCopy isEqual:identifier2];
 
           if (v23)
           {
@@ -667,16 +667,16 @@ LABEL_22:
   return v24;
 }
 
-- (id)displayNameForSubsectionID:(id)a3
+- (id)displayNameForSubsectionID:(id)d
 {
-  v4 = [(UNSDefaultDataProvider *)self _topicForIdentifier:a3];
+  v4 = [(UNSDefaultDataProvider *)self _topicForIdentifier:d];
   if (v4)
   {
-    v5 = [(UNSDefaultDataProvider *)self bundle];
-    [v5 cfBundle];
+    bundle = [(UNSDefaultDataProvider *)self bundle];
+    [bundle cfBundle];
 
-    v6 = [v4 displayNameLocalizationKey];
-    v7 = [v4 displayName];
+    displayNameLocalizationKey = [v4 displayNameLocalizationKey];
+    displayName = [v4 displayName];
     v8 = UNFormatLocalizedStringInBundleWithDefaultValue();
   }
 
@@ -688,19 +688,19 @@ LABEL_22:
   return v8;
 }
 
-- (id)_queue_bulletinForNotification:(id)a3
+- (id)_queue_bulletinForNotification:(id)notification
 {
   v225 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   dispatch_assert_queue_V2(self->_queue);
-  if (!v4)
+  if (!notificationCopy)
   {
     v32 = 0;
     goto LABEL_164;
   }
 
-  v5 = [v4 identifier];
-  if (![v5 length])
+  identifier = [notificationCopy identifier];
+  if (![identifier length])
   {
     v33 = *MEMORY[0x277CE2080];
     if (os_log_type_enabled(*MEMORY[0x277CE2080], OS_LOG_TYPE_ERROR))
@@ -712,106 +712,106 @@ LABEL_22:
     goto LABEL_163;
   }
 
-  v6 = [(UNSDefaultDataProvider *)self bundle];
-  [v6 cfBundle];
+  bundle = [(UNSDefaultDataProvider *)self bundle];
+  [bundle cfBundle];
 
-  v7 = [v4 titleLocalizationKey];
-  v8 = [v4 titleLocalizationArguments];
-  v9 = [v4 title];
+  titleLocalizationKey = [notificationCopy titleLocalizationKey];
+  titleLocalizationArguments = [notificationCopy titleLocalizationArguments];
+  title = [notificationCopy title];
   v203 = UNFormatLocalizedStringInBundleWithDefaultValue();
 
-  v10 = [v4 subtitleLocalizationKey];
-  v11 = [v4 subtitleLocalizationArguments];
-  v12 = [v4 subtitle];
+  subtitleLocalizationKey = [notificationCopy subtitleLocalizationKey];
+  subtitleLocalizationArguments = [notificationCopy subtitleLocalizationArguments];
+  subtitle = [notificationCopy subtitle];
   v202 = UNFormatLocalizedStringInBundleWithDefaultValue();
 
-  v13 = [v4 bodyLocalizationKey];
-  v14 = [v4 bodyLocalizationArguments];
-  v15 = [v4 body];
+  bodyLocalizationKey = [notificationCopy bodyLocalizationKey];
+  bodyLocalizationArguments = [notificationCopy bodyLocalizationArguments];
+  body = [notificationCopy body];
   v206 = UNFormatLocalizedStringInBundleWithDefaultValue();
 
-  v211 = [v4 attributedBody];
-  v201 = [v4 summaryArgument];
-  v16 = [v4 summaryArgumentCount];
-  v200 = [v4 badge];
-  v167 = [v4 targetContentIdentifier];
-  v199 = [v4 userInfo];
-  v205 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-  v17 = [v4 categoryIdentifier];
-  v197 = [(UNSDefaultDataProvider *)self _defaultActionWithNotification:v4];
-  v198 = v17;
-  v168 = [(UNSDefaultDataProvider *)self _categoryForIdentifier:v17];
+  attributedBody = [notificationCopy attributedBody];
+  summaryArgument = [notificationCopy summaryArgument];
+  summaryArgumentCount = [notificationCopy summaryArgumentCount];
+  badge = [notificationCopy badge];
+  targetContentIdentifier = [notificationCopy targetContentIdentifier];
+  userInfo = [notificationCopy userInfo];
+  sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+  categoryIdentifier = [notificationCopy categoryIdentifier];
+  v197 = [(UNSDefaultDataProvider *)self _defaultActionWithNotification:notificationCopy];
+  v198 = categoryIdentifier;
+  v168 = [(UNSDefaultDataProvider *)self _categoryForIdentifier:categoryIdentifier];
   v196 = [(UNSDefaultDataProvider *)self _dismissActionForCategory:v168];
   v195 = [(UNSDefaultDataProvider *)self _followActivityActionForCategory:v168];
   v194 = [(UNSDefaultDataProvider *)self _silenceActionForCategory:v168];
   v193 = [(UNSDefaultDataProvider *)self _supplementaryActionsForForCategoryRecord:v168];
-  v192 = [v168 intentIdentifiers];
-  v191 = [v4 launchImageName];
-  v18 = [v4 realertCount];
-  v209 = [v4 contentDate];
-  v19 = [v4 date];
-  v20 = -[UNSDefaultDataProvider _bulletinInterruptionLevelForInterruptionLevel:](self, "_bulletinInterruptionLevelForInterruptionLevel:", [v4 interruptionLevel]);
-  [v4 relevanceScore];
+  intentIdentifiers = [v168 intentIdentifiers];
+  launchImageName = [notificationCopy launchImageName];
+  realertCount = [notificationCopy realertCount];
+  contentDate = [notificationCopy contentDate];
+  date = [notificationCopy date];
+  v20 = -[UNSDefaultDataProvider _bulletinInterruptionLevelForInterruptionLevel:](self, "_bulletinInterruptionLevelForInterruptionLevel:", [notificationCopy interruptionLevel]);
+  [notificationCopy relevanceScore];
   v22 = v21;
-  v190 = [v4 filterCriteria];
-  v158 = [v4 screenCaptureProhibited];
-  v189 = [v4 speechLanguage];
-  v23 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowPrivateProperties];
-  v210 = v19;
-  v164 = v18;
-  v169 = v16;
-  if (!v23)
+  filterCriteria = [notificationCopy filterCriteria];
+  screenCaptureProhibited = [notificationCopy screenCaptureProhibited];
+  speechLanguage = [notificationCopy speechLanguage];
+  allowPrivateProperties = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowPrivateProperties];
+  v210 = date;
+  v164 = realertCount;
+  v169 = summaryArgumentCount;
+  if (!allowPrivateProperties)
   {
-    v185 = 0;
+    expirationDate = 0;
     v186 = 0;
     v34 = 0;
     v160 = 0;
-    v35 = 0;
-    v162 = 0;
-    v146 = 0;
-    v154 = 0;
-    v152 = 0;
-    v183 = 0;
-    v36 = 0;
+    shouldPreemptPresentedNotification = 0;
+    presentFullScreenAlertOverList = 0;
+    shouldHideTime = 0;
+    shouldSuppressSyncDismissalWhenRemoved = 0;
+    shouldIgnoreDowntime = 0;
+    shouldIgnoreDoNotDisturb = 0;
+    topicIdentifiers = 0;
     v187 = 0;
     v188 = 0;
     v156 = 1;
     v149 = 1;
-    v150 = 0;
-    v204 = v19;
+    shouldDisplayActionsInline = 0;
+    v204 = date;
     goto LABEL_26;
   }
 
-  v24 = [v4 headerLocalizationKey];
-  v25 = [v4 headerLocalizationArguments];
-  v26 = [v4 header];
+  headerLocalizationKey = [notificationCopy headerLocalizationKey];
+  headerLocalizationArguments = [notificationCopy headerLocalizationArguments];
+  header = [notificationCopy header];
   v188 = UNFormatLocalizedStringInBundleWithDefaultValue();
 
-  v27 = [v4 footerLocalizationKey];
-  v28 = [v4 footerLocalizationArguments];
-  v29 = [v4 footer];
+  footerLocalizationKey = [notificationCopy footerLocalizationKey];
+  footerLocalizationArguments = [notificationCopy footerLocalizationArguments];
+  footer = [notificationCopy footer];
   v187 = UNFormatLocalizedStringInBundleWithDefaultValue();
 
-  v162 = [v168 presentFullScreenAlertOverList];
-  v30 = [v168 backgroundStyle];
-  LOBYTE(v27) = [v30 isEqualToString:*MEMORY[0x277D77D80]];
+  presentFullScreenAlertOverList = [v168 presentFullScreenAlertOverList];
+  backgroundStyle = [v168 backgroundStyle];
+  LOBYTE(footerLocalizationKey) = [backgroundStyle isEqualToString:*MEMORY[0x277D77D80]];
 
-  if (v27)
+  if (footerLocalizationKey)
   {
     v31 = 1;
   }
 
   else
   {
-    v37 = [v168 backgroundStyle];
-    v38 = [v37 isEqualToString:*MEMORY[0x277D77D78]];
+    backgroundStyle2 = [v168 backgroundStyle];
+    v38 = [backgroundStyle2 isEqualToString:*MEMORY[0x277D77D78]];
 
     v31 = v38;
   }
 
   v160 = v31;
-  v39 = [v168 listPriority];
-  v40 = [v39 isEqualToString:*MEMORY[0x277D77D88]];
+  listPriority = [v168 listPriority];
+  v40 = [listPriority isEqualToString:*MEMORY[0x277D77D88]];
 
   if (v40)
   {
@@ -820,8 +820,8 @@ LABEL_22:
 
   else
   {
-    v41 = [v168 listPriority];
-    v42 = [v41 isEqualToString:*MEMORY[0x277D77D90]];
+    listPriority2 = [v168 listPriority];
+    v42 = [listPriority2 isEqualToString:*MEMORY[0x277D77D90]];
 
     if (v42)
     {
@@ -834,7 +834,7 @@ LABEL_22:
     }
   }
 
-  if ([v4 shouldHideDate])
+  if ([notificationCopy shouldHideDate])
   {
     v204 = 0;
 LABEL_21:
@@ -843,16 +843,16 @@ LABEL_21:
   }
 
   v204 = v210;
-  if (v209)
+  if (contentDate)
   {
-    v204 = v209;
+    v204 = contentDate;
     goto LABEL_21;
   }
 
 LABEL_22:
-  if ([v4 shouldUseRequestIdentifierForDismissalSync])
+  if ([notificationCopy shouldUseRequestIdentifierForDismissalSync])
   {
-    v186 = v5;
+    v186 = identifier;
   }
 
   else
@@ -860,20 +860,20 @@ LABEL_22:
     v186 = 0;
   }
 
-  v185 = [v4 expirationDate];
-  v36 = [v4 topicIdentifiers];
-  v149 = [v4 shouldSuppressScreenLightUp] ^ 1;
-  v183 = [v4 shouldIgnoreDoNotDisturb];
-  v152 = [v4 shouldIgnoreDowntime];
-  v154 = [v4 shouldSuppressSyncDismissalWhenRemoved];
-  v146 = [v4 shouldHideTime];
-  v35 = [v4 shouldPreemptPresentedNotification];
-  v150 = [v4 shouldDisplayActionsInline];
+  expirationDate = [notificationCopy expirationDate];
+  topicIdentifiers = [notificationCopy topicIdentifiers];
+  v149 = [notificationCopy shouldSuppressScreenLightUp] ^ 1;
+  shouldIgnoreDoNotDisturb = [notificationCopy shouldIgnoreDoNotDisturb];
+  shouldIgnoreDowntime = [notificationCopy shouldIgnoreDowntime];
+  shouldSuppressSyncDismissalWhenRemoved = [notificationCopy shouldSuppressSyncDismissalWhenRemoved];
+  shouldHideTime = [notificationCopy shouldHideTime];
+  shouldPreemptPresentedNotification = [notificationCopy shouldPreemptPresentedNotification];
+  shouldDisplayActionsInline = [notificationCopy shouldDisplayActionsInline];
   v156 = [v168 preventClearFromList] ^ 1;
 LABEL_26:
-  if ([v4 hasCriticalAlertSound])
+  if ([notificationCopy hasCriticalAlertSound])
   {
-    v43 = [(UNSDefaultDataProvider *)self _queue_supportsCriticalAlertsForSubsectionIDs:v36];
+    v43 = [(UNSDefaultDataProvider *)self _queue_supportsCriticalAlertsForSubsectionIDs:topicIdentifiers];
   }
 
   else
@@ -881,7 +881,7 @@ LABEL_26:
     v43 = 0;
   }
 
-  v145 = [v4 shouldShowSubordinateIcon];
+  shouldShowSubordinateIcon = [notificationCopy shouldShowSubordinateIcon];
   v44 = 3;
   if (!v43)
   {
@@ -900,51 +900,51 @@ LABEL_26:
   }
 
   v148 = v45;
-  v213 = [v4 threadIdentifier];
-  if (![v213 length] && v43)
+  threadIdentifier = [notificationCopy threadIdentifier];
+  if (![threadIdentifier length] && v43)
   {
-    v46 = [MEMORY[0x277CCAD78] UUID];
-    v47 = [v46 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v213 = v47;
+    threadIdentifier = uUIDString;
   }
 
-  v48 = [v4 contentType];
-  v212 = -[UNSDefaultDataProvider _bbContentTypeFromUNContentType:toneAlertType:](self, "_bbContentTypeFromUNContentType:toneAlertType:", v48, [v4 toneAlertType]);
+  contentType = [notificationCopy contentType];
+  v212 = -[UNSDefaultDataProvider _bbContentTypeFromUNContentType:toneAlertType:](self, "_bbContentTypeFromUNContentType:toneAlertType:", contentType, [notificationCopy toneAlertType]);
 
-  v166 = v5;
-  v171 = v36;
-  if (![v4 hasSound] || !objc_msgSend(v4, "shouldPlaySound"))
+  v166 = identifier;
+  v171 = topicIdentifiers;
+  if (![notificationCopy hasSound] || !objc_msgSend(notificationCopy, "shouldPlaySound"))
   {
     v50 = 0;
     v180 = 0;
     goto LABEL_89;
   }
 
-  v174 = v35;
-  v49 = v212 == *MEMORY[0x277CF34B8] && [v4 toneAlertType] == 1;
-  if ((v23 | v49))
+  v174 = shouldPreemptPresentedNotification;
+  v49 = v212 == *MEMORY[0x277CF34B8] && [notificationCopy toneAlertType] == 1;
+  if ((allowPrivateProperties | v49))
   {
-    v51 = [v4 toneAlertType];
+    toneAlertType = [notificationCopy toneAlertType];
   }
 
   else
   {
-    v51 = 17;
+    toneAlertType = 17;
   }
 
-  v52 = [objc_alloc(MEMORY[0x277D71F58]) initWithType:v51];
+  v52 = [objc_alloc(MEMORY[0x277D71F58]) initWithType:toneAlertType];
   v53 = v52;
   if (v43)
   {
     [v52 setTopic:*MEMORY[0x277D71FB0]];
   }
 
-  v54 = [v4 toneFileName];
-  v207 = v54;
-  if ([v54 length])
+  toneFileName = [notificationCopy toneFileName];
+  v207 = toneFileName;
+  if ([toneFileName length])
   {
-    v55 = [(UNSDefaultDataProvider *)self _pathForSoundName:v54];
+    v55 = [(UNSDefaultDataProvider *)self _pathForSoundName:toneFileName];
     if ([v55 length])
     {
       v56 = [MEMORY[0x277CBEBC0] fileURLWithPath:v55];
@@ -953,35 +953,35 @@ LABEL_26:
 
     else
     {
-      v57 = v36;
+      v57 = topicIdentifiers;
       v58 = *MEMORY[0x277CE2080];
       if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
       {
-        v179 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-        v182 = [v5 un_logDigest];
+        sectionIdentifier2 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+        un_logDigest = [identifier un_logDigest];
         *buf = 138543874;
-        v220 = v179;
+        v220 = sectionIdentifier2;
         v221 = 2114;
         v222 = v207;
         v223 = 2114;
-        v224 = v182;
+        v224 = un_logDigest;
         _os_log_error_impl(&dword_270AA8000, v58, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to find sound %{public}@ for notification %{public}@", buf, 0x20u);
       }
 
-      v36 = v57;
+      topicIdentifiers = v57;
     }
 
-    v54 = v207;
+    toneFileName = v207;
   }
 
   if (v49)
   {
-    [v4 soundMaximumDuration];
+    [notificationCopy soundMaximumDuration];
     v60 = v59;
     v61 = 30.0;
     if (v60 != 0.0)
     {
-      [v4 soundMaximumDuration];
+      [notificationCopy soundMaximumDuration];
       if (v61 > 30.0)
       {
         v61 = 30.0;
@@ -990,8 +990,8 @@ LABEL_26:
 
     [v53 setMaximumDuration:v61];
     [v53 setTopic:*MEMORY[0x277D71FD0]];
-    v35 = v174;
-    if (!v23)
+    shouldPreemptPresentedNotification = v174;
+    if (!allowPrivateProperties)
     {
       goto LABEL_83;
     }
@@ -999,87 +999,87 @@ LABEL_26:
     goto LABEL_64;
   }
 
-  v35 = v174;
-  if (v23)
+  shouldPreemptPresentedNotification = v174;
+  if (allowPrivateProperties)
   {
-    [v4 soundMaximumDuration];
+    [notificationCopy soundMaximumDuration];
     if (v62 != 0.0)
     {
       [v53 setMaximumDuration:?];
     }
 
 LABEL_64:
-    v63 = [v4 audioCategory];
-    if ([v63 length])
+    audioCategory = [notificationCopy audioCategory];
+    if ([audioCategory length])
     {
-      [v53 setAudioCategory:v63];
+      [v53 setAudioCategory:audioCategory];
     }
 
-    v181 = v63;
-    v64 = [v4 toneMediaLibraryItemIdentifier];
-    if (v64)
+    v181 = audioCategory;
+    toneMediaLibraryItemIdentifier = [notificationCopy toneMediaLibraryItemIdentifier];
+    if (toneMediaLibraryItemIdentifier)
     {
-      [v53 setExternalToneMediaLibraryItemIdentifier:v64];
+      [v53 setExternalToneMediaLibraryItemIdentifier:toneMediaLibraryItemIdentifier];
     }
 
-    v65 = [v4 vibrationPatternFileURL];
-    if (v65)
+    vibrationPatternFileURL = [notificationCopy vibrationPatternFileURL];
+    if (vibrationPatternFileURL)
     {
-      [v53 setExternalVibrationPatternFileURL:v65];
+      [v53 setExternalVibrationPatternFileURL:vibrationPatternFileURL];
     }
 
-    if ([v4 shouldSoundRepeat])
+    if ([notificationCopy shouldSoundRepeat])
     {
       [v53 setShouldRepeat:1];
     }
 
-    v66 = [v4 toneAlertTopic];
-    if ([v66 length])
+    toneAlertTopic = [notificationCopy toneAlertTopic];
+    if ([toneAlertTopic length])
     {
-      [v53 setTopic:v66];
+      [v53 setTopic:toneAlertTopic];
     }
 
-    v67 = [v4 toneIdentifier];
-    if ([v67 length])
+    toneIdentifier = [notificationCopy toneIdentifier];
+    if ([toneIdentifier length])
     {
-      [v53 setToneIdentifier:v67];
+      [v53 setToneIdentifier:toneIdentifier];
     }
 
-    v68 = [v4 toneFileURL];
-    if (v68)
+    toneFileURL = [notificationCopy toneFileURL];
+    if (toneFileURL)
     {
-      [v53 setExternalToneFileURL:v68];
+      [v53 setExternalToneFileURL:toneFileURL];
     }
 
-    v69 = [v4 vibrationIdentifier];
-    if ([v69 length])
+    vibrationIdentifier = [notificationCopy vibrationIdentifier];
+    if ([vibrationIdentifier length])
     {
-      [v53 setVibrationIdentifier:v69];
+      [v53 setVibrationIdentifier:vibrationIdentifier];
     }
 
-    if ([v4 shouldIgnoreAccessibilityDisabledVibrationSetting])
+    if ([notificationCopy shouldIgnoreAccessibilityDisabledVibrationSetting])
     {
       [v53 setShouldIgnoreAccessibilityDisabledVibrationSetting:1];
     }
 
-    v5 = v166;
-    v36 = v171;
-    v35 = v174;
-    v54 = v207;
+    identifier = v166;
+    topicIdentifiers = v171;
+    shouldPreemptPresentedNotification = v174;
+    toneFileName = v207;
   }
 
 LABEL_83:
-  v70 = [v4 audioVolume];
-  v50 = v70;
-  if ((v23 | v43))
+  audioVolume = [notificationCopy audioVolume];
+  v50 = audioVolume;
+  if ((allowPrivateProperties | v43))
   {
-    if (v70)
+    if (audioVolume)
     {
-      [v70 floatValue];
+      [audioVolume floatValue];
       [v53 setAudioVolume:?];
     }
 
-    if (([v4 shouldIgnoreRingerSwitch] | v43))
+    if (([notificationCopy shouldIgnoreRingerSwitch] | v43))
     {
       [v53 setShouldIgnoreRingerSwitch:1];
     }
@@ -1095,61 +1095,61 @@ LABEL_89:
     goto LABEL_100;
   }
 
-  v175 = v35;
-  v71 = [v4 iconApplicationIdentifier];
-  v72 = [v4 iconName];
-  v73 = [v4 iconPath];
-  v74 = [v4 iconSystemImageName];
-  v75 = [v4 iconUTI];
-  v76 = [v4 iconDateComponents];
-  v77 = v76;
-  if (v71)
+  v175 = shouldPreemptPresentedNotification;
+  iconApplicationIdentifier = [notificationCopy iconApplicationIdentifier];
+  iconName = [notificationCopy iconName];
+  iconPath = [notificationCopy iconPath];
+  iconSystemImageName = [notificationCopy iconSystemImageName];
+  iconUTI = [notificationCopy iconUTI];
+  iconDateComponents = [notificationCopy iconDateComponents];
+  v77 = iconDateComponents;
+  if (iconApplicationIdentifier)
   {
-    v78 = [MEMORY[0x277CF3560] variantWithFormat:0 applicationIdentifier:v71];
+    v78 = [MEMORY[0x277CF3560] variantWithFormat:0 applicationIdentifier:iconApplicationIdentifier];
   }
 
-  else if (v73)
+  else if (iconPath)
   {
-    v78 = [MEMORY[0x277CF3560] variantWithFormat:0 imagePath:v73];
+    v78 = [MEMORY[0x277CF3560] variantWithFormat:0 imagePath:iconPath];
   }
 
   else
   {
-    if (v72)
+    if (iconName)
     {
       v141 = MEMORY[0x277CF3560];
-      v178 = [(UNSDefaultDataProvider *)self bundle];
-      v173 = [v178 bundlePath];
-      v79 = [v141 variantWithFormat:0 imageName:v72 inBundleAtPath:v173];
+      bundle2 = [(UNSDefaultDataProvider *)self bundle];
+      bundlePath = [bundle2 bundlePath];
+      v79 = [v141 variantWithFormat:0 imageName:iconName inBundleAtPath:bundlePath];
 
       goto LABEL_96;
     }
 
-    if (v74)
+    if (iconSystemImageName)
     {
-      v78 = [MEMORY[0x277CF3560] variantWithFormat:0 systemImageName:v74];
+      v78 = [MEMORY[0x277CF3560] variantWithFormat:0 systemImageName:iconSystemImageName];
     }
 
-    else if (v75)
+    else if (iconUTI)
     {
-      v78 = [MEMORY[0x277CF3560] variantWithFormat:0 uti:v75];
+      v78 = [MEMORY[0x277CF3560] variantWithFormat:0 uti:iconUTI];
     }
 
     else
     {
-      if (!v76)
+      if (!iconDateComponents)
       {
         v79 = 0;
         goto LABEL_96;
       }
 
-      v78 = [MEMORY[0x277CF3560] variantWithFormat:0 dateComponentDetails:v76];
+      v78 = [MEMORY[0x277CF3560] variantWithFormat:0 dateComponentDetails:iconDateComponents];
     }
   }
 
   v79 = v78;
 LABEL_96:
-  [v79 setPrecomposed:{objc_msgSend(v4, "iconShouldSuppressMask")}];
+  [v79 setPrecomposed:{objc_msgSend(notificationCopy, "iconShouldSuppressMask")}];
   if (v79)
   {
     v177 = objc_alloc_init(MEMORY[0x277CF3558]);
@@ -1161,16 +1161,16 @@ LABEL_96:
     v177 = 0;
   }
 
-  v5 = v166;
-  v36 = v171;
-  v35 = v175;
+  identifier = v166;
+  topicIdentifiers = v171;
+  shouldPreemptPresentedNotification = v175;
 LABEL_100:
   if ([(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowPrivateProperties])
   {
-    v80 = [v4 accessoryImageName];
-    if (v80)
+    accessoryImageName = [notificationCopy accessoryImageName];
+    if (accessoryImageName)
     {
-      v176 = [MEMORY[0x277CF3538] imageWithName:v80 inBundlePath:0];
+      v176 = [MEMORY[0x277CF3538] imageWithName:accessoryImageName inBundlePath:0];
     }
 
     else
@@ -1184,15 +1184,15 @@ LABEL_100:
     v176 = 0;
   }
 
-  v81 = v43 | v35;
+  v81 = v43 | shouldPreemptPresentedNotification;
   v82 = objc_alloc(MEMORY[0x277D77C98]);
-  v83 = [(UNSDefaultDataProvider *)self bundle];
-  v84 = [v82 initWithBundle:v83 categoryRepository:self->_categoryRepository];
+  bundle3 = [(UNSDefaultDataProvider *)self bundle];
+  v84 = [v82 initWithBundle:bundle3 categoryRepository:self->_categoryRepository];
 
   v147 = v84;
-  v172 = [v84 notificationForNotificationRecord:v4];
-  LODWORD(v84) = [(UNSDefaultDataProvider *)self _queue_supportsCriticalAlertsForSubsectionIDs:v36];
-  v85 = [(UNSDefaultDataProvider *)self _queue_supportsTimeSensitiveAlertsforSubsectionIDs:v36];
+  v172 = [v84 notificationForNotificationRecord:notificationCopy];
+  LODWORD(v84) = [(UNSDefaultDataProvider *)self _queue_supportsCriticalAlertsForSubsectionIDs:topicIdentifiers];
+  v85 = [(UNSDefaultDataProvider *)self _queue_supportsTimeSensitiveAlertsforSubsectionIDs:topicIdentifiers];
   v86 = 2;
   if (v84)
   {
@@ -1230,17 +1230,17 @@ LABEL_100:
   [v89 setInterruptionLevel:v88];
   *&v90 = v22;
   [v89 setRelevanceScore:v90];
-  [v89 setFilterCriteria:v190];
-  [v89 setScreenCaptureProhibited:v158];
-  [v89 setSpeechLanguage:v189];
-  [v89 setDateIsAllDay:v146];
-  [v89 setExpirationDate:v185];
+  [v89 setFilterCriteria:filterCriteria];
+  [v89 setScreenCaptureProhibited:screenCaptureProhibited];
+  [v89 setSpeechLanguage:speechLanguage];
+  [v89 setDateIsAllDay:shouldHideTime];
+  [v89 setExpirationDate:expirationDate];
   [v89 setHeader:v188];
   [v89 setFooter:v187];
   [v89 setMessage:v206];
-  if (v211)
+  if (attributedBody)
   {
-    v91 = [(UNSDefaultDataProvider *)self _safeAttributedMessageWithAttributedMessage:v211 contentType:v212];
+    v91 = [(UNSDefaultDataProvider *)self _safeAttributedMessageWithAttributedMessage:attributedBody contentType:v212];
     if (v91)
     {
       [v89 setAttributedMessage:v91];
@@ -1248,79 +1248,79 @@ LABEL_100:
 
     else if (!v206)
     {
-      v92 = [v211 string];
-      [v89 setMessage:v92];
+      string = [attributedBody string];
+      [v89 setMessage:string];
     }
   }
 
-  [v89 setSection:v205];
+  [v89 setSection:sectionIdentifier];
   [v89 setSubtitle:v202];
   [v89 setTitle:v203];
-  [v89 setSummaryArgument:v201];
+  [v89 setSummaryArgument:summaryArgument];
   [v89 setSummaryArgumentCount:v169];
   [v89 setSound:v180];
   [v89 setIcon:v177];
-  [v89 setHasSubordinateIcon:v145];
+  [v89 setHasSubordinateIcon:shouldShowSubordinateIcon];
   [v89 setAccessoryImage:v176];
   [v89 setHasCriticalIcon:v43];
   [v89 setTurnsOnDisplay:v149];
-  [v89 setIgnoresQuietMode:(v43 | v183) & 1];
-  [v89 setIgnoresDowntime:v152];
+  [v89 setIgnoresQuietMode:(v43 | shouldIgnoreDoNotDisturb) & 1];
+  [v89 setIgnoresDowntime:shouldIgnoreDowntime];
   [v89 setPreemptsPresentedAlert:v81 & 1];
-  [v89 setDisplaysActionsInline:v150];
-  [v89 setUsesExternalSync:v154];
-  [v89 setPublisherBulletinID:v5];
-  [v89 setRecordID:v5];
+  [v89 setDisplaysActionsInline:shouldDisplayActionsInline];
+  [v89 setUsesExternalSync:shouldSuppressSyncDismissalWhenRemoved];
+  [v89 setPublisherBulletinID:identifier];
+  [v89 setRecordID:identifier];
   [v89 setDismissalID:v186];
   [v89 setCategoryID:v198];
   v93 = [(NSMutableDictionary *)self->_categoryToParamSubType objectForKey:v198];
   [v89 setSectionSubtype:{objc_msgSend(v93, "integerValue")}];
 
   [v89 setSilenceAction:v194];
-  [v89 setThreadID:v213];
-  [v89 setIntentIDs:v192];
-  [v89 setSubsectionIDs:v36];
+  [v89 setThreadID:threadIdentifier];
+  [v89 setIntentIDs:intentIdentifiers];
+  [v89 setSubsectionIDs:topicIdentifiers];
   [v89 setDateFormatStyle:1];
   [v89 setSupplementaryActions:v193];
-  [v89 setWantsFullscreenPresentation:v162];
+  [v89 setWantsFullscreenPresentation:presentFullScreenAlertOverList];
   [v89 setPreventAutomaticRemovalFromLockScreen:v43];
   [v89 setLockScreenPriority:v148];
   [v89 setBackgroundStyle:v160];
   [v89 setClearable:v156];
-  if ([v4 pipelineState])
+  if ([notificationCopy pipelineState])
   {
-    [v89 setIsHighlight:{objc_msgSend(v4, "isHighlight")}];
-    v94 = [v4 summary];
-    [v89 setSummary:v94];
+    [v89 setIsHighlight:{objc_msgSend(notificationCopy, "isHighlight")}];
+    summary = [notificationCopy summary];
+    [v89 setSummary:summary];
 
-    [v89 setPriorityNotificationStatus:{-[UNSDefaultDataProvider _bulletinPriorityStatusForNotificationPriorityStatus:](self, "_bulletinPriorityStatusForNotificationPriorityStatus:", objc_msgSend(v4, "priorityStatus"))}];
-    [v89 setNotificationSummaryStatus:{-[UNSDefaultDataProvider _bulletinSummaryStatusForNotificationSummaryStatus:](self, "_bulletinSummaryStatusForNotificationSummaryStatus:", objc_msgSend(v4, "summaryStatus"))}];
-    v95 = [v4 eventBehavior];
-    [v89 setEventBehavior:v95];
+    [v89 setPriorityNotificationStatus:{-[UNSDefaultDataProvider _bulletinPriorityStatusForNotificationPriorityStatus:](self, "_bulletinPriorityStatusForNotificationPriorityStatus:", objc_msgSend(notificationCopy, "priorityStatus"))}];
+    [v89 setNotificationSummaryStatus:{-[UNSDefaultDataProvider _bulletinSummaryStatusForNotificationSummaryStatus:](self, "_bulletinSummaryStatusForNotificationSummaryStatus:", objc_msgSend(notificationCopy, "summaryStatus"))}];
+    eventBehavior = [notificationCopy eventBehavior];
+    [v89 setEventBehavior:eventBehavior];
   }
 
   summaryService = self->_summaryService;
-  v97 = [v4 identifier];
-  v98 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-  v99 = [(UNSSummaryServiceAdapter *)summaryService groupSummariesForNotificationIdentifier:v97 bundleIdentifier:v98];
+  identifier2 = [notificationCopy identifier];
+  sectionIdentifier3 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+  v99 = [(UNSSummaryServiceAdapter *)summaryService groupSummariesForNotificationIdentifier:identifier2 bundleIdentifier:sectionIdentifier3];
 
-  v100 = [v99 threadSummary];
-  [v89 setThreadSummary:v100];
+  threadSummary = [v99 threadSummary];
+  [v89 setThreadSummary:threadSummary];
 
   v170 = v99;
-  v101 = [v99 spotlightIdentifier];
-  [v89 setSpotlightIdentifier:v101];
+  spotlightIdentifier = [v99 spotlightIdentifier];
+  [v89 setSpotlightIdentifier:spotlightIdentifier];
 
   v102 = MEMORY[0x277CE20A0];
   v103 = *MEMORY[0x277CE20A0];
   if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
   {
-    v104 = [v99 spotlightIdentifier];
+    spotlightIdentifier2 = [v99 spotlightIdentifier];
     v105 = MEMORY[0x277CCABB0];
-    v106 = [v99 threadSummary];
-    v107 = [v105 numberWithInt:{objc_msgSend(v106, "length") != 0}];
+    threadSummary2 = [v99 threadSummary];
+    v107 = [v105 numberWithInt:{objc_msgSend(threadSummary2, "length") != 0}];
     *buf = 138412546;
-    v220 = v104;
+    v220 = spotlightIdentifier2;
     v221 = 2112;
     v222 = v107;
     _os_log_impl(&dword_270AA8000, v103, OS_LOG_TYPE_DEFAULT, "group summaries request for record with spotlightIdentifier: %@ hasThreadSummary: %@", buf, 0x16u);
@@ -1332,71 +1332,71 @@ LABEL_100:
     [(UNSDefaultDataProvider *)v170 _queue_bulletinForNotification:v89, v108];
   }
 
-  v109 = v167;
+  v109 = targetContentIdentifier;
   if (v208)
   {
     [v89 setContextValue:v208 forKey:@"audioVolume"];
   }
 
-  if (v200)
+  if (badge)
   {
-    [v89 setContextValue:v200 forKey:@"badge"];
+    [v89 setContextValue:badge forKey:@"badge"];
   }
 
-  if (v209)
+  if (contentDate)
   {
-    [v89 setContextValue:v209 forKey:@"contentDate"];
+    [v89 setContextValue:contentDate forKey:@"contentDate"];
   }
 
-  [v89 setContextValue:v191 forKey:*MEMORY[0x277CF35D0]];
+  [v89 setContextValue:launchImageName forKey:*MEMORY[0x277CF35D0]];
   if (v210)
   {
     [v89 setContextValue:v210 forKey:@"recordDate"];
   }
 
-  v110 = [MEMORY[0x277CCABB0] numberWithBool:v183];
+  v110 = [MEMORY[0x277CCABB0] numberWithBool:shouldIgnoreDoNotDisturb];
   [v89 setContextValue:v110 forKey:@"shouldIgnoreDoNotDisturb"];
 
-  if (v167)
+  if (targetContentIdentifier)
   {
-    [v89 setContextValue:v167 forKey:@"targetContentIdentifier"];
+    [v89 setContextValue:targetContentIdentifier forKey:@"targetContentIdentifier"];
   }
 
-  v111 = v5;
+  v111 = identifier;
   v112 = v171;
-  if (v199)
+  if (userInfo)
   {
-    [v89 setContextValue:v199 forKey:@"userInfo"];
+    [v89 setContextValue:userInfo forKey:@"userInfo"];
   }
 
   [v89 setRealertCount:v164];
-  v113 = [v172 request];
-  v114 = [v113 content];
-  v115 = [v114 attachments];
+  request = [v172 request];
+  content = [request content];
+  attachments = [content attachments];
 
-  if (v115)
+  if (attachments)
   {
-    [(UNSDefaultDataProvider *)self _addAttachments:v115 toBulletinRequest:v89];
+    [(UNSDefaultDataProvider *)self _addAttachments:attachments toBulletinRequest:v89];
   }
 
-  v184 = v115;
-  v116 = [v172 request];
-  v117 = [v116 trigger];
+  v184 = attachments;
+  request2 = [v172 request];
+  trigger = [request2 trigger];
 
-  v5 = v111;
-  v118 = v117;
-  if (v117)
+  identifier = v111;
+  v118 = trigger;
+  if (trigger)
   {
-    v119 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v117 requiringSecureCoding:1 error:0];
+    v119 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:trigger requiringSecureCoding:1 error:0];
     [v89 setContextValue:v119 forKey:@"notificationTriggerData"];
   }
 
-  v120 = [v172 request];
-  v121 = [v120 content];
-  v122 = [v121 communicationContext];
+  request3 = [v172 request];
+  content2 = [request3 content];
+  communicationContext = [content2 communicationContext];
 
   v123 = v208;
-  if (v122)
+  if (communicationContext)
   {
     if (v144)
     {
@@ -1415,8 +1415,8 @@ LABEL_100:
       v215 = 0u;
       v216 = 0u;
       v217 = 0u;
-      v125 = [v122 recipients];
-      v126 = [v125 countByEnumeratingWithState:&v214 objects:v218 count:16];
+      recipients = [communicationContext recipients];
+      v126 = [recipients countByEnumeratingWithState:&v214 objects:v218 count:16];
       if (v126)
       {
         v127 = v126;
@@ -1427,25 +1427,25 @@ LABEL_100:
           {
             if (*v215 != v128)
             {
-              objc_enumerationMutation(v125);
+              objc_enumerationMutation(recipients);
             }
 
             v130 = [(UNSDefaultDataProvider *)self _bbContactFromUNContact:*(*(&v214 + 1) + 8 * i)];
             [v124 addObject:v130];
           }
 
-          v127 = [v125 countByEnumeratingWithState:&v214 objects:v218 count:16];
+          v127 = [recipients countByEnumeratingWithState:&v214 objects:v218 count:16];
         }
 
         while (v127);
       }
 
-      v131 = [v122 sender];
+      sender = [communicationContext sender];
 
-      if (v131)
+      if (sender)
       {
-        v132 = [v122 sender];
-        v133 = [(UNSDefaultDataProvider *)self _bbContactFromUNContact:v132];
+        sender2 = [communicationContext sender];
+        v133 = [(UNSDefaultDataProvider *)self _bbContactFromUNContact:sender2];
       }
 
       else
@@ -1454,9 +1454,9 @@ LABEL_100:
       }
 
       v165 = v133;
-      if ([v122 notifyRecipientAnyway])
+      if ([communicationContext notifyRecipientAnyway])
       {
-        v161 = [(UNSDefaultDataProvider *)self _isTCCUserAvailabilityGrantedForBundleId:v205];
+        v161 = [(UNSDefaultDataProvider *)self _isTCCUserAvailabilityGrantedForBundleId:sectionIdentifier];
       }
 
       else
@@ -1465,31 +1465,31 @@ LABEL_100:
       }
 
       v159 = MEMORY[0x277CF3548];
-      v157 = [v122 identifier];
-      v155 = [v122 bundleIdentifier];
-      v153 = [v122 associatedObjectUri];
-      v134 = [v122 displayName];
-      v151 = [v122 contentURL];
-      v135 = [v122 imageName];
-      v136 = [v122 isSystemImage];
-      v137 = [v122 mentionsCurrentUser];
-      BYTE3(v142) = [v122 isReplyToCurrentUser];
+      identifier3 = [communicationContext identifier];
+      bundleIdentifier = [communicationContext bundleIdentifier];
+      associatedObjectUri = [communicationContext associatedObjectUri];
+      displayName = [communicationContext displayName];
+      contentURL = [communicationContext contentURL];
+      imageName = [communicationContext imageName];
+      isSystemImage = [communicationContext isSystemImage];
+      mentionsCurrentUser = [communicationContext mentionsCurrentUser];
+      BYTE3(v142) = [communicationContext isReplyToCurrentUser];
       BYTE2(v142) = v161;
-      BYTE1(v142) = v137;
-      LOBYTE(v142) = v136;
-      v138 = [v159 communicationContextWithIdentifier:v157 bundleIdentifier:v155 associatedObjectUri:v153 displayName:v134 sender:v165 recipients:v124 contentURL:v151 imageName:v135 systemImage:v142 mentionsCurrentUser:objc_msgSend(v122 notifyRecipientAnyway:"recipientCount") replyToCurrentUser:? recipientCount:?];
+      BYTE1(v142) = mentionsCurrentUser;
+      LOBYTE(v142) = isSystemImage;
+      v138 = [v159 communicationContextWithIdentifier:identifier3 bundleIdentifier:bundleIdentifier associatedObjectUri:associatedObjectUri displayName:displayName sender:v165 recipients:v124 contentURL:contentURL imageName:imageName systemImage:v142 mentionsCurrentUser:objc_msgSend(communicationContext notifyRecipientAnyway:"recipientCount") replyToCurrentUser:? recipientCount:?];
 
-      [v138 setCapabilities:{objc_msgSend(v122, "capabilities") & 1}];
-      [v138 setBusinessCorrespondence:{objc_msgSend(v122, "isBusinessCorrespondence")}];
+      [v138 setCapabilities:{objc_msgSend(communicationContext, "capabilities") & 1}];
+      [v138 setBusinessCorrespondence:{objc_msgSend(communicationContext, "isBusinessCorrespondence")}];
       [v89 setCommunicationContext:v138];
 
-      v109 = v167;
+      v109 = targetContentIdentifier;
       v112 = v171;
       v123 = v208;
       v118 = v163;
     }
 
-    v5 = v166;
+    identifier = v166;
   }
 
   v32 = v89;
@@ -1502,17 +1502,17 @@ LABEL_164:
   return v32;
 }
 
-- (id)_bbContentTypeFromUNContentType:(id)a3 toneAlertType:(int64_t)a4
+- (id)_bbContentTypeFromUNContentType:(id)type toneAlertType:(int64_t)alertType
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  typeCopy = type;
   v7 = *MEMORY[0x277CF34B0];
-  v8 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowCalls];
-  v9 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowMessages];
-  v10 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowIntercom];
-  if ([v6 isEqualToString:*MEMORY[0x277CE2158]])
+  allowCalls = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowCalls];
+  allowMessages = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowMessages];
+  allowIntercom = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowIntercom];
+  if ([typeCopy isEqualToString:*MEMORY[0x277CE2158]])
   {
-    if (v9)
+    if (allowMessages)
     {
       v11 = MEMORY[0x277CF34C8];
 LABEL_39:
@@ -1530,9 +1530,9 @@ LABEL_39:
     goto LABEL_8;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x277CE2160]])
+  if ([typeCopy isEqualToString:*MEMORY[0x277CE2160]])
   {
-    if (v9)
+    if (allowMessages)
     {
       v11 = MEMORY[0x277CF34D0];
       goto LABEL_39;
@@ -1548,11 +1548,11 @@ LABEL_8:
     goto LABEL_40;
   }
 
-  if (![v6 isEqualToString:*MEMORY[0x277CE2150]])
+  if (![typeCopy isEqualToString:*MEMORY[0x277CE2150]])
   {
-    if ([v6 isEqualToString:*MEMORY[0x277CE2168]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CE2168]])
     {
-      if (v8)
+      if (allowCalls)
       {
         v11 = MEMORY[0x277CF34D8];
         goto LABEL_39;
@@ -1564,12 +1564,12 @@ LABEL_8:
       }
     }
 
-    else if ([v6 isEqualToString:*MEMORY[0x277CE2148]])
+    else if ([typeCopy isEqualToString:*MEMORY[0x277CE2148]])
     {
-      v12 = v8 ^ 1;
-      if (a4 == 1)
+      v12 = allowCalls ^ 1;
+      if (alertType == 1)
       {
-        v13 = v8 ^ 1;
+        v13 = allowCalls ^ 1;
       }
 
       else
@@ -1583,7 +1583,7 @@ LABEL_8:
         goto LABEL_39;
       }
 
-      if (a4 == 1)
+      if (alertType == 1)
       {
         v12 = 1;
       }
@@ -1596,9 +1596,9 @@ LABEL_8:
         if (os_log_type_enabled(*MEMORY[0x277CE2070], OS_LOG_TYPE_DEFAULT))
         {
           v16 = v15;
-          v17 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+          sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
           v21 = 138543362;
-          v22 = v17;
+          v22 = sectionIdentifier;
           _os_log_impl(&dword_270AA8000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] _UNNotificationContentType is '_UNNotificationContentTypeIncomingCall' but the tone alert type is NOT  'TLAlertTypeIncomingCall'. Tone alert type must be 'TLAlertTypeIncomingCall' for notification to be treated as an incoming call. Assigning 'BBBulletinContentTypeCallOther' to notification.", &v21, 0xCu);
         }
 
@@ -1612,9 +1612,9 @@ LABEL_8:
       }
     }
 
-    else if ([v6 isEqualToString:*MEMORY[0x277CE2170]])
+    else if ([typeCopy isEqualToString:*MEMORY[0x277CE2170]])
     {
-      if (v8)
+      if (allowCalls)
       {
         v11 = MEMORY[0x277CF34E0];
         goto LABEL_39;
@@ -1628,12 +1628,12 @@ LABEL_8:
 
     else
     {
-      if (![v6 isEqualToString:*MEMORY[0x277CE2138]])
+      if (![typeCopy isEqualToString:*MEMORY[0x277CE2138]])
       {
         goto LABEL_40;
       }
 
-      if (v8)
+      if (allowCalls)
       {
         v11 = MEMORY[0x277CF34A8];
         goto LABEL_39;
@@ -1649,7 +1649,7 @@ LABEL_8:
     goto LABEL_40;
   }
 
-  if (v10)
+  if (allowIntercom)
   {
     v11 = MEMORY[0x277CF34C0];
     goto LABEL_39;
@@ -1667,40 +1667,40 @@ LABEL_40:
   return v7;
 }
 
-- (id)_bbContactFromUNContact:(id)a3
+- (id)_bbContactFromUNContact:(id)contact
 {
-  v3 = a3;
-  v4 = [v3 handleType];
-  v5 = 2 * (v4 == 2);
-  if (v4 == 1)
+  contactCopy = contact;
+  handleType = [contactCopy handleType];
+  v5 = 2 * (handleType == 2);
+  if (handleType == 1)
   {
     v5 = 1;
   }
 
   v18 = v5;
   v6 = MEMORY[0x277CF3528];
-  v7 = [v3 handle];
-  v8 = [v3 serviceName];
-  v9 = [v3 displayName];
-  v10 = [v3 isDisplayNameSuggested];
-  v11 = [v3 customIdentifier];
-  v12 = [v3 cnContactIdentifier];
-  v13 = [v3 cnContactFullname];
-  v14 = [v3 isCNContactIdentifierSuggested];
+  handle = [contactCopy handle];
+  serviceName = [contactCopy serviceName];
+  displayName = [contactCopy displayName];
+  isDisplayNameSuggested = [contactCopy isDisplayNameSuggested];
+  customIdentifier = [contactCopy customIdentifier];
+  cnContactIdentifier = [contactCopy cnContactIdentifier];
+  cnContactFullname = [contactCopy cnContactFullname];
+  isCNContactIdentifierSuggested = [contactCopy isCNContactIdentifierSuggested];
 
-  LOBYTE(v17) = v14;
-  v15 = [v6 contactWithHandle:v7 handleType:v18 serviceName:v8 displayName:v9 displayNameSuggested:v10 customIdentifier:v11 cnContactIdentifier:v12 cnContactFullname:v13 cnContactIdentifierSuggested:v17];
+  LOBYTE(v17) = isCNContactIdentifierSuggested;
+  v15 = [v6 contactWithHandle:handle handleType:v18 serviceName:serviceName displayName:displayName displayNameSuggested:isDisplayNameSuggested customIdentifier:customIdentifier cnContactIdentifier:cnContactIdentifier cnContactFullname:cnContactFullname cnContactIdentifierSuggested:v17];
 
   return v15;
 }
 
-- (id)_safeAttributedMessageWithAttributedMessage:(id)a3 contentType:(id)a4
+- (id)_safeAttributedMessageWithAttributedMessage:(id)message contentType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v6 isEqualToString:*MEMORY[0x277CF34C8]] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CF34D0]))
+  messageCopy = message;
+  typeCopy = type;
+  if (([typeCopy isEqualToString:*MEMORY[0x277CF34C8]] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CF34D0]))
   {
-    v7 = v5;
+    v7 = messageCopy;
   }
 
   else
@@ -1711,10 +1711,10 @@ LABEL_40:
   return v7;
 }
 
-- (BOOL)_queue_supportsCriticalAlertsForSubsectionIDs:(id)a3
+- (BOOL)_queue_supportsCriticalAlertsForSubsectionIDs:(id)ds
 {
   v14 = *MEMORY[0x277D85DE8];
-  [(UNSDefaultDataProvider *)self _queue_applicableSectionInfosForSubsectionIDs:a3];
+  [(UNSDefaultDataProvider *)self _queue_applicableSectionInfosForSubsectionIDs:ds];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -1755,10 +1755,10 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)_queue_supportsTimeSensitiveAlertsforSubsectionIDs:(id)a3
+- (BOOL)_queue_supportsTimeSensitiveAlertsforSubsectionIDs:(id)ds
 {
   v14 = *MEMORY[0x277D85DE8];
-  [(UNSDefaultDataProvider *)self _queue_applicableSectionInfosForSubsectionIDs:a3];
+  [(UNSDefaultDataProvider *)self _queue_applicableSectionInfosForSubsectionIDs:ds];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -1799,17 +1799,17 @@ LABEL_11:
   return v4;
 }
 
-- (id)_queue_applicableSectionInfosForSubsectionIDs:(id)a3
+- (id)_queue_applicableSectionInfosForSubsectionIDs:(id)ds
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  dsCopy = ds;
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(BBSectionInfo *)self->_effectiveSectionInfo subsections];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  subsections = [(BBSectionInfo *)self->_effectiveSectionInfo subsections];
+  v7 = [subsections countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1820,62 +1820,62 @@ LABEL_11:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subsections);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 subsectionID];
-        v13 = [v4 containsObject:v12];
+        subsectionID = [v11 subsectionID];
+        v13 = [dsCopy containsObject:subsectionID];
 
         if (v13)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [subsections countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 
-  if (![v5 count] && self->_effectiveSectionInfo)
+  if (![array count] && self->_effectiveSectionInfo)
   {
-    [v5 addObject:?];
+    [array addObject:?];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)_soundsDirectoryPathForContainerBasePath:(id)a3
+- (id)_soundsDirectoryPathForContainerBasePath:(id)path
 {
-  v3 = [a3 stringByStandardizingPath];
-  v4 = [v3 stringByAppendingPathComponent:@"Library"];
+  stringByStandardizingPath = [path stringByStandardizingPath];
+  v4 = [stringByStandardizingPath stringByAppendingPathComponent:@"Library"];
   v5 = [v4 stringByAppendingPathComponent:@"Sounds"];
 
   return v5;
 }
 
-- (id)_pathForSoundName:(id)a3
+- (id)_pathForSoundName:(id)name
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription dataContainerURL];
-  v6 = v5;
-  if (v5)
+  nameCopy = name;
+  dataContainerURL = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription dataContainerURL];
+  v6 = dataContainerURL;
+  if (dataContainerURL)
   {
-    v7 = [v5 path];
-    v8 = [(UNSDefaultDataProvider *)self _soundsDirectoryPathForContainerBasePath:v7];
+    path = [dataContainerURL path];
+    v8 = [(UNSDefaultDataProvider *)self _soundsDirectoryPathForContainerBasePath:path];
 
-    v9 = [v8 stringByAppendingPathComponent:v4];
-    v10 = [v9 stringByStandardizingPath];
+    v9 = [v8 stringByAppendingPathComponent:nameCopy];
+    stringByStandardizingPath = [v9 stringByStandardizingPath];
 
-    if ([(UNSDefaultDataProvider *)self _isResourceValidForPath:v10 withContainerPath:v8])
+    if ([(UNSDefaultDataProvider *)self _isResourceValidForPath:stringByStandardizingPath withContainerPath:v8])
     {
 
-      if (v10)
+      if (stringByStandardizingPath)
       {
         goto LABEL_19;
       }
@@ -1886,14 +1886,14 @@ LABEL_11:
     }
   }
 
-  v11 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription groupContainerURLS];
-  v12 = [v11 allValues];
+  groupContainerURLS = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription groupContainerURLS];
+  allValues = [groupContainerURLS allValues];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = v12;
+  v13 = allValues;
   v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v14)
   {
@@ -1908,14 +1908,14 @@ LABEL_8:
         objc_enumerationMutation(v13);
       }
 
-      v18 = [*(*(&v30 + 1) + 8 * v17) path];
-      v19 = [v18 stringByStandardizingPath];
-      v20 = [(UNSDefaultDataProvider *)self _soundsDirectoryPathForContainerBasePath:v19];
+      path2 = [*(*(&v30 + 1) + 8 * v17) path];
+      stringByStandardizingPath2 = [path2 stringByStandardizingPath];
+      v20 = [(UNSDefaultDataProvider *)self _soundsDirectoryPathForContainerBasePath:stringByStandardizingPath2];
 
-      v21 = [v20 stringByAppendingPathComponent:v4];
-      v10 = [v21 stringByStandardizingPath];
+      v21 = [v20 stringByAppendingPathComponent:nameCopy];
+      stringByStandardizingPath = [v21 stringByStandardizingPath];
 
-      if ([(UNSDefaultDataProvider *)self _isResourceValidForPath:v10 withContainerPath:v20])
+      if ([(UNSDefaultDataProvider *)self _isResourceValidForPath:stringByStandardizingPath withContainerPath:v20])
       {
         break;
       }
@@ -1932,7 +1932,7 @@ LABEL_8:
       }
     }
 
-    if (v10)
+    if (stringByStandardizingPath)
     {
       goto LABEL_19;
     }
@@ -1943,33 +1943,33 @@ LABEL_8:
 LABEL_14:
   }
 
-  v22 = [(UNSDefaultDataProvider *)self bundle];
-  v23 = [v22 bundlePath];
-  v24 = [v23 stringByStandardizingPath];
+  bundle = [(UNSDefaultDataProvider *)self bundle];
+  bundlePath = [bundle bundlePath];
+  stringByStandardizingPath3 = [bundlePath stringByStandardizingPath];
 
-  v25 = [(UNSDefaultDataProvider *)self bundle];
-  v26 = [v25 pathForResource:v4 ofType:0];
-  v27 = [v26 stringByStandardizingPath];
+  bundle2 = [(UNSDefaultDataProvider *)self bundle];
+  v26 = [bundle2 pathForResource:nameCopy ofType:0];
+  stringByStandardizingPath4 = [v26 stringByStandardizingPath];
 
-  v10 = 0;
-  if ([(UNSDefaultDataProvider *)self _isResourceValidForPath:v27 withContainerPath:v24])
+  stringByStandardizingPath = 0;
+  if ([(UNSDefaultDataProvider *)self _isResourceValidForPath:stringByStandardizingPath4 withContainerPath:stringByStandardizingPath3])
   {
-    v10 = v27;
+    stringByStandardizingPath = stringByStandardizingPath4;
   }
 
 LABEL_19:
   v28 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return stringByStandardizingPath;
 }
 
-- (BOOL)_isResourceValidForPath:(id)a3 withContainerPath:(id)a4
+- (BOOL)_isResourceValidForPath:(id)path withContainerPath:(id)containerPath
 {
-  v5 = a3;
-  if ([v5 hasPrefix:a4] && (BSIsSymbolicLinkAtPath() & 1) == 0)
+  pathCopy = path;
+  if ([pathCopy hasPrefix:containerPath] && (BSIsSymbolicLinkAtPath() & 1) == 0)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v7 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v6 = [defaultManager fileExistsAtPath:pathCopy];
   }
 
   else
@@ -1980,29 +1980,29 @@ LABEL_19:
   return v6;
 }
 
-- (id)_defaultActionWithNotification:(id)a3
+- (id)_defaultActionWithNotification:(id)notification
 {
-  v4 = a3;
-  if (([v4 hasDefaultAction] & 1) != 0 || (-[UNCNotificationSourceDescription allowPrivateProperties](self->_notificationSourceDescription, "allowPrivateProperties") & 1) == 0)
+  notificationCopy = notification;
+  if (([notificationCopy hasDefaultAction] & 1) != 0 || (-[UNCNotificationSourceDescription allowPrivateProperties](self->_notificationSourceDescription, "allowPrivateProperties") & 1) == 0)
   {
-    v6 = [v4 defaultActionTitleLocalizationKey];
-    v7 = [(UNSDefaultDataProvider *)self bundle];
-    [v7 cfBundle];
-    v8 = [v4 defaultActionTitle];
+    defaultActionTitleLocalizationKey = [notificationCopy defaultActionTitleLocalizationKey];
+    bundle = [(UNSDefaultDataProvider *)self bundle];
+    [bundle cfBundle];
+    defaultActionTitle = [notificationCopy defaultActionTitle];
     v9 = UNFormatLocalizedStringInBundleWithDefaultValue();
 
     v5 = [MEMORY[0x277CF3500] actionWithIdentifier:*MEMORY[0x277CE20E8] title:v9];
     if ([(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowPrivateProperties])
     {
-      v10 = [v4 defaultActionURL];
-      [v5 setLaunchURL:v10];
+      defaultActionURL = [notificationCopy defaultActionURL];
+      [v5 setLaunchURL:defaultActionURL];
 
-      v11 = [v4 defaultActionBundleIdentifier];
-      [v5 setLaunchBundleID:v11];
+      defaultActionBundleIdentifier = [notificationCopy defaultActionBundleIdentifier];
+      [v5 setLaunchBundleID:defaultActionBundleIdentifier];
 
-      [v5 setShouldDismissBulletin:{objc_msgSend(v4, "shouldPreventNotificationDismissalAfterDefaultAction") ^ 1}];
-      [v5 setActivationMode:{objc_msgSend(v4, "shouldBackgroundDefaultAction")}];
-      [v5 setAuthenticationRequired:{objc_msgSend(v4, "shouldAuthenticateDefaultAction")}];
+      [v5 setShouldDismissBulletin:{objc_msgSend(notificationCopy, "shouldPreventNotificationDismissalAfterDefaultAction") ^ 1}];
+      [v5 setActivationMode:{objc_msgSend(notificationCopy, "shouldBackgroundDefaultAction")}];
+      [v5 setAuthenticationRequired:{objc_msgSend(notificationCopy, "shouldAuthenticateDefaultAction")}];
     }
 
     else
@@ -2019,9 +2019,9 @@ LABEL_19:
   return v5;
 }
 
-- (id)_dismissActionForCategory:(id)a3
+- (id)_dismissActionForCategory:(id)category
 {
-  if ([a3 hasCustomDismissAction])
+  if ([category hasCustomDismissAction])
   {
     v3 = [MEMORY[0x277CF3500] actionWithIdentifier:*MEMORY[0x277CE20F0]];
     [v3 setActivationMode:1];
@@ -2035,9 +2035,9 @@ LABEL_19:
   return v3;
 }
 
-- (id)_followActivityActionForCategory:(id)a3
+- (id)_followActivityActionForCategory:(id)category
 {
-  if ([a3 hasFollowActivityAction] && ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl()))
+  if ([category hasFollowActivityAction] && ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl()))
   {
     v3 = MEMORY[0x277CF3500];
     v4 = *MEMORY[0x277CE20F8];
@@ -2055,9 +2055,9 @@ LABEL_19:
   return v6;
 }
 
-- (id)_silenceActionForCategory:(id)a3
+- (id)_silenceActionForCategory:(id)category
 {
-  if ([a3 hasCustomSilenceAction] && -[UNCNotificationSourceDescription allowPrivateProperties](self->_notificationSourceDescription, "allowPrivateProperties"))
+  if ([category hasCustomSilenceAction] && -[UNCNotificationSourceDescription allowPrivateProperties](self->_notificationSourceDescription, "allowPrivateProperties"))
   {
     v4 = [MEMORY[0x277CF3500] actionWithIdentifier:*MEMORY[0x277CE2120]];
     [v4 setActivationMode:1];
@@ -2071,10 +2071,10 @@ LABEL_19:
   return v4;
 }
 
-- (id)_supplementaryActionsForForCategoryRecord:(id)a3
+- (id)_supplementaryActionsForForCategoryRecord:(id)record
 {
-  v4 = [a3 actions];
-  v5 = [v4 bs_first:10];
+  actions = [record actions];
+  v5 = [actions bs_first:10];
 
   v6 = [(UNSDefaultDataProvider *)self _actionsFromActionRecords:v5];
 
@@ -2084,13 +2084,13 @@ LABEL_19:
 - (id)_allCategories
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription defaultCategories];
+  array = [MEMORY[0x277CBEB18] array];
+  defaultCategories = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription defaultCategories];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v5 = [defaultCategories countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2101,21 +2101,21 @@ LABEL_19:
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(defaultCategories);
         }
 
-        [v3 addObject:*(*(&v23 + 1) + 8 * i)];
+        [array addObject:*(*(&v23 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v6 = [defaultCategories countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v6);
   }
 
   categoryRepository = self->_categoryRepository;
-  v10 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-  v11 = [(UNSNotificationCategoryRepository *)categoryRepository categoriesForBundleIdentifier:v10];
+  sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+  v11 = [(UNSNotificationCategoryRepository *)categoryRepository categoriesForBundleIdentifier:sectionIdentifier];
 
   v21 = 0u;
   v22 = 0u;
@@ -2136,7 +2136,7 @@ LABEL_19:
           objc_enumerationMutation(v12);
         }
 
-        [v3 addObject:{*(*(&v19 + 1) + 8 * j), v19}];
+        [array addObject:{*(*(&v19 + 1) + 8 * j), v19}];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -2147,14 +2147,14 @@ LABEL_19:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-- (id)_categoryForIdentifier:(id)a3
+- (id)_categoryForIdentifier:(id)identifier
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     [(UNCNotificationSourceDescription *)self->_notificationSourceDescription defaultCategories];
     v31 = 0u;
@@ -2176,8 +2176,8 @@ LABEL_19:
           }
 
           v10 = *(*(&v31 + 1) + 8 * i);
-          v11 = [v10 identifier];
-          v12 = [v4 isEqual:v11];
+          identifier = [v10 identifier];
+          v12 = [identifierCopy isEqual:identifier];
 
           if (v12)
           {
@@ -2198,8 +2198,8 @@ LABEL_19:
     }
 
     categoryRepository = self->_categoryRepository;
-    v14 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-    v15 = [(UNSNotificationCategoryRepository *)categoryRepository categoriesForBundleIdentifier:v14];
+    sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+    v15 = [(UNSNotificationCategoryRepository *)categoryRepository categoriesForBundleIdentifier:sectionIdentifier];
 
     v29 = 0u;
     v30 = 0u;
@@ -2221,8 +2221,8 @@ LABEL_19:
           }
 
           v21 = *(*(&v27 + 1) + 8 * j);
-          v22 = [v21 identifier];
-          v23 = [v4 isEqual:v22];
+          identifier2 = [v21 identifier];
+          v23 = [identifierCopy isEqual:identifier2];
 
           if (v23)
           {
@@ -2256,16 +2256,16 @@ LABEL_22:
   return v24;
 }
 
-- (id)_actionsFromActionRecords:(id)a3
+- (id)_actionsFromActionRecords:(id)records
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  recordsCopy = records;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = recordsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -2281,7 +2281,7 @@ LABEL_22:
         }
 
         v11 = [(UNSDefaultDataProvider *)self _actionFromActionRecord:*(*(&v14 + 1) + 8 * i), v14];
-        [v5 bs_safeAddObject:v11];
+        [array bs_safeAddObject:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -2292,53 +2292,53 @@ LABEL_22:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)_actionFromActionRecord:(id)a3
+- (id)_actionFromActionRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 titleLocalizationKey];
-  v7 = [v4 titleLocalizationArguments];
-  v8 = [(UNSDefaultDataProvider *)self bundle];
-  [v8 cfBundle];
-  v9 = [v4 title];
+  recordCopy = record;
+  identifier = [recordCopy identifier];
+  titleLocalizationKey = [recordCopy titleLocalizationKey];
+  titleLocalizationArguments = [recordCopy titleLocalizationArguments];
+  bundle = [(UNSDefaultDataProvider *)self bundle];
+  [bundle cfBundle];
+  title = [recordCopy title];
   v10 = UNFormatLocalizedStringInBundleWithDefaultValue();
 
-  v11 = [MEMORY[0x277CF3500] actionWithIdentifier:v5 title:v10];
-  [v11 setActivationMode:{objc_msgSend(v4, "isForeground") ^ 1}];
-  [v11 setAuthenticationRequired:{objc_msgSend(v4, "isAuthenticationRequired")}];
+  v11 = [MEMORY[0x277CF3500] actionWithIdentifier:identifier title:v10];
+  [v11 setActivationMode:{objc_msgSend(recordCopy, "isForeground") ^ 1}];
+  [v11 setAuthenticationRequired:{objc_msgSend(recordCopy, "isAuthenticationRequired")}];
   if ([(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowPrivateProperties])
   {
-    v12 = [v4 url];
+    v12 = [recordCopy url];
     [v11 setLaunchURL:v12];
 
-    [v11 setShouldDismissBulletin:{objc_msgSend(v4, "shouldPreventNotificationDismiss") ^ 1}];
+    [v11 setShouldDismissBulletin:{objc_msgSend(recordCopy, "shouldPreventNotificationDismiss") ^ 1}];
   }
 
-  if ([v4 isDestructive])
+  if ([recordCopy isDestructive])
   {
-    v13 = [v11 appearance];
-    [v13 setStyle:1];
+    appearance = [v11 appearance];
+    [appearance setStyle:1];
   }
 
-  v14 = [v4 actionType];
-  v15 = [v14 isEqualToString:*MEMORY[0x277D77D68]];
+  actionType = [recordCopy actionType];
+  v15 = [actionType isEqualToString:*MEMORY[0x277D77D68]];
 
   if (v15)
   {
-    v16 = [(UNSDefaultDataProvider *)self bundle];
-    [v16 cfBundle];
+    bundle2 = [(UNSDefaultDataProvider *)self bundle];
+    [bundle2 cfBundle];
 
-    v17 = [v4 textInputButtonTitleLocalizationKey];
-    v18 = [v4 textInputButtonTitleLocalizationArguments];
-    v19 = [v4 textInputButtonTitle];
+    textInputButtonTitleLocalizationKey = [recordCopy textInputButtonTitleLocalizationKey];
+    textInputButtonTitleLocalizationArguments = [recordCopy textInputButtonTitleLocalizationArguments];
+    textInputButtonTitle = [recordCopy textInputButtonTitle];
     v20 = UNFormatLocalizedStringInBundleWithDefaultValue();
 
-    v21 = [v4 textInputPlaceholderLocalizationKey];
-    v22 = [v4 textInputPlaceholderLocalizationArguments];
-    v23 = [v4 textInputPlaceholder];
+    textInputPlaceholderLocalizationKey = [recordCopy textInputPlaceholderLocalizationKey];
+    textInputPlaceholderLocalizationArguments = [recordCopy textInputPlaceholderLocalizationArguments];
+    textInputPlaceholder = [recordCopy textInputPlaceholder];
     v24 = UNFormatLocalizedStringInBundleWithDefaultValue();
 
     v25 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -2353,26 +2353,26 @@ LABEL_22:
     [v11 setBehavior:0];
   }
 
-  v26 = [v4 iconImageName];
-  v27 = [v26 length];
+  iconImageName = [recordCopy iconImageName];
+  v27 = [iconImageName length];
 
   if (v27)
   {
-    v28 = [v4 iconImageName];
-    if (v28)
+    iconImageName2 = [recordCopy iconImageName];
+    if (iconImageName2)
     {
-      if ([v4 hasSystemIcon])
+      if ([recordCopy hasSystemIcon])
       {
-        v29 = 0;
+        bundlePath = 0;
       }
 
       else
       {
-        v31 = [(UNSDefaultDataProvider *)self bundle];
-        v29 = [v31 bundlePath];
+        bundle3 = [(UNSDefaultDataProvider *)self bundle];
+        bundlePath = [bundle3 bundlePath];
       }
 
-      v30 = [MEMORY[0x277CF3538] imageWithName:v28 inBundlePath:v29];
+      v30 = [MEMORY[0x277CF3538] imageWithName:iconImageName2 inBundlePath:bundlePath];
     }
 
     else
@@ -2386,25 +2386,25 @@ LABEL_22:
     v30 = 0;
   }
 
-  v32 = [v11 appearance];
-  [v32 setImage:v30];
+  appearance2 = [v11 appearance];
+  [appearance2 setImage:v30];
 
   return v11;
 }
 
-- (id)_allBulletinsWithMaxCount:(unint64_t)a3 sinceDate:(id)a4
+- (id)_allBulletinsWithMaxCount:(unint64_t)count sinceDate:(id)date
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dateCopy = date;
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v8 = [(UNSDefaultDataProvider *)self notificationRecords];
-  v9 = self;
+  notificationRecords = [(UNSDefaultDataProvider *)self notificationRecords];
+  selfCopy = self;
   v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v11 = v8;
+  v11 = notificationRecords;
   v34 = [v11 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v34)
   {
@@ -2425,20 +2425,20 @@ LABEL_3:
         goto LABEL_29;
       }
 
-      v14 = [v13 shouldHideDate];
-      if (!v6 || (v14 & 1) != 0)
+      shouldHideDate = [v13 shouldHideDate];
+      if (!dateCopy || (shouldHideDate & 1) != 0)
       {
         break;
       }
 
-      v15 = [v13 contentDate];
-      if (!v15)
+      contentDate = [v13 contentDate];
+      if (!contentDate)
       {
-        v15 = [v13 date];
+        contentDate = [v13 date];
       }
 
-      v16 = v15;
-      v17 = [v6 isAfterDate:v15];
+      v16 = contentDate;
+      v17 = [dateCopy isAfterDate:contentDate];
 
       if ((v17 & 1) == 0)
       {
@@ -2459,32 +2459,32 @@ LABEL_22:
       }
     }
 
-    v18 = [(UNSDefaultDataProvider *)v9 _queue_bulletinForNotification:v13];
-    v19 = [v18 message];
-    if (![v19 length])
+    v18 = [(UNSDefaultDataProvider *)selfCopy _queue_bulletinForNotification:v13];
+    message = [v18 message];
+    if (![message length])
     {
-      v20 = [v18 subtitle];
-      if (![v20 length])
+      subtitle = [v18 subtitle];
+      if (![subtitle length])
       {
         [v18 title];
-        v22 = v6;
+        v22 = dateCopy;
         v23 = v10;
-        v24 = v9;
-        v25 = a3;
+        v24 = selfCopy;
+        countCopy = count;
         v27 = v26 = v7;
         v32 = [v27 length];
 
         v7 = v26;
-        a3 = v25;
-        v9 = v24;
+        count = countCopy;
+        selfCopy = v24;
         v10 = v23;
-        v6 = v22;
+        dateCopy = v22;
         v11 = v31;
 
         if (!v32)
         {
 LABEL_19:
-          if (a3 && [v7 count] == a3)
+          if (count && [v7 count] == count)
           {
 
             goto LABEL_29;
@@ -2494,11 +2494,11 @@ LABEL_19:
         }
 
 LABEL_16:
-        v21 = [v18 publisherBulletinID];
-        if (([v10 containsObject:v21] & 1) == 0)
+        publisherBulletinID = [v18 publisherBulletinID];
+        if (([v10 containsObject:publisherBulletinID] & 1) == 0)
         {
           [v7 addObject:v18];
-          [v10 addObject:v21];
+          [v10 addObject:publisherBulletinID];
         }
 
         goto LABEL_19;
@@ -2518,56 +2518,56 @@ LABEL_29:
 - (id)notificationRecords
 {
   notificationRepository = self->_notificationRepository;
-  v3 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-  v4 = [(UNCNotificationRepository *)notificationRepository notificationRecordsForBundleIdentifier:v3];
+  sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+  v4 = [(UNCNotificationRepository *)notificationRepository notificationRecordsForBundleIdentifier:sectionIdentifier];
 
   return v4;
 }
 
-- (id)bulletinsWithRequestParameters:(id)a3 lastCleared:(id)a4
+- (id)bulletinsWithRequestParameters:(id)parameters lastCleared:(id)cleared
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  parametersCopy = parameters;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v5 publisherDestination] == 2)
+  if ([parametersCopy publisherDestination] == 2)
   {
-    v6 = [v5 maximumCount];
-    v7 = [v5 sinceDate];
-    v8 = [(UNSDefaultDataProvider *)self _allBulletinsWithMaxCount:v6 sinceDate:v7];
+    maximumCount = [parametersCopy maximumCount];
+    sinceDate = [parametersCopy sinceDate];
+    v8 = [(UNSDefaultDataProvider *)self _allBulletinsWithMaxCount:maximumCount sinceDate:sinceDate];
 
     v9 = *MEMORY[0x277CE2080];
     if (os_log_type_enabled(*MEMORY[0x277CE2080], OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+      sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
       v12 = [v8 count];
-      v13 = [v5 sinceDate];
+      sinceDate2 = [parametersCopy sinceDate];
       *buf = 138544130;
-      v39 = v11;
+      v39 = sectionIdentifier;
       v40 = 2048;
       v41 = v12;
       v42 = 2114;
-      v43 = v13;
+      v43 = sinceDate2;
       v44 = 2048;
-      v45 = [v5 maximumCount];
+      maximumCount2 = [parametersCopy maximumCount];
       _os_log_impl(&dword_270AA8000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Returning %ld bulletins since %{public}@ (max %ld)", buf, 0x2Au);
     }
 
     if (UNCUseGroupService())
     {
-      v32 = v5;
+      v32 = parametersCopy;
       v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v15 = objc_alloc(MEMORY[0x277D77C80]);
-      v16 = [(UNSDefaultDataProvider *)self bundle];
-      v17 = [v15 initWithBundle:v16];
+      bundle = [(UNSDefaultDataProvider *)self bundle];
+      v17 = [v15 initWithBundle:bundle];
 
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
       v31 = v8;
-      v18 = [v8 allObjects];
-      v19 = [v18 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      allObjects = [v8 allObjects];
+      v19 = [allObjects countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v19)
       {
         v20 = v19;
@@ -2578,38 +2578,38 @@ LABEL_29:
           {
             if (*v34 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(allObjects);
             }
 
-            v23 = [*(*(&v33 + 1) + 8 * i) categoryID];
-            if (v23)
+            categoryID = [*(*(&v33 + 1) + 8 * i) categoryID];
+            if (categoryID)
             {
-              v24 = [v14 objectForKey:v23];
+              v24 = [v14 objectForKey:categoryID];
 
               if (!v24)
               {
-                v25 = [(UNSDefaultDataProvider *)self _categoryForIdentifier:v23];
+                v25 = [(UNSDefaultDataProvider *)self _categoryForIdentifier:categoryID];
                 if (v25)
                 {
                   v26 = [v17 notificationCategoryForNotificationCategoryRecord:v25];
-                  [v14 bs_setSafeObject:v26 forKey:v23];
+                  [v14 bs_setSafeObject:v26 forKey:categoryID];
                 }
               }
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v33 objects:v37 count:16];
+          v20 = [allObjects countByEnumeratingWithState:&v33 objects:v37 count:16];
         }
 
         while (v20);
       }
 
-      v27 = [(BBSectionInfo *)self->_effectiveSectionInfo uns_notificationSettings];
+      uns_notificationSettings = [(BBSectionInfo *)self->_effectiveSectionInfo uns_notificationSettings];
       v8 = v31;
-      v28 = [v31 allObjects];
-      [UNSNotificationPipelineAdapter addInitialBulletins:v28 categories:v14 sourceDescription:self->_notificationSourceDescription settings:v27];
+      allObjects2 = [v31 allObjects];
+      [UNSNotificationPipelineAdapter addInitialBulletins:allObjects2 categories:v14 sourceDescription:self->_notificationSourceDescription settings:uns_notificationSettings];
 
-      v5 = v32;
+      parametersCopy = v32;
     }
   }
 
@@ -2626,35 +2626,35 @@ LABEL_29:
 - (BOOL)_isAppProtectionActive
 {
   v2 = MEMORY[0x277CEBE80];
-  v3 = [(BBSectionInfo *)self->_effectiveSectionInfo sectionID];
-  v4 = [v2 applicationWithBundleIdentifier:v3];
+  sectionID = [(BBSectionInfo *)self->_effectiveSectionInfo sectionID];
+  v4 = [v2 applicationWithBundleIdentifier:sectionID];
 
   if ([v4 isHidden])
   {
-    v5 = 1;
+    isLocked = 1;
   }
 
   else
   {
-    v5 = [v4 isLocked];
+    isLocked = [v4 isLocked];
   }
 
-  return v5;
+  return isLocked;
 }
 
-- (id)clearedInfoAndBulletinsForClearingAllBulletinsWithLimit:(unint64_t)a3 lastClearedInfo:(id)a4
+- (id)clearedInfoAndBulletinsForClearingAllBulletinsWithLimit:(unint64_t)limit lastClearedInfo:(id)info
 {
   v14[2] = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v6 = [(UNSDefaultDataProvider *)self _allBulletinsWithMaxCount:a3 sinceDate:0];
+  v6 = [(UNSDefaultDataProvider *)self _allBulletinsWithMaxCount:limit sinceDate:0];
   notificationRepository = self->_notificationRepository;
-  v8 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-  [(UNCNotificationRepository *)notificationRepository removeAllNotificationRecordsForBundleIdentifier:v8];
+  sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+  [(UNCNotificationRepository *)notificationRepository removeAllNotificationRecordsForBundleIdentifier:sectionIdentifier];
 
   v13[0] = *MEMORY[0x277CF34F0];
-  v9 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v13[1] = *MEMORY[0x277CF34E8];
-  v14[0] = v9;
+  v14[0] = null;
   v14[1] = v6;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
 
@@ -2663,20 +2663,20 @@ LABEL_29:
   return v10;
 }
 
-- (id)clearedInfoForBulletins:(id)a3 lastClearedInfo:(id)a4
+- (id)clearedInfoForBulletins:(id)bulletins lastClearedInfo:(id)info
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  bulletinsCopy = bulletins;
   dispatch_assert_queue_V2(self->_queue);
   v6 = *MEMORY[0x277CE2080];
   if (os_log_type_enabled(*MEMORY[0x277CE2080], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+    sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
     *buf = 138543618;
-    v26 = v8;
+    v26 = sectionIdentifier;
     v27 = 2048;
-    v28 = [v5 count];
+    v28 = [bulletinsCopy count];
     _os_log_impl(&dword_270AA8000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Clear %ld bulletins", buf, 0x16u);
   }
 
@@ -2685,7 +2685,7 @@ LABEL_29:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v5;
+  v10 = bulletinsCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -2701,8 +2701,8 @@ LABEL_29:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v20 + 1) + 8 * v14) publisherBulletinID];
-        [v9 addObject:v15];
+        publisherBulletinID = [*(*(&v20 + 1) + 8 * v14) publisherBulletinID];
+        [v9 addObject:publisherBulletinID];
 
         ++v14;
       }
@@ -2715,8 +2715,8 @@ LABEL_29:
   }
 
   notificationRepository = self->_notificationRepository;
-  v17 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-  [(UNCNotificationRepository *)notificationRepository removeNotificationRecordsForIdentifiers:v9 bundleIdentifier:v17];
+  sectionIdentifier2 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+  [(UNCNotificationRepository *)notificationRepository removeNotificationRecordsForIdentifiers:v9 bundleIdentifier:sectionIdentifier2];
 
   v18 = *MEMORY[0x277D85DE8];
   return 0;
@@ -2731,16 +2731,16 @@ LABEL_29:
   return v4;
 }
 
-- (void)setEffectiveSectionInfo:(id)a3
+- (void)setEffectiveSectionInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   p_effectiveSectionInfo = &self->_effectiveSectionInfo;
   effectiveSectionInfo = self->_effectiveSectionInfo;
-  v15 = v5;
+  v15 = infoCopy;
   if (effectiveSectionInfo)
   {
-    v8 = [(BBSectionInfo *)effectiveSectionInfo isEqual:v5];
-    objc_storeStrong(&self->_effectiveSectionInfo, a3);
+    v8 = [(BBSectionInfo *)effectiveSectionInfo isEqual:infoCopy];
+    objc_storeStrong(&self->_effectiveSectionInfo, info);
     if (v8)
     {
       goto LABEL_8;
@@ -2749,20 +2749,20 @@ LABEL_29:
     if ([(UNCNotificationSourceDescription *)self->_notificationSourceDescription daemonShouldReceiveNotificationSettingsUpdates])
     {
       daemonLauncher = self->_daemonLauncher;
-      v10 = [(BBSectionInfo *)self->_effectiveSectionInfo uns_notificationSettings];
-      v11 = [(BBSectionInfo *)self->_effectiveSectionInfo sectionID];
-      [(UNSDaemonLauncher *)daemonLauncher didChangeSettings:v10 forBundleIdentifier:v11];
+      uns_notificationSettings = [(BBSectionInfo *)self->_effectiveSectionInfo uns_notificationSettings];
+      sectionID = [(BBSectionInfo *)self->_effectiveSectionInfo sectionID];
+      [(UNSDaemonLauncher *)daemonLauncher didChangeSettings:uns_notificationSettings forBundleIdentifier:sectionID];
     }
 
     notificationRepository = self->_notificationRepository;
-    v13 = [(BBSectionInfo *)self->_effectiveSectionInfo sectionID];
-    [(UNCNotificationRepository *)notificationRepository removeInvalidNotificationRecordsForBundleIdentifier:v13];
+    sectionID2 = [(BBSectionInfo *)self->_effectiveSectionInfo sectionID];
+    [(UNCNotificationRepository *)notificationRepository removeInvalidNotificationRecordsForBundleIdentifier:sectionID2];
   }
 
   else
   {
-    v14 = v5;
-    v13 = *p_effectiveSectionInfo;
+    v14 = infoCopy;
+    sectionID2 = *p_effectiveSectionInfo;
     *p_effectiveSectionInfo = v14;
   }
 
@@ -2771,92 +2771,92 @@ LABEL_8:
 
 - (id)sectionBundlePath
 {
-  v2 = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription bundleURL];
-  v3 = [v2 path];
+  bundleURL = [(UNCNotificationSourceDescription *)self->_notificationSourceDescription bundleURL];
+  path = [bundleURL path];
 
-  return v3;
+  return path;
 }
 
-- (void)handleBulletinActionResponse:(id)a3 withCompletion:(id)a4
+- (void)handleBulletinActionResponse:(id)response withCompletion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   v8 = MEMORY[0x277CE2080];
   v9 = *MEMORY[0x277CE2080];
   if (os_log_type_enabled(*MEMORY[0x277CE2080], OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-    v12 = [v6 bulletinPublisherID];
-    v13 = [v12 un_logDigest];
-    v14 = [v6 actionID];
+    sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+    bulletinPublisherID = [responseCopy bulletinPublisherID];
+    un_logDigest = [bulletinPublisherID un_logDigest];
+    actionID = [responseCopy actionID];
     v28 = 138544130;
-    v29 = v11;
+    v29 = sectionIdentifier;
     v30 = 2114;
-    v31 = v13;
+    v31 = un_logDigest;
     v32 = 2114;
-    v33 = v14;
+    v33 = actionID;
     v34 = 2048;
-    v35 = [v6 actionType];
+    actionType = [responseCopy actionType];
     _os_log_impl(&dword_270AA8000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received response to %{public}@ for action %{public}@ (%ld)  ", &v28, 0x2Au);
   }
 
-  v15 = [v6 actionType];
-  if (v15 > 0xB)
+  actionType2 = [responseCopy actionType];
+  if (actionType2 > 0xB)
   {
     goto LABEL_15;
   }
 
-  if (((1 << v15) & 0xD82) != 0)
+  if (((1 << actionType2) & 0xD82) != 0)
   {
-    [(UNSDefaultDataProvider *)self _handleBulletinActionResponse:v6 withCompletion:v7];
+    [(UNSDefaultDataProvider *)self _handleBulletinActionResponse:responseCopy withCompletion:completionCopy];
     goto LABEL_6;
   }
 
-  if (v15 == 5)
+  if (actionType2 == 5)
   {
     v17 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-      v20 = [v6 bulletinPublisherID];
-      v21 = [v20 un_logDigest];
-      v22 = [v6 actionID];
-      v23 = [v6 actionType];
+      sectionIdentifier2 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+      bulletinPublisherID2 = [responseCopy bulletinPublisherID];
+      un_logDigest2 = [bulletinPublisherID2 un_logDigest];
+      actionID2 = [responseCopy actionID];
+      actionType3 = [responseCopy actionType];
       v28 = 138544130;
-      v29 = v19;
+      v29 = sectionIdentifier2;
       v30 = 2114;
-      v31 = v21;
+      v31 = un_logDigest2;
       v32 = 2114;
-      v33 = v22;
+      v33 = actionID2;
       v34 = 2048;
-      v35 = v23;
+      actionType = actionType3;
       _os_log_impl(&dword_270AA8000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] Removing record with identifier %{public}@ from notification repository for action %{public}@ (%ld)  ", &v28, 0x2Au);
     }
 
-    v24 = [v6 bulletinPublisherID];
-    if (v24)
+    bulletinPublisherID3 = [responseCopy bulletinPublisherID];
+    if (bulletinPublisherID3)
     {
       notificationRepository = self->_notificationRepository;
-      v26 = [MEMORY[0x277CBEB98] setWithObject:v24];
-      v27 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-      [(UNCNotificationRepository *)notificationRepository removeNotificationRecordsForIdentifiers:v26 bundleIdentifier:v27];
+      v26 = [MEMORY[0x277CBEB98] setWithObject:bulletinPublisherID3];
+      sectionIdentifier3 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+      [(UNCNotificationRepository *)notificationRepository removeNotificationRecordsForIdentifiers:v26 bundleIdentifier:sectionIdentifier3];
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
 LABEL_15:
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -2865,45 +2865,45 @@ LABEL_6:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleBulletinActionResponse:(id)a3 withCompletion:(id)a4
+- (void)_handleBulletinActionResponse:(id)response withCompletion:(id)completion
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-  v54 = [v6 actionID];
-  v9 = [v6 actionType];
-  v49 = [v6 context];
-  v10 = [v49 objectForKey:*MEMORY[0x277CF35D8]];
-  v47 = [v6 actionActivationMode];
-  v53 = [v6 originID];
-  v52 = [v6 endpoint];
+  responseCopy = response;
+  completionCopy = completion;
+  sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+  actionID = [responseCopy actionID];
+  actionType = [responseCopy actionType];
+  context = [responseCopy context];
+  v10 = [context objectForKey:*MEMORY[0x277CF35D8]];
+  actionActivationMode = [responseCopy actionActivationMode];
+  originID = [responseCopy originID];
+  endpoint = [responseCopy endpoint];
   notificationRepository = self->_notificationRepository;
-  v12 = [v6 bulletinPublisherID];
-  v13 = [(UNCNotificationRepository *)notificationRepository notificationRecordForIdentifier:v12 bundleIdentifier:v8];
+  bulletinPublisherID = [responseCopy bulletinPublisherID];
+  v13 = [(UNCNotificationRepository *)notificationRepository notificationRecordForIdentifier:bulletinPublisherID bundleIdentifier:sectionIdentifier];
 
   v50 = v10;
   v14 = [v10 objectForKey:*MEMORY[0x277CE2178]];
-  v15 = v8;
-  v16 = [v13 defaultActionBundleIdentifier];
+  v15 = sectionIdentifier;
+  defaultActionBundleIdentifier = [v13 defaultActionBundleIdentifier];
   v17 = v15;
   v51 = v14;
-  if (v16)
+  if (defaultActionBundleIdentifier)
   {
     if ([(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowAlternateLaunchBundleIdentifiers])
     {
-      v17 = v16;
+      v17 = defaultActionBundleIdentifier;
 
       v18 = *MEMORY[0x277CE2080];
       if (os_log_type_enabled(*MEMORY[0x277CE2080], OS_LOG_TYPE_ERROR))
       {
         loga = v18;
-        v43 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-        v19 = [v6 bulletinPublisherID];
+        sectionIdentifier2 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+        bulletinPublisherID2 = [responseCopy bulletinPublisherID];
         *buf = 138543874;
-        v61 = v43;
+        v61 = sectionIdentifier2;
         v62 = 2114;
-        v63 = v19;
+        v63 = bulletinPublisherID2;
         v64 = 2114;
         v65 = v17;
         _os_log_error_impl(&dword_270AA8000, loga, OS_LOG_TYPE_ERROR, "[%{public}@] Launching action response '%{public}@' with alternate bundle identifier '%{public}@'", buf, 0x20u);
@@ -2916,8 +2916,8 @@ LABEL_6:
 
 LABEL_8:
         v21 = objc_alloc(MEMORY[0x277D77C98]);
-        v22 = [(UNSDefaultDataProvider *)self bundle];
-        v23 = [v21 initWithBundle:v22 categoryRepository:self->_categoryRepository];
+        bundle = [(UNSDefaultDataProvider *)self bundle];
+        v23 = [v21 initWithBundle:bundle categoryRepository:self->_categoryRepository];
 
         v24 = [v23 notificationForNotificationRecord:v13];
         goto LABEL_9;
@@ -2931,14 +2931,14 @@ LABEL_8:
       if (os_log_type_enabled(*MEMORY[0x277CE2080], OS_LOG_TYPE_ERROR))
       {
         v36 = v20;
-        v37 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-        v38 = [v6 bulletinPublisherID];
+        sectionIdentifier3 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+        bulletinPublisherID3 = [responseCopy bulletinPublisherID];
         *buf = 138543874;
-        v61 = v37;
+        v61 = sectionIdentifier3;
         v62 = 2114;
-        v63 = v38;
+        v63 = bulletinPublisherID3;
         v64 = 2114;
-        v65 = v16;
+        v65 = defaultActionBundleIdentifier;
         _os_log_error_impl(&dword_270AA8000, v36, OS_LOG_TYPE_ERROR, "[%{public}@] Permission denied to launch action response '%{public}@' with alternate bundle identifier '%{public}@'", buf, 0x20u);
 
         v14 = v51;
@@ -2968,9 +2968,9 @@ LABEL_31:
   v23 = v39;
   if (v39)
   {
-    log = v7;
-    v40 = [v39 sourceIdentifier];
-    v41 = [v15 isEqualToString:v40];
+    log = completionCopy;
+    sourceIdentifier = [v39 sourceIdentifier];
+    v41 = [v15 isEqualToString:sourceIdentifier];
 
     if (v41)
     {
@@ -2988,7 +2988,7 @@ LABEL_31:
       v24 = 0;
     }
 
-    v7 = log;
+    completionCopy = log;
   }
 
   else
@@ -3000,8 +3000,8 @@ LABEL_9:
 
   if (v24)
   {
-    v25 = v7;
-    switch(v9)
+    v25 = completionCopy;
+    switch(actionType)
     {
       case 1:
         v26 = MEMORY[0x277CE20E8];
@@ -3013,7 +3013,7 @@ LABEL_9:
         v26 = MEMORY[0x277CE20F0];
         break;
       default:
-        v28 = v54;
+        v28 = actionID;
         goto LABEL_18;
     }
 
@@ -3022,19 +3022,19 @@ LABEL_9:
     v28 = v27;
 LABEL_18:
     v55 = v28;
-    if ([v6 actionBehavior] == 1)
+    if ([responseCopy actionBehavior] == 1)
     {
       v29 = [v50 objectForKey:*MEMORY[0x277CF35E0]];
-      v30 = [MEMORY[0x277CE2018] responseWithNotification:v24 actionIdentifier:v28 originIdentifier:v53 targetConnectionEndpoint:v52 userText:v29];
+      v30 = [MEMORY[0x277CE2018] responseWithNotification:v24 actionIdentifier:v28 originIdentifier:originID targetConnectionEndpoint:endpoint userText:v29];
     }
 
     else
     {
-      v30 = [MEMORY[0x277CE1FC8] responseWithNotification:v24 actionIdentifier:v28 originIdentifier:v53 targetConnectionEndpoint:v52];
+      v30 = [MEMORY[0x277CE1FC8] responseWithNotification:v24 actionIdentifier:v28 originIdentifier:originID targetConnectionEndpoint:endpoint];
     }
 
-    v7 = v25;
-    if (v47)
+    completionCopy = v25;
+    if (actionActivationMode)
     {
       if ([(UNCNotificationSourceDescription *)self->_notificationSourceDescription daemonShouldReceiveBackgroundResponses])
       {
@@ -3047,7 +3047,7 @@ LABEL_18:
       }
     }
 
-    else if ([v6 didOpenApplication])
+    else if ([responseCopy didOpenApplication])
     {
       if ([(UNCNotificationSourceDescription *)self->_notificationSourceDescription daemonShouldReceiveApplicationEvents])
       {
@@ -3059,8 +3059,8 @@ LABEL_18:
     {
       [v24 request];
       v31 = logb = v25;
-      v32 = [v31 content];
-      v48 = [v32 launchImageName];
+      content = [v31 content];
+      launchImageName = [content launchImageName];
 
       appLauncher = self->_appLauncher;
       v56[0] = MEMORY[0x277D85DD0];
@@ -3072,8 +3072,8 @@ LABEL_18:
       v58 = v17;
       v59 = logb;
       v34 = appLauncher;
-      v7 = logb;
-      [(UNSApplicationLauncher *)v34 foregroundLaunchApplication:v58 withResponse:v57 launchImageName:v48 origin:v53 endpoint:v52 completionHandler:v56];
+      completionCopy = logb;
+      [(UNSApplicationLauncher *)v34 foregroundLaunchApplication:v58 withResponse:v57 launchImageName:launchImageName origin:originID endpoint:endpoint completionHandler:v56];
     }
 
     v35 = v55;
@@ -3086,10 +3086,10 @@ LABEL_35:
     [UNSDefaultDataProvider _handleBulletinActionResponse:withCompletion:];
   }
 
-  v35 = v54;
-  if (v7)
+  v35 = actionID;
+  if (completionCopy)
   {
-    (v7[2].isa)(v7, 0);
+    (completionCopy[2].isa)(completionCopy, 0);
   }
 
 LABEL_39:
@@ -3115,14 +3115,14 @@ uint64_t __71__UNSDefaultDataProvider__handleBulletinActionResponse_withCompleti
   return result;
 }
 
-- (id)_unarchiveNotificationFromData:(id)a3
+- (id)_unarchiveNotificationFromData:(id)data
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_autoreleasePoolPush();
-  if (v3)
+  if (dataCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v3 error:0];
+    v5 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:0];
     v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCA308]];
     [v5 finishDecoding];
   }
@@ -3139,7 +3139,7 @@ uint64_t __71__UNSDefaultDataProvider__handleBulletinActionResponse_withCompleti
   return v6;
 }
 
-- (void)notificationRepository:(id)a3 didDiscoverContentOnFirstUnlockForBundleIdentifier:(id)a4
+- (void)notificationRepository:(id)repository didDiscoverContentOnFirstUnlockForBundleIdentifier:(id)identifier
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -3150,21 +3150,21 @@ uint64_t __71__UNSDefaultDataProvider__handleBulletinActionResponse_withCompleti
   dispatch_async(queue, block);
 }
 
-- (void)notificationRepository:(id)a3 didPerformUpdates:(id)a4 forBundleIdentifier:(id)a5
+- (void)notificationRepository:(id)repository didPerformUpdates:(id)updates forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
+  updatesCopy = updates;
   queue = self->_queue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __87__UNSDefaultDataProvider_notificationRepository_didPerformUpdates_forBundleIdentifier___block_invoke;
   v9[3] = &unk_279E104B8;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = updatesCopy;
+  v8 = updatesCopy;
   dispatch_async(queue, v9);
 }
 
-- (void)categoryRepository:(id)a3 didChangeCategoriesForBundleIdentifier:(id)a4
+- (void)categoryRepository:(id)repository didChangeCategoriesForBundleIdentifier:(id)identifier
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -3183,7 +3183,7 @@ uint64_t __84__UNSDefaultDataProvider_categoryRepository_didChangeCategoriesForB
   return [v2 invalidateBulletins];
 }
 
-- (void)topicRepository:(id)a3 didChangeTopicsForBundleIdentifier:(id)a4
+- (void)topicRepository:(id)repository didChangeTopicsForBundleIdentifier:(id)identifier
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -3202,17 +3202,17 @@ uint64_t __77__UNSDefaultDataProvider_topicRepository_didChangeTopicsForBundleId
   return [v2 invalidateBulletins];
 }
 
-- (void)summaryServiceAdapter:(id)a3 didReceiveGroupSummariesForNotificationIdentifiers:(id)a4
+- (void)summaryServiceAdapter:(id)adapter didReceiveGroupSummariesForNotificationIdentifiers:(id)identifiers
 {
-  v5 = a4;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __99__UNSDefaultDataProvider_summaryServiceAdapter_didReceiveGroupSummariesForNotificationIdentifiers___block_invoke;
   v8[3] = &unk_279E104B8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = identifiersCopy;
+  selfCopy = self;
+  v7 = identifiersCopy;
   dispatch_async(queue, v8);
 }
 
@@ -3295,16 +3295,16 @@ void __99__UNSDefaultDataProvider_summaryServiceAdapter_didReceiveGroupSummaries
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_notificationRepositoryDidPerformUpdates:(id)a3
+- (void)_queue_notificationRepositoryDidPerformUpdates:(id)updates
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatesCopy = updates;
   dispatch_assert_queue_V2(self->_queue);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4;
+  v5 = updatesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -3321,11 +3321,11 @@ void __99__UNSDefaultDataProvider_summaryServiceAdapter_didReceiveGroupSummaries
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
-        v11 = [v10 notificationRecord];
+        notificationRecord = [v10 notificationRecord];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && ([v10 shouldRepost] & 1) == 0 && -[UNCNotificationSourceDescription allowPrivateProperties](self->_notificationSourceDescription, "allowPrivateProperties"))
         {
-          [(UNSDefaultDataProvider *)self _queue_modifyBulletinForNotification:v11];
+          [(UNSDefaultDataProvider *)self _queue_modifyBulletinForNotification:notificationRecord];
         }
 
         else
@@ -3336,15 +3336,15 @@ void __99__UNSDefaultDataProvider_summaryServiceAdapter_didReceiveGroupSummaries
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v12 = [v10 shouldRepost];
+              shouldRepost = [v10 shouldRepost];
             }
 
             else
             {
-              v12 = 1;
+              shouldRepost = 1;
             }
 
-            [(UNSDefaultDataProvider *)self _queue_addBulletinForNotification:v11 shouldRepost:v12];
+            [(UNSDefaultDataProvider *)self _queue_addBulletinForNotification:notificationRecord shouldRepost:shouldRepost];
           }
 
           else
@@ -3352,7 +3352,7 @@ void __99__UNSDefaultDataProvider_summaryServiceAdapter_didReceiveGroupSummaries
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              -[UNSDefaultDataProvider _queue_withdrawBulletinForNotification:shouldSync:](self, "_queue_withdrawBulletinForNotification:shouldSync:", v11, [v10 shouldSync]);
+              -[UNSDefaultDataProvider _queue_withdrawBulletinForNotification:shouldSync:](self, "_queue_withdrawBulletinForNotification:shouldSync:", notificationRecord, [v10 shouldSync]);
             }
           }
         }
@@ -3371,26 +3371,26 @@ void __99__UNSDefaultDataProvider_summaryServiceAdapter_didReceiveGroupSummaries
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_fetchBulletinForNotification:(id)a3
+- (void)_queue_fetchBulletinForNotification:(id)notification
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5)
+  notificationCopy = notification;
+  identifier = [notificationCopy identifier];
+  if (identifier)
   {
-    v6 = [(UNSDefaultDataProvider *)self _destinationsForNotification:v4];
+    v6 = [(UNSDefaultDataProvider *)self _destinationsForNotification:notificationCopy];
     v7 = *MEMORY[0x277CE2080];
     if (os_log_type_enabled(*MEMORY[0x277CE2080], OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-      v10 = [v4 identifier];
-      v11 = [v10 un_logDigest];
+      sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+      identifier2 = [notificationCopy identifier];
+      un_logDigest = [identifier2 un_logDigest];
       v12 = BBPublisherDestinationStrings();
       v16 = 138544130;
-      v17 = v9;
+      v17 = sectionIdentifier;
       v18 = 2114;
-      v19 = v11;
+      v19 = un_logDigest;
       v20 = 2048;
       v21 = v6;
       v22 = 2114;
@@ -3398,7 +3398,7 @@ void __99__UNSDefaultDataProvider_summaryServiceAdapter_didReceiveGroupSummaries
       _os_log_impl(&dword_270AA8000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Fetching notification %{public}@ destinations %ld: %{public}@", &v16, 0x2Au);
     }
 
-    v13 = [(UNSDefaultDataProvider *)self _queue_bulletinForNotification:v4];
+    v13 = [(UNSDefaultDataProvider *)self _queue_bulletinForNotification:notificationCopy];
     [(BBDataProviderProxy *)self->_proxy modifyBulletin:v13];
   }
 
@@ -3414,31 +3414,31 @@ void __99__UNSDefaultDataProvider_summaryServiceAdapter_didReceiveGroupSummaries
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_modifyBulletinForNotification:(id)a3
+- (void)_queue_modifyBulletinForNotification:(id)notification
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   dispatch_assert_queue_V2(self->_queue);
-  if (![v4 pipelineState])
+  if (![notificationCopy pipelineState])
   {
-    v5 = [v4 identifier];
-    if (v5)
+    identifier = [notificationCopy identifier];
+    if (identifier)
     {
-      v26 = [(UNSDefaultDataProvider *)self _categoryForNotification:v4];
-      v6 = [(UNSDefaultDataProvider *)self _destinationsForNotification:v4];
+      v26 = [(UNSDefaultDataProvider *)self _categoryForNotification:notificationCopy];
+      v6 = [(UNSDefaultDataProvider *)self _destinationsForNotification:notificationCopy];
       v7 = MEMORY[0x277CE2080];
       v8 = *MEMORY[0x277CE2080];
       if (os_log_type_enabled(*MEMORY[0x277CE2080], OS_LOG_TYPE_DEFAULT))
       {
         v9 = v8;
-        v10 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-        v11 = [v4 identifier];
-        v12 = [v11 un_logDigest];
+        sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+        identifier2 = [notificationCopy identifier];
+        un_logDigest = [identifier2 un_logDigest];
         v13 = BBPublisherDestinationStrings();
         *buf = 138544130;
-        v32 = v10;
+        v32 = sectionIdentifier;
         v33 = 2114;
-        v34 = v12;
+        v34 = un_logDigest;
         v35 = 2048;
         v36 = v6;
         v37 = 2114;
@@ -3446,35 +3446,35 @@ void __99__UNSDefaultDataProvider_summaryServiceAdapter_didReceiveGroupSummaries
         _os_log_impl(&dword_270AA8000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Modifying notification %{public}@ destinations %ld: %{public}@", buf, 0x2Au);
       }
 
-      v14 = [(UNSDefaultDataProvider *)self _queue_bulletinForNotification:v4];
+      v14 = [(UNSDefaultDataProvider *)self _queue_bulletinForNotification:notificationCopy];
       v15 = *v7;
       if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
       {
         v16 = v15;
-        v17 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-        v18 = [v4 identifier];
-        v19 = [v18 un_logDigest];
+        sectionIdentifier2 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+        identifier3 = [notificationCopy identifier];
+        un_logDigest2 = [identifier3 un_logDigest];
         *buf = 138543618;
-        v32 = v17;
+        v32 = sectionIdentifier2;
         v33 = 2114;
-        v34 = v19;
+        v34 = un_logDigest2;
         _os_log_impl(&dword_270AA8000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting modify notification pipeline for %{public}@", buf, 0x16u);
       }
 
       objc_initWeak(buf, self);
       v20 = objc_alloc_init(MEMORY[0x277D77C90]);
-      v21 = [(BBSectionInfo *)self->_effectiveSectionInfo uns_notificationSettings];
+      uns_notificationSettings = [(BBSectionInfo *)self->_effectiveSectionInfo uns_notificationSettings];
       notificationSourceDescription = self->_notificationSourceDescription;
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __63__UNSDefaultDataProvider__queue_modifyBulletinForNotification___block_invoke;
       v27[3] = &unk_279E10AB8;
       v27[4] = self;
-      v28 = v4;
+      v28 = notificationCopy;
       objc_copyWeak(&v30, buf);
       v23 = v20;
       v29 = v23;
-      [UNSNotificationPipelineAdapter updateBulletin:v14 category:v26 destinations:v6 sourceDescription:notificationSourceDescription settings:v21 completion:v27];
+      [UNSNotificationPipelineAdapter updateBulletin:v14 category:v26 destinations:v6 sourceDescription:notificationSourceDescription settings:uns_notificationSettings completion:v27];
 
       objc_destroyWeak(&v30);
       objc_destroyWeak(buf);
@@ -3541,86 +3541,86 @@ uint64_t __63__UNSDefaultDataProvider__queue_modifyBulletinForNotification___blo
   return objc_opt_class();
 }
 
-- (void)_queue_addBulletinForNotification:(id)a3 shouldRepost:(BOOL)a4
+- (void)_queue_addBulletinForNotification:(id)notification shouldRepost:(BOOL)repost
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  notificationCopy = notification;
   dispatch_assert_queue_V2(self->_queue);
-  if (![v6 pipelineState])
+  if (![notificationCopy pipelineState])
   {
-    v31 = a4;
-    v32 = [(UNSDefaultDataProvider *)self _categoryForNotification:v6];
-    v33 = [(UNSDefaultDataProvider *)self _destinationsForNotification:v6];
+    repostCopy = repost;
+    v32 = [(UNSDefaultDataProvider *)self _categoryForNotification:notificationCopy];
+    v33 = [(UNSDefaultDataProvider *)self _destinationsForNotification:notificationCopy];
     v7 = *MEMORY[0x277CE2080];
     if (os_log_type_enabled(*MEMORY[0x277CE2080], OS_LOG_TYPE_DEFAULT))
     {
       log = v7;
-      v29 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-      v30 = [v6 identifier];
-      v27 = [v30 un_logDigest];
-      v8 = [v6 hasAlertContent];
-      v9 = [v6 shouldPresentAlert];
-      v10 = [v6 hasSound];
-      v11 = [v6 shouldPlaySound];
-      v12 = [v6 interruptionLevel];
+      sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+      identifier = [notificationCopy identifier];
+      un_logDigest = [identifier un_logDigest];
+      hasAlertContent = [notificationCopy hasAlertContent];
+      shouldPresentAlert = [notificationCopy shouldPresentAlert];
+      hasSound = [notificationCopy hasSound];
+      shouldPlaySound = [notificationCopy shouldPlaySound];
+      interruptionLevel = [notificationCopy interruptionLevel];
       v13 = BBPublisherDestinationStrings();
-      v14 = [v6 contentDate];
-      v15 = [v14 un_logString];
+      contentDate = [notificationCopy contentDate];
+      un_logString = [contentDate un_logString];
       *buf = 138545666;
-      v40 = v29;
+      v40 = sectionIdentifier;
       v41 = 2114;
-      v42 = v27;
+      v42 = un_logDigest;
       v43 = 1024;
-      v44 = v8;
+      v44 = hasAlertContent;
       v45 = 1024;
-      v46 = v9;
+      v46 = shouldPresentAlert;
       v47 = 1024;
-      v48 = v10;
+      v48 = hasSound;
       v49 = 1024;
-      v50 = v11;
+      v50 = shouldPlaySound;
       v51 = 2048;
-      v52 = v12;
+      v52 = interruptionLevel;
       v53 = 2048;
       v54 = v33;
       v55 = 2114;
       v56 = v13;
       v57 = 2114;
-      v58 = v15;
+      v58 = un_logString;
       _os_log_impl(&dword_270AA8000, log, OS_LOG_TYPE_DEFAULT, "[%{public}@] Adding notification %{public}@ [ hasAlertContent: %d, shouldPresentAlert: %d hasSound: %d shouldPlaySound: %d ]; interruption-level: %lu; destinations %ld: %{public}@; contentDate: %{public}@", buf, 0x56u);
     }
 
     if (v33)
     {
-      v16 = [(UNSDefaultDataProvider *)self _queue_bulletinForNotification:v6];
+      v16 = [(UNSDefaultDataProvider *)self _queue_bulletinForNotification:notificationCopy];
       v17 = *MEMORY[0x277CE2080];
       if (os_log_type_enabled(*MEMORY[0x277CE2080], OS_LOG_TYPE_DEFAULT))
       {
         v18 = v17;
-        v19 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-        v20 = [v6 identifier];
-        v21 = [v20 un_logDigest];
+        sectionIdentifier2 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+        identifier2 = [notificationCopy identifier];
+        un_logDigest2 = [identifier2 un_logDigest];
         *buf = 138543618;
-        v40 = v19;
+        v40 = sectionIdentifier2;
         v41 = 2114;
-        v42 = v21;
+        v42 = un_logDigest2;
         _os_log_impl(&dword_270AA8000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting add notification pipeline for %{public}@", buf, 0x16u);
       }
 
       objc_initWeak(buf, self);
       v22 = objc_alloc_init(MEMORY[0x277D77C90]);
-      v23 = [(BBSectionInfo *)self->_effectiveSectionInfo uns_notificationSettings];
+      uns_notificationSettings = [(BBSectionInfo *)self->_effectiveSectionInfo uns_notificationSettings];
       notificationSourceDescription = self->_notificationSourceDescription;
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __73__UNSDefaultDataProvider__queue_addBulletinForNotification_shouldRepost___block_invoke;
       v34[3] = &unk_279E10B08;
       v34[4] = self;
-      v35 = v6;
+      v35 = notificationCopy;
       objc_copyWeak(&v37, buf);
-      v38 = v31;
+      v38 = repostCopy;
       v25 = v22;
       v36 = v25;
-      [UNSNotificationPipelineAdapter createBulletin:v16 category:v32 destinations:v33 sourceDescription:notificationSourceDescription settings:v23 completion:v34];
+      [UNSNotificationPipelineAdapter createBulletin:v16 category:v32 destinations:v33 sourceDescription:notificationSourceDescription settings:uns_notificationSettings completion:v34];
 
       objc_destroyWeak(&v37);
       objc_destroyWeak(buf);
@@ -3680,41 +3680,41 @@ uint64_t __73__UNSDefaultDataProvider__queue_addBulletinForNotification_shouldRe
   return objc_opt_class();
 }
 
-- (void)_queue_withdrawBulletinForNotification:(id)a3 shouldSync:(BOOL)a4
+- (void)_queue_withdrawBulletinForNotification:(id)notification shouldSync:(BOOL)sync
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  notificationCopy = notification;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [v6 identifier];
+  identifier = [notificationCopy identifier];
   v8 = MEMORY[0x277CE2080];
   v9 = *MEMORY[0x277CE2080];
   v10 = *MEMORY[0x277CE2080];
-  if (v7)
+  if (identifier)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v9;
-      v12 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-      v13 = [v7 un_logDigest];
+      sectionIdentifier = [(UNSDefaultDataProvider *)self sectionIdentifier];
+      un_logDigest = [identifier un_logDigest];
       *buf = 138543618;
-      v31 = v12;
+      v31 = sectionIdentifier;
       v32 = 2114;
-      v33 = v13;
+      v33 = un_logDigest;
       _os_log_impl(&dword_270AA8000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Withdrawing notification %{public}@", buf, 0x16u);
     }
 
-    v14 = [(UNSDefaultDataProvider *)self _queue_bulletinForNotification:v6];
+    v14 = [(UNSDefaultDataProvider *)self _queue_bulletinForNotification:notificationCopy];
     v15 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [(UNSDefaultDataProvider *)self sectionIdentifier];
-      v18 = [v6 identifier];
-      v19 = [v18 un_logDigest];
+      sectionIdentifier2 = [(UNSDefaultDataProvider *)self sectionIdentifier];
+      identifier2 = [notificationCopy identifier];
+      un_logDigest2 = [identifier2 un_logDigest];
       *buf = 138543618;
-      v31 = v17;
+      v31 = sectionIdentifier2;
       v32 = 2114;
-      v33 = v19;
+      v33 = un_logDigest2;
       _os_log_impl(&dword_270AA8000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting delete notification pipeline for %{public}@", buf, 0x16u);
     }
 
@@ -3726,10 +3726,10 @@ uint64_t __73__UNSDefaultDataProvider__queue_addBulletinForNotification_shouldRe
     v24[2] = __76__UNSDefaultDataProvider__queue_withdrawBulletinForNotification_shouldSync___block_invoke;
     v24[3] = &unk_279E10B58;
     v24[4] = self;
-    v25 = v6;
+    v25 = notificationCopy;
     objc_copyWeak(&v28, buf);
-    v26 = v7;
-    v29 = a4;
+    v26 = identifier;
+    syncCopy = sync;
     v22 = v20;
     v27 = v22;
     [UNSNotificationPipelineAdapter deleteBulletin:v14 sourceDescription:notificationSourceDescription completion:v24];
@@ -3791,16 +3791,16 @@ uint64_t __76__UNSDefaultDataProvider__queue_withdrawBulletinForNotification_sho
   return objc_opt_class();
 }
 
-- (id)_categoryForNotification:(id)a3
+- (id)_categoryForNotification:(id)notification
 {
-  v4 = [a3 categoryIdentifier];
-  v5 = [(UNSDefaultDataProvider *)self _categoryForIdentifier:v4];
+  categoryIdentifier = [notification categoryIdentifier];
+  v5 = [(UNSDefaultDataProvider *)self _categoryForIdentifier:categoryIdentifier];
 
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277D77C80]);
-    v7 = [(UNSDefaultDataProvider *)self bundle];
-    v8 = [v6 initWithBundle:v7];
+    bundle = [(UNSDefaultDataProvider *)self bundle];
+    v8 = [v6 initWithBundle:bundle];
 
     v9 = [v8 notificationCategoryForNotificationCategoryRecord:v5];
   }
@@ -3813,35 +3813,35 @@ uint64_t __76__UNSDefaultDataProvider__queue_withdrawBulletinForNotification_sho
   return v9;
 }
 
-- (unint64_t)_destinationsForNotification:(id)a3
+- (unint64_t)_destinationsForNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 categoryIdentifier];
-  v6 = [(UNSDefaultDataProvider *)self _categoryForIdentifier:v5];
+  notificationCopy = notification;
+  categoryIdentifier = [notificationCopy categoryIdentifier];
+  v6 = [(UNSDefaultDataProvider *)self _categoryForIdentifier:categoryIdentifier];
 
-  v7 = [v4 presentationOptions];
-  v8 = [MEMORY[0x277CF0CA8] sharedInstance];
-  v9 = [v8 deviceClass];
+  presentationOptions = [notificationCopy presentationOptions];
+  mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+  deviceClass = [mEMORY[0x277CF0CA8] deviceClass];
 
-  v10 = v9 != 4;
-  if (![v4 shouldPresentAlert] || !objc_msgSend(v4, "hasAlertContent"))
+  v10 = deviceClass != 4;
+  if (![notificationCopy shouldPresentAlert] || !objc_msgSend(notificationCopy, "hasAlertContent"))
   {
-    if ([v4 shouldPlaySound])
+    if ([notificationCopy shouldPlaySound])
     {
-      v20 = [v4 hasSound];
+      hasSound = [notificationCopy hasSound];
     }
 
     else
     {
-      v20 = 0;
+      hasSound = 0;
     }
 
     goto LABEL_21;
   }
 
-  v11 = v7 & 0x14;
-  v12 = v10 & (v7 >> 3) | (v7 >> 2) & 1;
-  v13 = v7 & 0xC;
+  v11 = presentationOptions & 0x14;
+  v12 = v10 & (presentationOptions >> 3) | (presentationOptions >> 2) & 1;
+  v13 = presentationOptions & 0xC;
   if (![(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowPrivateProperties])
   {
     if (v12)
@@ -3864,7 +3864,7 @@ uint64_t __76__UNSDefaultDataProvider__queue_withdrawBulletinForNotification_sho
       v19 = v24;
     }
 
-    v20 = v19 | 0x80;
+    hasSound = v19 | 0x80;
     if (![v6 shouldAllowInCarPlay])
     {
       goto LABEL_21;
@@ -3874,7 +3874,7 @@ uint64_t __76__UNSDefaultDataProvider__queue_withdrawBulletinForNotification_sho
   }
 
   v14 = v11 != 0;
-  if ([v4 allowsAlertDestination])
+  if ([notificationCopy allowsAlertDestination])
   {
     v15 = 8 * v14;
   }
@@ -3884,7 +3884,7 @@ uint64_t __76__UNSDefaultDataProvider__queue_withdrawBulletinForNotification_sho
     v15 = 0;
   }
 
-  if (([v4 allowsLockScreenDestination] & v12) != 0)
+  if (([notificationCopy allowsLockScreenDestination] & v12) != 0)
   {
     v16 = v15 | 4;
   }
@@ -3894,14 +3894,14 @@ uint64_t __76__UNSDefaultDataProvider__queue_withdrawBulletinForNotification_sho
     v16 = v15;
   }
 
-  v17 = [v4 allowsNotificationCenterDestination];
+  allowsNotificationCenterDestination = [notificationCopy allowsNotificationCenterDestination];
   v18 = v16 | 2;
   if (!v13)
   {
     v18 = v16;
   }
 
-  if (v17)
+  if (allowsNotificationCenterDestination)
   {
     v19 = v18;
   }
@@ -3911,30 +3911,30 @@ uint64_t __76__UNSDefaultDataProvider__queue_withdrawBulletinForNotification_sho
     v19 = v16;
   }
 
-  v20 = v19 | 0x80;
-  if ([v6 shouldAllowInCarPlay] && objc_msgSend(v4, "allowsCarPlayDestination"))
+  hasSound = v19 | 0x80;
+  if ([v6 shouldAllowInCarPlay] && objc_msgSend(notificationCopy, "allowsCarPlayDestination"))
   {
 LABEL_37:
     if (![(UNSDefaultDataProvider *)self _isAppProtectionActive])
     {
-      v20 = v19 | 0xC0;
+      hasSound = v19 | 0xC0;
     }
   }
 
 LABEL_21:
   if ([(UNCNotificationSourceDescription *)self->_notificationSourceDescription allowPrivateProperties])
   {
-    v21 = [v4 topicIdentifiers];
+    topicIdentifiers = [notificationCopy topicIdentifiers];
   }
 
   else
   {
-    v21 = 0;
+    topicIdentifiers = 0;
   }
 
-  if ([v4 hasCriticalAlertSound])
+  if ([notificationCopy hasCriticalAlertSound])
   {
-    if ([(UNSDefaultDataProvider *)self _queue_supportsCriticalAlertsForSubsectionIDs:v21])
+    if ([(UNSDefaultDataProvider *)self _queue_supportsCriticalAlertsForSubsectionIDs:topicIdentifiers])
     {
       v22 = 66304;
     }
@@ -3950,20 +3950,20 @@ LABEL_21:
     v22 = 256;
   }
 
-  return v22 | v20;
+  return v22 | hasSound;
 }
 
-- (void)_addAttachments:(id)a3 toBulletinRequest:(id)a4
+- (void)_addAttachments:(id)attachments toBulletinRequest:(id)request
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  attachmentsCopy = attachments;
+  requestCopy = request;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v5;
-  v7 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  obj = attachmentsCopy;
+  v7 = [attachmentsCopy countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3989,55 +3989,55 @@ LABEL_21:
           v13 = qword_270AE6DA8[v12];
         }
 
-        v14 = [v11 options];
-        v15 = [v14 displayLocation];
+        options = [v11 options];
+        displayLocation = [options displayLocation];
 
-        v16 = [v11 options];
-        v17 = [v16 displayLocation] == 1;
+        options2 = [v11 options];
+        v17 = [options2 displayLocation] == 1;
 
         v18 = objc_alloc_init(MEMORY[0x277CF3540]);
         [v18 setType:v13];
         v19 = [v11 URL];
         [v18 setURL:v19];
 
-        v20 = [v11 identifier];
-        [v18 setIdentifier:v20];
+        identifier = [v11 identifier];
+        [v18 setIdentifier:identifier];
 
-        v21 = [v11 type];
-        [v18 setUniformType:v21];
+        type = [v11 type];
+        [v18 setUniformType:type];
 
-        v22 = [v11 options];
-        v23 = [v22 thumbnailGeneratorUserInfo];
-        [v18 setThumbnailGeneratorUserInfo:v23];
+        options3 = [v11 options];
+        thumbnailGeneratorUserInfo = [options3 thumbnailGeneratorUserInfo];
+        [v18 setThumbnailGeneratorUserInfo:thumbnailGeneratorUserInfo];
 
-        [v18 setThumbnailHidden:v15 == 2];
+        [v18 setThumbnailHidden:displayLocation == 2];
         [v18 setHiddenFromDefaultExpandedView:v17];
-        v24 = [v6 primaryAttachment];
+        primaryAttachment = [requestCopy primaryAttachment];
 
-        if (v24 || v15 == 2)
+        if (primaryAttachment || displayLocation == 2)
         {
-          v25 = [v6 additionalAttachments];
-          v26 = v25;
-          if (v25)
+          additionalAttachments = [requestCopy additionalAttachments];
+          v26 = additionalAttachments;
+          if (additionalAttachments)
           {
-            v27 = v25;
+            array = additionalAttachments;
           }
 
           else
           {
-            v27 = [MEMORY[0x277CBEA60] array];
+            array = [MEMORY[0x277CBEA60] array];
           }
 
-          v28 = v27;
+          v28 = array;
 
           v29 = [v28 arrayByAddingObject:v18];
 
-          [v6 setAdditionalAttachments:v29];
+          [requestCopy setAdditionalAttachments:v29];
         }
 
         else
         {
-          [v6 setPrimaryAttachment:v18];
+          [requestCopy setPrimaryAttachment:v18];
         }
       }
 
@@ -4050,12 +4050,12 @@ LABEL_21:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_sectionIconVariantForApplicationIdentifier:(id)a3 format:(int64_t)a4
+- (id)_sectionIconVariantForApplicationIdentifier:(id)identifier format:(int64_t)format
 {
-  v5 = a3;
-  if ([v5 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v6 = [MEMORY[0x277CF3560] variantWithFormat:a4 applicationIdentifier:v5];
+    v6 = [MEMORY[0x277CF3560] variantWithFormat:format applicationIdentifier:identifierCopy];
     [v6 setPrecomposed:1];
   }
 
@@ -4067,12 +4067,12 @@ LABEL_21:
   return v6;
 }
 
-- (id)_sectionIconVariantForUTI:(id)a3 format:(int64_t)a4
+- (id)_sectionIconVariantForUTI:(id)i format:(int64_t)format
 {
-  v5 = a3;
-  if ([v5 length])
+  iCopy = i;
+  if ([iCopy length])
   {
-    v6 = [MEMORY[0x277CF3560] variantWithFormat:a4 uti:v5];
+    v6 = [MEMORY[0x277CF3560] variantWithFormat:format uti:iCopy];
     [v6 setPrecomposed:1];
   }
 
@@ -4084,79 +4084,79 @@ LABEL_21:
   return v6;
 }
 
-- (id)_sectionIconForNotificationSourceDescription:(id)a3
+- (id)_sectionIconForNotificationSourceDescription:(id)description
 {
-  v4 = a3;
-  v5 = [v4 bundleURL];
-  v50 = [v5 path];
+  descriptionCopy = description;
+  bundleURL = [descriptionCopy bundleURL];
+  path = [bundleURL path];
 
-  v6 = [v4 suppressIconMask];
-  v7 = [v4 iconApplicationIdentifier];
-  v8 = [v4 iconUTI];
-  v49 = v8;
-  if ([v7 length])
+  suppressIconMask = [descriptionCopy suppressIconMask];
+  iconApplicationIdentifier = [descriptionCopy iconApplicationIdentifier];
+  iconUTI = [descriptionCopy iconUTI];
+  v49 = iconUTI;
+  if ([iconApplicationIdentifier length])
   {
-    v9 = [(UNSDefaultDataProvider *)self _sectionIconVariantForApplicationIdentifier:v7 format:0];
+    v9 = [(UNSDefaultDataProvider *)self _sectionIconVariantForApplicationIdentifier:iconApplicationIdentifier format:0];
   }
 
   else
   {
-    if (![v8 length])
+    if (![iconUTI length])
     {
-      [v4 defaultIconFile];
-      v30 = v48 = v7;
-      v70 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v30 bundlePath:v50 format:0 precomposed:v6];
+      [descriptionCopy defaultIconFile];
+      v30 = v48 = iconApplicationIdentifier;
+      v70 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v30 bundlePath:path format:0 precomposed:suppressIconMask];
 
-      v31 = [v4 subordinateIconFile];
-      v68 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v31 bundlePath:v50 format:26 precomposed:v6];
+      subordinateIconFile = [descriptionCopy subordinateIconFile];
+      v68 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:subordinateIconFile bundlePath:path format:26 precomposed:suppressIconMask];
 
-      v32 = [v4 carPlayIconFile];
-      v66 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v32 bundlePath:v50 format:14 precomposed:v6];
+      carPlayIconFile = [descriptionCopy carPlayIconFile];
+      v66 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:carPlayIconFile bundlePath:path format:14 precomposed:suppressIconMask];
 
-      v33 = [v4 settingsIconFile];
-      v64 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v33 bundlePath:v50 format:1 precomposed:v6];
+      settingsIconFile = [descriptionCopy settingsIconFile];
+      v64 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:settingsIconFile bundlePath:path format:1 precomposed:suppressIconMask];
 
-      v34 = [v4 settingsSheetIconFile];
-      v62 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v34 bundlePath:v50 format:17 precomposed:v6];
+      settingsSheetIconFile = [descriptionCopy settingsSheetIconFile];
+      v62 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:settingsSheetIconFile bundlePath:path format:17 precomposed:suppressIconMask];
 
-      v35 = [v4 watchQuickLookSmallIconFile];
-      v60 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v35 bundlePath:v50 format:2 precomposed:v6];
+      watchQuickLookSmallIconFile = [descriptionCopy watchQuickLookSmallIconFile];
+      v60 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:watchQuickLookSmallIconFile bundlePath:path format:2 precomposed:suppressIconMask];
 
-      v36 = [v4 watchQuickLookLargeIconFile];
-      v58 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v36 bundlePath:v50 format:4 precomposed:v6];
+      watchQuickLookLargeIconFile = [descriptionCopy watchQuickLookLargeIconFile];
+      v58 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:watchQuickLookLargeIconFile bundlePath:path format:4 precomposed:suppressIconMask];
 
-      v37 = [v4 watchListSmallIconFile];
-      v56 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v37 bundlePath:v50 format:10 precomposed:v6];
+      watchListSmallIconFile = [descriptionCopy watchListSmallIconFile];
+      v56 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:watchListSmallIconFile bundlePath:path format:10 precomposed:suppressIconMask];
 
-      v38 = [v4 watchListLargeIconFile];
-      v54 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v38 bundlePath:v50 format:12 precomposed:v6];
+      watchListLargeIconFile = [descriptionCopy watchListLargeIconFile];
+      v54 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:watchListLargeIconFile bundlePath:path format:12 precomposed:suppressIconMask];
 
-      v39 = [v4 watchQuickLook394hIconFile];
-      v52 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v39 bundlePath:v50 format:4 precomposed:v6];
+      watchQuickLook394hIconFile = [descriptionCopy watchQuickLook394hIconFile];
+      v52 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:watchQuickLook394hIconFile bundlePath:path format:4 precomposed:suppressIconMask];
 
-      v40 = [v4 watchQuickLook448hIconFile];
-      v47 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v40 bundlePath:v50 format:15 precomposed:v6];
+      watchQuickLook448hIconFile = [descriptionCopy watchQuickLook448hIconFile];
+      v47 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:watchQuickLook448hIconFile bundlePath:path format:15 precomposed:suppressIconMask];
 
-      v41 = [v4 watchList394hIconFile];
-      v20 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v41 bundlePath:v50 format:12 precomposed:v6];
+      watchList394hIconFile = [descriptionCopy watchList394hIconFile];
+      v20 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:watchList394hIconFile bundlePath:path format:12 precomposed:suppressIconMask];
 
-      v42 = [v4 watchList448hIconFile];
-      v21 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v42 bundlePath:v50 format:18 precomposed:v6];
+      watchList448hIconFile = [descriptionCopy watchList448hIconFile];
+      v21 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:watchList448hIconFile bundlePath:path format:18 precomposed:suppressIconMask];
 
-      v43 = [v4 watchQuickLook430hIconFile];
-      v22 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v43 bundlePath:v50 format:4 precomposed:v6];
+      watchQuickLook430hIconFile = [descriptionCopy watchQuickLook430hIconFile];
+      v22 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:watchQuickLook430hIconFile bundlePath:path format:4 precomposed:suppressIconMask];
 
-      v44 = [v4 watchQuickLook484hIconFile];
-      v23 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v44 bundlePath:v50 format:22 precomposed:v6];
+      watchQuickLook484hIconFile = [descriptionCopy watchQuickLook484hIconFile];
+      v23 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:watchQuickLook484hIconFile bundlePath:path format:22 precomposed:suppressIconMask];
 
-      v45 = [v4 watchList430hIconFile];
-      v24 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v45 bundlePath:v50 format:12 precomposed:v6];
+      watchList430hIconFile = [descriptionCopy watchList430hIconFile];
+      v24 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:watchList430hIconFile bundlePath:path format:12 precomposed:suppressIconMask];
 
-      v46 = [v4 watchList484hIconFile];
-      v25 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:v46 bundlePath:v50 format:20 precomposed:v6];
+      watchList484hIconFile = [descriptionCopy watchList484hIconFile];
+      v25 = [(UNSDefaultDataProvider *)self _sectionIconVariantForImageName:watchList484hIconFile bundlePath:path format:20 precomposed:suppressIconMask];
 
       v19 = v47;
-      v7 = v48;
+      iconApplicationIdentifier = v48;
       v18 = v52;
       v17 = v54;
       v16 = v56;
@@ -4170,7 +4170,7 @@ LABEL_21:
       goto LABEL_6;
     }
 
-    v9 = [(UNSDefaultDataProvider *)self _sectionIconVariantForUTI:v8 format:0];
+    v9 = [(UNSDefaultDataProvider *)self _sectionIconVariantForUTI:iconUTI format:0];
   }
 
   v10 = 0;
@@ -4299,88 +4299,88 @@ LABEL_6:
   return v27;
 }
 
-- (unint64_t)_bulletinInterruptionLevelForInterruptionLevel:(unint64_t)a3
+- (unint64_t)_bulletinInterruptionLevelForInterruptionLevel:(unint64_t)level
 {
-  if (a3 - 1 >= 3)
+  if (level - 1 >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return level;
   }
 }
 
-- (unint64_t)_bulletinPriorityStatusForNotificationPriorityStatus:(unint64_t)a3
+- (unint64_t)_bulletinPriorityStatusForNotificationPriorityStatus:(unint64_t)status
 {
-  if (a3 - 1 >= 5)
+  if (status - 1 >= 5)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return status;
   }
 }
 
-- (unint64_t)_notificationRecordPriorityStatusForBulletinStatus:(unint64_t)a3
+- (unint64_t)_notificationRecordPriorityStatusForBulletinStatus:(unint64_t)status
 {
-  if (a3 - 1 >= 5)
+  if (status - 1 >= 5)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return status;
   }
 }
 
-- (unint64_t)_bulletinSummaryStatusForNotificationSummaryStatus:(unint64_t)a3
+- (unint64_t)_bulletinSummaryStatusForNotificationSummaryStatus:(unint64_t)status
 {
-  if (a3 - 1 >= 4)
+  if (status - 1 >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return status;
   }
 }
 
-- (unint64_t)_notificationRecordSummaryStatusForBulletinStatus:(unint64_t)a3
+- (unint64_t)_notificationRecordSummaryStatusForBulletinStatus:(unint64_t)status
 {
-  if (a3 - 1 >= 4)
+  if (status - 1 >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return status;
   }
 }
 
-- (BOOL)_isTCCUserAvailabilityGrantedForBundleId:(id)a3
+- (BOOL)_isTCCUserAvailabilityGrantedForBundleId:(id)id
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   v5 = MEMORY[0x277CE2070];
   v6 = *MEMORY[0x277CE2070];
   if (os_log_type_enabled(*MEMORY[0x277CE2070], OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v4;
+    v13 = idCopy;
     _os_log_impl(&dword_270AA8000, v6, OS_LOG_TYPE_DEFAULT, "Looking up User Availability permission for bundleId: %{public}@", &v12, 0xCu);
   }
 
-  if ([v4 length])
+  if ([idCopy length])
   {
-    v7 = [(UNSDefaultDataProvider *)self _userAvailabilityTCCApprovedBundleIds];
-    v8 = [v7 containsObject:v4];
+    _userAvailabilityTCCApprovedBundleIds = [(UNSDefaultDataProvider *)self _userAvailabilityTCCApprovedBundleIds];
+    v8 = [_userAvailabilityTCCApprovedBundleIds containsObject:idCopy];
   }
 
   else

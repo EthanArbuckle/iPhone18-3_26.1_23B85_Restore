@@ -12,9 +12,9 @@
   v5.receiver = self;
   v5.super_class = AMSUICommonLoadingViewController;
   [(AMSUICommonViewController *)&v5 loadView];
-  v3 = [MEMORY[0x1E69DC888] ams_defaultPlatformBackgroundColor];
-  v4 = [(AMSUICommonViewController *)self view];
-  [v4 ams_setBackgroundColor:v3];
+  ams_defaultPlatformBackgroundColor = [MEMORY[0x1E69DC888] ams_defaultPlatformBackgroundColor];
+  view = [(AMSUICommonViewController *)self view];
+  [view ams_setBackgroundColor:ams_defaultPlatformBackgroundColor];
 }
 
 - (void)viewDidLoad
@@ -30,14 +30,14 @@
   v13.receiver = self;
   v13.super_class = AMSUICommonLoadingViewController;
   [(AMSUICommonLoadingViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(AMSUICommonViewController *)self view];
-  [v3 bounds];
+  view = [(AMSUICommonViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AMSUICommonLoadingViewController *)self loadingView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  loadingView = [(AMSUICommonLoadingViewController *)self loadingView];
+  [loadingView setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)_setup
@@ -46,12 +46,12 @@
   v4 = [(AMSUILoadingView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(AMSUICommonLoadingViewController *)self setLoadingView:v4];
 
-  v5 = [MEMORY[0x1E69DC888] ams_defaultPlatformBackgroundColor];
-  v6 = [(AMSUICommonLoadingViewController *)self loadingView];
-  [v6 setBackgroundColor:v5];
+  ams_defaultPlatformBackgroundColor = [MEMORY[0x1E69DC888] ams_defaultPlatformBackgroundColor];
+  loadingView = [(AMSUICommonLoadingViewController *)self loadingView];
+  [loadingView setBackgroundColor:ams_defaultPlatformBackgroundColor];
 
-  v7 = [(AMSUICommonLoadingViewController *)self loadingView];
-  [v7 startAnimating];
+  loadingView2 = [(AMSUICommonLoadingViewController *)self loadingView];
+  [loadingView2 startAnimating];
 
   objc_initWeak(&location, self);
   v8 = MEMORY[0x1E69E96A0];

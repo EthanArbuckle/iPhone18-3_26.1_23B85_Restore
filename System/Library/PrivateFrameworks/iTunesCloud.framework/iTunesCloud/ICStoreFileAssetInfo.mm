@@ -1,6 +1,6 @@
 @interface ICStoreFileAssetInfo
-- (ICStoreFileAssetInfo)initWithAssetURL:(id)a3;
-- (ICStoreFileAssetInfo)initWithFileAssetResponseDictionary:(id)a3;
+- (ICStoreFileAssetInfo)initWithAssetURL:(id)l;
+- (ICStoreFileAssetInfo)initWithFileAssetResponseDictionary:(id)dictionary;
 - (ICStoreFinanceItemMetadata)metadata;
 - (NSArray)fairPlayInfoList;
 - (NSData)md5;
@@ -33,8 +33,8 @@
 
 - (int64_t)protectionType
 {
-  v3 = [(ICStoreFileAssetInfo *)self fairPlayInfoList];
-  v4 = [v3 count];
+  fairPlayInfoList = [(ICStoreFileAssetInfo *)self fairPlayInfoList];
+  v4 = [fairPlayInfoList count];
 
   if (v4)
   {
@@ -57,8 +57,8 @@
     {
       v5 = v4;
       v6 = [v5 length] >> 1;
-      v7 = [v5 lowercaseString];
-      v8 = [v7 UTF8String];
+      lowercaseString = [v5 lowercaseString];
+      uTF8String = [lowercaseString UTF8String];
 
       v17 = v6;
       v9 = malloc_type_calloc(v6, 1uLL, 0x100004077774924uLL);
@@ -67,15 +67,15 @@
         v10 = 0;
         do
         {
-          v11 = *(v8 + v10);
+          v11 = *(uTF8String + v10);
           v12 = v11 - 48;
           if ((v11 - 48) >= 0xA)
           {
             if ((v11 - 97) > 5)
             {
-              v13 = [MEMORY[0x1E696AAA8] currentHandler];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
               v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSData * _Nonnull MSVDataFromHexString(NSString * _Nonnull __strong)"];
-              [v13 handleFailureInFunction:v14 file:@"NSString+MSVAdditions.h" lineNumber:84 description:{@"Passed non-hex string into MSVDataFromHexString: %@", v5}];
+              [currentHandler handleFailureInFunction:v14 file:@"NSString+MSVAdditions.h" lineNumber:84 description:{@"Passed non-hex string into MSVDataFromHexString: %@", v5}];
 
               v12 = 0;
             }
@@ -165,15 +165,15 @@
 
   if (_NSIsNSNumber())
   {
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 - (int64_t)flavorType
@@ -251,8 +251,8 @@
   {
     if (![(NSString *)v4 length])
     {
-      v6 = [(ICStoreFileAssetInfo *)self _metadataDictionary];
-      v7 = [v6 objectForKey:@"fileExtension"];
+      _metadataDictionary = [(ICStoreFileAssetInfo *)self _metadataDictionary];
+      v7 = [_metadataDictionary objectForKey:@"fileExtension"];
 
       if (_NSIsNSString() && [v7 length])
       {
@@ -394,13 +394,13 @@
   return v5;
 }
 
-- (ICStoreFileAssetInfo)initWithFileAssetResponseDictionary:(id)a3
+- (ICStoreFileAssetInfo)initWithFileAssetResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(ICStoreFileAssetInfo *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     responseDictionary = v5->_responseDictionary;
     v5->_responseDictionary = v6;
   }
@@ -408,27 +408,27 @@
   return v5;
 }
 
-- (ICStoreFileAssetInfo)initWithAssetURL:(id)a3
+- (ICStoreFileAssetInfo)initWithAssetURL:(id)l
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 absoluteString];
-  v5 = v4;
-  if (v4)
+  absoluteString = [l absoluteString];
+  v5 = absoluteString;
+  if (absoluteString)
   {
     v9 = @"URL";
-    v10[0] = v4;
+    v10[0] = absoluteString;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     self = [(ICStoreFileAssetInfo *)self initWithFileAssetResponseDictionary:v6];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

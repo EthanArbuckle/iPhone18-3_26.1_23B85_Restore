@@ -1,31 +1,31 @@
 @interface ASCCredentialProviderExtensionLoginChoice
-- (ASCCredentialProviderExtensionLoginChoice)initWithCoder:(id)a3;
-- (ASCCredentialProviderExtensionLoginChoice)initWithProviderName:(id)a3 providerBundleID:(id)a4 providerExtensionContainingAppBundleID:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASCCredentialProviderExtensionLoginChoice)initWithCoder:(id)coder;
+- (ASCCredentialProviderExtensionLoginChoice)initWithProviderName:(id)name providerBundleID:(id)d providerExtensionContainingAppBundleID:(id)iD;
+- (BOOL)isEqual:(id)equal;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCCredentialProviderExtensionLoginChoice
 
-- (ASCCredentialProviderExtensionLoginChoice)initWithProviderName:(id)a3 providerBundleID:(id)a4 providerExtensionContainingAppBundleID:(id)a5
+- (ASCCredentialProviderExtensionLoginChoice)initWithProviderName:(id)name providerBundleID:(id)d providerExtensionContainingAppBundleID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
   v20.receiver = self;
   v20.super_class = ASCCredentialProviderExtensionLoginChoice;
   v11 = [(ASCCredentialProviderExtensionLoginChoice *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     providerName = v11->_providerName;
     v11->_providerName = v12;
 
-    v14 = [v9 copy];
+    v14 = [dCopy copy];
     providerExtensionBundleID = v11->_providerExtensionBundleID;
     v11->_providerExtensionBundleID = v14;
 
-    v16 = [v10 copy];
+    v16 = [iDCopy copy];
     providerExtensionContainingAppBundleID = v11->_providerExtensionContainingAppBundleID;
     v11->_providerExtensionContainingAppBundleID = v16;
 
@@ -35,20 +35,20 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     providerName = self->_providerName;
-    v7 = [v5 providerName];
-    if ([(NSString *)providerName isEqualToString:v7])
+    providerName = [v5 providerName];
+    if ([(NSString *)providerName isEqualToString:providerName])
     {
       providerExtensionBundleID = self->_providerExtensionBundleID;
-      v9 = [v5 providerExtensionBundleID];
-      v10 = [(NSString *)providerExtensionBundleID isEqualToString:v9];
+      providerExtensionBundleID = [v5 providerExtensionBundleID];
+      v10 = [(NSString *)providerExtensionBundleID isEqualToString:providerExtensionBundleID];
     }
 
     else
@@ -65,21 +65,21 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   providerName = self->_providerName;
-  v5 = a3;
-  [v5 encodeObject:providerName forKey:@"providerName"];
-  [v5 encodeObject:self->_providerExtensionBundleID forKey:@"providerExtensionBundleID"];
-  [v5 encodeObject:self->_providerExtensionContainingAppBundleID forKey:@"providerExtensionContainingAppBundleID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:providerName forKey:@"providerName"];
+  [coderCopy encodeObject:self->_providerExtensionBundleID forKey:@"providerExtensionBundleID"];
+  [coderCopy encodeObject:self->_providerExtensionContainingAppBundleID forKey:@"providerExtensionContainingAppBundleID"];
 }
 
-- (ASCCredentialProviderExtensionLoginChoice)initWithCoder:(id)a3
+- (ASCCredentialProviderExtensionLoginChoice)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"providerName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"providerExtensionBundleID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"providerExtensionContainingAppBundleID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"providerName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"providerExtensionBundleID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"providerExtensionContainingAppBundleID"];
 
   v8 = [(ASCCredentialProviderExtensionLoginChoice *)self initWithProviderName:v5 providerBundleID:v6 providerExtensionContainingAppBundleID:v7];
   return v8;

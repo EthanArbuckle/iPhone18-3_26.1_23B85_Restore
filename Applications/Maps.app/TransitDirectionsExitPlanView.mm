@@ -1,20 +1,20 @@
 @interface TransitDirectionsExitPlanView
 - (NSIndexSet)indexSetOfSuggestedCars;
-- (TransitDirectionsExitPlanView)initWithFrame:(CGRect)a3;
+- (TransitDirectionsExitPlanView)initWithFrame:(CGRect)frame;
 - (id)bottomView;
 - (id)topView;
-- (unint64_t)_visibleCarIndexForCar:(unint64_t)a3;
+- (unint64_t)_visibleCarIndexForCar:(unint64_t)car;
 - (void)_updateCars;
 - (void)_updateSuggestedCarTinting;
-- (void)setIndexSetOfSuggestedCars:(id)a3;
-- (void)setMaximumNumberOfVisibleCars:(unint64_t)a3;
-- (void)setNumberOfCars:(unint64_t)a3;
-- (void)setText:(id)a3;
+- (void)setIndexSetOfSuggestedCars:(id)cars;
+- (void)setMaximumNumberOfVisibleCars:(unint64_t)cars;
+- (void)setNumberOfCars:(unint64_t)cars;
+- (void)setText:(id)text;
 @end
 
 @implementation TransitDirectionsExitPlanView
 
-- (unint64_t)_visibleCarIndexForCar:(unint64_t)a3
+- (unint64_t)_visibleCarIndexForCar:(unint64_t)car
 {
   v5 = [(NSArray *)self->_cars count];
   if (!v5)
@@ -22,20 +22,20 @@
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (!a3)
+  if (!car)
   {
     return 0;
   }
 
   v6 = v5;
-  if ([(TransitDirectionsExitPlanView *)self numberOfCars]- 1 == a3)
+  if ([(TransitDirectionsExitPlanView *)self numberOfCars]- 1 == car)
   {
     return v6 - 1;
   }
 
   else
   {
-    return vcvtas_u32_f32((v6 * a3) / [(TransitDirectionsExitPlanView *)self numberOfCars]);
+    return vcvtas_u32_f32((v6 * car) / [(TransitDirectionsExitPlanView *)self numberOfCars]);
   }
 }
 
@@ -77,13 +77,13 @@
       while (v5);
     }
 
-    v10 = [(TransitDirectionsExitPlanView *)self indexSetOfSuggestedCars];
+    indexSetOfSuggestedCars = [(TransitDirectionsExitPlanView *)self indexSetOfSuggestedCars];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100D1C4F8;
     v11[3] = &unk_101656938;
     v11[4] = self;
-    [v10 enumerateIndexesUsingBlock:v11];
+    [indexSetOfSuggestedCars enumerateIndexesUsingBlock:v11];
   }
 }
 
@@ -91,19 +91,19 @@
 {
   v3 = objc_alloc_init(NSMutableArray);
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [(TransitDirectionsExitPlanView *)self numberOfCars];
-  if (v5 >= [(TransitDirectionsExitPlanView *)self maximumNumberOfVisibleCars])
+  numberOfCars = [(TransitDirectionsExitPlanView *)self numberOfCars];
+  if (numberOfCars >= [(TransitDirectionsExitPlanView *)self maximumNumberOfVisibleCars])
   {
-    v6 = [(TransitDirectionsExitPlanView *)self maximumNumberOfVisibleCars];
+    maximumNumberOfVisibleCars = [(TransitDirectionsExitPlanView *)self maximumNumberOfVisibleCars];
   }
 
   else
   {
-    v6 = [(TransitDirectionsExitPlanView *)self numberOfCars];
+    maximumNumberOfVisibleCars = [(TransitDirectionsExitPlanView *)self numberOfCars];
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = maximumNumberOfVisibleCars;
+  if (!maximumNumberOfVisibleCars)
   {
     goto LABEL_19;
   }
@@ -132,15 +132,15 @@ LABEL_10:
   height = CGRectZero.size.height;
   do
   {
-    v15 = [[AutolayoutImageView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[AutolayoutImageView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     LODWORD(v16) = 1148846080;
-    [(AutolayoutImageView *)v15 setContentHuggingPriority:0 forAxis:v16];
+    [(AutolayoutImageView *)height setContentHuggingPriority:0 forAxis:v16];
     LODWORD(v17) = 1148846080;
-    [(AutolayoutImageView *)v15 setContentHuggingPriority:1 forAxis:v17];
+    [(AutolayoutImageView *)height setContentHuggingPriority:1 forAxis:v17];
     LODWORD(v18) = 1148846080;
-    [(AutolayoutImageView *)v15 setContentCompressionResistancePriority:0 forAxis:v18];
+    [(AutolayoutImageView *)height setContentCompressionResistancePriority:0 forAxis:v18];
     LODWORD(v19) = 1148846080;
-    [(AutolayoutImageView *)v15 setContentCompressionResistancePriority:1 forAxis:v19];
+    [(AutolayoutImageView *)height setContentCompressionResistancePriority:1 forAxis:v19];
     if (--v7)
     {
       v20 = v10;
@@ -161,9 +161,9 @@ LABEL_10:
       v21 = v8;
     }
 
-    [(AutolayoutImageView *)v15 setImage:v21];
-    [v3 addObject:v15];
-    [v4 addObject:v15];
+    [(AutolayoutImageView *)height setImage:v21];
+    [v3 addObject:height];
+    [v4 addObject:height];
 
     --v11;
   }
@@ -172,21 +172,21 @@ LABEL_10:
 
 LABEL_19:
   v28 = v3;
-  v22 = [(TransitDirectionsExitPlanView *)self traitCollection];
-  v23 = [v22 layoutDirection];
+  traitCollection = [(TransitDirectionsExitPlanView *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  v24 = v28;
-  if (!v23)
+  allObjects = v28;
+  if (!layoutDirection)
   {
-    v25 = [v28 reverseObjectEnumerator];
-    v24 = [v25 allObjects];
+    reverseObjectEnumerator = [v28 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
   }
 
   v26 = [v4 copy];
   cars = self->_cars;
   self->_cars = v26;
 
-  [(UIStackView *)self->_carStackView _maps_setArrangedSubviews:v24];
+  [(UIStackView *)self->_carStackView _maps_setArrangedSubviews:allObjects];
   [(TransitDirectionsExitPlanView *)self _updateSuggestedCarTinting];
 }
 
@@ -205,11 +205,11 @@ LABEL_19:
   return indexSetOfSuggestedCars;
 }
 
-- (void)setIndexSetOfSuggestedCars:(id)a3
+- (void)setIndexSetOfSuggestedCars:(id)cars
 {
-  v4 = a3;
+  carsCopy = cars;
   indexSetOfSuggestedCars = self->_indexSetOfSuggestedCars;
-  v10 = v4;
+  v10 = carsCopy;
   v6 = indexSetOfSuggestedCars;
   if (v10 | v6)
   {
@@ -226,44 +226,44 @@ LABEL_19:
   }
 }
 
-- (void)setMaximumNumberOfVisibleCars:(unint64_t)a3
+- (void)setMaximumNumberOfVisibleCars:(unint64_t)cars
 {
-  if (self->_maximumNumberOfVisibleCars != a3)
+  if (self->_maximumNumberOfVisibleCars != cars)
   {
-    self->_maximumNumberOfVisibleCars = a3;
+    self->_maximumNumberOfVisibleCars = cars;
     [(TransitDirectionsExitPlanView *)self _updateCars];
   }
 }
 
-- (void)setNumberOfCars:(unint64_t)a3
+- (void)setNumberOfCars:(unint64_t)cars
 {
-  if (self->_numberOfCars != a3)
+  if (self->_numberOfCars != cars)
   {
-    self->_numberOfCars = a3;
+    self->_numberOfCars = cars;
     [(TransitDirectionsExitPlanView *)self _updateCars];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   text = self->_text;
-  v7 = v5;
-  v8 = text;
-  if (v7 | v8)
+  v7 = textCopy;
+  textCopy2 = text;
+  if (v7 | textCopy2)
   {
-    v9 = v8;
-    v10 = [v7 isEqual:v8];
+    v9 = textCopy2;
+    v10 = [v7 isEqual:textCopy2];
 
     if ((v10 & 1) == 0)
     {
-      objc_storeStrong(&self->_text, a3);
+      objc_storeStrong(&self->_text, text);
       if (v7)
       {
         v11 = [[MKServerFormattedString alloc] initWithComposedString:v7];
         v15 = NSFontAttributeName;
-        v12 = [(MKMultiPartLabel *)self->_label font];
-        v16 = v12;
+        font = [(MKMultiPartLabel *)self->_label font];
+        v16 = font;
         v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
         v14 = [v11 multiPartAttributedStringWithAttributes:v13];
         [(MKMultiPartLabel *)self->_label setMultiPartString:v14];
@@ -336,8 +336,8 @@ LABEL_19:
     [(UIStackView *)self->_carStackView setContentCompressionResistancePriority:0 forAxis:v8];
     LODWORD(v9) = 1148846080;
     [(UIStackView *)self->_carStackView setContentCompressionResistancePriority:1 forAxis:v9];
-    v10 = [(UIStackView *)self->_carStackView heightAnchor];
-    v11 = [v10 constraintEqualToConstant:20.0];
+    heightAnchor = [(UIStackView *)self->_carStackView heightAnchor];
+    v11 = [heightAnchor constraintEqualToConstant:20.0];
     [v11 setActive:1];
 
     [(TransitDirectionsExitPlanView *)self addSubview:self->_carStackView];
@@ -347,11 +347,11 @@ LABEL_19:
   return carStackView;
 }
 
-- (TransitDirectionsExitPlanView)initWithFrame:(CGRect)a3
+- (TransitDirectionsExitPlanView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = TransitDirectionsExitPlanView;
-  v3 = [(TransitDirectionsBoardingInfoStackView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitDirectionsBoardingInfoStackView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();

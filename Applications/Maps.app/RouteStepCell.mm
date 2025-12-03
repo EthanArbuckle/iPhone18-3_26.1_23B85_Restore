@@ -1,19 +1,19 @@
 @interface RouteStepCell
-+ (id)cellWithRoute:(id)a3 stepIndex:(unint64_t)a4 mapType:(unint64_t)a5;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_intersectLineWithPoint1:(id)a3 point2:(id)a4 withRect:(id)a5;
-- (BOOL)_lineSegmentsIntersectLineAPoint1:(id)a3 lineAPoint2:(id)a4 lineBPoint1:(id)a5 lineBPoint2:(id)a6 outIntersectionPoint:(id *)a7;
-- (CGPoint)_cgPointApplyAffineTransform:(CGPoint)a3 :(CGAffineTransform *)a4 :(CGAffineTransform *)a5 :(CGAffineTransform *)a6;
++ (id)cellWithRoute:(id)route stepIndex:(unint64_t)index mapType:(unint64_t)type;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_intersectLineWithPoint1:(id)point1 point2:(id)point2 withRect:(id)rect;
+- (BOOL)_lineSegmentsIntersectLineAPoint1:(id)point1 lineAPoint2:(id)point2 lineBPoint1:(id)bPoint1 lineBPoint2:(id)bPoint2 outIntersectionPoint:(id *)point;
+- (CGPoint)_cgPointApplyAffineTransform:(CGPoint)transform :(CGAffineTransform *)a4 :(CGAffineTransform *)a5 :(CGAffineTransform *)a6;
 - (CGRect)frame;
 - (GEOComposedRouteStep)routeStep;
-- (RouteStepCell)initWithRoute:(id)a3 stepIndex:(unint64_t)a4 mapType:(unint64_t)a5;
-- (double)_textLayoutHeightForLines:(id)a3;
+- (RouteStepCell)initWithRoute:(id)route stepIndex:(unint64_t)index mapType:(unint64_t)type;
+- (double)_textLayoutHeightForLines:(id)lines;
 - (id)instructionStringsArray;
 - (id)snapshotBlock;
 - (unint64_t)numberOfSteps;
 - (void)dealloc;
-- (void)drawInRect:(CGRect)a3;
-- (void)drawPinInRect:(CGRect)a3 zoomLevel:(double)a4;
-- (void)drawRouteLineInRect:(CGRect)a3 zoomLevel:(double)a4;
+- (void)drawInRect:(CGRect)rect;
+- (void)drawPinInRect:(CGRect)rect zoomLevel:(double)level;
+- (void)drawRouteLineInRect:(CGRect)rect zoomLevel:(double)level;
 - (void)releaseSnapshotCreator;
 @end
 
@@ -61,7 +61,7 @@
   return v2;
 }
 
-- (void)drawInRect:(CGRect)a3
+- (void)drawInRect:(CGRect)rect
 {
   MinX = CGRectGetMinX(self->_frame);
   v5 = CGRectGetMinX(self->_frame);
@@ -111,7 +111,7 @@ LABEL_10:
   [v7 _maps_drawAtPoint:v8 withFont:{v15, MinY - v18 + v19}];
 
 LABEL_11:
-  v21 = [(RouteStepCell *)self instructionStringsArray];
+  instructionStringsArray = [(RouteStepCell *)self instructionStringsArray];
   v22 = CGRectGetMinY(self->_frame);
   v23 = +[UIColor darkGrayColor];
   [v23 set];
@@ -119,7 +119,7 @@ LABEL_11:
   v24 = [UIFont systemFontOfSize:13.5];
   v25 = CGRectGetHeight(self->_frame) + 5.0;
   Width = CGRectGetWidth(self->_frame);
-  [(RouteStepCell *)self _textLayoutHeightForLines:v21];
+  [(RouteStepCell *)self _textLayoutHeightForLines:instructionStringsArray];
   if (v27 > v25)
   {
     v28 = [UIFont systemFontOfSize:11.0];
@@ -131,7 +131,7 @@ LABEL_11:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v29 = v21;
+  v29 = instructionStringsArray;
   v30 = [v29 countByEnumeratingWithState:&v55 objects:v59 count:16];
   if (v30)
   {
@@ -185,21 +185,21 @@ LABEL_11:
     while (v31);
   }
 
-  v41 = [(RouteStepCell *)self snapshotImage];
+  snapshotImage = [(RouteStepCell *)self snapshotImage];
 
-  if (v41)
+  if (snapshotImage)
   {
     v42 = v5 + 35.0;
-    v43 = [(RouteStepCell *)self snapshotImage];
-    [v43 size];
+    snapshotImage2 = [(RouteStepCell *)self snapshotImage];
+    [snapshotImage2 size];
     v45 = v44;
     v47 = v46;
 
     v48 = CGRectGetMinY(self->_frame);
     v49 = v45 * 0.5;
     v50 = v47 * 0.5;
-    v51 = [(RouteStepCell *)self snapshotImage];
-    [v51 drawInRect:{v42, v48, v49, v50}];
+    snapshotImage3 = [(RouteStepCell *)self snapshotImage];
+    [snapshotImage3 drawInRect:{v42, v48, v49, v50}];
 
     v52 = self->_stepIndex;
     if (v52 && v52 < [(RouteStepCell *)self numberOfSteps]- 1)
@@ -223,23 +223,23 @@ LABEL_11:
 - (id)instructionStringsArray
 {
   route = self->_route;
-  v3 = [(RouteStepCell *)self routeStep];
-  v4 = [RouteMiddleStepLabelListView stringsForRoute:route step:v3 tableMode:0 isPrinting:1];
+  routeStep = [(RouteStepCell *)self routeStep];
+  v4 = [RouteMiddleStepLabelListView stringsForRoute:route step:routeStep tableMode:0 isPrinting:1];
 
   return v4;
 }
 
 - (unint64_t)numberOfSteps
 {
-  v2 = [(GEOComposedRoute *)self->_route steps];
-  v3 = [v2 count];
+  steps = [(GEOComposedRoute *)self->_route steps];
+  v3 = [steps count];
 
   return v3;
 }
 
-- (double)_textLayoutHeightForLines:(id)a3
+- (double)_textLayoutHeightForLines:(id)lines
 {
-  v4 = a3;
+  linesCopy = lines;
   MinX = CGRectGetMinX(self->_frame);
   MaxX = CGRectGetMaxX(self->_frame);
   Height = CGRectGetHeight(self->_frame);
@@ -247,7 +247,7 @@ LABEL_11:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v4;
+  v8 = linesCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -290,12 +290,12 @@ LABEL_11:
   return v13;
 }
 
-- (void)drawRouteLineInRect:(CGRect)a3 zoomLevel:(double)a4
+- (void)drawRouteLineInRect:(CGRect)rect zoomLevel:(double)level
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v113 = 0;
   v114 = 0;
   [(GEOComposedRoute *)self->_route _maps_getMapPoints:&v114 count:&v113];
@@ -346,22 +346,22 @@ LABEL_2:
     v119.size.height = height;
     CGContextClipToRect(CurrentContext, v119);
     Mutable = CGPathCreateMutable();
-    v12 = [(RouteStepCell *)self routeStep];
-    [v12 startCoordinate];
+    routeStep = [(RouteStepCell *)self routeStep];
+    [routeStep startCoordinate];
     MKTilePointForCoordinate();
     v106 = height;
     v14 = v13;
     v103 = width;
     v16 = v15;
-    v17 = [(RouteStepCell *)self snapshotImage];
-    [v17 size];
+    snapshotImage = [(RouteStepCell *)self snapshotImage];
+    [snapshotImage size];
     v89 = x;
     v91 = y;
     v19 = v18;
     v21 = v20;
 
     v87 = v16 - v21 * 0.5;
-    [v12 startCoordinate];
+    [routeStep startCoordinate];
     v22 = MKMapPointForCoordinate(v116);
     MKCoordinateForTilePoint();
     v23 = MKMapPointForCoordinate(v117);
@@ -433,11 +433,11 @@ LABEL_2:
     v110 = v112;
     CGAffineTransformScale(&v111, &v110, 0.5, 0.5);
     v112 = v111;
-    v40 = [v12 startPointIndex];
-    v41 = &v114[16 * v40];
+    startPointIndex = [routeStep startPointIndex];
+    v41 = &v114[16 * startPointIndex];
     v43 = *v41;
     v42 = v41[1];
-    v44 = v40;
+    v44 = startPointIndex;
     v108 = a;
     v111.a = a;
     v111.b = v31;
@@ -602,10 +602,10 @@ LABEL_16:
   }
 }
 
-- (CGPoint)_cgPointApplyAffineTransform:(CGPoint)a3 :(CGAffineTransform *)a4 :(CGAffineTransform *)a5 :(CGAffineTransform *)a6
+- (CGPoint)_cgPointApplyAffineTransform:(CGPoint)transform :(CGAffineTransform *)a4 :(CGAffineTransform *)a5 :(CGAffineTransform *)a6
 {
-  v6 = a4->tx + a4->a * a3.x + a4->c * a3.y;
-  v7 = a4->ty + a4->b * a3.x + a4->d * a3.y;
+  v6 = a4->tx + a4->a * transform.x + a4->c * transform.y;
+  v7 = a4->ty + a4->b * transform.x + a4->d * transform.y;
   v8 = vmlaq_n_f64(vmlaq_n_f64(*&a6->tx, *&a6->a, a5->tx + a5->a * v6 + a5->c * v7), *&a6->c, a5->ty + a5->b * v6 + a5->d * v7);
   v9 = v8.f64[1];
   result.x = v8.f64[0];
@@ -613,16 +613,16 @@ LABEL_16:
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_intersectLineWithPoint1:(id)a3 point2:(id)a4 withRect:(id)a5
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_intersectLineWithPoint1:(id)point1 point2:(id)point2 withRect:(id)rect
 {
-  var1 = a5.var1.var1;
-  v6 = a5.var0.var1;
-  var0 = a5.var0.var0;
-  v8 = a4.var1;
-  v9 = a4.var0;
-  v10 = a3.var1;
-  v11 = a3.var0;
-  v13 = a5.var0.var0 + a5.var1.var0;
+  var1 = rect.var1.var1;
+  v6 = rect.var0.var1;
+  var0 = rect.var0.var0;
+  v8 = point2.var1;
+  v9 = point2.var0;
+  v10 = point1.var1;
+  v11 = point1.var0;
+  v13 = rect.var0.var0 + rect.var1.var0;
   v17 = 0.0;
   v18 = 0.0;
   if (![RouteStepCell _lineSegmentsIntersectLineAPoint1:"_lineSegmentsIntersectLineAPoint1:lineAPoint2:lineBPoint1:lineBPoint2:outIntersectionPoint:" lineAPoint2:&v17 lineBPoint1:? lineBPoint2:? outIntersectionPoint:?])
@@ -641,26 +641,26 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)_lineSegmentsIntersectLineAPoint1:(id)a3 lineAPoint2:(id)a4 lineBPoint1:(id)a5 lineBPoint2:(id)a6 outIntersectionPoint:(id *)a7
+- (BOOL)_lineSegmentsIntersectLineAPoint1:(id)point1 lineAPoint2:(id)point2 lineBPoint1:(id)bPoint1 lineBPoint2:(id)bPoint2 outIntersectionPoint:(id *)point
 {
-  v7 = a6.var0 - a5.var0;
-  v8 = a6.var1 - a5.var1;
-  v9 = a4.var0 - a3.var0;
-  v10 = a4.var1 - a3.var1;
-  v11 = -(v7 * (a4.var1 - a3.var1) - v8 * v9);
+  v7 = bPoint2.var0 - bPoint1.var0;
+  v8 = bPoint2.var1 - bPoint1.var1;
+  v9 = point2.var0 - point1.var0;
+  v10 = point2.var1 - point1.var1;
+  v11 = -(v7 * (point2.var1 - point1.var1) - v8 * v9);
   result = 0;
   if (v11 != 0.0)
   {
-    v13 = a3.var1 - a5.var1;
-    v14 = a3.var0 - a5.var0;
-    v15 = -(v8 * (a3.var0 - a5.var0) - v7 * v13) / v11;
+    v13 = point1.var1 - bPoint1.var1;
+    v14 = point1.var0 - bPoint1.var0;
+    v15 = -(v8 * (point1.var0 - bPoint1.var0) - v7 * v13) / v11;
     if (v15 >= 0.0 && v15 <= 1.0)
     {
       v17 = -(v14 * v10 - v13 * v9) / v11;
       if (v17 >= 0.0 && v17 <= 1.0)
       {
-        a7->var0 = a3.var0 + v15 * v9;
-        a7->var1 = a3.var1 + v15 * v10;
+        point->var0 = point1.var0 + v15 * v9;
+        point->var1 = point1.var1 + v15 * v10;
         return 1;
       }
     }
@@ -669,21 +669,21 @@ LABEL_16:
   return result;
 }
 
-- (void)drawPinInRect:(CGRect)a3 zoomLevel:(double)a4
+- (void)drawPinInRect:(CGRect)rect zoomLevel:(double)level
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   MKZoomScaleForZoomLevelF();
   sx = v9;
-  v10 = [(RouteStepCell *)self routeStep];
-  [v10 startCoordinate];
+  routeStep = [(RouteStepCell *)self routeStep];
+  [routeStep startCoordinate];
   MKTilePointForCoordinate();
   v12 = v11;
   v33 = v13;
-  v14 = [(RouteStepCell *)self snapshotImage];
-  [v14 size];
+  snapshotImage = [(RouteStepCell *)self snapshotImage];
+  [snapshotImage size];
   v16 = v15;
   v18 = v17;
 
@@ -715,7 +715,7 @@ LABEL_16:
   v26 = v36.ty;
   v36.a = 0.0;
   v35.a = 0.0;
-  [(GEOComposedRoute *)self->_route _maps_getMapPoints:&v36 count:&v35 forStep:v10];
+  [(GEOComposedRoute *)self->_route _maps_getMapPoints:&v36 count:&v35 forStep:routeStep];
   if (*&v35.a)
   {
     if (self->_stepIndex)
@@ -737,23 +737,23 @@ LABEL_16:
 
 - (GEOComposedRouteStep)routeStep
 {
-  v3 = [(GEOComposedRoute *)self->_route steps];
-  v4 = [v3 objectAtIndexedSubscript:self->_stepIndex];
+  steps = [(GEOComposedRoute *)self->_route steps];
+  v4 = [steps objectAtIndexedSubscript:self->_stepIndex];
 
   return v4;
 }
 
-- (RouteStepCell)initWithRoute:(id)a3 stepIndex:(unint64_t)a4 mapType:(unint64_t)a5
+- (RouteStepCell)initWithRoute:(id)route stepIndex:(unint64_t)index mapType:(unint64_t)type
 {
-  v8 = a3;
+  routeCopy = route;
   v18.receiver = self;
   v18.super_class = RouteStepCell;
   v9 = [(RouteStepCell *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    [(RouteStepCell *)v9 setRoute:v8];
-    [(RouteStepCell *)v10 setStepIndex:a4];
+    [(RouteStepCell *)v9 setRoute:routeCopy];
+    [(RouteStepCell *)v10 setStepIndex:index];
     v11 = [[UIColor alloc] initWithRed:0.254901961 green:0.447058824 blue:0.811764706 alpha:0.800000012];
     routeCenterPrintColor = v10->_routeCenterPrintColor;
     v10->_routeCenterPrintColor = v11;
@@ -766,16 +766,16 @@ LABEL_16:
     blueTextColor = v10->_blueTextColor;
     v10->_blueTextColor = v15;
 
-    v10->_mapType = a5;
+    v10->_mapType = type;
   }
 
   return v10;
 }
 
-+ (id)cellWithRoute:(id)a3 stepIndex:(unint64_t)a4 mapType:(unint64_t)a5
++ (id)cellWithRoute:(id)route stepIndex:(unint64_t)index mapType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = [[a1 alloc] initWithRoute:v8 stepIndex:a4 mapType:a5];
+  routeCopy = route;
+  v9 = [[self alloc] initWithRoute:routeCopy stepIndex:index mapType:type];
 
   return v9;
 }

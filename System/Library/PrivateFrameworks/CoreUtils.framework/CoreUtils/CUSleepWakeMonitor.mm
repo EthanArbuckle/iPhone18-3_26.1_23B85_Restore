@@ -4,31 +4,31 @@
 - (void)_ensureStopped;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_sleepWakeHandlerForService:(unsigned int)a3 type:(unsigned int)a4 arg:(void *)a5;
-- (void)activateWithCompletion:(id)a3;
+- (void)_sleepWakeHandlerForService:(unsigned int)service type:(unsigned int)type arg:(void *)arg;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation CUSleepWakeMonitor
 
-- (void)_sleepWakeHandlerForService:(unsigned int)a3 type:(unsigned int)a4 arg:(void *)a5
+- (void)_sleepWakeHandlerForService:(unsigned int)service type:(unsigned int)type arg:(void *)arg
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (a4 > -536870369)
+  if (type > -536870369)
   {
-    if (a4 > -536870289)
+    if (type > -536870289)
     {
-      if (a4 <= -536870257)
+      if (type <= -536870257)
       {
-        if (a4 == -536870288)
+        if (type == -536870288)
         {
           v12 = "CanSystemSleep";
           goto LABEL_51;
         }
 
-        if (a4 == -536870272)
+        if (type == -536870272)
         {
           v12 = "SystemWillSleep";
           goto LABEL_51;
@@ -37,7 +37,7 @@
 
       else
       {
-        switch(a4)
+        switch(type)
         {
           case 0xE0000290:
             v12 = "SystemWillNotSleep";
@@ -52,15 +52,15 @@
       }
     }
 
-    else if (a4 <= -536870337)
+    else if (type <= -536870337)
     {
-      if (a4 == -536870368)
+      if (type == -536870368)
       {
         v12 = "DeviceWillNotPowerOff";
         goto LABEL_51;
       }
 
-      if (a4 == -536870352)
+      if (type == -536870352)
       {
         v12 = "DeviceHasPoweredOn";
         goto LABEL_51;
@@ -69,7 +69,7 @@
 
     else
     {
-      switch(a4)
+      switch(type)
       {
         case 0xE0000240:
           v12 = "CanSystemPowerOff";
@@ -84,17 +84,17 @@
     }
   }
 
-  else if (a4 > -536870641)
+  else if (type > -536870641)
   {
-    if (a4 <= -536870609)
+    if (type <= -536870609)
     {
-      if (a4 == -536870640)
+      if (type == -536870640)
       {
         v12 = "WasClosed";
         goto LABEL_51;
       }
 
-      if (a4 == -536870624)
+      if (type == -536870624)
       {
         v12 = "BusyStateChange";
         goto LABEL_51;
@@ -103,7 +103,7 @@
 
     else
     {
-      switch(a4)
+      switch(type)
       {
         case 0xE0000130:
           v12 = "PropertyChange";
@@ -118,15 +118,15 @@
     }
   }
 
-  else if (a4 <= -536870865)
+  else if (type <= -536870865)
   {
-    if (a4 == -536870896)
+    if (type == -536870896)
     {
       v12 = "IsTerminated";
       goto LABEL_51;
     }
 
-    if (a4 == -536870880)
+    if (type == -536870880)
     {
       v12 = "IsSuspended";
       goto LABEL_51;
@@ -135,7 +135,7 @@
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 0xE0000030:
         v12 = "IsResumed";
@@ -149,7 +149,7 @@
     }
   }
 
-  if (a4 == -536870112)
+  if (type == -536870112)
   {
     v12 = "SystemWillPowerOn";
   }
@@ -179,8 +179,8 @@ LABEL_53:
   }
 
 LABEL_55:
-  HIDWORD(v15) = a4 + 536870336;
-  LODWORD(v15) = a4 + 536870336;
+  HIDWORD(v15) = type + 536870336;
+  LODWORD(v15) = type + 536870336;
   v14 = v15 >> 4;
   if (v14 > 3)
   {
@@ -226,9 +226,9 @@ LABEL_76:
       v33[1] = 3221225472;
       v33[2] = __59__CUSleepWakeMonitor__sleepWakeHandlerForService_type_arg___block_invoke;
       v33[3] = &unk_1E73A3C10;
-      v34 = a4;
+      typeCopy = type;
       v33[4] = self;
-      v33[5] = a5;
+      v33[5] = arg;
       (*(v24 + 2))(v24, 10, v33);
     }
 
@@ -240,7 +240,7 @@ LABEL_76:
         return;
       }
 
-      if (IOAllowPowerChange(powerCnx, a5))
+      if (IOAllowPowerChange(powerCnx, arg))
       {
         v31 = self->_ucat;
         if (v31->var0 <= 90)
@@ -285,7 +285,7 @@ LABEL_77:
     v18 = self->_powerCnx;
     if (v18)
     {
-      if (IOAllowPowerChange(v18, a5))
+      if (IOAllowPowerChange(v18, arg))
       {
         v23 = self->_ucat;
         if (v23->var0 <= 90)
@@ -726,17 +726,17 @@ LABEL_6:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__CUSleepWakeMonitor_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -776,13 +776,13 @@ LABEL_5:
   return result;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADEA398;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

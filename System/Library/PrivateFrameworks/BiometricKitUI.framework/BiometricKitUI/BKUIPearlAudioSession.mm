@@ -1,26 +1,26 @@
 @interface BKUIPearlAudioSession
-+ (id)_loadSound:(id)a3;
++ (id)_loadSound:(id)sound;
 - (BKUIPearlAudioSession)init;
 - (id)_setupMediaStack;
-- (void)_mediaServicesConnectionWasLost:(id)a3;
-- (void)_mediaServicesReconnect:(id)a3;
+- (void)_mediaServicesConnectionWasLost:(id)lost;
+- (void)_mediaServicesReconnect:(id)reconnect;
 - (void)dealloc;
 - (void)init;
 - (void)play;
-- (void)scheduleBuffer:(id)a3 atTime:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)scheduleBuffer:(id)a3 completionHandler:(id)a4;
+- (void)scheduleBuffer:(id)buffer atTime:(id)time options:(unint64_t)options completionHandler:(id)handler;
+- (void)scheduleBuffer:(id)buffer completionHandler:(id)handler;
 - (void)stop;
 @end
 
 @implementation BKUIPearlAudioSession
 
-+ (id)_loadSound:(id)a3
++ (id)_loadSound:(id)sound
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  soundCopy = sound;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v5 URLForResource:v4 withExtension:@"caf"];
+  v6 = [v5 URLForResource:soundCopy withExtension:@"caf"];
 
   if (v6)
   {
@@ -30,8 +30,8 @@
     if (v7)
     {
       v9 = objc_alloc(MEMORY[0x277CB83C8]);
-      v10 = [v7 processingFormat];
-      v11 = [v9 initWithPCMFormat:v10 frameCapacity:objc_msgSend(v7, "length")];
+      processingFormat = [v7 processingFormat];
+      v11 = [v9 initWithPCMFormat:processingFormat frameCapacity:objc_msgSend(v7, "length")];
 
       v18 = v8;
       v12 = [v7 readIntoBuffer:v11 error:&v18];
@@ -113,13 +113,13 @@
     failSoundBuffer = v2->_failSoundBuffer;
     v2->_failSoundBuffer = v13;
 
-    v15 = [(BKUIPearlAudioSession *)v2 _setupMediaStack];
-    if (v15)
+    _setupMediaStack = [(BKUIPearlAudioSession *)v2 _setupMediaStack];
+    if (_setupMediaStack)
     {
       v16 = _BKUILoggingFacility();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [(BKUIPearlAudioSession *)v15 init];
+        [(BKUIPearlAudioSession *)_setupMediaStack init];
       }
 
       v17 = 0;
@@ -131,34 +131,34 @@
     }
 
     v2->_mediaServicesConnected = v17;
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v2 selector:sel__mediaServicesReconnect_ name:*MEMORY[0x277CB80A0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__mediaServicesReconnect_ name:*MEMORY[0x277CB80A0] object:0];
 
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v2 selector:sel__mediaServicesConnectionWasLost_ name:*MEMORY[0x277CB8098] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__mediaServicesConnectionWasLost_ name:*MEMORY[0x277CB8098] object:0];
   }
 
   return v2;
 }
 
-- (void)scheduleBuffer:(id)a3 atTime:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)scheduleBuffer:(id)buffer atTime:(id)time options:(unint64_t)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  bufferCopy = buffer;
+  timeCopy = time;
+  handlerCopy = handler;
   avPlayerNodeOperationQueue = self->_avPlayerNodeOperationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__BKUIPearlAudioSession_scheduleBuffer_atTime_options_completionHandler___block_invoke;
   block[3] = &unk_278D0A960;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a5;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = bufferCopy;
+  v20 = handlerCopy;
+  optionsCopy = options;
+  v19 = timeCopy;
+  v14 = handlerCopy;
+  v15 = timeCopy;
+  v16 = bufferCopy;
   dispatch_async(avPlayerNodeOperationQueue, block);
 }
 
@@ -173,20 +173,20 @@ void *__73__BKUIPearlAudioSession_scheduleBuffer_atTime_options_completionHandle
   return result;
 }
 
-- (void)scheduleBuffer:(id)a3 completionHandler:(id)a4
+- (void)scheduleBuffer:(id)buffer completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  handlerCopy = handler;
   avPlayerNodeOperationQueue = self->_avPlayerNodeOperationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__BKUIPearlAudioSession_scheduleBuffer_completionHandler___block_invoke;
   block[3] = &unk_278D09B48;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = bufferCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = bufferCopy;
   dispatch_async(avPlayerNodeOperationQueue, block);
 }
 
@@ -263,7 +263,7 @@ uint64_t __29__BKUIPearlAudioSession_stop__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)_mediaServicesReconnect:(id)a3
+- (void)_mediaServicesReconnect:(id)reconnect
 {
   avPlayerNodeOperationQueue = self->_avPlayerNodeOperationQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -302,7 +302,7 @@ void __49__BKUIPearlAudioSession__mediaServicesReconnect___block_invoke(uint64_t
   }
 }
 
-- (void)_mediaServicesConnectionWasLost:(id)a3
+- (void)_mediaServicesConnectionWasLost:(id)lost
 {
   v4 = _BKUILoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -347,9 +347,9 @@ void __57__BKUIPearlAudioSession__mediaServicesConnectionWasLost___block_invoke(
   [(AVAudioEngine *)self->_audioEngine attachNode:self->_audioNode];
   v7 = self->_audioEngine;
   v8 = self->_audioNode;
-  v9 = [(AVAudioEngine *)v7 mainMixerNode];
-  v10 = [(AVAudioPCMBuffer *)self->_lockSoundBuffer format];
-  [(AVAudioEngine *)v7 connect:v8 to:v9 format:v10];
+  mainMixerNode = [(AVAudioEngine *)v7 mainMixerNode];
+  format = [(AVAudioPCMBuffer *)self->_lockSoundBuffer format];
+  [(AVAudioEngine *)v7 connect:v8 to:mainMixerNode format:format];
 
   v11 = self->_audioEngine;
   v14 = 0;
@@ -368,8 +368,8 @@ void __57__BKUIPearlAudioSession__mediaServicesConnectionWasLost___block_invoke(
     _os_log_impl(&dword_241B0A000, v3, OS_LOG_TYPE_DEFAULT, "BKUIPearlAudioSession dealloc.", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   self->_mediaServicesConnected = 0;
   [(AVAudioEngine *)self->_audioEngine stop];
@@ -383,7 +383,7 @@ void __57__BKUIPearlAudioSession__mediaServicesConnectionWasLost___block_invoke(
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_241B0A000, a2, OS_LOG_TYPE_ERROR, "Failed to start audio engine: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

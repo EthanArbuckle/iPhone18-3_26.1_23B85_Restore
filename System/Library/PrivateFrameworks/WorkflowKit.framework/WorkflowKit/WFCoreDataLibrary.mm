@@ -7,8 +7,8 @@
 - (id)descriptor
 {
   v3 = objc_alloc(MEMORY[0x1E69E0A68]);
-  v4 = [(WFCoreDataLibrary *)self identifier];
-  v5 = [v3 initWithIdentifier:v4 objectType:10];
+  identifier = [(WFCoreDataLibrary *)self identifier];
+  v5 = [v3 initWithIdentifier:identifier objectType:10];
 
   return v5;
 }

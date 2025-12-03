@@ -1,37 +1,37 @@
 @interface HMDCameraRecordingMetricUUIDUtilities
 + (id)UUIDRotationSalt;
-+ (id)currentEphemeralUUIDWithUUID:(id)a3 rotationScheduleDays:(unint64_t)a4;
-+ (id)ephemeralUUIDWithUUID:(id)a3 forTimestamp:(unint64_t)a4 rotationSchedule:(unint64_t)a5;
++ (id)currentEphemeralUUIDWithUUID:(id)d rotationScheduleDays:(unint64_t)days;
++ (id)ephemeralUUIDWithUUID:(id)d forTimestamp:(unint64_t)timestamp rotationSchedule:(unint64_t)schedule;
 @end
 
 @implementation HMDCameraRecordingMetricUUIDUtilities
 
-+ (id)currentEphemeralUUIDWithUUID:(id)a3 rotationScheduleDays:(unint64_t)a4
++ (id)currentEphemeralUUIDWithUUID:(id)d rotationScheduleDays:(unint64_t)days
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
-  v8 = [v6 date];
-  [v8 timeIntervalSince1970];
-  v10 = [a1 ephemeralUUIDWithUUID:v7 forTimestamp:(v9 * 1000.0) rotationScheduleDays:a4];
+  dCopy = d;
+  date = [v6 date];
+  [date timeIntervalSince1970];
+  v10 = [self ephemeralUUIDWithUUID:dCopy forTimestamp:(v9 * 1000.0) rotationScheduleDays:days];
 
   return v10;
 }
 
-+ (id)ephemeralUUIDWithUUID:(id)a3 forTimestamp:(unint64_t)a4 rotationSchedule:(unint64_t)a5
++ (id)ephemeralUUIDWithUUID:(id)d forTimestamp:(unint64_t)timestamp rotationSchedule:(unint64_t)schedule
 {
-  v14 = a4 / a5;
+  v14 = timestamp / schedule;
   v5 = MEMORY[0x277CBEB28];
-  v6 = a3;
+  dCopy = d;
   v7 = [v5 dataWithBytes:&v14 length:8];
-  v8 = [objc_opt_class() UUIDRotationSalt];
-  [v7 appendData:v8];
+  uUIDRotationSalt = [objc_opt_class() UUIDRotationSalt];
+  [v7 appendData:uUIDRotationSalt];
 
-  v9 = [v6 hm_convertToData];
+  hm_convertToData = [dCopy hm_convertToData];
 
-  [v7 appendData:v9];
+  [v7 appendData:hm_convertToData];
   v10 = objc_alloc(MEMORY[0x277CCAD78]);
-  v11 = [v7 hm_generateSHA1];
-  v12 = [v10 initWithUUIDBytes:{objc_msgSend(v11, "bytes")}];
+  hm_generateSHA1 = [v7 hm_generateSHA1];
+  v12 = [v10 initWithUUIDBytes:{objc_msgSend(hm_generateSHA1, "bytes")}];
 
   return v12;
 }

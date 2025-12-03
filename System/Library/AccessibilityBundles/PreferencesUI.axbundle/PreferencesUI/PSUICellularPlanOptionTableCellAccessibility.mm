@@ -1,15 +1,15 @@
 @interface PSUICellularPlanOptionTableCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation PSUICellularPlanOptionTableCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PSUICellularPlanOptionTableCell" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PSUICellularPlanOptionTableCell" hasInstanceMethod:@"numberLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PSUICellularPlanOptionTableCell" hasInstanceMethod:@"centeredNameLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PSUICellularPlanOptionTableCell" hasInstanceMethod:@"nameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PSUICellularPlanOptionTableCell" hasInstanceMethod:@"numberLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PSUICellularPlanOptionTableCell" hasInstanceMethod:@"centeredNameLabel" withFullSignature:{"@", 0}];
 }
 
 @end

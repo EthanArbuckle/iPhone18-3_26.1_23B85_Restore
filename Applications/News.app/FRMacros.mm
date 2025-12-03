@@ -21,13 +21,13 @@
 + (BOOL)splitScreenOneThird;
 + (BOOL)splitScreenThreeQuarters;
 + (BOOL)splitScreenTwoThirds;
-+ (BOOL)viewIsCompact:(id)a3;
++ (BOOL)viewIsCompact:(id)compact;
 + (BOOL)windowIsLandscape;
 + (double)deviceScreenScaleFromPotentialBackgroundThread;
 + (double)maxScreenSide;
 + (double)minScreenSide;
-+ (id)imageFromNewGraphicsContextWithSize:(CGSize)a3 opaque:(BOOL)a4 forceSRGB:(BOOL)a5 scale:(double)a6 contextBlock:(id)a7;
-+ (void)useManagedContextWithSize:(CGSize)a3 opaque:(BOOL)a4 forceSRGB:(BOOL)a5 scale:(double)a6 contextBlock:(id)a7;
++ (id)imageFromNewGraphicsContextWithSize:(CGSize)size opaque:(BOOL)opaque forceSRGB:(BOOL)b scale:(double)scale contextBlock:(id)block;
++ (void)useManagedContextWithSize:(CGSize)size opaque:(BOOL)opaque forceSRGB:(BOOL)b scale:(double)scale contextBlock:(id)block;
 @end
 
 @implementation FRMacros
@@ -52,57 +52,57 @@
   return byte_1000E61F0;
 }
 
-+ (void)useManagedContextWithSize:(CGSize)a3 opaque:(BOOL)a4 forceSRGB:(BOOL)a5 scale:(double)a6 contextBlock:(id)a7
++ (void)useManagedContextWithSize:(CGSize)size opaque:(BOOL)opaque forceSRGB:(BOOL)b scale:(double)scale contextBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  height = a3.height;
-  width = a3.width;
-  v12 = a7;
+  bCopy = b;
+  opaqueCopy = opaque;
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
   v13 = +[UIGraphicsImageRendererFormat preferredFormat];
-  if (vabdd_f64(0.0, a6) < 0.00999999978)
+  if (vabdd_f64(0.0, scale) < 0.00999999978)
   {
     +[FRMacros deviceScreenScaleFromPotentialBackgroundThread];
-    a6 = v14;
+    scale = v14;
   }
 
-  [v13 setScale:a6];
-  if (v8)
+  [v13 setScale:scale];
+  if (bCopy)
   {
     [v13 setPreferredRange:2];
   }
 
-  [v13 setOpaque:v9];
+  [v13 setOpaque:opaqueCopy];
   v15 = objc_autoreleasePoolPush();
   v16 = [[UIGraphicsImageRenderer alloc] initWithSize:v13 format:{width, height}];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000420D0;
   v19[3] = &unk_1000C4858;
-  v17 = v12;
+  v17 = blockCopy;
   v20 = v17;
   v18 = [v16 imageWithActions:v19];
 
   objc_autoreleasePoolPop(v15);
 }
 
-+ (id)imageFromNewGraphicsContextWithSize:(CGSize)a3 opaque:(BOOL)a4 forceSRGB:(BOOL)a5 scale:(double)a6 contextBlock:(id)a7
++ (id)imageFromNewGraphicsContextWithSize:(CGSize)size opaque:(BOOL)opaque forceSRGB:(BOOL)b scale:(double)scale contextBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  height = a3.height;
-  width = a3.width;
-  v12 = a7;
+  bCopy = b;
+  opaqueCopy = opaque;
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
   v13 = +[UIGraphicsImageRendererFormat preferredFormat];
-  if (vabdd_f64(0.0, a6) < 0.00999999978)
+  if (vabdd_f64(0.0, scale) < 0.00999999978)
   {
     +[FRMacros deviceScreenScaleFromPotentialBackgroundThread];
-    a6 = v14;
+    scale = v14;
   }
 
-  [v13 setScale:a6];
-  [v13 setOpaque:v9];
-  if (v8)
+  [v13 setScale:scale];
+  [v13 setOpaque:opaqueCopy];
+  if (bCopy)
   {
     [v13 setPreferredRange:2];
   }
@@ -113,7 +113,7 @@
   v20[1] = 3221225472;
   v20[2] = sub_1000422A4;
   v20[3] = &unk_1000C4858;
-  v17 = v12;
+  v17 = blockCopy;
   v21 = v17;
   v18 = [v16 imageWithActions:v20];
 
@@ -122,11 +122,11 @@
   return v18;
 }
 
-+ (BOOL)viewIsCompact:(id)a3
++ (BOOL)viewIsCompact:(id)compact
 {
-  v3 = [a3 traitCollection];
+  traitCollection = [compact traitCollection];
   v4 = [UITraitCollection traitCollectionWithHorizontalSizeClass:1];
-  v5 = [v3 containsTraitsInCollection:v4];
+  v5 = [traitCollection containsTraitsInCollection:v4];
 
   return v5;
 }
@@ -134,11 +134,11 @@
 + (BOOL)windowIsLandscape
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 key_window];
+  key_window = [v2 key_window];
 
-  [v3 frame];
+  [key_window frame];
   v5 = v4;
-  [v3 frame];
+  [key_window frame];
   LOBYTE(v2) = v5 > v6;
 
   return v2;
@@ -182,10 +182,10 @@
 {
   +[NSThread isMainThread];
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 key_window];
+  key_window = [v2 key_window];
 
   v4 = +[UIScreen mainScreen];
-  [v3 frame];
+  [key_window frame];
   Width = CGRectGetWidth(v8);
   [v4 bounds];
   v6 = Width != CGRectGetWidth(v9);
@@ -197,12 +197,12 @@
 {
   +[NSThread isMainThread];
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 key_window];
+  key_window = [v3 key_window];
 
   v5 = +[UIScreen mainScreen];
-  if ([a1 splitScreen])
+  if ([self splitScreen])
   {
-    [v4 frame];
+    [key_window frame];
     Width = CGRectGetWidth(v9);
     [v5 bounds];
     v7 = Width == CGRectGetWidth(v10) * 0.5 + -5.0;
@@ -220,12 +220,12 @@
 {
   +[NSThread isMainThread];
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 key_window];
+  key_window = [v3 key_window];
 
   v5 = +[UIScreen mainScreen];
-  if ([a1 splitScreen] && (objc_msgSend(a1, "splitScreenEqual") & 1) == 0)
+  if ([self splitScreen] && (objc_msgSend(self, "splitScreenEqual") & 1) == 0)
   {
-    [v4 frame];
+    [key_window frame];
     Width = CGRectGetWidth(v9);
     [v5 bounds];
     v6 = Width < CGRectGetWidth(v10) * 0.5;
@@ -243,12 +243,12 @@
 {
   +[NSThread isMainThread];
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 key_window];
+  key_window = [v3 key_window];
 
   v5 = +[UIScreen mainScreen];
-  if ([a1 splitScreen] && (objc_msgSend(a1, "portrait") & 1) == 0)
+  if ([self splitScreen] && (objc_msgSend(self, "portrait") & 1) == 0)
   {
-    [v4 frame];
+    [key_window frame];
     Width = CGRectGetWidth(v9);
     [v5 bounds];
     v6 = Width > CGRectGetWidth(v10) * 0.5;
@@ -266,12 +266,12 @@
 {
   +[NSThread isMainThread];
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 key_window];
+  key_window = [v3 key_window];
 
   v5 = +[UIScreen mainScreen];
-  if ([a1 splitScreen] && objc_msgSend(a1, "portrait"))
+  if ([self splitScreen] && objc_msgSend(self, "portrait"))
   {
-    [v4 frame];
+    [key_window frame];
     Width = CGRectGetWidth(v9);
     [v5 bounds];
     v7 = Width > CGRectGetWidth(v10) * 0.5;
@@ -289,12 +289,12 @@
 {
   +[NSThread isMainThread];
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 key_window];
+  key_window = [v2 key_window];
 
-  v4 = [v3 windowScene];
-  v5 = [v4 interfaceOrientation];
+  windowScene = [key_window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return (v5 - 1) < 2;
+  return (interfaceOrientation - 1) < 2;
 }
 
 + (BOOL)iPadPro
@@ -377,7 +377,7 @@
   block[1] = 3221225472;
   block[2] = sub_100042F1C;
   block[3] = &unk_1000C49B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000E6248 != -1)
   {
     dispatch_once(&qword_1000E6248, block);
@@ -402,7 +402,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000430D4;
   block[3] = &unk_1000C49B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000E6268 != -1)
   {
     dispatch_once(&qword_1000E6268, block);
@@ -417,7 +417,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000431BC;
   block[3] = &unk_1000C49B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000E6278 != -1)
   {
     dispatch_once(&qword_1000E6278, block);

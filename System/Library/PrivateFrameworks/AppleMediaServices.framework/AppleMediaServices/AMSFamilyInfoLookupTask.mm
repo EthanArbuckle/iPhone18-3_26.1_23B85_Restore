@@ -2,35 +2,35 @@
 + (AMSBagKeySet)bagKeySet;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
-+ (id)_processURLResult:(id)a3;
++ (id)_processURLResult:(id)result;
 + (id)createBagForSubProfile;
-- (AMSFamilyInfoLookupTask)initWithAccount:(id)a3 bag:(id)a4;
-- (AMSFamilyInfoLookupTask)initWithBag:(id)a3;
-- (AMSFamilyInfoLookupTask)initWithBagContract:(id)a3;
-- (id)_cachedFamilyInfoLookupResultForAccount:(id)a3;
+- (AMSFamilyInfoLookupTask)initWithAccount:(id)account bag:(id)bag;
+- (AMSFamilyInfoLookupTask)initWithBag:(id)bag;
+- (AMSFamilyInfoLookupTask)initWithBagContract:(id)contract;
+- (id)_cachedFamilyInfoLookupResultForAccount:(id)account;
 - (id)_currentCachedFamilyInfo;
 - (id)_pathForCachedFamilyInfoLookupResult;
-- (id)_performFamilyInfoRequestForAccount:(id)a3 error:(id *)a4;
+- (id)_performFamilyInfoRequestForAccount:(id)account error:(id *)error;
 - (id)fetchFamilyInfoLookupFromCache;
 - (id)fetchFamilyInfoLookupFromServer;
-- (id)performFamilyInfoLookupWithCachePolicy:(int64_t)a3;
-- (void)_cacheFamilyInfoLookupResult:(id)a3 forAccount:(id)a4;
+- (id)performFamilyInfoLookupWithCachePolicy:(int64_t)policy;
+- (void)_cacheFamilyInfoLookupResult:(id)result forAccount:(id)account;
 @end
 
 @implementation AMSFamilyInfoLookupTask
 
-- (AMSFamilyInfoLookupTask)initWithAccount:(id)a3 bag:(id)a4
+- (AMSFamilyInfoLookupTask)initWithAccount:(id)account bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  bagCopy = bag;
   v14.receiver = self;
   v14.super_class = AMSFamilyInfoLookupTask;
   v9 = [(AMSTask *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_bag, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_bag, bag);
     v11 = AMSGenerateLogCorrelationKey();
     logKey = v10->_logKey;
     v10->_logKey = v11;
@@ -77,21 +77,21 @@ void __47__AMSFamilyInfoLookupTask_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
-- (id)performFamilyInfoLookupWithCachePolicy:(int64_t)a3
+- (id)performFamilyInfoLookupWithCachePolicy:(int64_t)policy
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __66__AMSFamilyInfoLookupTask_performFamilyInfoLookupWithCachePolicy___block_invoke;
   v5[3] = &unk_1E73B7900;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = policy;
   v3 = [(AMSTask *)self performTaskWithPromiseBlock:v5];
 
   return v3;
@@ -188,8 +188,8 @@ id __66__AMSFamilyInfoLookupTask_performFamilyInfoLookupWithCachePolicy___block_
 - (id)fetchFamilyInfoLookupFromCache
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSFamilyInfoLookupTask *)self account];
-  v4 = [(AMSFamilyInfoLookupTask *)self _cachedFamilyInfoLookupResultForAccount:v3];
+  account = [(AMSFamilyInfoLookupTask *)self account];
+  v4 = [(AMSFamilyInfoLookupTask *)self _cachedFamilyInfoLookupResultForAccount:account];
 
   v5 = +[AMSLogConfig sharedConfig];
   v6 = v5;
@@ -200,20 +200,20 @@ id __66__AMSFamilyInfoLookupTask_performFamilyInfoLookupWithCachePolicy___block_
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v8 = objc_opt_class();
       v9 = v8;
-      v10 = [(AMSFamilyInfoLookupTask *)self logKey];
-      v11 = [v4 dictionaryRepresentation];
+      logKey = [(AMSFamilyInfoLookupTask *)self logKey];
+      dictionaryRepresentation = [v4 dictionaryRepresentation];
       v19 = 138543874;
       v20 = v8;
       v21 = 2114;
-      v22 = v10;
+      v22 = logKey;
       v23 = 2114;
-      v24 = v11;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] returning cached result %{public}@", &v19, 0x20u);
+      v24 = dictionaryRepresentation;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] returning cached result %{public}@", &v19, 0x20u);
     }
 
     v12 = [AMSPromise promiseWithResult:v4];
@@ -226,17 +226,17 @@ id __66__AMSFamilyInfoLookupTask_performFamilyInfoLookupWithCachePolicy___block_
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v6 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       v14 = objc_opt_class();
       v15 = v14;
-      v16 = [(AMSFamilyInfoLookupTask *)self logKey];
+      logKey2 = [(AMSFamilyInfoLookupTask *)self logKey];
       v19 = 138543618;
       v20 = v14;
       v21 = 2114;
-      v22 = v16;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Cache not available", &v19, 0x16u);
+      v22 = logKey2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Cache not available", &v19, 0x16u);
     }
 
     v17 = AMSError(7, @"Family Info Lookup Failed", @"Cache not available", 0);
@@ -249,13 +249,13 @@ id __66__AMSFamilyInfoLookupTask_performFamilyInfoLookupWithCachePolicy___block_
 - (id)fetchFamilyInfoLookupFromServer
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSFamilyInfoLookupTask *)self account];
+  account = [(AMSFamilyInfoLookupTask *)self account];
 
-  if (v3)
+  if (account)
   {
-    v4 = [(AMSFamilyInfoLookupTask *)self account];
+    account2 = [(AMSFamilyInfoLookupTask *)self account];
     v45 = 0;
-    v5 = [(AMSFamilyInfoLookupTask *)self _performFamilyInfoRequestForAccount:v4 error:&v45];
+    v5 = [(AMSFamilyInfoLookupTask *)self _performFamilyInfoRequestForAccount:account2 error:&v45];
     v6 = v45;
 
     v7 = [AMSFamilyInfoLookupTask _processURLResult:v5];
@@ -268,21 +268,21 @@ id __66__AMSFamilyInfoLookupTask_performFamilyInfoLookupWithCachePolicy___block_
         v9 = +[AMSLogConfig sharedConfig];
       }
 
-      v10 = [v9 OSLogObject];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      oSLogObject = [v9 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
       {
         v11 = objc_opt_class();
         v12 = v11;
-        v13 = [(AMSFamilyInfoLookupTask *)self logKey];
+        logKey = [(AMSFamilyInfoLookupTask *)self logKey];
         *buf = 138543618;
         v47 = v11;
         v48 = 2114;
-        v49 = v13;
-        _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Successfully fetched family info from server", buf, 0x16u);
+        v49 = logKey;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Successfully fetched family info from server", buf, 0x16u);
       }
 
-      v14 = [(AMSFamilyInfoLookupTask *)self account];
-      [(AMSFamilyInfoLookupTask *)self _cacheFamilyInfoLookupResult:v8 forAccount:v14];
+      account3 = [(AMSFamilyInfoLookupTask *)self account];
+      [(AMSFamilyInfoLookupTask *)self _cacheFamilyInfoLookupResult:v8 forAccount:account3];
     }
 
     else
@@ -295,44 +295,44 @@ id __66__AMSFamilyInfoLookupTask_performFamilyInfoLookupWithCachePolicy___block_
           v21 = +[AMSLogConfig sharedConfig];
         }
 
-        v22 = [v21 OSLogObject];
-        if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+        oSLogObject2 = [v21 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
         {
           v23 = objc_opt_class();
-          v24 = [(AMSFamilyInfoLookupTask *)self logKey];
+          logKey2 = [(AMSFamilyInfoLookupTask *)self logKey];
           v25 = AMSLogableError(v6);
           *buf = 138543874;
           v47 = v23;
           v48 = 2114;
-          v49 = v24;
+          v49 = logKey2;
           v50 = 2114;
           v51 = v25;
-          _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to load the family info because the network call failed. error = %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to load the family info because the network call failed. error = %{public}@", buf, 0x20u);
         }
       }
 
-      v26 = [(AMSFamilyInfoLookupTask *)self account];
-      v27 = [(AMSFamilyInfoLookupTask *)self _cachedFamilyInfoLookupResultForAccount:v26];
+      account4 = [(AMSFamilyInfoLookupTask *)self account];
+      v27 = [(AMSFamilyInfoLookupTask *)self _cachedFamilyInfoLookupResultForAccount:account4];
 
       v28 = +[AMSLogConfig sharedConfig];
-      v14 = v28;
+      account3 = v28;
       if (!v27)
       {
         if (!v28)
         {
-          v14 = +[AMSLogConfig sharedConfig];
+          account3 = +[AMSLogConfig sharedConfig];
         }
 
-        v42 = [v14 OSLogObject];
-        if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+        oSLogObject3 = [account3 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
         {
           v43 = objc_opt_class();
-          v44 = [(AMSFamilyInfoLookupTask *)self logKey];
+          logKey3 = [(AMSFamilyInfoLookupTask *)self logKey];
           *buf = 138543618;
           v47 = v43;
           v48 = 2114;
-          v49 = v44;
-          _os_log_impl(&dword_192869000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] We failed to load the family info, and we have no cached family info to return.", buf, 0x16u);
+          v49 = logKey3;
+          _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] We failed to load the family info, and we have no cached family info to return.", buf, 0x16u);
         }
 
         v8 = AMSError(0, @"Family Info Lookup Failed", @"We failed to load the family info for the active account.", v6);
@@ -342,20 +342,20 @@ id __66__AMSFamilyInfoLookupTask_performFamilyInfoLookupWithCachePolicy___block_
 
       if (!v28)
       {
-        v14 = +[AMSLogConfig sharedConfig];
+        account3 = +[AMSLogConfig sharedConfig];
       }
 
-      v29 = [v14 OSLogObject];
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+      oSLogObject4 = [account3 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
       {
         v30 = objc_opt_class();
         v31 = v30;
-        v32 = [(AMSFamilyInfoLookupTask *)self logKey];
+        logKey4 = [(AMSFamilyInfoLookupTask *)self logKey];
         *buf = 138543618;
         v47 = v30;
         v48 = 2114;
-        v49 = v32;
-        _os_log_impl(&dword_192869000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Returning cached family info.", buf, 0x16u);
+        v49 = logKey4;
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Returning cached family info.", buf, 0x16u);
       }
 
       v8 = v27;
@@ -367,21 +367,21 @@ id __66__AMSFamilyInfoLookupTask_performFamilyInfoLookupWithCachePolicy___block_
       v33 = +[AMSLogConfig sharedConfig];
     }
 
-    v34 = [v33 OSLogObject];
-    if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
+    oSLogObject5 = [v33 OSLogObject];
+    if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEBUG))
     {
       v35 = objc_opt_class();
       v36 = v35;
-      v37 = [(AMSFamilyInfoLookupTask *)self logKey];
-      v38 = [v8 dictionaryRepresentation];
-      v39 = AMSHashIfNeeded(v38);
+      logKey5 = [(AMSFamilyInfoLookupTask *)self logKey];
+      dictionaryRepresentation = [v8 dictionaryRepresentation];
+      v39 = AMSHashIfNeeded(dictionaryRepresentation);
       *buf = 138543874;
       v47 = v35;
       v48 = 2114;
-      v49 = v37;
+      v49 = logKey5;
       v50 = 2114;
       v51 = v39;
-      _os_log_impl(&dword_192869000, v34, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] returning result %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] returning result %{public}@", buf, 0x20u);
     }
 
     v40 = [AMSPromise promiseWithResult:v8];
@@ -397,17 +397,17 @@ LABEL_31:
     v15 = +[AMSLogConfig sharedConfig];
   }
 
-  v16 = [v15 OSLogObject];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+  oSLogObject6 = [v15 OSLogObject];
+  if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
   {
     v17 = objc_opt_class();
     v18 = v17;
-    v19 = [(AMSFamilyInfoLookupTask *)self logKey];
+    logKey6 = [(AMSFamilyInfoLookupTask *)self logKey];
     *buf = 138543618;
     v47 = v17;
     v48 = 2114;
-    v49 = v19;
-    _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed because there's no account.", buf, 0x16u);
+    v49 = logKey6;
+    _os_log_impl(&dword_192869000, oSLogObject6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed because there's no account.", buf, 0x16u);
   }
 
   v6 = AMSError(103, @"Family Info Lookup Failed", @"We cannot load the family circle if there's no account.", 0);
@@ -417,10 +417,10 @@ LABEL_32:
   return v20;
 }
 
-- (id)_performFamilyInfoRequestForAccount:(id)a3 error:(id *)a4
+- (id)_performFamilyInfoRequestForAccount:(id)account error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountCopy = account;
   v7 = [(AMSFamilyInfoLookupTask *)self bag];
   v8 = [v7 URLForKey:@"family-info"];
   v27 = 0;
@@ -433,21 +433,21 @@ LABEL_32:
     v12 = [(AMSFamilyInfoLookupTask *)self bag];
     v13 = [(AMSURLRequestEncoder *)v11 initWithBag:v12];
 
-    [(AMSURLRequestEncoder *)v13 setAccount:v6];
-    v14 = [(AMSFamilyInfoLookupTask *)self logKey];
-    [(AMSURLRequestEncoder *)v13 setLogUUID:v14];
+    [(AMSURLRequestEncoder *)v13 setAccount:accountCopy];
+    logKey = [(AMSFamilyInfoLookupTask *)self logKey];
+    [(AMSURLRequestEncoder *)v13 setLogUUID:logKey];
 
     [(AMSURLRequestEncoder *)v13 setUrlKnownToBeTrusted:1];
     v15 = [(AMSURLRequestEncoder *)v13 requestWithMethod:2 URL:v9 parameters:0];
-    v16 = [v15 resultWithError:a4];
+    v16 = [v15 resultWithError:error];
 
     v17 = objc_alloc_init(AMSPromise);
     v18 = +[AMSURLSession defaultSession];
-    v19 = [(AMSPromise *)v17 completionHandlerAdapter];
-    v20 = [v18 dataTaskWithRequest:v16 completionHandler:v19];
+    completionHandlerAdapter = [(AMSPromise *)v17 completionHandlerAdapter];
+    v20 = [v18 dataTaskWithRequest:v16 completionHandler:completionHandlerAdapter];
 
     [v20 resume];
-    v21 = [(AMSPromise *)v17 resultWithError:a4];
+    v21 = [(AMSPromise *)v17 resultWithError:error];
   }
 
   else
@@ -458,24 +458,24 @@ LABEL_32:
       v22 = +[AMSLogConfig sharedConfig];
     }
 
-    v23 = [v22 OSLogObject];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v24 = objc_opt_class();
-      v25 = [(AMSFamilyInfoLookupTask *)self logKey];
+      logKey2 = [(AMSFamilyInfoLookupTask *)self logKey];
       *buf = 138543874;
       v29 = v24;
       v30 = 2114;
-      v31 = v25;
+      v31 = logKey2;
       v32 = 2114;
       v33 = v10;
-      _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed because the bag didn't give us the URL. error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed because the bag didn't give us the URL. error = %{public}@", buf, 0x20u);
     }
 
-    if (a4)
+    if (error)
     {
       AMSError(204, @"Family Info Lookup Failed", @"We were unable to get the family circle URL.", v10);
-      *a4 = v21 = 0;
+      *error = v21 = 0;
     }
 
     else
@@ -487,19 +487,19 @@ LABEL_32:
   return v21;
 }
 
-+ (id)_processURLResult:(id)a3
++ (id)_processURLResult:(id)result
 {
-  if (!a3)
+  if (!result)
   {
     v5 = 0;
     goto LABEL_10;
   }
 
-  v3 = [a3 object];
+  object = [result object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = object;
 
     if (v4)
     {
@@ -528,34 +528,34 @@ LABEL_10:
   return v5;
 }
 
-- (void)_cacheFamilyInfoLookupResult:(id)a3 forAccount:(id)a4
+- (void)_cacheFamilyInfoLookupResult:(id)result forAccount:(id)account
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSFamilyInfoLookupTask *)self _pathForCachedFamilyInfoLookupResult];
-  if (v8)
+  resultCopy = result;
+  accountCopy = account;
+  _pathForCachedFamilyInfoLookupResult = [(AMSFamilyInfoLookupTask *)self _pathForCachedFamilyInfoLookupResult];
+  if (_pathForCachedFamilyInfoLookupResult)
   {
-    v9 = [v7 ams_DSID];
+    ams_DSID = [accountCopy ams_DSID];
 
-    if (v9)
+    if (ams_DSID)
     {
       v10 = MEMORY[0x1E696AE40];
       v39[0] = @"account";
-      v11 = [v7 ams_DSID];
-      v40[0] = v11;
+      ams_DSID2 = [accountCopy ams_DSID];
+      v40[0] = ams_DSID2;
       v39[1] = @"circle";
-      v12 = [v6 dictionaryRepresentation];
-      v40[1] = v12;
+      dictionaryRepresentation = [resultCopy dictionaryRepresentation];
+      v40[1] = dictionaryRepresentation;
       v39[2] = @"timestamp";
-      v13 = [MEMORY[0x1E695DF00] date];
-      v40[2] = v13;
+      date = [MEMORY[0x1E695DF00] date];
+      v40[2] = date;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:3];
       v38 = 0;
-      v15 = [v10 dataWithPropertyList:v14 format:200 options:0 error:&v38];
+      oSLogObject2 = [v10 dataWithPropertyList:v14 format:200 options:0 error:&v38];
       v16 = v38;
 
-      if (!v15)
+      if (!oSLogObject2)
       {
         v20 = +[AMSLogConfig sharedConfig];
         if (!v20)
@@ -563,26 +563,26 @@ LABEL_10:
           v20 = +[AMSLogConfig sharedConfig];
         }
 
-        v21 = [v20 OSLogObject];
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v20 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v33 = objc_opt_class();
-          v34 = [(AMSFamilyInfoLookupTask *)self logKey];
+          logKey = [(AMSFamilyInfoLookupTask *)self logKey];
           v35 = AMSLogableError(v16);
           *buf = 138543874;
           v42 = v33;
           v43 = 2114;
-          v44 = v34;
+          v44 = logKey;
           v45 = 2114;
           v46 = v35;
-          _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to serialize the family info. error = %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to serialize the family info. error = %{public}@", buf, 0x20u);
         }
 
         goto LABEL_28;
       }
 
       v37 = v16;
-      v17 = [v15 writeToFile:v8 options:1 error:&v37];
+      v17 = [oSLogObject2 writeToFile:_pathForCachedFamilyInfoLookupResult options:1 error:&v37];
       v18 = v37;
 
       v19 = +[AMSLogConfig sharedConfig];
@@ -594,21 +594,21 @@ LABEL_10:
           v20 = +[AMSLogConfig sharedConfig];
         }
 
-        v21 = [v20 OSLogObject];
-        if (!os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+        oSLogObject = [v20 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
         {
           goto LABEL_27;
         }
 
         v22 = objc_opt_class();
         v23 = v22;
-        v24 = [(AMSFamilyInfoLookupTask *)self logKey];
+        logKey2 = [(AMSFamilyInfoLookupTask *)self logKey];
         *buf = 138543618;
         v42 = v22;
         v43 = 2114;
-        v44 = v24;
+        v44 = logKey2;
         v25 = "%{public}@: [%{public}@] Successfully cached family info";
-        v26 = v21;
+        v26 = oSLogObject;
         v27 = OS_LOG_TYPE_INFO;
         v28 = 22;
       }
@@ -620,23 +620,23 @@ LABEL_10:
           v20 = +[AMSLogConfig sharedConfig];
         }
 
-        v21 = [v20 OSLogObject];
-        if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v20 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_27;
         }
 
         v36 = objc_opt_class();
-        v24 = [(AMSFamilyInfoLookupTask *)self logKey];
+        logKey2 = [(AMSFamilyInfoLookupTask *)self logKey];
         v23 = AMSLogableError(v18);
         *buf = 138543874;
         v42 = v36;
         v43 = 2114;
-        v44 = v24;
+        v44 = logKey2;
         v45 = 2114;
         v46 = v23;
         v25 = "%{public}@: [%{public}@] Failed to write the serialized family info to disk. error = %{public}@";
-        v26 = v21;
+        v26 = oSLogObject;
         v27 = OS_LOG_TYPE_ERROR;
         v28 = 32;
       }
@@ -656,19 +656,19 @@ LABEL_28:
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v16 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v31 = objc_opt_class();
-      v30 = [(AMSFamilyInfoLookupTask *)self logKey];
-      v32 = [v7 hashedDescription];
+      logKey3 = [(AMSFamilyInfoLookupTask *)self logKey];
+      hashedDescription = [accountCopy hashedDescription];
       *buf = 138543874;
       v42 = v31;
       v43 = 2114;
-      v44 = v30;
+      v44 = logKey3;
       v45 = 2114;
-      v46 = v32;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to cache a family info lookup because the given account has no DSID. account = %{public}@", buf, 0x20u);
+      v46 = hashedDescription;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to cache a family info lookup because the given account has no DSID. account = %{public}@", buf, 0x20u);
 
       goto LABEL_17;
     }
@@ -682,16 +682,16 @@ LABEL_28:
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v16 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v29 = objc_opt_class();
-      v30 = [(AMSFamilyInfoLookupTask *)self logKey];
+      logKey3 = [(AMSFamilyInfoLookupTask *)self logKey];
       *buf = 138543618;
       v42 = v29;
       v43 = 2114;
-      v44 = v30;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to generate the path in order to cache a family info lookup.", buf, 0x16u);
+      v44 = logKey3;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to generate the path in order to cache a family info lookup.", buf, 0x16u);
 LABEL_17:
     }
   }
@@ -699,13 +699,13 @@ LABEL_17:
 LABEL_29:
 }
 
-- (id)_cachedFamilyInfoLookupResultForAccount:(id)a3
+- (id)_cachedFamilyInfoLookupResultForAccount:(id)account
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 ams_DSID];
+  accountCopy = account;
+  ams_DSID = [accountCopy ams_DSID];
 
-  if (!v5)
+  if (!ams_DSID)
   {
     v7 = +[AMSLogConfig sharedConfig];
     if (!v7)
@@ -713,47 +713,47 @@ LABEL_29:
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v7 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
-      v11 = [(AMSFamilyInfoLookupTask *)self logKey];
-      v12 = [v4 hashedDescription];
+      logKey = [(AMSFamilyInfoLookupTask *)self logKey];
+      hashedDescription = [accountCopy hashedDescription];
       v34 = 138543874;
       v35 = v10;
       v36 = 2114;
-      v37 = v11;
+      v37 = logKey;
       v38 = 2114;
-      v39 = v12;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to load cached family info because the account has no DSID. account = %{public}@", &v34, 0x20u);
+      v39 = hashedDescription;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to load cached family info because the account has no DSID. account = %{public}@", &v34, 0x20u);
     }
 
     v13 = 0;
     goto LABEL_36;
   }
 
-  v6 = [(AMSFamilyInfoLookupTask *)self _currentCachedFamilyInfo];
-  v7 = v6;
-  if (!v6)
+  _currentCachedFamilyInfo = [(AMSFamilyInfoLookupTask *)self _currentCachedFamilyInfo];
+  v7 = _currentCachedFamilyInfo;
+  if (!_currentCachedFamilyInfo)
   {
     v13 = 0;
     goto LABEL_37;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"account"];
+  v8 = [_currentCachedFamilyInfo objectForKeyedSubscript:@"account"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    oSLogObject = v8;
   }
 
   else
   {
-    v9 = 0;
+    oSLogObject = 0;
   }
 
-  v14 = [v4 ams_DSID];
-  v15 = [v9 isEqualToNumber:v14];
+  ams_DSID2 = [accountCopy ams_DSID];
+  v15 = [oSLogObject isEqualToNumber:ams_DSID2];
 
   if ((v15 & 1) == 0)
   {
@@ -763,22 +763,22 @@ LABEL_29:
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v17 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v21 = objc_opt_class();
-      v22 = [(AMSFamilyInfoLookupTask *)self logKey];
+      logKey2 = [(AMSFamilyInfoLookupTask *)self logKey];
       v34 = 138543618;
       v35 = v21;
       v36 = 2114;
-      v37 = v22;
-      _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Our cached family info isn't for the given account.", &v34, 0x16u);
+      v37 = logKey2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Our cached family info isn't for the given account.", &v34, 0x16u);
     }
 
     goto LABEL_34;
   }
 
-  v16 = [v7 objectForKeyedSubscript:@"timestamp"];
+  date = [v7 objectForKeyedSubscript:@"timestamp"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -787,12 +787,12 @@ LABEL_29:
     goto LABEL_21;
   }
 
-  v17 = v16;
+  v17 = date;
 
   if (v17)
   {
-    v16 = [MEMORY[0x1E695DF00] date];
-    [v16 timeIntervalSinceDate:v17];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:v17];
     v19 = v18;
 LABEL_21:
 
@@ -829,22 +829,22 @@ LABEL_22:
     }
   }
 
-  v20 = +[AMSLogConfig sharedConfig];
-  if (!v20)
+  oSLogObject2 = +[AMSLogConfig sharedConfig];
+  if (!oSLogObject2)
   {
-    v20 = +[AMSLogConfig sharedConfig];
+    oSLogObject2 = +[AMSLogConfig sharedConfig];
   }
 
-  v30 = [v20 OSLogObject];
-  if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
+  v20OSLogObject = [oSLogObject2 OSLogObject];
+  if (os_log_type_enabled(v20OSLogObject, OS_LOG_TYPE_INFO))
   {
     v31 = objc_opt_class();
-    v32 = [(AMSFamilyInfoLookupTask *)self logKey];
+    logKey3 = [(AMSFamilyInfoLookupTask *)self logKey];
     v34 = 138543618;
     v35 = v31;
     v36 = 2114;
-    v37 = v32;
-    _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] We have cached family info for the account, but it's too old to return.", &v34, 0x16u);
+    v37 = logKey3;
+    _os_log_impl(&dword_192869000, v20OSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] We have cached family info for the account, but it's too old to return.", &v34, 0x16u);
   }
 
 LABEL_34:
@@ -860,8 +860,8 @@ LABEL_37:
 - (id)_currentCachedFamilyInfo
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSFamilyInfoLookupTask *)self _pathForCachedFamilyInfoLookupResult];
-  if (!v3)
+  _pathForCachedFamilyInfoLookupResult = [(AMSFamilyInfoLookupTask *)self _pathForCachedFamilyInfoLookupResult];
+  if (!_pathForCachedFamilyInfoLookupResult)
   {
     v4 = +[AMSLogConfig sharedConfig];
     if (!v4)
@@ -869,22 +869,22 @@ LABEL_37:
       v4 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v4 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 = objc_opt_class();
-      v9 = [(AMSFamilyInfoLookupTask *)self logKey];
+      logKey = [(AMSFamilyInfoLookupTask *)self logKey];
       *buf = 138543618;
       v17 = v8;
       v18 = 2114;
-      v19 = v9;
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to generate the path in order to load cached family info.", buf, 0x16u);
+      v19 = logKey;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to generate the path in order to load cached family info.", buf, 0x16u);
     }
 
     goto LABEL_17;
   }
 
-  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v3];
+  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:_pathForCachedFamilyInfoLookupResult];
   if (!v4)
   {
     v7 = 0;
@@ -893,7 +893,7 @@ LABEL_37:
 
   v15 = 0;
   v5 = [MEMORY[0x1E696AE40] propertyListWithData:v4 options:0 format:0 error:&v15];
-  v6 = v15;
+  oSLogObject = v15;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -905,18 +905,18 @@ LABEL_12:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
-      v13 = [(AMSFamilyInfoLookupTask *)self logKey];
+      logKey2 = [(AMSFamilyInfoLookupTask *)self logKey];
       *buf = 138543874;
       v17 = v12;
       v18 = 2114;
-      v19 = v13;
+      v19 = logKey2;
       v20 = 2114;
-      v21 = v6;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to deserialize the cached family info. error = %{public}@", buf, 0x20u);
+      v21 = oSLogObject;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to deserialize the cached family info. error = %{public}@", buf, 0x20u);
     }
 
 LABEL_17:
@@ -942,18 +942,18 @@ LABEL_19:
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  if (v3)
+  if (lastObject)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v13[0] = v3;
+    v13[0] = lastObject;
     v13[1] = @"com.apple.itunesstored";
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
     v6 = [v4 pathWithComponents:v5];
 
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    if (([v7 fileExistsAtPath:v6] & 1) != 0 || (v8 = 0, objc_msgSend(v7, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v6, 1, 0, 0)))
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if (([defaultManager fileExistsAtPath:v6] & 1) != 0 || (v8 = 0, objc_msgSend(defaultManager, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v6, 1, 0, 0)))
     {
       v9 = MEMORY[0x1E696AEC0];
       v12[0] = v6;
@@ -971,21 +971,21 @@ LABEL_19:
   return v8;
 }
 
-- (AMSFamilyInfoLookupTask)initWithBag:(id)a3
+- (AMSFamilyInfoLookupTask)initWithBag:(id)bag
 {
   v4 = MEMORY[0x1E6959A48];
-  v5 = a3;
-  v6 = [v4 ams_sharedAccountStore];
-  v7 = [v6 ams_activeiTunesAccount];
+  bagCopy = bag;
+  ams_sharedAccountStore = [v4 ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
-  v8 = [(AMSFamilyInfoLookupTask *)self initWithAccount:v7 bag:v5];
+  v8 = [(AMSFamilyInfoLookupTask *)self initWithAccount:ams_activeiTunesAccount bag:bagCopy];
   return v8;
 }
 
-- (AMSFamilyInfoLookupTask)initWithBagContract:(id)a3
+- (AMSFamilyInfoLookupTask)initWithBagContract:(id)contract
 {
-  v4 = a3;
-  v5 = [[AMSContractBagShim alloc] initWithBagContract:v4];
+  contractCopy = contract;
+  v5 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
   v6 = [(AMSFamilyInfoLookupTask *)self initWithBag:v5];
   return v6;

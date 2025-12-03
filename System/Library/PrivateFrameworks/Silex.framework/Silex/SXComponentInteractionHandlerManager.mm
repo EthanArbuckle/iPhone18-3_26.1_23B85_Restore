@@ -1,18 +1,18 @@
 @interface SXComponentInteractionHandlerManager
-- (SXComponentInteractionHandlerManager)initWithViewport:(id)a3;
-- (id)componentViewForLocation:(CGPoint)a3;
-- (id)interactionsForComponentView:(id)a3;
-- (id)interactionsForComponentView:(id)a3 type:(unint64_t)a4;
-- (void)addInteractionHandler:(id)a3 componentView:(id)a4 types:(unint64_t)a5;
-- (void)removeInteractionHandler:(id)a3 componentView:(id)a4;
-- (void)updateUserInteractionForComponentView:(id)a3;
+- (SXComponentInteractionHandlerManager)initWithViewport:(id)viewport;
+- (id)componentViewForLocation:(CGPoint)location;
+- (id)interactionsForComponentView:(id)view;
+- (id)interactionsForComponentView:(id)view type:(unint64_t)type;
+- (void)addInteractionHandler:(id)handler componentView:(id)view types:(unint64_t)types;
+- (void)removeInteractionHandler:(id)handler componentView:(id)view;
+- (void)updateUserInteractionForComponentView:(id)view;
 @end
 
 @implementation SXComponentInteractionHandlerManager
 
-- (SXComponentInteractionHandlerManager)initWithViewport:(id)a3
+- (SXComponentInteractionHandlerManager)initWithViewport:(id)viewport
 {
-  v5 = a3;
+  viewportCopy = viewport;
   v10.receiver = self;
   v10.super_class = SXComponentInteractionHandlerManager;
   v6 = [(SXComponentInteractionHandlerManager *)&v10 init];
@@ -22,47 +22,47 @@
     interactionHandlers = v6->_interactionHandlers;
     v6->_interactionHandlers = v7;
 
-    objc_storeStrong(&v6->_viewport, a3);
+    objc_storeStrong(&v6->_viewport, viewport);
   }
 
   return v6;
 }
 
-- (void)addInteractionHandler:(id)a3 componentView:(id)a4 types:(unint64_t)a5
+- (void)addInteractionHandler:(id)handler componentView:(id)view types:(unint64_t)types
 {
-  v13 = a3;
-  v8 = a4;
-  if (v13 && v8)
+  handlerCopy = handler;
+  viewCopy = view;
+  if (handlerCopy && viewCopy)
   {
-    v9 = [[SXComponentInteraction alloc] initWithComponentView:v8 handler:v13 types:a5];
-    if (-[SXComponentInteraction handlesType:](v9, "handlesType:", 8) && ([v13 conformsToProtocol:&unk_1F53A02A8] & 1) != 0 || !-[SXComponentInteraction handlesType:](v9, "handlesType:", 8))
+    v9 = [[SXComponentInteraction alloc] initWithComponentView:viewCopy handler:handlerCopy types:types];
+    if (-[SXComponentInteraction handlesType:](v9, "handlesType:", 8) && ([handlerCopy conformsToProtocol:&unk_1F53A02A8] & 1) != 0 || !-[SXComponentInteraction handlesType:](v9, "handlesType:", 8))
     {
-      v10 = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
-      v11 = [v10 objectForKey:v8];
+      interactionHandlers = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
+      array = [interactionHandlers objectForKey:viewCopy];
 
-      if (!v11)
+      if (!array)
       {
-        v11 = [MEMORY[0x1E695DF70] array];
-        v12 = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
-        [v12 setObject:v11 forKey:v8];
+        array = [MEMORY[0x1E695DF70] array];
+        interactionHandlers2 = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
+        [interactionHandlers2 setObject:array forKey:viewCopy];
       }
 
-      [v11 addObject:v9];
-      [(SXComponentInteractionHandlerManager *)self updateUserInteractionForComponentView:v8];
+      [array addObject:v9];
+      [(SXComponentInteractionHandlerManager *)self updateUserInteractionForComponentView:viewCopy];
     }
   }
 }
 
-- (void)removeInteractionHandler:(id)a3 componentView:(id)a4
+- (void)removeInteractionHandler:(id)handler componentView:(id)view
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  handlerCopy = handler;
+  viewCopy = view;
+  v8 = viewCopy;
+  if (handlerCopy && viewCopy)
   {
-    v9 = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
-    v10 = [v9 objectForKey:v8];
+    interactionHandlers = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
+    v10 = [interactionHandlers objectForKey:v8];
 
     v20 = 0u;
     v21 = 0u;
@@ -84,9 +84,9 @@
           }
 
           v16 = *(*(&v18 + 1) + 8 * i);
-          v17 = [v16 handler];
+          handler = [v16 handler];
 
-          if (v17 == v6)
+          if (handler == handlerCopy)
           {
             [v10 removeObject:v16];
           }
@@ -102,17 +102,17 @@
   }
 }
 
-- (id)componentViewForLocation:(CGPoint)a3
+- (id)componentViewForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
-  v7 = [v6 keyEnumerator];
+  y = location.y;
+  x = location.x;
+  interactionHandlers = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
+  keyEnumerator = [interactionHandlers keyEnumerator];
 
-  v8 = [v7 nextObject];
-  if (v8)
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v9 = v8;
+    v9 = nextObject;
     while (1)
     {
       [v9 absoluteFrame];
@@ -120,8 +120,8 @@
       v19.y = y;
       if (CGRectContainsPoint(v21, v19))
       {
-        v10 = [(SXComponentInteractionHandlerManager *)self viewport];
-        [v10 convertPoint:v9 toView:{x, y}];
+        viewport = [(SXComponentInteractionHandlerManager *)self viewport];
+        [viewport convertPoint:v9 toView:{x, y}];
         v12 = v11;
         v14 = v13;
 
@@ -134,10 +134,10 @@
         }
       }
 
-      v15 = [v7 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v9 = v15;
-      if (!v15)
+      v9 = nextObject2;
+      if (!nextObject2)
       {
         goto LABEL_6;
       }
@@ -155,16 +155,16 @@ LABEL_6:
   return v16;
 }
 
-- (id)interactionsForComponentView:(id)a3
+- (id)interactionsForComponentView:(id)view
 {
-  v4 = a3;
-  v5 = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
-  v6 = [v5 objectForKey:v4];
+  viewCopy = view;
+  interactionHandlers = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
+  v6 = [interactionHandlers objectForKey:viewCopy];
 
-  v7 = [v6 reverseObjectEnumerator];
-  v8 = [v7 allObjects];
+  reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v9 = [v8 copy];
+  v9 = [allObjects copy];
   v10 = v9;
   if (v9)
   {
@@ -181,18 +181,18 @@ LABEL_6:
   return v11;
 }
 
-- (id)interactionsForComponentView:(id)a3 type:(unint64_t)a4
+- (id)interactionsForComponentView:(id)view type:(unint64_t)type
 {
-  v4 = a4;
+  typeCopy = type;
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
-  v8 = [v7 objectForKey:v6];
-  v9 = [v8 reverseObjectEnumerator];
-  v10 = [v9 allObjects];
-  v11 = [v10 mutableCopy];
+  viewCopy = view;
+  interactionHandlers = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
+  v8 = [interactionHandlers objectForKey:viewCopy];
+  reverseObjectEnumerator = [v8 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
+  v11 = [allObjects mutableCopy];
 
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -214,21 +214,21 @@ LABEL_6:
 
         v18 = *(*(&v24 + 1) + 8 * i);
         v19 = [v18 handlesType:{2, v24}];
-        if ((v4 & 2) != 0 && v19)
+        if ((typeCopy & 2) != 0 && v19)
         {
-          [v12 addObject:v18];
+          [array addObject:v18];
         }
 
         v20 = [v18 handlesType:4];
-        if ((v4 & 4) != 0 && v20)
+        if ((typeCopy & 4) != 0 && v20)
         {
-          [v12 addObject:v18];
+          [array addObject:v18];
         }
 
         v21 = [v18 handlesType:8];
-        if ((v4 & 8) != 0 && v21)
+        if ((typeCopy & 8) != 0 && v21)
         {
-          [v12 addObject:v18];
+          [array addObject:v18];
         }
       }
 
@@ -238,21 +238,21 @@ LABEL_6:
     while (v15);
   }
 
-  v22 = [v12 copy];
+  v22 = [array copy];
 
   return v22;
 }
 
-- (void)updateUserInteractionForComponentView:(id)a3
+- (void)updateUserInteractionForComponentView:(id)view
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
-  v6 = [v5 objectForKey:v4];
+  interactionHandlers = [(SXComponentInteractionHandlerManager *)self interactionHandlers];
+  v6 = [interactionHandlers objectForKey:viewCopy];
 
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
@@ -294,7 +294,7 @@ LABEL_6:
 
 LABEL_13:
 
-  [v4 setUserInteractionEnabled:v12];
+  [viewCopy setUserInteractionEnabled:v12];
 }
 
 @end

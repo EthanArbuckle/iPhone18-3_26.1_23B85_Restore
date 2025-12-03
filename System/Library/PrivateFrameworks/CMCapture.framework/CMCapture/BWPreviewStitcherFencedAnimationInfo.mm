@@ -1,15 +1,15 @@
 @interface BWPreviewStitcherFencedAnimationInfo
-+ (id)fencedAnimationInfoWithAspectRatio:(double)a3 center:(CGPoint)a4 centerXPixelOffset:(int)a5 centerYPixelOffset:(int)a6 fencePortSendRight:(id)a7;
++ (id)fencedAnimationInfoWithAspectRatio:(double)ratio center:(CGPoint)center centerXPixelOffset:(int)offset centerYPixelOffset:(int)pixelOffset fencePortSendRight:(id)right;
 - (CGPoint)primaryCaptureRectCenter;
 - (id)description;
-- (id)initWithAspectRatio:(int)a3 center:(uint64_t)a4 centerXPixelOffset:(double)a5 centerYPixelOffset:(double)a6 fencePortSendRight:(double)a7;
+- (id)initWithAspectRatio:(int)ratio center:(uint64_t)center centerXPixelOffset:(double)offset centerYPixelOffset:(double)pixelOffset fencePortSendRight:(double)right;
 @end
 
 @implementation BWPreviewStitcherFencedAnimationInfo
 
-+ (id)fencedAnimationInfoWithAspectRatio:(double)a3 center:(CGPoint)a4 centerXPixelOffset:(int)a5 centerYPixelOffset:(int)a6 fencePortSendRight:(id)a7
++ (id)fencedAnimationInfoWithAspectRatio:(double)ratio center:(CGPoint)center centerXPixelOffset:(int)offset centerYPixelOffset:(int)pixelOffset fencePortSendRight:(id)right
 {
-  v7 = [[BWPreviewStitcherFencedAnimationInfo alloc] initWithAspectRatio:a5 center:a6 centerXPixelOffset:a7 centerYPixelOffset:a3 fencePortSendRight:a4.x, a4.y];
+  v7 = [[BWPreviewStitcherFencedAnimationInfo alloc] initWithAspectRatio:offset center:pixelOffset centerXPixelOffset:right centerYPixelOffset:ratio fencePortSendRight:center.x, center.y];
 
   return v7;
 }
@@ -34,20 +34,20 @@
   return result;
 }
 
-- (id)initWithAspectRatio:(int)a3 center:(uint64_t)a4 centerXPixelOffset:(double)a5 centerYPixelOffset:(double)a6 fencePortSendRight:(double)a7
+- (id)initWithAspectRatio:(int)ratio center:(uint64_t)center centerXPixelOffset:(double)offset centerYPixelOffset:(double)pixelOffset fencePortSendRight:(double)right
 {
   if (result)
   {
     v12.receiver = result;
     v12.super_class = BWPreviewStitcherFencedAnimationInfo;
-    result = objc_msgSendSuper2(&v12, sel_initWithFencePortSendRight_, a4);
+    result = objc_msgSendSuper2(&v12, sel_initWithFencePortSendRight_, center);
     if (result)
     {
-      *(result + 4) = a5;
-      *(result + 5) = a6;
-      *(result + 6) = a7;
+      *(result + 4) = offset;
+      *(result + 5) = pixelOffset;
+      *(result + 6) = right;
       *(result + 6) = a2;
-      *(result + 7) = a3;
+      *(result + 7) = ratio;
     }
   }
 

@@ -1,11 +1,11 @@
 @interface SKColorize
-+ (id)colorizeWithColor:(id)a3 colorBlendFactor:(double)a4 duration:(double)a5;
-+ (id)colorizeWithColorBlendFactor:(double)a3 duration:(double)a4;
++ (id)colorizeWithColor:(id)color colorBlendFactor:(double)factor duration:(double)duration;
++ (id)colorizeWithColorBlendFactor:(double)factor duration:(double)duration;
 - (SKColorize)init;
-- (SKColorize)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKColorize)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKColorize
@@ -22,12 +22,12 @@
   return 0;
 }
 
-- (SKColorize)initWithCoder:(id)a3
+- (SKColorize)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKColorize;
-  if ([(SKAction *)&v6 initWithCoder:v4])
+  if ([(SKAction *)&v6 initWithCoder:coderCopy])
   {
     operator new();
   }
@@ -35,65 +35,65 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SKColorize;
-  [(SKAction *)&v11 encodeWithCoder:v4];
+  [(SKAction *)&v11 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var20];
-  [v4 encodeObject:v5 forKey:@"_colorMix"];
+  [coderCopy encodeObject:v5 forKey:@"_colorMix"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var19.var0];
-  [v4 encodeObject:v6 forKey:@"_colorBlendR"];
+  [coderCopy encodeObject:v6 forKey:@"_colorBlendR"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var19.var1];
-  [v4 encodeObject:v7 forKey:@"_colorBlendG"];
+  [coderCopy encodeObject:v7 forKey:@"_colorBlendG"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var19.var2];
-  [v4 encodeObject:v8 forKey:@"_colorBlendB"];
+  [coderCopy encodeObject:v8 forKey:@"_colorBlendB"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mycaction->var19.var3];
-  [v4 encodeObject:v9 forKey:@"_colorBlendA"];
+  [coderCopy encodeObject:v9 forKey:@"_colorBlendA"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:BYTE4(self->_mycaction[1].var3)];
-  [v4 encodeObject:v10 forKey:@"_isMixOnly"];
+  [coderCopy encodeObject:v10 forKey:@"_isMixOnly"];
 }
 
-+ (id)colorizeWithColor:(id)a3 colorBlendFactor:(double)a4 duration:(double)a5
++ (id)colorizeWithColor:(id)color colorBlendFactor:(double)factor duration:(double)duration
 {
-  v7 = a3;
+  colorCopy = color;
   v8 = objc_alloc_init(SKColorize);
-  [v7 componentRGBA];
+  [colorCopy componentRGBA];
   mycaction = v8->_mycaction;
   mycaction->var19.var0 = v10;
   mycaction->var19.var1 = v11;
   mycaction->var19.var2 = v12;
   mycaction->var19.var3 = v13;
-  v14 = a4;
-  mycaction->var20 = v14;
-  [(SKAction *)v8 setDuration:a5];
+  factorCopy = factor;
+  mycaction->var20 = factorCopy;
+  [(SKAction *)v8 setDuration:duration];
   BYTE4(v8->_mycaction[1].var3) = 0;
 
   return v8;
 }
 
-+ (id)colorizeWithColorBlendFactor:(double)a3 duration:(double)a4
++ (id)colorizeWithColorBlendFactor:(double)factor duration:(double)duration
 {
   v6 = objc_alloc_init(SKColorize);
-  v7 = a3;
-  v6->_mycaction->var20 = v7;
-  [(SKAction *)v6 setDuration:a4];
+  factorCopy = factor;
+  v6->_mycaction->var20 = factorCopy;
+  [(SKAction *)v6 setDuration:duration];
   BYTE4(v6->_mycaction[1].var3) = 1;
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SKColorize;
-  result = [(SKAction *)&v7 copyWithZone:a3];
+  result = [(SKAction *)&v7 copyWithZone:zone];
   *(*(result + 2) + 112) = self->_mycaction->var19;
   mycaction = self->_mycaction;
   v6 = *(result + 2);

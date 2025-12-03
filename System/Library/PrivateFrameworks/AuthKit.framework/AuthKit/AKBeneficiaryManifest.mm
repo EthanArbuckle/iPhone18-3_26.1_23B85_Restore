@@ -1,50 +1,50 @@
 @interface AKBeneficiaryManifest
-- (AKBeneficiaryManifest)initWithBundleInformation:(id)a3 manifestOptions:(int64_t)a4;
-- (AKBeneficiaryManifest)initWithCoder:(id)a3;
+- (AKBeneficiaryManifest)initWithBundleInformation:(id)information manifestOptions:(int64_t)options;
+- (AKBeneficiaryManifest)initWithCoder:(id)coder;
 - (NSDictionary)parsableRepresentation;
-- (id)_bundleTypeFrom:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_bundleTypeFrom:(unint64_t)from;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKBeneficiaryManifest
 
-- (AKBeneficiaryManifest)initWithBundleInformation:(id)a3 manifestOptions:(int64_t)a4
+- (AKBeneficiaryManifest)initWithBundleInformation:(id)information manifestOptions:(int64_t)options
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(location, information);
+  optionsCopy = options;
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = AKBeneficiaryManifest;
   v8 = [(AKBeneficiaryManifest *)&v9 init];
-  v12 = v8;
-  objc_storeStrong(&v12, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeStrong(&v12->_accessibleBundleInformation, location[0]);
-    v12->_manifestOptions = v10;
+    objc_storeStrong(&selfCopy->_accessibleBundleInformation, location[0]);
+    selfCopy->_manifestOptions = optionsCopy;
   }
 
-  v6 = MEMORY[0x1E69E5928](v12);
+  v6 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 - (NSDictionary)parsableRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v21 = self;
+  selfCopy = self;
   v20[1] = a2;
   v20[0] = [MEMORY[0x1E695DF90] dictionary];
-  v19 = [(AKBeneficiaryManifest *)v21 accessibleBundleInformation];
-  v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v19, "count")}];
+  accessibleBundleInformation = [(AKBeneficiaryManifest *)selfCopy accessibleBundleInformation];
+  v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(accessibleBundleInformation, "count")}];
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x1E69E5928](v19);
+  obj = MEMORY[0x1E69E5928](accessibleBundleInformation);
   v14 = [obj countByEnumeratingWithState:__b objects:v22 count:16];
   if (v14)
   {
@@ -60,21 +60,21 @@
       }
 
       v17 = *(__b[1] + 8 * v11);
-      v15 = [MEMORY[0x1E695DF90] dictionary];
-      v5 = [v17 bundleIdentifier];
-      [v15 setObject:? forKeyedSubscript:?];
-      MEMORY[0x1E69E5920](v5);
-      v6 = [v17 bundleName];
-      [v15 setObject:? forKeyedSubscript:?];
-      MEMORY[0x1E69E5920](v6);
-      v7 = -[AKBeneficiaryManifest _bundleTypeFrom:](v21, "_bundleTypeFrom:", [v17 bundleType]);
-      [v15 setObject:? forKeyedSubscript:?];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      bundleIdentifier = [v17 bundleIdentifier];
+      [dictionary setObject:? forKeyedSubscript:?];
+      MEMORY[0x1E69E5920](bundleIdentifier);
+      bundleName = [v17 bundleName];
+      [dictionary setObject:? forKeyedSubscript:?];
+      MEMORY[0x1E69E5920](bundleName);
+      v7 = -[AKBeneficiaryManifest _bundleTypeFrom:](selfCopy, "_bundleTypeFrom:", [v17 bundleType]);
+      [dictionary setObject:? forKeyedSubscript:?];
       MEMORY[0x1E69E5920](v7);
-      v8 = [v17 bundleDescription];
-      [v15 setObject:? forKeyedSubscript:?];
-      MEMORY[0x1E69E5920](v8);
-      [v18 addObject:v15];
-      objc_storeStrong(&v15, 0);
+      bundleDescription = [v17 bundleDescription];
+      [dictionary setObject:? forKeyedSubscript:?];
+      MEMORY[0x1E69E5920](bundleDescription);
+      [v18 addObject:dictionary];
+      objc_storeStrong(&dictionary, 0);
       ++v11;
       if (v9 + 1 >= v12)
       {
@@ -90,23 +90,23 @@
 
   MEMORY[0x1E69E5920](obj);
   [v20[0] setObject:v18 forKeyedSubscript:@"items"];
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:{-[AKBeneficiaryManifest _isAllOptionsSelected](v21, "_isAllOptionsSelected")}];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:{-[AKBeneficiaryManifest _isAllOptionsSelected](selfCopy, "_isAllOptionsSelected")}];
   [v20[0] setObject:? forKeyedSubscript:?];
   MEMORY[0x1E69E5920](v3);
   v4 = [v20[0] copy];
   objc_storeStrong(&v18, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&accessibleBundleInformation, 0);
   objc_storeStrong(v20, 0);
   *MEMORY[0x1E69E9840];
 
   return v4;
 }
 
-- (id)_bundleTypeFrom:(unint64_t)a3
+- (id)_bundleTypeFrom:(unint64_t)from
 {
-  if (a3)
+  if (from)
   {
-    if (a3 == 1)
+    if (from == 1)
     {
       v4 = MEMORY[0x1E69E5928](&unk_1F07B4F58);
     }
@@ -120,32 +120,32 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v6->_accessibleBundleInformation forKey:@"_accessibleBundleInformation"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_accessibleBundleInformation forKey:@"_accessibleBundleInformation"];
   v3 = location[0];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:v6->_manifestOptions];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:selfCopy->_manifestOptions];
   [v3 encodeObject:? forKey:?];
   MEMORY[0x1E69E5920](v4);
   objc_storeStrong(location, 0);
 }
 
-- (AKBeneficiaryManifest)initWithCoder:(id)a3
+- (AKBeneficiaryManifest)initWithCoder:(id)coder
 {
-  v19 = &v23;
-  v23 = self;
+  v19 = &selfCopy;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v23;
-  v23 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v20 = [(AKBeneficiaryManifest *)v3 init];
-  v23 = v20;
-  objc_storeStrong(&v23, v20);
+  selfCopy = v20;
+  objc_storeStrong(&selfCopy, v20);
   if (v20)
   {
     v14 = MEMORY[0x1E695DFD8];
@@ -155,37 +155,37 @@
     v17 = &v21;
     v21 = v4;
     v5 = [location[0] decodeObjectOfClasses:v4 forKey:@"_accessibleBundleInformation"];
-    accessibleBundleInformation = v23->_accessibleBundleInformation;
-    v23->_accessibleBundleInformation = v5;
+    accessibleBundleInformation = selfCopy->_accessibleBundleInformation;
+    selfCopy->_accessibleBundleInformation = v5;
     MEMORY[0x1E69E5920](accessibleBundleInformation);
     v15 = location[0];
     v16 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_manifestOptions"];
-    v7 = [v16 integerValue];
+    integerValue = [v16 integerValue];
     v8 = v16;
-    v23->_manifestOptions = v7;
+    selfCopy->_manifestOptions = integerValue;
     MEMORY[0x1E69E5920](v8);
     objc_storeStrong(v17, v18);
   }
 
-  v10 = &v23;
-  v12 = MEMORY[0x1E69E5928](v23);
+  v10 = &selfCopy;
+  v12 = MEMORY[0x1E69E5928](selfCopy);
   obj = 0;
   objc_storeStrong(location, 0);
   objc_storeStrong(v10, obj);
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v8 = self;
+  selfCopy = self;
   v7[2] = a2;
-  v7[1] = a3;
+  v7[1] = zone;
   v7[0] = objc_alloc_init(AKBeneficiaryManifest);
-  v3 = [(NSArray *)v8->_accessibleBundleInformation copy];
+  v3 = [(NSArray *)selfCopy->_accessibleBundleInformation copy];
   v4 = *(v7[0] + 1);
   *(v7[0] + 1) = v3;
   MEMORY[0x1E69E5920](v4);
-  *(v7[0] + 2) = v8->_manifestOptions;
+  *(v7[0] + 2) = selfCopy->_manifestOptions;
   v6 = MEMORY[0x1E69E5928](v7[0]);
   objc_storeStrong(v7, 0);
   return v6;

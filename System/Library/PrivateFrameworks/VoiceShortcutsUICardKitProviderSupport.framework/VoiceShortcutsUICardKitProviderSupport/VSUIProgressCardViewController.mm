@@ -5,15 +5,15 @@
 - (UIActivityIndicatorView)_loadingIndicatorView;
 - (UIView)_hairlineView;
 - (VSUIActionStatusView)_statusView;
-- (double)contentHeightForWidth:(double)a3;
+- (double)contentHeightForWidth:(double)width;
 - (void)_setUpHelpers;
 - (void)_setUpViews;
 - (void)_updateDelegateOnBoundsDidChange;
-- (void)actionStatusView:(id)a3 didAddViewFromProgressViewController:(id)a4;
-- (void)cardSectionViewDidAppearForCardSection:(id)a3 withAppearanceFeedback:(id)a4;
-- (void)cardSectionViewWillAppearForCardSection:(id)a3 withAppearanceFeedback:(id)a4;
-- (void)handleCardCommand:(id)a3 reply:(id)a4;
-- (void)progressStateMachine:(id)a3 didTransitionToState:(unint64_t)a4 fromState:(unint64_t)a5 forEvent:(unint64_t)a6;
+- (void)actionStatusView:(id)view didAddViewFromProgressViewController:(id)controller;
+- (void)cardSectionViewDidAppearForCardSection:(id)section withAppearanceFeedback:(id)feedback;
+- (void)cardSectionViewWillAppearForCardSection:(id)section withAppearanceFeedback:(id)feedback;
+- (void)handleCardCommand:(id)command reply:(id)reply;
+- (void)progressStateMachine:(id)machine didTransitionToState:(unint64_t)state fromState:(unint64_t)fromState forEvent:(unint64_t)event;
 @end
 
 @implementation VSUIProgressCardViewController
@@ -21,85 +21,85 @@
 - (void)_setUpViews
 {
   v65[10] = *MEMORY[0x277D85DE8];
-  v3 = [(VSUIProgressCardViewController *)self view];
-  v4 = [(VSUIProgressCardViewController *)self _statusView];
-  [v3 addSubview:v4];
+  view = [(VSUIProgressCardViewController *)self view];
+  _statusView = [(VSUIProgressCardViewController *)self _statusView];
+  [view addSubview:_statusView];
 
-  v5 = [(VSUIProgressCardViewController *)self view];
-  v6 = [(VSUIProgressCardViewController *)self _hairlineView];
-  [v5 addSubview:v6];
+  view2 = [(VSUIProgressCardViewController *)self view];
+  _hairlineView = [(VSUIProgressCardViewController *)self _hairlineView];
+  [view2 addSubview:_hairlineView];
 
-  v7 = [(VSUIProgressCardViewController *)self view];
-  v8 = [(VSUIProgressCardViewController *)self _loadingIndicatorView];
-  [v7 addSubview:v8];
+  view3 = [(VSUIProgressCardViewController *)self view];
+  _loadingIndicatorView = [(VSUIProgressCardViewController *)self _loadingIndicatorView];
+  [view3 addSubview:_loadingIndicatorView];
 
-  v9 = [(VSUIProgressCardViewController *)self _statusView];
-  v10 = [v9 heightAnchor];
-  v11 = [v10 constraintEqualToConstant:40.0];
+  _statusView2 = [(VSUIProgressCardViewController *)self _statusView];
+  heightAnchor = [_statusView2 heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:40.0];
   statusViewSuccessHeightConstraint = self->_statusViewSuccessHeightConstraint;
   self->_statusViewSuccessHeightConstraint = v11;
 
-  v13 = [(VSUIProgressCardViewController *)self _statusView];
-  v14 = [v13 heightAnchor];
-  v15 = [v14 constraintLessThanOrEqualToConstant:70.0];
+  _statusView3 = [(VSUIProgressCardViewController *)self _statusView];
+  heightAnchor2 = [_statusView3 heightAnchor];
+  v15 = [heightAnchor2 constraintLessThanOrEqualToConstant:70.0];
   statusViewFailureHeightConstraint = self->_statusViewFailureHeightConstraint;
   self->_statusViewFailureHeightConstraint = v15;
 
   v45 = MEMORY[0x277CCAAD0];
   v65[0] = self->_statusViewSuccessHeightConstraint;
-  v64 = [(VSUIProgressCardViewController *)self _statusView];
-  v62 = [v64 leftAnchor];
-  v63 = [(VSUIProgressCardViewController *)self view];
-  v61 = [v63 leftAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  _statusView4 = [(VSUIProgressCardViewController *)self _statusView];
+  leftAnchor = [_statusView4 leftAnchor];
+  view4 = [(VSUIProgressCardViewController *)self view];
+  leftAnchor2 = [view4 leftAnchor];
+  v60 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v65[1] = v60;
-  v59 = [(VSUIProgressCardViewController *)self _statusView];
-  v57 = [v59 rightAnchor];
-  v58 = [(VSUIProgressCardViewController *)self view];
-  v56 = [v58 rightAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  _statusView5 = [(VSUIProgressCardViewController *)self _statusView];
+  rightAnchor = [_statusView5 rightAnchor];
+  view5 = [(VSUIProgressCardViewController *)self view];
+  rightAnchor2 = [view5 rightAnchor];
+  v55 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v65[2] = v55;
-  v54 = [(VSUIProgressCardViewController *)self _statusView];
-  v52 = [v54 bottomAnchor];
-  v53 = [(VSUIProgressCardViewController *)self view];
-  v51 = [v53 bottomAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  _statusView6 = [(VSUIProgressCardViewController *)self _statusView];
+  bottomAnchor = [_statusView6 bottomAnchor];
+  view6 = [(VSUIProgressCardViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v50 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v65[3] = v50;
-  v49 = [(VSUIProgressCardViewController *)self _hairlineView];
-  v48 = [v49 heightAnchor];
-  v47 = [v48 constraintEqualToConstant:1.0];
+  _hairlineView2 = [(VSUIProgressCardViewController *)self _hairlineView];
+  heightAnchor3 = [_hairlineView2 heightAnchor];
+  v47 = [heightAnchor3 constraintEqualToConstant:1.0];
   v65[4] = v47;
-  v46 = [(VSUIProgressCardViewController *)self _hairlineView];
-  v43 = [v46 leftAnchor];
-  v44 = [(VSUIProgressCardViewController *)self view];
-  v42 = [v44 leftAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  _hairlineView3 = [(VSUIProgressCardViewController *)self _hairlineView];
+  leftAnchor3 = [_hairlineView3 leftAnchor];
+  view7 = [(VSUIProgressCardViewController *)self view];
+  leftAnchor4 = [view7 leftAnchor];
+  v41 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   v65[5] = v41;
-  v40 = [(VSUIProgressCardViewController *)self _hairlineView];
-  v38 = [v40 rightAnchor];
-  v39 = [(VSUIProgressCardViewController *)self view];
-  v37 = [v39 rightAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  _hairlineView4 = [(VSUIProgressCardViewController *)self _hairlineView];
+  rightAnchor3 = [_hairlineView4 rightAnchor];
+  view8 = [(VSUIProgressCardViewController *)self view];
+  rightAnchor4 = [view8 rightAnchor];
+  v36 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v65[6] = v36;
-  v35 = [(VSUIProgressCardViewController *)self _hairlineView];
-  v33 = [v35 bottomAnchor];
-  v34 = [(VSUIProgressCardViewController *)self _statusView];
-  v32 = [v34 topAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  _hairlineView5 = [(VSUIProgressCardViewController *)self _hairlineView];
+  bottomAnchor3 = [_hairlineView5 bottomAnchor];
+  _statusView7 = [(VSUIProgressCardViewController *)self _statusView];
+  topAnchor = [_statusView7 topAnchor];
+  v31 = [bottomAnchor3 constraintEqualToAnchor:topAnchor];
   v65[7] = v31;
-  v30 = [(VSUIProgressCardViewController *)self _loadingIndicatorView];
-  v29 = [v30 centerXAnchor];
-  v17 = [(VSUIProgressCardViewController *)self view];
-  v18 = [v17 centerXAnchor];
-  v19 = [v29 constraintEqualToAnchor:v18];
+  _loadingIndicatorView2 = [(VSUIProgressCardViewController *)self _loadingIndicatorView];
+  centerXAnchor = [_loadingIndicatorView2 centerXAnchor];
+  view9 = [(VSUIProgressCardViewController *)self view];
+  centerXAnchor2 = [view9 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v65[8] = v19;
-  v20 = [(VSUIProgressCardViewController *)self _loadingIndicatorView];
-  v21 = [v20 topAnchor];
-  v22 = [(VSUIProgressCardViewController *)self view];
-  v23 = [v22 topAnchor];
-  v24 = [(VSUIProgressCardViewController *)self _loadingIndicatorView];
-  [v24 bounds];
-  v26 = [v21 constraintEqualToAnchor:v23 constant:(98.0 - v25) * 0.5];
+  _loadingIndicatorView3 = [(VSUIProgressCardViewController *)self _loadingIndicatorView];
+  topAnchor2 = [_loadingIndicatorView3 topAnchor];
+  view10 = [(VSUIProgressCardViewController *)self view];
+  topAnchor3 = [view10 topAnchor];
+  _loadingIndicatorView4 = [(VSUIProgressCardViewController *)self _loadingIndicatorView];
+  [_loadingIndicatorView4 bounds];
+  v26 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:(98.0 - v25) * 0.5];
   v65[9] = v26;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v65 count:10];
   [v45 activateConstraints:v27];
@@ -110,21 +110,21 @@
 - (void)_setUpHelpers
 {
   v8[3] = *MEMORY[0x277D85DE8];
-  v3 = [(VSUIProgressCardViewController *)self _progressStateMachine];
-  v4 = [(VSUIProgressCardViewController *)self _progressIndicatorViewController];
-  v8[1] = v4;
-  v5 = [(VSUIProgressCardViewController *)self _statusView];
-  v8[2] = v5;
+  _progressStateMachine = [(VSUIProgressCardViewController *)self _progressStateMachine];
+  _progressIndicatorViewController = [(VSUIProgressCardViewController *)self _progressIndicatorViewController];
+  v8[1] = _progressIndicatorViewController;
+  _statusView = [(VSUIProgressCardViewController *)self _statusView];
+  v8[2] = _statusView;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:3];
-  [v3 addObservers:v6];
+  [_progressStateMachine addObservers:v6];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_updateDelegateOnBoundsDidChange
 {
-  v3 = [(VSUIProgressCardViewController *)self cardViewControllerDelegate];
-  [v3 cardViewControllerBoundsDidChange:self];
+  cardViewControllerDelegate = [(VSUIProgressCardViewController *)self cardViewControllerDelegate];
+  [cardViewControllerDelegate cardViewControllerBoundsDidChange:self];
 }
 
 - (SUICProgressStateMachine)_progressStateMachine
@@ -165,8 +165,8 @@
   if (!hairlineView)
   {
     v4 = objc_opt_new();
-    v5 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)v4 setBackgroundColor:v5];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)v4 setBackgroundColor:blackColor];
 
     [(UIView *)v4 setAlpha:0.04];
     [(UIView *)v4 setHidden:1];
@@ -216,27 +216,27 @@
   return loadingIndicatorView;
 }
 
-- (void)actionStatusView:(id)a3 didAddViewFromProgressViewController:(id)a4
+- (void)actionStatusView:(id)view didAddViewFromProgressViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [(VSUIProgressCardViewController *)self _progressIndicatorViewController];
+  controllerCopy = controller;
+  _progressIndicatorViewController = [(VSUIProgressCardViewController *)self _progressIndicatorViewController];
 
-  if (v6 == v5)
+  if (_progressIndicatorViewController == controllerCopy)
   {
-    v7 = [(VSUIProgressCardViewController *)self _progressIndicatorViewController];
-    [v7 didMoveToParentViewController:self];
+    _progressIndicatorViewController2 = [(VSUIProgressCardViewController *)self _progressIndicatorViewController];
+    [_progressIndicatorViewController2 didMoveToParentViewController:self];
   }
 }
 
-- (void)progressStateMachine:(id)a3 didTransitionToState:(unint64_t)a4 fromState:(unint64_t)a5 forEvent:(unint64_t)a6
+- (void)progressStateMachine:(id)machine didTransitionToState:(unint64_t)state fromState:(unint64_t)fromState forEvent:(unint64_t)event
 {
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __95__VSUIProgressCardViewController_progressStateMachine_didTransitionToState_fromState_forEvent___block_invoke;
   v11[3] = &unk_279E53078;
   v11[4] = self;
-  v11[5] = a6;
-  v7 = MEMORY[0x2743CF430](v11, a2, a3, a4, a5);
+  v11[5] = event;
+  v7 = MEMORY[0x2743CF430](v11, a2, machine, state, fromState);
   v8 = v7;
   if (self->_animatesStateTransitions)
   {
@@ -322,74 +322,74 @@ uint64_t __95__VSUIProgressCardViewController_progressStateMachine_didTransition
   return result;
 }
 
-- (void)cardSectionViewWillAppearForCardSection:(id)a3 withAppearanceFeedback:(id)a4
+- (void)cardSectionViewWillAppearForCardSection:(id)section withAppearanceFeedback:(id)feedback
 {
-  v15 = a3;
+  sectionCopy = section;
   if (([(VSUIProgressCardViewController *)self isLoading]& 1) == 0)
   {
-    v5 = [(VSUIProgressCardViewController *)self _loadingIndicatorView];
-    [v5 stopAnimating];
+    _loadingIndicatorView = [(VSUIProgressCardViewController *)self _loadingIndicatorView];
+    [_loadingIndicatorView stopAnimating];
   }
 
   if (self->_hasAsynchronousCard)
   {
-    v6 = [(VSUIProgressCardViewController *)self cardSectionViewSource];
-    v7 = [v6 viewConfigurationForCardSection:v15];
-    v8 = [v7 cardSectionView];
+    cardSectionViewSource = [(VSUIProgressCardViewController *)self cardSectionViewSource];
+    v7 = [cardSectionViewSource viewConfigurationForCardSection:sectionCopy];
+    cardSectionView = [v7 cardSectionView];
 
-    [v8 setAlpha:0.0];
-    v9 = [(VSUIProgressCardViewController *)self view];
-    [v9 bounds];
+    [cardSectionView setAlpha:0.0];
+    view = [(VSUIProgressCardViewController *)self view];
+    [view bounds];
     v11 = v10;
     v13 = v12;
 
-    [v8 sizeThatFits:{v11, v13}];
-    [v8 setFrame:{0.0, 0.0, v11, v14}];
+    [cardSectionView sizeThatFits:{v11, v13}];
+    [cardSectionView setFrame:{0.0, 0.0, v11, v14}];
   }
 }
 
-- (void)cardSectionViewDidAppearForCardSection:(id)a3 withAppearanceFeedback:(id)a4
+- (void)cardSectionViewDidAppearForCardSection:(id)section withAppearanceFeedback:(id)feedback
 {
   if (self->_hasAsynchronousCard)
   {
     v15 = v4;
     v16 = v5;
-    v7 = a3;
-    v8 = [(VSUIProgressCardViewController *)self cardSectionViewSource];
-    v9 = [v8 viewConfigurationForCardSection:v7];
+    sectionCopy = section;
+    cardSectionViewSource = [(VSUIProgressCardViewController *)self cardSectionViewSource];
+    v9 = [cardSectionViewSource viewConfigurationForCardSection:sectionCopy];
 
-    v10 = [v9 cardSectionView];
+    cardSectionView = [v9 cardSectionView];
 
     v11 = MEMORY[0x277D75D18];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __96__VSUIProgressCardViewController_cardSectionViewDidAppearForCardSection_withAppearanceFeedback___block_invoke;
     v13[3] = &unk_279E530C8;
-    v14 = v10;
-    v12 = v10;
+    v14 = cardSectionView;
+    v12 = cardSectionView;
     [v11 animateWithDuration:v13 animations:0.300000012];
   }
 }
 
-- (double)contentHeightForWidth:(double)a3
+- (double)contentHeightForWidth:(double)width
 {
   v15.receiver = self;
   v15.super_class = VSUIProgressCardViewController;
   [(VSUIProgressCardViewController *)&v15 contentHeightForWidth:?];
   v6 = v5;
-  v7 = [(VSUIProgressCardViewController *)self _statusView];
-  v8 = [v7 isHidden];
+  _statusView = [(VSUIProgressCardViewController *)self _statusView];
+  isHidden = [_statusView isHidden];
 
   result = v6;
-  if ((v8 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    v10 = [(VSUIProgressCardViewController *)self _statusView];
-    [v10 sizeThatFits:{a3, 2.22507386e-308}];
+    _statusView2 = [(VSUIProgressCardViewController *)self _statusView];
+    [_statusView2 sizeThatFits:{width, 2.22507386e-308}];
     v12 = v11;
 
-    v13 = [(NSLayoutConstraint *)self->_statusViewFailureHeightConstraint isActive];
+    isActive = [(NSLayoutConstraint *)self->_statusViewFailureHeightConstraint isActive];
     v14 = 40.0;
-    if (v13)
+    if (isActive)
     {
       v14 = 70.0;
     }
@@ -410,34 +410,34 @@ uint64_t __95__VSUIProgressCardViewController_progressStateMachine_didTransition
   return result;
 }
 
-- (void)handleCardCommand:(id)a3 reply:(id)a4
+- (void)handleCardCommand:(id)command reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  replyCopy = reply;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = commandCopy;
     self->_animatesStateTransitions = [v8 animatesProgress];
-    v9 = [v8 progress];
+    progress = [v8 progress];
     progress = self->_progress;
-    self->_progress = v9;
+    self->_progress = progress;
 
-    v11 = [v8 event];
-    if (v11 >= 5)
+    event = [v8 event];
+    if (event >= 5)
     {
       v12 = -1;
     }
 
     else
     {
-      v12 = v11;
+      v12 = event;
     }
 
     [(SUICProgressStateMachine *)self->_progressStateMachine handleEvent:v12];
-    if (v7)
+    if (replyCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(replyCopy + 2))(replyCopy, 0, 0);
     }
   }
 
@@ -445,7 +445,7 @@ uint64_t __95__VSUIProgressCardViewController_progressStateMachine_didTransition
   {
     v13.receiver = self;
     v13.super_class = VSUIProgressCardViewController;
-    [(VSUIProgressCardViewController *)&v13 handleCardCommand:v6 reply:v7];
+    [(VSUIProgressCardViewController *)&v13 handleCardCommand:commandCopy reply:replyCopy];
   }
 }
 

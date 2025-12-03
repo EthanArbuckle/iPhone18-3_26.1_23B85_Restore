@@ -6,7 +6,7 @@
 
 - (uint64_t)BOOLValueForEntitlement:()StorageKit
 {
-  v1 = [a1 valueForEntitlement:?];
+  v1 = [self valueForEntitlement:?];
   v2 = NSNumberToBool(v1);
 
   return v2;

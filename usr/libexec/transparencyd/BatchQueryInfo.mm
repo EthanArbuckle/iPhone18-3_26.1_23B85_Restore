@@ -13,16 +13,16 @@
 
   if ([(BatchQueryInfo *)self hasUriWitness])
   {
-    v5 = [(BatchQueryInfo *)self uriWitness];
-    v6 = [v5 diagnosticsJsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"uriWitness"];
+    uriWitness = [(BatchQueryInfo *)self uriWitness];
+    diagnosticsJsonDictionary = [uriWitness diagnosticsJsonDictionary];
+    [v3 setObject:diagnosticsJsonDictionary forKeyedSubscript:@"uriWitness"];
   }
 
   if ([(BatchQueryInfo *)self hasMapEntry])
   {
-    v7 = [(BatchQueryInfo *)self mapEntry];
-    v8 = [v7 diagnosticsJsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"mapEntry"];
+    mapEntry = [(BatchQueryInfo *)self mapEntry];
+    diagnosticsJsonDictionary2 = [mapEntry diagnosticsJsonDictionary];
+    [v3 setObject:diagnosticsJsonDictionary2 forKeyedSubscript:@"mapEntry"];
   }
 
   v9 = +[NSMutableArray array];
@@ -30,8 +30,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [(BatchQueryInfo *)self pendingSmtsArray];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  pendingSmtsArray = [(BatchQueryInfo *)self pendingSmtsArray];
+  v11 = [pendingSmtsArray countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -42,15 +42,15 @@
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(pendingSmtsArray);
         }
 
         v15 = [SignedMutationTimestamp signedTypeWithObject:*(*(&v18 + 1) + 8 * i)];
-        v16 = [v15 diagnosticsJsonDictionary];
-        [v9 addObject:v16];
+        diagnosticsJsonDictionary3 = [v15 diagnosticsJsonDictionary];
+        [v9 addObject:diagnosticsJsonDictionary3];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [pendingSmtsArray countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);

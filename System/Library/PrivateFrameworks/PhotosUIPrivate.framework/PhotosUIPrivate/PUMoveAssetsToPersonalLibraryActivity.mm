@@ -1,7 +1,7 @@
 @interface PUMoveAssetsToPersonalLibraryActivity
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)canPerformWithActivityItems:(id)a3;
-- (id)_multiContributorConfirmationAlertControllerForAssets:(id)a3 contributorName:(id)a4 completion:(id)a5;
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)canPerformWithActivityItems:(id)items;
+- (id)_multiContributorConfirmationAlertControllerForAssets:(id)assets contributorName:(id)name completion:(id)completion;
 - (void)performActivity;
 @end
 
@@ -9,14 +9,14 @@
 
 - (void)performActivity
 {
-  v4 = [(PXActivity *)self itemSourceController];
-  v5 = [v4 assets];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
 
-  if (!v5 || ![v5 count])
+  if (!assets || ![assets count])
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = NSStringFromSelector(a2);
-    [v21 handleFailureInMethod:a2 object:self file:@"PUMoveAssetsToPersonalLibraryActivity.m" lineNumber:123 description:{@"Expecting non-empty, non-zero assets in %@", v22}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUMoveAssetsToPersonalLibraryActivity.m" lineNumber:123 description:{@"Expecting non-empty, non-zero assets in %@", v22}];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -29,34 +29,34 @@
   v29[1] = 3221225472;
   v29[2] = __56__PUMoveAssetsToPersonalLibraryActivity_performActivity__block_invoke_3;
   v29[3] = &unk_1E7B7E060;
-  v7 = v5;
+  v7 = assets;
   v30 = v7;
-  v31 = self;
+  selfCopy = self;
   v33 = a2;
   v8 = v6;
   v32 = v8;
   v9 = _Block_copy(v29);
-  v10 = [v7 firstObject];
-  v11 = [v10 photoLibrary];
+  firstObject = [v7 firstObject];
+  photoLibrary = [firstObject photoLibrary];
 
-  v12 = [MEMORY[0x1E69C3A08] sharedLibraryStatusProviderWithPhotoLibrary:v11];
+  v12 = [MEMORY[0x1E69C3A08] sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
   [v12 hasPreview];
   if (PXSharedLibraryShouldDisplayMoveToPersonalLibraryConfirmation())
   {
-    v13 = [v7 array];
+    array = [v7 array];
     v28 = 0;
     PXSharedLibraryGetMoveToPersonalLibraryConfirmationTitleAndMessage();
     v23 = 0;
 
     v14 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:v23 preferredStyle:0];
     v15 = MEMORY[0x1E69DC648];
-    v16 = [(PUMoveAssetsToPersonalLibraryActivity *)self activityTitle];
+    activityTitle = [(PUMoveAssetsToPersonalLibraryActivity *)self activityTitle];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __56__PUMoveAssetsToPersonalLibraryActivity_performActivity__block_invoke_271;
     v26[3] = &unk_1E7B80980;
     v27 = v9;
-    v17 = [v15 actionWithTitle:v16 style:0 handler:v26];
+    v17 = [v15 actionWithTitle:activityTitle style:0 handler:v26];
     [v14 addAction:v17];
 
     v18 = MEMORY[0x1E69DC648];
@@ -312,12 +312,12 @@ uint64_t __56__PUMoveAssetsToPersonalLibraryActivity_performActivity__block_invo
   return result;
 }
 
-- (id)_multiContributorConfirmationAlertControllerForAssets:(id)a3 contributorName:(id)a4 completion:(id)a5
+- (id)_multiContributorConfirmationAlertControllerForAssets:(id)assets contributorName:(id)name completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  assetsCopy = assets;
+  nameCopy = name;
+  completionCopy = completion;
+  v12 = assetsCopy;
   if (v12)
   {
     objc_opt_class();
@@ -326,23 +326,23 @@ uint64_t __56__PUMoveAssetsToPersonalLibraryActivity_performActivity__block_invo
       goto LABEL_3;
     }
 
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v37 = objc_opt_class();
     v36 = NSStringFromClass(v37);
-    v38 = [v12 px_descriptionForAssertionMessage];
-    [v34 handleFailureInMethod:a2 object:self file:@"PUMoveAssetsToPersonalLibraryActivity.m" lineNumber:67 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assets", v36, v38}];
+    px_descriptionForAssertionMessage = [v12 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUMoveAssetsToPersonalLibraryActivity.m" lineNumber:67 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assets", v36, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v35 = objc_opt_class();
     v36 = NSStringFromClass(v35);
-    [v34 handleFailureInMethod:a2 object:self file:@"PUMoveAssetsToPersonalLibraryActivity.m" lineNumber:67 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assets", v36}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUMoveAssetsToPersonalLibraryActivity.m" lineNumber:67 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assets", v36}];
   }
 
 LABEL_3:
-  v13 = [v12 fetchedObjects];
+  fetchedObjects = [v12 fetchedObjects];
   v14 = [v12 count];
   v15 = &stru_1F2AC6818;
   if (v14 > 1)
@@ -351,14 +351,14 @@ LABEL_3:
   }
 
   v16 = v15;
-  v17 = [v10 length];
+  v17 = [nameCopy length];
   v18 = [v12 count];
   if (v17)
   {
     v46 = 0;
     v47[0] = 0;
     v45 = 0;
-    [MEMORY[0x1E69C37F8] assetTypeCountsForAssets:v13 photosCount:v47 videosCount:&v46 othersCount:&v45];
+    [MEMORY[0x1E69C37F8] assetTypeCountsForAssets:fetchedObjects photosCount:v47 videosCount:&v46 othersCount:&v45];
     if (v47[0] == v18)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"PXSharedLibrary_MoveToPersonalLibrary_MC_ConfirmationMessage_For_Contributor_Photo%@", v16];
@@ -375,7 +375,7 @@ LABEL_3:
     }
     v19 = ;
     v20 = PXLocalizedSharedLibraryString();
-    v39 = v10;
+    v39 = nameCopy;
     v21 = PXLocalizedStringWithValidatedFormat();
   }
 
@@ -384,7 +384,7 @@ LABEL_3:
     v46 = 0;
     v47[0] = 0;
     v45 = 0;
-    [MEMORY[0x1E69C37F8] assetTypeCountsForAssets:v13 photosCount:v47 videosCount:&v46 othersCount:&v45];
+    [MEMORY[0x1E69C37F8] assetTypeCountsForAssets:fetchedObjects photosCount:v47 videosCount:&v46 othersCount:&v45];
     if (v47[0] == v18)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"PXSharedLibrary_MoveToPersonalLibrary_MC_ConfirmationMessage_Photo%@", v16];
@@ -403,7 +403,7 @@ LABEL_3:
     v21 = PXLocalizedSharedLibraryString();
   }
 
-  v22 = v10;
+  v22 = nameCopy;
   v23 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:v21 preferredStyle:{0, v39}];
   v24 = MEMORY[0x1E69DC648];
   v25 = PXLocalizedSharedLibraryString();
@@ -412,7 +412,7 @@ LABEL_3:
   v42[2] = __122__PUMoveAssetsToPersonalLibraryActivity__multiContributorConfirmationAlertControllerForAssets_contributorName_completion___block_invoke;
   v42[3] = &unk_1E7B7A8B8;
   v43 = v12;
-  v26 = v11;
+  v26 = completionCopy;
   v44 = v26;
   v27 = v12;
   v28 = [v24 actionWithTitle:v25 style:0 handler:v42];
@@ -455,34 +455,34 @@ uint64_t __122__PUMoveAssetsToPersonalLibraryActivity__multiContributorConfirmat
   return result;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v4 = [(PXActivity *)self itemSourceController];
-  v5 = [v4 isPreparingIndividualItems];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  isPreparingIndividualItems = [itemSourceController isPreparingIndividualItems];
 
-  if (!v5)
+  if (!isPreparingIndividualItems)
   {
     return 0;
   }
 
-  v6 = [(PXActivity *)self itemSourceController];
-  v7 = [v6 assets];
+  itemSourceController2 = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController2 assets];
 
-  LOBYTE(v6) = PXSharedLibraryCanMoveAssetsToPersonalLibrary();
-  return v6;
+  LOBYTE(itemSourceController2) = PXSharedLibraryCanMoveAssetsToPersonalLibrary();
+  return itemSourceController2;
 }
 
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  objc_storeStrong(&self->_presenterViewController, a3);
-  v9 = a3;
-  v10 = a5;
+  animatedCopy = animated;
+  objc_storeStrong(&self->_presenterViewController, controller);
+  controllerCopy = controller;
+  completionCopy = completion;
   v12.receiver = self;
   v12.super_class = PUMoveAssetsToPersonalLibraryActivity;
-  LOBYTE(v6) = [(PXActivity *)&v12 _presentActivityOnViewController:v9 animated:v6 completion:v10];
+  LOBYTE(animatedCopy) = [(PXActivity *)&v12 _presentActivityOnViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 
-  return v6;
+  return animatedCopy;
 }
 
 @end

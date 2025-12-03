@@ -1,7 +1,7 @@
 @interface PasscodeSettingsApplicator
 + (id)supportedConfigurationTypes;
 - (_TtC26PasscodeSettingsSubscriber26PasscodeSettingsApplicator)init;
-- (_TtC26PasscodeSettingsSubscriber26PasscodeSettingsApplicator)initWithAdapter:(id)a3 inPlaceUpdates:(BOOL)a4;
+- (_TtC26PasscodeSettingsSubscriber26PasscodeSettingsApplicator)initWithAdapter:(id)adapter inPlaceUpdates:(BOOL)updates;
 @end
 
 @implementation PasscodeSettingsApplicator
@@ -21,7 +21,7 @@
   sub_1000014B8(&qword_100014A50, &unk_10000B8E0);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_10000B5C0;
-  v3 = [objc_opt_self() registeredIdentifier];
+  registeredIdentifier = [objc_opt_self() registeredIdentifier];
   v4 = sub_10000AA8C();
   v6 = v5;
 
@@ -35,7 +35,7 @@
   return v7.super.isa;
 }
 
-- (_TtC26PasscodeSettingsSubscriber26PasscodeSettingsApplicator)initWithAdapter:(id)a3 inPlaceUpdates:(BOOL)a4
+- (_TtC26PasscodeSettingsSubscriber26PasscodeSettingsApplicator)initWithAdapter:(id)adapter inPlaceUpdates:(BOOL)updates
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

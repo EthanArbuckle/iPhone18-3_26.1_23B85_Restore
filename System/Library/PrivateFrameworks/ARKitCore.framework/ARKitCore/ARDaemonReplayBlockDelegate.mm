@@ -1,55 +1,55 @@
 @interface ARDaemonReplayBlockDelegate
-- (void)replayDidFailWithError:(id)a3;
-- (void)replayDidStartWithReplayTime:(double)a3;
+- (void)replayDidFailWithError:(id)error;
+- (void)replayDidStartWithReplayTime:(double)time;
 - (void)replayDidStop;
-- (void)replayDidUpdateResourceWithKey:(id)a3 atTime:(double)a4;
+- (void)replayDidUpdateResourceWithKey:(id)key atTime:(double)time;
 @end
 
 @implementation ARDaemonReplayBlockDelegate
 
-- (void)replayDidFailWithError:(id)a3
+- (void)replayDidFailWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(ARDaemonReplayBlockDelegate *)self replayFailedBlock];
+  errorCopy = error;
+  replayFailedBlock = [(ARDaemonReplayBlockDelegate *)self replayFailedBlock];
 
-  if (v4)
+  if (replayFailedBlock)
   {
-    v5 = [(ARDaemonReplayBlockDelegate *)self replayFailedBlock];
-    (v5)[2](v5, v6);
+    replayFailedBlock2 = [(ARDaemonReplayBlockDelegate *)self replayFailedBlock];
+    (replayFailedBlock2)[2](replayFailedBlock2, errorCopy);
   }
 }
 
-- (void)replayDidStartWithReplayTime:(double)a3
+- (void)replayDidStartWithReplayTime:(double)time
 {
-  v5 = [(ARDaemonReplayBlockDelegate *)self replayStartedBlock];
+  replayStartedBlock = [(ARDaemonReplayBlockDelegate *)self replayStartedBlock];
 
-  if (v5)
+  if (replayStartedBlock)
   {
-    v6 = [(ARDaemonReplayBlockDelegate *)self replayStartedBlock];
-    v6[2](a3);
+    replayStartedBlock2 = [(ARDaemonReplayBlockDelegate *)self replayStartedBlock];
+    replayStartedBlock2[2](time);
   }
 }
 
-- (void)replayDidUpdateResourceWithKey:(id)a3 atTime:(double)a4
+- (void)replayDidUpdateResourceWithKey:(id)key atTime:(double)time
 {
-  v8 = a3;
-  v6 = [(ARDaemonReplayBlockDelegate *)self replayUpdatedBlock];
+  keyCopy = key;
+  replayUpdatedBlock = [(ARDaemonReplayBlockDelegate *)self replayUpdatedBlock];
 
-  if (v6)
+  if (replayUpdatedBlock)
   {
-    v7 = [(ARDaemonReplayBlockDelegate *)self replayUpdatedBlock];
-    (v7)[2](v7, v8, a4);
+    replayUpdatedBlock2 = [(ARDaemonReplayBlockDelegate *)self replayUpdatedBlock];
+    (replayUpdatedBlock2)[2](replayUpdatedBlock2, keyCopy, time);
   }
 }
 
 - (void)replayDidStop
 {
-  v3 = [(ARDaemonReplayBlockDelegate *)self replayStoppedBlock];
+  replayStoppedBlock = [(ARDaemonReplayBlockDelegate *)self replayStoppedBlock];
 
-  if (v3)
+  if (replayStoppedBlock)
   {
-    v4 = [(ARDaemonReplayBlockDelegate *)self replayStoppedBlock];
-    v4[2]();
+    replayStoppedBlock2 = [(ARDaemonReplayBlockDelegate *)self replayStoppedBlock];
+    replayStoppedBlock2[2]();
   }
 }
 

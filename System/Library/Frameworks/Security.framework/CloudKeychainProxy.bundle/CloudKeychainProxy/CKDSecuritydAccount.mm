@@ -1,25 +1,25 @@
 @interface CKDSecuritydAccount
 + (id)securitydAccount;
-- (id)keysChanged:(id)a3 error:(id *)a4;
-- (id)syncWithPeers:(id)a3 backups:(id)a4 error:(id *)a5;
+- (id)keysChanged:(id)changed error:(id *)error;
+- (id)syncWithPeers:(id)peers backups:(id)backups error:(id *)error;
 @end
 
 @implementation CKDSecuritydAccount
 
-- (id)syncWithPeers:(id)a3 backups:(id)a4 error:(id *)a5
+- (id)syncWithPeers:(id)peers backups:(id)backups error:(id *)error
 {
   v5 = SOSCCProcessSyncWithPeers();
 
   return v5;
 }
 
-- (id)keysChanged:(id)a3 error:(id *)a4
+- (id)keysChanged:(id)changed error:(id *)error
 {
   updated = _SecKeychainSyncUpdateMessage();
-  if (a4)
+  if (error)
   {
     v6 = 0;
-    *a4 = 0;
+    *error = 0;
   }
 
   v7 = [NSSet setWithArray:updated];

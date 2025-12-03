@@ -1,18 +1,18 @@
 @interface MTRPluginStateChangedMetric
-+ (id)stateChangedMetricForDevice:(id)a3 homeID:(id)a4 state:(unint64_t)a5 remoteMessageID:(id)a6;
++ (id)stateChangedMetricForDevice:(id)device homeID:(id)d state:(unint64_t)state remoteMessageID:(id)iD;
 - (id)additionalCoreAnalyticsEventDictionary;
 @end
 
 @implementation MTRPluginStateChangedMetric
 
-+ (id)stateChangedMetricForDevice:(id)a3 homeID:(id)a4 state:(unint64_t)a5 remoteMessageID:(id)a6
++ (id)stateChangedMetricForDevice:(id)device homeID:(id)d state:(unint64_t)state remoteMessageID:(id)iD
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(MTRPluginMetric *)[MTRPluginStateChangedMetric alloc] initMetricWithName:@"com.apple.matter.stateChangedEvent" device:v11 homeID:v10 remoteMessageID:v9];
+  iDCopy = iD;
+  dCopy = d;
+  deviceCopy = device;
+  v12 = [(MTRPluginMetric *)[MTRPluginStateChangedMetric alloc] initMetricWithName:@"com.apple.matter.stateChangedEvent" device:deviceCopy homeID:dCopy remoteMessageID:iDCopy];
 
-  [v12 setState:a5];
+  [v12 setState:state];
 
   return v12;
 }

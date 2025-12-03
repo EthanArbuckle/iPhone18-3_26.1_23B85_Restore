@@ -1,7 +1,7 @@
 @interface FPQueryEnumerationSettings
 + (BOOL)supportsSecureCoding;
 - (FPQueryEnumerationSettings)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FPQueryEnumerationSettings
@@ -14,8 +14,8 @@
   v2 = [(FPEnumerationSettings *)&v8 init];
   if (v2)
   {
-    v3 = [*MEMORY[0x1E6982E48] identifier];
-    v9[0] = v3;
+    identifier = [*MEMORY[0x1E6982E48] identifier];
+    v9[0] = identifier;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     allowedFileTypes = v2->_allowedFileTypes;
     v2->_allowedFileTypes = v4;
@@ -27,17 +27,17 @@
 
 + (BOOL)supportsSecureCoding
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"FPEnumerationSettings.m" lineNumber:180 description:@"UNREACHABLE: this shouldn't need to go over XPC"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"FPEnumerationSettings.m" lineNumber:180 description:@"UNREACHABLE: this shouldn't need to go over XPC"];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18.receiver = self;
   v18.super_class = FPQueryEnumerationSettings;
-  v4 = [(FPEnumerationSettings *)&v18 copyWithZone:a3];
+  v4 = [(FPEnumerationSettings *)&v18 copyWithZone:zone];
   v5 = [(NSArray *)self->_allowedProviders copy];
   v6 = v4[4];
   v4[4] = v5;

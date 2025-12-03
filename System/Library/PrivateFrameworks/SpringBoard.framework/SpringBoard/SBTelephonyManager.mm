@@ -1,6 +1,6 @@
 @interface SBTelephonyManager
 + (__CTServerConnection)defaultTelephonyCenter;
-+ (id)sharedTelephonyManagerCreatingIfNecessary:(BOOL)a3;
++ (id)sharedTelephonyManagerCreatingIfNecessary:(BOOL)necessary;
 - (BOOL)activeCallExists;
 - (BOOL)emergencyCallSupported;
 - (BOOL)hasNonCellularNetworkConnection;
@@ -22,11 +22,11 @@
 - (BOOL)toggleBargeCallState;
 - (BOOL)updateLocale;
 - (SBTelephonyManager)init;
-- (SBTelephonyManager)initWithStateProvider:(id)a3 wifiDomain:(id)a4 bluetoothController:(id)a5;
+- (SBTelephonyManager)initWithStateProvider:(id)provider wifiDomain:(id)domain bluetoothController:(id)controller;
 - (__CTServerConnection)_serverConnection;
 - (double)inCallDuration;
 - (id)_backgroundQueryQueue;
-- (id)_callsForService:(int)a3;
+- (id)_callsForService:(int)service;
 - (id)_phoneApp;
 - (id)_primaryCarrierBundleInfo;
 - (id)_primaryMobileEquipmentInfo;
@@ -36,47 +36,47 @@
 - (id)_secondaryMobileEquipmentInfo;
 - (id)_secondarySubscriptionInfo;
 - (id)_secondarySubscriptionInfoIfEnabled;
-- (id)_subscriptionInfoForCall:(id)a3;
+- (id)_subscriptionInfoForCall:(id)call;
 - (id)carrierDisabledApplicationIDs;
 - (id)displayedCall;
 - (int64_t)_anySubscriptionSlotWithSIMPresent;
 - (int64_t)_dataConnectedSubscriptionSlot;
 - (int64_t)_dataPreferredSubscriptionSlotIfSIMPresent;
-- (int64_t)_otherSubscriptionSlot:(int64_t)a3;
-- (int64_t)_otherSubscriptionSlotIfSIMPresent:(int64_t)a3;
+- (int64_t)_otherSubscriptionSlot:(int64_t)slot;
+- (int64_t)_otherSubscriptionSlotIfSIMPresent:(int64_t)present;
 - (int64_t)_primarySubscriptionSlot;
 - (int64_t)_secondarySubscriptionSlot;
 - (int64_t)_secondarySubscriptionSlotIfEnabled;
-- (int64_t)_subscriptionSlotIfSIMPresent:(int64_t)a3;
-- (unint64_t)_callCountForService:(int)a3;
+- (int64_t)_subscriptionSlotIfSIMPresent:(int64_t)present;
+- (unint64_t)_callCountForService:(int)service;
 - (unint64_t)callCount;
 - (unint64_t)dataConnectionAvailabilityWithCurrentCalls;
-- (void)_avSystemControllerDidError:(id)a3;
+- (void)_avSystemControllerDidError:(id)error;
 - (void)_handleTelephonyDaemonRestart;
-- (void)_performQueryInBackground:(id)a3 withMainQueueResultHandler:(id)a4;
-- (void)_provisioningUpdateWithStatus:(int)a3 slot:(int64_t)a4;
+- (void)_performQueryInBackground:(id)background withMainQueueResultHandler:(id)handler;
+- (void)_provisioningUpdateWithStatus:(int)status slot:(int64_t)slot;
 - (void)_queue_noteWirelessModemDynamicStoreChanged;
-- (void)_serverConnectionDidError:(id)a3;
-- (void)_setCurrentActivationAlertItem:(id)a3;
-- (void)_setIsInEmergencyCallbackMode:(unsigned __int8)a3;
-- (void)_setIsNetworkTethering:(BOOL)a3 withNumberOfDevices:(int)a4;
+- (void)_serverConnectionDidError:(id)error;
+- (void)_setCurrentActivationAlertItem:(id)item;
+- (void)_setIsInEmergencyCallbackMode:(unsigned __int8)mode;
+- (void)_setIsNetworkTethering:(BOOL)tethering withNumberOfDevices:(int)devices;
 - (void)_updateState;
-- (void)callEventHandler:(id)a3;
-- (void)carrierBundleInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4;
+- (void)callEventHandler:(id)handler;
+- (void)carrierBundleInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot;
 - (void)disconnectAllCalls;
 - (void)disconnectCallAndActivateHeld;
 - (void)disconnectDisplayedCall;
 - (void)disconnectIncomingCall;
-- (void)dumpBasebandState:(id)a3;
-- (void)handleCallControlFailure:(id)a3;
+- (void)dumpBasebandState:(id)state;
+- (void)handleCallControlFailure:(id)failure;
 - (void)isUsingVPNConnection;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)preHeatDataLinkForDomains:(id)a3;
-- (void)queue_setFastDormancySuspended:(BOOL)a3 withConnection:(__CTServerConnection *)a4;
-- (void)setCellDataSwitchingEnabled:(BOOL)a3;
-- (void)setFastDormancySuspended:(BOOL)a3;
-- (void)setNetworkRegistrationEnabled:(BOOL)a3;
-- (void)subscriptionInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)preHeatDataLinkForDomains:(id)domains;
+- (void)queue_setFastDormancySuspended:(BOOL)suspended withConnection:(__CTServerConnection *)connection;
+- (void)setCellDataSwitchingEnabled:(BOOL)enabled;
+- (void)setFastDormancySuspended:(BOOL)suspended;
+- (void)setNetworkRegistrationEnabled:(BOOL)enabled;
+- (void)subscriptionInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot;
 - (void)swapCalls;
 - (void)telephonyAudioChangeHandler;
 - (void)updateCalls;
@@ -88,8 +88,8 @@
 - (int64_t)_dataConnectedSubscriptionSlot
 {
   v3 = [(SBTelephonyManager *)self _subscriptionSlotIfSIMPresent:2];
-  v4 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v5 = [v4 subscriptionInfoForSlot:v3];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v5 = [telephonyStateProvider subscriptionInfoForSlot:v3];
 
   if ([v5 isProvidingDataConnection])
   {
@@ -134,68 +134,68 @@
     return 0;
   }
 
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [v2 routeController];
-  v4 = [v3 pickedRoute];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  routeController = [mEMORY[0x277D6EDF8] routeController];
+  pickedRoute = [routeController pickedRoute];
 
-  if ([v4 isReceiver] & 1) != 0 || (objc_msgSend(v4, "isSpeaker"))
+  if ([pickedRoute isReceiver] & 1) != 0 || (objc_msgSend(pickedRoute, "isSpeaker"))
   {
-    v5 = 1;
+    isBluetoothLE = 1;
   }
 
   else
   {
-    v5 = [v4 isBluetoothLE];
+    isBluetoothLE = [pickedRoute isBluetoothLE];
   }
 
-  return v5;
+  return isBluetoothLE;
 }
 
 - (BOOL)inCall
 {
-  v3 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v4 = [v3 currentCallCount];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  currentCallCount = [mEMORY[0x277D6EDF8] currentCallCount];
 
-  if (!v4)
+  if (!currentCallCount)
   {
     return 0;
   }
 
-  if (v4 != 1)
+  if (currentCallCount != 1)
   {
     return 1;
   }
 
-  v5 = [(SBTelephonyManager *)self incomingCall];
-  v6 = v5 == 0;
+  incomingCall = [(SBTelephonyManager *)self incomingCall];
+  v6 = incomingCall == 0;
 
   return v6;
 }
 
 - (BOOL)hasNonCellularNetworkConnection
 {
-  v3 = [(SBTelephonyManager *)self wifiDomain];
-  v4 = [v3 data];
-  if ([v4 isWifiActive])
+  wifiDomain = [(SBTelephonyManager *)self wifiDomain];
+  data = [wifiDomain data];
+  if ([data isWifiActive])
   {
-    v5 = 1;
+    isEthernetPrimary = 1;
   }
 
   else
   {
-    v6 = [(SBTelephonyManager *)self bluetoothController];
-    if ([v6 tetheringConnected])
+    bluetoothController = [(SBTelephonyManager *)self bluetoothController];
+    if ([bluetoothController tetheringConnected])
     {
-      v5 = 1;
+      isEthernetPrimary = 1;
     }
 
     else
     {
-      v5 = [(NWSystemPathMonitor *)self->_systemPathMonitor isEthernetPrimary];
+      isEthernetPrimary = [(NWSystemPathMonitor *)self->_systemPathMonitor isEthernetPrimary];
     }
   }
 
-  return v5;
+  return isEthernetPrimary;
 }
 
 - (BOOL)isUsingSlowDataConnection
@@ -205,8 +205,8 @@
     return 0;
   }
 
-  v4 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v5 = [v4 subscriptionInfoForSlot:{-[SBTelephonyManager _dataConnectedSubscriptionSlot](self, "_dataConnectedSubscriptionSlot")}];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v5 = [telephonyStateProvider subscriptionInfoForSlot:{-[SBTelephonyManager _dataConnectedSubscriptionSlot](self, "_dataConnectedSubscriptionSlot")}];
 
   v3 = ([v5 dataConnectionType] - 1) < 3;
   return v3;
@@ -252,16 +252,16 @@ LABEL_6:
     }
 
     v10 = *(*(&v18 + 1) + 8 * v9);
-    v11 = [v10 provider];
-    v12 = [v11 isTelephonyProvider];
+    provider = [v10 provider];
+    isTelephonyProvider = [provider isTelephonyProvider];
 
-    if (!v12)
+    if (!isTelephonyProvider)
     {
       goto LABEL_13;
     }
 
-    v13 = [v10 providerContext];
-    v14 = [v13 objectForKey:@"kCallSubType"];
+    providerContext = [v10 providerContext];
+    v14 = [providerContext objectForKey:@"kCallSubType"];
 
     if (v14)
     {
@@ -320,11 +320,11 @@ LABEL_28:
 
 - (BOOL)emergencyCallSupported
 {
-  v2 = self;
-  v3 = [(SBTelephonyManager *)self callCount];
-  LOBYTE(v2) = [(SBTelephonyManager *)v2 isEmergencyCallActive];
+  selfCopy = self;
+  callCount = [(SBTelephonyManager *)self callCount];
+  LOBYTE(selfCopy) = [(SBTelephonyManager *)selfCopy isEmergencyCallActive];
   v4 = MGGetBoolAnswer();
-  v5 = (v3 == 0) | v2;
+  v5 = (callCount == 0) | selfCopy;
   if (!v4)
   {
     v5 = 0;
@@ -335,17 +335,17 @@ LABEL_28:
 
 - (unint64_t)callCount
 {
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [v2 currentCallCount];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  currentCallCount = [mEMORY[0x277D6EDF8] currentCallCount];
 
-  return v3;
+  return currentCallCount;
 }
 
 - (BOOL)isEmergencyCallActive
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  [v2 currentCalls];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  [mEMORY[0x277D6EDF8] currentCalls];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
@@ -387,8 +387,8 @@ LABEL_11:
 
 - (BOOL)incomingCallExists
 {
-  v2 = [(SBTelephonyManager *)self incomingCall];
-  v3 = v2 != 0;
+  incomingCall = [(SBTelephonyManager *)self incomingCall];
+  v3 = incomingCall != 0;
 
   return v3;
 }
@@ -407,8 +407,8 @@ LABEL_11:
 
 - (BOOL)outgoingCallExists
 {
-  v2 = [(SBTelephonyManager *)self outgoingCall];
-  v3 = v2 != 0;
+  outgoingCall = [(SBTelephonyManager *)self outgoingCall];
+  v3 = outgoingCall != 0;
 
   return v3;
 }
@@ -416,16 +416,16 @@ LABEL_11:
 - (void)updateSpringBoard
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [v2 displayedCallFromCalls:0];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  v3 = [mEMORY[0x277D6EDF8] displayedCallFromCalls:0];
 
   v4 = +[SBLockScreenManager sharedInstanceIfExists];
-  v5 = [v4 isUILocked];
+  isUILocked = [v4 isUILocked];
 
-  if (v5)
+  if (isUILocked)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:@"SBLockScreenTelephoneCallUINeedsUpdateNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBLockScreenTelephoneCallUINeedsUpdateNotification" object:0];
   }
 
   if (!v3)
@@ -435,9 +435,9 @@ LABEL_11:
     v14 = 0u;
     v15 = 0u;
     v7 = +[SBApplicationController sharedInstance];
-    v8 = [v7 allApplications];
+    allApplications = [v7 allApplications];
 
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v9 = [allApplications countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = v9;
@@ -449,14 +449,14 @@ LABEL_11:
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allApplications);
           }
 
           [*(*(&v14 + 1) + 8 * v12++) setHasDisplayedLaunchAlert:0 forType:1];
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [allApplications countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);
@@ -475,7 +475,7 @@ LABEL_11:
   return CTTelephonyCenterGetDefault();
 }
 
-+ (id)sharedTelephonyManagerCreatingIfNecessary:(BOOL)a3
++ (id)sharedTelephonyManagerCreatingIfNecessary:(BOOL)necessary
 {
   v3 = __sharedTelephonyManager;
   if (__sharedTelephonyManager)
@@ -485,28 +485,28 @@ LABEL_11:
 
   else
   {
-    v4 = !a3;
+    v4 = !necessary;
   }
 
   if (!v4)
   {
     kdebug_trace();
-    v5 = [SBApp systemStatusServer];
-    if (!v5)
+    systemStatusServer = [SBApp systemStatusServer];
+    if (!systemStatusServer)
     {
       +[SBTelephonyManager sharedTelephonyManagerCreatingIfNecessary:];
     }
 
-    v6 = [objc_alloc(MEMORY[0x277D6BBB0]) initWithServerHandle:v5];
-    v7 = [SBApp telephonyStateProvider];
-    if (!v7)
+    v6 = [objc_alloc(MEMORY[0x277D6BBB0]) initWithServerHandle:systemStatusServer];
+    telephonyStateProvider = [SBApp telephonyStateProvider];
+    if (!telephonyStateProvider)
     {
       +[SBTelephonyManager sharedTelephonyManagerCreatingIfNecessary:];
     }
 
     v8 = [SBTelephonyManager alloc];
     v9 = +[SBBluetoothController sharedInstance];
-    v10 = [(SBTelephonyManager *)v8 initWithStateProvider:v7 wifiDomain:v6 bluetoothController:v9];
+    v10 = [(SBTelephonyManager *)v8 initWithStateProvider:telephonyStateProvider wifiDomain:v6 bluetoothController:v9];
     v11 = __sharedTelephonyManager;
     __sharedTelephonyManager = v10;
 
@@ -519,17 +519,17 @@ LABEL_11:
 
 - (SBTelephonyManager)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBTelephonyManager.m" lineNumber:213 description:@"Use initWithStateProvider:wifiDomain:bluetoothController:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBTelephonyManager.m" lineNumber:213 description:@"Use initWithStateProvider:wifiDomain:bluetoothController:"];
 
   return [(SBTelephonyManager *)self initWithStateProvider:0 wifiDomain:0 bluetoothController:0];
 }
 
-- (SBTelephonyManager)initWithStateProvider:(id)a3 wifiDomain:(id)a4 bluetoothController:(id)a5
+- (SBTelephonyManager)initWithStateProvider:(id)provider wifiDomain:(id)domain bluetoothController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  domainCopy = domain;
+  controllerCopy = controller;
   v50.receiver = self;
   v50.super_class = SBTelephonyManager;
   v12 = [(SBTelephonyManager *)&v50 init];
@@ -538,15 +538,15 @@ LABEL_11:
 
   if (v12)
   {
-    objc_storeStrong(&v12->_telephonyStateProvider, a3);
-    objc_storeStrong(&v12->_wifiDomain, a4);
-    objc_storeStrong(&v12->_bluetoothController, a5);
+    objc_storeStrong(&v12->_telephonyStateProvider, provider);
+    objc_storeStrong(&v12->_wifiDomain, domain);
+    objc_storeStrong(&v12->_bluetoothController, controller);
     v12->_containsCellularRadio = MGGetBoolAnswer();
     v12->_hasCellularTelephony = MGGetBoolAnswer();
     v12->_hasCellularData = MGGetBoolAnswer();
     v12->_inEmergencyCallbackMode = -1;
     +[SBTelephonyManager defaultTelephonyCenter];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     if (v12->_containsCellularRadio)
     {
       CTTelephonyCenterAddObserver();
@@ -559,14 +559,14 @@ LABEL_11:
       CTTelephonyCenterAddObserver();
     }
 
-    [v14 addObserver:v12 selector:sel_callEventHandler_ name:*MEMORY[0x277D6EFF0] object:0];
-    [v14 addObserver:v12 selector:sel_callEventHandler_ name:*MEMORY[0x277D6EFE0] object:0];
-    [v14 addObserver:v12 selector:sel_handleCallControlFailure_ name:*MEMORY[0x277D6F008] object:0];
-    [v14 addObserver:v12 selector:sel_updateSpringBoard name:*MEMORY[0x277D6F0B0] object:0];
-    [v14 addObserver:v12 selector:sel_telephonyAudioChangeHandler name:*MEMORY[0x277D6EF60] object:0];
+    [defaultCenter addObserver:v12 selector:sel_callEventHandler_ name:*MEMORY[0x277D6EFF0] object:0];
+    [defaultCenter addObserver:v12 selector:sel_callEventHandler_ name:*MEMORY[0x277D6EFE0] object:0];
+    [defaultCenter addObserver:v12 selector:sel_handleCallControlFailure_ name:*MEMORY[0x277D6F008] object:0];
+    [defaultCenter addObserver:v12 selector:sel_updateSpringBoard name:*MEMORY[0x277D6F0B0] object:0];
+    [defaultCenter addObserver:v12 selector:sel_telephonyAudioChangeHandler name:*MEMORY[0x277D6EF60] object:0];
     v15 = objc_alloc(MEMORY[0x277CC37B0]);
-    v16 = [(SBTelephonyManager *)v12 _backgroundQueryQueue];
-    v17 = [v15 initWithQueue:v16];
+    _backgroundQueryQueue = [(SBTelephonyManager *)v12 _backgroundQueryQueue];
+    v17 = [v15 initWithQueue:_backgroundQueryQueue];
     coreTelephonyClient = v12->_coreTelephonyClient;
     v12->_coreTelephonyClient = v17;
 
@@ -580,21 +580,21 @@ LABEL_11:
     v19 = dispatch_get_global_queue(-2, 0);
     dispatch_async(v19, &__block_literal_global_18);
 
-    v20 = [getRTTSettingsClass() sharedInstance];
-    [v20 registerUpdateBlock:&__block_literal_global_92 forRetrieveSelector:sel_TTYSoftwareEnabled withListener:v12];
-    [v20 registerUpdateBlock:&__block_literal_global_92 forRetrieveSelector:sel_TTYHardwareEnabled withListener:v12];
+    sharedInstance = [getRTTSettingsClass() sharedInstance];
+    [sharedInstance registerUpdateBlock:&__block_literal_global_92 forRetrieveSelector:sel_TTYSoftwareEnabled withListener:v12];
+    [sharedInstance registerUpdateBlock:&__block_literal_global_92 forRetrieveSelector:sel_TTYHardwareEnabled withListener:v12];
     v21 = +[SBLockdownManager sharedInstance];
-    v22 = [v21 brickedDevice];
+    brickedDevice = [v21 brickedDevice];
 
-    if ((v22 & 1) == 0)
+    if ((brickedDevice & 1) == 0)
     {
       [(SBTelephonyManager *)v12 setNetworkRegistrationEnabled:1];
     }
 
     [(STTelephonyStateProvider *)v12->_telephonyStateProvider addObserver:v12];
     [(SBTelephonyManager *)v12 _updateState];
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    objc_initWeak(&location, v23);
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    objc_initWeak(&location, defaultCenter2);
 
     objc_initWeak(&from, v12);
     v42 = 0;
@@ -603,7 +603,7 @@ LABEL_11:
     v45 = __Block_byref_object_copy__5;
     v46 = __Block_byref_object_dispose__5;
     v47 = 0;
-    v24 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __75__SBTelephonyManager_initWithStateProvider_wifiDomain_bluetoothController___block_invoke_99;
@@ -611,7 +611,7 @@ LABEL_11:
     objc_copyWeak(&v40, &from);
     objc_copyWeak(&v41, &location);
     v39[4] = &v42;
-    v25 = [v14 addObserverForName:@"SBBootCompleteNotification" object:0 queue:v24 usingBlock:v39];
+    v25 = [defaultCenter addObserverForName:@"SBBootCompleteNotification" object:0 queue:mainQueue usingBlock:v39];
     v26 = v43[5];
     v43[5] = v25;
 
@@ -628,12 +628,12 @@ LABEL_11:
     v38 = v30;
     dispatch_async(v29, block);
     v31 = +[SBDefaults externalDefaults];
-    v32 = [v31 globalDefaults];
-    [v32 removeFormattedPhoneNumberFromGlobalPreferences];
+    globalDefaults = [v31 globalDefaults];
+    [globalDefaults removeFormattedPhoneNumberFromGlobalPreferences];
 
-    v33 = [MEMORY[0x277CD9208] sharedSystemPathMonitor];
+    mEMORY[0x277CD9208] = [MEMORY[0x277CD9208] sharedSystemPathMonitor];
     v34 = v30[12];
-    v30[12] = v33;
+    v30[12] = mEMORY[0x277CD9208];
 
     [v30[12] addObserver:v30 forKeyPath:@"vpnActive" options:5 context:0];
     _Block_object_dispose(&v42, 8);
@@ -644,7 +644,7 @@ LABEL_11:
     objc_destroyWeak(&location);
   }
 
-  v35 = [MEMORY[0x277D6EDF8] sharedInstance];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
 
   return v12;
 }
@@ -746,10 +746,10 @@ void __43__SBTelephonyManager__backgroundQueryQueue__block_invoke()
   _backgroundQueryQueue___queryQueue = Serial;
 }
 
-- (void)_performQueryInBackground:(id)a3 withMainQueueResultHandler:(id)a4
+- (void)_performQueryInBackground:(id)background withMainQueueResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  backgroundCopy = background;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __75__SBTelephonyManager__performQueryInBackground_withMainQueueResultHandler___block_invoke;
@@ -760,16 +760,16 @@ void __43__SBTelephonyManager__backgroundQueryQueue__block_invoke()
     dispatch_once(&_performQueryInBackground_withMainQueueResultHandler__onceToken, v14);
   }
 
-  v8 = [(SBTelephonyManager *)self _backgroundQueryQueue];
+  _backgroundQueryQueue = [(SBTelephonyManager *)self _backgroundQueryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__SBTelephonyManager__performQueryInBackground_withMainQueueResultHandler___block_invoke_2;
   block[3] = &unk_2783AAE68;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = backgroundCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = backgroundCopy;
+  dispatch_async(_backgroundQueryQueue, block);
 }
 
 void __75__SBTelephonyManager__performQueryInBackground_withMainQueueResultHandler___block_invoke(uint64_t a1)
@@ -820,9 +820,9 @@ void __75__SBTelephonyManager__performQueryInBackground_withMainQueueResultHandl
   return result;
 }
 
-- (void)_avSystemControllerDidError:(id)a3
+- (void)_avSystemControllerDidError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = SBLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -830,7 +830,7 @@ void __75__SBTelephonyManager__performQueryInBackground_withMainQueueResultHandl
   }
 }
 
-- (void)_serverConnectionDidError:(id)a3
+- (void)_serverConnectionDidError:(id)error
 {
   v4 = SBLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -867,10 +867,10 @@ void __75__SBTelephonyManager__performQueryInBackground_withMainQueueResultHandl
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [SBApp windowSceneManager];
-  v5 = [v4 connectedWindowScenes];
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  v6 = [connectedWindowScenes countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -882,25 +882,25 @@ void __75__SBTelephonyManager__performQueryInBackground_withMainQueueResultHandl
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectedWindowScenes);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * v9) iconController];
-        v11 = [v10 iconManager];
-        [v11 setIdleModeText:0];
+        iconController = [*(*(&v13 + 1) + 8 * v9) iconController];
+        iconManager = [iconController iconManager];
+        [iconManager setIdleModeText:0];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v7 = [connectedWindowScenes countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 postNotificationName:*MEMORY[0x277D67AB8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D67AB8] object:0];
 }
 
 void *__51__SBTelephonyManager__handleTelephonyDaemonRestart__block_invoke(uint64_t a1, uint64_t a2)
@@ -919,8 +919,8 @@ void *__51__SBTelephonyManager__handleTelephonyDaemonRestart__block_invoke(uint6
 
 - (double)inCallDuration
 {
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [v2 displayedCallFromCalls:0];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  v3 = [mEMORY[0x277D6EDF8] displayedCallFromCalls:0];
 
   v4 = -1.0;
   if (v3 && [v3 status] != 3)
@@ -935,18 +935,18 @@ void *__51__SBTelephonyManager__handleTelephonyDaemonRestart__block_invoke(uint6
 - (id)_phoneApp
 {
   v2 = +[SBApplicationController sharedInstance];
-  v3 = [v2 mobilePhone];
+  mobilePhone = [v2 mobilePhone];
 
-  return v3;
+  return mobilePhone;
 }
 
-- (void)queue_setFastDormancySuspended:(BOOL)a3 withConnection:(__CTServerConnection *)a4
+- (void)queue_setFastDormancySuspended:(BOOL)suspended withConnection:(__CTServerConnection *)connection
 {
   p_queue_fastDormancySuspendAssertion = &self->_queue_fastDormancySuspendAssertion;
   queue_fastDormancySuspendAssertion = self->_queue_fastDormancySuspendAssertion;
-  if (a3)
+  if (suspended)
   {
-    if (a4)
+    if (connection)
     {
       if (!queue_fastDormancySuspendAssertion)
       {
@@ -972,7 +972,7 @@ void *__51__SBTelephonyManager__handleTelephonyDaemonRestart__block_invoke(uint6
   }
 }
 
-- (void)setFastDormancySuspended:(BOOL)a3
+- (void)setFastDormancySuspended:(BOOL)suspended
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -984,7 +984,7 @@ void *__51__SBTelephonyManager__handleTelephonyDaemonRestart__block_invoke(uint6
   v5[2] = __47__SBTelephonyManager_setFastDormancySuspended___block_invoke;
   v5[3] = &unk_2783ABC38;
   v5[4] = self;
-  v6 = a3;
+  suspendedCopy = suspended;
   [(SBTelephonyManager *)self _performQueryInBackground:v5 withMainQueueResultHandler:0];
 }
 
@@ -996,19 +996,19 @@ void *__51__SBTelephonyManager__handleTelephonyDaemonRestart__block_invoke(uint6
   [(SBTelephonyManager *)self setHeldCall:0];
   [(SBTelephonyManager *)self setOutgoingCall:0];
   v3 = 0x277D6E000uLL;
-  v4 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v5 = [v4 currentCallCount];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  currentCallCount = [mEMORY[0x277D6EDF8] currentCallCount];
 
-  if (v5)
+  if (currentCallCount)
   {
-    v6 = [MEMORY[0x277D6EDF8] sharedInstance];
-    v7 = [v6 currentCalls];
+    mEMORY[0x277D6EDF8]2 = [MEMORY[0x277D6EDF8] sharedInstance];
+    currentCalls = [mEMORY[0x277D6EDF8]2 currentCalls];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = v7;
+    v8 = currentCalls;
     v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
@@ -1026,15 +1026,15 @@ void *__51__SBTelephonyManager__handleTelephonyDaemonRestart__block_invoke(uint6
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
-          v16 = [v15 status];
-          if (v16 > 2)
+          status = [v15 status];
+          if (status > 2)
           {
-            if (v16 == 3)
+            if (status == 3)
             {
               [(SBTelephonyManager *)self setOutgoingCall:v15];
             }
 
-            else if (v16 == 4)
+            else if (status == 4)
             {
               v18 = [MEMORY[0x277CCAB88] notificationWithName:v13 object:v15];
               [(SBTelephonyManager *)self callEventHandler:v18];
@@ -1043,21 +1043,21 @@ void *__51__SBTelephonyManager__handleTelephonyDaemonRestart__block_invoke(uint6
             }
           }
 
-          else if (v16 == 1)
+          else if (status == 1)
           {
-            v19 = [(SBTelephonyManager *)self activeCall];
+            activeCall = [(SBTelephonyManager *)self activeCall];
 
-            if (!v19)
+            if (!activeCall)
             {
               [(SBTelephonyManager *)self setActiveCall:v15];
             }
           }
 
-          else if (v16 == 2)
+          else if (status == 2)
           {
-            v17 = [(SBTelephonyManager *)self heldCall];
+            heldCall = [(SBTelephonyManager *)self heldCall];
 
-            if (!v17)
+            if (!heldCall)
             {
               [(SBTelephonyManager *)self setHeldCall:v15];
             }
@@ -1085,36 +1085,36 @@ void *__51__SBTelephonyManager__handleTelephonyDaemonRestart__block_invoke(uint6
 LABEL_24:
   }
 
-  v20 = [*(v3 + 3576) sharedInstance];
-  __LastUpdatedCallCount = [v20 currentCallCount];
+  sharedInstance = [*(v3 + 3576) sharedInstance];
+  __LastUpdatedCallCount = [sharedInstance currentCallCount];
 
   [(SBTelephonyManager *)self updateSpringBoard];
 }
 
 - (void)_updateState
 {
-  v3 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v11 = [v3 subscriptionInfoForSlot:1];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v11 = [telephonyStateProvider subscriptionInfoForSlot:1];
 
-  v4 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v5 = [v4 subscriptionInfoForSlot:2];
+  telephonyStateProvider2 = [(SBTelephonyManager *)self telephonyStateProvider];
+  v5 = [telephonyStateProvider2 subscriptionInfoForSlot:2];
 
-  v6 = [v11 lastKnownNetworkCountryCode];
-  [(SBTelephonyManager *)self setCachedSlot1CountryCode:v6];
+  lastKnownNetworkCountryCode = [v11 lastKnownNetworkCountryCode];
+  [(SBTelephonyManager *)self setCachedSlot1CountryCode:lastKnownNetworkCountryCode];
 
-  v7 = [v11 SIMStatus];
-  [(SBTelephonyManager *)self setCachedSlot1SIMStatus:v7];
+  sIMStatus = [v11 SIMStatus];
+  [(SBTelephonyManager *)self setCachedSlot1SIMStatus:sIMStatus];
 
-  v8 = [v5 lastKnownNetworkCountryCode];
-  [(SBTelephonyManager *)self setCachedSlot2CountryCode:v8];
+  lastKnownNetworkCountryCode2 = [v5 lastKnownNetworkCountryCode];
+  [(SBTelephonyManager *)self setCachedSlot2CountryCode:lastKnownNetworkCountryCode2];
 
-  v9 = [v5 SIMStatus];
-  [(SBTelephonyManager *)self setCachedSlot2SIMStatus:v9];
+  sIMStatus2 = [v5 SIMStatus];
+  [(SBTelephonyManager *)self setCachedSlot2SIMStatus:sIMStatus2];
 
   [(SBTelephonyManager *)self updateLocale];
   [(SBTelephonyManager *)self _updateNetworkLocale];
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 postNotificationName:@"SBTTYChangedNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBTTYChangedNotification" object:0 userInfo:0];
 }
 
 - (BOOL)updateLocale
@@ -1201,7 +1201,7 @@ uint64_t __42__SBTelephonyManager__updateNetworkLocale__block_invoke_2(uint64_t 
   return CPPhoneNumberSetNetworkCountryCode();
 }
 
-- (void)handleCallControlFailure:(id)a3
+- (void)handleCallControlFailure:(id)failure
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -1209,8 +1209,8 @@ uint64_t __42__SBTelephonyManager__updateNetworkLocale__block_invoke_2(uint64_t 
   }
 
   [(SBTelephonyManager *)self updateCalls];
-  v4 = [(SBTelephonyManager *)self activeCall];
-  if (v4)
+  activeCall = [(SBTelephonyManager *)self activeCall];
+  if (activeCall)
   {
     sInTelephonyCall = 1;
     SBUpdateCallState();
@@ -1218,48 +1218,48 @@ uint64_t __42__SBTelephonyManager__updateNetworkLocale__block_invoke_2(uint64_t 
 
   else
   {
-    v5 = [(SBTelephonyManager *)self outgoingCall];
-    sInTelephonyCall = v5 != 0;
+    outgoingCall = [(SBTelephonyManager *)self outgoingCall];
+    sInTelephonyCall = outgoingCall != 0;
     SBUpdateCallState();
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"SBCallCountChangedNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBCallCountChangedNotification" object:0 userInfo:0];
 }
 
-- (void)callEventHandler:(id)a3
+- (void)callEventHandler:(id)handler
 {
-  v39 = a3;
+  handlerCopy = handler;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBTelephonyManager callEventHandler:];
   }
 
-  v4 = [v39 object];
-  v5 = [v4 status];
-  v6 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v7 = [v6 currentCallCount];
+  object = [handlerCopy object];
+  status = [object status];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  currentCallCount = [mEMORY[0x277D6EDF8] currentCallCount];
 
-  v8 = [(SBTelephonyManager *)self incomingCall];
+  incomingCall = [(SBTelephonyManager *)self incomingCall];
 
-  if (v8)
+  if (incomingCall)
   {
-    v8 = [(SBTelephonyManager *)self incomingCall];
-    v9 = [(SBTelephonyManager *)self incomingCall];
-    v10 = [v9 status];
+    incomingCall = [(SBTelephonyManager *)self incomingCall];
+    incomingCall2 = [(SBTelephonyManager *)self incomingCall];
+    status2 = [incomingCall2 status];
 
-    if (v10 != 4)
+    if (status2 != 4)
     {
       [(SBTelephonyManager *)self setIncomingCall:0];
     }
   }
 
   v11 = 0;
-  if (v5 <= 2)
+  if (status <= 2)
   {
-    if (v5 == 1)
+    if (status == 1)
     {
-      [(SBTelephonyManager *)self setActiveCall:v4];
+      [(SBTelephonyManager *)self setActiveCall:object];
       v11 = 0;
       v38 = 1;
       v18 = 1;
@@ -1268,9 +1268,9 @@ uint64_t __42__SBTelephonyManager__updateNetworkLocale__block_invoke_2(uint64_t 
 
     v12 = 0;
     v13 = 0;
-    if (v5 == 2)
+    if (status == 2)
     {
-      [(SBTelephonyManager *)self setHeldCall:v4];
+      [(SBTelephonyManager *)self setHeldCall:object];
       v11 = 0;
       v12 = 0;
       v13 = 0;
@@ -1279,19 +1279,19 @@ uint64_t __42__SBTelephonyManager__updateNetworkLocale__block_invoke_2(uint64_t 
 
   else
   {
-    if (v5 == 6)
+    if (status == 6)
     {
-      if (v8 || v7)
+      if (incomingCall || currentCallCount)
       {
         v11 = 0;
         v12 = 1;
         v13 = 0;
-        if (v7 > 1 || !v8)
+        if (currentCallCount > 1 || !incomingCall)
         {
           goto LABEL_26;
         }
 
-        if ([v4 isEqual:v8])
+        if ([object isEqual:incomingCall])
         {
           v11 = 0;
           v13 = 0;
@@ -1306,21 +1306,21 @@ uint64_t __42__SBTelephonyManager__updateNetworkLocale__block_invoke_2(uint64_t 
       goto LABEL_26;
     }
 
-    if (v5 != 4)
+    if (status != 4)
     {
       v12 = 0;
       v13 = 0;
-      if (v5 != 3)
+      if (status != 3)
       {
         goto LABEL_26;
       }
 
-      v14 = [(SBTelephonyManager *)self outgoingCall];
+      outgoingCall = [(SBTelephonyManager *)self outgoingCall];
 
-      if (v14)
+      if (outgoingCall)
       {
-        v15 = [(SBTelephonyManager *)self outgoingCall];
-        v16 = [v15 isEqual:v4];
+        outgoingCall2 = [(SBTelephonyManager *)self outgoingCall];
+        v16 = [outgoingCall2 isEqual:object];
 
         if (v16)
         {
@@ -1330,64 +1330,64 @@ uint64_t __42__SBTelephonyManager__updateNetworkLocale__block_invoke_2(uint64_t 
         [(SBTelephonyManager *)self setOutgoingCall:0];
       }
 
-      [(SBTelephonyManager *)self setOutgoingCall:v4];
+      [(SBTelephonyManager *)self setOutgoingCall:object];
       v11 = 1;
     }
 
     v13 = 0;
     v12 = v11;
-    v11 = v7 == 1 && v5 == 3;
+    v11 = currentCallCount == 1 && status == 3;
   }
 
 LABEL_26:
   HIDWORD(v38) = v13;
   v18 = v12;
-  v19 = [(SBTelephonyManager *)self activeCall];
-  if (v19)
+  activeCall = [(SBTelephonyManager *)self activeCall];
+  if (activeCall)
   {
-    v20 = v19;
-    v21 = [(SBTelephonyManager *)self activeCall];
-    v22 = [v21 isEqual:v4];
+    v20 = activeCall;
+    activeCall2 = [(SBTelephonyManager *)self activeCall];
+    v22 = [activeCall2 isEqual:object];
 
     if (v22)
     {
-      v23 = [MEMORY[0x277D6EDF8] sharedInstance];
-      v24 = [v23 callWithStatus:1];
+      mEMORY[0x277D6EDF8]2 = [MEMORY[0x277D6EDF8] sharedInstance];
+      v24 = [mEMORY[0x277D6EDF8]2 callWithStatus:1];
       [(SBTelephonyManager *)self setActiveCall:v24];
     }
   }
 
   LODWORD(v38) = 0;
-  if (v5 != 2)
+  if (status != 2)
   {
 LABEL_32:
-    v25 = [(SBTelephonyManager *)self heldCall];
-    if (v25)
+    heldCall = [(SBTelephonyManager *)self heldCall];
+    if (heldCall)
     {
-      v26 = v25;
-      v27 = [(SBTelephonyManager *)self heldCall];
-      v28 = [v27 isEqual:v4];
+      v26 = heldCall;
+      heldCall2 = [(SBTelephonyManager *)self heldCall];
+      v28 = [heldCall2 isEqual:object];
 
       if (v28)
       {
-        v29 = [MEMORY[0x277D6EDF8] sharedInstance];
-        v30 = [v29 callWithStatus:2];
+        mEMORY[0x277D6EDF8]3 = [MEMORY[0x277D6EDF8] sharedInstance];
+        v30 = [mEMORY[0x277D6EDF8]3 callWithStatus:2];
         [(SBTelephonyManager *)self setHeldCall:v30];
       }
     }
 
-    if (v5 == 3)
+    if (status == 3)
     {
       goto LABEL_39;
     }
   }
 
-  v31 = [(SBTelephonyManager *)self outgoingCall];
-  if (v31)
+  outgoingCall3 = [(SBTelephonyManager *)self outgoingCall];
+  if (outgoingCall3)
   {
-    v32 = v31;
-    v33 = [(SBTelephonyManager *)self outgoingCall];
-    v34 = [v33 isEqual:v4];
+    v32 = outgoingCall3;
+    outgoingCall4 = [(SBTelephonyManager *)self outgoingCall];
+    v34 = [outgoingCall4 isEqual:object];
 
     if (v34)
     {
@@ -1396,12 +1396,12 @@ LABEL_32:
   }
 
 LABEL_39:
-  if (v8 && [v4 isEqual:v8])
+  if (incomingCall && [object isEqual:incomingCall])
   {
-    if (v5 != 4)
+    if (status != 4)
     {
       v35 = v38;
-      if (v7 != 1)
+      if (currentCallCount != 1)
       {
         v35 = 0;
       }
@@ -1410,11 +1410,11 @@ LABEL_39:
     }
   }
 
-  else if (v5 == 4)
+  else if (status == 4)
   {
-    [(SBTelephonyManager *)self setIncomingCall:v4];
-    v36 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v36 postNotificationName:*MEMORY[0x277D67A70] object:v4];
+    [(SBTelephonyManager *)self setIncomingCall:object];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x277D67A70] object:object];
   }
 
   if ((HIDWORD(v38) | v11))
@@ -1423,10 +1423,10 @@ LABEL_39:
     SBUpdateCallState();
   }
 
-  if (__LastUpdatedCallCount != v7)
+  if (__LastUpdatedCallCount != currentCallCount)
   {
-    v37 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v37 postNotificationName:@"SBCallCountChangedNotification" object:0 userInfo:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:@"SBCallCountChangedNotification" object:0 userInfo:0];
   }
 
   if (v18)
@@ -1434,7 +1434,7 @@ LABEL_39:
     [(SBTelephonyManager *)self updateSpringBoard];
   }
 
-  __LastUpdatedCallCount = v7;
+  __LastUpdatedCallCount = currentCallCount;
 LABEL_54:
 }
 
@@ -1449,31 +1449,31 @@ LABEL_54:
 
 - (id)displayedCall
 {
-  v3 = [(SBTelephonyManager *)self incomingCall];
-  if (!v3)
+  incomingCall = [(SBTelephonyManager *)self incomingCall];
+  if (!incomingCall)
   {
-    v3 = [(SBTelephonyManager *)self outgoingCall];
-    if (!v3)
+    incomingCall = [(SBTelephonyManager *)self outgoingCall];
+    if (!incomingCall)
     {
-      v3 = [(SBTelephonyManager *)self activeCall];
+      incomingCall = [(SBTelephonyManager *)self activeCall];
     }
   }
 
-  return v3;
+  return incomingCall;
 }
 
 - (BOOL)activeCallExists
 {
-  v2 = [(SBTelephonyManager *)self activeCall];
-  v3 = v2 != 0;
+  activeCall = [(SBTelephonyManager *)self activeCall];
+  v3 = activeCall != 0;
 
   return v3;
 }
 
 - (BOOL)heldCallExists
 {
-  v2 = [(SBTelephonyManager *)self heldCall];
-  v3 = v2 != 0;
+  heldCall = [(SBTelephonyManager *)self heldCall];
+  v3 = heldCall != 0;
 
   return v3;
 }
@@ -1481,24 +1481,24 @@ LABEL_54:
 - (BOOL)multipleCallsExist
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [v2 currentCallCount];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  currentCallCount = [mEMORY[0x277D6EDF8] currentCallCount];
 
-  if (v3 < 2)
+  if (currentCallCount < 2)
   {
     LOBYTE(v7) = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D6EDF8] sharedInstance];
-    v5 = [v4 currentCalls];
+    mEMORY[0x277D6EDF8]2 = [MEMORY[0x277D6EDF8] sharedInstance];
+    currentCalls = [mEMORY[0x277D6EDF8]2 currentCalls];
 
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = v5;
+    v6 = currentCalls;
     v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
@@ -1537,31 +1537,31 @@ LABEL_13:
 
 - (BOOL)isCellDataSwitchingEnabled
 {
-  v2 = [(SBTelephonyManager *)self coreTelephonyClient];
-  v3 = [v2 getSupportDynamicDataSimSwitchOnBBCallSync:0];
+  coreTelephonyClient = [(SBTelephonyManager *)self coreTelephonyClient];
+  v3 = [coreTelephonyClient getSupportDynamicDataSimSwitchOnBBCallSync:0];
 
   return v3;
 }
 
-- (void)setCellDataSwitchingEnabled:(BOOL)a3
+- (void)setCellDataSwitchingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(SBTelephonyManager *)self coreTelephonyClient];
-  v4 = [v5 setSupportDynamicDataSimSwitchOnBBCall:v3];
+  enabledCopy = enabled;
+  coreTelephonyClient = [(SBTelephonyManager *)self coreTelephonyClient];
+  v4 = [coreTelephonyClient setSupportDynamicDataSimSwitchOnBBCall:enabledCopy];
 }
 
-- (id)_subscriptionInfoForCall:(id)a3
+- (id)_subscriptionInfoForCall:(id)call
 {
-  v4 = [a3 localSenderIdentity];
-  v5 = [v4 UUID];
-  v6 = [v5 UUIDString];
+  localSenderIdentity = [call localSenderIdentity];
+  uUID = [localSenderIdentity UUID];
+  uUIDString = [uUID UUIDString];
 
-  v7 = [(SBTelephonyManager *)self telephonyStateProvider];
-  if ([v7 isSIMPresentForSlot:1])
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  if ([telephonyStateProvider isSIMPresentForSlot:1])
   {
-    v8 = [v7 subscriptionInfoForSlot:1];
-    v9 = [v8 identifier];
-    v10 = [v9 isEqualToString:v6];
+    v8 = [telephonyStateProvider subscriptionInfoForSlot:1];
+    identifier = [v8 identifier];
+    v10 = [identifier isEqualToString:uUIDString];
 
     if (v10)
     {
@@ -1569,11 +1569,11 @@ LABEL_13:
     }
   }
 
-  if ([v7 isSIMPresentForSlot:2])
+  if ([telephonyStateProvider isSIMPresentForSlot:2])
   {
-    v8 = [v7 subscriptionInfoForSlot:2];
-    v11 = [v8 identifier];
-    v12 = [v11 isEqualToString:v6];
+    v8 = [telephonyStateProvider subscriptionInfoForSlot:2];
+    identifier2 = [v8 identifier];
+    v12 = [identifier2 isEqualToString:uUIDString];
 
     if (v12)
     {
@@ -1587,17 +1587,17 @@ LABEL_8:
   return v8;
 }
 
-- (id)_callsForService:(int)a3
+- (id)_callsForService:(int)service
 {
-  v4 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v5 = [v4 currentCalls];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  currentCalls = [mEMORY[0x277D6EDF8] currentCalls];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __39__SBTelephonyManager__callsForService___block_invoke;
   v12[3] = &__block_descriptor_36_e23_B32__0__TUCall_8Q16_B24l;
-  v13 = a3;
-  v6 = [v5 indexesOfObjectsPassingTest:v12];
-  v7 = [v5 objectsAtIndexes:v6];
+  serviceCopy = service;
+  v6 = [currentCalls indexesOfObjectsPassingTest:v12];
+  v7 = [currentCalls objectsAtIndexes:v6];
   v8 = v7;
   if (v7)
   {
@@ -1614,16 +1614,16 @@ LABEL_8:
   return v10;
 }
 
-- (unint64_t)_callCountForService:(int)a3
+- (unint64_t)_callCountForService:(int)service
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v5 = [v4 currentCalls];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  currentCalls = [mEMORY[0x277D6EDF8] currentCalls];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [currentCalls countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1635,16 +1635,16 @@ LABEL_8:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(currentCalls);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) service] == a3)
+        if ([*(*(&v12 + 1) + 8 * i) service] == service)
         {
           ++v8;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [currentCalls countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -1660,67 +1660,67 @@ LABEL_8:
 
 - (BOOL)inBargeCall
 {
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [v2 bargeCalls];
-  v4 = [v3 count] != 0;
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  bargeCalls = [mEMORY[0x277D6EDF8] bargeCalls];
+  v4 = [bargeCalls count] != 0;
 
   return v4;
 }
 
 - (BOOL)toggleBargeCallState
 {
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [v2 frontmostBargeCall];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  frontmostBargeCall = [mEMORY[0x277D6EDF8] frontmostBargeCall];
 
-  v4 = [MEMORY[0x277D6EDF8] sharedInstance];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  mEMORY[0x277D6EDF8]2 = [MEMORY[0x277D6EDF8] sharedInstance];
+  if (frontmostBargeCall && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [v4 handleWiredHeadsetFlashButtonForBargeCalls];
+    handleWiredHeadsetFlashButtonForBargeCalls = [mEMORY[0x277D6EDF8]2 handleWiredHeadsetFlashButtonForBargeCalls];
   }
 
   else
   {
-    v5 = 0;
+    handleWiredHeadsetFlashButtonForBargeCalls = 0;
   }
 
-  return v5;
+  return handleWiredHeadsetFlashButtonForBargeCalls;
 }
 
 - (BOOL)isEndpointOnCurrentDevice
 {
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [v2 anyCallIsEndpointOnCurrentDevice];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  anyCallIsEndpointOnCurrentDevice = [mEMORY[0x277D6EDF8] anyCallIsEndpointOnCurrentDevice];
 
-  return v3;
+  return anyCallIsEndpointOnCurrentDevice;
 }
 
 - (void)disconnectIncomingCall
 {
-  v4 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [(SBTelephonyManager *)self incomingCall];
-  [v4 disconnectCall:v3];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  incomingCall = [(SBTelephonyManager *)self incomingCall];
+  [mEMORY[0x277D6EDF8] disconnectCall:incomingCall];
 }
 
 - (void)disconnectDisplayedCall
 {
-  v4 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [(SBTelephonyManager *)self displayedCall];
-  [v4 disconnectCall:v3];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  displayedCall = [(SBTelephonyManager *)self displayedCall];
+  [mEMORY[0x277D6EDF8] disconnectCall:displayedCall];
 }
 
 - (void)swapCalls
 {
-  v3 = [(SBTelephonyManager *)self heldCall];
-  if (v3)
+  heldCall = [(SBTelephonyManager *)self heldCall];
+  if (heldCall)
   {
-    v4 = v3;
-    v5 = [(SBTelephonyManager *)self activeCall];
+    v4 = heldCall;
+    activeCall = [(SBTelephonyManager *)self activeCall];
 
-    if (v5)
+    if (activeCall)
     {
-      v7 = [MEMORY[0x277D6EDF8] sharedInstance];
-      v6 = [(SBTelephonyManager *)self heldCall];
-      [v7 unholdCall:v6];
+      mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+      heldCall2 = [(SBTelephonyManager *)self heldCall];
+      [mEMORY[0x277D6EDF8] unholdCall:heldCall2];
     }
   }
 }
@@ -1729,28 +1729,28 @@ LABEL_8:
 {
   if ([(SBTelephonyManager *)self inCall])
   {
-    v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-    [v2 disconnectAllCalls];
+    mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+    [mEMORY[0x277D6EDF8] disconnectAllCalls];
   }
 }
 
 - (void)disconnectCallAndActivateHeld
 {
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  [v2 disconnectCurrentCallAndActivateHeld];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  [mEMORY[0x277D6EDF8] disconnectCurrentCallAndActivateHeld];
 }
 
-- (void)dumpBasebandState:(id)a3
+- (void)dumpBasebandState:(id)state
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   if ([(SBTelephonyManager *)self _serverConnection])
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = stateCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Dumping baseband state: %@", &v7, 0xCu);
     }
 
@@ -1764,22 +1764,22 @@ LABEL_8:
 
 - (BOOL)isNetworkRegistrationEnabled
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v3 = NSHomeDirectory();
   v4 = [v3 stringByAppendingPathComponent:@"SBNetworkRegistrationCookie"];
-  v5 = [v2 fileExistsAtPath:v4];
+  v5 = [defaultManager fileExistsAtPath:v4];
 
   return v5 ^ 1;
 }
 
-- (void)setNetworkRegistrationEnabled:(BOOL)a3
+- (void)setNetworkRegistrationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v5 = NSHomeDirectory();
     v6 = [v5 stringByAppendingPathComponent:@"SBNetworkRegistrationCookie"];
-    [v4 removeItemAtPath:v6 error:0];
+    [defaultManager removeItemAtPath:v6 error:0];
 
     if (![(SBTelephonyManager *)self _serverConnection])
     {
@@ -1791,10 +1791,10 @@ LABEL_8:
 
   else
   {
-    v8 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     v9 = NSHomeDirectory();
     v10 = [v9 stringByAppendingPathComponent:@"SBNetworkRegistrationCookie"];
-    [v8 writeToFile:v10 options:0x10000000 error:0];
+    [data writeToFile:v10 options:0x10000000 error:0];
 
     if (![(SBTelephonyManager *)self _serverConnection])
     {
@@ -1813,31 +1813,31 @@ LABEL_8:
 
 - (BOOL)isTTYEnabled
 {
-  v2 = [getRTTSettingsClass() sharedInstance];
-  if ([v2 TTYSoftwareEnabled])
+  sharedInstance = [getRTTSettingsClass() sharedInstance];
+  if ([sharedInstance TTYSoftwareEnabled])
   {
-    v3 = 1;
+    tTYHardwareEnabled = 1;
   }
 
   else
   {
-    v3 = [v2 TTYHardwareEnabled];
+    tTYHardwareEnabled = [sharedInstance TTYHardwareEnabled];
   }
 
-  return v3;
+  return tTYHardwareEnabled;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = [a5 objectForKey:{*MEMORY[0x277CCA2F0], a4}];
-  v8 = [v7 BOOLValue];
+  v7 = [change objectForKey:{*MEMORY[0x277CCA2F0], object}];
+  bOOLValue = [v7 BOOLValue];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__SBTelephonyManager_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v9[3] = &unk_2783A9F58;
   v9[4] = self;
-  v10 = v8;
+  v10 = bOOLValue;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 
@@ -1874,14 +1874,14 @@ void __69__SBTelephonyManager_observeValueForKeyPath_ofObject_change_context___b
   return *(self + 19) & 1;
 }
 
-- (void)_setCurrentActivationAlertItem:(id)a3
+- (void)_setCurrentActivationAlertItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   activationAlertItem = self->_activationAlertItem;
   p_activationAlertItem = &self->_activationAlertItem;
   v6 = activationAlertItem;
-  v11 = v5;
-  if (activationAlertItem != v5)
+  v11 = itemCopy;
+  if (activationAlertItem != itemCopy)
   {
     if (v6)
     {
@@ -1889,7 +1889,7 @@ void __69__SBTelephonyManager_observeValueForKeyPath_ofObject_change_context___b
       [v9 deactivateAlertItem:*p_activationAlertItem];
     }
 
-    objc_storeStrong(p_activationAlertItem, a3);
+    objc_storeStrong(p_activationAlertItem, item);
     if (*p_activationAlertItem)
     {
       [(SBAlertItem *)*p_activationAlertItem setSuppressForKeynote:1];
@@ -1899,30 +1899,30 @@ void __69__SBTelephonyManager_observeValueForKeyPath_ofObject_change_context___b
   }
 }
 
-- (void)_provisioningUpdateWithStatus:(int)a3 slot:(int64_t)a4
+- (void)_provisioningUpdateWithStatus:(int)status slot:(int64_t)slot
 {
-  v27 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v7 = [v27 subscriptionInfoForSlot:1];
-  v8 = [v7 SIMStatus];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v7 = [telephonyStateProvider subscriptionInfoForSlot:1];
+  sIMStatus = [v7 SIMStatus];
   v9 = *MEMORY[0x277CC3F00];
-  v10 = [v8 isEqualToString:*MEMORY[0x277CC3F00]];
+  v10 = [sIMStatus isEqualToString:*MEMORY[0x277CC3F00]];
 
-  v11 = [v27 subscriptionInfoForSlot:2];
-  v12 = [v11 SIMStatus];
-  v13 = [v12 isEqualToString:v9];
+  v11 = [telephonyStateProvider subscriptionInfoForSlot:2];
+  sIMStatus2 = [v11 SIMStatus];
+  v13 = [sIMStatus2 isEqualToString:v9];
 
   v14 = MGGetBoolAnswer();
-  if (a3 == 2)
+  if (status == 2)
   {
     ++self->_numActivationFailures;
     if (self->_hasCellularTelephony)
     {
-      v20 = [[SBActivationFailedAlertItem alloc] initWithFailureCount:self->_numActivationFailures slot:a4];
+      v20 = [[SBActivationFailedAlertItem alloc] initWithFailureCount:self->_numActivationFailures slot:slot];
 LABEL_13:
       v25 = +[SBSetupManager sharedInstance];
-      v26 = [v25 isInSetupMode];
+      isInSetupMode = [v25 isInSetupMode];
 
-      if (v26)
+      if (isInSetupMode)
       {
         [(SBAlertItem *)v20 setPendInSetupIfNotAllowed:0];
       }
@@ -1939,13 +1939,13 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (a3 == 1)
+  if (status == 1)
   {
     if (self->_hasCellularTelephony)
     {
       v22 = [SBDismissOnlyAlertItem alloc];
-      v23 = [MEMORY[0x277CCA8D8] mainBundle];
-      v24 = [v23 localizedStringForKey:@"PHONE_ACTIVATED" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v24 = [mainBundle localizedStringForKey:@"PHONE_ACTIVATED" value:&stru_283094718 table:@"SpringBoard"];
       v20 = [(SBDismissOnlyAlertItem *)v22 initWithTitle:v24 body:0];
 
       goto LABEL_13;
@@ -1954,15 +1954,15 @@ LABEL_17:
     goto LABEL_15;
   }
 
-  if (!a3 && (*(self + 56) & 1) == 0 && ((v14 ^ 1 | v10 | v13) & 1) != 0)
+  if (!status && (*(self + 56) & 1) == 0 && ((v14 ^ 1 | v10 | v13) & 1) != 0)
   {
     if (self->_hasCellularTelephony)
     {
       v15 = [SBDismissOnlyAlertItem alloc];
-      v16 = [MEMORY[0x277CCA8D8] mainBundle];
-      v17 = [v16 localizedStringForKey:@"WAITING_FOR_ACTIVATION_TITLE" value:&stru_283094718 table:@"SpringBoard"];
-      v18 = [MEMORY[0x277CCA8D8] mainBundle];
-      v19 = [v18 localizedStringForKey:@"WAITING_FOR_ACTIVATION_BODY" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v17 = [mainBundle2 localizedStringForKey:@"WAITING_FOR_ACTIVATION_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+      v19 = [mainBundle3 localizedStringForKey:@"WAITING_FOR_ACTIVATION_BODY" value:&stru_283094718 table:@"SpringBoard"];
       v20 = [(SBDismissOnlyAlertItem *)v15 initWithTitle:v17 body:v19];
 
       v21 = +[SBSetupManager sharedInstance];
@@ -1987,11 +1987,11 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_setIsInEmergencyCallbackMode:(unsigned __int8)a3
+- (void)_setIsInEmergencyCallbackMode:(unsigned __int8)mode
 {
   v14 = *MEMORY[0x277D85DE8];
   inEmergencyCallbackMode = self->_inEmergencyCallbackMode;
-  v4 = a3 != 0;
+  v4 = mode != 0;
   self->_inEmergencyCallbackMode = v4;
   if (inEmergencyCallbackMode != v4)
   {
@@ -2014,72 +2014,72 @@ LABEL_18:
 
 - (id)_primarySubscriptionInfo
 {
-  v3 = [(SBTelephonyManager *)self _primarySubscriptionSlot];
-  v4 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v5 = [v4 subscriptionInfoForSlot:v3];
+  _primarySubscriptionSlot = [(SBTelephonyManager *)self _primarySubscriptionSlot];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v5 = [telephonyStateProvider subscriptionInfoForSlot:_primarySubscriptionSlot];
 
   return v5;
 }
 
 - (id)_primaryCarrierBundleInfo
 {
-  v3 = [(SBTelephonyManager *)self _primarySubscriptionSlot];
-  v4 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v5 = [v4 carrierBundleInfoForSlot:v3];
+  _primarySubscriptionSlot = [(SBTelephonyManager *)self _primarySubscriptionSlot];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v5 = [telephonyStateProvider carrierBundleInfoForSlot:_primarySubscriptionSlot];
 
   return v5;
 }
 
 - (id)_primaryMobileEquipmentInfo
 {
-  v3 = [(SBTelephonyManager *)self _primarySubscriptionSlot];
-  v4 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v5 = [v4 mobileEquipmentInfoForSlot:v3];
+  _primarySubscriptionSlot = [(SBTelephonyManager *)self _primarySubscriptionSlot];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v5 = [telephonyStateProvider mobileEquipmentInfoForSlot:_primarySubscriptionSlot];
 
   return v5;
 }
 
 - (id)_secondarySubscriptionInfo
 {
-  v3 = [(SBTelephonyManager *)self _secondarySubscriptionSlot];
-  v4 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v5 = [v4 subscriptionInfoForSlot:v3];
+  _secondarySubscriptionSlot = [(SBTelephonyManager *)self _secondarySubscriptionSlot];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v5 = [telephonyStateProvider subscriptionInfoForSlot:_secondarySubscriptionSlot];
 
   return v5;
 }
 
 - (id)_secondarySubscriptionInfoIfEnabled
 {
-  v3 = [(SBTelephonyManager *)self _secondarySubscriptionSlotIfEnabled];
-  v4 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v5 = [v4 subscriptionInfoForSlot:v3];
+  _secondarySubscriptionSlotIfEnabled = [(SBTelephonyManager *)self _secondarySubscriptionSlotIfEnabled];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v5 = [telephonyStateProvider subscriptionInfoForSlot:_secondarySubscriptionSlotIfEnabled];
 
   return v5;
 }
 
 - (id)_secondaryCarrierBundleInfo
 {
-  v3 = [(SBTelephonyManager *)self _secondarySubscriptionSlot];
-  v4 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v5 = [v4 carrierBundleInfoForSlot:v3];
+  _secondarySubscriptionSlot = [(SBTelephonyManager *)self _secondarySubscriptionSlot];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v5 = [telephonyStateProvider carrierBundleInfoForSlot:_secondarySubscriptionSlot];
 
   return v5;
 }
 
 - (id)_secondaryCarrierBundleInfoIfEnabled
 {
-  v3 = [(SBTelephonyManager *)self _secondarySubscriptionSlotIfEnabled];
-  v4 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v5 = [v4 carrierBundleInfoForSlot:v3];
+  _secondarySubscriptionSlotIfEnabled = [(SBTelephonyManager *)self _secondarySubscriptionSlotIfEnabled];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v5 = [telephonyStateProvider carrierBundleInfoForSlot:_secondarySubscriptionSlotIfEnabled];
 
   return v5;
 }
 
 - (id)_secondaryMobileEquipmentInfo
 {
-  v3 = [(SBTelephonyManager *)self _secondarySubscriptionSlot];
-  v4 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v5 = [v4 mobileEquipmentInfoForSlot:v3];
+  _secondarySubscriptionSlot = [(SBTelephonyManager *)self _secondarySubscriptionSlot];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v5 = [telephonyStateProvider mobileEquipmentInfoForSlot:_secondarySubscriptionSlot];
 
   return v5;
 }
@@ -2106,9 +2106,9 @@ LABEL_18:
 
 - (int64_t)_secondarySubscriptionSlot
 {
-  v3 = [(SBTelephonyManager *)self _primarySubscriptionSlot];
+  _primarySubscriptionSlot = [(SBTelephonyManager *)self _primarySubscriptionSlot];
 
-  return [(SBTelephonyManager *)self _otherSubscriptionSlot:v3];
+  return [(SBTelephonyManager *)self _otherSubscriptionSlot:_primarySubscriptionSlot];
 }
 
 - (int64_t)_secondarySubscriptionSlotIfEnabled
@@ -2118,35 +2118,35 @@ LABEL_18:
     return 0;
   }
 
-  v3 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v4 = [v3 isDualSIMEnabled];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  isDualSIMEnabled = [telephonyStateProvider isDualSIMEnabled];
 
-  if (!v4)
+  if (!isDualSIMEnabled)
   {
     return 0;
   }
 
-  v5 = [(SBTelephonyManager *)self _primarySubscriptionSlot];
+  _primarySubscriptionSlot = [(SBTelephonyManager *)self _primarySubscriptionSlot];
 
-  return [(SBTelephonyManager *)self _otherSubscriptionSlotIfSIMPresent:v5];
+  return [(SBTelephonyManager *)self _otherSubscriptionSlotIfSIMPresent:_primarySubscriptionSlot];
 }
 
-- (int64_t)_otherSubscriptionSlot:(int64_t)a3
+- (int64_t)_otherSubscriptionSlot:(int64_t)slot
 {
-  if (a3 == 1)
+  if (slot == 1)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 2;
+    return slot == 2;
   }
 }
 
-- (int64_t)_otherSubscriptionSlotIfSIMPresent:(int64_t)a3
+- (int64_t)_otherSubscriptionSlotIfSIMPresent:(int64_t)present
 {
-  v4 = [(SBTelephonyManager *)self _otherSubscriptionSlot:a3];
+  v4 = [(SBTelephonyManager *)self _otherSubscriptionSlot:present];
 
   return [(SBTelephonyManager *)self _subscriptionSlotIfSIMPresent:v4];
 }
@@ -2154,8 +2154,8 @@ LABEL_18:
 - (int64_t)_dataPreferredSubscriptionSlotIfSIMPresent
 {
   v3 = [(SBTelephonyManager *)self _subscriptionSlotIfSIMPresent:2];
-  v4 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v5 = [v4 subscriptionInfoForSlot:v3];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v5 = [telephonyStateProvider subscriptionInfoForSlot:v3];
 
   if ([v5 isPreferredForDataConnections])
   {
@@ -2182,14 +2182,14 @@ LABEL_18:
   return result;
 }
 
-- (int64_t)_subscriptionSlotIfSIMPresent:(int64_t)a3
+- (int64_t)_subscriptionSlotIfSIMPresent:(int64_t)present
 {
-  v4 = [(SBTelephonyManager *)self telephonyStateProvider];
-  v5 = [v4 isSIMPresentForSlot:a3];
+  telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+  v5 = [telephonyStateProvider isSIMPresentForSlot:present];
 
   if (v5)
   {
-    return a3;
+    return present;
   }
 
   else
@@ -2198,14 +2198,14 @@ LABEL_18:
   }
 }
 
-- (void)subscriptionInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4
+- (void)subscriptionInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __69__SBTelephonyManager_subscriptionInfoDidChangeForStateProvider_slot___block_invoke;
   v4[3] = &unk_2783A8BC8;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = slot;
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 
@@ -2307,7 +2307,7 @@ LABEL_24:
   [v21 _updateNetworkLocale];
 }
 
-- (void)carrierBundleInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4
+- (void)carrierBundleInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -2319,22 +2319,22 @@ LABEL_24:
 
 - (id)carrierDisabledApplicationIDs
 {
-  v3 = [(SBTelephonyManager *)self _primaryCarrierBundleInfo];
-  v4 = [v3 disabledApplicationIDs];
+  _primaryCarrierBundleInfo = [(SBTelephonyManager *)self _primaryCarrierBundleInfo];
+  disabledApplicationIDs = [_primaryCarrierBundleInfo disabledApplicationIDs];
 
   v5 = [MEMORY[0x277CBEB58] set];
   v6 = v5;
-  if (v4)
+  if (disabledApplicationIDs)
   {
-    [v5 addObjectsFromArray:v4];
+    [v5 addObjectsFromArray:disabledApplicationIDs];
   }
 
-  v7 = [(SBTelephonyManager *)self _secondaryCarrierBundleInfoIfEnabled];
-  v8 = [v7 disabledApplicationIDs];
+  _secondaryCarrierBundleInfoIfEnabled = [(SBTelephonyManager *)self _secondaryCarrierBundleInfoIfEnabled];
+  disabledApplicationIDs2 = [_secondaryCarrierBundleInfoIfEnabled disabledApplicationIDs];
 
-  if (v8)
+  if (disabledApplicationIDs2)
   {
-    [v6 addObjectsFromArray:v8];
+    [v6 addObjectsFromArray:disabledApplicationIDs2];
   }
 
   return v6;
@@ -2344,7 +2344,7 @@ LABEL_24:
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_21ED4E000, a2, OS_LOG_TYPE_DEBUG, "Wireless modem data: %@", &v2, 0xCu);
 }
 
@@ -2410,11 +2410,11 @@ uint64_t __65__SBTelephonyManager__queue_noteWirelessModemDynamicStoreChanged__b
   return [*(a1 + 32) _setIsNetworkTethering:*(a1 + 48) withNumberOfDevices:*(a1 + 40)];
 }
 
-- (void)_setIsNetworkTethering:(BOOL)a3 withNumberOfDevices:(int)a4
+- (void)_setIsNetworkTethering:(BOOL)tethering withNumberOfDevices:(int)devices
 {
-  v5 = a3;
+  tetheringCopy = tethering;
   v20 = *MEMORY[0x277D85DE8];
-  if (self->_isNetworkTethering != a3 || self->_numberOfNetworkTetheredDevices != a4)
+  if (self->_isNetworkTethering != tethering || self->_numberOfNetworkTetheredDevices != devices)
   {
     v7 = SBLogStatusBarish();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2432,7 +2432,7 @@ uint64_t __65__SBTelephonyManager__queue_noteWirelessModemDynamicStoreChanged__b
       }
 
       v12 = 138413058;
-      if (v5)
+      if (tetheringCopy)
       {
         v8 = @"ON";
       }
@@ -2443,25 +2443,25 @@ uint64_t __65__SBTelephonyManager__queue_noteWirelessModemDynamicStoreChanged__b
       v16 = 2114;
       v17 = v8;
       v18 = 1024;
-      v19 = a4;
+      devicesCopy = devices;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Previous tethering state was %@ with %d devices connected; new state is %{public}@ with %d devices connected; updating UI.", &v12, 0x22u);
     }
 
-    self->_isNetworkTethering = v5;
-    self->_numberOfNetworkTetheredDevices = a4;
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 postNotificationName:*MEMORY[0x277D67A90] object:0];
+    self->_isNetworkTethering = tetheringCopy;
+    self->_numberOfNetworkTetheredDevices = devices;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x277D67A90] object:0];
   }
 }
 
-- (void)preHeatDataLinkForDomains:(id)a3
+- (void)preHeatDataLinkForDomains:(id)domains
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  domainsCopy = domains;
+  if ([domainsCopy count])
   {
-    v5 = [(SBTelephonyManager *)self telephonyStateProvider];
-    v6 = [v5 subscriptionInfoForSlot:{-[SBTelephonyManager _dataConnectedSubscriptionSlot](self, "_dataConnectedSubscriptionSlot")}];
+    telephonyStateProvider = [(SBTelephonyManager *)self telephonyStateProvider];
+    v6 = [telephonyStateProvider subscriptionInfoForSlot:{-[SBTelephonyManager _dataConnectedSubscriptionSlot](self, "_dataConnectedSubscriptionSlot")}];
 
     if (([v6 dataConnectionType] - 2) <= 8)
     {
@@ -2470,7 +2470,7 @@ uint64_t __65__SBTelephonyManager__queue_noteWirelessModemDynamicStoreChanged__b
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v7 = v4;
+      v7 = domainsCopy;
       v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
@@ -2602,7 +2602,7 @@ void __48__SBTelephonyManager_preHeatDataLinkForDomains___block_invoke(uint64_t 
 
 - (void)isUsingVPNConnection
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBTelephonyManager isUsingVPNConnection]"];
   [OUTLINED_FUNCTION_2_0(v0 v1];
 }

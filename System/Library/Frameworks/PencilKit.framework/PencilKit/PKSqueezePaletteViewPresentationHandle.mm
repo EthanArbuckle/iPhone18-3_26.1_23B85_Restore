@@ -1,20 +1,20 @@
 @interface PKSqueezePaletteViewPresentationHandle
 - (double)animationProgress;
-- (id)initWithPaletteViewOpacityPresentationValue:(double)a3 paletteViewScalePresentationValue:;
-- (void)animateToPaletteViewOpacity:(void *)a3 paletteViewScale:(void *)a4 animated:(double)a5 presentationValueHandler:(double)a6 completion:;
+- (id)initWithPaletteViewOpacityPresentationValue:(double)value paletteViewScalePresentationValue:;
+- (void)animateToPaletteViewOpacity:(void *)opacity paletteViewScale:(void *)scale animated:(double)animated presentationValueHandler:(double)handler completion:;
 @end
 
 @implementation PKSqueezePaletteViewPresentationHandle
 
-- (id)initWithPaletteViewOpacityPresentationValue:(double)a3 paletteViewScalePresentationValue:
+- (id)initWithPaletteViewOpacityPresentationValue:(double)value paletteViewScalePresentationValue:
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = PKSqueezePaletteViewPresentationHandle;
   v5 = objc_msgSendSuper2(&v17, sel_init);
   if (v5)
@@ -28,7 +28,7 @@
     v9 = v5[4];
     v5[4] = v8;
 
-    [v5[4] setValue:a3];
+    [v5[4] setValue:value];
     v10 = v5[4];
     v18[0] = v5[3];
     v18[1] = v10;
@@ -64,27 +64,27 @@ void __120__PKSqueezePaletteViewPresentationHandle_initWithPaletteViewOpacityPre
   }
 }
 
-- (void)animateToPaletteViewOpacity:(void *)a3 paletteViewScale:(void *)a4 animated:(double)a5 presentationValueHandler:(double)a6 completion:
+- (void)animateToPaletteViewOpacity:(void *)opacity paletteViewScale:(void *)scale animated:(double)animated presentationValueHandler:(double)handler completion:
 {
-  v11 = a3;
-  v12 = a4;
-  if (a1)
+  opacityCopy = opacity;
+  scaleCopy = scale;
+  if (self)
   {
-    v13 = [v11 copy];
-    v14 = *(a1 + 40);
-    *(a1 + 40) = v13;
+    v13 = [opacityCopy copy];
+    v14 = *(self + 40);
+    *(self + 40) = v13;
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __132__PKSqueezePaletteViewPresentationHandle_animateToPaletteViewOpacity_paletteViewScale_animated_presentationValueHandler_completion___block_invoke;
     aBlock[3] = &unk_1E82D9FE0;
-    v33 = v12;
+    v33 = scaleCopy;
     v15 = _Block_copy(aBlock);
-    [*(a1 + 24) value];
-    *(a1 + 8) = v16;
-    [*(a1 + 32) value];
-    *(a1 + 16) = v17;
-    objc_initWeak(&location, a1);
+    [*(self + 24) value];
+    *(self + 8) = v16;
+    [*(self + 32) value];
+    *(self + 16) = v17;
+    objc_initWeak(&location, self);
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __132__PKSqueezePaletteViewPresentationHandle_animateToPaletteViewOpacity_paletteViewScale_animated_presentationValueHandler_completion___block_invoke_2;
@@ -92,8 +92,8 @@ void __120__PKSqueezePaletteViewPresentationHandle_initWithPaletteViewOpacityPre
     objc_copyWeak(v30, &location);
     v18 = v15;
     v29 = v18;
-    v30[1] = *&a5;
-    v30[2] = *&a6;
+    v30[1] = *&animated;
+    v30[2] = *&handler;
     v22 = MEMORY[0x1E69E9820];
     v23 = 3221225472;
     v24 = __132__PKSqueezePaletteViewPresentationHandle_animateToPaletteViewOpacity_paletteViewScale_animated_presentationValueHandler_completion___block_invoke_3;
@@ -161,19 +161,19 @@ void __132__PKSqueezePaletteViewPresentationHandle_animateToPaletteViewOpacity_p
 
 - (double)animationProgress
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [*(a1 + 24) presentationValue];
-  v3 = v2 - *(a1 + 8);
-  [*(a1 + 24) value];
-  v5 = v3 / (v4 - *(a1 + 8));
-  [*(a1 + 32) presentationValue];
-  v7 = v6 - *(a1 + 16);
-  [*(a1 + 32) value];
-  return (v5 + v7 / (v8 - *(a1 + 16))) * 0.5;
+  [*(self + 24) presentationValue];
+  v3 = v2 - *(self + 8);
+  [*(self + 24) value];
+  v5 = v3 / (v4 - *(self + 8));
+  [*(self + 32) presentationValue];
+  v7 = v6 - *(self + 16);
+  [*(self + 32) value];
+  return (v5 + v7 / (v8 - *(self + 16))) * 0.5;
 }
 
 @end

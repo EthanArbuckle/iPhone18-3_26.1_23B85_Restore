@@ -29,8 +29,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) UUIDString];
-        v12 = [a1 localIdentifierWithUUID:v11];
+        uUIDString = [*(*(&v16 + 1) + 8 * i) UUIDString];
+        v12 = [self localIdentifierWithUUID:uUIDString];
         [v5 addObject:v12];
       }
 
@@ -48,13 +48,13 @@
 
 - (id)npto_uuid
 {
-  v2 = objc_getAssociatedObject(a1, sel_npto_uuid);
+  v2 = objc_getAssociatedObject(self, sel_npto_uuid);
   if (!v2)
   {
     v3 = objc_alloc(MEMORY[0x277CCAD78]);
     v4 = MEMORY[0x277CD9918];
-    v5 = [a1 localIdentifier];
-    v6 = [v4 uuidFromLocalIdentifier:v5];
+    localIdentifier = [self localIdentifier];
+    v6 = [v4 uuidFromLocalIdentifier:localIdentifier];
     v2 = [v3 initWithUUIDString:v6];
   }
 

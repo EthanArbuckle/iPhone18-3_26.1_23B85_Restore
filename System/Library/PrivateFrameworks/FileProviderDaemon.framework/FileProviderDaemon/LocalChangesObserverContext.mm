@@ -1,9 +1,9 @@
 @interface LocalChangesObserverContext
 - (_TtC18FileProviderDaemon27LocalChangesObserverContext)init;
 - (int64_t)suggestedBatchSize;
-- (void)didUpdateItems:(id)a3;
-- (void)finishEnumeratingChangesUpToSyncAnchor:(id)a3 moreComing:(BOOL)a4;
-- (void)finishEnumeratingWithError:(id)a3;
+- (void)didUpdateItems:(id)items;
+- (void)finishEnumeratingChangesUpToSyncAnchor:(id)anchor moreComing:(BOOL)coming;
+- (void)finishEnumeratingWithError:(id)error;
 @end
 
 @implementation LocalChangesObserverContext
@@ -19,25 +19,25 @@
   return [v2 suggestedBatchSize];
 }
 
-- (void)finishEnumeratingChangesUpToSyncAnchor:(id)a3 moreComing:(BOOL)a4
+- (void)finishEnumeratingChangesUpToSyncAnchor:(id)anchor moreComing:(BOOL)coming
 {
-  v6 = a3;
-  v7 = self;
-  sub_1CF02B218(v6, a4);
+  anchorCopy = anchor;
+  selfCopy = self;
+  sub_1CF02B218(anchorCopy, coming);
 }
 
-- (void)didUpdateItems:(id)a3
+- (void)didUpdateItems:(id)items
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC4BF580, &qword_1CFA01DB0);
   v4 = sub_1CF9E6D48();
-  v5 = self;
+  selfCopy = self;
   sub_1CF4F7838(v4);
 }
 
-- (void)finishEnumeratingWithError:(id)a3
+- (void)finishEnumeratingWithError:(id)error
 {
-  v5 = a3;
-  v4 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_1CF4F7A10();
 }
 

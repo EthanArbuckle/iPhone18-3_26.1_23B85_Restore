@@ -1,22 +1,22 @@
 @interface RTAppClipManager
-- (RTAppClipManager)initWithDistanceCalculator:(id)a3;
-- (RTAppClipManager)initWithProactiveCDNDownloader:(id)a3 distanceCalculator:(id)a4;
-- (id)_selectClosestLocationsFromLocations:(id)a3 toLocation:(id)a4 limit:(unint64_t)a5;
-- (void)_fetchNearbyAppClipLocationsFromLocation:(id)a3 radius:(double)a4 limit:(unint64_t)a5 handler:(id)a6;
-- (void)fetchNearbyAppClipLocationsFromLocation:(id)a3 radius:(double)a4 limit:(unint64_t)a5 handler:(id)a6;
+- (RTAppClipManager)initWithDistanceCalculator:(id)calculator;
+- (RTAppClipManager)initWithProactiveCDNDownloader:(id)downloader distanceCalculator:(id)calculator;
+- (id)_selectClosestLocationsFromLocations:(id)locations toLocation:(id)location limit:(unint64_t)limit;
+- (void)_fetchNearbyAppClipLocationsFromLocation:(id)location radius:(double)radius limit:(unint64_t)limit handler:(id)handler;
+- (void)fetchNearbyAppClipLocationsFromLocation:(id)location radius:(double)radius limit:(unint64_t)limit handler:(id)handler;
 @end
 
 @implementation RTAppClipManager
 
-- (RTAppClipManager)initWithDistanceCalculator:(id)a3
+- (RTAppClipManager)initWithDistanceCalculator:(id)calculator
 {
-  v4 = a3;
-  if (v4)
+  calculatorCopy = calculator;
+  if (calculatorCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x277D41BA0]);
-    self = [(RTAppClipManager *)self initWithProactiveCDNDownloader:v5 distanceCalculator:v4];
+    self = [(RTAppClipManager *)self initWithProactiveCDNDownloader:v5 distanceCalculator:calculatorCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -28,24 +28,24 @@
       _os_log_error_impl(&dword_2304B3000, v7, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: distanceCalculator", v9, 2u);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (RTAppClipManager)initWithProactiveCDNDownloader:(id)a3 distanceCalculator:(id)a4
+- (RTAppClipManager)initWithProactiveCDNDownloader:(id)downloader distanceCalculator:(id)calculator
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  downloaderCopy = downloader;
+  calculatorCopy = calculator;
+  if (!calculatorCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -56,7 +56,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!downloaderCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -75,24 +75,24 @@ LABEL_12:
   p_isa = &v9->super.super.super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_distanceCalculator, a4);
-    objc_storeStrong(p_isa + 5, a3);
+    objc_storeStrong(&v9->_distanceCalculator, calculator);
+    objc_storeStrong(p_isa + 5, downloader);
   }
 
   self = p_isa;
-  v11 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v11;
+  return selfCopy;
 }
 
-- (id)_selectClosestLocationsFromLocations:(id)a3 toLocation:(id)a4 limit:(unint64_t)a5
+- (id)_selectClosestLocationsFromLocations:(id)locations toLocation:(id)location limit:(unint64_t)limit
 {
   v43 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v31 = a4;
-  v29 = v9;
-  if (v31)
+  locationsCopy = locations;
+  locationCopy = location;
+  v29 = locationsCopy;
+  if (locationCopy)
   {
     v28 = a2;
     oslog = objc_opt_new();
@@ -100,7 +100,7 @@ LABEL_10:
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v10 = v9;
+    v10 = locationsCopy;
     v11 = [v10 countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v11)
     {
@@ -117,7 +117,7 @@ LABEL_10:
           v14 = *(*(&v38 + 1) + 8 * i);
           distanceCalculator = self->_distanceCalculator;
           v37 = 0;
-          [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v14 toLocation:v31 error:&v37];
+          [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v14 toLocation:locationCopy error:&v37];
           v17 = v16;
           v18 = v37;
           if (!v18)
@@ -153,7 +153,7 @@ LABEL_10:
     v32[5] = v28;
     v24 = [(_RTMap *)v23 withBlock:v32];
 
-    if ([v24 count] <= a5)
+    if ([v24 count] <= limit)
     {
       v25 = v24;
     }
@@ -225,12 +225,12 @@ id __74__RTAppClipManager__selectClosestLocationsFromLocations_toLocation_limit_
   return v10;
 }
 
-- (void)_fetchNearbyAppClipLocationsFromLocation:(id)a3 radius:(double)a4 limit:(unint64_t)a5 handler:(id)a6
+- (void)_fetchNearbyAppClipLocationsFromLocation:(id)location radius:(double)radius limit:(unint64_t)limit handler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
-  if (!v11)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (!locationCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -243,7 +243,7 @@ id __74__RTAppClipManager__selectClosestLocationsFromLocations_toLocation_limit_
     }
   }
 
-  if (a4 < 0.0)
+  if (radius < 0.0)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -256,7 +256,7 @@ id __74__RTAppClipManager__selectClosestLocationsFromLocations_toLocation_limit_
     }
   }
 
-  if (v12)
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -267,16 +267,16 @@ id __74__RTAppClipManager__selectClosestLocationsFromLocations_toLocation_limit_
         *buf = 138413059;
         v26 = v16;
         v27 = 2117;
-        v28 = v11;
+        v28 = locationCopy;
         v29 = 2048;
-        v30 = a4;
+        radiusCopy = radius;
         v31 = 2048;
-        v32 = a5;
+        limitCopy = limit;
         _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%@, fetch nearby app clips, location, %{sensitive}@, radius, %.2f, limit, %lu", buf, 0x2Au);
       }
     }
 
-    v17 = [objc_alloc(MEMORY[0x277CE41F8]) initWithRTLocation:v11];
+    v17 = [objc_alloc(MEMORY[0x277CE41F8]) initWithRTLocation:locationCopy];
     procativeCDNDownloader = self->_procativeCDNDownloader;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -284,10 +284,10 @@ id __74__RTAppClipManager__selectClosestLocationsFromLocations_toLocation_limit_
     v19[3] = &unk_2788CA350;
     v19[4] = self;
     v22 = a2;
-    v21 = v12;
-    v20 = v11;
-    v23 = a4;
-    v24 = a5;
+    v21 = handlerCopy;
+    v20 = locationCopy;
+    radiusCopy2 = radius;
+    limitCopy2 = limit;
     [(ATXProactiveCDNDownloader *)procativeCDNDownloader heroDatasForLocation:v17 completion:v19];
   }
 }
@@ -436,23 +436,23 @@ void __82__RTAppClipManager__fetchNearbyAppClipLocationsFromLocation_radius_limi
   }
 }
 
-- (void)fetchNearbyAppClipLocationsFromLocation:(id)a3 radius:(double)a4 limit:(unint64_t)a5 handler:(id)a6
+- (void)fetchNearbyAppClipLocationsFromLocation:(id)location radius:(double)radius limit:(unint64_t)limit handler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__RTAppClipManager_fetchNearbyAppClipLocationsFromLocation_radius_limit_handler___block_invoke;
   block[3] = &unk_2788C6C20;
   block[4] = self;
-  v16 = v10;
-  v18 = a4;
-  v19 = a5;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, block);
+  v16 = locationCopy;
+  radiusCopy = radius;
+  limitCopy = limit;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = locationCopy;
+  dispatch_async(queue, block);
 }
 
 @end

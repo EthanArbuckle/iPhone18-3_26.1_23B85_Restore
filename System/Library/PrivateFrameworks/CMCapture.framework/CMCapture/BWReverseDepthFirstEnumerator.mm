@@ -1,7 +1,7 @@
 @interface BWReverseDepthFirstEnumerator
-- (BWReverseDepthFirstEnumerator)initWithGraph:(id)a3 vertexOrdering:(int)a4;
+- (BWReverseDepthFirstEnumerator)initWithGraph:(id)graph vertexOrdering:(int)ordering;
 - (id)nextObject;
-- (uint64_t)_nextUnvisitedParent:(uint64_t)a1;
+- (uint64_t)_nextUnvisitedParent:(uint64_t)parent;
 - (uint64_t)nextObject;
 - (void)dealloc;
 @end
@@ -12,9 +12,9 @@
 {
   if (![(NSMutableArray *)self->_stack count])
   {
-    v11 = [(BWGraph *)self->super._graph _sinkNodes];
+    _sinkNodes = [(BWGraph *)self->super._graph _sinkNodes];
     currentSinkIndex = self->_currentSinkIndex;
-    if (currentSinkIndex >= [v11 count])
+    if (currentSinkIndex >= [_sinkNodes count])
     {
       return 0;
     }
@@ -38,17 +38,17 @@
       while (v15);
     }
 
-    v4 = [(NSMutableArray *)self->_stack bw_pop];
+    bw_pop = [(NSMutableArray *)self->_stack bw_pop];
   }
 
   else
   {
-    v4 = [(NSMutableArray *)stack bw_pop];
+    bw_pop = [(NSMutableArray *)stack bw_pop];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [objc_msgSend(v4 "inputs")];
+    v5 = [objc_msgSend(bw_pop "inputs")];
     v6 = [v5 countByEnumeratingWithState:&v17 objects:v16 count:16];
     if (v6)
     {
@@ -82,7 +82,7 @@
   }
 
   self->super._depth = 0;
-  return v4;
+  return bw_pop;
 }
 
 - (uint64_t)nextObject
@@ -101,15 +101,15 @@
   [(BWNodeEnumerator *)&v3 dealloc];
 }
 
-- (BWReverseDepthFirstEnumerator)initWithGraph:(id)a3 vertexOrdering:(int)a4
+- (BWReverseDepthFirstEnumerator)initWithGraph:(id)graph vertexOrdering:(int)ordering
 {
   v8.receiver = self;
   v8.super_class = BWReverseDepthFirstEnumerator;
-  v5 = [(BWNodeEnumerator *)&v8 initWithGraph:a3];
+  v5 = [(BWNodeEnumerator *)&v8 initWithGraph:graph];
   v6 = v5;
   if (v5)
   {
-    v5->_ordering = a4;
+    v5->_ordering = ordering;
     v5->_stack = objc_alloc_init(MEMORY[0x1E695DF70]);
     v6->_currentSinkIndex = 0;
   }
@@ -117,14 +117,14 @@
   return v6;
 }
 
-- (uint64_t)_nextUnvisitedParent:(uint64_t)a1
+- (uint64_t)_nextUnvisitedParent:(uint64_t)parent
 {
-  if (!a1)
+  if (!parent)
   {
     return 0;
   }
 
-  v4 = [objc_msgSend(OUTLINED_FUNCTION_0_73(a1 a2)];
+  v4 = [objc_msgSend(OUTLINED_FUNCTION_0_73(parent a2)];
   v6 = OUTLINED_FUNCTION_44_0(v4, v5);
   if (!v6)
   {

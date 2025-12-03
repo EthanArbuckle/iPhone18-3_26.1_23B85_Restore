@@ -1,14 +1,14 @@
 @interface ClimateFocusStackView
 - (NSArray)preferredFocusEnvironments;
-- (_TtC7Climate21ClimateFocusStackView)initWithCoder:(id)a3;
+- (_TtC7Climate21ClimateFocusStackView)initWithCoder:(id)coder;
 @end
 
 @implementation ClimateFocusStackView
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
-  v3 = [(ClimateFocusStackView *)v2 arrangedSubviews];
+  selfCopy = self;
+  arrangedSubviews = [(ClimateFocusStackView *)selfCopy arrangedSubviews];
   sub_100005AA0();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -20,11 +20,11 @@
   return v5.super.isa;
 }
 
-- (_TtC7Climate21ClimateFocusStackView)initWithCoder:(id)a3
+- (_TtC7Climate21ClimateFocusStackView)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for ClimateFocusStackView();
-  return [(ClimateFocusStackView *)&v5 initWithCoder:a3];
+  return [(ClimateFocusStackView *)&v5 initWithCoder:coder];
 }
 
 @end

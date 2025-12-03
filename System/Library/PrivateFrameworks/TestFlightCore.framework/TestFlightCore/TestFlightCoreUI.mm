@@ -1,12 +1,12 @@
 @interface TestFlightCoreUI
-+ (id)generateFeedbackViewWithDelegate:(id)a3;
-+ (id)generateWhatToTestViewWithDelegate:(id)a3;
++ (id)generateFeedbackViewWithDelegate:(id)delegate;
++ (id)generateWhatToTestViewWithDelegate:(id)delegate;
 - (_TtC14TestFlightCore16TestFlightCoreUI)init;
 @end
 
 @implementation TestFlightCoreUI
 
-+ (id)generateWhatToTestViewWithDelegate:(id)a3
++ (id)generateWhatToTestViewWithDelegate:(id)delegate
 {
   type metadata accessor for WhatToTestViewModel();
   v3 = swift_unknownObjectRetain_n();
@@ -21,7 +21,7 @@
   return v5;
 }
 
-+ (id)generateFeedbackViewWithDelegate:(id)a3
++ (id)generateFeedbackViewWithDelegate:(id)delegate
 {
   v3 = type metadata accessor for FeedbackView();
   v5 = MEMORY[0x28223BE20](v3 - 8, v4);

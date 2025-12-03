@@ -1,6 +1,6 @@
 @interface ARRaycastQuery
 - (ARRaycastQuery)initWithOrigin:(simd_float3)origin direction:(simd_float3)direction allowingTarget:(ARRaycastTarget)target alignment:(ARRaycastTargetAlignment)alignment;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
@@ -22,13 +22,13 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(ARRaycastQuery *)self origin];
     v16 = v6;
     [v5 origin];
@@ -36,8 +36,8 @@
     v8.i32[3] = v8.i32[2];
     if ((vminvq_u32(v8) & 0x80000000) != 0 && (-[ARRaycastQuery direction](self, "direction"), v17 = v9, [v5 direction], v11 = vceqq_f32(v17, v10), v11.i32[3] = v11.i32[2], (vminvq_u32(v11) & 0x80000000) != 0) && (v12 = -[ARRaycastQuery target](self, "target"), v12 == objc_msgSend(v5, "target")))
     {
-      v13 = [(ARRaycastQuery *)self targetAlignment];
-      v14 = v13 == [v5 targetAlignment];
+      targetAlignment = [(ARRaycastQuery *)self targetAlignment];
+      v14 = targetAlignment == [v5 targetAlignment];
     }
 
     else
@@ -56,19 +56,19 @@
 
 - (id)description
 {
-  v3 = [(ARRaycastQuery *)self targetAlignment];
-  if (v3 > ARRaycastTargetAlignmentAny)
+  targetAlignment = [(ARRaycastQuery *)self targetAlignment];
+  if (targetAlignment > ARRaycastTargetAlignmentAny)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E817D780[v3];
+    v4 = off_1E817D780[targetAlignment];
   }
 
-  v5 = [(ARRaycastQuery *)self target];
-  switch(v5)
+  target = [(ARRaycastQuery *)self target];
+  switch(target)
   {
     case ARRaycastTargetEstimatedPlane:
       v6 = @"estimatedPlane";

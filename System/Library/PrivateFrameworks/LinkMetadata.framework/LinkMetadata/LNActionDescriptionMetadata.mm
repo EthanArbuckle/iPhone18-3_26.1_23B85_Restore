@@ -1,21 +1,21 @@
 @interface LNActionDescriptionMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNActionDescriptionMetadata)actionDescriptionMetadataWithIcon:(id)a3;
-- (LNActionDescriptionMetadata)initWithCoder:(id)a3;
-- (LNActionDescriptionMetadata)initWithDescriptionText:(id)a3 categoryName:(id)a4 searchKeywords:(id)a5 resultValueName:(id)a6 icon:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNActionDescriptionMetadata)actionDescriptionMetadataWithIcon:(id)icon;
+- (LNActionDescriptionMetadata)initWithCoder:(id)coder;
+- (LNActionDescriptionMetadata)initWithDescriptionText:(id)text categoryName:(id)name searchKeywords:(id)keywords resultValueName:(id)valueName icon:(id)icon;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNActionDescriptionMetadata
 
-- (LNActionDescriptionMetadata)actionDescriptionMetadataWithIcon:(id)a3
+- (LNActionDescriptionMetadata)actionDescriptionMetadataWithIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   v5 = [(LNActionDescriptionMetadata *)self copy];
-  v6 = [v4 copy];
+  v6 = [iconCopy copy];
 
   v7 = v5[5];
   v5[5] = v6;
@@ -23,13 +23,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -38,10 +38,10 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v7 = [(LNActionDescriptionMetadata *)self descriptionText];
-    v8 = [(LNActionDescriptionMetadata *)v6 descriptionText];
-    v9 = v7;
-    v10 = v8;
+    descriptionText = [(LNActionDescriptionMetadata *)self descriptionText];
+    descriptionText2 = [(LNActionDescriptionMetadata *)v6 descriptionText];
+    v9 = descriptionText;
+    v10 = descriptionText2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -68,10 +68,10 @@ LABEL_45:
       }
     }
 
-    v16 = [(LNActionDescriptionMetadata *)self searchKeywords];
-    v17 = [(LNActionDescriptionMetadata *)v6 searchKeywords];
-    v14 = v16;
-    v18 = v17;
+    searchKeywords = [(LNActionDescriptionMetadata *)self searchKeywords];
+    searchKeywords2 = [(LNActionDescriptionMetadata *)v6 searchKeywords];
+    v14 = searchKeywords;
+    v18 = searchKeywords2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -98,10 +98,10 @@ LABEL_44:
       }
     }
 
-    v22 = [(LNActionDescriptionMetadata *)self categoryName];
-    v23 = [(LNActionDescriptionMetadata *)v6 categoryName];
-    v20 = v22;
-    v24 = v23;
+    categoryName = [(LNActionDescriptionMetadata *)self categoryName];
+    categoryName2 = [(LNActionDescriptionMetadata *)v6 categoryName];
+    v20 = categoryName;
+    v24 = categoryName2;
     v41 = v24;
     if (v20 != v24)
     {
@@ -121,10 +121,10 @@ LABEL_44:
 
 LABEL_24:
           v40 = v20;
-          v27 = [(LNActionDescriptionMetadata *)self resultValueName];
-          v28 = [(LNActionDescriptionMetadata *)v6 resultValueName];
-          v29 = v27;
-          v30 = v28;
+          resultValueName = [(LNActionDescriptionMetadata *)self resultValueName];
+          resultValueName2 = [(LNActionDescriptionMetadata *)v6 resultValueName];
+          v29 = resultValueName;
+          v30 = resultValueName2;
           v38 = v30;
           v39 = v29;
           if (v29 == v30)
@@ -164,9 +164,9 @@ LABEL_40:
           }
 
           v33 = [(LNActionDescriptionMetadata *)self icon:v38];
-          v34 = [(LNActionDescriptionMetadata *)v6 icon];
+          icon = [(LNActionDescriptionMetadata *)v6 icon];
           v29 = v33;
-          v35 = v34;
+          v35 = icon;
           v36 = v35;
           if (v29 == v35)
           {
@@ -222,16 +222,16 @@ LABEL_47:
 
 - (unint64_t)hash
 {
-  v3 = [(LNActionDescriptionMetadata *)self descriptionText];
-  v4 = [v3 hash];
-  v5 = [(LNActionDescriptionMetadata *)self searchKeywords];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNActionDescriptionMetadata *)self categoryName];
-  v8 = [v7 hash];
-  v9 = [(LNActionDescriptionMetadata *)self resultValueName];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(LNActionDescriptionMetadata *)self icon];
-  v12 = [v11 hash];
+  descriptionText = [(LNActionDescriptionMetadata *)self descriptionText];
+  v4 = [descriptionText hash];
+  searchKeywords = [(LNActionDescriptionMetadata *)self searchKeywords];
+  v6 = [searchKeywords hash] ^ v4;
+  categoryName = [(LNActionDescriptionMetadata *)self categoryName];
+  v8 = [categoryName hash];
+  resultValueName = [(LNActionDescriptionMetadata *)self resultValueName];
+  v10 = v6 ^ v8 ^ [resultValueName hash];
+  icon = [(LNActionDescriptionMetadata *)self icon];
+  v12 = [icon hash];
 
   return v10 ^ v12;
 }
@@ -241,90 +241,90 @@ LABEL_47:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNActionDescriptionMetadata *)self descriptionText];
-  v7 = [(LNActionDescriptionMetadata *)self categoryName];
-  v8 = [(LNActionDescriptionMetadata *)self searchKeywords];
-  v9 = [(LNActionDescriptionMetadata *)self resultValueName];
-  v10 = [(LNActionDescriptionMetadata *)self icon];
-  v11 = [v3 stringWithFormat:@"<%@: %p, description: %@, categoryName: %@, searchKeywords: [%@], resultValueName: %@, icon: %@>", v5, self, v6, v7, v8, v9, v10];
+  descriptionText = [(LNActionDescriptionMetadata *)self descriptionText];
+  categoryName = [(LNActionDescriptionMetadata *)self categoryName];
+  searchKeywords = [(LNActionDescriptionMetadata *)self searchKeywords];
+  resultValueName = [(LNActionDescriptionMetadata *)self resultValueName];
+  icon = [(LNActionDescriptionMetadata *)self icon];
+  v11 = [v3 stringWithFormat:@"<%@: %p, description: %@, categoryName: %@, searchKeywords: [%@], resultValueName: %@, icon: %@>", v5, self, descriptionText, categoryName, searchKeywords, resultValueName, icon];
 
   return v11;
 }
 
-- (LNActionDescriptionMetadata)initWithCoder:(id)a3
+- (LNActionDescriptionMetadata)initWithCoder:(id)coder
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"descriptionText"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"descriptionText"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"categoryName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"categoryName"];
     v7 = MEMORY[0x1E695DFD8];
     v16[0] = objc_opt_class();
     v16[1] = objc_opt_class();
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     v9 = [v7 setWithArray:v8];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"searchKeywords"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"searchKeywords"];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resultValueName"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resultValueName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
     self = [(LNActionDescriptionMetadata *)self initWithDescriptionText:v5 categoryName:v6 searchKeywords:v10 resultValueName:v11 icon:v12];
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNActionDescriptionMetadata *)self descriptionText];
-  [v4 encodeObject:v5 forKey:@"descriptionText"];
+  coderCopy = coder;
+  descriptionText = [(LNActionDescriptionMetadata *)self descriptionText];
+  [coderCopy encodeObject:descriptionText forKey:@"descriptionText"];
 
-  v6 = [(LNActionDescriptionMetadata *)self categoryName];
-  [v4 encodeObject:v6 forKey:@"categoryName"];
+  categoryName = [(LNActionDescriptionMetadata *)self categoryName];
+  [coderCopy encodeObject:categoryName forKey:@"categoryName"];
 
-  v7 = [(LNActionDescriptionMetadata *)self searchKeywords];
-  [v4 encodeObject:v7 forKey:@"searchKeywords"];
+  searchKeywords = [(LNActionDescriptionMetadata *)self searchKeywords];
+  [coderCopy encodeObject:searchKeywords forKey:@"searchKeywords"];
 
-  v8 = [(LNActionDescriptionMetadata *)self resultValueName];
-  [v4 encodeObject:v8 forKey:@"resultValueName"];
+  resultValueName = [(LNActionDescriptionMetadata *)self resultValueName];
+  [coderCopy encodeObject:resultValueName forKey:@"resultValueName"];
 
-  v9 = [(LNActionDescriptionMetadata *)self icon];
-  [v4 encodeObject:v9 forKey:@"icon"];
+  icon = [(LNActionDescriptionMetadata *)self icon];
+  [coderCopy encodeObject:icon forKey:@"icon"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(LNActionDescriptionMetadata *)self descriptionText];
-  v6 = [(LNActionDescriptionMetadata *)self categoryName];
-  v7 = [(LNActionDescriptionMetadata *)self searchKeywords];
-  v8 = [(LNActionDescriptionMetadata *)self resultValueName];
-  v9 = [(LNActionDescriptionMetadata *)self icon];
-  v10 = [v4 initWithDescriptionText:v5 categoryName:v6 searchKeywords:v7 resultValueName:v8 icon:v9];
+  descriptionText = [(LNActionDescriptionMetadata *)self descriptionText];
+  categoryName = [(LNActionDescriptionMetadata *)self categoryName];
+  searchKeywords = [(LNActionDescriptionMetadata *)self searchKeywords];
+  resultValueName = [(LNActionDescriptionMetadata *)self resultValueName];
+  icon = [(LNActionDescriptionMetadata *)self icon];
+  v10 = [v4 initWithDescriptionText:descriptionText categoryName:categoryName searchKeywords:searchKeywords resultValueName:resultValueName icon:icon];
 
   return v10;
 }
 
-- (LNActionDescriptionMetadata)initWithDescriptionText:(id)a3 categoryName:(id)a4 searchKeywords:(id)a5 resultValueName:(id)a6 icon:(id)a7
+- (LNActionDescriptionMetadata)initWithDescriptionText:(id)text categoryName:(id)name searchKeywords:(id)keywords resultValueName:(id)valueName icon:(id)icon
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v13)
+  textCopy = text;
+  nameCopy = name;
+  keywordsCopy = keywords;
+  valueNameCopy = valueName;
+  iconCopy = icon;
+  if (!textCopy)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"LNActionDescriptionMetadata.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"actionDescription"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionDescriptionMetadata.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"actionDescription"}];
   }
 
   v32.receiver = self;
@@ -332,23 +332,23 @@ LABEL_47:
   v18 = [(LNActionDescriptionMetadata *)&v32 init];
   if (v18)
   {
-    v19 = [v13 copy];
+    v19 = [textCopy copy];
     descriptionText = v18->_descriptionText;
     v18->_descriptionText = v19;
 
-    v21 = [v14 copy];
+    v21 = [nameCopy copy];
     categoryName = v18->_categoryName;
     v18->_categoryName = v21;
 
-    v23 = [v15 copy];
+    v23 = [keywordsCopy copy];
     searchKeywords = v18->_searchKeywords;
     v18->_searchKeywords = v23;
 
-    v25 = [v16 copy];
+    v25 = [valueNameCopy copy];
     resultValueName = v18->_resultValueName;
     v18->_resultValueName = v25;
 
-    v27 = [v17 copy];
+    v27 = [iconCopy copy];
     icon = v18->_icon;
     v18->_icon = v27;
 

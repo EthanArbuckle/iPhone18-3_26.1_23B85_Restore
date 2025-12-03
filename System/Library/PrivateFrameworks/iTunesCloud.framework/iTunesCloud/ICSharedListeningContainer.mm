@@ -1,30 +1,30 @@
 @interface ICSharedListeningContainer
-+ (id)albumContainerWithMediaIdentifier:(id)a3 featureName:(id)a4;
-+ (id)autoPlayContainerWithMediaIdentifier:(id)a3 featureName:(id)a4;
-+ (id)groupWithFeatureName:(id)a3;
-+ (id)playlistContainerWithMediaIdentifier:(id)a3 featureName:(id)a4;
-+ (id)radioContainerWithMediaIdentifier:(id)a3 featureName:(id)a4;
-+ (id)radioContainerWithSeedItem:(id)a3 featureName:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (ICSharedListeningContainer)initWithProtobuf:(id)a3;
++ (id)albumContainerWithMediaIdentifier:(id)identifier featureName:(id)name;
++ (id)autoPlayContainerWithMediaIdentifier:(id)identifier featureName:(id)name;
++ (id)groupWithFeatureName:(id)name;
++ (id)playlistContainerWithMediaIdentifier:(id)identifier featureName:(id)name;
++ (id)radioContainerWithMediaIdentifier:(id)identifier featureName:(id)name;
++ (id)radioContainerWithSeedItem:(id)item featureName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (ICSharedListeningContainer)initWithProtobuf:(id)protobuf;
 - (NSString)shortDescription;
-- (id)_initWithKind:(int64_t)a3 mediaIdentifier:(id)a4 featureName:(id)a5;
-- (id)_initWithKind:(int64_t)a3 seedItem:(id)a4 featureName:(id)a5;
+- (id)_initWithKind:(int64_t)kind mediaIdentifier:(id)identifier featureName:(id)name;
+- (id)_initWithKind:(int64_t)kind seedItem:(id)item featureName:(id)name;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation ICSharedListeningContainer
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     identifier = self->_identifier;
-    v6 = [v4 identifier];
-    v7 = [(NSString *)identifier isEqualToString:v6];
+    identifier = [equalCopy identifier];
+    v7 = [(NSString *)identifier isEqualToString:identifier];
   }
 
   else
@@ -105,10 +105,10 @@
   return v7;
 }
 
-- (id)_initWithKind:(int64_t)a3 seedItem:(id)a4 featureName:(id)a5
+- (id)_initWithKind:(int64_t)kind seedItem:(id)item featureName:(id)name
 {
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = ICSharedListeningContainer;
   v10 = [(ICSharedListeningContainer *)&v18 init];
@@ -118,12 +118,12 @@
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    v10->_kind = a3;
-    v13 = [v8 copy];
+    v10->_kind = kind;
+    v13 = [itemCopy copy];
     seedItem = v10->_seedItem;
     v10->_seedItem = v13;
 
-    v15 = [v9 copy];
+    v15 = [nameCopy copy];
     featureName = v10->_featureName;
     v10->_featureName = v15;
   }
@@ -131,10 +131,10 @@
   return v10;
 }
 
-- (id)_initWithKind:(int64_t)a3 mediaIdentifier:(id)a4 featureName:(id)a5
+- (id)_initWithKind:(int64_t)kind mediaIdentifier:(id)identifier featureName:(id)name
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = ICSharedListeningContainer;
   v10 = [(ICSharedListeningContainer *)&v18 init];
@@ -144,12 +144,12 @@
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    v10->_kind = a3;
-    v13 = [v8 copy];
+    v10->_kind = kind;
+    v13 = [identifierCopy copy];
     mediaIdentifier = v10->_mediaIdentifier;
     v10->_mediaIdentifier = v13;
 
-    v15 = [v9 copy];
+    v15 = [nameCopy copy];
     featureName = v10->_featureName;
     v10->_featureName = v15;
   }
@@ -157,17 +157,17 @@
   return v10;
 }
 
-- (ICSharedListeningContainer)initWithProtobuf:(id)a3
+- (ICSharedListeningContainer)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v23.receiver = self;
     v23.super_class = ICSharedListeningContainer;
     v5 = [(ICSharedListeningContainer *)&v23 init];
     if (v5)
     {
-      v6 = v4[1];
+      v6 = protobufCopy[1];
       v7 = v6;
       if (v6)
       {
@@ -182,9 +182,9 @@
       identifier = v5->_identifier;
       v5->_identifier = v8;
 
-      if (*(v4 + 44))
+      if (*(protobufCopy + 44))
       {
-        v11 = *(v4 + 10);
+        v11 = *(protobufCopy + 10);
         if ((v11 - 1) >= 4)
         {
           v11 = 0;
@@ -197,12 +197,12 @@
       }
 
       v5->_kind = v11;
-      v12 = v4[3];
+      v12 = protobufCopy[3];
       v13 = [v12 copy];
       mediaIdentifier = v5->_mediaIdentifier;
       v5->_mediaIdentifier = v13;
 
-      v15 = v4[2];
+      v15 = protobufCopy[2];
       v16 = [v15 copy];
       featureName = v5->_featureName;
       v5->_featureName = v16;
@@ -212,7 +212,7 @@
         objc_storeStrong(&v5->_mediaIdentifier, v5->_identifier);
       }
 
-      v18 = v4[4];
+      v18 = protobufCopy[4];
       v19 = [v18 copy];
       stationHash = v5->_stationHash;
       v5->_stationHash = v19;
@@ -232,55 +232,55 @@
   return v21;
 }
 
-+ (id)autoPlayContainerWithMediaIdentifier:(id)a3 featureName:(id)a4
++ (id)autoPlayContainerWithMediaIdentifier:(id)identifier featureName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) _initWithKind:5 mediaIdentifier:v6 featureName:v5];
+  nameCopy = name;
+  identifierCopy = identifier;
+  v7 = [objc_alloc(objc_opt_class()) _initWithKind:5 mediaIdentifier:identifierCopy featureName:nameCopy];
 
   return v7;
 }
 
-+ (id)groupWithFeatureName:(id)a3
++ (id)groupWithFeatureName:(id)name
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) _initWithKind:4 mediaIdentifier:0 featureName:v3];
+  nameCopy = name;
+  v4 = [objc_alloc(objc_opt_class()) _initWithKind:4 mediaIdentifier:0 featureName:nameCopy];
 
   return v4;
 }
 
-+ (id)radioContainerWithSeedItem:(id)a3 featureName:(id)a4
++ (id)radioContainerWithSeedItem:(id)item featureName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) _initWithKind:2 seedItem:v6 featureName:v5];
+  nameCopy = name;
+  itemCopy = item;
+  v7 = [objc_alloc(objc_opt_class()) _initWithKind:2 seedItem:itemCopy featureName:nameCopy];
 
   return v7;
 }
 
-+ (id)radioContainerWithMediaIdentifier:(id)a3 featureName:(id)a4
++ (id)radioContainerWithMediaIdentifier:(id)identifier featureName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) _initWithKind:2 mediaIdentifier:v6 featureName:v5];
+  nameCopy = name;
+  identifierCopy = identifier;
+  v7 = [objc_alloc(objc_opt_class()) _initWithKind:2 mediaIdentifier:identifierCopy featureName:nameCopy];
 
   return v7;
 }
 
-+ (id)playlistContainerWithMediaIdentifier:(id)a3 featureName:(id)a4
++ (id)playlistContainerWithMediaIdentifier:(id)identifier featureName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) _initWithKind:3 mediaIdentifier:v6 featureName:v5];
+  nameCopy = name;
+  identifierCopy = identifier;
+  v7 = [objc_alloc(objc_opt_class()) _initWithKind:3 mediaIdentifier:identifierCopy featureName:nameCopy];
 
   return v7;
 }
 
-+ (id)albumContainerWithMediaIdentifier:(id)a3 featureName:(id)a4
++ (id)albumContainerWithMediaIdentifier:(id)identifier featureName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) _initWithKind:1 mediaIdentifier:v6 featureName:v5];
+  nameCopy = name;
+  identifierCopy = identifier;
+  v7 = [objc_alloc(objc_opt_class()) _initWithKind:1 mediaIdentifier:identifierCopy featureName:nameCopy];
 
   return v7;
 }

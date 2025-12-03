@@ -1,28 +1,28 @@
 @interface SHSheetClientToHostAction
-- (void)performActionForSceneController:(id)a3;
+- (void)performActionForSceneController:(id)controller;
 @end
 
 @implementation SHSheetClientToHostAction
 
-- (void)performActionForSceneController:(id)a3
+- (void)performActionForSceneController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 delegate];
+  controllerCopy = controller;
+  delegate = [controllerCopy delegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 delegate];
-    [v7 receivedAction:self];
+    delegate2 = [controllerCopy delegate];
+    [delegate2 receivedAction:self];
   }
 
   else
   {
-    v7 = share_sheet_log();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    delegate2 = share_sheet_log();
+    if (os_log_type_enabled(delegate2, OS_LOG_TYPE_ERROR))
     {
-      [(SHSheetClientToHostAction *)self performActionForSceneController:v4, v7];
+      [(SHSheetClientToHostAction *)self performActionForSceneController:controllerCopy, delegate2];
     }
   }
 }

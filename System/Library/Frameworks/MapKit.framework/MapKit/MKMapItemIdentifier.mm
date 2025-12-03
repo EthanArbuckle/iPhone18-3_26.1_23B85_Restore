@@ -1,21 +1,21 @@
 @interface MKMapItemIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MKMapItemIdentifier)init;
-- (MKMapItemIdentifier)initWithCoder:(id)a3;
-- (MKMapItemIdentifier)initWithGEOMapItemIdentifier:(id)a3;
-- (MKMapItemIdentifier)initWithIdentifierString:(id)a3;
-- (MKMapItemIdentifier)initWithMUID:(unint64_t)a3;
-- (MKMapItemIdentifier)initWithMUID:(unint64_t)a3 coordinate:(CLLocationCoordinate2D)a4;
-- (MKMapItemIdentifier)initWithMUID:(unint64_t)a3 resultProviderID:(int)a4 coordinate:(CLLocationCoordinate2D)a5;
+- (MKMapItemIdentifier)initWithCoder:(id)coder;
+- (MKMapItemIdentifier)initWithGEOMapItemIdentifier:(id)identifier;
+- (MKMapItemIdentifier)initWithIdentifierString:(id)string;
+- (MKMapItemIdentifier)initWithMUID:(unint64_t)d;
+- (MKMapItemIdentifier)initWithMUID:(unint64_t)d coordinate:(CLLocationCoordinate2D)coordinate;
+- (MKMapItemIdentifier)initWithMUID:(unint64_t)d resultProviderID:(int)iD coordinate:(CLLocationCoordinate2D)coordinate;
 - (NSString)identifierString;
 @end
 
 @implementation MKMapItemIdentifier
 
-- (MKMapItemIdentifier)initWithCoder:(id)a3
+- (MKMapItemIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKIdentifier"];
 
   if (v5)
   {
@@ -29,27 +29,27 @@
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(GEOMapItemIdentifier *)self->_geoMapItemIdentifier isEqual:v5->_geoMapItemIdentifier];
   }
@@ -64,11 +64,11 @@
 
 - (NSString)identifierString
 {
-  v2 = [(GEOMapItemIdentifier *)self->_geoMapItemIdentifier mapsIdentifierString];
-  v3 = v2;
-  if (v2)
+  mapsIdentifierString = [(GEOMapItemIdentifier *)self->_geoMapItemIdentifier mapsIdentifierString];
+  v3 = mapsIdentifierString;
+  if (mapsIdentifierString)
   {
-    v4 = v2;
+    v4 = mapsIdentifierString;
   }
 
   else
@@ -81,33 +81,33 @@
   return &v4->isa;
 }
 
-- (MKMapItemIdentifier)initWithGEOMapItemIdentifier:(id)a3
+- (MKMapItemIdentifier)initWithGEOMapItemIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (v5 && (v9.receiver = self, v9.super_class = MKMapItemIdentifier, v6 = [(MKMapItemIdentifier *)&v9 init], (self = v6) != 0))
+  identifierCopy = identifier;
+  if (identifierCopy && (v9.receiver = self, v9.super_class = MKMapItemIdentifier, v6 = [(MKMapItemIdentifier *)&v9 init], (self = v6) != 0))
   {
-    objc_storeStrong(&v6->_geoMapItemIdentifier, a3);
+    objc_storeStrong(&v6->_geoMapItemIdentifier, identifier);
     self = self;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (MKMapItemIdentifier)initWithMUID:(unint64_t)a3 resultProviderID:(int)a4 coordinate:(CLLocationCoordinate2D)a5
+- (MKMapItemIdentifier)initWithMUID:(unint64_t)d resultProviderID:(int)iD coordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a5.longitude;
-  latitude = a5.latitude;
-  v7 = *&a4;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  v7 = *&iD;
   v14.receiver = self;
   v14.super_class = MKMapItemIdentifier;
   v9 = [(MKMapItemIdentifier *)&v14 init];
-  if (v9 && (v10 = [objc_alloc(MEMORY[0x1E69A21C0]) initWithMUID:a3 resultProviderID:v7 coordinate:{latitude, longitude}], geoMapItemIdentifier = v9->_geoMapItemIdentifier, v9->_geoMapItemIdentifier = v10, geoMapItemIdentifier, v9->_geoMapItemIdentifier))
+  if (v9 && (v10 = [objc_alloc(MEMORY[0x1E69A21C0]) initWithMUID:d resultProviderID:v7 coordinate:{latitude, longitude}], geoMapItemIdentifier = v9->_geoMapItemIdentifier, v9->_geoMapItemIdentifier = v10, geoMapItemIdentifier, v9->_geoMapItemIdentifier))
   {
     v12 = v9;
   }
@@ -120,14 +120,14 @@
   return v12;
 }
 
-- (MKMapItemIdentifier)initWithMUID:(unint64_t)a3 coordinate:(CLLocationCoordinate2D)a4
+- (MKMapItemIdentifier)initWithMUID:(unint64_t)d coordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v12.receiver = self;
   v12.super_class = MKMapItemIdentifier;
   v7 = [(MKMapItemIdentifier *)&v12 init];
-  if (v7 && (v8 = [objc_alloc(MEMORY[0x1E69A21C0]) initWithMUID:a3 coordinate:{latitude, longitude}], geoMapItemIdentifier = v7->_geoMapItemIdentifier, v7->_geoMapItemIdentifier = v8, geoMapItemIdentifier, v7->_geoMapItemIdentifier))
+  if (v7 && (v8 = [objc_alloc(MEMORY[0x1E69A21C0]) initWithMUID:d coordinate:{latitude, longitude}], geoMapItemIdentifier = v7->_geoMapItemIdentifier, v7->_geoMapItemIdentifier = v8, geoMapItemIdentifier, v7->_geoMapItemIdentifier))
   {
     v10 = v7;
   }
@@ -140,12 +140,12 @@
   return v10;
 }
 
-- (MKMapItemIdentifier)initWithMUID:(unint64_t)a3
+- (MKMapItemIdentifier)initWithMUID:(unint64_t)d
 {
   v9.receiver = self;
   v9.super_class = MKMapItemIdentifier;
   v4 = [(MKMapItemIdentifier *)&v9 init];
-  if (v4 && (v5 = [objc_alloc(MEMORY[0x1E69A21C0]) initWithMUID:a3], geoMapItemIdentifier = v4->_geoMapItemIdentifier, v4->_geoMapItemIdentifier = v5, geoMapItemIdentifier, v4->_geoMapItemIdentifier))
+  if (v4 && (v5 = [objc_alloc(MEMORY[0x1E69A21C0]) initWithMUID:d], geoMapItemIdentifier = v4->_geoMapItemIdentifier, v4->_geoMapItemIdentifier = v5, geoMapItemIdentifier, v4->_geoMapItemIdentifier))
   {
     v7 = v4;
   }
@@ -158,11 +158,11 @@
   return v7;
 }
 
-- (MKMapItemIdentifier)initWithIdentifierString:(id)a3
+- (MKMapItemIdentifier)initWithIdentifierString:(id)string
 {
   v4 = MEMORY[0x1E69A21C0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithMapsIdentifierString:v5];
+  stringCopy = string;
+  v6 = [[v4 alloc] initWithMapsIdentifierString:stringCopy];
 
   if (v6)
   {
@@ -176,15 +176,15 @@
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (MKMapItemIdentifier)init

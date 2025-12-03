@@ -5,18 +5,18 @@
 - (BOOL)dq_isCloudKitEnabled;
 - (BOOL)isCloudKitEnabled;
 - (id)description;
-- (void)_notifyObserversWithCurrentToken:(id)a3 lastToken:(id)a4;
-- (void)addObserver:(id)a3;
+- (void)_notifyObserversWithCurrentToken:(id)token lastToken:(id)lastToken;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)dq_archiveCurrentICloudIdentityToken;
 - (void)dq_refreshICloudAvailabilityStatus;
-- (void)p_iCloudIdentityDidChange:(id)a3;
-- (void)refreshICloudTokensAndUpdateWithOptedIn:(BOOL)a3;
-- (void)registerCoordinatingObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)p_iCloudIdentityDidChange:(id)change;
+- (void)refreshICloudTokensAndUpdateWithOptedIn:(BOOL)in;
+- (void)registerCoordinatingObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 - (void)restartObserving;
-- (void)setOptedIn:(BOOL)a3;
-- (void)updateWithOptedIn:(BOOL)a3;
+- (void)setOptedIn:(BOOL)in;
+- (void)updateWithOptedIn:(BOOL)in;
 @end
 
 @implementation BDSLiverpoolStatusMonitor
@@ -40,11 +40,11 @@
     notifyQueue = v2->_notifyQueue;
     v2->_notifyQueue = v7;
 
-    v9 = [MEMORY[0x1E698F538] sharedProvider];
-    v2->_optedIn = [v9 isPrimaryAccountManagedAppleID];
+    mEMORY[0x1E698F538] = [MEMORY[0x1E698F538] sharedProvider];
+    v2->_optedIn = [mEMORY[0x1E698F538] isPrimaryAccountManagedAppleID];
 
-    v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v11 = [v10 valueForKey:@"nonNilLiverpoolIdentityToken"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v11 = [standardUserDefaults valueForKey:@"nonNilLiverpoolIdentityToken"];
     v2->_lastArchivedNonNilICloudIdentityTokenWasNonNilAtColdLaunch = v11 != 0;
 
     v12 = v2->_dispatchQueue;
@@ -57,7 +57,7 @@
     dispatch_async(v12, block);
     out_token = -1;
     objc_initWeak(&location, v13);
-    v14 = [@"com.apple.tcc.access.changed" UTF8String];
+    uTF8String = [@"com.apple.tcc.access.changed" UTF8String];
     v15 = MEMORY[0x1E69E96A0];
     v16 = MEMORY[0x1E69E96A0];
     v19 = MEMORY[0x1E69E9820];
@@ -65,9 +65,9 @@
     v21 = sub_1E462A0D0;
     v22 = &unk_1E87597D0;
     objc_copyWeak(&v23, &location);
-    LODWORD(v14) = notify_register_dispatch(v14, &out_token, v15, &v19);
+    LODWORD(uTF8String) = notify_register_dispatch(uTF8String, &out_token, v15, &v19);
 
-    if (v14)
+    if (uTF8String)
     {
       v17 = 0xFFFFFFFFLL;
     }
@@ -92,15 +92,15 @@
   self->_currentICloudIdentityToken = v3;
 
   v5 = [BDSICloudIdentityToken alloc];
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v7 = [v6 valueForKey:@"liverpoolIdentityToken"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v7 = [standardUserDefaults valueForKey:@"liverpoolIdentityToken"];
   v8 = [(BDSICloudIdentityToken *)v5 initFromArchive:v7];
   lastArchivedICloudIdentityToken = self->_lastArchivedICloudIdentityToken;
   self->_lastArchivedICloudIdentityToken = v8;
 
   v10 = [BDSICloudIdentityToken alloc];
-  v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v11 = [v14 valueForKey:@"nonNilLiverpoolIdentityToken"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v11 = [standardUserDefaults2 valueForKey:@"nonNilLiverpoolIdentityToken"];
   v12 = [(BDSICloudIdentityToken *)v10 initFromArchive:v11];
   lastArchivedNonNilICloudIdentityToken = self->_lastArchivedNonNilICloudIdentityToken;
   self->_lastArchivedNonNilICloudIdentityToken = v12;
@@ -108,23 +108,23 @@
 
 - (BOOL)isCloudKitEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
+  dispatchQueue = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_1E45E249C;
   v5[3] = &unk_1E8759688;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(dispatchQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)dq_isCloudKitEnabled
@@ -181,53 +181,53 @@
 
 - (void)dq_archiveCurrentICloudIdentityToken
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [(BDSLiverpoolStatusMonitor *)self currentICloudIdentityToken];
-  v5 = [v4 token];
-  [v3 setObject:v5 forKey:@"liverpoolIdentityToken"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  currentICloudIdentityToken = [(BDSLiverpoolStatusMonitor *)self currentICloudIdentityToken];
+  token = [currentICloudIdentityToken token];
+  [standardUserDefaults setObject:token forKey:@"liverpoolIdentityToken"];
 
-  v6 = [(BDSLiverpoolStatusMonitor *)self currentICloudIdentityToken];
-  if (v6)
+  currentICloudIdentityToken2 = [(BDSLiverpoolStatusMonitor *)self currentICloudIdentityToken];
+  if (currentICloudIdentityToken2)
   {
-    v7 = v6;
-    v8 = [(BDSLiverpoolStatusMonitor *)self optedInKnown];
+    v7 = currentICloudIdentityToken2;
+    optedInKnown = [(BDSLiverpoolStatusMonitor *)self optedInKnown];
 
-    if (v8)
+    if (optedInKnown)
     {
-      v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v10 = [(BDSLiverpoolStatusMonitor *)self currentICloudIdentityToken];
-      v11 = [v10 token];
-      [v9 setObject:v11 forKey:@"nonNilLiverpoolIdentityToken"];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      currentICloudIdentityToken3 = [(BDSLiverpoolStatusMonitor *)self currentICloudIdentityToken];
+      token2 = [currentICloudIdentityToken3 token];
+      [standardUserDefaults2 setObject:token2 forKey:@"nonNilLiverpoolIdentityToken"];
     }
   }
 
-  v12 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v12 synchronize];
+  standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults3 synchronize];
 }
 
-- (void)updateWithOptedIn:(BOOL)a3
+- (void)updateWithOptedIn:(BOOL)in
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [(BDSLiverpoolStatusMonitor *)self isCloudKitEnabled];
-  v6 = [(BDSLiverpoolStatusMonitor *)self optedInKnown];
-  if (a3)
+  isCloudKitEnabled = [(BDSLiverpoolStatusMonitor *)self isCloudKitEnabled];
+  optedInKnown = [(BDSLiverpoolStatusMonitor *)self optedInKnown];
+  if (in)
   {
-    v7 = 1;
+    isPrimaryAccountManagedAppleID = 1;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E698F538] sharedProvider];
-    v7 = [v8 isPrimaryAccountManagedAppleID];
+    mEMORY[0x1E698F538] = [MEMORY[0x1E698F538] sharedProvider];
+    isPrimaryAccountManagedAppleID = [mEMORY[0x1E698F538] isPrimaryAccountManagedAppleID];
   }
 
-  [(BDSLiverpoolStatusMonitor *)self setOptedIn:v7];
-  if (((v5 ^ [(BDSLiverpoolStatusMonitor *)self isCloudKitEnabled]) & v6) == 1)
+  [(BDSLiverpoolStatusMonitor *)self setOptedIn:isPrimaryAccountManagedAppleID];
+  if (((isCloudKitEnabled ^ [(BDSLiverpoolStatusMonitor *)self isCloudKitEnabled]) & optedInKnown) == 1)
   {
     [(BDSLiverpoolStatusMonitor *)self p_iCloudIdentityDidChange:0];
   }
 
-  [(BDSLiverpoolStatusMonitor *)self refreshICloudTokensAndUpdateWithOptedIn:v7];
+  [(BDSLiverpoolStatusMonitor *)self refreshICloudTokensAndUpdateWithOptedIn:isPrimaryAccountManagedAppleID];
   v9 = BDSCloudKitLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -261,23 +261,23 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)refreshICloudTokensAndUpdateWithOptedIn:(BOOL)a3
+- (void)refreshICloudTokensAndUpdateWithOptedIn:(BOOL)in
 {
   [(BDSLiverpoolStatusMonitor *)self setOptedIn:?];
-  v5 = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
+  dispatchQueue = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_1E462A324;
   v6[3] = &unk_1E875AB90;
-  v7 = a3;
+  inCopy = in;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(dispatchQueue, v6);
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if ([(BDSLiverpoolStatusMonitor *)self tccNotifyToken]!= -1)
   {
@@ -297,14 +297,14 @@
   v10 = sub_1E462A588;
   v11 = sub_1E462A598;
   v12 = 0;
-  v3 = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
+  dispatchQueue = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_1E462A5A0;
   v6[3] = &unk_1E8759688;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(dispatchQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -312,96 +312,96 @@
   return v4;
 }
 
-- (void)setOptedIn:(BOOL)a3
+- (void)setOptedIn:(BOOL)in
 {
-  if (self->_optedIn != a3)
+  if (self->_optedIn != in)
   {
-    self->_optedIn = a3;
+    self->_optedIn = in;
     self->_optedInKnown = 1;
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
+    dispatchQueue = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_1E462A6C0;
     v6[3] = &unk_1E875A030;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = observerCopy;
+    dispatch_async(dispatchQueue, v6);
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
+    dispatchQueue = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_1E462A808;
     v6[3] = &unk_1E875A030;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = observerCopy;
+    dispatch_async(dispatchQueue, v6);
   }
 }
 
-- (void)registerCoordinatingObserver:(id)a3
+- (void)registerCoordinatingObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
+    dispatchQueue = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_1E462A954;
     v6[3] = &unk_1E875A030;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = observerCopy;
+    dispatch_async(dispatchQueue, v6);
   }
 }
 
 - (void)restartObserving
 {
-  v3 = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
+  dispatchQueue = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E462A9E4;
   block[3] = &unk_1E875A008;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)p_iCloudIdentityDidChange:(id)a3
+- (void)p_iCloudIdentityDidChange:(id)change
 {
-  v4 = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
+  dispatchQueue = [(BDSLiverpoolStatusMonitor *)self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E462AC2C;
   block[3] = &unk_1E875A008;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)_notifyObserversWithCurrentToken:(id)a3 lastToken:(id)a4
+- (void)_notifyObserversWithCurrentToken:(id)token lastToken:(id)lastToken
 {
   v30 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v6 = a4;
+  tokenCopy = token;
+  lastTokenCopy = lastToken;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [(BDSLiverpoolStatusMonitor *)self observers];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  observers = [(BDSLiverpoolStatusMonitor *)self observers];
+  v8 = [observers countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -413,45 +413,45 @@
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(observers);
         }
 
         v12 = *(*(&v25 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          v13 = [(BDSLiverpoolStatusMonitor *)self notifyQueue];
+          notifyQueue = [(BDSLiverpoolStatusMonitor *)self notifyQueue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = sub_1E462AFE4;
           block[3] = &unk_1E8759FE0;
           block[4] = v12;
-          v23 = v17;
-          v24 = v6;
-          dispatch_async(v13, block);
+          v23 = tokenCopy;
+          v24 = lastTokenCopy;
+          dispatch_async(notifyQueue, block);
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v9 = [observers countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v9);
   }
 
-  v14 = [(BDSLiverpoolStatusMonitor *)self coordinatingObserver];
-  if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+  coordinatingObserver = [(BDSLiverpoolStatusMonitor *)self coordinatingObserver];
+  if (coordinatingObserver && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v15 = [(BDSLiverpoolStatusMonitor *)self notifyQueue];
+    notifyQueue2 = [(BDSLiverpoolStatusMonitor *)self notifyQueue];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = sub_1E462AFF4;
     v18[3] = &unk_1E8759FE0;
-    v19 = v14;
-    v20 = v17;
-    v21 = v6;
-    dispatch_async(v15, v18);
+    v19 = coordinatingObserver;
+    v20 = tokenCopy;
+    v21 = lastTokenCopy;
+    dispatch_async(notifyQueue2, v18);
   }
 
   v16 = *MEMORY[0x1E69E9840];

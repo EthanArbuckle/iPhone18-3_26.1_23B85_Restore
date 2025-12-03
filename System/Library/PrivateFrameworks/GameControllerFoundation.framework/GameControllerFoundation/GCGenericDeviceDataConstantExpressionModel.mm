@@ -1,48 +1,48 @@
 @interface GCGenericDeviceDataConstantExpressionModel
-- (BOOL)isEqual:(id)a3;
-- (GCGenericDeviceDataConstantExpressionModel)initWithCoder:(id)a3;
-- (id)buildExpressionWithContext:(id)a3 error:(id *)a4;
-- (id)buildReactiveExpressionWithContext:(id)a3 consumer:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (GCGenericDeviceDataConstantExpressionModel)initWithCoder:(id)coder;
+- (id)buildExpressionWithContext:(id)context error:(id *)error;
+- (id)buildReactiveExpressionWithContext:(id)context consumer:(id)consumer error:(id *)error;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCGenericDeviceDataConstantExpressionModel
 
-- (GCGenericDeviceDataConstantExpressionModel)initWithCoder:(id)a3
+- (GCGenericDeviceDataConstantExpressionModel)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = GCGenericDeviceDataConstantExpressionModel;
-  v3 = a3;
-  v4 = [(GCGenericDeviceDataProcessorExpressionModel *)&v8 initWithCoder:v3];
-  [v3 decodeDoubleForKey:{@"value", v8.receiver, v8.super_class}];
+  coderCopy = coder;
+  v4 = [(GCGenericDeviceDataProcessorExpressionModel *)&v8 initWithCoder:coderCopy];
+  [coderCopy decodeDoubleForKey:{@"value", v8.receiver, v8.super_class}];
   v6 = v5;
 
   v4->_value = v6;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GCGenericDeviceDataConstantExpressionModel;
-  v4 = a3;
-  [(GCGenericDeviceDataProcessorExpressionModel *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(GCGenericDeviceDataProcessorExpressionModel *)&v5 encodeWithCoder:coderCopy];
   [(GCGenericDeviceDataConstantExpressionModel *)self value:v5.receiver];
-  [v4 encodeDouble:@"value" forKey:?];
+  [coderCopy encodeDouble:@"value" forKey:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = GCGenericDeviceDataConstantExpressionModel;
-  if ([(GCGenericDeviceDataProcessorExpressionModel *)&v10 isEqual:v4])
+  if ([(GCGenericDeviceDataProcessorExpressionModel *)&v10 isEqual:equalCopy])
   {
     [(GCGenericDeviceDataConstantExpressionModel *)self value];
     v6 = v5;
-    [v4 value];
+    [equalCopy value];
     v8 = v6 == v7;
   }
 
@@ -71,9 +71,9 @@
   return v6;
 }
 
-- (id)buildExpressionWithContext:(id)a3 error:(id *)a4
+- (id)buildExpressionWithContext:(id)context error:(id *)error
 {
-  [(GCGenericDeviceDataConstantExpressionModel *)self value:a3];
+  [(GCGenericDeviceDataConstantExpressionModel *)self value:context];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __92__GCGenericDeviceDataConstantExpressionModel_Compilation__buildExpressionWithContext_error___block_invoke;
@@ -84,11 +84,11 @@
   return v5;
 }
 
-- (id)buildReactiveExpressionWithContext:(id)a3 consumer:(id)a4 error:(id *)a5
+- (id)buildReactiveExpressionWithContext:(id)context consumer:(id)consumer error:(id *)error
 {
-  v7 = a4;
+  consumerCopy = consumer;
   [(GCGenericDeviceDataConstantExpressionModel *)self value];
-  (*(a4 + 2))(v7);
+  (*(consumer + 2))(consumerCopy);
 
   v8 = MEMORY[0x1E695DFB0];
 

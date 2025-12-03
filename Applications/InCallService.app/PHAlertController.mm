@@ -1,18 +1,18 @@
 @interface PHAlertController
-- (PHAlertController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PHAlertController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PHAlertController
 
-- (PHAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = PHAlertController;
-  v4 = [(PHAlertController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(PHAlertController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -22,37 +22,37 @@
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PHAlertController;
-  [(PHAlertController *)&v5 viewWillAppear:a3];
-  v4 = [(PHAlertController *)self dismissalAssertionReason];
-  [PHInCallRootViewController obtainDismissalAssertionForReason:v4];
+  [(PHAlertController *)&v5 viewWillAppear:appear];
+  dismissalAssertionReason = [(PHAlertController *)self dismissalAssertionReason];
+  [PHInCallRootViewController obtainDismissalAssertionForReason:dismissalAssertionReason];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PHAlertController;
-  [(PHAlertController *)&v5 viewDidAppear:a3];
-  v4 = [(PHAlertController *)self dismissalAssertionReason];
-  [PHInCallRootViewController obtainDismissalAssertionForReason:v4];
+  [(PHAlertController *)&v5 viewDidAppear:appear];
+  dismissalAssertionReason = [(PHAlertController *)self dismissalAssertionReason];
+  [PHInCallRootViewController obtainDismissalAssertionForReason:dismissalAssertionReason];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PHAlertController;
-  [(PHAlertController *)&v5 viewDidDisappear:a3];
-  v4 = [(PHAlertController *)self dismissalAssertionReason];
-  [PHInCallRootViewController releaseDismissalAssertionForReason:v4];
+  [(PHAlertController *)&v5 viewDidDisappear:disappear];
+  dismissalAssertionReason = [(PHAlertController *)self dismissalAssertionReason];
+  [PHInCallRootViewController releaseDismissalAssertionForReason:dismissalAssertionReason];
 }
 
 - (void)dealloc
 {
-  v3 = [(PHAlertController *)self dismissalAssertionReason];
-  [PHInCallRootViewController releaseDismissalAssertionForReason:v3];
+  dismissalAssertionReason = [(PHAlertController *)self dismissalAssertionReason];
+  [PHInCallRootViewController releaseDismissalAssertionForReason:dismissalAssertionReason];
 
   v4.receiver = self;
   v4.super_class = PHAlertController;

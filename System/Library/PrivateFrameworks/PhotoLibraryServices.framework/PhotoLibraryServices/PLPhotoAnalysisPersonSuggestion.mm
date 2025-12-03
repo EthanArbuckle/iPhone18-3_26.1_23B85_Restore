@@ -1,5 +1,5 @@
 @interface PLPhotoAnalysisPersonSuggestion
-- (PLPhotoAnalysisPersonSuggestion)initWithSuggestionDictionary:(id)a3;
+- (PLPhotoAnalysisPersonSuggestion)initWithSuggestionDictionary:(id)dictionary;
 - (id)description;
 - (id)suggestionDictionaryRepresentation;
 @end
@@ -12,8 +12,8 @@
   v8.receiver = self;
   v8.super_class = PLPhotoAnalysisPersonSuggestion;
   v4 = [(PLPhotoAnalysisPersonSuggestion *)&v8 description];
-  v5 = [(PLPhotoAnalysisPersonSuggestion *)self suggestionDictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  suggestionDictionaryRepresentation = [(PLPhotoAnalysisPersonSuggestion *)self suggestionDictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, suggestionDictionaryRepresentation];
 
   return v6;
 }
@@ -41,20 +41,20 @@
   return v8;
 }
 
-- (PLPhotoAnalysisPersonSuggestion)initWithSuggestionDictionary:(id)a3
+- (PLPhotoAnalysisPersonSuggestion)initWithSuggestionDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = PLPhotoAnalysisPersonSuggestion;
   v5 = [(PLPhotoAnalysisPersonSuggestion *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"faceCSN"];
-    v7 = [v4 objectForKeyedSubscript:@"faceIdentifier"];
-    v8 = [v4 objectForKeyedSubscript:@"personIdentifier"];
-    v9 = [v4 objectForKeyedSubscript:@"personFaceCount"];
-    v10 = [v4 objectForKeyedSubscript:@"confirmed"];
-    v11 = [v4 objectForKeyedSubscript:@"similarityScore"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"faceCSN"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"faceIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"personIdentifier"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"personFaceCount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"confirmed"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"similarityScore"];
     if (v6 && v7 && v8 && v10 && v9)
     {
       v5->_keyFaceClusterSequenceNumber = [v6 integerValue];

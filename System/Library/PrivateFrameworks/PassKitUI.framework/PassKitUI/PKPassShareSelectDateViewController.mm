@@ -1,26 +1,26 @@
 @interface PKPassShareSelectDateViewController
-- (PKPassShareSelectDateViewController)initWithDate:(id)a3 minimumDate:(id)a4 maximumDate:(id)a5 title:(id)a6;
-- (void)didUpdateDate:(id)a3;
-- (void)reloadDataAnimated:(BOOL)a3;
+- (PKPassShareSelectDateViewController)initWithDate:(id)date minimumDate:(id)minimumDate maximumDate:(id)maximumDate title:(id)title;
+- (void)didUpdateDate:(id)date;
+- (void)reloadDataAnimated:(BOOL)animated;
 @end
 
 @implementation PKPassShareSelectDateViewController
 
-- (PKPassShareSelectDateViewController)initWithDate:(id)a3 minimumDate:(id)a4 maximumDate:(id)a5 title:(id)a6
+- (PKPassShareSelectDateViewController)initWithDate:(id)date minimumDate:(id)minimumDate maximumDate:(id)maximumDate title:(id)title
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dateCopy = date;
+  minimumDateCopy = minimumDate;
+  maximumDateCopy = maximumDate;
+  titleCopy = title;
   v20.receiver = self;
   v20.super_class = PKPassShareSelectDateViewController;
   v14 = [(PKPaymentSetupOptionsViewController *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    [(PKPassShareSelectDateViewController *)v14 setTitle:v13];
-    v16 = [[PKPassShareSelectDateSectionController alloc] initWithDate:v10 minimumDate:v11 maximumDate:v12 delegate:v15];
+    [(PKPassShareSelectDateViewController *)v14 setTitle:titleCopy];
+    v16 = [[PKPassShareSelectDateSectionController alloc] initWithDate:dateCopy minimumDate:minimumDateCopy maximumDate:maximumDateCopy delegate:v15];
     sectionController = v15->_sectionController;
     v15->_sectionController = v16;
 
@@ -34,22 +34,22 @@
   return v15;
 }
 
-- (void)didUpdateDate:(id)a3
+- (void)didUpdateDate:(id)date
 {
   dateChangeHandler = self->_dateChangeHandler;
   if (dateChangeHandler)
   {
-    dateChangeHandler[2](dateChangeHandler, a3);
+    dateChangeHandler[2](dateChangeHandler, date);
   }
 }
 
-- (void)reloadDataAnimated:(BOOL)a3
+- (void)reloadDataAnimated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = PKPassShareSelectDateViewController;
-  [(PKDynamicCollectionViewController *)&v5 reloadDataAnimated:a3];
-  v4 = [(PKDynamicCollectionViewController *)self layout];
-  [v4 invalidateLayout];
+  [(PKDynamicCollectionViewController *)&v5 reloadDataAnimated:animated];
+  layout = [(PKDynamicCollectionViewController *)self layout];
+  [layout invalidateLayout];
 }
 
 @end

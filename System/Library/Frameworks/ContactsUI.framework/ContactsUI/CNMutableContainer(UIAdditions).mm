@@ -13,15 +13,15 @@
   v8 = a4;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"CNContainer+UIAdditions.m" lineNumber:57 description:@"A store is needed here"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContainer+UIAdditions.m" lineNumber:57 description:@"A store is needed here"];
   }
 
   v9 = CNUILogAccountsAndGroupsList();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v18 = a1;
+    selfCopy = self;
     v19 = 2112;
     v20 = v7;
     _os_log_impl(&dword_199A75000, v9, OS_LOG_TYPE_DEFAULT, "[CNContainer+UIAdditions] deleting container %@ in store %@", buf, 0x16u);
@@ -32,7 +32,7 @@
     v8 = objc_alloc_init(MEMORY[0x1E695CF88]);
   }
 
-  [v8 deleteContainer:a1];
+  [v8 deleteContainer:self];
   v16 = 0;
   v10 = [v7 executeSaveRequest:v8 error:&v16];
   v11 = v16;
@@ -41,15 +41,15 @@
     v12 = CNUILogAccountsAndGroupsList();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v14 = [a1 identifier];
+      identifier = [self identifier];
       *buf = 138544130;
-      v18 = v14;
+      selfCopy = identifier;
       v19 = 2114;
       v20 = v11;
       v21 = 2114;
       v22 = v7;
       v23 = 2112;
-      v24 = a1;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_199A75000, v12, OS_LOG_TYPE_ERROR, "[CNContainer+UIAdditions] Could not delete container with identifer %{public}@, error %{public}@, store %{public}@, full container %@", buf, 0x2Au);
     }
   }
@@ -64,15 +64,15 @@
   v8 = a4;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"CNContainer+UIAdditions.m" lineNumber:38 description:@"A store is needed here"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContainer+UIAdditions.m" lineNumber:38 description:@"A store is needed here"];
   }
 
   v9 = CNUILogAccountsAndGroupsList();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v18 = a1;
+    selfCopy = self;
     v19 = 2112;
     v20 = v7;
     _os_log_impl(&dword_199A75000, v9, OS_LOG_TYPE_DEFAULT, "[CNContainer+UIAdditions] updating container %@ in store %@", buf, 0x16u);
@@ -83,7 +83,7 @@
     v8 = objc_alloc_init(MEMORY[0x1E695CF88]);
   }
 
-  [v8 updateContainer:a1];
+  [v8 updateContainer:self];
   v16 = 0;
   v10 = [v7 executeSaveRequest:v8 error:&v16];
   v11 = v16;
@@ -92,15 +92,15 @@
     v12 = CNUILogAccountsAndGroupsList();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v14 = [a1 identifier];
+      identifier = [self identifier];
       *buf = 138544130;
-      v18 = v14;
+      selfCopy = identifier;
       v19 = 2114;
       v20 = v11;
       v21 = 2114;
       v22 = v7;
       v23 = 2112;
-      v24 = a1;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_199A75000, v12, OS_LOG_TYPE_ERROR, "[CNContainer+UIAdditions] Could not update container with identifer %{public}@, error %{public}@, store %{public}@, full container %@", buf, 0x2Au);
     }
   }
@@ -116,15 +116,15 @@
   v11 = a5;
   if (!v9)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"CNContainer+UIAdditions.m" lineNumber:18 description:@"A store is needed here"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContainer+UIAdditions.m" lineNumber:18 description:@"A store is needed here"];
   }
 
   v12 = CNUILogAccountsAndGroupsList();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v21 = a1;
+    selfCopy = self;
     v22 = 2112;
     v23 = v10;
     v24 = 2112;
@@ -137,7 +137,7 @@
     v11 = objc_alloc_init(MEMORY[0x1E695CF88]);
   }
 
-  [v11 addContainer:a1 toAccountWithIdentifier:v10];
+  [v11 addContainer:self toAccountWithIdentifier:v10];
   v19 = 0;
   v13 = [v9 executeSaveRequest:v11 error:&v19];
   v14 = v19;
@@ -146,9 +146,9 @@
     v15 = CNUILogAccountsAndGroupsList();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v17 = [a1 identifier];
+      identifier = [self identifier];
       *buf = 138544386;
-      v21 = v17;
+      selfCopy = identifier;
       v22 = 2114;
       v23 = v10;
       v24 = 2114;
@@ -156,7 +156,7 @@
       v26 = 2114;
       v27 = v9;
       v28 = 2112;
-      v29 = a1;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_199A75000, v15, OS_LOG_TYPE_ERROR, "[CNContainer+UIAdditions] Could not add container with identifer %{public}@ to account %{public}@, error %{public}@, store %{public}@, full container %@", buf, 0x34u);
     }
   }

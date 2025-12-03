@@ -2,9 +2,9 @@
 - (_ATXInspectionServerPredictionScoreLogger)init;
 - (id)inputsAndSubscores;
 - (id)stageScores;
-- (void)logInputDict:(id)a3 subscores:(id)a4 forBundleId:(id)a5;
-- (void)logInputs:(id)a3 subscores:(id)a4 forBundleId:(id)a5;
-- (void)logStageScores:(id)a3 forStageType:(int64_t)a4;
+- (void)logInputDict:(id)dict subscores:(id)subscores forBundleId:(id)id;
+- (void)logInputs:(id)inputs subscores:(id)subscores forBundleId:(id)id;
+- (void)logStageScores:(id)scores forStageType:(int64_t)type;
 @end
 
 @implementation _ATXInspectionServerPredictionScoreLogger
@@ -77,48 +77,48 @@
   return v3;
 }
 
-- (void)logInputs:(id)a3 subscores:(id)a4 forBundleId:(id)a5
+- (void)logInputs:(id)inputs subscores:(id)subscores forBundleId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  inputsCopy = inputs;
+  subscoresCopy = subscores;
+  idCopy = id;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77___ATXInspectionServerPredictionScoreLogger_logInputs_subscores_forBundleId___block_invoke;
   v15[3] = &unk_2785978C0;
   v15[4] = self;
-  v16 = v10;
-  v17 = v8;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = idCopy;
+  v17 = inputsCopy;
+  v18 = subscoresCopy;
+  v12 = subscoresCopy;
+  v13 = inputsCopy;
+  v14 = idCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)logInputDict:(id)a3 subscores:(id)a4 forBundleId:(id)a5
+- (void)logInputDict:(id)dict subscores:(id)subscores forBundleId:(id)id
 {
-  v8 = a5;
-  v9 = a4;
-  v11 = [a3 toDictionary];
-  v10 = [v9 toDictionary];
+  idCopy = id;
+  subscoresCopy = subscores;
+  toDictionary = [dict toDictionary];
+  toDictionary2 = [subscoresCopy toDictionary];
 
-  [(_ATXInspectionServerPredictionScoreLogger *)self logInputs:v11 subscores:v10 forBundleId:v8];
+  [(_ATXInspectionServerPredictionScoreLogger *)self logInputs:toDictionary subscores:toDictionary2 forBundleId:idCopy];
 }
 
-- (void)logStageScores:(id)a3 forStageType:(int64_t)a4
+- (void)logStageScores:(id)scores forStageType:(int64_t)type
 {
-  v6 = a3;
+  scoresCopy = scores;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73___ATXInspectionServerPredictionScoreLogger_logStageScores_forStageType___block_invoke;
   block[3] = &unk_278599E28;
-  v10 = v6;
-  v11 = a4;
+  v10 = scoresCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = scoresCopy;
   dispatch_async(queue, block);
 }
 

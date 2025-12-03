@@ -1,50 +1,50 @@
 @interface IMAccountController
-+ (id)bestAccountFromAccounts:(id)a3;
++ (id)bestAccountFromAccounts:(id)accounts;
 + (id)sharedInstance;
-- (BOOL)_deactivateAccount:(id)a3;
-- (BOOL)accountConnected:(id)a3;
-- (BOOL)accountConnecting:(id)a3;
-- (BOOL)accountLogoutable:(id)a3;
-- (BOOL)activateAccounts:(id)a3 force:(BOOL)a4 locally:(BOOL)a5;
-- (BOOL)activateAndHandleReconnectAccount:(id)a3;
-- (BOOL)activateAndHandleReconnectAccounts:(id)a3;
-- (BOOL)addAccount:(id)a3 locally:(BOOL)a4;
-- (BOOL)canActivateAccount:(id)a3;
-- (BOOL)canActivateAccounts:(id)a3;
-- (BOOL)canDeleteAccount:(id)a3;
-- (BOOL)deactivateAccount:(id)a3;
-- (BOOL)deactivateAccounts:(id)a3;
-- (BOOL)deactivateAccounts:(id)a3 withDisable:(BOOL)a4;
-- (BOOL)deleteAccount:(id)a3;
-- (BOOL)deleteAccount:(id)a3 locally:(BOOL)a4;
+- (BOOL)_deactivateAccount:(id)account;
+- (BOOL)accountConnected:(id)connected;
+- (BOOL)accountConnecting:(id)connecting;
+- (BOOL)accountLogoutable:(id)logoutable;
+- (BOOL)activateAccounts:(id)accounts force:(BOOL)force locally:(BOOL)locally;
+- (BOOL)activateAndHandleReconnectAccount:(id)account;
+- (BOOL)activateAndHandleReconnectAccounts:(id)accounts;
+- (BOOL)addAccount:(id)account locally:(BOOL)locally;
+- (BOOL)canActivateAccount:(id)account;
+- (BOOL)canActivateAccounts:(id)accounts;
+- (BOOL)canDeleteAccount:(id)account;
+- (BOOL)deactivateAccount:(id)account;
+- (BOOL)deactivateAccounts:(id)accounts;
+- (BOOL)deactivateAccounts:(id)accounts withDisable:(BOOL)disable;
+- (BOOL)deleteAccount:(id)account;
+- (BOOL)deleteAccount:(id)account locally:(BOOL)locally;
 - (BOOL)hasRelayApprovedAccount;
-- (BOOL)metionedHandleMatchesMeCard:(id)a3;
-- (BOOL)receiverIsMyMention:(id)a3;
+- (BOOL)metionedHandleMatchesMeCard:(id)card;
+- (BOOL)receiverIsMyMention:(id)mention;
 - (IMAccount)activeIMessageAccount;
 - (IMAccount)activeSMSAccount;
 - (IMAccountController)init;
 - (NSArray)activeAccounts;
 - (NSArray)connectedAccounts;
 - (NSArray)operationalAccounts;
-- (id)_bestAccountForAddresses:(id)a3;
-- (id)_bestOperationalAccountForSendingForService:(id)a3;
-- (id)accountForUniqueID:(id)a3;
-- (id)accountsForService:(id)a3;
-- (id)accountsWithCapability:(unint64_t)a3;
-- (id)accountsWithServiceCapability:(id)a3;
-- (id)activeAccountsForService:(id)a3;
-- (id)activeAccountsWithServiceCapability:(id)a3;
+- (id)_bestAccountForAddresses:(id)addresses;
+- (id)_bestOperationalAccountForSendingForService:(id)service;
+- (id)accountForUniqueID:(id)d;
+- (id)accountsForService:(id)service;
+- (id)accountsWithCapability:(unint64_t)capability;
+- (id)accountsWithServiceCapability:(id)capability;
+- (id)activeAccountsForService:(id)service;
+- (id)activeAccountsWithServiceCapability:(id)capability;
 - (id)aimAccount;
 - (id)bestAccountForStatus;
-- (id)bestAccountWithCapability:(unint64_t)a3;
-- (id)connectedAccountsForService:(id)a3;
-- (id)connectedAccountsWithCapability:(unint64_t)a3;
-- (id)connectedAccountsWithServiceCapability:(id)a3;
-- (id)iMessageAccountForLastAddressedHandle:(id)a3 simID:(id)a4;
+- (id)bestAccountWithCapability:(unint64_t)capability;
+- (id)connectedAccountsForService:(id)service;
+- (id)connectedAccountsWithCapability:(unint64_t)capability;
+- (id)connectedAccountsWithServiceCapability:(id)capability;
+- (id)iMessageAccountForLastAddressedHandle:(id)handle simID:(id)d;
 - (id)jabberAccount;
 - (id)mostLoggedInAccount;
-- (id)operationalAccountsForService:(id)a3;
-- (id)operationalAccountsWithCapability:(unint64_t)a3;
+- (id)operationalAccountsForService:(id)service;
+- (id)operationalAccountsWithCapability:(unint64_t)capability;
 - (id)senderIdentifiers;
 - (int64_t)activeAccountsAreEligibleForAppleSMSFilter;
 - (int64_t)activeAccountsAreEligibleForAppleSMSFilterSubClassification;
@@ -55,7 +55,7 @@
 - (int64_t)activeAccountsAreEligibleForiMessageJunk;
 - (void)_disableCache;
 - (void)_requestNetworkDataAvailability;
-- (void)accountLoginComplete:(id)a3;
+- (void)accountLoginComplete:(id)complete;
 - (void)autoLogin;
 - (void)dealloc;
 - (void)deferredSetup;
@@ -515,39 +515,39 @@ LABEL_11:
   v4 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], a2, v2);
   objc_msgSend_removeObserver_name_object_(v4, v5, self, 0, 0);
 
-  v6 = self;
-  objc_sync_enter(v6);
-  accounts = v6->_accounts;
-  v6->_accounts = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  accounts = selfCopy->_accounts;
+  selfCopy->_accounts = 0;
 
-  accountMap = v6->_accountMap;
-  v6->_accountMap = 0;
+  accountMap = selfCopy->_accountMap;
+  selfCopy->_accountMap = 0;
 
-  objc_sync_exit(v6);
-  v9.receiver = v6;
+  objc_sync_exit(selfCopy);
+  v9.receiver = selfCopy;
   v9.super_class = IMAccountController;
   [(IMAccountController *)&v9 dealloc];
 }
 
-- (void)accountLoginComplete:(id)a3
+- (void)accountLoginComplete:(id)complete
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completeCopy = complete;
   v6 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v4, v5);
-  objc_msgSend___mainThreadPostNotificationName_object_(v6, v7, @"__kIMAccountControllerUpdatedNotification", v3);
+  objc_msgSend___mainThreadPostNotificationName_object_(v6, v7, @"__kIMAccountControllerUpdatedNotification", completeCopy);
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)accountForUniqueID:(id)a3
+- (id)accountForUniqueID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v7 = objc_msgSend_objectForKey_(v5->_accountMap, v6, v4);
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v7 = objc_msgSend_objectForKey_(selfCopy->_accountMap, v6, dCopy);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -609,43 +609,43 @@ LABEL_11:
   return Mutable;
 }
 
-- (id)accountsWithServiceCapability:(id)a3
+- (id)accountsWithServiceCapability:(id)capability
 {
-  v4 = a3;
+  capabilityCopy = capability;
   accounts = self->_accounts;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1A82AC1A0;
   v10[3] = &unk_1E7810DE0;
-  v11 = v4;
-  v6 = v4;
+  v11 = capabilityCopy;
+  v6 = capabilityCopy;
   v8 = objc_msgSend___imArrayByFilteringWithBlock_(accounts, v7, v10);
 
   return v8;
 }
 
-- (id)accountsForService:(id)a3
+- (id)accountsForService:(id)service
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  serviceCopy = service;
+  v7 = serviceCopy;
+  if (serviceCopy)
   {
     serviceToAccountsMap = self->_serviceToAccountsMap;
-    v9 = objc_msgSend_internalName(v4, v5, v6);
+    v9 = objc_msgSend_internalName(serviceCopy, v5, v6);
     v11 = objc_msgSend_objectForKey_(serviceToAccountsMap, v10, v9);
 
     if (!v11)
     {
       Mutable = CFArrayCreateMutable(0, 0, MEMORY[0x1E695E9C0]);
-      v13 = self;
-      objc_sync_enter(v13);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      obj = v13;
-      v14 = v13->_accounts;
+      obj = selfCopy;
+      v14 = selfCopy->_accounts;
       v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v34, v38, 16);
       if (v18)
       {
@@ -705,31 +705,31 @@ LABEL_11:
   return v30;
 }
 
-- (id)activeAccountsWithServiceCapability:(id)a3
+- (id)activeAccountsWithServiceCapability:(id)capability
 {
-  v4 = a3;
+  capabilityCopy = capability;
   accounts = self->_accounts;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1A82AC504;
   v10[3] = &unk_1E7810E08;
   v10[4] = self;
-  v11 = v4;
-  v6 = v4;
+  v11 = capabilityCopy;
+  v6 = capabilityCopy;
   v8 = objc_msgSend___imArrayByFilteringWithBlock_(accounts, v7, v10);
 
   return v8;
 }
 
-- (id)activeAccountsForService:(id)a3
+- (id)activeAccountsForService:(id)service
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  serviceCopy = service;
+  v7 = serviceCopy;
+  if (serviceCopy)
   {
     serviceToActiveAccountsMap = self->_serviceToActiveAccountsMap;
-    v9 = objc_msgSend_internalName(v4, v5, v6);
+    v9 = objc_msgSend_internalName(serviceCopy, v5, v6);
     v11 = objc_msgSend_objectForKey_(serviceToActiveAccountsMap, v10, v9);
 
     if (!v11)
@@ -806,14 +806,14 @@ LABEL_11:
   return v30;
 }
 
-- (id)operationalAccountsForService:(id)a3
+- (id)operationalAccountsForService:(id)service
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  serviceCopy = service;
+  v7 = serviceCopy;
+  if (serviceCopy)
   {
-    if (!self->_cachesEnabled || (v8 = self->_serviceToOperationalAccountsMap, objc_msgSend_internalName(v4, v5, v6), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKey_(v8, v10, v9), v11 = objc_claimAutoreleasedReturnValue(), v9, !v11))
+    if (!self->_cachesEnabled || (v8 = self->_serviceToOperationalAccountsMap, objc_msgSend_internalName(serviceCopy, v5, v6), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKey_(v8, v10, v9), v11 = objc_claimAutoreleasedReturnValue(), v9, !v11))
     {
       Mutable = CFArrayCreateMutable(0, 0, MEMORY[0x1E695E9C0]);
       v34 = 0u;
@@ -887,22 +887,22 @@ LABEL_11:
   return v31;
 }
 
-- (id)connectedAccountsWithServiceCapability:(id)a3
+- (id)connectedAccountsWithServiceCapability:(id)capability
 {
-  v3 = objc_msgSend_accountsWithServiceCapability_(self, a2, a3);
+  v3 = objc_msgSend_accountsWithServiceCapability_(self, a2, capability);
   v5 = objc_msgSend___imArrayByFilteringWithBlock_(v3, v4, &unk_1F1B6E140);
 
   return v5;
 }
 
-- (id)connectedAccountsForService:(id)a3
+- (id)connectedAccountsForService:(id)service
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  serviceCopy = service;
+  v7 = serviceCopy;
+  if (serviceCopy)
   {
-    if (self->_cachesEnabled && (v8 = self->_serviceToConnectedAccountsMap, objc_msgSend_internalName(v4, v5, v6), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKey_(v8, v10, v9), Mutable = objc_claimAutoreleasedReturnValue(), v9, Mutable))
+    if (self->_cachesEnabled && (v8 = self->_serviceToConnectedAccountsMap, objc_msgSend_internalName(serviceCopy, v5, v6), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKey_(v8, v10, v9), Mutable = objc_claimAutoreleasedReturnValue(), v9, Mutable))
     {
       if (IMOSLoggingEnabled())
       {
@@ -1005,17 +1005,17 @@ LABEL_11:
   return v33;
 }
 
-- (id)accountsWithCapability:(unint64_t)a3
+- (id)accountsWithCapability:(unint64_t)capability
 {
   v24 = *MEMORY[0x1E69E9840];
   Mutable = CFArrayCreateMutable(0, 0, MEMORY[0x1E695E9C0]);
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v6->_accounts;
+  v7 = selfCopy->_accounts;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v19, v23, 16);
   if (v10)
   {
@@ -1030,7 +1030,7 @@ LABEL_11:
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        hasCapability = objc_msgSend_hasCapability_(v13, v9, a3, v19);
+        hasCapability = objc_msgSend_hasCapability_(v13, v9, capability, v19);
         if (Mutable)
         {
           v15 = v13 == 0;
@@ -1063,23 +1063,23 @@ LABEL_11:
     while (v10);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v17 = *MEMORY[0x1E69E9840];
 
   return Mutable;
 }
 
-- (id)operationalAccountsWithCapability:(unint64_t)a3
+- (id)operationalAccountsWithCapability:(unint64_t)capability
 {
   v26 = *MEMORY[0x1E69E9840];
   Mutable = CFArrayCreateMutable(0, 0, MEMORY[0x1E695E9C0]);
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = objc_msgSend_accountsWithCapability_(v6, v7, a3, 0);
+  v8 = objc_msgSend_accountsWithCapability_(selfCopy, v7, capability, 0);
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v21, v25, 16);
   if (v12)
   {
@@ -1112,13 +1112,13 @@ LABEL_11:
     while (v12);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v19 = *MEMORY[0x1E69E9840];
 
   return Mutable;
 }
 
-- (id)connectedAccountsWithCapability:(unint64_t)a3
+- (id)connectedAccountsWithCapability:(unint64_t)capability
 {
   v25 = *MEMORY[0x1E69E9840];
   Mutable = CFArrayCreateMutable(0, 0, MEMORY[0x1E695E9C0]);
@@ -1126,7 +1126,7 @@ LABEL_11:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = objc_msgSend_accountsWithCapability_(self, v6, a3, 0);
+  v7 = objc_msgSend_accountsWithCapability_(self, v6, capability, 0);
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v20, v24, 16);
   if (v9)
   {
@@ -1169,30 +1169,30 @@ LABEL_11:
   return Mutable;
 }
 
-- (BOOL)canDeleteAccount:(id)a3
+- (BOOL)canDeleteAccount:(id)account
 {
-  v3 = a3;
-  v6 = objc_msgSend_service(v3, v4, v5);
-  if (objc_msgSend_isPersistent(v6, v7, v8) & 1) != 0 || (objc_msgSend_isManaged(v3, v9, v10))
+  accountCopy = account;
+  v6 = objc_msgSend_service(accountCopy, v4, v5);
+  if (objc_msgSend_isPersistent(v6, v7, v8) & 1) != 0 || (objc_msgSend_isManaged(accountCopy, v9, v10))
   {
     LOBYTE(v13) = 0;
   }
 
   else
   {
-    v14 = objc_msgSend_service(v3, v11, v12);
+    v14 = objc_msgSend_service(accountCopy, v11, v12);
     v13 = objc_msgSend_shouldDisableDeactivation(v14, v15, v16) ^ 1;
   }
 
   return v13;
 }
 
-- (BOOL)accountLogoutable:(id)a3
+- (BOOL)accountLogoutable:(id)logoutable
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6 = objc_msgSend_accountActive_(self, v5, v4);
-  isAccountKeyCDPSyncingOrWaitingForUser = objc_msgSend_isAccountKeyCDPSyncingOrWaitingForUser_(self, v7, v4);
+  logoutableCopy = logoutable;
+  v6 = objc_msgSend_accountActive_(self, v5, logoutableCopy);
+  isAccountKeyCDPSyncingOrWaitingForUser = objc_msgSend_isAccountKeyCDPSyncingOrWaitingForUser_(self, v7, logoutableCopy);
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
@@ -1238,45 +1238,45 @@ LABEL_11:
   return (v6 | isAccountKeyCDPSyncingOrWaitingForUser) & 1;
 }
 
-- (BOOL)addAccount:(id)a3 locally:(BOOL)a4
+- (BOOL)addAccount:(id)account locally:(BOOL)locally
 {
-  v4 = a4;
+  locallyCopy = locally;
   v82 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = objc_msgSend_service(v6, v7, v8);
+  accountCopy = account;
+  v9 = objc_msgSend_service(accountCopy, v7, v8);
   isPersistent = objc_msgSend_isPersistent(v9, v10, v11);
 
-  if (isPersistent && (objc_msgSend_service(v6, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend_accountsForService_(self, v16, v15), v17 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend_count(v17, v18, v19), v17, v15, v20))
+  if (isPersistent && (objc_msgSend_service(accountCopy, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend_accountsForService_(self, v16, v15), v17 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend_count(v17, v18, v19), v17, v15, v20))
   {
     v21 = 0;
   }
 
   else
   {
-    v22 = self;
-    objc_sync_enter(v22);
-    v24 = objc_msgSend_containsObjectIdenticalTo_(v22->_accounts, v23, v6);
-    objc_sync_exit(v22);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v24 = objc_msgSend_containsObjectIdenticalTo_(selfCopy->_accounts, v23, accountCopy);
+    objc_sync_exit(selfCopy);
 
     if ((v24 & 1) == 0)
     {
-      if (!v4 && IMOSLoggingEnabled())
+      if (!locallyCopy && IMOSLoggingEnabled())
       {
         v25 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
           v80 = 138412290;
-          v81 = v6;
+          v81 = accountCopy;
           _os_log_impl(&dword_1A823F000, v25, OS_LOG_TYPE_INFO, "Adding account: %@", &v80, 0xCu);
         }
       }
 
-      v26 = v22;
+      v26 = selfCopy;
       objc_sync_enter(v26);
-      v28 = objc_msgSend_arrayByAddingObject_(v22->_accounts, v27, v6);
+      v28 = objc_msgSend_arrayByAddingObject_(selfCopy->_accounts, v27, accountCopy);
       objc_msgSend_setAccounts_(v26, v29, v28);
 
-      v30 = v6;
+      v30 = accountCopy;
       v33 = v30;
       if (v30)
       {
@@ -1289,7 +1289,7 @@ LABEL_11:
       objc_msgSend_removeAllObjects(v26->_serviceToActiveAccountsMap, v38, v39);
       objc_sync_exit(v26);
 
-      if (((objc_msgSend_readOnly(v26, v40, v41) | v4) & 1) == 0)
+      if (((objc_msgSend_readOnly(v26, v40, v41) | locallyCopy) & 1) == 0)
       {
         v44 = objc_msgSend_sharedController(IMDaemonController, v42, v43);
         v47 = objc_msgSend_remoteDaemon(v44, v45, v46);
@@ -1326,33 +1326,33 @@ LABEL_11:
   return v21;
 }
 
-- (BOOL)deleteAccount:(id)a3
+- (BOOL)deleteAccount:(id)account
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = accountCopy;
       _os_log_impl(&dword_1A823F000, v6, OS_LOG_TYPE_INFO, "Client request to delete account: %@", &v10, 0xCu);
     }
   }
 
-  v7 = objc_msgSend_deleteAccount_locally_(self, v5, v4, 0);
+  v7 = objc_msgSend_deleteAccount_locally_(self, v5, accountCopy, 0);
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (BOOL)deleteAccount:(id)a3 locally:(BOOL)a4
+- (BOOL)deleteAccount:(id)account locally:(BOOL)locally
 {
-  v4 = a4;
+  locallyCopy = locally;
   v73 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = objc_msgSend_service(v6, v7, v8);
+  accountCopy = account;
+  v9 = objc_msgSend_service(accountCopy, v7, v8);
   shouldDisableDeactivation = objc_msgSend_shouldDisableDeactivation(v9, v10, v11);
 
   if (shouldDisableDeactivation)
@@ -1368,7 +1368,7 @@ LABEL_26:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v69 = 138412290;
-      v70 = v6;
+      v70 = accountCopy;
       _os_log_impl(&dword_1A823F000, v15, OS_LOG_TYPE_INFO, "Someone tried to delete an account that can't be deactivated, you can't do this (%@)", &v69, 0xCu);
     }
 
@@ -1377,9 +1377,9 @@ LABEL_5:
     goto LABEL_26;
   }
 
-  if (!v4)
+  if (!locallyCopy)
   {
-    if (objc_msgSend_supportsRegistration(v6, v13, v14) && objc_msgSend_accountType(v6, v16, v17) == 2)
+    if (objc_msgSend_supportsRegistration(accountCopy, v13, v14) && objc_msgSend_accountType(accountCopy, v16, v17) == 2)
     {
       if (!IMOSLoggingEnabled())
       {
@@ -1402,7 +1402,7 @@ LABEL_5:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v69 = 138412546;
-        v70 = v6;
+        v70 = accountCopy;
         v71 = 2112;
         v72 = @"NO";
         _os_log_impl(&dword_1A823F000, v18, OS_LOG_TYPE_INFO, "Deleting account: %@  (Locally: %@)", &v69, 0x16u);
@@ -1410,79 +1410,79 @@ LABEL_5:
     }
   }
 
-  if (objc_msgSend_isConnected(v6, v13, v14))
+  if (objc_msgSend_isConnected(accountCopy, v13, v14))
   {
-    objc_msgSend_logoutAccount(v6, v19, v20);
+    objc_msgSend_logoutAccount(accountCopy, v19, v20);
   }
 
-  if (objc_msgSend_accountActive_(self, v19, v6) && !objc_msgSend_deactivateAccount_(self, v21, v6))
+  if (objc_msgSend_accountActive_(self, v19, accountCopy) && !objc_msgSend_deactivateAccount_(self, v21, accountCopy))
   {
     goto LABEL_26;
   }
 
   v23 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v21, v22);
-  objc_msgSend___mainThreadPostNotificationName_object_(v23, v24, @"__kIMAccountControllerAccountWillBeRemovedNotification", v6);
+  objc_msgSend___mainThreadPostNotificationName_object_(v23, v24, @"__kIMAccountControllerAccountWillBeRemovedNotification", accountCopy);
 
-  objc_msgSend_accountWillBeRemoved(v6, v25, v26);
-  v27 = self;
-  objc_sync_enter(v27);
-  v30 = objc_msgSend_mutableCopy(v27->_accounts, v28, v29);
-  objc_msgSend_removeObject_(v30, v31, v6);
-  objc_msgSend_setAccounts_(v27, v32, v30);
-  v35 = objc_msgSend_uniqueID(v6, v33, v34);
+  objc_msgSend_accountWillBeRemoved(accountCopy, v25, v26);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v30 = objc_msgSend_mutableCopy(selfCopy->_accounts, v28, v29);
+  objc_msgSend_removeObject_(v30, v31, accountCopy);
+  objc_msgSend_setAccounts_(selfCopy, v32, v30);
+  v35 = objc_msgSend_uniqueID(accountCopy, v33, v34);
 
   if (v35)
   {
-    accountMap = v27->_accountMap;
-    v39 = objc_msgSend_uniqueID(v6, v36, v37);
+    accountMap = selfCopy->_accountMap;
+    v39 = objc_msgSend_uniqueID(accountCopy, v36, v37);
     objc_msgSend_removeObjectForKey_(accountMap, v40, v39);
   }
 
-  objc_msgSend_removeAllObjects(v27->_serviceToAccountsMap, v36, v37);
-  objc_msgSend_removeAllObjects(v27->_serviceToActiveAccountsMap, v41, v42);
+  objc_msgSend_removeAllObjects(selfCopy->_serviceToAccountsMap, v36, v37);
+  objc_msgSend_removeAllObjects(selfCopy->_serviceToActiveAccountsMap, v41, v42);
 
-  objc_sync_exit(v27);
-  if (((objc_msgSend_readOnly(v27, v43, v44) | v4) & 1) == 0)
+  objc_sync_exit(selfCopy);
+  if (((objc_msgSend_readOnly(selfCopy, v43, v44) | locallyCopy) & 1) == 0)
   {
     v47 = objc_msgSend_sharedController(IMDaemonController, v45, v46);
     v50 = objc_msgSend_remoteDaemon(v47, v48, v49);
-    v53 = objc_msgSend_uniqueID(v6, v51, v52);
+    v53 = objc_msgSend_uniqueID(accountCopy, v51, v52);
     objc_msgSend_removeAccount_(v50, v54, v53);
   }
 
   v55 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v45, v46);
-  objc_msgSend___mainThreadPostNotificationName_object_(v55, v56, @"__k_IMAccountControllerUpdatedNotification", v6);
+  objc_msgSend___mainThreadPostNotificationName_object_(v55, v56, @"__k_IMAccountControllerUpdatedNotification", accountCopy);
 
   v59 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v57, v58);
   objc_msgSend___mainThreadPostNotificationName_object_(v59, v60, @"__kIMAccountControllerUpdatedNotification", 0);
 
   v63 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v61, v62);
-  objc_msgSend___mainThreadPostNotificationName_object_(v63, v64, @"__kIMAccountControllerAccountRemovedNotification", v6);
+  objc_msgSend___mainThreadPostNotificationName_object_(v63, v64, @"__kIMAccountControllerAccountRemovedNotification", accountCopy);
 
   v65 = 1;
-  objc_msgSend__rebuildOperationalAccountsCache_(v27, v66, 1);
+  objc_msgSend__rebuildOperationalAccountsCache_(selfCopy, v66, 1);
 LABEL_27:
 
   v67 = *MEMORY[0x1E69E9840];
   return v65;
 }
 
-- (BOOL)deactivateAccounts:(id)a3 withDisable:(BOOL)a4
+- (BOOL)deactivateAccounts:(id)accounts withDisable:(BOOL)disable
 {
-  v4 = a4;
+  disableCopy = disable;
   v85 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountsCopy = accounts;
   v7 = MEMORY[0x1E695E9C0];
   theArray = CFArrayCreateMutable(0, 0, MEMORY[0x1E695E9C0]);
   Mutable = CFArrayCreateMutable(0, 0, v7);
-  v66 = v4;
-  if (v4 && (objc_msgSend_readOnly(self, v8, v9) & 1) == 0 && IMOSLoggingEnabled())
+  v66 = disableCopy;
+  if (disableCopy && (objc_msgSend_readOnly(self, v8, v9) & 1) == 0 && IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v84 = v6;
+      v84 = accountsCopy;
       _os_log_impl(&dword_1A823F000, v11, OS_LOG_TYPE_INFO, "Deactivating accounts: %@", buf, 0xCu);
     }
   }
@@ -1491,7 +1491,7 @@ LABEL_27:
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v12 = v6;
+  v12 = accountsCopy;
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v76, v82, 16);
   if (v15)
   {
@@ -1625,10 +1625,10 @@ LABEL_27:
   return 1;
 }
 
-- (BOOL)_deactivateAccount:(id)a3
+- (BOOL)_deactivateAccount:(id)account
 {
-  v4 = a3;
-  v7 = objc_msgSend_service(v4, v5, v6);
+  accountCopy = account;
+  v7 = objc_msgSend_service(accountCopy, v5, v6);
   shouldDisableDeactivation = objc_msgSend_shouldDisableDeactivation(v7, v8, v9);
 
   if (shouldDisableDeactivation)
@@ -1638,70 +1638,70 @@ LABEL_27:
 
   else
   {
-    v12 = objc_msgSend_deactivateAccount_withDisable_(self, v11, v4, 1);
+    v12 = objc_msgSend_deactivateAccount_withDisable_(self, v11, accountCopy, 1);
   }
 
   return v12;
 }
 
-- (BOOL)deactivateAccount:(id)a3
+- (BOOL)deactivateAccount:(id)account
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = accountCopy;
       _os_log_impl(&dword_1A823F000, v6, OS_LOG_TYPE_INFO, "Client request to deactivate account: %@", &v10, 0xCu);
     }
   }
 
-  v7 = objc_msgSend__deactivateAccount_(self, v5, v4);
+  v7 = objc_msgSend__deactivateAccount_(self, v5, accountCopy);
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (BOOL)deactivateAccounts:(id)a3
+- (BOOL)deactivateAccounts:(id)accounts
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountsCopy = accounts;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = accountsCopy;
       _os_log_impl(&dword_1A823F000, v6, OS_LOG_TYPE_INFO, "Client request to deactivate accounts: %@", &v10, 0xCu);
     }
   }
 
-  v7 = objc_msgSend__deactivateAccounts_(self, v5, v4);
+  v7 = objc_msgSend__deactivateAccounts_(self, v5, accountsCopy);
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (BOOL)activateAccounts:(id)a3 force:(BOOL)a4 locally:(BOOL)a5
+- (BOOL)activateAccounts:(id)accounts force:(BOOL)force locally:(BOOL)locally
 {
-  v5 = a5;
+  locallyCopy = locally;
   v118 = *MEMORY[0x1E69E9840];
-  v92 = a3;
-  canActivateAccounts = objc_msgSend_canActivateAccounts_(self, v7, v92);
+  accountsCopy = accounts;
+  canActivateAccounts = objc_msgSend_canActivateAccounts_(self, v7, accountsCopy);
   if (canActivateAccounts)
   {
-    v90 = v5;
-    if (!v5 && IMOSLoggingEnabled())
+    v90 = locallyCopy;
+    if (!locallyCopy && IMOSLoggingEnabled())
     {
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v117 = v92;
+        v117 = accountsCopy;
         _os_log_impl(&dword_1A823F000, v8, OS_LOG_TYPE_INFO, "Activating accounts: %@", buf, 0xCu);
       }
     }
@@ -1712,7 +1712,7 @@ LABEL_27:
     v111 = 0u;
     v108 = 0u;
     v109 = 0u;
-    v9 = v92;
+    v9 = accountsCopy;
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v108, v115, 16);
     if (v12)
     {
@@ -1893,7 +1893,7 @@ LABEL_27:
     if (os_log_type_enabled(v87, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v117 = v92;
+      v117 = accountsCopy;
       _os_log_impl(&dword_1A823F000, v87, OS_LOG_TYPE_INFO, "Accounts could not be activated: %@", buf, 0xCu);
     }
   }
@@ -1902,14 +1902,14 @@ LABEL_27:
   return canActivateAccounts;
 }
 
-- (BOOL)activateAndHandleReconnectAccounts:(id)a3
+- (BOOL)activateAndHandleReconnectAccounts:(id)accounts
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountsCopy = accounts;
   v7 = objc_msgSend_activeAccounts(self, v5, v6);
   v10 = objc_msgSend_count(v7, v8, v9);
 
-  v14 = objc_msgSend_activateAccounts_force_locally_(self, v11, v4, 1, 0);
+  v14 = objc_msgSend_activateAccounts_force_locally_(self, v11, accountsCopy, 1, 0);
   if (v14)
   {
     if (!v10)
@@ -1929,7 +1929,7 @@ LABEL_4:
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v23 = v4;
+      v23 = accountsCopy;
       v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(v23, v24, &v33, v37, 16);
       if (v25)
       {
@@ -1961,9 +1961,9 @@ LABEL_4:
   return v14;
 }
 
-- (BOOL)activateAndHandleReconnectAccount:(id)a3
+- (BOOL)activateAndHandleReconnectAccount:(id)account
 {
-  if (!a3)
+  if (!account)
   {
     return 0;
   }
@@ -1974,12 +1974,12 @@ LABEL_4:
   return self;
 }
 
-- (BOOL)accountConnecting:(id)a3
+- (BOOL)accountConnecting:(id)connecting
 {
-  v4 = a3;
-  if (objc_msgSend_accountActive_(self, v5, v4) && objc_msgSend_isConnecting(v4, v6, v7))
+  connectingCopy = connecting;
+  if (objc_msgSend_accountActive_(self, v5, connectingCopy) && objc_msgSend_isConnecting(connectingCopy, v6, v7))
   {
-    v10 = objc_msgSend_isConnected(v4, v8, v9) ^ 1;
+    v10 = objc_msgSend_isConnected(connectingCopy, v8, v9) ^ 1;
   }
 
   else
@@ -1990,12 +1990,12 @@ LABEL_4:
   return v10;
 }
 
-- (BOOL)accountConnected:(id)a3
+- (BOOL)accountConnected:(id)connected
 {
-  v4 = a3;
-  if (objc_msgSend_accountActive_(self, v5, v4))
+  connectedCopy = connected;
+  if (objc_msgSend_accountActive_(self, v5, connectedCopy))
   {
-    isConnected = objc_msgSend_isConnected(v4, v6, v7);
+    isConnected = objc_msgSend_isConnected(connectedCopy, v6, v7);
   }
 
   else
@@ -2006,24 +2006,24 @@ LABEL_4:
   return isConnected;
 }
 
-- (BOOL)canActivateAccount:(id)a3
+- (BOOL)canActivateAccount:(id)account
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v7 = objc_msgSend_standardControls(IMParentalControls, v5, v6);
-  v9 = objc_msgSend_okToConnectAccount_(v7, v8, v4);
+  v9 = objc_msgSend_okToConnectAccount_(v7, v8, accountCopy);
 
   if (v9)
   {
-    if (objc_msgSend_accountActive_(self, v10, v4))
+    if (objc_msgSend_accountActive_(self, v10, accountCopy))
     {
       goto LABEL_14;
     }
 
-    v13 = objc_msgSend_service(v4, v11, v12);
+    v13 = objc_msgSend_service(accountCopy, v11, v12);
     v16 = objc_msgSend_allowsMultipleConnections(v13, v14, v15);
 
-    if ((v16 & 1) != 0 || (objc_msgSend_service(v4, v17, v18), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend_connectedAccountsForService_(self, v20, v19), v21 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend_count(v21, v22, v23), v21, v19, !v24))
+    if ((v16 & 1) != 0 || (objc_msgSend_service(accountCopy, v17, v18), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend_connectedAccountsForService_(self, v20, v19), v21 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend_count(v21, v22, v23), v21, v19, !v24))
     {
 LABEL_14:
       v26 = 1;
@@ -2036,7 +2036,7 @@ LABEL_14:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
         v29 = 138412290;
-        v30 = v4;
+        v30 = accountCopy;
         _os_log_impl(&dword_1A823F000, v25, OS_LOG_TYPE_INFO, "Not activating account since we already have active accounts of this type for account: %@", &v29, 0xCu);
       }
 
@@ -2050,7 +2050,7 @@ LABEL_12:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       v29 = 138412290;
-      v30 = v4;
+      v30 = accountCopy;
       _os_log_impl(&dword_1A823F000, v25, OS_LOG_TYPE_INFO, "Parental controls disabled account: %@   not allowed to activate", &v29, 0xCu);
     }
 
@@ -2064,17 +2064,17 @@ LABEL_15:
   return v26;
 }
 
-- (BOOL)canActivateAccounts:(id)a3
+- (BOOL)canActivateAccounts:(id)accounts
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6))
+  accountsCopy = accounts;
+  if (objc_msgSend_count(accountsCopy, v5, v6))
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v4;
+    v7 = accountsCopy;
     v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v17, v21, 16);
     if (v9)
     {
@@ -2119,15 +2119,15 @@ LABEL_12:
   return v14;
 }
 
-+ (id)bestAccountFromAccounts:(id)a3
++ (id)bestAccountFromAccounts:(id)accounts
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  accountsCopy = accounts;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v46, v50, 16);
+  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(accountsCopy, v4, &v46, v50, 16);
   if (!v5)
   {
     v9 = 0;
@@ -2143,7 +2143,7 @@ LABEL_12:
     {
       if (*v47 != v10)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(accountsCopy);
       }
 
       v12 = *(*(&v46 + 1) + 8 * i);
@@ -2197,7 +2197,7 @@ LABEL_17:
       }
     }
 
-    v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v6, &v46, v50, 16);
+    v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(accountsCopy, v6, &v46, v50, 16);
   }
 
   while (v8);
@@ -2208,22 +2208,22 @@ LABEL_22:
   return v9;
 }
 
-- (id)iMessageAccountForLastAddressedHandle:(id)a3 simID:(id)a4
+- (id)iMessageAccountForLastAddressedHandle:(id)handle simID:(id)d
 {
   v99 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v70 = a4;
-  if (objc_msgSend_length(v70, v7, v8))
+  handleCopy = handle;
+  dCopy = d;
+  if (objc_msgSend_length(dCopy, v7, v8))
   {
     v11 = objc_msgSend_sharedInstance(MEMORY[0x1E69A7F68], v9, v10);
     v14 = objc_msgSend_ctSubscriptionInfo(v11, v12, v13);
-    v68 = objc_msgSend___im_subscriptionContextForForSimID_(v14, v15, v70);
+    v68 = objc_msgSend___im_subscriptionContextForForSimID_(v14, v15, dCopy);
 
-    if (!objc_msgSend_length(v6, v16, v17))
+    if (!objc_msgSend_length(handleCopy, v16, v17))
     {
       v18 = objc_msgSend_phoneNumber(v68, v9, v10);
 
-      v6 = v18;
+      handleCopy = v18;
       v21 = objc_msgSend_length(v18, v19, v20, v68);
       goto LABEL_6;
     }
@@ -2234,7 +2234,7 @@ LABEL_22:
     v68 = 0;
   }
 
-  v21 = objc_msgSend_length(v6, v9, v10, v68);
+  v21 = objc_msgSend_length(handleCopy, v9, v10, v68);
 LABEL_6:
   if (v21)
   {
@@ -2312,7 +2312,7 @@ LABEL_6:
                     objc_enumerationMutation(v42);
                   }
 
-                  if (objc_msgSend_isPhoneNumber_equivalentToExistingPhoneNumber_(MEMORY[0x1E69A51E8], v44, v6, *(*(&v77 + 1) + 8 * k)))
+                  if (objc_msgSend_isPhoneNumber_equivalentToExistingPhoneNumber_(MEMORY[0x1E69A51E8], v44, handleCopy, *(*(&v77 + 1) + 8 * k)))
                   {
                     if (IMOSLoggingEnabled())
                     {
@@ -2320,7 +2320,7 @@ LABEL_6:
                       if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
                       {
                         *buf = 138412546;
-                        v90 = v6;
+                        v90 = handleCopy;
                         v91 = 2112;
                         v92 = v41;
                         _os_log_impl(&dword_1A823F000, v48, OS_LOG_TYPE_INFO, "Alias %@  matched phone based iMessage account: %@, selecting it", buf, 0x16u);
@@ -2411,7 +2411,7 @@ LABEL_51:
         if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v90 = v6;
+          v90 = handleCopy;
           v91 = 2112;
           v92 = v60;
           _os_log_impl(&dword_1A823F000, v64, OS_LOG_TYPE_INFO, "Alias %@  did not match any accounts, selecting Apple ID account %@", buf, 0x16u);
@@ -2423,7 +2423,7 @@ LABEL_51:
       if (objc_msgSend_accountType(v60, v54, v55) != 2)
       {
         v61 = objc_msgSend_aliases(v60, v54, v55);
-        v63 = objc_msgSend_containsObject_(v61, v62, v6);
+        v63 = objc_msgSend_containsObject_(v61, v62, handleCopy);
 
         if (v63)
         {
@@ -2452,7 +2452,7 @@ LABEL_51:
     if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v90 = v6;
+      v90 = handleCopy;
       v91 = 2112;
       v92 = v60;
       _os_log_impl(&dword_1A823F000, v64, OS_LOG_TYPE_INFO, "Alias %@  matched account: %@, selecting it", buf, 0x16u);
@@ -2477,9 +2477,9 @@ LABEL_70:
         *buf = 138412802;
         v90 = v72;
         v91 = 2112;
-        v92 = v6;
+        v92 = handleCopy;
         v93 = 2112;
-        v94 = v70;
+        v94 = dCopy;
         _os_log_impl(&dword_1A823F000, v65, OS_LOG_TYPE_INFO, "Returning iMessage account %@ for lastAddressedHandle %@ and context %@", buf, 0x20u);
       }
     }
@@ -2495,7 +2495,7 @@ LABEL_75:
     if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v90 = v70;
+      v90 = dCopy;
       v91 = 2112;
       v92 = v69;
       _os_log_impl(&dword_1A823F000, v50, OS_LOG_TYPE_INFO, "Returning nil account because senderLastAddressedHandle is nil for simID %@ and context %@", buf, 0x16u);
@@ -2510,10 +2510,10 @@ LABEL_76:
   return v72;
 }
 
-- (id)bestAccountWithCapability:(unint64_t)a3
+- (id)bestAccountWithCapability:(unint64_t)capability
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_operationalAccountsWithCapability_(self, a2, a3);
+  v5 = objc_msgSend_operationalAccountsWithCapability_(self, a2, capability);
   if (objc_msgSend_count(v5, v6, v7))
   {
     v9 = objc_msgSend_bestAccountFromAccounts_(IMAccountController, v8, v5);
@@ -2522,7 +2522,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v10 = objc_msgSend_connectedAccountsWithCapability_(self, v8, a3);
+  v10 = objc_msgSend_connectedAccountsWithCapability_(self, v8, capability);
   if (objc_msgSend_count(v10, v11, v12))
   {
     v9 = objc_msgSend_bestAccountFromAccounts_(IMAccountController, v13, v10);
@@ -2531,7 +2531,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v14 = objc_msgSend_accountsWithCapability_(self, v13, a3);
+  v14 = objc_msgSend_accountsWithCapability_(self, v13, capability);
   if (objc_msgSend_count(v14, v15, v16))
   {
     v9 = objc_msgSend_bestAccountFromAccounts_(IMAccountController, v17, v14);
@@ -2543,7 +2543,7 @@ LABEL_7:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v5 = objc_msgSend_servicesWithCapability_(IMServiceImpl, v20, a3, 0);
+  v5 = objc_msgSend_servicesWithCapability_(IMServiceImpl, v20, capability, 0);
   v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v21, &v41, v45, 16);
   if (!v22)
   {
@@ -2797,18 +2797,18 @@ LABEL_11:
   return v4;
 }
 
-- (id)_bestOperationalAccountForSendingForService:(id)a3
+- (id)_bestOperationalAccountForSendingForService:(id)service
 {
   v104 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v78 = v4;
-  v8 = objc_msgSend_operationalAccountsForService_(self, v7, v4);
+  v78 = serviceCopy;
+  v8 = objc_msgSend_operationalAccountsForService_(self, v7, serviceCopy);
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v92, v103, 16);
   if (v12)
   {
@@ -3039,11 +3039,11 @@ LABEL_55:
   return v75;
 }
 
-- (id)_bestAccountForAddresses:(id)a3
+- (id)_bestAccountForAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   v7 = objc_msgSend_iMessageService(IMServiceImpl, v5, v6);
-  v8 = IMPreferredSendingAccountForAddressesWantsGroupWithFallbackService(v4, 1, v7);
+  v8 = IMPreferredSendingAccountForAddressesWantsGroupWithFallbackService(addressesCopy, 1, v7);
 
   if ((objc_msgSend__isUsableForSending(v8, v9, v10) & 1) == 0)
   {
@@ -3060,11 +3060,11 @@ LABEL_55:
   return v8;
 }
 
-- (BOOL)receiverIsMyMention:(id)a3
+- (BOOL)receiverIsMyMention:(id)mention
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  mentionCopy = mention;
+  if (objc_msgSend_length(mentionCopy, v5, v6))
   {
     v7 = IMChatCanonicalIDSIDsForAddress();
     v8 = MEMORY[0x1AC56C3F0]();
@@ -3127,24 +3127,24 @@ LABEL_14:
   return v16;
 }
 
-- (BOOL)metionedHandleMatchesMeCard:(id)a3
+- (BOOL)metionedHandleMatchesMeCard:(id)card
 {
-  v4 = a3;
-  if (objc_msgSend_receiverIsMyMention_(self, v5, v4))
+  cardCopy = card;
+  if (objc_msgSend_receiverIsMyMention_(self, v5, cardCopy))
   {
     v6 = 1;
   }
 
   else
   {
-    if (MEMORY[0x1AC56C3C0](v4))
+    if (MEMORY[0x1AC56C3C0](cardCopy))
     {
       v7 = IMNormalizePhoneNumber();
     }
 
     else
     {
-      v7 = v4;
+      v7 = cardCopy;
     }
 
     v10 = v7;

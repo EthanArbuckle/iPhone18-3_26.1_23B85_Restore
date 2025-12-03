@@ -3,13 +3,13 @@
 - (ACMDialog)init;
 - (int64_t)modalTransitionStyle;
 - (void)dealloc;
-- (void)hideWithParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)hideWithParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)loadView;
-- (void)showWithParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)showWithParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ACMDialog
@@ -49,31 +49,31 @@
   return [(ACMDialog *)&v4 modalTransitionStyle];
 }
 
-- (void)showWithParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)showWithParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   if ([(ACMDialog *)self isMovingFromParentViewController])
   {
-    v9 = [a5 copy];
+    v9 = [completion copy];
     v10 = dispatch_time(0, 100000000);
     block[0] = MEMORY[0x29EDCA5F8];
     block[1] = 3221225472;
     block[2] = __62__ACMDialog_showWithParentViewController_animated_completion___block_invoke;
     block[3] = &unk_29EE917A0;
     block[4] = self;
-    block[5] = a3;
-    v14 = v6;
+    block[5] = controller;
+    v14 = animatedCopy;
     block[6] = v9;
     dispatch_after(v10, MEMORY[0x29EDCA578], block);
   }
 
   else if ([(ACMDialog *)self presentingViewController])
   {
-    if (-[ACMDialog presentingViewController](self, "presentingViewController") == a3 || (v11 = -[ACMDialog presentingViewController](self, "presentingViewController"), v11 == [a3 navigationController]))
+    if (-[ACMDialog presentingViewController](self, "presentingViewController") == controller || (v11 = -[ACMDialog presentingViewController](self, "presentingViewController"), v11 == [controller navigationController]))
     {
       if (qword_2A1EB8ED0 && (ACFLogSettingsGetLevelMask() & 8) != 0)
       {
-        ACFLog(3, "[ACMDialog showWithParentViewController:animated:completion:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMDialog.m", 70, 0, "Attempt to show %@ with parent: %@, while it always has a parent: %@", self, a3, [(ACMDialog *)self presentingViewController]);
+        ACFLog(3, "[ACMDialog showWithParentViewController:animated:completion:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMDialog.m", 70, 0, "Attempt to show %@ with parent: %@, while it always has a parent: %@", self, controller, [(ACMDialog *)self presentingViewController]);
       }
     }
 
@@ -82,64 +82,64 @@
       ACFLog(6, "[ACMDialog showWithParentViewController:animated:completion:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMDialog.m", 74, 0, "Already shown");
     }
 
-    if (a5)
+    if (completion)
     {
-      v12 = *(a5 + 2);
+      v12 = *(completion + 2);
 
-      v12(a5);
+      v12(completion);
     }
   }
 
   else
   {
 
-    [a3 presentViewController:self animated:v6 completion:a5];
+    [controller presentViewController:self animated:animatedCopy completion:completion];
   }
 }
 
-- (void)hideWithParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)hideWithParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   if ([(ACMDialog *)self isBeingPresented])
   {
-    v9 = [a5 copy];
+    v9 = [completion copy];
     v10 = dispatch_time(0, 100000000);
     block[0] = MEMORY[0x29EDCA5F8];
     block[1] = 3221225472;
     block[2] = __62__ACMDialog_hideWithParentViewController_animated_completion___block_invoke;
     block[3] = &unk_29EE917A0;
     block[4] = self;
-    block[5] = a3;
-    v16 = v6;
+    block[5] = controller;
+    v16 = animatedCopy;
     block[6] = v9;
     dispatch_after(v10, MEMORY[0x29EDCA578], block);
   }
 
   else if ([(ACMDialog *)self presentingViewController]&& ([(ACMDialog *)self isBeingDismissed]& 1) == 0)
   {
-    v12 = [a3 navigationController];
-    if (v12 != [(ACMDialog *)self presentingViewController])
+    navigationController = [controller navigationController];
+    if (navigationController != [(ACMDialog *)self presentingViewController])
     {
-      v13 = [(ACMDialog *)self presentingViewController];
+      presentingViewController = [(ACMDialog *)self presentingViewController];
       if (qword_2A1EB8ED0)
       {
-        if (v13 != a3 && (ACFLogSettingsGetLevelMask() & 8) != 0)
+        if (presentingViewController != controller && (ACFLogSettingsGetLevelMask() & 8) != 0)
         {
-          ACFLog(3, "[ACMDialog hideWithParentViewController:animated:completion:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMDialog.m", 103, 0, "Attempt to dismiss %@ with parent: %@, while it has diferent parent: %@", self, a3, [(ACMDialog *)self presentingViewController]);
+          ACFLog(3, "[ACMDialog hideWithParentViewController:animated:completion:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMDialog.m", 103, 0, "Attempt to dismiss %@ with parent: %@, while it has diferent parent: %@", self, controller, [(ACMDialog *)self presentingViewController]);
         }
       }
     }
 
-    v14 = [(ACMDialog *)self presentingViewController];
+    presentingViewController2 = [(ACMDialog *)self presentingViewController];
 
-    [v14 dismissViewControllerAnimated:v6 completion:a5];
+    [presentingViewController2 dismissViewControllerAnimated:animatedCopy completion:completion];
   }
 
-  else if (a5)
+  else if (completion)
   {
-    v11 = *(a5 + 2);
+    v11 = *(completion + 2);
 
-    v11(a5);
+    v11(completion);
   }
 }
 
@@ -149,10 +149,10 @@
   v7 = [objc_alloc(MEMORY[0x29EDC7DA0]) initWithFrame:{v3, v4, v5, v6}];
   [v7 setBackgroundColor:{objc_msgSend(MEMORY[0x29EDC7A00], "clearColor")}];
   [v7 setAutoresizesSubviews:1];
-  v8 = [(ACMDialog *)self backgroundImageName];
-  if (v8)
+  backgroundImageName = [(ACMDialog *)self backgroundImageName];
+  if (backgroundImageName)
   {
-    v9 = [objc_alloc(MEMORY[0x29EDC7AD8]) initWithImage:ACMImageWithName(v8)];
+    v9 = [objc_alloc(MEMORY[0x29EDC7AD8]) initWithImage:ACMImageWithName(backgroundImageName)];
     [v9 setFrame:{0.0, -20.0, 320.0, 480.0}];
     [v7 addSubview:v9];
     [v7 bringSubviewToFront:v9];
@@ -161,9 +161,9 @@
   [(ACMDialog *)self setView:v7];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if ([(ACMDialog *)self shouldManuallyChangeStatusBarStyle])
   {
     -[ACMDialog setSavedStatusBarStyle:](self, "setSavedStatusBarStyle:", [objc_msgSend(MEMORY[0x29EDC7938] "sharedApplication")]);
@@ -172,19 +172,19 @@
 
   v5.receiver = self;
   v5.super_class = ACMDialog;
-  [(ACMDialog *)&v5 viewWillAppear:v3];
+  [(ACMDialog *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = ACMDialog;
-  [(ACMDialog *)&v3 viewDidAppear:a3];
+  [(ACMDialog *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = ACMDialog;
   [(ACMDialog *)&v5 viewDidDisappear:?];
@@ -194,11 +194,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = ACMDialog;
-  [(ACMDialog *)&v3 viewWillDisappear:a3];
+  [(ACMDialog *)&v3 viewWillDisappear:disappear];
 }
 
 @end

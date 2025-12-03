@@ -1,17 +1,17 @@
 @interface CNContactActionDropdownMenuButton
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
 - (CNContactActionDropdownMenuButton)init;
 @end
 
 @implementation CNContactActionDropdownMenuButton
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CNContactActionDropdownMenuButton *)self traitCollection];
-  v6 = [v5 horizontalSizeClass];
+  configurationCopy = configuration;
+  traitCollection = [(CNContactActionDropdownMenuButton *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v6 == 2)
+  if (horizontalSizeClass == 2)
   {
     [(CNContactActionDropdownMenuButton *)self frame];
     MidX = CGRectGetMidX(v15);
@@ -22,7 +22,7 @@
   {
     v13.receiver = self;
     v13.super_class = CNContactActionDropdownMenuButton;
-    [(CNContactActionDropdownMenuButton *)&v13 menuAttachmentPointForConfiguration:v4];
+    [(CNContactActionDropdownMenuButton *)&v13 menuAttachmentPointForConfiguration:configurationCopy];
     MidX = v9;
     v8 = v10;
   }
@@ -41,8 +41,8 @@
   v2 = [(CNContactActionDropdownMenuButton *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] clearColor];
-    [(CNContactActionDropdownMenuButton *)v2 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CNContactActionDropdownMenuButton *)v2 setBackgroundColor:clearColor];
 
     v4 = v2;
   }

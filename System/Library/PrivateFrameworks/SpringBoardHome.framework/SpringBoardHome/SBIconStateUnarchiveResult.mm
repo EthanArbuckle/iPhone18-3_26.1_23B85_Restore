@@ -1,20 +1,20 @@
 @interface SBIconStateUnarchiveResult
 - (id)_popFolder;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_noteNodeIdentifierWasUnarchived:(id)a3;
-- (void)_noteWidgetUniqueIdentifierWasUnarchived:(id)a3;
-- (void)_pushFolder:(id)a3;
+- (void)_noteNodeIdentifierWasUnarchived:(id)unarchived;
+- (void)_noteWidgetUniqueIdentifierWasUnarchived:(id)unarchived;
+- (void)_pushFolder:(id)folder;
 @end
 
 @implementation SBIconStateUnarchiveResult
 
-- (void)_pushFolder:(id)a3
+- (void)_pushFolder:(id)folder
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  folderCopy = folder;
+  v5 = folderCopy;
+  if (folderCopy)
   {
     folderStack = self->_folderStack;
     v9 = v5;
@@ -30,23 +30,23 @@
       self->_folderStack = v7;
     }
 
-    v4 = [(SBIconStateUnarchiveResult *)self _noteEnteredNode];
+    folderCopy = [(SBIconStateUnarchiveResult *)self _noteEnteredNode];
     v5 = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](folderCopy, v5);
 }
 
 - (id)_popFolder
 {
-  v3 = [(NSMutableArray *)self->_folderStack lastObject];
+  lastObject = [(NSMutableArray *)self->_folderStack lastObject];
   v4 = [(NSMutableArray *)self->_folderStack count];
   folderStack = self->_folderStack;
   if (v4 < 2)
   {
     self->_folderStack = 0;
 
-    if (!v3)
+    if (!lastObject)
     {
       goto LABEL_6;
     }
@@ -55,7 +55,7 @@
   }
 
   [(NSMutableArray *)folderStack removeLastObject];
-  if (v3)
+  if (lastObject)
   {
 LABEL_5:
     [(SBIconStateUnarchiveResult *)self _noteExitedNode];
@@ -63,16 +63,16 @@ LABEL_5:
 
 LABEL_6:
 
-  return v3;
+  return lastObject;
 }
 
-- (void)_noteNodeIdentifierWasUnarchived:(id)a3
+- (void)_noteNodeIdentifierWasUnarchived:(id)unarchived
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  unarchivedCopy = unarchived;
+  v9 = unarchivedCopy;
+  if (unarchivedCopy)
   {
-    v5 = v4;
+    v5 = unarchivedCopy;
     nodeIdentifiersUnarchived = self->_nodeIdentifiersUnarchived;
     if (nodeIdentifiersUnarchived)
     {
@@ -90,13 +90,13 @@ LABEL_6:
   }
 }
 
-- (void)_noteWidgetUniqueIdentifierWasUnarchived:(id)a3
+- (void)_noteWidgetUniqueIdentifierWasUnarchived:(id)unarchived
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  unarchivedCopy = unarchived;
+  v9 = unarchivedCopy;
+  if (unarchivedCopy)
   {
-    v5 = v4;
+    v5 = unarchivedCopy;
     widgetUniqueIdentifiersUnarchived = self->_widgetUniqueIdentifiersUnarchived;
     if (widgetUniqueIdentifiersUnarchived)
     {
@@ -114,34 +114,34 @@ LABEL_6:
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconStateUnarchiveResult *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconStateUnarchiveResult *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v5 = [(SBIconStateUnarchiveResult *)self rootFolder];
-  v6 = [v4 appendObject:v5 withName:@"rootFolder"];
+  rootFolder = [(SBIconStateUnarchiveResult *)self rootFolder];
+  v6 = [v4 appendObject:rootFolder withName:@"rootFolder"];
 
   v7 = [v4 appendBool:-[SBIconStateUnarchiveResult isValid](self withName:{"isValid"), @"isValid"}];
   v8 = [v4 appendBool:-[SBIconStateUnarchiveResult isDirty](self withName:{"isDirty"), @"isDirty"}];
-  v9 = [(SBIconStateUnarchiveResult *)self metadata];
-  v10 = [v4 appendObject:v9 withName:@"metadata"];
+  metadata = [(SBIconStateUnarchiveResult *)self metadata];
+  v10 = [v4 appendObject:metadata withName:@"metadata"];
 
   return v4;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconStateUnarchiveResult *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconStateUnarchiveResult *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

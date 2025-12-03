@@ -1,14 +1,14 @@
 @interface _UIDynamicCaretNoContentView
-- (_UIDynamicCaretNoContentView)initWithImage:(id)a3;
+- (_UIDynamicCaretNoContentView)initWithImage:(id)image;
 @end
 
 @implementation _UIDynamicCaretNoContentView
 
-- (_UIDynamicCaretNoContentView)initWithImage:(id)a3
+- (_UIDynamicCaretNoContentView)initWithImage:(id)image
 {
   v6.receiver = self;
   v6.super_class = _UIDynamicCaretNoContentView;
-  v3 = [(UIImageView *)&v6 initWithImage:a3];
+  v3 = [(UIImageView *)&v6 initWithImage:image];
   v4 = v3;
   if (v3)
   {

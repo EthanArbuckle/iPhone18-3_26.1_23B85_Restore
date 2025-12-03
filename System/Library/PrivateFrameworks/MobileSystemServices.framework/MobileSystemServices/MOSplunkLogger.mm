@@ -1,20 +1,20 @@
 @interface MOSplunkLogger
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 - (void)_onQueue_loadConfiguration;
-- (void)logEventNamed:(id)a3 value:(id)a4;
-- (void)uploadEventsWithCompletion:(id)a3;
+- (void)logEventNamed:(id)named value:(id)value;
+- (void)uploadEventsWithCompletion:(id)completion;
 @end
 
 @implementation MOSplunkLogger
 
 - (void)_onQueue_loadConfiguration
 {
-  v3 = [(MOSplunkLogger *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MOSplunkLogger *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = dispatch_semaphore_create(0);
-  v5 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
-  v6 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v5 delegate:self delegateQueue:0];
+  ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+  v6 = [MEMORY[0x277CCAD30] sessionWithConfiguration:ephemeralSessionConfiguration delegate:self delegateQueue:0];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __44__MOSplunkLogger__onQueue_loadConfiguration__block_invoke;
@@ -23,8 +23,8 @@
   v16 = v4;
   v7 = v4;
   v8 = _Block_copy(v15);
-  v9 = [(MOSplunkLogger *)self configurationURL];
-  v10 = [v6 dataTaskWithURL:v9 completionHandler:v8];
+  configurationURL = [(MOSplunkLogger *)self configurationURL];
+  v10 = [v6 dataTaskWithURL:configurationURL completionHandler:v8];
 
   MOLogWrite(0, 3, "[MOSplunkLogger _onQueue_loadConfiguration]", @"Loading configuration", v11, v12, v13, v14, v15[0]);
   [v10 resume];
@@ -125,26 +125,26 @@ LABEL_6:
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)uploadEventsWithCompletion:(id)a3
+- (void)uploadEventsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MOSplunkLogger *)self queue];
+  completionCopy = completion;
+  queue = [(MOSplunkLogger *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__MOSplunkLogger_uploadEventsWithCompletion___block_invoke;
   block[3] = &unk_279917190;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 
-  v6 = [(MOSplunkLogger *)self queue];
+  queue2 = [(MOSplunkLogger *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__MOSplunkLogger_uploadEventsWithCompletion___block_invoke_2;
   v8[3] = &unk_2799171E0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue2, v8);
 }
 
 uint64_t __45__MOSplunkLogger_uploadEventsWithCompletion___block_invoke(uint64_t a1)
@@ -276,18 +276,18 @@ void __45__MOSplunkLogger_uploadEventsWithCompletion___block_invoke_3(uint64_t a
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)logEventNamed:(id)a3 value:(id)a4
+- (void)logEventNamed:(id)named value:(id)value
 {
-  v6 = a3;
-  v7 = [a4 mutableCopy];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:clock_gettime_nsec_np(_CLOCK_REALTIME) / 0xF4240];
-  [v7 setObject:v8 forKeyedSubscript:@"eventTime"];
+  namedCopy = named;
+  v7 = [value mutableCopy];
+  0xF4240 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:clock_gettime_nsec_np(_CLOCK_REALTIME) / 0xF4240];
+  [v7 setObject:0xF4240 forKeyedSubscript:@"eventTime"];
 
-  v9 = [(MOSplunkLogger *)self splunkTopic];
-  [v7 setObject:v9 forKeyedSubscript:@"topic"];
+  splunkTopic = [(MOSplunkLogger *)self splunkTopic];
+  [v7 setObject:splunkTopic forKeyedSubscript:@"topic"];
 
-  [v7 setObject:v6 forKeyedSubscript:@"eventType"];
-  v10 = [(MOSplunkLogger *)self queue];
+  [v7 setObject:namedCopy forKeyedSubscript:@"eventType"];
+  queue = [(MOSplunkLogger *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __38__MOSplunkLogger_logEventNamed_value___block_invoke;
@@ -295,7 +295,7 @@ void __45__MOSplunkLogger_uploadEventsWithCompletion___block_invoke_3(uint64_t a
   v12[4] = self;
   v13 = v7;
   v11 = v7;
-  dispatch_async(v10, v12);
+  dispatch_async(queue, v12);
 }
 
 void __38__MOSplunkLogger_logEventNamed_value___block_invoke(uint64_t a1)
@@ -314,35 +314,35 @@ void __38__MOSplunkLogger_logEventNamed_value___block_invoke(uint64_t a1)
   }
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   MOLogWrite(0, 3, "[MOSplunkLogger URLSession:didReceiveChallenge:completionHandler:]", @"Splunk upload challenge", v9, v10, v11, v12, v28);
   v30 = 0;
-  if ([v7 previousFailureCount] >= 1)
+  if ([challengeCopy previousFailureCount] >= 1)
   {
     goto LABEL_2;
   }
 
-  v13 = [v7 protectionSpace];
-  v14 = [v13 authenticationMethod];
-  v15 = [v14 isEqualToString:*MEMORY[0x277CCA720]];
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v15 = [authenticationMethod isEqualToString:*MEMORY[0x277CCA720]];
 
   if (!v15)
   {
-    v8[2](v8, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_11;
   }
 
-  v16 = [v7 protectionSpace];
-  MEMORY[0x25F84B1B0]([v16 serverTrust], &v30);
+  protectionSpace2 = [challengeCopy protectionSpace];
+  MEMORY[0x25F84B1B0]([protectionSpace2 serverTrust], &v30);
 
   if (![(MOSplunkLogger *)self allowInvalidCert]&& v30 != 4 && v30 != 1)
   {
     MOLogWrite(0, 3, "[MOSplunkLogger URLSession:didReceiveChallenge:completionHandler:]", @"Error evaluating trust. SecTrustResultType=%d", v17, v18, v19, v20, v30);
 LABEL_2:
-    v8[2](v8, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
     goto LABEL_11;
   }
 
@@ -352,10 +352,10 @@ LABEL_2:
   }
 
   v25 = MEMORY[0x277CCACF0];
-  v26 = [v7 protectionSpace];
-  v27 = [v25 credentialForTrust:{objc_msgSend(v26, "serverTrust")}];
+  protectionSpace3 = [challengeCopy protectionSpace];
+  v27 = [v25 credentialForTrust:{objc_msgSend(protectionSpace3, "serverTrust")}];
 
-  (v8)[2](v8, 0, v27);
+  (handlerCopy)[2](handlerCopy, 0, v27);
 LABEL_11:
 }
 

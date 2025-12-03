@@ -2,7 +2,7 @@
 + (Class)incomingMessageClass;
 + (unint64_t)command;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandGetCodeSignMapping)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandGetCodeSignMapping)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (NSString)identifier;
 - (void)execute;
 @end
@@ -22,8 +22,8 @@
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
   v4 = gCodeSigningMapping;
-  v5 = [(MCMCommandGetCodeSignMapping *)self identifier];
-  v6 = [v4 getCodeSigningInfoForIdentifier:v5];
+  identifier = [(MCMCommandGetCodeSignMapping *)self identifier];
+  v6 = [v4 getCodeSigningInfoForIdentifier:identifier];
 
   if (v6)
   {
@@ -79,8 +79,8 @@ LABEL_10:
   }
 
   v15 = v14;
-  v16 = [(MCMCommand *)self resultPromise];
-  [v16 completeWithResult:v15];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v15];
 
   objc_autoreleasePoolPop(v3);
   v17 = *MEMORY[0x1E69E9840];
@@ -89,26 +89,26 @@ LABEL_10:
 - (BOOL)preflightClientAllowed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 isAllowedToAccessCodesignMapping];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  isAllowedToAccessCodesignMapping = [clientIdentity isAllowedToAccessCodesignMapping];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToAccessCodesignMapping;
 }
 
-- (MCMCommandGetCodeSignMapping)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandGetCodeSignMapping)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = MCMCommandGetCodeSignMapping;
-  v9 = [(MCMCommand *)&v14 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v14 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v10 = [v8 identifier];
+    identifier = [messageCopy identifier];
     identifier = v9->_identifier;
-    v9->_identifier = v10;
+    v9->_identifier = identifier;
   }
 
   v12 = *MEMORY[0x1E69E9840];

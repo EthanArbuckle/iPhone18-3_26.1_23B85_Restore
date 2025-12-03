@@ -1,18 +1,18 @@
 @interface PLAVPlayerView
 - (AVPlayer)player;
 - (CGRect)videoRect;
-- (PLAVPlayerView)initWithFrame:(CGRect)a3;
-- (void)setPlayer:(id)a3;
-- (void)setScaleMode:(int64_t)a3 duration:(double)a4;
+- (PLAVPlayerView)initWithFrame:(CGRect)frame;
+- (void)setPlayer:(id)player;
+- (void)setScaleMode:(int64_t)mode duration:(double)duration;
 @end
 
 @implementation PLAVPlayerView
 
 - (CGRect)videoRect
 {
-  v2 = [(PLAVPlayerView *)self layer];
+  layer = [(PLAVPlayerView *)self layer];
 
-  [v2 videoRect];
+  [layer videoRect];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -20,25 +20,25 @@
   return result;
 }
 
-- (void)setScaleMode:(int64_t)a3 duration:(double)a4
+- (void)setScaleMode:(int64_t)mode duration:(double)duration
 {
-  v7 = [(PLAVPlayerView *)self layer];
-  if (v7)
+  layer = [(PLAVPlayerView *)self layer];
+  if (layer)
   {
-    v8 = v7;
-    if (a4 > 0.0)
+    v8 = layer;
+    if (duration > 0.0)
     {
-      [MEMORY[0x277CD9FF0] setAnimationDuration:a4];
+      [MEMORY[0x277CD9FF0] setAnimationDuration:duration];
     }
 
     v9 = MEMORY[0x277CE5DD8];
     v10 = MEMORY[0x277CE5DC8];
-    if (a3 != 3)
+    if (mode != 3)
     {
       v10 = MEMORY[0x277CE5DD0];
     }
 
-    if (a3 != 2)
+    if (mode != 2)
     {
       v9 = v10;
     }
@@ -46,28 +46,28 @@
     [v8 setVideoGravity:*v9];
   }
 
-  self->_scaleMode = a3;
+  self->_scaleMode = mode;
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v4 = [(PLAVPlayerView *)self layer];
+  layer = [(PLAVPlayerView *)self layer];
 
-  [v4 setPlayer:a3];
+  [layer setPlayer:player];
 }
 
 - (AVPlayer)player
 {
-  v2 = [(PLAVPlayerView *)self layer];
+  layer = [(PLAVPlayerView *)self layer];
 
-  return [v2 player];
+  return [layer player];
 }
 
-- (PLAVPlayerView)initWithFrame:(CGRect)a3
+- (PLAVPlayerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PLAVPlayerView;
-  v3 = [(PLAVPlayerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLAVPlayerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

@@ -1,58 +1,58 @@
 @interface CPMapTemplate
 - (BOOL)isPanningInterfaceVisible;
-- (BOOL)mapButton:(id)a3 setFocusedImage:(id)a4;
-- (BOOL)mapButton:(id)a3 setHidden:(BOOL)a4;
-- (BOOL)mapButton:(id)a3 setImageSet:(id)a4;
+- (BOOL)mapButton:(id)button setFocusedImage:(id)image;
+- (BOOL)mapButton:(id)button setHidden:(BOOL)hidden;
+- (BOOL)mapButton:(id)button setImageSet:(id)set;
 - (CPMapTemplate)init;
-- (CPMapTemplate)initWithCoder:(id)a3;
+- (CPMapTemplate)initWithCoder:(id)coder;
 - (CPNavigationSession)startNavigationSessionForTrip:(CPTrip *)trip;
 - (id)mapDelegate;
-- (int64_t)_displayStyleForManeuver:(id)a3;
-- (void)_postBannerIfNecessaryForManeuver:(id)a3;
-- (void)_postBannerIfNecessaryForNavigationAlert:(id)a3;
-- (void)_resolveTrip:(id)a3 routeChoice:(id)a4 completion:(id)a5;
-- (void)_updateBannerIfNecessaryForManeuver:(id)a3 travelEstimates:(id)a4;
-- (void)_updateNavigationAlert:(id)a3;
-- (void)bannerDidDisappearWithIdentifier:(id)a3;
-- (void)bannerTappedWithIdentifier:(id)a3;
-- (void)clientNavigationAlertDidAppear:(id)a3;
-- (void)clientNavigationAlertDidDisappear:(id)a3 context:(unint64_t)a4;
-- (void)clientNavigationAlertWillAppear:(id)a3;
-- (void)clientNavigationAlertWillDisappear:(id)a3 context:(unint64_t)a4;
-- (void)clientPanBeganWithDirection:(int64_t)a3;
-- (void)clientPanEndedWithDirection:(int64_t)a3;
+- (int64_t)_displayStyleForManeuver:(id)maneuver;
+- (void)_postBannerIfNecessaryForManeuver:(id)maneuver;
+- (void)_postBannerIfNecessaryForNavigationAlert:(id)alert;
+- (void)_resolveTrip:(id)trip routeChoice:(id)choice completion:(id)completion;
+- (void)_updateBannerIfNecessaryForManeuver:(id)maneuver travelEstimates:(id)estimates;
+- (void)_updateNavigationAlert:(id)alert;
+- (void)bannerDidDisappearWithIdentifier:(id)identifier;
+- (void)bannerTappedWithIdentifier:(id)identifier;
+- (void)clientNavigationAlertDidAppear:(id)appear;
+- (void)clientNavigationAlertDidDisappear:(id)disappear context:(unint64_t)context;
+- (void)clientNavigationAlertWillAppear:(id)appear;
+- (void)clientNavigationAlertWillDisappear:(id)disappear context:(unint64_t)context;
+- (void)clientPanBeganWithDirection:(int64_t)direction;
+- (void)clientPanEndedWithDirection:(int64_t)direction;
 - (void)clientPanGestureBegan;
-- (void)clientPanGestureEndedWithVelocity:(CGPoint)a3;
-- (void)clientPanGestureWithDeltaPoint:(CGPoint)a3 velocity:(CGPoint)a4;
+- (void)clientPanGestureEndedWithVelocity:(CGPoint)velocity;
+- (void)clientPanGestureWithDeltaPoint:(CGPoint)point velocity:(CGPoint)velocity;
 - (void)clientPanViewDidAppear;
 - (void)clientPanViewDidDisappear;
 - (void)clientPanViewWillDisappear;
-- (void)clientPanWithDirection:(int64_t)a3;
+- (void)clientPanWithDirection:(int64_t)direction;
 - (void)clientPitchGestureBegan;
-- (void)clientPitchGestureEndedWithCenterPoint:(CGPoint)a3;
-- (void)clientPitchGestureWithCenterPoint:(CGPoint)a3;
+- (void)clientPitchGestureEndedWithCenterPoint:(CGPoint)point;
+- (void)clientPitchGestureWithCenterPoint:(CGPoint)point;
 - (void)clientRotationGestureBegan;
-- (void)clientRotationGestureEndedWithVelocity:(double)a3;
-- (void)clientRotationGestureWithCenterPoint:(CGPoint)a3 rotation:(double)a4 velocity:(double)a5;
+- (void)clientRotationGestureEndedWithVelocity:(double)velocity;
+- (void)clientRotationGestureWithCenterPoint:(CGPoint)point rotation:(double)rotation velocity:(double)velocity;
 - (void)clientTripCanceledByExternalNavigation;
 - (void)clientZoomGestureBegan;
-- (void)clientZoomGestureEndedWithVelocity:(double)a3;
-- (void)clientZoomGestureWithCenterPoint:(CGPoint)a3 scale:(double)a4 velocity:(double)a5;
+- (void)clientZoomGestureEndedWithVelocity:(double)velocity;
+- (void)clientZoomGestureWithCenterPoint:(CGPoint)point scale:(double)scale velocity:(double)velocity;
 - (void)dismissNavigationAlertAnimated:(BOOL)animated completion:(void *)completion;
 - (void)dismissPanningInterfaceAnimated:(BOOL)animated;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleActionForControlIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleActionForControlIdentifier:(id)identifier;
 - (void)hideTripPreviews;
 - (void)presentNavigationAlert:(CPNavigationAlert *)navigationAlert animated:(BOOL)animated;
-- (void)previewTripIdentifier:(id)a3 usingRouteIdentifier:(id)a4;
+- (void)previewTripIdentifier:(id)identifier usingRouteIdentifier:(id)routeIdentifier;
 - (void)setGuidanceBackgroundColor:(UIColor *)guidanceBackgroundColor;
 - (void)setMapButtons:(NSArray *)mapButtons;
-- (void)setNavigationSessionProvider:(id)a3;
+- (void)setNavigationSessionProvider:(id)provider;
 - (void)setTripEstimateStyle:(CPTripEstimateStyle)tripEstimateStyle;
 - (void)showPanningInterfaceAnimated:(BOOL)animated;
 - (void)showRouteChoicesPreviewForTrip:(CPTrip *)tripPreview textConfiguration:(CPTripPreviewTextConfiguration *)textConfiguration;
 - (void)showTripPreviews:(NSArray *)tripPreviews selectedTrip:(CPTrip *)selectedTrip textConfiguration:(CPTripPreviewTextConfiguration *)textConfiguration;
-- (void)startTripIdentifier:(id)a3 usingRouteIdentifier:(id)a4;
+- (void)startTripIdentifier:(id)identifier usingRouteIdentifier:(id)routeIdentifier;
 - (void)updateTravelEstimates:(CPTravelEstimates *)estimates forTrip:(CPTrip *)trip withTimeRemainingColor:(CPTimeRemainingColor)timeRemainingColor;
 @end
 
@@ -68,9 +68,9 @@
   {
     v2->_automaticallyHidesNavigationBar = 1;
     v2->_hidesButtonsWithNavigationBar = 1;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     postedBannerObjects = v3->_postedBannerObjects;
-    v3->_postedBannerObjects = v4;
+    v3->_postedBannerObjects = dictionary;
 
     v3->_tripEstimateStyle = 1;
     v6 = objc_alloc_init(MEMORY[0x277D2C900]);
@@ -81,24 +81,24 @@
   return v3;
 }
 
-- (CPMapTemplate)initWithCoder:(id)a3
+- (CPMapTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CPMapTemplate;
-  v5 = [(CPTemplate *)&v16 initWithCoder:v4];
+  v5 = [(CPTemplate *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kCPMapTemplateMapButtonsKey"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kCPMapTemplateMapButtonsKey"];
     mapButtons = v5->_mapButtons;
     v5->_mapButtons = v9;
 
-    v5->_automaticallyHidesNavigationBar = [v4 decodeBoolForKey:@"kCPMapTemplateAutoHidesNavigationBarKey"];
-    v5->_hidesButtonsWithNavigationBar = [v4 decodeBoolForKey:@"kCPMapTemplateHidesButtonsWithNavigationBarKey"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPMapTemplateGuidanceBackgroundColorKey"];
+    v5->_automaticallyHidesNavigationBar = [coderCopy decodeBoolForKey:@"kCPMapTemplateAutoHidesNavigationBarKey"];
+    v5->_hidesButtonsWithNavigationBar = [coderCopy decodeBoolForKey:@"kCPMapTemplateHidesButtonsWithNavigationBarKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPMapTemplateGuidanceBackgroundColorKey"];
     v12 = v11;
     if (v11)
     {
@@ -107,27 +107,27 @@
       v5->_guidanceBackgroundColor = v13;
     }
 
-    v5->_tripEstimateStyle = [v4 decodeIntegerForKey:@"kCPMapTemplateTripEstimateStyleKey"];
+    v5->_tripEstimateStyle = [coderCopy decodeIntegerForKey:@"kCPMapTemplateTripEstimateStyleKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CPMapTemplate;
-  v4 = a3;
-  [(CPTemplate *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPTemplate *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CPMapTemplate *)self mapButtons:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"kCPMapTemplateMapButtonsKey"];
+  [coderCopy encodeObject:v5 forKey:@"kCPMapTemplateMapButtonsKey"];
 
-  [v4 encodeBool:-[CPMapTemplate automaticallyHidesNavigationBar](self forKey:{"automaticallyHidesNavigationBar"), @"kCPMapTemplateAutoHidesNavigationBarKey"}];
-  [v4 encodeBool:-[CPMapTemplate hidesButtonsWithNavigationBar](self forKey:{"hidesButtonsWithNavigationBar"), @"kCPMapTemplateHidesButtonsWithNavigationBarKey"}];
-  v6 = [(CPMapTemplate *)self guidanceBackgroundColor];
-  [v4 encodeObject:v6 forKey:@"kCPMapTemplateGuidanceBackgroundColorKey"];
+  [coderCopy encodeBool:-[CPMapTemplate automaticallyHidesNavigationBar](self forKey:{"automaticallyHidesNavigationBar"), @"kCPMapTemplateAutoHidesNavigationBarKey"}];
+  [coderCopy encodeBool:-[CPMapTemplate hidesButtonsWithNavigationBar](self forKey:{"hidesButtonsWithNavigationBar"), @"kCPMapTemplateHidesButtonsWithNavigationBarKey"}];
+  guidanceBackgroundColor = [(CPMapTemplate *)self guidanceBackgroundColor];
+  [coderCopy encodeObject:guidanceBackgroundColor forKey:@"kCPMapTemplateGuidanceBackgroundColorKey"];
 
-  [v4 encodeInteger:-[CPMapTemplate tripEstimateStyle](self forKey:{"tripEstimateStyle"), @"kCPMapTemplateTripEstimateStyleKey"}];
+  [coderCopy encodeInteger:-[CPMapTemplate tripEstimateStyle](self forKey:{"tripEstimateStyle"), @"kCPMapTemplateTripEstimateStyleKey"}];
 }
 
 - (void)setGuidanceBackgroundColor:(UIColor *)guidanceBackgroundColor
@@ -139,14 +139,14 @@
     self->_guidanceBackgroundColor = v4;
 
     v6 = self->_guidanceBackgroundColor;
-    v7 = [(CPTemplate *)self templateProviderFuture];
+    templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __44__CPMapTemplate_setGuidanceBackgroundColor___block_invoke;
     v10[3] = &unk_278A10A90;
     v11 = v6;
     v8 = v6;
-    v9 = [v7 addSuccessBlock:v10];
+    v9 = [templateProviderFuture addSuccessBlock:v10];
   }
 }
 
@@ -157,13 +157,13 @@
     v8[7] = v3;
     v8[8] = v4;
     self->_tripEstimateStyle = tripEstimateStyle;
-    v6 = [(CPTemplate *)self templateProviderFuture];
+    templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __38__CPMapTemplate_setTripEstimateStyle___block_invoke;
     v8[3] = &__block_descriptor_40_e34_v16__0___CPMapTemplateProviding__8l;
     v8[4] = tripEstimateStyle;
-    v7 = [v6 addSuccessBlock:v8];
+    v7 = [templateProviderFuture addSuccessBlock:v8];
   }
 }
 
@@ -192,7 +192,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v14 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __65__CPMapTemplate_showTripPreviews_selectedTrip_textConfiguration___block_invoke;
@@ -202,7 +202,7 @@ LABEL_6:
   v22 = v11;
   v23 = v12;
   v16 = v11;
-  v17 = [v14 addSuccessBlock:v20];
+  v17 = [templateProviderFuture addSuccessBlock:v20];
 
   v18 = self->_tripPreviews;
   self->_tripPreviews = v15;
@@ -222,7 +222,7 @@ LABEL_6:
     CPAssertAllowedClass(v8, v10, a2);
   }
 
-  v11 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __66__CPMapTemplate_showRouteChoicesPreviewForTrip_textConfiguration___block_invoke;
@@ -231,7 +231,7 @@ LABEL_6:
   v23 = v8;
   v12 = v8;
   v13 = v7;
-  v14 = [v11 addSuccessBlock:&v18];
+  v14 = [templateProviderFuture addSuccessBlock:&v18];
 
   v24[0] = v13;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:{1, v18, v19, v20, v21}];
@@ -255,8 +255,8 @@ void __66__CPMapTemplate_showRouteChoicesPreviewForTrip_textConfiguration___bloc
 
 - (void)hideTripPreviews
 {
-  v3 = [(CPTemplate *)self templateProviderFuture];
-  v4 = [v3 addSuccessBlock:&__block_literal_global_14];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
+  v4 = [templateProviderFuture addSuccessBlock:&__block_literal_global_14];
 
   tripPreviews = self->_tripPreviews;
   self->_tripPreviews = MEMORY[0x277CBEBF8];
@@ -267,7 +267,7 @@ void __66__CPMapTemplate_showRouteChoicesPreviewForTrip_textConfiguration___bloc
   v8 = estimates;
   v9 = trip;
   [(CPTravelEstimates *)v8 setTimeRemainingColor:timeRemainingColor];
-  v10 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __70__CPMapTemplate_updateTravelEstimates_forTrip_withTimeRemainingColor___block_invoke;
@@ -276,7 +276,7 @@ void __66__CPMapTemplate_showRouteChoicesPreviewForTrip_textConfiguration___bloc
   v16 = v9;
   v11 = v9;
   v12 = v8;
-  v13 = [v10 addSuccessBlock:v14];
+  v13 = [templateProviderFuture addSuccessBlock:v14];
 }
 
 void __70__CPMapTemplate_updateTravelEstimates_forTrip_withTimeRemainingColor___block_invoke(uint64_t a1, void *a2)
@@ -301,13 +301,13 @@ void __70__CPMapTemplate_updateTravelEstimates_forTrip_withTimeRemainingColor___
   }
 
   v6 = [[CPNavigationSession alloc] initWithTrip:v4 mapTemplate:self];
-  v7 = [(CPMapTemplate *)self mapDelegate];
+  mapDelegate = [(CPMapTemplate *)self mapDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CPMapTemplate *)self mapDelegate];
-    v10 = [v9 mapTemplateShouldProvideNavigationMetadata:self];
+    mapDelegate2 = [(CPMapTemplate *)self mapDelegate];
+    v10 = [mapDelegate2 mapTemplateShouldProvideNavigationMetadata:self];
 
     [(CPNavigationSession *)v6 setSendsNavigationMetadata:v10];
     [(CPTrip *)v4 setSendsNavigationMetadata:v10];
@@ -317,15 +317,15 @@ void __70__CPMapTemplate_updateTravelEstimates_forTrip_withTimeRemainingColor___
     }
   }
 
-  v11 = [(CPTrip *)v4 destinationNameVariants];
-  [(CPNavigationSession *)v6 setDestinationNameVariants:v11];
+  destinationNameVariants = [(CPTrip *)v4 destinationNameVariants];
+  [(CPNavigationSession *)v6 setDestinationNameVariants:destinationNameVariants];
 
-  v12 = [(CPMapTemplate *)self navigationSessionProviderFuture];
-  v13 = [v12 isFinished];
+  navigationSessionProviderFuture = [(CPMapTemplate *)self navigationSessionProviderFuture];
+  isFinished = [navigationSessionProviderFuture isFinished];
 
   v14 = CarPlayFrameworkGeneralLogging();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v13)
+  if (isFinished)
   {
     if (v15)
     {
@@ -343,17 +343,17 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v17 = [(CPMapTemplate *)self navigationSessionProviderFuture];
+  navigationSessionProviderFuture2 = [(CPMapTemplate *)self navigationSessionProviderFuture];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __47__CPMapTemplate_startNavigationSessionForTrip___block_invoke;
   v25[3] = &unk_278A11470;
   v26 = v4;
-  v27 = self;
+  selfCopy = self;
   v18 = v6;
   v28 = v18;
   v19 = v4;
-  v20 = [v17 addSuccessBlock:v25];
+  v20 = [navigationSessionProviderFuture2 addSuccessBlock:v25];
 
   v21 = v28;
   v22 = v18;
@@ -415,26 +415,26 @@ void __47__CPMapTemplate_startNavigationSessionForTrip___block_invoke_30(uint64_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNavigationSessionProvider:(id)a3
+- (void)setNavigationSessionProvider:(id)provider
 {
-  objc_storeStrong(&self->_navigationSessionProvider, a3);
-  v5 = a3;
-  v6 = [(CPMapTemplate *)self navigationSessionProviderFuture];
-  [v6 finishWithResult:v5];
+  objc_storeStrong(&self->_navigationSessionProvider, provider);
+  providerCopy = provider;
+  navigationSessionProviderFuture = [(CPMapTemplate *)self navigationSessionProviderFuture];
+  [navigationSessionProviderFuture finishWithResult:providerCopy];
 }
 
-- (BOOL)mapButton:(id)a3 setHidden:(BOOL)a4
+- (BOOL)mapButton:(id)button setHidden:(BOOL)hidden
 {
-  v6 = a3;
-  v7 = [(CPTemplate *)self templateProviderFuture];
+  buttonCopy = button;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __37__CPMapTemplate_mapButton_setHidden___block_invoke;
   v11[3] = &unk_278A11498;
-  v12 = v6;
-  v13 = a4;
-  v8 = v6;
-  v9 = [v7 addSuccessBlock:v11];
+  v12 = buttonCopy;
+  hiddenCopy = hidden;
+  v8 = buttonCopy;
+  v9 = [templateProviderFuture addSuccessBlock:v11];
 
   return 1;
 }
@@ -447,20 +447,20 @@ void __37__CPMapTemplate_mapButton_setHidden___block_invoke(uint64_t a1, void *a
   [v4 setMapButton:v5 hidden:*(a1 + 40)];
 }
 
-- (BOOL)mapButton:(id)a3 setImageSet:(id)a4
+- (BOOL)mapButton:(id)button setImageSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPTemplate *)self templateProviderFuture];
+  buttonCopy = button;
+  setCopy = set;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __39__CPMapTemplate_mapButton_setImageSet___block_invoke;
   v13[3] = &unk_278A11428;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 addSuccessBlock:v13];
+  v14 = buttonCopy;
+  v15 = setCopy;
+  v9 = setCopy;
+  v10 = buttonCopy;
+  v11 = [templateProviderFuture addSuccessBlock:v13];
 
   return 1;
 }
@@ -473,20 +473,20 @@ void __39__CPMapTemplate_mapButton_setImageSet___block_invoke(uint64_t a1, void 
   [v4 hostSetMapButton:v5 imageSet:*(a1 + 40)];
 }
 
-- (BOOL)mapButton:(id)a3 setFocusedImage:(id)a4
+- (BOOL)mapButton:(id)button setFocusedImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPTemplate *)self templateProviderFuture];
+  buttonCopy = button;
+  imageCopy = image;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __43__CPMapTemplate_mapButton_setFocusedImage___block_invoke;
   v13[3] = &unk_278A11428;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 addSuccessBlock:v13];
+  v14 = buttonCopy;
+  v15 = imageCopy;
+  v9 = imageCopy;
+  v10 = buttonCopy;
+  v11 = [templateProviderFuture addSuccessBlock:v13];
 
   return 1;
 }
@@ -509,13 +509,13 @@ void __43__CPMapTemplate_mapButton_setFocusedImage___block_invoke(uint64_t a1, v
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
     v22 = v7;
     _os_log_impl(&dword_236ED4000, v8, OS_LOG_TYPE_INFO, "%@: Presenting navigation alert: %@", buf, 0x16u);
   }
 
-  v9 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __49__CPMapTemplate_presentNavigationAlert_animated___block_invoke;
@@ -523,7 +523,7 @@ void __43__CPMapTemplate_mapButton_setFocusedImage___block_invoke(uint64_t a1, v
   v17 = v7;
   v18 = animated;
   v10 = v7;
-  v11 = [v9 addSuccessBlock:&v13];
+  v11 = [templateProviderFuture addSuccessBlock:&v13];
 
   [(CPMapTemplate *)self _postBannerIfNecessaryForNavigationAlert:v10, v13, v14, v15, v16];
   v12 = *MEMORY[0x277D85DE8];
@@ -532,7 +532,7 @@ void __43__CPMapTemplate_mapButton_setFocusedImage___block_invoke(uint64_t a1, v
 - (void)dismissNavigationAlertAnimated:(BOOL)animated completion:(void *)completion
 {
   v6 = completion;
-  v7 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__CPMapTemplate_dismissNavigationAlertAnimated_completion___block_invoke;
@@ -540,7 +540,7 @@ void __43__CPMapTemplate_mapButton_setFocusedImage___block_invoke(uint64_t a1, v
   v12 = animated;
   v11 = v6;
   v8 = v6;
-  v9 = [v7 addSuccessBlock:v10];
+  v9 = [templateProviderFuture addSuccessBlock:v10];
 }
 
 void __59__CPMapTemplate_dismissNavigationAlertAnimated_completion___block_invoke(uint64_t a1, void *a2)
@@ -576,34 +576,34 @@ uint64_t __59__CPMapTemplate_dismissNavigationAlertAnimated_completion___block_i
   return result;
 }
 
-- (void)_updateNavigationAlert:(id)a3
+- (void)_updateNavigationAlert:(id)alert
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  alertCopy = alert;
   v5 = CarPlayFrameworkGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v4;
+    v18 = alertCopy;
     _os_log_impl(&dword_236ED4000, v5, OS_LOG_TYPE_INFO, "%@: Updating navigation alert: %@", buf, 0x16u);
   }
 
-  v6 = [v4 identifier];
-  v7 = [(CPMapTemplate *)self currentNavigationAlert];
-  v8 = [v7 identifier];
-  v9 = [v6 isEqual:v8];
+  identifier = [alertCopy identifier];
+  currentNavigationAlert = [(CPMapTemplate *)self currentNavigationAlert];
+  identifier2 = [currentNavigationAlert identifier];
+  v9 = [identifier isEqual:identifier2];
 
   if (v9)
   {
-    v10 = [(CPTemplate *)self templateProviderFuture];
+    templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __40__CPMapTemplate__updateNavigationAlert___block_invoke;
     v13[3] = &unk_278A10A90;
-    v14 = v4;
-    v11 = [v10 addSuccessBlock:v13];
+    v14 = alertCopy;
+    v11 = [templateProviderFuture addSuccessBlock:v13];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -619,14 +619,14 @@ uint64_t __59__CPMapTemplate_dismissNavigationAlertAnimated_completion___block_i
   v4 = mapButtons;
   [(NSArray *)v4 enumerateObjectsUsingBlock:v17];
   [(NSArray *)self->_mapButtons makeObjectsPerformSelector:sel_setControlDelegate_ withObject:0];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __31__CPMapTemplate_setMapButtons___block_invoke_2;
   v15[3] = &unk_278A11558;
   v15[4] = self;
-  v16 = v5;
-  v6 = v5;
+  v16 = array;
+  v6 = array;
   [(NSArray *)v4 enumerateObjectsUsingBlock:v15];
 
   v7 = [MEMORY[0x277CBEA60] arrayWithArray:v6];
@@ -634,14 +634,14 @@ uint64_t __59__CPMapTemplate_dismissNavigationAlertAnimated_completion___block_i
   self->_mapButtons = v7;
 
   v9 = self->_mapButtons;
-  v10 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __31__CPMapTemplate_setMapButtons___block_invoke_3;
   v13[3] = &unk_278A10A90;
   v14 = v9;
   v11 = v9;
-  v12 = [v10 addSuccessBlock:v13];
+  v12 = [templateProviderFuture addSuccessBlock:v13];
 }
 
 void __31__CPMapTemplate_setMapButtons___block_invoke(uint64_t a1, void *a2)
@@ -667,16 +667,16 @@ void __31__CPMapTemplate_setMapButtons___block_invoke_2(uint64_t a1, void *a2, u
   }
 }
 
-- (void)handleActionForControlIdentifier:(id)a3
+- (void)handleActionForControlIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__CPMapTemplate_handleActionForControlIdentifier___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -825,40 +825,40 @@ void __50__CPMapTemplate_handleActionForControlIdentifier___block_invoke_43(uint
   }
 }
 
-- (void)_resolveTrip:(id)a3 routeChoice:(id)a4 completion:(id)a5
+- (void)_resolveTrip:(id)trip routeChoice:(id)choice completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CPMapTemplate *)self tripPreviews];
+  tripCopy = trip;
+  choiceCopy = choice;
+  completionCopy = completion;
+  tripPreviews = [(CPMapTemplate *)self tripPreviews];
   v12 = MEMORY[0x277CCAC30];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __53__CPMapTemplate__resolveTrip_routeChoice_completion___block_invoke;
   v29[3] = &unk_278A115A8;
-  v13 = v8;
+  v13 = tripCopy;
   v30 = v13;
   v14 = [v12 predicateWithBlock:v29];
-  v15 = [v11 filteredArrayUsingPredicate:v14];
-  v16 = [v15 firstObject];
+  v15 = [tripPreviews filteredArrayUsingPredicate:v14];
+  firstObject = [v15 firstObject];
 
-  v17 = [v16 routeChoices];
+  routeChoices = [firstObject routeChoices];
   v18 = MEMORY[0x277CCAC30];
   v24 = MEMORY[0x277D85DD0];
   v25 = 3221225472;
   v26 = __53__CPMapTemplate__resolveTrip_routeChoice_completion___block_invoke_2;
   v27 = &unk_278A115D0;
-  v19 = v9;
+  v19 = choiceCopy;
   v28 = v19;
   v20 = [v18 predicateWithBlock:&v24];
-  v21 = [v17 filteredArrayUsingPredicate:{v20, v24, v25, v26, v27}];
-  v22 = [v21 firstObject];
+  v21 = [routeChoices filteredArrayUsingPredicate:{v20, v24, v25, v26, v27}];
+  firstObject2 = [v21 firstObject];
 
-  if (v16 && v22)
+  if (firstObject && firstObject2)
   {
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, v16, v22);
+      completionCopy[2](completionCopy, firstObject, firstObject2);
     }
   }
 
@@ -890,19 +890,19 @@ uint64_t __53__CPMapTemplate__resolveTrip_routeChoice_completion___block_invoke_
   return v4;
 }
 
-- (void)previewTripIdentifier:(id)a3 usingRouteIdentifier:(id)a4
+- (void)previewTripIdentifier:(id)identifier usingRouteIdentifier:(id)routeIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  routeIdentifierCopy = routeIdentifier;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__CPMapTemplate_previewTripIdentifier_usingRouteIdentifier___block_invoke;
   block[3] = &unk_278A11620;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = routeIdentifierCopy;
+  v8 = routeIdentifierCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -942,19 +942,19 @@ void __60__CPMapTemplate_previewTripIdentifier_usingRouteIdentifier___block_invo
   }
 }
 
-- (void)startTripIdentifier:(id)a3 usingRouteIdentifier:(id)a4
+- (void)startTripIdentifier:(id)identifier usingRouteIdentifier:(id)routeIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  routeIdentifierCopy = routeIdentifier;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__CPMapTemplate_startTripIdentifier_usingRouteIdentifier___block_invoke;
   block[3] = &unk_278A11620;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = routeIdentifierCopy;
+  v8 = routeIdentifierCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -996,24 +996,24 @@ void __58__CPMapTemplate_startTripIdentifier_usingRouteIdentifier___block_invoke
 
 - (void)showPanningInterfaceAnimated:(BOOL)animated
 {
-  v4 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__CPMapTemplate_showPanningInterfaceAnimated___block_invoke;
   v6[3] = &__block_descriptor_33_e34_v16__0___CPMapTemplateProviding__8l;
   v7 = animated;
-  v5 = [v4 addSuccessBlock:v6];
+  v5 = [templateProviderFuture addSuccessBlock:v6];
 }
 
 - (void)dismissPanningInterfaceAnimated:(BOOL)animated
 {
-  v4 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__CPMapTemplate_dismissPanningInterfaceAnimated___block_invoke;
   v6[3] = &__block_descriptor_33_e34_v16__0___CPMapTemplateProviding__8l;
   v7 = animated;
-  v5 = [v4 addSuccessBlock:v6];
+  v5 = [templateProviderFuture addSuccessBlock:v6];
 }
 
 - (BOOL)isPanningInterfaceVisible
@@ -1023,7 +1023,7 @@ void __58__CPMapTemplate_startTripIdentifier_usingRouteIdentifier___block_invoke
   v14 = 0x2020000000;
   v15 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__CPMapTemplate_isPanningInterfaceVisible__block_invoke;
@@ -1031,14 +1031,14 @@ void __58__CPMapTemplate_startTripIdentifier_usingRouteIdentifier___block_invoke
   v11 = &v12;
   v5 = v3;
   v10 = v5;
-  v6 = [v4 addSuccessBlock:v9];
+  v6 = [templateProviderFuture addSuccessBlock:v9];
 
   v7 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v5, v7);
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(templateProviderFuture) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return templateProviderFuture;
 }
 
 void __42__CPMapTemplate_isPanningInterfaceVisible__block_invoke(uint64_t a1, void *a2)
@@ -1119,14 +1119,14 @@ void __42__CPMapTemplate_clientPanViewDidDisappear__block_invoke(uint64_t a1)
   }
 }
 
-- (void)clientPanBeganWithDirection:(int64_t)a3
+- (void)clientPanBeganWithDirection:(int64_t)direction
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __45__CPMapTemplate_clientPanBeganWithDirection___block_invoke;
   v3[3] = &unk_278A10758;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = direction;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -1142,14 +1142,14 @@ void __45__CPMapTemplate_clientPanBeganWithDirection___block_invoke(uint64_t a1)
   }
 }
 
-- (void)clientPanEndedWithDirection:(int64_t)a3
+- (void)clientPanEndedWithDirection:(int64_t)direction
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __45__CPMapTemplate_clientPanEndedWithDirection___block_invoke;
   v3[3] = &unk_278A10758;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = direction;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -1187,15 +1187,15 @@ void __38__CPMapTemplate_clientPanGestureBegan__block_invoke(uint64_t a1)
   }
 }
 
-- (void)clientPanGestureWithDeltaPoint:(CGPoint)a3 velocity:(CGPoint)a4
+- (void)clientPanGestureWithDeltaPoint:(CGPoint)point velocity:(CGPoint)velocity
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__CPMapTemplate_clientPanGestureWithDeltaPoint_velocity___block_invoke;
   block[3] = &unk_278A10C40;
   block[4] = self;
-  v5 = a3;
-  v6 = a4;
+  pointCopy = point;
+  velocityCopy = velocity;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1211,14 +1211,14 @@ void __57__CPMapTemplate_clientPanGestureWithDeltaPoint_velocity___block_invoke(
   }
 }
 
-- (void)clientPanGestureEndedWithVelocity:(CGPoint)a3
+- (void)clientPanGestureEndedWithVelocity:(CGPoint)velocity
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__CPMapTemplate_clientPanGestureEndedWithVelocity___block_invoke;
   block[3] = &unk_278A11698;
   block[4] = self;
-  v4 = a3;
+  velocityCopy = velocity;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1256,16 +1256,16 @@ void __39__CPMapTemplate_clientZoomGestureBegan__block_invoke(uint64_t a1)
   }
 }
 
-- (void)clientZoomGestureWithCenterPoint:(CGPoint)a3 scale:(double)a4 velocity:(double)a5
+- (void)clientZoomGestureWithCenterPoint:(CGPoint)point scale:(double)scale velocity:(double)velocity
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__CPMapTemplate_clientZoomGestureWithCenterPoint_scale_velocity___block_invoke;
   block[3] = &unk_278A10C40;
   block[4] = self;
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
+  pointCopy = point;
+  scaleCopy = scale;
+  velocityCopy = velocity;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1281,14 +1281,14 @@ void __65__CPMapTemplate_clientZoomGestureWithCenterPoint_scale_velocity___block
   }
 }
 
-- (void)clientZoomGestureEndedWithVelocity:(double)a3
+- (void)clientZoomGestureEndedWithVelocity:(double)velocity
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __52__CPMapTemplate_clientZoomGestureEndedWithVelocity___block_invoke;
   v3[3] = &unk_278A10758;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = velocity;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -1326,16 +1326,16 @@ void __43__CPMapTemplate_clientRotationGestureBegan__block_invoke(uint64_t a1)
   }
 }
 
-- (void)clientRotationGestureWithCenterPoint:(CGPoint)a3 rotation:(double)a4 velocity:(double)a5
+- (void)clientRotationGestureWithCenterPoint:(CGPoint)point rotation:(double)rotation velocity:(double)velocity
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__CPMapTemplate_clientRotationGestureWithCenterPoint_rotation_velocity___block_invoke;
   block[3] = &unk_278A10C40;
   block[4] = self;
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
+  pointCopy = point;
+  rotationCopy = rotation;
+  velocityCopy = velocity;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1351,14 +1351,14 @@ void __72__CPMapTemplate_clientRotationGestureWithCenterPoint_rotation_velocity_
   }
 }
 
-- (void)clientRotationGestureEndedWithVelocity:(double)a3
+- (void)clientRotationGestureEndedWithVelocity:(double)velocity
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __56__CPMapTemplate_clientRotationGestureEndedWithVelocity___block_invoke;
   v3[3] = &unk_278A10758;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = velocity;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -1396,14 +1396,14 @@ void __40__CPMapTemplate_clientPitchGestureBegan__block_invoke(uint64_t a1)
   }
 }
 
-- (void)clientPitchGestureWithCenterPoint:(CGPoint)a3
+- (void)clientPitchGestureWithCenterPoint:(CGPoint)point
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__CPMapTemplate_clientPitchGestureWithCenterPoint___block_invoke;
   block[3] = &unk_278A11698;
   block[4] = self;
-  v4 = a3;
+  pointCopy = point;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1419,14 +1419,14 @@ void __51__CPMapTemplate_clientPitchGestureWithCenterPoint___block_invoke(uint64
   }
 }
 
-- (void)clientPitchGestureEndedWithCenterPoint:(CGPoint)a3
+- (void)clientPitchGestureEndedWithCenterPoint:(CGPoint)point
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__CPMapTemplate_clientPitchGestureEndedWithCenterPoint___block_invoke;
   block[3] = &unk_278A11698;
   block[4] = self;
-  v4 = a3;
+  pointCopy = point;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1442,14 +1442,14 @@ void __56__CPMapTemplate_clientPitchGestureEndedWithCenterPoint___block_invoke(u
   }
 }
 
-- (void)clientPanWithDirection:(int64_t)a3
+- (void)clientPanWithDirection:(int64_t)direction
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __40__CPMapTemplate_clientPanWithDirection___block_invoke;
   v3[3] = &unk_278A10758;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = direction;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -1483,16 +1483,16 @@ void __40__CPMapTemplate_clientPanWithDirection___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientNavigationAlertWillAppear:(id)a3
+- (void)clientNavigationAlertWillAppear:(id)appear
 {
-  v4 = a3;
+  appearCopy = appear;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__CPMapTemplate_clientNavigationAlertWillAppear___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = appearCopy;
+  v5 = appearCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1516,16 +1516,16 @@ void __49__CPMapTemplate_clientNavigationAlertWillAppear___block_invoke(uint64_t
   }
 }
 
-- (void)clientNavigationAlertDidAppear:(id)a3
+- (void)clientNavigationAlertDidAppear:(id)appear
 {
-  v4 = a3;
+  appearCopy = appear;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__CPMapTemplate_clientNavigationAlertDidAppear___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = appearCopy;
+  v5 = appearCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1549,17 +1549,17 @@ void __48__CPMapTemplate_clientNavigationAlertDidAppear___block_invoke(uint64_t 
   }
 }
 
-- (void)clientNavigationAlertWillDisappear:(id)a3 context:(unint64_t)a4
+- (void)clientNavigationAlertWillDisappear:(id)disappear context:(unint64_t)context
 {
-  v6 = a3;
+  disappearCopy = disappear;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__CPMapTemplate_clientNavigationAlertWillDisappear_context___block_invoke;
   block[3] = &unk_278A10D48;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = disappearCopy;
+  contextCopy = context;
+  v7 = disappearCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1583,17 +1583,17 @@ void __60__CPMapTemplate_clientNavigationAlertWillDisappear_context___block_invo
   }
 }
 
-- (void)clientNavigationAlertDidDisappear:(id)a3 context:(unint64_t)a4
+- (void)clientNavigationAlertDidDisappear:(id)disappear context:(unint64_t)context
 {
-  v6 = a3;
+  disappearCopy = disappear;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__CPMapTemplate_clientNavigationAlertDidDisappear_context___block_invoke;
   block[3] = &unk_278A10D48;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = disappearCopy;
+  contextCopy = context;
+  v7 = disappearCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -1664,14 +1664,14 @@ void __55__CPMapTemplate_clientTripCanceledByExternalNavigation__block_invoke(ui
   [v5 removeAllObjects];
 }
 
-- (int64_t)_displayStyleForManeuver:(id)a3
+- (int64_t)_displayStyleForManeuver:(id)maneuver
 {
-  v4 = a3;
-  v5 = [(CPMapTemplate *)self mapDelegate];
+  maneuverCopy = maneuver;
+  mapDelegate = [(CPMapTemplate *)self mapDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 mapTemplate:self displayStyleForManeuver:v4];
-    [v4 setDisplayStyle:v6];
+    v6 = [mapDelegate mapTemplate:self displayStyleForManeuver:maneuverCopy];
+    [maneuverCopy setDisplayStyle:v6];
   }
 
   else
@@ -1682,39 +1682,39 @@ void __55__CPMapTemplate_clientTripCanceledByExternalNavigation__block_invoke(ui
   return v6;
 }
 
-- (void)bannerDidDisappearWithIdentifier:(id)a3
+- (void)bannerDidDisappearWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPMapTemplate *)self postedBannerObjects];
-  [v5 removeObjectForKey:v4];
+  identifierCopy = identifier;
+  postedBannerObjects = [(CPMapTemplate *)self postedBannerObjects];
+  [postedBannerObjects removeObjectForKey:identifierCopy];
 }
 
-- (void)bannerTappedWithIdentifier:(id)a3
+- (void)bannerTappedWithIdentifier:(id)identifier
 {
-  v19 = a3;
-  v4 = [(CPMapTemplate *)self postedBannerObjects];
-  v5 = [v4 objectForKeyedSubscript:v19];
+  identifierCopy = identifier;
+  postedBannerObjects = [(CPMapTemplate *)self postedBannerObjects];
+  v5 = [postedBannerObjects objectForKeyedSubscript:identifierCopy];
 
   if (v5)
   {
-    v6 = [(CPMapTemplate *)self postedBannerObjects];
-    [v6 removeObjectForKey:v19];
+    postedBannerObjects2 = [(CPMapTemplate *)self postedBannerObjects];
+    [postedBannerObjects2 removeObjectForKey:identifierCopy];
 
     v7 = +[CPTemplateApplicationScene activeTemplateScene];
-    v8 = [v7 delegate];
+    delegate = [v7 delegate];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if (objc_opt_respondsToSelector())
       {
-        [v8 templateApplicationScene:v7 didSelectNavigationAlert:v5];
+        [delegate templateApplicationScene:v7 didSelectNavigationAlert:v5];
 LABEL_13:
 
         goto LABEL_14;
       }
 
-      v9 = [MEMORY[0x277D75128] sharedApplication];
-      v10 = [v9 delegate];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      delegate2 = [mEMORY[0x277D75128] delegate];
       v11 = objc_opt_respondsToSelector();
 
       if ((v11 & 1) == 0)
@@ -1722,11 +1722,11 @@ LABEL_13:
         goto LABEL_13;
       }
 
-      v12 = [MEMORY[0x277D75128] sharedApplication];
-      v13 = [v12 delegate];
+      mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+      delegate3 = [mEMORY[0x277D75128]2 delegate];
 
-      v14 = [MEMORY[0x277D75128] sharedApplication];
-      [v13 application:v14 didSelectNavigationAlert:v5];
+      mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+      [delegate3 application:mEMORY[0x277D75128]3 didSelectNavigationAlert:v5];
     }
 
     else
@@ -1739,12 +1739,12 @@ LABEL_13:
 
       if (objc_opt_respondsToSelector())
       {
-        [v8 templateApplicationScene:v7 didSelectManeuver:v5];
+        [delegate templateApplicationScene:v7 didSelectManeuver:v5];
         goto LABEL_13;
       }
 
-      v15 = [MEMORY[0x277D75128] sharedApplication];
-      v16 = [v15 delegate];
+      mEMORY[0x277D75128]4 = [MEMORY[0x277D75128] sharedApplication];
+      delegate4 = [mEMORY[0x277D75128]4 delegate];
       v17 = objc_opt_respondsToSelector();
 
       if ((v17 & 1) == 0)
@@ -1752,11 +1752,11 @@ LABEL_13:
         goto LABEL_13;
       }
 
-      v18 = [MEMORY[0x277D75128] sharedApplication];
-      v13 = [v18 delegate];
+      mEMORY[0x277D75128]5 = [MEMORY[0x277D75128] sharedApplication];
+      delegate3 = [mEMORY[0x277D75128]5 delegate];
 
-      v14 = [MEMORY[0x277D75128] sharedApplication];
-      [v13 application:v14 didSelectManeuver:v5];
+      mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+      [delegate3 application:mEMORY[0x277D75128]3 didSelectManeuver:v5];
     }
 
     goto LABEL_13;
@@ -1765,71 +1765,71 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_postBannerIfNecessaryForManeuver:(id)a3
+- (void)_postBannerIfNecessaryForManeuver:(id)maneuver
 {
-  v12 = a3;
-  v4 = [(CPTemplate *)self templateDelegate];
+  maneuverCopy = maneuver;
+  templateDelegate = [(CPTemplate *)self templateDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0 || (-[CPTemplate templateDelegate](self, "templateDelegate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isCarPlayCanvasActive], v6, (v7 & 1) == 0))
   {
-    v8 = [(CPMapTemplate *)self mapDelegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 mapTemplate:self shouldShowNotificationForManeuver:v12])
+    mapDelegate = [(CPMapTemplate *)self mapDelegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [mapDelegate mapTemplate:self shouldShowNotificationForManeuver:maneuverCopy])
     {
       postedBannerObjects = self->_postedBannerObjects;
-      v10 = [v12 identifier];
-      [(NSMutableDictionary *)postedBannerObjects setObject:v12 forKeyedSubscript:v10];
+      identifier = [maneuverCopy identifier];
+      [(NSMutableDictionary *)postedBannerObjects setObject:maneuverCopy forKeyedSubscript:identifier];
 
-      v11 = [(CPMapTemplate *)self bannerProvider];
-      [v11 postBannerForManeuver:v12 travelEstimates:0];
+      bannerProvider = [(CPMapTemplate *)self bannerProvider];
+      [bannerProvider postBannerForManeuver:maneuverCopy travelEstimates:0];
     }
   }
 }
 
-- (void)_postBannerIfNecessaryForNavigationAlert:(id)a3
+- (void)_postBannerIfNecessaryForNavigationAlert:(id)alert
 {
-  v12 = a3;
-  v4 = [(CPTemplate *)self templateDelegate];
+  alertCopy = alert;
+  templateDelegate = [(CPTemplate *)self templateDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0 || (-[CPTemplate templateDelegate](self, "templateDelegate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isCarPlayCanvasActive], v6, (v7 & 1) == 0))
   {
-    v8 = [(CPMapTemplate *)self mapDelegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 mapTemplate:self shouldShowNotificationForNavigationAlert:v12])
+    mapDelegate = [(CPMapTemplate *)self mapDelegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [mapDelegate mapTemplate:self shouldShowNotificationForNavigationAlert:alertCopy])
     {
       postedBannerObjects = self->_postedBannerObjects;
-      v10 = [v12 identifier];
-      [(NSMutableDictionary *)postedBannerObjects setObject:v12 forKeyedSubscript:v10];
+      identifier = [alertCopy identifier];
+      [(NSMutableDictionary *)postedBannerObjects setObject:alertCopy forKeyedSubscript:identifier];
 
-      v11 = [(CPMapTemplate *)self bannerProvider];
-      [v11 postBannerForNavigationAlert:v12];
+      bannerProvider = [(CPMapTemplate *)self bannerProvider];
+      [bannerProvider postBannerForNavigationAlert:alertCopy];
     }
   }
 }
 
-- (void)_updateBannerIfNecessaryForManeuver:(id)a3 travelEstimates:(id)a4
+- (void)_updateBannerIfNecessaryForManeuver:(id)maneuver travelEstimates:(id)estimates
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(CPTemplate *)self templateDelegate];
+  maneuverCopy = maneuver;
+  estimatesCopy = estimates;
+  templateDelegate = [(CPTemplate *)self templateDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if ((v8 & 1) == 0 || (-[CPTemplate templateDelegate](self, "templateDelegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isCarPlayCanvasActive], v9, (v10 & 1) == 0))
   {
-    v11 = [(CPMapTemplate *)self mapDelegate];
+    mapDelegate = [(CPMapTemplate *)self mapDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v11 mapTemplate:self shouldUpdateNotificationForManeuver:v16 withTravelEstimates:v6];
-      if (v16)
+      v12 = [mapDelegate mapTemplate:self shouldUpdateNotificationForManeuver:maneuverCopy withTravelEstimates:estimatesCopy];
+      if (maneuverCopy)
       {
         if (v12)
         {
           postedBannerObjects = self->_postedBannerObjects;
-          v14 = [v16 identifier];
-          [(NSMutableDictionary *)postedBannerObjects setObject:v16 forKeyedSubscript:v14];
+          identifier = [maneuverCopy identifier];
+          [(NSMutableDictionary *)postedBannerObjects setObject:maneuverCopy forKeyedSubscript:identifier];
 
-          v15 = [(CPMapTemplate *)self bannerProvider];
-          [v15 postBannerForManeuver:v16 travelEstimates:v6];
+          bannerProvider = [(CPMapTemplate *)self bannerProvider];
+          [bannerProvider postBannerForManeuver:maneuverCopy travelEstimates:estimatesCopy];
         }
       }
     }

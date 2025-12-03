@@ -1,7 +1,7 @@
 @interface TLKDescriptionView
 - (BOOL)moreButtonIsHidden;
-- (BOOL)shouldHideMoreButtonForTextView:(id)a3;
-- (CGSize)textSizeForTextView:(id)a3 width:(double)a4 lineCount:(unint64_t)a5;
+- (BOOL)shouldHideMoreButtonForTextView:(id)view;
+- (CGSize)textSizeForTextView:(id)view width:(double)width lineCount:(unint64_t)count;
 - (TLKDescriptionViewDelegate)delegate;
 - (UIEdgeInsets)defaultBaselineRelativeLayoutMargins;
 - (id)detailTextViewText;
@@ -9,22 +9,22 @@
 - (id)setupContentView;
 - (id)viewForFirstBaselineLayout;
 - (int64_t)numberOfLines;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews;
 - (void)didMoveToWindow;
 - (void)footnoteButtonPressed;
 - (void)moreButtonPressed;
 - (void)observedPropertiesChanged;
-- (void)setExclusionPathInContainer:(id)a3 includeMoreButton:(BOOL)a4;
-- (void)setFootnoteButtonText:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setMoreButtonText:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTrailingFootnoteButtonText:(id)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)trailingFootnoteButtonPressed:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setExclusionPathInContainer:(id)container includeMoreButton:(BOOL)button;
+- (void)setFootnoteButtonText:(id)text;
+- (void)setImage:(id)image;
+- (void)setMoreButtonText:(id)text;
+- (void)setText:(id)text;
+- (void)setTitle:(id)title;
+- (void)setTrailingFootnoteButtonText:(id)text;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)trailingFootnoteButtonPressed:(id)pressed;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TLKDescriptionView
@@ -48,8 +48,8 @@
   [v6 setFont:v7];
 
   v8 = objc_opt_new();
-  v9 = [v6 font];
-  [v8 setFont:v9];
+  font = [v6 font];
+  [v8 setFont:font];
 
   [v8 addTarget:self action:sel_moreButtonPressed];
   v10 = objc_opt_new();
@@ -86,24 +86,24 @@
   [(NUIContainerStackView *)v16 setSpacing:1.0];
   [(TLKStackView *)v16 setDelegate:self];
   [(TLKDescriptionView *)self setStackView:v16];
-  v17 = [(TLKDescriptionView *)self imageAndDescriptionBoxView];
-  [v17 effectiveBaselineOffsetFromBottom];
+  imageAndDescriptionBoxView = [(TLKDescriptionView *)self imageAndDescriptionBoxView];
+  [imageAndDescriptionBoxView effectiveBaselineOffsetFromBottom];
   v19 = v18;
 
-  v20 = [(TLKDescriptionView *)self imageView];
-  [v20 setCustomAlignmentRectInsets:{0.0, 0.0, -v19, 0.0}];
+  imageView = [(TLKDescriptionView *)self imageView];
+  [imageView setCustomAlignmentRectInsets:{0.0, 0.0, -v19, 0.0}];
 
   return v16;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = TLKDescriptionView;
-  [(TLKDescriptionView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(TLKDescriptionView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(TLKDescriptionView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(TLKDescriptionView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -111,11 +111,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(TLKDescriptionView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(TLKDescriptionView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -131,15 +131,15 @@ LABEL_5:
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
   v10.receiver = self;
   v10.super_class = TLKDescriptionView;
-  v4 = a3;
-  [(UIView *)&v10 tlk_updateForAppearance:v4];
-  v5 = [v4 isVibrant];
+  appearanceCopy = appearance;
+  [(UIView *)&v10 tlk_updateForAppearance:appearanceCopy];
+  isVibrant = [appearanceCopy isVibrant];
 
-  if (v5)
+  if (isVibrant)
   {
     v6 = 2;
   }
@@ -149,20 +149,20 @@ LABEL_5:
     v6 = 1;
   }
 
-  v7 = [(TLKDescriptionView *)self moreButton];
-  [v7 setProminence:v6];
+  moreButton = [(TLKDescriptionView *)self moreButton];
+  [moreButton setProminence:v6];
 
-  v8 = [(TLKDescriptionView *)self footnoteButton];
-  [v8 setProminence:3];
+  footnoteButton = [(TLKDescriptionView *)self footnoteButton];
+  [footnoteButton setProminence:3];
 
-  v9 = [(TLKDescriptionView *)self trailingFootnoteButton];
-  [v9 setProminence:3];
+  trailingFootnoteButton = [(TLKDescriptionView *)self trailingFootnoteButton];
+  [trailingFootnoteButton setProminence:3];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  textCopy = text;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_text setObserver:0];
@@ -173,7 +173,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = textCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -206,11 +206,11 @@ LABEL_5:
         while (v8);
       }
 
-      v5 = v23;
+      textCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_text, a3);
+  objc_storeStrong(&self->_text, text);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_text setObserver:self];
@@ -255,25 +255,25 @@ LABEL_5:
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  titleCopy = title;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_title setObserver:0];
@@ -284,7 +284,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = titleCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -317,11 +317,11 @@ LABEL_5:
         while (v8);
       }
 
-      v5 = v23;
+      titleCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_title, a3);
+  objc_storeStrong(&self->_title, title);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_title setObserver:self];
@@ -366,104 +366,104 @@ LABEL_5:
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setMoreButtonText:(id)a3
+- (void)setMoreButtonText:(id)text
 {
-  v10 = a3;
-  if (self->_moreButtonText != v10)
+  textCopy = text;
+  if (self->_moreButtonText != textCopy)
   {
-    objc_storeStrong(&self->_moreButtonText, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_moreButtonText, text);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setFootnoteButtonText:(id)a3
+- (void)setFootnoteButtonText:(id)text
 {
-  v10 = a3;
-  if (self->_footnoteButtonText != v10)
+  textCopy = text;
+  if (self->_footnoteButtonText != textCopy)
   {
-    objc_storeStrong(&self->_footnoteButtonText, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_footnoteButtonText, text);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setTrailingFootnoteButtonText:(id)a3
+- (void)setTrailingFootnoteButtonText:(id)text
 {
-  v10 = a3;
-  if (self->_trailingFootnoteButtonText != v10)
+  textCopy = text;
+  if (self->_trailingFootnoteButtonText != textCopy)
   {
-    objc_storeStrong(&self->_trailingFootnoteButtonText, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_trailingFootnoteButtonText, text);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v10 = a3;
-  if (self->_image != v10)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    objc_storeStrong(&self->_image, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_image, image);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
@@ -472,31 +472,31 @@ LABEL_5:
 - (void)observedPropertiesChanged
 {
   v56[3] = *MEMORY[0x1E69E9840];
-  v6 = [(TLKDescriptionView *)self text];
-  v7 = [(TLKDescriptionView *)self detailsTextView];
-  [v7 setMultilineText:v6];
+  text = [(TLKDescriptionView *)self text];
+  detailsTextView = [(TLKDescriptionView *)self detailsTextView];
+  [detailsTextView setMultilineText:text];
 
-  v8 = [(TLKDescriptionView *)self footnoteButtonText];
-  v9 = [(TLKDescriptionView *)self trailingFootnoteButtonText];
-  if (!(v8 | v9))
+  footnoteButtonText = [(TLKDescriptionView *)self footnoteButtonText];
+  trailingFootnoteButtonText = [(TLKDescriptionView *)self trailingFootnoteButtonText];
+  if (!(footnoteButtonText | trailingFootnoteButtonText))
   {
     goto LABEL_10;
   }
 
-  v10 = [(TLKDescriptionView *)self footnoteButtonStackView];
+  footnoteButtonStackView = [(TLKDescriptionView *)self footnoteButtonStackView];
 
-  if (!v10)
+  if (!footnoteButtonStackView)
   {
     v11 = +[TLKFontUtilities shortFootnoteFont];
-    v3 = objc_opt_new();
-    [v3 setFont:v11];
-    [v3 setAlignment:4];
+    delegate = objc_opt_new();
+    [delegate setFont:v11];
+    [delegate setAlignment:4];
     LODWORD(v12) = 1148846080;
-    [v3 setContentHuggingPriority:0 forAxis:v12];
-    [v3 addTarget:self action:sel_footnoteButtonPressed];
-    [(TLKDescriptionView *)self setFootnoteButton:v3];
-    v4 = objc_opt_new();
-    [v4 setFont:v11];
+    [delegate setContentHuggingPriority:0 forAxis:v12];
+    [delegate addTarget:self action:sel_footnoteButtonPressed];
+    [(TLKDescriptionView *)self setFootnoteButton:delegate];
+    footnoteButton2 = objc_opt_new();
+    [footnoteButton2 setFont:v11];
     if (+[TLKLayoutUtilities isLTR])
     {
       v13 = 2;
@@ -507,44 +507,44 @@ LABEL_5:
       v13 = 0;
     }
 
-    [v4 setAlignment:v13];
+    [footnoteButton2 setAlignment:v13];
     LODWORD(v14) = 1148846080;
-    [v4 setContentHuggingPriority:0 forAxis:v14];
-    [v4 addTarget:self action:sel_trailingFootnoteButtonPressed_];
-    [(TLKDescriptionView *)self setTrailingFootnoteButton:v4];
+    [footnoteButton2 setContentHuggingPriority:0 forAxis:v14];
+    [footnoteButton2 addTarget:self action:sel_trailingFootnoteButtonPressed_];
+    [(TLKDescriptionView *)self setTrailingFootnoteButton:footnoteButton2];
     v15 = objc_opt_new();
     [(TLKDescriptionView *)self setFootnoteButtonStackDummyView:v15];
 
     v16 = [TLKStackView alloc];
-    v17 = [(TLKDescriptionView *)self footnoteButtonStackDummyView];
-    v56[1] = v17;
-    v56[2] = v4;
+    footnoteButtonStackDummyView = [(TLKDescriptionView *)self footnoteButtonStackDummyView];
+    v56[1] = footnoteButtonStackDummyView;
+    v56[2] = footnoteButton2;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:3];
     v19 = [(NUIContainerStackView *)v16 initWithArrangedSubviews:v18];
     [(TLKDescriptionView *)self setFootnoteButtonStackView:v19];
 
-    v20 = [(TLKDescriptionView *)self footnoteButtonStackView];
-    [v20 setFlipsToVerticalAxisForAccessibilityContentSizes:1];
+    footnoteButtonStackView2 = [(TLKDescriptionView *)self footnoteButtonStackView];
+    [footnoteButtonStackView2 setFlipsToVerticalAxisForAccessibilityContentSizes:1];
 
-    v21 = [(TLKDescriptionView *)self stackView];
-    v22 = [(TLKDescriptionView *)self footnoteButtonStackView];
-    [v21 addArrangedSubview:v22];
+    stackView = [(TLKDescriptionView *)self stackView];
+    footnoteButtonStackView3 = [(TLKDescriptionView *)self footnoteButtonStackView];
+    [stackView addArrangedSubview:footnoteButtonStackView3];
   }
 
-  v23 = [(TLKDescriptionView *)self footnoteButton];
-  [v23 setTitle:v8];
+  footnoteButton = [(TLKDescriptionView *)self footnoteButton];
+  [footnoteButton setTitle:footnoteButtonText];
 
-  v2 = [(TLKDescriptionView *)self trailingFootnoteButton];
-  [v2 setTitle:v9];
+  trailingFootnoteButton = [(TLKDescriptionView *)self trailingFootnoteButton];
+  [trailingFootnoteButton setTitle:trailingFootnoteButtonText];
 
-  if (v8)
+  if (footnoteButtonText)
   {
-    v2 = [(TLKDescriptionView *)self delegate];
+    trailingFootnoteButton = [(TLKDescriptionView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [(TLKDescriptionView *)self delegate];
-      v4 = [(TLKDescriptionView *)self footnoteButton];
-      v24 = [v3 configureMenuForFootnoteButton:v4];
+      delegate = [(TLKDescriptionView *)self delegate];
+      footnoteButton2 = [(TLKDescriptionView *)self footnoteButton];
+      v24 = [delegate configureMenuForFootnoteButton:footnoteButton2];
       v25 = 1;
     }
 
@@ -562,25 +562,25 @@ LABEL_10:
     v24 = 0;
   }
 
-  v26 = [(TLKDescriptionView *)self footnoteButton];
-  [v26 setShowsMenuAsPrimaryAction:v24];
+  footnoteButton3 = [(TLKDescriptionView *)self footnoteButton];
+  [footnoteButton3 setShowsMenuAsPrimaryAction:v24];
 
   if (v25)
   {
   }
 
-  if (v8)
+  if (footnoteButtonText)
   {
   }
 
-  if (v9)
+  if (trailingFootnoteButtonText)
   {
-    v2 = [(TLKDescriptionView *)self delegate];
+    trailingFootnoteButton = [(TLKDescriptionView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [(TLKDescriptionView *)self delegate];
-      v4 = [(TLKDescriptionView *)self trailingFootnoteButton];
-      v27 = [v3 configureMenuForTrailingFootnoteButton:v4];
+      delegate = [(TLKDescriptionView *)self delegate];
+      footnoteButton2 = [(TLKDescriptionView *)self trailingFootnoteButton];
+      v27 = [delegate configureMenuForTrailingFootnoteButton:footnoteButton2];
       v28 = 1;
     }
 
@@ -597,38 +597,38 @@ LABEL_10:
     v27 = 0;
   }
 
-  v29 = [(TLKDescriptionView *)self trailingFootnoteButton];
-  [v29 setShowsMenuAsPrimaryAction:v27];
+  trailingFootnoteButton2 = [(TLKDescriptionView *)self trailingFootnoteButton];
+  [trailingFootnoteButton2 setShowsMenuAsPrimaryAction:v27];
 
   if (v28)
   {
   }
 
-  if (v9)
+  if (trailingFootnoteButtonText)
   {
   }
 
-  v30 = v8 == 0;
-  v31 = [(TLKDescriptionView *)self footnoteButtonStackView];
-  [v31 setHidden:(v8 | v9) == 0];
+  moreButtonText = footnoteButtonText == 0;
+  footnoteButtonStackView4 = [(TLKDescriptionView *)self footnoteButtonStackView];
+  [footnoteButtonStackView4 setHidden:(footnoteButtonText | trailingFootnoteButtonText) == 0];
 
-  v32 = [(TLKDescriptionView *)self footnoteButtonStackView];
-  v33 = [v32 axis] == 1;
-  v34 = [(TLKDescriptionView *)self footnoteButtonStackDummyView];
-  [v34 setHidden:v33];
+  footnoteButtonStackView5 = [(TLKDescriptionView *)self footnoteButtonStackView];
+  v33 = [footnoteButtonStackView5 axis] == 1;
+  footnoteButtonStackDummyView2 = [(TLKDescriptionView *)self footnoteButtonStackDummyView];
+  [footnoteButtonStackDummyView2 setHidden:v33];
 
-  v35 = [(TLKDescriptionView *)self footnoteButton];
-  [v35 setHidden:v30];
+  footnoteButton4 = [(TLKDescriptionView *)self footnoteButton];
+  [footnoteButton4 setHidden:moreButtonText];
 
-  v36 = [(TLKDescriptionView *)self trailingFootnoteButton];
-  [v36 setHidden:v9 == 0];
+  trailingFootnoteButton3 = [(TLKDescriptionView *)self trailingFootnoteButton];
+  [trailingFootnoteButton3 setHidden:trailingFootnoteButtonText == 0];
 
-  v37 = [(TLKDescriptionView *)self text];
-  v38 = [v37 maxLines];
-  if (v38)
+  text2 = [(TLKDescriptionView *)self text];
+  maxLines = [text2 maxLines];
+  if (maxLines)
   {
-    v30 = [(TLKDescriptionView *)self moreButtonText];
-    v39 = v30 == 0;
+    moreButtonText = [(TLKDescriptionView *)self moreButtonText];
+    v39 = moreButtonText == 0;
   }
 
   else
@@ -636,36 +636,36 @@ LABEL_10:
     v39 = 1;
   }
 
-  v40 = [(TLKDescriptionView *)self moreButton];
-  [v40 setHidden:v39];
+  moreButton = [(TLKDescriptionView *)self moreButton];
+  [moreButton setHidden:v39];
 
-  if (v38)
+  if (maxLines)
   {
   }
 
-  v41 = [(TLKDescriptionView *)self moreButtonText];
-  v42 = [(TLKDescriptionView *)self moreButton];
-  [v42 setTitle:v41];
+  moreButtonText2 = [(TLKDescriptionView *)self moreButtonText];
+  moreButton2 = [(TLKDescriptionView *)self moreButton];
+  [moreButton2 setTitle:moreButtonText2];
 
-  v43 = [(TLKDescriptionView *)self image];
-  v44 = [(TLKDescriptionView *)self imageView];
-  [v44 setHidden:v43 == 0];
+  image = [(TLKDescriptionView *)self image];
+  imageView = [(TLKDescriptionView *)self imageView];
+  [imageView setHidden:image == 0];
 
-  v45 = [(TLKDescriptionView *)self image];
-  v46 = [(TLKDescriptionView *)self imageView];
-  [v46 setTlkImage:v45];
+  image2 = [(TLKDescriptionView *)self image];
+  imageView2 = [(TLKDescriptionView *)self imageView];
+  [imageView2 setTlkImage:image2];
 
-  v47 = [(TLKDescriptionView *)self title];
-  v48 = [(TLKDescriptionView *)self titleLabel];
-  [v48 setHidden:v47 == 0];
+  title = [(TLKDescriptionView *)self title];
+  titleLabel = [(TLKDescriptionView *)self titleLabel];
+  [titleLabel setHidden:title == 0];
 
-  v49 = [(TLKDescriptionView *)self title];
-  v50 = [v49 text];
-  v51 = [(TLKDescriptionView *)self titleLabel];
-  [v51 setText:v50];
+  title2 = [(TLKDescriptionView *)self title];
+  text3 = [title2 text];
+  titleLabel2 = [(TLKDescriptionView *)self titleLabel];
+  [titleLabel2 setText:text3];
 
-  v52 = [(TLKDescriptionView *)self imageViewExclusionPath];
-  if (!v52 || (v53 = v52, [(TLKDescriptionView *)self image], v54 = objc_claimAutoreleasedReturnValue(), v54, v53, !v54))
+  imageViewExclusionPath = [(TLKDescriptionView *)self imageViewExclusionPath];
+  if (!imageViewExclusionPath || (v53 = imageViewExclusionPath, [(TLKDescriptionView *)self image], v54 = objc_claimAutoreleasedReturnValue(), v54, v53, !v54))
   {
     [(TLKDescriptionView *)self setImageViewExclusionPath:0];
   }
@@ -678,19 +678,19 @@ LABEL_10:
 
 - (id)viewForFirstBaselineLayout
 {
-  v3 = [(TLKDescriptionView *)self titleLabel];
-  if ([v3 isHidden])
+  titleLabel = [(TLKDescriptionView *)self titleLabel];
+  if ([titleLabel isHidden])
   {
-    v4 = [(TLKDescriptionView *)self imageAndDescriptionBoxView];
-    v5 = [v4 viewForFirstBaselineLayout];
+    imageAndDescriptionBoxView = [(TLKDescriptionView *)self imageAndDescriptionBoxView];
+    viewForFirstBaselineLayout = [imageAndDescriptionBoxView viewForFirstBaselineLayout];
   }
 
   else
   {
-    v5 = [(TLKDescriptionView *)self titleLabel];
+    viewForFirstBaselineLayout = [(TLKDescriptionView *)self titleLabel];
   }
 
-  return v5;
+  return viewForFirstBaselineLayout;
 }
 
 - (UIEdgeInsets)defaultBaselineRelativeLayoutMargins
@@ -702,17 +702,17 @@ LABEL_10:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TLKDescriptionView *)self titleLabel];
-  if ([v11 isHidden])
+  titleLabel = [(TLKDescriptionView *)self titleLabel];
+  if ([titleLabel isHidden])
   {
-    v12 = [(TLKDescriptionView *)self imageView];
-    v13 = [v12 isHidden];
+    imageView = [(TLKDescriptionView *)self imageView];
+    isHidden = [imageView isHidden];
 
-    if ((v13 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v14 = [(TLKDescriptionView *)self detailsTextView];
-      v15 = [v14 font];
-      [v15 ascender];
+      detailsTextView = [(TLKDescriptionView *)self detailsTextView];
+      font = [detailsTextView font];
+      [font ascender];
       [TLKLayoutUtilities deviceScaledRoundedValue:self forView:?];
       v17 = v16;
 
@@ -736,12 +736,12 @@ LABEL_10:
   return result;
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = [(TLKDescriptionView *)self imageView];
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  imageView = [(TLKDescriptionView *)self imageView];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __85__TLKDescriptionView_containerView_willMeasureArrangedSubviewsFittingSize_forReason___block_invoke;
@@ -749,30 +749,30 @@ LABEL_10:
   v32[4] = self;
   *&v32[5] = width;
   *&v32[6] = height;
-  [v10 performBatchUpdates:v32];
+  [imageView performBatchUpdates:v32];
 
-  v11 = [(TLKDescriptionView *)self imageAndDescriptionBoxView];
+  imageAndDescriptionBoxView = [(TLKDescriptionView *)self imageAndDescriptionBoxView];
 
-  if (!a5 && v11 == v9)
+  if (!reason && imageAndDescriptionBoxView == viewCopy)
   {
-    v12 = [(TLKDescriptionView *)self image];
+    image = [(TLKDescriptionView *)self image];
 
-    if (v12)
+    if (image)
     {
-      v13 = [(TLKDescriptionView *)self imageView];
-      [v13 intrinsicContentSize];
+      imageView2 = [(TLKDescriptionView *)self imageView];
+      [imageView2 intrinsicContentSize];
       v15 = v14;
       v17 = v16;
 
-      v18 = [(TLKDescriptionView *)self detailsTextView];
-      v19 = [v18 font];
+      detailsTextView = [(TLKDescriptionView *)self detailsTextView];
+      font = [detailsTextView font];
 
       v21 = *MEMORY[0x1E695F058];
       v20 = *(MEMORY[0x1E695F058] + 8);
       v22 = v15 + 10.0;
-      [TLKLayoutUtilities scaledValueForValue:v19 withFont:self view:16.0];
+      [TLKLayoutUtilities scaledValueForValue:font withFont:self view:16.0];
       v24 = v17 + v23;
-      [v19 capHeight];
+      [font capHeight];
       [TLKLayoutUtilities deviceScaledRoundedValue:self forView:?];
       v26 = v24 - v25;
       if (!+[TLKLayoutUtilities isLTR])
@@ -789,14 +789,14 @@ LABEL_10:
       [(TLKDescriptionView *)self setImageViewExclusionPath:v28];
     }
 
-    v29 = [(TLKDescriptionView *)self detailsTextView];
-    v30 = [v29 textContainer];
-    [(TLKDescriptionView *)self setExclusionPathInContainer:v30 includeMoreButton:0];
+    detailsTextView2 = [(TLKDescriptionView *)self detailsTextView];
+    textContainer = [detailsTextView2 textContainer];
+    [(TLKDescriptionView *)self setExclusionPathInContainer:textContainer includeMoreButton:0];
 
-    v31 = [(TLKDescriptionView *)self detailsTextView];
-    [v31 invalidateIntrinsicContentSize];
+    detailsTextView3 = [(TLKDescriptionView *)self detailsTextView];
+    [detailsTextView3 invalidateIntrinsicContentSize];
 
-    [v9 invalidateIntrinsicContentSize];
+    [viewCopy invalidateIntrinsicContentSize];
   }
 }
 
@@ -807,36 +807,36 @@ void __85__TLKDescriptionView_containerView_willMeasureArrangedSubviewsFittingSi
   [v2 setMaximumLayoutSize:{v1, 1.79769313e308}];
 }
 
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews
 {
-  v4 = a3;
-  v5 = [(TLKDescriptionView *)self imageAndDescriptionBoxView];
+  subviewsCopy = subviews;
+  imageAndDescriptionBoxView = [(TLKDescriptionView *)self imageAndDescriptionBoxView];
 
-  if (v5 == v4)
+  if (imageAndDescriptionBoxView == subviewsCopy)
   {
-    v6 = [(TLKDescriptionView *)self detailsTextView];
-    v7 = [(TLKDescriptionView *)self moreButtonText];
+    detailsTextView = [(TLKDescriptionView *)self detailsTextView];
+    moreButtonText = [(TLKDescriptionView *)self moreButtonText];
 
-    if (v7)
+    if (moreButtonText)
     {
-      v8 = [(TLKDescriptionView *)self shouldHideMoreButtonForTextView:v6];
-      v9 = [(TLKDescriptionView *)self moreButton];
-      [v9 setHidden:v8];
+      v8 = [(TLKDescriptionView *)self shouldHideMoreButtonForTextView:detailsTextView];
+      moreButton = [(TLKDescriptionView *)self moreButton];
+      [moreButton setHidden:v8];
 
-      v10 = [(TLKDescriptionView *)self moreButton];
-      LOBYTE(v9) = [v10 isHidden];
+      moreButton2 = [(TLKDescriptionView *)self moreButton];
+      LOBYTE(moreButton) = [moreButton2 isHidden];
 
-      if (v9)
+      if (moreButton)
       {
-        v11 = [v6 textContainer];
-        [(TLKDescriptionView *)self setExclusionPathInContainer:v11 includeMoreButton:0];
+        textContainer = [detailsTextView textContainer];
+        [(TLKDescriptionView *)self setExclusionPathInContainer:textContainer includeMoreButton:0];
       }
 
       else
       {
-        v11 = [v6 layoutManager];
-        v12 = [v6 textContainer];
-        v13 = [v11 glyphRangeForTextContainer:v12];
+        textContainer = [detailsTextView layoutManager];
+        textContainer2 = [detailsTextView textContainer];
+        v13 = [textContainer glyphRangeForTextContainer:textContainer2];
         v15 = v14;
 
         v63 = 0;
@@ -858,13 +858,13 @@ void __85__TLKDescriptionView_containerView_willMeasureArrangedSubviewsFittingSi
         v54[4] = &v63;
         v54[5] = &v59;
         v54[6] = &v55;
-        [v11 enumerateLineFragmentsForGlyphRange:v13 usingBlock:{v15, v54}];
+        [textContainer enumerateLineFragmentsForGlyphRange:v13 usingBlock:{v15, v54}];
         v16 = +[TLKLayoutUtilities isLTR];
-        v17 = [(TLKDescriptionView *)self moreButton];
-        v18 = [(TLKDescriptionView *)self moreButton];
-        v19 = [v18 titleLabel];
-        [v19 frame];
-        [v17 convertRect:v6 toView:?];
+        moreButton3 = [(TLKDescriptionView *)self moreButton];
+        moreButton4 = [(TLKDescriptionView *)self moreButton];
+        titleLabel = [moreButton4 titleLabel];
+        [titleLabel frame];
+        [moreButton3 convertRect:detailsTextView toView:?];
         v21 = v20;
         v23 = v22;
         v25 = v24;
@@ -879,8 +879,8 @@ void __85__TLKDescriptionView_containerView_willMeasureArrangedSubviewsFittingSi
         v28 = [MEMORY[0x1E69DC728] bezierPathWithRect:{v21 - v27, v64[3], v23 + 3.0, v25, rect}];
         [(TLKDescriptionView *)self setMoreButtonExclusionPath:v28];
 
-        v29 = [v6 textContainer];
-        [(TLKDescriptionView *)self setExclusionPathInContainer:v29 includeMoreButton:1];
+        textContainer3 = [detailsTextView textContainer];
+        [(TLKDescriptionView *)self setExclusionPathInContainer:textContainer3 includeMoreButton:1];
 
         v53[0] = MEMORY[0x1E69E9820];
         v53[1] = 3221225472;
@@ -889,9 +889,9 @@ void __85__TLKDescriptionView_containerView_willMeasureArrangedSubviewsFittingSi
         v53[4] = &v63;
         v53[5] = &v59;
         v53[6] = &v55;
-        [v11 enumerateLineFragmentsForGlyphRange:v13 usingBlock:{v15, v53}];
-        v30 = [(TLKDescriptionView *)self moreButton];
-        [v30 frame];
+        [textContainer enumerateLineFragmentsForGlyphRange:v13 usingBlock:{v15, v53}];
+        moreButton5 = [(TLKDescriptionView *)self moreButton];
+        [moreButton5 frame];
         v32 = v31;
         v34 = v33;
         v36 = v35;
@@ -908,7 +908,7 @@ void __85__TLKDescriptionView_containerView_willMeasureArrangedSubviewsFittingSi
         v68.size.width = v23;
         v68.size.height = v25;
         v41 = CGRectGetHeight(v68);
-        [v6 frame];
+        [detailsTextView frame];
         v43 = v42;
         if (v16)
         {
@@ -926,8 +926,8 @@ void __85__TLKDescriptionView_containerView_willMeasureArrangedSubviewsFittingSi
         v47 = v46;
         [TLKLayoutUtilities ceilingValue:self inView:v39 + (Height - v41) * -0.5 + v43];
         v49 = v48;
-        v50 = [(TLKDescriptionView *)self moreButton];
-        [v50 setFrame:{v47, v49, v36, v38}];
+        moreButton6 = [(TLKDescriptionView *)self moreButton];
+        [moreButton6 setFrame:{v47, v49, v36, v38}];
 
         _Block_object_dispose(&v55, 8);
         _Block_object_dispose(&v59, 8);
@@ -957,61 +957,61 @@ void *__61__TLKDescriptionView_containerViewDidLayoutArrangedSubviews___block_in
   return result;
 }
 
-- (void)setExclusionPathInContainer:(id)a3 includeMoreButton:(BOOL)a4
+- (void)setExclusionPathInContainer:(id)container includeMoreButton:(BOOL)button
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = [(TLKDescriptionView *)self imageViewExclusionPath];
-  if (v4)
+  buttonCopy = button;
+  containerCopy = container;
+  imageViewExclusionPath = [(TLKDescriptionView *)self imageViewExclusionPath];
+  if (buttonCopy)
   {
-    v7 = [(TLKDescriptionView *)self moreButtonExclusionPath];
+    moreButtonExclusionPath = [(TLKDescriptionView *)self moreButtonExclusionPath];
   }
 
   else
   {
-    v7 = 0;
+    moreButtonExclusionPath = 0;
   }
 
   v8 = objc_alloc(MEMORY[0x1E695DEC8]);
-  if (v6)
+  if (imageViewExclusionPath)
   {
-    v9 = [v8 initWithObjects:{v6, v7, 0}];
+    v9 = [v8 initWithObjects:{imageViewExclusionPath, moreButtonExclusionPath, 0}];
   }
 
   else
   {
-    v9 = [v8 initWithObjects:{v7, 0, v11}];
+    v9 = [v8 initWithObjects:{moreButtonExclusionPath, 0, v11}];
   }
 
   v10 = v9;
-  [v12 setExclusionPaths:v9];
+  [containerCopy setExclusionPaths:v9];
 }
 
-- (CGSize)textSizeForTextView:(id)a3 width:(double)a4 lineCount:(unint64_t)a5
+- (CGSize)textSizeForTextView:(id)view width:(double)width lineCount:(unint64_t)count
 {
   v8 = MEMORY[0x1E69DB850];
-  v9 = a3;
+  viewCopy = view;
   v10 = [v8 alloc];
-  v11 = [v9 attributedText];
-  v12 = [v10 initWithAttributedString:v11];
+  attributedText = [viewCopy attributedText];
+  v12 = [v10 initWithAttributedString:attributedText];
 
-  v13 = [objc_alloc(MEMORY[0x1E69DB800]) initWithSize:{a4, 3.40282347e38}];
+  v13 = [objc_alloc(MEMORY[0x1E69DB800]) initWithSize:{width, 3.40282347e38}];
   v14 = objc_alloc_init(MEMORY[0x1E69DB7C0]);
   [v14 addTextContainer:v13];
   [v12 addLayoutManager:v14];
-  [v13 setMaximumNumberOfLines:a5];
-  v15 = [v9 textContainer];
-  [v15 lineFragmentPadding];
+  [v13 setMaximumNumberOfLines:count];
+  textContainer = [viewCopy textContainer];
+  [textContainer lineFragmentPadding];
   [v13 setLineFragmentPadding:?];
 
-  v16 = [v9 textContainer];
-  [v13 setLineBreakMode:{objc_msgSend(v16, "lineBreakMode")}];
+  textContainer2 = [viewCopy textContainer];
+  [v13 setLineBreakMode:{objc_msgSend(textContainer2, "lineBreakMode")}];
 
   [(TLKDescriptionView *)self setExclusionPathInContainer:v13 includeMoreButton:0];
   [v14 ensureLayoutForTextContainer:v13];
   [v14 usedRectForTextContainer:v13];
   v18 = v17;
-  [TLKLayoutUtilities flooredValue:v9 inView:v19];
+  [TLKLayoutUtilities flooredValue:viewCopy inView:v19];
   v21 = v20;
 
   v22 = v18;
@@ -1021,17 +1021,17 @@ void *__61__TLKDescriptionView_containerViewDidLayoutArrangedSubviews___block_in
   return result;
 }
 
-- (BOOL)shouldHideMoreButtonForTextView:(id)a3
+- (BOOL)shouldHideMoreButtonForTextView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 textContainer];
-  v6 = [v5 maximumNumberOfLines];
+  viewCopy = view;
+  textContainer = [viewCopy textContainer];
+  maximumNumberOfLines = [textContainer maximumNumberOfLines];
 
-  if (v6 && ([v4 frame], v8 != 0.0))
+  if (maximumNumberOfLines && ([viewCopy frame], v8 != 0.0))
   {
-    [(TLKDescriptionView *)self textSizeForTextView:v4 width:0 lineCount:v7];
+    [(TLKDescriptionView *)self textSizeForTextView:viewCopy width:0 lineCount:v7];
     v11 = v10;
-    [v4 frame];
+    [viewCopy frame];
     v9 = v11 <= v12;
   }
 
@@ -1045,83 +1045,83 @@ void *__61__TLKDescriptionView_containerViewDidLayoutArrangedSubviews___block_in
 
 - (void)moreButtonPressed
 {
-  v3 = [(TLKDescriptionView *)self delegate];
+  delegate = [(TLKDescriptionView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(TLKDescriptionView *)self detailsTextView];
-    v6 = [v5 textContainer];
-    [(TLKDescriptionView *)self setExclusionPathInContainer:v6 includeMoreButton:0];
+    detailsTextView = [(TLKDescriptionView *)self detailsTextView];
+    textContainer = [detailsTextView textContainer];
+    [(TLKDescriptionView *)self setExclusionPathInContainer:textContainer includeMoreButton:0];
 
-    v7 = [(TLKDescriptionView *)self text];
-    [v7 setMaxLines:0];
+    text = [(TLKDescriptionView *)self text];
+    [text setMaxLines:0];
 
-    v8 = [(TLKDescriptionView *)self detailsTextView];
-    [v8 invalidateIntrinsicContentSize];
+    detailsTextView2 = [(TLKDescriptionView *)self detailsTextView];
+    [detailsTextView2 invalidateIntrinsicContentSize];
 
-    v9 = [(TLKDescriptionView *)self delegate];
-    [v9 didPressMoreButton];
+    delegate2 = [(TLKDescriptionView *)self delegate];
+    [delegate2 didPressMoreButton];
   }
 }
 
 - (void)footnoteButtonPressed
 {
-  v3 = [(TLKDescriptionView *)self delegate];
+  delegate = [(TLKDescriptionView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(TLKDescriptionView *)self delegate];
-    [v5 didPressFootnoteButton];
+    delegate2 = [(TLKDescriptionView *)self delegate];
+    [delegate2 didPressFootnoteButton];
   }
 }
 
-- (void)trailingFootnoteButtonPressed:(id)a3
+- (void)trailingFootnoteButtonPressed:(id)pressed
 {
-  v7 = a3;
-  v4 = [(TLKDescriptionView *)self delegate];
+  pressedCopy = pressed;
+  delegate = [(TLKDescriptionView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(TLKDescriptionView *)self delegate];
-    [v6 didPressTrailingFootnoteButton:v7];
+    delegate2 = [(TLKDescriptionView *)self delegate];
+    [delegate2 didPressTrailingFootnoteButton:pressedCopy];
   }
 }
 
 - (id)detailTextViewText
 {
-  v2 = [(TLKDescriptionView *)self detailsTextView];
-  v3 = [v2 text];
+  detailsTextView = [(TLKDescriptionView *)self detailsTextView];
+  text = [detailsTextView text];
 
-  return v3;
+  return text;
 }
 
 - (int64_t)numberOfLines
 {
-  v2 = [(TLKDescriptionView *)self detailsTextView];
-  v3 = [v2 textContainer];
-  v4 = [v3 maximumNumberOfLines];
+  detailsTextView = [(TLKDescriptionView *)self detailsTextView];
+  textContainer = [detailsTextView textContainer];
+  maximumNumberOfLines = [textContainer maximumNumberOfLines];
 
-  return v4;
+  return maximumNumberOfLines;
 }
 
 - (BOOL)moreButtonIsHidden
 {
-  v2 = [(TLKDescriptionView *)self moreButton];
-  v3 = [v2 isHidden];
+  moreButton = [(TLKDescriptionView *)self moreButton];
+  isHidden = [moreButton isHidden];
 
-  return v3;
+  return isHidden;
 }
 
 - (id)exclusionPathsForTextView
 {
-  v2 = [(TLKDescriptionView *)self detailsTextView];
-  v3 = [v2 textContainer];
-  v4 = [v3 exclusionPaths];
+  detailsTextView = [(TLKDescriptionView *)self detailsTextView];
+  textContainer = [detailsTextView textContainer];
+  exclusionPaths = [textContainer exclusionPaths];
 
-  return v4;
+  return exclusionPaths;
 }
 
 - (TLKDescriptionViewDelegate)delegate

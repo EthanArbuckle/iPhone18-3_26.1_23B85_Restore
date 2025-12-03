@@ -1,49 +1,49 @@
 @interface EMWebViewScriptHandler
-+ (void)addScriptHandlerForWebView:(id)a3 key:(id)a4 handler:(id)a5;
++ (void)addScriptHandlerForWebView:(id)view key:(id)key handler:(id)handler;
 - (WKWebView)webView;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
 @end
 
 @implementation EMWebViewScriptHandler
 
-+ (void)addScriptHandlerForWebView:(id)a3 key:(id)a4 handler:(id)a5
++ (void)addScriptHandlerForWebView:(id)view key:(id)key handler:(id)handler
 {
-  v16 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v16)
+  viewCopy = view;
+  keyCopy = key;
+  handlerCopy = handler;
+  if (!viewCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"EMWebViewScriptHandler.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"webView"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMWebViewScriptHandler.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"webView"}];
   }
 
   v11 = objc_alloc_init(EMWebViewScriptHandler);
-  [(EMWebViewScriptHandler *)v11 setName:v9];
-  [(EMWebViewScriptHandler *)v11 setWebView:v16];
-  [(EMWebViewScriptHandler *)v11 setHandler:v10];
-  v12 = [v16 configuration];
-  v13 = [v12 userContentController];
-  v14 = [(EMWebViewScriptHandler *)v11 name];
-  [v13 addScriptMessageHandler:v11 name:v14];
+  [(EMWebViewScriptHandler *)v11 setName:keyCopy];
+  [(EMWebViewScriptHandler *)v11 setWebView:viewCopy];
+  [(EMWebViewScriptHandler *)v11 setHandler:handlerCopy];
+  configuration = [viewCopy configuration];
+  userContentController = [configuration userContentController];
+  name = [(EMWebViewScriptHandler *)v11 name];
+  [userContentController addScriptMessageHandler:v11 name:name];
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
-  v9 = a4;
-  v5 = [(EMWebViewScriptHandler *)self webView];
-  v6 = [v9 webView];
-  if (v6 == v5)
+  messageCopy = message;
+  webView = [(EMWebViewScriptHandler *)self webView];
+  webView2 = [messageCopy webView];
+  if (webView2 == webView)
   {
-    v7 = [(EMWebViewScriptHandler *)self handler];
+    handler = [(EMWebViewScriptHandler *)self handler];
 
-    if (!v7)
+    if (!handler)
     {
       goto LABEL_5;
     }
 
-    v6 = [(EMWebViewScriptHandler *)self handler];
-    v8 = [v9 body];
-    (v6)[2](v6, v8);
+    webView2 = [(EMWebViewScriptHandler *)self handler];
+    body = [messageCopy body];
+    (webView2)[2](webView2, body);
   }
 
 LABEL_5:

@@ -1,15 +1,15 @@
 @interface AccountStatusHandlerMail
-- (id)_getStatusInfoFromIncomingAccount:(id)a3;
-- (id)_getStatusInfoFromOutgoingAccount:(id)a3;
-- (id)getStatusInfoFromAccount:(id)a3;
-- (id)getStatusKeyPathFromAccount:(id)a3;
+- (id)_getStatusInfoFromIncomingAccount:(id)account;
+- (id)_getStatusInfoFromOutgoingAccount:(id)account;
+- (id)getStatusInfoFromAccount:(id)account;
+- (id)getStatusKeyPathFromAccount:(id)account;
 @end
 
 @implementation AccountStatusHandlerMail
 
-- (id)getStatusKeyPathFromAccount:(id)a3
+- (id)getStatusKeyPathFromAccount:(id)account
 {
-  v3 = [a3 objectForKeyedSubscript:@"RemoteManagementPrimaryAccountIdentifier"];
+  v3 = [account objectForKeyedSubscript:@"RemoteManagementPrimaryAccountIdentifier"];
   v4 = &RMModelStatusItemAccountListMailIncoming;
   if (v3)
   {
@@ -22,52 +22,52 @@
   return v5;
 }
 
-- (id)getStatusInfoFromAccount:(id)a3
+- (id)getStatusInfoFromAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"RemoteManagementPrimaryAccountIdentifier"];
+  accountCopy = account;
+  v5 = [accountCopy objectForKeyedSubscript:@"RemoteManagementPrimaryAccountIdentifier"];
   if (v5)
   {
-    [(AccountStatusHandlerMail *)self _getStatusInfoFromOutgoingAccount:v4];
+    [(AccountStatusHandlerMail *)self _getStatusInfoFromOutgoingAccount:accountCopy];
   }
 
   else
   {
-    [(AccountStatusHandlerMail *)self _getStatusInfoFromIncomingAccount:v4];
+    [(AccountStatusHandlerMail *)self _getStatusInfoFromIncomingAccount:accountCopy];
   }
   v6 = ;
 
   return v6;
 }
 
-- (id)_getStatusInfoFromIncomingAccount:(id)a3
+- (id)_getStatusInfoFromIncomingAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [RMModelStatusAccountListMailIncoming buildRequiredOnlyWithIdentifier:v4];
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  v5 = [RMModelStatusAccountListMailIncoming buildRequiredOnlyWithIdentifier:identifier];
 
-  v6 = [v3 objectForKeyedSubscript:@"RemoteManagementConfigurationIdentifier"];
+  v6 = [accountCopy objectForKeyedSubscript:@"RemoteManagementConfigurationIdentifier"];
   [v5 setStatusDeclarationIdentifier:v6];
 
-  v7 = [v3 accountDescription];
-  [v5 setStatusVisibleName:v7];
+  accountDescription = [accountCopy accountDescription];
+  [v5 setStatusVisibleName:accountDescription];
 
-  v8 = [v3 objectForKeyedSubscript:ACAccountPropertyHostname];
+  v8 = [accountCopy objectForKeyedSubscript:ACAccountPropertyHostname];
   [v5 setStatusHostname:v8];
 
-  v9 = [v3 objectForKeyedSubscript:ACAccountPropertyPortNumber];
+  v9 = [accountCopy objectForKeyedSubscript:ACAccountPropertyPortNumber];
   if ([v9 intValue])
   {
     [v5 setStatusPort:v9];
   }
 
-  v10 = [v3 username];
-  [v5 setStatusUsername:v10];
+  username = [accountCopy username];
+  [v5 setStatusUsername:username];
 
-  v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabledForDataclass:ACAccountDataclassMail]);
+  v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [accountCopy isEnabledForDataclass:ACAccountDataclassMail]);
   [v5 setStatusIsMailEnabled:v11];
 
-  v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabledForDataclass:ACAccountDataclassNotes]);
+  v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [accountCopy isEnabledForDataclass:ACAccountDataclassNotes]);
   [v5 setStatusAreNotesEnabled:v12];
 
   v13 = [v5 serializeWithType:1];
@@ -75,29 +75,29 @@
   return v13;
 }
 
-- (id)_getStatusInfoFromOutgoingAccount:(id)a3
+- (id)_getStatusInfoFromOutgoingAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [RMModelStatusAccountListMailOutgoing buildRequiredOnlyWithIdentifier:v4];
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  v5 = [RMModelStatusAccountListMailOutgoing buildRequiredOnlyWithIdentifier:identifier];
 
-  v6 = [v3 objectForKeyedSubscript:@"RemoteManagementConfigurationIdentifier"];
+  v6 = [accountCopy objectForKeyedSubscript:@"RemoteManagementConfigurationIdentifier"];
   [v5 setStatusDeclarationIdentifier:v6];
 
-  v7 = [v3 accountDescription];
-  [v5 setStatusVisibleName:v7];
+  accountDescription = [accountCopy accountDescription];
+  [v5 setStatusVisibleName:accountDescription];
 
-  v8 = [v3 objectForKeyedSubscript:ACAccountPropertyHostname];
+  v8 = [accountCopy objectForKeyedSubscript:ACAccountPropertyHostname];
   [v5 setStatusHostname:v8];
 
-  v9 = [v3 objectForKeyedSubscript:ACAccountPropertyPortNumber];
+  v9 = [accountCopy objectForKeyedSubscript:ACAccountPropertyPortNumber];
   if ([v9 intValue])
   {
     [v5 setStatusPort:v9];
   }
 
-  v10 = [v3 username];
-  [v5 setStatusUsername:v10];
+  username = [accountCopy username];
+  [v5 setStatusUsername:username];
 
   v11 = [v5 serializeWithType:1];
 

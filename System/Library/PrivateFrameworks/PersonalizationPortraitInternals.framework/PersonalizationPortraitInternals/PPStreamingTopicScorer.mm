@@ -1,20 +1,20 @@
 @interface PPStreamingTopicScorer
-+ (uint64_t)sourceStatsNeededForBytecode:(uint64_t)a1;
-- (float)getFinalScoreWithAggregationResultOut:(uint64_t)a1 finalResultOut:(uint64_t)a2;
-- (void)addRecord:(uint64_t)a1;
++ (uint64_t)sourceStatsNeededForBytecode:(uint64_t)bytecode;
+- (float)getFinalScoreWithAggregationResultOut:(uint64_t)out finalResultOut:(uint64_t)resultOut;
+- (void)addRecord:(uint64_t)record;
 @end
 
 @implementation PPStreamingTopicScorer
 
-+ (uint64_t)sourceStatsNeededForBytecode:(uint64_t)a1
++ (uint64_t)sourceStatsNeededForBytecode:(uint64_t)bytecode
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 scalarScoreInputsNeeded];
-  v4 = [v2 objectScoreInputsNeeded];
+  scalarScoreInputsNeeded = [v2 scalarScoreInputsNeeded];
+  objectScoreInputsNeeded = [v2 objectScoreInputsNeeded];
 
-  BitAtIndex = CFBitVectorGetBitAtIndex(v3, 6);
-  v6 = CFBitVectorGetBitAtIndex(v3, 7);
+  BitAtIndex = CFBitVectorGetBitAtIndex(scalarScoreInputsNeeded, 6);
+  v6 = CFBitVectorGetBitAtIndex(scalarScoreInputsNeeded, 7);
   v7 = 2;
   if (BitAtIndex)
   {
@@ -31,27 +31,27 @@
     v8 = BitAtIndex != 0;
   }
 
-  if (CFBitVectorGetBitAtIndex(v3, 8))
+  if (CFBitVectorGetBitAtIndex(scalarScoreInputsNeeded, 8))
   {
     v8 |= 4uLL;
   }
 
-  if (CFBitVectorGetBitAtIndex(v3, 9))
+  if (CFBitVectorGetBitAtIndex(scalarScoreInputsNeeded, 9))
   {
     v8 |= 8uLL;
   }
 
-  if (CFBitVectorGetBitAtIndex(v3, 10))
+  if (CFBitVectorGetBitAtIndex(scalarScoreInputsNeeded, 10))
   {
     v8 |= 0x40uLL;
   }
 
-  if (CFBitVectorGetBitAtIndex(v3, 11))
+  if (CFBitVectorGetBitAtIndex(scalarScoreInputsNeeded, 11))
   {
     v8 |= 0x80uLL;
   }
 
-  if (CFBitVectorGetBitAtIndex(v3, 23))
+  if (CFBitVectorGetBitAtIndex(scalarScoreInputsNeeded, 23))
   {
     v9 = v8 | 0x100;
   }
@@ -61,12 +61,12 @@
     v9 = v8;
   }
 
-  if (CFBitVectorGetBitAtIndex(v4, 9))
+  if (CFBitVectorGetBitAtIndex(objectScoreInputsNeeded, 9))
   {
     v9 |= 0x10uLL;
   }
 
-  if (CFBitVectorGetBitAtIndex(v4, 10))
+  if (CFBitVectorGetBitAtIndex(objectScoreInputsNeeded, 10))
   {
     return v9 | 0x20;
   }
@@ -77,18 +77,18 @@
   }
 }
 
-- (void)addRecord:(uint64_t)a1
+- (void)addRecord:(uint64_t)record
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (record)
   {
-    v5 = *(a1 + 8);
+    v5 = *(record + 8);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __36__PPStreamingTopicScorer_addRecord___block_invoke;
     v9[3] = &unk_278976148;
-    v9[4] = a1;
+    v9[4] = record;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __36__PPStreamingTopicScorer_addRecord___block_invoke_2;
@@ -98,7 +98,7 @@
     v6[1] = 3221225472;
     v6[2] = __36__PPStreamingTopicScorer_addRecord___block_invoke_3;
     v6[3] = &unk_278976170;
-    v6[4] = a1;
+    v6[4] = record;
     [v5 evaluateWithPreviousStageSubscores:0 scoreInputInitializationBlock:v9 scoreInputAssignmentBlock:v7 outputBlock:v6];
   }
 }
@@ -178,9 +178,9 @@ void __36__PPStreamingTopicScorer_addRecord___block_invoke_2(uint64_t a1, void *
   [v4 setObject:v38 forIndex:6];
 }
 
-- (float)getFinalScoreWithAggregationResultOut:(uint64_t)a1 finalResultOut:(uint64_t)a2
+- (float)getFinalScoreWithAggregationResultOut:(uint64_t)out finalResultOut:(uint64_t)resultOut
 {
-  if (!a1)
+  if (!out)
   {
     return 0.0;
   }
@@ -189,26 +189,26 @@ void __36__PPStreamingTopicScorer_addRecord___block_invoke_2(uint64_t a1, void *
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = -957033984;
-  v3 = *(a1 + 16);
+  v3 = *(out + 16);
   if (v3)
   {
-    v4 = *(a1 + 32);
+    v4 = *(out + 32);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __79__PPStreamingTopicScorer_getFinalScoreWithAggregationResultOut_finalResultOut___block_invoke;
     v9[3] = &unk_278976148;
-    v9[4] = a1;
+    v9[4] = out;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __79__PPStreamingTopicScorer_getFinalScoreWithAggregationResultOut_finalResultOut___block_invoke_3;
     v8[3] = &unk_2789761B8;
     v8[4] = &v10;
-    v8[5] = a2;
+    v8[5] = resultOut;
     [v3 evaluateWithPreviousStageSubscores:v4 scoreInputInitializationBlock:v9 scoreInputAssignmentBlock:&__block_literal_global_16564 outputBlock:v8];
   }
 
-  [*(a1 + 8) cleanupReusableComponents];
-  v5 = *(a1 + 16);
+  [*(out + 8) cleanupReusableComponents];
+  v5 = *(out + 16);
   if (v5)
   {
     [v5 cleanupReusableComponents];

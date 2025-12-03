@@ -1,9 +1,9 @@
 @interface MUISearchFeedbackNotificationViewController
 + (OS_os_log)log;
-- (MUISearchFeedbackNotificationViewController)initWithTitleText:(id)a3 messageText:(id)a4;
+- (MUISearchFeedbackNotificationViewController)initWithTitleText:(id)text messageText:(id)messageText;
 - (MUISearchFeedbackNotificationViewControllerDelegate)delegate;
-- (void)_handleThumbsDown:(id)a3;
-- (void)_handleThumbsUp:(id)a3;
+- (void)_handleThumbsDown:(id)down;
+- (void)_handleThumbsUp:(id)up;
 @end
 
 @implementation MUISearchFeedbackNotificationViewController
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __50__MUISearchFeedbackNotificationViewController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_0 != -1)
   {
     dispatch_once(&log_onceToken_0, block);
@@ -34,11 +34,11 @@ void __50__MUISearchFeedbackNotificationViewController_log__block_invoke(uint64_
   log_log_0 = v2;
 }
 
-- (MUISearchFeedbackNotificationViewController)initWithTitleText:(id)a3 messageText:(id)a4
+- (MUISearchFeedbackNotificationViewController)initWithTitleText:(id)text messageText:(id)messageText
 {
   v8.receiver = self;
   v8.super_class = MUISearchFeedbackNotificationViewController;
-  v4 = [(MUIFeedbackNotificationViewController *)&v8 initWithTitleText:a3 messageText:a4];
+  v4 = [(MUIFeedbackNotificationViewController *)&v8 initWithTitleText:text messageText:messageText];
   if (v4)
   {
     v5 = createButton(@"hand.thumbsup", v4, sel__handleThumbsUp_);
@@ -51,7 +51,7 @@ void __50__MUISearchFeedbackNotificationViewController_log__block_invoke(uint64_
   return v4;
 }
 
-- (void)_handleThumbsUp:(id)a3
+- (void)_handleThumbsUp:(id)up
 {
   v4 = +[MUISearchFeedbackNotificationViewController log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -64,7 +64,7 @@ void __50__MUISearchFeedbackNotificationViewController_log__block_invoke(uint64_
   [WeakRetained shouldTriggerTapToRadarForViewController:self shouldTrigger:0];
 }
 
-- (void)_handleThumbsDown:(id)a3
+- (void)_handleThumbsDown:(id)down
 {
   v4 = +[MUISearchFeedbackNotificationViewController log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

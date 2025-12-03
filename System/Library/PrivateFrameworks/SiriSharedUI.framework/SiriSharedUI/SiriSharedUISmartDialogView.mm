@@ -1,23 +1,23 @@
 @interface SiriSharedUISmartDialogView
 - (BOOL)_hasNoDialog;
-- (BOOL)_isConversationSnippetHintType:(id)a3;
-- (BOOL)_shouldAddVibrancyForSnippet:(id)a3;
+- (BOOL)_isConversationSnippetHintType:(id)type;
+- (BOOL)_shouldAddVibrancyForSnippet:(id)snippet;
 - (BOOL)_showSpeech;
 - (BOOL)layerHasOpacity;
 - (BOOL)ongoingASR;
 - (BOOL)onlyContainsSnippet;
-- (BOOL)transitionToExpandablePlatterStyle:(int64_t)a3;
+- (BOOL)transitionToExpandablePlatterStyle:(int64_t)style;
 - (BOOL)willAutomaticallyCollapseWhenResultIsScrolled;
 - (CGSize)_fittingSize;
-- (CGSize)_sizeOfSnippet:(id)a3;
-- (CGSize)_sizeThatFits:(CGSize)a3 forSnippet:(id)a4;
-- (CGSize)_sizeThatFitsAllSnippets:(CGSize)a3;
+- (CGSize)_sizeOfSnippet:(id)snippet;
+- (CGSize)_sizeThatFits:(CGSize)fits forSnippet:(id)snippet;
+- (CGSize)_sizeThatFitsAllSnippets:(CGSize)snippets;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SiriSharedUICompactConversationViewDelegate)delegate;
 - (SiriSharedUIDropletContentDelegate)dropletContainerDelegate;
-- (SiriSharedUISmartDialogView)initWithFrame:(CGRect)a3;
-- (SiriSharedUISmartDialogView)initWithResultView:(id)a3;
+- (SiriSharedUISmartDialogView)initWithFrame:(CGRect)frame;
+- (SiriSharedUISmartDialogView)initWithResultView:(id)view;
 - (SiriSharedUIStackableContentDelegate)stackContainerDelegate;
 - (UIEdgeInsets)serverUtteranceContentInsets;
 - (UIEdgeInsets)snippetContentInsets;
@@ -25,63 +25,63 @@
 - (double)maxSnippetWidth;
 - (id)_conversationAppearAnimation;
 - (id)_conversationDisappearAnimation;
-- (id)_filterTranscriptItems:(id)a3;
+- (id)_filterTranscriptItems:(id)items;
 - (id)animatingLayer;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)parserSpeakableObjectProviderForServerUtterance:(id)a3;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)parserSpeakableObjectProviderForServerUtterance:(id)utterance;
 - (id)prepareForUpdatesPendingCompletionBlocks;
 - (int)updateUserUtteranceVisibilityIfNeeded;
-- (void)_adjustCornerRadiusForSnippetView:(id)a3 vibrancyView:(id)a4;
-- (void)_adjustHintCornerRadiusForSnippetView:(id)a3 vibrancyView:(id)a4;
+- (void)_adjustCornerRadiusForSnippetView:(id)view vibrancyView:(id)vibrancyView;
+- (void)_adjustHintCornerRadiusForSnippetView:(id)view vibrancyView:(id)vibrancyView;
 - (void)_prepareHintForAnimation;
 - (void)_reloadConversationSnippetViewsIfHint;
-- (void)_resetAttributionView:(id)a3;
+- (void)_resetAttributionView:(id)view;
 - (void)_resetExpansionStateForNewContent;
 - (void)_setupSubviews;
 - (void)_showAlternativesUI;
 - (void)_updateAmbientSnippetScaling;
 - (void)_updateSubviewContentInsets;
 - (void)animateAppearanceIfNeeded;
-- (void)animateFadeOutWithCompletion:(id)a3;
+- (void)animateFadeOutWithCompletion:(id)completion;
 - (void)animateForDrillIn;
 - (void)didCompleteAnimatedFadeOut;
 - (void)layoutSubviews;
 - (void)prepareForDrillInAnimation;
-- (void)prepareForPopAnimationOfType:(int64_t)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)serverUtteranceView:(id)a3 utteranceViewDidAppear:(id)a4;
-- (void)serverUtteranceView:(id)a3 utteranceViewDidDisappear:(id)a4;
-- (void)setActiveTranscriptItems:(id)a3;
-- (void)setAllowAutomaticConversationSnippetViewScaling:(BOOL)a3;
-- (void)setConversationSnippetViews:(id)a3;
-- (void)setCurrentExpandablePlatterStyle:(int64_t)a3;
-- (void)setInteractionDelegate:(id)a3;
-- (void)setIsInAmbient:(BOOL)a3;
-- (void)setIsInAmbientInteractivity:(BOOL)a3;
-- (void)setLatencyViewModel:(id)a3;
-- (void)setServerUtterances:(id)a3;
-- (void)setShowCollapsedUI:(BOOL)a3;
-- (void)setSmartDialogCard:(id)a3;
-- (void)setSmartDialogPlugin:(id)a3 attribution:(id)a4;
-- (void)setSnippetBackgroundView:(id)a3;
-- (void)setSpeechRecognitionHypothesisForSuggestion:(id)a3;
-- (void)setUserInterfaceStyle:(int64_t)a3;
-- (void)setUserUtteranceViewModel:(id)a3;
+- (void)prepareForPopAnimationOfType:(int64_t)type;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)serverUtteranceView:(id)view utteranceViewDidAppear:(id)appear;
+- (void)serverUtteranceView:(id)view utteranceViewDidDisappear:(id)disappear;
+- (void)setActiveTranscriptItems:(id)items;
+- (void)setAllowAutomaticConversationSnippetViewScaling:(BOOL)scaling;
+- (void)setConversationSnippetViews:(id)views;
+- (void)setCurrentExpandablePlatterStyle:(int64_t)style;
+- (void)setInteractionDelegate:(id)delegate;
+- (void)setIsInAmbient:(BOOL)ambient;
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity;
+- (void)setLatencyViewModel:(id)model;
+- (void)setServerUtterances:(id)utterances;
+- (void)setShowCollapsedUI:(BOOL)i;
+- (void)setSmartDialogCard:(id)card;
+- (void)setSmartDialogPlugin:(id)plugin attribution:(id)attribution;
+- (void)setSnippetBackgroundView:(id)view;
+- (void)setSpeechRecognitionHypothesisForSuggestion:(id)suggestion;
+- (void)setUserInterfaceStyle:(int64_t)style;
+- (void)setUserUtteranceViewModel:(id)model;
 - (void)snippetContentDidUpdate;
 - (void)updateAttributionView;
 - (void)updateContentSizeIfNecessary;
-- (void)updateContentSizeWithAnimation:(BOOL)a3;
-- (void)userDidReportConcernForCardSection:(id)a3 additionalDomainProvidedFeedback:(id)a4;
-- (void)userUtteranceView:(id)a3 speechRecognitionHypothesisDidAppear:(id)a4;
-- (void)userUtteranceView:(id)a3 speechRecognitionHypothesisDidDisappear:(id)a4;
-- (void)userUtteranceViewContentHeightDidUpdate:(id)a3;
-- (void)userUtteranceViewTapped:(id)a3;
+- (void)updateContentSizeWithAnimation:(BOOL)animation;
+- (void)userDidReportConcernForCardSection:(id)section additionalDomainProvidedFeedback:(id)feedback;
+- (void)userUtteranceView:(id)view speechRecognitionHypothesisDidAppear:(id)appear;
+- (void)userUtteranceView:(id)view speechRecognitionHypothesisDidDisappear:(id)disappear;
+- (void)userUtteranceViewContentHeightDidUpdate:(id)update;
+- (void)userUtteranceViewTapped:(id)tapped;
 @end
 
 @implementation SiriSharedUISmartDialogView
 
-- (SiriSharedUISmartDialogView)initWithFrame:(CGRect)a3
+- (SiriSharedUISmartDialogView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SiriSharedUISmartDialogView;
@@ -91,40 +91,40 @@
   {
     v3->_state = 1;
     [(SiriSharedUISmartDialogView *)v3 _setupSubviews];
-    v5 = [(SiriSharedUISmartDialogView *)v4 layer];
-    [v5 setOpacity:0.0];
+    layer = [(SiriSharedUISmartDialogView *)v4 layer];
+    [layer setOpacity:0.0];
     [(SiriSharedUISmartDialogView *)v4 setIsActive:1];
-    [v5 setCornerRadius:28.0];
-    [v5 setMasksToBounds:0];
+    [layer setCornerRadius:28.0];
+    [layer setMasksToBounds:0];
   }
 
   return v4;
 }
 
-- (SiriSharedUISmartDialogView)initWithResultView:(id)a3
+- (SiriSharedUISmartDialogView)initWithResultView:(id)view
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = SiriSharedUISmartDialogView;
   v5 = [(SiriSharedUISmartDialogView *)&v11 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v5)
   {
-    v6 = [v4 snippetView];
-    v7 = v6;
-    if (v6)
+    snippetView = [viewCopy snippetView];
+    v7 = snippetView;
+    if (snippetView)
     {
-      v12[0] = v6;
+      v12[0] = snippetView;
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
       [(SiriSharedUISmartDialogView *)v5 setConversationSnippetViews:v8];
     }
 
     v5->_state = 1;
     [(SiriSharedUISmartDialogView *)v5 _setupSubviews];
-    v9 = [(SiriSharedUISmartDialogView *)v5 layer];
-    [v9 setOpacity:0.0];
+    layer = [(SiriSharedUISmartDialogView *)v5 layer];
+    [layer setOpacity:0.0];
     [(SiriSharedUISmartDialogView *)v5 setIsActive:1];
-    [v9 setCornerRadius:28.0];
+    [layer setCornerRadius:28.0];
   }
 
   return v5;
@@ -138,11 +138,11 @@
 
   [(UIView *)self->_containerView setClipsToBounds:1];
   v5 = self->_containerView;
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)v5 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)v5 setBackgroundColor:clearColor];
 
-  v7 = [(UIView *)self->_containerView layer];
-  [v7 setHitTestsAsOpaque:1];
+  layer = [(UIView *)self->_containerView layer];
+  [layer setHitTestsAsOpaque:1];
 
   [(SiriSharedUISmartDialogView *)self addSubview:self->_containerView];
   v8 = objc_alloc_init(SiriSharedUIStandardScrollView);
@@ -167,13 +167,13 @@
   smartDialogContainer = self->_smartDialogContainer;
   self->_smartDialogContainer = v12;
 
-  v14 = [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer view];
+  view = [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer view];
   smartDialogView = self->_smartDialogView;
-  self->_smartDialogView = v14;
+  self->_smartDialogView = view;
 
-  v16 = [(UIView *)self->_smartDialogView layer];
+  layer2 = [(UIView *)self->_smartDialogView layer];
   v17 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA318]];
-  [v16 setCompositingFilter:v17];
+  [layer2 setCompositingFilter:v17];
 
   [(UIView *)self->_smartDialogView setHidden:1];
   [(SiriSharedUIStandardScrollView *)self->_scrollView addContentView:self->_smartDialogView];
@@ -192,12 +192,12 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   self->_isDrilledIn = 1;
-  v2 = [(UIView *)self->_snippetContainerView subviews];
+  subviews = [(UIView *)self->_snippetContainerView subviews];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v3 = [subviews countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -208,7 +208,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subviews);
         }
 
         v7 = *(*(&v8 + 1) + 8 * i);
@@ -218,24 +218,24 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [subviews countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)prepareForPopAnimationOfType:(int64_t)a3
+- (void)prepareForPopAnimationOfType:(int64_t)type
 {
   v17 = *MEMORY[0x277D85DE8];
   self->_isDrilledIn = 0;
-  [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer setAllowDrillingInAndOut:a3 == 1];
-  v5 = [(UIView *)self->_snippetContainerView subviews];
+  [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer setAllowDrillingInAndOut:type == 1];
+  subviews = [(UIView *)self->_snippetContainerView subviews];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -246,18 +246,18 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+          v11 = [MEMORY[0x277CCABB0] numberWithInteger:type];
           [v10 performSelector:sel_prepareForPopAnimationOfType_ withObject:v11];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -269,9 +269,9 @@
   prepareForUpdatesPendingCompletionBlocks = self->_prepareForUpdatesPendingCompletionBlocks;
   if (!prepareForUpdatesPendingCompletionBlocks)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_prepareForUpdatesPendingCompletionBlocks;
-    self->_prepareForUpdatesPendingCompletionBlocks = v4;
+    self->_prepareForUpdatesPendingCompletionBlocks = array;
 
     prepareForUpdatesPendingCompletionBlocks = self->_prepareForUpdatesPendingCompletionBlocks;
   }
@@ -289,10 +289,10 @@
   }
 }
 
-- (void)animateFadeOutWithCompletion:(id)a3
+- (void)animateFadeOutWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if ([(SiriSharedUISmartDialogView *)self layerHasOpacity])
   {
     v5 = *MEMORY[0x277CEF098];
@@ -312,23 +312,23 @@
     v12 = __60__SiriSharedUISmartDialogView_animateFadeOutWithCompletion___block_invoke;
     v13 = &unk_2783548D0;
     objc_copyWeak(&v15, buf);
-    v14 = v4;
+    v14 = completionCopy;
     [v6 setCompletionBlock:&v10];
     v7 = [(SiriSharedUISmartDialogView *)self animatingLayer:v10];
-    v8 = [(SiriSharedUISmartDialogView *)self _conversationDisappearAnimation];
-    [v7 addAnimation:v8 forKey:@"conversationDisappearance"];
+    _conversationDisappearAnimation = [(SiriSharedUISmartDialogView *)self _conversationDisappearAnimation];
+    [v7 addAnimation:_conversationDisappearAnimation forKey:@"conversationDisappearance"];
 
-    v9 = [(SiriSharedUISmartDialogView *)self animatingLayer];
-    [v9 setOpacity:0.0];
+    animatingLayer = [(SiriSharedUISmartDialogView *)self animatingLayer];
+    [animatingLayer setOpacity:0.0];
 
     [MEMORY[0x277CD9FF0] commit];
     objc_destroyWeak(&v15);
     objc_destroyWeak(buf);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -373,13 +373,13 @@ void __60__SiriSharedUISmartDialogView_animateFadeOutWithCompletion___block_invo
       }
 
       [MEMORY[0x277CD9FF0] begin];
-      v4 = [(SiriSharedUISmartDialogView *)self animatingLayer];
-      v5 = [(SiriSharedUISmartDialogView *)self _conversationAppearAnimation];
-      [v4 addAnimation:v5 forKey:@"conversationAppearance"];
+      animatingLayer = [(SiriSharedUISmartDialogView *)self animatingLayer];
+      _conversationAppearAnimation = [(SiriSharedUISmartDialogView *)self _conversationAppearAnimation];
+      [animatingLayer addAnimation:_conversationAppearAnimation forKey:@"conversationAppearance"];
 
-      v6 = [(SiriSharedUISmartDialogView *)self animatingLayer];
+      animatingLayer2 = [(SiriSharedUISmartDialogView *)self animatingLayer];
       LODWORD(v7) = 1.0;
-      [v6 setOpacity:v7];
+      [animatingLayer2 setOpacity:v7];
 
       if (self->_isInAmbient)
       {
@@ -394,8 +394,8 @@ void __60__SiriSharedUISmartDialogView_animateFadeOutWithCompletion___block_invo
 - (void)animateForDrillIn
 {
   smartDialogContainer = self->_smartDialogContainer;
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  [(SiriSharedUISmartDialogContainer *)smartDialogContainer updateHeaderWithText:&stru_282F84AA8 color:v4];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [(SiriSharedUISmartDialogContainer *)smartDialogContainer updateHeaderWithText:&stru_282F84AA8 color:systemBlueColor];
 
   v5 = self->_smartDialogContainer;
 
@@ -424,16 +424,16 @@ void __60__SiriSharedUISmartDialogView_animateFadeOutWithCompletion___block_invo
 
 - (id)_conversationDisappearAnimation
 {
-  v2 = [(SiriSharedUISmartDialogView *)self _animatedPresentationType];
+  _animatedPresentationType = [(SiriSharedUISmartDialogView *)self _animatedPresentationType];
 
-  return [SiriSharedUIAnimationUtilities animationForStyle:2 expectedWidthForStyle:0 presentationType:v2];
+  return [SiriSharedUIAnimationUtilities animationForStyle:2 expectedWidthForStyle:0 presentationType:_animatedPresentationType];
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
   v11 = *MEMORY[0x277D85DE8];
-  self->_userInterfaceStyle = a3;
-  if (a3 == 1)
+  self->_userInterfaceStyle = style;
+  if (style == 1)
   {
     [MEMORY[0x277D75348] systemDarkGrayColor];
   }
@@ -445,9 +445,9 @@ void __60__SiriSharedUISmartDialogView_animateFadeOutWithCompletion___block_invo
   v4 = ;
   if (self->_showingAlternativesUI)
   {
-    v5 = [MEMORY[0x277D75348] systemBlueColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
 
-    v4 = v5;
+    v4 = systemBlueColor;
   }
 
   v6 = *MEMORY[0x277CEF098];
@@ -467,8 +467,8 @@ void __60__SiriSharedUISmartDialogView_animateFadeOutWithCompletion___block_invo
 
 - (BOOL)layerHasOpacity
 {
-  v2 = [(SiriSharedUISmartDialogView *)self animatingLayer];
-  [v2 opacity];
+  animatingLayer = [(SiriSharedUISmartDialogView *)self animatingLayer];
+  [animatingLayer opacity];
   v4 = v3 > 0.0;
 
   return v4;
@@ -476,37 +476,37 @@ void __60__SiriSharedUISmartDialogView_animateFadeOutWithCompletion___block_invo
 
 - (id)animatingLayer
 {
-  v2 = self;
-  v3 = [(SiriSharedUISmartDialogView *)self layer];
-  [v3 opacity];
+  selfCopy = self;
+  layer = [(SiriSharedUISmartDialogView *)self layer];
+  [layer opacity];
   v5 = v4;
 
   if (v5 != 0.0)
   {
-    v2 = v2->_scrollView;
+    selfCopy = selfCopy->_scrollView;
   }
 
-  v6 = [(SiriSharedUISmartDialogView *)v2 layer];
+  layer2 = [(SiriSharedUISmartDialogView *)selfCopy layer];
 
-  return v6;
+  return layer2;
 }
 
 - (BOOL)ongoingASR
 {
-  v3 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
-  if (v3)
+  speech = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
+  if (speech)
   {
-    v4 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
-    if ([v4 isFinal])
+    speech2 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
+    if ([speech2 isFinal])
     {
       v5 = 0;
     }
 
     else
     {
-      v6 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
-      v7 = [v6 backingAceObject];
-      v5 = v7 != 0;
+      speech3 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
+      backingAceObject = [speech3 backingAceObject];
+      v5 = backingAceObject != 0;
     }
   }
 
@@ -518,21 +518,21 @@ void __60__SiriSharedUISmartDialogView_animateFadeOutWithCompletion___block_invo
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (self->_state)
   {
-    [(SiriSharedUILatencyView *)self->_latencyView sizeThatFits:a3.width, a3.height];
+    [(SiriSharedUILatencyView *)self->_latencyView sizeThatFits:fits.width, fits.height];
     v7 = v6;
     [(SiriSharedUICompactUserUtteranceView *)self->_userUtteranceView sizeThatFits:width, height];
     v9 = v8;
     [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer sizeThatFits:width, height];
     v11 = v10;
-    v12 = [(SiriSharedUISmartDialogView *)self onlyContainsSnippet];
+    onlyContainsSnippet = [(SiriSharedUISmartDialogView *)self onlyContainsSnippet];
     v13 = 16.0;
-    if (v12)
+    if (onlyContainsSnippet)
     {
       v13 = 1.0;
     }
@@ -592,10 +592,10 @@ void __60__SiriSharedUISmartDialogView_animateFadeOutWithCompletion___block_invo
       if ([(SiriSharedUISmartDialogView *)self onlyContainsSnippet])
       {
 LABEL_27:
-        v26 = [(UIView *)self->_smartDialogView isHidden];
+        isHidden = [(UIView *)self->_smartDialogView isHidden];
         if (v15 <= 0.0)
         {
-          if (!v26 && ![(SiriSharedUISmartDialogView *)self onlyContainsSnippet]&& ![(NSArray *)self->_activeTranscriptItems count])
+          if (!isHidden && ![(SiriSharedUISmartDialogView *)self onlyContainsSnippet]&& ![(NSArray *)self->_activeTranscriptItems count])
           {
             v22 = v22 + 20.0;
           }
@@ -603,7 +603,7 @@ LABEL_27:
           goto LABEL_41;
         }
 
-        if (v9 == 0.0 && v26)
+        if (v9 == 0.0 && isHidden)
         {
           goto LABEL_32;
         }
@@ -627,8 +627,8 @@ LABEL_40:
 LABEL_41:
         if (!self->_currentExpandablePlatterStyle)
         {
-          v30 = [(SiriSharedUISmartDialogView *)self dropletContainerDelegate];
-          [v30 dropletContentMaximumContainerHeight];
+          dropletContainerDelegate = [(SiriSharedUISmartDialogView *)self dropletContainerDelegate];
+          [dropletContainerDelegate dropletContentMaximumContainerHeight];
           v32 = v31;
 
           if (v22 >= v32)
@@ -673,7 +673,7 @@ LABEL_47:
 - (void)layoutSubviews
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v3 = 136315650;
   v4 = "[SiriSharedUISmartDialogView layoutSubviews]";
   v5 = 2048;
@@ -687,27 +687,27 @@ LABEL_47:
 {
   if ([(SiriSharedUISmartDialogView *)self transitionToExpandablePlatterStyle:1])
   {
-    v3 = [(SiriSharedUISmartDialogView *)self delegate];
-    [v3 conversationViewDidResetExpandedState:self];
+    delegate = [(SiriSharedUISmartDialogView *)self delegate];
+    [delegate conversationViewDidResetExpandedState:self];
   }
 }
 
-- (void)setServerUtterances:(id)a3
+- (void)setServerUtterances:(id)utterances
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  utterancesCopy = utterances;
   serverUtterances = self->_serverUtterances;
-  if (serverUtterances != v4 && ![(NSArray *)serverUtterances isEqualToArray:v4])
+  if (serverUtterances != utterancesCopy && ![(NSArray *)serverUtterances isEqualToArray:utterancesCopy])
   {
-    v6 = [(NSArray *)v4 copy];
+    v6 = [(NSArray *)utterancesCopy copy];
     v7 = self->_serverUtterances;
     self->_serverUtterances = v6;
 
-    v8 = [MEMORY[0x277D75348] systemBlueColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
     if ([(NSArray *)self->_serverUtterances count])
     {
       [(SiriSharedUISmartDialogView *)self transitionToResult];
-      v9 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
@@ -727,8 +727,8 @@ LABEL_47:
               objc_enumerationMutation(v10);
             }
 
-            v15 = [*(*(&v28 + 1) + 8 * i) text];
-            [v9 addObject:v15];
+            text = [*(*(&v28 + 1) + 8 * i) text];
+            [array addObject:text];
           }
 
           v12 = [(NSArray *)v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -737,7 +737,7 @@ LABEL_47:
         while (v12);
       }
 
-      v16 = [v9 componentsJoinedByString:@"\n\n"];
+      v16 = [array componentsJoinedByString:@"\n\n"];
     }
 
     else
@@ -747,17 +747,17 @@ LABEL_47:
 
     if ([(__CFString *)v16 length])
     {
-      v17 = 0;
+      shouldBeHidden = 0;
     }
 
     else
     {
-      v17 = [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer shouldBeHidden];
+      shouldBeHidden = [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer shouldBeHidden];
     }
 
-    [(UIView *)self->_smartDialogView setHidden:v17];
-    [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer updateHeaderWithText:&stru_282F84AA8 color:v8];
-    if (v17)
+    [(UIView *)self->_smartDialogView setHidden:shouldBeHidden];
+    [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer updateHeaderWithText:&stru_282F84AA8 color:systemBlueColor];
+    if (shouldBeHidden)
     {
       v18 = &stru_282F84AA8;
     }
@@ -772,7 +772,7 @@ LABEL_47:
     v20 = SiriSharedUILanguageSemanticContentAttribute();
     SiriSharedUIRecursiveSetSemanticContentAttribute(smartDialogView, v20);
     [(SiriSharedUISmartDialogView *)self _resetExpansionStateForNewContent];
-    if (!v17)
+    if (!shouldBeHidden)
     {
       [(SiriSharedUICompactUserUtteranceView *)self->_userUtteranceView frame];
       if (!CGRectEqualToRect(v34, *MEMORY[0x277CBF3A0]))
@@ -846,22 +846,22 @@ LABEL_47:
   }
 }
 
-- (void)setUserUtteranceViewModel:(id)a3
+- (void)setUserUtteranceViewModel:(id)model
 {
-  v4 = a3;
-  if (self->_userUtteranceViewModel != v4)
+  modelCopy = model;
+  if (self->_userUtteranceViewModel != modelCopy)
   {
-    v26 = v4;
-    v25 = [(SiriSharedUISAEUserUtteranceViewModel *)v4 shouldShow]|| [(SiriSharedUISmartDialogView *)self _showSpeech];
+    v26 = modelCopy;
+    _showSpeech = [(SiriSharedUISAEUserUtteranceViewModel *)modelCopy shouldShow]|| [(SiriSharedUISmartDialogView *)self _showSpeech];
     v5 = [SiriSharedUISAEUserUtteranceViewModel alloc];
-    v6 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 speech];
-    v7 = [v6 copy];
-    v8 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 asrAlternatives];
-    v9 = [v8 copy];
-    v10 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 latencySummary];
-    v11 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 shouldShow];
-    v12 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 taskIdentifier];
-    v13 = [(SiriSharedUISAEUserUtteranceViewModel *)v5 initWithSpeech:v7 asrAlternatives:v9 latencySummary:v10 shouldShow:v11 taskIdentifier:v12];
+    speech = [(SiriSharedUISAEUserUtteranceViewModel *)v26 speech];
+    v7 = [speech copy];
+    asrAlternatives = [(SiriSharedUISAEUserUtteranceViewModel *)v26 asrAlternatives];
+    v9 = [asrAlternatives copy];
+    latencySummary = [(SiriSharedUISAEUserUtteranceViewModel *)v26 latencySummary];
+    shouldShow = [(SiriSharedUISAEUserUtteranceViewModel *)v26 shouldShow];
+    taskIdentifier = [(SiriSharedUISAEUserUtteranceViewModel *)v26 taskIdentifier];
+    v13 = [(SiriSharedUISAEUserUtteranceViewModel *)v5 initWithSpeech:v7 asrAlternatives:v9 latencySummary:latencySummary shouldShow:shouldShow taskIdentifier:taskIdentifier];
     userUtteranceViewModel = self->_userUtteranceViewModel;
     self->_userUtteranceViewModel = v13;
 
@@ -870,32 +870,32 @@ LABEL_47:
       self->_state = 0;
     }
 
-    v15 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 latencySummary];
-    if (v15 && (revealRecognizedSpeech = self->_revealRecognizedSpeech, v15, !revealRecognizedSpeech))
+    latencySummary2 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 latencySummary];
+    if (latencySummary2 && (revealRecognizedSpeech = self->_revealRecognizedSpeech, latencySummary2, !revealRecognizedSpeech))
     {
       userUtteranceView = self->_userUtteranceView;
-      v23 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 latencySummary];
-      [(SiriSharedUICompactUserUtteranceView *)userUtteranceView setLatencySummary:v23];
+      latencySummary3 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 latencySummary];
+      [(SiriSharedUICompactUserUtteranceView *)userUtteranceView setLatencySummary:latencySummary3];
     }
 
-    else if (v25)
+    else if (_showSpeech)
     {
       v17 = self->_userUtteranceView;
-      v18 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 speech];
-      [(SiriSharedUICompactUserUtteranceView *)v17 setSpeechRecognitionHypothesis:v18];
+      speech2 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 speech];
+      [(SiriSharedUICompactUserUtteranceView *)v17 setSpeechRecognitionHypothesis:speech2];
 
-      v19 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 speech];
-      LODWORD(v18) = [v19 isFinal];
+      speech3 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 speech];
+      LODWORD(speech2) = [speech3 isFinal];
 
-      if (v18)
+      if (speech2)
       {
         self->_waitingForFinalSpeechHypothesis = 0;
       }
 
       if (self->_revealRecognizedSpeech)
       {
-        v20 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 asrAlternatives];
-        v21 = [v20 count];
+        asrAlternatives2 = [(SiriSharedUISAEUserUtteranceViewModel *)v26 asrAlternatives];
+        v21 = [asrAlternatives2 count];
 
         if (v21)
         {
@@ -909,7 +909,7 @@ LABEL_47:
     [(SiriSharedUISmartDialogView *)self maxSnippetWidth];
     [(SiriSharedUICompactUserUtteranceView *)v24 setMaxWidth:?];
     [(SiriSharedUISmartDialogView *)self updateContentSizeWithAnimation:0];
-    v4 = v26;
+    modelCopy = v26;
   }
 }
 
@@ -921,26 +921,26 @@ LABEL_47:
   _os_log_error_impl(&dword_21E3EB000, log, OS_LOG_TYPE_ERROR, "%s #sae unable to find valid range to underline after iterating through all alternatives", &v1, 0xCu);
 }
 
-- (void)setSpeechRecognitionHypothesisForSuggestion:(id)a3
+- (void)setSpeechRecognitionHypothesisForSuggestion:(id)suggestion
 {
-  v4 = [a3 copy];
+  v4 = [suggestion copy];
   speechRecognitionHypothesisForSuggestion = self->_speechRecognitionHypothesisForSuggestion;
   self->_speechRecognitionHypothesisForSuggestion = v4;
 
   MEMORY[0x2821F96F8](v4, speechRecognitionHypothesisForSuggestion);
 }
 
-- (void)setSmartDialogPlugin:(id)a3 attribution:(id)a4
+- (void)setSmartDialogPlugin:(id)plugin attribution:(id)attribution
 {
-  v7 = a3;
-  if (self->_smartDialogPlugin != v7)
+  pluginCopy = plugin;
+  if (self->_smartDialogPlugin != pluginCopy)
   {
-    v9 = v7;
-    objc_storeStrong(&self->_smartDialogPlugin, a3);
-    v8 = a4;
+    v9 = pluginCopy;
+    objc_storeStrong(&self->_smartDialogPlugin, plugin);
+    attributionCopy = attribution;
     [(SiriSharedUISmartDialogView *)self _resetAttributionView:0];
     [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer updateWithSmartDialogPluginView:v9];
-    [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer updateWithAttribution:v8];
+    [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer updateWithAttribution:attributionCopy];
 
     [(UIView *)self->_smartDialogView setHidden:[(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer shouldBeHidden]];
     if (v9)
@@ -949,17 +949,17 @@ LABEL_47:
     }
 
     [(SiriSharedUISmartDialogView *)self _smartDialogSizeNeedsUpdatingWithAnimation:1];
-    v7 = v9;
+    pluginCopy = v9;
   }
 }
 
-- (void)setSmartDialogCard:(id)a3
+- (void)setSmartDialogCard:(id)card
 {
-  v5 = a3;
-  objc_storeStrong(&self->_smartDialogCard, a3);
-  [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer updateWithSmartDialogCard:v5];
+  cardCopy = card;
+  objc_storeStrong(&self->_smartDialogCard, card);
+  [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer updateWithSmartDialogCard:cardCopy];
   [(UIView *)self->_smartDialogView setHidden:[(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer shouldBeHidden]];
-  if (v5)
+  if (cardCopy)
   {
     [(SiriSharedUISmartDialogView *)self transitionToResult];
   }
@@ -980,57 +980,57 @@ LABEL_47:
   }
 }
 
-- (void)setLatencyViewModel:(id)a3
+- (void)setLatencyViewModel:(id)model
 {
-  v11 = a3;
-  v4 = [(SiriSharedUILatencyViewModel *)self->_latencyViewModel isEqualToViewModel:v11];
-  v5 = v11;
-  if ((v4 & 1) == 0)
+  modelCopy = model;
+  ongoingASR = [(SiriSharedUILatencyViewModel *)self->_latencyViewModel isEqualToViewModel:modelCopy];
+  v5 = modelCopy;
+  if ((ongoingASR & 1) == 0)
   {
-    v6 = [v11 viewShouldUpdateFromOldModel:self->_latencyViewModel];
-    v7 = [v11 copy];
+    v6 = [modelCopy viewShouldUpdateFromOldModel:self->_latencyViewModel];
+    v7 = [modelCopy copy];
     latencyViewModel = self->_latencyViewModel;
     self->_latencyViewModel = v7;
 
-    v4 = [(SiriSharedUISmartDialogView *)self ongoingASR];
-    if ((v4 & 1) != 0 || (-[SiriSharedUISmartDialogView latencyViewModel](self, "latencyViewModel"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 shouldDisplay], v9, v10))
+    ongoingASR = [(SiriSharedUISmartDialogView *)self ongoingASR];
+    if ((ongoingASR & 1) != 0 || (-[SiriSharedUISmartDialogView latencyViewModel](self, "latencyViewModel"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 shouldDisplay], v9, v10))
     {
       self->_state = 0;
     }
 
-    v5 = v11;
+    v5 = modelCopy;
     if (v6)
     {
-      v4 = [(SiriSharedUISmartDialogView *)self updateContentSizeWithAnimation:1];
-      v5 = v11;
+      ongoingASR = [(SiriSharedUISmartDialogView *)self updateContentSizeWithAnimation:1];
+      v5 = modelCopy;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](ongoingASR, v5);
 }
 
 - (int)updateUserUtteranceVisibilityIfNeeded
 {
   if ([(SiriSharedUISmartDialogView *)self _showSpeech])
   {
-    v3 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
-    v4 = [v3 isFinal];
+    speech = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
+    isFinal = [speech isFinal];
 
-    if ((v4 & 1) == 0)
+    if ((isFinal & 1) == 0)
     {
       v5 = objc_alloc(MEMORY[0x277D61B08]);
-      v6 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
-      v7 = [v6 userUtterance];
-      v8 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
-      v9 = [v8 backingAceObject];
-      v10 = [v5 initWithUserUtterance:v7 backingAceObject:v9 isFinal:1];
+      speech2 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
+      userUtterance = [speech2 userUtterance];
+      speech3 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
+      backingAceObject = [speech3 backingAceObject];
+      v10 = [v5 initWithUserUtterance:userUtterance backingAceObject:backingAceObject isFinal:1];
 
       [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel setSpeech:v10];
     }
 
     userUtteranceView = self->_userUtteranceView;
-    v12 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
-    [(SiriSharedUICompactUserUtteranceView *)userUtteranceView setSpeechRecognitionHypothesis:v12];
+    speech4 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
+    [(SiriSharedUICompactUserUtteranceView *)userUtteranceView setSpeechRecognitionHypothesis:speech4];
 
     if (self->_revealRecognizedSpeech)
     {
@@ -1051,20 +1051,20 @@ LABEL_47:
   }
 }
 
-- (BOOL)_isConversationSnippetHintType:(id)a3
+- (BOOL)_isConversationSnippetHintType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isHint];
+    isHint = [typeCopy isHint];
   }
 
   else
   {
-    v4 = 0;
+    isHint = 0;
   }
 
-  return v4;
+  return isHint;
 }
 
 - (UIEdgeInsets)serverUtteranceContentInsets
@@ -1072,16 +1072,16 @@ LABEL_47:
   v2 = 16.0;
   if (self->_isInAmbient)
   {
-    v4 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
-    if (v4)
+    speech = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
+    if (speech)
     {
     }
 
     else
     {
-      v6 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel latencySummary];
+      latencySummary = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel latencySummary];
 
-      if (!v6)
+      if (!latencySummary)
       {
         v5 = 4.0;
         goto LABEL_7;
@@ -1138,14 +1138,14 @@ LABEL_7:
 
 - (BOOL)_hasNoDialog
 {
-  v3 = [(UIView *)self->_smartDialogView isHidden];
-  if (v3)
+  isHidden = [(UIView *)self->_smartDialogView isHidden];
+  if (isHidden)
   {
     [(SiriSharedUICompactUserUtteranceView *)self->_userUtteranceView bounds];
-    LOBYTE(v3) = v5 == *(MEMORY[0x277CBF3A8] + 8) && v4 == *MEMORY[0x277CBF3A8];
+    LOBYTE(isHidden) = v5 == *(MEMORY[0x277CBF3A8] + 8) && v4 == *MEMORY[0x277CBF3A8];
   }
 
-  return v3;
+  return isHidden;
 }
 
 - (UIEdgeInsets)snippetContentInsets
@@ -1160,9 +1160,9 @@ LABEL_7:
 
   else
   {
-    v7 = [(SiriSharedUISmartDialogView *)self _hasNoDialog];
+    _hasNoDialog = [(SiriSharedUISmartDialogView *)self _hasNoDialog];
     v3 = 0.0;
-    if (v7)
+    if (_hasNoDialog)
     {
       v4 = 0.0;
       v2 = 0.0;
@@ -1191,28 +1191,28 @@ LABEL_7:
   return result;
 }
 
-- (void)setSnippetBackgroundView:(id)a3
+- (void)setSnippetBackgroundView:(id)view
 {
-  v5 = a3;
-  if (self->_snippetBackgroundView != v5)
+  viewCopy = view;
+  if (self->_snippetBackgroundView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_snippetBackgroundView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_snippetBackgroundView, view);
     [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer updateWithBackgroundView:v6];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (id)_filterTranscriptItems:(id)a3
+- (id)_filterTranscriptItems:(id)items
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1228,11 +1228,11 @@ LABEL_7:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 viewController];
+        viewController = [v10 viewController];
 
-        if (v11 && ([v10 isHintItem] & 1) == 0)
+        if (viewController && ([v10 isHintItem] & 1) == 0)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -1242,15 +1242,15 @@ LABEL_7:
     while (v7);
   }
 
-  v12 = [v4 copy];
+  v12 = [array copy];
 
   return v12;
 }
 
-- (void)setActiveTranscriptItems:(id)a3
+- (void)setActiveTranscriptItems:(id)items
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [(SiriSharedUISmartDialogView *)self _filterTranscriptItems:a3];
+  v4 = [(SiriSharedUISmartDialogView *)self _filterTranscriptItems:items];
   if (![(NSArray *)self->_activeTranscriptItems isEqualToArray:v4])
   {
     objc_storeStrong(&self->_activeTranscriptItems, v4);
@@ -1280,19 +1280,19 @@ LABEL_7:
             objc_enumerationMutation(v5);
           }
 
-          v11 = [*(*(&v17 + 1) + 8 * i) viewController];
-          v12 = [v11 view];
+          viewController = [*(*(&v17 + 1) + 8 * i) viewController];
+          view = [viewController view];
           v13 = SiriSharedUILanguageSemanticContentAttribute();
-          SiriSharedUIRecursiveSetSemanticContentAttribute(v12, v13);
+          SiriSharedUIRecursiveSetSemanticContentAttribute(view, v13);
           if (objc_opt_respondsToSelector())
           {
             [(SiriSharedUISmartDialogView *)self snippetContentInsets];
-            [v12 viewInsetsInConversationView:?];
+            [view viewInsetsInConversationView:?];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v9 &= [v12 shouldAutomaticallyScaleContentInAmbient];
+            v9 &= [view shouldAutomaticallyScaleContentInAmbient];
           }
         }
 
@@ -1309,9 +1309,9 @@ LABEL_7:
 
     [(SiriSharedUISmartDialogView *)self setAllowAutomaticConversationSnippetViewScaling:v9 & 1];
     [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer updateWithActiveTranscriptItems:v5];
-    v14 = [(SiriSharedUISmartDialogView *)self _hasNoDialog];
+    _hasNoDialog = [(SiriSharedUISmartDialogView *)self _hasNoDialog];
     v15 = &SiriSharedUICompactPlatterCornerRadius;
-    if (!v14)
+    if (!_hasNoDialog)
     {
       v15 = &SiriSharedUICompactConversationViewSnippetCornerRadius;
     }
@@ -1324,11 +1324,11 @@ LABEL_7:
   }
 }
 
-- (void)setConversationSnippetViews:(id)a3
+- (void)setConversationSnippetViews:(id)views
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(NSArray *)self->_conversationSnippetViews isEqualToArray:v5])
+  viewsCopy = views;
+  if (![(NSArray *)self->_conversationSnippetViews isEqualToArray:viewsCopy])
   {
     v43 = 0u;
     v44 = 0u;
@@ -1358,7 +1358,7 @@ LABEL_7:
       while (v8);
     }
 
-    objc_storeStrong(&self->_conversationSnippetViews, a3);
+    objc_storeStrong(&self->_conversationSnippetViews, views);
     if ([(NSArray *)self->_conversationSnippetViews count])
     {
       [(SiriSharedUISmartDialogView *)self transitionToResult];
@@ -1368,8 +1368,8 @@ LABEL_7:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v11 = [(NSDictionary *)self->_conversationSnippetVibrancyViews allValues];
-    v12 = [v11 countByEnumeratingWithState:&v37 objects:v46 count:16];
+    allValues = [(NSDictionary *)self->_conversationSnippetVibrancyViews allValues];
+    v12 = [allValues countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1380,20 +1380,20 @@ LABEL_7:
         {
           if (*v38 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v37 + 1) + 8 * j) removeFromSuperview];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v37 objects:v46 count:16];
+        v13 = [allValues countByEnumeratingWithState:&v37 objects:v46 count:16];
       }
 
       while (v13);
     }
 
-    v27 = v5;
-    v28 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+    v27 = viewsCopy;
+    v28 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(viewsCopy, "count")}];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -1457,8 +1457,8 @@ LABEL_34:
         v20 = [[SiriSharedUICompactConversationSnippetVibrancyView alloc] initWithStyle:1];
         [(UIView *)self->_snippetContainerView frame];
         [(SiriSharedUICompactConversationSnippetVibrancyView *)v20 setFrame:?];
-        v21 = [(SiriSharedUICompactConversationSnippetVibrancyView *)v20 layer];
-        [v21 setOpacity:0.0];
+        layer = [(SiriSharedUICompactConversationSnippetVibrancyView *)v20 layer];
+        [layer setOpacity:0.0];
 
         objc_storeStrong(&self->_hintVibrancyView, v20);
         objc_storeStrong(&self->_hintSnippetView, v17);
@@ -1509,62 +1509,62 @@ LABEL_45:
         [(SiriSharedUISmartDialogView *)self setAllowAutomaticConversationSnippetViewScaling:v31 & 1];
         [(SiriSharedUISmartDialogView *)self _smartDialogSizeNeedsUpdatingWithAnimation:1];
         self->_didSetConversationSnippets = 1;
-        v5 = v27;
+        viewsCopy = v27;
         break;
       }
     }
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [v6 view];
-  [v7 bounds];
+  interactionCopy = interaction;
+  view = [interactionCopy view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [v6 view];
-  v17 = [v16 subviews];
-  v18 = [v17 count];
+  view2 = [interactionCopy view];
+  subviews = [view2 subviews];
+  v18 = [subviews count];
 
   if (v18)
   {
-    v19 = [v6 view];
-    v20 = [v19 subviews];
-    v21 = [v20 firstObject];
-    [v21 frame];
+    view3 = [interactionCopy view];
+    subviews2 = [view3 subviews];
+    firstObject = [subviews2 firstObject];
+    [firstObject frame];
     v9 = v22;
     v11 = v23;
     v13 = v24;
     v15 = v25;
   }
 
-  v26 = [(SiriSharedUISmartDialogView *)self _hasNoDialog];
+  _hasNoDialog = [(SiriSharedUISmartDialogView *)self _hasNoDialog];
   v27 = &SiriSharedUISmartDialogPlatterCornerRadius;
-  if (!v26)
+  if (!_hasNoDialog)
   {
     v27 = &SiriSharedUISmartDialogSnippetCornerRadius;
   }
 
   v28 = *v27;
   v29 = objc_alloc_init(MEMORY[0x277D758D8]);
-  v30 = [MEMORY[0x277D75348] clearColor];
-  [v29 setBackgroundColor:v30];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v29 setBackgroundColor:clearColor];
 
   v31 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:v9 cornerRadius:{v11, v13, v15, v28}];
   [v29 setVisiblePath:v31];
 
   v32 = objc_alloc(MEMORY[0x277D75B90]);
-  v33 = [v6 view];
-  v34 = [v32 initWithView:v33 parameters:v29];
+  view4 = [interactionCopy view];
+  v34 = [v32 initWithView:view4 parameters:v29];
 
   return v34;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -1686,8 +1686,8 @@ id __85__SiriSharedUISmartDialogView_contextMenuInteraction_configurationForMenu
   }
 
   v8 = *v6;
-  v9 = [(SiriSharedUISmartDialogView *)self dropletContainerDelegate];
-  [v9 dropletContentMaximumContainerWidth];
+  dropletContainerDelegate = [(SiriSharedUISmartDialogView *)self dropletContainerDelegate];
+  [dropletContainerDelegate dropletContentMaximumContainerWidth];
   v11 = v10 + v8 * -2.0;
 
   if (v5 >= v11)
@@ -1741,9 +1741,9 @@ id __85__SiriSharedUISmartDialogView_contextMenuInteraction_configurationForMenu
   return result;
 }
 
-- (void)updateContentSizeWithAnimation:(BOOL)a3
+- (void)updateContentSizeWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v17 = *MEMORY[0x277D85DE8];
   [(SiriSharedUISmartDialogView *)self _fittingSize];
   v6 = v5;
@@ -1761,40 +1761,40 @@ id __85__SiriSharedUISmartDialogView_contextMenuInteraction_configurationForMenu
     _os_log_impl(&dword_21E3EB000, v9, OS_LOG_TYPE_DEFAULT, "%s #smartDialog updateContentSizeWithAnimation: %f %f", &v11, 0x20u);
   }
 
-  v10 = [(SiriSharedUISmartDialogView *)self dropletContainerDelegate];
-  [v10 dropletContentWillUpdateLayout:self withUpdatedContentSize:v3 animated:{v6, v8}];
+  dropletContainerDelegate = [(SiriSharedUISmartDialogView *)self dropletContainerDelegate];
+  [dropletContainerDelegate dropletContentWillUpdateLayout:self withUpdatedContentSize:animationCopy animated:{v6, v8}];
 
   [(SiriSharedUISmartDialogView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setAllowAutomaticConversationSnippetViewScaling:(BOOL)a3
+- (void)setAllowAutomaticConversationSnippetViewScaling:(BOOL)scaling
 {
-  if (self->_allowAutomaticConversationSnippetViewScaling != a3)
+  if (self->_allowAutomaticConversationSnippetViewScaling != scaling)
   {
-    self->_allowAutomaticConversationSnippetViewScaling = a3;
+    self->_allowAutomaticConversationSnippetViewScaling = scaling;
     [(SiriSharedUISmartDialogView *)self _updateAmbientSnippetScaling];
   }
 }
 
-- (void)setIsInAmbient:(BOOL)a3
+- (void)setIsInAmbient:(BOOL)ambient
 {
-  if (self->_isInAmbient != a3)
+  if (self->_isInAmbient != ambient)
   {
-    v4 = a3;
-    self->_isInAmbient = a3;
+    ambientCopy = ambient;
+    self->_isInAmbient = ambient;
     [(SiriSharedUISmartDialogView *)self _updateSubviewContentInsets];
-    [(SiriSharedUICompactUserUtteranceView *)self->_userUtteranceView setIsInAmbient:v4];
-    [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer setIsInAmbient:v4];
+    [(SiriSharedUICompactUserUtteranceView *)self->_userUtteranceView setIsInAmbient:ambientCopy];
+    [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer setIsInAmbient:ambientCopy];
 
     [(SiriSharedUISmartDialogView *)self _updateAmbientSnippetScaling];
   }
 }
 
-- (void)setIsInAmbientInteractivity:(BOOL)a3
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity
 {
-  if (self->_isInAmbientInteractivity != a3)
+  if (self->_isInAmbientInteractivity != interactivity)
   {
-    self->_isInAmbientInteractivity = a3;
+    self->_isInAmbientInteractivity = interactivity;
     [(SiriSharedUICompactUserUtteranceView *)self->_userUtteranceView setIsInAmbientInteractivity:?];
 
     [(SiriSharedUISmartDialogView *)self _updateAmbientSnippetScaling];
@@ -1842,149 +1842,149 @@ id __85__SiriSharedUISmartDialogView_contextMenuInteraction_configurationForMenu
 
 - (BOOL)_showSpeech
 {
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = ([v3 alwaysShowRecognizedSpeech] & 1) != 0 || self->_revealRecognizedSpeech;
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  v4 = ([mEMORY[0x277CEF368] alwaysShowRecognizedSpeech] & 1) != 0 || self->_revealRecognizedSpeech;
 
   return v4;
 }
 
-- (void)setShowCollapsedUI:(BOOL)a3
+- (void)setShowCollapsedUI:(BOOL)i
 {
-  if (self->_showingCollapsedUI != a3)
+  if (self->_showingCollapsedUI != i)
   {
-    self->_showingCollapsedUI = a3;
+    self->_showingCollapsedUI = i;
   }
 }
 
-- (void)setCurrentExpandablePlatterStyle:(int64_t)a3
+- (void)setCurrentExpandablePlatterStyle:(int64_t)style
 {
-  self->_currentExpandablePlatterStyle = a3;
-  if (a3 == 2)
+  self->_currentExpandablePlatterStyle = style;
+  if (style == 2)
   {
     [(SiriSharedUISmartDialogView *)self setShowCollapsedUI:1];
-    v4 = [(SiriSharedUISmartDialogView *)self delegate];
-    [v4 conversationViewDidTransitionToCollapsedState:self];
+    delegate = [(SiriSharedUISmartDialogView *)self delegate];
+    [delegate conversationViewDidTransitionToCollapsedState:self];
 
     goto LABEL_3;
   }
 
   [(SiriSharedUISmartDialogView *)self setShowCollapsedUI:0];
-  if (a3 == 1)
+  if (style == 1)
   {
     self->_automaticallyCollapseWhenResultIsScrolled = 1;
     goto LABEL_4;
   }
 
-  if (a3 == 4)
+  if (style == 4)
   {
     self->_automaticallyCollapseWhenResultIsScrolled = 0;
-    v5 = self;
+    selfCopy2 = self;
     v6 = 1;
     goto LABEL_5;
   }
 
-  if (a3 != 3)
+  if (style != 3)
   {
 LABEL_3:
     self->_automaticallyCollapseWhenResultIsScrolled = 0;
 LABEL_4:
-    v5 = self;
+    selfCopy2 = self;
     v6 = 0;
 LABEL_5:
 
-    [(SiriSharedUISmartDialogView *)v5 _enableScrolling:v6];
+    [(SiriSharedUISmartDialogView *)selfCopy2 _enableScrolling:v6];
     return;
   }
 
   self->_automaticallyCollapseWhenResultIsScrolled = 0;
   [(SiriSharedUISmartDialogView *)self _enableScrolling:1];
-  v8 = [(SiriSharedUISmartDialogView *)self delegate];
-  [v8 conversationViewDidTransitionToExpandedState:self];
+  delegate2 = [(SiriSharedUISmartDialogView *)self delegate];
+  [delegate2 conversationViewDidTransitionToExpandedState:self];
 }
 
-- (BOOL)transitionToExpandablePlatterStyle:(int64_t)a3
+- (BOOL)transitionToExpandablePlatterStyle:(int64_t)style
 {
   currentExpandablePlatterStyle = self->_currentExpandablePlatterStyle;
-  if (currentExpandablePlatterStyle != a3 && currentExpandablePlatterStyle != 0)
+  if (currentExpandablePlatterStyle != style && currentExpandablePlatterStyle != 0)
   {
-    if (a3 == 4)
+    if (style == 4)
     {
       [(SiriSharedUISmartDialogView *)self setNeedsLayout];
     }
 
-    else if (a3 == 1)
+    else if (style == 1)
     {
       [(SiriSharedUISmartDialogView *)self updateContentSizeWithAnimation:0];
     }
 
-    [(SiriSharedUISmartDialogView *)self setCurrentExpandablePlatterStyle:a3];
+    [(SiriSharedUISmartDialogView *)self setCurrentExpandablePlatterStyle:style];
     [(SiriSharedUISmartDialogView *)self invalidateIntrinsicContentSize];
   }
 
   return currentExpandablePlatterStyle != 0;
 }
 
-- (void)userUtteranceViewTapped:(id)a3
+- (void)userUtteranceViewTapped:(id)tapped
 {
   if ([(SiriSharedUICompactUserUtteranceView *)self->_userUtteranceView currentDisplayType]== 1)
   {
-    v4 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
-    v5 = [v4 userUtterance];
-    v9 = [v5 bestTextInterpretation];
+    speech = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
+    userUtterance = [speech userUtterance];
+    bestTextInterpretation = [userUtterance bestTextInterpretation];
 
     WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
-    LOBYTE(v5) = objc_opt_respondsToSelector();
+    LOBYTE(userUtterance) = objc_opt_respondsToSelector();
 
-    if (v5)
+    if (userUtterance)
     {
       v7 = objc_loadWeakRetained(&self->_interactionDelegate);
-      v8 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel asrAlternatives];
-      [v7 siriViewControllerShouldRequestTextInputWithUtterance:v9 alternatives:v8];
+      asrAlternatives = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel asrAlternatives];
+      [v7 siriViewControllerShouldRequestTextInputWithUtterance:bestTextInterpretation alternatives:asrAlternatives];
     }
   }
 }
 
-- (void)userUtteranceView:(id)a3 speechRecognitionHypothesisDidAppear:(id)a4
+- (void)userUtteranceView:(id)view speechRecognitionHypothesisDidAppear:(id)appear
 {
-  v8 = a4;
-  v5 = [v8 backingAceObject];
+  appearCopy = appear;
+  backingAceObject = [appearCopy backingAceObject];
 
-  if (v5)
+  if (backingAceObject)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v8 backingAceObject];
-    [WeakRetained conversationView:self viewDidAppearForAceObject:v7];
+    backingAceObject2 = [appearCopy backingAceObject];
+    [WeakRetained conversationView:self viewDidAppearForAceObject:backingAceObject2];
   }
 }
 
-- (void)userUtteranceView:(id)a3 speechRecognitionHypothesisDidDisappear:(id)a4
+- (void)userUtteranceView:(id)view speechRecognitionHypothesisDidDisappear:(id)disappear
 {
-  v8 = a4;
-  v5 = [v8 backingAceObject];
+  disappearCopy = disappear;
+  backingAceObject = [disappearCopy backingAceObject];
 
-  if (v5)
+  if (backingAceObject)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v8 backingAceObject];
-    [WeakRetained conversationView:self viewDidDisappearForAceObject:v7];
+    backingAceObject2 = [disappearCopy backingAceObject];
+    [WeakRetained conversationView:self viewDidDisappearForAceObject:backingAceObject2];
   }
 }
 
-- (void)serverUtteranceView:(id)a3 utteranceViewDidAppear:(id)a4
+- (void)serverUtteranceView:(id)view utteranceViewDidAppear:(id)appear
 {
-  v5 = a4;
+  appearCopy = appear;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained conversationView:self viewDidAppearForAceObject:v5];
+  [WeakRetained conversationView:self viewDidAppearForAceObject:appearCopy];
 }
 
-- (void)serverUtteranceView:(id)a3 utteranceViewDidDisappear:(id)a4
+- (void)serverUtteranceView:(id)view utteranceViewDidDisappear:(id)disappear
 {
-  v5 = a4;
+  disappearCopy = disappear;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained conversationView:self viewDidDisappearForAceObject:v5];
+  [WeakRetained conversationView:self viewDidDisappearForAceObject:disappearCopy];
 }
 
-- (id)parserSpeakableObjectProviderForServerUtterance:(id)a3
+- (id)parserSpeakableObjectProviderForServerUtterance:(id)utterance
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained parserSpeakableObjectProviderForConversationView:self];
@@ -1992,20 +1992,20 @@ LABEL_5:
   return v5;
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v5 = a3;
-  v10 = [(SiriSharedUISmartDialogView *)self delegate];
-  [v5 contentOffset];
+  draggingCopy = dragging;
+  delegate = [(SiriSharedUISmartDialogView *)self delegate];
+  [draggingCopy contentOffset];
   v7 = v6;
   v9 = v8;
 
-  [v10 conversationViewContentScrolled:self toContentOffset:{v7, v9}];
+  [delegate conversationViewContentScrolled:self toContentOffset:{v7, v9}];
 }
 
-- (CGSize)_sizeOfSnippet:(id)a3
+- (CGSize)_sizeOfSnippet:(id)snippet
 {
-  v4 = a3;
+  snippetCopy = snippet;
   [(SiriSharedUISmartDialogView *)self _fittingSize];
   v6 = v5;
   [(SiriSharedUISmartDialogView *)self snippetContentInsets];
@@ -2027,7 +2027,7 @@ LABEL_5:
     v10 = v10 / *v11;
   }
 
-  [(SiriSharedUISmartDialogView *)self _sizeThatFits:v4 forSnippet:v10, 1.79769313e308];
+  [(SiriSharedUISmartDialogView *)self _sizeThatFits:snippetCopy forSnippet:v10, 1.79769313e308];
   v13 = v12;
   v15 = v14;
 
@@ -2038,10 +2038,10 @@ LABEL_5:
   return result;
 }
 
-- (CGSize)_sizeThatFitsAllSnippets:(CGSize)a3
+- (CGSize)_sizeThatFitsAllSnippets:(CGSize)snippets
 {
-  height = a3.height;
-  width = a3.width;
+  height = snippets.height;
+  width = snippets.width;
   v29 = *MEMORY[0x277D85DE8];
   [(SiriSharedUISmartDialogView *)self snippetContentInsets];
   v7 = v6;
@@ -2093,22 +2093,22 @@ LABEL_5:
   return result;
 }
 
-- (CGSize)_sizeThatFits:(CGSize)a3 forSnippet:(id)a4
+- (CGSize)_sizeThatFits:(CGSize)fits forSnippet:(id)snippet
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
+  height = fits.height;
+  width = fits.width;
+  snippetCopy = snippet;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 collectionViewLayout];
-    [v7 collectionViewContentSize];
+    collectionViewLayout = [snippetCopy collectionViewLayout];
+    [collectionViewLayout collectionViewContentSize];
     v9 = v8;
   }
 
   else
   {
-    [v6 sizeThatFits:{width, height}];
+    [snippetCopy sizeThatFits:{width, height}];
     width = v10;
     v9 = v11;
   }
@@ -2120,22 +2120,22 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)_shouldAddVibrancyForSnippet:(id)a3
+- (BOOL)_shouldAddVibrancyForSnippet:(id)snippet
 {
-  v3 = a3;
+  snippetCopy = snippet;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 suppressVibrantBackground] ^ 1;
+    v4 = [snippetCopy suppressVibrantBackground] ^ 1;
   }
 
   else
   {
-    v5 = [v3 backgroundColor];
-    if (v5)
+    backgroundColor = [snippetCopy backgroundColor];
+    if (backgroundColor)
     {
-      v6 = [v3 backgroundColor];
-      v7 = [MEMORY[0x277D75348] clearColor];
-      LOBYTE(v4) = [v6 isEqual:v7];
+      backgroundColor2 = [snippetCopy backgroundColor];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      LOBYTE(v4) = [backgroundColor2 isEqual:clearColor];
     }
 
     else
@@ -2147,21 +2147,21 @@ LABEL_5:
   return v4;
 }
 
-- (void)_adjustCornerRadiusForSnippetView:(id)a3 vibrancyView:(id)a4
+- (void)_adjustCornerRadiusForSnippetView:(id)view vibrancyView:(id)vibrancyView
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SiriSharedUISmartDialogView *)self _hasNoDialog];
+  vibrancyViewCopy = vibrancyView;
+  viewCopy = view;
+  _hasNoDialog = [(SiriSharedUISmartDialogView *)self _hasNoDialog];
   v9 = &SiriSharedUISmartDialogPlatterCornerRadius;
-  if (!v8)
+  if (!_hasNoDialog)
   {
     v9 = &SiriSharedUISmartDialogSnippetCornerRadius;
   }
 
   v10 = *v9;
-  [v7 _setContinuousCornerRadius:*v9];
+  [viewCopy _setContinuousCornerRadius:*v9];
 
-  [v6 _setContinuousCornerRadius:v10];
+  [vibrancyViewCopy _setContinuousCornerRadius:v10];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2171,17 +2171,17 @@ LABEL_5:
   }
 }
 
-- (void)_adjustHintCornerRadiusForSnippetView:(id)a3 vibrancyView:(id)a4
+- (void)_adjustHintCornerRadiusForSnippetView:(id)view vibrancyView:(id)vibrancyView
 {
-  v12 = a3;
-  v6 = a4;
+  viewCopy = view;
+  vibrancyViewCopy = vibrancyView;
   if ([(NSArray *)self->_serverUtterances count]|| [(NSArray *)self->_conversationSnippetViews count]> 1)
   {
     goto LABEL_6;
   }
 
-  v7 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
-  if (v7)
+  speech = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel speech];
+  if (speech)
   {
 
 LABEL_6:
@@ -2189,35 +2189,35 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel latencySummary];
+  latencySummary = [(SiriSharedUISAEUserUtteranceViewModel *)self->_userUtteranceViewModel latencySummary];
 
-  if (v8)
+  if (latencySummary)
   {
     goto LABEL_6;
   }
 
   v9 = 15;
 LABEL_7:
-  [v12 _setContinuousCornerRadius:28.0];
-  [v6 _setContinuousCornerRadius:28.0];
-  v10 = [v12 layer];
-  [v10 setMaskedCorners:v9];
+  [viewCopy _setContinuousCornerRadius:28.0];
+  [vibrancyViewCopy _setContinuousCornerRadius:28.0];
+  layer = [viewCopy layer];
+  [layer setMaskedCorners:v9];
 
-  v11 = [v6 layer];
-  [v11 setMaskedCorners:v9];
+  layer2 = [vibrancyViewCopy layer];
+  [layer2 setMaskedCorners:v9];
 }
 
-- (void)userUtteranceViewContentHeightDidUpdate:(id)a3
+- (void)userUtteranceViewContentHeightDidUpdate:(id)update
 {
   [(SiriSharedUISmartDialogView *)self updateContentSizeWithAnimation:1];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained conversationViewDidUpdatePresentedContentHeight:self];
 }
 
-- (void)userDidReportConcernForCardSection:(id)a3 additionalDomainProvidedFeedback:(id)a4
+- (void)userDidReportConcernForCardSection:(id)section additionalDomainProvidedFeedback:(id)feedback
 {
-  v13 = a3;
-  v6 = a4;
+  sectionCopy = section;
+  feedbackCopy = feedback;
   WeakRetained = objc_loadWeakRetained(&self->_interactionDelegate);
   v8 = objc_opt_respondsToSelector();
 
@@ -2225,7 +2225,7 @@ LABEL_7:
   v10 = v9;
   if (v8)
   {
-    [v9 userDidReportConcernForCardSection:v13 additionalDomainProvidedFeedback:v6];
+    [v9 userDidReportConcernForCardSection:sectionCopy additionalDomainProvidedFeedback:feedbackCopy];
   }
 
   else
@@ -2236,7 +2236,7 @@ LABEL_7:
     v10 = v12;
     if (v11)
     {
-      [v12 userDidReportConcernForCardSection:v13];
+      [v12 userDidReportConcernForCardSection:sectionCopy];
     }
 
     else
@@ -2272,9 +2272,9 @@ LABEL_7:
   self->_attributionUpdated = 1;
 }
 
-- (void)_resetAttributionView:(id)a3
+- (void)_resetAttributionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   self->_attributionUpdated = 0;
   attributionView = self->_attributionView;
   if (attributionView)
@@ -2283,14 +2283,14 @@ LABEL_7:
   }
 
   v6 = self->_attributionView;
-  self->_attributionView = v4;
+  self->_attributionView = viewCopy;
 }
 
-- (void)setInteractionDelegate:(id)a3
+- (void)setInteractionDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_interactionDelegate, v4);
-  [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer setInteractionDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_interactionDelegate, delegateCopy);
+  [(SiriSharedUISmartDialogContainer *)self->_smartDialogContainer setInteractionDelegate:delegateCopy];
 }
 
 - (SiriSharedUICompactConversationViewDelegate)delegate

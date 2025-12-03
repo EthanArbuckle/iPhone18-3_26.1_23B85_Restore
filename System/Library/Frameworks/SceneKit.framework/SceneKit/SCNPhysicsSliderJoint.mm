@@ -1,17 +1,17 @@
 @interface SCNPhysicsSliderJoint
 + (SCNPhysicsSliderJoint)jointWithBody:(SCNPhysicsBody *)body axis:(SCNVector3)axis anchor:(SCNVector3)anchor;
 + (SCNPhysicsSliderJoint)jointWithBodyA:(SCNPhysicsBody *)bodyA axisA:(SCNVector3)axisA anchorA:(SCNVector3)anchorA bodyB:(SCNPhysicsBody *)bodyB axisB:(SCNVector3)axisB anchorB:(SCNVector3)anchorB;
-- (SCNPhysicsSliderJoint)initWithBodyA:(id)a3 axisA:(SCNVector3)a4 anchorA:(SCNVector3)a5 bodyB:(id)a6 axisB:(SCNVector3)a7 anchorB:(SCNVector3)a8;
-- (SCNPhysicsSliderJoint)initWithCoder:(id)a3;
+- (SCNPhysicsSliderJoint)initWithBodyA:(id)a axisA:(SCNVector3)axisA anchorA:(SCNVector3)anchorA bodyB:(id)b axisB:(SCNVector3)axisB anchorB:(SCNVector3)anchorB;
+- (SCNPhysicsSliderJoint)initWithCoder:(id)coder;
 - (SCNVector3)anchorA;
 - (SCNVector3)anchorB;
 - (SCNVector3)axisA;
 - (SCNVector3)axisB;
-- (void)_addToPhysicsWorld:(id)a3 definition:(id *)a4;
-- (void)_copyDefinition:(id *)a3;
-- (void)_willRemoveFromPhysicsWorld:(id)a3;
+- (void)_addToPhysicsWorld:(id)world definition:(id *)definition;
+- (void)_copyDefinition:(id *)definition;
+- (void)_willRemoveFromPhysicsWorld:(id)world;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAnchorA:(SCNVector3)anchorA;
 - (void)setAnchorB:(SCNVector3)anchorB;
 - (void)setAxisA:(SCNVector3)axisA;
@@ -43,28 +43,28 @@
   [(SCNPhysicsSliderJoint *)&v5 dealloc];
 }
 
-- (SCNPhysicsSliderJoint)initWithBodyA:(id)a3 axisA:(SCNVector3)a4 anchorA:(SCNVector3)a5 bodyB:(id)a6 axisB:(SCNVector3)a7 anchorB:(SCNVector3)a8
+- (SCNPhysicsSliderJoint)initWithBodyA:(id)a axisA:(SCNVector3)axisA anchorA:(SCNVector3)anchorA bodyB:(id)b axisB:(SCNVector3)axisB anchorB:(SCNVector3)anchorB
 {
-  z = a5.z;
-  y = a5.y;
-  x = a5.x;
-  v12 = a4.z;
-  v13 = a4.y;
-  v14 = a4.x;
+  z = anchorA.z;
+  y = anchorA.y;
+  x = anchorA.x;
+  v12 = axisA.z;
+  v13 = axisA.y;
+  v14 = axisA.x;
   v18.receiver = self;
   v18.super_class = SCNPhysicsSliderJoint;
-  v16 = [(SCNPhysicsSliderJoint *)&v18 init:a3];
+  v16 = [(SCNPhysicsSliderJoint *)&v18 init:a];
   if (v16)
   {
-    *(v16 + 1) = a3;
+    *(v16 + 1) = a;
     *(v16 + 6) = v14;
     *(v16 + 7) = v13;
     *(v16 + 8) = v12;
     *(v16 + 9) = x;
     *(v16 + 10) = y;
     *(v16 + 11) = z;
-    *(v16 + 2) = a6;
-    *(v16 + 4) = a7;
+    *(v16 + 2) = b;
+    *(v16 + 4) = axisB;
     *(v16 + 15) = v19;
     *(v16 + 16) = v20;
     *(v16 + 17) = v21;
@@ -85,7 +85,7 @@
   v12 = axisA.z;
   v13 = axisA.y;
   v14 = axisA.x;
-  v16 = [a1 alloc];
+  v16 = [self alloc];
   HIDWORD(v25) = v28;
   *(&v25 + 4) = v27;
   *&v25 = axisB.z;
@@ -108,7 +108,7 @@
   v8 = axis.z;
   v9 = axis.y;
   v10 = axis.x;
-  v12 = [a1 alloc];
+  v12 = [self alloc];
   *&v13 = v10;
   *&v14 = v9;
   *&v15 = v8;
@@ -590,30 +590,30 @@ float __47__SCNPhysicsSliderJoint_setMotorMaximumTorque___block_invoke(uint64_t 
   return result;
 }
 
-- (void)_copyDefinition:(id *)a3
+- (void)_copyDefinition:(id *)definition
 {
   v3 = *&self->_definition.axisB.z;
   v5 = *&self->_definition.bodyA;
   v4 = *&self->_definition.axisA.x;
-  *&a3->var0[32] = *&self->_definition.anchorA.y;
-  *&a3->var0[48] = v3;
-  *a3->var0 = v5;
-  *&a3->var0[16] = v4;
+  *&definition->var0[32] = *&self->_definition.anchorA.y;
+  *&definition->var0[48] = v3;
+  *definition->var0 = v5;
+  *&definition->var0[16] = v4;
   v6 = *&self->_definition.motorTargetAngularVelocity;
   v8 = *&self->_definition.minLinearLimit;
   v7 = *&self->_definition.minAngularLimit;
-  *&a3->var0[96] = *&self->_definition.motorTargetLinearVelocity;
-  *&a3->var0[112] = v6;
-  *&a3->var0[64] = v8;
-  *&a3->var0[80] = v7;
+  *&definition->var0[96] = *&self->_definition.motorTargetLinearVelocity;
+  *&definition->var0[112] = v6;
+  *&definition->var0[64] = v8;
+  *&definition->var0[80] = v7;
 }
 
-- (void)_addToPhysicsWorld:(id)a3 definition:(id *)a4
+- (void)_addToPhysicsWorld:(id)world definition:(id *)definition
 {
   world = self->_world;
   if (world)
   {
-    v8 = world == a3;
+    v8 = world == world;
   }
 
   else
@@ -630,30 +630,30 @@ float __47__SCNPhysicsSliderJoint_setMotorMaximumTorque___block_invoke(uint64_t 
     }
   }
 
-  self->_world = a3;
-  v10 = *&a4->var0[80];
-  v15[4] = *&a4->var0[64];
+  self->_world = world;
+  v10 = *&definition->var0[80];
+  v15[4] = *&definition->var0[64];
   v15[5] = v10;
-  v11 = *&a4->var0[112];
-  v15[6] = *&a4->var0[96];
+  v11 = *&definition->var0[112];
+  v15[6] = *&definition->var0[96];
   v15[7] = v11;
-  v12 = *&a4->var0[16];
-  v15[0] = *a4->var0;
+  v12 = *&definition->var0[16];
+  v15[0] = *definition->var0;
   v15[1] = v12;
-  v13 = *&a4->var0[48];
-  v15[2] = *&a4->var0[32];
+  v13 = *&definition->var0[48];
+  v15[2] = *&definition->var0[32];
   v15[3] = v13;
   self->_constraint = _createConstraintFromDefinition(v15);
-  v14 = [a3 _handle];
-  (*(*v14 + 112))(v14, self->_constraint, 0);
+  _handle = [world _handle];
+  (*(*_handle + 112))(_handle, self->_constraint, 0);
 }
 
-- (void)_willRemoveFromPhysicsWorld:(id)a3
+- (void)_willRemoveFromPhysicsWorld:(id)world
 {
   if (self->_constraint)
   {
-    v4 = [a3 _handle];
-    (*(*v4 + 120))(v4, self->_constraint);
+    _handle = [world _handle];
+    (*(*_handle + 120))(_handle, self->_constraint);
     constraint = self->_constraint;
     if (constraint)
     {
@@ -664,7 +664,7 @@ float __47__SCNPhysicsSliderJoint_setMotorMaximumTorque___block_invoke(uint64_t 
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNPhysicsSliderJoint;
@@ -672,30 +672,30 @@ float __47__SCNPhysicsSliderJoint_setMotorMaximumTorque___block_invoke(uint64_t 
   p_definition = &self->_definition;
   if (p_definition->bodyA)
   {
-    [a3 encodeObject:p_definition->bodyA forKey:@"bodyA"];
+    [coder encodeObject:p_definition->bodyA forKey:@"bodyA"];
   }
 
   bodyB = p_definition->bodyB;
   if (bodyB)
   {
-    [a3 encodeObject:bodyB forKey:@"bodyB"];
+    [coder encodeObject:bodyB forKey:@"bodyB"];
   }
 
-  SCNEncodeVector3(a3, @"axisA", p_definition->axisA.x, p_definition->axisA.y, p_definition->axisA.z);
-  SCNEncodeVector3(a3, @"axisB", p_definition->axisB.x, p_definition->axisB.y, p_definition->axisB.z);
-  SCNEncodeVector3(a3, @"anchorA", p_definition->anchorA.x, p_definition->anchorA.y, p_definition->anchorA.z);
-  SCNEncodeVector3(a3, @"anchorB", p_definition->anchorB.x, p_definition->anchorB.y, p_definition->anchorB.z);
-  [a3 encodeDouble:@"minLinearLimit" forKey:p_definition->minLinearLimit];
-  [a3 encodeDouble:@"maxLinearLimit" forKey:p_definition->maxLinearLimit];
-  [a3 encodeDouble:@"minAngularLimit" forKey:p_definition->minAngularLimit];
-  [a3 encodeDouble:@"maxAngularLimit" forKey:p_definition->maxAngularLimit];
-  [a3 encodeDouble:@"motorTargetLinearVelocity" forKey:p_definition->motorTargetLinearVelocity];
-  [a3 encodeDouble:@"motorMaximumForce" forKey:p_definition->motorMaximumForce];
-  [a3 encodeDouble:@"motorTargetAngularVelocity" forKey:p_definition->motorTargetAngularVelocity];
-  [a3 encodeDouble:@"motorMaximumTorque" forKey:p_definition->motorMaximumTorque];
+  SCNEncodeVector3(coder, @"axisA", p_definition->axisA.x, p_definition->axisA.y, p_definition->axisA.z);
+  SCNEncodeVector3(coder, @"axisB", p_definition->axisB.x, p_definition->axisB.y, p_definition->axisB.z);
+  SCNEncodeVector3(coder, @"anchorA", p_definition->anchorA.x, p_definition->anchorA.y, p_definition->anchorA.z);
+  SCNEncodeVector3(coder, @"anchorB", p_definition->anchorB.x, p_definition->anchorB.y, p_definition->anchorB.z);
+  [coder encodeDouble:@"minLinearLimit" forKey:p_definition->minLinearLimit];
+  [coder encodeDouble:@"maxLinearLimit" forKey:p_definition->maxLinearLimit];
+  [coder encodeDouble:@"minAngularLimit" forKey:p_definition->minAngularLimit];
+  [coder encodeDouble:@"maxAngularLimit" forKey:p_definition->maxAngularLimit];
+  [coder encodeDouble:@"motorTargetLinearVelocity" forKey:p_definition->motorTargetLinearVelocity];
+  [coder encodeDouble:@"motorMaximumForce" forKey:p_definition->motorMaximumForce];
+  [coder encodeDouble:@"motorTargetAngularVelocity" forKey:p_definition->motorTargetAngularVelocity];
+  [coder encodeDouble:@"motorMaximumTorque" forKey:p_definition->motorMaximumTorque];
 }
 
-- (SCNPhysicsSliderJoint)initWithCoder:(id)a3
+- (SCNPhysicsSliderJoint)initWithCoder:(id)coder
 {
   v23.receiver = self;
   v23.super_class = SCNPhysicsSliderJoint;
@@ -704,35 +704,35 @@ float __47__SCNPhysicsSliderJoint_setMotorMaximumTorque___block_invoke(uint64_t 
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    v4->_definition.axisA.x = SCNDecodeVector3(a3, @"axisA");
+    v4->_definition.axisA.x = SCNDecodeVector3(coder, @"axisA");
     v4->_definition.axisA.y = v6;
     v4->_definition.axisA.z = v7;
-    v4->_definition.axisB.x = SCNDecodeVector3(a3, @"axisB");
+    v4->_definition.axisB.x = SCNDecodeVector3(coder, @"axisB");
     v4->_definition.axisB.y = v8;
     v4->_definition.axisB.z = v9;
-    v4->_definition.anchorA.x = SCNDecodeVector3(a3, @"anchorA");
+    v4->_definition.anchorA.x = SCNDecodeVector3(coder, @"anchorA");
     v4->_definition.anchorA.y = v10;
     v4->_definition.anchorA.z = v11;
-    v4->_definition.anchorB.x = SCNDecodeVector3(a3, @"anchorB");
+    v4->_definition.anchorB.x = SCNDecodeVector3(coder, @"anchorB");
     v4->_definition.anchorB.y = v12;
     v4->_definition.anchorB.z = v13;
-    v4->_definition.bodyA = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bodyA"];
-    v4->_definition.bodyB = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bodyB"];
-    [a3 decodeDoubleForKey:@"minLinearLimit"];
+    v4->_definition.bodyA = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bodyA"];
+    v4->_definition.bodyB = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bodyB"];
+    [coder decodeDoubleForKey:@"minLinearLimit"];
     v4->_definition.minLinearLimit = v14;
-    [a3 decodeDoubleForKey:@"maxLinearLimit"];
+    [coder decodeDoubleForKey:@"maxLinearLimit"];
     v4->_definition.maxLinearLimit = v15;
-    [a3 decodeDoubleForKey:@"minAngularLimit"];
+    [coder decodeDoubleForKey:@"minAngularLimit"];
     v4->_definition.minAngularLimit = v16;
-    [a3 decodeDoubleForKey:@"maxAngularLimit"];
+    [coder decodeDoubleForKey:@"maxAngularLimit"];
     v4->_definition.maxAngularLimit = v17;
-    [a3 decodeDoubleForKey:@"motorTargetLinearVelocity"];
+    [coder decodeDoubleForKey:@"motorTargetLinearVelocity"];
     v4->_definition.motorTargetLinearVelocity = v18;
-    [a3 decodeDoubleForKey:@"motorMaximumForce"];
+    [coder decodeDoubleForKey:@"motorMaximumForce"];
     v4->_definition.motorMaximumForce = v19;
-    [a3 decodeDoubleForKey:@"motorTargetAngularVelocity"];
+    [coder decodeDoubleForKey:@"motorTargetAngularVelocity"];
     v4->_definition.motorTargetAngularVelocity = v20;
-    [a3 decodeDoubleForKey:@"motorMaximumTorque"];
+    [coder decodeDoubleForKey:@"motorMaximumTorque"];
     v4->_definition.motorMaximumTorque = v21;
     [SCNTransaction setImmediateMode:v5];
   }

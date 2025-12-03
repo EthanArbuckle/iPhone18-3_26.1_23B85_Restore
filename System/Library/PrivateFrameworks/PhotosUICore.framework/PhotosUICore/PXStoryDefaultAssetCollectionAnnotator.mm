@@ -1,8 +1,8 @@
 @interface PXStoryDefaultAssetCollectionAnnotator
 - (PXStoryDefaultAssetCollectionAnnotator)init;
 - (id)sourceObject;
-- (void)addTransientDraftAnnotationToMemoryCreationRequest:(id)a3;
-- (void)setSourceObject:(id)a3;
+- (void)addTransientDraftAnnotationToMemoryCreationRequest:(id)request;
+- (void)setSourceObject:(id)object;
 @end
 
 @implementation PXStoryDefaultAssetCollectionAnnotator
@@ -15,20 +15,20 @@
   return v2;
 }
 
-- (void)setSourceObject:(id)a3
+- (void)setSourceObject:(id)object
 {
   v5 = OBJC_IVAR___PXStoryDefaultAssetCollectionAnnotator_sourceObject;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = object;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (void)addTransientDraftAnnotationToMemoryCreationRequest:(id)a3
+- (void)addTransientDraftAnnotationToMemoryCreationRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A4A2B3B4(v4);
+  requestCopy = request;
+  selfCopy = self;
+  sub_1A4A2B3B4(requestCopy);
 }
 
 - (PXStoryDefaultAssetCollectionAnnotator)init

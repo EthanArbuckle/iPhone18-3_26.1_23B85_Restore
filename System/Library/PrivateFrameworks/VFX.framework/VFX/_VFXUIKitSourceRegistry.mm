@@ -1,12 +1,12 @@
 @interface _VFXUIKitSourceRegistry
 + (id)sharedInstance;
-+ (void)registerUIKitSource:(id)a3;
-+ (void)unregisterUIKitSource:(id)a3;
++ (void)registerUIKitSource:(id)source;
++ (void)unregisterUIKitSource:(id)source;
 - (_VFXUIKitSourceRegistry)init;
-- (void)add:(id)a3;
-- (void)apply:(id)a3;
+- (void)add:(id)add;
+- (void)apply:(id)apply;
 - (void)dealloc;
-- (void)remove:(id)a3;
+- (void)remove:(id)remove;
 @end
 
 @implementation _VFXUIKitSourceRegistry
@@ -41,23 +41,23 @@
   [(_VFXUIKitSourceRegistry *)&v3 dealloc];
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
   objc_sync_enter(self);
-  objc_msgSend_addObject_(self->_sources, v5, a3, v6);
+  objc_msgSend_addObject_(self->_sources, v5, add, v6);
 
   objc_sync_exit(self);
 }
 
-- (void)remove:(id)a3
+- (void)remove:(id)remove
 {
   objc_sync_enter(self);
-  objc_msgSend_removeObject_(self->_sources, v5, a3, v6);
+  objc_msgSend_removeObject_(self->_sources, v5, remove, v6);
 
   objc_sync_exit(self);
 }
 
-- (void)apply:(id)a3
+- (void)apply:(id)apply
 {
   v16 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
@@ -79,7 +79,7 @@
           objc_enumerationMutation(sources);
         }
 
-        (*(a3 + 2))(a3, *(*(&v11 + 1) + 8 * i));
+        (*(apply + 2))(apply, *(*(&v11 + 1) + 8 * i));
       }
 
       v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(sources, v10, &v11, v15, 16);
@@ -91,18 +91,18 @@
   objc_sync_exit(self);
 }
 
-+ (void)registerUIKitSource:(id)a3
++ (void)registerUIKitSource:(id)source
 {
-  v5 = objc_msgSend_sharedInstance(a1, a2, a3, v3);
+  v5 = objc_msgSend_sharedInstance(self, a2, source, v3);
 
-  MEMORY[0x1EEE66B58](v5, sel_add_, a3, v6);
+  MEMORY[0x1EEE66B58](v5, sel_add_, source, v6);
 }
 
-+ (void)unregisterUIKitSource:(id)a3
++ (void)unregisterUIKitSource:(id)source
 {
-  v5 = objc_msgSend_sharedInstance(a1, a2, a3, v3);
+  v5 = objc_msgSend_sharedInstance(self, a2, source, v3);
 
-  MEMORY[0x1EEE66B58](v5, sel_remove_, a3, v6);
+  MEMORY[0x1EEE66B58](v5, sel_remove_, source, v6);
 }
 
 @end

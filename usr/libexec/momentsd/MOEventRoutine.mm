@@ -1,19 +1,19 @@
 @interface MOEventRoutine
-+ (id)descriptionOfMode:(unint64_t)a3;
-+ (id)stringOfMapItemPlaceType:(unint64_t)a3;
-+ (id)stringOfPlaceInferencePlaceType:(unint64_t)a3;
-+ (id)stringOfPlaceUserType:(unint64_t)a3;
-- (BOOL)fallbackToAddressFormattingWithFormatOption:(id)a3 preferredCategories:(id)a4 poiCategoryBlocklist:(id)a5 mediumConfidenceThreshold:(double)a6 aoiConfidenceThreshold:(double)a7;
++ (id)descriptionOfMode:(unint64_t)mode;
++ (id)stringOfMapItemPlaceType:(unint64_t)type;
++ (id)stringOfPlaceInferencePlaceType:(unint64_t)type;
++ (id)stringOfPlaceUserType:(unint64_t)type;
+- (BOOL)fallbackToAddressFormattingWithFormatOption:(id)option preferredCategories:(id)categories poiCategoryBlocklist:(id)blocklist mediumConfidenceThreshold:(double)threshold aoiConfidenceThreshold:(double)confidenceThreshold;
 - (MOEventRoutine)init;
-- (MOEventRoutine)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MOEventRoutine)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)formatAddressParkingDisplayNameWithFallback:(BOOL)a3;
-- (id)formatAddressWithFormatOption:(id)a3;
-- (id)formatAdministrativeAreaWithFormatOption:(id)a3;
-- (id)formatCountryWithFormatOption:(id)a3;
-- (id)formatLocalityWithFormatOption:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)formatAddressParkingDisplayNameWithFallback:(BOOL)fallback;
+- (id)formatAddressWithFormatOption:(id)option;
+- (id)formatAdministrativeAreaWithFormatOption:(id)option;
+- (id)formatCountryWithFormatOption:(id)option;
+- (id)formatLocalityWithFormatOption:(id)option;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventRoutine
@@ -31,15 +31,15 @@
   return result;
 }
 
-+ (id)descriptionOfMode:(unint64_t)a3
++ (id)descriptionOfMode:(unint64_t)mode
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = @"Local";
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     return @"Tourist";
   }
@@ -50,38 +50,38 @@
   }
 }
 
-+ (id)stringOfPlaceUserType:(unint64_t)a3
++ (id)stringOfPlaceUserType:(unint64_t)type
 {
   v3 = @"Unknown";
   v4 = @"School";
   v5 = @"Gym";
   v6 = @"Outing";
-  if (a3 != 100)
+  if (type != 100)
   {
     v6 = @"Unknown";
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
     v5 = v6;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
     v4 = v5;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"Work";
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"Home";
   }
 
-  if (a3 <= 2)
+  if (type <= 2)
   {
     return v3;
   }
@@ -92,71 +92,71 @@
   }
 }
 
-+ (id)stringOfPlaceInferencePlaceType:(unint64_t)a3
++ (id)stringOfPlaceInferencePlaceType:(unint64_t)type
 {
   v3 = @"Unknown";
   v4 = @"City";
   v5 = @"State";
   v6 = @"Country";
-  if (a3 != 102)
+  if (type != 102)
   {
     v6 = @"Unknown";
   }
 
-  if (a3 != 101)
+  if (type != 101)
   {
     v5 = v6;
   }
 
-  if (a3 != 100)
+  if (type != 100)
   {
     v4 = v5;
   }
 
   v7 = @"Custom";
-  if (a3 != 6)
+  if (type != 6)
   {
     v7 = @"Unknown";
   }
 
-  if (a3 == 5)
+  if (type == 5)
   {
     v7 = @"CoarseAddress";
   }
 
-  if (a3 <= 99)
+  if (type <= 99)
   {
     v4 = v7;
   }
 
   v8 = @"PointOfInterest";
   v9 = @"Address";
-  if (a3 != 4)
+  if (type != 4)
   {
     v9 = @"Unknown";
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
     v8 = v9;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"AreaOfInterest";
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"NonClassified";
   }
 
-  if (a3 > 2)
+  if (type > 2)
   {
     v3 = v8;
   }
 
-  if (a3 <= 4)
+  if (type <= 4)
   {
     return v3;
   }
@@ -167,10 +167,10 @@
   }
 }
 
-+ (id)stringOfMapItemPlaceType:(unint64_t)a3
++ (id)stringOfMapItemPlaceType:(unint64_t)type
 {
   result = @"AreaOfInterest";
-  switch(a3)
+  switch(type)
   {
     case 0uLL:
       result = @"Unknown";
@@ -235,7 +235,7 @@
       result = @"Division";
       break;
     default:
-      if (a3 == 1000)
+      if (type == 1000)
       {
         result = @"Undefined";
       }
@@ -246,102 +246,102 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isInvalid = self->_isInvalid;
-  v6 = a3;
-  [v6 encodeBool:isInvalid forKey:@"isInvalid"];
-  [v6 encodeBool:self->_isHighConfidence forKey:@"isHighConfidence"];
-  [v6 encodeObject:self->_placeName forKey:@"placeName"];
-  [v6 encodeObject:self->_location forKey:@"location"];
-  [v6 encodeInteger:self->_mapItemPlaceType forKey:@"mapItemPlaceType"];
-  [v6 encodeInteger:self->_placeType forKey:@"placeType"];
-  [v6 encodeInteger:self->_placeUserType forKey:@"placeUserType"];
-  [v6 encodeInteger:self->_mode forKey:@"mode"];
-  [v6 encodeInteger:self->_placeDiscovery forKey:@"placeDiscovery"];
-  [v6 encodeObject:self->_address forKey:@"address"];
-  [v6 encodeObject:self->_geoAddressObject forKey:@"geoAddressObject"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isInvalid forKey:@"isInvalid"];
+  [coderCopy encodeBool:self->_isHighConfidence forKey:@"isHighConfidence"];
+  [coderCopy encodeObject:self->_placeName forKey:@"placeName"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
+  [coderCopy encodeInteger:self->_mapItemPlaceType forKey:@"mapItemPlaceType"];
+  [coderCopy encodeInteger:self->_placeType forKey:@"placeType"];
+  [coderCopy encodeInteger:self->_placeUserType forKey:@"placeUserType"];
+  [coderCopy encodeInteger:self->_mode forKey:@"mode"];
+  [coderCopy encodeInteger:self->_placeDiscovery forKey:@"placeDiscovery"];
+  [coderCopy encodeObject:self->_address forKey:@"address"];
+  [coderCopy encodeObject:self->_geoAddressObject forKey:@"geoAddressObject"];
   placeNameConfidence = self->_placeNameConfidence;
   *&placeNameConfidence = placeNameConfidence;
-  [v6 encodeFloat:@"placeNameConfidence" forKey:placeNameConfidence];
-  [v6 encodeObject:self->_placeMapItem forKey:@"placeMapItem"];
-  [v6 encodeObject:self->_poiCategory forKey:@"poiCategory"];
-  [v6 encodeObject:self->_categoryMuid forKey:@"categoryMuid"];
-  [v6 encodeDouble:@"familiarityIndexLOI" forKey:self->_familiarityIndexLOI];
-  [v6 encodeInteger:self->_placeSource forKey:@"placeSource"];
-  [v6 encodeObject:self->_predominantWeather forKey:@"predominantWeather"];
-  [v6 encodeBool:self->_isPreOnboardedVisit forKey:@"isPreOnboardedVisit"];
-  [v6 encodeObject:self->_mapItemLocation forKey:@"mapItemLocation"];
-  [v6 encodeDouble:@"distanceFromVisitToPlace" forKey:self->_distanceFromVisitToPlace];
-  [v6 encodeInteger:self->_mapItemID forKey:@"mapItemID"];
+  [coderCopy encodeFloat:@"placeNameConfidence" forKey:placeNameConfidence];
+  [coderCopy encodeObject:self->_placeMapItem forKey:@"placeMapItem"];
+  [coderCopy encodeObject:self->_poiCategory forKey:@"poiCategory"];
+  [coderCopy encodeObject:self->_categoryMuid forKey:@"categoryMuid"];
+  [coderCopy encodeDouble:@"familiarityIndexLOI" forKey:self->_familiarityIndexLOI];
+  [coderCopy encodeInteger:self->_placeSource forKey:@"placeSource"];
+  [coderCopy encodeObject:self->_predominantWeather forKey:@"predominantWeather"];
+  [coderCopy encodeBool:self->_isPreOnboardedVisit forKey:@"isPreOnboardedVisit"];
+  [coderCopy encodeObject:self->_mapItemLocation forKey:@"mapItemLocation"];
+  [coderCopy encodeDouble:@"distanceFromVisitToPlace" forKey:self->_distanceFromVisitToPlace];
+  [coderCopy encodeInteger:self->_mapItemID forKey:@"mapItemID"];
 }
 
-- (MOEventRoutine)initWithCoder:(id)a3
+- (MOEventRoutine)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = MOEventRoutine;
   v5 = [(MOEventRoutine *)&v28 init];
   if (v5)
   {
-    v5->_isInvalid = [v4 decodeBoolForKey:@"isInvalid"];
-    v5->_isHighConfidence = [v4 decodeBoolForKey:@"isHighConfidence"];
-    v5->_isPreOnboardedVisit = [v4 decodeBoolForKey:@"isPreOnboardedVisit"];
-    v5->_mapItemPlaceType = [v4 decodeIntegerForKey:@"mapItemPlaceType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeName"];
+    v5->_isInvalid = [coderCopy decodeBoolForKey:@"isInvalid"];
+    v5->_isHighConfidence = [coderCopy decodeBoolForKey:@"isHighConfidence"];
+    v5->_isPreOnboardedVisit = [coderCopy decodeBoolForKey:@"isPreOnboardedVisit"];
+    v5->_mapItemPlaceType = [coderCopy decodeIntegerForKey:@"mapItemPlaceType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeName"];
     placeName = v5->_placeName;
     v5->_placeName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     location = v5->_location;
     v5->_location = v8;
 
-    v5->_placeType = [v4 decodeIntegerForKey:@"placeType"];
-    v5->_placeUserType = [v4 decodeIntegerForKey:@"placeUserType"];
-    v5->_mode = [v4 decodeIntegerForKey:@"mode"];
-    v5->_placeDiscovery = [v4 decodeIntForKey:@"placeDiscovery"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"address"];
+    v5->_placeType = [coderCopy decodeIntegerForKey:@"placeType"];
+    v5->_placeUserType = [coderCopy decodeIntegerForKey:@"placeUserType"];
+    v5->_mode = [coderCopy decodeIntegerForKey:@"mode"];
+    v5->_placeDiscovery = [coderCopy decodeIntForKey:@"placeDiscovery"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"address"];
     address = v5->_address;
     v5->_address = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"geoAddressObject"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"geoAddressObject"];
     geoAddressObject = v5->_geoAddressObject;
     v5->_geoAddressObject = v12;
 
-    [v4 decodeFloatForKey:@"placeNameConfidence"];
+    [coderCopy decodeFloatForKey:@"placeNameConfidence"];
     v5->_placeNameConfidence = v14;
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeMapItem"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeMapItem"];
     placeMapItem = v5->_placeMapItem;
     v5->_placeMapItem = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"poiCategory"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"poiCategory"];
     poiCategory = v5->_poiCategory;
     v5->_poiCategory = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"categoryMuid"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"categoryMuid"];
     categoryMuid = v5->_categoryMuid;
     v5->_categoryMuid = v19;
 
-    [v4 decodeDoubleForKey:@"familiarityIndexLOI"];
+    [coderCopy decodeDoubleForKey:@"familiarityIndexLOI"];
     v5->_familiarityIndexLOI = v21;
-    v5->_placeSource = [v4 decodeIntegerForKey:@"placeSource"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predominantWeather"];
+    v5->_placeSource = [coderCopy decodeIntegerForKey:@"placeSource"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predominantWeather"];
     predominantWeather = v5->_predominantWeather;
     v5->_predominantWeather = v22;
 
-    [v4 decodeDoubleForKey:@"distanceFromVisitToPlace"];
+    [coderCopy decodeDoubleForKey:@"distanceFromVisitToPlace"];
     v5->_distanceFromVisitToPlace = v24;
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapItemLocation"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapItemLocation"];
     mapItemLocation = v5->_mapItemLocation;
     v5->_mapItemLocation = v25;
 
-    v5->_mapItemID = [v4 decodeIntegerForKey:@"mapItemID"];
+    v5->_mapItemID = [coderCopy decodeIntegerForKey:@"mapItemID"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOEventRoutine);
   v4->_isInvalid = self->_isInvalid;
@@ -372,7 +372,7 @@
 - (id)description
 {
   v17 = [NSString alloc];
-  v3 = [(NSString *)self->_placeName mask];
+  mask = [(NSString *)self->_placeName mask];
   placeNameConfidence = self->_placeNameConfidence;
   v5 = [MOEventRoutine descriptionOfMode:[(MOEventRoutine *)self mode]];
   placeDiscovery = self->_placeDiscovery;
@@ -384,30 +384,30 @@
   v11 = [objc_opt_class() stringOfPlaceInferencePlaceType:self->_placeType];
   v12 = [objc_opt_class() stringOfMapItemPlaceType:self->_mapItemPlaceType];
   placeUserType = self->_placeUserType;
-  v14 = [v17 initWithFormat:@"placeName, %@, confidence, %f, locationMode, %@, new place, %lu, isHighConfidence, %d, isInvalid, %d, isPreOnboardedVisit, %d, poiCategory, %@, categoryMuid, %@, placeSource, %lu, placeType, %@, mapItemPlaceType, %@, userType, %lu, predominantWeather %@, familiarityIndexLOI, %.2f, mapItem, %lu", v3, *&placeNameConfidence, v5, placeDiscovery, isHighConfidence, isInvalid, isPreOnboardedVisit, v16, placeSource, v11, v12, placeUserType, self->_predominantWeather, *&self->_familiarityIndexLOI, self->_mapItemID];
+  v14 = [v17 initWithFormat:@"placeName, %@, confidence, %f, locationMode, %@, new place, %lu, isHighConfidence, %d, isInvalid, %d, isPreOnboardedVisit, %d, poiCategory, %@, categoryMuid, %@, placeSource, %lu, placeType, %@, mapItemPlaceType, %@, userType, %lu, predominantWeather %@, familiarityIndexLOI, %.2f, mapItem, %lu", mask, *&placeNameConfidence, v5, placeDiscovery, isHighConfidence, isInvalid, isPreOnboardedVisit, v16, placeSource, v11, v12, placeUserType, self->_predominantWeather, *&self->_familiarityIndexLOI, self->_mapItemID];
 
   return v14;
 }
 
-- (BOOL)fallbackToAddressFormattingWithFormatOption:(id)a3 preferredCategories:(id)a4 poiCategoryBlocklist:(id)a5 mediumConfidenceThreshold:(double)a6 aoiConfidenceThreshold:(double)a7
+- (BOOL)fallbackToAddressFormattingWithFormatOption:(id)option preferredCategories:(id)categories poiCategoryBlocklist:(id)blocklist mediumConfidenceThreshold:(double)threshold aoiConfidenceThreshold:(double)confidenceThreshold
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = [(MOEventRoutine *)self poiCategory];
-  v14 = [v12 containsObject:v13];
+  categoriesCopy = categories;
+  blocklistCopy = blocklist;
+  poiCategory = [(MOEventRoutine *)self poiCategory];
+  v14 = [blocklistCopy containsObject:poiCategory];
 
   if ([(MOEventRoutine *)self placeType]== 3)
   {
-    v15 = [(MOEventRoutine *)self poiCategory];
-    if (([v11 containsObject:v15] & 1) != 0 || (-[MOEventRoutine placeNameConfidence](self, "placeNameConfidence"), v16 > a6))
+    poiCategory2 = [(MOEventRoutine *)self poiCategory];
+    if (([categoriesCopy containsObject:poiCategory2] & 1) != 0 || (-[MOEventRoutine placeNameConfidence](self, "placeNameConfidence"), v16 > threshold))
     {
     }
 
     else
     {
-      v18 = [(MOEventRoutine *)self placeSource];
+      placeSource = [(MOEventRoutine *)self placeSource];
 
-      if ((v18 & 0x40000) == 0)
+      if ((placeSource & 0x40000) == 0)
       {
         goto LABEL_13;
       }
@@ -427,7 +427,7 @@ LABEL_13:
   }
 
   [(MOEventRoutine *)self placeNameConfidence];
-  if (v17 <= a7)
+  if (v17 <= confidenceThreshold)
   {
     v14 |= ([(MOEventRoutine *)self placeSource]& 1) == 0;
   }
@@ -437,10 +437,10 @@ LABEL_14:
   return v14 & 1;
 }
 
-- (id)formatAddressParkingDisplayNameWithFallback:(BOOL)a3
+- (id)formatAddressParkingDisplayNameWithFallback:(BOOL)fallback
 {
-  v3 = a3;
-  v6 = [(GEOAddressObject *)self->_geoAddressObject parkingDisplayName];
+  fallbackCopy = fallback;
+  parkingDisplayName = [(GEOAddressObject *)self->_geoAddressObject parkingDisplayName];
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityEventData);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -448,35 +448,35 @@ LABEL_14:
     v16 = 138412802;
     v17 = v14;
     v18 = 2112;
-    v19 = v6;
+    v19 = parkingDisplayName;
     v20 = 1024;
-    v21 = v3;
+    v21 = fallbackCopy;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%@, parkingDisplayName output string, %@, fallback, %i", &v16, 0x1Cu);
   }
 
-  if ([v6 length])
+  if ([parkingDisplayName length])
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = !v3;
+    v8 = !fallbackCopy;
   }
 
   if (v8)
   {
-    v9 = v6;
+    shortAddress = parkingDisplayName;
   }
 
   else
   {
-    v9 = [(GEOAddressObject *)self->_geoAddressObject shortAddress];
+    shortAddress = [(GEOAddressObject *)self->_geoAddressObject shortAddress];
 
     v10 = _mo_log_facility_get_os_log(&MOLogFacilityEventData);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [(MOEventRoutine *)a2 formatAddressParkingDisplayNameWithFallback:v9, v10];
+      [(MOEventRoutine *)a2 formatAddressParkingDisplayNameWithFallback:shortAddress, v10];
     }
   }
 
@@ -487,71 +487,71 @@ LABEL_14:
     v16 = 138412802;
     v17 = v15;
     v18 = 2112;
-    v19 = v9;
+    v19 = shortAddress;
     v20 = 1024;
-    v21 = v3;
+    v21 = fallbackCopy;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%@, output string, %@, fallback, %i", &v16, 0x1Cu);
   }
 
-  return v9;
+  return shortAddress;
 }
 
-- (id)formatAddressWithFormatOption:(id)a3
+- (id)formatAddressWithFormatOption:(id)option
 {
-  v5 = a3;
-  v6 = [(GEOAddressObject *)self->_geoAddressObject address];
-  v7 = [v6 structuredAddress];
-  v8 = [v7 areaOfInterests];
-  v9 = [v8 count];
+  optionCopy = option;
+  address = [(GEOAddressObject *)self->_geoAddressObject address];
+  structuredAddress = [address structuredAddress];
+  areaOfInterests = [structuredAddress areaOfInterests];
+  v9 = [areaOfInterests count];
 
   if (v9)
   {
-    v10 = [(GEOAddressObject *)self->_geoAddressObject address];
-    v11 = [v10 structuredAddress];
-    v12 = [v11 areaOfInterests];
-    v13 = [v12 objectAtIndexedSubscript:0];
+    address2 = [(GEOAddressObject *)self->_geoAddressObject address];
+    structuredAddress2 = [address2 structuredAddress];
+    areaOfInterests2 = [structuredAddress2 areaOfInterests];
+    aboveDoorShortAddress = [areaOfInterests2 objectAtIndexedSubscript:0];
 
     goto LABEL_3;
   }
 
   if ([(MOEventRoutine *)self mapItemPlaceType]== 15)
   {
-    v14 = [(MOEventRoutine *)self formatLocalityWithFormatOption:v5];
+    shortAddress = [(MOEventRoutine *)self formatLocalityWithFormatOption:optionCopy];
 LABEL_11:
-    v13 = v14;
+    aboveDoorShortAddress = shortAddress;
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:@"shortAddress"])
+  if ([optionCopy isEqualToString:@"shortAddress"])
   {
-    v14 = [(GEOAddressObject *)self->_geoAddressObject shortAddress];
+    shortAddress = [(GEOAddressObject *)self->_geoAddressObject shortAddress];
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"parkingDisplayName"])
+  if ([optionCopy isEqualToString:@"parkingDisplayName"])
   {
-    v14 = [(MOEventRoutine *)self formatAddressParkingDisplayNameWithFallback:1];
+    shortAddress = [(MOEventRoutine *)self formatAddressParkingDisplayNameWithFallback:1];
     goto LABEL_11;
   }
 
-  v21 = [v5 isEqualToString:@"aboveDoorShortAddress"];
-  v13 = [(GEOAddressObject *)self->_geoAddressObject aboveDoorShortAddress];
+  v21 = [optionCopy isEqualToString:@"aboveDoorShortAddress"];
+  aboveDoorShortAddress = [(GEOAddressObject *)self->_geoAddressObject aboveDoorShortAddress];
   if ((v21 & 1) == 0)
   {
-    v10 = _mo_log_facility_get_os_log(&MOLogFacilityEventData);
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    address2 = _mo_log_facility_get_os_log(&MOLogFacilityEventData);
+    if (!os_log_type_enabled(address2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_4;
     }
 
-    v11 = NSStringFromSelector(a2);
+    structuredAddress2 = NSStringFromSelector(a2);
     v22 = 138412802;
-    v23 = v11;
+    v23 = structuredAddress2;
     v24 = 2112;
-    v25 = v5;
+    v25 = optionCopy;
     v26 = 2112;
-    v27 = v13;
-    _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%@, unrecognized format option, %@, will use default, %@", &v22, 0x20u);
+    v27 = aboveDoorShortAddress;
+    _os_log_error_impl(&_mh_execute_header, address2, OS_LOG_TYPE_ERROR, "%@, unrecognized format option, %@, will use default, %@", &v22, 0x20u);
 LABEL_3:
 
 LABEL_4:
@@ -562,26 +562,26 @@ LABEL_12:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     v17 = NSStringFromSelector(a2);
-    v18 = [(GEOAddressObject *)self->_geoAddressObject address];
-    v19 = [v18 structuredAddress];
-    v20 = [v19 areaOfInterests];
+    address3 = [(GEOAddressObject *)self->_geoAddressObject address];
+    structuredAddress3 = [address3 structuredAddress];
+    areaOfInterests3 = [structuredAddress3 areaOfInterests];
     v22 = 138413058;
     v23 = v17;
     v24 = 2112;
-    v25 = v5;
+    v25 = optionCopy;
     v26 = 2112;
-    v27 = v13;
+    v27 = aboveDoorShortAddress;
     v28 = 2112;
-    v29 = v20;
+    v29 = areaOfInterests3;
     _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%@, format option, %@, output string, %@, AOI List, %@", &v22, 0x2Au);
   }
 
-  return v13;
+  return aboveDoorShortAddress;
 }
 
-- (id)formatLocalityWithFormatOption:(id)a3
+- (id)formatLocalityWithFormatOption:(id)option
 {
-  v5 = a3;
+  optionCopy = option;
   v6 = [(GEOAddressObject *)self->_geoAddressObject cityDisplayNameWithFallback:1];
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityEventData);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -590,7 +590,7 @@ LABEL_12:
     v10 = 138412802;
     v11 = v9;
     v12 = 2112;
-    v13 = v5;
+    v13 = optionCopy;
     v14 = 2112;
     v15 = v6;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%@, format option, %@, output string, %@", &v10, 0x20u);
@@ -599,10 +599,10 @@ LABEL_12:
   return v6;
 }
 
-- (id)formatAdministrativeAreaWithFormatOption:(id)a3
+- (id)formatAdministrativeAreaWithFormatOption:(id)option
 {
-  v5 = a3;
-  v6 = [(RTAddress *)self->_address administrativeArea];
+  optionCopy = option;
+  administrativeArea = [(RTAddress *)self->_address administrativeArea];
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityEventData);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -610,19 +610,19 @@ LABEL_12:
     v10 = 138412802;
     v11 = v9;
     v12 = 2112;
-    v13 = v5;
+    v13 = optionCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = administrativeArea;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%@, format option, %@, output string, %@", &v10, 0x20u);
   }
 
-  return v6;
+  return administrativeArea;
 }
 
-- (id)formatCountryWithFormatOption:(id)a3
+- (id)formatCountryWithFormatOption:(id)option
 {
-  v5 = a3;
-  v6 = [(GEOAddressObject *)self->_geoAddressObject countryName];
+  optionCopy = option;
+  countryName = [(GEOAddressObject *)self->_geoAddressObject countryName];
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityEventData);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -630,13 +630,13 @@ LABEL_12:
     v10 = 138412802;
     v11 = v9;
     v12 = 2112;
-    v13 = v5;
+    v13 = optionCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = countryName;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%@, format option, %@, output string, %@", &v10, 0x20u);
   }
 
-  return v6;
+  return countryName;
 }
 
 - (void)formatAddressParkingDisplayNameWithFallback:(NSObject *)a3 .cold.1(const char *a1, uint64_t a2, NSObject *a3)

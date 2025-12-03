@@ -1,22 +1,22 @@
 @interface CXVoicemailControllerHost
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CXVoicemailControllerHost)initWithVoicemails:(id)a3 delegate:(id)a4 queue:(id)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CXVoicemailControllerHost)initWithVoicemails:(id)voicemails delegate:(id)delegate queue:(id)queue;
 - (CXVoicemailControllerHostDelegate)delegate;
-- (id)_voicemailsForVoicemailControllerHostConnection:(id)a3;
-- (void)_performDelegateCallback:(id)a3;
-- (void)addOrUpdateVoicemails:(id)a3;
-- (void)removeVoicemails:(id)a3;
-- (void)voicemailControllerHostConnection:(id)a3 requestTransaction:(id)a4 completion:(id)a5;
-- (void)voicemailControllerHostConnection:(id)a3 requestVoicemails:(id)a4;
-- (void)voicemailControllerHostConnectionInvalidated:(id)a3;
+- (id)_voicemailsForVoicemailControllerHostConnection:(id)connection;
+- (void)_performDelegateCallback:(id)callback;
+- (void)addOrUpdateVoicemails:(id)voicemails;
+- (void)removeVoicemails:(id)voicemails;
+- (void)voicemailControllerHostConnection:(id)connection requestTransaction:(id)transaction completion:(id)completion;
+- (void)voicemailControllerHostConnection:(id)connection requestVoicemails:(id)voicemails;
+- (void)voicemailControllerHostConnectionInvalidated:(id)invalidated;
 @end
 
 @implementation CXVoicemailControllerHost
 
-- (CXVoicemailControllerHost)initWithVoicemails:(id)a3 delegate:(id)a4 queue:(id)a5
+- (CXVoicemailControllerHost)initWithVoicemails:(id)voicemails delegate:(id)delegate queue:(id)queue
 {
-  v7 = a4;
-  v8 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = CXVoicemailControllerHost;
   v9 = [(CXVoicemailControllerHost *)&v18 init];
@@ -32,8 +32,8 @@
     block[2] = __63__CXVoicemailControllerHost_initWithVoicemails_delegate_queue___block_invoke;
     block[3] = &unk_1E7C06C80;
     v15 = v9;
-    v16 = v7;
-    v17 = v8;
+    v16 = delegateCopy;
+    v17 = queueCopy;
     dispatch_async(v12, block);
   }
 
@@ -67,18 +67,18 @@ uint64_t __63__CXVoicemailControllerHost_initWithVoicemails_delegate_queue___blo
   return notify_post("com.apple.callkit.voicemailcontrollerhost.started");
 }
 
-- (void)addOrUpdateVoicemails:(id)a3
+- (void)addOrUpdateVoicemails:(id)voicemails
 {
-  v4 = a3;
-  v5 = [(CXVoicemailControllerHost *)self queue];
+  voicemailsCopy = voicemails;
+  queue = [(CXVoicemailControllerHost *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__CXVoicemailControllerHost_addOrUpdateVoicemails___block_invoke;
   v7[3] = &unk_1E7C06BE0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = voicemailsCopy;
+  selfCopy = self;
+  v6 = voicemailsCopy;
+  dispatch_async(queue, v7);
 }
 
 void __51__CXVoicemailControllerHost_addOrUpdateVoicemails___block_invoke(uint64_t a1)
@@ -152,18 +152,18 @@ void __51__CXVoicemailControllerHost_addOrUpdateVoicemails___block_invoke(uint64
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeVoicemails:(id)a3
+- (void)removeVoicemails:(id)voicemails
 {
-  v4 = a3;
-  v5 = [(CXVoicemailControllerHost *)self queue];
+  voicemailsCopy = voicemails;
+  queue = [(CXVoicemailControllerHost *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__CXVoicemailControllerHost_removeVoicemails___block_invoke;
   v7[3] = &unk_1E7C06BE0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = voicemailsCopy;
+  selfCopy = self;
+  v6 = voicemailsCopy;
+  dispatch_async(queue, v7);
 }
 
 void __46__CXVoicemailControllerHost_removeVoicemails___block_invoke(uint64_t a1)
@@ -237,45 +237,45 @@ void __46__CXVoicemailControllerHost_removeVoicemails___block_invoke(uint64_t a1
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performDelegateCallback:(id)a3
+- (void)_performDelegateCallback:(id)callback
 {
-  block = a3;
-  v4 = [(CXVoicemailControllerHost *)self queue];
-  dispatch_assert_queue_V2(v4);
+  block = callback;
+  queue = [(CXVoicemailControllerHost *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CXVoicemailControllerHost *)self delegate];
-  if (v5)
+  delegate = [(CXVoicemailControllerHost *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
-    v7 = [(CXVoicemailControllerHost *)self delegateQueue];
+    v6 = delegate;
+    delegateQueue = [(CXVoicemailControllerHost *)self delegateQueue];
 
-    if (v7)
+    if (delegateQueue)
     {
-      v8 = [(CXVoicemailControllerHost *)self delegateQueue];
-      dispatch_async(v8, block);
+      delegateQueue2 = [(CXVoicemailControllerHost *)self delegateQueue];
+      dispatch_async(delegateQueue2, block);
     }
   }
 }
 
-- (id)_voicemailsForVoicemailControllerHostConnection:(id)a3
+- (id)_voicemailsForVoicemailControllerHostConnection:(id)connection
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CXVoicemailControllerHost *)self queue];
-  dispatch_assert_queue_V2(v5);
+  connectionCopy = connection;
+  queue = [(CXVoicemailControllerHost *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = MEMORY[0x1E695DF70];
-  v7 = [(CXVoicemailControllerHost *)self voicemailUUIDToVoicemailMap];
-  v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  voicemailUUIDToVoicemailMap = [(CXVoicemailControllerHost *)self voicemailUUIDToVoicemailMap];
+  v8 = [v6 arrayWithCapacity:{objc_msgSend(voicemailUUIDToVoicemailMap, "count")}];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [(CXVoicemailControllerHost *)self voicemailUUIDToVoicemailMap];
-  v10 = [v9 allValues];
+  voicemailUUIDToVoicemailMap2 = [(CXVoicemailControllerHost *)self voicemailUUIDToVoicemailMap];
+  allValues = [voicemailUUIDToVoicemailMap2 allValues];
 
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v11 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -286,25 +286,25 @@ void __46__CXVoicemailControllerHost_removeVoicemails___block_invoke(uint64_t a1
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allValues);
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        if ([v4 isPermittedToUsePrivateAPI])
+        if ([connectionCopy isPermittedToUsePrivateAPI])
         {
-          v16 = v15;
+          sanitizedCopy = v15;
         }
 
         else
         {
-          v16 = [v15 sanitizedCopy];
+          sanitizedCopy = [v15 sanitizedCopy];
         }
 
-        v17 = v16;
-        [v8 addObject:v16];
+        v17 = sanitizedCopy;
+        [v8 addObject:sanitizedCopy];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v12 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v12);
@@ -316,36 +316,36 @@ void __46__CXVoicemailControllerHost_removeVoicemails___block_invoke(uint64_t a1
   return v18;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = CXDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v19 = v6;
+    v19 = listenerCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = connectionCopy;
     _os_log_impl(&dword_1B47F3000, v8, OS_LOG_TYPE_DEFAULT, "listener: %@ newConnection: %@", buf, 0x16u);
   }
 
   v9 = [CXVoicemailControllerHostConnection alloc];
-  v10 = [(CXVoicemailControllerHost *)self queue];
-  v11 = [(CXVoicemailControllerHostConnection *)v9 initWithConnection:v7 serialQueue:v10];
+  queue = [(CXVoicemailControllerHost *)self queue];
+  v11 = [(CXVoicemailControllerHostConnection *)v9 initWithConnection:connectionCopy serialQueue:queue];
 
   if (v11)
   {
     [(CXVoicemailControllerHostConnection *)v11 setDelegate:self];
-    v12 = [(CXVoicemailControllerHost *)self queue];
+    queue2 = [(CXVoicemailControllerHost *)self queue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __64__CXVoicemailControllerHost_listener_shouldAcceptNewConnection___block_invoke;
     v16[3] = &unk_1E7C06BE0;
     v16[4] = self;
     v17 = v11;
-    dispatch_async(v12, v16);
+    dispatch_async(queue2, v16);
   }
 
   else
@@ -354,7 +354,7 @@ void __46__CXVoicemailControllerHost_removeVoicemails___block_invoke(uint64_t a1
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v7;
+      v19 = connectionCopy;
       _os_log_impl(&dword_1B47F3000, v13, OS_LOG_TYPE_DEFAULT, "[WARN] Not accepting connection %@ because a CXXPCVoicemailSource couldn't be created", buf, 0xCu);
     }
   }
@@ -369,54 +369,54 @@ void __64__CXVoicemailControllerHost_listener_shouldAcceptNewConnection___block_
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)voicemailControllerHostConnectionInvalidated:(id)a3
+- (void)voicemailControllerHostConnectionInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v5 = [(CXVoicemailControllerHost *)self queue];
-  dispatch_assert_queue_V2(v5);
+  invalidatedCopy = invalidated;
+  queue = [(CXVoicemailControllerHost *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CXVoicemailControllerHost *)self connections];
-  [v6 removeObject:v4];
+  connections = [(CXVoicemailControllerHost *)self connections];
+  [connections removeObject:invalidatedCopy];
 }
 
-- (void)voicemailControllerHostConnection:(id)a3 requestVoicemails:(id)a4
+- (void)voicemailControllerHostConnection:(id)connection requestVoicemails:(id)voicemails
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXVoicemailControllerHost *)self queue];
-  dispatch_assert_queue_V2(v8);
+  connectionCopy = connection;
+  voicemailsCopy = voicemails;
+  queue = [(CXVoicemailControllerHost *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = CXDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = connectionCopy;
     _os_log_impl(&dword_1B47F3000, v9, OS_LOG_TYPE_DEFAULT, "voicemailControllerHostConnection: %@", &v12, 0xCu);
   }
 
-  v10 = [(CXVoicemailControllerHost *)self _voicemailsForVoicemailControllerHostConnection:v6];
-  v7[2](v7, v10);
+  v10 = [(CXVoicemailControllerHost *)self _voicemailsForVoicemailControllerHostConnection:connectionCopy];
+  voicemailsCopy[2](voicemailsCopy, v10);
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)voicemailControllerHostConnection:(id)a3 requestTransaction:(id)a4 completion:(id)a5
+- (void)voicemailControllerHostConnection:(id)connection requestTransaction:(id)transaction completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CXVoicemailControllerHost *)self queue];
-  dispatch_assert_queue_V2(v11);
+  connectionCopy = connection;
+  transactionCopy = transaction;
+  completionCopy = completion;
+  queue = [(CXVoicemailControllerHost *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = CXDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v22 = v8;
+    v22 = connectionCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = transactionCopy;
     _os_log_impl(&dword_1B47F3000, v12, OS_LOG_TYPE_DEFAULT, "voicemailControllerHostConnection: %@ transaction: %@", buf, 0x16u);
   }
 
@@ -425,12 +425,12 @@ void __64__CXVoicemailControllerHost_listener_shouldAcceptNewConnection___block_
   v17[2] = __93__CXVoicemailControllerHost_voicemailControllerHostConnection_requestTransaction_completion___block_invoke;
   v17[3] = &unk_1E7C06DE0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v18 = connectionCopy;
+  v19 = transactionCopy;
+  v20 = completionCopy;
+  v13 = completionCopy;
+  v14 = transactionCopy;
+  v15 = connectionCopy;
   [(CXVoicemailControllerHost *)self _performDelegateCallback:v17];
 
   v16 = *MEMORY[0x1E69E9840];

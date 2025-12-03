@@ -1,7 +1,7 @@
 @interface QSSRecognitionChoice
 - (NSArray)alternative_index;
-- (Offset<siri::speech::schema_fb::RecognitionChoice>)addObjectToBuffer:(void *)a3;
-- (QSSRecognitionChoice)initWithFlatbuffData:(id)a3 root:(const RecognitionChoice *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::RecognitionChoice>)addObjectToBuffer:(void *)buffer;
+- (QSSRecognitionChoice)initWithFlatbuffData:(id)data root:(const RecognitionChoice *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int)confidence;
 @end
@@ -37,19 +37,19 @@ flatbuffers::DetachedBuffer *__36__QSSRecognitionChoice_flatbuffData__block_invo
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::RecognitionChoice>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::RecognitionChoice>)addObjectToBuffer:(void *)buffer
 {
   v27 = *MEMORY[0x277D85DE8];
   memset(&v25, 0, sizeof(v25));
-  v5 = [(QSSRecognitionChoice *)self alternative_index];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v25, [v5 count]);
+  alternative_index = [(QSSRecognitionChoice *)self alternative_index];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v25, [alternative_index count]);
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(QSSRecognitionChoice *)self alternative_index];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  alternative_index2 = [(QSSRecognitionChoice *)self alternative_index];
+  v7 = [alternative_index2 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
     v8 = *v22;
@@ -59,14 +59,14 @@ flatbuffers::DetachedBuffer *__36__QSSRecognitionChoice_flatbuffData__block_invo
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(alternative_index2);
         }
 
-        v20 = [*(*(&v21 + 1) + 8 * i) intValue];
-        std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v25, &v20);
+        intValue = [*(*(&v21 + 1) + 8 * i) intValue];
+        std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v25, &intValue);
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v7 = [alternative_index2 countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v7);
@@ -83,16 +83,16 @@ flatbuffers::DetachedBuffer *__36__QSSRecognitionChoice_flatbuffData__block_invo
     v11 = v25.__begin_;
   }
 
-  v12 = flatbuffers::FlatBufferBuilder::CreateVector<int>(a3, v11, v25.__end_ - v25.__begin_);
-  v13 = [(QSSRecognitionChoice *)self confidence];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 8);
-  v15 = *(a3 + 12);
-  v16 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v13);
-  v17.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v14 - v15 + v16);
+  v12 = flatbuffers::FlatBufferBuilder::CreateVector<int>(buffer, v11, v25.__end_ - v25.__begin_);
+  confidence = [(QSSRecognitionChoice *)self confidence];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 8);
+  v15 = *(buffer + 12);
+  v16 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, v12);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, confidence);
+  v17.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v14 - v15 + v16);
   if (begin)
   {
     operator delete(begin);
@@ -119,10 +119,10 @@ flatbuffers::DetachedBuffer *__36__QSSRecognitionChoice_flatbuffData__block_invo
 
 - (NSArray)alternative_index
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"alternative_index"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"alternative_index"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 5u)
@@ -141,7 +141,7 @@ flatbuffers::DetachedBuffer *__36__QSSRecognitionChoice_flatbuffData__block_invo
             v11 = *v10->var0;
             v10 += 4;
             v12 = [MEMORY[0x277CCABB0] numberWithInt:v11];
-            [v3 addObject:v12];
+            [array addObject:v12];
 
             v9 -= 4;
           }
@@ -151,48 +151,48 @@ flatbuffers::DetachedBuffer *__36__QSSRecognitionChoice_flatbuffData__block_invo
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"alternative_index"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"alternative_index"];
   }
 
-  return v3;
+  return array;
 }
 
-- (QSSRecognitionChoice)initWithFlatbuffData:(id)a3 root:(const RecognitionChoice *)a4 verify:(BOOL)a5
+- (QSSRecognitionChoice)initWithFlatbuffData:(id)data root:(const RecognitionChoice *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSRecognitionChoice;
   v10 = [(QSSRecognitionChoice *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -214,9 +214,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

@@ -1,6 +1,6 @@
 @interface NSLookupMatch
-+ (id)matchesInString:(id)a3 types:(unint64_t)a4 range:(_NSRange)a5;
-- (NSLookupMatch)initWithType:(unint64_t)a3 range:(_NSRange)a4 score:(double)a5;
++ (id)matchesInString:(id)string types:(unint64_t)types range:(_NSRange)range;
+- (NSLookupMatch)initWithType:(unint64_t)type range:(_NSRange)range score:(double)score;
 - (_NSRange)range;
 - (id)description;
 - (void)dealloc;
@@ -8,20 +8,20 @@
 
 @implementation NSLookupMatch
 
-- (NSLookupMatch)initWithType:(unint64_t)a3 range:(_NSRange)a4 score:(double)a5
+- (NSLookupMatch)initWithType:(unint64_t)type range:(_NSRange)range score:(double)score
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = NSLookupMatch;
   result = [(NSLookupMatch *)&v10 init];
   if (result)
   {
-    result->_matchType = a3;
+    result->_matchType = type;
     result->_range.location = location;
     result->_range.length = length;
-    result->_score = a5;
+    result->_score = score;
   }
 
   return result;
@@ -44,33 +44,33 @@
   return [NSString stringWithFormat:@"%@ %0.2f", v3, v4];
 }
 
-+ (id)matchesInString:(id)a3 types:(unint64_t)a4 range:(_NSRange)a5
++ (id)matchesInString:(id)string types:(unint64_t)types range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  typesCopy = types;
   v36[4] = *MEMORY[0x1E69E9840];
-  v11 = [MEMORY[0x1E695DF70] array];
-  if (!a3)
+  array = [MEMORY[0x1E695DF70] array];
+  if (!string)
   {
-    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:a1 lineNumber:@"NSLookupMatch.m" description:68, @"Invalid parameter: string is nil"];
+    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSLookupMatch.m" description:68, @"Invalid parameter: string is nil"];
   }
 
-  v12 = [a3 length];
+  v12 = [string length];
   if (location > v12)
   {
     v23 = +[NSAssertionHandler currentHandler];
     v37.location = 0;
     v37.length = v12;
-    v24 = a1;
+    selfCopy = self;
     v25 = a2;
     v26 = NSStringFromRange(v37);
     v38.location = location;
     v38.length = length;
     v30 = v26;
     a2 = v25;
-    a1 = v24;
-    [(NSAssertionHandler *)v23 handleFailureInMethod:a2 object:v24 file:@"NSLookupMatch.m" lineNumber:70 description:@"Invalid range: string range %@ does not contain search range %@", v30, NSStringFromRange(v38)];
+    self = selfCopy;
+    [(NSAssertionHandler *)v23 handleFailureInMethod:a2 object:selfCopy file:@"NSLookupMatch.m" lineNumber:70 description:@"Invalid range: string range %@ does not contain search range %@", v30, NSStringFromRange(v38)];
   }
 
   v13 = location + length;
@@ -79,15 +79,15 @@
     v32 = +[NSAssertionHandler currentHandler];
     v39.location = 0;
     v39.length = v12;
-    v27 = a1;
+    selfCopy2 = self;
     v28 = a2;
     v29 = NSStringFromRange(v39);
     v40.location = location;
     v40.length = length;
     v31 = v29;
     a2 = v28;
-    a1 = v27;
-    [(NSAssertionHandler *)v32 handleFailureInMethod:a2 object:v27 file:@"NSLookupMatch.m" lineNumber:71 description:@"Invalid range: string range %@ does not contain search range %@", v31, NSStringFromRange(v40)];
+    self = selfCopy2;
+    [(NSAssertionHandler *)v32 handleFailureInMethod:a2 object:selfCopy2 file:@"NSLookupMatch.m" lineNumber:71 description:@"Invalid range: string range %@ does not contain search range %@", v31, NSStringFromRange(v40)];
   }
 
   if (location >= 0x100)
@@ -108,15 +108,15 @@
 
   v16 = v15 - v14;
   v17 = &unk_1812EC000;
-  if ((v7 & 2) != 0)
+  if ((typesCopy & 2) != 0)
   {
-    v18 = a1;
+    selfCopy3 = self;
     v19 = a2;
     v35 = 0;
     v20 = [NSDataDetector dataDetectorWithTypes:6200 error:&v35];
     if (!v20)
     {
-      [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:v19 file:v18 lineNumber:@"NSLookupMatch.m" description:84, @"Failed to create NSDataDetector"];
+      [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:v19 file:selfCopy3 lineNumber:@"NSLookupMatch.m" description:84, @"Failed to create NSDataDetector"];
     }
 
     v34[0] = MEMORY[0x1E69E9820];
@@ -126,30 +126,30 @@
     v34[3] = &unk_1E69F4798;
     v34[5] = location;
     v34[6] = length;
-    v34[4] = v11;
-    [(NSDataDetector *)v20 enumerateMatchesInString:a3 options:8 range:v14 usingBlock:v16, v34];
+    v34[4] = array;
+    [(NSDataDetector *)v20 enumerateMatchesInString:string options:8 range:v14 usingBlock:v16, v34];
   }
 
-  if (v7)
+  if (typesCopy)
   {
     v36[0] = @"TokenType";
     v36[1] = @"Language";
     v36[2] = @"NameType";
     v36[3] = @"LexicalClass";
     v21 = -[NSLinguisticTagger initWithTagSchemes:options:]([NSLinguisticTagger alloc], "initWithTagSchemes:options:", [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:4], 30);
-    [(NSLinguisticTagger *)v21 setString:a3];
+    [(NSLinguisticTagger *)v21 setString:string];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = v17[22];
     v33[2] = __45__NSLookupMatch_matchesInString_types_range___block_invoke_2;
     v33[3] = &unk_1E69F47C0;
     v33[5] = location;
     v33[6] = length;
-    v33[4] = v11;
+    v33[4] = array;
     [(NSLinguisticTagger *)v21 enumerateTagsInRange:v14 scheme:v16 options:@"TokenType" usingBlock:30, v33];
   }
 
-  [v11 sortUsingComparator:&__block_literal_global_18];
-  return v11;
+  [array sortUsingComparator:&__block_literal_global_18];
+  return array;
 }
 
 unint64_t __45__NSLookupMatch_matchesInString_types_range___block_invoke(uint64_t a1, void *a2, uint64_t a3, BOOL *a4)

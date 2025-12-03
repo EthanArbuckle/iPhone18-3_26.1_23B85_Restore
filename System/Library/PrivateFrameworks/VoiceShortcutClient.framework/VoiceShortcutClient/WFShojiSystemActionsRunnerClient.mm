@@ -1,20 +1,20 @@
 @interface WFShojiSystemActionsRunnerClient
-- (WFShojiSystemActionsRunnerClient)initWithContextualAction:(id)a3;
-- (void)handleWorkflowRunResult:(id)a3 completion:(id)a4;
+- (WFShojiSystemActionsRunnerClient)initWithContextualAction:(id)action;
+- (void)handleWorkflowRunResult:(id)result completion:(id)completion;
 @end
 
 @implementation WFShojiSystemActionsRunnerClient
 
-- (void)handleWorkflowRunResult:(id)a3 completion:(id)a4
+- (void)handleWorkflowRunResult:(id)result completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFWorkflowRunnerClient *)self delegate];
+  resultCopy = result;
+  completionCopy = completion;
+  delegate = [(WFWorkflowRunnerClient *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = v6;
+    v10 = resultCopy;
     if (v10)
     {
       objc_opt_class();
@@ -36,13 +36,13 @@
 
     v12 = v11;
 
-    v13 = [(WFWorkflowRunnerClient *)self descriptor];
-    if (v13)
+    descriptor = [(WFWorkflowRunnerClient *)self descriptor];
+    if (descriptor)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = v13;
+        v14 = descriptor;
       }
 
       else
@@ -58,49 +58,49 @@
 
     v15 = v14;
 
-    v16 = [v15 action];
+    action = [v15 action];
 
-    if ([v16 isReversible])
+    if ([action isReversible])
     {
-      v17 = [v12 reversalState];
+      reversalState = [v12 reversalState];
 
-      if (v17)
+      if (reversalState)
       {
         v18 = [WFReverseContextualAction alloc];
-        v19 = [v12 reversalState];
-        v17 = [(WFReverseContextualAction *)v18 initWithActionToReverse:v16 reversalState:v19];
+        reversalState2 = [v12 reversalState];
+        reversalState = [(WFReverseContextualAction *)v18 initWithActionToReverse:action reversalState:reversalState2];
       }
     }
 
     else
     {
-      v17 = 0;
+      reversalState = 0;
     }
 
-    v20 = [(WFWorkflowRunnerClient *)self delegate];
-    [v20 workflowRunnerClient:self didFinishRunningAction:v16 withReverseAction:v17];
+    delegate2 = [(WFWorkflowRunnerClient *)self delegate];
+    [delegate2 workflowRunnerClient:self didFinishRunningAction:action withReverseAction:reversalState];
   }
 
   else
   {
     v21.receiver = self;
     v21.super_class = WFShojiSystemActionsRunnerClient;
-    [(WFWorkflowRunnerClient *)&v21 handleWorkflowRunResult:v6 completion:v7];
+    [(WFWorkflowRunnerClient *)&v21 handleWorkflowRunResult:resultCopy completion:completionCopy];
   }
 }
 
-- (WFShojiSystemActionsRunnerClient)initWithContextualAction:(id)a3
+- (WFShojiSystemActionsRunnerClient)initWithContextualAction:(id)action
 {
-  v5 = a3;
-  if (!v5)
+  actionCopy = action;
+  if (!actionCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFShojiSystemActionsRunnerClient.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFShojiSystemActionsRunnerClient.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"action"}];
   }
 
   v6 = [[WFContextualActionContext alloc] initWithSurface:9];
-  v7 = [[WFContextualActionRunDescriptor alloc] initWithAction:v5 context:v6];
-  v8 = [[WFContextualActionRunRequest alloc] initWithAction:v5 actionContext:v6];
+  v7 = [[WFContextualActionRunDescriptor alloc] initWithAction:actionCopy context:v6];
+  v8 = [[WFContextualActionRunRequest alloc] initWithAction:actionCopy actionContext:v6];
   v12.receiver = self;
   v12.super_class = WFShojiSystemActionsRunnerClient;
   v9 = [(WFWorkflowRunnerClient *)&v12 initWithDescriptor:v7 runRequest:v8];

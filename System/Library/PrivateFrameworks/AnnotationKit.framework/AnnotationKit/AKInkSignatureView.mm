@@ -1,22 +1,22 @@
 @interface AKInkSignatureView
-- (AKInkSignatureView)initWithCoder:(id)a3;
-- (AKInkSignatureView)initWithFrame:(CGRect)a3;
-- (CGPath)copyPotracedPathAndReturnDrawing:(id *)a3;
+- (AKInkSignatureView)initWithCoder:(id)coder;
+- (AKInkSignatureView)initWithFrame:(CGRect)frame;
+- (CGPath)copyPotracedPathAndReturnDrawing:(id *)drawing;
 - (void)_commonInit;
 - (void)_updateTool;
-- (void)canvasViewDrawingDidChange:(id)a3;
+- (void)canvasViewDrawingDidChange:(id)change;
 - (void)clear;
 - (void)layoutSubviews;
-- (void)setStrokeColor:(id)a3;
+- (void)setStrokeColor:(id)color;
 @end
 
 @implementation AKInkSignatureView
 
-- (AKInkSignatureView)initWithFrame:(CGRect)a3
+- (AKInkSignatureView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AKInkSignatureView;
-  v3 = [(AKInkSignatureView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AKInkSignatureView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,11 +26,11 @@
   return v4;
 }
 
-- (AKInkSignatureView)initWithCoder:(id)a3
+- (AKInkSignatureView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AKInkSignatureView;
-  v3 = [(AKInkSignatureView *)&v6 initWithCoder:a3];
+  v3 = [(AKInkSignatureView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -42,29 +42,29 @@
 
 - (void)_commonInit
 {
-  v3 = [MEMORY[0x277D75348] blackColor];
-  [(AKInkSignatureView *)self setStrokeColor:v3];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(AKInkSignatureView *)self setStrokeColor:blackColor];
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(AKInkSignatureView *)self canvasView];
+  canvasView = [(AKInkSignatureView *)self canvasView];
 
-  if (!v3)
+  if (!canvasView)
   {
     [(AKInkSignatureView *)self bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(AKInkSignatureView *)self superview];
-    if (v12)
+    superview = [(AKInkSignatureView *)self superview];
+    if (superview)
     {
-      v29 = v12;
-      v13 = [(AKInkSignatureView *)self window];
-      if (v13)
+      v29 = superview;
+      window = [(AKInkSignatureView *)self window];
+      if (window)
       {
-        v14 = v13;
+        v14 = window;
         v31.origin.x = v5;
         v31.origin.y = v7;
         v31.size.width = v9;
@@ -80,41 +80,41 @@
         [v29 setDrawingPolicy:1];
         [(AKInkSignatureView *)self setCanvasView:v29];
         [v29 setDelegate:self];
-        v16 = [(AKInkSignatureView *)self tool];
-        [v29 setTool:v16];
+        tool = [(AKInkSignatureView *)self tool];
+        [v29 setTool:tool];
 
         [(AKInkSignatureView *)self addSubview:v29];
         [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v17 = [v29 widthAnchor];
-        v18 = [(AKInkSignatureView *)self widthAnchor];
-        v19 = [v17 constraintEqualToAnchor:v18];
+        widthAnchor = [v29 widthAnchor];
+        widthAnchor2 = [(AKInkSignatureView *)self widthAnchor];
+        v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
         [v19 setActive:1];
 
-        v20 = [v29 heightAnchor];
-        v21 = [(AKInkSignatureView *)self heightAnchor];
-        v22 = [v20 constraintEqualToAnchor:v21];
+        heightAnchor = [v29 heightAnchor];
+        heightAnchor2 = [(AKInkSignatureView *)self heightAnchor];
+        v22 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
         [v22 setActive:1];
 
-        v23 = [v29 centerXAnchor];
-        v24 = [(AKInkSignatureView *)self centerXAnchor];
-        v25 = [v23 constraintEqualToAnchor:v24];
+        centerXAnchor = [v29 centerXAnchor];
+        centerXAnchor2 = [(AKInkSignatureView *)self centerXAnchor];
+        v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         [v25 setActive:1];
 
-        v26 = [v29 centerYAnchor];
-        v27 = [(AKInkSignatureView *)self centerYAnchor];
-        v28 = [v26 constraintEqualToAnchor:v27];
+        centerYAnchor = [v29 centerYAnchor];
+        centerYAnchor2 = [(AKInkSignatureView *)self centerYAnchor];
+        v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         [v28 setActive:1];
       }
     }
   }
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
   v4 = MEMORY[0x277CD9640];
-  v5 = a3;
+  colorCopy = color;
   v6 = [v4 alloc];
-  v7 = [v6 initWithInkType:*MEMORY[0x277CD96F8] color:v5];
+  v7 = [v6 initWithInkType:*MEMORY[0x277CD96F8] color:colorCopy];
 
   [(AKInkSignatureView *)self setTool:v7];
 
@@ -123,42 +123,42 @@
 
 - (void)_updateTool
 {
-  v3 = [(AKInkSignatureView *)self canvasView];
-  if (v3)
+  canvasView = [(AKInkSignatureView *)self canvasView];
+  if (canvasView)
   {
-    v5 = v3;
-    v4 = [(AKInkSignatureView *)self tool];
-    [v5 setTool:v4];
+    v5 = canvasView;
+    tool = [(AKInkSignatureView *)self tool];
+    [v5 setTool:tool];
 
-    v3 = v5;
+    canvasView = v5;
   }
 }
 
 - (void)clear
 {
   [(AKInkSignatureView *)self setLatestDrawing:0];
-  v3 = [(AKInkSignatureView *)self canvasView];
+  canvasView = [(AKInkSignatureView *)self canvasView];
 
-  if (v3)
+  if (canvasView)
   {
     v4 = objc_alloc(MEMORY[0x277CD95F8]);
     v9 = objc_opt_new();
-    v5 = [(AKInkSignatureView *)self canvasView];
-    v6 = [v5 drawing];
-    v7 = [v4 initWithStrokes:v9 fromDrawing:v6];
-    v8 = [(AKInkSignatureView *)self canvasView];
-    [v8 setDrawing:v7];
+    canvasView2 = [(AKInkSignatureView *)self canvasView];
+    drawing = [canvasView2 drawing];
+    v7 = [v4 initWithStrokes:v9 fromDrawing:drawing];
+    canvasView3 = [(AKInkSignatureView *)self canvasView];
+    [canvasView3 setDrawing:v7];
   }
 }
 
-- (CGPath)copyPotracedPathAndReturnDrawing:(id *)a3
+- (CGPath)copyPotracedPathAndReturnDrawing:(id *)drawing
 {
-  v4 = [(AKInkSignatureView *)self latestDrawing];
-  v5 = v4;
-  if (!v4)
+  latestDrawing = [(AKInkSignatureView *)self latestDrawing];
+  v5 = latestDrawing;
+  if (!latestDrawing)
   {
     v15 = 0;
-    if (!a3)
+    if (!drawing)
     {
       goto LABEL_12;
     }
@@ -166,7 +166,7 @@
     goto LABEL_11;
   }
 
-  [v4 bounds];
+  [latestDrawing bounds];
   v7 = v6;
   v9 = v8;
   v10 = [AKInkRendererHelper renderDrawing:"renderDrawing:clippedToStrokeSpaceRect:scale:" clippedToStrokeSpaceRect:v5 scale:?];
@@ -209,10 +209,10 @@
     v15 = 0;
   }
 
-  if (a3)
+  if (drawing)
   {
 LABEL_11:
-    *a3 = [v5 copy];
+    *drawing = [v5 copy];
   }
 
 LABEL_12:
@@ -220,15 +220,15 @@ LABEL_12:
   return v15;
 }
 
-- (void)canvasViewDrawingDidChange:(id)a3
+- (void)canvasViewDrawingDidChange:(id)change
 {
-  v4 = [a3 drawing];
-  if (v4)
+  drawing = [change drawing];
+  if (drawing)
   {
-    v6 = v4;
-    [(AKInkSignatureView *)self setLatestDrawing:v4];
-    v5 = [v6 strokes];
-    -[AKInkSignatureView setHasStrokes:](self, "setHasStrokes:", [v5 count] != 0);
+    v6 = drawing;
+    [(AKInkSignatureView *)self setLatestDrawing:drawing];
+    strokes = [v6 strokes];
+    -[AKInkSignatureView setHasStrokes:](self, "setHasStrokes:", [strokes count] != 0);
   }
 
   MEMORY[0x2821F96F8]();

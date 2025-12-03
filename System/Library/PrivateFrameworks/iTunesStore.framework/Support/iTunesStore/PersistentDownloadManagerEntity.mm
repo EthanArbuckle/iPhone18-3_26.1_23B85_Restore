@@ -1,22 +1,22 @@
 @interface PersistentDownloadManagerEntity
 + (void)initialize;
-- (id)finishPersistentDownloadsWithDownloadIDs:(id)a3;
-- (void)performNewsstandMigration1InDatabase:(id)a3;
+- (id)finishPersistentDownloadsWithDownloadIDs:(id)ds;
+- (void)performNewsstandMigration1InDatabase:(id)database;
 @end
 
 @implementation PersistentDownloadManagerEntity
 
-- (id)finishPersistentDownloadsWithDownloadIDs:(id)a3
+- (id)finishPersistentDownloadsWithDownloadIDs:(id)ds
 {
   v38 = objc_alloc_init(DownloadsChangeset);
-  v5 = [(PersistentDownloadManagerEntity *)self database];
-  obj = a3;
+  database = [(PersistentDownloadManagerEntity *)self database];
+  obj = ds;
   v41 = [SSSQLiteComparisonPredicate predicateWithProperty:@"manager_id" equalToLongLong:[(PersistentDownloadManagerEntity *)self persistentID]];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v43 objects:v53 count:16];
+  v6 = [ds countByEnumeratingWithState:&v43 objects:v53 count:16];
   if (v6)
   {
     v7 = v6;
@@ -33,7 +33,7 @@
         }
 
         v9 = *(*(&v43 + 1) + 8 * i);
-        v10 = -[DownloadEntity initWithPersistentID:inDatabase:]([DownloadEntity alloc], "initWithPersistentID:inDatabase:", [v9 longLongValue], v5);
+        v10 = -[DownloadEntity initWithPersistentID:inDatabase:]([DownloadEntity alloc], "initWithPersistentID:inDatabase:", [v9 longLongValue], database);
         v52[0] = @"kind";
         v52[1] = @"download_state.phase";
         v52[2] = @"is_hls";
@@ -41,12 +41,12 @@
         v11 = v51[2];
         if (objc_opt_respondsToSelector())
         {
-          v12 = [v11 BOOLValue];
+          bOOLValue = [v11 BOOLValue];
         }
 
         else
         {
-          v12 = 0;
+          bOOLValue = 0;
         }
 
         v13 = v51[0];
@@ -58,11 +58,11 @@
 
         if (SSDownloadPhaseIsUnsuccessful())
         {
-          if (v12)
+          if (bOOLValue)
           {
             if (SSDownloadKindIsMediaKind())
             {
-              v14 = [DownloadAssetEntity anyInDatabase:v5 predicate:[SSSQLiteCompoundPredicate predicateMatchingAllPredicates:[NSArray arrayWithObjects:[SSSQLiteComparisonPredicate predicateWithProperty:@"download_id" equalToValue:v9], [SSSQLiteComparisonPredicate predicateWithProperty:@"is_hls" equalToValue:&__kCFBooleanTrue], 0]]];
+              v14 = [DownloadAssetEntity anyInDatabase:database predicate:[SSSQLiteCompoundPredicate predicateMatchingAllPredicates:[NSArray arrayWithObjects:[SSSQLiteComparisonPredicate predicateWithProperty:@"download_id" equalToValue:v9], [SSSQLiteComparisonPredicate predicateWithProperty:@"is_hls" equalToValue:&__kCFBooleanTrue], 0]]];
               if (v14)
               {
                 v15 = [sub_10020F36C(v13) stringByAppendingPathComponent:{-[NSString stringByAppendingPathExtension:](+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", objc_msgSend(v14, "persistentID")), "stringByAppendingPathExtension:", v37)}];
@@ -82,18 +82,18 @@
                         v18 = +[SSLogConfig sharedConfig];
                       }
 
-                      v19 = [v18 shouldLog];
+                      shouldLog = [v18 shouldLog];
                       if ([v18 shouldLogToDisk])
                       {
-                        v19 |= 2u;
+                        shouldLog |= 2u;
                       }
 
                       if (!os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_DEBUG))
                       {
-                        v19 &= 2u;
+                        shouldLog &= 2u;
                       }
 
-                      if (v19)
+                      if (shouldLog)
                       {
                         v20 = objc_opt_class();
                         v47 = 138412802;
@@ -130,15 +130,15 @@
             v24 = +[SSLogConfig sharedConfig];
           }
 
-          v25 = [v24 shouldLog];
+          shouldLog2 = [v24 shouldLog];
           if ([v24 shouldLogToDisk])
           {
-            v26 = v25 | 2;
+            v26 = shouldLog2 | 2;
           }
 
           else
           {
-            v26 = v25;
+            v26 = shouldLog2;
           }
 
           if (!os_log_type_enabled([v24 OSLogObject], OS_LOG_TYPE_INFO))
@@ -167,8 +167,8 @@
           }
 
           v31 = [SSSQLiteComparisonPredicate predicateWithProperty:@"download_id" equalToValue:v9, v34];
-          [+[PersistentDownloadEntity queryWithDatabase:predicate:](PersistentDownloadEntity queryWithDatabase:v5 predicate:{+[SSSQLiteCompoundPredicate predicateMatchingAllPredicates:](SSSQLiteCompoundPredicate, "predicateMatchingAllPredicates:", +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v31, v41, 0))), "deleteAllEntities"}];
-          if (![PersistentDownloadEntity anyInDatabase:v5 predicate:v31])
+          [+[PersistentDownloadEntity queryWithDatabase:predicate:](PersistentDownloadEntity queryWithDatabase:database predicate:{+[SSSQLiteCompoundPredicate predicateMatchingAllPredicates:](SSSQLiteCompoundPredicate, "predicateMatchingAllPredicates:", +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v31, v41, 0))), "deleteAllEntities"}];
+          if (![PersistentDownloadEntity anyInDatabase:database predicate:v31])
           {
             [(DownloadEntity *)v10 deleteFromDatabase];
             [(DownloadsChangeset *)v38 addDownloadChangeTypes:8];
@@ -187,24 +187,24 @@
   return v38;
 }
 
-- (void)performNewsstandMigration1InDatabase:(id)a3
+- (void)performNewsstandMigration1InDatabase:(id)database
 {
   v9 = @"download_id";
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100140868;
   v5[3] = &unk_100329AE8;
-  v6 = a3;
+  databaseCopy = database;
   v7 = [(PersistentDownloadManagerEntity *)self valueForProperty:@"client_id"];
-  v8 = self;
-  [+[PersistentDownloadEntity queryWithDatabase:predicate:](PersistentDownloadEntity queryWithDatabase:v6 predicate:{+[SSSQLiteComparisonPredicate predicateWithProperty:equalToLongLong:](SSSQLiteComparisonPredicate, "predicateWithProperty:equalToLongLong:", @"manager_id", -[PersistentDownloadManagerEntity persistentID](self, "persistentID"))), "enumeratePersistentIDsAndProperties:count:usingBlock:", &v9, 1, v5}];
+  selfCopy = self;
+  [+[PersistentDownloadEntity queryWithDatabase:predicate:](PersistentDownloadEntity queryWithDatabase:databaseCopy predicate:{+[SSSQLiteComparisonPredicate predicateWithProperty:equalToLongLong:](SSSQLiteComparisonPredicate, "predicateWithProperty:equalToLongLong:", @"manager_id", -[PersistentDownloadManagerEntity persistentID](self, "persistentID"))), "enumeratePersistentIDsAndProperties:count:usingBlock:", &v9, 1, v5}];
   v4 = [[NSDictionary alloc] initWithObjectsAndKeys:{+[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", 1), @"migration_version", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", 1), @"filters_external_downloads", 0}];
   [(PersistentDownloadManagerEntity *)self setValuesWithDictionary:v4];
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100383F18 = [[NSDictionary alloc] initWithObjectsAndKeys:{@"persistent_download", @"manager_id", @"persistent_manager_kind", 0}];
     qword_100383F10 = [[NSSet alloc] initWithObjects:{@"persistent_download", @"persistent_manager_kind", 0}];

@@ -15,7 +15,7 @@
 
 + (id)ic_attributedStringWithArchive:()NSAttributedStringPersistenceAdditions dataPersister:note:shouldCreateNewAttachments:error:
 {
-  v7 = [a1 ic_attributedStringWithArchive:a3 dataPersister:a4 note:a5 parentAttachment:0 shouldCreateNewAttachments:a6 error:a7];
+  v7 = [self ic_attributedStringWithArchive:a3 dataPersister:a4 note:a5 parentAttachment:0 shouldCreateNewAttachments:a6 error:a7];
 
   return v7;
 }
@@ -169,16 +169,16 @@ LABEL_34:
             v39 = [MEMORY[0x277CCACA8] stringWithCString:v40 encoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
             if (v39 && [ICTTAttachment typeUTIIsInlineAttachment:v39])
             {
-              v41 = [MEMORY[0x277CCAD78] UUID];
-              v42 = [v41 UUIDString];
+              uUID = [MEMORY[0x277CCAD78] UUID];
+              uUIDString = [uUID UUIDString];
               if (v71)
               {
-                [v71 addInlineAttachmentWithIdentifier:v42];
+                [v71 addInlineAttachmentWithIdentifier:uUIDString];
               }
 
               else
               {
-                [v73 addInlineAttachmentWithIdentifier:v42];
+                [v73 addInlineAttachmentWithIdentifier:uUIDString];
               }
               v45 = ;
 
@@ -193,14 +193,14 @@ LABEL_34:
             v39 = 0;
           }
 
-          v43 = [MEMORY[0x277CCAD78] UUID];
-          v44 = [v43 UUIDString];
-          v45 = [v73 addAttachmentWithIdentifier:v44];
+          uUID2 = [MEMORY[0x277CCAD78] UUID];
+          uUIDString2 = [uUID2 UUIDString];
+          v45 = [v73 addAttachmentWithIdentifier:uUIDString2];
 
           [v45 loadFromArchive:google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::Attachment>::TypeHandler>(a3 + 104 dataPersister:v36) withIdentifierMap:{v13, v74}];
           [v45 updateChangeCountWithReason:@"Loaded attachment from archive"];
-          v46 = [v45 media];
-          [v46 updateChangeCountWithReason:@"Loaded attachment from archive"];
+          media = [v45 media];
+          [media updateChangeCountWithReason:@"Loaded attachment from archive"];
 
 LABEL_44:
           objc_autoreleasePoolPop(v37);
@@ -225,12 +225,12 @@ LABEL_49:
           v52 = [v51 objectForKeyedSubscript:@"NSAttachment"];
           v53 = ICDynamicCast();
 
-          v54 = [v53 attachmentIdentifier];
+          attachmentIdentifier = [v53 attachmentIdentifier];
 
-          if (v54)
+          if (attachmentIdentifier)
           {
-            v55 = [v53 attachmentIdentifier];
-            v56 = [v74 objectForKeyedSubscript:v55];
+            attachmentIdentifier2 = [v53 attachmentIdentifier];
+            v56 = [v74 objectForKeyedSubscript:attachmentIdentifier2];
 
             if (v56)
             {
@@ -250,7 +250,7 @@ LABEL_49:
       }
 
       v60 = ICTTAttributeNameParagraphStyle;
-      v61 = [v75 ic_range];
+      ic_range = [v75 ic_range];
       v63 = v62;
       v76[0] = MEMORY[0x277D85DD0];
       v76[1] = 3221225472;
@@ -259,7 +259,7 @@ LABEL_49:
       v35 = v75;
       v77 = v35;
       v13 = v70;
-      [v35 enumerateAttribute:v60 inRange:v61 options:v63 usingBlock:{0, v76}];
+      [v35 enumerateAttribute:v60 inRange:ic_range options:v63 usingBlock:{0, v76}];
       v32 = v77;
       goto LABEL_57;
     }
@@ -287,21 +287,21 @@ LABEL_59:
 
 + (id)ic_attributedStringWithData:()NSAttributedStringPersistenceAdditions dataPersister:createNewAttachmentsInNote:error:
 {
-  v6 = [a1 ic_attributedStringWithData:a3 dataPersister:a4 createNewAttachmentsInNote:a5 forParentAttachment:0 error:a6];
+  v6 = [self ic_attributedStringWithData:a3 dataPersister:a4 createNewAttachmentsInNote:a5 forParentAttachment:0 error:a6];
 
   return v6;
 }
 
 + (id)ic_attributedStringWithData:()NSAttributedStringPersistenceAdditions dataPersister:createNewAttachmentsInNote:forParentAttachment:error:
 {
-  v7 = [a1 ic_attributedStringWithData:a3 dataPersister:a4 note:a5 parentAttachment:a6 shouldCreateAttachments:1 error:a7];
+  v7 = [self ic_attributedStringWithData:a3 dataPersister:a4 note:a5 parentAttachment:a6 shouldCreateAttachments:1 error:a7];
 
   return v7;
 }
 
 + (id)ic_attributedStringWithData:()NSAttributedStringPersistenceAdditions dataPersister:note:shouldCreateAttachments:error:
 {
-  v7 = [a1 ic_attributedStringWithData:a3 dataPersister:a4 note:a5 parentAttachment:0 shouldCreateAttachments:a6 error:a7];
+  v7 = [self ic_attributedStringWithData:a3 dataPersister:a4 note:a5 parentAttachment:0 shouldCreateAttachments:a6 error:a7];
 
   return v7;
 }
@@ -315,9 +315,9 @@ LABEL_59:
   if (v13)
   {
     topotext::String::String(v23);
-    v17 = [v13 bytes];
+    bytes = [v13 bytes];
     v18 = ICTTBoundedCheckedCastNSUIntegerToUInt32([v13 length]);
-    if (google::protobuf::MessageLite::ParseFromArray(v23, v17, v18))
+    if (google::protobuf::MessageLite::ParseFromArray(v23, bytes, v18))
     {
       v19 = [MEMORY[0x277CCA898] ic_attributedStringWithArchive:v23 dataPersister:v14 note:v15 parentAttachment:v16 shouldCreateNewAttachments:a7 error:a8];
     }
@@ -355,9 +355,9 @@ LABEL_59:
   v5 = a3;
   v6 = a4;
   topotext::String::String(v15);
-  v7 = [v5 bytes];
+  bytes = [v5 bytes];
   v8 = ICTTBoundedCheckedCastNSUIntegerToUInt32([v5 length]);
-  if (google::protobuf::MessageLite::ParseFromArray(v15, v7, v8))
+  if (google::protobuf::MessageLite::ParseFromArray(v15, bytes, v8))
   {
     v14 = 0;
     v9 = v17;
@@ -414,10 +414,10 @@ LABEL_14:
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 1;
-  v14 = [a1 string];
-  v15 = [v14 UTF8String];
-  v16 = [a1 string];
-  v17 = [v16 lengthOfBytesUsingEncoding:4];
+  string = [self string];
+  uTF8String = [string UTF8String];
+  string2 = [self string];
+  v17 = [string2 lengthOfBytesUsingEncoding:4];
   *(a3 + 32) |= 1u;
   if (!google::protobuf::internal::empty_string_)
   {
@@ -431,9 +431,9 @@ LABEL_14:
     operator new();
   }
 
-  std::string::__assign_external(v19, v15, v18);
+  std::string::__assign_external(v19, uTF8String, v18);
 
-  [ICTTMergeableAttributedString saveAttributesOfString:a1 toArchive:a3];
+  [ICTTMergeableAttributedString saveAttributesOfString:self toArchive:a3];
   if (a4)
   {
     v31 = 0;
@@ -442,7 +442,7 @@ LABEL_14:
     v34 = __Block_byref_object_copy__7;
     v35 = __Block_byref_object_dispose__7;
     v36 = 0;
-    v20 = [a1 length];
+    v20 = [self length];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __126__NSAttributedString_NSAttributedStringPersistenceAdditions__ic_saveToArchive_flags_dataPersister_managedObjectContext_error___block_invoke;
@@ -453,7 +453,7 @@ LABEL_14:
     v26 = v12;
     v28 = &v31;
     v30 = a4;
-    [a1 enumerateAttribute:@"NSAttachment" inRange:0 options:v20 usingBlock:{0, v24}];
+    [self enumerateAttribute:@"NSAttachment" inRange:0 options:v20 usingBlock:{0, v24}];
     if (a7)
     {
       v21 = v32[5];
@@ -476,7 +476,7 @@ LABEL_14:
 {
   v10 = a4;
   v11 = a5;
-  v12 = [a1 ic_attributedStringByFlatteningUnsupportedInlineAttachmentsWithContext:v11];
+  v12 = [self ic_attributedStringByFlatteningUnsupportedInlineAttachmentsWithContext:v11];
   topotext::String::String(v20);
   v19 = 0;
   v13 = [v12 ic_saveToArchive:v20 flags:a3 dataPersister:v10 managedObjectContext:v11 error:&v19];
@@ -511,14 +511,14 @@ LABEL_14:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v5 = [a1 length];
+  v5 = [self length];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __109__NSAttributedString_NSAttributedStringPersistenceAdditions__ic_approximateAttachmentsSizeIncludingPreviews___block_invoke;
   v8[3] = &unk_2781958C0;
   v8[4] = &v10;
   v9 = a3;
-  [a1 enumerateAttribute:@"NSAttachment" inRange:0 options:v5 usingBlock:{0, v8}];
+  [self enumerateAttribute:@"NSAttachment" inRange:0 options:v5 usingBlock:{0, v8}];
   v6 = v11[3];
   _Block_object_dispose(&v10, 8);
   return v6;

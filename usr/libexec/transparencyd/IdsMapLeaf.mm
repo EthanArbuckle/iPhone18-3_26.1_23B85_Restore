@@ -1,13 +1,13 @@
 @interface IdsMapLeaf
-+ (id)parseFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (IdsMapLeaf)init;
-- (id)accountForAccountKeyHash:(id)a3;
+- (id)accountForAccountKeyHash:(id)hash;
 - (id)data;
 - (id)description;
 - (id)diagnosticsJsonDictionary;
-- (id)recordForAccountKeyHash:(id)a3 deviceIdHash:(id)a4 appVersion:(unint64_t)a5 clientDataHash:(id)a6;
-- (unint64_t)verifyWithError:(id *)a3;
+- (id)recordForAccountKeyHash:(id)hash deviceIdHash:(id)idHash appVersion:(unint64_t)version clientDataHash:(id)dataHash;
+- (unint64_t)verifyWithError:(id *)error;
 @end
 
 @implementation IdsMapLeaf
@@ -39,8 +39,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(IdsMapLeaf *)self accountsArray];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  accountsArray = [(IdsMapLeaf *)self accountsArray];
+  v6 = [accountsArray countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -51,21 +51,21 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accountsArray);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) data];
-        if (!v10)
+        data = [*(*(&v16 + 1) + 8 * i) data];
+        if (!data)
         {
 
           goto LABEL_13;
         }
 
-        v11 = v10;
-        [v4 appendData:v10];
+        v11 = data;
+        [v4 appendData:data];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [accountsArray countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -89,30 +89,30 @@ LABEL_13:
   return v14;
 }
 
-+ (id)parseFromData:(id)a3 error:(id *)a4
++ (id)parseFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  v7 = [v5 bytes];
-  v8 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  bytes2 = [dataCopy bytes];
+  v8 = [dataCopy length];
   v9 = objc_alloc_init(IdsMapLeaf);
   v27 = 0;
-  v10 = [(TLSMessageClass *)v9 parseByteArray:v6 end:&v8[v7] minLength:0 maxLength:0xFFFFFFLL result:&v27];
+  v10 = [(TLSMessageClass *)v9 parseByteArray:bytes end:&v8[bytes2] minLength:0 maxLength:0xFFFFFFLL result:&v27];
   v11 = v27;
   v12 = v11;
   if (!v10)
   {
-    if (a4)
+    if (error)
     {
       [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-263 description:@"failed to parse accounts from IdsMapLeaf"];
-      *a4 = v18 = 0;
+      *error = v18 = 0;
       goto LABEL_20;
     }
 
     goto LABEL_15;
   }
 
-  v24 = a4;
+  errorCopy = error;
   if ([v11 length])
   {
     while (1)
@@ -126,8 +126,8 @@ LABEL_13:
         break;
       }
 
-      v16 = [(IdsMapLeaf *)v9 accountsArray];
-      [v16 addObject:v13];
+      accountsArray = [(IdsMapLeaf *)v9 accountsArray];
+      [accountsArray addObject:v13];
 
       v17 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v13 parsedLength] + objc_msgSend(v12, "bytes"), objc_msgSend(v12, "length") - objc_msgSend(v13, "parsedLength"));
 
@@ -138,10 +138,10 @@ LABEL_13:
       }
     }
 
-    if (a4 && v14)
+    if (error && v14)
     {
       v22 = v14;
-      *a4 = v15;
+      *error = v15;
     }
 
 LABEL_15:
@@ -152,7 +152,7 @@ LABEL_15:
   v17 = v12;
 LABEL_9:
   v25 = 0;
-  v19 = [(TLSMessageClass *)v9 parseExtensions:v10 end:&v8[v7] result:&v25];
+  v19 = [(TLSMessageClass *)v9 parseExtensions:v10 end:&v8[bytes2] result:&v25];
   v20 = v25;
   if (v19)
   {
@@ -162,10 +162,10 @@ LABEL_9:
     v18 = v9;
   }
 
-  else if (v24)
+  else if (errorCopy)
   {
     [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-264 description:@"failed to parse extensions from IdsMapLeaf"];
-    *v24 = v18 = 0;
+    *errorCopy = v18 = 0;
   }
 
   else
@@ -205,17 +205,17 @@ LABEL_20:
         v28 = v4;
         v5 = *(*(&v42 + 1) + 8 * v4);
         [v3 appendFormat:@"   {\n"];
-        v6 = [v5 accountKeyHash];
-        v7 = [v6 kt_hexString];
-        [v3 appendFormat:@"    accountKeyHash:%@\n", v7];
+        accountKeyHash = [v5 accountKeyHash];
+        kt_hexString = [accountKeyHash kt_hexString];
+        [v3 appendFormat:@"    accountKeyHash:%@\n", kt_hexString];
 
         v8 = [NSMutableString stringWithFormat:@"[\n"];
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v29 = [v5 devicesArray];
-        v32 = [v29 countByEnumeratingWithState:&v38 objects:v47 count:16];
+        devicesArray = [v5 devicesArray];
+        v32 = [devicesArray countByEnumeratingWithState:&v38 objects:v47 count:16];
         if (v32)
         {
           v30 = *v39;
@@ -227,23 +227,23 @@ LABEL_20:
             {
               if (*v39 != v30)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(devicesArray);
               }
 
               v33 = v9;
               v10 = *(*(&v38 + 1) + 8 * v9);
               [v8 appendFormat:@"     {\n"];
-              v11 = [v10 deviceIdHash];
-              v12 = [v11 kt_hexString];
-              [v8 appendFormat:@"      deviceIdHash: %@\n", v12];
+              deviceIdHash = [v10 deviceIdHash];
+              kt_hexString2 = [deviceIdHash kt_hexString];
+              [v8 appendFormat:@"      deviceIdHash: %@\n", kt_hexString2];
 
               v13 = [NSMutableString stringWithFormat:@"[\n"];
               v34 = 0u;
               v35 = 0u;
               v36 = 0u;
               v37 = 0u;
-              v14 = [v10 clientDataArray];
-              v15 = [v14 countByEnumeratingWithState:&v34 objects:v46 count:16];
+              clientDataArray = [v10 clientDataArray];
+              v15 = [clientDataArray countByEnumeratingWithState:&v34 objects:v46 count:16];
               if (v15)
               {
                 v16 = v15;
@@ -254,21 +254,21 @@ LABEL_20:
                   {
                     if (*v35 != v17)
                     {
-                      objc_enumerationMutation(v14);
+                      objc_enumerationMutation(clientDataArray);
                     }
 
                     v19 = *(*(&v34 + 1) + 8 * i);
                     [v13 appendFormat:@"       {\n"];
-                    v20 = [v19 clientDataHash];
-                    v21 = [v20 kt_hexString];
-                    [v13 appendFormat:@"        clientDataHash:%@\n", v21];
+                    clientDataHash = [v19 clientDataHash];
+                    kt_hexString3 = [clientDataHash kt_hexString];
+                    [v13 appendFormat:@"        clientDataHash:%@\n", kt_hexString3];
 
                     [v13 appendFormat:@"        appVersion:%lu\n", objc_msgSend(v19, "appVersion")];
                     [v13 appendFormat:@"        addedMs:%llu markMs:%llu; expiryMs:%llu; escrowMs:%llu\n", objc_msgSend(v19, "addedMs"), objc_msgSend(v19, "markedForDeletionMs"), objc_msgSend(v19, "expiryMs"), objc_msgSend(v19, "escrowExpiryMs")];
                     [v13 appendFormat:@"       }, \n"];
                   }
 
-                  v16 = [v14 countByEnumeratingWithState:&v34 objects:v46 count:16];
+                  v16 = [clientDataArray countByEnumeratingWithState:&v34 objects:v46 count:16];
                 }
 
                 while (v16);
@@ -283,7 +283,7 @@ LABEL_20:
             }
 
             while ((v33 + 1) != v32);
-            v32 = [v29 countByEnumeratingWithState:&v38 objects:v47 count:16];
+            v32 = [devicesArray countByEnumeratingWithState:&v38 objects:v47 count:16];
           }
 
           while (v32);
@@ -310,10 +310,10 @@ LABEL_20:
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -323,11 +323,11 @@ LABEL_20:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(IdsMapLeaf *)self data];
-      v7 = [(IdsMapLeaf *)v5 data];
+      v5 = equalCopy;
+      data = [(IdsMapLeaf *)self data];
+      data2 = [(IdsMapLeaf *)v5 data];
 
-      v8 = [v6 isEqualToData:v7];
+      v8 = [data isEqualToData:data2];
     }
 
     else
@@ -347,8 +347,8 @@ LABEL_20:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(IdsMapLeaf *)self accountsArray];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  accountsArray = [(IdsMapLeaf *)self accountsArray];
+  v6 = [accountsArray countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -359,14 +359,14 @@ LABEL_20:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accountsArray);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) diagnosticsJsonDictionary];
-        [v4 addObject:v10];
+        diagnosticsJsonDictionary = [*(*(&v12 + 1) + 8 * i) diagnosticsJsonDictionary];
+        [v4 addObject:diagnosticsJsonDictionary];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [accountsArray countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -380,24 +380,24 @@ LABEL_20:
   return v3;
 }
 
-- (id)recordForAccountKeyHash:(id)a3 deviceIdHash:(id)a4 appVersion:(unint64_t)a5 clientDataHash:(id)a6
+- (id)recordForAccountKeyHash:(id)hash deviceIdHash:(id)idHash appVersion:(unint64_t)version clientDataHash:(id)dataHash
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  hashCopy = hash;
+  idHashCopy = idHash;
+  dataHashCopy = dataHash;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v13 = [(IdsMapLeaf *)self accountsArray];
-  v14 = [v13 countByEnumeratingWithState:&v54 objects:v60 count:16];
+  accountsArray = [(IdsMapLeaf *)self accountsArray];
+  v14 = [accountsArray countByEnumeratingWithState:&v54 objects:v60 count:16];
   if (v14)
   {
     v15 = v14;
     v16 = *v55;
-    v39 = v13;
-    v40 = v10;
-    v43 = v11;
+    v39 = accountsArray;
+    v40 = hashCopy;
+    v43 = idHashCopy;
     v37 = *v55;
     do
     {
@@ -405,12 +405,12 @@ LABEL_20:
       {
         if (*v55 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(accountsArray);
         }
 
         v18 = *(*(&v54 + 1) + 8 * i);
-        v19 = [v18 accountKeyHash];
-        v20 = [v19 isEqualToData:v10];
+        accountKeyHash = [v18 accountKeyHash];
+        v20 = [accountKeyHash isEqualToData:hashCopy];
 
         if (v20)
         {
@@ -419,13 +419,13 @@ LABEL_20:
           v53 = 0u;
           v50 = 0u;
           v51 = 0u;
-          v21 = [v18 devicesArray];
-          v44 = [v21 countByEnumeratingWithState:&v50 objects:v59 count:16];
+          devicesArray = [v18 devicesArray];
+          v44 = [devicesArray countByEnumeratingWithState:&v50 objects:v59 count:16];
           if (v44)
           {
             v45 = *v51;
             v38 = v15;
-            v42 = v21;
+            v42 = devicesArray;
             do
             {
               v22 = 0;
@@ -434,12 +434,12 @@ LABEL_20:
               {
                 if (*v51 != v45)
                 {
-                  objc_enumerationMutation(v21);
+                  objc_enumerationMutation(devicesArray);
                 }
 
                 v24 = *(*(&v50 + 1) + 8 * v22);
-                v25 = [v24 deviceIdHash];
-                v26 = [v25 isEqualToData:v23];
+                deviceIdHash = [v24 deviceIdHash];
+                v26 = [deviceIdHash isEqualToData:v23];
 
                 if (v26)
                 {
@@ -447,8 +447,8 @@ LABEL_20:
                   v49 = 0u;
                   v46 = 0u;
                   v47 = 0u;
-                  v27 = [v24 clientDataArray];
-                  v28 = [v27 countByEnumeratingWithState:&v46 objects:v58 count:16];
+                  clientDataArray = [v24 clientDataArray];
+                  v28 = [clientDataArray countByEnumeratingWithState:&v46 objects:v58 count:16];
                   if (v28)
                   {
                     v29 = v28;
@@ -459,28 +459,28 @@ LABEL_20:
                       {
                         if (*v47 != v30)
                         {
-                          objc_enumerationMutation(v27);
+                          objc_enumerationMutation(clientDataArray);
                         }
 
                         v32 = *(*(&v46 + 1) + 8 * j);
-                        if ([v32 appVersion] == a5)
+                        if ([v32 appVersion] == version)
                         {
-                          v33 = [v32 clientDataHash];
-                          v34 = [v33 isEqualToData:v12];
+                          clientDataHash = [v32 clientDataHash];
+                          v34 = [clientDataHash isEqualToData:dataHashCopy];
 
                           if (v34)
                           {
                             v35 = v32;
 
-                            v13 = v39;
-                            v10 = v40;
-                            v11 = v43;
+                            accountsArray = v39;
+                            hashCopy = v40;
+                            idHashCopy = v43;
                             goto LABEL_31;
                           }
                         }
                       }
 
-                      v29 = [v27 countByEnumeratingWithState:&v46 objects:v58 count:16];
+                      v29 = [clientDataArray countByEnumeratingWithState:&v46 objects:v58 count:16];
                       if (v29)
                       {
                         continue;
@@ -490,7 +490,7 @@ LABEL_20:
                     }
                   }
 
-                  v21 = v42;
+                  devicesArray = v42;
                   v23 = v43;
                 }
 
@@ -498,11 +498,11 @@ LABEL_20:
               }
 
               while (v22 != v44);
-              v13 = v39;
-              v10 = v40;
+              accountsArray = v39;
+              hashCopy = v40;
               v16 = v37;
               v15 = v38;
-              v44 = [v21 countByEnumeratingWithState:&v50 objects:v59 count:16];
+              v44 = [devicesArray countByEnumeratingWithState:&v50 objects:v59 count:16];
             }
 
             while (v44);
@@ -512,9 +512,9 @@ LABEL_20:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v54 objects:v60 count:16];
+      v15 = [accountsArray countByEnumeratingWithState:&v54 objects:v60 count:16];
       v35 = 0;
-      v11 = v43;
+      idHashCopy = v43;
     }
 
     while (v15);
@@ -530,15 +530,15 @@ LABEL_31:
   return v35;
 }
 
-- (id)accountForAccountKeyHash:(id)a3
+- (id)accountForAccountKeyHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(IdsMapLeaf *)self accountsArray];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  accountsArray = [(IdsMapLeaf *)self accountsArray];
+  v6 = [accountsArray countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -548,12 +548,12 @@ LABEL_31:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accountsArray);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 accountKeyHash];
-        v11 = [v10 isEqual:v4];
+        accountKeyHash = [v9 accountKeyHash];
+        v11 = [accountKeyHash isEqual:hashCopy];
 
         if (v11)
         {
@@ -562,7 +562,7 @@ LABEL_31:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [accountsArray countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -577,14 +577,14 @@ LABEL_11:
   return v6;
 }
 
-- (unint64_t)verifyWithError:(id *)a3
+- (unint64_t)verifyWithError:(id *)error
 {
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v4 = [(IdsMapLeaf *)self accountsArray];
-  v5 = [v4 countByEnumeratingWithState:&v54 objects:v62 count:16];
+  accountsArray = [(IdsMapLeaf *)self accountsArray];
+  v5 = [accountsArray countByEnumeratingWithState:&v54 objects:v62 count:16];
   if (!v5)
   {
 LABEL_35:
@@ -599,19 +599,19 @@ LABEL_3:
 LABEL_4:
   if (*v55 != v7)
   {
-    objc_enumerationMutation(v4);
+    objc_enumerationMutation(accountsArray);
   }
 
   v9 = *(*(&v54 + 1) + 8 * v8);
-  v10 = [v9 accountKeyHash];
-  if (!v10 || (v11 = v10, [v9 accountKeyHash], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v11, !v13))
+  accountKeyHash = [v9 accountKeyHash];
+  if (!accountKeyHash || (v11 = accountKeyHash, [v9 accountKeyHash], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v11, !v13))
   {
     v37 = -81;
     goto LABEL_41;
   }
 
-  v14 = [v9 devicesArray];
-  v15 = [v14 count];
+  devicesArray = [v9 devicesArray];
+  v15 = [devicesArray count];
 
   if (!v15)
   {
@@ -623,16 +623,16 @@ LABEL_4:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v16 = [v9 devicesArray];
-  v17 = [v16 countByEnumeratingWithState:&v50 objects:v61 count:16];
+  devicesArray2 = [v9 devicesArray];
+  v17 = [devicesArray2 countByEnumeratingWithState:&v50 objects:v61 count:16];
   if (!v17)
   {
     goto LABEL_33;
   }
 
   v18 = *v51;
-  v43 = v4;
-  v44 = a3;
+  v43 = accountsArray;
+  errorCopy = error;
   v40 = *v51;
   v41 = v6;
 LABEL_11:
@@ -641,12 +641,12 @@ LABEL_11:
 LABEL_12:
   if (*v51 != v18)
   {
-    objc_enumerationMutation(v16);
+    objc_enumerationMutation(devicesArray2);
   }
 
   v20 = *(*(&v50 + 1) + 8 * v19);
-  v21 = [v20 clientDataArray];
-  v22 = [v21 count];
+  clientDataArray = [v20 clientDataArray];
+  v22 = [clientDataArray count];
 
   if (v22)
   {
@@ -654,8 +654,8 @@ LABEL_12:
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v23 = [v20 clientDataArray];
-    v24 = [v23 countByEnumeratingWithState:&v46 objects:v60 count:16];
+    clientDataArray2 = [v20 clientDataArray];
+    v24 = [clientDataArray2 countByEnumeratingWithState:&v46 objects:v60 count:16];
     if (!v24)
     {
       goto LABEL_31;
@@ -664,26 +664,26 @@ LABEL_12:
     v25 = v24;
     v26 = *v47;
     v39 = v7;
-    v45 = v16;
+    v45 = devicesArray2;
 LABEL_17:
     v27 = 0;
     while (1)
     {
       if (*v47 != v26)
       {
-        objc_enumerationMutation(v23);
+        objc_enumerationMutation(clientDataArray2);
       }
 
       v28 = *(*(&v46 + 1) + 8 * v27);
-      v29 = [v28 clientDataHash];
-      if (!v29)
+      clientDataHash = [v28 clientDataHash];
+      if (!clientDataHash)
       {
         break;
       }
 
-      v30 = v29;
-      v31 = [v28 clientDataHash];
-      v32 = [v31 length];
+      v30 = clientDataHash;
+      clientDataHash2 = [v28 clientDataHash];
+      v32 = [clientDataHash2 length];
 
       if (!v32)
       {
@@ -692,8 +692,8 @@ LABEL_17:
 
       if ([v28 markedForDeletionMs])
       {
-        v33 = [v28 escrowExpiryMs];
-        if (v33 <= [v28 markedForDeletionMs])
+        escrowExpiryMs = [v28 escrowExpiryMs];
+        if (escrowExpiryMs <= [v28 markedForDeletionMs])
         {
           v37 = -85;
           goto LABEL_39;
@@ -708,9 +708,9 @@ LABEL_17:
 
       if (v25 == ++v27)
       {
-        v25 = [v23 countByEnumeratingWithState:&v46 objects:v60 count:16];
+        v25 = [clientDataArray2 countByEnumeratingWithState:&v46 objects:v60 count:16];
         v7 = v39;
-        v16 = v45;
+        devicesArray2 = v45;
         if (v25)
         {
           goto LABEL_17;
@@ -723,16 +723,16 @@ LABEL_31:
         v18 = v40;
         if (v19 == v42)
         {
-          v17 = [v16 countByEnumeratingWithState:&v50 objects:v61 count:16];
-          v4 = v43;
-          a3 = v44;
+          v17 = [devicesArray2 countByEnumeratingWithState:&v50 objects:v61 count:16];
+          accountsArray = v43;
+          error = errorCopy;
           if (!v17)
           {
 LABEL_33:
 
             if (++v8 == v6)
             {
-              v6 = [v4 countByEnumeratingWithState:&v54 objects:v62 count:16];
+              v6 = [accountsArray countByEnumeratingWithState:&v54 objects:v62 count:16];
               if (!v6)
               {
                 goto LABEL_35;
@@ -754,21 +754,21 @@ LABEL_33:
     v37 = -84;
 LABEL_39:
 
-    v4 = v43;
-    a3 = v44;
-    v16 = v45;
+    accountsArray = v43;
+    error = errorCopy;
+    devicesArray2 = v45;
     goto LABEL_40;
   }
 
   v37 = -83;
-  v4 = v43;
-  a3 = v44;
+  accountsArray = v43;
+  error = errorCopy;
 LABEL_40:
 
 LABEL_41:
-  if (a3)
+  if (error)
   {
-    *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:v37 description:@"MapLeaf missing required fields or inconsistent"];
+    *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:v37 description:@"MapLeaf missing required fields or inconsistent"];
   }
 
   if (qword_10039CA40 != -1)

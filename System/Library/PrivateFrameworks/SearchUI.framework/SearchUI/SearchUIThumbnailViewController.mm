@@ -1,24 +1,24 @@
 @interface SearchUIThumbnailViewController
-+ (BOOL)rowModelHasSuggestionThumbnail:(id)a3;
-+ (BOOL)supportsRowModel:(id)a3;
++ (BOOL)rowModelHasSuggestionThumbnail:(id)thumbnail;
++ (BOOL)supportsRowModel:(id)model;
 + (id)compactSymbolFont;
 + (int64_t)compactSymbolScale;
-+ (void)applyImageConstraintsToImageView:(id)a3 isCompact:(BOOL)a4 preventThumbnailScaling:(BOOL)a5 usesCompactWidth:(BOOL)a6;
++ (void)applyImageConstraintsToImageView:(id)view isCompact:(BOOL)compact preventThumbnailScaling:(BOOL)scaling usesCompactWidth:(BOOL)width;
 - (BOOL)shouldVerticallyCenter;
-- (id)imageForRowModel:(id)a3 appearance:(id)a4;
+- (id)imageForRowModel:(id)model appearance:(id)appearance;
 - (id)setupView;
-- (void)setUsesCompactWidth:(BOOL)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)updateWithRowModel:(id)a3;
+- (void)setUsesCompactWidth:(BOOL)width;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIThumbnailViewController
 
 + (id)compactSymbolFont
 {
-  v2 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
   v3 = MEMORY[0x1E69D9138];
-  if (v2)
+  if (isMacOS)
   {
     v4 = [MEMORY[0x1E69D9138] cachedFontForTextStyle:*MEMORY[0x1E69DDDC0] isShort:0 isBold:1 isMacStyle:1];
   }
@@ -66,8 +66,8 @@
   [SearchUIAppIconImage sizeForVariant:2];
   v4 = v3;
   v6 = v5;
-  v7 = [(SearchUILeadingViewController *)self view];
-  [v7 intrinsicContentSize];
+  view = [(SearchUILeadingViewController *)self view];
+  [view intrinsicContentSize];
   v9 = v8;
   v11 = v10;
 
@@ -76,55 +76,55 @@
     return 1;
   }
 
-  v13 = [(SearchUILeadingViewController *)self rowModel];
-  v14 = [v13 useCompactVersionOfUI];
+  rowModel = [(SearchUILeadingViewController *)self rowModel];
+  useCompactVersionOfUI = [rowModel useCompactVersionOfUI];
 
-  return v14;
+  return useCompactVersionOfUI;
 }
 
-+ (BOOL)supportsRowModel:(id)a3
++ (BOOL)supportsRowModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 leadingImage];
-  if (v4)
+  modelCopy = model;
+  leadingImage = [modelCopy leadingImage];
+  if (leadingImage)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 fallbackImage];
-    if (v6)
+    fallbackImage = [modelCopy fallbackImage];
+    if (fallbackImage)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [SearchUIThumbnailViewController rowModelHasSuggestionThumbnail:v3];
+      v5 = [SearchUIThumbnailViewController rowModelHasSuggestionThumbnail:modelCopy];
     }
   }
 
   return v5;
 }
 
-+ (BOOL)rowModelHasSuggestionThumbnail:(id)a3
++ (BOOL)rowModelHasSuggestionThumbnail:(id)thumbnail
 {
-  v3 = [a3 cardSection];
+  cardSection = [thumbnail cardSection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-+ (void)applyImageConstraintsToImageView:(id)a3 isCompact:(BOOL)a4 preventThumbnailScaling:(BOOL)a5 usesCompactWidth:(BOOL)a6
++ (void)applyImageConstraintsToImageView:(id)view isCompact:(BOOL)compact preventThumbnailScaling:(BOOL)scaling usesCompactWidth:(BOOL)width
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = v9;
-  if (v8)
+  widthCopy = width;
+  scalingCopy = scaling;
+  compactCopy = compact;
+  viewCopy = view;
+  v10 = viewCopy;
+  if (compactCopy)
   {
     +[SearchUISuggestionImageUtilities maximumSize];
     [v10 setMaximumLayoutSize:?];
@@ -132,25 +132,25 @@
     [v10 setMinimumLayoutSize:?];
   }
 
-  else if (v7)
+  else if (scalingCopy)
   {
-    [MEMORY[0x1E69D91A8] maxThumbnailSizeIsCompactWidth:v6];
+    [MEMORY[0x1E69D91A8] maxThumbnailSizeIsCompactWidth:widthCopy];
     [v10 setMinimumLayoutSize:?];
     [v10 setMaximumLayoutSize:{*MEMORY[0x1E698B700], *(MEMORY[0x1E698B700] + 8)}];
   }
 
   else
   {
-    [MEMORY[0x1E69D91A8] applyRowBoundedSizingToImageView:v9 isCompactWidth:v6];
+    [MEMORY[0x1E69D91A8] applyRowBoundedSizingToImageView:viewCopy isCompactWidth:widthCopy];
   }
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = SearchUIThumbnailViewController;
-  [(SearchUILeadingViewController *)&v14 updateWithRowModel:v4];
+  [(SearchUILeadingViewController *)&v14 updateWithRowModel:modelCopy];
   if ([MEMORY[0x1E69D9240] isMacOS])
   {
     [MEMORY[0x1E69D9138] cachedFontForMacTextStyle:*MEMORY[0x1E69DDDC0]];
@@ -161,57 +161,57 @@
     [MEMORY[0x1E69D9138] cachedFontForTextStyle:*MEMORY[0x1E69DDD58]];
   }
   v5 = ;
-  v6 = [v4 useCompactVersionOfUI];
-  v7 = v5;
-  if (v6)
+  useCompactVersionOfUI = [modelCopy useCompactVersionOfUI];
+  compactSymbolFont = v5;
+  if (useCompactVersionOfUI)
   {
-    v7 = [objc_opt_class() compactSymbolFont];
+    compactSymbolFont = [objc_opt_class() compactSymbolFont];
   }
 
-  v8 = [(SearchUILeadingViewController *)self view];
-  [v8 setSymbolFont:v7];
+  view = [(SearchUILeadingViewController *)self view];
+  [view setSymbolFont:compactSymbolFont];
 
-  if (v6)
+  if (useCompactVersionOfUI)
   {
   }
 
-  if ([v4 useCompactVersionOfUI])
+  if ([modelCopy useCompactVersionOfUI])
   {
-    v9 = [objc_opt_class() compactSymbolScale];
+    compactSymbolScale = [objc_opt_class() compactSymbolScale];
   }
 
   else
   {
-    v9 = 2;
+    compactSymbolScale = 2;
   }
 
-  v10 = [(SearchUILeadingViewController *)self view];
-  [v10 setSymbolScale:v9];
+  view2 = [(SearchUILeadingViewController *)self view];
+  [view2 setSymbolScale:compactSymbolScale];
 
   v11 = MEMORY[0x1E69D9108];
-  v12 = [(SearchUILeadingViewController *)self view];
-  v13 = [v11 bestAppearanceForView:v12];
+  view3 = [(SearchUILeadingViewController *)self view];
+  v13 = [v11 bestAppearanceForView:view3];
   [(SearchUIThumbnailViewController *)self tlk_updateForAppearance:v13];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v12.receiver = self;
   v12.super_class = SearchUIThumbnailViewController;
-  [(SearchUILeadingViewController *)&v12 tlk_updateForAppearance:v4];
-  v5 = [(SearchUILeadingViewController *)self rowModel];
-  v6 = [(SearchUILeadingViewController *)self view];
+  [(SearchUILeadingViewController *)&v12 tlk_updateForAppearance:appearanceCopy];
+  rowModel = [(SearchUILeadingViewController *)self rowModel];
+  view = [(SearchUILeadingViewController *)self view];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__SearchUIThumbnailViewController_tlk_updateForAppearance___block_invoke;
   v9[3] = &unk_1E85B26A8;
   v9[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  [v6 performBatchUpdates:v9];
+  v10 = rowModel;
+  v11 = appearanceCopy;
+  v7 = appearanceCopy;
+  v8 = rowModel;
+  [view performBatchUpdates:v9];
 }
 
 void __59__SearchUIThumbnailViewController_tlk_updateForAppearance___block_invoke(uint64_t a1)
@@ -329,38 +329,38 @@ void __59__SearchUIThumbnailViewController_tlk_updateForAppearance___block_invok
   }
 }
 
-- (id)imageForRowModel:(id)a3 appearance:(id)a4
+- (id)imageForRowModel:(id)model appearance:(id)appearance
 {
-  v4 = a3;
-  v5 = [v4 leadingImage];
-  if (v5 || ![SearchUIThumbnailViewController rowModelHasSuggestionThumbnail:v4])
+  modelCopy = model;
+  leadingImage = [modelCopy leadingImage];
+  if (leadingImage || ![SearchUIThumbnailViewController rowModelHasSuggestionThumbnail:modelCopy])
   {
-    v7 = v5;
+    v7 = leadingImage;
   }
 
   else
   {
-    v6 = [v4 cardSection];
-    v7 = [SearchUISuggestionImageUtilities imageForSuggestionCardSection:v6];
+    cardSection = [modelCopy cardSection];
+    v7 = [SearchUISuggestionImageUtilities imageForSuggestionCardSection:cardSection];
   }
 
   return v7;
 }
 
-- (void)setUsesCompactWidth:(BOOL)a3
+- (void)setUsesCompactWidth:(BOOL)width
 {
-  v3 = a3;
-  if ([(SearchUILeadingViewController *)self usesCompactWidth]!= a3)
+  widthCopy = width;
+  if ([(SearchUILeadingViewController *)self usesCompactWidth]!= width)
   {
     v10.receiver = self;
     v10.super_class = SearchUIThumbnailViewController;
-    [(SearchUILeadingViewController *)&v10 setUsesCompactWidth:v3];
+    [(SearchUILeadingViewController *)&v10 setUsesCompactWidth:widthCopy];
     v5 = objc_opt_class();
-    v6 = [(SearchUILeadingViewController *)self view];
-    v7 = [(SearchUILeadingViewController *)self rowModel];
-    v8 = [v7 useCompactVersionOfUI];
-    v9 = [(SearchUILeadingViewController *)self rowModel];
-    [v5 applyImageConstraintsToImageView:v6 isCompact:v8 preventThumbnailScaling:objc_msgSend(v9 usesCompactWidth:{"preventThumbnailImageScaling"), -[SearchUILeadingViewController usesCompactWidth](self, "usesCompactWidth")}];
+    view = [(SearchUILeadingViewController *)self view];
+    rowModel = [(SearchUILeadingViewController *)self rowModel];
+    useCompactVersionOfUI = [rowModel useCompactVersionOfUI];
+    rowModel2 = [(SearchUILeadingViewController *)self rowModel];
+    [v5 applyImageConstraintsToImageView:view isCompact:useCompactVersionOfUI preventThumbnailScaling:objc_msgSend(rowModel2 usesCompactWidth:{"preventThumbnailImageScaling"), -[SearchUILeadingViewController usesCompactWidth](self, "usesCompactWidth")}];
   }
 }
 

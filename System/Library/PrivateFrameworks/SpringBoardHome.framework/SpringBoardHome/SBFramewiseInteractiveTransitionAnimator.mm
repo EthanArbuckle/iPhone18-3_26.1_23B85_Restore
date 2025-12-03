@@ -1,48 +1,48 @@
 @interface SBFramewiseInteractiveTransitionAnimator
 - (SBFramewiseInteractiveTransitionAnimatorDelegate)delegate;
 - (double)percentVisible;
-- (void)animateTransition:(id)a3;
-- (void)cancelTransition:(id)a3 withCompletionSpeed:(double)a4 completionCurve:(int64_t)a5;
-- (void)finishInteractiveTransition:(id)a3 withCompletionSpeed:(double)a4 completionCurve:(int64_t)a5;
-- (void)updateTransition:(id)a3 withPercentComplete:(double)a4;
+- (void)animateTransition:(id)transition;
+- (void)cancelTransition:(id)transition withCompletionSpeed:(double)speed completionCurve:(int64_t)curve;
+- (void)finishInteractiveTransition:(id)transition withCompletionSpeed:(double)speed completionCurve:(int64_t)curve;
+- (void)updateTransition:(id)transition withPercentComplete:(double)complete;
 @end
 
 @implementation SBFramewiseInteractiveTransitionAnimator
 
-- (void)updateTransition:(id)a3 withPercentComplete:(double)a4
+- (void)updateTransition:(id)transition withPercentComplete:(double)complete
 {
-  self->_percentComplete = a4;
-  v6 = a3;
+  self->_percentComplete = complete;
+  transitionCopy = transition;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained transitionContext:v6 updateTransitionProgress:a4];
+  [WeakRetained transitionContext:transitionCopy updateTransitionProgress:complete];
 }
 
-- (void)finishInteractiveTransition:(id)a3 withCompletionSpeed:(double)a4 completionCurve:(int64_t)a5
+- (void)finishInteractiveTransition:(id)transition withCompletionSpeed:(double)speed completionCurve:(int64_t)curve
 {
-  v5 = a3;
-  [v5 completeTransition:{objc_msgSend(v5, "transitionWasCancelled") ^ 1}];
+  transitionCopy = transition;
+  [transitionCopy completeTransition:{objc_msgSend(transitionCopy, "transitionWasCancelled") ^ 1}];
 }
 
-- (void)cancelTransition:(id)a3 withCompletionSpeed:(double)a4 completionCurve:(int64_t)a5
+- (void)cancelTransition:(id)transition withCompletionSpeed:(double)speed completionCurve:(int64_t)curve
 {
-  v5 = a3;
-  [v5 completeTransition:{objc_msgSend(v5, "transitionWasCancelled") ^ 1}];
+  transitionCopy = transition;
+  [transitionCopy completeTransition:{objc_msgSend(transitionCopy, "transitionWasCancelled") ^ 1}];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  if ([v4 isAnimated])
+  transitionCopy = transition;
+  if ([transitionCopy isAnimated])
   {
     v5 = MEMORY[0x1E69DD250];
-    [(SBFramewiseInteractiveTransitionAnimator *)self transitionDuration:v4];
+    [(SBFramewiseInteractiveTransitionAnimator *)self transitionDuration:transitionCopy];
     v7 = v6;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __62__SBFramewiseInteractiveTransitionAnimator_animateTransition___block_invoke;
     v10[3] = &unk_1E8088F18;
     v10[4] = self;
-    v11 = v4;
+    v11 = transitionCopy;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __62__SBFramewiseInteractiveTransitionAnimator_animateTransition___block_invoke_2;
@@ -53,7 +53,7 @@
 
   else
   {
-    [v4 completeTransition:{objc_msgSend(v4, "transitionWasCancelled") ^ 1}];
+    [transitionCopy completeTransition:{objc_msgSend(transitionCopy, "transitionWasCancelled") ^ 1}];
   }
 }
 

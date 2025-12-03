@@ -1,80 +1,80 @@
 @interface HMIJSONUnarchiver
-+ (id)objectWithJSONData:(id)a3 classMap:(id)a4;
-+ (id)objectWithJSONObject:(id)a3 classMap:(id)a4;
-+ (id)objectWithJSONObjectString:(id)a3 classMap:(id)a4;
-- (BOOL)decodeBoolForKey:(id)a3;
-- (HMIJSONUnarchiver)initWithJSONObject:(id)a3;
-- (double)decodeDoubleForKey:(id)a3;
-- (id)_objectWithJSONObject:(id)a3 allowedClasses:(id)a4;
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4;
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4;
-- (int)decodeInt32ForKey:(id)a3;
-- (int64_t)decodeInt64ForKey:(id)a3;
++ (id)objectWithJSONData:(id)data classMap:(id)map;
++ (id)objectWithJSONObject:(id)object classMap:(id)map;
++ (id)objectWithJSONObjectString:(id)string classMap:(id)map;
+- (BOOL)decodeBoolForKey:(id)key;
+- (HMIJSONUnarchiver)initWithJSONObject:(id)object;
+- (double)decodeDoubleForKey:(id)key;
+- (id)_objectWithJSONObject:(id)object allowedClasses:(id)classes;
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key;
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key;
+- (int)decodeInt32ForKey:(id)key;
+- (int64_t)decodeInt64ForKey:(id)key;
 @end
 
 @implementation HMIJSONUnarchiver
 
-- (HMIJSONUnarchiver)initWithJSONObject:(id)a3
+- (HMIJSONUnarchiver)initWithJSONObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = HMIJSONUnarchiver;
   v6 = [(HMIJSONUnarchiver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_container, a3);
+    objc_storeStrong(&v6->_container, object);
   }
 
   return v7;
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
-  v3 = [self->_container objectForKeyedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [self->_container objectForKeyedSubscript:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (int)decodeInt32ForKey:(id)a3
+- (int)decodeInt32ForKey:(id)key
 {
-  v3 = [self->_container objectForKeyedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [self->_container objectForKeyedSubscript:key];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
-  v3 = [self->_container objectForKeyedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [self->_container objectForKeyedSubscript:key];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
-  v3 = [self->_container objectForKeyedSubscript:a3];
+  v3 = [self->_container objectForKeyedSubscript:key];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (id)_objectWithJSONObject:(id)a3 allowedClasses:(id)a4
+- (id)_objectWithJSONObject:(id)object allowedClasses:(id)classes
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  objectCopy = object;
+  classesCopy = classes;
+  if (!objectCopy)
   {
     v11 = 0;
     goto LABEL_23;
   }
 
-  v8 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v8 == v6)
+  if (null == objectCopy)
   {
     goto LABEL_11;
   }
@@ -82,7 +82,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (![v9 hasPrefix:{@"data:base64, "}] || (objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v9), v10 = v9 = v6;
+    if (![v9 hasPrefix:{@"data:base64, "}] || (objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v9), v10 = v9 = objectCopy;
     {
       if (![v9 hasSuffix:@"Z"] || (v12 = objc_alloc_init(MEMORY[0x277CCAA68]), objc_msgSend(v12, "dateFromString:", v9), v11 = objc_claimAutoreleasedReturnValue(), v12, !v11))
       {
@@ -97,7 +97,7 @@
   if (objc_opt_isKindOfClass())
   {
 LABEL_11:
-    v11 = v6;
+    v11 = objectCopy;
     goto LABEL_23;
   }
 
@@ -109,8 +109,8 @@ LABEL_11:
     v32[2] = __58__HMIJSONUnarchiver__objectWithJSONObject_allowedClasses___block_invoke;
     v32[3] = &unk_2787546F8;
     v32[4] = self;
-    v33 = v7;
-    v11 = [v6 na_map:v32];
+    v33 = classesCopy;
+    v11 = [objectCopy na_map:v32];
 
     goto LABEL_23;
   }
@@ -127,12 +127,12 @@ LABEL_11:
     objc_exception_throw(v23);
   }
 
-  v9 = v6;
+  v9 = objectCopy;
   v13 = [v9 objectForKeyedSubscript:@"$"];
   if (v13)
   {
-    v14 = [(HMIJSONUnarchiver *)self classMap];
-    v15 = [v14 objectForKeyedSubscript:v13];
+    classMap = [(HMIJSONUnarchiver *)self classMap];
+    v15 = [classMap objectForKeyedSubscript:v13];
 
     if (!v15)
     {
@@ -152,8 +152,8 @@ LABEL_11:
     }
 
     v17 = [[HMIJSONUnarchiver alloc] initWithJSONObject:v9];
-    v18 = [(HMIJSONUnarchiver *)self classMap];
-    [(HMIJSONUnarchiver *)v17 setClassMap:v18];
+    classMap2 = [(HMIJSONUnarchiver *)self classMap];
+    [(HMIJSONUnarchiver *)v17 setClassMap:classMap2];
 
     v11 = [[v15 alloc] initWithCoder:v17];
   }
@@ -165,7 +165,7 @@ LABEL_11:
     v30[2] = __58__HMIJSONUnarchiver__objectWithJSONObject_allowedClasses___block_invoke_2;
     v30[3] = &unk_278754720;
     v30[4] = self;
-    v31 = v7;
+    v31 = classesCopy;
     v11 = [v9 na_dictionaryByMappingValues:v30];
   }
 
@@ -175,52 +175,52 @@ LABEL_23:
   return v11;
 }
 
-- (id)decodeObjectOfClass:(Class)a3 forKey:(id)a4
+- (id)decodeObjectOfClass:(Class)class forKey:(id)key
 {
-  v6 = [self->_container objectForKeyedSubscript:a4];
-  v7 = [MEMORY[0x277CBEB98] setWithObject:a3];
+  v6 = [self->_container objectForKeyedSubscript:key];
+  v7 = [MEMORY[0x277CBEB98] setWithObject:class];
   v8 = [(HMIJSONUnarchiver *)self _objectWithJSONObject:v6 allowedClasses:v7];
 
   return v8;
 }
 
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key
 {
   container = self->_container;
-  v7 = a3;
-  v8 = [container objectForKeyedSubscript:a4];
-  v9 = [(HMIJSONUnarchiver *)self _objectWithJSONObject:v8 allowedClasses:v7];
+  classesCopy = classes;
+  v8 = [container objectForKeyedSubscript:key];
+  v9 = [(HMIJSONUnarchiver *)self _objectWithJSONObject:v8 allowedClasses:classesCopy];
 
   return v9;
 }
 
-+ (id)objectWithJSONObject:(id)a3 classMap:(id)a4
++ (id)objectWithJSONObject:(id)object classMap:(id)map
 {
-  v5 = a4;
-  v6 = a3;
+  mapCopy = map;
+  objectCopy = object;
   v7 = objc_alloc_init(HMIJSONUnarchiver);
-  [(HMIJSONUnarchiver *)v7 setClassMap:v5];
+  [(HMIJSONUnarchiver *)v7 setClassMap:mapCopy];
 
-  v8 = [(HMIJSONUnarchiver *)v7 _objectWithJSONObject:v6 allowedClasses:0];
-
-  return v8;
-}
-
-+ (id)objectWithJSONObjectString:(id)a3 classMap:(id)a4
-{
-  v6 = a4;
-  v7 = [a3 dataUsingEncoding:4];
-  v8 = [a1 objectWithJSONData:v7 classMap:v6];
+  v8 = [(HMIJSONUnarchiver *)v7 _objectWithJSONObject:objectCopy allowedClasses:0];
 
   return v8;
 }
 
-+ (id)objectWithJSONData:(id)a3 classMap:(id)a4
++ (id)objectWithJSONObjectString:(id)string classMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  v7 = [string dataUsingEncoding:4];
+  v8 = [self objectWithJSONData:v7 classMap:mapCopy];
+
+  return v8;
+}
+
++ (id)objectWithJSONData:(id)data classMap:(id)map
+{
+  dataCopy = data;
+  mapCopy = map;
   v17 = 0;
-  v8 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v6 options:4 error:&v17];
+  v8 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:4 error:&v17];
   v9 = v17;
   if (!v8)
   {
@@ -233,7 +233,7 @@ LABEL_23:
     objc_exception_throw(v15);
   }
 
-  v10 = [a1 objectWithJSONObject:v8 classMap:v7];
+  v10 = [self objectWithJSONObject:v8 classMap:mapCopy];
 
   return v10;
 }

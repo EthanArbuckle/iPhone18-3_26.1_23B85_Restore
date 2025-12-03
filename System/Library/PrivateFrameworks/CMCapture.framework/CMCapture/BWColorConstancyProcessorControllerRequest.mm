@@ -11,9 +11,9 @@
     return 1;
   }
 
-  v4 = [(BWStillImageProcessorControllerRequest *)self input];
+  input = [(BWStillImageProcessorControllerRequest *)self input];
 
-  return [(BWStillImageProcessorControllerInput *)v4 addFrameFailed];
+  return [(BWStillImageProcessorControllerInput *)input addFrameFailed];
 }
 
 @end

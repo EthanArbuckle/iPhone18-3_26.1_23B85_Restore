@@ -1,22 +1,22 @@
 @interface UtraReselectionInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addUtraNcell:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSfMedium:(BOOL)a3;
-- (void)setHasTReselection:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addUtraNcell:(id)ncell;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSfMedium:(BOOL)medium;
+- (void)setHasTReselection:(BOOL)reselection;
+- (void)writeTo:(id)to;
 @end
 
 @implementation UtraReselectionInfo
 
-- (void)setHasTReselection:(BOOL)a3
+- (void)setHasTReselection:(BOOL)reselection
 {
-  if (a3)
+  if (reselection)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSfMedium:(BOOL)a3
+- (void)setHasSfMedium:(BOOL)medium
 {
-  if (a3)
+  if (medium)
   {
     v3 = 2;
   }
@@ -44,22 +44,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addUtraNcell:(id)a3
+- (void)addUtraNcell:(id)ncell
 {
-  v4 = a3;
+  ncellCopy = ncell;
   utraNcells = self->_utraNcells;
-  v8 = v4;
+  v8 = ncellCopy;
   if (!utraNcells)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_utraNcells;
     self->_utraNcells = v6;
 
-    v4 = v8;
+    ncellCopy = v8;
     utraNcells = self->_utraNcells;
   }
 
-  [(NSMutableArray *)utraNcells addObject:v4];
+  [(NSMutableArray *)utraNcells addObject:ncellCopy];
 }
 
 - (id)description
@@ -67,8 +67,8 @@
   v7.receiver = self;
   v7.super_class = UtraReselectionInfo;
   v3 = [(UtraReselectionInfo *)&v7 description];
-  v4 = [(UtraReselectionInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(UtraReselectionInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -133,8 +133,8 @@ LABEL_5:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -149,9 +149,9 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -215,9 +215,9 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -227,8 +227,8 @@ LABEL_5:
     }
 
 LABEL_13:
-    v4[3] = self->_sfMedium;
-    *(v4 + 32) |= 2u;
+    toCopy[3] = self->_sfMedium;
+    *(toCopy + 32) |= 2u;
     if ((*&self->_has & 1) == 0)
     {
       goto LABEL_5;
@@ -237,8 +237,8 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  v4[4] = self->_tReselection;
-  *(v4 + 32) |= 4u;
+  toCopy[4] = self->_tReselection;
+  *(toCopy + 32) |= 4u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -249,19 +249,19 @@ LABEL_3:
   if (has)
   {
 LABEL_4:
-    v4[2] = self->_sfHigh;
-    *(v4 + 32) |= 1u;
+    toCopy[2] = self->_sfHigh;
+    *(toCopy + 32) |= 1u;
   }
 
 LABEL_5:
-  v10 = v4;
+  v10 = toCopy;
   if ([(UtraReselectionInfo *)self utraNcellsCount])
   {
     [v10 clearUtraNcells];
-    v6 = [(UtraReselectionInfo *)self utraNcellsCount];
-    if (v6)
+    utraNcellsCount = [(UtraReselectionInfo *)self utraNcellsCount];
+    if (utraNcellsCount)
     {
-      v7 = v6;
+      v7 = utraNcellsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(UtraReselectionInfo *)self utraNcellAtIndex:i];
@@ -271,9 +271,9 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -327,7 +327,7 @@ LABEL_5:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{zone, v15}];
         [v6 addUtraNcell:v13];
       }
 
@@ -340,24 +340,24 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_tReselection != *(v4 + 4))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_tReselection != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
 LABEL_19:
     v7 = 0;
@@ -366,32 +366,32 @@ LABEL_19:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_sfMedium != *(v4 + 3))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_sfMedium != *(equalCopy + 3))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_sfHigh != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_sfHigh != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_19;
   }
 
   utraNcells = self->_utraNcells;
-  if (utraNcells | *(v4 + 3))
+  if (utraNcells | *(equalCopy + 3))
   {
     v7 = [(NSMutableArray *)utraNcells isEqual:?];
   }
@@ -446,16 +446,16 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(NSMutableArray *)self->_utraNcells hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 32);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 32);
   if ((v6 & 4) != 0)
   {
-    self->_tReselection = *(v4 + 4);
+    self->_tReselection = *(fromCopy + 4);
     *&self->_has |= 4u;
-    v6 = *(v4 + 32);
+    v6 = *(fromCopy + 32);
     if ((v6 & 2) == 0)
     {
 LABEL_3:
@@ -468,17 +468,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 2) == 0)
+  else if ((*(fromCopy + 32) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sfMedium = *(v4 + 3);
+  self->_sfMedium = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
 LABEL_4:
-    self->_sfHigh = *(v4 + 2);
+    self->_sfHigh = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
@@ -487,7 +487,7 @@ LABEL_5:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

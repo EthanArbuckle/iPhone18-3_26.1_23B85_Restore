@@ -13,17 +13,17 @@
 {
   v1 = MEMORY[0x1E695EFD0];
   v2 = *(MEMORY[0x1E695EFD0] + 16);
-  *a1 = *MEMORY[0x1E695EFD0];
-  *(a1 + 16) = v2;
+  *self = *MEMORY[0x1E695EFD0];
+  *(self + 16) = v2;
   result = v1[2];
-  *(a1 + 32) = result;
+  *(self + 32) = result;
   return result;
 }
 
 - (float)px_playbackScore
 {
-  v1 = [a1 mediaAnalysisProperties];
-  [v1 autoplaySuggestionScore];
+  mediaAnalysisProperties = [self mediaAnalysisProperties];
+  [mediaAnalysisProperties autoplaySuggestionScore];
   v3 = v2;
 
   return v3;
@@ -42,8 +42,8 @@
         {
           if (a3 == 6 || a3 == 7)
           {
-            v9 = [result creationDate];
-            [v9 timeIntervalSinceReferenceDate];
+            creationDate = [result creationDate];
+            [creationDate timeIntervalSinceReferenceDate];
             srand(v10);
 
             return rand();
@@ -102,7 +102,7 @@
     result = 0.0;
     if (a3 == 2)
     {
-      [a1 highlightVisibilityScore];
+      [self highlightVisibilityScore];
       v7 = fmod(v6 * 130.0, 100.0);
       return fmod(v7, 20.0) / 10.0;
     }
@@ -111,7 +111,7 @@
   else
   {
 
-    [a1 weight];
+    [self weight];
   }
 
   return result;
@@ -120,16 +120,16 @@
 - (uint64_t)weight
 {
   v2 = +[PXGridSettings sharedInstance];
-  v3 = [v2 weightingScheme];
+  weightingScheme = [v2 weightingScheme];
 
-  return [a1 weightUsingWeightingScheme:v3];
+  return [self weightUsingWeightingScheme:weightingScheme];
 }
 
 - (double)size
 {
-  v2 = [a1 pixelWidth];
-  [a1 pixelHeight];
-  return v2;
+  pixelWidth = [self pixelWidth];
+  [self pixelHeight];
+  return pixelWidth;
 }
 
 @end

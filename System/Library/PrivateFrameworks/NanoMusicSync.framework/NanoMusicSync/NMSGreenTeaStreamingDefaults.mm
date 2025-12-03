@@ -1,6 +1,6 @@
 @interface NMSGreenTeaStreamingDefaults
 + (id)sharedInstance;
-- (BOOL)_BOOLForKey:(id)a3;
+- (BOOL)_BOOLForKey:(id)key;
 - (NMSGreenTeaStreamingDefaults)init;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __46__NMSGreenTeaStreamingDefaults_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -48,15 +48,15 @@ uint64_t __46__NMSGreenTeaStreamingDefaults_sharedInstance__block_invoke(uint64_
   return v2;
 }
 
-- (BOOL)_BOOLForKey:(id)a3
+- (BOOL)_BOOLForKey:(id)key
 {
-  v3 = self;
+  selfCopy = self;
   sharedDefaults = self->_sharedDefaults;
-  v5 = a3;
+  keyCopy = key;
   [(NSUserDefaults *)sharedDefaults synchronize];
-  LOBYTE(v3) = [(NSUserDefaults *)v3->_sharedDefaults BOOLForKey:v5];
+  LOBYTE(selfCopy) = [(NSUserDefaults *)selfCopy->_sharedDefaults BOOLForKey:keyCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 @end

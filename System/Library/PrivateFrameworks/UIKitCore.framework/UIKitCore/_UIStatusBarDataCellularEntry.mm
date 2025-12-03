@@ -1,10 +1,10 @@
 @interface _UIStatusBarDataCellularEntry
-- (BOOL)isEqual:(id)a3;
-- (_UIStatusBarDataCellularEntry)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIStatusBarDataCellularEntry)initWithCoder:(id)coder;
 - (id)_ui_descriptionBuilder;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIStatusBarDataCellularEntry
@@ -19,11 +19,11 @@
   return v4 ^ v5 ^ [(NSString *)self->_crossfadeString hash]^ LOBYTE(self->super._status) ^ BYTE1(self->super._status) ^ BYTE2(self->super._status) ^ BYTE3(self->super._status) ^ BYTE4(self->super._status);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _UIStatusBarDataCellularEntry;
-  v4 = [(_UIStatusBarDataNetworkEntry *)&v6 copyWithZone:a3];
+  v4 = [(_UIStatusBarDataNetworkEntry *)&v6 copyWithZone:zone];
   [v4 setType:*&self->_wifiCallingEnabled];
   [v4 setString:self->_type];
   [v4 setCrossfadeString:self->_string];
@@ -36,66 +36,66 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIStatusBarDataCellularEntry;
-  v4 = a3;
-  [(_UIStatusBarDataNetworkEntry *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:*&self->_wifiCallingEnabled forKey:{@"type", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_type forKey:@"string"];
-  [v4 encodeObject:self->_string forKey:@"crossfadeString"];
-  [v4 encodeObject:self->_crossfadeString forKey:@"badgeString"];
-  [v4 encodeBool:LOBYTE(self->super._status) forKey:@"wifiCallingEnabled"];
-  [v4 encodeBool:BYTE1(self->super._status) forKey:@"callForwardingEnabled"];
-  [v4 encodeBool:BYTE2(self->super._status) forKey:@"showsSOSWhenDisabled"];
-  [v4 encodeBool:BYTE3(self->super._status) forKey:@"sosAvailable"];
-  [v4 encodeBool:BYTE4(self->super._status) forKey:@"isBootstrapCellular"];
+  coderCopy = coder;
+  [(_UIStatusBarDataNetworkEntry *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:*&self->_wifiCallingEnabled forKey:{@"type", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_type forKey:@"string"];
+  [coderCopy encodeObject:self->_string forKey:@"crossfadeString"];
+  [coderCopy encodeObject:self->_crossfadeString forKey:@"badgeString"];
+  [coderCopy encodeBool:LOBYTE(self->super._status) forKey:@"wifiCallingEnabled"];
+  [coderCopy encodeBool:BYTE1(self->super._status) forKey:@"callForwardingEnabled"];
+  [coderCopy encodeBool:BYTE2(self->super._status) forKey:@"showsSOSWhenDisabled"];
+  [coderCopy encodeBool:BYTE3(self->super._status) forKey:@"sosAvailable"];
+  [coderCopy encodeBool:BYTE4(self->super._status) forKey:@"isBootstrapCellular"];
 }
 
-- (_UIStatusBarDataCellularEntry)initWithCoder:(id)a3
+- (_UIStatusBarDataCellularEntry)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = _UIStatusBarDataCellularEntry;
-  v3 = a3;
-  v4 = [(_UIStatusBarDataNetworkEntry *)&v10 initWithCoder:v3];
-  -[_UIStatusBarDataCellularEntry setType:](v4, "setType:", [v3 decodeIntegerForKey:{@"type", v10.receiver, v10.super_class}]);
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"string"];
+  coderCopy = coder;
+  v4 = [(_UIStatusBarDataNetworkEntry *)&v10 initWithCoder:coderCopy];
+  -[_UIStatusBarDataCellularEntry setType:](v4, "setType:", [coderCopy decodeIntegerForKey:{@"type", v10.receiver, v10.super_class}]);
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"string"];
   [(_UIStatusBarDataCellularEntry *)v4 setString:v5];
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"crossfadeString"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"crossfadeString"];
   [(_UIStatusBarDataCellularEntry *)v4 setCrossfadeString:v6];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"badgeString"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"badgeString"];
   [(_UIStatusBarDataCellularEntry *)v4 setBadgeString:v7];
 
-  -[_UIStatusBarDataCellularEntry setWifiCallingEnabled:](v4, "setWifiCallingEnabled:", [v3 decodeBoolForKey:@"wifiCallingEnabled"]);
-  -[_UIStatusBarDataCellularEntry setCallForwardingEnabled:](v4, "setCallForwardingEnabled:", [v3 decodeBoolForKey:@"callForwardingEnabled"]);
-  -[_UIStatusBarDataCellularEntry setShowsSOSWhenDisabled:](v4, "setShowsSOSWhenDisabled:", [v3 decodeBoolForKey:@"showsSOSWhenDisabled"]);
-  -[_UIStatusBarDataCellularEntry setSosAvailable:](v4, "setSosAvailable:", [v3 decodeBoolForKey:@"sosAvailable"]);
-  v8 = [v3 decodeBoolForKey:@"isBootstrapCellular"];
+  -[_UIStatusBarDataCellularEntry setWifiCallingEnabled:](v4, "setWifiCallingEnabled:", [coderCopy decodeBoolForKey:@"wifiCallingEnabled"]);
+  -[_UIStatusBarDataCellularEntry setCallForwardingEnabled:](v4, "setCallForwardingEnabled:", [coderCopy decodeBoolForKey:@"callForwardingEnabled"]);
+  -[_UIStatusBarDataCellularEntry setShowsSOSWhenDisabled:](v4, "setShowsSOSWhenDisabled:", [coderCopy decodeBoolForKey:@"showsSOSWhenDisabled"]);
+  -[_UIStatusBarDataCellularEntry setSosAvailable:](v4, "setSosAvailable:", [coderCopy decodeBoolForKey:@"sosAvailable"]);
+  v8 = [coderCopy decodeBoolForKey:@"isBootstrapCellular"];
 
   [(_UIStatusBarDataCellularEntry *)v4 setIsBootstrapCellular:v8];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v31.receiver = self;
   v31.super_class = _UIStatusBarDataCellularEntry;
-  if ([(_UIStatusBarDataNetworkEntry *)&v31 isEqual:v4])
+  if ([(_UIStatusBarDataNetworkEntry *)&v31 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (([v5 isEnabled] & 1) != 0 || -[_UIStatusBarDataEntry isEnabled](self, "isEnabled"))
     {
       v6 = *&self->_wifiCallingEnabled;
       if (v6 == [v5 type])
       {
         type = self->_type;
-        v8 = [v5 string];
+        string = [v5 string];
         v9 = type;
-        v10 = v8;
+        v10 = string;
         v11 = v10;
         if (v9 == v10)
         {
@@ -132,9 +132,9 @@ LABEL_40:
         }
 
         string = self->_string;
-        v17 = [v5 crossfadeString];
+        crossfadeString = [v5 crossfadeString];
         v14 = string;
-        v18 = v17;
+        v18 = crossfadeString;
         v9 = v18;
         if (v14 == v18)
         {
@@ -160,9 +160,9 @@ LABEL_39:
         }
 
         crossfadeString = self->_crossfadeString;
-        v21 = [v5 badgeString];
+        badgeString = [v5 badgeString];
         v22 = crossfadeString;
-        v23 = v21;
+        v23 = badgeString;
         v14 = v23;
         if (v22 == v23)
         {
@@ -240,7 +240,7 @@ LABEL_42:
   v16[9] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = _UIStatusBarDataCellularEntry;
-  v2 = [(_UIStatusBarDataNetworkEntry *)&v15 _ui_descriptionBuilder];
+  _ui_descriptionBuilder = [(_UIStatusBarDataNetworkEntry *)&v15 _ui_descriptionBuilder];
   v14 = NSStringFromSelector(sel_type);
   v16[0] = v14;
   v13 = NSStringFromSelector(sel_string);
@@ -260,7 +260,7 @@ LABEL_42:
   v9 = NSStringFromSelector(sel_isBootstrapCellular);
   v16[8] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:9];
-  v11 = [v2 appendKeys:v10];
+  v11 = [_ui_descriptionBuilder appendKeys:v10];
 
   return v11;
 }

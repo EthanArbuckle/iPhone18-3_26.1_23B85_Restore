@@ -1,34 +1,34 @@
 @interface PKPaymentTransactionRequestAmountComparison
-- (PKPaymentTransactionRequestAmountComparison)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKPaymentTransactionRequestAmountComparison)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentTransactionRequestAmountComparison
 
-- (PKPaymentTransactionRequestAmountComparison)initWithCoder:(id)a3
+- (PKPaymentTransactionRequestAmountComparison)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPaymentTransactionRequestAmountComparison;
   v5 = [(PKPaymentTransactionRequestAmountComparison *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v6;
 
-    v5->_comparison = [v4 decodeIntegerForKey:@"comparison"];
+    v5->_comparison = [coderCopy decodeIntegerForKey:@"comparison"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
-  v5 = a3;
-  [v5 encodeObject:amount forKey:@"amount"];
-  [v5 encodeInteger:self->_comparison forKey:@"comparison"];
+  coderCopy = coder;
+  [coderCopy encodeObject:amount forKey:@"amount"];
+  [coderCopy encodeInteger:self->_comparison forKey:@"comparison"];
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface PBAAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (int64_t)_computeBootOrientation;
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4;
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window;
 - (void)_createInitialAppScene;
 - (void)_createInputUIScene;
 - (void)_reconfigureHomeButton;
-- (void)_resetIdleTimerForReason:(id)a3;
+- (void)_resetIdleTimerForReason:(id)reason;
 - (void)_setupHomeButtonRecognition;
 - (void)_setupMouseButtonRecognition;
 - (void)_setupTapToWakeRecognition;
-- (void)authenticationPolicyEncounteredPolicyError:(id)a3;
-- (void)displayDidBlank:(id)a3;
-- (void)displayWillUnblank:(id)a3;
-- (void)homeButtonSinglePressDown:(id)a3;
-- (void)homeButtonTriplePressUp:(id)a3;
-- (void)mouseButtonDown:(id)a3;
+- (void)authenticationPolicyEncounteredPolicyError:(id)error;
+- (void)displayDidBlank:(id)blank;
+- (void)displayWillUnblank:(id)unblank;
+- (void)homeButtonSinglePressDown:(id)down;
+- (void)homeButtonTriplePressUp:(id)up;
+- (void)mouseButtonDown:(id)down;
 - (void)presentDataRecovery;
 - (void)presentDeviceUnlock;
 - (void)presentLAPasscodeVerification;
-- (void)sceneManager:(id)a3 didAddScene:(id)a4;
-- (void)setMainViewController:(id)a3;
-- (void)tapToWake:(id)a3;
+- (void)sceneManager:(id)manager didAddScene:(id)scene;
+- (void)setMainViewController:(id)controller;
+- (void)tapToWake:(id)wake;
 @end
 
 @implementation PBAAppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = [[FBSceneWorkspace alloc] initWithIdentifier:@"com.apple.preboard"];
   sceneWorkspace = self->_sceneWorkspace;
   self->_sceneWorkspace = v6;
@@ -37,18 +37,18 @@
 
   v9 = [UIRootWindowScenePresentationBinder alloc];
   v10 = +[FBDisplayManager sharedInstance];
-  v11 = [v10 mainConfiguration];
-  v12 = [v9 initWithPriority:0 displayConfiguration:v11];
+  mainConfiguration = [v10 mainConfiguration];
+  v12 = [v9 initWithPriority:0 displayConfiguration:mainConfiguration];
   rootWindowScenePresentationBinder = self->_rootWindowScenePresentationBinder;
   self->_rootWindowScenePresentationBinder = v12;
 
   [(PBAAppDelegate *)self _createInitialAppScene];
-  v14 = [(PBAAppDelegate *)self _computeBootOrientation];
+  _computeBootOrientation = [(PBAAppDelegate *)self _computeBootOrientation];
   v15 = +[UIDevice currentDevice];
-  [v15 setOrientation:v14];
+  [v15 setOrientation:_computeBootOrientation];
 
   BKSHIDServicesLockOrientation();
-  [v5 setStatusBarHidden:1 withAnimation:0];
+  [applicationCopy setStatusBarHidden:1 withAnimation:0];
 
   v16 = [PBASecureWindow alloc];
   v17 = +[UIScreen mainScreen];
@@ -85,16 +85,16 @@
   self->_stackViewController = v27;
 
   v29 = +[LAPreboard sharedInstance];
-  v30 = [v29 isRequired];
+  isRequired = [v29 isRequired];
 
   v38 = _NSConcreteStackBlock;
   v39 = 3221225472;
   v40 = sub_10000B024;
   v41 = &unk_10001CBE0;
-  v43 = v30;
-  v42 = self;
+  v43 = isRequired;
+  selfCopy = self;
   AnalyticsSendEventLazy();
-  if (v30)
+  if (isRequired)
   {
     [(PBAAppDelegate *)self presentLAPasscodeVerification];
   }
@@ -135,9 +135,9 @@
   return 1;
 }
 
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window
 {
-  v4 = [(PBAAppDelegate *)self _computeBootOrientation:a3];
+  v4 = [(PBAAppDelegate *)self _computeBootOrientation:application];
   if ((v4 - 2) > 2)
   {
     return 2;
@@ -149,7 +149,7 @@
   }
 }
 
-- (void)authenticationPolicyEncounteredPolicyError:(id)a3
+- (void)authenticationPolicyEncounteredPolicyError:(id)error
 {
   if ([(PBADataRecoveryEngine *)self->_dataRecoveryEngine requiresDataRecovery])
   {
@@ -227,14 +227,14 @@
   [(PBAAppDelegate *)self setMainViewController:v3];
 }
 
-- (void)setMainViewController:(id)a3
+- (void)setMainViewController:(id)controller
 {
   stackViewController = self->_stackViewController;
-  v7 = a3;
-  v5 = [(PBAStackViewController *)stackViewController topViewController];
-  v6 = v5 != 0;
+  controllerCopy = controller;
+  topViewController = [(PBAStackViewController *)stackViewController topViewController];
+  v6 = topViewController != 0;
 
-  [(PBAAppDelegate *)self setMainViewController:v7 animated:v6];
+  [(PBAAppDelegate *)self setMainViewController:controllerCopy animated:v6];
 }
 
 - (void)_reconfigureHomeButton
@@ -319,14 +319,14 @@
   [v12 applyDefinitions:v13];
 }
 
-- (void)_resetIdleTimerForReason:(id)a3
+- (void)_resetIdleTimerForReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v4 = sub_10000A054();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Resetting idle timer if needed (reason:%{public}@)", &v6, 0xCu);
   }
 
@@ -337,18 +337,18 @@
   }
 }
 
-- (void)homeButtonSinglePressDown:(id)a3
+- (void)homeButtonSinglePressDown:(id)down
 {
-  if ([a3 state] == 3)
+  if ([down state] == 3)
   {
 
     [(PBAAppDelegate *)self _resetIdleTimerForReason:@"home button single press down"];
   }
 }
 
-- (void)homeButtonTriplePressUp:(id)a3
+- (void)homeButtonTriplePressUp:(id)up
 {
-  if ([a3 state] == 3)
+  if ([up state] == 3)
   {
     v3 = sub_10000A054();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -361,30 +361,30 @@
   }
 }
 
-- (void)tapToWake:(id)a3
+- (void)tapToWake:(id)wake
 {
-  if ([a3 state] == 3)
+  if ([wake state] == 3)
   {
 
     [(PBAAppDelegate *)self _resetIdleTimerForReason:@"tap to wake"];
   }
 }
 
-- (void)mouseButtonDown:(id)a3
+- (void)mouseButtonDown:(id)down
 {
-  if ([a3 state] == 3)
+  if ([down state] == 3)
   {
 
     [(PBAAppDelegate *)self _resetIdleTimerForReason:@"mouse button"];
   }
 }
 
-- (void)displayDidBlank:(id)a3
+- (void)displayDidBlank:(id)blank
 {
   v4 = [BKSTouchStream alloc];
-  v5 = [(UIWindow *)self->_window _contextId];
+  _contextId = [(UIWindow *)self->_window _contextId];
   v6 = objc_alloc_init(BKSTouchStreamPolicy);
-  v7 = [v4 initWithContextID:v5 displayUUID:0 identifier:1 policy:v6];
+  v7 = [v4 initWithContextID:_contextId displayUUID:0 identifier:1 policy:v6];
   touchStream = self->_touchStream;
   self->_touchStream = v7;
 
@@ -394,7 +394,7 @@
   [(UIHBClickGestureRecognizer *)singlePressDownGestureRecognizer setEnabled:1];
 }
 
-- (void)displayWillUnblank:(id)a3
+- (void)displayWillUnblank:(id)unblank
 {
   [(UIHBClickGestureRecognizer *)self->_singlePressDownGestureRecognizer setEnabled:0];
   [(SBFTapToWakeGestureRecognizer *)self->_tapToWakeGestureRecognizer setEnabled:0];
@@ -405,12 +405,12 @@
 
 - (void)_createInitialAppScene
 {
-  v3 = [(PBAAppDelegate *)self sceneWorkspace];
-  v4 = [v3 createScene:&stru_10001CC60];
+  sceneWorkspace = [(PBAAppDelegate *)self sceneWorkspace];
+  v4 = [sceneWorkspace createScene:&stru_10001CC60];
 
-  v5 = [v4 definition];
-  v6 = [v5 specification];
-  v7 = [FBSMutableSceneParameters parametersForSpecification:v6];
+  definition = [v4 definition];
+  specification = [definition specification];
+  v7 = [FBSMutableSceneParameters parametersForSpecification:specification];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -441,7 +441,7 @@
   if (+[UIKeyboard usesInputSystemUI])
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
 
     v5 = [RBSProcessIdentity identityForAngelJobLabel:@"com.apple.InputUI"];
     if (v5)
@@ -451,7 +451,7 @@
       v16[1] = 3221225472;
       v16[2] = sub_10000C3E8;
       v16[3] = &unk_10001CD00;
-      v17 = v4;
+      v17 = uUIDString;
       v18 = v5;
       v7 = [(FBSceneWorkspace *)sceneWorkspace createScene:v16];
       if (v7)
@@ -461,7 +461,7 @@
         v11 = 3221225472;
         v12 = sub_10000C48C;
         v14 = v13 = &unk_10001CD28;
-        v15 = self;
+        selfCopy = self;
         v8 = v14;
         [v7 performUpdate:&v10];
         [(UIRootWindowScenePresentationBinder *)self->_rootWindowScenePresentationBinder addScene:v7, v10, v11, v12, v13];
@@ -515,12 +515,12 @@
   }
 }
 
-- (void)sceneManager:(id)a3 didAddScene:(id)a4
+- (void)sceneManager:(id)manager didAddScene:(id)scene
 {
-  v5 = a4;
+  sceneCopy = scene;
   v6 = _UIKeyboardArbiter_SceneIdentifier;
-  v7 = [v5 identifier];
-  if ([v6 isEqualToString:v7])
+  identifier = [sceneCopy identifier];
+  if ([v6 isEqualToString:identifier])
   {
     v8 = +[UIKeyboard usesInputSystemUI];
 
@@ -531,7 +531,7 @@
       v9[2] = sub_10000C664;
       v9[3] = &unk_10001CA50;
       v9[4] = self;
-      v10 = v5;
+      v10 = sceneCopy;
       dispatch_async(&_dispatch_main_q, v9);
     }
   }

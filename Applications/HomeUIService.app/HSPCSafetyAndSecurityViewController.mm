@@ -1,15 +1,15 @@
 @interface HSPCSafetyAndSecurityViewController
-- (HSPCSafetyAndSecurityViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCSafetyAndSecurityViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)_enableSafetyAndSecuritySettings;
 - (id)commitConfiguration;
 @end
 
 @implementation HSPCSafetyAndSecurityViewController
 
-- (HSPCSafetyAndSecurityViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCSafetyAndSecurityViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v9 = [UIImageView alloc];
   v10 = +[UIImage hf_safetyAndSecurityImage];
   v11 = [v9 initWithImage:v10];
@@ -21,8 +21,8 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_config, a4);
-    objc_storeStrong(&v13->_coordinator, a3);
+    objc_storeStrong(&v12->_config, config);
+    objc_storeStrong(&v13->_coordinator, coordinator);
     v14 = HULocalizedString();
     [(HSPCSafetyAndSecurityViewController *)v13 setTitle:v14];
 
@@ -52,15 +52,15 @@
   v29[4] = self;
   v21 = [NAFuture futureWithBlock:v29];
   [v3 na_safeAddObject:?];
-  v4 = [(HSPCSafetyAndSecurityViewController *)self config];
-  v5 = [v4 home];
-  v6 = [v5 hf_allUsersIncludingCurrentUser];
+  config = [(HSPCSafetyAndSecurityViewController *)self config];
+  home = [config home];
+  hf_allUsersIncludingCurrentUser = [home hf_allUsersIncludingCurrentUser];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v6;
+  obj = hf_allUsersIncludingCurrentUser;
   v7 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
@@ -76,9 +76,9 @@
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = [(HSPCSafetyAndSecurityViewController *)self config];
-        v13 = [v12 home];
-        v14 = [v13 homeAccessControlForUser:v11];
+        config2 = [(HSPCSafetyAndSecurityViewController *)self config];
+        home2 = [config2 home];
+        v14 = [home2 homeAccessControlForUser:v11];
 
         v23[0] = _NSConcreteStackBlock;
         v23[1] = 3221225472;
@@ -96,8 +96,8 @@
     while (v8);
   }
 
-  v17 = [(HSPCSafetyAndSecurityViewController *)self commitConfiguration];
-  [v3 addObject:v17];
+  commitConfiguration = [(HSPCSafetyAndSecurityViewController *)self commitConfiguration];
+  [v3 addObject:commitConfiguration];
 
   v18 = [v3 copy];
   v19 = [NAFuture chainFutures:v18];
@@ -116,12 +116,12 @@
   }
 
   v5 = [HFUserItem alloc];
-  v6 = [(HSPCSafetyAndSecurityViewController *)self config];
-  v7 = [v6 home];
-  v8 = [(HSPCSafetyAndSecurityViewController *)self config];
-  v9 = [v8 home];
-  v10 = [v9 currentUser];
-  v11 = [v5 initWithHome:v7 user:v10 nameStyle:0];
+  config = [(HSPCSafetyAndSecurityViewController *)self config];
+  home = [config home];
+  config2 = [(HSPCSafetyAndSecurityViewController *)self config];
+  home2 = [config2 home];
+  currentUser = [home2 currentUser];
+  v11 = [v5 initWithHome:home user:currentUser nameStyle:0];
 
   v12 = [v11 setDismissedAudioAnalysisOnboardingOnThisDevice:1];
   v18[0] = _NSConcreteStackBlock;

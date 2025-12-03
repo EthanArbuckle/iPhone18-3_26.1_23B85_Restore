@@ -1,16 +1,16 @@
 @interface WKContactPicker
-- (BOOL)dismissIfNeededWithReason:(unsigned __int8)a3;
-- (ContactInfo)_contactInfoFromCNContact:(SEL)a3;
-- (WKContactPicker)initWithView:(id)a3;
+- (BOOL)dismissIfNeededWithReason:(unsigned __int8)reason;
+- (ContactInfo)_contactInfoFromCNContact:(SEL)contact;
+- (WKContactPicker)initWithView:(id)view;
 - (WKContactPickerDelegate)delegate;
 - (id).cxx_construct;
-- (id)_contactsFromJSContacts:(id)a3;
-- (void)_contactPickerDidDismissWithContactInfo:(void *)a3;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPicker:(id)a3 didSelectContacts:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
-- (void)dismissWithContacts:(id)a3;
-- (void)presentWithRequestData:(const void *)a3 completionHandler:(void *)a4;
+- (id)_contactsFromJSContacts:(id)contacts;
+- (void)_contactPickerDidDismissWithContactInfo:(void *)info;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContacts:(id)contacts;
+- (void)contactPickerDidCancel:(id)cancel;
+- (void)dismissWithContacts:(id)contacts;
+- (void)presentWithRequestData:(const void *)data completionHandler:(void *)handler;
 @end
 
 @implementation WKContactPicker
@@ -26,7 +26,7 @@
   return v3;
 }
 
-- (WKContactPicker)initWithView:(id)a3
+- (WKContactPicker)initWithView:(id)view
 {
   v7.receiver = self;
   v7.super_class = WKContactPicker;
@@ -34,25 +34,25 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_webView.m_weakReference, a3);
+    objc_storeWeak(&v4->_webView.m_weakReference, view);
   }
 
   return v5;
 }
 
-- (void)presentWithRequestData:(const void *)a3 completionHandler:(void *)a4
+- (void)presentWithRequestData:(const void *)data completionHandler:(void *)handler
 {
   p_properties = &self->_properties;
-  if (&self->_properties != a3)
+  if (&self->_properties != data)
   {
     m_size = self->_properties.m_size;
-    v9 = *(a3 + 3);
+    v9 = *(data + 3);
     if (m_size <= v9)
     {
       if (v9 > self->_properties.m_capacity)
       {
         WTF::Vector<WebCore::ContactProperty,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::shrinkCapacity(&self->_properties, 0);
-        WTF::Vector<WebCore::ContactProperty,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::reserveCapacity<(WTF::FailureAction)0>(p_properties, *(a3 + 3));
+        WTF::Vector<WebCore::ContactProperty,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::reserveCapacity<(WTF::FailureAction)0>(p_properties, *(data + 3));
         m_size = self->_properties.m_size;
       }
     }
@@ -65,7 +65,7 @@
 
     if (m_size)
     {
-      memmove(self->_properties.m_buffer, *a3, m_size);
+      memmove(self->_properties.m_buffer, *data, m_size);
       v10 = self->_properties.m_size;
     }
 
@@ -74,12 +74,12 @@
       v10 = 0;
     }
 
-    memcpy(&self->_properties.m_buffer[v10], (*a3 + v10), *(a3 + 3) - v10);
-    self->_properties.m_size = *(a3 + 3);
+    memcpy(&self->_properties.m_buffer[v10], (*data + v10), *(data + 3) - v10);
+    self->_properties.m_size = *(data + 3);
   }
 
-  v11 = *a4;
-  *a4 = 0;
+  v11 = *handler;
+  *handler = 0;
   ptr = self->_completionHandler.m_function.m_callableWrapper.__ptr_;
   self->_completionHandler.m_function.m_callableWrapper.__ptr_ = v11;
   if (ptr)
@@ -87,7 +87,7 @@
     (*(*ptr + 8))(ptr);
   }
 
-  if (*(a3 + 16) == 1)
+  if (*(data + 16) == 1)
   {
     v13 = WKCNContactPickerMultiSelectDelegate;
   }
@@ -115,7 +115,7 @@
 
   [(CNContactPickerViewController *)v16 setDelegate:self->_contactPickerDelegate.m_ptr];
   v18 = self->_contactPickerViewController.m_ptr;
-  v19 = *(a3 + 3);
+  v19 = *(data + 3);
   if (v19)
   {
     atomic_fetch_add_explicit(v19, 2u, memory_order_relaxed);
@@ -139,7 +139,7 @@
   {
   }
 
-  v23 = [objc_loadWeak(&self->_webView.m_weakReference) _wk_viewControllerForFullScreenPresentation];
+  _wk_viewControllerForFullScreenPresentation = [objc_loadWeak(&self->_webView.m_weakReference) _wk_viewControllerForFullScreenPresentation];
   v24 = self->_contactPickerViewController.m_ptr;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3321888768;
@@ -149,7 +149,7 @@
   objc_initWeak(&location, self);
   v26 = 0;
   objc_copyWeak(&v26, &location);
-  [v23 presentViewController:v24 animated:1 completion:v25];
+  [_wk_viewControllerForFullScreenPresentation presentViewController:v24 animated:1 completion:v25];
   objc_destroyWeak(&location);
   objc_destroyWeak(&v26);
 }
@@ -168,9 +168,9 @@ void __60__WKContactPicker_presentWithRequestData_completionHandler___block_invo
   }
 }
 
-- (BOOL)dismissIfNeededWithReason:(unsigned __int8)a3
+- (BOOL)dismissIfNeededWithReason:(unsigned __int8)reason
 {
-  if (a3 == 1)
+  if (reason == 1)
   {
     if (([(CNContactPickerViewController *)self->_contactPickerViewController.m_ptr _wk_isInFullscreenPresentation]& 1) != 0)
     {
@@ -180,7 +180,7 @@ void __60__WKContactPicker_presentWithRequestData_completionHandler___block_invo
     goto LABEL_5;
   }
 
-  if ((a3 - 1) <= 1)
+  if ((reason - 1) <= 1)
   {
 LABEL_5:
     [(WKContactPicker *)self setDelegate:0];
@@ -190,7 +190,7 @@ LABEL_5:
   return 1;
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   v4[0] = 0;
   v4[1] = 0;
@@ -198,12 +198,12 @@ LABEL_5:
   WTF::Vector<WebCore::ContactInfo,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(v4, v3);
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
   v15 = *MEMORY[0x1E69E9840];
   if (self)
   {
-    [(WKContactPicker *)self _contactInfoFromCNContact:a4];
+    [(WKContactPicker *)self _contactInfoFromCNContact:contact];
   }
 
   else
@@ -226,9 +226,9 @@ LABEL_5:
   WTF::Vector<WebCore::ContactInfo,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v9, v8);
 }
 
-- (void)contactPicker:(id)a3 didSelectContacts:(id)a4
+- (void)contactPicker:(id)picker didSelectContacts:(id)contacts
 {
-  v6 = [a4 count];
+  v6 = [contacts count];
   v15 = 0;
   v16 = 0;
   if (!v6)
@@ -248,7 +248,7 @@ LABEL_8:
     v9 = v15;
     do
     {
-      v10 = [a4 objectAtIndexedSubscript:{v8, v15, v16, v17, v18, v19}];
+      v10 = [contacts objectAtIndexedSubscript:{v8, v15, v16, v17, v18, v19}];
       if (self)
       {
         [(WKContactPicker *)self _contactInfoFromCNContact:v10];
@@ -276,12 +276,12 @@ LABEL_8:
   __break(0xC471u);
 }
 
-- (void)_contactPickerDidDismissWithContactInfo:(void *)a3
+- (void)_contactPickerDidDismissWithContactInfo:(void *)info
 {
-  v6[0] = *a3;
-  v4 = *(a3 + 1);
-  *a3 = 0;
-  *(a3 + 1) = 0;
+  v6[0] = *info;
+  v4 = *(info + 1);
+  *info = 0;
+  *(info + 1) = 0;
   v6[1] = v4;
   v7 = 1;
   WTF::CompletionHandler<void ()(std::optional<WTF::Vector<WebCore::ContactInfo,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>> &&)>::operator()(&self->_completionHandler);
@@ -293,7 +293,7 @@ LABEL_8:
   }
 }
 
-- (ContactInfo)_contactInfoFromCNContact:(SEL)a3
+- (ContactInfo)_contactInfoFromCNContact:(SEL)contact
 {
   v46[1] = *MEMORY[0x1E69E9840];
   retstr->var1 = 0u;
@@ -305,7 +305,7 @@ LABEL_8:
     return self;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = *&self->var1.m_capacity;
   while (1)
   {
@@ -329,7 +329,7 @@ LABEL_8:
   }
 
   MEMORY[0x19EB02040](v46, v11);
-  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(&v42, v46, 1uLL);
+  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector(&value, v46, 1uLL);
   m_size = retstr->var0.m_size;
   if (m_size)
   {
@@ -344,12 +344,12 @@ LABEL_8:
     WTF::fastFree(m_buffer, v13);
   }
 
-  retstr->var0.m_buffer = v42;
+  retstr->var0.m_buffer = value;
   v16 = v43;
-  v42 = 0;
+  value = 0;
   v43 = 0;
   *&retstr->var0.m_capacity = v16;
-  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v42, v13);
+  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&value, v13);
   self = v46[0];
   v46[0] = 0;
   if (!self || atomic_fetch_add_explicit(self, 0xFFFFFFFE, memory_order_relaxed) != 2)
@@ -369,10 +369,10 @@ LABEL_15:
   }
 
 LABEL_16:
-  v18 = HIDWORD(v7->var2.m_buffer);
+  v18 = HIDWORD(selfCopy->var2.m_buffer);
   if (v18)
   {
-    v19 = *&v7->var1.m_capacity;
+    v19 = *&selfCopy->var1.m_capacity;
     while (*v19++)
     {
       if (!--v18)
@@ -385,9 +385,9 @@ LABEL_16:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v21 = [a4 emailAddresses];
-    self = [v21 countByEnumeratingWithState:&v38 objects:v45 count:16];
-    v22 = self;
+    emailAddresses = [a4 emailAddresses];
+    self = [emailAddresses countByEnumeratingWithState:&v38 objects:v45 count:16];
+    selfCopy3 = self;
     if (self)
     {
       v23 = *v39;
@@ -398,14 +398,14 @@ LABEL_16:
         {
           if (*v39 != v23)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(emailAddresses);
           }
 
-          v42 = [*(*(&v38 + 1) + 8 * v24) value];
+          value = [*(*(&v38 + 1) + 8 * v24) value];
           v25 = retstr->var1.m_size;
           if (v25 == retstr->var1.m_capacity)
           {
-            WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::appendSlowCase<(WTF::FailureAction)0,NSString *&>(&retstr->var1, &v42);
+            WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::appendSlowCase<(WTF::FailureAction)0,NSString *&>(&retstr->var1, &value);
           }
 
           else
@@ -417,19 +417,19 @@ LABEL_16:
           v24 = (v24 + 1);
         }
 
-        while (v22 != v24);
-        self = [v21 countByEnumeratingWithState:&v38 objects:v45 count:16];
-        v22 = self;
+        while (selfCopy3 != v24);
+        self = [emailAddresses countByEnumeratingWithState:&v38 objects:v45 count:16];
+        selfCopy3 = self;
       }
 
       while (self);
     }
 
 LABEL_32:
-    v26 = HIDWORD(v7->var2.m_buffer);
+    v26 = HIDWORD(selfCopy->var2.m_buffer);
     if (v26)
     {
-      v27 = *&v7->var1.m_capacity;
+      v27 = *&selfCopy->var1.m_capacity;
       while (1)
       {
         v28 = *v27++;
@@ -448,9 +448,9 @@ LABEL_32:
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v29 = [a4 phoneNumbers];
-      self = [v29 countByEnumeratingWithState:&v34 objects:v44 count:16];
-      v30 = self;
+      phoneNumbers = [a4 phoneNumbers];
+      self = [phoneNumbers countByEnumeratingWithState:&v34 objects:v44 count:16];
+      selfCopy5 = self;
       if (self)
       {
         v31 = *v35;
@@ -461,14 +461,14 @@ LABEL_32:
           {
             if (*v35 != v31)
             {
-              objc_enumerationMutation(v29);
+              objc_enumerationMutation(phoneNumbers);
             }
 
-            v42 = [objc_msgSend(*(*(&v34 + 1) + 8 * v32) "value")];
+            value = [objc_msgSend(*(*(&v34 + 1) + 8 * v32) "value")];
             v33 = retstr->var2.m_size;
             if (v33 == retstr->var2.m_capacity)
             {
-              WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::appendSlowCase<(WTF::FailureAction)0,NSString *&>(&retstr->var2, &v42);
+              WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::appendSlowCase<(WTF::FailureAction)0,NSString *&>(&retstr->var2, &value);
             }
 
             else
@@ -480,9 +480,9 @@ LABEL_32:
             v32 = (v32 + 1);
           }
 
-          while (v30 != v32);
-          self = [v29 countByEnumeratingWithState:&v34 objects:v44 count:16];
-          v30 = self;
+          while (selfCopy5 != v32);
+          self = [phoneNumbers countByEnumeratingWithState:&v34 objects:v44 count:16];
+          selfCopy5 = self;
         }
 
         while (self);
@@ -493,7 +493,7 @@ LABEL_32:
   return self;
 }
 
-- (void)dismissWithContacts:(id)a3
+- (void)dismissWithContacts:(id)contacts
 {
   m_ptr = self->_contactPickerViewController.m_ptr;
   v12[0] = MEMORY[0x1E69E9820];
@@ -502,24 +502,24 @@ LABEL_32:
   v12[3] = &__block_descriptor_56_e8_32c53_ZTSKZ39__WKContactPicker_dismissWithContacts__E4__48_e5_v8__0l;
   v10 = 0;
   objc_initWeak(&v10, self);
-  v11 = a3;
-  if (a3)
+  contactsCopy = contacts;
+  if (contacts)
   {
-    v5 = a3;
+    contactsCopy2 = contacts;
   }
 
   v12[4] = self;
   v13 = 0;
   objc_copyWeak(&v13, &v10);
-  v14 = v11;
-  if (v11)
+  v14 = contactsCopy;
+  if (contactsCopy)
   {
-    v6 = v11;
+    v6 = contactsCopy;
   }
 
   [(CNContactPickerViewController *)m_ptr dismissViewControllerAnimated:0 completion:v12, self];
-  v7 = v11;
-  v11 = 0;
+  v7 = contactsCopy;
+  contactsCopy = 0;
   if (v7)
   {
   }
@@ -544,13 +544,13 @@ void __39__WKContactPicker_dismissWithContacts___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_contactsFromJSContacts:(id)a3
+- (id)_contactsFromJSContacts:(id)contacts
 {
   v69 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (contacts)
   {
-    v3 = a3;
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a3, "count")}];
+    contactsCopy = contacts;
+    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(contacts, "count")}];
     v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self isKindOfClass: %@", objc_opt_class()];
     v6 = v5;
     if (v5)
@@ -562,12 +562,12 @@ void __39__WKContactPicker_dismissWithContacts___block_invoke(uint64_t a1)
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v8 = [v3 countByEnumeratingWithState:&v61 objects:v68 count:16];
+    v8 = [contactsCopy countByEnumeratingWithState:&v61 objects:v68 count:16];
     if (v8)
     {
       v46 = v6;
       v47 = *v62;
-      v43 = v3;
+      v43 = contactsCopy;
       v45 = v4;
       do
       {
@@ -577,7 +577,7 @@ void __39__WKContactPicker_dismissWithContacts___block_invoke(uint64_t a1)
         {
           if (*v62 != v47)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(contactsCopy);
           }
 
           v9 = *(*(&v61 + 1) + 8 * v51);
@@ -654,7 +654,7 @@ void __39__WKContactPicker_dismissWithContacts___block_invoke(uint64_t a1)
               }
 
               [v50 setEmailAddresses:v17];
-              v3 = v43;
+              contactsCopy = v43;
               if (v17)
               {
               }
@@ -722,7 +722,7 @@ void __39__WKContactPicker_dismissWithContacts___block_invoke(uint64_t a1)
               }
 
               [v50 setPhoneNumbers:v29];
-              v3 = v43;
+              contactsCopy = v43;
               if (v29)
               {
               }
@@ -752,7 +752,7 @@ void __39__WKContactPicker_dismissWithContacts___block_invoke(uint64_t a1)
         }
 
         while (v51 != v48);
-        v8 = [v3 countByEnumeratingWithState:&v61 objects:v68 count:16];
+        v8 = [contactsCopy countByEnumeratingWithState:&v61 objects:v68 count:16];
       }
 
       while (v8);

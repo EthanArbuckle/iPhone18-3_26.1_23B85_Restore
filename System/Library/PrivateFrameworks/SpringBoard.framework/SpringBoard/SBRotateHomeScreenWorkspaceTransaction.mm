@@ -7,8 +7,8 @@
 - (void)begin
 {
   v3 = [SBDismissOverlaysAnimationController alloc];
-  v4 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v5 = [(SBDismissOverlaysAnimationController *)v3 initWithTransitionContextProvider:v4 options:-109];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  v5 = [(SBDismissOverlaysAnimationController *)v3 initWithTransitionContextProvider:transitionRequest options:-109];
   animationController = self->_animationController;
   self->_animationController = v5;
 

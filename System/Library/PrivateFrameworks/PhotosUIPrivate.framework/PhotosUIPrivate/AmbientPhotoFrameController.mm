@@ -1,29 +1,29 @@
 @interface AmbientPhotoFrameController
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 - (void)openVisibleAssetInPhotosApp;
-- (void)thermalStateDidChangeWithNotification:(id)a3;
+- (void)thermalStateDidChangeWithNotification:(id)notification;
 @end
 
 @implementation AmbientPhotoFrameController
 
-- (void)thermalStateDidChangeWithNotification:(id)a3
+- (void)thermalStateDidChangeWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_1B3790600();
 }
 
 - (void)openVisibleAssetInPhotosApp
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3793024();
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  AmbientPhotoFrameController.collectTapToRadarDiagnostics(into:)(a3);
+  selfCopy = self;
+  AmbientPhotoFrameController.collectTapToRadarDiagnostics(into:)(container);
   swift_unknownObjectRelease();
 }
 

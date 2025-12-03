@@ -1,40 +1,40 @@
 @interface ABVCardCardDAVExporter
-+ (id)copyVCardRepresentationOfRecord:(void *)a3 withPhoto:(id)a4 extraPhotoParameters:(id)a5;
-+ (id)copyVCardRepresentationOfRecord:(void *)a3 withPhoto:(id)a4 extraPhotoParameters:(id)a5 includeWallpaper:(BOOL)a6;
++ (id)copyVCardRepresentationOfRecord:(void *)record withPhoto:(id)photo extraPhotoParameters:(id)parameters;
++ (id)copyVCardRepresentationOfRecord:(void *)record withPhoto:(id)photo extraPhotoParameters:(id)parameters includeWallpaper:(BOOL)wallpaper;
 @end
 
 @implementation ABVCardCardDAVExporter
 
-+ (id)copyVCardRepresentationOfRecord:(void *)a3 withPhoto:(id)a4 extraPhotoParameters:(id)a5
++ (id)copyVCardRepresentationOfRecord:(void *)record withPhoto:(id)photo extraPhotoParameters:(id)parameters
 {
   v8 = objc_opt_class();
 
-  return [v8 copyVCardRepresentationOfRecord:a3 withPhoto:a4 extraPhotoParameters:a5 includeWallpaper:0];
+  return [v8 copyVCardRepresentationOfRecord:record withPhoto:photo extraPhotoParameters:parameters includeWallpaper:0];
 }
 
-+ (id)copyVCardRepresentationOfRecord:(void *)a3 withPhoto:(id)a4 extraPhotoParameters:(id)a5 includeWallpaper:(BOOL)a6
++ (id)copyVCardRepresentationOfRecord:(void *)record withPhoto:(id)photo extraPhotoParameters:(id)parameters includeWallpaper:(BOOL)wallpaper
 {
-  v6 = a6;
-  v10 = [(ABVCardRecord *)[ABVCardCardDAVRecord alloc] initWithRecord:a3];
-  if (ABRecordGetRecordType(a3))
+  wallpaperCopy = wallpaper;
+  v10 = [(ABVCardRecord *)[ABVCardCardDAVRecord alloc] initWithRecord:record];
+  if (ABRecordGetRecordType(record))
   {
     v11 = [(ABVCardRecord *)v10 _copyGroupVCardRepresentationAsStringIncludeExternalProperties:1];
   }
 
   else
   {
-    if (!a4)
+    if (!photo)
     {
-      a4 = [MEMORY[0x1E695DEF0] data];
+      photo = [MEMORY[0x1E695DEF0] data];
     }
 
-    v11 = [(ABVCardRecord *)v10 _copyVCardRepresentationAsStringIncludeExternalProperties:1 withPhoto:a4 extraPhotoParameters:a5 includePrivateData:1 includeWallpaper:v6];
+    v11 = [(ABVCardRecord *)v10 _copyVCardRepresentationAsStringIncludeExternalProperties:1 withPhoto:photo extraPhotoParameters:parameters includePrivateData:1 includeWallpaper:wallpaperCopy];
   }
 
   v12 = v11;
 
-  v13 = [v12 copyABVCardDataRepresentation];
-  return v13;
+  copyABVCardDataRepresentation = [v12 copyABVCardDataRepresentation];
+  return copyABVCardDataRepresentation;
 }
 
 @end

@@ -1,39 +1,39 @@
 @interface AKMinimalTextColorUserInterfaceItem
-- (id)convertTextAttributes:(id)a3;
+- (id)convertTextAttributes:(id)attributes;
 @end
 
 @implementation AKMinimalTextColorUserInterfaceItem
 
-- (id)convertTextAttributes:(id)a3
+- (id)convertTextAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = *MEMORY[0x277D740C0];
-  v6 = [v4 objectForKey:*MEMORY[0x277D740C0]];
-  v7 = [(AKMinimalColorChooserUserInterfaceItem *)self color];
-  if (!v6)
+  blackColor = [attributesCopy objectForKey:*MEMORY[0x277D740C0]];
+  color = [(AKMinimalColorChooserUserInterfaceItem *)self color];
+  if (!blackColor)
   {
-    v6 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  if ([v6 akIsEqualToColor:v7])
+  if ([blackColor akIsEqualToColor:color])
   {
     v8 = 0;
   }
 
   else
   {
-    if (v4)
+    if (attributesCopy)
     {
-      v9 = [v4 mutableCopy];
+      dictionary = [attributesCopy mutableCopy];
     }
 
     else
     {
-      v9 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    v8 = v9;
-    [v9 setObject:v7 forKey:v5];
+    v8 = dictionary;
+    [dictionary setObject:color forKey:v5];
   }
 
   if (v8)
@@ -43,7 +43,7 @@
 
   else
   {
-    v10 = v4;
+    v10 = attributesCopy;
   }
 
   v11 = v10;

@@ -1,39 +1,39 @@
 @interface NTKVideoFaceView
-- (NTKVideoFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
+- (NTKVideoFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (double)_rightSideMarginForDigitalTimeHeroPosition;
 - (double)_timeTravelYAdjustment;
 - (id)_complicationForegroundColor;
 - (id)_defaultListing;
 - (id)_nextListing;
-- (id)_posterImageViewWithTheme:(unint64_t)a3;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
-- (id)_viewForEditOption:(id)a3;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (id)_posterImageViewWithTheme:(unint64_t)theme;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
+- (id)_viewForEditOption:(id)option;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_handleTapToPlayVideoGesture:(id)a3;
+- (void)_handleTapToPlayVideoGesture:(id)gesture;
 - (void)_loadSnapshotContentViews;
 - (void)_performPreloadVideoTask;
 - (void)_prepareForEditing;
 - (void)_unloadSnapshotContentViews;
 - (void)_updatePaused;
 - (void)dealloc;
-- (void)videoPlayerViewDidBeginPlaying:(id)a3;
-- (void)videoPlayerViewDidPauseAfterPlayingVideoToEnd:(id)a3;
+- (void)videoPlayerViewDidBeginPlaying:(id)playing;
+- (void)videoPlayerViewDidPauseAfterPlayingVideoToEnd:(id)end;
 @end
 
 @implementation NTKVideoFaceView
 
-- (NTKVideoFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKVideoFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  identifierCopy = identifier;
   v25.receiver = self;
   v25.super_class = NTKVideoFaceView;
-  v10 = [(NTKVideoFaceView *)&v25 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:v9];
+  v10 = [(NTKVideoFaceView *)&v25 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifierCopy];
   if (v10)
   {
-    v11 = [[NTKDigitialUtilitarianFaceViewComplicationFactory alloc] initForDevice:v8];
+    v11 = [[NTKDigitialUtilitarianFaceViewComplicationFactory alloc] initForDevice:deviceCopy];
     faceViewComplicationFactory = v10->_faceViewComplicationFactory;
     v10->_faceViewComplicationFactory = v11;
 
@@ -78,8 +78,8 @@
 
 - (void)dealloc
 {
-  v3 = [(NTKVideoFaceView *)self device];
-  v4 = [NTKVideoListingFactory sharedInstanceForDevice:v3];
+  device = [(NTKVideoFaceView *)self device];
+  v4 = [NTKVideoListingFactory sharedInstanceForDevice:device];
   [v4 discardAssets];
 
   v5.receiver = self;
@@ -111,29 +111,29 @@
   v5.receiver = self;
   v5.super_class = NTKVideoFaceView;
   [(NTKVideoFaceView *)&v5 _unloadSnapshotContentViews];
-  v3 = [(NTKVideoFaceView *)self device];
-  v4 = [NTKVideoListingFactory sharedInstanceForDevice:v3];
+  device = [(NTKVideoFaceView *)self device];
+  v4 = [NTKVideoListingFactory sharedInstanceForDevice:device];
   [v4 discardAssets];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
+  optionCopy = option;
+  toOptionCopy = toOption;
   v24.receiver = self;
   v24.super_class = NTKVideoFaceView;
-  [(NTKVideoFaceView *)&v24 _applyTransitionFraction:v12 fromOption:v13 toOption:a6 forCustomEditMode:a7 slot:a3];
-  if (a6 == 12)
+  [(NTKVideoFaceView *)&v24 _applyTransitionFraction:optionCopy fromOption:toOptionCopy toOption:mode forCustomEditMode:slot slot:fraction];
+  if (mode == 12)
   {
-    v14 = [v12 videoTheme];
-    v15 = [v13 videoTheme];
-    v16 = [(NTKVideoFaceView *)self device];
-    v17 = [NTKVideoListingFactory sharedInstanceForDevice:v16];
+    videoTheme = [optionCopy videoTheme];
+    videoTheme2 = [toOptionCopy videoTheme];
+    device = [(NTKVideoFaceView *)self device];
+    v17 = [NTKVideoListingFactory sharedInstanceForDevice:device];
 
-    v18 = [v17 defaultListingWithTheme:v14];
-    v19 = [v17 defaultListingWithTheme:v15];
-    v20 = [v18 overlayColor];
-    v21 = [v19 overlayColor];
+    v18 = [v17 defaultListingWithTheme:videoTheme];
+    v19 = [v17 defaultListingWithTheme:videoTheme2];
+    overlayColor = [v18 overlayColor];
+    overlayColor2 = [v19 overlayColor];
     v22 = NTKInterpolateBetweenColors();
     editingComplicationColor = self->_editingComplicationColor;
     self->_editingComplicationColor = v22;
@@ -142,30 +142,30 @@
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v17.receiver = self;
   v17.super_class = NTKVideoFaceView;
-  v8 = a3;
-  [(NTKVideoFaceView *)&v17 _applyOption:v8 forCustomEditMode:a4 slot:a5];
-  v9 = [v8 videoTheme];
+  optionCopy = option;
+  [(NTKVideoFaceView *)&v17 _applyOption:optionCopy forCustomEditMode:mode slot:slot];
+  videoTheme = [optionCopy videoTheme];
 
-  self->_theme = v9;
-  v10 = [(NTKVideoFaceView *)self posterImageView];
-  [v10 removeFromSuperview];
-  v11 = [(NTKVideoFaceView *)self device];
-  v12 = [NTKVideoListingFactory sharedInstanceForDevice:v11];
+  self->_theme = videoTheme;
+  posterImageView = [(NTKVideoFaceView *)self posterImageView];
+  [posterImageView removeFromSuperview];
+  device = [(NTKVideoFaceView *)self device];
+  v12 = [NTKVideoListingFactory sharedInstanceForDevice:device];
   v13 = [v12 posterImageWithTheme:self->_theme];
-  [v10 setImage:v13];
+  [posterImageView setImage:v13];
 
-  v14 = [(NTKVideoFaceView *)self contentView];
-  [v14 addSubview:v10];
+  contentView = [(NTKVideoFaceView *)self contentView];
+  [contentView addSubview:posterImageView];
 
-  v15 = [(NTKVideoFaceView *)self contentView];
-  [v15 sendSubviewToBack:v10];
+  contentView2 = [(NTKVideoFaceView *)self contentView];
+  [contentView2 sendSubviewToBack:posterImageView];
 
   [(NTKVideoFaceView *)self setNeedsLayout];
-  if (a4 == 12)
+  if (mode == 12)
   {
     editingComplicationColor = self->_editingComplicationColor;
     self->_editingComplicationColor = 0;
@@ -189,10 +189,10 @@
 
 - (void)_cleanupAfterEditing
 {
-  v3 = [(NTKVideoFaceView *)self currentListing];
-  if (!v3)
+  currentListing = [(NTKVideoFaceView *)self currentListing];
+  if (!currentListing)
   {
-    v4 = [(NTKVideoFaceView *)self _nextListing];
+    _nextListing = [(NTKVideoFaceView *)self _nextListing];
   }
 
   [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self->_faceViewComplicationFactory cleanupAfterEditingForFaceView:self];
@@ -204,47 +204,47 @@
   [(NTKVideoFaceView *)&v6 _cleanupAfterEditing];
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v5 = [a3 videoTheme];
-  if (v5 > 2)
+  videoTheme = [option videoTheme];
+  if (videoTheme > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = *(&off_8390 + v5);
+    v6 = *(&off_8390 + videoTheme);
   }
 
   return [NTKMotionFaceBundle imageWithName:v6];
 }
 
-- (id)_viewForEditOption:(id)a3
+- (id)_viewForEditOption:(id)option
 {
-  v4 = [a3 videoTheme];
+  videoTheme = [option videoTheme];
 
-  return [(NTKVideoFaceView *)self _posterImageViewWithTheme:v4];
+  return [(NTKVideoFaceView *)self _posterImageViewWithTheme:videoTheme];
 }
 
 - (double)_rightSideMarginForDigitalTimeHeroPosition
 {
-  v3 = [(NTKVideoFaceView *)self device];
-  if ([v3 deviceCategory] == &dword_0 + 1)
+  device = [(NTKVideoFaceView *)self device];
+  if ([device deviceCategory] == &dword_0 + 1)
   {
 
     return NTKDigitalTimeLabelStyleNarrowRightSideMargin;
   }
 
-  v4 = [(NTKVideoFaceView *)self device];
-  v5 = [v4 deviceCategory];
+  device2 = [(NTKVideoFaceView *)self device];
+  deviceCategory = [device2 deviceCategory];
 
-  if (v5 == &dword_0 + 2)
+  if (deviceCategory == &dword_0 + 2)
   {
     return NTKDigitalTimeLabelStyleNarrowRightSideMargin;
   }
 
-  v7 = [(NTKVideoFaceView *)self device];
+  device3 = [(NTKVideoFaceView *)self device];
   NTKDigitalTimeLabelStyleWideRightSideMargin();
   v9 = v8;
 
@@ -253,8 +253,8 @@
 
 - (double)_timeTravelYAdjustment
 {
-  v2 = [(NTKVideoFaceView *)self device];
-  if ([v2 sizeClass])
+  device = [(NTKVideoFaceView *)self device];
+  if ([device sizeClass])
   {
     v3 = 16.5;
   }
@@ -277,7 +277,7 @@
     {
       v5 = editingComplicationColor;
 LABEL_8:
-      v7 = v3;
+      overlayColor2 = v3;
       v3 = v5;
       goto LABEL_9;
     }
@@ -291,34 +291,34 @@ LABEL_8:
 
   if (*(self + 32))
   {
-    v6 = [(NTKVideoFaceView *)self _defaultListing];
+    _defaultListing = [(NTKVideoFaceView *)self _defaultListing];
   }
 
   else
   {
     if (([(NTKVideoFaceView *)self editing]& 1) != 0 || ([(NTKVideoFaceView *)self currentListing], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
     {
-      v11 = [(NTKVideoFaceView *)self device];
-      v7 = [NTKVideoListingFactory sharedInstanceForDevice:v11];
+      device = [(NTKVideoFaceView *)self device];
+      overlayColor2 = [NTKVideoListingFactory sharedInstanceForDevice:device];
 
-      v12 = [v7 defaultListingWithTheme:self->_theme];
-      v13 = [v12 overlayColor];
+      v12 = [overlayColor2 defaultListingWithTheme:self->_theme];
+      overlayColor = [v12 overlayColor];
 
-      v3 = v13;
+      v3 = overlayColor;
       goto LABEL_9;
     }
 
-    v6 = [(NTKVideoFaceView *)self currentListing];
+    _defaultListing = [(NTKVideoFaceView *)self currentListing];
   }
 
-  v10 = v6;
-  v7 = [v6 overlayColor];
+  v10 = _defaultListing;
+  overlayColor2 = [_defaultListing overlayColor];
 
-  if (v7)
+  if (overlayColor2)
   {
-    v7 = v7;
+    overlayColor2 = overlayColor2;
 
-    v3 = v7;
+    v3 = overlayColor2;
   }
 
 LABEL_9:
@@ -345,16 +345,16 @@ LABEL_9:
   [(UITapGestureRecognizer *)tapToPlayGesture setEnabled:v4];
 }
 
-- (id)_posterImageViewWithTheme:(unint64_t)a3
+- (id)_posterImageViewWithTheme:(unint64_t)theme
 {
   v5 = [UIImageView alloc];
   [(NTKVideoFaceView *)self bounds];
   v6 = [v5 initWithFrame:?];
   [v6 setContentMode:2];
   [v6 setClipsToBounds:1];
-  v7 = [(NTKVideoFaceView *)self device];
-  v8 = [NTKVideoListingFactory sharedInstanceForDevice:v7];
-  v9 = [v8 posterImageWithTheme:a3];
+  device = [(NTKVideoFaceView *)self device];
+  v8 = [NTKVideoListingFactory sharedInstanceForDevice:device];
+  v9 = [v8 posterImageWithTheme:theme];
   [v6 setImage:v9];
 
   return v6;
@@ -362,8 +362,8 @@ LABEL_9:
 
 - (id)_defaultListing
 {
-  v3 = [(NTKVideoFaceView *)self device];
-  v4 = [NTKVideoListingFactory sharedInstanceForDevice:v3];
+  device = [(NTKVideoFaceView *)self device];
+  v4 = [NTKVideoListingFactory sharedInstanceForDevice:device];
 
   v5 = [v4 defaultListingWithTheme:self->_theme];
 
@@ -372,17 +372,17 @@ LABEL_9:
 
 - (id)_nextListing
 {
-  v3 = [(NTKVideoFaceView *)self device];
-  v4 = [NTKVideoListingFactory sharedInstanceForDevice:v3];
+  device = [(NTKVideoFaceView *)self device];
+  v4 = [NTKVideoListingFactory sharedInstanceForDevice:device];
 
-  v5 = [(NTKVideoFaceView *)self currentListing];
-  if (v5 && (v6 = *(self + 32), v5, (v6 & 1) == 0))
+  currentListing = [(NTKVideoFaceView *)self currentListing];
+  if (currentListing && (v6 = *(self + 32), currentListing, (v6 & 1) == 0))
   {
     v10 = [v4 behaviorForTheme:self->_theme];
-    v9 = [(NTKVideoFaceView *)self currentListing];
+    currentListing2 = [(NTKVideoFaceView *)self currentListing];
     if ([(NTKVideoFaceView *)self shouldChangeVariantForScreenWake])
     {
-      v11 = [v4 anyListingWithTheme:self->_theme notMatchingVariant:objc_msgSend(v9 matchingTag:{"variant"), 4}];
+      v11 = [v4 anyListingWithTheme:self->_theme notMatchingVariant:objc_msgSend(currentListing2 matchingTag:{"variant"), 4}];
       v12 = v11;
       if (v11)
       {
@@ -391,69 +391,69 @@ LABEL_9:
 
       else
       {
-        v13 = [v4 anyListingWithTheme:self->_theme notMatchingVariant:objc_msgSend(v9 matchingTag:{"variant"), 2}];
+        v13 = [v4 anyListingWithTheme:self->_theme notMatchingVariant:objc_msgSend(currentListing2 matchingTag:{"variant"), 2}];
       }
 
-      v7 = v13;
+      _defaultListing = v13;
     }
 
     else
     {
       theme = self->_theme;
-      v15 = [v9 variant];
+      variant = [currentListing2 variant];
       if (v10 == &dword_4)
       {
-        [v4 anyListingWithTheme:theme variant:v15 tag:2 notMatchingClip:{objc_msgSend(v9, "clip")}];
+        [v4 anyListingWithTheme:theme variant:variant tag:2 notMatchingClip:{objc_msgSend(currentListing2, "clip")}];
       }
 
       else
       {
-        [v4 anyListingWithTheme:theme notMatchingVariant:v15 matchingTag:2];
+        [v4 anyListingWithTheme:theme notMatchingVariant:variant matchingTag:2];
       }
-      v7 = ;
+      _defaultListing = ;
     }
   }
 
   else
   {
     *(self + 32) &= ~1u;
-    v7 = [(NTKVideoFaceView *)self _defaultListing];
-    v8 = [v4 anyListingWithTheme:self->_theme variant:objc_msgSend(v7 tag:{"variant"), 4}];
-    v9 = v8;
+    _defaultListing = [(NTKVideoFaceView *)self _defaultListing];
+    v8 = [v4 anyListingWithTheme:self->_theme variant:objc_msgSend(_defaultListing tag:{"variant"), 4}];
+    currentListing2 = v8;
     if (v8)
     {
-      v9 = v8;
+      currentListing2 = v8;
 
-      v7 = v9;
+      _defaultListing = currentListing2;
     }
   }
 
   [(NTKVideoFaceView *)self setShouldChangeVariantForScreenWake:0];
 
-  return v7;
+  return _defaultListing;
 }
 
-- (void)_handleTapToPlayVideoGesture:(id)a3
+- (void)_handleTapToPlayVideoGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if (([(NTKVideoFaceView *)self timeScrubbing]& 1) == 0)
   {
     [(NTKVideoFaceView *)self faultInFaceContentSkippedDuringSwiping];
     if (([(NTKVideoFaceView *)self shouldPause]& 1) == 0)
     {
       [(NTKVideoFaceView *)self _cancelDelayedPlayback];
-      v5 = [(NTKVideoFaceView *)self device];
-      v6 = [NTKVideoListingFactory sharedInstanceForDevice:v5];
+      device = [(NTKVideoFaceView *)self device];
+      v6 = [NTKVideoListingFactory sharedInstanceForDevice:device];
 
-      v7 = [(NTKVideoFaceView *)self currentListing];
-      v8 = [v6 anyListingWithTheme:self->_theme notMatchingVariant:objc_msgSend(v7 matchingTag:{"variant"), 4}];
-      if (v8 || ([v6 anyListingWithTheme:self->_theme notMatchingVariant:objc_msgSend(v7 matchingTag:{"variant"), 2}], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+      currentListing = [(NTKVideoFaceView *)self currentListing];
+      v8 = [v6 anyListingWithTheme:self->_theme notMatchingVariant:objc_msgSend(currentListing matchingTag:{"variant"), 4}];
+      if (v8 || ([v6 anyListingWithTheme:self->_theme notMatchingVariant:objc_msgSend(currentListing matchingTag:{"variant"), 2}], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v9 = v8;
         [(NTKVideoFaceView *)self setCurrentListing:v8];
         [(NTKVideoFaceView *)self _updateImageToBlur];
-        v10 = [(NTKVideoFaceView *)self videoPlayerView];
-        [v10 pause];
+        videoPlayerView = [(NTKVideoFaceView *)self videoPlayerView];
+        [videoPlayerView pause];
 
         [(UITapGestureRecognizer *)self->_tapToPlayGesture setEnabled:0];
         objc_initWeak(&location, self);
@@ -472,11 +472,11 @@ LABEL_9:
   }
 }
 
-- (void)videoPlayerViewDidBeginPlaying:(id)a3
+- (void)videoPlayerViewDidBeginPlaying:(id)playing
 {
   v4.receiver = self;
   v4.super_class = NTKVideoFaceView;
-  [(NTKVideoFaceView *)&v4 videoPlayerViewDidBeginPlaying:a3];
+  [(NTKVideoFaceView *)&v4 videoPlayerViewDidBeginPlaying:playing];
   [(NTKVideoFaceView *)self _hideCurtainView];
   [(UITapGestureRecognizer *)self->_tapToPlayGesture setEnabled:1];
   if ((*(self + 32) & 2) != 0)
@@ -491,11 +491,11 @@ LABEL_9:
   }
 }
 
-- (void)videoPlayerViewDidPauseAfterPlayingVideoToEnd:(id)a3
+- (void)videoPlayerViewDidPauseAfterPlayingVideoToEnd:(id)end
 {
   kdebug_trace();
-  v4 = [(NTKVideoFaceView *)self device];
-  v5 = [NTKVideoListingFactory sharedInstanceForDevice:v4];
+  device = [(NTKVideoFaceView *)self device];
+  v5 = [NTKVideoListingFactory sharedInstanceForDevice:device];
 
   if ([v5 behaviorForTheme:self->_theme] - 3 <= &dword_0 + 1)
   {

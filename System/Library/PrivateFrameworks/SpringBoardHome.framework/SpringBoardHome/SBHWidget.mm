@@ -1,24 +1,24 @@
 @interface SBHWidget
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matches:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matches:(id)matches;
 - (CHSExtensionIdentity)extensionIdentity;
 - (NSString)containerBundleIdentifier;
 - (NSString)displayName;
-- (SBHWidget)initWithCoder:(id)a3;
-- (SBHWidget)initWithKind:(id)a3 extensionBundleIdentifier:(id)a4;
-- (SBHWidget)initWithKind:(id)a3 extensionBundleIdentifier:(id)a4 containerBundleIdentifier:(id)a5;
-- (SBHWidget)initWithKind:(id)a3 extensionBundleIdentifier:(id)a4 containerBundleIdentifier:(id)a5 supportedGridSizeClasses:(id)a6;
-- (SBHWidget)initWithKind:(id)a3 extensionBundleIdentifier:(id)a4 supportedGridSizeClasses:(id)a5;
-- (SBHWidget)initWithUniqueIdentifier:(id)a3 kind:(id)a4 extensionBundleIdentifier:(id)a5 containerBundleIdentifier:(id)a6;
-- (SBHWidget)initWithUniqueIdentifier:(id)a3 kind:(id)a4 extensionBundleIdentifier:(id)a5 containerBundleIdentifier:(id)a6 supportedGridSizeClasses:(id)a7;
-- (id)chsWidgetWithGridSizeClass:(id)a3 intent:(id)a4;
-- (id)copyWithSuggestionSource:(int64_t)a3;
+- (SBHWidget)initWithCoder:(id)coder;
+- (SBHWidget)initWithKind:(id)kind extensionBundleIdentifier:(id)identifier;
+- (SBHWidget)initWithKind:(id)kind extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier;
+- (SBHWidget)initWithKind:(id)kind extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier supportedGridSizeClasses:(id)classes;
+- (SBHWidget)initWithKind:(id)kind extensionBundleIdentifier:(id)identifier supportedGridSizeClasses:(id)classes;
+- (SBHWidget)initWithUniqueIdentifier:(id)identifier kind:(id)kind extensionBundleIdentifier:(id)bundleIdentifier containerBundleIdentifier:(id)containerBundleIdentifier;
+- (SBHWidget)initWithUniqueIdentifier:(id)identifier kind:(id)kind extensionBundleIdentifier:(id)bundleIdentifier containerBundleIdentifier:(id)containerBundleIdentifier supportedGridSizeClasses:(id)classes;
+- (id)chsWidgetWithGridSizeClass:(id)class intent:(id)intent;
+- (id)copyWithSuggestionSource:(int64_t)source;
 - (id)copyWithUniqueIdentifier;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBHWidget
@@ -38,8 +38,8 @@
   containerBundleIdentifier = self->_containerBundleIdentifier;
   if (!containerBundleIdentifier)
   {
-    v4 = [(SBHWidget *)self extensionBundleIdentifier];
-    v5 = SBHContainingBundleIdentifierForWidgetWithBundleIdentifier(v4);
+    extensionBundleIdentifier = [(SBHWidget *)self extensionBundleIdentifier];
+    v5 = SBHContainingBundleIdentifierForWidgetWithBundleIdentifier(extensionBundleIdentifier);
     v6 = [v5 copy];
     v7 = self->_containerBundleIdentifier;
     self->_containerBundleIdentifier = v6;
@@ -53,9 +53,9 @@
 - (CHSExtensionIdentity)extensionIdentity
 {
   v3 = objc_alloc(MEMORY[0x1E6994290]);
-  v4 = [(SBHWidget *)self extensionBundleIdentifier];
-  v5 = [(SBHWidget *)self containerBundleIdentifier];
-  v6 = [v3 initWithExtensionBundleIdentifier:v4 containerBundleIdentifier:v5 deviceIdentifier:0];
+  extensionBundleIdentifier = [(SBHWidget *)self extensionBundleIdentifier];
+  containerBundleIdentifier = [(SBHWidget *)self containerBundleIdentifier];
+  v6 = [v3 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier deviceIdentifier:0];
 
   return v6;
 }
@@ -65,8 +65,8 @@
   displayName = self->_displayName;
   if (!displayName)
   {
-    v4 = [(SBHWidget *)self extensionBundleIdentifier];
-    v5 = SBHContainingBundleRecordForWidgetWithBundleIdentifier(v4);
+    extensionBundleIdentifier = [(SBHWidget *)self extensionBundleIdentifier];
+    v5 = SBHContainingBundleRecordForWidgetWithBundleIdentifier(extensionBundleIdentifier);
 
     if (!v5)
     {
@@ -76,19 +76,19 @@
       goto LABEL_9;
     }
 
-    v6 = [v5 localizedName];
-    v7 = v6;
-    if (v6)
+    localizedName = [v5 localizedName];
+    v7 = localizedName;
+    if (localizedName)
     {
-      v8 = v6;
+      localizedShortName = localizedName;
     }
 
     else
     {
-      v8 = [v5 localizedShortName];
+      localizedShortName = [v5 localizedShortName];
     }
 
-    v11 = v8;
+    v11 = localizedShortName;
 
     v12 = [v11 copy];
     v13 = self->_displayName;
@@ -103,36 +103,36 @@ LABEL_9:
   return v10;
 }
 
-- (SBHWidget)initWithUniqueIdentifier:(id)a3 kind:(id)a4 extensionBundleIdentifier:(id)a5 containerBundleIdentifier:(id)a6 supportedGridSizeClasses:(id)a7
+- (SBHWidget)initWithUniqueIdentifier:(id)identifier kind:(id)kind extensionBundleIdentifier:(id)bundleIdentifier containerBundleIdentifier:(id)containerBundleIdentifier supportedGridSizeClasses:(id)classes
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  kindCopy = kind;
+  bundleIdentifierCopy = bundleIdentifier;
+  containerBundleIdentifierCopy = containerBundleIdentifier;
+  classesCopy = classes;
   v31.receiver = self;
   v31.super_class = SBHWidget;
   v17 = [(SBHWidget *)&v31 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [identifierCopy copy];
     uniqueIdentifier = v17->_uniqueIdentifier;
     v17->_uniqueIdentifier = v18;
 
-    v20 = [v13 copy];
+    v20 = [kindCopy copy];
     kind = v17->_kind;
     v17->_kind = v20;
 
-    v22 = [v14 copy];
+    v22 = [bundleIdentifierCopy copy];
     extensionBundleIdentifier = v17->_extensionBundleIdentifier;
     v17->_extensionBundleIdentifier = v22;
 
-    v24 = [v15 copy];
+    v24 = [containerBundleIdentifierCopy copy];
     containerBundleIdentifier = v17->_containerBundleIdentifier;
     v17->_containerBundleIdentifier = v24;
 
     v17->_suggestionSource = 0;
-    v26 = [v16 copy];
+    v26 = [classesCopy copy];
     supportedGridSizeClasses = v17->_supportedGridSizeClasses;
     v17->_supportedGridSizeClasses = v26;
 
@@ -144,81 +144,81 @@ LABEL_9:
   return v17;
 }
 
-- (SBHWidget)initWithUniqueIdentifier:(id)a3 kind:(id)a4 extensionBundleIdentifier:(id)a5 containerBundleIdentifier:(id)a6
+- (SBHWidget)initWithUniqueIdentifier:(id)identifier kind:(id)kind extensionBundleIdentifier:(id)bundleIdentifier containerBundleIdentifier:(id)containerBundleIdentifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  containerBundleIdentifierCopy = containerBundleIdentifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  kindCopy = kind;
+  identifierCopy = identifier;
   v14 = +[SBHIconGridSizeClassSet gridSizeClassSetForAllNonDefaultGridSizeClasses];
-  v15 = [(SBHWidget *)self initWithUniqueIdentifier:v13 kind:v12 extensionBundleIdentifier:v11 containerBundleIdentifier:v10 supportedGridSizeClasses:v14];
+  v15 = [(SBHWidget *)self initWithUniqueIdentifier:identifierCopy kind:kindCopy extensionBundleIdentifier:bundleIdentifierCopy containerBundleIdentifier:containerBundleIdentifierCopy supportedGridSizeClasses:v14];
 
   return v15;
 }
 
-- (SBHWidget)initWithKind:(id)a3 extensionBundleIdentifier:(id)a4 containerBundleIdentifier:(id)a5
+- (SBHWidget)initWithKind:(id)kind extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier
 {
   v8 = MEMORY[0x1E696AFB0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 UUID];
-  v13 = [v12 UUIDString];
-  v14 = [(SBHWidget *)self initWithUniqueIdentifier:v13 kind:v11 extensionBundleIdentifier:v10 containerBundleIdentifier:v9];
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  kindCopy = kind;
+  uUID = [v8 UUID];
+  uUIDString = [uUID UUIDString];
+  v14 = [(SBHWidget *)self initWithUniqueIdentifier:uUIDString kind:kindCopy extensionBundleIdentifier:identifierCopy containerBundleIdentifier:bundleIdentifierCopy];
 
   return v14;
 }
 
-- (SBHWidget)initWithKind:(id)a3 extensionBundleIdentifier:(id)a4 containerBundleIdentifier:(id)a5 supportedGridSizeClasses:(id)a6
+- (SBHWidget)initWithKind:(id)kind extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier supportedGridSizeClasses:(id)classes
 {
   v10 = MEMORY[0x1E696AFB0];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 UUID];
-  v16 = [v15 UUIDString];
-  v17 = [(SBHWidget *)self initWithUniqueIdentifier:v16 kind:v14 extensionBundleIdentifier:v13 containerBundleIdentifier:v12 supportedGridSizeClasses:v11];
+  classesCopy = classes;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  kindCopy = kind;
+  uUID = [v10 UUID];
+  uUIDString = [uUID UUIDString];
+  v17 = [(SBHWidget *)self initWithUniqueIdentifier:uUIDString kind:kindCopy extensionBundleIdentifier:identifierCopy containerBundleIdentifier:bundleIdentifierCopy supportedGridSizeClasses:classesCopy];
 
   return v17;
 }
 
-- (SBHWidget)initWithKind:(id)a3 extensionBundleIdentifier:(id)a4
+- (SBHWidget)initWithKind:(id)kind extensionBundleIdentifier:(id)identifier
 {
   v6 = MEMORY[0x1E696AFB0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 UUID];
-  v10 = [v9 UUIDString];
-  v11 = [(SBHWidget *)self initWithUniqueIdentifier:v10 kind:v8 extensionBundleIdentifier:v7 containerBundleIdentifier:0];
+  identifierCopy = identifier;
+  kindCopy = kind;
+  uUID = [v6 UUID];
+  uUIDString = [uUID UUIDString];
+  v11 = [(SBHWidget *)self initWithUniqueIdentifier:uUIDString kind:kindCopy extensionBundleIdentifier:identifierCopy containerBundleIdentifier:0];
 
   return v11;
 }
 
-- (SBHWidget)initWithKind:(id)a3 extensionBundleIdentifier:(id)a4 supportedGridSizeClasses:(id)a5
+- (SBHWidget)initWithKind:(id)kind extensionBundleIdentifier:(id)identifier supportedGridSizeClasses:(id)classes
 {
   v8 = MEMORY[0x1E696AFB0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 UUID];
-  v13 = [v12 UUIDString];
-  v14 = [(SBHWidget *)self initWithUniqueIdentifier:v13 kind:v11 extensionBundleIdentifier:v10 containerBundleIdentifier:0 supportedGridSizeClasses:v9];
+  classesCopy = classes;
+  identifierCopy = identifier;
+  kindCopy = kind;
+  uUID = [v8 UUID];
+  uUIDString = [uUID UUIDString];
+  v14 = [(SBHWidget *)self initWithUniqueIdentifier:uUIDString kind:kindCopy extensionBundleIdentifier:identifierCopy containerBundleIdentifier:0 supportedGridSizeClasses:classesCopy];
 
   return v14;
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v4 = a3;
-  v5 = [(SBHWidget *)self extensionIdentity];
-  v6 = [v4 extensionIdentity];
+  matchesCopy = matches;
+  extensionIdentity = [(SBHWidget *)self extensionIdentity];
+  extensionIdentity2 = [matchesCopy extensionIdentity];
   v7 = BSEqualObjects();
 
   if (v7)
   {
-    v8 = [(SBHWidget *)self kind];
-    v9 = [v4 kind];
+    kind = [(SBHWidget *)self kind];
+    kind2 = [matchesCopy kind];
     v10 = BSEqualObjects();
   }
 
@@ -230,17 +230,17 @@ LABEL_9:
   return v10;
 }
 
-- (id)chsWidgetWithGridSizeClass:(id)a3 intent:(id)a4
+- (id)chsWidgetWithGridSizeClass:(id)class intent:(id)intent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHWidget *)self kind];
-  v9 = [(SBHWidget *)self extensionBundleIdentifier];
-  v10 = [(SBHWidget *)self containerBundleIdentifier];
-  v11 = CHSWidgetFamilyForSBHIconGridSizeClass(v7);
+  intentCopy = intent;
+  classCopy = class;
+  kind = [(SBHWidget *)self kind];
+  extensionBundleIdentifier = [(SBHWidget *)self extensionBundleIdentifier];
+  containerBundleIdentifier = [(SBHWidget *)self containerBundleIdentifier];
+  v11 = CHSWidgetFamilyForSBHIconGridSizeClass(classCopy);
 
-  v12 = [objc_alloc(MEMORY[0x1E6994290]) initWithExtensionBundleIdentifier:v9 containerBundleIdentifier:v10 deviceIdentifier:0];
-  v13 = [objc_alloc(MEMORY[0x1E6994370]) initWithExtensionIdentity:v12 kind:v8 family:v11 intent:v6 activityIdentifier:0];
+  v12 = [objc_alloc(MEMORY[0x1E6994290]) initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier deviceIdentifier:0];
+  v13 = [objc_alloc(MEMORY[0x1E6994370]) initWithExtensionIdentity:v12 kind:kind family:v11 intent:intentCopy activityIdentifier:0];
 
   return v13;
 }
@@ -248,17 +248,17 @@ LABEL_9:
 - (id)copyWithUniqueIdentifier
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [v4 UUIDString];
-  v6 = [v3 initWithUniqueIdentifier:v5 kind:self->_kind extensionBundleIdentifier:self->_extensionBundleIdentifier containerBundleIdentifier:self->_containerBundleIdentifier supportedGridSizeClasses:self->_supportedGridSizeClasses];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v6 = [v3 initWithUniqueIdentifier:uUIDString kind:self->_kind extensionBundleIdentifier:self->_extensionBundleIdentifier containerBundleIdentifier:self->_containerBundleIdentifier supportedGridSizeClasses:self->_supportedGridSizeClasses];
 
   v6[7] = self->_suggestionSource;
   return v6;
 }
 
-- (id)copyWithSuggestionSource:(int64_t)a3
+- (id)copyWithSuggestionSource:(int64_t)source
 {
-  if (self->_suggestionSource == a3)
+  if (self->_suggestionSource == source)
   {
 
     return self;
@@ -267,16 +267,16 @@ LABEL_9:
   else
   {
     result = [objc_alloc(objc_opt_class()) initWithUniqueIdentifier:self->_uniqueIdentifier kind:self->_kind extensionBundleIdentifier:self->_extensionBundleIdentifier containerBundleIdentifier:self->_containerBundleIdentifier supportedGridSizeClasses:self->_supportedGridSizeClasses];
-    *(result + 7) = a3;
+    *(result + 7) = source;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -288,7 +288,7 @@ LABEL_9:
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       if (BSEqualObjects() && BSEqualObjects() && BSEqualObjects() && self->_suggestionSource == v7->_suggestionSource)
       {
         v8 = BSEqualObjects();
@@ -311,76 +311,76 @@ LABEL_9:
 
 - (id)succinctDescription
 {
-  v2 = [(SBHWidget *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHWidget *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHWidget *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHWidget *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHWidget *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_uniqueIdentifier withName:@"uniqueIdentifier"];
-  v6 = [v4 appendObject:self->_kind withName:@"kind"];
-  v7 = [v4 appendObject:self->_extensionBundleIdentifier withName:@"extensionBundleIdentifier"];
-  v8 = [(SBHWidget *)self displayName];
-  v9 = [v4 appendObject:v8 withName:@"displayName"];
+  succinctDescriptionBuilder = [(SBHWidget *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_uniqueIdentifier withName:@"uniqueIdentifier"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_kind withName:@"kind"];
+  v7 = [succinctDescriptionBuilder appendObject:self->_extensionBundleIdentifier withName:@"extensionBundleIdentifier"];
+  displayName = [(SBHWidget *)self displayName];
+  v9 = [succinctDescriptionBuilder appendObject:displayName withName:@"displayName"];
 
-  v10 = [v4 appendInteger:self->_suggestionSource withName:@"suggestionSource"];
-  v11 = [(SBHWidget *)self supportedGridSizeClasses];
-  v12 = [v4 appendObject:v11 withName:@"supportedGridSizeClasses"];
+  v10 = [succinctDescriptionBuilder appendInteger:self->_suggestionSource withName:@"suggestionSource"];
+  supportedGridSizeClasses = [(SBHWidget *)self supportedGridSizeClasses];
+  v12 = [succinctDescriptionBuilder appendObject:supportedGridSizeClasses withName:@"supportedGridSizeClasses"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uniqueIdentifier = self->_uniqueIdentifier;
-  v5 = a3;
-  [v5 encodeObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
-  [v5 encodeObject:self->_kind forKey:@"kind"];
-  [v5 encodeObject:self->_extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
-  [v5 encodeInteger:self->_suggestionSource forKey:@"suggestionSource"];
-  [v5 encodeObject:self->_supportedGridSizeClasses forKey:@"supportedGridSizeClasses"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
+  [coderCopy encodeObject:self->_kind forKey:@"kind"];
+  [coderCopy encodeObject:self->_extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
+  [coderCopy encodeInteger:self->_suggestionSource forKey:@"suggestionSource"];
+  [coderCopy encodeObject:self->_supportedGridSizeClasses forKey:@"supportedGridSizeClasses"];
 }
 
-- (SBHWidget)initWithCoder:(id)a3
+- (SBHWidget)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = SBHWidget;
   v5 = [(SBHWidget *)&v23 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"uniqueIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"uniqueIdentifier"];
     v8 = [v7 copy];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v8;
 
     v10 = objc_opt_self();
-    v11 = [v4 decodeObjectOfClass:v10 forKey:@"kind"];
+    v11 = [coderCopy decodeObjectOfClass:v10 forKey:@"kind"];
     v12 = [v11 copy];
     kind = v5->_kind;
     v5->_kind = v12;
 
     v14 = objc_opt_self();
-    v15 = [v4 decodeObjectOfClass:v14 forKey:@"extensionBundleIdentifier"];
+    v15 = [coderCopy decodeObjectOfClass:v14 forKey:@"extensionBundleIdentifier"];
     v16 = [v15 copy];
     extensionBundleIdentifier = v5->_extensionBundleIdentifier;
     v5->_extensionBundleIdentifier = v16;
 
-    v5->_suggestionSource = [v4 decodeIntegerForKey:@"suggestionSource"];
+    v5->_suggestionSource = [coderCopy decodeIntegerForKey:@"suggestionSource"];
     v18 = objc_opt_self();
-    v19 = [v4 decodeObjectOfClass:v18 forKey:@"supportedGridSizeClasses"];
+    v19 = [coderCopy decodeObjectOfClass:v18 forKey:@"supportedGridSizeClasses"];
     v20 = [v19 copy];
     supportedGridSizeClasses = v5->_supportedGridSizeClasses;
     v5->_supportedGridSizeClasses = v20;

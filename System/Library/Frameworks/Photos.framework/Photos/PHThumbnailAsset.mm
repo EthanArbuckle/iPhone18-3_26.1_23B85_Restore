@@ -3,8 +3,8 @@
 - (BOOL)complete;
 - (BOOL)hasAllThumbs;
 - (BOOL)hasMasterThumb;
-- (BOOL)isEqual:(id)a3;
-- (PHThumbnailAsset)initWithObjectID:(id)a3 knownKeysDictionary:(id)a4 photoLibrary:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PHThumbnailAsset)initWithObjectID:(id)d knownKeysDictionary:(id)dictionary photoLibrary:(id)library;
 - (id)pl_photoLibrary;
 - (int64_t)_persistedThumbnailIndex;
 - (int64_t)compactSCSensitivityAnalysis;
@@ -18,41 +18,41 @@
 
 - (id)pl_photoLibrary
 {
-  v2 = [(PHThumbnailAsset *)self photoLibrary];
-  v3 = [v2 photoLibrary];
+  photoLibrary = [(PHThumbnailAsset *)self photoLibrary];
+  v2PhotoLibrary = [photoLibrary photoLibrary];
 
-  return v3;
+  return v2PhotoLibrary;
 }
 
 - (int64_t)compactSCSensitivityAnalysis
 {
   v2 = [(NSKnownKeysDictionary *)self->_dictionary valueAtIndex:4];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 - (unint64_t)sourceType
 {
-  v2 = [(PHThumbnailAsset *)self savedAssetType];
+  savedAssetType = [(PHThumbnailAsset *)self savedAssetType];
 
-  return [PHAsset sourceTypeFromSavedAssetType:v2];
+  return [PHAsset sourceTypeFromSavedAssetType:savedAssetType];
 }
 
 - (signed)savedAssetType
 {
   v2 = [(NSKnownKeysDictionary *)self->_dictionary valueAtIndex:3];
-  v3 = [v2 shortValue];
+  shortValue = [v2 shortValue];
 
-  return v3;
+  return shortValue;
 }
 
 - (BOOL)complete
 {
   v2 = [(NSKnownKeysDictionary *)self->_dictionary valueAtIndex:2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)thumbnailIndex
@@ -69,10 +69,10 @@
 - (int64_t)_persistedThumbnailIndex
 {
   v2 = [(NSKnownKeysDictionary *)self->_dictionary valueAtIndex:1];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
   if (v2)
   {
-    v4 = v3;
+    v4 = integerValue;
   }
 
   else
@@ -85,32 +85,32 @@
 
 - (BOOL)hasMasterThumb
 {
-  v2 = [(PHThumbnailAsset *)self _persistedThumbnailIndex];
+  _persistedThumbnailIndex = [(PHThumbnailAsset *)self _persistedThumbnailIndex];
   v3 = MEMORY[0x1E69BE540];
 
-  return [v3 hasMasterThumbWithThumbnailIndex:v2];
+  return [v3 hasMasterThumbWithThumbnailIndex:_persistedThumbnailIndex];
 }
 
 - (BOOL)hasAllThumbs
 {
-  v2 = [(PHThumbnailAsset *)self _persistedThumbnailIndex];
+  _persistedThumbnailIndex = [(PHThumbnailAsset *)self _persistedThumbnailIndex];
   v3 = MEMORY[0x1E69BE540];
 
-  return [v3 hasAllThumbsWithThumbnailIndex:v2];
+  return [v3 hasAllThumbsWithThumbnailIndex:_persistedThumbnailIndex];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PHThumbnailAsset *)self objectID];
-  v3 = [v2 hash];
+  objectID = [(PHThumbnailAsset *)self objectID];
+  v3 = [objectID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     IsEqual = 1;
   }
@@ -120,9 +120,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PHThumbnailAsset *)self objectID];
-      v7 = [(PHThumbnailAsset *)v5 objectID];
+      v5 = equalCopy;
+      objectID = [(PHThumbnailAsset *)self objectID];
+      objectID2 = [(PHThumbnailAsset *)v5 objectID];
 
       IsEqual = PLObjectIsEqual();
     }
@@ -136,20 +136,20 @@
   return IsEqual;
 }
 
-- (PHThumbnailAsset)initWithObjectID:(id)a3 knownKeysDictionary:(id)a4 photoLibrary:(id)a5
+- (PHThumbnailAsset)initWithObjectID:(id)d knownKeysDictionary:(id)dictionary photoLibrary:(id)library
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  dictionaryCopy = dictionary;
+  libraryCopy = library;
   v15.receiver = self;
   v15.super_class = PHThumbnailAsset;
   v12 = [(PHThumbnailAsset *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_objectID, a3);
-    objc_storeStrong(&v13->_dictionary, a4);
-    objc_storeStrong(&v13->_photoLibrary, a5);
+    objc_storeStrong(&v12->_objectID, d);
+    objc_storeStrong(&v13->_dictionary, dictionary);
+    objc_storeStrong(&v13->_photoLibrary, library);
   }
 
   return v13;

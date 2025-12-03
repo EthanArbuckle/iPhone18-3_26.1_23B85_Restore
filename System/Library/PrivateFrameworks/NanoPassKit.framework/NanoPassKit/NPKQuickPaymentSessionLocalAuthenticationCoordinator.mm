@@ -1,25 +1,25 @@
 @interface NPKQuickPaymentSessionLocalAuthenticationCoordinator
-- (NPKQuickPaymentSessionLocalAuthenticationCoordinator)initWithCallbackQueue:(id)a3;
+- (NPKQuickPaymentSessionLocalAuthenticationCoordinator)initWithCallbackQueue:(id)queue;
 - (NPKQuickPaymentSessionLocalAuthenticationCoordinatorCredentialDelegate)credentialDelegate;
-- (id)_nameForLocalAuthenticationEvent:(int64_t)a3;
-- (int64_t)_credentialTypeForEvent:(int64_t)a3;
-- (void)_activateLocalAuthenticationEvent:(int64_t)a3;
+- (id)_nameForLocalAuthenticationEvent:(int64_t)event;
+- (int64_t)_credentialTypeForEvent:(int64_t)event;
+- (void)_activateLocalAuthenticationEvent:(int64_t)event;
 - (void)_cancelLocalAuthentication;
-- (void)_deactivateLocalAuthenticationEvent:(int64_t)a3;
-- (void)_handleLocalAuthenticationPolicyEvaluatedWithContext:(id)a3 error:(id)a4;
-- (void)_invokeCompletionHandlerForInvalidationWithError:(id)a3;
+- (void)_deactivateLocalAuthenticationEvent:(int64_t)event;
+- (void)_handleLocalAuthenticationPolicyEvaluatedWithContext:(id)context error:(id)error;
+- (void)_invokeCompletionHandlerForInvalidationWithError:(id)error;
 - (void)_presentNextLocalAuthenticationEvent;
-- (void)beginLocalAuthenticationWithAccessControl:(__SecAccessControl *)a3 operation:(int64_t)a4 completion:(id)a5;
-- (void)beginLocalAuthenticationWithPolicy:(int64_t)a3 completion:(id)a4;
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5;
+- (void)beginLocalAuthenticationWithAccessControl:(__SecAccessControl *)control operation:(int64_t)operation completion:(id)completion;
+- (void)beginLocalAuthenticationWithPolicy:(int64_t)policy completion:(id)completion;
+- (void)event:(int64_t)event params:(id)params reply:(id)reply;
 - (void)invalidateLocalAuthenticationContexts;
 @end
 
 @implementation NPKQuickPaymentSessionLocalAuthenticationCoordinator
 
-- (NPKQuickPaymentSessionLocalAuthenticationCoordinator)initWithCallbackQueue:(id)a3
+- (NPKQuickPaymentSessionLocalAuthenticationCoordinator)initWithCallbackQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = NPKQuickPaymentSessionLocalAuthenticationCoordinator;
   v6 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)&v11 init];
@@ -30,24 +30,24 @@
     localAuthenticationQueue = v6->_localAuthenticationQueue;
     v6->_localAuthenticationQueue = v8;
 
-    objc_storeStrong(&v6->_callbackQueue, a3);
+    objc_storeStrong(&v6->_callbackQueue, queue);
   }
 
   return v6;
 }
 
-- (void)beginLocalAuthenticationWithPolicy:(int64_t)a3 completion:(id)a4
+- (void)beginLocalAuthenticationWithPolicy:(int64_t)policy completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   localAuthenticationQueue = self->_localAuthenticationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __102__NPKQuickPaymentSessionLocalAuthenticationCoordinator_beginLocalAuthenticationWithPolicy_completion___block_invoke;
   block[3] = &unk_279946730;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = completionCopy;
+  policyCopy = policy;
+  v8 = completionCopy;
   dispatch_async(localAuthenticationQueue, block);
 }
 
@@ -281,19 +281,19 @@ void __102__NPKQuickPaymentSessionLocalAuthenticationCoordinator_beginLocalAuthe
   dispatch_async(v7, block);
 }
 
-- (void)beginLocalAuthenticationWithAccessControl:(__SecAccessControl *)a3 operation:(int64_t)a4 completion:(id)a5
+- (void)beginLocalAuthenticationWithAccessControl:(__SecAccessControl *)control operation:(int64_t)operation completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   localAuthenticationQueue = self->_localAuthenticationQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __119__NPKQuickPaymentSessionLocalAuthenticationCoordinator_beginLocalAuthenticationWithAccessControl_operation_completion___block_invoke;
   v11[3] = &unk_2799489A8;
   v11[4] = self;
-  v12 = v8;
-  v13 = a3;
-  v14 = a4;
-  v10 = v8;
+  v12 = completionCopy;
+  controlCopy = control;
+  operationCopy = operation;
+  v10 = completionCopy;
   dispatch_async(localAuthenticationQueue, v11);
 }
 
@@ -547,11 +547,11 @@ void __93__NPKQuickPaymentSessionLocalAuthenticationCoordinator_invalidateLocalA
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5
+- (void)event:(int64_t)event params:(id)params reply:(id)reply
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:&unk_286CE7738];
+  paramsCopy = params;
+  v8 = [paramsCopy objectForKeyedSubscript:&unk_286CE7738];
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -560,7 +560,7 @@ void __93__NPKQuickPaymentSessionLocalAuthenticationCoordinator_invalidateLocalA
     v11 = pk_Payment_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self _nameForLocalAuthenticationEvent:a3];
+      v12 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self _nameForLocalAuthenticationEvent:event];
       if (v8)
       {
         if ([v8 BOOLValue])
@@ -579,7 +579,7 @@ void __93__NPKQuickPaymentSessionLocalAuthenticationCoordinator_invalidateLocalA
         v13 = @"received";
       }
 
-      v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v14 = [MEMORY[0x277CCABB0] numberWithInteger:event];
       *buf = 138413058;
       v22 = v12;
       v23 = 2112;
@@ -587,12 +587,12 @@ void __93__NPKQuickPaymentSessionLocalAuthenticationCoordinator_invalidateLocalA
       v25 = 2112;
       v26 = v14;
       v27 = 2112;
-      v28 = v7;
+      v28 = paramsCopy;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: LocalAuthentication UI ***** %@ %@ ***** - event: %@ params: %@", buf, 0x2Au);
     }
   }
 
-  if (a3)
+  if (event)
   {
     localAuthenticationQueue = self->_localAuthenticationQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -600,8 +600,8 @@ void __93__NPKQuickPaymentSessionLocalAuthenticationCoordinator_invalidateLocalA
     block[2] = __75__NPKQuickPaymentSessionLocalAuthenticationCoordinator_event_params_reply___block_invoke;
     block[3] = &unk_279945F18;
     v18 = v8;
-    v19 = self;
-    v20 = a3;
+    selfCopy = self;
+    eventCopy = event;
     dispatch_async(localAuthenticationQueue, block);
   }
 
@@ -626,14 +626,14 @@ uint64_t __75__NPKQuickPaymentSessionLocalAuthenticationCoordinator_event_params
   }
 }
 
-- (void)_handleLocalAuthenticationPolicyEvaluatedWithContext:(id)a3 error:(id)a4
+- (void)_handleLocalAuthenticationPolicyEvaluatedWithContext:(id)context error:(id)error
 {
   v44[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  errorCopy = error;
   kdebug_trace();
   dispatch_assert_queue_V2(self->_localAuthenticationQueue);
-  if (v7)
+  if (errorCopy)
   {
     v8 = MEMORY[0x277D37D28];
     v9 = *MEMORY[0x277D38558];
@@ -644,12 +644,12 @@ uint64_t __75__NPKQuickPaymentSessionLocalAuthenticationCoordinator_event_params
     v40 = *MEMORY[0x277D383E8];
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     [v8 subjects:v10 sendEvent:v11];
-    v12 = 0;
+    externalizedContext = 0;
   }
 
   else
   {
-    v12 = [(LAContext *)v6 externalizedContext];
+    externalizedContext = [(LAContext *)contextCopy externalizedContext];
     v13 = MEMORY[0x277D37D28];
     v14 = *MEMORY[0x277D38558];
     v44[0] = *MEMORY[0x277D38538];
@@ -673,7 +673,7 @@ uint64_t __75__NPKQuickPaymentSessionLocalAuthenticationCoordinator_event_params
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v38 = v7;
+        v38 = errorCopy;
         _os_log_impl(&dword_25B300000, v18, OS_LOG_TYPE_DEFAULT, "Notice: Local authentication coordinator: have completion handler for evaluate policy with error:%@", buf, 0xCu);
       }
     }
@@ -685,13 +685,13 @@ uint64_t __75__NPKQuickPaymentSessionLocalAuthenticationCoordinator_event_params
     v32[1] = 3221225472;
     v32[2] = __115__NPKQuickPaymentSessionLocalAuthenticationCoordinator__handleLocalAuthenticationPolicyEvaluatedWithContext_error___block_invoke;
     v32[3] = &unk_279948930;
-    v33 = v6;
-    v34 = v12;
-    v35 = v7;
+    v33 = contextCopy;
+    v34 = externalizedContext;
+    v35 = errorCopy;
     v36 = v15;
-    v20 = v7;
-    v21 = v12;
-    v22 = v6;
+    v20 = errorCopy;
+    v21 = externalizedContext;
+    v22 = contextCopy;
     [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self _performDelegateCallback:v32];
 
     completedError = v36;
@@ -705,22 +705,22 @@ uint64_t __75__NPKQuickPaymentSessionLocalAuthenticationCoordinator_event_params
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v38 = v7;
+        v38 = errorCopy;
         _os_log_impl(&dword_25B300000, v24, OS_LOG_TYPE_DEFAULT, "Notice: Local authentication coordinator: no completion handler for evaluate policy with error:%@", buf, 0xCu);
       }
     }
 
     completedContext = self->_completedContext;
-    self->_completedContext = v6;
-    v26 = v6;
+    self->_completedContext = contextCopy;
+    v26 = contextCopy;
 
     completedCredential = self->_completedCredential;
-    self->_completedCredential = v12;
-    v28 = v12;
+    self->_completedCredential = externalizedContext;
+    v28 = externalizedContext;
 
     completedError = self->_completedError;
-    self->_completedError = v7;
-    v29 = v7;
+    self->_completedError = errorCopy;
+    v29 = errorCopy;
   }
 
   inProgressContext = self->_inProgressContext;
@@ -729,7 +729,7 @@ uint64_t __75__NPKQuickPaymentSessionLocalAuthenticationCoordinator_event_params
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_activateLocalAuthenticationEvent:(int64_t)a3
+- (void)_activateLocalAuthenticationEvent:(int64_t)event
 {
   v15 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_localAuthenticationQueue);
@@ -742,28 +742,28 @@ uint64_t __75__NPKQuickPaymentSessionLocalAuthenticationCoordinator_event_params
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134217984;
-      v14 = a3;
+      eventCopy = event;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Activating local authentication event %ld", &v13, 0xCu);
     }
   }
 
-  v8 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self pendingLocalAuthenticationEvents];
+  pendingLocalAuthenticationEvents = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self pendingLocalAuthenticationEvents];
 
-  if (!v8)
+  if (!pendingLocalAuthenticationEvents)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
-    [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self setPendingLocalAuthenticationEvents:v9];
+    array = [MEMORY[0x277CBEB18] array];
+    [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self setPendingLocalAuthenticationEvents:array];
   }
 
-  v10 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self pendingLocalAuthenticationEvents];
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v10 addObject:v11];
+  pendingLocalAuthenticationEvents2 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self pendingLocalAuthenticationEvents];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:event];
+  [pendingLocalAuthenticationEvents2 addObject:v11];
 
   [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self _presentNextLocalAuthenticationEvent];
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deactivateLocalAuthenticationEvent:(int64_t)a3
+- (void)_deactivateLocalAuthenticationEvent:(int64_t)event
 {
   v16 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_localAuthenticationQueue);
@@ -776,28 +776,28 @@ uint64_t __75__NPKQuickPaymentSessionLocalAuthenticationCoordinator_event_params
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v15 = a3;
+      eventCopy = event;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Local authentication coordinator: Deactivating local authentication with event %ld", buf, 0xCu);
     }
   }
 
-  v8 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self activeLocalAuthenticationEvent];
-  v9 = v8;
-  if (v8 && [v8 integerValue] == a3)
+  activeLocalAuthenticationEvent = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self activeLocalAuthenticationEvent];
+  v9 = activeLocalAuthenticationEvent;
+  if (activeLocalAuthenticationEvent && [activeLocalAuthenticationEvent integerValue] == event)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __92__NPKQuickPaymentSessionLocalAuthenticationCoordinator__deactivateLocalAuthenticationEvent___block_invoke;
     v13[3] = &unk_279945830;
     v13[4] = self;
-    v13[5] = a3;
+    v13[5] = event;
     [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self _performDelegateCallback:v13];
     [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self setActiveLocalAuthenticationEvent:0];
   }
 
-  v10 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self pendingLocalAuthenticationEvents];
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v10 removeObject:v11];
+  pendingLocalAuthenticationEvents = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self pendingLocalAuthenticationEvents];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:event];
+  [pendingLocalAuthenticationEvents removeObject:v11];
 
   [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self _presentNextLocalAuthenticationEvent];
   v12 = *MEMORY[0x277D85DE8];
@@ -812,23 +812,23 @@ void __92__NPKQuickPaymentSessionLocalAuthenticationCoordinator__deactivateLocal
 - (void)_presentNextLocalAuthenticationEvent
 {
   dispatch_assert_queue_V2(self->_localAuthenticationQueue);
-  v9 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self pendingLocalAuthenticationEvents];
-  if ([v9 count])
+  pendingLocalAuthenticationEvents = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self pendingLocalAuthenticationEvents];
+  if ([pendingLocalAuthenticationEvents count])
   {
-    v3 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self activeLocalAuthenticationEvent];
+    activeLocalAuthenticationEvent = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self activeLocalAuthenticationEvent];
 
-    if (!v3)
+    if (!activeLocalAuthenticationEvent)
     {
-      v4 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self pendingLocalAuthenticationEvents];
-      v5 = [v4 firstObject];
-      v6 = [v5 integerValue];
+      pendingLocalAuthenticationEvents2 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self pendingLocalAuthenticationEvents];
+      firstObject = [pendingLocalAuthenticationEvents2 firstObject];
+      integerValue = [firstObject integerValue];
 
-      v7 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self pendingLocalAuthenticationEvents];
-      [v7 removeObjectAtIndex:0];
+      pendingLocalAuthenticationEvents3 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self pendingLocalAuthenticationEvents];
+      [pendingLocalAuthenticationEvents3 removeObjectAtIndex:0];
 
-      if ((v6 & 0xFFFFFFFFFFFFFFFELL) == 2)
+      if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 2)
       {
-        v8 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self _credentialTypeForEvent:v6];
+        v8 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self _credentialTypeForEvent:integerValue];
         objc_initWeak(&location, self);
         v10[0] = MEMORY[0x277D85DD0];
         v10[1] = 3221225472;
@@ -837,7 +837,7 @@ void __92__NPKQuickPaymentSessionLocalAuthenticationCoordinator__deactivateLocal
         v10[4] = self;
         v11[1] = v8;
         objc_copyWeak(v11, &location);
-        v11[2] = v6;
+        v11[2] = integerValue;
         [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self _performDelegateCallback:v10];
         objc_destroyWeak(v11);
         objc_destroyWeak(&location);
@@ -950,15 +950,15 @@ void __92__NPKQuickPaymentSessionLocalAuthenticationCoordinator__presentNextLoca
     }
   }
 
-  v6 = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self inProgressContext];
-  [v6 invalidate];
+  inProgressContext = [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self inProgressContext];
+  [inProgressContext invalidate];
 
   [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self setInProgressContext:0];
 }
 
-- (void)_invokeCompletionHandlerForInvalidationWithError:(id)a3
+- (void)_invokeCompletionHandlerForInvalidationWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
@@ -971,21 +971,21 @@ void __92__NPKQuickPaymentSessionLocalAuthenticationCoordinator__presentNextLoca
     v9[2] = __105__NPKQuickPaymentSessionLocalAuthenticationCoordinator__invokeCompletionHandlerForInvalidationWithError___block_invoke;
     v9[3] = &unk_279946670;
     v11 = v6;
-    v10 = v4;
+    v10 = errorCopy;
     v8 = v6;
     [(NPKQuickPaymentSessionLocalAuthenticationCoordinator *)self _performDelegateCallback:v9];
   }
 }
 
-- (int64_t)_credentialTypeForEvent:(int64_t)a3
+- (int64_t)_credentialTypeForEvent:(int64_t)event
 {
   v3 = -2;
-  if (a3 != 3)
+  if (event != 3)
   {
     v3 = 0;
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
     return -1;
   }
@@ -996,16 +996,16 @@ void __92__NPKQuickPaymentSessionLocalAuthenticationCoordinator__presentNextLoca
   }
 }
 
-- (id)_nameForLocalAuthenticationEvent:(int64_t)a3
+- (id)_nameForLocalAuthenticationEvent:(int64_t)event
 {
-  if (a3 > 5)
+  if (event > 5)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_279948A40 + a3);
+    return *(&off_279948A40 + event);
   }
 }
 

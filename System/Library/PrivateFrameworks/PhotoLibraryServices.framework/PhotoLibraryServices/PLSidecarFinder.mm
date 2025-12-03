@@ -1,8 +1,8 @@
 @interface PLSidecarFinder
-+ (BOOL)_isValidExtensionForSidecar:(id)a3 context:(id)a4;
-+ (id)_findPotentialSidecarURLsInDirectory:(id)a3 context:(id)a4;
++ (BOOL)_isValidExtensionForSidecar:(id)sidecar context:(id)context;
++ (id)_findPotentialSidecarURLsInDirectory:(id)directory context:(id)context;
 - (PLSidecarFinder)init;
-- (id)collectSidecarURLsForAssetFilename:(id)a3 inDirectory:(id)a4 context:(id)a5 removeWhenDone:(BOOL)a6;
+- (id)collectSidecarURLsForAssetFilename:(id)filename inDirectory:(id)directory context:(id)context removeWhenDone:(BOOL)done;
 - (void)reset;
 @end
 
@@ -10,34 +10,34 @@
 
 - (void)reset
 {
-  v2 = [(PLSidecarFinder *)self cachedSidecarURLsByDirectory];
-  [v2 removeAllObjects];
+  cachedSidecarURLsByDirectory = [(PLSidecarFinder *)self cachedSidecarURLsByDirectory];
+  [cachedSidecarURLsByDirectory removeAllObjects];
 }
 
-- (id)collectSidecarURLsForAssetFilename:(id)a3 inDirectory:(id)a4 context:(id)a5 removeWhenDone:(BOOL)a6
+- (id)collectSidecarURLsForAssetFilename:(id)filename inDirectory:(id)directory context:(id)context removeWhenDone:(BOOL)done
 {
-  v26 = a6;
+  doneCopy = done;
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  filenameCopy = filename;
+  directoryCopy = directory;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
-  v12 = [v9 stringByDeletingPathExtension];
-  v30 = [MEMORY[0x1E695DF70] array];
-  v13 = [MEMORY[0x1E695DF70] array];
-  v14 = [(PLSidecarFinder *)self cachedSidecarURLsByDirectory];
-  v15 = [v14 objectForKey:v10];
+  stringByDeletingPathExtension = [filenameCopy stringByDeletingPathExtension];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  cachedSidecarURLsByDirectory = [(PLSidecarFinder *)self cachedSidecarURLsByDirectory];
+  v15 = [cachedSidecarURLsByDirectory objectForKey:directoryCopy];
 
   if (!v15)
   {
-    v15 = [objc_opt_class() _findPotentialSidecarURLsInDirectory:v10 context:v11];
-    v16 = [(PLSidecarFinder *)self cachedSidecarURLsByDirectory];
-    [v16 setObject:v15 forKey:v10];
+    v15 = [objc_opt_class() _findPotentialSidecarURLsInDirectory:directoryCopy context:contextCopy];
+    cachedSidecarURLsByDirectory2 = [(PLSidecarFinder *)self cachedSidecarURLsByDirectory];
+    [cachedSidecarURLsByDirectory2 setObject:v15 forKey:directoryCopy];
   }
 
-  v27 = v11;
-  v28 = self;
-  v29 = v10;
+  v27 = contextCopy;
+  selfCopy = self;
+  v29 = directoryCopy;
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -58,16 +58,16 @@
         }
 
         v22 = *(*(&v31 + 1) + 8 * i);
-        v23 = [v22 lastPathComponent];
-        v24 = [v23 stringByDeletingPathExtension];
-        if ([v12 isEqualToString:v24])
+        lastPathComponent = [v22 lastPathComponent];
+        stringByDeletingPathExtension2 = [lastPathComponent stringByDeletingPathExtension];
+        if ([stringByDeletingPathExtension isEqualToString:stringByDeletingPathExtension2])
         {
-          if (([v23 isEqualToString:v9] & 1) == 0)
+          if (([lastPathComponent isEqualToString:filenameCopy] & 1) == 0)
           {
-            [v30 addObject:v22];
+            [array addObject:v22];
           }
 
-          [v13 addObject:v22];
+          [array2 addObject:v22];
         }
       }
 
@@ -77,14 +77,14 @@
     while (v19);
   }
 
-  if (v26)
+  if (doneCopy)
   {
-    [v17 removeObjectsInArray:v13];
+    [v17 removeObjectsInArray:array2];
   }
 
-  os_unfair_lock_unlock(&v28->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
-  return v30;
+  return array;
 }
 
 - (PLSidecarFinder)init
@@ -104,19 +104,19 @@
   return v2;
 }
 
-+ (id)_findPotentialSidecarURLsInDirectory:(id)a3 context:(id)a4
++ (id)_findPotentialSidecarURLsInDirectory:(id)directory context:(id)context
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v27 = a4;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  directoryCopy = directory;
+  contextCopy = context;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v7 = *MEMORY[0x1E695DB78];
   v28 = *MEMORY[0x1E695DC30];
   [MEMORY[0x1E695DEC8] arrayWithObjects:{*MEMORY[0x1E695DB78], 0}];
-  v24 = v6;
-  v23 = v25 = v5;
-  v8 = [v6 enumeratorAtURL:v5 includingPropertiesForKeys:? options:? errorHandler:?];
-  v26 = [MEMORY[0x1E695DF70] array];
+  v24 = defaultManager;
+  v23 = v25 = directoryCopy;
+  v8 = [defaultManager enumeratorAtURL:directoryCopy includingPropertiesForKeys:? options:? errorHandler:?];
+  array = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -149,10 +149,10 @@
           v20 = v29;
           if (v19)
           {
-            v21 = [v14 pathExtension];
-            if ([objc_opt_class() _isValidExtensionForSidecar:v21 context:v27])
+            pathExtension = [v14 pathExtension];
+            if ([objc_opt_class() _isValidExtensionForSidecar:pathExtension context:contextCopy])
             {
-              [v26 addObject:v14];
+              [array addObject:v14];
             }
           }
         }
@@ -166,7 +166,7 @@
     while (v11);
   }
 
-  return v26;
+  return array;
 }
 
 uint64_t __64__PLSidecarFinder__findPotentialSidecarURLsInDirectory_context___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -187,10 +187,10 @@ uint64_t __64__PLSidecarFinder__findPotentialSidecarURLsInDirectory_context___bl
   return 1;
 }
 
-+ (BOOL)_isValidExtensionForSidecar:(id)a3 context:(id)a4
++ (BOOL)_isValidExtensionForSidecar:(id)sidecar context:(id)context
 {
-  v4 = a3;
-  if ([v4 length] && +[PLManagedAsset isValidFileExtensionForImport:](PLManagedAsset, "isValidFileExtensionForImport:", v4) && (objc_msgSend(MEMORY[0x1E69C08F0], "resourceModelTypeForFilenameExtension:", v4), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
+  sidecarCopy = sidecar;
+  if ([sidecarCopy length] && +[PLManagedAsset isValidFileExtensionForImport:](PLManagedAsset, "isValidFileExtensionForImport:", sidecarCopy) && (objc_msgSend(MEMORY[0x1E69C08F0], "resourceModelTypeForFilenameExtension:", sidecarCopy), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
   {
     v7 = [PLUniformTypeIdentifier utiWithIdentifier:v6];
     v8 = [v7 conformsToData] && (!objc_msgSend(v7, "conformsToImage") || objc_msgSend(v7, "conformsToRawImage")) && !objc_msgSend(v7, "conformsToMovie");

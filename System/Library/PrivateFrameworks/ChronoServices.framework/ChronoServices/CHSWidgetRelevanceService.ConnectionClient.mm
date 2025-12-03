@@ -1,12 +1,12 @@
 @interface CHSWidgetRelevanceService.ConnectionClient
 - (_TtCE14ChronoServicesCSo25CHSWidgetRelevanceService16ConnectionClient)init;
-- (void)handleWidgetRelevanceEvent:(id)a3;
-- (void)timelineEntryRelevanceDidChange:(id)a3;
+- (void)handleWidgetRelevanceEvent:(id)event;
+- (void)timelineEntryRelevanceDidChange:(id)change;
 @end
 
 @implementation CHSWidgetRelevanceService.ConnectionClient
 
-- (void)timelineEntryRelevanceDidChange:(id)a3
+- (void)timelineEntryRelevanceDidChange:(id)change
 {
   sub_195EB4B30(0, &qword_1EAEEDD50, off_1E74527C8);
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAEEDD58, &unk_195FACFC8);
@@ -17,7 +17,7 @@
   {
     v6 = *&self->timelineRelevanceDidChangeHandler[OBJC_IVAR____TtCE14ChronoServicesCSo25CHSWidgetRelevanceService16ConnectionClient_timelineRelevanceDidChangeHandler];
     v7 = v4;
-    v8 = self;
+    selfCopy = self;
     sub_195ECF998(v5);
     v5(v7);
 
@@ -29,16 +29,16 @@
   }
 }
 
-- (void)handleWidgetRelevanceEvent:(id)a3
+- (void)handleWidgetRelevanceEvent:(id)event
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCE14ChronoServicesCSo25CHSWidgetRelevanceService16ConnectionClient_widgetRelevanceEventHandler);
   if (v3)
   {
     v5 = *&self->timelineRelevanceDidChangeHandler[OBJC_IVAR____TtCE14ChronoServicesCSo25CHSWidgetRelevanceService16ConnectionClient_widgetRelevanceEventHandler];
-    v6 = a3;
-    v7 = self;
+    eventCopy = event;
+    selfCopy = self;
     sub_195ECF998(v3);
-    v3(v6);
+    v3(eventCopy);
 
     sub_195EB6E70(v3);
   }

@@ -1,18 +1,18 @@
 @interface APLegacyMetric
 - (APLegacyMetric)init;
-- (APLegacyMetric)initWithType:(int64_t)a3 purpose:(int64_t)a4 contentData:(id)a5 context:(id)a6 bundleIdentifier:(id)a7 properties:(id)a8;
+- (APLegacyMetric)initWithType:(int64_t)type purpose:(int64_t)purpose contentData:(id)data context:(id)context bundleIdentifier:(id)identifier properties:(id)properties;
 - (NSString)contentIdentifier;
 - (NSString)contextIdentifier;
-- (void)setProperty:(id)a3 forKey:(id)a4 internal:(BOOL)a5;
+- (void)setProperty:(id)property forKey:(id)key internal:(BOOL)internal;
 @end
 
 @implementation APLegacyMetric
 
-- (APLegacyMetric)initWithType:(int64_t)a3 purpose:(int64_t)a4 contentData:(id)a5 context:(id)a6 bundleIdentifier:(id)a7 properties:(id)a8
+- (APLegacyMetric)initWithType:(int64_t)type purpose:(int64_t)purpose contentData:(id)data context:(id)context bundleIdentifier:(id)identifier properties:(id)properties
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
+  dataCopy = data;
+  contextCopy = context;
+  propertiesCopy = properties;
   v30.receiver = self;
   v30.super_class = APLegacyMetric;
   v17 = [(APLegacyMetric *)&v30 init];
@@ -23,13 +23,13 @@
     v17->_timestamp = v18;
 
     v20 = +[NSUUID UUID];
-    v21 = [v20 UUIDString];
+    uUIDString = [v20 UUIDString];
     handle = v17->handle;
-    v17->handle = v21;
+    v17->handle = uUIDString;
 
-    v17->_metric = a3;
-    objc_storeStrong(&v17->_contentData, a5);
-    objc_storeStrong(&v17->_context, a6);
+    v17->_metric = type;
+    objc_storeStrong(&v17->_contentData, data);
+    objc_storeStrong(&v17->_context, context);
     v23 = +[NSDictionary dictionary];
     properties = v17->_properties;
     v17->_properties = v23;
@@ -38,24 +38,24 @@
     internalProperties = v17->_internalProperties;
     v17->_internalProperties = v25;
 
-    v17->_purpose = a4;
+    v17->_purpose = purpose;
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_1002E4638;
     v28[3] = &unk_10047DA60;
     v29 = v17;
-    [v16 enumerateKeysAndObjectsUsingBlock:v28];
+    [propertiesCopy enumerateKeysAndObjectsUsingBlock:v28];
   }
 
   return v17;
 }
 
-- (void)setProperty:(id)a3 forKey:(id)a4 internal:(BOOL)a5
+- (void)setProperty:(id)property forKey:(id)key internal:(BOOL)internal
 {
-  v5 = a5;
-  v12 = a3;
-  v8 = a4;
-  if (v5)
+  internalCopy = internal;
+  propertyCopy = property;
+  keyCopy = key;
+  if (internalCopy)
   {
     [(APLegacyMetric *)self internalProperties];
   }
@@ -67,18 +67,18 @@
   v9 = ;
   v10 = [v9 mutableCopy];
 
-  if (v12)
+  if (propertyCopy)
   {
-    [v10 setObject:v12 forKey:v8];
+    [v10 setObject:propertyCopy forKey:keyCopy];
   }
 
   else
   {
-    [v10 removeObjectForKey:v8];
+    [v10 removeObjectForKey:keyCopy];
   }
 
   v11 = [v10 copy];
-  if (v5)
+  if (internalCopy)
   {
     [(APLegacyMetric *)self setInternalProperties:v11];
   }
@@ -105,20 +105,20 @@
 
 - (NSString)contentIdentifier
 {
-  v2 = [(APLegacyMetric *)self contentData];
-  v3 = [v2 content];
-  v4 = [v3 identifier];
+  contentData = [(APLegacyMetric *)self contentData];
+  content = [contentData content];
+  identifier = [content identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (NSString)contextIdentifier
 {
-  v2 = [(APLegacyMetric *)self context];
-  v3 = [v2 identifier];
-  v4 = [v3 UUIDString];
+  context = [(APLegacyMetric *)self context];
+  identifier = [context identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 @end

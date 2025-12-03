@@ -1,31 +1,31 @@
 @interface WFRunWorkflowURLHandler
-+ (id)workflowWithInputParameters:(id)a3 error:(id *)a4;
-+ (id)workflowWithName:(id)a3 identifier:(id)a4 error:(id *)a5;
-+ (void)registerOpenWorkflowHandler:(id)a3;
-+ (void)registerRunWorkflowHandler:(id)a3;
++ (id)workflowWithInputParameters:(id)parameters error:(id *)error;
++ (id)workflowWithName:(id)name identifier:(id)identifier error:(id *)error;
++ (void)registerOpenWorkflowHandler:(id)handler;
++ (void)registerRunWorkflowHandler:(id)handler;
 @end
 
 @implementation WFRunWorkflowURLHandler
 
-+ (id)workflowWithName:(id)a3 identifier:(id)a4 error:(id *)a5
++ (id)workflowWithName:(id)name identifier:(id)identifier error:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v9 = +[WFDatabase defaultDatabase];
   v10 = v9;
-  if (v8)
+  if (identifierCopy)
   {
-    v11 = [v9 referenceForWorkflowID:v8];
+    v11 = [v9 referenceForWorkflowID:identifierCopy];
     if (v11)
     {
       goto LABEL_5;
     }
   }
 
-  if (v7)
+  if (nameCopy)
   {
-    v11 = [v10 uniqueVisibleReferenceForWorkflowName:v7];
+    v11 = [v10 uniqueVisibleReferenceForWorkflowName:nameCopy];
     if (v11)
     {
 LABEL_5:
@@ -36,20 +36,20 @@ LABEL_5:
     v14 = WFLocalizedString(@"Could not find the specified shortcut.");
     v15 = MEMORY[0x1E696AEC0];
     v16 = WFLocalizedString(@"Could not find the shortcut “%@.”");
-    v13 = [v15 stringWithFormat:v16, v7];
+    nameCopy = [v15 stringWithFormat:v16, nameCopy];
   }
 
   else
   {
-    v13 = WFLocalizedString(@"Could not find the specified shortcut.");
+    nameCopy = WFLocalizedString(@"Could not find the specified shortcut.");
   }
 
   v17 = MEMORY[0x1E696ABC0];
   v18 = *MEMORY[0x1E696A250];
   v22 = *MEMORY[0x1E696A578];
-  v23[0] = v13;
+  v23[0] = nameCopy;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-  *a5 = [v17 errorWithDomain:v18 code:4 userInfo:v19];
+  *error = [v17 errorWithDomain:v18 code:4 userInfo:v19];
 
   v12 = 0;
 LABEL_9:
@@ -59,21 +59,21 @@ LABEL_9:
   return v12;
 }
 
-+ (id)workflowWithInputParameters:(id)a3 error:(id *)a4
++ (id)workflowWithInputParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 objectForKey:@"id"];
-  v8 = [v6 objectForKey:@"name"];
+  parametersCopy = parameters;
+  v7 = [parametersCopy objectForKey:@"id"];
+  v8 = [parametersCopy objectForKey:@"name"];
 
-  v9 = [a1 workflowWithName:v8 identifier:v7 error:a4];
+  v9 = [self workflowWithName:v8 identifier:v7 error:error];
 
   return v9;
 }
 
-+ (void)registerOpenWorkflowHandler:(id)a3
++ (void)registerOpenWorkflowHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = getWFGeneralLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -87,9 +87,9 @@ LABEL_9:
   v9[1] = 3221225472;
   v9[2] = __55__WFRunWorkflowURLHandler_registerOpenWorkflowHandler___block_invoke;
   v9[3] = &unk_1E837D228;
-  v10 = v4;
-  v11 = a1;
-  v7 = v4;
+  v10 = handlerCopy;
+  selfCopy = self;
+  v7 = handlerCopy;
   [v6 registerHandler:v9 forIncomingRequestsWithAction:@"open-shortcut" legacyAction:@"open-workflow" scheme:0];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -149,17 +149,17 @@ LABEL_10:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)registerRunWorkflowHandler:(id)a3
++ (void)registerRunWorkflowHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[WFInterchangeManager sharedManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__WFRunWorkflowURLHandler_registerRunWorkflowHandler___block_invoke;
   v7[3] = &unk_1E837D228;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
+  v8 = handlerCopy;
+  selfCopy = self;
+  v6 = handlerCopy;
   [v5 registerHandler:v7 forIncomingRequestsWithAction:@"run-shortcut" legacyAction:@"run-workflow" scheme:0];
 }
 

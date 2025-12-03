@@ -1,44 +1,44 @@
 @interface MRTiledSprite
 - (BOOL)getVerticesCoordinates:(CGPoint *)(a3 withMatrix:;
-- (BOOL)hitAtPoint:(CGPoint)a3 withInverseMatrix:(float)a4[16] localPoint:(CGPoint *)a5;
+- (BOOL)hitAtPoint:(CGPoint)point withInverseMatrix:(float)matrix[16] localPoint:(CGPoint *)localPoint;
 - (CGPoint)position;
 - (CGRect)innerRect;
 - (CGRect)outerRect;
 - (CGSize)halfSize;
-- (double)initWithPosition:(double)a3 size:(double)a4 zRotation:(double)a5 innerRect:(float)a6 outerRect:(uint64_t)a7 context:(void *)a8;
+- (double)initWithPosition:(double)position size:(double)size zRotation:(double)rotation innerRect:(float)rect outerRect:(uint64_t)outerRect context:(void *)context;
 - (void)dealloc;
-- (void)getOpaquePosition:(CGPoint *)a3 andHalfSize:(CGSize *)a4;
-- (void)renderDumbImage:(id)a3 inContext:(id)a4;
-- (void)renderImage:(id)a3 inContext:(id)a4;
-- (void)renderImageInner:(id)a3 inContext:(id)a4;
-- (void)renderImageMiddle:(id)a3 inContext:(id)a4;
-- (void)renderImageOuter:(id)a3 inContext:(id)a4;
+- (void)getOpaquePosition:(CGPoint *)position andHalfSize:(CGSize *)size;
+- (void)renderDumbImage:(id)image inContext:(id)context;
+- (void)renderImage:(id)image inContext:(id)context;
+- (void)renderImageInner:(id)inner inContext:(id)context;
+- (void)renderImageMiddle:(id)middle inContext:(id)context;
+- (void)renderImageOuter:(id)outer inContext:(id)context;
 - (void)seal;
-- (void)setSpriteCoordinatesFactor:(CGSize)a3 andOffset:(CGPoint)a4;
-- (void)setTextureCoordinatesFactor:(CGSize)a3 andOffset:(CGPoint)a4 onTextureUnit:(unint64_t)a5;
-- (void)subtractOpaqueSpriteWithPosition:(CGPoint)a3 halfSize:(CGSize)a4 andRotation:(float)a5;
-- (void)subtractSprite:(id)a3;
-- (void)subtractSpriteAtPosition:(CGPoint)a3 withSize:(CGSize)a4 zRotation:(float)a5 andOpaqueRect:(CGRect)a6 inContext:(id)a7;
-- (void)subtractTriangle:(double)a3[6] fromTriangle:(double)a4[6] addTrianglesTo:(id)a5;
+- (void)setSpriteCoordinatesFactor:(CGSize)factor andOffset:(CGPoint)offset;
+- (void)setTextureCoordinatesFactor:(CGSize)factor andOffset:(CGPoint)offset onTextureUnit:(unint64_t)unit;
+- (void)subtractOpaqueSpriteWithPosition:(CGPoint)position halfSize:(CGSize)size andRotation:(float)rotation;
+- (void)subtractSprite:(id)sprite;
+- (void)subtractSpriteAtPosition:(CGPoint)position withSize:(CGSize)size zRotation:(float)rotation andOpaqueRect:(CGRect)rect inContext:(id)context;
+- (void)subtractTriangle:(double)triangle[6] fromTriangle:(double)fromTriangle[6] addTrianglesTo:(id)to;
 - (void)updateInSpriteCoordinates;
 @end
 
 @implementation MRTiledSprite
 
-- (double)initWithPosition:(double)a3 size:(double)a4 zRotation:(double)a5 innerRect:(float)a6 outerRect:(uint64_t)a7 context:(void *)a8
+- (double)initWithPosition:(double)position size:(double)size zRotation:(double)rotation innerRect:(float)rect outerRect:(uint64_t)outerRect context:(void *)context
 {
-  v27 = [a1 init];
+  v27 = [self init];
   v28 = v27;
   if (v27)
   {
     v27[1] = a2;
-    [a8 localAspectRatio];
-    v28[2] = a3 / v29;
-    v28[3] = a4 * 0.5;
-    [a8 localAspectRatio];
+    [context localAspectRatio];
+    v28[2] = position / v29;
+    v28[3] = size * 0.5;
+    [context localAspectRatio];
     v30 = 0;
-    v28[4] = a5 * 0.5 / v31;
-    *(v28 + 10) = a6;
+    v28[4] = rotation * 0.5 / v31;
+    *(v28 + 10) = rect;
     *(v28 + 6) = a14;
     *(v28 + 7) = a15;
     *(v28 + 8) = a16;
@@ -415,14 +415,14 @@
   [(MRTiledSprite *)&v17 dealloc];
 }
 
-- (void)subtractTriangle:(double)a3[6] fromTriangle:(double)a4[6] addTrianglesTo:(id)a5
+- (void)subtractTriangle:(double)triangle[6] fromTriangle:(double)fromTriangle[6] addTrianglesTo:(id)to
 {
-  if (TrianglesAreDisjoint(a3, a4) || (v8 = *a3, v9 = a3[1], v10 = a3[2] - *a3, v11 = a3[3] - v9, v12 = a3[4] - *a3, v13 = a3[5] - v9, v14 = v10 * v13 - v12 * v11, v15 = fabs(v14), v15 < 0.00001))
+  if (TrianglesAreDisjoint(triangle, fromTriangle) || (v8 = *triangle, v9 = triangle[1], v10 = triangle[2] - *triangle, v11 = triangle[3] - v9, v12 = triangle[4] - *triangle, v13 = triangle[5] - v9, v14 = v10 * v13 - v12 * v11, v15 = fabs(v14), v15 < 0.00001))
   {
 LABEL_3:
-    v16 = [NSData dataWithBytes:a4 length:48];
+    v16 = [NSData dataWithBytes:fromTriangle length:48];
 
-    [a5 addObject:v16];
+    [to addObject:v16];
     return;
   }
 
@@ -432,15 +432,15 @@ LABEL_3:
   v20 = 0;
   v21 = 0;
   LODWORD(v22) = 0;
-  v23 = *a4;
-  v24 = a4[1];
-  v179 = a4[3];
-  v181 = a4[2];
-  v25 = v181 - *a4;
+  v23 = *fromTriangle;
+  v24 = fromTriangle[1];
+  v179 = fromTriangle[3];
+  v181 = fromTriangle[2];
+  v25 = v181 - *fromTriangle;
   v26 = v179 - v24;
-  v183 = a4[5];
-  v185 = a4[4];
-  v27 = v185 - *a4;
+  v183 = fromTriangle[5];
+  v185 = fromTriangle[4];
+  v27 = v185 - *fromTriangle;
   v28 = v183 - v24;
   v29 = v25 * (v183 - v24) - v27 * (v179 - v24);
   v30 = v15 * 0.00001;
@@ -452,9 +452,9 @@ LABEL_3:
   do
   {
     v36 = v22;
-    v37 = a4[2 * v17];
+    v37 = fromTriangle[2 * v17];
     v38 = (2 * (v17 & 0x3FFFFFFFFFFFFFFFLL)) | 1;
-    v39 = a4[v38];
+    v39 = fromTriangle[v38];
     v40 = v37 - v8;
     v41 = v39 - v9;
     if (v37 - v8 == v10 && v41 == v11)
@@ -599,8 +599,8 @@ LABEL_27:
 
 LABEL_29:
     v22 = v36;
-    v48 = a3[2 * v17];
-    v49 = a3[v38];
+    v48 = triangle[2 * v17];
+    v49 = triangle[v38];
     v50 = v48 - v23;
     v51 = v49 - v24;
     if (v48 - v23 == v25 && v51 == v26)
@@ -619,8 +619,8 @@ LABEL_29:
     {
       v44 = 5;
 LABEL_42:
-      v54 = a3[2 * v17];
-      v55 = a3[v38];
+      v54 = triangle[2 * v17];
+      v55 = triangle[v38];
       goto LABEL_43;
     }
 
@@ -694,7 +694,7 @@ LABEL_42:
 
         if (v85 >= v31 || v88 >= v31)
         {
-          v54 = a3[2 * v17];
+          v54 = triangle[2 * v17];
         }
 
         else
@@ -745,21 +745,21 @@ LABEL_49:
     v60 = v17;
 LABEL_97:
     v94 = 0;
-    v95 = a3[2 * v35];
+    v95 = triangle[2 * v35];
     v96 = v95 - v48;
     v97 = 1;
-    v98 = a3[(2 * v35) | 1];
+    v98 = triangle[(2 * v35) | 1];
     v99 = v98 - v49;
     do
     {
-      v100 = a4[2 * v97];
+      v100 = fromTriangle[2 * v97];
       v101 = (2 * v97) | 1;
-      if (v95 != v100 || v98 != a4[v101])
+      if (v95 != v100 || v98 != fromTriangle[v101])
       {
-        v102 = &a4[2 * v94];
+        v102 = &fromTriangle[2 * v94];
         v103 = v102[1];
         v104 = *v102 - v100;
-        v105 = v103 - a4[v101];
+        v105 = v103 - fromTriangle[v101];
         v106 = v104 * -(v98 - v49) + v96 * v105;
         if (fabs(v106) >= 0.00001)
         {
@@ -852,7 +852,7 @@ LABEL_111:
   {
     if ((v195[0] & 0x38) == 0 || (v195[1] & 0x38) == 0 || (v195[2] & 0x38) == 0)
     {
-      [a5 addObject:{+[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", v196, 48)}];
+      [to addObject:{+[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", v196, 48)}];
     }
   }
 
@@ -880,7 +880,7 @@ LABEL_111:
     v182 = -1;
     v180 = -1;
     v186 = v22;
-    obj = a5;
+    obj = to;
 LABEL_143:
     v126 = 0;
     v127 = 0;
@@ -970,8 +970,8 @@ LABEL_143:
     {
       NSLog(@"SubtractTriangle Error2\n");
 LABEL_214:
-      NSLog(@"Triangle 1: {%1.20f, %1.20f, %1.20f, %1.20f, %1.20f, %1.20f}\n", *a3, *(a3 + 1), *(a3 + 2), *(a3 + 3), *(a3 + 4), *(a3 + 5));
-      NSLog(@"Triangle 2: {%1.20f, %1.20f, %1.20f, %1.20f, %1.20f, %1.20f}\n", *a4, *(a4 + 1), *(a4 + 2), *(a4 + 3), *(a4 + 4), *(a4 + 5));
+      NSLog(@"Triangle 1: {%1.20f, %1.20f, %1.20f, %1.20f, %1.20f, %1.20f}\n", *triangle, *(triangle + 1), *(triangle + 2), *(triangle + 3), *(triangle + 4), *(triangle + 5));
+      NSLog(@"Triangle 2: {%1.20f, %1.20f, %1.20f, %1.20f, %1.20f, %1.20f}\n", *fromTriangle, *(fromTriangle + 1), *(fromTriangle + 2), *(fromTriangle + 3), *(fromTriangle + 4), *(fromTriangle + 5));
     }
 
     else
@@ -1176,49 +1176,49 @@ LABEL_214:
   }
 }
 
-- (void)subtractSprite:(id)a3
+- (void)subtractSprite:(id)sprite
 {
   v9 = 0.0;
   v10 = 0.0;
   v7 = 0.0;
   v8 = 0.0;
-  [a3 getOpaquePosition:&v9 andHalfSize:&v7];
-  [a3 rotation];
+  [sprite getOpaquePosition:&v9 andHalfSize:&v7];
+  [sprite rotation];
   LODWORD(v6) = v5;
   [(MRTiledSprite *)self subtractOpaqueSpriteWithPosition:v9 halfSize:v10 andRotation:v7, v8, v6];
 }
 
-- (void)subtractSpriteAtPosition:(CGPoint)a3 withSize:(CGSize)a4 zRotation:(float)a5 andOpaqueRect:(CGRect)a6 inContext:(id)a7
+- (void)subtractSpriteAtPosition:(CGPoint)position withSize:(CGSize)size zRotation:(float)rotation andOpaqueRect:(CGRect)rect inContext:(id)context
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
-  [a7 localAspectRatio];
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
+  [context localAspectRatio];
   v13 = width * 0.5;
   v14 = y / v12;
-  [a7 localAspectRatio];
+  [context localAspectRatio];
   v16 = height * 0.5 / v15;
-  v17 = v13 * (a6.origin.x * 2.0 + -1.0);
-  v22 = v13 * ((a6.origin.x + a6.size.width) * 2.0 + -1.0);
-  v18 = (a6.origin.y * 2.0 + -1.0) * v16;
-  v19 = ((a6.origin.y + a6.size.height) * 2.0 + -1.0) * v16;
+  v17 = v13 * (rect.origin.x * 2.0 + -1.0);
+  v22 = v13 * ((rect.origin.x + rect.size.width) * 2.0 + -1.0);
+  v18 = (rect.origin.y * 2.0 + -1.0) * v16;
+  v19 = ((rect.origin.y + rect.size.height) * 2.0 + -1.0) * v16;
   v20 = x + (v17 + v22) * 0.5;
   v21 = (v22 - v17) * 0.5;
-  *&v22 = a5;
+  *&v22 = rotation;
 
   [(MRTiledSprite *)self subtractOpaqueSpriteWithPosition:v20 halfSize:v14 + (v19 + v18) * 0.5 andRotation:v21, (v19 - v18) * 0.5, v22];
 }
 
-- (void)subtractOpaqueSpriteWithPosition:(CGPoint)a3 halfSize:(CGSize)a4 andRotation:(float)a5
+- (void)subtractOpaqueSpriteWithPosition:(CGPoint)position halfSize:(CGSize)size andRotation:(float)rotation
 {
   if (!self->mIsSealed)
   {
-    height = a4.height;
-    width = a4.width;
-    y = a3.y;
-    x = a3.x;
-    v10 = __sincosf_stret(a5);
+    height = size.height;
+    width = size.width;
+    y = position.y;
+    x = position.x;
+    v10 = __sincosf_stret(rotation);
     v11 = width * v10.__cosval;
     v12 = width * v10.__sinval;
     v13 = -(height * v10.__sinval);
@@ -1474,7 +1474,7 @@ LABEL_214:
             objc_enumerationMutation(mTriangles);
           }
 
-          v24 = [*(*(&v157 + 1) + 8 * i) bytes];
+          bytes = [*(*(&v157 + 1) + 8 * i) bytes];
           v25 = 0;
           x = self->mPosition.x;
           v27 = self->mPosition.y;
@@ -1490,7 +1490,7 @@ LABEL_214:
             v35 = 0;
             v36 = (6 * v21 + 2 * v25);
             v37 = v36 | 1;
-            v38 = &v24[16 * v25];
+            v38 = &bytes[16 * v25];
             v39 = *v38;
             v40 = v38[1];
             v41 = *v38;
@@ -1587,7 +1587,7 @@ LABEL_214:
               objc_enumerationMutation(v63);
             }
 
-            v69 = [*(*(&v153 + 1) + 8 * j) bytes];
+            bytes2 = [*(*(&v153 + 1) + 8 * j) bytes];
             v70 = 0;
             v71 = self->mPosition.x;
             v72 = self->mPosition.y;
@@ -1601,7 +1601,7 @@ LABEL_214:
             do
             {
               v80 = (6 * v66 + 2 * v70);
-              v81 = &v69[16 * v70];
+              v81 = &bytes2[16 * v70];
               v82 = *v81;
               v83 = v81[1];
               v84 = *v81;
@@ -1704,7 +1704,7 @@ LABEL_214:
               objc_enumerationMutation(v110);
             }
 
-            v116 = [*(*(&v149 + 1) + 8 * k) bytes];
+            bytes3 = [*(*(&v149 + 1) + 8 * k) bytes];
             v117 = 0;
             v118 = self->mPosition.x;
             v119 = self->mPosition.y;
@@ -1718,7 +1718,7 @@ LABEL_214:
             do
             {
               v127 = (6 * v113 + 2 * v117);
-              v128 = &v116[16 * v117];
+              v128 = &bytes3[16 * v117];
               v129 = *v128;
               v130 = v128[1];
               v131 = *v128;
@@ -1900,7 +1900,7 @@ LABEL_214:
   self->mNeedsToUpdateInSpriteCoordinates = 0;
 }
 
-- (void)renderDumbImage:(id)a3 inContext:(id)a4
+- (void)renderDumbImage:(id)image inContext:(id)context
 {
   if (self->mIsSealed)
   {
@@ -1916,47 +1916,47 @@ LABEL_214:
   }
 
   v9 = 0;
-  if (a3)
+  if (image)
   {
-    [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v9 state:0.0];
+    [image setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v9 state:0.0];
   }
 
   for (i = 0; i != 4; ++i)
   {
-    if (a3 && !i || [a4 imageSetOnTextureUnit:i])
+    if (image && !i || [context imageSetOnTextureUnit:i])
     {
-      [a4 setTextureCoordinatesPointer:self->mInSpriteCoordinates onTextureUnit:i];
+      [context setTextureCoordinatesPointer:self->mInSpriteCoordinates onTextureUnit:i];
     }
   }
 
   if (self->mNeedsInSpriteCoordinates)
   {
-    [a4 setInSpriteCoordinatesPointer:self->mInSpriteCoordinates];
+    [context setInSpriteCoordinatesPointer:self->mInSpriteCoordinates];
   }
 
-  [a4 setVertex2DPointer:self->mVertices];
-  [a4 drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mTriangles, "count")}];
-  [a4 unsetVertexPointer];
+  [context setVertex2DPointer:self->mVertices];
+  [context drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mTriangles, "count")}];
+  [context unsetVertexPointer];
   if (self->mNeedsInSpriteCoordinates)
   {
-    [a4 unsetInSpriteCoordinatesPointer];
+    [context unsetInSpriteCoordinatesPointer];
   }
 
   for (j = 0; j != 4; ++j)
   {
-    if (a3 && !j || [a4 imageSetOnTextureUnit:j])
+    if (image && !j || [context imageSetOnTextureUnit:j])
     {
-      [a4 unsetTextureCoordinatesPointerOnTextureUnit:j];
+      [context unsetTextureCoordinatesPointerOnTextureUnit:j];
     }
   }
 
-  if (a3)
+  if (image)
   {
-    [a3 unsetOnContext:a4 onTextureUnit:0 state:&v9];
+    [image unsetOnContext:context onTextureUnit:0 state:&v9];
   }
 }
 
-- (void)renderImageInner:(id)a3 inContext:(id)a4
+- (void)renderImageInner:(id)inner inContext:(id)context
 {
   if (self->mIsSealed)
   {
@@ -1972,7 +1972,7 @@ LABEL_214:
   }
 
   v11 = 0;
-  if (a3)
+  if (inner)
   {
     if (self->mPreservesImageAspectRatio)
     {
@@ -1981,16 +1981,16 @@ LABEL_214:
 
     else
     {
-      [a3 aspectRatio];
+      [inner aspectRatio];
     }
 
     *&v7 = v7;
-    [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v11 state:v7];
+    [inner setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v11 state:v7];
   }
 
   for (i = 0; i != 4; ++i)
   {
-    if (a3 && !i || [a4 imageSetOnTextureUnit:i])
+    if (inner && !i || [context imageSetOnTextureUnit:i])
     {
       mBasicTextureCoordinates = self->mTextureCoordinates[i];
       if (!mBasicTextureCoordinates)
@@ -1998,38 +1998,38 @@ LABEL_214:
         mBasicTextureCoordinates = self->mBasicTextureCoordinates;
       }
 
-      [a4 setTextureCoordinatesPointer:mBasicTextureCoordinates onTextureUnit:i];
+      [context setTextureCoordinatesPointer:mBasicTextureCoordinates onTextureUnit:i];
     }
   }
 
   if (self->mNeedsInSpriteCoordinates)
   {
-    [a4 setInSpriteCoordinatesPointer:self->mInSpriteCoordinates];
+    [context setInSpriteCoordinatesPointer:self->mInSpriteCoordinates];
   }
 
-  [a4 setVertex2DPointer:self->mVertices];
-  [a4 drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mTriangles, "count")}];
-  [a4 unsetVertexPointer];
+  [context setVertex2DPointer:self->mVertices];
+  [context drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mTriangles, "count")}];
+  [context unsetVertexPointer];
   if (self->mNeedsInSpriteCoordinates)
   {
-    [a4 unsetInSpriteCoordinatesPointer];
+    [context unsetInSpriteCoordinatesPointer];
   }
 
   for (j = 0; j != 4; ++j)
   {
-    if (a3 && !j || [a4 imageSetOnTextureUnit:j])
+    if (inner && !j || [context imageSetOnTextureUnit:j])
     {
-      [a4 unsetTextureCoordinatesPointerOnTextureUnit:j];
+      [context unsetTextureCoordinatesPointerOnTextureUnit:j];
     }
   }
 
-  if (a3)
+  if (inner)
   {
-    [a3 unsetOnContext:a4 onTextureUnit:0 state:&v11];
+    [inner unsetOnContext:context onTextureUnit:0 state:&v11];
   }
 }
 
-- (void)renderImageMiddle:(id)a3 inContext:(id)a4
+- (void)renderImageMiddle:(id)middle inContext:(id)context
 {
   if (self->mMiddleTriangles)
   {
@@ -2047,7 +2047,7 @@ LABEL_214:
     }
 
     v11 = 0;
-    if (a3)
+    if (middle)
     {
       if (self->mPreservesImageAspectRatio)
       {
@@ -2056,16 +2056,16 @@ LABEL_214:
 
       else
       {
-        [a3 aspectRatio];
+        [middle aspectRatio];
       }
 
       *&v7 = v7;
-      [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v11 state:v7];
+      [middle setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v11 state:v7];
     }
 
     for (i = 0; i != 4; ++i)
     {
-      if (a3 && !i || [a4 imageSetOnTextureUnit:i])
+      if (middle && !i || [context imageSetOnTextureUnit:i])
       {
         mMiddleBasicTextureCoordinates = self->mMiddleTextureCoordinates[i];
         if (!mMiddleBasicTextureCoordinates)
@@ -2073,39 +2073,39 @@ LABEL_214:
           mMiddleBasicTextureCoordinates = self->mMiddleBasicTextureCoordinates;
         }
 
-        [a4 setTextureCoordinatesPointer:mMiddleBasicTextureCoordinates onTextureUnit:i];
+        [context setTextureCoordinatesPointer:mMiddleBasicTextureCoordinates onTextureUnit:i];
       }
     }
 
     if (self->mNeedsInSpriteCoordinates)
     {
-      [a4 setInSpriteCoordinatesPointer:self->mMiddleInSpriteCoordinates];
+      [context setInSpriteCoordinatesPointer:self->mMiddleInSpriteCoordinates];
     }
 
-    [a4 setVertex2DPointer:self->mMiddleVertices];
-    [a4 drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mMiddleTriangles, "count")}];
-    [a4 unsetVertexPointer];
+    [context setVertex2DPointer:self->mMiddleVertices];
+    [context drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mMiddleTriangles, "count")}];
+    [context unsetVertexPointer];
     if (self->mNeedsInSpriteCoordinates)
     {
-      [a4 unsetInSpriteCoordinatesPointer];
+      [context unsetInSpriteCoordinatesPointer];
     }
 
     for (j = 0; j != 4; ++j)
     {
-      if (a3 && !j || [a4 imageSetOnTextureUnit:j])
+      if (middle && !j || [context imageSetOnTextureUnit:j])
       {
-        [a4 unsetTextureCoordinatesPointerOnTextureUnit:j];
+        [context unsetTextureCoordinatesPointerOnTextureUnit:j];
       }
     }
 
-    if (a3)
+    if (middle)
     {
-      [a3 unsetOnContext:a4 onTextureUnit:0 state:&v11];
+      [middle unsetOnContext:context onTextureUnit:0 state:&v11];
     }
   }
 }
 
-- (void)renderImageOuter:(id)a3 inContext:(id)a4
+- (void)renderImageOuter:(id)outer inContext:(id)context
 {
   if (self->mOuterTriangles)
   {
@@ -2123,7 +2123,7 @@ LABEL_214:
     }
 
     v11 = 0;
-    if (a3)
+    if (outer)
     {
       if (self->mPreservesImageAspectRatio)
       {
@@ -2132,16 +2132,16 @@ LABEL_214:
 
       else
       {
-        [a3 aspectRatio];
+        [outer aspectRatio];
       }
 
       *&v7 = v7;
-      [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v11 state:v7];
+      [outer setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v11 state:v7];
     }
 
     for (i = 0; i != 4; ++i)
     {
-      if (a3 && !i || [a4 imageSetOnTextureUnit:i])
+      if (outer && !i || [context imageSetOnTextureUnit:i])
       {
         mOuterBasicTextureCoordinates = self->mOuterTextureCoordinates[i];
         if (!mOuterBasicTextureCoordinates)
@@ -2149,39 +2149,39 @@ LABEL_214:
           mOuterBasicTextureCoordinates = self->mOuterBasicTextureCoordinates;
         }
 
-        [a4 setTextureCoordinatesPointer:mOuterBasicTextureCoordinates onTextureUnit:i];
+        [context setTextureCoordinatesPointer:mOuterBasicTextureCoordinates onTextureUnit:i];
       }
     }
 
     if (self->mNeedsInSpriteCoordinates)
     {
-      [a4 setInSpriteCoordinatesPointer:self->mOuterInSpriteCoordinates];
+      [context setInSpriteCoordinatesPointer:self->mOuterInSpriteCoordinates];
     }
 
-    [a4 setVertex2DPointer:self->mOuterVertices];
-    [a4 drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mOuterTriangles, "count")}];
-    [a4 unsetVertexPointer];
+    [context setVertex2DPointer:self->mOuterVertices];
+    [context drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mOuterTriangles, "count")}];
+    [context unsetVertexPointer];
     if (self->mNeedsInSpriteCoordinates)
     {
-      [a4 unsetInSpriteCoordinatesPointer];
+      [context unsetInSpriteCoordinatesPointer];
     }
 
     for (j = 0; j != 4; ++j)
     {
-      if (a3 && !j || [a4 imageSetOnTextureUnit:j])
+      if (outer && !j || [context imageSetOnTextureUnit:j])
       {
-        [a4 unsetTextureCoordinatesPointerOnTextureUnit:j];
+        [context unsetTextureCoordinatesPointerOnTextureUnit:j];
       }
     }
 
-    if (a3)
+    if (outer)
     {
-      [a3 unsetOnContext:a4 onTextureUnit:0 state:&v11];
+      [outer unsetOnContext:context onTextureUnit:0 state:&v11];
     }
   }
 }
 
-- (void)renderImage:(id)a3 inContext:(id)a4
+- (void)renderImage:(id)image inContext:(id)context
 {
   if (self->mIsSealed)
   {
@@ -2197,7 +2197,7 @@ LABEL_214:
   }
 
   v15 = 0;
-  if (a3)
+  if (image)
   {
     if (self->mPreservesImageAspectRatio)
     {
@@ -2206,16 +2206,16 @@ LABEL_214:
 
     else
     {
-      [a3 aspectRatio];
+      [image aspectRatio];
     }
 
     *&v7 = v7;
-    [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v15 state:v7];
+    [image setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v15 state:v7];
   }
 
   for (i = 0; i != 4; ++i)
   {
-    if (a3 && !i || [a4 imageSetOnTextureUnit:i])
+    if (image && !i || [context imageSetOnTextureUnit:i])
     {
       mBasicTextureCoordinates = self->mTextureCoordinates[i];
       if (!mBasicTextureCoordinates)
@@ -2223,22 +2223,22 @@ LABEL_214:
         mBasicTextureCoordinates = self->mBasicTextureCoordinates;
       }
 
-      [a4 setTextureCoordinatesPointer:mBasicTextureCoordinates onTextureUnit:i];
+      [context setTextureCoordinatesPointer:mBasicTextureCoordinates onTextureUnit:i];
     }
   }
 
   if (self->mNeedsInSpriteCoordinates)
   {
-    [a4 setInSpriteCoordinatesPointer:self->mInSpriteCoordinates];
+    [context setInSpriteCoordinatesPointer:self->mInSpriteCoordinates];
   }
 
-  [a4 setVertex2DPointer:self->mVertices];
-  [a4 drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mTriangles, "count")}];
+  [context setVertex2DPointer:self->mVertices];
+  [context drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mTriangles, "count")}];
   if (self->mMiddleVertices)
   {
     for (j = 0; j != 4; ++j)
     {
-      if (a3 && !j || [a4 imageSetOnTextureUnit:j])
+      if (image && !j || [context imageSetOnTextureUnit:j])
       {
         mMiddleBasicTextureCoordinates = self->mMiddleTextureCoordinates[j];
         if (!mMiddleBasicTextureCoordinates)
@@ -2246,24 +2246,24 @@ LABEL_214:
           mMiddleBasicTextureCoordinates = self->mMiddleBasicTextureCoordinates;
         }
 
-        [a4 setTextureCoordinatesPointer:mMiddleBasicTextureCoordinates onTextureUnit:j];
+        [context setTextureCoordinatesPointer:mMiddleBasicTextureCoordinates onTextureUnit:j];
       }
     }
 
     if (self->mNeedsInSpriteCoordinates)
     {
-      [a4 setInSpriteCoordinatesPointer:self->mMiddleInSpriteCoordinates];
+      [context setInSpriteCoordinatesPointer:self->mMiddleInSpriteCoordinates];
     }
 
-    [a4 setVertex2DPointer:self->mMiddleVertices];
-    [a4 drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mMiddleTriangles, "count")}];
+    [context setVertex2DPointer:self->mMiddleVertices];
+    [context drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mMiddleTriangles, "count")}];
   }
 
   if (self->mOuterVertices)
   {
     for (k = 0; k != 4; ++k)
     {
-      if (a3 && !k || [a4 imageSetOnTextureUnit:k])
+      if (image && !k || [context imageSetOnTextureUnit:k])
       {
         mOuterBasicTextureCoordinates = self->mOuterTextureCoordinates[k];
         if (!mOuterBasicTextureCoordinates)
@@ -2271,62 +2271,62 @@ LABEL_214:
           mOuterBasicTextureCoordinates = self->mOuterBasicTextureCoordinates;
         }
 
-        [a4 setTextureCoordinatesPointer:mOuterBasicTextureCoordinates onTextureUnit:k];
+        [context setTextureCoordinatesPointer:mOuterBasicTextureCoordinates onTextureUnit:k];
       }
     }
 
     if (self->mNeedsInSpriteCoordinates)
     {
-      [a4 setInSpriteCoordinatesPointer:self->mOuterInSpriteCoordinates];
+      [context setInSpriteCoordinatesPointer:self->mOuterInSpriteCoordinates];
     }
 
-    [a4 setVertex2DPointer:self->mOuterVertices];
-    [a4 drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mOuterTriangles, "count")}];
+    [context setVertex2DPointer:self->mOuterVertices];
+    [context drawTrianglesFromOffset:0 count:{3 * -[NSMutableArray count](self->mOuterTriangles, "count")}];
   }
 
-  [a4 unsetVertexPointer];
+  [context unsetVertexPointer];
   if (self->mNeedsInSpriteCoordinates)
   {
-    [a4 unsetInSpriteCoordinatesPointer];
+    [context unsetInSpriteCoordinatesPointer];
   }
 
   for (m = 0; m != 4; ++m)
   {
-    if (a3 && !m || [a4 imageSetOnTextureUnit:m])
+    if (image && !m || [context imageSetOnTextureUnit:m])
     {
-      [a4 unsetTextureCoordinatesPointerOnTextureUnit:m];
+      [context unsetTextureCoordinatesPointerOnTextureUnit:m];
     }
   }
 
-  if (a3)
+  if (image)
   {
-    [a3 unsetOnContext:a4 onTextureUnit:0 state:&v15];
+    [image unsetOnContext:context onTextureUnit:0 state:&v15];
   }
 }
 
-- (void)setTextureCoordinatesFactor:(CGSize)a3 andOffset:(CGPoint)a4 onTextureUnit:(unint64_t)a5
+- (void)setTextureCoordinatesFactor:(CGSize)factor andOffset:(CGPoint)offset onTextureUnit:(unint64_t)unit
 {
-  v5 = self + 16 * a5;
-  *(v5 + 344) = a3;
-  *(v5 + 408) = a4;
+  v5 = self + 16 * unit;
+  *(v5 + 344) = factor;
+  *(v5 + 408) = offset;
 }
 
-- (void)setSpriteCoordinatesFactor:(CGSize)a3 andOffset:(CGPoint)a4
+- (void)setSpriteCoordinatesFactor:(CGSize)factor andOffset:(CGPoint)offset
 {
-  v4 = a3.width == self->mInSpriteCoordinatesFactor.width && a3.height == self->mInSpriteCoordinatesFactor.height;
-  if (!v4 || (a4.x == self->mInSpriteCoordinatesOffset.x ? (v5 = a4.y == self->mInSpriteCoordinatesOffset.y) : (v5 = 0), !v5))
+  v4 = factor.width == self->mInSpriteCoordinatesFactor.width && factor.height == self->mInSpriteCoordinatesFactor.height;
+  if (!v4 || (offset.x == self->mInSpriteCoordinatesOffset.x ? (v5 = offset.y == self->mInSpriteCoordinatesOffset.y) : (v5 = 0), !v5))
   {
-    self->mInSpriteCoordinatesFactor = a3;
-    self->mInSpriteCoordinatesOffset = a4;
+    self->mInSpriteCoordinatesFactor = factor;
+    self->mInSpriteCoordinatesOffset = offset;
     self->mNeedsToUpdateInSpriteCoordinates = 1;
   }
 }
 
-- (BOOL)hitAtPoint:(CGPoint)a3 withInverseMatrix:(float)a4[16] localPoint:(CGPoint *)a5
+- (BOOL)hitAtPoint:(CGPoint)point withInverseMatrix:(float)matrix[16] localPoint:(CGPoint *)localPoint
 {
   if (self->mHitIsActive)
   {
-    v24 = MRMatrix_UnprojectPoint(a4, a3.x, a3.y) - self->mPosition.x;
+    v24 = MRMatrix_UnprojectPoint(matrix, point.x, point.y) - self->mPosition.x;
     v25 = v7 - self->mPosition.y;
     v8 = __sincosf_stret(self->mRotation);
     v9.f64[0] = v24;
@@ -2341,9 +2341,9 @@ LABEL_214:
     }
 
     v19 = vmulq_f64(vaddq_f64(v12, _Q1), _Q2);
-    if (a5)
+    if (localPoint)
     {
-      *a5 = v19;
+      *localPoint = v19;
     }
 
     v20.i32[0] = vuzp1_s16(vmovn_s64(vcgeq_f64(_Q1, v19)), *&v19.x).u32[0];
@@ -2384,7 +2384,7 @@ LABEL_214:
   return 1;
 }
 
-- (void)getOpaquePosition:(CGPoint *)a3 andHalfSize:(CGSize *)a4
+- (void)getOpaquePosition:(CGPoint *)position andHalfSize:(CGSize *)size
 {
   x = self->mPosition.x;
   v8 = __sincosf_stret(self->mRotation);
@@ -2403,11 +2403,11 @@ LABEL_214:
   _Q4 = vaddq_f64(v19, v20);
   __asm { FMLA            D0, D1, V4.D[1] }
 
-  a3->x = x + (_Q4.f64[0] * v8.__cosval - _Q4.f64[1] * v8.__sinval) * 0.5;
-  a3->y = y + _D0 * 0.5;
+  position->x = x + (_Q4.f64[0] * v8.__cosval - _Q4.f64[1] * v8.__sinval) * 0.5;
+  position->y = y + _D0 * 0.5;
   __asm { FMOV            V1.2D, #0.5 }
 
-  *a4 = vmulq_f64(vsubq_f64(v20, v19), _Q1);
+  *size = vmulq_f64(vsubq_f64(v20, v19), _Q1);
 }
 
 - (CGPoint)position

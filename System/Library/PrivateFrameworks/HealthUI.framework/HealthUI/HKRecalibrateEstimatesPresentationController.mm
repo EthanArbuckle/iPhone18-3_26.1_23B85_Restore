@@ -1,34 +1,34 @@
 @interface HKRecalibrateEstimatesPresentationController
 - (UIViewController)viewControllerPresenter;
-- (void)_dismissViewControllerAnimated:(BOOL)a3;
-- (void)_makeRemoteViewControllerVisible:(id)a3;
-- (void)_requestAndConfigureHostViewController:(id)a3 completion:(id)a4;
+- (void)_dismissViewControllerAnimated:(BOOL)animated;
+- (void)_makeRemoteViewControllerVisible:(id)visible;
+- (void)_requestAndConfigureHostViewController:(id)controller completion:(id)completion;
 - (void)dealloc;
-- (void)healthPrivacyHostRecalibrateEstimatesControllerDidFinishWithError:(id)a3;
-- (void)presentWithRequestRecord:(id)a3 authorizationViewControllerPresenter:(id)a4 completion:(id)a5;
+- (void)healthPrivacyHostRecalibrateEstimatesControllerDidFinishWithError:(id)error;
+- (void)presentWithRequestRecord:(id)record authorizationViewControllerPresenter:(id)presenter completion:(id)completion;
 @end
 
 @implementation HKRecalibrateEstimatesPresentationController
 
 - (void)dealloc
 {
-  v3 = [(HKRecalibrateEstimatesPresentationController *)self requestCancellationInvocation];
-  v4 = [v3 invoke];
+  requestCancellationInvocation = [(HKRecalibrateEstimatesPresentationController *)self requestCancellationInvocation];
+  invoke = [requestCancellationInvocation invoke];
 
   v5.receiver = self;
   v5.super_class = HKRecalibrateEstimatesPresentationController;
   [(HKRecalibrateEstimatesPresentationController *)&v5 dealloc];
 }
 
-- (void)presentWithRequestRecord:(id)a3 authorizationViewControllerPresenter:(id)a4 completion:(id)a5
+- (void)presentWithRequestRecord:(id)record authorizationViewControllerPresenter:(id)presenter completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  recordCopy = record;
+  presenterCopy = presenter;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (recordCopy)
   {
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -40,7 +40,7 @@
     if (v12)
     {
 LABEL_3:
-      if (!v10)
+      if (!presenterCopy)
       {
         goto LABEL_7;
       }
@@ -50,7 +50,7 @@ LABEL_3:
   }
 
   [HKRecalibrateEstimatesPresentationController presentWithRequestRecord:a2 authorizationViewControllerPresenter:self completion:?];
-  if (!v10)
+  if (!presenterCopy)
   {
     goto LABEL_7;
   }
@@ -62,17 +62,17 @@ LABEL_4:
     [HKRecalibrateEstimatesPresentationController presentWithRequestRecord:a2 authorizationViewControllerPresenter:self completion:?];
   }
 
-  objc_storeWeak(&self->_viewControllerPresenter, v10);
+  objc_storeWeak(&self->_viewControllerPresenter, presenterCopy);
 LABEL_7:
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __121__HKRecalibrateEstimatesPresentationController_presentWithRequestRecord_authorizationViewControllerPresenter_completion___block_invoke;
   block[3] = &unk_1E81B5A60;
   block[4] = self;
-  v16 = v9;
+  v16 = recordCopy;
   v17 = v12;
   v13 = v12;
-  v14 = v9;
+  v14 = recordCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -88,14 +88,14 @@ void __121__HKRecalibrateEstimatesPresentationController_presentWithRequestRecor
   [v2 _requestAndConfigureHostViewController:v3 completion:*(a1 + 48)];
 }
 
-- (void)_requestAndConfigureHostViewController:(id)a3 completion:(id)a4
+- (void)_requestAndConfigureHostViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   if ([(HKRecalibrateEstimatesPresentationController *)self didPresent])
   {
     v8 = [MEMORY[0x1E696ABC0] hk_error:3 description:@"Already presenting recalibrate estimates remote view controller."];
-    v7[2](v7, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
   }
 
   else
@@ -105,8 +105,8 @@ void __121__HKRecalibrateEstimatesPresentationController_presentWithRequestRecor
     aBlock[2] = __98__HKRecalibrateEstimatesPresentationController__requestAndConfigureHostViewController_completion___block_invoke;
     aBlock[3] = &unk_1E81B66C0;
     aBlock[4] = self;
-    v18 = v6;
-    v9 = v7;
+    v18 = controllerCopy;
+    v9 = completionCopy;
     v19 = v9;
     v10 = _Block_copy(aBlock);
     [(HKRecalibrateEstimatesPresentationController *)self setDidPresent:1];
@@ -185,9 +185,9 @@ void __98__HKRecalibrateEstimatesPresentationController__requestAndConfigureHost
   }
 }
 
-- (void)_makeRemoteViewControllerVisible:(id)a3
+- (void)_makeRemoteViewControllerVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   if (_UIApplicationIsExtension())
   {
     _HKInitializeLogging();
@@ -200,76 +200,76 @@ void __98__HKRecalibrateEstimatesPresentationController__requestAndConfigureHost
 
   else
   {
-    v6 = [MEMORY[0x1E696C608] sharedBehavior];
-    v7 = [v6 isiPad];
+    mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+    isiPad = [mEMORY[0x1E696C608] isiPad];
 
-    if (v7)
+    if (isiPad)
     {
-      [v4 setModalPresentationStyle:5];
+      [visibleCopy setModalPresentationStyle:5];
     }
 
-    [v4 setModalInPresentation:1];
+    [visibleCopy setModalInPresentation:1];
     v8 = objc_alloc_init(HKAuthorizationViewPresenterProvider);
     WeakRetained = objc_loadWeakRetained(&self->_viewControllerPresenter);
     v10 = [(HKAuthorizationViewPresenterProvider *)v8 hkAuthorizationViewControllerPresenter:WeakRetained];
 
-    v11 = [v10 presentedViewController];
+    presentedViewController = [v10 presentedViewController];
 
-    if (v11)
+    if (presentedViewController)
     {
       do
       {
-        v12 = [v10 presentedViewController];
+        presentedViewController2 = [v10 presentedViewController];
 
-        v13 = [v12 presentedViewController];
+        v12PresentedViewController = [presentedViewController2 presentedViewController];
 
-        v10 = v12;
+        v10 = presentedViewController2;
       }
 
-      while (v13);
+      while (v12PresentedViewController);
     }
 
     else
     {
-      v12 = v10;
+      presentedViewController2 = v10;
     }
 
-    [v12 presentViewController:v4 animated:1 completion:0];
+    [presentedViewController2 presentViewController:visibleCopy animated:1 completion:0];
   }
 }
 
-- (void)_dismissViewControllerAnimated:(BOOL)a3
+- (void)_dismissViewControllerAnimated:(BOOL)animated
 {
   if (self->_didPresent)
   {
     v10[9] = v3;
     v10[10] = v4;
-    v5 = a3;
+    animatedCopy = animated;
     v7 = self->_hostViewController;
     [(HKHealthPrivacyHostRecalibrateEstimatesViewController *)v7 setDelegate:0];
     hostViewController = self->_hostViewController;
     self->_hostViewController = 0;
 
-    v9 = [(HKHealthPrivacyHostRecalibrateEstimatesViewController *)v7 presentingViewController];
+    presentingViewController = [(HKHealthPrivacyHostRecalibrateEstimatesViewController *)v7 presentingViewController];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __79__HKRecalibrateEstimatesPresentationController__dismissViewControllerAnimated___block_invoke;
     v10[3] = &unk_1E81B55A8;
     v10[4] = self;
-    [v9 dismissViewControllerAnimated:v5 completion:v10];
+    [presentingViewController dismissViewControllerAnimated:animatedCopy completion:v10];
   }
 }
 
-- (void)healthPrivacyHostRecalibrateEstimatesControllerDidFinishWithError:(id)a3
+- (void)healthPrivacyHostRecalibrateEstimatesControllerDidFinishWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     _HKInitializeLogging();
     v5 = HKLogAuthorization();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(HKRecalibrateEstimatesPresentationController *)v4 healthPrivacyHostRecalibrateEstimatesControllerDidFinishWithError:v5];
+      [(HKRecalibrateEstimatesPresentationController *)errorCopy healthPrivacyHostRecalibrateEstimatesControllerDidFinishWithError:v5];
     }
   }
 

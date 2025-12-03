@@ -6,8 +6,8 @@
 
 - (BOOL)canBecomeFocused
 {
-  v2 = [(CarCardFocusAnchor *)self canBecomeFocusedHandler];
-  v3 = v2[2]();
+  canBecomeFocusedHandler = [(CarCardFocusAnchor *)self canBecomeFocusedHandler];
+  v3 = canBecomeFocusedHandler[2]();
 
   return v3;
 }

@@ -1,38 +1,38 @@
 @interface TIKeyboardFeatureSpecialization_fr
-- (id)accentKeyStringForInputPrefix:(id)a3;
-- (id)accentKeyStringForKeyboardState:(id)a3;
-- (id)externalStringToInternal:(id)a3;
-- (id)internalStringToExternal:(id)a3;
+- (id)accentKeyStringForInputPrefix:(id)prefix;
+- (id)accentKeyStringForKeyboardState:(id)state;
+- (id)externalStringToInternal:(id)internal;
+- (id)internalStringToExternal:(id)external;
 - (id)nonstopPunctuationCharacters;
 - (id)terminatorsDeletingAutospace;
-- (void)createInputManager:(id)a3;
+- (void)createInputManager:(id)manager;
 @end
 
 @implementation TIKeyboardFeatureSpecialization_fr
 
-- (id)accentKeyStringForInputPrefix:(id)a3
+- (id)accentKeyStringForInputPrefix:(id)prefix
 {
-  v3 = a3;
-  if (![v3 length])
+  prefixCopy = prefix;
+  if (![prefixCopy length])
   {
     v5 = @"´";
-    v4 = v3;
+    lowercaseString = prefixCopy;
     goto LABEL_8;
   }
 
-  v4 = [v3 lowercaseString];
+  lowercaseString = [prefixCopy lowercaseString];
 
   if ([TIKeyboardFeatureSpecialization_fr accentKeyStringForInputPrefix:]::once != -1)
   {
     [TIKeyboardFeatureSpecialization_fr accentKeyStringForInputPrefix:];
   }
 
-  if ([v4 hasSuffix:@"qu"] & 1) != 0 || (objc_msgSend(-[TIKeyboardFeatureSpecialization_fr accentKeyStringForInputPrefix:]::apostrophePrefixes, "containsObject:", v4))
+  if ([lowercaseString hasSuffix:@"qu"] & 1) != 0 || (objc_msgSend(-[TIKeyboardFeatureSpecialization_fr accentKeyStringForInputPrefix:]::apostrophePrefixes, "containsObject:", lowercaseString))
   {
     goto LABEL_6;
   }
 
-  v7 = [v4 characterAtIndex:{objc_msgSend(v4, "length") - 1}];
+  v7 = [lowercaseString characterAtIndex:{objc_msgSend(lowercaseString, "length") - 1}];
   v8 = (((v7 - 97) >> 1) | ((v7 - 97) << 15));
   if (v8 <= 3)
   {
@@ -65,7 +65,7 @@ LABEL_6:
   }
 
   v9 = @"ˋ";
-  if (([v4 isEqualToString:@"ou"] & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", @"dou"))
+  if (([lowercaseString isEqualToString:@"ou"] & 1) == 0 && !objc_msgSend(lowercaseString, "isEqualToString:", @"dou"))
   {
     v9 = @"ˆ";
   }
@@ -76,31 +76,31 @@ LABEL_8:
   return v5;
 }
 
-- (id)accentKeyStringForKeyboardState:(id)a3
+- (id)accentKeyStringForKeyboardState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 layoutState];
-  v6 = [v5 hasAccentKey];
+  stateCopy = state;
+  layoutState = [stateCopy layoutState];
+  hasAccentKey = [layoutState hasAccentKey];
 
-  if (v6)
+  if (hasAccentKey)
   {
     if ([TIKeyboardFeatureSpecialization_fr accentKeyStringForKeyboardState:]::onceToken != -1)
     {
       [TIKeyboardFeatureSpecialization_fr accentKeyStringForKeyboardState:];
     }
 
-    v7 = [v4 documentState];
-    v8 = [v7 contextBeforeInput];
+    documentState = [stateCopy documentState];
+    contextBeforeInput = [documentState contextBeforeInput];
 
-    v9 = [v8 rangeOfCharacterFromSet:-[TIKeyboardFeatureSpecialization_fr accentKeyStringForKeyboardState:]::nonLetterSet options:4];
+    v9 = [contextBeforeInput rangeOfCharacterFromSet:-[TIKeyboardFeatureSpecialization_fr accentKeyStringForKeyboardState:]::nonLetterSet options:4];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [v8 substringFromIndex:v9 + v10];
+      v11 = [contextBeforeInput substringFromIndex:v9 + v10];
 
-      v8 = v11;
+      contextBeforeInput = v11;
     }
 
-    v12 = [(TIKeyboardFeatureSpecialization_fr *)self accentKeyStringForInputPrefix:v8];
+    v12 = [(TIKeyboardFeatureSpecialization_fr *)self accentKeyStringForInputPrefix:contextBeforeInput];
     v13 = v12;
     v14 = @"UI-Nothing";
     if (v12)
@@ -119,20 +119,20 @@ LABEL_8:
   return v15;
 }
 
-- (void)createInputManager:(id)a3
+- (void)createInputManager:(id)manager
 {
   v5 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  managerCopy = manager;
   operator new();
 }
 
-- (id)externalStringToInternal:(id)a3
+- (id)externalStringToInternal:(id)internal
 {
   v13 = *MEMORY[0x29EDCA608];
   v12[0] = xmmword_29EA1E060;
-  v4 = a3;
+  internalCopy = internal;
   std::vector<unsigned int>::vector[abi:nn200100](__p, v12, 4uLL);
-  KB::utf8_string(v11, v4, v5);
+  KB::utf8_string(v11, internalCopy, v5);
 
   [(TIKeyboardFeatureSpecialization *)self precomposedCharacterSet];
   KB::decompose_diacritics();
@@ -150,10 +150,10 @@ LABEL_8:
   return v7;
 }
 
-- (id)internalStringToExternal:(id)a3
+- (id)internalStringToExternal:(id)external
 {
   v10 = *MEMORY[0x29EDCA608];
-  KB::utf8_string(v8, a3, a2);
+  KB::utf8_string(v8, external, a2);
   [(TIKeyboardFeatureSpecialization *)self precomposedCharacterSet];
   KB::compose_diacritics();
   v5 = KB::ns_string(v9, v4);
@@ -168,22 +168,22 @@ LABEL_8:
 {
   v5.receiver = self;
   v5.super_class = TIKeyboardFeatureSpecialization_fr;
-  v2 = [(TIKeyboardFeatureSpecialization *)&v5 nonstopPunctuationCharacters];
-  v3 = [v2 stringByAppendingString:@"-"];
+  nonstopPunctuationCharacters = [(TIKeyboardFeatureSpecialization *)&v5 nonstopPunctuationCharacters];
+  v3 = [nonstopPunctuationCharacters stringByAppendingString:@"-"];
 
   return v3;
 }
 
 - (id)terminatorsDeletingAutospace
 {
-  v3 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v4 = [v3 languageWithRegion];
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  languageWithRegion = [inputMode languageWithRegion];
 
-  if (([v4 isEqualToString:@"fr_CA"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"fr_CH"))
+  if (([languageWithRegion isEqualToString:@"fr_CA"] & 1) != 0 || objc_msgSend(languageWithRegion, "isEqualToString:", @"fr_CH"))
   {
     v8.receiver = self;
     v8.super_class = TIKeyboardFeatureSpecialization_fr;
-    v5 = [(TIKeyboardFeatureSpecialization *)&v8 terminatorsDeletingAutospace];
+    terminatorsDeletingAutospace = [(TIKeyboardFeatureSpecialization *)&v8 terminatorsDeletingAutospace];
   }
 
   else
@@ -193,10 +193,10 @@ LABEL_8:
       [TIKeyboardFeatureSpecialization_fr terminatorsDeletingAutospace];
     }
 
-    v5 = [TIKeyboardFeatureSpecialization_fr terminatorsDeletingAutospace]::result;
+    terminatorsDeletingAutospace = [TIKeyboardFeatureSpecialization_fr terminatorsDeletingAutospace]::result;
   }
 
-  v6 = v5;
+  v6 = terminatorsDeletingAutospace;
 
   return v6;
 }

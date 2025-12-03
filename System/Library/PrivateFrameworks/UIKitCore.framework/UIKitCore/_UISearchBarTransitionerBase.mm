@@ -1,8 +1,8 @@
 @interface _UISearchBarTransitionerBase
 - (UIView)searchBar;
 - (_UISearchBarTransitionerBase)init;
-- (_UISearchBarTransitionerBase)initWithNewTransitionContextForSearchBar:(id)a3;
-- (_UISearchBarTransitionerBase)initWithTransitionContext:(id)a3 forSearchBar:(id)a4;
+- (_UISearchBarTransitionerBase)initWithNewTransitionContextForSearchBar:(id)bar;
+- (_UISearchBarTransitionerBase)initWithTransitionContext:(id)context forSearchBar:(id)bar;
 - (void)animate;
 - (void)cancel;
 - (void)prepare;
@@ -10,19 +10,19 @@
 
 @implementation _UISearchBarTransitionerBase
 
-- (_UISearchBarTransitionerBase)initWithTransitionContext:(id)a3 forSearchBar:(id)a4
+- (_UISearchBarTransitionerBase)initWithTransitionContext:(id)context forSearchBar:(id)bar
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  barCopy = bar;
   v17.receiver = self;
   v17.super_class = _UISearchBarTransitionerBase;
   v9 = [(_UISearchBarTransitionerBase *)&v17 init];
   if (v9)
   {
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
-    if (v7)
+    if (contextCopy)
     {
-      v11 = v8 == 0;
+      v11 = barCopy == 0;
     }
 
     else
@@ -54,8 +54,8 @@
       }
     }
 
-    objc_storeStrong(&v9->_transitionContext, a3);
-    objc_storeWeak(&v9->_searchBar, v8);
+    objc_storeStrong(&v9->_transitionContext, context);
+    objc_storeWeak(&v9->_searchBar, barCopy);
   }
 
   return v9;
@@ -86,34 +86,34 @@
   return 0;
 }
 
-- (_UISearchBarTransitionerBase)initWithNewTransitionContextForSearchBar:(id)a3
+- (_UISearchBarTransitionerBase)initWithNewTransitionContextForSearchBar:(id)bar
 {
-  v4 = a3;
+  barCopy = bar;
   v5 = objc_alloc_init(_UISearchBarTransitionContext);
-  v6 = [(_UISearchBarTransitionerBase *)self initWithTransitionContext:v5 forSearchBar:v4];
+  v6 = [(_UISearchBarTransitionerBase *)self initWithTransitionContext:v5 forSearchBar:barCopy];
 
   return v6;
 }
 
 - (void)prepare
 {
-  v3 = [(_UISearchBarTransitionContext *)self->_transitionContext fromLayout];
+  fromLayout = [(_UISearchBarTransitionContext *)self->_transitionContext fromLayout];
   activeLayout = self->_activeLayout;
-  self->_activeLayout = v3;
+  self->_activeLayout = fromLayout;
 }
 
 - (void)animate
 {
-  v3 = [(_UISearchBarTransitionContext *)self->_transitionContext toLayout];
+  toLayout = [(_UISearchBarTransitionContext *)self->_transitionContext toLayout];
   activeLayout = self->_activeLayout;
-  self->_activeLayout = v3;
+  self->_activeLayout = toLayout;
 }
 
 - (void)cancel
 {
-  v3 = [(_UISearchBarTransitionContext *)self->_transitionContext fromLayout];
+  fromLayout = [(_UISearchBarTransitionContext *)self->_transitionContext fromLayout];
   activeLayout = self->_activeLayout;
-  self->_activeLayout = v3;
+  self->_activeLayout = fromLayout;
 }
 
 - (UIView)searchBar

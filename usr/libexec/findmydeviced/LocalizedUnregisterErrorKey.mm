@@ -1,15 +1,15 @@
 @interface LocalizedUnregisterErrorKey
-- (LocalizedUnregisterErrorKey)initWithUnregisterError:(int64_t)a3 context:(unint64_t)a4 deviceClass:(int64_t)a5;
+- (LocalizedUnregisterErrorKey)initWithUnregisterError:(int64_t)error context:(unint64_t)context deviceClass:(int64_t)class;
 - (NSString)okButtonKey;
-- (id)deviceTypeStringForDeviceClass:(int64_t)a3;
-- (id)errorContextStringForDisableContext:(unint64_t)a3;
+- (id)deviceTypeStringForDeviceClass:(int64_t)class;
+- (id)errorContextStringForDisableContext:(unint64_t)context;
 - (id)errorTypeString;
-- (id)keyForType:(id)a3;
+- (id)keyForType:(id)type;
 @end
 
 @implementation LocalizedUnregisterErrorKey
 
-- (LocalizedUnregisterErrorKey)initWithUnregisterError:(int64_t)a3 context:(unint64_t)a4 deviceClass:(int64_t)a5
+- (LocalizedUnregisterErrorKey)initWithUnregisterError:(int64_t)error context:(unint64_t)context deviceClass:(int64_t)class
 {
   v11.receiver = self;
   v11.super_class = LocalizedUnregisterErrorKey;
@@ -17,9 +17,9 @@
   v9 = v8;
   if (v8)
   {
-    [(LocalizedUnregisterErrorKey *)v8 setResponseErrorType:a3];
-    [(LocalizedUnregisterErrorKey *)v9 setContext:a4];
-    [(LocalizedUnregisterErrorKey *)v9 setDeviceClass:a5];
+    [(LocalizedUnregisterErrorKey *)v8 setResponseErrorType:error];
+    [(LocalizedUnregisterErrorKey *)v9 setContext:context];
+    [(LocalizedUnregisterErrorKey *)v9 setDeviceClass:class];
   }
 
   return v9;
@@ -28,27 +28,27 @@
 - (NSString)okButtonKey
 {
   v3 = [(LocalizedUnregisterErrorKey *)self errorContextStringForDisableContext:[(LocalizedUnregisterErrorKey *)self context]];
-  v4 = [(LocalizedUnregisterErrorKey *)self errorTypeString];
-  v5 = [NSString stringWithFormat:@"%@_%@_%@", v3, v4, @"OK_BUTTON"];
+  errorTypeString = [(LocalizedUnregisterErrorKey *)self errorTypeString];
+  v5 = [NSString stringWithFormat:@"%@_%@_%@", v3, errorTypeString, @"OK_BUTTON"];
 
   return v5;
 }
 
-- (id)keyForType:(id)a3
+- (id)keyForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = [(LocalizedUnregisterErrorKey *)self deviceTypeStringForDeviceClass:[(LocalizedUnregisterErrorKey *)self deviceClass]];
   v6 = [(LocalizedUnregisterErrorKey *)self errorContextStringForDisableContext:[(LocalizedUnregisterErrorKey *)self context]];
-  v7 = [(LocalizedUnregisterErrorKey *)self errorTypeString];
-  v8 = v7;
+  errorTypeString = [(LocalizedUnregisterErrorKey *)self errorTypeString];
+  v8 = errorTypeString;
   if (v5)
   {
-    [NSString stringWithFormat:@"%@_%@_%@_%@", v6, v7, v5, v4];
+    [NSString stringWithFormat:@"%@_%@_%@_%@", v6, errorTypeString, v5, typeCopy];
   }
 
   else
   {
-    [NSString stringWithFormat:@"%@_%@_%@", v6, v7, v4, v11];
+    [NSString stringWithFormat:@"%@_%@_%@", v6, errorTypeString, typeCopy, v11];
   }
   v9 = ;
 
@@ -70,29 +70,29 @@
   return v2;
 }
 
-- (id)errorContextStringForDisableContext:(unint64_t)a3
+- (id)errorContextStringForDisableContext:(unint64_t)context
 {
-  if (a3 - 1 > 6)
+  if (context - 1 > 6)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1002CE058 + a3 - 1);
+    return *(&off_1002CE058 + context - 1);
   }
 }
 
-- (id)deviceTypeStringForDeviceClass:(int64_t)a3
+- (id)deviceTypeStringForDeviceClass:(int64_t)class
 {
-  if (a3 > 7)
+  if (class > 7)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1002CE090 + a3);
+    return *(&off_1002CE090 + class);
   }
 }
 

@@ -1,11 +1,11 @@
 @interface InAppPurchaseLockupCollectionViewCell
-- (_TtC8AppStore37InAppPurchaseLockupCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore37InAppPurchaseLockupCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation InAppPurchaseLockupCollectionViewCell
 
-- (_TtC8AppStore37InAppPurchaseLockupCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore37InAppPurchaseLockupCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore37InAppPurchaseLockupCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -23,7 +23,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100058A48();
 }
 

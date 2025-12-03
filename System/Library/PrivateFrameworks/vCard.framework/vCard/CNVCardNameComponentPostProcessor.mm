@@ -1,15 +1,15 @@
 @interface CNVCardNameComponentPostProcessor
-+ (void)postProcessNameComponents:(id)a3;
++ (void)postProcessNameComponents:(id)components;
 - (_TtC5vCard33CNVCardNameComponentPostProcessor)init;
 @end
 
 @implementation CNVCardNameComponentPostProcessor
 
-+ (void)postProcessNameComponents:(id)a3
++ (void)postProcessNameComponents:(id)components
 {
-  v3 = a3;
-  sub_277218D88(v3);
-  sub_277219204(v3);
+  componentsCopy = components;
+  sub_277218D88(componentsCopy);
+  sub_277219204(componentsCopy);
 }
 
 - (_TtC5vCard33CNVCardNameComponentPostProcessor)init

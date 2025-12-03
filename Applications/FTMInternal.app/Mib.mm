@@ -1,20 +1,20 @@
 @interface Mib
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSubCarrierSpacing:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSubCarrierSpacing:(BOOL)spacing;
+- (void)writeTo:(id)to;
 @end
 
 @implementation Mib
 
-- (void)setHasSubCarrierSpacing:(BOOL)a3
+- (void)setHasSubCarrierSpacing:(BOOL)spacing
 {
-  if (a3)
+  if (spacing)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = Mib;
   v3 = [(Mib *)&v7 description];
-  v4 = [(Mib *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(Mib *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -65,16 +65,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     subCarrierSpacing = self->_subCarrierSpacing;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -82,44 +82,44 @@
   {
     ssbSubCarrierOffset = self->_ssbSubCarrierOffset;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_mibContent)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[5] = self->_subCarrierSpacing;
-    *(v4 + 24) |= 2u;
+    toCopy[5] = self->_subCarrierSpacing;
+    *(toCopy + 24) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[4] = self->_ssbSubCarrierOffset;
-    *(v4 + 24) |= 1u;
+    toCopy[4] = self->_ssbSubCarrierOffset;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_mibContent)
   {
-    v6 = v4;
-    [v4 setMibContent:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setMibContent:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -135,31 +135,31 @@
     *(v5 + 24) |= 1u;
   }
 
-  v8 = [(NSData *)self->_mibContent copyWithZone:a3];
+  v8 = [(NSData *)self->_mibContent copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_subCarrierSpacing != *(v4 + 5))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_subCarrierSpacing != *(equalCopy + 5))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
 LABEL_14:
     v7 = 0;
@@ -168,19 +168,19 @@ LABEL_14:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_ssbSubCarrierOffset != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_ssbSubCarrierOffset != *(equalCopy + 4))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_14;
   }
 
   mibContent = self->_mibContent;
-  if (mibContent | *(v4 + 1))
+  if (mibContent | *(equalCopy + 1))
   {
     v7 = [(NSData *)mibContent isEqual:?];
   }
@@ -221,28 +221,28 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSData *)self->_mibContent hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if ((v5 & 2) != 0)
   {
-    self->_subCarrierSpacing = *(v4 + 5);
+    self->_subCarrierSpacing = *(fromCopy + 5);
     *&self->_has |= 2u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
   }
 
   if (v5)
   {
-    self->_ssbSubCarrierOffset = *(v4 + 4);
+    self->_ssbSubCarrierOffset = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(Mib *)self setMibContent:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

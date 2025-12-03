@@ -1,5 +1,5 @@
 @interface PHPlaceholderView
-- (PHPlaceholderView)initWithType:(int64_t)a3;
+- (PHPlaceholderView)initWithType:(int64_t)type;
 - (id)_appleTVMessage;
 - (void)_setup;
 @end
@@ -8,14 +8,14 @@
 
 - (id)_appleTVMessage
 {
-  v2 = [(PHPlaceholderView *)self type];
-  if (!v2)
+  type = [(PHPlaceholderView *)self type];
+  if (!type)
   {
     v3 = @"VIDEO_PLAYING_ON_EXTERNAL_DISPLAY_PLACEHOLDER_MESSAGE";
     goto LABEL_5;
   }
 
-  if (v2 == 1)
+  if (type == 1)
   {
     v3 = @"AIRPLAY_SLIDESHOW_ON_APPLE_TV_MESSAGE";
 LABEL_5:
@@ -32,19 +32,19 @@ LABEL_7:
 - (void)_setup
 {
   v30 = +[PUInterfaceManager currentTheme];
-  v3 = [v30 airPlayVideoPlaceholderBackgroundColor];
-  [(PHPlaceholderView *)self setBackgroundColor:v3];
+  airPlayVideoPlaceholderBackgroundColor = [v30 airPlayVideoPlaceholderBackgroundColor];
+  [(PHPlaceholderView *)self setBackgroundColor:airPlayVideoPlaceholderBackgroundColor];
 
   [(PHPlaceholderView *)self setUserInteractionEnabled:0];
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PHPlaceholderView *)self addSubview:v4];
   v5 = objc_alloc(MEMORY[0x1E69DCAE0]);
-  v6 = [v30 airPlayVideoPlaceholderIcon];
-  v7 = [v5 initWithImage:v6];
+  airPlayVideoPlaceholderIcon = [v30 airPlayVideoPlaceholderIcon];
+  v7 = [v5 initWithImage:airPlayVideoPlaceholderIcon];
 
-  v8 = [v30 airPlayVideoPlaceholderIconTintColor];
-  [v7 setTintColor:v8];
+  airPlayVideoPlaceholderIconTintColor = [v30 airPlayVideoPlaceholderIconTintColor];
+  [v7 setTintColor:airPlayVideoPlaceholderIconTintColor];
 
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v4 addSubview:v7];
@@ -52,25 +52,25 @@ LABEL_7:
   v10 = PULocalizedString(@"VIDEO_PLAYING_ON_EXTERNAL_DISPLAY_PLACEHOLDER_TITLE");
   [v9 setText:v10];
 
-  v11 = [v30 airPlayVideoPlaceholderTitleTextColor];
-  [v9 setTextColor:v11];
+  airPlayVideoPlaceholderTitleTextColor = [v30 airPlayVideoPlaceholderTitleTextColor];
+  [v9 setTextColor:airPlayVideoPlaceholderTitleTextColor];
 
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [v30 airPlayVideoPlaceholderTitleFont];
-  [v9 setFont:v12];
+  airPlayVideoPlaceholderTitleFont = [v30 airPlayVideoPlaceholderTitleFont];
+  [v9 setFont:airPlayVideoPlaceholderTitleFont];
 
   [v4 addSubview:v9];
-  v13 = [(PHPlaceholderView *)self _appleTVMessage];
+  _appleTVMessage = [(PHPlaceholderView *)self _appleTVMessage];
   v14 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [v14 setNumberOfLines:0];
   [v14 setTextAlignment:1];
-  [v14 setText:v13];
-  v15 = [v30 airPlayVideoPlaceholderMessageTextColor];
-  [v14 setTextColor:v15];
+  [v14 setText:_appleTVMessage];
+  airPlayVideoPlaceholderMessageTextColor = [v30 airPlayVideoPlaceholderMessageTextColor];
+  [v14 setTextColor:airPlayVideoPlaceholderMessageTextColor];
 
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v16 = [v30 airPlayVideoPlaceholderMessageFont];
-  [v14 setFont:v16];
+  airPlayVideoPlaceholderMessageFont = [v30 airPlayVideoPlaceholderMessageFont];
+  [v14 setFont:airPlayVideoPlaceholderMessageFont];
 
   [v4 addSubview:v14];
   [(PHPlaceholderView *)self _setContainer:v4];
@@ -78,53 +78,53 @@ LABEL_7:
   [(PHPlaceholderView *)self _setAirPlayLabel:v9];
   [(PHPlaceholderView *)self _setAppleTVMessageLabel:v14];
   v17 = _NSDictionaryOfVariableBindings(&cfstr_ContainerImage.isa, v4, v7, v9, v14, 0);
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v19 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[container]|" options:0 metrics:0 views:v17];
-  [v18 addObjectsFromArray:v19];
+  [array addObjectsFromArray:v19];
 
   v20 = [MEMORY[0x1E696ACD8] constraintWithItem:v4 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
-  [v18 addObject:v20];
+  [array addObject:v20];
 
   v21 = [MEMORY[0x1E696ACD8] constraintWithItem:v7 attribute:9 relatedBy:0 toItem:v4 attribute:9 multiplier:1.0 constant:0.0];
-  [v18 addObject:v21];
+  [array addObject:v21];
 
   v22 = [MEMORY[0x1E696ACD8] constraintWithItem:v9 attribute:11 relatedBy:0 toItem:v7 attribute:4 multiplier:1.0 constant:33.0];
-  [v18 addObject:v22];
+  [array addObject:v22];
 
-  v23 = [v18 lastObject];
+  lastObject = [array lastObject];
   LODWORD(v24) = 1132068864;
-  [v23 setPriority:v24];
+  [lastObject setPriority:v24];
 
   v25 = [MEMORY[0x1E696ACD8] constraintWithItem:v14 attribute:11 relatedBy:0 toItem:v9 attribute:11 multiplier:1.0 constant:15.0];
-  [v18 addObject:v25];
+  [array addObject:v25];
 
-  v26 = [v18 lastObject];
+  lastObject2 = [array lastObject];
   LODWORD(v27) = 1132068864;
-  [v26 setPriority:v27];
+  [lastObject2 setPriority:v27];
 
   v28 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[appleTVMessageLabel]|" options:512 metrics:0 views:v17];
-  [v18 addObjectsFromArray:v28];
+  [array addObjectsFromArray:v28];
 
   v29 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[imageView]-(>=0)-[airPlayLabel]-(>=0)-[appleTVMessageLabel]|" options:512 metrics:0 views:v17];
-  [v18 addObjectsFromArray:v29];
+  [array addObjectsFromArray:v29];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v18];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
-- (PHPlaceholderView)initWithType:(int64_t)a3
+- (PHPlaceholderView)initWithType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = PHPlaceholderView;
   v5 = [(PHPlaceholderView *)&v8 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v5)
   {
-    if (a3 >= 2)
+    if (type >= 2)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:v5 file:@"PHPlaceholderView.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"PHPlaceholderTypeIsValid(type)"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v5 file:@"PHPlaceholderView.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"PHPlaceholderTypeIsValid(type)"}];
     }
 
-    v5->_type = a3;
+    v5->_type = type;
     [(PHPlaceholderView *)v5 _setup];
   }
 

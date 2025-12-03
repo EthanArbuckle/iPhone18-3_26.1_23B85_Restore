@@ -1,59 +1,59 @@
 @interface ABSGroup
-+ (id)propertyKeyForPropertyID:(int)a3;
++ (id)propertyKeyForPropertyID:(int)d;
 + (void)initialize;
 - (ABSAddressBook)addressBook;
-- (ABSGroup)initWithMutableGroup:(id)a3;
-- (ABSGroup)initWithSource:(id)a3;
+- (ABSGroup)initWithMutableGroup:(id)group;
+- (ABSGroup)initWithSource:(id)source;
 - (ABSSource)source;
-- (BOOL)removeProperty:(int)a3 withError:(id *)a4;
-- (BOOL)setValue:(void *)a3 forProperty:(int)a4 withError:(__CFError *)a5;
+- (BOOL)removeProperty:(int)property withError:(id *)error;
+- (BOOL)setValue:(void *)value forProperty:(int)property withError:(__CFError *)error;
 - (CNMutableGroup)cnImpl;
 - (NSString)CNIdentifierString;
 - (NSString)compositeName;
 - (int)id;
-- (void)copyValueForProperty:(int)a3;
-- (void)replaceRecordStorageWithCNObject:(id)a3;
-- (void)updateAllValuesWithValuesFromGroup:(id)a3;
+- (void)copyValueForProperty:(int)property;
+- (void)replaceRecordStorageWithCNObject:(id)object;
+- (void)updateAllValuesWithValuesFromGroup:(id)group;
 @end
 
 @implementation ABSGroup
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___ABSGroup;
   objc_msgSendSuper2(&v2, sel_initialize);
   +[ABSAddressBook ABInitialize];
 }
 
-- (ABSGroup)initWithSource:(id)a3
+- (ABSGroup)initWithSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = [(ABSGroup *)self initWithMutableGroup:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_source, v4);
+    objc_storeWeak(&v5->_source, sourceCopy);
     v6->_revertedRecordID = -1;
   }
 
   return v6;
 }
 
-- (ABSGroup)initWithMutableGroup:(id)a3
+- (ABSGroup)initWithMutableGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v7.receiver = self;
   v7.super_class = ABSGroup;
   v5 = [(ABSGroup *)&v7 init];
   if (v5)
   {
-    if (!v4)
+    if (!groupCopy)
     {
-      v4 = objc_alloc_init(MEMORY[0x277CBDB50]);
+      groupCopy = objc_alloc_init(MEMORY[0x277CBDB50]);
     }
 
-    objc_storeStrong(&v5->_cnImpl, v4);
+    objc_storeStrong(&v5->_cnImpl, groupCopy);
   }
 
   return v5;
@@ -61,12 +61,12 @@
 
 - (int)id
 {
-  v2 = [(ABSGroup *)self cnImpl];
-  v3 = [v2 iOSLegacyIdentifier];
+  cnImpl = [(ABSGroup *)self cnImpl];
+  iOSLegacyIdentifier = [cnImpl iOSLegacyIdentifier];
 
-  if (v3)
+  if (iOSLegacyIdentifier)
   {
-    return v3;
+    return iOSLegacyIdentifier;
   }
 
   else
@@ -79,8 +79,8 @@
 {
   if (!self->_cnImpl && [(ABSGroup *)self revertedRecordID]!= -1)
   {
-    v3 = [(ABSGroup *)self addressBook];
-    v4 = [v3 groupWithRecordID:{-[ABSGroup revertedRecordID](self, "revertedRecordID")}];
+    addressBook = [(ABSGroup *)self addressBook];
+    v4 = [addressBook groupWithRecordID:{-[ABSGroup revertedRecordID](self, "revertedRecordID")}];
   }
 
   cnImpl = self->_cnImpl;
@@ -90,18 +90,18 @@
 
 - (NSString)CNIdentifierString
 {
-  v2 = [(ABSGroup *)self cnImpl];
-  v3 = [v2 identifier];
+  cnImpl = [(ABSGroup *)self cnImpl];
+  identifier = [cnImpl identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)compositeName
 {
-  v2 = [(ABSGroup *)self cnImpl];
-  v3 = [v2 name];
+  cnImpl = [(ABSGroup *)self cnImpl];
+  name = [cnImpl name];
 
-  return v3;
+  return name;
 }
 
 - (ABSSource)source
@@ -110,8 +110,8 @@
 
   if (WeakRetained)
   {
-    v4 = objc_loadWeakRetained(&self->_source);
-    if (v4)
+    defaultSource = objc_loadWeakRetained(&self->_source);
+    if (defaultSource)
     {
       goto LABEL_7;
     }
@@ -119,67 +119,67 @@
     goto LABEL_6;
   }
 
-  if (-[ABSGroup id](self, "id") == -1 || (-[ABSGroup addressBook](self, "addressBook"), v5 = objc_claimAutoreleasedReturnValue(), [v5 sourceForRecord:self], v4 = objc_claimAutoreleasedReturnValue(), v5, objc_storeWeak(&self->_source, v4), !v4))
+  if (-[ABSGroup id](self, "id") == -1 || (-[ABSGroup addressBook](self, "addressBook"), v5 = objc_claimAutoreleasedReturnValue(), [v5 sourceForRecord:self], defaultSource = objc_claimAutoreleasedReturnValue(), v5, objc_storeWeak(&self->_source, defaultSource), !defaultSource))
   {
 LABEL_6:
-    v6 = [(ABSGroup *)self addressBook];
-    v4 = [v6 defaultSource];
+    addressBook = [(ABSGroup *)self addressBook];
+    defaultSource = [addressBook defaultSource];
 
-    objc_storeWeak(&self->_source, v4);
+    objc_storeWeak(&self->_source, defaultSource);
   }
 
 LABEL_7:
 
-  return v4;
+  return defaultSource;
 }
 
-- (void)copyValueForProperty:(int)a3
+- (void)copyValueForProperty:(int)property
 {
-  if (a3)
+  if (property)
   {
-    v3 = 0;
+    compositeName = 0;
   }
 
   else
   {
-    v3 = [(ABSGroup *)self compositeName];
+    compositeName = [(ABSGroup *)self compositeName];
   }
 
-  v4 = [v3 copy];
+  v4 = [compositeName copy];
 
   return v4;
 }
 
-- (BOOL)setValue:(void *)a3 forProperty:(int)a4 withError:(__CFError *)a5
+- (BOOL)setValue:(void *)value forProperty:(int)property withError:(__CFError *)error
 {
-  v7 = [ABSGroup propertyKeyForPropertyID:*&a4];
-  v8 = a3;
-  v9 = [(ABSGroup *)self cnImpl];
-  [v9 setValue:v8 forKey:v7];
+  v7 = [ABSGroup propertyKeyForPropertyID:*&property];
+  valueCopy = value;
+  cnImpl = [(ABSGroup *)self cnImpl];
+  [cnImpl setValue:valueCopy forKey:v7];
 
-  v10 = [(ABSGroup *)self addressBook];
-  [v10 recordUpdated:self];
+  addressBook = [(ABSGroup *)self addressBook];
+  [addressBook recordUpdated:self];
 
   return 1;
 }
 
-- (BOOL)removeProperty:(int)a3 withError:(id *)a4
+- (BOOL)removeProperty:(int)property withError:(id *)error
 {
-  v5 = [ABSGroup propertyKeyForPropertyID:*&a3, a4];
-  v6 = [(ABSGroup *)self cnImpl];
-  [v6 setValue:0 forKey:v5];
+  error = [ABSGroup propertyKeyForPropertyID:*&property, error];
+  cnImpl = [(ABSGroup *)self cnImpl];
+  [cnImpl setValue:0 forKey:error];
 
-  v7 = [(ABSGroup *)self addressBook];
-  [v7 recordUpdated:self];
+  addressBook = [(ABSGroup *)self addressBook];
+  [addressBook recordUpdated:self];
 
   return 1;
 }
 
-- (void)updateAllValuesWithValuesFromGroup:(id)a3
+- (void)updateAllValuesWithValuesFromGroup:(id)group
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  groupCopy = group;
+  if (groupCopy)
   {
     v16 = 0u;
     v17 = 0u;
@@ -206,9 +206,9 @@ LABEL_7:
           }
 
           v11 = *(*(&v14 + 1) + 8 * v10);
-          v12 = [(ABSGroup *)self cnImpl];
-          v13 = [v4 valueForKey:v11];
-          [v12 setValue:v13 forKey:v11];
+          cnImpl = [(ABSGroup *)self cnImpl];
+          v13 = [groupCopy valueForKey:v11];
+          [cnImpl setValue:v13 forKey:v11];
 
           ++v10;
         }
@@ -222,12 +222,12 @@ LABEL_7:
   }
 }
 
-- (void)replaceRecordStorageWithCNObject:(id)a3
+- (void)replaceRecordStorageWithCNObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v5 = v4;
+    v5 = objectCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -241,8 +241,8 @@ LABEL_7:
 
   else
   {
-    v8 = [(ABSGroup *)self cnImpl];
-    -[ABSGroup setRevertedRecordID:](self, "setRevertedRecordID:", [v8 iOSLegacyIdentifier]);
+    cnImpl = [(ABSGroup *)self cnImpl];
+    -[ABSGroup setRevertedRecordID:](self, "setRevertedRecordID:", [cnImpl iOSLegacyIdentifier]);
 
     v7 = 0;
   }
@@ -251,9 +251,9 @@ LABEL_7:
   [(ABSGroup *)self setCnImpl:v7];
 }
 
-+ (id)propertyKeyForPropertyID:(int)a3
++ (id)propertyKeyForPropertyID:(int)d
 {
-  if (a3)
+  if (d)
   {
     v4 = 0;
   }

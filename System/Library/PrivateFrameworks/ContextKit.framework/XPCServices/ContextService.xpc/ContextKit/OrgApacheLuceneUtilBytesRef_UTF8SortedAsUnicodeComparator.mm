@@ -1,22 +1,22 @@
 @interface OrgApacheLuceneUtilBytesRef_UTF8SortedAsUnicodeComparator
-- (int)compareWithId:(id)a3 withId:(id)a4;
+- (int)compareWithId:(id)id withId:(id)withId;
 @end
 
 @implementation OrgApacheLuceneUtilBytesRef_UTF8SortedAsUnicodeComparator
 
-- (int)compareWithId:(id)a3 withId:(id)a4
+- (int)compareWithId:(id)id withId:(id)withId
 {
-  if (!a3 || !a4)
+  if (!id || !withId)
   {
 LABEL_18:
     JreThrowNullPointerException();
   }
 
-  v6 = *(a3 + 1);
-  v7 = *(a4 + 1);
-  v8 = *(a3 + 4);
-  v9 = *(a4 + 4);
-  v10 = JavaLangMath_minWithInt_withInt_(*(a3 + 5), *(a4 + 5));
+  v6 = *(id + 1);
+  v7 = *(withId + 1);
+  v8 = *(id + 4);
+  v9 = *(withId + 4);
+  v10 = JavaLangMath_minWithInt_withInt_(*(id + 5), *(withId + 5));
   v11 = v10 + v8;
   if (v8 > v10 + v8)
   {
@@ -59,7 +59,7 @@ LABEL_18:
     }
   }
 
-  return *(a3 + 5) - *(a4 + 5);
+  return *(id + 5) - *(withId + 5);
 }
 
 @end

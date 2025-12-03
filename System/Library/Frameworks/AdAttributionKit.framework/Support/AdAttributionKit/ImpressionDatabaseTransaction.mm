@@ -1,6 +1,6 @@
 @interface ImpressionDatabaseTransaction
 - (_TtC20AttributionKitDaemon29ImpressionDatabaseTransaction)init;
-- (_TtC20AttributionKitDaemon29ImpressionDatabaseTransaction)initWithConnection:(id)a3;
+- (_TtC20AttributionKitDaemon29ImpressionDatabaseTransaction)initWithConnection:(id)connection;
 @end
 
 @implementation ImpressionDatabaseTransaction
@@ -12,11 +12,11 @@
   return [(ImpressionDatabaseSession *)&v3 init];
 }
 
-- (_TtC20AttributionKitDaemon29ImpressionDatabaseTransaction)initWithConnection:(id)a3
+- (_TtC20AttributionKitDaemon29ImpressionDatabaseTransaction)initWithConnection:(id)connection
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(ImpressionDatabaseSession *)&v5 initWithConnection:a3];
+  return [(ImpressionDatabaseSession *)&v5 initWithConnection:connection];
 }
 
 @end

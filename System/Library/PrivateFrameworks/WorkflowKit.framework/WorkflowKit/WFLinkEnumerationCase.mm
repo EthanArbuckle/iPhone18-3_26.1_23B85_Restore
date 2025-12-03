@@ -1,46 +1,46 @@
 @interface WFLinkEnumerationCase
-- (WFLinkEnumerationCase)initWithCoder:(id)a3;
-- (WFLinkEnumerationCase)initWithIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFLinkEnumerationCase)initWithCoder:(id)coder;
+- (WFLinkEnumerationCase)initWithIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFLinkEnumerationCase
 
-- (WFLinkEnumerationCase)initWithCoder:(id)a3
+- (WFLinkEnumerationCase)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   if (v5)
   {
     self = [(WFLinkEnumerationCase *)self initWithIdentifier:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFLinkEnumerationCase *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFLinkEnumerationCase *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
-- (WFLinkEnumerationCase)initWithIdentifier:(id)a3
+- (WFLinkEnumerationCase)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = WFLinkEnumerationCase;
   v5 = [(WFLinkEnumerationCase *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 

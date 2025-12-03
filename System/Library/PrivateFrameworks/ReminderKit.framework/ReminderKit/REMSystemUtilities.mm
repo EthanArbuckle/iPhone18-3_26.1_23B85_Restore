@@ -36,8 +36,8 @@ uint64_t __39__REMSystemUtilities_isInternalInstall__block_invoke()
 
 + (id)systemBuildVersion
 {
-  v2 = [a1 systemVersionDictionary];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695E1E8]];
+  systemVersionDictionary = [self systemVersionDictionary];
+  v3 = [systemVersionDictionary objectForKeyedSubscript:*MEMORY[0x1E695E1E8]];
 
   return v3;
 }

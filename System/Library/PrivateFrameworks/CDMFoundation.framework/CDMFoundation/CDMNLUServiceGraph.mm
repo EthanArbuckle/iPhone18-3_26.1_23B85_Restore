@@ -1,5 +1,5 @@
 @interface CDMNLUServiceGraph
-+ (id)getUsageForAssetSetName:(int64_t)a3 withLocale:(id)a4;
++ (id)getUsageForAssetSetName:(int64_t)name withLocale:(id)locale;
 + (id)requiredDAGServices;
 - (void)buildGraph;
 @end
@@ -84,19 +84,19 @@
   return v34;
 }
 
-+ (id)getUsageForAssetSetName:(int64_t)a3 withLocale:(id)a4
++ (id)getUsageForAssetSetName:(int64_t)name withLocale:(id)locale
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (a3 == 1)
+  localeCopy = locale;
+  if (name == 1)
   {
-    v6 = [CDMAssetsUtils getNLUsages:v5];
+    v6 = [CDMAssetsUtils getNLUsages:localeCopy];
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!name)
   {
-    v6 = [CDMAssetsUtils getAssistantUsages:v5];
+    v6 = [CDMAssetsUtils getAssistantUsages:localeCopy];
 LABEL_5:
     v7 = v6;
     goto LABEL_9;
@@ -105,7 +105,7 @@ LABEL_5:
   v8 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:name];
     v12 = 136315394;
     v13 = "+[CDMNLUServiceGraph getUsageForAssetSetName:withLocale:]";
     v14 = 2112;
@@ -361,19 +361,19 @@ LABEL_9:
   [(CDMServiceGraph *)self getGraphInput];
   v118 = v6;
   v114 = v120 = v5;
-  v12 = [v114 siriNLUTypeObj];
+  siriNLUTypeObj = [v114 siriNLUTypeObj];
   v13 = MEMORY[0x1E69D1420];
-  v14 = [v12 requestId];
-  v124 = [v13 extractRequestLinkData:v14];
+  requestId = [siriNLUTypeObj requestId];
+  v124 = [v13 extractRequestLinkData:requestId];
 
-  v15 = [(CDMServiceGraph *)self getLanguage];
-  v16 = [(CDMServiceGraph *)self validateRequest:v12];
+  getLanguage = [(CDMServiceGraph *)self getLanguage];
+  v16 = [(CDMServiceGraph *)self validateRequest:siriNLUTypeObj];
   v430[0] = 0;
   v430[1] = v430;
   v430[2] = 0x3032000000;
   v430[3] = __Block_byref_object_copy__487;
   v430[4] = __Block_byref_object_dispose__488;
-  v431 = [v16 utterance];
+  utterance = [v16 utterance];
   v428[0] = 0;
   v428[1] = v428;
   v428[2] = 0x3032000000;
@@ -386,32 +386,32 @@ LABEL_9:
   v426[3] = __Block_byref_object_copy__487;
   v426[4] = __Block_byref_object_dispose__488;
   v427 = 0;
-  [(CDMServiceGraph *)self populateRequesterEnumForNluRequest:v12];
+  [(CDMServiceGraph *)self populateRequesterEnumForNluRequest:siriNLUTypeObj];
   v116 = v7;
   v112 = v8;
   v109 = v16;
-  v17 = [v12 requestId];
+  requestId2 = [siriNLUTypeObj requestId];
   v420[0] = MEMORY[0x1E69E9820];
   v420[1] = 3221225472;
   v420[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke;
   v420[3] = &unk_1E862E890;
-  v18 = v12;
+  v18 = siriNLUTypeObj;
   v421 = v18;
   v423 = v462;
   v424 = v500;
   v19 = v3;
   v422 = v19;
   objc_copyWeak(&v425, location);
-  v133 = [(CDMServiceGraph *)self addNodeWithName:@"doContextUpdate" bindService:v19 requestId:v17 block:v420];
+  v133 = [(CDMServiceGraph *)self addNodeWithName:@"doContextUpdate" bindService:v19 requestId:requestId2 block:v420];
 
-  v20 = [v18 requestId];
+  requestId3 = [v18 requestId];
   v413[0] = MEMORY[0x1E69E9820];
   v413[1] = 3221225472;
   v413[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_618;
   v413[3] = &unk_1E862E8B8;
   v21 = v18;
   v414 = v21;
-  v22 = v15;
+  v22 = getLanguage;
   v415 = v22;
   v418 = v498;
   v23 = v4;
@@ -419,9 +419,9 @@ LABEL_9:
   v24 = v11;
   v417 = v24;
   objc_copyWeak(&v419, location);
-  v132 = [(CDMServiceGraph *)self addNodeWithName:@"doCurrentTokenize" bindService:v23 requestId:v20 block:v413];
+  v132 = [(CDMServiceGraph *)self addNodeWithName:@"doCurrentTokenize" bindService:v23 requestId:requestId3 block:v413];
 
-  v25 = [v21 requestId];
+  requestId4 = [v21 requestId];
   v412[0] = MEMORY[0x1E69E9820];
   v412[1] = 3221225472;
   v412[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_620;
@@ -431,10 +431,10 @@ LABEL_9:
   v412[6] = v430;
   v412[7] = v496;
   v412[8] = v498;
-  v26 = [(CDMServiceGraph *)self addNodeWithName:@"doCorrectedUtteranceTokenize" bindService:v23 requestId:v25 block:v412];
+  v26 = [(CDMServiceGraph *)self addNodeWithName:@"doCorrectedUtteranceTokenize" bindService:v23 requestId:requestId4 block:v412];
   v110 = v9;
 
-  v27 = [v21 requestId];
+  requestId5 = [v21 requestId];
   v405[0] = MEMORY[0x1E69E9820];
   v405[1] = 3221225472;
   v405[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_621;
@@ -448,11 +448,11 @@ LABEL_9:
   v30 = v22;
   v408 = v30;
   objc_copyWeak(&v411, location);
-  v131 = [(CDMServiceGraph *)self addNodeWithName:@"doPreviousTurnsTokenize" bindService:v159 requestId:v27 block:v405];
+  v131 = [(CDMServiceGraph *)self addNodeWithName:@"doPreviousTurnsTokenize" bindService:v159 requestId:requestId5 block:v405];
   v107 = v28;
   v108 = v19;
 
-  v31 = [v29 requestId];
+  requestId6 = [v29 requestId];
   v398[0] = MEMORY[0x1E69E9820];
   v398[1] = 3221225472;
   v398[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_2;
@@ -464,9 +464,9 @@ LABEL_9:
   v402 = v486;
   v403 = v484;
   v404 = v488;
-  v162 = [(CDMServiceGraph *)self addNodeWithName:@"doEmbedding" bindService:v32 requestId:v31 block:v398];
+  v162 = [(CDMServiceGraph *)self addNodeWithName:@"doEmbedding" bindService:v32 requestId:requestId6 block:v398];
 
-  v33 = [v29 requestId];
+  requestId7 = [v29 requestId];
   v389 = MEMORY[0x1E69E9820];
   v390 = 3221225472;
   v391 = __32__CDMNLUServiceGraph_buildGraph__block_invoke_625;
@@ -480,7 +480,7 @@ LABEL_9:
   v106 = v394;
   v147 = [CDMServiceGraph addNodeWithName:"addNodeWithName:bindService:requestId:block:" bindService:@"doSpanizationDateTime" requestId:? block:?];
 
-  v35 = [v34 requestId];
+  requestId8 = [v34 requestId];
   v380 = MEMORY[0x1E69E9820];
   v381 = 3221225472;
   v382 = __32__CDMNLUServiceGraph_buildGraph__block_invoke_629;
@@ -494,7 +494,7 @@ LABEL_9:
   v105 = v385;
   v146 = [CDMServiceGraph addNodeWithName:"addNodeWithName:bindService:requestId:block:" bindService:@"doSpanizationRegex" requestId:? block:?];
 
-  v37 = [v36 requestId];
+  requestId9 = [v36 requestId];
   v374[0] = MEMORY[0x1E69E9820];
   v374[1] = 3221225472;
   v374[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_630;
@@ -506,9 +506,9 @@ LABEL_9:
   v376 = v38;
   v379 = v478;
   v104 = v375;
-  v154 = [(CDMServiceGraph *)self addNodeWithName:@"doSpanizationSiriVocabulary" bindService:v375 requestId:v37 block:v374];
+  v154 = [(CDMServiceGraph *)self addNodeWithName:@"doSpanizationSiriVocabulary" bindService:v375 requestId:requestId9 block:v374];
 
-  v39 = [v38 requestId];
+  requestId10 = [v38 requestId];
   v368[0] = MEMORY[0x1E69E9820];
   v368[1] = 3221225472;
   v368[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_632;
@@ -520,12 +520,12 @@ LABEL_9:
   v373 = v476;
   v41 = v150;
   v370 = v41;
-  v145 = [(CDMServiceGraph *)self addNodeWithName:@"doSpanizationVoc" bindService:v41 requestId:v39 block:v368];
+  v145 = [(CDMServiceGraph *)self addNodeWithName:@"doSpanizationVoc" bindService:v41 requestId:requestId10 block:v368];
   v102 = v41;
   v103 = v32;
   v151 = v24;
 
-  v42 = [v40 requestId];
+  requestId11 = [v40 requestId];
   v356[0] = MEMORY[0x1E69E9820];
   v356[1] = 3221225472;
   v356[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_633;
@@ -544,9 +544,9 @@ LABEL_9:
   v366 = v468;
   objc_copyWeak(&v367, location);
   v101 = v357;
-  v158 = [(CDMServiceGraph *)self addNodeWithName:@"doUaaPNLInference" bindService:v357 requestId:v42 block:v356];
+  v158 = [(CDMServiceGraph *)self addNodeWithName:@"doUaaPNLInference" bindService:v357 requestId:requestId11 block:v356];
 
-  v45 = [v43 requestId];
+  requestId12 = [v43 requestId];
   v350[0] = MEMORY[0x1E69E9820];
   v350[1] = 3221225472;
   v350[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_2_634;
@@ -558,9 +558,9 @@ LABEL_9:
   v355 = v434;
   v47 = v139;
   v352 = v47;
-  v138 = [(CDMServiceGraph *)self addNodeWithName:@"doShortcutParse" bindService:v47 requestId:v45 block:v350];
+  v138 = [(CDMServiceGraph *)self addNodeWithName:@"doShortcutParse" bindService:v47 requestId:requestId12 block:v350];
 
-  v48 = [v46 requestId];
+  requestId13 = [v46 requestId];
   v337[0] = MEMORY[0x1E69E9820];
   v337[1] = 3221225472;
   v337[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_636;
@@ -579,9 +579,9 @@ LABEL_9:
   v50 = v141;
   v339 = v50;
   v348 = v458;
-  v140 = [(CDMServiceGraph *)self addNodeWithName:@"doPSCInference" bindService:v50 requestId:v48 block:v337];
+  v140 = [(CDMServiceGraph *)self addNodeWithName:@"doPSCInference" bindService:v50 requestId:requestId13 block:v337];
 
-  v51 = [v49 requestId];
+  requestId14 = [v49 requestId];
   v324[0] = MEMORY[0x1E69E9820];
   v324[1] = 3221225472;
   v324[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_637;
@@ -600,11 +600,11 @@ LABEL_9:
   v335 = v454;
   v53 = v128;
   v326 = v53;
-  v156 = [(CDMServiceGraph *)self addNodeWithName:@"doLVCInference" bindService:v53 requestId:v51 block:v324];
+  v156 = [(CDMServiceGraph *)self addNodeWithName:@"doLVCInference" bindService:v53 requestId:requestId14 block:v324];
   v99 = v53;
   v100 = v50;
 
-  v54 = [v52 requestId];
+  requestId15 = [v52 requestId];
   v308 = MEMORY[0x1E69E9820];
   v309 = 3221225472;
   v310 = __32__CDMNLUServiceGraph_buildGraph__block_invoke_638;
@@ -625,7 +625,7 @@ LABEL_9:
   v98 = v313;
   v56 = [CDMServiceGraph addNodeWithName:"addNodeWithName:bindService:requestId:block:" bindService:@"doSNLCInference" requestId:? block:?];
 
-  v57 = [v55 requestId];
+  requestId16 = [v55 requestId];
   v298[0] = MEMORY[0x1E69E9820];
   v298[1] = 3221225472;
   v298[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_639;
@@ -642,10 +642,10 @@ LABEL_9:
   v307 = v490;
   v60 = v134;
   v301 = v60;
-  v135 = [(CDMServiceGraph *)self addNodeWithName:@"doSSUMatching" bindService:v60 requestId:v57 block:v298];
+  v135 = [(CDMServiceGraph *)self addNodeWithName:@"doSSUMatching" bindService:v60 requestId:requestId16 block:v298];
   v97 = v47;
 
-  v61 = [v58 requestId];
+  requestId17 = [v58 requestId];
   v289[0] = MEMORY[0x1E69E9820];
   v289[1] = 3221225472;
   v289[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_2_647;
@@ -662,9 +662,9 @@ LABEL_9:
   v96 = v59;
   v293 = v96;
   v125 = v290;
-  v160 = [(CDMServiceGraph *)self addNodeWithName:@"doCcqrAerCbRInference" bindService:v290 requestId:v61 block:v289];
+  v160 = [(CDMServiceGraph *)self addNodeWithName:@"doCcqrAerCbRInference" bindService:v290 requestId:requestId17 block:v289];
 
-  v64 = [v62 requestId];
+  requestId18 = [v62 requestId];
   v279[0] = MEMORY[0x1E69E9820];
   v279[1] = 3221225472;
   v279[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_648;
@@ -681,9 +681,9 @@ LABEL_9:
   v281 = v66;
   v67 = v62;
   v282 = v67;
-  v152 = [(CDMServiceGraph *)self addNodeWithName:@"doCATIInference" bindService:v65 requestId:v64 block:v279];
+  v152 = [(CDMServiceGraph *)self addNodeWithName:@"doCATIInference" bindService:v65 requestId:requestId18 block:v279];
 
-  v68 = [v67 requestId];
+  requestId19 = [v67 requestId];
   v129 = v66;
   v264 = MEMORY[0x1E69E9820];
   v265 = 3221225472;
@@ -705,7 +705,7 @@ LABEL_9:
   v70 = [CDMServiceGraph addNodeWithName:"addNodeWithName:bindService:requestId:block:" bindService:@"doNLv4Inference" requestId:? block:?];
   v95 = v65;
 
-  v71 = [v69 requestId];
+  requestId20 = [v69 requestId];
   v255[0] = MEMORY[0x1E69E9820];
   v255[1] = 3221225472;
   v255[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_655;
@@ -720,9 +720,9 @@ LABEL_9:
   v262 = v470;
   v263 = v464;
   v127 = v256;
-  v149 = [(CDMServiceGraph *)self addNodeWithName:@"doNLv4SNLCMerging" bindService:v256 requestId:v71 block:v255];
+  v149 = [(CDMServiceGraph *)self addNodeWithName:@"doNLv4SNLCMerging" bindService:v256 requestId:requestId20 block:v255];
 
-  v73 = [v72 requestId];
+  requestId21 = [v72 requestId];
   v245 = MEMORY[0x1E69E9820];
   v246 = 3221225472;
   v247 = __32__CDMNLUServiceGraph_buildGraph__block_invoke_662;
@@ -737,7 +737,7 @@ LABEL_9:
   v74 = [CDMServiceGraph addNodeWithName:"addNodeWithName:bindService:requestId:block:" bindService:@"doOverridesProto" requestId:? block:?];
 
   [v74 setQueuePriority:4];
-  v75 = [v72 requestId];
+  requestId22 = [v72 requestId];
   v237 = MEMORY[0x1E69E9820];
   v238 = 3221225472;
   v239 = __32__CDMNLUServiceGraph_buildGraph__block_invoke_663;
@@ -751,7 +751,7 @@ LABEL_9:
   v119 = v243;
   v137 = [CDMServiceGraph addNodeWithName:"addNodeWithName:bindService:requestId:block:" bindService:@"doRepetitionDetection" requestId:? block:?];
 
-  v78 = [v76 requestId];
+  requestId23 = [v76 requestId];
   v223 = MEMORY[0x1E69E9820];
   v224 = 3221225472;
   v225 = __32__CDMNLUServiceGraph_buildGraph__block_invoke_666;
@@ -772,7 +772,7 @@ LABEL_9:
   v144 = [CDMServiceGraph addNodeWithName:"addNodeWithName:bindService:requestId:block:" bindService:@"doMentionDetection" requestId:? block:?];
   v94 = v60;
 
-  v81 = [v80 requestId];
+  requestId24 = [v80 requestId];
   v213 = MEMORY[0x1E69E9820];
   v214 = 3221225472;
   v215 = __32__CDMNLUServiceGraph_buildGraph__block_invoke_669;
@@ -787,7 +787,7 @@ LABEL_9:
   v113 = v218;
   v142 = [CDMServiceGraph addNodeWithName:"addNodeWithName:bindService:requestId:block:" bindService:@"doContextualSpanMatching" requestId:? block:?];
 
-  v83 = [v82 requestId];
+  requestId25 = [v82 requestId];
   v200[1] = MEMORY[0x1E69E9820];
   v200[2] = 3221225472;
   v200[3] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_672;
@@ -809,7 +809,7 @@ LABEL_9:
   v111 = v203;
   v85 = [CDMServiceGraph addNodeWithName:"addNodeWithName:bindService:requestId:block:" bindService:@"doMentionResolving" requestId:? block:?];
 
-  v86 = [v84 requestId];
+  requestId26 = [v84 requestId];
   v191[0] = MEMORY[0x1E69E9820];
   v191[1] = 3221225472;
   v191[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_675;
@@ -824,9 +824,9 @@ LABEL_9:
   objc_copyWeak(v200, location);
   v198 = v432;
   v199 = v440;
-  v88 = [(CDMServiceGraph *)self addNodeWithName:@"doSpanMerging" requestId:v86 block:v191];
+  v88 = [(CDMServiceGraph *)self addNodeWithName:@"doSpanMerging" requestId:requestId26 block:v191];
 
-  v89 = [v87 requestId];
+  requestId27 = [v87 requestId];
   v165[0] = MEMORY[0x1E69E9820];
   v165[1] = 3221225472;
   v165[2] = __32__CDMNLUServiceGraph_buildGraph__block_invoke_2_677;
@@ -859,7 +859,7 @@ LABEL_9:
   v130 = v129;
   v168 = v130;
   objc_copyWeak(&v190, location);
-  v90 = [(CDMServiceGraph *)self addNodeWithName:@"doPostProcess" requestId:v89 block:v165];
+  v90 = [(CDMServiceGraph *)self addNodeWithName:@"doPostProcess" requestId:requestId27 block:v165];
 
   [v160 addDependency:v131];
   [v160 addDependency:v132];

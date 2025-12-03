@@ -2,7 +2,7 @@
 - (ABPKAlgInput)init;
 - (CGSize)imageResolution;
 - (__n128)imageCameraIntrinsics;
-- (__n128)setImageCameraIntrinsics:(__n128)a3;
+- (__n128)setImageCameraIntrinsics:(__n128)intrinsics;
 @end
 
 @implementation ABPKAlgInput
@@ -33,16 +33,16 @@
 
 - (__n128)imageCameraIntrinsics
 {
-  result = *(a1 + 80);
-  v2 = *(a1 + 96);
-  v3 = *(a1 + 112);
+  result = *(self + 80);
+  v2 = *(self + 96);
+  v3 = *(self + 112);
   return result;
 }
 
-- (__n128)setImageCameraIntrinsics:(__n128)a3
+- (__n128)setImageCameraIntrinsics:(__n128)intrinsics
 {
   result[5] = a2;
-  result[6] = a3;
+  result[6] = intrinsics;
   result[7] = a4;
   return result;
 }

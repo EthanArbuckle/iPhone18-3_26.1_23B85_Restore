@@ -1,24 +1,24 @@
 @interface STStatusDomainXPCServerHandle
 + (id)sharedMachServiceServerHandle;
 - (STStatusDomainXPCServerHandle)init;
-- (STStatusDomainXPCServerHandle)initWithXPCConnectionProvider:(id)a3 serverLaunchObservable:(id)a4;
-- (dispatch_queue_t)_internalQueue_dataForDomain:(dispatch_queue_t *)a1;
-- (id)dataForDomain:(unint64_t)a3 client:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)serverDataForDomains:(id)a3 preferredLocalizations:(id)a4;
+- (STStatusDomainXPCServerHandle)initWithXPCConnectionProvider:(id)provider serverLaunchObservable:(id)observable;
+- (dispatch_queue_t)_internalQueue_dataForDomain:(dispatch_queue_t *)domain;
+- (id)dataForDomain:(unint64_t)domain client:(id)client;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)serverDataForDomains:(id)domains preferredLocalizations:(id)localizations;
 - (id)succinctDescription;
-- (void)_internalQueue_sendClientsData:(unint64_t)a3 forDomain:(void *)a4 withChangeContext:;
+- (void)_internalQueue_sendClientsData:(unint64_t)data forDomain:(void *)domain withChangeContext:;
 - (void)_internalQueue_setupXPCConnectionIfNecessary;
 - (void)_reregisterForDomainsIfNecessary;
 - (void)_tearDownXPCConnection;
 - (void)dealloc;
-- (void)didObserveServerLaunch:(id)a3;
-- (void)observeData:(id)a3 forDomain:(unint64_t)a4 withChangeContext:(id)a5;
-- (void)observeDiff:(id)a3 forDomain:(unint64_t)a4 withChangeContext:(id)a5;
-- (void)registerClient:(id)a3 forDomain:(unint64_t)a4;
-- (void)removeClient:(id)a3 forDomain:(unint64_t)a4;
-- (void)reportUserInteraction:(id)a3 forClient:(id)a4 domain:(unint64_t)a5;
+- (void)didObserveServerLaunch:(id)launch;
+- (void)observeData:(id)data forDomain:(unint64_t)domain withChangeContext:(id)context;
+- (void)observeDiff:(id)diff forDomain:(unint64_t)domain withChangeContext:(id)context;
+- (void)registerClient:(id)client forDomain:(unint64_t)domain;
+- (void)removeClient:(id)client forDomain:(unint64_t)domain;
+- (void)reportUserInteraction:(id)interaction forClient:(id)client domain:(unint64_t)domain;
 @end
 
 @implementation STStatusDomainXPCServerHandle
@@ -59,10 +59,10 @@ id __37__STStatusDomainXPCServerHandle_init__block_invoke()
   return v0;
 }
 
-- (STStatusDomainXPCServerHandle)initWithXPCConnectionProvider:(id)a3 serverLaunchObservable:(id)a4
+- (STStatusDomainXPCServerHandle)initWithXPCConnectionProvider:(id)provider serverLaunchObservable:(id)observable
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  observableCopy = observable;
   v22.receiver = self;
   v22.super_class = STStatusDomainXPCServerHandle;
   v8 = [(STStatusDomainXPCServerHandle *)&v22 init];
@@ -84,11 +84,11 @@ id __37__STStatusDomainXPCServerHandle_init__block_invoke()
     clientQueue = v8->_clientQueue;
     v8->_clientQueue = SerialWithQoS;
 
-    v17 = [v6 copy];
+    v17 = [providerCopy copy];
     xpcConnectionProvider = v8->_xpcConnectionProvider;
     v8->_xpcConnectionProvider = v17;
 
-    objc_storeStrong(&v8->_serverLaunchObservable, a4);
+    objc_storeStrong(&v8->_serverLaunchObservable, observable);
     [(STServerLaunchObservable *)v8->_serverLaunchObservable addObserver:v8];
     v21 = v8;
     v19 = BSLogAddStateCaptureBlockWithTitle();
@@ -99,19 +99,19 @@ id __37__STStatusDomainXPCServerHandle_init__block_invoke()
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_serverLaunchObservable;
   }
 
-  [(STStatusDomainXPCServerHandle *)self removeObserver:v2];
-  v3.receiver = v2;
+  [(STStatusDomainXPCServerHandle *)self removeObserver:selfCopy];
+  v3.receiver = selfCopy;
   v3.super_class = STStatusDomainXPCServerHandle;
   [(STStatusDomainXPCServerHandle *)&v3 dealloc];
 }
 
-- (id)dataForDomain:(unint64_t)a3 client:(id)a4
+- (id)dataForDomain:(unint64_t)domain client:(id)client
 {
   v8 = 0;
   v9 = &v8;
@@ -135,7 +135,7 @@ id __37__STStatusDomainXPCServerHandle_init__block_invoke()
   block[3] = &unk_1E85DE0D8;
   block[4] = self;
   block[5] = &v8;
-  block[6] = a3;
+  block[6] = domain;
   dispatch_sync(internalQueue, block);
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -152,22 +152,22 @@ void __54__STStatusDomainXPCServerHandle_dataForDomain_client___block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-- (dispatch_queue_t)_internalQueue_dataForDomain:(dispatch_queue_t *)a1
+- (dispatch_queue_t)_internalQueue_dataForDomain:(dispatch_queue_t *)domain
 {
-  if (a1)
+  if (domain)
   {
-    v4 = a1;
-    dispatch_assert_queue_V2(a1[3]);
-    a1 = [v4[1] objectForKey:a2];
+    domainCopy = domain;
+    dispatch_assert_queue_V2(domain[3]);
+    domain = [domainCopy[1] objectForKey:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return domain;
 }
 
-- (void)registerClient:(id)a3 forDomain:(unint64_t)a4
+- (void)registerClient:(id)client forDomain:(unint64_t)domain
 {
-  v6 = a3;
+  clientCopy = client;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -182,10 +182,10 @@ void __54__STStatusDomainXPCServerHandle_dataForDomain_client___block_invoke(uin
   block[1] = 3221225472;
   block[2] = __58__STStatusDomainXPCServerHandle_registerClient_forDomain___block_invoke;
   block[3] = &unk_1E85DE100;
-  v10 = v6;
-  v11 = a4;
+  v10 = clientCopy;
+  domainCopy = domain;
   block[4] = self;
-  v8 = v6;
+  v8 = clientCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -226,13 +226,13 @@ void __58__STStatusDomainXPCServerHandle_registerClient_forDomain___block_invoke
 
 - (void)_internalQueue_setupXPCConnectionIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
-    if (!*(a1 + 40))
+    dispatch_assert_queue_V2(*(self + 24));
+    if (!*(self + 40))
     {
-      v2 = *(*(a1 + 56) + 16);
-      v3 = *(a1 + 56);
+      v2 = *(*(self + 56) + 16);
+      v3 = *(self + 56);
       v4 = v2();
 
       v5 = STStatusDomainXPCServerInterface();
@@ -241,9 +241,9 @@ void __58__STStatusDomainXPCServerHandle_registerClient_forDomain___block_invoke
       v6 = STStatusDomainXPCClientInterface();
       [v4 setExportedInterface:v6];
 
-      [v4 setExportedObject:a1];
-      objc_storeStrong((a1 + 40), v4);
-      objc_initWeak(&location, a1);
+      [v4 setExportedObject:self];
+      objc_storeStrong((self + 40), v4);
+      objc_initWeak(&location, self);
       [v4 setInterruptionHandler:&__block_literal_global_30];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
@@ -258,8 +258,8 @@ void __58__STStatusDomainXPCServerHandle_registerClient_forDomain___block_invoke
       v9[3] = &unk_1E85DE178;
       objc_copyWeak(&v10, &location);
       v7 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
-      v8 = *(a1 + 48);
-      *(a1 + 48) = v7;
+      v8 = *(self + 48);
+      *(self + 48) = v7;
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&v12);
@@ -268,9 +268,9 @@ void __58__STStatusDomainXPCServerHandle_registerClient_forDomain___block_invoke
   }
 }
 
-- (void)removeClient:(id)a3 forDomain:(unint64_t)a4
+- (void)removeClient:(id)client forDomain:(unint64_t)domain
 {
-  v6 = a3;
+  clientCopy = client;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -285,10 +285,10 @@ void __58__STStatusDomainXPCServerHandle_registerClient_forDomain___block_invoke
   block[1] = 3221225472;
   block[2] = __56__STStatusDomainXPCServerHandle_removeClient_forDomain___block_invoke;
   block[3] = &unk_1E85DE100;
-  v10 = v6;
-  v11 = a4;
+  v10 = clientCopy;
+  domainCopy = domain;
   block[4] = self;
-  v8 = v6;
+  v8 = clientCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -329,11 +329,11 @@ uint64_t __56__STStatusDomainXPCServerHandle_removeClient_forDomain___block_invo
   return MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)reportUserInteraction:(id)a3 forClient:(id)a4 domain:(unint64_t)a5
+- (void)reportUserInteraction:(id)interaction forClient:(id)client domain:(unint64_t)domain
 {
-  v8 = a3;
-  v9 = a4;
-  if (STIsValidUserInteractionForStatusDomain(v8))
+  interactionCopy = interaction;
+  clientCopy = client;
+  if (STIsValidUserInteractionForStatusDomain(interactionCopy))
   {
     if (self)
     {
@@ -350,9 +350,9 @@ uint64_t __56__STStatusDomainXPCServerHandle_removeClient_forDomain___block_invo
     v11[2] = __72__STStatusDomainXPCServerHandle_reportUserInteraction_forClient_domain___block_invoke;
     v11[3] = &unk_1E85DE128;
     v11[4] = self;
-    v14 = a5;
-    v12 = v9;
-    v13 = v8;
+    domainCopy = domain;
+    v12 = clientCopy;
+    v13 = interactionCopy;
     dispatch_sync(internalQueue, v11);
   }
 }
@@ -390,17 +390,17 @@ void __72__STStatusDomainXPCServerHandle_reportUserInteraction_forClient_domain_
   }
 }
 
-- (void)observeData:(id)a3 forDomain:(unint64_t)a4 withChangeContext:(id)a5
+- (void)observeData:(id)data forDomain:(unint64_t)domain withChangeContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v8 || STIsValidDataForStatusDomain(v8))
+  dataCopy = data;
+  contextCopy = context;
+  if (!dataCopy || STIsValidDataForStatusDomain(dataCopy))
   {
-    if (v9)
+    if (contextCopy)
     {
-      if (STIsValidDataChangeContextForStatusDomain(v9))
+      if (STIsValidDataChangeContextForStatusDomain(contextCopy))
       {
-        v10 = v9;
+        v10 = contextCopy;
       }
 
       else
@@ -430,12 +430,12 @@ void __72__STStatusDomainXPCServerHandle_reportUserInteraction_forClient_domain_
     block[1] = 3221225472;
     block[2] = __73__STStatusDomainXPCServerHandle_observeData_forDomain_withChangeContext___block_invoke;
     block[3] = &unk_1E85DE150;
-    v17 = a4;
-    v14 = v8;
-    v9 = v11;
-    v15 = v9;
-    v16 = self;
-    v18 = v8 == 0;
+    domainCopy = domain;
+    v14 = dataCopy;
+    contextCopy = v11;
+    v15 = contextCopy;
+    selfCopy = self;
+    v18 = dataCopy == 0;
     dispatch_sync(internalQueue, block);
   }
 }
@@ -519,14 +519,14 @@ LABEL_18:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_internalQueue_sendClientsData:(unint64_t)a3 forDomain:(void *)a4 withChangeContext:
+- (void)_internalQueue_sendClientsData:(unint64_t)data forDomain:(void *)domain withChangeContext:
 {
   v27 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  domainCopy = domain;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
+    dispatch_assert_queue_V2(*(self + 24));
     if (STSystemStatusIsInternalLoggingEnabled_onceToken != -1)
     {
       dispatch_once(&STSystemStatusIsInternalLoggingEnabled_onceToken, &__block_literal_global_56);
@@ -537,29 +537,29 @@ LABEL_18:
       v9 = STSystemStatusLogObservation();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = STSystemStatusDescriptionForDomain(a3);
+        v10 = STSystemStatusDescriptionForDomain(data);
         *buf = 138543874;
         v22 = v10;
         v23 = 2114;
         v24 = v7;
         v25 = 2114;
-        v26 = v8;
+        v26 = domainCopy;
         _os_log_impl(&dword_1DA9C2000, v9, OS_LOG_TYPE_DEFAULT, "Sending data to observers for %{public}@ domain: %{public}@ -- context: %{public}@", buf, 0x20u);
       }
     }
 
-    v11 = [*(a1 + 16) objectForKey:a3];
+    v11 = [*(self + 16) objectForKey:data];
     v12 = [v11 copy];
 
-    v13 = *(a1 + 32);
+    v13 = *(self + 32);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __92__STStatusDomainXPCServerHandle__internalQueue_sendClientsData_forDomain_withChangeContext___block_invoke;
     v16[3] = &unk_1E85DE128;
     v17 = v12;
     v18 = v7;
-    v20 = a3;
-    v19 = v8;
+    dataCopy = data;
+    v19 = domainCopy;
     v14 = v12;
     dispatch_async(v13, v16);
   }
@@ -567,11 +567,11 @@ LABEL_18:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observeDiff:(id)a3 forDomain:(unint64_t)a4 withChangeContext:(id)a5
+- (void)observeDiff:(id)diff forDomain:(unint64_t)domain withChangeContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  if (STIsValidDiffForStatusDomain(v8) && ([v8 isEmpty] & 1) == 0)
+  diffCopy = diff;
+  contextCopy = context;
+  if (STIsValidDiffForStatusDomain(diffCopy) && ([diffCopy isEmpty] & 1) == 0)
   {
     if (self)
     {
@@ -587,10 +587,10 @@ LABEL_18:
     v11[1] = 3221225472;
     v11[2] = __73__STStatusDomainXPCServerHandle_observeDiff_forDomain_withChangeContext___block_invoke;
     v11[3] = &unk_1E85DE128;
-    v15 = a4;
-    v12 = v8;
-    v13 = v9;
-    v14 = self;
+    domainCopy = domain;
+    v12 = diffCopy;
+    v13 = contextCopy;
+    selfCopy = self;
     dispatch_sync(internalQueue, v11);
   }
 }
@@ -633,7 +633,7 @@ void __73__STStatusDomainXPCServerHandle_observeDiff_forDomain_withChangeContext
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didObserveServerLaunch:(id)a3
+- (void)didObserveServerLaunch:(id)launch
 {
   v4 = STSystemStatusLogObservation();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -647,22 +647,22 @@ void __73__STStatusDomainXPCServerHandle_observeDiff_forDomain_withChangeContext
 
 - (void)_reregisterForDomainsIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __65__STStatusDomainXPCServerHandle__reregisterForDomainsIfNecessary__block_invoke;
     block[3] = &unk_1E85DE068;
-    block[4] = a1;
+    block[4] = self;
     dispatch_sync(v1, block);
   }
 }
 
-- (id)serverDataForDomains:(id)a3 preferredLocalizations:(id)a4
+- (id)serverDataForDomains:(id)domains preferredLocalizations:(id)localizations
 {
-  v6 = a3;
-  v7 = a4;
+  domainsCopy = domains;
+  localizationsCopy = localizations;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -684,11 +684,11 @@ void __73__STStatusDomainXPCServerHandle_observeDiff_forDomain_withChangeContext
   v13[2] = __77__STStatusDomainXPCServerHandle_serverDataForDomains_preferredLocalizations___block_invoke;
   v13[3] = &unk_1E85DE218;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = domainsCopy;
+  v15 = localizationsCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = localizationsCopy;
+  v10 = domainsCopy;
   dispatch_sync(internalQueue, v13);
   v11 = v18[5];
 
@@ -756,14 +756,14 @@ void __77__STStatusDomainXPCServerHandle_serverDataForDomains_preferredLocalizat
 
 - (void)_tearDownXPCConnection
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __55__STStatusDomainXPCServerHandle__tearDownXPCConnection__block_invoke;
     block[3] = &unk_1E85DE068;
-    block[4] = a1;
+    block[4] = self;
     dispatch_sync(v1, block);
   }
 }
@@ -846,24 +846,24 @@ uint64_t __77__STStatusDomainXPCServerHandle_serverDataForDomains_preferredLocal
 
 - (id)succinctDescription
 {
-  v2 = [(STStatusDomainXPCServerHandle *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STStatusDomainXPCServerHandle *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusDomainXPCServerHandle *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STStatusDomainXPCServerHandle *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(STStatusDomainXPCServerHandle *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(STStatusDomainXPCServerHandle *)self succinctDescriptionBuilder];
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -878,11 +878,11 @@ uint64_t __77__STStatusDomainXPCServerHandle_serverDataForDomains_preferredLocal
   block[1] = 3221225472;
   block[2] = __71__STStatusDomainXPCServerHandle_descriptionBuilderWithMultilinePrefix___block_invoke;
   block[3] = &unk_1E85DE268;
-  v7 = v5;
+  v7 = succinctDescriptionBuilder;
   v12 = v7;
-  v13 = v4;
-  v14 = self;
-  v8 = v4;
+  v13 = prefixCopy;
+  selfCopy = self;
+  v8 = prefixCopy;
   dispatch_sync(internalQueue, block);
   v9 = v7;
 

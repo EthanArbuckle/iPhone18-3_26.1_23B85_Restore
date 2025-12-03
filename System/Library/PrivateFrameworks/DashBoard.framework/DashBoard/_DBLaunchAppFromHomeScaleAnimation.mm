@@ -1,12 +1,12 @@
 @interface _DBLaunchAppFromHomeScaleAnimation
-- (void)startAnimationWithCompletion:(id)a3;
+- (void)startAnimationWithCompletion:(id)completion;
 @end
 
 @implementation _DBLaunchAppFromHomeScaleAnimation
 
-- (void)startAnimationWithCompletion:(id)a3
+- (void)startAnimationWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -21,7 +21,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_248313130(v7, v6);
   sub_248167864(v7);
 }

@@ -16,11 +16,11 @@
 
 - (id)fc_gzipDeflate
 {
-  if ([a1 length])
+  if ([self length])
   {
     memset(&v8.total_out, 0, 72);
-    v8.avail_in = [a1 length];
-    v2 = 0;
+    v8.avail_in = [self length];
+    selfCopy = 0;
     if (!deflateInit2_(&v8, -1, 8, 31, 8, 0, "1.2.12", 112))
     {
       v3 = [MEMORY[0x1E695DF88] dataWithLength:0x4000];
@@ -32,8 +32,8 @@
           [v3 increaseLengthBy:0x4000];
         }
 
-        v5 = [v3 mutableBytes];
-        v8.next_out = (v5 + v8.total_out);
+        mutableBytes = [v3 mutableBytes];
+        v8.next_out = (mutableBytes + v8.total_out);
         v6 = [v3 length];
         v8.avail_out = v6 - LODWORD(v8.total_out);
         deflate(&v8, 4);
@@ -42,30 +42,30 @@
       while (!v8.avail_out);
       deflateEnd(&v8);
       [v3 setLength:v8.total_out];
-      v2 = [MEMORY[0x1E695DEF0] dataWithData:v3];
+      selfCopy = [MEMORY[0x1E695DEF0] dataWithData:v3];
     }
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)fc_zlibInflate
 {
-  if (![a1 length])
+  if (![self length])
   {
-    v10 = a1;
+    selfCopy = self;
     goto LABEL_14;
   }
 
-  v2 = [a1 length];
-  v3 = [a1 length];
+  v2 = [self length];
+  v3 = [self length];
   v4 = [MEMORY[0x1E695DF88] dataWithLength:v2 + (v3 >> 1)];
-  v12.avail_in = [a1 length];
+  v12.avail_in = [self length];
   v12.zalloc = 0;
   v12.zfree = 0;
   v12.total_out = 0;
@@ -83,8 +83,8 @@
       [v4 increaseLengthBy:v5];
     }
 
-    v7 = [v4 mutableBytes];
-    v12.next_out = (v7 + v12.total_out);
+    mutableBytes = [v4 mutableBytes];
+    v12.next_out = (mutableBytes + v12.total_out);
     v8 = [v4 length];
     v12.avail_out = v8 - LODWORD(v12.total_out);
     v9 = inflate(&v12, 2);
@@ -100,26 +100,26 @@
   if (inflateEnd(&v12))
   {
 LABEL_12:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
   [v4 setLength:v12.total_out];
-  v10 = [MEMORY[0x1E695DEF0] dataWithData:v4];
+  selfCopy = [MEMORY[0x1E695DEF0] dataWithData:v4];
 LABEL_13:
 
 LABEL_14:
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)fc_zlibDeflate
 {
-  if ([a1 length])
+  if ([self length])
   {
     memset(&v8.total_out, 0, 72);
-    v8.avail_in = [a1 length];
-    v2 = 0;
+    v8.avail_in = [self length];
+    selfCopy = 0;
     if (!deflateInit2_(&v8, 9, 8, -15, 9, 0, "1.2.12", 112))
     {
       v3 = [MEMORY[0x1E695DF88] dataWithLength:0x4000];
@@ -131,8 +131,8 @@ LABEL_14:
           [v3 increaseLengthBy:0x4000];
         }
 
-        v5 = [v3 mutableBytes];
-        v8.next_out = (v5 + v8.total_out);
+        mutableBytes = [v3 mutableBytes];
+        v8.next_out = (mutableBytes + v8.total_out);
         v6 = [v3 length];
         v8.avail_out = v6 - LODWORD(v8.total_out);
         deflate(&v8, 4);
@@ -141,30 +141,30 @@ LABEL_14:
       while (!v8.avail_out);
       deflateEnd(&v8);
       [v3 setLength:v8.total_out];
-      v2 = [MEMORY[0x1E695DEF0] dataWithData:v3];
+      selfCopy = [MEMORY[0x1E695DEF0] dataWithData:v3];
     }
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)fc_gzipInflate
 {
-  if (![a1 length])
+  if (![self length])
   {
-    v10 = a1;
+    selfCopy = self;
     goto LABEL_14;
   }
 
-  v2 = [a1 length];
-  v3 = [a1 length];
+  v2 = [self length];
+  v3 = [self length];
   v4 = [MEMORY[0x1E695DF88] dataWithLength:v2 + (v3 >> 1)];
-  v12.avail_in = [a1 length];
+  v12.avail_in = [self length];
   v12.zalloc = 0;
   v12.zfree = 0;
   v12.total_out = 0;
@@ -182,8 +182,8 @@ LABEL_14:
       [v4 increaseLengthBy:v5];
     }
 
-    v7 = [v4 mutableBytes];
-    v12.next_out = (v7 + v12.total_out);
+    mutableBytes = [v4 mutableBytes];
+    v12.next_out = (mutableBytes + v12.total_out);
     v8 = [v4 length];
     v12.avail_out = v8 - LODWORD(v12.total_out);
     v9 = inflate(&v12, 2);
@@ -199,33 +199,33 @@ LABEL_14:
   if (inflateEnd(&v12))
   {
 LABEL_12:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
   [v4 setLength:v12.total_out];
-  v10 = [MEMORY[0x1E695DEF0] dataWithData:v4];
+  selfCopy = [MEMORY[0x1E695DEF0] dataWithData:v4];
 LABEL_13:
 
 LABEL_14:
 
-  return v10;
+  return selfCopy;
 }
 
 - (BOOL)fc_isGzipped
 {
-  if ([a1 length] < 2)
+  if ([self length] < 2)
   {
     return 0;
   }
 
-  v2 = [a1 bytes];
-  v3 = *v2;
+  bytes = [self bytes];
+  v3 = *bytes;
   if (v3 != 31)
   {
     if (v3 == 120)
     {
-      v4 = v2[1];
+      v4 = bytes[1];
       if (v4 == 1 || v4 == 218 || v4 == 156)
       {
         return 1;
@@ -235,7 +235,7 @@ LABEL_14:
     return 0;
   }
 
-  return v2[1] == 139;
+  return bytes[1] == 139;
 }
 
 + (id)fc_randomDataWithLength:()FCAdditions
@@ -258,15 +258,15 @@ LABEL_14:
   if (v6)
   {
     ccaes_siv_encrypt_mode();
-    [a1 length];
+    [self length];
     v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:ccsiv_ciphertext_size()];
     ccaes_siv_encrypt_mode();
     [v6 length];
     [v6 bytes];
     [v7 length];
     [v7 bytes];
-    [a1 length];
-    [a1 bytes];
+    [self length];
+    [self bytes];
     [v8 mutableBytes];
     if (!ccsiv_one_shot())
     {
@@ -310,15 +310,15 @@ LABEL_6:
   if (v6)
   {
     ccaes_siv_encrypt_mode();
-    [a1 length];
+    [self length];
     v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:ccsiv_plaintext_size()];
     ccaes_siv_decrypt_mode();
     [v6 length];
     [v6 bytes];
     [v7 length];
     [v7 bytes];
-    [a1 length];
-    [a1 bytes];
+    [self length];
+    [self bytes];
     [v8 mutableBytes];
     if (!ccsiv_one_shot())
     {
@@ -358,7 +358,7 @@ LABEL_6:
 {
   v5 = *MEMORY[0x1E69E9840];
   memset(v4, 0, sizeof(v4));
-  v1 = CC_SHA256([a1 bytes], objc_msgSend(a1, "length"), v4);
+  v1 = CC_SHA256([self bytes], objc_msgSend(self, "length"), v4);
   if (v1)
   {
     v1 = [MEMORY[0x1E695DEF0] dataWithBytes:v4 length:32];
@@ -371,7 +371,7 @@ LABEL_6:
 
 - (id)fc_URLSafeBase64EncodedStringWithOptions:()FCAdditions
 {
-  v1 = [a1 base64EncodedStringWithOptions:?];
+  v1 = [self base64EncodedStringWithOptions:?];
   v2 = [v1 mutableCopy];
 
   [v2 replaceOccurrencesOfString:@"+" withString:@"-" options:0 range:{0, objc_msgSend(v2, "length")}];
@@ -384,9 +384,9 @@ LABEL_6:
 - (uint64_t)fc_bigEndianCompareAsUnsignedInteger:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 bytes];
-  v6 = [v4 bytes];
-  v7 = [a1 length];
+  bytes = [self bytes];
+  bytes2 = [v4 bytes];
+  v7 = [self length];
   if ([v4 length] | v7)
   {
     v8 = 0;
@@ -394,24 +394,24 @@ LABEL_6:
     do
     {
       v10 = v9 - 1;
-      v11 = [a1 length];
+      v11 = [self length];
       if (v11 <= [v4 length])
       {
         v16 = [v4 length];
-        if (v16 <= [a1 length])
+        if (v16 <= [self length])
         {
-          v14 = *v5;
-          v15 = *v6;
+          v14 = *bytes;
+          v15 = *bytes2;
         }
 
         else
         {
           v17 = [v4 length];
-          v18 = [a1 length];
-          v15 = *v6;
+          v18 = [self length];
+          v15 = *bytes2;
           if (v10 >= v17 - v18)
           {
-            v14 = v5[v18 - v17];
+            v14 = bytes[v18 - v17];
           }
 
           else
@@ -423,12 +423,12 @@ LABEL_6:
 
       else
       {
-        v12 = [a1 length];
+        v12 = [self length];
         v13 = [v4 length];
-        v14 = *v5;
+        v14 = *bytes;
         if (v10 >= v12 - v13)
         {
-          v15 = v6[v13 - v12];
+          v15 = bytes2[v13 - v12];
         }
 
         else
@@ -452,7 +452,7 @@ LABEL_6:
         v22 = 0;
       }
 
-      v23 = [a1 length];
+      v23 = [self length];
       v24 = [v4 length];
       if (v23 <= v24)
       {
@@ -469,8 +469,8 @@ LABEL_6:
         break;
       }
 
-      ++v5;
-      ++v6;
+      ++bytes;
+      ++bytes2;
     }
 
     while (v9++ < v25);

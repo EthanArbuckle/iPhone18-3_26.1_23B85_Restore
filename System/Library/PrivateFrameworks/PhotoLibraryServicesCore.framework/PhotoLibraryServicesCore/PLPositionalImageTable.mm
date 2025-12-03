@@ -1,30 +1,30 @@
 @interface PLPositionalImageTable
-- (BOOL)readImageDataAtIndex:(unint64_t)a3 intoBuffer:(void *)a4 bytesRead:(unint64_t *)a5 imageWidth:(int *)a6 imageHeight:(int *)a7 imageDataWidth:(int *)a8 imageDataHeight:(int *)a9 startingOffset:(int64_t *)a10 bytesPerRow:(unint64_t *)a11 uuidBytes:(id *)a12;
-- (BOOL)validateData:(id)a3 withToken:(id)a4;
-- (BOOL)writeDebugImageAtIndex:(unint64_t)a3 toFileURL:(id)a4;
-- (CGImage)createImageWithIdentifier:(id)a3 orIndex:(unint64_t)a4;
-- (PLImageTableEntryFooter_s)tableFooterForIndex:(unint64_t)a3;
-- (PLPositionalImageTable)initWithPath:(id)a3 readOnly:(BOOL)a4 format:(id)a5;
+- (BOOL)readImageDataAtIndex:(unint64_t)index intoBuffer:(void *)buffer bytesRead:(unint64_t *)read imageWidth:(int *)width imageHeight:(int *)height imageDataWidth:(int *)dataWidth imageDataHeight:(int *)dataHeight startingOffset:(int64_t *)self0 bytesPerRow:(unint64_t *)self1 uuidBytes:(id *)self2;
+- (BOOL)validateData:(id)data withToken:(id)token;
+- (BOOL)writeDebugImageAtIndex:(unint64_t)index toFileURL:(id)l;
+- (CGImage)createImageWithIdentifier:(id)identifier orIndex:(unint64_t)index;
+- (PLImageTableEntryFooter_s)tableFooterForIndex:(unint64_t)index;
+- (PLPositionalImageTable)initWithPath:(id)path readOnly:(BOOL)only format:(id)format;
 - (id)_debugDescription;
-- (id)debugImageDataAtIndex:(unint64_t)a3;
-- (id)imageDataWithIdentifier:(id)a3 orIndex:(unint64_t)a4 width:(int *)a5 height:(int *)a6 bytesPerRow:(int *)a7 dataWidth:(int *)a8 dataHeight:(int *)a9 dataOffset:(int *)a10;
-- (void)getImageDataOffset:(int64_t *)a3 size:(CGSize *)a4 bytesPerRow:(unint64_t *)a5 fromEntryFooter:(PLImageTableEntryFooter_s *)a6;
-- (void)preheatDataForThumbnailIndexes:(id)a3;
+- (id)debugImageDataAtIndex:(unint64_t)index;
+- (id)imageDataWithIdentifier:(id)identifier orIndex:(unint64_t)index width:(int *)width height:(int *)height bytesPerRow:(int *)row dataWidth:(int *)dataWidth dataHeight:(int *)dataHeight dataOffset:(int *)self0;
+- (void)getImageDataOffset:(int64_t *)offset size:(CGSize *)size bytesPerRow:(unint64_t *)row fromEntryFooter:(PLImageTableEntryFooter_s *)footer;
+- (void)preheatDataForThumbnailIndexes:(id)indexes;
 @end
 
 @implementation PLPositionalImageTable
 
-- (PLImageTableEntryFooter_s)tableFooterForIndex:(unint64_t)a3
+- (PLImageTableEntryFooter_s)tableFooterForIndex:(unint64_t)index
 {
   if (self->super._readOnly)
   {
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
   }
 
-  else if (self->super._entryCapacity <= a3)
+  else if (self->super._entryCapacity <= index)
   {
     return 0;
   }
@@ -37,14 +37,14 @@
 
   v6 = v5;
   v12 = 0;
-  v7 = [(PLPositionalTable *)self readDataAtIndex:a3 intoBuffer:v5 bytesRead:&v12];
+  v7 = [(PLPositionalTable *)self readDataAtIndex:index intoBuffer:v5 bytesRead:&v12];
   v8 = 0;
   if (v7)
   {
     v8 = malloc_type_calloc(1uLL, 0x1CuLL, 0x100004027586B93uLL);
-    v9 = [(PLPositionalTable *)self entryLength];
-    v10 = *&v6[v9 - 16];
-    *v8 = *&v6[v9 - 28];
+    entryLength = [(PLPositionalTable *)self entryLength];
+    v10 = *&v6[entryLength - 16];
+    *v8 = *&v6[entryLength - 28];
     *(v8 + 12) = v10;
   }
 
@@ -52,14 +52,14 @@
   return v8;
 }
 
-- (BOOL)readImageDataAtIndex:(unint64_t)a3 intoBuffer:(void *)a4 bytesRead:(unint64_t *)a5 imageWidth:(int *)a6 imageHeight:(int *)a7 imageDataWidth:(int *)a8 imageDataHeight:(int *)a9 startingOffset:(int64_t *)a10 bytesPerRow:(unint64_t *)a11 uuidBytes:(id *)a12
+- (BOOL)readImageDataAtIndex:(unint64_t)index intoBuffer:(void *)buffer bytesRead:(unint64_t *)read imageWidth:(int *)width imageHeight:(int *)height imageDataWidth:(int *)dataWidth imageDataHeight:(int *)dataHeight startingOffset:(int64_t *)self0 bytesPerRow:(unint64_t *)self1 uuidBytes:(id *)self2
 {
   v43 = *MEMORY[0x1E69E9840];
   v37 = 0;
-  v19 = [(PLPositionalTable *)self readDataAtIndex:a3 intoBuffer:a4 bytesRead:&v37];
+  v19 = [(PLPositionalTable *)self readDataAtIndex:index intoBuffer:buffer bytesRead:&v37];
   if (v19)
   {
-    v20 = a4 + [(PLPositionalTable *)self entryLength];
+    v20 = buffer + [(PLPositionalTable *)self entryLength];
     v21 = *(v20 - 2);
     if (v21 && (v22 = *(v20 - 3)) != 0 && ((v23 = self->_formatSideLen, v21 <= v23) ? (v24 = v22 > v23) : (v24 = 1), !v24))
     {
@@ -81,17 +81,17 @@
         formatSideLen = v30;
       }
 
-      *a5 = v37;
-      *a6 = v32;
-      *a7 = formatSideLen;
+      *read = v37;
+      *width = v32;
+      *height = formatSideLen;
       v33 = *&buf[8];
-      *a8 = *buf;
-      *a9 = v33;
-      *a10 = v36;
-      *a11 = v35;
-      if (a12)
+      *dataWidth = *buf;
+      *dataHeight = v33;
+      *offset = v36;
+      *row = v35;
+      if (bytes)
       {
-        *a12 = *(v20 - 28);
+        *bytes = *(v20 - 28);
       }
 
       LOBYTE(v19) = 1;
@@ -106,7 +106,7 @@
         v27 = *(v20 - 3);
         v28 = *(v20 - 2);
         *buf = 134218752;
-        *&buf[4] = a3;
+        *&buf[4] = index;
         *&buf[12] = 1024;
         *&buf[14] = v27;
         v39 = 1024;
@@ -123,22 +123,22 @@
   return v19;
 }
 
-- (BOOL)writeDebugImageAtIndex:(unint64_t)a3 toFileURL:(id)a4
+- (BOOL)writeDebugImageAtIndex:(unint64_t)index toFileURL:(id)l
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [(PLPositionalImageTable *)self debugImageDataAtIndex:a3];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [(PLPositionalImageTable *)self debugImageDataAtIndex:index];
   if (v8)
   {
-    v9 = [v6 path];
-    v10 = [v7 fileExistsAtPath:v9];
+    path = [lCopy path];
+    v10 = [defaultManager fileExistsAtPath:path];
 
     if (v10)
     {
-      [v7 removeItemAtURL:v6 error:0];
+      [defaultManager removeItemAtURL:lCopy error:0];
     }
 
-    v11 = [v8 writeToURL:v6 atomically:0];
+    v11 = [v8 writeToURL:lCopy atomically:0];
   }
 
   else
@@ -149,16 +149,16 @@
   return v11;
 }
 
-- (void)getImageDataOffset:(int64_t *)a3 size:(CGSize *)a4 bytesPerRow:(unint64_t *)a5 fromEntryFooter:(PLImageTableEntryFooter_s *)a6
+- (void)getImageDataOffset:(int64_t *)offset size:(CGSize *)size bytesPerRow:(unint64_t *)row fromEntryFooter:(PLImageTableEntryFooter_s *)footer
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"PLPositionalImageTable.m" lineNumber:261 description:@"must be overriden by subclass."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLPositionalImageTable.m" lineNumber:261 description:@"must be overriden by subclass."];
 }
 
-- (id)debugImageDataAtIndex:(unint64_t)a3
+- (id)debugImageDataAtIndex:(unint64_t)index
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PLPositionalImageTable.m" lineNumber:256 description:@"must be overriden by subclass."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLPositionalImageTable.m" lineNumber:256 description:@"must be overriden by subclass."];
 
   return 0;
 }
@@ -167,12 +167,12 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   context = objc_autoreleasePoolPush();
-  v4 = [(PLPositionalTable *)self entryCapacity];
-  v5 = [(PLPositionalImageTable *)self format];
-  v6 = [(PLPositionalTable *)self path];
-  [v3 appendFormat:@"\n%p %@ %@, capacity: %ld entries\n", self, v5, v6, v4];
+  entryCapacity = [(PLPositionalTable *)self entryCapacity];
+  format = [(PLPositionalImageTable *)self format];
+  path = [(PLPositionalTable *)self path];
+  [v3 appendFormat:@"\n%p %@ %@, capacity: %ld entries\n", self, format, path, entryCapacity];
 
-  if (v4 >= 1)
+  if (entryCapacity >= 1)
   {
     v7 = 0;
     v8 = @"(Empty)\n";
@@ -234,7 +234,7 @@
       ++v7;
     }
 
-    while (v7 != v4);
+    while (v7 != entryCapacity);
   }
 
   objc_autoreleasePoolPop(context);
@@ -242,31 +242,31 @@
   return v3;
 }
 
-- (void)preheatDataForThumbnailIndexes:(id)a3
+- (void)preheatDataForThumbnailIndexes:(id)indexes
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__PLPositionalImageTable_preheatDataForThumbnailIndexes___block_invoke;
   v3[3] = &unk_1E792FE58;
   v3[4] = self;
-  [a3 enumerateRangesUsingBlock:v3];
+  [indexes enumerateRangesUsingBlock:v3];
 }
 
-- (BOOL)validateData:(id)a3 withToken:(id)a4
+- (BOOL)validateData:(id)data withToken:(id)token
 {
-  if (!a3)
+  if (!data)
   {
     return 0;
   }
 
-  v6 = a3;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
+  dataCopy = data;
+  tokenCopy = token;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v10 = [dataCopy2 length];
 
-  v11 = v9 + v10;
-  v12 = PLUUIDBytesFromString(v7);
+  v11 = bytes + v10;
+  v12 = PLUUIDBytesFromString(tokenCopy);
   v14 = v13;
 
   *uu2 = v12;
@@ -275,25 +275,25 @@
   return uuid_compare(&v16, uu2) == 0;
 }
 
-- (CGImage)createImageWithIdentifier:(id)a3 orIndex:(unint64_t)a4
+- (CGImage)createImageWithIdentifier:(id)identifier orIndex:(unint64_t)index
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PLPositionalImageTable.m" lineNumber:150 description:@"must be overriden by subclass."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLPositionalImageTable.m" lineNumber:150 description:@"must be overriden by subclass."];
 
   return 0;
 }
 
-- (id)imageDataWithIdentifier:(id)a3 orIndex:(unint64_t)a4 width:(int *)a5 height:(int *)a6 bytesPerRow:(int *)a7 dataWidth:(int *)a8 dataHeight:(int *)a9 dataOffset:(int *)a10
+- (id)imageDataWithIdentifier:(id)identifier orIndex:(unint64_t)index width:(int *)width height:(int *)height bytesPerRow:(int *)row dataWidth:(int *)dataWidth dataHeight:(int *)dataHeight dataOffset:(int *)self0
 {
   if (self->super._readOnly)
   {
-    if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_14;
     }
   }
 
-  else if (self->super._entryCapacity <= a4)
+  else if (self->super._entryCapacity <= index)
   {
 LABEL_14:
     v16 = 0;
@@ -313,7 +313,7 @@ LABEL_14:
   v28 = 0;
   v26 = 0;
   v27 = 0;
-  if (![(PLPositionalImageTable *)self readImageDataAtIndex:a4 intoBuffer:v16 bytesRead:&v31 imageWidth:&v29 imageHeight:&v28 imageDataWidth:&v27 + 4 imageDataHeight:&v27 startingOffset:&v30 bytesPerRow:&v26 uuidBytes:0])
+  if (![(PLPositionalImageTable *)self readImageDataAtIndex:index intoBuffer:v16 bytesRead:&v31 imageWidth:&v29 imageHeight:&v28 imageDataWidth:&v27 + 4 imageDataHeight:&v27 startingOffset:&v30 bytesPerRow:&v26 uuidBytes:0])
   {
     free(v17);
     goto LABEL_14;
@@ -343,13 +343,13 @@ LABEL_14:
   v16 = [v20 initWithBytesNoCopy:v17 length:v31 deallocator:v25];
   if (v16)
   {
-    *a5 = v29;
+    *width = v29;
     v21 = HIDWORD(v27);
-    *a6 = v28;
-    *a8 = v21;
-    *a9 = v27;
-    *a10 = v30;
-    *a7 = v26;
+    *height = v28;
+    *dataWidth = v21;
+    *dataHeight = v27;
+    *offset = v30;
+    *row = v26;
   }
 
 LABEL_15:
@@ -369,44 +369,44 @@ void __115__PLPositionalImageTable_imageDataWithIdentifier_orIndex_width_height_
   free(v6);
 }
 
-- (PLPositionalImageTable)initWithPath:(id)a3 readOnly:(BOOL)a4 format:(id)a5
+- (PLPositionalImageTable)initWithPath:(id)path readOnly:(BOOL)only format:(id)format
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  if (!v10)
+  onlyCopy = only;
+  pathCopy = path;
+  formatCopy = format;
+  if (!formatCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PLPositionalImageTable.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"format"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPositionalImageTable.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"format"}];
   }
 
-  if (([v10 isTable] & 1) == 0)
+  if (([formatCopy isTable] & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PLPositionalImageTable.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"format.isTable"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPositionalImageTable.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"format.isTable"}];
   }
 
-  [v10 dimension];
+  [formatCopy dimension];
   v12 = v11;
   if (v12 <= 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PLPositionalImageTable.m" lineNumber:77 description:@"format must have non-zero dimension."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLPositionalImageTable.m" lineNumber:77 description:@"format must have non-zero dimension."];
   }
 
-  v13 = [v10 tableFormatBytesPerRowForWidth:v12];
-  [v10 size];
+  v13 = [formatCopy tableFormatBytesPerRowForWidth:v12];
+  [formatCopy size];
   v21.receiver = self;
   v21.super_class = PLPositionalImageTable;
-  v15 = [(PLPositionalTable *)&v21 initWithPath:v9 readOnly:v6 entryLength:v13 * v14 + 28];
+  v15 = [(PLPositionalTable *)&v21 initWithPath:pathCopy readOnly:onlyCopy entryLength:v13 * v14 + 28];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_format, a5);
-    v16->_formatIsCropped = [v10 isCropped];
+    objc_storeStrong(&v15->_format, format);
+    v16->_formatIsCropped = [formatCopy isCropped];
     v16->_formatSideLen = v12;
-    v16->_formatBytesPerPixel = [v10 tableFormatBytesPerPixel];
-    v16->_formatMaxBytesPerRow = [v10 tableFormatBytesPerRowForWidth:v12];
+    v16->_formatBytesPerPixel = [formatCopy tableFormatBytesPerPixel];
+    v16->_formatMaxBytesPerRow = [formatCopy tableFormatBytesPerRowForWidth:v12];
   }
 
   return v16;

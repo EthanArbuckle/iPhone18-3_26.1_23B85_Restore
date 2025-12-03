@@ -1,31 +1,31 @@
 @interface IDSKTRegistrationStatus
-- (IDSKTRegistrationStatus)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IDSKTRegistrationStatus)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSKTRegistrationStatus
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   unregisteredKTData = self->_unregisteredKTData;
-  v5 = a3;
-  [v5 encodeObject:unregisteredKTData forKey:@"kUnregisteredKTData"];
-  [v5 encodeObject:self->_registeredKTData forKey:@"kRegisteredKTData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:unregisteredKTData forKey:@"kUnregisteredKTData"];
+  [coderCopy encodeObject:self->_registeredKTData forKey:@"kRegisteredKTData"];
 }
 
-- (IDSKTRegistrationStatus)initWithCoder:(id)a3
+- (IDSKTRegistrationStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = IDSKTRegistrationStatus;
   v5 = [(IDSKTRegistrationStatus *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kUnregisteredKTData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kUnregisteredKTData"];
     unregisteredKTData = v5->_unregisteredKTData;
     v5->_unregisteredKTData = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kRegisteredKTData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kRegisteredKTData"];
     registeredKTData = v5->_registeredKTData;
     v5->_registeredKTData = v8;
   }

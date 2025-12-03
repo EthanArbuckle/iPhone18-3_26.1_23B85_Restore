@@ -1,6 +1,6 @@
 @interface SCATMenuSiriShorcutsSheet
 - (id)makeMenuItemsIfNeeded;
-- (void)menuItemWasActivated:(id)a3;
+- (void)menuItemWasActivated:(id)activated;
 @end
 
 @implementation SCATMenuSiriShorcutsSheet
@@ -14,10 +14,10 @@
   v21 = 0u;
   v22 = 0u;
   v5 = +[AXSiriShortcutsManager sharedManager];
-  v6 = [v5 shortcuts];
+  shortcuts = [v5 shortcuts];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  obj = shortcuts;
+  v7 = [shortcuts countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -32,12 +32,12 @@
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [v11 shortcutName];
-        v14 = [(SCATModernMenuItem *)SCATMenuShortcutItem itemWithIdentifier:v12 delegate:self title:v13 imageName:0 activateBehavior:1];
+        identifier = [v11 identifier];
+        shortcutName = [v11 shortcutName];
+        v14 = [(SCATModernMenuItem *)SCATMenuShortcutItem itemWithIdentifier:identifier delegate:self title:shortcutName imageName:0 activateBehavior:1];
 
-        v15 = [v11 shortcutName];
-        v16 = [UIImage scat_singleCharacterImageForTitle:v15 charactersInUse:v4];
+        shortcutName2 = [v11 shortcutName];
+        v16 = [UIImage scat_singleCharacterImageForTitle:shortcutName2 charactersInUse:v4];
         [v14 setImage:v16];
 
         [v14 setShortcut:v11];
@@ -53,16 +53,16 @@
   return v3;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
+  activatedCopy = activated;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = activatedCopy;
     v6 = +[AXSiriShortcutsManager sharedManager];
-    v7 = [v5 identifier];
-    v8 = [v6 shortcutForIdentifier:v7];
+    identifier = [v5 identifier];
+    v8 = [v6 shortcutForIdentifier:identifier];
 
     if (v8)
     {
@@ -75,7 +75,7 @@
   {
     v10.receiver = self;
     v10.super_class = SCATMenuSiriShorcutsSheet;
-    [(SCATModernMenuSheet *)&v10 menuItemWasActivated:v4];
+    [(SCATModernMenuSheet *)&v10 menuItemWasActivated:activatedCopy];
   }
 }
 

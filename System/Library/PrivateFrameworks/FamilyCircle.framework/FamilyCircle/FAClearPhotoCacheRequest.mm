@@ -1,17 +1,17 @@
 @interface FAClearPhotoCacheRequest
-- (void)startRequestWithCompletionHandler:(id)a3;
+- (void)startRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation FAClearPhotoCacheRequest
 
-- (void)startRequestWithCompletionHandler:(id)a3
+- (void)startRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__FAClearPhotoCacheRequest_startRequestWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E7CA46D8;
-  v5 = v4;
+  v5 = handlerCopy;
   v11 = v5;
   v6 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];

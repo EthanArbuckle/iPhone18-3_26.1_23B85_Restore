@@ -1,10 +1,10 @@
 @interface AKWalrusController
 - (AKWalrusController)init;
-- (void)PCSAuthContextForWebSessionIdentifier:(id)a3 serviceName:(id)a4 completion:(id)a5;
-- (void)PCSAuthContextForWebSessionUUID:(id)a3 serviceName:(id)a4 completion:(id)a5;
-- (void)postWalrusStateUpdateToServerWithContext:(id)a3 urlBagKey:(id)a4 username:(id)a5 password:(id)a6 completion:(id)a7;
-- (void)removeAllPCSAuthCredentialWithCompletion:(id)a3;
-- (void)verifyEnableWalrusAllowedWithContext:(id)a3 completion:(id)a4;
+- (void)PCSAuthContextForWebSessionIdentifier:(id)identifier serviceName:(id)name completion:(id)completion;
+- (void)PCSAuthContextForWebSessionUUID:(id)d serviceName:(id)name completion:(id)completion;
+- (void)postWalrusStateUpdateToServerWithContext:(id)context urlBagKey:(id)key username:(id)username password:(id)password completion:(id)completion;
+- (void)removeAllPCSAuthCredentialWithCompletion:(id)completion;
+- (void)verifyEnableWalrusAllowedWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKWalrusController
@@ -34,16 +34,16 @@
   return v6;
 }
 
-- (void)PCSAuthContextForWebSessionIdentifier:(id)a3 serviceName:(id)a4 completion:(id)a5
+- (void)PCSAuthContextForWebSessionIdentifier:(id)identifier serviceName:(id)name completion:(id)completion
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
+  objc_storeStrong(&v32, name);
   v31 = 0;
-  objc_storeStrong(&v31, a5);
+  objc_storeStrong(&v31, completion);
   v29 = _os_activity_create(&dword_193225000, "walrus-authkit/fetch-pcs-auth-context", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v30 = v29;
   state.opaque[0] = 0;
@@ -55,7 +55,7 @@
   v24 = 48;
   v25 = __Block_byref_object_copy__9;
   v26 = __Block_byref_object_dispose__9;
-  v27 = MEMORY[0x1E69E5928](v34);
+  v27 = MEMORY[0x1E69E5928](selfCopy);
   v15 = MEMORY[0x1E69E9820];
   v16 = -1073741824;
   v17 = 0;
@@ -64,7 +64,7 @@
   v20[1] = v22;
   v20[0] = MEMORY[0x1E69E5928](v31);
   v21 = MEMORY[0x193B165F0](&v15);
-  remoteService = v34->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v8 = MEMORY[0x1E69E9820];
   v9 = -1073741824;
   v10 = 0;
@@ -121,31 +121,31 @@ void __83__AKWalrusController_PCSAuthContextForWebSessionIdentifier_serviceName_
   *MEMORY[0x1E69E9840];
 }
 
-- (void)PCSAuthContextForWebSessionUUID:(id)a3 serviceName:(id)a4 completion:(id)a5
+- (void)PCSAuthContextForWebSessionUUID:(id)d serviceName:(id)name completion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, name);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
-  v5 = v12;
-  v6 = [location[0] UUIDString];
+  objc_storeStrong(&v9, completion);
+  v5 = selfCopy;
+  uUIDString = [location[0] UUIDString];
   [AKWalrusController PCSAuthContextForWebSessionIdentifier:v5 serviceName:"PCSAuthContextForWebSessionIdentifier:serviceName:completion:" completion:?];
-  MEMORY[0x1E69E5920](v6);
+  MEMORY[0x1E69E5920](uUIDString);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)removeAllPCSAuthCredentialWithCompletion:(id)a3
+- (void)removeAllPCSAuthCredentialWithCompletion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v25 = _os_activity_create(&dword_193225000, "walrus-authkit/remove-all-pcs-auth-credentials", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v26 = v25;
   state.opaque[0] = 0;
@@ -157,7 +157,7 @@ void __83__AKWalrusController_PCSAuthContextForWebSessionIdentifier_serviceName_
   v20 = 48;
   v21 = __Block_byref_object_copy__9;
   v22 = __Block_byref_object_dispose__9;
-  v23 = MEMORY[0x1E69E5928](v28);
+  v23 = MEMORY[0x1E69E5928](selfCopy);
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -166,7 +166,7 @@ void __83__AKWalrusController_PCSAuthContextForWebSessionIdentifier_serviceName_
   v16[1] = v18;
   v16[0] = MEMORY[0x1E69E5928](location[0]);
   v17 = MEMORY[0x193B165F0](&v11);
-  remoteService = v28->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
@@ -218,22 +218,22 @@ void __63__AKWalrusController_removeAllPCSAuthCredentialWithCompletion___block_i
   *MEMORY[0x1E69E9840];
 }
 
-- (void)verifyEnableWalrusAllowedWithContext:(id)a3 completion:(id)a4
+- (void)verifyEnableWalrusAllowedWithContext:(id)context completion:(id)completion
 {
   v56 = *MEMORY[0x1E69E9840];
-  v54 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v52 = 0;
-  objc_storeStrong(&v52, a4);
+  objc_storeStrong(&v52, completion);
   v46[0] = 0;
   v46[1] = v46;
   v47 = 838860800;
   v48 = 48;
   v49 = __Block_byref_object_copy__9;
   v50 = __Block_byref_object_dispose__9;
-  v51 = MEMORY[0x1E69E5928](v54);
+  v51 = MEMORY[0x1E69E5928](selfCopy);
   v44 = _os_activity_create(&dword_193225000, "walrus-authkit/verify-walrus-enable-allowed", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v45 = v44;
   state.opaque[0] = 0;
@@ -277,7 +277,7 @@ void __63__AKWalrusController_removeAllPCSAuthCredentialWithCompletion___block_i
   v33 = v41;
   v32[0] = MEMORY[0x1E69E5928](v52);
   v34 = MEMORY[0x193B165F0](&v27);
-  remoteService = v54->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v20 = MEMORY[0x1E69E9820];
   v21 = -1073741824;
   v22 = 0;
@@ -409,28 +409,28 @@ void __70__AKWalrusController_verifyEnableWalrusAllowedWithContext_completion___
   *MEMORY[0x1E69E9840];
 }
 
-- (void)postWalrusStateUpdateToServerWithContext:(id)a3 urlBagKey:(id)a4 username:(id)a5 password:(id)a6 completion:(id)a7
+- (void)postWalrusStateUpdateToServerWithContext:(id)context urlBagKey:(id)key username:(id)username password:(id)password completion:(id)completion
 {
   v68 = *MEMORY[0x1E69E9840];
-  v66 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v64 = 0;
-  objc_storeStrong(&v64, a4);
+  objc_storeStrong(&v64, key);
   v63 = 0;
-  objc_storeStrong(&v63, a5);
+  objc_storeStrong(&v63, username);
   v62 = 0;
-  objc_storeStrong(&v62, a6);
+  objc_storeStrong(&v62, password);
   v61 = 0;
-  objc_storeStrong(&v61, a7);
+  objc_storeStrong(&v61, completion);
   v55[0] = 0;
   v55[1] = v55;
   v56 = 838860800;
   v57 = 48;
   v58 = __Block_byref_object_copy__9;
   v59 = __Block_byref_object_dispose__9;
-  v60 = MEMORY[0x1E69E5928](v66);
+  v60 = MEMORY[0x1E69E5928](selfCopy);
   v53 = _os_activity_create(&dword_193225000, "walrus-authkit/post-walrus-state-update-to-server", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v54 = v53;
   state.opaque[0] = 0;
@@ -474,7 +474,7 @@ void __70__AKWalrusController_verifyEnableWalrusAllowedWithContext_completion___
   v42 = v50;
   v41[0] = MEMORY[0x1E69E5928](v61);
   v43 = MEMORY[0x193B165F0](&v36);
-  remoteService = v66->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v29 = MEMORY[0x1E69E9820];
   v30 = -1073741824;
   v31 = 0;

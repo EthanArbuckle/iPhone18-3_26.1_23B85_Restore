@@ -1,6 +1,6 @@
 @interface EDUpdateOthersCategoryTypeUpgradeStep
 + (id)log;
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDUpdateOthersCategoryTypeUpgradeStep
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __44__EDUpdateOthersCategoryTypeUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_107 != -1)
   {
     dispatch_once(&log_onceToken_107, block);
@@ -30,12 +30,12 @@ void __44__EDUpdateOthersCategoryTypeUpgradeStep_log__block_invoke(uint64_t a1)
   log_log_107 = v1;
 }
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v3 = a3;
-  if ([v3 columnExists:@"model_category" inTable:@"message_global_data" type:0])
+  connectionCopy = connection;
+  if ([connectionCopy columnExists:@"model_category" inTable:@"message_global_data" type:0])
   {
-    v4 = sqlite3_exec([v3 sqlDB], "UPDATE message_global_data SET model_category = 2 where model_subcategory == 6;", 0, 0, 0);
+    v4 = sqlite3_exec([connectionCopy sqlDB], "UPDATE message_global_data SET model_category = 2 where model_subcategory == 6;", 0, 0, 0);
   }
 
   else

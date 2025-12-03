@@ -2,8 +2,8 @@
 - (AAAppleIDRepairController)init;
 - (BOOL)offline_primaryAppleIDNeedsRepair;
 - (unint64_t)_fetchRepairState;
-- (void)_forceFetchUpdatedUserInformationWithCompletion:(id)a3;
-- (void)primaryAppleIDRepairNeedsRepairCompletion:(id)a3;
+- (void)_forceFetchUpdatedUserInformationWithCompletion:(id)completion;
+- (void)primaryAppleIDRepairNeedsRepairCompletion:(id)completion;
 @end
 
 @implementation AAAppleIDRepairController
@@ -15,9 +15,9 @@
   v2 = [(AAAppleIDRepairController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6959A48] defaultStore];
-    v4 = [v3 aa_primaryAppleAccount];
-    [(AAAppleIDRepairController *)v2 setPrimaryAccount:v4];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+    [(AAAppleIDRepairController *)v2 setPrimaryAccount:aa_primaryAppleAccount];
   }
 
   return v2;
@@ -25,35 +25,35 @@
 
 - (BOOL)offline_primaryAppleIDNeedsRepair
 {
-  v3 = [(AAAppleIDRepairController *)self primaryAccount];
+  primaryAccount = [(AAAppleIDRepairController *)self primaryAccount];
 
-  if (!v3)
+  if (!primaryAccount)
   {
     return 0;
   }
 
-  v4 = [(AAAppleIDRepairController *)self _fetchRepairState];
-  return (v4 & 0xFFFFFFFFFFFFFFFDLL) == 0 || v4 == 3;
+  _fetchRepairState = [(AAAppleIDRepairController *)self _fetchRepairState];
+  return (_fetchRepairState & 0xFFFFFFFFFFFFFFFDLL) == 0 || _fetchRepairState == 3;
 }
 
-- (void)primaryAppleIDRepairNeedsRepairCompletion:(id)a3
+- (void)primaryAppleIDRepairNeedsRepairCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__AAAppleIDRepairController_primaryAppleIDRepairNeedsRepairCompletion___block_invoke;
   aBlock[3] = &unk_1E7C9C950;
-  v5 = v4;
+  v5 = completionCopy;
   v10 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(AAAppleIDRepairController *)self primaryAccount];
+  primaryAccount = [(AAAppleIDRepairController *)self primaryAccount];
 
-  if (v7)
+  if (primaryAccount)
   {
-    v8 = [(AAAppleIDRepairController *)self _fetchRepairState];
-    if (v8)
+    _fetchRepairState = [(AAAppleIDRepairController *)self _fetchRepairState];
+    if (_fetchRepairState)
     {
-      v6[2](v6, v8);
+      v6[2](v6, _fetchRepairState);
     }
 
     else
@@ -92,30 +92,30 @@ uint64_t __71__AAAppleIDRepairController_primaryAppleIDRepairNeedsRepairCompleti
 
 - (unint64_t)_fetchRepairState
 {
-  v3 = [MEMORY[0x1E698DC80] sharedInstance];
-  v4 = [(AAAppleIDRepairController *)self primaryAccount];
-  v5 = [v4 aa_altDSID];
-  v6 = [v3 authKitAccountWithAltDSID:v5];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  primaryAccount = [(AAAppleIDRepairController *)self primaryAccount];
+  aa_altDSID = [primaryAccount aa_altDSID];
+  v6 = [mEMORY[0x1E698DC80] authKitAccountWithAltDSID:aa_altDSID];
 
-  v7 = [MEMORY[0x1E698DC80] sharedInstance];
-  v8 = [v7 repairStateForAccount:v6];
+  mEMORY[0x1E698DC80]2 = [MEMORY[0x1E698DC80] sharedInstance];
+  v8 = [mEMORY[0x1E698DC80]2 repairStateForAccount:v6];
 
   return v8;
 }
 
-- (void)_forceFetchUpdatedUserInformationWithCompletion:(id)a3
+- (void)_forceFetchUpdatedUserInformationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
-  v6 = [(AAAppleIDRepairController *)self primaryAccount];
-  v7 = [v6 aa_altDSID];
+  primaryAccount = [(AAAppleIDRepairController *)self primaryAccount];
+  aa_altDSID = [primaryAccount aa_altDSID];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __77__AAAppleIDRepairController__forceFetchUpdatedUserInformationWithCompletion___block_invoke;
   v9[3] = &unk_1E7C9C978;
-  v10 = v4;
-  v8 = v4;
-  [v5 getUserInformationForAltDSID:v7 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [v5 getUserInformationForAltDSID:aa_altDSID completion:v9];
 }
 
 void __77__AAAppleIDRepairController__forceFetchUpdatedUserInformationWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)

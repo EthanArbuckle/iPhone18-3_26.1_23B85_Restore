@@ -1,24 +1,24 @@
 @interface SBSRemoteAlertDefinition
-- (SBSRemoteAlertDefinition)initWithSceneProvidingProcess:(id)a3 configurationIdentifier:(id)a4;
-- (SBSRemoteAlertDefinition)initWithServiceName:(id)a3 viewControllerClassName:(id)a4;
-- (SBSRemoteAlertDefinition)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBSRemoteAlertDefinition)initWithSceneProvidingProcess:(id)process configurationIdentifier:(id)identifier;
+- (SBSRemoteAlertDefinition)initWithServiceName:(id)name viewControllerClassName:(id)className;
+- (SBSRemoteAlertDefinition)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SBSRemoteAlertDefinition
 
-- (SBSRemoteAlertDefinition)initWithServiceName:(id)a3 viewControllerClassName:(id)a4
+- (SBSRemoteAlertDefinition)initWithServiceName:(id)name viewControllerClassName:(id)className
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  nameCopy = name;
+  classNameCopy = className;
+  v9 = classNameCopy;
+  if (nameCopy)
   {
-    if (v8)
+    if (classNameCopy)
     {
       goto LABEL_3;
     }
@@ -40,7 +40,7 @@ LABEL_3:
   v10 = [(SBSRemoteAlertDefinition *)&v16 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     serviceName = v10->_serviceName;
     v10->_serviceName = v11;
 
@@ -52,11 +52,11 @@ LABEL_3:
   return v10;
 }
 
-- (SBSRemoteAlertDefinition)initWithSceneProvidingProcess:(id)a3 configurationIdentifier:(id)a4
+- (SBSRemoteAlertDefinition)initWithSceneProvidingProcess:(id)process configurationIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  processCopy = process;
+  identifierCopy = identifier;
+  if (!processCopy)
   {
     [SBSRemoteAlertDefinition initWithSceneProvidingProcess:a2 configurationIdentifier:self];
   }
@@ -67,8 +67,8 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_sceneProvidingProcess, a3);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_sceneProvidingProcess, process);
+    v12 = [identifierCopy copy];
     configurationIdentifier = v11->_configurationIdentifier;
     v11->_configurationIdentifier = v12;
   }
@@ -76,9 +76,9 @@ LABEL_3:
   return v11;
 }
 
-- (SBSRemoteAlertDefinition)initWithXPCDictionary:(id)a3
+- (SBSRemoteAlertDefinition)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = BSDeserializeStringFromXPCDictionaryWithKey();
   v6 = BSDeserializeStringFromXPCDictionaryWithKey();
   objc_opt_class();
@@ -126,7 +126,7 @@ LABEL_3:
 
     if (v7)
     {
-      v14 = xpc_dictionary_get_BOOL(v4, "supportsMultipleDisplayPresentations");
+      v14 = xpc_dictionary_get_BOOL(dictionaryCopy, "supportsMultipleDisplayPresentations");
       v15 = BSDeserializeStringFromXPCDictionaryWithKey();
       [(SBSRemoteAlertDefinition *)v12 setSupportsMultipleDisplayPresentations:v14];
       [(SBSRemoteAlertDefinition *)v12 setSecondaryConfigurationIdentifier:v15];
@@ -138,22 +138,22 @@ LABEL_3:
       [(SBSRemoteAlertDefinition *)v12 setSecondaryViewControllerClassName:v15];
     }
 
-    [(SBSRemoteAlertDefinition *)v12 setPrefersEmbeddedDisplayPresentation:xpc_dictionary_get_BOOL(v4, "prefersEmbeddedDisplayPresentation")];
+    [(SBSRemoteAlertDefinition *)v12 setPrefersEmbeddedDisplayPresentation:xpc_dictionary_get_BOOL(dictionaryCopy, "prefersEmbeddedDisplayPresentation")];
     v16 = BSDeserializeStringFromXPCDictionaryWithKey();
     [(SBSRemoteAlertDefinition *)v12 setImpersonatedCarPlayAppIdentifier:v16];
 
-    [(SBSRemoteAlertDefinition *)v12 setForCarPlay:xpc_dictionary_get_BOOL(v4, "forCarPlay")];
+    [(SBSRemoteAlertDefinition *)v12 setForCarPlay:xpc_dictionary_get_BOOL(dictionaryCopy, "forCarPlay")];
   }
 
   return v12;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    xdict = v4;
+    xdict = dictionaryCopy;
     if (self->_sceneProvidingProcess)
     {
       BSSerializeNSSecureEncodableObjectToXPCDictionaryWithKey();
@@ -178,43 +178,43 @@ LABEL_3:
 
     BSSerializeCFValueToXPCDictionaryWithKey();
     BSSerializeStringToXPCDictionaryWithKey();
-    v4 = xdict;
+    dictionaryCopy = xdict;
     if (self->_forCarPlay)
     {
       xpc_dictionary_set_BOOL(xdict, "forCarPlay", 1);
-      v4 = xdict;
+      dictionaryCopy = xdict;
     }
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBSRemoteAlertDefinition *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSRemoteAlertDefinition *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSRemoteAlertDefinition *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSRemoteAlertDefinition *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBSRemoteAlertDefinition *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBSRemoteAlertDefinition *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__SBSRemoteAlertDefinition_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E735F7F0;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -252,7 +252,7 @@ id __66__SBSRemoteAlertDefinition_descriptionBuilderWithMultilinePrefix___block_
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 64) withName:@"userInfo" skipIfNil:1];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   sceneProvidingProcess = self->_sceneProvidingProcess;
   v5 = objc_alloc(objc_opt_class());

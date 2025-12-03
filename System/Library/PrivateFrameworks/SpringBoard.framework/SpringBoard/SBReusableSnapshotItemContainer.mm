@@ -1,10 +1,10 @@
 @interface SBReusableSnapshotItemContainer
-- (SBReusableSnapshotItemContainer)initWithFrame:(CGRect)a3 appLayout:(id)a4 delegate:(id)a5 active:(BOOL)a6 windowScene:(id)a7;
+- (SBReusableSnapshotItemContainer)initWithFrame:(CGRect)frame appLayout:(id)layout delegate:(id)delegate active:(BOOL)active windowScene:(id)scene;
 - (id)_snapshotView;
-- (void)_updateSnapshotViewWithAppLayout:(id)a3;
+- (void)_updateSnapshotViewWithAppLayout:(id)layout;
 - (void)prepareForReuse;
-- (void)setAppLayout:(id)a3;
-- (void)setContentView:(id)a3;
+- (void)setAppLayout:(id)layout;
+- (void)setContentView:(id)view;
 @end
 
 @implementation SBReusableSnapshotItemContainer
@@ -12,27 +12,27 @@
 - (id)_snapshotView
 {
   v3 = objc_opt_class();
-  v4 = [(SBFluidSwitcherItemContainer *)self contentView];
-  v5 = SBSafeCast(v3, v4);
+  contentView = [(SBFluidSwitcherItemContainer *)self contentView];
+  v5 = SBSafeCast(v3, contentView);
 
   return v5;
 }
 
-- (SBReusableSnapshotItemContainer)initWithFrame:(CGRect)a3 appLayout:(id)a4 delegate:(id)a5 active:(BOOL)a6 windowScene:(id)a7
+- (SBReusableSnapshotItemContainer)initWithFrame:(CGRect)frame appLayout:(id)layout delegate:(id)delegate active:(BOOL)active windowScene:(id)scene
 {
-  v8 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
+  activeCopy = active;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
   v19.receiver = self;
   v19.super_class = SBReusableSnapshotItemContainer;
-  v16 = [(SBFluidSwitcherItemContainer *)&v19 initWithFrame:v15 appLayout:a5 delegate:v8 active:a7 windowScene:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(SBFluidSwitcherItemContainer *)&v19 initWithFrame:layoutCopy appLayout:delegate delegate:activeCopy active:scene windowScene:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    [(SBReusableSnapshotItemContainer *)v16 _updateSnapshotViewWithAppLayout:v15];
+    [(SBReusableSnapshotItemContainer *)height _updateSnapshotViewWithAppLayout:layoutCopy];
   }
 
   return v17;
@@ -45,43 +45,43 @@
   [(SBFluidSwitcherItemContainer *)&v2 prepareForReuse];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [(SBReusableSnapshotItemContainer *)a2 setContentView:?];
   }
 
-  v6 = [(SBFluidSwitcherItemContainer *)self contentView];
+  contentView = [(SBFluidSwitcherItemContainer *)self contentView];
 
-  if (v6)
+  if (contentView)
   {
     [(SBReusableSnapshotItemContainer *)a2 setContentView:?];
   }
 
   v8.receiver = self;
   v8.super_class = SBReusableSnapshotItemContainer;
-  [(SBFluidSwitcherItemContainer *)&v8 setContentView:v5];
-  v7 = [(SBFluidSwitcherItemContainer *)self appLayout];
-  [(SBReusableSnapshotItemContainer *)self _updateSnapshotViewWithAppLayout:v7];
+  [(SBFluidSwitcherItemContainer *)&v8 setContentView:viewCopy];
+  appLayout = [(SBFluidSwitcherItemContainer *)self appLayout];
+  [(SBReusableSnapshotItemContainer *)self _updateSnapshotViewWithAppLayout:appLayout];
 }
 
-- (void)setAppLayout:(id)a3
+- (void)setAppLayout:(id)layout
 {
   v5.receiver = self;
   v5.super_class = SBReusableSnapshotItemContainer;
-  v4 = a3;
-  [(SBFluidSwitcherItemContainer *)&v5 setAppLayout:v4];
-  [(SBReusableSnapshotItemContainer *)self _updateSnapshotViewWithAppLayout:v4, v5.receiver, v5.super_class];
+  layoutCopy = layout;
+  [(SBFluidSwitcherItemContainer *)&v5 setAppLayout:layoutCopy];
+  [(SBReusableSnapshotItemContainer *)self _updateSnapshotViewWithAppLayout:layoutCopy, v5.receiver, v5.super_class];
 }
 
-- (void)_updateSnapshotViewWithAppLayout:(id)a3
+- (void)_updateSnapshotViewWithAppLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(SBReusableSnapshotItemContainer *)self _snapshotView];
-  [v5 setAppLayout:v4];
+  layoutCopy = layout;
+  _snapshotView = [(SBReusableSnapshotItemContainer *)self _snapshotView];
+  [_snapshotView setAppLayout:layoutCopy];
 }
 
 - (void)setContentView:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

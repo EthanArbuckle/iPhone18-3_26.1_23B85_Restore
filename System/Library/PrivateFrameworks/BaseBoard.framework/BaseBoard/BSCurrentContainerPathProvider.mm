@@ -19,8 +19,8 @@
 {
   v2 = MEMORY[0x1E695DFF8];
   v3 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-  v4 = [v3 firstObject];
-  v5 = [v2 fileURLWithPath:v4];
+  firstObject = [v3 firstObject];
+  v5 = [v2 fileURLWithPath:firstObject];
 
   return v5;
 }
@@ -29,8 +29,8 @@
 {
   v2 = MEMORY[0x1E695DFF8];
   v3 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v4 = [v3 firstObject];
-  v5 = [v2 fileURLWithPath:v4];
+  firstObject = [v3 firstObject];
+  v5 = [v2 fileURLWithPath:firstObject];
 
   return v5;
 }

@@ -1,8 +1,8 @@
 @interface XDCService
 - (XDCService)init;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)service:(id)service devicesChanged:(id)changed;
 @end
 
 @implementation XDCService
@@ -78,24 +78,24 @@ LABEL_10:
   return v19;
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v10 = a5;
-  v11 = a7;
-  if (!a6)
+  identifierCopy = identifier;
+  errorCopy = error;
+  if (!success)
   {
     v12 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *v18 = 138543618;
-      *&v18[4] = v10;
+      *&v18[4] = identifierCopy;
       *&v18[12] = 2114;
-      *&v18[14] = v11;
+      *&v18[14] = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Sending: %{public}@ failed with error: %{public}@", v18, 0x16u);
     }
 
-    v13 = v10;
-    v14 = v11;
+    v13 = identifierCopy;
+    v14 = errorCopy;
     if (self)
     {
       dispatch_assert_queue_V2(self->_dispatchQueue);
@@ -119,20 +119,20 @@ LABEL_10:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  if ([v10 isResponse])
+  protobufCopy = protobuf;
+  dCopy = d;
+  contextCopy = context;
+  if ([protobufCopy isResponse])
   {
-    v13 = [v12 incomingResponseIdentifier];
+    incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
 
-    if (v13)
+    if (incomingResponseIdentifier)
     {
-      v14 = v13;
-      v15 = v10;
-      v16 = v11;
+      v14 = incomingResponseIdentifier;
+      v15 = protobufCopy;
+      v16 = dCopy;
       if (self)
       {
         dispatch_assert_queue_V2(self->_dispatchQueue);
@@ -143,7 +143,7 @@ LABEL_10:
         v20 = v19;
         if (v18)
         {
-          v44 = v11;
+          v44 = dCopy;
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
             *buf = 138543874;
@@ -176,7 +176,7 @@ LABEL_10:
           v16 = v23;
           [(NSMutableDictionary *)self->_queuedMessages setObject:0 forKeyedSubscript:v14];
 
-          v11 = v44;
+          dCopy = v44;
         }
 
         else if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -198,9 +198,9 @@ LABEL_10:
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109378;
-        *&buf[4] = [v10 type];
+        *&buf[4] = [protobufCopy type];
         *&buf[8] = 2114;
-        *&buf[10] = v11;
+        *&buf[10] = dCopy;
         _os_log_error_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "Received reply without outgoing identifier for type: %u from: %{public}@", buf, 0x12u);
       }
     }
@@ -208,18 +208,18 @@ LABEL_10:
 
   else
   {
-    v28 = [v12 outgoingResponseIdentifier];
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
 
-    v13 = v28;
-    v29 = v10;
-    v30 = v11;
+    incomingResponseIdentifier = outgoingResponseIdentifier;
+    v29 = protobufCopy;
+    v30 = dCopy;
     if (self)
     {
       dispatch_assert_queue_V2(self->_dispatchQueue);
       v31 = sub_1002B0154();
       v46 = sub_1002B05FC(v31, v30, self->_service);
 
-      v32 = sub_100342148([XDCMessage alloc], v29, v46, v13);
+      v32 = sub_100342148([XDCMessage alloc], v29, v46, incomingResponseIdentifier);
       v45 = v32;
       messageHandlers = self->_messageHandlers;
       if (v32)
@@ -265,7 +265,7 @@ LABEL_10:
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          *&buf[4] = v13;
+          *&buf[4] = incomingResponseIdentifier;
           *&buf[12] = 1024;
           *&buf[14] = [v29 type];
           *&buf[18] = 2114;
@@ -277,19 +277,19 @@ LABEL_10:
   }
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v11 = v5;
+    v11 = changedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Updating after devices changed: %{public}@", buf, 0xCu);
   }
 
   v7 = sub_1002B0154();
-  sub_1002B0C08(v7, v5);
+  sub_1002B0C08(v7, changedCopy);
 
   v8 = dispatch_get_global_queue(21, 0);
   block[0] = _NSConcreteStackBlock;

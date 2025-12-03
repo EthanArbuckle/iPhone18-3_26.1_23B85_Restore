@@ -12,26 +12,26 @@
 - (BOOL)_shouldCollapseLookAroundPreview;
 - (BOOL)_shouldShowBrowseVenueFloatingControl;
 - (BOOL)_shouldShowSearchFloatingControl;
-- (BOOL)_shouldShowTrafficForViewMode:(int64_t)a3;
+- (BOOL)_shouldShowTrafficForViewMode:(int64_t)mode;
 - (BOOL)_suppressOverlaysForActiveFullscreenContainer;
 - (BOOL)canDropPin;
 - (BOOL)canEnter3dMode;
 - (BOOL)canEnterLookAroundMode;
 - (BOOL)canExitLookAroundMode;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canRemovePin;
 - (BOOL)canSnapToNorth;
 - (BOOL)displayNavigationAlertAndShouldContinue;
-- (BOOL)isHidingCardsForContext:(id)a3;
+- (BOOL)isHidingCardsForContext:(id)context;
 - (BOOL)isNightMode;
 - (BOOL)isSnappedToNorth;
 - (BOOL)locationPulseEnabled;
-- (BOOL)mapViewShouldHandleTapToDeselect:(id)a3;
+- (BOOL)mapViewShouldHandleTapToDeselect:(id)deselect;
 - (BOOL)pptTestCanUpdateTrayLayout;
-- (BOOL)pptTestIsTrayType:(int64_t)a3;
+- (BOOL)pptTestIsTrayType:(int64_t)type;
 - (BOOL)prefersHomeIndicatorAutoHidden;
-- (BOOL)willMoveToOrFromSecureLockScreenUI:(BOOL)a3;
-- (CGRect)popoverPresentationRectForPrintController:(id)a3;
+- (BOOL)willMoveToOrFromSecureLockScreenUI:(BOOL)i;
+- (CGRect)popoverPresentationRectForPrintController:(id)controller;
 - (DefaultTransportTypeFinder)defaultTransportTypeFinder;
 - (IOSBasedChromeContext)currentIOSBasedContext;
 - (IOSBasedChromeViewController)init;
@@ -45,31 +45,31 @@
 - (VenuesManager)venuesManager;
 - (ViewModeDelegate)viewModeDelegate;
 - (double)statusBarHeight;
-- (id)_containerViewControllerWithContext:(id)a3;
+- (id)_containerViewControllerWithContext:(id)context;
 - (id)_currentContainerViewController;
-- (id)_currentLogContextDelegateForSelector:(SEL)a3;
+- (id)_currentLogContextDelegateForSelector:(SEL)selector;
 - (id)_defaultStatusBarBackgroundViewStyle;
 - (id)_lookAroundButtonPlaceCardItem;
 - (id)_prevailingSearchButtonOverlay;
-- (id)acquireModernMapTokenForReason:(unint64_t)a3;
+- (id)acquireModernMapTokenForReason:(unint64_t)reason;
 - (id)allComponents;
-- (id)allVisibleMapViewsButNotCarPlayForDebugController:(id)a3;
-- (id)allVisibleMapViewsForDebugController:(id)a3;
+- (id)allVisibleMapViewsButNotCarPlayForDebugController:(id)controller;
+- (id)allVisibleMapViewsForDebugController:(id)controller;
 - (id)baseModeController;
 - (id)coordinator;
 - (id)currentCollectionShareItemSource;
 - (id)currentShareItemSource;
 - (id)currentTraits;
-- (id)fullscreenViewControllerTransitionFromController:(id)a3 toController:(id)a4 isDismissTransition:(BOOL)a5;
+- (id)fullscreenViewControllerTransitionFromController:(id)controller toController:(id)toController isDismissTransition:(BOOL)transition;
 - (id)lookAroundCoordinator;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
 - (id)mapViewResponder;
 - (id)navActionCoordinator;
 - (id)personalizedItemSourcesForCurrentState;
 - (id)routeCreationContext;
-- (id)topmostContaineeForVenuesManager:(id)a3;
-- (id)viewsToRenderMapsScreenshotService:(id)a3;
+- (id)topmostContaineeForVenuesManager:(id)manager;
+- (id)viewsToRenderMapsScreenshotService:(id)service;
 - (int)currentMapViewTargetForAnalytics;
 - (int)currentUITargetForAnalytics;
 - (int)displayedMapType;
@@ -80,150 +80,150 @@
 - (int64_t)preferredUserInterfaceStyle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_freezeInnerLayoutGuide;
-- (void)_handleLogTileState:(id)a3;
+- (void)_handleLogTileState:(id)state;
 - (void)_initializePrintingController;
 - (void)_loadInternalDebugSetting;
-- (void)_mapFullyDrawn:(id)a3;
+- (void)_mapFullyDrawn:(id)drawn;
 - (void)_refreshHiddenCards;
-- (void)_resetTracking:(BOOL)a3;
+- (void)_resetTracking:(BOOL)tracking;
 - (void)_sceneConnectionsDidChange;
 - (void)_teardownViewHierarchyForTesting;
-- (void)_teardownViewHierarchyWithActionCoordinator:(id)a3 shouldAnimate:(BOOL)a4;
-- (void)_updateBrowseVenueButtonWithAnimation:(id)a3;
-- (void)_updateCardsForCurrentStateWithAnimation:(id)a3;
-- (void)_updateFloatingControlsDidChangePitching:(BOOL)a3 animated:(BOOL)a4;
-- (void)_updateFloatingControlsDidChangeYaw:(BOOL)a3 animated:(BOOL)a4;
-- (void)_updateFloatingControlsForCurrentStateWithAnimation:(id)a3;
-- (void)_updateInnerLayoutGuideWithTopViewController:(id)a3;
-- (void)_updateLookAroundButtonWithAnimation:(id)a3;
-- (void)_updateMapScaleVisibilityWithAnimation:(id)a3;
-- (void)_updateMapViewResponderTargetForObject:(id)a3;
+- (void)_teardownViewHierarchyWithActionCoordinator:(id)coordinator shouldAnimate:(BOOL)animate;
+- (void)_updateBrowseVenueButtonWithAnimation:(id)animation;
+- (void)_updateCardsForCurrentStateWithAnimation:(id)animation;
+- (void)_updateFloatingControlsDidChangePitching:(BOOL)pitching animated:(BOOL)animated;
+- (void)_updateFloatingControlsDidChangeYaw:(BOOL)yaw animated:(BOOL)animated;
+- (void)_updateFloatingControlsForCurrentStateWithAnimation:(id)animation;
+- (void)_updateInnerLayoutGuideWithTopViewController:(id)controller;
+- (void)_updateLookAroundButtonWithAnimation:(id)animation;
+- (void)_updateMapScaleVisibilityWithAnimation:(id)animation;
+- (void)_updateMapViewResponderTargetForObject:(id)object;
 - (void)_updateMapViewWithEVChargingConfig;
 - (void)_updateModernMapCartographicConfiguration;
 - (void)_updateOfflineModernMapToken;
-- (void)_updateRedoSearchButtonWithAnimation:(id)a3;
-- (void)_updateStatusBarForCurrentStateWithAnimation:(id)a3;
-- (void)_updateStatusBarSupplementaryViewWithAnimation:(id)a3;
+- (void)_updateRedoSearchButtonWithAnimation:(id)animation;
+- (void)_updateStatusBarForCurrentStateWithAnimation:(id)animation;
+- (void)_updateStatusBarSupplementaryViewWithAnimation:(id)animation;
 - (void)_updateViewModeForLabelsDisplayIfNeeded;
 - (void)_updateViewModeForTrafficDisplayIfNeeded;
-- (void)_updateWeatherWithAnimation:(id)a3;
+- (void)_updateWeatherWithAnimation:(id)animation;
 - (void)_windowUserInterfaceStyleDidChange;
-- (void)browseVenueChromeOverlayDidSelectFocusedVenueWithOverlay:(id)a3;
+- (void)browseVenueChromeOverlayDidSelectFocusedVenueWithOverlay:(id)overlay;
 - (void)centerMapToUserLocation;
-- (void)chromeNavigationDisplayDidRenderRoute:(id)a3;
+- (void)chromeNavigationDisplayDidRenderRoute:(id)route;
 - (void)cleanUIandHideSearch;
-- (void)contextStackDidUpdateFrom:(id)a3 to:(id)a4 withAnimation:(id)a5;
-- (void)contextStackWillUpdateFrom:(id)a3 to:(id)a4 withAnimation:(id)a5;
-- (void)copy:(id)a3;
+- (void)contextStackDidUpdateFrom:(id)from to:(id)to withAnimation:(id)animation;
+- (void)contextStackWillUpdateFrom:(id)from to:(id)to withAnimation:(id)animation;
+- (void)copy:(id)copy;
 - (void)createCustomSearchResultForDroppedPinAtCenterPoint;
-- (void)createCustomSearchResultForDroppedPinAtPoint:(CLLocationCoordinate2D)a3 floorOrdinal:(int)a4 animated:(BOOL)a5;
+- (void)createCustomSearchResultForDroppedPinAtPoint:(CLLocationCoordinate2D)point floorOrdinal:(int)ordinal animated:(BOOL)animated;
 - (void)createScreenshotService;
 - (void)dealloc;
-- (void)debugController:(id)a3 choseTraceAtPath:(id)a4 startNav:(BOOL)a5;
-- (void)decrementForToken:(id)a3;
+- (void)debugController:(id)controller choseTraceAtPath:(id)path startNav:(BOOL)nav;
+- (void)decrementForToken:(id)token;
 - (void)defaultZoom;
-- (void)didUpdateForcedExploreMapConfiguration:(BOOL)a3;
-- (void)directionsTypeForMapItem:(id)a3 handler:(id)a4;
-- (void)dismissAllModalViewsIfPresentAnimated:(BOOL)a3 completion:(id)a4;
-- (void)dismissLastVenuesPlaceCardForVenuesManager:(id)a3;
+- (void)didUpdateForcedExploreMapConfiguration:(BOOL)configuration;
+- (void)directionsTypeForMapItem:(id)item handler:(id)handler;
+- (void)dismissAllModalViewsIfPresentAnimated:(BOOL)animated completion:(id)completion;
+- (void)dismissLastVenuesPlaceCardForVenuesManager:(id)manager;
 - (void)displayNavShareETA;
 - (void)displayNearbySearch;
-- (void)enterLookAroundForMapItem:(id)a3 isMarkedLocation:(BOOL)a4 lookAroundView:(id)a5;
-- (void)enterLookAroundPIP:(id)a3;
+- (void)enterLookAroundForMapItem:(id)item isMarkedLocation:(BOOL)location lookAroundView:(id)view;
+- (void)enterLookAroundPIP:(id)p;
 - (void)exitLookAround;
-- (void)find:(id)a3;
-- (void)floatingControlsOverlay:(id)a3 didTapEnterPedestrianARFromButton:(id)a4;
-- (void)floatingControlsOverlayDidTapEnter3DMode:(id)a3;
-- (void)floatingControlsOverlayDidTapExit3DMode:(id)a3;
-- (void)floatingControlsOverlayDidTapOpenSettings:(id)a3;
-- (void)floatingControlsOverlayDidTapOpenUserProfile:(id)a3;
-- (void)floatingControlsOverlayDidTapRefreshCurrentSearch:(id)a3;
-- (void)floatingControlsOverlayDidTapTTRButton:(id)a3;
-- (void)fullscreenViewControllerDidChange:(id)a3;
-- (void)incrementForToken:(id)a3;
-- (void)mapStylePickerContaineeViewControllerDidChangeMapTypeWithViewController:(id)a3 mapType:(unint64_t)a4 skipConfiguration:(BOOL)a5;
-- (void)mapStylePickerContaineeViewControllerDismissByGestureWithViewController:(id)a3;
-- (void)mapStylePickerContaineeViewControllerPresentDebugPanelIfEnabledWithViewController:(id)a3;
-- (void)mapStylePickerContaineeViewControllerWantsDismissWithViewController:(id)a3;
-- (void)mapView:(id)a3 calloutPrimaryActionTriggeredForAnnotationView:(id)a4;
-- (void)mapView:(id)a3 calloutPrimaryActionTriggeredForLabelMarker:(id)a4;
-- (void)mapView:(id)a3 didChangeDisplayedFloorOrdinal:(signed __int16)a4 forVenue:(id)a5;
-- (void)mapView:(id)a3 didChangeFocusedVenue:(id)a4 focusedBuilding:(id)a5;
-- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4;
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6;
-- (void)mapView:(id)a3 didDeselectLabelMarker:(id)a4;
-- (void)mapView:(id)a3 didFailToLocateUserWithError:(id)a4;
-- (void)mapView:(id)a3 didSelectLabelMarker:(id)a4;
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8;
-- (void)mapView:(id)a3 didUpdateYaw:(double)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5;
-- (void)mapViewDidFailLoadingMap:(id)a3 withError:(id)a4;
-- (void)mapViewDidFinishLoadingMap:(id)a3;
-- (void)mapViewWillStartLoadingMap:(id)a3;
+- (void)find:(id)find;
+- (void)floatingControlsOverlay:(id)overlay didTapEnterPedestrianARFromButton:(id)button;
+- (void)floatingControlsOverlayDidTapEnter3DMode:(id)mode;
+- (void)floatingControlsOverlayDidTapExit3DMode:(id)mode;
+- (void)floatingControlsOverlayDidTapOpenSettings:(id)settings;
+- (void)floatingControlsOverlayDidTapOpenUserProfile:(id)profile;
+- (void)floatingControlsOverlayDidTapRefreshCurrentSearch:(id)search;
+- (void)floatingControlsOverlayDidTapTTRButton:(id)button;
+- (void)fullscreenViewControllerDidChange:(id)change;
+- (void)incrementForToken:(id)token;
+- (void)mapStylePickerContaineeViewControllerDidChangeMapTypeWithViewController:(id)controller mapType:(unint64_t)type skipConfiguration:(BOOL)configuration;
+- (void)mapStylePickerContaineeViewControllerDismissByGestureWithViewController:(id)controller;
+- (void)mapStylePickerContaineeViewControllerPresentDebugPanelIfEnabledWithViewController:(id)controller;
+- (void)mapStylePickerContaineeViewControllerWantsDismissWithViewController:(id)controller;
+- (void)mapView:(id)view calloutPrimaryActionTriggeredForAnnotationView:(id)annotationView;
+- (void)mapView:(id)view calloutPrimaryActionTriggeredForLabelMarker:(id)marker;
+- (void)mapView:(id)view didChangeDisplayedFloorOrdinal:(signed __int16)ordinal forVenue:(id)venue;
+- (void)mapView:(id)view didChangeFocusedVenue:(id)venue focusedBuilding:(id)building;
+- (void)mapView:(id)view didChangeMapType:(unint64_t)type;
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button;
+- (void)mapView:(id)view didDeselectLabelMarker:(id)marker;
+- (void)mapView:(id)view didFailToLocateUserWithError:(id)error;
+- (void)mapView:(id)view didSelectLabelMarker:(id)marker;
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection;
+- (void)mapView:(id)view didUpdateYaw:(double)yaw;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated;
+- (void)mapViewDidFailLoadingMap:(id)map withError:(id)error;
+- (void)mapViewDidFinishLoadingMap:(id)map;
+- (void)mapViewWillStartLoadingMap:(id)map;
 - (void)openUserProfile;
-- (void)overlayControllerDidUpdateMapInsets:(id)a3 fromOverlay:(id)a4;
-- (void)pptTestDismissTrayAnimated:(BOOL)a3 assertTrayType:(int64_t)a4;
-- (void)pptTestUpdateTrayLayout:(unint64_t)a3 animated:(BOOL)a4;
+- (void)overlayControllerDidUpdateMapInsets:(id)insets fromOverlay:(id)overlay;
+- (void)pptTestDismissTrayAnimated:(BOOL)animated assertTrayType:(int64_t)type;
+- (void)pptTestUpdateTrayLayout:(unint64_t)layout animated:(BOOL)animated;
 - (void)prepareMapViewForFirstUse;
 - (void)presentMapsDebugControllerIfEnabled;
 - (void)printCurrentState;
-- (void)printRoute:(id)a3;
-- (void)printSearchResultFromSession:(id)a3;
-- (void)registerFramesInDebugFramesView:(id)a3;
+- (void)printRoute:(id)route;
+- (void)printSearchResultFromSession:(id)session;
+- (void)registerFramesInDebugFramesView:(id)view;
 - (void)removeDroppedPin;
 - (void)reportCurrentLocationFailure;
-- (void)requestCardLayout:(unint64_t)a3 animated:(BOOL)a4 forCard:(id)a5;
-- (void)resetForEditingShortcut:(id)a3;
-- (void)resetForLaunchURLWithOptions:(id)a3;
+- (void)requestCardLayout:(unint64_t)layout animated:(BOOL)animated forCard:(id)card;
+- (void)resetForEditingShortcut:(id)shortcut;
+- (void)resetForLaunchURLWithOptions:(id)options;
 - (void)resetForTestingAction;
-- (void)routeFromSearchResult:(id)a3 toSearchResult:(id)a4 directionsType:(unint64_t)a5 drivePreferences:(id)a6 routeHandle:(id)a7 timePoint:(id)a8 withFeedback:(id)a9 origin:(int64_t)a10 options:(id)a11;
-- (void)searchForAddress:(id)a3 source:(int)a4;
-- (void)searchForAddressString:(id)a3 source:(int)a4;
-- (void)searchForExternalURLQuery:(id)a3 coordinate:(CLLocationCoordinate2D)a4 muid:(unint64_t)a5 resultProviderId:(int)a6 contentProvider:(id)a7;
-- (void)searchForRouteFromAddress:(id)a3 toAddress:(id)a4 directionsMode:(unint64_t)a5 userInfo:(id)a6;
-- (void)searchForSearchItem:(id)a3 traits:(id)a4 source:(int)a5;
-- (void)searchForString:(id)a3 traits:(id)a4 scrollToResults:(BOOL)a5 source:(int)a6;
-- (void)searchWithSearchInfo:(id)a3 source:(int)a4;
+- (void)routeFromSearchResult:(id)result toSearchResult:(id)searchResult directionsType:(unint64_t)type drivePreferences:(id)preferences routeHandle:(id)handle timePoint:(id)point withFeedback:(id)feedback origin:(int64_t)self0 options:(id)self1;
+- (void)searchForAddress:(id)address source:(int)source;
+- (void)searchForAddressString:(id)string source:(int)source;
+- (void)searchForExternalURLQuery:(id)query coordinate:(CLLocationCoordinate2D)coordinate muid:(unint64_t)muid resultProviderId:(int)id contentProvider:(id)provider;
+- (void)searchForRouteFromAddress:(id)address toAddress:(id)toAddress directionsMode:(unint64_t)mode userInfo:(id)info;
+- (void)searchForSearchItem:(id)item traits:(id)traits source:(int)source;
+- (void)searchForString:(id)string traits:(id)traits scrollToResults:(BOOL)results source:(int)source;
+- (void)searchWithSearchInfo:(id)info source:(int)source;
 - (void)select3dMode;
 - (void)selectLookAroundMode;
-- (void)selectParkedCarAndPerformAction:(int64_t)a3;
-- (void)setConnectedToCarPlay:(BOOL)a3;
-- (void)setLocationPulseEnabled:(BOOL)a3;
+- (void)selectParkedCarAndPerformAction:(int64_t)action;
+- (void)setConnectedToCarPlay:(BOOL)play;
+- (void)setLocationPulseEnabled:(BOOL)enabled;
 - (void)setNeedsUserActivityUpdate;
 - (void)setNeedsUserInterfaceAppearanceUpdate;
-- (void)setSearchHereFloatingControlBottomPadding:(double)a3;
-- (void)setStatusBarAdditionalColor:(id)a3;
-- (void)setSuggestedApplicationState:(int)a3;
+- (void)setSearchHereFloatingControlBottomPadding:(double)padding;
+- (void)setStatusBarAdditionalColor:(id)color;
+- (void)setSuggestedApplicationState:(int)state;
 - (void)shouldStartRedoSearch;
-- (void)showAnnouncementForFlyover:(id)a3;
-- (void)showFavoritesType:(int64_t)a3;
-- (void)showRedoSearchOverlay:(BOOL)a3;
-- (void)showTransitLine:(unint64_t)a3 withName:(id)a4;
+- (void)showAnnouncementForFlyover:(id)flyover;
+- (void)showFavoritesType:(int64_t)type;
+- (void)showRedoSearchOverlay:(BOOL)overlay;
+- (void)showTransitLine:(unint64_t)line withName:(id)name;
 - (void)snapToNorth;
-- (void)switchMapMode:(id)a3;
+- (void)switchMapMode:(id)mode;
 - (void)toggleLabels;
 - (void)toggleTraffic;
-- (void)undo:(id)a3;
-- (void)updateComponent:(id)a3 forTiming:(unint64_t)a4 withAnimation:(id)a5;
-- (void)updateComponentsIfNeededWithTansitionCoordinator:(id)a3;
-- (void)updateFramesInDebugFramesView:(id)a3;
+- (void)undo:(id)undo;
+- (void)updateComponent:(id)component forTiming:(unint64_t)timing withAnimation:(id)animation;
+- (void)updateComponentsIfNeededWithTansitionCoordinator:(id)coordinator;
+- (void)updateFramesInDebugFramesView:(id)view;
 - (void)updateHistoricalLocations;
-- (void)updateLightLevelAnimated:(BOOL)a3 lightLevel:(int64_t)a4;
+- (void)updateLightLevelAnimated:(BOOL)animated lightLevel:(int64_t)level;
 - (void)updateMapViewDisplayOptions;
-- (void)updateThemeForVisualEffectStyle:(unint64_t)a3;
+- (void)updateThemeForVisualEffectStyle:(unint64_t)style;
 - (void)updateThemeViewAndControllers;
-- (void)updateViewMode:(int64_t)a3 animated:(BOOL)a4 preserveMapSelection:(BOOL)a5;
-- (void)updateViewMode:(int64_t)displayedViewMode animated:(BOOL)a4 skipSettingMapConfiguration:(BOOL)a5;
-- (void)validateCommand:(id)a3;
-- (void)venuesManager:(id)a3 dismissFloorCardViewController:(id)a4;
-- (void)venuesManager:(id)a3 presentFloorCardViewController:(id)a4;
-- (void)venuesManager:(id)a3 presentPlaceCardForMapItem:(id)a4 addToHistory:(BOOL)a5 presentationActionSource:(unint64_t)a6;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateViewMode:(int64_t)displayedViewMode animated:(BOOL)animated skipSettingMapConfiguration:(BOOL)configuration;
+- (void)updateViewMode:(int64_t)mode animated:(BOOL)animated preserveMapSelection:(BOOL)selection;
+- (void)validateCommand:(id)command;
+- (void)venuesManager:(id)manager dismissFloorCardViewController:(id)controller;
+- (void)venuesManager:(id)manager presentFloorCardViewController:(id)controller;
+- (void)venuesManager:(id)manager presentPlaceCardForMapItem:(id)item addToHistory:(BOOL)history presentationActionSource:(unint64_t)source;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)virtualGarageDidUpdate:(id)update;
 - (void)zoomIn;
 - (void)zoomOut;
 @end
@@ -281,8 +281,8 @@
     v16 = +[NSNotificationCenter defaultCenter];
     [v16 addObserver:v3 selector:"offlineStateChanged:" name:GEOOfflineStateChangedNotification object:0];
 
-    v17 = [(IOSBasedChromeViewController *)v3 traitCollection];
-    v3->_currentUserInterfaceIdiom = [v17 userInterfaceIdiom];
+    traitCollection = [(IOSBasedChromeViewController *)v3 traitCollection];
+    v3->_currentUserInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
     v34 = objc_opt_class();
     v18 = [NSArray arrayWithObjects:&v34 count:1];
@@ -297,9 +297,9 @@
 
     v21 = +[NSMutableArray array];
     v22 = +[GEOPlatform sharedPlatform];
-    v23 = [v22 isInternalInstall];
+    isInternalInstall = [v22 isInternalInstall];
 
-    if (v23)
+    if (isInternalInstall)
     {
       v3->_testing_hide2D3DFloatingControls = GEOConfigGetBOOL();
       objc_copyWeak(&v27, &location);
@@ -344,12 +344,12 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [NSString stringWithFormat:@"%@.innerLayoutGuide", v5];
-  v7 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-  [v7 setIdentifier:v6];
+  innerLayoutGuide = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+  [innerLayoutGuide setIdentifier:v6];
 
-  v8 = [(IOSBasedChromeViewController *)self view];
-  v9 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-  [v8 addLayoutGuide:v9];
+  view = [(IOSBasedChromeViewController *)self view];
+  innerLayoutGuide2 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+  [view addLayoutGuide:innerLayoutGuide2];
 
   v10 = objc_alloc_init(UILayoutGuide);
   [(IOSBasedChromeViewController *)self setWeatherLayoutGuide:v10];
@@ -357,12 +357,12 @@
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   v13 = [NSString stringWithFormat:@"%@.weatherLayoutGuide", v12];
-  v14 = [(IOSBasedChromeViewController *)self weatherLayoutGuide];
-  [v14 setIdentifier:v13];
+  weatherLayoutGuide = [(IOSBasedChromeViewController *)self weatherLayoutGuide];
+  [weatherLayoutGuide setIdentifier:v13];
 
-  v15 = [(IOSBasedChromeViewController *)self view];
-  v16 = [(IOSBasedChromeViewController *)self weatherLayoutGuide];
-  [v15 addLayoutGuide:v16];
+  view2 = [(IOSBasedChromeViewController *)self view];
+  weatherLayoutGuide2 = [(IOSBasedChromeViewController *)self weatherLayoutGuide];
+  [view2 addLayoutGuide:weatherLayoutGuide2];
 
   v17 = objc_alloc_init(IOSCardsOverlay);
   cardsOverlay = self->_cardsOverlay;
@@ -376,49 +376,49 @@
 
   [(ContainerViewController *)self->_cardsOverlay setContainerDelegate:self->_containerDelegateProxy];
   objc_storeWeak(&self->_currentContainerViewController, self->_cardsOverlay);
-  v21 = [(ChromeViewController *)self overlayController];
-  [v21 addOverlay:self->_cardsOverlay];
+  overlayController = [(ChromeViewController *)self overlayController];
+  [overlayController addOverlay:self->_cardsOverlay];
 
   v22 = objc_alloc_init(FloatingControlsOverlay);
   [(IOSBasedChromeViewController *)self setFloatingControlsOverlay:v22];
 
-  v23 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-  [v23 setMapViewProvider:self];
+  floatingControlsOverlay = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+  [floatingControlsOverlay setMapViewProvider:self];
 
   v24 = [[FloatingControlsOverlayDelegateProxy alloc] initWithChromeViewController:self];
   floatingControlsOverlayDelegateProxy = self->_floatingControlsOverlayDelegateProxy;
   self->_floatingControlsOverlayDelegateProxy = v24;
 
   v26 = self->_floatingControlsOverlayDelegateProxy;
-  v27 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-  [v27 setDelegate:v26];
+  floatingControlsOverlay2 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+  [floatingControlsOverlay2 setDelegate:v26];
 
-  v28 = [(ChromeViewController *)self overlayController];
-  v29 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-  v30 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-  [v28 addOverlay:v29 inLayoutGuide:v30];
+  overlayController2 = [(ChromeViewController *)self overlayController];
+  floatingControlsOverlay3 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+  innerLayoutGuide3 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+  [overlayController2 addOverlay:floatingControlsOverlay3 inLayoutGuide:innerLayoutGuide3];
 
-  v31 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-  v32 = [v31 mapViewDelegate];
-  [(ChromeViewController *)self registerAdditionalMapViewDelegate:v32];
+  floatingControlsOverlay4 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+  mapViewDelegate = [floatingControlsOverlay4 mapViewDelegate];
+  [(ChromeViewController *)self registerAdditionalMapViewDelegate:mapViewDelegate];
 
   self->_statusBarHidden = [(IOSBasedChromeViewController *)self _defaultPrefersStatusBarHidden];
   self->_statusBarStyle = [(IOSBasedChromeViewController *)self _defaultPreferredStatusBarStyle];
   v33 = [StatusBarBackgroundView alloc];
-  v34 = [(IOSBasedChromeViewController *)self view];
-  v35 = [v34 safeAreaLayoutGuide];
-  v36 = [v35 topAnchor];
-  v37 = [(StatusBarBackgroundView *)v33 initWithSafeAreaTopLayoutAnchor:v36];
+  view3 = [(IOSBasedChromeViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide topAnchor];
+  v37 = [(StatusBarBackgroundView *)v33 initWithSafeAreaTopLayoutAnchor:topAnchor];
   statusBarBackgroundView = self->_statusBarBackgroundView;
   self->_statusBarBackgroundView = v37;
 
   [(StatusBarBackgroundView *)self->_statusBarBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
   self->_permitCustomStatusBarBackgroundViewStyle = GEOConfigGetBOOL() ^ 1;
-  v39 = [(IOSBasedChromeViewController *)self _defaultStatusBarBackgroundViewStyle];
-  [(StatusBarBackgroundView *)self->_statusBarBackgroundView setStyle:v39];
+  _defaultStatusBarBackgroundViewStyle = [(IOSBasedChromeViewController *)self _defaultStatusBarBackgroundViewStyle];
+  [(StatusBarBackgroundView *)self->_statusBarBackgroundView setStyle:_defaultStatusBarBackgroundViewStyle];
 
-  v40 = [(IOSBasedChromeViewController *)self view];
-  [v40 addSubview:self->_statusBarBackgroundView];
+  view4 = [(IOSBasedChromeViewController *)self view];
+  [view4 addSubview:self->_statusBarBackgroundView];
 
   if (GEOConfigGetBOOL())
   {
@@ -426,12 +426,12 @@
     scrollPocketCollectorInteraction = self->_scrollPocketCollectorInteraction;
     self->_scrollPocketCollectorInteraction = v41;
 
-    v43 = [(IOSBasedChromeViewController *)self view];
-    [v43 addInteraction:self->_scrollPocketCollectorInteraction];
+    view5 = [(IOSBasedChromeViewController *)self view];
+    [view5 addInteraction:self->_scrollPocketCollectorInteraction];
 
     v44 = [_UIScrollPocketContainerInteraction alloc];
-    v45 = [(ChromeViewController *)self mapView];
-    v46 = [v44 initWithScrollView:v45 edge:1];
+    mapView = [(ChromeViewController *)self mapView];
+    v46 = [v44 initWithScrollView:mapView edge:1];
 
     [v46 _setCollectorInteraction:self->_scrollPocketCollectorInteraction];
     [(StatusBarBackgroundView *)self->_statusBarBackgroundView addInteraction:v46];
@@ -442,63 +442,63 @@
     }
   }
 
-  v48 = [(ChromeViewController *)self viewportLayoutGuide];
-  v49 = [v48 topAnchor];
-  v50 = [(StatusBarBackgroundView *)self->_statusBarBackgroundView bottomAnchor];
+  viewportLayoutGuide = [(ChromeViewController *)self viewportLayoutGuide];
+  topAnchor2 = [viewportLayoutGuide topAnchor];
+  bottomAnchor = [(StatusBarBackgroundView *)self->_statusBarBackgroundView bottomAnchor];
   LODWORD(v51) = 1148829696;
-  v52 = [v49 constraintEqualToAnchor:v50 constant:0.0 priority:v51];
+  v52 = [topAnchor2 constraintEqualToAnchor:bottomAnchor constant:0.0 priority:v51];
   viewportTopEqualToStatusBarBottomConstraint = self->_viewportTopEqualToStatusBarBottomConstraint;
   self->_viewportTopEqualToStatusBarBottomConstraint = v52;
 
-  v54 = [(ChromeViewController *)self viewportLayoutGuide];
-  v55 = [v54 topAnchor];
-  v56 = [(IOSBasedChromeViewController *)self view];
-  v57 = [v56 safeAreaLayoutGuide];
-  v58 = [v57 topAnchor];
-  v59 = [v55 constraintEqualToAnchor:v58];
+  viewportLayoutGuide2 = [(ChromeViewController *)self viewportLayoutGuide];
+  topAnchor3 = [viewportLayoutGuide2 topAnchor];
+  view6 = [(IOSBasedChromeViewController *)self view];
+  safeAreaLayoutGuide2 = [view6 safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide2 topAnchor];
+  v59 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   viewportTopEqualToSafeAreaBottomConstraint = self->_viewportTopEqualToSafeAreaBottomConstraint;
   self->_viewportTopEqualToSafeAreaBottomConstraint = v59;
 
-  v91 = [(StatusBarBackgroundView *)self->_statusBarBackgroundView leadingAnchor];
-  v92 = [(IOSBasedChromeViewController *)self view];
-  v90 = [v92 leadingAnchor];
-  v89 = [v91 constraintEqualToAnchor:v90];
+  leadingAnchor = [(StatusBarBackgroundView *)self->_statusBarBackgroundView leadingAnchor];
+  view7 = [(IOSBasedChromeViewController *)self view];
+  leadingAnchor2 = [view7 leadingAnchor];
+  v89 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v94[0] = v89;
-  v87 = [(StatusBarBackgroundView *)self->_statusBarBackgroundView trailingAnchor];
-  v88 = [(IOSBasedChromeViewController *)self view];
-  v86 = [v88 trailingAnchor];
-  v85 = [v87 constraintEqualToAnchor:v86];
+  trailingAnchor = [(StatusBarBackgroundView *)self->_statusBarBackgroundView trailingAnchor];
+  view8 = [(IOSBasedChromeViewController *)self view];
+  trailingAnchor2 = [view8 trailingAnchor];
+  v85 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v94[1] = v85;
-  v83 = [(StatusBarBackgroundView *)self->_statusBarBackgroundView topAnchor];
-  v84 = [(IOSBasedChromeViewController *)self view];
-  v82 = [v84 topAnchor];
-  v81 = [v83 constraintEqualToAnchor:v82];
+  topAnchor5 = [(StatusBarBackgroundView *)self->_statusBarBackgroundView topAnchor];
+  view9 = [(IOSBasedChromeViewController *)self view];
+  topAnchor6 = [view9 topAnchor];
+  v81 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v94[2] = v81;
-  v79 = [(StatusBarBackgroundView *)self->_statusBarBackgroundView bottomAnchor];
-  v80 = [(IOSBasedChromeViewController *)self view];
-  v78 = [v80 safeAreaLayoutGuide];
-  v77 = [v78 topAnchor];
-  v76 = [v79 constraintGreaterThanOrEqualToAnchor:v77];
+  bottomAnchor2 = [(StatusBarBackgroundView *)self->_statusBarBackgroundView bottomAnchor];
+  view10 = [(IOSBasedChromeViewController *)self view];
+  safeAreaLayoutGuide3 = [view10 safeAreaLayoutGuide];
+  topAnchor7 = [safeAreaLayoutGuide3 topAnchor];
+  v76 = [bottomAnchor2 constraintGreaterThanOrEqualToAnchor:topAnchor7];
   v94[3] = v76;
-  v75 = [(StatusBarBackgroundView *)self->_statusBarBackgroundView bottomAnchor];
-  v61 = [(IOSBasedChromeViewController *)self view];
-  v62 = [v61 safeAreaLayoutGuide];
-  v63 = [v62 topAnchor];
+  bottomAnchor3 = [(StatusBarBackgroundView *)self->_statusBarBackgroundView bottomAnchor];
+  view11 = [(IOSBasedChromeViewController *)self view];
+  safeAreaLayoutGuide4 = [view11 safeAreaLayoutGuide];
+  topAnchor8 = [safeAreaLayoutGuide4 topAnchor];
   LODWORD(v64) = 1132068864;
-  v65 = [v75 constraintEqualToAnchor:v63 constant:0.0 priority:v64];
+  v65 = [bottomAnchor3 constraintEqualToAnchor:topAnchor8 constant:0.0 priority:v64];
   v94[4] = v65;
-  v66 = [(ChromeViewController *)self viewportLayoutGuide];
-  v67 = [v66 topAnchor];
-  v68 = [(StatusBarBackgroundView *)self->_statusBarBackgroundView bottomAnchor];
-  v69 = [v67 constraintGreaterThanOrEqualToAnchor:v68];
+  viewportLayoutGuide3 = [(ChromeViewController *)self viewportLayoutGuide];
+  topAnchor9 = [viewportLayoutGuide3 topAnchor];
+  bottomAnchor4 = [(StatusBarBackgroundView *)self->_statusBarBackgroundView bottomAnchor];
+  v69 = [topAnchor9 constraintGreaterThanOrEqualToAnchor:bottomAnchor4];
   v70 = self->_viewportTopEqualToSafeAreaBottomConstraint;
   v94[5] = v69;
   v94[6] = v70;
   v71 = [NSArray arrayWithObjects:v94 count:7];
   [NSLayoutConstraint activateConstraints:v71];
 
-  v72 = [(IOSBasedChromeViewController *)self theme];
-  [v72 applyAppearance];
+  theme = [(IOSBasedChromeViewController *)self theme];
+  [theme applyAppearance];
 
   [(EnvironmentObserver *)self->_environmentObserver updateCurrentEnvironmentName];
   [(IOSBasedChromeViewController *)self _loadInternalDebugSetting];
@@ -513,19 +513,19 @@
 
 - (int64_t)preferredUserInterfaceStyle
 {
-  v3 = [(IOSBasedChromeViewController *)self viewIfLoaded];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 screen];
-  v7 = [v6 traitCollection];
-  v8 = [v7 userInterfaceStyle];
+  viewIfLoaded = [(IOSBasedChromeViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
+  traitCollection = [screen traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   if ([(IOSBasedChromeViewController *)self _isNavigationMode])
   {
     v9 = +[MapsLightLevelController sharedController];
-    v10 = [v9 currentLightLevel];
+    currentLightLevel = [v9 currentLightLevel];
 
-    if (v10 == 2)
+    if (currentLightLevel == 2)
     {
       return 2;
     }
@@ -548,7 +548,7 @@
 
       else
       {
-        return v8;
+        return userInterfaceStyle;
       }
     }
   }
@@ -558,7 +558,7 @@
 
 - (BOOL)_isNavigationMode
 {
-  v2 = [(IOSBasedChromeViewController *)self currentIOSBasedContext];
+  currentIOSBasedContext = [(IOSBasedChromeViewController *)self currentIOSBasedContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -578,24 +578,24 @@
 {
   if ([(ChromeViewController *)self isSuppressed])
   {
-    v3 = 0;
+    topContext = 0;
   }
 
   else
   {
-    v3 = [(ChromeViewController *)self topContext];
+    topContext = [(ChromeViewController *)self topContext];
   }
 
-  return v3;
+  return topContext;
 }
 
 - (MapsUserLocationView)userLocationView
 {
   v4.receiver = self;
   v4.super_class = IOSBasedChromeViewController;
-  v2 = [(ChromeViewController *)&v4 userLocationView];
+  userLocationView = [(ChromeViewController *)&v4 userLocationView];
 
-  return v2;
+  return userLocationView;
 }
 
 - (void)prepareMapViewForFirstUse
@@ -603,77 +603,77 @@
   v45.receiver = self;
   v45.super_class = IOSBasedChromeViewController;
   [(ChromeViewController *)&v45 prepareMapViewForFirstUse];
-  v3 = [(ChromeViewController *)self mapView];
-  [v3 _setUseBalloonCalloutsForLabels:1];
-  [v3 setTintAdjustmentMode:1];
-  [v3 setShowsScale:0];
-  [v3 setShowsCompass:0];
-  [v3 _setShowsScaleDuringZoom:0];
-  [v3 _setScrollEdgeEffectViewInteractionDisabled:GEOConfigGetBOOL() ^ 1];
+  mapView = [(ChromeViewController *)self mapView];
+  [mapView _setUseBalloonCalloutsForLabels:1];
+  [mapView setTintAdjustmentMode:1];
+  [mapView setShowsScale:0];
+  [mapView setShowsCompass:0];
+  [mapView _setShowsScaleDuringZoom:0];
+  [mapView _setScrollEdgeEffectViewInteractionDisabled:GEOConfigGetBOOL() ^ 1];
   [(IOSBasedChromeViewController *)self _updateOfflineModernMapToken];
   v44 = 0;
   v42 = 0u;
   v43 = 0u;
   v41 = 0u;
-  if (v3)
+  if (mapView)
   {
-    [v3 _cartographicConfiguration];
+    [mapView _cartographicConfiguration];
   }
 
   if ([(IOSBasedChromeViewController *)self shouldUseModernMap])
   {
-    v4 = [(IOSBasedChromeViewController *)self modernMapTerrainMode];
+    modernMapTerrainMode = [(IOSBasedChromeViewController *)self modernMapTerrainMode];
   }
 
   else
   {
-    v4 = 1;
+    modernMapTerrainMode = 1;
   }
 
-  *(&v42 + 1) = v4;
+  *(&v42 + 1) = modernMapTerrainMode;
   if ([(IOSBasedChromeViewController *)self shouldUseModernMap])
   {
-    v5 = [(IOSBasedChromeViewController *)self modernMapProjectionType];
+    modernMapProjectionType = [(IOSBasedChromeViewController *)self modernMapProjectionType];
   }
 
   else
   {
-    v5 = 1;
+    modernMapProjectionType = 1;
   }
 
-  *&v42 = v5;
+  *&v42 = modernMapProjectionType;
   *&v43 = 0;
-  v6 = [[MapViewResponder alloc] initWithMapView:v3];
+  v6 = [[MapViewResponder alloc] initWithMapView:mapView];
   mapViewResponder = self->_mapViewResponder;
   self->_mapViewResponder = v6;
 
-  [(EnvironmentObserver *)self->_environmentObserver setMapView:v3];
-  v8 = [v3 mapType];
+  [(EnvironmentObserver *)self->_environmentObserver setMapView:mapView];
+  mapType = [mapView mapType];
   v9 = 3;
   v10 = 7;
-  if (v8 != 108)
+  if (mapType != 108)
   {
     v10 = 0;
   }
 
-  if (v8 != 104)
+  if (mapType != 104)
   {
     v9 = v10;
   }
 
   v11 = 5;
   v12 = -1;
-  if (v8 != 103)
+  if (mapType != 103)
   {
     v12 = 0;
   }
 
-  if (v8 != 4)
+  if (mapType != 4)
   {
     v11 = v12;
   }
 
-  if (v8 <= 103)
+  if (mapType <= 103)
   {
     v9 = v11;
   }
@@ -681,22 +681,22 @@
   v13 = 2;
   v14 = 1;
   v15 = 6;
-  if (v8 != 3)
+  if (mapType != 3)
   {
     v15 = 0;
   }
 
-  if (v8 != 2)
+  if (mapType != 2)
   {
     v14 = v15;
   }
 
-  if (v8 != 1)
+  if (mapType != 1)
   {
     v13 = v14;
   }
 
-  if (v8 <= 3)
+  if (mapType <= 3)
   {
     v16 = v13;
   }
@@ -707,8 +707,8 @@
   }
 
   self->_displayedViewMode = v16;
-  v17 = [(IOSBasedChromeViewController *)self userLocationView];
-  [v17 setViewMode:v16];
+  userLocationView = [(IOSBasedChromeViewController *)self userLocationView];
+  [userLocationView setViewMode:v16];
 
   if (self->_logTileStateRecognizer)
   {
@@ -716,9 +716,9 @@
   }
 
   v18 = +[GEOPlatform sharedPlatform];
-  v19 = [v18 isInternalInstall];
+  isInternalInstall = [v18 isInternalInstall];
 
-  if (v19)
+  if (isInternalInstall)
   {
     v20 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_handleLogTileState:"];
     logTileStateRecognizer = self->_logTileStateRecognizer;
@@ -733,11 +733,11 @@
   if (self->_logTileStateRecognizer)
   {
 LABEL_32:
-    v22 = [(ChromeViewController *)self mapView];
-    [v22 addGestureRecognizer:self->_logTileStateRecognizer];
+    mapView2 = [(ChromeViewController *)self mapView];
+    [mapView2 addGestureRecognizer:self->_logTileStateRecognizer];
   }
 
-  [v3 _setDebugConsoleAdditionalInfoProvider:&stru_101654748];
+  [mapView _setDebugConsoleAdditionalInfoProvider:&stru_101654748];
   if (self->_mapFullyDrawnObserver)
   {
     v23 = +[NSNotificationCenter defaultCenter];
@@ -752,7 +752,7 @@ LABEL_32:
 
   objc_initWeak(&location, self);
   v25 = +[NSNotificationCenter defaultCenter];
-  v26 = [v3 _mapLayer];
+  _mapLayer = [mapView _mapLayer];
   v27 = +[NSOperationQueue mainQueue];
   v28 = VKMapViewDidBecomeFullyDrawnNotification;
   v38[0] = _NSConcreteStackBlock;
@@ -760,7 +760,7 @@ LABEL_32:
   v38[2] = sub_100DC09B0;
   v38[3] = &unk_10165FBE8;
   objc_copyWeak(&v39, &location);
-  v29 = [v25 addObserverForName:v28 object:v26 queue:v27 usingBlock:v38];
+  v29 = [v25 addObserverForName:v28 object:_mapLayer queue:v27 usingBlock:v38];
   mapFullyDrawnObserver = self->_mapFullyDrawnObserver;
   self->_mapFullyDrawnObserver = v29;
 
@@ -786,11 +786,11 @@ LABEL_32:
 {
   usingOfflineDataModernMapToken = self->_usingOfflineDataModernMapToken;
   v4 = +[GEOOfflineService shared];
-  v5 = [v4 isUsingOffline];
+  isUsingOffline = [v4 isUsingOffline];
 
-  if ((((usingOfflineDataModernMapToken == 0) ^ v5) & 1) == 0)
+  if ((((usingOfflineDataModernMapToken == 0) ^ isUsingOffline) & 1) == 0)
   {
-    if (v5)
+    if (isUsingOffline)
     {
       v6 = [(IOSBasedChromeViewController *)self acquireModernMapTokenForReason:4];
     }
@@ -803,9 +803,9 @@ LABEL_32:
     v7 = self->_usingOfflineDataModernMapToken;
     self->_usingOfflineDataModernMapToken = v6;
 
-    v9 = [(ChromeViewController *)self mapView];
-    v8 = [v9 _mapLayer];
-    [v8 clearScene];
+    mapView = [(ChromeViewController *)self mapView];
+    _mapLayer = [mapView _mapLayer];
+    [_mapLayer clearScene];
   }
 }
 
@@ -827,9 +827,9 @@ LABEL_32:
 
     else
     {
-      v6 = [(IOSBasedChromeViewController *)self viewIfLoaded];
-      v7 = [v6 traitCollection];
-      v4 = [v7 verticalSizeClass] == 1;
+      viewIfLoaded = [(IOSBasedChromeViewController *)self viewIfLoaded];
+      traitCollection = [viewIfLoaded traitCollection];
+      v4 = [traitCollection verticalSizeClass] == 1;
     }
   }
 
@@ -864,12 +864,12 @@ LABEL_32:
 {
   v7 = +[NSUserDefaults standardUserDefaults];
   v3 = [v7 BOOLForKey:@"DisableLocationPulse"];
-  v4 = [(ChromeViewController *)self mapView];
-  [v4 _setLocationPulseEnabled:v3 ^ 1];
+  mapView = [(ChromeViewController *)self mapView];
+  [mapView _setLocationPulseEnabled:v3 ^ 1];
 
   v5 = [v7 BOOLForKey:@"DebugConsoleEnabled"];
-  v6 = [(ChromeViewController *)self mapView];
-  [v6 setLocationConsoleEnabled:v5];
+  mapView2 = [(ChromeViewController *)self mapView];
+  [mapView2 setLocationConsoleEnabled:v5];
 }
 
 - (VenuesManager)venuesManager
@@ -883,44 +883,44 @@ LABEL_32:
 LABEL_9:
 
       v11 = [VenuesManager alloc];
-      v12 = [(ChromeViewController *)self mapView];
-      v13 = [(IOSBasedChromeViewController *)self userLocationView];
-      v14 = [(VenuesManager *)v11 initWithDelegate:self mapView:v12 userLocationView:v13];
+      mapView = [(ChromeViewController *)self mapView];
+      userLocationView = [(IOSBasedChromeViewController *)self userLocationView];
+      v14 = [(VenuesManager *)v11 initWithDelegate:self mapView:mapView userLocationView:userLocationView];
       v15 = self->_venuesManager;
       self->_venuesManager = v14;
 
       v16 = self->_venuesManager;
-      v17 = [(ChromeViewController *)self searchPinsManager];
-      [v17 setVenuesManager:v16];
+      searchPinsManager = [(ChromeViewController *)self searchPinsManager];
+      [searchPinsManager setVenuesManager:v16];
 
       v18 = self->_venuesManager;
-      v19 = [(ChromeViewController *)self searchPinsManager];
-      [(VenuesManager *)v18 addChangeObserver:v19];
+      searchPinsManager2 = [(ChromeViewController *)self searchPinsManager];
+      [(VenuesManager *)v18 addChangeObserver:searchPinsManager2];
 
       venuesManager = self->_venuesManager;
       goto LABEL_10;
     }
 
-    v5 = self;
+    selfCopy = self;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(IOSBasedChromeViewController *)v5 performSelector:"accessibilityIdentifier"];
+      v8 = [(IOSBasedChromeViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v9 = v8;
       if (v8 && ![v8 isEqualToString:v7])
       {
-        v10 = [NSString stringWithFormat:@"%@<%p, %@>", v7, v5, v9];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v7, selfCopy, v9];
 
         goto LABEL_8;
       }
     }
 
-    v10 = [NSString stringWithFormat:@"%@<%p>", v7, v5];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v7, selfCopy];
 LABEL_8:
 
     *buf = 138543362;
-    v22 = v10;
+    v22 = selfCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}@] Creating venuesManager", buf, 0xCu);
 
     goto LABEL_9;
@@ -936,37 +936,37 @@ LABEL_10:
   v7.receiver = self;
   v7.super_class = IOSBasedChromeViewController;
   [(IOSBasedChromeViewController *)&v7 viewLayoutMarginsDidChange];
-  v3 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-  [v3 edgePadding];
+  _currentContainerViewController = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+  [_currentContainerViewController edgePadding];
   v5 = v4;
-  v6 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-  [v6 setMargin:v5];
+  floatingControlsOverlay = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+  [floatingControlsOverlay setMargin:v5];
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-  v2 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 fullscreenViewController];
+    fullscreenViewController = [topContext fullscreenViewController];
   }
 
   else
   {
-    v3 = 0;
+    fullscreenViewController = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 prefersHomeIndicatorAutoHidden];
+    prefersHomeIndicatorAutoHidden = [fullscreenViewController prefersHomeIndicatorAutoHidden];
   }
 
   else
   {
-    v4 = 0;
+    prefersHomeIndicatorAutoHidden = 0;
   }
 
-  return v4;
+  return prefersHomeIndicatorAutoHidden;
 }
 
 - (void)viewDidLayoutSubviews
@@ -976,28 +976,28 @@ LABEL_10:
   [(ChromeViewController *)&v50 viewDidLayoutSubviews];
   if (![(IOSBasedChromeViewController *)self _isCurrentUserInterfaceIdiomMac]&& ![(IOSBasedChromeViewController *)self _internal_topContextWantsCompassLayoutControl])
   {
-    v3 = [(ChromeViewController *)self mapView];
-    v4 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-    [v4 layoutFrame];
+    mapView = [(ChromeViewController *)self mapView];
+    innerLayoutGuide = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+    [innerLayoutGuide layoutFrame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-    v14 = [v13 owningView];
-    [v3 convertRect:v14 fromView:{v6, v8, v10, v12}];
+    innerLayoutGuide2 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+    owningView = [innerLayoutGuide2 owningView];
+    [mapView convertRect:owningView fromView:{v6, v8, v10, v12}];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v45 = v21;
 
-    v22 = [(ChromeViewController *)self mapView];
-    [v22 _edgeInsets];
+    mapView2 = [(ChromeViewController *)self mapView];
+    [mapView2 _edgeInsets];
     v48 = v24;
     v49 = v23;
 
-    v25 = [(ChromeViewController *)self mapView];
-    [v25 bounds];
+    mapView3 = [(ChromeViewController *)self mapView];
+    [mapView3 bounds];
     v43 = v27;
     v44 = v26;
     v42 = v28;
@@ -1066,13 +1066,13 @@ LABEL_10:
       }
     }
 
-    v36 = [(ChromeViewController *)self mapView];
-    [v36 _compassInsets];
+    mapView4 = [(ChromeViewController *)self mapView];
+    [mapView4 _compassInsets];
     v38 = v37;
     v40 = v39;
 
-    v41 = [(ChromeViewController *)self mapView];
-    [v41 _setCompassInsets:{v38, MinX - v49, v40, right - v48}];
+    mapView5 = [(ChromeViewController *)self mapView];
+    [mapView5 _setCompassInsets:{v38, MinX - v49, v40, right - v48}];
   }
 }
 
@@ -1097,8 +1097,8 @@ LABEL_10:
 
     else
     {
-      v4 = [(ChromeViewController *)self mapView];
-      [v4 setShowsLiveEVData:0];
+      mapView = [(ChromeViewController *)self mapView];
+      [mapView setShowsLiveEVData:0];
     }
   }
 }
@@ -1112,117 +1112,117 @@ LABEL_10:
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(ChromeViewController *)self topContext];
-    v5 = [v4 fullscreenViewController];
+    topContext2 = [(ChromeViewController *)self topContext];
+    fullscreenViewController = [topContext2 fullscreenViewController];
   }
 
   else
   {
-    v5 = 0;
+    fullscreenViewController = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [fullscreenViewController supportedInterfaceOrientations];
   }
 
   else
   {
-    v7 = [(IOSBasedChromeViewController *)self cardsOverlay];
-    v8 = [v7 currentViewController];
+    cardsOverlay = [(IOSBasedChromeViewController *)self cardsOverlay];
+    currentViewController = [cardsOverlay currentViewController];
 
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v8 supportedInterfaceOrientations];
+      supportedInterfaceOrientations = [currentViewController supportedInterfaceOrientations];
     }
 
     else
     {
-      v9 = [(ChromeViewController *)self topContext];
+      topContext3 = [(ChromeViewController *)self topContext];
       if (objc_opt_respondsToSelector())
       {
-        v10 = [(ChromeViewController *)self topContext];
-        v11 = [v10 customContainerViewController];
+        topContext4 = [(ChromeViewController *)self topContext];
+        customContainerViewController = [topContext4 customContainerViewController];
       }
 
       else
       {
-        v11 = 0;
+        customContainerViewController = 0;
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v6 = [v11 supportedInterfaceOrientations];
+        supportedInterfaceOrientations = [customContainerViewController supportedInterfaceOrientations];
       }
 
       else
       {
-        v6 = 26;
+        supportedInterfaceOrientations = 26;
       }
     }
   }
 
-  return v6;
+  return supportedInterfaceOrientations;
 }
 
 - (BOOL)_internal_topContextWantsCompassLayoutControl
 {
-  v3 = [(ChromeViewController *)self nextTopContext];
-  v4 = v3;
-  if (v3)
+  nextTopContext = [(ChromeViewController *)self nextTopContext];
+  v4 = nextTopContext;
+  if (nextTopContext)
   {
-    v5 = v3;
+    topContext = nextTopContext;
   }
 
   else
   {
-    v5 = [(ChromeViewController *)self topContext];
+    topContext = [(ChromeViewController *)self topContext];
   }
 
-  v6 = v5;
+  v6 = topContext;
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 wantsCompassLayoutControl];
+    wantsCompassLayoutControl = [v6 wantsCompassLayoutControl];
   }
 
   else
   {
-    v7 = 0;
+    wantsCompassLayoutControl = 0;
   }
 
-  return v7;
+  return wantsCompassLayoutControl;
 }
 
 - (int64_t)_desiredFloatingControlsForCurrentState
 {
-  v3 = [(ChromeViewController *)self pendingContexts];
-  v4 = v3;
-  if (v3)
+  pendingContexts = [(ChromeViewController *)self pendingContexts];
+  v4 = pendingContexts;
+  if (pendingContexts)
   {
-    v5 = v3;
+    contexts = pendingContexts;
   }
 
   else
   {
-    v5 = [(ChromeViewController *)self contexts];
+    contexts = [(ChromeViewController *)self contexts];
   }
 
-  v6 = v5;
+  v6 = contexts;
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [v6 reverseObjectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (!v8)
   {
 LABEL_27:
-    v15 = 0;
+    desiredFloatingControls = 0;
     goto LABEL_28;
   }
 
@@ -1237,13 +1237,13 @@ LABEL_27:
     {
       if (*v26 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v14 = *(*(&v25 + 1) + 8 * v12);
       if (objc_opt_respondsToSelector())
       {
-        v15 = [v14 desiredFloatingControls];
+        desiredFloatingControls = [v14 desiredFloatingControls];
         goto LABEL_28;
       }
 
@@ -1293,8 +1293,8 @@ LABEL_25:
     }
 
     while (v9 != v12);
-    v9 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
-    v15 = 0;
+    v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v25 objects:v31 count:16];
+    desiredFloatingControls = 0;
     v11 = v13;
     if (v9)
     {
@@ -1308,12 +1308,12 @@ LABEL_28:
 
   if (self->_testing_hide2D3DFloatingControls)
   {
-    v23 = v15 & 0xFFFFFFFFFFFFFFCFLL;
+    v23 = desiredFloatingControls & 0xFFFFFFFFFFFFFFCFLL;
   }
 
   else
   {
-    v23 = v15;
+    v23 = desiredFloatingControls;
   }
 
   return v23;
@@ -1321,8 +1321,8 @@ LABEL_28:
 
 - (double)statusBarHeight
 {
-  v3 = [(IOSBasedChromeViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(IOSBasedChromeViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
   [(StatusBarBackgroundView *)self->_statusBarBackgroundView frame];
   if (v5 <= CGRectGetHeight(v10))
@@ -1333,8 +1333,8 @@ LABEL_28:
 
   else
   {
-    v6 = [(IOSBasedChromeViewController *)self view];
-    [v6 safeAreaInsets];
+    view2 = [(IOSBasedChromeViewController *)self view];
+    [view2 safeAreaInsets];
     Height = v7;
   }
 
@@ -1345,7 +1345,7 @@ LABEL_28:
 {
   v6.receiver = self;
   v6.super_class = IOSBasedChromeViewController;
-  v2 = [(ChromeViewController *)&v6 allComponents];
+  allComponents = [(ChromeViewController *)&v6 allComponents];
   v7[0] = @"floatingControls";
   v7[1] = @"cards";
   v7[2] = @"lookAroundButton";
@@ -1355,15 +1355,15 @@ LABEL_28:
   v7[6] = @"mapScale";
   v7[7] = @"floatingSearchButton";
   v3 = [NSArray arrayWithObjects:v7 count:8];
-  v4 = [v2 arrayByAddingObjectsFromArray:v3];
+  v4 = [allComponents arrayByAddingObjectsFromArray:v3];
 
   return v4;
 }
 
 - (void)_freezeInnerLayoutGuide
 {
-  v3 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-  [v3 layoutFrame];
+  innerLayoutGuide = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+  [innerLayoutGuide layoutFrame];
   v45 = v5;
   v47 = v4;
   v43 = v6;
@@ -1374,10 +1374,10 @@ LABEL_28:
     [NSLayoutConstraint deactivateConstraints:?];
   }
 
-  v8 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-  v51 = [v8 owningView];
+  innerLayoutGuide2 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+  owningView = [innerLayoutGuide2 owningView];
 
-  [v51 bounds];
+  [owningView bounds];
   v36 = v9;
   rect = v10;
   v39 = v12;
@@ -1452,25 +1452,25 @@ LABEL_28:
   }
 
   rect1a = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-  v48 = [rect1a topAnchor];
-  v46 = [v51 topAnchor];
-  v35 = [v48 constraintEqualToAnchor:v46 constant:top];
-  v44 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-  v42 = [v44 leftAnchor];
-  v40 = [v51 leftAnchor];
-  v34 = [v42 constraintEqualToAnchor:v40 constant:MinX];
-  v37 = [v51 bottomAnchor];
-  v24 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-  v25 = [v24 bottomAnchor];
-  v26 = [v37 constraintEqualToAnchor:v25 constant:v19];
-  v27 = [v51 rightAnchor];
-  v28 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-  v29 = [v28 rightAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29 constant:right];
+  topAnchor = [rect1a topAnchor];
+  topAnchor2 = [owningView topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:top];
+  innerLayoutGuide3 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+  leftAnchor = [innerLayoutGuide3 leftAnchor];
+  leftAnchor2 = [owningView leftAnchor];
+  v34 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:MinX];
+  bottomAnchor = [owningView bottomAnchor];
+  innerLayoutGuide4 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+  bottomAnchor2 = [innerLayoutGuide4 bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v19];
+  rightAnchor = [owningView rightAnchor];
+  innerLayoutGuide5 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+  rightAnchor2 = [innerLayoutGuide5 rightAnchor];
+  v30 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:right];
   v31 = [MapsEdgeConstraints edgeConstraintsWithTop:v35 leading:v34 bottom:v26 trailing:v30];
-  v32 = [v31 allConstraints];
+  allConstraints = [v31 allConstraints];
   innerLayoutGuideConstraints = self->_innerLayoutGuideConstraints;
-  self->_innerLayoutGuideConstraints = v32;
+  self->_innerLayoutGuideConstraints = allConstraints;
 
   [NSLayoutConstraint activateConstraints:self->_innerLayoutGuideConstraints];
 }
@@ -1480,10 +1480,10 @@ LABEL_28:
   if (!self->_screenshotService)
   {
     v3 = [MapsScreenshotService alloc];
-    v8 = [(IOSBasedChromeViewController *)self view];
-    v4 = [v8 window];
-    v5 = [v4 windowScene];
-    v6 = [(MapsScreenshotService *)v3 initWithDelegate:self windowScene:v5];
+    view = [(IOSBasedChromeViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    v6 = [(MapsScreenshotService *)v3 initWithDelegate:self windowScene:windowScene];
     screenshotService = self->_screenshotService;
     self->_screenshotService = v6;
   }
@@ -1498,36 +1498,36 @@ LABEL_28:
 
 - (id)coordinator
 {
-  v2 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 actionCoordinator];
+    actionCoordinator = [topContext actionCoordinator];
   }
 
   else
   {
-    v3 = 0;
+    actionCoordinator = 0;
   }
 
-  return v3;
+  return actionCoordinator;
 }
 
 - (BOOL)_canShowLookAroundButton
 {
   v3 = +[GEOResourceManifestManager modernManager];
-  v4 = [v3 isMuninEnabled];
+  isMuninEnabled = [v3 isMuninEnabled];
 
-  if (v4)
+  if (isMuninEnabled)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(ChromeViewController *)self contexts];
-    v6 = [v5 reverseObjectEnumerator];
+    contexts = [(ChromeViewController *)self contexts];
+    reverseObjectEnumerator = [contexts reverseObjectEnumerator];
 
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1539,7 +1539,7 @@ LABEL_4:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
@@ -1555,7 +1555,7 @@ LABEL_4:
 
         if (v8 == ++v11)
         {
-          v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
           if (v8)
           {
             goto LABEL_4;
@@ -1580,59 +1580,59 @@ LABEL_16:
 
 - (id)_lookAroundButtonPlaceCardItem
 {
-  v3 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   if ([(IOSBasedChromeViewController *)self _shouldCollapseLookAroundPreview]|| (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v4 = 0;
+    placeCardItemForLookAroundButton = 0;
   }
 
   else
   {
-    v4 = [v3 placeCardItemForLookAroundButton];
+    placeCardItemForLookAroundButton = [topContext placeCardItemForLookAroundButton];
   }
 
-  return v4;
+  return placeCardItemForLookAroundButton;
 }
 
 - (BOOL)_shouldCollapseLookAroundPreview
 {
-  v2 = [(IOSBasedChromeViewController *)self coordinator];
-  v3 = [v2 containerViewController];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  containerViewController = [coordinator containerViewController];
 
-  v4 = [v3 currentViewController];
-  v5 = [v4 cardPresentationController];
+  currentViewController = [containerViewController currentViewController];
+  cardPresentationController = [currentViewController cardPresentationController];
 
-  v6 = [v5 containerStyle];
-  v7 = (v6 >= 8 || ((0xE3u >> v6) & 1) == 0) && [v5 containeeLayout] == 1;
+  containerStyle = [cardPresentationController containerStyle];
+  v7 = (containerStyle >= 8 || ((0xE3u >> containerStyle) & 1) == 0) && [cardPresentationController containeeLayout] == 1;
 
   return v7;
 }
 
 - (void)updateMapViewDisplayOptions
 {
-  v3 = [(IOSBasedChromeViewController *)self settingsController];
-  if ([v3 shouldChangeViewModeForLabels])
+  settingsController = [(IOSBasedChromeViewController *)self settingsController];
+  if ([settingsController shouldChangeViewModeForLabels])
   {
     [(IOSBasedChromeViewController *)self _updateViewModeForLabelsDisplayIfNeeded];
   }
 
-  if ([v3 shouldChangeViewModeForTraffic])
+  if ([settingsController shouldChangeViewModeForTraffic])
   {
     [(IOSBasedChromeViewController *)self _updateViewModeForTrafficDisplayIfNeeded];
   }
 
   v4 = [(IOSBasedChromeViewController *)self _shouldShowTrafficForViewMode:[(IOSBasedChromeViewController *)self displayedViewMode]];
-  v5 = [(ChromeViewController *)self mapView];
-  [v5 setShowsTraffic:v4];
+  mapView = [(ChromeViewController *)self mapView];
+  [mapView setShowsTraffic:v4];
 
-  LOBYTE(v5) = [v3 userDesiresLabels];
-  LOBYTE(v4) = [v3 userDesiresTraffic];
+  LOBYTE(mapView) = [settingsController userDesiresLabels];
+  LOBYTE(v4) = [settingsController userDesiresTraffic];
   v6 = +[MapsAnalyticStateProvider serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100039B58;
   block[3] = &unk_1016547B8;
-  v8 = v5;
+  v8 = mapView;
   v9 = v4;
   dispatch_async(v6, block);
 }
@@ -1657,12 +1657,12 @@ LABEL_16:
 {
   v9.receiver = self;
   v9.super_class = IOSBasedChromeViewController;
-  v3 = [(ChromeViewController *)&v9 personalizedItemSourcesForCurrentState];
-  v4 = [v3 mutableCopy];
+  personalizedItemSourcesForCurrentState = [(ChromeViewController *)&v9 personalizedItemSourcesForCurrentState];
+  v4 = [personalizedItemSourcesForCurrentState mutableCopy];
 
-  v5 = [(IOSBasedChromeViewController *)self sharedTripsAnnotationsController];
-  v6 = [v5 itemSource];
-  [v4 addObject:v6];
+  sharedTripsAnnotationsController = [(IOSBasedChromeViewController *)self sharedTripsAnnotationsController];
+  itemSource = [sharedTripsAnnotationsController itemSource];
+  [v4 addObject:itemSource];
 
   v7 = [v4 copy];
 
@@ -1704,19 +1704,19 @@ LABEL_16:
 
 - (void)_refreshHiddenCards
 {
-  v3 = [(ChromeViewController *)self pendingContexts];
-  v4 = v3;
-  if (v3)
+  pendingContexts = [(ChromeViewController *)self pendingContexts];
+  v4 = pendingContexts;
+  if (pendingContexts)
   {
-    v5 = v3;
+    contexts = pendingContexts;
   }
 
   else
   {
-    v5 = [(ChromeViewController *)self contexts];
+    contexts = [(ChromeViewController *)self contexts];
   }
 
-  v6 = v5;
+  v6 = contexts;
 
   v15 = 0u;
   v16 = 0u;
@@ -1750,14 +1750,14 @@ LABEL_16:
 
 - (void)updateThemeViewAndControllers
 {
-  v3 = [(IOSBasedChromeViewController *)self view];
-  v4 = [v3 window];
-  v5 = [(IOSBasedChromeViewController *)self theme];
-  [v4 _accessibilitySetInterfaceStyleIntent:{objc_msgSend(v5, "interfaceStyleIntent")}];
+  view = [(IOSBasedChromeViewController *)self view];
+  window = [view window];
+  theme = [(IOSBasedChromeViewController *)self theme];
+  [window _accessibilitySetInterfaceStyleIntent:{objc_msgSend(theme, "interfaceStyleIntent")}];
 
-  LOBYTE(v5) = self->_transitioningFromImagery;
+  LOBYTE(theme) = self->_transitioningFromImagery;
   v6 = +[MapsLightLevelController sharedController];
-  -[IOSBasedChromeViewController updateLightLevelAnimated:lightLevel:](self, "updateLightLevelAnimated:lightLevel:", (v5 & 1) == 0, [v6 currentLightLevel]);
+  -[IOSBasedChromeViewController updateLightLevelAnimated:lightLevel:](self, "updateLightLevelAnimated:lightLevel:", (theme & 1) == 0, [v6 currentLightLevel]);
 
   self->_transitioningFromImagery = 0;
   [(IOSBasedChromeViewController *)self setNeedsUserInterfaceAppearanceUpdate];
@@ -1776,13 +1776,13 @@ LABEL_16:
 
 - (id)currentTraits
 {
-  v3 = [(ChromeViewController *)self mapView];
-  if (v3)
+  mapView = [(ChromeViewController *)self mapView];
+  if (mapView)
   {
     v4 = +[MKMapService sharedService];
-    v5 = [(ChromeViewController *)self mapViewEnteredForegroundDate];
-    v6 = [(ChromeViewController *)self lastMapViewportChangedDate];
-    v7 = [v4 mapsDefaultTraitsForMapView:v3 mapViewEnteredForegroundDate:v5 mapViewportChangedDate:v6];
+    mapViewEnteredForegroundDate = [(ChromeViewController *)self mapViewEnteredForegroundDate];
+    lastMapViewportChangedDate = [(ChromeViewController *)self lastMapViewportChangedDate];
+    v7 = [v4 mapsDefaultTraitsForMapView:mapView mapViewEnteredForegroundDate:mapViewEnteredForegroundDate mapViewportChangedDate:lastMapViewportChangedDate];
 
     v8 = [(NSArray *)self->_historicalLocations mutableCopy];
     [v7 setHistoricalLocations:v8];
@@ -1817,11 +1817,11 @@ LABEL_16:
 
 - (BOOL)isNightMode
 {
-  v3 = [(ChromeViewController *)self mapView];
-  if (v3)
+  mapView = [(ChromeViewController *)self mapView];
+  if (mapView)
   {
-    v4 = v3;
-    [v3 _cartographicConfiguration];
+    v4 = mapView;
+    [mapView _cartographicConfiguration];
 
     if (v6 == 1)
     {
@@ -1842,25 +1842,25 @@ LABEL_16:
 
 - (UIScrollView)pptTestScrollView
 {
-  v2 = [(IOSBasedChromeViewController *)self _ppt_containerViewController];
-  v3 = [v2 currentViewController];
+  _ppt_containerViewController = [(IOSBasedChromeViewController *)self _ppt_containerViewController];
+  currentViewController = [_ppt_containerViewController currentViewController];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 pptTestScrollView];
+    pptTestScrollView = [currentViewController pptTestScrollView];
   }
 
   else
   {
-    v4 = 0;
+    pptTestScrollView = 0;
   }
 
-  return v4;
+  return pptTestScrollView;
 }
 
-- (void)pptTestDismissTrayAnimated:(BOOL)a3 assertTrayType:(int64_t)a4
+- (void)pptTestDismissTrayAnimated:(BOOL)animated assertTrayType:(int64_t)type
 {
-  v4 = a3;
-  if (a4 && ![(IOSBasedChromeViewController *)self pptTestIsTrayType:a4])
+  animatedCopy = animated;
+  if (type && ![(IOSBasedChromeViewController *)self pptTestIsTrayType:type])
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1891,34 +1891,34 @@ LABEL_16:
 
   else
   {
-    v9 = [(IOSBasedChromeViewController *)self _ppt_containerViewController];
-    [v9 popLastViewControllerAnimated:v4];
+    _ppt_containerViewController = [(IOSBasedChromeViewController *)self _ppt_containerViewController];
+    [_ppt_containerViewController popLastViewControllerAnimated:animatedCopy];
   }
 }
 
-- (BOOL)pptTestIsTrayType:(int64_t)a3
+- (BOOL)pptTestIsTrayType:(int64_t)type
 {
-  v4 = [(IOSBasedChromeViewController *)self _ppt_containerViewController];
-  v5 = [v4 currentViewController];
+  _ppt_containerViewController = [(IOSBasedChromeViewController *)self _ppt_containerViewController];
+  currentViewController = [_ppt_containerViewController currentViewController];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 pptTestIsTrayType:a3];
+    v6 = [currentViewController pptTestIsTrayType:type];
   }
 
   else
   {
-    v6 = a3 == 0;
+    v6 = type == 0;
   }
 
   return v6;
 }
 
-- (void)pptTestUpdateTrayLayout:(unint64_t)a3 animated:(BOOL)a4
+- (void)pptTestUpdateTrayLayout:(unint64_t)layout animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3 < 3)
+  animatedCopy = animated;
+  if (layout < 3)
   {
-    v6 = (a3 + 1);
+    v6 = (layout + 1);
   }
 
   else
@@ -1926,29 +1926,29 @@ LABEL_16:
     v6 = 0;
   }
 
-  v7 = [(IOSBasedChromeViewController *)self _ppt_containerViewController];
-  if ([v7 containeeLayout] == v6)
+  _ppt_containerViewController = [(IOSBasedChromeViewController *)self _ppt_containerViewController];
+  if ([_ppt_containerViewController containeeLayout] == v6)
   {
     v11[0] = @"ContainerLayout";
     v8 = [NSNumber numberWithUnsignedInteger:v6];
     v11[1] = @"ContainerContainee";
     v12[0] = v8;
-    v9 = [v7 currentViewController];
-    v12[1] = v9;
+    currentViewController = [_ppt_containerViewController currentViewController];
+    v12[1] = currentViewController;
     v10 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
     [PPTNotificationCenter postNotificationIfNeededWithName:@"PPTTestTrayLayoutDidUpdateNotification" object:self userInfo:v10];
   }
 
   else
   {
-    [v7 setLayoutIfSupported:v6 animated:v4];
+    [_ppt_containerViewController setLayoutIfSupported:v6 animated:animatedCopy];
   }
 }
 
 - (BOOL)pptTestCanUpdateTrayLayout
 {
-  v2 = [(IOSBasedChromeViewController *)self _ppt_containerViewController];
-  v3 = [v2 containeeLayout] != 5 && objc_msgSend(v2, "containeeLayout") != 4;
+  _ppt_containerViewController = [(IOSBasedChromeViewController *)self _ppt_containerViewController];
+  v3 = [_ppt_containerViewController containeeLayout] != 5 && objc_msgSend(_ppt_containerViewController, "containeeLayout") != 4;
 
   return v3;
 }
@@ -1960,55 +1960,55 @@ LABEL_16:
   return WeakRetained;
 }
 
-- (void)mapStylePickerContaineeViewControllerWantsDismissWithViewController:(id)a3
+- (void)mapStylePickerContaineeViewControllerWantsDismissWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (sub_10000FA08(self) == 5 || sub_10000FA08(self) == 1)
   {
-    [v5 dismissModalViewControllerAnimated:1];
+    [controllerCopy dismissModalViewControllerAnimated:1];
   }
 
   else
   {
-    v4 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-    [v4 popLastViewControllerAnimated:1];
+    _currentContainerViewController = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+    [_currentContainerViewController popLastViewControllerAnimated:1];
   }
 
-  [(ChromeViewController *)self unregisterAdditionalMapViewDelegate:v5];
+  [(ChromeViewController *)self unregisterAdditionalMapViewDelegate:controllerCopy];
 }
 
-- (void)mapStylePickerContaineeViewControllerDidChangeMapTypeWithViewController:(id)a3 mapType:(unint64_t)a4 skipConfiguration:(BOOL)a5
+- (void)mapStylePickerContaineeViewControllerDidChangeMapTypeWithViewController:(id)controller mapType:(unint64_t)type skipConfiguration:(BOOL)configuration
 {
-  v5 = a5;
-  if (a4 <= 3)
+  configurationCopy = configuration;
+  if (type <= 3)
   {
     v9 = 2;
     v10 = 1;
     v11 = 6;
-    if (a4 != 3)
+    if (type != 3)
     {
       v11 = 0;
     }
 
-    if (a4 != 2)
+    if (type != 2)
     {
       v10 = v11;
     }
 
-    v12 = a4 == 1;
+    v12 = type == 1;
     goto LABEL_14;
   }
 
-  if (a4 > 103)
+  if (type > 103)
   {
     v9 = 3;
     v10 = 7;
-    if (a4 != 108)
+    if (type != 108)
     {
       v10 = 0;
     }
 
-    v12 = a4 == 104;
+    v12 = type == 104;
 LABEL_14:
     if (v12)
     {
@@ -2023,14 +2023,14 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
     v8 = 5;
   }
 
   else
   {
-    if (a4 == 103)
+    if (type == 103)
     {
       v7 = 0;
       v8 = -1;
@@ -2056,21 +2056,21 @@ LABEL_18:
   [MapsSettings setSelectedViewMode:v13];
   if (v13 == 2)
   {
-    v14 = [(ChromeViewController *)self mapView];
-    v15 = [v14 preferredConfiguration];
+    mapView = [(ChromeViewController *)self mapView];
+    preferredConfiguration = [mapView preferredConfiguration];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v17 = [(ChromeViewController *)self mapView];
-      v18 = [v17 preferredConfiguration];
+      mapView2 = [(ChromeViewController *)self mapView];
+      preferredConfiguration2 = [mapView2 preferredConfiguration];
 
-      v19 = [(ChromeViewController *)self mapView];
-      v20 = v19;
-      if (v19)
+      mapView3 = [(ChromeViewController *)self mapView];
+      v20 = mapView3;
+      if (mapView3)
       {
-        [v19 _cartographicConfiguration];
+        [mapView3 _cartographicConfiguration];
         v21 = v26 != 0;
       }
 
@@ -2079,9 +2079,9 @@ LABEL_18:
         v21 = 0;
       }
 
-      v22 = [v18 showsTraffic];
+      showsTraffic = [preferredConfiguration2 showsTraffic];
       [MapsSettings setUserDesiresLabels:v21];
-      [MapsSettings setUserDesiresTraffic:v22];
+      [MapsSettings setUserDesiresTraffic:showsTraffic];
     }
   }
 
@@ -2101,30 +2101,30 @@ LABEL_18:
   v25 = +[CarDisplayController sharedInstance];
   [v25 updateMapsSuggestionsSignalForMapType:v23];
 
-  [(IOSBasedChromeViewController *)self updateViewMode:v8 animated:1 skipSettingMapConfiguration:v5];
+  [(IOSBasedChromeViewController *)self updateViewMode:v8 animated:1 skipSettingMapConfiguration:configurationCopy];
 }
 
-- (void)mapStylePickerContaineeViewControllerDismissByGestureWithViewController:(id)a3
+- (void)mapStylePickerContaineeViewControllerDismissByGestureWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(ChromeViewController *)self setNeedsUpdateComponent:@"lookAroundButton" animated:1];
   [(ChromeViewController *)self setNeedsUpdateComponent:@"weatherOverlay" animated:1];
   [(ChromeViewController *)self setNeedsUpdateComponent:@"floatingControls" animated:1];
-  [(ChromeViewController *)self unregisterAdditionalMapViewDelegate:v4];
+  [(ChromeViewController *)self unregisterAdditionalMapViewDelegate:controllerCopy];
 }
 
-- (void)mapStylePickerContaineeViewControllerPresentDebugPanelIfEnabledWithViewController:(id)a3
+- (void)mapStylePickerContaineeViewControllerPresentDebugPanelIfEnabledWithViewController:(id)controller
 {
-  v3 = [(IOSBasedChromeViewController *)self _maps_mapsSceneDelegate];
-  [v3 presentMapsDebugControllerIfEnabled];
+  _maps_mapsSceneDelegate = [(IOSBasedChromeViewController *)self _maps_mapsSceneDelegate];
+  [_maps_mapsSceneDelegate presentMapsDebugControllerIfEnabled];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = a3;
-  v5 = [(IOSBasedChromeViewController *)self currentShareItemSource];
+  copyCopy = copy;
+  currentShareItemSource = [(IOSBasedChromeViewController *)self currentShareItemSource];
   shareItemSourceForCopyAction = self->_shareItemSourceForCopyAction;
-  self->_shareItemSourceForCopyAction = v5;
+  self->_shareItemSourceForCopyAction = currentShareItemSource;
 
   objc_initWeak(&location, self);
   v7 = self->_shareItemSourceForCopyAction;
@@ -2138,22 +2138,22 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (void)dismissAllModalViewsIfPresentAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAllModalViewsIfPresentAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v7 = sub_10000B11C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
-    if (v4)
+    if (animatedCopy)
     {
       v8 = @"YES";
     }
 
     v9 = v8;
     v14 = 138412802;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2080;
     v17 = "[IOSBasedChromeViewController dismissAllModalViewsIfPresentAnimated:completion:]";
     v18 = 2112;
@@ -2161,10 +2161,10 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ %s, %@", &v14, 0x20u);
   }
 
-  v10 = [(IOSBasedChromeViewController *)self presentedViewController];
-  if (v10)
+  presentedViewController = [(IOSBasedChromeViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v11 = v10;
+    v11 = presentedViewController;
     while (1)
     {
       objc_opt_class();
@@ -2173,10 +2173,10 @@ LABEL_18:
         break;
       }
 
-      v12 = [(__CFString *)v11 presentedViewController];
+      presentedViewController2 = [(__CFString *)v11 presentedViewController];
 
-      v11 = v12;
-      if (!v12)
+      v11 = presentedViewController2;
+      if (!presentedViewController2)
       {
         goto LABEL_9;
       }
@@ -2186,7 +2186,7 @@ LABEL_18:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412802;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2080;
       v17 = "[IOSBasedChromeViewController dismissAllModalViewsIfPresentAnimated:completion:]";
       v18 = 2112;
@@ -2194,22 +2194,22 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@ %s, dismissing Modal! %@", &v14, 0x20u);
     }
 
-    [(__CFString *)v11 dismissViewControllerAnimated:v4 completion:v6];
+    [(__CFString *)v11 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 
   else
   {
 LABEL_9:
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (BOOL)isHidingCardsForContext:(id)a3
+- (BOOL)isHidingCardsForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(IOSBasedChromeViewController *)self isHidingCards])
   {
     v5 = 1;
@@ -2217,21 +2217,21 @@ LABEL_9:
 
   else
   {
-    v6 = [(ChromeViewController *)self pendingContexts];
-    v7 = v6;
-    if (v6)
+    pendingContexts = [(ChromeViewController *)self pendingContexts];
+    v7 = pendingContexts;
+    if (pendingContexts)
     {
-      v8 = v6;
+      contexts = pendingContexts;
     }
 
     else
     {
-      v8 = [(ChromeViewController *)self contexts];
+      contexts = [(ChromeViewController *)self contexts];
     }
 
-    v9 = v8;
+    v9 = contexts;
 
-    v10 = [v9 indexOfObject:v4];
+    v10 = [v9 indexOfObject:contextCopy];
     if (v10 == 0x7FFFFFFFFFFFFFFFLL || (v11 = v10, v12 = [v9 count], v13 = v11 + 1, v13 >= v12))
     {
 LABEL_12:
@@ -2262,11 +2262,11 @@ LABEL_12:
   return v5;
 }
 
-- (id)acquireModernMapTokenForReason:(unint64_t)a3
+- (id)acquireModernMapTokenForReason:(unint64_t)reason
 {
   modernMapTokens = self->_modernMapTokens;
   v8 = @"reason";
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:reason];
   v9 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v6 = [(MapsTokenStorage *)modernMapTokens tokenWithUserInfo:v5];
@@ -2276,14 +2276,14 @@ LABEL_12:
 
 - (void)_updateModernMapCartographicConfiguration
 {
-  v3 = [(IOSBasedChromeViewController *)self shouldUseModernMap];
+  shouldUseModernMap = [(IOSBasedChromeViewController *)self shouldUseModernMap];
   v11 = 0u;
   v9 = 0u;
-  v4 = [(ChromeViewController *)self mapView];
-  v5 = v4;
-  if (v4)
+  mapView = [(ChromeViewController *)self mapView];
+  v5 = mapView;
+  if (mapView)
   {
-    [v4 _cartographicConfiguration];
+    [mapView _cartographicConfiguration];
   }
 
   else
@@ -2292,19 +2292,19 @@ LABEL_12:
     v9 = 0u;
   }
 
-  if (v3)
+  if (shouldUseModernMap)
   {
     *(&v10 + 1) = [(IOSBasedChromeViewController *)self modernMapTerrainMode];
-    v6 = [(IOSBasedChromeViewController *)self modernMapProjectionType];
+    modernMapProjectionType = [(IOSBasedChromeViewController *)self modernMapProjectionType];
   }
 
   else
   {
-    v6 = 1;
+    modernMapProjectionType = 1;
     *(&v10 + 1) = 1;
   }
 
-  *&v10 = v6;
+  *&v10 = modernMapProjectionType;
   v7 = sub_10000B11C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2315,12 +2315,12 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "_updateModernMapCartographicConfiguration with terrainMode: %ld projectionType: %ld", buf, 0x16u);
   }
 
-  v8 = [(ChromeViewController *)self mapView];
+  mapView2 = [(ChromeViewController *)self mapView];
   *buf = v9;
   *&buf[16] = v10;
   v13 = v11;
   v14 = 0;
-  [v8 _setCartographicConfiguration:buf];
+  [mapView2 _setCartographicConfiguration:buf];
 }
 
 - (int64_t)modernMapProjectionType
@@ -2329,8 +2329,8 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(MapsTokenStorage *)self->_modernMapTokens tokens];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  tokens = [(MapsTokenStorage *)self->_modernMapTokens tokens];
+  v3 = [tokens countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2342,21 +2342,21 @@ LABEL_12:
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(tokens);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) userInfo];
-        v9 = [v8 objectForKeyedSubscript:@"reason"];
+        userInfo = [*(*(&v12 + 1) + 8 * i) userInfo];
+        v9 = [userInfo objectForKeyedSubscript:@"reason"];
 
-        v10 = [v9 unsignedIntegerValue];
-        if (v10)
+        unsignedIntegerValue = [v9 unsignedIntegerValue];
+        if (unsignedIntegerValue)
         {
           v6 = 0;
           goto LABEL_12;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [tokens countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -2382,8 +2382,8 @@ LABEL_12:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(MapsTokenStorage *)self->_modernMapTokens tokens];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  tokens = [(MapsTokenStorage *)self->_modernMapTokens tokens];
+  v3 = [tokens countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2395,14 +2395,14 @@ LABEL_12:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(tokens);
         }
 
-        v7 = [*(*(&v13 + 1) + 8 * v6) userInfo];
-        v8 = [v7 objectForKeyedSubscript:@"reason"];
+        userInfo = [*(*(&v13 + 1) + 8 * v6) userInfo];
+        v8 = [userInfo objectForKeyedSubscript:@"reason"];
 
-        v9 = [v8 unsignedIntegerValue];
-        if (v9)
+        unsignedIntegerValue = [v8 unsignedIntegerValue];
+        if (unsignedIntegerValue)
         {
 
           return 0;
@@ -2412,7 +2412,7 @@ LABEL_12:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [tokens countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -2436,11 +2436,11 @@ LABEL_12:
   }
 }
 
-- (void)decrementForToken:(id)a3
+- (void)decrementForToken:(id)token
 {
-  v4 = a3;
-  v5 = [v4 tokenGroupName];
-  v6 = [v5 isEqualToString:@"IOSBasedChromeMetros"];
+  tokenCopy = token;
+  tokenGroupName = [tokenCopy tokenGroupName];
+  v6 = [tokenGroupName isEqualToString:@"IOSBasedChromeMetros"];
 
   if (v6)
   {
@@ -2448,16 +2448,16 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = tokenCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Releasing modern map token: %@", buf, 0xCu);
     }
 
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 postNotificationName:@"ChromeViewControllerDidUpdateShouldUseModernMap" object:self];
 
-    v9 = [(ChromeViewController *)self mapView];
+    mapView = [(ChromeViewController *)self mapView];
 
-    if (v9)
+    if (mapView)
     {
       [(IOSBasedChromeViewController *)self _updateModernMapCartographicConfiguration];
     }
@@ -2465,8 +2465,8 @@ LABEL_12:
 
   else
   {
-    v10 = [v4 tokenGroupName];
-    v11 = [v10 isEqualToString:@"IOSBasedChromeForceCardsHidden"];
+    tokenGroupName2 = [tokenCopy tokenGroupName];
+    v11 = [tokenGroupName2 isEqualToString:@"IOSBasedChromeForceCardsHidden"];
 
     if (v11 && ![(MapsTokenStorage *)self->_forceCardsHiddenTokenStorage count])
     {
@@ -2476,22 +2476,22 @@ LABEL_12:
 
   v12.receiver = self;
   v12.super_class = IOSBasedChromeViewController;
-  [(ChromeViewController *)&v12 decrementForToken:v4];
+  [(ChromeViewController *)&v12 decrementForToken:tokenCopy];
 }
 
-- (void)incrementForToken:(id)a3
+- (void)incrementForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v23.receiver = self;
   v23.super_class = IOSBasedChromeViewController;
-  [(ChromeViewController *)&v23 incrementForToken:v4];
-  v5 = [v4 tokenGroupName];
-  v6 = [v5 isEqualToString:@"IOSBasedChromeMetros"];
+  [(ChromeViewController *)&v23 incrementForToken:tokenCopy];
+  tokenGroupName = [tokenCopy tokenGroupName];
+  v6 = [tokenGroupName isEqualToString:@"IOSBasedChromeMetros"];
 
   if (v6)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"reason"];
+    userInfo = [tokenCopy userInfo];
+    contexts = [userInfo objectForKeyedSubscript:@"reason"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2500,7 +2500,7 @@ LABEL_12:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v26 = v4;
+        v26 = tokenCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Invalid modern map token: %@", buf, 0xCu);
       }
     }
@@ -2508,9 +2508,9 @@ LABEL_12:
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 postNotificationName:@"ChromeViewControllerDidUpdateShouldUseModernMap" object:self];
 
-    v11 = [(ChromeViewController *)self mapView];
+    mapView = [(ChromeViewController *)self mapView];
 
-    if (v11)
+    if (mapView)
     {
       [(IOSBasedChromeViewController *)self _updateModernMapCartographicConfiguration];
     }
@@ -2520,8 +2520,8 @@ LABEL_8:
     goto LABEL_19;
   }
 
-  v12 = [v4 tokenGroupName];
-  v13 = [v12 isEqualToString:@"IOSBasedChromeForceCardsHidden"];
+  tokenGroupName2 = [tokenCopy tokenGroupName];
+  v13 = [tokenGroupName2 isEqualToString:@"IOSBasedChromeForceCardsHidden"];
 
   if (v13 && [(MapsTokenStorage *)self->_forceCardsHiddenTokenStorage count]== 1)
   {
@@ -2529,8 +2529,8 @@ LABEL_8:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [(ChromeViewController *)self contexts];
-    v14 = [v8 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    contexts = [(ChromeViewController *)self contexts];
+    v14 = [contexts countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v14)
     {
       v15 = v14;
@@ -2541,14 +2541,14 @@ LABEL_8:
         {
           if (*v20 != v16)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(contexts);
           }
 
           v18 = [(IOSBasedChromeViewController *)self _containerViewControllerWithContext:*(*(&v19 + 1) + 8 * i)];
           [v18 setContaineesHidden:1];
         }
 
-        v15 = [v8 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v15 = [contexts countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v15);
@@ -2560,16 +2560,16 @@ LABEL_8:
 LABEL_19:
 }
 
-- (void)chromeNavigationDisplayDidRenderRoute:(id)a3
+- (void)chromeNavigationDisplayDidRenderRoute:(id)route
 {
   v5.receiver = self;
   v5.super_class = IOSBasedChromeViewController;
-  [(ChromeViewController *)&v5 chromeNavigationDisplayDidRenderRoute:a3];
+  [(ChromeViewController *)&v5 chromeNavigationDisplayDidRenderRoute:route];
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:3072 onTarget:-[IOSBasedChromeViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 }
 
-- (CGRect)popoverPresentationRectForPrintController:(id)a3
+- (CGRect)popoverPresentationRectForPrintController:(id)controller
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -2582,30 +2582,30 @@ LABEL_19:
   return result;
 }
 
-- (void)printSearchResultFromSession:(id)a3
+- (void)printSearchResultFromSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   [(IOSBasedChromeViewController *)self _initializePrintingController];
   [GEOAPPortal captureUserAction:17052 target:0 value:0];
-  v10 = [v4 searchFieldItem];
+  searchFieldItem = [sessionCopy searchFieldItem];
   printController = self->_printController;
-  v6 = [v10 searchString];
-  v7 = [v4 currentResults];
-  v8 = [v4 printedPageTitle];
-  v9 = [v4 printedPageSubtitle];
+  searchString = [searchFieldItem searchString];
+  currentResults = [sessionCopy currentResults];
+  printedPageTitle = [sessionCopy printedPageTitle];
+  printedPageSubtitle = [sessionCopy printedPageSubtitle];
 
-  [(PrintController *)printController printSearchString:v6 searchResults:v7 title:v8 subTitle:v9];
+  [(PrintController *)printController printSearchString:searchString searchResults:currentResults title:printedPageTitle subTitle:printedPageSubtitle];
 }
 
-- (void)printRoute:(id)a3
+- (void)printRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   [(IOSBasedChromeViewController *)self _initializePrintingController];
   [GEOAPPortal captureUserAction:17052 target:0 value:0];
   printController = self->_printController;
-  v7 = [v4 destination];
-  v6 = [v7 name];
-  [(PrintController *)printController printRoute:v4 searchString:v6];
+  destination = [routeCopy destination];
+  name = [destination name];
+  [(PrintController *)printController printRoute:routeCopy searchString:name];
 }
 
 - (void)_initializePrintingController
@@ -2613,8 +2613,8 @@ LABEL_19:
   if (!self->_printController)
   {
     v3 = [PrintController alloc];
-    v6 = [(ChromeViewController *)self mapView];
-    v4 = [(PrintController *)v3 initWithMapView:v6 delegate:self];
+    mapView = [(ChromeViewController *)self mapView];
+    v4 = [(PrintController *)v3 initWithMapView:mapView delegate:self];
     printController = self->_printController;
     self->_printController = v4;
   }
@@ -2622,123 +2622,123 @@ LABEL_19:
 
 - (void)printCurrentState
 {
-  v3 = [(IOSBasedChromeViewController *)self _maps_platformController];
-  v8 = [v3 currentSession];
+  _maps_platformController = [(IOSBasedChromeViewController *)self _maps_platformController];
+  currentSession = [_maps_platformController currentSession];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v8 currentRouteCollection];
-    v5 = [v4 currentRoute];
-    [(IOSBasedChromeViewController *)self printRoute:v5];
+    currentRouteCollection = [currentSession currentRouteCollection];
+    currentRoute = [currentRouteCollection currentRoute];
+    [(IOSBasedChromeViewController *)self printRoute:currentRoute];
   }
 
   else
   {
-    v6 = [(IOSBasedChromeViewController *)self appCoordinator];
-    v7 = [v6 baseActionCoordinator];
-    v4 = [v7 currentSearchSession];
+    appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+    baseActionCoordinator = [appCoordinator baseActionCoordinator];
+    currentRouteCollection = [baseActionCoordinator currentSearchSession];
 
-    [(IOSBasedChromeViewController *)self printSearchResultFromSession:v4];
+    [(IOSBasedChromeViewController *)self printSearchResultFromSession:currentRouteCollection];
   }
 }
 
-- (void)undo:(id)a3
+- (void)undo:(id)undo
 {
-  v3 = [(IOSBasedChromeViewController *)self routeCreationContext];
-  [v3 pressedUndo];
+  routeCreationContext = [(IOSBasedChromeViewController *)self routeCreationContext];
+  [routeCreationContext pressedUndo];
 }
 
-- (void)find:(id)a3
+- (void)find:(id)find
 {
-  v3 = [(IOSBasedChromeViewController *)self coordinator];
-  [v3 viewControllerPresentSearchEditing];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator viewControllerPresentSearchEditing];
 }
 
 - (void)removeDroppedPin
 {
-  v2 = [(IOSBasedChromeViewController *)self baseModeController];
-  [v2 removeDroppedPin];
+  baseModeController = [(IOSBasedChromeViewController *)self baseModeController];
+  [baseModeController removeDroppedPin];
 }
 
 - (BOOL)canRemovePin
 {
-  v2 = [(IOSBasedChromeViewController *)self baseModeController];
-  v3 = [v2 hasDroppedPin];
+  baseModeController = [(IOSBasedChromeViewController *)self baseModeController];
+  hasDroppedPin = [baseModeController hasDroppedPin];
 
-  return v3;
+  return hasDroppedPin;
 }
 
 - (void)centerMapToUserLocation
 {
-  v3 = [(ChromeViewController *)self mapView];
-  [v3 _stopFlyoverAnimation];
+  mapView = [(ChromeViewController *)self mapView];
+  [mapView _stopFlyoverAnimation];
 
-  v4 = [(ChromeViewController *)self mapView];
-  [v4 setUserTrackingMode:1 animated:1];
+  mapView2 = [(ChromeViewController *)self mapView];
+  [mapView2 setUserTrackingMode:1 animated:1];
 }
 
 - (void)zoomOut
 {
-  v2 = [(IOSBasedChromeViewController *)self coordinator];
-  [v2 zoomOut];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator zoomOut];
 }
 
 - (void)zoomIn
 {
-  v2 = [(IOSBasedChromeViewController *)self coordinator];
-  [v2 zoomIn];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator zoomIn];
 }
 
 - (void)defaultZoom
 {
-  v2 = [(IOSBasedChromeViewController *)self coordinator];
-  [v2 defaultZoom];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator defaultZoom];
 }
 
 - (void)snapToNorth
 {
-  v3 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(IOSBasedChromeViewController *)self lookAroundCoordinator];
-    v5 = [v8 dataCoordinator];
-    v6 = [v5 lookAroundView];
-    [v6 snapToNorth:self];
+    lookAroundCoordinator = [(IOSBasedChromeViewController *)self lookAroundCoordinator];
+    dataCoordinator = [lookAroundCoordinator dataCoordinator];
+    lookAroundView = [dataCoordinator lookAroundView];
+    [lookAroundView snapToNorth:self];
   }
 
   else
   {
-    v7 = [(ChromeViewController *)self mapView];
-    [v7 _stopFlyoverAnimation];
+    mapView = [(ChromeViewController *)self mapView];
+    [mapView _stopFlyoverAnimation];
 
-    v8 = [(ChromeViewController *)self mapView];
-    [v8 snapToNorth:self];
+    lookAroundCoordinator = [(ChromeViewController *)self mapView];
+    [lookAroundCoordinator snapToNorth:self];
   }
 }
 
 - (BOOL)isSnappedToNorth
 {
-  v3 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(IOSBasedChromeViewController *)self lookAroundCoordinator];
-    v6 = [v5 dataCoordinator];
-    v7 = [v6 lookAroundView];
-    [v7 presentationYaw];
+    lookAroundCoordinator = [(IOSBasedChromeViewController *)self lookAroundCoordinator];
+    dataCoordinator = [lookAroundCoordinator dataCoordinator];
+    lookAroundView = [dataCoordinator lookAroundView];
+    [lookAroundView presentationYaw];
     v9 = v8;
   }
 
   else
   {
-    v5 = [(ChromeViewController *)self mapView];
-    [v5 presentationYaw];
+    lookAroundCoordinator = [(ChromeViewController *)self mapView];
+    [lookAroundCoordinator presentationYaw];
     v9 = v10;
   }
 
@@ -2747,7 +2747,7 @@ LABEL_19:
 
 - (BOOL)canSnapToNorth
 {
-  v3 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2756,7 +2756,7 @@ LABEL_19:
 
   else
   {
-    v5 = [(ChromeViewController *)self topContext];
+    topContext2 = [(ChromeViewController *)self topContext];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -2764,30 +2764,30 @@ LABEL_19:
   return isKindOfClass & 1;
 }
 
-- (void)switchMapMode:(id)a3
+- (void)switchMapMode:(id)mode
 {
-  v7 = [a3 propertyList];
-  v4 = [v7 integerValue];
-  v5 = [(IOSBasedChromeViewController *)self coordinator];
-  v6 = [v5 settingsController];
-  [v6 setSelectedViewMode:v4 animated:1];
+  propertyList = [mode propertyList];
+  integerValue = [propertyList integerValue];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  settingsController = [coordinator settingsController];
+  [settingsController setSelectedViewMode:integerValue animated:1];
 }
 
 - (void)toggleTraffic
 {
-  v2 = [(IOSBasedChromeViewController *)self settingsController];
-  [v2 toggleTraffic];
+  settingsController = [(IOSBasedChromeViewController *)self settingsController];
+  [settingsController toggleTraffic];
 }
 
 - (void)toggleLabels
 {
-  v2 = [(IOSBasedChromeViewController *)self settingsController];
-  [v2 toggleLabels];
+  settingsController = [(IOSBasedChromeViewController *)self settingsController];
+  [settingsController toggleLabels];
 }
 
 - (BOOL)canExitLookAroundMode
 {
-  v2 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2796,12 +2796,12 @@ LABEL_19:
 
 - (BOOL)canEnterLookAroundMode
 {
-  v3 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(ChromeViewController *)self mapView];
-    v5 = [v4 _lookAroundAvailability] == 2;
+    mapView = [(ChromeViewController *)self mapView];
+    v5 = [mapView _lookAroundAvailability] == 2;
   }
 
   else
@@ -2814,132 +2814,132 @@ LABEL_19:
 
 - (BOOL)canEnter3dMode
 {
-  v3 = [(ChromeViewController *)self mapView];
-  v4 = [v3 _mapLayer];
+  mapView = [(ChromeViewController *)self mapView];
+  _mapLayer = [mapView _mapLayer];
 
-  v5 = [v4 mapType];
-  v6 = [(ChromeViewController *)self mapView];
-  v7 = [v6 _canEnter3DMode];
+  mapType = [_mapLayer mapType];
+  mapView2 = [(ChromeViewController *)self mapView];
+  _canEnter3DMode = [mapView2 _canEnter3DMode];
 
-  v8 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if (v5 == 1)
+  if (mapType == 1)
   {
     v10 = 3;
     goto LABEL_5;
   }
 
-  if (v5 == 2)
+  if (mapType == 2)
   {
     v10 = 4;
 LABEL_5:
-    v11 = [v4 supportsMapType:v10];
+    v11 = [_mapLayer supportsMapType:v10];
     goto LABEL_7;
   }
 
   v11 = 0;
 LABEL_7:
-  if (v7 & 1 | ((isKindOfClass & 1) == 0))
+  if (_canEnter3DMode & 1 | ((isKindOfClass & 1) == 0))
   {
     v12 = isKindOfClass;
   }
 
   else
   {
-    v12 = (v5 - 3 < 2) | v11;
+    v12 = (mapType - 3 < 2) | v11;
   }
 
   return v12 & 1;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v20 = a3;
-  if ([v20 action] == "snapToNorth")
+  commandCopy = command;
+  if ([commandCopy action] == "snapToNorth")
   {
-    [v20 setState:{-[IOSBasedChromeViewController isSnappedToNorth](self, "isSnappedToNorth")}];
+    [commandCopy setState:{-[IOSBasedChromeViewController isSnappedToNorth](self, "isSnappedToNorth")}];
   }
 
   else
   {
-    if ([v20 action] == "switchMapMode:")
+    if ([commandCopy action] == "switchMapMode:")
     {
-      v8 = [v20 propertyList];
-      v9 = [v8 integerValue];
-      v10 = [(IOSBasedChromeViewController *)self settingsController];
-      [v20 setState:{objc_msgSend(v10, "selectedViewMode") == v9}];
+      propertyList = [commandCopy propertyList];
+      integerValue = [propertyList integerValue];
+      settingsController = [(IOSBasedChromeViewController *)self settingsController];
+      [commandCopy setState:{objc_msgSend(settingsController, "selectedViewMode") == integerValue}];
 
-      v11 = [(ChromeViewController *)self topContext];
+      topContext = [(ChromeViewController *)self topContext];
       objc_opt_class();
-      LOBYTE(v9) = objc_opt_isKindOfClass();
+      LOBYTE(integerValue) = objc_opt_isKindOfClass();
 
-      if ((v9 & 1) == 0)
+      if ((integerValue & 1) == 0)
       {
-        [v20 setAttributes:1];
+        [commandCopy setAttributes:1];
       }
 
       goto LABEL_26;
     }
 
-    if ([v20 action] == "removeDroppedPin" && !-[IOSBasedChromeViewController canRemovePin](self, "canRemovePin"))
+    if ([commandCopy action] == "removeDroppedPin" && !-[IOSBasedChromeViewController canRemovePin](self, "canRemovePin"))
     {
 LABEL_23:
-      [v20 setAttributes:4];
+      [commandCopy setAttributes:4];
       goto LABEL_26;
     }
 
-    if ([v20 action] == "select3dMode")
+    if ([commandCopy action] == "select3dMode")
     {
-      v6 = [(IOSBasedChromeViewController *)self coordinator];
-      v7 = [v6 is3dModeSelected];
+      coordinator = [(IOSBasedChromeViewController *)self coordinator];
+      is3dModeSelected = [coordinator is3dModeSelected];
       goto LABEL_25;
     }
 
-    if ([v20 action] != "selectLookAroundMode")
+    if ([commandCopy action] != "selectLookAroundMode")
     {
-      if ([v20 action] == "toggleLabels")
+      if ([commandCopy action] == "toggleLabels")
       {
-        v6 = [(IOSBasedChromeViewController *)self settingsController];
-        v7 = [v6 showsLabels];
+        coordinator = [(IOSBasedChromeViewController *)self settingsController];
+        is3dModeSelected = [coordinator showsLabels];
         goto LABEL_25;
       }
 
-      if ([v20 action] == "toggleTraffic")
+      if ([commandCopy action] == "toggleTraffic")
       {
-        v4 = [(IOSBasedChromeViewController *)self settingsController];
-        v5 = [v4 showsTraffic];
+        settingsController2 = [(IOSBasedChromeViewController *)self settingsController];
+        showsTraffic = [settingsController2 showsTraffic];
 
-        if (v5)
+        if (showsTraffic)
         {
-          v6 = [(IOSBasedChromeViewController *)self settingsController];
-          v7 = [v6 showsTraffic];
+          coordinator = [(IOSBasedChromeViewController *)self settingsController];
+          is3dModeSelected = [coordinator showsTraffic];
 LABEL_25:
-          [v20 _maps_setUseDisableFeatureTitle:v7];
+          [commandCopy _maps_setUseDisableFeatureTitle:is3dModeSelected];
 
           goto LABEL_26;
         }
       }
 
-      v12 = [v20 action] == "copy:";
-      v13 = v20;
+      v12 = [commandCopy action] == "copy:";
+      v13 = commandCopy;
       if (!v12)
       {
         goto LABEL_27;
       }
 
-      v14 = [(IOSBasedChromeViewController *)self firstResponder];
+      firstResponder = [(IOSBasedChromeViewController *)self firstResponder];
       objc_opt_class();
-      v15 = (objc_opt_isKindOfClass() & 1) != 0 ? v14 : 0;
+      v15 = (objc_opt_isKindOfClass() & 1) != 0 ? firstResponder : 0;
       v16 = v15;
 
-      v17 = [v16 _fieldEditor];
+      _fieldEditor = [v16 _fieldEditor];
 
-      [v17 selectionRange];
+      [_fieldEditor selectionRange];
       v19 = v18;
 
-      v13 = v20;
+      v13 = commandCopy;
       if (v19)
       {
         goto LABEL_27;
@@ -2948,46 +2948,46 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    [v20 _maps_setUseDisableFeatureTitle:{-[IOSBasedChromeViewController canExitLookAroundMode](self, "canExitLookAroundMode")}];
+    [commandCopy _maps_setUseDisableFeatureTitle:{-[IOSBasedChromeViewController canExitLookAroundMode](self, "canExitLookAroundMode")}];
   }
 
 LABEL_26:
-  v13 = v20;
+  v13 = commandCopy;
 LABEL_27:
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ("find:" == a3 || "defaultZoom" == a3 || "zoomIn" == a3 || "zoomOut" == a3 || "centerMapToUserLocation" == a3)
+  senderCopy = sender;
+  if ("find:" == action || "defaultZoom" == action || "zoomIn" == action || "zoomOut" == action || "centerMapToUserLocation" == action)
   {
-    v11 = [(ChromeViewController *)self topContext];
+    topContext = [(ChromeViewController *)self topContext];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     goto LABEL_16;
   }
 
-  if ("snapToNorth" == a3)
+  if ("snapToNorth" == action)
   {
-    v14 = [(IOSBasedChromeViewController *)self canSnapToNorth];
+    canSnapToNorth = [(IOSBasedChromeViewController *)self canSnapToNorth];
 LABEL_31:
-    v13 = v14;
+    v13 = canSnapToNorth;
     goto LABEL_32;
   }
 
-  if ("createCustomSearchResultForDroppedPinAtCenterPoint" == a3)
+  if ("createCustomSearchResultForDroppedPinAtCenterPoint" == action)
   {
-    v14 = [(IOSBasedChromeViewController *)self canDropPin];
+    canSnapToNorth = [(IOSBasedChromeViewController *)self canDropPin];
     goto LABEL_31;
   }
 
-  if ("select3dMode" == a3)
+  if ("select3dMode" == action)
   {
-    v14 = [(IOSBasedChromeViewController *)self canEnter3dMode];
+    canSnapToNorth = [(IOSBasedChromeViewController *)self canEnter3dMode];
     goto LABEL_31;
   }
 
-  if ("selectLookAroundMode" == a3)
+  if ("selectLookAroundMode" == action)
   {
     if ([(IOSBasedChromeViewController *)self canEnterLookAroundMode]|| [(IOSBasedChromeViewController *)self canExitLookAroundMode])
     {
@@ -2995,29 +2995,29 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v14 = [(IOSBasedChromeViewController *)self _canShowLookAroundButton];
+    canSnapToNorth = [(IOSBasedChromeViewController *)self _canShowLookAroundButton];
     goto LABEL_31;
   }
 
-  if ("toggleLabels" == a3)
+  if ("toggleLabels" == action)
   {
-    v11 = [(IOSBasedChromeViewController *)self settingsController];
-    isKindOfClass = [v11 canToggleLabels];
+    topContext = [(IOSBasedChromeViewController *)self settingsController];
+    isKindOfClass = [topContext canToggleLabels];
   }
 
   else
   {
-    if ("openUserProfile" == a3)
+    if ("openUserProfile" == action)
     {
-      v16 = [(IOSBasedChromeViewController *)self appCoordinator];
-      v17 = [v16 baseActionCoordinator];
-      v11 = [v17 currentViewController];
+      appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+      baseActionCoordinator = [appCoordinator baseActionCoordinator];
+      topContext = [baseActionCoordinator currentViewController];
 
       if ([(IOSBasedChromeViewController *)self _isCurrentUserInterfaceIdiomMac]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         if ([(IOSBasedChromeViewController *)self _isCurrentUserInterfaceIdiomMac])
         {
-          v18 = [(ChromeViewController *)self topContext];
+          topContext2 = [(ChromeViewController *)self topContext];
           objc_opt_class();
           v13 = objc_opt_isKindOfClass();
         }
@@ -3036,17 +3036,17 @@ LABEL_31:
       goto LABEL_17;
     }
 
-    if ("toggleTraffic" == a3)
+    if ("toggleTraffic" == action)
     {
-      v11 = [(IOSBasedChromeViewController *)self settingsController];
-      isKindOfClass = [v11 canToggleTraffic];
+      topContext = [(IOSBasedChromeViewController *)self settingsController];
+      isKindOfClass = [topContext canToggleTraffic];
     }
 
     else
     {
-      if ("undo:" != a3)
+      if ("undo:" != action)
       {
-        if ("redo:" == a3)
+        if ("redo:" == action)
         {
           v13 = 0;
           goto LABEL_32;
@@ -3054,12 +3054,12 @@ LABEL_31:
 
         v19.receiver = self;
         v19.super_class = IOSBasedChromeViewController;
-        v14 = [(IOSBasedChromeViewController *)&v19 canPerformAction:a3 withSender:v6];
+        canSnapToNorth = [(IOSBasedChromeViewController *)&v19 canPerformAction:action withSender:senderCopy];
         goto LABEL_31;
       }
 
-      v11 = [(IOSBasedChromeViewController *)self routeCreationContext];
-      isKindOfClass = [v11 undoEnabled];
+      topContext = [(IOSBasedChromeViewController *)self routeCreationContext];
+      isKindOfClass = [topContext undoEnabled];
     }
   }
 
@@ -3100,22 +3100,22 @@ LABEL_32:
   return defaultTransportTypeFinder;
 }
 
-- (id)_currentLogContextDelegateForSelector:(SEL)a3
+- (id)_currentLogContextDelegateForSelector:(SEL)selector
 {
-  v4 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 fullscreenViewController];
+    fullscreenViewController = [topContext fullscreenViewController];
   }
 
   else
   {
-    v5 = 0;
+    fullscreenViewController = 0;
   }
 
-  if (sub_100010C34(v5, &OBJC_PROTOCOL___GEOLogContextDelegate))
+  if (sub_100010C34(fullscreenViewController, &OBJC_PROTOCOL___GEOLogContextDelegate))
   {
-    v6 = v5;
+    v6 = fullscreenViewController;
     if (objc_opt_respondsToSelector())
     {
       goto LABEL_12;
@@ -3123,14 +3123,14 @@ LABEL_32:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_currentContainerViewController);
-  v8 = [WeakRetained currentViewController];
+  currentViewController = [WeakRetained currentViewController];
 
-  if (!sub_100010C34(v8, &OBJC_PROTOCOL___GEOLogContextDelegate))
+  if (!sub_100010C34(currentViewController, &OBJC_PROTOCOL___GEOLogContextDelegate))
   {
     goto LABEL_10;
   }
 
-  v6 = v8;
+  v6 = currentViewController;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
@@ -3149,15 +3149,15 @@ LABEL_12:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 currentMapViewTargetForAnalytics];
+    currentMapViewTargetForAnalytics = [v2 currentMapViewTargetForAnalytics];
   }
 
   else
   {
-    v4 = 0;
+    currentMapViewTargetForAnalytics = 0;
   }
 
-  return v4;
+  return currentMapViewTargetForAnalytics;
 }
 
 - (int)currentUITargetForAnalytics
@@ -3166,50 +3166,50 @@ LABEL_12:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 currentUITargetForAnalytics];
+    currentUITargetForAnalytics = [v2 currentUITargetForAnalytics];
   }
 
   else
   {
-    v4 = 0;
+    currentUITargetForAnalytics = 0;
   }
 
-  return v4;
+  return currentUITargetForAnalytics;
 }
 
 - (void)reportCurrentLocationFailure
 {
-  v2 = [(IOSBasedChromeViewController *)self interruptionManager];
-  [v2 reportCurrentLocationFailure];
+  interruptionManager = [(IOSBasedChromeViewController *)self interruptionManager];
+  [interruptionManager reportCurrentLocationFailure];
 }
 
-- (void)showAnnouncementForFlyover:(id)a3
+- (void)showAnnouncementForFlyover:(id)flyover
 {
-  v4 = a3;
-  v5 = [(IOSBasedChromeViewController *)self coordinator];
-  [v5 showAnnouncementForFlyover:v4];
+  flyoverCopy = flyover;
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator showAnnouncementForFlyover:flyoverCopy];
 }
 
-- (void)showFavoritesType:(int64_t)a3
+- (void)showFavoritesType:(int64_t)type
 {
-  v5 = [(IOSBasedChromeViewController *)self coordinator];
-  [v5 viewController:self showFavoritesType:a3];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator viewController:self showFavoritesType:type];
 }
 
-- (void)showTransitLine:(unint64_t)a3 withName:(id)a4
+- (void)showTransitLine:(unint64_t)line withName:(id)name
 {
-  v10 = a4;
+  nameCopy = name;
   v6 = [MKMapItemIdentifier alloc];
-  v7 = [v6 initWithMUID:a3 resultProviderID:0 coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
+  v7 = [v6 initWithMUID:line resultProviderID:0 coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
   if (v7)
   {
-    v8 = [[IncompleteTransitLineItem alloc] initWithIdentifier:v7 name:v10];
-    v9 = [(IOSBasedChromeViewController *)self coordinator];
-    [v9 viewController:self selectTransitLineItem:v8 zoomToMapRegion:1];
+    v8 = [[IncompleteTransitLineItem alloc] initWithIdentifier:v7 name:nameCopy];
+    coordinator = [(IOSBasedChromeViewController *)self coordinator];
+    [coordinator viewController:self selectTransitLineItem:v8 zoomToMapRegion:1];
   }
 }
 
-- (void)selectParkedCarAndPerformAction:(int64_t)a3
+- (void)selectParkedCarAndPerformAction:(int64_t)action
 {
   v5 = +[ParkedCarManager sharedManager];
   v6[0] = _NSConcreteStackBlock;
@@ -3217,28 +3217,28 @@ LABEL_12:
   v6[2] = sub_100DB8774;
   v6[3] = &unk_1016547E0;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = action;
   [v5 fetchParkedCar:v6];
 }
 
 - (void)displayNavShareETA
 {
-  v3 = [(IOSBasedChromeViewController *)self currentIOSBasedContext];
+  currentIOSBasedContext = [(IOSBasedChromeViewController *)self currentIOSBasedContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(IOSBasedChromeViewController *)self currentIOSBasedContext];
+    currentIOSBasedContext2 = [(IOSBasedChromeViewController *)self currentIOSBasedContext];
     if (MSPSharedTripSharingAvailable())
     {
-      v5 = [v8 route];
-      v6 = [v5 transportType];
+      route = [currentIOSBasedContext2 route];
+      transportType = [route transportType];
 
-      if (!v6)
+      if (!transportType)
       {
-        v7 = [v8 navActionCoordinator];
-        [v7 senderShareNavigation:self];
+        navActionCoordinator = [currentIOSBasedContext2 navActionCoordinator];
+        [navActionCoordinator senderShareNavigation:self];
       }
     }
   }
@@ -3246,32 +3246,32 @@ LABEL_12:
 
 - (void)displayNearbySearch
 {
-  v3 = [(IOSBasedChromeViewController *)self coordinator];
-  [v3 viewControllerOpenNearby:self animated:0];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator viewControllerOpenNearby:self animated:0];
 }
 
 - (BOOL)canDropPin
 {
-  v2 = [(IOSBasedChromeViewController *)self baseModeController];
-  v3 = [v2 canDropPin];
+  baseModeController = [(IOSBasedChromeViewController *)self baseModeController];
+  canDropPin = [baseModeController canDropPin];
 
-  return v3;
+  return canDropPin;
 }
 
 - (void)createCustomSearchResultForDroppedPinAtCenterPoint
 {
-  v2 = [(IOSBasedChromeViewController *)self baseModeController];
-  [v2 createCustomSearchResultForDroppedPinAtCenterPoint];
+  baseModeController = [(IOSBasedChromeViewController *)self baseModeController];
+  [baseModeController createCustomSearchResultForDroppedPinAtCenterPoint];
 }
 
-- (void)createCustomSearchResultForDroppedPinAtPoint:(CLLocationCoordinate2D)a3 floorOrdinal:(int)a4 animated:(BOOL)a5
+- (void)createCustomSearchResultForDroppedPinAtPoint:(CLLocationCoordinate2D)point floorOrdinal:(int)ordinal animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = *&a4;
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v9 = [(IOSBasedChromeViewController *)self baseModeController];
-  [v9 createCustomSearchResultForDroppedPinAtPoint:v6 floorOrdinal:v5 animated:{latitude, longitude}];
+  animatedCopy = animated;
+  v6 = *&ordinal;
+  longitude = point.longitude;
+  latitude = point.latitude;
+  baseModeController = [(IOSBasedChromeViewController *)self baseModeController];
+  [baseModeController createCustomSearchResultForDroppedPinAtPoint:v6 floorOrdinal:animatedCopy animated:{latitude, longitude}];
 }
 
 - (id)routeCreationContext
@@ -3280,8 +3280,8 @@ LABEL_12:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(ChromeViewController *)self contexts];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  contexts = [(ChromeViewController *)self contexts];
+  v3 = [contexts countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -3291,7 +3291,7 @@ LABEL_12:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(contexts);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -3303,7 +3303,7 @@ LABEL_12:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [contexts countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -3324,8 +3324,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(ChromeViewController *)self contexts];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  contexts = [(ChromeViewController *)self contexts];
+  v3 = [contexts countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -3335,7 +3335,7 @@ LABEL_11:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(contexts);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -3347,7 +3347,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [contexts countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -3362,17 +3362,17 @@ LABEL_11:
   return v3;
 }
 
-- (void)directionsTypeForMapItem:(id)a3 handler:(id)a4
+- (void)directionsTypeForMapItem:(id)item handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = +[MKLocationManager sharedLocationManager];
     if ([v8 hasLocation])
     {
-      v9 = [v8 lastLocation];
-      [v9 coordinate];
+      lastLocation = [v8 lastLocation];
+      [lastLocation coordinate];
       latitude = v10;
       longitude = v12;
     }
@@ -3383,11 +3383,11 @@ LABEL_11:
       longitude = kCLLocationCoordinate2DInvalid.longitude;
     }
 
-    v14 = [v6 location];
-    if (v14)
+    location = [itemCopy location];
+    if (location)
     {
-      v15 = [v6 location];
-      [v15 coordinate];
+      location2 = [itemCopy location];
+      [location2 coordinate];
       v17 = v16;
       v19 = v18;
     }
@@ -3398,122 +3398,122 @@ LABEL_11:
       v19 = kCLLocationCoordinate2DInvalid.longitude;
     }
 
-    v20 = [(IOSBasedChromeViewController *)self defaultTransportTypeFinder];
+    defaultTransportTypeFinder = [(IOSBasedChromeViewController *)self defaultTransportTypeFinder];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100DB8DE4;
     v21[3] = &unk_101657E40;
-    v22 = v7;
-    [v20 mkDirectionsTypeForOrigin:1 destination:v21 ignoreMapType:latitude completion:{longitude, v17, v19}];
+    v22 = handlerCopy;
+    [defaultTransportTypeFinder mkDirectionsTypeForOrigin:1 destination:v21 ignoreMapType:latitude completion:{longitude, v17, v19}];
   }
 }
 
-- (void)routeFromSearchResult:(id)a3 toSearchResult:(id)a4 directionsType:(unint64_t)a5 drivePreferences:(id)a6 routeHandle:(id)a7 timePoint:(id)a8 withFeedback:(id)a9 origin:(int64_t)a10 options:(id)a11
+- (void)routeFromSearchResult:(id)result toSearchResult:(id)searchResult directionsType:(unint64_t)type drivePreferences:(id)preferences routeHandle:(id)handle timePoint:(id)point withFeedback:(id)feedback origin:(int64_t)self0 options:(id)self1
 {
-  v15 = a11;
-  v16 = a4;
-  v17 = a3;
+  optionsCopy = options;
+  searchResultCopy = searchResult;
+  resultCopy = result;
   v18 = objc_alloc_init(SearchFieldItem);
-  [(SearchFieldItem *)v18 setSearchResult:v17];
+  [(SearchFieldItem *)v18 setSearchResult:resultCopy];
 
   v19 = objc_alloc_init(SearchFieldItem);
-  [(SearchFieldItem *)v19 setSearchResult:v16];
+  [(SearchFieldItem *)v19 setSearchResult:searchResultCopy];
 
   v20 = [DirectionItem alloc];
   v24[0] = v18;
   v24[1] = v19;
   v21 = [NSArray arrayWithObjects:v24 count:2];
-  if (a5 > 7)
+  if (type > 7)
   {
-    if (a5 == 8)
+    if (type == 8)
     {
-      a5 = 5;
+      type = 5;
       goto LABEL_8;
     }
 
     goto LABEL_6;
   }
 
-  if (a5 - 1 >= 2)
+  if (type - 1 >= 2)
   {
-    if (a5 == 4)
+    if (type == 4)
     {
-      a5 = 3;
+      type = 3;
       goto LABEL_8;
     }
 
 LABEL_6:
-    a5 = 0;
+    type = 0;
   }
 
 LABEL_8:
-  v22 = [(DirectionItem *)v20 initWithItems:v21 transportType:a5];
+  v22 = [(DirectionItem *)v20 initWithItems:v21 transportType:type];
 
-  v23 = [(IOSBasedChromeViewController *)self coordinator];
-  [v23 viewController:self doDirectionItem:v22 withUserInfo:v15];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator viewController:self doDirectionItem:v22 withUserInfo:optionsCopy];
 }
 
-- (void)searchWithSearchInfo:(id)a3 source:(int)a4
+- (void)searchWithSearchInfo:(id)info source:(int)source
 {
-  v6 = a3;
-  if ([v6 isSearchAlongRoute])
+  infoCopy = info;
+  if ([infoCopy isSearchAlongRoute])
   {
-    v5 = [(IOSBasedChromeViewController *)self navActionCoordinator];
-    [v5 setCurrentSearchInfo:v6];
+    navActionCoordinator = [(IOSBasedChromeViewController *)self navActionCoordinator];
+    [navActionCoordinator setCurrentSearchInfo:infoCopy];
   }
 }
 
-- (void)searchForString:(id)a3 traits:(id)a4 scrollToResults:(BOOL)a5 source:(int)a6
+- (void)searchForString:(id)string traits:(id)traits scrollToResults:(BOOL)results source:(int)source
 {
-  v6 = *&a6;
-  v9 = a4;
-  v10 = a3;
+  v6 = *&source;
+  traitsCopy = traits;
+  stringCopy = string;
   v11 = objc_alloc_init(SearchFieldItem);
-  [(SearchFieldItem *)v11 setSearchString:v10];
+  [(SearchFieldItem *)v11 setSearchString:stringCopy];
 
-  if (!v9)
+  if (!traitsCopy)
   {
-    v9 = [(IOSBasedChromeViewController *)self currentTraits];
+    traitsCopy = [(IOSBasedChromeViewController *)self currentTraits];
   }
 
   v15[0] = @"SearchSessionTraitsSource";
   v12 = [NSNumber numberWithInt:v6];
   v15[1] = @"SearchSessionTraits";
   v16[0] = v12;
-  v16[1] = v9;
+  v16[1] = traitsCopy;
   v13 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
 
-  v14 = [(IOSBasedChromeViewController *)self coordinator];
-  [v14 viewController:self doSearchItem:v11 withUserInfo:v13];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator viewController:self doSearchItem:v11 withUserInfo:v13];
 }
 
-- (void)searchForExternalURLQuery:(id)a3 coordinate:(CLLocationCoordinate2D)a4 muid:(unint64_t)a5 resultProviderId:(int)a6 contentProvider:(id)a7
+- (void)searchForExternalURLQuery:(id)query coordinate:(CLLocationCoordinate2D)coordinate muid:(unint64_t)muid resultProviderId:(int)id contentProvider:(id)provider
 {
-  v7 = *&a6;
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v13 = a7;
-  v14 = a3;
+  v7 = *&id;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  providerCopy = provider;
+  queryCopy = query;
   v15 = objc_alloc_init(SearchFieldItem);
-  v16 = [[ExternalURLQuery alloc] initWithQuery:v14 coordinate:a5 muid:v7 resultProviderId:v13 contentProvider:latitude, longitude];
+  longitude = [[ExternalURLQuery alloc] initWithQuery:queryCopy coordinate:muid muid:v7 resultProviderId:providerCopy contentProvider:latitude, longitude];
 
-  [(SearchFieldItem *)v15 setExternalURLQuery:v16];
+  [(SearchFieldItem *)v15 setExternalURLQuery:longitude];
   v19 = @"SearchSessionTraitsSource";
   v20 = &off_1016E9E18;
   v17 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-  v18 = [(IOSBasedChromeViewController *)self coordinator];
-  [v18 viewController:self doSearchItem:v15 withUserInfo:v17];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator viewController:self doSearchItem:v15 withUserInfo:v17];
 }
 
-- (void)searchForRouteFromAddress:(id)a3 toAddress:(id)a4 directionsMode:(unint64_t)a5 userInfo:(id)a6
+- (void)searchForRouteFromAddress:(id)address toAddress:(id)toAddress directionsMode:(unint64_t)mode userInfo:(id)info
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
+  addressCopy = address;
+  infoCopy = info;
+  toAddressCopy = toAddress;
   v13 = objc_alloc_init(SearchFieldItem);
-  if ([v10 length])
+  if ([addressCopy length])
   {
-    [(SearchFieldItem *)v13 setSearchString:v10];
+    [(SearchFieldItem *)v13 setSearchString:addressCopy];
   }
 
   else
@@ -3523,16 +3523,16 @@ LABEL_8:
   }
 
   v15 = objc_alloc_init(SearchFieldItem);
-  [(SearchFieldItem *)v15 setSearchString:v12];
+  [(SearchFieldItem *)v15 setSearchString:toAddressCopy];
 
-  if (a5 - 1 > 7)
+  if (mode - 1 > 7)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = qword_101215C40[a5 - 1];
+    v16 = qword_101215C40[mode - 1];
   }
 
   v17 = [DirectionItem alloc];
@@ -3541,77 +3541,77 @@ LABEL_8:
   v18 = [NSArray arrayWithObjects:v21 count:2];
   v19 = [(DirectionItem *)v17 initWithItems:v18 transportType:v16];
 
-  v20 = [(IOSBasedChromeViewController *)self coordinator];
-  [v20 viewController:self doDirectionItem:v19 withUserInfo:v11];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator viewController:self doDirectionItem:v19 withUserInfo:infoCopy];
 }
 
-- (void)searchForAddressString:(id)a3 source:(int)a4
+- (void)searchForAddressString:(id)string source:(int)source
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&source;
+  stringCopy = string;
   v7 = objc_alloc_init(SearchFieldItem);
-  [(SearchFieldItem *)v7 setAddressString:v6];
+  [(SearchFieldItem *)v7 setAddressString:stringCopy];
 
   v11 = @"SearchSessionTraitsSource";
   v8 = [NSNumber numberWithInt:v4];
   v12 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 
-  v10 = [(IOSBasedChromeViewController *)self coordinator];
-  [v10 viewController:self doSearchItem:v7 withUserInfo:v9];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator viewController:self doSearchItem:v7 withUserInfo:v9];
 }
 
-- (void)searchForAddress:(id)a3 source:(int)a4
+- (void)searchForAddress:(id)address source:(int)source
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&source;
+  addressCopy = address;
   v7 = objc_alloc_init(SearchFieldItem);
-  [(SearchFieldItem *)v7 setAddress:v6];
+  [(SearchFieldItem *)v7 setAddress:addressCopy];
 
   v11 = @"SearchSessionTraitsSource";
   v8 = [NSNumber numberWithInt:v4];
   v12 = v8;
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 
-  v10 = [(IOSBasedChromeViewController *)self coordinator];
-  [v10 viewController:self doSearchItem:v7 withUserInfo:v9];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator viewController:self doSearchItem:v7 withUserInfo:v9];
 }
 
-- (void)searchForSearchItem:(id)a3 traits:(id)a4 source:(int)a5
+- (void)searchForSearchItem:(id)item traits:(id)traits source:(int)source
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
+  v5 = *&source;
+  itemCopy = item;
+  traitsCopy = traits;
   v17 = @"SearchSessionTraitsSource";
   v10 = [NSNumber numberWithInt:v5];
   v18 = v10;
   v11 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
 
-  if (v9)
+  if (traitsCopy)
   {
     v12 = [v11 mutableCopy];
-    [v12 setObject:v9 forKeyedSubscript:@"SearchSessionTraits"];
+    [v12 setObject:traitsCopy forKeyedSubscript:@"SearchSessionTraits"];
 
     v11 = v12;
   }
 
-  v13 = [(IOSBasedChromeViewController *)self coordinator];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
 
-  if (v13)
+  if (coordinator)
   {
-    v14 = [(IOSBasedChromeViewController *)self coordinator];
+    coordinator2 = [(IOSBasedChromeViewController *)self coordinator];
 LABEL_7:
-    v16 = v14;
-    [v14 viewController:self doSearchItem:v8 withUserInfo:v11];
+    v16 = coordinator2;
+    [coordinator2 viewController:self doSearchItem:itemCopy withUserInfo:v11];
 
     goto LABEL_8;
   }
 
-  v15 = [(IOSBasedChromeViewController *)self navActionCoordinator];
+  navActionCoordinator = [(IOSBasedChromeViewController *)self navActionCoordinator];
 
-  if (v15)
+  if (navActionCoordinator)
   {
-    v14 = [(IOSBasedChromeViewController *)self navActionCoordinator];
+    coordinator2 = [(IOSBasedChromeViewController *)self navActionCoordinator];
     goto LABEL_7;
   }
 
@@ -3627,14 +3627,14 @@ LABEL_8:
 
   if (v4)
   {
-    v6 = [(ChromeViewController *)self mapView];
-    [v6 setShowsUserLocation:1];
+    mapView = [(ChromeViewController *)self mapView];
+    [mapView setShowsUserLocation:1];
   }
 
   else
   {
-    v6 = +[UIApplication sharedMapsDelegate];
-    [v6 showLocationServicesAlertWithError:v5];
+    mapView = +[UIApplication sharedMapsDelegate];
+    [mapView showLocationServicesAlertWithError:v5];
   }
 
   return v4;
@@ -3643,31 +3643,31 @@ LABEL_8:
 - (void)cleanUIandHideSearch
 {
   [(IOSBasedChromeViewController *)self resetForLaunchURLWithOptions:0];
-  v3 = [(IOSBasedChromeViewController *)self coordinator];
-  [v3 viewControllerClosed:0 animated:0];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator viewControllerClosed:0 animated:0];
 }
 
-- (void)_teardownViewHierarchyWithActionCoordinator:(id)a3 shouldAnimate:(BOOL)a4
+- (void)_teardownViewHierarchyWithActionCoordinator:(id)coordinator shouldAnimate:(BOOL)animate
 {
-  v4 = a4;
-  v6 = a3;
+  animateCopy = animate;
+  coordinatorCopy = coordinator;
   v7 = +[UIApplication sharedMapsDelegate];
-  v8 = [v7 currentInterruptionKind];
+  currentInterruptionKind = [v7 currentInterruptionKind];
 
-  if (v8 != 5)
+  if (currentInterruptionKind != 5)
   {
-    [(IOSBasedChromeViewController *)self dismissAllModalViewsIfPresentAnimated:v4 completion:0];
+    [(IOSBasedChromeViewController *)self dismissAllModalViewsIfPresentAnimated:animateCopy completion:0];
   }
 
   v9 = +[UIPrintInteractionController sharedPrintController];
-  [v9 dismissAnimated:v4];
+  [v9 dismissAnimated:animateCopy];
 
-  [(ChromeViewController *)self popToRootContextAnimated:v4 completion:0];
-  [v6 viewControllerPresentSearchEndEditingAnimated:v4];
-  [v6 viewControllerClosed:0 animated:v4];
-  v10 = [v6 searchPinsManager];
+  [(ChromeViewController *)self popToRootContextAnimated:animateCopy completion:0];
+  [coordinatorCopy viewControllerPresentSearchEndEditingAnimated:animateCopy];
+  [coordinatorCopy viewControllerClosed:0 animated:animateCopy];
+  searchPinsManager = [coordinatorCopy searchPinsManager];
 
-  [v10 clearLinkedPlacesAndPolygon];
+  [searchPinsManager clearLinkedPlacesAndPolygon];
 
   [(IOSBasedChromeViewController *)self updateThemeViewAndControllers];
 }
@@ -3682,9 +3682,9 @@ LABEL_8:
   }
 
   v4 = +[UIApplication sharedMapsDelegate];
-  v5 = [v4 currentInterruptionKind];
+  currentInterruptionKind = [v4 currentInterruptionKind];
 
-  if (v5 != 5)
+  if (currentInterruptionKind != 5)
   {
     [(IOSBasedChromeViewController *)self dismissAllModalViewsIfPresentAnimated:0 completion:0];
   }
@@ -3709,22 +3709,22 @@ LABEL_8:
 
 - (void)resetForTestingAction
 {
-  v3 = [(ChromeViewController *)self mapView];
-  v4 = [v3 _mapLayer];
+  mapView = [(ChromeViewController *)self mapView];
+  _mapLayer = [mapView _mapLayer];
 
-  if ([v4 mapType] - 3 <= 1)
+  if ([_mapLayer mapType] - 3 <= 1)
   {
-    v5 = [(ChromeViewController *)self mapView];
-    [v5 _stopFlyoverAnimation];
+    mapView2 = [(ChromeViewController *)self mapView];
+    [mapView2 _stopFlyoverAnimation];
 
-    v6 = [(ChromeViewController *)self mapView];
-    [v6 _exitARMode];
+    mapView3 = [(ChromeViewController *)self mapView];
+    [mapView3 _exitARMode];
 
     v7 = +[UIApplication sharedMapsDelegate];
     [v7 setMapsIsShowingTour:0];
 
-    v8 = [(IOSBasedChromeViewController *)self appCoordinator];
-    [v8 exitFlyover];
+    appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+    [appCoordinator exitFlyover];
 
     v9 = sub_100005610();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -3766,9 +3766,9 @@ LABEL_8:
   [v13 postNotificationName:@"ResetForTestingActionNotification" object:0];
 }
 
-- (void)resetForLaunchURLWithOptions:(id)a3
+- (void)resetForLaunchURLWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   [(IOSBasedChromeViewController *)self coordinator];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
@@ -3777,84 +3777,84 @@ LABEL_8:
   v5 = v11 = self;
   v12 = v5;
   [UIViewController _performWithoutDeferringTransitions:&v7];
-  v6 = [v4 objectForKeyedSubscript:{_MKLaunchOptionsPreserveSearchResultsKey, v7, v8, v9, v10, v11}];
+  v6 = [optionsCopy objectForKeyedSubscript:{_MKLaunchOptionsPreserveSearchResultsKey, v7, v8, v9, v10, v11}];
 
-  LOBYTE(v4) = [v6 BOOLValue];
-  if ((v4 & 1) == 0)
+  LOBYTE(optionsCopy) = [v6 BOOLValue];
+  if ((optionsCopy & 1) == 0)
   {
     [v5 endSearch];
   }
 }
 
-- (void)resetForEditingShortcut:(id)a3
+- (void)resetForEditingShortcut:(id)shortcut
 {
-  v4 = a3;
-  v6 = [(IOSBasedChromeViewController *)self coordinator];
-  [(IOSBasedChromeViewController *)self _teardownViewHierarchyWithActionCoordinator:v6 shouldAnimate:1];
-  v5 = [ShortcutEditSession editSessionWithShortcut:v4];
+  shortcutCopy = shortcut;
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [(IOSBasedChromeViewController *)self _teardownViewHierarchyWithActionCoordinator:coordinator shouldAnimate:1];
+  v5 = [ShortcutEditSession editSessionWithShortcut:shortcutCopy];
 
-  [v6 viewController:self editShortcut:v5];
+  [coordinator viewController:self editShortcut:v5];
 }
 
 - (id)navActionCoordinator
 {
-  v2 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 actionCoordinator];
+    actionCoordinator = [topContext actionCoordinator];
   }
 
   else
   {
-    v3 = 0;
+    actionCoordinator = 0;
   }
 
-  return v3;
+  return actionCoordinator;
 }
 
 - (id)lookAroundCoordinator
 {
-  v2 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 actionCoordinator];
+    actionCoordinator = [topContext actionCoordinator];
   }
 
   else
   {
-    v3 = 0;
+    actionCoordinator = 0;
   }
 
-  return v3;
+  return actionCoordinator;
 }
 
 - (void)shouldStartRedoSearch
 {
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
-    v5 = [(ChromeViewController *)self topContext];
+    topContext = [(ChromeViewController *)self topContext];
     if (objc_opt_respondsToSelector())
     {
-      [v5 searchRedoFloatingControlPressed];
+      [topContext searchRedoFloatingControlPressed];
     }
 
-    v3 = [(IOSBasedChromeViewController *)self baseModeController];
-    v4 = [v3 actionCoordinator];
-    [v4 refreshCurrentSearch];
+    baseModeController = [(IOSBasedChromeViewController *)self baseModeController];
+    actionCoordinator = [baseModeController actionCoordinator];
+    [actionCoordinator refreshCurrentSearch];
   }
 }
 
 - (void)openUserProfile
 {
-  v2 = [(IOSBasedChromeViewController *)self appCoordinator];
-  [v2 openUserProfile];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  [appCoordinator openUserProfile];
 }
 
 - (void)selectLookAroundMode
 {
-  v3 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3866,122 +3866,122 @@ LABEL_8:
 
   else
   {
-    v5 = [(IOSBasedChromeViewController *)self lookAroundCoordinator];
-    [v5 exitLookAround];
+    lookAroundCoordinator = [(IOSBasedChromeViewController *)self lookAroundCoordinator];
+    [lookAroundCoordinator exitLookAround];
   }
 }
 
 - (void)exitLookAround
 {
-  v2 = [(IOSBasedChromeViewController *)self appCoordinator];
-  [v2 exitLookAround];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  [appCoordinator exitLookAround];
 }
 
-- (void)enterLookAroundForMapItem:(id)a3 isMarkedLocation:(BOOL)a4 lookAroundView:(id)a5
+- (void)enterLookAroundForMapItem:(id)item isMarkedLocation:(BOOL)location lookAroundView:(id)view
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 window];
-  [v8 bounds];
-  [v10 convertRect:v8 fromView:?];
+  locationCopy = location;
+  viewCopy = view;
+  itemCopy = item;
+  window = [viewCopy window];
+  [viewCopy bounds];
+  [window convertRect:viewCopy fromView:?];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v20 = [MKLookAroundEntryPoint entryPointWithMapItem:v9 isMarkedLocation:v5 wantsCloseUpView:1 cameraFrameOverride:0 triggerAction:6060];
+  v20 = [MKLookAroundEntryPoint entryPointWithMapItem:itemCopy isMarkedLocation:locationCopy wantsCloseUpView:1 cameraFrameOverride:0 triggerAction:6060];
 
-  v19 = [(IOSBasedChromeViewController *)self appCoordinator];
-  [v19 enterLookAroundWithEntryPoint:v20 lookAroundView:v8 showsFullScreen:1 originFrame:{v12, v14, v16, v18}];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  [appCoordinator enterLookAroundWithEntryPoint:v20 lookAroundView:viewCopy showsFullScreen:1 originFrame:{v12, v14, v16, v18}];
 }
 
-- (void)enterLookAroundPIP:(id)a3
+- (void)enterLookAroundPIP:(id)p
 {
-  v26 = a3;
-  v4 = [(IOSBasedChromeViewController *)self coordinator];
-  v5 = [v4 containerViewController];
-  v6 = [v5 view];
+  pCopy = p;
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  containerViewController = [coordinator containerViewController];
+  view = [containerViewController view];
 
-  if (v26)
+  if (pCopy)
   {
-    [v26 bounds];
-    [v6 convertRect:v26 fromView:?];
+    [pCopy bounds];
+    [view convertRect:pCopy fromView:?];
   }
 
   else
   {
-    [v6 frame];
+    [view frame];
   }
 
   v11 = v7;
   v12 = v8;
   v13 = v9;
   v14 = v10;
-  v15 = [(IOSBasedChromeViewController *)self appCoordinator];
-  v16 = [v15 baseActionCoordinator];
-  v17 = [v16 currentMapItem];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
+  currentMapItem = [baseActionCoordinator currentMapItem];
 
-  if (([v17 _hasLookAroundStorefront] & 1) == 0)
+  if (([currentMapItem _hasLookAroundStorefront] & 1) == 0)
   {
-    v18 = [(ChromeViewController *)self mapView];
+    mapView = [(ChromeViewController *)self mapView];
     v19 = [MKPlacemark alloc];
-    [v18 centerCoordinate];
+    [mapView centerCoordinate];
     v20 = [v19 initWithCoordinate:?];
     v21 = [[MKMapItem alloc] initWithPlacemark:v20];
 
-    v17 = v21;
+    currentMapItem = v21;
   }
 
-  v22 = [MKLookAroundEntryPoint entryPointWithMapItem:v17 triggerAction:6061];
+  v22 = [MKLookAroundEntryPoint entryPointWithMapItem:currentMapItem triggerAction:6061];
   [GEOAPPortal captureUserAction:6061 target:[(IOSBasedChromeViewController *)self currentUITargetForAnalytics] value:0];
-  v23 = [(IOSBasedChromeViewController *)self coordinator];
-  v24 = [v23 containerViewController];
-  [v24 setContaineesHidden:1];
+  coordinator2 = [(IOSBasedChromeViewController *)self coordinator];
+  containerViewController2 = [coordinator2 containerViewController];
+  [containerViewController2 setContaineesHidden:1];
 
-  v25 = [(IOSBasedChromeViewController *)self appCoordinator];
-  [v25 enterLookAroundWithEntryPoint:v22 lookAroundView:0 showsFullScreen:0 originFrame:{v11, v12, v13, v14}];
+  appCoordinator2 = [(IOSBasedChromeViewController *)self appCoordinator];
+  [appCoordinator2 enterLookAroundWithEntryPoint:v22 lookAroundView:0 showsFullScreen:0 originFrame:{v11, v12, v13, v14}];
 }
 
 - (void)select3dMode
 {
-  v2 = [(IOSBasedChromeViewController *)self coordinator];
-  [v2 select3dMode];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator select3dMode];
 }
 
-- (void)setLocationPulseEnabled:(BOOL)a3
+- (void)setLocationPulseEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(ChromeViewController *)self mapView];
-  [v4 _setLocationPulseEnabled:v3];
+  enabledCopy = enabled;
+  mapView = [(ChromeViewController *)self mapView];
+  [mapView _setLocationPulseEnabled:enabledCopy];
 }
 
 - (BOOL)locationPulseEnabled
 {
-  v2 = [(ChromeViewController *)self mapView];
-  v3 = [v2 _isLocationPulseEnabled];
+  mapView = [(ChromeViewController *)self mapView];
+  _isLocationPulseEnabled = [mapView _isLocationPulseEnabled];
 
-  return v3;
+  return _isLocationPulseEnabled;
 }
 
-- (void)debugController:(id)a3 choseTraceAtPath:(id)a4 startNav:(BOOL)a5
+- (void)debugController:(id)controller choseTraceAtPath:(id)path startNav:(BOOL)nav
 {
-  v8 = a3;
+  controllerCopy = controller;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100DBA974;
   v13[3] = &unk_101660CE8;
-  v16 = a5;
-  v14 = a4;
-  v15 = self;
-  v9 = v14;
+  navCopy = nav;
+  pathCopy = path;
+  selfCopy = self;
+  v9 = pathCopy;
   v10 = objc_retainBlock(v13);
-  v11 = [v8 presentingViewController];
+  presentingViewController = [controllerCopy presentingViewController];
 
-  if (v11)
+  if (presentingViewController)
   {
-    v12 = [v8 presentingViewController];
-    [v12 dismissViewControllerAnimated:1 completion:v10];
+    presentingViewController2 = [controllerCopy presentingViewController];
+    [presentingViewController2 dismissViewControllerAnimated:1 completion:v10];
   }
 
   else
@@ -3990,45 +3990,45 @@ LABEL_8:
   }
 }
 
-- (id)allVisibleMapViewsButNotCarPlayForDebugController:(id)a3
+- (id)allVisibleMapViewsButNotCarPlayForDebugController:(id)controller
 {
   v3 = +[UIApplication sharedMapsDelegate];
-  v4 = [v3 allVisibleMapViewsButNotCarPlay];
+  allVisibleMapViewsButNotCarPlay = [v3 allVisibleMapViewsButNotCarPlay];
 
-  return v4;
+  return allVisibleMapViewsButNotCarPlay;
 }
 
-- (id)allVisibleMapViewsForDebugController:(id)a3
+- (id)allVisibleMapViewsForDebugController:(id)controller
 {
   v3 = +[UIApplication sharedMapsDelegate];
-  v4 = [v3 allVisibleMapViews];
+  allVisibleMapViews = [v3 allVisibleMapViews];
 
-  return v4;
+  return allVisibleMapViews;
 }
 
 - (void)presentMapsDebugControllerIfEnabled
 {
-  v2 = [(IOSBasedChromeViewController *)self _maps_mapsSceneDelegate];
-  [v2 presentMapsDebugControllerIfEnabled];
+  _maps_mapsSceneDelegate = [(IOSBasedChromeViewController *)self _maps_mapsSceneDelegate];
+  [_maps_mapsSceneDelegate presentMapsDebugControllerIfEnabled];
 }
 
-- (void)setSuggestedApplicationState:(int)a3
+- (void)setSuggestedApplicationState:(int)state
 {
-  LODWORD(v3) = a3;
-  v5 = [(IOSBasedChromeViewController *)self appCoordinator];
-  v6 = [v5 isNavigationTurnByTurnOrStepping];
+  LODWORD(v3) = state;
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  isNavigationTurnByTurnOrStepping = [appCoordinator isNavigationTurnByTurnOrStepping];
 
-  if (v6)
+  if (isNavigationTurnByTurnOrStepping)
   {
     v3 = 2;
   }
 
   else
   {
-    v7 = [(IOSBasedChromeViewController *)self appCoordinator];
-    v8 = [v7 isRoutePlanningPresented];
+    appCoordinator2 = [(IOSBasedChromeViewController *)self appCoordinator];
+    isRoutePlanningPresented = [appCoordinator2 isRoutePlanningPresented];
 
-    if (v8)
+    if (isRoutePlanningPresented)
     {
       v3 = 1;
     }
@@ -4039,28 +4039,28 @@ LABEL_8:
     }
   }
 
-  v9 = [(ChromeViewController *)self mapView];
-  [v9 _setApplicationState:v3];
+  mapView = [(ChromeViewController *)self mapView];
+  [mapView _setApplicationState:v3];
 }
 
 - (void)setNeedsUserActivityUpdate
 {
-  v2 = [(IOSBasedChromeViewController *)self _maps_mapsSceneDelegate];
-  [v2 setNeedsUserActivityUpdate];
+  _maps_mapsSceneDelegate = [(IOSBasedChromeViewController *)self _maps_mapsSceneDelegate];
+  [_maps_mapsSceneDelegate setNeedsUserActivityUpdate];
 }
 
-- (BOOL)willMoveToOrFromSecureLockScreenUI:(BOOL)a3
+- (BOOL)willMoveToOrFromSecureLockScreenUI:(BOOL)i
 {
-  v3 = a3;
-  self->_isTransitioningToLockScreen = a3;
+  iCopy = i;
+  self->_isTransitioningToLockScreen = i;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(ChromeViewController *)self contexts];
-  v6 = [v5 reverseObjectEnumerator];
+  contexts = [(ChromeViewController *)self contexts];
+  reverseObjectEnumerator = [contexts reverseObjectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4072,13 +4072,13 @@ LABEL_8:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
         if (sub_100010C34(v12, &OBJC_PROTOCOL___LockScreenProtocol))
         {
-          if (v3)
+          if (iCopy)
           {
             [v12 willBeginDisplayingInSecureLockScreen];
           }
@@ -4092,7 +4092,7 @@ LABEL_8:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -4103,43 +4103,43 @@ LABEL_8:
     v9 = 0;
   }
 
-  if (v3 && [(IOSBasedChromeViewController *)self _isCurrentContainerChromeOwned])
+  if (iCopy && [(IOSBasedChromeViewController *)self _isCurrentContainerChromeOwned])
   {
-    v13 = [(IOSBasedChromeViewController *)self cardsOverlay];
-    [v13 willBeginDisplayingInSecureLockScreen];
+    cardsOverlay = [(IOSBasedChromeViewController *)self cardsOverlay];
+    [cardsOverlay willBeginDisplayingInSecureLockScreen];
   }
 
   if (v9)
   {
-    [(IOSBasedChromeViewController *)self handleMoveToOrFromSecureLockscreenUI:v3];
+    [(IOSBasedChromeViewController *)self handleMoveToOrFromSecureLockscreenUI:iCopy];
     return 1;
   }
 
   else
   {
     self->_isTransitioningToLockScreen = 0;
-    return !v3;
+    return !iCopy;
   }
 }
 
-- (BOOL)_shouldShowTrafficForViewMode:(int64_t)a3
+- (BOOL)_shouldShowTrafficForViewMode:(int64_t)mode
 {
-  if (a3 == 7)
+  if (mode == 7)
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [(IOSBasedChromeViewController *)self settingsController];
-    v6 = [v5 userDesiresTraffic];
-    v7 = 0x57u >> (a3 + 1);
-    if ((a3 + 1) > 6)
+    settingsController = [(IOSBasedChromeViewController *)self settingsController];
+    userDesiresTraffic = [settingsController userDesiresTraffic];
+    v7 = 0x57u >> (mode + 1);
+    if ((mode + 1) > 6)
     {
       LOBYTE(v7) = 0;
     }
 
-    if (((a3 - 1) & 0xFFFFFFFFFFFFFFFALL) != 0)
+    if (((mode - 1) & 0xFFFFFFFFFFFFFFFALL) != 0)
     {
       v8 = 0;
     }
@@ -4149,7 +4149,7 @@ LABEL_8:
       v8 = v7;
     }
 
-    if (v6)
+    if (userDesiresTraffic)
     {
       v3 = v8;
     }
@@ -4165,13 +4165,13 @@ LABEL_8:
 
 - (void)_updateViewModeForTrafficDisplayIfNeeded
 {
-  v3 = [(IOSBasedChromeViewController *)self displayedViewMode];
-  v4 = [(IOSBasedChromeViewController *)self settingsController];
-  v5 = [v4 shouldChangeViewModeForTraffic];
+  displayedViewMode = [(IOSBasedChromeViewController *)self displayedViewMode];
+  settingsController = [(IOSBasedChromeViewController *)self settingsController];
+  shouldChangeViewModeForTraffic = [settingsController shouldChangeViewModeForTraffic];
 
-  if (v5)
+  if (shouldChangeViewModeForTraffic)
   {
-    switch(v3)
+    switch(displayedViewMode)
     {
       case 2:
         v6 = 1;
@@ -4192,14 +4192,14 @@ LABEL_8:
 
 - (void)_updateViewModeForLabelsDisplayIfNeeded
 {
-  v3 = [(IOSBasedChromeViewController *)self displayedViewMode];
-  v4 = [(IOSBasedChromeViewController *)self settingsController];
-  v5 = [v4 shouldChangeViewModeForLabels];
+  displayedViewMode = [(IOSBasedChromeViewController *)self displayedViewMode];
+  settingsController = [(IOSBasedChromeViewController *)self settingsController];
+  shouldChangeViewModeForLabels = [settingsController shouldChangeViewModeForLabels];
 
-  if (v5)
+  if (shouldChangeViewModeForLabels)
   {
-    v6 = v3 - 1;
-    if (v3 - 1) <= 5 && ((0x33u >> v6))
+    v6 = displayedViewMode - 1;
+    if (displayedViewMode - 1) <= 5 && ((0x33u >> v6))
     {
       v7 = qword_101215C10[v6];
 
@@ -4208,12 +4208,12 @@ LABEL_8:
   }
 }
 
-- (void)updateLightLevelAnimated:(BOOL)a3 lightLevel:(int64_t)a4
+- (void)updateLightLevelAnimated:(BOOL)animated lightLevel:(int64_t)level
 {
-  LODWORD(v5) = a3;
+  LODWORD(v5) = animated;
   if (![(IOSBasedChromeViewController *)self _isCurrentUserInterfaceIdiomMac])
   {
-    if (a4)
+    if (level)
     {
       v5 = v5;
     }
@@ -4229,10 +4229,10 @@ LABEL_8:
       goto LABEL_18;
     }
 
-    v8 = self;
-    if (!v8)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v13 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_14;
     }
 
@@ -4240,77 +4240,77 @@ LABEL_8:
     v10 = NSStringFromClass(v9);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(IOSBasedChromeViewController *)v8 performSelector:"accessibilityIdentifier"];
+      v11 = [(IOSBasedChromeViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v12 = v11;
       if (v11 && ![v11 isEqualToString:v10])
       {
-        v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, v8, v12];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v10, selfCopy, v12];
 
         goto LABEL_12;
       }
     }
 
-    v13 = [NSString stringWithFormat:@"%@<%p>", v10, v8];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v10, selfCopy];
 LABEL_12:
 
 LABEL_14:
-    v14 = v13;
-    if (a4 >= 3)
+    v14 = selfCopy;
+    if (level >= 3)
     {
-      v15 = [NSString stringWithFormat:@"<Unknown: %ld>", a4];
+      level = [NSString stringWithFormat:@"<Unknown: %ld>", level];
     }
 
     else
     {
-      v15 = off_101654870[a4];
+      level = off_101654870[level];
     }
 
     *buf = 138543618;
     v31 = v14;
     v32 = 2112;
-    v33 = v15;
+    v33 = level;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}@] updateLightLevelAnimated with lightLevel: %@", buf, 0x16u);
 
 LABEL_18:
     if (![(IOSBasedChromeViewController *)self _isNavigationMode])
     {
-      v16 = [(IOSBasedChromeViewController *)self viewIfLoaded];
-      v17 = [v16 window];
-      v18 = [v17 traitCollection];
-      v19 = [v18 copy];
+      viewIfLoaded = [(IOSBasedChromeViewController *)self viewIfLoaded];
+      window = [viewIfLoaded window];
+      traitCollection = [window traitCollection];
+      v19 = [traitCollection copy];
 
-      a4 = [v19 userInterfaceStyle];
+      level = [v19 userInterfaceStyle];
     }
 
-    self->_interfaceStyleForLight = 2 * (a4 == 2);
+    self->_interfaceStyleForLight = 2 * (level == 2);
     v20 = sub_10004F508();
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       goto LABEL_27;
     }
 
-    v21 = self;
+    selfCopy2 = self;
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
     if (objc_opt_respondsToSelector())
     {
-      v24 = [(IOSBasedChromeViewController *)v21 performSelector:"accessibilityIdentifier"];
+      v24 = [(IOSBasedChromeViewController *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v25 = v24;
       if (v24 && ![v24 isEqualToString:v23])
       {
-        v26 = [NSString stringWithFormat:@"%@<%p, %@>", v23, v21, v25];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v23, selfCopy2, v25];
 
         goto LABEL_26;
       }
     }
 
-    v26 = [NSString stringWithFormat:@"%@<%p>", v23, v21];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v23, selfCopy2];
 LABEL_26:
 
     *buf = 138543618;
-    v31 = v26;
+    v31 = selfCopy2;
     v32 = 1024;
-    LODWORD(v33) = a4 == 2;
+    LODWORD(v33) = level == 2;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[%{public}@] Updating map view to show night mode: %d", buf, 0x12u);
 
 LABEL_27:
@@ -4320,16 +4320,16 @@ LABEL_27:
     v28[2] = sub_100DBB68C;
     v28[3] = &unk_101661AE0;
     v28[4] = self;
-    v29 = a4 == 2;
+    v29 = level == 2;
     [v27 addAnimations:v28 completion:0];
     [v27 runWithDuration:196608 delay:2.0 options:0.0];
   }
 }
 
-- (void)updateThemeForVisualEffectStyle:(unint64_t)a3
+- (void)updateThemeForVisualEffectStyle:(unint64_t)style
 {
-  v4 = [(IOSBasedChromeViewController *)self theme];
-  [v4 updateVisualEffectStyleIfNeeded:a3];
+  theme = [(IOSBasedChromeViewController *)self theme];
+  [theme updateVisualEffectStyleIfNeeded:style];
 }
 
 - (void)_windowUserInterfaceStyleDidChange
@@ -4342,13 +4342,13 @@ LABEL_27:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)browseVenueChromeOverlayDidSelectFocusedVenueWithOverlay:(id)a3
+- (void)browseVenueChromeOverlayDidSelectFocusedVenueWithOverlay:(id)overlay
 {
-  v3 = [(IOSBasedChromeViewController *)self venuesManager];
-  [v3 presentPlaceCardForVenueWithFocusAndAddToHistory:1 source:7 centeringOnVenue:1];
+  venuesManager = [(IOSBasedChromeViewController *)self venuesManager];
+  [venuesManager presentPlaceCardForVenueWithFocusAndAddToHistory:1 source:7 centeringOnVenue:1];
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -4358,39 +4358,39 @@ LABEL_27:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didUpdateForcedExploreMapConfiguration:(BOOL)a3
+- (void)didUpdateForcedExploreMapConfiguration:(BOOL)configuration
 {
-  if (a3 && ![(IOSBasedChromeViewController *)self _isCurrentUserInterfaceIdiomMac])
+  if (configuration && ![(IOSBasedChromeViewController *)self _isCurrentUserInterfaceIdiomMac])
   {
-    v4 = [(ChromeViewController *)self mapView];
-    [v4 setOverrideUserInterfaceStyle:0];
+    mapView = [(ChromeViewController *)self mapView];
+    [mapView setOverrideUserInterfaceStyle:0];
 
-    v6 = [(IOSBasedChromeViewController *)self _maps_mapsSceneDelegate];
-    v5 = [v6 window];
-    [v5 setOverrideUserInterfaceStyle:0];
+    _maps_mapsSceneDelegate = [(IOSBasedChromeViewController *)self _maps_mapsSceneDelegate];
+    window = [_maps_mapsSceneDelegate window];
+    [window setOverrideUserInterfaceStyle:0];
   }
 }
 
-- (void)updateViewMode:(int64_t)a3 animated:(BOOL)a4 preserveMapSelection:(BOOL)a5
+- (void)updateViewMode:(int64_t)mode animated:(BOOL)animated preserveMapSelection:(BOOL)selection
 {
-  v5 = a4;
-  if (a5)
+  animatedCopy = animated;
+  if (selection)
   {
-    v8 = [(ChromeViewController *)self mapSelectionManager];
-    v12 = [v8 selectionStateIncludingCamera:0 includeNotCustomLabelMarkers:1];
+    mapSelectionManager = [(ChromeViewController *)self mapSelectionManager];
+    v12 = [mapSelectionManager selectionStateIncludingCamera:0 includeNotCustomLabelMarkers:1];
 
-    v9 = [(ChromeViewController *)self mapSelectionManager];
-    [v9 setIgnoreSelectionChanges:1];
+    mapSelectionManager2 = [(ChromeViewController *)self mapSelectionManager];
+    [mapSelectionManager2 setIgnoreSelectionChanges:1];
 
-    [(IOSBasedChromeViewController *)self updateViewMode:a3 animated:v5];
+    [(IOSBasedChromeViewController *)self updateViewMode:mode animated:animatedCopy];
     if (v12)
     {
-      v10 = [(ChromeViewController *)self mapSelectionManager];
-      [v10 restoreSelectionState:v12 animated:0 restoreRegion:0 notifyDelegate:0];
+      mapSelectionManager3 = [(ChromeViewController *)self mapSelectionManager];
+      [mapSelectionManager3 restoreSelectionState:v12 animated:0 restoreRegion:0 notifyDelegate:0];
     }
 
-    v11 = [(ChromeViewController *)self mapSelectionManager];
-    [v11 setIgnoreSelectionChanges:0];
+    mapSelectionManager4 = [(ChromeViewController *)self mapSelectionManager];
+    [mapSelectionManager4 setIgnoreSelectionChanges:0];
   }
 
   else
@@ -4400,9 +4400,9 @@ LABEL_27:
   }
 }
 
-- (void)updateViewMode:(int64_t)displayedViewMode animated:(BOOL)a4 skipSettingMapConfiguration:(BOOL)a5
+- (void)updateViewMode:(int64_t)displayedViewMode animated:(BOOL)animated skipSettingMapConfiguration:(BOOL)configuration
 {
-  v6 = a4;
+  animatedCopy = animated;
   v9 = +[MapsOfflineUIHelper sharedHelper];
   if ([v9 isUsingOfflineMaps])
   {
@@ -4443,18 +4443,18 @@ LABEL_27:
     v14 = displayedViewMode + 1;
     if (displayedViewMode + 1) < 9 && ((0x1DFu >> v14))
     {
-      v15 = off_101654828[v14];
+      displayedViewMode = off_101654828[v14];
     }
 
     else
     {
-      v15 = [NSString stringWithFormat:@"<Unknown: %ld>", displayedViewMode];
+      displayedViewMode = [NSString stringWithFormat:@"<Unknown: %ld>", displayedViewMode];
     }
 
     *buf = 138543618;
     *&buf[4] = v13;
     *&buf[12] = 2114;
-    *&buf[14] = v15;
+    *&buf[14] = displayedViewMode;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Updating view mode from %{public}@ to %{public}@", buf, 0x16u);
   }
 
@@ -4504,27 +4504,27 @@ LABEL_30:
 LABEL_31:
   if ([(IOSBasedChromeViewController *)self shouldUseModernMap])
   {
-    v17 = [(IOSBasedChromeViewController *)self modernMapProjectionType];
+    modernMapProjectionType = [(IOSBasedChromeViewController *)self modernMapProjectionType];
   }
 
   else
   {
-    v17 = *&buf[16];
+    modernMapProjectionType = *&buf[16];
   }
 
-  *&buf[16] = v17;
+  *&buf[16] = modernMapProjectionType;
   if ([(IOSBasedChromeViewController *)self shouldUseModernMap])
   {
-    v18 = [(IOSBasedChromeViewController *)self modernMapTerrainMode];
+    modernMapTerrainMode = [(IOSBasedChromeViewController *)self modernMapTerrainMode];
   }
 
   else
   {
-    v18 = *&buf[24];
+    modernMapTerrainMode = *&buf[24];
   }
 
   v19 = self->_displayedViewMode;
-  *&buf[24] = v18;
+  *&buf[24] = modernMapTerrainMode;
   v40 = 0u;
   v42 = 0u;
   v43 = 0;
@@ -4571,27 +4571,27 @@ LABEL_51:
   v22 = v40.i64[0] == 1 && *buf != 1;
   self->_transitioningFromImagery = v22;
   self->_displayedViewMode = displayedViewMode;
-  if (!a5)
+  if (!configuration)
   {
-    v23 = [(ChromeViewController *)self mapView];
+    mapView = [(ChromeViewController *)self mapView];
     v38[0] = *buf;
     v38[1] = *&buf[16];
     v38[2] = v45;
     v39 = v46;
-    [v23 _setCartographicConfiguration:v38 animated:v6];
+    [mapView _setCartographicConfiguration:v38 animated:animatedCopy];
 
     v24 = [(IOSBasedChromeViewController *)self _shouldShowTrafficForViewMode:displayedViewMode];
-    v25 = [(ChromeViewController *)self mapView];
-    [v25 setShowsTraffic:v24];
+    mapView2 = [(ChromeViewController *)self mapView];
+    [mapView2 setShowsTraffic:v24];
   }
 
-  v26 = [(IOSBasedChromeViewController *)self userLocationView];
-  [v26 setViewMode:displayedViewMode];
+  userLocationView = [(IOSBasedChromeViewController *)self userLocationView];
+  [userLocationView setViewMode:displayedViewMode];
 
   self->_interfaceStyleForMapType = 0;
   [(IOSBasedChromeViewController *)self _updateMapViewWithEVChargingConfig];
-  v27 = [(IOSBasedChromeViewController *)self _maps_mapsSceneDelegate];
-  v28 = [v27 window];
+  _maps_mapsSceneDelegate = [(IOSBasedChromeViewController *)self _maps_mapsSceneDelegate];
+  window = [_maps_mapsSceneDelegate window];
 
   if ([(IOSBasedChromeViewController *)self _isCurrentUserInterfaceIdiomMac])
   {
@@ -4601,11 +4601,11 @@ LABEL_63:
     goto LABEL_65;
   }
 
-  v29 = [(ChromeViewController *)self mapView];
-  v30 = v29;
-  if (v29)
+  mapView3 = [(ChromeViewController *)self mapView];
+  v30 = mapView3;
+  if (mapView3)
   {
-    [v29 _cartographicConfiguration];
+    [mapView3 _cartographicConfiguration];
 
     if (v37 == 1)
     {
@@ -4620,42 +4620,42 @@ LABEL_63:
 
   v31 = 0;
 LABEL_65:
-  v32 = [(ChromeViewController *)self mapView];
-  [v32 setOverrideUserInterfaceStyle:v31];
+  mapView4 = [(ChromeViewController *)self mapView];
+  [mapView4 setOverrideUserInterfaceStyle:v31];
 
-  [v28 setOverrideUserInterfaceStyle:v30];
+  [window setOverrideUserInterfaceStyle:v30];
   [(IOSBasedChromeViewController *)self updateThemeViewAndControllers];
-  v33 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   if (objc_opt_respondsToSelector())
   {
-    [v33 chromeViewController:self didUpdateViewMode:displayedViewMode];
+    [topContext chromeViewController:self didUpdateViewMode:displayedViewMode];
   }
 
   else
   {
-    v34 = [(IOSBasedChromeViewController *)self viewModeDelegate];
-    [v34 chromeViewController:self didUpdateViewMode:displayedViewMode];
+    viewModeDelegate = [(IOSBasedChromeViewController *)self viewModeDelegate];
+    [viewModeDelegate chromeViewController:self didUpdateViewMode:displayedViewMode];
   }
 
   [(IOSBasedChromeViewController *)self setNeedsStatusBarAppearanceUpdate];
   v35 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
   [v35 setMapViewMode:displayedViewMode];
 
-  v36 = [(ChromeViewController *)self mapView];
-  [MapsAnalyticStateProvider updateMapViewInformation:v36];
+  mapView5 = [(ChromeViewController *)self mapView];
+  [MapsAnalyticStateProvider updateMapViewInformation:mapView5];
 
   [MapsAnalyticStateProvider updateMapViewViewMode:displayedViewMode];
   [(IOSBasedChromeViewController *)self _updateFloatingControlsDidChangePitching:0 animated:0];
 }
 
-- (void)_updateMapViewResponderTargetForObject:(id)a3
+- (void)_updateMapViewResponderTargetForObject:(id)object
 {
-  v7 = a3;
-  v4 = sub_100010C34(v7, &OBJC_PROTOCOL___MapViewResponderHandling);
-  v5 = [(IOSBasedChromeViewController *)self mapViewResponder];
+  objectCopy = object;
+  v4 = sub_100010C34(objectCopy, &OBJC_PROTOCOL___MapViewResponderHandling);
+  mapViewResponder = [(IOSBasedChromeViewController *)self mapViewResponder];
   if (v4)
   {
-    v6 = v7;
+    v6 = objectCopy;
   }
 
   else
@@ -4663,7 +4663,7 @@ LABEL_65:
     v6 = 0;
   }
 
-  [v5 setTarget:v6];
+  [mapViewResponder setTarget:v6];
 }
 
 - (BOOL)_canShowWeather
@@ -4679,10 +4679,10 @@ LABEL_65:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(ChromeViewController *)self contexts];
-    v5 = [v4 reverseObjectEnumerator];
+    contexts = [(ChromeViewController *)self contexts];
+    reverseObjectEnumerator = [contexts reverseObjectEnumerator];
 
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -4694,7 +4694,7 @@ LABEL_6:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -4710,7 +4710,7 @@ LABEL_6:
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
           if (v7)
           {
             goto LABEL_6;
@@ -4728,32 +4728,32 @@ LABEL_17:
   return v3 & 1;
 }
 
-- (void)_updateInnerLayoutGuideWithTopViewController:(id)a3
+- (void)_updateInnerLayoutGuideWithTopViewController:(id)controller
 {
-  v17 = a3;
+  controllerCopy = controller;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v17 view], v4 = objc_claimAutoreleasedReturnValue(), -[IOSBasedChromeViewController view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isDescendantOfView:", v5), v5, v4, v6))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([controllerCopy view], v4 = objc_claimAutoreleasedReturnValue(), -[IOSBasedChromeViewController view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isDescendantOfView:", v5), v5, v4, v6))
   {
-    v7 = [v17 innerLayoutGuide];
+    innerLayoutGuide = [controllerCopy innerLayoutGuide];
   }
 
   else
   {
-    v8 = [(IOSBasedChromeViewController *)self cardsOverlay];
-    v9 = [v8 currentViewController];
+    cardsOverlay = [(IOSBasedChromeViewController *)self cardsOverlay];
+    currentViewController = [cardsOverlay currentViewController];
 
-    if (v9)
+    if (currentViewController)
     {
-      v10 = [(IOSBasedChromeViewController *)self cardsOverlay];
-      [v10 innerLayoutGuide];
+      cardsOverlay2 = [(IOSBasedChromeViewController *)self cardsOverlay];
+      [cardsOverlay2 innerLayoutGuide];
     }
 
     else
     {
-      v10 = [(ChromeViewController *)self overlayController];
-      [v10 contentLayoutGuide];
+      cardsOverlay2 = [(ChromeViewController *)self overlayController];
+      [cardsOverlay2 contentLayoutGuide];
     }
-    v7 = ;
+    innerLayoutGuide = ;
   }
 
   if (self->_innerLayoutGuideConstraints)
@@ -4763,36 +4763,36 @@ LABEL_17:
     self->_innerLayoutGuideConstraints = 0;
   }
 
-  if (v7)
+  if (innerLayoutGuide)
   {
-    v12 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+    innerLayoutGuide2 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
     LODWORD(v13) = 1148846080;
-    v14 = [v12 _maps_constraintsEqualToEdgesOfLayoutGuide:v7 priority:v13];
-    v15 = [v14 allConstraints];
+    v14 = [innerLayoutGuide2 _maps_constraintsEqualToEdgesOfLayoutGuide:innerLayoutGuide priority:v13];
+    allConstraints = [v14 allConstraints];
     v16 = self->_innerLayoutGuideConstraints;
-    self->_innerLayoutGuideConstraints = v15;
+    self->_innerLayoutGuideConstraints = allConstraints;
 
     [NSLayoutConstraint activateConstraints:self->_innerLayoutGuideConstraints];
   }
 }
 
-- (void)contextStackDidUpdateFrom:(id)a3 to:(id)a4 withAnimation:(id)a5
+- (void)contextStackDidUpdateFrom:(id)from to:(id)to withAnimation:(id)animation
 {
-  v8 = a5;
+  animationCopy = animation;
   v17.receiver = self;
   v17.super_class = IOSBasedChromeViewController;
-  v9 = a4;
-  [(ChromeViewController *)&v17 contextStackDidUpdateFrom:a3 to:v9 withAnimation:v8];
-  v10 = [v9 lastObject];
+  toCopy = to;
+  [(ChromeViewController *)&v17 contextStackDidUpdateFrom:from to:toCopy withAnimation:animationCopy];
+  lastObject = [toCopy lastObject];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v10 customContainerViewController];
+    customContainerViewController = [lastObject customContainerViewController];
   }
 
   else
   {
-    v11 = 0;
+    customContainerViewController = 0;
   }
 
   v14[0] = _NSConcreteStackBlock;
@@ -4800,36 +4800,36 @@ LABEL_17:
   v14[2] = sub_100DBCA14;
   v14[3] = &unk_10165EB30;
   v14[4] = self;
-  v15 = v11;
-  v16 = v10;
-  v12 = v10;
-  v13 = v11;
-  [v8 addCompletion:v14];
+  v15 = customContainerViewController;
+  v16 = lastObject;
+  v12 = lastObject;
+  v13 = customContainerViewController;
+  [animationCopy addCompletion:v14];
 }
 
-- (void)contextStackWillUpdateFrom:(id)a3 to:(id)a4 withAnimation:(id)a5
+- (void)contextStackWillUpdateFrom:(id)from to:(id)to withAnimation:(id)animation
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100DBCC00;
   v12[3] = &unk_101661B18;
   v12[4] = self;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [v8 addPreparation:v12];
+  animationCopy = animation;
+  toCopy = to;
+  fromCopy = from;
+  [animationCopy addPreparation:v12];
   v11.receiver = self;
   v11.super_class = IOSBasedChromeViewController;
-  [(ChromeViewController *)&v11 contextStackWillUpdateFrom:v10 to:v9 withAnimation:v8];
+  [(ChromeViewController *)&v11 contextStackWillUpdateFrom:fromCopy to:toCopy withAnimation:animationCopy];
 }
 
 - (BOOL)_internal_createPostMapFullyDrawnOverlaysIfNeeded
 {
-  v3 = [(ChromeViewController *)self mapView];
+  mapView = [(ChromeViewController *)self mapView];
 
-  if (!v3)
+  if (!mapView)
   {
-    return v3 != 0;
+    return mapView != 0;
   }
 
   [(GCDTimer *)self->_mapFullyDrawnFallbackTimer invalidate];
@@ -4845,94 +4845,94 @@ LABEL_17:
   v7 = sub_10000B11C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = self;
+    selfCopy = self;
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(IOSBasedChromeViewController *)v8 performSelector:"accessibilityIdentifier"];
+      v11 = [(IOSBasedChromeViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v12 = v11;
       if (v11 && ![v11 isEqualToString:v10])
       {
-        v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, v8, v12];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v10, selfCopy, v12];
 
         goto LABEL_8;
       }
     }
 
-    v13 = [NSString stringWithFormat:@"%@<%p>", v10, v8];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v10, selfCopy];
 LABEL_8:
 
     *buf = 138543362;
-    v34 = v13;
+    v34 = selfCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}@] Creating map-render-dependent overlays", buf, 0xCu);
   }
 
-  v14 = [(IOSBasedChromeViewController *)self mapScaleOverlay];
+  mapScaleOverlay = [(IOSBasedChromeViewController *)self mapScaleOverlay];
 
-  if (!v14)
+  if (!mapScaleOverlay)
   {
     v15 = objc_alloc_init(_TtC4Maps21MapScaleChromeOverlay);
     mapScaleOverlay = self->_mapScaleOverlay;
     self->_mapScaleOverlay = v15;
 
     [(MapScaleChromeOverlay *)self->_mapScaleOverlay setMapViewProvider:self];
-    v17 = [(ChromeViewController *)self overlayController];
+    overlayController = [(ChromeViewController *)self overlayController];
     v18 = self->_mapScaleOverlay;
-    v19 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-    [v17 addOverlay:v18 inLayoutGuide:v19];
+    innerLayoutGuide = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+    [overlayController addOverlay:v18 inLayoutGuide:innerLayoutGuide];
 
     [(ChromeViewController *)self setNeedsUpdateComponent:@"mapScale" animated:0];
   }
 
-  v20 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
+  browseVenueOverlay = [(IOSBasedChromeViewController *)self browseVenueOverlay];
 
-  if (!v20)
+  if (!browseVenueOverlay)
   {
     v21 = objc_alloc_init(_TtC4Maps24BrowseVenueChromeOverlay);
     [(IOSBasedChromeViewController *)self setBrowseVenueOverlay:v21];
 
-    v22 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
-    [v22 setDelegate:self];
+    browseVenueOverlay2 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
+    [browseVenueOverlay2 setDelegate:self];
 
-    v23 = [(ChromeViewController *)self mapView];
-    v24 = [v23 mapType];
-    v25 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
-    [v25 setDisplayedMapType:v24];
+    mapView2 = [(ChromeViewController *)self mapView];
+    mapType = [mapView2 mapType];
+    browseVenueOverlay3 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
+    [browseVenueOverlay3 setDisplayedMapType:mapType];
 
-    v26 = [(IOSBasedChromeViewController *)self venuesManager];
-    v27 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
-    [v26 addChangeObserver:v27];
+    venuesManager = [(IOSBasedChromeViewController *)self venuesManager];
+    browseVenueOverlay4 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
+    [venuesManager addChangeObserver:browseVenueOverlay4];
 
-    v28 = [(ChromeViewController *)self overlayController];
-    v29 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
-    v30 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-    [v28 addOverlay:v29 inLayoutGuide:v30];
+    overlayController2 = [(ChromeViewController *)self overlayController];
+    browseVenueOverlay5 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
+    innerLayoutGuide2 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+    [overlayController2 addOverlay:browseVenueOverlay5 inLayoutGuide:innerLayoutGuide2];
 
-    v31 = [(IOSBasedChromeViewController *)self venuesManager];
-    [(ChromeViewController *)self registerAdditionalMapViewDelegate:v31];
+    venuesManager2 = [(IOSBasedChromeViewController *)self venuesManager];
+    [(ChromeViewController *)self registerAdditionalMapViewDelegate:venuesManager2];
 
     [(ChromeViewController *)self setNeedsUpdateComponent:@"floatingSearchButton" animated:0];
   }
 
-  return v3 != 0;
+  return mapView != 0;
 }
 
 - (BOOL)_internal_createPostLaunchOverlaysIfNeeded
 {
-  v3 = [(IOSBasedChromeViewController *)self _appearState];
-  if (v3 != 2)
+  _appearState = [(IOSBasedChromeViewController *)self _appearState];
+  if (_appearState != 2)
   {
-    return v3 == 2;
+    return _appearState == 2;
   }
 
   v4 = sub_10000B11C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = self;
-    if (!v5)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v10 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_11;
     }
 
@@ -4940,104 +4940,104 @@ LABEL_8:
     v7 = NSStringFromClass(v6);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(IOSBasedChromeViewController *)v5 performSelector:"accessibilityIdentifier"];
+      v8 = [(IOSBasedChromeViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v9 = v8;
       if (v8 && ![v8 isEqualToString:v7])
       {
-        v10 = [NSString stringWithFormat:@"%@<%p, %@>", v7, v5, v9];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v7, selfCopy, v9];
 
         goto LABEL_9;
       }
     }
 
-    v10 = [NSString stringWithFormat:@"%@<%p>", v7, v5];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v7, selfCopy];
 LABEL_9:
 
 LABEL_11:
     *buf = 138543362;
-    v35 = v10;
+    v35 = selfCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}@] Creating post-launch overlays", buf, 0xCu);
   }
 
-  v11 = [(IOSBasedChromeViewController *)self weatherOverlay];
+  weatherOverlay = [(IOSBasedChromeViewController *)self weatherOverlay];
 
-  if (!v11)
+  if (!weatherOverlay)
   {
     v12 = objc_alloc_init(WeatherOverlay);
     [(IOSBasedChromeViewController *)self setWeatherOverlay:v12];
 
-    v13 = [(IOSBasedChromeViewController *)self weatherOverlay];
-    [v13 setMapViewProvider:self];
+    weatherOverlay2 = [(IOSBasedChromeViewController *)self weatherOverlay];
+    [weatherOverlay2 setMapViewProvider:self];
 
-    v14 = [(ChromeViewController *)self overlayController];
-    v15 = [(IOSBasedChromeViewController *)self weatherOverlay];
-    v16 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-    [v14 addOverlay:v15 inLayoutGuide:v16];
+    overlayController = [(ChromeViewController *)self overlayController];
+    weatherOverlay3 = [(IOSBasedChromeViewController *)self weatherOverlay];
+    innerLayoutGuide = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+    [overlayController addOverlay:weatherOverlay3 inLayoutGuide:innerLayoutGuide];
 
     [(ChromeViewController *)self setNeedsUpdateComponent:@"weatherOverlay" animated:0];
   }
 
-  v17 = [(IOSBasedChromeViewController *)self lookAroundOverlay];
+  lookAroundOverlay = [(IOSBasedChromeViewController *)self lookAroundOverlay];
 
-  if (!v17)
+  if (!lookAroundOverlay)
   {
     v18 = objc_alloc_init(LookAroundChromeOverlay);
     [(IOSBasedChromeViewController *)self setLookAroundOverlay:v18];
 
-    v19 = [(IOSBasedChromeViewController *)self lookAroundOverlay];
-    [v19 setDelegate:self];
+    lookAroundOverlay2 = [(IOSBasedChromeViewController *)self lookAroundOverlay];
+    [lookAroundOverlay2 setDelegate:self];
 
-    v20 = [(ChromeViewController *)self overlayController];
-    v21 = [(IOSBasedChromeViewController *)self lookAroundOverlay];
-    v22 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-    [v20 addOverlay:v21 inLayoutGuide:v22];
+    overlayController2 = [(ChromeViewController *)self overlayController];
+    lookAroundOverlay3 = [(IOSBasedChromeViewController *)self lookAroundOverlay];
+    innerLayoutGuide2 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+    [overlayController2 addOverlay:lookAroundOverlay3 inLayoutGuide:innerLayoutGuide2];
 
     [(ChromeViewController *)self setNeedsUpdateComponent:@"lookAroundButton" animated:0];
   }
 
-  v23 = [(IOSBasedChromeViewController *)self redoSearchOverlay];
+  redoSearchOverlay = [(IOSBasedChromeViewController *)self redoSearchOverlay];
 
-  if (!v23)
+  if (!redoSearchOverlay)
   {
     v24 = objc_alloc_init(_TtC4Maps23RedoSearchChromeOverlay);
     [(IOSBasedChromeViewController *)self setRedoSearchOverlay:v24];
 
-    v25 = [(IOSBasedChromeViewController *)self redoSearchOverlay];
-    [v25 setDelegate:self];
+    redoSearchOverlay2 = [(IOSBasedChromeViewController *)self redoSearchOverlay];
+    [redoSearchOverlay2 setDelegate:self];
 
-    v26 = [(ChromeViewController *)self overlayController];
-    v27 = [(IOSBasedChromeViewController *)self redoSearchOverlay];
-    v28 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
-    [v26 addOverlay:v27 inLayoutGuide:v28];
+    overlayController3 = [(ChromeViewController *)self overlayController];
+    redoSearchOverlay3 = [(IOSBasedChromeViewController *)self redoSearchOverlay];
+    innerLayoutGuide3 = [(IOSBasedChromeViewController *)self innerLayoutGuide];
+    [overlayController3 addOverlay:redoSearchOverlay3 inLayoutGuide:innerLayoutGuide3];
 
     [(ChromeViewController *)self setNeedsUpdateComponent:@"floatingSearchButton" animated:0];
   }
 
   if (!self->_pedestrianARSessionStateManager && +[PedestrianARSessionTask isPedestrianARModeSupported])
   {
-    v29 = [(IOSBasedChromeViewController *)self appCoordinator];
-    v30 = [v29 platformController];
-    v31 = [v30 pedestrianARSessionStateManager];
+    appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+    platformController = [appCoordinator platformController];
+    pedestrianARSessionStateManager = [platformController pedestrianARSessionStateManager];
     pedestrianARSessionStateManager = self->_pedestrianARSessionStateManager;
-    self->_pedestrianARSessionStateManager = v31;
+    self->_pedestrianARSessionStateManager = pedestrianARSessionStateManager;
 
     [(PedestrianARSessionStateManager *)self->_pedestrianARSessionStateManager addObserver:self];
   }
 
-  return v3 == 2;
+  return _appearState == 2;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = IOSBasedChromeViewController;
-  [(IOSBasedChromeViewController *)&v13 viewDidAppear:a3];
+  [(IOSBasedChromeViewController *)&v13 viewDidAppear:appear];
   [(IOSBasedChromeViewController *)self createScreenshotService];
   [(IOSBasedChromeViewController *)self _internal_createPostLaunchOverlaysIfNeeded];
-  v4 = [(ChromeViewController *)self mapView];
-  v5 = [v4 _isInactive];
+  mapView = [(ChromeViewController *)self mapView];
+  _isInactive = [mapView _isInactive];
 
-  if (v5)
+  if (_isInactive)
   {
     v6 = sub_10000B11C();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -5048,10 +5048,10 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v7 = self;
-    if (!v7)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v12 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_11;
     }
 
@@ -5059,22 +5059,22 @@ LABEL_12:
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(IOSBasedChromeViewController *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(IOSBasedChromeViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_9;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_9:
 
 LABEL_11:
     *buf = 138543362;
-    v15 = v12;
+    v15 = selfCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] Map is inactive at viewDidAppear, force-create all map-render-dependent overlays", buf, 0xCu);
 
     goto LABEL_12;
@@ -5084,150 +5084,150 @@ LABEL_13:
   [(ChromeViewController *)self updateComponentsIfNeeded];
 }
 
-- (void)showRedoSearchOverlay:(BOOL)a3
+- (void)showRedoSearchOverlay:(BOOL)overlay
 {
-  v3 = a3;
+  overlayCopy = overlay;
   [(ChromeViewController *)self setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
-  v5 = [(IOSBasedChromeViewController *)self redoSearchOverlay];
-  v8 = v5;
-  if (v3)
+  redoSearchOverlay = [(IOSBasedChromeViewController *)self redoSearchOverlay];
+  baseModeController = redoSearchOverlay;
+  if (overlayCopy)
   {
-    [v5 updateSearchOverlayWithState:0];
+    [redoSearchOverlay updateSearchOverlayWithState:0];
 
-    v6 = [(IOSBasedChromeViewController *)self redoSearchOverlay];
-    [v6 shouldHideFloatingControl:0 animated:1];
+    redoSearchOverlay2 = [(IOSBasedChromeViewController *)self redoSearchOverlay];
+    [redoSearchOverlay2 shouldHideFloatingControl:0 animated:1];
 
-    v8 = [(IOSBasedChromeViewController *)self baseModeController];
-    v7 = [v8 actionCoordinator];
-    [v7 refreshCurrentSearch];
+    baseModeController = [(IOSBasedChromeViewController *)self baseModeController];
+    actionCoordinator = [baseModeController actionCoordinator];
+    [actionCoordinator refreshCurrentSearch];
   }
 
   else
   {
-    [v5 updateSearchOverlayWithState:1];
+    [redoSearchOverlay updateSearchOverlayWithState:1];
   }
 }
 
-- (void)setSearchHereFloatingControlBottomPadding:(double)a3
+- (void)setSearchHereFloatingControlBottomPadding:(double)padding
 {
-  v4 = [(IOSBasedChromeViewController *)self redoSearchOverlay];
-  [v4 layoutSearchHereFloatingControlWithHeight:a3];
+  redoSearchOverlay = [(IOSBasedChromeViewController *)self redoSearchOverlay];
+  [redoSearchOverlay layoutSearchHereFloatingControlWithHeight:padding];
 }
 
 - (BOOL)_shouldShowBrowseVenueFloatingControl
 {
-  v3 = [(ChromeViewController *)self topContext];
-  v4 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
+  topContext2 = [(ChromeViewController *)self topContext];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [v3 permitsBrowseVenueFloatingControl];
+    permitsBrowseVenueFloatingControl = [topContext permitsBrowseVenueFloatingControl];
   }
 
   else
   {
-    v6 = 0;
+    permitsBrowseVenueFloatingControl = 0;
   }
 
-  return v6;
+  return permitsBrowseVenueFloatingControl;
 }
 
 - (BOOL)_shouldShowSearchFloatingControl
 {
-  v3 = [(ChromeViewController *)self topContext];
-  v4 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
+  topContext2 = [(ChromeViewController *)self topContext];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [v3 shouldShowSearchFloatingControl];
+    shouldShowSearchFloatingControl = [topContext shouldShowSearchFloatingControl];
   }
 
   else
   {
-    v7 = [(ChromeViewController *)self topContext];
+    topContext3 = [(ChromeViewController *)self topContext];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(IOSBasedChromeViewController *)self baseModeController];
-      v9 = [v8 actionCoordinator];
-      v6 = [v9 shouldShowSearchOverlay];
+      baseModeController = [(IOSBasedChromeViewController *)self baseModeController];
+      actionCoordinator = [baseModeController actionCoordinator];
+      shouldShowSearchFloatingControl = [actionCoordinator shouldShowSearchOverlay];
     }
 
     else
     {
-      v6 = 0;
+      shouldShowSearchFloatingControl = 0;
     }
   }
 
-  return v6;
+  return shouldShowSearchFloatingControl;
 }
 
-- (void)dismissLastVenuesPlaceCardForVenuesManager:(id)a3
+- (void)dismissLastVenuesPlaceCardForVenuesManager:(id)manager
 {
-  v3 = [(IOSBasedChromeViewController *)self appCoordinator];
-  [v3 dismissLastVenuePlaceCard];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  [appCoordinator dismissLastVenuePlaceCard];
 }
 
-- (id)topmostContaineeForVenuesManager:(id)a3
+- (id)topmostContaineeForVenuesManager:(id)manager
 {
-  v3 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-  v4 = [v3 currentViewController];
+  _currentContainerViewController = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+  currentViewController = [_currentContainerViewController currentViewController];
 
-  return v4;
+  return currentViewController;
 }
 
-- (void)venuesManager:(id)a3 presentPlaceCardForMapItem:(id)a4 addToHistory:(BOOL)a5 presentationActionSource:(unint64_t)a6
+- (void)venuesManager:(id)manager presentPlaceCardForMapItem:(id)item addToHistory:(BOOL)history presentationActionSource:(unint64_t)source
 {
-  v7 = a5;
-  v9 = a4;
-  v10 = [(IOSBasedChromeViewController *)self appCoordinator];
-  [v10 displayPlaceCardForMapItem:v9 addToHistory:v7 presentationActionSource:a6];
+  historyCopy = history;
+  itemCopy = item;
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  [appCoordinator displayPlaceCardForMapItem:itemCopy addToHistory:historyCopy presentationActionSource:source];
 }
 
-- (void)venuesManager:(id)a3 presentFloorCardViewController:(id)a4
+- (void)venuesManager:(id)manager presentFloorCardViewController:(id)controller
 {
-  v8 = a4;
-  v5 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-  v6 = [v5 currentViewController];
+  controllerCopy = controller;
+  _currentContainerViewController = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+  currentViewController = [_currentContainerViewController currentViewController];
 
-  if (v6 != v8)
+  if (currentViewController != controllerCopy)
   {
-    v7 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-    [v7 presentController:v8 animated:1];
+    _currentContainerViewController2 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+    [_currentContainerViewController2 presentController:controllerCopy animated:1];
   }
 }
 
-- (void)venuesManager:(id)a3 dismissFloorCardViewController:(id)a4
+- (void)venuesManager:(id)manager dismissFloorCardViewController:(id)controller
 {
-  v9 = a4;
-  v5 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-  v6 = [v5 currentViewController];
+  controllerCopy = controller;
+  _currentContainerViewController = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+  currentViewController = [_currentContainerViewController currentViewController];
 
-  v7 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-  v8 = v7;
-  if (v6 == v9)
+  _currentContainerViewController2 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+  v8 = _currentContainerViewController2;
+  if (currentViewController == controllerCopy)
   {
-    [v7 popLastViewControllerAnimated:1];
+    [_currentContainerViewController2 popLastViewControllerAnimated:1];
   }
 
   else
   {
-    [v7 removeControllerFromStack:v9];
+    [_currentContainerViewController2 removeControllerFromStack:controllerCopy];
   }
 }
 
-- (void)floatingControlsOverlayDidTapTTRButton:(id)a3
+- (void)floatingControlsOverlayDidTapTTRButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v5 = sub_10000B11C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -5235,27 +5235,27 @@ LABEL_13:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(IOSBasedChromeViewController *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(IOSBasedChromeViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v34 = v11;
+    v34 = selfCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Tapped TTR floating control button", buf, 0xCu);
   }
 
-  v12 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-  v13 = [v12 currentViewController];
+  _currentContainerViewController = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+  currentViewController = [_currentContainerViewController currentViewController];
   v14 = objc_opt_respondsToSelector();
 
   v15 = sub_10000B11C();
@@ -5266,15 +5266,15 @@ LABEL_10:
     {
 LABEL_33:
 
-      v31 = +[MapsRadarController sharedInstance];
-      [v31 launchTTR];
+      _currentContainerViewController3 = +[MapsRadarController sharedInstance];
+      [_currentContainerViewController3 launchTTR];
       goto LABEL_34;
     }
 
-    v23 = self;
-    if (!v23)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v28 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_32;
     }
 
@@ -5282,22 +5282,22 @@ LABEL_33:
     v25 = NSStringFromClass(v24);
     if (objc_opt_respondsToSelector())
     {
-      v26 = [(IOSBasedChromeViewController *)v23 performSelector:"accessibilityIdentifier"];
+      v26 = [(IOSBasedChromeViewController *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v27 = v26;
       if (v26 && ![v26 isEqualToString:v25])
       {
-        v28 = [NSString stringWithFormat:@"%@<%p, %@>", v25, v23, v27];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v25, selfCopy2, v27];
 
         goto LABEL_27;
       }
     }
 
-    v28 = [NSString stringWithFormat:@"%@<%p>", v25, v23];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v25, selfCopy2];
 LABEL_27:
 
 LABEL_32:
     *buf = 138543362;
-    v34 = v28;
+    v34 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Launching TTR from floating control", buf, 0xCu);
 
     goto LABEL_33;
@@ -5305,10 +5305,10 @@ LABEL_32:
 
   if (v16)
   {
-    v17 = self;
-    if (!v17)
+    selfCopy3 = self;
+    if (!selfCopy3)
     {
-      v22 = @"<nil>";
+      selfCopy3 = @"<nil>";
       goto LABEL_29;
     }
 
@@ -5316,136 +5316,136 @@ LABEL_32:
     v19 = NSStringFromClass(v18);
     if (objc_opt_respondsToSelector())
     {
-      v20 = [(IOSBasedChromeViewController *)v17 performSelector:"accessibilityIdentifier"];
+      v20 = [(IOSBasedChromeViewController *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v21 = v20;
       if (v20 && ![v20 isEqualToString:v19])
       {
-        v22 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v21];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy3, v21];
 
         goto LABEL_19;
       }
     }
 
-    v22 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy3];
 LABEL_19:
 
 LABEL_29:
-    v29 = [(IOSBasedChromeViewController *)v17 _currentContainerViewController];
-    v30 = [v29 currentViewController];
+    _currentContainerViewController2 = [(IOSBasedChromeViewController *)selfCopy3 _currentContainerViewController];
+    currentViewController2 = [_currentContainerViewController2 currentViewController];
     *buf = 138543618;
-    v34 = v22;
+    v34 = selfCopy3;
     v35 = 2112;
-    v36 = v30;
+    v36 = currentViewController2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Handing off to %@ to handle TTR button", buf, 0x16u);
   }
 
-  v31 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-  v32 = [v31 currentViewController];
-  [v32 floatingControlsOverlayDidTapTTRButton:v4];
+  _currentContainerViewController3 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+  currentViewController3 = [_currentContainerViewController3 currentViewController];
+  [currentViewController3 floatingControlsOverlayDidTapTTRButton:buttonCopy];
 
 LABEL_34:
 }
 
-- (void)floatingControlsOverlayDidTapRefreshCurrentSearch:(id)a3
+- (void)floatingControlsOverlayDidTapRefreshCurrentSearch:(id)search
 {
-  v4 = [(IOSBasedChromeViewController *)self baseModeController];
-  v3 = [v4 actionCoordinator];
-  [v3 refreshCurrentSearch];
+  baseModeController = [(IOSBasedChromeViewController *)self baseModeController];
+  actionCoordinator = [baseModeController actionCoordinator];
+  [actionCoordinator refreshCurrentSearch];
 }
 
-- (void)floatingControlsOverlayDidTapExit3DMode:(id)a3
+- (void)floatingControlsOverlayDidTapExit3DMode:(id)mode
 {
-  v3 = [(IOSBasedChromeViewController *)self coordinator];
-  [v3 exit3dMode];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator exit3dMode];
 }
 
-- (void)floatingControlsOverlayDidTapEnter3DMode:(id)a3
+- (void)floatingControlsOverlayDidTapEnter3DMode:(id)mode
 {
-  v3 = [(IOSBasedChromeViewController *)self coordinator];
-  [v3 select3dMode];
+  coordinator = [(IOSBasedChromeViewController *)self coordinator];
+  [coordinator select3dMode];
 }
 
-- (void)floatingControlsOverlay:(id)a3 didTapEnterPedestrianARFromButton:(id)a4
+- (void)floatingControlsOverlay:(id)overlay didTapEnterPedestrianARFromButton:(id)button
 {
-  v5 = [(IOSBasedChromeViewController *)self topIOSBasedContext:a3];
+  v5 = [(IOSBasedChromeViewController *)self topIOSBasedContext:overlay];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(IOSBasedChromeViewController *)self topIOSBasedContext];
-    [v7 enterPedestrianAR];
+    topIOSBasedContext = [(IOSBasedChromeViewController *)self topIOSBasedContext];
+    [topIOSBasedContext enterPedestrianAR];
   }
 }
 
-- (void)floatingControlsOverlayDidTapOpenUserProfile:(id)a3
+- (void)floatingControlsOverlayDidTapOpenUserProfile:(id)profile
 {
-  v3 = [(IOSBasedChromeViewController *)self appCoordinator];
-  [v3 openUserProfile];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  [appCoordinator openUserProfile];
 }
 
-- (void)floatingControlsOverlayDidTapOpenSettings:(id)a3
+- (void)floatingControlsOverlayDidTapOpenSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = [_TtC4Maps37MapStylePickerContaineeViewController alloc];
-  v6 = [(ChromeViewController *)self mapView];
-  v7 = [(MapStylePickerContaineeViewController *)v5 initWithMapView:v6 delegate:self];
+  mapView = [(ChromeViewController *)self mapView];
+  v7 = [(MapStylePickerContaineeViewController *)v5 initWithMapView:mapView delegate:self];
 
-  v8 = [(IOSBasedChromeViewController *)self appCoordinator];
-  v9 = [v8 baseActionCoordinator];
-  [(ContaineeViewController *)v7 setContaineeDelegate:v9];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
+  [(ContaineeViewController *)v7 setContaineeDelegate:baseActionCoordinator];
 
   [(ChromeViewController *)self registerAdditionalMapViewDelegate:v7];
   if (sub_10000FA08(v7) == 5 || sub_10000FA08(v7) == 1)
   {
     [(MapStylePickerContaineeViewController *)v7 setModalPresentationStyle:7];
-    v10 = [v4 floatingControlsViewController];
-    v11 = [v10 settingsButtonPopoverSourceView];
-    v12 = [(MapStylePickerContaineeViewController *)v7 popoverPresentationController];
-    [v12 setSourceItem:v11];
+    floatingControlsViewController = [settingsCopy floatingControlsViewController];
+    settingsButtonPopoverSourceView = [floatingControlsViewController settingsButtonPopoverSourceView];
+    popoverPresentationController = [(MapStylePickerContaineeViewController *)v7 popoverPresentationController];
+    [popoverPresentationController setSourceItem:settingsButtonPopoverSourceView];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100DBE2A4;
     v17[3] = &unk_101654798;
-    v18 = v4;
+    v18 = settingsCopy;
     v13 = [UIViewControllerTransition zoomWithOptions:0 sourceViewProvider:v17];
     [(MapStylePickerContaineeViewController *)v7 setPreferredTransition:v13];
 
-    v14 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-    [v14 _maps_topMostPresentViewController:v7 animated:1 completion:0];
+    _currentContainerViewController = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+    [_currentContainerViewController _maps_topMostPresentViewController:v7 animated:1 completion:0];
   }
 
   else
   {
-    v15 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-    [v15 presentController:v7 animated:1];
+    _currentContainerViewController2 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+    [_currentContainerViewController2 presentController:v7 animated:1];
   }
 
   v16 = +[MKMapService sharedService];
   [v16 captureUserAction:5001 onTarget:-[IOSBasedChromeViewController currentMapViewTargetForAnalytics](self eventValue:{"currentMapViewTargetForAnalytics"), 0}];
 }
 
-- (void)_updateFloatingControlsDidChangePitching:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateFloatingControlsDidChangePitching:(BOOL)pitching animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+  animatedCopy = animated;
+  pitchingCopy = pitching;
+  floatingControlsOverlay = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
 
-  if (!v7)
+  if (!floatingControlsOverlay)
   {
     return;
   }
 
-  v55 = v5;
-  v8 = [(ChromeViewController *)self mapView];
-  v9 = [(IOSBasedChromeViewController *)self _desiredFloatingControlsForCurrentState];
-  v10 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-  v11 = [v10 floatingControlsViewController];
-  v12 = [v11 visibleControls];
+  v55 = pitchingCopy;
+  mapView = [(ChromeViewController *)self mapView];
+  _desiredFloatingControlsForCurrentState = [(IOSBasedChromeViewController *)self _desiredFloatingControlsForCurrentState];
+  floatingControlsOverlay2 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+  floatingControlsViewController = [floatingControlsOverlay2 floatingControlsViewController];
+  visibleControls = [floatingControlsViewController visibleControls];
 
   if (sub_10000FA08(self) == 5)
   {
-    v13 = v12 & ~v9;
+    v13 = visibleControls & ~_desiredFloatingControlsForCurrentState;
   }
 
   else
@@ -5453,14 +5453,14 @@ LABEL_34:
     v13 = 0;
   }
 
-  v14 = v9 & 0xFFFFFFFFFFFFFE7FLL;
-  v15 = [v8 _lookAroundAvailability];
-  if (v15 == 2)
+  v14 = _desiredFloatingControlsForCurrentState & 0xFFFFFFFFFFFFFE7FLL;
+  _lookAroundAvailability = [mapView _lookAroundAvailability];
+  if (_lookAroundAvailability == 2)
   {
-    v14 = v9;
+    v14 = _desiredFloatingControlsForCurrentState;
   }
 
-  if (v15 == 2 && (v9 & 0x80) != 0)
+  if (_lookAroundAvailability == 2 && (_desiredFloatingControlsForCurrentState & 0x80) != 0)
   {
     v16 = v13;
   }
@@ -5472,10 +5472,10 @@ LABEL_34:
 
   [MapsAnalyticStateProvider updateButtonsInformationLookAround:?];
   v17 = v14 & 0xFFFFFFFFFFFFFEFFLL;
-  v57 = v4;
+  v57 = animatedCopy;
   if (-[PedestrianARSessionStateManager shouldShowPedestrianAR](self->_pedestrianARSessionStateManager, "shouldShowPedestrianAR") || (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 BOOLForKey:@"PedestrianARForceShowAffordanceKey"], v18, v19))
   {
-    v17 |= v9 & 0x100;
+    v17 |= _desiredFloatingControlsForCurrentState & 0x100;
   }
 
   else
@@ -5483,17 +5483,17 @@ LABEL_34:
     v16 |= 0x100uLL;
   }
 
-  v20 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-  v21 = [v20 compassEnabled];
+  floatingControlsOverlay3 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+  compassEnabled = [floatingControlsOverlay3 compassEnabled];
 
   v22 = 4096;
-  if (!v21)
+  if (!compassEnabled)
   {
     v22 = 0;
   }
 
   v23 = v22 | v17 & 0xFFFFFFFFFFFFEFFFLL;
-  if (v21)
+  if (compassEnabled)
   {
     v24 = v16;
   }
@@ -5503,8 +5503,8 @@ LABEL_34:
     v24 = v16 | 0x1000;
   }
 
-  v25 = [(IOSBasedChromeViewController *)self displayedViewMode];
-  v53 = (v25 - 1) & 0xFFFFFFFFFFFFFFFALL;
+  displayedViewMode = [(IOSBasedChromeViewController *)self displayedViewMode];
+  v53 = (displayedViewMode - 1) & 0xFFFFFFFFFFFFFFFALL;
   v26 = v23 & 0xFFFFFFFFFFFFFF8FLL;
   if (v53)
   {
@@ -5517,50 +5517,50 @@ LABEL_34:
   }
 
   v27 = v26 & 0xFFFFFFFFFFFFFFCFLL;
-  v28 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v30 = 0;
+  actionCoordinator = 0;
   if (isKindOfClass)
   {
-    v31 = [(ChromeViewController *)self topContext];
-    v30 = [v31 actionCoordinator];
+    topContext2 = [(ChromeViewController *)self topContext];
+    actionCoordinator = [topContext2 actionCoordinator];
   }
 
   v32 = +[SettingsController deviceSupportsGlobe];
-  v33 = [v8 _isPitched];
+  _isPitched = [mapView _isPitched];
   if (!v32)
   {
-    [v8 _mapLayer];
-    v42 = v41 = v30;
-    v54 = [v42 isPitchable];
+    [mapView _mapLayer];
+    v42 = v41 = actionCoordinator;
+    isPitchable = [v42 isPitchable];
 
     v43 = v41;
-    v44 = [v41 isExiting3dMode];
+    isExiting3dMode = [v41 isExiting3dMode];
     v45 = !v55;
-    if ((v25 - 7) <= 0xFFFFFFFFFFFFFFFDLL)
+    if ((displayedViewMode - 7) <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v45 = 0;
     }
 
-    if (v45 || ((v33 ^ 1 | v44) & 1) == 0)
+    if (v45 || ((_isPitched ^ 1 | isExiting3dMode) & 1) == 0)
     {
-      v27 |= v9 & 0x10;
+      v27 |= _desiredFloatingControlsForCurrentState & 0x10;
       v24 |= 0x20uLL;
     }
 
     else
     {
-      v46 = [v8 _canEnter3DModeFlyover];
-      v47 = v46;
-      if ((v25 - 1) < 2)
+      _canEnter3DModeFlyover = [mapView _canEnter3DModeFlyover];
+      v47 = _canEnter3DModeFlyover;
+      if ((displayedViewMode - 1) < 2)
       {
         v40 = v57;
-        if (v46)
+        if (_canEnter3DModeFlyover)
         {
           v24 |= 0x10uLL;
-          v27 |= v9 & 0x20;
+          v27 |= _desiredFloatingControlsForCurrentState & 0x20;
           if (!v27)
           {
             goto LABEL_56;
@@ -5579,22 +5579,22 @@ LABEL_34:
         goto LABEL_55;
       }
 
-      if ((v25 - 5) > 1)
+      if ((displayedViewMode - 5) > 1)
       {
         v24 |= 0x30uLL;
       }
 
       else
       {
-        v48 = [v41 is3dModeSelected];
-        if (v55 && (v48 & 1) == 0)
+        is3dModeSelected = [v41 is3dModeSelected];
+        if (v55 && (is3dModeSelected & 1) == 0)
         {
-          if (((v47 | v54) & 1) == 0)
+          if (((v47 | isPitchable) & 1) == 0)
           {
             v24 |= 0x30uLL;
           }
 
-          if (v25 == 5)
+          if (displayedViewMode == 5)
           {
             v49 = 1;
           }
@@ -5625,18 +5625,18 @@ LABEL_34:
     goto LABEL_55;
   }
 
-  v56 = v30;
-  v34 = [v30 isExiting3dMode];
-  v35 = [v8 _canEnter3DMode];
-  v36 = [v8 _isShowingCuratedElevatedGround];
+  v56 = actionCoordinator;
+  isExiting3dMode2 = [actionCoordinator isExiting3dMode];
+  _canEnter3DMode = [mapView _canEnter3DMode];
+  _isShowingCuratedElevatedGround = [mapView _isShowingCuratedElevatedGround];
   GEOConfigGetDouble();
   v38 = v37;
-  [v8 _zoomLevel];
-  if (!v33 || (v34 & 1) != 0)
+  [mapView _zoomLevel];
+  if (!_isPitched || (isExiting3dMode2 & 1) != 0)
   {
-    if (v35 && ((v36 & (v39 >= v38)) != 0 || !v53))
+    if (_canEnter3DMode && ((_isShowingCuratedElevatedGround & (v39 >= v38)) != 0 || !v53))
     {
-      v27 |= v9 & 0x20;
+      v27 |= _desiredFloatingControlsForCurrentState & 0x20;
     }
 
     else
@@ -5650,7 +5650,7 @@ LABEL_34:
 
   else
   {
-    v27 |= v9 & 0x10;
+    v27 |= _desiredFloatingControlsForCurrentState & 0x10;
     v24 |= 0x20uLL;
     v40 = v57;
   }
@@ -5662,14 +5662,14 @@ LABEL_34:
   }
 
 LABEL_55:
-  v51 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-  [v51 showControlsIfNeeded:v27 animated:v40];
+  floatingControlsOverlay4 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+  [floatingControlsOverlay4 showControlsIfNeeded:v27 animated:v40];
 
 LABEL_56:
   if (v24)
   {
-    v52 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-    [v52 hideControlsIfNeeded:v24 animated:v40];
+    floatingControlsOverlay5 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+    [floatingControlsOverlay5 hideControlsIfNeeded:v24 animated:v40];
   }
 
   if (((v27 | v24) & 0x80) != 0)
@@ -5678,17 +5678,17 @@ LABEL_56:
   }
 }
 
-- (void)_updateFloatingControlsDidChangeYaw:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateFloatingControlsDidChangeYaw:(BOOL)yaw animated:(BOOL)animated
 {
-  v5 = [(IOSBasedChromeViewController *)self floatingControlsOverlay:a3];
+  v5 = [(IOSBasedChromeViewController *)self floatingControlsOverlay:yaw];
 
   if (v5)
   {
-    v6 = [(IOSBasedChromeViewController *)self _desiredFloatingControlsForCurrentState];
-    v7 = [(ChromeViewController *)self mapView];
-    v8 = [v7 shouldShowExternalCompass];
+    _desiredFloatingControlsForCurrentState = [(IOSBasedChromeViewController *)self _desiredFloatingControlsForCurrentState];
+    mapView = [(ChromeViewController *)self mapView];
+    shouldShowExternalCompass = [mapView shouldShowExternalCompass];
 
-    if (v8 && (v6 & 0x1000) != 0)
+    if (shouldShowExternalCompass && (_desiredFloatingControlsForCurrentState & 0x1000) != 0)
     {
       v9 = 1;
     }
@@ -5703,41 +5703,41 @@ LABEL_56:
       v9 = 0;
     }
 
-    v10 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-    v11 = [v10 compassEnabled];
+    floatingControlsOverlay = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+    compassEnabled = [floatingControlsOverlay compassEnabled];
 
-    if (v9 != v11)
+    if (v9 != compassEnabled)
     {
-      v12 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-      [v12 setCompassEnabled:v9];
+      floatingControlsOverlay2 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+      [floatingControlsOverlay2 setCompassEnabled:v9];
 
       [(IOSBasedChromeViewController *)self _updateFloatingControlsDidChangePitching:0 animated:0];
     }
   }
 }
 
-- (void)requestCardLayout:(unint64_t)a3 animated:(BOOL)a4 forCard:(id)a5
+- (void)requestCardLayout:(unint64_t)layout animated:(BOOL)animated forCard:(id)card
 {
-  v5 = a4;
-  v11 = a5;
+  animatedCopy = animated;
+  cardCopy = card;
   if ([(IOSBasedChromeViewController *)self _isCurrentContainerChromeOwned])
   {
-    v8 = [(IOSBasedChromeViewController *)self cardsOverlay];
-    v9 = [v8 currentViewController];
+    cardsOverlay = [(IOSBasedChromeViewController *)self cardsOverlay];
+    currentViewController = [cardsOverlay currentViewController];
 
-    if (v9 == v11)
+    if (currentViewController == cardCopy)
     {
-      v10 = [(IOSBasedChromeViewController *)self cardsOverlay];
-      [v10 setLayoutIfSupported:a3 animated:v5];
+      cardsOverlay2 = [(IOSBasedChromeViewController *)self cardsOverlay];
+      [cardsOverlay2 setLayoutIfSupported:layout animated:animatedCopy];
     }
   }
 }
 
-- (void)_updateCardsForCurrentStateWithAnimation:(id)a3
+- (void)_updateCardsForCurrentStateWithAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v74 = objc_alloc_init(NSMutableArray);
-  v72 = [v4 isAnimated];
+  isAnimated = [animationCopy isAnimated];
   if (!self->_externalContainerAppearanceNotification)
   {
     goto LABEL_19;
@@ -5746,26 +5746,26 @@ LABEL_56:
   v5 = sub_10000B11C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = self;
+    selfCopy = self;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(IOSBasedChromeViewController *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(IOSBasedChromeViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
     *buf = 138543362;
-    v91 = v11;
+    v91 = selfCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] removing existing wait for external container to appear", buf, 0xCu);
   }
 
@@ -5790,26 +5790,26 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v17 = self;
+    selfCopy2 = self;
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     if (objc_opt_respondsToSelector())
     {
-      v20 = [(IOSBasedChromeViewController *)v17 performSelector:"accessibilityIdentifier"];
+      v20 = [(IOSBasedChromeViewController *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v21 = v20;
       if (v20 && ![v20 isEqualToString:v19])
       {
-        v22 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v21];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy2, v21];
 
         goto LABEL_16;
       }
     }
 
-    v22 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy2];
 LABEL_16:
 
     *buf = 138543362;
-    v91 = v22;
+    v91 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}@] calling existing container appearance wait block", buf, 0xCu);
 
     goto LABEL_17;
@@ -5819,54 +5819,54 @@ LABEL_18:
 
 LABEL_19:
   WeakRetained = objc_loadWeakRetained(&self->_currentContainerViewController);
-  v24 = [(ChromeViewController *)self nextTopContext];
-  v25 = v24;
-  if (v24)
+  nextTopContext = [(ChromeViewController *)self nextTopContext];
+  v25 = nextTopContext;
+  if (nextTopContext)
   {
-    v26 = v24;
+    topContext = nextTopContext;
   }
 
   else
   {
-    v26 = [(ChromeViewController *)self topContext];
+    topContext = [(ChromeViewController *)self topContext];
   }
 
-  v27 = v26;
+  v27 = topContext;
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([v27 customContainerViewController], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v29 = v28;
-    v30 = v29;
+    cardsOverlay = v28;
+    v30 = cardsOverlay;
   }
 
   else
   {
-    v29 = [(IOSBasedChromeViewController *)self cardsOverlay];
+    cardsOverlay = [(IOSBasedChromeViewController *)self cardsOverlay];
     v30 = 0;
   }
 
-  v31 = [(ChromeViewController *)self previousTopContext];
-  v32 = v31;
-  if (v31)
+  previousTopContext = [(ChromeViewController *)self previousTopContext];
+  v32 = previousTopContext;
+  if (previousTopContext)
   {
-    v33 = v31;
+    topContext2 = previousTopContext;
   }
 
   else
   {
-    v33 = [(ChromeViewController *)self topContext];
+    topContext2 = [(ChromeViewController *)self topContext];
   }
 
-  v34 = v33;
+  v34 = topContext2;
 
-  v35 = [(ChromeViewController *)self currentContextTransition];
-  v73 = self;
-  if (v35)
+  currentContextTransition = [(ChromeViewController *)self currentContextTransition];
+  selfCopy3 = self;
+  if (currentContextTransition)
   {
     [(ChromeViewController *)self currentContextTransition];
     v70 = v27;
-    v36 = v29;
-    v37 = v4;
+    v36 = cardsOverlay;
+    v37 = animationCopy;
     v38 = v30;
     v40 = v39 = WeakRetained;
     [v40 pendingContexts];
@@ -5876,8 +5876,8 @@ LABEL_19:
     v34 = v41;
     WeakRetained = v39;
     v30 = v38;
-    v4 = v37;
-    v29 = v36;
+    animationCopy = v37;
+    cardsOverlay = v36;
     v27 = v70;
   }
 
@@ -5886,85 +5886,85 @@ LABEL_19:
     v43 = 0;
   }
 
-  if ([(ChromeViewController *)self transitionFromViewController:WeakRetained fromContext:v34 toViewController:v29 toContext:v27 withAnimation:v4 dismissing:v43])
+  if ([(ChromeViewController *)self transitionFromViewController:WeakRetained fromContext:v34 toViewController:cardsOverlay toContext:v27 withAnimation:animationCopy dismissing:v43])
   {
-    objc_storeWeak(&self->_currentContainerViewController, v29);
+    objc_storeWeak(&self->_currentContainerViewController, cardsOverlay);
   }
 
-  v44 = [(IOSBasedChromeViewController *)self cardsOverlay];
+  cardsOverlay2 = [(IOSBasedChromeViewController *)self cardsOverlay];
 
-  if (v29 == v44)
+  if (cardsOverlay == cardsOverlay2)
   {
-    v58 = [(IOSBasedChromeViewController *)self topIOSBasedContext];
-    v59 = [(IOSBasedChromeViewController *)self cardsOverlay];
-    [v59 setChromeContext:v58];
+    topIOSBasedContext = [(IOSBasedChromeViewController *)self topIOSBasedContext];
+    cardsOverlay3 = [(IOSBasedChromeViewController *)self cardsOverlay];
+    [cardsOverlay3 setChromeContext:topIOSBasedContext];
 
-    v60 = [(IOSBasedChromeViewController *)self cardsOverlay];
-    [(ChromeViewController *)self registerAdditionalMapViewDelegate:v60];
+    cardsOverlay4 = [(IOSBasedChromeViewController *)self cardsOverlay];
+    [(ChromeViewController *)self registerAdditionalMapViewDelegate:cardsOverlay4];
 
-    v61 = self;
+    selfCopy4 = self;
     v62 = objc_opt_class();
     v63 = NSStringFromClass(v62);
     if (objc_opt_respondsToSelector())
     {
-      v64 = [(IOSBasedChromeViewController *)v61 performSelector:"accessibilityIdentifier"];
+      v64 = [(IOSBasedChromeViewController *)selfCopy4 performSelector:"accessibilityIdentifier"];
       v65 = v64;
       if (v64 && ![v64 isEqualToString:v63])
       {
-        v66 = [NSString stringWithFormat:@"%@<%p, %@>", v63, v61, v65];
+        selfCopy4 = [NSString stringWithFormat:@"%@<%p, %@>", v63, selfCopy4, v65];
 
         goto LABEL_48;
       }
     }
 
-    v66 = [NSString stringWithFormat:@"%@<%p>", v63, v61];
+    selfCopy4 = [NSString stringWithFormat:@"%@<%p>", v63, selfCopy4];
 LABEL_48:
 
-    v67 = [NSString stringWithFormat:@"%@: updating controllers in chrome-owned card stack", v66];
-    v68 = [v4 addCompletionWaitBlockWithReason:v67];
+    v67 = [NSString stringWithFormat:@"%@: updating controllers in chrome-owned card stack", selfCopy4];
+    v68 = [animationCopy addCompletionWaitBlockWithReason:v67];
 
     v86[0] = _NSConcreteStackBlock;
     v86[1] = 3221225472;
     v86[2] = sub_100DBF308;
     v86[3] = &unk_101661068;
-    v86[4] = v61;
+    v86[4] = selfCopy4;
     v57 = v74;
-    v89 = v72;
+    v89 = isAnimated;
     v87 = v74;
     v88 = v68;
     v69 = v68;
-    [v4 addPreparation:v86];
+    [animationCopy addPreparation:v86];
 
     goto LABEL_49;
   }
 
-  v45 = [(IOSBasedChromeViewController *)self cardsOverlay];
-  [(ChromeViewController *)self unregisterAdditionalMapViewDelegate:v45];
+  cardsOverlay5 = [(IOSBasedChromeViewController *)self cardsOverlay];
+  [(ChromeViewController *)self unregisterAdditionalMapViewDelegate:cardsOverlay5];
 
   v46 = &OBJC_IVAR____TtC4Maps24GEOAPHistoricalModelItem_totalByteCount;
   if (objc_opt_respondsToSelector())
   {
     v71 = WeakRetained;
-    v47 = self;
+    selfCopy5 = self;
     v48 = objc_opt_class();
     v49 = NSStringFromClass(v48);
     if (objc_opt_respondsToSelector())
     {
-      v50 = [(IOSBasedChromeViewController *)v47 performSelector:"accessibilityIdentifier"];
+      v50 = [(IOSBasedChromeViewController *)selfCopy5 performSelector:"accessibilityIdentifier"];
       v51 = v50;
       if (v50 && ![v50 isEqualToString:v49])
       {
-        v52 = [NSString stringWithFormat:@"%@<%p, %@>", v49, v47, v51];
+        selfCopy5 = [NSString stringWithFormat:@"%@<%p, %@>", v49, selfCopy5, v51];
 
         goto LABEL_41;
       }
     }
 
-    v52 = [NSString stringWithFormat:@"%@<%p>", v49, v47];
+    selfCopy5 = [NSString stringWithFormat:@"%@<%p>", v49, selfCopy5];
 LABEL_41:
 
-    v53 = [NSString stringWithFormat:@"%@: updating controllers in custom context-owned card stack", v52];
-    v54 = [v4 addCompletionWaitBlockWithReason:v53];
+    v53 = [NSString stringWithFormat:@"%@: updating controllers in custom context-owned card stack", selfCopy5];
+    v54 = [animationCopy addCompletionWaitBlockWithReason:v53];
 
     v81[0] = _NSConcreteStackBlock;
     v46 = &OBJC_IVAR____TtC4Maps24GEOAPHistoricalModelItem_totalByteCount;
@@ -5972,14 +5972,14 @@ LABEL_41:
     v81[2] = sub_100DBF5B4;
     v81[3] = &unk_101661068;
     v82 = v27;
-    v85 = v72;
+    v85 = isAnimated;
     v83 = v30;
     v84 = v54;
     v55 = v54;
-    [v4 addPreparation:v81];
+    [animationCopy addPreparation:v81];
 
     WeakRetained = v71;
-    self = v73;
+    self = selfCopy3;
   }
 
   v76 = _NSConcreteStackBlock;
@@ -5987,34 +5987,34 @@ LABEL_41:
   v56 = v77;
   v78 = sub_100DBF640;
   v79 = &unk_101661B18;
-  v80 = self;
-  [v4 addPreparation:&v76];
+  selfCopy6 = self;
+  [animationCopy addPreparation:&v76];
   v75[0] = _NSConcreteStackBlock;
   v75[1] = v56;
   v75[2] = sub_100DBF648;
   v75[3] = &unk_101661738;
   v75[4] = self;
-  [v4 addCompletion:v75];
+  [animationCopy addCompletion:v75];
   v57 = v74;
 LABEL_49:
 }
 
-- (id)viewsToRenderMapsScreenshotService:(id)a3
+- (id)viewsToRenderMapsScreenshotService:(id)service
 {
-  v4 = a3;
-  v5 = [(ChromeViewController *)self topContext];
-  v6 = sub_100010C34(v5, &OBJC_PROTOCOL___MapsScreenshotServiceDelegate);
+  serviceCopy = service;
+  topContext = [(ChromeViewController *)self topContext];
+  v6 = sub_100010C34(topContext, &OBJC_PROTOCOL___MapsScreenshotServiceDelegate);
 
   if (v6)
   {
-    v7 = [(ChromeViewController *)self topContext];
-    v8 = [v7 viewsToRenderMapsScreenshotService:v4];
+    topContext2 = [(ChromeViewController *)self topContext];
+    v8 = [topContext2 viewsToRenderMapsScreenshotService:serviceCopy];
   }
 
   else
   {
-    v7 = [(ChromeViewController *)self mapView];
-    v11 = v7;
+    topContext2 = [(ChromeViewController *)self mapView];
+    v11 = topContext2;
     v8 = [NSArray arrayWithObjects:&v11 count:1];
   }
 
@@ -6023,98 +6023,98 @@ LABEL_49:
   return v9;
 }
 
-- (void)mapView:(id)a3 didUpdateYaw:(double)a4
+- (void)mapView:(id)view didUpdateYaw:(double)yaw
 {
-  v7 = a3;
+  viewCopy = view;
   v8 = [(ChromeViewController *)self mapViewDelegateForSelector:a2];
-  [v8 mapView:v7 didUpdateYaw:a4];
+  [v8 mapView:viewCopy didUpdateYaw:yaw];
 
   [(IOSBasedChromeViewController *)self _updateFloatingControlsDidChangeYaw:1 animated:1];
 }
 
-- (void)_resetTracking:(BOOL)a3
+- (void)_resetTracking:(BOOL)tracking
 {
-  v3 = [(ChromeViewController *)self mapView];
-  [v3 setUserTrackingMode:0];
+  mapView = [(ChromeViewController *)self mapView];
+  [mapView setUserTrackingMode:0];
 }
 
-- (void)mapViewDidFailLoadingMap:(id)a3 withError:(id)a4
+- (void)mapViewDidFailLoadingMap:(id)map withError:(id)error
 {
   loadingMapNetworkActivity = self->_loadingMapNetworkActivity;
   self->_loadingMapNetworkActivity = 0;
-  v7 = a4;
-  v8 = a3;
+  errorCopy = error;
+  mapCopy = map;
 
   v9.receiver = self;
   v9.super_class = IOSBasedChromeViewController;
-  [(IOSBasedChromeViewController *)&v9 mapViewDidFailLoadingMap:v8 withError:v7];
+  [(IOSBasedChromeViewController *)&v9 mapViewDidFailLoadingMap:mapCopy withError:errorCopy];
 }
 
-- (void)mapViewDidFinishLoadingMap:(id)a3
+- (void)mapViewDidFinishLoadingMap:(id)map
 {
   loadingMapNetworkActivity = self->_loadingMapNetworkActivity;
   self->_loadingMapNetworkActivity = 0;
-  v5 = a3;
+  mapCopy = map;
 
   v6.receiver = self;
   v6.super_class = IOSBasedChromeViewController;
-  [(IOSBasedChromeViewController *)&v6 mapViewDidFinishLoadingMap:v5];
+  [(IOSBasedChromeViewController *)&v6 mapViewDidFinishLoadingMap:mapCopy];
 }
 
-- (void)mapViewWillStartLoadingMap:(id)a3
+- (void)mapViewWillStartLoadingMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   if (!self->_loadingMapNetworkActivity)
   {
     v5 = +[LoadingIndicatorController sharedController];
-    v6 = [v5 beginShowingLoadingIndicator];
+    beginShowingLoadingIndicator = [v5 beginShowingLoadingIndicator];
     loadingMapNetworkActivity = self->_loadingMapNetworkActivity;
-    self->_loadingMapNetworkActivity = v6;
+    self->_loadingMapNetworkActivity = beginShowingLoadingIndicator;
   }
 
   v8.receiver = self;
   v8.super_class = IOSBasedChromeViewController;
-  [(IOSBasedChromeViewController *)&v8 mapViewWillStartLoadingMap:v4];
+  [(IOSBasedChromeViewController *)&v8 mapViewWillStartLoadingMap:mapCopy];
 }
 
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection
 {
-  v9 = a7;
-  v14 = a3;
+  decelerateCopy = decelerate;
+  viewCopy = view;
   v32.receiver = self;
   v32.super_class = IOSBasedChromeViewController;
-  [(IOSBasedChromeViewController *)&v32 mapView:v14 didStopRespondingToGesture:a4 zoomDirection:a5 zoomGestureType:a6 didDecelerate:v9 tiltDirection:a8];
-  v15 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-  v16 = [v15 mapViewDelegate];
+  [(IOSBasedChromeViewController *)&v32 mapView:viewCopy didStopRespondingToGesture:gesture zoomDirection:direction zoomGestureType:type didDecelerate:decelerateCopy tiltDirection:tiltDirection];
+  floatingControlsOverlay = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+  mapViewDelegate = [floatingControlsOverlay mapViewDelegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-    v19 = [v18 mapViewDelegate];
-    [v19 mapView:v14 didStopRespondingToGesture:a4 zoomDirection:a5 zoomGestureType:a6 didDecelerate:v9 tiltDirection:a8];
+    floatingControlsOverlay2 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+    mapViewDelegate2 = [floatingControlsOverlay2 mapViewDelegate];
+    [mapViewDelegate2 mapView:viewCopy didStopRespondingToGesture:gesture zoomDirection:direction zoomGestureType:type didDecelerate:decelerateCopy tiltDirection:tiltDirection];
   }
 
   v20 = +[MKSystemController sharedInstance];
-  v21 = [v20 shouldCaptureMapViewGestureAnalytics];
+  shouldCaptureMapViewGestureAnalytics = [v20 shouldCaptureMapViewGestureAnalytics];
 
-  if (a4 <= 3 && v21)
+  if (gesture <= 3 && shouldCaptureMapViewGestureAnalytics)
   {
-    if (a4 > 1)
+    if (gesture > 1)
     {
-      if (a4 == 2)
+      if (gesture == 2)
       {
         v22 = 1004;
       }
 
-      else if (a8 == 2)
+      else if (tiltDirection == 2)
       {
         v22 = 1041;
       }
 
       else
       {
-        if (a8 != 1)
+        if (tiltDirection != 1)
         {
           goto LABEL_55;
         }
@@ -6123,24 +6123,24 @@ LABEL_49:
       }
     }
 
-    else if (a4)
+    else if (gesture)
     {
-      if (a5 == 1)
+      if (direction == 1)
       {
         v22 = 1043;
-        if (a6 > 3)
+        if (type > 3)
         {
-          if ((a6 - 6) < 2)
+          if ((type - 6) < 2)
           {
             v22 = 1002;
           }
 
-          else if (a6 == 4)
+          else if (type == 4)
           {
             v22 = 1047;
           }
 
-          else if (a6 == 5)
+          else if (type == 5)
           {
             v22 = 1049;
           }
@@ -6148,7 +6148,7 @@ LABEL_49:
 
         else
         {
-          switch(a6)
+          switch(type)
           {
             case 0:
               goto LABEL_55;
@@ -6164,19 +6164,19 @@ LABEL_49:
       else
       {
         v22 = 1044;
-        if (a6 > 3)
+        if (type > 3)
         {
-          if ((a6 - 6) < 2)
+          if ((type - 6) < 2)
           {
             v22 = 1003;
           }
 
-          else if (a6 == 4)
+          else if (type == 4)
           {
             v22 = 1048;
           }
 
-          else if (a6 == 5)
+          else if (type == 5)
           {
             v22 = 1050;
           }
@@ -6184,12 +6184,12 @@ LABEL_49:
 
         else
         {
-          if (!a6 || a6 == 2)
+          if (!type || type == 2)
           {
             goto LABEL_55;
           }
 
-          if (a6 == 3)
+          if (type == 3)
           {
             v22 = 1046;
           }
@@ -6202,25 +6202,25 @@ LABEL_49:
       v22 = 1001;
     }
 
-    v23 = [(IOSBasedChromeViewController *)self currentMapViewTargetForAnalytics];
+    currentMapViewTargetForAnalytics = [(IOSBasedChromeViewController *)self currentMapViewTargetForAnalytics];
     v24 = +[MKMapService sharedService];
-    v25 = [v14 mapRegion];
-    [v14 _zoomLevel];
+    mapRegion = [viewCopy mapRegion];
+    [viewCopy _zoomLevel];
     v27 = v26;
-    v28 = [v14 mapType];
+    mapType = [viewCopy mapType];
     v29 = 1;
-    if (v28 <= 2)
+    if (mapType <= 2)
     {
-      switch(v28)
+      switch(mapType)
       {
         case 0:
 LABEL_52:
-          [v24 captureUserAction:v22 onTarget:v23 eventValue:0 mapRegion:v25 zoomLevel:v29 mapType:v27];
+          [v24 captureUserAction:v22 onTarget:currentMapViewTargetForAnalytics eventValue:0 mapRegion:mapRegion zoomLevel:v29 mapType:v27];
 
-          if ((v23 - 502) <= 4 && ((1 << (v23 + 10)) & 0x13) != 0)
+          if ((currentMapViewTargetForAnalytics - 502) <= 4 && ((1 << (currentMapViewTargetForAnalytics + 10)) & 0x13) != 0)
           {
             v30 = objc_alloc_init(SearchSessionAnalytics);
-            [(SearchSessionAnalytics *)v30 setTarget:v23];
+            [(SearchSessionAnalytics *)v30 setTarget:currentMapViewTargetForAnalytics];
             [(SearchSessionAnalytics *)v30 setAction:v22];
             v31 = +[SearchSessionAnalyticsAggregator sharedAggregator];
             [v31 collectSearchSessionAnalytics:v30];
@@ -6238,11 +6238,11 @@ LABEL_46:
 
     else
     {
-      if (v28 <= 101)
+      if (mapType <= 101)
       {
-        if (v28 != 3)
+        if (mapType != 3)
         {
-          if (v28 != 4)
+          if (mapType != 4)
           {
             goto LABEL_51;
           }
@@ -6255,12 +6255,12 @@ LABEL_50:
         goto LABEL_52;
       }
 
-      if (v28 == 102)
+      if (mapType == 102)
       {
         goto LABEL_52;
       }
 
-      if (v28 == 104)
+      if (mapType == 104)
       {
         v29 = 4;
         goto LABEL_52;
@@ -6275,65 +6275,65 @@ LABEL_51:
 LABEL_55:
 }
 
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated
 {
-  v5 = a5;
-  v13 = a3;
-  v8 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-  v9 = [v8 mapViewDelegate];
+  animatedCopy = animated;
+  viewCopy = view;
+  floatingControlsOverlay = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+  mapViewDelegate = [floatingControlsOverlay mapViewDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-    v12 = [v11 mapViewDelegate];
-    [v12 mapView:v13 willStartRespondingToGesture:a4 animated:v5];
+    floatingControlsOverlay2 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+    mapViewDelegate2 = [floatingControlsOverlay2 mapViewDelegate];
+    [mapViewDelegate2 mapView:viewCopy willStartRespondingToGesture:gesture animated:animatedCopy];
   }
 }
 
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button
 {
-  v6 = a6;
+  buttonCopy = button;
   v11.receiver = self;
   v11.super_class = IOSBasedChromeViewController;
-  [(IOSBasedChromeViewController *)&v11 mapView:a3 didChangeUserTrackingMode:a4 animated:a5 fromTrackingButton:?];
-  if ((a4 - 1) <= 1 && v6)
+  [(IOSBasedChromeViewController *)&v11 mapView:view didChangeUserTrackingMode:mode animated:animated fromTrackingButton:?];
+  if ((mode - 1) <= 1 && buttonCopy)
   {
     self->_explicitlyRequestedUserLocation = 1;
   }
 
-  if (a4 >= 3)
+  if (mode >= 3)
   {
     v9 = 17064;
   }
 
   else
   {
-    v9 = (a4 + 17064);
+    v9 = (mode + 17064);
   }
 
   [GEOAPPortal captureUserAction:v9 target:0 value:0];
   v10 = +[UIApplication sharedMapsDelegate];
-  [v10 setTrackingMode:a4 monitorBatteryState:1];
+  [v10 setTrackingMode:mode monitorBatteryState:1];
 }
 
-- (void)mapView:(id)a3 didFailToLocateUserWithError:(id)a4
+- (void)mapView:(id)view didFailToLocateUserWithError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v15.receiver = self;
   v15.super_class = IOSBasedChromeViewController;
-  v7 = a3;
-  [(IOSBasedChromeViewController *)&v15 mapView:v7 didFailToLocateUserWithError:v6];
-  v8 = [v7 hasUserLocation];
+  viewCopy = view;
+  [(IOSBasedChromeViewController *)&v15 mapView:viewCopy didFailToLocateUserWithError:errorCopy];
+  hasUserLocation = [viewCopy hasUserLocation];
 
-  if ((v8 & 1) == 0)
+  if ((hasUserLocation & 1) == 0)
   {
-    v9 = [(IOSBasedChromeViewController *)self _maps_platformController];
-    v10 = [v9 currentSession];
+    _maps_platformController = [(IOSBasedChromeViewController *)self _maps_platformController];
+    currentSession = [_maps_platformController currentSession];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = currentSession;
     }
 
     else
@@ -6343,8 +6343,8 @@ LABEL_55:
 
     v12 = v11;
 
-    v13 = [v6 domain];
-    if ([v13 isEqualToString:MKLocationErrorDomain] & 1) != 0 || (objc_msgSend(v6, "_mapkit_isCLDenied") & 1) != 0 || v12 && (objc_msgSend(v12, "isWaitingForAccurateLocationUpdate"))
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:MKLocationErrorDomain] & 1) != 0 || (objc_msgSend(errorCopy, "_mapkit_isCLDenied") & 1) != 0 || v12 && (objc_msgSend(v12, "isWaitingForAccurateLocationUpdate"))
     {
     }
 
@@ -6358,75 +6358,75 @@ LABEL_55:
       }
     }
 
-    -[IOSBasedChromeViewController _resetTracking:](self, "_resetTracking:", [v6 _mapkit_isCLLocationUnknown] ^ 1);
+    -[IOSBasedChromeViewController _resetTracking:](self, "_resetTracking:", [errorCopy _mapkit_isCLLocationUnknown] ^ 1);
   }
 
   self->_explicitlyRequestedUserLocation = 0;
 }
 
-- (void)mapView:(id)a3 didChangeDisplayedFloorOrdinal:(signed __int16)a4 forVenue:(id)a5
+- (void)mapView:(id)view didChangeDisplayedFloorOrdinal:(signed __int16)ordinal forVenue:(id)venue
 {
-  v5 = a4;
-  v9 = a5;
-  v10 = a3;
+  ordinalCopy = ordinal;
+  venueCopy = venue;
+  viewCopy = view;
   v11 = [(ChromeViewController *)self mapViewDelegateForSelector:a2];
-  [v11 mapView:v10 didChangeDisplayedFloorOrdinal:v5 forVenue:v9];
+  [v11 mapView:viewCopy didChangeDisplayedFloorOrdinal:ordinalCopy forVenue:venueCopy];
 }
 
-- (void)mapView:(id)a3 didChangeFocusedVenue:(id)a4 focusedBuilding:(id)a5
+- (void)mapView:(id)view didChangeFocusedVenue:(id)venue focusedBuilding:(id)building
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  buildingCopy = building;
+  venueCopy = venue;
+  viewCopy = view;
   v12 = [(ChromeViewController *)self mapViewDelegateForSelector:a2];
-  [v12 mapView:v11 didChangeFocusedVenue:v10 focusedBuilding:v9];
+  [v12 mapView:viewCopy didChangeFocusedVenue:venueCopy focusedBuilding:buildingCopy];
 }
 
-- (void)mapView:(id)a3 calloutPrimaryActionTriggeredForAnnotationView:(id)a4
+- (void)mapView:(id)view calloutPrimaryActionTriggeredForAnnotationView:(id)annotationView
 {
-  v7 = a4;
-  v8 = a3;
+  annotationViewCopy = annotationView;
+  viewCopy = view;
   v9 = [(ChromeViewController *)self mapViewDelegateForSelector:a2];
-  [v9 mapView:v8 calloutPrimaryActionTriggeredForAnnotationView:v7];
+  [v9 mapView:viewCopy calloutPrimaryActionTriggeredForAnnotationView:annotationViewCopy];
 }
 
-- (void)mapView:(id)a3 calloutPrimaryActionTriggeredForLabelMarker:(id)a4
+- (void)mapView:(id)view calloutPrimaryActionTriggeredForLabelMarker:(id)marker
 {
-  v7 = a4;
-  v8 = a3;
+  markerCopy = marker;
+  viewCopy = view;
   v9 = [(ChromeViewController *)self mapViewDelegateForSelector:a2];
-  [v9 mapView:v8 calloutPrimaryActionTriggeredForLabelMarker:v7];
+  [v9 mapView:viewCopy calloutPrimaryActionTriggeredForLabelMarker:markerCopy];
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [MapsAnalyticStateProvider updateMapViewInformation:v6];
-  v7 = [(IOSBasedChromeViewController *)self weatherOverlay];
-  [v7 mapView:v6 regionDidChangeAnimated:v4];
+  animatedCopy = animated;
+  viewCopy = view;
+  [MapsAnalyticStateProvider updateMapViewInformation:viewCopy];
+  weatherOverlay = [(IOSBasedChromeViewController *)self weatherOverlay];
+  [weatherOverlay mapView:viewCopy regionDidChangeAnimated:animatedCopy];
 
-  [(IOSBasedChromeViewController *)self _updateFloatingControlsDidChangePitching:0 animated:v4];
+  [(IOSBasedChromeViewController *)self _updateFloatingControlsDidChangePitching:0 animated:animatedCopy];
   v8.receiver = self;
   v8.super_class = IOSBasedChromeViewController;
-  [(ChromeViewController *)&v8 mapView:v6 regionDidChangeAnimated:v4];
+  [(ChromeViewController *)&v8 mapView:viewCopy regionDidChangeAnimated:animatedCopy];
 }
 
-- (BOOL)mapViewShouldHandleTapToDeselect:(id)a3
+- (BOOL)mapViewShouldHandleTapToDeselect:(id)deselect
 {
-  v5 = a3;
+  deselectCopy = deselect;
   v6 = [(ChromeViewController *)self mapViewDelegateForSelector:a2];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 mapViewShouldHandleTapToDeselect:v5];
+    v8 = [v6 mapViewShouldHandleTapToDeselect:deselectCopy];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = IOSBasedChromeViewController;
-    v8 = [(ChromeViewController *)&v11 mapViewShouldHandleTapToDeselect:v5];
+    v8 = [(ChromeViewController *)&v11 mapViewShouldHandleTapToDeselect:deselectCopy];
   }
 
   v9 = v8;
@@ -6434,36 +6434,36 @@ LABEL_55:
   return v9;
 }
 
-- (void)mapView:(id)a3 didSelectLabelMarker:(id)a4
+- (void)mapView:(id)view didSelectLabelMarker:(id)marker
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IOSBasedChromeViewController *)self overlayManager];
-  [v8 setSelectedLabelMarker:v6];
+  markerCopy = marker;
+  viewCopy = view;
+  overlayManager = [(IOSBasedChromeViewController *)self overlayManager];
+  [overlayManager setSelectedLabelMarker:markerCopy];
 
   v9.receiver = self;
   v9.super_class = IOSBasedChromeViewController;
-  [(ChromeViewController *)&v9 mapView:v7 didSelectLabelMarker:v6];
+  [(ChromeViewController *)&v9 mapView:viewCopy didSelectLabelMarker:markerCopy];
 }
 
-- (void)mapView:(id)a3 didDeselectLabelMarker:(id)a4
+- (void)mapView:(id)view didDeselectLabelMarker:(id)marker
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IOSBasedChromeViewController *)self overlayManager];
-  [v8 setSelectedLabelMarker:0];
+  markerCopy = marker;
+  viewCopy = view;
+  overlayManager = [(IOSBasedChromeViewController *)self overlayManager];
+  [overlayManager setSelectedLabelMarker:0];
 
   v9.receiver = self;
   v9.super_class = IOSBasedChromeViewController;
-  [(ChromeViewController *)&v9 mapView:v7 didDeselectLabelMarker:v6];
+  [(ChromeViewController *)&v9 mapView:viewCopy didDeselectLabelMarker:markerCopy];
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IOSBasedChromeViewController *)self overlayManager];
-  v9 = [v8 mapView:v6 rendererForOverlay:v7];
+  viewCopy = view;
+  overlayCopy = overlay;
+  overlayManager = [(IOSBasedChromeViewController *)self overlayManager];
+  v9 = [overlayManager mapView:viewCopy rendererForOverlay:overlayCopy];
 
   if (v9)
   {
@@ -6475,14 +6475,14 @@ LABEL_55:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [SearchResultsDebugOverlay rendererWithPolygon:v7];
+      v10 = [SearchResultsDebugOverlay rendererWithPolygon:overlayCopy];
     }
 
     else
     {
       v13.receiver = self;
       v13.super_class = IOSBasedChromeViewController;
-      v10 = [(ChromeViewController *)&v13 mapView:v6 rendererForOverlay:v7];
+      v10 = [(ChromeViewController *)&v13 mapView:viewCopy rendererForOverlay:overlayCopy];
     }
   }
 
@@ -6491,27 +6491,27 @@ LABEL_55:
   return v11;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  annotationCopy = annotation;
   v13.receiver = self;
   v13.super_class = IOSBasedChromeViewController;
-  v8 = [(ChromeViewController *)&v13 mapView:v6 viewForAnnotation:v7];
+  v8 = [(ChromeViewController *)&v13 mapView:viewCopy viewForAnnotation:annotationCopy];
   if (v8)
   {
     goto LABEL_2;
   }
 
-  v10 = [(IOSBasedChromeViewController *)self ridesharingAnnotationsManager];
-  v9 = [v10 mapView:v6 viewForAnnotation:v7];
+  ridesharingAnnotationsManager = [(IOSBasedChromeViewController *)self ridesharingAnnotationsManager];
+  v9 = [ridesharingAnnotationsManager mapView:viewCopy viewForAnnotation:annotationCopy];
 
   if (!v9)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [SearchResultsDebugOverlay viewForAnnotation:v7];
+      v8 = [SearchResultsDebugOverlay viewForAnnotation:annotationCopy];
       if (v8)
       {
         goto LABEL_2;
@@ -6521,7 +6521,7 @@ LABEL_55:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [[TransitVehiclePositionAnnotationView alloc] initWithAnnotation:v7 reuseIdentifier:0];
+      v8 = [[TransitVehiclePositionAnnotationView alloc] initWithAnnotation:annotationCopy reuseIdentifier:0];
       if (v8)
       {
         goto LABEL_2;
@@ -6529,12 +6529,12 @@ LABEL_55:
     }
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || (-[IOSBasedChromeViewController sharedTripsAnnotationsController](self, "sharedTripsAnnotationsController"), v12 = objc_claimAutoreleasedReturnValue(), [v12 mapView:v6 viewForAnnotation:v7], v9 = objc_claimAutoreleasedReturnValue(), v12, !v9))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || (-[IOSBasedChromeViewController sharedTripsAnnotationsController](self, "sharedTripsAnnotationsController"), v12 = objc_claimAutoreleasedReturnValue(), [v12 mapView:viewCopy viewForAnnotation:annotationCopy], v9 = objc_claimAutoreleasedReturnValue(), v12, !v9))
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [[MapsRippleAnnotationView alloc] initWithAnnotation:v7 reuseIdentifier:@"rippleView"];
+        v8 = [[MapsRippleAnnotationView alloc] initWithAnnotation:annotationCopy reuseIdentifier:@"rippleView"];
 LABEL_2:
         v9 = v8;
         goto LABEL_4;
@@ -6549,13 +6549,13 @@ LABEL_4:
   return v9;
 }
 
-- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4
+- (void)mapView:(id)view didChangeMapType:(unint64_t)type
 {
-  v5 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
-  [v5 setDisplayedMapType:a4];
+  browseVenueOverlay = [(IOSBasedChromeViewController *)self browseVenueOverlay];
+  [browseVenueOverlay setDisplayedMapType:type];
 }
 
-- (void)_mapFullyDrawn:(id)a3
+- (void)_mapFullyDrawn:(id)drawn
 {
   if (self->_mapFullyDrawnObserver)
   {
@@ -6568,35 +6568,35 @@ LABEL_9:
       return;
     }
 
-    v5 = self;
+    selfCopy = self;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(IOSBasedChromeViewController *)v5 performSelector:"accessibilityIdentifier"];
+      v8 = [(IOSBasedChromeViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v9 = v8;
       if (v8 && ![v8 isEqualToString:v7])
       {
-        v10 = [NSString stringWithFormat:@"%@<%p, %@>", v7, v5, v9];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v7, selfCopy, v9];
 
         goto LABEL_8;
       }
     }
 
-    v10 = [NSString stringWithFormat:@"%@<%p>", v7, v5];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v7, selfCopy];
 LABEL_8:
 
     *buf = 138543362;
-    v12 = v10;
+    v12 = selfCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}@] Map full drawn, will create map-render-dependent overlays", buf, 0xCu);
 
     goto LABEL_9;
   }
 }
 
-- (void)_handleLogTileState:(id)a3
+- (void)_handleLogTileState:(id)state
 {
-  if ([a3 state] == 3)
+  if ([state state] == 3)
   {
     v10 = 0;
     v11 = 0;
@@ -6606,45 +6606,45 @@ LABEL_8:
     v7 = v6;
     if (v4)
     {
-      v8 = [v6 path];
-      NSLog(@"Logged tile state to %@", v8);
-      v9 = [NSString stringWithFormat:@"Logged tile state to %@", v8];
+      path = [v6 path];
+      NSLog(@"Logged tile state to %@", path);
+      v9 = [NSString stringWithFormat:@"Logged tile state to %@", path];
       [(IOSBasedChromeViewController *)self _maps_presentSimpleAlertWithTitle:@"State Snapshot" message:v9 dismissalActionTitle:@"OK"];
     }
 
     else
     {
-      v8 = [v5 localizedDescription];
-      [(IOSBasedChromeViewController *)self _maps_presentSimpleAlertWithTitle:@"State Snapshot Creation Failed" message:v8 dismissalActionTitle:@"OK"];
+      path = [v5 localizedDescription];
+      [(IOSBasedChromeViewController *)self _maps_presentSimpleAlertWithTitle:@"State Snapshot Creation Failed" message:path dismissalActionTitle:@"OK"];
     }
   }
 }
 
-- (void)overlayControllerDidUpdateMapInsets:(id)a3 fromOverlay:(id)a4
+- (void)overlayControllerDidUpdateMapInsets:(id)insets fromOverlay:(id)overlay
 {
   v8.receiver = self;
   v8.super_class = IOSBasedChromeViewController;
-  v6 = a4;
-  [(ChromeViewController *)&v8 overlayControllerDidUpdateMapInsets:a3 fromOverlay:v6];
+  overlayCopy = overlay;
+  [(ChromeViewController *)&v8 overlayControllerDidUpdateMapInsets:insets fromOverlay:overlayCopy];
   v7 = [(IOSBasedChromeViewController *)self cardsOverlay:v8.receiver];
 
-  if (v7 == v6)
+  if (v7 == overlayCopy)
   {
     [(ChromeViewController *)self updateComponentsIfNeeded];
   }
 }
 
-- (void)_updateBrowseVenueButtonWithAnimation:(id)a3
+- (void)_updateBrowseVenueButtonWithAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
+  animationCopy = animation;
+  browseVenueOverlay = [(IOSBasedChromeViewController *)self browseVenueOverlay];
 
-  if (v5)
+  if (browseVenueOverlay)
   {
     v9[0] = 0;
     v9[1] = v9;
     v9[2] = 0x2020000000;
-    v10 = [v4 isAnimated];
+    isAnimated = [animationCopy isAnimated];
     objc_initWeak(&location, self);
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
@@ -6653,38 +6653,38 @@ LABEL_8:
     objc_copyWeak(&v7, &location);
     v6[4] = self;
     v6[5] = v9;
-    [v4 addAnimations:v6];
+    [animationCopy addAnimations:v6];
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
     _Block_object_dispose(v9, 8);
   }
 }
 
-- (void)_updateRedoSearchButtonWithAnimation:(id)a3
+- (void)_updateRedoSearchButtonWithAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = [(IOSBasedChromeViewController *)self redoSearchOverlay];
+  animationCopy = animation;
+  redoSearchOverlay = [(IOSBasedChromeViewController *)self redoSearchOverlay];
 
-  if (v5)
+  if (redoSearchOverlay)
   {
     v11[0] = 0;
     v11[1] = v11;
     v11[2] = 0x2020000000;
-    v12 = [v4 isAnimated];
+    isAnimated = [animationCopy isAnimated];
     objc_initWeak(&location, self);
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100DC1150;
     v8[3] = &unk_101661B98;
     objc_copyWeak(&v9, &location);
-    [v4 addPreparation:v8];
+    [animationCopy addPreparation:v8];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100DC11E4;
     v6[3] = &unk_10165DE50;
     objc_copyWeak(&v7, &location);
     v6[4] = v11;
-    [v4 addAnimations:v6];
+    [animationCopy addAnimations:v6];
     objc_destroyWeak(&v7);
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -6694,66 +6694,66 @@ LABEL_8:
 
 - (id)_prevailingSearchButtonOverlay
 {
-  v3 = [(IOSBasedChromeViewController *)self redoSearchOverlay];
-  if (v3 && (v4 = v3, v5 = [(IOSBasedChromeViewController *)self _shouldShowSearchFloatingControl], v4, v5))
+  redoSearchOverlay = [(IOSBasedChromeViewController *)self redoSearchOverlay];
+  if (redoSearchOverlay && (v4 = redoSearchOverlay, v5 = [(IOSBasedChromeViewController *)self _shouldShowSearchFloatingControl], v4, v5))
   {
-    v6 = [(IOSBasedChromeViewController *)self redoSearchOverlay];
+    redoSearchOverlay2 = [(IOSBasedChromeViewController *)self redoSearchOverlay];
   }
 
   else
   {
-    v6 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
-    if (v6)
+    redoSearchOverlay2 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
+    if (redoSearchOverlay2)
     {
-      v7 = v6;
-      v8 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
-      v9 = [v8 shouldBeVisible];
+      v7 = redoSearchOverlay2;
+      browseVenueOverlay = [(IOSBasedChromeViewController *)self browseVenueOverlay];
+      shouldBeVisible = [browseVenueOverlay shouldBeVisible];
 
-      if (v9)
+      if (shouldBeVisible)
       {
-        v6 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
+        redoSearchOverlay2 = [(IOSBasedChromeViewController *)self browseVenueOverlay];
       }
 
       else
       {
-        v6 = 0;
+        redoSearchOverlay2 = 0;
       }
     }
   }
 
-  return v6;
+  return redoSearchOverlay2;
 }
 
-- (void)_updateLookAroundButtonWithAnimation:(id)a3
+- (void)_updateLookAroundButtonWithAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = [(IOSBasedChromeViewController *)self lookAroundOverlay];
+  animationCopy = animation;
+  lookAroundOverlay = [(IOSBasedChromeViewController *)self lookAroundOverlay];
 
-  if (v5)
+  if (lookAroundOverlay)
   {
-    v6 = [v4 isAnimated];
+    isAnimated = [animationCopy isAnimated];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100DC144C;
     v9[3] = &unk_101661B18;
     v9[4] = self;
-    [v4 addPreparation:v9];
+    [animationCopy addPreparation:v9];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100DC14D4;
     v7[3] = &unk_101661AE0;
     v7[4] = self;
-    v8 = v6;
-    [v4 addAnimations:v7];
+    v8 = isAnimated;
+    [animationCopy addAnimations:v7];
   }
 }
 
-- (id)fullscreenViewControllerTransitionFromController:(id)a3 toController:(id)a4 isDismissTransition:(BOOL)a5
+- (id)fullscreenViewControllerTransitionFromController:(id)controller toController:(id)toController isDismissTransition:(BOOL)transition
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (sub_100010C34(v8, &OBJC_PROTOCOL___ModeTransitionProtocol) && sub_100010C34(v9, &OBJC_PROTOCOL___ModeTransitionProtocol))
+  transitionCopy = transition;
+  controllerCopy = controller;
+  toControllerCopy = toController;
+  if (sub_100010C34(controllerCopy, &OBJC_PROTOCOL___ModeTransitionProtocol) && sub_100010C34(toControllerCopy, &OBJC_PROTOCOL___ModeTransitionProtocol))
   {
     v10 = objc_alloc_init(ModeTransitionController);
   }
@@ -6762,7 +6762,7 @@ LABEL_8:
   {
     v13.receiver = self;
     v13.super_class = IOSBasedChromeViewController;
-    v10 = [(ChromeViewController *)&v13 fullscreenViewControllerTransitionFromController:v8 toController:v9 isDismissTransition:v5];
+    v10 = [(ChromeViewController *)&v13 fullscreenViewControllerTransitionFromController:controllerCopy toController:toControllerCopy isDismissTransition:transitionCopy];
   }
 
   v11 = v10;
@@ -6770,13 +6770,13 @@ LABEL_8:
   return v11;
 }
 
-- (void)fullscreenViewControllerDidChange:(id)a3
+- (void)fullscreenViewControllerDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v25.receiver = self;
   v25.super_class = IOSBasedChromeViewController;
-  [(ChromeViewController *)&v25 fullscreenViewControllerDidChange:v4];
-  if (!v4)
+  [(ChromeViewController *)&v25 fullscreenViewControllerDidChange:changeCopy];
+  if (!changeCopy)
   {
     goto LABEL_3;
   }
@@ -6790,21 +6790,21 @@ LABEL_8:
   v5 = sub_10006D178();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v6 = [(ChromeViewController *)self nextTopContext];
-    v7 = v6;
-    if (v6)
+    nextTopContext = [(ChromeViewController *)self nextTopContext];
+    v7 = nextTopContext;
+    if (nextTopContext)
     {
-      v8 = v6;
+      topContext = nextTopContext;
     }
 
     else
     {
-      v8 = [(ChromeViewController *)self topContext];
-      if (!v8)
+      topContext = [(ChromeViewController *)self topContext];
+      if (!topContext)
       {
         v13 = @"<nil>";
 LABEL_14:
-        v14 = v4;
+        v14 = changeCopy;
         v15 = objc_opt_class();
         v16 = NSStringFromClass(v15);
         if (objc_opt_respondsToSelector())
@@ -6849,17 +6849,17 @@ LABEL_19:
     v10 = NSStringFromClass(v9);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v8 performSelector:"accessibilityIdentifier"];
+      v11 = [topContext performSelector:"accessibilityIdentifier"];
       v12 = v11;
       if (v11 && ![v11 isEqualToString:v10])
       {
-        v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, v8, v12];
+        v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, topContext, v12];
 
         goto LABEL_13;
       }
     }
 
-    v13 = [NSString stringWithFormat:@"%@<%p>", v10, v8];
+    v13 = [NSString stringWithFormat:@"%@<%p>", v10, topContext];
 LABEL_13:
 
     goto LABEL_14;
@@ -6882,103 +6882,103 @@ LABEL_22:
 LABEL_3:
 }
 
-- (id)_containerViewControllerWithContext:(id)a3
+- (id)_containerViewControllerWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 customContainerViewController];
+    customContainerViewController = [contextCopy customContainerViewController];
   }
 
   else
   {
-    v5 = 0;
+    customContainerViewController = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    cardsOverlay = customContainerViewController;
   }
 
   else
   {
-    v6 = [(IOSBasedChromeViewController *)self cardsOverlay];
+    cardsOverlay = [(IOSBasedChromeViewController *)self cardsOverlay];
   }
 
-  v7 = v6;
+  v7 = cardsOverlay;
 
   return v7;
 }
 
 - (BOOL)_isCurrentContainerChromeOwned
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_currentContainerViewController);
-  v4 = [(IOSBasedChromeViewController *)v2 cardsOverlay];
-  LOBYTE(v2) = WeakRetained == v4;
+  cardsOverlay = [(IOSBasedChromeViewController *)selfCopy cardsOverlay];
+  LOBYTE(selfCopy) = WeakRetained == cardsOverlay;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_suppressOverlaysForActiveFullscreenContainer
 {
-  v3 = [(ChromeViewController *)self nextTopContext];
-  v4 = v3;
-  if (v3)
+  nextTopContext = [(ChromeViewController *)self nextTopContext];
+  v4 = nextTopContext;
+  if (nextTopContext)
   {
-    v5 = v3;
+    topContext = nextTopContext;
   }
 
   else
   {
-    v5 = [(ChromeViewController *)self topContext];
+    topContext = [(ChromeViewController *)self topContext];
   }
 
-  v6 = v5;
+  v6 = topContext;
 
   v7 = [(IOSBasedChromeViewController *)self _containerViewControllerWithContext:v6];
-  v8 = [(IOSBasedChromeViewController *)self cardsOverlay];
-  v9 = v7 != v8;
+  cardsOverlay = [(IOSBasedChromeViewController *)self cardsOverlay];
+  v9 = v7 != cardsOverlay;
 
   return v9;
 }
 
-- (void)updateFramesInDebugFramesView:(id)a3
+- (void)updateFramesInDebugFramesView:(id)view
 {
   v6.receiver = self;
   v6.super_class = IOSBasedChromeViewController;
-  v4 = a3;
-  [(ChromeViewController *)&v6 updateFramesInDebugFramesView:v4];
+  viewCopy = view;
+  [(ChromeViewController *)&v6 updateFramesInDebugFramesView:viewCopy];
   v5 = [(IOSBasedChromeViewController *)self innerLayoutGuide:v6.receiver];
-  [v4 setLayoutGuide:v5 forName:@"inner layout guide"];
+  [viewCopy setLayoutGuide:v5 forName:@"inner layout guide"];
 }
 
-- (void)registerFramesInDebugFramesView:(id)a3
+- (void)registerFramesInDebugFramesView:(id)view
 {
   v5.receiver = self;
   v5.super_class = IOSBasedChromeViewController;
-  v3 = a3;
-  [(ChromeViewController *)&v5 registerFramesInDebugFramesView:v3];
+  viewCopy = view;
+  [(ChromeViewController *)&v5 registerFramesInDebugFramesView:viewCopy];
   v4 = [UIColor systemPinkColor:v5.receiver];
-  [v3 registerName:@"inner layout guide" color:v4 weight:15 edges:1.0];
+  [viewCopy registerName:@"inner layout guide" color:v4 weight:15 edges:1.0];
 }
 
-- (void)_updateStatusBarSupplementaryViewWithAnimation:(id)a3
+- (void)_updateStatusBarSupplementaryViewWithAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v5 = [(ChromeViewController *)self contexts];
-  v6 = [v5 reverseObjectEnumerator];
+  contexts = [(ChromeViewController *)self contexts];
+  reverseObjectEnumerator = [contexts reverseObjectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (!v7)
   {
 LABEL_23:
-    v18 = 0;
+    statusBarSupplementaryView = 0;
     goto LABEL_24;
   }
 
@@ -6990,7 +6990,7 @@ LABEL_3:
   {
     if (*v42 != v9)
     {
-      objc_enumerationMutation(v6);
+      objc_enumerationMutation(reverseObjectEnumerator);
     }
 
     v11 = *(*(&v41 + 1) + 8 * v10);
@@ -7004,7 +7004,7 @@ LABEL_3:
 
     if (v8 == ++v10)
     {
-      v8 = [v6 countByEnumeratingWithState:&v41 objects:v49 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v49 count:16];
       if (v8)
       {
         goto LABEL_3;
@@ -7052,17 +7052,17 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  v18 = [v11 statusBarSupplementaryView];
+  statusBarSupplementaryView = [v11 statusBarSupplementaryView];
 LABEL_24:
 
   statusBarSupplementaryView = self->_statusBarSupplementaryView;
-  if (v18 == statusBarSupplementaryView)
+  if (statusBarSupplementaryView == statusBarSupplementaryView)
   {
     goto LABEL_47;
   }
 
   v20 = statusBarSupplementaryView;
-  objc_storeStrong(&self->_statusBarSupplementaryView, v18);
+  objc_storeStrong(&self->_statusBarSupplementaryView, statusBarSupplementaryView);
   v21 = sub_10000B11C();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
@@ -7073,7 +7073,7 @@ LABEL_24:
 LABEL_34:
 
       v28 = v27;
-      v29 = v18;
+      v29 = statusBarSupplementaryView;
       if (!v29)
       {
         v34 = @"<nil>";
@@ -7130,11 +7130,11 @@ LABEL_32:
 LABEL_43:
 
   [(StatusBarSupplementaryView *)v20 removeFromSuperview];
-  if (v18)
+  if (statusBarSupplementaryView)
   {
-    [(StatusBarSupplementaryView *)v18 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(StatusBarBackgroundView *)self->_statusBarBackgroundView addSubview:v18];
-    v35 = [(StatusBarSupplementaryView *)v18 initialConstraintsForAnimatingPositionInStatusBarBackgroundView:self->_statusBarBackgroundView];
+    [(StatusBarSupplementaryView *)statusBarSupplementaryView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(StatusBarBackgroundView *)self->_statusBarBackgroundView addSubview:statusBarSupplementaryView];
+    v35 = [(StatusBarSupplementaryView *)statusBarSupplementaryView initialConstraintsForAnimatingPositionInStatusBarBackgroundView:self->_statusBarBackgroundView];
     [NSLayoutConstraint activateConstraints:v35];
   }
 
@@ -7143,37 +7143,37 @@ LABEL_43:
     v35 = 0;
   }
 
-  v36 = [(IOSBasedChromeViewController *)self view];
-  [v36 layoutIfNeeded];
+  view = [(IOSBasedChromeViewController *)self view];
+  [view layoutIfNeeded];
 
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_100DC22B8;
   v38[3] = &unk_101661A40;
   v38[4] = self;
-  v39 = v18;
+  v39 = statusBarSupplementaryView;
   v40 = v35;
   v37 = v35;
-  [v4 addAnimations:v38];
+  [animationCopy addAnimations:v38];
 
 LABEL_47:
 }
 
-- (void)setStatusBarAdditionalColor:(id)a3
+- (void)setStatusBarAdditionalColor:(id)color
 {
-  objc_storeStrong(&self->_statusBarAdditionalColor, a3);
-  v5 = a3;
-  [(StatusBarBackgroundView *)self->_statusBarBackgroundView setAdditionalColor:v5];
+  objc_storeStrong(&self->_statusBarAdditionalColor, color);
+  colorCopy = color;
+  [(StatusBarBackgroundView *)self->_statusBarBackgroundView setAdditionalColor:colorCopy];
 }
 
-- (void)_updateWeatherWithAnimation:(id)a3
+- (void)_updateWeatherWithAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = [(IOSBasedChromeViewController *)self weatherOverlay];
+  animationCopy = animation;
+  weatherOverlay = [(IOSBasedChromeViewController *)self weatherOverlay];
 
-  if (v5)
+  if (weatherOverlay)
   {
-    v6 = [v4 isAnimated];
+    isAnimated = [animationCopy isAnimated];
     v10[0] = 0;
     v10[1] = v10;
     v10[2] = 0x2020000000;
@@ -7184,40 +7184,40 @@ LABEL_47:
     v9[3] = &unk_101661600;
     v9[4] = self;
     v9[5] = v10;
-    [v4 addPreparation:v9];
+    [animationCopy addPreparation:v9];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100DC2648;
     v7[3] = &unk_101661AE0;
     v7[4] = self;
-    v8 = v6;
-    [v4 addAnimations:v7];
+    v8 = isAnimated;
+    [animationCopy addAnimations:v7];
     _Block_object_dispose(v10, 8);
   }
 }
 
-- (void)_updateStatusBarForCurrentStateWithAnimation:(id)a3
+- (void)_updateStatusBarForCurrentStateWithAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = [(IOSBasedChromeViewController *)self _defaultStatusBarBackgroundViewStyle];
-  v6 = [(IOSBasedChromeViewController *)self _defaultPrefersStatusBarHidden];
-  v7 = [(IOSBasedChromeViewController *)self _defaultPreferredStatusBarStyle];
+  animationCopy = animation;
+  _defaultStatusBarBackgroundViewStyle = [(IOSBasedChromeViewController *)self _defaultStatusBarBackgroundViewStyle];
+  _defaultPrefersStatusBarHidden = [(IOSBasedChromeViewController *)self _defaultPrefersStatusBarHidden];
+  _defaultPreferredStatusBarStyle = [(IOSBasedChromeViewController *)self _defaultPreferredStatusBarStyle];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v8 = [(ChromeViewController *)self contexts];
-  v9 = [v8 reverseObjectEnumerator];
+  contexts = [(ChromeViewController *)self contexts];
+  reverseObjectEnumerator = [contexts reverseObjectEnumerator];
 
-  v10 = [v9 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (!v10)
   {
     goto LABEL_31;
   }
 
   v11 = v10;
-  v31 = v5;
-  v12 = v4;
+  v31 = _defaultStatusBarBackgroundViewStyle;
+  v12 = animationCopy;
   v13 = *v36;
   while (2)
   {
@@ -7225,7 +7225,7 @@ LABEL_47:
     {
       if (*v36 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v15 = *(*(&v35 + 1) + 8 * i);
@@ -7234,23 +7234,23 @@ LABEL_47:
         v16 = sub_10000B11C();
         if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
-          v4 = v12;
-          v5 = v31;
+          animationCopy = v12;
+          _defaultStatusBarBackgroundViewStyle = v31;
           goto LABEL_22;
         }
 
         v15 = v15;
-        v4 = v12;
+        animationCopy = v12;
         if (!v15)
         {
           v21 = @"<nil>";
-          v5 = v31;
+          _defaultStatusBarBackgroundViewStyle = v31;
           goto LABEL_21;
         }
 
         v17 = objc_opt_class();
         v18 = NSStringFromClass(v17);
-        v5 = v31;
+        _defaultStatusBarBackgroundViewStyle = v31;
         if (objc_opt_respondsToSelector())
         {
           v19 = [v15 performSelector:"accessibilityIdentifier"];
@@ -7274,38 +7274,38 @@ LABEL_21:
 LABEL_22:
         if (objc_opt_respondsToSelector())
         {
-          v22 = [v15 prefersStatusBarHidden];
+          prefersStatusBarHidden = [v15 prefersStatusBarHidden];
         }
 
         else
         {
-          v22 = [(IOSBasedChromeViewController *)self _defaultPrefersStatusBarHidden];
+          prefersStatusBarHidden = [(IOSBasedChromeViewController *)self _defaultPrefersStatusBarHidden];
         }
 
-        v6 = v22;
+        _defaultPrefersStatusBarHidden = prefersStatusBarHidden;
         if (objc_opt_respondsToSelector())
         {
-          v23 = [v15 preferredStatusBarStyle];
+          preferredStatusBarStyle = [v15 preferredStatusBarStyle];
         }
 
         else
         {
-          v23 = [(IOSBasedChromeViewController *)self _defaultPreferredStatusBarStyle];
+          preferredStatusBarStyle = [(IOSBasedChromeViewController *)self _defaultPreferredStatusBarStyle];
         }
 
-        v7 = v23;
+        _defaultPreferredStatusBarStyle = preferredStatusBarStyle;
         if (self->_permitCustomStatusBarBackgroundViewStyle && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v24 = [v15 statusBarBackgroundViewStyle];
+          statusBarBackgroundViewStyle = [v15 statusBarBackgroundViewStyle];
 
-          v5 = v24;
+          _defaultStatusBarBackgroundViewStyle = statusBarBackgroundViewStyle;
         }
 
         goto LABEL_31;
       }
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v35 objects:v41 count:16];
+    v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v11)
     {
       continue;
@@ -7314,17 +7314,17 @@ LABEL_22:
     break;
   }
 
-  v4 = v12;
-  v5 = v31;
+  animationCopy = v12;
+  _defaultStatusBarBackgroundViewStyle = v31;
 LABEL_31:
 
   v25 = +[UIDevice currentDevice];
-  v26 = [v25 orientation];
+  orientation = [v25 orientation];
 
-  if (!sub_10000FA08(self) && (v26 - 3) <= 1)
+  if (!sub_10000FA08(self) && (orientation - 3) <= 1)
   {
 
-    v5 = 0;
+    _defaultStatusBarBackgroundViewStyle = 0;
   }
 
   v33[0] = _NSConcreteStackBlock;
@@ -7332,10 +7332,10 @@ LABEL_31:
   v33[2] = sub_100DC2BE4;
   v33[3] = &unk_101661A90;
   v33[4] = self;
-  v34 = v5;
-  v27 = v5;
-  [v4 addAnimations:v33];
-  if (self->_statusBarHidden != v6)
+  v34 = _defaultStatusBarBackgroundViewStyle;
+  v27 = _defaultStatusBarBackgroundViewStyle;
+  [animationCopy addAnimations:v33];
+  if (self->_statusBarHidden != _defaultPrefersStatusBarHidden)
   {
     v28 = sub_10000B11C();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -7345,10 +7345,10 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "[Status Bar] hidden will change to %{public}@", buf, 0xCu);
     }
 
-    self->_statusBarHidden = v6;
+    self->_statusBarHidden = _defaultPrefersStatusBarHidden;
   }
 
-  if (!v6 && v7 != self->_statusBarStyle)
+  if (!_defaultPrefersStatusBarHidden && _defaultPreferredStatusBarStyle != self->_statusBarStyle)
   {
     v29 = sub_10000B11C();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -7359,7 +7359,7 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "[Status Bar] visible status bar style will change to %ld", buf, 0xCu);
     }
 
-    self->_statusBarStyle = v7;
+    self->_statusBarStyle = _defaultPreferredStatusBarStyle;
   }
 
   v32[0] = _NSConcreteStackBlock;
@@ -7367,72 +7367,72 @@ LABEL_31:
   v32[2] = sub_100DC2BF8;
   v32[3] = &unk_101661B18;
   v32[4] = self;
-  [v4 addAnimations:v32];
+  [animationCopy addAnimations:v32];
 }
 
 - (int64_t)_internal_topContextMapScaleFeatureVisibility
 {
-  v3 = [(ChromeViewController *)self nextTopContext];
-  v4 = v3;
-  if (v3)
+  nextTopContext = [(ChromeViewController *)self nextTopContext];
+  v4 = nextTopContext;
+  if (nextTopContext)
   {
-    v5 = v3;
+    topContext = nextTopContext;
   }
 
   else
   {
-    v5 = [(ChromeViewController *)self topContext];
+    topContext = [(ChromeViewController *)self topContext];
   }
 
-  v6 = v5;
+  v6 = topContext;
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 preferredMapScaleVisibility];
+    preferredMapScaleVisibility = [v6 preferredMapScaleVisibility];
   }
 
   else if ([(IOSBasedChromeViewController *)self _isCurrentUserInterfaceIdiomMac])
   {
     if (+[MapsSettings alwaysShowScale])
     {
-      v7 = 2;
+      preferredMapScaleVisibility = 2;
     }
 
     else
     {
-      v7 = 0;
+      preferredMapScaleVisibility = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    preferredMapScaleVisibility = 0;
   }
 
-  return v7;
+  return preferredMapScaleVisibility;
 }
 
-- (void)_updateFloatingControlsForCurrentStateWithAnimation:(id)a3
+- (void)_updateFloatingControlsForCurrentStateWithAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = [v4 isAnimated];
-  v6 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-  [v6 edgePadding];
+  animationCopy = animation;
+  isAnimated = [animationCopy isAnimated];
+  _currentContainerViewController = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+  [_currentContainerViewController edgePadding];
   v8 = v7;
-  v9 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-  [v9 setMargin:v8];
+  floatingControlsOverlay = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+  [floatingControlsOverlay setMargin:v8];
 
-  v10 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
-  v11 = [v10 blurGroupName];
-  v12 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
-  [v12 setBlurGroupName:v11];
+  _currentContainerViewController2 = [(IOSBasedChromeViewController *)self _currentContainerViewController];
+  blurGroupName = [_currentContainerViewController2 blurGroupName];
+  floatingControlsOverlay2 = [(IOSBasedChromeViewController *)self floatingControlsOverlay];
+  [floatingControlsOverlay2 setBlurGroupName:blurGroupName];
 
-  v13 = [(IOSBasedChromeViewController *)self _desiredFloatingControlsForCurrentState];
+  _desiredFloatingControlsForCurrentState = [(IOSBasedChromeViewController *)self _desiredFloatingControlsForCurrentState];
   v14 = sub_10000B11C();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [(ChromeViewController *)self topContext];
-    if (!v15)
+    topContext = [(ChromeViewController *)self topContext];
+    if (!topContext)
     {
       v20 = @"<nil>";
       goto LABEL_10;
@@ -7442,17 +7442,17 @@ LABEL_31:
     v17 = NSStringFromClass(v16);
     if (objc_opt_respondsToSelector())
     {
-      v18 = [v15 performSelector:"accessibilityIdentifier"];
+      v18 = [topContext performSelector:"accessibilityIdentifier"];
       v19 = v18;
       if (v18 && ![v18 isEqualToString:v17])
       {
-        v20 = [NSString stringWithFormat:@"%@<%p, %@>", v17, v15, v19];
+        v20 = [NSString stringWithFormat:@"%@<%p, %@>", v17, topContext, v19];
 
         goto LABEL_8;
       }
     }
 
-    v20 = [NSString stringWithFormat:@"%@<%p>", v17, v15];
+    v20 = [NSString stringWithFormat:@"%@<%p>", v17, topContext];
 LABEL_8:
 
 LABEL_10:
@@ -7468,111 +7468,111 @@ LABEL_10:
   v24[2] = sub_100DC2FE0;
   v24[3] = &unk_101661650;
   v24[4] = self;
-  v24[5] = v13;
+  v24[5] = _desiredFloatingControlsForCurrentState;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100DC3224;
   v22[3] = &unk_101654728;
   v22[4] = self;
-  v22[5] = v13;
-  v23 = v5;
+  v22[5] = _desiredFloatingControlsForCurrentState;
+  v23 = isAnimated;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100DC3284;
   v21[3] = &unk_101661738;
   v21[4] = self;
-  [v4 addPreparation:v24 animations:v22 completion:v21];
+  [animationCopy addPreparation:v24 animations:v22 completion:v21];
 }
 
-- (void)_updateMapScaleVisibilityWithAnimation:(id)a3
+- (void)_updateMapScaleVisibilityWithAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = [(IOSBasedChromeViewController *)self mapScaleOverlay];
+  animationCopy = animation;
+  mapScaleOverlay = [(IOSBasedChromeViewController *)self mapScaleOverlay];
 
-  if (v5)
+  if (mapScaleOverlay)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100DC3388;
     v6[3] = &unk_101661B18;
     v6[4] = self;
-    [v4 addAnimations:v6];
+    [animationCopy addAnimations:v6];
   }
 }
 
-- (void)updateComponent:(id)a3 forTiming:(unint64_t)a4 withAnimation:(id)a5
+- (void)updateComponent:(id)component forTiming:(unint64_t)timing withAnimation:(id)animation
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8 == @"floatingControls")
+  componentCopy = component;
+  animationCopy = animation;
+  if (componentCopy == @"floatingControls")
   {
-    [(IOSBasedChromeViewController *)self _updateFloatingControlsForCurrentStateWithAnimation:v9];
+    [(IOSBasedChromeViewController *)self _updateFloatingControlsForCurrentStateWithAnimation:animationCopy];
     goto LABEL_17;
   }
 
-  if (v8 == @"cards")
+  if (componentCopy == @"cards")
   {
-    [(IOSBasedChromeViewController *)self _updateCardsForCurrentStateWithAnimation:v9];
+    [(IOSBasedChromeViewController *)self _updateCardsForCurrentStateWithAnimation:animationCopy];
     goto LABEL_17;
   }
 
-  if (v8 == @"statusBarStyle")
+  if (componentCopy == @"statusBarStyle")
   {
-    [(IOSBasedChromeViewController *)self _updateStatusBarForCurrentStateWithAnimation:v9];
+    [(IOSBasedChromeViewController *)self _updateStatusBarForCurrentStateWithAnimation:animationCopy];
     goto LABEL_17;
   }
 
-  if (v8 == @"statusBarSupplementaryView")
+  if (componentCopy == @"statusBarSupplementaryView")
   {
-    [(IOSBasedChromeViewController *)self _updateStatusBarSupplementaryViewWithAnimation:v9];
+    [(IOSBasedChromeViewController *)self _updateStatusBarSupplementaryViewWithAnimation:animationCopy];
     goto LABEL_17;
   }
 
-  if (v8 == @"lookAroundButton")
+  if (componentCopy == @"lookAroundButton")
   {
-    [(IOSBasedChromeViewController *)self _updateLookAroundButtonWithAnimation:v9];
+    [(IOSBasedChromeViewController *)self _updateLookAroundButtonWithAnimation:animationCopy];
 LABEL_16:
-    [(IOSBasedChromeViewController *)self _updateBrowseVenueButtonWithAnimation:v9];
+    [(IOSBasedChromeViewController *)self _updateBrowseVenueButtonWithAnimation:animationCopy];
     goto LABEL_17;
   }
 
-  if (v8 == @"floatingSearchButton")
+  if (componentCopy == @"floatingSearchButton")
   {
-    [(IOSBasedChromeViewController *)self _updateRedoSearchButtonWithAnimation:v9];
+    [(IOSBasedChromeViewController *)self _updateRedoSearchButtonWithAnimation:animationCopy];
     goto LABEL_16;
   }
 
-  if (v8 == @"weatherOverlay")
+  if (componentCopy == @"weatherOverlay")
   {
-    [(IOSBasedChromeViewController *)self _updateWeatherWithAnimation:v9];
+    [(IOSBasedChromeViewController *)self _updateWeatherWithAnimation:animationCopy];
   }
 
-  else if (v8 == @"mapScale")
+  else if (componentCopy == @"mapScale")
   {
-    [(IOSBasedChromeViewController *)self _updateMapScaleVisibilityWithAnimation:v9];
+    [(IOSBasedChromeViewController *)self _updateMapScaleVisibilityWithAnimation:animationCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = IOSBasedChromeViewController;
-    [(ChromeViewController *)&v10 updateComponent:v8 forTiming:a4 withAnimation:v9];
+    [(ChromeViewController *)&v10 updateComponent:componentCopy forTiming:timing withAnimation:animationCopy];
   }
 
 LABEL_17:
 }
 
-- (void)updateComponentsIfNeededWithTansitionCoordinator:(id)a3
+- (void)updateComponentsIfNeededWithTansitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  if (v4)
+  coordinatorCopy = coordinator;
+  if (coordinatorCopy)
   {
     v5 = objc_alloc_init(GroupAnimation);
-    -[GroupAnimation setAnimated:](v5, "setAnimated:", [v4 isAnimated]);
-    v6 = self;
-    if (!v6)
+    -[GroupAnimation setAnimated:](v5, "setAnimated:", [coordinatorCopy isAnimated]);
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_11;
     }
 
@@ -7580,28 +7580,28 @@ LABEL_17:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(IOSBasedChromeViewController *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(IOSBasedChromeViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_11:
-    v12 = [NSString stringWithFormat:@"%@: UIViewController transition coordinator animation", v11];
+    v12 = [NSString stringWithFormat:@"%@: UIViewController transition coordinator animation", selfCopy];
     v13 = [(GroupAnimation *)v5 addCompletionWaitBlockWithReason:v12];
 
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100DC37A8;
     v18[3] = &unk_1016546D8;
-    v18[4] = v6;
+    v18[4] = selfCopy;
     v19 = v5;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -7610,7 +7610,7 @@ LABEL_11:
     v17 = v13;
     v14 = v13;
     v15 = v5;
-    [v4 animateAlongsideTransition:v18 completion:v16];
+    [coordinatorCopy animateAlongsideTransition:v18 completion:v16];
 
     goto LABEL_12;
   }
@@ -7619,15 +7619,15 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)setConnectedToCarPlay:(BOOL)a3
+- (void)setConnectedToCarPlay:(BOOL)play
 {
-  if (self->_connectedToCarPlay != a3)
+  if (self->_connectedToCarPlay != play)
   {
     v13 = v3;
     v14 = v4;
-    self->_connectedToCarPlay = a3;
+    self->_connectedToCarPlay = play;
     carPlayModernMapToken = self->_carPlayModernMapToken;
-    if (!a3)
+    if (!play)
     {
       if (!carPlayModernMapToken)
       {
@@ -7668,8 +7668,8 @@ LABEL_12:
   if (!ridesharingAnnotationsManager)
   {
     v4 = [RidesharingAnnotationsManager alloc];
-    v5 = [(ChromeViewController *)self mapView];
-    v6 = [(RidesharingAnnotationsManager *)v4 initWithMapView:v5];
+    mapView = [(ChromeViewController *)self mapView];
+    v6 = [(RidesharingAnnotationsManager *)v4 initWithMapView:mapView];
     v7 = self->_ridesharingAnnotationsManager;
     self->_ridesharingAnnotationsManager = v6;
 
@@ -7689,8 +7689,8 @@ LABEL_12:
     v5 = self->_overlayManager;
     self->_overlayManager = v4;
 
-    v6 = [(ChromeViewController *)self mapView];
-    [(OverlayManager *)self->_overlayManager setMapView:v6];
+    mapView = [(ChromeViewController *)self mapView];
+    [(OverlayManager *)self->_overlayManager setMapView:mapView];
 
     overlayManager = self->_overlayManager;
   }
@@ -7704,8 +7704,8 @@ LABEL_12:
   if (!mapViewResponder)
   {
     v4 = [MapViewResponder alloc];
-    v5 = [(ChromeViewController *)self mapView];
-    v6 = [(MapViewResponder *)v4 initWithMapView:v5];
+    mapView = [(ChromeViewController *)self mapView];
+    v6 = [(MapViewResponder *)v4 initWithMapView:mapView];
     v7 = self->_mapViewResponder;
     self->_mapViewResponder = v6;
 
@@ -7717,118 +7717,118 @@ LABEL_12:
 
 - (id)currentShareItemSource
 {
-  v3 = [(ChromeViewController *)self topContext];
+  topContext = [(ChromeViewController *)self topContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 currentShareItemSource];
+    currentShareItemSource = [topContext currentShareItemSource];
     goto LABEL_21;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 quickActionMenuPresenter];
-    v6 = [v5 resolvedMapItem];
+    quickActionMenuPresenter = [topContext quickActionMenuPresenter];
+    resolvedMapItem = [quickActionMenuPresenter resolvedMapItem];
 
-    if (v6)
+    if (resolvedMapItem)
     {
-      v7 = [[SearchResult alloc] initWithMapItem:v6];
-      v8 = [(SearchResult *)v7 unknownContact];
-      v4 = [ShareItem shareItemWithSearchResult:v7 contact:v8 includePrintActivity:1];
+      currentPlaceCardItem = [[SearchResult alloc] initWithMapItem:resolvedMapItem];
+      unknownContact = [(SearchResult *)currentPlaceCardItem unknownContact];
+      currentShareItemSource = [ShareItem shareItemWithSearchResult:currentPlaceCardItem contact:unknownContact includePrintActivity:1];
 LABEL_19:
 
       goto LABEL_20;
     }
   }
 
-  v9 = [(IOSBasedChromeViewController *)self currentCollectionShareItemSource];
-  v6 = v9;
-  if (!v9)
+  currentCollectionShareItemSource = [(IOSBasedChromeViewController *)self currentCollectionShareItemSource];
+  resolvedMapItem = currentCollectionShareItemSource;
+  if (!currentCollectionShareItemSource)
   {
-    v10 = [(IOSBasedChromeViewController *)self appCoordinator];
-    v11 = [v10 baseActionCoordinator];
-    v7 = [v11 currentPlaceCardItem];
+    appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+    baseActionCoordinator = [appCoordinator baseActionCoordinator];
+    currentPlaceCardItem = [baseActionCoordinator currentPlaceCardItem];
 
-    v12 = [(SearchResult *)v7 searchResult];
+    searchResult = [(SearchResult *)currentPlaceCardItem searchResult];
 
-    if (v12)
+    if (searchResult)
     {
       v13 = [SearchResult alloc];
-      v14 = [(SearchResult *)v7 searchResult];
-      v15 = [(SearchResult *)v13 initWithSearchResult:v14];
+      searchResult2 = [(SearchResult *)currentPlaceCardItem searchResult];
+      v15 = [(SearchResult *)v13 initWithSearchResult:searchResult2];
     }
 
     else
     {
-      v16 = [(SearchResult *)v7 mapItem];
+      mapItem = [(SearchResult *)currentPlaceCardItem mapItem];
 
-      if (!v16)
+      if (!mapItem)
       {
         goto LABEL_14;
       }
 
       v17 = [SearchResult alloc];
-      v14 = [(SearchResult *)v7 mapItem];
-      v15 = [(SearchResult *)v17 initWithMapItem:v14];
+      searchResult2 = [(SearchResult *)currentPlaceCardItem mapItem];
+      v15 = [(SearchResult *)v17 initWithMapItem:searchResult2];
     }
 
-    v8 = v15;
+    unknownContact = v15;
 
-    if (v8)
+    if (unknownContact)
     {
-      v18 = [v8 unknownContact];
-      v4 = [ShareItem shareItemWithSearchResult:v8 contact:v18 includePrintActivity:1];
+      v8UnknownContact = [unknownContact unknownContact];
+      currentShareItemSource = [ShareItem shareItemWithSearchResult:unknownContact contact:v8UnknownContact includePrintActivity:1];
 LABEL_18:
 
       goto LABEL_19;
     }
 
 LABEL_14:
-    v19 = [(IOSBasedChromeViewController *)self _maps_platformController];
-    v8 = [v19 currentSession];
+    _maps_platformController = [(IOSBasedChromeViewController *)self _maps_platformController];
+    unknownContact = [_maps_platformController currentSession];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [v8 currentRouteCollection];
-      v20 = [v18 currentRoute];
-      v4 = [ShareItem shareItemWithRoute:v20 includeRoutingApps:0];
+      v8UnknownContact = [unknownContact currentRouteCollection];
+      currentRoute = [v8UnknownContact currentRoute];
+      currentShareItemSource = [ShareItem shareItemWithRoute:currentRoute includeRoutingApps:0];
     }
 
     else
     {
       v25 = [MapRegionShareItemSource alloc];
-      v18 = [(ChromeViewController *)self mapView];
-      v20 = [(IOSBasedChromeViewController *)self view];
-      v21 = [v20 window];
-      v22 = [v21 windowScene];
-      v23 = [v22 title];
-      v4 = [(MapRegionShareItemSource *)v25 initWithMapView:v18 title:v23];
+      v8UnknownContact = [(ChromeViewController *)self mapView];
+      currentRoute = [(IOSBasedChromeViewController *)self view];
+      window = [currentRoute window];
+      windowScene = [window windowScene];
+      title = [windowScene title];
+      currentShareItemSource = [(MapRegionShareItemSource *)v25 initWithMapView:v8UnknownContact title:title];
     }
 
     goto LABEL_18;
   }
 
-  v4 = v9;
+  currentShareItemSource = currentCollectionShareItemSource;
 LABEL_20:
 
 LABEL_21:
 
-  return v4;
+  return currentShareItemSource;
 }
 
 - (id)currentCollectionShareItemSource
 {
-  v2 = [(IOSBasedChromeViewController *)self appCoordinator];
-  v3 = [v2 baseActionCoordinator];
-  v4 = [v3 currentViewController];
+  appCoordinator = [(IOSBasedChromeViewController *)self appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
+  currentViewController = [baseActionCoordinator currentViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 collectionHandler];
-    v6 = [[PersonalCollectionShareItemSource alloc] initWithCollectionHandlerInfo:v5];
+    collectionHandler = [currentViewController collectionHandler];
+    v6 = [[PersonalCollectionShareItemSource alloc] initWithCollectionHandlerInfo:collectionHandler];
   }
 
   else
@@ -7836,13 +7836,13 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v8 = [v5 curatedCollection];
-      if (v8)
+      collectionHandler = currentViewController;
+      curatedCollection = [collectionHandler curatedCollection];
+      if (curatedCollection)
       {
         v9 = [CuratedCollectionShareItemSource alloc];
-        v10 = [v5 mapItems];
-        v7 = [(CuratedCollectionShareItemSource *)v9 initWithPlaceCollection:v8 refinedMapItems:v10];
+        mapItems = [collectionHandler mapItems];
+        v7 = [(CuratedCollectionShareItemSource *)v9 initWithPlaceCollection:curatedCollection refinedMapItems:mapItems];
       }
 
       else
@@ -7860,11 +7860,11 @@ LABEL_21:
       goto LABEL_13;
     }
 
-    v11 = v4;
+    v11 = currentViewController;
     v12 = [CuratedCollectionShareItemSource alloc];
-    v5 = [v11 publisher];
+    collectionHandler = [v11 publisher];
 
-    v6 = [(CuratedCollectionShareItemSource *)v12 initWithPublisher:v5];
+    v6 = [(CuratedCollectionShareItemSource *)v12 initWithPublisher:collectionHandler];
   }
 
   v7 = v6;
@@ -7880,10 +7880,10 @@ LABEL_13:
   v3 = sub_10000B11C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -7891,22 +7891,22 @@ LABEL_13:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(IOSBasedChromeViewController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(IOSBasedChromeViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v23 = v9;
+    v23 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Deallocating", buf, 0xCu);
   }
 

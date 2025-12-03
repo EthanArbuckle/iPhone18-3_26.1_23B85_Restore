@@ -1,65 +1,65 @@
 @interface LNAsyncSequenceReference
-- (BOOL)isEqual:(id)a3;
-- (LNAsyncSequenceReference)initWithCoder:(id)a3;
-- (LNAsyncSequenceReference)initWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNAsyncSequenceReference)initWithCoder:(id)coder;
+- (LNAsyncSequenceReference)initWithIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAsyncSequenceReference
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAsyncSequenceReference *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNAsyncSequenceReference *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
-- (LNAsyncSequenceReference)initWithCoder:(id)a3
+- (LNAsyncSequenceReference)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   if (v5)
   {
     self = [(LNAsyncSequenceReference *)self initWithIdentifier:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(LNAsyncSequenceReference *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(LNAsyncSequenceReference *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNAsyncSequenceReference *)self identifier];
-      v8 = [(LNAsyncSequenceReference *)v6 identifier];
-      v9 = [v7 isEqual:v8];
+      identifier = [(LNAsyncSequenceReference *)self identifier];
+      identifier2 = [(LNAsyncSequenceReference *)v6 identifier];
+      v9 = [identifier isEqual:identifier2];
     }
 
     else
@@ -76,20 +76,20 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNAsyncSequenceReference *)self identifier];
-  v7 = [v6 UUIDString];
-  v8 = [v3 stringWithFormat:@"<%@ %@>", v5, v7];
+  identifier = [(LNAsyncSequenceReference *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v8 = [v3 stringWithFormat:@"<%@ %@>", v5, uUIDString];
 
   return v8;
 }
 
-- (LNAsyncSequenceReference)initWithIdentifier:(id)a3
+- (LNAsyncSequenceReference)initWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNAsyncSequenceReference.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAsyncSequenceReference.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v12.receiver = self;
@@ -98,7 +98,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_identifier, a3);
+    objc_storeStrong(&v7->_identifier, identifier);
     v9 = v8;
   }
 

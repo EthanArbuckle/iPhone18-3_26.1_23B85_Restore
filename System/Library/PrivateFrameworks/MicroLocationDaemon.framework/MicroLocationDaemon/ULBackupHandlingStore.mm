@@ -1,27 +1,27 @@
 @interface ULBackupHandlingStore
-- (BOOL)_commitBatchToStore:(id)a3 forEntityName:(id)a4 stop:(BOOL *)a5;
-- (BOOL)_transferLOIsUsingGroupIdsFilter:(BOOL)a3;
-- (BOOL)_transferRecordsForEntityName:(id)a3 relation:(id)a4 relationUUID:(id)a5 uuidMap:(id)a6 sortAttribute:(id)a7 limit:(unint64_t)a8 fetchBatchSize:(unint64_t)a9;
+- (BOOL)_commitBatchToStore:(id)store forEntityName:(id)name stop:(BOOL *)stop;
+- (BOOL)_transferLOIsUsingGroupIdsFilter:(BOOL)filter;
+- (BOOL)_transferRecordsForEntityName:(id)name relation:(id)relation relationUUID:(id)d uuidMap:(id)map sortAttribute:(id)attribute limit:(unint64_t)limit fetchBatchSize:(unint64_t)size;
 - (BOOL)exportData;
 - (BOOL)importData;
-- (ULBackupHandlingStore)initWithSourceDatabase:(ULDatabaseStoreInterface *)a3 targetDatabase:(ULDatabaseStoreInterface *)a4 andCancelFunc:(function<BOOL)(;
+- (ULBackupHandlingStore)initWithSourceDatabase:(ULDatabaseStoreInterface *)database targetDatabase:(ULDatabaseStoreInterface *)targetDatabase andCancelFunc:(function<BOOL)(;
 - (id)_getDistinctHomeLoiGroupIds;
-- (id)_getUUIDToObjectIDMapForEntityName:(id)a3 uuidAttribute:(id)a4 sortAttribute:(id)a5 atStore:(id)a6;
-- (void)_transferLOIsInBatch:(id)a3 toStore:(id)a4;
-- (void)_transferRecordsInBatch:(id)a3 forEntityName:(id)a4 relation:(id)a5 relationUUID:(id)a6 uuidMap:(id)a7 toStore:(id)a8;
+- (id)_getUUIDToObjectIDMapForEntityName:(id)name uuidAttribute:(id)attribute sortAttribute:(id)sortAttribute atStore:(id)store;
+- (void)_transferLOIsInBatch:(id)batch toStore:(id)store;
+- (void)_transferRecordsInBatch:(id)batch forEntityName:(id)name relation:(id)relation relationUUID:(id)d uuidMap:(id)map toStore:(id)store;
 @end
 
 @implementation ULBackupHandlingStore
 
-- (ULBackupHandlingStore)initWithSourceDatabase:(ULDatabaseStoreInterface *)a3 targetDatabase:(ULDatabaseStoreInterface *)a4 andCancelFunc:(function<BOOL)(
+- (ULBackupHandlingStore)initWithSourceDatabase:(ULDatabaseStoreInterface *)database targetDatabase:(ULDatabaseStoreInterface *)targetDatabase andCancelFunc:(function<BOOL)(
 {
   v13 = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = ULBackupHandlingStore;
-  v7 = [(ULStore *)&v11 initWithDbStore:a3];
+  v7 = [(ULStore *)&v11 initWithDbStore:database];
   if (v7)
   {
-    v8 = [[ULStore alloc] initWithDbStore:a4];
+    v8 = [[ULStore alloc] initWithDbStore:targetDatabase];
     [(ULBackupHandlingStore *)v7 setTargetStore:v8];
 
     std::__function::__value_func<BOOL ()(void)>::__value_func[abi:ne200100](v12, a5);
@@ -47,11 +47,11 @@
     _os_log_impl(&dword_258FE9000, v3, OS_LOG_TYPE_DEFAULT, "Exporting milo data", buf, 2u);
   }
 
-  v4 = [(ULBackupHandlingStore *)self _getDistinctHomeLoiGroupIds];
-  [(ULBackupHandlingStore *)self setDistinctHomeloiGroupIds:v4];
+  _getDistinctHomeLoiGroupIds = [(ULBackupHandlingStore *)self _getDistinctHomeLoiGroupIds];
+  [(ULBackupHandlingStore *)self setDistinctHomeloiGroupIds:_getDistinctHomeLoiGroupIds];
 
-  v5 = [(ULBackupHandlingStore *)self distinctHomeloiGroupIds];
-  v6 = [v5 count];
+  distinctHomeloiGroupIds = [(ULBackupHandlingStore *)self distinctHomeloiGroupIds];
+  v6 = [distinctHomeloiGroupIds count];
 
   if (v6)
   {
@@ -102,11 +102,11 @@
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = MEMORY[0x277CCAC30];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"home"];
   v7 = [v5 predicateWithFormat:@"%K=%@", @"loiType", v6];
-  [v4 addObject:v7];
+  [array addObject:v7];
 
   v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastSeenTimeStamp" ascending:0];
   v9 = objc_opt_class();
@@ -114,23 +114,23 @@
   v21[0] = v8;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
   v12 = +[ULDefaultsSingleton shared];
-  v13 = [v12 defaultsDictionary];
+  defaultsDictionary = [v12 defaultsDictionary];
 
   v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULCloudBackupMaxLoiGroupIdsToExport"];
-  v15 = [v13 objectForKey:v14];
+  v15 = [defaultsDictionary objectForKey:v14];
   if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v16 = [v15 unsignedIntValue];
+    unsignedIntValue = [v15 unsignedIntValue];
   }
 
   else
   {
-    v16 = [&unk_286A71748 unsignedIntValue];
+    unsignedIntValue = [&unk_286A71748 unsignedIntValue];
   }
 
-  v17 = v16;
+  v17 = unsignedIntValue;
 
-  v18 = [(ULStore *)self fetchPropertyForEntityName:v10 propertyToFetch:@"loiGroupId" distinctResults:1 byAndPredicates:v4 sortDescriptors:v11 andLimit:v17];
+  v18 = [(ULStore *)self fetchPropertyForEntityName:v10 propertyToFetch:@"loiGroupId" distinctResults:1 byAndPredicates:array sortDescriptors:v11 andLimit:v17];
 
   objc_autoreleasePoolPop(v3);
   v19 = *MEMORY[0x277D85DE8];
@@ -138,7 +138,7 @@
   return v18;
 }
 
-- (BOOL)_transferLOIsUsingGroupIdsFilter:(BOOL)a3
+- (BOOL)_transferLOIsUsingGroupIdsFilter:(BOOL)filter
 {
   v16 = *MEMORY[0x277D85DE8];
   [(ULBackupHandlingStore *)self shouldCancel];
@@ -160,15 +160,15 @@
     v13 = &v12;
     v14 = 0x2020000000;
     LOBYTE(v15) = 1;
-    v7 = [(ULStore *)self managedObjectContext];
+    managedObjectContext = [(ULStore *)self managedObjectContext];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __58__ULBackupHandlingStore__transferLOIsUsingGroupIdsFilter___block_invoke;
     v10[3] = &unk_2798D4550;
-    v11 = a3;
+    filterCopy = filter;
     v10[4] = self;
     v10[5] = &v12;
-    [v7 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
 
     v6 = *(v13 + 24);
     _Block_object_dispose(&v12, 8);
@@ -296,16 +296,16 @@ void __58__ULBackupHandlingStore__transferLOIsUsingGroupIdsFilter___block_invoke
   *(*(a1[6] + 8) + 24) &= [v4 _commitBatchToStore:v8 forEntityName:v6 stop:a1[7]];
 }
 
-- (void)_transferLOIsInBatch:(id)a3 toStore:(id)a4
+- (void)_transferLOIsInBatch:(id)batch toStore:(id)store
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  batchCopy = batch;
+  storeCopy = store;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v5;
+  obj = batchCopy;
   v7 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -322,13 +322,13 @@ void __58__ULBackupHandlingStore__transferLOIsUsingGroupIdsFilter___block_invoke
 
         v10 = *(*(&v20 + 1) + 8 * v9);
         v11 = [ULLoiMO alloc];
-        v12 = [v6 managedObjectContext];
-        v13 = [(ULLoiMO *)v11 initWithContext:v12];
+        managedObjectContext = [storeCopy managedObjectContext];
+        v13 = [(ULLoiMO *)v11 initWithContext:managedObjectContext];
 
-        v14 = [v10 entity];
-        v15 = [v14 attributesByName];
-        v16 = [v15 allKeys];
-        v17 = [v10 dictionaryWithValuesForKeys:v16];
+        entity = [v10 entity];
+        attributesByName = [entity attributesByName];
+        allKeys = [attributesByName allKeys];
+        v17 = [v10 dictionaryWithValuesForKeys:allKeys];
         [(ULLoiMO *)v13 setValuesForKeysWithDictionary:v17];
 
         ++v9;
@@ -344,19 +344,19 @@ void __58__ULBackupHandlingStore__transferLOIsUsingGroupIdsFilter___block_invoke
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_commitBatchToStore:(id)a3 forEntityName:(id)a4 stop:(BOOL *)a5
+- (BOOL)_commitBatchToStore:(id)store forEntityName:(id)name stop:(BOOL *)stop
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 managedObjectContext];
-  v10 = [v9 hasChanges];
+  storeCopy = store;
+  nameCopy = name;
+  managedObjectContext = [storeCopy managedObjectContext];
+  hasChanges = [managedObjectContext hasChanges];
 
-  if (v10)
+  if (hasChanges)
   {
-    v11 = [v7 managedObjectContext];
+    managedObjectContext2 = [storeCopy managedObjectContext];
     v19 = 0;
-    v12 = [v11 save:&v19];
+    v12 = [managedObjectContext2 save:&v19];
     v13 = v19;
   }
 
@@ -366,12 +366,12 @@ void __58__ULBackupHandlingStore__transferLOIsUsingGroupIdsFilter___block_invoke
     v12 = 1;
   }
 
-  v14 = [v7 managedObjectContext];
-  [v14 reset];
+  managedObjectContext3 = [storeCopy managedObjectContext];
+  [managedObjectContext3 reset];
 
   if (v13)
   {
-    *a5 = 1;
+    *stop = 1;
     if (onceToken_MicroLocation_Default != -1)
     {
       [ULBackupHandlingStore exportData];
@@ -387,7 +387,7 @@ void __58__ULBackupHandlingStore__transferLOIsUsingGroupIdsFilter___block_invoke
       v24 = 2114;
       v25 = v13;
       v26 = 2113;
-      v27 = v8;
+      v27 = nameCopy;
       _os_log_impl(&dword_258FE9000, v15, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:Backup: Error transferring batch. Could not save changes to store, error:%{public, location:escape_only}@, Entity:%{private, location:escape_only}@}", buf, 0x26u);
     }
 
@@ -406,7 +406,7 @@ void __58__ULBackupHandlingStore__transferLOIsUsingGroupIdsFilter___block_invoke
       v24 = 2114;
       v25 = v13;
       v26 = 2113;
-      v27 = v8;
+      v27 = nameCopy;
       _os_signpost_emit_with_name_impl(&dword_258FE9000, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Backup: Error transferring batch. Could not save changes to store", "{msg%{public}.0s:Backup: Error transferring batch. Could not save changes to store, error:%{public, location:escape_only}@, Entity:%{private, location:escape_only}@}", buf, 0x26u);
     }
   }
@@ -415,27 +415,27 @@ void __58__ULBackupHandlingStore__transferLOIsUsingGroupIdsFilter___block_invoke
   return v12;
 }
 
-- (id)_getUUIDToObjectIDMapForEntityName:(id)a3 uuidAttribute:(id)a4 sortAttribute:(id)a5 atStore:(id)a6
+- (id)_getUUIDToObjectIDMapForEntityName:(id)name uuidAttribute:(id)attribute sortAttribute:(id)sortAttribute atStore:(id)store
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:v12 ascending:1];
-  v15 = [(ULBackupHandlingStore *)self targetStore];
+  nameCopy = name;
+  attributeCopy = attribute;
+  sortAttributeCopy = sortAttribute;
+  storeCopy = store;
+  v14 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:sortAttributeCopy ascending:1];
+  targetStore = [(ULBackupHandlingStore *)self targetStore];
   v35[0] = v14;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
-  v17 = [v13 managedObjectContext];
-  v18 = [v15 fetchManagedObjectsWithEntityName:v10 byAndPredicates:0 sortDescriptors:v16 andLimit:0 returnObjectsAsFaults:1 withManagedObjectContext:v17];
+  managedObjectContext = [storeCopy managedObjectContext];
+  v18 = [targetStore fetchManagedObjectsWithEntityName:nameCopy byAndPredicates:0 sortDescriptors:v16 andLimit:0 returnObjectsAsFaults:1 withManagedObjectContext:managedObjectContext];
 
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__1;
   v33 = __Block_byref_object_dispose__1;
-  v34 = [MEMORY[0x277CBEB38] dictionary];
-  v19 = [v13 managedObjectContext];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  managedObjectContext2 = [storeCopy managedObjectContext];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __96__ULBackupHandlingStore__getUUIDToObjectIDMapForEntityName_uuidAttribute_sortAttribute_atStore___block_invoke;
@@ -443,9 +443,9 @@ void __58__ULBackupHandlingStore__transferLOIsUsingGroupIdsFilter___block_invoke
   v20 = v18;
   v26 = v20;
   v28 = &v29;
-  v21 = v11;
+  v21 = attributeCopy;
   v27 = v21;
-  [v19 performBlockAndWait:v25];
+  [managedObjectContext2 performBlockAndWait:v25];
 
   v22 = v30[5];
   _Block_object_dispose(&v29, 8);
@@ -492,14 +492,14 @@ void __96__ULBackupHandlingStore__getUUIDToObjectIDMapForEntityName_uuidAttribut
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_transferRecordsForEntityName:(id)a3 relation:(id)a4 relationUUID:(id)a5 uuidMap:(id)a6 sortAttribute:(id)a7 limit:(unint64_t)a8 fetchBatchSize:(unint64_t)a9
+- (BOOL)_transferRecordsForEntityName:(id)name relation:(id)relation relationUUID:(id)d uuidMap:(id)map sortAttribute:(id)attribute limit:(unint64_t)limit fetchBatchSize:(unint64_t)size
 {
   v39 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  nameCopy = name;
+  relationCopy = relation;
+  dCopy = d;
+  mapCopy = map;
+  attributeCopy = attribute;
   [(ULBackupHandlingStore *)self shouldCancel];
   if (!v38)
   {
@@ -519,21 +519,21 @@ void __96__ULBackupHandlingStore__getUUIDToObjectIDMapForEntityName_uuidAttribut
     v36 = &v35;
     v37 = 0x2020000000;
     LOBYTE(v38) = 1;
-    v22 = [(ULStore *)self managedObjectContext];
+    managedObjectContext = [(ULStore *)self managedObjectContext];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __120__ULBackupHandlingStore__transferRecordsForEntityName_relation_relationUUID_uuidMap_sortAttribute_limit_fetchBatchSize___block_invoke;
     v25[3] = &unk_2798D45F0;
-    v26 = v16;
-    v27 = v17;
-    v28 = v18;
-    v29 = v19;
-    v30 = self;
-    v33 = a8;
-    v34 = a9;
-    v31 = v15;
+    v26 = relationCopy;
+    v27 = dCopy;
+    v28 = mapCopy;
+    v29 = attributeCopy;
+    selfCopy = self;
+    limitCopy = limit;
+    sizeCopy = size;
+    v31 = nameCopy;
     v32 = &v35;
-    [v22 performBlockAndWait:v25];
+    [managedObjectContext performBlockAndWait:v25];
 
     v21 = *(v36 + 24);
     _Block_object_dispose(&v35, 8);
@@ -665,20 +665,20 @@ void __120__ULBackupHandlingStore__transferRecordsForEntityName_relation_relatio
   *(*(a1[10] + 8) + 24) &= [v8 _commitBatchToStore:? forEntityName:? stop:?];
 }
 
-- (void)_transferRecordsInBatch:(id)a3 forEntityName:(id)a4 relation:(id)a5 relationUUID:(id)a6 uuidMap:(id)a7 toStore:(id)a8
+- (void)_transferRecordsInBatch:(id)batch forEntityName:(id)name relation:(id)relation relationUUID:(id)d uuidMap:(id)map toStore:(id)store
 {
   v42 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v30 = a4;
-  v36 = a5;
-  v34 = a6;
-  v33 = a7;
-  v35 = a8;
+  batchCopy = batch;
+  nameCopy = name;
+  relationCopy = relation;
+  dCopy = d;
+  mapCopy = map;
+  storeCopy = store;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v13;
+  obj = batchCopy;
   v14 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v14)
   {
@@ -694,28 +694,28 @@ void __120__ULBackupHandlingStore__transferRecordsForEntityName_relation_relatio
         }
 
         v16 = *(*(&v37 + 1) + 8 * v15);
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v36, v34];
-        v18 = [v16 valueForKeyPath:v17];
-        v19 = [v33 objectForKeyedSubscript:v18];
+        dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", relationCopy, dCopy];
+        v18 = [v16 valueForKeyPath:dCopy];
+        v19 = [mapCopy objectForKeyedSubscript:v18];
 
         if (v19)
         {
-          v20 = [v35 managedObjectContext];
-          v21 = [v20 existingObjectWithID:v19 error:0];
+          managedObjectContext = [storeCopy managedObjectContext];
+          v21 = [managedObjectContext existingObjectWithID:v19 error:0];
 
           if (v21)
           {
             v22 = MEMORY[0x277CBE408];
-            v23 = [v35 managedObjectContext];
-            v24 = [v22 insertNewObjectForEntityForName:v30 inManagedObjectContext:v23];
+            managedObjectContext2 = [storeCopy managedObjectContext];
+            v24 = [v22 insertNewObjectForEntityForName:nameCopy inManagedObjectContext:managedObjectContext2];
 
-            v25 = [v16 entity];
-            v26 = [v25 attributesByName];
-            v27 = [v26 allKeys];
-            v28 = [v16 dictionaryWithValuesForKeys:v27];
+            entity = [v16 entity];
+            attributesByName = [entity attributesByName];
+            allKeys = [attributesByName allKeys];
+            v28 = [v16 dictionaryWithValuesForKeys:allKeys];
             [v24 setValuesForKeysWithDictionary:v28];
 
-            [v24 setValue:v21 forKeyPath:v36];
+            [v24 setValue:v21 forKeyPath:relationCopy];
           }
         }
 

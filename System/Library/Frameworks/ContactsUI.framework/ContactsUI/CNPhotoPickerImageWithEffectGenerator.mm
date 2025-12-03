@@ -1,23 +1,23 @@
 @interface CNPhotoPickerImageWithEffectGenerator
 + (id)coreImageFilterDisplayNames;
-+ (id)displayNameForFilterNamed:(id)a3;
-+ (id)imageByApplyingEffect:(id)a3 withContext:(id)a4 toImage:(id)a5 withSize:(CGSize)a6;
-+ (id)imageByApplyingEffect:(id)a3 withContext:(id)a4 toImageData:(id)a5;
-+ (void)imagesByApplyingEffectsToImageData:(id)a3 withScaleFactor:(double)a4 originalImageScale:(double)a5 cropRect:(CGRect)a6 completion:(id)a7;
++ (id)displayNameForFilterNamed:(id)named;
++ (id)imageByApplyingEffect:(id)effect withContext:(id)context toImage:(id)image withSize:(CGSize)size;
++ (id)imageByApplyingEffect:(id)effect withContext:(id)context toImageData:(id)data;
++ (void)imagesByApplyingEffectsToImageData:(id)data withScaleFactor:(double)factor originalImageScale:(double)scale cropRect:(CGRect)rect completion:(id)completion;
 @end
 
 @implementation CNPhotoPickerImageWithEffectGenerator
 
-+ (id)imageByApplyingEffect:(id)a3 withContext:(id)a4 toImage:(id)a5 withSize:(CGSize)a6
++ (id)imageByApplyingEffect:(id)effect withContext:(id)context toImage:(id)image withSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  height = size.height;
+  width = size.width;
+  effectCopy = effect;
+  contextCopy = context;
+  imageCopy = image;
   v13 = objc_alloc_init(MEMORY[0x1E6996838]);
-  v14 = [v12 imageByApplyingFilter:v10];
-  v15 = [v11 createCGImage:v14 fromRect:{0.0, 0.0, width, height}];
+  v14 = [imageCopy imageByApplyingFilter:effectCopy];
+  v15 = [contextCopy createCGImage:v14 fromRect:{0.0, 0.0, width, height}];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __92__CNPhotoPickerImageWithEffectGenerator_imageByApplyingEffect_withContext_toImage_withSize___block_invoke;
@@ -36,35 +36,35 @@
   return v19;
 }
 
-+ (id)imageByApplyingEffect:(id)a3 withContext:(id)a4 toImageData:(id)a5
++ (id)imageByApplyingEffect:(id)effect withContext:(id)context toImageData:(id)data
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  dataCopy = data;
+  contextCopy = context;
+  effectCopy = effect;
   v10 = objc_opt_class();
-  v11 = [MEMORY[0x1E695F658] imageWithData:v7];
-  v12 = [MEMORY[0x1E69DCAB8] imageWithData:v7];
+  v11 = [MEMORY[0x1E695F658] imageWithData:dataCopy];
+  v12 = [MEMORY[0x1E69DCAB8] imageWithData:dataCopy];
 
   [v12 size];
-  v13 = [v10 imageByApplyingEffect:v9 withContext:v8 toImage:v11 withSize:?];
+  v13 = [v10 imageByApplyingEffect:effectCopy withContext:contextCopy toImage:v11 withSize:?];
 
   return v13;
 }
 
-+ (void)imagesByApplyingEffectsToImageData:(id)a3 withScaleFactor:(double)a4 originalImageScale:(double)a5 cropRect:(CGRect)a6 completion:(id)a7
++ (void)imagesByApplyingEffectsToImageData:(id)data withScaleFactor:(double)factor originalImageScale:(double)scale cropRect:(CGRect)rect completion:(id)completion
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v34 = *MEMORY[0x1E69E9840];
-  v14 = a7;
-  v15 = [MEMORY[0x1E695F658] imageWithData:a3];
+  completionCopy = completion;
+  v15 = [MEMORY[0x1E695F658] imageWithData:data];
   v16 = [MEMORY[0x1E695F648] filterWithName:@"CILanczosScaleTransform"];
   v27 = v15;
   [v16 setValue:v15 forKey:@"inputImage"];
-  v17 = a4 / a5;
-  *&v17 = a4 / a5;
+  v17 = factor / scale;
+  *&v17 = factor / scale;
   v18 = [MEMORY[0x1E696AD98] numberWithFloat:v17];
   [v16 setValue:v18 forKey:@"inputScale"];
 
@@ -92,7 +92,7 @@
 
         v25 = *(*(&v29 + 1) + 8 * i);
         v26 = [objc_opt_class() imageByApplyingEffect:v25 withContext:v20 toImage:v19 withSize:{width, height}];
-        v14[2](v14, v26, v25, x, y, width, height);
+        completionCopy[2](completionCopy, v26, v25, x, y, width, height);
       }
 
       v22 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -102,11 +102,11 @@
   }
 }
 
-+ (id)displayNameForFilterNamed:(id)a3
++ (id)displayNameForFilterNamed:(id)named
 {
-  v4 = a3;
-  v5 = [a1 coreImageFilterDisplayNames];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  namedCopy = named;
+  coreImageFilterDisplayNames = [self coreImageFilterDisplayNames];
+  v6 = [coreImageFilterDisplayNames objectForKeyedSubscript:namedCopy];
 
   return v6;
 }

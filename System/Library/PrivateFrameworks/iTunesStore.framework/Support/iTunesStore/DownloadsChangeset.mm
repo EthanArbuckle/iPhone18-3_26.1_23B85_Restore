@@ -10,48 +10,48 @@
 - (id)_finishedDownloadKinds;
 - (id)_initDownloadsChangeset;
 - (id)_policyChangedDownloadIDs;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_addApplicationWorkspaceChangeWithHandle:(id)a3 changeType:(int64_t)a4;
-- (void)addApplicationWorkspaceChange:(id)a3;
-- (void)addCanceledAppDataRestoreID:(id)a3;
-- (void)addCanceledIPodLibraryDownloadID:(int64_t)a3;
-- (void)addDeletedHTTPCookies:(id)a3;
-- (void)addDeletedIPodLibraryDownloadID:(int64_t)a3;
-- (void)addDownloadKind:(id)a3;
-- (void)addDownloadToPipelineWithID:(int64_t)a3;
-- (void)addFinishedDownloadKind:(id)a3;
-- (void)addHTTPCookie:(id)a3;
-- (void)addPolicyChangedDownloadID:(int64_t)a3;
-- (void)addRemovedDownloadID:(int64_t)a3;
-- (void)addRemovedPersistentDownloadID:(int64_t)a3;
-- (void)addRestorableDownloadID:(int64_t)a3;
-- (void)addSSAppWakeRequest:(id)a3;
-- (void)addStatusChangedDownloadID:(int64_t)a3;
-- (void)addUpdatedDownloadID:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_addApplicationWorkspaceChangeWithHandle:(id)handle changeType:(int64_t)type;
+- (void)addApplicationWorkspaceChange:(id)change;
+- (void)addCanceledAppDataRestoreID:(id)d;
+- (void)addCanceledIPodLibraryDownloadID:(int64_t)d;
+- (void)addDeletedHTTPCookies:(id)cookies;
+- (void)addDeletedIPodLibraryDownloadID:(int64_t)d;
+- (void)addDownloadKind:(id)kind;
+- (void)addDownloadToPipelineWithID:(int64_t)d;
+- (void)addFinishedDownloadKind:(id)kind;
+- (void)addHTTPCookie:(id)cookie;
+- (void)addPolicyChangedDownloadID:(int64_t)d;
+- (void)addRemovedDownloadID:(int64_t)d;
+- (void)addRemovedPersistentDownloadID:(int64_t)d;
+- (void)addRestorableDownloadID:(int64_t)d;
+- (void)addSSAppWakeRequest:(id)request;
+- (void)addStatusChangedDownloadID:(int64_t)d;
+- (void)addUpdatedDownloadID:(int64_t)d;
 - (void)dealloc;
-- (void)removeDownloadFromPipelineWithID:(int64_t)a3;
-- (void)unionChangeset:(id)a3;
+- (void)removeDownloadFromPipelineWithID:(int64_t)d;
+- (void)unionChangeset:(id)changeset;
 @end
 
 @implementation DownloadsChangeset
 
 - (DownloadsChangeset)init
 {
-  v2 = [(DownloadsChangeset *)self _initDownloadsChangeset];
-  if (v2)
+  _initDownloadsChangeset = [(DownloadsChangeset *)self _initDownloadsChangeset];
+  if (_initDownloadsChangeset)
   {
-    v2->_changedDownloadKinds = objc_alloc_init(NSMutableSet);
-    v2->_ipodLibraryItems = objc_alloc_init(NSMutableArray);
-    v2->_pipelineAdditions = objc_alloc_init(NSMutableOrderedSet);
-    v2->_pipelineRestarts = objc_alloc_init(NSMutableOrderedSet);
-    v2->_removedDownloadIDs = objc_alloc_init(NSMutableOrderedSet);
-    v2->_removedPersistentDownloadIDs = objc_alloc_init(NSMutableOrderedSet);
-    v2->_restorableDownloadIDs = objc_alloc_init(NSMutableOrderedSet);
-    v2->_statusChangedDownloadIDs = objc_alloc_init(NSMutableSet);
-    v2->_updatedDownloadIDs = objc_alloc_init(NSMutableSet);
+    _initDownloadsChangeset->_changedDownloadKinds = objc_alloc_init(NSMutableSet);
+    _initDownloadsChangeset->_ipodLibraryItems = objc_alloc_init(NSMutableArray);
+    _initDownloadsChangeset->_pipelineAdditions = objc_alloc_init(NSMutableOrderedSet);
+    _initDownloadsChangeset->_pipelineRestarts = objc_alloc_init(NSMutableOrderedSet);
+    _initDownloadsChangeset->_removedDownloadIDs = objc_alloc_init(NSMutableOrderedSet);
+    _initDownloadsChangeset->_removedPersistentDownloadIDs = objc_alloc_init(NSMutableOrderedSet);
+    _initDownloadsChangeset->_restorableDownloadIDs = objc_alloc_init(NSMutableOrderedSet);
+    _initDownloadsChangeset->_statusChangedDownloadIDs = objc_alloc_init(NSMutableSet);
+    _initDownloadsChangeset->_updatedDownloadIDs = objc_alloc_init(NSMutableSet);
   }
 
-  return v2;
+  return _initDownloadsChangeset;
 }
 
 - (id)_initDownloadsChangeset
@@ -68,143 +68,143 @@
   [(DownloadsChangeset *)&v3 dealloc];
 }
 
-- (void)addSSAppWakeRequest:(id)a3
+- (void)addSSAppWakeRequest:(id)request
 {
-  v4 = [(DownloadsChangeset *)self _SSAppWakeRequests];
+  _SSAppWakeRequests = [(DownloadsChangeset *)self _SSAppWakeRequests];
 
-  [v4 addObject:a3];
+  [_SSAppWakeRequests addObject:request];
 }
 
-- (void)addApplicationWorkspaceChange:(id)a3
+- (void)addApplicationWorkspaceChange:(id)change
 {
-  v4 = [(DownloadsChangeset *)self _applicationWorkspaceChanges];
+  _applicationWorkspaceChanges = [(DownloadsChangeset *)self _applicationWorkspaceChanges];
 
-  [v4 addObject:a3];
+  [_applicationWorkspaceChanges addObject:change];
 }
 
-- (void)addCanceledAppDataRestoreID:(id)a3
+- (void)addCanceledAppDataRestoreID:(id)d
 {
-  v4 = [(DownloadsChangeset *)self _canceledAppDataRestoreIDs];
+  _canceledAppDataRestoreIDs = [(DownloadsChangeset *)self _canceledAppDataRestoreIDs];
 
-  [v4 addObject:a3];
+  [_canceledAppDataRestoreIDs addObject:d];
 }
 
-- (void)addCanceledIPodLibraryDownloadID:(int64_t)a3
+- (void)addCanceledIPodLibraryDownloadID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   [-[DownloadsChangeset _canceledIPodLibraryDownloadIDs](self "_canceledIPodLibraryDownloadIDs")];
 }
 
-- (void)addDeletedHTTPCookies:(id)a3
+- (void)addDeletedHTTPCookies:(id)cookies
 {
-  v4 = [(DownloadsChangeset *)self _deletedHTTPCookies];
+  _deletedHTTPCookies = [(DownloadsChangeset *)self _deletedHTTPCookies];
 
-  [v4 addObjectsFromArray:a3];
+  [_deletedHTTPCookies addObjectsFromArray:cookies];
 }
 
-- (void)addDeletedIPodLibraryDownloadID:(int64_t)a3
+- (void)addDeletedIPodLibraryDownloadID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   [-[DownloadsChangeset _deletedIPodLibraryDownloadIDs](self "_deletedIPodLibraryDownloadIDs")];
 }
 
-- (void)addDownloadKind:(id)a3
+- (void)addDownloadKind:(id)kind
 {
-  if (a3)
+  if (kind)
   {
     [(NSMutableSet *)self->_changedDownloadKinds addObject:?];
   }
 }
 
-- (void)addDownloadToPipelineWithID:(int64_t)a3
+- (void)addDownloadToPipelineWithID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   [(NSMutableOrderedSet *)self->_pipelineAdditions addObject:v4];
 }
 
-- (void)addFinishedDownloadKind:(id)a3
+- (void)addFinishedDownloadKind:(id)kind
 {
-  if (a3)
+  if (kind)
   {
-    v4 = [(DownloadsChangeset *)self _finishedDownloadKinds];
+    _finishedDownloadKinds = [(DownloadsChangeset *)self _finishedDownloadKinds];
 
-    [v4 addObject:a3];
+    [_finishedDownloadKinds addObject:kind];
   }
 }
 
-- (void)addHTTPCookie:(id)a3
+- (void)addHTTPCookie:(id)cookie
 {
-  v4 = [(DownloadsChangeset *)self _cookies];
+  _cookies = [(DownloadsChangeset *)self _cookies];
 
-  [v4 addObject:a3];
+  [_cookies addObject:cookie];
 }
 
-- (void)addPolicyChangedDownloadID:(int64_t)a3
+- (void)addPolicyChangedDownloadID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   [-[DownloadsChangeset _policyChangedDownloadIDs](self "_policyChangedDownloadIDs")];
 }
 
-- (void)addRemovedDownloadID:(int64_t)a3
+- (void)addRemovedDownloadID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   [(NSMutableOrderedSet *)self->_removedDownloadIDs addObject:v4];
 }
 
-- (void)addRemovedPersistentDownloadID:(int64_t)a3
+- (void)addRemovedPersistentDownloadID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   [(NSMutableOrderedSet *)self->_removedPersistentDownloadIDs addObject:v4];
 }
 
-- (void)addRestorableDownloadID:(int64_t)a3
+- (void)addRestorableDownloadID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   [(NSMutableOrderedSet *)self->_restorableDownloadIDs addObject:v4];
 }
 
-- (void)addStatusChangedDownloadID:(int64_t)a3
+- (void)addStatusChangedDownloadID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   [(NSMutableSet *)self->_statusChangedDownloadIDs addObject:v4];
 }
 
-- (void)addUpdatedDownloadID:(int64_t)a3
+- (void)addUpdatedDownloadID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   [(NSMutableSet *)self->_updatedDownloadIDs addObject:v4];
 }
 
-- (void)removeDownloadFromPipelineWithID:(int64_t)a3
+- (void)removeDownloadFromPipelineWithID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   [(NSMutableOrderedSet *)self->_pipelineAdditions removeObject:v4];
 }
 
-- (void)unionChangeset:(id)a3
+- (void)unionChangeset:(id)changeset
 {
-  v5 = [a3 SSAppWakeRequests];
-  if (v5)
+  sSAppWakeRequests = [changeset SSAppWakeRequests];
+  if (sSAppWakeRequests)
   {
     [-[DownloadsChangeset _SSAppWakeRequests](self "_SSAppWakeRequests")];
   }
 
-  v6 = [a3 applicationWorkspaceChanges];
-  if ([v6 count])
+  applicationWorkspaceChanges = [changeset applicationWorkspaceChanges];
+  if ([applicationWorkspaceChanges count])
   {
     [-[DownloadsChangeset _applicationWorkspaceChanges](self "_applicationWorkspaceChanges")];
   }
 
-  v7 = [a3 canceledAppDataRestoreIDs];
-  if (v7)
+  canceledAppDataRestoreIDs = [changeset canceledAppDataRestoreIDs];
+  if (canceledAppDataRestoreIDs)
   {
     [-[DownloadsChangeset _canceledAppDataRestoreIDs](self "_canceledAppDataRestoreIDs")];
   }
 
-  v8 = [a3 changedDownloadProperties];
-  if (v8)
+  changedDownloadProperties = [changeset changedDownloadProperties];
+  if (changedDownloadProperties)
   {
-    v9 = v8;
+    v9 = changedDownloadProperties;
     changedDownloadProperties = self->_changedDownloadProperties;
     if (changedDownloadProperties)
     {
@@ -221,10 +221,10 @@
     [(DownloadsChangeset *)self setChangedDownloadProperties:v12];
   }
 
-  v13 = [a3 changedExternalDownloadProperties];
-  if (v13)
+  changedExternalDownloadProperties = [changeset changedExternalDownloadProperties];
+  if (changedExternalDownloadProperties)
   {
-    v14 = v13;
+    v14 = changedExternalDownloadProperties;
     changedExternalDownloadProperties = self->_changedExternalDownloadProperties;
     if (changedExternalDownloadProperties)
     {
@@ -241,90 +241,90 @@
     [(DownloadsChangeset *)self setChangedExternalDownloadProperties:v17];
   }
 
-  v18 = [a3 finishedDownloadKinds];
-  if (v18)
+  finishedDownloadKinds = [changeset finishedDownloadKinds];
+  if (finishedDownloadKinds)
   {
     [-[DownloadsChangeset _finishedDownloadKinds](self "_finishedDownloadKinds")];
   }
 
-  v19 = [a3 HTTPCookies];
-  if (v19)
+  hTTPCookies = [changeset HTTPCookies];
+  if (hTTPCookies)
   {
     [-[DownloadsChangeset _cookies](self "_cookies")];
   }
 
-  v20 = [a3 deletedHTTPCookies];
-  if (v20)
+  deletedHTTPCookies = [changeset deletedHTTPCookies];
+  if (deletedHTTPCookies)
   {
     [-[DownloadsChangeset _deletedHTTPCookies](self "_deletedHTTPCookies")];
   }
 
-  v21 = [a3 deletedIPodLibraryDownloadIDs];
-  if (v21)
+  deletedIPodLibraryDownloadIDs = [changeset deletedIPodLibraryDownloadIDs];
+  if (deletedIPodLibraryDownloadIDs)
   {
     [-[DownloadsChangeset _deletedIPodLibraryDownloadIDs](self "_deletedIPodLibraryDownloadIDs")];
   }
 
-  v22 = [a3 canceledIPodLibraryDownloadIDs];
-  if (v22)
+  canceledIPodLibraryDownloadIDs = [changeset canceledIPodLibraryDownloadIDs];
+  if (canceledIPodLibraryDownloadIDs)
   {
     [-[DownloadsChangeset _canceledIPodLibraryDownloadIDs](self "_canceledIPodLibraryDownloadIDs")];
   }
 
-  v23 = [a3 policyChangedDownloadIDs];
-  if (v23)
+  policyChangedDownloadIDs = [changeset policyChangedDownloadIDs];
+  if (policyChangedDownloadIDs)
   {
     [-[DownloadsChangeset _policyChangedDownloadIDs](self "_policyChangedDownloadIDs")];
   }
 
-  -[NSMutableSet unionSet:](self->_changedDownloadKinds, "unionSet:", [a3 changedDownloadKinds]);
-  self->_downloadChangeTypes |= [a3 downloadChangeTypes];
-  -[NSMutableArray addObjectsFromArray:](self->_ipodLibraryItems, "addObjectsFromArray:", [a3 IPodLibraryItems]);
-  -[NSMutableOrderedSet unionOrderedSet:](self->_pipelineAdditions, "unionOrderedSet:", [a3 pipelineAdditions]);
-  -[NSMutableOrderedSet unionOrderedSet:](self->_removedDownloadIDs, "unionOrderedSet:", [a3 removedDownloadIDs]);
-  -[NSMutableOrderedSet unionOrderedSet:](self->_removedPersistentDownloadIDs, "unionOrderedSet:", [a3 removedPersistentDownloadIDs]);
-  -[NSMutableOrderedSet unionOrderedSet:](self->_restorableDownloadIDs, "unionOrderedSet:", [a3 restorableDownloadIDs]);
-  -[NSMutableSet unionSet:](self->_statusChangedDownloadIDs, "unionSet:", [a3 statusChangedDownloadIDs]);
-  -[NSMutableSet unionSet:](self->_updatedDownloadIDs, "unionSet:", [a3 updatedDownloadIDs]);
+  -[NSMutableSet unionSet:](self->_changedDownloadKinds, "unionSet:", [changeset changedDownloadKinds]);
+  self->_downloadChangeTypes |= [changeset downloadChangeTypes];
+  -[NSMutableArray addObjectsFromArray:](self->_ipodLibraryItems, "addObjectsFromArray:", [changeset IPodLibraryItems]);
+  -[NSMutableOrderedSet unionOrderedSet:](self->_pipelineAdditions, "unionOrderedSet:", [changeset pipelineAdditions]);
+  -[NSMutableOrderedSet unionOrderedSet:](self->_removedDownloadIDs, "unionOrderedSet:", [changeset removedDownloadIDs]);
+  -[NSMutableOrderedSet unionOrderedSet:](self->_removedPersistentDownloadIDs, "unionOrderedSet:", [changeset removedPersistentDownloadIDs]);
+  -[NSMutableOrderedSet unionOrderedSet:](self->_restorableDownloadIDs, "unionOrderedSet:", [changeset restorableDownloadIDs]);
+  -[NSMutableSet unionSet:](self->_statusChangedDownloadIDs, "unionSet:", [changeset statusChangedDownloadIDs]);
+  -[NSMutableSet unionSet:](self->_updatedDownloadIDs, "unionSet:", [changeset updatedDownloadIDs]);
   if (!self->_restoreReason)
   {
-    self->_restoreReason = [a3 restoreReason];
+    self->_restoreReason = [changeset restoreReason];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "_initDownloadsChangeset"}];
-  v5[1] = [(NSMutableArray *)self->_SSAppWakeRequests mutableCopyWithZone:a3];
-  v5[2] = [(NSMutableArray *)self->_applicationWorkspaceChanges mutableCopyWithZone:a3];
-  v5[3] = [(NSMutableSet *)self->_canceledAppDataRestoreIDs mutableCopyWithZone:a3];
-  v5[4] = [(NSMutableSet *)self->_canceledIPodLibraryDownloadIDs mutableCopyWithZone:a3];
-  v5[5] = [(NSMutableSet *)self->_changedDownloadKinds mutableCopyWithZone:a3];
-  v5[6] = [(NSDictionary *)self->_changedDownloadProperties copyWithZone:a3];
-  v5[7] = [(NSDictionary *)self->_changedExternalDownloadProperties copyWithZone:a3];
-  v5[8] = [(NSMutableArray *)self->_cookies mutableCopyWithZone:a3];
-  v5[9] = [(NSMutableArray *)self->_deletedHTTPCookies mutableCopyWithZone:a3];
-  v5[10] = [(NSMutableSet *)self->_deletedIPodLibraryDownloadIDs mutableCopyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "_initDownloadsChangeset"}];
+  v5[1] = [(NSMutableArray *)self->_SSAppWakeRequests mutableCopyWithZone:zone];
+  v5[2] = [(NSMutableArray *)self->_applicationWorkspaceChanges mutableCopyWithZone:zone];
+  v5[3] = [(NSMutableSet *)self->_canceledAppDataRestoreIDs mutableCopyWithZone:zone];
+  v5[4] = [(NSMutableSet *)self->_canceledIPodLibraryDownloadIDs mutableCopyWithZone:zone];
+  v5[5] = [(NSMutableSet *)self->_changedDownloadKinds mutableCopyWithZone:zone];
+  v5[6] = [(NSDictionary *)self->_changedDownloadProperties copyWithZone:zone];
+  v5[7] = [(NSDictionary *)self->_changedExternalDownloadProperties copyWithZone:zone];
+  v5[8] = [(NSMutableArray *)self->_cookies mutableCopyWithZone:zone];
+  v5[9] = [(NSMutableArray *)self->_deletedHTTPCookies mutableCopyWithZone:zone];
+  v5[10] = [(NSMutableSet *)self->_deletedIPodLibraryDownloadIDs mutableCopyWithZone:zone];
   v5[11] = self->_downloadChangeTypes;
-  v5[12] = [(NSMutableSet *)self->_finishedDownloadKinds mutableCopyWithZone:a3];
-  v5[13] = [(NSMutableArray *)self->_ipodLibraryItems mutableCopyWithZone:a3];
-  v5[14] = [(NSMutableOrderedSet *)self->_pipelineAdditions mutableCopyWithZone:a3];
-  v5[15] = [(NSMutableOrderedSet *)self->_pipelineRestarts mutableCopyWithZone:a3];
-  v5[16] = [(NSMutableOrderedSet *)self->_policyChangedDownloadIDs mutableCopyWithZone:a3];
-  v5[17] = [(NSMutableOrderedSet *)self->_removedDownloadIDs mutableCopyWithZone:a3];
-  v5[18] = [(NSMutableOrderedSet *)self->_removedPersistentDownloadIDs mutableCopyWithZone:a3];
-  v5[19] = [(NSMutableOrderedSet *)self->_restorableDownloadIDs mutableCopyWithZone:a3];
-  v5[20] = [(NSString *)self->_restoreReason copyWithZone:a3];
-  v5[21] = [(NSMutableSet *)self->_statusChangedDownloadIDs mutableCopyWithZone:a3];
-  v5[22] = [(NSMutableSet *)self->_updatedDownloadIDs mutableCopyWithZone:a3];
+  v5[12] = [(NSMutableSet *)self->_finishedDownloadKinds mutableCopyWithZone:zone];
+  v5[13] = [(NSMutableArray *)self->_ipodLibraryItems mutableCopyWithZone:zone];
+  v5[14] = [(NSMutableOrderedSet *)self->_pipelineAdditions mutableCopyWithZone:zone];
+  v5[15] = [(NSMutableOrderedSet *)self->_pipelineRestarts mutableCopyWithZone:zone];
+  v5[16] = [(NSMutableOrderedSet *)self->_policyChangedDownloadIDs mutableCopyWithZone:zone];
+  v5[17] = [(NSMutableOrderedSet *)self->_removedDownloadIDs mutableCopyWithZone:zone];
+  v5[18] = [(NSMutableOrderedSet *)self->_removedPersistentDownloadIDs mutableCopyWithZone:zone];
+  v5[19] = [(NSMutableOrderedSet *)self->_restorableDownloadIDs mutableCopyWithZone:zone];
+  v5[20] = [(NSString *)self->_restoreReason copyWithZone:zone];
+  v5[21] = [(NSMutableSet *)self->_statusChangedDownloadIDs mutableCopyWithZone:zone];
+  v5[22] = [(NSMutableSet *)self->_updatedDownloadIDs mutableCopyWithZone:zone];
   return v5;
 }
 
-- (void)_addApplicationWorkspaceChangeWithHandle:(id)a3 changeType:(int64_t)a4
+- (void)_addApplicationWorkspaceChangeWithHandle:(id)handle changeType:(int64_t)type
 {
   v7 = objc_alloc_init(ApplicationWorkspaceChange);
-  [(ApplicationWorkspaceChange *)v7 setChangeType:a4];
-  [(ApplicationWorkspaceChange *)v7 setApplicationHandle:a3];
+  [(ApplicationWorkspaceChange *)v7 setChangeType:type];
+  [(ApplicationWorkspaceChange *)v7 setApplicationHandle:handle];
   [(DownloadsChangeset *)self addApplicationWorkspaceChange:v7];
 }
 

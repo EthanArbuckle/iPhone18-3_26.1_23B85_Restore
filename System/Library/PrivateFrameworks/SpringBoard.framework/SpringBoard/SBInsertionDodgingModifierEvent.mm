@@ -1,25 +1,25 @@
 @interface SBInsertionDodgingModifierEvent
 - (CGPoint)center;
 - (CGSize)size;
-- (SBInsertionDodgingModifierEvent)initWithIdentifier:(id)a3 center:(CGPoint)a4 size:(CGSize)a5;
+- (SBInsertionDodgingModifierEvent)initWithIdentifier:(id)identifier center:(CGPoint)center size:(CGSize)size;
 @end
 
 @implementation SBInsertionDodgingModifierEvent
 
-- (SBInsertionDodgingModifierEvent)initWithIdentifier:(id)a3 center:(CGPoint)a4 size:(CGSize)a5
+- (SBInsertionDodgingModifierEvent)initWithIdentifier:(id)identifier center:(CGPoint)center size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
+  height = size.height;
+  width = size.width;
+  y = center.y;
+  x = center.x;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = SBInsertionDodgingModifierEvent;
   v12 = [(SBInsertionDodgingModifierEvent *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
+    objc_storeStrong(&v12->_identifier, identifier);
     v13->_center.x = x;
     v13->_center.y = y;
     v13->_size.width = width;

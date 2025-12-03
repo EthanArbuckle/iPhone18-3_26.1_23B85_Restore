@@ -3,13 +3,13 @@
 - (CACUtilityToolServer)init;
 - (id)dictationStatus;
 - (id)drillStatus;
-- (id)gridNumberToHitRect:(CGRect)a3 displayID:(unsigned int)a4;
+- (id)gridNumberToHitRect:(CGRect)rect displayID:(unsigned int)d;
 - (id)listeningStatus;
 - (id)numbersForOnboardingElements;
 - (id)overlayStatus;
 - (id)recognizedCommandIdentifier;
-- (void)addClient:(id)a3;
-- (void)notifyClients:(id)a3;
+- (void)addClient:(id)client;
+- (void)notifyClients:(id)clients;
 - (void)notifyCorrectionForString;
 - (void)notifyDictationModeChanged;
 - (void)notifyDidDictateText;
@@ -18,8 +18,8 @@
 - (void)notifyNumbersForOnboardingElements;
 - (void)notifyOverlayStatusChanged;
 - (void)notifyRecognizedCommandIdentifier;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeClient:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeClient:(id)client;
 - (void)startObserving;
 @end
 
@@ -51,8 +51,8 @@ uint64_t __38__CACUtilityToolServer_sharedInstance__block_invoke()
   v2 = [(CACUtilityToolServer *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__getNumbersForElements name:@"SOLabeledElementsOverlayDidUpdateElementsNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__getNumbersForElements name:@"SOLabeledElementsOverlayDidUpdateElementsNotification" object:0];
 
     v4 = dispatch_queue_create("com.apple.speech.ToolServerQueue", 0);
     v5 = *(v2 + 1);
@@ -146,47 +146,47 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
   [v10 addObserver:*(a1 + 32) forKeyPath:@"gridDidDrill" options:3 context:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v12 = a3;
+  pathCopy = path;
   v8 = *MEMORY[0x277CCA300];
-  v9 = a5;
-  v10 = [v9 objectForKeyedSubscript:v8];
-  v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+  changeCopy = change;
+  v10 = [changeCopy objectForKeyedSubscript:v8];
+  v11 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
 
   if (v10 != v11 && ([v10 isEqual:v11] & 1) == 0)
   {
-    if (([v12 isEqual:@"waitingForWakeUpCommand"] & 1) != 0 || (objc_msgSend(v12, "isEqual:", @"_recognizerInteractionLevels") & 1) != 0 || objc_msgSend(v12, "isEqual:", @"statusIndicatorType"))
+    if (([pathCopy isEqual:@"waitingForWakeUpCommand"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqual:", @"_recognizerInteractionLevels") & 1) != 0 || objc_msgSend(pathCopy, "isEqual:", @"statusIndicatorType"))
     {
       [(CACUtilityToolServer *)self notifyListeningStatusChanged];
     }
 
-    else if ([v12 isEqual:@"transientOverlayType"])
+    else if ([pathCopy isEqual:@"transientOverlayType"])
     {
       [(CACUtilityToolServer *)self notifyOverlayStatusChanged];
     }
 
-    else if ([v12 isEqual:@"dictationRecognizerMode"])
+    else if ([pathCopy isEqual:@"dictationRecognizerMode"])
     {
       [(CACUtilityToolServer *)self notifyDictationModeChanged];
     }
 
-    else if ([v12 isEqual:@"previousTextInsertionSpecifier"])
+    else if ([pathCopy isEqual:@"previousTextInsertionSpecifier"])
     {
       [(CACUtilityToolServer *)self notifyDidDictateText];
     }
 
-    else if ([v12 isEqual:@"recognizedCommandIdentifier"])
+    else if ([pathCopy isEqual:@"recognizedCommandIdentifier"])
     {
       [(CACUtilityToolServer *)self notifyRecognizedCommandIdentifier];
     }
 
-    else if ([v12 isEqual:@"phoneticAlternative"])
+    else if ([pathCopy isEqual:@"phoneticAlternative"])
     {
       [(CACUtilityToolServer *)self notifyCorrectionForString];
     }
 
-    else if ([v12 isEqual:@"gridDidDrill"])
+    else if ([pathCopy isEqual:@"gridDidDrill"])
     {
       [(CACUtilityToolServer *)self notifyDrilled];
     }
@@ -196,15 +196,15 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
 - (void)notifyNumbersForOnboardingElements
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(CACUtilityToolServer *)self numbersForOnboardingElements];
-  v4 = v3;
-  if (v3)
+  numbersForOnboardingElements = [(CACUtilityToolServer *)self numbersForOnboardingElements];
+  v4 = numbersForOnboardingElements;
+  if (numbersForOnboardingElements)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    obj = [v3 allKeys];
+    obj = [numbersForOnboardingElements allKeys];
     v5 = [obj countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v5)
     {
@@ -238,18 +238,18 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)gridNumberToHitRect:(CGRect)a3 displayID:(unsigned int)a4
+- (id)gridNumberToHitRect:(CGRect)rect displayID:(unsigned int)d
 {
   v4 = &unk_287BF0038;
-  if (a3.size.width > 0.0)
+  if (rect.size.width > 0.0)
   {
-    height = a3.size.height;
-    if (a3.size.height > 0.0)
+    height = rect.size.height;
+    if (rect.size.height > 0.0)
     {
-      v6 = *&a4;
-      width = a3.size.width;
-      y = a3.origin.y;
-      x = a3.origin.x;
+      v6 = *&d;
+      width = rect.size.width;
+      y = rect.origin.y;
+      x = rect.origin.x;
       v10 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
       v11 = [v10 isActiveOverlayType:@"NumberedGrid"];
 
@@ -274,13 +274,13 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
   v21 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v3 = +[CACDisplayManager sharedManager];
-  v4 = [v3 labeledElementsForItemNumbers];
+  labeledElementsForItemNumbers = [v3 labeledElementsForItemNumbers];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v4;
+  v5 = labeledElementsForItemNumbers;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -296,12 +296,12 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 axIdentifier];
-        v12 = v11;
-        if (v11 && [v11 rangeOfString:@"AX_ONBOARDING"] != 0x7FFFFFFFFFFFFFFFLL)
+        axIdentifier = [v10 axIdentifier];
+        v12 = axIdentifier;
+        if (axIdentifier && [axIdentifier rangeOfString:@"AX_ONBOARDING"] != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v13 = [v10 numberedLabel];
-          [v2 setObject:v13 forKey:v12];
+          numberedLabel = [v10 numberedLabel];
+          [v2 setObject:numberedLabel forKey:v12];
         }
       }
 
@@ -327,11 +327,11 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
 - (id)overlayStatus
 {
   v2 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v3 = [v2 activeOverlayType];
-  v4 = v3;
-  if (v3)
+  activeOverlayType = [v2 activeOverlayType];
+  v4 = activeOverlayType;
+  if (activeOverlayType)
   {
-    v5 = v3;
+    v5 = activeOverlayType;
   }
 
   else
@@ -365,12 +365,12 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
 - (void)notifyDictationModeChanged
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(CACUtilityToolServer *)self dictationStatus];
-  v4 = v3;
-  if (v3)
+  dictationStatus = [(CACUtilityToolServer *)self dictationStatus];
+  v4 = dictationStatus;
+  if (dictationStatus)
   {
     v6 = @"DictationStatusString";
-    v7[0] = v3;
+    v7[0] = dictationStatus;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
     [(CACUtilityToolServer *)self notifyClients:v5];
   }
@@ -379,16 +379,16 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
 - (id)dictationStatus
 {
   v2 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v3 = [v2 dictationRecognizerMode];
+  dictationRecognizerMode = [v2 dictationRecognizerMode];
 
-  if (v3 > 3)
+  if (dictationRecognizerMode > 3)
   {
     return @"Default";
   }
 
   else
   {
-    return off_279CEC338[v3];
+    return off_279CEC338[dictationRecognizerMode];
   }
 }
 
@@ -396,13 +396,13 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 previousTextInsertionSpecifier];
+  previousTextInsertionSpecifier = [v3 previousTextInsertionSpecifier];
 
-  v5 = [v4 insertedString];
-  if ([v5 length])
+  insertedString = [previousTextInsertionSpecifier insertedString];
+  if ([insertedString length])
   {
     v7 = @"DidDictateText";
-    v8[0] = v5;
+    v8[0] = insertedString;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
     [(CACUtilityToolServer *)self notifyClients:v6];
   }
@@ -412,8 +412,8 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
 {
   v6[1] = *MEMORY[0x277D85DE8];
   v5 = @"OverlayStatusString";
-  v3 = [(CACUtilityToolServer *)self overlayStatus];
-  v6[0] = v3;
+  overlayStatus = [(CACUtilityToolServer *)self overlayStatus];
+  v6[0] = overlayStatus;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
   [(CACUtilityToolServer *)self notifyClients:v4];
 }
@@ -422,8 +422,8 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
 {
   v6[1] = *MEMORY[0x277D85DE8];
   v5 = @"DrilledAtNumber";
-  v3 = [(CACUtilityToolServer *)self drillStatus];
-  v6[0] = v3;
+  drillStatus = [(CACUtilityToolServer *)self drillStatus];
+  v6[0] = drillStatus;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
   [(CACUtilityToolServer *)self notifyClients:v4];
 }
@@ -431,17 +431,17 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
 - (id)listeningStatus
 {
   v2 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v3 = [v2 isListening];
+  isListening = [v2 isListening];
 
-  if (!v3)
+  if (!isListening)
   {
     return @"Off";
   }
 
   v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v5 = [v4 currentInteractionLevel];
+  currentInteractionLevel = [v4 currentInteractionLevel];
 
-  if ((v5 - 1) >= 2)
+  if ((currentInteractionLevel - 1) >= 2)
   {
     return @"Listening";
   }
@@ -455,12 +455,12 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
 - (void)notifyListeningStatusChanged
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(CACUtilityToolServer *)self listeningStatus];
-  v4 = v3;
-  if (v3)
+  listeningStatus = [(CACUtilityToolServer *)self listeningStatus];
+  v4 = listeningStatus;
+  if (listeningStatus)
   {
     v6 = @"ListeningStatusString";
-    v7[0] = v3;
+    v7[0] = listeningStatus;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
     [(CACUtilityToolServer *)self notifyClients:v5];
   }
@@ -469,12 +469,12 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
 - (void)notifyRecognizedCommandIdentifier
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(CACUtilityToolServer *)self recognizedCommandIdentifier];
-  v4 = v3;
-  if (v3)
+  recognizedCommandIdentifier = [(CACUtilityToolServer *)self recognizedCommandIdentifier];
+  v4 = recognizedCommandIdentifier;
+  if (recognizedCommandIdentifier)
   {
     v6 = @"RecognizedCommandIdentifierString";
-    v7[0] = v3;
+    v7[0] = recognizedCommandIdentifier;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
     [(CACUtilityToolServer *)self notifyClients:v5];
   }
@@ -484,9 +484,9 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
 {
   v15 = *MEMORY[0x277D85DE8];
   v2 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v3 = [v2 recognizedCommandIdentifier];
+  recognizedCommandIdentifier = [v2 recognizedCommandIdentifier];
 
-  if (v3 && (v12 = 0u, v13 = 0u, v10 = 0u, v11 = 0u, (v4 = [&unk_287BEFFC0 countByEnumeratingWithState:&v10 objects:v14 count:16]) != 0))
+  if (recognizedCommandIdentifier && (v12 = 0u, v13 = 0u, v10 = 0u, v11 = 0u, (v4 = [&unk_287BEFFC0 countByEnumeratingWithState:&v10 objects:v14 count:16]) != 0))
   {
     v5 = v4;
     v6 = *v11;
@@ -500,9 +500,9 @@ void __38__CACUtilityToolServer_startObserving__block_invoke_2(uint64_t a1)
           objc_enumerationMutation(&unk_287BEFFC0);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) isEqualToString:v3])
+        if ([*(*(&v10 + 1) + 8 * i) isEqualToString:recognizedCommandIdentifier])
         {
-          v7 = v3;
+          v7 = recognizedCommandIdentifier;
           goto LABEL_13;
         }
       }
@@ -530,28 +530,28 @@ LABEL_13:
 - (void)notifyCorrectionForString
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(CACUtilityToolServer *)self phoneticAlternative];
+  phoneticAlternative = [(CACUtilityToolServer *)self phoneticAlternative];
 
-  if (v3)
+  if (phoneticAlternative)
   {
     v6 = @"PhoneticAlternative";
-    v4 = [(CACUtilityToolServer *)self phoneticAlternative];
-    v7[0] = v4;
+    phoneticAlternative2 = [(CACUtilityToolServer *)self phoneticAlternative];
+    v7[0] = phoneticAlternative2;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
     [(CACUtilityToolServer *)self notifyClients:v5];
   }
 }
 
-- (void)notifyClients:(id)a3
+- (void)notifyClients:(id)clients
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = CACCreateSerializedObject(a3);
+  v4 = CACCreateSerializedObject(clients);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CACUtilityToolServer *)self xpcClients];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  xpcClients = [(CACUtilityToolServer *)self xpcClients];
+  v6 = [xpcClients countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -563,32 +563,32 @@ LABEL_13:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(xpcClients);
         }
 
         xpc_connection_send_message(*(*(&v10 + 1) + 8 * v9++), v4);
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [xpcClients countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
-  if (v4)
+  clientCopy = client;
+  if (clientCopy)
   {
     [(CACUtilityToolServer *)self startObserving];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __34__CACUtilityToolServer_addClient___block_invoke;
     v5[3] = &unk_279CEB4C0;
-    v6 = v4;
-    v7 = self;
+    v6 = clientCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], v5);
   }
 }
@@ -602,18 +602,18 @@ void __34__CACUtilityToolServer_addClient___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  clientCopy = client;
+  v5 = clientCopy;
+  if (clientCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __37__CACUtilityToolServer_removeClient___block_invoke;
     v6[3] = &unk_279CEB4C0;
     v6[4] = self;
-    v7 = v4;
+    v7 = clientCopy;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 }

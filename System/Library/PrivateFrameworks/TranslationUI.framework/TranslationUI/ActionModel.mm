@@ -1,15 +1,15 @@
 @interface ActionModel
 - (_TtC13TranslationUIP33_1A302F1D41F983AACAEA0A320F7AE9EC11ActionModel)init;
-- (void)performActionWithSender:(id)a3;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation ActionModel
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC13TranslationUIP33_1A302F1D41F983AACAEA0A320F7AE9EC11ActionModel_action);
   v4 = *&self->action[OBJC_IVAR____TtC13TranslationUIP33_1A302F1D41F983AACAEA0A320F7AE9EC11ActionModel_action];
-  v6 = self;
+  selfCopy = self;
 
   v3(v5);
 }

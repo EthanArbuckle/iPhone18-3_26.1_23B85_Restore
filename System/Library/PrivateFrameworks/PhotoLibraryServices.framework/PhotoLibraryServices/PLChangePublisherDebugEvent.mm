@@ -40,15 +40,15 @@
     v8 = [v7 appendQoSClass:{-[PFAbstractStateCaptureEvent qosClass](self, "qosClass")}];
 
     v9 = [v4 appendString:@" kind: "];
-    v10 = [(PLChangePublisherDebugEvent *)self kind];
-    if (v10 > 2)
+    kind = [(PLChangePublisherDebugEvent *)self kind];
+    if (kind > 2)
     {
       v11 = @"<Unknown>";
     }
 
     else
     {
-      v11 = off_1E75741A8[v10];
+      v11 = off_1E75741A8[kind];
     }
 
     v13 = [v9 appendString:v11];

@@ -1,29 +1,29 @@
 @interface LPTextViewStyle
-- (LPTextViewStyle)initWithPlatform:(int64_t)a3 fontScalingFactor:(double)a4;
-- (id)adjustedForString:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (LPTextViewStyle)initWithPlatform:(int64_t)platform fontScalingFactor:(double)factor;
+- (id)adjustedForString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unsigned)maximumLines;
-- (void)_adjustForString:(id)a3;
+- (void)_adjustForString:(id)string;
 @end
 
 @implementation LPTextViewStyle
 
-- (LPTextViewStyle)initWithPlatform:(int64_t)a3 fontScalingFactor:(double)a4
+- (LPTextViewStyle)initWithPlatform:(int64_t)platform fontScalingFactor:(double)factor
 {
   v22.receiver = self;
   v22.super_class = LPTextViewStyle;
   v6 = [(LPTextViewStyle *)&v22 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     color = v6->_color;
-    v6->_color = v7;
+    v6->_color = labelColor;
 
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0 weight:*MEMORY[0x1E69DB978]];
     font = v6->_font;
     v6->_font = v9;
 
-    if (a3 == 2)
+    if (platform == 2)
     {
       v11 = 4;
     }
@@ -54,16 +54,16 @@
     v6->_paragraphSpacing = v18;
 
     v6->_maximumLineCountScalingBehavior = 2;
-    v6->_fontScalingFactor = a4;
+    v6->_fontScalingFactor = factor;
     v20 = v6;
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -125,26 +125,26 @@
   return v2;
 }
 
-- (void)_adjustForString:(id)a3
+- (void)_adjustForString:(id)string
 {
-  v5 = a3;
-  if ([v5 _lp_stringType] == 1)
+  stringCopy = string;
+  if ([stringCopy _lp_stringType] == 1)
   {
     [(LPTextViewStyle *)self setMaximumLines:1];
   }
 
-  if (+[LPSettings showDebugIndicators](LPSettings, "showDebugIndicators") && [v5 _lp_stringType] == 1)
+  if (+[LPSettings showDebugIndicators](LPSettings, "showDebugIndicators") && [stringCopy _lp_stringType] == 1)
   {
-    v4 = [MEMORY[0x1E69DC888] systemPurpleColor];
-    [(LPTextViewStyle *)self setColor:v4];
+    systemPurpleColor = [MEMORY[0x1E69DC888] systemPurpleColor];
+    [(LPTextViewStyle *)self setColor:systemPurpleColor];
   }
 }
 
-- (id)adjustedForString:(id)a3
+- (id)adjustedForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [(LPTextViewStyle *)self copyWithZone:0];
-  [v5 _adjustForString:v4];
+  [v5 _adjustForString:stringCopy];
 
   return v5;
 }

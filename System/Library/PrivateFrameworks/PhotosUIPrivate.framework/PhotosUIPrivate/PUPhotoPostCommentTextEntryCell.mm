@@ -1,6 +1,6 @@
 @interface PUPhotoPostCommentTextEntryCell
-+ (double)heightForWidth:(double)a3;
-- (PUPhotoPostCommentTextEntryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (double)heightForWidth:(double)width;
+- (PUPhotoPostCommentTextEntryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
@@ -11,19 +11,19 @@
   v8.receiver = self;
   v8.super_class = PUPhotoPostCommentTextEntryCell;
   [(PUPhotoPostCommentTextEntryCell *)&v8 layoutSubviews];
-  v3 = [(PUPhotoPostCommentTextEntryCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PUPhotoPostCommentTextEntryCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 
   [(PUPhotoCommentEntryView *)self->_textEntryView setFrame:0.0, 0.0, v5, v7];
 }
 
-- (PUPhotoPostCommentTextEntryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PUPhotoPostCommentTextEntryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = PUPhotoPostCommentTextEntryCell;
-  v4 = [(PUPhotoPostCommentTextEntryCell *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PUPhotoPostCommentTextEntryCell *)&v11 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -33,28 +33,28 @@
     textEntryView = v5->_textEntryView;
     v5->_textEntryView = v7;
 
-    v9 = [(PUPhotoPostCommentTextEntryCell *)v5 contentView];
-    [v9 addSubview:v5->_textEntryView];
+    contentView = [(PUPhotoPostCommentTextEntryCell *)v5 contentView];
+    [contentView addSubview:v5->_textEntryView];
   }
 
   return v5;
 }
 
-+ (double)heightForWidth:(double)a3
++ (double)heightForWidth:(double)width
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__PUPhotoPostCommentTextEntryCell_heightForWidth___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (heightForWidth__onceToken != -1)
   {
     dispatch_once(&heightForWidth__onceToken, block);
   }
 
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!IsAccessibilityCategory)
   {
@@ -65,12 +65,12 @@
   if (*&_cachedAccessibilityHeight < 0.0)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69DD168]);
-    v9 = [MEMORY[0x1E69BE1B8] sharedCache];
-    v10 = [v9 commentEntryFont];
-    [v8 setFont:v10];
+    mEMORY[0x1E69BE1B8] = [MEMORY[0x1E69BE1B8] sharedCache];
+    commentEntryFont = [mEMORY[0x1E69BE1B8] commentEntryFont];
+    [v8 setFont:commentEntryFont];
 
     [v8 setText:@"A"];
-    [v8 sizeThatFits:{a3, 0.0}];
+    [v8 sizeThatFits:{width, 0.0}];
     v12 = v11;
     [v8 textContainerInset];
     v14 = v12 + v13;

@@ -1,20 +1,20 @@
 @interface IDSBassHarborCheckInMetric
-- (IDSBassHarborCheckInMetric)initWithCohort:(id)a3;
+- (IDSBassHarborCheckInMetric)initWithCohort:(id)cohort;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation IDSBassHarborCheckInMetric
 
-- (IDSBassHarborCheckInMetric)initWithCohort:(id)a3
+- (IDSBassHarborCheckInMetric)initWithCohort:(id)cohort
 {
-  v5 = a3;
+  cohortCopy = cohort;
   v9.receiver = self;
   v9.super_class = IDSBassHarborCheckInMetric;
   v6 = [(IDSBassHarborCheckInMetric *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cohort, a3);
+    objc_storeStrong(&v6->_cohort, cohort);
   }
 
   return v7;

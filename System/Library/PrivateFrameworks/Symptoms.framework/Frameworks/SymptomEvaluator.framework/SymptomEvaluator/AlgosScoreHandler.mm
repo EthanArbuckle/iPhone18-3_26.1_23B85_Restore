@@ -1,10 +1,10 @@
 @interface AlgosScoreHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
 - (AlgosScoreHandler)init;
-- (BOOL)noteSymptom:(id)a3;
-- (int)read:(id)a3 returnedValues:(id)a4;
-- (void)processEventFor:(id)a3 withScore:(double)a4;
+- (BOOL)noteSymptom:(id)symptom;
+- (int)read:(id)read returnedValues:(id)values;
+- (void)processEventFor:(id)for withScore:(double)score;
 @end
 
 @implementation AlgosScoreHandler
@@ -19,9 +19,9 @@
     v3 = +[SystemProperties sharedInstance];
     v2->active = [v3 internalBuild];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     notificationCenter = v2->notificationCenter;
-    v2->notificationCenter = v4;
+    v2->notificationCenter = defaultCenter;
   }
 
   return v2;
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = __35__AlgosScoreHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_26 != -1)
   {
     dispatch_once(&sharedInstance_pred_26, block);
@@ -56,32 +56,32 @@ void __35__AlgosScoreHandler_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[AlgosScoreHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (void)processEventFor:(id)a3 withScore:(double)a4
+- (void)processEventFor:(id)for withScore:(double)score
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  forCopy = for;
   v7 = appExperienceLogHandle;
   if (os_log_type_enabled(appExperienceLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v14 = v6;
+    v14 = forCopy;
     v15 = 2048;
-    v16 = a4;
+    scoreCopy = score;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "Bundle: %@ score: %f", buf, 0x16u);
   }
 
-  if (a4 > 0.0)
+  if (score > 0.0)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithDouble:{a4, @"AlgosScoreBundleName", @"AlgosScoreValue", v6}];
+    v8 = [MEMORY[0x277CCABB0] numberWithDouble:{score, @"AlgosScoreBundleName", @"AlgosScoreValue", forCopy}];
     v12[1] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:2];
 
@@ -91,24 +91,24 @@ void __35__AlgosScoreHandler_sharedInstance__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  symptomCopy = symptom;
+  v5 = symptomCopy;
   if (self->active)
   {
-    v6 = [v4 eventKey];
+    eventKey = [symptomCopy eventKey];
     v7 = [SymptomStore keyFromSymptomName:@"SYMPTOM_ALGOS_SCORE"];
-    v8 = [(__CFString *)v6 isEqualToString:v7];
+    v8 = [(__CFString *)eventKey isEqualToString:v7];
 
     if (v8)
     {
-      v9 = [v5 eventData];
+      eventData = [v5 eventData];
       v10 = [v5 eventQualifierStringForKey:@"0"];
-      if (v10 && (*(v9 + 4) & 1) != 0)
+      if (v10 && (*(eventData + 4) & 1) != 0)
       {
-        [(AlgosScoreHandler *)self processEventFor:v10 withScore:*(v9 + 24)];
+        [(AlgosScoreHandler *)self processEventFor:v10 withScore:*(eventData + 24)];
       }
 
       else
@@ -126,7 +126,7 @@ void __35__AlgosScoreHandler_sharedInstance__block_invoke(uint64_t a1)
     }
 
     v12 = [SymptomStore keyFromSymptomName:@"SYMPTOM_LIBTRACE_OS_LOG"];
-    v13 = [(__CFString *)v6 isEqualToString:v12];
+    v13 = [(__CFString *)eventKey isEqualToString:v12];
 
     if (!v13)
     {
@@ -134,7 +134,7 @@ void __35__AlgosScoreHandler_sharedInstance__block_invoke(uint64_t a1)
       if (os_log_type_enabled(appExperienceLogHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v52 = v6;
+        v52 = eventKey;
         _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_ERROR, "Unrecognized symptom: %@", buf, 0xCu);
       }
 
@@ -166,8 +166,8 @@ void __35__AlgosScoreHandler_sharedInstance__block_invoke(uint64_t a1)
           _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_DEFAULT, "Symptom %@ by %@, with %@", buf, 0x20u);
         }
 
-        v20 = [v5 eventQualifiers];
-        v21 = [v20 objectForKeyedSubscript:@"4"];
+        eventQualifiers = [v5 eventQualifiers];
+        v21 = [eventQualifiers objectForKeyedSubscript:@"4"];
 
         v46 = 0;
         v22 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v21 options:0 error:&v46];
@@ -361,12 +361,12 @@ void __33__AlgosScoreHandler_noteSymptom___block_invoke(uint64_t a1, void *a2, v
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }

@@ -1,67 +1,67 @@
 @interface WKDataListSuggestionsDropdown
-- (WKDataListSuggestionsDropdown)initWithInformation:(void *)a3 inView:(id)a4;
+- (WKDataListSuggestionsDropdown)initWithInformation:(void *)information inView:(id)view;
 - (id).cxx_construct;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)_displayWithActivationType:(unsigned __int8)a3;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)_displayWithActivationType:(unsigned __int8)type;
 - (void)_removeContextMenuInteraction;
 - (void)_showSuggestions;
 - (void)_suggestionsMenuDidDismiss;
 - (void)_suggestionsMenuDidPresent;
 - (void)_updateSuggestionsMenuElements;
 - (void)_updateTextSuggestions;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)didSelectOptionAtIndex:(int64_t)a3;
-- (void)showSuggestionsDropdown:(void *)a3 activationType:(unsigned __int8)a4;
-- (void)updateWithInformation:(void *)a3;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)didSelectOptionAtIndex:(int64_t)index;
+- (void)showSuggestionsDropdown:(void *)dropdown activationType:(unsigned __int8)type;
+- (void)updateWithInformation:(void *)information;
 @end
 
 @implementation WKDataListSuggestionsDropdown
 
-- (WKDataListSuggestionsDropdown)initWithInformation:(void *)a3 inView:(id)a4
+- (WKDataListSuggestionsDropdown)initWithInformation:(void *)information inView:(id)view
 {
   v5.receiver = self;
   v5.super_class = WKDataListSuggestionsDropdown;
-  return [(WKDataListSuggestionsControl *)&v5 initWithInformation:a3 inView:a4];
+  return [(WKDataListSuggestionsControl *)&v5 initWithInformation:information inView:view];
 }
 
-- (void)updateWithInformation:(void *)a3
+- (void)updateWithInformation:(void *)information
 {
-  v4 = *a3;
+  v4 = *information;
   v5.receiver = self;
   v5.super_class = WKDataListSuggestionsDropdown;
   [(WKDataListSuggestionsControl *)&v5 updateWithInformation:?];
   [(WKDataListSuggestionsDropdown *)self _displayWithActivationType:v4];
 }
 
-- (void)showSuggestionsDropdown:(void *)a3 activationType:(unsigned __int8)a4
+- (void)showSuggestionsDropdown:(void *)dropdown activationType:(unsigned __int8)type
 {
-  v4 = a4;
+  typeCopy = type;
   v6.receiver = self;
   v6.super_class = WKDataListSuggestionsDropdown;
-  [(WKDataListSuggestionsControl *)&v6 showSuggestionsDropdown:a3 activationType:?];
-  [(WKDataListSuggestionsDropdown *)self _displayWithActivationType:v4];
+  [(WKDataListSuggestionsControl *)&v6 showSuggestionsDropdown:dropdown activationType:?];
+  [(WKDataListSuggestionsDropdown *)self _displayWithActivationType:typeCopy];
 }
 
-- (void)didSelectOptionAtIndex:(int64_t)a3
+- (void)didSelectOptionAtIndex:(int64_t)index
 {
   [(WKContentView *)[(WKDataListSuggestionsControl *)self view] updateFocusedElementFocusedWithDataListDropdown:0];
   v5.receiver = self;
   v5.super_class = WKDataListSuggestionsDropdown;
-  [(WKDataListSuggestionsControl *)&v5 didSelectOptionAtIndex:a3];
+  [(WKDataListSuggestionsControl *)&v5 didSelectOptionAtIndex:index];
 }
 
-- (void)_displayWithActivationType:(unsigned __int8)a3
+- (void)_displayWithActivationType:(unsigned __int8)type
 {
-  v4 = a3 - 1;
-  if (a3 == 1)
+  v4 = type - 1;
+  if (type == 1)
   {
     v5 = 1;
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!type)
   {
     v5 = 0;
 LABEL_5:
@@ -92,11 +92,11 @@ LABEL_5:
 
   else
   {
-    v4 = [(WKDataListSuggestionsControl *)self view];
+    view = [(WKDataListSuggestionsControl *)self view];
     v6 = WebKit::CompactContextMenuPresenter::operator new(0x10, v5);
-    WebKit::CompactContextMenuPresenter::CompactContextMenuPresenter(v6, v4, self);
+    WebKit::CompactContextMenuPresenter::CompactContextMenuPresenter(v6, view, self);
     std::unique_ptr<WebKit::CompactContextMenuPresenter>::reset[abi:sn200100](&self->_suggestionsContextMenuPresenter, v6);
-    v7 = [(WKDataListSuggestionsControl *)self view];
+    view2 = [(WKDataListSuggestionsControl *)self view];
     location = 0;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3321888768;
@@ -105,7 +105,7 @@ LABEL_5:
     objc_initWeak(&location, self);
     v11 = 0;
     objc_copyWeak(&v11, &location);
-    [(WKContentView *)v7 doAfterEditorStateUpdateAfterFocusingElement:v10];
+    [(WKContentView *)view2 doAfterEditorStateUpdateAfterFocusingElement:v10];
     objc_destroyWeak(&location);
     objc_destroyWeak(&v11);
   }
@@ -159,10 +159,10 @@ LABEL_12:
 
 - (void)_updateTextSuggestions
 {
-  v3 = [(WKDataListSuggestionsControl *)self textSuggestions];
-  v4 = [(WKDataListSuggestionsControl *)self view];
+  textSuggestions = [(WKDataListSuggestionsControl *)self textSuggestions];
+  view = [(WKDataListSuggestionsControl *)self view];
 
-  [(WKContentView *)v4 setDataListTextSuggestions:v3];
+  [(WKContentView *)view setDataListTextSuggestions:textSuggestions];
 }
 
 - (void)_updateSuggestionsMenuElements
@@ -305,18 +305,18 @@ void __63__WKDataListSuggestionsDropdown__updateSuggestionsMenuElements__block_i
     [objc_msgSend(*(ptr + 1) "contextMenuInteraction")];
     std::unique_ptr<WebKit::CompactContextMenuPresenter>::reset[abi:sn200100](&self->_suggestionsContextMenuPresenter, 0);
     [(WKContentView *)[(WKDataListSuggestionsControl *)self view] _removeContextMenuHintContainerIfPossible];
-    v4 = [(WKContentView *)[(WKDataListSuggestionsControl *)self view] webView];
+    webView = [(WKContentView *)[(WKDataListSuggestionsControl *)self view] webView];
 
-    [v4 _didDismissContextMenu];
+    [webView _didDismissContextMenu];
   }
 }
 
 - (void)_suggestionsMenuDidPresent
 {
   [(WKDataListSuggestionsControl *)self setIsShowingSuggestions:1];
-  v3 = [(WKContentView *)[(WKDataListSuggestionsControl *)self view] webView];
+  webView = [(WKContentView *)[(WKDataListSuggestionsControl *)self view] webView];
 
-  [v3 _didShowContextMenu];
+  [webView _didShowContextMenu];
 }
 
 - (void)_suggestionsMenuDidDismiss
@@ -328,14 +328,14 @@ void __63__WKDataListSuggestionsDropdown__updateSuggestionsMenuElements__block_i
   [(WKDataListSuggestionsDropdown *)self _removeContextMenuInteraction];
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
-  v5 = [(WKDataListSuggestionsControl *)self view:a3];
+  v5 = [(WKDataListSuggestionsControl *)self view:interaction];
 
   return [(WKContentView *)v5 _createTargetedContextMenuHintPreviewForFocusedElement:1];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v6 = 0;
   v7[0] = MEMORY[0x1E69E9820];
@@ -365,7 +365,7 @@ uint64_t __87__WKDataListSuggestionsDropdown_contextMenuInteraction_configuratio
   return v3;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v6 = 0;
   v7[0] = MEMORY[0x1E69E9820];
@@ -375,7 +375,7 @@ uint64_t __87__WKDataListSuggestionsDropdown_contextMenuInteraction_configuratio
   objc_initWeak(&v6, self);
   v8 = 0;
   objc_copyWeak(&v8, &v6);
-  [a5 addCompletion:v7];
+  [animator addCompletion:v7];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
 }
@@ -390,7 +390,7 @@ void __97__WKDataListSuggestionsDropdown_contextMenuInteraction_willDisplayMenuF
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v6 = 0;
   v7[0] = MEMORY[0x1E69E9820];
@@ -400,7 +400,7 @@ void __97__WKDataListSuggestionsDropdown_contextMenuInteraction_willDisplayMenuF
   objc_initWeak(&v6, self);
   v8 = 0;
   objc_copyWeak(&v8, &v6);
-  [a5 addCompletion:v7];
+  [animator addCompletion:v7];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
 }

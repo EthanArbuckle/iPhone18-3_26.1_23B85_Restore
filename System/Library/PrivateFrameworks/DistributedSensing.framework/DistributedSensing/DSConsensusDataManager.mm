@@ -1,18 +1,18 @@
 @interface DSConsensusDataManager
-- (DSConsensusDataManager)initWithWindowOfInterest:(double)a3;
-- (void)_addDatumToFrequencyTable:(id)a3;
-- (void)_addDatumtoDataArrayMap:(id)a3;
+- (DSConsensusDataManager)initWithWindowOfInterest:(double)interest;
+- (void)_addDatumToFrequencyTable:(id)table;
+- (void)_addDatumtoDataArrayMap:(id)map;
 - (void)_evictOldestDatum;
-- (void)_removeDatumFromDataArrayMap:(id)a3;
-- (void)_removeDatumFromFrequencyTable:(id)a3;
-- (void)addDatum:(id)a3;
+- (void)_removeDatumFromDataArrayMap:(id)map;
+- (void)_removeDatumFromFrequencyTable:(id)table;
+- (void)addDatum:(id)datum;
 - (void)printConsensusData;
-- (void)printConsensusDataFromWindowStart:(double)a3 ToWindowEnd:(double)a4;
+- (void)printConsensusDataFromWindowStart:(double)start ToWindowEnd:(double)end;
 @end
 
 @implementation DSConsensusDataManager
 
-- (DSConsensusDataManager)initWithWindowOfInterest:(double)a3
+- (DSConsensusDataManager)initWithWindowOfInterest:(double)interest
 {
   v8.receiver = self;
   v8.super_class = DSConsensusDataManager;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_windowOfInterest = a3;
+    v4->_windowOfInterest = interest;
     v6 = v4;
   }
 
@@ -34,11 +34,11 @@
     while (1)
     {
       v9 = [(NSMutableArray *)self->_consensusDataArray objectAtIndexedSubscript:0];
-      v3 = [MEMORY[0x277CBEAA8] date];
-      [v3 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v5 = v4;
-      v6 = [v9 time];
-      [v6 timeIntervalSince1970];
+      time = [v9 time];
+      [time timeIntervalSince1970];
       v8 = v5 - v7;
 
       if (v8 <= self->_windowOfInterest)
@@ -58,16 +58,16 @@
   }
 }
 
-- (void)addDatum:(id)a3
+- (void)addDatum:(id)datum
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  datumCopy = datum;
   [(DSConsensusDataManager *)self _evictOldestDatum];
   if ([(NSMutableArray *)self->_consensusDataArray count]< 0x64)
   {
-    v8 = [v4 identifier];
+    identifier = [datumCopy identifier];
 
-    if (v8)
+    if (identifier)
     {
       consensusDataArray = self->_consensusDataArray;
       if (!consensusDataArray)
@@ -79,9 +79,9 @@
         consensusDataArray = self->_consensusDataArray;
       }
 
-      [(NSMutableArray *)consensusDataArray addObject:v4];
-      [(DSConsensusDataManager *)self _addDatumToFrequencyTable:v4];
-      [(DSConsensusDataManager *)self _addDatumtoDataArrayMap:v4];
+      [(NSMutableArray *)consensusDataArray addObject:datumCopy];
+      [(DSConsensusDataManager *)self _addDatumToFrequencyTable:datumCopy];
+      [(DSConsensusDataManager *)self _addDatumtoDataArrayMap:datumCopy];
     }
   }
 
@@ -106,62 +106,62 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addDatumtoDataArrayMap:(id)a3
+- (void)_addDatumtoDataArrayMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   consensusDataArrayMap = self->_consensusDataArrayMap;
-  v16 = v4;
+  v16 = mapCopy;
   if (!consensusDataArrayMap)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v7 = self->_consensusDataArrayMap;
     self->_consensusDataArrayMap = v6;
 
-    v4 = v16;
+    mapCopy = v16;
     consensusDataArrayMap = self->_consensusDataArrayMap;
   }
 
-  v8 = [v4 identifier];
-  v9 = [(NSMutableDictionary *)consensusDataArrayMap objectForKeyedSubscript:v8];
+  identifier = [mapCopy identifier];
+  v9 = [(NSMutableDictionary *)consensusDataArrayMap objectForKeyedSubscript:identifier];
 
   if (!v9)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v11 = self->_consensusDataArrayMap;
-    v12 = [v16 identifier];
-    [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:v12];
+    identifier2 = [v16 identifier];
+    [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:identifier2];
   }
 
   v13 = self->_consensusDataArrayMap;
-  v14 = [v16 identifier];
-  v15 = [(NSMutableDictionary *)v13 objectForKeyedSubscript:v14];
+  identifier3 = [v16 identifier];
+  v15 = [(NSMutableDictionary *)v13 objectForKeyedSubscript:identifier3];
   [v15 addObject:v16];
 }
 
-- (void)_removeDatumFromDataArrayMap:(id)a3
+- (void)_removeDatumFromDataArrayMap:(id)map
 {
-  v9 = a3;
-  v4 = [v9 identifier];
-  v5 = [(NSMutableDictionary *)self->_consensusDataArrayMap objectForKeyedSubscript:v4];
+  mapCopy = map;
+  identifier = [mapCopy identifier];
+  v5 = [(NSMutableDictionary *)self->_consensusDataArrayMap objectForKeyedSubscript:identifier];
 
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_consensusDataArrayMap objectForKeyedSubscript:v4];
-    [v6 removeObject:v9];
+    v6 = [(NSMutableDictionary *)self->_consensusDataArrayMap objectForKeyedSubscript:identifier];
+    [v6 removeObject:mapCopy];
 
-    v7 = [(NSMutableDictionary *)self->_consensusDataArrayMap objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)self->_consensusDataArrayMap objectForKeyedSubscript:identifier];
     v8 = [v7 count];
 
     if (!v8)
     {
-      [(NSMutableDictionary *)self->_consensusDataArrayMap setObject:0 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_consensusDataArrayMap setObject:0 forKeyedSubscript:identifier];
     }
   }
 }
 
-- (void)_addDatumToFrequencyTable:(id)a3
+- (void)_addDatumToFrequencyTable:(id)table
 {
-  v13 = a3;
+  tableCopy = table;
   if (!self->_consensusFrequencyTable)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -170,16 +170,16 @@
   }
 
   v6 = objc_alloc(MEMORY[0x277CCACA8]);
-  v7 = [v13 confidence];
-  if (v7 <= 6)
+  confidence = [tableCopy confidence];
+  if (confidence <= 6)
   {
-    if (!v7)
+    if (!confidence)
     {
       v8 = "lowest";
       goto LABEL_15;
     }
 
-    if (v7 == 4)
+    if (confidence == 4)
     {
       v8 = "low-medium";
       goto LABEL_15;
@@ -188,7 +188,7 @@
 
   else
   {
-    switch(v7)
+    switch(confidence)
     {
       case 7:
         v8 = "medium";
@@ -216,24 +216,24 @@ LABEL_15:
     }
 
     v12 = [(NSMutableDictionary *)self->_consensusFrequencyTable objectForKeyedSubscript:v9];
-    [v12 addObject:v13];
+    [v12 addObject:tableCopy];
   }
 }
 
-- (void)_removeDatumFromFrequencyTable:(id)a3
+- (void)_removeDatumFromFrequencyTable:(id)table
 {
-  v12 = a3;
+  tableCopy = table;
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
-  v5 = [v12 confidence];
-  if (v5 <= 6)
+  confidence = [tableCopy confidence];
+  if (confidence <= 6)
   {
-    if (!v5)
+    if (!confidence)
     {
       v6 = "lowest";
       goto LABEL_13;
     }
 
-    if (v5 == 4)
+    if (confidence == 4)
     {
       v6 = "low-medium";
       goto LABEL_13;
@@ -244,19 +244,19 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v5 == 7)
+  if (confidence == 7)
   {
     v6 = "medium";
     goto LABEL_13;
   }
 
-  if (v5 == 11)
+  if (confidence == 11)
   {
     v6 = "medium-high";
     goto LABEL_13;
   }
 
-  if (v5 != 15)
+  if (confidence != 15)
   {
     goto LABEL_12;
   }
@@ -271,7 +271,7 @@ LABEL_13:
     if (v8)
     {
       v9 = [(NSMutableDictionary *)self->_consensusFrequencyTable objectForKeyedSubscript:v7];
-      [v9 removeObject:v12];
+      [v9 removeObject:tableCopy];
 
       v10 = [(NSMutableDictionary *)self->_consensusFrequencyTable objectForKeyedSubscript:v7];
       v11 = [v10 count];
@@ -320,10 +320,10 @@ LABEL_13:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)printConsensusDataFromWindowStart:(double)a3 ToWindowEnd:(double)a4
+- (void)printConsensusDataFromWindowStart:(double)start ToWindowEnd:(double)end
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a4 - a3;
+  v7 = end - start;
   if (v7 > 0.0 && v7 <= self->_windowOfInterest)
   {
     if (onceTokenDSConsensus_0 != -1)
@@ -336,9 +336,9 @@ LABEL_13:
     {
       windowOfInterest = self->_windowOfInterest;
       *buf = 134218496;
-      v31 = a3;
+      startCopy2 = start;
       v32 = 2048;
-      v33 = a4;
+      endCopy2 = end;
       v34 = 2048;
       v35 = windowOfInterest;
       _os_log_impl(&dword_249027000, v10, OS_LOG_TYPE_ERROR, "window start: %f and end: %f. Configured window of interest: %f", buf, 0x20u);
@@ -364,16 +364,16 @@ LABEL_13:
           }
 
           v17 = *(*(&v25 + 1) + 8 * i);
-          v18 = [MEMORY[0x277CBEAA8] date];
-          [v18 timeIntervalSince1970];
+          date = [MEMORY[0x277CBEAA8] date];
+          [date timeIntervalSince1970];
           v20 = v19;
-          v21 = [v17 time];
-          [v21 timeIntervalSince1970];
+          time = [v17 time];
+          [time timeIntervalSince1970];
           v23 = v20 - v22;
 
-          if (v23 >= a3)
+          if (v23 >= start)
           {
-            if (v23 > a4)
+            if (v23 > end)
             {
               goto LABEL_21;
             }
@@ -403,9 +403,9 @@ LABEL_21:
     {
       v9 = self->_windowOfInterest;
       *buf = 134218496;
-      v31 = a3;
+      startCopy2 = start;
       v32 = 2048;
-      v33 = a4;
+      endCopy2 = end;
       v34 = 2048;
       v35 = v9;
       _os_log_impl(&dword_249027000, v8, OS_LOG_TYPE_ERROR, "Invalid window start: %f and end: %f. Configured window of interest: %f", buf, 0x20u);

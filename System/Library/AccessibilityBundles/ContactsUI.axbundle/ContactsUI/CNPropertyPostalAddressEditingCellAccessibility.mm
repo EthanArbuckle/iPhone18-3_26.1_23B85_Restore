@@ -1,17 +1,17 @@
 @interface CNPropertyPostalAddressEditingCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation CNPropertyPostalAddressEditingCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNPropertyEditingCell"];
-  [v3 validateClass:@"CNAddressComponentTextFieldCell"];
-  [v3 validateClass:@"CNAddressComponentTextFieldCell" hasInstanceMethod:@"textFields" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPropertyEditingCell" hasProperty:@"labelButton" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNPropertyEditingCell"];
+  [validationsCopy validateClass:@"CNAddressComponentTextFieldCell"];
+  [validationsCopy validateClass:@"CNAddressComponentTextFieldCell" hasInstanceMethod:@"textFields" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPropertyEditingCell" hasProperty:@"labelButton" withType:"@"];
 }
 
 - (id)accessibilityElements

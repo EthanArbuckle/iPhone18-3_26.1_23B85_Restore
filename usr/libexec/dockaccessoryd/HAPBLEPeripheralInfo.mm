@@ -1,100 +1,100 @@
 @interface HAPBLEPeripheralInfo
-- (BOOL)isEqual:(id)a3;
-- (HAPBLEPeripheralInfo)initWithCoder:(id)a3;
-- (HAPBLEPeripheralInfo)initWithPeripheralInfo:(id)a3 advertisedProtocolVersion:(unint64_t)a4 previousProtocolVersion:(int64_t)a5 resumeSessionId:(unint64_t)a6 lastSeen:(double)a7 statusFlags:(id)a8 stateNumber:(id)a9 configNumber:(id)a10 categoryIdentifier:(id)a11 accessoryName:(id)a12;
+- (BOOL)isEqual:(id)equal;
+- (HAPBLEPeripheralInfo)initWithCoder:(id)coder;
+- (HAPBLEPeripheralInfo)initWithPeripheralInfo:(id)info advertisedProtocolVersion:(unint64_t)version previousProtocolVersion:(int64_t)protocolVersion resumeSessionId:(unint64_t)id lastSeen:(double)seen statusFlags:(id)flags stateNumber:(id)number configNumber:(id)self0 categoryIdentifier:(id)self1 accessoryName:(id)self2;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)resetBroadcastKeyConfig;
-- (void)saveBroadcastKey:(id)a3 keyUpdatedStateNumber:(id)a4 updatedTime:(double)a5;
-- (void)updateAccessoryName:(id)a3;
-- (void)updateBroadcastKey:(id)a3;
-- (void)updateProtocolVersion:(unint64_t)a3;
+- (void)saveBroadcastKey:(id)key keyUpdatedStateNumber:(id)number updatedTime:(double)time;
+- (void)updateAccessoryName:(id)name;
+- (void)updateBroadcastKey:(id)key;
+- (void)updateProtocolVersion:(unint64_t)version;
 @end
 
 @implementation HAPBLEPeripheralInfo
 
-- (HAPBLEPeripheralInfo)initWithPeripheralInfo:(id)a3 advertisedProtocolVersion:(unint64_t)a4 previousProtocolVersion:(int64_t)a5 resumeSessionId:(unint64_t)a6 lastSeen:(double)a7 statusFlags:(id)a8 stateNumber:(id)a9 configNumber:(id)a10 categoryIdentifier:(id)a11 accessoryName:(id)a12
+- (HAPBLEPeripheralInfo)initWithPeripheralInfo:(id)info advertisedProtocolVersion:(unint64_t)version previousProtocolVersion:(int64_t)protocolVersion resumeSessionId:(unint64_t)id lastSeen:(double)seen statusFlags:(id)flags stateNumber:(id)number configNumber:(id)self0 categoryIdentifier:(id)self1 accessoryName:(id)self2
 {
-  v28 = a3;
-  v27 = a8;
-  v26 = a9;
-  v25 = a10;
-  v18 = a11;
-  v19 = a12;
+  infoCopy = info;
+  flagsCopy = flags;
+  numberCopy = number;
+  configNumberCopy = configNumber;
+  identifierCopy = identifier;
+  nameCopy = name;
   v29.receiver = self;
   v29.super_class = HAPBLEPeripheralInfo;
   v20 = [(HAPBLEPeripheralInfo *)&v29 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_peripheralUUID, a3);
-    v21->_advertisedProtocolVersion = a4;
-    v21->_previousProtocolVersion = a5;
-    v21->_resumeSessionId = a6;
-    v21->_lastSeen = a7;
-    objc_storeStrong(&v21->_statusFlags, a8);
-    objc_storeStrong(&v21->_stateNumber, a9);
-    objc_storeStrong(&v21->_configNumber, a10);
-    objc_storeStrong(&v21->_categoryIdentifier, a11);
-    objc_storeStrong(&v21->_accessoryName, a12);
+    objc_storeStrong(&v20->_peripheralUUID, info);
+    v21->_advertisedProtocolVersion = version;
+    v21->_previousProtocolVersion = protocolVersion;
+    v21->_resumeSessionId = id;
+    v21->_lastSeen = seen;
+    objc_storeStrong(&v21->_statusFlags, flags);
+    objc_storeStrong(&v21->_stateNumber, number);
+    objc_storeStrong(&v21->_configNumber, configNumber);
+    objc_storeStrong(&v21->_categoryIdentifier, identifier);
+    objc_storeStrong(&v21->_accessoryName, name);
   }
 
   return v21;
 }
 
-- (void)updateProtocolVersion:(unint64_t)a3
+- (void)updateProtocolVersion:(unint64_t)version
 {
-  if ([(HAPBLEPeripheralInfo *)self advertisedProtocolVersion]!= a3)
+  if ([(HAPBLEPeripheralInfo *)self advertisedProtocolVersion]!= version)
   {
     [(HAPBLEPeripheralInfo *)self setPreviousProtocolVersion:[(HAPBLEPeripheralInfo *)self advertisedProtocolVersion]];
 
-    [(HAPBLEPeripheralInfo *)self setAdvertisedProtocolVersion:a3];
+    [(HAPBLEPeripheralInfo *)self setAdvertisedProtocolVersion:version];
   }
 }
 
-- (void)saveBroadcastKey:(id)a3 keyUpdatedStateNumber:(id)a4 updatedTime:(double)a5
+- (void)saveBroadcastKey:(id)key keyUpdatedStateNumber:(id)number updatedTime:(double)time
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = [(HAPBLEPeripheralInfo *)self broadcastKey];
-  v10 = [v11 isEqualToData:v9];
+  keyCopy = key;
+  numberCopy = number;
+  broadcastKey = [(HAPBLEPeripheralInfo *)self broadcastKey];
+  v10 = [keyCopy isEqualToData:broadcastKey];
 
   if ((v10 & 1) == 0)
   {
-    [(HAPBLEPeripheralInfo *)self setBroadcastKey:v11];
-    if (a5 > 0.0)
+    [(HAPBLEPeripheralInfo *)self setBroadcastKey:keyCopy];
+    if (time > 0.0)
     {
-      [(HAPBLEPeripheralInfo *)self setKeyUpdatedTime:a5];
+      [(HAPBLEPeripheralInfo *)self setKeyUpdatedTime:time];
     }
 
-    [(HAPBLEPeripheralInfo *)self setKeyUpdatedStateNumber:v8];
+    [(HAPBLEPeripheralInfo *)self setKeyUpdatedStateNumber:numberCopy];
   }
 }
 
-- (void)updateBroadcastKey:(id)a3
+- (void)updateBroadcastKey:(id)key
 {
-  v6 = a3;
-  v4 = [(HAPBLEPeripheralInfo *)self broadcastKey];
-  v5 = [v6 isEqualToData:v4];
+  keyCopy = key;
+  broadcastKey = [(HAPBLEPeripheralInfo *)self broadcastKey];
+  v5 = [keyCopy isEqualToData:broadcastKey];
 
   if ((v5 & 1) == 0)
   {
-    [(HAPBLEPeripheralInfo *)self setBroadcastKey:v6];
+    [(HAPBLEPeripheralInfo *)self setBroadcastKey:keyCopy];
     [(HAPBLEPeripheralInfo *)self setKeyUpdatedTime:CFAbsoluteTimeGetCurrent()];
   }
 }
 
-- (void)updateAccessoryName:(id)a3
+- (void)updateAccessoryName:(id)name
 {
-  v7 = a3;
-  v4 = [v7 length];
-  v5 = [(HAPBLEPeripheralInfo *)self accessoryName];
-  v6 = [v5 length];
+  nameCopy = name;
+  v4 = [nameCopy length];
+  accessoryName = [(HAPBLEPeripheralInfo *)self accessoryName];
+  v6 = [accessoryName length];
 
   if (v4 > v6)
   {
-    [(HAPBLEPeripheralInfo *)self setAccessoryName:v7];
+    [(HAPBLEPeripheralInfo *)self setAccessoryName:nameCopy];
   }
 }
 
@@ -106,85 +106,85 @@
   [(HAPBLEPeripheralInfo *)self setKeyUpdatedTime:0.0];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HAPBLEPeripheralInfo *)self peripheralUUID];
-  [v4 encodeObject:v5 forKey:@"PUUI"];
+  coderCopy = coder;
+  peripheralUUID = [(HAPBLEPeripheralInfo *)self peripheralUUID];
+  [coderCopy encodeObject:peripheralUUID forKey:@"PUUI"];
 
-  [v4 encodeInteger:-[HAPBLEPeripheralInfo advertisedProtocolVersion](self forKey:{"advertisedProtocolVersion"), @"PV"}];
-  [v4 encodeInteger:-[HAPBLEPeripheralInfo previousProtocolVersion](self forKey:{"previousProtocolVersion"), @"PPV"}];
-  [v4 encodeInt64:-[HAPBLEPeripheralInfo resumeSessionId](self forKey:{"resumeSessionId"), @"RSI"}];
+  [coderCopy encodeInteger:-[HAPBLEPeripheralInfo advertisedProtocolVersion](self forKey:{"advertisedProtocolVersion"), @"PV"}];
+  [coderCopy encodeInteger:-[HAPBLEPeripheralInfo previousProtocolVersion](self forKey:{"previousProtocolVersion"), @"PPV"}];
+  [coderCopy encodeInt64:-[HAPBLEPeripheralInfo resumeSessionId](self forKey:{"resumeSessionId"), @"RSI"}];
   [(HAPBLEPeripheralInfo *)self lastSeen];
-  [v4 encodeDouble:@"LS" forKey:?];
-  v6 = [(HAPBLEPeripheralInfo *)self statusFlags];
-  [v4 encodeObject:v6 forKey:@"SF"];
+  [coderCopy encodeDouble:@"LS" forKey:?];
+  statusFlags = [(HAPBLEPeripheralInfo *)self statusFlags];
+  [coderCopy encodeObject:statusFlags forKey:@"SF"];
 
-  v7 = [(HAPBLEPeripheralInfo *)self stateNumber];
-  [v4 encodeObject:v7 forKey:@"SN"];
+  stateNumber = [(HAPBLEPeripheralInfo *)self stateNumber];
+  [coderCopy encodeObject:stateNumber forKey:@"SN"];
 
-  v8 = [(HAPBLEPeripheralInfo *)self configNumber];
-  [v4 encodeObject:v8 forKey:@"CF"];
+  configNumber = [(HAPBLEPeripheralInfo *)self configNumber];
+  [coderCopy encodeObject:configNumber forKey:@"CF"];
 
-  v9 = [(HAPBLEPeripheralInfo *)self categoryIdentifier];
-  [v4 encodeObject:v9 forKey:@"CI"];
+  categoryIdentifier = [(HAPBLEPeripheralInfo *)self categoryIdentifier];
+  [coderCopy encodeObject:categoryIdentifier forKey:@"CI"];
 
-  v10 = [(HAPBLEPeripheralInfo *)self accessoryName];
-  [v4 encodeObject:v10 forKey:@"AN"];
+  accessoryName = [(HAPBLEPeripheralInfo *)self accessoryName];
+  [coderCopy encodeObject:accessoryName forKey:@"AN"];
 
-  v11 = [(HAPBLEPeripheralInfo *)self broadcastKey];
-  [v4 encodeObject:v11 forKey:@"BK"];
+  broadcastKey = [(HAPBLEPeripheralInfo *)self broadcastKey];
+  [coderCopy encodeObject:broadcastKey forKey:@"BK"];
 
   [(HAPBLEPeripheralInfo *)self keyUpdatedTime];
-  [v4 encodeDouble:@"BKUT" forKey:?];
-  v12 = [(HAPBLEPeripheralInfo *)self keyUpdatedStateNumber];
-  [v4 encodeObject:v12 forKey:@"BKUSN"];
+  [coderCopy encodeDouble:@"BKUT" forKey:?];
+  keyUpdatedStateNumber = [(HAPBLEPeripheralInfo *)self keyUpdatedStateNumber];
+  [coderCopy encodeObject:keyUpdatedStateNumber forKey:@"BKUSN"];
 }
 
-- (HAPBLEPeripheralInfo)initWithCoder:(id)a3
+- (HAPBLEPeripheralInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = HAPBLEPeripheralInfo;
   v5 = [(HAPBLEPeripheralInfo *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PUUI"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PUUI"];
     peripheralUUID = v5->_peripheralUUID;
     v5->_peripheralUUID = v6;
 
-    v5->_advertisedProtocolVersion = [v4 decodeIntegerForKey:@"PV"];
-    v5->_previousProtocolVersion = [v4 decodeIntegerForKey:@"PPV"];
-    v5->_resumeSessionId = [v4 decodeInt64ForKey:@"RSI"];
-    [v4 decodeDoubleForKey:@"LS"];
+    v5->_advertisedProtocolVersion = [coderCopy decodeIntegerForKey:@"PV"];
+    v5->_previousProtocolVersion = [coderCopy decodeIntegerForKey:@"PPV"];
+    v5->_resumeSessionId = [coderCopy decodeInt64ForKey:@"RSI"];
+    [coderCopy decodeDoubleForKey:@"LS"];
     v5->_lastSeen = v8;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SF"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SF"];
     statusFlags = v5->_statusFlags;
     v5->_statusFlags = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SN"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SN"];
     stateNumber = v5->_stateNumber;
     v5->_stateNumber = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CF"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CF"];
     configNumber = v5->_configNumber;
     v5->_configNumber = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CI"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CI"];
     categoryIdentifier = v5->_categoryIdentifier;
     v5->_categoryIdentifier = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AN"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AN"];
     accessoryName = v5->_accessoryName;
     v5->_accessoryName = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BK"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BK"];
     broadcastKey = v5->_broadcastKey;
     v5->_broadcastKey = v19;
 
-    [v4 decodeDoubleForKey:@"BKUT"];
+    [coderCopy decodeDoubleForKey:@"BKUT"];
     v5->_keyUpdatedTime = v21;
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BKUSN"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BKUSN"];
     keyUpdatedStateNumber = v5->_keyUpdatedStateNumber;
     v5->_keyUpdatedStateNumber = v22;
   }
@@ -192,10 +192,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -205,11 +205,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HAPBLEPeripheralInfo *)self peripheralUUID];
-      v7 = [(HAPBLEPeripheralInfo *)v5 peripheralUUID];
+      v5 = equalCopy;
+      peripheralUUID = [(HAPBLEPeripheralInfo *)self peripheralUUID];
+      peripheralUUID2 = [(HAPBLEPeripheralInfo *)v5 peripheralUUID];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [peripheralUUID isEqual:peripheralUUID2];
     }
 
     else
@@ -223,29 +223,29 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HAPBLEPeripheralInfo *)self peripheralUUID];
-  v3 = [v2 hash];
+  peripheralUUID = [(HAPBLEPeripheralInfo *)self peripheralUUID];
+  v3 = [peripheralUUID hash];
 
   return v3;
 }
 
 - (id)description
 {
-  v16 = [(HAPBLEPeripheralInfo *)self peripheralUUID];
-  v15 = [(HAPBLEPeripheralInfo *)self advertisedProtocolVersion];
-  v3 = [(HAPBLEPeripheralInfo *)self previousProtocolVersion];
-  v4 = [(HAPBLEPeripheralInfo *)self resumeSessionId];
+  peripheralUUID = [(HAPBLEPeripheralInfo *)self peripheralUUID];
+  advertisedProtocolVersion = [(HAPBLEPeripheralInfo *)self advertisedProtocolVersion];
+  previousProtocolVersion = [(HAPBLEPeripheralInfo *)self previousProtocolVersion];
+  resumeSessionId = [(HAPBLEPeripheralInfo *)self resumeSessionId];
   [(HAPBLEPeripheralInfo *)self lastSeen];
   v5 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-  v6 = [(HAPBLEPeripheralInfo *)self statusFlags];
-  v7 = [(HAPBLEPeripheralInfo *)self stateNumber];
-  v8 = [(HAPBLEPeripheralInfo *)self configNumber];
-  v9 = [(HAPBLEPeripheralInfo *)self categoryIdentifier];
-  v10 = [(HAPBLEPeripheralInfo *)self accessoryName];
+  statusFlags = [(HAPBLEPeripheralInfo *)self statusFlags];
+  stateNumber = [(HAPBLEPeripheralInfo *)self stateNumber];
+  configNumber = [(HAPBLEPeripheralInfo *)self configNumber];
+  categoryIdentifier = [(HAPBLEPeripheralInfo *)self categoryIdentifier];
+  accessoryName = [(HAPBLEPeripheralInfo *)self accessoryName];
   [(HAPBLEPeripheralInfo *)self keyUpdatedTime];
   v11 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-  v12 = [(HAPBLEPeripheralInfo *)self keyUpdatedStateNumber];
-  v13 = [NSString stringWithFormat:@"\nPeripheral Info:\n\tPeripheral UUID: %@, \n\tProtocol Version: %tu, \n\tPrevious Version: %tu, \n\tResume Id: %llu, \n\tLast Seen:%@, \n\tStatus Flags: %@, \n\tState Number:%@, \n\tConfig Number: %@, \n\tCategory Id: %@, \n\tName: %@, \n\tKeyUpdatedTime: %@, \n\tKeyUpdated State Number: %@", v16, v15, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  keyUpdatedStateNumber = [(HAPBLEPeripheralInfo *)self keyUpdatedStateNumber];
+  v13 = [NSString stringWithFormat:@"\nPeripheral Info:\n\tPeripheral UUID: %@, \n\tProtocol Version: %tu, \n\tPrevious Version: %tu, \n\tResume Id: %llu, \n\tLast Seen:%@, \n\tStatus Flags: %@, \n\tState Number:%@, \n\tConfig Number: %@, \n\tCategory Id: %@, \n\tName: %@, \n\tKeyUpdatedTime: %@, \n\tKeyUpdated State Number: %@", peripheralUUID, advertisedProtocolVersion, previousProtocolVersion, resumeSessionId, v5, statusFlags, stateNumber, configNumber, categoryIdentifier, accessoryName, v11, keyUpdatedStateNumber];
 
   return v13;
 }

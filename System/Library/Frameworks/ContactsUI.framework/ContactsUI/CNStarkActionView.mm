@@ -1,56 +1,56 @@
 @interface CNStarkActionView
-+ (id)propertyTransportButtonWithDelegate:(id)a3;
-+ (id)quickActionButtonWithDelegate:(id)a3;
++ (id)propertyTransportButtonWithDelegate:(id)delegate;
++ (id)quickActionButtonWithDelegate:(id)delegate;
 - (CGSize)intrinsicContentSize;
-- (CNStarkActionView)initWithDelegate:(id)a3;
+- (CNStarkActionView)initWithDelegate:(id)delegate;
 - (CNStarkActionViewDelegate)delegate;
 - (void)_updateLabelStyle;
-- (void)clickGestureDidUpdate:(id)a3;
+- (void)clickGestureDidUpdate:(id)update;
 - (void)deselect;
 - (void)notifyDelegateAboutUserChoice;
 - (void)select;
-- (void)setActionType:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setActionType:(id)type;
+- (void)setTitle:(id)title;
 - (void)setupButton;
 - (void)setupClickGestureRecognizer;
 - (void)setupConstraints;
 - (void)setupLabel;
 - (void)stateUpdated;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CNStarkActionView
 
 - (void)stateUpdated
 {
-  v3 = [(CNStarkActionView *)self title];
-  v4 = [(CNStarkActionView *)self label];
-  [v4 setText:v3];
+  title = [(CNStarkActionView *)self title];
+  label = [(CNStarkActionView *)self label];
+  [label setText:title];
 
-  v5 = [(CNStarkActionView *)self enabled];
-  v6 = [(CNStarkActionView *)self button];
-  [v6 setEnabled:v5];
+  enabled = [(CNStarkActionView *)self enabled];
+  button = [(CNStarkActionView *)self button];
+  [button setEnabled:enabled];
 
   [(CNStarkActionView *)self _updateLabelStyle];
-  v28 = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
-  v7 = [(CNStarkActionView *)self traitCollection];
-  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v7];
+  _currentTraitCollection = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
+  traitCollection = [(CNStarkActionView *)self traitCollection];
+  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:traitCollection];
 
   if ([(CNStarkActionView *)self enabled]&& ([(CNStarkActionView *)self selected]|| [(CNStarkActionView *)self isFocused]))
   {
-    v8 = [(CNStarkActionView *)self selectedStrokeColor];
-    v9 = [(CNStarkActionView *)self button];
-    [v9 setStrokeColor:v8];
+    selectedStrokeColor = [(CNStarkActionView *)self selectedStrokeColor];
+    button2 = [(CNStarkActionView *)self button];
+    [button2 setStrokeColor:selectedStrokeColor];
 
-    v10 = [(CNStarkActionView *)self selectedFillColor];
-    v11 = [(CNStarkActionView *)self button];
-    [v11 setFillColor:v10];
+    selectedFillColor = [(CNStarkActionView *)self selectedFillColor];
+    button3 = [(CNStarkActionView *)self button];
+    [button3 setFillColor:selectedFillColor];
 
-    v12 = [(CNStarkActionView *)self selectedGlyphColor];
+    selectedGlyphColor = [(CNStarkActionView *)self selectedGlyphColor];
 LABEL_7:
-    v17 = v12;
-    v18 = [(CNStarkActionView *)self button];
-    [v18 setGlyphColor:v17];
+    v17 = selectedGlyphColor;
+    button4 = [(CNStarkActionView *)self button];
+    [button4 setGlyphColor:v17];
 
     v19 = +[CNUIColorRepository carPlayQuickActionButtonTitleTextColorEnabled];
     goto LABEL_9;
@@ -58,37 +58,37 @@ LABEL_7:
 
   if ([(CNStarkActionView *)self enabled])
   {
-    v13 = [(CNStarkActionView *)self enabledStrokeColor];
-    v14 = [(CNStarkActionView *)self button];
-    [v14 setStrokeColor:v13];
+    enabledStrokeColor = [(CNStarkActionView *)self enabledStrokeColor];
+    button5 = [(CNStarkActionView *)self button];
+    [button5 setStrokeColor:enabledStrokeColor];
 
-    v15 = [(CNStarkActionView *)self enabledFillColor];
-    v16 = [(CNStarkActionView *)self button];
-    [v16 setFillColor:v15];
+    enabledFillColor = [(CNStarkActionView *)self enabledFillColor];
+    button6 = [(CNStarkActionView *)self button];
+    [button6 setFillColor:enabledFillColor];
 
-    v12 = [(CNStarkActionView *)self enabledGlyphColor];
+    selectedGlyphColor = [(CNStarkActionView *)self enabledGlyphColor];
     goto LABEL_7;
   }
 
-  v20 = [(CNStarkActionView *)self disabledStrokeColor];
-  v21 = [(CNStarkActionView *)self button];
-  [v21 setStrokeColor:v20];
+  disabledStrokeColor = [(CNStarkActionView *)self disabledStrokeColor];
+  button7 = [(CNStarkActionView *)self button];
+  [button7 setStrokeColor:disabledStrokeColor];
 
-  v22 = [(CNStarkActionView *)self disabledFillColor];
-  v23 = [(CNStarkActionView *)self button];
-  [v23 setFillColor:v22];
+  disabledFillColor = [(CNStarkActionView *)self disabledFillColor];
+  button8 = [(CNStarkActionView *)self button];
+  [button8 setFillColor:disabledFillColor];
 
-  v24 = [(CNStarkActionView *)self disabledGlyphColor];
-  v25 = [(CNStarkActionView *)self button];
-  [v25 setGlyphColor:v24];
+  disabledGlyphColor = [(CNStarkActionView *)self disabledGlyphColor];
+  button9 = [(CNStarkActionView *)self button];
+  [button9 setGlyphColor:disabledGlyphColor];
 
   v19 = +[CNUIColorRepository carPlayQuickActionButtonTitleTextColorDisabled];
 LABEL_9:
   v26 = v19;
-  v27 = [(CNStarkActionView *)self label];
-  [v27 setTextColor:v26];
+  label2 = [(CNStarkActionView *)self label];
+  [label2 setTextColor:v26];
 
-  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v28];
+  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:_currentTraitCollection];
 }
 
 - (void)select
@@ -119,8 +119,8 @@ LABEL_9:
 {
   if ([(CNStarkActionView *)self enabled])
   {
-    v3 = [(CNStarkActionView *)self delegate];
-    [v3 actionViewTapped:self];
+    delegate = [(CNStarkActionView *)self delegate];
+    [delegate actionViewTapped:self];
   }
 }
 
@@ -147,8 +147,8 @@ LABEL_9:
 
   [(UILabel *)self->_label setIsAccessibilityElement:0];
   [(UILabel *)self->_label setAccessibilityIdentifier:@"CNStarkActionLabel"];
-  v6 = [(UILabel *)self->_label layer];
-  [v6 setAllowsGroupBlending:0];
+  layer = [(UILabel *)self->_label layer];
+  [layer setAllowsGroupBlending:0];
 
   [(CNStarkActionView *)self addSubview:self->_label];
   [(CNStarkActionView *)self _updateLabelStyle];
@@ -176,8 +176,8 @@ LABEL_9:
   [(CNStarkActionViewButton *)self->_button setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CNStarkActionView *)self actionPlatterSize];
   [(CNStarkActionViewButton *)self->_button setShapeCornerRadius:v5 * 0.5];
-  v6 = [(CNStarkActionViewButton *)self->_button layer];
-  [v6 setMasksToBounds:1];
+  layer = [(CNStarkActionViewButton *)self->_button layer];
+  [layer setMasksToBounds:1];
 
   [(CNStarkActionViewButton *)self->_button addTarget:self action:sel_actionViewTapped_ forControlEvents:64];
   [(CNStarkActionViewButton *)self->_button addTarget:self action:sel_actionViewTouchDown_ forControlEvents:1];
@@ -191,25 +191,25 @@ LABEL_9:
 {
   v33[5] = *MEMORY[0x1E69E9840];
   v31 = objc_opt_new();
-  v29 = [(CNStarkActionView *)self widthAnchor];
+  widthAnchor = [(CNStarkActionView *)self widthAnchor];
   [(CNStarkActionView *)self actionPlatterSize];
-  v27 = [v29 constraintGreaterThanOrEqualToConstant:?];
+  v27 = [widthAnchor constraintGreaterThanOrEqualToConstant:?];
   v33[0] = v27;
-  v25 = [(CNStarkActionViewButton *)self->_button topAnchor];
-  v23 = [(CNStarkActionView *)self topAnchor];
-  v22 = [v25 constraintEqualToAnchor:v23];
+  topAnchor = [(CNStarkActionViewButton *)self->_button topAnchor];
+  topAnchor2 = [(CNStarkActionView *)self topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v33[1] = v22;
-  v21 = [(CNStarkActionViewButton *)self->_button centerXAnchor];
-  v3 = [(CNStarkActionView *)self centerXAnchor];
-  v4 = [v21 constraintEqualToAnchor:v3];
+  centerXAnchor = [(CNStarkActionViewButton *)self->_button centerXAnchor];
+  centerXAnchor2 = [(CNStarkActionView *)self centerXAnchor];
+  v4 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v33[2] = v4;
-  v5 = [(CNStarkActionViewButton *)self->_button widthAnchor];
+  widthAnchor2 = [(CNStarkActionViewButton *)self->_button widthAnchor];
   [(CNStarkActionView *)self actionPlatterSize];
-  v6 = [v5 constraintEqualToConstant:?];
+  v6 = [widthAnchor2 constraintEqualToConstant:?];
   v33[3] = v6;
-  v7 = [(CNStarkActionViewButton *)self->_button heightAnchor];
-  v8 = [(CNStarkActionViewButton *)self->_button widthAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  heightAnchor = [(CNStarkActionViewButton *)self->_button heightAnchor];
+  widthAnchor3 = [(CNStarkActionViewButton *)self->_button widthAnchor];
+  v9 = [heightAnchor constraintEqualToAnchor:widthAnchor3];
   v33[4] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:5];
   [v31 addObjectsFromArray:v10];
@@ -217,22 +217,22 @@ LABEL_9:
   label = self->_label;
   if (label)
   {
-    v30 = [(UILabel *)label leadingAnchor];
-    v28 = [(CNStarkActionView *)self leadingAnchor];
-    v26 = [v30 constraintEqualToAnchor:v28];
+    leadingAnchor = [(UILabel *)label leadingAnchor];
+    leadingAnchor2 = [(CNStarkActionView *)self leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v32[0] = v26;
-    v24 = [(UILabel *)self->_label firstBaselineAnchor];
-    v12 = [(CNStarkActionViewButton *)self->_button bottomAnchor];
+    firstBaselineAnchor = [(UILabel *)self->_label firstBaselineAnchor];
+    bottomAnchor = [(CNStarkActionViewButton *)self->_button bottomAnchor];
     [(CNStarkActionView *)self actionLabelOffset];
-    v13 = [v24 constraintEqualToAnchor:v12 constant:?];
+    v13 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:?];
     v32[1] = v13;
-    v14 = [(UILabel *)self->_label trailingAnchor];
-    v15 = [(CNStarkActionView *)self trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    trailingAnchor = [(UILabel *)self->_label trailingAnchor];
+    trailingAnchor2 = [(CNStarkActionView *)self trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v32[2] = v16;
-    v17 = [(UILabel *)self->_label bottomAnchor];
-    v18 = [(CNStarkActionView *)self bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor2 = [(UILabel *)self->_label bottomAnchor];
+    bottomAnchor3 = [(CNStarkActionView *)self bottomAnchor];
+    v19 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v32[3] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:4];
     [v31 addObjectsFromArray:v20];
@@ -261,11 +261,11 @@ LABEL_9:
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = CNStarkActionView;
-  [(CNStarkActionView *)&v6 traitCollectionDidChange:a3];
+  [(CNStarkActionView *)&v6 traitCollectionDidChange:change];
   if (_AXSCarPlayEnhanceTextLegibilityEnabled())
   {
     +[CNUIFontRepository carPlayQuickActionButtonTitleFontBold];
@@ -276,28 +276,28 @@ LABEL_9:
     +[CNUIFontRepository carPlayQuickActionButtonTitleFont];
   }
   v4 = ;
-  v5 = [(CNStarkActionView *)self label];
-  [v5 setFont:v4];
+  label = [(CNStarkActionView *)self label];
+  [label setFont:v4];
 
   [(CNStarkActionView *)self stateUpdated];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
+  objc_storeStrong(&self->_title, title);
 
   [(CNStarkActionView *)self stateUpdated];
 }
 
-- (void)clickGestureDidUpdate:(id)a3
+- (void)clickGestureDidUpdate:(id)update
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  updateCopy = update;
+  if ([updateCopy state] == 3)
   {
     [(CNStarkActionView *)self choose];
   }
 
-  else if ([v4 state] == 4 || objc_msgSend(v4, "state") == 5)
+  else if ([updateCopy state] == 4 || objc_msgSend(updateCopy, "state") == 5)
   {
     [(CNStarkActionView *)self deselect];
   }
@@ -307,37 +307,37 @@ LABEL_9:
 {
   if ([(CNStarkActionView *)self enabled])
   {
-    v9 = [(CNStarkActionView *)self label];
-    v3 = [v9 layer];
-    [v3 setCompositingFilter:0];
+    label = [(CNStarkActionView *)self label];
+    layer = [label layer];
+    [layer setCompositingFilter:0];
   }
 
   else
   {
     v4 = MEMORY[0x1E6979378];
-    v9 = [(CNStarkActionView *)self traitCollection];
-    v5 = [v9 userInterfaceStyle];
+    label = [(CNStarkActionView *)self traitCollection];
+    userInterfaceStyle = [label userInterfaceStyle];
     v6 = MEMORY[0x1E6979CF8];
-    if (v5 != 2)
+    if (userInterfaceStyle != 2)
     {
       v6 = MEMORY[0x1E6979CE8];
     }
 
-    v3 = [v4 filterWithType:*v6];
-    v7 = [(CNStarkActionView *)self label];
-    v8 = [v7 layer];
-    [v8 setCompositingFilter:v3];
+    layer = [v4 filterWithType:*v6];
+    label2 = [(CNStarkActionView *)self label];
+    layer2 = [label2 layer];
+    [layer2 setCompositingFilter:layer];
   }
 }
 
-- (void)setActionType:(id)a3
+- (void)setActionType:(id)type
 {
-  v14 = a3;
-  if (([v14 isEqualToString:self->_actionType] & 1) == 0)
+  typeCopy = type;
+  if (([typeCopy isEqualToString:self->_actionType] & 1) == 0)
   {
-    objc_storeStrong(&self->_actionType, a3);
+    objc_storeStrong(&self->_actionType, type);
     v5 = MEMORY[0x1E69DCAB8];
-    v6 = [MEMORY[0x1E6996C08] symbolImageNameForActionType:v14];
+    v6 = [MEMORY[0x1E6996C08] symbolImageNameForActionType:typeCopy];
     if ([(CNStarkActionView *)self prefersSmallImageScale])
     {
       v7 = 1;
@@ -349,16 +349,16 @@ LABEL_9:
     }
 
     v8 = [v5 cnui_symbolImageNamed:v6 scale:v7 withColor:0 useFixedSize:1 compatibleWithTextStyle:*MEMORY[0x1E69DDDC0]];
-    v9 = [(CNStarkActionView *)self button];
-    [v9 setButtonImage:v8];
+    button = [(CNStarkActionView *)self button];
+    [button setButtonImage:v8];
 
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CNStarkActionView - %@", v14];
-    v11 = [(CNStarkActionView *)self label];
-    [v11 setAccessibilityValue:v10];
+    typeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"CNStarkActionView - %@", typeCopy];
+    label = [(CNStarkActionView *)self label];
+    [label setAccessibilityValue:typeCopy];
 
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CNStarkActionButton%@", v14];
-    v13 = [(CNStarkActionView *)self button];
-    [v13 setAccessibilityIdentifier:v12];
+    typeCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CNStarkActionButton%@", typeCopy];
+    button2 = [(CNStarkActionView *)self button];
+    [button2 setAccessibilityIdentifier:typeCopy2];
 
     [(CNStarkActionView *)self stateUpdated];
   }
@@ -370,19 +370,19 @@ void __31__CNStarkActionView_setupLabel__block_invoke(uint64_t a1)
   [WeakRetained _updateLabelStyle];
 }
 
-- (CNStarkActionView)initWithDelegate:(id)a3
+- (CNStarkActionView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = CNStarkActionView;
   v5 = [(CNStarkActionView *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     [(CNStarkActionView *)v6 setAccessibilityIdentifier:@"CNStarkActionView"];
-    v7 = [(CNStarkActionView *)v6 layer];
-    [v7 setAllowsGroupBlending:0];
+    layer = [(CNStarkActionView *)v6 layer];
+    [layer setAllowsGroupBlending:0];
 
     v8 = v6;
   }
@@ -390,10 +390,10 @@ void __31__CNStarkActionView_setupLabel__block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (id)propertyTransportButtonWithDelegate:(id)a3
++ (id)propertyTransportButtonWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [objc_alloc(objc_opt_class()) initWithDelegate:delegateCopy];
 
   [v4 setActionPlatterSize:36.0];
   v5 = +[CNUIColorRepository carPlayTransportButtonBackgroundStrokeColorDisabled];
@@ -425,8 +425,8 @@ void __31__CNStarkActionView_setupLabel__block_invoke(uint64_t a1)
 
   [v4 setupButton];
   LODWORD(v13) = _UISolariumEnabled();
-  v14 = [v4 button];
-  [v14 setShowsStroke:v13 ^ 1];
+  button = [v4 button];
+  [button setShowsStroke:v13 ^ 1];
 
   [v4 setupConstraints];
   [v4 setupClickGestureRecognizer];
@@ -435,10 +435,10 @@ void __31__CNStarkActionView_setupLabel__block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)quickActionButtonWithDelegate:(id)a3
++ (id)quickActionButtonWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDelegate:v3];
+  delegateCopy = delegate;
+  v4 = [objc_alloc(objc_opt_class()) initWithDelegate:delegateCopy];
 
   [v4 setActionPlatterSize:50.0];
   [v4 setActionLabelOffset:16.0];

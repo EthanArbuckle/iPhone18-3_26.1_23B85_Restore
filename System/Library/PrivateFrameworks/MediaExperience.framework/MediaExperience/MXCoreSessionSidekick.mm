@@ -1,23 +1,23 @@
 @interface MXCoreSessionSidekick
 - (BOOL)allowsAirPlayBuffered;
 - (BOOL)allowsAirPlayVideo;
-- (BOOL)isCategoryValid:(id)a3;
-- (BOOL)isModeValidForCategory:(id)a3;
-- (MXCoreSessionSidekick)initWithRemoteDeviceID:(id)a3;
-- (id)_initWithRemoteDeviceID:(id)a3;
+- (BOOL)isCategoryValid:(id)valid;
+- (BOOL)isModeValidForCategory:(id)category;
+- (MXCoreSessionSidekick)initWithRemoteDeviceID:(id)d;
+- (id)_initWithRemoteDeviceID:(id)d;
 - (int)_activate;
-- (int)_copyPropertyForKey:(id)a3 valueOut:(id *)a4;
-- (int)_setPropertyForKey:(id)a3 value:(id)a4;
+- (int)_copyPropertyForKey:(id)key valueOut:(id *)out;
+- (int)_setPropertyForKey:(id)key value:(id)value;
 - (int)activate;
-- (int)copyPropertyForKey:(id)a3 valueOut:(id *)a4;
-- (int)deactivate:(BOOL)a3 postInterruptionNotification:(BOOL)a4;
-- (int)setPropertyForKey:(id)a3 value:(id)a4;
+- (int)copyPropertyForKey:(id)key valueOut:(id *)out;
+- (int)deactivate:(BOOL)deactivate postInterruptionNotification:(BOOL)notification;
+- (int)setPropertyForKey:(id)key value:(id)value;
 - (void)dealloc;
 @end
 
 @implementation MXCoreSessionSidekick
 
-- (MXCoreSessionSidekick)initWithRemoteDeviceID:(id)a3
+- (MXCoreSessionSidekick)initWithRemoteDeviceID:(id)d
 {
   v9 = 0;
   v10 = &v9;
@@ -25,15 +25,15 @@
   v12 = __Block_byref_object_copy__3;
   v13 = __Block_byref_object_dispose__3;
   v14 = 0;
-  v5 = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick serialQueue];
+  serialQueue = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick serialQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__MXCoreSessionSidekick_initWithRemoteDeviceID___block_invoke;
   v8[3] = &unk_1E7AEB1E8;
-  v8[5] = a3;
+  v8[5] = d;
   v8[6] = &v9;
   v8[4] = self;
-  MXDispatchAsyncAndWait("[MXCoreSessionSidekick initWithRemoteDeviceID:]", "MXCoreSessionSidekick.m", 46, 0, 0, v5, v8);
+  MXDispatchAsyncAndWait("[MXCoreSessionSidekick initWithRemoteDeviceID:]", "MXCoreSessionSidekick.m", 46, 0, 0, serialQueue, v8);
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
   return v6;
@@ -52,14 +52,14 @@ uint64_t __48__MXCoreSessionSidekick_initWithRemoteDeviceID___block_invoke(uint6
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick serialQueue];
+  serialQueue = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick serialQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __33__MXCoreSessionSidekick_activate__block_invoke;
   v5[3] = &unk_1E7AEB210;
   v5[4] = self;
   v5[5] = &v6;
-  MXDispatchAsyncAndWait("[MXCoreSessionSidekick activate]", "MXCoreSessionSidekick.m", 57, 0, 0, v3, v5);
+  MXDispatchAsyncAndWait("[MXCoreSessionSidekick activate]", "MXCoreSessionSidekick.m", 57, 0, 0, serialQueue, v5);
   LODWORD(self) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
   return self;
@@ -72,22 +72,22 @@ uint64_t __33__MXCoreSessionSidekick_activate__block_invoke(uint64_t a1)
   return result;
 }
 
-- (int)deactivate:(BOOL)a3 postInterruptionNotification:(BOOL)a4
+- (int)deactivate:(BOOL)deactivate postInterruptionNotification:(BOOL)notification
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v7 = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick serialQueue];
+  serialQueue = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick serialQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__MXCoreSessionSidekick_deactivate_postInterruptionNotification___block_invoke;
   v10[3] = &unk_1E7AEB238;
   v10[4] = self;
   v10[5] = &v13;
-  v11 = a3;
-  v12 = a4;
-  MXDispatchAsyncAndWait("[MXCoreSessionSidekick deactivate:postInterruptionNotification:]", "MXCoreSessionSidekick.m", 69, 0, 0, v7, v10);
+  deactivateCopy = deactivate;
+  notificationCopy = notification;
+  MXDispatchAsyncAndWait("[MXCoreSessionSidekick deactivate:postInterruptionNotification:]", "MXCoreSessionSidekick.m", 69, 0, 0, serialQueue, v10);
   v8 = *(v14 + 6);
   _Block_object_dispose(&v13, 8);
   return v8;
@@ -111,25 +111,25 @@ uint64_t __65__MXCoreSessionSidekick_deactivate_postInterruptionNotification___b
   objc_autoreleasePoolPop(v3);
 }
 
-- (int)setPropertyForKey:(id)a3 value:(id)a4
+- (int)setPropertyForKey:(id)key value:(id)value
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v7 = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick serialQueue];
+  serialQueue = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick serialQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__MXCoreSessionSidekick_setPropertyForKey_value___block_invoke;
   v9[3] = &unk_1E7AE70A8;
   v9[4] = self;
-  v9[5] = a3;
-  v9[6] = a4;
+  v9[5] = key;
+  v9[6] = value;
   v9[7] = &v10;
-  MXDispatchAsyncAndWait("[MXCoreSessionSidekick setPropertyForKey:value:]", "MXCoreSessionSidekick.m", 91, 0, 0, v7, v9);
-  LODWORD(a4) = *(v11 + 6);
+  MXDispatchAsyncAndWait("[MXCoreSessionSidekick setPropertyForKey:value:]", "MXCoreSessionSidekick.m", 91, 0, 0, serialQueue, v9);
+  LODWORD(value) = *(v11 + 6);
   _Block_object_dispose(&v10, 8);
-  return a4;
+  return value;
 }
 
 uint64_t __49__MXCoreSessionSidekick_setPropertyForKey_value___block_invoke(uint64_t a1)
@@ -139,25 +139,25 @@ uint64_t __49__MXCoreSessionSidekick_setPropertyForKey_value___block_invoke(uint
   return result;
 }
 
-- (int)copyPropertyForKey:(id)a3 valueOut:(id *)a4
+- (int)copyPropertyForKey:(id)key valueOut:(id *)out
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v7 = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick serialQueue];
+  serialQueue = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick serialQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__MXCoreSessionSidekick_copyPropertyForKey_valueOut___block_invoke;
   v9[3] = &unk_1E7AE70D0;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = key;
   v9[6] = &v10;
-  v9[7] = a4;
-  MXDispatchAsyncAndWait("[MXCoreSessionSidekick copyPropertyForKey:valueOut:]", "MXCoreSessionSidekick.m", 102, 0, 0, v7, v9);
-  LODWORD(a4) = *(v11 + 6);
+  v9[7] = out;
+  MXDispatchAsyncAndWait("[MXCoreSessionSidekick copyPropertyForKey:valueOut:]", "MXCoreSessionSidekick.m", 102, 0, 0, serialQueue, v9);
+  LODWORD(out) = *(v11 + 6);
   _Block_object_dispose(&v10, 8);
-  return a4;
+  return out;
 }
 
 uint64_t __53__MXCoreSessionSidekick_copyPropertyForKey_valueOut___block_invoke(uint64_t a1)
@@ -187,11 +187,11 @@ uint64_t __53__MXCoreSessionSidekick_copyPropertyForKey_valueOut___block_invoke(
 {
   [(MXCoreSessionBase *)self audioCategory];
   [(MXCoreSessionBase *)self displayID];
-  v3 = [(MXCoreSessionSidekick *)self remoteDeviceID];
+  remoteDeviceID = [(MXCoreSessionSidekick *)self remoteDeviceID];
   result = 0;
-  if ((![(MXCoreSessionBase *)self mixesWithEveryone]|| v3) && !FigCFEqual())
+  if ((![(MXCoreSessionBase *)self mixesWithEveryone]|| remoteDeviceID) && !FigCFEqual())
   {
-    v4 = FigCFEqual() && v3 == 0;
+    v4 = FigCFEqual() && remoteDeviceID == 0;
     if (!v4 && !FigCFEqual() && !FigCFEqual() && !FigCFEqual() && !FigCFEqual() && !FigCFEqual() && !FigCFEqual())
     {
       return 1;
@@ -201,7 +201,7 @@ uint64_t __53__MXCoreSessionSidekick_copyPropertyForKey_valueOut___block_invoke(
   return result;
 }
 
-- (id)_initWithRemoteDeviceID:(id)a3
+- (id)_initWithRemoteDeviceID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -210,7 +210,7 @@ uint64_t __53__MXCoreSessionSidekick_copyPropertyForKey_valueOut___block_invoke(
   v5 = v4;
   if (v4)
   {
-    [(MXCoreSessionSidekick *)v4 setRemoteDeviceID:a3];
+    [(MXCoreSessionSidekick *)v4 setRemoteDeviceID:d];
     [(MXCoreSessionBase *)v5 setAudioCategory:@"MediaPlayback"];
     [(MXCoreSessionBase *)v5 setAudioMode:@"Default"];
     cf = 0;
@@ -257,8 +257,8 @@ uint64_t __53__MXCoreSessionSidekick_copyPropertyForKey_valueOut___block_invoke(
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v4 = [(MXCoreSessionBase *)self reporterIDs];
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    reporterIDs = [(MXCoreSessionBase *)self reporterIDs];
+    v5 = [(NSArray *)reporterIDs countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v5)
     {
       v6 = v5;
@@ -269,13 +269,13 @@ uint64_t __53__MXCoreSessionSidekick_copyPropertyForKey_valueOut___block_invoke(
         {
           if (*v21 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(reporterIDs);
           }
 
           CMSUtility_SetAudioServiceTypeForReporterID(self, [*(*(&v20 + 1) + 8 * i) longLongValue]);
         }
 
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v20 objects:v26 count:16];
+        v6 = [(NSArray *)reporterIDs countByEnumeratingWithState:&v20 objects:v26 count:16];
       }
 
       while (v6);
@@ -334,17 +334,17 @@ void __79__MXCoreSessionSidekick_InternalUse___deactivate_postInterruptionNotifi
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isCategoryValid:(id)a3
+- (BOOL)isCategoryValid:(id)valid
 {
-  if ([a3 isEqualToString:@"Alarm"])
+  if ([valid isEqualToString:@"Alarm"])
   {
     return 1;
   }
 
-  return [a3 isEqualToString:@"MediaPlayback"];
+  return [valid isEqualToString:@"MediaPlayback"];
 }
 
-- (BOOL)isModeValidForCategory:(id)a3
+- (BOOL)isModeValidForCategory:(id)category
 {
   if (![(NSString *)[(MXCoreSessionBase *)self audioCategory] isEqualToString:@"Alarm"])
   {
@@ -354,7 +354,7 @@ void __79__MXCoreSessionSidekick_InternalUse___deactivate_postInterruptionNotifi
       return v7;
     }
 
-    if (([a3 isEqualToString:@"Default"] & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"VoicePrompt") & 1) == 0)
+    if (([category isEqualToString:@"Default"] & 1) == 0 && (objc_msgSend(category, "isEqualToString:", @"VoicePrompt") & 1) == 0)
     {
       v5 = kMXSessionAudioMode_VoiceMessages;
       goto LABEL_4;
@@ -365,7 +365,7 @@ LABEL_10:
     return v7;
   }
 
-  if ([a3 isEqualToString:@"Default"])
+  if ([category isEqualToString:@"Default"])
   {
     goto LABEL_10;
   }
@@ -374,11 +374,11 @@ LABEL_10:
 LABEL_4:
   v6 = *v5;
 
-  LOBYTE(v7) = [a3 isEqualToString:v6];
+  LOBYTE(v7) = [category isEqualToString:v6];
   return v7;
 }
 
-- (int)_setPropertyForKey:(id)a3 value:(id)a4
+- (int)_setPropertyForKey:(id)key value:(id)value
 {
   v30 = *MEMORY[0x1E69E9840];
   if (dword_1EB75DE40)
@@ -388,16 +388,16 @@ LABEL_4:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (![a3 isEqualToString:{@"AudioSessionID", v26, v27}])
+  if (![key isEqualToString:{@"AudioSessionID", v26, v27}])
   {
-    if ([a3 isEqualToString:@"ClientPID"])
+    if ([key isEqualToString:@"ClientPID"])
     {
-      if (a4)
+      if (value)
       {
-        v9 = CFGetTypeID(a4);
+        v9 = CFGetTypeID(value);
         if (v9 == CFNumberGetTypeID())
         {
-          [(MXCoreSessionBase *)self setClientPID:a4];
+          [(MXCoreSessionBase *)self setClientPID:value];
           goto LABEL_15;
         }
       }
@@ -406,14 +406,14 @@ LABEL_4:
       goto LABEL_60;
     }
 
-    if ([a3 isEqualToString:@"ClientName"])
+    if ([key isEqualToString:@"ClientName"])
     {
-      if (a4)
+      if (value)
       {
-        v10 = CFGetTypeID(a4);
+        v10 = CFGetTypeID(value);
         if (v10 == CFStringGetTypeID())
         {
-          [(MXCoreSessionBase *)self updateClientName:a4];
+          [(MXCoreSessionBase *)self updateClientName:value];
           goto LABEL_15;
         }
       }
@@ -422,16 +422,16 @@ LABEL_4:
       goto LABEL_60;
     }
 
-    if ([a3 isEqualToString:@"AudioCategory"])
+    if ([key isEqualToString:@"AudioCategory"])
     {
-      if (a4)
+      if (value)
       {
-        v14 = CFGetTypeID(a4);
+        v14 = CFGetTypeID(value);
         if (v14 == CFStringGetTypeID())
         {
-          if ([(MXCoreSessionSidekick *)self isCategoryValid:a4])
+          if ([(MXCoreSessionSidekick *)self isCategoryValid:value])
           {
-            [(MXCoreSessionBase *)self setAudioCategory:a4];
+            [(MXCoreSessionBase *)self setAudioCategory:value];
             goto LABEL_15;
           }
 
@@ -448,25 +448,25 @@ LABEL_44:
       goto LABEL_60;
     }
 
-    if (![a3 isEqualToString:@"AudioMode"])
+    if (![key isEqualToString:@"AudioMode"])
     {
-      if ([a3 isEqualToString:@"IsPlaying"])
+      if ([key isEqualToString:@"IsPlaying"])
       {
-        if (a4)
+        if (value)
         {
-          v17 = CFGetTypeID(a4);
+          v17 = CFGetTypeID(value);
           if (v17 == CFBooleanGetTypeID())
           {
             v18 = *MEMORY[0x1E695E4D0];
-            v19 = *MEMORY[0x1E695E4D0] == a4;
+            v19 = *MEMORY[0x1E695E4D0] == value;
             if ([(MXCoreSessionBase *)self isPlaying]!= v19)
             {
-              if (v18 == a4 && ![(MXCoreSessionBase *)self isActive])
+              if (v18 == value && ![(MXCoreSessionBase *)self isActive])
               {
                 [(MXCoreSessionSidekick *)self _activate];
               }
 
-              [(MXCoreSessionBase *)self setIsPlaying:v18 == a4];
+              [(MXCoreSessionBase *)self setIsPlaying:v18 == value];
               if (dword_1EB75DE40)
               {
                 v20 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -485,14 +485,14 @@ LABEL_44:
         goto LABEL_60;
       }
 
-      if ([a3 isEqualToString:@"IAmTheAssistant"])
+      if ([key isEqualToString:@"IAmTheAssistant"])
       {
-        if (a4)
+        if (value)
         {
-          v21 = CFGetTypeID(a4);
+          v21 = CFGetTypeID(value);
           if (v21 == CFBooleanGetTypeID())
           {
-            [(MXCoreSessionBase *)self setIsTheAssistant:*MEMORY[0x1E695E4D0] == a4];
+            [(MXCoreSessionBase *)self setIsTheAssistant:*MEMORY[0x1E695E4D0] == value];
             goto LABEL_15;
           }
         }
@@ -501,7 +501,7 @@ LABEL_44:
         goto LABEL_60;
       }
 
-      if (![a3 isEqualToString:@"InterruptionFadeDuration"])
+      if (![key isEqualToString:@"InterruptionFadeDuration"])
       {
         goto LABEL_15;
       }
@@ -514,16 +514,16 @@ LABEL_44:
       }
 
       valuePtr = v24;
-      if (a4)
+      if (value)
       {
-        v25 = CFGetTypeID(a4);
+        v25 = CFGetTypeID(value);
         if (v25 != CFNumberGetTypeID())
         {
           [MXCoreSessionSidekick(InternalUse) _setPropertyForKey:v29 value:?];
           goto LABEL_60;
         }
 
-        CFNumberGetValue(a4, kCFNumberFloat32Type, &valuePtr);
+        CFNumberGetValue(value, kCFNumberFloat32Type, &valuePtr);
       }
 
       [(MXCoreSessionBase *)self setInterruptionFadeDuration:?];
@@ -531,16 +531,16 @@ LABEL_44:
       goto LABEL_43;
     }
 
-    if (a4)
+    if (value)
     {
-      v15 = CFGetTypeID(a4);
+      v15 = CFGetTypeID(value);
       if (v15 == CFStringGetTypeID())
       {
-        v16 = [(MXCoreSessionBase *)self audioMode];
-        if ([(MXCoreSessionSidekick *)self isModeValidForCategory:a4])
+        audioMode = [(MXCoreSessionBase *)self audioMode];
+        if ([(MXCoreSessionSidekick *)self isModeValidForCategory:value])
         {
-          [(MXCoreSessionBase *)self setAudioMode:a4];
-          [(MXCoreSessionBase *)self updateDefaultInterruptionFadeDuration:v16];
+          [(MXCoreSessionBase *)self setAudioMode:value];
+          [(MXCoreSessionBase *)self updateDefaultInterruptionFadeDuration:audioMode];
           v11 = 0;
         }
 
@@ -565,13 +565,13 @@ LABEL_60:
     goto LABEL_43;
   }
 
-  if (!a4 || (v8 = CFGetTypeID(a4), v8 != CFNumberGetTypeID()))
+  if (!value || (v8 = CFGetTypeID(value), v8 != CFNumberGetTypeID()))
   {
     [MXCoreSessionSidekick(InternalUse) _setPropertyForKey:v29 value:?];
     goto LABEL_60;
   }
 
-  -[MXCoreSessionBase setAudioSessionID:](self, "setAudioSessionID:", [a4 unsignedIntValue]);
+  -[MXCoreSessionBase setAudioSessionID:](self, "setAudioSessionID:", [value unsignedIntValue]);
 LABEL_15:
   v11 = 0;
 LABEL_16:
@@ -579,40 +579,40 @@ LABEL_16:
   return v11;
 }
 
-- (int)_copyPropertyForKey:(id)a3 valueOut:(id *)a4
+- (int)_copyPropertyForKey:(id)key valueOut:(id *)out
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!key)
   {
     result = -15682;
     goto LABEL_13;
   }
 
-  if (![a3 isEqualToString:@"RemoteDeviceID"])
+  if (![key isEqualToString:@"RemoteDeviceID"])
   {
-    if ([a3 isEqualToString:@"RoutingContextUUID"])
+    if ([key isEqualToString:@"RoutingContextUUID"])
     {
-      v7 = [(MXCoreSessionBase *)self routingContextUUID];
+      routingContextUUID = [(MXCoreSessionBase *)self routingContextUUID];
       goto LABEL_7;
     }
 
-    if ([a3 isEqualToString:@"RoutingContext"])
+    if ([key isEqualToString:@"RoutingContext"])
     {
-      FigRoutingManagerContextUtilities_CopyRoutingContextForContextUUID([(MXCoreSessionBase *)self routingContextUUID], a4);
+      FigRoutingManagerContextUtilities_CopyRoutingContextForContextUUID([(MXCoreSessionBase *)self routingContextUUID], out);
       goto LABEL_8;
     }
 
-    if ([a3 isEqualToString:@"AudioSessionID"])
+    if ([key isEqualToString:@"AudioSessionID"])
     {
       v11 = *MEMORY[0x1E695E480];
       [(MXCoreSessionBase *)self audioSessionID];
       UInt32 = FigCFNumberCreateUInt32();
 LABEL_20:
-      *a4 = UInt32;
+      *out = UInt32;
       goto LABEL_8;
     }
 
-    if ([a3 isEqualToString:@"ClientPID"])
+    if ([key isEqualToString:@"ClientPID"])
     {
       valuePtr[0] = [(NSNumber *)[(MXCoreSessionBase *)self clientPID] intValue];
 LABEL_18:
@@ -623,45 +623,45 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    if ([a3 isEqualToString:@"ClientName"])
+    if ([key isEqualToString:@"ClientName"])
     {
-      v7 = [(MXCoreSessionBase *)self clientName];
+      routingContextUUID = [(MXCoreSessionBase *)self clientName];
       goto LABEL_7;
     }
 
-    if ([a3 isEqualToString:@"AudioCategory"])
+    if ([key isEqualToString:@"AudioCategory"])
     {
-      v7 = [(MXCoreSessionBase *)self audioCategory];
+      routingContextUUID = [(MXCoreSessionBase *)self audioCategory];
       goto LABEL_7;
     }
 
-    if ([a3 isEqualToString:@"AudioMode"])
+    if ([key isEqualToString:@"AudioMode"])
     {
-      v7 = [(MXCoreSessionBase *)self audioMode];
+      routingContextUUID = [(MXCoreSessionBase *)self audioMode];
       goto LABEL_7;
     }
 
-    if ([a3 isEqualToString:@"IsActive"])
+    if ([key isEqualToString:@"IsActive"])
     {
-      v15 = [(MXCoreSessionBase *)self isActive];
+      isActive = [(MXCoreSessionBase *)self isActive];
     }
 
-    else if ([a3 isEqualToString:@"IsPlaying"])
+    else if ([key isEqualToString:@"IsPlaying"])
     {
-      v15 = [(MXCoreSessionBase *)self isPlaying];
+      isActive = [(MXCoreSessionBase *)self isPlaying];
     }
 
     else
     {
-      if ([a3 isEqualToString:@"MaximumNumberOfOutputChannels"])
+      if ([key isEqualToString:@"MaximumNumberOfOutputChannels"])
       {
         valuePtr[0] = 2;
         goto LABEL_18;
       }
 
-      if (![a3 isEqualToString:@"SomeOtherClientIsPlaying"])
+      if (![key isEqualToString:@"SomeOtherClientIsPlaying"])
       {
-        if ([a3 isEqualToString:@"DetailedActiveAudioRoute"])
+        if ([key isEqualToString:@"DetailedActiveAudioRoute"])
         {
           v22 = @"RouteDetailedDescription_Outputs";
           v19[0] = @"RouteDetailedDescription_Name";
@@ -672,20 +672,20 @@ LABEL_19:
           v20[2] = @"AirTunes";
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
           v23[0] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
-          v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
+          routingContextUUID = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
           goto LABEL_7;
         }
 
-        if ([a3 isEqualToString:@"ReporterIDs"])
+        if ([key isEqualToString:@"ReporterIDs"])
         {
           CMSUtility_CreateReporterIDIfNeeded(self);
-          v7 = [(MXCoreSessionBase *)self reporterIDs];
+          routingContextUUID = [(MXCoreSessionBase *)self reporterIDs];
           goto LABEL_7;
         }
 
-        if (![a3 isEqualToString:@"InterruptionFadeDuration"])
+        if (![key isEqualToString:@"InterruptionFadeDuration"])
         {
-          *a4 = 0;
+          *out = 0;
           goto LABEL_8;
         }
 
@@ -696,23 +696,23 @@ LABEL_19:
         goto LABEL_19;
       }
 
-      v15 = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick isSomeOtherSessionPlaying:"isSomeOtherSessionPlaying:", self];
+      isActive = [+[MXSessionManagerSidekick sharedInstance](MXSessionManagerSidekick isSomeOtherSessionPlaying:"isSomeOtherSessionPlaying:", self];
     }
 
     v16 = MEMORY[0x1E695E4D0];
-    if (!v15)
+    if (!isActive)
     {
       v16 = MEMORY[0x1E695E4C0];
     }
 
-    v7 = *v16;
+    routingContextUUID = *v16;
     goto LABEL_7;
   }
 
-  v7 = [(MXCoreSessionSidekick *)self remoteDeviceID];
+  routingContextUUID = [(MXCoreSessionSidekick *)self remoteDeviceID];
 LABEL_7:
-  *a4 = v7;
-  CFRetain(v7);
+  *out = routingContextUUID;
+  CFRetain(routingContextUUID);
 LABEL_8:
   if (dword_1EB75DE40)
   {

@@ -1,57 +1,57 @@
 @interface TPSAnalyticsEventSession
-+ (id)eventWithCollectionsViewed:(int64_t)a3 tipsViewed:(int64_t)a4;
-- (TPSAnalyticsEventSession)initWithCoder:(id)a3;
-- (id)_initWithCollectionsViewed:(int64_t)a3 tipsViewed:(int64_t)a4;
++ (id)eventWithCollectionsViewed:(int64_t)viewed tipsViewed:(int64_t)tipsViewed;
+- (TPSAnalyticsEventSession)initWithCoder:(id)coder;
+- (id)_initWithCollectionsViewed:(int64_t)viewed tipsViewed:(int64_t)tipsViewed;
 - (id)mutableAnalyticsEventRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSAnalyticsEventSession
 
-- (TPSAnalyticsEventSession)initWithCoder:(id)a3
+- (TPSAnalyticsEventSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TPSAnalyticsEventSession;
-  v5 = [(TPSAnalyticsEvent *)&v7 initWithCoder:v4];
+  v5 = [(TPSAnalyticsEvent *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_collectionsViewed = [v4 decodeIntegerForKey:@"collections_viewed"];
-    v5->_tipsViewed = [v4 decodeIntegerForKey:@"tips_viewed"];
+    v5->_collectionsViewed = [coderCopy decodeIntegerForKey:@"collections_viewed"];
+    v5->_tipsViewed = [coderCopy decodeIntegerForKey:@"tips_viewed"];
   }
 
   return v5;
 }
 
-- (id)_initWithCollectionsViewed:(int64_t)a3 tipsViewed:(int64_t)a4
+- (id)_initWithCollectionsViewed:(int64_t)viewed tipsViewed:(int64_t)tipsViewed
 {
   v7.receiver = self;
   v7.super_class = TPSAnalyticsEventSession;
   result = [(TPSAnalyticsEvent *)&v7 initWithDate:0];
   if (result)
   {
-    *(result + 4) = a3;
-    *(result + 5) = a4;
+    *(result + 4) = viewed;
+    *(result + 5) = tipsViewed;
   }
 
   return result;
 }
 
-+ (id)eventWithCollectionsViewed:(int64_t)a3 tipsViewed:(int64_t)a4
++ (id)eventWithCollectionsViewed:(int64_t)viewed tipsViewed:(int64_t)tipsViewed
 {
-  v4 = [[a1 alloc] _initWithCollectionsViewed:a3 tipsViewed:a4];
+  v4 = [[self alloc] _initWithCollectionsViewed:viewed tipsViewed:tipsViewed];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TPSAnalyticsEventSession;
-  v4 = a3;
-  [(TPSAnalyticsEvent *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_collectionsViewed forKey:{@"collections_viewed", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_tipsViewed forKey:@"tips_viewed"];
+  coderCopy = coder;
+  [(TPSAnalyticsEvent *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_collectionsViewed forKey:{@"collections_viewed", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_tipsViewed forKey:@"tips_viewed"];
 }
 
 - (id)mutableAnalyticsEventRepresentation

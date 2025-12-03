@@ -1,26 +1,26 @@
 @interface VCPImageBlurAnalyzer
-- (VCPImageBlurAnalyzer)initWithFaceResults:(id)a3 sdof:(BOOL)a4 revision:(unint64_t)a5;
-- (float)estimateDistance:(id)a3 prevHomography:(id)a4;
-- (float)getFaceScoreFromOutput:(id)a3 ratio:(float)a4;
+- (VCPImageBlurAnalyzer)initWithFaceResults:(id)results sdof:(BOOL)sdof revision:(unint64_t)revision;
+- (float)estimateDistance:(id)distance prevHomography:(id)homography;
+- (float)getFaceScoreFromOutput:(id)output ratio:(float)ratio;
 - (id).cxx_construct;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 withPreAnalysisScore:(float)a5 results:(id *)a6 cancel:(id)a7;
-- (int)computeCNNFaceSharpness:(__CVBuffer *)a3 result:(float *)a4 cancel:(id)a5;
-- (int)computeGyroSharpness:(float *)a3;
-- (int)computeLocalSharpness:(__CVBuffer *)a3;
-- (int)computeSharpnessScore:(float *)a3 forFacesInImage:(__CVBuffer *)a4;
-- (int)prepareFaceBlurModel:(BOOL)a3;
-- (int)scaleRegion:(CGRect *)a3 ofImage:(__CVBuffer *)a4 toData:(id)a5 withWidth:(int)a6 andHeight:(int)a7;
-- (void)setFaceResults:(id)a3;
-- (void)setGyroSharpnessParam:(id)a3 homographyResults:(id)a4 livePhotoStillDisplayTime:(float)a5 imageExposureTime:(float)a6;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags withPreAnalysisScore:(float)score results:(id *)results cancel:(id)cancel;
+- (int)computeCNNFaceSharpness:(__CVBuffer *)sharpness result:(float *)result cancel:(id)cancel;
+- (int)computeGyroSharpness:(float *)sharpness;
+- (int)computeLocalSharpness:(__CVBuffer *)sharpness;
+- (int)computeSharpnessScore:(float *)score forFacesInImage:(__CVBuffer *)image;
+- (int)prepareFaceBlurModel:(BOOL)model;
+- (int)scaleRegion:(CGRect *)region ofImage:(__CVBuffer *)image toData:(id)data withWidth:(int)width andHeight:(int)height;
+- (void)setFaceResults:(id)results;
+- (void)setGyroSharpnessParam:(id)param homographyResults:(id)results livePhotoStillDisplayTime:(float)time imageExposureTime:(float)exposureTime;
 - (void)spatialPooling;
 @end
 
 @implementation VCPImageBlurAnalyzer
 
-- (VCPImageBlurAnalyzer)initWithFaceResults:(id)a3 sdof:(BOOL)a4 revision:(unint64_t)a5
+- (VCPImageBlurAnalyzer)initWithFaceResults:(id)results sdof:(BOOL)sdof revision:(unint64_t)revision
 {
-  v6 = a4;
-  v8 = a3;
+  sdofCopy = sdof;
+  resultsCopy = results;
   v20.receiver = self;
   v20.super_class = VCPImageBlurAnalyzer;
   v9 = [(VCPImageBlurAnalyzer *)&v20 init];
@@ -29,24 +29,24 @@
     goto LABEL_6;
   }
 
-  if (v8)
+  if (resultsCopy)
   {
-    v10 = [v8 objectForKey:@"FaceResults"];
+    v10 = [resultsCopy objectForKey:@"FaceResults"];
     faces = v9->_faces;
     v9->_faces = v10;
   }
 
-  v9->_sdof = v6;
+  v9->_sdof = sdofCopy;
   v9->_contrast = 0.0;
   v9->_useGPU = +[VCPCNNMetalContext supportGPU];
-  v12 = [VCPCNNBlurAnalyzer analyzerWithRevision:a5];
+  v12 = [VCPCNNBlurAnalyzer analyzerWithRevision:revision];
   blurAnalyzer = v9->_blurAnalyzer;
   v9->_blurAnalyzer = v12;
 
   v14 = v9->_blurAnalyzer;
   if (v14)
   {
-    [(VCPCNNBlurAnalyzer *)v14 setSdof:v6];
+    [(VCPCNNBlurAnalyzer *)v14 setSdof:sdofCopy];
     v9->_livePhotoStillDisplayTime = -1.0;
     v9->_imageExposureTime = -1.0;
     framePTSResults = v9->_framePTSResults;
@@ -69,53 +69,53 @@ LABEL_6:
   return v18;
 }
 
-- (void)setGyroSharpnessParam:(id)a3 homographyResults:(id)a4 livePhotoStillDisplayTime:(float)a5 imageExposureTime:(float)a6
+- (void)setGyroSharpnessParam:(id)param homographyResults:(id)results livePhotoStillDisplayTime:(float)time imageExposureTime:(float)exposureTime
 {
-  v10 = a3;
-  v11 = a4;
-  self->_livePhotoStillDisplayTime = a5;
-  self->_imageExposureTime = a6;
+  paramCopy = param;
+  resultsCopy = results;
+  self->_livePhotoStillDisplayTime = time;
+  self->_imageExposureTime = exposureTime;
   framePTSResults = self->_framePTSResults;
-  self->_framePTSResults = v10;
-  v14 = v10;
+  self->_framePTSResults = paramCopy;
+  v14 = paramCopy;
 
   homographyResults = self->_homographyResults;
-  self->_homographyResults = v11;
+  self->_homographyResults = resultsCopy;
 }
 
-- (void)setFaceResults:(id)a3
+- (void)setFaceResults:(id)results
 {
-  v6 = a3;
-  v4 = [v6 count];
+  resultsCopy = results;
+  v4 = [resultsCopy count];
   if (v4)
   {
-    v4 = v6;
+    v4 = resultsCopy;
   }
 
   faces = self->_faces;
   self->_faces = v4;
 }
 
-- (float)getFaceScoreFromOutput:(id)a3 ratio:(float)a4
+- (float)getFaceScoreFromOutput:(id)output ratio:(float)ratio
 {
-  v5 = a3;
+  outputCopy = output;
   v6 = 0;
   v7 = -1.0;
   v8 = -1;
   while (1)
   {
-    v9 = [v5 size];
+    v9 = [outputCopy size];
     v10 = [v9 objectAtIndexedSubscript:0];
-    v11 = [v10 intValue];
+    intValue = [v10 intValue];
 
-    if (v6 >= v11)
+    if (v6 >= intValue)
     {
       break;
     }
 
-    if (*([v5 data] + 4 * v6) > v7)
+    if (*([outputCopy data] + 4 * v6) > v7)
     {
-      v7 = *([v5 data] + 4 * v6);
+      v7 = *([outputCopy data] + 4 * v6);
       v8 = v6;
     }
 
@@ -124,29 +124,29 @@ LABEL_6:
 
   if (v8)
   {
-    v12 = a4 * 0.3;
+    v12 = ratio * 0.3;
   }
 
   else
   {
-    v12 = *[v5 data];
+    v12 = *[outputCopy data];
   }
 
   return v12;
 }
 
-- (int)computeCNNFaceSharpness:(__CVBuffer *)a3 result:(float *)a4 cancel:(id)a5
+- (int)computeCNNFaceSharpness:(__CVBuffer *)sharpness result:(float *)result cancel:(id)cancel
 {
   v77 = *MEMORY[0x1E69E9840];
-  v67 = a5;
-  v8 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v9 = [v8 resourceURL];
+  cancelCopy = cancel;
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v52 = v9;
-  v54 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_faceblur.dat" relativeToURL:v9];
-  Width = CVPixelBufferGetWidth(a3);
-  v51 = a4;
-  Height = CVPixelBufferGetHeight(a3);
+  v52 = resourceURL;
+  v54 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_faceblur.dat" relativeToURL:resourceURL];
+  Width = CVPixelBufferGetWidth(sharpness);
+  resultCopy = result;
+  Height = CVPixelBufferGetHeight(sharpness);
   faceInput = self->_faceInput;
   self->_faceInput = 0;
 
@@ -154,12 +154,12 @@ LABEL_6:
   self->_faceModel = 0;
 
   v72 = 0;
-  pixelBuffer = a3;
+  pixelBuffer = sharpness;
   unlockFlags = 1;
-  if (a3)
+  if (sharpness)
   {
-    v58 = a3;
-    v72 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    sharpnessCopy = sharpness;
+    v72 = CVPixelBufferLockBaseAddress(sharpness, 1uLL);
     v53 = v72;
     if (v72)
     {
@@ -211,15 +211,15 @@ LABEL_8:
             }
 
             v21 = *(*(&v68 + 1) + 8 * v20);
-            if (v67)
+            if (cancelCopy)
             {
-              if (v67[2]())
+              if (cancelCopy[2]())
               {
                 break;
               }
             }
 
-            v22 = [v21 objectForKey:{@"attributes", v51}];
+            v22 = [v21 objectForKey:{@"attributes", resultCopy}];
             v23 = [v22 objectForKey:@"faceBounds"];
             v78 = NSRectFromString(v23);
             buf.b = 0.0;
@@ -264,8 +264,8 @@ LABEL_8:
             {
               if (!self->_faceModel)
               {
-                v32 = [(VCPImageBlurAnalyzer *)self prepareFaceBlurModel:v57 & 1];
-                if (v32)
+                softmax = [(VCPImageBlurAnalyzer *)self prepareFaceBlurModel:v57 & 1];
+                if (softmax)
                 {
                   goto LABEL_36;
                 }
@@ -274,35 +274,35 @@ LABEL_8:
               v33 = self->_faceInput;
               if (!v33)
               {
-                v34 = [(VCPCNNModel *)self->_faceModel getGPUContext];
-                v35 = [VCPCNNData cnnDataWithPlane:1 height:v30 width:v30 context:v34];
+                getGPUContext = [(VCPCNNModel *)self->_faceModel getGPUContext];
+                v35 = [VCPCNNData cnnDataWithPlane:1 height:v30 width:v30 context:getGPUContext];
                 v36 = self->_faceInput;
                 self->_faceInput = v35;
 
                 v37 = self->_faceInput;
                 if (!v37)
                 {
-                  v32 = -50;
+                  softmax = -50;
 LABEL_36:
 
                   v48 = 0;
-                  v53 = v32;
+                  v53 = softmax;
 LABEL_37:
                   v47 = v59;
                   goto LABEL_38;
                 }
 
-                v32 = [(VCPCNNData *)v37 allocBuffers:1];
-                if (v32)
+                softmax = [(VCPCNNData *)v37 allocBuffers:1];
+                if (softmax)
                 {
                   goto LABEL_36;
                 }
 
                 v38 = self->_faceModel;
                 v39 = [(VCPCNNData *)self->_faceInput size];
-                v32 = [(VCPCNNModel *)v38 prepareNetworkFromURL:v54 withInputSize:v39];
+                softmax = [(VCPCNNModel *)v38 prepareNetworkFromURL:v54 withInputSize:v39];
 
-                if (v32)
+                if (softmax)
                 {
                   goto LABEL_36;
                 }
@@ -310,29 +310,29 @@ LABEL_37:
                 v33 = self->_faceInput;
               }
 
-              v32 = [(VCPImageBlurAnalyzer *)self scaleRegion:&buf ofImage:v58 toData:v33 withWidth:v30 andHeight:v30];
-              if (v32)
+              softmax = [(VCPImageBlurAnalyzer *)self scaleRegion:&buf ofImage:sharpnessCopy toData:v33 withWidth:v30 andHeight:v30];
+              if (softmax)
               {
                 goto LABEL_36;
               }
 
-              v32 = [(VCPCNNModel *)self->_faceModel forward:self->_faceInput];
-              if (v32)
+              softmax = [(VCPCNNModel *)self->_faceModel forward:self->_faceInput];
+              if (softmax)
               {
                 goto LABEL_36;
               }
 
-              v40 = [(VCPCNNModel *)self->_faceModel output];
-              v32 = [v40 softmax];
+              output = [(VCPCNNModel *)self->_faceModel output];
+              softmax = [output softmax];
 
-              if (v32)
+              if (softmax)
               {
                 goto LABEL_36;
               }
 
-              v41 = [(VCPCNNModel *)self->_faceModel output];
+              output2 = [(VCPCNNModel *)self->_faceModel output];
               *&v42 = v30 / v66;
-              [(VCPImageBlurAnalyzer *)self getFaceScoreFromOutput:v41 ratio:v42];
+              [(VCPImageBlurAnalyzer *)self getFaceScoreFromOutput:output2 ratio:v42];
               v44 = v43;
 
               v45 = (v28 * v65);
@@ -389,7 +389,7 @@ LABEL_38:
               v49 = 0.5;
             }
 
-            *v51 = v49;
+            *resultCopy = v49;
           }
 
           break;
@@ -417,10 +417,10 @@ LABEL_38:
   return v53;
 }
 
-- (int)computeSharpnessScore:(float *)a3 forFacesInImage:(__CVBuffer *)a4
+- (int)computeSharpnessScore:(float *)score forFacesInImage:(__CVBuffer *)image
 {
-  v14 = a3;
-  v15 = a4;
+  scoreCopy = score;
+  imageCopy = image;
   v21 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
@@ -442,7 +442,7 @@ LABEL_38:
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * v9) objectForKey:{@"attributes", v14, v15, v16}];
+        v10 = [*(*(&v16 + 1) + 8 * v9) objectForKey:{@"attributes", scoreCopy, imageCopy, v16}];
         v11 = [v10 objectForKey:@"faceBounds"];
         [v5 addObject:v11];
 
@@ -456,7 +456,7 @@ LABEL_38:
     while (v7);
   }
 
-  v12 = [(VCPBlurAnalyzer *)self computeSharpnessScore:v14 forObjects:v5 inImage:v15];
+  v12 = [(VCPBlurAnalyzer *)self computeSharpnessScore:scoreCopy forObjects:v5 inImage:imageCopy];
   return v12;
 }
 
@@ -656,13 +656,13 @@ LABEL_38:
   self->_sharpness = roundf(v38) / 100.0;
 }
 
-- (int)computeLocalSharpness:(__CVBuffer *)a3
+- (int)computeLocalSharpness:(__CVBuffer *)sharpness
 {
-  pixelBuffer = a3;
+  pixelBuffer = sharpness;
   unlockFlags = 1;
-  if (a3)
+  if (sharpness)
   {
-    v5 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v5 = CVPixelBufferLockBaseAddress(sharpness, 1uLL);
     v16 = v5;
     if (v5)
     {
@@ -675,10 +675,10 @@ LABEL_38:
 
     else
     {
-      Width = CVPixelBufferGetWidth(a3);
-      Height = CVPixelBufferGetHeight(a3);
-      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
+      Width = CVPixelBufferGetWidth(sharpness);
+      Height = CVPixelBufferGetHeight(sharpness);
+      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(sharpness, 0);
+      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(sharpness, 0);
       v12 = 0;
       *self->_sharpnessBlocks = 0u;
       *&self->_sharpnessBlocks[4] = 0u;
@@ -714,9 +714,9 @@ LABEL_38:
   return v6;
 }
 
-- (int)prepareFaceBlurModel:(BOOL)a3
+- (int)prepareFaceBlurModel:(BOOL)model
 {
-  if (a3)
+  if (model)
   {
     v3 = 4;
   }
@@ -787,19 +787,19 @@ LABEL_38:
   return v8;
 }
 
-- (int)scaleRegion:(CGRect *)a3 ofImage:(__CVBuffer *)a4 toData:(id)a5 withWidth:(int)a6 andHeight:(int)a7
+- (int)scaleRegion:(CGRect *)region ofImage:(__CVBuffer *)image toData:(id)data withWidth:(int)width andHeight:(int)height
 {
-  v7 = *&a7;
-  v8 = *&a6;
-  v12 = a5;
+  v7 = *&height;
+  v8 = *&width;
+  dataCopy = data;
   pixelBuffer = 0;
-  v13 = MEMORY[0x1E695F058];
-  if (a3)
+  regionCopy = MEMORY[0x1E695F058];
+  if (region)
   {
-    v13 = a3;
+    regionCopy = region;
   }
 
-  v14 = Scaler::ScaleCropped(&self->_scaler, *v13, a4, &pixelBuffer, v8, v7, 875704438);
+  v14 = Scaler::ScaleCropped(&self->_scaler, *regionCopy, image, &pixelBuffer, v8, v7, 875704438);
   if (!v14)
   {
     v25 = pixelBuffer;
@@ -822,7 +822,7 @@ LABEL_38:
         BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0);
         Width = CVPixelBufferGetWidth(pixelBuffer);
         Height = CVPixelBufferGetHeight(pixelBuffer);
-        v20 = [v12 data];
+        data = [dataCopy data];
         if (Height >= 1)
         {
           for (i = 0; i != Height; ++i)
@@ -834,14 +834,14 @@ LABEL_38:
               {
                 LOBYTE(v21) = BaseAddressOfPlane[v23];
                 v21 = LODWORD(v21) / 255.0;
-                *(v20 + 4 * v23++) = v21;
+                *(data + 4 * v23++) = v21;
               }
 
               while ((Width & 0x7FFFFFFF) != v23);
             }
 
             BaseAddressOfPlane += BytesPerRowOfPlane;
-            v20 += 4 * Width;
+            data += 4 * Width;
           }
         }
 
@@ -869,7 +869,7 @@ LABEL_38:
   return v14;
 }
 
-- (int)computeGyroSharpness:(float *)a3
+- (int)computeGyroSharpness:(float *)sharpness
 {
   memset(&v42, 0, sizeof(v42));
   v5 = [(NSArray *)self->_framePTSResults objectAtIndexedSubscript:0];
@@ -945,8 +945,8 @@ LABEL_38:
   }
 
   v38 = v6 + 1;
-  v23 = [(NSArray *)self->_homographyResults objectAtIndexedSubscript:v6, a3];
-  v24 = [v23 objectForKeyedSubscript:@"attributes"];
+  sharpness = [(NSArray *)self->_homographyResults objectAtIndexedSubscript:v6, sharpness];
+  v24 = [sharpness objectForKeyedSubscript:@"attributes"];
   v39 = [v24 objectForKeyedSubscript:@"MetaHomographyResults"];
 
   v25 = [(NSArray *)self->_homographyResults objectAtIndexedSubscript:v6 - 1];
@@ -976,18 +976,18 @@ LABEL_38:
   return 0;
 }
 
-- (float)estimateDistance:(id)a3 prevHomography:(id)a4
+- (float)estimateDistance:(id)distance prevHomography:(id)homography
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  distanceCopy = distance;
+  homographyCopy = homography;
   for (i = 0; i != 9; ++i)
   {
-    v8 = [v5 objectAtIndexedSubscript:i];
+    v8 = [distanceCopy objectAtIndexedSubscript:i];
     [v8 floatValue];
     __B[i] = v9;
 
-    v10 = [v6 objectAtIndexedSubscript:i];
+    v10 = [homographyCopy objectAtIndexedSubscript:i];
     [v10 floatValue];
     v13[i] = v11;
   }
@@ -995,18 +995,18 @@ LABEL_38:
   vcp_matrix_invert(__B);
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 withPreAnalysisScore:(float)a5 results:(id *)a6 cancel:(id)a7
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags withPreAnalysisScore:(float)score results:(id *)results cancel:(id)cancel
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v11 = a7;
-  v12 = [MEMORY[0x1E695DF90] dictionary];
+  cancelCopy = cancel;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   p_sharpness = &self->_sharpness;
   self->_sharpness = 0.0;
   self->_textureScore = 1.0;
   v14 = objc_autoreleasePoolPush();
   if (self->_sdof)
   {
-    v16 = [(VCPImageBlurAnalyzer *)self computeLocalSharpness:a3];
+    v16 = [(VCPImageBlurAnalyzer *)self computeLocalSharpness:buffer];
     if (v16)
     {
       goto LABEL_14;
@@ -1015,26 +1015,26 @@ LABEL_38:
     [(VCPImageBlurAnalyzer *)self spatialPooling];
   }
 
-  if (a5 == -1.0)
+  if (score == -1.0)
   {
     *&v15 = self->_contrast;
-    v16 = [(VCPCNNBlurAnalyzer *)self->_blurAnalyzer computeCNNBasedSharpness:a3 sharpnessScore:&self->_sharpness textureScore:&self->_textureScore contrast:v11 cancel:v15];
+    v16 = [(VCPCNNBlurAnalyzer *)self->_blurAnalyzer computeCNNBasedSharpness:buffer sharpnessScore:&self->_sharpness textureScore:&self->_textureScore contrast:cancelCopy cancel:v15];
     if (v16)
     {
       goto LABEL_14;
     }
 
-    a5 = *p_sharpness;
+    score = *p_sharpness;
   }
 
   else
   {
-    *p_sharpness = a5;
+    *p_sharpness = score;
   }
 
-  *&v15 = a5;
+  *&v15 = score;
   v17 = [MEMORY[0x1E696AD98] numberWithFloat:v15];
-  [v12 setObject:v17 forKey:@"sharpness"];
+  [dictionary setObject:v17 forKey:@"sharpness"];
 
   faces = self->_faces;
   if (faces && [(NSArray *)faces count])
@@ -1042,12 +1042,12 @@ LABEL_38:
     v29 = 0;
     if (self->_useGPU)
     {
-      v19 = [(VCPImageBlurAnalyzer *)self computeCNNFaceSharpness:a3 result:&v29 cancel:v11];
+      v19 = [(VCPImageBlurAnalyzer *)self computeCNNFaceSharpness:buffer result:&v29 cancel:cancelCopy];
     }
 
     else
     {
-      v19 = [(VCPImageBlurAnalyzer *)self computeSharpnessScore:&v29 forFacesInImage:a3];
+      v19 = [(VCPImageBlurAnalyzer *)self computeSharpnessScore:&v29 forFacesInImage:buffer];
     }
 
     v16 = v19;
@@ -1058,7 +1058,7 @@ LABEL_38:
 
     LODWORD(v20) = v29;
     v22 = [MEMORY[0x1E696AD98] numberWithFloat:v20];
-    [v12 setObject:v22 forKey:@"sharpnessFaces"];
+    [dictionary setObject:v22 forKey:@"sharpnessFaces"];
   }
 
   framePTSResults = self->_framePTSResults;
@@ -1093,12 +1093,12 @@ LABEL_24:
   {
     v33 = @"BlurResults";
     v30 = @"attributes";
-    v31 = v12;
+    v31 = dictionary;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v32 = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
     v34[0] = v27;
-    *a6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
+    *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
 
     v16 = 0;
   }

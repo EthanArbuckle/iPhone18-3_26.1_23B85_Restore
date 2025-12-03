@@ -1,21 +1,21 @@
 @interface CMLClientConfig
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToClientConfig:(id)a3;
-- (CMLClientConfig)initWithCoder:(id)a3;
-- (CMLClientConfig)initWithUseCase:(id)a3;
-- (CMLClientConfig)initWithUseCase:(id)a3 sourceApplicationBundleIdentifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToClientConfig:(id)config;
+- (CMLClientConfig)initWithCoder:(id)coder;
+- (CMLClientConfig)initWithUseCase:(id)case;
+- (CMLClientConfig)initWithUseCase:(id)case sourceApplicationBundleIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSourceApplicationBundleIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSourceApplicationBundleIdentifier:(id)identifier;
 @end
 
 @implementation CMLClientConfig
 
-- (CMLClientConfig)initWithUseCase:(id)a3 sourceApplicationBundleIdentifier:(id)a4
+- (CMLClientConfig)initWithUseCase:(id)case sourceApplicationBundleIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  caseCopy = case;
+  identifierCopy = identifier;
   v10 = +[CMLLog client];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -23,9 +23,9 @@
     *buf = 138543874;
     v20 = v11;
     v21 = 2114;
-    v22 = v9;
+    v22 = identifierCopy;
     v23 = 2114;
-    v24 = v8;
+    v24 = caseCopy;
     _os_log_impl(&dword_224E26000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ using sourceApplicationBundleIdentifier '%{public}@' for useCase '%{public}@'", buf, 0x20u);
   }
 
@@ -35,8 +35,8 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_useCase, a3);
-    v14 = [v9 copy];
+    objc_storeStrong(&v12->_useCase, case);
+    v14 = [identifierCopy copy];
     sourceApplicationBundleIdentifier = v13->_sourceApplicationBundleIdentifier;
     v13->_sourceApplicationBundleIdentifier = v14;
   }
@@ -45,21 +45,21 @@
   return v13;
 }
 
-- (CMLClientConfig)initWithUseCase:(id)a3
+- (CMLClientConfig)initWithUseCase:(id)case
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
-  v6 = [v4 mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = [(CMLClientConfig *)self initWithUseCase:v5 sourceApplicationBundleIdentifier:v7];
+  caseCopy = case;
+  mainBundle = [v4 mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v8 = [(CMLClientConfig *)self initWithUseCase:caseCopy sourceApplicationBundleIdentifier:bundleIdentifier];
 
   return v8;
 }
 
-- (void)setSourceApplicationBundleIdentifier:(id)a3
+- (void)setSourceApplicationBundleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = +[CMLLog client];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -68,88 +68,88 @@
     v12 = 138543874;
     v13 = v7;
     v14 = 2114;
-    v15 = v5;
+    v15 = identifierCopy;
     v16 = 2114;
     v17 = useCase;
     _os_log_impl(&dword_224E26000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Switching sourceApplicationBundleIdentifier to '%{public}@' for useCase '%{public}@'", &v12, 0x20u);
   }
 
-  v9 = [v5 copy];
+  v9 = [identifierCopy copy];
   sourceApplicationBundleIdentifier = self->_sourceApplicationBundleIdentifier;
   self->_sourceApplicationBundleIdentifier = v9;
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CMLClientConfig *)self isEqualToClientConfig:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CMLClientConfig *)self isEqualToClientConfig:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToClientConfig:(id)a3
+- (BOOL)isEqualToClientConfig:(id)config
 {
-  v4 = a3;
-  v5 = [(CMLClientConfig *)self sourceApplicationBundleIdentifier];
-  v6 = [v4 sourceApplicationBundleIdentifier];
-  if (v5 == v6)
+  configCopy = config;
+  sourceApplicationBundleIdentifier = [(CMLClientConfig *)self sourceApplicationBundleIdentifier];
+  sourceApplicationBundleIdentifier2 = [configCopy sourceApplicationBundleIdentifier];
+  if (sourceApplicationBundleIdentifier == sourceApplicationBundleIdentifier2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(CMLClientConfig *)self sourceApplicationBundleIdentifier];
-    v8 = [v4 sourceApplicationBundleIdentifier];
-    v9 = [v7 isEqual:v8];
+    sourceApplicationBundleIdentifier3 = [(CMLClientConfig *)self sourceApplicationBundleIdentifier];
+    sourceApplicationBundleIdentifier4 = [configCopy sourceApplicationBundleIdentifier];
+    v9 = [sourceApplicationBundleIdentifier3 isEqual:sourceApplicationBundleIdentifier4];
   }
 
-  v10 = [(CMLClientConfig *)self useCase];
-  v11 = [v4 useCase];
-  v12 = [v10 isEqual:v11];
+  useCase = [(CMLClientConfig *)self useCase];
+  useCase2 = [configCopy useCase];
+  v12 = [useCase isEqual:useCase2];
 
   return v12 & v9;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(CMLClientConfig *)self useCase];
-  v4 = [v3 hash];
-  v5 = [(CMLClientConfig *)self sourceApplicationBundleIdentifier];
-  v6 = [v5 hash];
+  useCase = [(CMLClientConfig *)self useCase];
+  v4 = [useCase hash];
+  sourceApplicationBundleIdentifier = [(CMLClientConfig *)self sourceApplicationBundleIdentifier];
+  v6 = [sourceApplicationBundleIdentifier hash];
 
   return v6 ^ v4;
 }
 
-- (CMLClientConfig)initWithCoder:(id)a3
+- (CMLClientConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"useCase"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationBundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"useCase"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationBundleIdentifier"];
 
   v7 = [(CMLClientConfig *)self initWithUseCase:v5 sourceApplicationBundleIdentifier:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CMLClientConfig *)self useCase];
-  [v4 encodeObject:v5 forKey:@"useCase"];
+  coderCopy = coder;
+  useCase = [(CMLClientConfig *)self useCase];
+  [coderCopy encodeObject:useCase forKey:@"useCase"];
 
-  v6 = [(CMLClientConfig *)self sourceApplicationBundleIdentifier];
-  [v4 encodeObject:v6 forKey:@"sourceApplicationBundleIdentifier"];
+  sourceApplicationBundleIdentifier = [(CMLClientConfig *)self sourceApplicationBundleIdentifier];
+  [coderCopy encodeObject:sourceApplicationBundleIdentifier forKey:@"sourceApplicationBundleIdentifier"];
 }
 
 @end

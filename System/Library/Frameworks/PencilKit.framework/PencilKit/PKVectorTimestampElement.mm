@@ -1,17 +1,17 @@
 @interface PKVectorTimestampElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation PKVectorTimestampElement
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PKVectorTimestampElement *)self clock];
-  if (v5 == [v4 clock])
+  equalCopy = equal;
+  clock = [(PKVectorTimestampElement *)self clock];
+  if (clock == [equalCopy clock])
   {
-    v6 = [(PKVectorTimestampElement *)self subclock];
-    v7 = v6 == [v4 subclock];
+    subclock = [(PKVectorTimestampElement *)self subclock];
+    v7 = subclock == [equalCopy subclock];
   }
 
   else

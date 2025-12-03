@@ -1,25 +1,25 @@
 @interface UIDictationLayoutView
 - (BOOL)isShowing;
-- (UIDictationLayoutView)initWithFrame:(CGRect)a3;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (UIDictationLayoutView)initWithFrame:(CGRect)frame;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)finishReturnToKeyboard;
-- (void)globeButtonPressed:(id)a3 withEvent:(id)a4;
-- (void)globeButtonPressed:(id)a3 withEvent:(id)a4 location:(CGPoint)a5;
-- (void)keyboardButtonPressed:(id)a3;
+- (void)globeButtonPressed:(id)pressed withEvent:(id)event;
+- (void)globeButtonPressed:(id)pressed withEvent:(id)event location:(CGPoint)location;
+- (void)keyboardButtonPressed:(id)pressed;
 - (void)layoutSubviews;
 - (void)returnToKeyboard;
-- (void)setRenderConfig:(id)a3;
-- (void)setState:(int)a3;
+- (void)setRenderConfig:(id)config;
+- (void)setState:(int)state;
 - (void)updateLanguageLabel;
 @end
 
 @implementation UIDictationLayoutView
 
-- (UIDictationLayoutView)initWithFrame:(CGRect)a3
+- (UIDictationLayoutView)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = UIDictationLayoutView;
-  v3 = [(UIDictationView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIDictationView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UILabel alloc];
@@ -69,9 +69,9 @@
   return v3;
 }
 
-- (void)keyboardButtonPressed:(id)a3
+- (void)keyboardButtonPressed:(id)pressed
 {
-  v8 = a3;
+  pressedCopy = pressed;
   v4 = +[UIInputSwitcherView sharedInstance];
   if ([v4 isVisible])
   {
@@ -80,12 +80,12 @@
 
   else
   {
-    if (self->_keyboardButton == v8)
+    if (self->_keyboardButton == pressedCopy)
     {
       v5 = 15;
     }
 
-    else if (self->_waveTapEndpointButtonView == v8)
+    else if (self->_waveTapEndpointButtonView == pressedCopy)
     {
       v5 = 14;
     }
@@ -151,9 +151,9 @@
   }
 
   v16 = v15 + v15;
-  v17 = [(UIView *)self->_keyboardButton window];
+  window = [(UIView *)self->_keyboardButton window];
 
-  if (v17)
+  if (window)
   {
     v16 = v16 + -120.0;
   }
@@ -166,9 +166,9 @@
 
   [(UIView *)self->_languageLabel frame];
   [(UILabel *)self->_languageLabel setBounds:0.0, 0.0, v16, v19 * [(UILabel *)self->_languageLabel numberOfLines]];
-  v20 = [(UIView *)self->_keyboardButton superview];
+  superview = [(UIView *)self->_keyboardButton superview];
 
-  if (v20)
+  if (superview)
   {
     [(UIView *)self frame];
     v22 = v21 * 0.5;
@@ -203,27 +203,27 @@
   [(UIView *)self->_languageLabel setAlpha:1.0];
 }
 
-- (void)globeButtonPressed:(id)a3 withEvent:(id)a4
+- (void)globeButtonPressed:(id)pressed withEvent:(id)event
 {
-  v6 = a4;
-  v8 = a3;
-  [v8 bounds];
+  eventCopy = event;
+  pressedCopy = pressed;
+  [pressedCopy bounds];
   MidX = CGRectGetMidX(v10);
-  [v8 bounds];
-  [v8 convertPoint:0 toView:{MidX, CGRectGetMidY(v11) + -20.0}];
-  [(UIDictationLayoutView *)self globeButtonPressed:v8 withEvent:v6 location:?];
+  [pressedCopy bounds];
+  [pressedCopy convertPoint:0 toView:{MidX, CGRectGetMidY(v11) + -20.0}];
+  [(UIDictationLayoutView *)self globeButtonPressed:pressedCopy withEvent:eventCopy location:?];
 }
 
-- (void)globeButtonPressed:(id)a3 withEvent:(id)a4 location:(CGPoint)a5
+- (void)globeButtonPressed:(id)pressed withEvent:(id)event location:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
+  y = location.y;
+  x = location.x;
+  pressedCopy = pressed;
+  eventCopy = event;
   v11 = +[UIKeyboardInputModeController sharedInputModeController];
-  v12 = [v11 enabledDictationLanguages];
+  enabledDictationLanguages = [v11 enabledDictationLanguages];
 
-  if ([v12 count])
+  if ([enabledDictationLanguages count])
   {
     [(UIDictationView *)self setSwitchingLanguage:1];
     v13 = +[UIInputSwitcherView sharedInstance];
@@ -232,7 +232,7 @@
     v17[2] = __63__UIDictationLayoutView_globeButtonPressed_withEvent_location___block_invoke;
     v17[3] = &unk_1E70F3590;
     v17[4] = self;
-    v14 = [v13 buttonPressed:v9 withEvent:v10 location:1 isForDictation:v17 tapAction:{x, y}];
+    v14 = [v13 buttonPressed:pressedCopy withEvent:eventCopy location:1 isForDictation:v17 tapAction:{x, y}];
   }
 
   else
@@ -303,18 +303,18 @@ void __63__UIDictationLayoutView_globeButtonPressed_withEvent_location___block_i
   }
 }
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
   background = self->super._background;
-  v4 = a3;
-  v5 = [(UIKeyboardDicationBackground *)background gradient];
-  [v5 setRenderConfig:v4];
+  configCopy = config;
+  gradient = [(UIKeyboardDicationBackground *)background gradient];
+  [gradient setRenderConfig:configCopy];
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  v3 = *&a3;
-  if (a3 == 2)
+  v3 = *&state;
+  if (state == 2)
   {
     [(UIView *)self bounds];
     v9 = v8;
@@ -328,8 +328,8 @@ void __63__UIDictationLayoutView_globeButtonPressed_withEvent_location___block_i
     else
     {
       v12 = [SUICFlamesViewClass alloc];
-      v13 = [objc_opt_self() mainScreen];
-      v14 = [v12 initWithFrame:v13 screen:2 fidelity:{0.0, 0.0, v9, 100.0}];
+      mainScreen = [objc_opt_self() mainScreen];
+      v14 = [v12 initWithFrame:mainScreen screen:2 fidelity:{0.0, 0.0, v9, 100.0}];
       v15 = self->super._flamesView;
       self->super._flamesView = v14;
     }
@@ -355,14 +355,14 @@ void __63__UIDictationLayoutView_globeButtonPressed_withEvent_location___block_i
     [(UIView *)self setNeedsLayout];
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    v6 = [v5 _inheritedRenderConfig];
-    [(UIDictationLayoutView *)self setRenderConfig:v6];
+    _inheritedRenderConfig = [v5 _inheritedRenderConfig];
+    [(UIDictationLayoutView *)self setRenderConfig:_inheritedRenderConfig];
 
-    v7 = [(UIKeyboardDicationBackground *)self->super._background gradient];
-    [v7 startColorTransitionIn];
+    gradient = [(UIKeyboardDicationBackground *)self->super._background gradient];
+    [gradient startColorTransitionIn];
   }
 
   else
@@ -370,8 +370,8 @@ void __63__UIDictationLayoutView_globeButtonPressed_withEvent_location___block_i
     [(SUICFlamesView *)self->super._flamesView setHidden:1];
   }
 
-  v17 = [(UIKeyboardDicationBackground *)self->super._background gradient];
-  [v17 setNeedsLayout];
+  gradient2 = [(UIKeyboardDicationBackground *)self->super._background gradient];
+  [gradient2 setNeedsLayout];
 
   v18.receiver = self;
   v18.super_class = UIDictationLayoutView;
@@ -389,9 +389,9 @@ void __63__UIDictationLayoutView_globeButtonPressed_withEvent_location___block_i
   if (+[UIKeyboardImpl isSplit])
   {
     v7 = +[UIKeyboardImpl activeInstance];
-    v8 = [v7 centerFilled];
+    centerFilled = [v7 centerFilled];
 
-    if ((v8 & 1) == 0)
+    if ((centerFilled & 1) == 0)
     {
       v9 = +[UIKeyboardLayoutDictation activeInstance];
       [v9 splitLeftSize];
@@ -401,8 +401,8 @@ void __63__UIDictationLayoutView_globeButtonPressed_withEvent_location___block_i
 
   v11 = +[UIKeyboardImpl showsGlobeAndDictationKeysExternally];
   v12 = +[UIKeyboardInputMode dictationInputMode];
-  v13 = [v12 triggeringTouch];
-  if (v13)
+  triggeringTouch = [v12 triggeringTouch];
+  if (triggeringTouch)
   {
     v14 = 1;
   }
@@ -427,18 +427,18 @@ void __63__UIDictationLayoutView_globeButtonPressed_withEvent_location___block_i
   [(SUICFlamesView *)self->super._flamesView setCenter:v4 * 0.5, v16];
   [(SUICFlamesView *)self->super._flamesView setNeedsLayout];
   v17 = +[UIKeyboardImpl activeInstance];
-  v18 = [v17 _inheritedRenderConfig];
-  self->_blackTextColor = [v18 lightKeyboard];
+  _inheritedRenderConfig = [v17 _inheritedRenderConfig];
+  self->_blackTextColor = [_inheritedRenderConfig lightKeyboard];
 
   v19 = +[UIDevice currentDevice];
-  v20 = [v19 userInterfaceIdiom];
+  userInterfaceIdiom = [v19 userInterfaceIdiom];
 
   [(UIView *)self bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  if ((v20 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(UIView *)self bounds];
     v30 = v29 * 0.5;
@@ -477,8 +477,8 @@ void __63__UIDictationLayoutView_globeButtonPressed_withEvent_location___block_i
     v36 = v6 - fmin(v6 * 0.25, 40.0);
     v37 = v6 * 0.5;
     v38 = +[UIKeyboardInputModeController sharedInputModeController];
-    v39 = [v38 enabledDictationLanguages];
-    v40 = [v39 count];
+    enabledDictationLanguages = [v38 enabledDictationLanguages];
+    v40 = [enabledDictationLanguages count];
 
     if (v40 < 2)
     {
@@ -511,10 +511,10 @@ void __63__UIDictationLayoutView_globeButtonPressed_withEvent_location___block_i
     }
 
     [(UIButton *)self->_keyboardButton setBounds:v41, v42, v35, v37];
-    v46 = [(UIView *)self->_globeButton superview];
+    superview = [(UIView *)self->_globeButton superview];
 
     v47 = v4 + -40.0;
-    if (!v46)
+    if (!superview)
     {
       v47 = v4 * 0.5;
     }
@@ -541,9 +541,9 @@ void __63__UIDictationLayoutView_globeButtonPressed_withEvent_location___block_i
   {
     [(UIDictationView *)self setShowLanguageLabel:0];
     v51 = +[UIKeyboardImpl activeInstance];
-    v52 = [v51 activeDictationLanguage];
+    activeDictationLanguage = [v51 activeDictationLanguage];
     currentDictationLanguage = self->_currentDictationLanguage;
-    self->_currentDictationLanguage = v52;
+    self->_currentDictationLanguage = activeDictationLanguage;
 
     [(UIView *)self->_languageLabel alpha];
     if (v54 == 0.0)
@@ -558,9 +558,9 @@ void __63__UIDictationLayoutView_globeButtonPressed_withEvent_location___block_i
 
     if (self->_currentDictationLanguage)
     {
-      v56 = [(UIView *)self->_globeButton superview];
+      superview2 = [(UIView *)self->_globeButton superview];
 
-      if (!v56)
+      if (!superview2)
       {
         [(UIView *)self->_keyboardButton setAlpha:0.0];
       }
@@ -613,8 +613,8 @@ void __39__UIDictationLayoutView_layoutSubviews__block_invoke(uint64_t a1)
 {
   if (self->super._background)
   {
-    v2 = [(UIKeyboardDicationBackground *)self->super._background gradient];
-    [v2 startColorTransitionOut];
+    gradient = [(UIKeyboardDicationBackground *)self->super._background gradient];
+    [gradient startColorTransitionOut];
   }
 
   else
@@ -630,44 +630,44 @@ void __39__UIDictationLayoutView_layoutSubviews__block_invoke(uint64_t a1)
   v2 = +[UIKeyboardImpl sharedInstance];
   if ([v2 isUsingDictationLayout])
   {
-    v3 = 1;
+    isDictationPopoverPresented = 1;
   }
 
   else
   {
     v4 = +[UIKeyboardImpl sharedInstance];
-    v3 = [v4 isDictationPopoverPresented];
+    isDictationPopoverPresented = [v4 isDictationPopoverPresented];
   }
 
-  return v3;
+  return isDictationPopoverPresented;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v4 = [a3 view];
+  view = [interaction view];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v5 = 0;
+    imageView = 0;
     goto LABEL_11;
   }
 
-  v5 = [v4 imageView];
-  if (!v5)
+  imageView = [view imageView];
+  if (!imageView)
   {
 LABEL_11:
     v25 = 0;
     goto LABEL_12;
   }
 
-  v6 = [[UITargetedPreview alloc] initWithView:v5];
-  [v4 bounds];
+  v6 = [[UITargetedPreview alloc] initWithView:imageView];
+  [view bounds];
   v8 = v7;
   v10 = v9;
-  [v5 frame];
+  [imageView frame];
   v12 = v11;
   v14 = v13;
-  [v5 bounds];
+  [imageView bounds];
   v17 = v10 - v16;
   v18 = 0.0;
   if (v10 - v16 < 0.0)

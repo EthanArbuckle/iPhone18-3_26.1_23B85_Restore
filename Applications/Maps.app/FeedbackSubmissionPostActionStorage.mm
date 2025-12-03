@@ -1,15 +1,15 @@
 @interface FeedbackSubmissionPostActionStorage
-- (BOOL)removefeedbackActionForSubmissionIdentifier:(id)a3;
-- (BOOL)saveFeedbackAction:(id)a3 forSubmissionIdentifier:(id)a4;
-- (id)feedbackActionForSubmissionIdentifier:(id)a3;
+- (BOOL)removefeedbackActionForSubmissionIdentifier:(id)identifier;
+- (BOOL)saveFeedbackAction:(id)action forSubmissionIdentifier:(id)identifier;
+- (id)feedbackActionForSubmissionIdentifier:(id)identifier;
 @end
 
 @implementation FeedbackSubmissionPostActionStorage
 
-- (id)feedbackActionForSubmissionIdentifier:(id)a3
+- (id)feedbackActionForSubmissionIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 stringByAppendingString:@"feedback"];
+  identifierCopy = identifier;
+  v4 = [identifierCopy stringByAppendingString:@"feedback"];
   v5 = [RAPCorrectionsStorage pathForFeedbackRequestForSubmissionIdentifier:v4];
   v6 = [RAPFileManager dataAtFileURL:v5];
   v11 = 0;
@@ -21,7 +21,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v13 = v3;
+      v13 = identifierCopy;
       v14 = 2112;
       v15 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to unarchive feedback action for identifier:%@ withError:%@", buf, 0x16u);
@@ -31,20 +31,20 @@
   return v7;
 }
 
-- (BOOL)removefeedbackActionForSubmissionIdentifier:(id)a3
+- (BOOL)removefeedbackActionForSubmissionIdentifier:(id)identifier
 {
-  v3 = [a3 stringByAppendingString:@"feedback"];
+  v3 = [identifier stringByAppendingString:@"feedback"];
   v4 = [RAPCorrectionsStorage pathForFeedbackRequestForSubmissionIdentifier:v3];
   v5 = [RAPFileManager removeItemAtFilePath:v4];
 
   return v5;
 }
 
-- (BOOL)saveFeedbackAction:(id)a3 forSubmissionIdentifier:(id)a4
+- (BOOL)saveFeedbackAction:(id)action forSubmissionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v13 = 0;
-  v6 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v13];
+  v6 = [NSKeyedArchiver archivedDataWithRootObject:action requiringSecureCoding:1 error:&v13];
   v7 = v13;
   if (v7)
   {
@@ -52,14 +52,14 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v15 = v5;
+      v15 = identifierCopy;
       v16 = 2112;
       v17 = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Failed to archive feedback action for identifier:%@ withError:%@", buf, 0x16u);
     }
   }
 
-  v9 = [v5 stringByAppendingString:@"feedback"];
+  v9 = [identifierCopy stringByAppendingString:@"feedback"];
   v10 = +[RAPCorrectionsStorage basePathForCorrections];
   v11 = [RAPFileManager saveData:v6 toDirectory:v10 filename:v9];
 

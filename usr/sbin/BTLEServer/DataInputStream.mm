@@ -1,32 +1,32 @@
 @interface DataInputStream
-+ (id)inputStreamWithData:(id)a3;
-+ (id)inputStreamWithData:(id)a3 byteOrder:(int64_t)a4;
-- (BOOL)readIEEEFloat:(float *)a3;
-- (BOOL)readNumBytes:(unsigned int)a3 toData:(id)a4;
-- (BOOL)readString:(id)a3;
-- (BOOL)readUint16:(unsigned __int16 *)a3;
-- (BOOL)readUint24:(unsigned int *)a3;
-- (BOOL)readUint32:(unsigned int *)a3;
-- (BOOL)readUint40:(unint64_t *)a3;
-- (BOOL)readUint48:(unint64_t *)a3;
-- (BOOL)readUint8:(char *)a3;
-- (DataInputStream)initWithValue:(id)a3 byteOrder:(int64_t)a4;
++ (id)inputStreamWithData:(id)data;
++ (id)inputStreamWithData:(id)data byteOrder:(int64_t)order;
+- (BOOL)readIEEEFloat:(float *)float;
+- (BOOL)readNumBytes:(unsigned int)bytes toData:(id)data;
+- (BOOL)readString:(id)string;
+- (BOOL)readUint16:(unsigned __int16 *)uint16;
+- (BOOL)readUint24:(unsigned int *)uint24;
+- (BOOL)readUint32:(unsigned int *)uint32;
+- (BOOL)readUint40:(unint64_t *)uint40;
+- (BOOL)readUint48:(unint64_t *)uint48;
+- (BOOL)readUint8:(char *)uint8;
+- (DataInputStream)initWithValue:(id)value byteOrder:(int64_t)order;
 @end
 
 @implementation DataInputStream
 
-- (DataInputStream)initWithValue:(id)a3 byteOrder:(int64_t)a4
+- (DataInputStream)initWithValue:(id)value byteOrder:(int64_t)order
 {
-  v6 = a3;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = DataInputStream;
   v7 = [(DataInputStream *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    if (v6)
+    if (valueCopy)
     {
-      v9 = [[NSInputStream alloc] initWithData:v6];
+      v9 = [[NSInputStream alloc] initWithData:valueCopy];
       stream = v8->_stream;
       v8->_stream = v9;
 
@@ -39,75 +39,75 @@
       v7->_stream = 0;
     }
 
-    v8->_byteOrder = a4;
+    v8->_byteOrder = order;
   }
 
   return v8;
 }
 
-+ (id)inputStreamWithData:(id)a3
++ (id)inputStreamWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[DataInputStream alloc] initWithValue:v3 byteOrder:0];
+  dataCopy = data;
+  v4 = [[DataInputStream alloc] initWithValue:dataCopy byteOrder:0];
 
   return v4;
 }
 
-+ (id)inputStreamWithData:(id)a3 byteOrder:(int64_t)a4
++ (id)inputStreamWithData:(id)data byteOrder:(int64_t)order
 {
-  v5 = a3;
-  v6 = [[DataInputStream alloc] initWithValue:v5 byteOrder:a4];
+  dataCopy = data;
+  v6 = [[DataInputStream alloc] initWithValue:dataCopy byteOrder:order];
 
   return v6;
 }
 
-- (BOOL)readUint8:(char *)a3
+- (BOOL)readUint8:(char *)uint8
 {
-  v4 = [(DataInputStream *)self stream];
-  v5 = [v4 read:a3 maxLength:1];
+  stream = [(DataInputStream *)self stream];
+  v5 = [stream read:uint8 maxLength:1];
 
   return v5 == 1;
 }
 
-- (BOOL)readUint16:(unsigned __int16 *)a3
+- (BOOL)readUint16:(unsigned __int16 *)uint16
 {
-  v5 = [(DataInputStream *)self stream];
-  v6 = [v5 read:a3 maxLength:2];
+  stream = [(DataInputStream *)self stream];
+  v6 = [stream read:uint16 maxLength:2];
 
-  v7 = [(DataInputStream *)self byteOrder];
-  v8 = *a3;
+  byteOrder = [(DataInputStream *)self byteOrder];
+  v8 = *uint16;
   v9 = bswap32(v8) >> 16;
-  if (v7 != 1)
+  if (byteOrder != 1)
   {
     LOWORD(v8) = v9;
   }
 
-  *a3 = v8;
+  *uint16 = v8;
   return v6 == 2;
 }
 
-- (BOOL)readUint32:(unsigned int *)a3
+- (BOOL)readUint32:(unsigned int *)uint32
 {
-  v5 = [(DataInputStream *)self stream];
-  v6 = [v5 read:a3 maxLength:4];
+  stream = [(DataInputStream *)self stream];
+  v6 = [stream read:uint32 maxLength:4];
 
-  v7 = [(DataInputStream *)self byteOrder];
-  v8 = *a3;
-  v9 = bswap32(*a3);
-  if (v7 != 1)
+  byteOrder = [(DataInputStream *)self byteOrder];
+  v8 = *uint32;
+  v9 = bswap32(*uint32);
+  if (byteOrder != 1)
   {
     v8 = v9;
   }
 
-  *a3 = v8;
+  *uint32 = v8;
   return v6 == 4;
 }
 
-- (BOOL)readIEEEFloat:(float *)a3
+- (BOOL)readIEEEFloat:(float *)float
 {
   v19 = 0;
-  v5 = [(DataInputStream *)self stream];
-  v6 = [v5 read:&v19 maxLength:4];
+  stream = [(DataInputStream *)self stream];
+  v6 = [stream read:&v19 maxLength:4];
 
   if (v6 != 4)
   {
@@ -150,11 +150,11 @@ LABEL_7:
 LABEL_11:
   v14 = v7;
   v15 = __exp10(v7) * v11;
-  *a3 = v15;
+  *float = v15;
   v16 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = *a3;
+    v17 = *float;
     *buf = 67109632;
     v21 = v14;
     v22 = 1024;
@@ -167,12 +167,12 @@ LABEL_11:
   return v6 == 4;
 }
 
-- (BOOL)readString:(id)a3
+- (BOOL)readString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v11 = 0;
-  v5 = [(DataInputStream *)self stream];
-  v6 = [v5 read:&v11 maxLength:1];
+  stream = [(DataInputStream *)self stream];
+  v6 = [stream read:&v11 maxLength:1];
 
   if (v6)
   {
@@ -184,9 +184,9 @@ LABEL_11:
         break;
       }
 
-      [v4 appendFormat:@"%c", v11];
-      v8 = [(DataInputStream *)self stream];
-      v9 = [v8 read:&v11 maxLength:1];
+      [stringCopy appendFormat:@"%c", v11];
+      stream2 = [(DataInputStream *)self stream];
+      v9 = [stream2 read:&v11 maxLength:1];
     }
 
     while (v9);
@@ -200,12 +200,12 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)readUint24:(unsigned int *)a3
+- (BOOL)readUint24:(unsigned int *)uint24
 {
   v10 = 0;
   v9 = 0;
-  v5 = [(DataInputStream *)self stream];
-  v6 = [v5 read:&v9 maxLength:3];
+  stream = [(DataInputStream *)self stream];
+  v6 = [stream read:&v9 maxLength:3];
 
   if (v6 == 3)
   {
@@ -219,18 +219,18 @@ LABEL_11:
       v7 = (v9 << 16) | (HIBYTE(v9) << 8) | v10;
     }
 
-    *a3 = v7;
+    *uint24 = v7;
   }
 
   return v6 == 3;
 }
 
-- (BOOL)readUint40:(unint64_t *)a3
+- (BOOL)readUint40:(unint64_t *)uint40
 {
   v10 = 0;
   v9 = 0;
-  v5 = [(DataInputStream *)self stream];
-  v6 = [v5 read:&v9 maxLength:5];
+  stream = [(DataInputStream *)self stream];
+  v6 = [stream read:&v9 maxLength:5];
 
   if (v6 == 5)
   {
@@ -244,18 +244,18 @@ LABEL_11:
       v7 = (v9 << 32) | (BYTE1(v9) << 24) | (BYTE2(v9) << 16) | (HIBYTE(v9) << 8) | v10;
     }
 
-    *a3 = v7;
+    *uint40 = v7;
   }
 
   return v6 == 5;
 }
 
-- (BOOL)readUint48:(unint64_t *)a3
+- (BOOL)readUint48:(unint64_t *)uint48
 {
   v10 = 0;
   v9 = 0;
-  v5 = [(DataInputStream *)self stream];
-  v6 = [v5 read:&v9 maxLength:6];
+  stream = [(DataInputStream *)self stream];
+  v6 = [stream read:&v9 maxLength:6];
 
   if (v6 == 6)
   {
@@ -269,25 +269,25 @@ LABEL_11:
       v7 = (v9 << 40) | (BYTE1(v9) << 32) | (BYTE2(v9) << 24) | (HIBYTE(v9) << 16) | (v10 << 8) | HIBYTE(v10);
     }
 
-    *a3 = v7;
+    *uint48 = v7;
   }
 
   return v6 == 6;
 }
 
-- (BOOL)readNumBytes:(unsigned int)a3 toData:(id)a4
+- (BOOL)readNumBytes:(unsigned int)bytes toData:(id)data
 {
-  v6 = a4;
-  bzero(&v10 - ((a3 + 15) & 0x1FFFFFFF0), a3);
-  v7 = [(DataInputStream *)self stream];
-  v8 = [v7 read:&v10 - ((a3 + 15) & 0x1FFFFFFF0) maxLength:a3];
+  dataCopy = data;
+  bzero(&v10 - ((bytes + 15) & 0x1FFFFFFF0), bytes);
+  stream = [(DataInputStream *)self stream];
+  v8 = [stream read:&v10 - ((bytes + 15) & 0x1FFFFFFF0) maxLength:bytes];
 
-  if (v8 == a3)
+  if (v8 == bytes)
   {
-    [v6 appendBytes:&v10 - ((a3 + 15) & 0x1FFFFFFF0) length:a3];
+    [dataCopy appendBytes:&v10 - ((bytes + 15) & 0x1FFFFFFF0) length:bytes];
   }
 
-  return v8 == a3;
+  return v8 == bytes;
 }
 
 @end

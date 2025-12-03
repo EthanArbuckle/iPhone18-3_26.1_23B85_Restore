@@ -1,19 +1,19 @@
 @interface TSDiOSModalPresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
-- (TSDiOSModalPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
+- (TSDiOSModalPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
 @end
 
 @implementation TSDiOSModalPresentationController
 
-- (TSDiOSModalPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (TSDiOSModalPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v9.receiver = self;
   v9.super_class = TSDiOSModalPresentationController;
-  v4 = [(TSDiOSModalPresentationController *)&v9 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(TSDiOSModalPresentationController *)&v9 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -29,23 +29,23 @@
   return v4;
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [(TSDiOSModalPresentationController *)self presentedViewController];
+  height = size.height;
+  width = size.width;
+  containerCopy = container;
+  presentedViewController = [(TSDiOSModalPresentationController *)self presentedViewController];
 
-  if (v8 == v7)
+  if (presentedViewController == containerCopy)
   {
-    [v7 preferredContentSize];
+    [containerCopy preferredContentSize];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = TSDiOSModalPresentationController;
-    [(TSDiOSModalPresentationController *)&v15 sizeForChildContentContainer:v7 withParentContainerSize:width, height];
+    [(TSDiOSModalPresentationController *)&v15 sizeForChildContentContainer:containerCopy withParentContainerSize:width, height];
   }
 
   v11 = v9;
@@ -60,15 +60,15 @@
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(TSDiOSModalPresentationController *)self containerView];
-  [v3 bounds];
+  containerView = [(TSDiOSModalPresentationController *)self containerView];
+  [containerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(TSDiOSModalPresentationController *)self presentedViewController];
-  [v12 preferredContentSize];
+  presentedViewController = [(TSDiOSModalPresentationController *)self presentedViewController];
+  [presentedViewController preferredContentSize];
   v13 = sub_10011ECB4();
   v15 = v14;
   v17 = v16;
@@ -84,41 +84,41 @@
 
 - (void)presentationTransitionWillBegin
 {
-  v3 = [(TSDiOSModalPresentationController *)self containerView];
-  v4 = [(TSDiOSModalPresentationController *)self presentedView];
-  [v3 bounds];
+  containerView = [(TSDiOSModalPresentationController *)self containerView];
+  presentedView = [(TSDiOSModalPresentationController *)self presentedView];
+  [containerView bounds];
   [(UIView *)self->_dimmingView setFrame:?];
-  [v3 addSubview:self->_dimmingView];
-  v5 = [(TSDiOSModalPresentationController *)self presentedViewController];
-  v6 = [v5 parentViewController];
+  [containerView addSubview:self->_dimmingView];
+  presentedViewController = [(TSDiOSModalPresentationController *)self presentedViewController];
+  parentViewController = [presentedViewController parentViewController];
 
-  if (v6)
+  if (parentViewController)
   {
-    [v5 willMoveToParentViewController:0];
-    [v4 removeFromSuperview];
-    [v5 removeFromParentViewController];
+    [presentedViewController willMoveToParentViewController:0];
+    [presentedView removeFromSuperview];
+    [presentedViewController removeFromParentViewController];
   }
 
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:1];
-  [v4 setAutoresizingMask:45];
-  [v3 addSubview:v4];
-  v7 = [v5 transitionCoordinator];
-  if (v7)
+  [presentedView setTranslatesAutoresizingMaskIntoConstraints:1];
+  [presentedView setAutoresizingMask:45];
+  [containerView addSubview:presentedView];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
+  if (transitionCoordinator)
   {
     [(UIView *)self->_dimmingView setAlpha:0.0];
-    v8 = [v5 transitionCoordinator];
+    transitionCoordinator2 = [presentedViewController transitionCoordinator];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1004A4CC4;
     v9[3] = &unk_101848DD8;
     v9[4] = self;
-    [v8 animateAlongsideTransition:v9 completion:0];
+    [transitionCoordinator2 animateAlongsideTransition:v9 completion:0];
   }
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  if (!a3)
+  if (!end)
   {
     [(UIView *)self->_dimmingView removeFromSuperview];
   }
@@ -126,15 +126,15 @@
 
 - (void)dismissalTransitionWillBegin
 {
-  v3 = [(TSDiOSModalPresentationController *)self presentedViewController];
-  v4 = [v3 transitionCoordinator];
+  presentedViewController = [(TSDiOSModalPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
 
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1004A4D9C;
   v5[3] = &unk_101848DD8;
   v5[4] = self;
-  [v4 animateAlongsideTransition:v5 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v5 completion:0];
 }
 
 @end

@@ -3,22 +3,22 @@
 - (KmlPairingTransportDelegate)delegate;
 - (void)endSession;
 - (void)endTransaction;
-- (void)hceSession:(id)a3 didReceiveAPDU:(id)a4;
-- (void)hceSessionDidConnect:(id)a3;
-- (void)hceSessionDidDisconnect:(id)a3;
-- (void)hceSessionDidEndUnexpectedly:(id)a3;
-- (void)loyaltyAndPaymentSession:(id)a3 didEndTransaction:(id)a4;
-- (void)loyaltyAndPaymentSession:(id)a3 didStartTransaction:(id)a4;
-- (void)loyaltyAndPaymentSessionDidEndUnexpectedly:(id)a3;
-- (void)pairingEndedWithResult:(id)a3;
+- (void)hceSession:(id)session didReceiveAPDU:(id)u;
+- (void)hceSessionDidConnect:(id)connect;
+- (void)hceSessionDidDisconnect:(id)disconnect;
+- (void)hceSessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)loyaltyAndPaymentSession:(id)session didEndTransaction:(id)transaction;
+- (void)loyaltyAndPaymentSession:(id)session didStartTransaction:(id)transaction;
+- (void)loyaltyAndPaymentSessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)pairingEndedWithResult:(id)result;
 - (void)pauseSession;
 - (void)readApdu;
 - (void)reset;
 - (void)resumeSessionWithTimeout;
-- (void)sendApdu:(id)a3;
+- (void)sendApdu:(id)apdu;
 - (void)startSession;
 - (void)startSessionWithTimeout;
-- (void)startTransactionForKeyWithIdentifier:(id)a3;
+- (void)startTransactionForKeyWithIdentifier:(id)identifier;
 @end
 
 @implementation KmlNfcPairingTransport
@@ -85,17 +85,17 @@
   dispatch_async(nfcTransportQueue, block);
 }
 
-- (void)startTransactionForKeyWithIdentifier:(id)a3
+- (void)startTransactionForKeyWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   nfcTransportQueue = self->_nfcTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10036FD2C;
   v7[3] = &unk_1004C22F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(nfcTransportQueue, v7);
 }
 
@@ -121,17 +121,17 @@
   dispatch_async(nfcTransportQueue, block);
 }
 
-- (void)sendApdu:(id)a3
+- (void)sendApdu:(id)apdu
 {
-  v4 = a3;
+  apduCopy = apdu;
   nfcTransportQueue = self->_nfcTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003701D4;
   v7[3] = &unk_1004C22F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = apduCopy;
+  v6 = apduCopy;
   dispatch_async(nfcTransportQueue, v7);
 }
 
@@ -146,7 +146,7 @@
   dispatch_async(nfcTransportQueue, block);
 }
 
-- (void)pairingEndedWithResult:(id)a3
+- (void)pairingEndedWithResult:(id)result
 {
   v3 = KmlLogger();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -159,107 +159,107 @@
   }
 }
 
-- (void)hceSessionDidConnect:(id)a3
+- (void)hceSessionDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   nfcTransportQueue = self->_nfcTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100371218;
   v7[3] = &unk_1004C22F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = connectCopy;
+  selfCopy = self;
+  v6 = connectCopy;
   dispatch_async(nfcTransportQueue, v7);
 }
 
-- (void)hceSessionDidDisconnect:(id)a3
+- (void)hceSessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   nfcTransportQueue = self->_nfcTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100371410;
   v7[3] = &unk_1004C22F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = disconnectCopy;
+  selfCopy = self;
+  v6 = disconnectCopy;
   dispatch_async(nfcTransportQueue, v7);
 }
 
-- (void)hceSessionDidEndUnexpectedly:(id)a3
+- (void)hceSessionDidEndUnexpectedly:(id)unexpectedly
 {
-  v4 = a3;
+  unexpectedlyCopy = unexpectedly;
   nfcTransportQueue = self->_nfcTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003715F8;
   v7[3] = &unk_1004C22F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = unexpectedlyCopy;
+  selfCopy = self;
+  v6 = unexpectedlyCopy;
   dispatch_async(nfcTransportQueue, v7);
 }
 
-- (void)hceSession:(id)a3 didReceiveAPDU:(id)a4
+- (void)hceSession:(id)session didReceiveAPDU:(id)u
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  uCopy = u;
   nfcTransportQueue = self->_nfcTransportQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1003718BC;
   block[3] = &unk_1004C24A8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  selfCopy = self;
+  v14 = uCopy;
+  v9 = uCopy;
+  v10 = sessionCopy;
   dispatch_async(nfcTransportQueue, block);
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didStartTransaction:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didStartTransaction:(id)transaction
 {
-  v5 = a3;
+  sessionCopy = session;
   nfcTransportQueue = self->_nfcTransportQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100371A74;
   v8[3] = &unk_1004C22F0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = sessionCopy;
+  selfCopy = self;
+  v7 = sessionCopy;
   dispatch_async(nfcTransportQueue, v8);
 }
 
-- (void)loyaltyAndPaymentSession:(id)a3 didEndTransaction:(id)a4
+- (void)loyaltyAndPaymentSession:(id)session didEndTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  transactionCopy = transaction;
   nfcTransportQueue = self->_nfcTransportQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100371C10;
   block[3] = &unk_1004C24A8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  selfCopy = self;
+  v14 = transactionCopy;
+  v9 = transactionCopy;
+  v10 = sessionCopy;
   dispatch_async(nfcTransportQueue, block);
 }
 
-- (void)loyaltyAndPaymentSessionDidEndUnexpectedly:(id)a3
+- (void)loyaltyAndPaymentSessionDidEndUnexpectedly:(id)unexpectedly
 {
-  v4 = a3;
+  unexpectedlyCopy = unexpectedly;
   nfcTransportQueue = self->_nfcTransportQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100371EB4;
   v7[3] = &unk_1004C22F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = unexpectedlyCopy;
+  selfCopy = self;
+  v6 = unexpectedlyCopy;
   dispatch_async(nfcTransportQueue, v7);
 }
 

@@ -1,21 +1,21 @@
 @interface CADSPMutablePropertyConnectionModel
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setBoxName:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setBoxName:(id)name;
 @end
 
 @implementation CADSPMutablePropertyConnectionModel
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CADSPMutablePropertyConnectionModel;
-  return [(CADSPPropertyConnectionModel *)&v4 mutableCopyWithZone:a3];
+  return [(CADSPPropertyConnectionModel *)&v4 mutableCopyWithZone:zone];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CADSPPropertyConnectionModel allocWithZone:a3];
+  v4 = [CADSPPropertyConnectionModel allocWithZone:zone];
   v4->_this.graphPropertyID = self->super._this.graphPropertyID;
   std::string::operator=(&v4->_this.boxName, &self->super._this.boxName);
   v5 = *&self->super._this.var0;
@@ -24,10 +24,10 @@
   return v4;
 }
 
-- (void)setBoxName:(id)a3
+- (void)setBoxName:(id)name
 {
-  v4 = a3;
-  std::string::__assign_external(&self->super._this.boxName, [v4 UTF8String]);
+  nameCopy = name;
+  std::string::__assign_external(&self->super._this.boxName, [nameCopy UTF8String]);
 }
 
 @end

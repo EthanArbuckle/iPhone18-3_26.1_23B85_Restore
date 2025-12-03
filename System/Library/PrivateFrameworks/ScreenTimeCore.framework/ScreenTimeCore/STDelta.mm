@@ -1,19 +1,19 @@
 @interface STDelta
-- (STDelta)initWithUniqueIdentifier:(id)a3;
+- (STDelta)initWithUniqueIdentifier:(id)identifier;
 - (void)deleted;
 @end
 
 @implementation STDelta
 
-- (STDelta)initWithUniqueIdentifier:(id)a3
+- (STDelta)initWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = STDelta;
   v5 = [(STDelta *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v6;
   }

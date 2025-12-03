@@ -1,22 +1,22 @@
 @interface EKEventEstimatedTravelTimeResultCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation EKEventEstimatedTravelTimeResultCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKEventEstimatedTravelTimeResultCell" isKindOfClass:@"EKCalendarChooserCell"];
-  [v3 validateClass:@"EKCalendarChooserCell" hasInstanceVariable:@"_colorDot" withType:"UIImage"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKEventEstimatedTravelTimeResultCell" isKindOfClass:@"EKCalendarChooserCell"];
+  [validationsCopy validateClass:@"EKCalendarChooserCell" hasInstanceVariable:@"_colorDot" withType:"UIImage"];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   objc_opt_class();
-  v3 = [(EKEventEstimatedTravelTimeResultCellAccessibility *)v2 safeValueForKey:@"_colorDot"];
+  v3 = [(EKEventEstimatedTravelTimeResultCellAccessibility *)selfCopy safeValueForKey:@"_colorDot"];
   v4 = __UIAccessibilityCastAsClass();
 
   v5 = CarImage();
@@ -32,7 +32,7 @@
 
     if (v4 != v6)
     {
-      v14 = v2;
+      v14 = selfCopy;
       _AXAssert();
       v7 = 0;
       goto LABEL_7;
@@ -43,10 +43,10 @@
 
   v7 = accessibilityLocalizedString(v8);
 LABEL_7:
-  v9 = [(EKEventEstimatedTravelTimeResultCellAccessibility *)v2 textLabel];
-  v10 = [v9 accessibilityLabel];
-  v11 = [(EKEventEstimatedTravelTimeResultCellAccessibility *)v2 detailTextLabel];
-  v15 = [v11 accessibilityLabel];
+  textLabel = [(EKEventEstimatedTravelTimeResultCellAccessibility *)selfCopy textLabel];
+  accessibilityLabel = [textLabel accessibilityLabel];
+  detailTextLabel = [(EKEventEstimatedTravelTimeResultCellAccessibility *)selfCopy detailTextLabel];
+  accessibilityLabel2 = [detailTextLabel accessibilityLabel];
   v12 = __UIAXStringForVariables();
 
   return v12;

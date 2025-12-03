@@ -1,27 +1,27 @@
 @interface STPersistentHistoryCleanupManager
-+ (BOOL)_wouldDeletingTransactionsBeforeDate:(id)a3 causeExpiryOfToken:(id)a4 forStore:(id)a5 inManagedObjectContext:(id)a6;
-+ (id)_buildChangeDateForHourAge:(int64_t)a3 fromDate:(id)a4;
-+ (id)_transactionsFoundByRequest:(id)a3 forStore:(id)a4 inManagedObjectContext:(id)a5 error:(id *)a6;
-- (BOOL)_deletePersistentHistoryInContext:(id)a3 beforeDate:(id)a4 error:(id *)a5;
-- (BOOL)cleanUpInContext:(id)a3 error:(id *)a4;
-- (STPersistentHistoryCleanupManager)initWithRelevantStores:(id)a3 hourAge:(int64_t)a4 historyTokenForStore:(id)a5;
++ (BOOL)_wouldDeletingTransactionsBeforeDate:(id)date causeExpiryOfToken:(id)token forStore:(id)store inManagedObjectContext:(id)context;
++ (id)_buildChangeDateForHourAge:(int64_t)age fromDate:(id)date;
++ (id)_transactionsFoundByRequest:(id)request forStore:(id)store inManagedObjectContext:(id)context error:(id *)error;
+- (BOOL)_deletePersistentHistoryInContext:(id)context beforeDate:(id)date error:(id *)error;
+- (BOOL)cleanUpInContext:(id)context error:(id *)error;
+- (STPersistentHistoryCleanupManager)initWithRelevantStores:(id)stores hourAge:(int64_t)age historyTokenForStore:(id)store;
 @end
 
 @implementation STPersistentHistoryCleanupManager
 
-- (STPersistentHistoryCleanupManager)initWithRelevantStores:(id)a3 hourAge:(int64_t)a4 historyTokenForStore:(id)a5
+- (STPersistentHistoryCleanupManager)initWithRelevantStores:(id)stores hourAge:(int64_t)age historyTokenForStore:(id)store
 {
-  v8 = a3;
+  storesCopy = stores;
   v16.receiver = self;
   v16.super_class = STPersistentHistoryCleanupManager;
-  v9 = a5;
+  storeCopy = store;
   v10 = [(STPersistentHistoryCleanupManager *)&v16 init];
   relevantStores = v10->_relevantStores;
-  v10->_relevantStores = v8;
-  v12 = v8;
+  v10->_relevantStores = storesCopy;
+  v12 = storesCopy;
 
-  v10->_hourAge = a4;
-  v13 = objc_retainBlock(v9);
+  v10->_hourAge = age;
+  v13 = objc_retainBlock(storeCopy);
 
   historyTokenForStore = v10->_historyTokenForStore;
   v10->_historyTokenForStore = v13;
@@ -29,20 +29,20 @@
   return v10;
 }
 
-- (BOOL)cleanUpInContext:(id)a3 error:(id *)a4
+- (BOOL)cleanUpInContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(STPersistentHistoryCleanupManager *)self hourAge];
+  contextCopy = context;
+  hourAge = [(STPersistentHistoryCleanupManager *)self hourAge];
   v8 = objc_opt_new();
-  v9 = [STPersistentHistoryCleanupManager _buildChangeDateForHourAge:v7 fromDate:v8];
+  v9 = [STPersistentHistoryCleanupManager _buildChangeDateForHourAge:hourAge fromDate:v8];
 
-  LOBYTE(a4) = [(STPersistentHistoryCleanupManager *)self _deletePersistentHistoryInContext:v6 beforeDate:v9 error:a4];
-  return a4;
+  LOBYTE(error) = [(STPersistentHistoryCleanupManager *)self _deletePersistentHistoryInContext:contextCopy beforeDate:v9 error:error];
+  return error;
 }
 
-- (BOOL)_deletePersistentHistoryInContext:(id)a3 beforeDate:(id)a4 error:(id *)a5
+- (BOOL)_deletePersistentHistoryInContext:(id)context beforeDate:(id)date error:(id *)error
 {
-  v9 = a3;
+  contextCopy = context;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -58,20 +58,20 @@
   v15[2] = sub_100050870;
   v15[3] = &unk_1001A47C0;
   v15[4] = self;
-  v10 = a4;
-  v16 = v10;
-  v11 = v9;
+  dateCopy = date;
+  v16 = dateCopy;
+  v11 = contextCopy;
   v17 = v11;
   v18 = &v27;
   v19 = &v21;
   v20 = a2;
   [v11 performBlockAndWait:v15];
-  if (a5)
+  if (error)
   {
     v12 = v22[5];
     if (v12)
     {
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -83,20 +83,20 @@
   return v13;
 }
 
-+ (BOOL)_wouldDeletingTransactionsBeforeDate:(id)a3 causeExpiryOfToken:(id)a4 forStore:(id)a5 inManagedObjectContext:(id)a6
++ (BOOL)_wouldDeletingTransactionsBeforeDate:(id)date causeExpiryOfToken:(id)token forStore:(id)store inManagedObjectContext:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [NSPersistentHistoryChangeRequest fetchHistoryAfterToken:a4];
+  dateCopy = date;
+  storeCopy = store;
+  contextCopy = context;
+  v12 = [NSPersistentHistoryChangeRequest fetchHistoryAfterToken:token];
   v23 = 0;
-  v13 = [STPersistentHistoryCleanupManager _transactionsFoundByRequest:v12 forStore:v10 inManagedObjectContext:v11 error:&v23];
+  v13 = [STPersistentHistoryCleanupManager _transactionsFoundByRequest:v12 forStore:storeCopy inManagedObjectContext:contextCopy error:&v23];
   v14 = v23;
   if (v13)
   {
-    v15 = [NSPersistentHistoryChangeRequest fetchHistoryAfterDate:v9];
+    v15 = [NSPersistentHistoryChangeRequest fetchHistoryAfterDate:dateCopy];
     v22 = v14;
-    v16 = [STPersistentHistoryCleanupManager _transactionsFoundByRequest:v15 forStore:v10 inManagedObjectContext:v11 error:&v22];
+    v16 = [STPersistentHistoryCleanupManager _transactionsFoundByRequest:v15 forStore:storeCopy inManagedObjectContext:contextCopy error:&v22];
     v17 = v22;
 
     if (v16)
@@ -132,11 +132,11 @@
   return v19;
 }
 
-+ (id)_transactionsFoundByRequest:(id)a3 forStore:(id)a4 inManagedObjectContext:(id)a5 error:(id *)a6
++ (id)_transactionsFoundByRequest:(id)request forStore:(id)store inManagedObjectContext:(id)context error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  storeCopy = store;
+  contextCopy = context;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -153,21 +153,21 @@
   v18[1] = 3221225472;
   v18[2] = sub_100050F7C;
   v18[3] = &unk_1001A47E8;
-  v12 = v9;
+  v12 = requestCopy;
   v19 = v12;
-  v13 = v10;
+  v13 = storeCopy;
   v20 = v13;
-  v14 = v11;
+  v14 = contextCopy;
   v21 = v14;
   v22 = &v24;
   v23 = &v30;
   [v14 performBlockAndWait:v18];
-  if (a6)
+  if (error)
   {
     v15 = v25[5];
     if (v15)
     {
-      *a6 = v15;
+      *error = v15;
     }
   }
 
@@ -179,11 +179,11 @@
   return v16;
 }
 
-+ (id)_buildChangeDateForHourAge:(int64_t)a3 fromDate:(id)a4
++ (id)_buildChangeDateForHourAge:(int64_t)age fromDate:(id)date
 {
-  v5 = a4;
+  dateCopy = date;
   v6 = +[NSCalendar currentCalendar];
-  v7 = [v6 dateByAddingUnit:32 value:-a3 toDate:v5 options:0];
+  v7 = [v6 dateByAddingUnit:32 value:-age toDate:dateCopy options:0];
 
   return v7;
 }

@@ -1,16 +1,16 @@
 @interface NowPlayingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation NowPlayingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NowPlayingUI.NowPlayingViewController" hasSwiftField:@"collectionView" withSwiftType:"Optional<NowPlayingCollectionView>"];
-  [v3 validateClass:@"NowPlayingUI.TitleSectionHeaderView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NowPlayingUI.NowPlayingViewController" hasSwiftField:@"collectionView" withSwiftType:"Optional<NowPlayingCollectionView>"];
+  [validationsCopy validateClass:@"NowPlayingUI.TitleSectionHeaderView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

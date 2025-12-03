@@ -5,8 +5,8 @@
 + (VNVector)vectorBySubtractingVector:(VNVector *)v1 fromVector:(VNVector *)v2;
 + (VNVector)zeroVector;
 + (double)dotProductOfVector:(VNVector *)v1 vector:(VNVector *)v2;
-- (BOOL)isEqual:(id)a3;
-- (VNVector)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VNVector)initWithCoder:(id)coder;
 - (VNVector)initWithR:(double)r theta:(double)theta;
 - (VNVector)initWithVectorHead:(VNPoint *)head tail:(VNPoint *)tail;
 - (VNVector)initWithXComponent:(double)x yComponent:(double)y;
@@ -33,9 +33,9 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -76,10 +76,10 @@
   return atan(v6);
 }
 
-- (VNVector)initWithCoder:(id)a3
+- (VNVector)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vproj"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vproj"];
   v6 = [v5 copy];
 
   [v6 x];
@@ -108,16 +108,16 @@
 
 - (VNVector)initWithR:(double)r theta:(double)theta
 {
-  v6 = 0;
+  selfCopy = 0;
   v7 = fabs(theta) == INFINITY;
   if ((*&r & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && !v7)
   {
     v8 = __sincos_stret(theta);
     self = [(VNVector *)self initWithXComponent:v8.__cosval * r yComponent:v8.__sinval * r];
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (VNVector)initWithXComponent:(double)x yComponent:(double)y
@@ -197,9 +197,9 @@
   [(VNVector *)v5 x];
   v8 = v7;
   [(VNVector *)v5 y];
-  v10 = [(VNVector *)v6 initWithXComponent:v8 * scalar yComponent:v9 * scalar];
+  scalar = [(VNVector *)v6 initWithXComponent:v8 * scalar yComponent:v9 * scalar];
 
-  return v10;
+  return scalar;
 }
 
 + (VNVector)unitVectorForVector:(VNVector *)vector
@@ -209,7 +209,7 @@
   v6 = v5;
   if (v5 == 0.0)
   {
-    v7 = [a1 copy];
+    v7 = [self copy];
   }
 
   else

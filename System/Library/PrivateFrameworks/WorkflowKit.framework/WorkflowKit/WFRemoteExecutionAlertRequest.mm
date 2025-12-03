@@ -1,40 +1,40 @@
 @interface WFRemoteExecutionAlertRequest
-- (BOOL)readMessageFromData:(id)a3 error:(id *)a4;
-- (WFRemoteExecutionAlertRequest)initWithAlert:(id)a3 associatedRunRequestIdentifier:(id)a4;
-- (id)writeMessageToWriter:(id)a3 error:(id *)a4;
-- (void)inflateAlertWithBlock:(id)a3;
+- (BOOL)readMessageFromData:(id)data error:(id *)error;
+- (WFRemoteExecutionAlertRequest)initWithAlert:(id)alert associatedRunRequestIdentifier:(id)identifier;
+- (id)writeMessageToWriter:(id)writer error:(id *)error;
+- (void)inflateAlertWithBlock:(id)block;
 @end
 
 @implementation WFRemoteExecutionAlertRequest
 
-- (id)writeMessageToWriter:(id)a3 error:(id *)a4
+- (id)writeMessageToWriter:(id)writer error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v25 = a3;
+  writerCopy = writer;
   v5 = objc_opt_new();
-  v6 = [(WFRemoteExecutionAlertRequest *)self associatedRunRequestIdentifier];
-  [v5 setAssociatedRunRequestIdentifier:v6];
+  associatedRunRequestIdentifier = [(WFRemoteExecutionAlertRequest *)self associatedRunRequestIdentifier];
+  [v5 setAssociatedRunRequestIdentifier:associatedRunRequestIdentifier];
 
   v7 = objc_opt_new();
-  v8 = [(WFRemoteExecutionAlertRequest *)self alert];
-  v9 = [v8 title];
-  [v7 setTitle:v9];
+  alert = [(WFRemoteExecutionAlertRequest *)self alert];
+  title = [alert title];
+  [v7 setTitle:title];
 
-  v10 = [(WFRemoteExecutionAlertRequest *)self alert];
-  v11 = [v10 message];
-  [v7 setMessage:v11];
+  alert2 = [(WFRemoteExecutionAlertRequest *)self alert];
+  message = [alert2 message];
+  [v7 setMessage:message];
 
-  v12 = [(WFRemoteExecutionAlertRequest *)self alert];
-  [v7 setPreferredStyle:{objc_msgSend(v12, "preferredStyle")}];
+  alert3 = [(WFRemoteExecutionAlertRequest *)self alert];
+  [v7 setPreferredStyle:{objc_msgSend(alert3, "preferredStyle")}];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v13 = [(WFRemoteExecutionAlertRequest *)self alert];
-  v14 = [v13 buttons];
+  alert4 = [(WFRemoteExecutionAlertRequest *)self alert];
+  buttons = [alert4 buttons];
 
-  v15 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v15 = [buttons countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v15)
   {
     v16 = v15;
@@ -45,40 +45,40 @@
       {
         if (*v27 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(buttons);
         }
 
         v19 = *(*(&v26 + 1) + 8 * i);
         v20 = objc_opt_new();
-        v21 = [v19 title];
-        [v20 setTitle:v21];
+        title2 = [v19 title];
+        [v20 setTitle:title2];
 
         [v20 setPreferred:{objc_msgSend(v19, "isPreferred")}];
         [v20 setStyle:{objc_msgSend(v19, "style")}];
         [v7 addButtons:v20];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v16 = [buttons countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v16);
   }
 
   [v5 setAlert:v7];
-  [v5 writeTo:v25];
-  v22 = [v25 immutableData];
+  [v5 writeTo:writerCopy];
+  immutableData = [writerCopy immutableData];
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v22;
+  return immutableData;
 }
 
-- (BOOL)readMessageFromData:(id)a3 error:(id *)a4
+- (BOOL)readMessageFromData:(id)data error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69C65B8];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithData:v6];
+  dataCopy = data;
+  v7 = [[v5 alloc] initWithData:dataCopy];
 
   v8 = objc_alloc_init(WFREPBAlertRequest);
   v17 = 0;
@@ -86,13 +86,13 @@
   v10 = v17;
   if (v9)
   {
-    v11 = [(WFREPBAlertRequest *)v8 associatedRunRequestIdentifier];
+    associatedRunRequestIdentifier = [(WFREPBAlertRequest *)v8 associatedRunRequestIdentifier];
     associatedRunRequestIdentifier = self->_associatedRunRequestIdentifier;
-    self->_associatedRunRequestIdentifier = v11;
+    self->_associatedRunRequestIdentifier = associatedRunRequestIdentifier;
 
-    v13 = [(WFREPBAlertRequest *)v8 alert];
+    alert = [(WFREPBAlertRequest *)v8 alert];
     p_super = &self->_pbAlert->super.super;
-    self->_pbAlert = v13;
+    self->_pbAlert = alert;
   }
 
   else
@@ -112,24 +112,24 @@
   return v9;
 }
 
-- (void)inflateAlertWithBlock:(id)a3
+- (void)inflateAlertWithBlock:(id)block
 {
-  v5 = a3;
-  v8 = [(WFRemoteExecutionAlertRequest *)self pbAlert];
-  v6 = (*(a3 + 2))(v5, v8);
+  blockCopy = block;
+  pbAlert = [(WFRemoteExecutionAlertRequest *)self pbAlert];
+  v6 = (*(block + 2))(blockCopy, pbAlert);
 
   alert = self->_alert;
   self->_alert = v6;
 }
 
-- (WFRemoteExecutionAlertRequest)initWithAlert:(id)a3 associatedRunRequestIdentifier:(id)a4
+- (WFRemoteExecutionAlertRequest)initWithAlert:(id)alert associatedRunRequestIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  alertCopy = alert;
+  identifierCopy = identifier;
+  v10 = identifierCopy;
+  if (alertCopy)
   {
-    if (v9)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -137,8 +137,8 @@
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionAlertRequest.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"alert"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionAlertRequest.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"alert"}];
 
     if (v10)
     {
@@ -146,16 +146,16 @@
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionAlertRequest.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"runRequestIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionAlertRequest.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"runRequestIdentifier"}];
 
 LABEL_3:
   v11 = [(WFRemoteExecutionRequest *)self init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_associatedRunRequestIdentifier, a4);
-    objc_storeStrong(&v12->_alert, a3);
+    objc_storeStrong(&v11->_associatedRunRequestIdentifier, identifier);
+    objc_storeStrong(&v12->_alert, alert);
     v13 = v12;
   }
 

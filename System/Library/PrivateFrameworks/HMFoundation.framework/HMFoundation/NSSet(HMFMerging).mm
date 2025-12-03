@@ -9,7 +9,7 @@
 - (id)hmf_addedObjectsFromSet:()HMFMerging
 {
   v4 = [a3 mutableCopy];
-  [v4 minusSet:a1];
+  [v4 minusSet:self];
   v5 = [v4 copy];
 
   return v5;
@@ -18,7 +18,7 @@
 - (id)hmf_removedObjectsFromSet:()HMFMerging
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 minusSet:v4];
 
   v6 = [v5 copy];
@@ -29,7 +29,7 @@
 - (id)hmf_commonObjectsFromSet:()HMFMerging
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 intersectSet:v4];
 
   v6 = [v5 copy];

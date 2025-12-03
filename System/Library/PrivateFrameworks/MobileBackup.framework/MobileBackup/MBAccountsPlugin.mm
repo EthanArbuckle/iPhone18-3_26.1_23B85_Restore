@@ -1,12 +1,12 @@
 @interface MBAccountsPlugin
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4;
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine;
 @end
 
 @implementation MBAccountsPlugin
 
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  if ([a4 restoresPrimaryAccount])
+  if ([engine restoresPrimaryAccount])
   {
     v4 = MBGetDefaultLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

@@ -1,9 +1,9 @@
 @interface MPSCNNDilatedPoolingMax
 - (MPSCNNDilatedPoolingMax)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNDilatedPoolingMax)initWithDevice:(id)device kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight dilationRateX:(NSUInteger)dilationRateX dilationRateY:(NSUInteger)dilationRateY strideInPixelsX:(NSUInteger)strideInPixelsX strideInPixelsY:(NSUInteger)strideInPixelsY;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNDilatedPoolingMax
@@ -81,19 +81,19 @@ LABEL_9:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v3.receiver = self;
   v3.super_class = MPSCNNDilatedPoolingMax;
-  [(MPSCNNPooling *)&v3 encodeWithCoder:a3];
+  [(MPSCNNPooling *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v22.receiver = self;
   v22.super_class = MPSCNNDilatedPoolingMax;
-  v5 = [(MPSCNNPooling *)&v22 copyWithZone:a3 device:a4];
+  v5 = [(MPSCNNPooling *)&v22 copyWithZone:zone device:device];
   v13 = v5;
   if (v5)
   {

@@ -1,18 +1,18 @@
 @interface AMKArchiveReader
-- (AMKArchiveReader)initWithFileHandle:(id)a3 error:(id *)a4;
-- (BOOL)_configureReadArchiveWithFileHandle:(id)a3 error:(id *)a4;
-- (BOOL)_configureWriteArchiveWithError:(id *)a3;
-- (BOOL)_readAndExpandIntoURL:(id)a3 error:(id *)a4;
-- (BOOL)copyDataWithError:(id *)a3;
+- (AMKArchiveReader)initWithFileHandle:(id)handle error:(id *)error;
+- (BOOL)_configureReadArchiveWithFileHandle:(id)handle error:(id *)error;
+- (BOOL)_configureWriteArchiveWithError:(id *)error;
+- (BOOL)_readAndExpandIntoURL:(id)l error:(id *)error;
+- (BOOL)copyDataWithError:(id *)error;
 - (void)dealloc;
-- (void)readAndExpandIntoURL:(id)a3 completion:(id)a4;
+- (void)readAndExpandIntoURL:(id)l completion:(id)completion;
 @end
 
 @implementation AMKArchiveReader
 
-- (AMKArchiveReader)initWithFileHandle:(id)a3 error:(id *)a4
+- (AMKArchiveReader)initWithFileHandle:(id)handle error:(id *)error
 {
-  v6 = a3;
+  handleCopy = handle;
   v13.receiver = self;
   v13.super_class = AMKArchiveReader;
   v7 = [(AMKArchiveReader *)&v13 init];
@@ -27,7 +27,7 @@
     queue = v7->_queue;
     v7->_queue = v10;
 
-    objc_storeStrong(&v7->_fileHandle, a3);
+    objc_storeStrong(&v7->_fileHandle, handle);
   }
 
   return v7;
@@ -48,14 +48,14 @@
   [(AMKArchiveReader *)&v7 dealloc];
 }
 
-- (BOOL)_configureReadArchiveWithFileHandle:(id)a3 error:(id *)a4
+- (BOOL)_configureReadArchiveWithFileHandle:(id)handle error:(id *)error
 {
-  v6 = a3;
+  handleCopy = handle;
   readArchive = self->_readArchive;
-  if (archive_read_support_format_all() || (v8 = self->_readArchive, archive_read_support_filter_all()) || (v9 = self->_readArchive, [v6 fileDescriptor], archive_read_open_fd()))
+  if (archive_read_support_format_all() || (v8 = self->_readArchive, archive_read_support_filter_all()) || (v9 = self->_readArchive, [handleCopy fileDescriptor], archive_read_open_fd()))
   {
     [MEMORY[0x29EDB9FA0] amk_errorFromArchive:self->_readArchive];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -96,7 +96,7 @@
   return v10;
 }
 
-- (BOOL)_configureWriteArchiveWithError:(id *)a3
+- (BOOL)_configureWriteArchiveWithError:(id *)error
 {
   writeArchive = self->_writeArchive;
   if (!archive_write_disk_set_options())
@@ -111,16 +111,16 @@
   v7 = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:self->_writeArchive];
   v8 = v7;
   result = 0;
-  *a3 = v7;
+  *error = v7;
   return result;
 }
 
-- (BOOL)copyDataWithError:(id *)a3
+- (BOOL)copyDataWithError:(id *)error
 {
   if (self->_isCancelled)
   {
 LABEL_2:
-    v4 = [MEMORY[0x29EDB9FA0] amk_canceledError];
+    amk_canceledError = [MEMORY[0x29EDB9FA0] amk_canceledError];
   }
 
   else
@@ -155,30 +155,30 @@ LABEL_2:
     }
 
 LABEL_11:
-    v4 = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:*p_readArchive];
+    amk_canceledError = [MEMORY[0x29EDB9FA0] amk_errorFromArchive:*p_readArchive];
   }
 
-  v11 = v4;
-  v9 = v4;
+  v11 = amk_canceledError;
+  v9 = amk_canceledError;
   LOBYTE(v9) = 0;
-  *a3 = v11;
+  *error = v11;
   return v9;
 }
 
-- (void)readAndExpandIntoURL:(id)a3 completion:(id)a4
+- (void)readAndExpandIntoURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __52__AMKArchiveReader_readAndExpandIntoURL_completion___block_invoke;
   block[3] = &unk_29F37F7C8;
-  v12 = v6;
-  v13 = v7;
+  v12 = lCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = lCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -234,9 +234,9 @@ LABEL_11:
   (*(v2 + 16))(v2, 0, v15);
 }
 
-- (BOOL)_readAndExpandIntoURL:(id)a3 error:(id *)a4
+- (BOOL)_readAndExpandIntoURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = 0;
   v32[1] = 0;
   p_symlinkCount = &self->_symlinkCount;
@@ -268,7 +268,7 @@ LABEL_2:
         v17 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:archive_entry_pathname_utf8()];
         if (validatePathInArchive(v17, 0))
         {
-          v31 = a4;
+          errorCopy = error;
           if (v16 == 0x4000)
           {
             p_dirCount = &self->_dirCount;
@@ -281,9 +281,9 @@ LABEL_2:
               if (v16 != 0x8000 || (++self->_fileCount, v18 = archive_entry_size(), p_dirCount = &self->_uncompressedBytes, v18 <= 0))
               {
 LABEL_28:
-                v20 = [v6 URLByAppendingPathComponent:{v17, p_symlinkCount}];
-                v21 = [v20 path];
-                [v21 UTF8String];
+                v20 = [lCopy URLByAppendingPathComponent:{v17, p_symlinkCount}];
+                path = [v20 path];
+                [path UTF8String];
                 archive_entry_set_pathname_utf8();
 
                 writeArchive = self->_writeArchive;
@@ -300,7 +300,7 @@ LABEL_28:
 
                     objc_autoreleasePoolPop(v14);
                     p_symlinkCount = v30;
-                    a4 = v31;
+                    error = errorCopy;
                     goto LABEL_2;
                   }
 
@@ -310,7 +310,7 @@ LABEL_34:
 
                 objc_autoreleasePoolPop(v14);
                 v7 = v24;
-                a4 = v31;
+                error = errorCopy;
                 break;
               }
 
@@ -346,7 +346,7 @@ LABEL_27:
     v26 = v7;
 LABEL_44:
     v28 = 0;
-    *a4 = v26;
+    *error = v26;
     goto LABEL_45;
   }
 

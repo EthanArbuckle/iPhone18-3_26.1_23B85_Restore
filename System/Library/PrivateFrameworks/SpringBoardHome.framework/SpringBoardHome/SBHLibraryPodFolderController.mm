@@ -1,58 +1,58 @@
 @interface SBHLibraryPodFolderController
-- (BOOL)_ourFolderContainsFolder:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)isDisplayingIcon:(id)a3;
-- (BOOL)isDisplayingIcon:(id)a3 inLocation:(id)a4;
-- (BOOL)isDisplayingIcon:(id)a3 inLocations:(id)a4;
-- (BOOL)isDisplayingIconView:(id)a3;
-- (BOOL)isDisplayingIconView:(id)a3 inLocation:(id)a4;
-- (BOOL)isPresentingIconLocation:(id)a3;
-- (BOOL)shouldOpenFolderIcon:(id)a3;
+- (BOOL)_ourFolderContainsFolder:(id)folder;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)isDisplayingIcon:(id)icon;
+- (BOOL)isDisplayingIcon:(id)icon inLocation:(id)location;
+- (BOOL)isDisplayingIcon:(id)icon inLocations:(id)locations;
+- (BOOL)isDisplayingIconView:(id)view;
+- (BOOL)isDisplayingIconView:(id)view inLocation:(id)location;
+- (BOOL)isPresentingIconLocation:(id)location;
+- (BOOL)shouldOpenFolderIcon:(id)icon;
 - (BSUIScrollViewDelegate)librarySearchControllerScrollViewDelegate;
-- (Class)controllerClassForFolder:(id)a3;
+- (Class)controllerClassForFolder:(id)folder;
 - (NSSet)presentedIconLocations;
-- (SBHLibraryPodFolderController)initWithConfiguration:(id)a3;
+- (SBHLibraryPodFolderController)initWithConfiguration:(id)configuration;
 - (SBHLibraryPodFolderControllerDelegate)podFolderControllerDelegate;
 - (SBIconListView)currentIconListView;
 - (UIView)containerView;
 - (id)_nestingViewControllerForPushing;
 - (id)contentScrollView;
-- (id)firstIconViewForIcon:(id)a3;
-- (id)firstIconViewForIcon:(id)a3 excludingLocations:(id)a4;
-- (id)firstIconViewForIcon:(id)a3 inLocations:(id)a4;
-- (id)firstNonSuggestionsOrRecentsIconViewForIcon:(id)a3;
-- (id)folderIconViewForIcon:(id)a3 folderRelativeIconIndexPath:(id *)a4;
-- (id)iconViewForIcon:(id)a3 location:(id)a4 options:(unint64_t)a5;
+- (id)firstIconViewForIcon:(id)icon;
+- (id)firstIconViewForIcon:(id)icon excludingLocations:(id)locations;
+- (id)firstIconViewForIcon:(id)icon inLocations:(id)locations;
+- (id)firstNonSuggestionsOrRecentsIconViewForIcon:(id)icon;
+- (id)folderIconViewForIcon:(id)icon folderRelativeIconIndexPath:(id *)path;
+- (id)iconViewForIcon:(id)icon location:(id)location options:(unint64_t)options;
 - (void)_reloadAppIcons;
-- (void)categoriesDataSource:(id)a3 shouldAnimateLayoutForCategories:(id)a4;
-- (void)categoriesDataSourceNeedsAnimatedReload:(id)a3;
-- (void)configureInnerFolderControllerConfiguration:(id)a3;
-- (void)enumerateDisplayedIconViewsForIcon:(id)a3 usingBlock:(id)a4;
-- (void)enumerateDisplayedIconViewsUsingBlock:(id)a3;
-- (void)enumerateNonSuggestionsOrRecentsViewControllersUsingBlock:(id)a3;
-- (void)enumerateViewControllersUsingBlock:(id)a3;
-- (void)handleTapGesture:(id)a3;
-- (void)iconListView:(id)a3 didAddIconView:(id)a4;
-- (void)iconListView:(id)a3 didRemoveIconView:(id)a4;
-- (void)iconViewDidHandleTap:(id)a3;
-- (void)pushNestedViewController:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5;
-- (void)setContentAlpha:(double)a3;
-- (void)setLibraryCategoryMap:(id)a3;
-- (void)setLibrarySearchControllerScrollViewDelegate:(id)a3;
+- (void)categoriesDataSource:(id)source shouldAnimateLayoutForCategories:(id)categories;
+- (void)categoriesDataSourceNeedsAnimatedReload:(id)reload;
+- (void)configureInnerFolderControllerConfiguration:(id)configuration;
+- (void)enumerateDisplayedIconViewsForIcon:(id)icon usingBlock:(id)block;
+- (void)enumerateDisplayedIconViewsUsingBlock:(id)block;
+- (void)enumerateNonSuggestionsOrRecentsViewControllersUsingBlock:(id)block;
+- (void)enumerateViewControllersUsingBlock:(id)block;
+- (void)handleTapGesture:(id)gesture;
+- (void)iconListView:(id)view didAddIconView:(id)iconView;
+- (void)iconListView:(id)view didRemoveIconView:(id)iconView;
+- (void)iconViewDidHandleTap:(id)tap;
+- (void)pushNestedViewController:(id)controller animated:(BOOL)animated withCompletion:(id)completion;
+- (void)setContentAlpha:(double)alpha;
+- (void)setLibraryCategoryMap:(id)map;
+- (void)setLibrarySearchControllerScrollViewDelegate:(id)delegate;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBHLibraryPodFolderController
 
-- (SBHLibraryPodFolderController)initWithConfiguration:(id)a3
+- (SBHLibraryPodFolderController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = configurationCopy;
   }
 
   else
@@ -63,28 +63,28 @@
   v6 = v5;
   v18.receiver = self;
   v18.super_class = SBHLibraryPodFolderController;
-  v7 = [(SBFolderController *)&v18 initWithConfiguration:v4];
+  v7 = [(SBFolderController *)&v18 initWithConfiguration:configurationCopy];
   if (v7)
   {
-    v8 = [objc_opt_class() iconLocation];
-    v9 = [v8 isEqualToString:@"SBIconLocationAppLibrary"];
+    iconLocation = [objc_opt_class() iconLocation];
+    v9 = [iconLocation isEqualToString:@"SBIconLocationAppLibrary"];
 
     if (v9)
     {
       v10 = [SBHLibraryCategoriesFolderDataSource alloc];
-      v11 = [v6 categoriesFolder];
-      v12 = [(SBHLibraryCategoriesFolderDataSource *)v10 initWithCategoriesFolder:v11];
+      categoriesFolder = [v6 categoriesFolder];
+      v12 = [(SBHLibraryCategoriesFolderDataSource *)v10 initWithCategoriesFolder:categoriesFolder];
       dataSource = v7->_dataSource;
       v7->_dataSource = v12;
 
       [(SBHLibraryCategoriesFolderDataSource *)v7->_dataSource addObserver:v7];
-      v14 = [(SBHLibraryCategoriesFolderDataSource *)v7->_dataSource categoriesFolder];
-      [(SBFolderController *)v7 setFolder:v14];
+      categoriesFolder2 = [(SBHLibraryCategoriesFolderDataSource *)v7->_dataSource categoriesFolder];
+      [(SBFolderController *)v7 setFolder:categoriesFolder2];
     }
 
-    v15 = [MEMORY[0x1E698AEB0] sharedInstance];
+    mEMORY[0x1E698AEB0] = [MEMORY[0x1E698AEB0] sharedInstance];
     loggingClient = v7->_loggingClient;
-    v7->_loggingClient = v15;
+    v7->_loggingClient = mEMORY[0x1E698AEB0];
   }
 
   return v7;
@@ -95,65 +95,65 @@
   v7.receiver = self;
   v7.super_class = SBHLibraryPodFolderController;
   [(SBFolderController *)&v7 viewDidLoad];
-  v3 = [(SBHLibraryPodFolderController *)self podFolderView];
+  podFolderView = [(SBHLibraryPodFolderController *)self podFolderView];
   v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleTapGesture_];
   tapToDismissRecognizer = self->_tapToDismissRecognizer;
   self->_tapToDismissRecognizer = v4;
 
   [(UITapGestureRecognizer *)self->_tapToDismissRecognizer setAllowableMovement:10.0];
   [(UITapGestureRecognizer *)self->_tapToDismissRecognizer setDelegate:self];
-  v6 = [v3 scalingView];
-  [v6 addGestureRecognizer:self->_tapToDismissRecognizer];
+  scalingView = [podFolderView scalingView];
+  [scalingView addGestureRecognizer:self->_tapToDismissRecognizer];
 }
 
 - (id)contentScrollView
 {
-  v2 = [(SBHLibraryPodFolderController *)self podFolderView];
-  v3 = [v2 podScrollView];
+  podFolderView = [(SBHLibraryPodFolderController *)self podFolderView];
+  podScrollView = [podFolderView podScrollView];
 
-  return v3;
+  return podScrollView;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBHLibraryPodFolderController;
-  [(SBFolderController *)&v4 viewWillAppear:a3];
+  [(SBFolderController *)&v4 viewWillAppear:appear];
   [(SBHLibraryPodFolderController *)self _updateContentOverlayInsetsForSelfAndChildren];
   [(SBHLibraryPodFolderController *)self _reloadAppIcons];
 }
 
-- (void)handleTapGesture:(id)a3
+- (void)handleTapGesture:(id)gesture
 {
-  v8 = a3;
-  v4 = [(SBHLibraryPodFolderController *)self tapToDismissRecognizer];
+  gestureCopy = gesture;
+  tapToDismissRecognizer = [(SBHLibraryPodFolderController *)self tapToDismissRecognizer];
 
-  v5 = v8;
-  if (v4 == v8)
+  v5 = gestureCopy;
+  if (tapToDismissRecognizer == gestureCopy)
   {
-    v6 = [v8 state] == 3;
-    v5 = v8;
+    v6 = [gestureCopy state] == 3;
+    v5 = gestureCopy;
     if (v6)
     {
-      v7 = [(SBHLibraryPodFolderController *)self podFolderControllerDelegate];
-      [v7 libraryPodFolderControllerRequestsDismissal:self];
+      podFolderControllerDelegate = [(SBHLibraryPodFolderController *)self podFolderControllerDelegate];
+      [podFolderControllerDelegate libraryPodFolderControllerRequestsDismissal:self];
 
-      v5 = v8;
+      v5 = gestureCopy;
     }
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHLibraryPodFolderController *)self tapToDismissRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  tapToDismissRecognizer = [(SBHLibraryPodFolderController *)self tapToDismissRecognizer];
 
-  if (v8 == v7)
+  if (tapToDismissRecognizer == recognizerCopy)
   {
-    v10 = [(SBHLibraryPodFolderController *)self contentScrollView];
-    v11 = [v10 panGestureRecognizer];
-    v9 = v11 == v6;
+    contentScrollView = [(SBHLibraryPodFolderController *)self contentScrollView];
+    panGestureRecognizer = [contentScrollView panGestureRecognizer];
+    v9 = panGestureRecognizer == gestureRecognizerCopy;
   }
 
   else
@@ -164,15 +164,15 @@
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v28 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v6 = a4;
-  v7 = [(SBHLibraryPodFolderController *)self tapToDismissRecognizer];
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  tapToDismissRecognizer = [(SBHLibraryPodFolderController *)self tapToDismissRecognizer];
 
   v8 = 1;
-  if (v7 == v15)
+  if (tapToDismissRecognizer == recognizerCopy)
   {
     v23 = 0;
     v24 = &v23;
@@ -182,8 +182,8 @@
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [(SBFolderController *)self iconListViews];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v27 count:16];
+    iconListViews = [(SBFolderController *)self iconListViews];
+    v10 = [iconListViews countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v10)
     {
       v11 = *v20;
@@ -194,7 +194,7 @@
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(iconListViews);
           }
 
           v13 = *(*(&v19 + 1) + 8 * v12);
@@ -202,7 +202,7 @@
           v16[1] = 3221225472;
           v16[2] = __70__SBHLibraryPodFolderController_gestureRecognizer_shouldReceiveTouch___block_invoke;
           v16[3] = &unk_1E808AE98;
-          v17 = v6;
+          v17 = touchCopy;
           v18 = &v23;
           [v13 enumerateIconViewsUsingBlock:v16];
 
@@ -210,7 +210,7 @@
         }
 
         while (v10 != v12);
-        v10 = [v9 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v10 = [iconListViews countByEnumeratingWithState:&v19 objects:v27 count:16];
       }
 
       while (v10);
@@ -252,11 +252,11 @@ BOOL __70__SBHLibraryPodFolderController_gestureRecognizer_shouldReceiveTouch___
   return result;
 }
 
-- (BOOL)shouldOpenFolderIcon:(id)a3
+- (BOOL)shouldOpenFolderIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [v4 folder];
-  v6 = [(SBHLibraryPodFolderController *)self _ourFolderContainsFolder:v5];
+  iconCopy = icon;
+  folder = [iconCopy folder];
+  v6 = [(SBHLibraryPodFolderController *)self _ourFolderContainsFolder:folder];
 
   if (v6)
   {
@@ -267,19 +267,19 @@ BOOL __70__SBHLibraryPodFolderController_gestureRecognizer_shouldReceiveTouch___
   {
     v9.receiver = self;
     v9.super_class = SBHLibraryPodFolderController;
-    v7 = [(SBFolderController *)&v9 shouldOpenFolderIcon:v4];
+    v7 = [(SBFolderController *)&v9 shouldOpenFolderIcon:iconCopy];
   }
 
   return v7;
 }
 
-- (void)configureInnerFolderControllerConfiguration:(id)a3
+- (void)configureInnerFolderControllerConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = configurationCopy;
   }
 
   else
@@ -290,42 +290,42 @@ BOOL __70__SBHLibraryPodFolderController_gestureRecognizer_shouldReceiveTouch___
   v6 = v5;
   if (v6)
   {
-    v7 = [(SBHLibraryCategoriesFolderDataSource *)self->_dataSource categoriesFolder];
-    [v6 setCategoriesFolder:v7];
+    categoriesFolder = [(SBHLibraryCategoriesFolderDataSource *)self->_dataSource categoriesFolder];
+    [v6 setCategoriesFolder:categoriesFolder];
   }
 
   v14.receiver = self;
   v14.super_class = SBHLibraryPodFolderController;
-  [(SBFolderController *)&v14 configureInnerFolderControllerConfiguration:v4];
+  [(SBFolderController *)&v14 configureInnerFolderControllerConfiguration:configurationCopy];
   objc_opt_class();
-  v8 = [v4 folder];
-  v9 = [v8 icon];
+  folder = [configurationCopy folder];
+  icon = [folder icon];
   v10 = SBFSafeCast();
 
   if (v10)
   {
-    v11 = [v10 category];
-    v12 = [v11 expandedPodFolder];
-    [v4 setFolder:v12];
+    category = [v10 category];
+    expandedPodFolder = [category expandedPodFolder];
+    [configurationCopy setFolder:expandedPodFolder];
 
-    v13 = [v11 expandedPodFolder];
-    [v13 setIcon:v10];
+    expandedPodFolder2 = [category expandedPodFolder];
+    [expandedPodFolder2 setIcon:v10];
   }
 }
 
-- (Class)controllerClassForFolder:(id)a3
+- (Class)controllerClassForFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v11.receiver = self;
   v11.super_class = SBHLibraryPodFolderController;
-  v5 = [(SBFolderController *)&v11 controllerClassForFolder:v4];
+  v5 = [(SBFolderController *)&v11 controllerClassForFolder:folderCopy];
   if ([(objc_class *)v5 isEqual:objc_opt_class()])
   {
-    v6 = [(SBFolderController *)self folder];
-    if (([v4 isEqual:v6] & 1) == 0)
+    folder = [(SBFolderController *)self folder];
+    if (([folderCopy isEqual:folder] & 1) == 0)
     {
-      v7 = [v4 rootFolder];
-      v8 = [v7 isEqual:v6];
+      rootFolder = [folderCopy rootFolder];
+      v8 = [rootFolder isEqual:folder];
 
       if (v8)
       {
@@ -339,51 +339,51 @@ BOOL __70__SBHLibraryPodFolderController_gestureRecognizer_shouldReceiveTouch___
   return v5;
 }
 
-- (void)pushNestedViewController:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (void)pushNestedViewController:(id)controller animated:(BOOL)animated withCompletion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SBHLibraryPodFolderController *)self _nestingViewControllerForPushing];
-  v11 = v10;
-  if (v10 == self)
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  _nestingViewControllerForPushing = [(SBHLibraryPodFolderController *)self _nestingViewControllerForPushing];
+  v11 = _nestingViewControllerForPushing;
+  if (_nestingViewControllerForPushing == self)
   {
     v12.receiver = self;
     v12.super_class = SBHLibraryPodFolderController;
-    [(SBNestingViewController *)&v12 pushNestedViewController:v9 animated:v5 withCompletion:v8];
+    [(SBNestingViewController *)&v12 pushNestedViewController:controllerCopy animated:animatedCopy withCompletion:completionCopy];
   }
 
   else
   {
-    [(SBHLibraryPodFolderController *)v10 pushNestedViewController:v9 animated:v5 withCompletion:v8];
+    [(SBHLibraryPodFolderController *)_nestingViewControllerForPushing pushNestedViewController:controllerCopy animated:animatedCopy withCompletion:completionCopy];
   }
 }
 
 - (UIView)containerView
 {
-  v2 = [(SBHLibraryPodFolderController *)self _nestingViewControllerForPushing];
-  v3 = [v2 view];
+  _nestingViewControllerForPushing = [(SBHLibraryPodFolderController *)self _nestingViewControllerForPushing];
+  view = [_nestingViewControllerForPushing view];
 
-  return v3;
+  return view;
 }
 
 - (SBIconListView)currentIconListView
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHLibraryPodFolderController *)self _nestingViewControllerForPushing];
-  v4 = [v3 deepestNestedDescendantViewController];
+  _nestingViewControllerForPushing = [(SBHLibraryPodFolderController *)self _nestingViewControllerForPushing];
+  deepestNestedDescendantViewController = [_nestingViewControllerForPushing deepestNestedDescendantViewController];
 
-  if (v4)
+  if (deepestNestedDescendantViewController)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v5 = [(SBFolderController *)self folderView];
-    v6 = [v5 iconListViews];
+    folderView = [(SBFolderController *)self folderView];
+    iconListViews = [folderView iconListViews];
 
-    obj = v6;
-    v25 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    obj = iconListViews;
+    v25 = [iconListViews countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v25)
     {
       v24 = *v32;
@@ -402,8 +402,8 @@ BOOL __70__SBHLibraryPodFolderController_gestureRecognizer_shouldReceiveTouch___
           v29 = 0u;
           v30 = 0u;
           v26 = v8;
-          v9 = [v8 icons];
-          v10 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          icons = [v8 icons];
+          v10 = [icons countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v10)
           {
             v11 = v10;
@@ -414,22 +414,22 @@ LABEL_9:
             {
               if (*v28 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(icons);
               }
 
               v14 = *(*(&v27 + 1) + 8 * v13);
-              v15 = [v14 category];
-              v16 = [v15 expandedPodFolder];
-              v17 = [v4 folder];
+              category = [v14 category];
+              expandedPodFolder = [category expandedPodFolder];
+              folder = [deepestNestedDescendantViewController folder];
 
-              if (v16 == v17)
+              if (expandedPodFolder == folder)
               {
                 break;
               }
 
               if (v11 == ++v13)
               {
-                v11 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+                v11 = [icons countByEnumeratingWithState:&v27 objects:v35 count:16];
                 if (v11)
                 {
                   goto LABEL_9;
@@ -440,10 +440,10 @@ LABEL_9:
             }
 
             v18 = [v26 iconViewForIcon:v14];
-            v19 = [v18 customIconImageViewController];
-            v20 = [v19 iconListView];
+            customIconImageViewController = [v18 customIconImageViewController];
+            iconListView = [customIconImageViewController iconListView];
 
-            if (v20)
+            if (iconListView)
             {
               goto LABEL_20;
             }
@@ -461,31 +461,31 @@ LABEL_15:
       while (v25);
     }
 
-    v20 = 0;
+    iconListView = 0;
 LABEL_20:
   }
 
   else
   {
-    v21 = [(SBHLibraryPodFolderController *)self podFolderView];
-    v20 = [v21 currentIconListView];
+    podFolderView = [(SBHLibraryPodFolderController *)self podFolderView];
+    iconListView = [podFolderView currentIconListView];
   }
 
-  return v20;
+  return iconListView;
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  v4 = [(SBHLibraryPodFolderController *)self view];
-  [v4 setAlpha:a3];
+  view = [(SBHLibraryPodFolderController *)self view];
+  [view setAlpha:alpha];
 }
 
-- (void)setLibraryCategoryMap:(id)a3
+- (void)setLibraryCategoryMap:(id)map
 {
-  v6 = a3;
+  mapCopy = map;
   if (![(SBHLibraryCategoryMap *)self->_libraryCategoryMap isEqualToCategoryMap:?])
   {
-    v4 = [v6 copy];
+    v4 = [mapCopy copy];
     libraryCategoryMap = self->_libraryCategoryMap;
     self->_libraryCategoryMap = v4;
 
@@ -503,18 +503,18 @@ void __60__SBHLibraryPodFolderController_dismissDisplayedContextMenu__block_invo
   }
 }
 
-- (id)folderIconViewForIcon:(id)a3 folderRelativeIconIndexPath:(id *)a4
+- (id)folderIconViewForIcon:(id)icon folderRelativeIconIndexPath:(id *)path
 {
   v53 = *MEMORY[0x1E69E9840];
-  v39 = a3;
+  iconCopy = icon;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v6 = [(SBFolderController *)self folderView];
-  v7 = [v6 iconListViews];
+  folderView = [(SBFolderController *)self folderView];
+  iconListViews = [folderView iconListViews];
 
-  v32 = [v7 countByEnumeratingWithState:&v47 objects:v52 count:16];
+  v32 = [iconListViews countByEnumeratingWithState:&v47 objects:v52 count:16];
   v8 = 0;
   if (!v32)
   {
@@ -523,8 +523,8 @@ void __60__SBHLibraryPodFolderController_dismissDisplayedContextMenu__block_invo
   }
 
   v9 = *v48;
-  v34 = v7;
-  v35 = a4;
+  v34 = iconListViews;
+  pathCopy = path;
   v31 = *v48;
   do
   {
@@ -533,7 +533,7 @@ void __60__SBHLibraryPodFolderController_dismissDisplayedContextMenu__block_invo
     {
       if (*v48 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(iconListViews);
       }
 
       v33 = v10;
@@ -560,7 +560,7 @@ void __60__SBHLibraryPodFolderController_dismissDisplayedContextMenu__block_invo
             }
 
             v14 = *(*(&v43 + 1) + 8 * v13);
-            v15 = [v14 category];
+            category = [v14 category];
             v16 = [v11 displayedIconViewForIcon:v14];
             v17 = v16;
             if (!v16)
@@ -568,34 +568,34 @@ void __60__SBHLibraryPodFolderController_dismissDisplayedContextMenu__block_invo
               goto LABEL_19;
             }
 
-            v41 = [v16 customIconImageViewController];
-            v18 = [v41 iconListView];
-            v19 = [v18 model];
-            v20 = [v19 folder];
+            customIconImageViewController = [v16 customIconImageViewController];
+            iconListView = [customIconImageViewController iconListView];
+            model = [iconListView model];
+            folder = [model folder];
 
-            v21 = [v20 indexPathForIcon:v39];
+            v21 = [folder indexPathForIcon:iconCopy];
             if (v21)
             {
               v42 = v8;
-              v22 = [v20 folderContainingIndexPath:v21 relativeIndexPath:&v42];
+              additionalItemsIndicatorIcon = [folder folderContainingIndexPath:v21 relativeIndexPath:&v42];
               v23 = v42;
 
-              v24 = [v22 icon];
-              v25 = [v18 displayedIconViewForIcon:v24];
+              icon = [additionalItemsIndicatorIcon icon];
+              v25 = [iconListView displayedIconViewForIcon:icon];
 
               v8 = v23;
               goto LABEL_14;
             }
 
-            if (![v15 overflowBehavior])
+            if (![category overflowBehavior])
             {
-              v26 = [v15 expandedPodFolder];
-              v27 = [v26 containsIcon:v39];
+              expandedPodFolder = [category expandedPodFolder];
+              v27 = [expandedPodFolder containsIcon:iconCopy];
 
               if (v27)
               {
-                v22 = [v15 additionalItemsIndicatorIcon];
-                v25 = [v18 displayedIconViewForIcon:v22];
+                additionalItemsIndicatorIcon = [category additionalItemsIndicatorIcon];
+                v25 = [iconListView displayedIconViewForIcon:additionalItemsIndicatorIcon];
 LABEL_14:
               }
 
@@ -615,8 +615,8 @@ LABEL_18:
             if (v25)
             {
 
-              v7 = v34;
-              a4 = v35;
+              iconListViews = v34;
+              path = pathCopy;
               goto LABEL_30;
             }
 
@@ -634,8 +634,8 @@ LABEL_19:
       }
 
       v10 = v33 + 1;
-      v7 = v34;
-      a4 = v35;
+      iconListViews = v34;
+      path = pathCopy;
       v9 = v31;
     }
 
@@ -647,76 +647,76 @@ LABEL_19:
   while (v32);
 LABEL_30:
 
-  if (a4)
+  if (path)
   {
     v29 = v8;
-    *a4 = v8;
+    *path = v8;
   }
 
   return v25;
 }
 
-- (void)iconListView:(id)a3 didAddIconView:(id)a4
+- (void)iconListView:(id)view didAddIconView:(id)iconView
 {
-  v6 = a4;
+  iconViewCopy = iconView;
   v12.receiver = self;
   v12.super_class = SBHLibraryPodFolderController;
-  [(SBFolderController *)&v12 iconListView:a3 didAddIconView:v6];
+  [(SBFolderController *)&v12 iconListView:view didAddIconView:iconViewCopy];
   v7 = objc_opt_self();
-  v8 = [v6 customIconImageViewController];
+  customIconImageViewController = [iconViewCopy customIconImageViewController];
   v9 = SBFSafeCast();
 
   if (v9)
   {
-    v10 = [v9 iconListView];
-    [v10 addLayoutObserver:self];
+    iconListView = [v9 iconListView];
+    [iconListView addLayoutObserver:self];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __61__SBHLibraryPodFolderController_iconListView_didAddIconView___block_invoke;
     v11[3] = &unk_1E808AEC0;
     v11[4] = self;
-    [v10 enumerateIconViewsUsingBlock:v11];
+    [iconListView enumerateIconViewsUsingBlock:v11];
   }
 
   else
   {
-    [v6 addObserver:self];
+    [iconViewCopy addObserver:self];
   }
 }
 
-- (void)iconListView:(id)a3 didRemoveIconView:(id)a4
+- (void)iconListView:(id)view didRemoveIconView:(id)iconView
 {
   v7.receiver = self;
   v7.super_class = SBHLibraryPodFolderController;
-  v6 = a4;
-  [(SBFolderController *)&v7 iconListView:a3 didRemoveIconView:v6];
-  [v6 removeObserver:{self, v7.receiver, v7.super_class}];
+  iconViewCopy = iconView;
+  [(SBFolderController *)&v7 iconListView:view didRemoveIconView:iconViewCopy];
+  [iconViewCopy removeObserver:{self, v7.receiver, v7.super_class}];
 }
 
-- (void)iconViewDidHandleTap:(id)a3
+- (void)iconViewDidHandleTap:(id)tap
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tapCopy = tap;
   v44.receiver = self;
   v44.super_class = SBHLibraryPodFolderController;
-  [(SBFolderController *)&v44 iconViewDidHandleTap:v4];
-  v5 = [v4 icon];
-  v6 = [(SBFolderController *)self folder];
-  v7 = [objc_opt_class() iconLocation];
-  if (([v6 containsIcon:v5] & 1) == 0)
+  [(SBFolderController *)&v44 iconViewDidHandleTap:tapCopy];
+  icon = [tapCopy icon];
+  folder = [(SBFolderController *)self folder];
+  iconLocation = [objc_opt_class() iconLocation];
+  if (([folder containsIcon:icon] & 1) == 0)
   {
-    v38 = v7;
+    v38 = iconLocation;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v8 = [(SBHLibraryCategoriesFolderDataSource *)self->_dataSource categoryIdentifiers];
-    v9 = [v8 countByEnumeratingWithState:&v40 objects:v45 count:16];
+    categoryIdentifiers = [(SBHLibraryCategoriesFolderDataSource *)self->_dataSource categoryIdentifiers];
+    v9 = [categoryIdentifiers countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v9)
     {
       v10 = v9;
-      v34 = v6;
-      v36 = v4;
+      v34 = folder;
+      v36 = tapCopy;
       v11 = *v41;
       while (2)
       {
@@ -724,25 +724,25 @@ LABEL_30:
         {
           if (*v41 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(categoryIdentifiers);
           }
 
           v13 = [(SBHLibraryCategoriesFolderDataSource *)self->_dataSource categoryForIdentifier:*(*(&v40 + 1) + 8 * i)];
-          v14 = [v13 compactPodFolder];
-          v15 = [v14 containsIcon:v5];
+          compactPodFolder = [v13 compactPodFolder];
+          v15 = [compactPodFolder containsIcon:icon];
 
           if (v15)
           {
-            v16 = [v13 compactPodFolder];
+            compactPodFolder2 = [v13 compactPodFolder];
 
-            v7 = @"SBIconLocationAppLibraryCategoryPod";
-            v6 = v16;
-            v4 = v36;
+            iconLocation = @"SBIconLocationAppLibraryCategoryPod";
+            folder = compactPodFolder2;
+            tapCopy = v36;
             goto LABEL_13;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v40 objects:v45 count:16];
+        v10 = [categoryIdentifiers countByEnumeratingWithState:&v40 objects:v45 count:16];
         if (v10)
         {
           continue;
@@ -751,34 +751,34 @@ LABEL_30:
         break;
       }
 
-      v6 = v34;
-      v4 = v36;
+      folder = v34;
+      tapCopy = v36;
     }
 
 LABEL_13:
   }
 
-  if ([v5 isLaunchEnabled] && objc_msgSend(v5, "isLeafIcon") && objc_msgSend(v6, "isLibraryCategoryFolder"))
+  if ([icon isLaunchEnabled] && objc_msgSend(icon, "isLeafIcon") && objc_msgSend(folder, "isLibraryCategoryFolder"))
   {
-    v35 = [(SBHLibraryPodFolderController *)self loggingClient];
+    loggingClient = [(SBHLibraryPodFolderController *)self loggingClient];
     v17 = self->_libraryCategoryMap;
-    v18 = [v6 libraryCategoryIdentifier];
-    v19 = [v5 leafIdentifier];
-    v33 = [v18 predictionCategoryID];
-    v20 = [v18 predictionCategoryIndex];
-    v37 = v18;
-    v21 = [(SBHLibraryCategoryMap *)v17 sortedApplicationIdentifiersForCategoryIdentifier:v18];
-    v22 = [v21 indexOfObject:v19];
+    libraryCategoryIdentifier = [folder libraryCategoryIdentifier];
+    leafIdentifier = [icon leafIdentifier];
+    predictionCategoryID = [libraryCategoryIdentifier predictionCategoryID];
+    predictionCategoryIndex = [libraryCategoryIdentifier predictionCategoryIndex];
+    v37 = libraryCategoryIdentifier;
+    v21 = [(SBHLibraryCategoryMap *)v17 sortedApplicationIdentifiersForCategoryIdentifier:libraryCategoryIdentifier];
+    v22 = [v21 indexOfObject:leafIdentifier];
 
-    v23 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v39 = v17;
-    v24 = [(SBHLibraryCategoryMap *)v17 metadata];
-    v25 = [v24 objectForKey:@"response"];
+    metadata = [(SBHLibraryCategoryMap *)v17 metadata];
+    v25 = [metadata objectForKey:@"response"];
 
-    if ([(__CFString *)v7 isEqual:@"SBIconLocationAppLibraryCategoryPodRecents"])
+    if ([(__CFString *)iconLocation isEqual:@"SBIconLocationAppLibraryCategoryPodRecents"])
     {
-      v26 = v35;
-      [v35 logLaunchFromCategoryPreviewWithDate:v23 categoryID:4 categoryIndex:v20 bundleID:v19 bundleIndex:v22 appDirectoryResponse:v25];
+      v26 = loggingClient;
+      [loggingClient logLaunchFromCategoryPreviewWithDate:date categoryID:4 categoryIndex:predictionCategoryIndex bundleID:leafIdentifier bundleIndex:v22 appDirectoryResponse:v25];
 LABEL_19:
       v27 = v26;
 LABEL_25:
@@ -787,52 +787,52 @@ LABEL_25:
     }
 
     v32 = v22;
-    v26 = v35;
-    if ([(__CFString *)v7 isEqual:@"SBIconLocationAppLibraryCategoryPodSuggestions"])
+    v26 = loggingClient;
+    if ([(__CFString *)iconLocation isEqual:@"SBIconLocationAppLibraryCategoryPodSuggestions"])
     {
-      v27 = v35;
-      v28 = v35;
-      v29 = v23;
+      v27 = loggingClient;
+      v28 = loggingClient;
+      v29 = date;
       v30 = 3;
     }
 
     else
     {
-      v27 = v35;
-      if (![(__CFString *)v7 isEqual:@"SBIconLocationAppLibraryCategoryPod"])
+      v27 = loggingClient;
+      if (![(__CFString *)iconLocation isEqual:@"SBIconLocationAppLibraryCategoryPod"])
       {
-        if ([(__CFString *)v7 isEqual:@"SBIconLocationAppLibraryCategoryPodExpanded"])
+        if ([(__CFString *)iconLocation isEqual:@"SBIconLocationAppLibraryCategoryPodExpanded"])
         {
-          [v35 logLaunchFromExpandedCategoryWithDate:v23 categoryID:v33 categoryIndex:v20 bundleID:v19 bundleIndex:v32 appDirectoryResponse:v25];
+          [loggingClient logLaunchFromExpandedCategoryWithDate:date categoryID:predictionCategoryID categoryIndex:predictionCategoryIndex bundleID:leafIdentifier bundleIndex:v32 appDirectoryResponse:v25];
           goto LABEL_25;
         }
 
         v31 = SBLogProactiveAppLibrary();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
-          [(SBHLibraryPodFolderController *)v19 iconViewDidHandleTap:v7, v31];
+          [(SBHLibraryPodFolderController *)leafIdentifier iconViewDidHandleTap:iconLocation, v31];
         }
 
         goto LABEL_19;
       }
 
-      v28 = v35;
-      v29 = v23;
-      v30 = v33;
+      v28 = loggingClient;
+      v29 = date;
+      v30 = predictionCategoryID;
     }
 
-    [v28 logLaunchFromCategoryPreviewWithDate:v29 categoryID:v30 categoryIndex:v20 bundleID:v19 bundleIndex:v32 appDirectoryResponse:v25];
+    [v28 logLaunchFromCategoryPreviewWithDate:v29 categoryID:v30 categoryIndex:predictionCategoryIndex bundleID:leafIdentifier bundleIndex:v32 appDirectoryResponse:v25];
     goto LABEL_25;
   }
 
 LABEL_26:
 }
 
-- (BOOL)isPresentingIconLocation:(id)a3
+- (BOOL)isPresentingIconLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(SBHLibraryPodFolderController *)self presentedIconLocations];
-  v6 = [v5 containsObject:v4];
+  locationCopy = location;
+  presentedIconLocations = [(SBHLibraryPodFolderController *)self presentedIconLocations];
+  v6 = [presentedIconLocations containsObject:locationCopy];
 
   return v6;
 }
@@ -841,8 +841,8 @@ LABEL_26:
 {
   v9.receiver = self;
   v9.super_class = SBHLibraryPodFolderController;
-  v3 = [(SBFolderController *)&v9 presentedIconLocations];
-  v4 = [v3 mutableCopy];
+  presentedIconLocations = [(SBFolderController *)&v9 presentedIconLocations];
+  v4 = [presentedIconLocations mutableCopy];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -862,17 +862,17 @@ void __55__SBHLibraryPodFolderController_presentedIconLocations__block_invoke(ui
   [v2 unionSet:v3];
 }
 
-- (id)iconViewForIcon:(id)a3 location:(id)a4 options:(unint64_t)a5
+- (id)iconViewForIcon:(id)icon location:(id)location options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SBFolderController *)self folder];
-  v11 = [v10 isRootFolder];
+  iconCopy = icon;
+  locationCopy = location;
+  folder = [(SBFolderController *)self folder];
+  isRootFolder = [folder isRootFolder];
 
-  if (v11)
+  if (isRootFolder)
   {
     v12 = 0;
-    if (v8 && v9)
+    if (iconCopy && locationCopy)
     {
       v18 = 0;
       v19 = &v18;
@@ -884,8 +884,8 @@ void __55__SBHLibraryPodFolderController_presentedIconLocations__block_invoke(ui
       v14[1] = 3221225472;
       v14[2] = __66__SBHLibraryPodFolderController_iconViewForIcon_location_options___block_invoke;
       v14[3] = &unk_1E808AF10;
-      v15 = v8;
-      v16 = v9;
+      v15 = iconCopy;
+      v16 = locationCopy;
       v17 = &v18;
       [(SBHLibraryPodFolderController *)self enumerateViewControllersUsingBlock:v14];
       v12 = v19[5];
@@ -898,7 +898,7 @@ void __55__SBHLibraryPodFolderController_presentedIconLocations__block_invoke(ui
   {
     v24.receiver = self;
     v24.super_class = SBHLibraryPodFolderController;
-    v12 = [(SBFolderController *)&v24 iconViewForIcon:v8 location:v9 options:a5];
+    v12 = [(SBFolderController *)&v24 iconViewForIcon:iconCopy location:locationCopy options:options];
   }
 
   return v12;
@@ -919,17 +919,17 @@ uint64_t __66__SBHLibraryPodFolderController_iconViewForIcon_location_options___
   return MEMORY[0x1EEE66BB8](v5, v7);
 }
 
-- (id)firstIconViewForIcon:(id)a3 inLocations:(id)a4
+- (id)firstIconViewForIcon:(id)icon inLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBFolderController *)self folder];
-  v9 = [v8 isRootFolder];
+  iconCopy = icon;
+  locationsCopy = locations;
+  folder = [(SBFolderController *)self folder];
+  isRootFolder = [folder isRootFolder];
 
-  if (v9)
+  if (isRootFolder)
   {
     v10 = 0;
-    if (v6 && v7)
+    if (iconCopy && locationsCopy)
     {
       v16 = 0;
       v17 = &v16;
@@ -941,8 +941,8 @@ uint64_t __66__SBHLibraryPodFolderController_iconViewForIcon_location_options___
       v12[1] = 3221225472;
       v12[2] = __66__SBHLibraryPodFolderController_firstIconViewForIcon_inLocations___block_invoke;
       v12[3] = &unk_1E808AF10;
-      v13 = v6;
-      v14 = v7;
+      v13 = iconCopy;
+      v14 = locationsCopy;
       v15 = &v16;
       [(SBHLibraryPodFolderController *)self enumerateViewControllersUsingBlock:v12];
       v10 = v17[5];
@@ -955,7 +955,7 @@ uint64_t __66__SBHLibraryPodFolderController_iconViewForIcon_location_options___
   {
     v22.receiver = self;
     v22.super_class = SBHLibraryPodFolderController;
-    v10 = [(SBFolderController *)&v22 firstIconViewForIcon:v6 inLocations:v7];
+    v10 = [(SBFolderController *)&v22 firstIconViewForIcon:iconCopy inLocations:locationsCopy];
   }
 
   return v10;
@@ -976,15 +976,15 @@ uint64_t __66__SBHLibraryPodFolderController_firstIconViewForIcon_inLocations___
   return MEMORY[0x1EEE66BB8](v5, v7);
 }
 
-- (id)firstIconViewForIcon:(id)a3
+- (id)firstIconViewForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBFolderController *)self folder];
-  v6 = [v5 isRootFolder];
+  iconCopy = icon;
+  folder = [(SBFolderController *)self folder];
+  isRootFolder = [folder isRootFolder];
 
-  if (v6)
+  if (isRootFolder)
   {
-    if (v4)
+    if (iconCopy)
     {
       v12 = 0;
       v13 = &v12;
@@ -996,7 +996,7 @@ uint64_t __66__SBHLibraryPodFolderController_firstIconViewForIcon_inLocations___
       v9[1] = 3221225472;
       v9[2] = __54__SBHLibraryPodFolderController_firstIconViewForIcon___block_invoke;
       v9[3] = &unk_1E808AF38;
-      v10 = v4;
+      v10 = iconCopy;
       v11 = &v12;
       [(SBHLibraryPodFolderController *)self enumerateViewControllersUsingBlock:v9];
       v7 = v13[5];
@@ -1014,7 +1014,7 @@ uint64_t __66__SBHLibraryPodFolderController_firstIconViewForIcon_inLocations___
   {
     v18.receiver = self;
     v18.super_class = SBHLibraryPodFolderController;
-    v7 = [(SBFolderController *)&v18 firstIconViewForIcon:v4];
+    v7 = [(SBFolderController *)&v18 firstIconViewForIcon:iconCopy];
   }
 
   return v7;
@@ -1035,15 +1035,15 @@ uint64_t __54__SBHLibraryPodFolderController_firstIconViewForIcon___block_invoke
   return MEMORY[0x1EEE66BB8](v5, v7);
 }
 
-- (id)firstNonSuggestionsOrRecentsIconViewForIcon:(id)a3
+- (id)firstNonSuggestionsOrRecentsIconViewForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBFolderController *)self folder];
-  v6 = [v5 isRootFolder];
+  iconCopy = icon;
+  folder = [(SBFolderController *)self folder];
+  isRootFolder = [folder isRootFolder];
 
-  if (v6)
+  if (isRootFolder)
   {
-    if (v4)
+    if (iconCopy)
     {
       v12 = 0;
       v13 = &v12;
@@ -1055,7 +1055,7 @@ uint64_t __54__SBHLibraryPodFolderController_firstIconViewForIcon___block_invoke
       v9[1] = 3221225472;
       v9[2] = __77__SBHLibraryPodFolderController_firstNonSuggestionsOrRecentsIconViewForIcon___block_invoke;
       v9[3] = &unk_1E808AF38;
-      v10 = v4;
+      v10 = iconCopy;
       v11 = &v12;
       [(SBHLibraryPodFolderController *)self enumerateNonSuggestionsOrRecentsViewControllersUsingBlock:v9];
       v7 = v13[5];
@@ -1073,7 +1073,7 @@ uint64_t __54__SBHLibraryPodFolderController_firstIconViewForIcon___block_invoke
   {
     v18.receiver = self;
     v18.super_class = SBHLibraryPodFolderController;
-    v7 = [(SBFolderController *)&v18 firstIconViewForIcon:v4];
+    v7 = [(SBFolderController *)&v18 firstIconViewForIcon:iconCopy];
   }
 
   return v7;
@@ -1094,17 +1094,17 @@ uint64_t __77__SBHLibraryPodFolderController_firstNonSuggestionsOrRecentsIconVie
   return MEMORY[0x1EEE66BB8](v5, v7);
 }
 
-- (BOOL)isDisplayingIcon:(id)a3 inLocation:(id)a4
+- (BOOL)isDisplayingIcon:(id)icon inLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBFolderController *)self folder];
-  v9 = [v8 isRootFolder];
+  iconCopy = icon;
+  locationCopy = location;
+  folder = [(SBFolderController *)self folder];
+  isRootFolder = [folder isRootFolder];
 
-  if (v9)
+  if (isRootFolder)
   {
     v10 = 0;
-    if (v6 && v7)
+    if (iconCopy && locationCopy)
     {
       v16 = 0;
       v17 = &v16;
@@ -1114,8 +1114,8 @@ uint64_t __77__SBHLibraryPodFolderController_firstNonSuggestionsOrRecentsIconVie
       v12[1] = 3221225472;
       v12[2] = __61__SBHLibraryPodFolderController_isDisplayingIcon_inLocation___block_invoke;
       v12[3] = &unk_1E808AF10;
-      v13 = v6;
-      v14 = v7;
+      v13 = iconCopy;
+      v14 = locationCopy;
       v15 = &v16;
       [(SBHLibraryPodFolderController *)self enumerateViewControllersUsingBlock:v12];
       v10 = *(v17 + 24);
@@ -1128,7 +1128,7 @@ uint64_t __77__SBHLibraryPodFolderController_firstNonSuggestionsOrRecentsIconVie
   {
     v20.receiver = self;
     v20.super_class = SBHLibraryPodFolderController;
-    v10 = [(SBFolderController *)&v20 isDisplayingIcon:v6 inLocation:v7];
+    v10 = [(SBFolderController *)&v20 isDisplayingIcon:iconCopy inLocation:locationCopy];
   }
 
   return v10 & 1;
@@ -1146,17 +1146,17 @@ uint64_t __61__SBHLibraryPodFolderController_isDisplayingIcon_inLocation___block
   return result;
 }
 
-- (BOOL)isDisplayingIcon:(id)a3 inLocations:(id)a4
+- (BOOL)isDisplayingIcon:(id)icon inLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBFolderController *)self folder];
-  v9 = [v8 isRootFolder];
+  iconCopy = icon;
+  locationsCopy = locations;
+  folder = [(SBFolderController *)self folder];
+  isRootFolder = [folder isRootFolder];
 
-  if (v9)
+  if (isRootFolder)
   {
     v10 = 0;
-    if (v6 && v7)
+    if (iconCopy && locationsCopy)
     {
       v16 = 0;
       v17 = &v16;
@@ -1166,8 +1166,8 @@ uint64_t __61__SBHLibraryPodFolderController_isDisplayingIcon_inLocation___block
       v12[1] = 3221225472;
       v12[2] = __62__SBHLibraryPodFolderController_isDisplayingIcon_inLocations___block_invoke;
       v12[3] = &unk_1E808AF10;
-      v13 = v6;
-      v14 = v7;
+      v13 = iconCopy;
+      v14 = locationsCopy;
       v15 = &v16;
       [(SBHLibraryPodFolderController *)self enumerateViewControllersUsingBlock:v12];
       v10 = *(v17 + 24);
@@ -1180,7 +1180,7 @@ uint64_t __61__SBHLibraryPodFolderController_isDisplayingIcon_inLocation___block
   {
     v20.receiver = self;
     v20.super_class = SBHLibraryPodFolderController;
-    v10 = [(SBFolderController *)&v20 isDisplayingIcon:v6 inLocations:v7];
+    v10 = [(SBFolderController *)&v20 isDisplayingIcon:iconCopy inLocations:locationsCopy];
   }
 
   return v10 & 1;
@@ -1198,15 +1198,15 @@ uint64_t __62__SBHLibraryPodFolderController_isDisplayingIcon_inLocations___bloc
   return result;
 }
 
-- (BOOL)isDisplayingIcon:(id)a3
+- (BOOL)isDisplayingIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBFolderController *)self folder];
-  v6 = [v5 isRootFolder];
+  iconCopy = icon;
+  folder = [(SBFolderController *)self folder];
+  isRootFolder = [folder isRootFolder];
 
-  if (v6)
+  if (isRootFolder)
   {
-    if (v4)
+    if (iconCopy)
     {
       v12 = 0;
       v13 = &v12;
@@ -1216,7 +1216,7 @@ uint64_t __62__SBHLibraryPodFolderController_isDisplayingIcon_inLocations___bloc
       v9[1] = 3221225472;
       v9[2] = __50__SBHLibraryPodFolderController_isDisplayingIcon___block_invoke;
       v9[3] = &unk_1E808AF38;
-      v10 = v4;
+      v10 = iconCopy;
       v11 = &v12;
       [(SBHLibraryPodFolderController *)self enumerateViewControllersUsingBlock:v9];
       v7 = *(v13 + 24);
@@ -1234,7 +1234,7 @@ uint64_t __62__SBHLibraryPodFolderController_isDisplayingIcon_inLocations___bloc
   {
     v16.receiver = self;
     v16.super_class = SBHLibraryPodFolderController;
-    v7 = [(SBFolderController *)&v16 isDisplayingIcon:v4];
+    v7 = [(SBFolderController *)&v16 isDisplayingIcon:iconCopy];
   }
 
   return v7 & 1;
@@ -1252,15 +1252,15 @@ uint64_t __50__SBHLibraryPodFolderController_isDisplayingIcon___block_invoke(uin
   return result;
 }
 
-- (BOOL)isDisplayingIconView:(id)a3
+- (BOOL)isDisplayingIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBFolderController *)self folder];
-  v6 = [v5 isRootFolder];
+  viewCopy = view;
+  folder = [(SBFolderController *)self folder];
+  isRootFolder = [folder isRootFolder];
 
-  if (v6)
+  if (isRootFolder)
   {
-    if (v4)
+    if (viewCopy)
     {
       v12 = 0;
       v13 = &v12;
@@ -1270,7 +1270,7 @@ uint64_t __50__SBHLibraryPodFolderController_isDisplayingIcon___block_invoke(uin
       v9[1] = 3221225472;
       v9[2] = __54__SBHLibraryPodFolderController_isDisplayingIconView___block_invoke;
       v9[3] = &unk_1E808AF38;
-      v10 = v4;
+      v10 = viewCopy;
       v11 = &v12;
       [(SBHLibraryPodFolderController *)self enumerateViewControllersUsingBlock:v9];
       v7 = *(v13 + 24);
@@ -1288,7 +1288,7 @@ uint64_t __50__SBHLibraryPodFolderController_isDisplayingIcon___block_invoke(uin
   {
     v16.receiver = self;
     v16.super_class = SBHLibraryPodFolderController;
-    v7 = [(SBFolderController *)&v16 isDisplayingIconView:v4];
+    v7 = [(SBFolderController *)&v16 isDisplayingIconView:viewCopy];
   }
 
   return v7 & 1;
@@ -1306,17 +1306,17 @@ uint64_t __54__SBHLibraryPodFolderController_isDisplayingIconView___block_invoke
   return result;
 }
 
-- (BOOL)isDisplayingIconView:(id)a3 inLocation:(id)a4
+- (BOOL)isDisplayingIconView:(id)view inLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBFolderController *)self folder];
-  v9 = [v8 isRootFolder];
+  viewCopy = view;
+  locationCopy = location;
+  folder = [(SBFolderController *)self folder];
+  isRootFolder = [folder isRootFolder];
 
-  if (v9)
+  if (isRootFolder)
   {
     v10 = 0;
-    if (v6 && v7)
+    if (viewCopy && locationCopy)
     {
       v16 = 0;
       v17 = &v16;
@@ -1326,8 +1326,8 @@ uint64_t __54__SBHLibraryPodFolderController_isDisplayingIconView___block_invoke
       v12[1] = 3221225472;
       v12[2] = __65__SBHLibraryPodFolderController_isDisplayingIconView_inLocation___block_invoke;
       v12[3] = &unk_1E808AF10;
-      v13 = v6;
-      v14 = v7;
+      v13 = viewCopy;
+      v14 = locationCopy;
       v15 = &v16;
       [(SBHLibraryPodFolderController *)self enumerateViewControllersUsingBlock:v12];
       v10 = *(v17 + 24);
@@ -1340,7 +1340,7 @@ uint64_t __54__SBHLibraryPodFolderController_isDisplayingIconView___block_invoke
   {
     v20.receiver = self;
     v20.super_class = SBHLibraryPodFolderController;
-    v10 = [(SBFolderController *)&v20 isDisplayingIconView:v6 inLocation:v7];
+    v10 = [(SBFolderController *)&v20 isDisplayingIconView:viewCopy inLocation:locationCopy];
   }
 
   return v10 & 1;
@@ -1358,23 +1358,23 @@ uint64_t __65__SBHLibraryPodFolderController_isDisplayingIconView_inLocation___b
   return result;
 }
 
-- (void)enumerateDisplayedIconViewsForIcon:(id)a3 usingBlock:(id)a4
+- (void)enumerateDisplayedIconViewsForIcon:(id)icon usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBFolderController *)self folder];
-  v9 = [v8 isRootFolder];
+  iconCopy = icon;
+  blockCopy = block;
+  folder = [(SBFolderController *)self folder];
+  isRootFolder = [folder isRootFolder];
 
-  if (v9)
+  if (isRootFolder)
   {
-    if (v6 && v7)
+    if (iconCopy && blockCopy)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __79__SBHLibraryPodFolderController_enumerateDisplayedIconViewsForIcon_usingBlock___block_invoke;
       v10[3] = &unk_1E808AF60;
-      v11 = v6;
-      v12 = v7;
+      v11 = iconCopy;
+      v12 = blockCopy;
       [(SBHLibraryPodFolderController *)self enumerateViewControllersUsingBlock:v10];
     }
   }
@@ -1383,34 +1383,34 @@ uint64_t __65__SBHLibraryPodFolderController_isDisplayingIconView_inLocation___b
   {
     v13.receiver = self;
     v13.super_class = SBHLibraryPodFolderController;
-    [(SBFolderController *)&v13 enumerateDisplayedIconViewsForIcon:v6 usingBlock:v7];
+    [(SBFolderController *)&v13 enumerateDisplayedIconViewsForIcon:iconCopy usingBlock:blockCopy];
   }
 }
 
-- (void)enumerateDisplayedIconViewsUsingBlock:(id)a3
+- (void)enumerateDisplayedIconViewsUsingBlock:(id)block
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBFolderController *)self folder];
-  v6 = [v5 isRootFolder];
+  blockCopy = block;
+  folder = [(SBFolderController *)self folder];
+  isRootFolder = [folder isRootFolder];
 
-  if (v6)
+  if (isRootFolder)
   {
-    if (v4)
+    if (blockCopy)
     {
       v32 = 0;
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v7 = [(SBFolderController *)self folderView];
-      v8 = [v7 iconListViews];
+      folderView = [(SBFolderController *)self folderView];
+      iconListViews = [folderView iconListViews];
 
-      v20 = [v8 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      v20 = [iconListViews countByEnumeratingWithState:&v28 objects:v35 count:16];
       if (v20)
       {
         v9 = *v29;
-        v21 = v8;
+        v21 = iconListViews;
         v19 = *v29;
         do
         {
@@ -1419,7 +1419,7 @@ uint64_t __65__SBHLibraryPodFolderController_isDisplayingIconView_inLocation___b
           {
             if (*v29 != v9)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(iconListViews);
             }
 
             v11 = *(*(&v28 + 1) + 8 * v10);
@@ -1427,8 +1427,8 @@ uint64_t __65__SBHLibraryPodFolderController_isDisplayingIconView_inLocation___b
             v25 = 0u;
             v26 = 0u;
             v27 = 0u;
-            v12 = [v11 icons];
-            v13 = [v12 countByEnumeratingWithState:&v24 objects:v34 count:16];
+            icons = [v11 icons];
+            v13 = [icons countByEnumeratingWithState:&v24 objects:v34 count:16];
             if (v13)
             {
               v14 = v13;
@@ -1440,13 +1440,13 @@ uint64_t __65__SBHLibraryPodFolderController_isDisplayingIconView_inLocation___b
                 {
                   if (*v25 != v15)
                   {
-                    objc_enumerationMutation(v12);
+                    objc_enumerationMutation(icons);
                   }
 
                   v17 = [v11 displayedIconViewForIcon:*(*(&v24 + 1) + 8 * v16)];
                   if (v17)
                   {
-                    v4[2](v4, v17, &v32);
+                    blockCopy[2](blockCopy, v17, &v32);
                     if (v32)
                     {
 
@@ -1459,7 +1459,7 @@ uint64_t __65__SBHLibraryPodFolderController_isDisplayingIconView_inLocation___b
                 }
 
                 while (v14 != v16);
-                v14 = [v12 countByEnumeratingWithState:&v24 objects:v34 count:16];
+                v14 = [icons countByEnumeratingWithState:&v24 objects:v34 count:16];
                 if (v14)
                 {
                   continue;
@@ -1470,7 +1470,7 @@ uint64_t __65__SBHLibraryPodFolderController_isDisplayingIconView_inLocation___b
             }
 
             ++v10;
-            v8 = v21;
+            iconListViews = v21;
             v9 = v19;
           }
 
@@ -1485,7 +1485,7 @@ uint64_t __65__SBHLibraryPodFolderController_isDisplayingIconView_inLocation___b
       v22[1] = 3221225472;
       v22[2] = __71__SBHLibraryPodFolderController_enumerateDisplayedIconViewsUsingBlock___block_invoke;
       v22[3] = &unk_1E808AF88;
-      v23 = v4;
+      v23 = blockCopy;
       [(SBHLibraryPodFolderController *)self enumerateViewControllersUsingBlock:v22];
       v18 = v23;
 LABEL_22:
@@ -1496,20 +1496,20 @@ LABEL_22:
   {
     v33.receiver = self;
     v33.super_class = SBHLibraryPodFolderController;
-    [(SBFolderController *)&v33 enumerateDisplayedIconViewsUsingBlock:v4];
+    [(SBFolderController *)&v33 enumerateDisplayedIconViewsUsingBlock:blockCopy];
   }
 }
 
-- (id)firstIconViewForIcon:(id)a3 excludingLocations:(id)a4
+- (id)firstIconViewForIcon:(id)icon excludingLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBFolderController *)self folder];
-  v9 = [v8 isRootFolder];
+  iconCopy = icon;
+  locationsCopy = locations;
+  folder = [(SBFolderController *)self folder];
+  isRootFolder = [folder isRootFolder];
 
-  if (v9)
+  if (isRootFolder)
   {
-    if (v6 && [v7 count])
+    if (iconCopy && [locationsCopy count])
     {
       v16 = 0;
       v17 = &v16;
@@ -1521,8 +1521,8 @@ LABEL_22:
       v12[1] = 3221225472;
       v12[2] = __73__SBHLibraryPodFolderController_firstIconViewForIcon_excludingLocations___block_invoke;
       v12[3] = &unk_1E808AF10;
-      v13 = v6;
-      v14 = v7;
+      v13 = iconCopy;
+      v14 = locationsCopy;
       v15 = &v16;
       [(SBHLibraryPodFolderController *)self enumerateViewControllersUsingBlock:v12];
       v10 = v17[5];
@@ -1540,7 +1540,7 @@ LABEL_22:
   {
     v22.receiver = self;
     v22.super_class = SBHLibraryPodFolderController;
-    v10 = [(SBFolderController *)&v22 firstIconViewForIcon:v6 excludingLocations:v7];
+    v10 = [(SBFolderController *)&v22 firstIconViewForIcon:iconCopy excludingLocations:locationsCopy];
   }
 
   return v10;
@@ -1561,49 +1561,49 @@ uint64_t __73__SBHLibraryPodFolderController_firstIconViewForIcon_excludingLocat
   return MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (void)setLibrarySearchControllerScrollViewDelegate:(id)a3
+- (void)setLibrarySearchControllerScrollViewDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SBHLibraryPodFolderController *)self podFolderView];
-  [v5 setLibrarySearchControllerScrollViewDelegate:v4];
+  delegateCopy = delegate;
+  podFolderView = [(SBHLibraryPodFolderController *)self podFolderView];
+  [podFolderView setLibrarySearchControllerScrollViewDelegate:delegateCopy];
 }
 
 - (BSUIScrollViewDelegate)librarySearchControllerScrollViewDelegate
 {
-  v2 = [(SBHLibraryPodFolderController *)self podFolderView];
-  v3 = [v2 librarySearchControllerScrollViewDelegate];
+  podFolderView = [(SBHLibraryPodFolderController *)self podFolderView];
+  librarySearchControllerScrollViewDelegate = [podFolderView librarySearchControllerScrollViewDelegate];
 
-  return v3;
+  return librarySearchControllerScrollViewDelegate;
 }
 
-- (BOOL)_ourFolderContainsFolder:(id)a3
+- (BOOL)_ourFolderContainsFolder:(id)folder
 {
   dataSource = self->_dataSource;
-  v4 = a3;
-  v5 = [(SBHLibraryCategoriesFolderDataSource *)dataSource categoriesFolder];
-  v6 = [v4 rootFolder];
+  folderCopy = folder;
+  categoriesFolder = [(SBHLibraryCategoriesFolderDataSource *)dataSource categoriesFolder];
+  rootFolder = [folderCopy rootFolder];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(folderCopy) = [categoriesFolder isEqual:rootFolder];
+  return folderCopy;
 }
 
-- (void)enumerateViewControllersUsingBlock:(id)a3
+- (void)enumerateViewControllersUsingBlock:(id)block
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v31 = 0;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [(SBFolderController *)self folderView];
-  v6 = [v5 iconListViews];
+  folderView = [(SBFolderController *)self folderView];
+  iconListViews = [folderView iconListViews];
 
-  v20 = [v6 countByEnumeratingWithState:&v27 objects:v33 count:16];
+  v20 = [iconListViews countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v20)
   {
     v7 = *v28;
-    v22 = v6;
+    v22 = iconListViews;
     v19 = *v28;
     do
     {
@@ -1612,7 +1612,7 @@ uint64_t __73__SBHLibraryPodFolderController_firstIconViewForIcon_excludingLocat
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(iconListViews);
         }
 
         v21 = v8;
@@ -1621,8 +1621,8 @@ uint64_t __73__SBHLibraryPodFolderController_firstIconViewForIcon_excludingLocat
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v10 = [v9 icons];
-        v11 = [v10 countByEnumeratingWithState:&v23 objects:v32 count:16];
+        icons = [v9 icons];
+        v11 = [icons countByEnumeratingWithState:&v23 objects:v32 count:16];
         if (v11)
         {
           v12 = v11;
@@ -1633,27 +1633,27 @@ uint64_t __73__SBHLibraryPodFolderController_firstIconViewForIcon_excludingLocat
             {
               if (*v24 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(icons);
               }
 
               v15 = [v9 displayedIconViewForIcon:*(*(&v23 + 1) + 8 * i)];
               v16 = v15;
               if (v15)
               {
-                v17 = [v15 customIconImageViewController];
-                v4[2](v4, v17, &v31);
+                customIconImageViewController = [v15 customIconImageViewController];
+                blockCopy[2](blockCopy, customIconImageViewController, &v31);
                 v18 = v31;
 
                 if (v18)
                 {
 
-                  v6 = v22;
+                  iconListViews = v22;
                   goto LABEL_19;
                 }
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v23 objects:v32 count:16];
+            v12 = [icons countByEnumeratingWithState:&v23 objects:v32 count:16];
             if (v12)
             {
               continue;
@@ -1664,7 +1664,7 @@ uint64_t __73__SBHLibraryPodFolderController_firstIconViewForIcon_excludingLocat
         }
 
         v8 = v21 + 1;
-        v6 = v22;
+        iconListViews = v22;
         v7 = v19;
       }
 
@@ -1678,23 +1678,23 @@ uint64_t __73__SBHLibraryPodFolderController_firstIconViewForIcon_excludingLocat
 LABEL_19:
 }
 
-- (void)enumerateNonSuggestionsOrRecentsViewControllersUsingBlock:(id)a3
+- (void)enumerateNonSuggestionsOrRecentsViewControllersUsingBlock:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v34 = 0;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = [(SBFolderController *)self folderView];
-  v6 = [v5 iconListViews];
+  folderView = [(SBFolderController *)self folderView];
+  iconListViews = [folderView iconListViews];
 
-  v23 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  v23 = [iconListViews countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v23)
   {
     v7 = *v31;
-    v25 = v6;
+    v25 = iconListViews;
     v22 = *v31;
     do
     {
@@ -1703,7 +1703,7 @@ LABEL_19:
       {
         if (*v31 != v7)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(iconListViews);
         }
 
         v24 = v8;
@@ -1712,8 +1712,8 @@ LABEL_19:
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v10 = [v9 icons];
-        v11 = [v10 countByEnumeratingWithState:&v26 objects:v35 count:16];
+        icons = [v9 icons];
+        v11 = [icons countByEnumeratingWithState:&v26 objects:v35 count:16];
         if (v11)
         {
           v12 = v11;
@@ -1724,36 +1724,36 @@ LABEL_19:
             {
               if (*v27 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(icons);
               }
 
               v15 = *(*(&v26 + 1) + 8 * i);
               if ([v15 isCategoryIcon])
               {
-                v16 = [v15 category];
-                v17 = [v16 categoryIdentifier];
-                v18 = [v17 predictionCategoryID];
+                category = [v15 category];
+                categoryIdentifier = [category categoryIdentifier];
+                predictionCategoryID = [categoryIdentifier predictionCategoryID];
 
-                if ((v18 - 3) < 2)
+                if ((predictionCategoryID - 3) < 2)
                 {
                   continue;
                 }
               }
 
               v19 = [v9 displayedIconViewForIcon:v15];
-              v20 = [v19 customIconImageViewController];
-              v4[2](v4, v20, &v34);
+              customIconImageViewController = [v19 customIconImageViewController];
+              blockCopy[2](blockCopy, customIconImageViewController, &v34);
               v21 = v34;
 
               if (v21)
               {
 
-                v6 = v25;
+                iconListViews = v25;
                 goto LABEL_20;
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v26 objects:v35 count:16];
+            v12 = [icons countByEnumeratingWithState:&v26 objects:v35 count:16];
             if (v12)
             {
               continue;
@@ -1764,7 +1764,7 @@ LABEL_19:
         }
 
         v8 = v24 + 1;
-        v6 = v25;
+        iconListViews = v25;
         v7 = v22;
       }
 
@@ -1780,24 +1780,24 @@ LABEL_20:
 
 - (id)_nestingViewControllerForPushing
 {
-  v2 = self;
-  v3 = v2;
-  if (v2)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy)
   {
-    v4 = v2;
-    v5 = v2;
+    v4 = selfCopy;
+    v5 = selfCopy;
     do
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || (v6 = v5, v4, [v6 parentNestingViewController], v7 = objc_claimAutoreleasedReturnValue(), v4 = v6, !v7))
+      if ((objc_opt_isKindOfClass() & 1) == 0 || (v6 = v5, v4, [v6 parentNestingViewController], parentViewController = objc_claimAutoreleasedReturnValue(), v4 = v6, !parentViewController))
       {
-        v7 = [v5 parentViewController];
+        parentViewController = [v5 parentViewController];
       }
 
-      v5 = v7;
+      v5 = parentViewController;
     }
 
-    while (v7);
+    while (parentViewController);
   }
 
   else
@@ -1805,10 +1805,10 @@ LABEL_20:
     v4 = 0;
   }
 
-  v8 = [(SBHLibraryPodFolderController *)v3 podFolderControllerDelegate];
+  podFolderControllerDelegate = [(SBHLibraryPodFolderController *)v3 podFolderControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 libraryPodFolderController:v3 nestingViewControllerForPushingWithProposedController:v4];
+    v9 = [podFolderControllerDelegate libraryPodFolderController:v3 nestingViewControllerForPushingWithProposedController:v4];
 
     v4 = v9;
   }
@@ -1816,48 +1816,48 @@ LABEL_20:
   return v4;
 }
 
-- (void)categoriesDataSourceNeedsAnimatedReload:(id)a3
+- (void)categoriesDataSourceNeedsAnimatedReload:(id)reload
 {
-  v4 = a3;
-  v5 = [(SBHLibraryPodFolderController *)self podFolderControllerDelegate];
-  v6 = [v4 categoryIdentifiersCount];
+  reloadCopy = reload;
+  podFolderControllerDelegate = [(SBHLibraryPodFolderController *)self podFolderControllerDelegate];
+  categoryIdentifiersCount = [reloadCopy categoryIdentifiersCount];
 
-  [v5 libraryPodFolderController:self willLayoutDisplayedCategories:v6];
+  [podFolderControllerDelegate libraryPodFolderController:self willLayoutDisplayedCategories:categoryIdentifiersCount];
   if ([(SBHLibraryPodFolderController *)self _isViewControllerVisible])
   {
-    v7 = [(SBFolderController *)self folderView];
-    [v7 layoutIconListsWithAnimationType:0 forceRelayout:1];
+    folderView = [(SBFolderController *)self folderView];
+    [folderView layoutIconListsWithAnimationType:0 forceRelayout:1];
   }
 }
 
-- (void)categoriesDataSource:(id)a3 shouldAnimateLayoutForCategories:(id)a4
+- (void)categoriesDataSource:(id)source shouldAnimateLayoutForCategories:(id)categories
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHLibraryPodFolderController *)self podFolderControllerDelegate];
-  v9 = [v7 categoryIdentifiersCount];
+  categoriesCopy = categories;
+  sourceCopy = source;
+  podFolderControllerDelegate = [(SBHLibraryPodFolderController *)self podFolderControllerDelegate];
+  categoryIdentifiersCount = [sourceCopy categoryIdentifiersCount];
 
-  [v8 libraryPodFolderController:self willLayoutDisplayedCategories:v9];
-  v10 = [(SBHLibraryPodFolderController *)self bs_isAppearingOrAppeared];
-  if (((v10 ^ 1) & 1) == 0)
+  [podFolderControllerDelegate libraryPodFolderController:self willLayoutDisplayedCategories:categoryIdentifiersCount];
+  bs_isAppearingOrAppeared = [(SBHLibraryPodFolderController *)self bs_isAppearingOrAppeared];
+  if (((bs_isAppearingOrAppeared ^ 1) & 1) == 0)
   {
     [MEMORY[0x1E6979518] begin];
   }
 
-  v11 = [(SBFolderController *)self folderView];
-  if ([v6 count])
+  folderView = [(SBFolderController *)self folderView];
+  if ([categoriesCopy count])
   {
-    v12 = [v11 iconListViews];
+    iconListViews = [folderView iconListViews];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __87__SBHLibraryPodFolderController_categoriesDataSource_shouldAnimateLayoutForCategories___block_invoke;
     v13[3] = &unk_1E808AFB0;
-    v14 = v6;
-    v15 = ((v10 ^ 1u) << 63) >> 63;
-    [v12 enumerateObjectsUsingBlock:v13];
+    v14 = categoriesCopy;
+    v15 = ((bs_isAppearingOrAppeared ^ 1u) << 63) >> 63;
+    [iconListViews enumerateObjectsUsingBlock:v13];
   }
 
-  if (v10)
+  if (bs_isAppearingOrAppeared)
   {
     [MEMORY[0x1E6979518] commit];
   }
@@ -1918,8 +1918,8 @@ void __87__SBHLibraryPodFolderController_categoriesDataSource_shouldAnimateLayou
 - (void)_reloadAppIcons
 {
   dataSource = self->_dataSource;
-  v4 = [(SBHLibraryPodFolderController *)self libraryCategoryMap];
-  v3 = [(SBHLibraryCategoriesFolderDataSource *)dataSource reloadDataWithCategoryMap:v4];
+  libraryCategoryMap = [(SBHLibraryPodFolderController *)self libraryCategoryMap];
+  v3 = [(SBHLibraryCategoriesFolderDataSource *)dataSource reloadDataWithCategoryMap:libraryCategoryMap];
 }
 
 - (SBHLibraryPodFolderControllerDelegate)podFolderControllerDelegate

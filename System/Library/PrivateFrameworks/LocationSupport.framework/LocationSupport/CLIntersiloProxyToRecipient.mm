@@ -1,19 +1,19 @@
 @interface CLIntersiloProxyToRecipient
-- (CLIntersiloProxyToRecipient)initWithUninitializedPeer:(id)a3;
+- (CLIntersiloProxyToRecipient)initWithUninitializedPeer:(id)peer;
 @end
 
 @implementation CLIntersiloProxyToRecipient
 
-- (CLIntersiloProxyToRecipient)initWithUninitializedPeer:(id)a3
+- (CLIntersiloProxyToRecipient)initWithUninitializedPeer:(id)peer
 {
-  v5 = a3;
+  peerCopy = peer;
   v9.receiver = self;
   v9.super_class = CLIntersiloProxyToRecipient;
   v6 = [(CLIntersiloProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_peer, a3);
+    objc_storeStrong(&v6->_peer, peer);
   }
 
   return v7;

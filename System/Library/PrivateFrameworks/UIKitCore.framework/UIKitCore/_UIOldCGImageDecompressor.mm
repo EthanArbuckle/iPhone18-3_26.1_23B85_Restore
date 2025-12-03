@@ -1,9 +1,9 @@
 @interface _UIOldCGImageDecompressor
 + (uint64_t)flushCaches;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGImage)waitForImageRef;
-- (id)initWithData:(void *)a3 immediateLoadWithMaxSize:(int)a4 renderingIntent:(double)a5 cache:(double)a6;
-- (void)_decompressEagerly:(uint64_t)a1;
+- (id)initWithData:(void *)data immediateLoadWithMaxSize:(int)size renderingIntent:(double)intent cache:(double)cache;
+- (void)_decompressEagerly:(uint64_t)eagerly;
 - (void)_waitForMetadata;
 - (void)dealloc;
 @end
@@ -23,22 +23,22 @@
   return result;
 }
 
-- (id)initWithData:(void *)a3 immediateLoadWithMaxSize:(int)a4 renderingIntent:(double)a5 cache:(double)a6
+- (id)initWithData:(void *)data immediateLoadWithMaxSize:(int)size renderingIntent:(double)intent cache:(double)cache
 {
   v12 = a2;
-  if (a1)
+  if (self)
   {
-    v21.receiver = a1;
+    v21.receiver = self;
     v21.super_class = _UIOldCGImageDecompressor;
     v13 = objc_msgSendSuper2(&v21, sel_init);
     v14 = v13;
     if (v13)
     {
-      *(v13 + 2) = a5;
-      *(v13 + 3) = a6;
-      v13[5] = a3;
+      *(v13 + 2) = intent;
+      *(v13 + 3) = cache;
+      v13[5] = data;
       objc_storeStrong(v13 + 1, a2);
-      if (a4)
+      if (size)
       {
         v15 = 32;
       }
@@ -67,18 +67,18 @@
     v20 = v16;
     v17 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
     dispatch_async(_MergedGlobals_3_23, v17);
-    a1 = v16;
+    self = v16;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_decompressEagerly:(uint64_t)a1
+- (void)_decompressEagerly:(uint64_t)eagerly
 {
   valuePtr[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (eagerly)
   {
-    v3 = (a1 + 60);
+    v3 = (eagerly + 60);
     if (a2)
     {
       if (!os_unfair_lock_trylock(v3))
@@ -92,9 +92,9 @@
       os_unfair_lock_lock(v3);
     }
 
-    if ((*(a1 + 64) & 0x10) == 0)
+    if ((*(eagerly + 64) & 0x10) == 0)
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, eagerly);
       v4 = dispatch_get_global_queue(2, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -113,9 +113,9 @@
         Mutable = CFDictionaryCreateMutable(0, 2, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
         v8 = *MEMORY[0x1E695F060];
         v7 = *(MEMORY[0x1E695F060] + 8);
-        if (*(a1 + 16) != *MEMORY[0x1E695F060] || *(a1 + 24) != v7)
+        if (*(eagerly + 16) != *MEMORY[0x1E695F060] || *(eagerly + 24) != v7)
         {
-          v9 = *(a1 + 8);
+          v9 = *(eagerly + 8);
           v61 = @"kCGImageSourceSkipMetadata";
           valuePtr[0] = *MEMORY[0x1E695E4D0];
           v10 = MEMORY[0x1E695DF20];
@@ -148,14 +148,14 @@
 
           if (v22 != v8 || v23 != v7)
           {
-            valuePtr[0] = *(a1 + 16 + 8 * (v22 <= v23));
+            valuePtr[0] = *(eagerly + 16 + 8 * (v22 <= v23));
             v24 = CFNumberCreate(0, kCFNumberFloatType, valuePtr);
             CFDictionaryAddValue(Mutable, *MEMORY[0x1E6991B50], v24);
             CFRelease(v24);
           }
         }
 
-        if (*(a1 + 40))
+        if (*(eagerly + 40))
         {
           v25 = 1111970369;
         }
@@ -176,48 +176,48 @@
         v53 = 3221225472;
         v54 = __48___UIOldCGImageDecompressor__decompressEagerly___block_invoke_3;
         v55 = &unk_1E7129E88;
-        v56 = a1;
+        eagerlyCopy = eagerly;
         v57 = v27;
-        *(a1 + 48) = CMPhotoJPEGDecodeSessionDecodeDataToCGImageAsynchronously();
+        *(eagerly + 48) = CMPhotoJPEGDecodeSessionDecodeDataToCGImageAsynchronously();
         dispatch_semaphore_wait(v57, 0xFFFFFFFFFFFFFFFFLL);
         CFRelease(Mutable);
       }
 
-      if ((*(a1 + 64) & 0x10) != 0)
+      if ((*(eagerly + 64) & 0x10) != 0)
       {
         goto LABEL_39;
       }
 
-      os_unfair_lock_assert_owner((a1 + 60));
-      v28 = *(a1 + 8);
+      os_unfair_lock_assert_owner((eagerly + 60));
+      v28 = *(eagerly + 8);
       LOBYTE(valuePtr[0]) = 0;
       v29 = *MEMORY[0x1E6982E58];
       v30 = v28;
-      v31 = [v29 identifier];
+      identifier = [v29 identifier];
       TypeWithData = CGImageSourceGetTypeWithData();
 
       if (LOBYTE(valuePtr[0]) == 1 || ([MEMORY[0x1E6982C40] typeWithIdentifier:TypeWithData], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "conformsToType:", v29), v33, (v34 & 1) != 0))
       {
-        v35 = _UIImageRefFromData(*(a1 + 8), 0, 0, 0);
-        *(a1 + 32) = v35;
+        v35 = _UIImageRefFromData(*(eagerly + 8), 0, 0, 0);
+        *(eagerly + 32) = v35;
         if (v35)
         {
 LABEL_38:
-          *(a1 + 64) |= 0x10u;
+          *(eagerly + 64) |= 0x10u;
 LABEL_39:
-          os_unfair_lock_unlock((a1 + 60));
+          os_unfair_lock_unlock((eagerly + 60));
           objc_destroyWeak(&v59);
           objc_destroyWeak(&location);
           return;
         }
 
         v36 = MEMORY[0x1E696AEC0];
-        v37 = a1;
+        eagerlyCopy2 = eagerly;
         v38 = objc_opt_class();
         v39 = NSStringFromClass(v38);
-        v40 = [v36 stringWithFormat:@"<%@: %p>", v39, v37];
+        eagerlyCopy2 = [v36 stringWithFormat:@"<%@: %p>", v39, eagerlyCopy2];
 
-        v41 = v37[1];
+        v41 = eagerlyCopy2[1];
         if (v41)
         {
           v42 = MEMORY[0x1E696AEC0];
@@ -232,43 +232,43 @@ LABEL_39:
           v46 = @"(nil)";
         }
 
-        NSLog(&cfstr_UnableToCreate_2.isa, v40, v46, v52, v53, v54, v55, v56);
+        NSLog(&cfstr_UnableToCreate_2.isa, eagerlyCopy2, v46, v52, v53, v54, v55, eagerlyCopy);
       }
 
       else
       {
-        v47 = *(a1 + 8);
+        v47 = *(eagerly + 8);
         if (v47)
         {
           v48 = MEMORY[0x1E696AEC0];
           v49 = v47;
           v50 = objc_opt_class();
           v51 = NSStringFromClass(v50);
-          v40 = [v48 stringWithFormat:@"<%@: %p>", v51, v49];
+          eagerlyCopy2 = [v48 stringWithFormat:@"<%@: %p>", v51, v49];
         }
 
         else
         {
-          v40 = @"(nil)";
+          eagerlyCopy2 = @"(nil)";
         }
 
-        NSLog(&cfstr_InvalidJpegDat.isa, v40);
+        NSLog(&cfstr_InvalidJpegDat.isa, eagerlyCopy2);
       }
 
       goto LABEL_38;
     }
 
-    os_unfair_lock_unlock((a1 + 60));
+    os_unfair_lock_unlock((eagerly + 60));
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = *(v5 + 1) == self->_imageData && *(v5 + 5) == self->_renderingIntent && ((*&self->_decompressorFlags ^ *(v5 + 64)) & 0x20) == 0 && v5[3] == self->_maxSize.height && v5[2] == self->_maxSize.width;
   }
 
@@ -291,18 +291,18 @@ LABEL_39:
 - (void)_waitForMetadata
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 56));
-    if (*(a1 + 64))
+    os_unfair_lock_lock((self + 56));
+    if (*(self + 64))
     {
 
-      os_unfair_lock_unlock((a1 + 56));
+      os_unfair_lock_unlock((self + 56));
     }
 
     else
     {
-      if ((*(a1 + 64) & 0x20) != 0)
+      if ((*(self + 64) & 0x20) != 0)
       {
         v3 = 0;
       }
@@ -317,7 +317,7 @@ LABEL_39:
         v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
       }
 
-      v4 = CGImageSourceCreateWithData(*(a1 + 8), v3);
+      v4 = CGImageSourceCreateWithData(*(self + 8), v3);
       v7 = 0;
       if (v4)
       {
@@ -332,10 +332,10 @@ LABEL_39:
         v6 = 0;
       }
 
-      *(a1 + 64) = *(a1 + 64) & 0xF1 | v6;
-      *(a1 + 64) |= 1u;
+      *(self + 64) = *(self + 64) & 0xF1 | v6;
+      *(self + 64) |= 1u;
 
-      os_unfair_lock_unlock((a1 + 56));
+      os_unfair_lock_unlock((self + 56));
     }
   }
 }

@@ -1,34 +1,34 @@
 @interface ICHostedNotesAppearanceCoordinator
-- (BOOL)shouldHideModeButtonWithPresentedViewController:(id)a3;
+- (BOOL)shouldHideModeButtonWithPresentedViewController:(id)controller;
 - (ICHostedNotesAppearanceCoordinating)delegate;
-- (ICHostedNotesAppearanceCoordinator)initWithDelegate:(id)a3;
+- (ICHostedNotesAppearanceCoordinator)initWithDelegate:(id)delegate;
 - (NSSet)modeButtonHidingModalTypes;
 - (NSSet)modeButtonHidingPopoverTypes;
 - (UIView)view;
 - (UIViewController)viewController;
 - (_UIHostedWindowScene)hostedWindowScene;
-- (void)didDismissViewController:(id)a3;
+- (void)didDismissViewController:(id)controller;
 - (void)updateAppearance;
-- (void)willDismissViewController:(id)a3;
-- (void)willPresentViewController:(id)a3;
+- (void)willDismissViewController:(id)controller;
+- (void)willPresentViewController:(id)controller;
 @end
 
 @implementation ICHostedNotesAppearanceCoordinator
 
-- (ICHostedNotesAppearanceCoordinator)initWithDelegate:(id)a3
+- (ICHostedNotesAppearanceCoordinator)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = ICHostedNotesAppearanceCoordinator;
   v5 = [(ICHostedNotesAppearanceCoordinator *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v6 selector:sel_willPresentViewController_ name:*MEMORY[0x1E69DE2E0] object:0];
-    [v7 addObserver:v6 selector:sel_willDismissViewController_ name:*MEMORY[0x1E69DE2D0] object:0];
-    [v7 addObserver:v6 selector:sel_didDismissViewController_ name:*MEMORY[0x1E69DE2C8] object:0];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_willPresentViewController_ name:*MEMORY[0x1E69DE2E0] object:0];
+    [defaultCenter addObserver:v6 selector:sel_willDismissViewController_ name:*MEMORY[0x1E69DE2D0] object:0];
+    [defaultCenter addObserver:v6 selector:sel_didDismissViewController_ name:*MEMORY[0x1E69DE2C8] object:0];
   }
 
   return v6;
@@ -36,22 +36,22 @@
 
 - (void)updateAppearance
 {
-  v3 = [(ICHostedNotesAppearanceCoordinator *)self hostedWindowScene];
+  hostedWindowScene = [(ICHostedNotesAppearanceCoordinator *)self hostedWindowScene];
 
-  if (!v3)
+  if (!hostedWindowScene)
   {
     return;
   }
 
-  v4 = [(ICHostedNotesAppearanceCoordinator *)self view];
-  [v4 bounds];
+  view = [(ICHostedNotesAppearanceCoordinator *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(ICHostedNotesAppearanceCoordinator *)self view];
-  [v13 safeAreaInsets];
+  view2 = [(ICHostedNotesAppearanceCoordinator *)self view];
+  [view2 safeAreaInsets];
   rect = v8;
   v109 = v6;
   v15 = v6 + v14;
@@ -62,12 +62,12 @@
   v21 = v12 - (v16 + v20);
 
   v22 = MEMORY[0x1E6978530];
-  v23 = [(ICHostedNotesAppearanceCoordinator *)self view];
-  v24 = [v23 window];
-  v106 = [v22 _existingToolPickerForWindow:v24];
+  view3 = [(ICHostedNotesAppearanceCoordinator *)self view];
+  window = [view3 window];
+  v106 = [v22 _existingToolPickerForWindow:window];
 
-  v25 = [v106 _paletteView];
-  [v25 frame];
+  _paletteView = [v106 _paletteView];
+  [_paletteView frame];
   x = v114.origin.x;
   y = v114.origin.y;
   width = v114.size.width;
@@ -79,19 +79,19 @@
   v97 = CGRectIntersection(v114, v138);
   if (!CGRectIsNull(v97))
   {
-    v30 = [(ICHostedNotesAppearanceCoordinator *)self view];
+    view4 = [(ICHostedNotesAppearanceCoordinator *)self view];
     v94 = v17;
     v96 = v15;
     v91 = v21;
     v92 = v19;
-    [v30 convertRect:0 toView:{v15, v17, v19, v21}];
+    [view4 convertRect:0 toView:{v15, v17, v19, v21}];
     v32 = v31;
     v34 = v33;
     v36 = v35;
     v38 = v37;
 
-    v39 = [v25 palettePosition];
-    if (v39 == 8 || v39 == 4)
+    palettePosition = [_paletteView palettePosition];
+    if (palettePosition == 8 || palettePosition == 4)
     {
       v117.origin.y = rect;
       v117.origin.x = v109;
@@ -132,7 +132,7 @@ LABEL_13:
       }
     }
 
-    else if (v39 == 3)
+    else if (palettePosition == 3)
     {
       v115.origin.x = x;
       v115.origin.y = y;
@@ -160,23 +160,23 @@ LABEL_13:
   }
 
 LABEL_14:
-  v43 = [(ICHostedNotesAppearanceCoordinator *)self view];
-  [v43 convertRect:0 toView:{v15, v17, v19, v21}];
+  view5 = [(ICHostedNotesAppearanceCoordinator *)self view];
+  [view5 convertRect:0 toView:{v15, v17, v19, v21}];
   v45 = v44;
   v102 = v47;
   v103 = v46;
   v49 = v48;
 
-  v50 = [(ICHostedNotesAppearanceCoordinator *)self view];
-  v51 = [v50 window];
-  [v51 bounds];
+  view6 = [(ICHostedNotesAppearanceCoordinator *)self view];
+  window2 = [view6 window];
+  [window2 bounds];
   v53 = v52;
   v55 = v54;
   v57 = v56;
   v59 = v58;
-  v60 = [(ICHostedNotesAppearanceCoordinator *)self view];
-  v61 = [v60 window];
-  [v61 safeAreaInsets];
+  view7 = [(ICHostedNotesAppearanceCoordinator *)self view];
+  window3 = [view7 window];
+  [window3 safeAreaInsets];
   v63 = v53 + v62;
   v65 = v55 + v64;
   v112 = v57 - (v62 + v66);
@@ -231,8 +231,8 @@ LABEL_14:
     v75 = v102;
     v129.size.height = v102;
     v76 = fmax(MaxX - CGRectGetMaxX(v129), 0.0);
-    v77 = [(ICHostedNotesAppearanceCoordinator *)self viewController];
-    if ([v77 ic_isRTL])
+    viewController = [(ICHostedNotesAppearanceCoordinator *)self viewController];
+    if ([viewController ic_isRTL])
     {
       v78 = v76;
     }
@@ -244,8 +244,8 @@ LABEL_14:
 
     rect2 = v78;
 
-    v79 = [(ICHostedNotesAppearanceCoordinator *)self viewController];
-    if ([v79 ic_isRTL])
+    viewController2 = [(ICHostedNotesAppearanceCoordinator *)self viewController];
+    if ([viewController2 ic_isRTL])
     {
       v80 = v98;
     }
@@ -321,18 +321,18 @@ LABEL_14:
     v86 = v69[2];
   }
 
-  v87 = [(ICHostedNotesAppearanceCoordinator *)self modeButtonHidingPresentedViewController];
-  v88 = v87 != 0;
+  modeButtonHidingPresentedViewController = [(ICHostedNotesAppearanceCoordinator *)self modeButtonHidingPresentedViewController];
+  v88 = modeButtonHidingPresentedViewController != 0;
 
-  v89 = [(ICHostedNotesAppearanceCoordinator *)self viewController];
-  [v89 ic_hostedNotesUpdateAdditionalSafeAreaInsets:v88 isModeButtonHidden:{v84, rect2, v86, v99}];
+  viewController3 = [(ICHostedNotesAppearanceCoordinator *)self viewController];
+  [viewController3 ic_hostedNotesUpdateAdditionalSafeAreaInsets:v88 isModeButtonHidden:{v84, rect2, v86, v99}];
 }
 
-- (void)willPresentViewController:(id)a3
+- (void)willPresentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [controllerCopy object];
 
   v6 = ICDynamicCast();
 
@@ -345,21 +345,21 @@ LABEL_14:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)willDismissViewController:(id)a3
+- (void)willDismissViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [controllerCopy object];
 
   v10 = ICDynamicCast();
 
-  v6 = [v10 transitionCoordinator];
-  v7 = [v6 isInteractive];
+  transitionCoordinator = [v10 transitionCoordinator];
+  isInteractive = [transitionCoordinator isInteractive];
 
-  v8 = [(ICHostedNotesAppearanceCoordinator *)self modeButtonHidingPresentedViewController];
+  modeButtonHidingPresentedViewController = [(ICHostedNotesAppearanceCoordinator *)self modeButtonHidingPresentedViewController];
 
   v9 = v10;
-  if (v10 == v8 && (v7 & 1) == 0)
+  if (v10 == modeButtonHidingPresentedViewController && (isInteractive & 1) == 0)
   {
     [(ICHostedNotesAppearanceCoordinator *)self setModeButtonHidingPresentedViewController:0];
     [(ICHostedNotesAppearanceCoordinator *)self updateAppearance];
@@ -367,13 +367,13 @@ LABEL_14:
   }
 }
 
-- (void)didDismissViewController:(id)a3
+- (void)didDismissViewController:(id)controller
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69DE2C0]];
-  v5 = [v4 BOOLValue];
+  userInfo = [controller userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DE2C0]];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     [(ICHostedNotesAppearanceCoordinator *)self setModeButtonHidingPresentedViewController:0];
     [(ICHostedNotesAppearanceCoordinator *)self updateAppearance];
@@ -382,44 +382,44 @@ LABEL_14:
 
 - (NSSet)modeButtonHidingModalTypes
 {
-  v3 = [(ICHostedNotesAppearanceCoordinator *)self delegate];
-  v4 = [v3 hostedNotesAppearanceCoordinatorModeButtonHidingModalTypes:self];
+  delegate = [(ICHostedNotesAppearanceCoordinator *)self delegate];
+  v4 = [delegate hostedNotesAppearanceCoordinatorModeButtonHidingModalTypes:self];
 
   return v4;
 }
 
 - (NSSet)modeButtonHidingPopoverTypes
 {
-  v3 = [(ICHostedNotesAppearanceCoordinator *)self delegate];
-  v4 = [v3 hostedNotesAppearanceCoordinatorModeButtonHidingPopoverTypes:self];
+  delegate = [(ICHostedNotesAppearanceCoordinator *)self delegate];
+  v4 = [delegate hostedNotesAppearanceCoordinatorModeButtonHidingPopoverTypes:self];
 
   return v4;
 }
 
-- (BOOL)shouldHideModeButtonWithPresentedViewController:(id)a3
+- (BOOL)shouldHideModeButtonWithPresentedViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 presentationController];
-  v6 = [v5 presentingViewController];
-  v7 = [v6 _hostedWindowScene];
-  if (v7 && ([(ICHostedNotesAppearanceCoordinator *)self hostedWindowScene], v8 = objc_claimAutoreleasedReturnValue(), v8, v7 == v8))
+  controllerCopy = controller;
+  presentationController = [controllerCopy presentationController];
+  presentingViewController = [presentationController presentingViewController];
+  _hostedWindowScene = [presentingViewController _hostedWindowScene];
+  if (_hostedWindowScene && ([(ICHostedNotesAppearanceCoordinator *)self hostedWindowScene], v8 = objc_claimAutoreleasedReturnValue(), v8, _hostedWindowScene == v8))
   {
-    v10 = [v4 popoverPresentationController];
+    popoverPresentationController = [controllerCopy popoverPresentationController];
 
-    v11 = [(ICHostedNotesAppearanceCoordinator *)self viewController];
-    v12 = [v11 traitCollection];
-    v13 = [v12 horizontalSizeClass];
+    viewController = [(ICHostedNotesAppearanceCoordinator *)self viewController];
+    traitCollection = [viewController traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if ([v4 modalPresentationStyle] == -1)
+    if ([controllerCopy modalPresentationStyle] == -1)
     {
       v15 = 1;
     }
 
     else
     {
-      if (v10)
+      if (popoverPresentationController)
       {
-        v14 = v13 == 1;
+        v14 = horizontalSizeClass == 1;
       }
 
       else
@@ -430,30 +430,30 @@ LABEL_14:
       v15 = !v14;
     }
 
-    v16 = [(ICHostedNotesAppearanceCoordinator *)self modeButtonHidingModalTypes];
+    modeButtonHidingModalTypes = [(ICHostedNotesAppearanceCoordinator *)self modeButtonHidingModalTypes];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __86__ICHostedNotesAppearanceCoordinator_shouldHideModeButtonWithPresentedViewController___block_invoke;
     v27[3] = &unk_1E846B670;
-    v17 = v4;
+    v17 = controllerCopy;
     v28 = v17;
-    v18 = [v16 ic_containsObjectPassingTest:v27];
+    v18 = [modeButtonHidingModalTypes ic_containsObjectPassingTest:v27];
 
     v19 = v15 ^ 1;
     if ((v15 & 1) == 0 && (v18 & 1) == 0)
     {
-      v20 = [(ICHostedNotesAppearanceCoordinator *)self delegate];
-      v19 = [v20 hostedNotesAppearanceCoordinator:self shouldHideWithModal:v17];
+      delegate = [(ICHostedNotesAppearanceCoordinator *)self delegate];
+      v19 = [delegate hostedNotesAppearanceCoordinator:self shouldHideWithModal:v17];
     }
 
-    v21 = v10 != 0;
-    v22 = [(ICHostedNotesAppearanceCoordinator *)self modeButtonHidingPopoverTypes];
+    v21 = popoverPresentationController != 0;
+    modeButtonHidingPopoverTypes = [(ICHostedNotesAppearanceCoordinator *)self modeButtonHidingPopoverTypes];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __86__ICHostedNotesAppearanceCoordinator_shouldHideModeButtonWithPresentedViewController___block_invoke_2;
     v25[3] = &unk_1E846B670;
     v26 = v17;
-    v23 = [v22 ic_containsObjectPassingTest:v25];
+    v23 = [modeButtonHidingPopoverTypes ic_containsObjectPassingTest:v25];
 
     v9 = v19 | v21 & v23;
   }
@@ -468,26 +468,26 @@ LABEL_14:
 
 - (_UIHostedWindowScene)hostedWindowScene
 {
-  v2 = [(ICHostedNotesAppearanceCoordinator *)self viewController];
-  v3 = [v2 _hostedWindowScene];
+  viewController = [(ICHostedNotesAppearanceCoordinator *)self viewController];
+  _hostedWindowScene = [viewController _hostedWindowScene];
 
-  return v3;
+  return _hostedWindowScene;
 }
 
 - (UIViewController)viewController
 {
-  v3 = [(ICHostedNotesAppearanceCoordinator *)self delegate];
-  v4 = [v3 hostedNotesAppearanceCoordinatorSafeAreaViewController:self];
+  delegate = [(ICHostedNotesAppearanceCoordinator *)self delegate];
+  v4 = [delegate hostedNotesAppearanceCoordinatorSafeAreaViewController:self];
 
   return v4;
 }
 
 - (UIView)view
 {
-  v2 = [(ICHostedNotesAppearanceCoordinator *)self viewController];
-  v3 = [v2 view];
+  viewController = [(ICHostedNotesAppearanceCoordinator *)self viewController];
+  view = [viewController view];
 
-  return v3;
+  return view;
 }
 
 - (ICHostedNotesAppearanceCoordinating)delegate

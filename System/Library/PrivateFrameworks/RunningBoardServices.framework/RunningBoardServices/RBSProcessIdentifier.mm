@@ -1,30 +1,30 @@
 @interface RBSProcessIdentifier
 + (id)identifierForCurrentProcess;
-+ (id)identifierForIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)identifierForIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (RBSProcessIdentifier)init;
-- (RBSProcessIdentifier)initWithRBSXPCCoder:(id)a3;
+- (RBSProcessIdentifier)initWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSProcessIdentifier
 
 - (NSString)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  description = v2->_description;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  description = selfCopy->_description;
   if (!description)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%d", v2->_pid];
-    v5 = v2->_description;
-    v2->_description = v4;
+    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%d", selfCopy->_pid];
+    v5 = selfCopy->_description;
+    selfCopy->_description = v4;
 
-    description = v2->_description;
+    description = selfCopy->_description;
   }
 
   v6 = description;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -33,21 +33,21 @@
 {
   v3 = getpid();
 
-  return [a1 identifierWithPid:v3];
+  return [self identifierWithPid:v3];
 }
 
-+ (id)identifierForIdentifier:(id)a3
++ (id)identifierForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = v4;
+    v6 = identifierCopy;
   }
 
   else
   {
-    v6 = [a1 identifierWithPid:{objc_msgSend(v4, "rbs_pid")}];
+    v6 = [self identifierWithPid:{objc_msgSend(identifierCopy, "rbs_pid")}];
   }
 
   v7 = v6;
@@ -69,10 +69,10 @@ uint64_t __36__RBSProcessIdentifier_initWithPid___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -83,7 +83,7 @@ uint64_t __36__RBSProcessIdentifier_initWithPid___block_invoke()
     if (v5 == objc_opt_class() || (objc_opt_respondsToSelector() & 1) != 0)
     {
       pid = self->_pid;
-      v7 = pid == [(RBSProcessIdentifier *)v4 rbs_pid];
+      v7 = pid == [(RBSProcessIdentifier *)equalCopy rbs_pid];
     }
 
     else
@@ -95,9 +95,9 @@ uint64_t __36__RBSProcessIdentifier_initWithPid___block_invoke()
   return v7;
 }
 
-- (RBSProcessIdentifier)initWithRBSXPCCoder:(id)a3
+- (RBSProcessIdentifier)initWithRBSXPCCoder:(id)coder
 {
-  v4 = [a3 decodeInt64ForKey:@"_pid"];
+  v4 = [coder decodeInt64ForKey:@"_pid"];
 
   return [(RBSProcessIdentifier *)self initWithPid:v4];
 }

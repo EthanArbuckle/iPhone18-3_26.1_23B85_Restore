@@ -1,61 +1,61 @@
 @interface AXMTranslatedText
-+ (id)text:(id)a3 confidence:(double)a4 isLowConfidence:(BOOL)a5 targetLocale:(id)a6;
-- (AXMTranslatedText)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)text:(id)text confidence:(double)confidence isLowConfidence:(BOOL)lowConfidence targetLocale:(id)locale;
+- (AXMTranslatedText)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMTranslatedText
 
-+ (id)text:(id)a3 confidence:(double)a4 isLowConfidence:(BOOL)a5 targetLocale:(id)a6
++ (id)text:(id)text confidence:(double)confidence isLowConfidence:(BOOL)lowConfidence targetLocale:(id)locale
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a3;
+  lowConfidenceCopy = lowConfidence;
+  localeCopy = locale;
+  textCopy = text;
   v11 = objc_alloc_init(AXMTranslatedText);
-  [(AXMTranslatedText *)v11 setText:v10];
+  [(AXMTranslatedText *)v11 setText:textCopy];
 
-  [(AXMTranslatedText *)v11 setConfidence:a4];
-  [(AXMTranslatedText *)v11 setTargetLocale:v9];
+  [(AXMTranslatedText *)v11 setConfidence:confidence];
+  [(AXMTranslatedText *)v11 setTargetLocale:localeCopy];
 
-  [(AXMTranslatedText *)v11 setLowConfidence:v6];
+  [(AXMTranslatedText *)v11 setLowConfidence:lowConfidenceCopy];
 
   return v11;
 }
 
-- (AXMTranslatedText)initWithCoder:(id)a3
+- (AXMTranslatedText)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AXMTranslatedText;
   v5 = [(AXMTranslatedText *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     [(AXMTranslatedText *)v5 setText:v6];
 
-    [v4 decodeDoubleForKey:@"confidence"];
+    [coderCopy decodeDoubleForKey:@"confidence"];
     [(AXMTranslatedText *)v5 setConfidence:?];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetLocale"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetLocale"];
     [(AXMTranslatedText *)v5 setTargetLocale:v7];
 
-    -[AXMTranslatedText setLowConfidence:](v5, "setLowConfidence:", [v4 decodeBoolForKey:@"lowConfidence"]);
+    -[AXMTranslatedText setLowConfidence:](v5, "setLowConfidence:", [coderCopy decodeBoolForKey:@"lowConfidence"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(AXMTranslatedText *)self text];
-  [v6 encodeObject:v4 forKey:@"text"];
+  coderCopy = coder;
+  text = [(AXMTranslatedText *)self text];
+  [coderCopy encodeObject:text forKey:@"text"];
 
   [(AXMTranslatedText *)self confidence];
-  [v6 encodeDouble:@"confidence" forKey:?];
-  v5 = [(AXMTranslatedText *)self targetLocale];
-  [v6 encodeObject:v5 forKey:@"targetLocale"];
+  [coderCopy encodeDouble:@"confidence" forKey:?];
+  targetLocale = [(AXMTranslatedText *)self targetLocale];
+  [coderCopy encodeObject:targetLocale forKey:@"targetLocale"];
 
-  [v6 encodeBool:-[AXMTranslatedText isLowConfidence](self forKey:{"isLowConfidence"), @"lowConfidence"}];
+  [coderCopy encodeBool:-[AXMTranslatedText isLowConfidence](self forKey:{"isLowConfidence"), @"lowConfidence"}];
 }
 
 @end

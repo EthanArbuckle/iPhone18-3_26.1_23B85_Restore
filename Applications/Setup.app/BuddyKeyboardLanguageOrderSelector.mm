@@ -1,6 +1,6 @@
 @interface BuddyKeyboardLanguageOrderSelector
 + (BOOL)needsFullscreenPane;
-+ (void)writePreferredKeyboardLanguagesToSystem:(id)a3;
++ (void)writePreferredKeyboardLanguagesToSystem:(id)system;
 - (BuddyKeyboardLanguageOrderSelector)init;
 - (void)continuePressed;
 - (void)presentAdditionViewController;
@@ -10,12 +10,12 @@
 
 + (BOOL)needsFullscreenPane
 {
-  v9 = a1;
+  selfCopy = self;
   v8 = a2;
   v2 = +[UIKeyboardInputModeController sharedInputModeController];
-  v3 = [v2 currentLocaleRequiresExtendedSetup];
+  currentLocaleRequiresExtendedSetup = [v2 currentLocaleRequiresExtendedSetup];
 
-  v7 = v3 & 1;
+  v7 = currentLocaleRequiresExtendedSetup & 1;
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -39,7 +39,7 @@
 
 - (BuddyKeyboardLanguageOrderSelector)init
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   v2 = +[NSBundle mainBundle];
   location[0] = [(NSBundle *)v2 localizedStringForKey:@"MULTILINGUAL_KEYBOARD_LANGUAGE_TITLE" value:&stru_10032F900 table:@"Localizable"];
@@ -50,60 +50,60 @@
 
   v5 = +[NSBundle mainBundle];
   v6 = [(NSBundle *)v5 localizedStringForKey:@"MULTILINGUAL_KEYBOARD_LANGUAGE_ACTIONTEXT" value:&stru_10032F900 table:@"Localizable"];
-  v11 = [v11 initWithTitle:location[0] detailText:v9 symbolName:@"keyboard" actionString:v6];
-  v7 = v11;
+  selfCopy = [selfCopy initWithTitle:location[0] detailText:v9 symbolName:@"keyboard" actionString:v6];
+  v7 = selfCopy;
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
 - (void)continuePressed
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = BuddyKeyboardLanguageOrderSelector;
   [(BuddyMultilingualBaseViewController *)&v5 continuePressed];
   v2 = objc_opt_class();
-  v3 = [(BuddyMultilingualBaseViewController *)v7 backingStore];
-  [v2 writePreferredKeyboardLanguagesToSystem:v3];
+  backingStore = [(BuddyMultilingualBaseViewController *)selfCopy backingStore];
+  [v2 writePreferredKeyboardLanguagesToSystem:backingStore];
 
-  v4 = [(BuddyMultilingualBaseViewController *)v7 delegate];
-  [(BFFFlowItemDelegate *)v4 flowItemDone:v7 nextItemClass:0];
+  delegate = [(BuddyMultilingualBaseViewController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy nextItemClass:0];
 }
 
 - (void)presentAdditionViewController
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   v2 = objc_opt_class();
-  v3 = [(BuddyMultilingualBaseViewController *)v13 backingStore];
-  [v2 writePreferredKeyboardLanguagesToSystem:v3];
+  backingStore = [(BuddyMultilingualBaseViewController *)selfCopy backingStore];
+  [v2 writePreferredKeyboardLanguagesToSystem:backingStore];
 
-  objc_initWeak(location, v13);
+  objc_initWeak(location, selfCopy);
   v5 = _NSConcreteStackBlock;
   v6 = 3221225472;
   v7 = sub_10023F4EC;
   v8 = &unk_10032AFA8;
   v4 = [BuddyAddKeyboardLanguageViewController alloc];
   objc_copyWeak(v10, location);
-  v9 = v13;
+  v9 = selfCopy;
   v11 = [(BuddyAddKeyboardLanguageViewController *)v4 initWithCompletion:&v5];
-  [(BuddyKeyboardLanguageOrderSelector *)v13 presentViewController:v11 animated:1 completion:0, v5, v6, v7, v8];
+  [(BuddyKeyboardLanguageOrderSelector *)selfCopy presentViewController:v11 animated:1 completion:0, v5, v6, v7, v8];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v9, 0);
   objc_destroyWeak(v10);
   objc_destroyWeak(location);
 }
 
-+ (void)writePreferredKeyboardLanguagesToSystem:(id)a3
++ (void)writePreferredKeyboardLanguagesToSystem:(id)system
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, system);
   v16 = [location[0] buddy_mapArray:&stru_10032F6A0];
   oslog = _BYLoggingFacility();
   v14 = OS_LOG_TYPE_DEFAULT;

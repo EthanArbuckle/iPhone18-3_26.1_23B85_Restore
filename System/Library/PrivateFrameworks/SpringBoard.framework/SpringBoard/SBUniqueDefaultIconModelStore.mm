@@ -1,25 +1,25 @@
 @interface SBUniqueDefaultIconModelStore
-+ (id)filePathByAddingUniqueIdentifier:(id)a3 toFilePath:(id)a4;
-- (SBUniqueDefaultIconModelStore)initWithUniqueIdentifier:(id)a3;
++ (id)filePathByAddingUniqueIdentifier:(id)identifier toFilePath:(id)path;
+- (SBUniqueDefaultIconModelStore)initWithUniqueIdentifier:(id)identifier;
 @end
 
 @implementation SBUniqueDefaultIconModelStore
 
-- (SBUniqueDefaultIconModelStore)initWithUniqueIdentifier:(id)a3
+- (SBUniqueDefaultIconModelStore)initWithUniqueIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(SBUniqueDefaultIconModelStore *)a2 initWithUniqueIdentifier:?];
   }
 
   v6 = objc_opt_class();
-  v7 = [@"~/Library/SpringBoard/IconState.plist" stringByExpandingTildeInPath];
-  v8 = [v6 filePathByAddingUniqueIdentifier:v5 toFilePath:v7];
+  stringByExpandingTildeInPath = [@"~/Library/SpringBoard/IconState.plist" stringByExpandingTildeInPath];
+  v8 = [v6 filePathByAddingUniqueIdentifier:identifierCopy toFilePath:stringByExpandingTildeInPath];
 
   v9 = objc_opt_class();
-  v10 = [@"~/Library/SpringBoard/DesiredIconState.plist" stringByExpandingTildeInPath];
-  v11 = [v9 filePathByAddingUniqueIdentifier:v5 toFilePath:v10];
+  stringByExpandingTildeInPath2 = [@"~/Library/SpringBoard/DesiredIconState.plist" stringByExpandingTildeInPath];
+  v11 = [v9 filePathByAddingUniqueIdentifier:identifierCopy toFilePath:stringByExpandingTildeInPath2];
 
   v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8];
   v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v11];
@@ -27,7 +27,7 @@
 
   if (v14)
   {
-    v15 = [v5 copy];
+    v15 = [identifierCopy copy];
     uniqueIdentifier = v14->_uniqueIdentifier;
     v14->_uniqueIdentifier = v15;
   }
@@ -35,21 +35,21 @@
   return v14;
 }
 
-+ (id)filePathByAddingUniqueIdentifier:(id)a3 toFilePath:(id)a4
++ (id)filePathByAddingUniqueIdentifier:(id)identifier toFilePath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 lastPathComponent];
-  v8 = [v7 stringByDeletingPathExtension];
+  pathCopy = path;
+  identifierCopy = identifier;
+  lastPathComponent = [pathCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v9 = [v5 pathExtension];
-  v10 = [v5 stringByDeletingLastPathComponent];
+  pathExtension = [pathCopy pathExtension];
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
 
-  v11 = [v8 stringByAppendingFormat:@"-%@", v6];
+  identifierCopy = [stringByDeletingPathExtension stringByAppendingFormat:@"-%@", identifierCopy];
 
-  v12 = [v11 stringByAppendingPathExtension:v9];
+  v12 = [identifierCopy stringByAppendingPathExtension:pathExtension];
 
-  v13 = [v10 stringByAppendingPathComponent:v12];
+  v13 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v12];
 
   return v13;
 }

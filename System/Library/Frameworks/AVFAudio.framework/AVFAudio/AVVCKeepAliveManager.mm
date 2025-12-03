@@ -1,11 +1,11 @@
 @interface AVVCKeepAliveManager
 + (id)sharedManager;
 - (AVVCKeepAliveManager)init;
-- (void)createWithCompletion:(id)a3;
+- (void)createWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)destroyWithCompletion:(id)a3;
-- (void)startWithCompletion:(id)a3;
-- (void)stopWithCompletion:(id)a3;
+- (void)destroyWithCompletion:(id)completion;
+- (void)startWithCompletion:(id)completion;
+- (void)stopWithCompletion:(id)completion;
 @end
 
 @implementation AVVCKeepAliveManager
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __37__AVVCKeepAliveManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[AVVCKeepAliveManager sharedManager]::onceToken != -1)
   {
     dispatch_once(&+[AVVCKeepAliveManager sharedManager]::onceToken, block);
@@ -70,44 +70,44 @@ LABEL_10:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)destroyWithCompletion:(id)a3
+- (void)destroyWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   v4 = (*(self->_impl->var0 + 3))(self->_impl);
-  if (v6)
+  if (completionCopy)
   {
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v4 userInfo:0];
-    v6[2](v6, v5);
+    completionCopy[2](completionCopy, v5);
   }
 
   MEMORY[0x1EEE66BB8](v4);
 }
 
-- (void)stopWithCompletion:(id)a3
+- (void)stopWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   v4 = (*(self->_impl->var0 + 2))(self->_impl);
-  if (v6)
+  if (completionCopy)
   {
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v4 userInfo:0];
-    v6[2](v6, v5);
+    completionCopy[2](completionCopy, v5);
   }
 
   MEMORY[0x1EEE66BB8](v4);
 }
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   impl = self->_impl;
   mKeepAliveDispatchQueue = self->mKeepAliveDispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__AVVCKeepAliveManager_startWithCompletion___block_invoke;
   v8[3] = &unk_1E7EF6590;
-  v9 = v4;
+  v9 = completionCopy;
   v10 = impl;
-  v7 = v4;
+  v7 = completionCopy;
   dispatch_async(mKeepAliveDispatchQueue, v8);
 }
 
@@ -122,14 +122,14 @@ void __44__AVVCKeepAliveManager_startWithCompletion___block_invoke(uint64_t a1)
   }
 }
 
-- (void)createWithCompletion:(id)a3
+- (void)createWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   v4 = (*self->_impl->var0)(self->_impl);
-  if (v6)
+  if (completionCopy)
   {
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v4 userInfo:0];
-    v6[2](v6, v5);
+    completionCopy[2](completionCopy, v5);
   }
 
   MEMORY[0x1EEE66BB8](v4);

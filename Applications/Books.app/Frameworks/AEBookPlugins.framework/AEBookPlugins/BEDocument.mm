@@ -6,10 +6,10 @@
 - (_TtP13AEBookPlugins30DocumentPaginationDataProvider_)paginationData;
 - (int64_t)file_size;
 - (int64_t)pageOffset;
-- (void)setFile_size:(int64_t)a3;
-- (void)setPageOffset:(int64_t)a3;
-- (void)setPages:(id)a3;
-- (void)setPaginationData:(id)a3;
+- (void)setFile_size:(int64_t)file_size;
+- (void)setPageOffset:(int64_t)offset;
+- (void)setPages:(id)pages;
+- (void)setPaginationData:(id)data;
 @end
 
 @implementation BEDocument
@@ -37,18 +37,18 @@
   return *(self + v3);
 }
 
-- (void)setFile_size:(int64_t)a3
+- (void)setFile_size:(int64_t)file_size
 {
   v5 = OBJC_IVAR___BEDocument_file_size;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = file_size;
 }
 
 - (NSArray)contentFragments
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_139890();
 
   sub_1330AC(v6);
@@ -63,17 +63,17 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_139890();
 
   return v5;
 }
 
-- (void)setPageOffset:(int64_t)a3
+- (void)setPageOffset:(int64_t)offset
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_1398A0();
 }
 
@@ -81,7 +81,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_139890();
 
   type metadata accessor for Page();
@@ -90,13 +90,13 @@
   return v4.super.isa;
 }
 
-- (void)setPages:(id)a3
+- (void)setPages:(id)pages
 {
   type metadata accessor for Page();
   sub_139A40();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_1398A0();
 }
 
@@ -107,11 +107,11 @@
   return v2;
 }
 
-- (void)setPaginationData:(id)a3
+- (void)setPaginationData:(id)data
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_134FB4(a3);
+  selfCopy = self;
+  sub_134FB4(data);
 }
 
 - (BEDocument)init

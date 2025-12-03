@@ -1,29 +1,29 @@
 @interface PLSearchIndexDateFormatter
 - (PLSearchIndexDateFormatter)init;
 - (id)_arrangedMonthSymbols;
-- (id)_inqNewLocalizedStringFromDate:(id)a3;
-- (id)localizedMonthStringsFromDate:(id)a3;
-- (id)newLocalizedComponentsFromDate:(id)a3 includeMonth:(BOOL)a4;
-- (id)newLocalizedStringFromDate:(id)a3;
-- (id)newLocalizedStringFromYear:(id)a3 month:(id)a4;
+- (id)_inqNewLocalizedStringFromDate:(id)date;
+- (id)localizedMonthStringsFromDate:(id)date;
+- (id)newLocalizedComponentsFromDate:(id)date includeMonth:(BOOL)month;
+- (id)newLocalizedStringFromDate:(id)date;
+- (id)newLocalizedStringFromYear:(id)year month:(id)month;
 - (void)_inqSetupDateFormatter;
-- (void)_inqUpdateDateFormat:(id)a3;
+- (void)_inqUpdateDateFormat:(id)format;
 @end
 
 @implementation PLSearchIndexDateFormatter
 
-- (id)newLocalizedStringFromYear:(id)a3 month:(id)a4
+- (id)newLocalizedStringFromYear:(id)year month:(id)month
 {
-  v5 = a3;
-  v6 = a4;
+  yearCopy = year;
+  monthCopy = month;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__112433;
   v15 = __Block_byref_object_dispose__112434;
   v16 = 0;
-  v9 = v5;
-  v10 = v6;
+  v9 = yearCopy;
+  v10 = monthCopy;
   pl_dispatch_sync();
   v7 = v12[5];
 
@@ -88,7 +88,7 @@ void __63__PLSearchIndexDateFormatter_newLocalizedStringFromYear_month___block_i
   *(v14 + 40) = v13;
 }
 
-- (id)newLocalizedStringFromDate:(id)a3
+- (id)newLocalizedStringFromDate:(id)date
 {
   v6 = 0;
   v7 = &v6;
@@ -96,7 +96,7 @@ void __63__PLSearchIndexDateFormatter_newLocalizedStringFromYear_month___block_i
   v9 = __Block_byref_object_copy__112433;
   v10 = __Block_byref_object_dispose__112434;
   v11 = 0;
-  v5 = a3;
+  dateCopy = date;
   pl_dispatch_sync();
   v3 = v7[5];
 
@@ -112,18 +112,18 @@ void __57__PLSearchIndexDateFormatter_newLocalizedStringFromDate___block_invoke(
   *(v3 + 40) = v2;
 }
 
-- (id)_inqNewLocalizedStringFromDate:(id)a3
+- (id)_inqNewLocalizedStringFromDate:(id)date
 {
   displayFormat = self->_displayFormat;
-  v5 = a3;
+  dateCopy = date;
   [(PLSearchIndexDateFormatter *)self _inqUpdateDateFormat:displayFormat];
-  v6 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v5];
+  v6 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:dateCopy];
 
   v7 = [v6 copy];
   return v7;
 }
 
-- (id)newLocalizedComponentsFromDate:(id)a3 includeMonth:(BOOL)a4
+- (id)newLocalizedComponentsFromDate:(id)date includeMonth:(BOOL)month
 {
   v7 = 0;
   v8 = &v7;
@@ -131,7 +131,7 @@ void __57__PLSearchIndexDateFormatter_newLocalizedStringFromDate___block_invoke(
   v10 = __Block_byref_object_copy__112433;
   v11 = __Block_byref_object_dispose__112434;
   v12 = 0;
-  v6 = a3;
+  dateCopy = date;
   pl_dispatch_sync();
   v4 = v8[5];
 
@@ -171,7 +171,7 @@ void __74__PLSearchIndexDateFormatter_newLocalizedComponentsFromDate_includeMont
 LABEL_6:
 }
 
-- (id)localizedMonthStringsFromDate:(id)a3
+- (id)localizedMonthStringsFromDate:(id)date
 {
   v6 = 0;
   v7 = &v6;
@@ -179,7 +179,7 @@ LABEL_6:
   v9 = __Block_byref_object_copy__112433;
   v10 = __Block_byref_object_dispose__112434;
   v11 = 0;
-  v5 = a3;
+  dateCopy = date;
   pl_dispatch_sync();
   v3 = v7[5];
 
@@ -203,19 +203,19 @@ void __60__PLSearchIndexDateFormatter_localizedMonthStringsFromDate___block_invo
   }
 }
 
-- (void)_inqUpdateDateFormat:(id)a3
+- (void)_inqUpdateDateFormat:(id)format
 {
-  v7 = a3;
-  if (!v7)
+  formatCopy = format;
+  if (!formatCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLSearchIndexDateFormatter.m" lineNumber:155 description:@"expect valid format"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSearchIndexDateFormatter.m" lineNumber:155 description:@"expect valid format"];
   }
 
-  v5 = [(NSDateFormatter *)self->_dateFormatter dateFormat];
-  if (v5 != v7 && ([v5 isEqualToString:v7] & 1) == 0)
+  dateFormat = [(NSDateFormatter *)self->_dateFormatter dateFormat];
+  if (dateFormat != formatCopy && ([dateFormat isEqualToString:formatCopy] & 1) == 0)
   {
-    [(NSDateFormatter *)self->_dateFormatter setDateFormat:v7];
+    [(NSDateFormatter *)self->_dateFormatter setDateFormat:formatCopy];
   }
 }
 
@@ -242,8 +242,8 @@ void __60__PLSearchIndexDateFormatter_localizedMonthStringsFromDate___block_invo
     [(PLDateRangeFormatter *)self->_dateRangeFormatter setLocale:v24];
     v7 = [objc_alloc(MEMORY[0x1E695DFE8]) initWithName:@"UTC"];
     [(NSDateFormatter *)self->_dateFormatter setTimeZone:v7];
-    v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v9 = [v8 copy];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v9 = [currentCalendar copy];
 
     [v9 setTimeZone:v7];
     [(NSDateFormatter *)self->_dateFormatter setCalendar:v9];
@@ -267,9 +267,9 @@ void __60__PLSearchIndexDateFormatter_localizedMonthStringsFromDate___block_invo
     parseFormat = self->_parseFormat;
     self->_parseFormat = v20;
 
-    v22 = [(PLSearchIndexDateFormatter *)self _arrangedMonthSymbols];
+    _arrangedMonthSymbols = [(PLSearchIndexDateFormatter *)self _arrangedMonthSymbols];
     monthSymbols = self->_monthSymbols;
-    self->_monthSymbols = v22;
+    self->_monthSymbols = _arrangedMonthSymbols;
 
     self->_didSetupLocaleAndFormats = 1;
   }
@@ -278,27 +278,27 @@ void __60__PLSearchIndexDateFormatter_localizedMonthStringsFromDate___block_invo
 - (id)_arrangedMonthSymbols
 {
   v54[6] = *MEMORY[0x1E69E9840];
-  v3 = [(NSDateFormatter *)self->_dateFormatter monthSymbols];
-  v54[0] = v3;
-  v4 = [(NSDateFormatter *)self->_dateFormatter shortMonthSymbols];
-  v54[1] = v4;
-  v5 = [(NSDateFormatter *)self->_dateFormatter veryShortMonthSymbols];
-  v54[2] = v5;
-  v6 = [(NSDateFormatter *)self->_dateFormatter standaloneMonthSymbols];
-  v54[3] = v6;
-  v7 = [(NSDateFormatter *)self->_dateFormatter shortStandaloneMonthSymbols];
-  v54[4] = v7;
-  v8 = [(NSDateFormatter *)self->_dateFormatter veryShortStandaloneMonthSymbols];
-  v54[5] = v8;
+  monthSymbols = [(NSDateFormatter *)self->_dateFormatter monthSymbols];
+  v54[0] = monthSymbols;
+  shortMonthSymbols = [(NSDateFormatter *)self->_dateFormatter shortMonthSymbols];
+  v54[1] = shortMonthSymbols;
+  veryShortMonthSymbols = [(NSDateFormatter *)self->_dateFormatter veryShortMonthSymbols];
+  v54[2] = veryShortMonthSymbols;
+  standaloneMonthSymbols = [(NSDateFormatter *)self->_dateFormatter standaloneMonthSymbols];
+  v54[3] = standaloneMonthSymbols;
+  shortStandaloneMonthSymbols = [(NSDateFormatter *)self->_dateFormatter shortStandaloneMonthSymbols];
+  v54[4] = shortStandaloneMonthSymbols;
+  veryShortStandaloneMonthSymbols = [(NSDateFormatter *)self->_dateFormatter veryShortStandaloneMonthSymbols];
+  v54[5] = veryShortStandaloneMonthSymbols;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:6];
 
   v10 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_112463];
   v11 = [v9 filteredArrayUsingPredicate:v10];
 
-  v36 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v37 = v11;
-  v12 = [v11 firstObject];
-  v13 = [v12 count];
+  firstObject = [v11 firstObject];
+  v13 = [firstObject count];
 
   v35 = v13;
   if (v13)
@@ -306,7 +306,7 @@ void __60__PLSearchIndexDateFormatter_localizedMonthStringsFromDate___block_invo
     v14 = 0;
     do
     {
-      v15 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
@@ -327,7 +327,7 @@ void __60__PLSearchIndexDateFormatter_localizedMonthStringsFromDate___block_invo
             }
 
             v21 = [*(*(&v47 + 1) + 8 * i) objectAtIndexedSubscript:v14];
-            [v15 addObject:v21];
+            [array2 addObject:v21];
           }
 
           v18 = [v16 countByEnumeratingWithState:&v47 objects:v53 count:16];
@@ -338,13 +338,13 @@ void __60__PLSearchIndexDateFormatter_localizedMonthStringsFromDate___block_invo
 
       v38 = v14;
 
-      [v15 sortUsingComparator:&__block_literal_global_11];
-      v22 = [MEMORY[0x1E695DF70] array];
+      [array2 sortUsingComparator:&__block_literal_global_11];
+      array3 = [MEMORY[0x1E695DF70] array];
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v23 = v15;
+      v23 = array2;
       v24 = [v23 countByEnumeratingWithState:&v43 objects:v52 count:16];
       if (v24)
       {
@@ -364,7 +364,7 @@ void __60__PLSearchIndexDateFormatter_localizedMonthStringsFromDate___block_invo
             v40 = 0u;
             v41 = 0u;
             v42 = 0u;
-            v29 = v22;
+            v29 = array3;
             v30 = [v29 countByEnumeratingWithState:&v39 objects:v51 count:16];
             if (v30)
             {
@@ -407,14 +407,14 @@ LABEL_25:
         while (v25);
       }
 
-      [v36 addObject:v22];
+      [array addObject:array3];
       v14 = v38 + 1;
     }
 
     while (v38 + 1 != v35);
   }
 
-  return v36;
+  return array;
 }
 
 uint64_t __51__PLSearchIndexDateFormatter__arrangedMonthSymbols__block_invoke_2(uint64_t a1, void *a2, void *a3)

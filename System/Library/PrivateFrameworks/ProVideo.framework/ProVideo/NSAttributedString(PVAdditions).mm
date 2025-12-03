@@ -6,7 +6,7 @@
 
 - (uint64_t)pv_isRightToLeft
 {
-  v1 = CTLineCreateWithAttributedString(a1);
+  v1 = CTLineCreateWithAttributedString(self);
   GlyphRuns = CTLineGetGlyphRuns(v1);
   Count = CFArrayGetCount(GlyphRuns);
   if (Count < 1)

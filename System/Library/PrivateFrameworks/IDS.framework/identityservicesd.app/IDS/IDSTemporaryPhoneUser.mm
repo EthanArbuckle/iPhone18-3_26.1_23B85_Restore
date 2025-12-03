@@ -1,61 +1,61 @@
 @interface IDSTemporaryPhoneUser
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTemporaryPhoneUser:(id)a3;
-- (BOOL)isIdenticalToUser:(id)a3;
-- (IDSTemporaryPhoneUser)initWithCoder:(id)a3;
-- (IDSTemporaryPhoneUser)initWithPhoneUser:(id)a3;
-- (IDSTemporaryPhoneUser)initWithPhoneUser:(id)a3 expirationDate:(id)a4 finishedRegistration:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTemporaryPhoneUser:(id)user;
+- (BOOL)isIdenticalToUser:(id)user;
+- (IDSTemporaryPhoneUser)initWithCoder:(id)coder;
+- (IDSTemporaryPhoneUser)initWithPhoneUser:(id)user;
+- (IDSTemporaryPhoneUser)initWithPhoneUser:(id)user expirationDate:(id)date finishedRegistration:(BOOL)registration;
 - (IDSTemporaryPhoneUser)temporaryPhoneUserWithFinishedRegistration;
 - (IDSTemporaryPhoneUser)temporaryPhoneUserWithNotifiedSuccess;
-- (IDSTemporaryPhoneUser)temporaryPhoneUserWithUpdatedExpirationDate:(id)a3;
+- (IDSTemporaryPhoneUser)temporaryPhoneUserWithUpdatedExpirationDate:(id)date;
 - (NSString)countryCode;
 - (NSString)description;
 - (NSString)labelID;
 - (NSString)networkCode;
 - (NSString)phoneNumber;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)realmPrefixedIdentifier;
 - (id)storageIdentifier;
 - (id)uniqueIdentifier;
 - (id)unprefixedIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSTemporaryPhoneUser
 
-- (IDSTemporaryPhoneUser)initWithPhoneUser:(id)a3
+- (IDSTemporaryPhoneUser)initWithPhoneUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v5 = [NSDate dateWithTimeIntervalSinceNow:300.0];
-  v6 = [(IDSTemporaryPhoneUser *)self initWithPhoneUser:v4 expirationDate:v5 finishedRegistration:0];
+  v6 = [(IDSTemporaryPhoneUser *)self initWithPhoneUser:userCopy expirationDate:v5 finishedRegistration:0];
 
   return v6;
 }
 
-- (IDSTemporaryPhoneUser)initWithPhoneUser:(id)a3 expirationDate:(id)a4 finishedRegistration:(BOOL)a5
+- (IDSTemporaryPhoneUser)initWithPhoneUser:(id)user expirationDate:(id)date finishedRegistration:(BOOL)registration
 {
-  v9 = a3;
-  v10 = a4;
+  userCopy = user;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = IDSTemporaryPhoneUser;
   v11 = [(IDSTemporaryPhoneUser *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_phoneUser, a3);
-    objc_storeStrong(&v12->_expirationDate, a4);
-    v12->_finishedRegistration = a5;
+    objc_storeStrong(&v11->_phoneUser, user);
+    objc_storeStrong(&v12->_expirationDate, date);
+    v12->_finishedRegistration = registration;
   }
 
   return v12;
 }
 
-- (IDSTemporaryPhoneUser)temporaryPhoneUserWithUpdatedExpirationDate:(id)a3
+- (IDSTemporaryPhoneUser)temporaryPhoneUserWithUpdatedExpirationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [(IDSTemporaryPhoneUser *)self copy];
-  [v5 setExpirationDate:v4];
+  [v5 setExpirationDate:dateCopy];
 
   [v5 setHasBeenProvisioned:1];
 
@@ -80,19 +80,19 @@
 
 - (id)uniqueIdentifier
 {
-  v3 = [(IDSTemporaryPhoneUser *)self phoneNumber];
-  v4 = v3;
+  phoneNumber = [(IDSTemporaryPhoneUser *)self phoneNumber];
+  v4 = phoneNumber;
   v5 = &stru_100C06028;
-  if (v3)
+  if (phoneNumber)
   {
-    v5 = v3;
+    v5 = phoneNumber;
   }
 
   v6 = v5;
 
-  v7 = [(IDSTemporaryPhoneUser *)self phoneUser];
-  v8 = [v7 uniqueIdentifier];
-  v9 = [@"tp" stringByAppendingString:v8];
+  phoneUser = [(IDSTemporaryPhoneUser *)self phoneUser];
+  uniqueIdentifier = [phoneUser uniqueIdentifier];
+  v9 = [@"tp" stringByAppendingString:uniqueIdentifier];
   v10 = [v9 stringByAppendingString:v6];
 
   return v10;
@@ -100,87 +100,87 @@
 
 - (id)realmPrefixedIdentifier
 {
-  v2 = [(IDSTemporaryPhoneUser *)self phoneUser];
-  v3 = [v2 realmPrefixedIdentifier];
+  phoneUser = [(IDSTemporaryPhoneUser *)self phoneUser];
+  realmPrefixedIdentifier = [phoneUser realmPrefixedIdentifier];
 
-  return v3;
+  return realmPrefixedIdentifier;
 }
 
 - (id)unprefixedIdentifier
 {
-  v2 = [(IDSTemporaryPhoneUser *)self phoneUser];
-  v3 = [v2 unprefixedIdentifier];
+  phoneUser = [(IDSTemporaryPhoneUser *)self phoneUser];
+  unprefixedIdentifier = [phoneUser unprefixedIdentifier];
 
-  return v3;
+  return unprefixedIdentifier;
 }
 
 - (id)storageIdentifier
 {
-  v2 = [(IDSTemporaryPhoneUser *)self phoneUser];
-  v3 = [v2 storageIdentifier];
-  v4 = [@"tp" stringByAppendingString:v3];
+  phoneUser = [(IDSTemporaryPhoneUser *)self phoneUser];
+  storageIdentifier = [phoneUser storageIdentifier];
+  v4 = [@"tp" stringByAppendingString:storageIdentifier];
 
   return v4;
 }
 
 - (NSString)phoneNumber
 {
-  v3 = [(IDSTemporaryPhoneUser *)self phoneUser];
-  v4 = [v3 phoneNumber];
-  v5 = v4;
-  if (v4)
+  phoneUser = [(IDSTemporaryPhoneUser *)self phoneUser];
+  phoneNumber = [phoneUser phoneNumber];
+  v5 = phoneNumber;
+  if (phoneNumber)
   {
-    v6 = v4;
+    phoneBookNumber = phoneNumber;
   }
 
   else
   {
-    v7 = [(IDSTemporaryPhoneUser *)self phoneUser];
-    v6 = [v7 phoneBookNumber];
+    phoneUser2 = [(IDSTemporaryPhoneUser *)self phoneUser];
+    phoneBookNumber = [phoneUser2 phoneBookNumber];
   }
 
-  return v6;
+  return phoneBookNumber;
 }
 
 - (NSString)countryCode
 {
-  v2 = [(IDSTemporaryPhoneUser *)self phoneUser];
-  v3 = [v2 countryCode];
+  phoneUser = [(IDSTemporaryPhoneUser *)self phoneUser];
+  countryCode = [phoneUser countryCode];
 
-  return v3;
+  return countryCode;
 }
 
 - (NSString)networkCode
 {
-  v2 = [(IDSTemporaryPhoneUser *)self phoneUser];
-  v3 = [v2 networkCode];
+  phoneUser = [(IDSTemporaryPhoneUser *)self phoneUser];
+  networkCode = [phoneUser networkCode];
 
-  return v3;
+  return networkCode;
 }
 
 - (NSString)labelID
 {
-  v2 = [(IDSTemporaryPhoneUser *)self phoneUser];
-  v3 = [v2 labelID];
+  phoneUser = [(IDSTemporaryPhoneUser *)self phoneUser];
+  labelID = [phoneUser labelID];
 
-  return v3;
+  return labelID;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(IDSTemporaryPhoneUser *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(IDSTemporaryPhoneUser *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(IDSTemporaryPhoneUser *)self isEqualToTemporaryPhoneUser:v4];
+    v5 = [(IDSTemporaryPhoneUser *)self isEqualToTemporaryPhoneUser:equalCopy];
   }
 
   else
@@ -191,24 +191,24 @@
   return v5;
 }
 
-- (BOOL)isEqualToTemporaryPhoneUser:(id)a3
+- (BOOL)isEqualToTemporaryPhoneUser:(id)user
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  userCopy = user;
+  v5 = userCopy;
+  if (self == userCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v6 = [(IDSTemporaryPhoneUser *)v4 uniqueIdentifier];
-    v7 = [(IDSTemporaryPhoneUser *)self uniqueIdentifier];
-    if ([v6 isEqualToString:v7])
+    uniqueIdentifier = [(IDSTemporaryPhoneUser *)userCopy uniqueIdentifier];
+    uniqueIdentifier2 = [(IDSTemporaryPhoneUser *)self uniqueIdentifier];
+    if ([uniqueIdentifier isEqualToString:uniqueIdentifier2])
     {
-      v8 = [(IDSTemporaryPhoneUser *)v5 phoneNumber];
-      v9 = [(IDSTemporaryPhoneUser *)self phoneNumber];
-      v10 = [v8 isEqualToString:v9];
+      phoneNumber = [(IDSTemporaryPhoneUser *)v5 phoneNumber];
+      phoneNumber2 = [(IDSTemporaryPhoneUser *)self phoneNumber];
+      v10 = [phoneNumber isEqualToString:phoneNumber2];
     }
 
     else
@@ -220,18 +220,18 @@
   return v10;
 }
 
-- (BOOL)isIdenticalToUser:(id)a3
+- (BOOL)isIdenticalToUser:(id)user
 {
-  v4 = a3;
-  if ([(IDSTemporaryPhoneUser *)self isEqualToUser:v4])
+  userCopy = user;
+  if ([(IDSTemporaryPhoneUser *)self isEqualToUser:userCopy])
   {
-    v5 = v4;
-    v6 = [v5 expirationDate];
-    v7 = [(IDSTemporaryPhoneUser *)self expirationDate];
-    if ([v6 isEqualToDate:v7] && (v8 = objc_msgSend(v5, "finishedRegistration"), v8 == -[IDSTemporaryPhoneUser finishedRegistration](self, "finishedRegistration")) && (v9 = objc_msgSend(v5, "hasBeenProvisioned"), v9 == -[IDSTemporaryPhoneUser hasBeenProvisioned](self, "hasBeenProvisioned")))
+    v5 = userCopy;
+    expirationDate = [v5 expirationDate];
+    expirationDate2 = [(IDSTemporaryPhoneUser *)self expirationDate];
+    if ([expirationDate isEqualToDate:expirationDate2] && (v8 = objc_msgSend(v5, "finishedRegistration"), v8 == -[IDSTemporaryPhoneUser finishedRegistration](self, "finishedRegistration")) && (v9 = objc_msgSend(v5, "hasBeenProvisioned"), v9 == -[IDSTemporaryPhoneUser hasBeenProvisioned](self, "hasBeenProvisioned")))
     {
-      v12 = [v5 hasNotifiedSuccess];
-      v10 = v12 ^ [(IDSTemporaryPhoneUser *)self hasNotifiedSuccess]^ 1;
+      hasNotifiedSuccess = [v5 hasNotifiedSuccess];
+      v10 = hasNotifiedSuccess ^ [(IDSTemporaryPhoneUser *)self hasNotifiedSuccess]^ 1;
     }
 
     else
@@ -248,47 +248,47 @@
   return v10;
 }
 
-- (IDSTemporaryPhoneUser)initWithCoder:(id)a3
+- (IDSTemporaryPhoneUser)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneUser"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiration"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"finished"];
-  v8 = [v7 BOOLValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneUser"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiration"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"finished"];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v4 decodeBoolForKey:@"Provisioned"];
-  v10 = [v4 decodeBoolForKey:@"notifiedSuccess"];
+  v9 = [coderCopy decodeBoolForKey:@"Provisioned"];
+  v10 = [coderCopy decodeBoolForKey:@"notifiedSuccess"];
 
-  v11 = [(IDSTemporaryPhoneUser *)self initWithPhoneUser:v5 expirationDate:v6 finishedRegistration:v8];
+  v11 = [(IDSTemporaryPhoneUser *)self initWithPhoneUser:v5 expirationDate:v6 finishedRegistration:bOOLValue];
   [(IDSTemporaryPhoneUser *)v11 setHasBeenProvisioned:v9];
   [(IDSTemporaryPhoneUser *)v11 setHasNotifiedSuccess:v10];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(IDSTemporaryPhoneUser *)self phoneUser];
-  [v7 encodeObject:v4 forKey:@"phoneUser"];
+  coderCopy = coder;
+  phoneUser = [(IDSTemporaryPhoneUser *)self phoneUser];
+  [coderCopy encodeObject:phoneUser forKey:@"phoneUser"];
 
-  v5 = [(IDSTemporaryPhoneUser *)self expirationDate];
-  [v7 encodeObject:v5 forKey:@"expiration"];
+  expirationDate = [(IDSTemporaryPhoneUser *)self expirationDate];
+  [coderCopy encodeObject:expirationDate forKey:@"expiration"];
 
   v6 = [NSNumber numberWithBool:[(IDSTemporaryPhoneUser *)self finishedRegistration]];
-  [v7 encodeObject:v6 forKey:@"finished"];
+  [coderCopy encodeObject:v6 forKey:@"finished"];
 
-  [v7 encodeBool:-[IDSTemporaryPhoneUser hasBeenProvisioned](self forKey:{"hasBeenProvisioned"), @"Provisioned"}];
-  [v7 encodeBool:-[IDSTemporaryPhoneUser hasNotifiedSuccess](self forKey:{"hasNotifiedSuccess"), @"notifiedSuccess"}];
+  [coderCopy encodeBool:-[IDSTemporaryPhoneUser hasBeenProvisioned](self forKey:{"hasBeenProvisioned"), @"Provisioned"}];
+  [coderCopy encodeBool:-[IDSTemporaryPhoneUser hasNotifiedSuccess](self forKey:{"hasNotifiedSuccess"), @"notifiedSuccess"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(IDSTemporaryPhoneUser *)self phoneUser];
-  v6 = [v5 copy];
-  v7 = [(IDSTemporaryPhoneUser *)self expirationDate];
-  v8 = [v4 initWithPhoneUser:v6 expirationDate:v7 finishedRegistration:{-[IDSTemporaryPhoneUser finishedRegistration](self, "finishedRegistration")}];
+  phoneUser = [(IDSTemporaryPhoneUser *)self phoneUser];
+  v6 = [phoneUser copy];
+  expirationDate = [(IDSTemporaryPhoneUser *)self expirationDate];
+  v8 = [v4 initWithPhoneUser:v6 expirationDate:expirationDate finishedRegistration:{-[IDSTemporaryPhoneUser finishedRegistration](self, "finishedRegistration")}];
 
   [v8 setHasNotifiedSuccess:{-[IDSTemporaryPhoneUser hasNotifiedSuccess](self, "hasNotifiedSuccess")}];
   [v8 setHasBeenProvisioned:{-[IDSTemporaryPhoneUser hasBeenProvisioned](self, "hasBeenProvisioned")}];
@@ -298,17 +298,17 @@
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(IDSTemporaryPhoneUser *)self uniqueIdentifier];
-  v5 = [(IDSTemporaryPhoneUser *)self phoneNumber];
-  v6 = [(IDSTemporaryPhoneUser *)self expirationDate];
-  v7 = [(IDSTemporaryPhoneUser *)self finishedRegistration];
+  uniqueIdentifier = [(IDSTemporaryPhoneUser *)self uniqueIdentifier];
+  phoneNumber = [(IDSTemporaryPhoneUser *)self phoneNumber];
+  expirationDate = [(IDSTemporaryPhoneUser *)self expirationDate];
+  finishedRegistration = [(IDSTemporaryPhoneUser *)self finishedRegistration];
   v8 = @"NO";
-  if (v7)
+  if (finishedRegistration)
   {
     v8 = @"YES";
   }
 
-  v9 = [NSString stringWithFormat:@"<%@:%p> uid: %@, pn: %@, expiration: %@, finished : %@", v3, self, v4, v5, v6, v8];
+  v9 = [NSString stringWithFormat:@"<%@:%p> uid: %@, pn: %@, expiration: %@, finished : %@", v3, self, uniqueIdentifier, phoneNumber, expirationDate, v8];
 
   return v9;
 }

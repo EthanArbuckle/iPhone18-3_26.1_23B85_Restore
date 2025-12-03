@@ -1,16 +1,16 @@
 @interface MediaControlsRoutingCornerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 @end
 
 @implementation MediaControlsRoutingCornerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MediaControlsRoutingCornerView" hasInstanceMethod:@"isRouting" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MediaControlsRoutingCornerView" hasInstanceMethod:@"routesAreAvailable" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MediaControlsRoutingCornerView" hasInstanceMethod:@"isRouting" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MediaControlsRoutingCornerView" hasInstanceMethod:@"routesAreAvailable" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)isAccessibilityElement

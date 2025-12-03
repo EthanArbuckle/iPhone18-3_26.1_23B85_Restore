@@ -1,27 +1,27 @@
 @interface TabSnapshotCacheEntry
 - (BOOL)isPendingUpdate;
-- (TabSnapshotCacheEntry)initWithIdentifier:(id)a3 isGroup:(BOOL)a4;
+- (TabSnapshotCacheEntry)initWithIdentifier:(id)identifier isGroup:(BOOL)group;
 - (TabSnapshotCacheEntryStateObserving)stateObserver;
 - (id)debugDescription;
-- (void)setState:(int64_t)a3;
-- (void)setUpdatingState:(BOOL)a3;
+- (void)setState:(int64_t)state;
+- (void)setUpdatingState:(BOOL)state;
 @end
 
 @implementation TabSnapshotCacheEntry
 
-- (TabSnapshotCacheEntry)initWithIdentifier:(id)a3 isGroup:(BOOL)a4
+- (TabSnapshotCacheEntry)initWithIdentifier:(id)identifier isGroup:(BOOL)group
 {
-  v4 = a4;
-  v7 = a3;
+  groupCopy = group;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = TabSnapshotCacheEntry;
   v8 = [(TabSnapshotCacheEntry *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_group = v4;
-    if (v4)
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_group = groupCopy;
+    if (groupCopy)
     {
       v10 = [MEMORY[0x277CBEB58] set];
       groupMembers = v9->_groupMembers;
@@ -90,21 +90,21 @@
   return v15;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     WeakRetained = objc_loadWeakRetained(&self->_stateObserver);
     [WeakRetained tabSnapshotCacheEntryDidUpdateState:self];
   }
 }
 
-- (void)setUpdatingState:(BOOL)a3
+- (void)setUpdatingState:(BOOL)state
 {
-  if (self->_updatingState != a3)
+  if (self->_updatingState != state)
   {
-    self->_updatingState = a3;
+    self->_updatingState = state;
     WeakRetained = objc_loadWeakRetained(&self->_stateObserver);
     [WeakRetained tabSnapshotCacheEntryDidUpdateState:self];
   }

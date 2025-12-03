@@ -1,26 +1,26 @@
 @interface _TSF_TSDClockSync
-+ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)a3;
++ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)identifier;
 - (BOOL)deregisterAsyncCallback;
 - (BOOL)registerAsyncCallback;
 - (id)connection;
 - (id)service;
 - (unint64_t)releaseReference;
-- (void)_handleNotification:(int)a3 withArgs:(unint64_t *)a4 ofCount:(unsigned int)a5;
-- (void)addUpdateClient:(id)a3;
+- (void)_handleNotification:(int)notification withArgs:(unint64_t *)args ofCount:(unsigned int)count;
+- (void)addUpdateClient:(id)client;
 - (void)registerAsyncCallback;
-- (void)removeUpdateClient:(id)a3;
+- (void)removeUpdateClient:(id)client;
 @end
 
 @implementation _TSF_TSDClockSync
 
-+ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)a3
++ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)identifier
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"IOProviderClass";
   v10[1] = @"IOPropertyMatch";
   v11[0] = @"IOTimeSyncService";
   v8 = @"ClockIdentifier";
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:identifier];
   v9 = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v11[1] = v4;
@@ -49,24 +49,24 @@
   return v3;
 }
 
-- (void)_handleNotification:(int)a3 withArgs:(unint64_t *)a4 ofCount:(unsigned int)a5
+- (void)_handleNotification:(int)notification withArgs:(unint64_t *)args ofCount:(unsigned int)count
 {
   v61 = *MEMORY[0x277D85DE8];
-  if (a3 == 3001)
+  if (notification == 3001)
   {
-    if (a5 != 13)
+    if (count != 13)
     {
       [_TSF_TSDClockSync _handleNotification:withArgs:ofCount:];
       goto LABEL_33;
     }
 
-    v32 = *(a4 + 6) | (a4[2] << 32);
-    v33 = *(a4 + 2) | (*a4 << 32);
-    v30 = *(a4 + 14) | (a4[6] << 32);
-    v31 = *(a4 + 10) | (a4[4] << 32);
-    v29 = *(a4 + 18) | (a4[8] << 32);
-    v18 = *(a4 + 22) | (a4[10] << 32);
-    v19 = a4[12];
+    v32 = *(args + 6) | (args[2] << 32);
+    v33 = *(args + 2) | (*args << 32);
+    v30 = *(args + 14) | (args[6] << 32);
+    v31 = *(args + 10) | (args[4] << 32);
+    v29 = *(args + 18) | (args[8] << 32);
+    v18 = *(args + 22) | (args[10] << 32);
+    v19 = args[12];
     v20 = v19 & 0xFF000000;
     if (self->_logNotifyTest && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -96,7 +96,7 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v28 = self;
+    selfCopy2 = self;
     v12 = self->_updateClients;
     v21 = [(NSPointerArray *)v12 countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (v21)
@@ -128,22 +128,22 @@
 
 LABEL_30:
 
-    os_unfair_lock_unlock(&v28->_updateClientsLock);
+    os_unfair_lock_unlock(&selfCopy2->_updateClientsLock);
     goto LABEL_33;
   }
 
-  if (a3 == 3000)
+  if (notification == 3000)
   {
-    if (a5 != 8)
+    if (count != 8)
     {
       [_TSF_TSDClockSync _handleNotification:withArgs:ofCount:];
       goto LABEL_33;
     }
 
-    v8 = *(a4 + 2) | (*a4 << 32);
-    v9 = *(a4 + 6) | (a4[2] << 32);
-    v10 = *(a4 + 10) | (a4[4] << 32);
-    v11 = *(a4 + 14) | (a4[6] << 32);
+    v8 = *(args + 2) | (*args << 32);
+    v9 = *(args + 6) | (args[2] << 32);
+    v10 = *(args + 10) | (args[4] << 32);
+    v11 = *(args + 14) | (args[6] << 32);
     if (self->_logNotifyTest && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218752;
@@ -162,7 +162,7 @@ LABEL_30:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v28 = self;
+    selfCopy2 = self;
     v12 = self->_updateClients;
     v13 = [(NSPointerArray *)v12 countByEnumeratingWithState:&v38 objects:v60 count:16];
     if (v13)
@@ -197,9 +197,9 @@ LABEL_30:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    *v44 = a3;
+    *v44 = notification;
     *&v44[4] = 1024;
-    *&v44[6] = a5;
+    *&v44[6] = count;
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "TSDClockSync _handleNotification unhandled notification %u numArgs %u\n", buf, 0xEu);
   }
 
@@ -213,8 +213,8 @@ LABEL_33:
   self->_asyncCallbackRefcon = [v3 allocateRefcon:self];
   p_asyncCallbackRefcon = &self->_asyncCallbackRefcon;
 
-  v5 = [(_TSF_TSDClockSync *)self connection];
-  v6 = [v5 registerAsyncNotificationsWithSelector:0 callBack:asyncNotificationsCallback_1 refcon:self->_asyncCallbackRefcon callbackQueue:self->_notificationsQueue];
+  connection = [(_TSF_TSDClockSync *)self connection];
+  v6 = [connection registerAsyncNotificationsWithSelector:0 callBack:asyncNotificationsCallback_1 refcon:self->_asyncCallbackRefcon callbackQueue:self->_notificationsQueue];
 
   if ((v6 & 1) == 0)
   {
@@ -229,31 +229,31 @@ LABEL_33:
   v3 = +[_TSF_TSDCallbackRefconMap sharedTSDCallbackRefconMap];
   [v3 releaseRefcon:self->_asyncCallbackRefcon];
 
-  v4 = [(_TSF_TSDClockSync *)self connection];
-  LOBYTE(v3) = [v4 deregisterAsyncNotificationsWithSelector:1];
+  connection = [(_TSF_TSDClockSync *)self connection];
+  LOBYTE(v3) = [connection deregisterAsyncNotificationsWithSelector:1];
 
   return v3;
 }
 
-- (void)addUpdateClient:(id)a3
+- (void)addUpdateClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_updateClientsLock);
-  [(NSPointerArray *)self->_updateClients addPointer:v4];
+  [(NSPointerArray *)self->_updateClients addPointer:clientCopy];
 
   [(NSPointerArray *)self->_updateClients compact];
 
   os_unfair_lock_unlock(&self->_updateClientsLock);
 }
 
-- (void)removeUpdateClient:(id)a3
+- (void)removeUpdateClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_updateClientsLock);
   if ([(NSPointerArray *)self->_updateClients count])
   {
     v4 = 0;
-    while ([(NSPointerArray *)self->_updateClients pointerAtIndex:v4]!= v5)
+    while ([(NSPointerArray *)self->_updateClients pointerAtIndex:v4]!= clientCopy)
     {
       if (++v4 >= [(NSPointerArray *)self->_updateClients count])
       {
@@ -352,7 +352,7 @@ LABEL_7:
   }
 
   v7 = +[_TSF_TSDCallbackRefconMap sharedTSDCallbackRefconMap];
-  [v7 releaseRefcon:*a1];
+  [v7 releaseRefcon:*self];
 
   v8 = *MEMORY[0x277D85DE8];
 }

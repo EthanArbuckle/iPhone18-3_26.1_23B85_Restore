@@ -1,21 +1,21 @@
 @interface HDCodableFHIRCredential
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeleted:(BOOL)a3;
-- (void)setHasReceivedDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeleted:(BOOL)deleted;
+- (void)setHasReceivedDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableFHIRCredential
 
-- (void)setHasReceivedDate:(BOOL)a3
+- (void)setHasReceivedDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDeleted:(BOOL)a3
+- (void)setHasDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 4;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableFHIRCredential;
   v4 = [(HDCodableFHIRCredential *)&v8 description];
-  v5 = [(HDCodableFHIRCredential *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableFHIRCredential *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   accountSyncIdentifier = self->_accountSyncIdentifier;
@@ -127,52 +127,52 @@ LABEL_15:
   messageVersion = self->_messageVersion;
   if (messageVersion)
   {
-    v13 = [(HDCodableMessageVersion *)messageVersion dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"messageVersion"];
+    dictionaryRepresentation = [(HDCodableMessageVersion *)messageVersion dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"messageVersion"];
   }
 
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v15 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v4 setObject:v15 forKey:@"syncIdentity"];
+    dictionaryRepresentation2 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"syncIdentity"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_accountSyncIdentifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_scopeString)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_requestedScopeString)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_patientID)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -180,7 +180,7 @@ LABEL_15:
   {
     receivedDate = self->_receivedDate;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -201,68 +201,68 @@ LABEL_13:
 
   expirationDate = self->_expirationDate;
   PBDataWriterWriteDoubleField();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_14:
     deleted = self->_deleted;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_15:
   if (self->_messageVersion)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_syncIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v6;
+    [toCopy setIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_accountSyncIdentifier)
   {
     [v6 setAccountSyncIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_scopeString)
   {
     [v6 setScopeString:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_requestedScopeString)
   {
     [v6 setRequestedScopeString:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_patientID)
   {
     [v6 setPatientID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_receivedDate;
-    *(v4 + 84) |= 2u;
+    *(toCopy + 2) = *&self->_receivedDate;
+    *(toCopy + 84) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -281,49 +281,49 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v4 + 1) = *&self->_expirationDate;
-  *(v4 + 84) |= 1u;
+  *(toCopy + 1) = *&self->_expirationDate;
+  *(toCopy + 84) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_14:
-    *(v4 + 80) = self->_deleted;
-    *(v4 + 84) |= 4u;
+    *(toCopy + 80) = self->_deleted;
+    *(toCopy + 84) |= 4u;
   }
 
 LABEL_15:
   if (self->_messageVersion)
   {
     [v6 setMessageVersion:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_syncIdentity)
   {
     [v6 setSyncIdentity:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSData *)self->_accountSyncIdentifier copyWithZone:a3];
+  v8 = [(NSData *)self->_accountSyncIdentifier copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_scopeString copyWithZone:a3];
+  v10 = [(NSString *)self->_scopeString copyWithZone:zone];
   v11 = *(v5 + 64);
   *(v5 + 64) = v10;
 
-  v12 = [(NSString *)self->_requestedScopeString copyWithZone:a3];
+  v12 = [(NSString *)self->_requestedScopeString copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
-  v14 = [(NSString *)self->_patientID copyWithZone:a3];
+  v14 = [(NSString *)self->_patientID copyWithZone:zone];
   v15 = *(v5 + 48);
   *(v5 + 48) = v14;
 
@@ -363,27 +363,27 @@ LABEL_4:
   }
 
 LABEL_5:
-  v17 = [(HDCodableMessageVersion *)self->_messageVersion copyWithZone:a3];
+  v17 = [(HDCodableMessageVersion *)self->_messageVersion copyWithZone:zone];
   v18 = *(v5 + 40);
   *(v5 + 40) = v17;
 
-  v19 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v19 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v20 = *(v5 + 72);
   *(v5 + 72) = v19;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 4))
+  if (identifier | *(equalCopy + 4))
   {
     if (![(NSData *)identifier isEqual:?])
     {
@@ -392,7 +392,7 @@ LABEL_5:
   }
 
   accountSyncIdentifier = self->_accountSyncIdentifier;
-  if (accountSyncIdentifier | *(v4 + 3))
+  if (accountSyncIdentifier | *(equalCopy + 3))
   {
     if (![(NSData *)accountSyncIdentifier isEqual:?])
     {
@@ -401,7 +401,7 @@ LABEL_5:
   }
 
   scopeString = self->_scopeString;
-  if (scopeString | *(v4 + 8))
+  if (scopeString | *(equalCopy + 8))
   {
     if (![(NSString *)scopeString isEqual:?])
     {
@@ -410,7 +410,7 @@ LABEL_5:
   }
 
   requestedScopeString = self->_requestedScopeString;
-  if (requestedScopeString | *(v4 + 7))
+  if (requestedScopeString | *(equalCopy + 7))
   {
     if (![(NSString *)requestedScopeString isEqual:?])
     {
@@ -419,7 +419,7 @@ LABEL_5:
   }
 
   patientID = self->_patientID;
-  if (patientID | *(v4 + 6))
+  if (patientID | *(equalCopy + 6))
   {
     if (![(NSString *)patientID isEqual:?])
     {
@@ -427,36 +427,36 @@ LABEL_5:
     }
   }
 
-  v10 = *(v4 + 84);
+  v10 = *(equalCopy + 84);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 84) & 2) == 0 || self->_receivedDate != *(v4 + 2))
+    if ((*(equalCopy + 84) & 2) == 0 || self->_receivedDate != *(equalCopy + 2))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 84) & 2) != 0)
+  else if ((*(equalCopy + 84) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 84) & 1) == 0 || self->_expirationDate != *(v4 + 1))
+    if ((*(equalCopy + 84) & 1) == 0 || self->_expirationDate != *(equalCopy + 1))
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 84))
+  else if (*(equalCopy + 84))
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 84) & 4) == 0)
+    if ((*(equalCopy + 84) & 4) == 0)
     {
       goto LABEL_24;
     }
@@ -466,34 +466,34 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if ((*(v4 + 84) & 4) == 0)
+  if ((*(equalCopy + 84) & 4) == 0)
   {
     goto LABEL_29;
   }
 
-  v15 = *(v4 + 80);
+  v15 = *(equalCopy + 80);
   if (self->_deleted)
   {
-    if ((*(v4 + 80) & 1) == 0)
+    if ((*(equalCopy + 80) & 1) == 0)
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
     goto LABEL_29;
   }
 
 LABEL_24:
   messageVersion = self->_messageVersion;
-  if (messageVersion | *(v4 + 5) && ![(HDCodableMessageVersion *)messageVersion isEqual:?])
+  if (messageVersion | *(equalCopy + 5) && ![(HDCodableMessageVersion *)messageVersion isEqual:?])
   {
     goto LABEL_29;
   }
 
   syncIdentity = self->_syncIdentity;
-  if (syncIdentity | *(v4 + 9))
+  if (syncIdentity | *(equalCopy + 9))
   {
     v13 = [(HDCodableSyncIdentity *)syncIdentity isEqual:?];
   }
@@ -597,46 +597,46 @@ LABEL_30:
   return v19 ^ v20 ^ [(HDCodableSyncIdentity *)self->_syncIdentity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v10 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v10 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(HDCodableFHIRCredential *)self setIdentifier:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HDCodableFHIRCredential *)self setAccountSyncIdentifier:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(HDCodableFHIRCredential *)self setScopeString:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HDCodableFHIRCredential *)self setRequestedScopeString:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HDCodableFHIRCredential *)self setPatientID:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  v5 = *(v4 + 84);
+  v5 = *(fromCopy + 84);
   if ((v5 & 2) != 0)
   {
-    self->_receivedDate = *(v4 + 2);
+    self->_receivedDate = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 84);
+    v5 = *(fromCopy + 84);
     if ((v5 & 1) == 0)
     {
 LABEL_13:
@@ -649,23 +649,23 @@ LABEL_13:
     }
   }
 
-  else if ((*(v4 + 84) & 1) == 0)
+  else if ((*(fromCopy + 84) & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  self->_expirationDate = *(v4 + 1);
+  self->_expirationDate = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 84) & 4) != 0)
+  if ((*(fromCopy + 84) & 4) != 0)
   {
 LABEL_14:
-    self->_deleted = *(v4 + 80);
+    self->_deleted = *(fromCopy + 80);
     *&self->_has |= 4u;
   }
 
 LABEL_15:
   messageVersion = self->_messageVersion;
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   if (messageVersion)
   {
     if (!v7)
@@ -686,10 +686,10 @@ LABEL_15:
     [(HDCodableFHIRCredential *)self setMessageVersion:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_24:
   syncIdentity = self->_syncIdentity;
-  v9 = *(v4 + 9);
+  v9 = *(fromCopy + 9);
   if (syncIdentity)
   {
     if (!v9)
@@ -710,10 +710,10 @@ LABEL_24:
     syncIdentity = [(HDCodableFHIRCredential *)self setSyncIdentity:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_30:
 
-  MEMORY[0x2821F96F8](syncIdentity, v4);
+  MEMORY[0x2821F96F8](syncIdentity, fromCopy);
 }
 
 @end

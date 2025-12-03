@@ -1,13 +1,13 @@
 @interface AXBuddySettingsMenuTableViewController
 - (id)SCATVC;
-- (id)createWelcomeControllerWithAXSettingsController:(id)a3 title:(id)a4;
+- (id)createWelcomeControllerWithAXSettingsController:(id)controller title:(id)title;
 - (id)keyboardSettingsVC;
 - (id)speechVC;
 - (id)tableSections;
 - (id)touchAndReachVC;
 - (id)voiceOverVC;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation AXBuddySettingsMenuTableViewController
@@ -70,12 +70,12 @@
   return v4;
 }
 
-- (id)createWelcomeControllerWithAXSettingsController:(id)a3 title:(id)a4
+- (id)createWelcomeControllerWithAXSettingsController:(id)controller title:(id)title
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  titleCopy = title;
   v7 = AXSettingsBundle();
-  v8 = [v7 classNamed:v5];
+  v8 = [v7 classNamed:controllerCopy];
 
   if (v8)
   {
@@ -88,25 +88,25 @@
     v11 = AXLogSettings();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_5668(v5, v11);
+      sub_5668(controllerCopy, v11);
     }
 
-    v10 = [[OBWelcomeController alloc] initWithTitle:v6 detailText:0 icon:0 contentLayout:3];
+    v10 = [[OBWelcomeController alloc] initWithTitle:titleCopy detailText:0 icon:0 contentLayout:3];
   }
 
   return v10;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   if ((AXUISettingsHandleWelcomeControllerTableViewUpdate() & 1) == 0)
   {
     v13.receiver = self;
     v13.super_class = AXBuddySettingsMenuTableViewController;
-    [(AXBuddySettingsMenuTableViewController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(AXBuddySettingsMenuTableViewController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -117,9 +117,9 @@
   v2 = [AXBuddySettingsLargeVCPushItem alloc];
   v65 = settingsLocString(@"VOICEOVER_TITLE", @"Accessibility");
   v67 = AXSettingsBundle();
-  v3 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
-  v63 = [UIImage imageNamed:@"VoiceOver" inBundle:v67 compatibleWithTraitCollection:v3];
-  v50 = v3;
+  traitCollection = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
+  v63 = [UIImage imageNamed:@"VoiceOver" inBundle:v67 compatibleWithTraitCollection:traitCollection];
+  v50 = traitCollection;
   v87[0] = _NSConcreteStackBlock;
   v87[1] = 3221225472;
   v87[2] = sub_2B30;
@@ -130,8 +130,8 @@
   v4 = [AXBuddySettingsLargeVCPushItem alloc];
   v54 = settingsLocString(@"ZOOM_TITLE", @"Accessibility");
   v59 = AXSettingsBundle();
-  v57 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
-  v55 = [UIImage imageNamed:@"Zoom" inBundle:v59 compatibleWithTraitCollection:v57];
+  traitCollection2 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
+  v55 = [UIImage imageNamed:@"Zoom" inBundle:v59 compatibleWithTraitCollection:traitCollection2];
   v5 = [UIColor colorWithRed:0.290196078 green:0.290196078 blue:0.290196078 alpha:1.0];
   y = CGPointZero.y;
   v53 = AXUIIconImageWithBackgroundForImage();
@@ -146,8 +146,8 @@
   v7 = [AXBuddySettingsLargeVCPushItem alloc];
   v8 = settingsLocString(@"DISPLAY_AND_TEXT", @"Accessibility");
   v9 = AXSettingsBundle();
-  v10 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
-  v11 = [UIImage imageNamed:@"Text Size" inBundle:v9 compatibleWithTraitCollection:v10];
+  traitCollection3 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
+  v11 = [UIImage imageNamed:@"Text Size" inBundle:v9 compatibleWithTraitCollection:traitCollection3];
   v83[0] = _NSConcreteStackBlock;
   v83[1] = 3221225472;
   v83[2] = sub_2C38;
@@ -158,8 +158,8 @@
   v13 = [AXBuddySettingsLargeVCPushItem alloc];
   v14 = settingsLocString(@"MOTION_TITLE", @"Accessibility");
   v15 = AXSettingsBundle();
-  v16 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
-  v17 = [UIImage imageNamed:@"Motion" inBundle:v15 compatibleWithTraitCollection:v16];
+  traitCollection4 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
+  v17 = [UIImage imageNamed:@"Motion" inBundle:v15 compatibleWithTraitCollection:traitCollection4];
   v81[0] = _NSConcreteStackBlock;
   v81[1] = 3221225472;
   v81[2] = sub_2CBC;
@@ -175,8 +175,8 @@
     v19 = [AXBuddySettingsLargeVCPushItem alloc];
     v20 = settingsLocString(@"READ_AND_SPEAK_TITLE", @"Accessibility");
     v21 = AXSettingsBundle();
-    v22 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
-    v23 = [UIImage imageNamed:@"Speech" inBundle:v21 compatibleWithTraitCollection:v22];
+    traitCollection5 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
+    v23 = [UIImage imageNamed:@"Speech" inBundle:v21 compatibleWithTraitCollection:traitCollection5];
     v79[0] = _NSConcreteStackBlock;
     v79[1] = 3221225472;
     v79[2] = sub_2D40;
@@ -194,8 +194,8 @@
     v27 = [AXBuddySettingsLargeVCPushItem alloc];
     v20 = settingsLocString(@"SPEECH_TITLE", @"Accessibility");
     v21 = AXSettingsBundle();
-    v22 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
-    v23 = [UIImage imageNamed:@"Speech" inBundle:v21 compatibleWithTraitCollection:v22];
+    traitCollection5 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
+    v23 = [UIImage imageNamed:@"Speech" inBundle:v21 compatibleWithTraitCollection:traitCollection5];
     v77[0] = _NSConcreteStackBlock;
     v77[1] = 3221225472;
     v77[2] = sub_2DC4;
@@ -216,9 +216,9 @@
   v30 = [AXBuddySettingsLargeVCPushItem alloc];
   v66 = settingsLocString(@"TOUCH", @"Accessibility");
   v68 = AXSettingsBundle();
-  v31 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
-  v64 = [UIImage imageNamed:@"Touch" inBundle:v68 compatibleWithTraitCollection:v31];
-  v56 = v31;
+  traitCollection6 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
+  v64 = [UIImage imageNamed:@"Touch" inBundle:v68 compatibleWithTraitCollection:traitCollection6];
+  v56 = traitCollection6;
   v75[0] = _NSConcreteStackBlock;
   v75[1] = 3221225472;
   v75[2] = sub_2E48;
@@ -229,8 +229,8 @@
   v32 = [AXBuddySettingsLargeVCPushItem alloc];
   v60 = AXBuddyBundleLocString(@"SWITCH_CONTROL_TITLE");
   v33 = AXSettingsBundle();
-  v34 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
-  v35 = [UIImage imageNamed:@"SwitchControl" inBundle:v33 compatibleWithTraitCollection:v34];
+  traitCollection7 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
+  v35 = [UIImage imageNamed:@"SwitchControl" inBundle:v33 compatibleWithTraitCollection:traitCollection7];
   v73[0] = _NSConcreteStackBlock;
   v73[1] = 3221225472;
   v73[2] = sub_2ECC;
@@ -241,8 +241,8 @@
   v37 = [AXBuddySettingsLargeVCPushItem alloc];
   v38 = settingsLocString(@"KEYBOARDS", @"Accessibility");
   v39 = AXSettingsBundle();
-  v40 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
-  v41 = [UIImage imageNamed:@"Keyboards" inBundle:v39 compatibleWithTraitCollection:v40];
+  traitCollection8 = [(AXBuddySettingsMenuTableViewController *)self traitCollection];
+  v41 = [UIImage imageNamed:@"Keyboards" inBundle:v39 compatibleWithTraitCollection:traitCollection8];
   v71[0] = _NSConcreteStackBlock;
   v71[1] = 3221225472;
   v71[2] = sub_2F48;

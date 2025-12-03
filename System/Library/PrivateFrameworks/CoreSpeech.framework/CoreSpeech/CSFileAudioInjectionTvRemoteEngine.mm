@@ -1,16 +1,16 @@
 @interface CSFileAudioInjectionTvRemoteEngine
-- (BOOL)injectAudio:(id)a3;
-- (BOOL)injectAudio:(id)a3 withScaleFactor:(float)a4 playbackStarted:(id)a5 completion:(id)a6;
+- (BOOL)injectAudio:(id)audio;
+- (BOOL)injectAudio:(id)audio withScaleFactor:(float)factor playbackStarted:(id)started completion:(id)completion;
 - (BOOL)isRecording;
-- (BOOL)startAudioStreamWithOption:(id)a3 withOutError:(id *)a4;
-- (BOOL)stopAudioStreamWithOutError:(id *)a3;
+- (BOOL)startAudioStreamWithOption:(id)option withOutError:(id *)error;
+- (BOOL)stopAudioStreamWithOutError:(id *)error;
 - (CSAudioInjectionDevice)connectedDevice;
 - (CSAudioInjectionEngineDelegate)delegate;
-- (CSFileAudioInjectionTvRemoteEngine)initWithStreamHandleId:(unint64_t)a3;
-- (void)audioConverterDidConvertPackets:(id)a3 packets:(id)a4 durationInSec:(float)a5 timestamp:(unint64_t)a6 arrivalTimestampToAudioRecorder:(unint64_t)a7;
-- (void)audioEngineBufferAvailable:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 atTime:(unint64_t)a7 isFileLoadedBuffer:(BOOL)a8;
-- (void)audioEngineDidStopRecord:(id)a3 audioStreamHandleId:(unint64_t)a4 reason:(unint64_t)a5;
-- (void)setDelegate:(id)a3;
+- (CSFileAudioInjectionTvRemoteEngine)initWithStreamHandleId:(unint64_t)id;
+- (void)audioConverterDidConvertPackets:(id)packets packets:(id)a4 durationInSec:(float)sec timestamp:(unint64_t)timestamp arrivalTimestampToAudioRecorder:(unint64_t)recorder;
+- (void)audioEngineBufferAvailable:(id)available audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d atTime:(unint64_t)time isFileLoadedBuffer:(BOOL)loadedBuffer;
+- (void)audioEngineDidStopRecord:(id)record audioStreamHandleId:(unint64_t)id reason:(unint64_t)reason;
+- (void)setDelegate:(id)delegate;
 - (void)start;
 - (void)stop;
 @end
@@ -31,7 +31,7 @@
   return WeakRetained;
 }
 
-- (void)audioConverterDidConvertPackets:(id)a3 packets:(id)a4 durationInSec:(float)a5 timestamp:(unint64_t)a6 arrivalTimestampToAudioRecorder:(unint64_t)a7
+- (void)audioConverterDidConvertPackets:(id)packets packets:(id)a4 durationInSec:(float)sec timestamp:(unint64_t)timestamp arrivalTimestampToAudioRecorder:(unint64_t)recorder
 {
   v16 = a4;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -41,13 +41,13 @@
   {
     v11 = objc_alloc_init(CSAudioChunkForTV);
     [v11 setPackets:v16];
-    [v11 setTimeStamp:a6];
+    [v11 setTimeStamp:timestamp];
     [v11 setStreamHandleID:{-[CSFileAudioInjectionEngine audioStreamHandleId](self, "audioStreamHandleId")}];
     [v11 setNumChannels:1];
     v12 = +[CSFPreferences sharedPreferences];
-    v13 = [v12 useSpeexForAudioInjection];
+    useSpeexForAudioInjection = [v12 useSpeexForAudioInjection];
 
-    if (v13)
+    if (useSpeexForAudioInjection)
     {
       v14 = 1936745848;
     }
@@ -63,14 +63,14 @@
   }
 }
 
-- (void)audioEngineBufferAvailable:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 atTime:(unint64_t)a7 isFileLoadedBuffer:(BOOL)a8
+- (void)audioEngineBufferAvailable:(id)available audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d atTime:(unint64_t)time isFileLoadedBuffer:(BOOL)loadedBuffer
 {
   encoder = self->_encoder;
-  v10 = a5;
-  [(CSAudioConverter *)encoder addSamples:v10 timestamp:a7 arrivalTimestampToAudioRecorder:mach_absolute_time()];
+  bufferCopy = buffer;
+  [(CSAudioConverter *)encoder addSamples:bufferCopy timestamp:time arrivalTimestampToAudioRecorder:mach_absolute_time()];
 }
 
-- (void)audioEngineDidStopRecord:(id)a3 audioStreamHandleId:(unint64_t)a4 reason:(unint64_t)a5
+- (void)audioEngineDidStopRecord:(id)record audioStreamHandleId:(unint64_t)id reason:(unint64_t)reason
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
@@ -78,22 +78,22 @@
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 audioEngineDidStopRecord:self audioStreamHandleId:a4 reason:a5];
+    [v10 audioEngineDidStopRecord:self audioStreamHandleId:id reason:reason];
   }
 }
 
-- (BOOL)stopAudioStreamWithOutError:(id *)a3
+- (BOOL)stopAudioStreamWithOutError:(id *)error
 {
   v4.receiver = self;
   v4.super_class = CSFileAudioInjectionTvRemoteEngine;
   return [(CSFileAudioInjectionEngine *)&v4 stopAudioStreamWithOutError:0];
 }
 
-- (BOOL)startAudioStreamWithOption:(id)a3 withOutError:(id *)a4
+- (BOOL)startAudioStreamWithOption:(id)option withOutError:(id *)error
 {
   v5.receiver = self;
   v5.super_class = CSFileAudioInjectionTvRemoteEngine;
-  return [(CSFileAudioInjectionEngine *)&v5 startAudioStreamWithOption:a3 withOutError:0];
+  return [(CSFileAudioInjectionEngine *)&v5 startAudioStreamWithOption:option withOutError:0];
 }
 
 - (BOOL)isRecording
@@ -103,18 +103,18 @@
   return [(CSFileAudioInjectionEngine *)&v3 isRecording];
 }
 
-- (BOOL)injectAudio:(id)a3 withScaleFactor:(float)a4 playbackStarted:(id)a5 completion:(id)a6
+- (BOOL)injectAudio:(id)audio withScaleFactor:(float)factor playbackStarted:(id)started completion:(id)completion
 {
   v7.receiver = self;
   v7.super_class = CSFileAudioInjectionTvRemoteEngine;
-  return [(CSFileAudioInjectionEngine *)&v7 injectAudio:a3 withScaleFactor:a5 playbackStarted:a6 completion:?];
+  return [(CSFileAudioInjectionEngine *)&v7 injectAudio:audio withScaleFactor:started playbackStarted:completion completion:?];
 }
 
-- (BOOL)injectAudio:(id)a3
+- (BOOL)injectAudio:(id)audio
 {
   v4.receiver = self;
   v4.super_class = CSFileAudioInjectionTvRemoteEngine;
-  return [(CSFileAudioInjectionEngine *)&v4 injectAudio:a3];
+  return [(CSFileAudioInjectionEngine *)&v4 injectAudio:audio];
 }
 
 - (void)stop
@@ -131,20 +131,20 @@
   [(CSFileAudioInjectionEngine *)&v2 start];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = CSFileAudioInjectionTvRemoteEngine;
-  v4 = a3;
+  delegateCopy = delegate;
   [(CSFileAudioInjectionEngine *)&v5 setDelegate:self];
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 }
 
-- (CSFileAudioInjectionTvRemoteEngine)initWithStreamHandleId:(unint64_t)a3
+- (CSFileAudioInjectionTvRemoteEngine)initWithStreamHandleId:(unint64_t)id
 {
   v13.receiver = self;
   v13.super_class = CSFileAudioInjectionTvRemoteEngine;
-  v3 = [(CSFileAudioInjectionEngine *)&v13 initWithStreamHandleId:a3];
+  v3 = [(CSFileAudioInjectionEngine *)&v13 initWithStreamHandleId:id];
   if (v3)
   {
     v4 = dispatch_queue_create("CSFileAudioInjectionTvRemoteEngine", 0);
@@ -152,9 +152,9 @@
     v3->_queue = v4;
 
     v6 = +[CSFPreferences sharedPreferences];
-    v7 = [v6 useSpeexForAudioInjection];
+    useSpeexForAudioInjection = [v6 useSpeexForAudioInjection];
 
-    if (v7)
+    if (useSpeexForAudioInjection)
     {
       +[CSAudioConverter speexConverter];
     }

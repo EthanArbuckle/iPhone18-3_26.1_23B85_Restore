@@ -1,6 +1,6 @@
 @interface NRRemoteObject
 + (id)trafficClassQueue;
-- (BOOL)_updateDPDAndReturnYESIfChangeWithDevice:(id)a3;
+- (BOOL)_updateDPDAndReturnYESIfChangeWithDevice:(id)device;
 - (BOOL)hasAccounts;
 - (BOOL)isAlwaysConnected;
 - (BOOL)isDisconnected;
@@ -8,48 +8,48 @@
 - (BOOL)isIDSConnectedNotification;
 - (BOOL)isIDSNearby;
 - (NRImmutableIDSDevice)defaultPairedDevice;
-- (NRRemoteObject)initWithServiceName:(id)a3;
-- (NRRemoteObject)initWithServiceName:(id)a3 isAlwaysConnected:(BOOL)a4 andClientQueue:(id)a5 andDelegate:(id)a6;
+- (NRRemoteObject)initWithServiceName:(id)name;
+- (NRRemoteObject)initWithServiceName:(id)name isAlwaysConnected:(BOOL)connected andClientQueue:(id)queue andDelegate:(id)delegate;
 - (NRRemoteObjectDelegate)delegate;
 - (NSPointerArray)connectivityObservers;
 - (NSSet)deviceUniqueIdentifiers;
-- (id)_areAccountsAndDevicesPresent:(id)a3 andDevices:(id)a4;
-- (id)_lookupDestinations:(id)a3;
+- (id)_areAccountsAndDevicesPresent:(id)present andDevices:(id)devices;
+- (id)_lookupDestinations:(id)destinations;
 - (id)_rawDefaultPairedDevice;
-- (id)deprecatedIDSDeviceIdentifierForBTUUID:(id)a3;
-- (id)idsDeviceIdentifierForBTUUID:(id)a3;
-- (void)_fireIDSAvailableDelegateIfNeededWithIDSDevice:(id)a3;
+- (id)deprecatedIDSDeviceIdentifierForBTUUID:(id)d;
+- (id)idsDeviceIdentifierForBTUUID:(id)d;
+- (void)_fireIDSAvailableDelegateIfNeededWithIDSDevice:(id)device;
 - (void)_generateNearbyConnectedDelegateCalls;
-- (void)_messageResponseTimeout:(id)a3;
-- (void)_queueSendMessage:(id)a3 type:(unsigned __int16)a4 requestUUID:(id)a5 withTimeout:(id)a6 withResponseTimeout:(id)a7 withDescription:(id)a8 onlyOneFor:(id)a9 priority:(int64_t)a10 toIDSBTUUID:(id)a11 didSend:(id)a12 andResponse:(id)a13;
+- (void)_messageResponseTimeout:(id)timeout;
+- (void)_queueSendMessage:(id)message type:(unsigned __int16)type requestUUID:(id)d withTimeout:(id)timeout withResponseTimeout:(id)responseTimeout withDescription:(id)description onlyOneFor:(id)for priority:(int64_t)self0 toIDSBTUUID:(id)self1 didSend:(id)self2 andResponse:(id)self3;
 - (void)_resumeMessageDeliveryQueue;
-- (void)_sendCloudMessage:(id)a3 type:(unsigned __int16)a4 responseToRequest:(id)a5 withTimeout:(id)a6 withResponseTimeout:(id)a7 withDescription:(id)a8 onlyOneFor:(id)a9 priority:(int64_t)a10 toDestinations:(id)a11 skipLookup:(BOOL)a12 didSend:(id)a13 andResponse:(id)a14;
-- (void)_sendMessage:(id)a3 type:(unsigned __int16)a4 requestUUID:(id)a5 withTimeout:(id)a6 withResponseTimeout:(id)a7 withDescription:(id)a8 onlyOneFor:(id)a9 priority:(int64_t)a10 toIDSBTUUID:(id)a11 didSend:(id)a12 andResponse:(id)a13;
+- (void)_sendCloudMessage:(id)message type:(unsigned __int16)type responseToRequest:(id)request withTimeout:(id)timeout withResponseTimeout:(id)responseTimeout withDescription:(id)description onlyOneFor:(id)for priority:(int64_t)self0 toDestinations:(id)self1 skipLookup:(BOOL)self2 didSend:(id)self3 andResponse:(id)self4;
+- (void)_sendMessage:(id)message type:(unsigned __int16)type requestUUID:(id)d withTimeout:(id)timeout withResponseTimeout:(id)responseTimeout withDescription:(id)description onlyOneFor:(id)for priority:(int64_t)self0 toIDSBTUUID:(id)self1 didSend:(id)self2 andResponse:(id)self3;
 - (void)_suspendMessageDeliveryQueue;
 - (void)_updateIDSDeviceUniqueIdentifiers;
-- (void)_updateTrafficClassesWithClasses:(id)a3;
-- (void)addConnectivityObserver:(id)a3;
+- (void)_updateTrafficClassesWithClasses:(id)classes;
+- (void)addConnectivityObserver:(id)observer;
 - (void)dealloc;
-- (void)handleIncomingMessage:(id)a3;
+- (void)handleIncomingMessage:(id)message;
 - (void)invalidate;
-- (void)removeConnectivityObserver:(id)a3;
-- (void)sendResponse:(id)a3 type:(unsigned __int16)a4 withRequest:(id)a5 withTimeout:(id)a6 withDescription:(id)a7 onlyOneFor:(id)a8 priority:(int64_t)a9 didSend:(id)a10;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
-- (void)setConnectivityObservers:(id)a3;
-- (void)setDefaultPairedDevice:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDeviceUniqueIdentifiers:(id)a3;
-- (void)setDisconnected:(BOOL)a3;
-- (void)setHasAccounts:(BOOL)a3;
-- (void)setIDSConnected:(BOOL)a3;
-- (void)setIDSNearby:(BOOL)a3;
-- (void)setIsAlwaysConnected:(BOOL)a3;
-- (void)setIsIDSConnectedNotification:(BOOL)a3;
-- (void)updateTrafficClassesWithClasses:(id)a3;
+- (void)removeConnectivityObserver:(id)observer;
+- (void)sendResponse:(id)response type:(unsigned __int16)type withRequest:(id)request withTimeout:(id)timeout withDescription:(id)description onlyOneFor:(id)for priority:(int64_t)priority didSend:(id)self0;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
+- (void)setConnectivityObservers:(id)observers;
+- (void)setDefaultPairedDevice:(id)device;
+- (void)setDelegate:(id)delegate;
+- (void)setDeviceUniqueIdentifiers:(id)identifiers;
+- (void)setDisconnected:(BOOL)disconnected;
+- (void)setHasAccounts:(BOOL)accounts;
+- (void)setIDSConnected:(BOOL)connected;
+- (void)setIDSNearby:(BOOL)nearby;
+- (void)setIsAlwaysConnected:(BOOL)connected;
+- (void)setIsIDSConnectedNotification:(BOOL)notification;
+- (void)updateTrafficClassesWithClasses:(id)classes;
 @end
 
 @implementation NRRemoteObject
@@ -155,7 +155,7 @@
   return v3;
 }
 
-- (void)setIsIDSConnectedNotification:(BOOL)a3
+- (void)setIsIDSConnectedNotification:(BOOL)notification
 {
   defaultPairedDeviceQueue = self->_defaultPairedDeviceQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -163,7 +163,7 @@
   v4[2] = sub_1000C2648;
   v4[3] = &unk_100176198;
   v4[4] = self;
-  v5 = a3;
+  notificationCopy = notification;
   dispatch_async(defaultPairedDeviceQueue, v4);
 }
 
@@ -205,7 +205,7 @@
   return v3;
 }
 
-- (void)setIDSNearby:(BOOL)a3
+- (void)setIDSNearby:(BOOL)nearby
 {
   defaultPairedDeviceQueue = self->_defaultPairedDeviceQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -213,11 +213,11 @@
   v4[2] = sub_1000C2878;
   v4[3] = &unk_100176198;
   v4[4] = self;
-  v5 = a3;
+  nearbyCopy = nearby;
   dispatch_async(defaultPairedDeviceQueue, v4);
 }
 
-- (void)setIDSConnected:(BOOL)a3
+- (void)setIDSConnected:(BOOL)connected
 {
   defaultPairedDeviceQueue = self->_defaultPairedDeviceQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -225,7 +225,7 @@
   v4[2] = sub_1000C2900;
   v4[3] = &unk_100176198;
   v4[4] = self;
-  v5 = a3;
+  connectedCopy = connected;
   dispatch_async(defaultPairedDeviceQueue, v4);
 }
 
@@ -247,7 +247,7 @@
   {
     v25 = isIDSConnected;
     self->_wasIDSNearby = isIDSNearby;
-    v5 = [(NRRemoteObject *)self delegate];
+    delegate = [(NRRemoteObject *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
@@ -266,8 +266,8 @@
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v8 = [(NRRemoteObject *)self connectivityObservers];
-    v9 = [v8 countByEnumeratingWithState:&v36 objects:v43 count:16];
+    connectivityObservers = [(NRRemoteObject *)self connectivityObservers];
+    v9 = [connectivityObservers countByEnumeratingWithState:&v36 objects:v43 count:16];
     if (v9)
     {
       v10 = v9;
@@ -278,7 +278,7 @@
         {
           if (*v37 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(connectivityObservers);
           }
 
           v13 = *(*(&v36 + 1) + 8 * i);
@@ -296,7 +296,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v36 objects:v43 count:16];
+        v10 = [connectivityObservers countByEnumeratingWithState:&v36 objects:v43 count:16];
       }
 
       while (v10);
@@ -308,7 +308,7 @@
   if (self->_wasIDSConnected != isIDSConnected)
   {
     self->_wasIDSConnected = isIDSConnected;
-    v15 = [(NRRemoteObject *)self delegate];
+    delegate2 = [(NRRemoteObject *)self delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
@@ -327,8 +327,8 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v18 = [(NRRemoteObject *)self connectivityObservers];
-    v19 = [v18 countByEnumeratingWithState:&v28 objects:v42 count:16];
+    connectivityObservers2 = [(NRRemoteObject *)self connectivityObservers];
+    v19 = [connectivityObservers2 countByEnumeratingWithState:&v28 objects:v42 count:16];
     if (v19)
     {
       v20 = v19;
@@ -339,7 +339,7 @@
         {
           if (*v29 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(connectivityObservers2);
           }
 
           v23 = *(*(&v28 + 1) + 8 * j);
@@ -357,7 +357,7 @@
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v28 objects:v42 count:16];
+        v20 = [connectivityObservers2 countByEnumeratingWithState:&v28 objects:v42 count:16];
       }
 
       while (v20);
@@ -387,21 +387,21 @@
   return v3;
 }
 
-- (void)setDeviceUniqueIdentifiers:(id)a3
+- (void)setDeviceUniqueIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   defaultPairedDeviceQueue = self->_defaultPairedDeviceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C2F5C;
   v7[3] = &unk_100175598;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifiersCopy;
+  selfCopy = self;
+  v6 = identifiersCopy;
   dispatch_async(defaultPairedDeviceQueue, v7);
 }
 
-- (void)setHasAccounts:(BOOL)a3
+- (void)setHasAccounts:(BOOL)accounts
 {
   defaultPairedDeviceQueue = self->_defaultPairedDeviceQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -409,18 +409,18 @@
   v4[2] = sub_1000C3124;
   v4[3] = &unk_100176198;
   v4[4] = self;
-  v5 = a3;
+  accountsCopy = accounts;
   dispatch_async(defaultPairedDeviceQueue, v4);
 }
 
-- (void)setDisconnected:(BOOL)a3
+- (void)setDisconnected:(BOOL)disconnected
 {
   defaultPairedDeviceQueue = self->_defaultPairedDeviceQueue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000C31B8;
   v4[3] = &unk_100176198;
-  v5 = a3;
+  disconnectedCopy = disconnected;
   v4[4] = self;
   dispatch_async(defaultPairedDeviceQueue, v4);
 }
@@ -444,7 +444,7 @@
   return v3;
 }
 
-- (void)setIsAlwaysConnected:(BOOL)a3
+- (void)setIsAlwaysConnected:(BOOL)connected
 {
   idsQueue = self->_idsQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -452,7 +452,7 @@
   v4[2] = sub_1000C37E4;
   v4[3] = &unk_100176198;
   v4[4] = self;
-  v5 = a3;
+  connectedCopy = connected;
   dispatch_async(idsQueue, v4);
 }
 
@@ -478,59 +478,59 @@
   return v3;
 }
 
-- (void)setDefaultPairedDevice:(id)a3
+- (void)setDefaultPairedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   defaultPairedDeviceQueue = self->_defaultPairedDeviceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C39A4;
   v7[3] = &unk_100175598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_async(defaultPairedDeviceQueue, v7);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   delegateQueue = self->_delegateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C3A9C;
   v7[3] = &unk_100175598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(delegateQueue, v7);
 }
 
-- (void)addConnectivityObserver:(id)a3
+- (void)addConnectivityObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   delegateQueue = self->_delegateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C3B40;
   v7[3] = &unk_100175598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(delegateQueue, v7);
 }
 
-- (void)removeConnectivityObserver:(id)a3
+- (void)removeConnectivityObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   delegateQueue = self->_delegateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C3C1C;
   v7[3] = &unk_100175598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(delegateQueue, v7);
 }
 
@@ -556,23 +556,23 @@
   return v3;
 }
 
-- (void)setConnectivityObservers:(id)a3
+- (void)setConnectivityObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   delegateQueue = self->_delegateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C3E8C;
   v7[3] = &unk_100175598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observersCopy;
+  v6 = observersCopy;
   dispatch_async(delegateQueue, v7);
 }
 
-- (NRRemoteObject)initWithServiceName:(id)a3
+- (NRRemoteObject)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -582,22 +582,22 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = nameCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Init NRRemoteObject: %@", &v10, 0xCu);
     }
   }
 
-  v8 = [(NRRemoteObject *)self initWithServiceName:v4 andClientQueue:0];
+  v8 = [(NRRemoteObject *)self initWithServiceName:nameCopy andClientQueue:0];
 
   return v8;
 }
 
-- (NRRemoteObject)initWithServiceName:(id)a3 isAlwaysConnected:(BOOL)a4 andClientQueue:(id)a5 andDelegate:(id)a6
+- (NRRemoteObject)initWithServiceName:(id)name isAlwaysConnected:(BOOL)connected andClientQueue:(id)queue andDelegate:(id)delegate
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  connectedCopy = connected;
+  nameCopy = name;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v64.receiver = self;
   v64.super_class = NRRemoteObject;
   v13 = [(NRRemoteObject *)&v64 init];
@@ -612,21 +612,21 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = @"NO";
-        if (v8)
+        if (connectedCopy)
         {
           v17 = @"YES";
         }
 
         *buf = 138412546;
-        v66 = v10;
+        v66 = nameCopy;
         v67 = 2112;
         v68 = v17;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Init NRRemoteObject (name: %@, alwaysConnected: %@)", buf, 0x16u);
       }
     }
 
-    *(v13 + 85) = v8;
-    v18 = [v10 copy];
+    *(v13 + 85) = connectedCopy;
+    v18 = [nameCopy copy];
     v19 = *(v13 + 4);
     *(v13 + 4) = v18;
 
@@ -651,37 +651,37 @@
     *(v13 + 18) = v28;
 
     v30 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v31 = dispatch_queue_create([v10 UTF8String], v30);
+    v31 = dispatch_queue_create([nameCopy UTF8String], v30);
     v32 = *(v13 + 5);
     *(v13 + 5) = v31;
 
-    if (v11)
+    if (queueCopy)
     {
-      v33 = v11;
+      v33 = queueCopy;
       v34 = *(v13 + 15);
       *(v13 + 15) = v33;
     }
 
     else
     {
-      v34 = [v10 stringByAppendingString:@".client"];
+      v34 = [nameCopy stringByAppendingString:@".client"];
       v35 = dispatch_queue_create([v34 UTF8String], v30);
       v36 = *(v13 + 15);
       *(v13 + 15) = v35;
     }
 
-    v37 = [v10 stringByAppendingString:@".incomingDeliveryQueue"];
+    v37 = [nameCopy stringByAppendingString:@".incomingDeliveryQueue"];
     v38 = dispatch_queue_create_with_target_V2([v37 UTF8String], v30, *(v13 + 15));
     v39 = *(v13 + 17);
     *(v13 + 17) = v38;
 
-    v40 = [v10 stringByAppendingString:@".delegate"];
+    v40 = [nameCopy stringByAppendingString:@".delegate"];
     v41 = dispatch_queue_create([v40 UTF8String], v30);
     v42 = *(v13 + 6);
     *(v13 + 6) = v41;
 
-    v58 = v12;
-    objc_storeWeak(v13 + 13, v12);
+    v58 = delegateCopy;
+    objc_storeWeak(v13 + 13, delegateCopy);
     v43 = *(v13 + 5);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -690,7 +690,7 @@
     v44 = v13;
     v63 = v44;
     dispatch_sync(v43, block);
-    v45 = [v10 stringByAppendingString:@".DPD"];
+    v45 = [nameCopy stringByAppendingString:@".DPD"];
     v46 = dispatch_queue_create([v45 UTF8String], v30);
     v47 = v44[7];
     v44[7] = v46;
@@ -706,31 +706,31 @@
     [v44 registerProtobufHandlers];
     [v44[16] addDelegate:v44 queue:*(v13 + 5)];
     [v44 setDisconnected:1];
-    v52 = [v44 defaultPairedDevice];
+    defaultPairedDevice = [v44 defaultPairedDevice];
     v53 = *(v13 + 5);
     v59[0] = _NSConcreteStackBlock;
     v59[1] = 3221225472;
     v59[2] = sub_1000C44A4;
     v59[3] = &unk_100175598;
     v60 = v44;
-    v61 = v52;
-    v54 = v52;
+    v61 = defaultPairedDevice;
+    v54 = defaultPairedDevice;
     dispatch_async(v53, v59);
     v55 = nr_daemon_log();
-    LODWORD(v52) = os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT);
+    LODWORD(defaultPairedDevice) = os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT);
 
-    if (v52)
+    if (defaultPairedDevice)
     {
       v56 = nr_daemon_log();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v66 = v10;
+        v66 = nameCopy;
         _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "Created IDS service %@", buf, 0xCu);
       }
     }
 
-    v12 = v58;
+    delegateCopy = v58;
   }
 
   return v13;
@@ -809,9 +809,9 @@
   }
 }
 
-- (void)handleIncomingMessage:(id)a3
+- (void)handleIncomingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -821,12 +821,12 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       serviceName = self->_serviceName;
-      v9 = [v4 type];
-      v10 = [v4 data];
-      v11 = [v10 length];
-      v12 = [v4 isResponse];
+      type = [messageCopy type];
+      data = [messageCopy data];
+      v11 = [data length];
+      isResponse = [messageCopy isResponse];
       v13 = &__kCFBooleanFalse;
-      if (v12)
+      if (isResponse)
       {
         v13 = &__kCFBooleanTrue;
       }
@@ -834,7 +834,7 @@
       *buf = 138413058;
       v74 = serviceName;
       v75 = 2048;
-      v76 = v9;
+      v76 = type;
       v77 = 2048;
       v78 = v11;
       v79 = 2112;
@@ -849,25 +849,25 @@
   }
 
   service = self->_service;
-  v15 = [v4 context];
-  v16 = [v15 fromID];
-  v17 = [(IDSService *)service linkedDeviceForFromID:v16 withRelationship:3];
+  context = [messageCopy context];
+  fromID = [context fromID];
+  v17 = [(IDSService *)service linkedDeviceForFromID:fromID withRelationship:3];
 
   if (v17)
   {
 LABEL_9:
-    v18 = [v4 context];
-    v19 = [v18 incomingResponseIdentifier];
+    context2 = [messageCopy context];
+    incomingResponseIdentifier = [context2 incomingResponseIdentifier];
 
-    if (![v4 isResponse] || !v19)
+    if (![messageCopy isResponse] || !incomingResponseIdentifier)
     {
       goto LABEL_21;
     }
 
-    v20 = [(NSMutableDictionary *)self->_idsSendIDToTimer objectForKeyedSubscript:v19];
+    v20 = [(NSMutableDictionary *)self->_idsSendIDToTimer objectForKeyedSubscript:incomingResponseIdentifier];
     [v20 invalidate];
-    [(NSMutableDictionary *)self->_idsSendIDToTimer removeObjectForKey:v19];
-    v21 = [(NSMutableDictionary *)self->_idsSendIDToResponseHandler objectForKeyedSubscript:v19];
+    [(NSMutableDictionary *)self->_idsSendIDToTimer removeObjectForKey:incomingResponseIdentifier];
+    v21 = [(NSMutableDictionary *)self->_idsSendIDToResponseHandler objectForKeyedSubscript:incomingResponseIdentifier];
     v22 = nr_daemon_log();
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
 
@@ -882,16 +882,16 @@ LABEL_9:
           *buf = 138412546;
           v74 = v25;
           v75 = 2114;
-          v76 = v19;
+          v76 = incomingResponseIdentifier;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "(%@): matched response %{public}@, executing block", buf, 0x16u);
         }
       }
 
-      [(NSMutableDictionary *)self->_idsSendIDToResponseHandler removeObjectForKey:v19];
-      v26 = [(NSMapTable *)self->_shortcutMessages objectForKey:v4];
-      v27 = [v26 BOOLValue];
+      [(NSMutableDictionary *)self->_idsSendIDToResponseHandler removeObjectForKey:incomingResponseIdentifier];
+      v26 = [(NSMapTable *)self->_shortcutMessages objectForKey:messageCopy];
+      bOOLValue = [v26 BOOLValue];
       v28 = 136;
-      if (v27)
+      if (bOOLValue)
       {
         v28 = 120;
       }
@@ -902,8 +902,8 @@ LABEL_9:
       block[2] = sub_1000C55F8;
       block[3] = &unk_100176A18;
       v72 = v21;
-      v70 = v4;
-      v71 = self;
+      v70 = messageCopy;
+      selfCopy = self;
       dispatch_async(v29, block);
 
       v30 = v72;
@@ -923,14 +923,14 @@ LABEL_9:
         *buf = 138412546;
         v74 = v58;
         v75 = 2114;
-        v76 = v19;
+        v76 = incomingResponseIdentifier;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "(%@): no ack block found for response %{public}@, ignoring", buf, 0x16u);
       }
     }
 
 LABEL_20:
 LABEL_21:
-    if ([v4 isResponse])
+    if ([messageCopy isResponse])
     {
       v31 = 0x10000;
     }
@@ -940,16 +940,16 @@ LABEL_21:
       v31 = 0;
     }
 
-    v32 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v31 | [v4 type]);
+    v32 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", v31 | [messageCopy type]);
     v33 = [(NSMutableDictionary *)self->_idsRequestMessageTypeToSelector objectForKeyedSubscript:v32];
     v34 = v33;
     if (v33)
     {
-      v35 = [v33 method];
+      method = [v33 method];
       v36 = nr_daemon_log();
       v37 = os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT);
 
-      if (v35)
+      if (method)
       {
         if (v37)
         {
@@ -958,43 +958,43 @@ LABEL_21:
           {
             v39 = self->_serviceName;
             v62 = NSStringFromSelector([v34 selector]);
-            v61 = [v4 type];
-            v64 = [v4 data];
-            v60 = [v64 length];
-            v40 = [v4 isResponse];
+            type2 = [messageCopy type];
+            data2 = [messageCopy data];
+            v60 = [data2 length];
+            isResponse2 = [messageCopy isResponse];
             v41 = &__kCFBooleanFalse;
-            if (v40)
+            if (isResponse2)
             {
               v41 = &__kCFBooleanTrue;
             }
 
             v59 = v41;
-            v63 = [v4 context];
-            v42 = [v63 fromID];
+            context3 = [messageCopy context];
+            fromID2 = [context3 fromID];
             *buf = 138413570;
             v74 = v39;
             v75 = 2114;
             v76 = v62;
             v77 = 2048;
-            v78 = v61;
+            v78 = type2;
             v79 = 2048;
             v80 = v60;
             v81 = 2112;
             v82 = v59;
             v83 = 2114;
-            v84 = v42;
+            v84 = fromID2;
             _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "(%@): Calling selector %{public}@ for type=%ld length=%ld response=%@ messageSource=%{public}@", buf, 0x3Eu);
           }
         }
 
         if (([v34 connected] & 1) == 0)
         {
-          [(NSMapTable *)self->_shortcutMessages setObject:&__kCFBooleanTrue forKey:v4];
+          [(NSMapTable *)self->_shortcutMessages setObject:&__kCFBooleanTrue forKey:messageCopy];
         }
 
-        v43 = [v34 connected];
+        connected = [v34 connected];
         v44 = 120;
-        if (v43)
+        if (connected)
         {
           v44 = 136;
         }
@@ -1004,10 +1004,10 @@ LABEL_21:
         v65[1] = 3221225472;
         v65[2] = sub_1000C56D8;
         v65[3] = &unk_100178570;
-        v68 = v35;
+        v68 = method;
         v65[4] = self;
         v66 = v34;
-        v67 = v4;
+        v67 = messageCopy;
         dispatch_async(v45, v65);
 
         goto LABEL_48;
@@ -1019,12 +1019,12 @@ LABEL_21:
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
         {
           v49 = self->_serviceName;
-          v50 = [v4 type];
-          v51 = [v4 data];
-          v52 = [v51 length];
-          v55 = [v4 isResponse];
+          type3 = [messageCopy type];
+          data3 = [messageCopy data];
+          v52 = [data3 length];
+          isResponse3 = [messageCopy isResponse];
           v54 = &__kCFBooleanFalse;
-          if (v55)
+          if (isResponse3)
           {
             v54 = &__kCFBooleanTrue;
           }
@@ -1033,7 +1033,7 @@ LABEL_46:
           *buf = 138413058;
           v74 = v49;
           v75 = 2048;
-          v76 = v50;
+          v76 = type3;
           v77 = 2048;
           v78 = v52;
           v79 = 2112;
@@ -1058,12 +1058,12 @@ LABEL_46:
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
         {
           v49 = self->_serviceName;
-          v50 = [v4 type];
-          v51 = [v4 data];
-          v52 = [v51 length];
-          v53 = [v4 isResponse];
+          type3 = [messageCopy type];
+          data3 = [messageCopy data];
+          v52 = [data3 length];
+          isResponse4 = [messageCopy isResponse];
           v54 = &__kCFBooleanFalse;
-          if (v53)
+          if (isResponse4)
           {
             v54 = &__kCFBooleanTrue;
           }
@@ -1088,10 +1088,10 @@ LABEL_48:
     goto LABEL_50;
   }
 
-  v19 = nr_daemon_log();
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+  incomingResponseIdentifier = nr_daemon_log();
+  if (os_log_type_enabled(incomingResponseIdentifier, OS_LOG_TYPE_ERROR))
   {
-    sub_100103238(self, v4);
+    sub_100103238(self, messageCopy);
   }
 
 LABEL_49:
@@ -1099,36 +1099,36 @@ LABEL_49:
 LABEL_50:
 }
 
-- (void)sendResponse:(id)a3 type:(unsigned __int16)a4 withRequest:(id)a5 withTimeout:(id)a6 withDescription:(id)a7 onlyOneFor:(id)a8 priority:(int64_t)a9 didSend:(id)a10
+- (void)sendResponse:(id)response type:(unsigned __int16)type withRequest:(id)request withTimeout:(id)timeout withDescription:(id)description onlyOneFor:(id)for priority:(int64_t)priority didSend:(id)self0
 {
-  v28 = a4;
-  v15 = a10;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a3;
+  typeCopy = type;
+  sendCopy = send;
+  forCopy = for;
+  descriptionCopy = description;
+  timeoutCopy = timeout;
+  requestCopy = request;
+  responseCopy = response;
   v21 = [NSUUID alloc];
-  v26 = [v19 protobuf];
-  v22 = [v26 context];
-  v23 = [v22 outgoingResponseIdentifier];
-  v24 = [v21 initWithUUIDString:v23];
-  v25 = [v19 idsBTUUID];
+  protobuf = [requestCopy protobuf];
+  context = [protobuf context];
+  outgoingResponseIdentifier = [context outgoingResponseIdentifier];
+  v24 = [v21 initWithUUIDString:outgoingResponseIdentifier];
+  idsBTUUID = [requestCopy idsBTUUID];
 
-  [(NRRemoteObject *)self _sendMessage:v20 type:v28 requestUUID:v24 withTimeout:v18 withResponseTimeout:0 withDescription:v17 onlyOneFor:v16 priority:a9 toIDSBTUUID:v25 didSend:v15 andResponse:0];
+  [(NRRemoteObject *)self _sendMessage:responseCopy type:typeCopy requestUUID:v24 withTimeout:timeoutCopy withResponseTimeout:0 withDescription:descriptionCopy onlyOneFor:forCopy priority:priority toIDSBTUUID:idsBTUUID didSend:sendCopy andResponse:0];
 }
 
-- (void)_sendMessage:(id)a3 type:(unsigned __int16)a4 requestUUID:(id)a5 withTimeout:(id)a6 withResponseTimeout:(id)a7 withDescription:(id)a8 onlyOneFor:(id)a9 priority:(int64_t)a10 toIDSBTUUID:(id)a11 didSend:(id)a12 andResponse:(id)a13
+- (void)_sendMessage:(id)message type:(unsigned __int16)type requestUUID:(id)d withTimeout:(id)timeout withResponseTimeout:(id)responseTimeout withDescription:(id)description onlyOneFor:(id)for priority:(int64_t)self0 toIDSBTUUID:(id)self1 didSend:(id)self2 andResponse:(id)self3
 {
-  v35 = a3;
-  v34 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
+  messageCopy = message;
+  dCopy = d;
+  timeoutCopy = timeout;
+  responseTimeoutCopy = responseTimeout;
+  descriptionCopy = description;
+  forCopy = for;
+  iDCopy = iD;
+  sendCopy = send;
+  responseCopy = response;
   dispatch_assert_queue_not_V2(self->_idsQueue);
   queue = self->_idsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1136,40 +1136,40 @@ LABEL_50:
   block[2] = sub_1000C5F68;
   block[3] = &unk_100179368;
   block[4] = self;
-  v39 = v35;
-  v49 = a4;
-  v40 = v34;
-  v41 = v18;
-  v42 = v19;
-  v43 = v20;
-  v47 = v24;
-  v48 = a10;
-  v44 = v21;
-  v45 = v22;
-  v46 = v23;
-  v25 = v24;
-  v26 = v23;
-  v27 = v22;
-  v28 = v21;
-  v29 = v20;
-  v30 = v19;
-  v31 = v18;
-  v32 = v34;
-  v33 = v35;
+  v39 = messageCopy;
+  typeCopy = type;
+  v40 = dCopy;
+  v41 = timeoutCopy;
+  v42 = responseTimeoutCopy;
+  v43 = descriptionCopy;
+  v47 = responseCopy;
+  priorityCopy = priority;
+  v44 = forCopy;
+  v45 = iDCopy;
+  v46 = sendCopy;
+  v25 = responseCopy;
+  v26 = sendCopy;
+  v27 = iDCopy;
+  v28 = forCopy;
+  v29 = descriptionCopy;
+  v30 = responseTimeoutCopy;
+  v31 = timeoutCopy;
+  v32 = dCopy;
+  v33 = messageCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_sendCloudMessage:(id)a3 type:(unsigned __int16)a4 responseToRequest:(id)a5 withTimeout:(id)a6 withResponseTimeout:(id)a7 withDescription:(id)a8 onlyOneFor:(id)a9 priority:(int64_t)a10 toDestinations:(id)a11 skipLookup:(BOOL)a12 didSend:(id)a13 andResponse:(id)a14
+- (void)_sendCloudMessage:(id)message type:(unsigned __int16)type responseToRequest:(id)request withTimeout:(id)timeout withResponseTimeout:(id)responseTimeout withDescription:(id)description onlyOneFor:(id)for priority:(int64_t)self0 toDestinations:(id)self1 skipLookup:(BOOL)self2 didSend:(id)self3 andResponse:(id)self4
 {
-  v36 = a3;
-  v35 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a11;
-  v24 = a13;
-  v25 = a14;
+  messageCopy = message;
+  requestCopy = request;
+  timeoutCopy = timeout;
+  responseTimeoutCopy = responseTimeout;
+  descriptionCopy = description;
+  forCopy = for;
+  destinationsCopy = destinations;
+  sendCopy = send;
+  responseCopy = response;
   dispatch_assert_queue_not_V2(self->_idsQueue);
   queue = self->_idsQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1177,90 +1177,90 @@ LABEL_50:
   block[2] = sub_1000C62D8;
   block[3] = &unk_100179390;
   block[4] = self;
-  v40 = v36;
-  v50 = a4;
-  v41 = v35;
-  v42 = v19;
-  v43 = v20;
-  v44 = v21;
-  v48 = v25;
-  v49 = a10;
-  v45 = v22;
-  v46 = v23;
-  v51 = a12;
-  v47 = v24;
-  v26 = v25;
-  v27 = v24;
-  v28 = v23;
-  v29 = v22;
-  v30 = v21;
-  v31 = v20;
-  v32 = v19;
-  v33 = v35;
-  v34 = v36;
+  v40 = messageCopy;
+  typeCopy = type;
+  v41 = requestCopy;
+  v42 = timeoutCopy;
+  v43 = responseTimeoutCopy;
+  v44 = descriptionCopy;
+  v48 = responseCopy;
+  priorityCopy = priority;
+  v45 = forCopy;
+  v46 = destinationsCopy;
+  lookupCopy = lookup;
+  v47 = sendCopy;
+  v26 = responseCopy;
+  v27 = sendCopy;
+  v28 = destinationsCopy;
+  v29 = forCopy;
+  v30 = descriptionCopy;
+  v31 = responseTimeoutCopy;
+  v32 = timeoutCopy;
+  v33 = requestCopy;
+  v34 = messageCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_messageResponseTimeout:(id)a3
+- (void)_messageResponseTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   idsQueue = self->_idsQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C63C4;
   v7[3] = &unk_100175598;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = timeoutCopy;
+  selfCopy = self;
+  v6 = timeoutCopy;
   dispatch_async(idsQueue, v7);
 }
 
-- (void)_queueSendMessage:(id)a3 type:(unsigned __int16)a4 requestUUID:(id)a5 withTimeout:(id)a6 withResponseTimeout:(id)a7 withDescription:(id)a8 onlyOneFor:(id)a9 priority:(int64_t)a10 toIDSBTUUID:(id)a11 didSend:(id)a12 andResponse:(id)a13
+- (void)_queueSendMessage:(id)message type:(unsigned __int16)type requestUUID:(id)d withTimeout:(id)timeout withResponseTimeout:(id)responseTimeout withDescription:(id)description onlyOneFor:(id)for priority:(int64_t)self0 toIDSBTUUID:(id)self1 didSend:(id)self2 andResponse:(id)self3
 {
-  v89 = a4;
-  v95 = a3;
-  v18 = a5;
-  v19 = a6;
-  v94 = a7;
-  v93 = a8;
-  v97 = a9;
-  v96 = a12;
-  v98 = a13;
+  typeCopy = type;
+  messageCopy = message;
+  dCopy = d;
+  timeoutCopy = timeout;
+  responseTimeoutCopy = responseTimeout;
+  descriptionCopy = description;
+  forCopy = for;
+  sendCopy = send;
+  responseCopy = response;
   v20 = "request";
-  if (v18)
+  if (dCopy)
   {
     v20 = "response";
   }
 
   v92 = v20;
   idsQueue = self->_idsQueue;
-  v22 = a11;
+  iDCopy = iD;
   dispatch_assert_queue_V2(idsQueue);
-  v23 = [(IDSService *)self->_service devicesForBTUUID:v22];
+  v23 = [(IDSService *)self->_service devicesForBTUUID:iDCopy];
 
-  v24 = [v23 anyObject];
+  anyObject = [v23 anyObject];
 
-  v99 = v24;
-  if (v24)
+  v99 = anyObject;
+  if (anyObject)
   {
     v25 = +[NSMutableDictionary dictionary];
     v26 = v25;
-    v86 = v19;
-    if (v19)
+    v86 = timeoutCopy;
+    if (timeoutCopy)
     {
-      [v25 setObject:v19 forKeyedSubscript:IDSSendMessageOptionTimeoutKey];
-      [v19 doubleValue];
-      v28 = v95;
-      v29 = v97;
+      [v25 setObject:timeoutCopy forKeyedSubscript:IDSSendMessageOptionTimeoutKey];
+      [timeoutCopy doubleValue];
+      v28 = messageCopy;
+      v29 = forCopy;
       if (v27 + -10.0 >= 0.00000011920929)
       {
-        LODWORD(v19) = 0;
+        LODWORD(timeoutCopy) = 0;
       }
 
       else
       {
         [v26 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionFireAndForgetKey];
-        LODWORD(v19) = 1;
+        LODWORD(timeoutCopy) = 1;
       }
     }
 
@@ -1269,8 +1269,8 @@ LABEL_50:
       v47 = [NSNumber numberWithDouble:IDSMaxMessageTimeout];
       [v26 setObject:v47 forKeyedSubscript:IDSSendMessageOptionTimeoutKey];
 
-      v28 = v95;
-      v29 = v97;
+      v28 = messageCopy;
+      v29 = forCopy;
     }
 
     [v26 setObject:&__kCFBooleanFalse forKeyedSubscript:IDSSendMessageOptionEnforceRemoteTimeoutsKey];
@@ -1279,24 +1279,24 @@ LABEL_50:
       [v26 setObject:v29 forKeyedSubscript:IDSSendMessageOptionQueueOneIdentifierKey];
     }
 
-    if (v18)
+    if (dCopy)
     {
-      v48 = [v18 UUIDString];
-      [v26 setObject:v48 forKeyedSubscript:IDSSendMessageOptionPeerResponseIdentifierKey];
+      uUIDString = [dCopy UUIDString];
+      [v26 setObject:uUIDString forKeyedSubscript:IDSSendMessageOptionPeerResponseIdentifierKey];
     }
 
-    v88 = v18;
+    v88 = dCopy;
     v49 = [IDSProtobuf alloc];
-    v50 = [v28 data];
-    v51 = [v49 initWithProtobufData:v50 type:v89 isResponse:v18 != 0];
+    data = [v28 data];
+    v51 = [v49 initWithProtobufData:data type:typeCopy isResponse:dCopy != 0];
 
-    v52 = [(NRRemoteObject *)self service];
+    service = [(NRRemoteObject *)self service];
     v53 = IDSCopyIDForDevice();
     v54 = [NSSet setWithObject:v53];
     v112 = 0;
     v113 = 0;
     v91 = v51;
-    v55 = [v52 sendProtobuf:v51 toDestinations:v54 priority:a10 options:v26 identifier:&v113 error:&v112];
+    v55 = [service sendProtobuf:v51 toDestinations:v54 priority:priority options:v26 identifier:&v113 error:&v112];
     v46 = v113;
     v30 = v112;
 
@@ -1319,14 +1319,14 @@ LABEL_50:
 
       v67 = objc_opt_class();
       v68 = NSStringFromClass(v67);
-      v69 = [v30 nr_safeDescription];
-      v59 = [NSString stringWithFormat:@"Error sending %s %@ - %@", v92, v68, v69];
+      nr_safeDescription = [v30 nr_safeDescription];
+      v59 = [NSString stringWithFormat:@"Error sending %s %@ - %@", v92, v68, nr_safeDescription];
 
       v70 = nr_daemon_log();
-      LODWORD(v69) = os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT);
+      LODWORD(nr_safeDescription) = os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT);
 
-      v18 = v88;
-      if (v69)
+      dCopy = v88;
+      if (nr_safeDescription)
       {
         v71 = nr_daemon_log();
         if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
@@ -1337,42 +1337,42 @@ LABEL_50:
         }
       }
 
-      v33 = v96;
-      if (v96)
+      v33 = sendCopy;
+      if (sendCopy)
       {
         clientQueue = self->_clientQueue;
         v109[0] = _NSConcreteStackBlock;
         v109[1] = 3221225472;
         v109[2] = sub_1000C6FA8;
         v109[3] = &unk_100175688;
-        v111 = v96;
+        v111 = sendCopy;
         v110 = v30;
         dispatch_async(clientQueue, v109);
       }
 
-      if (v98)
+      if (responseCopy)
       {
         v73 = self->_clientQueue;
         v107[0] = _NSConcreteStackBlock;
         v107[1] = 3221225472;
         v107[2] = sub_1000C6FBC;
         v107[3] = &unk_100175D58;
-        v108 = v98;
+        v108 = responseCopy;
         dispatch_async(v73, v107);
       }
     }
 
     else
     {
-      v33 = v96;
-      if (v96)
+      v33 = sendCopy;
+      if (sendCopy)
       {
-        v56 = objc_retainBlock(v96);
+        v56 = objc_retainBlock(sendCopy);
         [(NSMutableDictionary *)self->_idsSendIDToCompletionHandler setObject:v56 forKeyedSubscript:v46];
       }
 
-      v18 = v88;
-      if (!v98 || (v57 = objc_retainBlock(v98), [(NSMutableDictionary *)self->_idsSendIDToResponseHandler setObject:v57 forKeyedSubscript:v46], v57, !v94))
+      dCopy = v88;
+      if (!responseCopy || (v57 = objc_retainBlock(responseCopy), [(NSMutableDictionary *)self->_idsSendIDToResponseHandler setObject:v57 forKeyedSubscript:v46], v57, !responseTimeoutCopy))
       {
         v30 = 0;
         goto LABEL_47;
@@ -1381,7 +1381,7 @@ LABEL_50:
       v58 = [NSString stringWithFormat:@"com.apple.%s.%@", v92, v46];
       v59 = [v58 stringByReplacingOccurrencesOfString:@" " withString:@"-"];
 
-      [v94 doubleValue];
+      [responseTimeoutCopy doubleValue];
       v61 = v60;
       v62 = self->_idsQueue;
       v105[0] = _NSConcreteStackBlock;
@@ -1393,7 +1393,7 @@ LABEL_50:
       v106 = v63;
       v64 = [TimerFactory timerWithIdentifier:v59 delay:1 gracePeriod:v62 waking:v105 handlerQueue:v61 handlerBlock:0.0];
       v65 = v63;
-      v33 = v96;
+      v33 = sendCopy;
       [(NSMutableDictionary *)self->_idsSendIDToTimer setObject:v64 forKeyedSubscript:v65];
 
       v30 = 0;
@@ -1409,23 +1409,23 @@ LABEL_47:
       if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
       {
         v85 = v46;
-        v77 = v93;
-        if (!v93)
+        v77 = descriptionCopy;
+        if (!descriptionCopy)
         {
           v78 = objc_opt_class();
           v77 = NSStringFromClass(v78);
         }
 
-        v79 = [v28 data];
-        v80 = [v79 length];
-        v81 = [v99 nsuuid];
-        v82 = [v81 UUIDString];
-        v83 = v82;
+        data2 = [v28 data];
+        v80 = [data2 length];
+        nsuuid = [v99 nsuuid];
+        uUIDString2 = [nsuuid UUIDString];
+        v83 = uUIDString2;
         *buf = 136316418;
         v84 = "";
         v115 = v92;
         v116 = 2114;
-        if (v19)
+        if (timeoutCopy)
         {
           v84 = "fireAndForget is ON";
         }
@@ -1434,28 +1434,28 @@ LABEL_47:
         v118 = 2048;
         v119 = v80;
         v120 = 2114;
-        v121 = v82;
+        v121 = uUIDString2;
         v122 = 2114;
         v123 = v85;
         v124 = 2080;
         v125 = v84;
         _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEFAULT, "Sent IDS %s %{public}@ bytes=%ld to %{public}@ got identifier: %{public}@ %s", buf, 0x3Eu);
 
-        if (!v93)
+        if (!descriptionCopy)
         {
         }
 
-        v28 = v95;
-        v33 = v96;
-        v18 = v88;
+        v28 = messageCopy;
+        v33 = sendCopy;
+        dCopy = v88;
         v46 = v85;
       }
     }
 
-    v19 = v86;
-    v34 = v93;
-    v44 = v94;
-    v35 = v98;
+    timeoutCopy = v86;
+    v34 = descriptionCopy;
+    v44 = responseTimeoutCopy;
+    v35 = responseCopy;
     goto LABEL_58;
   }
 
@@ -1463,28 +1463,28 @@ LABEL_47:
   v31 = nr_daemon_log();
   v32 = os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT);
 
-  v28 = v95;
-  v33 = v96;
-  v34 = v93;
-  v35 = v98;
+  v28 = messageCopy;
+  v33 = sendCopy;
+  v34 = descriptionCopy;
+  v35 = responseCopy;
   if (v32)
   {
     v36 = nr_daemon_log();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
-      v87 = v18;
-      v90 = v93;
-      if (!v93)
+      v87 = dCopy;
+      v90 = descriptionCopy;
+      if (!descriptionCopy)
       {
         v37 = objc_opt_class();
         v90 = NSStringFromClass(v37);
       }
 
-      v38 = [v95 data];
-      v39 = [v38 length];
-      v40 = [0 nsuuid];
-      v41 = [v40 UUIDString];
-      v42 = [v30 nr_safeDescription];
+      data3 = [messageCopy data];
+      v39 = [data3 length];
+      nsuuid2 = [0 nsuuid];
+      uUIDString3 = [nsuuid2 UUIDString];
+      nr_safeDescription2 = [v30 nr_safeDescription];
       *buf = 136316162;
       v115 = v92;
       v116 = 2114;
@@ -1492,20 +1492,20 @@ LABEL_47:
       v118 = 2048;
       v119 = v39;
       v120 = 2114;
-      v121 = v41;
+      v121 = uUIDString3;
       v122 = 2114;
-      v123 = v42;
+      v123 = nr_safeDescription2;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Failed to send IDS %s %{public}@ bytes=%ld to %{public}@ because of %{public}@", buf, 0x34u);
 
-      v34 = v93;
-      if (!v93)
+      v34 = descriptionCopy;
+      if (!descriptionCopy)
       {
       }
 
-      v28 = v95;
-      v33 = v96;
-      v18 = v87;
-      v35 = v98;
+      v28 = messageCopy;
+      v33 = sendCopy;
+      dCopy = v87;
+      v35 = responseCopy;
     }
   }
 
@@ -1521,7 +1521,7 @@ LABEL_47:
     dispatch_async(v43, block);
   }
 
-  v44 = v94;
+  v44 = responseTimeoutCopy;
   if (v35)
   {
     v45 = self->_clientQueue;
@@ -1536,9 +1536,9 @@ LABEL_58:
   }
 }
 
-- (id)_lookupDestinations:(id)a3
+- (id)_lookupDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1548,18 +1548,18 @@ LABEL_58:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = v4;
+      v33 = destinationsCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Looking up cloud destinations %@", buf, 0xCu);
     }
   }
 
-  v8 = [(IDSService *)self->_service nr_mineTinkerDevices];
+  nr_mineTinkerDevices = [(IDSService *)self->_service nr_mineTinkerDevices];
   v9 = +[NSMutableSet set];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = v8;
+  v10 = nr_mineTinkerDevices;
   v11 = [v10 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v11)
   {
@@ -1585,17 +1585,17 @@ LABEL_58:
           v19 = nr_daemon_log();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [v16 uniqueIDOverride];
+            uniqueIDOverride = [v16 uniqueIDOverride];
             *buf = v27;
             v33 = v16;
             v34 = 2112;
-            v35 = v20;
+            v35 = uniqueIDOverride;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Lookup: IDSDevice %@ uniqueIDOverride=%@", buf, 0x16u);
           }
         }
 
-        v21 = [v16 uniqueIDOverride];
-        v22 = [v4 containsObject:v21];
+        uniqueIDOverride2 = [v16 uniqueIDOverride];
+        v22 = [destinationsCopy containsObject:uniqueIDOverride2];
 
         if (v22)
         {
@@ -1614,7 +1614,7 @@ LABEL_58:
   }
 
   v24 = [v9 count];
-  if (v24 == [v4 count])
+  if (v24 == [destinationsCopy count])
   {
     v25 = v9;
   }
@@ -1627,12 +1627,12 @@ LABEL_58:
   return v25;
 }
 
-- (id)deprecatedIDSDeviceIdentifierForBTUUID:(id)a3
+- (id)deprecatedIDSDeviceIdentifierForBTUUID:(id)d
 {
-  v3 = [(IDSService *)self->_service devicesForBTUUID:a3];
-  v4 = [v3 anyObject];
+  v3 = [(IDSService *)self->_service devicesForBTUUID:d];
+  anyObject = [v3 anyObject];
 
-  if (v4)
+  if (anyObject)
   {
     v5 = IDSCopyIDForDevice();
   }
@@ -1645,34 +1645,34 @@ LABEL_58:
   return v5;
 }
 
-- (id)idsDeviceIdentifierForBTUUID:(id)a3
+- (id)idsDeviceIdentifierForBTUUID:(id)d
 {
-  v3 = [(IDSService *)self->_service devicesForBTUUID:a3];
-  v4 = [v3 anyObject];
+  v3 = [(IDSService *)self->_service devicesForBTUUID:d];
+  anyObject = [v3 anyObject];
 
-  if (v4)
+  if (anyObject)
   {
-    v5 = [v4 uniqueIDOverride];
+    uniqueIDOverride = [anyObject uniqueIDOverride];
   }
 
   else
   {
-    v5 = 0;
+    uniqueIDOverride = 0;
   }
 
-  return v5;
+  return uniqueIDOverride;
 }
 
-- (id)_areAccountsAndDevicesPresent:(id)a3 andDevices:(id)a4
+- (id)_areAccountsAndDevicesPresent:(id)present andDevices:(id)devices
 {
-  v6 = a4;
-  v7 = [a3 count];
+  devicesCopy = devices;
+  v7 = [present count];
   [(NRRemoteObject *)self setHasAccounts:v7 != 0];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v8 = v6;
+  v8 = devicesCopy;
   v9 = [v8 countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v9)
   {
@@ -1700,12 +1700,12 @@ LABEL_58:
 
           else
           {
-            v14 = [v13 maxCompatibilityVersion];
-            if (v7 && v14 != 0x7FFFFFFFFFFFFFFFLL)
+            maxCompatibilityVersion = [v13 maxCompatibilityVersion];
+            if (v7 && maxCompatibilityVersion != 0x7FFFFFFFFFFFFFFFLL)
             {
 LABEL_43:
-              v15 = [[NRImmutableIDSDevice alloc] initWithIDSDevice:v13];
-              v28 = v8;
+              defaultPairedDevice = [[NRImmutableIDSDevice alloc] initWithIDSDevice:v13];
+              nr_mineTinkerDevices = v8;
               goto LABEL_44;
             }
           }
@@ -1722,9 +1722,9 @@ LABEL_43:
     }
   }
 
-  v15 = [(NRRemoteObject *)self defaultPairedDevice];
+  defaultPairedDevice = [(NRRemoteObject *)self defaultPairedDevice];
 
-  if (v15)
+  if (defaultPairedDevice)
   {
     v16 = nr_daemon_log();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
@@ -1743,8 +1743,8 @@ LABEL_43:
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v19 = [(IDSService *)self->_service accounts];
-    v20 = [v19 countByEnumeratingWithState:&v44 objects:v55 count:16];
+    accounts = [(IDSService *)self->_service accounts];
+    v20 = [accounts countByEnumeratingWithState:&v44 objects:v55 count:16];
     if (v20)
     {
       v21 = v20;
@@ -1755,7 +1755,7 @@ LABEL_43:
         {
           if (*v45 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(accounts);
           }
 
           v24 = *(*(&v44 + 1) + 8 * j);
@@ -1774,7 +1774,7 @@ LABEL_43:
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v44 objects:v55 count:16];
+        v21 = [accounts countByEnumeratingWithState:&v44 objects:v55 count:16];
       }
 
       while (v21);
@@ -1784,8 +1784,8 @@ LABEL_43:
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v28 = [*(v38 + 128) nr_mineTinkerDevices];
-    v29 = [v28 countByEnumeratingWithState:&v40 objects:v52 count:16];
+    nr_mineTinkerDevices = [*(v38 + 128) nr_mineTinkerDevices];
+    v29 = [nr_mineTinkerDevices countByEnumeratingWithState:&v40 objects:v52 count:16];
     if (v29)
     {
       v30 = v29;
@@ -1796,7 +1796,7 @@ LABEL_43:
         {
           if (*v41 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(nr_mineTinkerDevices);
           }
 
           v33 = *(*(&v40 + 1) + 8 * k);
@@ -1815,92 +1815,92 @@ LABEL_43:
           }
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v40 objects:v52 count:16];
+        v30 = [nr_mineTinkerDevices countByEnumeratingWithState:&v40 objects:v52 count:16];
       }
 
       while (v30);
     }
 
-    v15 = 0;
+    defaultPairedDevice = 0;
     v8 = v39;
 LABEL_44:
   }
 
-  return v15;
+  return defaultPairedDevice;
 }
 
-- (void)_updateTrafficClassesWithClasses:(id)a3
+- (void)_updateTrafficClassesWithClasses:(id)classes
 {
-  v4 = a3;
-  v5 = [(NRRemoteObject *)self _rawDefaultPairedDevice];
-  if (v5)
+  classesCopy = classes;
+  _rawDefaultPairedDevice = [(NRRemoteObject *)self _rawDefaultPairedDevice];
+  if (_rawDefaultPairedDevice)
   {
-    v6 = [objc_opt_class() trafficClassQueue];
+    trafficClassQueue = [objc_opt_class() trafficClassQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000C83D4;
     block[3] = &unk_1001758F8;
-    v7 = v4;
+    v7 = classesCopy;
     v14 = v7;
-    v8 = v5;
+    v8 = _rawDefaultPairedDevice;
     v15 = v8;
-    v16 = self;
-    dispatch_async(v6, block);
+    selfCopy = self;
+    dispatch_async(trafficClassQueue, block);
 
     if ([v7 shouldDropUnmatchingTraffic])
     {
-      v9 = [objc_opt_class() trafficClassQueue];
+      trafficClassQueue2 = [objc_opt_class() trafficClassQueue];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_1000C8614;
       v10[3] = &unk_100175598;
       v11 = v8;
-      v12 = self;
-      dispatch_async(v9, v10);
+      selfCopy2 = self;
+      dispatch_async(trafficClassQueue2, v10);
     }
   }
 }
 
-- (void)updateTrafficClassesWithClasses:(id)a3
+- (void)updateTrafficClassesWithClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   idsQueue = self->_idsQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C8854;
   v7[3] = &unk_100175598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = classesCopy;
+  v6 = classesCopy;
   dispatch_async(idsQueue, v7);
 }
 
-- (BOOL)_updateDPDAndReturnYESIfChangeWithDevice:(id)a3
+- (BOOL)_updateDPDAndReturnYESIfChangeWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(NRRemoteObject *)self _rawDefaultPairedDevice];
+  deviceCopy = device;
+  _rawDefaultPairedDevice = [(NRRemoteObject *)self _rawDefaultPairedDevice];
 
-  if (v4 || !v5)
+  if (deviceCopy || !_rawDefaultPairedDevice)
   {
-    v8 = [(NRRemoteObject *)self _rawDefaultPairedDevice];
+    _rawDefaultPairedDevice2 = [(NRRemoteObject *)self _rawDefaultPairedDevice];
 
-    if ((!v4 || v8) && !v4)
+    if ((!deviceCopy || _rawDefaultPairedDevice2) && !deviceCopy)
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    v6 = self;
-    v7 = v4;
+    selfCopy2 = self;
+    v7 = deviceCopy;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 0;
   }
 
-  [(NRRemoteObject *)v6 setDefaultPairedDevice:v7];
+  [(NRRemoteObject *)selfCopy2 setDefaultPairedDevice:v7];
   v9 = 1;
 LABEL_9:
 
@@ -1915,8 +1915,8 @@ LABEL_9:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(IDSService *)self->_service nr_mineTinkerDevices];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  nr_mineTinkerDevices = [(IDSService *)self->_service nr_mineTinkerDevices];
+  v5 = [nr_mineTinkerDevices countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1928,20 +1928,20 @@ LABEL_9:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nr_mineTinkerDevices);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) uniqueIDOverride];
-        if (v9)
+        uniqueIDOverride = [*(*(&v10 + 1) + 8 * v8) uniqueIDOverride];
+        if (uniqueIDOverride)
         {
-          [v3 addObject:v9];
+          [v3 addObject:uniqueIDOverride];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [nr_mineTinkerDevices countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -1950,18 +1950,18 @@ LABEL_9:
   [(NRRemoteObject *)self setDeviceUniqueIdentifiers:v3];
 }
 
-- (void)_fireIDSAvailableDelegateIfNeededWithIDSDevice:(id)a3
+- (void)_fireIDSAvailableDelegateIfNeededWithIDSDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_idsQueue);
-  [(NRRemoteObject *)self setDefaultPairedDevice:v4];
-  v5 = [v4 nsuuid];
-  if (v5)
+  [(NRRemoteObject *)self setDefaultPairedDevice:deviceCopy];
+  nsuuid = [deviceCopy nsuuid];
+  if (nsuuid)
   {
-    v6 = [v4 nsuuid];
-    v7 = [(NRRemoteObject *)self _rawDefaultPairedDevice];
-    v8 = [v7 nsuuid];
-    v9 = [v6 isEqual:v8] ^ 1;
+    nsuuid2 = [deviceCopy nsuuid];
+    _rawDefaultPairedDevice = [(NRRemoteObject *)self _rawDefaultPairedDevice];
+    nsuuid3 = [_rawDefaultPairedDevice nsuuid];
+    v9 = [nsuuid2 isEqual:nsuuid3] ^ 1;
   }
 
   else
@@ -1969,8 +1969,8 @@ LABEL_9:
     v9 = 0;
   }
 
-  v10 = [(NRRemoteObject *)self _updateDPDAndReturnYESIfChangeWithDevice:v4];
-  v11 = [(NRRemoteObject *)self defaultPairedDevice];
+  v10 = [(NRRemoteObject *)self _updateDPDAndReturnYESIfChangeWithDevice:deviceCopy];
+  defaultPairedDevice = [(NRRemoteObject *)self defaultPairedDevice];
   if ([(NRRemoteObject *)self isDisconnected])
   {
     if (![(NRRemoteObject *)self isIDSConnectedNotification])
@@ -1985,9 +1985,9 @@ LABEL_9:
     }
 
     v47 = v9;
-    v48 = v11;
-    v46 = v4;
-    v12 = [(NRRemoteObject *)self delegate];
+    v48 = defaultPairedDevice;
+    v46 = deviceCopy;
+    delegate = [(NRRemoteObject *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
@@ -2005,8 +2005,8 @@ LABEL_9:
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v15 = [(NRRemoteObject *)self connectivityObservers];
-    v16 = [v15 countByEnumeratingWithState:&v66 objects:v75 count:16];
+    connectivityObservers = [(NRRemoteObject *)self connectivityObservers];
+    v16 = [connectivityObservers countByEnumeratingWithState:&v66 objects:v75 count:16];
     if (v16)
     {
       v17 = v16;
@@ -2017,7 +2017,7 @@ LABEL_9:
         {
           if (*v67 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(connectivityObservers);
           }
 
           v20 = *(*(&v66 + 1) + 8 * i);
@@ -2034,7 +2034,7 @@ LABEL_9:
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v66 objects:v75 count:16];
+        v17 = [connectivityObservers countByEnumeratingWithState:&v66 objects:v75 count:16];
       }
 
       while (v17);
@@ -2043,20 +2043,20 @@ LABEL_9:
     goto LABEL_48;
   }
 
-  if ((v10 & 1) != 0 || (((v11 == 0) ^ [(NRRemoteObject *)self isIDSConnectedNotification]) & 1) == 0)
+  if ((v10 & 1) != 0 || (((defaultPairedDevice == 0) ^ [(NRRemoteObject *)self isIDSConnectedNotification]) & 1) == 0)
   {
-    v22 = [(NRRemoteObject *)self isIDSConnectedNotification];
-    v48 = v11;
+    isIDSConnectedNotification = [(NRRemoteObject *)self isIDSConnectedNotification];
+    v48 = defaultPairedDevice;
     v47 = v9;
-    if (v11)
+    if (defaultPairedDevice)
     {
       [(NRRemoteObject *)self setIsIDSConnectedNotification:1];
-      v23 = [(NRRemoteObject *)self delegate];
+      delegate2 = [(NRRemoteObject *)self delegate];
       v24 = objc_opt_respondsToSelector();
 
       if (v24)
       {
-        v25 = v22 ^ 1;
+        v25 = isIDSConnectedNotification ^ 1;
         v26 = self->_clientQueue;
         v62[0] = _NSConcreteStackBlock;
         v62[1] = 3221225472;
@@ -2064,17 +2064,17 @@ LABEL_9:
         v62[3] = &unk_100177C58;
         v64 = v25;
         v62[4] = self;
-        v63 = v4;
+        v63 = deviceCopy;
         dispatch_async(v26, v62);
       }
 
-      v27 = v4;
+      v27 = deviceCopy;
       v60 = 0u;
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v28 = [(NRRemoteObject *)self connectivityObservers];
-      v29 = [v28 countByEnumeratingWithState:&v58 objects:v74 count:16];
+      connectivityObservers2 = [(NRRemoteObject *)self connectivityObservers];
+      v29 = [connectivityObservers2 countByEnumeratingWithState:&v58 objects:v74 count:16];
       if (v29)
       {
         v30 = v29;
@@ -2085,7 +2085,7 @@ LABEL_9:
           {
             if (*v59 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(connectivityObservers2);
             }
 
             v33 = *(*(&v58 + 1) + 8 * j);
@@ -2103,14 +2103,14 @@ LABEL_9:
             }
           }
 
-          v30 = [v28 countByEnumeratingWithState:&v58 objects:v74 count:16];
+          v30 = [connectivityObservers2 countByEnumeratingWithState:&v58 objects:v74 count:16];
         }
 
         while (v30);
       }
 
       [(NRRemoteObject *)self _resumeMessageDeliveryQueue];
-      v4 = v27;
+      deviceCopy = v27;
       goto LABEL_49;
     }
 
@@ -2120,8 +2120,8 @@ LABEL_9:
       [(NRRemoteObject *)self _suspendMessageDeliveryQueue];
     }
 
-    v46 = v4;
-    v35 = [(NRRemoteObject *)self delegate];
+    v46 = deviceCopy;
+    delegate3 = [(NRRemoteObject *)self delegate];
     v36 = objc_opt_respondsToSelector();
 
     if (v36)
@@ -2131,7 +2131,7 @@ LABEL_9:
       v54[1] = 3221225472;
       v54[2] = sub_1000C9208;
       v54[3] = &unk_100176198;
-      v55 = v22;
+      v55 = isIDSConnectedNotification;
       v54[4] = self;
       dispatch_async(v37, v54);
     }
@@ -2140,8 +2140,8 @@ LABEL_9:
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v15 = [(NRRemoteObject *)self connectivityObservers];
-    v38 = [v15 countByEnumeratingWithState:&v50 objects:v73 count:16];
+    connectivityObservers = [(NRRemoteObject *)self connectivityObservers];
+    v38 = [connectivityObservers countByEnumeratingWithState:&v50 objects:v73 count:16];
     if (v38)
     {
       v39 = v38;
@@ -2152,7 +2152,7 @@ LABEL_9:
         {
           if (*v51 != v40)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(connectivityObservers);
           }
 
           v42 = *(*(&v50 + 1) + 8 * k);
@@ -2169,7 +2169,7 @@ LABEL_9:
           }
         }
 
-        v39 = [v15 countByEnumeratingWithState:&v50 objects:v73 count:16];
+        v39 = [connectivityObservers countByEnumeratingWithState:&v50 objects:v73 count:16];
       }
 
       while (v39);
@@ -2177,18 +2177,18 @@ LABEL_9:
 
 LABEL_48:
 
-    v4 = v46;
+    deviceCopy = v46;
 LABEL_49:
-    v11 = v48;
+    defaultPairedDevice = v48;
     v9 = v47;
   }
 
 LABEL_50:
   if (v9)
   {
-    if ([v11 isNearby])
+    if ([defaultPairedDevice isNearby])
     {
-      v72 = v11;
+      v72 = defaultPairedDevice;
       v44 = [NSArray arrayWithObjects:&v72 count:1];
     }
 
@@ -2198,9 +2198,9 @@ LABEL_50:
     }
 
     [(NRRemoteObject *)self service:self->_service linkedDevicesChanged:v44];
-    if ([v11 isConnected])
+    if ([defaultPairedDevice isConnected])
     {
-      v71 = v11;
+      v71 = defaultPairedDevice;
       v45 = [NSArray arrayWithObjects:&v71 count:1];
     }
 
@@ -2213,32 +2213,32 @@ LABEL_50:
   }
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  if (self->_service == a3)
+  if (self->_service == service)
   {
-    v7 = a4;
-    v8 = [a3 nr_mineTinkerDevices];
-    v9 = [(NRRemoteObject *)self _areAccountsAndDevicesPresent:v7 andDevices:v8];
+    changedCopy = changed;
+    nr_mineTinkerDevices = [service nr_mineTinkerDevices];
+    v9 = [(NRRemoteObject *)self _areAccountsAndDevicesPresent:changedCopy andDevices:nr_mineTinkerDevices];
 
     [(NRRemoteObject *)self _fireIDSAvailableDelegateIfNeededWithIDSDevice:v9];
   }
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v5 = a3;
-  v6 = [(IDSService *)v5 nr_mineTinkerDevices];
-  if (self->_service == v5)
+  serviceCopy = service;
+  nr_mineTinkerDevices = [(IDSService *)serviceCopy nr_mineTinkerDevices];
+  if (self->_service == serviceCopy)
   {
-    v23 = self;
-    v24 = v5;
+    selfCopy = self;
+    v24 = serviceCopy;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v22 = v6;
-    obj = v6;
+    v22 = nr_mineTinkerDevices;
+    obj = nr_mineTinkerDevices;
     v34 = [obj countByEnumeratingWithState:&v35 objects:v65 count:16];
     if (v34)
     {
@@ -2261,15 +2261,15 @@ LABEL_50:
             v12 = nr_daemon_log();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
             {
-              v32 = [v9 nsuuid];
-              v13 = [v32 UUIDString];
-              v14 = [v9 uniqueIDOverride];
-              v31 = [v9 service];
-              v30 = [v9 name];
-              v29 = [v9 productBuildVersion];
-              v28 = [v9 minCompatibilityVersion];
-              v27 = [v9 maxCompatibilityVersion];
-              v26 = [v9 pairingProtocolVersion];
+              nsuuid = [v9 nsuuid];
+              uUIDString = [nsuuid UUIDString];
+              uniqueIDOverride = [v9 uniqueIDOverride];
+              service = [v9 service];
+              name = [v9 name];
+              productBuildVersion = [v9 productBuildVersion];
+              minCompatibilityVersion = [v9 minCompatibilityVersion];
+              maxCompatibilityVersion = [v9 maxCompatibilityVersion];
+              pairingProtocolVersion = [v9 pairingProtocolVersion];
               if ([v9 isDefaultPairedDevice])
               {
                 v15 = @"YES";
@@ -2301,9 +2301,9 @@ LABEL_50:
                 v17 = @"NO";
               }
 
-              v18 = [v9 isConnected];
+              isConnected = [v9 isConnected];
               *buf = 138546434;
-              if (v18)
+              if (isConnected)
               {
                 v19 = @"YES";
               }
@@ -2313,23 +2313,23 @@ LABEL_50:
                 v19 = @"NO";
               }
 
-              v40 = v13;
+              v40 = uUIDString;
               v41 = 2114;
-              v42 = v14;
+              v42 = uniqueIDOverride;
               v43 = 2048;
               v44 = v9;
               v45 = 2114;
-              v46 = v31;
+              v46 = service;
               v47 = 2114;
-              v48 = v30;
+              v48 = name;
               v49 = 2114;
-              v50 = v29;
+              v50 = productBuildVersion;
               v51 = 2048;
-              v52 = v28;
+              v52 = minCompatibilityVersion;
               v53 = 2048;
-              v54 = v27;
+              v54 = maxCompatibilityVersion;
               v55 = 2048;
-              v56 = v26;
+              v56 = pairingProtocolVersion;
               v57 = 2112;
               v58 = v25;
               v59 = 2112;
@@ -2349,44 +2349,44 @@ LABEL_50:
       while (v34);
     }
 
-    v5 = v24;
-    v20 = [(IDSService *)v24 accounts];
-    v21 = [(NRRemoteObject *)v23 _areAccountsAndDevicesPresent:v20 andDevices:obj];
+    serviceCopy = v24;
+    accounts = [(IDSService *)v24 accounts];
+    v21 = [(NRRemoteObject *)selfCopy _areAccountsAndDevicesPresent:accounts andDevices:obj];
 
-    [(NRRemoteObject *)v23 _fireIDSAvailableDelegateIfNeededWithIDSDevice:v21];
-    [(NRRemoteObject *)v23 _updateIDSDeviceUniqueIdentifiers];
+    [(NRRemoteObject *)selfCopy _fireIDSAvailableDelegateIfNeededWithIDSDevice:v21];
+    [(NRRemoteObject *)selfCopy _updateIDSDeviceUniqueIdentifiers];
 
-    v6 = v22;
+    nr_mineTinkerDevices = v22;
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v10 = a5;
-  v11 = a7;
-  v12 = [(NSMutableDictionary *)self->_idsSendIDToCompletionHandler objectForKeyedSubscript:v10];
+  identifierCopy = identifier;
+  errorCopy = error;
+  v12 = [(NSMutableDictionary *)self->_idsSendIDToCompletionHandler objectForKeyedSubscript:identifierCopy];
   if (v12)
   {
-    [(NSMutableDictionary *)self->_idsSendIDToCompletionHandler removeObjectForKey:v10];
+    [(NSMutableDictionary *)self->_idsSendIDToCompletionHandler removeObjectForKey:identifierCopy];
     clientQueue = self->_clientQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000C99BC;
     block[3] = &unk_100175688;
     v33 = v12;
-    v32 = v11;
+    v32 = errorCopy;
     dispatch_async(clientQueue, block);
   }
 
-  if (v11 || !a6)
+  if (errorCopy || !success)
   {
     v17 = IDSErrorDomain;
-    v18 = [v11 domain];
-    if ([v17 isEqual:v18])
+    domain = [errorCopy domain];
+    if ([v17 isEqual:domain])
     {
-      v19 = [v11 code];
+      code = [errorCopy code];
 
-      if (v19 == 24)
+      if (code == 24)
       {
         v20 = nr_daemon_log();
         v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
@@ -2400,7 +2400,7 @@ LABEL_50:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v35 = v10;
+          v35 = identifierCopy;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "IDS message %{public}@ was replaced by another message", buf, 0xCu);
         }
 
@@ -2423,13 +2423,13 @@ LABEL_50:
     v22 = nr_daemon_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      sub_100103320(v11);
+      sub_100103320(errorCopy);
     }
 
 LABEL_17:
 
 LABEL_18:
-    v25 = [(NSMutableDictionary *)self->_idsSendIDToResponseHandler objectForKeyedSubscript:v10];
+    v25 = [(NSMutableDictionary *)self->_idsSendIDToResponseHandler objectForKeyedSubscript:identifierCopy];
     v16 = v25;
     if (v25)
     {
@@ -2459,7 +2459,7 @@ LABEL_18:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v35 = v10;
+      v35 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "IDS success sending request: %{public}@", buf, 0xCu);
     }
 
@@ -2467,11 +2467,11 @@ LABEL_20:
   }
 }
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  if (self->_service == a3)
+  deviceCopy = device;
+  blockCopy = block;
+  if (self->_service == service)
   {
     v10 = nr_daemon_log();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -2486,9 +2486,9 @@ LABEL_20:
       }
     }
 
-    v25 = v9;
-    v9[2](v9);
-    v13 = [(NRRemoteObject *)self delegate];
+    v25 = blockCopy;
+    blockCopy[2](blockCopy);
+    delegate = [(NRRemoteObject *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
@@ -2499,17 +2499,17 @@ LABEL_20:
       block[2] = sub_1000C9D18;
       block[3] = &unk_100175598;
       block[4] = self;
-      v35 = v8;
+      v35 = deviceCopy;
       dispatch_async(clientQueue, block);
     }
 
-    v16 = v8;
+    v16 = deviceCopy;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v17 = [(NRRemoteObject *)self connectivityObservers];
-    v18 = [v17 countByEnumeratingWithState:&v30 objects:v37 count:16];
+    connectivityObservers = [(NRRemoteObject *)self connectivityObservers];
+    v18 = [connectivityObservers countByEnumeratingWithState:&v30 objects:v37 count:16];
     if (v18)
     {
       v19 = v18;
@@ -2521,7 +2521,7 @@ LABEL_20:
         {
           if (*v31 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(connectivityObservers);
           }
 
           v22 = *(*(&v30 + 1) + 8 * v21);
@@ -2542,7 +2542,7 @@ LABEL_20:
         }
 
         while (v19 != v21);
-        v19 = [v17 countByEnumeratingWithState:&v30 objects:v37 count:16];
+        v19 = [connectivityObservers countByEnumeratingWithState:&v30 objects:v37 count:16];
       }
 
       while (v19);
@@ -2554,21 +2554,21 @@ LABEL_20:
     v26[2] = sub_1000C9E04;
     v26[3] = &unk_100175598;
     v26[4] = self;
-    v8 = v16;
+    deviceCopy = v16;
     v27 = v16;
     dispatch_async(idsQueue, v26);
 
-    v9 = v25;
+    blockCopy = v25;
   }
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
-  v5 = a3;
-  v6 = [v5 accounts];
-  v7 = [v5 nr_mineTinkerDevices];
+  serviceCopy = service;
+  accounts = [serviceCopy accounts];
+  nr_mineTinkerDevices = [serviceCopy nr_mineTinkerDevices];
 
-  v8 = [(NRRemoteObject *)self _areAccountsAndDevicesPresent:v6 andDevices:v7];
+  v8 = [(NRRemoteObject *)self _areAccountsAndDevicesPresent:accounts andDevices:nr_mineTinkerDevices];
 
   [(NRRemoteObject *)self setDefaultPairedDevice:v8];
 }

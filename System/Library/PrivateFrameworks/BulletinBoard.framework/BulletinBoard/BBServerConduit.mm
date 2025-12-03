@@ -5,8 +5,8 @@
 - (BBServerConduit)init;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sendMessageToDataProviderSectionID:(id)a3 name:(id)a4 userInfo:(id)a5;
-- (void)weeAppWithBundleID:(id)a3 getHiddenFromUser:(id)a4;
+- (void)sendMessageToDataProviderSectionID:(id)d name:(id)name userInfo:(id)info;
+- (void)weeAppWithBundleID:(id)d getHiddenFromUser:(id)user;
 @end
 
 @implementation BBServerConduit
@@ -59,7 +59,7 @@ uint64_t __34__BBServerConduit_clientInterface__block_invoke()
   block[1] = 3221225472;
   block[2] = __32__BBServerConduit_sharedConduit__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedConduit_onceToken != -1)
   {
     dispatch_once(&sharedConduit_onceToken, block);
@@ -89,13 +89,13 @@ uint64_t __32__BBServerConduit_sharedConduit__block_invoke(uint64_t a1)
     v2->_connection = v3;
 
     v5 = v2->_connection;
-    v6 = [objc_opt_class() clientInterface];
-    [(NSXPCConnection *)v5 setExportedInterface:v6];
+    clientInterface = [objc_opt_class() clientInterface];
+    [(NSXPCConnection *)v5 setExportedInterface:clientInterface];
 
     [(NSXPCConnection *)v2->_connection setExportedObject:v2];
     v7 = v2->_connection;
-    v8 = [objc_opt_class() serverInterface];
-    [(NSXPCConnection *)v7 setRemoteObjectInterface:v8];
+    serverInterface = [objc_opt_class() serverInterface];
+    [(NSXPCConnection *)v7 setRemoteObjectInterface:serverInterface];
 
     [(NSXPCConnection *)v2->_connection setInterruptionHandler:&__block_literal_global_59];
     [(NSXPCConnection *)v2->_connection setInvalidationHandler:&__block_literal_global_62];
@@ -140,29 +140,29 @@ void __23__BBServerConduit_init__block_invoke_60()
   self->_connection = 0;
 }
 
-- (void)sendMessageToDataProviderSectionID:(id)a3 name:(id)a4 userInfo:(id)a5
+- (void)sendMessageToDataProviderSectionID:(id)d name:(id)name userInfo:(id)info
 {
   connection = self->_connection;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v11 sendMessageToDataProviderSectionID:v10 name:v9 userInfo:v8];
+  infoCopy = info;
+  nameCopy = name;
+  dCopy = d;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy sendMessageToDataProviderSectionID:dCopy name:nameCopy userInfo:infoCopy];
 }
 
-- (void)weeAppWithBundleID:(id)a3 getHiddenFromUser:(id)a4
+- (void)weeAppWithBundleID:(id)d getHiddenFromUser:(id)user
 {
-  v6 = a4;
+  userCopy = user;
   connection = self->_connection;
-  v8 = a3;
-  v9 = [(NSXPCConnection *)connection remoteObjectProxy];
+  dCopy = d;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__BBServerConduit_weeAppWithBundleID_getHiddenFromUser___block_invoke;
   v11[3] = &unk_278D2BB08;
-  v12 = v6;
-  v10 = v6;
-  [v9 weeAppWithBundleID:v8 getHiddenFromUser:v11];
+  v12 = userCopy;
+  v10 = userCopy;
+  [remoteObjectProxy weeAppWithBundleID:dCopy getHiddenFromUser:v11];
 }
 
 void __56__BBServerConduit_weeAppWithBundleID_getHiddenFromUser___block_invoke(uint64_t a1, void *a2, void *a3)

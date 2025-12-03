@@ -1,6 +1,6 @@
 @interface MPModelLibraryAddToPlaylistChangeRequestOperation
 - (BOOL)_isCloudLibraryEnabled;
-- (void)_updateCloudLibraryForPlaylist:(id)a3 withAddedItems:(id)a4 completion:(id)a5;
+- (void)_updateCloudLibraryForPlaylist:(id)playlist withAddedItems:(id)items completion:(id)completion;
 - (void)execute;
 @end
 
@@ -8,70 +8,70 @@
 
 - (BOOL)_isCloudLibraryEnabled
 {
-  v2 = [(MPAsyncOperation *)self userIdentity];
-  v3 = [MPCloudController controllerWithUserIdentity:v2];
-  v4 = [v3 isCloudLibraryEnabled];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v3 = [MPCloudController controllerWithUserIdentity:userIdentity];
+  isCloudLibraryEnabled = [v3 isCloudLibraryEnabled];
 
-  return v4;
+  return isCloudLibraryEnabled;
 }
 
-- (void)_updateCloudLibraryForPlaylist:(id)a3 withAddedItems:(id)a4 completion:(id)a5
+- (void)_updateCloudLibraryForPlaylist:(id)playlist withAddedItems:(id)items completion:(id)completion
 {
-  v54 = a3;
-  v9 = a4;
-  v53 = a5;
-  v10 = [(MPModelLibraryAddToPlaylistChangeRequest *)self->_request representativeModelObject];
-  v11 = [v10 identifiers];
-  v12 = [v11 library];
-  v51 = [v12 persistentID];
+  playlistCopy = playlist;
+  itemsCopy = items;
+  completionCopy = completion;
+  representativeModelObject = [(MPModelLibraryAddToPlaylistChangeRequest *)self->_request representativeModelObject];
+  identifiers = [representativeModelObject identifiers];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
-  v13 = [v11 personalizedStore];
-  v55 = [v13 cloudID];
+  personalizedStore = [identifiers personalizedStore];
+  cloudID = [personalizedStore cloudID];
 
-  v14 = [v11 universalStore];
-  v15 = [v14 purchasedAdamID];
-  if (!v15)
+  universalStore = [identifiers universalStore];
+  purchasedAdamID = [universalStore purchasedAdamID];
+  if (!purchasedAdamID)
   {
-    v16 = [v11 universalStore];
-    v15 = [v16 adamID];
-    if (!v15)
+    universalStore2 = [identifiers universalStore];
+    purchasedAdamID = [universalStore2 adamID];
+    if (!purchasedAdamID)
     {
-      [v11 universalStore];
-      v17 = v11;
+      [identifiers universalStore];
+      v17 = identifiers;
       v19 = v18 = a2;
-      v15 = [v19 subscriptionAdamID];
+      purchasedAdamID = [v19 subscriptionAdamID];
 
       a2 = v18;
-      v11 = v17;
+      identifiers = v17;
     }
   }
 
   objc_opt_class();
-  v52 = v10;
+  v52 = representativeModelObject;
   LOBYTE(v20) = objc_opt_isKindOfClass();
-  if ([v9 count] == 1)
+  if ([itemsCopy count] == 1)
   {
-    v50 = v9;
-    v21 = v11;
+    v50 = itemsCopy;
+    v21 = identifiers;
     v22 = a2;
-    v23 = [v9 firstObject];
-    v24 = [v23 persistentID];
-    v25 = [v23 valueForProperty:@"subscriptionStoreItemAdamID"];
-    v26 = [v25 unsignedLongLongValue];
+    firstObject = [itemsCopy firstObject];
+    persistentID2 = [firstObject persistentID];
+    v25 = [firstObject valueForProperty:@"subscriptionStoreItemAdamID"];
+    unsignedLongLongValue = [v25 unsignedLongLongValue];
 
-    if (!v26)
+    if (!unsignedLongLongValue)
     {
-      v27 = [v23 valueForProperty:@"storeItemAdamID"];
-      v26 = [v27 unsignedLongLongValue];
+      v27 = [firstObject valueForProperty:@"storeItemAdamID"];
+      unsignedLongLongValue = [v27 unsignedLongLongValue];
     }
 
-    v28 = [v23 valueForProperty:@"storeSagaID"];
-    v29 = [v28 unsignedLongLongValue];
+    v28 = [firstObject valueForProperty:@"storeSagaID"];
+    unsignedLongLongValue2 = [v28 unsignedLongLongValue];
 
-    v30 = v51;
-    if (v24)
+    v30 = persistentID;
+    if (persistentID2)
     {
-      v31 = v51 == 0;
+      v31 = persistentID == 0;
     }
 
     else
@@ -81,38 +81,38 @@
 
     if (v31)
     {
-      v30 = v24;
+      v30 = persistentID2;
     }
 
-    if (v55)
+    if (cloudID)
     {
       a2 = v22;
-      v11 = v21;
+      identifiers = v21;
     }
 
     else
     {
       a2 = v22;
-      v11 = v21;
-      if (v29)
+      identifiers = v21;
+      if (unsignedLongLongValue2)
       {
-        if ([v23 mediaType])
+        if ([firstObject mediaType])
         {
           LOBYTE(v20) = 1;
         }
 
         else
         {
-          v20 = ([v23 mediaType] >> 11) & 1;
+          v20 = ([firstObject mediaType] >> 11) & 1;
         }
 
-        v55 = v29;
+        cloudID = unsignedLongLongValue2;
       }
     }
 
-    if (v26)
+    if (unsignedLongLongValue)
     {
-      v32 = v15 == 0;
+      v32 = purchasedAdamID == 0;
     }
 
     else
@@ -122,20 +122,20 @@
 
     if (v32)
     {
-      v15 = v26;
+      purchasedAdamID = unsignedLongLongValue;
     }
 
-    v9 = v50;
+    itemsCopy = v50;
   }
 
   else
   {
-    v30 = v51;
+    v30 = persistentID;
   }
 
   if (self->_isCollaborativePlaylist)
   {
-    v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+    v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
     v64[0] = MEMORY[0x1E69E9820];
     v64[1] = 3221225472;
     v64[2] = __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibraryForPlaylist_withAddedItems_completion___block_invoke;
@@ -144,75 +144,75 @@
     v66 = a2;
     v64[4] = self;
     v34 = v33;
-    [v9 enumerateObjectsUsingBlock:v64];
-    v35 = [(MPAsyncOperation *)self userIdentity];
-    v36 = [MPCloudController controllerWithUserIdentity:v35];
-    v37 = v54;
-    v38 = [v54 persistentID];
+    [itemsCopy enumerateObjectsUsingBlock:v64];
+    userIdentity = [(MPAsyncOperation *)self userIdentity];
+    v36 = [MPCloudController controllerWithUserIdentity:userIdentity];
+    v37 = playlistCopy;
+    persistentID3 = [playlistCopy persistentID];
     v62[0] = MEMORY[0x1E69E9820];
     v62[1] = 3221225472;
     v62[2] = __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibraryForPlaylist_withAddedItems_completion___block_invoke_38;
     v62[3] = &unk_1E76816D0;
-    v39 = v53;
-    v63 = v53;
-    [v36 editCollaborationWithPersistentID:v38 properties:MEMORY[0x1E695E0F8] trackEdits:v34 completion:v62];
+    v39 = completionCopy;
+    v63 = completionCopy;
+    [v36 editCollaborationWithPersistentID:persistentID3 properties:MEMORY[0x1E695E0F8] trackEdits:v34 completion:v62];
   }
 
-  else if (((v55 != 0) & v20) == 1)
+  else if (((cloudID != 0) & v20) == 1)
   {
-    v40 = [(MPAsyncOperation *)self userIdentity];
-    v41 = [MPCloudController controllerWithUserIdentity:v40];
-    v37 = v54;
-    v42 = [v54 persistentID];
+    userIdentity2 = [(MPAsyncOperation *)self userIdentity];
+    v41 = [MPCloudController controllerWithUserIdentity:userIdentity2];
+    v37 = playlistCopy;
+    persistentID4 = [playlistCopy persistentID];
     v60[0] = MEMORY[0x1E69E9820];
     v60[1] = 3221225472;
     v60[2] = __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibraryForPlaylist_withAddedItems_completion___block_invoke_39;
     v60[3] = &unk_1E76816D0;
-    v39 = v53;
-    v61 = v53;
-    [v41 addItemWithSagaID:v55 toPlaylistWithPersistentID:v42 completionHandler:v60];
+    v39 = completionCopy;
+    v61 = completionCopy;
+    [v41 addItemWithSagaID:cloudID toPlaylistWithPersistentID:persistentID4 completionHandler:v60];
 
     v34 = v61;
   }
 
   else
   {
-    v43 = v9;
-    v44 = [(MPAsyncOperation *)self userIdentity];
-    v45 = [MPCloudController controllerWithUserIdentity:v44];
-    if (!v15 || v30)
+    v43 = itemsCopy;
+    userIdentity3 = [(MPAsyncOperation *)self userIdentity];
+    v45 = [MPCloudController controllerWithUserIdentity:userIdentity3];
+    if (!purchasedAdamID || v30)
     {
-      v37 = v54;
-      v48 = [MPCloudControllerItemIDList cloudItemIDListForPlaylist:v54];
-      v49 = [v54 persistentID];
+      v37 = playlistCopy;
+      v48 = [MPCloudControllerItemIDList cloudItemIDListForPlaylist:playlistCopy];
+      persistentID5 = [playlistCopy persistentID];
       v56[0] = MEMORY[0x1E69E9820];
       v56[1] = 3221225472;
       v56[2] = __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibraryForPlaylist_withAddedItems_completion___block_invoke_42;
       v56[3] = &unk_1E76816D0;
-      v39 = v53;
-      v57 = v53;
-      [v45 setPlaylistProperties:0 trackList:v48 forPlaylistWithPersistentID:v49 completionHandler:v56];
+      v39 = completionCopy;
+      v57 = completionCopy;
+      [v45 setPlaylistProperties:0 trackList:v48 forPlaylistWithPersistentID:persistentID5 completionHandler:v56];
 
       v34 = v57;
     }
 
     else
     {
-      v46 = [(MPModelLibraryAddToPlaylistChangeRequest *)self->_request referralObject];
-      v37 = v54;
-      v47 = [v54 persistentID];
+      referralObject = [(MPModelLibraryAddToPlaylistChangeRequest *)self->_request referralObject];
+      v37 = playlistCopy;
+      persistentID6 = [playlistCopy persistentID];
       v58[0] = MEMORY[0x1E69E9820];
       v58[1] = 3221225472;
       v58[2] = __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibraryForPlaylist_withAddedItems_completion___block_invoke_40;
       v58[3] = &unk_1E76816D0;
-      v39 = v53;
-      v59 = v53;
-      [v45 addStoreItemWithAdamID:v15 referralObject:v46 toPlaylistWithPersistentID:v47 completionHandler:v58];
+      v39 = completionCopy;
+      v59 = completionCopy;
+      [v45 addStoreItemWithAdamID:purchasedAdamID referralObject:referralObject toPlaylistWithPersistentID:persistentID6 completionHandler:v58];
 
       v34 = v59;
     }
 
-    v9 = v43;
+    itemsCopy = v43;
   }
 }
 
@@ -366,24 +366,24 @@ void __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibrar
 - (void)execute
 {
   v70 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = [v3 qualityOfService];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  qualityOfService = [currentThread qualityOfService];
 
-  v5 = [(MPModelLibraryAddToPlaylistChangeRequestOperation *)self request];
-  v6 = [(MPAsyncOperation *)self userIdentity];
-  v7 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v6];
+  request = [(MPModelLibraryAddToPlaylistChangeRequestOperation *)self request];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v7 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
 
-  v8 = [v5 playlist];
-  v9 = [v8 identifiers];
-  v10 = [v9 library];
-  v11 = [v10 persistentID];
+  playlist = [request playlist];
+  identifiers = [playlist identifiers];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
-  if (v11)
+  if (persistentID)
   {
-    v12 = [v7 playlistWithPersistentID:v11];
-    if ([v8 hasLoadedValueForKey:@"MPModelPropertyPlaylistIsCollaborative"])
+    v12 = [v7 playlistWithPersistentID:persistentID];
+    if ([playlist hasLoadedValueForKey:@"MPModelPropertyPlaylistIsCollaborative"])
     {
-      self->_isCollaborativePlaylist = [v8 isCollaborative];
+      self->_isCollaborativePlaylist = [playlist isCollaborative];
     }
 
     else
@@ -392,9 +392,9 @@ void __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibrar
       self->_isCollaborativePlaylist = [v13 BOOLValue];
     }
 
-    if ([v8 hasLoadedValueForKey:@"MPModelPropertyPlaylistIsOwner"])
+    if ([playlist hasLoadedValueForKey:@"MPModelPropertyPlaylistIsOwner"])
     {
-      self->_isOwner = [v8 isOwner];
+      self->_isOwner = [playlist isOwner];
     }
 
     else
@@ -403,9 +403,9 @@ void __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibrar
       self->_isOwner = [v14 BOOLValue];
     }
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     itemEntryProperties = self->_itemEntryProperties;
-    self->_itemEntryProperties = v15;
+    self->_itemEntryProperties = dictionary;
   }
 
   else
@@ -416,27 +416,27 @@ void __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibrar
   v17 = os_log_create("com.apple.amp.mediaplayer", "Default_Oversize");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v5 songResults];
-    v19 = [v18 totalItemCount];
+    songResults = [request songResults];
+    totalItemCount = [songResults totalItemCount];
     isCollaborativePlaylist = self->_isCollaborativePlaylist;
     *buf = 138544386;
-    v61 = self;
+    selfCopy3 = self;
     v62 = 2048;
-    v63 = v19;
+    v63 = totalItemCount;
     v64 = 2114;
-    v65 = v8;
+    v65 = playlist;
     v66 = 1024;
     v67 = isCollaborativePlaylist;
     v68 = 1024;
-    v69 = v4;
+    v69 = qualityOfService;
     _os_log_impl(&dword_1A238D000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ Adding %ld items to playlist %{public}@. isCollaborative = %{BOOL}u, qualityOfService=%d", buf, 0x2Cu);
   }
 
   if (v12)
   {
     v40 = v12;
-    v38 = v4;
-    v21 = [v5 songResults];
+    v38 = qualityOfService;
+    songResults2 = [request songResults];
     v22 = objc_alloc_init(MPMutableSectionedCollection);
     [(MPMutableSectionedCollection *)v22 appendSection:&stru_1F149ECA8];
     v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -446,15 +446,15 @@ void __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibrar
     v54[3] = &unk_1E767BEC8;
     v24 = v7;
     v55 = v24;
-    v56 = self;
+    selfCopy2 = self;
     v25 = v23;
     v57 = v25;
-    v26 = v21;
+    v26 = songResults2;
     v58 = v26;
     v27 = v22;
     v59 = v27;
     [v26 enumerateItemIdentifiersUsingBlock:v54];
-    v41 = v5;
+    v41 = request;
     v39 = v7;
     if ([(MPSectionedCollection *)v27 totalItemCount]< 1)
     {
@@ -478,11 +478,11 @@ void __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibrar
       v28 = os_log_create("com.apple.amp.mediaplayer", "Default");
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [(MPSectionedCollection *)v27 totalItemCount];
+        totalItemCount2 = [(MPSectionedCollection *)v27 totalItemCount];
         *buf = 138543618;
-        v61 = self;
+        selfCopy3 = self;
         v62 = 2048;
-        v63 = v29;
+        v63 = totalItemCount2;
         _os_log_impl(&dword_1A238D000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ Importing %ld songs not in the library", buf, 0x16u);
       }
 
@@ -493,7 +493,7 @@ void __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibrar
       aBlock[4] = self;
       v53 = v38;
       v30 = &v48;
-      v31 = v5;
+      v31 = request;
       v48 = v31;
       v32 = &v49;
       v49 = v27;
@@ -501,8 +501,8 @@ void __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibrar
       v51 = v24;
       v52 = v40;
       v33 = _Block_copy(aBlock);
-      v34 = [v31 storeImportAllowedHandler];
-      if (v34)
+      storeImportAllowedHandler = [v31 storeImportAllowedHandler];
+      if (storeImportAllowedHandler)
       {
         v45[0] = MEMORY[0x1E69E9820];
         v45[1] = 3221225472;
@@ -510,7 +510,7 @@ void __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibrar
         v45[3] = &unk_1E767AC48;
         v45[4] = self;
         v46 = v33;
-        (v34)[2](v34, v45);
+        (storeImportAllowedHandler)[2](storeImportAllowedHandler, v45);
       }
 
       else
@@ -521,7 +521,7 @@ void __110__MPModelLibraryAddToPlaylistChangeRequestOperation__updateCloudLibrar
       v12 = v40;
     }
 
-    v5 = v41;
+    request = v41;
     v7 = v39;
   }
 

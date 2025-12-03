@@ -4,39 +4,39 @@
 + (id)localizedDefaultReminderListTitle;
 + (id)localizedScheduledRemindersCalendarTitle;
 + (id)localizedSiriSuggestedEventsCalendarTitle;
-+ (id)localizedTitleForTitle:(id)a3 isSuggestedEventCalendar:(BOOL)a4 isBirthdayCalendar:(BOOL)a5 allowsReminders:(BOOL)a6 isIntegrationCalendar:(BOOL)a7;
++ (id)localizedTitleForTitle:(id)title isSuggestedEventCalendar:(BOOL)calendar isBirthdayCalendar:(BOOL)birthdayCalendar allowsReminders:(BOOL)reminders isIntegrationCalendar:(BOOL)integrationCalendar;
 + (id)localizedVirtualCalendarTitle;
 @end
 
 @implementation CalLocalizedCalendarTitles
 
-+ (id)localizedTitleForTitle:(id)a3 isSuggestedEventCalendar:(BOOL)a4 isBirthdayCalendar:(BOOL)a5 allowsReminders:(BOOL)a6 isIntegrationCalendar:(BOOL)a7
++ (id)localizedTitleForTitle:(id)title isSuggestedEventCalendar:(BOOL)calendar isBirthdayCalendar:(BOOL)birthdayCalendar allowsReminders:(BOOL)reminders isIntegrationCalendar:(BOOL)integrationCalendar
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
-  if ([v12 isEqualToString:@"DEFAULT_CALENDAR_NAME"])
+  integrationCalendarCopy = integrationCalendar;
+  remindersCopy = reminders;
+  birthdayCalendarCopy = birthdayCalendar;
+  calendarCopy = calendar;
+  titleCopy = title;
+  if ([titleCopy isEqualToString:@"DEFAULT_CALENDAR_NAME"])
   {
-    v13 = [a1 localizedDefaultCalendarTitle];
+    localizedDefaultCalendarTitle = [self localizedDefaultCalendarTitle];
     goto LABEL_17;
   }
 
-  if ([v12 isEqualToString:@"DEFAULT_TASK_CALENDAR_NAME"])
+  if ([titleCopy isEqualToString:@"DEFAULT_TASK_CALENDAR_NAME"])
   {
     goto LABEL_4;
   }
 
-  if ([v12 isEqualToString:@"VIRTUAL_APP_CALENDAR_NAME"])
+  if ([titleCopy isEqualToString:@"VIRTUAL_APP_CALENDAR_NAME"])
   {
-    v13 = [a1 localizedVirtualCalendarTitle];
+    localizedDefaultCalendarTitle = [self localizedVirtualCalendarTitle];
     goto LABEL_17;
   }
 
-  if (v7)
+  if (integrationCalendarCopy)
   {
-    v13 = [a1 localizedScheduledRemindersCalendarTitle];
+    localizedDefaultCalendarTitle = [self localizedScheduledRemindersCalendarTitle];
     goto LABEL_17;
   }
 
@@ -45,32 +45,32 @@
     goto LABEL_22;
   }
 
-  if (v10)
+  if (calendarCopy)
   {
-    v13 = [a1 localizedSiriSuggestedEventsCalendarTitle];
+    localizedDefaultCalendarTitle = [self localizedSiriSuggestedEventsCalendarTitle];
     goto LABEL_17;
   }
 
-  if (v9)
+  if (birthdayCalendarCopy)
   {
-    v13 = [a1 localizedBirthdayCalendarTitle];
+    localizedDefaultCalendarTitle = [self localizedBirthdayCalendarTitle];
   }
 
   else
   {
 LABEL_22:
-    if (v8 && [v12 isEqualToString:@"Reminders"])
+    if (remindersCopy && [titleCopy isEqualToString:@"Reminders"])
     {
 LABEL_4:
-      v13 = [a1 localizedDefaultReminderListTitle];
+      localizedDefaultCalendarTitle = [self localizedDefaultReminderListTitle];
       goto LABEL_17;
     }
 
-    v13 = v12;
+    localizedDefaultCalendarTitle = titleCopy;
   }
 
 LABEL_17:
-  v14 = v13;
+  v14 = localizedDefaultCalendarTitle;
 
   return v14;
 }

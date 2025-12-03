@@ -1,28 +1,28 @@
 @interface PUAvalancheReviewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_updateCell:(id)a3 forItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_updateCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)_updateMainView;
 @end
 
 @implementation PUAvalancheReviewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUAvalancheReviewController" hasInstanceMethod:@"_avalancheBeingReviewed" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUAvalancheReviewController" hasInstanceMethod:@"_updateCell: forItemAtIndexPath:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"PUAvalancheReviewController" hasInstanceMethod:@"_updateMainView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUAvalancheReviewController" hasInstanceMethod:@"_collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLAvalanche" hasInstanceMethod:@"assets" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUAvalancheReviewController" hasInstanceMethod:@"_avalancheBeingReviewed" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUAvalancheReviewController" hasInstanceMethod:@"_updateCell: forItemAtIndexPath:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"PUAvalancheReviewController" hasInstanceMethod:@"_updateMainView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUAvalancheReviewController" hasInstanceMethod:@"_collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLAvalanche" hasInstanceMethod:@"assets" withFullSignature:{"@", 0}];
 }
 
-- (void)_updateCell:(id)a3 forItemAtIndexPath:(id)a4
+- (void)_updateCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = PUAvalancheReviewControllerAccessibility;
-  [(PUAvalancheReviewControllerAccessibility *)&v18 _updateCell:v6 forItemAtIndexPath:v7];
+  [(PUAvalancheReviewControllerAccessibility *)&v18 _updateCell:cellCopy forItemAtIndexPath:pathCopy];
   v8 = [(PUAvalancheReviewControllerAccessibility *)self safeValueForKey:@"_avalancheBeingReviewed"];
   v12 = 0;
   v13 = &v12;
@@ -31,12 +31,12 @@
   v16 = __Block_byref_object_dispose__1;
   v17 = 0;
   v10 = v8;
-  v11 = v7;
+  v11 = pathCopy;
   AXPerformSafeBlock();
   v9 = v13[5];
 
   _Block_object_dispose(&v12, 8);
-  [v6 _accessibilitySetRetainedValue:v9 forKey:@"AXAsset"];
+  [cellCopy _accessibilitySetRetainedValue:v9 forKey:@"AXAsset"];
 }
 
 void __75__PUAvalancheReviewControllerAccessibility__updateCell_forItemAtIndexPath___block_invoke(uint64_t a1)

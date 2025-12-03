@@ -1,20 +1,20 @@
 @interface WFQuickLookActionUIKitUserInterface
-- (BOOL)previewController:(id)a3 canShareItem:(id)a4;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)previewControllerDidDismiss:(id)a3;
-- (void)showWithItems:(id)a3 fullScreen:(BOOL)a4 completionHandler:(id)a5;
+- (BOOL)previewController:(id)controller canShareItem:(id)item;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithError:(id)error;
+- (void)previewControllerDidDismiss:(id)dismiss;
+- (void)showWithItems:(id)items fullScreen:(BOOL)screen completionHandler:(id)handler;
 @end
 
 @implementation WFQuickLookActionUIKitUserInterface
 
-- (BOOL)previewController:(id)a3 canShareItem:(id)a4
+- (BOOL)previewController:(id)controller canShareItem:(id)item
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  itemCopy = item;
+  controllerCopy = controller;
   v7 = objc_opt_class();
-  v8 = v5;
+  v8 = itemCopy;
   if (v8 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v10 = getWFGeneralLogObject();
@@ -40,11 +40,11 @@
     v9 = v8;
   }
 
-  v12 = [v9 item];
-  v13 = [v12 attributionSet];
-  v14 = [v6 isContentManaged];
+  item = [v9 item];
+  attributionSet = [item attributionSet];
+  isContentManaged = [controllerCopy isContentManaged];
 
-  if (v14)
+  if (isContentManaged)
   {
     v15 = 2;
   }
@@ -54,87 +54,87 @@
     v15 = 1;
   }
 
-  v16 = [v13 isAllowedToBeSentToDestinationWithManagedLevel:{v15, *v19, *&v19[16], v20, v21}];
+  v16 = [attributionSet isAllowedToBeSentToDestinationWithManagedLevel:{v15, *v19, *&v19[16], v20, v21}];
 
   v17 = *MEMORY[0x277D85DE8];
   return v16;
 }
 
-- (void)previewControllerDidDismiss:(id)a3
+- (void)previewControllerDidDismiss:(id)dismiss
 {
-  v10 = a3;
-  v4 = [(WFActionUserInterface *)self viewControllerForPresenting];
-  v5 = [v4 parentViewController];
+  dismissCopy = dismiss;
+  viewControllerForPresenting = [(WFActionUserInterface *)self viewControllerForPresenting];
+  parentViewController = [viewControllerForPresenting parentViewController];
 
-  if (v5)
+  if (parentViewController)
   {
     do
     {
-      v6 = [v4 parentViewController];
+      parentViewController2 = [viewControllerForPresenting parentViewController];
 
-      v7 = [v6 parentViewController];
+      v6ParentViewController = [parentViewController2 parentViewController];
 
-      v4 = v6;
+      viewControllerForPresenting = parentViewController2;
     }
 
-    while (v7);
+    while (v6ParentViewController);
   }
 
   else
   {
-    v6 = v4;
+    parentViewController2 = viewControllerForPresenting;
   }
 
-  v8 = [v6 view];
-  [v8 setAccessibilityElementsHidden:0];
+  view = [parentViewController2 view];
+  [view setAccessibilityElementsHidden:0];
 
-  [v10 setDataSource:0];
+  [dismissCopy setDataSource:0];
   [(WFQuickLookActionUIKitUserInterface *)self setDataSource:0];
   [(WFQuickLookActionUIKitUserInterface *)self setPreviewController:0];
-  v9 = [(WFQuickLookActionUIKitUserInterface *)self exitError];
-  [(WFQuickLookActionUIKitUserInterface *)self finishWithError:v9];
+  exitError = [(WFQuickLookActionUIKitUserInterface *)self exitError];
+  [(WFQuickLookActionUIKitUserInterface *)self finishWithError:exitError];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(WFQuickLookActionUIKitUserInterface *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(WFQuickLookActionUIKitUserInterface *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(WFQuickLookActionUIKitUserInterface *)self completionHandler];
-    (v5)[2](v5, v6);
+    completionHandler2 = [(WFQuickLookActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
   }
 
   [(WFQuickLookActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCA9B8] userCancelledError];
-  [(WFQuickLookActionUIKitUserInterface *)self setExitError:v5];
+  handlerCopy = handler;
+  userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
+  [(WFQuickLookActionUIKitUserInterface *)self setExitError:userCancelledError];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__WFQuickLookActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v8[3] = &unk_278C37170;
-  v9 = v4;
+  v9 = handlerCopy;
   v7.receiver = self;
   v7.super_class = WFQuickLookActionUIKitUserInterface;
-  v6 = v4;
+  v6 = handlerCopy;
   [(WFActionUserInterface *)&v7 cancelPresentationWithCompletionHandler:v8];
 }
 
-- (void)showWithItems:(id)a3 fullScreen:(BOOL)a4 completionHandler:(id)a5
+- (void)showWithItems:(id)items fullScreen:(BOOL)screen completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  itemsCopy = items;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (!itemsCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFQuickLookActionUIKitUserInterface.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"itemsData"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFQuickLookActionUIKitUserInterface.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"itemsData"}];
 
     if (v11)
     {
@@ -142,13 +142,13 @@
     }
 
 LABEL_5:
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFQuickLookActionUIKitUserInterface.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFQuickLookActionUIKitUserInterface.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -162,8 +162,8 @@ LABEL_3:
   v17[2] = __82__WFQuickLookActionUIKitUserInterface_showWithItems_fullScreen_completionHandler___block_invoke;
   v17[3] = &unk_278C36600;
   v17[4] = self;
-  v18 = a4;
-  v14 = [v12 wf_securelyUnarchiveObjectWithData:v9 allowedClasses:v13 completionHandler:v17];
+  screenCopy = screen;
+  v14 = [v12 wf_securelyUnarchiveObjectWithData:itemsCopy allowedClasses:v13 completionHandler:v17];
 }
 
 void __82__WFQuickLookActionUIKitUserInterface_showWithItems_fullScreen_completionHandler___block_invoke(uint64_t a1, void *a2)

@@ -1,45 +1,45 @@
 @interface WBSPasswordAuditor
-- (BOOL)_passwordIsReused:(id)a3 byOtherSavedAccount:(id)a4;
-- (BOOL)_savedAccountQualifiesForReuseAuditing:(id)a3;
+- (BOOL)_passwordIsReused:(id)reused byOtherSavedAccount:(id)account;
+- (BOOL)_savedAccountQualifiesForReuseAuditing:(id)auditing;
 - (BOOL)accountStoreHasDuplicatedPasswords;
-- (BOOL)savedAccount:(id)a3 reusesPasswordWithAccountInSavedAccounts:(id)a4;
-- (WBSPasswordAuditor)initWithSavedAccountStore:(id)a3 autoFillQuirksManager:(id)a4;
-- (id)duplicatePasswordsInPasswords:(id)a3;
-- (id)savedAccountsWithDuplicatedPassword:(id)a3;
+- (BOOL)savedAccount:(id)account reusesPasswordWithAccountInSavedAccounts:(id)accounts;
+- (WBSPasswordAuditor)initWithSavedAccountStore:(id)store autoFillQuirksManager:(id)manager;
+- (id)duplicatePasswordsInPasswords:(id)passwords;
+- (id)savedAccountsWithDuplicatedPassword:(id)password;
 @end
 
 @implementation WBSPasswordAuditor
 
-- (WBSPasswordAuditor)initWithSavedAccountStore:(id)a3 autoFillQuirksManager:(id)a4
+- (WBSPasswordAuditor)initWithSavedAccountStore:(id)store autoFillQuirksManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = WBSPasswordAuditor;
   v9 = [(WBSPasswordAuditor *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_savedAccountStore, a3);
-    objc_storeStrong(&v10->_autoFillQuirksManager, a4);
+    objc_storeStrong(&v9->_savedAccountStore, store);
+    objc_storeStrong(&v10->_autoFillQuirksManager, manager);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (BOOL)_savedAccountQualifiesForReuseAuditing:(id)a3
+- (BOOL)_savedAccountQualifiesForReuseAuditing:(id)auditing
 {
-  v4 = a3;
-  v5 = [v4 password];
-  v6 = [v4 highLevelDomain];
-  v7 = [v4 userIsNeverSaveMarker];
+  auditingCopy = auditing;
+  password = [auditingCopy password];
+  highLevelDomain = [auditingCopy highLevelDomain];
+  userIsNeverSaveMarker = [auditingCopy userIsNeverSaveMarker];
 
-  if ((v7 & 1) == 0 && [v6 length] && objc_msgSend(v5, "length") && !+[WBSPasswordGenerationManager passwordLooksLikePasswordManagerGeneratedPassword:](WBSPasswordGenerationManager, "passwordLooksLikePasswordManagerGeneratedPassword:", v5))
+  if ((userIsNeverSaveMarker & 1) == 0 && [highLevelDomain length] && objc_msgSend(password, "length") && !+[WBSPasswordGenerationManager passwordLooksLikePasswordManagerGeneratedPassword:](WBSPasswordGenerationManager, "passwordLooksLikePasswordManagerGeneratedPassword:", password))
   {
-    v10 = [(WBSAutoFillQuirksManager *)self->_autoFillQuirksManager passwordAuditingEligibleDomainsManager];
-    v11 = [v10 domainsIneligibleForPasswordAuditing];
-    v8 = [v11 containsObject:v6] ^ 1;
+    passwordAuditingEligibleDomainsManager = [(WBSAutoFillQuirksManager *)self->_autoFillQuirksManager passwordAuditingEligibleDomainsManager];
+    domainsIneligibleForPasswordAuditing = [passwordAuditingEligibleDomainsManager domainsIneligibleForPasswordAuditing];
+    v8 = [domainsIneligibleForPasswordAuditing containsObject:highLevelDomain] ^ 1;
   }
 
   else
@@ -50,25 +50,25 @@
   return v8;
 }
 
-- (BOOL)_passwordIsReused:(id)a3 byOtherSavedAccount:(id)a4
+- (BOOL)_passwordIsReused:(id)reused byOtherSavedAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqual:v7] & 1) == 0 && -[WBSPasswordAuditor _savedAccountQualifiesForReuseAuditing:](self, "_savedAccountQualifiesForReuseAuditing:", v6) && -[WBSPasswordAuditor _savedAccountQualifiesForReuseAuditing:](self, "_savedAccountQualifiesForReuseAuditing:", v7))
+  reusedCopy = reused;
+  accountCopy = account;
+  if (([reusedCopy isEqual:accountCopy] & 1) == 0 && -[WBSPasswordAuditor _savedAccountQualifiesForReuseAuditing:](self, "_savedAccountQualifiesForReuseAuditing:", reusedCopy) && -[WBSPasswordAuditor _savedAccountQualifiesForReuseAuditing:](self, "_savedAccountQualifiesForReuseAuditing:", accountCopy))
   {
-    v8 = [v6 highLevelDomain];
-    v9 = [v7 highLevelDomain];
-    if (([v8 isEqualToString:v9] & 1) != 0 || (objc_msgSend(v6, "password"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "password"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqualToString:", v11), v11, v10, !v12))
+    highLevelDomain = [reusedCopy highLevelDomain];
+    highLevelDomain2 = [accountCopy highLevelDomain];
+    if (([highLevelDomain isEqualToString:highLevelDomain2] & 1) != 0 || (objc_msgSend(reusedCopy, "password"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(accountCopy, "password"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqualToString:", v11), v11, v10, !v12))
     {
       LOBYTE(v15) = 0;
     }
 
     else
     {
-      v13 = [(WBSAutoFillQuirksManager *)self->_autoFillQuirksManager associatedDomainsManager];
-      v14 = [v13 domainsWithAssociatedCredentialsForDomain:v8];
+      associatedDomainsManager = [(WBSAutoFillQuirksManager *)self->_autoFillQuirksManager associatedDomainsManager];
+      v14 = [associatedDomainsManager domainsWithAssociatedCredentialsForDomain:highLevelDomain];
 
-      v15 = [v14 containsObject:v9] ^ 1;
+      v15 = [v14 containsObject:highLevelDomain2] ^ 1;
     }
   }
 
@@ -86,13 +86,13 @@
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [(WBSSavedAccountStore *)self->_savedAccountStore savedAccountsWithPasswords];
+  savedAccountsWithPasswords = [(WBSSavedAccountStore *)self->_savedAccountStore savedAccountsWithPasswords];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__WBSPasswordAuditor_accountStoreHasDuplicatedPasswords__block_invoke;
   v7[3] = &unk_1E7CF2F58;
   v7[4] = self;
-  v4 = v3;
+  v4 = savedAccountsWithPasswords;
   v8 = v4;
   v9 = &v10;
   [v4 enumerateObjectsUsingBlock:v7];
@@ -146,16 +146,16 @@ uint64_t __56__WBSPasswordAuditor_accountStoreHasDuplicatedPasswords__block_invo
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (BOOL)savedAccount:(id)a3 reusesPasswordWithAccountInSavedAccounts:(id)a4
+- (BOOL)savedAccount:(id)account reusesPasswordWithAccountInSavedAccounts:(id)accounts
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accountCopy = account;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  accountsCopy = accounts;
+  v8 = [accountsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -166,17 +166,17 @@ uint64_t __56__WBSPasswordAuditor_accountStoreHasDuplicatedPasswords__block_invo
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(accountsCopy);
         }
 
-        if ([(WBSPasswordAuditor *)self _passwordIsReused:*(*(&v15 + 1) + 8 * i) byOtherSavedAccount:v6, v15])
+        if ([(WBSPasswordAuditor *)self _passwordIsReused:*(*(&v15 + 1) + 8 * i) byOtherSavedAccount:accountCopy, v15])
         {
           v12 = 1;
           goto LABEL_11;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [accountsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         continue;
@@ -193,22 +193,22 @@ LABEL_11:
   return v12;
 }
 
-- (id)savedAccountsWithDuplicatedPassword:(id)a3
+- (id)savedAccountsWithDuplicatedPassword:(id)password
 {
-  v4 = a3;
-  if ([(WBSPasswordAuditor *)self _savedAccountQualifiesForReuseAuditing:v4])
+  passwordCopy = password;
+  if ([(WBSPasswordAuditor *)self _savedAccountQualifiesForReuseAuditing:passwordCopy])
   {
     v5 = [MEMORY[0x1E695DFA8] set];
-    v6 = [(WBSSavedAccountStore *)self->_savedAccountStore savedAccountsWithPasswords];
+    savedAccountsWithPasswords = [(WBSSavedAccountStore *)self->_savedAccountStore savedAccountsWithPasswords];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __58__WBSPasswordAuditor_savedAccountsWithDuplicatedPassword___block_invoke;
     v10[3] = &unk_1E7CF2F80;
     v11 = v5;
-    v12 = self;
-    v13 = v4;
+    selfCopy = self;
+    v13 = passwordCopy;
     v7 = v5;
-    v8 = [v6 safari_filterObjectsUsingBlock:v10];
+    v8 = [savedAccountsWithPasswords safari_filterObjectsUsingBlock:v10];
   }
 
   else
@@ -237,20 +237,20 @@ uint64_t __58__WBSPasswordAuditor_savedAccountsWithDuplicatedPassword___block_in
   return v5;
 }
 
-- (id)duplicatePasswordsInPasswords:(id)a3
+- (id)duplicatePasswordsInPasswords:(id)passwords
 {
-  v4 = a3;
+  passwordsCopy = passwords;
   v5 = [MEMORY[0x1E695DFA8] set];
-  v6 = [v4 count];
+  v6 = [passwordsCopy count];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __52__WBSPasswordAuditor_duplicatePasswordsInPasswords___block_invoke;
   v14 = &unk_1E7CF2FD0;
-  v15 = self;
+  selfCopy = self;
   v16 = v5;
-  v17 = v4;
+  v17 = passwordsCopy;
   v18 = v6;
-  v7 = v4;
+  v7 = passwordsCopy;
   v8 = v5;
   [v7 enumerateObjectsUsingBlock:&v11];
   v9 = [v8 copy];

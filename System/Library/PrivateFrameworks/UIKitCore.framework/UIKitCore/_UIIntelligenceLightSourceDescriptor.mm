@@ -1,44 +1,44 @@
 @interface _UIIntelligenceLightSourceDescriptor
-+ (id)_customDescriptorWithIdentifier:(id)a3 provider:(id)a4;
-+ (id)directionalLightWithConfiguration:(id)a3;
-+ (id)livingLightWithPalette:(id)a3;
-+ (id)livingLightWithPalette:(id)a3 seed:(unsigned int)a4;
++ (id)_customDescriptorWithIdentifier:(id)identifier provider:(id)provider;
++ (id)directionalLightWithConfiguration:(id)configuration;
++ (id)livingLightWithPalette:(id)palette;
++ (id)livingLightWithPalette:(id)palette seed:(unsigned int)seed;
 + (id)sharedLight;
 + (id)sharedReactiveLight;
 + (id)sharedReactiveShimmeringLight;
 + (id)sharedShimmeringLight;
-- (BOOL)isEqual:(id)a3;
-- (_UIIntelligenceLightSourceDescriptor)descriptorWithModificationID:(id)a3 modifier:(id)a4;
-- (_UIIntelligenceLightSourceDescriptor)initWithIdentifier:(id)a3 lightSourceViewProvider:(id)a4;
-- (id)_createLightSourceViewWithFrame:(CGRect)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIIntelligenceLightSourceDescriptor)descriptorWithModificationID:(id)d modifier:(id)modifier;
+- (_UIIntelligenceLightSourceDescriptor)initWithIdentifier:(id)identifier lightSourceViewProvider:(id)provider;
+- (id)_createLightSourceViewWithFrame:(CGRect)frame;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _UIIntelligenceLightSourceDescriptor
 
-+ (id)livingLightWithPalette:(id)a3
++ (id)livingLightWithPalette:(id)palette
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_188F7B7E4(v4);
+  paletteCopy = palette;
+  v5 = sub_188F7B7E4(paletteCopy);
 
   return v5;
 }
 
-+ (id)livingLightWithPalette:(id)a3 seed:(unsigned int)a4
++ (id)livingLightWithPalette:(id)palette seed:(unsigned int)seed
 {
   swift_getObjCClassMetadata();
-  v6 = a3;
-  v7 = sub_188F7B884(v6, a4);
+  paletteCopy = palette;
+  v7 = sub_188F7B884(paletteCopy, seed);
 
   return v7;
 }
 
-+ (id)directionalLightWithConfiguration:(id)a3
++ (id)directionalLightWithConfiguration:(id)configuration
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_1890DE478(v4);
+  configurationCopy = configuration;
+  v5 = sub_1890DE478(configurationCopy);
 
   return v5;
 }
@@ -75,18 +75,18 @@
   return v2;
 }
 
-- (_UIIntelligenceLightSourceDescriptor)initWithIdentifier:(id)a3 lightSourceViewProvider:(id)a4
+- (_UIIntelligenceLightSourceDescriptor)initWithIdentifier:(id)identifier lightSourceViewProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = _UIIntelligenceLightSourceDescriptor;
   v9 = [(_UIIntelligenceLightSourceDescriptor *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_identifier, identifier);
+    v11 = _Block_copy(providerCopy);
     builder = v10->_builder;
     v10->_builder = v11;
   }
@@ -94,16 +94,16 @@
   return v10;
 }
 
-+ (id)_customDescriptorWithIdentifier:(id)a3 provider:(id)a4
++ (id)_customDescriptorWithIdentifier:(id)identifier provider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithIdentifier:v7 lightSourceViewProvider:v6];
+  providerCopy = provider;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithIdentifier:identifierCopy lightSourceViewProvider:providerCopy];
 
   return v8;
 }
 
-- (id)_createLightSourceViewWithFrame:(CGRect)a3
+- (id)_createLightSourceViewWithFrame:(CGRect)frame
 {
   v7 = 0;
   v8 = &v7;
@@ -117,7 +117,7 @@
   v5[3] = &unk_1E710B920;
   v5[4] = self;
   v5[5] = &v7;
-  v6 = a3;
+  frameCopy = frame;
   [UIView performWithoutAnimation:v5];
   v3 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -125,15 +125,15 @@
   return v3;
 }
 
-- (_UIIntelligenceLightSourceDescriptor)descriptorWithModificationID:(id)a3 modifier:(id)a4
+- (_UIIntelligenceLightSourceDescriptor)descriptorWithModificationID:(id)d modifier:(id)modifier
 {
-  v6 = a4;
-  v7 = a3;
+  modifierCopy = modifier;
+  dCopy = d;
   v8 = [(_UIIntelligenceLightSourceDescriptor *)self copy];
-  v9 = [*(v8 + 16) stringByAppendingFormat:@".%@", v7];
+  dCopy = [*(v8 + 16) stringByAppendingFormat:@".%@", dCopy];
 
   v10 = *(v8 + 16);
-  *(v8 + 16) = v9;
+  *(v8 + 16) = dCopy;
 
   v11 = _Block_copy(self->_builder);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -141,8 +141,8 @@
   aBlock[2] = __78___UIIntelligenceLightSourceDescriptor_descriptorWithModificationID_modifier___block_invoke;
   aBlock[3] = &unk_1E7124CF0;
   v18 = v11;
-  v19 = v6;
-  v12 = v6;
+  v19 = modifierCopy;
+  v12 = modifierCopy;
   v13 = v11;
   v14 = _Block_copy(aBlock);
   v15 = *(v8 + 8);
@@ -151,7 +151,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_UIIntelligenceLightSourceDescriptor alloc];
   builder = self->_builder;
@@ -160,13 +160,13 @@
   return [(_UIIntelligenceLightSourceDescriptor *)v4 initWithIdentifier:identifier lightSourceViewProvider:builder];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4[2] isEqualToString:self->_identifier];
+    v5 = [equalCopy[2] isEqualToString:self->_identifier];
   }
 
   else

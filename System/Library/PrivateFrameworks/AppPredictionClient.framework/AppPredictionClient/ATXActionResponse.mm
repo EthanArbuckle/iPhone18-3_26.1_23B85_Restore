@@ -1,11 +1,11 @@
 @interface ATXActionResponse
-- (ATXActionResponse)initWithCoder:(id)a3;
-- (ATXActionResponse)initWithProactiveSuggestions:(id)a3 blendingModelUICacheUpdateUUID:(id)a4 consumerSubType:(unsigned __int8)a5 error:(id)a6;
-- (ATXActionResponse)initWithScoredActions:(id)a3 cacheFileData:(id)a4 consumerSubType:(unsigned __int8)a5 error:(id)a6;
-- (ATXActionResponse)initWithScoredActions:(id)a3 cacheFileData:(id)a4 proactiveSuggestions:(id)a5 blendingModelUICacheUpdateUUID:(id)a6 consumerSubType:(unsigned __int8)a7 predictionDate:(id)a8 error:(id)a9;
+- (ATXActionResponse)initWithCoder:(id)coder;
+- (ATXActionResponse)initWithProactiveSuggestions:(id)suggestions blendingModelUICacheUpdateUUID:(id)d consumerSubType:(unsigned __int8)type error:(id)error;
+- (ATXActionResponse)initWithScoredActions:(id)actions cacheFileData:(id)data consumerSubType:(unsigned __int8)type error:(id)error;
+- (ATXActionResponse)initWithScoredActions:(id)actions cacheFileData:(id)data proactiveSuggestions:(id)suggestions blendingModelUICacheUpdateUUID:(id)d consumerSubType:(unsigned __int8)type predictionDate:(id)date error:(id)error;
 - (BOOL)isActionSpotlightCaptureRateAppEngagementType;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToActionResponse:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToActionResponse:(id)response;
 - (NSArray)explicitlyDismissedActions;
 - (NSArray)shownActions;
 - (id)json;
@@ -13,46 +13,46 @@
 - (id)jsonDescription;
 - (id)routeDestinationTypeString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)jsonData;
-- (void)updateConsumerSubType:(unsigned __int8)a3 engagedAction:(id)a4 shownActions:(id)a5 feedbackStage:(unint64_t)a6 explicitlyDismissedActions:(id)a7 searchedActionType:(unint64_t)a8 engagedAppString:(id)a9 uiFeedbackDate:(id)a10;
-- (void)updateWithMatchingIntentDonatedAction:(id)a3 intentDonationDate:(id)a4 matchingIntentWasCompleteMatch:(BOOL)a5;
+- (void)updateConsumerSubType:(unsigned __int8)type engagedAction:(id)action shownActions:(id)actions feedbackStage:(unint64_t)stage explicitlyDismissedActions:(id)dismissedActions searchedActionType:(unint64_t)actionType engagedAppString:(id)string uiFeedbackDate:(id)self0;
+- (void)updateWithMatchingIntentDonatedAction:(id)action intentDonationDate:(id)date matchingIntentWasCompleteMatch:(BOOL)match;
 @end
 
 @implementation ATXActionResponse
 
-- (ATXActionResponse)initWithScoredActions:(id)a3 cacheFileData:(id)a4 consumerSubType:(unsigned __int8)a5 error:(id)a6
+- (ATXActionResponse)initWithScoredActions:(id)actions cacheFileData:(id)data consumerSubType:(unsigned __int8)type error:(id)error
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  typeCopy = type;
+  errorCopy = error;
+  dataCopy = data;
+  actionsCopy = actions;
   v13 = objc_opt_new();
-  v14 = [(ATXActionResponse *)self initWithScoredActions:v12 cacheFileData:v11 proactiveSuggestions:0 blendingModelUICacheUpdateUUID:0 consumerSubType:v6 predictionDate:v13 error:v10];
+  v14 = [(ATXActionResponse *)self initWithScoredActions:actionsCopy cacheFileData:dataCopy proactiveSuggestions:0 blendingModelUICacheUpdateUUID:0 consumerSubType:typeCopy predictionDate:v13 error:errorCopy];
 
   return v14;
 }
 
-- (ATXActionResponse)initWithProactiveSuggestions:(id)a3 blendingModelUICacheUpdateUUID:(id)a4 consumerSubType:(unsigned __int8)a5 error:(id)a6
+- (ATXActionResponse)initWithProactiveSuggestions:(id)suggestions blendingModelUICacheUpdateUUID:(id)d consumerSubType:(unsigned __int8)type error:(id)error
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  typeCopy = type;
+  errorCopy = error;
+  dCopy = d;
+  suggestionsCopy = suggestions;
   v13 = objc_opt_new();
-  v14 = [(ATXActionResponse *)self initWithScoredActions:0 cacheFileData:0 proactiveSuggestions:v12 blendingModelUICacheUpdateUUID:v11 consumerSubType:v6 predictionDate:v13 error:v10];
+  v14 = [(ATXActionResponse *)self initWithScoredActions:0 cacheFileData:0 proactiveSuggestions:suggestionsCopy blendingModelUICacheUpdateUUID:dCopy consumerSubType:typeCopy predictionDate:v13 error:errorCopy];
 
   return v14;
 }
 
-- (ATXActionResponse)initWithScoredActions:(id)a3 cacheFileData:(id)a4 proactiveSuggestions:(id)a5 blendingModelUICacheUpdateUUID:(id)a6 consumerSubType:(unsigned __int8)a7 predictionDate:(id)a8 error:(id)a9
+- (ATXActionResponse)initWithScoredActions:(id)actions cacheFileData:(id)data proactiveSuggestions:(id)suggestions blendingModelUICacheUpdateUUID:(id)d consumerSubType:(unsigned __int8)type predictionDate:(id)date error:(id)error
 {
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v15 = a6;
-  v16 = a8;
-  v17 = a9;
+  actionsCopy = actions;
+  dataCopy = data;
+  suggestionsCopy = suggestions;
+  dCopy = d;
+  dateCopy = date;
+  errorCopy = error;
   v30.receiver = self;
   v30.super_class = ATXActionResponse;
   v18 = [(ATXActionResponse *)&v30 init];
@@ -62,13 +62,13 @@
     uuid = v18->_uuid;
     v18->_uuid = v19;
 
-    objc_storeStrong(&v18->_scoredActions, a3);
-    objc_storeStrong(&v18->_cacheFileData, a4);
-    objc_storeStrong(&v18->_proactiveSuggestions, a5);
-    objc_storeStrong(&v18->_blendingModelUICacheUpdateUUID, a6);
-    v18->_consumerSubType = a7;
+    objc_storeStrong(&v18->_scoredActions, actions);
+    objc_storeStrong(&v18->_cacheFileData, data);
+    objc_storeStrong(&v18->_proactiveSuggestions, suggestions);
+    objc_storeStrong(&v18->_blendingModelUICacheUpdateUUID, d);
+    v18->_consumerSubType = type;
     v18->_feedbackStage = 1;
-    objc_storeStrong(&v18->_error, a9);
+    objc_storeStrong(&v18->_error, error);
     v21 = objc_opt_new();
     shownActionIndices = v18->_shownActionIndices;
     v18->_shownActionIndices = v21;
@@ -77,32 +77,32 @@
     explicitlyDismissedActionIndices = v18->_explicitlyDismissedActionIndices;
     v18->_explicitlyDismissedActionIndices = v23;
 
-    objc_storeStrong(&v18->_predictionDate, a8);
+    objc_storeStrong(&v18->_predictionDate, date);
     v18->_searchedActionType = 4;
   }
 
   return v18;
 }
 
-- (void)updateConsumerSubType:(unsigned __int8)a3 engagedAction:(id)a4 shownActions:(id)a5 feedbackStage:(unint64_t)a6 explicitlyDismissedActions:(id)a7 searchedActionType:(unint64_t)a8 engagedAppString:(id)a9 uiFeedbackDate:(id)a10
+- (void)updateConsumerSubType:(unsigned __int8)type engagedAction:(id)action shownActions:(id)actions feedbackStage:(unint64_t)stage explicitlyDismissedActions:(id)dismissedActions searchedActionType:(unint64_t)actionType engagedAppString:(id)string uiFeedbackDate:(id)self0
 {
-  v16 = a4;
-  v17 = a9;
-  v18 = a10;
-  self->_consumerSubType = a3;
-  v19 = a7;
-  v20 = a5;
-  v31 = [(ATXActionResponse *)self actions];
-  v21 = actionsToIndexSet(v20, v31);
+  actionCopy = action;
+  stringCopy = string;
+  dateCopy = date;
+  self->_consumerSubType = type;
+  dismissedActionsCopy = dismissedActions;
+  actionsCopy = actions;
+  actions = [(ATXActionResponse *)self actions];
+  v21 = actionsToIndexSet(actionsCopy, actions);
 
   shownActionIndices = self->_shownActionIndices;
   self->_shownActionIndices = v21;
 
   engagedAction = self->_engagedAction;
-  self->_engagedAction = v16;
-  v24 = v16;
+  self->_engagedAction = actionCopy;
+  v24 = actionCopy;
 
-  v25 = actionsToIndexSet(v19, v31);
+  v25 = actionsToIndexSet(dismissedActionsCopy, actions);
 
   explicitlyDismissedActionIndices = self->_explicitlyDismissedActionIndices;
   self->_explicitlyDismissedActionIndices = v25;
@@ -111,28 +111,28 @@
   self->_matchingIntentDonatedAction = 0;
 
   uiFeedbackDate = self->_uiFeedbackDate;
-  self->_feedbackStage = a6;
-  self->_uiFeedbackDate = v18;
-  v29 = v18;
+  self->_feedbackStage = stage;
+  self->_uiFeedbackDate = dateCopy;
+  v29 = dateCopy;
 
   engagedAppString = self->_engagedAppString;
-  self->_searchedActionType = a8;
-  self->_engagedAppString = v17;
+  self->_searchedActionType = actionType;
+  self->_engagedAppString = stringCopy;
 }
 
-- (void)updateWithMatchingIntentDonatedAction:(id)a3 intentDonationDate:(id)a4 matchingIntentWasCompleteMatch:(BOOL)a5
+- (void)updateWithMatchingIntentDonatedAction:(id)action intentDonationDate:(id)date matchingIntentWasCompleteMatch:(BOOL)match
 {
-  v8 = a3;
-  v9 = a4;
+  actionCopy = action;
+  dateCopy = date;
   matchingIntentDonatedAction = self->_matchingIntentDonatedAction;
-  self->_matchingIntentDonatedAction = v8;
-  v11 = v8;
+  self->_matchingIntentDonatedAction = actionCopy;
+  v11 = actionCopy;
 
   donatedIntentDate = self->_donatedIntentDate;
-  self->_donatedIntentDate = v9;
+  self->_donatedIntentDate = dateCopy;
 
   self->_feedbackStage = 3;
-  self->_matchingIntentWasCompleteMatch = a5;
+  self->_matchingIntentWasCompleteMatch = match;
 }
 
 - (NSArray)shownActions
@@ -147,7 +147,7 @@
     v12 = __33__ATXActionResponse_shownActions__block_invoke;
     v13 = &unk_1E80C1218;
     v14 = v4;
-    v15 = self;
+    selfCopy = self;
     v6 = v4;
     [(NSIndexSet *)shownActionIndices enumerateIndexesUsingBlock:&v10];
     v7 = [v6 copy];
@@ -177,7 +177,7 @@ void __33__ATXActionResponse_shownActions__block_invoke(uint64_t a1, uint64_t a2
   v10 = __47__ATXActionResponse_explicitlyDismissedActions__block_invoke;
   v11 = &unk_1E80C1218;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
   [(NSIndexSet *)explicitlyDismissedActionIndices enumerateIndexesUsingBlock:&v8];
   v6 = [v5 copy];
@@ -193,29 +193,29 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
   [v2 addObject:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXActionResponse *)self isEqualToActionResponse:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXActionResponse *)self isEqualToActionResponse:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToActionResponse:(id)a3
+- (BOOL)isEqualToActionResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = self->_uuid;
   v6 = v5;
-  if (v5 == v4[5])
+  if (v5 == responseCopy[5])
   {
   }
 
@@ -231,7 +231,7 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
 
   v8 = self->_scoredActions;
   v9 = v8;
-  if (v8 == v4[6])
+  if (v8 == responseCopy[6])
   {
   }
 
@@ -247,7 +247,7 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
 
   v11 = self->_cacheFileData;
   v12 = v11;
-  if (v11 == v4[17])
+  if (v11 == responseCopy[17])
   {
   }
 
@@ -263,7 +263,7 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
 
   v14 = self->_proactiveSuggestions;
   v15 = v14;
-  if (v14 == v4[8])
+  if (v14 == responseCopy[8])
   {
   }
 
@@ -279,7 +279,7 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
 
   v17 = self->_blendingModelUICacheUpdateUUID;
   v18 = v17;
-  if (v17 == v4[7])
+  if (v17 == responseCopy[7])
   {
   }
 
@@ -293,11 +293,11 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
     }
   }
 
-  if (self->_consumerSubType == *(v4 + 33))
+  if (self->_consumerSubType == *(responseCopy + 33))
   {
     v20 = self->_engagedAction;
     v21 = v20;
-    if (v20 == v4[10])
+    if (v20 == responseCopy[10])
     {
     }
 
@@ -313,7 +313,7 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
 
     v23 = self->_explicitlyDismissedActionIndices;
     v24 = v23;
-    if (v23 == v4[2])
+    if (v23 == responseCopy[2])
     {
     }
 
@@ -329,7 +329,7 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
 
     v26 = self->_matchingIntentDonatedAction;
     v27 = v26;
-    if (v26 == v4[13])
+    if (v26 == responseCopy[13])
     {
     }
 
@@ -343,11 +343,11 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
       }
     }
 
-    if (self->_matchingIntentWasCompleteMatch == *(v4 + 34))
+    if (self->_matchingIntentWasCompleteMatch == *(responseCopy + 34))
     {
       v29 = self->_shownActionIndices;
       v30 = v29;
-      if (v29 == v4[1])
+      if (v29 == responseCopy[1])
       {
       }
 
@@ -363,7 +363,7 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
 
       v32 = self->_predictionDate;
       v33 = v32;
-      if (v32 == v4[9])
+      if (v32 == responseCopy[9])
       {
       }
 
@@ -379,7 +379,7 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
 
       v35 = self->_uiFeedbackDate;
       v36 = v35;
-      if (v35 == v4[12])
+      if (v35 == responseCopy[12])
       {
       }
 
@@ -395,7 +395,7 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
 
       v38 = self->_donatedIntentDate;
       v39 = v38;
-      if (v38 == v4[14])
+      if (v38 == responseCopy[14])
       {
       }
 
@@ -409,14 +409,14 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
         }
       }
 
-      if (self->_feedbackStage != v4[11] || self->_searchedActionType != v4[15])
+      if (self->_feedbackStage != responseCopy[11] || self->_searchedActionType != responseCopy[15])
       {
         goto LABEL_55;
       }
 
       v41 = self->_engagedAppString;
       v42 = v41;
-      if (v41 == v4[16])
+      if (v41 == responseCopy[16])
       {
       }
 
@@ -430,7 +430,7 @@ void __47__ATXActionResponse_explicitlyDismissedActions__block_invoke(uint64_t a
         }
       }
 
-      v44 = self->_containsRouteInternal == *(v4 + 32);
+      v44 = self->_containsRouteInternal == *(responseCopy + 32);
       goto LABEL_56;
     }
   }
@@ -499,15 +499,15 @@ LABEL_56:
   v48[3] = engagedAction;
   v47[3] = @"engagedActionKey";
   v47[4] = @"explicitlyDismissedActionIndices";
-  v9 = [(NSIndexSet *)self->_explicitlyDismissedActionIndices atx_asArray];
+  atx_asArray = [(NSIndexSet *)self->_explicitlyDismissedActionIndices atx_asArray];
   matchingIntentDonatedAction = self->_matchingIntentDonatedAction;
   if (!matchingIntentDonatedAction)
   {
     matchingIntentDonatedAction = @"NONE";
   }
 
-  v39 = v9;
-  v48[4] = v9;
+  v39 = atx_asArray;
+  v48[4] = atx_asArray;
   v48[5] = matchingIntentDonatedAction;
   v47[5] = @"matchingDonatedIntentActionKey";
   v47[6] = @"matchingDonatedIntentWasCompleteMatch";
@@ -544,9 +544,9 @@ LABEL_56:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v43 + 1) + 8 * i) predictedItem];
-        v20 = [v19 json];
-        [v13 addObject:v20];
+        predictedItem = [*(*(&v43 + 1) + 8 * i) predictedItem];
+        json = [predictedItem json];
+        [v13 addObject:json];
       }
 
       v16 = [(NSArray *)v14 countByEnumeratingWithState:&v43 objects:v49 count:16];
@@ -557,8 +557,8 @@ LABEL_56:
 
   v48[7] = v13;
   v47[8] = @"shownActionIndices";
-  v38 = [(NSIndexSet *)self->_shownActionIndices atx_asArray];
-  v48[8] = v38;
+  atx_asArray2 = [(NSIndexSet *)self->_shownActionIndices atx_asArray];
+  v48[8] = atx_asArray2;
   v47[9] = @"predictionDate";
   v21 = [(NSDate *)self->_predictionDate description];
   v22 = v21;
@@ -605,8 +605,8 @@ LABEL_56:
   v30 = [ATXActionPredictionTypes actionFeedbackStageToString:self->_feedbackStage];
   v48[12] = v30;
   v47[13] = @"routeDestinationType";
-  v31 = [(ATXActionResponse *)self routeDestinationTypeString];
-  v48[13] = v31;
+  routeDestinationTypeString = [(ATXActionResponse *)self routeDestinationTypeString];
+  v48[13] = routeDestinationTypeString;
   v47[14] = @"cacheFileDataSize";
   v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lu", 8];
   v48[14] = v32;
@@ -630,9 +630,9 @@ LABEL_56:
 - (id)jsonData
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXActionResponse *)self json];
+  json = [(ATXActionResponse *)self json];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:json options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -649,10 +649,10 @@ LABEL_56:
 
 - (id)jsonDescription
 {
-  v2 = [(ATXActionResponse *)self jsonData];
-  if (v2)
+  jsonData = [(ATXActionResponse *)self jsonData];
+  if (jsonData)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v2 encoding:4];
+    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:jsonData encoding:4];
   }
 
   else
@@ -670,16 +670,16 @@ LABEL_56:
     return 0;
   }
 
-  v3 = [(ATXActionResponse *)self engagedAction];
-  if (v3)
+  engagedAction = [(ATXActionResponse *)self engagedAction];
+  if (engagedAction)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(ATXActionResponse *)self engagedAppString];
-    if ([v5 length])
+    engagedAppString = [(ATXActionResponse *)self engagedAppString];
+    if ([engagedAppString length])
     {
       v4 = [(ATXActionResponse *)self searchedActionType]== 4;
     }
@@ -693,9 +693,9 @@ LABEL_56:
   return v4;
 }
 
-- (ATXActionResponse)initWithCoder:(id)a3
+- (ATXActionResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = ATXActionResponse;
   v5 = [(ATXActionResponse *)&v39 init];
@@ -704,93 +704,93 @@ LABEL_56:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"scoredActions"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"scoredActions"];
     scoredActions = v5->_scoredActions;
     v5->_scoredActions = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cacheFileData"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cacheFileData"];
     cacheFileData = v5->_cacheFileData;
     v5->_cacheFileData = v11;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"proactiveSuggestions"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"proactiveSuggestions"];
     proactiveSuggestions = v5->_proactiveSuggestions;
     v5->_proactiveSuggestions = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"blendingUICacheUpdateUUID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"blendingUICacheUpdateUUID"];
     blendingModelUICacheUpdateUUID = v5->_blendingModelUICacheUpdateUUID;
     v5->_blendingModelUICacheUpdateUUID = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v20;
 
-    v5->_consumerSubType = [v4 decodeIntegerForKey:@"consumerSubType"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"engagedActionKey"];
+    v5->_consumerSubType = [coderCopy decodeIntegerForKey:@"consumerSubType"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"engagedActionKey"];
     engagedAction = v5->_engagedAction;
     v5->_engagedAction = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"explicitlyDismissedActionIndices"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"explicitlyDismissedActionIndices"];
     explicitlyDismissedActionIndices = v5->_explicitlyDismissedActionIndices;
     v5->_explicitlyDismissedActionIndices = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchingDonatedIntentActionKey"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchingDonatedIntentActionKey"];
     matchingIntentDonatedAction = v5->_matchingIntentDonatedAction;
     v5->_matchingIntentDonatedAction = v26;
 
-    v5->_matchingIntentWasCompleteMatch = [v4 decodeBoolForKey:@"matchingDonatedIntentWasCompleteMatch"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shownActionIndices"];
+    v5->_matchingIntentWasCompleteMatch = [coderCopy decodeBoolForKey:@"matchingDonatedIntentWasCompleteMatch"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shownActionIndices"];
     shownActionIndices = v5->_shownActionIndices;
     v5->_shownActionIndices = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predictionDate"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predictionDate"];
     predictionDate = v5->_predictionDate;
     v5->_predictionDate = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uiFeedbackDate"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uiFeedbackDate"];
     uiFeedbackDate = v5->_uiFeedbackDate;
     v5->_uiFeedbackDate = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"donatedIntentDate"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"donatedIntentDate"];
     donatedIntentDate = v5->_donatedIntentDate;
     v5->_donatedIntentDate = v34;
 
-    v5->_feedbackStage = [v4 decodeIntegerForKey:@"feedbackStage"];
-    v5->_searchedActionType = [v4 decodeIntegerForKey:@"searchedActionType"];
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"engagedAppString"];
+    v5->_feedbackStage = [coderCopy decodeIntegerForKey:@"feedbackStage"];
+    v5->_searchedActionType = [coderCopy decodeIntegerForKey:@"searchedActionType"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"engagedAppString"];
     engagedAppString = v5->_engagedAppString;
     v5->_engagedAppString = v36;
 
-    v5->_containsRouteInternal = [v4 decodeBoolForKey:@"containsRouteInternal"];
+    v5->_containsRouteInternal = [coderCopy decodeBoolForKey:@"containsRouteInternal"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   scoredActions = self->_scoredActions;
-  v5 = a3;
-  [v5 encodeObject:scoredActions forKey:@"scoredActions"];
-  [v5 encodeObject:self->_cacheFileData forKey:@"cacheFileData"];
-  [v5 encodeObject:self->_proactiveSuggestions forKey:@"proactiveSuggestions"];
-  [v5 encodeObject:self->_blendingModelUICacheUpdateUUID forKey:@"blendingUICacheUpdateUUID"];
-  [v5 encodeObject:self->_uuid forKey:@"uuid"];
-  [v5 encodeInteger:self->_consumerSubType forKey:@"consumerSubType"];
-  [v5 encodeObject:self->_engagedAction forKey:@"engagedActionKey"];
-  [v5 encodeObject:self->_explicitlyDismissedActionIndices forKey:@"explicitlyDismissedActionIndices"];
-  [v5 encodeObject:self->_matchingIntentDonatedAction forKey:@"matchingDonatedIntentActionKey"];
-  [v5 encodeBool:self->_matchingIntentWasCompleteMatch forKey:@"matchingDonatedIntentWasCompleteMatch"];
-  [v5 encodeObject:self->_shownActionIndices forKey:@"shownActionIndices"];
-  [v5 encodeObject:self->_predictionDate forKey:@"predictionDate"];
-  [v5 encodeObject:self->_uiFeedbackDate forKey:@"uiFeedbackDate"];
-  [v5 encodeObject:self->_donatedIntentDate forKey:@"donatedIntentDate"];
-  [v5 encodeInteger:self->_feedbackStage forKey:@"feedbackStage"];
-  [v5 encodeInteger:self->_searchedActionType forKey:@"searchedActionType"];
-  [v5 encodeObject:self->_engagedAppString forKey:@"engagedAppString"];
-  [v5 encodeBool:self->_containsRouteInternal forKey:@"containsRouteInternal"];
+  coderCopy = coder;
+  [coderCopy encodeObject:scoredActions forKey:@"scoredActions"];
+  [coderCopy encodeObject:self->_cacheFileData forKey:@"cacheFileData"];
+  [coderCopy encodeObject:self->_proactiveSuggestions forKey:@"proactiveSuggestions"];
+  [coderCopy encodeObject:self->_blendingModelUICacheUpdateUUID forKey:@"blendingUICacheUpdateUUID"];
+  [coderCopy encodeObject:self->_uuid forKey:@"uuid"];
+  [coderCopy encodeInteger:self->_consumerSubType forKey:@"consumerSubType"];
+  [coderCopy encodeObject:self->_engagedAction forKey:@"engagedActionKey"];
+  [coderCopy encodeObject:self->_explicitlyDismissedActionIndices forKey:@"explicitlyDismissedActionIndices"];
+  [coderCopy encodeObject:self->_matchingIntentDonatedAction forKey:@"matchingDonatedIntentActionKey"];
+  [coderCopy encodeBool:self->_matchingIntentWasCompleteMatch forKey:@"matchingDonatedIntentWasCompleteMatch"];
+  [coderCopy encodeObject:self->_shownActionIndices forKey:@"shownActionIndices"];
+  [coderCopy encodeObject:self->_predictionDate forKey:@"predictionDate"];
+  [coderCopy encodeObject:self->_uiFeedbackDate forKey:@"uiFeedbackDate"];
+  [coderCopy encodeObject:self->_donatedIntentDate forKey:@"donatedIntentDate"];
+  [coderCopy encodeInteger:self->_feedbackStage forKey:@"feedbackStage"];
+  [coderCopy encodeInteger:self->_searchedActionType forKey:@"searchedActionType"];
+  [coderCopy encodeObject:self->_engagedAppString forKey:@"engagedAppString"];
+  [coderCopy encodeBool:self->_containsRouteInternal forKey:@"containsRouteInternal"];
 }
 
 - (id)routeDestinationTypeString
@@ -810,7 +810,7 @@ LABEL_56:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BF549000, a2, OS_LOG_TYPE_ERROR, "Unable to serialize ATXActionResponse. Error: %@", &v2, 0xCu);
 }
 

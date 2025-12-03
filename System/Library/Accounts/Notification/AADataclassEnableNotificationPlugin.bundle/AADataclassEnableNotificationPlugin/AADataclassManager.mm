@@ -2,29 +2,29 @@
 + (AADataclassManager)sharedManager;
 + (id)dataclassBundleMap;
 - (AADataclassManager)init;
-- (AADataclassManager)initWithAccountStore:(id)a3;
-- (BOOL)_appStatusRestrictsProvisioningForDataclass:(id)a3;
-- (BOOL)_isRestrictedForDataclass:(id)a3 account:(id)a4;
-- (BOOL)_shouldProvisionNotesForAccount:(id)a3;
-- (BOOL)_shouldProvisionRemindersForAccount:(id)a3;
-- (BOOL)_shouldShowDataclassWhenAppIsRemoved:(id)a3;
+- (AADataclassManager)initWithAccountStore:(id)store;
+- (BOOL)_appStatusRestrictsProvisioningForDataclass:(id)dataclass;
+- (BOOL)_isRestrictedForDataclass:(id)dataclass account:(id)account;
+- (BOOL)_shouldProvisionNotesForAccount:(id)account;
+- (BOOL)_shouldProvisionRemindersForAccount:(id)account;
+- (BOOL)_shouldShowDataclassWhenAppIsRemoved:(id)removed;
 - (BOOL)_shouldVerifyAccountSave;
-- (BOOL)canAutoEnableDataclass:(id)a3 forAccount:(id)a4;
-- (BOOL)isSystemAppMCRestrictedOrRemovedForDataclass:(id)a3 forAccount:(id)a4;
-- (BOOL)shouldProvisionDataclass:(id)a3 forAccount:(id)a4;
-- (id)_filteredDataclassesForAccountClass:(id)a3;
+- (BOOL)canAutoEnableDataclass:(id)dataclass forAccount:(id)account;
+- (BOOL)isSystemAppMCRestrictedOrRemovedForDataclass:(id)dataclass forAccount:(id)account;
+- (BOOL)shouldProvisionDataclass:(id)dataclass forAccount:(id)account;
+- (id)_filteredDataclassesForAccountClass:(id)class;
 - (id)_nonVisibleServiceDataclass;
 - (id)_userVisibleDataclasses;
 - (id)allowListedDataclassesForAppleAccountClassBasic;
 - (id)allowListedDataclassesForAppleAccountClassFull;
-- (id)appBundleIdentifierForDataclass:(id)a3;
+- (id)appBundleIdentifierForDataclass:(id)dataclass;
 - (id)denyListedMacOSDataclasses;
-- (id)filterDataclassesForPossibleAutoEnablementForAccount:(id)a3;
-- (id)filteredServerProvidedFeatures:(id)a3 forAccount:(id)a4;
+- (id)filterDataclassesForPossibleAutoEnablementForAccount:(id)account;
+- (id)filteredServerProvidedFeatures:(id)features forAccount:(id)account;
 - (id)userDefaultsDisabledDataclasses;
-- (void)_buildAutoEnableableDataclassesAndActionsForAccount:(id)a3 dataclassesForEnablement:(id)a4 completion:(id)a5;
-- (void)enableDataclassesWithoutLocalDataDataclassActionsForAccount:(id)a3 completion:(id)a4;
-- (void)enableDataclassesWithoutLocalDataDataclassActionsForDataclasses:(id)a3 fromAccount:(id)a4 completion:(id)a5;
+- (void)_buildAutoEnableableDataclassesAndActionsForAccount:(id)account dataclassesForEnablement:(id)enablement completion:(id)completion;
+- (void)enableDataclassesWithoutLocalDataDataclassActionsForAccount:(id)account completion:(id)completion;
+- (void)enableDataclassesWithoutLocalDataDataclassActionsForDataclasses:(id)dataclasses fromAccount:(id)account completion:(id)completion;
 @end
 
 @implementation AADataclassManager
@@ -163,15 +163,15 @@
   return v6;
 }
 
-- (id)_filteredDataclassesForAccountClass:(id)a3
+- (id)_filteredDataclassesForAccountClass:(id)class
 {
-  v4 = a3;
-  if (objc_msgSend_isEqualToString_(v4, v5, *MEMORY[0x29EDBE2C0]))
+  classCopy = class;
+  if (objc_msgSend_isEqualToString_(classCopy, v5, *MEMORY[0x29EDBE2C0]))
   {
     sub_29C85C760();
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v6, *MEMORY[0x29EDBE2B0]))
+  if (objc_msgSend_isEqualToString_(classCopy, v6, *MEMORY[0x29EDBE2B0]))
   {
     v9 = objc_msgSend_allowListedDataclassesForAppleAccountClassBasic(self, v7, v8);
 LABEL_7:
@@ -179,7 +179,7 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (objc_msgSend_isEqualToString_(v4, v7, *MEMORY[0x29EDBE2B8]))
+  if (objc_msgSend_isEqualToString_(classCopy, v7, *MEMORY[0x29EDBE2B8]))
   {
     v9 = objc_msgSend_allowListedDataclassesForAppleAccountClassFull(self, v10, v11);
     goto LABEL_7;
@@ -191,14 +191,14 @@ LABEL_9:
   return v12;
 }
 
-- (id)filteredServerProvidedFeatures:(id)a3 forAccount:(id)a4
+- (id)filteredServerProvidedFeatures:(id)features forAccount:(id)account
 {
   v41 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v8 = a4;
-  if (v8)
+  featuresCopy = features;
+  accountCopy = account;
+  if (accountCopy)
   {
-    if (v6)
+    if (featuresCopy)
     {
       goto LABEL_3;
     }
@@ -207,7 +207,7 @@ LABEL_9:
   else
   {
     sub_29C85C7CC();
-    if (v6)
+    if (featuresCopy)
     {
       goto LABEL_3;
     }
@@ -215,7 +215,7 @@ LABEL_9:
 
   sub_29C85C840();
 LABEL_3:
-  v9 = objc_msgSend_setWithSet_(MEMORY[0x29EDB8E50], v7, v6);
+  v9 = objc_msgSend_setWithSet_(MEMORY[0x29EDB8E50], v7, featuresCopy);
   v12 = objc_msgSend_mutableCopy(v9, v10, v11);
 
   if ((objc_msgSend_isMomentsDataclassEnabled(MEMORY[0x29EDBE378], v13, v14) & 1) == 0)
@@ -224,12 +224,12 @@ LABEL_3:
   }
 
   v16 = *MEMORY[0x29EDB8168];
-  if ((objc_msgSend_containsObject_(v12, v15, *MEMORY[0x29EDB8168]) & 1) == 0 && objc_msgSend_containsObject_(v12, v17, *MEMORY[0x29EDB8180]) && (objc_msgSend_aa_isManagedAppleID(v8, v17, v18) & 1) == 0)
+  if ((objc_msgSend_containsObject_(v12, v15, *MEMORY[0x29EDB8168]) & 1) == 0 && objc_msgSend_containsObject_(v12, v17, *MEMORY[0x29EDB8180]) && (objc_msgSend_aa_isManagedAppleID(accountCopy, v17, v18) & 1) == 0)
   {
     objc_msgSend_addObject_(v12, v17, v16);
   }
 
-  v19 = objc_msgSend_aa_accountClass(v8, v17, v18);
+  v19 = objc_msgSend_aa_accountClass(accountCopy, v17, v18);
   isEqualToString = objc_msgSend_isEqualToString_(v19, v20, *MEMORY[0x29EDBE2B0]);
 
   if ((isEqualToString & 1) == 0)
@@ -271,7 +271,7 @@ LABEL_3:
           sub_29C85C8B4();
         }
 
-        if (objc_msgSend_shouldProvisionDataclass_forAccount_(self, v32, v31, v8, v36))
+        if (objc_msgSend_shouldProvisionDataclass_forAccount_(self, v32, v31, accountCopy, v36))
         {
           objc_msgSend_addObject_(v24, v33, v31);
         }
@@ -308,16 +308,16 @@ LABEL_3:
   return v6;
 }
 
-- (AADataclassManager)initWithAccountStore:(id)a3
+- (AADataclassManager)initWithAccountStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = AADataclassManager;
   v6 = [(AADataclassManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     v8 = objc_alloc_init(MEMORY[0x29EDBE2F8]);
     storeProxy = v7->_storeProxy;
     v7->_storeProxy = v8;
@@ -338,21 +338,21 @@ LABEL_3:
   return v3;
 }
 
-- (id)appBundleIdentifierForDataclass:(id)a3
+- (id)appBundleIdentifierForDataclass:(id)dataclass
 {
-  v3 = a3;
+  dataclassCopy = dataclass;
   v6 = objc_msgSend_dataclassBundleMap(AADataclassManager, v4, v5);
-  v8 = objc_msgSend_objectForKey_(v6, v7, v3);
+  v8 = objc_msgSend_objectForKey_(v6, v7, dataclassCopy);
 
   return v8;
 }
 
-- (BOOL)_isRestrictedForDataclass:(id)a3 account:(id)a4
+- (BOOL)_isRestrictedForDataclass:(id)dataclass account:(id)account
 {
-  v5 = a3;
-  v6 = a4;
-  isEqualToString = objc_msgSend_isEqualToString_(v5, v7, *MEMORY[0x29EDB8080]);
-  if (v6 && isEqualToString && !objc_msgSend_aa_isAccountClass_(v6, v9, *MEMORY[0x29EDBE2C0]))
+  dataclassCopy = dataclass;
+  accountCopy = account;
+  isEqualToString = objc_msgSend_isEqualToString_(dataclassCopy, v7, *MEMORY[0x29EDB8080]);
+  if (accountCopy && isEqualToString && !objc_msgSend_aa_isAccountClass_(accountCopy, v9, *MEMORY[0x29EDBE2C0]))
   {
     v15 = 0;
   }
@@ -364,7 +364,7 @@ LABEL_3:
       sub_29C85C908();
     }
 
-    v12 = objc_msgSend_objectForKeyedSubscript_(qword_2A1A10CE8, v9, v5);
+    v12 = objc_msgSend_objectForKeyedSubscript_(qword_2A1A10CE8, v9, dataclassCopy);
     if (v12)
     {
       v13 = objc_msgSend_sharedConnection(MEMORY[0x29EDC58E0], v10, v11);
@@ -409,17 +409,17 @@ LABEL_3:
   return v13;
 }
 
-- (BOOL)isSystemAppMCRestrictedOrRemovedForDataclass:(id)a3 forAccount:(id)a4
+- (BOOL)isSystemAppMCRestrictedOrRemovedForDataclass:(id)dataclass forAccount:(id)account
 {
   v15 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  if (objc_msgSend__isRestrictedForDataclass_account_(self, v7, v6, a4))
+  dataclassCopy = dataclass;
+  if (objc_msgSend__isRestrictedForDataclass_account_(self, v7, dataclassCopy, account))
   {
     v9 = _AALogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = dataclassCopy;
       _os_log_impl(&dword_29C856000, v9, OS_LOG_TYPE_DEFAULT, "%@ is not available due to restrictions.", &v13, 0xCu);
     }
 
@@ -428,18 +428,18 @@ LABEL_3:
 
   else
   {
-    v10 = objc_msgSend__appStatusRestrictsProvisioningForDataclass_(self, v8, v6);
+    v10 = objc_msgSend__appStatusRestrictsProvisioningForDataclass_(self, v8, dataclassCopy);
   }
 
   v11 = *MEMORY[0x29EDCA608];
   return v10;
 }
 
-- (BOOL)_appStatusRestrictsProvisioningForDataclass:(id)a3
+- (BOOL)_appStatusRestrictsProvisioningForDataclass:(id)dataclass
 {
   v20 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v7 = objc_msgSend_appBundleIdentifierForDataclass_(self, v5, v4);
+  dataclassCopy = dataclass;
+  v7 = objc_msgSend_appBundleIdentifierForDataclass_(self, v5, dataclassCopy);
   if (!v7)
   {
     v8 = _AALogSystem();
@@ -460,7 +460,7 @@ LABEL_3:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = v4;
+        v19 = dataclassCopy;
         v14 = "%@ is not available with a restricted app.";
 LABEL_11:
         _os_log_impl(&dword_29C856000, v13, OS_LOG_TYPE_DEFAULT, v14, &v18, 0xCu);
@@ -475,7 +475,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!objc_msgSend__hideDataclassWhenAppRemoved_(self, v11, v4))
+  if (!objc_msgSend__hideDataclassWhenAppRemoved_(self, v11, dataclassCopy))
   {
     goto LABEL_13;
   }
@@ -484,7 +484,7 @@ LABEL_13:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v4;
+    v19 = dataclassCopy;
     v14 = "%@ is not available when its app is removed.";
     goto LABEL_11;
   }
@@ -498,29 +498,29 @@ LABEL_14:
   return v15;
 }
 
-- (BOOL)_shouldShowDataclassWhenAppIsRemoved:(id)a3
+- (BOOL)_shouldShowDataclassWhenAppIsRemoved:(id)removed
 {
   v3 = qword_2A17951C0;
-  v5 = a3;
+  removedCopy = removed;
   if (v3 != -1)
   {
     sub_29C85C9FC();
   }
 
-  v6 = objc_msgSend_containsObject_(qword_2A17951B8, v4, v5);
+  v6 = objc_msgSend_containsObject_(qword_2A17951B8, v4, removedCopy);
 
   return v6;
 }
 
-- (BOOL)canAutoEnableDataclass:(id)a3 forAccount:(id)a4
+- (BOOL)canAutoEnableDataclass:(id)dataclass forAccount:(id)account
 {
   v39 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dataclassCopy = dataclass;
+  accountCopy = account;
+  v8 = accountCopy;
+  if (dataclassCopy)
   {
-    if (v7)
+    if (accountCopy)
     {
       goto LABEL_3;
     }
@@ -541,7 +541,7 @@ LABEL_3:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v37 = 138412290;
-    v38 = v6;
+    v38 = dataclassCopy;
     _os_log_impl(&dword_29C856000, v9, OS_LOG_TYPE_DEFAULT, "Checking if we need to auto-enable: %@", &v37, 0xCu);
   }
 
@@ -551,14 +551,14 @@ LABEL_3:
   }
 
   v14 = objc_msgSend__userVisibleDataclasses(self, v12, v13);
-  if (objc_msgSend_containsObject_(v14, v15, v6))
+  if (objc_msgSend_containsObject_(v14, v15, dataclassCopy))
   {
   }
 
   else
   {
     v18 = objc_msgSend__nonVisibleServiceDataclass(self, v16, v17);
-    v20 = objc_msgSend_containsObject_(v18, v19, v6);
+    v20 = objc_msgSend_containsObject_(v18, v19, dataclassCopy);
 
     if (!v20)
     {
@@ -568,13 +568,13 @@ LABEL_17:
     }
   }
 
-  if (objc_msgSend__isRestrictedForDataclass_account_(self, v12, v6, v8) & 1) != 0 || objc_msgSend_isEqualToString_(v6, v12, *MEMORY[0x29EDB8080]) && (objc_msgSend_isRunningInStoreDemoMode(MEMORY[0x29EDBE378], v12, v21) & 1) != 0 || (objc_msgSend_isEqualToString_(v6, v12, *MEMORY[0x29EDB80D0]) & 1) != 0 || (objc_msgSend_isEqualToString_(v6, v12, *MEMORY[0x29EDB8148]) & 1) != 0 || (objc_msgSend_isEqualToString_(v6, v12, *MEMORY[0x29EDB8118]) & 1) != 0 || (objc_msgSend_isEqualToString_(v6, v12, *MEMORY[0x29EDB8160]) & 1) != 0 || (objc_msgSend_isEqualToString_(v6, v12, *MEMORY[0x29EDB8120]))
+  if (objc_msgSend__isRestrictedForDataclass_account_(self, v12, dataclassCopy, v8) & 1) != 0 || objc_msgSend_isEqualToString_(dataclassCopy, v12, *MEMORY[0x29EDB8080]) && (objc_msgSend_isRunningInStoreDemoMode(MEMORY[0x29EDBE378], v12, v21) & 1) != 0 || (objc_msgSend_isEqualToString_(dataclassCopy, v12, *MEMORY[0x29EDB80D0]) & 1) != 0 || (objc_msgSend_isEqualToString_(dataclassCopy, v12, *MEMORY[0x29EDB8148]) & 1) != 0 || (objc_msgSend_isEqualToString_(dataclassCopy, v12, *MEMORY[0x29EDB8118]) & 1) != 0 || (objc_msgSend_isEqualToString_(dataclassCopy, v12, *MEMORY[0x29EDB8160]) & 1) != 0 || (objc_msgSend_isEqualToString_(dataclassCopy, v12, *MEMORY[0x29EDB8120]))
   {
     goto LABEL_17;
   }
 
   v28 = *MEMORY[0x29EDB8110];
-  if (objc_msgSend_isEqualToString_(v6, v12, *MEMORY[0x29EDB8110]))
+  if (objc_msgSend_isEqualToString_(dataclassCopy, v12, *MEMORY[0x29EDB8110]))
   {
     v31 = objc_msgSend_sharedManager(AADataclassManager, v29, v30);
     isSystemAppMCRestrictedOrRemovedForDataclass_forAccount = objc_msgSend_isSystemAppMCRestrictedOrRemovedForDataclass_forAccount_(v31, v32, v28, v8);
@@ -584,7 +584,7 @@ LABEL_17:
 
   else
   {
-    if (objc_msgSend_isEqualToString_(v6, v29, *MEMORY[0x29EDB80E8]) && objc_msgSend_isDeviceiPad(AADeviceModelHelper, v12, v13))
+    if (objc_msgSend_isEqualToString_(dataclassCopy, v29, *MEMORY[0x29EDB80E8]) && objc_msgSend_isDeviceiPad(AADeviceModelHelper, v12, v13))
     {
       v36 = _AALogSystem();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -602,14 +602,14 @@ LABEL_17:
 LABEL_18:
   if (objc_msgSend_aa_isManagedAppleID(v8, v12, v13))
   {
-    if (((objc_msgSend_aa_serverDisabledDataclass_(v8, v23, v6) | v22) & 1) == 0)
+    if (((objc_msgSend_aa_serverDisabledDataclass_(v8, v23, dataclassCopy) | v22) & 1) == 0)
     {
 LABEL_20:
       v24 = _AALogSystem();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         v37 = 138412290;
-        v38 = v6;
+        v38 = dataclassCopy;
         _os_log_impl(&dword_29C856000, v24, OS_LOG_TYPE_DEFAULT, "Auto-enabling dataclass: %@", &v37, 0xCu);
       }
 
@@ -627,7 +627,7 @@ LABEL_20:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     v37 = 138412290;
-    v38 = v6;
+    v38 = dataclassCopy;
     _os_log_impl(&dword_29C856000, v24, OS_LOG_TYPE_DEFAULT, "Skipping auto-enable for %@", &v37, 0xCu);
   }
 
@@ -638,12 +638,12 @@ LABEL_27:
   return v25;
 }
 
-- (BOOL)shouldProvisionDataclass:(id)a3 forAccount:(id)a4
+- (BOOL)shouldProvisionDataclass:(id)dataclass forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = v7;
-  if (!v6)
+  dataclassCopy = dataclass;
+  accountCopy = account;
+  v9 = accountCopy;
+  if (!dataclassCopy)
   {
     sub_29C85CAF8();
     if (v9)
@@ -656,13 +656,13 @@ LABEL_21:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!accountCopy)
   {
     goto LABEL_21;
   }
 
 LABEL_3:
-  if ((objc_msgSend_isSystemAppMCRestrictedOrRemovedForDataclass_forAccount_(self, v8, v6, v9) & 1) == 0 && (!objc_msgSend_isEqualToString_(v6, v10, *MEMORY[0x29EDB8128]) || objc_msgSend_isMomentsDataclassEnabled(MEMORY[0x29EDBE378], v12, v13)))
+  if ((objc_msgSend_isSystemAppMCRestrictedOrRemovedForDataclass_forAccount_(self, v8, dataclassCopy, v9) & 1) == 0 && (!objc_msgSend_isEqualToString_(dataclassCopy, v10, *MEMORY[0x29EDB8128]) || objc_msgSend_isMomentsDataclassEnabled(MEMORY[0x29EDBE378], v12, v13)))
   {
     v14 = objc_msgSend_aa_accountClass(v9, v12, v13);
     if (objc_msgSend_isEqualToString_(v14, v15, *MEMORY[0x29EDBE2C0]))
@@ -674,16 +674,16 @@ LABEL_18:
     }
 
     v17 = objc_msgSend__filteredDataclassesForAccountClass_(self, v16, v14);
-    if (objc_msgSend_containsObject_(v17, v18, v6))
+    if (objc_msgSend_containsObject_(v17, v18, dataclassCopy))
     {
-      if (objc_msgSend_isEqualToString_(v6, v19, *MEMORY[0x29EDB8138]))
+      if (objc_msgSend_isEqualToString_(dataclassCopy, v19, *MEMORY[0x29EDB8138]))
       {
         shouldProvisionNotesForAccount = objc_msgSend__shouldProvisionNotesForAccount_(self, v20, v9);
       }
 
       else
       {
-        if (!objc_msgSend_isEqualToString_(v6, v20, *MEMORY[0x29EDB8158]))
+        if (!objc_msgSend_isEqualToString_(dataclassCopy, v20, *MEMORY[0x29EDB8158]))
         {
           v11 = 1;
           goto LABEL_17;
@@ -711,15 +711,15 @@ LABEL_19:
   return v11;
 }
 
-- (BOOL)_shouldProvisionNotesForAccount:(id)a3
+- (BOOL)_shouldProvisionNotesForAccount:(id)account
 {
-  v5 = a3;
-  if (!v5)
+  accountCopy = account;
+  if (!accountCopy)
   {
     sub_29C85CBE0();
   }
 
-  v6 = objc_msgSend_aa_accountClass(v5, v3, v4);
+  v6 = objc_msgSend_aa_accountClass(accountCopy, v3, v4);
   if (objc_msgSend_isEqualToString_(v6, v7, *MEMORY[0x29EDBE2C0]))
   {
 
@@ -728,10 +728,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = objc_msgSend_aa_accountClass(v5, v8, v9);
+  v10 = objc_msgSend_aa_accountClass(accountCopy, v8, v9);
   isEqualToString = objc_msgSend_isEqualToString_(v10, v11, *MEMORY[0x29EDBE2B8]);
 
-  if ((isEqualToString & 1) != 0 || !objc_msgSend_aa_isNotesMigrated(v5, v13, v14))
+  if ((isEqualToString & 1) != 0 || !objc_msgSend_aa_isNotesMigrated(accountCopy, v13, v14))
   {
     goto LABEL_10;
   }
@@ -748,15 +748,15 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)_shouldProvisionRemindersForAccount:(id)a3
+- (BOOL)_shouldProvisionRemindersForAccount:(id)account
 {
-  v5 = a3;
-  if (!v5)
+  accountCopy = account;
+  if (!accountCopy)
   {
     sub_29C85CCC4();
   }
 
-  v6 = objc_msgSend_aa_accountClass(v5, v3, v4);
+  v6 = objc_msgSend_aa_accountClass(accountCopy, v3, v4);
   if (objc_msgSend_isEqualToString_(v6, v7, *MEMORY[0x29EDBE2C0]))
   {
 
@@ -765,10 +765,10 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = objc_msgSend_aa_accountClass(v5, v8, v9);
+  v10 = objc_msgSend_aa_accountClass(accountCopy, v8, v9);
   isEqualToString = objc_msgSend_isEqualToString_(v10, v11, *MEMORY[0x29EDBE2B8]);
 
-  if ((isEqualToString & 1) != 0 || !objc_msgSend_aa_isRemindersMigrated(v5, v13, v14))
+  if ((isEqualToString & 1) != 0 || !objc_msgSend_aa_isRemindersMigrated(accountCopy, v13, v14))
   {
     goto LABEL_10;
   }
@@ -785,15 +785,15 @@ LABEL_11:
   return v16;
 }
 
-- (void)enableDataclassesWithoutLocalDataDataclassActionsForAccount:(id)a3 completion:(id)a4
+- (void)enableDataclassesWithoutLocalDataDataclassActionsForAccount:(id)account completion:(id)completion
 {
   v27 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
-  v9 = objc_msgSend_filterDataclassesForPossibleAutoEnablementForAccount_(self, v8, v6);
+  accountCopy = account;
+  completionCopy = completion;
+  v9 = objc_msgSend_filterDataclassesForPossibleAutoEnablementForAccount_(self, v8, accountCopy);
   if (objc_msgSend_count(v9, v10, v11))
   {
-    objc_msgSend_enableDataclassesWithoutLocalDataDataclassActionsForDataclasses_fromAccount_completion_(self, v12, v9, v6, v7);
+    objc_msgSend_enableDataclassesWithoutLocalDataDataclassActionsForDataclasses_fromAccount_completion_(self, v12, v9, accountCopy, completionCopy);
   }
 
   else
@@ -804,7 +804,7 @@ LABEL_11:
       *buf = 136315394;
       *&buf[4] = "[AADataclassManager enableDataclassesWithoutLocalDataDataclassActionsForAccount:completion:]";
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = accountCopy;
       _os_log_impl(&dword_29C856000, v13, OS_LOG_TYPE_DEFAULT, "%s - There are no auto-enableable dataclasses for account %@. Proceeding with save.", buf, 0x16u);
     }
 
@@ -818,10 +818,10 @@ LABEL_11:
     v18 = 3221225472;
     v19 = sub_29C85ACF8;
     v20 = &unk_29F32A440;
-    v21 = v7;
+    v21 = completionCopy;
     v22 = buf;
     v14 = MEMORY[0x29ED46520](&v17);
-    objc_msgSend_saveAccount_onAccountStore_withCompletionHandler_(self->_storeProxy, v15, v6, self->_store, v14, v17, v18, v19, v20);
+    objc_msgSend_saveAccount_onAccountStore_withCompletionHandler_(self->_storeProxy, v15, accountCopy, self->_store, v14, v17, v18, v19, v20);
 
     _Block_object_dispose(buf, 8);
   }
@@ -829,23 +829,23 @@ LABEL_11:
   v16 = *MEMORY[0x29EDCA608];
 }
 
-- (void)enableDataclassesWithoutLocalDataDataclassActionsForDataclasses:(id)a3 fromAccount:(id)a4 completion:(id)a5
+- (void)enableDataclassesWithoutLocalDataDataclassActionsForDataclasses:(id)dataclasses fromAccount:(id)account completion:(id)completion
 {
   v24 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dataclassesCopy = dataclasses;
+  accountCopy = account;
+  completionCopy = completion;
+  if (!dataclassesCopy)
   {
     sub_29C85CE10();
   }
 
-  if (!v9)
+  if (!accountCopy)
   {
     sub_29C85CE84();
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     sub_29C85CEF8();
   }
@@ -854,9 +854,9 @@ LABEL_11:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v9;
+    v21 = accountCopy;
     v22 = 2114;
-    v23 = v8;
+    v23 = dataclassesCopy;
     _os_log_impl(&dword_29C856000, v11, OS_LOG_TYPE_DEFAULT, "Attempting to auto-enable dataclasses for account (%@): %{public}@", buf, 0x16u);
   }
 
@@ -866,12 +866,12 @@ LABEL_11:
   v16[2] = sub_29C85AFDC;
   v16[3] = &unk_29F32A490;
   objc_copyWeak(&v19, buf);
-  v12 = v10;
+  v12 = completionCopy;
   v18 = v12;
   v16[4] = self;
-  v13 = v9;
+  v13 = accountCopy;
   v17 = v13;
-  objc_msgSend__buildAutoEnableableDataclassesAndActionsForAccount_dataclassesForEnablement_completion_(self, v14, v13, v8, v16);
+  objc_msgSend__buildAutoEnableableDataclassesAndActionsForAccount_dataclassesForEnablement_completion_(self, v14, v13, dataclassesCopy, v16);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(buf);
@@ -879,18 +879,18 @@ LABEL_11:
   v15 = *MEMORY[0x29EDCA608];
 }
 
-- (void)_buildAutoEnableableDataclassesAndActionsForAccount:(id)a3 dataclassesForEnablement:(id)a4 completion:(id)a5
+- (void)_buildAutoEnableableDataclassesAndActionsForAccount:(id)account dataclassesForEnablement:(id)enablement completion:(id)completion
 {
   v63 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v46 = objc_msgSend_mutableCopy(v9, v11, v12);
+  accountCopy = account;
+  enablementCopy = enablement;
+  completionCopy = completion;
+  v46 = objc_msgSend_mutableCopy(enablementCopy, v11, v12);
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v13 = v9;
+  v13 = enablementCopy;
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v56, v62, 16);
   if (v15)
   {
@@ -906,7 +906,7 @@ LABEL_11:
           objc_enumerationMutation(v13);
         }
 
-        objc_msgSend_setEnabled_forDataclass_(v8, v16, 1, *(*(&v56 + 1) + 8 * v19++), v46);
+        objc_msgSend_setEnabled_forDataclass_(accountCopy, v16, 1, *(*(&v56 + 1) + 8 * v19++), v46);
       }
 
       while (v17 != v19);
@@ -917,10 +917,10 @@ LABEL_11:
   }
 
   v20 = objc_alloc_init(MEMORY[0x29EDB8E00]);
-  isPrimaryEmailVerified = objc_msgSend_aa_isPrimaryEmailVerified(v8, v21, v22);
+  isPrimaryEmailVerified = objc_msgSend_aa_isPrimaryEmailVerified(accountCopy, v21, v22);
   store = self->_store;
   v55 = 0;
-  v26 = objc_msgSend_dataclassActionsForAccountSave_error_(store, v25, v8, &v55);
+  v26 = objc_msgSend_dataclassActionsForAccountSave_error_(store, v25, accountCopy, &v55);
   v27 = v55;
   v30 = v27;
   if (v26)
@@ -938,11 +938,11 @@ LABEL_11:
     v48 = 3221225472;
     v49 = sub_29C85B7D0;
     v50 = &unk_29F32A4B8;
-    v51 = self;
+    selfCopy = self;
     v52 = v32;
     v33 = v46;
     v53 = v46;
-    v54 = v8;
+    v54 = accountCopy;
     v34 = v32;
     objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v26, v35, &v47);
     v38 = objc_msgSend_copy(v34, v36, v37);
@@ -955,15 +955,15 @@ LABEL_11:
   if (!v27)
   {
 LABEL_12:
-    if (isPrimaryEmailVerified != objc_msgSend_aa_isPrimaryEmailVerified(v8, v28, v29, v46, v47, v48, v49, v50, v51))
+    if (isPrimaryEmailVerified != objc_msgSend_aa_isPrimaryEmailVerified(accountCopy, v28, v29, v46, v47, v48, v49, v50, selfCopy))
     {
-      objc_msgSend_aa_setPrimaryEmailVerified_(v8, v40, 1);
+      objc_msgSend_aa_setPrimaryEmailVerified_(accountCopy, v40, 1);
     }
 
     v42 = objc_msgSend_copy(v33, v40, v41);
     objc_msgSend_setObject_forKeyedSubscript_(v20, v43, v42, @"dataclasses");
 
-    v10[2](v10, v20, 0);
+    completionCopy[2](completionCopy, v20, 0);
     goto LABEL_19;
   }
 
@@ -973,26 +973,26 @@ LABEL_12:
     sub_29C85D080();
   }
 
-  (v10)[2](v10, 0, v30);
+  (completionCopy)[2](completionCopy, 0, v30);
 LABEL_19:
 
   v45 = *MEMORY[0x29EDCA608];
 }
 
-- (id)filterDataclassesForPossibleAutoEnablementForAccount:(id)a3
+- (id)filterDataclassesForPossibleAutoEnablementForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v7 = objc_msgSend_userDefaultsDisabledDataclasses(self, v5, v6);
-  v10 = objc_msgSend_provisionedDataclasses(v4, v8, v9);
+  v10 = objc_msgSend_provisionedDataclasses(accountCopy, v8, v9);
   v13 = objc_msgSend_allObjects(v10, v11, v12);
   v19[0] = MEMORY[0x29EDCA5F8];
   v19[1] = 3221225472;
   v19[2] = sub_29C85BB0C;
   v19[3] = &unk_29F32A4E0;
-  v20 = v4;
+  v20 = accountCopy;
   v21 = v7;
   v14 = v7;
-  v15 = v4;
+  v15 = accountCopy;
   v17 = objc_msgSend_aaf_filter_(v13, v16, v19);
 
   return v17;

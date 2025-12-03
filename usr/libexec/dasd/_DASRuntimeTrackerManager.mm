@@ -1,46 +1,46 @@
 @interface _DASRuntimeTrackerManager
 + (id)sharedRuntimeTrackerManager;
-- (BOOL)doesImmediateRuntimeTrackerExist:(id)a3;
-- (BOOL)immediateRuntimeTrackerHasRemainingRuntime:(id)a3;
-- (BOOL)isTrackingActivity:(id)a3;
-- (BOOL)isTrackingDynamicRuntimeActivity:(id)a3;
-- (BOOL)isTrackingImmediateRuntimeActivity:(id)a3;
+- (BOOL)doesImmediateRuntimeTrackerExist:(id)exist;
+- (BOOL)immediateRuntimeTrackerHasRemainingRuntime:(id)runtime;
+- (BOOL)isTrackingActivity:(id)activity;
+- (BOOL)isTrackingDynamicRuntimeActivity:(id)activity;
+- (BOOL)isTrackingImmediateRuntimeActivity:(id)activity;
 - (_DASRuntimeTrackerManager)init;
 - (double)allocatedRuntime;
-- (double)allocatedRuntimeForActivity:(id)a3;
-- (double)allocatedRuntimeRemainingForActivity:(id)a3;
+- (double)allocatedRuntimeForActivity:(id)activity;
+- (double)allocatedRuntimeRemainingForActivity:(id)activity;
 - (double)excessRuntime;
-- (double)reallocatedRuntimeForActivity:(id)a3;
-- (double)taskCountWithUtilization:(float)a3;
+- (double)reallocatedRuntimeForActivity:(id)activity;
+- (double)taskCountWithUtilization:(float)utilization;
 - (double)totalReallocatedRuntime;
-- (double)unprotectedCurrentRuntimeForActivityName:(id)a3;
+- (double)unprotectedCurrentRuntimeForActivityName:(id)name;
 - (double)utilizedAllocatedRuntime;
 - (double)utilizedRuntime;
 - (id)allocationStatsPerActivity;
 - (id)description;
-- (id)groupTypesForActivity:(id)a3;
-- (id)runtimeTrackerFor:(id)a3 inGroup:(id)a4;
+- (id)groupTypesForActivity:(id)activity;
+- (id)runtimeTrackerFor:(id)for inGroup:(id)group;
 - (unint64_t)activitiesTracked;
 - (unint64_t)reallocatedTaskCount;
-- (void)activityEnded:(id)a3;
-- (void)activityEnded:(id)a3 inGroup:(id)a4;
-- (void)activityStarted:(id)a3;
-- (void)activityStarted:(id)a3 inGroup:(id)a4;
-- (void)addRuntime:(double)a3 toTrackers:(id)a4;
+- (void)activityEnded:(id)ended;
+- (void)activityEnded:(id)ended inGroup:(id)group;
+- (void)activityStarted:(id)started;
+- (void)activityStarted:(id)started inGroup:(id)group;
+- (void)addRuntime:(double)runtime toTrackers:(id)trackers;
 - (void)cleanupTimerHandler;
-- (void)logOrderingWithActivities:(id)a3;
-- (void)reallocateDuration:(double)a3 fromActivity:(id)a4;
+- (void)logOrderingWithActivities:(id)activities;
+- (void)reallocateDuration:(double)duration fromActivity:(id)activity;
 - (void)removeAllDynamicRuntimeActivityTracker;
-- (void)submitRuntimeActivityTracker:(id)a3 inGroup:(id)a4 withMaximumRuntime:(double)a5;
-- (void)updateTracker:(id)a3 withMaximumRuntime:(double)a4 conditionally:(BOOL)a5;
+- (void)submitRuntimeActivityTracker:(id)tracker inGroup:(id)group withMaximumRuntime:(double)runtime;
+- (void)updateTracker:(id)tracker withMaximumRuntime:(double)runtime conditionally:(BOOL)conditionally;
 @end
 
 @implementation _DASRuntimeTrackerManager
 
 - (void)cleanupTimerHandler
 {
-  v3 = [(_DASRuntimeTrackerManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_DASRuntimeTrackerManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [_DASDaemonLogger logForCategory:@"runtimeLimiter"];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -322,7 +322,7 @@
   block[1] = 3221225472;
   block[2] = sub_100083288;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B568 != -1)
   {
     dispatch_once(&qword_10020B568, block);
@@ -333,27 +333,27 @@
   return v2;
 }
 
-- (void)submitRuntimeActivityTracker:(id)a3 inGroup:(id)a4 withMaximumRuntime:(double)a5
+- (void)submitRuntimeActivityTracker:(id)tracker inGroup:(id)group withMaximumRuntime:(double)runtime
 {
-  v8 = a3;
-  v9 = a4;
+  trackerCopy = tracker;
+  groupCopy = group;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10008339C;
   v13[3] = &unk_1001B7100;
-  v17 = a5;
-  v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v11 = v8;
-  v12 = v9;
+  runtimeCopy = runtime;
+  v14 = groupCopy;
+  selfCopy = self;
+  v16 = trackerCopy;
+  v11 = trackerCopy;
+  v12 = groupCopy;
   dispatch_sync(queue, v13);
 }
 
-- (BOOL)doesImmediateRuntimeTrackerExist:(id)a3
+- (BOOL)doesImmediateRuntimeTrackerExist:(id)exist
 {
-  v4 = a3;
+  existCopy = exist;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -364,9 +364,9 @@
   block[2] = sub_10008367C;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v9 = v4;
+  v9 = existCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = existCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -374,49 +374,49 @@
   return queue;
 }
 
-- (void)updateTracker:(id)a3 withMaximumRuntime:(double)a4 conditionally:(BOOL)a5
+- (void)updateTracker:(id)tracker withMaximumRuntime:(double)runtime conditionally:(BOOL)conditionally
 {
-  v8 = a3;
+  trackerCopy = tracker;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000837B4;
   v11[3] = &unk_1001B7128;
   v11[4] = self;
-  v12 = v8;
-  v14 = a5;
-  v13 = a4;
-  v10 = v8;
+  v12 = trackerCopy;
+  conditionallyCopy = conditionally;
+  runtimeCopy = runtime;
+  v10 = trackerCopy;
   dispatch_sync(queue, v11);
 }
 
-- (void)addRuntime:(double)a3 toTrackers:(id)a4
+- (void)addRuntime:(double)runtime toTrackers:(id)trackers
 {
-  v6 = a4;
+  trackersCopy = trackers;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100083A58;
   block[3] = &unk_1001B5DC0;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = trackersCopy;
+  runtimeCopy = runtime;
+  v8 = trackersCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)reallocateDuration:(double)a3 fromActivity:(id)a4
+- (void)reallocateDuration:(double)duration fromActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100083D1C;
   block[3] = &unk_1001B5DC0;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = activityCopy;
+  durationCopy = duration;
+  v8 = activityCopy;
   dispatch_sync(queue, block);
 }
 
@@ -431,9 +431,9 @@
   dispatch_sync(queue, block);
 }
 
-- (BOOL)immediateRuntimeTrackerHasRemainingRuntime:(id)a3
+- (BOOL)immediateRuntimeTrackerHasRemainingRuntime:(id)runtime
 {
-  v4 = a3;
+  runtimeCopy = runtime;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -444,9 +444,9 @@
   block[2] = sub_100084030;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v9 = v4;
+  v9 = runtimeCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = runtimeCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -454,31 +454,31 @@
   return queue;
 }
 
-- (id)runtimeTrackerFor:(id)a3 inGroup:(id)a4
+- (id)runtimeTrackerFor:(id)for inGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_DASRuntimeTrackerManager *)self queue];
-  dispatch_assert_queue_V2(v8);
+  forCopy = for;
+  groupCopy = group;
+  queue = [(_DASRuntimeTrackerManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v7 isEqualToString:off_10020A088[0]])
+  if ([groupCopy isEqualToString:off_10020A088[0]])
   {
     v9 = 8;
 LABEL_7:
     v10 = *(&self->super.isa + v9);
-    v11 = [v6 name];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    name = [forCopy name];
+    v12 = [v10 objectForKeyedSubscript:name];
 
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:off_10020A090[0]])
+  if ([groupCopy isEqualToString:off_10020A090[0]])
   {
     v9 = 16;
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:off_10020A098])
+  if ([groupCopy isEqualToString:off_10020A098])
   {
     v9 = 24;
     goto LABEL_7;
@@ -490,19 +490,19 @@ LABEL_8:
   return v12;
 }
 
-- (id)groupTypesForActivity:(id)a3
+- (id)groupTypesForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = +[NSMutableSet set];
-  v6 = [v4 name];
-  v7 = [(_DASRuntimeTrackerManager *)self isTrackingDynamicRuntimeActivity:v6];
+  name = [activityCopy name];
+  v7 = [(_DASRuntimeTrackerManager *)self isTrackingDynamicRuntimeActivity:name];
 
   if (v7)
   {
     [v5 addObject:off_10020A088[0]];
   }
 
-  if ([(_DASRuntimeTrackerManager *)self isTrackingImmediateRuntimeActivity:v4])
+  if ([(_DASRuntimeTrackerManager *)self isTrackingImmediateRuntimeActivity:activityCopy])
   {
     [v5 addObject:off_10020A090[0]];
     [v5 addObject:off_10020A098];
@@ -511,10 +511,10 @@ LABEL_8:
   return v5;
 }
 
-- (void)activityStarted:(id)a3
+- (void)activityStarted:(id)started
 {
-  v4 = a3;
-  v5 = [(_DASRuntimeTrackerManager *)self groupTypesForActivity:v4];
+  startedCopy = started;
+  v5 = [(_DASRuntimeTrackerManager *)self groupTypesForActivity:startedCopy];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -534,7 +534,7 @@ LABEL_8:
           objc_enumerationMutation(v5);
         }
 
-        [(_DASRuntimeTrackerManager *)self activityStarted:v4 inGroup:*(*(&v10 + 1) + 8 * v9)];
+        [(_DASRuntimeTrackerManager *)self activityStarted:startedCopy inGroup:*(*(&v10 + 1) + 8 * v9)];
         v9 = v9 + 1;
       }
 
@@ -546,27 +546,27 @@ LABEL_8:
   }
 }
 
-- (void)activityStarted:(id)a3 inGroup:(id)a4
+- (void)activityStarted:(id)started inGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  startedCopy = started;
+  groupCopy = group;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000846D0;
   block[3] = &unk_1001B56B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = startedCopy;
+  v13 = groupCopy;
+  v9 = groupCopy;
+  v10 = startedCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)activityEnded:(id)a3
+- (void)activityEnded:(id)ended
 {
-  v4 = a3;
-  v5 = [(_DASRuntimeTrackerManager *)self groupTypesForActivity:v4];
+  endedCopy = ended;
+  v5 = [(_DASRuntimeTrackerManager *)self groupTypesForActivity:endedCopy];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -586,7 +586,7 @@ LABEL_8:
           objc_enumerationMutation(v5);
         }
 
-        [(_DASRuntimeTrackerManager *)self activityEnded:v4 inGroup:*(*(&v10 + 1) + 8 * v9)];
+        [(_DASRuntimeTrackerManager *)self activityEnded:endedCopy inGroup:*(*(&v10 + 1) + 8 * v9)];
         v9 = v9 + 1;
       }
 
@@ -598,26 +598,26 @@ LABEL_8:
   }
 }
 
-- (void)activityEnded:(id)a3 inGroup:(id)a4
+- (void)activityEnded:(id)ended inGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  groupCopy = group;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100084954;
   block[3] = &unk_1001B56B8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = endedCopy;
+  selfCopy = self;
+  v14 = groupCopy;
+  v9 = groupCopy;
+  v10 = endedCopy;
   dispatch_sync(queue, block);
 }
 
-- (double)allocatedRuntimeForActivity:(id)a3
+- (double)allocatedRuntimeForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -628,9 +628,9 @@ LABEL_8:
   block[2] = sub_100084BE8;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v10 = v4;
+  v10 = activityCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = activityCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -638,16 +638,16 @@ LABEL_8:
   return v7;
 }
 
-- (double)unprotectedCurrentRuntimeForActivityName:(id)a3
+- (double)unprotectedCurrentRuntimeForActivityName:(id)name
 {
-  v4 = a3;
-  v5 = [(_DASRuntimeTrackerManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  queue = [(_DASRuntimeTrackerManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   dynamicRuntimeTracker = self->_dynamicRuntimeTracker;
   if (dynamicRuntimeTracker)
   {
-    v7 = [(NSMutableDictionary *)dynamicRuntimeTracker objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)dynamicRuntimeTracker objectForKeyedSubscript:nameCopy];
     v8 = v7;
     if (v7)
     {
@@ -669,9 +669,9 @@ LABEL_8:
   return v10;
 }
 
-- (double)reallocatedRuntimeForActivity:(id)a3
+- (double)reallocatedRuntimeForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -682,9 +682,9 @@ LABEL_8:
   block[2] = sub_100084DE8;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v10 = v4;
+  v10 = activityCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = activityCopy;
   dispatch_sync(queue, block);
   if (v13[3] >= 0.0)
   {
@@ -700,9 +700,9 @@ LABEL_8:
   return v7;
 }
 
-- (double)allocatedRuntimeRemainingForActivity:(id)a3
+- (double)allocatedRuntimeRemainingForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -713,9 +713,9 @@ LABEL_8:
   block[2] = sub_100084F84;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v10 = v4;
+  v10 = activityCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = activityCopy;
   dispatch_sync(queue, block);
   if (v13[3] >= 0.0)
   {
@@ -848,7 +848,7 @@ LABEL_8:
   return v3;
 }
 
-- (double)taskCountWithUtilization:(float)a3
+- (double)taskCountWithUtilization:(float)utilization
 {
   v8 = 0;
   v9 = &v8;
@@ -859,7 +859,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = sub_100085EB8;
   block[3] = &unk_1001B7150;
-  v7 = a3;
+  utilizationCopy = utilization;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(queue, block);
@@ -906,9 +906,9 @@ LABEL_8:
   return v3;
 }
 
-- (void)logOrderingWithActivities:(id)a3
+- (void)logOrderingWithActivities:(id)activities
 {
-  v4 = a3;
+  activitiesCopy = activities;
   v23 = +[NSMutableArray array];
   v22 = +[NSMutableArray array];
   v5 = +[NSMutableArray array];
@@ -918,7 +918,7 @@ LABEL_8:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v4;
+  v7 = activitiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v8)
   {
@@ -936,16 +936,16 @@ LABEL_8:
         v12 = *(*(&v24 + 1) + 8 * i);
         if ([v12 isIntensive])
         {
-          v13 = [v12 name];
-          v14 = [(_DASRuntimeTrackerManager *)self isTrackingDynamicRuntimeActivity:v13];
+          name = [v12 name];
+          v14 = [(_DASRuntimeTrackerManager *)self isTrackingDynamicRuntimeActivity:name];
 
           if (v14)
           {
             [(_DASRuntimeTrackerManager *)self allocatedRuntimeRemainingForActivity:v12];
             if (v15 <= 0.0)
             {
-              v16 = [v12 name];
-              [v23 addObject:v16];
+              name2 = [v12 name];
+              [v23 addObject:name2];
             }
 
             if ([v12 timewiseEligibleAtDate:v6])
@@ -955,8 +955,8 @@ LABEL_8:
 
             else
             {
-              v17 = [v12 name];
-              [v22 addObject:v17];
+              name3 = [v12 name];
+              [v22 addObject:name3];
             }
           }
         }
@@ -1014,14 +1014,14 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isTrackingActivity:(id)a3
+- (BOOL)isTrackingActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [(_DASRuntimeTrackerManager *)self groupTypesForActivity:v4];
+  v5 = [(_DASRuntimeTrackerManager *)self groupTypesForActivity:activityCopy];
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -1029,9 +1029,9 @@ LABEL_8:
   v10[3] = &unk_1001B6A08;
   v10[4] = self;
   v11 = v5;
-  v12 = v4;
+  v12 = activityCopy;
   v13 = &v14;
-  v7 = v4;
+  v7 = activityCopy;
   v8 = v5;
   dispatch_sync(queue, v10);
   LOBYTE(v5) = *(v15 + 24);
@@ -1040,9 +1040,9 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isTrackingDynamicRuntimeActivity:(id)a3
+- (BOOL)isTrackingDynamicRuntimeActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1053,9 +1053,9 @@ LABEL_8:
   block[2] = sub_100086BA8;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v9 = v4;
+  v9 = activityCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = activityCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -1063,11 +1063,11 @@ LABEL_8:
   return queue;
 }
 
-- (BOOL)isTrackingImmediateRuntimeActivity:(id)a3
+- (BOOL)isTrackingImmediateRuntimeActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_immediateRuntimeTracker && self->_immediateRuntimeShortTracker && [v4 requestsImmediateRuntime])
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (self->_immediateRuntimeTracker && self->_immediateRuntimeShortTracker && [activityCopy requestsImmediateRuntime])
   {
     v12 = 0;
     v13 = &v12;

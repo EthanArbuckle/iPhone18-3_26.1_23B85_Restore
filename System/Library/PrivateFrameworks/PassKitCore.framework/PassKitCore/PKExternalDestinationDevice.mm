@@ -1,21 +1,21 @@
 @interface PKExternalDestinationDevice
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToExternalDestinationDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToExternalDestinationDevice:(id)device;
 - (NSString)deviceClass;
-- (PKExternalDestinationDevice)initWithCoder:(id)a3;
-- (PKExternalDestinationDevice)initWithDictionary:(id)a3;
-- (PKExternalDestinationDevice)initWithIdentifier:(id)a3 serialNumber:(id)a4;
+- (PKExternalDestinationDevice)initWithCoder:(id)coder;
+- (PKExternalDestinationDevice)initWithDictionary:(id)dictionary;
+- (PKExternalDestinationDevice)initWithIdentifier:(id)identifier serialNumber:(id)number;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKExternalDestinationDevice
 
-- (PKExternalDestinationDevice)initWithDictionary:(id)a3
+- (PKExternalDestinationDevice)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     goto LABEL_8;
   }
@@ -25,30 +25,30 @@
   v5 = [(PKExternalDestinationDevice *)&v24 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"deviceIdentifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"deviceIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"deviceSerialNumber"];
+    v8 = [dictionaryCopy PKStringForKey:@"deviceSerialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v8;
 
     if (v5->_identifier && v5->_serialNumber)
     {
-      v10 = [v4 PKStringForKey:@"name"];
+      v10 = [dictionaryCopy PKStringForKey:@"name"];
       name = v5->_name;
       v5->_name = v10;
 
-      v5->_eligibilityStatus = [v4 PKIntegerForKey:@"eligibilityStatus"];
-      v12 = [v4 PKStringForKey:@"deviceType"];
+      v5->_eligibilityStatus = [dictionaryCopy PKIntegerForKey:@"eligibilityStatus"];
+      v12 = [dictionaryCopy PKStringForKey:@"deviceType"];
       osType = v5->_osType;
       v5->_osType = v12;
 
-      v14 = [v4 PKStringForKey:@"deviceModelType"];
+      v14 = [dictionaryCopy PKStringForKey:@"deviceModelType"];
       model = v5->_model;
       v5->_model = v14;
 
-      v16 = [v4 PKDictionaryForKey:@"deviceImageUrl"];
+      v16 = [dictionaryCopy PKDictionaryForKey:@"deviceImageUrl"];
       v17 = [v16 PKDictionaryForKey:@"infobox"];
 
       v18 = [v17 PKURLForKey:@"2x"];
@@ -64,30 +64,30 @@
 
     self = 0;
 LABEL_8:
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
 LABEL_6:
   self = v5;
-  v22 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v22;
+  return selfCopy;
 }
 
-- (PKExternalDestinationDevice)initWithIdentifier:(id)a3 serialNumber:(id)a4
+- (PKExternalDestinationDevice)initWithIdentifier:(id)identifier serialNumber:(id)number
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  numberCopy = number;
   v12.receiver = self;
   v12.super_class = PKExternalDestinationDevice;
   v9 = [(PKExternalDestinationDevice *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_serialNumber, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_serialNumber, number);
     v10->_eligibilityStatus = 1;
   }
 
@@ -182,42 +182,42 @@ LABEL_9:
   }
 }
 
-- (PKExternalDestinationDevice)initWithCoder:(id)a3
+- (PKExternalDestinationDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = PKExternalDestinationDevice;
   v5 = [(PKExternalDestinationDevice *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eligibilityStatus"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eligibilityStatus"];
     v5->_eligibilityStatus = [v12 integerValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"osType"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"osType"];
     osType = v5->_osType;
     v5->_osType = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
     model = v5->_model;
     v5->_model = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageURL2x"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageURL2x"];
     imageURL2x = v5->_imageURL2x;
     v5->_imageURL2x = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageURL3x"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageURL3x"];
     imageURL3x = v5->_imageURL3x;
     v5->_imageURL3x = v19;
   }
@@ -225,20 +225,20 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v6 = a3;
-  [v6 encodeObject:identifier forKey:@"identifier"];
-  [v6 encodeObject:self->_serialNumber forKey:@"serialNumber"];
-  [v6 encodeObject:self->_name forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_serialNumber forKey:@"serialNumber"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_eligibilityStatus];
-  [v6 encodeObject:v5 forKey:@"eligibilityStatus"];
+  [coderCopy encodeObject:v5 forKey:@"eligibilityStatus"];
 
-  [v6 encodeObject:self->_osType forKey:@"osType"];
-  [v6 encodeObject:self->_model forKey:@"model"];
-  [v6 encodeObject:self->_imageURL2x forKey:@"imageURL2x"];
-  [v6 encodeObject:self->_imageURL3x forKey:@"imageURL3x"];
+  [coderCopy encodeObject:self->_osType forKey:@"osType"];
+  [coderCopy encodeObject:self->_model forKey:@"model"];
+  [coderCopy encodeObject:self->_imageURL2x forKey:@"imageURL2x"];
+  [coderCopy encodeObject:self->_imageURL3x forKey:@"imageURL3x"];
 }
 
 - (id)description
@@ -280,33 +280,33 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalDestinationDevice *)self isEqualToExternalDestinationDevice:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalDestinationDevice *)self isEqualToExternalDestinationDevice:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToExternalDestinationDevice:(id)a3
+- (BOOL)isEqualToExternalDestinationDevice:(id)device
 {
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     goto LABEL_38;
   }
 
   identifier = self->_identifier;
-  v6 = v4[1];
+  v6 = deviceCopy[1];
   if (identifier)
   {
     v7 = v6 == 0;
@@ -331,7 +331,7 @@ LABEL_9:
   }
 
   serialNumber = self->_serialNumber;
-  v9 = v4[2];
+  v9 = deviceCopy[2];
   if (serialNumber && v9)
   {
     if (([(NSString *)serialNumber isEqual:?]& 1) == 0)
@@ -346,7 +346,7 @@ LABEL_9:
   }
 
   name = self->_name;
-  v11 = v4[3];
+  v11 = deviceCopy[3];
   if (name && v11)
   {
     if (([(NSString *)name isEqual:?]& 1) == 0)
@@ -360,13 +360,13 @@ LABEL_9:
     goto LABEL_38;
   }
 
-  if (self->_eligibilityStatus != v4[4])
+  if (self->_eligibilityStatus != deviceCopy[4])
   {
     goto LABEL_38;
   }
 
   osType = self->_osType;
-  v13 = v4[5];
+  v13 = deviceCopy[5];
   if (osType && v13)
   {
     if (([(NSString *)osType isEqual:?]& 1) == 0)
@@ -381,7 +381,7 @@ LABEL_9:
   }
 
   model = self->_model;
-  v15 = v4[6];
+  v15 = deviceCopy[6];
   if (model && v15)
   {
     if (([(NSString *)model isEqual:?]& 1) == 0)
@@ -396,7 +396,7 @@ LABEL_9:
   }
 
   imageURL2x = self->_imageURL2x;
-  v17 = v4[7];
+  v17 = deviceCopy[7];
   if (!imageURL2x || !v17)
   {
     if (imageURL2x == v17)
@@ -416,7 +416,7 @@ LABEL_38:
 
 LABEL_34:
   imageURL3x = self->_imageURL3x;
-  v19 = v4[8];
+  v19 = deviceCopy[8];
   if (imageURL3x && v19)
   {
     v20 = [(NSURL *)imageURL3x isEqual:?];

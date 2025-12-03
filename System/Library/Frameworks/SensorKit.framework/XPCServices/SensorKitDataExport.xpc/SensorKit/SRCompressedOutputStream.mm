@@ -1,6 +1,6 @@
 @interface SRCompressedOutputStream
 + (void)initialize;
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length;
 - (void)close;
 - (void)dealloc;
 - (void)open;
@@ -10,7 +10,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100016930 = os_log_create("com.apple.SensorKit", "CompressedOutputStream");
   }
@@ -58,9 +58,9 @@
   if (bufferSize != dst_size)
   {
     sub_100005104(self, bufferSize - dst_size);
-    v6 = [sub_100004E68(self) mutableBytes];
+    mutableBytes = [sub_100004E68(self) mutableBytes];
     v7 = self->_bufferSize;
-    p_compression_stream->dst_ptr = v6;
+    p_compression_stream->dst_ptr = mutableBytes;
     p_compression_stream->dst_size = v7;
   }
 
@@ -110,15 +110,15 @@ LABEL_10:
   objc_setProperty_nonatomic(self, v15, 0, 80);
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length
 {
-  v4 = a4;
+  lengthCopy = length;
   p_compression_stream = &self->_compression_stream;
-  self->_compression_stream.src_ptr = a3;
-  self->_compression_stream.src_size = a4;
-  if (!a4)
+  self->_compression_stream.src_ptr = write;
+  self->_compression_stream.src_size = length;
+  if (!length)
   {
-    return v4;
+    return lengthCopy;
   }
 
   while (1)
@@ -133,7 +133,7 @@ LABEL_10:
 
       if (!p_compression_stream->src_size)
       {
-        return v4;
+        return lengthCopy;
       }
 
       if (!p_compression_stream->dst_size)
@@ -143,9 +143,9 @@ LABEL_10:
           return -1;
         }
 
-        v9 = [sub_100004E68(self) mutableBytes];
+        mutableBytes = [sub_100004E68(self) mutableBytes];
         bufferSize = self->_bufferSize;
-        p_compression_stream->dst_ptr = v9;
+        p_compression_stream->dst_ptr = mutableBytes;
         p_compression_stream->dst_size = bufferSize;
         goto LABEL_12;
       }
@@ -171,7 +171,7 @@ LABEL_10:
 LABEL_12:
     if (!p_compression_stream->src_size)
     {
-      return v4;
+      return lengthCopy;
     }
   }
 

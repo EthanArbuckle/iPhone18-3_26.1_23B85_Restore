@@ -1,7 +1,7 @@
 @interface NCLocationUpdateSimulatorDelegate
 - (NCLocationUpdateSimulatorDelegate)init;
-- (void)endSession:(id)a3;
-- (void)updateLocation:(id)a3 error:(id)a4;
+- (void)endSession:(id)session;
+- (void)updateLocation:(id)location error:(id)error;
 @end
 
 @implementation NCLocationUpdateSimulatorDelegate
@@ -21,25 +21,25 @@
   return v2;
 }
 
-- (void)updateLocation:(id)a3 error:(id)a4
+- (void)updateLocation:(id)location error:(id)error
 {
-  v6 = a3;
+  locationCopy = location;
   v9.receiver = self;
   v9.super_class = NCLocationUpdateSimulatorDelegate;
-  [(NCLocationUpdateBaseDelegate *)&v9 updateLocation:v6 error:a4];
-  if (v6 && self->_inSession)
+  [(NCLocationUpdateBaseDelegate *)&v9 updateLocation:locationCopy error:error];
+  if (locationCopy && self->_inSession)
   {
-    objc_msgSend_addObject_(self->_locations, v7, v6, v8);
+    objc_msgSend_addObject_(self->_locations, v7, locationCopy, v8);
   }
 }
 
-- (void)endSession:(id)a3
+- (void)endSession:(id)session
 {
   self->_inSession = 0;
   locations = self->_locations;
-  v7 = a3;
+  sessionCopy = session;
   objc_msgSend_removeAllObjects(locations, v4, v5, v6);
-  v7[2]();
+  sessionCopy[2]();
 }
 
 @end

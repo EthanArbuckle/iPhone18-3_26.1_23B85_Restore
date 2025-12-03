@@ -1,18 +1,18 @@
 @interface AFDataStore
 - (AFDataStore)init;
-- (AFDataStore)initWithEntries:(id)a3;
-- (AFDataStore)initWithPropertyListRepresentation:(id)a3;
-- (id)imageDataForKey:(id)a3;
+- (AFDataStore)initWithEntries:(id)entries;
+- (AFDataStore)initWithPropertyListRepresentation:(id)representation;
+- (id)imageDataForKey:(id)key;
 - (id)propertyListRepresentation;
-- (void)setImageData:(id)a3 forKey:(id)a4;
+- (void)setImageData:(id)data forKey:(id)key;
 @end
 
 @implementation AFDataStore
 
 - (id)propertyListRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:&unk_1F056DA88 forKey:@"Version"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:&unk_1F056DA88 forKey:@"Version"];
   v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSMutableDictionary count](self->_entries, "count")}];
   entries = self->_entries;
   v8[0] = MEMORY[0x1E69E9820];
@@ -22,23 +22,23 @@
   v9 = v4;
   v6 = v4;
   [(NSMutableDictionary *)entries enumerateKeysAndObjectsUsingBlock:v8];
-  [v3 setObject:v6 forKey:@"Entries"];
+  [dictionary setObject:v6 forKey:@"Entries"];
 
-  return v3;
+  return dictionary;
 }
 
 - (AFDataStore)init
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(AFDataStore *)self initWithEntries:v3];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = [(AFDataStore *)self initWithEntries:dictionary];
 
   return v4;
 }
 
-- (AFDataStore)initWithPropertyListRepresentation:(id)a3
+- (AFDataStore)initWithPropertyListRepresentation:(id)representation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v5 = objc_alloc_init(AFDictionarySchema);
   v6 = [AFCoercion typeAssertionWithClass:objc_opt_class()];
   [(AFDictionarySchema *)v5 setObjectCoercion:v6 forKey:@"Version"];
@@ -47,7 +47,7 @@
   [(AFDictionarySchema *)v5 setObjectCoercion:v7 forKey:@"Entries"];
 
   v21 = 0;
-  v8 = [(AFDictionarySchema *)v5 coerceObject:v4 error:&v21];
+  v8 = [(AFDictionarySchema *)v5 coerceObject:representationCopy error:&v21];
   v9 = v21;
   if (!v8)
   {
@@ -55,14 +55,14 @@
     if (!os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
     {
 LABEL_7:
-      v13 = 0;
+      selfCopy = 0;
       goto LABEL_8;
     }
 
     *buf = 136315650;
     v23 = "[AFDataStore initWithPropertyListRepresentation:]";
     v24 = 2112;
-    v25 = v4;
+    v25 = representationCopy;
     v26 = 2114;
     v27 = v9;
     v15 = "%s returning nil; passed invalid property list (%@): %{public}@";
@@ -74,9 +74,9 @@ LABEL_10:
   }
 
   v10 = [v8 objectForKey:@"Version"];
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
-  if (v11 != 1)
+  if (integerValue != 1)
   {
     v18 = AFSiriLogContextConnection;
     if (!os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -87,7 +87,7 @@ LABEL_10:
     *buf = 136315394;
     v23 = "[AFDataStore initWithPropertyListRepresentation:]";
     v24 = 2050;
-    v25 = v11;
+    v25 = integerValue;
     v15 = "%s unable to deserialize property list with version %{public}ld; returning nil";
     v16 = v18;
     v17 = 22;
@@ -97,11 +97,11 @@ LABEL_10:
   v12 = [v8 objectForKey:@"Entries"];
   self = [(AFDataStore *)self initWithEntries:v12];
 
-  v13 = self;
+  selfCopy = self;
 LABEL_8:
 
   v19 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
 id __50__AFDataStore_initWithPropertyListRepresentation___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -186,17 +186,17 @@ void __41__AFDataStore_propertyListRepresentation__block_invoke(uint64_t a1, voi
   [v4 setObject:v6 forKey:v5];
 }
 
-- (id)imageDataForKey:(id)a3
+- (id)imageDataForKey:(id)key
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_entries objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_entries objectForKey:keyCopy];
   v6 = v5;
   if (v5)
   {
     if ([v5 type] == 1)
     {
-      v7 = [v6 value];
+      value = [v6 value];
       goto LABEL_7;
     }
 
@@ -204,43 +204,43 @@ void __41__AFDataStore_propertyListRepresentation__block_invoke(uint64_t a1, voi
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
     {
       v11 = v8;
-      v12 = [v6 value];
+      value2 = [v6 value];
       v13 = 136315650;
       v14 = "[AFDataStore imageDataForKey:]";
       v15 = 2112;
-      v16 = v4;
+      v16 = keyCopy;
       v17 = 2112;
-      v18 = v12;
+      v18 = value2;
       _os_log_error_impl(&dword_1912FE000, v11, OS_LOG_TYPE_ERROR, "%s returning nil because value for key %@ is %@, which cannot be coerced to an image", &v13, 0x20u);
     }
   }
 
-  v7 = 0;
+  value = 0;
 LABEL_7:
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return value;
 }
 
-- (void)setImageData:(id)a3 forKey:(id)a4
+- (void)setImageData:(id)data forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_AFDataStoreEntry alloc] initWithType:1 value:v7];
+  keyCopy = key;
+  dataCopy = data;
+  v8 = [[_AFDataStoreEntry alloc] initWithType:1 value:dataCopy];
 
-  [(NSMutableDictionary *)self->_entries setObject:v8 forKey:v6];
+  [(NSMutableDictionary *)self->_entries setObject:v8 forKey:keyCopy];
 }
 
-- (AFDataStore)initWithEntries:(id)a3
+- (AFDataStore)initWithEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v9.receiver = self;
   v9.super_class = AFDataStore;
   v5 = [(AFDataStore *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [entriesCopy mutableCopy];
     entries = v5->_entries;
     v5->_entries = v6;
   }

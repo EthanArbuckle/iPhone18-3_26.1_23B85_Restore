@@ -1,14 +1,14 @@
 @interface PXMapOptionsView
 - (BOOL)enableUserTrackingButton;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXMapOptionsView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXMapOptionsView)initWithFrame:(CGRect)frame;
 - (PXMapOptionsViewDelegate)delegate;
 - (unint64_t)mapStyle;
 - (void)didTapMapModeSettingsButton;
-- (void)didTapPerspectiveButtonWithSender:(id)a3;
-- (void)setEnableUserTrackingButton:(BOOL)a3;
-- (void)setMapStyle:(unint64_t)a3;
-- (void)setPerspectiveButtonState:(unint64_t)a3 animated:(BOOL)a4;
+- (void)didTapPerspectiveButtonWithSender:(id)sender;
+- (void)setEnableUserTrackingButton:(BOOL)button;
+- (void)setMapStyle:(unint64_t)style;
+- (void)setPerspectiveButtonState:(unint64_t)state animated:(BOOL)animated;
 @end
 
 @implementation PXMapOptionsView
@@ -20,12 +20,12 @@
   return *(self + v3);
 }
 
-- (void)setMapStyle:(unint64_t)a3
+- (void)setMapStyle:(unint64_t)style
 {
   v5 = OBJC_IVAR___PXMapOptionsView_mapStyle;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
+  *(self + v5) = style;
+  selfCopy = self;
   sub_1A47C4488();
 }
 
@@ -36,14 +36,14 @@
   return *(self + v3);
 }
 
-- (void)setEnableUserTrackingButton:(BOOL)a3
+- (void)setEnableUserTrackingButton:(BOOL)button
 {
   v5 = OBJC_IVAR___PXMapOptionsView_enableUserTrackingButton;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = button;
   v6 = *((*MEMORY[0x1E69E7D40] & *self) + 0xC8);
-  v7 = self;
-  [*(v7 + OBJC_IVAR___PXMapOptionsView_userLocationButton) setHidden_];
+  selfCopy = self;
+  [*(selfCopy + OBJC_IVAR___PXMapOptionsView_userLocationButton) setHidden_];
 }
 
 - (PXMapOptionsViewDelegate)delegate
@@ -54,7 +54,7 @@
   return Strong;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [*(self + OBJC_IVAR___PXMapOptionsView_platterStackView) sizeThatFits_];
   result.height = v4;
@@ -62,19 +62,19 @@
   return result;
 }
 
-- (void)setPerspectiveButtonState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setPerspectiveButtonState:(unint64_t)state animated:(BOOL)animated
 {
-  if (*(self + OBJC_IVAR___PXMapOptionsView_perspectiveButtonState) != a3)
+  if (*(self + OBJC_IVAR___PXMapOptionsView_perspectiveButtonState) != state)
   {
-    v7 = self;
-    sub_1A47C4BE0(a3, a4);
+    selfCopy = self;
+    sub_1A47C4BE0(state, animated);
   }
 }
 
 - (void)didTapMapModeSettingsButton
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self) + 0xF8);
-  v4 = self;
+  selfCopy = self;
   v3 = v2();
   if (v3)
   {
@@ -83,10 +83,10 @@
   }
 }
 
-- (void)didTapPerspectiveButtonWithSender:(id)a3
+- (void)didTapPerspectiveButtonWithSender:(id)sender
 {
   v3 = *((*MEMORY[0x1E69E7D40] & *self) + 0xF8);
-  v5 = self;
+  selfCopy = self;
   v4 = v3();
   if (v4)
   {
@@ -95,7 +95,7 @@
   }
 }
 
-- (PXMapOptionsView)initWithFrame:(CGRect)a3
+- (PXMapOptionsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

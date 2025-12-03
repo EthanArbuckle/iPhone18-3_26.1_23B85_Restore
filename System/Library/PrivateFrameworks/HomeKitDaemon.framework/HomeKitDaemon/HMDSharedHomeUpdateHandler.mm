@@ -3,19 +3,19 @@
 - (BOOL)pendingRequestDataFromResident;
 - (HMDHome)home;
 - (HMDSharedHomeUpdateSession)pendingRequestDataFromResidentSession;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (id)logIdentifier;
 - (void)_evaluateNeedForSync;
-- (void)_receivedHomeDataFromSourceVersion:(id)a3 forceUpdateVersion:(BOOL)a4 completion:(id)a5;
-- (void)configureWithHome:(id)a3;
-- (void)didCompleteHomeUpdateSession:(id)a3 withError:(id)a4;
+- (void)_receivedHomeDataFromSourceVersion:(id)version forceUpdateVersion:(BOOL)updateVersion completion:(id)completion;
+- (void)configureWithHome:(id)home;
+- (void)didCompleteHomeUpdateSession:(id)session withError:(id)error;
 - (void)pause;
-- (void)receivedHomeDataFromSourceVersion:(id)a3 forceUpdateVersion:(BOOL)a4 completion:(id)a5;
+- (void)receivedHomeDataFromSourceVersion:(id)version forceUpdateVersion:(BOOL)updateVersion completion:(id)completion;
 - (void)registerForMessages;
 - (void)requestHomeDataSync;
-- (void)residentsChanged:(id)a3;
+- (void)residentsChanged:(id)changed;
 - (void)resume;
-- (void)setPendingRequestDataFromResidentSession:(id)a3;
+- (void)setPendingRequestDataFromResidentSession:(id)session;
 @end
 
 @implementation HMDSharedHomeUpdateHandler
@@ -47,29 +47,29 @@ void __41__HMDSharedHomeUpdateHandler_logCategory__block_invoke()
   return WeakRetained;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(HMDSharedHomeUpdateHandler *)self pendingRequestDataFromResidentSession];
-  v7 = [v6 dumpStateWithPrivacyLevel:a3];
-  [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x277D0F168]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  pendingRequestDataFromResidentSession = [(HMDSharedHomeUpdateHandler *)self pendingRequestDataFromResidentSession];
+  v7 = [pendingRequestDataFromResidentSession dumpStateWithPrivacyLevel:level];
+  [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x277D0F168]];
 
-  v8 = [v5 copy];
+  v8 = [dictionary copy];
 
   return v8;
 }
 
-- (void)didCompleteHomeUpdateSession:(id)a3 withError:(id)a4
+- (void)didCompleteHomeUpdateSession:(id)session withError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDSharedHomeUpdateHandler *)self pendingRequestDataFromResidentSession];
+  sessionCopy = session;
+  errorCopy = error;
+  pendingRequestDataFromResidentSession = [(HMDSharedHomeUpdateHandler *)self pendingRequestDataFromResidentSession];
 
-  if (v8 == v6)
+  if (pendingRequestDataFromResidentSession == sessionCopy)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -77,14 +77,14 @@ void __41__HMDSharedHomeUpdateHandler_logCategory__block_invoke()
       v14 = 138543874;
       v15 = v12;
       v16 = 2112;
-      v17 = v6;
+      v17 = sessionCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = errorCopy;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@%@ is complete with error %@, stopping", &v14, 0x20u);
     }
 
     objc_autoreleasePoolPop(v9);
-    [(HMDSharedHomeUpdateHandler *)v10 setPendingRequestDataFromResidentSession:0];
+    [(HMDSharedHomeUpdateHandler *)selfCopy setPendingRequestDataFromResidentSession:0];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -99,34 +99,34 @@ void __41__HMDSharedHomeUpdateHandler_logCategory__block_invoke()
   return v3;
 }
 
-- (void)setPendingRequestDataFromResidentSession:(id)a3
+- (void)setPendingRequestDataFromResidentSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   os_unfair_lock_lock_with_options();
   pendingRequestDataFromResidentSession = self->_pendingRequestDataFromResidentSession;
-  self->_pendingRequestDataFromResidentSession = v4;
+  self->_pendingRequestDataFromResidentSession = sessionCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (BOOL)pendingRequestDataFromResident
 {
-  v2 = [(HMDSharedHomeUpdateHandler *)self pendingRequestDataFromResidentSession];
+  pendingRequestDataFromResidentSession = [(HMDSharedHomeUpdateHandler *)self pendingRequestDataFromResidentSession];
 
-  return v2 != 0;
+  return pendingRequestDataFromResidentSession != 0;
 }
 
-- (void)_receivedHomeDataFromSourceVersion:(id)a3 forceUpdateVersion:(BOOL)a4 completion:(id)a5
+- (void)_receivedHomeDataFromSourceVersion:(id)version forceUpdateVersion:(BOOL)updateVersion completion:(id)completion
 {
-  v6 = a4;
+  updateVersionCopy = updateVersion;
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  versionCopy = version;
+  completionCopy = completion;
   v10 = +[HMDHomeKitVersion currentVersion];
-  if (([v8 isEqualToVersion:v10] & 1) != 0 || objc_msgSend(v8, "isGreaterThanVersion:", v10))
+  if (([versionCopy isEqualToVersion:v10] & 1) != 0 || objc_msgSend(versionCopy, "isGreaterThanVersion:", v10))
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -142,7 +142,7 @@ void __41__HMDSharedHomeUpdateHandler_logCategory__block_invoke()
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -152,17 +152,17 @@ void __41__HMDSharedHomeUpdateHandler_logCategory__block_invoke()
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Remote version is less than local version", buf, 0xCu);
     }
 
-    v15 = v8;
+    v15 = versionCopy;
   }
 
   objc_autoreleasePoolPop(v11);
   v18 = v15;
-  v19 = [(HMDSharedHomeUpdateHandler *)self home];
-  v20 = [v19 sharedHomeSourceVersion];
-  if (v20 && ([v18 isGreaterThanVersion:v20] & 1) == 0 && (objc_msgSend(v18, "isEqualToVersion:", v20) || !v6))
+  home = [(HMDSharedHomeUpdateHandler *)self home];
+  sharedHomeSourceVersion = [home sharedHomeSourceVersion];
+  if (sharedHomeSourceVersion && ([v18 isGreaterThanVersion:sharedHomeSourceVersion] & 1) == 0 && (objc_msgSend(v18, "isEqualToVersion:", sharedHomeSourceVersion) || !updateVersionCopy))
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = self;
+    selfCopy3 = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
@@ -175,16 +175,16 @@ void __41__HMDSharedHomeUpdateHandler_logCategory__block_invoke()
     }
 
     objc_autoreleasePoolPop(v30);
-    if (v9)
+    if (completionCopy)
     {
-      (*(v9 + 2))(v9, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy4 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
@@ -197,18 +197,18 @@ void __41__HMDSharedHomeUpdateHandler_logCategory__block_invoke()
     }
 
     objc_autoreleasePoolPop(v21);
-    v25 = [v19 emptyModelObjectWithChangeType:2];
+    v25 = [home emptyModelObjectWithChangeType:2];
     [v25 setSharedHomeSourceVersion:v18];
-    v26 = [v19 backingStore];
+    backingStore = [home backingStore];
     v27 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-    v28 = [v26 transaction:@"Update Shared Home Source Version" options:v27];
+    v28 = [backingStore transaction:@"Update Shared Home Source Version" options:v27];
 
     [v28 add:v25 withMessage:0];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __95__HMDSharedHomeUpdateHandler__receivedHomeDataFromSourceVersion_forceUpdateVersion_completion___block_invoke;
     v34[3] = &unk_278688DD0;
-    v35 = v9;
+    v35 = completionCopy;
     [v28 run:v34];
   }
 
@@ -226,33 +226,33 @@ uint64_t __95__HMDSharedHomeUpdateHandler__receivedHomeDataFromSourceVersion_for
   return result;
 }
 
-- (void)receivedHomeDataFromSourceVersion:(id)a3 forceUpdateVersion:(BOOL)a4 completion:(id)a5
+- (void)receivedHomeDataFromSourceVersion:(id)version forceUpdateVersion:(BOOL)updateVersion completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HMDSharedHomeUpdateHandler *)self workQueue];
+  versionCopy = version;
+  completionCopy = completion;
+  workQueue = [(HMDSharedHomeUpdateHandler *)self workQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __94__HMDSharedHomeUpdateHandler_receivedHomeDataFromSourceVersion_forceUpdateVersion_completion___block_invoke;
   v13[3] = &unk_278685C18;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = versionCopy;
+  updateVersionCopy = updateVersion;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = versionCopy;
+  dispatch_async(workQueue, v13);
 }
 
 - (void)_evaluateNeedForSync
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSharedHomeUpdateHandler *)self pendingRequestDataFromResidentSession];
+  pendingRequestDataFromResidentSession = [(HMDSharedHomeUpdateHandler *)self pendingRequestDataFromResidentSession];
 
-  if (v3)
+  if (pendingRequestDataFromResidentSession)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -267,11 +267,11 @@ uint64_t __95__HMDSharedHomeUpdateHandler__receivedHomeDataFromSourceVersion_for
 
   else
   {
-    v8 = [(HMDSharedHomeUpdateHandler *)self home];
+    home = [(HMDSharedHomeUpdateHandler *)self home];
     v9 = +[HMDHomeKitVersion currentVersion];
-    v10 = [v8 sharedHomeSourceVersion];
+    sharedHomeSourceVersion = [home sharedHomeSourceVersion];
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -279,23 +279,23 @@ uint64_t __95__HMDSharedHomeUpdateHandler__receivedHomeDataFromSourceVersion_for
       *buf = 138543874;
       v38 = v14;
       v39 = 2112;
-      v40 = v10;
+      v40 = sharedHomeSourceVersion;
       v41 = 2112;
       v42 = v9;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Current source version %@, device version is %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v11);
-    if ([v9 isGreaterThanVersion:v10])
+    if ([v9 isGreaterThanVersion:sharedHomeSourceVersion])
     {
-      if ([(HMDSharedHomeUpdateHandler *)v12 firstFetchComplete])
+      if ([(HMDSharedHomeUpdateHandler *)selfCopy2 firstFetchComplete])
       {
-        v15 = [v8 currentUser];
+        currentUser = [home currentUser];
         v16 = objc_autoreleasePoolPush();
-        v17 = v12;
+        v17 = selfCopy2;
         v18 = HMFGetOSLogHandle();
         v19 = os_log_type_enabled(v18, OS_LOG_TYPE_INFO);
-        if (v15)
+        if (currentUser)
         {
           if (v19)
           {
@@ -306,19 +306,19 @@ uint64_t __95__HMDSharedHomeUpdateHandler__receivedHomeDataFromSourceVersion_for
           }
 
           objc_autoreleasePoolPop(v16);
-          v21 = [v15 pairingUsername];
-          v36 = v21;
+          pairingUsername = [currentUser pairingUsername];
+          v36 = pairingUsername;
           v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
 
           v23 = [HMDSharedHomeUpdateSession alloc];
-          v24 = [(HMDSharedHomeUpdateHandler *)v17 workQueue];
-          v25 = [v8 homeManager];
-          v26 = [v25 messageDispatcher];
-          v27 = [(HMDSharedHomeUpdateSession *)v23 initWithHome:v8 delegate:v17 workQueue:v24 messagePayload:v22 messageDispatcher:v26];
+          workQueue = [(HMDSharedHomeUpdateHandler *)v17 workQueue];
+          homeManager = [home homeManager];
+          messageDispatcher = [homeManager messageDispatcher];
+          v27 = [(HMDSharedHomeUpdateSession *)v23 initWithHome:home delegate:v17 workQueue:workQueue messagePayload:v22 messageDispatcher:messageDispatcher];
           [(HMDSharedHomeUpdateHandler *)v17 setPendingRequestDataFromResidentSession:v27];
 
-          v28 = [(HMDSharedHomeUpdateHandler *)v17 pendingRequestDataFromResidentSession];
-          [v28 requestDataSync];
+          pendingRequestDataFromResidentSession2 = [(HMDSharedHomeUpdateHandler *)v17 pendingRequestDataFromResidentSession];
+          [pendingRequestDataFromResidentSession2 requestDataSync];
         }
 
         else
@@ -338,7 +338,7 @@ uint64_t __95__HMDSharedHomeUpdateHandler__receivedHomeDataFromSourceVersion_for
       else
       {
         v29 = objc_autoreleasePoolPush();
-        v30 = v12;
+        v30 = selfCopy2;
         v31 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
         {
@@ -358,13 +358,13 @@ uint64_t __95__HMDSharedHomeUpdateHandler__receivedHomeDataFromSourceVersion_for
 
 - (void)requestHomeDataSync
 {
-  v3 = [(HMDSharedHomeUpdateHandler *)self workQueue];
+  workQueue = [(HMDSharedHomeUpdateHandler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__HMDSharedHomeUpdateHandler_requestHomeDataSync__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __49__HMDSharedHomeUpdateHandler_requestHomeDataSync__block_invoke(uint64_t a1)
@@ -387,15 +387,15 @@ uint64_t __49__HMDSharedHomeUpdateHandler_requestHomeDataSync__block_invoke(uint
   return result;
 }
 
-- (void)residentsChanged:(id)a3
+- (void)residentsChanged:(id)changed
 {
-  v4 = [(HMDSharedHomeUpdateHandler *)self workQueue];
+  workQueue = [(HMDSharedHomeUpdateHandler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__HMDSharedHomeUpdateHandler_residentsChanged___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __47__HMDSharedHomeUpdateHandler_residentsChanged___block_invoke(uint64_t a1)
@@ -438,13 +438,13 @@ void __47__HMDSharedHomeUpdateHandler_residentsChanged___block_invoke(uint64_t a
 
 - (void)resume
 {
-  v3 = [(HMDSharedHomeUpdateHandler *)self workQueue];
+  workQueue = [(HMDSharedHomeUpdateHandler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__HMDSharedHomeUpdateHandler_resume__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __36__HMDSharedHomeUpdateHandler_resume__block_invoke(uint64_t a1)
@@ -474,13 +474,13 @@ uint64_t __36__HMDSharedHomeUpdateHandler_resume__block_invoke(uint64_t a1)
 
 - (void)pause
 {
-  v3 = [(HMDSharedHomeUpdateHandler *)self workQueue];
+  workQueue = [(HMDSharedHomeUpdateHandler *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__HMDSharedHomeUpdateHandler_pause__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __35__HMDSharedHomeUpdateHandler_pause__block_invoke(uint64_t a1)
@@ -510,31 +510,31 @@ uint64_t __35__HMDSharedHomeUpdateHandler_pause__block_invoke(uint64_t a1)
 
 - (id)logIdentifier
 {
-  v2 = [(HMDSharedHomeUpdateHandler *)self home];
+  home = [(HMDSharedHomeUpdateHandler *)self home];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [v2 name];
-  v5 = [v2 uuid];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@/%@", v4, v6];
+  name = [home name];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
+  v7 = [v3 stringWithFormat:@"%@/%@", name, uUIDString];
 
   return v7;
 }
 
 - (void)registerForMessages
 {
-  v3 = [(HMDSharedHomeUpdateHandler *)self home];
-  v5 = [v3 residentDeviceManager];
+  home = [(HMDSharedHomeUpdateHandler *)self home];
+  residentDeviceManager = [home residentDeviceManager];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_residentsChanged_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_residentsChanged_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:residentDeviceManager];
 }
 
-- (void)configureWithHome:(id)a3
+- (void)configureWithHome:(id)home
 {
-  obj = a3;
-  v4 = [obj workQueue];
+  obj = home;
+  workQueue = [obj workQueue];
   workQueue = self->_workQueue;
-  self->_workQueue = v4;
+  self->_workQueue = workQueue;
 
   objc_storeWeak(&self->_home, obj);
 }

@@ -1,19 +1,19 @@
 @interface STUIStatusBarCellularCondensedItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (STUIStatusBarCellularCondensedItemAccessibility)init;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation STUIStatusBarCellularCondensedItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarCellularCondensedItem" hasInstanceMethod:@"applyUpdate:toDisplayItem:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"STUIStatusBarCellularCondensedItem" hasInstanceMethod:@"dualSignalView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarDualCellularSignalView" hasInstanceMethod:@"topSignalView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUIStatusBarDualCellularSignalView" hasInstanceMethod:@"bottomSignalView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarCellularCondensedItem" hasInstanceMethod:@"applyUpdate:toDisplayItem:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarCellularCondensedItem" hasInstanceMethod:@"dualSignalView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarDualCellularSignalView" hasInstanceMethod:@"topSignalView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarDualCellularSignalView" hasInstanceMethod:@"bottomSignalView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -42,11 +42,11 @@
   return v3;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v7.receiver = self;
   v7.super_class = STUIStatusBarCellularCondensedItemAccessibility;
-  v5 = [(STUIStatusBarCellularCondensedItemAccessibility *)&v7 applyUpdate:a3 toDisplayItem:a4];
+  v5 = [(STUIStatusBarCellularCondensedItemAccessibility *)&v7 applyUpdate:update toDisplayItem:item];
   [(STUIStatusBarCellularCondensedItemAccessibility *)self _accessibilityLoadAccessibilityInformation];
 
   return v5;

@@ -1,14 +1,14 @@
 @interface PUSingleAssetLayoutTransitionCoordinator
-- (id)_layoutInfoWithDefaultDisappearance:(id)a3;
+- (id)_layoutInfoWithDefaultDisappearance:(id)disappearance;
 @end
 
 @implementation PUSingleAssetLayoutTransitionCoordinator
 
-- (id)_layoutInfoWithDefaultDisappearance:(id)a3
+- (id)_layoutInfoWithDefaultDisappearance:(id)disappearance
 {
-  v4 = a3;
-  v5 = [(PUSingleAssetLayoutTransitionCoordinator *)self fixedCoordinateSystem];
-  v6 = [v4 layoutInfoWithCoordinateSystem:v5];
+  disappearanceCopy = disappearance;
+  fixedCoordinateSystem = [(PUSingleAssetLayoutTransitionCoordinator *)self fixedCoordinateSystem];
+  v6 = [disappearanceCopy layoutInfoWithCoordinateSystem:fixedCoordinateSystem];
 
   v7 = [v6 layoutInfoWithZPosition:*&PUTilingLayoutBackgroundZPosition + *&PUTilingLayoutBackgroundZPosition];
 

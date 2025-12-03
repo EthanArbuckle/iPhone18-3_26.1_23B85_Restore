@@ -1,16 +1,16 @@
 @interface PLXPCGenericObject
-- (PLXPCGenericObject)initWithCoder:(id)a3;
+- (PLXPCGenericObject)initWithCoder:(id)coder;
 @end
 
 @implementation PLXPCGenericObject
 
-- (PLXPCGenericObject)initWithCoder:(id)a3
+- (PLXPCGenericObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 decodeXPCObjectForKey:@"_xpcObject"];
+    v5 = [coderCopy decodeXPCObjectForKey:@"_xpcObject"];
   }
 
   else

@@ -1,49 +1,49 @@
 @interface UIStatusBarBackgroundView
-- (UIStatusBarBackgroundView)initWithFrame:(CGRect)a3 style:(id)a4 backgroundColor:(id)a5;
+- (UIStatusBarBackgroundView)initWithFrame:(CGRect)frame style:(id)style backgroundColor:(id)color;
 - (id)_baseImage;
 - (id)_glowImage;
-- (void)_setGlowAnimationEnabled:(BOOL)a3 waitForNextCycle:(BOOL)a4;
-- (void)_startGlowAnimationWaitForNextCycle:(BOOL)a3;
+- (void)_setGlowAnimationEnabled:(BOOL)enabled waitForNextCycle:(BOOL)cycle;
+- (void)_startGlowAnimationWaitForNextCycle:(BOOL)cycle;
 - (void)_stopGlowAnimation;
 @end
 
 @implementation UIStatusBarBackgroundView
 
-- (UIStatusBarBackgroundView)initWithFrame:(CGRect)a3 style:(id)a4 backgroundColor:(id)a5
+- (UIStatusBarBackgroundView)initWithFrame:(CGRect)frame style:(id)style backgroundColor:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  styleCopy = style;
+  colorCopy = color;
   v23.receiver = self;
   v23.super_class = UIStatusBarBackgroundView;
-  v14 = [(UIView *)&v23 initWithFrame:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(UIView *)&v23 initWithFrame:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    objc_storeStrong(&v14->_style, a4);
-    if (v13)
+    objc_storeStrong(&height->_style, style);
+    if (colorCopy)
     {
-      [(UIView *)v15 setBackgroundColor:v13];
+      [(UIView *)v15 setBackgroundColor:colorCopy];
     }
 
-    v16 = [(UIStatusBarBackgroundView *)v15 _baseImage];
-    if (v16)
+    _baseImage = [(UIStatusBarBackgroundView *)v15 _baseImage];
+    if (_baseImage)
     {
-      v17 = [(UIView *)v15 layer];
-      [v17 setContents:{objc_msgSend(v16, "CGImage")}];
+      layer = [(UIView *)v15 layer];
+      [layer setContents:{objc_msgSend(_baseImage, "CGImage")}];
 
-      [v16 scale];
+      [_baseImage scale];
       [(UIView *)v15 setContentScaleFactor:?];
-      [v16 size];
+      [_baseImage size];
       v19 = v18;
       if (v18 > 1.0)
       {
         v20 = floor((v18 + -1.0) * 0.5);
-        v21 = [(UIView *)v15 layer];
-        [v21 setContentsCenter:{v20 / v19, 0.0, (v19 - (v20 + v20)) / v19, 1.0}];
+        layer2 = [(UIView *)v15 layer];
+        [layer2 setContentsCenter:{v20 / v19, 0.0, (v19 - (v20 + v20)) / v19, 1.0}];
       }
     }
 
@@ -53,12 +53,12 @@
   return v15;
 }
 
-- (void)_setGlowAnimationEnabled:(BOOL)a3 waitForNextCycle:(BOOL)a4
+- (void)_setGlowAnimationEnabled:(BOOL)enabled waitForNextCycle:(BOOL)cycle
 {
-  self->_glowEnabled = a3;
-  if (a3 && !self->_suppressGlow)
+  self->_glowEnabled = enabled;
+  if (enabled && !self->_suppressGlow)
   {
-    [(UIStatusBarBackgroundView *)self _startGlowAnimationWaitForNextCycle:a4];
+    [(UIStatusBarBackgroundView *)self _startGlowAnimationWaitForNextCycle:cycle];
   }
 
   else
@@ -67,25 +67,25 @@
   }
 }
 
-- (void)_startGlowAnimationWaitForNextCycle:(BOOL)a3
+- (void)_startGlowAnimationWaitForNextCycle:(BOOL)cycle
 {
   if (self->_glowView)
   {
     return;
   }
 
-  v3 = a3;
+  cycleCopy = cycle;
   if (![(UIStatusBarBackgroundView *)self _styleCanGlow])
   {
     return;
   }
 
-  v28 = [(UIStatusBarBackgroundView *)self _glowImage];
-  if (v28)
+  _glowImage = [(UIStatusBarBackgroundView *)self _glowImage];
+  if (_glowImage)
   {
     v5 = CACurrentMediaTime();
     v6 = floor(v5 / 1.5) * 1.5;
-    if (v3)
+    if (cycleCopy)
     {
       v7 = v6 + 1.5;
     }
@@ -132,30 +132,30 @@
     self->_glowView = v19;
 
     [(UIView *)self->_glowView setAutoresizingMask:18];
-    [(UIImageView *)self->_glowView setImage:v28];
+    [(UIImageView *)self->_glowView setImage:_glowImage];
     [(UIView *)self->_glowView setAlpha:0.0];
     [(UIView *)self addSubview:self->_glowView];
-    v21 = [MEMORY[0x1E6979318] animation];
-    [v21 setKeyPath:@"opacity"];
+    animation = [MEMORY[0x1E6979318] animation];
+    [animation setKeyPath:@"opacity"];
     v22 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
-    [v21 setFromValue:v22];
+    [animation setFromValue:v22];
 
     LODWORD(v23) = 1.0;
     v24 = [MEMORY[0x1E696AD98] numberWithFloat:v23];
-    [v21 setToValue:v24];
+    [animation setToValue:v24];
 
-    [v21 setDuration:0.75];
-    [v21 setRemovedOnCompletion:0];
+    [animation setDuration:0.75];
+    [animation setRemovedOnCompletion:0];
     v25 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-    [v21 setTimingFunction:v25];
+    [animation setTimingFunction:v25];
 
-    [v21 setBeginTime:v7];
+    [animation setBeginTime:v7];
     *&v26 = v16;
-    [v21 setRepeatCount:v26];
-    [v21 setFrameInterval:0.05];
-    [v21 setAutoreverses:1];
-    v27 = [(UIView *)self->_glowView layer];
-    [v27 addAnimation:v21 forKey:@"opacity"];
+    [animation setRepeatCount:v26];
+    [animation setFrameInterval:0.05];
+    [animation setAutoreverses:1];
+    layer = [(UIView *)self->_glowView layer];
+    [layer addAnimation:animation forKey:@"opacity"];
   }
 
 LABEL_21:
@@ -166,8 +166,8 @@ LABEL_21:
   glowView = self->_glowView;
   if (glowView)
   {
-    v4 = [(UIView *)glowView layer];
-    [v4 removeAllAnimations];
+    layer = [(UIView *)glowView layer];
+    [layer removeAllAnimations];
 
     [(UIView *)self->_glowView removeFromSuperview];
     v5 = self->_glowView;
@@ -177,10 +177,10 @@ LABEL_21:
 
 - (id)_baseImage
 {
-  v2 = [(UIStatusBarBackgroundView *)self _backgroundImageName];
-  if (v2)
+  _backgroundImageName = [(UIStatusBarBackgroundView *)self _backgroundImageName];
+  if (_backgroundImageName)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_Base.png", v2];
+    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_Base.png", _backgroundImageName];
     v4 = [UIImage kitImageNamed:v3];
   }
 
@@ -194,10 +194,10 @@ LABEL_21:
 
 - (id)_glowImage
 {
-  v2 = [(UIStatusBarBackgroundView *)self _backgroundImageName];
-  if (v2)
+  _backgroundImageName = [(UIStatusBarBackgroundView *)self _backgroundImageName];
+  if (_backgroundImageName)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_Glow.png", v2];
+    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_Glow.png", _backgroundImageName];
     v4 = [UIImage kitImageNamed:v3];
   }
 

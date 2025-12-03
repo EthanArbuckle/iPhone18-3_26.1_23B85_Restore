@@ -1,10 +1,10 @@
 @interface RMModelPackageDeclaration_InstallBehavior
 + (NSSet)allowedPayloadKeys;
 + (id)buildRequiredOnly;
-+ (id)buildWithInstall:(id)a3 installScript:(id)a4;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildWithInstall:(id)install installScript:(id)script;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelPackageDeclaration_InstallBehavior
@@ -23,15 +23,15 @@
   return v4;
 }
 
-+ (id)buildWithInstall:(id)a3 installScript:(id)a4
++ (id)buildWithInstall:(id)install installScript:(id)script
 {
-  v5 = a4;
-  v6 = a3;
+  scriptCopy = script;
+  installCopy = install;
   v7 = objc_opt_new();
   v8 = v7;
-  if (v6)
+  if (installCopy)
   {
-    v9 = v6;
+    v9 = installCopy;
   }
 
   else
@@ -41,7 +41,7 @@
 
   [v7 setPayloadInstall:v9];
 
-  [v8 setPayloadInstallScript:v5];
+  [v8 setPayloadInstallScript:scriptCopy];
 
   return v8;
 }
@@ -53,12 +53,12 @@
   return v2;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelPackageDeclaration_InstallBehavior allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -67,33 +67,33 @@
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
   v13 = 0;
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"Install" forKeyPath:@"payloadInstall" isRequired:0 defaultValue:@"Optional" error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Install" forKeyPath:@"payloadInstall" isRequired:0 defaultValue:@"Optional" error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"InstallScript" forKeyPath:@"payloadInstallScript" isRequired:0 defaultValue:0 error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"InstallScript" forKeyPath:@"payloadInstallScript" isRequired:0 defaultValue:0 error:error];
   }
 
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelPackageDeclaration_InstallBehavior *)self payloadInstall];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Install" value:v5 isRequired:0 defaultValue:@"Optional"];
+  payloadInstall = [(RMModelPackageDeclaration_InstallBehavior *)self payloadInstall];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Install" value:payloadInstall isRequired:0 defaultValue:@"Optional"];
 
-  v6 = [(RMModelPackageDeclaration_InstallBehavior *)self payloadInstallScript];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"InstallScript" value:v6 isRequired:0 defaultValue:0];
+  payloadInstallScript = [(RMModelPackageDeclaration_InstallBehavior *)self payloadInstallScript];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"InstallScript" value:payloadInstallScript isRequired:0 defaultValue:0];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelPackageDeclaration_InstallBehavior;
-  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadInstall copy];
   v6 = v4[2];
   v4[2] = v5;

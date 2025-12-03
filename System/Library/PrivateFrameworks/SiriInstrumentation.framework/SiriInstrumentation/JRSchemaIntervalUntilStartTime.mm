@@ -1,28 +1,28 @@
 @interface JRSchemaIntervalUntilStartTime
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaIntervalUntilStartTime)initWithDictionary:(id)a3;
-- (JRSchemaIntervalUntilStartTime)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaIntervalUntilStartTime)initWithDictionary:(id)dictionary;
+- (JRSchemaIntervalUntilStartTime)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addCandidateBooleanMask:(id)a3;
-- (void)addCandidateTimeIntervalMatrix:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCandidateBooleanMask:(id)mask;
+- (void)addCandidateTimeIntervalMatrix:(id)matrix;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaIntervalUntilStartTime
 
-- (JRSchemaIntervalUntilStartTime)initWithDictionary:(id)a3
+- (JRSchemaIntervalUntilStartTime)initWithDictionary:(id)dictionary
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = JRSchemaIntervalUntilStartTime;
   v5 = [(JRSchemaIntervalUntilStartTime *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"candidateBooleanMask"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"candidateBooleanMask"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"candidateTimeIntervalMatrix"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"candidateTimeIntervalMatrix"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,30 +117,30 @@
   return v5;
 }
 
-- (JRSchemaIntervalUntilStartTime)initWithJSON:(id)a3
+- (JRSchemaIntervalUntilStartTime)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaIntervalUntilStartTime *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaIntervalUntilStartTime *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaIntervalUntilStartTime *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -154,10 +154,10 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_candidateBooleanMasks count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -177,16 +177,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -196,12 +196,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"candidateBooleanMask"];
+    [dictionary setObject:array forKeyedSubscript:@"candidateBooleanMask"];
   }
 
   if ([(NSArray *)self->_candidateTimeIntervalMatrixs count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -221,16 +221,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -240,36 +240,36 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"candidateTimeIntervalMatrix"];
+    [dictionary setObject:array2 forKeyedSubscript:@"candidateTimeIntervalMatrix"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v21];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v21];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(JRSchemaIntervalUntilStartTime *)self candidateBooleanMasks];
-  v6 = [v4 candidateBooleanMasks];
-  if ((v5 != 0) == (v6 == 0))
+  candidateBooleanMasks = [(JRSchemaIntervalUntilStartTime *)self candidateBooleanMasks];
+  candidateBooleanMasks2 = [equalCopy candidateBooleanMasks];
+  if ((candidateBooleanMasks != 0) == (candidateBooleanMasks2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(JRSchemaIntervalUntilStartTime *)self candidateBooleanMasks];
-  if (v7)
+  candidateBooleanMasks3 = [(JRSchemaIntervalUntilStartTime *)self candidateBooleanMasks];
+  if (candidateBooleanMasks3)
   {
-    v8 = v7;
-    v9 = [(JRSchemaIntervalUntilStartTime *)self candidateBooleanMasks];
-    v10 = [v4 candidateBooleanMasks];
-    v11 = [v9 isEqual:v10];
+    v8 = candidateBooleanMasks3;
+    candidateBooleanMasks4 = [(JRSchemaIntervalUntilStartTime *)self candidateBooleanMasks];
+    candidateBooleanMasks5 = [equalCopy candidateBooleanMasks];
+    v11 = [candidateBooleanMasks4 isEqual:candidateBooleanMasks5];
 
     if (!v11)
     {
@@ -281,12 +281,12 @@
   {
   }
 
-  v5 = [(JRSchemaIntervalUntilStartTime *)self candidateTimeIntervalMatrixs];
-  v6 = [v4 candidateTimeIntervalMatrixs];
-  if ((v5 != 0) != (v6 == 0))
+  candidateBooleanMasks = [(JRSchemaIntervalUntilStartTime *)self candidateTimeIntervalMatrixs];
+  candidateBooleanMasks2 = [equalCopy candidateTimeIntervalMatrixs];
+  if ((candidateBooleanMasks != 0) != (candidateBooleanMasks2 == 0))
   {
-    v12 = [(JRSchemaIntervalUntilStartTime *)self candidateTimeIntervalMatrixs];
-    if (!v12)
+    candidateTimeIntervalMatrixs = [(JRSchemaIntervalUntilStartTime *)self candidateTimeIntervalMatrixs];
+    if (!candidateTimeIntervalMatrixs)
     {
 
 LABEL_15:
@@ -294,10 +294,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(JRSchemaIntervalUntilStartTime *)self candidateTimeIntervalMatrixs];
-    v15 = [v4 candidateTimeIntervalMatrixs];
-    v16 = [v14 isEqual:v15];
+    v13 = candidateTimeIntervalMatrixs;
+    candidateTimeIntervalMatrixs2 = [(JRSchemaIntervalUntilStartTime *)self candidateTimeIntervalMatrixs];
+    candidateTimeIntervalMatrixs3 = [equalCopy candidateTimeIntervalMatrixs];
+    v16 = [candidateTimeIntervalMatrixs2 isEqual:candidateTimeIntervalMatrixs3];
 
     if (v16)
     {
@@ -317,10 +317,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -384,54 +384,54 @@ LABEL_13:
   }
 }
 
-- (void)addCandidateTimeIntervalMatrix:(id)a3
+- (void)addCandidateTimeIntervalMatrix:(id)matrix
 {
-  v4 = a3;
+  matrixCopy = matrix;
   candidateTimeIntervalMatrixs = self->_candidateTimeIntervalMatrixs;
-  v8 = v4;
+  v8 = matrixCopy;
   if (!candidateTimeIntervalMatrixs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_candidateTimeIntervalMatrixs;
-    self->_candidateTimeIntervalMatrixs = v6;
+    self->_candidateTimeIntervalMatrixs = array;
 
-    v4 = v8;
+    matrixCopy = v8;
     candidateTimeIntervalMatrixs = self->_candidateTimeIntervalMatrixs;
   }
 
-  [(NSArray *)candidateTimeIntervalMatrixs addObject:v4];
+  [(NSArray *)candidateTimeIntervalMatrixs addObject:matrixCopy];
 }
 
-- (void)addCandidateBooleanMask:(id)a3
+- (void)addCandidateBooleanMask:(id)mask
 {
-  v4 = a3;
+  maskCopy = mask;
   candidateBooleanMasks = self->_candidateBooleanMasks;
-  v8 = v4;
+  v8 = maskCopy;
   if (!candidateBooleanMasks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_candidateBooleanMasks;
-    self->_candidateBooleanMasks = v6;
+    self->_candidateBooleanMasks = array;
 
-    v4 = v8;
+    maskCopy = v8;
     candidateBooleanMasks = self->_candidateBooleanMasks;
   }
 
-  [(NSArray *)candidateBooleanMasks addObject:v4];
+  [(NSArray *)candidateBooleanMasks addObject:maskCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = JRSchemaIntervalUntilStartTime;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(JRSchemaIntervalUntilStartTime *)self candidateBooleanMasks:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(JRSchemaIntervalUntilStartTime *)self setCandidateBooleanMasks:v7];
 
-  v8 = [(JRSchemaIntervalUntilStartTime *)self candidateTimeIntervalMatrixs];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  candidateTimeIntervalMatrixs = [(JRSchemaIntervalUntilStartTime *)self candidateTimeIntervalMatrixs];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:candidateTimeIntervalMatrixs underConditions:policyCopy];
 
   [(JRSchemaIntervalUntilStartTime *)self setCandidateTimeIntervalMatrixs:v9];
 

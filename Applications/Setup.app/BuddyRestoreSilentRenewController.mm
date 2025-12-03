@@ -1,8 +1,8 @@
 @interface BuddyRestoreSilentRenewController
 - (BuddyRestoreSilentRenewController)init;
 - (void)loadView;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation BuddyRestoreSilentRenewController
@@ -20,31 +20,31 @@
 
 - (void)loadView
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = BuddyRestoreSilentRenewController;
   [(BuddyRestoreSilentRenewController *)&v3 loadView];
-  v2 = [(BuddyRestoreSilentRenewController *)v5 navigationItem];
-  [v2 setHidesBackButton:1];
+  navigationItem = [(BuddyRestoreSilentRenewController *)selfCopy navigationItem];
+  [navigationItem setHidesBackButton:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = BuddyRestoreSilentRenewController;
-  [(BuddyRestoreSilentRenewController *)&v3 viewDidAppear:a3];
+  [(BuddyRestoreSilentRenewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = +[BYSecurityInterface sharedInterface];
   v4 = [v3 isHSA2EnabledForPrimaryAccount] ^ 1;
 
@@ -72,9 +72,9 @@
   else
   {
     v7 = +[ACAccountStore defaultStore];
-    v28 = [v7 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [v7 aa_primaryAppleAccount];
 
-    if (v28)
+    if (aa_primaryAppleAccount)
     {
       if (location[0])
       {
@@ -91,7 +91,7 @@
 
         objc_storeStrong(&v24, 0);
         v12 = +[ACAccountStore defaultStore];
-        v21 = [v12 aa_primaryAppleAccount];
+        aa_primaryAppleAccount2 = [v12 aa_primaryAppleAccount];
 
         v35[0] = kACRenewCredentialsShouldAvoidUIKey;
         v36[0] = &__kCFBooleanTrue;
@@ -104,12 +104,12 @@
         v16 = 0;
         v17 = sub_1001B8BE8;
         v18 = &unk_10032E548;
-        v19 = v34;
-        [v13 renewCredentialsForAccount:v21 options:v20 completion:&v14];
+        v19 = selfCopy;
+        [v13 renewCredentialsForAccount:aa_primaryAppleAccount2 options:v20 completion:&v14];
 
         objc_storeStrong(&v19, 0);
         objc_storeStrong(&v20, 0);
-        objc_storeStrong(&v21, 0);
+        objc_storeStrong(&aa_primaryAppleAccount2, 0);
       }
 
       v29 = 0;
@@ -136,7 +136,7 @@
       v29 = 1;
     }
 
-    objc_storeStrong(&v28, 0);
+    objc_storeStrong(&aa_primaryAppleAccount, 0);
   }
 
   objc_storeStrong(location, 0);

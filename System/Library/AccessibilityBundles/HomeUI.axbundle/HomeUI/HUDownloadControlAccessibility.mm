@@ -1,5 +1,5 @@
 @interface HUDownloadControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,21 +7,21 @@
 
 @implementation HUDownloadControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUDownloadControl" hasInstanceVariable:@"_controlTitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"HUDownloadControl" hasInstanceVariable:@"_downloadProgressView" withType:"HUDownloadProgressView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUDownloadControl" hasInstanceVariable:@"_controlTitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"HUDownloadControl" hasInstanceVariable:@"_downloadProgressView" withType:"HUDownloadProgressView"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(HUDownloadControlAccessibility *)self safeUIViewForKey:@"_controlTitleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v8.receiver = self;
   v8.super_class = HUDownloadControlAccessibility;
-  v5 = [(HUDownloadControlAccessibility *)&v8 accessibilityLabel];
+  accessibilityLabel2 = [(HUDownloadControlAccessibility *)&v8 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;
@@ -30,11 +30,11 @@
 - (id)accessibilityValue
 {
   v3 = [(HUDownloadControlAccessibility *)self safeValueForKey:@"_downloadProgressView"];
-  v4 = [v3 accessibilityValue];
+  accessibilityValue = [v3 accessibilityValue];
 
   v8.receiver = self;
   v8.super_class = HUDownloadControlAccessibility;
-  v5 = [(HUDownloadControlAccessibility *)&v8 accessibilityValue];
+  accessibilityValue2 = [(HUDownloadControlAccessibility *)&v8 accessibilityValue];
   v6 = __UIAXStringForVariables();
 
   return v6;

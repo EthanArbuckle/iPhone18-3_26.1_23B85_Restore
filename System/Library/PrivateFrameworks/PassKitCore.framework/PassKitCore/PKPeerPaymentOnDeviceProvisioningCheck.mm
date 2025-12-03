@@ -1,37 +1,37 @@
 @interface PKPeerPaymentOnDeviceProvisioningCheck
-+ (BOOL)_hasPeerPaymentPassProvisionedForAccount:(id)a3 passLibraryDataProvider:(id)a4;
-+ (BOOL)peerPaymentPassIsProvisionedOnDeviceForAccount:(id)a3;
-+ (id)_peerPaymentPassForAccount:(id)a3 passLibraryDataProvider:(id)a4;
++ (BOOL)_hasPeerPaymentPassProvisionedForAccount:(id)account passLibraryDataProvider:(id)provider;
++ (BOOL)peerPaymentPassIsProvisionedOnDeviceForAccount:(id)account;
++ (id)_peerPaymentPassForAccount:(id)account passLibraryDataProvider:(id)provider;
 @end
 
 @implementation PKPeerPaymentOnDeviceProvisioningCheck
 
-+ (BOOL)_hasPeerPaymentPassProvisionedForAccount:(id)a3 passLibraryDataProvider:(id)a4
++ (BOOL)_hasPeerPaymentPassProvisionedForAccount:(id)account passLibraryDataProvider:(id)provider
 {
-  v4 = [a1 _peerPaymentPassForAccount:a3 passLibraryDataProvider:a4];
+  v4 = [self _peerPaymentPassForAccount:account passLibraryDataProvider:provider];
   v5 = [v4 activationState] != 4;
 
   return v5;
 }
 
-+ (id)_peerPaymentPassForAccount:(id)a3 passLibraryDataProvider:(id)a4
++ (id)_peerPaymentPassForAccount:(id)account passLibraryDataProvider:(id)provider
 {
-  v5 = a4;
-  v6 = [a3 associatedPassUniqueID];
-  v7 = [v5 passWithUniqueID:v6];
+  providerCopy = provider;
+  associatedPassUniqueID = [account associatedPassUniqueID];
+  v7 = [providerCopy passWithUniqueID:associatedPassUniqueID];
 
-  v8 = [v7 paymentPass];
+  paymentPass = [v7 paymentPass];
 
-  return v8;
+  return paymentPass;
 }
 
-+ (BOOL)peerPaymentPassIsProvisionedOnDeviceForAccount:(id)a3
++ (BOOL)peerPaymentPassIsProvisionedOnDeviceForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_alloc_init(PKPassLibraryDefaultDataProvider);
-  LOBYTE(a1) = [a1 peerPaymentPassIsProvisionedOnDeviceForAccount:v4 passLibraryDataProvider:v5];
+  LOBYTE(self) = [self peerPaymentPassIsProvisionedOnDeviceForAccount:accountCopy passLibraryDataProvider:v5];
 
-  return a1;
+  return self;
 }
 
 @end

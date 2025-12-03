@@ -1,6 +1,6 @@
 @interface MPSNDArrayNormFusionDescriptor
 - (MPSNDArrayNormFusionDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSNDArrayNormFusionDescriptor
@@ -15,9 +15,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 3) = self->_normFusionType;
   *(result + 4) = LODWORD(self->_epsilon);
   *(result + 8) = self->_isLeftFused;

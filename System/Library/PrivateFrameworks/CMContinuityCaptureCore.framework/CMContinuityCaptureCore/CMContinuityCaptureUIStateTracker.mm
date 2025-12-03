@@ -10,15 +10,15 @@
 - (void)_aquireAppSuspendAssertion;
 - (void)_refreshInFaceTime;
 - (void)_releaseAppSuspendAssertion;
-- (void)_sessionDidUpdateWithConfiguration:(id)a3;
+- (void)_sessionDidUpdateWithConfiguration:(id)configuration;
 - (void)_tearDownShield;
 - (void)activeConfiguration;
-- (void)presentError:(int64_t)a3 userInfo:(id)a4;
+- (void)presentError:(int64_t)error userInfo:(id)info;
 - (void)serverXPCConnectionInterrupted;
-- (void)sessionDidUpdateWithConfiguration:(id)a3;
-- (void)setConnectionType:(int64_t)a3;
-- (void)setUIConfiguration:(id)a3;
-- (void)setUiState:(int64_t)a3;
+- (void)sessionDidUpdateWithConfiguration:(id)configuration;
+- (void)setConnectionType:(int64_t)type;
+- (void)setUIConfiguration:(id)configuration;
+- (void)setUiState:(int64_t)state;
 - (void)tearDownShield;
 @end
 
@@ -58,18 +58,18 @@ uint64_t __51__CMContinuityCaptureUIStateTracker_sharedInstance__block_invoke()
 
     v3->_active = 1;
     objc_storeStrong(&v3->_queue, MEMORY[0x277D85CD0]);
-    v6 = [MEMORY[0x277D6EDF8] sharedInstance];
-    v7 = [v6 neighborhoodActivityConduit];
-    [v7 addDelegate:v3 queue:v3->_queue];
+    mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+    neighborhoodActivityConduit = [mEMORY[0x277D6EDF8] neighborhoodActivityConduit];
+    [neighborhoodActivityConduit addDelegate:v3 queue:v3->_queue];
 
-    v8 = [MEMORY[0x277D6EDF8] sharedInstance];
-    v9 = [v8 conversationManager];
-    [v9 addDelegate:v3 queue:v3->_queue];
+    mEMORY[0x277D6EDF8]2 = [MEMORY[0x277D6EDF8] sharedInstance];
+    conversationManager = [mEMORY[0x277D6EDF8]2 conversationManager];
+    [conversationManager addDelegate:v3 queue:v3->_queue];
 
-    v10 = [MEMORY[0x277D6EDF8] sharedInstance];
-    v11 = [v10 neighborhoodActivityConduit];
-    v12 = [v11 activeSplitSessionTV];
-    v3->_inFaceTime = v12 != 0;
+    mEMORY[0x277D6EDF8]3 = [MEMORY[0x277D6EDF8] sharedInstance];
+    neighborhoodActivityConduit2 = [mEMORY[0x277D6EDF8]3 neighborhoodActivityConduit];
+    activeSplitSessionTV = [neighborhoodActivityConduit2 activeSplitSessionTV];
+    v3->_inFaceTime = activeSplitSessionTV != 0;
 
     [(CMContinuityCaptureUIStateTracker *)v3 _aquireAppSuspendAssertion];
     v13 = +[CMContinuityCaptureXPCClientCCD sharedInstance];
@@ -82,8 +82,8 @@ uint64_t __51__CMContinuityCaptureUIStateTracker_sharedInstance__block_invoke()
 - (void)_aquireAppSuspendAssertion
 {
   v3 = [MEMORY[0x277D46E38] attributeWithDomain:@"com.apple.ContinuityCaptureShieldUI" name:@"DoCapture"];
-  v4 = [MEMORY[0x277D46F50] identifierForCurrentProcess];
-  v5 = [MEMORY[0x277D47008] targetWithPid:{objc_msgSend(v4, "pid")}];
+  identifierForCurrentProcess = [MEMORY[0x277D46F50] identifierForCurrentProcess];
+  v5 = [MEMORY[0x277D47008] targetWithPid:{objc_msgSend(identifierForCurrentProcess, "pid")}];
   v6 = objc_alloc(MEMORY[0x277D46DB8]);
   v23 = v3;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
@@ -102,7 +102,7 @@ uint64_t __51__CMContinuityCaptureUIStateTracker_sharedInstance__block_invoke()
     if (v14)
     {
       v18 = 138412290;
-      v19 = self;
+      selfCopy2 = self;
       v15 = "%@ Successfully acquired app suspend assertion";
       v16 = v13;
       v17 = 12;
@@ -114,7 +114,7 @@ LABEL_6:
   else if (v14)
   {
     v18 = 138412546;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2112;
     v21 = v12;
     v15 = "%@ Failed to acquire app suspend assertion with error %@";
@@ -137,53 +137,53 @@ LABEL_6:
 
 - (int64_t)uiState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  uiState = v2->_uiState;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  uiState = selfCopy->_uiState;
+  objc_sync_exit(selfCopy);
 
   return uiState;
 }
 
-- (void)setUiState:(int64_t)a3
+- (void)setUiState:(int64_t)state
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_uiState = a3;
+  obj->_uiState = state;
   objc_sync_exit(obj);
 }
 
 - (int64_t)connectionType
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  connectionType = v2->_connectionType;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connectionType = selfCopy->_connectionType;
+  objc_sync_exit(selfCopy);
 
   return connectionType;
 }
 
-- (void)setConnectionType:(int64_t)a3
+- (void)setConnectionType:(int64_t)type
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_connectionType = a3;
+  obj->_connectionType = type;
   objc_sync_exit(obj);
 }
 
 - (CMContinuityCaptureUIConfiguration)activeConfiguration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activeConfiguration;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activeConfiguration;
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
     v4 = CMContinuityCaptureLog(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      [(CMContinuityCaptureUIStateTracker *)v2 activeConfiguration];
+      [(CMContinuityCaptureUIStateTracker *)selfCopy activeConfiguration];
     }
   }
 
@@ -192,51 +192,51 @@ LABEL_6:
 
 - (BOOL)active
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  active = v2->_active;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  active = selfCopy->_active;
+  objc_sync_exit(selfCopy);
 
   return active;
 }
 
 - (BOOL)isInFaceTime
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  inFaceTime = v2->_inFaceTime;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  inFaceTime = selfCopy->_inFaceTime;
+  objc_sync_exit(selfCopy);
 
   return inFaceTime;
 }
 
 - (BOOL)isDedicatedSession
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CMContinuityCaptureUIStateTracker *)v2 activeConfiguration];
-  v4 = [v3 isDedicated];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activeConfiguration = [(CMContinuityCaptureUIStateTracker *)selfCopy activeConfiguration];
+  isDedicated = [activeConfiguration isDedicated];
 
-  objc_sync_exit(v2);
-  return v4;
+  objc_sync_exit(selfCopy);
+  return isDedicated;
 }
 
-- (void)setUIConfiguration:(id)a3
+- (void)setUIConfiguration:(id)configuration
 {
-  v6 = a3;
-  v4 = [(CMContinuityCaptureUIStateTracker *)self activeConfiguration];
-  v5 = [v4 isEqual:v6];
+  configurationCopy = configuration;
+  activeConfiguration = [(CMContinuityCaptureUIStateTracker *)self activeConfiguration];
+  v5 = [activeConfiguration isEqual:configurationCopy];
 
   if ((v5 & 1) == 0)
   {
     if ([MEMORY[0x277CCACC8] isMainThread] && self->_queue == MEMORY[0x277D85CD0])
     {
-      [(CMContinuityCaptureUIStateTracker *)self _sessionDidUpdateWithConfiguration:v6];
+      [(CMContinuityCaptureUIStateTracker *)self _sessionDidUpdateWithConfiguration:configurationCopy];
     }
 
     else
     {
-      [(CMContinuityCaptureUIStateTracker *)self sessionDidUpdateWithConfiguration:v6];
+      [(CMContinuityCaptureUIStateTracker *)self sessionDidUpdateWithConfiguration:configurationCopy];
     }
   }
 }
@@ -246,19 +246,19 @@ LABEL_6:
   dispatch_assert_queue_V2(self->_queue);
   obj = self;
   objc_sync_enter(obj);
-  v3 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v4 = [v3 conversationManager];
-  v5 = [v4 activeConversations];
-  v6 = [v5 bs_firstObjectPassingTest:&__block_literal_global_34];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  conversationManager = [mEMORY[0x277D6EDF8] conversationManager];
+  activeConversations = [conversationManager activeConversations];
+  v6 = [activeConversations bs_firstObjectPassingTest:&__block_literal_global_34];
 
-  v7 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v8 = [v7 neighborhoodActivityConduit];
-  v9 = [v8 activeSplitSessionTV];
-  if (v9)
+  mEMORY[0x277D6EDF8]2 = [MEMORY[0x277D6EDF8] sharedInstance];
+  neighborhoodActivityConduit = [mEMORY[0x277D6EDF8]2 neighborhoodActivityConduit];
+  activeSplitSessionTV = [neighborhoodActivityConduit activeSplitSessionTV];
+  if (activeSplitSessionTV)
   {
-    v10 = [MEMORY[0x277D6EDF8] sharedInstance];
-    v11 = [v10 neighborhoodActivityConduit];
-    v12 = [v11 canPullBackConversation:v6];
+    mEMORY[0x277D6EDF8]3 = [MEMORY[0x277D6EDF8] sharedInstance];
+    neighborhoodActivityConduit2 = [mEMORY[0x277D6EDF8]3 neighborhoodActivityConduit];
+    v12 = [neighborhoodActivityConduit2 canPullBackConversation:v6];
   }
 
   else
@@ -277,9 +277,9 @@ LABEL_6:
   objc_sync_exit(obj);
 }
 
-- (void)sessionDidUpdateWithConfiguration:(id)a3
+- (void)sessionDidUpdateWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -287,8 +287,8 @@ LABEL_6:
   block[2] = __71__CMContinuityCaptureUIStateTracker_sessionDidUpdateWithConfiguration___block_invoke;
   block[3] = &unk_278D5C0A8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -301,68 +301,68 @@ void __71__CMContinuityCaptureUIStateTracker_sessionDidUpdateWithConfiguration__
   [WeakRetained _sessionDidUpdateWithConfiguration:*(a1 + 32)];
 }
 
-- (void)_sessionDidUpdateWithConfiguration:(id)a3
+- (void)_sessionDidUpdateWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = +[CMContinuityCaptureUIStateTracker sharedInstance];
-  v6 = [v5 activeConfiguration];
+  activeConfiguration = [v5 activeConfiguration];
 
   v7 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412802;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v6;
+    v21 = activeConfiguration;
     v22 = 2114;
-    v23 = v4;
+    v23 = configurationCopy;
     _os_log_impl(&dword_242545000, v7, OS_LOG_TYPE_DEFAULT, "%@ activeConfiguration change (%{public}@ -> %{public}@)", &v18, 0x20u);
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (configurationCopy)
   {
     [(CMContinuityCaptureUIStateTracker *)self willChangeValueForKey:@"activeConfiguration"];
-    v8 = self;
-    objc_sync_enter(v8);
-    if ([v4 clientDeviceModel])
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    if ([configurationCopy clientDeviceModel])
     {
-      [v6 setClientDeviceModel:{objc_msgSend(v4, "clientDeviceModel")}];
+      [activeConfiguration setClientDeviceModel:{objc_msgSend(configurationCopy, "clientDeviceModel")}];
     }
 
-    v9 = [v4 clientName];
-    [v6 setClientName:v9];
+    clientName = [configurationCopy clientName];
+    [activeConfiguration setClientName:clientName];
 
-    [v6 setCompositeState:{objc_msgSend(v4, "compositeState")}];
-    v10 = [v4 applicationIdentifier];
-    [v6 setApplicationIdentifier:v10];
+    [activeConfiguration setCompositeState:{objc_msgSend(configurationCopy, "compositeState")}];
+    applicationIdentifier = [configurationCopy applicationIdentifier];
+    [activeConfiguration setApplicationIdentifier:applicationIdentifier];
 
-    v11 = [v6 placementStepSkipped];
+    placementStepSkipped = [activeConfiguration placementStepSkipped];
 
-    if (!v11)
+    if (!placementStepSkipped)
     {
-      [v6 setPlacementStepSkipped:MEMORY[0x277CBEC28]];
+      [activeConfiguration setPlacementStepSkipped:MEMORY[0x277CBEC28]];
     }
 
-    v12 = [v6 placementStepSkipped];
-    v13 = [v12 BOOLValue];
+    placementStepSkipped2 = [activeConfiguration placementStepSkipped];
+    bOOLValue = [placementStepSkipped2 BOOLValue];
 
-    if ((v13 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v14 = [v4 placementStepSkipped];
-      [v6 setPlacementStepSkipped:v14];
+      placementStepSkipped3 = [configurationCopy placementStepSkipped];
+      [activeConfiguration setPlacementStepSkipped:placementStepSkipped3];
     }
 
-    [v6 setIsDedicated:{objc_msgSend(v4, "isDedicated")}];
-    [v6 setMicOnly:{objc_msgSend(v4, "micOnly")}];
-    v15 = [v4 remoteDisplayIdentifier];
-    [v6 setRemoteDisplayIdentifier:v15];
+    [activeConfiguration setIsDedicated:{objc_msgSend(configurationCopy, "isDedicated")}];
+    [activeConfiguration setMicOnly:{objc_msgSend(configurationCopy, "micOnly")}];
+    remoteDisplayIdentifier = [configurationCopy remoteDisplayIdentifier];
+    [activeConfiguration setRemoteDisplayIdentifier:remoteDisplayIdentifier];
 
-    v16 = [v4 participantInfo];
-    [v6 setParticipantInfo:v16];
+    participantInfo = [configurationCopy participantInfo];
+    [activeConfiguration setParticipantInfo:participantInfo];
 
-    objc_sync_exit(v8);
-    [(CMContinuityCaptureUIStateTracker *)v8 didChangeValueForKey:@"activeConfiguration"];
+    objc_sync_exit(selfCopy2);
+    [(CMContinuityCaptureUIStateTracker *)selfCopy2 didChangeValueForKey:@"activeConfiguration"];
   }
 
   else
@@ -381,7 +381,7 @@ void __71__CMContinuityCaptureUIStateTracker_sessionDidUpdateWithConfiguration__
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "%@ teardown shieldUI", buf, 0xCu);
   }
 
@@ -408,76 +408,76 @@ void __51__CMContinuityCaptureUIStateTracker_tearDownShield__block_invoke(uint64
   dispatch_assert_queue_V2(self->_queue);
   [(CMContinuityCaptureUIStateTracker *)self _releaseAppSuspendAssertion];
   [(CMContinuityCaptureUIStateTracker *)self willChangeValueForKey:@"active"];
-  v3 = self;
-  objc_sync_enter(v3);
-  active = v3->_active;
-  v3->_active = 0;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  active = selfCopy->_active;
+  selfCopy->_active = 0;
+  objc_sync_exit(selfCopy);
 
-  [(CMContinuityCaptureUIStateTracker *)v3 didChangeValueForKey:@"active"];
+  [(CMContinuityCaptureUIStateTracker *)selfCopy didChangeValueForKey:@"active"];
   if (active)
   {
-    v5 = [MEMORY[0x277D6EDF8] sharedInstance];
-    v6 = [v5 neighborhoodActivityConduit];
-    [v6 removeDelegate:v3];
+    mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+    neighborhoodActivityConduit = [mEMORY[0x277D6EDF8] neighborhoodActivityConduit];
+    [neighborhoodActivityConduit removeDelegate:selfCopy];
 
-    v8 = [MEMORY[0x277D6EDF8] sharedInstance];
-    v7 = [v8 conversationManager];
-    [v7 removeDelegate:v3];
+    mEMORY[0x277D6EDF8]2 = [MEMORY[0x277D6EDF8] sharedInstance];
+    conversationManager = [mEMORY[0x277D6EDF8]2 conversationManager];
+    [conversationManager removeDelegate:selfCopy];
   }
 }
 
 - (void)serverXPCConnectionInterrupted
 {
   v3 = +[CMContinuityCaptureUIStateTracker sharedInstance];
-  v6 = [v3 activeConfiguration];
+  activeConfiguration = [v3 activeConfiguration];
 
-  v4 = v6;
-  if (v6)
+  v4 = activeConfiguration;
+  if (activeConfiguration)
   {
-    v5 = [v6 copy];
+    v5 = [activeConfiguration copy];
     [v5 setCompositeState:16];
     [(CMContinuityCaptureUIStateTracker *)self sessionDidUpdateWithConfiguration:v5];
 
-    v4 = v6;
+    v4 = activeConfiguration;
   }
 }
 
-- (void)presentError:(int64_t)a3 userInfo:(id)a4
+- (void)presentError:(int64_t)error userInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   v7 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:error];
     v12 = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2080;
     v15 = "[CMContinuityCaptureUIStateTracker presentError:userInfo:]";
     v16 = 2112;
     v17 = v8;
     v18 = 2112;
-    v19 = v6;
+    v19 = infoCopy;
     _os_log_impl(&dword_242545000, v7, OS_LOG_TYPE_DEFAULT, "%@ %s %@ %@", &v12, 0x2Au);
   }
 
   v9 = objc_opt_new();
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:error];
   [v9 setObject:v10 forKeyedSubscript:@"CMContinuityCaptureUIStateTrackerErrorCodeKey"];
 
-  if (v6)
+  if (infoCopy)
   {
-    [v9 addEntriesFromDictionary:v6];
+    [v9 addEntriesFromDictionary:infoCopy];
   }
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 postNotificationName:CMContinuityCaptureUIStateErrorNotification object:0 userInfo:v9];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:CMContinuityCaptureUIStateErrorNotification object:0 userInfo:v9];
 }
 
 - (void)activeConfiguration
 {
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_242545000, a2, OS_LOG_TYPE_ERROR, "%@ activeConfiguration shouldn't be nil", &v2, 0xCu);
 }
 

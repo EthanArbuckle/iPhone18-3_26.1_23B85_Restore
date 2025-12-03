@@ -1,17 +1,17 @@
 @interface FigMetalHistogram
-- (FigMetalHistogram)initWithMetalContext:(id)a3;
-- (int)singleComponentCPUAverageInputPixelBuffer:(__CVBuffer *)a3 validRect:(CGRect)a4 outputAverage:(float *)a5;
-- (int)singleComponentCPUHistogramInputPixelBuffer:(__CVBuffer *)a3 validRect:(CGRect)a4 subSampleX:(unsigned int)a5 subSampleY:(unsigned int)a6 outputHistogram:(id *)a7;
-- (int)singleComponentGPUAverageInputPixelBuffer:(__CVBuffer *)a3 validRect:(CGRect)a4 outputAverage:(float *)a5;
-- (int)singleComponentGPUHistogramInputPixelBuffer:(__CVBuffer *)a3 validRect:(CGRect)a4 outputHistogram:(id *)a5;
+- (FigMetalHistogram)initWithMetalContext:(id)context;
+- (int)singleComponentCPUAverageInputPixelBuffer:(__CVBuffer *)buffer validRect:(CGRect)rect outputAverage:(float *)average;
+- (int)singleComponentCPUHistogramInputPixelBuffer:(__CVBuffer *)buffer validRect:(CGRect)rect subSampleX:(unsigned int)x subSampleY:(unsigned int)y outputHistogram:(id *)histogram;
+- (int)singleComponentGPUAverageInputPixelBuffer:(__CVBuffer *)buffer validRect:(CGRect)rect outputAverage:(float *)average;
+- (int)singleComponentGPUHistogramInputPixelBuffer:(__CVBuffer *)buffer validRect:(CGRect)rect outputHistogram:(id *)histogram;
 - (uint64_t)_initShaders;
 @end
 
 @implementation FigMetalHistogram
 
-- (FigMetalHistogram)initWithMetalContext:(id)a3
+- (FigMetalHistogram)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = FigMetalHistogram;
   v6 = [(FigMetalHistogram *)&v13 init];
@@ -24,7 +24,7 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   if (!v7->_metalContext)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -64,25 +64,25 @@ LABEL_8:
   return v11;
 }
 
-- (int)singleComponentGPUHistogramInputPixelBuffer:(__CVBuffer *)a3 validRect:(CGRect)a4 outputHistogram:(id *)a5
+- (int)singleComponentGPUHistogramInputPixelBuffer:(__CVBuffer *)buffer validRect:(CGRect)rect outputHistogram:(id *)histogram
 {
-  if (!a3)
+  if (!buffer)
   {
     [FigMetalHistogram singleComponentGPUHistogramInputPixelBuffer:validRect:outputHistogram:];
     return -12780;
   }
 
-  if (!a5)
+  if (!histogram)
   {
     [FigMetalHistogram singleComponentGPUHistogramInputPixelBuffer:validRect:outputHistogram:];
     return -12780;
   }
 
-  y = a4.origin.y;
-  height = a4.size.height;
-  width = a4.size.width;
-  __dst = a4.origin.x;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  y = rect.origin.y;
+  height = rect.size.height;
+  width = rect.size.width;
+  __dst = rect.origin.x;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   result = -12780;
   v10 = 10;
   if (PixelFormatType > 796423727)
@@ -210,8 +210,8 @@ LABEL_35:
   }
 
 LABEL_38:
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
   v42.size.width = width;
   v42.origin.x = __dst;
   v42.origin.y = y;
@@ -243,32 +243,32 @@ LABEL_38:
   v15 = vmovn_s32(vuzp1q_s32(vcvtq_s64_f64(v16), vcvtq_s64_f64(v17)));
 LABEL_47:
   v41[0] = v15;
-  v18 = [(FigMetalContext *)self->_metalContext commandBuffer];
-  if (!v18)
+  commandBuffer = [(FigMetalContext *)self->_metalContext commandBuffer];
+  if (!commandBuffer)
   {
     [FigMetalHistogram singleComponentGPUHistogramInputPixelBuffer:v40 validRect:? outputHistogram:?];
     return v40[0];
   }
 
-  v19 = v18;
-  v20 = [(FigMetalContext *)self->_metalContext bindPixelBufferToMTL2DTexture:a3 pixelFormat:v10 usage:1 textureSize:0 plane:WidthOfPlane, HeightOfPlane];
-  if (!v20)
+  v19 = commandBuffer;
+  heightOfPlane = [(FigMetalContext *)self->_metalContext bindPixelBufferToMTL2DTexture:buffer pixelFormat:v10 usage:1 textureSize:0 plane:WidthOfPlane, HeightOfPlane];
+  if (!heightOfPlane)
   {
     [FigMetalHistogram singleComponentGPUHistogramInputPixelBuffer:v19 validRect:? outputHistogram:?];
     return -12786;
   }
 
-  v21 = v20;
-  v22 = [v19 computeCommandEncoder];
-  if (!v22)
+  v21 = heightOfPlane;
+  computeCommandEncoder = [v19 computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     [FigMetalHistogram singleComponentGPUHistogramInputPixelBuffer:v21 validRect:v19 outputHistogram:?];
     return -12786;
   }
 
-  v23 = v22;
-  v24 = [(FigMetalContext *)self->_metalContext device];
-  v25 = [v24 newBufferWithLength:1024 options:0];
+  v23 = computeCommandEncoder;
+  device = [(FigMetalContext *)self->_metalContext device];
+  v25 = [device newBufferWithLength:1024 options:0];
 
   bzero([v25 contents], 0x400uLL);
   v26 = (([v21 width] >> 1) + 15) >> 4;
@@ -303,7 +303,7 @@ LABEL_47:
   }
 
   [(FigMetalContext *)self->_metalContext commitAndWait];
-  memcpy(a5, [v25 contents], sizeof($A1886C520643A86ACC5362F227C8A889));
+  memcpy(histogram, [v25 contents], sizeof($A1886C520643A86ACC5362F227C8A889));
 
   return 0;
 }
@@ -331,32 +331,32 @@ void __91__FigMetalHistogram_singleComponentGPUHistogramInputPixelBuffer_validRe
   }
 }
 
-- (int)singleComponentCPUHistogramInputPixelBuffer:(__CVBuffer *)a3 validRect:(CGRect)a4 subSampleX:(unsigned int)a5 subSampleY:(unsigned int)a6 outputHistogram:(id *)a7
+- (int)singleComponentCPUHistogramInputPixelBuffer:(__CVBuffer *)buffer validRect:(CGRect)rect subSampleX:(unsigned int)x subSampleY:(unsigned int)y outputHistogram:(id *)histogram
 {
-  if (!a3)
+  if (!buffer)
   {
     [FigMetalHistogram singleComponentCPUHistogramInputPixelBuffer:validRect:subSampleX:subSampleY:outputHistogram:];
     return -12780;
   }
 
-  if (!a7)
+  if (!histogram)
   {
     [FigMetalHistogram singleComponentCPUHistogramInputPixelBuffer:validRect:subSampleX:subSampleY:outputHistogram:];
     return -12780;
   }
 
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if ((CVPixelBufferGetPixelFormatType(a3) & 0xFFFFFFEF) != 0x34323066)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if ((CVPixelBufferGetPixelFormatType(buffer) & 0xFFFFFFEF) != 0x34323066)
   {
     [FigMetalHistogram singleComponentCPUHistogramInputPixelBuffer:validRect:subSampleX:subSampleY:outputHistogram:];
     return -12780;
   }
 
-  bzero(a7, 0x400uLL);
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
+  bzero(histogram, 0x400uLL);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
   v29.origin.x = x;
   v29.origin.y = y;
   v29.size.width = width;
@@ -364,7 +364,7 @@ void __91__FigMetalHistogram_singleComponentGPUHistogramInputPixelBuffer_validRe
   v28 = BytesPerRowOfPlane;
   if (!CGRectIsNull(v29))
   {
-    WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
+    WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
     if (x < 0.0 || x + width > WidthOfPlane || width <= 0.0)
     {
       [FigMetalHistogram singleComponentCPUHistogramInputPixelBuffer:validRect:subSampleX:subSampleY:outputHistogram:];
@@ -372,11 +372,11 @@ void __91__FigMetalHistogram_singleComponentGPUHistogramInputPixelBuffer_validRe
 
     else
     {
-      HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+      HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
       if (y >= 0.0 && y + height <= HeightOfPlane && height > 0.0)
       {
-        v18 = x;
-        v19 = y;
+        xCopy = x;
+        yCopy = y;
         v16 = width;
         v17 = height;
         goto LABEL_13;
@@ -388,38 +388,38 @@ void __91__FigMetalHistogram_singleComponentGPUHistogramInputPixelBuffer_validRe
     return -12780;
   }
 
-  v16 = CVPixelBufferGetWidthOfPlane(a3, 0);
-  v17 = CVPixelBufferGetHeightOfPlane(a3, 0);
-  v18 = 0;
-  v19 = 0;
+  v16 = CVPixelBufferGetWidthOfPlane(buffer, 0);
+  v17 = CVPixelBufferGetHeightOfPlane(buffer, 0);
+  xCopy = 0;
+  yCopy = 0;
 LABEL_13:
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
   if (*MEMORY[0x1E695FF58] == 1)
   {
     kdebug_trace();
   }
 
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-  v23 = v19 + (a6 >> 1);
-  if (v23 < v17 + v19)
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+  v23 = yCopy + (y >> 1);
+  if (v23 < v17 + yCopy)
   {
-    v24 = v16 + v18;
+    v24 = v16 + xCopy;
     v25 = &BaseAddressOfPlane[v23 * v28];
     do
     {
-      for (i = v18 + (a5 >> 1); i < v24; i += a5)
+      for (i = xCopy + (x >> 1); i < v24; i += x)
       {
-        ++a7->var0[v25[i]];
+        ++histogram->var0[v25[i]];
       }
 
-      v25 += v28 * a6;
-      v23 += a6;
+      v25 += v28 * y;
+      v23 += y;
     }
 
-    while (v23 < v17 + v19);
+    while (v23 < v17 + yCopy);
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   if (*MEMORY[0x1E695FF58] == 1)
   {
     kdebug_trace();
@@ -428,20 +428,20 @@ LABEL_13:
   return 0;
 }
 
-- (int)singleComponentGPUAverageInputPixelBuffer:(__CVBuffer *)a3 validRect:(CGRect)a4 outputAverage:(float *)a5
+- (int)singleComponentGPUAverageInputPixelBuffer:(__CVBuffer *)buffer validRect:(CGRect)rect outputAverage:(float *)average
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   bzero(v25, 0x400uLL);
-  if (CVPixelBufferGetPixelFormatType(a3) != 1278226488)
+  if (CVPixelBufferGetPixelFormatType(buffer) != 1278226488)
   {
     [FigMetalHistogram singleComponentGPUAverageInputPixelBuffer:validRect:outputAverage:];
     return -12780;
   }
 
-  if (!a5)
+  if (!average)
   {
     [FigMetalHistogram singleComponentGPUAverageInputPixelBuffer:validRect:outputAverage:];
     return -12780;
@@ -453,19 +453,19 @@ LABEL_13:
   v26.size.height = height;
   if (CGRectIsNull(v26))
   {
-    WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-    HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+    WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
+    HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
     goto LABEL_12;
   }
 
-  v14 = CVPixelBufferGetWidthOfPlane(a3, 0);
+  v14 = CVPixelBufferGetWidthOfPlane(buffer, 0);
   if (x < 0.0 || x + width > v14 || width <= 0.0)
   {
     [FigMetalHistogram singleComponentGPUAverageInputPixelBuffer:validRect:outputAverage:];
     return -12780;
   }
 
-  v15 = CVPixelBufferGetHeightOfPlane(a3, 0);
+  v15 = CVPixelBufferGetHeightOfPlane(buffer, 0);
   if (y < 0.0 || y + height > v15 || height <= 0.0)
   {
     [FigMetalHistogram singleComponentGPUAverageInputPixelBuffer:validRect:outputAverage:];
@@ -475,10 +475,10 @@ LABEL_13:
   WidthOfPlane = width;
   HeightOfPlane = height;
 LABEL_12:
-  v16 = [(FigMetalHistogram *)self singleComponentGPUHistogramInputPixelBuffer:a3 validRect:v25 outputHistogram:x, y, width, height];
-  if (v16)
+  height = [(FigMetalHistogram *)self singleComponentGPUHistogramInputPixelBuffer:buffer validRect:v25 outputHistogram:x, y, width, height];
+  if (height)
   {
-    v23 = v16;
+    v23 = height;
     [FigMetalHistogram singleComponentGPUAverageInputPixelBuffer:validRect:outputAverage:];
   }
 
@@ -501,44 +501,44 @@ LABEL_12:
 
     while (v17 != 1024);
     v23 = 0;
-    *a5 = vaddvq_s64(vaddq_s64(v19, v21)) / ((WidthOfPlane * HeightOfPlane) * 255.0);
+    *average = vaddvq_s64(vaddq_s64(v19, v21)) / ((WidthOfPlane * HeightOfPlane) * 255.0);
   }
 
   return v23;
 }
 
-- (int)singleComponentCPUAverageInputPixelBuffer:(__CVBuffer *)a3 validRect:(CGRect)a4 outputAverage:(float *)a5
+- (int)singleComponentCPUAverageInputPixelBuffer:(__CVBuffer *)buffer validRect:(CGRect)rect outputAverage:(float *)average
 {
-  if (!a3)
+  if (!buffer)
   {
     [FigMetalHistogram singleComponentCPUAverageInputPixelBuffer:validRect:outputAverage:];
     return -12780;
   }
 
-  if (!a5)
+  if (!average)
   {
     [FigMetalHistogram singleComponentCPUAverageInputPixelBuffer:validRect:outputAverage:];
     return -12780;
   }
 
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (CVPixelBufferGetPixelFormatType(a3) != 1278226488)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CVPixelBufferGetPixelFormatType(buffer) != 1278226488)
   {
     [FigMetalHistogram singleComponentCPUAverageInputPixelBuffer:validRect:outputAverage:];
     return -12780;
   }
 
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
   v25.origin.x = x;
   v25.origin.y = y;
   v25.size.width = width;
   v25.size.height = height;
   if (!CGRectIsNull(v25))
   {
-    WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
+    WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
     if (x < 0.0 || x + width > WidthOfPlane || width <= 0.0)
     {
       [FigMetalHistogram singleComponentCPUAverageInputPixelBuffer:validRect:outputAverage:];
@@ -546,7 +546,7 @@ LABEL_12:
 
     else
     {
-      HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+      HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
       if (y >= 0.0 && y + height <= HeightOfPlane && height > 0.0)
       {
         v14 = x;
@@ -562,13 +562,13 @@ LABEL_12:
     return -12780;
   }
 
-  v12 = CVPixelBufferGetWidthOfPlane(a3, 0);
-  v13 = CVPixelBufferGetHeightOfPlane(a3, 0);
+  v12 = CVPixelBufferGetWidthOfPlane(buffer, 0);
+  v13 = CVPixelBufferGetHeightOfPlane(buffer, 0);
   v14 = 0;
   v15 = 0;
 LABEL_13:
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
   v19 = v13 + v15;
   v20 = 0.0;
   if (v15 < v13 + v15)
@@ -596,24 +596,24 @@ LABEL_13:
     v20 = v21;
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   result = 0;
-  *a5 = v20 / ((v13 * v12) * 255.0);
+  *average = v20 / ((v13 * v12) * 255.0);
   return result;
 }
 
 - (uint64_t)_initShaders
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [*(a1 + 8) computePipelineStateFor:@"histogramSingleComponent" constants:0];
-  v3 = *(a1 + 16);
-  *(a1 + 16) = v2;
+  v2 = [*(self + 8) computePipelineStateFor:@"histogramSingleComponent" constants:0];
+  v3 = *(self + 16);
+  *(self + 16) = v2;
 
-  if (*(a1 + 16))
+  if (*(self + 16))
   {
     return 0;
   }

@@ -2,20 +2,20 @@
 - (BOOL)isCompleted;
 - (CPLResourceTransferTask)transferTask;
 - (NSArray)taskIDs;
-- (PLCloudInMemoryDownloadTask)initWithResourceID:(id)a3 taskID:(id)a4 completionHandler:(id)a5;
-- (void)addClientWithTaskID:(id)a3 completionHandler:(id)a4;
-- (void)cancelClientWithTaskID:(id)a3;
-- (void)reportCompletionWithData:(id)a3 error:(id)a4;
-- (void)setTransferTask:(id)a3;
+- (PLCloudInMemoryDownloadTask)initWithResourceID:(id)d taskID:(id)iD completionHandler:(id)handler;
+- (void)addClientWithTaskID:(id)d completionHandler:(id)handler;
+- (void)cancelClientWithTaskID:(id)d;
+- (void)reportCompletionWithData:(id)data error:(id)error;
+- (void)setTransferTask:(id)task;
 @end
 
 @implementation PLCloudInMemoryDownloadTask
 
-- (void)reportCompletionWithData:(id)a3 error:(id)a4
+- (void)reportCompletionWithData:(id)data error:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   v8 = [(NSMapTable *)self->_taskIDsToCompletionHandlers copy];
   self->_completed = 1;
@@ -24,8 +24,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [v8 keyEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  keyEnumerator = [v8 keyEnumerator];
+  v10 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -36,15 +36,15 @@
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
         v15 = [v8 objectForKey:v14];
-        (v15)[2](v15, v14, v6, v7);
+        (v15)[2](v15, v14, dataCopy, errorCopy);
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
@@ -60,18 +60,18 @@
   return v3;
 }
 
-- (void)cancelClientWithTaskID:(id)a3
+- (void)cancelClientWithTaskID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMapTable *)self->_taskIDsToCompletionHandlers objectForKey:v4];
-  [(NSMapTable *)self->_taskIDsToCompletionHandlers removeObjectForKey:v4];
+  v8 = [(NSMapTable *)self->_taskIDsToCompletionHandlers objectForKey:dCopy];
+  [(NSMapTable *)self->_taskIDsToCompletionHandlers removeObjectForKey:dCopy];
   v5 = [(NSMapTable *)self->_taskIDsToCompletionHandlers count];
   self->_completed = v5 == 0;
   v6 = self->_transferTask;
   os_unfair_lock_unlock(&self->_lock);
-  v7 = [MEMORY[0x1E6994AB0] operationCancelledError];
-  v8[2](v8, v4, 0, v7);
+  operationCancelledError = [MEMORY[0x1E6994AB0] operationCancelledError];
+  v8[2](v8, dCopy, 0, operationCancelledError);
 
   if (!v5)
   {
@@ -79,15 +79,15 @@
   }
 }
 
-- (void)addClientWithTaskID:(id)a3 completionHandler:(id)a4
+- (void)addClientWithTaskID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   taskIDsToCompletionHandlers = self->_taskIDsToCompletionHandlers;
-  v9 = _Block_copy(v6);
+  v9 = _Block_copy(handlerCopy);
 
-  [(NSMapTable *)taskIDsToCompletionHandlers setObject:v9 forKey:v7];
+  [(NSMapTable *)taskIDsToCompletionHandlers setObject:v9 forKey:dCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -101,10 +101,10 @@
   return v3;
 }
 
-- (void)setTransferTask:(id)a3
+- (void)setTransferTask:(id)task
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  taskCopy = task;
   os_unfair_lock_lock(&self->_lock);
   if (self->_transferTask)
   {
@@ -120,12 +120,12 @@
     objc_exception_throw(v10);
   }
 
-  objc_storeStrong(&self->_transferTask, a3);
+  objc_storeStrong(&self->_transferTask, task);
   completed = self->_completed;
   os_unfair_lock_unlock(&self->_lock);
   if (completed)
   {
-    [v12 cancelTask];
+    [taskCopy cancelTask];
   }
 }
 
@@ -137,17 +137,17 @@
   return completed;
 }
 
-- (PLCloudInMemoryDownloadTask)initWithResourceID:(id)a3 taskID:(id)a4 completionHandler:(id)a5
+- (PLCloudInMemoryDownloadTask)initWithResourceID:(id)d taskID:(id)iD completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = PLCloudInMemoryDownloadTask;
   v11 = [(PLCloudInMemoryDownloadTask *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     resourceID = v11->_resourceID;
     v11->_resourceID = v12;
 
@@ -157,8 +157,8 @@
     v11->_taskIDsToCompletionHandlers = v14;
 
     v16 = v11->_taskIDsToCompletionHandlers;
-    v17 = _Block_copy(v10);
-    [(NSMapTable *)v16 setObject:v17 forKey:v9];
+    v17 = _Block_copy(handlerCopy);
+    [(NSMapTable *)v16 setObject:v17 forKey:iDCopy];
   }
 
   return v11;

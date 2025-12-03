@@ -1,26 +1,26 @@
 @interface CHStrokeGroupRecognitionResult
-+ (id)filteredResultsByLocale:(id)a3 orderedLocales:(id)a4 usingLanguageFitness:(id)a5 outSortedLocales:(id *)a6;
-+ (id)sortedLanguageGroups:(id)a3 usingLanguageFitness:(id)a4;
-+ (id)sortedLocales:(id)a3 usingLanguageFitness:(id)a4 useCombinedScore:(BOOL)a5;
-+ (id)textTranscriptionsForSortedGroupCluster:(id)a3 recognizedResultsByGroupID:(id)a4;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)languageFitnessForLocale:(id)a3;
++ (id)filteredResultsByLocale:(id)locale orderedLocales:(id)locales usingLanguageFitness:(id)fitness outSortedLocales:(id *)sortedLocales;
++ (id)sortedLanguageGroups:(id)groups usingLanguageFitness:(id)fitness;
++ (id)sortedLocales:(id)locales usingLanguageFitness:(id)fitness useCombinedScore:(BOOL)score;
++ (id)textTranscriptionsForSortedGroupCluster:(id)cluster recognizedResultsByGroupID:(id)d;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)languageFitnessForLocale:(id)locale;
 - (BOOL)hasPrincipalLines;
 - (BOOL)isCandidateMathGroup;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CHStrokeGroupRecognitionResult)init;
-- (CHStrokeGroupRecognitionResult)initWithCoder:(id)a3;
-- (CHStrokeGroupRecognitionResult)initWithOrderedLocales:(id)a3 resultsByLocale:(id)a4 errorsByLocale:(id)a5 languageFitnessByLocale:(id)a6 mathResult:(id)a7 inputStrokeIdentifiers:(id)a8 processing:(unint64_t)a9 inputDrawing:(id)a10 inputDrawingCutPoints:(id)a11;
+- (CHStrokeGroupRecognitionResult)initWithCoder:(id)coder;
+- (CHStrokeGroupRecognitionResult)initWithOrderedLocales:(id)locales resultsByLocale:(id)locale errorsByLocale:(id)byLocale languageFitnessByLocale:(id)fitnessByLocale mathResult:(id)result inputStrokeIdentifiers:(id)identifiers processing:(unint64_t)processing inputDrawing:(id)self0 inputDrawingCutPoints:(id)self1;
 - (CHTokenizedResult)preferredTokenizedResult;
 - (NSString)preferredTranscription;
 - (id)description;
-- (id)highConfidenceTextForSessionResult:(id)a3 averageTokenScore:(double *)a4 rejectionRate:(double *)a5 doesContainUnfilteredMultiLocaleResults:(BOOL *)a6 isNonTextCandidateResult:(BOOL *)a7;
-- (id)localesSortedByCombinedLanguageFitness:(id)a3;
-- (id)localesSortedByRawLanguageFitness:(id)a3;
-- (id)mathStrokeGroupRecognitionResultByAppendingStrokeGroupRecognitionResult:(id)a3 wrapTextResult:(BOOL)a4;
+- (id)highConfidenceTextForSessionResult:(id)result averageTokenScore:(double *)score rejectionRate:(double *)rate doesContainUnfilteredMultiLocaleResults:(BOOL *)results isNonTextCandidateResult:(BOOL *)candidateResult;
+- (id)localesSortedByCombinedLanguageFitness:(id)fitness;
+- (id)localesSortedByRawLanguageFitness:(id)fitness;
+- (id)mathStrokeGroupRecognitionResultByAppendingStrokeGroupRecognitionResult:(id)result wrapTextResult:(BOOL)textResult;
 - (id)preferredLocale;
-- (id)textStrokeGroupRecognitionResultByAppendingStrokeGroupRecognitionResult:(id)a3 shouldForceSpace:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setInputDrawing:(id)a3;
+- (id)textStrokeGroupRecognitionResultByAppendingStrokeGroupRecognitionResult:(id)result shouldForceSpace:(BOOL)space;
+- (void)encodeWithCoder:(id)coder;
+- (void)setInputDrawing:(id)drawing;
 @end
 
 @implementation CHStrokeGroupRecognitionResult
@@ -75,30 +75,30 @@ LABEL_8:
   return v14;
 }
 
-- (id)localesSortedByRawLanguageFitness:(id)a3
+- (id)localesSortedByRawLanguageFitness:(id)fitness
 {
-  v4 = a3;
+  fitnessCopy = fitness;
   v5 = objc_opt_class();
   v11 = objc_msgSend_languageFitnessByLocale(self, v6, v7, v8, v9, v10);
-  v14 = objc_msgSend_sortedLocales_usingLanguageFitness_useCombinedScore_(v5, v12, v4, v11, 0, v13);
+  v14 = objc_msgSend_sortedLocales_usingLanguageFitness_useCombinedScore_(v5, v12, fitnessCopy, v11, 0, v13);
 
   return v14;
 }
 
-- (id)localesSortedByCombinedLanguageFitness:(id)a3
+- (id)localesSortedByCombinedLanguageFitness:(id)fitness
 {
-  v4 = a3;
+  fitnessCopy = fitness;
   v5 = objc_opt_class();
   v11 = objc_msgSend_languageFitnessByLocale(self, v6, v7, v8, v9, v10);
-  v14 = objc_msgSend_sortedLocales_usingLanguageFitness_useCombinedScore_(v5, v12, v4, v11, 1, v13);
+  v14 = objc_msgSend_sortedLocales_usingLanguageFitness_useCombinedScore_(v5, v12, fitnessCopy, v11, 1, v13);
 
   return v14;
 }
 
-- (id)highConfidenceTextForSessionResult:(id)a3 averageTokenScore:(double *)a4 rejectionRate:(double *)a5 doesContainUnfilteredMultiLocaleResults:(BOOL *)a6 isNonTextCandidateResult:(BOOL *)a7
+- (id)highConfidenceTextForSessionResult:(id)result averageTokenScore:(double *)score rejectionRate:(double *)rate doesContainUnfilteredMultiLocaleResults:(BOOL *)results isNonTextCandidateResult:(BOOL *)candidateResult
 {
   v237 = *MEMORY[0x1E69E9840];
-  v220 = a3;
+  resultCopy = result;
   v21 = objc_msgSend_mathResult(self, v11, v12, v13, v14, v15);
   if (!v21)
   {
@@ -113,15 +113,15 @@ LABEL_8:
     if (!isEvaluationExpected)
     {
 LABEL_4:
-      v217 = a6;
-      v218 = a4;
-      v216 = a7;
-      if (!v220)
+      resultsCopy = results;
+      scoreCopy = score;
+      candidateResultCopy = candidateResult;
+      if (!resultCopy)
       {
         goto LABEL_48;
       }
 
-      v39 = v220;
+      v39 = resultCopy;
       objc_sync_enter(v39);
       if (!v39[5])
       {
@@ -278,7 +278,7 @@ LABEL_49:
       if (v186)
       {
         v192 = objc_msgSend_length(v186, v187, v188, v189, v190, v191);
-        v88 = objc_msgSend_transcriptionWithPath_columnRange_filterLowConfidence_excludeGibberish_rejectionRate_tokenProcessingBlock_(v163, v193, v186, 0, v192, v174 ^ 1u, v174 ^ 1u, a5, 0);
+        v88 = objc_msgSend_transcriptionWithPath_columnRange_filterLowConfidence_excludeGibberish_rejectionRate_tokenProcessingBlock_(v163, v193, v186, 0, v192, v174 ^ 1u, v174 ^ 1u, rate, 0);
         v199 = objc_msgSend_length(v88, v194, v195, v196, v197, v198);
       }
 
@@ -290,7 +290,7 @@ LABEL_49:
 
       if (v199)
       {
-        if (v218)
+        if (scoreCopy)
         {
           goto LABEL_54;
         }
@@ -300,13 +300,13 @@ LABEL_49:
       {
 
         v88 = 0;
-        if (v218)
+        if (scoreCopy)
         {
 LABEL_54:
           v205 = objc_msgSend_length(v186, v200, v201, v202, v203, v204);
           objc_msgSend_averageTokenRecognitionScoreForColumnRange_(v163, v206, 0, v205, v207, v208);
-          *v218 = v209;
-          if (!v217)
+          *scoreCopy = v209;
+          if (!resultsCopy)
           {
             goto LABEL_55;
           }
@@ -315,10 +315,10 @@ LABEL_54:
         }
       }
 
-      if (!v217)
+      if (!resultsCopy)
       {
 LABEL_55:
-        if (!v216)
+        if (!candidateResultCopy)
         {
           goto LABEL_61;
         }
@@ -327,8 +327,8 @@ LABEL_55:
       }
 
 LABEL_59:
-      *v217 = objc_msgSend_count(v128, v200, v201, v202, v203, v204) > 1;
-      if (!v216)
+      *resultsCopy = objc_msgSend_count(v128, v200, v201, v202, v203, v204) > 1;
+      if (!candidateResultCopy)
       {
 LABEL_61:
 
@@ -336,7 +336,7 @@ LABEL_61:
       }
 
 LABEL_60:
-      *v216 = objc_msgSend_isNonTextCandidateTranscriptionWithStrictFiltering_(v163, v200, 1, v202, v203, v204);
+      *candidateResultCopy = objc_msgSend_isNonTextCandidateTranscriptionWithStrictFiltering_(v163, v200, 1, v202, v203, v204);
       goto LABEL_61;
     }
   }
@@ -355,24 +355,24 @@ LABEL_60:
   objc_msgSend_averageTokenScoreForColumnRange_(v94, v107, 0, v106, v108, v109);
   v111 = v110;
 
-  if (a4)
+  if (score)
   {
-    *a4 = v111;
+    *score = v111;
   }
 
-  if (a5)
+  if (rate)
   {
-    *a5 = 0.0;
+    *rate = 0.0;
   }
 
-  if (a6)
+  if (results)
   {
-    *a6 = 0;
+    *results = 0;
   }
 
-  if (a7)
+  if (candidateResult)
   {
-    *a7 = 0;
+    *candidateResult = 0;
   }
 
 LABEL_62:
@@ -408,12 +408,12 @@ LABEL_62:
   }
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)languageFitnessForLocale:(id)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)languageFitnessForLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v22 = vdupq_n_s64(0xC7EFFFFFE0000000);
   v10 = objc_msgSend_languageFitnessByLocale(self, v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_objectForKeyedSubscript_(v10, v11, v4, v12, v13, v14);
+  v15 = objc_msgSend_objectForKeyedSubscript_(v10, v11, localeCopy, v12, v13, v14);
 
   if (v15)
   {
@@ -584,16 +584,16 @@ LABEL_6:
   return v42;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
-  objc_msgSend_encodeObject_forKey_(v4, v6, self->_orderedLocales, @"orderedLocales", v7, v8);
-  objc_msgSend_encodeObject_forKey_(v4, v9, self->_recognitionResultsByLocale, @"recognitionResultsByLocale", v10, v11);
-  objc_msgSend_encodeObject_forKey_(v4, v12, self->_mathResult, @"mathResult", v13, v14);
-  objc_msgSend_encodeObject_forKey_(v4, v15, self->_errorsByLocale, @"errorsByLocale", v16, v17);
-  objc_msgSend_encodeObject_forKey_(v4, v18, self->_inputStrokeIdentifiers, @"inputStrokeIdentifiers", v19, v20);
-  objc_msgSend_encodeInteger_forKey_(v4, v21, self->_processing, @"processing", v22, v23);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->_orderedLocales, @"orderedLocales", v7, v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_recognitionResultsByLocale, @"recognitionResultsByLocale", v10, v11);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, self->_mathResult, @"mathResult", v13, v14);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, self->_errorsByLocale, @"errorsByLocale", v16, v17);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v18, self->_inputStrokeIdentifiers, @"inputStrokeIdentifiers", v19, v20);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v21, self->_processing, @"processing", v22, v23);
   v24 = MEMORY[0x1E695DF90];
   v30 = objc_msgSend_count(self->_languageFitnessByLocale, v25, v26, v27, v28, v29);
   v35 = objc_msgSend_dictionaryWithCapacity_(v24, v31, v30, v32, v33, v34);
@@ -605,34 +605,34 @@ LABEL_6:
   v37 = v35;
   v46 = v37;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(languageFitnessByLocale, v38, v45, v39, v40, v41);
-  objc_msgSend_encodeObject_forKey_(v4, v42, v37, @"languageFitnessDictByLocale", v43, v44);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v42, v37, @"languageFitnessDictByLocale", v43, v44);
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (CHStrokeGroupRecognitionResult)initWithCoder:(id)a3
+- (CHStrokeGroupRecognitionResult)initWithCoder:(id)coder
 {
   v177[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = MEMORY[0x1E695DFD8];
-  v162 = self;
+  selfCopy = self;
   v177[0] = objc_opt_class();
   v177[1] = objc_opt_class();
   v177[2] = objc_opt_class();
   v10 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v7, v177, 3, v8, v9);
   v15 = objc_msgSend_setWithArray_(v6, v11, v10, v12, v13, v14);
   context = v5;
-  v164 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v16, v15, @"recognitionResultsByLocale", v17, v18);
+  v164 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v16, v15, @"recognitionResultsByLocale", v17, v18);
 
   v19 = objc_opt_class();
-  v163 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v20, v19, @"mathResult", v21, v22);
+  v163 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v20, v19, @"mathResult", v21, v22);
   v23 = MEMORY[0x1E695DFD8];
   v176[0] = objc_opt_class();
   v176[1] = objc_opt_class();
   v27 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v24, v176, 2, v25, v26);
   v32 = objc_msgSend_setWithArray_(v23, v28, v27, v29, v30, v31);
-  v161 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v33, v32, @"orderedLocales", v34, v35);
+  v161 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v33, v32, @"orderedLocales", v34, v35);
 
   v36 = MEMORY[0x1E695DFD8];
   v175[0] = objc_opt_class();
@@ -640,19 +640,19 @@ LABEL_6:
   v175[2] = objc_opt_class();
   v40 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v37, v175, 3, v38, v39);
   v45 = objc_msgSend_setWithArray_(v36, v41, v40, v42, v43, v44);
-  v160 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v46, v45, @"errorsByLocale", v47, v48);
+  v160 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v46, v45, @"errorsByLocale", v47, v48);
 
   v49 = MEMORY[0x1E695DFD8];
   v174[0] = objc_opt_class();
   v174[1] = objc_opt_class();
   v53 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v50, v174, 2, v51, v52);
   v58 = objc_msgSend_setWithArray_(v49, v54, v53, v55, v56, v57);
-  v159 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v59, v58, @"inputStrokeIdentifiers", v60, v61);
+  v159 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v59, v58, @"inputStrokeIdentifiers", v60, v61);
 
-  v70 = objc_msgSend_decodeIntegerForKey_(v4, v62, @"processing", v63, v64, v65);
+  v70 = objc_msgSend_decodeIntegerForKey_(coderCopy, v62, @"processing", v63, v64, v65);
   if (!v70)
   {
-    if ((objc_msgSend_containsValueForKey_(v4, v66, @"processing", v67, v68, v69) & 1) == 0 && (v163 || objc_msgSend_count(v164, v66, v71, v67, v68, v69)))
+    if ((objc_msgSend_containsValueForKey_(coderCopy, v66, @"processing", v67, v68, v69) & 1) == 0 && (v163 || objc_msgSend_count(v164, v66, v71, v67, v68, v69)))
     {
       v169 = 0u;
       v170 = 0u;
@@ -708,7 +708,7 @@ LABEL_14:
     }
   }
 
-  v94 = objc_msgSend_containsValueForKey_(v4, v66, @"languageFitnessDictByLocale", v67, v68, v69);
+  v94 = objc_msgSend_containsValueForKey_(coderCopy, v66, @"languageFitnessDictByLocale", v67, v68, v69);
   v95 = MEMORY[0x1E695DFD8];
   if (v94)
   {
@@ -718,7 +718,7 @@ LABEL_14:
     v172[3] = objc_opt_class();
     v99 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v96, v172, 4, v97, v98);
     v104 = objc_msgSend_setWithArray_(v95, v100, v99, v101, v102, v103);
-    v108 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v105, v104, @"languageFitnessDictByLocale", v106, v107);
+    v108 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v105, v104, @"languageFitnessDictByLocale", v106, v107);
 
     v109 = MEMORY[0x1E695DF90];
     v115 = objc_msgSend_count(v108, v110, v111, v112, v113, v114);
@@ -740,7 +740,7 @@ LABEL_14:
     v171[2] = objc_opt_class();
     v130 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v127, v171, 3, v128, v129);
     v135 = objc_msgSend_setWithArray_(v95, v131, v130, v132, v133, v134);
-    v108 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v136, v135, @"languageFitnessByLocale", v137, v138);
+    v108 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v136, v135, @"languageFitnessByLocale", v137, v138);
 
     v139 = MEMORY[0x1E695DF90];
     v145 = objc_msgSend_count(v108, v140, v141, v142, v143, v144);
@@ -755,19 +755,19 @@ LABEL_14:
     objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v108, v151, v165, v152, v153, v154);
   }
 
-  v156 = objc_msgSend_initWithOrderedLocales_resultsByLocale_errorsByLocale_languageFitnessByLocale_mathResult_inputStrokeIdentifiers_processing_(v162, v155, v161, v164, v160, v122, v163, v159, v70);
+  v156 = objc_msgSend_initWithOrderedLocales_resultsByLocale_errorsByLocale_languageFitnessByLocale_mathResult_inputStrokeIdentifiers_processing_(selfCopy, v155, v161, v164, v160, v122, v163, v159, v70);
   objc_autoreleasePoolPop(context);
 
   return v156;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v11 = v5;
     if (self)
     {
@@ -890,75 +890,75 @@ LABEL_28:
   return self;
 }
 
-- (CHStrokeGroupRecognitionResult)initWithOrderedLocales:(id)a3 resultsByLocale:(id)a4 errorsByLocale:(id)a5 languageFitnessByLocale:(id)a6 mathResult:(id)a7 inputStrokeIdentifiers:(id)a8 processing:(unint64_t)a9 inputDrawing:(id)a10 inputDrawingCutPoints:(id)a11
+- (CHStrokeGroupRecognitionResult)initWithOrderedLocales:(id)locales resultsByLocale:(id)locale errorsByLocale:(id)byLocale languageFitnessByLocale:(id)fitnessByLocale mathResult:(id)result inputStrokeIdentifiers:(id)identifiers processing:(unint64_t)processing inputDrawing:(id)self0 inputDrawingCutPoints:(id)self1
 {
-  v75 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a10;
-  v23 = a11;
+  localesCopy = locales;
+  localeCopy = locale;
+  byLocaleCopy = byLocale;
+  fitnessByLocaleCopy = fitnessByLocale;
+  resultCopy = result;
+  identifiersCopy = identifiers;
+  drawingCopy = drawing;
+  pointsCopy = points;
   v76.receiver = self;
   v76.super_class = CHStrokeGroupRecognitionResult;
   v29 = [(CHStrokeGroupRecognitionResult *)&v76 init];
   if (v29)
   {
-    v30 = objc_msgSend_copy(v75, v24, v25, v26, v27, v28);
+    v30 = objc_msgSend_copy(localesCopy, v24, v25, v26, v27, v28);
     orderedLocales = v29->_orderedLocales;
     v29->_orderedLocales = v30;
 
-    v37 = objc_msgSend_copy(v17, v32, v33, v34, v35, v36);
+    v37 = objc_msgSend_copy(localeCopy, v32, v33, v34, v35, v36);
     recognitionResultsByLocale = v29->_recognitionResultsByLocale;
     v29->_recognitionResultsByLocale = v37;
 
-    v44 = objc_msgSend_copy(v19, v39, v40, v41, v42, v43);
+    v44 = objc_msgSend_copy(fitnessByLocaleCopy, v39, v40, v41, v42, v43);
     languageFitnessByLocale = v29->_languageFitnessByLocale;
     v29->_languageFitnessByLocale = v44;
 
-    v51 = objc_msgSend_copy(v21, v46, v47, v48, v49, v50);
+    v51 = objc_msgSend_copy(identifiersCopy, v46, v47, v48, v49, v50);
     inputStrokeIdentifiers = v29->_inputStrokeIdentifiers;
     v29->_inputStrokeIdentifiers = v51;
 
-    objc_storeStrong(&v29->_inputDrawing, a10);
-    v58 = objc_msgSend_copy(v23, v53, v54, v55, v56, v57);
+    objc_storeStrong(&v29->_inputDrawing, drawing);
+    v58 = objc_msgSend_copy(pointsCopy, v53, v54, v55, v56, v57);
     inputDrawingCutPoints = v29->_inputDrawingCutPoints;
     v29->_inputDrawingCutPoints = v58;
 
-    v65 = objc_msgSend_copy(v18, v60, v61, v62, v63, v64);
+    v65 = objc_msgSend_copy(byLocaleCopy, v60, v61, v62, v63, v64);
     errorsByLocale = v29->_errorsByLocale;
     v29->_errorsByLocale = v65;
 
-    v72 = objc_msgSend_copy(v20, v67, v68, v69, v70, v71);
+    v72 = objc_msgSend_copy(resultCopy, v67, v68, v69, v70, v71);
     mathResult = v29->_mathResult;
     v29->_mathResult = v72;
 
-    v29->_processing = a9;
+    v29->_processing = processing;
   }
 
   return v29;
 }
 
-- (void)setInputDrawing:(id)a3
+- (void)setInputDrawing:(id)drawing
 {
-  v11 = a3;
-  v9 = objc_msgSend_copy(v11, v4, v5, v6, v7, v8);
+  drawingCopy = drawing;
+  v9 = objc_msgSend_copy(drawingCopy, v4, v5, v6, v7, v8);
   inputDrawing = self->_inputDrawing;
   self->_inputDrawing = v9;
 }
 
-+ (id)sortedLanguageGroups:(id)a3 usingLanguageFitness:(id)a4
++ (id)sortedLanguageGroups:(id)groups usingLanguageFitness:(id)fitness
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  groupsCopy = groups;
+  fitnessCopy = fitness;
   v12 = objc_msgSend_array(MEMORY[0x1E695DF70], v7, v8, v9, v10, v11);
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v18 = objc_msgSend_allKeys(v5, v13, v14, v15, v16, v17);
+  v18 = objc_msgSend_allKeys(groupsCopy, v13, v14, v15, v16, v17);
   v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(v18, v19, &v45, v49, 16, v20);
   if (v25)
   {
@@ -973,7 +973,7 @@ LABEL_28:
         }
 
         v28 = *(*(&v45 + 1) + 8 * i);
-        v29 = objc_msgSend_objectForKeyedSubscript_(v5, v21, v28, v22, v23, v24);
+        v29 = objc_msgSend_objectForKeyedSubscript_(groupsCopy, v21, v28, v22, v23, v24);
         v35 = objc_msgSend_count(v29, v30, v31, v32, v33, v34) == 0;
 
         if (!v35)
@@ -992,28 +992,28 @@ LABEL_28:
   v42[1] = 3221225472;
   v42[2] = sub_18375CDB4;
   v42[3] = &unk_1E6DDD610;
-  v36 = v6;
+  v36 = fitnessCopy;
   v43 = v36;
-  v37 = v5;
+  v37 = groupsCopy;
   v44 = v37;
   objc_msgSend_sortWithOptions_usingComparator_(v12, v38, 16, v42, v39, v40);
 
   return v12;
 }
 
-+ (id)sortedLocales:(id)a3 usingLanguageFitness:(id)a4 useCombinedScore:(BOOL)a5
++ (id)sortedLocales:(id)locales usingLanguageFitness:(id)fitness useCombinedScore:(BOOL)score
 {
-  v5 = a5;
+  scoreCopy = score;
   v58 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  fitnessCopy = fitness;
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
   v55[2] = sub_18375D2A0;
   v55[3] = &unk_1E6DDC0C0;
-  v8 = v7;
+  v8 = fitnessCopy;
   v56 = v8;
-  v47 = objc_msgSend_sortedArrayWithOptions_usingComparator_(a3, v9, 16, v55, v10, v11);
-  if (v5)
+  v47 = objc_msgSend_sortedArrayWithOptions_usingComparator_(locales, v9, 16, v55, v10, v11);
+  if (scoreCopy)
   {
     v16 = objc_msgSend_localesByLanguageGroup_(CHRecognizerConfiguration, v12, v47, v13, v14, v15);
     v17 = objc_opt_class();
@@ -1063,17 +1063,17 @@ LABEL_28:
   return v26;
 }
 
-+ (id)textTranscriptionsForSortedGroupCluster:(id)a3 recognizedResultsByGroupID:(id)a4
++ (id)textTranscriptionsForSortedGroupCluster:(id)cluster recognizedResultsByGroupID:(id)d
 {
   v58 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  clusterCopy = cluster;
+  dCopy = d;
   v12 = objc_msgSend_array(MEMORY[0x1E695DF70], v7, v8, v9, v10, v11);
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v13 = v5;
+  v13 = clusterCopy;
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v53, v57, 16, v15);
   if (v21)
   {
@@ -1090,7 +1090,7 @@ LABEL_28:
         v24 = MEMORY[0x1E696AD98];
         v25 = objc_msgSend_uniqueIdentifier(*(*(&v53 + 1) + 8 * i), v16, v17, v18, v19, v20);
         v30 = objc_msgSend_numberWithInteger_(v24, v26, v25, v27, v28, v29);
-        v35 = objc_msgSend_objectForKeyedSubscript_(v6, v31, v30, v32, v33, v34);
+        v35 = objc_msgSend_objectForKeyedSubscript_(dCopy, v31, v30, v32, v33, v34);
 
         if (v35)
         {
@@ -1116,16 +1116,16 @@ LABEL_28:
   return v51;
 }
 
-+ (id)filteredResultsByLocale:(id)a3 orderedLocales:(id)a4 usingLanguageFitness:(id)a5 outSortedLocales:(id *)a6
++ (id)filteredResultsByLocale:(id)locale orderedLocales:(id)locales usingLanguageFitness:(id)fitness outSortedLocales:(id *)sortedLocales
 {
   v297 = *MEMORY[0x1E69E9840];
-  v257 = a3;
-  v246 = a4;
-  v258 = a5;
+  localeCopy = locale;
+  localesCopy = locales;
+  fitnessCopy = fitness;
   v254 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v9, v10, v11, v12, v13);
   v255 = objc_msgSend_array(MEMORY[0x1E695DF70], v14, v15, v16, v17, v18);
-  v24 = objc_msgSend_allKeys(v257, v19, v20, v21, v22, v23);
-  v27 = objc_msgSend_sortedLocales_usingLanguageFitness_useCombinedScore_(a1, v25, v24, v258, 0, v26);
+  v24 = objc_msgSend_allKeys(localeCopy, v19, v20, v21, v22, v23);
+  v27 = objc_msgSend_sortedLocales_usingLanguageFitness_useCombinedScore_(self, v25, v24, fitnessCopy, 0, v26);
 
   v243 = v27;
   v253 = objc_msgSend_localesByLanguageGroup_(CHRecognizerConfiguration, v28, v27, v29, v30, v31);
@@ -1162,7 +1162,7 @@ LABEL_28:
 
           v69 = *(*(&v279 + 1) + 8 * i);
           v70 = objc_msgSend_objectForKeyedSubscript_(v253, v62, v69, v63, v64, v65);
-          v71 = sub_18375E59C(CHStrokeGroupRecognitionResult, v70, v257, v53);
+          v71 = sub_18375E59C(CHStrokeGroupRecognitionResult, v70, localeCopy, v53);
 
           objc_msgSend_setObject_forKeyedSubscript_(v253, v72, v71, v69, v73, v74);
         }
@@ -1174,8 +1174,8 @@ LABEL_28:
     }
   }
 
-  v75 = sub_18375D704(CHStrokeGroupRecognitionResult, @"zh", v246);
-  if (v75 >= sub_18375D704(CHStrokeGroupRecognitionResult, @"yue", v246))
+  v75 = sub_18375D704(CHStrokeGroupRecognitionResult, @"zh", localesCopy);
+  if (v75 >= sub_18375D704(CHStrokeGroupRecognitionResult, @"yue", localesCopy))
   {
     v76 = @"yue";
   }
@@ -1185,21 +1185,21 @@ LABEL_28:
     v76 = @"zh";
   }
 
-  v77 = sub_18375D704(CHStrokeGroupRecognitionResult, v76, v246);
-  v78 = sub_18375D704(CHStrokeGroupRecognitionResult, @"ja", v246);
+  v77 = sub_18375D704(CHStrokeGroupRecognitionResult, v76, localesCopy);
+  v78 = sub_18375D704(CHStrokeGroupRecognitionResult, @"ja", localesCopy);
   if (v77 != 0x7FFFFFFFFFFFFFFFLL && v78 != 0x7FFFFFFFFFFFFFFFLL && v77 < v78)
   {
     v84 = objc_msgSend_modelNameJapanese(CHRecognizerConfiguration, v79, v80, v81, v82, v83);
     v89 = objc_msgSend_objectForKeyedSubscript_(v253, v85, v84, v86, v87, v88);
-    v90 = sub_18375E59C(CHStrokeGroupRecognitionResult, v89, v257, &unk_1EF1BC910);
+    v90 = sub_18375E59C(CHStrokeGroupRecognitionResult, v89, localeCopy, &unk_1EF1BC910);
 
     v96 = objc_msgSend_modelNameJapanese(CHRecognizerConfiguration, v91, v92, v93, v94, v95);
     objc_msgSend_setObject_forKeyedSubscript_(v253, v97, v90, v96, v98, v99);
   }
 
   v100 = objc_opt_class();
-  v104 = objc_msgSend_sortedLanguageGroups_usingLanguageFitness_(v100, v101, v253, v258, v102, v103);
-  v110 = objc_msgSend_count(v257, v105, v106, v107, v108, v109, v104) > 1;
+  v104 = objc_msgSend_sortedLanguageGroups_usingLanguageFitness_(v100, v101, v253, fitnessCopy, v102, v103);
+  v110 = objc_msgSend_count(localeCopy, v105, v106, v107, v108, v109, v104) > 1;
   v251 = objc_msgSend_array(MEMORY[0x1E695DF70], v111, v112, v113, v114, v115);
   v277 = 0u;
   v278 = 0u;
@@ -1224,7 +1224,7 @@ LABEL_28:
         v127 = *(*(&v275 + 1) + 8 * j);
         v128 = objc_msgSend_objectForKeyedSubscript_(v253, v118, v127, v119, v120, v121);
         v134 = objc_msgSend_firstObject(v128, v129, v130, v131, v132, v133);
-        v139 = objc_msgSend_objectForKeyedSubscript_(v258, v135, v134, v136, v137, v138);
+        v139 = objc_msgSend_objectForKeyedSubscript_(fitnessCopy, v135, v134, v136, v137, v138);
         objc_msgSend_getValue_(v139, v140, buf, v141, v142, v143);
 
         v144 = *buf;
@@ -1289,7 +1289,7 @@ LABEL_28:
               }
 
               v169 = *(*(&v267 + 1) + 8 * m);
-              v170 = objc_msgSend_objectForKeyedSubscript_(v258, v160, v169, v161, v162, v163);
+              v170 = objc_msgSend_objectForKeyedSubscript_(fitnessCopy, v160, v169, v161, v162, v163);
               objc_msgSend_getValue_(v170, v171, &v265, v172, v173, v174);
 
               if (v265 < v123 || v166 - v265 > 0.1)
@@ -1338,7 +1338,7 @@ LABEL_28:
         v263[1] = 3221225472;
         v263[2] = sub_18375E8CC;
         v263[3] = &unk_1E6DDC0C0;
-        v193 = v258;
+        v193 = fitnessCopy;
         v264 = v193;
         objc_msgSend_sortUsingComparator_(v256, v194, v263, v195, v196, v197);
         v261 = 0u;
@@ -1365,7 +1365,7 @@ LABEL_28:
               v210 = objc_msgSend_objectForKeyedSubscript_(v193, v201, v209, v202, v203, v204);
               objc_msgSend_getValue_(v210, v211, &v265, v212, v213, v214);
 
-              v222 = objc_msgSend_objectForKey_(v257, v215, v209, v216, v217, v218);
+              v222 = objc_msgSend_objectForKey_(localeCopy, v215, v209, v216, v217, v218);
               if (v222)
               {
                 if (v207 - v266 <= 0.01)
@@ -1421,10 +1421,10 @@ LABEL_28:
     while (v249);
   }
 
-  if (a6)
+  if (sortedLocales)
   {
     v241 = v255;
-    *a6 = v255;
+    *sortedLocales = v255;
   }
 
   return v254;
@@ -1440,17 +1440,17 @@ LABEL_28:
   return hasValidPrincipalLinesForPath;
 }
 
-- (id)textStrokeGroupRecognitionResultByAppendingStrokeGroupRecognitionResult:(id)a3 shouldForceSpace:(BOOL)a4
+- (id)textStrokeGroupRecognitionResultByAppendingStrokeGroupRecognitionResult:(id)result shouldForceSpace:(BOOL)space
 {
-  v476 = a4;
+  spaceCopy = space;
   v496[1] = *MEMORY[0x1E69E9840];
-  v475 = a3;
+  resultCopy = result;
   v478 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v4, v5, v6, v7, v8);
   v477 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v9, v10, v11, v12, v13);
   v24 = objc_msgSend_mathResult(self, v14, v15, v16, v17, v18);
   if (v24)
   {
-    v25 = objc_msgSend_mathResult(v475, v19, v20, v21, v22, v23);
+    v25 = objc_msgSend_mathResult(resultCopy, v19, v20, v21, v22, v23);
 
     if (v25)
     {
@@ -1460,12 +1460,12 @@ LABEL_28:
 
       if (!v38)
       {
-        v44 = objc_msgSend_orderedLocales(v475, v39, v40, v41, v42, v43);
+        v44 = objc_msgSend_orderedLocales(resultCopy, v39, v40, v41, v42, v43);
         v50 = objc_msgSend_count(v44, v45, v46, v47, v48, v49);
 
         if (v50)
         {
-          v56 = objc_msgSend_orderedLocales(v475, v51, v52, v53, v54, v55);
+          v56 = objc_msgSend_orderedLocales(resultCopy, v51, v52, v53, v54, v55);
 
           v26 = v56;
         }
@@ -1497,24 +1497,24 @@ LABEL_28:
         objc_msgSend_setInputStrokeIdentifiers_(v346, v362, v335, v363, v364, v365);
       }
 
-      if (objc_msgSend_hasTextResult(v475, v366, v367, v368, v369, v370))
+      if (objc_msgSend_hasTextResult(resultCopy, v366, v367, v368, v369, v370))
       {
-        v376 = objc_msgSend_recognitionResultsByLocale(v475, v371, v372, v373, v374, v375);
-        v382 = objc_msgSend_preferredLocale(v475, v377, v378, v379, v380, v381);
+        v376 = objc_msgSend_recognitionResultsByLocale(resultCopy, v371, v372, v373, v374, v375);
+        v382 = objc_msgSend_preferredLocale(resultCopy, v377, v378, v379, v380, v381);
         v387 = objc_msgSend_objectForKeyedSubscript_(v376, v383, v382, v384, v385, v386);
       }
 
       else
       {
-        v388 = objc_msgSend_mathResult(v475, v371, v372, v373, v374, v375);
+        v388 = objc_msgSend_mathResult(resultCopy, v371, v372, v373, v374, v375);
         v394 = objc_msgSend_firstObject(v26, v389, v390, v391, v392, v393);
         v387 = objc_msgSend_tokenizedTextResultFromTokenizedMathResult_locale_(CHMathPostProcessingManager, v395, v388, v394, v396, v397);
 
-        v376 = objc_msgSend_inputStrokeIdentifiers(v475, v398, v399, v400, v401, v402);
+        v376 = objc_msgSend_inputStrokeIdentifiers(resultCopy, v398, v399, v400, v401, v402);
         objc_msgSend_setInputStrokeIdentifiers_(v387, v403, v376, v404, v405, v406);
       }
 
-      v410 = objc_msgSend_tokenizedTextResultByAppendingTokenizedTextResult_shouldForceSpace_(v346, v407, v387, v476, v408, v409);
+      v410 = objc_msgSend_tokenizedTextResultByAppendingTokenizedTextResult_shouldForceSpace_(v346, v407, v387, spaceCopy, v408, v409);
       v416 = objc_msgSend_firstObject(v26, v411, v412, v413, v414, v415);
       objc_msgSend_languageFitnessForLocale_recognitionMode_(v410, v417, v416, 6, v418, v419);
       *buf = v420;
@@ -1546,7 +1546,7 @@ LABEL_28:
     else
     {
       v103 = objc_msgSend_mathResult(self, v63, v64, v65, v66, v67);
-      v109 = objc_msgSend_preferredLocale(v475, v104, v105, v106, v107, v108);
+      v109 = objc_msgSend_preferredLocale(resultCopy, v104, v105, v106, v107, v108);
       v79 = objc_msgSend_tokenizedTextResultFromTokenizedMathResult_locale_(CHMathPostProcessingManager, v110, v103, v109, v111, v112);
 
       v68 = objc_msgSend_inputStrokeIdentifiers(self, v113, v114, v115, v116, v117);
@@ -1557,7 +1557,7 @@ LABEL_28:
     v490 = 0u;
     v487 = 0u;
     v488 = 0u;
-    obj = objc_msgSend_recognitionResultsByLocale(v475, v122, v123, v124, v125, v126);
+    obj = objc_msgSend_recognitionResultsByLocale(resultCopy, v122, v123, v124, v125, v126);
     v134 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v127, &v487, v495, 16, v128);
     v135 = v79;
     if (v134)
@@ -1573,10 +1573,10 @@ LABEL_28:
           }
 
           v138 = *(*(&v487 + 1) + 8 * i);
-          v139 = objc_msgSend_recognitionResultsByLocale(v475, v129, v130, v131, v132, v133);
+          v139 = objc_msgSend_recognitionResultsByLocale(resultCopy, v129, v130, v131, v132, v133);
           v144 = objc_msgSend_objectForKeyedSubscript_(v139, v140, v138, v141, v142, v143);
 
-          v148 = objc_msgSend_tokenizedTextResultByAppendingTokenizedTextResult_shouldForceSpace_(v135, v145, v144, v476, v146, v147);
+          v148 = objc_msgSend_tokenizedTextResultByAppendingTokenizedTextResult_shouldForceSpace_(v135, v145, v144, spaceCopy, v146, v147);
           *buf = 0;
           v492 = 0;
           objc_msgSend_languageFitnessForLocale_recognitionMode_(v148, v149, v138, 6, v150, v151);
@@ -1594,42 +1594,42 @@ LABEL_28:
     }
 
     v164 = v135;
-    v170 = objc_msgSend_orderedLocales(v475, v165, v166, v167, v168, v169);
+    v170 = objc_msgSend_orderedLocales(resultCopy, v165, v166, v167, v168, v169);
 LABEL_39:
     v26 = v170;
 LABEL_48:
 
 LABEL_49:
     v444 = objc_msgSend_inputStrokeIdentifiers(self, v253, v254, v255, v256, v257);
-    v450 = objc_msgSend_inputStrokeIdentifiers(v475, v445, v446, v447, v448, v449);
+    v450 = objc_msgSend_inputStrokeIdentifiers(resultCopy, v445, v446, v447, v448, v449);
     v455 = objc_msgSend_arrayByAddingObjectsFromArray_(v444, v451, v450, v452, v453, v454);
 
     v461 = objc_msgSend_processing(self, v456, v457, v458, v459, v460);
-    v467 = objc_msgSend_processing(v475, v462, v463, v464, v465, v466);
+    v467 = objc_msgSend_processing(resultCopy, v462, v463, v464, v465, v466);
     v468 = [CHStrokeGroupRecognitionResult alloc];
     v470 = objc_msgSend_initWithOrderedLocales_resultsByLocale_errorsByLocale_languageFitnessByLocale_mathResult_inputStrokeIdentifiers_processing_(v468, v469, v26, v478, MEMORY[0x1E695E0F8], v477, 0, v455, v467 & v461);
 
     goto LABEL_50;
   }
 
-  v80 = objc_msgSend_mathResult(v475, v58, v59, v60, v61, v62);
+  v80 = objc_msgSend_mathResult(resultCopy, v58, v59, v60, v61, v62);
 
   if (v80)
   {
-    if (objc_msgSend_hasTextResult(v475, v81, v82, v83, v84, v85))
+    if (objc_msgSend_hasTextResult(resultCopy, v81, v82, v83, v84, v85))
     {
-      v91 = objc_msgSend_recognitionResultsByLocale(v475, v86, v87, v88, v89, v90);
-      v97 = objc_msgSend_preferredLocale(v475, v92, v93, v94, v95, v96);
+      v91 = objc_msgSend_recognitionResultsByLocale(resultCopy, v86, v87, v88, v89, v90);
+      v97 = objc_msgSend_preferredLocale(resultCopy, v92, v93, v94, v95, v96);
       v102 = objc_msgSend_objectForKeyedSubscript_(v91, v98, v97, v99, v100, v101);
     }
 
     else
     {
-      v258 = objc_msgSend_mathResult(v475, v86, v87, v88, v89, v90);
+      v258 = objc_msgSend_mathResult(resultCopy, v86, v87, v88, v89, v90);
       v264 = objc_msgSend_preferredLocale(self, v259, v260, v261, v262, v263);
       v102 = objc_msgSend_tokenizedTextResultFromTokenizedMathResult_locale_(CHMathPostProcessingManager, v265, v258, v264, v266, v267);
 
-      v91 = objc_msgSend_inputStrokeIdentifiers(v475, v268, v269, v270, v271, v272);
+      v91 = objc_msgSend_inputStrokeIdentifiers(resultCopy, v268, v269, v270, v271, v272);
       objc_msgSend_setInputStrokeIdentifiers_(v102, v273, v91, v274, v275, v276);
     }
 
@@ -1657,7 +1657,7 @@ LABEL_49:
           v295 = objc_msgSend_recognitionResultsByLocale(self, v285, v286, v287, v288, v289);
           v300 = objc_msgSend_objectForKeyedSubscript_(v295, v296, v294, v297, v298, v299);
 
-          v304 = objc_msgSend_tokenizedTextResultByAppendingTokenizedTextResult_shouldForceSpace_(v300, v301, v291, v476, v302, v303);
+          v304 = objc_msgSend_tokenizedTextResultByAppendingTokenizedTextResult_shouldForceSpace_(v300, v301, v291, spaceCopy, v302, v303);
           *buf = 0;
           v492 = 0;
           objc_msgSend_languageFitnessForLocale_recognitionMode_(v304, v305, v294, 6, v306, v307);
@@ -1682,7 +1682,7 @@ LABEL_49:
 
   v171 = objc_msgSend_recognitionResultsByLocale(self, v81, v82, v83, v84, v85);
   v177 = objc_msgSend_allKeys(v171, v172, v173, v174, v175, v176);
-  v183 = objc_msgSend_recognitionResultsByLocale(v475, v178, v179, v180, v181, v182);
+  v183 = objc_msgSend_recognitionResultsByLocale(resultCopy, v178, v179, v180, v181, v182);
   v189 = objc_msgSend_allKeys(v183, v184, v185, v186, v187, v188);
   isEqualToArray = objc_msgSend_isEqualToArray_(v177, v190, v189, v191, v192, v193);
 
@@ -1710,10 +1710,10 @@ LABEL_49:
           v212 = objc_msgSend_recognitionResultsByLocale(self, v203, v204, v205, v206, v207);
           v217 = objc_msgSend_objectForKeyedSubscript_(v212, v213, v211, v214, v215, v216);
 
-          v223 = objc_msgSend_recognitionResultsByLocale(v475, v218, v219, v220, v221, v222);
+          v223 = objc_msgSend_recognitionResultsByLocale(resultCopy, v218, v219, v220, v221, v222);
           v228 = objc_msgSend_objectForKeyedSubscript_(v223, v224, v211, v225, v226, v227);
 
-          v232 = objc_msgSend_tokenizedTextResultByAppendingTokenizedTextResult_shouldForceSpace_(v217, v229, v228, v476, v230, v231);
+          v232 = objc_msgSend_tokenizedTextResultByAppendingTokenizedTextResult_shouldForceSpace_(v217, v229, v228, spaceCopy, v230, v231);
           *buf = 0;
           v492 = 0;
           objc_msgSend_languageFitnessForLocale_recognitionMode_(v232, v233, v211, 6, v234, v235);
@@ -1752,19 +1752,19 @@ LABEL_50:
   return v470;
 }
 
-- (id)mathStrokeGroupRecognitionResultByAppendingStrokeGroupRecognitionResult:(id)a3 wrapTextResult:(BOOL)a4
+- (id)mathStrokeGroupRecognitionResultByAppendingStrokeGroupRecognitionResult:(id)result wrapTextResult:(BOOL)textResult
 {
-  v6 = a3;
+  resultCopy = result;
   v17 = objc_msgSend_mathResult(self, v7, v8, v9, v10, v11);
-  v238 = v6;
+  v238 = resultCopy;
   if (v17)
   {
-    v18 = objc_msgSend_mathResult(v6, v12, v13, v14, v15, v16);
+    v18 = objc_msgSend_mathResult(resultCopy, v12, v13, v14, v15, v16);
 
     if (v18)
     {
       v19 = objc_msgSend_mathResult(self, v12, v13, v14, v15, v16);
-      v25 = objc_msgSend_mathResult(v6, v20, v21, v22, v23, v24);
+      v25 = objc_msgSend_mathResult(resultCopy, v20, v21, v22, v23, v24);
       v31 = objc_msgSend_topTranscription(v19, v26, v27, v28, v29, v30);
       v37 = objc_msgSend_length(v31, v32, v33, v34, v35, v36);
 
@@ -1781,11 +1781,11 @@ LABEL_50:
 
       v72 = v55;
       v73 = objc_msgSend_inputStrokeIdentifiers(self, v56, v57, v58, v59, v60);
-      v79 = objc_msgSend_inputStrokeIdentifiers(v6, v74, v75, v76, v77, v78);
+      v79 = objc_msgSend_inputStrokeIdentifiers(resultCopy, v74, v75, v76, v77, v78);
       v84 = objc_msgSend_arrayByAddingObjectsFromArray_(v73, v80, v79, v81, v82, v83);
 
       v90 = objc_msgSend_processing(self, v85, v86, v87, v88, v89);
-      v96 = objc_msgSend_processing(v6, v91, v92, v93, v94, v95);
+      v96 = objc_msgSend_processing(resultCopy, v91, v92, v93, v94, v95);
       v97 = [CHStrokeGroupRecognitionResult alloc];
       v99 = objc_msgSend_initWithOrderedLocales_resultsByLocale_errorsByLocale_languageFitnessByLocale_mathResult_inputStrokeIdentifiers_processing_(v97, v98, MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F8], MEMORY[0x1E695E0F8], MEMORY[0x1E695E0F8], v72, v84, v96 & v90);
 
@@ -1800,7 +1800,7 @@ LABEL_50:
     goto LABEL_11;
   }
 
-  v100 = objc_msgSend_mathResult(v6, v62, v63, v64, v65, v66);
+  v100 = objc_msgSend_mathResult(resultCopy, v62, v63, v64, v65, v66);
 
   if (v100)
   {
@@ -1808,8 +1808,8 @@ LABEL_11:
     v106 = objc_msgSend_mathResult(self, v67, v68, v69, v70, v71);
     if (v106)
     {
-      v107 = objc_msgSend_recognitionResultsByLocale(v6, v101, v102, v103, v104, v105);
-      objc_msgSend_preferredLocale(v6, v108, v109, v110, v111, v112);
+      v107 = objc_msgSend_recognitionResultsByLocale(resultCopy, v101, v102, v103, v104, v105);
+      objc_msgSend_preferredLocale(resultCopy, v108, v109, v110, v111, v112);
     }
 
     else
@@ -1840,14 +1840,14 @@ LABEL_11:
       v241[1] = 3221225472;
       v241[2] = sub_183760130;
       v241[3] = &unk_1E6DDD6D0;
-      v243 = a4;
+      textResultCopy = textResult;
       v164 = v157;
       v242 = v164;
       objc_msgSend_enumerateTokensInTranscriptionPath_columnRange_tokenProcessingBlock_(v19, v165, v151, 0, v163, v241);
       v171 = objc_msgSend_copy(v164, v166, v167, v168, v169, v170);
       objc_msgSend_addObject_(v239, v172, v171, v173, v174, v175);
 
-      v6 = v238;
+      resultCopy = v238;
     }
 
     if (objc_msgSend_count(v239, v141, v142, v143, v144, v145))
@@ -1865,7 +1865,7 @@ LABEL_11:
 
     if (v187)
     {
-      v193 = self;
+      selfCopy = self;
       if (v186)
       {
         v194 = objc_msgSend_mathResult(self, v188, v189, v190, v191, v192);
@@ -1875,10 +1875,10 @@ LABEL_25:
 
 LABEL_27:
         v210 = objc_msgSend_inputStrokeIdentifiers(self, v205, v206, v207, v208, v209);
-        v216 = objc_msgSend_inputStrokeIdentifiers(v6, v211, v212, v213, v214, v215);
+        v216 = objc_msgSend_inputStrokeIdentifiers(resultCopy, v211, v212, v213, v214, v215);
         v221 = objc_msgSend_arrayByAddingObjectsFromArray_(v210, v217, v216, v218, v219, v220);
 
-        v6 = v238;
+        resultCopy = v238;
         v227 = objc_msgSend_processing(self, v222, v223, v224, v225, v226);
         v233 = objc_msgSend_processing(v238, v228, v229, v230, v231, v232);
         v234 = [CHStrokeGroupRecognitionResult alloc];
@@ -1891,16 +1891,16 @@ LABEL_28:
 
     else
     {
-      v193 = v6;
+      selfCopy = resultCopy;
       if (v186)
       {
-        v194 = objc_msgSend_mathResult(v6, v188, v189, v190, v191, v192);
+        v194 = objc_msgSend_mathResult(resultCopy, v188, v189, v190, v191, v192);
         v199 = objc_msgSend_tokenizedMathResultByAppendingTokenizedMathResult_(v186, v200, v194, v201, v202, v203);
         goto LABEL_25;
       }
     }
 
-    v204 = objc_msgSend_mathResult(v193, v188, v189, v190, v191, v192);
+    v204 = objc_msgSend_mathResult(selfCopy, v188, v189, v190, v191, v192);
     goto LABEL_27;
   }
 

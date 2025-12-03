@@ -1,30 +1,30 @@
 @interface HFDemoModeAccessoryItem
-+ (id)accessoryItemForAccessory:(id)a3;
-+ (id)itemWithAccessoryRepresentableObject:(id)a3 valueSource:(id)a4;
++ (id)accessoryItemForAccessory:(id)accessory;
++ (id)itemWithAccessoryRepresentableObject:(id)object valueSource:(id)source;
 - (BOOL)isMediaSystemDemoType;
 - (HFCharacteristicValueSource)valueSource;
-- (HFDemoModeAccessoryItem)initWithAccessory:(id)a3;
+- (HFDemoModeAccessoryItem)initWithAccessory:(id)accessory;
 - (HMAccessory)accessory;
 - (HMHome)home;
 - (id)_iconDescriptor;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)accessories;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)hf_serviceNameComponents;
 - (id)namingComponentForHomeKitObject;
-- (id)serviceLikeBuilderInHome:(id)a3;
+- (id)serviceLikeBuilderInHome:(id)home;
 @end
 
 @implementation HFDemoModeAccessoryItem
 
-+ (id)itemWithAccessoryRepresentableObject:(id)a3 valueSource:(id)a4
++ (id)itemWithAccessoryRepresentableObject:(id)object valueSource:(id)source
 {
-  v5 = a3;
+  objectCopy = object;
   v6 = objc_opt_class();
-  v7 = [v5 hf_homeKitObject];
+  hf_homeKitObject = [objectCopy hf_homeKitObject];
 
-  v8 = v7;
+  v8 = hf_homeKitObject;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -43,23 +43,23 @@
       goto LABEL_8;
     }
 
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v11 handleFailureInFunction:v12 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v6, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v12 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v6, objc_opt_class()}];
   }
 
   v10 = 0;
 LABEL_8:
 
-  v13 = [[a1 alloc] initWithAccessory:v10];
+  v13 = [[self alloc] initWithAccessory:v10];
 
   return v13;
 }
 
-+ (id)accessoryItemForAccessory:(id)a3
++ (id)accessoryItemForAccessory:(id)accessory
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithAccessory:v3];
+  accessoryCopy = accessory;
+  v4 = [objc_alloc(objc_opt_class()) initWithAccessory:accessoryCopy];
 
   return v4;
 }
@@ -67,48 +67,48 @@ LABEL_8:
 - (HFCharacteristicValueSource)valueSource
 {
   v2 = +[HFDemoModeAccessoryManager sharedManager];
-  v3 = [v2 valueSource];
+  valueSource = [v2 valueSource];
 
-  return v3;
+  return valueSource;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFDemoModeAccessoryItem *)self accessory];
-  v6 = [v4 initWithAccessory:v5];
+  accessory = [(HFDemoModeAccessoryItem *)self accessory];
+  v6 = [v4 initWithAccessory:accessory];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFDemoModeAccessoryItem *)self valueSource];
-  v5 = [(HFDemoModeAccessoryItem *)self copyWithValueSource:v4];
+  valueSource = [(HFDemoModeAccessoryItem *)self valueSource];
+  v5 = [(HFDemoModeAccessoryItem *)self copyWithValueSource:valueSource];
 
   return v5;
 }
 
-- (id)serviceLikeBuilderInHome:(id)a3
+- (id)serviceLikeBuilderInHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = [HFDemoModeAccessoryBuilder alloc];
-  v6 = [(HFDemoModeAccessoryItem *)self accessory];
-  v7 = [(HFDemoModeAccessoryBuilder *)v5 initWithExistingObject:v6 inHome:v4];
+  accessory = [(HFDemoModeAccessoryItem *)self accessory];
+  v7 = [(HFDemoModeAccessoryBuilder *)v5 initWithExistingObject:accessory inHome:homeCopy];
 
   return v7;
 }
 
-- (HFDemoModeAccessoryItem)initWithAccessory:(id)a3
+- (HFDemoModeAccessoryItem)initWithAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v9.receiver = self;
   v9.super_class = HFDemoModeAccessoryItem;
   v5 = [(HFDemoModeAccessoryItem *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_accessory, v4);
+    objc_storeWeak(&v5->_accessory, accessoryCopy);
     v7 = [(HFItem *)v6 updateWithOptions:MEMORY[0x277CBEC10]];
   }
 
@@ -117,24 +117,24 @@ LABEL_8:
 
 - (id)hf_serviceNameComponents
 {
-  v3 = [(HFDemoModeAccessoryItem *)self accessory];
-  v4 = [v3 name];
+  accessory = [(HFDemoModeAccessoryItem *)self accessory];
+  name = [accessory name];
 
-  v5 = [(HFDemoModeAccessoryItem *)self accessory];
-  v6 = [v5 room];
-  v7 = [v6 name];
+  accessory2 = [(HFDemoModeAccessoryItem *)self accessory];
+  room = [accessory2 room];
+  name2 = [room name];
 
-  v8 = [[HFServiceNameComponents alloc] initWithRawServiceName:v4 rawRoomName:v7];
+  v8 = [[HFServiceNameComponents alloc] initWithRawServiceName:name rawRoomName:name2];
 
   return v8;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = [HFDemoModeMediaControlItem alloc];
   v5 = [(HFDemoModeMediaControlItem *)v4 initWithDisplayResults:MEMORY[0x277CBEC10]];
-  v6 = [(HFDemoModeAccessoryItem *)self accessory];
-  [(HFDemoModeMediaControlItem *)v5 setAccessory:v6];
+  accessory = [(HFDemoModeAccessoryItem *)self accessory];
+  [(HFDemoModeMediaControlItem *)v5 setAccessory:accessory];
 
   v7 = [MEMORY[0x277CBEB98] setWithObject:v5];
   if ([(HFDemoModeAccessoryItem *)self isMediaSystemDemoType])
@@ -146,28 +146,28 @@ LABEL_8:
 
   v9 = [HFMutableItemUpdateOutcome alloc];
   v10 = [(HFItemUpdateOutcome *)v9 initWithResults:MEMORY[0x277CBEC10]];
-  v11 = [(HFDemoModeAccessoryItem *)self hf_serviceNameComponents];
+  hf_serviceNameComponents = [(HFDemoModeAccessoryItem *)self hf_serviceNameComponents];
   [(HFMutableItemUpdateOutcome *)v10 setObject:v7 forKeyedSubscript:@"childItems"];
-  [(HFMutableItemUpdateOutcome *)v10 setObject:v11 forKeyedSubscript:@"serviceNameComponents"];
-  v12 = [(HFDemoModeAccessoryItem *)self _iconDescriptor];
-  [(HFMutableItemUpdateOutcome *)v10 setObject:v12 forKeyedSubscript:@"icon"];
-  if ([v12 isSystemImage])
+  [(HFMutableItemUpdateOutcome *)v10 setObject:hf_serviceNameComponents forKeyedSubscript:@"serviceNameComponents"];
+  _iconDescriptor = [(HFDemoModeAccessoryItem *)self _iconDescriptor];
+  [(HFMutableItemUpdateOutcome *)v10 setObject:_iconDescriptor forKeyedSubscript:@"icon"];
+  if ([_iconDescriptor isSystemImage])
   {
-    v13 = [v12 imageIdentifier];
-    [(HFMutableItemUpdateOutcome *)v10 setObject:v13 forKeyedSubscript:@"iconNames"];
+    imageIdentifier = [_iconDescriptor imageIdentifier];
+    [(HFMutableItemUpdateOutcome *)v10 setObject:imageIdentifier forKeyedSubscript:@"iconNames"];
   }
 
-  v14 = [v11 rawServiceName];
-  [(HFMutableItemUpdateOutcome *)v10 setObject:v14 forKeyedSubscript:@"controlDescription"];
+  rawServiceName = [hf_serviceNameComponents rawServiceName];
+  [(HFMutableItemUpdateOutcome *)v10 setObject:rawServiceName forKeyedSubscript:@"controlDescription"];
 
-  v15 = [(HFDemoModeAccessoryItem *)self accessory];
-  v16 = [v15 room];
-  v17 = [v16 uniqueIdentifier];
-  [(HFMutableItemUpdateOutcome *)v10 setObject:v17 forKeyedSubscript:@"roomIdentifier"];
+  accessory2 = [(HFDemoModeAccessoryItem *)self accessory];
+  room = [accessory2 room];
+  uniqueIdentifier = [room uniqueIdentifier];
+  [(HFMutableItemUpdateOutcome *)v10 setObject:uniqueIdentifier forKeyedSubscript:@"roomIdentifier"];
 
-  v18 = [(HFDemoModeAccessoryItem *)self accessory];
-  v19 = [v18 applicationData];
-  v20 = [v19 objectForKeyedSubscript:@"primaryDisplayState"];
+  accessory3 = [(HFDemoModeAccessoryItem *)self accessory];
+  applicationData = [accessory3 applicationData];
+  v20 = [applicationData objectForKeyedSubscript:@"primaryDisplayState"];
 
   objc_opt_class();
   v21 = v20;
@@ -183,9 +183,9 @@ LABEL_8:
 
   v23 = v22;
 
-  v24 = [v23 integerValue];
-  v25 = [(HFDemoModeAccessoryItem *)self isMediaSystemDemoType];
-  if (v24 == 2)
+  integerValue = [v23 integerValue];
+  isMediaSystemDemoType = [(HFDemoModeAccessoryItem *)self isMediaSystemDemoType];
+  if (integerValue == 2)
   {
     [(HFMutableItemUpdateOutcome *)v10 setObject:&unk_282524840 forKeyedSubscript:@"state"];
     [(HFMutableItemUpdateOutcome *)v10 setObject:&unk_282524840 forKeyedSubscript:@"value"];
@@ -201,7 +201,7 @@ LABEL_8:
     v27 = @"HFMediaAccessoryStateDescriptionPaused";
   }
 
-  if (v25)
+  if (isMediaSystemDemoType)
   {
     v28 = v27;
   }
@@ -221,17 +221,17 @@ LABEL_8:
 
 - (HMHome)home
 {
-  v2 = [(HFDemoModeAccessoryItem *)self accessory];
-  v3 = [v2 home];
+  accessory = [(HFDemoModeAccessoryItem *)self accessory];
+  home = [accessory home];
 
-  return v3;
+  return home;
 }
 
 - (id)accessories
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFDemoModeAccessoryItem *)self accessory];
-  v4 = [v2 setWithObject:v3];
+  accessory = [(HFDemoModeAccessoryItem *)self accessory];
+  v4 = [v2 setWithObject:accessory];
 
   return v4;
 }
@@ -243,12 +243,12 @@ LABEL_8:
     dispatch_once(&qword_280E02428, &__block_literal_global_163);
   }
 
-  v3 = [(HFDemoModeAccessoryItem *)self accessory];
-  v4 = [v3 applicationData];
-  v5 = [v4 objectForKeyedSubscript:@"type"];
+  accessory = [(HFDemoModeAccessoryItem *)self accessory];
+  applicationData = [accessory applicationData];
+  v5 = [applicationData objectForKeyedSubscript:@"type"];
 
-  LOBYTE(v3) = [_MergedGlobals_3_2 containsObject:v5];
-  return v3;
+  LOBYTE(accessory) = [_MergedGlobals_3_2 containsObject:v5];
+  return accessory;
 }
 
 void __48__HFDemoModeAccessoryItem_isMediaSystemDemoType__block_invoke()
@@ -268,8 +268,8 @@ void __48__HFDemoModeAccessoryItem_isMediaSystemDemoType__block_invoke()
 
 - (id)namingComponentForHomeKitObject
 {
-  v2 = [(HFDemoModeAccessoryItem *)self accessory];
-  v3 = [HFNamingComponents namingComponentFromHomeKitObject:v2];
+  accessory = [(HFDemoModeAccessoryItem *)self accessory];
+  v3 = [HFNamingComponents namingComponentFromHomeKitObject:accessory];
 
   return v3;
 }
@@ -277,14 +277,14 @@ void __48__HFDemoModeAccessoryItem_isMediaSystemDemoType__block_invoke()
 - (id)_iconDescriptor
 {
   v3 = MEMORY[0x277D755D0];
-  v4 = [MEMORY[0x277D75348] systemGrayColor];
-  v5 = [v3 configurationWithHierarchicalColor:v4];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  v5 = [v3 configurationWithHierarchicalColor:systemGrayColor];
 
   v6 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76A08] scale:3];
   v7 = [v6 configurationByApplyingConfiguration:v5];
-  v8 = [(HFDemoModeAccessoryItem *)self accessory];
-  v9 = [v8 applicationData];
-  v10 = [v9 objectForKeyedSubscript:@"type"];
+  accessory = [(HFDemoModeAccessoryItem *)self accessory];
+  applicationData = [accessory applicationData];
+  v10 = [applicationData objectForKeyedSubscript:@"type"];
 
   if ([v10 isEqualToString:@"AppleTV"])
   {
@@ -323,10 +323,10 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v15 = [(HFDemoModeAccessoryItem *)self accessory];
-  v16 = [v15 applicationData];
-  v17 = [v16 dictionary];
-  v13 = [HFDemoModeAccessoryManager imageIconDescriptorFromDictionary:v17];
+  accessory2 = [(HFDemoModeAccessoryItem *)self accessory];
+  applicationData2 = [accessory2 applicationData];
+  dictionary = [applicationData2 dictionary];
+  v13 = [HFDemoModeAccessoryManager imageIconDescriptorFromDictionary:dictionary];
 
 LABEL_12:
 

@@ -1,12 +1,12 @@
 @interface TSDMagicMoveMatchObject
-+ (id)matchObjectWithTextRep:(id)a3 position:(CGPoint)a4 stringValue:(id)a5 stringRange:(_NSRange)a6;
-- (BOOL)conflictsWithMatchObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)matchObjectWithTextRep:(id)rep position:(CGPoint)position stringValue:(id)value stringRange:(_NSRange)range;
+- (BOOL)conflictsWithMatchObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)position;
 - (TSDMagicMoveMatchObject)init;
-- (TSDMagicMoveMatchObject)initWithRep:(id)a3 position:(CGPoint)a4 stringValue:(id)a5 stringRange:(_NSRange)a6;
+- (TSDMagicMoveMatchObject)initWithRep:(id)rep position:(CGPoint)position stringValue:(id)value stringRange:(_NSRange)range;
 - (_NSRange)stringRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -30,27 +30,27 @@
   objc_exception_throw(v14);
 }
 
-- (TSDMagicMoveMatchObject)initWithRep:(id)a3 position:(CGPoint)a4 stringValue:(id)a5 stringRange:(_NSRange)a6
+- (TSDMagicMoveMatchObject)initWithRep:(id)rep position:(CGPoint)position stringValue:(id)value stringRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  y = a4.y;
-  x = a4.x;
-  v12 = a3;
-  v13 = a5;
+  length = range.length;
+  location = range.location;
+  y = position.y;
+  x = position.x;
+  repCopy = rep;
+  valueCopy = value;
   v44.receiver = self;
   v44.super_class = TSDMagicMoveMatchObject;
   v14 = [(TSDMagicMoveMatchObject *)&v44 init];
   v16 = v14;
   if (v14)
   {
-    objc_msgSend_setRep_(v14, v15, v12);
+    objc_msgSend_setRep_(v14, v15, repCopy);
     objc_msgSend_setPosition_(v16, v17, v18, x, y);
-    objc_msgSend_setStringValue_(v16, v19, v13);
+    objc_msgSend_setStringValue_(v16, v19, valueCopy);
     objc_msgSend_setStringRange_(v16, v20, location, length);
-    v23 = objc_msgSend_canvas(v12, v21, v22);
+    v23 = objc_msgSend_canvas(repCopy, v21, v22);
     v26 = objc_msgSend_allRepsOrdered(v23, v24, v25);
-    v28 = objc_msgSend_indexOfObject_(v26, v27, v12);
+    v28 = objc_msgSend_indexOfObject_(v26, v27, repCopy);
     objc_msgSend_setZOrder_(v16, v29, v28);
 
     if (objc_msgSend_zOrder(v16, v30, v31) >= 10000)
@@ -68,21 +68,21 @@
   return v16;
 }
 
-+ (id)matchObjectWithTextRep:(id)a3 position:(CGPoint)a4 stringValue:(id)a5 stringRange:(_NSRange)a6
++ (id)matchObjectWithTextRep:(id)rep position:(CGPoint)position stringValue:(id)value stringRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  y = a4.y;
-  x = a4.x;
-  v11 = a5;
-  v12 = a3;
+  length = range.length;
+  location = range.location;
+  y = position.y;
+  x = position.x;
+  valueCopy = value;
+  repCopy = rep;
   v13 = [TSDMagicMoveMatchObject alloc];
-  v15 = objc_msgSend_initWithRep_position_stringValue_stringRange_(v13, v14, v12, v11, location, length, x, y);
+  v15 = objc_msgSend_initWithRep_position_stringValue_stringRange_(v13, v14, repCopy, valueCopy, location, length, x, y);
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSDMagicMoveMatchObject alloc];
   v7 = objc_msgSend_rep(self, v5, v6);
@@ -102,9 +102,9 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   if (!objc_msgSend_isEqual_(v5, v7, v6))
@@ -113,7 +113,7 @@
   }
 
   v10 = objc_msgSend_rep(self, v8, v9);
-  v13 = objc_msgSend_rep(v4, v11, v12);
+  v13 = objc_msgSend_rep(equalCopy, v11, v12);
 
   if (v10 != v13)
   {
@@ -123,7 +123,7 @@
   v20 = objc_msgSend_stringValue(self, v14, v15);
   if (v20)
   {
-    v13 = objc_msgSend_stringValue(v4, v18, v19);
+    v13 = objc_msgSend_stringValue(equalCopy, v18, v19);
     if (!v13)
     {
 
@@ -144,7 +144,7 @@ LABEL_3:
 
   else
   {
-    v26 = objc_msgSend_stringValue(v4, v22, v23);
+    v26 = objc_msgSend_stringValue(equalCopy, v22, v23);
 
     if (v20)
     {
@@ -160,12 +160,12 @@ LABEL_3:
   if (v27)
   {
     v30 = v27;
-    v31 = objc_msgSend_stringValue(v4, v28, v29);
+    v31 = objc_msgSend_stringValue(equalCopy, v28, v29);
     if (v31)
     {
       v34 = v31;
       v35 = objc_msgSend_stringValue(self, v32, v33);
-      v38 = objc_msgSend_stringValue(v4, v36, v37);
+      v38 = objc_msgSend_stringValue(equalCopy, v36, v37);
       isEqual = objc_msgSend_isEqual_(v35, v39, v38);
 
       if (!isEqual)
@@ -181,7 +181,7 @@ LABEL_3:
 
   v41 = objc_msgSend_stringRange(self, v28, v29);
   v43 = v42;
-  v16 = v41 == objc_msgSend_stringRange(v4, v42, v44) && v43 == v45;
+  v16 = v41 == objc_msgSend_stringRange(equalCopy, v42, v44) && v43 == v45;
 LABEL_4:
 
   return v16;
@@ -245,20 +245,20 @@ LABEL_4:
   return v34;
 }
 
-- (BOOL)conflictsWithMatchObject:(id)a3
+- (BOOL)conflictsWithMatchObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_rep(self, v5, v6);
-  v10 = objc_msgSend_rep(v4, v8, v9);
+  v10 = objc_msgSend_rep(objectCopy, v8, v9);
 
   if (v7 == v10)
   {
     v14 = objc_msgSend_stringValue(self, v11, v12);
-    if (v14 && (v17 = v14, objc_msgSend_stringValue(v4, v15, v16), v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
+    if (v14 && (v17 = v14, objc_msgSend_stringValue(objectCopy, v15, v16), v18 = objc_claimAutoreleasedReturnValue(), v18, v17, v18))
     {
       v21 = objc_msgSend_stringRange(self, v19, v20);
       v23 = v22;
-      v28.location = objc_msgSend_stringRange(v4, v22, v24);
+      v28.location = objc_msgSend_stringRange(objectCopy, v22, v24);
       v28.length = v25;
       v27.location = v21;
       v27.length = v23;

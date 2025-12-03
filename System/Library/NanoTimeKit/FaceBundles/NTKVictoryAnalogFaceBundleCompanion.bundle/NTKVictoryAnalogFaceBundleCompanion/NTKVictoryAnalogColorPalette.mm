@@ -5,23 +5,23 @@
 - (id)_dotMarker;
 - (id)_hands;
 - (id)_logo;
-- (id)_markerAtIndex:(id)a3;
+- (id)_markerAtIndex:(id)index;
 - (id)_numbers;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dotMarkerColorAtIndex:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dotMarkerColorAtIndex:(id)index;
 - (id)identifier;
-- (id)numberColorAtIndex:(id)a3;
-- (void)configurationDidChange:(id)a3;
-- (void)setStyle:(unint64_t)a3;
+- (id)numberColorAtIndex:(id)index;
+- (void)configurationDidChange:(id)change;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation NTKVictoryAnalogColorPalette
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NTKVictoryAnalogColorPalette;
-  v4 = [(NTKVictoryAnalogColorPalette *)&v6 copyWithZone:a3];
+  v4 = [(NTKVictoryAnalogColorPalette *)&v6 copyWithZone:zone];
   [v4 setStyle:{-[NTKVictoryAnalogColorPalette style](self, "style")}];
   return v4;
 }
@@ -33,8 +33,8 @@
   {
     v8.receiver = self;
     v8.super_class = NTKVictoryAnalogColorPalette;
-    v4 = [(NTKVictoryAnalogColorPalette *)&v8 identifier];
-    v5 = [NSString stringWithFormat:@"%@-%lu", v4, self->_style];
+    identifier = [(NTKVictoryAnalogColorPalette *)&v8 identifier];
+    v5 = [NSString stringWithFormat:@"%@-%lu", identifier, self->_style];
     v6 = self->_cachedIdentifier;
     self->_cachedIdentifier = v5;
 
@@ -44,18 +44,18 @@
   return cachedIdentifier;
 }
 
-- (void)configurationDidChange:(id)a3
+- (void)configurationDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = NTKVictoryAnalogColorPalette;
-  [(NTKVictoryAnalogColorPalette *)&v5 configurationDidChange:a3];
+  [(NTKVictoryAnalogColorPalette *)&v5 configurationDidChange:change];
   cachedIdentifier = self->_cachedIdentifier;
   self->_cachedIdentifier = 0;
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  self->_style = a3;
+  self->_style = style;
   cachedIdentifier = self->_cachedIdentifier;
   self->_cachedIdentifier = 0;
   _objc_release_x1();
@@ -66,15 +66,15 @@
   if ([(NTKVictoryAnalogColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKVictoryAnalogColorPalette *)self paletteAtIndex:0];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v4 = [(NTKVictoryAnalogColorPalette *)self primaryColor];
+    primaryColor = [(NTKVictoryAnalogColorPalette *)self primaryColor];
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)_hands
@@ -98,7 +98,7 @@
   if ([(NTKVictoryAnalogColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKVictoryAnalogColorPalette *)self paletteAtIndex:1];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
@@ -112,10 +112,10 @@
     {
       +[UIColor whiteColor];
     }
-    v4 = ;
+    primaryColor = ;
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)_cornerComplicationsAccent
@@ -139,15 +139,15 @@
   if ([(NTKVictoryAnalogColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKVictoryAnalogColorPalette *)self paletteAtIndex:0];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v4 = [(NTKVictoryAnalogColorPalette *)self primaryColor];
+    primaryColor = [(NTKVictoryAnalogColorPalette *)self primaryColor];
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (NSNumber)dotMarkerAlpha
@@ -173,63 +173,63 @@
     return 1;
   }
 
-  v4 = [(NTKVictoryAnalogColorPalette *)self pigmentEditOption];
-  v5 = [v4 identifier];
-  v6 = [v5 isEqual:ntk_victory_white];
+  pigmentEditOption = [(NTKVictoryAnalogColorPalette *)self pigmentEditOption];
+  identifier = [pigmentEditOption identifier];
+  v6 = [identifier isEqual:ntk_victory_white];
 
   return v6;
 }
 
-- (id)dotMarkerColorAtIndex:(id)a3
+- (id)dotMarkerColorAtIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(NTKVictoryAnalogColorPalette *)self dotMarker];
+  indexCopy = index;
+  dotMarker = [(NTKVictoryAnalogColorPalette *)self dotMarker];
   if ([(NTKVictoryAnalogColorPalette *)self isRainbowColor])
   {
-    v6 = [(NTKVictoryAnalogColorPalette *)self _markerAtIndex:v4];
+    v6 = [(NTKVictoryAnalogColorPalette *)self _markerAtIndex:indexCopy];
 
-    v5 = v6;
+    dotMarker = v6;
   }
 
-  return v5;
+  return dotMarker;
 }
 
-- (id)numberColorAtIndex:(id)a3
+- (id)numberColorAtIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(NTKVictoryAnalogColorPalette *)self numbers];
+  indexCopy = index;
+  numbers = [(NTKVictoryAnalogColorPalette *)self numbers];
   if ([(NTKVictoryAnalogColorPalette *)self isRainbowColor])
   {
-    v6 = [(NTKVictoryAnalogColorPalette *)self _markerAtIndex:v4];
+    v6 = [(NTKVictoryAnalogColorPalette *)self _markerAtIndex:indexCopy];
 
-    v5 = v6;
+    numbers = v6;
   }
 
-  return v5;
+  return numbers;
 }
 
-- (id)_markerAtIndex:(id)a3
+- (id)_markerAtIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(NTKVictoryAnalogColorPalette *)self style];
+  indexCopy = index;
+  style = [(NTKVictoryAnalogColorPalette *)self style];
   v6 = @"largeDigit";
-  if (v5 < 3)
+  if (style < 3)
   {
     v6 = @"digit";
   }
 
   v7 = v6;
-  v8 = [(NTKVictoryAnalogColorPalette *)self style];
-  v9 = [v4 integerValue];
+  style2 = [(NTKVictoryAnalogColorPalette *)self style];
+  integerValue = [indexCopy integerValue];
 
-  if (v8 >= 3)
+  if (style2 >= 3)
   {
-    v10 = v9;
+    v10 = integerValue;
   }
 
   else
   {
-    v10 = v9 + 1;
+    v10 = integerValue + 1;
   }
 
   v11 = [NSString stringWithFormat:@"%@%lu", v7, v10];

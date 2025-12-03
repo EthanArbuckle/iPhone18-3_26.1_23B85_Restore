@@ -1,30 +1,30 @@
 @interface CSSESWrapper
 - (BOOL)validatePassphrasePresentOrPending;
-- (CSSESWrapper)initWithDSID:(id)a3 escrowRecordContents:(id)a4 passcodeStashSecret:(id)a5 recoveryPassphrase:(id)a6 recordID:(id)a7 recordLabel:(id)a8 useAppleIDPassword:(BOOL)a9 appleIDPasswordMetadata:(id)a10 reqVersion:(int)a11;
-- (CSSESWrapper)initWithRequest:(id)a3 validate:(BOOL)a4 reqVersion:(int)a5;
+- (CSSESWrapper)initWithDSID:(id)d escrowRecordContents:(id)contents passcodeStashSecret:(id)secret recoveryPassphrase:(id)passphrase recordID:(id)iD recordLabel:(id)label useAppleIDPassword:(BOOL)password appleIDPasswordMetadata:(id)self0 reqVersion:(int)self1;
+- (CSSESWrapper)initWithRequest:(id)request validate:(BOOL)validate reqVersion:(int)version;
 - (id)derivePassword;
 - (id)derivePasswordGuitarfish;
-- (id)encodedEscrowRecordWithPublicKey:(__SecKey *)a3 certificateData:(id)a4 error:(id *)a5;
-- (id)encodedEscrowRecordWithPublicKeyBytes:(id)a3 certificateData:(id)a4 error:(id *)a5;
-- (id)recoveryResponseForBlob:(id)a3;
+- (id)encodedEscrowRecordWithPublicKey:(__SecKey *)key certificateData:(id)data error:(id *)error;
+- (id)encodedEscrowRecordWithPublicKeyBytes:(id)bytes certificateData:(id)data error:(id *)error;
+- (id)recoveryResponseForBlob:(id)blob;
 - (id)srpInitBlob;
-- (id)srpRecoveryBlobFromData:(id)a3 error:(id *)a4;
-- (id)srpResponseForEscrowBlob:(id)a3 withFullCCKey:(ccrsa_full_ctx *)a4;
+- (id)srpRecoveryBlobFromData:(id)data error:(id *)error;
+- (id)srpResponseForEscrowBlob:(id)blob withFullCCKey:(ccrsa_full_ctx *)key;
 - (unint64_t)srpKeySize;
 - (unint64_t)srpPublicKeySize;
 - (void)dealloc;
-- (void)setReqVersion:(int)a3;
-- (void)srpRecoveryUpdateDSID:(id)a3 recoveryPassphrase:(id)a4;
+- (void)setReqVersion:(int)version;
+- (void)srpRecoveryUpdateDSID:(id)d recoveryPassphrase:(id)passphrase;
 @end
 
 @implementation CSSESWrapper
 
-- (CSSESWrapper)initWithRequest:(id)a3 validate:(BOOL)a4 reqVersion:(int)a5
+- (CSSESWrapper)initWithRequest:(id)request validate:(BOOL)validate reqVersion:(int)version
 {
-  v6 = a4;
-  v8 = a3;
-  v11 = v8;
-  if (v6 && (objc_msgSend_validateInput(v8, v9, v10), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  validateCopy = validate;
+  requestCopy = request;
+  v11 = requestCopy;
+  if (validateCopy && (objc_msgSend_validateInput(requestCopy, v9, v10), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = v12;
     v14 = CloudServicesLog();
@@ -33,12 +33,12 @@
       sub_22E9F5208();
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v42 = a5;
+    versionCopy = version;
     v16 = objc_msgSend_dsid(v11, v9, v10);
     v19 = objc_msgSend_escrowRecord(v11, v17, v18);
     v22 = objc_msgSend_passcodeStashSecret(v11, v20, v21);
@@ -56,27 +56,27 @@
     }
 
     v37 = objc_msgSend_appleIDPasswordMetadata(v11, v34, v35);
-    v41 = v42;
+    v41 = versionCopy;
     v40 = v36;
     self = objc_msgSend_initWithDSID_escrowRecordContents_passcodeStashSecret_recoveryPassphrase_recordID_recordLabel_useAppleIDPassword_appleIDPasswordMetadata_reqVersion_(self, v38, v16, v19, v22, v25, v28, v31, v40, v37, v41);
 
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (CSSESWrapper)initWithDSID:(id)a3 escrowRecordContents:(id)a4 passcodeStashSecret:(id)a5 recoveryPassphrase:(id)a6 recordID:(id)a7 recordLabel:(id)a8 useAppleIDPassword:(BOOL)a9 appleIDPasswordMetadata:(id)a10 reqVersion:(int)a11
+- (CSSESWrapper)initWithDSID:(id)d escrowRecordContents:(id)contents passcodeStashSecret:(id)secret recoveryPassphrase:(id)passphrase recordID:(id)iD recordLabel:(id)label useAppleIDPassword:(BOOL)password appleIDPasswordMetadata:(id)self0 reqVersion:(int)self1
 {
-  v18 = a3;
-  v33 = a4;
-  v32 = a5;
-  v19 = a6;
-  v31 = a7;
-  obj = a8;
-  v20 = a8;
-  v21 = a10;
-  if (((objc_msgSend_isEqualToString_(v20, v22, @"com.apple.protectedcloudstorage.record") & 1) != 0 || objc_msgSend_isEqualToString_(v20, v23, @"com.apple.protectedcloudstorage.record.double")) && (objc_msgSend_isEqualToString_(v19, v23, v18) & 1) == 0)
+  dCopy = d;
+  contentsCopy = contents;
+  secretCopy = secret;
+  passphraseCopy = passphrase;
+  iDCopy = iD;
+  obj = label;
+  labelCopy = label;
+  metadataCopy = metadata;
+  if (((objc_msgSend_isEqualToString_(labelCopy, v22, @"com.apple.protectedcloudstorage.record") & 1) != 0 || objc_msgSend_isEqualToString_(labelCopy, v23, @"com.apple.protectedcloudstorage.record.double")) && (objc_msgSend_isEqualToString_(passphraseCopy, v23, dCopy) & 1) == 0)
   {
     sub_22E9F511C();
   }
@@ -87,24 +87,24 @@
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_dsid, a3);
-    objc_storeStrong(&v25->_escrowRecord, a4);
-    objc_storeStrong(&v25->_passcodeStashSecret, a5);
-    objc_storeStrong(&v25->_recoveryPassphrase, a6);
-    objc_storeStrong(&v25->_recordID, a7);
+    objc_storeStrong(&v24->_dsid, d);
+    objc_storeStrong(&v25->_escrowRecord, contents);
+    objc_storeStrong(&v25->_passcodeStashSecret, secret);
+    objc_storeStrong(&v25->_recoveryPassphrase, passphrase);
+    objc_storeStrong(&v25->_recordID, iD);
     objc_storeStrong(&v25->_label, obj);
     if (!v25->_dsid && !v25->_recoveryPassphrase)
     {
       v25->_recoveryPassphraseMutable = 1;
     }
 
-    v25->_reqVersion = a11;
+    v25->_reqVersion = version;
     v26 = malloc_type_malloc(0x38uLL, 0x6004031944618uLL);
     v25->_ckvr = v26;
     sub_22E9E763C(v26);
-    objc_msgSend_setReqVersion_(v25, v27, a11);
-    v25->_useAppleIDPassword = a9;
-    objc_storeStrong(&v25->_appleIDPasswordMetadata, a10);
+    objc_msgSend_setReqVersion_(v25, v27, version);
+    v25->_useAppleIDPassword = password;
+    objc_storeStrong(&v25->_appleIDPasswordMetadata, metadata);
     v28 = v25;
   }
 
@@ -171,11 +171,11 @@
   return v6;
 }
 
-- (void)setReqVersion:(int)a3
+- (void)setReqVersion:(int)version
 {
-  self->_reqVersion = a3;
+  self->_reqVersion = version;
   p_reqVersion = &self->_reqVersion;
-  if (a3 >= 3)
+  if (version >= 3)
   {
     v5 = p_reqVersion;
     v4 = CloudServicesLog();
@@ -222,20 +222,20 @@
   return sub_22E9E77E8(v3);
 }
 
-- (void)srpRecoveryUpdateDSID:(id)a3 recoveryPassphrase:(id)a4
+- (void)srpRecoveryUpdateDSID:(id)d recoveryPassphrase:(id)passphrase
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  passphraseCopy = passphrase;
   if (!self->_recoveryPassphraseMutable)
   {
     abort();
   }
 
-  v8 = v7;
+  v8 = passphraseCopy;
   self->_recoveryPassphraseMutable = 0;
   dsid = self->_dsid;
-  self->_dsid = v6;
-  v11 = v6;
+  self->_dsid = dCopy;
+  v11 = dCopy;
 
   recoveryPassphrase = self->_recoveryPassphrase;
   self->_recoveryPassphrase = v8;
@@ -254,24 +254,24 @@
   return v6;
 }
 
-- (id)srpRecoveryBlobFromData:(id)a3 error:(id *)a4
+- (id)srpRecoveryBlobFromData:(id)data error:(id *)error
 {
   v155 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   self->_recoveryPassphraseMutable = 0;
-  if (objc_msgSend_length(v6, v7, v8) >> 32)
+  if (objc_msgSend_length(dataCopy, v7, v8) >> 32)
   {
     v11 = CloudServicesLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_22E9F55D4(v6, v11, v12);
+      sub_22E9F55D4(dataCopy, v11, v12);
     }
 
-    if (a4)
+    if (error)
     {
-      v15 = objc_msgSend_length(v6, v13, v14);
+      v15 = objc_msgSend_length(dataCopy, v13, v14);
       objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v16, @"EscrowServiceErrorDomain", 102, @"srp recovery blob too large: %lu bytes", v15);
-      *a4 = v17 = 0;
+      *error = v17 = 0;
     }
 
     else
@@ -282,7 +282,7 @@
     goto LABEL_72;
   }
 
-  v18 = objc_msgSend_length(v6, v9, v10);
+  v18 = objc_msgSend_length(dataCopy, v9, v10);
   v19 = (v18 + 15) & 0xFFFFFFFFFFFFFFF0;
   v20 = &v145 - v19;
   if (v18)
@@ -290,15 +290,15 @@
     memset(&v145 - v19, 170, v18);
   }
 
-  v21 = v6;
+  v21 = dataCopy;
   v24 = objc_msgSend_bytes(v21, v22, v23);
-  v27 = objc_msgSend_length(v6, v25, v26);
+  v27 = objc_msgSend_length(dataCopy, v25, v26);
   memcpy(v20, v24, v27);
-  v30 = objc_msgSend_length(v6, v28, v29);
+  v30 = objc_msgSend_length(dataCopy, v28, v29);
   if (sub_22E9EB7E4(v30, v20))
   {
     v33 = MEMORY[0x277CBEA90];
-    v34 = objc_msgSend_length(v6, v31, v32);
+    v34 = objc_msgSend_length(dataCopy, v31, v32);
     v36 = objc_msgSend_dataWithBytes_length_(v33, v35, v20, v34);
     v39 = v36;
     if (v36)
@@ -331,10 +331,10 @@ LABEL_21:
                 sub_22E9F5414();
               }
 
-              if (a4)
+              if (error)
               {
                 v85 = v83;
-                *a4 = v83;
+                *error = v83;
               }
 
               goto LABEL_49;
@@ -353,10 +353,10 @@ LABEL_21:
                 sub_22E9F5414();
               }
 
-              if (a4)
+              if (error)
               {
                 v76 = v74;
-                *a4 = v74;
+                *error = v74;
               }
 
               goto LABEL_49;
@@ -432,12 +432,12 @@ LABEL_21:
             }
 
             v130 = v118;
-            if (a4)
+            if (error)
             {
               v131 = *(v151[0] + 40);
               if (v131)
               {
-                *a4 = v131;
+                *error = v131;
               }
             }
 
@@ -466,10 +466,10 @@ LABEL_21:
           else
           {
             v119 = objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v101, @"EscrowServiceErrorDomain", 102, @"fail to derive password");
-            if (a4)
+            if (error)
             {
               v119 = v119;
-              *a4 = v119;
+              *error = v119;
             }
 
             v17 = 0;
@@ -484,10 +484,10 @@ LABEL_21:
           sub_22E9F555C();
         }
 
-        if (a4)
+        if (error)
         {
           objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v78, @"EscrowServiceErrorDomain", 128, @"recoveryPassphrase not provided");
-          *a4 = v17 = 0;
+          *error = v17 = 0;
 LABEL_71:
 
           goto LABEL_72;
@@ -516,7 +516,7 @@ LABEL_49:
           sub_22E9F539C();
         }
 
-        if (!a4)
+        if (!error)
         {
 LABEL_43:
 
@@ -534,14 +534,14 @@ LABEL_43:
           sub_22E9F53D8();
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_43;
         }
 
         objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v80, @"EscrowServiceErrorDomain", 102, @"can't process recovery blob with no username");
       }
-      *a4 = ;
+      *error = ;
       goto LABEL_43;
     }
   }
@@ -552,10 +552,10 @@ LABEL_43:
     sub_22E9F5598();
   }
 
-  if (a4)
+  if (error)
   {
     objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v55, @"EscrowServiceErrorDomain", 102, @"failed to convert srp init response");
-    *a4 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -570,9 +570,9 @@ LABEL_72:
   return v17;
 }
 
-- (id)encodedEscrowRecordWithPublicKey:(__SecKey *)a3 certificateData:(id)a4 error:(id *)a5
+- (id)encodedEscrowRecordWithPublicKey:(__SecKey *)key certificateData:(id)data error:(id *)error
 {
-  v7 = a4;
+  dataCopy = data;
   v13 = 0xAAAAAAAAAAAAAAAALL;
   if (SecKeyCopyPublicBytes())
   {
@@ -589,17 +589,17 @@ LABEL_72:
   else
   {
     v9 = v13;
-    v10 = objc_msgSend_encodedEscrowRecordWithPublicKeyBytes_certificateData_error_(self, v8, v13, v7, a5);
+    v10 = objc_msgSend_encodedEscrowRecordWithPublicKeyBytes_certificateData_error_(self, v8, v13, dataCopy, error);
   }
 
   return v10;
 }
 
-- (id)encodedEscrowRecordWithPublicKeyBytes:(id)a3 certificateData:(id)a4 error:(id *)a5
+- (id)encodedEscrowRecordWithPublicKeyBytes:(id)bytes certificateData:(id)data error:(id *)error
 {
   v307 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  bytesCopy = bytes;
+  dataCopy = data;
   v10 = MEMORY[0x277CCAC58];
   v13 = objc_msgSend_escrowRecord(self, v11, v12);
   v302 = 0;
@@ -620,10 +620,10 @@ LABEL_72:
       _os_log_impl(&dword_22E9CA000, v121, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v122 = v120;
-      *a5 = v120;
+      *error = v120;
     }
 
     goto LABEL_24;
@@ -646,10 +646,10 @@ LABEL_72:
       _os_log_impl(&dword_22E9CA000, v123, OS_LOG_TYPE_DEFAULT, "username missing for %@ (dsid %@)", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v130, @"EscrowServiceErrorDomain", 4, @"Username missing");
-      *a5 = v116 = 0;
+      *error = v116 = 0;
       goto LABEL_43;
     }
 
@@ -657,7 +657,7 @@ LABEL_72:
   }
 
   v23 = v22;
-  v298 = a5;
+  errorCopy = error;
   v299 = v16;
   v297 = strlen(v22);
   v26 = objc_msgSend_label(self, v24, v25);
@@ -691,10 +691,10 @@ LABEL_72:
     }
 
     v16 = v299;
-    if (v298)
+    if (errorCopy)
     {
       objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v138, @"EscrowServiceErrorDomain", 4, @"label missing");
-      *v298 = v116 = 0;
+      *errorCopy = v116 = 0;
       goto LABEL_43;
     }
 
@@ -717,8 +717,8 @@ LABEL_24:
   v294 = objc_msgSend_stringFromDate_(v295, v51, v48);
   v53 = objc_msgSend_cStringUsingEncoding_(v294, v52, 4);
   v292 = strlen(v53);
-  objc_msgSend_length(v8, v54, v55);
-  v56 = v8;
+  objc_msgSend_length(bytesCopy, v54, v55);
+  v56 = bytesCopy;
   objc_msgSend_bytes(v56, v57, v58);
   v59 = ccrsa_import_pub_n();
   if (v59)
@@ -748,8 +748,8 @@ LABEL_24:
 
     v81 = objc_msgSend_passcodeStashSecret(self, v63, v64);
 
-    v289 = v9;
-    v290 = v8;
+    v289 = dataCopy;
+    v290 = bytesCopy;
     v291 = v15;
     if (v81)
     {
@@ -763,10 +763,10 @@ LABEL_24:
       v93 = v15;
       v96 = objc_msgSend_bytes(v93, v94, v95);
       v99 = objc_msgSend_length(v15, v97, v98);
-      v100 = v9;
+      v100 = dataCopy;
       v103 = v29;
       v104 = objc_msgSend_bytes(v100, v101, v102);
-      v107 = objc_msgSend_length(v9, v105, v106);
+      v107 = objc_msgSend_length(dataCopy, v105, v106);
       sub_22E9F48FC(4294967293, *(&v288 + 1), v288, v23, v297 + 1, v103, v293, v96, v99, v53, v292, v104, v107, &v301, &v300, v282, v283, v284, v285, v286, v287, v288, v289, v290, v291);
       v109 = v108;
 
@@ -783,14 +783,14 @@ LABEL_24:
           _os_log_impl(&dword_22E9CA000, v114, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
         }
 
-        v9 = v289;
-        v8 = v290;
+        dataCopy = v289;
+        bytesCopy = v290;
         v15 = v291;
         v16 = v299;
-        if (v298)
+        if (errorCopy)
         {
           v115 = v113;
-          *v298 = v113;
+          *errorCopy = v113;
         }
 
         v116 = 0;
@@ -799,8 +799,8 @@ LABEL_24:
 
       v168 = objc_alloc(MEMORY[0x277CBEA90]);
       v116 = objc_msgSend_initWithBytesNoCopy_length_freeWhenDone_(v168, v169, v301, v300, 1);
-      v9 = v289;
-      v8 = v290;
+      dataCopy = v289;
+      bytesCopy = v290;
       v15 = v291;
       goto LABEL_41;
     }
@@ -814,15 +814,15 @@ LABEL_24:
       v153 = objc_msgSend_length(v291, v151, v152);
       v156 = objc_msgSend_salt(v148, v154, v155);
       v159 = objc_msgSend_length(v156, v157, v158);
-      v160 = v8;
+      v160 = bytesCopy;
       objc_msgSend_bytes(v160, v161, v162);
-      objc_msgSend_length(v8, v163, v164);
+      objc_msgSend_length(bytesCopy, v163, v164);
       v165 = sub_22E9EA0B8(v288, 0, v153, v293, v292, v159);
     }
 
     else
     {
-      v172 = v8;
+      v172 = bytesCopy;
       v173 = objc_msgSend_ckvr(self, v145, v146);
       v176 = objc_msgSend_length(v291, v174, v175);
       v177 = v172;
@@ -837,11 +837,11 @@ LABEL_24:
     {
       v182 = objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v167, @"EscrowServiceErrorDomain", 3, @"Escrow data too long (%zu)", v165);
       v183 = v182;
-      v8 = v290;
-      if (v298)
+      bytesCopy = v290;
+      if (errorCopy)
       {
         v184 = v182;
-        *v298 = v183;
+        *errorCopy = v183;
       }
 
       v185 = CloudServicesLog();
@@ -853,7 +853,7 @@ LABEL_24:
       }
 
       v116 = 0;
-      v9 = v289;
+      dataCopy = v289;
       v15 = v291;
       goto LABEL_42;
     }
@@ -903,11 +903,11 @@ LABEL_24:
           sub_22E9F5414();
         }
 
-        v9 = v289;
-        v8 = v290;
-        v280 = v298;
+        dataCopy = v289;
+        bytesCopy = v290;
+        v280 = errorCopy;
         v16 = v299;
-        if (v298)
+        if (errorCopy)
         {
           v281 = v278;
           *v280 = v278;
@@ -942,7 +942,7 @@ LABEL_24:
         v247 = objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v246, @"EscrowServiceErrorDomain", 125, @"Escrow error encrypting data");
         v248 = CloudServicesLog();
         v249 = os_log_type_enabled(v248, OS_LOG_TYPE_DEFAULT);
-        v9 = v289;
+        dataCopy = v289;
         v16 = v299;
         if (v249)
         {
@@ -953,14 +953,14 @@ LABEL_24:
 
         v15 = v291;
         v188 = v297;
-        v250 = v298;
-        if (v298)
+        v250 = errorCopy;
+        if (errorCopy)
         {
           v251 = v247;
           *v250 = v247;
         }
 
-        v8 = v290;
+        bytesCopy = v290;
 LABEL_73:
 
 LABEL_74:
@@ -970,7 +970,7 @@ LABEL_77:
         goto LABEL_42;
       }
 
-      v9 = v289;
+      dataCopy = v289;
       v16 = v299;
       v188 = v297;
     }
@@ -989,14 +989,14 @@ LABEL_77:
       v267 = objc_msgSend_bytes(v264, v265, v266);
       v245 = *(&v287 + 1);
       v268 = sub_22E9EAC84(v259, v297, v23, v256, v255, v263, v267, v293, v147, v292, *(&v288 + 1), v188, *(&v287 + 1));
-      v9 = v289;
+      dataCopy = v289;
       v16 = v299;
       if (v268)
       {
         v198 = objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v269, @"EscrowServiceErrorDomain", 125, @"Escrow error encrypting data");
         v270 = CloudServicesLog();
         v271 = os_log_type_enabled(v270, OS_LOG_TYPE_DEFAULT);
-        v8 = v290;
+        bytesCopy = v290;
         if (v271)
         {
           *buf = 138412290;
@@ -1005,8 +1005,8 @@ LABEL_77:
         }
 
         v15 = v291;
-        v272 = v298;
-        if (v298)
+        v272 = errorCopy;
+        if (errorCopy)
         {
           v273 = v198;
           *v272 = v198;
@@ -1017,19 +1017,19 @@ LABEL_77:
     }
 
     v116 = objc_msgSend_dataWithBytes_length_(MEMORY[0x277CBEA90], v269, v245, v287);
-    v8 = v290;
+    bytesCopy = v290;
     v15 = v291;
     goto LABEL_77;
   }
 
   v139 = v15;
-  v140 = v9;
+  v140 = dataCopy;
   v141 = objc_msgSend_errorWithDomain_code_format_(CloudServicesError, v60, @"EscrowServiceErrorDomain", 120, @"Fail to parse certificate");
   v142 = v141;
-  if (v298)
+  if (errorCopy)
   {
     v143 = v141;
-    *v298 = v142;
+    *errorCopy = v142;
   }
 
   v144 = CloudServicesLog();
@@ -1041,7 +1041,7 @@ LABEL_77:
   }
 
   v116 = 0;
-  v9 = v140;
+  dataCopy = v140;
   v15 = v139;
 LABEL_41:
   v16 = v299;
@@ -1053,7 +1053,7 @@ LABEL_43:
   return v116;
 }
 
-- (id)srpResponseForEscrowBlob:(id)a3 withFullCCKey:(ccrsa_full_ctx *)a4
+- (id)srpResponseForEscrowBlob:(id)blob withFullCCKey:(ccrsa_full_ctx *)key
 {
   v4 = MEMORY[0x28223BE20](self);
   v6 = v5;
@@ -1207,14 +1207,14 @@ LABEL_25:
   return v60;
 }
 
-- (id)recoveryResponseForBlob:(id)a3
+- (id)recoveryResponseForBlob:(id)blob
 {
   v83[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blobCopy = blob;
   v9 = objc_msgSend_srpKeySize(self, v5, v6);
   if (v9)
   {
-    v10 = objc_msgSend_length(v4, v7, v8);
+    v10 = objc_msgSend_length(blobCopy, v7, v8);
     v11 = MEMORY[0x28223BE20](v10);
     v14 = (&v77 - v13);
     if (v11)
@@ -1222,12 +1222,12 @@ LABEL_25:
       memset(&v77 - v13, 170, v12);
     }
 
-    v15 = v4;
+    v15 = blobCopy;
     v18 = objc_msgSend_bytes(v15, v16, v17);
-    v21 = objc_msgSend_length(v4, v19, v20);
+    v21 = objc_msgSend_length(blobCopy, v19, v20);
     memcpy(v14, v18, v21);
-    v24 = objc_msgSend_length(v4, v22, v23);
-    if (!sub_22E9EB8E8(v24, v14) || (v27 = MEMORY[0x277CBEA90], v28 = objc_msgSend_length(v4, v25, v26), objc_msgSend_dataWithBytes_length_(v27, v29, v14, v28), (v30 = objc_claimAutoreleasedReturnValue()) == 0))
+    v24 = objc_msgSend_length(blobCopy, v22, v23);
+    if (!sub_22E9EB8E8(v24, v14) || (v27 = MEMORY[0x277CBEA90], v28 = objc_msgSend_length(blobCopy, v25, v26), objc_msgSend_dataWithBytes_length_(v27, v29, v14, v28), (v30 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v9 = 0;
       goto LABEL_22;

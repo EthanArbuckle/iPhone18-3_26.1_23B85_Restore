@@ -1,15 +1,15 @@
 @interface CNLabeledBadge
-+ (id)labeledBadgeWithText:(id)a3;
-- (CNLabeledBadge)initWithFrame:(CGRect)a3;
++ (id)labeledBadgeWithText:(id)text;
+- (CNLabeledBadge)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CNLabeledBadge
 
-- (CNLabeledBadge)initWithFrame:(CGRect)a3
+- (CNLabeledBadge)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CNLabeledBadge;
-  v3 = [(CNLabeledBadge *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNLabeledBadge *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[CNUIFontRepository contactCardRecentBadgeFont];
@@ -33,11 +33,11 @@
   return v3;
 }
 
-+ (id)labeledBadgeWithText:(id)a3
++ (id)labeledBadgeWithText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = objc_alloc_init(CNLabeledBadge);
-  [(CNLabeledBadge *)v4 setText:v3];
+  [(CNLabeledBadge *)v4 setText:textCopy];
 
   return v4;
 }

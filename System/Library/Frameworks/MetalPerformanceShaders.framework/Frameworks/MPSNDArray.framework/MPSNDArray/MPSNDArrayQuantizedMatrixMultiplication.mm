@@ -1,34 +1,34 @@
 @interface MPSNDArrayQuantizedMatrixMultiplication
-+ (BOOL)supportsDestinationQuantizationWithDescriptor:(id)a3 device:(void *)a4;
-+ (BOOL)supportsSourceQuantizationWithDescriptor:(id)a3 atIndex:(unint64_t)a4 device:(void *)a5;
-+ (int64_t)getDQuantMinValIndexWithLeftQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4 isForLeft:(BOOL)a5;
-+ (int64_t)getDQuantScaleIndexWithLeftQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4 isForLeft:(BOOL)a5;
-+ (int64_t)getLUTIndexWithLeftQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4 isForLeft:(BOOL)a5;
-+ (int64_t)getLeftDQuantMinValIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4;
-+ (int64_t)getLeftDQuantScaleIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4;
-+ (int64_t)getLeftMinValIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4;
-+ (int64_t)getLeftScaleIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4;
-+ (int64_t)getLeftZeroPointIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4;
-+ (int64_t)getMinValIndexWithLeftQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4 isForLeft:(BOOL)a5;
-+ (int64_t)getRightDQuantMinValIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4;
-+ (int64_t)getRightDQuantScaleIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4;
-+ (int64_t)getRightLUTIndexWithLeftLUTQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4;
-+ (int64_t)getRightMinValIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4;
-+ (int64_t)getRightScaleIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4;
-+ (int64_t)getRightZeroPointIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4;
-+ (int64_t)getScaleIndexWithLeftQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4 isForLeft:(BOOL)a5;
-+ (int64_t)getZeroPointIndexWithLeftQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4 isForLeft:(BOOL)a5;
-- (MPSNDArrayQuantizedMatrixMultiplication)initWithDevice:(id)a3 leftQuantizationDescriptor:(id)a4 rightQuantizationDescriptor:(id)a5;
-- (MPSNDArrayQuantizedMatrixMultiplication)initWithDevice:(id)a3 leftQuantizationDescriptor:(id)a4 rightQuantizationDescriptor:(id)a5 sourceCount:(unint64_t)a6;
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7;
-- (unint64_t)kernelDimensionalityForSourceArrays:(id)a3;
-- (unint64_t)kernelDimensionalityForSourceArrays:(id)a3 destinationArrays:(id)a4 kernelDAGObject:(id)a5;
++ (BOOL)supportsDestinationQuantizationWithDescriptor:(id)descriptor device:(void *)device;
++ (BOOL)supportsSourceQuantizationWithDescriptor:(id)descriptor atIndex:(unint64_t)index device:(void *)device;
++ (int64_t)getDQuantMinValIndexWithLeftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor isForLeft:(BOOL)left;
++ (int64_t)getDQuantScaleIndexWithLeftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor isForLeft:(BOOL)left;
++ (int64_t)getLUTIndexWithLeftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor isForLeft:(BOOL)left;
++ (int64_t)getLeftDQuantMinValIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor;
++ (int64_t)getLeftDQuantScaleIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor;
++ (int64_t)getLeftMinValIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor;
++ (int64_t)getLeftScaleIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor;
++ (int64_t)getLeftZeroPointIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor;
++ (int64_t)getMinValIndexWithLeftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor isForLeft:(BOOL)left;
++ (int64_t)getRightDQuantMinValIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor;
++ (int64_t)getRightDQuantScaleIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor;
++ (int64_t)getRightLUTIndexWithLeftLUTQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor;
++ (int64_t)getRightMinValIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor;
++ (int64_t)getRightScaleIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor;
++ (int64_t)getRightZeroPointIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor;
++ (int64_t)getScaleIndexWithLeftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor isForLeft:(BOOL)left;
++ (int64_t)getZeroPointIndexWithLeftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor isForLeft:(BOOL)left;
+- (MPSNDArrayQuantizedMatrixMultiplication)initWithDevice:(id)device leftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor;
+- (MPSNDArrayQuantizedMatrixMultiplication)initWithDevice:(id)device leftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor sourceCount:(unint64_t)count;
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state;
+- (unint64_t)kernelDimensionalityForSourceArrays:(id)arrays;
+- (unint64_t)kernelDimensionalityForSourceArrays:(id)arrays destinationArrays:(id)destinationArrays kernelDAGObject:(id)object;
 - (void)dealloc;
 @end
 
 @implementation MPSNDArrayQuantizedMatrixMultiplication
 
-- (unint64_t)kernelDimensionalityForSourceArrays:(id)a3
+- (unint64_t)kernelDimensionalityForSourceArrays:(id)arrays
 {
   leftQuantizationDescriptor = self->super._leftQuantizationDescriptor;
   if (leftQuantizationDescriptor && [(MPSNDArrayQuantizationDescriptor *)leftQuantizationDescriptor quantizationScheme]== 1)
@@ -44,10 +44,10 @@
 
   v8.receiver = self;
   v8.super_class = MPSNDArrayQuantizedMatrixMultiplication;
-  return [(MPSNDArrayMatrixMultiplication *)&v8 kernelDimensionalityForSourceArrays:a3];
+  return [(MPSNDArrayMatrixMultiplication *)&v8 kernelDimensionalityForSourceArrays:arrays];
 }
 
-- (unint64_t)kernelDimensionalityForSourceArrays:(id)a3 destinationArrays:(id)a4 kernelDAGObject:(id)a5
+- (unint64_t)kernelDimensionalityForSourceArrays:(id)arrays destinationArrays:(id)destinationArrays kernelDAGObject:(id)object
 {
   leftQuantizationDescriptor = self->super._leftQuantizationDescriptor;
   if (leftQuantizationDescriptor && [(MPSNDArrayQuantizationDescriptor *)leftQuantizationDescriptor quantizationScheme]== 1)
@@ -63,119 +63,119 @@
 
   v12.receiver = self;
   v12.super_class = MPSNDArrayQuantizedMatrixMultiplication;
-  return [(MPSNDArrayMatrixMultiplication *)&v12 kernelDimensionalityForSourceArrays:a3 destinationArrays:a4 kernelDAGObject:a5];
+  return [(MPSNDArrayMatrixMultiplication *)&v12 kernelDimensionalityForSourceArrays:arrays destinationArrays:destinationArrays kernelDAGObject:object];
 }
 
-+ (int64_t)getLeftScaleIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4
++ (int64_t)getLeftScaleIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor
 {
-  if (!a3)
+  if (!descriptor)
   {
     return -1;
   }
 
-  v4 = [a3 getScaleIndex];
-  if (v4 == -1)
+  getScaleIndex = [descriptor getScaleIndex];
+  if (getScaleIndex == -1)
   {
     return -1;
   }
 
   else
   {
-    return v4 + 2;
+    return getScaleIndex + 2;
   }
 }
 
-+ (int64_t)getLeftZeroPointIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4
++ (int64_t)getLeftZeroPointIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor
 {
-  if (!a3)
+  if (!descriptor)
   {
     return -1;
   }
 
-  v4 = [a3 getZeroPointIndex];
-  if (v4 == -1)
+  getZeroPointIndex = [descriptor getZeroPointIndex];
+  if (getZeroPointIndex == -1)
   {
     return -1;
   }
 
   else
   {
-    return v4 + 2;
+    return getZeroPointIndex + 2;
   }
 }
 
-+ (int64_t)getLeftMinValIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4
++ (int64_t)getLeftMinValIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor
 {
-  if (!a3)
+  if (!descriptor)
   {
     return -1;
   }
 
-  v4 = [a3 getMinValIndex];
-  if (v4 == -1)
+  getMinValIndex = [descriptor getMinValIndex];
+  if (getMinValIndex == -1)
   {
     return -1;
   }
 
   else
   {
-    return v4 + 2;
+    return getMinValIndex + 2;
   }
 }
 
-+ (int64_t)getLeftDQuantScaleIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4
++ (int64_t)getLeftDQuantScaleIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor
 {
-  if (!a3)
+  if (!descriptor)
   {
     return -1;
   }
 
-  v4 = [a3 getDQuantScaleIndex];
-  if (v4 == -1)
+  getDQuantScaleIndex = [descriptor getDQuantScaleIndex];
+  if (getDQuantScaleIndex == -1)
   {
     return -1;
   }
 
   else
   {
-    return v4 + 2;
+    return getDQuantScaleIndex + 2;
   }
 }
 
-+ (int64_t)getLeftDQuantMinValIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4
++ (int64_t)getLeftDQuantMinValIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor
 {
-  if (!a3)
+  if (!descriptor)
   {
     return -1;
   }
 
-  v4 = [a3 getDQuantMinValIndex];
-  if (v4 == -1)
+  getDQuantMinValIndex = [descriptor getDQuantMinValIndex];
+  if (getDQuantMinValIndex == -1)
   {
     return -1;
   }
 
   else
   {
-    return v4 + 2;
+    return getDQuantMinValIndex + 2;
   }
 }
 
-+ (int64_t)getScaleIndexWithLeftQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4 isForLeft:(BOOL)a5
++ (int64_t)getScaleIndexWithLeftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor isForLeft:(BOOL)left
 {
-  v5 = a5;
-  v6 = a4;
-  if (!a5)
+  leftCopy = left;
+  descriptorCopy = quantizationDescriptor;
+  if (!left)
   {
-    v8 = [a4 quantizationScheme];
-    v9 = [a3 getNDArrayCount] + 2;
-    if (v8 == 2)
+    quantizationScheme = [quantizationDescriptor quantizationScheme];
+    v9 = [descriptor getNDArrayCount] + 2;
+    if (quantizationScheme == 2)
     {
       goto LABEL_6;
     }
 
 LABEL_5:
-    if (v8 != 1)
+    if (quantizationScheme != 1)
     {
       return -1;
     }
@@ -183,27 +183,27 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [a3 quantizationScheme];
+  quantizationScheme = [descriptor quantizationScheme];
   v9 = 2;
-  if (v8 != 2)
+  if (quantizationScheme != 2)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
-  if (v5)
+  if (leftCopy)
   {
-    v6 = a3;
+    descriptorCopy = descriptor;
   }
 
-  if (v6)
+  if (descriptorCopy)
   {
-    if ([v6 quantizationScheme] == 1)
+    if ([descriptorCopy quantizationScheme] == 1)
     {
-      v10 = [v6 getScaleIndex];
-      if (v10 != -1)
+      getScaleIndex = [descriptorCopy getScaleIndex];
+      if (getScaleIndex != -1)
       {
-        return v10 + v9;
+        return getScaleIndex + v9;
       }
     }
   }
@@ -211,21 +211,21 @@ LABEL_6:
   return -1;
 }
 
-+ (int64_t)getZeroPointIndexWithLeftQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4 isForLeft:(BOOL)a5
++ (int64_t)getZeroPointIndexWithLeftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor isForLeft:(BOOL)left
 {
-  v5 = a5;
-  v6 = a4;
-  if (!a5)
+  leftCopy = left;
+  descriptorCopy = quantizationDescriptor;
+  if (!left)
   {
-    v8 = [a4 quantizationScheme];
-    v9 = [a3 getNDArrayCount] + 2;
-    if (v8 == 2)
+    quantizationScheme = [quantizationDescriptor quantizationScheme];
+    v9 = [descriptor getNDArrayCount] + 2;
+    if (quantizationScheme == 2)
     {
       goto LABEL_6;
     }
 
 LABEL_5:
-    if (v8 != 1)
+    if (quantizationScheme != 1)
     {
       return -1;
     }
@@ -233,27 +233,27 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [a3 quantizationScheme];
+  quantizationScheme = [descriptor quantizationScheme];
   v9 = 2;
-  if (v8 != 2)
+  if (quantizationScheme != 2)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
-  if (v5)
+  if (leftCopy)
   {
-    v6 = a3;
+    descriptorCopy = descriptor;
   }
 
-  if (v6)
+  if (descriptorCopy)
   {
-    if ([v6 quantizationScheme] == 1)
+    if ([descriptorCopy quantizationScheme] == 1)
     {
-      v10 = [v6 getZeroPointIndex];
-      if (v10 != -1)
+      getZeroPointIndex = [descriptorCopy getZeroPointIndex];
+      if (getZeroPointIndex != -1)
       {
-        return v10 + v9;
+        return getZeroPointIndex + v9;
       }
     }
   }
@@ -261,21 +261,21 @@ LABEL_6:
   return -1;
 }
 
-+ (int64_t)getMinValIndexWithLeftQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4 isForLeft:(BOOL)a5
++ (int64_t)getMinValIndexWithLeftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor isForLeft:(BOOL)left
 {
-  v5 = a5;
-  v6 = a4;
-  if (!a5)
+  leftCopy = left;
+  descriptorCopy = quantizationDescriptor;
+  if (!left)
   {
-    v8 = [a4 quantizationScheme];
-    v9 = [a3 getNDArrayCount] + 2;
-    if (v8 == 2)
+    quantizationScheme = [quantizationDescriptor quantizationScheme];
+    v9 = [descriptor getNDArrayCount] + 2;
+    if (quantizationScheme == 2)
     {
       goto LABEL_6;
     }
 
 LABEL_5:
-    if (v8 != 1)
+    if (quantizationScheme != 1)
     {
       return -1;
     }
@@ -283,27 +283,27 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [a3 quantizationScheme];
+  quantizationScheme = [descriptor quantizationScheme];
   v9 = 2;
-  if (v8 != 2)
+  if (quantizationScheme != 2)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
-  if (v5)
+  if (leftCopy)
   {
-    v6 = a3;
+    descriptorCopy = descriptor;
   }
 
-  if (v6)
+  if (descriptorCopy)
   {
-    if ([v6 quantizationScheme] == 1)
+    if ([descriptorCopy quantizationScheme] == 1)
     {
-      v10 = [v6 getMinValIndex];
-      if (v10 != -1)
+      getMinValIndex = [descriptorCopy getMinValIndex];
+      if (getMinValIndex != -1)
       {
-        return v10 + v9;
+        return getMinValIndex + v9;
       }
     }
   }
@@ -311,21 +311,21 @@ LABEL_6:
   return -1;
 }
 
-+ (int64_t)getDQuantScaleIndexWithLeftQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4 isForLeft:(BOOL)a5
++ (int64_t)getDQuantScaleIndexWithLeftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor isForLeft:(BOOL)left
 {
-  v5 = a5;
-  v6 = a4;
-  if (!a5)
+  leftCopy = left;
+  descriptorCopy = quantizationDescriptor;
+  if (!left)
   {
-    v8 = [a4 quantizationScheme];
-    v9 = [a3 getNDArrayCount] + 2;
-    if (v8 == 2)
+    quantizationScheme = [quantizationDescriptor quantizationScheme];
+    v9 = [descriptor getNDArrayCount] + 2;
+    if (quantizationScheme == 2)
     {
       goto LABEL_6;
     }
 
 LABEL_5:
-    if (v8 != 1)
+    if (quantizationScheme != 1)
     {
       return -1;
     }
@@ -333,27 +333,27 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [a3 quantizationScheme];
+  quantizationScheme = [descriptor quantizationScheme];
   v9 = 2;
-  if (v8 != 2)
+  if (quantizationScheme != 2)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
-  if (v5)
+  if (leftCopy)
   {
-    v6 = a3;
+    descriptorCopy = descriptor;
   }
 
-  if (v6)
+  if (descriptorCopy)
   {
-    if ([v6 quantizationScheme] == 1)
+    if ([descriptorCopy quantizationScheme] == 1)
     {
-      v10 = [v6 getDQuantScaleIndex];
-      if (v10 != -1)
+      getDQuantScaleIndex = [descriptorCopy getDQuantScaleIndex];
+      if (getDQuantScaleIndex != -1)
       {
-        return v10 + v9;
+        return getDQuantScaleIndex + v9;
       }
     }
   }
@@ -361,21 +361,21 @@ LABEL_6:
   return -1;
 }
 
-+ (int64_t)getDQuantMinValIndexWithLeftQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4 isForLeft:(BOOL)a5
++ (int64_t)getDQuantMinValIndexWithLeftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor isForLeft:(BOOL)left
 {
-  v5 = a5;
-  v6 = a4;
-  if (!a5)
+  leftCopy = left;
+  descriptorCopy = quantizationDescriptor;
+  if (!left)
   {
-    v8 = [a4 quantizationScheme];
-    v9 = [a3 getNDArrayCount] + 2;
-    if (v8 == 2)
+    quantizationScheme = [quantizationDescriptor quantizationScheme];
+    v9 = [descriptor getNDArrayCount] + 2;
+    if (quantizationScheme == 2)
     {
       goto LABEL_6;
     }
 
 LABEL_5:
-    if (v8 != 1)
+    if (quantizationScheme != 1)
     {
       return -1;
     }
@@ -383,27 +383,27 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [a3 quantizationScheme];
+  quantizationScheme = [descriptor quantizationScheme];
   v9 = 2;
-  if (v8 != 2)
+  if (quantizationScheme != 2)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
-  if (v5)
+  if (leftCopy)
   {
-    v6 = a3;
+    descriptorCopy = descriptor;
   }
 
-  if (v6)
+  if (descriptorCopy)
   {
-    if ([v6 quantizationScheme] == 1)
+    if ([descriptorCopy quantizationScheme] == 1)
     {
-      v10 = [v6 getDQuantMinValIndex];
-      if (v10 != -1)
+      getDQuantMinValIndex = [descriptorCopy getDQuantMinValIndex];
+      if (getDQuantMinValIndex != -1)
       {
-        return v10 + v9;
+        return getDQuantMinValIndex + v9;
       }
     }
   }
@@ -411,30 +411,30 @@ LABEL_6:
   return -1;
 }
 
-+ (int64_t)getLUTIndexWithLeftQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4 isForLeft:(BOOL)a5
++ (int64_t)getLUTIndexWithLeftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor isForLeft:(BOOL)left
 {
-  v5 = a5;
-  if (!a5)
+  leftCopy = left;
+  if (!left)
   {
-    v8 = [a4 quantizationScheme];
-    v9 = [a3 getNDArrayCount] + 2;
-    if (v8 != 2)
+    quantizationScheme = [quantizationDescriptor quantizationScheme];
+    v9 = [descriptor getNDArrayCount] + 2;
+    if (quantizationScheme != 2)
     {
       goto LABEL_3;
     }
 
 LABEL_12:
-    if (v5)
+    if (leftCopy)
     {
-      v10 = a3;
+      quantizationDescriptorCopy = descriptor;
     }
 
     else
     {
-      v10 = a4;
+      quantizationDescriptorCopy = quantizationDescriptor;
     }
 
-    if (v10)
+    if (quantizationDescriptorCopy)
     {
       goto LABEL_8;
     }
@@ -442,27 +442,27 @@ LABEL_12:
     return -1;
   }
 
-  v8 = [a3 quantizationScheme];
+  quantizationScheme = [descriptor quantizationScheme];
   v9 = 2;
-  if (v8 == 2)
+  if (quantizationScheme == 2)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
-  if (v8 != 1)
+  if (quantizationScheme != 1)
   {
     return -1;
   }
 
-  v10 = v5 ? a3 : a4;
-  if (!v10)
+  quantizationDescriptorCopy = leftCopy ? descriptor : quantizationDescriptor;
+  if (!quantizationDescriptorCopy)
   {
     return -1;
   }
 
 LABEL_8:
-  if ([v10 quantizationScheme] == 2)
+  if ([quantizationDescriptorCopy quantizationScheme] == 2)
   {
     return v9;
   }
@@ -473,91 +473,91 @@ LABEL_8:
   }
 }
 
-+ (int64_t)getRightScaleIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4
++ (int64_t)getRightScaleIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor
 {
-  if (!a4)
+  if (!quantizationDescriptor)
   {
     return -1;
   }
 
-  result = [a4 getScaleIndex];
+  result = [quantizationDescriptor getScaleIndex];
   if (result != -1)
   {
-    result += [a3 getNDArrayCount] + 2;
+    result += [descriptor getNDArrayCount] + 2;
   }
 
   return result;
 }
 
-+ (int64_t)getRightZeroPointIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4
++ (int64_t)getRightZeroPointIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor
 {
-  if (!a4)
+  if (!quantizationDescriptor)
   {
     return -1;
   }
 
-  result = [a4 getZeroPointIndex];
+  result = [quantizationDescriptor getZeroPointIndex];
   if (result != -1)
   {
-    result += [a3 getNDArrayCount] + 2;
+    result += [descriptor getNDArrayCount] + 2;
   }
 
   return result;
 }
 
-+ (int64_t)getRightMinValIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4
++ (int64_t)getRightMinValIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor
 {
-  if (!a4)
+  if (!quantizationDescriptor)
   {
     return -1;
   }
 
-  result = [a4 getMinValIndex];
+  result = [quantizationDescriptor getMinValIndex];
   if (result != -1)
   {
-    result += [a3 getNDArrayCount] + 2;
+    result += [descriptor getNDArrayCount] + 2;
   }
 
   return result;
 }
 
-+ (int64_t)getRightDQuantScaleIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4
++ (int64_t)getRightDQuantScaleIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor
 {
-  if (!a4)
+  if (!quantizationDescriptor)
   {
     return -1;
   }
 
-  result = [a4 getDQuantScaleIndex];
+  result = [quantizationDescriptor getDQuantScaleIndex];
   if (result != -1)
   {
-    result += [a3 getNDArrayCount] + 2;
+    result += [descriptor getNDArrayCount] + 2;
   }
 
   return result;
 }
 
-+ (int64_t)getRightDQuantMinValIndexWithLeftAffineQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4
++ (int64_t)getRightDQuantMinValIndexWithLeftAffineQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor
 {
-  if (!a4)
+  if (!quantizationDescriptor)
   {
     return -1;
   }
 
-  result = [a4 getDQuantMinValIndex];
+  result = [quantizationDescriptor getDQuantMinValIndex];
   if (result != -1)
   {
-    result += [a3 getNDArrayCount] + 2;
+    result += [descriptor getNDArrayCount] + 2;
   }
 
   return result;
 }
 
-+ (int64_t)getRightLUTIndexWithLeftLUTQuantizationDescriptor:(id)a3 rightQuantizationDescriptor:(id)a4
++ (int64_t)getRightLUTIndexWithLeftLUTQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor
 {
-  if (a4)
+  if (quantizationDescriptor)
   {
-    return [a3 getNDArrayCount] + 3;
+    return [descriptor getNDArrayCount] + 3;
   }
 
   else
@@ -566,13 +566,13 @@ LABEL_8:
   }
 }
 
-+ (BOOL)supportsSourceQuantizationWithDescriptor:(id)a3 atIndex:(unint64_t)a4 device:(void *)a5
++ (BOOL)supportsSourceQuantizationWithDescriptor:(id)descriptor atIndex:(unint64_t)index device:(void *)device
 {
-  v6 = [a3 quantizationDataType];
-  v7 = v6;
-  if ((*(a5 + 1477) & 4) == 0 || *(a5 + 368) < 22)
+  quantizationDataType = [descriptor quantizationDataType];
+  v7 = quantizationDataType;
+  if ((*(device + 1477) & 4) == 0 || *(device + 368) < 22)
   {
-    return (v6 & 0x10000000) != 0;
+    return (quantizationDataType & 0x10000000) != 0;
   }
 
   result = 1;
@@ -584,13 +584,13 @@ LABEL_8:
   return result;
 }
 
-+ (BOOL)supportsDestinationQuantizationWithDescriptor:(id)a3 device:(void *)a4
++ (BOOL)supportsDestinationQuantizationWithDescriptor:(id)descriptor device:(void *)device
 {
-  v5 = [a3 quantizationDataType];
-  v6 = v5;
-  if ((*(a4 + 1477) & 4) == 0 || *(a4 + 368) < 22)
+  quantizationDataType = [descriptor quantizationDataType];
+  v6 = quantizationDataType;
+  if ((*(device + 1477) & 4) == 0 || *(device + 368) < 22)
   {
-    return (v5 & 0x10000000) != 0;
+    return (quantizationDataType & 0x10000000) != 0;
   }
 
   result = 1;
@@ -602,33 +602,33 @@ LABEL_8:
   return result;
 }
 
-- (MPSNDArrayQuantizedMatrixMultiplication)initWithDevice:(id)a3 leftQuantizationDescriptor:(id)a4 rightQuantizationDescriptor:(id)a5
+- (MPSNDArrayQuantizedMatrixMultiplication)initWithDevice:(id)device leftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor
 {
-  v9 = [a4 getNDArrayCount];
-  v10 = v9 + [a5 getNDArrayCount] + 2;
+  getNDArrayCount = [descriptor getNDArrayCount];
+  v10 = getNDArrayCount + [quantizationDescriptor getNDArrayCount] + 2;
 
-  return [(MPSNDArrayQuantizedMatrixMultiplication *)self initWithDevice:a3 leftQuantizationDescriptor:a4 rightQuantizationDescriptor:a5 sourceCount:v10];
+  return [(MPSNDArrayQuantizedMatrixMultiplication *)self initWithDevice:device leftQuantizationDescriptor:descriptor rightQuantizationDescriptor:quantizationDescriptor sourceCount:v10];
 }
 
-- (MPSNDArrayQuantizedMatrixMultiplication)initWithDevice:(id)a3 leftQuantizationDescriptor:(id)a4 rightQuantizationDescriptor:(id)a5 sourceCount:(unint64_t)a6
+- (MPSNDArrayQuantizedMatrixMultiplication)initWithDevice:(id)device leftQuantizationDescriptor:(id)descriptor rightQuantizationDescriptor:(id)quantizationDescriptor sourceCount:(unint64_t)count
 {
   v11.receiver = self;
   v11.super_class = MPSNDArrayQuantizedMatrixMultiplication;
-  v9 = [(MPSNDArrayMatrixMultiplication *)&v11 initWithDevice:a3 sourceCount:a6];
-  v9->super._leftQuantizationDescriptor = a4;
-  v9->super._rightQuantizationDescriptor = a5;
+  v9 = [(MPSNDArrayMatrixMultiplication *)&v11 initWithDevice:device sourceCount:count];
+  v9->super._leftQuantizationDescriptor = descriptor;
+  v9->super._rightQuantizationDescriptor = quantizationDescriptor;
   v9->super.super._encode = EncodeQuantizedMatrixMultiplication;
   v9->super.super.super._encodeGradient = 0;
   v9->super.super.super._encodeData = v9;
-  v9->_lutGEMVKernel = [[MPSNDArrayLUTGEMV alloc] initWithDevice:a3 lhsDesc:a4 rhsDesc:a5];
+  v9->_lutGEMVKernel = [[MPSNDArrayLUTGEMV alloc] initWithDevice:device lhsDesc:descriptor rhsDesc:quantizationDescriptor];
   return v9;
 }
 
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state
 {
   v8.receiver = self;
   v8.super_class = MPSNDArrayQuantizedMatrixMultiplication;
-  return [(MPSNDArrayMultiaryBase *)&v8 workloadStatisticsForSourceArrays:a3 sourceState:a7, a5, a6];
+  return [(MPSNDArrayMultiaryBase *)&v8 workloadStatisticsForSourceArrays:arrays sourceState:state, kernel, object];
 }
 
 - (void)dealloc

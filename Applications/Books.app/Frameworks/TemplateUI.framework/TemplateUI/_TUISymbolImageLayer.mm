@@ -1,15 +1,15 @@
 @interface _TUISymbolImageLayer
 - (void)_updateBackdropLayer;
-- (void)setContentCompositingFilter:(id)a3;
-- (void)updateContentAndBoundsWithImage:(id)a3 color:(id)a4;
+- (void)setContentCompositingFilter:(id)filter;
+- (void)updateContentAndBoundsWithImage:(id)image color:(id)color;
 @end
 
 @implementation _TUISymbolImageLayer
 
-- (void)updateContentAndBoundsWithImage:(id)a3 color:(id)a4
+- (void)updateContentAndBoundsWithImage:(id)image color:(id)color
 {
-  v22 = a3;
-  v6 = a4;
+  imageCopy = image;
+  colorCopy = color;
   if (!self->_contentLayer)
   {
     v7 = +[_TUIImplicitAnimationLayer layer];
@@ -19,10 +19,10 @@
     [(_TUISymbolImageLayer *)self addSublayer:self->_contentLayer];
   }
 
-  if (v22)
+  if (imageCopy)
   {
-    [v22 contentInsets];
-    [v22 alignmentInsets];
+    [imageCopy contentInsets];
+    [imageCopy alignmentInsets];
     [(_TUISymbolImageLayer *)self bounds];
     UIRectInset();
     v10 = v9;
@@ -32,7 +32,7 @@
     [(_TUISymbolImageLayer *)self contentsScale];
     [(CALayer *)self->_contentLayer setContentsScale:?];
     [(CALayer *)self->_contentLayer setFrame:v10, v12, v14, v16];
-    if (v6 && ![v22 isMulticolor])
+    if (colorCopy && ![imageCopy isMulticolor])
     {
       v17 = &kCALayerContentsSwizzleAAAA;
     }
@@ -55,19 +55,19 @@
       [CATransaction setDisableActions:1];
     }
 
-    -[CALayer setContents:](self->_contentLayer, "setContents:", [v22 CGImage]);
+    -[CALayer setContents:](self->_contentLayer, "setContents:", [imageCopy CGImage]);
     [(CALayer *)self->_contentLayer setContentsSwizzle:v18];
     if (v18 == kCALayerContentsSwizzleAAAA)
     {
-      v21 = [v6 CGColor];
+      cGColor = [colorCopy CGColor];
     }
 
     else
     {
-      v21 = 0;
+      cGColor = 0;
     }
 
-    [(CALayer *)self->_contentLayer setContentsMultiplyColor:v21];
+    [(CALayer *)self->_contentLayer setContentsMultiplyColor:cGColor];
     if (v19)
     {
       +[CATransaction commit];
@@ -77,25 +77,25 @@
   [(_TUISymbolImageLayer *)self _updateBackdropLayer];
 }
 
-- (void)setContentCompositingFilter:(id)a3
+- (void)setContentCompositingFilter:(id)filter
 {
-  v6 = a3;
-  v4 = [(CALayer *)self->_contentLayer compositingFilter];
+  filterCopy = filter;
+  compositingFilter = [(CALayer *)self->_contentLayer compositingFilter];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = filterCopy;
+  if (compositingFilter != filterCopy)
   {
-    [(CALayer *)self->_contentLayer setCompositingFilter:v6];
+    [(CALayer *)self->_contentLayer setCompositingFilter:filterCopy];
     [(_TUISymbolImageLayer *)self _updateBackdropLayer];
-    v5 = v6;
+    v5 = filterCopy;
   }
 }
 
 - (void)_updateBackdropLayer
 {
-  v8 = [(CALayer *)self->_contentLayer compositingFilter];
-  v3 = TUILayerCompositingFilterNeedsBackdropLayer(v8);
-  [(_TUISymbolImageLayer *)self setAllowsGroupBlending:(v8 == 0) | (v3 & 1)];
+  compositingFilter = [(CALayer *)self->_contentLayer compositingFilter];
+  v3 = TUILayerCompositingFilterNeedsBackdropLayer(compositingFilter);
+  [(_TUISymbolImageLayer *)self setAllowsGroupBlending:(compositingFilter == 0) | (v3 & 1)];
   backdropLayer = self->_backdropLayer;
   if (v3)
   {

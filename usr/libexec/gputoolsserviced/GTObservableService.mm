@@ -1,9 +1,9 @@
 @interface GTObservableService
 - (GTObservableService)init;
-- (unint64_t)registerObserver:(id)a3;
-- (void)deregisterObserver:(unint64_t)a3;
-- (void)deregisterObserversForConnection:(id)a3 path:(id)a4;
-- (void)notifyAll:(id)a3;
+- (unint64_t)registerObserver:(id)observer;
+- (void)deregisterObserver:(unint64_t)observer;
+- (void)deregisterObserversForConnection:(id)connection path:(id)path;
+- (void)notifyAll:(id)all;
 @end
 
 @implementation GTObservableService
@@ -25,31 +25,31 @@
   return v2;
 }
 
-- (unint64_t)registerObserver:(id)a3
+- (unint64_t)registerObserver:(id)observer
 {
   observerIdToObserver = self->_observerIdToObserver;
   nextObserverId = self->_nextObserverId;
   self->_nextObserverId = nextObserverId + 1;
-  v5 = a3;
+  observerCopy = observer;
   v6 = [NSNumber numberWithUnsignedLongLong:nextObserverId];
-  [(NSMutableDictionary *)observerIdToObserver setObject:v5 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)observerIdToObserver setObject:observerCopy forKeyedSubscript:v6];
 
   return nextObserverId;
 }
 
-- (void)deregisterObserver:(unint64_t)a3
+- (void)deregisterObserver:(unint64_t)observer
 {
   observerIdToObserver = self->_observerIdToObserver;
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
+  v4 = [NSNumber numberWithUnsignedLongLong:observer];
   [(NSMutableDictionary *)observerIdToObserver removeObjectForKey:v4];
 }
 
-- (void)deregisterObserversForConnection:(id)a3 path:(id)a4
+- (void)deregisterObserversForConnection:(id)connection path:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v26 = v7;
+  connectionCopy = connection;
+  pathCopy = path;
+  v8 = connectionCopy;
+  v26 = pathCopy;
   v25 = [[NSMutableArray alloc] initWithCapacity:{-[NSMutableDictionary count](self->_observerIdToObserver, "count")}];
   v34 = 0u;
   v35 = 0u;
@@ -57,7 +57,7 @@
   v37 = 0u;
   obj = self->_observerIdToObserver;
   v9 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v34 objects:v39 count:16];
-  v27 = v6;
+  v27 = connectionCopy;
   if (v9)
   {
     v10 = v9;
@@ -73,14 +73,14 @@
 
         v12 = *(*(&v34 + 1) + 8 * i);
         v13 = [(NSMutableDictionary *)self->_observerIdToObserver objectForKeyedSubscript:v12];
-        v14 = [v8 connection];
-        v15 = [v13 connection];
-        v16 = [v15 connection];
-        v17 = v16;
-        if (v14 == v16)
+        connection = [v8 connection];
+        connection2 = [v13 connection];
+        v15Connection = [connection2 connection];
+        v17 = v15Connection;
+        if (connection == v15Connection)
         {
-          v18 = [v13 replyPath];
-          v19 = MessagePathEndsWith(v18, v26);
+          replyPath = [v13 replyPath];
+          v19 = MessagePathEndsWith(replyPath, v26);
 
           v8 = v27;
           if (v19)
@@ -129,9 +129,9 @@
   }
 }
 
-- (void)notifyAll:(id)a3
+- (void)notifyAll:(id)all
 {
-  v4 = a3;
+  allCopy = all;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -153,7 +153,7 @@
         }
 
         v10 = [(NSMutableDictionary *)self->_observerIdToObserver objectForKeyedSubscript:*(*(&v11 + 1) + 8 * v9), v11];
-        v4[2](v4, v10);
+        allCopy[2](allCopy, v10);
 
         v9 = v9 + 1;
       }

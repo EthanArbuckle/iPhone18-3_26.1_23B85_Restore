@@ -1,21 +1,21 @@
 @interface POXSBooleanDefinition
-- (id)stringFromValue:(id)a3;
-- (id)valueFromString:(id)a3;
+- (id)stringFromValue:(id)value;
+- (id)valueFromString:(id)string;
 @end
 
 @implementation POXSBooleanDefinition
 
-- (id)valueFromString:(id)a3
+- (id)valueFromString:(id)string
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [a3 BOOLValue];
+  bOOLValue = [string BOOLValue];
 
-  return [v3 numberWithBool:v4];
+  return [v3 numberWithBool:bOOLValue];
 }
 
-- (id)stringFromValue:(id)a3
+- (id)stringFromValue:(id)value
 {
-  if ([a3 BOOLValue])
+  if ([value BOOLValue])
   {
     v3 = @"true";
   }

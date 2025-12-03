@@ -1,51 +1,51 @@
 @interface NFTrustPaymentSignResponse
-+ (id)paymentSignResponseWithSignResponse:(id)a3 paymentResponse:(id)a4;
-- (NFTrustPaymentSignResponse)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)paymentSignResponseWithSignResponse:(id)response paymentResponse:(id)paymentResponse;
+- (NFTrustPaymentSignResponse)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFTrustPaymentSignResponse
 
-- (NFTrustPaymentSignResponse)initWithCoder:(id)a3
+- (NFTrustPaymentSignResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = NFTrustPaymentSignResponse;
-  v5 = [(NFTrustObject *)&v9 initWithCoder:v4];
+  v5 = [(NFTrustObject *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signResponse"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signResponse"];
     [(NFTrustPaymentSignResponse *)v5 setValue:v6 forKey:@"signResponse"];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentResponse"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentResponse"];
     [(NFTrustPaymentSignResponse *)v5 setValue:v7 forKey:@"paymentResponse"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NFTrustPaymentSignResponse *)self signResponse];
-  [v4 encodeObject:v5 forKey:@"signResponse"];
+  coderCopy = coder;
+  signResponse = [(NFTrustPaymentSignResponse *)self signResponse];
+  [coderCopy encodeObject:signResponse forKey:@"signResponse"];
 
-  v6 = [(NFTrustPaymentSignResponse *)self paymentResponse];
-  [v4 encodeObject:v6 forKey:@"paymentResponse"];
+  paymentResponse = [(NFTrustPaymentSignResponse *)self paymentResponse];
+  [coderCopy encodeObject:paymentResponse forKey:@"paymentResponse"];
 }
 
-+ (id)paymentSignResponseWithSignResponse:(id)a3 paymentResponse:(id)a4
++ (id)paymentSignResponseWithSignResponse:(id)response paymentResponse:(id)paymentResponse
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  responseCopy = response;
+  paymentResponseCopy = paymentResponse;
+  if (responseCopy)
   {
     v9 = [NFTrustPaymentSignResponse alloc];
     v10 = v9;
     if (v9)
     {
-      [(NFTrustPaymentSignResponse *)v9 setSignResponse:v7];
-      [(NFTrustPaymentSignResponse *)v10 setPaymentResponse:v8];
+      [(NFTrustPaymentSignResponse *)v9 setSignResponse:responseCopy];
+      [(NFTrustPaymentSignResponse *)v10 setPaymentResponse:paymentResponseCopy];
     }
   }
 
@@ -56,9 +56,9 @@
     if (Logger)
     {
       v12 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v16 = 45;
       if (isMetaClass)
@@ -73,7 +73,7 @@
     v17 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = object_getClass(a1);
+      v18 = object_getClass(self);
       if (class_isMetaClass(v18))
       {
         v19 = 43;
@@ -87,7 +87,7 @@
       *buf = 67109890;
       v23 = v19;
       v24 = 2082;
-      v25 = object_getClassName(a1);
+      v25 = object_getClassName(self);
       v26 = 2082;
       v27 = sel_getName(a2);
       v28 = 1024;

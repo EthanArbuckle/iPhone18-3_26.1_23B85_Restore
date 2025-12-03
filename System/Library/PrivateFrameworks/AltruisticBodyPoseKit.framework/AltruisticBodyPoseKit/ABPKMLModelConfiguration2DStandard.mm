@@ -1,8 +1,8 @@
 @interface ABPKMLModelConfiguration2DStandard
 - (ABPKMLModelConfiguration2DStandard)init;
 - (CGSize)inputDimensions;
-- (CGSize)inputDimensionsForABPKDeviceOrientation:(int64_t)a3;
-- (id)configStringForABPKDeviceOrientation:(int64_t)a3;
+- (CGSize)inputDimensionsForABPKDeviceOrientation:(int64_t)orientation;
+- (id)configStringForABPKDeviceOrientation:(int64_t)orientation;
 - (id)inputTensorNames;
 - (id)outputTensorNames;
 @end
@@ -54,9 +54,9 @@
   return result;
 }
 
-- (CGSize)inputDimensionsForABPKDeviceOrientation:(int64_t)a3
+- (CGSize)inputDimensionsForABPKDeviceOrientation:(int64_t)orientation
 {
-  if (ABPKDeviceOrientationIsLandscape(a3))
+  if (ABPKDeviceOrientationIsLandscape(orientation))
   {
     v4 = 256.0;
     v5 = 192.0;
@@ -64,7 +64,7 @@
 
   else
   {
-    IsPortrait = ABPKDeviceOrientationIsPortrait(a3);
+    IsPortrait = ABPKDeviceOrientationIsPortrait(orientation);
     if (IsPortrait)
     {
       v5 = 256.0;
@@ -87,9 +87,9 @@
   return result;
 }
 
-- (id)configStringForABPKDeviceOrientation:(int64_t)a3
+- (id)configStringForABPKDeviceOrientation:(int64_t)orientation
 {
-  if (ABPKDeviceOrientationIsLandscape(a3))
+  if (ABPKDeviceOrientationIsLandscape(orientation))
   {
     v4 = kABPK2D19JointsFlickrFullPreD5xLandscapeConfigMode;
 LABEL_5:
@@ -97,7 +97,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (ABPKDeviceOrientationIsPortrait(a3))
+  if (ABPKDeviceOrientationIsPortrait(orientation))
   {
     v4 = kABPK2D19JointsFlickrFullPreD5xPortraitConfigMode;
     goto LABEL_5;

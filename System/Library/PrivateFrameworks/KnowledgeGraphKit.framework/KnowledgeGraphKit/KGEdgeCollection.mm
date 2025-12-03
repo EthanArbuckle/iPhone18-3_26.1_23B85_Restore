@@ -1,30 +1,30 @@
 @interface KGEdgeCollection
 - (id)allObjects;
-- (void)enumerateEdgesSortedByFloatPropertyForName:(id)a3 usingBlock:(id)a4;
-- (void)enumerateEdgesSortedByIntegerPropertyForName:(id)a3 usingBlock:(id)a4;
-- (void)enumerateEdgesSortedByStringPropertyForName:(id)a3 usingBlock:(id)a4;
-- (void)enumerateElementsWithBatchSize:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumerateOrderedEdges:(id)a3 withBatchSize:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumeratePropertyValuesForKey:(id)a3 withBlock:(id)a4;
+- (void)enumerateEdgesSortedByFloatPropertyForName:(id)name usingBlock:(id)block;
+- (void)enumerateEdgesSortedByIntegerPropertyForName:(id)name usingBlock:(id)block;
+- (void)enumerateEdgesSortedByStringPropertyForName:(id)name usingBlock:(id)block;
+- (void)enumerateElementsWithBatchSize:(unint64_t)size usingBlock:(id)block;
+- (void)enumerateOrderedEdges:(id)edges withBatchSize:(unint64_t)size usingBlock:(id)block;
+- (void)enumeratePropertyValuesForKey:(id)key withBlock:(id)block;
 @end
 
 @implementation KGEdgeCollection
 
-- (void)enumeratePropertyValuesForKey:(id)a3 withBlock:(id)a4
+- (void)enumeratePropertyValuesForKey:(id)key withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(KGGraph *)self->super._graph implementation];
+  keyCopy = key;
+  blockCopy = block;
+  implementation = [(KGGraph *)self->super._graph implementation];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__KGEdgeCollection_enumeratePropertyValuesForKey_withBlock___block_invoke;
   v12[3] = &unk_2797FF310;
-  v13 = v8;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = v8;
+  v13 = implementation;
+  v14 = keyCopy;
+  v15 = blockCopy;
+  v9 = blockCopy;
+  v10 = keyCopy;
+  v11 = implementation;
   [(KGElementCollection *)self enumerateElementIdentifierBatchesWithBatchSize:256 usingBlock:v12];
 }
 
@@ -34,21 +34,21 @@ void __60__KGEdgeCollection_enumeratePropertyValuesForKey_withBlock___block_invo
   [v3 enumerateUsingBlock:*(a1 + 48)];
 }
 
-- (void)enumerateEdgesSortedByFloatPropertyForName:(id)a3 usingBlock:(id)a4
+- (void)enumerateEdgesSortedByFloatPropertyForName:(id)name usingBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   graph = self->super._graph;
-  v8 = a3;
-  v9 = [(KGGraph *)graph implementation];
-  v10 = [(KGElementCollection *)self identifiers];
+  nameCopy = name;
+  implementation = [(KGGraph *)graph implementation];
+  identifiers = [(KGElementCollection *)self identifiers];
   v15 = 0;
-  v11 = [v9 edgeIdentifiers:v10 sortedByFloatPropertyForName:v8 ascending:1 limit:-1 error:&v15];
+  v11 = [implementation edgeIdentifiers:identifiers sortedByFloatPropertyForName:nameCopy ascending:1 limit:-1 error:&v15];
 
   v12 = v15;
   if (v11)
   {
-    [(KGEdgeCollection *)self enumerateOrderedEdges:v11 withBatchSize:256 usingBlock:v6];
+    [(KGEdgeCollection *)self enumerateOrderedEdges:v11 withBatchSize:256 usingBlock:blockCopy];
   }
 
   else
@@ -65,21 +65,21 @@ void __60__KGEdgeCollection_enumeratePropertyValuesForKey_withBlock___block_invo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateEdgesSortedByIntegerPropertyForName:(id)a3 usingBlock:(id)a4
+- (void)enumerateEdgesSortedByIntegerPropertyForName:(id)name usingBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   graph = self->super._graph;
-  v8 = a3;
-  v9 = [(KGGraph *)graph implementation];
-  v10 = [(KGElementCollection *)self identifiers];
+  nameCopy = name;
+  implementation = [(KGGraph *)graph implementation];
+  identifiers = [(KGElementCollection *)self identifiers];
   v15 = 0;
-  v11 = [v9 edgeIdentifiers:v10 sortedByIntegerPropertyForName:v8 ascending:1 limit:-1 error:&v15];
+  v11 = [implementation edgeIdentifiers:identifiers sortedByIntegerPropertyForName:nameCopy ascending:1 limit:-1 error:&v15];
 
   v12 = v15;
   if (v11)
   {
-    [(KGEdgeCollection *)self enumerateOrderedEdges:v11 withBatchSize:256 usingBlock:v6];
+    [(KGEdgeCollection *)self enumerateOrderedEdges:v11 withBatchSize:256 usingBlock:blockCopy];
   }
 
   else
@@ -96,21 +96,21 @@ void __60__KGEdgeCollection_enumeratePropertyValuesForKey_withBlock___block_invo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateEdgesSortedByStringPropertyForName:(id)a3 usingBlock:(id)a4
+- (void)enumerateEdgesSortedByStringPropertyForName:(id)name usingBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   graph = self->super._graph;
-  v8 = a3;
-  v9 = [(KGGraph *)graph implementation];
-  v10 = [(KGElementCollection *)self identifiers];
+  nameCopy = name;
+  implementation = [(KGGraph *)graph implementation];
+  identifiers = [(KGElementCollection *)self identifiers];
   v15 = 0;
-  v11 = [v9 edgeIdentifiers:v10 sortedByStringPropertyForName:v8 ascending:1 limit:-1 error:&v15];
+  v11 = [implementation edgeIdentifiers:identifiers sortedByStringPropertyForName:nameCopy ascending:1 limit:-1 error:&v15];
 
   v12 = v15;
   if (v11)
   {
-    [(KGEdgeCollection *)self enumerateOrderedEdges:v11 withBatchSize:256 usingBlock:v6];
+    [(KGEdgeCollection *)self enumerateOrderedEdges:v11 withBatchSize:256 usingBlock:blockCopy];
   }
 
   else
@@ -127,29 +127,29 @@ void __60__KGEdgeCollection_enumeratePropertyValuesForKey_withBlock___block_invo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateOrderedEdges:(id)a3 withBatchSize:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateOrderedEdges:(id)edges withBatchSize:(unint64_t)size usingBlock:(id)block
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  edgesCopy = edges;
+  blockCopy = block;
   v34 = 0;
-  v10 = [(KGGraph *)self->super._graph implementation];
-  v11 = [(KGGraph *)self->super._graph entityFactory];
-  if ([v8 count])
+  implementation = [(KGGraph *)self->super._graph implementation];
+  entityFactory = [(KGGraph *)self->super._graph entityFactory];
+  if ([edgesCopy count])
   {
     v12 = 0;
     v13 = 0;
-    v26 = v8;
-    v27 = v10;
-    v25 = v11;
+    v26 = edgesCopy;
+    v27 = implementation;
+    v25 = entityFactory;
     while (1)
     {
       v14 = v13;
       context = objc_autoreleasePoolPush();
-      v15 = a4;
-      v16 = [v8 subarrayWithRange:{v12, a4}];
+      sizeCopy = size;
+      v16 = [edgesCopy subarrayWithRange:{v12, size}];
       v33 = v13;
-      v17 = [v10 orderedArrayOfEdgesWithIdentifiers:v16 entityFactory:v11 error:&v33];
+      v17 = [implementation orderedArrayOfEdgesWithIdentifiers:v16 entityFactory:entityFactory error:&v33];
       v13 = v33;
 
       if (!v17)
@@ -176,12 +176,12 @@ void __60__KGEdgeCollection_enumeratePropertyValuesForKey_withBlock___block_invo
               objc_enumerationMutation(v18);
             }
 
-            v9[2](v9, *(*(&v29 + 1) + 8 * i), &v34);
+            blockCopy[2](blockCopy, *(*(&v29 + 1) + 8 * i), &v34);
             if (v34)
             {
               v23 = v18;
-              v11 = v25;
-              v8 = v26;
+              entityFactory = v25;
+              edgesCopy = v26;
               goto LABEL_15;
             }
           }
@@ -196,12 +196,12 @@ void __60__KGEdgeCollection_enumeratePropertyValuesForKey_withBlock___block_invo
         }
       }
 
-      v12 += v15;
-      a4 = v15;
+      v12 += sizeCopy;
+      size = sizeCopy;
       objc_autoreleasePoolPop(context);
-      v8 = v26;
-      v10 = v27;
-      v11 = v25;
+      edgesCopy = v26;
+      implementation = v27;
+      entityFactory = v25;
       if (v12 >= [v26 count])
       {
         goto LABEL_16;
@@ -217,36 +217,36 @@ void __60__KGEdgeCollection_enumeratePropertyValuesForKey_withBlock___block_invo
     }
 
     v23 = 0;
-    v8 = v26;
+    edgesCopy = v26;
 LABEL_15:
 
     objc_autoreleasePoolPop(context);
-    v10 = v27;
+    implementation = v27;
 LABEL_16:
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateElementsWithBatchSize:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateElementsWithBatchSize:(unint64_t)size usingBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(KGElementCollection *)self identifiers];
-  v8 = [v7 mutableCopy];
+  blockCopy = block;
+  identifiers = [(KGElementCollection *)self identifiers];
+  v8 = [identifiers mutableCopy];
 
   v25 = 0;
-  v9 = [(KGGraph *)self->super._graph implementation];
-  v10 = [(KGGraph *)self->super._graph entityFactory];
+  implementation = [(KGGraph *)self->super._graph implementation];
+  entityFactory = [(KGGraph *)self->super._graph entityFactory];
   if (([v8 isEmpty] & 1) == 0)
   {
-    v19 = a3;
+    sizeCopy = size;
     do
     {
       context = objc_autoreleasePoolPush();
-      v11 = [v8 prefix:a3];
+      v11 = [v8 prefix:size];
       [v8 subtractIdentifierSet:v11];
-      v12 = [v9 arrayOfEdgesWithIdentifiers:v11 entityFactory:v10 error:0];
+      v12 = [implementation arrayOfEdgesWithIdentifiers:v11 entityFactory:entityFactory error:0];
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
@@ -266,7 +266,7 @@ LABEL_16:
               objc_enumerationMutation(v13);
             }
 
-            v6[2](v6, *(*(&v21 + 1) + 8 * i), &v25);
+            blockCopy[2](blockCopy, *(*(&v21 + 1) + 8 * i), &v25);
             if (v25)
             {
 
@@ -286,7 +286,7 @@ LABEL_16:
       }
 
       objc_autoreleasePoolPop(context);
-      a3 = v19;
+      size = sizeCopy;
     }
 
     while (([v8 isEmpty] & 1) == 0);
@@ -299,10 +299,10 @@ LABEL_14:
 
 - (id)allObjects
 {
-  v3 = [(KGGraph *)self->super._graph implementation];
-  v4 = [(KGElementCollection *)self identifiers];
-  v5 = [(KGGraph *)self->super._graph entityFactory];
-  v6 = [v3 arrayOfEdgesWithIdentifiers:v4 entityFactory:v5 error:0];
+  implementation = [(KGGraph *)self->super._graph implementation];
+  identifiers = [(KGElementCollection *)self identifiers];
+  entityFactory = [(KGGraph *)self->super._graph entityFactory];
+  v6 = [implementation arrayOfEdgesWithIdentifiers:identifiers entityFactory:entityFactory error:0];
 
   return v6;
 }

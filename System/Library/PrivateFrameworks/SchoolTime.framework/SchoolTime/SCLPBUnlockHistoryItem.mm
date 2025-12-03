@@ -1,24 +1,24 @@
 @interface SCLPBUnlockHistoryItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasScheduleEndHour:(BOOL)a3;
-- (void)setHasScheduleEndMinute:(BOOL)a3;
-- (void)setHasScheduleStartHour:(BOOL)a3;
-- (void)setHasScheduleStartMinute:(BOOL)a3;
-- (void)setHasStartTimeIntervalSinceReferenceDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasScheduleEndHour:(BOOL)hour;
+- (void)setHasScheduleEndMinute:(BOOL)minute;
+- (void)setHasScheduleStartHour:(BOOL)hour;
+- (void)setHasScheduleStartMinute:(BOOL)minute;
+- (void)setHasStartTimeIntervalSinceReferenceDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SCLPBUnlockHistoryItem
 
-- (void)setHasStartTimeIntervalSinceReferenceDate:(BOOL)a3
+- (void)setHasStartTimeIntervalSinceReferenceDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasScheduleStartHour:(BOOL)a3
+- (void)setHasScheduleStartHour:(BOOL)hour
 {
-  if (a3)
+  if (hour)
   {
     v3 = 16;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasScheduleStartMinute:(BOOL)a3
+- (void)setHasScheduleStartMinute:(BOOL)minute
 {
-  if (a3)
+  if (minute)
   {
     v3 = 32;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasScheduleEndHour:(BOOL)a3
+- (void)setHasScheduleEndHour:(BOOL)hour
 {
-  if (a3)
+  if (hour)
   {
     v3 = 4;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasScheduleEndMinute:(BOOL)a3
+- (void)setHasScheduleEndMinute:(BOOL)minute
 {
-  if (a3)
+  if (minute)
   {
     v3 = 8;
   }
@@ -97,20 +97,20 @@
   v8.receiver = self;
   v8.super_class = SCLPBUnlockHistoryItem;
   v4 = [(SCLPBUnlockHistoryItem *)&v8 description];
-  v5 = [(SCLPBUnlockHistoryItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SCLPBUnlockHistoryItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_startTimeIntervalSinceReferenceDate];
-    [v3 setObject:v5 forKey:@"startTimeIntervalSinceReferenceDate"];
+    [dictionary setObject:v5 forKey:@"startTimeIntervalSinceReferenceDate"];
 
     has = self->_has;
   }
@@ -118,26 +118,26 @@
   if (has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_duration];
-    [v3 setObject:v6 forKey:@"duration"];
+    [dictionary setObject:v6 forKey:@"duration"];
   }
 
   calendarIdentifier = self->_calendarIdentifier;
   if (calendarIdentifier)
   {
-    [v3 setObject:calendarIdentifier forKey:@"calendarIdentifier"];
+    [dictionary setObject:calendarIdentifier forKey:@"calendarIdentifier"];
   }
 
   timeZoneName = self->_timeZoneName;
   if (timeZoneName)
   {
-    [v3 setObject:timeZoneName forKey:@"timeZoneName"];
+    [dictionary setObject:timeZoneName forKey:@"timeZoneName"];
   }
 
   v9 = self->_has;
   if ((v9 & 0x10) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_scheduleStartHour];
-    [v3 setObject:v12 forKey:@"scheduleStartHour"];
+    [dictionary setObject:v12 forKey:@"scheduleStartHour"];
 
     v9 = self->_has;
     if ((v9 & 0x20) == 0)
@@ -158,7 +158,7 @@ LABEL_11:
   }
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_scheduleStartMinute];
-  [v3 setObject:v13 forKey:@"scheduleStartMinute"];
+  [dictionary setObject:v13 forKey:@"scheduleStartMinute"];
 
   v9 = self->_has;
   if ((v9 & 4) == 0)
@@ -174,23 +174,23 @@ LABEL_12:
 
 LABEL_19:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_scheduleEndHour];
-  [v3 setObject:v14 forKey:@"scheduleEndHour"];
+  [dictionary setObject:v14 forKey:@"scheduleEndHour"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_13:
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_scheduleEndMinute];
-    [v3 setObject:v10 forKey:@"scheduleEndMinute"];
+    [dictionary setObject:v10 forKey:@"scheduleEndMinute"];
   }
 
 LABEL_14:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -265,41 +265,41 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_startTimeIntervalSinceReferenceDate;
-    *(v4 + 56) |= 2u;
+    toCopy[2] = *&self->_startTimeIntervalSinceReferenceDate;
+    *(toCopy + 56) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[1] = *&self->_duration;
-    *(v4 + 56) |= 1u;
+    toCopy[1] = *&self->_duration;
+    *(toCopy + 56) |= 1u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_calendarIdentifier)
   {
-    [v4 setCalendarIdentifier:?];
-    v4 = v7;
+    [toCopy setCalendarIdentifier:?];
+    toCopy = v7;
   }
 
   if (self->_timeZoneName)
   {
     [v7 setTimeZoneName:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
-    *(v4 + 10) = self->_scheduleStartHour;
-    *(v4 + 56) |= 0x10u;
+    *(toCopy + 10) = self->_scheduleStartHour;
+    *(toCopy + 56) |= 0x10u;
     v6 = self->_has;
     if ((v6 & 0x20) == 0)
     {
@@ -318,8 +318,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 11) = self->_scheduleStartMinute;
-  *(v4 + 56) |= 0x20u;
+  *(toCopy + 11) = self->_scheduleStartMinute;
+  *(toCopy + 56) |= 0x20u;
   v6 = self->_has;
   if ((v6 & 4) == 0)
   {
@@ -333,21 +333,21 @@ LABEL_12:
   }
 
 LABEL_19:
-  *(v4 + 8) = self->_scheduleEndHour;
-  *(v4 + 56) |= 4u;
+  *(toCopy + 8) = self->_scheduleEndHour;
+  *(toCopy + 56) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_13:
-    *(v4 + 9) = self->_scheduleEndMinute;
-    *(v4 + 56) |= 8u;
+    *(toCopy + 9) = self->_scheduleEndMinute;
+    *(toCopy + 56) |= 8u;
   }
 
 LABEL_14:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -363,11 +363,11 @@ LABEL_14:
     *(v5 + 56) |= 1u;
   }
 
-  v8 = [(NSString *)self->_calendarIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_calendarIdentifier copyWithZone:zone];
   v9 = *(v6 + 24);
   *(v6 + 24) = v8;
 
-  v10 = [(NSString *)self->_timeZoneName copyWithZone:a3];
+  v10 = [(NSString *)self->_timeZoneName copyWithZone:zone];
   v11 = *(v6 + 48);
   *(v6 + 48) = v10;
 
@@ -421,24 +421,24 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(equalCopy + 56);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_startTimeIntervalSinceReferenceDate != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_startTimeIntervalSinceReferenceDate != *(equalCopy + 2))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
 LABEL_35:
     v8 = 0;
@@ -447,25 +447,25 @@ LABEL_35:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_duration != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_duration != *(equalCopy + 1))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_35;
   }
 
   calendarIdentifier = self->_calendarIdentifier;
-  if (calendarIdentifier | *(v4 + 3) && ![(NSString *)calendarIdentifier isEqual:?])
+  if (calendarIdentifier | *(equalCopy + 3) && ![(NSString *)calendarIdentifier isEqual:?])
   {
     goto LABEL_35;
   }
 
   timeZoneName = self->_timeZoneName;
-  if (timeZoneName | *(v4 + 6))
+  if (timeZoneName | *(equalCopy + 6))
   {
     if (![(NSString *)timeZoneName isEqual:?])
     {
@@ -475,47 +475,47 @@ LABEL_35:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 56) & 0x10) == 0 || self->_scheduleStartHour != *(v4 + 10))
+    if ((*(equalCopy + 56) & 0x10) == 0 || self->_scheduleStartHour != *(equalCopy + 10))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 56) & 0x10) != 0)
+  else if ((*(equalCopy + 56) & 0x10) != 0)
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 56) & 0x20) == 0 || self->_scheduleStartMinute != *(v4 + 11))
+    if ((*(equalCopy + 56) & 0x20) == 0 || self->_scheduleStartMinute != *(equalCopy + 11))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 56) & 0x20) != 0)
+  else if ((*(equalCopy + 56) & 0x20) != 0)
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_scheduleEndHour != *(v4 + 8))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_scheduleEndHour != *(equalCopy + 8))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_35;
   }
 
-  v8 = (*(v4 + 56) & 8) == 0;
+  v8 = (*(equalCopy + 56) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 56) & 8) == 0 || self->_scheduleEndMinute != *(v4 + 9))
+    if ((*(equalCopy + 56) & 8) == 0 || self->_scheduleEndMinute != *(equalCopy + 9))
     {
       goto LABEL_35;
     }
@@ -651,42 +651,42 @@ LABEL_21:
   return v9 ^ v5 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 56);
+  fromCopy = from;
+  v5 = *(fromCopy + 56);
   if ((v5 & 2) != 0)
   {
-    self->_startTimeIntervalSinceReferenceDate = *(v4 + 2);
+    self->_startTimeIntervalSinceReferenceDate = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
   }
 
   if (v5)
   {
-    self->_duration = *(v4 + 1);
+    self->_duration = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  v7 = v4;
-  if (*(v4 + 3))
+  v7 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(SCLPBUnlockHistoryItem *)self setCalendarIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SCLPBUnlockHistoryItem *)self setTimeZoneName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(fromCopy + 56);
   if ((v6 & 0x10) != 0)
   {
-    self->_scheduleStartHour = *(v4 + 10);
+    self->_scheduleStartHour = *(fromCopy + 10);
     *&self->_has |= 0x10u;
-    v6 = *(v4 + 56);
+    v6 = *(fromCopy + 56);
     if ((v6 & 0x20) == 0)
     {
 LABEL_11:
@@ -699,14 +699,14 @@ LABEL_11:
     }
   }
 
-  else if ((*(v4 + 56) & 0x20) == 0)
+  else if ((*(fromCopy + 56) & 0x20) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_scheduleStartMinute = *(v4 + 11);
+  self->_scheduleStartMinute = *(fromCopy + 11);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 56);
+  v6 = *(fromCopy + 56);
   if ((v6 & 4) == 0)
   {
 LABEL_12:
@@ -719,12 +719,12 @@ LABEL_12:
   }
 
 LABEL_19:
-  self->_scheduleEndHour = *(v4 + 8);
+  self->_scheduleEndHour = *(fromCopy + 8);
   *&self->_has |= 4u;
-  if ((*(v4 + 56) & 8) != 0)
+  if ((*(fromCopy + 56) & 8) != 0)
   {
 LABEL_13:
-    self->_scheduleEndMinute = *(v4 + 9);
+    self->_scheduleEndMinute = *(fromCopy + 9);
     *&self->_has |= 8u;
   }
 

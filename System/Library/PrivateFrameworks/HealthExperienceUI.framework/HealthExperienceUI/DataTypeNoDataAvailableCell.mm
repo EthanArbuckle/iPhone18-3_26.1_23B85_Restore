@@ -1,16 +1,16 @@
 @interface DataTypeNoDataAvailableCell
-- (_TtC18HealthExperienceUI27DataTypeNoDataAvailableCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI27DataTypeNoDataAvailableCell)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI27DataTypeNoDataAvailableCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI27DataTypeNoDataAvailableCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DataTypeNoDataAvailableCell
 
-- (_TtC18HealthExperienceUI27DataTypeNoDataAvailableCell)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI27DataTypeNoDataAvailableCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC18HealthExperienceUI27DataTypeNoDataAvailableCell_item;
   *v8 = 0u;
   *(v8 + 1) = 0u;
@@ -24,7 +24,7 @@
   return [(DataTypeNoDataAvailableCell *)&v12 initWithFrame:x, y, width, height];
 }
 
-- (_TtC18HealthExperienceUI27DataTypeNoDataAvailableCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI27DataTypeNoDataAvailableCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC18HealthExperienceUI27DataTypeNoDataAvailableCell_item;
   *v3 = 0u;

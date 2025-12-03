@@ -1,21 +1,21 @@
 @interface PLJournalFile
-+ (BOOL)copyURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-+ (BOOL)createEmptyURL:(id)a3 error:(id *)a4;
-+ (BOOL)moveURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-+ (BOOL)removeURL:(id)a3 error:(id *)a4;
-+ (BOOL)writeData:(id)a3 toURL:(id)a4 atomically:(BOOL)a5 error:(id *)a6;
-- (BOOL)_fileSize:(unint64_t *)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)appendEntries:(id)a3 error:(id *)a4;
-- (BOOL)copyToURL:(id)a3 error:(id *)a4;
-- (BOOL)createEmptyFileWithError:(id *)a3;
-- (BOOL)enumerateEntriesUsingBlock:(id)a3 decodePayload:(BOOL)a4 error:(id *)a5;
++ (BOOL)copyURL:(id)l toURL:(id)rL error:(id *)error;
++ (BOOL)createEmptyURL:(id)l error:(id *)error;
++ (BOOL)moveURL:(id)l toURL:(id)rL error:(id *)error;
++ (BOOL)removeURL:(id)l error:(id *)error;
++ (BOOL)writeData:(id)data toURL:(id)l atomically:(BOOL)atomically error:(id *)error;
+- (BOOL)_fileSize:(unint64_t *)size forKey:(id)key error:(id *)error;
+- (BOOL)appendEntries:(id)entries error:(id *)error;
+- (BOOL)copyToURL:(id)l error:(id *)error;
+- (BOOL)createEmptyFileWithError:(id *)error;
+- (BOOL)enumerateEntriesUsingBlock:(id)block decodePayload:(BOOL)payload error:(id *)error;
 - (BOOL)fileExists;
-- (BOOL)moveToURL:(id)a3 error:(id *)a4;
-- (BOOL)openForReadingUsingBlock:(id)a3 error:(id *)a4;
-- (BOOL)openForWritingUsingBlock:(id)a3 error:(id *)a4;
-- (BOOL)removeFileWithError:(id *)a3;
-- (PLJournalFile)initWithURL:(id)a3 payloadClass:(Class)a4;
-- (id)fileHandleForWritingWithError:(id *)a3;
+- (BOOL)moveToURL:(id)l error:(id *)error;
+- (BOOL)openForReadingUsingBlock:(id)block error:(id *)error;
+- (BOOL)openForWritingUsingBlock:(id)block error:(id *)error;
+- (BOOL)removeFileWithError:(id *)error;
+- (PLJournalFile)initWithURL:(id)l payloadClass:(Class)class;
+- (id)fileHandleForWritingWithError:(id *)error;
 @end
 
 @implementation PLJournalFile
@@ -28,24 +28,24 @@
   return [v3 fileExistsAtURL:url];
 }
 
-- (BOOL)_fileSize:(unint64_t *)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)_fileSize:(unint64_t *)size forKey:(id)key error:(id *)error
 {
-  v6 = self;
-  *a3 = 0;
+  selfCopy = self;
+  *size = 0;
   url = self->_url;
-  v8 = a4;
-  [(NSURL *)url removeCachedResourceValueForKey:v8];
-  v9 = v6->_url;
+  keyCopy = key;
+  [(NSURL *)url removeCachedResourceValueForKey:keyCopy];
+  v9 = selfCopy->_url;
   v16 = 0;
   v17 = 0;
-  LODWORD(v6) = [(NSURL *)v9 getResourceValue:&v17 forKey:v8 error:&v16];
+  LODWORD(selfCopy) = [(NSURL *)v9 getResourceValue:&v17 forKey:keyCopy error:&v16];
 
   v10 = v16;
-  if (v6)
+  if (selfCopy)
   {
     v11 = v17;
     v12 = v16;
-    *a3 = [v11 unsignedLongLongValue];
+    *size = [v11 unsignedLongLongValue];
     v13 = 1;
   }
 
@@ -58,51 +58,51 @@
   return v13;
 }
 
-- (BOOL)copyToURL:(id)a3 error:(id *)a4
+- (BOOL)copyToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  LOBYTE(a4) = [objc_opt_class() copyURL:self->_url toURL:v6 error:a4];
+  lCopy = l;
+  LOBYTE(error) = [objc_opt_class() copyURL:self->_url toURL:lCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)moveToURL:(id)a3 error:(id *)a4
+- (BOOL)moveToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  LOBYTE(a4) = [objc_opt_class() moveURL:self->_url toURL:v6 error:a4];
+  lCopy = l;
+  LOBYTE(error) = [objc_opt_class() moveURL:self->_url toURL:lCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)createEmptyFileWithError:(id *)a3
+- (BOOL)createEmptyFileWithError:(id *)error
 {
   v5 = objc_opt_class();
   url = self->_url;
 
-  return [v5 createEmptyURL:url error:a3];
+  return [v5 createEmptyURL:url error:error];
 }
 
-- (BOOL)removeFileWithError:(id *)a3
+- (BOOL)removeFileWithError:(id *)error
 {
   v5 = objc_opt_class();
   url = self->_url;
 
-  return [v5 removeURL:url error:a3];
+  return [v5 removeURL:url error:error];
 }
 
-- (BOOL)appendEntries:(id)a3 error:(id *)a4
+- (BOOL)appendEntries:(id)entries error:(id *)error
 {
-  v6 = a3;
-  if ([v6 count])
+  entriesCopy = entries;
+  if ([entriesCopy count])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __37__PLJournalFile_appendEntries_error___block_invoke;
     v9[3] = &unk_1E7570BB0;
-    v10 = v6;
-    v11 = self;
-    v12 = a4;
-    v7 = [(PLJournalFile *)self openForWritingUsingBlock:v9 error:a4];
+    v10 = entriesCopy;
+    selfCopy = self;
+    errorCopy = error;
+    v7 = [(PLJournalFile *)self openForWritingUsingBlock:v9 error:error];
   }
 
   else
@@ -200,14 +200,14 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)openForWritingUsingBlock:(id)a3 error:(id *)a4
+- (BOOL)openForWritingUsingBlock:(id)block error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLJournalFile *)self fileHandleForWritingWithError:a4];
+  blockCopy = block;
+  v7 = [(PLJournalFile *)self fileHandleForWritingWithError:error];
   if (v7)
   {
     v8 = v7;
-    v9 = v6[2](v6, v7);
+    v9 = blockCopy[2](blockCopy, v7);
   }
 
   else
@@ -218,20 +218,20 @@ LABEL_16:
   return v9;
 }
 
-- (id)fileHandleForWritingWithError:(id *)a3
+- (id)fileHandleForWritingWithError:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [(NSURL *)self->_url path];
-  v7 = [v6 stringByDeletingLastPathComponent];
-  [v5 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [(NSURL *)self->_url path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+  [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
-  v8 = [(NSURL *)self->_url path];
-  v9 = open([v8 fileSystemRepresentation], 513, 438);
+  path2 = [(NSURL *)self->_url path];
+  v9 = open([path2 fileSystemRepresentation], 513, 438);
 
   if (v9 == -1)
   {
-    if (a3)
+    if (error)
     {
       v10 = MEMORY[0x1E696ABC0];
       v11 = *MEMORY[0x1E696A798];
@@ -242,36 +242,36 @@ LABEL_16:
       v15 = [v13 stringWithUTF8String:strerror(*v14)];
       v19[0] = v15;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      *a3 = [v10 errorWithDomain:v11 code:v12 userInfo:v16];
+      *error = [v10 errorWithDomain:v11 code:v12 userInfo:v16];
 
-      a3 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    a3 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:v9 closeOnDealloc:1];
-    [a3 seekToEndOfFile];
+    error = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:v9 closeOnDealloc:1];
+    [error seekToEndOfFile];
   }
 
-  return a3;
+  return error;
 }
 
-- (BOOL)enumerateEntriesUsingBlock:(id)a3 decodePayload:(BOOL)a4 error:(id *)a5
+- (BOOL)enumerateEntriesUsingBlock:(id)block decodePayload:(BOOL)payload error:(id *)error
 {
-  v8 = a3;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__PLJournalFile_enumerateEntriesUsingBlock_decodePayload_error___block_invoke;
   v11[3] = &unk_1E7570B88;
-  v14 = a4;
+  payloadCopy = payload;
   v11[4] = self;
-  v12 = v8;
-  v13 = a5;
-  v9 = v8;
-  LOBYTE(a5) = [(PLJournalFile *)self openForReadingUsingBlock:v11 error:a5];
+  v12 = blockCopy;
+  errorCopy = error;
+  v9 = blockCopy;
+  LOBYTE(error) = [(PLJournalFile *)self openForReadingUsingBlock:v11 error:error];
 
-  return a5;
+  return error;
 }
 
 uint64_t __64__PLJournalFile_enumerateEntriesUsingBlock_decodePayload_error___block_invoke(uint64_t a1, void *a2)
@@ -326,21 +326,21 @@ uint64_t __64__PLJournalFile_enumerateEntriesUsingBlock_decodePayload_error___bl
   return v8;
 }
 
-- (BOOL)openForReadingUsingBlock:(id)a3 error:(id *)a4
+- (BOOL)openForReadingUsingBlock:(id)block error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NSURL *)self->_url path];
-  v8 = open([v7 fileSystemRepresentation], 0);
+  blockCopy = block;
+  path = [(NSURL *)self->_url path];
+  v8 = open([path fileSystemRepresentation], 0);
 
   if (v8 == -1)
   {
     if (*__error() == 2)
     {
-      LOBYTE(a4) = v6[2](v6, 0);
+      LOBYTE(error) = blockCopy[2](blockCopy, 0);
     }
 
-    else if (a4)
+    else if (error)
     {
       v10 = MEMORY[0x1E696ABC0];
       v11 = *MEMORY[0x1E696A798];
@@ -351,61 +351,61 @@ uint64_t __64__PLJournalFile_enumerateEntriesUsingBlock_decodePayload_error___bl
       v15 = [v13 stringWithUTF8String:strerror(*v14)];
       v19[0] = v15;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      *a4 = [v10 errorWithDomain:v11 code:v12 userInfo:v16];
+      *error = [v10 errorWithDomain:v11 code:v12 userInfo:v16];
 
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
     v9 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:v8 closeOnDealloc:0];
-    LOBYTE(a4) = (v6)[2](v6, v9);
+    LOBYTE(error) = (blockCopy)[2](blockCopy, v9);
     close(v8);
   }
 
-  return a4;
+  return error;
 }
 
-- (PLJournalFile)initWithURL:(id)a3 payloadClass:(Class)a4
+- (PLJournalFile)initWithURL:(id)l payloadClass:(Class)class
 {
-  v7 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = PLJournalFile;
   v8 = [(PLJournalFile *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_url, a3);
-    v9->_payloadClass = a4;
+    objc_storeStrong(&v8->_url, l);
+    v9->_payloadClass = class;
   }
 
   return v9;
 }
 
-+ (BOOL)writeData:(id)a3 toURL:(id)a4 atomically:(BOOL)a5 error:(id *)a6
++ (BOOL)writeData:(id)data toURL:(id)l atomically:(BOOL)atomically error:(id *)error
 {
-  v7 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = v10;
-  if (v7)
+  atomicallyCopy = atomically;
+  lCopy = l;
+  dataCopy = data;
+  v11 = dataCopy;
+  if (atomicallyCopy)
   {
-    v12 = [v9 lastPathComponent];
-    v13 = [v12 stringByDeletingPathExtension];
+    lastPathComponent = [lCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v14 = [v9 lastPathComponent];
-    v15 = [v14 pathExtension];
+    lastPathComponent2 = [lCopy lastPathComponent];
+    pathExtension = [lastPathComponent2 pathExtension];
 
-    v16 = [v9 URLByDeletingLastPathComponent];
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-tmp", v13];
-    v18 = [v17 stringByAppendingPathExtension:v15];
-    v19 = [v16 URLByAppendingPathComponent:v18];
+    uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-tmp", stringByDeletingPathExtension];
+    v18 = [v17 stringByAppendingPathExtension:pathExtension];
+    v19 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v18];
 
-    LODWORD(v16) = [v11 writeToURL:v19 options:0 error:a6];
-    if (v16)
+    LODWORD(uRLByDeletingLastPathComponent) = [v11 writeToURL:v19 options:0 error:error];
+    if (uRLByDeletingLastPathComponent)
     {
-      v20 = [objc_opt_class() moveURL:v19 toURL:v9 error:a6];
+      v20 = [objc_opt_class() moveURL:v19 toURL:lCopy error:error];
     }
 
     else
@@ -413,31 +413,31 @@ uint64_t __64__PLJournalFile_enumerateEntriesUsingBlock_decodePayload_error___bl
       v20 = 0;
     }
 
-    v11 = v13;
+    v11 = stringByDeletingPathExtension;
   }
 
   else
   {
-    v20 = [v10 writeToURL:v9 options:0 error:a6];
+    v20 = [dataCopy writeToURL:lCopy options:0 error:error];
   }
 
   return v20;
 }
 
-+ (BOOL)copyURL:(id)a3 toURL:(id)a4 error:(id *)a5
++ (BOOL)copyURL:(id)l toURL:(id)rL error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [a3 fileSystemRepresentation];
-  v11 = [v9 fileSystemRepresentation];
+  lCopy = l;
+  rLCopy = rL;
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  fileSystemRepresentation2 = [rLCopy fileSystemRepresentation];
 
-  if (!copyfile(v10, v11, 0, 0x1000000u) || *__error() == 2)
+  if (!copyfile(fileSystemRepresentation, fileSystemRepresentation2, 0, 0x1000000u) || *__error() == 2)
   {
     return 1;
   }
 
-  if (a5)
+  if (error)
   {
     v13 = MEMORY[0x1E696ABC0];
     v14 = *MEMORY[0x1E696A798];
@@ -448,23 +448,23 @@ uint64_t __64__PLJournalFile_enumerateEntriesUsingBlock_decodePayload_error___bl
     v18 = [v16 stringWithUTF8String:strerror(*v17)];
     v21[0] = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    *a5 = [v13 errorWithDomain:v14 code:v15 userInfo:v19];
+    *error = [v13 errorWithDomain:v14 code:v15 userInfo:v19];
   }
 
   return 0;
 }
 
-+ (BOOL)moveURL:(id)a3 toURL:(id)a4 error:(id *)a5
++ (BOOL)moveURL:(id)l toURL:(id)rL error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [a3 fileSystemRepresentation];
-  v11 = [v9 fileSystemRepresentation];
+  lCopy = l;
+  rLCopy = rL;
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  fileSystemRepresentation2 = [rLCopy fileSystemRepresentation];
 
-  rename(v10, v11, v12);
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v12);
   v14 = v13;
-  if (a5 && v13)
+  if (error && v13)
   {
     v15 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E696A798];
@@ -475,28 +475,28 @@ uint64_t __64__PLJournalFile_enumerateEntriesUsingBlock_decodePayload_error___bl
     v20 = [v18 stringWithUTF8String:strerror(*v19)];
     v24[0] = v20;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-    *a5 = [v15 errorWithDomain:v16 code:v17 userInfo:v21];
+    *error = [v15 errorWithDomain:v16 code:v17 userInfo:v21];
   }
 
   return v14 == 0;
 }
 
-+ (BOOL)createEmptyURL:(id)a3 error:(id *)a4
++ (BOOL)createEmptyURL:(id)l error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AC08];
-  v6 = a3;
-  v7 = [v5 defaultManager];
-  v8 = [v6 path];
-  v9 = [v8 stringByDeletingLastPathComponent];
-  [v7 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:0];
+  lCopy = l;
+  defaultManager = [v5 defaultManager];
+  path = [lCopy path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+  [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
-  v10 = [v6 path];
+  path2 = [lCopy path];
 
-  v11 = open([v10 fileSystemRepresentation], 1537, 438);
+  v11 = open([path2 fileSystemRepresentation], 1537, 438);
   if (v11 == -1)
   {
-    if (a4)
+    if (error)
     {
       v12 = MEMORY[0x1E696ABC0];
       v13 = *MEMORY[0x1E696A798];
@@ -507,7 +507,7 @@ uint64_t __64__PLJournalFile_enumerateEntriesUsingBlock_decodePayload_error___bl
       v17 = [v15 stringWithUTF8String:strerror(*v16)];
       v21[0] = v17;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-      *a4 = [v12 errorWithDomain:v13 code:v14 userInfo:v18];
+      *error = [v12 errorWithDomain:v13 code:v14 userInfo:v18];
     }
   }
 
@@ -519,18 +519,18 @@ uint64_t __64__PLJournalFile_enumerateEntriesUsingBlock_decodePayload_error___bl
   return v11 != -1;
 }
 
-+ (BOOL)removeURL:(id)a3 error:(id *)a4
++ (BOOL)removeURL:(id)l error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = [a3 path];
-  v6 = unlink([v5 fileSystemRepresentation]);
+  path = [l path];
+  v6 = unlink([path fileSystemRepresentation]);
 
   if (!v6 || *__error() == 2)
   {
     return 1;
   }
 
-  if (a4)
+  if (error)
   {
     v8 = MEMORY[0x1E696ABC0];
     v9 = *MEMORY[0x1E696A798];
@@ -541,7 +541,7 @@ uint64_t __64__PLJournalFile_enumerateEntriesUsingBlock_decodePayload_error___bl
     v13 = [v11 stringWithUTF8String:strerror(*v12)];
     v16[0] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    *a4 = [v8 errorWithDomain:v9 code:v10 userInfo:v14];
+    *error = [v8 errorWithDomain:v9 code:v10 userInfo:v14];
   }
 
   return 0;

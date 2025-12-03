@@ -1,10 +1,10 @@
 @interface IMEventListenerList
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (IMEventListenerList)init;
 - (unint64_t)count;
-- (void)addObject:(id)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)removeObject:(id)a3;
+- (void)addObject:(id)object;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)removeObject:(id)object;
 @end
 
 @implementation IMEventListenerList
@@ -16,9 +16,9 @@
   v2 = [(IMEventListenerList *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     eventListeners = v2->_eventListeners;
-    v2->_eventListeners = v3;
+    v2->_eventListeners = array;
   }
 
   return v2;
@@ -27,13 +27,13 @@
 - (unint64_t)count
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = v2->_eventListeners;
+  v3 = selfCopy->_eventListeners;
   v4 = 0;
   v5 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
@@ -49,8 +49,8 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * v7) eventListener];
-        v9 = v8 != 0;
+        eventListener = [*(*(&v11 + 1) + 8 * v7) eventListener];
+        v9 = eventListener != 0;
 
         v4 += v9;
         ++v7;
@@ -63,37 +63,37 @@
     while (v5);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  eventListeners = v4->_eventListeners;
-  v6 = [[IMEventListenerReference alloc] initWithEventListener:v7];
+  objectCopy = object;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  eventListeners = selfCopy->_eventListeners;
+  v6 = [[IMEventListenerReference alloc] initWithEventListener:objectCopy];
   [(NSMutableArray *)eventListeners addObject:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableArray *)v4->_eventListeners count];
+  objectCopy = object;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableArray *)selfCopy->_eventListeners count];
   if (v5 - 1 >= 0)
   {
     do
     {
-      v6 = [(NSMutableArray *)v4->_eventListeners objectAtIndex:--v5];
-      v7 = [v6 eventListener];
-      if (v7)
+      v6 = [(NSMutableArray *)selfCopy->_eventListeners objectAtIndex:--v5];
+      eventListener = [v6 eventListener];
+      if (eventListener)
       {
-        v8 = v7 == v9;
+        v8 = eventListener == objectCopy;
       }
 
       else
@@ -103,22 +103,22 @@
 
       if (v8)
       {
-        [(NSMutableArray *)v4->_eventListeners removeObjectAtIndex:v5];
+        [(NSMutableArray *)selfCopy->_eventListeners removeObjectAtIndex:v5];
       }
     }
 
     while (v5 > 0);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableArray *)v5->_eventListeners count];
+  objectCopy = object;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableArray *)selfCopy->_eventListeners count];
   if (v6 - 1 < 0)
   {
 LABEL_7:
@@ -128,16 +128,16 @@ LABEL_7:
 
   while (1)
   {
-    v7 = [(NSMutableArray *)v5->_eventListeners objectAtIndex:--v6];
-    v8 = [v7 eventListener];
-    v9 = v8;
-    if (!v8)
+    v7 = [(NSMutableArray *)selfCopy->_eventListeners objectAtIndex:--v6];
+    eventListener = [v7 eventListener];
+    v9 = eventListener;
+    if (!eventListener)
     {
-      [(NSMutableArray *)v5->_eventListeners removeObjectAtIndex:v6];
+      [(NSMutableArray *)selfCopy->_eventListeners removeObjectAtIndex:v6];
       goto LABEL_6;
     }
 
-    if (v8 == v4)
+    if (eventListener == objectCopy)
     {
       break;
     }
@@ -152,23 +152,23 @@ LABEL_6:
 
   v10 = 1;
 LABEL_8:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5->_eventListeners;
+  v6 = selfCopy->_eventListeners;
   v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v7)
   {
@@ -183,10 +183,10 @@ LABEL_3:
         objc_enumerationMutation(v6);
       }
 
-      v11 = [*(*(&v13 + 1) + 8 * v10) eventListener];
-      if (v11)
+      eventListener = [*(*(&v13 + 1) + 8 * v10) eventListener];
+      if (eventListener)
       {
-        v4[2](v4, v11, v8++, &v17);
+        blockCopy[2](blockCopy, eventListener, v8++, &v17);
       }
 
       v12 = v17;
@@ -209,7 +209,7 @@ LABEL_3:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 @end

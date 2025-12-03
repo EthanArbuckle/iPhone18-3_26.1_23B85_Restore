@@ -1,15 +1,15 @@
 @interface PUThresholdCrossingCountValueFilter
-- (double)updatedValue:(double)a3 withTargetValue:(double)a4;
+- (double)updatedValue:(double)value withTargetValue:(double)targetValue;
 @end
 
 @implementation PUThresholdCrossingCountValueFilter
 
-- (double)updatedValue:(double)a3 withTargetValue:(double)a4
+- (double)updatedValue:(double)value withTargetValue:(double)targetValue
 {
   [(PUThresholdCrossingCountValueFilter *)self thresholdValue];
   v8 = v7;
   crossingCount = self->_crossingCount;
-  if (v7 > a3 != v7 > a4)
+  if (v7 > value != v7 > targetValue)
   {
     self->_crossingCount = ++crossingCount;
   }
@@ -21,7 +21,7 @@
 
   else
   {
-    return a4;
+    return targetValue;
   }
 }
 

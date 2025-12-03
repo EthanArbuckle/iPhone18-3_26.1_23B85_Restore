@@ -1,14 +1,14 @@
 @interface TVRUIShortcutsMenuViewController
 - (BOOL)hasInternalShortcuts;
-- (BOOL)itemIsEnabled:(id)a3;
+- (BOOL)itemIsEnabled:(id)enabled;
 - (CGSize)_effectiveContentSize;
 - (id)_layout;
 - (void)_configureHierarchy;
-- (void)_invokePlayerCommandHandlerForItem:(id)a3;
+- (void)_invokePlayerCommandHandlerForItem:(id)item;
 - (void)_toggleEditing;
-- (void)_updateDataSourceAnimated:(BOOL)a3;
+- (void)_updateDataSourceAnimated:(BOOL)animated;
 - (void)_updateEditButtonFromCurrentState;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -27,40 +27,40 @@
 
   [(TVRUIShortcutsMenuViewController *)self _configureHierarchy];
   [(TVRUIShortcutsMenuViewController *)self _updateDataSourceAnimated:0];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__shortcutsDidChange_ name:@"TVRUIShortcutsControllerShortcutsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__shortcutsDidChange_ name:@"TVRUIShortcutsControllerShortcutsDidChangeNotification" object:0];
 }
 
 - (BOOL)hasInternalShortcuts
 {
-  v2 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
-  v3 = [v2 internalShortcuts];
-  v4 = [v3 count] != 0;
+  shortcutsController = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+  internalShortcuts = [shortcutsController internalShortcuts];
+  v4 = [internalShortcuts count] != 0;
 
   return v4;
 }
 
-- (BOOL)itemIsEnabled:(id)a3
+- (BOOL)itemIsEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
-  v6 = [v4 identifier];
+  enabledCopy = enabled;
+  shortcutsController = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+  identifier = [enabledCopy identifier];
 
-  LOBYTE(v4) = [v5 itemIsEnabledWithIdentifier:v6];
-  return v4;
+  LOBYTE(enabledCopy) = [shortcutsController itemIsEnabledWithIdentifier:identifier];
+  return enabledCopy;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(TVRUIShortcutsMenuViewController *)self dataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  dataSource = [(TVRUIShortcutsMenuViewController *)self dataSource];
+  v7 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
   if ([(TVRUIShortcutsMenuViewController *)self isEditing])
   {
-    v8 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
-    v9 = [v7 identifier];
-    [v8 toggleItemEnablementWithIdentifier:v9];
+    shortcutsController = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+    identifier = [v7 identifier];
+    [shortcutsController toggleItemEnablementWithIdentifier:identifier];
   }
 
   else
@@ -75,38 +75,38 @@
   }
 }
 
-- (void)_invokePlayerCommandHandlerForItem:(id)a3
+- (void)_invokePlayerCommandHandlerForItem:(id)item
 {
-  v7 = a3;
-  v4 = [(TVRUIShortcutsMenuViewController *)self playerCommandHandler];
+  itemCopy = item;
+  playerCommandHandler = [(TVRUIShortcutsMenuViewController *)self playerCommandHandler];
 
-  if (v4)
+  if (playerCommandHandler)
   {
-    v5 = [(TVRUIShortcutsMenuViewController *)self playerCommandHandler];
-    v6 = [v7 playerCommand];
-    v5[2](v5, v6, MEMORY[0x277CBEC10]);
+    playerCommandHandler2 = [(TVRUIShortcutsMenuViewController *)self playerCommandHandler];
+    playerCommand = [itemCopy playerCommand];
+    playerCommandHandler2[2](playerCommandHandler2, playerCommand, MEMORY[0x277CBEC10]);
   }
 }
 
 - (CGSize)_effectiveContentSize
 {
-  v3 = [(TVRUIShortcutsMenuViewController *)self isCompact];
-  v4 = [(TVRUIShortcutsMenuViewController *)self isEditing];
-  v5 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
-  v6 = v5;
-  if (v4)
+  isCompact = [(TVRUIShortcutsMenuViewController *)self isCompact];
+  isEditing = [(TVRUIShortcutsMenuViewController *)self isEditing];
+  shortcutsController = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+  v6 = shortcutsController;
+  if (isEditing)
   {
-    [v5 allShortcuts];
+    [shortcutsController allShortcuts];
   }
 
   else
   {
-    [v5 availableShortcuts];
+    [shortcutsController availableShortcuts];
   }
   v7 = ;
   v8 = [v7 count];
 
-  if (v3)
+  if (isCompact)
   {
     if (v8 == 3 * (v8 / 3))
     {
@@ -137,10 +137,10 @@
 
 - (void)_updateEditButtonFromCurrentState
 {
-  v3 = [(TVRUIShortcutsMenuViewController *)self isEditing];
+  isEditing = [(TVRUIShortcutsMenuViewController *)self isEditing];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3)
+  if (isEditing)
   {
     v6 = @"TVRUIDone";
   }
@@ -152,12 +152,12 @@
 
   v10 = [v4 localizedStringForKey:v6 value:&stru_287E6AEF8 table:@"Localizable"];
 
-  v7 = [(TVRUIShortcutsMenuViewController *)self editButton];
-  v8 = [v7 configuration];
+  editButton = [(TVRUIShortcutsMenuViewController *)self editButton];
+  configuration = [editButton configuration];
 
-  [v8 setTitle:v10];
-  v9 = [(TVRUIShortcutsMenuViewController *)self editButton];
-  [v9 setConfiguration:v8];
+  [configuration setTitle:v10];
+  editButton2 = [(TVRUIShortcutsMenuViewController *)self editButton];
+  [editButton2 setConfiguration:configuration];
 }
 
 - (void)_toggleEditing
@@ -169,26 +169,26 @@
   [(TVRUIShortcutsMenuViewController *)self _effectiveContentSize];
   v4 = v3;
   v6 = v5;
-  v8 = [(TVRUIShortcutsMenuViewController *)self popoverPresentationController];
-  v7 = [v8 presentedViewController];
-  [v7 setPreferredContentSize:{v4, v6}];
+  popoverPresentationController = [(TVRUIShortcutsMenuViewController *)self popoverPresentationController];
+  presentedViewController = [popoverPresentationController presentedViewController];
+  [presentedViewController setPreferredContentSize:{v4, v6}];
 }
 
 - (void)_configureHierarchy
 {
   v90 = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
-  v72 = [(TVRUIShortcutsMenuViewController *)self view];
+  view = [(TVRUIShortcutsMenuViewController *)self view];
   v2 = objc_alloc(MEMORY[0x277D752A0]);
-  v3 = [(TVRUIShortcutsMenuViewController *)self _layout];
-  v73 = [v2 initWithFrame:v3 collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  _layout = [(TVRUIShortcutsMenuViewController *)self _layout];
+  v73 = [v2 initWithFrame:_layout collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
 
   [v73 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v73 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v73 setBackgroundColor:clearColor];
 
   [v73 setDelegate:self];
-  [v72 addSubview:v73];
+  [view addSubview:v73];
   v70 = objc_alloc_init(MEMORY[0x277D756B8]);
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"TVRUIShortcuts" value:&stru_287E6AEF8 table:@"Localizable"];
@@ -197,15 +197,15 @@
   v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   [v70 setFont:v7];
 
-  v8 = [MEMORY[0x277D75348] whiteColor];
-  [v70 setTextColor:v8];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v70 setTextColor:whiteColor];
 
-  v9 = [MEMORY[0x277D75230] borderlessButtonConfiguration];
+  borderlessButtonConfiguration = [MEMORY[0x277D75230] borderlessButtonConfiguration];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"TVRUIEdit" value:&stru_287E6AEF8 table:@"Localizable"];
-  [v9 setTitle:v11];
+  [borderlessButtonConfiguration setTitle:v11];
 
-  [v9 setButtonSize:0];
+  [borderlessButtonConfiguration setButtonSize:0];
   v12 = MEMORY[0x277D750C8];
   v84[0] = MEMORY[0x277D85DD0];
   v84[1] = 3221225472;
@@ -213,14 +213,14 @@
   v84[3] = &unk_279D87C68;
   objc_copyWeak(&v85, &location);
   v13 = [v12 actionWithHandler:v84];
-  v69 = [MEMORY[0x277D75220] buttonWithConfiguration:v9 primaryAction:v13];
-  v14 = [MEMORY[0x277D75348] whiteColor];
-  [v69 setTintColor:v14];
+  v69 = [MEMORY[0x277D75220] buttonWithConfiguration:borderlessButtonConfiguration primaryAction:v13];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  [v69 setTintColor:whiteColor2];
 
   objc_destroyWeak(&v85);
   v15 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v72 addSubview:v15];
+  [view addSubview:v15];
   v82 = 0u;
   v83 = 0u;
   v81 = 0u;
@@ -253,53 +253,53 @@
   }
 
   v40 = MEMORY[0x277CCAAD0];
-  v68 = [v15 topAnchor];
-  v67 = [v72 topAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67 constant:20.0];
+  topAnchor = [v15 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v66 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   v87[0] = v66;
-  v65 = [v15 leadingAnchor];
-  v64 = [v72 leadingAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64 constant:20.0];
+  leadingAnchor = [v15 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v63 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   v87[1] = v63;
-  v62 = [v15 trailingAnchor];
-  v61 = [v72 trailingAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61 constant:-10.0];
+  trailingAnchor = [v15 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v60 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   v87[2] = v60;
-  v59 = [v70 topAnchor];
-  v58 = [v15 topAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  topAnchor3 = [v70 topAnchor];
+  topAnchor4 = [v15 topAnchor];
+  v57 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v87[3] = v57;
-  v56 = [v70 bottomAnchor];
-  v55 = [v15 bottomAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  bottomAnchor = [v70 bottomAnchor];
+  bottomAnchor2 = [v15 bottomAnchor];
+  v54 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v87[4] = v54;
-  v53 = [v70 leadingAnchor];
-  v52 = [v15 leadingAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  leadingAnchor3 = [v70 leadingAnchor];
+  leadingAnchor4 = [v15 leadingAnchor];
+  v51 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v87[5] = v51;
-  v50 = [v69 centerYAnchor];
-  v49 = [v15 centerYAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  centerYAnchor = [v69 centerYAnchor];
+  centerYAnchor2 = [v15 centerYAnchor];
+  v48 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v87[6] = v48;
-  v47 = [v69 trailingAnchor];
-  v46 = [v15 trailingAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  trailingAnchor3 = [v69 trailingAnchor];
+  trailingAnchor4 = [v15 trailingAnchor];
+  v45 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v87[7] = v45;
-  v44 = [v73 topAnchor];
-  v43 = [v15 bottomAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43 constant:20.0];
+  topAnchor5 = [v73 topAnchor];
+  bottomAnchor3 = [v15 bottomAnchor];
+  v42 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:20.0];
   v87[8] = v42;
-  v41 = [v73 leadingAnchor];
-  v21 = [v72 leadingAnchor];
-  v22 = [v41 constraintEqualToAnchor:v21];
+  leadingAnchor5 = [v73 leadingAnchor];
+  leadingAnchor6 = [view leadingAnchor];
+  v22 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v87[9] = v22;
-  v23 = [v73 trailingAnchor];
-  v24 = [v72 trailingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  trailingAnchor5 = [v73 trailingAnchor];
+  trailingAnchor6 = [view trailingAnchor];
+  v25 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v87[10] = v25;
-  v26 = [v73 bottomAnchor];
-  v27 = [v72 bottomAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  bottomAnchor4 = [v73 bottomAnchor];
+  bottomAnchor5 = [view bottomAnchor];
+  v28 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v87[11] = v28;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v87 count:12];
   [v40 activateConstraints:v29];
@@ -356,29 +356,29 @@ void __55__TVRUIShortcutsMenuViewController__configureHierarchy__block_invoke_2(
   [v8 setItem:v6];
 }
 
-- (void)_updateDataSourceAnimated:(BOOL)a3
+- (void)_updateDataSourceAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(TVRUIShortcutsMenuViewController *)self isEditing];
+  animatedCopy = animated;
+  isEditing = [(TVRUIShortcutsMenuViewController *)self isEditing];
   v13 = objc_alloc_init(MEMORY[0x277CFB890]);
   [v13 appendSectionsWithIdentifiers:&unk_287E84C90];
-  v6 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
-  v7 = [v6 availableShortcuts];
-  [v13 appendItemsWithIdentifiers:v7];
+  shortcutsController = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+  availableShortcuts = [shortcutsController availableShortcuts];
+  [v13 appendItemsWithIdentifiers:availableShortcuts];
 
-  if (v5)
+  if (isEditing)
   {
     [v13 appendSectionsWithIdentifiers:&unk_287E84CA8];
-    v8 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
-    v9 = [v8 disabledShortcuts];
-    [v13 appendItemsWithIdentifiers:v9];
+    shortcutsController2 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+    disabledShortcuts = [shortcutsController2 disabledShortcuts];
+    [v13 appendItemsWithIdentifiers:disabledShortcuts];
 
-    if ([(TVRUIShortcutsMenuViewController *)self hasInternalShortcuts]&& v5)
+    if ([(TVRUIShortcutsMenuViewController *)self hasInternalShortcuts]&& isEditing)
     {
       [v13 appendSectionsWithIdentifiers:&unk_287E84CC0];
-      v10 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
-      v11 = [v10 internalShortcuts];
-      [v13 appendItemsWithIdentifiers:v11];
+      shortcutsController3 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+      internalShortcuts = [shortcutsController3 internalShortcuts];
+      [v13 appendItemsWithIdentifiers:internalShortcuts];
     }
   }
 
@@ -387,8 +387,8 @@ void __55__TVRUIShortcutsMenuViewController__configureHierarchy__block_invoke_2(
     [(TVRUIShortcutsMenuViewController *)self hasInternalShortcuts];
   }
 
-  v12 = [(TVRUIShortcutsMenuViewController *)self dataSource];
-  [v12 applySnapshot:v13 animatingDifferences:v3];
+  dataSource = [(TVRUIShortcutsMenuViewController *)self dataSource];
+  [dataSource applySnapshot:v13 animatingDifferences:animatedCopy];
 }
 
 - (id)_layout

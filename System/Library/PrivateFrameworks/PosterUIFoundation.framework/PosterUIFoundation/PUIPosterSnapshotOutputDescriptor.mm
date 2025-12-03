@@ -1,50 +1,50 @@
 @interface PUIPosterSnapshotOutputDescriptor
 - (NSString)description;
-- (PUIPosterSnapshotOutputDescriptor)initWithBSXPCCoder:(id)a3;
-- (PUIPosterSnapshotOutputDescriptor)initWithCoder:(id)a3;
-- (PUIPosterSnapshotOutputDescriptor)initWithLevelSets:(id)a3 snapshotDefinitionIdentifier:(id)a4 persistenceScale:(double)a5;
-- (PUIPosterSnapshotOutputDescriptor)initWithSnapshotDefinitionIdentifier:(id)a3;
+- (PUIPosterSnapshotOutputDescriptor)initWithBSXPCCoder:(id)coder;
+- (PUIPosterSnapshotOutputDescriptor)initWithCoder:(id)coder;
+- (PUIPosterSnapshotOutputDescriptor)initWithLevelSets:(id)sets snapshotDefinitionIdentifier:(id)identifier persistenceScale:(double)scale;
+- (PUIPosterSnapshotOutputDescriptor)initWithSnapshotDefinitionIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUIPosterSnapshotOutputDescriptor
 
-- (PUIPosterSnapshotOutputDescriptor)initWithSnapshotDefinitionIdentifier:(id)a3
+- (PUIPosterSnapshotOutputDescriptor)initWithSnapshotDefinitionIdentifier:(id)identifier
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[PUIPosterLevelSet compositeLevelSet];
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-  v7 = [(PUIPosterSnapshotOutputDescriptor *)self initWithLevelSets:v6 snapshotDefinitionIdentifier:v4];
+  v7 = [(PUIPosterSnapshotOutputDescriptor *)self initWithLevelSets:v6 snapshotDefinitionIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (PUIPosterSnapshotOutputDescriptor)initWithLevelSets:(id)a3 snapshotDefinitionIdentifier:(id)a4 persistenceScale:(double)a5
+- (PUIPosterSnapshotOutputDescriptor)initWithLevelSets:(id)sets snapshotDefinitionIdentifier:(id)identifier persistenceScale:(double)scale
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  setsCopy = sets;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [PUIPosterSnapshotOutputDescriptor initWithLevelSets:a2 snapshotDefinitionIdentifier:? persistenceScale:?];
   }
 
-  if (a5 <= 0.0)
+  if (scale <= 0.0)
   {
     [PUIPosterSnapshotOutputDescriptor initWithLevelSets:a2 snapshotDefinitionIdentifier:? persistenceScale:?];
   }
 
-  v11 = v10;
+  v11 = identifierCopy;
   v21.receiver = self;
   v21.super_class = PUIPosterSnapshotOutputDescriptor;
   v12 = [(PUIPosterSnapshotOutputDescriptor *)&v21 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [setsCopy copy];
     levelSets = v12->_levelSets;
     v12->_levelSets = v13;
 
@@ -61,7 +61,7 @@
     snapshotDefinitionIdentifier = v12->_snapshotDefinitionIdentifier;
     v12->_snapshotDefinitionIdentifier = v18;
 
-    v12->_persistenceScale = a5;
+    v12->_persistenceScale = scale;
   }
 
   return v12;
@@ -73,72 +73,72 @@
   [v3 appendString:self->_snapshotDefinitionIdentifier withName:@"_snapshotDefinitionIdentifier"];
   v4 = [v3 appendDouble:@"_persistenceScale" withName:2 decimalPrecision:self->_persistenceScale];
   [v3 appendArraySection:self->_levelSets withName:@"levelSets" skipIfEmpty:0];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_snapshotDefinitionIdentifier];
-  v5 = [v3 appendObject:self->_levelSets];
-  v6 = [v3 appendCGFloat:self->_persistenceScale];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_snapshotDefinitionIdentifier];
+  v5 = [builder appendObject:self->_levelSets];
+  v6 = [builder appendCGFloat:self->_persistenceScale];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (PUIPosterSnapshotOutputDescriptor)initWithCoder:(id)a3
+- (PUIPosterSnapshotOutputDescriptor)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_self();
   v7 = [v4 setWithObject:v6];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"_levelSets"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"_levelSets"];
 
-  [v5 decodeDoubleForKey:@"_persistenceScale"];
+  [coderCopy decodeDoubleForKey:@"_persistenceScale"];
   v10 = v9;
   v11 = objc_opt_self();
-  v12 = [v5 decodeObjectOfClass:v11 forKey:@"_snapshotDefinitionIdentifier"];
+  v12 = [coderCopy decodeObjectOfClass:v11 forKey:@"_snapshotDefinitionIdentifier"];
 
   v13 = [(PUIPosterSnapshotOutputDescriptor *)self initWithLevelSets:v8 snapshotDefinitionIdentifier:v12 persistenceScale:v10];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   levelSets = self->_levelSets;
-  v5 = a3;
-  [v5 encodeObject:levelSets forKey:@"_levelSets"];
-  [v5 encodeObject:self->_snapshotDefinitionIdentifier forKey:@"_snapshotDefinitionIdentifier"];
-  [v5 encodeDouble:@"_persistenceScale" forKey:self->_persistenceScale];
+  coderCopy = coder;
+  [coderCopy encodeObject:levelSets forKey:@"_levelSets"];
+  [coderCopy encodeObject:self->_snapshotDefinitionIdentifier forKey:@"_snapshotDefinitionIdentifier"];
+  [coderCopy encodeDouble:@"_persistenceScale" forKey:self->_persistenceScale];
 }
 
-- (PUIPosterSnapshotOutputDescriptor)initWithBSXPCCoder:(id)a3
+- (PUIPosterSnapshotOutputDescriptor)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"_snapshotDefinitionIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"_snapshotDefinitionIdentifier"];
 
   v7 = objc_opt_self();
   v8 = objc_opt_self();
-  v9 = [v4 decodeCollectionOfClass:v7 containingClass:v8 forKey:@"_levelSets"];
+  v9 = [coderCopy decodeCollectionOfClass:v7 containingClass:v8 forKey:@"_levelSets"];
 
-  [v4 decodeDoubleForKey:@"_persistenceScale"];
+  [coderCopy decodeDoubleForKey:@"_persistenceScale"];
   v11 = v10;
 
   v12 = [(PUIPosterSnapshotOutputDescriptor *)self initWithLevelSets:v9 snapshotDefinitionIdentifier:v6 persistenceScale:v11];
   return v12;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   levelSets = self->_levelSets;
-  v5 = a3;
-  [v5 encodeObject:levelSets forKey:@"_levelSets"];
-  [v5 encodeObject:self->_snapshotDefinitionIdentifier forKey:@"_snapshotDefinitionIdentifier"];
-  [v5 encodeDouble:@"_persistenceScale" forKey:self->_persistenceScale];
+  coderCopy = coder;
+  [coderCopy encodeObject:levelSets forKey:@"_levelSets"];
+  [coderCopy encodeObject:self->_snapshotDefinitionIdentifier forKey:@"_snapshotDefinitionIdentifier"];
+  [coderCopy encodeDouble:@"_persistenceScale" forKey:self->_persistenceScale];
 }
 
 - (void)initWithLevelSets:(char *)a1 snapshotDefinitionIdentifier:persistenceScale:.cold.1(char *a1)

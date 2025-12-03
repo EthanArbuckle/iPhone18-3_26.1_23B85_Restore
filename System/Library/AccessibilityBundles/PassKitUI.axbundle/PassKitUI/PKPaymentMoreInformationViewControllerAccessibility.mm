@@ -1,16 +1,16 @@
 @interface PKPaymentMoreInformationViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation PKPaymentMoreInformationViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaymentMoreInformationViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PKPaymentMoreInformationViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaymentMoreInformationViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PKPaymentMoreInformationViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

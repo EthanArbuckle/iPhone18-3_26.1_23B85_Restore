@@ -1,25 +1,25 @@
 @interface PEGASUSSchemaPEGASUSSortedScore
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSSortedScore)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSSortedScore)initWithJSON:(id)a3;
+- (PEGASUSSchemaPEGASUSSortedScore)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSSortedScore)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSSortedScore
 
-- (PEGASUSSchemaPEGASUSSortedScore)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSSortedScore)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = PEGASUSSchemaPEGASUSSortedScore;
   v5 = [(PEGASUSSchemaPEGASUSSortedScore *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sortedScoreFinal"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sortedScoreFinal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(PEGASUSSchemaPEGASUSSortedScore *)v5 setSortedScoreFinal:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"sortedScorelinearCombiner"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sortedScorelinearCombiner"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(PEGASUSSchemaPEGASUSSortedScore *)v5 setSortedScorelinearCombiner:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"sortedScoreModelFinal"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"sortedScoreModelFinal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(PEGASUSSchemaPEGASUSSortedScore *)v5 setSortedScoreModelFinal:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"sortedScoreStage2"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"sortedScoreStage2"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(PEGASUSSchemaPEGASUSSortedScore *)v5 setSortedScoreStage2:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"sortedScoreBoosted"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"sortedScoreBoosted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       [(PEGASUSSchemaPEGASUSSortedScore *)v5 setSortedScoreBoosted:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"sortedScoreKnockOut"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"sortedScoreKnockOut"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSSortedScore)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSSortedScore)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSSortedScore *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSSortedScore *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSSortedScore *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,52 +109,52 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_sortedScoreBoosted)
   {
-    v4 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreBoosted];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"sortedScoreBoosted"];
+    sortedScoreBoosted = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreBoosted];
+    v5 = [sortedScoreBoosted copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"sortedScoreBoosted"];
   }
 
   if (self->_sortedScoreFinal)
   {
-    v6 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreFinal];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"sortedScoreFinal"];
+    sortedScoreFinal = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreFinal];
+    v7 = [sortedScoreFinal copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"sortedScoreFinal"];
   }
 
   if (self->_sortedScoreKnockOut)
   {
-    v8 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreKnockOut];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"sortedScoreKnockOut"];
+    sortedScoreKnockOut = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreKnockOut];
+    v9 = [sortedScoreKnockOut copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"sortedScoreKnockOut"];
   }
 
   if (self->_sortedScoreModelFinal)
   {
-    v10 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreModelFinal];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"sortedScoreModelFinal"];
+    sortedScoreModelFinal = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreModelFinal];
+    v11 = [sortedScoreModelFinal copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"sortedScoreModelFinal"];
   }
 
   if (self->_sortedScoreStage2)
   {
-    v12 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreStage2];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"sortedScoreStage2"];
+    sortedScoreStage2 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreStage2];
+    v13 = [sortedScoreStage2 copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"sortedScoreStage2"];
   }
 
   if (self->_sortedScorelinearCombiner)
   {
-    v14 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScorelinearCombiner];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"sortedScorelinearCombiner"];
+    sortedScorelinearCombiner = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScorelinearCombiner];
+    v15 = [sortedScorelinearCombiner copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"sortedScorelinearCombiner"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -167,28 +167,28 @@
   return v6 ^ v7 ^ [(NSString *)self->_sortedScoreKnockOut hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreFinal];
-  v6 = [v4 sortedScoreFinal];
-  if ((v5 != 0) == (v6 == 0))
+  sortedScoreFinal = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreFinal];
+  sortedScoreFinal2 = [equalCopy sortedScoreFinal];
+  if ((sortedScoreFinal != 0) == (sortedScoreFinal2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreFinal];
-  if (v7)
+  sortedScoreFinal3 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreFinal];
+  if (sortedScoreFinal3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreFinal];
-    v10 = [v4 sortedScoreFinal];
-    v11 = [v9 isEqual:v10];
+    v8 = sortedScoreFinal3;
+    sortedScoreFinal4 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreFinal];
+    sortedScoreFinal5 = [equalCopy sortedScoreFinal];
+    v11 = [sortedScoreFinal4 isEqual:sortedScoreFinal5];
 
     if (!v11)
     {
@@ -200,20 +200,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScorelinearCombiner];
-  v6 = [v4 sortedScorelinearCombiner];
-  if ((v5 != 0) == (v6 == 0))
+  sortedScoreFinal = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScorelinearCombiner];
+  sortedScoreFinal2 = [equalCopy sortedScorelinearCombiner];
+  if ((sortedScoreFinal != 0) == (sortedScoreFinal2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScorelinearCombiner];
-  if (v12)
+  sortedScorelinearCombiner = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScorelinearCombiner];
+  if (sortedScorelinearCombiner)
   {
-    v13 = v12;
-    v14 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScorelinearCombiner];
-    v15 = [v4 sortedScorelinearCombiner];
-    v16 = [v14 isEqual:v15];
+    v13 = sortedScorelinearCombiner;
+    sortedScorelinearCombiner2 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScorelinearCombiner];
+    sortedScorelinearCombiner3 = [equalCopy sortedScorelinearCombiner];
+    v16 = [sortedScorelinearCombiner2 isEqual:sortedScorelinearCombiner3];
 
     if (!v16)
     {
@@ -225,20 +225,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreModelFinal];
-  v6 = [v4 sortedScoreModelFinal];
-  if ((v5 != 0) == (v6 == 0))
+  sortedScoreFinal = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreModelFinal];
+  sortedScoreFinal2 = [equalCopy sortedScoreModelFinal];
+  if ((sortedScoreFinal != 0) == (sortedScoreFinal2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreModelFinal];
-  if (v17)
+  sortedScoreModelFinal = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreModelFinal];
+  if (sortedScoreModelFinal)
   {
-    v18 = v17;
-    v19 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreModelFinal];
-    v20 = [v4 sortedScoreModelFinal];
-    v21 = [v19 isEqual:v20];
+    v18 = sortedScoreModelFinal;
+    sortedScoreModelFinal2 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreModelFinal];
+    sortedScoreModelFinal3 = [equalCopy sortedScoreModelFinal];
+    v21 = [sortedScoreModelFinal2 isEqual:sortedScoreModelFinal3];
 
     if (!v21)
     {
@@ -250,20 +250,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreStage2];
-  v6 = [v4 sortedScoreStage2];
-  if ((v5 != 0) == (v6 == 0))
+  sortedScoreFinal = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreStage2];
+  sortedScoreFinal2 = [equalCopy sortedScoreStage2];
+  if ((sortedScoreFinal != 0) == (sortedScoreFinal2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreStage2];
-  if (v22)
+  sortedScoreStage2 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreStage2];
+  if (sortedScoreStage2)
   {
-    v23 = v22;
-    v24 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreStage2];
-    v25 = [v4 sortedScoreStage2];
-    v26 = [v24 isEqual:v25];
+    v23 = sortedScoreStage2;
+    sortedScoreStage22 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreStage2];
+    sortedScoreStage23 = [equalCopy sortedScoreStage2];
+    v26 = [sortedScoreStage22 isEqual:sortedScoreStage23];
 
     if (!v26)
     {
@@ -275,20 +275,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreBoosted];
-  v6 = [v4 sortedScoreBoosted];
-  if ((v5 != 0) == (v6 == 0))
+  sortedScoreFinal = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreBoosted];
+  sortedScoreFinal2 = [equalCopy sortedScoreBoosted];
+  if ((sortedScoreFinal != 0) == (sortedScoreFinal2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreBoosted];
-  if (v27)
+  sortedScoreBoosted = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreBoosted];
+  if (sortedScoreBoosted)
   {
-    v28 = v27;
-    v29 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreBoosted];
-    v30 = [v4 sortedScoreBoosted];
-    v31 = [v29 isEqual:v30];
+    v28 = sortedScoreBoosted;
+    sortedScoreBoosted2 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreBoosted];
+    sortedScoreBoosted3 = [equalCopy sortedScoreBoosted];
+    v31 = [sortedScoreBoosted2 isEqual:sortedScoreBoosted3];
 
     if (!v31)
     {
@@ -300,12 +300,12 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreKnockOut];
-  v6 = [v4 sortedScoreKnockOut];
-  if ((v5 != 0) != (v6 == 0))
+  sortedScoreFinal = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreKnockOut];
+  sortedScoreFinal2 = [equalCopy sortedScoreKnockOut];
+  if ((sortedScoreFinal != 0) != (sortedScoreFinal2 == 0))
   {
-    v32 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreKnockOut];
-    if (!v32)
+    sortedScoreKnockOut = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreKnockOut];
+    if (!sortedScoreKnockOut)
     {
 
 LABEL_35:
@@ -313,10 +313,10 @@ LABEL_35:
       goto LABEL_33;
     }
 
-    v33 = v32;
-    v34 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreKnockOut];
-    v35 = [v4 sortedScoreKnockOut];
-    v36 = [v34 isEqual:v35];
+    v33 = sortedScoreKnockOut;
+    sortedScoreKnockOut2 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreKnockOut];
+    sortedScoreKnockOut3 = [equalCopy sortedScoreKnockOut];
+    v36 = [sortedScoreKnockOut2 isEqual:sortedScoreKnockOut3];
 
     if (v36)
     {
@@ -336,51 +336,51 @@ LABEL_33:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreFinal];
+  toCopy = to;
+  sortedScoreFinal = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreFinal];
 
-  if (v4)
+  if (sortedScoreFinal)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScorelinearCombiner];
+  sortedScorelinearCombiner = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScorelinearCombiner];
 
-  if (v5)
+  if (sortedScorelinearCombiner)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreModelFinal];
+  sortedScoreModelFinal = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreModelFinal];
 
-  if (v6)
+  if (sortedScoreModelFinal)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreStage2];
+  sortedScoreStage2 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreStage2];
 
-  if (v7)
+  if (sortedScoreStage2)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreBoosted];
+  sortedScoreBoosted = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreBoosted];
 
-  if (v8)
+  if (sortedScoreBoosted)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreKnockOut];
+  sortedScoreKnockOut = [(PEGASUSSchemaPEGASUSSortedScore *)self sortedScoreKnockOut];
 
-  v10 = v11;
-  if (v9)
+  v10 = toCopy;
+  if (sortedScoreKnockOut)
   {
     PBDataWriterWriteStringField();
-    v10 = v11;
+    v10 = toCopy;
   }
 }
 

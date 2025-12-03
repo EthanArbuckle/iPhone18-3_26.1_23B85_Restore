@@ -1,8 +1,8 @@
 @interface CDMPlatformUtils
 + (BOOL)isInternalInstall;
 + (id)normalizedAssistantLocaleIdentifier;
-+ (id)prettyPrintError:(id)a3;
-+ (id)prettyPrintJson:(id)a3;
++ (id)prettyPrintError:(id)error;
++ (id)prettyPrintJson:(id)json;
 @end
 
 @implementation CDMPlatformUtils
@@ -19,12 +19,12 @@
 
 + (id)normalizedAssistantLocaleIdentifier
 {
-  v2 = [MEMORY[0x1E698D1C0] sharedPreferences];
-  v3 = [v2 languageCode];
+  mEMORY[0x1E698D1C0] = [MEMORY[0x1E698D1C0] sharedPreferences];
+  languageCode = [mEMORY[0x1E698D1C0] languageCode];
 
-  if (v3)
+  if (languageCode)
   {
-    v4 = [CDMPlatformUtils normalizeLocaleIdentifier:v3];
+    v4 = [CDMPlatformUtils normalizeLocaleIdentifier:languageCode];
   }
 
   else
@@ -35,63 +35,63 @@
   return v4;
 }
 
-+ (id)prettyPrintError:(id)a3
++ (id)prettyPrintError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
-    v6 = @"(no error)";
+    localizedDescription2 = @"(no error)";
     goto LABEL_7;
   }
 
-  v5 = [v3 localizedFailureReason];
-  if (v5)
+  localizedFailureReason = [errorCopy localizedFailureReason];
+  if (localizedFailureReason)
   {
 
 LABEL_6:
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [v4 localizedDescription];
-    v10 = [v4 localizedFailureReason];
-    v11 = [v4 localizedRecoverySuggestion];
-    v6 = [v8 stringWithFormat:@"{Description: %@, Failure Reason: %@, Recovery Suggestion: %@}", v9, v10, v11];
+    localizedDescription = [v4 localizedDescription];
+    localizedFailureReason2 = [v4 localizedFailureReason];
+    localizedRecoverySuggestion = [v4 localizedRecoverySuggestion];
+    localizedDescription2 = [v8 stringWithFormat:@"{Description: %@, Failure Reason: %@, Recovery Suggestion: %@}", localizedDescription, localizedFailureReason2, localizedRecoverySuggestion];
 
     goto LABEL_7;
   }
 
-  v7 = [v4 localizedRecoverySuggestion];
+  localizedRecoverySuggestion2 = [v4 localizedRecoverySuggestion];
 
-  if (v7)
+  if (localizedRecoverySuggestion2)
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 localizedDescription];
+  localizedDescription2 = [v4 localizedDescription];
 LABEL_7:
 
-  return v6;
+  return localizedDescription2;
 }
 
-+ (id)prettyPrintJson:(id)a3
++ (id)prettyPrintJson:(id)json
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [json dataUsingEncoding:4];
   v11 = 0;
   v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v3 options:4 error:&v11];
   v5 = v11;
   if (v5)
   {
     v6 = v5;
-    v7 = [v5 localizedDescription];
-    NSLog(&cfstr_FailedToConver.isa, v7);
+    localizedDescription = [v5 localizedDescription];
+    NSLog(&cfstr_FailedToConver.isa, localizedDescription);
     v8 = 0;
   }
 
   else
   {
     v10 = 0;
-    v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v4 options:1 error:&v10];
+    localizedDescription = [MEMORY[0x1E696ACB0] dataWithJSONObject:v4 options:1 error:&v10];
     v6 = v10;
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v7 encoding:4];
+    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:localizedDescription encoding:4];
   }
 
   return v8;

@@ -2,18 +2,18 @@
 - (void)_beginInteractionSignPost;
 - (void)_endInteractionSignPost;
 - (void)insertInitialCompositionIfNeeded;
-- (void)keyboardDidChangeFrame:(id)a3;
-- (void)sendComposition:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)keyboardDidChangeFrame:(id)frame;
+- (void)sendComposition:(id)composition;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation CKShareSheetChatController
 
-- (void)keyboardDidChangeFrame:(id)a3
+- (void)keyboardDidChangeFrame:(id)frame
 {
   v4.receiver = self;
   v4.super_class = CKShareSheetChatController;
-  [(CKChatController *)&v4 keyboardDidChangeFrame:a3];
+  [(CKChatController *)&v4 keyboardDidChangeFrame:frame];
   [(CKChatController *)self _updateEntryViewFrameIfNeeded:0];
 }
 
@@ -57,39 +57,39 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(CKShareSheetChatController *)self _beginInteractionSignPost];
   v5.receiver = self;
   v5.super_class = CKShareSheetChatController;
-  [(CKChatController *)&v5 viewDidAppear:v3];
+  [(CKChatController *)&v5 viewDidAppear:appearCopy];
 }
 
 - (void)insertInitialCompositionIfNeeded
 {
-  v3 = [(CKChatController *)self initialComposition];
-  if (v3)
+  initialComposition = [(CKChatController *)self initialComposition];
+  if (initialComposition)
   {
     [(CKChatController *)self setInitialComposition:0];
-    [(CKChatController *)self setComposition:v3];
+    [(CKChatController *)self setComposition:initialComposition];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __62__CKShareSheetChatController_insertInitialCompositionIfNeeded__block_invoke;
     v8[3] = &unk_1E72EBA18;
     v8[4] = self;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v8];
-    v4 = [(CKChatController *)self entryView];
+    entryView = [(CKChatController *)self entryView];
 
-    if (v4)
+    if (entryView)
     {
-      v5 = [(CKCoreChatController *)self delegate];
+      delegate = [(CKCoreChatController *)self delegate];
       v6 = objc_opt_respondsToSelector();
 
       if (v6)
       {
-        v7 = [(CKCoreChatController *)self delegate];
-        [v7 composeChatController:self didLoadEntryViewContentWithCompletion:&__block_literal_global_21];
+        delegate2 = [(CKCoreChatController *)self delegate];
+        [delegate2 composeChatController:self didLoadEntryViewContentWithCompletion:&__block_literal_global_21];
       }
     }
   }
@@ -104,9 +104,9 @@ void __62__CKShareSheetChatController_insertInitialCompositionIfNeeded__block_in
   [v3 layoutIfNeeded];
 }
 
-- (void)sendComposition:(id)a3
+- (void)sendComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -117,20 +117,20 @@ void __62__CKShareSheetChatController_insertInitialCompositionIfNeeded__block_in
     }
   }
 
-  v6 = [(CKCoreChatController *)self delegate];
+  delegate = [(CKCoreChatController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CKCoreChatController *)self delegate];
-    v9 = [(CKCoreChatController *)self conversation];
+    delegate2 = [(CKCoreChatController *)self delegate];
+    conversation = [(CKCoreChatController *)self conversation];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __46__CKShareSheetChatController_sendComposition___block_invoke;
     v11[3] = &unk_1E72ECCA8;
     v11[4] = self;
-    v12 = v4;
-    [v8 composeChatController:self shouldSendComposition:v12 inConversation:v9 completion:v11];
+    v12 = compositionCopy;
+    [delegate2 composeChatController:self shouldSendComposition:v12 inConversation:conversation completion:v11];
   }
 
   else
@@ -138,7 +138,7 @@ void __62__CKShareSheetChatController_insertInitialCompositionIfNeeded__block_in
     [(CKShareSheetChatController *)self _endInteractionSignPost];
     v10.receiver = self;
     v10.super_class = CKShareSheetChatController;
-    [(CKComposeChatController *)&v10 sendComposition:v4];
+    [(CKComposeChatController *)&v10 sendComposition:compositionCopy];
   }
 }
 

@@ -4,10 +4,10 @@
 - (id)_currentInteraction;
 - (void)_updateImageAndNotify;
 - (void)dealloc;
-- (void)didAction:(id)a3;
+- (void)didAction:(id)action;
 - (void)didDisplayAssistantItem;
-- (void)floatingKeyboardControllerWillHide:(id)a3;
-- (void)floatingKeyboardControllerWillShow:(id)a3;
+- (void)floatingKeyboardControllerWillHide:(id)hide;
+- (void)floatingKeyboardControllerWillShow:(id)show;
 @end
 
 @implementation PKTextInputKeyboardAssistantItem
@@ -94,10 +94,10 @@ void __40__PKTextInputKeyboardAssistantItem_init__block_invoke_2(uint64_t a1, vo
   [(PKTextInputKeyboardAssistantItem *)&v3 dealloc];
 }
 
-- (void)didAction:(id)a3
+- (void)didAction:(id)action
 {
-  v3 = [(PKTextInputKeyboardAssistantItem *)self floatingKeyboardController];
-  [(PKPaletteFloatingKeyboardController *)v3 presentOrDismissIfPresented];
+  floatingKeyboardController = [(PKTextInputKeyboardAssistantItem *)self floatingKeyboardController];
+  [(PKPaletteFloatingKeyboardController *)floatingKeyboardController presentOrDismissIfPresented];
 }
 
 - (void)_updateImageAndNotify
@@ -128,13 +128,13 @@ void __40__PKTextInputKeyboardAssistantItem_init__block_invoke_2(uint64_t a1, vo
   {
     [MEMORY[0x1E69DD250] _currentAnimationDuration];
     v8 = v7;
-    v9 = [(PKTextInputKeyboardAssistantItem *)self delegate];
-    [v9 keyboardAssistantItemAnimateUpdateSymbolDisplay:self withDuration:v8];
+    delegate = [(PKTextInputKeyboardAssistantItem *)self delegate];
+    [delegate keyboardAssistantItemAnimateUpdateSymbolDisplay:self withDuration:v8];
   }
 
   else
   {
-    v10 = [(PKTextInputKeyboardAssistantItem *)self delegate];
+    delegate2 = [(PKTextInputKeyboardAssistantItem *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if ((v11 & 1) == 0)
@@ -142,8 +142,8 @@ void __40__PKTextInputKeyboardAssistantItem_init__block_invoke_2(uint64_t a1, vo
       goto LABEL_13;
     }
 
-    v9 = [(PKTextInputKeyboardAssistantItem *)self delegate];
-    [v9 keyboardAssistantItemUpdateSymbolDisplay:self];
+    delegate = [(PKTextInputKeyboardAssistantItem *)self delegate];
+    [delegate keyboardAssistantItemUpdateSymbolDisplay:self];
   }
 
 LABEL_13:
@@ -155,49 +155,49 @@ LABEL_13:
   [v2 notifyLanguageDidChange];
 }
 
-- (void)floatingKeyboardControllerWillShow:(id)a3
+- (void)floatingKeyboardControllerWillShow:(id)show
 {
-  v4 = [(PKTextInputKeyboardAssistantItem *)self delegate];
+  delegate = [(PKTextInputKeyboardAssistantItem *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PKTextInputKeyboardAssistantItem *)self delegate];
-    [v6 keyboardAssistantItemWillShowKeyboard:self];
+    delegate2 = [(PKTextInputKeyboardAssistantItem *)self delegate];
+    [delegate2 keyboardAssistantItemWillShowKeyboard:self];
   }
 
-  v7 = [(PKTextInputKeyboardAssistantItem *)self _currentInteraction];
+  _currentInteraction = [(PKTextInputKeyboardAssistantItem *)self _currentInteraction];
   if (objc_opt_respondsToSelector())
   {
-    [v7 textInputPaletteControllerFloatingKeyboardWillShow:0];
+    [_currentInteraction textInputPaletteControllerFloatingKeyboardWillShow:0];
   }
 }
 
-- (void)floatingKeyboardControllerWillHide:(id)a3
+- (void)floatingKeyboardControllerWillHide:(id)hide
 {
-  v4 = [(PKTextInputKeyboardAssistantItem *)self delegate];
+  delegate = [(PKTextInputKeyboardAssistantItem *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PKTextInputKeyboardAssistantItem *)self delegate];
-    [v6 keyboardAssistantItemWillHideKeyboard:self];
+    delegate2 = [(PKTextInputKeyboardAssistantItem *)self delegate];
+    [delegate2 keyboardAssistantItemWillHideKeyboard:self];
   }
 
-  v7 = [(PKTextInputKeyboardAssistantItem *)self _currentInteraction];
+  _currentInteraction = [(PKTextInputKeyboardAssistantItem *)self _currentInteraction];
   if (objc_opt_respondsToSelector())
   {
-    [v7 textInputPaletteControllerFloatingKeyboardWillHide:0];
+    [_currentInteraction textInputPaletteControllerFloatingKeyboardWillHide:0];
   }
 }
 
 - (id)_currentInteraction
 {
-  v2 = [(PKTextInputKeyboardAssistantItem *)self view];
-  v3 = [v2 _responderWindow];
-  v4 = [v3 windowScene];
+  view = [(PKTextInputKeyboardAssistantItem *)self view];
+  _responderWindow = [view _responderWindow];
+  windowScene = [_responderWindow windowScene];
 
-  v5 = [PKTextInputInteraction interactionForScene:v4];
+  v5 = [PKTextInputInteraction interactionForScene:windowScene];
 
   return v5;
 }

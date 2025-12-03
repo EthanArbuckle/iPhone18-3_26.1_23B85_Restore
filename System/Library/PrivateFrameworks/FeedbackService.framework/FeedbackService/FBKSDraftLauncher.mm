@@ -1,21 +1,21 @@
 @interface FBKSDraftLauncher
-- (FBKSDraftLauncher)initWithFeedbackForm:(id)a3;
-- (void)collectFeedbackWithLaunchConfiguration:(id)a3 completion:(id)a4;
+- (FBKSDraftLauncher)initWithFeedbackForm:(id)form;
+- (void)collectFeedbackWithLaunchConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation FBKSDraftLauncher
 
-- (FBKSDraftLauncher)initWithFeedbackForm:(id)a3
+- (FBKSDraftLauncher)initWithFeedbackForm:(id)form
 {
-  v4 = a3;
+  formCopy = form;
   v11.receiver = self;
   v11.super_class = FBKSDraftLauncher;
   v5 = [(FBKSDraftLauncher *)&v11 init];
   if (v5)
   {
     v6 = [FBKSDraftLauncher_FrameworkPrivateName alloc];
-    v7 = [v4 swiftObject];
-    v8 = [(FBKSDraftLauncher_FrameworkPrivateName *)v6 initWithFeedbackForm:v7];
+    swiftObject = [formCopy swiftObject];
+    v8 = [(FBKSDraftLauncher_FrameworkPrivateName *)v6 initWithFeedbackForm:swiftObject];
     swiftObject = v5->_swiftObject;
     v5->_swiftObject = v8;
   }
@@ -23,14 +23,14 @@
   return v5;
 }
 
-- (void)collectFeedbackWithLaunchConfiguration:(id)a3 completion:(id)a4
+- (void)collectFeedbackWithLaunchConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(FBKSDraftLauncher *)self swiftObject];
-  v8 = [v7 _swiftObject];
+  completionCopy = completion;
+  configurationCopy = configuration;
+  swiftObject = [(FBKSDraftLauncher *)self swiftObject];
+  _swiftObject = [configurationCopy _swiftObject];
 
-  [v9 collectFeedbackWithLaunchConfiguration:v8 completion:v6];
+  [swiftObject collectFeedbackWithLaunchConfiguration:_swiftObject completion:completionCopy];
 }
 
 @end

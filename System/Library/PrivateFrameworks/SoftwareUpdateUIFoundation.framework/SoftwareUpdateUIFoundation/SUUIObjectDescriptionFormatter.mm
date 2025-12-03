@@ -1,49 +1,49 @@
 @interface SUUIObjectDescriptionFormatter
-+ (id)descriptionForObject:(id)a3;
-+ (id)descriptionForObject:(id)a3 options:(unint64_t)a4;
-+ (id)descriptionForObject:(id)a3 properties:(id)a4;
-+ (id)descriptionForObject:(id)a3 properties:(id)a4 options:(unint64_t)a5;
-+ (id)formatValue:(id)a3 withOptions:(unint64_t)a4;
-+ (id)scanPropertiesForObject:(id)a3;
++ (id)descriptionForObject:(id)object;
++ (id)descriptionForObject:(id)object options:(unint64_t)options;
++ (id)descriptionForObject:(id)object properties:(id)properties;
++ (id)descriptionForObject:(id)object properties:(id)properties options:(unint64_t)options;
++ (id)formatValue:(id)value withOptions:(unint64_t)options;
++ (id)scanPropertiesForObject:(id)object;
 @end
 
 @implementation SUUIObjectDescriptionFormatter
 
-+ (id)descriptionForObject:(id)a3
++ (id)descriptionForObject:(id)object
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, object);
   v4 = [SUUIObjectDescriptionFormatter descriptionForObject:location[0] options:0];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-+ (id)descriptionForObject:(id)a3 options:(unint64_t)a4
++ (id)descriptionForObject:(id)object options:(unint64_t)options
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, object);
   v5 = location[0];
-  v6 = [location[0] descriptionDictionary];
+  descriptionDictionary = [location[0] descriptionDictionary];
   v7 = [SUUIObjectDescriptionFormatter descriptionForObject:"descriptionForObject:properties:options:" properties:v5 options:?];
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](descriptionDictionary);
   objc_storeStrong(location, 0);
 
   return v7;
 }
 
-+ (id)descriptionForObject:(id)a3 properties:(id)a4
++ (id)descriptionForObject:(id)object properties:(id)properties
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, object);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, properties);
   v6 = [SUUIObjectDescriptionFormatter descriptionForObject:location[0] properties:v7 options:0];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
@@ -51,59 +51,59 @@
   return v6;
 }
 
-+ (id)descriptionForObject:(id)a3 properties:(id)a4 options:(unint64_t)a5
++ (id)descriptionForObject:(id)object properties:(id)properties options:(unint64_t)options
 {
   v38 = *MEMORY[0x277D85DE8];
-  v36 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, object);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
-  v33 = a5;
+  objc_storeStrong(&v34, properties);
+  optionsCopy = options;
   if (!v34)
   {
-    v5 = [v36 scanPropertiesForObject:location[0]];
+    v5 = [selfCopy scanPropertiesForObject:location[0]];
     v6 = v34;
     v34 = v5;
     MEMORY[0x277D82BD8](v6);
   }
 
-  v32 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v7 = objc_opt_class();
   v23 = NSStringFromClass(v7);
-  [v32 appendFormat:@"<%@", v23];
+  [string appendFormat:@"<%@", v23];
   MEMORY[0x277D82BD8](v23);
-  if ((v33 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
-    [v32 appendFormat:@": %p", location[0]];
+    [string appendFormat:@": %p", location[0]];
   }
 
-  v31 = [v34 allKeys];
-  if ((v33 & 8) == 0)
+  allKeys = [v34 allKeys];
+  if ((optionsCopy & 8) == 0)
   {
-    if ((v33 & 4) != 0)
+    if ((optionsCopy & 4) != 0)
     {
-      v22 = [v31 sortedArrayUsingSelector:sel_compare_];
-      v21 = [v22 reverseObjectEnumerator];
-      v8 = [v21 allObjects];
-      v9 = v31;
-      v31 = v8;
+      v22 = [allKeys sortedArrayUsingSelector:sel_compare_];
+      reverseObjectEnumerator = [v22 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
+      v9 = allKeys;
+      allKeys = allObjects;
       MEMORY[0x277D82BD8](v9);
-      MEMORY[0x277D82BD8](v21);
+      MEMORY[0x277D82BD8](reverseObjectEnumerator);
       MEMORY[0x277D82BD8](v22);
     }
 
     else
     {
-      v10 = [v31 sortedArrayUsingSelector:sel_compare_];
-      v11 = v31;
-      v31 = v10;
+      v10 = [allKeys sortedArrayUsingSelector:sel_compare_];
+      v11 = allKeys;
+      allKeys = v10;
       MEMORY[0x277D82BD8](v11);
     }
   }
 
-  if ((v33 & 0x10) != 0)
+  if ((optionsCopy & 0x10) != 0)
   {
     v12 = @"\n\t";
   }
@@ -115,7 +115,7 @@
 
   v30 = MEMORY[0x277D82BE0](v12);
   memset(__b, 0, sizeof(__b));
-  v19 = MEMORY[0x277D82BE0](v31);
+  v19 = MEMORY[0x277D82BE0](allKeys);
   v20 = [v19 countByEnumeratingWithState:__b objects:v37 count:16];
   if (v20)
   {
@@ -132,10 +132,10 @@
 
       v29 = *(__b[1] + 8 * v17);
       v27 = [v34 objectForKeyedSubscript:v29];
-      if (v27 || (v33 & 0x20) == 0)
+      if (v27 || (optionsCopy & 0x20) == 0)
       {
-        v26 = [v36 formatValue:v27 withOptions:v33];
-        [v32 appendFormat:@"%@%@=%@", v30, v29, v26];
+        v26 = [selfCopy formatValue:v27 withOptions:optionsCopy];
+        [string appendFormat:@"%@%@=%@", v30, v29, v26];
         objc_storeStrong(&v26, 0);
       }
 
@@ -154,11 +154,11 @@
   }
 
   MEMORY[0x277D82BD8](v19);
-  [v32 appendString:@">"];
-  v14 = MEMORY[0x277D82BE0](v32);
+  [string appendString:@">"];
+  v14 = MEMORY[0x277D82BE0](string);
   objc_storeStrong(&v30, 0);
-  objc_storeStrong(&v31, 0);
-  objc_storeStrong(&v32, 0);
+  objc_storeStrong(&allKeys, 0);
+  objc_storeStrong(&string, 0);
   objc_storeStrong(&v34, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
@@ -166,13 +166,13 @@
   return v14;
 }
 
-+ (id)formatValue:(id)a3 withOptions:(unint64_t)a4
++ (id)formatValue:(id)value withOptions:(unint64_t)options
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = a4;
+  objc_storeStrong(location, value);
+  optionsCopy = options;
   v16 = 0;
   v13 = 1;
   if (location[0])
@@ -182,7 +182,7 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v11 = location[0];
-      v17 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
       v16 = 1;
       v13 = [v11 isEqual:?];
     }
@@ -190,7 +190,7 @@
 
   if (v16)
   {
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](null);
   }
 
   if (v13)
@@ -199,13 +199,13 @@
     v15 = 1;
   }
 
-  else if ((objc_opt_respondsToSelector() & 1) != 0 && (v18 & 2) != 0)
+  else if ((objc_opt_respondsToSelector() & 1) != 0 && (optionsCopy & 2) != 0)
   {
     v20 = [location[0] debugDescription];
     v15 = 1;
   }
 
-  else if ((v18 & 0x40) != 0)
+  else if ((optionsCopy & 0x40) != 0)
   {
     v9 = MEMORY[0x277CCACA8];
     v4 = objc_opt_class();
@@ -217,7 +217,7 @@
 
   else
   {
-    if ((v18 & 0x80) == 0)
+    if ((optionsCopy & 0x80) == 0)
     {
       goto LABEL_31;
     }
@@ -247,7 +247,7 @@
     if (!v15)
     {
 LABEL_31:
-      if (v18 & 0x100) != 0 && ((objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass())))
+      if (optionsCopy & 0x100) != 0 && ((objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass())))
       {
         v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ (count: %lu)", location[0], objc_msgSend(location[0], "count")];
         v15 = 1;
@@ -267,13 +267,13 @@ LABEL_31:
   return v5;
 }
 
-+ (id)scanPropertiesForObject:(id)a3
++ (id)scanPropertiesForObject:(id)object
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v12 = [MEMORY[0x277CBEB38] dictionary];
+  objc_storeStrong(location, object);
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v11 = 0;
   v3 = objc_opt_class();
   v10 = class_copyPropertyList(v3, &v11);
@@ -284,7 +284,7 @@ LABEL_31:
     v6 = [location[0] valueForKey:v7];
     if (v6)
     {
-      [v12 setObject:v6 forKeyedSubscript:v7];
+      [dictionary setObject:v6 forKeyedSubscript:v7];
     }
 
     objc_storeStrong(&v6, 0);
@@ -292,8 +292,8 @@ LABEL_31:
   }
 
   free(v10);
-  v5 = MEMORY[0x277D82BE0](v12);
-  objc_storeStrong(&v12, 0);
+  v5 = MEMORY[0x277D82BE0](dictionary);
+  objc_storeStrong(&dictionary, 0);
   objc_storeStrong(location, 0);
 
   return v5;

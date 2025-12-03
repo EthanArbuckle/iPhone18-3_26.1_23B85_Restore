@@ -1,42 +1,42 @@
 @interface SBUIStartupFromBlackAnimationController
-- (SBUIStartupFromBlackAnimationController)initWithTransitionContextProvider:(id)a3;
+- (SBUIStartupFromBlackAnimationController)initWithTransitionContextProvider:(id)provider;
 - (id)_getTransitionWindow;
 - (void)_cleanupAnimation;
 - (void)_prepareAnimation;
-- (void)_setHidden:(BOOL)a3;
+- (void)_setHidden:(BOOL)hidden;
 - (void)_showBlackView;
 - (void)_startAnimation;
 @end
 
 @implementation SBUIStartupFromBlackAnimationController
 
-- (SBUIStartupFromBlackAnimationController)initWithTransitionContextProvider:(id)a3
+- (SBUIStartupFromBlackAnimationController)initWithTransitionContextProvider:(id)provider
 {
   v12.receiver = self;
   v12.super_class = SBUIStartupFromBlackAnimationController;
-  v3 = [(SBUIMainScreenAnimationController *)&v12 initWithTransitionContextProvider:a3];
+  v3 = [(SBUIMainScreenAnimationController *)&v12 initWithTransitionContextProvider:provider];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SBUIStartupFromBlackAnimationController *)v3 _getTransitionWindow];
+    _getTransitionWindow = [(SBUIStartupFromBlackAnimationController *)v3 _getTransitionWindow];
     v6 = objc_alloc(MEMORY[0x277D75D18]);
-    [v5 bounds];
+    [_getTransitionWindow bounds];
     v7 = [v6 initWithFrame:?];
     internalContainerView = v4->_internalContainerView;
     v4->_internalContainerView = v7;
 
     if (SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleStartupFadeAnimation"))
     {
-      v9 = [v5 rootViewController];
-      v10 = [v9 view];
+      rootViewController = [_getTransitionWindow rootViewController];
+      view = [rootViewController view];
     }
 
     else
     {
-      v10 = v5;
+      view = _getTransitionWindow;
     }
 
-    [v10 addSubview:v4->_internalContainerView];
+    [view addSubview:v4->_internalContainerView];
     [(SBUIStartupFromBlackAnimationController *)v4 _showBlackView];
   }
 
@@ -78,46 +78,46 @@ uint64_t __63__SBUIStartupFromBlackAnimationController__getTransitionWindow__blo
   return [v7 setAlpha:1.0];
 }
 
-- (void)_setHidden:(BOOL)a3
+- (void)_setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(SBUIStartupFromBlackAnimationController *)self _getTransitionWindow];
-  [v5 setHidden:v3];
+  hiddenCopy = hidden;
+  _getTransitionWindow = [(SBUIStartupFromBlackAnimationController *)self _getTransitionWindow];
+  [_getTransitionWindow setHidden:hiddenCopy];
 
   v6.receiver = self;
   v6.super_class = SBUIStartupFromBlackAnimationController;
-  [(SBUIAnimationController *)&v6 _setHidden:v3];
+  [(SBUIAnimationController *)&v6 _setHidden:hiddenCopy];
 }
 
 - (void)_prepareAnimation
 {
-  v3 = [(SBUIAnimationController *)self toApplicationSceneEntities];
-  v4 = [v3 count];
+  toApplicationSceneEntities = [(SBUIAnimationController *)self toApplicationSceneEntities];
+  v4 = [toApplicationSceneEntities count];
 
   if (v4)
   {
-    v25 = [(SBUIMainScreenAnimationController *)self transitionRequest];
-    v5 = [v25 applicationContext];
-    v6 = [v5 layoutState];
+    transitionRequest = [(SBUIMainScreenAnimationController *)self transitionRequest];
+    applicationContext = [transitionRequest applicationContext];
+    layoutState = [applicationContext layoutState];
 
-    v7 = [v6 elementWithRole:1];
-    v8 = [v7 workspaceEntity];
+    v7 = [layoutState elementWithRole:1];
+    workspaceEntity = [v7 workspaceEntity];
 
-    v9 = [v8 deviceApplicationSceneEntity];
+    deviceApplicationSceneEntity = [workspaceEntity deviceApplicationSceneEntity];
     v10 = objc_opt_class();
-    v11 = [v9 sceneHandle];
-    v12 = SBSafeCast(v10, v11);
+    sceneHandle = [deviceApplicationSceneEntity sceneHandle];
+    v12 = SBSafeCast(v10, sceneHandle);
 
     if (v12)
     {
-      v13 = [(SBUIStartupFromBlackAnimationController *)self _getTransitionWindow];
-      v14 = [v13 _windowInterfaceOrientation];
+      _getTransitionWindow = [(SBUIStartupFromBlackAnimationController *)self _getTransitionWindow];
+      _windowInterfaceOrientation = [_getTransitionWindow _windowInterfaceOrientation];
 
-      v15 = [v12 currentInterfaceOrientation];
+      currentInterfaceOrientation = [v12 currentInterfaceOrientation];
       v16 = [SBDeviceApplicationSceneView alloc];
-      v17 = [v25 displayConfiguration];
-      [v17 bounds];
-      v20 = [(SBDeviceApplicationSceneView *)v16 initWithSceneHandle:v12 referenceSize:v14 contentOrientation:v15 containerOrientation:self hostRequester:v18, v19];
+      displayConfiguration = [transitionRequest displayConfiguration];
+      [displayConfiguration bounds];
+      v20 = [(SBDeviceApplicationSceneView *)v16 initWithSceneHandle:v12 referenceSize:_windowInterfaceOrientation contentOrientation:currentInterfaceOrientation containerOrientation:self hostRequester:v18, v19];
       sceneView = self->_sceneView;
       self->_sceneView = v20;
 
@@ -127,8 +127,8 @@ uint64_t __63__SBUIStartupFromBlackAnimationController__getTransitionWindow__blo
       orientationWrapperView = self->_orientationWrapperView;
       self->_orientationWrapperView = v23;
 
-      [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView setContainerOrientation:v14];
-      [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView setContentOrientation:v15];
+      [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView setContainerOrientation:_windowInterfaceOrientation];
+      [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView setContentOrientation:currentInterfaceOrientation];
       [(BSUIOrientationTransformWrapperView *)self->_orientationWrapperView addContentView:self->_sceneView];
       [(SBSceneView *)self->_sceneView setDisplayMode:4 animationFactory:0 completion:0];
       [(UIView *)self->_internalContainerView addSubview:self->_orientationWrapperView];
@@ -168,8 +168,8 @@ uint64_t __63__SBUIStartupFromBlackAnimationController__getTransitionWindow__blo
   internalContainerView = self->_internalContainerView;
   self->_internalContainerView = 0;
 
-  v6 = [(SBUIStartupFromBlackAnimationController *)self _getTransitionWindow];
-  [v6 setHidden:1];
+  _getTransitionWindow = [(SBUIStartupFromBlackAnimationController *)self _getTransitionWindow];
+  [_getTransitionWindow setHidden:1];
 
   v7.receiver = self;
   v7.super_class = SBUIStartupFromBlackAnimationController;
@@ -185,8 +185,8 @@ uint64_t __63__SBUIStartupFromBlackAnimationController__getTransitionWindow__blo
   self->_blackView = v4;
 
   v6 = self->_blackView;
-  v7 = [MEMORY[0x277D75348] blackColor];
-  [(UIView *)v6 setBackgroundColor:v7];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UIView *)v6 setBackgroundColor:blackColor];
 
   [(UIView *)self->_blackView setAlpha:1.0];
   internalContainerView = self->_internalContainerView;

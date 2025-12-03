@@ -1,56 +1,56 @@
 @interface PKShareableCredential
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToShareableCredential:(id)a3;
-- (PKShareableCredential)initWithCoder:(id)a3;
-- (PKShareableCredential)initWithProtoCredential:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToShareableCredential:(id)credential;
+- (PKShareableCredential)initWithCoder:(id)coder;
+- (PKShareableCredential)initWithProtoCredential:(id)credential;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)protoCredential;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKShareableCredential
 
-- (PKShareableCredential)initWithProtoCredential:(id)a3
+- (PKShareableCredential)initWithProtoCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   v23.receiver = self;
   v23.super_class = PKShareableCredential;
   v5 = [(PKShareableCredential *)&v23 init];
   if (v5)
   {
-    v6 = [v4 encryptedPushProvisioningTarget];
-    v7 = [v6 pk_decodeHexadecimal];
+    encryptedPushProvisioningTarget = [credentialCopy encryptedPushProvisioningTarget];
+    pk_decodeHexadecimal = [encryptedPushProvisioningTarget pk_decodeHexadecimal];
 
-    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:0];
+    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:pk_decodeHexadecimal error:0];
     encryptedPushProvisioningTarget = v5->_encryptedPushProvisioningTarget;
     v5->_encryptedPushProvisioningTarget = v8;
 
-    v5->_status = [v4 status];
-    v10 = [v4 cardConfigurationIdentifier];
+    v5->_status = [credentialCopy status];
+    cardConfigurationIdentifier = [credentialCopy cardConfigurationIdentifier];
     cardConfigurationIdentifier = v5->_cardConfigurationIdentifier;
-    v5->_cardConfigurationIdentifier = v10;
+    v5->_cardConfigurationIdentifier = cardConfigurationIdentifier;
 
-    v12 = [v4 credentialIdentifier];
+    credentialIdentifier = [credentialCopy credentialIdentifier];
     credentialIdentifier = v5->_credentialIdentifier;
-    v5->_credentialIdentifier = v12;
+    v5->_credentialIdentifier = credentialIdentifier;
 
-    v14 = [v4 credentialIdentifierHash];
+    credentialIdentifierHash = [credentialCopy credentialIdentifierHash];
     credentialIdentifierHash = v5->_credentialIdentifierHash;
-    v5->_credentialIdentifierHash = v14;
+    v5->_credentialIdentifierHash = credentialIdentifierHash;
 
-    v16 = [v4 ownerDisplayName];
+    ownerDisplayName = [credentialCopy ownerDisplayName];
     ownerDisplayName = v5->_ownerDisplayName;
-    v5->_ownerDisplayName = v16;
+    v5->_ownerDisplayName = ownerDisplayName;
 
-    v18 = [v4 sharingInstanceIdentifier];
+    sharingInstanceIdentifier = [credentialCopy sharingInstanceIdentifier];
     sharingInstanceIdentifier = v5->_sharingInstanceIdentifier;
-    v5->_sharingInstanceIdentifier = v18;
+    v5->_sharingInstanceIdentifier = sharingInstanceIdentifier;
 
-    v20 = [v4 nonce];
+    nonce = [credentialCopy nonce];
     nonce = v5->_nonce;
-    v5->_nonce = v20;
+    v5->_nonce = nonce;
   }
 
   return v5;
@@ -63,8 +63,8 @@
   if (encryptedPushProvisioningTarget)
   {
     v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:encryptedPushProvisioningTarget requiringSecureCoding:1 error:0];
-    v6 = [v5 hexEncoding];
-    [(PKProtobufShareableCredential *)v3 setEncryptedPushProvisioningTarget:v6];
+    hexEncoding = [v5 hexEncoding];
+    [(PKProtobufShareableCredential *)v3 setEncryptedPushProvisioningTarget:hexEncoding];
   }
 
   [(PKProtobufShareableCredential *)v3 setStatus:LODWORD(self->_status)];
@@ -78,40 +78,40 @@
   return v3;
 }
 
-- (PKShareableCredential)initWithCoder:(id)a3
+- (PKShareableCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKShareableCredential;
   v5 = [(PKShareableCredential *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptedPushProvisioningTargetKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encryptedPushProvisioningTargetKey"];
     encryptedPushProvisioningTarget = v5->_encryptedPushProvisioningTarget;
     v5->_encryptedPushProvisioningTarget = v6;
 
-    v5->_status = [v4 decodeIntegerForKey:@"statusKey"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardConfigurationIdentifierKey"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"statusKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardConfigurationIdentifierKey"];
     cardConfigurationIdentifier = v5->_cardConfigurationIdentifier;
     v5->_cardConfigurationIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifierKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifierKey"];
     credentialIdentifier = v5->_credentialIdentifier;
     v5->_credentialIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifierHashKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifierHashKey"];
     credentialIdentifierHash = v5->_credentialIdentifierHash;
     v5->_credentialIdentifierHash = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerDisplayNameKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownerDisplayNameKey"];
     ownerDisplayName = v5->_ownerDisplayName;
     v5->_ownerDisplayName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingInstanceIdentifierKey"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingInstanceIdentifierKey"];
     sharingInstanceIdentifier = v5->_sharingInstanceIdentifier;
     v5->_sharingInstanceIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nonceKey"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nonceKey"];
     nonce = v5->_nonce;
     v5->_nonce = v18;
   }
@@ -119,44 +119,44 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   status = self->_status;
-  v5 = a3;
-  [v5 encodeInteger:status forKey:@"statusKey"];
-  [v5 encodeObject:self->_encryptedPushProvisioningTarget forKey:@"encryptedPushProvisioningTargetKey"];
-  [v5 encodeObject:self->_cardConfigurationIdentifier forKey:@"cardConfigurationIdentifierKey"];
-  [v5 encodeObject:self->_credentialIdentifier forKey:@"identifierKey"];
-  [v5 encodeObject:self->_credentialIdentifierHash forKey:@"identifierHashKey"];
-  [v5 encodeObject:self->_ownerDisplayName forKey:@"ownerDisplayNameKey"];
-  [v5 encodeObject:self->_sharingInstanceIdentifier forKey:@"sharingInstanceIdentifierKey"];
-  [v5 encodeObject:self->_nonce forKey:@"nonceKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:status forKey:@"statusKey"];
+  [coderCopy encodeObject:self->_encryptedPushProvisioningTarget forKey:@"encryptedPushProvisioningTargetKey"];
+  [coderCopy encodeObject:self->_cardConfigurationIdentifier forKey:@"cardConfigurationIdentifierKey"];
+  [coderCopy encodeObject:self->_credentialIdentifier forKey:@"identifierKey"];
+  [coderCopy encodeObject:self->_credentialIdentifierHash forKey:@"identifierHashKey"];
+  [coderCopy encodeObject:self->_ownerDisplayName forKey:@"ownerDisplayNameKey"];
+  [coderCopy encodeObject:self->_sharingInstanceIdentifier forKey:@"sharingInstanceIdentifierKey"];
+  [coderCopy encodeObject:self->_nonce forKey:@"nonceKey"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKShareableCredential *)self isEqualToShareableCredential:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKShareableCredential *)self isEqualToShareableCredential:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToShareableCredential:(id)a3
+- (BOOL)isEqualToShareableCredential:(id)credential
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  credentialCopy = credential;
+  v5 = credentialCopy;
+  if (credentialCopy)
   {
-    v6 = v4[4];
+    v6 = credentialCopy[4];
     v7 = self->_credentialIdentifier;
     v8 = v6;
     v9 = v8;
@@ -301,35 +301,35 @@ LABEL_31:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PKEncryptedPushProvisioningTarget *)self->_encryptedPushProvisioningTarget copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PKEncryptedPushProvisioningTarget *)self->_encryptedPushProvisioningTarget copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   v5[2] = self->_status;
-  v8 = [(NSString *)self->_credentialIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_credentialIdentifier copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_credentialIdentifierHash copyWithZone:a3];
+  v10 = [(NSString *)self->_credentialIdentifierHash copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(NSString *)self->_sharingInstanceIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_sharingInstanceIdentifier copyWithZone:zone];
   v13 = v5[6];
   v5[6] = v12;
 
-  v14 = [(NSString *)self->_cardConfigurationIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_cardConfigurationIdentifier copyWithZone:zone];
   v15 = v5[7];
   v5[7] = v14;
 
-  v16 = [(NSString *)self->_ownerDisplayName copyWithZone:a3];
+  v16 = [(NSString *)self->_ownerDisplayName copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
-  v18 = [(NSString *)self->_nonce copyWithZone:a3];
+  v18 = [(NSString *)self->_nonce copyWithZone:zone];
   v19 = v5[8];
   v5[8] = v18;
 

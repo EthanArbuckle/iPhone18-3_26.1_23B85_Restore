@@ -1,39 +1,39 @@
 @interface _UISplitViewControllerAdaptivePanelLayout
-- (BOOL)canIncludeColumn:(int64_t)a3 style:(int64_t)a4;
-- (BOOL)canShowSplitViewControllerColumn:(int64_t)a3 withSplitViewControllerColumn:(int64_t)a4;
-- (CGRect)columnFrameForSplitViewControllerColumn:(int64_t)a3;
-- (CGRect)separatorFrameForSplitViewControllerColumn:(int64_t)a3;
+- (BOOL)canIncludeColumn:(int64_t)column style:(int64_t)style;
+- (BOOL)canShowSplitViewControllerColumn:(int64_t)column withSplitViewControllerColumn:(int64_t)controllerColumn;
+- (CGRect)columnFrameForSplitViewControllerColumn:(int64_t)column;
+- (CGRect)separatorFrameForSplitViewControllerColumn:(int64_t)column;
 - (CGSize)contentSize;
 - (CGSize)minimumSize;
 - (CGSize)preferredSize;
 - (NSString)description;
-- (UIEdgeInsets)contentInsetsForSplitViewControllerColumn:(int64_t)a3;
-- (UIEdgeInsets)scrollPocketInsetsForSplitViewControllerColumn:(int64_t)a3;
+- (UIEdgeInsets)contentInsetsForSplitViewControllerColumn:(int64_t)column;
+- (UIEdgeInsets)scrollPocketInsetsForSplitViewControllerColumn:(int64_t)column;
 - (_UISplitViewControllerAdaptivePanelLayout)init;
-- (_UISplitViewControllerAdaptivePanelLayout)initWithDataSource:(id)a3 delegate:(id)a4;
-- (double)dimmingLevelForSplitViewControllerColumn:(int64_t)a3;
-- (double)maximumWidthForSplitViewControllerColumn:(int64_t)a3;
-- (double)minimumWidthForSplitViewControllerColumn:(int64_t)a3;
+- (_UISplitViewControllerAdaptivePanelLayout)initWithDataSource:(id)source delegate:(id)delegate;
+- (double)dimmingLevelForSplitViewControllerColumn:(int64_t)column;
+- (double)maximumWidthForSplitViewControllerColumn:(int64_t)column;
+- (double)minimumWidthForSplitViewControllerColumn:(int64_t)column;
 - (int64_t)displayMode;
-- (int64_t)levelForSplitViewControllerColumn:(int64_t)a3;
+- (int64_t)levelForSplitViewControllerColumn:(int64_t)column;
 - (int64_t)primaryEdge;
 - (int64_t)splitBehavior;
-- (int64_t)splitViewControllerColumnDisplayedAfterSplitViewControllerColumn:(int64_t)a3;
-- (int64_t)splitViewControllerColumnDisplayedBeforeSplitViewControllerColumn:(int64_t)a3;
-- (unint64_t)columnModeForSplitViewControllerColumn:(int64_t)a3;
-- (unint64_t)maskedCornersForSplitViewControllerColumn:(int64_t)a3;
-- (unint64_t)primaryEdgeButtonForSplitViewControllerColumn:(int64_t)a3;
-- (unint64_t)secondaryEdgeButtonForSplitViewControllerColumn:(int64_t)a3;
-- (void)enumerateDisplayInOrder:(unint64_t)a3 withBlock:(id)a4;
-- (void)enumerateDisplayOrder:(id)a3;
-- (void)enumerateSubviewZOrder:(id)a3;
+- (int64_t)splitViewControllerColumnDisplayedAfterSplitViewControllerColumn:(int64_t)column;
+- (int64_t)splitViewControllerColumnDisplayedBeforeSplitViewControllerColumn:(int64_t)column;
+- (unint64_t)columnModeForSplitViewControllerColumn:(int64_t)column;
+- (unint64_t)maskedCornersForSplitViewControllerColumn:(int64_t)column;
+- (unint64_t)primaryEdgeButtonForSplitViewControllerColumn:(int64_t)column;
+- (unint64_t)secondaryEdgeButtonForSplitViewControllerColumn:(int64_t)column;
+- (void)enumerateDisplayInOrder:(unint64_t)order withBlock:(id)block;
+- (void)enumerateDisplayOrder:(id)order;
+- (void)enumerateSubviewZOrder:(id)order;
 - (void)prepareLayout;
 - (void)validateData;
 @end
 
 @implementation _UISplitViewControllerAdaptivePanelLayout
 
-- (_UISplitViewControllerAdaptivePanelLayout)initWithDataSource:(id)a3 delegate:(id)a4
+- (_UISplitViewControllerAdaptivePanelLayout)initWithDataSource:(id)source delegate:(id)delegate
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
@@ -87,9 +87,9 @@
   return *(v2 + 9);
 }
 
-- (CGRect)columnFrameForSplitViewControllerColumn:(int64_t)a3
+- (CGRect)columnFrameForSplitViewControllerColumn:(int64_t)column
 {
-  v3 = sub_188E5CC18(a3);
+  v3 = sub_188E5CC18(column);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -97,7 +97,7 @@
   return result;
 }
 
-- (double)minimumWidthForSplitViewControllerColumn:(int64_t)a3
+- (double)minimumWidthForSplitViewControllerColumn:(int64_t)column
 {
   v5 = OBJC_IVAR____UISplitViewControllerAdaptivePanelLayout_solution;
   swift_beginAccess();
@@ -105,7 +105,7 @@
   v7 = 0.0;
   if (*(v6 + 16))
   {
-    v8 = sub_188B85570(a3);
+    v8 = sub_188B85570(column);
     if (v9)
     {
       v7 = *(*(v6 + 56) + 216 * v8 + 112);
@@ -116,7 +116,7 @@
   return v7;
 }
 
-- (double)maximumWidthForSplitViewControllerColumn:(int64_t)a3
+- (double)maximumWidthForSplitViewControllerColumn:(int64_t)column
 {
   v5 = OBJC_IVAR____UISplitViewControllerAdaptivePanelLayout_solution;
   swift_beginAccess();
@@ -124,7 +124,7 @@
   v7 = 0.0;
   if (*(v6 + 16))
   {
-    v8 = sub_188B85570(a3);
+    v8 = sub_188B85570(column);
     if (v9)
     {
       v7 = *(*(v6 + 56) + 216 * v8 + 104);
@@ -135,9 +135,9 @@
   return v7;
 }
 
-- (UIEdgeInsets)contentInsetsForSplitViewControllerColumn:(int64_t)a3
+- (UIEdgeInsets)contentInsetsForSplitViewControllerColumn:(int64_t)column
 {
-  v3 = sub_188E5CE10(a3);
+  v3 = sub_188E5CE10(column);
   result.right = v6;
   result.bottom = v5;
   result.left = v4;
@@ -145,9 +145,9 @@
   return result;
 }
 
-- (UIEdgeInsets)scrollPocketInsetsForSplitViewControllerColumn:(int64_t)a3
+- (UIEdgeInsets)scrollPocketInsetsForSplitViewControllerColumn:(int64_t)column
 {
-  v3 = sub_188E5CEE8(a3);
+  v3 = sub_188E5CEE8(column);
   result.right = v6;
   result.bottom = v5;
   result.left = v4;
@@ -155,12 +155,12 @@
   return result;
 }
 
-- (int64_t)levelForSplitViewControllerColumn:(int64_t)a3
+- (int64_t)levelForSplitViewControllerColumn:(int64_t)column
 {
   v5 = OBJC_IVAR____UISplitViewControllerAdaptivePanelLayout_solution;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  if (*(v6 + 16) && (v7 = sub_188B85570(a3), (v8 & 1) != 0))
+  if (*(v6 + 16) && (v7 = sub_188B85570(column), (v8 & 1) != 0))
   {
     v9 = *(*(v6 + 56) + 216 * v7 + 88);
   }
@@ -174,12 +174,12 @@
   return v9;
 }
 
-- (unint64_t)maskedCornersForSplitViewControllerColumn:(int64_t)a3
+- (unint64_t)maskedCornersForSplitViewControllerColumn:(int64_t)column
 {
   v5 = OBJC_IVAR____UISplitViewControllerAdaptivePanelLayout_solution;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  if (*(v6 + 16) && (v7 = sub_188B85570(a3), (v8 & 1) != 0))
+  if (*(v6 + 16) && (v7 = sub_188B85570(column), (v8 & 1) != 0))
   {
     v9 = *(*(v6 + 56) + 216 * v7 + 96);
   }
@@ -193,9 +193,9 @@
   return v9;
 }
 
-- (CGRect)separatorFrameForSplitViewControllerColumn:(int64_t)a3
+- (CGRect)separatorFrameForSplitViewControllerColumn:(int64_t)column
 {
-  v3 = sub_188E5D2CC(a3);
+  v3 = sub_188E5D2CC(column);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -210,15 +210,15 @@
   return *(v2 + 1);
 }
 
-- (unint64_t)columnModeForSplitViewControllerColumn:(int64_t)a3
+- (unint64_t)columnModeForSplitViewControllerColumn:(int64_t)column
 {
-  v4 = self;
-  v5 = sub_188E5D3F4(a3);
+  selfCopy = self;
+  v5 = sub_188E5D3F4(column);
 
   return v5;
 }
 
-- (double)dimmingLevelForSplitViewControllerColumn:(int64_t)a3
+- (double)dimmingLevelForSplitViewControllerColumn:(int64_t)column
 {
   v5 = OBJC_IVAR____UISplitViewControllerAdaptivePanelLayout_solution;
   swift_beginAccess();
@@ -226,7 +226,7 @@
   v7 = 0.0;
   if (*(v6 + 16))
   {
-    v8 = sub_188B85570(a3);
+    v8 = sub_188B85570(column);
     if (v9)
     {
       v7 = *(*(v6 + 56) + 216 * v8 + 72);
@@ -237,20 +237,20 @@
   return v7;
 }
 
-- (BOOL)canShowSplitViewControllerColumn:(int64_t)a3 withSplitViewControllerColumn:(int64_t)a4
+- (BOOL)canShowSplitViewControllerColumn:(int64_t)column withSplitViewControllerColumn:(int64_t)controllerColumn
 {
-  v6 = self;
-  LOBYTE(a4) = sub_188E5D610(a3, a4);
+  selfCopy = self;
+  LOBYTE(controllerColumn) = sub_188E5D610(column, controllerColumn);
 
-  return a4 & 1;
+  return controllerColumn & 1;
 }
 
-- (unint64_t)primaryEdgeButtonForSplitViewControllerColumn:(int64_t)a3
+- (unint64_t)primaryEdgeButtonForSplitViewControllerColumn:(int64_t)column
 {
   v5 = OBJC_IVAR____UISplitViewControllerAdaptivePanelLayout_solution;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  if (*(v6 + 16) && (v7 = sub_188B85570(a3), (v8 & 1) != 0))
+  if (*(v6 + 16) && (v7 = sub_188B85570(column), (v8 & 1) != 0))
   {
     v9 = *(*(v6 + 56) + 216 * v7 + 128);
   }
@@ -264,12 +264,12 @@
   return v9;
 }
 
-- (unint64_t)secondaryEdgeButtonForSplitViewControllerColumn:(int64_t)a3
+- (unint64_t)secondaryEdgeButtonForSplitViewControllerColumn:(int64_t)column
 {
   v5 = OBJC_IVAR____UISplitViewControllerAdaptivePanelLayout_solution;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  if (*(v6 + 16) && (v7 = sub_188B85570(a3), (v8 & 1) != 0))
+  if (*(v6 + 16) && (v7 = sub_188B85570(column), (v8 & 1) != 0))
   {
     v9 = *(*(v6 + 56) + 216 * v7 + 168);
   }
@@ -283,16 +283,16 @@
   return v9;
 }
 
-- (void)enumerateDisplayOrder:(id)a3
+- (void)enumerateDisplayOrder:(id)order
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(order);
   v5 = self + OBJC_IVAR____UISplitViewControllerAdaptivePanelLayout_data;
   swift_beginAccess();
   v6 = *(v5 + 7);
   v7 = *(v6 + 16);
   if (v7)
   {
-    v8 = self;
+    selfCopy2 = self;
 
     v9 = 32;
     do
@@ -307,72 +307,72 @@
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
   }
 
   _Block_release(v4);
 }
 
-- (void)enumerateDisplayInOrder:(unint64_t)a3 withBlock:(id)a4
+- (void)enumerateDisplayInOrder:(unint64_t)order withBlock:(id)block
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   _Block_copy(v6);
-  v7 = self;
-  sub_188E670D4(a3, v7, v6);
+  selfCopy = self;
+  sub_188E670D4(order, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)enumerateSubviewZOrder:(id)a3
+- (void)enumerateSubviewZOrder:(id)order
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(order);
   _Block_copy(v4);
-  v5 = self;
-  sub_188E67218(v5, v4);
+  selfCopy = self;
+  sub_188E67218(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (int64_t)splitViewControllerColumnDisplayedBeforeSplitViewControllerColumn:(int64_t)a3
+- (int64_t)splitViewControllerColumnDisplayedBeforeSplitViewControllerColumn:(int64_t)column
 {
-  v4 = self;
-  v5 = sub_188E5E3B8(a3);
+  selfCopy = self;
+  v5 = sub_188E5E3B8(column);
 
   return v5;
 }
 
-- (int64_t)splitViewControllerColumnDisplayedAfterSplitViewControllerColumn:(int64_t)a3
+- (int64_t)splitViewControllerColumnDisplayedAfterSplitViewControllerColumn:(int64_t)column
 {
-  v4 = self;
-  v5 = sub_188E5E4E0(a3);
+  selfCopy = self;
+  v5 = sub_188E5E4E0(column);
 
   return v5;
 }
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_188E5E6C0();
 }
 
 - (void)validateData
 {
-  v2 = self;
+  selfCopy = self;
   sub_188E639CC();
 }
 
-- (BOOL)canIncludeColumn:(int64_t)a3 style:(int64_t)a4
+- (BOOL)canIncludeColumn:(int64_t)column style:(int64_t)style
 {
   if (qword_1EA9308E0 != -1)
   {
     swift_once();
   }
 
-  v6 = sub_188C1CAD8(a3, off_1EA9308F0);
-  v7 = a4 == 2;
-  if (a4 < 2)
+  v6 = sub_188C1CAD8(column, off_1EA9308F0);
+  v7 = style == 2;
+  if (style < 2)
   {
-    v7 = a3 != 1;
+    v7 = column != 1;
   }
 
   return v6 && v7;
@@ -380,7 +380,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_18A4A80E8();
   MEMORY[0x18CFE22D0](0xD00000000000002CLL, 0x800000018A68C1F0);
   sub_18A4A82D8();

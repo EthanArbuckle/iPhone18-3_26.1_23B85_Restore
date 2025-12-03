@@ -1,9 +1,9 @@
 @interface ICMusicAccountNotificationsSettingsRequestOperation
-- (ICMusicAccountNotificationsSettingsRequestOperation)initWithRequestContext:(id)a3 withRequestMethod:(int64_t)a4;
-- (ICMusicAccountNotificationsSettingsRequestOperation)initWithRequestContext:(id)a3 withRequestMethod:(int64_t)a4 andBodyDictionary:(id)a5;
+- (ICMusicAccountNotificationsSettingsRequestOperation)initWithRequestContext:(id)context withRequestMethod:(int64_t)method;
+- (ICMusicAccountNotificationsSettingsRequestOperation)initWithRequestContext:(id)context withRequestMethod:(int64_t)method andBodyDictionary:(id)dictionary;
 - (void)cancel;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICMusicAccountNotificationsSettingsRequestOperation
@@ -163,44 +163,44 @@ uint64_t __62__ICMusicAccountNotificationsSettingsRequestOperation_execute__bloc
   return [v9 finish];
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __89__ICMusicAccountNotificationsSettingsRequestOperation_performRequestWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
-- (ICMusicAccountNotificationsSettingsRequestOperation)initWithRequestContext:(id)a3 withRequestMethod:(int64_t)a4 andBodyDictionary:(id)a5
+- (ICMusicAccountNotificationsSettingsRequestOperation)initWithRequestContext:(id)context withRequestMethod:(int64_t)method andBodyDictionary:(id)dictionary
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  dictionaryCopy = dictionary;
   v11 = [(ICRequestOperation *)self init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_requestContext, a3);
-    v12->_requestMethod = a4;
-    objc_storeStrong(&v12->_bodyDictionary, a5);
+    objc_storeStrong(&v11->_requestContext, context);
+    v12->_requestMethod = method;
+    objc_storeStrong(&v12->_bodyDictionary, dictionary);
   }
 
   return v12;
 }
 
-- (ICMusicAccountNotificationsSettingsRequestOperation)initWithRequestContext:(id)a3 withRequestMethod:(int64_t)a4
+- (ICMusicAccountNotificationsSettingsRequestOperation)initWithRequestContext:(id)context withRequestMethod:(int64_t)method
 {
-  v7 = a3;
+  contextCopy = context;
   v8 = [(ICRequestOperation *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_requestContext, a3);
-    v9->_requestMethod = a4;
+    objc_storeStrong(&v8->_requestContext, context);
+    v9->_requestMethod = method;
   }
 
   return v9;

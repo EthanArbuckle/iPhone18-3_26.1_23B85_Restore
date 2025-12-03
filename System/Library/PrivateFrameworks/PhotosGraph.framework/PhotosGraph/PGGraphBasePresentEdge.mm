@@ -2,12 +2,12 @@
 + (MAEdgeFilter)consolidatedFilter;
 + (MAEdgeFilter)consolidatedPresentInAssetsFilter;
 + (id)filter;
-+ (void)setImportance:(double)a3 onPresentEdgeForIdentifier:(unint64_t)a4 inGraph:(id)a5;
-+ (void)setNumberOfAssets:(unint64_t)a3 onPresentEdgeForIdentifier:(unint64_t)a4 inGraph:(id)a5;
-- (BOOL)hasProperties:(id)a3;
-- (PGGraphBasePresentEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7;
++ (void)setImportance:(double)importance onPresentEdgeForIdentifier:(unint64_t)identifier inGraph:(id)graph;
++ (void)setNumberOfAssets:(unint64_t)assets onPresentEdgeForIdentifier:(unint64_t)identifier inGraph:(id)graph;
+- (BOOL)hasProperties:(id)properties;
+- (PGGraphBasePresentEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties;
 - (id)edgeDescription;
-- (id)initFromPersonNode:(id)a3 toMomentNode:(id)a4 importance:(double)a5 numberOfAssets:(unint64_t)a6;
+- (id)initFromPersonNode:(id)node toMomentNode:(id)momentNode importance:(double)importance numberOfAssets:(unint64_t)assets;
 - (id)label;
 - (id)propertyDictionary;
 @end
@@ -25,8 +25,8 @@
   v3 = MEMORY[0x277CCACA8];
   v7.receiver = self;
   v7.super_class = PGGraphBasePresentEdge;
-  v4 = [(PGGraphOptimizedEdge *)&v7 edgeDescription];
-  v5 = [v3 stringWithFormat:@"%@ (importance = %f, %u assets)", v4, *&self->_importance, *(self + 10)];
+  edgeDescription = [(PGGraphOptimizedEdge *)&v7 edgeDescription];
+  v5 = [v3 stringWithFormat:@"%@ (importance = %f, %u assets)", edgeDescription, *&self->_importance, *(self + 10)];
 
   return v5;
 }
@@ -47,11 +47,11 @@
   return v5;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"importance"];
     v7 = v6;
@@ -76,45 +76,45 @@
   return v10;
 }
 
-- (PGGraphBasePresentEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7
+- (PGGraphBasePresentEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  labelCopy = label;
+  nodeCopy = node;
+  targetNodeCopy = targetNode;
+  propertiesCopy = properties;
   v16 = PGAbstractMethodException(self, a2);
   objc_exception_throw(v16);
 }
 
-- (id)initFromPersonNode:(id)a3 toMomentNode:(id)a4 importance:(double)a5 numberOfAssets:(unint64_t)a6
+- (id)initFromPersonNode:(id)node toMomentNode:(id)momentNode importance:(double)importance numberOfAssets:(unint64_t)assets
 {
-  v6 = a6;
+  assetsCopy = assets;
   v9.receiver = self;
   v9.super_class = PGGraphBasePresentEdge;
-  result = [(PGGraphEdge *)&v9 initWithSourceNode:a3 targetNode:a4];
+  result = [(PGGraphEdge *)&v9 initWithSourceNode:node targetNode:momentNode];
   if (result)
   {
-    *(result + 6) = a5;
-    *(result + 10) = v6;
+    *(result + 6) = importance;
+    *(result + 10) = assetsCopy;
   }
 
   return result;
 }
 
-+ (void)setNumberOfAssets:(unint64_t)a3 onPresentEdgeForIdentifier:(unint64_t)a4 inGraph:(id)a5
++ (void)setNumberOfAssets:(unint64_t)assets onPresentEdgeForIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
   v7 = MEMORY[0x277CCABB0];
-  v8 = a5;
-  v9 = [v7 numberWithUnsignedInteger:a3];
-  [v8 persistModelProperty:v9 forKey:@"numberOfAssets" forEdgeWithIdentifier:a4];
+  graphCopy = graph;
+  v9 = [v7 numberWithUnsignedInteger:assets];
+  [graphCopy persistModelProperty:v9 forKey:@"numberOfAssets" forEdgeWithIdentifier:identifier];
 }
 
-+ (void)setImportance:(double)a3 onPresentEdgeForIdentifier:(unint64_t)a4 inGraph:(id)a5
++ (void)setImportance:(double)importance onPresentEdgeForIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
   v7 = MEMORY[0x277CCABB0];
-  v8 = a5;
-  v9 = [v7 numberWithDouble:a3];
-  [v8 persistModelProperty:v9 forKey:@"importance" forEdgeWithIdentifier:a4];
+  graphCopy = graph;
+  v9 = [v7 numberWithDouble:importance];
+  [graphCopy persistModelProperty:v9 forKey:@"importance" forEdgeWithIdentifier:identifier];
 }
 
 + (MAEdgeFilter)consolidatedPresentInAssetsFilter

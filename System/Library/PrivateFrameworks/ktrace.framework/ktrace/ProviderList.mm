@@ -1,37 +1,37 @@
 @interface ProviderList
-- (BOOL)containsWithName:(id)a3;
-- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)a3 error:(id *)a4;
+- (BOOL)containsWithName:(id)name;
+- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)configuration error:(id *)error;
 - (_TtC6ktrace12ProviderList)init;
-- (_TtC6ktrace12ProviderList)initWithMachine:(ktrace_machine *)a3;
-- (void)configurePostprocessingWithSession:(void *)a3;
-- (void)configureWithSession:(void *)a3;
-- (void)didEndTracingWithFile:(void *)a3;
-- (void)didStartTracingWithFile:(void *)a3;
-- (void)postprocessingCompleteWithFile:(void *)a3;
-- (void)willEndTracingWithFile:(void *)a3;
-- (void)willFinishWithCatalog:(void *)a3 file:(void *)a4;
-- (void)willStartTracingWithFile:(void *)a3;
+- (_TtC6ktrace12ProviderList)initWithMachine:(ktrace_machine *)machine;
+- (void)configurePostprocessingWithSession:(void *)session;
+- (void)configureWithSession:(void *)session;
+- (void)didEndTracingWithFile:(void *)file;
+- (void)didStartTracingWithFile:(void *)file;
+- (void)postprocessingCompleteWithFile:(void *)file;
+- (void)willEndTracingWithFile:(void *)file;
+- (void)willFinishWithCatalog:(void *)catalog file:(void *)file;
+- (void)willStartTracingWithFile:(void *)file;
 @end
 
 @implementation ProviderList
 
-- (void)willEndTracingWithFile:(void *)a3
+- (void)willEndTracingWithFile:(void *)file
 {
-  v4 = self;
-  ProviderList.willEndTracing(file:)(a3);
+  selfCopy = self;
+  ProviderList.willEndTracing(file:)(file);
 }
 
-- (_TtC6ktrace12ProviderList)initWithMachine:(ktrace_machine *)a3
+- (_TtC6ktrace12ProviderList)initWithMachine:(ktrace_machine *)machine
 {
   ObjectType = swift_getObjectType();
   *(&self->super.isa + OBJC_IVAR____TtC6ktrace12ProviderList_providers) = MEMORY[0x277D84F90];
-  *(&self->super.isa + OBJC_IVAR____TtC6ktrace12ProviderList_machine) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC6ktrace12ProviderList_machine) = machine;
   v7.receiver = self;
   v7.super_class = ObjectType;
   return [(ProviderList *)&v7 init];
 }
 
-- (BOOL)containsWithName:(id)a3
+- (BOOL)containsWithName:(id)name
 {
   v3._countAndFlagsBits = sub_22EE3C124();
   v4 = ProviderList.contains(name:)(v3);
@@ -39,54 +39,54 @@
   return v4;
 }
 
-- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)a3 error:(id *)a4
+- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)configuration error:(id *)error
 {
-  v5 = self;
-  ProviderList.shouldStartTracing(configuration:)(a3);
+  selfCopy = self;
+  ProviderList.shouldStartTracing(configuration:)(configuration);
 
   return 1;
 }
 
-- (void)configureWithSession:(void *)a3
+- (void)configureWithSession:(void *)session
 {
-  v4 = self;
-  ProviderList.configure(session:)(a3);
+  selfCopy = self;
+  ProviderList.configure(session:)(session);
 }
 
-- (void)willStartTracingWithFile:(void *)a3
+- (void)willStartTracingWithFile:(void *)file
 {
-  v4 = self;
-  ProviderList.willStartTracing(file:)(a3);
+  selfCopy = self;
+  ProviderList.willStartTracing(file:)(file);
 }
 
-- (void)didStartTracingWithFile:(void *)a3
+- (void)didStartTracingWithFile:(void *)file
 {
-  v4 = self;
-  ProviderList.didStartTracing(file:)(a3);
+  selfCopy = self;
+  ProviderList.didStartTracing(file:)(file);
 }
 
-- (void)didEndTracingWithFile:(void *)a3
+- (void)didEndTracingWithFile:(void *)file
 {
-  v4 = self;
-  ProviderList.didEndTracing(file:)(a3);
+  selfCopy = self;
+  ProviderList.didEndTracing(file:)(file);
 }
 
-- (void)configurePostprocessingWithSession:(void *)a3
+- (void)configurePostprocessingWithSession:(void *)session
 {
-  v4 = self;
-  ProviderList.configurePostprocessing(session:)(a3);
+  selfCopy = self;
+  ProviderList.configurePostprocessing(session:)(session);
 }
 
-- (void)postprocessingCompleteWithFile:(void *)a3
+- (void)postprocessingCompleteWithFile:(void *)file
 {
-  v4 = self;
-  ProviderList.postprocessingComplete(file:)(a3);
+  selfCopy = self;
+  ProviderList.postprocessingComplete(file:)(file);
 }
 
-- (void)willFinishWithCatalog:(void *)a3 file:(void *)a4
+- (void)willFinishWithCatalog:(void *)catalog file:(void *)file
 {
-  v6 = self;
-  ProviderList.willFinish(catalog:file:)(a3, a4);
+  selfCopy = self;
+  ProviderList.willFinish(catalog:file:)(catalog, file);
 }
 
 - (_TtC6ktrace12ProviderList)init

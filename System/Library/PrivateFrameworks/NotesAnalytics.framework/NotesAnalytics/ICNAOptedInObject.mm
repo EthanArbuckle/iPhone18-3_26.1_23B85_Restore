@@ -13,15 +13,15 @@
     v6.receiver = self;
     v6.super_class = ICNAOptedInObject;
     self = [(ICNAOptedInObject *)&v6 init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  v4 = v3;
+  v4 = selfCopy;
 
   return v4;
 }
@@ -56,16 +56,16 @@
 + (void)isOptedInForAnalytics
 {
   v7 = *MEMORY[0x277D85DE8];
-  v2 = [_isOptedInNumber BOOLValue];
+  bOOLValue = [_isOptedInNumber BOOLValue];
   v3 = @"NO";
-  if (v2)
+  if (bOOLValue)
   {
     v3 = @"YES";
   }
 
   v5 = 138412290;
   v6 = v3;
-  _os_log_debug_impl(&dword_25C6BF000, a1, OS_LOG_TYPE_DEBUG, "D&U check result: %@", &v5, 0xCu);
+  _os_log_debug_impl(&dword_25C6BF000, self, OS_LOG_TYPE_DEBUG, "D&U check result: %@", &v5, 0xCu);
   v4 = *MEMORY[0x277D85DE8];
 }
 

@@ -1,23 +1,23 @@
 @interface REMTemplateSectionStorage
-- (REMTemplateSectionStorage)initWithObjectID:(id)a3 accountID:(id)a4 parentTemplateID:(id)a5 displayName:(id)a6;
+- (REMTemplateSectionStorage)initWithObjectID:(id)d accountID:(id)iD parentTemplateID:(id)templateID displayName:(id)name;
 - (id)cdKeyToStorageKeyMap;
-- (void)setParentTemplateID:(id)a3;
+- (void)setParentTemplateID:(id)d;
 @end
 
 @implementation REMTemplateSectionStorage
 
-- (void)setParentTemplateID:(id)a3
+- (void)setParentTemplateID:(id)d
 {
   v3.receiver = self;
   v3.super_class = REMTemplateSectionStorage;
-  [(REMBaseSectionStorage *)&v3 setParentID:a3];
+  [(REMBaseSectionStorage *)&v3 setParentID:d];
 }
 
-- (REMTemplateSectionStorage)initWithObjectID:(id)a3 accountID:(id)a4 parentTemplateID:(id)a5 displayName:(id)a6
+- (REMTemplateSectionStorage)initWithObjectID:(id)d accountID:(id)iD parentTemplateID:(id)templateID displayName:(id)name
 {
   v7.receiver = self;
   v7.super_class = REMTemplateSectionStorage;
-  return [(REMBaseSectionStorage *)&v7 initWithObjectID:a3 accountID:a4 parentID:a5 displayName:a6];
+  return [(REMBaseSectionStorage *)&v7 initWithObjectID:d accountID:iD parentID:templateID displayName:name];
 }
 
 - (id)cdKeyToStorageKeyMap

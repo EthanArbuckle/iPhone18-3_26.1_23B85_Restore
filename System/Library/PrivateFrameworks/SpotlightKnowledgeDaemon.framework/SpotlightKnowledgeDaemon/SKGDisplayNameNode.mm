@@ -1,14 +1,14 @@
 @interface SKGDisplayNameNode
-+ (id)displayNameWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4;
-- (SKGDisplayNameNode)initWithName:(id)a3;
++ (id)displayNameWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph;
+- (SKGDisplayNameNode)initWithName:(id)name;
 @end
 
 @implementation SKGDisplayNameNode
 
-+ (id)displayNameWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4
++ (id)displayNameWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  v5 = [a4 graph];
-  v6 = [v5 nodeForIdentifier:a3];
+  graph = [graph graph];
+  v6 = [graph nodeForIdentifier:identifier];
 
   v7 = [SKGDisplayNameNode alloc];
   v8 = [v6 propertyForKey:@"value"];
@@ -17,11 +17,11 @@
   return v9;
 }
 
-- (SKGDisplayNameNode)initWithName:(id)a3
+- (SKGDisplayNameNode)initWithName:(id)name
 {
   v4.receiver = self;
   v4.super_class = SKGDisplayNameNode;
-  return [(SKGNode *)&v4 initWithValue:a3];
+  return [(SKGNode *)&v4 initWithValue:name];
 }
 
 @end

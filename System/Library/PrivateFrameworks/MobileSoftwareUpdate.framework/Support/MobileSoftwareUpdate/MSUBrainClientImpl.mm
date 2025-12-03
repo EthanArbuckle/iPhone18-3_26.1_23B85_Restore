@@ -1,32 +1,32 @@
 @interface MSUBrainClientImpl
-- (id)init:(id)a3 version:(id)a4 endpoint:(id)a5 delgate:(id)a6;
+- (id)init:(id)init version:(id)version endpoint:(id)endpoint delgate:(id)delgate;
 - (void)_connectToServerIfNecessary_nolock;
 - (void)_invalidateConnection;
 - (void)_invalidateConnection_nolock;
-- (void)applyUpdate:(id)a3 progress:(id)a4 completion:(id)a5;
-- (void)commitUnlockOnceToken:(id)a3 progress:(id)a4 completion:(id)a5;
+- (void)applyUpdate:(id)update progress:(id)progress completion:(id)completion;
+- (void)commitUnlockOnceToken:(id)token progress:(id)progress completion:(id)completion;
 - (void)connectToServerIfNecessary;
 - (void)dealloc;
-- (void)handleConnectionError:(id)a3 method:(const char *)a4 handler:(id)a5;
+- (void)handleConnectionError:(id)error method:(const char *)method handler:(id)handler;
 - (void)noteConnectionDropped;
-- (void)prepareUpdate:(id)a3 options:(id)a4 progress:(id)a5 completion:(id)a6;
+- (void)prepareUpdate:(id)update options:(id)options progress:(id)progress completion:(id)completion;
 @end
 
 @implementation MSUBrainClientImpl
 
-- (id)init:(id)a3 version:(id)a4 endpoint:(id)a5 delgate:(id)a6
+- (id)init:(id)init version:(id)version endpoint:(id)endpoint delgate:(id)delgate
 {
   v10 = [(MSUBrainClientImpl *)self init];
   result = 0;
-  if (a5)
+  if (endpoint)
   {
     if (v10)
     {
-      v10->_brainVersion = a4;
-      v10->_brainUUID = a3;
-      v10->_serverEndpoint = a5;
-      v10->_delegate = a6;
-      v12 = a3;
+      v10->_brainVersion = version;
+      v10->_brainUUID = init;
+      v10->_serverEndpoint = endpoint;
+      v10->_delegate = delgate;
+      initCopy = init;
       v13 = v10->_brainVersion;
       v14 = v10->_serverEndpoint;
       return v10;
@@ -190,27 +190,27 @@ uint64_t __56__MSUBrainClientImpl__connectToServerIfNecessary_nolock__block_invo
   objc_sync_exit(self);
 }
 
-- (void)handleConnectionError:(id)a3 method:(const char *)a4 handler:(id)a5
+- (void)handleConnectionError:(id)error method:(const char *)method handler:(id)handler
 {
-  if (a3)
+  if (error)
   {
     v9 = msuSharedLogger();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
-    if (a4)
+    if (method)
     {
       if (v10)
       {
-        [MSUBrainClientImpl handleConnectionError:a4 method:a3 handler:v9];
+        [MSUBrainClientImpl handleConnectionError:method method:error handler:v9];
       }
     }
 
     else if (v10)
     {
-      [MSUBrainClientImpl handleConnectionError:a3 method:v9 handler:?];
+      [MSUBrainClientImpl handleConnectionError:error method:v9 handler:?];
     }
 
     [(MSUBrainClientImpl *)self _invalidateConnection];
-    (*(a5 + 2))(a5);
+    (*(handler + 2))(handler);
   }
 }
 
@@ -228,13 +228,13 @@ id __66__MSUBrainClientImpl_preflightUpdate_options_progress_completion___block_
   return [v3 handleConnectionError:a2 method:v2 handler:v6];
 }
 
-- (void)prepareUpdate:(id)a3 options:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)prepareUpdate:(id)update options:(id)options progress:(id)progress completion:(id)completion
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __64__MSUBrainClientImpl_prepareUpdate_options_progress_completion___block_invoke;
   v15[3] = &unk_100049D58;
-  v15[5] = a6;
+  v15[5] = completion;
   v15[6] = "[MSUBrainClientImpl prepareUpdate:options:progress:completion:]";
   v15[4] = self;
   v10 = [(MSUBrainClientImpl *)self _remoteInterfaceWithErrorHandler:v15];
@@ -242,7 +242,7 @@ id __66__MSUBrainClientImpl_preflightUpdate_options_progress_completion___block_
   v14[1] = 3221225472;
   v14[2] = __64__MSUBrainClientImpl_prepareUpdate_options_progress_completion___block_invoke_3;
   v14[3] = &unk_100049D80;
-  v14[4] = a5;
+  v14[4] = progress;
   v11 = [[MSURemoteableBlock alloc] initWithProgressBlock:v14];
   v12 = v11;
   if (v10)
@@ -251,15 +251,15 @@ id __66__MSUBrainClientImpl_preflightUpdate_options_progress_completion___block_
     v13[1] = 3221225472;
     v13[2] = __64__MSUBrainClientImpl_prepareUpdate_options_progress_completion___block_invoke_4;
     v13[3] = &unk_100049DA8;
-    v13[4] = a6;
-    [v10 _nsxpcPrepareUpdate:a3 options:a4 progress:v11 completion:v13];
+    v13[4] = completion;
+    [v10 _nsxpcPrepareUpdate:update options:options progress:v11 completion:v13];
   }
 
   else
   {
     v16 = NSDebugDescriptionErrorKey;
     v17 = @"no remote object connection";
-    (*(a6 + 2))(a6, [NSError errorWithDomain:@"MobileSoftwareUpdateErrorDomain" code:1364 userInfo:[NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1]]);
+    (*(completion + 2))(completion, [NSError errorWithDomain:@"MobileSoftwareUpdateErrorDomain" code:1364 userInfo:[NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1]]);
   }
 }
 
@@ -277,13 +277,13 @@ id __64__MSUBrainClientImpl_prepareUpdate_options_progress_completion___block_in
   return [v3 handleConnectionError:a2 method:v2 handler:v6];
 }
 
-- (void)commitUnlockOnceToken:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)commitUnlockOnceToken:(id)token progress:(id)progress completion:(id)completion
 {
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __64__MSUBrainClientImpl_commitUnlockOnceToken_progress_completion___block_invoke;
   v13[3] = &unk_100049D58;
-  v13[5] = a5;
+  v13[5] = completion;
   v13[6] = "[MSUBrainClientImpl commitUnlockOnceToken:progress:completion:]";
   v13[4] = self;
   v8 = [(MSUBrainClientImpl *)self _remoteInterfaceWithErrorHandler:v13];
@@ -291,7 +291,7 @@ id __64__MSUBrainClientImpl_prepareUpdate_options_progress_completion___block_in
   v12[1] = 3221225472;
   v12[2] = __64__MSUBrainClientImpl_commitUnlockOnceToken_progress_completion___block_invoke_3;
   v12[3] = &unk_100049D80;
-  v12[4] = a4;
+  v12[4] = progress;
   v9 = [[MSURemoteableBlock alloc] initWithProgressBlock:v12];
   v10 = v9;
   if (v8)
@@ -300,15 +300,15 @@ id __64__MSUBrainClientImpl_prepareUpdate_options_progress_completion___block_in
     v11[1] = 3221225472;
     v11[2] = __64__MSUBrainClientImpl_commitUnlockOnceToken_progress_completion___block_invoke_4;
     v11[3] = &unk_100049DA8;
-    v11[4] = a5;
-    [v8 _nsxpcCommitUnlockOnceToken:a3 progress:v9 completion:v11];
+    v11[4] = completion;
+    [v8 _nsxpcCommitUnlockOnceToken:token progress:v9 completion:v11];
   }
 
   else
   {
     v14 = NSDebugDescriptionErrorKey;
     v15 = @"no remote object connection";
-    (*(a5 + 2))(a5, [NSError errorWithDomain:@"MobileSoftwareUpdateErrorDomain" code:1364 userInfo:[NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1]]);
+    (*(completion + 2))(completion, [NSError errorWithDomain:@"MobileSoftwareUpdateErrorDomain" code:1364 userInfo:[NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1]]);
   }
 }
 
@@ -326,13 +326,13 @@ id __64__MSUBrainClientImpl_commitUnlockOnceToken_progress_completion___block_in
   return [v3 handleConnectionError:a2 method:v2 handler:v6];
 }
 
-- (void)applyUpdate:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)applyUpdate:(id)update progress:(id)progress completion:(id)completion
 {
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __54__MSUBrainClientImpl_applyUpdate_progress_completion___block_invoke;
   v13[3] = &unk_100049D58;
-  v13[5] = a5;
+  v13[5] = completion;
   v13[6] = "[MSUBrainClientImpl applyUpdate:progress:completion:]";
   v13[4] = self;
   v8 = [(MSUBrainClientImpl *)self _remoteInterfaceWithErrorHandler:v13];
@@ -340,7 +340,7 @@ id __64__MSUBrainClientImpl_commitUnlockOnceToken_progress_completion___block_in
   v12[1] = 3221225472;
   v12[2] = __54__MSUBrainClientImpl_applyUpdate_progress_completion___block_invoke_3;
   v12[3] = &unk_100049D80;
-  v12[4] = a4;
+  v12[4] = progress;
   v9 = [[MSURemoteableBlock alloc] initWithProgressBlock:v12];
   v10 = v9;
   if (v8)
@@ -349,15 +349,15 @@ id __64__MSUBrainClientImpl_commitUnlockOnceToken_progress_completion___block_in
     v11[1] = 3221225472;
     v11[2] = __54__MSUBrainClientImpl_applyUpdate_progress_completion___block_invoke_4;
     v11[3] = &unk_100049DA8;
-    v11[4] = a5;
-    [v8 _nsxpcApplyUpdate:a3 progress:v9 completion:v11];
+    v11[4] = completion;
+    [v8 _nsxpcApplyUpdate:update progress:v9 completion:v11];
   }
 
   else
   {
     v14 = NSDebugDescriptionErrorKey;
     v15 = @"no remote object connection";
-    (*(a5 + 2))(a5, [NSError errorWithDomain:@"MobileSoftwareUpdateErrorDomain" code:1364 userInfo:[NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1]]);
+    (*(completion + 2))(completion, [NSError errorWithDomain:@"MobileSoftwareUpdateErrorDomain" code:1364 userInfo:[NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1]]);
   }
 }
 

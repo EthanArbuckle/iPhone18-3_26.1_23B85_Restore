@@ -1,16 +1,16 @@
 @interface BCSAppRanker
-+ (id)bundleIdentifierOfLastUsedAppForURL:(id)a3;
-+ (id)orderApps:(id)a3 forLastUsedApp:(id)a4;
-+ (void)setLastUsedApp:(id)a3 forURL:(id)a4;
++ (id)bundleIdentifierOfLastUsedAppForURL:(id)l;
++ (id)orderApps:(id)apps forLastUsedApp:(id)app;
++ (void)setLastUsedApp:(id)app forURL:(id)l;
 @end
 
 @implementation BCSAppRanker
 
-+ (id)orderApps:(id)a3 forLastUsedApp:(id)a4
++ (id)orderApps:(id)apps forLastUsedApp:(id)app
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] <= 1 || !v6)
+  appsCopy = apps;
+  appCopy = app;
+  if ([appsCopy count] <= 1 || !appCopy)
   {
     goto LABEL_6;
   }
@@ -21,9 +21,9 @@
     _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSAppRanker: Found last used app for scanned URL", buf, 2u);
   }
 
-  v7 = [v5 firstObject];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v6 isEqualToString:v8];
+  firstObject = [appsCopy firstObject];
+  bundleIdentifier = [firstObject bundleIdentifier];
+  v9 = [appCopy isEqualToString:bundleIdentifier];
 
   if (!v9)
   {
@@ -37,17 +37,17 @@
     v14 = 3221225472;
     v15 = __41__BCSAppRanker_orderApps_forLastUsedApp___block_invoke;
     v16 = &unk_278CFEC20;
-    v17 = v6;
+    v17 = appCopy;
     v18 = buf;
-    v12 = [v5 indexOfObjectPassingTest:&v13];
+    v12 = [appsCopy indexOfObjectPassingTest:&v13];
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = v5;
+      v10 = appsCopy;
     }
 
     else
     {
-      v10 = [v5 mutableCopy];
+      v10 = [appsCopy mutableCopy];
       [v10 removeObjectAtIndex:v12];
       [v10 insertObject:*(v20 + 5) atIndex:0];
     }
@@ -58,7 +58,7 @@
   else
   {
 LABEL_6:
-    v10 = v5;
+    v10 = appsCopy;
   }
 
   return v10;
@@ -80,17 +80,17 @@ uint64_t __41__BCSAppRanker_orderApps_forLastUsedApp___block_invoke(uint64_t a1,
   return v10;
 }
 
-+ (void)setLastUsedApp:(id)a3 forURL:(id)a4
++ (void)setLastUsedApp:(id)app forURL:(id)l
 {
-  v14 = a3;
-  v5 = a4;
-  v6 = [v5 host];
-  if ([v5 _bcs_isUPIURL])
+  appCopy = app;
+  lCopy = l;
+  host = [lCopy host];
+  if ([lCopy _bcs_isUPIURL])
   {
-    v7 = [v5 scheme];
+    scheme = [lCopy scheme];
 
     v8 = @"schemesToLastUsedApps";
-    v6 = v7;
+    host = scheme;
   }
 
   else
@@ -98,50 +98,50 @@ uint64_t __41__BCSAppRanker_orderApps_forLastUsedApp___block_invoke(uint64_t a1,
     v8 = @"hostsToLastUsedApps";
   }
 
-  if ([v6 length])
+  if ([host length])
   {
-    v9 = [MEMORY[0x277CBEBD0] bcs_barcodeSupportDefaults];
-    v10 = [v9 valueForKey:v8];
-    v11 = [v10 objectForKeyedSubscript:v6];
-    if (v11 != v14 && ([v11 isEqualToString:v14] & 1) == 0)
+    bcs_barcodeSupportDefaults = [MEMORY[0x277CBEBD0] bcs_barcodeSupportDefaults];
+    v10 = [bcs_barcodeSupportDefaults valueForKey:v8];
+    v11 = [v10 objectForKeyedSubscript:host];
+    if (v11 != appCopy && ([v11 isEqualToString:appCopy] & 1) == 0)
     {
       if (v10)
       {
-        v12 = [v10 mutableCopy];
+        dictionary = [v10 mutableCopy];
       }
 
       else
       {
-        v12 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
       }
 
-      v13 = v12;
-      if (v14)
+      v13 = dictionary;
+      if (appCopy)
       {
-        [v12 setObject:v14 forKeyedSubscript:v6];
+        [dictionary setObject:appCopy forKeyedSubscript:host];
       }
 
       else
       {
-        [v12 removeObjectForKey:v6];
+        [dictionary removeObjectForKey:host];
       }
 
-      [v9 setObject:v13 forKey:v8];
-      [v9 synchronize];
+      [bcs_barcodeSupportDefaults setObject:v13 forKey:v8];
+      [bcs_barcodeSupportDefaults synchronize];
     }
   }
 }
 
-+ (id)bundleIdentifierOfLastUsedAppForURL:(id)a3
++ (id)bundleIdentifierOfLastUsedAppForURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 host];
-  if ([v3 _bcs_isUPIURL])
+  lCopy = l;
+  host = [lCopy host];
+  if ([lCopy _bcs_isUPIURL])
   {
-    v5 = [v3 scheme];
+    scheme = [lCopy scheme];
 
     v6 = @"schemesToLastUsedApps";
-    v4 = v5;
+    host = scheme;
   }
 
   else
@@ -149,12 +149,12 @@ uint64_t __41__BCSAppRanker_orderApps_forLastUsedApp___block_invoke(uint64_t a1,
     v6 = @"hostsToLastUsedApps";
   }
 
-  v7 = [MEMORY[0x277CBEBD0] bcs_barcodeSupportDefaults];
-  v8 = [v7 valueForKey:v6];
+  bcs_barcodeSupportDefaults = [MEMORY[0x277CBEBD0] bcs_barcodeSupportDefaults];
+  v8 = [bcs_barcodeSupportDefaults valueForKey:v6];
 
-  if (v8 && [v4 length])
+  if (v8 && [host length])
   {
-    v9 = [v8 objectForKeyedSubscript:v4];
+    v9 = [v8 objectForKeyedSubscript:host];
   }
 
   else

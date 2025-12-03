@@ -6,9 +6,9 @@
 
 + (void)updateCoachingTipContext
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v3 postNotificationName:@"TSKCoachingTipContextChangedNotification" object:a1];
+  [defaultCenter postNotificationName:@"TSKCoachingTipContextChangedNotification" object:self];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface PRUISPosterAttachment
-+ (id)attachmentWithImage:(id)a3 level:(int64_t)a4;
-+ (id)attachmentWithView:(id)a3 level:(int64_t)a4;
-- (int64_t)compare:(id)a3;
++ (id)attachmentWithImage:(id)image level:(int64_t)level;
++ (id)attachmentWithView:(id)view level:(int64_t)level;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation PRUISPosterAttachment
 
-+ (id)attachmentWithImage:(id)a3 level:(int64_t)a4
++ (id)attachmentWithImage:(id)image level:(int64_t)level
 {
-  if (a3)
+  if (image)
   {
     v6 = MEMORY[0x1E69DCAE0];
-    v7 = a3;
-    v8 = [[v6 alloc] initWithImage:v7];
+    imageCopy = image;
+    v8 = [[v6 alloc] initWithImage:imageCopy];
 
     [v8 sizeToFit];
-    v9 = [a1 attachmentWithView:v8 level:a4];
+    v9 = [self attachmentWithView:v8 level:level];
   }
 
   else
@@ -26,18 +26,18 @@
   return v9;
 }
 
-+ (id)attachmentWithView:(id)a3 level:(int64_t)a4
++ (id)attachmentWithView:(id)view level:(int64_t)level
 {
-  v8 = a3;
+  viewCopy = view;
   if (PUIPosterLevelIsDefined())
   {
     v12 = MEMORY[0x1E696AEC0];
     v13 = NSStringFromPUIPosterLevel();
-    v14 = [v12 stringWithFormat:@"Level %lu is already in-use as %@", a4, v13];
+    v14 = [v12 stringWithFormat:@"Level %lu is already in-use as %@", level, v13];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      [(PRUISPosterAttachment *)a2 attachmentWithView:a1 level:v14];
+      [(PRUISPosterAttachment *)a2 attachmentWithView:self level:v14];
     }
 
     [v14 UTF8String];
@@ -47,18 +47,18 @@
 
   else
   {
-    if (v8)
+    if (viewCopy)
     {
-      v9 = [v8 superview];
+      superview = [viewCopy superview];
 
-      if (v9)
+      if (superview)
       {
         [PRUISPosterAttachment attachmentWithView:a2 level:?];
       }
 
       v10 = objc_alloc_init(PRUISPosterAttachment);
-      objc_storeStrong(&v10->_view, a3);
-      v10->_level = a4;
+      objc_storeStrong(&v10->_view, view);
+      v10->_level = level;
     }
 
     else
@@ -72,16 +72,16 @@
   return result;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v5 = a3;
-  if (!v5)
+  compareCopy = compare;
+  if (!compareCopy)
   {
     [PRUISPosterAttachment compare:a2];
   }
 
   level = self->_level;
-  v7 = v5[2];
+  v7 = compareCopy[2];
   v8 = level == v7;
   v9 = level < v7;
   v10 = -1;

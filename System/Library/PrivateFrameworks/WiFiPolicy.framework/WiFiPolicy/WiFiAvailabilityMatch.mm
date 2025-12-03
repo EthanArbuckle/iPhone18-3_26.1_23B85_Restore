@@ -1,9 +1,9 @@
 @interface WiFiAvailabilityMatch
-+ (id)matchWithNetwork:(id)a3 scannedNetwork:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAvailabilityMatch:(id)a3;
-- (BOOL)isEqualToScannedNetwork:(id)a3;
-- (WiFiAvailabilityMatch)initWithNetwork:(id)a3 scannedNetwork:(id)a4;
++ (id)matchWithNetwork:(id)network scannedNetwork:(id)scannedNetwork;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAvailabilityMatch:(id)match;
+- (BOOL)isEqualToScannedNetwork:(id)network;
+- (WiFiAvailabilityMatch)initWithNetwork:(id)network scannedNetwork:(id)scannedNetwork;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -12,57 +12,57 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WiFiAvailabilityMatch *)self SSID];
-  v3 = [v2 hash];
+  sSID = [(WiFiAvailabilityMatch *)self SSID];
+  v3 = [sSID hash];
 
   return v3;
 }
 
-+ (id)matchWithNetwork:(id)a3 scannedNetwork:(id)a4
++ (id)matchWithNetwork:(id)network scannedNetwork:(id)scannedNetwork
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 setMatched:1];
-  v7 = [[WiFiAvailabilityMatch alloc] initWithNetwork:v6 scannedNetwork:v5];
+  scannedNetworkCopy = scannedNetwork;
+  networkCopy = network;
+  [networkCopy setMatched:1];
+  v7 = [[WiFiAvailabilityMatch alloc] initWithNetwork:networkCopy scannedNetwork:scannedNetworkCopy];
 
   return v7;
 }
 
-- (BOOL)isEqualToScannedNetwork:(id)a3
+- (BOOL)isEqualToScannedNetwork:(id)network
 {
-  if (!a3)
+  if (!network)
   {
     return 0;
   }
 
-  v4 = [a3 SSID];
-  v5 = [(WiFiAvailabilityMatch *)self network];
-  v6 = [v5 SSID];
-  v7 = [v4 isEqualToString:v6];
+  sSID = [network SSID];
+  network = [(WiFiAvailabilityMatch *)self network];
+  sSID2 = [network SSID];
+  v7 = [sSID isEqualToString:sSID2];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WiFiAvailabilityMatch *)self isEqualToAvailabilityMatch:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WiFiAvailabilityMatch *)self isEqualToAvailabilityMatch:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToAvailabilityMatch:(id)a3
+- (BOOL)isEqualToAvailabilityMatch:(id)match
 {
-  v4 = a3;
-  v5 = [(WiFiAvailabilityMatch *)self SSID];
-  v6 = [v4 SSID];
-  if ([v5 isEqualToString:v6])
+  matchCopy = match;
+  sSID = [(WiFiAvailabilityMatch *)self SSID];
+  sSID2 = [matchCopy SSID];
+  if ([sSID isEqualToString:sSID2])
   {
-    v7 = [(WiFiAvailabilityMatch *)self network];
-    v8 = [v7 source];
-    v9 = [v4 network];
-    v10 = v8 == [v9 source];
+    network = [(WiFiAvailabilityMatch *)self network];
+    source = [network source];
+    network2 = [matchCopy network];
+    v10 = source == [network2 source];
   }
 
   else
@@ -80,17 +80,17 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@ : %p ", v5, self];
 
-  v7 = [(WiFiAvailabilityMatch *)self network];
-  [v6 appendFormat:@"Source: %ld ", objc_msgSend(v7, "source")];
+  network = [(WiFiAvailabilityMatch *)self network];
+  [v6 appendFormat:@"Source: %ld ", objc_msgSend(network, "source")];
 
-  v8 = [(WiFiAvailabilityMatch *)self SSID];
-  [v6 appendFormat:@"SSID: %@ ", v8];
+  sSID = [(WiFiAvailabilityMatch *)self SSID];
+  [v6 appendFormat:@"SSID: %@ ", sSID];
 
-  v9 = [(WiFiAvailabilityMatch *)self scannedNetwork];
-  if (v9)
+  scannedNetwork = [(WiFiAvailabilityMatch *)self scannedNetwork];
+  if (scannedNetwork)
   {
-    v10 = [(WiFiAvailabilityMatch *)self scannedNetwork];
-    [v6 appendFormat:@"RSSI: %ld ", objc_msgSend(v10, "RSSI")];
+    scannedNetwork2 = [(WiFiAvailabilityMatch *)self scannedNetwork];
+    [v6 appendFormat:@"RSSI: %ld ", objc_msgSend(scannedNetwork2, "RSSI")];
   }
 
   else
@@ -98,8 +98,8 @@
     [v6 appendFormat:@"RSSI: %ld ", 0];
   }
 
-  v11 = [(WiFiAvailabilityMatch *)self matchedAt];
-  [v6 appendFormat:@"MatchedAt: %@ ", v11];
+  matchedAt = [(WiFiAvailabilityMatch *)self matchedAt];
+  [v6 appendFormat:@"MatchedAt: %@ ", matchedAt];
 
   if ([(WiFiAvailabilityMatch *)self unwantedNetworkName])
   {
@@ -111,10 +111,10 @@
   return v6;
 }
 
-- (WiFiAvailabilityMatch)initWithNetwork:(id)a3 scannedNetwork:(id)a4
+- (WiFiAvailabilityMatch)initWithNetwork:(id)network scannedNetwork:(id)scannedNetwork
 {
-  v7 = a3;
-  v8 = a4;
+  networkCopy = network;
+  scannedNetworkCopy = scannedNetwork;
   v29.receiver = self;
   v29.super_class = WiFiAvailabilityMatch;
   v9 = [(WiFiAvailabilityMatch *)&v29 init];
@@ -125,7 +125,7 @@
     goto LABEL_19;
   }
 
-  if (!v7)
+  if (!networkCopy)
   {
     NSLog(&cfstr_SMissingCandid.isa, "[WiFiAvailabilityMatch initWithNetwork:scannedNetwork:]");
     matchedAt = v10;
@@ -133,21 +133,21 @@
     goto LABEL_19;
   }
 
-  objc_storeStrong(&v9->_network, a3);
-  objc_storeStrong(&v10->_scannedNetwork, a4);
-  v11 = [(WiFiCandidateNetwork *)v10->_network SSID];
-  if (v11)
+  objc_storeStrong(&v9->_network, network);
+  objc_storeStrong(&v10->_scannedNetwork, scannedNetwork);
+  sSID = [(WiFiCandidateNetwork *)v10->_network SSID];
+  if (sSID)
   {
-    v12 = v11;
-    v13 = [(WiFiCandidateNetwork *)v10->_network SSID];
-    v14 = [v13 length];
+    v12 = sSID;
+    sSID2 = [(WiFiCandidateNetwork *)v10->_network SSID];
+    v14 = [sSID2 length];
 
     if (v14)
     {
       network = v10->_network;
 LABEL_9:
-      v20 = [(WiFiCandidateNetwork *)network SSID];
-      v21 = [v20 copy];
+      sSID3 = [(WiFiCandidateNetwork *)network SSID];
+      v21 = [sSID3 copy];
       SSID = v10->_SSID;
       v10->_SSID = v21;
 LABEL_10:
@@ -156,12 +156,12 @@ LABEL_10:
     }
   }
 
-  v16 = [(WiFiScannedNetwork *)v10->_scannedNetwork SSID];
-  if (v16)
+  sSID4 = [(WiFiScannedNetwork *)v10->_scannedNetwork SSID];
+  if (sSID4)
   {
-    v17 = v16;
-    v18 = [(WiFiScannedNetwork *)v10->_scannedNetwork SSID];
-    v19 = [v18 length];
+    v17 = sSID4;
+    sSID5 = [(WiFiScannedNetwork *)v10->_scannedNetwork SSID];
+    v19 = [sSID5 length];
 
     if (v19)
     {
@@ -172,8 +172,8 @@ LABEL_10:
 
   if (!v10->_SSID)
   {
-    v20 = [(WiFiScannedNetwork *)v10->_scannedNetwork scanProperties];
-    SSID = [v20 objectForKey:@"SSID_STR"];
+    sSID3 = [(WiFiScannedNetwork *)v10->_scannedNetwork scanProperties];
+    SSID = [sSID3 objectForKey:@"SSID_STR"];
     v27 = [SSID copy];
     v28 = v10->_SSID;
     v10->_SSID = v27;
@@ -182,7 +182,7 @@ LABEL_10:
   }
 
 LABEL_12:
-  if ([v7 source] == 1)
+  if ([networkCopy source] == 1)
   {
     v23 = 2;
 LABEL_17:
@@ -190,7 +190,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if ([v7 source] != 2)
+  if ([networkCopy source] != 2)
   {
     v23 = 1;
     goto LABEL_17;
@@ -198,9 +198,9 @@ LABEL_17:
 
   v10->_priority = 0;
 LABEL_18:
-  v24 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   matchedAt = v10->_matchedAt;
-  v10->_matchedAt = v24;
+  v10->_matchedAt = date;
 LABEL_19:
 
   return v10;

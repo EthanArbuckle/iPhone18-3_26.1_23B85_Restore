@@ -1,19 +1,19 @@
 @interface RelatedSectionTableViewCell
 + (id)accessibilityIdentifier;
 + (id)identifier;
-- (RelatedSectionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (RelatedSectionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)configureSection;
 - (void)prepareForReuse;
-- (void)setSectionName:(id)a3;
+- (void)setSectionName:(id)name;
 @end
 
 @implementation RelatedSectionTableViewCell
 
-- (void)setSectionName:(id)a3
+- (void)setSectionName:(id)name
 {
-  objc_storeStrong(&self->_sectionName, a3);
-  v5 = a3;
-  [(MKVibrantLabel *)self->_sectionNameLabel setText:v5];
+  objc_storeStrong(&self->_sectionName, name);
+  nameCopy = name;
+  [(MKVibrantLabel *)self->_sectionNameLabel setText:nameCopy];
 }
 
 - (void)prepareForReuse
@@ -21,8 +21,8 @@
   v4.receiver = self;
   v4.super_class = RelatedSectionTableViewCell;
   [(RelatedSectionTableViewCell *)&v4 prepareForReuse];
-  v3 = [(RelatedSectionTableViewCell *)self sectionNameLabel];
-  [v3 setText:0];
+  sectionNameLabel = [(RelatedSectionTableViewCell *)self sectionNameLabel];
+  [sectionNameLabel setText:0];
 
   [(RelatedSectionTableViewCell *)self setSectionName:0];
 }
@@ -39,38 +39,38 @@
   [(MKVibrantLabel *)self->_sectionNameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(RelatedSectionTableViewCell *)self setSeparatorInset:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
   [(RelatedSectionTableViewCell *)self _setShouldHaveFullLengthBottomSeparator:1];
-  v6 = [(RelatedSectionTableViewCell *)self contentView];
-  [v6 addSubview:self->_sectionNameLabel];
+  contentView = [(RelatedSectionTableViewCell *)self contentView];
+  [contentView addSubview:self->_sectionNameLabel];
 
-  v22 = [(MKVibrantLabel *)self->_sectionNameLabel leadingAnchor];
-  v23 = [(RelatedSectionTableViewCell *)self contentView];
-  v21 = [v23 leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21 constant:16.0];
+  leadingAnchor = [(MKVibrantLabel *)self->_sectionNameLabel leadingAnchor];
+  contentView2 = [(RelatedSectionTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v24[0] = v20;
-  v18 = [(MKVibrantLabel *)self->_sectionNameLabel trailingAnchor];
-  v19 = [(RelatedSectionTableViewCell *)self contentView];
-  v17 = [v19 trailingAnchor];
-  v7 = [v18 constraintEqualToAnchor:v17];
+  trailingAnchor = [(MKVibrantLabel *)self->_sectionNameLabel trailingAnchor];
+  contentView3 = [(RelatedSectionTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[1] = v7;
-  v8 = [(MKVibrantLabel *)self->_sectionNameLabel topAnchor];
-  v9 = [(RelatedSectionTableViewCell *)self contentView];
-  v10 = [v9 topAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10 constant:16.0];
+  topAnchor = [(MKVibrantLabel *)self->_sectionNameLabel topAnchor];
+  contentView4 = [(RelatedSectionTableViewCell *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v24[2] = v11;
-  v12 = [(MKVibrantLabel *)self->_sectionNameLabel bottomAnchor];
-  v13 = [(RelatedSectionTableViewCell *)self contentView];
-  v14 = [v13 bottomAnchor];
-  v15 = [v12 constraintLessThanOrEqualToAnchor:v14];
+  bottomAnchor = [(MKVibrantLabel *)self->_sectionNameLabel bottomAnchor];
+  contentView5 = [(RelatedSectionTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v15 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v24[3] = v15;
   v16 = [NSArray arrayWithObjects:v24 count:4];
   [NSLayoutConstraint activateConstraints:v16];
 }
 
-- (RelatedSectionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RelatedSectionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = RelatedSectionTableViewCell;
-  v4 = [(RelatedSectionTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RelatedSectionTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

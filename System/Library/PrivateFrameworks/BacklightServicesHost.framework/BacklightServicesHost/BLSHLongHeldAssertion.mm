@@ -1,16 +1,16 @@
 @interface BLSHLongHeldAssertion
-+ (id)longHeldAssertionWithDescription:(id)a3 activeDuration:(double)a4 timeReleased:(id)a5;
++ (id)longHeldAssertionWithDescription:(id)description activeDuration:(double)duration timeReleased:(id)released;
 - (id)description;
-- (id)initWithDescription:(void *)a3 activeDuration:(double)a4 timeReleased:;
+- (id)initWithDescription:(void *)description activeDuration:(double)duration timeReleased:;
 @end
 
 @implementation BLSHLongHeldAssertion
 
-+ (id)longHeldAssertionWithDescription:(id)a3 activeDuration:(double)a4 timeReleased:(id)a5
++ (id)longHeldAssertionWithDescription:(id)description activeDuration:(double)duration timeReleased:(id)released
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(BLSHLongHeldAssertion *)[a1 alloc] initWithDescription:v9 activeDuration:v8 timeReleased:a4];
+  releasedCopy = released;
+  descriptionCopy = description;
+  v10 = [(BLSHLongHeldAssertion *)[self alloc] initWithDescription:descriptionCopy activeDuration:releasedCopy timeReleased:duration];
 
   return v10;
 }
@@ -23,7 +23,7 @@
   v9 = __36__BLSHLongHeldAssertion_description__block_invoke;
   v10 = &unk_27841E538;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendProem:self block:&v7];
   v5 = [v4 description];
@@ -39,25 +39,25 @@ void __36__BLSHLongHeldAssertion_description__block_invoke(uint64_t a1)
   [v2 appendString:v3 withName:@"released"];
 }
 
-- (id)initWithDescription:(void *)a3 activeDuration:(double)a4 timeReleased:
+- (id)initWithDescription:(void *)description activeDuration:(double)duration timeReleased:
 {
   v8 = a2;
-  v9 = a3;
-  if (a1)
+  descriptionCopy = description;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = BLSHLongHeldAssertion;
     v10 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 1, a2);
-      *(a1 + 3) = a4;
-      objc_storeStrong(a1 + 2, a3);
+      *(self + 3) = duration;
+      objc_storeStrong(self + 2, description);
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

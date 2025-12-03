@@ -1,31 +1,31 @@
 @interface ocv_drift_modelInput
-- (id)featureValueForName:(id)a3;
-- (ocv_drift_modelInput)initWithInput:(id)a3;
+- (id)featureValueForName:(id)name;
+- (ocv_drift_modelInput)initWithInput:(id)input;
 @end
 
 @implementation ocv_drift_modelInput
 
-- (ocv_drift_modelInput)initWithInput:(id)a3
+- (ocv_drift_modelInput)initWithInput:(id)input
 {
-  v5 = a3;
+  inputCopy = input;
   v9.receiver = self;
   v9.super_class = ocv_drift_modelInput;
   v6 = [(ocv_drift_modelInput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_Input, a3);
+    objc_storeStrong(&v6->_Input, input);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"Input"])
+  if ([name isEqualToString:@"Input"])
   {
-    v4 = [(ocv_drift_modelInput *)self Input];
-    v5 = [MLFeatureValue featureValueWithMultiArray:v4];
+    input = [(ocv_drift_modelInput *)self Input];
+    v5 = [MLFeatureValue featureValueWithMultiArray:input];
   }
 
   else

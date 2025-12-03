@@ -1,14 +1,14 @@
 @interface JPDataStream
-- (JPDataStream)initWithData:(id)a3;
+- (JPDataStream)initWithData:(id)data;
 @end
 
 @implementation JPDataStream
 
-- (JPDataStream)initWithData:(id)a3
+- (JPDataStream)initWithData:(id)data
 {
-  v3 = a3;
-  [v3 bytes];
-  [v3 length];
+  dataCopy = data;
+  [dataCopy bytes];
+  [dataCopy length];
   JetPackCreateDataStream();
 }
 

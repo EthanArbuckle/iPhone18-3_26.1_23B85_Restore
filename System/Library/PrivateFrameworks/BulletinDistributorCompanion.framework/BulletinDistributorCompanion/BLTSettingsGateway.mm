@@ -1,19 +1,19 @@
 @interface BLTSettingsGateway
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-+ (id)surrogateWithQueue:(id)a3;
-- (BLTSettingsGateway)initWithQueue:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
++ (id)surrogateWithQueue:(id)queue;
+- (BLTSettingsGateway)initWithQueue:(id)queue;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation BLTSettingsGateway
 
-- (BLTSettingsGateway)initWithQueue:(id)a3
+- (BLTSettingsGateway)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = BLTSettingsGateway;
   v5 = [(BLTSettingsGateway *)&v18 init];
@@ -23,7 +23,7 @@
     actualSettingsGatewayLock = v5->_actualSettingsGatewayLock;
     v5->_actualSettingsGatewayLock = v6;
 
-    v8 = [objc_alloc(MEMORY[0x277CF3580]) initWithQueue:v4];
+    v8 = [objc_alloc(MEMORY[0x277CF3580]) initWithQueue:queueCopy];
     actualSettingsGateway = v5->_actualSettingsGateway;
     v5->_actualSettingsGateway = v8;
 
@@ -38,7 +38,7 @@
     v11[3] = &unk_278D31D70;
     v13 = v16;
     objc_copyWeak(&v14, &location);
-    v12 = v4;
+    v12 = queueCopy;
     notify_register_dispatch("com.apple.bulletinboard.listeningForConnections", &v5->_token, v12, v11);
 
     objc_destroyWeak(&v14);
@@ -87,10 +87,10 @@ void __36__BLTSettingsGateway_initWithQueue___block_invoke(uint64_t a1, int toke
   }
 }
 
-+ (id)surrogateWithQueue:(id)a3
++ (id)surrogateWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [[BLTSettingsGateway alloc] initWithQueue:v3];
+  queueCopy = queue;
+  v4 = [[BLTSettingsGateway alloc] initWithQueue:queueCopy];
 
   return v4;
 }
@@ -107,29 +107,29 @@ void __36__BLTSettingsGateway_initWithQueue___block_invoke(uint64_t a1, int toke
   [(BLTSettingsGateway *)&v4 dealloc];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   actualSettingsGatewayLock = self->_actualSettingsGatewayLock;
-  v5 = a3;
+  invocationCopy = invocation;
   [(NSLock *)actualSettingsGatewayLock lock];
   v6 = self->_actualSettingsGatewayLock;
   v7 = self->_actualSettingsGateway;
   [(NSLock *)v6 unlock];
-  [v5 selector];
+  [invocationCopy selector];
   if (objc_opt_respondsToSelector())
   {
-    [v5 invokeWithTarget:v7];
+    [invocationCopy invokeWithTarget:v7];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = BLTSettingsGateway;
-    [(BLTSettingsGateway *)&v8 forwardInvocation:v5];
+    [(BLTSettingsGateway *)&v8 forwardInvocation:invocationCopy];
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = BLTSettingsGateway;
@@ -151,9 +151,9 @@ void __36__BLTSettingsGateway_initWithQueue___block_invoke(uint64_t a1, int toke
   return v4 & 1;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     isKindOfClass = 1;
   }
@@ -171,9 +171,9 @@ void __36__BLTSettingsGateway_initWithQueue___block_invoke(uint64_t a1, int toke
   return isKindOfClass & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___BLTSettingsGateway;
   if (objc_msgSendSuper2(&v5, sel_instancesRespondToSelector_))
   {
@@ -182,11 +182,11 @@ void __36__BLTSettingsGateway_initWithQueue___block_invoke(uint64_t a1, int toke
 
   else
   {
-    return [MEMORY[0x277CF3580] instancesRespondToSelector:a3];
+    return [MEMORY[0x277CF3580] instancesRespondToSelector:selector];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = BLTSettingsGateway;
@@ -198,7 +198,7 @@ void __36__BLTSettingsGateway_initWithQueue___block_invoke(uint64_t a1, int toke
     actualSettingsGatewayLock = self->_actualSettingsGatewayLock;
     v8 = actualSettingsGateway;
     [(NSLock *)actualSettingsGatewayLock unlock];
-    v5 = [(BBSettingsGateway *)v8 methodSignatureForSelector:a3];
+    v5 = [(BBSettingsGateway *)v8 methodSignatureForSelector:selector];
   }
 
   return v5;

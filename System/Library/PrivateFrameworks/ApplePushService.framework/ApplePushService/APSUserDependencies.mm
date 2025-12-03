@@ -3,7 +3,7 @@
 - (APSSystemTokenStorage)systemTokenStorage;
 - (APSUserAppIDManager)userAppIDManager;
 - (APSUserDependencies)init;
-- (APSUserDependencies)initWithClientIdentityProvider:(id)a3 systemTokenStorage:(id)a4 userPreferences:(id)a5 userAppIDManager:(id)a6;
+- (APSUserDependencies)initWithClientIdentityProvider:(id)provider systemTokenStorage:(id)storage userPreferences:(id)preferences userAppIDManager:(id)manager;
 - (APSUserPreferences)userPreferences;
 - (NSString)description;
 @end
@@ -42,12 +42,12 @@
   return v3;
 }
 
-- (APSUserDependencies)initWithClientIdentityProvider:(id)a3 systemTokenStorage:(id)a4 userPreferences:(id)a5 userAppIDManager:(id)a6
+- (APSUserDependencies)initWithClientIdentityProvider:(id)provider systemTokenStorage:(id)storage userPreferences:(id)preferences userAppIDManager:(id)manager
 {
-  *(&self->super.isa + OBJC_IVAR___APSUserDependencies_clientIdentityProvider) = a3;
-  *(&self->super.isa + OBJC_IVAR___APSUserDependencies_systemTokenStorage) = a4;
-  *(&self->super.isa + OBJC_IVAR___APSUserDependencies_userPreferences) = a5;
-  *(&self->super.isa + OBJC_IVAR___APSUserDependencies_userAppIDManager) = a6;
+  *(&self->super.isa + OBJC_IVAR___APSUserDependencies_clientIdentityProvider) = provider;
+  *(&self->super.isa + OBJC_IVAR___APSUserDependencies_systemTokenStorage) = storage;
+  *(&self->super.isa + OBJC_IVAR___APSUserDependencies_userPreferences) = preferences;
+  *(&self->super.isa + OBJC_IVAR___APSUserDependencies_userAppIDManager) = manager;
   v7.receiver = self;
   v7.super_class = type metadata accessor for UserDependencies();
   swift_unknownObjectRetain();
@@ -59,7 +59,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000CB798();
 
   v3 = String._bridgeToObjectiveC()();

@@ -1,7 +1,7 @@
 @interface CDDCloudKitMetadataModel
 + (id)newMetadataModel;
-+ (void)addAttributes:(void *)a3 toPropertiesOfEntity:;
-+ (void)addRelationships:(void *)a3 toPropertiesOfEntity:;
++ (void)addAttributes:(void *)attributes toPropertiesOfEntity:;
++ (void)addRelationships:(void *)relationships toPropertiesOfEntity:;
 @end
 
 @implementation CDDCloudKitMetadataModel
@@ -57,30 +57,30 @@
   return v2;
 }
 
-+ (void)addAttributes:(void *)a3 toPropertiesOfEntity:
++ (void)addAttributes:(void *)attributes toPropertiesOfEntity:
 {
   objc_opt_self();
-  v5 = [objc_msgSend(a3 "properties")];
+  v5 = [objc_msgSend(attributes "properties")];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__CDDCloudKitMetadataModel_addAttributes_toPropertiesOfEntity___block_invoke;
   v6[3] = &unk_1E6EC28F8;
   v6[4] = v5;
   [a2 enumerateKeysAndObjectsUsingBlock:v6];
-  [a3 setProperties:v5];
+  [attributes setProperties:v5];
 }
 
-+ (void)addRelationships:(void *)a3 toPropertiesOfEntity:
++ (void)addRelationships:(void *)relationships toPropertiesOfEntity:
 {
   objc_opt_self();
-  v5 = [objc_msgSend(a3 "properties")];
+  v5 = [objc_msgSend(relationships "properties")];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__CDDCloudKitMetadataModel_addRelationships_toPropertiesOfEntity___block_invoke;
   v6[3] = &unk_1E6EC28F8;
   v6[4] = v5;
   [a2 enumerateKeysAndObjectsUsingBlock:v6];
-  [a3 setProperties:v5];
+  [relationships setProperties:v5];
 }
 
 void __63__CDDCloudKitMetadataModel_addAttributes_toPropertiesOfEntity___block_invoke(uint64_t a1, uint64_t a2, void *a3)

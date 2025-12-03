@@ -1,9 +1,9 @@
 @interface CTCarrierSpaceUserConsentFlowInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTCarrierSpaceUserConsentFlowInfo)init;
-- (CTCarrierSpaceUserConsentFlowInfo)initWithCoder:(id)a3;
+- (CTCarrierSpaceUserConsentFlowInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCarrierSpaceUserConsentFlowInfo
@@ -29,21 +29,21 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTCarrierSpaceUserConsentFlowInfo *)self webURL];
-  [v3 appendFormat:@" URL=%@", v4];
+  webURL = [(CTCarrierSpaceUserConsentFlowInfo *)self webURL];
+  [v3 appendFormat:@" URL=%@", webURL];
 
-  v5 = [(CTCarrierSpaceUserConsentFlowInfo *)self postData];
-  [v3 appendFormat:@" postData=%@", v5];
+  postData = [(CTCarrierSpaceUserConsentFlowInfo *)self postData];
+  [v3 appendFormat:@" postData=%@", postData];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -53,25 +53,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(CTCarrierSpaceUserConsentFlowInfo *)self webURL];
-      v8 = [(CTCarrierSpaceUserConsentFlowInfo *)v6 webURL];
-      if (v7 == v8 || (-[CTCarrierSpaceUserConsentFlowInfo webURL](self, "webURL"), v3 = objc_claimAutoreleasedReturnValue(), -[CTCarrierSpaceUserConsentFlowInfo webURL](v6, "webURL"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToString:v4]))
+      webURL = [(CTCarrierSpaceUserConsentFlowInfo *)self webURL];
+      webURL2 = [(CTCarrierSpaceUserConsentFlowInfo *)equalCopy webURL];
+      if (webURL == webURL2 || (-[CTCarrierSpaceUserConsentFlowInfo webURL](self, "webURL"), v3 = objc_claimAutoreleasedReturnValue(), -[CTCarrierSpaceUserConsentFlowInfo webURL](equalCopy, "webURL"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToString:v4]))
       {
-        v10 = [(CTCarrierSpaceUserConsentFlowInfo *)self postData];
-        v11 = [(CTCarrierSpaceUserConsentFlowInfo *)v6 postData];
-        if (v10 == v11)
+        postData = [(CTCarrierSpaceUserConsentFlowInfo *)self postData];
+        postData2 = [(CTCarrierSpaceUserConsentFlowInfo *)equalCopy postData];
+        if (postData == postData2)
         {
           v9 = 1;
         }
 
         else
         {
-          v12 = [(CTCarrierSpaceUserConsentFlowInfo *)self postData];
-          v13 = [(CTCarrierSpaceUserConsentFlowInfo *)v6 postData];
-          v9 = [v12 isEqualToString:v13];
+          postData3 = [(CTCarrierSpaceUserConsentFlowInfo *)self postData];
+          postData4 = [(CTCarrierSpaceUserConsentFlowInfo *)equalCopy postData];
+          v9 = [postData3 isEqualToString:postData4];
         }
 
-        if (v7 == v8)
+        if (webURL == webURL2)
         {
           goto LABEL_13;
         }
@@ -94,27 +94,27 @@ LABEL_14:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   webURL = self->_webURL;
-  v5 = a3;
-  [v5 encodeObject:webURL forKey:@"webURL"];
-  [v5 encodeObject:self->_postData forKey:@"postData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:webURL forKey:@"webURL"];
+  [coderCopy encodeObject:self->_postData forKey:@"postData"];
 }
 
-- (CTCarrierSpaceUserConsentFlowInfo)initWithCoder:(id)a3
+- (CTCarrierSpaceUserConsentFlowInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTCarrierSpaceUserConsentFlowInfo;
   v5 = [(CTCarrierSpaceUserConsentFlowInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"webURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"webURL"];
     webURL = v5->_webURL;
     v5->_webURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"postData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"postData"];
     postData = v5->_postData;
     v5->_postData = v8;
   }

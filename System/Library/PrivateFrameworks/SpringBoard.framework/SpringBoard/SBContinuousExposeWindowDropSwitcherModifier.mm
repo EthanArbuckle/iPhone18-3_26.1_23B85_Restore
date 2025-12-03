@@ -1,41 +1,41 @@
 @interface SBContinuousExposeWindowDropSwitcherModifier
-- (BOOL)_isLayoutRolePartOfWindowDragInteraction:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
+- (BOOL)_isLayoutRolePartOfWindowDragInteraction:(int64_t)interaction inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
 - (CGPoint)liftOffVelocity;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (CGRect)fullyPresentedFrameForIndex:(unint64_t)a3 frame:(CGRect)a4;
-- (SBContinuousExposeWindowDropSwitcherModifier)initWithTransitionID:(id)a3 selectedDisplayItem:(id)a4 toAppLayout:(id)a5 initialAppLayout:(id)a6 liftOffVelocity:(CGPoint)a7;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (CGRect)fullyPresentedFrameForIndex:(unint64_t)index frame:(CGRect)frame;
+- (SBContinuousExposeWindowDropSwitcherModifier)initWithTransitionID:(id)d selectedDisplayItem:(id)item toAppLayout:(id)layout initialAppLayout:(id)appLayout liftOffVelocity:(CGPoint)velocity;
 - (double)fadeInDelayForSplitViewHandles;
-- (id)_appLayoutContainingDisplayItem:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)_appLayoutContainingDisplayItem:(id)item;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)transitionDidEnd;
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5;
-- (void)didMoveToParentModifier:(id)a3;
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBContinuousExposeWindowDropSwitcherModifier
 
-- (SBContinuousExposeWindowDropSwitcherModifier)initWithTransitionID:(id)a3 selectedDisplayItem:(id)a4 toAppLayout:(id)a5 initialAppLayout:(id)a6 liftOffVelocity:(CGPoint)a7
+- (SBContinuousExposeWindowDropSwitcherModifier)initWithTransitionID:(id)d selectedDisplayItem:(id)item toAppLayout:(id)layout initialAppLayout:(id)appLayout liftOffVelocity:(CGPoint)velocity
 {
-  y = a7.y;
-  x = a7.x;
-  v14 = a4;
-  v15 = a5;
+  y = velocity.y;
+  x = velocity.x;
+  itemCopy = item;
+  layoutCopy = layout;
   v23.receiver = self;
   v23.super_class = SBContinuousExposeWindowDropSwitcherModifier;
-  v16 = [(SBTransitionSwitcherModifier *)&v23 initWithTransitionID:a3];
+  v16 = [(SBTransitionSwitcherModifier *)&v23 initWithTransitionID:d];
   if (v16)
   {
-    if (!v14)
+    if (!itemCopy)
     {
       [SBContinuousExposeWindowDropSwitcherModifier initWithTransitionID:a2 selectedDisplayItem:v16 toAppLayout:? initialAppLayout:? liftOffVelocity:?];
     }
 
-    objc_storeStrong(&v16->_selectedDisplayItem, a4);
-    objc_storeStrong(&v16->_toAppLayout, a5);
+    objc_storeStrong(&v16->_selectedDisplayItem, item);
+    objc_storeStrong(&v16->_toAppLayout, layout);
     v16->_liftOffVelocity.x = x;
     v16->_liftOffVelocity.y = y;
     SBRectWithSize();
@@ -43,7 +43,7 @@
     v16->_initialFrameOfMinimizingItem.origin.y = v18;
     v16->_initialFrameOfMinimizingItem.size.width = v19;
     v16->_initialFrameOfMinimizingItem.size.height = v20;
-    if ([v15 containsItem:v14])
+    if ([layoutCopy containsItem:itemCopy])
     {
       v21 = [[SBSplitDisplayItemSwitcherModifier alloc] initWithDisplayItem:v16->_selectedDisplayItem];
       [(SBChainableModifier *)v16 addChildModifier:v21 atLevel:0 key:@"SBContinuousExposeWindowDropSwitcherModifierKeySplitDisplayItem"];
@@ -53,12 +53,12 @@
   return v16;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v6.receiver = self;
   v6.super_class = SBContinuousExposeWindowDropSwitcherModifier;
   [(SBChainableModifier *)&v6 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     v5 = [SBPinDesktopSpaceDisplayItemsSwitcherModifier modifierForTransitionToAppLayout:self->_toAppLayout context:self];
     if (v5)
@@ -68,10 +68,10 @@
   }
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBContinuousExposeWindowDropSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeWindowDropSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
   if ([v6 containsItem:self->_selectedDisplayItem] && -[SBAppLayout containsItem:](self->_toAppLayout, "containsItem:", self->_selectedDisplayItem))
   {
@@ -82,48 +82,48 @@
   {
     v9.receiver = self;
     v9.super_class = SBContinuousExposeWindowDropSwitcherModifier;
-    v7 = [(SBContinuousExposeWindowDropSwitcherModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+    v7 = [(SBContinuousExposeWindowDropSwitcherModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
   }
 
   return v7;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = [(SBChainableModifier *)self childModifierByKey:@"SBContinuousExposeWindowDropSwitcherModifierKeyFullScreenToHomeIcon"];
 
   if (v5)
   {
     v17.receiver = self;
     v17.super_class = SBContinuousExposeWindowDropSwitcherModifier;
-    v6 = [(SBTransitionSwitcherModifier *)&v17 animationAttributesForLayoutElement:v4];
+    v6 = [(SBTransitionSwitcherModifier *)&v17 animationAttributesForLayoutElement:elementCopy];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = SBContinuousExposeWindowDropSwitcherModifier;
-    v7 = [(SBTransitionSwitcherModifier *)&v16 animationAttributesForLayoutElement:v4];
+    v7 = [(SBTransitionSwitcherModifier *)&v16 animationAttributesForLayoutElement:elementCopy];
     v6 = [v7 mutableCopy];
 
-    v8 = [(SBContinuousExposeWindowDropSwitcherModifier *)self switcherSettings];
-    v9 = [v8 windowingSettings];
-    v10 = [v9 windowDragAnimationSettings];
-    [v6 setLayoutSettings:v10];
+    switcherSettings = [(SBContinuousExposeWindowDropSwitcherModifier *)self switcherSettings];
+    windowingSettings = [switcherSettings windowingSettings];
+    windowDragAnimationSettings = [windowingSettings windowDragAnimationSettings];
+    [v6 setLayoutSettings:windowDragAnimationSettings];
 
-    if ([v4 isAppLayout])
+    if ([elementCopy isAppLayout])
     {
       toAppLayout = self->_toAppLayout;
-      v12 = [v4 appLayout];
-      if ([(SBAppLayout *)toAppLayout isOrContainsAppLayout:v12])
+      appLayout = [elementCopy appLayout];
+      if ([(SBAppLayout *)toAppLayout isOrContainsAppLayout:appLayout])
       {
       }
 
       else
       {
-        v13 = [v4 appLayout];
-        v14 = [(SBContinuousExposeWindowDropSwitcherModifier *)self prioritizesSortOrderForAppLayout:v13];
+        appLayout2 = [elementCopy appLayout];
+        v14 = [(SBContinuousExposeWindowDropSwitcherModifier *)self prioritizesSortOrderForAppLayout:appLayout2];
 
         if (v14)
         {
@@ -137,17 +137,17 @@
   return v6;
 }
 
-- (CGRect)fullyPresentedFrameForIndex:(unint64_t)a3 frame:(CGRect)a4
+- (CGRect)fullyPresentedFrameForIndex:(unint64_t)index frame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = SBContinuousExposeWindowDropSwitcherModifier;
-  [(SBContinuousExposeWindowDropSwitcherModifier *)&v20 fullyPresentedFrameForIndex:a4.origin.x frame:a4.origin.y, a4.size.width, a4.size.height];
+  [(SBContinuousExposeWindowDropSwitcherModifier *)&v20 fullyPresentedFrameForIndex:frame.origin.x frame:frame.origin.y, frame.size.width, frame.size.height];
   x = v6;
   y = v8;
   width = v10;
   height = v12;
-  v14 = [(SBContinuousExposeWindowDropSwitcherModifier *)self appLayouts];
-  v15 = [v14 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeWindowDropSwitcherModifier *)self appLayouts];
+  v15 = [appLayouts objectAtIndex:index];
 
   if ([v15 containsItem:self->_minimizingItem])
   {
@@ -168,23 +168,23 @@
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v24.receiver = self;
   v24.super_class = SBContinuousExposeWindowDropSwitcherModifier;
-  v11 = a4;
-  [(SBContinuousExposeWindowDropSwitcherModifier *)&v24 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+  layoutCopy = layout;
+  [(SBContinuousExposeWindowDropSwitcherModifier *)&v24 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  LODWORD(a3) = [v11 containsItem:{self->_minimizingItem, v24.receiver, v24.super_class}];
+  LODWORD(role) = [layoutCopy containsItem:{self->_minimizingItem, v24.receiver, v24.super_class}];
 
-  if (a3)
+  if (role)
   {
     v19 = height;
     v17 = width;
@@ -203,10 +203,10 @@
   return result;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([(SBContinuousExposeWindowDropSwitcherModifier *)self _isLayoutRolePartOfWindowDragInteraction:a3 inAppLayout:v6])
+  layoutCopy = layout;
+  if ([(SBContinuousExposeWindowDropSwitcherModifier *)self _isLayoutRolePartOfWindowDragInteraction:scene inAppLayout:layoutCopy])
   {
     v7 = 1;
   }
@@ -215,42 +215,42 @@
   {
     v9.receiver = self;
     v9.super_class = SBContinuousExposeWindowDropSwitcherModifier;
-    v7 = [(SBContinuousExposeWindowDropSwitcherModifier *)&v9 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6];
+    v7 = [(SBContinuousExposeWindowDropSwitcherModifier *)&v9 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy];
   }
 
   return v7;
 }
 
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners
 {
-  v8 = a4;
+  layoutCopy = layout;
   v17.receiver = self;
   v17.super_class = SBContinuousExposeWindowDropSwitcherModifier;
-  v9 = [(SBTransitionSwitcherModifier *)&v17 maskedCornersForLayoutRole:a3 inAppLayout:v8 withMaskedCorners:a5];
-  v10 = [v8 itemForLayoutRole:a3];
+  v9 = [(SBTransitionSwitcherModifier *)&v17 maskedCornersForLayoutRole:role inAppLayout:layoutCopy withMaskedCorners:corners];
+  v10 = [layoutCopy itemForLayoutRole:role];
   v11 = v10;
-  if (v10 && ([(SBDisplayItem *)v10 isEqualToItem:?]& 1) == 0 && [(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:v8])
+  if (v10 && ([(SBDisplayItem *)v10 isEqualToItem:?]& 1) == 0 && [(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:layoutCopy])
   {
     v12 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_toAppLayout];
     v13 = [v12 flexibleAutoLayoutItemForDisplayItem:v11];
-    v14 = [v13 intersectedDisplayRectCorners];
+    intersectedDisplayRectCorners = [v13 intersectedDisplayRectCorners];
     v15 = v9 & 0xFFFFFFFFFFFFFFFELL;
-    if ((v14 & 1) == 0)
+    if ((intersectedDisplayRectCorners & 1) == 0)
     {
       v15 = v9;
     }
 
-    if ((v14 & 2) != 0)
+    if ((intersectedDisplayRectCorners & 2) != 0)
     {
       v15 &= ~2uLL;
     }
 
-    if ((v14 & 4) != 0)
+    if ((intersectedDisplayRectCorners & 4) != 0)
     {
       v15 &= ~4uLL;
     }
 
-    if ((v14 & 8) != 0)
+    if ((intersectedDisplayRectCorners & 8) != 0)
     {
       v9 = v15 & 0xFFFFFFFFFFFFFFF7;
     }
@@ -264,38 +264,38 @@
   return v9;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v66.receiver = self;
   v66.super_class = SBContinuousExposeWindowDropSwitcherModifier;
-  v60 = [(SBTransitionSwitcherModifier *)&v66 handleTransitionEvent:v4];
-  v5 = [v4 fromEnvironmentMode];
-  v6 = [v4 toEnvironmentMode];
-  v7 = [v4 fromAppLayout];
-  v61 = [v4 toAppLayout];
-  v8 = [(SBContinuousExposeWindowDropSwitcherModifier *)self isReduceMotionEnabled];
-  v9 = [(SBTransitionSwitcherModifier *)self transitionID];
-  v10 = [(SBContinuousExposeWindowDropSwitcherModifier *)self windowManagementContext];
-  v11 = [v10 isAutomaticStageCreationEnabled];
+  v60 = [(SBTransitionSwitcherModifier *)&v66 handleTransitionEvent:eventCopy];
+  fromEnvironmentMode = [eventCopy fromEnvironmentMode];
+  toEnvironmentMode = [eventCopy toEnvironmentMode];
+  fromAppLayout = [eventCopy fromAppLayout];
+  toAppLayout = [eventCopy toAppLayout];
+  isReduceMotionEnabled = [(SBContinuousExposeWindowDropSwitcherModifier *)self isReduceMotionEnabled];
+  transitionID = [(SBTransitionSwitcherModifier *)self transitionID];
+  windowManagementContext = [(SBContinuousExposeWindowDropSwitcherModifier *)self windowManagementContext];
+  isAutomaticStageCreationEnabled = [windowManagementContext isAutomaticStageCreationEnabled];
   v12 = [(SBChainableModifier *)self childModifierByKey:@"SBContinuousExposeWindowDropSwitcherModifierKeyFullScreenToHomeIcon"];
 
   if (!v12)
   {
-    v13 = [(SBContinuousExposeWindowDropSwitcherModifier *)self displayItemInSlideOver];
-    v59 = v13;
-    if (v13 && (v14 = v13, -[SBDisplayItem isEqualToItem:](self->_selectedDisplayItem, v13)) && ([v61 containsItem:v14] & 1) == 0)
+    displayItemInSlideOver = [(SBContinuousExposeWindowDropSwitcherModifier *)self displayItemInSlideOver];
+    v59 = displayItemInSlideOver;
+    if (displayItemInSlideOver && (v14 = displayItemInSlideOver, -[SBDisplayItem isEqualToItem:](self->_selectedDisplayItem, displayItemInSlideOver)) && ([toAppLayout containsItem:v14] & 1) == 0)
     {
-      v32 = [(SBContinuousExposeWindowDropSwitcherModifier *)self displayOrdinal];
+      displayOrdinal = [(SBContinuousExposeWindowDropSwitcherModifier *)self displayOrdinal];
       if ([(SBContinuousExposeWindowDropSwitcherModifier *)self hasMultipleDisplays])
       {
-        v58 = [(SBContinuousExposeWindowDropSwitcherModifier *)self draggingAppLayoutsForWindowDrag];
+        draggingAppLayoutsForWindowDrag = [(SBContinuousExposeWindowDropSwitcherModifier *)self draggingAppLayoutsForWindowDrag];
         v65[0] = MEMORY[0x277D85DD0];
         v65[1] = 3221225472;
         v65[2] = __70__SBContinuousExposeWindowDropSwitcherModifier_handleTransitionEvent___block_invoke;
         v65[3] = &__block_descriptor_40_e21_B16__0__SBAppLayout_8l;
-        v65[4] = v32;
-        v15 = [v58 bs_containsObjectPassingTest:v65] ^ 1;
+        v65[4] = displayOrdinal;
+        v15 = [draggingAppLayoutsForWindowDrag bs_containsObjectPassingTest:v65] ^ 1;
       }
 
       else
@@ -303,8 +303,8 @@
         v15 = 1;
       }
 
-      v16 = v6 == 1;
-      if (v6 == 1 && v15)
+      v16 = toEnvironmentMode == 1;
+      if (toEnvironmentMode == 1 && v15)
       {
         v22 = [[SBStashSlideOverItemAnimationModifier alloc] initWithDirection:0];
         v23 = v59;
@@ -315,12 +315,12 @@
     else
     {
       v15 = 0;
-      v16 = v6 == 1;
+      v16 = toEnvironmentMode == 1;
     }
 
-    if (v5 == 3 && v16)
+    if (fromEnvironmentMode == 3 && v16)
     {
-      if ([v4 isIconZoomDisabled])
+      if ([eventCopy isIconZoomDisabled])
       {
         v17 = *MEMORY[0x277CBF398];
         v18 = *(MEMORY[0x277CBF398] + 8);
@@ -330,35 +330,35 @@
 
       else
       {
-        [(SBContinuousExposeWindowDropSwitcherModifier *)self homeScreenIconFrameForAppLayout:v7];
+        [(SBContinuousExposeWindowDropSwitcherModifier *)self homeScreenIconFrameForAppLayout:fromAppLayout];
       }
 
       v23 = v59;
-      if (((CGRectIsNull(*&v17) | v8) & 1) == 0)
+      if (((CGRectIsNull(*&v17) | isReduceMotionEnabled) & 1) == 0)
       {
-        [(SBContinuousExposeWindowDropSwitcherModifier *)self currentGenieFrameForVisibleAppLayout:v7];
+        [(SBContinuousExposeWindowDropSwitcherModifier *)self currentGenieFrameForVisibleAppLayout:fromAppLayout];
         self->_initialFrameOfMinimizingItem.origin.x = v26;
         self->_initialFrameOfMinimizingItem.origin.y = v27;
         self->_initialFrameOfMinimizingItem.size.width = v28;
         self->_initialFrameOfMinimizingItem.size.height = v29;
-        v30 = [v7 itemForLayoutRole:1];
+        v30 = [fromAppLayout itemForLayoutRole:1];
         minimizingItem = self->_minimizingItem;
         self->_minimizingItem = v30;
 
-        v24 = [[SBFullScreenToHomeIconZoomSwitcherModifier alloc] initWithTransitionID:v9 appLayout:v7 direction:1];
-        [(SBFullScreenToHomeIconZoomSwitcherModifier *)v24 setShouldForceDefaultAnchorPointForTransition:1];
-        [(SBFullScreenToHomeIconZoomSwitcherModifier *)v24 setShouldDockOrderFrontDuringTransition:1];
-        [(SBFullScreenToHomeIconZoomSwitcherModifier *)v24 setCanAddVelocityKickToHurdleDock:0];
-        v22 = [[SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier alloc] initWithAppLayout:v7 gestureEdge:1 liftOffVelocity:self->_liftOffVelocity.x, self->_liftOffVelocity.y];
-        [(SBChainableModifier *)v22 addChildModifier:v24];
+        homeGestureSettings = [[SBFullScreenToHomeIconZoomSwitcherModifier alloc] initWithTransitionID:transitionID appLayout:fromAppLayout direction:1];
+        [(SBFullScreenToHomeIconZoomSwitcherModifier *)homeGestureSettings setShouldForceDefaultAnchorPointForTransition:1];
+        [(SBFullScreenToHomeIconZoomSwitcherModifier *)homeGestureSettings setShouldDockOrderFrontDuringTransition:1];
+        [(SBFullScreenToHomeIconZoomSwitcherModifier *)homeGestureSettings setCanAddVelocityKickToHurdleDock:0];
+        v22 = [[SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier alloc] initWithAppLayout:fromAppLayout gestureEdge:1 liftOffVelocity:self->_liftOffVelocity.x, self->_liftOffVelocity.y];
+        [(SBChainableModifier *)v22 addChildModifier:homeGestureSettings];
         goto LABEL_22;
       }
 
-      if (v7)
+      if (fromAppLayout)
       {
-        v24 = [(SBContinuousExposeWindowDropSwitcherModifier *)self homeGestureSettings];
-        [(SBFullScreenToHomeIconZoomSwitcherModifier *)v24 homeGestureCenterZoomDownCenterYOffsetFactor];
-        v22 = [[SBFullScreenToHomeCenterZoomDownSwitcherModifier alloc] initWithTransitionID:v9 appLayout:v7 offsetYPercentOfScreenHeight:v25];
+        homeGestureSettings = [(SBContinuousExposeWindowDropSwitcherModifier *)self homeGestureSettings];
+        [(SBFullScreenToHomeIconZoomSwitcherModifier *)homeGestureSettings homeGestureCenterZoomDownCenterYOffsetFactor];
+        v22 = [[SBFullScreenToHomeCenterZoomDownSwitcherModifier alloc] initWithTransitionID:transitionID appLayout:fromAppLayout offsetYPercentOfScreenHeight:v25];
         [(SBStashSlideOverItemAnimationModifier *)v22 setShouldForceDefaultAnchorPointForTransition:1];
 LABEL_22:
 
@@ -377,13 +377,13 @@ LABEL_43:
 
     else
     {
-      if (v5 == 3 && v6 == 3)
+      if (fromEnvironmentMode == 3 && toEnvironmentMode == 3)
       {
-        v21 = [v4 minimizingDisplayItem];
-        if (v21 && !(v11 & 1 | (([v7 containsItem:v21] & 1) == 0)))
+        minimizingDisplayItem = [eventCopy minimizingDisplayItem];
+        if (minimizingDisplayItem && !(isAutomaticStageCreationEnabled & 1 | (([fromAppLayout containsItem:minimizingDisplayItem] & 1) == 0)))
         {
-          v33 = [v7 leafAppLayoutForItem:v21];
-          if ([v4 isIconZoomDisabled])
+          v33 = [fromAppLayout leafAppLayoutForItem:minimizingDisplayItem];
+          if ([eventCopy isIconZoomDisabled])
           {
             x = *MEMORY[0x277CBF398];
             y = *(MEMORY[0x277CBF398] + 8);
@@ -418,8 +418,8 @@ LABEL_43:
           if (CGRectIsNull(v69))
           {
             v46 = [SBPuffAwayItemWindowingModifier alloc];
-            v47 = [v33 allItems];
-            [(SBDockToStageZoomWindowingModifier *)v47 firstObject];
+            allItems = [v33 allItems];
+            [(SBDockToStageZoomWindowingModifier *)allItems firstObject];
             v49 = v48 = v33;
             v22 = [(SBPuffAwayItemWindowingModifier *)v46 initWithDisplayItem:v49];
 
@@ -428,7 +428,7 @@ LABEL_43:
 
           else
           {
-            v50 = [v7 leafAppLayoutForItem:v21];
+            v50 = [fromAppLayout leafAppLayoutForItem:minimizingDisplayItem];
             v51 = v38[130];
             v64.receiver = self;
             v64.super_class = v51;
@@ -438,21 +438,21 @@ LABEL_43:
             self->_initialFrameOfMinimizingItem.size.width = v54;
             self->_initialFrameOfMinimizingItem.size.height = v55;
 
-            objc_storeStrong(&self->_minimizingItem, v21);
-            v47 = [[SBDockToStageZoomWindowingModifier alloc] initWithAppLayout:v33 addingToStage:0];
-            if ([v7 isEqual:v33])
+            objc_storeStrong(&self->_minimizingItem, minimizingDisplayItem);
+            allItems = [[SBDockToStageZoomWindowingModifier alloc] initWithAppLayout:v33 addingToStage:0];
+            if ([fromAppLayout isEqual:v33])
             {
               v62[0] = MEMORY[0x277D85DD0];
               v62[1] = 3221225472;
               v62[2] = __70__SBContinuousExposeWindowDropSwitcherModifier_handleTransitionEvent___block_invoke_2;
               v62[3] = &unk_2783A8C90;
-              v63 = v21;
-              v56 = [v61 appLayoutWithItemsPassingTest:v62];
-              [(SBDockToStageZoomWindowingModifier *)v47 setLaunchingOverDesktopSpaceAppLayout:v56];
+              v63 = minimizingDisplayItem;
+              v56 = [toAppLayout appLayoutWithItemsPassingTest:v62];
+              [(SBDockToStageZoomWindowingModifier *)allItems setLaunchingOverDesktopSpaceAppLayout:v56];
             }
 
             v22 = [[SBGestureInitiatedIconZoomAnimationAttributesSwitcherModifier alloc] initWithAppLayout:v33 gestureEdge:1 liftOffVelocity:self->_liftOffVelocity.x, self->_liftOffVelocity.y];
-            [(SBChainableModifier *)v22 addChildModifier:v47];
+            [(SBChainableModifier *)v22 addChildModifier:allItems];
           }
         }
 
@@ -486,49 +486,49 @@ LABEL_46:
 {
   v6.receiver = self;
   v6.super_class = SBContinuousExposeWindowDropSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v6 transitionDidEnd];
   v3 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-  v4 = SBAppendSwitcherModifierResponse(v3, v2);
+  v4 = SBAppendSwitcherModifierResponse(v3, transitionDidEnd);
 
   return v4;
 }
 
 - (double)fadeInDelayForSplitViewHandles
 {
-  v2 = [(SBContinuousExposeWindowDropSwitcherModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  [v3 percentageOfTransitionForSplitViewHandleFadeInDelay];
+  switcherSettings = [(SBContinuousExposeWindowDropSwitcherModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  [windowingSettings percentageOfTransitionForSplitViewHandleFadeInDelay];
   v5 = v4;
-  v6 = [v2 animationSettings];
-  v7 = [v6 layoutSettings];
-  [v7 settlingDuration];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
+  [layoutSettings settlingDuration];
   v9 = v5 * v8;
 
   return v9;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBContinuousExposeWindowDropSwitcherModifier;
-  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:a3];
+  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:event];
   v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:2];
   v5 = SBAppendSwitcherModifierResponse(v4, v3);
 
   return v5;
 }
 
-- (id)_appLayoutContainingDisplayItem:(id)a3
+- (id)_appLayoutContainingDisplayItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SBContinuousExposeWindowDropSwitcherModifier *)self appLayouts];
+  itemCopy = item;
+  appLayouts = [(SBContinuousExposeWindowDropSwitcherModifier *)self appLayouts];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __80__SBContinuousExposeWindowDropSwitcherModifier__appLayoutContainingDisplayItem___block_invoke;
   v14 = &unk_2783A8CB8;
-  v6 = v4;
+  v6 = itemCopy;
   v15 = v6;
-  v7 = [v5 bs_firstObjectPassingTest:&v11];
+  v7 = [appLayouts bs_firstObjectPassingTest:&v11];
 
   if (!v7)
   {
@@ -544,11 +544,11 @@ LABEL_46:
   return v7;
 }
 
-- (BOOL)_isLayoutRolePartOfWindowDragInteraction:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)_isLayoutRolePartOfWindowDragInteraction:(int64_t)interaction inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   toAppLayout = self->_toAppLayout;
-  v8 = [v6 itemForLayoutRole:a3];
+  v8 = [layoutCopy itemForLayoutRole:interaction];
   if ([(SBAppLayout *)toAppLayout containsItem:v8])
   {
     v9 = 1;
@@ -557,7 +557,7 @@ LABEL_46:
   else
   {
     selectedDisplayItem = self->_selectedDisplayItem;
-    v11 = [v6 itemForLayoutRole:a3];
+    v11 = [layoutCopy itemForLayoutRole:interaction];
     v9 = [(SBDisplayItem *)selectedDisplayItem isEqualToItem:v11];
   }
 

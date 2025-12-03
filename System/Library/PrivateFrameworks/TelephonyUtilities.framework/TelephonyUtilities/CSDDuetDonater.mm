@@ -1,23 +1,23 @@
 @interface CSDDuetDonater
-- (void)reportingController:(id)a3 addedActivatedLink:(id)a4;
-- (void)reportingController:(id)a3 statusChangedForCall:(id)a4 totalCallCount:(unint64_t)a5;
+- (void)reportingController:(id)controller addedActivatedLink:(id)link;
+- (void)reportingController:(id)controller statusChangedForCall:(id)call totalCallCount:(unint64_t)count;
 @end
 
 @implementation CSDDuetDonater
 
-- (void)reportingController:(id)a3 statusChangedForCall:(id)a4 totalCallCount:(unint64_t)a5
+- (void)reportingController:(id)controller statusChangedForCall:(id)call totalCallCount:(unint64_t)count
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_100037484(v9, v8);
+  controllerCopy = controller;
+  callCopy = call;
+  selfCopy = self;
+  sub_100037484(selfCopy, callCopy);
 }
 
-- (void)reportingController:(id)a3 addedActivatedLink:(id)a4
+- (void)reportingController:(id)controller addedActivatedLink:(id)link
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  linkCopy = link;
+  selfCopy = self;
   sub_10031F0F0();
 }
 

@@ -1,11 +1,11 @@
 @interface CWFLinkChangeStatus
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLinkChangeStatus:(id)a3;
-- (CWFLinkChangeStatus)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLinkChangeStatus:(id)status;
+- (CWFLinkChangeStatus)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFLinkChangeStatus
@@ -38,14 +38,14 @@
   return v7;
 }
 
-- (BOOL)isEqualToLinkChangeStatus:(id)a3
+- (BOOL)isEqualToLinkChangeStatus:(id)status
 {
-  v7 = a3;
+  statusCopy = status;
   interfaceName = self->_interfaceName;
-  v9 = [v7 interfaceName];
-  if (interfaceName != v9)
+  interfaceName = [statusCopy interfaceName];
+  if (interfaceName != interfaceName)
   {
-    if (!self->_interfaceName || ([v7 interfaceName], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!self->_interfaceName || ([statusCopy interfaceName], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v12 = 0;
       goto LABEL_30;
@@ -53,8 +53,8 @@
 
     v3 = v10;
     v11 = self->_interfaceName;
-    v4 = [v7 interfaceName];
-    if (![(NSString *)v11 isEqual:v4])
+    interfaceName2 = [statusCopy interfaceName];
+    if (![(NSString *)v11 isEqual:interfaceName2])
     {
       v12 = 0;
 LABEL_29:
@@ -64,16 +64,16 @@ LABEL_29:
   }
 
   timestamp = self->_timestamp;
-  v14 = [v7 timestamp];
-  if (timestamp != v14)
+  timestamp = [statusCopy timestamp];
+  if (timestamp != timestamp)
   {
     if (!self->_timestamp)
     {
       goto LABEL_24;
     }
 
-    v15 = [v7 timestamp];
-    if (!v15)
+    timestamp2 = [statusCopy timestamp];
+    if (!timestamp2)
     {
 LABEL_23:
 
@@ -81,12 +81,12 @@ LABEL_23:
       goto LABEL_28;
     }
 
-    v5 = v15;
+    v5 = timestamp2;
     v16 = self->_timestamp;
-    v17 = [v7 timestamp];
+    timestamp3 = [statusCopy timestamp];
     v18 = v16;
-    v19 = v17;
-    if (![(NSDate *)v18 isEqual:v17])
+    v19 = timestamp3;
+    if (![(NSDate *)v18 isEqual:timestamp3])
     {
       v12 = 0;
 LABEL_26:
@@ -98,30 +98,30 @@ LABEL_26:
   }
 
   linkDown = self->_linkDown;
-  if (linkDown == [v7 isLinkDown])
+  if (linkDown == [statusCopy isLinkDown])
   {
     involuntaryLinkDown = self->_involuntaryLinkDown;
-    if (involuntaryLinkDown == [v7 isInvoluntaryLinkDown])
+    if (involuntaryLinkDown == [statusCopy isInvoluntaryLinkDown])
     {
       reason = self->_reason;
-      if (reason == [v7 reason])
+      if (reason == [statusCopy reason])
       {
         subreason = self->_subreason;
-        if (subreason == [v7 subreason])
+        if (subreason == [statusCopy subreason])
         {
           linkDownDebounceInProgress = self->_linkDownDebounceInProgress;
-          if (linkDownDebounceInProgress == [v7 isLinkDownDebounceInProgress])
+          if (linkDownDebounceInProgress == [statusCopy isLinkDownDebounceInProgress])
           {
             RSSI = self->_RSSI;
-            if (RSSI == [v7 RSSI])
+            if (RSSI == [statusCopy RSSI])
             {
               noise = self->_noise;
-              if (noise == [v7 noise])
+              if (noise == [statusCopy noise])
               {
                 CCA = self->_CCA;
-                v12 = CCA == [v7 CCA];
+                v12 = CCA == [statusCopy CCA];
                 v19 = v29;
-                if (timestamp == v14)
+                if (timestamp == timestamp)
                 {
                   goto LABEL_27;
                 }
@@ -135,7 +135,7 @@ LABEL_26:
     }
   }
 
-  if (timestamp != v14)
+  if (timestamp != timestamp)
   {
 
     goto LABEL_23;
@@ -146,7 +146,7 @@ LABEL_24:
 LABEL_27:
 
 LABEL_28:
-  if (interfaceName != v9)
+  if (interfaceName != interfaceName)
   {
     goto LABEL_29;
   }
@@ -156,18 +156,18 @@ LABEL_30:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFLinkChangeStatus *)self isEqualToLinkChangeStatus:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFLinkChangeStatus *)self isEqualToLinkChangeStatus:v5];
   }
 
   return v6;
@@ -181,7 +181,7 @@ LABEL_30:
   return *&veor_s8(*v5.i8, *&vextq_s8(v5, v5, 8uLL)) ^ self->_linkDown ^ (self->_involuntaryLinkDown ^ self->_linkDownDebounceInProgress) & 1 ^ v3 ^ self->_reason ^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFLinkChangeStatus allocWithZone:?]];
   [(CWFLinkChangeStatus *)v4 setInterfaceName:self->_interfaceName];
@@ -197,47 +197,47 @@ LABEL_30:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   interfaceName = self->_interfaceName;
-  v5 = a3;
-  [v5 encodeObject:interfaceName forKey:@"_interfaceName"];
-  [v5 encodeObject:self->_timestamp forKey:@"_timestamp"];
-  [v5 encodeBool:self->_linkDown forKey:@"_linkDown"];
-  [v5 encodeBool:self->_involuntaryLinkDown forKey:@"_involuntaryLinkDown"];
-  [v5 encodeInteger:self->_reason forKey:@"_reason"];
-  [v5 encodeInteger:self->_subreason forKey:@"_subreason"];
-  [v5 encodeBool:self->_linkDownDebounceInProgress forKey:@"_linkDownDebounceInProgress"];
-  [v5 encodeInteger:self->_RSSI forKey:@"_RSSI"];
-  [v5 encodeInteger:self->_noise forKey:@"_noise"];
+  coderCopy = coder;
+  [coderCopy encodeObject:interfaceName forKey:@"_interfaceName"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"_timestamp"];
+  [coderCopy encodeBool:self->_linkDown forKey:@"_linkDown"];
+  [coderCopy encodeBool:self->_involuntaryLinkDown forKey:@"_involuntaryLinkDown"];
+  [coderCopy encodeInteger:self->_reason forKey:@"_reason"];
+  [coderCopy encodeInteger:self->_subreason forKey:@"_subreason"];
+  [coderCopy encodeBool:self->_linkDownDebounceInProgress forKey:@"_linkDownDebounceInProgress"];
+  [coderCopy encodeInteger:self->_RSSI forKey:@"_RSSI"];
+  [coderCopy encodeInteger:self->_noise forKey:@"_noise"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_CCA];
-  [v5 encodeObject:v6 forKey:@"_CCA"];
+  [coderCopy encodeObject:v6 forKey:@"_CCA"];
 }
 
-- (CWFLinkChangeStatus)initWithCoder:(id)a3
+- (CWFLinkChangeStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CWFLinkChangeStatus;
   v5 = [(CWFLinkChangeStatus *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_interfaceName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_interfaceName"];
     interfaceName = v5->_interfaceName;
     v5->_interfaceName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timestamp"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v8;
 
-    v5->_linkDown = [v4 decodeBoolForKey:@"_linkDown"];
-    v5->_involuntaryLinkDown = [v4 decodeBoolForKey:@"_involuntaryLinkDown"];
-    v5->_reason = [v4 decodeIntegerForKey:@"_reason"];
-    v5->_subreason = [v4 decodeIntegerForKey:@"_subreason"];
-    v5->_linkDownDebounceInProgress = [v4 decodeBoolForKey:@"_linkDownDebounceInProgress"];
-    v5->_RSSI = [v4 decodeIntegerForKey:@"_RSSI"];
-    v5->_noise = [v4 decodeIntegerForKey:@"_noise"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_CCA"];
+    v5->_linkDown = [coderCopy decodeBoolForKey:@"_linkDown"];
+    v5->_involuntaryLinkDown = [coderCopy decodeBoolForKey:@"_involuntaryLinkDown"];
+    v5->_reason = [coderCopy decodeIntegerForKey:@"_reason"];
+    v5->_subreason = [coderCopy decodeIntegerForKey:@"_subreason"];
+    v5->_linkDownDebounceInProgress = [coderCopy decodeBoolForKey:@"_linkDownDebounceInProgress"];
+    v5->_RSSI = [coderCopy decodeIntegerForKey:@"_RSSI"];
+    v5->_noise = [coderCopy decodeIntegerForKey:@"_noise"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_CCA"];
     v5->_CCA = [v10 unsignedIntegerValue];
   }
 

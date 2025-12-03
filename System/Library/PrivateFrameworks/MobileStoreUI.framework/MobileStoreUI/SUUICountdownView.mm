@@ -1,50 +1,50 @@
 @interface SUUICountdownView
-- (SUUICountdownView)initWithCountdown:(id)a3 clientContext:(id)a4;
+- (SUUICountdownView)initWithCountdown:(id)countdown clientContext:(id)context;
 - (id)_newDateDescriptionLabel;
 - (id)_newDateLabel;
-- (id)_newFlapLabelWithPosition:(int64_t)a3;
+- (id)_newFlapLabelWithPosition:(int64_t)position;
 - (id)_newNumberSeparatorLabel;
 - (int64_t)_currentValue;
-- (void)_currentRemainingDays:(int64_t *)a3 hours:(int64_t *)a4 minutes:(int64_t *)a5 seconds:(int64_t *)a6;
+- (void)_currentRemainingDays:(int64_t *)days hours:(int64_t *)hours minutes:(int64_t *)minutes seconds:(int64_t *)seconds;
 - (void)_reload;
-- (void)_reloadDateDescriptions:(BOOL)a3;
+- (void)_reloadDateDescriptions:(BOOL)descriptions;
 - (void)_reloadFontSizes;
 - (void)_reloadNumber;
 - (void)_reloadNumberFlapped;
 - (void)_reloadTime;
 - (void)_reloadTimeFlapped;
-- (void)_setCountdownWithResponse:(id)a3 error:(id)a4;
+- (void)_setCountdownWithResponse:(id)response error:(id)error;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackgroundImage:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBackgroundImage:(id)image;
+- (void)setFrame:(CGRect)frame;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation SUUICountdownView
 
-- (SUUICountdownView)initWithCountdown:(id)a3 clientContext:(id)a4
+- (SUUICountdownView)initWithCountdown:(id)countdown clientContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  countdownCopy = countdown;
+  contextCopy = context;
   v32.receiver = self;
   v32.super_class = SUUICountdownView;
   v9 = [(SUUICountdownView *)&v32 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientContext, a4);
-    objc_storeStrong(&v10->_countdown, a3);
+    objc_storeStrong(&v9->_clientContext, context);
+    objc_storeStrong(&v10->_countdown, countdown);
     v11 = objc_alloc_init(MEMORY[0x277CCABB8]);
     numberFormatter = v10->_numberFormatter;
     v10->_numberFormatter = v11;
 
     v13 = v10->_numberFormatter;
-    v14 = [(SUUICountdown *)v10->_countdown numberFormat];
-    if (v14)
+    numberFormat = [(SUUICountdown *)v10->_countdown numberFormat];
+    if (numberFormat)
     {
-      [(NSNumberFormatter *)v13 setPositiveFormat:v14];
+      [(NSNumberFormatter *)v13 setPositiveFormat:numberFormat];
     }
 
     else
@@ -137,15 +137,15 @@ void __53__SUUICountdownView_initWithCountdown_clientContext___block_invoke_2(ui
   [(SUUICountdownView *)&v3 dealloc];
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
-  v12 = a3;
-  v4 = [(UIImageView *)self->_imageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_imageView image];
 
-  if (v4 != v12)
+  if (image != imageCopy)
   {
     imageView = self->_imageView;
-    if (v12)
+    if (imageCopy)
     {
       if (!imageView)
       {
@@ -155,8 +155,8 @@ void __53__SUUICountdownView_initWithCountdown_clientContext___block_invoke_2(ui
 
         [(UIImageView *)self->_imageView setContentMode:1];
         v9 = self->_imageView;
-        v10 = [(SUUICountdownView *)self backgroundColor];
-        [(UIImageView *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SUUICountdownView *)self backgroundColor];
+        [(UIImageView *)v9 setBackgroundColor:backgroundColor];
 
         [(SUUICountdownView *)self addSubview:self->_imageView];
         imageView = self->_imageView;
@@ -172,10 +172,10 @@ void __53__SUUICountdownView_initWithCountdown_clientContext___block_invoke_2(ui
       self->_imageView = 0;
     }
 
-    v5 = [(SUUICountdownView *)self setNeedsLayout];
+    setNeedsLayout = [(SUUICountdownView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](setNeedsLayout);
 }
 
 - (void)start
@@ -186,10 +186,10 @@ void __53__SUUICountdownView_initWithCountdown_clientContext___block_invoke_2(ui
     v3 = 1.0;
     if (![(SUUICountdown *)self->_countdown type])
     {
-      v4 = [(SUUICountdown *)self->_countdown rate];
-      if (1.0 / v4 >= 0.400000006)
+      rate = [(SUUICountdown *)self->_countdown rate];
+      if (1.0 / rate >= 0.400000006)
       {
-        v3 = 1.0 / v4;
+        v3 = 1.0 / rate;
       }
 
       else
@@ -222,8 +222,8 @@ void __53__SUUICountdownView_initWithCountdown_clientContext___block_invoke_2(ui
     timer = self->_timer;
     self->_timer = v9;
 
-    v11 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v11 addTimer:self->_timer forMode:*MEMORY[0x277CBE738]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [mainRunLoop addTimer:self->_timer forMode:*MEMORY[0x277CBE738]];
   }
 }
 
@@ -240,11 +240,11 @@ void __26__SUUICountdownView_start__block_invoke(uint64_t a1)
   self->_timer = 0;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SUUICountdownView;
-  [(SUUICountdownView *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SUUICountdownView *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SUUICountdownView *)self frame];
   self->_factor = v4 / 212.0;
   [(SUUICountdownView *)self _reloadFontSizes];
@@ -269,36 +269,36 @@ void __26__SUUICountdownView_start__block_invoke(uint64_t a1)
 
   if ([(SUUICountdown *)self->_countdown isLoaded])
   {
-    v11 = [(SUUICountdown *)self->_countdown artworkProvider];
+    artworkProvider = [(SUUICountdown *)self->_countdown artworkProvider];
 
-    if (v11)
+    if (artworkProvider)
     {
-      v12 = [(SUUICountdown *)self->_countdown artworkProvider];
-      v13 = [v12 largestArtwork];
+      artworkProvider2 = [(SUUICountdown *)self->_countdown artworkProvider];
+      largestArtwork = [artworkProvider2 largestArtwork];
 
-      v14 = v8 / [v13 width];
-      v15 = [v13 height];
-      v16 = v14 * v15;
+      v14 = v8 / [largestArtwork width];
+      height = [largestArtwork height];
+      v16 = v14 * height;
       if (v16 > 0.0)
       {
         v17 = (v10 - v16) * 0.5;
         v6 = v6 + roundf(v17);
-        v10 = v14 * v15;
+        v10 = v14 * height;
       }
     }
 
-    v18 = [(SUUICountdown *)self->_countdown type];
+    type = [(SUUICountdown *)self->_countdown type];
     countdown = self->_countdown;
-    if (v18)
+    if (type)
     {
       if ([(SUUICountdown *)countdown type]!= 1)
       {
         return;
       }
 
-      v20 = [(SUUICountdown *)self->_countdown isFlapped];
+      isFlapped = [(SUUICountdown *)self->_countdown isFlapped];
       dateDescriptionLabelDay = self->_dateDescriptionLabelDay;
-      if (v20)
+      if (isFlapped)
       {
         dateDescriptionLabelHour = self->_dateDescriptionLabelHour;
         v187[0] = self->_dateDescriptionLabelDay;
@@ -307,7 +307,7 @@ void __26__SUUICountdownView_start__block_invoke(uint64_t a1)
         v187[2] = self->_dateDescriptionLabelMinute;
         v187[3] = dateDescriptionLabelSecond;
         v157 = [MEMORY[0x277CBEA60] arrayWithObjects:v187 count:4];
-        v159 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v169 = 0u;
         v170 = 0u;
         v171 = 0u;
@@ -366,7 +366,7 @@ void __26__SUUICountdownView_start__block_invoke(uint64_t a1)
               }
 
               v37 = [MEMORY[0x277CCABB0] numberWithDouble:v27 + v34 * 0.5];
-              [v159 addObject:v37];
+              [array addObject:v37];
 
               v38 = self->_factor * 7.0;
               v27 = v27 + v34 + roundf(v38);
@@ -396,7 +396,7 @@ void __26__SUUICountdownView_start__block_invoke(uint64_t a1)
           do
           {
             v106 = [v59 objectAtIndex:{v100, v156}];
-            v107 = [v159 objectAtIndex:v100];
+            v107 = [array objectAtIndex:v100];
             [v106 frame];
             v109 = v108;
             v111 = v110;
@@ -456,37 +456,37 @@ LABEL_116:
         return;
       }
 
-      v52 = self->_dateDescriptionLabelDay;
+      null = self->_dateDescriptionLabelDay;
       if (!dateDescriptionLabelDay)
       {
-        v52 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
       }
 
-      v183[0] = v52;
+      v183[0] = null;
       v53 = self->_dateDescriptionLabelHour;
-      v54 = v53;
+      null2 = v53;
       if (!v53)
       {
-        v54 = [MEMORY[0x277CBEB68] null];
+        null2 = [MEMORY[0x277CBEB68] null];
       }
 
-      v183[1] = v54;
+      v183[1] = null2;
       dateDescriptionLabelMinute = self->_dateDescriptionLabelMinute;
-      v56 = dateDescriptionLabelMinute;
+      null3 = dateDescriptionLabelMinute;
       if (!dateDescriptionLabelMinute)
       {
-        v56 = [MEMORY[0x277CBEB68] null];
+        null3 = [MEMORY[0x277CBEB68] null];
       }
 
-      v183[2] = v56;
+      v183[2] = null3;
       v57 = self->_dateDescriptionLabelSecond;
-      v58 = v57;
+      null4 = v57;
       if (!v57)
       {
-        v58 = [MEMORY[0x277CBEB68] null];
+        null4 = [MEMORY[0x277CBEB68] null];
       }
 
-      v183[3] = v58;
+      v183[3] = null4;
       v59 = [MEMORY[0x277CBEA60] arrayWithObjects:v183 count:4];
       if (!v57)
       {
@@ -505,38 +505,38 @@ LABEL_116:
       }
 
       dateLabelDay = self->_dateLabelDay;
-      v61 = dateLabelDay;
+      null5 = dateLabelDay;
       if (!dateLabelDay)
       {
-        v61 = [MEMORY[0x277CBEB68] null];
+        null5 = [MEMORY[0x277CBEB68] null];
       }
 
-      v160 = v61;
-      v182[0] = v61;
+      v160 = null5;
+      v182[0] = null5;
       dateLabelHour = self->_dateLabelHour;
-      v63 = dateLabelHour;
+      null6 = dateLabelHour;
       if (!dateLabelHour)
       {
-        v63 = [MEMORY[0x277CBEB68] null];
+        null6 = [MEMORY[0x277CBEB68] null];
       }
 
-      v182[1] = v63;
+      v182[1] = null6;
       dateLabelMinute = self->_dateLabelMinute;
-      v65 = dateLabelMinute;
+      null7 = dateLabelMinute;
       if (!dateLabelMinute)
       {
-        v65 = [MEMORY[0x277CBEB68] null];
+        null7 = [MEMORY[0x277CBEB68] null];
       }
 
-      v182[2] = v65;
+      v182[2] = null7;
       dateLabelSecond = self->_dateLabelSecond;
-      v67 = dateLabelSecond;
+      null8 = dateLabelSecond;
       if (!dateLabelSecond)
       {
-        v67 = [MEMORY[0x277CBEB68] null];
+        null8 = [MEMORY[0x277CBEB68] null];
       }
 
-      v182[3] = v67;
+      v182[3] = null8;
       v68 = [MEMORY[0x277CBEA60] arrayWithObjects:v182 count:4];
       if (dateLabelSecond)
       {
@@ -567,7 +567,7 @@ LABEL_69:
         if (dateLabelDay)
         {
 LABEL_70:
-          v69 = [MEMORY[0x277CBEB18] array];
+          array2 = [MEMORY[0x277CBEB18] array];
           if ([v59 count])
           {
             v70 = 0;
@@ -576,12 +576,12 @@ LABEL_70:
             {
               v72 = [v59 objectAtIndex:v70];
               v73 = [v68 objectAtIndex:v70];
-              v74 = [MEMORY[0x277CBEB68] null];
+              null9 = [MEMORY[0x277CBEB68] null];
 
-              if (v73 == v74)
+              if (v73 == null9)
               {
-                v80 = [MEMORY[0x277CBEB68] null];
-                [v69 addObject:v80];
+                null10 = [MEMORY[0x277CBEB68] null];
+                [array2 addObject:null10];
               }
 
               else
@@ -595,7 +595,7 @@ LABEL_70:
                 }
 
                 v78 = [MEMORY[0x277CCABB0] numberWithDouble:v71 + v76 * 0.5];
-                [v69 addObject:v78];
+                [array2 addObject:v78];
 
                 v79 = self->_factor * 14.0;
                 v71 = v71 + v76 + roundf(v79);
@@ -624,10 +624,10 @@ LABEL_70:
             {
               v135 = [v59 objectAtIndex:v130];
               v136 = [v68 objectAtIndex:v130];
-              v137 = [v69 objectAtIndex:v130];
-              v138 = [MEMORY[0x277CBEB68] null];
+              v137 = [array2 objectAtIndex:v130];
+              null11 = [MEMORY[0x277CBEB68] null];
 
-              if (v136 != v138)
+              if (v136 != null11)
               {
                 [v135 frame];
                 v140 = v139;
@@ -803,26 +803,26 @@ LABEL_107:
 - (id)_newDateLabel
 {
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v4 = [(SUUICountdown *)self->_countdown fontColor];
-  [v3 setTextColor:v4];
+  fontColor = [(SUUICountdown *)self->_countdown fontColor];
+  [v3 setTextColor:fontColor];
 
-  v5 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   [v3 setTextAlignment:1];
   return v3;
 }
 
-- (id)_newFlapLabelWithPosition:(int64_t)a3
+- (id)_newFlapLabelWithPosition:(int64_t)position
 {
-  v5 = [(SUUICountdown *)self->_countdown flapTopColor];
-  v6 = [(SUUICountdown *)self->_countdown flapBottomColor];
-  v7 = [[SUUICountdownFlapView alloc] initWithPosition:a3 flapTopColor:v5 flapBottomColor:v6];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [(SUUICountdownFlapView *)v7 setBackgroundColor:v8];
+  flapTopColor = [(SUUICountdown *)self->_countdown flapTopColor];
+  flapBottomColor = [(SUUICountdown *)self->_countdown flapBottomColor];
+  v7 = [[SUUICountdownFlapView alloc] initWithPosition:position flapTopColor:flapTopColor flapBottomColor:flapBottomColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SUUICountdownFlapView *)v7 setBackgroundColor:clearColor];
 
-  v9 = [(SUUICountdown *)self->_countdown fontColor];
-  [(SUUICountdownFlapView *)v7 setTextColor:v9];
+  fontColor = [(SUUICountdown *)self->_countdown fontColor];
+  [(SUUICountdownFlapView *)v7 setTextColor:fontColor];
 
   return v7;
 }
@@ -830,20 +830,20 @@ LABEL_107:
 - (id)_newDateDescriptionLabel
 {
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v4 = [(SUUICountdown *)self->_countdown fontColor];
-  if (v4)
+  fontColor = [(SUUICountdown *)self->_countdown fontColor];
+  if (fontColor)
   {
-    [v3 setTextColor:v4];
+    [v3 setTextColor:fontColor];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] blackColor];
-    [v3 setTextColor:v5];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [v3 setTextColor:blackColor];
   }
 
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   [v3 setTextAlignment:1];
   return v3;
@@ -852,20 +852,20 @@ LABEL_107:
 - (id)_newNumberSeparatorLabel
 {
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v4 = [(SUUICountdown *)self->_countdown flapTopColor];
-  if (v4)
+  flapTopColor = [(SUUICountdown *)self->_countdown flapTopColor];
+  if (flapTopColor)
   {
-    [v3 setTextColor:v4];
+    [v3 setTextColor:flapTopColor];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] blackColor];
-    [v3 setTextColor:v5];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [v3 setTextColor:blackColor];
   }
 
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   [v3 setTextAlignment:1];
   return v3;
@@ -875,27 +875,27 @@ LABEL_107:
 {
   if ([(SUUICountdown *)self->_countdown isLoaded])
   {
-    v3 = [(SUUICountdown *)self->_countdown type];
+    type = [(SUUICountdown *)self->_countdown type];
     countdown = self->_countdown;
-    if (v3)
+    if (type)
     {
       if ([(SUUICountdown *)countdown type]== 1)
       {
         if ([(SUUICountdown *)self->_countdown isFlapped])
         {
           [(SUUICountdownView *)self _reloadTimeFlapped];
-          v5 = self;
+          selfCopy2 = self;
           v6 = 0;
         }
 
         else
         {
           [(SUUICountdownView *)self _reloadTime];
-          v5 = self;
+          selfCopy2 = self;
           v6 = 1;
         }
 
-        [(SUUICountdownView *)v5 _reloadDateDescriptions:v6];
+        [(SUUICountdownView *)selfCopy2 _reloadDateDescriptions:v6];
       }
     }
 
@@ -922,21 +922,21 @@ LABEL_107:
     self->_numberLabel = v3;
 
     v5 = self->_numberLabel;
-    v6 = [(SUUICountdown *)self->_countdown fontColor];
-    if (v6)
+    fontColor = [(SUUICountdown *)self->_countdown fontColor];
+    if (fontColor)
     {
-      [(UILabel *)v5 setTextColor:v6];
+      [(UILabel *)v5 setTextColor:fontColor];
     }
 
     else
     {
-      v7 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)v5 setTextColor:v7];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)v5 setTextColor:blackColor];
     }
 
     v8 = self->_numberLabel;
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v8 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v8 setBackgroundColor:clearColor];
 
     [(UILabel *)self->_numberLabel setTextAlignment:1];
     [(SUUICountdownView *)self addSubview:self->_numberLabel];
@@ -955,17 +955,17 @@ LABEL_107:
   v57 = *MEMORY[0x277D85DE8];
   if (!self->_numberFlapLabels)
   {
-    v3 = [(NSNumberFormatter *)self->_numberFormatter positiveFormat];
+    positiveFormat = [(NSNumberFormatter *)self->_numberFormatter positiveFormat];
     v4 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"#"];
     v5 = MEMORY[0x277CBEB18];
     v44 = v4;
-    v6 = [v3 componentsSeparatedByCharactersInSet:?];
+    v6 = [positiveFormat componentsSeparatedByCharactersInSet:?];
     v7 = [v5 arrayWithArray:v6];
 
     [v7 removeObject:&stru_286AECDE0];
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     numberSeparatorLabels = self->_numberSeparatorLabels;
-    self->_numberSeparatorLabels = v8;
+    self->_numberSeparatorLabels = array;
 
     v53 = 0u;
     v54 = 0u;
@@ -987,11 +987,11 @@ LABEL_107:
           }
 
           v14 = *(*(&v51 + 1) + 8 * i);
-          v15 = [(SUUICountdownView *)self _newNumberSeparatorLabel];
-          [v15 setText:v14];
-          [v15 sizeToFit];
-          [(SUUICountdownView *)self addSubview:v15];
-          [(NSMutableArray *)self->_numberSeparatorLabels addObject:v15];
+          _newNumberSeparatorLabel = [(SUUICountdownView *)self _newNumberSeparatorLabel];
+          [_newNumberSeparatorLabel setText:v14];
+          [_newNumberSeparatorLabel sizeToFit];
+          [(SUUICountdownView *)self addSubview:_newNumberSeparatorLabel];
+          [(NSMutableArray *)self->_numberSeparatorLabels addObject:_newNumberSeparatorLabel];
         }
 
         v11 = [obj countByEnumeratingWithState:&v51 objects:v56 count:16];
@@ -1001,13 +1001,13 @@ LABEL_107:
     }
 
     v16 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"#"];
-    v17 = [v16 invertedSet];
+    invertedSet = [v16 invertedSet];
 
-    v45 = v3;
-    v18 = [v3 componentsSeparatedByCharactersInSet:v17];
-    v19 = [MEMORY[0x277CBEB18] array];
+    v45 = positiveFormat;
+    v18 = [positiveFormat componentsSeparatedByCharactersInSet:invertedSet];
+    array2 = [MEMORY[0x277CBEB18] array];
     numberFlapLabels = self->_numberFlapLabels;
-    self->_numberFlapLabels = v19;
+    self->_numberFlapLabels = array2;
 
     v49 = 0u;
     v50 = 0u;
@@ -1029,7 +1029,7 @@ LABEL_107:
           }
 
           v26 = *(*(&v47 + 1) + 8 * j);
-          v27 = [MEMORY[0x277CBEB18] array];
+          array3 = [MEMORY[0x277CBEB18] array];
           if ([v26 length])
           {
             v28 = 0;
@@ -1060,7 +1060,7 @@ LABEL_107:
 
               v30 = [(SUUICountdownView *)self _newFlapLabelWithPosition:v29];
               [(SUUICountdownView *)self addSubview:v30];
-              [v27 addObject:v30];
+              [array3 addObject:v30];
 
               ++v28;
             }
@@ -1068,7 +1068,7 @@ LABEL_107:
             while (v28 < [v26 length]);
           }
 
-          [(NSMutableArray *)self->_numberFlapLabels addObject:v27];
+          [(NSMutableArray *)self->_numberFlapLabels addObject:array3];
         }
 
         v23 = [v21 countByEnumeratingWithState:&v47 objects:v55 count:16];
@@ -1079,14 +1079,14 @@ LABEL_107:
   }
 
   v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", -[SUUICountdownView _currentValue](self, "_currentValue")];
-  v32 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   if ([v31 length])
   {
     v33 = 0;
     do
     {
       v34 = [v31 substringWithRange:{v33, 1}];
-      [v32 addObject:v34];
+      [array4 addObject:v34];
 
       ++v33;
     }
@@ -1094,7 +1094,7 @@ LABEL_107:
     while (v33 < [v31 length]);
   }
 
-  v35 = [v32 reverseObjectEnumerator];
+  reverseObjectEnumerator = [array4 reverseObjectEnumerator];
   v36 = [(NSMutableArray *)self->_numberFlapLabels count]- 1;
   if (v36 >= 0)
   {
@@ -1107,11 +1107,11 @@ LABEL_107:
         do
         {
           v39 = [v37 objectAtIndex:v38];
-          v40 = [v35 nextObject];
-          v41 = v40;
-          if (v40)
+          nextObject = [reverseObjectEnumerator nextObject];
+          v41 = nextObject;
+          if (nextObject)
           {
-            v42 = v40;
+            v42 = nextObject;
           }
 
           else
@@ -1132,9 +1132,9 @@ LABEL_107:
   }
 }
 
-- (void)_reloadDateDescriptions:(BOOL)a3
+- (void)_reloadDateDescriptions:(BOOL)descriptions
 {
-  v3 = a3;
+  descriptionsCopy = descriptions;
   v36 = 0;
   v37 = 0;
   v34 = 0;
@@ -1148,16 +1148,16 @@ LABEL_107:
 
   else
   {
-    v6 = !v3;
+    v6 = !descriptionsCopy;
   }
 
   if (v6)
   {
     if (!dateDescriptionLabelDay)
     {
-      v7 = [(SUUICountdownView *)self _newDateDescriptionLabel];
+      _newDateDescriptionLabel = [(SUUICountdownView *)self _newDateDescriptionLabel];
       v8 = self->_dateDescriptionLabelDay;
-      self->_dateDescriptionLabelDay = v7;
+      self->_dateDescriptionLabelDay = _newDateDescriptionLabel;
 
       v9 = self->_dateDescriptionLabelDay;
       clientContext = self->_clientContext;
@@ -1190,13 +1190,13 @@ LABEL_13:
   }
 
   dateDescriptionLabelHour = self->_dateDescriptionLabelHour;
-  if (v37 || v36 || !v3)
+  if (v37 || v36 || !descriptionsCopy)
   {
     if (!dateDescriptionLabelHour)
     {
-      v15 = [(SUUICountdownView *)self _newDateDescriptionLabel];
+      _newDateDescriptionLabel2 = [(SUUICountdownView *)self _newDateDescriptionLabel];
       v16 = self->_dateDescriptionLabelHour;
-      self->_dateDescriptionLabelHour = v15;
+      self->_dateDescriptionLabelHour = _newDateDescriptionLabel2;
 
       v17 = self->_dateDescriptionLabelHour;
       v18 = self->_clientContext;
@@ -1229,13 +1229,13 @@ LABEL_24:
   }
 
   dateDescriptionLabelMinute = self->_dateDescriptionLabelMinute;
-  if (v37 || v36 || v35 || !v3)
+  if (v37 || v36 || v35 || !descriptionsCopy)
   {
     if (!dateDescriptionLabelMinute)
     {
-      v22 = [(SUUICountdownView *)self _newDateDescriptionLabel];
+      _newDateDescriptionLabel3 = [(SUUICountdownView *)self _newDateDescriptionLabel];
       v23 = self->_dateDescriptionLabelMinute;
-      self->_dateDescriptionLabelMinute = v22;
+      self->_dateDescriptionLabelMinute = _newDateDescriptionLabel3;
 
       v24 = self->_dateDescriptionLabelMinute;
       v25 = self->_clientContext;
@@ -1268,16 +1268,16 @@ LABEL_36:
   }
 
   dateDescriptionLabelSecond = self->_dateDescriptionLabelSecond;
-  if (v37 || v36 || v35 || v34 || !v3)
+  if (v37 || v36 || v35 || v34 || !descriptionsCopy)
   {
     if (dateDescriptionLabelSecond)
     {
       return;
     }
 
-    v29 = [(SUUICountdownView *)self _newDateDescriptionLabel];
+    _newDateDescriptionLabel4 = [(SUUICountdownView *)self _newDateDescriptionLabel];
     v30 = self->_dateDescriptionLabelSecond;
-    self->_dateDescriptionLabelSecond = v29;
+    self->_dateDescriptionLabelSecond = _newDateDescriptionLabel4;
 
     v31 = self->_dateDescriptionLabelSecond;
     v32 = self->_clientContext;
@@ -1324,9 +1324,9 @@ LABEL_36:
   {
     if (!dateLabelDay)
     {
-      v5 = [(SUUICountdownView *)self _newDateLabel];
+      _newDateLabel = [(SUUICountdownView *)self _newDateLabel];
       v6 = self->_dateLabelDay;
-      self->_dateLabelDay = v5;
+      self->_dateLabelDay = _newDateLabel;
 
       [(SUUICountdownView *)self addSubview:self->_dateLabelDay];
       [(SUUICountdownView *)self setNeedsLayout];
@@ -1365,9 +1365,9 @@ LABEL_36:
   {
     if (!dateLabelHour)
     {
-      v11 = [(SUUICountdownView *)self _newDateLabel];
+      _newDateLabel2 = [(SUUICountdownView *)self _newDateLabel];
       v12 = self->_dateLabelHour;
-      self->_dateLabelHour = v11;
+      self->_dateLabelHour = _newDateLabel2;
 
       [(SUUICountdownView *)self addSubview:self->_dateLabelHour];
       [(SUUICountdownView *)self setNeedsLayout];
@@ -1385,9 +1385,9 @@ LABEL_36:
   {
     if (!dateLabelMinute)
     {
-      v18 = [(SUUICountdownView *)self _newDateLabel];
+      _newDateLabel3 = [(SUUICountdownView *)self _newDateLabel];
       v19 = self->_dateLabelMinute;
-      self->_dateLabelMinute = v18;
+      self->_dateLabelMinute = _newDateLabel3;
 
       [(SUUICountdownView *)self addSubview:self->_dateLabelMinute];
       [(SUUICountdownView *)self setNeedsLayout];
@@ -1414,9 +1414,9 @@ LABEL_36:
   {
     if (!dateLabelSecond)
     {
-      v24 = [(SUUICountdownView *)self _newDateLabel];
+      _newDateLabel4 = [(SUUICountdownView *)self _newDateLabel];
       v25 = self->_dateLabelSecond;
-      self->_dateLabelSecond = v24;
+      self->_dateLabelSecond = _newDateLabel4;
 
       [(SUUICountdownView *)self addSubview:self->_dateLabelSecond];
       [(SUUICountdownView *)self setNeedsLayout];
@@ -1448,23 +1448,23 @@ LABEL_36:
   dateFlapLabels = self->_dateFlapLabels;
   if (!dateFlapLabels)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_dateFlapLabels;
-    self->_dateFlapLabels = v4;
+    self->_dateFlapLabels = array;
 
     v6 = 4;
     do
     {
-      v7 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       v8 = [(SUUICountdownView *)self _newFlapLabelWithPosition:0];
       [(SUUICountdownView *)self addSubview:v8];
-      [v7 addObject:v8];
+      [array2 addObject:v8];
 
       v9 = [(SUUICountdownView *)self _newFlapLabelWithPosition:2];
       [(SUUICountdownView *)self addSubview:v9];
-      [v7 addObject:v9];
+      [array2 addObject:v9];
 
-      [(NSMutableArray *)self->_dateFlapLabels addObject:v7];
+      [(NSMutableArray *)self->_dateFlapLabels addObject:array2];
       --v6;
     }
 
@@ -1669,38 +1669,38 @@ LABEL_36:
   }
 
   dateLabelDay = self->_dateLabelDay;
-  v36 = dateLabelDay;
+  null = dateLabelDay;
   if (!dateLabelDay)
   {
-    v36 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v80 = v36;
-  v113[0] = v36;
+  v80 = null;
+  v113[0] = null;
   dateLabelHour = self->_dateLabelHour;
-  v38 = dateLabelHour;
+  null2 = dateLabelHour;
   if (!dateLabelHour)
   {
-    v38 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v113[1] = v38;
+  v113[1] = null2;
   dateLabelMinute = self->_dateLabelMinute;
-  v40 = dateLabelMinute;
+  null3 = dateLabelMinute;
   if (!dateLabelMinute)
   {
-    v40 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v113[2] = v40;
+  v113[2] = null3;
   dateLabelSecond = self->_dateLabelSecond;
-  v42 = dateLabelSecond;
+  null4 = dateLabelSecond;
   if (!dateLabelSecond)
   {
-    v42 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v113[3] = v42;
+  v113[3] = null4;
   v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v113 count:4];
   if (dateLabelSecond)
   {
@@ -1766,11 +1766,11 @@ LABEL_50:
         }
 
         v48 = *(*(&v86 + 1) + 8 * ii);
-        v49 = [MEMORY[0x277CBEB68] null];
+        null5 = [MEMORY[0x277CBEB68] null];
 
-        if (v48 != v49)
+        if (v48 != null5)
         {
-          v50 = [v48 text];
+          text = [v48 text];
           v51 = self->_factor * 28.0;
           v52 = [MEMORY[0x277D74300] fontWithName:@"HelveticaNeue-CondensedBold" size:roundf(v51)];
           [v48 setFont:v52];
@@ -1779,7 +1779,7 @@ LABEL_50:
           [v48 sizeToFit];
           [v48 frame];
           [v48 setFrame:?];
-          [v48 setText:v50];
+          [v48 setText:text];
         }
       }
 
@@ -1790,38 +1790,38 @@ LABEL_50:
   }
 
   dateDescriptionLabelDay = self->_dateDescriptionLabelDay;
-  v54 = dateDescriptionLabelDay;
+  null6 = dateDescriptionLabelDay;
   if (!dateDescriptionLabelDay)
   {
-    v54 = [MEMORY[0x277CBEB68] null];
+    null6 = [MEMORY[0x277CBEB68] null];
   }
 
-  objb = v54;
-  v111[0] = v54;
+  objb = null6;
+  v111[0] = null6;
   dateDescriptionLabelHour = self->_dateDescriptionLabelHour;
-  v56 = dateDescriptionLabelHour;
+  null7 = dateDescriptionLabelHour;
   if (!dateDescriptionLabelHour)
   {
-    v56 = [MEMORY[0x277CBEB68] null];
+    null7 = [MEMORY[0x277CBEB68] null];
   }
 
-  v111[1] = v56;
+  v111[1] = null7;
   dateDescriptionLabelMinute = self->_dateDescriptionLabelMinute;
-  v58 = dateDescriptionLabelMinute;
+  null8 = dateDescriptionLabelMinute;
   if (!dateDescriptionLabelMinute)
   {
-    v58 = [MEMORY[0x277CBEB68] null];
+    null8 = [MEMORY[0x277CBEB68] null];
   }
 
-  v111[2] = v58;
+  v111[2] = null8;
   dateDescriptionLabelSecond = self->_dateDescriptionLabelSecond;
-  v60 = dateDescriptionLabelSecond;
+  null9 = dateDescriptionLabelSecond;
   if (!dateDescriptionLabelSecond)
   {
-    v60 = [MEMORY[0x277CBEB68] null];
+    null9 = [MEMORY[0x277CBEB68] null];
   }
 
-  v111[3] = v60;
+  v111[3] = null9;
   v61 = [MEMORY[0x277CBEA60] arrayWithObjects:v111 count:{4, objb}];
   if (dateDescriptionLabelSecond)
   {
@@ -1878,9 +1878,9 @@ LABEL_70:
         }
 
         v67 = *(*(&v82 + 1) + 8 * jj);
-        v68 = [MEMORY[0x277CBEB68] null];
+        null10 = [MEMORY[0x277CBEB68] null];
 
-        if (v67 != v68)
+        if (v67 != null10)
         {
           v69 = self->_factor * 14.0;
           v70 = [MEMORY[0x277D74300] fontWithName:@"HelveticaNeue-CondensedBold" size:roundf(v69)];
@@ -1906,20 +1906,20 @@ LABEL_70:
 
 - (int64_t)_currentValue
 {
-  v3 = [(SUUICountdown *)self->_countdown initialValue];
-  v4 = [(SUUICountdown *)self->_countdown startDate];
-  [v4 timeIntervalSinceNow];
+  initialValue = [(SUUICountdown *)self->_countdown initialValue];
+  startDate = [(SUUICountdown *)self->_countdown startDate];
+  [startDate timeIntervalSinceNow];
   v6 = v5;
-  v7 = [(SUUICountdown *)self->_countdown rate];
-  v8 = [(SUUICountdown *)self->_countdown initialValue];
-  v9 = [(SUUICountdown *)self->_countdown finalValue];
+  rate = [(SUUICountdown *)self->_countdown rate];
+  initialValue2 = [(SUUICountdown *)self->_countdown initialValue];
+  finalValue = [(SUUICountdown *)self->_countdown finalValue];
   v10 = -1.0;
-  if (v8 < v9)
+  if (initialValue2 < finalValue)
   {
     v10 = 1.0;
   }
 
-  v11 = (v3 + -(v6 * v7) * v10);
+  v11 = (initialValue + -(v6 * rate) * v10);
 
   if (v11 < 0)
   {
@@ -1936,10 +1936,10 @@ LABEL_70:
   return [(SUUICountdown *)countdown finalValue];
 }
 
-- (void)_currentRemainingDays:(int64_t *)a3 hours:(int64_t *)a4 minutes:(int64_t *)a5 seconds:(int64_t *)a6
+- (void)_currentRemainingDays:(int64_t *)days hours:(int64_t *)hours minutes:(int64_t *)minutes seconds:(int64_t *)seconds
 {
-  v10 = [(SUUICountdown *)self->_countdown endDate];
-  [v10 timeIntervalSinceNow];
+  endDate = [(SUUICountdown *)self->_countdown endDate];
+  [endDate timeIntervalSinceNow];
   v12 = v11;
 
   v13 = 0.0;
@@ -1948,34 +1948,34 @@ LABEL_70:
     v13 = v12;
   }
 
-  if (a3)
+  if (days)
   {
-    *a3 = (v13 / 86400.0);
+    *days = (v13 / 86400.0);
   }
 
-  if (a4)
+  if (hours)
   {
-    *a4 = (v13 / 3600.0) % 24;
+    *hours = (v13 / 3600.0) % 24;
   }
 
-  if (a5)
+  if (minutes)
   {
-    *a5 = (v13 / 60.0) % 60;
+    *minutes = (v13 / 60.0) % 60;
   }
 
-  if (a6)
+  if (seconds)
   {
-    *a6 = v13 % 60;
+    *seconds = v13 % 60;
   }
 }
 
-- (void)_setCountdownWithResponse:(id)a3 error:(id)a4
+- (void)_setCountdownWithResponse:(id)response error:(id)error
 {
-  v5 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SUUICountdown *)self->_countdown updateWithDictionary:v5];
+    [(SUUICountdown *)self->_countdown updateWithDictionary:responseCopy];
     [(SUUICountdownView *)self _reload];
     [(SUUICountdownView *)self _reloadFontSizes];
     [(SUUICountdownView *)self start];

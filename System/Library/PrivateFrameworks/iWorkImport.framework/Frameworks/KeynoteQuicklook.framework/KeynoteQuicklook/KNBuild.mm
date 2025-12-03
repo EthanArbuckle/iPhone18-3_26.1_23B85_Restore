@@ -1,10 +1,10 @@
 @interface KNBuild
-+ (BOOL)p_shouldExcludeAnimationName:(id)a3 forDrawable:(id)a4;
-+ (KNBuild)buildWithEffect:(id)a3 animationType:(int64_t)a4 drawable:(id)a5 slide:(id)a6;
-+ (id)menuAnimationInfosForDrawableInfo:(id)a3 animationType:(int64_t)a4;
-+ (id)p_drawableFromInfo:(id)a3;
-+ (id)supportedAnimationInfosForDrawableInfo:(id)a3 animationType:(int64_t)a4;
-+ (void)i_repairBuildToDrawableReferencesFromUUIDsForBuilds:(id)a3 drawables:(id)a4;
++ (BOOL)p_shouldExcludeAnimationName:(id)name forDrawable:(id)drawable;
++ (KNBuild)buildWithEffect:(id)effect animationType:(int64_t)type drawable:(id)drawable slide:(id)slide;
++ (id)menuAnimationInfosForDrawableInfo:(id)info animationType:(int64_t)type;
++ (id)p_drawableFromInfo:(id)info;
++ (id)supportedAnimationInfosForDrawableInfo:(id)info animationType:(int64_t)type;
++ (void)i_repairBuildToDrawableReferencesFromUUIDsForBuilds:(id)builds drawables:(id)drawables;
 - (BOOL)canEditAnimations;
 - (BOOL)customAlignToPath;
 - (BOOL)customBounce;
@@ -17,13 +17,13 @@
 - (BOOL)hasComplement;
 - (BOOL)i_isFullyFormedBuild;
 - (BOOL)isActionMotionBuild;
-- (BOOL)isComplementOfBuild:(id)a3;
+- (BOOL)isComplementOfBuild:(id)build;
 - (BOOL)isEmphasisBuild;
 - (BOOL)isOnSlide;
-- (BOOL)p_hasComplementInBuilds:(id)a3;
-- (BOOL)p_isDeliveryLocalized:(id)a3 forNonNilDrawable:(id)a4;
-- (BOOL)p_supportsCustomEffectTimingCurveForLayoutStyles:(id)a3;
-- (BOOL)p_supportsCustomTextDeliveryOptionsForAttributes:(id)a3;
+- (BOOL)p_hasComplementInBuilds:(id)builds;
+- (BOOL)p_isDeliveryLocalized:(id)localized forNonNilDrawable:(id)drawable;
+- (BOOL)p_supportsCustomEffectTimingCurveForLayoutStyles:(id)styles;
+- (BOOL)p_supportsCustomTextDeliveryOptionsForAttributes:(id)attributes;
 - (BOOL)supports3DChartRotationAngle;
 - (BOOL)supportsAcceleration;
 - (BOOL)supportsActionRotationAngle;
@@ -53,7 +53,7 @@
 - (KNAbstractSlide)slide;
 - (KNAnimationInfo)animationInfo;
 - (KNAnimationPluginMenu)directionMenu;
-- (KNBuild)initWithSlide:(id)a3 effect:(id)a4 buildType:(int64_t)a5 context:(id)a6;
+- (KNBuild)initWithSlide:(id)slide effect:(id)effect buildType:(int64_t)type context:(id)context;
 - (KNBuildChunk)firstChunk;
 - (NSArray)chunks;
 - (NSSet)inspectableAttributes;
@@ -79,15 +79,15 @@
 - (double)customTravelDistance;
 - (double)durationDefaultForInitialChunk;
 - (float)custom3DChartRotation;
-- (id)chunkForIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)deliveriesLocalized:(BOOL)a3;
-- (id)i_buildChunkForChunkIdentifier:(id)a3;
-- (id)i_drawableForArchiving:(BOOL)a3;
-- (id)i_drawableOnSlide:(id)a3;
+- (id)chunkForIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)deliveriesLocalized:(BOOL)localized;
+- (id)i_buildChunkForChunkIdentifier:(id)identifier;
+- (id)i_drawableForArchiving:(BOOL)archiving;
+- (id)i_drawableOnSlide:(id)slide;
 - (id)p_buildChunkIDMap;
-- (id)p_chunkAtIndex:(unint64_t)a3;
-- (id)p_chunkTitleByTruncatingTitle:(id)a3 toLength:(unint64_t)a4;
+- (id)p_chunkAtIndex:(unint64_t)index;
+- (id)p_chunkTitleByTruncatingTitle:(id)title toLength:(unint64_t)length;
 - (int64_t)animationType;
 - (int64_t)customAccelerationOption;
 - (int64_t)customTextDelivery;
@@ -102,7 +102,7 @@
 - (unint64_t)deliveryStyle;
 - (unint64_t)direction;
 - (unint64_t)directionType;
-- (unint64_t)endChunkIndexFromEndOffset:(unint64_t)a3;
+- (unint64_t)endChunkIndexFromEndOffset:(unint64_t)offset;
 - (unint64_t)endOffset;
 - (unint64_t)expectedChunkCount;
 - (unint64_t)firstChunkIndexOnSlide;
@@ -110,18 +110,18 @@
 - (unint64_t)lastChunkIndexOnSlide;
 - (unint64_t)startOffset;
 - (void)didInitFromSOS;
-- (void)i_deregisterBuildChunkWithChunkIdentifier:(id)a3;
-- (void)i_generateAndApplyNewChunkIdentifierToChunk:(id)a3;
+- (void)i_deregisterBuildChunkWithChunkIdentifier:(id)identifier;
+- (void)i_generateAndApplyNewChunkIdentifierToChunk:(id)chunk;
 - (void)i_invalidateChunkCache;
-- (void)i_registerBuildChunkIdentifierForChunk:(id)a3;
-- (void)i_rollbackChunkIDSeedForChunk:(id)a3;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setAttributes:(id)a3;
-- (void)setDelivery:(id)a3;
-- (void)setDrawable:(id)a3;
+- (void)i_registerBuildChunkIdentifierForChunk:(id)chunk;
+- (void)i_rollbackChunkIDSeedForChunk:(id)chunk;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setAttributes:(id)attributes;
+- (void)setDelivery:(id)delivery;
+- (void)setDrawable:(id)drawable;
 @end
 
 @implementation KNBuild
@@ -157,17 +157,17 @@
   return v4;
 }
 
-+ (void)i_repairBuildToDrawableReferencesFromUUIDsForBuilds:(id)a3 drawables:(id)a4
++ (void)i_repairBuildToDrawableReferencesFromUUIDsForBuilds:(id)builds drawables:(id)drawables
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  buildsCopy = builds;
+  drawablesCopy = drawables;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
-  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v7, &v27, v31, 16);
+  obj = buildsCopy;
+  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(buildsCopy, v7, &v27, v31, 16);
   if (v8)
   {
     v11 = v8;
@@ -189,11 +189,11 @@
         v21 = objc_msgSend_objectWithUUIDIfAvailable_(v19, v20, v16);
         v22 = TSUDynamicCast();
 
-        if (v6 && !v22)
+        if (drawablesCopy && !v22)
         {
           if (!v12)
           {
-            v12 = objc_msgSend_UUIDToTSPObjectMapForTSPObjects_(KNBuildUtility, v23, v6);
+            v12 = objc_msgSend_UUIDToTSPObjectMapForTSPObjects_(KNBuildUtility, v23, drawablesCopy);
           }
 
           objc_opt_class();
@@ -219,17 +219,17 @@
   }
 }
 
-- (id)i_drawableForArchiving:(BOOL)a3
+- (id)i_drawableForArchiving:(BOOL)archiving
 {
   drawable = self->_drawable;
   if (!drawable)
   {
-    v5 = a3;
+    archivingCopy = archiving;
     objc_opt_class();
     v8 = objc_msgSend_context(self, v6, v7);
     v10 = v8;
     drawableId = self->_drawableId;
-    if (v5)
+    if (archivingCopy)
     {
       objc_msgSend_objectWithUUIDIfAvailable_(v8, v9, drawableId);
     }
@@ -250,11 +250,11 @@
   return drawable;
 }
 
-- (id)i_drawableOnSlide:(id)a3
+- (id)i_drawableOnSlide:(id)slide
 {
-  v4 = a3;
+  slideCopy = slide;
   v7 = objc_msgSend_drawable(self, v5, v6);
-  v10 = objc_msgSend_infosToDisplay(v4, v8, v9);
+  v10 = objc_msgSend_infosToDisplay(slideCopy, v8, v9);
 
   if ((objc_msgSend_containsObject_(v10, v11, v7) & 1) == 0)
   {
@@ -273,11 +273,11 @@
   return v7;
 }
 
-- (void)i_generateAndApplyNewChunkIdentifierToChunk:(id)a3
+- (void)i_generateAndApplyNewChunkIdentifierToChunk:(id)chunk
 {
-  v4 = a3;
-  v38 = v4;
-  if (!v4)
+  chunkCopy = chunk;
+  v38 = chunkCopy;
+  if (!chunkCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNBuild(Internal) i_generateAndApplyNewChunkIdentifierToChunk:]");
@@ -285,10 +285,10 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v11, v8, v10, 173, 0, "Invalid parameter not satisfying: %{public}s", "chunk != nil");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
-    v4 = 0;
+    chunkCopy = 0;
   }
 
-  v14 = objc_msgSend_chunkIdentifier(v4, v5, v6);
+  v14 = objc_msgSend_chunkIdentifier(chunkCopy, v5, v6);
   isValid = objc_msgSend_isValid(v14, v15, v16);
 
   if (isValid)
@@ -321,11 +321,11 @@
   }
 }
 
-- (void)i_rollbackChunkIDSeedForChunk:(id)a3
+- (void)i_rollbackChunkIDSeedForChunk:(id)chunk
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  chunkCopy = chunk;
+  if (!chunkCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[KNBuild(Internal) i_rollbackChunkIDSeedForChunk:]");
@@ -335,7 +335,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  v14 = objc_msgSend_build(v6, v4, v5);
+  v14 = objc_msgSend_build(chunkCopy, v4, v5);
 
   if (v14 != self)
   {
@@ -347,7 +347,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23);
   }
 
-  v24 = objc_msgSend_chunkIdentifier(v6, v15, v16);
+  v24 = objc_msgSend_chunkIdentifier(chunkCopy, v15, v16);
   chunkIDSeed = objc_msgSend_chunkID(v24, v25, v26);
   if (chunkIDSeed != self->_chunkIDSeed)
   {
@@ -376,7 +376,7 @@
     objc_msgSend_i_deregisterBuildChunkWithChunkIdentifier_(self, v28, v24);
     objc_msgSend_willModify(self, v36, v37);
     --self->_chunkIDSeed;
-    objc_msgSend_i_clearChunkIdentifier(v6, v38, v39);
+    objc_msgSend_i_clearChunkIdentifier(chunkCopy, v38, v39);
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
@@ -417,11 +417,11 @@
   }
 }
 
-- (void)i_registerBuildChunkIdentifierForChunk:(id)a3
+- (void)i_registerBuildChunkIdentifierForChunk:(id)chunk
 {
-  v4 = a3;
-  v67 = v4;
-  if (!v4)
+  chunkCopy = chunk;
+  v67 = chunkCopy;
+  if (!chunkCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNBuild(Internal) i_registerBuildChunkIdentifierForChunk:]");
@@ -429,10 +429,10 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v11, v8, v10, 241, 0, "Invalid parameter not satisfying: %{public}s", "chunk != nil");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
-    v4 = 0;
+    chunkCopy = 0;
   }
 
-  v14 = objc_msgSend_chunkIdentifier(v4, v5, v6);
+  v14 = objc_msgSend_chunkIdentifier(chunkCopy, v5, v6);
   v17 = v14;
   if (v14)
   {
@@ -565,12 +565,12 @@
   return buildChunkIDMap;
 }
 
-- (id)i_buildChunkForChunkIdentifier:(id)a3
+- (id)i_buildChunkForChunkIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v7 = objc_msgSend_p_buildChunkIDMap(self, v5, v6);
   v8 = MEMORY[0x277CCABB0];
-  v11 = objc_msgSend_chunkID(v4, v9, v10);
+  v11 = objc_msgSend_chunkID(identifierCopy, v9, v10);
 
   v13 = objc_msgSend_numberWithInt_(v8, v12, v11);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
@@ -578,10 +578,10 @@
   return v15;
 }
 
-- (void)i_deregisterBuildChunkWithChunkIdentifier:(id)a3
+- (void)i_deregisterBuildChunkWithChunkIdentifier:(id)identifier
 {
-  v37 = a3;
-  if ((objc_msgSend_isValid(v37, v4, v5) & 1) == 0)
+  identifierCopy = identifier;
+  if ((objc_msgSend_isValid(identifierCopy, v4, v5) & 1) == 0)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[KNBuild(Internal) i_deregisterBuildChunkWithChunkIdentifier:]");
@@ -591,7 +591,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
   }
 
-  v15 = objc_msgSend_buildUUID(v37, v6, v7);
+  v15 = objc_msgSend_buildUUID(identifierCopy, v6, v7);
   v18 = objc_msgSend_objectUUID(self, v16, v17);
   isEqual = objc_msgSend_isEqual_(v15, v19, v18);
 
@@ -605,41 +605,41 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29);
   }
 
-  v30 = objc_msgSend_chunkID(v37, v21, v22);
+  v30 = objc_msgSend_chunkID(identifierCopy, v21, v22);
   v33 = objc_msgSend_p_buildChunkIDMap(self, v31, v32);
   v35 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v34, v30);
   objc_msgSend_removeObjectForKey_(v33, v36, v35);
 }
 
-+ (BOOL)p_shouldExcludeAnimationName:(id)a3 forDrawable:(id)a4
++ (BOOL)p_shouldExcludeAnimationName:(id)name forDrawable:(id)drawable
 {
-  v5 = a4;
-  v6 = a3;
-  isEqualToString = objc_msgSend_isEqualToString_(v6, v7, @"apple:bc-orbital");
+  drawableCopy = drawable;
+  nameCopy = name;
+  isEqualToString = objc_msgSend_isEqualToString_(nameCopy, v7, @"apple:bc-orbital");
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v11 = objc_msgSend_isEqualToString_(v6, v10, @"apple:drift object");
+  v11 = objc_msgSend_isEqualToString_(nameCopy, v10, @"apple:drift object");
 
   objc_opt_class();
-  LOBYTE(v6) = objc_opt_isKindOfClass();
+  LOBYTE(nameCopy) = objc_opt_isKindOfClass();
 
-  return (isEqualToString & ~isKindOfClass | v11 & v6) & 1;
+  return (isEqualToString & ~isKindOfClass | v11 & nameCopy) & 1;
 }
 
-+ (id)p_drawableFromInfo:(id)a3
++ (id)p_drawableFromInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   objc_opt_class();
   v4 = TSUDynamicCast();
 
   return v4;
 }
 
-+ (id)supportedAnimationInfosForDrawableInfo:(id)a3 animationType:(int64_t)a4
++ (id)supportedAnimationInfosForDrawableInfo:(id)info animationType:(int64_t)type
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a4 == 3)
+  infoCopy = info;
+  if (type == 3)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "+[KNBuild supportedAnimationInfosForDrawableInfo:animationType:]");
@@ -650,11 +650,11 @@
   }
 
   v16 = objc_msgSend_set(MEMORY[0x277CBEB58], v6, v7);
-  v40 = v8;
-  v18 = objc_msgSend_p_drawableFromInfo_(a1, v17, v8);
+  v40 = infoCopy;
+  v18 = objc_msgSend_p_drawableFromInfo_(self, v17, infoCopy);
   v21 = objc_msgSend_instance(KNAnimationRegistry, v19, v20);
   v24 = objc_msgSend_animationFilters(v18, v22, v23);
-  v26 = objc_msgSend_animationInfosForAnimationType_filter_(v21, v25, a4, v24);
+  v26 = objc_msgSend_animationInfosForAnimationType_filter_(v21, v25, type, v24);
 
   v43 = 0u;
   v44 = 0u;
@@ -677,7 +677,7 @@
 
         v35 = *(*(&v41 + 1) + 8 * i);
         v36 = objc_msgSend_effectIdentifier(v35, v30, v31);
-        if ((objc_msgSend_p_shouldExcludeAnimationName_forDrawable_(a1, v37, v36, v18) & 1) == 0)
+        if ((objc_msgSend_p_shouldExcludeAnimationName_forDrawable_(self, v37, v36, v18) & 1) == 0)
         {
           objc_msgSend_addObject_(v16, v38, v35);
         }
@@ -692,11 +692,11 @@
   return v16;
 }
 
-+ (id)menuAnimationInfosForDrawableInfo:(id)a3 animationType:(int64_t)a4
++ (id)menuAnimationInfosForDrawableInfo:(id)info animationType:(int64_t)type
 {
   v57 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (a4 == 3)
+  infoCopy = info;
+  if (type == 3)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "+[KNBuild menuAnimationInfosForDrawableInfo:animationType:]");
@@ -707,8 +707,8 @@
   }
 
   v15 = MEMORY[0x277CBEB58];
-  v51 = v7;
-  v16 = objc_msgSend_supportedAnimationInfosForDrawableInfo_animationType_(a1, v6, v7, a4);
+  v51 = infoCopy;
+  v16 = objc_msgSend_supportedAnimationInfosForDrawableInfo_animationType_(self, v6, infoCopy, type);
   v18 = objc_msgSend_setWithSet_(v15, v17, v16);
 
   v21 = objc_msgSend_set(MEMORY[0x277CBEB58], v19, v20);
@@ -760,16 +760,16 @@
   return v48;
 }
 
-+ (KNBuild)buildWithEffect:(id)a3 animationType:(int64_t)a4 drawable:(id)a5 slide:(id)a6
++ (KNBuild)buildWithEffect:(id)effect animationType:(int64_t)type drawable:(id)drawable slide:(id)slide
 {
   v60[2] = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  v11 = a3;
+  drawableCopy = drawable;
+  slideCopy = slide;
+  effectCopy = effect;
   IsEmphasisEffect = KNEffectIsEmphasisEffect();
-  if (a4 != 4 || (IsEmphasisEffect & 1) != 0)
+  if (type != 4 || (IsEmphasisEffect & 1) != 0)
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_7;
     }
@@ -791,20 +791,20 @@
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23);
 LABEL_7:
   v24 = [KNBuild alloc];
-  v27 = objc_msgSend_slide(v9, v25, v26);
-  v30 = objc_msgSend_context(v9, v28, v29);
-  v32 = objc_msgSend_initWithSlide_effect_buildType_context_(v24, v31, v27, v11, a4, v30);
+  v27 = objc_msgSend_slide(drawableCopy, v25, v26);
+  v30 = objc_msgSend_context(drawableCopy, v28, v29);
+  v32 = objc_msgSend_initWithSlide_effect_buildType_context_(v24, v31, v27, effectCopy, type, v30);
 
-  objc_msgSend_setDrawable_(v32, v33, v9);
-  v38 = objc_msgSend_slide(v9, v34, v35);
+  objc_msgSend_setDrawable_(v32, v33, drawableCopy);
+  v38 = objc_msgSend_slide(drawableCopy, v34, v35);
   if (v38)
   {
-    isRightToLeft = objc_msgSend_isRightToLeft(v9, v36, v37);
+    isRightToLeft = objc_msgSend_isRightToLeft(drawableCopy, v36, v37);
   }
 
   else
   {
-    isRightToLeft = objc_msgSend_documentIsRTL(v10, v36, v37);
+    isRightToLeft = objc_msgSend_documentIsRTL(slideCopy, v36, v37);
   }
 
   v40 = isRightToLeft;
@@ -828,13 +828,13 @@ LABEL_7:
   return v32;
 }
 
-- (KNBuild)initWithSlide:(id)a3 effect:(id)a4 buildType:(int64_t)a5 context:(id)a6
+- (KNBuild)initWithSlide:(id)slide effect:(id)effect buildType:(int64_t)type context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
+  slideCopy = slide;
+  effectCopy = effect;
   v29.receiver = self;
   v29.super_class = KNBuild;
-  v12 = [(KNBuild *)&v29 initWithContext:a6];
+  v12 = [(KNBuild *)&v29 initWithContext:context];
   if (v12)
   {
     if ((KNAnimationTypeIsBuildType() & 1) == 0)
@@ -847,12 +847,12 @@ LABEL_7:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20);
     }
 
-    objc_storeWeak(&v12->_slide, v10);
+    objc_storeWeak(&v12->_slide, slideCopy);
     v23 = objc_msgSend_copy(*MEMORY[0x277D80118], v21, v22);
     delivery = v12->_delivery;
     v12->_delivery = v23;
 
-    v26 = objc_msgSend_defaultAttributesForEffect_buildType_(KNBuildAttributes, v25, v11, a5);
+    v26 = objc_msgSend_defaultAttributesForEffect_buildType_(KNBuildAttributes, v25, effectCopy, type);
     attributes = v12->_attributes;
     v12->_attributes = v26;
   }
@@ -860,7 +860,7 @@ LABEL_7:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [KNBuild alloc];
   v7 = objc_msgSend_slide(self, v5, v6);
@@ -1005,10 +1005,10 @@ LABEL_7:
   return v6;
 }
 
-- (void)setDrawable:(id)a3
+- (void)setDrawable:(id)drawable
 {
-  v26 = a3;
-  if (!v26)
+  drawableCopy = drawable;
+  if (!drawableCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNBuild setDrawable:]");
@@ -1019,11 +1019,11 @@ LABEL_7:
   }
 
   objc_msgSend_willModify(self, v5, v6);
-  v16 = v26;
-  if (self->_drawable != v26)
+  v16 = drawableCopy;
+  if (self->_drawable != drawableCopy)
   {
-    objc_storeStrong(&self->_drawable, a3);
-    v16 = v26;
+    objc_storeStrong(&self->_drawable, drawable);
+    v16 = drawableCopy;
   }
 
   v18 = objc_msgSend_objectUUID(v16, v14, v15);
@@ -1043,13 +1043,13 @@ LABEL_7:
   }
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
-  v4 = a3;
-  if (self->_attributes != v4)
+  attributesCopy = attributes;
+  if (self->_attributes != attributesCopy)
   {
-    v31 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v31 = attributesCopy;
+    objc_msgSend_willModify(self, attributesCopy, v5);
     started = objc_msgSend_startOffset(self, v6, v7);
     v11 = objc_msgSend_endOffset(self, v9, v10);
     v14 = objc_msgSend_copy(v31, v12, v13);
@@ -1058,7 +1058,7 @@ LABEL_7:
 
     v18 = objc_msgSend_startOffset(self, v16, v17);
     v21 = objc_msgSend_endOffset(self, v19, v20);
-    v4 = v31;
+    attributesCopy = v31;
     if (started != v18 || v11 != v21)
     {
       v23 = objc_msgSend_slide(self, v31, v22);
@@ -1067,7 +1067,7 @@ LABEL_7:
       v28 = objc_msgSend_slideNode(v23, v26, v27);
       objc_msgSend_invalidateBuildEventCountCaches(v28, v29, v30);
 
-      v4 = v31;
+      attributesCopy = v31;
     }
   }
 }
@@ -1191,10 +1191,10 @@ LABEL_7:
   return cachedChunks;
 }
 
-- (id)p_chunkAtIndex:(unint64_t)a3
+- (id)p_chunkAtIndex:(unint64_t)index
 {
-  v4 = objc_msgSend_chunks(self, a2, a3);
-  v6 = objc_msgSend_tsu_rangeCheckedObjectAtIndex_(v4, v5, a3);
+  v4 = objc_msgSend_chunks(self, a2, index);
+  v6 = objc_msgSend_tsu_rangeCheckedObjectAtIndex_(v4, v5, index);
 
   return v6;
 }
@@ -1267,11 +1267,11 @@ LABEL_7:
   return v6;
 }
 
-- (id)chunkForIdentifier:(id)a3
+- (id)chunkForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v7 = objc_msgSend_objectUUID(self, v5, v6);
-  v10 = objc_msgSend_buildUUID(v4, v8, v9);
+  v10 = objc_msgSend_buildUUID(identifierCopy, v8, v9);
   isEqual = objc_msgSend_isEqual_(v7, v11, v10);
 
   if ((isEqual & 1) == 0)
@@ -1284,16 +1284,16 @@ LABEL_7:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20);
   }
 
-  v21 = objc_msgSend_i_buildChunkForChunkIdentifier_(self, v13, v4);
+  v21 = objc_msgSend_i_buildChunkForChunkIdentifier_(self, v13, identifierCopy);
 
   return v21;
 }
 
-- (id)deliveriesLocalized:(BOOL)a3
+- (id)deliveriesLocalized:(BOOL)localized
 {
-  v3 = a3;
+  localizedCopy = localized;
   v39[1] = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_drawable(self, a2, a3);
+  v7 = objc_msgSend_drawable(self, a2, localized);
   if (!v7)
   {
     v18 = 0;
@@ -1304,7 +1304,7 @@ LABEL_8:
       goto LABEL_16;
     }
 
-    if (v3)
+    if (localizedCopy)
     {
       goto LABEL_10;
     }
@@ -1322,13 +1322,13 @@ LABEL_14:
   if (!isDrift)
   {
     v23 = objc_msgSend_animationFilter(self, v12, v13);
-    v18 = objc_msgSend_textureDeliveryStylesLocalized_animationFilter_(v7, v24, v3, v23);
+    v18 = objc_msgSend_textureDeliveryStylesLocalized_animationFilter_(v7, v24, localizedCopy, v23);
 
     v21 = objc_msgSend_count(v18, v25, v26);
     goto LABEL_8;
   }
 
-  if (!v3)
+  if (!localizedCopy)
   {
     v32 = *MEMORY[0x277D80118];
     v38 = *MEMORY[0x277D80118];
@@ -1368,18 +1368,18 @@ LABEL_16:
 
 - (BOOL)downgradesDelivery
 {
-  v2 = self;
+  selfCopy = self;
   v3 = objc_msgSend_deliveriesLocalized_(self, a2, 0);
-  LOBYTE(v2) = objc_msgSend_containsObject_(v3, v4, v2->_delivery);
+  LOBYTE(selfCopy) = objc_msgSend_containsObject_(v3, v4, selfCopy->_delivery);
 
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
-- (void)setDelivery:(id)a3
+- (void)setDelivery:(id)delivery
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4 || !objc_msgSend_length(v4, v5, v6))
+  deliveryCopy = delivery;
+  v7 = deliveryCopy;
+  if (!deliveryCopy || !objc_msgSend_length(deliveryCopy, v5, v6))
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNBuild setDelivery:]");
@@ -1415,13 +1415,13 @@ LABEL_16:
   }
 }
 
-- (BOOL)p_isDeliveryLocalized:(id)a3 forNonNilDrawable:(id)a4
+- (BOOL)p_isDeliveryLocalized:(id)localized forNonNilDrawable:(id)drawable
 {
-  v6 = a3;
-  v9 = a4;
-  if (v9)
+  localizedCopy = localized;
+  drawableCopy = drawable;
+  if (drawableCopy)
   {
-    if (v6)
+    if (localizedCopy)
     {
       goto LABEL_3;
     }
@@ -1435,7 +1435,7 @@ LABEL_16:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v23, v20, v22, 533, 0, "Invalid parameter not satisfying: %{public}s", "drawable != nil");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25);
-    if (v6)
+    if (localizedCopy)
     {
       goto LABEL_3;
     }
@@ -1449,12 +1449,12 @@ LABEL_16:
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v31, v32);
 LABEL_3:
   v10 = objc_msgSend_animationFilter(self, v7, v8);
-  v12 = objc_msgSend_textureDeliveryStylesLocalized_animationFilter_(v9, v11, 0, v10);
+  v12 = objc_msgSend_textureDeliveryStylesLocalized_animationFilter_(drawableCopy, v11, 0, v10);
   v15 = 0;
-  if ((objc_msgSend_containsObject_(v12, v13, v6) & 1) == 0)
+  if ((objc_msgSend_containsObject_(v12, v13, localizedCopy) & 1) == 0)
   {
-    v16 = objc_msgSend_textureDeliveryStylesLocalized_animationFilter_(v9, v14, 1, v10);
-    v15 = objc_msgSend_containsObject_(v16, v17, v6);
+    v16 = objc_msgSend_textureDeliveryStylesLocalized_animationFilter_(drawableCopy, v14, 1, v10);
+    v15 = objc_msgSend_containsObject_(v16, v17, localizedCopy);
   }
 
   return v15;
@@ -1565,17 +1565,17 @@ LABEL_3:
   return result;
 }
 
-- (unint64_t)endChunkIndexFromEndOffset:(unint64_t)a3
+- (unint64_t)endChunkIndexFromEndOffset:(unint64_t)offset
 {
-  v4 = objc_msgSend_chunkCount(self, a2, a3);
-  if (v4 <= a3)
+  v4 = objc_msgSend_chunkCount(self, a2, offset);
+  if (v4 <= offset)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    return v4 + ~a3;
+    return v4 + ~offset;
   }
 }
 
@@ -1592,18 +1592,18 @@ LABEL_3:
   return v9 - 1;
 }
 
-- (id)p_chunkTitleByTruncatingTitle:(id)a3 toLength:(unint64_t)a4
+- (id)p_chunkTitleByTruncatingTitle:(id)title toLength:(unint64_t)length
 {
-  v5 = a3;
-  v8 = objc_msgSend_length(v5, v6, v7);
-  v9 = v5;
+  titleCopy = title;
+  v8 = objc_msgSend_length(titleCopy, v6, v7);
+  v9 = titleCopy;
   v11 = v9;
   v12 = v9;
   if (v8)
   {
-    if (v8 >= a4)
+    if (v8 >= length)
     {
-      objc_msgSend_substringWithRange_(v9, v10, 0, a4);
+      objc_msgSend_substringWithRange_(v9, v10, 0, length);
     }
 
     else
@@ -1640,26 +1640,26 @@ LABEL_3:
 
 - (BOOL)isOnSlide
 {
-  v3 = self;
+  selfCopy = self;
   v4 = objc_msgSend_slide(self, a2, v2);
   v7 = objc_msgSend_builds(v4, v5, v6);
-  LOBYTE(v3) = objc_msgSend_containsObject_(v7, v8, v3);
+  LOBYTE(selfCopy) = objc_msgSend_containsObject_(v7, v8, selfCopy);
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)isComplementOfBuild:(id)a3
+- (BOOL)isComplementOfBuild:(id)build
 {
-  v4 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], a2, a3);
+  v4 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], a2, build);
   LOBYTE(self) = objc_msgSend_p_hasComplementInBuilds_(self, v5, v4);
 
   return self;
 }
 
-- (BOOL)p_hasComplementInBuilds:(id)a3
+- (BOOL)p_hasComplementInBuilds:(id)builds
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  buildsCopy = builds;
   if (objc_msgSend_isActionBuild(self, v5, v6))
   {
     v9 = 0;
@@ -1672,7 +1672,7 @@ LABEL_3:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = v4;
+    v11 = buildsCopy;
     v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v26, v30, 16);
     if (v13)
     {
@@ -1728,12 +1728,12 @@ LABEL_16:
 
 - (BOOL)hasComplement
 {
-  v3 = self;
+  selfCopy = self;
   v4 = objc_msgSend_slide(self, a2, v2);
   v7 = objc_msgSend_builds(v4, v5, v6);
-  LOBYTE(v3) = objc_msgSend_p_hasComplementInBuilds_(v3, v8, v7);
+  LOBYTE(selfCopy) = objc_msgSend_p_hasComplementInBuilds_(selfCopy, v8, v7);
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)isActionMotionBuild
@@ -2033,9 +2033,9 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)p_supportsCustomEffectTimingCurveForLayoutStyles:(id)a3
+- (BOOL)p_supportsCustomEffectTimingCurveForLayoutStyles:(id)styles
 {
-  v4 = a3;
+  stylesCopy = styles;
   isCustomEffectTimingCurveEditingEnabled = objc_msgSend_isCustomEffectTimingCurveEditingEnabled(KNAnimationUtils, v5, v6);
   v10 = objc_msgSend_animationInfo(self, v8, v9);
   v13 = objc_msgSend_attributes(self, v11, v12);
@@ -2043,7 +2043,7 @@ LABEL_16:
   v18 = objc_msgSend_customEffectTimingCurveDisplayParametersForAttributes_layoutStyleOnly_(v10, v17, v16, 1);
 
   v20 = objc_msgSend_objectForKeyedSubscript_(v18, v19, &unk_2884F3B40);
-  LOBYTE(v10) = objc_msgSend_containsObject_(v4, v21, v20);
+  LOBYTE(v10) = objc_msgSend_containsObject_(stylesCopy, v21, v20);
 
   return isCustomEffectTimingCurveEditingEnabled & v10;
 }
@@ -2452,10 +2452,10 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)p_supportsCustomTextDeliveryOptionsForAttributes:(id)a3
+- (BOOL)p_supportsCustomTextDeliveryOptionsForAttributes:(id)attributes
 {
-  v4 = a3;
-  v9 = objc_msgSend_containsObject_(v4, v5, @"KNBuildCustomAttributesTextDelivery") && objc_msgSend_containsObject_(v4, v6, @"KNBuildCustomAttributesDeliveryOption") && objc_msgSend_customTextDelivery(self, v7, v8) > 1;
+  attributesCopy = attributes;
+  v9 = objc_msgSend_containsObject_(attributesCopy, v5, @"KNBuildCustomAttributesTextDelivery") && objc_msgSend_containsObject_(attributesCopy, v6, @"KNBuildCustomAttributesDeliveryOption") && objc_msgSend_customTextDelivery(self, v7, v8) > 1;
 
   return v9;
 }
@@ -2486,19 +2486,19 @@ LABEL_8:
   return v8;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v8 = v6;
-  if ((*(a3 + 16) & 2) != 0)
+  unarchiverCopy = unarchiver;
+  v8 = unarchiverCopy;
+  if ((*(archive + 16) & 2) != 0)
   {
-    v9 = *(a3 + 4);
+    v9 = *(archive + 4);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = sub_275E517EC;
     v22[3] = &unk_27A699760;
     v22[4] = self;
-    v10 = v6;
+    v10 = unarchiverCopy;
     v11 = objc_opt_class();
     objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v10, v12, v9, v11, 0, v22);
   }
@@ -2508,7 +2508,7 @@ LABEL_8:
     sub_275E6112C();
   }
 
-  v13 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v7, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+  v13 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v7, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
   delivery = self->_delivery;
   self->_delivery = v13;
 
@@ -2519,9 +2519,9 @@ LABEL_8:
   }
 
   v18 = [KNBuildAttributes alloc];
-  if (*(a3 + 5))
+  if (*(archive + 5))
   {
-    v20 = objc_msgSend_initFromBuildAttributesArchive_(v18, v19, *(a3 + 5));
+    v20 = objc_msgSend_initFromBuildAttributesArchive_(v18, v19, *(archive + 5));
   }
 
   else
@@ -2532,33 +2532,33 @@ LABEL_8:
   attributes = self->_attributes;
   self->_attributes = v20;
 
-  if ((*(a3 + 16) & 0x10) != 0)
+  if ((*(archive + 16) & 0x10) != 0)
   {
-    self->_chunkIDSeed = *(a3 + 14);
+    self->_chunkIDSeed = *(archive + 14);
   }
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v9 = objc_msgSend_i_drawableForArchiving_(self, v7, 1);
   if (v9)
   {
-    *(a3 + 4) |= 2u;
-    v10 = *(a3 + 4);
+    *(archive + 4) |= 2u;
+    v10 = *(archive + 4);
     if (!v10)
     {
-      v11 = *(a3 + 1);
+      v11 = *(archive + 1);
       if (v11)
       {
         v11 = *(v11 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v10 = MEMORY[0x277C8F050](v11);
-      *(a3 + 4) = v10;
+      *(archive + 4) = v10;
     }
 
-    objc_msgSend_setWeakReference_message_(v6, v8, v9, v10);
+    objc_msgSend_setWeakReference_message_(archiverCopy, v8, v9, v10);
   }
 
   else if (KNBuildCobblestoneLogCat_init_token != -1)
@@ -2591,26 +2591,26 @@ LABEL_8:
   v30 = v14;
   v31 = v14;
   v34 = objc_msgSend_UTF8String(v30, v32, v33);
-  sub_275E51DB8(a3, v34);
-  *(a3 + 4) |= 8u;
-  *(a3 + 6) = 0;
+  sub_275E51DB8(archive, v34);
+  *(archive + 4) |= 8u;
+  *(archive + 6) = 0;
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = sub_275E51ECC;
   v38[3] = &unk_27A697C88;
   v38[4] = self;
-  v40 = a3;
-  v35 = v6;
+  archiveCopy = archive;
+  v35 = archiverCopy;
   v39 = v35;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v35, v36, 4, a3, v38);
+  objc_msgSend_pushScopeForField_message_usingBlock_(v35, v36, 4, archive, v38);
   chunkIDSeed = self->_chunkIDSeed;
-  *(a3 + 4) |= 0x10u;
-  *(a3 + 14) = chunkIDSeed;
+  *(archive + 4) |= 0x10u;
+  *(archive + 14) = chunkIDSeed;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
   {
@@ -2622,20 +2622,20 @@ LABEL_8:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  v17 = v4;
+  v17 = unarchiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v15 = objc_msgSend_messageWithDescriptor_(v17, v14, off_2812EA908[16]);
 
   objc_msgSend_loadFromArchive_unarchiver_(self, v16, v15, v17);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_275E52190, off_2812EA908[16]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_275E52190, off_2812EA908[16]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
 @end

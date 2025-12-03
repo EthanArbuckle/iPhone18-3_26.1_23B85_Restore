@@ -1,11 +1,11 @@
 @interface MTPartialFeedRequest
 - (BOOL)showTypeIsSerial;
-- (MTPartialFeedRequest)initWithStoreID:(int64_t)a3;
+- (MTPartialFeedRequest)initWithStoreID:(int64_t)d;
 - (NSArray)sections;
 - (int64_t)limit;
-- (void)setLimit:(int64_t)a3;
-- (void)setSections:(id)a3;
-- (void)setShowTypeIsSerial:(BOOL)a3;
+- (void)setLimit:(int64_t)limit;
+- (void)setSections:(id)sections;
+- (void)setShowTypeIsSerial:(BOOL)serial;
 @end
 
 @implementation MTPartialFeedRequest
@@ -17,11 +17,11 @@
   return *(self + v3);
 }
 
-- (void)setLimit:(int64_t)a3
+- (void)setLimit:(int64_t)limit
 {
   v5 = OBJC_IVAR___MTPartialFeedRequest_limit;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = limit;
 }
 
 - (NSArray)sections
@@ -35,7 +35,7 @@
   return v5;
 }
 
-- (void)setSections:(id)a3
+- (void)setSections:(id)sections
 {
   v4 = sub_1D91785FC();
   v5 = OBJC_IVAR___MTPartialFeedRequest_sections;
@@ -51,20 +51,20 @@
   return *(self + v3);
 }
 
-- (void)setShowTypeIsSerial:(BOOL)a3
+- (void)setShowTypeIsSerial:(BOOL)serial
 {
   v5 = OBJC_IVAR___MTPartialFeedRequest_showTypeIsSerial;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = serial;
 }
 
-- (MTPartialFeedRequest)initWithStoreID:(int64_t)a3
+- (MTPartialFeedRequest)initWithStoreID:(int64_t)d
 {
   *(self + OBJC_IVAR___MTPartialFeedRequest_limit) = 25;
   *(self + OBJC_IVAR___MTPartialFeedRequest_sections) = MEMORY[0x1E69E7CC0];
   *(self + OBJC_IVAR___MTPartialFeedRequest_showTypeIsSerial) = 0;
   *(self + OBJC_IVAR___MTBaseFeedRequest_showMetadata) = 0;
-  *(self + OBJC_IVAR___MTBaseFeedRequest_storeID) = a3;
+  *(self + OBJC_IVAR___MTBaseFeedRequest_storeID) = d;
   v4.receiver = self;
   v4.super_class = type metadata accessor for BaseFeedRequest();
   return [(MTBaseFeedRequest *)&v4 init];

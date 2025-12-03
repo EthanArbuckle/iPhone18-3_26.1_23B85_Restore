@@ -1,14 +1,14 @@
 @interface CSPowerLogger
 + (id)sharedPowerLogger;
 - (CSPowerLogger)init;
-- (void)_borealisPowerlog:(id)a3;
-- (void)_configPowerlog:(id)a3;
-- (void)_emitSelfTriggerSuppressionToBiomeWithStsDuration:(double)a3;
-- (void)_updateConfigToPreferencesWithLanguage:(id)a3 withModelVersion:(id)a4;
-- (void)powerLogSecondPassWithResult:(unint64_t)a3 withSecondPassScore:(float)a4 withPhId:(unint64_t)a5;
-- (void)powerLogSelfTriggerSuppressionStartWithSpeakerType:(unint64_t)a3 withAudioSource:(unint64_t)a4 atTime:(double)a5 isPhoneCall:(BOOL)a6;
-- (void)powerLogSelfTriggerSuppressionStopAtTime:(double)a3;
-- (void)powerWithNumFalseWakeup:(unint64_t)a3 withDuration:(double)a4 withPhraseDict:(id)a5;
+- (void)_borealisPowerlog:(id)powerlog;
+- (void)_configPowerlog:(id)powerlog;
+- (void)_emitSelfTriggerSuppressionToBiomeWithStsDuration:(double)duration;
+- (void)_updateConfigToPreferencesWithLanguage:(id)language withModelVersion:(id)version;
+- (void)powerLogSecondPassWithResult:(unint64_t)result withSecondPassScore:(float)score withPhId:(unint64_t)id;
+- (void)powerLogSelfTriggerSuppressionStartWithSpeakerType:(unint64_t)type withAudioSource:(unint64_t)source atTime:(double)time isPhoneCall:(BOOL)call;
+- (void)powerLogSelfTriggerSuppressionStopAtTime:(double)time;
+- (void)powerWithNumFalseWakeup:(unint64_t)wakeup withDuration:(double)duration withPhraseDict:(id)dict;
 @end
 
 @implementation CSPowerLogger
@@ -25,7 +25,7 @@
   return v3;
 }
 
-- (void)_emitSelfTriggerSuppressionToBiomeWithStsDuration:(double)a3
+- (void)_emitSelfTriggerSuppressionToBiomeWithStsDuration:(double)duration
 {
   v30 = *MEMORY[0x1E69E9840];
   selfTriggerSuppressionPlaybackRoute = self->_selfTriggerSuppressionPlaybackRoute;
@@ -44,24 +44,24 @@
   v9 = selfTriggerSuppressionPlaybackRoute == 2;
   v10 = objc_alloc(MEMORY[0x1E698EF48]);
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numSelfTriggersInInterval];
-  v12 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v12 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   v13 = [MEMORY[0x1E696AD98] numberWithBool:v9];
   v14 = [MEMORY[0x1E696AD98] numberWithBool:v8];
   v15 = [v10 initWithNumSelfTriggersDetectedDuringEvent:v11 durationOfSelfTriggerEventInSec:v12 audioSource:v7 isBluetoothSpeakerActive:v13 isBuiltInSpeakerActive:v14];
 
   v16 = BiomeLibrary();
-  v17 = [v16 Siri];
-  v18 = [v17 SelfTriggerSuppression];
+  siri = [v16 Siri];
+  selfTriggerSuppression = [siri SelfTriggerSuppression];
 
-  v19 = [v18 source];
-  v20 = [MEMORY[0x1E695DF00] date];
-  [v19 sendEvent:v15];
-  v21 = [MEMORY[0x1E695DF00] date];
+  source = [selfTriggerSuppression source];
+  date = [MEMORY[0x1E695DF00] date];
+  [source sendEvent:v15];
+  date2 = [MEMORY[0x1E695DF00] date];
   v22 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v23 = v22;
-    [v21 timeIntervalSinceDate:v20];
+    [date2 timeIntervalSinceDate:date];
     v26 = 136315394;
     v27 = "[CSPowerLogger _emitSelfTriggerSuppressionToBiomeWithStsDuration:]";
     v28 = 2050;
@@ -72,21 +72,21 @@
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateConfigToPreferencesWithLanguage:(id)a3 withModelVersion:(id)a4
+- (void)_updateConfigToPreferencesWithLanguage:(id)language withModelVersion:(id)version
 {
-  v5 = a4;
-  v6 = a3;
+  versionCopy = version;
+  languageCopy = language;
   v7 = +[CSFPreferences sharedPreferences];
-  [v7 setPowerLoggingCurrentLanguage:v6];
+  [v7 setPowerLoggingCurrentLanguage:languageCopy];
 
   v8 = +[CSFPreferences sharedPreferences];
-  [v8 setPowerLoggingCurrentAssetConfigVersion:v5];
+  [v8 setPowerLoggingCurrentAssetConfigVersion:versionCopy];
 }
 
-- (void)_configPowerlog:(id)a3
+- (void)_configPowerlog:(id)powerlog
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  powerlogCopy = powerlog;
   if (PLShouldLogRegisteredEvent())
   {
     PLLogRegisteredEvent();
@@ -96,7 +96,7 @@
       v6 = 136315394;
       v7 = "[CSPowerLogger _configPowerlog:]";
       v8 = 2114;
-      v9 = v3;
+      v9 = powerlogCopy;
       _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s PowerLog : SiriConfig %{public}@", &v6, 0x16u);
     }
   }
@@ -104,10 +104,10 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_borealisPowerlog:(id)a3
+- (void)_borealisPowerlog:(id)powerlog
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  powerlogCopy = powerlog;
   if (PLShouldLogRegisteredEvent())
   {
     PLLogRegisteredEvent();
@@ -117,7 +117,7 @@
       v6 = 136315394;
       v7 = "[CSPowerLogger _borealisPowerlog:]";
       v8 = 2114;
-      v9 = v3;
+      v9 = powerlogCopy;
       _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s PowerLog : Borealis %{public}@", &v6, 0x16u);
     }
   }
@@ -125,14 +125,14 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)powerLogSelfTriggerSuppressionStopAtTime:(double)a3
+- (void)powerLogSelfTriggerSuppressionStopAtTime:(double)time
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __58__CSPowerLogger_powerLogSelfTriggerSuppressionStopAtTime___block_invoke;
   v4[3] = &unk_1E865CC58;
-  *&v4[5] = a3;
+  *&v4[5] = time;
   v4[4] = self;
   dispatch_async(queue, v4);
 }
@@ -199,7 +199,7 @@ uint64_t __58__CSPowerLogger_powerLogSelfTriggerSuppressionStopAtTime___block_in
   return result;
 }
 
-- (void)powerLogSelfTriggerSuppressionStartWithSpeakerType:(unint64_t)a3 withAudioSource:(unint64_t)a4 atTime:(double)a5 isPhoneCall:(BOOL)a6
+- (void)powerLogSelfTriggerSuppressionStartWithSpeakerType:(unint64_t)type withAudioSource:(unint64_t)source atTime:(double)time isPhoneCall:(BOOL)call
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -207,10 +207,10 @@ uint64_t __58__CSPowerLogger_powerLogSelfTriggerSuppressionStopAtTime___block_in
   block[2] = __103__CSPowerLogger_powerLogSelfTriggerSuppressionStartWithSpeakerType_withAudioSource_atTime_isPhoneCall___block_invoke;
   block[3] = &unk_1E865C8A8;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  *&block[7] = a5;
-  v8 = a6;
+  block[5] = type;
+  block[6] = source;
+  *&block[7] = time;
+  callCopy = call;
   dispatch_async(queue, block);
 }
 
@@ -225,18 +225,18 @@ double __103__CSPowerLogger_powerLogSelfTriggerSuppressionStartWithSpeakerType_w
   return result;
 }
 
-- (void)powerLogSecondPassWithResult:(unint64_t)a3 withSecondPassScore:(float)a4 withPhId:(unint64_t)a5
+- (void)powerLogSecondPassWithResult:(unint64_t)result withSecondPassScore:(float)score withPhId:(unint64_t)id
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"secondPassState";
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:result];
   v13[0] = v7;
   v12[1] = @"secondPassScore";
-  *&v8 = a4;
+  *&v8 = score;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   v13[1] = v9;
   v12[2] = @"phID";
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:id];
   v13[2] = v10;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   PLLogRegisteredEvent();
@@ -244,19 +244,19 @@ double __103__CSPowerLogger_powerLogSelfTriggerSuppressionStartWithSpeakerType_w
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)powerWithNumFalseWakeup:(unint64_t)a3 withDuration:(double)a4 withPhraseDict:(id)a5
+- (void)powerWithNumFalseWakeup:(unint64_t)wakeup withDuration:(double)duration withPhraseDict:(id)dict
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"numFalseWakeUp";
   v7 = MEMORY[0x1E696AD98];
-  v8 = a5;
-  v9 = [v7 numberWithUnsignedLongLong:a3];
+  dictCopy = dict;
+  v9 = [v7 numberWithUnsignedLongLong:wakeup];
   v13[0] = v9;
   v12[1] = @"secondsSinceLastReport";
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   v12[2] = @"phraseDict";
   v13[1] = v10;
-  v13[2] = v8;
+  v13[2] = dictCopy;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
   PLLogRegisteredEvent();

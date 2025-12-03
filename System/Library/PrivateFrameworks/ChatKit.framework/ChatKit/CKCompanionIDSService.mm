@@ -1,8 +1,8 @@
 @interface CKCompanionIDSService
 - (CKCompanionIDSService)init;
 - (void)requestDynamicDictionariesRemoval;
-- (void)sendDeviceSalt:(id)a3;
-- (void)sendResponseKitData:(id)a3;
+- (void)sendDeviceSalt:(id)salt;
+- (void)sendResponseKitData:(id)data;
 @end
 
 @implementation CKCompanionIDSService
@@ -15,38 +15,38 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CKIDSService *)v2 classCService];
-    v5 = [(CKIDSService *)v3 queue];
-    [v4 addDelegate:v3 queue:v5];
+    classCService = [(CKIDSService *)v2 classCService];
+    queue = [(CKIDSService *)v3 queue];
+    [classCService addDelegate:v3 queue:queue];
   }
 
   return v3;
 }
 
-- (void)sendDeviceSalt:(id)a3
+- (void)sendDeviceSalt:(id)salt
 {
-  v4 = a3;
+  saltCopy = salt;
   v7 = objc_alloc_init(NanoMessagesProtoSyncDeviceSalt);
-  [(NanoMessagesProtoSyncDeviceSalt *)v7 setDeviceSalt:v4];
+  [(NanoMessagesProtoSyncDeviceSalt *)v7 setDeviceSalt:saltCopy];
 
-  v5 = [(NanoMessagesProtoSyncDeviceSalt *)v7 data];
-  v6 = [(CKIDSService *)self classAService];
-  [(CKIDSService *)self sendProtobufData:v5 type:0 service:v6 fireAndForget:1 includeInactiveDevices:0];
+  data = [(NanoMessagesProtoSyncDeviceSalt *)v7 data];
+  classAService = [(CKIDSService *)self classAService];
+  [(CKIDSService *)self sendProtobufData:data type:0 service:classAService fireAndForget:1 includeInactiveDevices:0];
 }
 
-- (void)sendResponseKitData:(id)a3
+- (void)sendResponseKitData:(id)data
 {
-  v4 = a3;
-  v5 = [(CKIDSService *)self classCService];
-  [(CKIDSService *)self sendFile:v4 onService:v5];
+  dataCopy = data;
+  classCService = [(CKIDSService *)self classCService];
+  [(CKIDSService *)self sendFile:dataCopy onService:classCService];
 }
 
 - (void)requestDynamicDictionariesRemoval
 {
   v5 = objc_alloc_init(NanoMessagesProtoRemoveDynamicDictionaries);
-  v3 = [(NanoMessagesProtoRemoveDynamicDictionaries *)v5 data];
-  v4 = [(CKIDSService *)self classCService];
-  [(CKIDSService *)self sendProtobufData:v3 type:3 service:v4 fireAndForget:0 includeInactiveDevices:1];
+  data = [(NanoMessagesProtoRemoveDynamicDictionaries *)v5 data];
+  classCService = [(CKIDSService *)self classCService];
+  [(CKIDSService *)self sendProtobufData:data type:3 service:classCService fireAndForget:0 includeInactiveDevices:1];
 }
 
 @end

@@ -1,46 +1,46 @@
 @interface RTCellIndex
-- (BOOL)isEqual:(id)a3;
-- (RTCellIndex)initWithX:(signed __int16)a3 Y:(signed __int16)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTCellIndex)initWithX:(signed __int16)x Y:(signed __int16)y;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation RTCellIndex
 
-- (RTCellIndex)initWithX:(signed __int16)a3 Y:(signed __int16)a4
+- (RTCellIndex)initWithX:(signed __int16)x Y:(signed __int16)y
 {
-  v4 = a4;
-  v5 = a3;
+  yCopy = y;
+  xCopy = x;
   v9.receiver = self;
   v9.super_class = RTCellIndex;
   v6 = [(RTCellIndex *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    [(RTCellIndex *)v6 setX:v5];
-    [(RTCellIndex *)v7 setY:v4];
+    [(RTCellIndex *)v6 setX:xCopy];
+    [(RTCellIndex *)v7 setY:yCopy];
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   x = self->_x;
   y = self->_y;
 
   return [v4 initWithX:x Y:y];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [(RTCellIndex *)self x];
-  if (v5 == [v4 x])
+  if (v5 == [equalCopy x])
   {
     v6 = [(RTCellIndex *)self y];
-    v7 = v6 == [v4 y];
+    v7 = v6 == [equalCopy y];
   }
 
   else

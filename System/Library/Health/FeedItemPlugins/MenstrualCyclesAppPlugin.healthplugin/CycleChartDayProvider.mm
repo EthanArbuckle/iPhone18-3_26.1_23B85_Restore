@@ -1,14 +1,14 @@
 @interface CycleChartDayProvider
-- (void)viewModelProviderDidUpdate:(id)a3;
+- (void)viewModelProviderDidUpdate:(id)update;
 @end
 
 @implementation CycleChartDayProvider
 
-- (void)viewModelProviderDidUpdate:(id)a3
+- (void)viewModelProviderDidUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
 
-  sub_29E1AF718(v3);
+  sub_29E1AF718(updateCopy);
 }
 
 @end

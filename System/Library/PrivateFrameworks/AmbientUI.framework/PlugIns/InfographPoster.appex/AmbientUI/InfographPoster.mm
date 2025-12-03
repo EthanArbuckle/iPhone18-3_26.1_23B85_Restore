@@ -1,19 +1,19 @@
 @interface InfographPoster
-- (id)looksForEditor:(id)a3;
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)updateDescriptors:(id)a3 withSessionInfo:(id)a4 completion:(id)a5;
+- (id)looksForEditor:(id)editor;
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment;
+- (void)updateDescriptors:(id)descriptors withSessionInfo:(id)info completion:(id)completion;
 @end
 
 @implementation InfographPoster
 
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment
 {
-  v5 = [a3 foregroundView];
+  foregroundView = [renderer foregroundView];
   v4 = +[UIColor blackColor];
-  [v5 setBackgroundColor:v4];
+  [foregroundView setBackgroundColor:v4];
 }
 
-- (id)looksForEditor:(id)a3
+- (id)looksForEditor:(id)editor
 {
   v3 = [[PREditingLook alloc] initWithIdentifier:@"InfographPoster" displayName:@"Infograph" initialTimeFontConfiguration:0 initialTitleColor:0];
   v6 = v3;
@@ -22,24 +22,24 @@
   return v4;
 }
 
-- (void)updateDescriptors:(id)a3 withSessionInfo:(id)a4 completion:(id)a5
+- (void)updateDescriptors:(id)descriptors withSessionInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a5;
-  if ([v6 count])
+  descriptorsCopy = descriptors;
+  completionCopy = completion;
+  if ([descriptorsCopy count])
   {
-    v8 = [v6 allValues];
-    v7[2](v7, v8, 0);
+    allValues = [descriptorsCopy allValues];
+    completionCopy[2](completionCopy, allValues, 0);
   }
 
   else
   {
-    v8 = [PRMutablePosterDescriptor mutableDescriptorWithIdentifier:@"InfographPoster" role:PRPosterRoleAmbient];
+    allValues = [PRMutablePosterDescriptor mutableDescriptorWithIdentifier:@"InfographPoster" role:PRPosterRoleAmbient];
     v9 = [[PRPosterAmbientConfiguration alloc] initWithSupportedDataLayout:2 creationBehavior:0 editingBehavior:1 deletionBehavior:2];
-    [v8 setAmbientConfiguration:v9];
-    v11 = v8;
+    [allValues setAmbientConfiguration:v9];
+    v11 = allValues;
     v10 = [NSArray arrayWithObjects:&v11 count:1];
-    v7[2](v7, v10, 0);
+    completionCopy[2](completionCopy, v10, 0);
   }
 }
 

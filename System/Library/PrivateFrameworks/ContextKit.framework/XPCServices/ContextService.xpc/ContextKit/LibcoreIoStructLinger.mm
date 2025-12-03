@@ -1,14 +1,14 @@
 @interface LibcoreIoStructLinger
-- (LibcoreIoStructLinger)initWithInt:(int)a3 withInt:(int)a4;
+- (LibcoreIoStructLinger)initWithInt:(int)int withInt:(int)withInt;
 - (id)description;
 @end
 
 @implementation LibcoreIoStructLinger
 
-- (LibcoreIoStructLinger)initWithInt:(int)a3 withInt:(int)a4
+- (LibcoreIoStructLinger)initWithInt:(int)int withInt:(int)withInt
 {
-  self->l_onoff_ = a3;
-  self->l_linger_ = a4;
+  self->l_onoff_ = int;
+  self->l_linger_ = withInt;
   return self;
 }
 

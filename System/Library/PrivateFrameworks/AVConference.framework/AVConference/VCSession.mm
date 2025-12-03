@@ -1,25 +1,25 @@
 @interface VCSession
 + (BOOL)isUplinkRetransmissionEnabledForVideo;
-+ (id)mediaStateMessageKeyForMediaType:(unsigned int)a3;
-+ (id)mediaStateMessageStreamGroupKeysForMediaType:(unsigned int)a3;
-+ (id)mediaStateMessageValueForMediaState:(unsigned int)a3;
-+ (int)deviceRoleForSessionMode:(int64_t)a3;
-+ (unsigned)mediaStateForMediaStateMessageValue:(id)a3;
-+ (unsigned)mediaTypeForMediaStateMessageKey:(id)a3;
-+ (void)addUUIDToMutableData:(id)a3 fromUUIDString:(id)a4;
-+ (void)cleanupControlChannelParticipantConfig:(id *)a3;
-+ (void)initVideoFeatureStatusSettings:(tagVCReportingClientSettingsPersist *)a3;
-- (BOOL)addOneToOneParticipant:(id)a3;
-- (BOOL)completeTransitionToOneToOneEnabled:(BOOL)a3;
-- (BOOL)composeControlChannelParticipantConfig:(id *)a3 withRemoteParticipant:(id)a4;
-- (BOOL)configureLocalParticipantWithOneToOneRemoteParticipant:(id)a3 isInitialConfiguration:(BOOL)a4;
-- (BOOL)configureRemoteParticipant:(id)a3 withConfig:(id)a4;
-- (BOOL)configureRemoteParticipantForOneToOne:(id)a3;
-- (BOOL)detectSSRCCollision:(id)a3 resetNeeded:(BOOL *)a4;
-- (BOOL)detectSSRCCollisionWithRemoteMediaStream:(id)a3 remoteBlobCreationTime:(tagNTP)a4 resetNeeded:(BOOL *)a5;
-- (BOOL)handleEncryptionInfoChange:(id)a3;
++ (id)mediaStateMessageKeyForMediaType:(unsigned int)type;
++ (id)mediaStateMessageStreamGroupKeysForMediaType:(unsigned int)type;
++ (id)mediaStateMessageValueForMediaState:(unsigned int)state;
++ (int)deviceRoleForSessionMode:(int64_t)mode;
++ (unsigned)mediaStateForMediaStateMessageValue:(id)value;
++ (unsigned)mediaTypeForMediaStateMessageKey:(id)key;
++ (void)addUUIDToMutableData:(id)data fromUUIDString:(id)string;
++ (void)cleanupControlChannelParticipantConfig:(id *)config;
++ (void)initVideoFeatureStatusSettings:(tagVCReportingClientSettingsPersist *)settings;
+- (BOOL)addOneToOneParticipant:(id)participant;
+- (BOOL)completeTransitionToOneToOneEnabled:(BOOL)enabled;
+- (BOOL)composeControlChannelParticipantConfig:(id *)config withRemoteParticipant:(id)participant;
+- (BOOL)configureLocalParticipantWithOneToOneRemoteParticipant:(id)participant isInitialConfiguration:(BOOL)configuration;
+- (BOOL)configureRemoteParticipant:(id)participant withConfig:(id)config;
+- (BOOL)configureRemoteParticipantForOneToOne:(id)one;
+- (BOOL)detectSSRCCollision:(id)collision resetNeeded:(BOOL *)needed;
+- (BOOL)detectSSRCCollisionWithRemoteMediaStream:(id)stream remoteBlobCreationTime:(tagNTP)time resetNeeded:(BOOL *)needed;
+- (BOOL)handleEncryptionInfoChange:(id)change;
 - (BOOL)isAVCForcingECNDefaultSet;
-- (BOOL)isECNCapableWithRemoteParticipant:(id)a3;
+- (BOOL)isECNCapableWithRemoteParticipant:(id)participant;
 - (BOOL)isECNPermittedFromNetworkingLayer;
 - (BOOL)isEnhancedJBAdaptationsEnabled;
 - (BOOL)isJBLatencySensitiveModeEnabled;
@@ -32,40 +32,40 @@
 - (BOOL)isTLEEnabledOnPrimaryConnection;
 - (BOOL)isUsingPersonaCamera;
 - (BOOL)multiwayToOneToOneSwitchConfigure;
-- (BOOL)negotiateOneToOneWithRemoteParticipant:(id)a3;
-- (BOOL)registerRemoteParticipantToSession:(id)a3;
-- (BOOL)setOneToOneConfigOnRemoteParticipant:(id)a3;
+- (BOOL)negotiateOneToOneWithRemoteParticipant:(id)participant;
+- (BOOL)registerRemoteParticipantToSession:(id)session;
+- (BOOL)setOneToOneConfigOnRemoteParticipant:(id)participant;
 - (BOOL)switchFromMultiwayToOneToOne;
 - (BOOL)switchFromOneToOneToMultiway;
-- (BOOL)validateStreamGroup:(id)a3 state:(id)a4;
+- (BOOL)validateStreamGroup:(id)group state:(id)state;
 - (NSDictionary)capabilities;
 - (NSDictionary)transportMetadata;
 - (NSUUID)playbackSynchronizationGroupUUID;
-- (VCSession)initWithIDSDestination:(id)a3 configurationDict:(id)a4 negotiationData:(id)a5 delegate:(id)a6 processId:(int)a7 isGKVoiceChat:(BOOL)a8;
+- (VCSession)initWithIDSDestination:(id)destination configurationDict:(id)dict negotiationData:(id)data delegate:(id)delegate processId:(int)id isGKVoiceChat:(BOOL)chat;
 - (VCSession)initWithRelevantStorebagEntries;
 - (VCSessionParticipantRemote)oneToOneRemoteParticipant;
 - (__CFDictionary)getClientSpecificUserInfo;
 - (__CFString)configurationSpecificReportingClientName;
 - (__CFString)configurationSpecificReportingServiceName;
-- (char)sessionStateToString:(unsigned int)a3;
+- (char)sessionStateToString:(unsigned int)string;
 - (id)computeConversationTimeBaseTruncated;
 - (id)configurationSpecificReportingServiceNameOneToOne;
-- (id)newEncryptionLabelWithLocalUUID:(id)a3 remoteUUID:(id)a4;
-- (id)newNegotiatorForOneToOneWithRemoteParticipant:(id)a3;
-- (id)newNetworkBitrateString:(id *)a3;
-- (id)newParticipantOneToOneConfigWithIDSParticipantID:(unint64_t)a3 isLocal:(BOOL)a4 mediaControlInfoVersion:(unsigned __int8)a5 videoEnabled:(BOOL)a6 screenEnabled:(BOOL)a7 remoteParticipant:(id)a8;
-- (id)participantForID:(id)a3;
-- (id)stateMessageWithSupportsNestedDictionary:(BOOL)a3;
-- (id)vcrcServerBagWithOperatingMode:(int)a3;
-- (int)flushBasebandWithPayloads:(id)a3;
-- (int)getStorebagValueForIntegerKey:(id)a3 defaultValue:(id)a4;
-- (int)learntBitrateForSegment:(id)a3 defaultValue:(int)a4;
+- (id)newEncryptionLabelWithLocalUUID:(id)d remoteUUID:(id)iD;
+- (id)newNegotiatorForOneToOneWithRemoteParticipant:(id)participant;
+- (id)newNetworkBitrateString:(id *)string;
+- (id)newParticipantOneToOneConfigWithIDSParticipantID:(unint64_t)d isLocal:(BOOL)local mediaControlInfoVersion:(unsigned __int8)version videoEnabled:(BOOL)enabled screenEnabled:(BOOL)screenEnabled remoteParticipant:(id)participant;
+- (id)participantForID:(id)d;
+- (id)stateMessageWithSupportsNestedDictionary:(BOOL)dictionary;
+- (id)vcrcServerBagWithOperatingMode:(int)mode;
+- (int)flushBasebandWithPayloads:(id)payloads;
+- (int)getStorebagValueForIntegerKey:(id)key defaultValue:(id)value;
+- (int)learntBitrateForSegment:(id)segment defaultValue:(int)value;
 - (int)maxOneToOneCameraFrameRate;
 - (int)maxRemoteParticipants30fps;
-- (int)reserveAudioChannelForMediaType:(unsigned int)a3;
+- (int)reserveAudioChannelForMediaType:(unsigned int)type;
 - (int)selectDataPath;
 - (int)setupOneToOne;
-- (int)setupOneToOneMediaControlInfoGeneratorsWithVersion:(unsigned __int8)a3 oneToOneConfig:(id)a4 videoEnabled:(BOOL)a5;
+- (int)setupOneToOneMediaControlInfoGeneratorsWithVersion:(unsigned __int8)version oneToOneConfig:(id)config videoEnabled:(BOOL)enabled;
 - (int)setupOneToOneMediaQueue;
 - (int)setupRateControllerOneToOne;
 - (int)setupSpatialAudio;
@@ -73,20 +73,20 @@
 - (unsigned)calculateExpectedTotalNetworkBitrateUplink;
 - (unsigned)detailedErrorCodeForNoRemotePacketsError;
 - (unsigned)vcrcServerBagProfileNumber;
-- (void)addNegotiatedCipherSuitesForParticipant:(id)a3 toReportingDictionary:(id)a4;
-- (void)addParticipantConfigurations:(id)a3;
-- (void)additionalFlushCountToOneToOneRateController:(unsigned int)a3;
-- (void)appendMediaTypeMixingListToMessageDictionary:(id)a3;
-- (void)applyLinkConstrains:(id)a3;
+- (void)addNegotiatedCipherSuitesForParticipant:(id)participant toReportingDictionary:(id)dictionary;
+- (void)addParticipantConfigurations:(id)configurations;
+- (void)additionalFlushCountToOneToOneRateController:(unsigned int)controller;
+- (void)appendMediaTypeMixingListToMessageDictionary:(id)dictionary;
+- (void)applyLinkConstrains:(id)constrains;
 - (void)applyNegotiatedOneToOneFaceTimeSettings;
-- (void)applyRemoteLinkConstrains:(id)a3;
+- (void)applyRemoteLinkConstrains:(id)constrains;
 - (void)applySpatialMetadata;
 - (void)applyVideoCaptureServerMitigationsForLowPowerMode;
 - (void)broadcastInitialMediaState;
 - (void)broadcastMediaStateUpdateMessage;
-- (void)broadcastMessage:(id)a3 withTopic:(id)a4;
-- (void)broadcastMessageDictionary:(id)a3 withTopic:(id)a4;
-- (void)broadcastSingleStateMessage:(id)a3 withTopic:(id)a4;
+- (void)broadcastMessage:(id)message withTopic:(id)topic;
+- (void)broadcastMessageDictionary:(id)dictionary withTopic:(id)topic;
+- (void)broadcastSingleStateMessage:(id)message withTopic:(id)topic;
 - (void)cleanUpMediaRecorder;
 - (void)cleanUpOneToOneVideoStreamDelegate;
 - (void)cleanupNwActivity;
@@ -97,136 +97,136 @@
 - (void)cleanupRateControllerOneToOne;
 - (void)cleanupSpatialAudio;
 - (void)cleanupVCRC;
-- (void)collectSessionEventKeyFieldsAndSubtype:(__CFDictionary *)a3 eventType:(unsigned __int16)a4 withParticipant:(id)a5 keyChangeReason:(id)a6 newMKI:(id)a7 withStreamGroupID:(unsigned int)a8 withStreamID:(unsigned __int16)a9 collectSubtype:(unsigned __int16 *)a10;
-- (void)completionHandlerOneToOneEnabled:(BOOL)a3 didSucceed:(BOOL)a4 configurationDict:(id)a5;
-- (void)configureOneToOneRateController:(id)a3;
-- (void)configureOneToOneRateController:(id)a3 isUsingCamera:(BOOL)a4 isUsingScreen:(BOOL)a5;
+- (void)collectSessionEventKeyFieldsAndSubtype:(__CFDictionary *)subtype eventType:(unsigned __int16)type withParticipant:(id)participant keyChangeReason:(id)reason newMKI:(id)i withStreamGroupID:(unsigned int)d withStreamID:(unsigned __int16)iD collectSubtype:(unsigned __int16 *)self0;
+- (void)completionHandlerOneToOneEnabled:(BOOL)enabled didSucceed:(BOOL)succeed configurationDict:(id)dict;
+- (void)configureOneToOneRateController:(id)controller;
+- (void)configureOneToOneRateController:(id)controller isUsingCamera:(BOOL)camera isUsingScreen:(BOOL)screen;
 - (void)configureOneToOneReportingOnVideoEnabled;
-- (void)configureSessionForLowPowerMode:(BOOL)a3;
+- (void)configureSessionForLowPowerMode:(BOOL)mode;
 - (void)createMediaQueue;
 - (void)createSessionMessaging;
 - (void)dealloc;
 - (void)deregisterForThermalFeatureNotifications;
 - (void)destroySessionMessaging;
-- (void)didChangeThermalLevel:(int)a3;
+- (void)didChangeThermalLevel:(int)level;
 - (void)didEncryptionKeyRollTimeout;
-- (void)didLocalNetworkConditionChange:(BOOL)a3 isLocalNetworkQualityDegraded:(BOOL)a4 isRemoteNetworkQualityDegraded:(BOOL)a5;
-- (void)didReceiveMomentsRequest:(id)a3;
-- (void)didReceivedSessionStatsAtTime:(double)a3;
+- (void)didLocalNetworkConditionChange:(BOOL)change isLocalNetworkQualityDegraded:(BOOL)degraded isRemoteNetworkQualityDegraded:(BOOL)qualityDegraded;
+- (void)didReceiveMomentsRequest:(id)request;
+- (void)didReceivedSessionStatsAtTime:(double)time;
 - (void)didRemoveSpatialMetadataEntry;
-- (void)dispatchedAddParticipantConfigurations:(id)a3;
-- (void)dispatchedAddParticipantWithConfig:(id)a3;
-- (void)dispatchedConfigureSessionForLowPowerMode:(BOOL)a3;
-- (void)dispatchedParticipant:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)dispatchedParticipant:(id)a3 didStopWithError:(id)a4;
-- (void)dispatchedRemoteCellTechStateUpdate:(id)a3 maxRemoteBitrate:(id)a4;
-- (void)dispatchedRemoveParticipant:(id)a3;
-- (void)dispatchedSetOneToOneModeEnabled:(BOOL)a3 isLocal:(BOOL)a4 configurationDict:(id)a5;
-- (void)dispatchedSetPlaybackSyncGroupUUID:(id)a3;
-- (void)dispatchedSetScreenAndCameraMixingEnabled:(BOOL)a3;
-- (void)dispatchedSetSharingEnabled:(BOOL)a3;
+- (void)dispatchedAddParticipantConfigurations:(id)configurations;
+- (void)dispatchedAddParticipantWithConfig:(id)config;
+- (void)dispatchedConfigureSessionForLowPowerMode:(BOOL)mode;
+- (void)dispatchedParticipant:(id)participant didStart:(BOOL)start error:(id)error;
+- (void)dispatchedParticipant:(id)participant didStopWithError:(id)error;
+- (void)dispatchedRemoteCellTechStateUpdate:(id)update maxRemoteBitrate:(id)bitrate;
+- (void)dispatchedRemoveParticipant:(id)participant;
+- (void)dispatchedSetOneToOneModeEnabled:(BOOL)enabled isLocal:(BOOL)local configurationDict:(id)dict;
+- (void)dispatchedSetPlaybackSyncGroupUUID:(id)d;
+- (void)dispatchedSetScreenAndCameraMixingEnabled:(BOOL)enabled;
+- (void)dispatchedSetSharingEnabled:(BOOL)enabled;
 - (void)dispatchedStart;
-- (void)dispatchedStopWithError:(id)a3 didRemoteCancel:(BOOL)a4;
+- (void)dispatchedStopWithError:(id)error didRemoteCancel:(BOOL)cancel;
 - (void)dispatchedTransportStop;
-- (void)dispatchedUpdateConfiguration:(id)a3;
-- (void)distributeBitrateAndOptInToStreamIDsWithSeamlessTransition:(BOOL)a3;
+- (void)dispatchedUpdateConfiguration:(id)configuration;
+- (void)distributeBitrateAndOptInToStreamIDsWithSeamlessTransition:(BOOL)transition;
 - (void)dumpVCSessionMetadataToDataStore;
-- (void)enableDataCollectionInReportingConfig:(id *)a3;
+- (void)enableDataCollectionInReportingConfig:(id *)config;
 - (void)enableVCOverlay;
-- (void)generateKeyFrameWithReceivedMessage:(id)a3 forParticipant:(id)a4;
-- (void)generateReportDictionary:(__CFDictionary *)a3;
-- (void)handleActiveConnectionChange:(id)a3;
-- (void)handleActiveConnectionChangeForMultiway:(id)a3;
-- (void)handleActiveConnectionChangeForOneToOne:(id)a3;
-- (void)handleCellTechChange:(int)a3 connection:(id)a4;
-- (void)handleCellularMTUChanged:(unsigned __int16)a3 connection:(id)a4;
-- (void)handleDeviceStateMessage:(id)a3 forParticipantId:(id)a4;
-- (void)handleEncryptionInfoEvent:(id)a3;
-- (void)handleMediaQueueSizeExceedThresholdWithQueueSize:(double)a3 mediaQueueStreamId:(unsigned int)a4 type:(int)a5;
-- (void)handleMembershipChangeInfoEvent:(id)a3;
-- (void)handleMicModeNotification:(id)a3;
-- (void)handleNetworkCapabilityMessage:(id)a3 forParticipantId:(id)a4;
-- (void)handlePreferredInterfaceForDuplicationUpdate:(unsigned __int8)a3 notifyPeer:(BOOL)a4 enableDuplication:(BOOL)a5 isMediaUnrecoverableSignal:(BOOL)a6;
-- (void)handlePrimaryConnectionChanged:(id)a3;
-- (void)initAudioFeatureStatusSettings:(tagVCReportingClientSettingsPersist *)a3;
-- (void)mediaController:(void *)a3 mediaSuggestionDidChange:(VCRateControlMediaSuggestion)a4;
-- (void)mediaQualityDegraded:(BOOL)a3;
-- (void)mediaRecorder:(id)a3 shouldProcessRequest:(id)a4 recipientID:(id)a5;
-- (void)mediaStateChangedForParticipant:(id)a3;
+- (void)generateKeyFrameWithReceivedMessage:(id)message forParticipant:(id)participant;
+- (void)generateReportDictionary:(__CFDictionary *)dictionary;
+- (void)handleActiveConnectionChange:(id)change;
+- (void)handleActiveConnectionChangeForMultiway:(id)multiway;
+- (void)handleActiveConnectionChangeForOneToOne:(id)one;
+- (void)handleCellTechChange:(int)change connection:(id)connection;
+- (void)handleCellularMTUChanged:(unsigned __int16)changed connection:(id)connection;
+- (void)handleDeviceStateMessage:(id)message forParticipantId:(id)id;
+- (void)handleEncryptionInfoEvent:(id)event;
+- (void)handleMediaQueueSizeExceedThresholdWithQueueSize:(double)size mediaQueueStreamId:(unsigned int)id type:(int)type;
+- (void)handleMembershipChangeInfoEvent:(id)event;
+- (void)handleMicModeNotification:(id)notification;
+- (void)handleNetworkCapabilityMessage:(id)message forParticipantId:(id)id;
+- (void)handlePreferredInterfaceForDuplicationUpdate:(unsigned __int8)update notifyPeer:(BOOL)peer enableDuplication:(BOOL)duplication isMediaUnrecoverableSignal:(BOOL)signal;
+- (void)handlePrimaryConnectionChanged:(id)changed;
+- (void)initAudioFeatureStatusSettings:(tagVCReportingClientSettingsPersist *)settings;
+- (void)mediaController:(void *)controller mediaSuggestionDidChange:(VCRateControlMediaSuggestion)change;
+- (void)mediaQualityDegraded:(BOOL)degraded;
+- (void)mediaRecorder:(id)recorder shouldProcessRequest:(id)request recipientID:(id)d;
+- (void)mediaStateChangedForParticipant:(id)participant;
 - (void)messageExistingParticipantsPostOneToOneModeSwitch;
-- (void)messageMediaInitialStateToParticipant:(id)a3;
+- (void)messageMediaInitialStateToParticipant:(id)participant;
 - (void)multiwayToOneToOneSwitchResume;
 - (void)multiwayToOneToOneSwitchSuspend;
 - (void)notifyDelegateActiveConnectionDidChange;
-- (void)notifyRemoteOfCellTechChange:(id)a3 remoteParticipant:(id)a4;
+- (void)notifyRemoteOfCellTechChange:(id)change remoteParticipant:(id)participant;
 - (void)oneToOneToMultiwaySwitchConfigure;
 - (void)oneToOneToMultiwaySwitchResume;
 - (void)oneToOneToMultiwaySwitchSuspend;
-- (void)optInStreamWithIDSStreamIDs:(id)a3;
-- (void)optOutStreamWithIDSStreamIDs:(id)a3;
-- (void)preWarmStateChanged:(BOOL)a3;
+- (void)optInStreamWithIDSStreamIDs:(id)ds;
+- (void)optOutStreamWithIDSStreamIDs:(id)ds;
+- (void)preWarmStateChanged:(BOOL)changed;
 - (void)processDidStop;
-- (void)processMediaStateMessage:(id)a3 remoteParticipantID:(id)a4;
-- (void)processMediaTypeMixingList:(id)a3 forRemoteParticipant:(id)a4;
-- (void)processMediaTypeStatesWithMessage:(id)a3 mediaTypeStates:(id)a4;
-- (void)processStreamGroupStateMessageKey:(id)a3 value:(id)a4 mediaTypeStates:(id)a5;
-- (void)processSymptomFromMessage:(id)a3 participantID:(id)a4 isLocalInitiated:(BOOL)a5 isLocalSideOnly:(BOOL)a6;
-- (void)rateController:(id)a3 isECNEnabled:(BOOL)isECNForcedByNetwork isECNCapable:(BOOL)a5;
-- (void)rateController:(id)a3 targetBitrateDidChange:(unsigned int)a4 rateChangeCounter:(unsigned int)a5;
-- (void)readAndSetABCSymptomsReportingThresholdsFromStorebags:(id *)a3;
-- (void)recommendedSettingsChanged:(id)a3;
+- (void)processMediaStateMessage:(id)message remoteParticipantID:(id)d;
+- (void)processMediaTypeMixingList:(id)list forRemoteParticipant:(id)participant;
+- (void)processMediaTypeStatesWithMessage:(id)message mediaTypeStates:(id)states;
+- (void)processStreamGroupStateMessageKey:(id)key value:(id)value mediaTypeStates:(id)states;
+- (void)processSymptomFromMessage:(id)message participantID:(id)d isLocalInitiated:(BOOL)initiated isLocalSideOnly:(BOOL)only;
+- (void)rateController:(id)controller isECNEnabled:(BOOL)isECNForcedByNetwork isECNCapable:(BOOL)capable;
+- (void)rateController:(id)controller targetBitrateDidChange:(unsigned int)change rateChangeCounter:(unsigned int)counter;
+- (void)readAndSetABCSymptomsReportingThresholdsFromStorebags:(id *)storebags;
+- (void)recommendedSettingsChanged:(id)changed;
 - (void)registerForThermalFeatureNotifications;
 - (void)registerQoSReporting;
-- (void)remoteCellTechStateUpdate:(int)a3 maxRemoteBitrate:(unsigned int)a4;
-- (void)removeParticipant:(id)a3;
+- (void)remoteCellTechStateUpdate:(int)update maxRemoteBitrate:(unsigned int)bitrate;
+- (void)removeParticipant:(id)participant;
 - (void)renewOneToOneMediaQueue;
 - (void)reportActiveConnectionOneToOne;
 - (void)reportClientPersistentSettings;
-- (void)reportCompletedSwitchingToOneToOne:(BOOL)a3;
+- (void)reportCompletedSwitchingToOneToOne:(BOOL)one;
 - (void)reportExistingParticipantsAnew;
 - (void)reportInitialThermalLevel;
-- (void)reportKeysForDeviceStateMessage:(unsigned __int16)a3 stateMessage:(id)a4 InPayload:(id)a5 ForParitcipant:(id)a6;
+- (void)reportKeysForDeviceStateMessage:(unsigned __int16)message stateMessage:(id)stateMessage InPayload:(id)payload ForParitcipant:(id)paritcipant;
 - (void)reportLocalRateControlExperimentConfiguration;
 - (void)reportNearbyStop;
-- (void)reportSatelliteNetworkStatusForConnection:(id)a3;
-- (void)reportStartedSwitchingToOneToOne:(BOOL)a3;
-- (void)reportSwitchingError:(BOOL)a3 errorEvent:(unsigned int)a4;
-- (void)reportingMomentsToGreenTeaWithRequest:(id)a3;
-- (void)reportingSessionDownlinkOptInEvent:(id)a3 selectedMediaEntriesForParticipants:(id)a4;
-- (void)reportingSessionParticipantEvent:(unsigned __int16)a3 withParticipant:(id)a4 keyChangeReason:(id)a5 newMKI:(id)a6 withStreamGroupID:(unsigned int)a7 withStreamID:(unsigned __int16)a8;
-- (void)reportingSessionRemoteParticipantEvent:(unsigned __int16)a3 withParticipant:(id)a4 value:(id)a5;
-- (void)reportingSessionStopEventWithError:(id)a3;
+- (void)reportSatelliteNetworkStatusForConnection:(id)connection;
+- (void)reportStartedSwitchingToOneToOne:(BOOL)one;
+- (void)reportSwitchingError:(BOOL)error errorEvent:(unsigned int)event;
+- (void)reportingMomentsToGreenTeaWithRequest:(id)request;
+- (void)reportingSessionDownlinkOptInEvent:(id)event selectedMediaEntriesForParticipants:(id)participants;
+- (void)reportingSessionParticipantEvent:(unsigned __int16)event withParticipant:(id)participant keyChangeReason:(id)reason newMKI:(id)i withStreamGroupID:(unsigned int)d withStreamID:(unsigned __int16)iD;
+- (void)reportingSessionRemoteParticipantEvent:(unsigned __int16)event withParticipant:(id)participant value:(id)value;
+- (void)reportingSessionStopEventWithError:(id)error;
 - (void)reportingSetUserInfo;
 - (void)resetDecryptionTimeout;
 - (void)revertMultiwayToOneToOneModeSwitchConfigure;
-- (void)sendDeviceStateMessageToParticipant:(id)a3 withStatus:(id)a4 checkDNUStatus:(BOOL)a5;
+- (void)sendDeviceStateMessageToParticipant:(id)participant withStatus:(id)status checkDNUStatus:(BOOL)uStatus;
 - (void)sendInitialDeviceOrientationToRemote;
-- (void)sendMediaStateUpdateMessageToRemoteParticipant:(id)a3;
-- (void)sendNetworkCapabilitiesMessageToParticipant:(id)a3;
-- (void)sendStreamGroupStateToParticipant:(id)a3;
-- (void)sendSymptomsToRemoteParticipants:(id)a3 symptom:(id)a4 groupID:(id)a5;
-- (void)sendThermalAndSliceMessageToPariticipant:(id)a3;
+- (void)sendMediaStateUpdateMessageToRemoteParticipant:(id)participant;
+- (void)sendNetworkCapabilitiesMessageToParticipant:(id)participant;
+- (void)sendStreamGroupStateToParticipant:(id)participant;
+- (void)sendSymptomsToRemoteParticipants:(id)participants symptom:(id)symptom groupID:(id)d;
+- (void)sendThermalAndSliceMessageToPariticipant:(id)pariticipant;
 - (void)sendVCRCMLReportingEnrollmentEvent;
 - (void)serverDidDie;
-- (void)setBytesInFlightFlagWithParticipant:(id)a3;
-- (void)setIsSpatialAudioSupported:(BOOL)a3;
-- (void)setIsUplinkRetransmissionEnabled:(BOOL)a3;
-- (void)setLinkTypeForFeedbackController:(id)a3 withActiveConnection:(id)a4;
-- (void)setMediaQueuePeakBitrateWithTargetBitrate:(unsigned int)a3;
-- (void)setOneToOneModeEnabled:(BOOL)a3;
-- (void)setOneToOneModeEnabled:(BOOL)a3 configurationDict:(id)a4;
-- (void)setOneToOneVideoStreamBandwidthProbing:(BOOL)a3;
-- (void)setParentNWActivity:(id)a3;
-- (void)setPlaybackSynchronizationGroupUUID:(id)a3;
-- (void)setRemoteScreenControlEnabled:(BOOL)a3;
-- (void)setReportingConfig:(id *)a3;
-- (void)setScreenAndCameraMixingEnabled:(BOOL)a3;
+- (void)setBytesInFlightFlagWithParticipant:(id)participant;
+- (void)setIsSpatialAudioSupported:(BOOL)supported;
+- (void)setIsUplinkRetransmissionEnabled:(BOOL)enabled;
+- (void)setLinkTypeForFeedbackController:(id)controller withActiveConnection:(id)connection;
+- (void)setMediaQueuePeakBitrateWithTargetBitrate:(unsigned int)bitrate;
+- (void)setOneToOneModeEnabled:(BOOL)enabled;
+- (void)setOneToOneModeEnabled:(BOOL)enabled configurationDict:(id)dict;
+- (void)setOneToOneVideoStreamBandwidthProbing:(BOOL)probing;
+- (void)setParentNWActivity:(id)activity;
+- (void)setPlaybackSynchronizationGroupUUID:(id)d;
+- (void)setRemoteScreenControlEnabled:(BOOL)enabled;
+- (void)setReportingConfig:(id *)config;
+- (void)setScreenAndCameraMixingEnabled:(BOOL)enabled;
 - (void)setSessionInfoSynchronizerCallbacks;
 - (void)setSessionInfoSynchronizerErrorResponseCallback;
 - (void)setSessionInfoSynchronizerPeerSubscribedStreamsCallback;
-- (void)setSharingEnabled:(BOOL)a3;
-- (void)setState:(unsigned int)a3;
-- (void)setTransportConnectionSelectionVersionWithLocalFrameWorkVersion:(id)a3 remoteFrameworkVersion:(id)a4;
+- (void)setSharingEnabled:(BOOL)enabled;
+- (void)setState:(unsigned int)state;
+- (void)setTransportConnectionSelectionVersionWithLocalFrameWorkVersion:(id)version remoteFrameworkVersion:(id)frameworkVersion;
 - (void)setTransportSessionEventHandler;
 - (void)setUpDeviceOrientationMessage;
 - (void)setUpSensitiveContentAnalyzerForLocalParticipant;
@@ -255,7 +255,7 @@
 - (void)setupSpatialAudio;
 - (void)setupStreamGroupStateFetchMessage;
 - (void)setupSymptomEnabledMessages;
-- (void)setupTransportSessionWithDestination:(id)a3;
+- (void)setupTransportSessionWithDestination:(id)destination;
 - (void)setupUplinkBitrateCaps;
 - (void)setupVideoEnabledMessages;
 - (void)setupVideoPausedMessages;
@@ -265,97 +265,97 @@
 - (void)startDeallocTimer;
 - (void)startOneToOne;
 - (void)startRateControllerOneToOne;
-- (void)startRateControllersMultiwayFromOneToOne:(BOOL)a3;
-- (void)startReportingForOneToOneEnabled:(BOOL)a3 withPayload:(id)a4;
+- (void)startRateControllersMultiwayFromOneToOne:(BOOL)one;
+- (void)startReportingForOneToOneEnabled:(BOOL)enabled withPayload:(id)payload;
 - (void)startSessionMessaging;
 - (void)stopAllParticipants;
 - (void)stopMediaQueueOneToOne;
 - (void)stopSessionMessaging;
 - (void)stopTimeoutTimer;
-- (void)stopWithError:(id)a3;
-- (void)stopWithError:(id)a3 didRemoteCancel:(BOOL)a4;
+- (void)stopWithError:(id)error;
+- (void)stopWithError:(id)error didRemoteCancel:(BOOL)cancel;
 - (void)tearDown;
 - (void)unregisterQoSReporting;
-- (void)unregisterRemoteParticipantFromSession:(id)a3;
+- (void)unregisterRemoteParticipantFromSession:(id)session;
 - (void)unregisterReportingTask;
-- (void)updateAlwaysHDCaptureScreenEnabledWithNewParticipant:(id)a3;
-- (void)updateConfiguration:(id)a3;
-- (void)updateIsPlaybackSynchronizationGroupMemberWithUpdateConfig:(id)a3 forParticipant:(id)a4;
+- (void)updateAlwaysHDCaptureScreenEnabledWithNewParticipant:(id)participant;
+- (void)updateConfiguration:(id)configuration;
+- (void)updateIsPlaybackSynchronizationGroupMemberWithUpdateConfig:(id)config forParticipant:(id)participant;
 - (void)updateLocalCameraCaptureStatus;
 - (void)updateLocalStreamConfiguration;
 - (void)updateLocalVideoCaptureFrameRate;
-- (void)updateMediaRecorderCapabillities:(unsigned int)a3 imageType:(int)a4 videoCodec:(int)a5;
-- (void)updateMicrophoneMuted:(BOOL)a3 withUpdateConfig:(id)a4 forParticipant:(id)a5;
-- (void)updateMultiwayRateControllerWithActiveConnection:(id)a3 isScreenEnabled:(BOOL)a4 isLocal:(BOOL)a5;
-- (void)updateMultiwayRateControllersWithActiveConnection:(id)a3;
-- (void)updateNetworkFeedbackControllerReport:(id *)a3;
-- (void)updateOneToOneRateControllerForVideoEnabled:(BOOL)a3;
-- (void)updateOneToOneRateControllerForVideoEnabled:(BOOL)a3 screenEnabled:(BOOL)a4;
-- (void)updateOneToOneVideoReceiverDelegate:(BOOL)a3;
-- (void)updateParticipantConfigurations:(id)a3 sessionPresentationInfo:(id)a4;
-- (void)updateParticipantUUID:(id)a3 withUpdateConfig:(id)a4 redistributeBitrate:(BOOL *)a5;
+- (void)updateMediaRecorderCapabillities:(unsigned int)capabillities imageType:(int)type videoCodec:(int)codec;
+- (void)updateMicrophoneMuted:(BOOL)muted withUpdateConfig:(id)config forParticipant:(id)participant;
+- (void)updateMultiwayRateControllerWithActiveConnection:(id)connection isScreenEnabled:(BOOL)enabled isLocal:(BOOL)local;
+- (void)updateMultiwayRateControllersWithActiveConnection:(id)connection;
+- (void)updateNetworkFeedbackControllerReport:(id *)report;
+- (void)updateOneToOneRateControllerForVideoEnabled:(BOOL)enabled;
+- (void)updateOneToOneRateControllerForVideoEnabled:(BOOL)enabled screenEnabled:(BOOL)screenEnabled;
+- (void)updateOneToOneVideoReceiverDelegate:(BOOL)delegate;
+- (void)updateParticipantConfigurations:(id)configurations sessionPresentationInfo:(id)info;
+- (void)updateParticipantUUID:(id)d withUpdateConfig:(id)config redistributeBitrate:(BOOL *)bitrate;
 - (void)updateParticipantWindowState;
 - (void)updatePlaybackSynchronizationGroupMemberCount;
-- (void)updatePlaybackSynchronizationGroupMembership:(BOOL)a3 forParticipant:(id)a4;
-- (void)updatePlaybackSynchronizationGroupUUIDWithUpdateConfig:(id)a3;
-- (void)updatePositionalInfoWithUpdateConfig:(id)a3 forParticipant:(id)a4;
-- (void)updatePresentationInfo:(id)a3;
-- (void)updateProminenceIndexWithUpdateConfig:(id)a3 forParticipant:(id)a4 redistributeBitrate:(BOOL *)a5;
-- (void)updateStateMessage:(id)a3 stateState:(unsigned int)a4 streamGroupKey:(id)a5;
-- (void)updateVCMediaQueueForMediaType:(unsigned int)a3 mediaState:(unsigned int)a4;
-- (void)updateVideoQualityWithUpdateConfig:(id)a3 forParticipant:(id)a4 redistributeBitrate:(BOOL *)a5;
-- (void)updateVisibilityIndexWithUpdateConfig:(id)a3 forParticipant:(id)a4 redistributeBitrate:(BOOL *)a5;
+- (void)updatePlaybackSynchronizationGroupMembership:(BOOL)membership forParticipant:(id)participant;
+- (void)updatePlaybackSynchronizationGroupUUIDWithUpdateConfig:(id)config;
+- (void)updatePositionalInfoWithUpdateConfig:(id)config forParticipant:(id)participant;
+- (void)updatePresentationInfo:(id)info;
+- (void)updateProminenceIndexWithUpdateConfig:(id)config forParticipant:(id)participant redistributeBitrate:(BOOL *)bitrate;
+- (void)updateStateMessage:(id)message stateState:(unsigned int)state streamGroupKey:(id)key;
+- (void)updateVCMediaQueueForMediaType:(unsigned int)type mediaState:(unsigned int)state;
+- (void)updateVideoQualityWithUpdateConfig:(id)config forParticipant:(id)participant redistributeBitrate:(BOOL *)bitrate;
+- (void)updateVisibilityIndexWithUpdateConfig:(id)config forParticipant:(id)participant redistributeBitrate:(BOOL *)bitrate;
 - (void)validateVCRCMLEnrollment;
-- (void)vcSessionParticipant:(id)a3 audioEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)vcSessionParticipant:(id)a3 audioPaused:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)vcSessionParticipant:(id)a3 didChangeDeviceOrientation:(int)a4;
-- (void)vcSessionParticipant:(id)a3 didChangeMediaPriority:(unsigned __int8)a4 description:(id)a5;
-- (void)vcSessionParticipant:(id)a3 didDetectError:(id)a4;
-- (void)vcSessionParticipant:(id)a3 didRequestVideoRedundancy:(BOOL)a4;
-- (void)vcSessionParticipant:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)vcSessionParticipant:(id)a3 didStopWithError:(id)a4;
-- (void)vcSessionParticipant:(id)a3 didSwitchFromStreamID:(unsigned __int16)a4 toStreamID:(unsigned __int16)a5;
-- (void)vcSessionParticipant:(id)a3 mediaMixingDidChangeForMediaType:(unsigned int)a4 mixingMediaType:(unsigned int)a5;
-- (void)vcSessionParticipant:(id)a3 mediaStateDidChange:(unsigned int)a4 forMediaType:(unsigned int)a5 didSucceed:(BOOL)a6 error:(id)a7;
-- (void)vcSessionParticipant:(id)a3 oneToOneModeDidChange:(BOOL)a4;
-- (void)vcSessionParticipant:(id)a3 reactionDidStart:(id)a4;
-- (void)vcSessionParticipant:(id)a3 remoteAudioEnabledDidChange:(BOOL)a4;
-- (void)vcSessionParticipant:(id)a3 remoteAudioPausedDidChange:(BOOL)a4;
-- (void)vcSessionParticipant:(id)a3 remoteMediaStateDidChange:(unsigned int)a4 forMediaType:(unsigned int)a5;
-- (void)vcSessionParticipant:(id)a3 remoteScreenEnabledDidChange:(BOOL)a4;
-- (void)vcSessionParticipant:(id)a3 remoteVideoEnabledDidChange:(BOOL)a4;
-- (void)vcSessionParticipant:(id)a3 remoteVideoPausedDidChange:(BOOL)a4;
-- (void)vcSessionParticipant:(id)a3 requestKeyFrameGenerationWithStreamID:(unsigned __int16)a4 streamGroupID:(unsigned int)a5 firType:(int)a6;
-- (void)vcSessionParticipant:(id)a3 screenEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)vcSessionParticipant:(id)a3 videoEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)vcSessionParticipant:(id)a3 videoPaused:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)vcSessionParticipantDidChangeReceivingStreams:(id)a3;
-- (void)vcSessionParticipantDidChangeSendingStreams:(id)a3;
-- (void)vcSessionParticipantDidDetectMKICollision:(id)a3;
-- (void)vcSessionParticipantDidMediaDecryptionTimeOut:(id)a3;
-- (void)vcSessionParticipantDidMediaDecryptionTimeOutForMKMRecovery:(id)a3;
-- (void)vcSessionParticipantDidMediaReceiveFlushRequestWithPayloads:(id)a3;
-- (void)vcSessionParticipantDidRemoteMediaStallTimeout:(id)a3 duration:(double)a4;
-- (void)vcSessionParticipantDidStopReacting:(id)a3;
-- (void)vcSessionParticipantFetchStreamGroupState:(id)a3;
+- (void)vcSessionParticipant:(id)participant audioEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSessionParticipant:(id)participant audioPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSessionParticipant:(id)participant didChangeDeviceOrientation:(int)orientation;
+- (void)vcSessionParticipant:(id)participant didChangeMediaPriority:(unsigned __int8)priority description:(id)description;
+- (void)vcSessionParticipant:(id)participant didDetectError:(id)error;
+- (void)vcSessionParticipant:(id)participant didRequestVideoRedundancy:(BOOL)redundancy;
+- (void)vcSessionParticipant:(id)participant didStart:(BOOL)start error:(id)error;
+- (void)vcSessionParticipant:(id)participant didStopWithError:(id)error;
+- (void)vcSessionParticipant:(id)participant didSwitchFromStreamID:(unsigned __int16)d toStreamID:(unsigned __int16)iD;
+- (void)vcSessionParticipant:(id)participant mediaMixingDidChangeForMediaType:(unsigned int)type mixingMediaType:(unsigned int)mediaType;
+- (void)vcSessionParticipant:(id)participant mediaStateDidChange:(unsigned int)change forMediaType:(unsigned int)type didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSessionParticipant:(id)participant oneToOneModeDidChange:(BOOL)change;
+- (void)vcSessionParticipant:(id)participant reactionDidStart:(id)start;
+- (void)vcSessionParticipant:(id)participant remoteAudioEnabledDidChange:(BOOL)change;
+- (void)vcSessionParticipant:(id)participant remoteAudioPausedDidChange:(BOOL)change;
+- (void)vcSessionParticipant:(id)participant remoteMediaStateDidChange:(unsigned int)change forMediaType:(unsigned int)type;
+- (void)vcSessionParticipant:(id)participant remoteScreenEnabledDidChange:(BOOL)change;
+- (void)vcSessionParticipant:(id)participant remoteVideoEnabledDidChange:(BOOL)change;
+- (void)vcSessionParticipant:(id)participant remoteVideoPausedDidChange:(BOOL)change;
+- (void)vcSessionParticipant:(id)participant requestKeyFrameGenerationWithStreamID:(unsigned __int16)d streamGroupID:(unsigned int)iD firType:(int)type;
+- (void)vcSessionParticipant:(id)participant screenEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSessionParticipant:(id)participant videoEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSessionParticipant:(id)participant videoPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSessionParticipantDidChangeReceivingStreams:(id)streams;
+- (void)vcSessionParticipantDidChangeSendingStreams:(id)streams;
+- (void)vcSessionParticipantDidDetectMKICollision:(id)collision;
+- (void)vcSessionParticipantDidMediaDecryptionTimeOut:(id)out;
+- (void)vcSessionParticipantDidMediaDecryptionTimeOutForMKMRecovery:(id)recovery;
+- (void)vcSessionParticipantDidMediaReceiveFlushRequestWithPayloads:(id)payloads;
+- (void)vcSessionParticipantDidRemoteMediaStallTimeout:(id)timeout duration:(double)duration;
+- (void)vcSessionParticipantDidStopReacting:(id)reacting;
+- (void)vcSessionParticipantFetchStreamGroupState:(id)state;
 @end
 
 @implementation VCSession
 
-- (VCSession)initWithIDSDestination:(id)a3 configurationDict:(id)a4 negotiationData:(id)a5 delegate:(id)a6 processId:(int)a7 isGKVoiceChat:(BOOL)a8
+- (VCSession)initWithIDSDestination:(id)destination configurationDict:(id)dict negotiationData:(id)data delegate:(id)delegate processId:(int)id isGKVoiceChat:(BOOL)chat
 {
-  v8 = a8;
+  chatCopy = chat;
   v117 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     __str[0] = 0;
-    v13 = a4 ? [objc_msgSend(a4 "description")] : "<nil>";
+    v13 = dict ? [objc_msgSend(dict "description")] : "<nil>";
     asprintf(__str, "%s", v13);
     if (__str[0])
     {
-      v92 = a4;
-      v94 = v8;
-      v95 = a3;
+      dictCopy = dict;
+      v94 = chatCopy;
+      destinationCopy = destination;
       __lasts = 0;
       v14 = strtok_r(__str[0], "\n", &__lasts);
       v15 = MEMORY[0x1E6986650];
@@ -386,9 +386,9 @@
 
       while (v14);
       free(__str[0]);
-      a3 = v95;
-      v8 = v94;
-      a4 = v92;
+      destination = destinationCopy;
+      chatCopy = v94;
+      dict = dictCopy;
     }
   }
 
@@ -398,7 +398,7 @@
   v19 = v18;
   if (v18)
   {
-    if (!a3)
+    if (!destination)
     {
       if (objc_opt_class() == v18)
       {
@@ -431,7 +431,7 @@ LABEL_82:
         return 0;
       }
 
-      v58 = [0 UTF8String];
+      uTF8String = [0 UTF8String];
       *buf = 136316418;
       *&buf[4] = v56;
       *&buf[12] = 2080;
@@ -443,7 +443,7 @@ LABEL_82:
       *&buf[38] = 2048;
       *&buf[40] = v19;
       *&buf[48] = 2080;
-      *&buf[50] = v58;
+      *&buf[50] = uTF8String;
       v59 = "VCSession [%s] %s:%d %@(%p) Unable to initialize the session. Destination=%s";
       v60 = v57;
       v61 = 58;
@@ -452,9 +452,9 @@ LABEL_98:
       goto LABEL_82;
     }
 
-    v18->_isGKVoiceChat = v8;
+    v18->_isGKVoiceChat = chatCopy;
     +[VCServerBag pullStoreBagKeys];
-    objc_storeWeak(&v19->_delegate, a6);
+    objc_storeWeak(&v19->_delegate, delegate);
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
     v19->_sessionQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCSession.sessionQueue", 0, CustomRootQueue);
     v19->_notificationQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCSession.notificationQueue", 0, CustomRootQueue);
@@ -463,11 +463,11 @@ LABEL_98:
     v19->_stopCompletedSemaphore = v21;
     dispatch_semaphore_signal(v21);
     v19->_uuid = [objc_msgSend(MEMORY[0x1E696AFB0] "UUID")];
-    v19->_idsDestination = [a3 copy];
+    v19->_idsDestination = [destination copy];
     v19->_switchFromGFTToOneToOneEnabled = _os_feature_enabled_impl();
-    v22 = [[VCSessionConfiguration alloc] initWithClientDictionary:a4];
+    v22 = [[VCSessionConfiguration alloc] initWithClientDictionary:dict];
     v19->_configuration = v22;
-    [(VCSessionConfiguration *)v22 setIsGKVoiceChat:v8];
+    [(VCSessionConfiguration *)v22 setIsGKVoiceChat:chatCopy];
     v19->_siriSpatialAudioSourceID = VCUniqueIDGenerator_GenerateID();
     v19->_conversationID = [(NSString *)[(NSUUID *)[(VCSessionConfiguration *)v19->_configuration conversationID] UUIDString] copy];
     v19->_experimentManager = [[VCExperimentManager alloc] initWithSamplingUUID:[(VCSessionConfiguration *)v19->_configuration conversationID]];
@@ -490,10 +490,10 @@ LABEL_98:
     v19->_isAlwaysHDCaptureEnabled = VCFeatureFlagManager_AlwaysHDCaptureEnabled();
     v19->_abSwitches = [[VCSessionSwitches alloc] initWithConversationID:[(VCSessionConfiguration *)v19->_configuration conversationID]];
     v24 = objc_alloc_init(VCSessionParticipantConfig);
-    v96 = a3;
-    [(VCSessionParticipantConfig *)v24 setIdsDestination:a3];
-    [(VCSessionParticipantConfig *)v24 setParticipantData:a5];
-    [(VCSessionParticipantConfig *)v24 setProcessId:a7];
+    destinationCopy2 = destination;
+    [(VCSessionParticipantConfig *)v24 setIdsDestination:destination];
+    [(VCSessionParticipantConfig *)v24 setParticipantData:data];
+    [(VCSessionParticipantConfig *)v24 setProcessId:id];
     [(VCSessionParticipantConfig *)v24 setSessionUUID:v19->_uuid];
     [(VCSessionParticipantConfig *)v24 setIsGKVoiceChat:v19->_isGKVoiceChat];
     [(VCSessionParticipantConfig *)v24 setIsLowLatencyAudio:+[VCHardwareSettings deviceClass]== 8];
@@ -508,11 +508,11 @@ LABEL_98:
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
         oneToOneModeEnabled = v19->_oneToOneModeEnabled;
-        v89 = [(VCSessionConfiguration *)v19->_configuration sessionMode];
-        v88 = [(VCSessionConfiguration *)v19->_configuration serviceName];
-        v27 = [(VCSessionConfiguration *)v19->_configuration isOneToOneAuthenticationTagEnabled];
-        v28 = [(VCSessionConfiguration *)v19->_configuration isGftTLEEnabled];
-        v29 = [(VCSessionConfiguration *)v19->_configuration isP2PEncryptionEnabled];
+        sessionMode = [(VCSessionConfiguration *)v19->_configuration sessionMode];
+        serviceName = [(VCSessionConfiguration *)v19->_configuration serviceName];
+        isOneToOneAuthenticationTagEnabled = [(VCSessionConfiguration *)v19->_configuration isOneToOneAuthenticationTagEnabled];
+        isGftTLEEnabled = [(VCSessionConfiguration *)v19->_configuration isGftTLEEnabled];
+        isP2PEncryptionEnabled = [(VCSessionConfiguration *)v19->_configuration isP2PEncryptionEnabled];
         detectInactiveAudioFramesAACELD = v19->_detectInactiveAudioFramesAACELD;
         *buf = 136317442;
         *&buf[4] = v25;
@@ -523,15 +523,15 @@ LABEL_98:
         *&buf[28] = 1024;
         *&buf[30] = oneToOneModeEnabled;
         *&buf[34] = 2048;
-        *&buf[36] = v89;
+        *&buf[36] = sessionMode;
         *&buf[44] = 2112;
-        *&buf[46] = v88;
+        *&buf[46] = serviceName;
         *&buf[54] = 1024;
-        *&buf[56] = v27;
+        *&buf[56] = isOneToOneAuthenticationTagEnabled;
         *&buf[60] = 1024;
-        *&buf[62] = v28;
+        *&buf[62] = isGftTLEEnabled;
         *&buf[66] = 1024;
-        *&buf[68] = v29;
+        *&buf[68] = isP2PEncryptionEnabled;
         *&buf[72] = 1024;
         *&buf[74] = detectInactiveAudioFramesAACELD;
         _os_log_impl(&dword_1DB56E000, v26, OS_LOG_TYPE_DEFAULT, "VCSession [%s] %s:%d Using the following path - oneToOneModeEnabled=%d sessionMode=%ld serviceName=%@, oneToOneAuthenticationTagEnabled=%d, gftTLEEnabled=%d, p2pEncryptionEnabled=%d, detectInactiveAudioFramesAACELD=%d", buf, 0x4Eu);
@@ -758,13 +758,13 @@ LABEL_46:
       [(VCSession *)v19 createMediaQueue];
     }
 
-    [(VCSession *)v19 setupTransportSessionWithDestination:v96];
+    [(VCSession *)v19 setupTransportSessionWithDestination:destinationCopy2];
     [(VCSession *)v19 setupRateControllersMultiway];
     [(VCSession *)v19 setupOneToOne];
     [(VCSession *)v19 reportLocalRateControlExperimentConfiguration];
-    v46 = [(VCSessionConfiguration *)v19->_configuration isOneToOneModeEnabled];
+    isOneToOneModeEnabled = [(VCSessionConfiguration *)v19->_configuration isOneToOneModeEnabled];
     v47 = &OBJC_IVAR___VCSession__oneToOneSettings;
-    if (!v46)
+    if (!isOneToOneModeEnabled)
     {
       v47 = &OBJC_IVAR___VCSession__downlinkRateController;
     }
@@ -772,13 +772,13 @@ LABEL_46:
     -[VCConnectionManager setStatisticsCollector:](-[VCTransportSession connectionManager](v19->_transportSession, "connectionManager"), "setStatisticsCollector:", [*(&v19->super.super.isa + *v47) statisticsCollector]);
     [(VCSession *)v19 setSessionInfoSynchronizerCallbacks];
     v48 = [VCSessionStatsController alloc];
-    v49 = [(VCTransportSession *)v19->_transportSession connectionManager];
-    v50 = [(AVCRateController *)v19->_uplinkRateController statisticsCollector];
-    v51 = [(AVCRateController *)v19->_downlinkRateController statisticsCollector];
+    connectionManager = [(VCTransportSession *)v19->_transportSession connectionManager];
+    statisticsCollector = [(AVCRateController *)v19->_uplinkRateController statisticsCollector];
+    statisticsCollector2 = [(AVCRateController *)v19->_downlinkRateController statisticsCollector];
     reportingAgent = v19->super._reportingAgent;
     transportSessionID = v19->_transportSessionID;
     LOWORD(v87) = [(VCSessionParticipantLocal *)v19->_localParticipant connectionStatsStreamID];
-    v19->_sessionStatsController = [(VCSessionStatsController *)v48 initWithDelegate:v19 connectionManager:v49 uplinkStatsCollector:v50 downlinkStatsCollector:v51 reportingAgent:reportingAgent transportSessionID:transportSessionID streamID:v87 mediaQueue:v19->_mediaQueue];
+    v19->_sessionStatsController = [(VCSessionStatsController *)v48 initWithDelegate:v19 connectionManager:connectionManager uplinkStatsCollector:statisticsCollector downlinkStatsCollector:statisticsCollector2 reportingAgent:reportingAgent transportSessionID:transportSessionID streamID:v87 mediaQueue:v19->_mediaQueue];
     [(VCSessionParticipantLocal *)v19->_localParticipant setCellularUniqueTag:[(VCTransportSession *)v19->_transportSession basebandNotificationRegistrationToken]];
     v19->_switchManager = objc_alloc_init(VCSwitchManager);
     if (!v19->_oneToOneModeEnabled)
@@ -861,9 +861,9 @@ LABEL_46:
         }
 
         __str[0] = 0;
-        v64 = [(__CFString *)v55 UTF8String];
+        uTF8String2 = [(__CFString *)v55 UTF8String];
         v65 = [(VCSession *)v19 description]? [[(NSString *)[(VCSession *)v19 description] description] UTF8String]: "<nil>";
-        asprintf(__str, "%s(%p) Session init %s", v64, v19, v65);
+        asprintf(__str, "%s(%p) Session init %s", uTF8String2, v19, v65);
         if (!__str[0])
         {
           goto LABEL_107;
@@ -907,15 +907,15 @@ LABEL_107:
       [(VCConnectionManager *)[(VCTransportSession *)v19->_transportSession connectionManager] setCellPrimaryInterfaceChangeEnabled:1];
       [(VCConnectionManager *)[(VCTransportSession *)v19->_transportSession connectionManager] setShouldLimitMultiwayBandwidthWhenConstrained:[(VCSessionSwitches *)v19->_abSwitches isFeatureEnabled:2]];
       v84 = v19->_oneToOneModeEnabled;
-      v85 = [(VCTransportSession *)v19->_transportSession connectionManager];
+      connectionManager2 = [(VCTransportSession *)v19->_transportSession connectionManager];
       if (v84)
       {
-        [(VCConnectionManager *)v85 setDefaultLinkProbingCapabilityVersionForDeviceRole:v54];
+        [(VCConnectionManager *)connectionManager2 setDefaultLinkProbingCapabilityVersionForDeviceRole:v54];
       }
 
       else
       {
-        [(VCConnectionManager *)v85 setiRATDuplicationEnabled:1];
+        [(VCConnectionManager *)connectionManager2 setiRATDuplicationEnabled:1];
         [(VCConnectionHealthMonitor *)[(VCConnectionManager *)[(VCTransportSession *)v19->_transportSession connectionManager] connectionHealthMonitor] setUsingServerBasedLinks:1];
       }
 
@@ -945,7 +945,7 @@ LABEL_107:
         goto LABEL_82;
       }
 
-      v70 = [v96 UTF8String];
+      uTF8String3 = [destinationCopy2 UTF8String];
       localParticipant = v19->_localParticipant;
       *buf = 136316162;
       *&buf[4] = v68;
@@ -954,7 +954,7 @@ LABEL_107:
       *&buf[22] = 1024;
       *&buf[24] = 393;
       *&buf[28] = 2080;
-      *&buf[30] = v70;
+      *&buf[30] = uTF8String3;
       *&buf[38] = 2048;
       *&buf[40] = localParticipant;
       v59 = "VCSession [%s] %s:%d Unable to configure local participant streams for the session. Destination=%s localParticipant=%p";
@@ -986,7 +986,7 @@ LABEL_107:
         goto LABEL_82;
       }
 
-      v78 = [v96 UTF8String];
+      uTF8String4 = [destinationCopy2 UTF8String];
       v79 = v19->_localParticipant;
       *buf = 136316674;
       *&buf[4] = v76;
@@ -999,7 +999,7 @@ LABEL_107:
       *&buf[38] = 2048;
       *&buf[40] = v19;
       *&buf[48] = 2080;
-      *&buf[50] = v78;
+      *&buf[50] = uTF8String4;
       *&buf[58] = 2048;
       *&buf[60] = v79;
       v59 = "VCSession [%s] %s:%d %@(%p) Unable to configure local participant streams for the session. Destination=%s localParticipant=%p";
@@ -1085,9 +1085,9 @@ LABEL_107:
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       __str = 0;
-      v5 = [(__CFString *)v3 UTF8String];
+      uTF8String = [(__CFString *)v3 UTF8String];
       v6 = [(VCSession *)self description]? [[(NSString *)[(VCSession *)self description] description] UTF8String]: "<nil>";
-      asprintf(&__str, "%s(%p) Session dealloc %s", v5, self, v6);
+      asprintf(&__str, "%s(%p) Session dealloc %s", uTF8String, self, v6);
       if (__str)
       {
         __lasts = 0;
@@ -1187,21 +1187,21 @@ LABEL_26:
   [(VCObject *)&v20 dealloc];
 }
 
-- (void)setReportingConfig:(id *)a3
+- (void)setReportingConfig:(id *)config
 {
-  if (a3)
+  if (config)
   {
-    a3->var0 = self->_transportSessionID;
-    a3->var1 = self->_conversationID;
-    a3->var2 = self->_conversationTimeBase;
-    a3->var5 = [(VCSessionConfiguration *)self->_configuration reportingHierarchyToken];
-    a3->var6 = [(VCSession *)self nwActivity];
-    a3->var7 = [(VCSession *)self configurationSpecificReportingClientName];
-    a3->var8 = [(VCSession *)self configurationSpecificReportingServiceName];
-    a3->var10 = [(VCCallInfoBlob *)[(VCSessionParticipant *)self->_localParticipant callInfoBlob] deviceType];
-    a3->var9 = [(VCCallInfoBlob *)[(VCSessionParticipant *)self->_localParticipant callInfoBlob] osVersion];
-    a3->var4 = [(VCSessionConfiguration *)self->_configuration isOneToOneModeEnabled];
-    a3->var11 = [(VCSession *)self getClientSpecificUserInfo];
+    config->var0 = self->_transportSessionID;
+    config->var1 = self->_conversationID;
+    config->var2 = self->_conversationTimeBase;
+    config->var5 = [(VCSessionConfiguration *)self->_configuration reportingHierarchyToken];
+    config->var6 = [(VCSession *)self nwActivity];
+    config->var7 = [(VCSession *)self configurationSpecificReportingClientName];
+    config->var8 = [(VCSession *)self configurationSpecificReportingServiceName];
+    config->var10 = [(VCCallInfoBlob *)[(VCSessionParticipant *)self->_localParticipant callInfoBlob] deviceType];
+    config->var9 = [(VCCallInfoBlob *)[(VCSessionParticipant *)self->_localParticipant callInfoBlob] osVersion];
+    config->var4 = [(VCSessionConfiguration *)self->_configuration isOneToOneModeEnabled];
+    config->var11 = [(VCSession *)self getClientSpecificUserInfo];
     v5 = 5;
     if (![VCDefaults BOOLeanValueForKey:@"useAggregatorMultiwayforU1" defaultValue:1])
     {
@@ -1217,12 +1217,12 @@ LABEL_26:
     }
 
     self->_reportingClientType = v5;
-    a3->var3 = v5;
-    a3->var12 = &__block_literal_global_54;
-    a3->var14 = self->_shouldCreateSecondAggregator;
-    [(VCSession *)self readAndSetABCSymptomsReportingThresholdsFromStorebags:a3];
+    config->var3 = v5;
+    config->var12 = &__block_literal_global_54;
+    config->var14 = self->_shouldCreateSecondAggregator;
+    [(VCSession *)self readAndSetABCSymptomsReportingThresholdsFromStorebags:config];
 
-    [(VCSession *)self enableDataCollectionInReportingConfig:a3];
+    [(VCSession *)self enableDataCollectionInReportingConfig:config];
   }
 
   else
@@ -1244,27 +1244,27 @@ LABEL_26:
   v5[0] = @"VCRCMLMID";
   if ([(VCRateControlMLEnrollment *)self->_vcrcMLEnrollment trialModelID])
   {
-    v3 = [(VCRateControlMLEnrollment *)self->_vcrcMLEnrollment trialModelID];
+    trialModelID = [(VCRateControlMLEnrollment *)self->_vcrcMLEnrollment trialModelID];
   }
 
   else
   {
-    v3 = &stru_1F570E008;
+    trialModelID = &stru_1F570E008;
   }
 
-  v6[0] = v3;
+  v6[0] = trialModelID;
   v5[1] = @"VCRCMLRID";
   if ([(VCRateControlMLEnrollment *)self->_vcrcMLEnrollment recipeID])
   {
-    v4 = [(VCRateControlMLEnrollment *)self->_vcrcMLEnrollment recipeID];
+    recipeID = [(VCRateControlMLEnrollment *)self->_vcrcMLEnrollment recipeID];
   }
 
   else
   {
-    v4 = &stru_1F570E008;
+    recipeID = &stru_1F570E008;
   }
 
-  v6[1] = v4;
+  v6[1] = recipeID;
   v5[2] = @"VCRCMLNI";
   v6[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCRateControlMLEnrollment nIteration](self->_vcrcMLEnrollment, "nIteration")}];
   v5[3] = @"VCRCMLRG";
@@ -1293,7 +1293,7 @@ LABEL_26:
 - (NSDictionary)capabilities
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded maxActiveVideoDecoders];
+  maxActiveVideoDecoders = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded maxActiveVideoDecoders];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v3 = VRTraceErrorLogLevelToCSTR();
@@ -1307,12 +1307,12 @@ LABEL_26:
       v12 = 1024;
       v13 = 608;
       v14 = 1024;
-      v15 = v2;
+      v15 = maxActiveVideoDecoders;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "VCSession [%s] %s:%d maxActiveVideoDecodes=%d", buf, 0x22u);
     }
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{v2, @"avcKeySupportedMaxVideoDecodes"}];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{maxActiveVideoDecoders, @"avcKeySupportedMaxVideoDecodes"}];
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:&v7 forKeys:&v6 count:1];
 }
 
@@ -1329,14 +1329,14 @@ LABEL_26:
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:v5 count:2];
 }
 
-- (void)setTransportConnectionSelectionVersionWithLocalFrameWorkVersion:(id)a3 remoteFrameworkVersion:(id)a4
+- (void)setTransportConnectionSelectionVersionWithLocalFrameWorkVersion:(id)version remoteFrameworkVersion:(id)frameworkVersion
 {
-  [(VCTransportSession *)self->_transportSession setConnectionSelectionVersionWithLocalFrameworkVersion:a3 remoteFrameworkVersion:a4];
+  [(VCTransportSession *)self->_transportSession setConnectionSelectionVersionWithLocalFrameworkVersion:version remoteFrameworkVersion:frameworkVersion];
   if (self->_oneToOneModeEnabled)
   {
-    v5 = [(VCTransportSession *)self->_transportSession connectionManager];
+    connectionManager = [(VCTransportSession *)self->_transportSession connectionManager];
 
-    [(VCConnectionManager *)v5 setOptIntoExistingSubscribedStreams:1];
+    [(VCConnectionManager *)connectionManager setOptIntoExistingSubscribedStreams:1];
   }
 }
 
@@ -1374,10 +1374,10 @@ LABEL_26:
   return v2;
 }
 
-- (void)setupTransportSessionWithDestination:(id)a3
+- (void)setupTransportSessionWithDestination:(id)destination
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(VCSession *)self selectDataPath];
+  selectDataPath = [(VCSession *)self selectDataPath];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v6 = VRTraceErrorLogLevelToCSTR();
@@ -1389,7 +1389,7 @@ LABEL_26:
       *&v14[4] = v6;
       *&v14[12] = 2080;
       *&v14[14] = "[VCSession setupTransportSessionWithDestination:]";
-      if (!v5)
+      if (!selectDataPath)
       {
         v8 = @"shared";
       }
@@ -1402,10 +1402,10 @@ LABEL_26:
     }
   }
 
-  v9 = [[VCTransportSessionIDSMultiLink alloc] initWithCallID:self->_transportSessionID requireEncryptionInfo:1 reportingAgent:self->super._reportingAgent notificationQueue:self->_sessionQueue isMultiwaySession:1 dataPath:v5];
+  v9 = [[VCTransportSessionIDSMultiLink alloc] initWithCallID:self->_transportSessionID requireEncryptionInfo:1 reportingAgent:self->super._reportingAgent notificationQueue:self->_sessionQueue isMultiwaySession:1 dataPath:selectDataPath];
   reportingSetDataPath();
   [(VCTransportSession *)v9 setPerfTimings:objc_alloc_init(MEMORY[0x1E6986620])];
-  [(VCTransportSessionIDS *)v9 setDestination:a3];
+  [(VCTransportSessionIDS *)v9 setDestination:destination];
   self->_transportSession = &v9->super.super;
   [(VCConnectionManager *)[(VCTransportSession *)v9 connectionManager] setIsOneToOneModeEnabled:self->_oneToOneModeEnabled];
   [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] setGftTLEEnabled:[(VCSessionConfiguration *)self->_configuration isGftTLEEnabled]];
@@ -1413,27 +1413,27 @@ LABEL_26:
   if (self->_oneToOneModeEnabled)
   {
     v10 = @"2045";
-    v11 = self;
-    v12 = @"2045";
+    selfCopy2 = self;
+    frameworkVersion2 = @"2045";
   }
 
   else
   {
-    v13 = [(VCCallInfoBlob *)[(VCSessionParticipant *)self->_localParticipant callInfoBlob] frameworkVersion];
-    v12 = [(VCCallInfoBlob *)[(VCSessionParticipant *)self->_localParticipant callInfoBlob] frameworkVersion];
-    v11 = self;
-    v10 = v13;
+    frameworkVersion = [(VCCallInfoBlob *)[(VCSessionParticipant *)self->_localParticipant callInfoBlob] frameworkVersion];
+    frameworkVersion2 = [(VCCallInfoBlob *)[(VCSessionParticipant *)self->_localParticipant callInfoBlob] frameworkVersion];
+    selfCopy2 = self;
+    v10 = frameworkVersion;
   }
 
-  [(VCSession *)v11 setTransportConnectionSelectionVersionWithLocalFrameWorkVersion:v10 remoteFrameworkVersion:v12, *v14, *&v14[16]];
+  [(VCSession *)selfCopy2 setTransportConnectionSelectionVersionWithLocalFrameWorkVersion:v10 remoteFrameworkVersion:frameworkVersion2, *v14, *&v14[16]];
 }
 
-- (void)setState:(unsigned int)a3
+- (void)setState:(unsigned int)state
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    v3 = *&a3;
+    v3 = *&state;
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() < 6)
@@ -1458,7 +1458,7 @@ LABEL_26:
       v21 = 2080;
       v22 = v8;
       v23 = 2080;
-      v24 = [(VCSession *)self sessionStateToString:v3];
+      selfCopy = [(VCSession *)self sessionStateToString:v3];
       v9 = "VCSession [%s] %s:%d Exiting state session %s. Entering state session %s.";
       v10 = v7;
       v11 = 48;
@@ -1498,7 +1498,7 @@ LABEL_26:
       v21 = 2112;
       v22 = v5;
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v25 = 2080;
       v26 = v14;
       v27 = 2080;
@@ -1514,20 +1514,20 @@ LABEL_13:
   }
 }
 
-- (char)sessionStateToString:(unsigned int)a3
+- (char)sessionStateToString:(unsigned int)string
 {
-  if (a3 - 1 > 3)
+  if (string - 1 > 3)
   {
     return "Stopped";
   }
 
   else
   {
-    return off_1E85F7A68[a3 - 1];
+    return off_1E85F7A68[string - 1];
   }
 }
 
-- (void)addParticipantConfigurations:(id)a3
+- (void)addParticipantConfigurations:(id)configurations
 {
   block[6] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -1536,11 +1536,11 @@ LABEL_13:
   block[2] = __42__VCSession_addParticipantConfigurations___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = configurations;
   dispatch_async(sessionQueue, block);
 }
 
-- (void)removeParticipant:(id)a3
+- (void)removeParticipant:(id)participant
 {
   block[6] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -1549,15 +1549,15 @@ LABEL_13:
   block[2] = __31__VCSession_removeParticipant___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = participant;
   dispatch_async(sessionQueue, block);
 }
 
 - (VCSessionParticipantRemote)oneToOneRemoteParticipant
 {
-  v2 = [(VCSession *)self remoteParticipants];
+  remoteParticipants = [(VCSession *)self remoteParticipants];
 
-  return [(NSArray *)v2 firstObject];
+  return [(NSArray *)remoteParticipants firstObject];
 }
 
 - (void)start
@@ -1573,14 +1573,14 @@ LABEL_13:
   dispatch_async(sessionQueue, v4);
 }
 
-- (void)stopWithError:(id)a3
+- (void)stopWithError:(id)error
 {
   kdebug_trace();
 
-  [(VCSession *)self stopWithError:a3 didRemoteCancel:0];
+  [(VCSession *)self stopWithError:error didRemoteCancel:0];
 }
 
-- (void)stopWithError:(id)a3 didRemoteCancel:(BOOL)a4
+- (void)stopWithError:(id)error didRemoteCancel:(BOOL)cancel
 {
   v7 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -1589,12 +1589,12 @@ LABEL_13:
   v5[2] = __43__VCSession_stopWithError_didRemoteCancel___block_invoke;
   v5[3] = &unk_1E85F37C8;
   v5[4] = self;
-  v5[5] = a3;
-  v6 = a4;
+  v5[5] = error;
+  cancelCopy = cancel;
   dispatch_async(sessionQueue, v5);
 }
 
-- (void)updateConfiguration:(id)a3
+- (void)updateConfiguration:(id)configuration
 {
   block[6] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -1603,7 +1603,7 @@ LABEL_13:
   block[2] = __33__VCSession_updateConfiguration___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = configuration;
   dispatch_async(sessionQueue, block);
 }
 
@@ -1615,7 +1615,7 @@ uint64_t __33__VCSession_updateConfiguration___block_invoke(uint64_t a1)
   return [v2 reportingSessionParticipantEvent:169 withParticipant:0];
 }
 
-- (id)participantForID:(id)a3
+- (id)participantForID:(id)d
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -1629,7 +1629,7 @@ uint64_t __33__VCSession_updateConfiguration___block_invoke(uint64_t a1)
   v6[1] = 3221225472;
   v6[2] = __30__VCSession_participantForID___block_invoke;
   v6[3] = &unk_1E85F6638;
-  v6[4] = a3;
+  v6[4] = d;
   v6[5] = self;
   v6[6] = &v7;
   dispatch_sync(sessionQueue, v6);
@@ -1656,7 +1656,7 @@ uint64_t __30__VCSession_participantForID___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)mediaStateChangedForParticipant:(id)a3
+- (void)mediaStateChangedForParticipant:(id)participant
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1672,7 +1672,7 @@ uint64_t __30__VCSession_participantForID___block_invoke(uint64_t a1)
       v11 = 1024;
       v12 = 749;
       v13 = 2112;
-      v14 = [a3 uuid];
+      uuid = [participant uuid];
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCSession [%s] %s:%d uuid:%@", &v7, 0x26u);
     }
   }
@@ -1683,7 +1683,7 @@ uint64_t __30__VCSession_participantForID___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setParentNWActivity:(id)a3
+- (void)setParentNWActivity:(id)activity
 {
   parentNWActivity = self->_parentNWActivity;
   if (parentNWActivity)
@@ -1691,19 +1691,19 @@ uint64_t __30__VCSession_participantForID___block_invoke(uint64_t a1)
     nw_release(parentNWActivity);
   }
 
-  self->_parentNWActivity = a3;
-  if (a3)
+  self->_parentNWActivity = activity;
+  if (activity)
   {
 
-    nw_retain(a3);
+    nw_retain(activity);
   }
 }
 
 - (__CFString)configurationSpecificReportingServiceName
 {
-  v3 = [(VCSessionConfiguration *)self->_configuration serviceName];
+  serviceName = [(VCSessionConfiguration *)self->_configuration serviceName];
   configuration = self->_configuration;
-  if (v3)
+  if (serviceName)
   {
     if ([(NSString *)[(VCSessionConfiguration *)configuration serviceName] isEqualToString:@"com.apple.private.alloy.dropin.communication"])
     {
@@ -1757,8 +1757,8 @@ LABEL_14:
 - (__CFString)configurationSpecificReportingClientName
 {
   v2 = *MEMORY[0x1E6986730];
-  v3 = [(VCSessionConfiguration *)self->_configuration serviceName];
-  if ([(NSString *)v3 isEqualToString:*MEMORY[0x1E6986788]])
+  serviceName = [(VCSessionConfiguration *)self->_configuration serviceName];
+  if ([(NSString *)serviceName isEqualToString:*MEMORY[0x1E6986788]])
   {
     return *MEMORY[0x1E6986780];
   }
@@ -1777,7 +1777,7 @@ LABEL_14:
   reportingSetUserInfo();
 }
 
-- (void)setOneToOneModeEnabled:(BOOL)a3
+- (void)setOneToOneModeEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -1786,11 +1786,11 @@ LABEL_14:
   block[2] = __36__VCSession_setOneToOneModeEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(sessionQueue, block);
 }
 
-- (void)setOneToOneModeEnabled:(BOOL)a3 configurationDict:(id)a4
+- (void)setOneToOneModeEnabled:(BOOL)enabled configurationDict:(id)dict
 {
   v7 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -1798,13 +1798,13 @@ LABEL_14:
   v5[1] = 3221225472;
   v5[2] = __54__VCSession_setOneToOneModeEnabled_configurationDict___block_invoke;
   v5[3] = &unk_1E85F37C8;
-  v6 = a3;
+  enabledCopy = enabled;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = dict;
   dispatch_async(sessionQueue, v5);
 }
 
-- (void)setRemoteScreenControlEnabled:(BOOL)a3
+- (void)setRemoteScreenControlEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -1813,11 +1813,11 @@ LABEL_14:
   block[2] = __43__VCSession_setRemoteScreenControlEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(sessionQueue, block);
 }
 
-- (void)generateKeyFrameWithReceivedMessage:(id)a3 forParticipant:(id)a4
+- (void)generateKeyFrameWithReceivedMessage:(id)message forParticipant:(id)participant
 {
   v5[7] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -1826,8 +1826,8 @@ LABEL_14:
   v5[2] = __64__VCSession_generateKeyFrameWithReceivedMessage_forParticipant___block_invoke;
   v5[3] = &unk_1E85F3E30;
   v5[4] = self;
-  v5[5] = a4;
-  v5[6] = a3;
+  v5[5] = participant;
+  v5[6] = message;
   dispatch_async(sessionQueue, v5);
 }
 
@@ -1906,7 +1906,7 @@ void __64__VCSession_generateKeyFrameWithReceivedMessage_forParticipant___block_
   }
 }
 
-- (void)setSharingEnabled:(BOOL)a3
+- (void)setSharingEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -1915,11 +1915,11 @@ void __64__VCSession_generateKeyFrameWithReceivedMessage_forParticipant___block_
   block[2] = __31__VCSession_setSharingEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(sessionQueue, block);
 }
 
-- (void)setScreenAndCameraMixingEnabled:(BOOL)a3
+- (void)setScreenAndCameraMixingEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -1928,17 +1928,17 @@ void __64__VCSession_generateKeyFrameWithReceivedMessage_forParticipant___block_
   block[2] = __45__VCSession_setScreenAndCameraMixingEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(sessionQueue, block);
 }
 
-- (void)dispatchedSetSharingEnabled:(BOOL)a3
+- (void)dispatchedSetSharingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v52 = *MEMORY[0x1E69E9840];
   sharingEnabled = self->_sharingEnabled;
   v6 = objc_opt_class();
-  if (sharingEnabled != v3)
+  if (sharingEnabled != enabledCopy)
   {
     if (v6 == self)
     {
@@ -1961,7 +1961,7 @@ void __64__VCSession_generateKeyFrameWithReceivedMessage_forParticipant___block_
       v44 = 1024;
       v45 = 878;
       v46 = 1024;
-      LODWORD(v47) = v3;
+      LODWORD(v47) = enabledCopy;
       v16 = "VCSession [%s] %s:%d changing _sharingEnabled to %d";
       v17 = v15;
       v18 = 34;
@@ -2000,9 +2000,9 @@ void __64__VCSession_generateKeyFrameWithReceivedMessage_forParticipant___block_
       v46 = 2112;
       v47 = v8;
       v48 = 2048;
-      v49 = self;
+      selfCopy3 = self;
       v50 = 1024;
-      v51 = v3;
+      v51 = enabledCopy;
       v16 = "VCSession [%s] %s:%d %@(%p) changing _sharingEnabled to %d";
       v17 = v22;
       v18 = 54;
@@ -2010,11 +2010,11 @@ void __64__VCSession_generateKeyFrameWithReceivedMessage_forParticipant___block_
 
     _os_log_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_DEFAULT, v16, buf, v18);
 LABEL_24:
-    self->_sharingEnabled = v3;
-    [(VCSessionParticipant *)self->_localParticipant setSharingEnabled:v3];
+    self->_sharingEnabled = enabledCopy;
+    [(VCSessionParticipant *)self->_localParticipant setSharingEnabled:enabledCopy];
     v38[0] = @"VCSPExpanseEnabled";
     v38[1] = @"VCSPUUID";
-    v39[0] = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v39[0] = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
     v39[1] = [(VCSessionParticipant *)self->_localParticipant uuid];
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
     reportingGenericEvent();
@@ -2022,9 +2022,9 @@ LABEL_24:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v23 = self;
-    v24 = [(VCSession *)self remoteParticipants];
-    v25 = [(NSArray *)v24 countByEnumeratingWithState:&v34 objects:v33 count:16];
+    selfCopy2 = self;
+    remoteParticipants = [(VCSession *)self remoteParticipants];
+    v25 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v34 objects:v33 count:16];
     if (v25)
     {
       v26 = v25;
@@ -2035,13 +2035,13 @@ LABEL_24:
         {
           if (*v35 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(remoteParticipants);
           }
 
           v29 = *(*(&v34 + 1) + 8 * i);
-          [v29 setSharingEnabled:v3];
+          [v29 setSharingEnabled:enabledCopy];
           v31[0] = @"VCSPExpanseEnabled";
-          v30 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+          v30 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
           v31[1] = @"VCSPUUID";
           v32[0] = v30;
           v32[1] = [v29 uuid];
@@ -2049,19 +2049,19 @@ LABEL_24:
           reportingGenericEvent();
         }
 
-        v26 = [(NSArray *)v24 countByEnumeratingWithState:&v34 objects:v33 count:16];
+        v26 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v34 objects:v33 count:16];
       }
 
       while (v26);
     }
 
-    if (!v23->_oneToOneModeEnabled)
+    if (!selfCopy2->_oneToOneModeEnabled)
     {
-      [(VCSession *)v23 distributeBitrateAndOptInToStreamIDsWithSeamlessTransition:0];
+      [(VCSession *)selfCopy2 distributeBitrateAndOptInToStreamIDsWithSeamlessTransition:0];
     }
 
     [+[VCVideoCaptureServer VCVideoCaptureServerSingleton](VCVideoCaptureServer "VCVideoCaptureServerSingleton")];
-    [(VCSession *)v23 updateLocalVideoCaptureFrameRate];
+    [(VCSession *)selfCopy2 updateLocalVideoCaptureFrameRate];
     return;
   }
 
@@ -2080,7 +2080,7 @@ LABEL_24:
         v44 = 1024;
         v45 = 897;
         v46 = 1024;
-        LODWORD(v47) = v3;
+        LODWORD(v47) = enabledCopy;
         v11 = "VCSession [%s] %s:%d _sharingEnabled already %d";
         v12 = v10;
         v13 = 34;
@@ -2117,9 +2117,9 @@ LABEL_18:
         v46 = 2112;
         v47 = v7;
         v48 = 2048;
-        v49 = self;
+        selfCopy3 = self;
         v50 = 1024;
-        v51 = v3;
+        v51 = enabledCopy;
         v11 = "VCSession [%s] %s:%d %@(%p) _sharingEnabled already %d";
         v12 = v20;
         v13 = 54;
@@ -2129,7 +2129,7 @@ LABEL_18:
   }
 }
 
-- (void)configureSessionForLowPowerMode:(BOOL)a3
+- (void)configureSessionForLowPowerMode:(BOOL)mode
 {
   v6 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -2138,7 +2138,7 @@ LABEL_18:
   block[2] = __45__VCSession_configureSessionForLowPowerMode___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  modeCopy = mode;
   dispatch_async(sessionQueue, block);
 }
 
@@ -2151,14 +2151,14 @@ LABEL_18:
   [v3 setViewPointCorrectionEnabled:v4];
 }
 
-- (void)dispatchedConfigureSessionForLowPowerMode:(BOOL)a3
+- (void)dispatchedConfigureSessionForLowPowerMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v45 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_sessionQueue);
   lowPowerModeEnabled = self->_lowPowerModeEnabled;
   v6 = objc_opt_class();
-  if (lowPowerModeEnabled != v3)
+  if (lowPowerModeEnabled != modeCopy)
   {
     if (v6 == self)
     {
@@ -2181,7 +2181,7 @@ LABEL_18:
       v37 = 1024;
       v38 = 917;
       v39 = 1024;
-      LODWORD(v40) = v3;
+      LODWORD(v40) = modeCopy;
       v16 = "VCSession [%s] %s:%d changing _lowPowerModeEnabled to %d";
       v17 = v15;
       v18 = 34;
@@ -2220,9 +2220,9 @@ LABEL_18:
       v39 = 2112;
       v40 = v8;
       v41 = 2048;
-      v42 = self;
+      selfCopy2 = self;
       v43 = 1024;
-      v44 = v3;
+      v44 = modeCopy;
       v16 = "VCSession [%s] %s:%d %@(%p) changing _lowPowerModeEnabled to %d";
       v17 = v22;
       v18 = 54;
@@ -2230,14 +2230,14 @@ LABEL_18:
 
     _os_log_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_DEFAULT, v16, buf, v18);
 LABEL_24:
-    self->_lowPowerModeEnabled = v3;
-    [(VCSessionParticipantLocal *)self->_localParticipant setLowPowerModeEnabled:v3];
+    self->_lowPowerModeEnabled = modeCopy;
+    [(VCSessionParticipantLocal *)self->_localParticipant setLowPowerModeEnabled:modeCopy];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v23 = [(VCSession *)self remoteParticipants];
-    v24 = [(NSArray *)v23 countByEnumeratingWithState:&v29 objects:v28 count:16];
+    remoteParticipants = [(VCSession *)self remoteParticipants];
+    v24 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v29 objects:v28 count:16];
     if (v24)
     {
       v25 = v24;
@@ -2248,13 +2248,13 @@ LABEL_24:
         {
           if (*v30 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(remoteParticipants);
           }
 
-          [*(*(&v29 + 1) + 8 * i) setLowPowerModeEnabled:v3];
+          [*(*(&v29 + 1) + 8 * i) setLowPowerModeEnabled:modeCopy];
         }
 
-        v25 = [(NSArray *)v23 countByEnumeratingWithState:&v29 objects:v28 count:16];
+        v25 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v29 objects:v28 count:16];
       }
 
       while (v25);
@@ -2280,7 +2280,7 @@ LABEL_24:
         v37 = 1024;
         v38 = 927;
         v39 = 1024;
-        LODWORD(v40) = v3;
+        LODWORD(v40) = modeCopy;
         v11 = "VCSession [%s] %s:%d _lowPowerModeEnabled already %d";
         v12 = v10;
         v13 = 34;
@@ -2317,9 +2317,9 @@ LABEL_18:
         v39 = 2112;
         v40 = v7;
         v41 = 2048;
-        v42 = self;
+        selfCopy2 = self;
         v43 = 1024;
-        v44 = v3;
+        v44 = modeCopy;
         v11 = "VCSession [%s] %s:%d %@(%p) _lowPowerModeEnabled already %d";
         v12 = v20;
         v13 = 54;
@@ -2329,22 +2329,22 @@ LABEL_18:
   }
 }
 
-- (void)dispatchedSetScreenAndCameraMixingEnabled:(BOOL)a3
+- (void)dispatchedSetScreenAndCameraMixingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v28 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_sessionQueue);
   screenAndCameraMixingEnabled = self->_screenAndCameraMixingEnabled;
   v6 = objc_opt_class();
-  if (screenAndCameraMixingEnabled != v3)
+  if (screenAndCameraMixingEnabled != enabledCopy)
   {
     if (v6 == self)
     {
       if (VRTraceGetErrorLogLevelForModule() < 6 || (v14 = VRTraceErrorLogLevelToCSTR(), v15 = *MEMORY[0x1E6986650], !os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT)))
       {
 LABEL_24:
-        self->_screenAndCameraMixingEnabled = v3;
-        if (v3)
+        self->_screenAndCameraMixingEnabled = enabledCopy;
+        if (enabledCopy)
         {
           v23 = 1;
         }
@@ -2354,7 +2354,7 @@ LABEL_24:
           v23 = 2;
         }
 
-        [(VCSessionParticipant *)self->_localParticipant setMediaType:2 mixingWithMediaType:v23, *v24, *&v24[16], v25, v26, v27, v28];
+        [(VCSessionParticipant *)self->_localParticipant setMediaType:2 mixingWithMediaType:v23, *v24, *&v24[16], v25, selfCopy2, v27, v28];
         return;
       }
 
@@ -2365,7 +2365,7 @@ LABEL_24:
       *&v24[22] = 1024;
       LODWORD(v25) = 934;
       WORD2(v25) = 1024;
-      *(&v25 + 6) = v3;
+      *(&v25 + 6) = enabledCopy;
       v16 = "VCSession [%s] %s:%d changing _screenAndCameraMixingEnabled=%d";
       v17 = v15;
       v18 = 34;
@@ -2404,9 +2404,9 @@ LABEL_24:
       WORD2(v25) = 2112;
       *(&v25 + 6) = v8;
       HIWORD(v25) = 2048;
-      v26 = self;
+      selfCopy2 = self;
       LOWORD(v27) = 1024;
-      *(&v27 + 2) = v3;
+      *(&v27 + 2) = enabledCopy;
       v16 = "VCSession [%s] %s:%d %@(%p) changing _screenAndCameraMixingEnabled=%d";
       v17 = v22;
       v18 = 54;
@@ -2431,7 +2431,7 @@ LABEL_24:
         *&v24[22] = 1024;
         LODWORD(v25) = 942;
         WORD2(v25) = 1024;
-        *(&v25 + 6) = v3;
+        *(&v25 + 6) = enabledCopy;
         v11 = "VCSession [%s] %s:%d _screenAndCameraMixingEnabled=%d already";
         v12 = v10;
         v13 = 34;
@@ -2468,9 +2468,9 @@ LABEL_18:
         WORD2(v25) = 2112;
         *(&v25 + 6) = v7;
         HIWORD(v25) = 2048;
-        v26 = self;
+        selfCopy2 = self;
         LOWORD(v27) = 1024;
-        *(&v27 + 2) = v3;
+        *(&v27 + 2) = enabledCopy;
         v11 = "VCSession [%s] %s:%d %@(%p) _screenAndCameraMixingEnabled=%d already";
         v12 = v20;
         v13 = 54;
@@ -2480,7 +2480,7 @@ LABEL_18:
   }
 }
 
-- (void)sendStreamGroupStateToParticipant:(id)a3
+- (void)sendStreamGroupStateToParticipant:(id)participant
 {
   block[6] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -2488,7 +2488,7 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = __47__VCSession_sendStreamGroupStateToParticipant___block_invoke;
   block[3] = &unk_1E85F37F0;
-  block[4] = a3;
+  block[4] = participant;
   block[5] = self;
   dispatch_async(sessionQueue, block);
 }
@@ -2505,23 +2505,23 @@ uint64_t __47__VCSession_sendStreamGroupStateToParticipant___block_invoke(uint64
   return result;
 }
 
-- (int)getStorebagValueForIntegerKey:(id)a3 defaultValue:(id)a4
+- (int)getStorebagValueForIntegerKey:(id)key defaultValue:(id)value
 {
-  v4 = [GKSConnectivitySettings readStorebagValueForStorebagKey:a3 userDefaultKey:0 defaultValue:a4 isDoubleType:0];
+  v4 = [GKSConnectivitySettings readStorebagValueForStorebagKey:key userDefaultKey:0 defaultValue:value isDoubleType:0];
 
   return [v4 intValue];
 }
 
-- (void)readAndSetABCSymptomsReportingThresholdsFromStorebags:(id *)a3
+- (void)readAndSetABCSymptomsReportingThresholdsFromStorebags:(id *)storebags
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (storebags)
   {
-    a3->var15.var0 = [(VCSession *)self getStorebagValueForIntegerKey:@"vc-reporting-audio-connection-time-symptom-threshold" defaultValue:&unk_1F579A068];
-    a3->var15.var1 = [(VCSession *)self getStorebagValueForIntegerKey:@"vc-reporting-audio-erasure-percentage-symptom-threshold" defaultValue:&unk_1F579A068];
-    a3->var15.var2 = [(VCSession *)self getStorebagValueForIntegerKey:@"vc-reporting-poor-connection-percentage-symptom-threshold" defaultValue:&unk_1F579A068];
-    a3->var15.var3 = [(VCSession *)self getStorebagValueForIntegerKey:@"vc-reporting-video-connection-time-symptom-threshold" defaultValue:&unk_1F579A068];
-    a3->var15.var4 = [(VCSession *)self getStorebagValueForIntegerKey:@"vc-reporting-video-stall-percentage-symptom-threshold" defaultValue:&unk_1F579A068];
+    storebags->var15.var0 = [(VCSession *)self getStorebagValueForIntegerKey:@"vc-reporting-audio-connection-time-symptom-threshold" defaultValue:&unk_1F579A068];
+    storebags->var15.var1 = [(VCSession *)self getStorebagValueForIntegerKey:@"vc-reporting-audio-erasure-percentage-symptom-threshold" defaultValue:&unk_1F579A068];
+    storebags->var15.var2 = [(VCSession *)self getStorebagValueForIntegerKey:@"vc-reporting-poor-connection-percentage-symptom-threshold" defaultValue:&unk_1F579A068];
+    storebags->var15.var3 = [(VCSession *)self getStorebagValueForIntegerKey:@"vc-reporting-video-connection-time-symptom-threshold" defaultValue:&unk_1F579A068];
+    storebags->var15.var4 = [(VCSession *)self getStorebagValueForIntegerKey:@"vc-reporting-video-stall-percentage-symptom-threshold" defaultValue:&unk_1F579A068];
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2530,11 +2530,11 @@ uint64_t __47__VCSession_sendStreamGroupStateToParticipant___block_invoke(uint64
         v7 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          var0 = a3->var15.var0;
-          var1 = a3->var15.var1;
-          var2 = a3->var15.var2;
-          var3 = a3->var15.var3;
-          var4 = a3->var15.var4;
+          var0 = storebags->var15.var0;
+          var1 = storebags->var15.var1;
+          var2 = storebags->var15.var2;
+          var3 = storebags->var15.var3;
+          var4 = storebags->var15.var4;
           v23 = 136316930;
           v24 = v6;
           v25 = 2080;
@@ -2545,9 +2545,9 @@ uint64_t __47__VCSession_sendStreamGroupStateToParticipant___block_invoke(uint64
           *v30 = var0;
           *&v30[4] = 1024;
           *&v30[6] = var1;
-          LOWORD(v31) = 1024;
-          *(&v31 + 2) = var2;
-          HIWORD(v31) = 1024;
+          LOWORD(selfCopy) = 1024;
+          *(&selfCopy + 2) = var2;
+          HIWORD(selfCopy) = 1024;
           *v32 = var3;
           *&v32[4] = 1024;
           *v33 = var4;
@@ -2578,11 +2578,11 @@ LABEL_15:
         v17 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v18 = a3->var15.var0;
-          v19 = a3->var15.var1;
-          v20 = a3->var15.var2;
-          v21 = a3->var15.var3;
-          v22 = a3->var15.var4;
+          v18 = storebags->var15.var0;
+          v19 = storebags->var15.var1;
+          v20 = storebags->var15.var2;
+          v21 = storebags->var15.var3;
+          v22 = storebags->var15.var4;
           v23 = 136317442;
           v24 = v16;
           v25 = 2080;
@@ -2592,7 +2592,7 @@ LABEL_15:
           v29 = 2112;
           *v30 = v5;
           *&v30[8] = 2048;
-          v31 = self;
+          selfCopy = self;
           *v32 = 1024;
           *&v32[2] = v18;
           *v33 = 1024;
@@ -2648,8 +2648,8 @@ LABEL_15:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allValues];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  allValues = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allValues];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2661,13 +2661,13 @@ LABEL_15:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v6 += [*(*(&v10 + 1) + 8 * i) isPlaybackSynchronizationGroupMember];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v5);
@@ -2678,13 +2678,13 @@ LABEL_15:
   }
 }
 
-- (void)dispatchedSetPlaybackSyncGroupUUID:(id)a3
+- (void)dispatchedSetPlaybackSyncGroupUUID:(id)d
 {
   v31 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_sessionQueue);
   v5 = self->_playbackSynchronizationGroupUUID;
   v6 = v5;
-  if (v5 && ([(NSUUID *)v5 isEqual:a3]& 1) == 0)
+  if (v5 && ([(NSUUID *)v5 isEqual:d]& 1) == 0)
   {
     if (objc_opt_class() == self)
     {
@@ -2748,7 +2748,7 @@ LABEL_15:
       WORD2(v28) = 2112;
       *(&v28 + 6) = v7;
       HIWORD(v28) = 2048;
-      v29 = self;
+      selfCopy2 = self;
       LOWORD(v30) = 2112;
       *(&v30 + 2) = v16;
       v11 = "VCSession [%s] %s:%d %@(%p) Stop playback sync group with uuid=%@";
@@ -2762,8 +2762,8 @@ LABEL_14:
     self->_maxPlaybackSynchronizationGroupMemberCount = 0;
   }
 
-  self->_playbackSynchronizationGroupUUID = a3;
-  if (a3 && ([a3 isEqual:v6] & 1) == 0)
+  self->_playbackSynchronizationGroupUUID = d;
+  if (d && ([d isEqual:v6] & 1) == 0)
   {
     if (objc_opt_class() == self)
     {
@@ -2827,7 +2827,7 @@ LABEL_14:
       WORD2(v28) = 2112;
       *(&v28 + 6) = v17;
       HIWORD(v28) = 2048;
-      v29 = self;
+      selfCopy2 = self;
       LOWORD(v30) = 2112;
       *(&v30 + 2) = v26;
       v21 = "VCSession [%s] %s:%d %@(%p) Start playback sync group with uuid=%@";
@@ -2871,7 +2871,7 @@ id __45__VCSession_playbackSynchronizationGroupUUID__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setPlaybackSynchronizationGroupUUID:(id)a3
+- (void)setPlaybackSynchronizationGroupUUID:(id)d
 {
   block[6] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -2880,11 +2880,11 @@ id __45__VCSession_playbackSynchronizationGroupUUID__block_invoke(uint64_t a1)
   block[2] = __49__VCSession_setPlaybackSynchronizationGroupUUID___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = d;
   dispatch_async(sessionQueue, block);
 }
 
-- (void)updatePlaybackSynchronizationGroupMembership:(BOOL)a3 forParticipant:(id)a4
+- (void)updatePlaybackSynchronizationGroupMembership:(BOOL)membership forParticipant:(id)participant
 {
   v7 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -2893,8 +2893,8 @@ id __45__VCSession_playbackSynchronizationGroupUUID__block_invoke(uint64_t a1)
   v5[2] = __73__VCSession_updatePlaybackSynchronizationGroupMembership_forParticipant___block_invoke;
   v5[3] = &unk_1E85F37C8;
   v5[4] = self;
-  v5[5] = a4;
-  v6 = a3;
+  v5[5] = participant;
+  membershipCopy = membership;
   dispatch_async(sessionQueue, v5);
 }
 
@@ -3214,48 +3214,48 @@ LABEL_14:
   }
 }
 
-- (void)applyLinkConstrains:(id)a3
+- (void)applyLinkConstrains:(id)constrains
 {
-  v5 = [(VCTransportSession *)self->_transportSession connectionManager];
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"transportSessionEventPayloadKey_IsCellular", "BOOLValue"}];
+  connectionManager = [(VCTransportSession *)self->_transportSession connectionManager];
+  v6 = [objc_msgSend(constrains objectForKeyedSubscript:{@"transportSessionEventPayloadKey_IsCellular", "BOOLValue"}];
   v7 = MEMORY[0x1E69A46D0];
   if (!v6)
   {
     v7 = MEMORY[0x1E69A4708];
   }
 
-  -[VCConnectionManager applyLinkFlags:isCellular:](v5, "applyLinkFlags:isCellular:", [objc_msgSend(a3 objectForKeyedSubscript:{*v7), "intValue"}], v6);
+  -[VCConnectionManager applyLinkFlags:isCellular:](connectionManager, "applyLinkFlags:isCellular:", [objc_msgSend(constrains objectForKeyedSubscript:{*v7), "intValue"}], v6);
   if (self->_oneToOneModeEnabled && [(VCSession *)self oneToOneRemoteParticipant])
   {
     sessionMessaging = self->_sessionMessaging;
-    v9 = [(VCSessionParticipant *)[(VCSession *)self oneToOneRemoteParticipant] idsParticipantID];
+    idsParticipantID = [(VCSessionParticipant *)[(VCSession *)self oneToOneRemoteParticipant] idsParticipantID];
 
-    [(VCSessionMessaging *)sessionMessaging sendMessageDictionary:a3 withTopic:@"VCSessionMessageTopicLinkConstrainesChanged" participantID:v9];
+    [(VCSessionMessaging *)sessionMessaging sendMessageDictionary:constrains withTopic:@"VCSessionMessageTopicLinkConstrainesChanged" participantID:idsParticipantID];
   }
 }
 
-- (void)applyRemoteLinkConstrains:(id)a3
+- (void)applyRemoteLinkConstrains:(id)constrains
 {
-  v5 = [(VCTransportSession *)self->_transportSession connectionManager];
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"transportSessionEventPayloadKey_IsCellular", "BOOLValue"}];
+  connectionManager = [(VCTransportSession *)self->_transportSession connectionManager];
+  v6 = [objc_msgSend(constrains objectForKeyedSubscript:{@"transportSessionEventPayloadKey_IsCellular", "BOOLValue"}];
   v7 = MEMORY[0x1E69A46D0];
   if (!v6)
   {
     v7 = MEMORY[0x1E69A4708];
   }
 
-  -[VCConnectionManager applyRemoteLinkFlags:isCellular:](v5, "applyRemoteLinkFlags:isCellular:", [objc_msgSend(a3 objectForKeyedSubscript:{*v7), "intValue"}], v6);
+  -[VCConnectionManager applyRemoteLinkFlags:isCellular:](connectionManager, "applyRemoteLinkFlags:isCellular:", [objc_msgSend(constrains objectForKeyedSubscript:{*v7), "intValue"}], v6);
   currentActiveConnection = self->_currentActiveConnection;
 
   [(VCSession *)self reportSatelliteNetworkStatusForConnection:currentActiveConnection];
 }
 
-- (void)reportSatelliteNetworkStatusForConnection:(id)a3
+- (void)reportSatelliteNetworkStatusForConnection:(id)connection
 {
-  if (a3)
+  if (connection)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    VCConnectionIDS_ReportingSatelliteNetwork(a3, v4);
+    VCConnectionIDS_ReportingSatelliteNetwork(connection, v4);
     if ([(__CFDictionary *)v4 count])
     {
       reportingGenericEvent();
@@ -3263,55 +3263,55 @@ LABEL_14:
   }
 }
 
-- (void)notifyRemoteOfCellTechChange:(id)a3 remoteParticipant:(id)a4
+- (void)notifyRemoteOfCellTechChange:(id)change remoteParticipant:(id)participant
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (participant)
   {
     if ([(VCSession *)self isOneToOneUsingVideo]|| [(VCSession *)self isOneToOneUsingScreen])
     {
-      v7 = [a3 uplinkBitrateCapOneToOne];
+      uplinkBitrateCapOneToOne = [change uplinkBitrateCapOneToOne];
     }
 
     else
     {
-      v7 = [a3 uplinkAudioBitrateCapOneToOne];
+      uplinkBitrateCapOneToOne = [change uplinkAudioBitrateCapOneToOne];
     }
 
-    v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:v7];
-    v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:VCConnection_LocalCellTech(a3)];
+    v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:uplinkBitrateCapOneToOne];
+    v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:VCConnection_LocalCellTech(change)];
     v10[0] = @"VCCellTechKey";
     v10[1] = @"VCMaxBitrateKey";
     v11[0] = v9;
     v11[1] = v8;
-    -[VCSessionMessaging sendMessageDictionary:withTopic:participantID:](self->_sessionMessaging, "sendMessageDictionary:withTopic:participantID:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2], @"VCCellTechChangeTopic", objc_msgSend(a4, "idsParticipantID"));
+    -[VCSessionMessaging sendMessageDictionary:withTopic:participantID:](self->_sessionMessaging, "sendMessageDictionary:withTopic:participantID:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2], @"VCCellTechChangeTopic", objc_msgSend(participant, "idsParticipantID"));
   }
 }
 
-- (void)handleCellTechChange:(int)a3 connection:(id)a4
+- (void)handleCellTechChange:(int)change connection:(id)connection
 {
-  v5 = *&a3;
+  v5 = *&change;
   v7 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] getCellularTechForActiveConnectionWithQuality:1 forLocalInterface:1];
   if (v5)
   {
     if (v5 <= 9 && v7 != v5 && (self->_state | 2) == 3)
     {
       [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] updateCellularTech:v5 forLocalInterface:1];
-      [(VCSession *)self handleActiveConnectionChange:a4];
+      [(VCSession *)self handleActiveConnectionChange:connection];
       if (self->_oneToOneModeEnabled)
       {
-        v8 = [(VCSession *)self oneToOneRemoteParticipant];
+        oneToOneRemoteParticipant = [(VCSession *)self oneToOneRemoteParticipant];
 
-        [(VCSession *)self notifyRemoteOfCellTechChange:a4 remoteParticipant:v8];
+        [(VCSession *)self notifyRemoteOfCellTechChange:connection remoteParticipant:oneToOneRemoteParticipant];
       }
     }
   }
 }
 
-- (void)handlePrimaryConnectionChanged:(id)a3
+- (void)handlePrimaryConnectionChanged:(id)changed
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (changed)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
@@ -3329,7 +3329,7 @@ LABEL_14:
           v13 = 1024;
           v14 = 1237;
           v15 = 2112;
-          v16 = a3;
+          changedCopy = changed;
           _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCSession [%s] %s:%d Primary connection changed to '%@'", &v9, 0x26u);
         }
       }
@@ -3361,14 +3361,14 @@ LABEL_14:
   }
 }
 
-- (void)handleCellularMTUChanged:(unsigned __int16)a3 connection:(id)a4
+- (void)handleCellularMTUChanged:(unsigned __int16)changed connection:(id)connection
 {
-  [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] updateCellularMTU:a3];
+  [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] updateCellularMTU:changed];
 
-  [(VCSession *)self handleActiveConnectionChange:a4];
+  [(VCSession *)self handleActiveConnectionChange:connection];
 }
 
-- (void)handleActiveConnectionChange:(id)a3
+- (void)handleActiveConnectionChange:(id)change
 {
   v32 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_sessionQueue);
@@ -3386,36 +3386,36 @@ LABEL_14:
       v26 = 1024;
       v27 = 1256;
       v28 = 2048;
-      v29 = self;
+      selfCopy = self;
       v30 = 2112;
-      v31 = a3;
+      changeCopy = change;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCSession [%s] %s:%d @:@ VCSession-handleActiveConnectionChange (%p) Connection changed to '%@'", buf, 0x30u);
     }
   }
 
   if ((self->_state | 2) == 3)
   {
-    IsEndToEndLink = VCConnection_IsEndToEndLink(a3);
+    IsEndToEndLink = VCConnection_IsEndToEndLink(change);
     if (!self->_oneToOneModeEnabled || IsEndToEndLink == 0)
     {
       if ((IsEndToEndLink & 1) == 0)
       {
-        [(VCSession *)self handleActiveConnectionChangeForMultiway:a3];
+        [(VCSession *)self handleActiveConnectionChangeForMultiway:change];
       }
     }
 
     else
     {
-      [(VCSession *)self handleActiveConnectionChangeForOneToOne:a3];
+      [(VCSession *)self handleActiveConnectionChangeForOneToOne:change];
     }
 
-    [(VCSessionParticipantLocal *)self->_localParticipant handleActiveConnectionChange:a3];
+    [(VCSessionParticipantLocal *)self->_localParticipant handleActiveConnectionChange:change];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(VCSession *)self remoteParticipants];
-    v10 = [(NSArray *)v9 countByEnumeratingWithState:&v18 objects:v17 count:16];
+    remoteParticipants = [(VCSession *)self remoteParticipants];
+    v10 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v18 objects:v17 count:16];
     if (v10)
     {
       v11 = v10;
@@ -3427,23 +3427,23 @@ LABEL_14:
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(remoteParticipants);
           }
 
           v14 = *(*(&v18 + 1) + 8 * v13);
           if (!self->_oneToOneModeEnabled)
           {
             v15 = @"sliceStatus";
-            v16 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnection_ReportingSliceStatus(a3)];
+            v16 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnection_ReportingSliceStatus(change)];
             -[VCSession sendDeviceStateMessageToParticipant:withStatus:checkDNUStatus:](self, "sendDeviceStateMessageToParticipant:withStatus:checkDNUStatus:", v14, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1], 0);
           }
 
-          [v14 handleActiveConnectionChange:a3];
+          [v14 handleActiveConnectionChange:change];
           ++v13;
         }
 
         while (v11 != v13);
-        v11 = [(NSArray *)v9 countByEnumeratingWithState:&v18 objects:v17 count:16];
+        v11 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v18 objects:v17 count:16];
       }
 
       while (v11);
@@ -3451,21 +3451,21 @@ LABEL_14:
 
     if (self->_feedbackController)
     {
-      [(VCNetworkFeedbackController *)self->_feedbackController setIsLocalCellular:VCConnection_IsLocalOnCellular(a3)];
+      [(VCNetworkFeedbackController *)self->_feedbackController setIsLocalCellular:VCConnection_IsLocalOnCellular(change)];
     }
   }
 }
 
-- (void)updateMultiwayRateControllersWithActiveConnection:(id)a3
+- (void)updateMultiwayRateControllersWithActiveConnection:(id)connection
 {
   v16 = *MEMORY[0x1E69E9840];
-  [(VCSession *)self updateMultiwayRateControllerWithActiveConnection:a3 isScreenEnabled:[(VCSessionParticipant *)self->_localParticipant isScreenEnabled] isLocal:1];
+  [(VCSession *)self updateMultiwayRateControllerWithActiveConnection:connection isScreenEnabled:[(VCSessionParticipant *)self->_localParticipant isScreenEnabled] isLocal:1];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(VCSession *)self remoteParticipants];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  remoteParticipants = [(VCSession *)self remoteParticipants];
+  v6 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3477,7 +3477,7 @@ LABEL_14:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(remoteParticipants);
         }
 
         if ([*(*(&v12 + 1) + 8 * v9) isRemoteScreenEnabled])
@@ -3490,7 +3490,7 @@ LABEL_14:
       }
 
       while (v7 != v9);
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v7 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v12 objects:v11 count:16];
       if (v7)
       {
         continue;
@@ -3502,22 +3502,22 @@ LABEL_14:
 
   v10 = 0;
 LABEL_11:
-  [(VCSession *)self updateMultiwayRateControllerWithActiveConnection:a3 isScreenEnabled:v10 isLocal:0];
-  -[VCNetworkFeedbackController setClientTargetBitrateCap:](self->_feedbackController, "setClientTargetBitrateCap:", [a3 uplinkBitrateCap]);
-  if (VCConnection_IsLocalOnCellular(a3))
+  [(VCSession *)self updateMultiwayRateControllerWithActiveConnection:connection isScreenEnabled:v10 isLocal:0];
+  -[VCNetworkFeedbackController setClientTargetBitrateCap:](self->_feedbackController, "setClientTargetBitrateCap:", [connection uplinkBitrateCap]);
+  if (VCConnection_IsLocalOnCellular(connection))
   {
-    -[VCNetworkFeedbackController setDownlinkTargetCellBitrateCap:](self->_feedbackController, "setDownlinkTargetCellBitrateCap:", [a3 downlinkBitrateCap]);
+    -[VCNetworkFeedbackController setDownlinkTargetCellBitrateCap:](self->_feedbackController, "setDownlinkTargetCellBitrateCap:", [connection downlinkBitrateCap]);
   }
 }
 
-- (void)handleActiveConnectionChangeForMultiway:(id)a3
+- (void)handleActiveConnectionChangeForMultiway:(id)multiway
 {
-  IsLocalOnCellular = VCConnection_IsLocalOnCellular(a3);
-  IsLocalConstrained = VCConnection_IsLocalConstrained(a3);
+  IsLocalOnCellular = VCConnection_IsLocalOnCellular(multiway);
+  IsLocalConstrained = VCConnection_IsLocalConstrained(multiway);
   currentConnectionType = self->_currentConnectionType;
-  if (currentConnectionType != [a3 localConnectionType])
+  if (currentConnectionType != [multiway localConnectionType])
   {
-    self->_currentConnectionType = [a3 localConnectionType];
+    self->_currentConnectionType = [multiway localConnectionType];
     [(VCSession *)self reportingSessionParticipantEvent:159 withParticipant:0];
     p_isCurrentConnectionConstrained = &self->_isCurrentConnectionConstrained;
     if (self->_isCurrentConnectionConstrained == IsLocalConstrained)
@@ -3534,8 +3534,8 @@ LABEL_11:
 LABEL_8:
     *p_isCurrentConnectionConstrained = IsLocalConstrained;
 LABEL_9:
-    [(VCSession *)self updateMultiwayRateControllersWithActiveConnection:a3];
-    [(VCSession *)self reportSatelliteNetworkStatusForConnection:a3];
+    [(VCSession *)self updateMultiwayRateControllersWithActiveConnection:multiway];
+    [(VCSession *)self reportSatelliteNetworkStatusForConnection:multiway];
     if (!IsLocalOnCellular)
     {
       return;
@@ -3550,28 +3550,28 @@ LABEL_9:
   }
 
 LABEL_4:
-  v9 = [(AVCRateController *)self->_uplinkRateController basebandCongestionDetector];
+  basebandCongestionDetector = [(AVCRateController *)self->_uplinkRateController basebandCongestionDetector];
   localParticipant = self->_localParticipant;
 
-  [(VCSessionParticipant *)localParticipant setBasebandCongestionDetector:v9];
+  [(VCSessionParticipant *)localParticipant setBasebandCongestionDetector:basebandCongestionDetector];
 }
 
-- (void)handlePreferredInterfaceForDuplicationUpdate:(unsigned __int8)a3 notifyPeer:(BOOL)a4 enableDuplication:(BOOL)a5 isMediaUnrecoverableSignal:(BOOL)a6
+- (void)handlePreferredInterfaceForDuplicationUpdate:(unsigned __int8)update notifyPeer:(BOOL)peer enableDuplication:(BOOL)duplication isMediaUnrecoverableSignal:(BOOL)signal
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  if (self->_oneToOneModeEnabled && a4)
+  if (self->_oneToOneModeEnabled && peer)
   {
-    v7 = a6;
-    v8 = a5;
-    v9 = a3;
-    if ([(VCSession *)self oneToOneRemoteParticipant:a3])
+    signalCopy = signal;
+    duplicationCopy = duplication;
+    updateCopy = update;
+    if ([(VCSession *)self oneToOneRemoteParticipant:update])
     {
       v11[0] = @"VCPreferredInterfaceKey";
-      v12[0] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v9];
+      v12[0] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:updateCopy];
       v11[1] = @"VCPreferredInterfaceDuplicatingKey";
-      v12[1] = [MEMORY[0x1E696AD98] numberWithBool:v8];
+      v12[1] = [MEMORY[0x1E696AD98] numberWithBool:duplicationCopy];
       v11[2] = @"VCPreferredInterfaceMediaUnrecoverableSignalKey";
-      v12[2] = [MEMORY[0x1E696AD98] numberWithBool:v7];
+      v12[2] = [MEMORY[0x1E696AD98] numberWithBool:signalCopy];
       -[VCSessionMessaging sendMessageDictionary:withTopic:participantID:](self->_sessionMessaging, "sendMessageDictionary:withTopic:participantID:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3], @"VCPreferredInterfaceMessageTopic", -[VCSessionParticipant idsParticipantID](-[VCSession oneToOneRemoteParticipant](self, "oneToOneRemoteParticipant"), "idsParticipantID"));
     }
   }
@@ -3585,8 +3585,8 @@ LABEL_4:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = [(VCSession *)self remoteParticipants];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v27 objects:v26 count:16];
+  remoteParticipants = [(VCSession *)self remoteParticipants];
+  v5 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v27 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3598,13 +3598,13 @@ LABEL_4:
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(remoteParticipants);
         }
 
         v7 += [*(*(&v27 + 1) + 8 * i) actualNetworkBitrateWithAudioBitrates:v3];
       }
 
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v27 objects:v26 count:16];
+      v6 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v27 objects:v26 count:16];
     }
 
     while (v6);
@@ -3666,7 +3666,7 @@ LABEL_4:
 - (unsigned)calculateExpectedTotalNetworkBitrateUplink
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(VCSessionParticipantLocal *)self->_localParticipant currentUplinkTotalBitrate];
+  currentUplinkTotalBitrate = [(VCSessionParticipantLocal *)self->_localParticipant currentUplinkTotalBitrate];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v3 = VRTraceErrorLogLevelToCSTR();
@@ -3680,17 +3680,17 @@ LABEL_4:
       v10 = 1024;
       v11 = 1373;
       v12 = 1024;
-      v13 = v2;
+      v13 = currentUplinkTotalBitrate;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "VCSession [%s] %s:%d New uplink expected bitrate:%u", &v6, 0x22u);
     }
   }
 
-  return v2;
+  return currentUplinkTotalBitrate;
 }
 
-- (void)setOneToOneVideoStreamBandwidthProbing:(BOOL)a3
+- (void)setOneToOneVideoStreamBandwidthProbing:(BOOL)probing
 {
-  v3 = a3;
+  probingCopy = probing;
   localParticipant = self->_localParticipant;
   if (localParticipant)
   {
@@ -3705,7 +3705,7 @@ LABEL_4:
     v10 = 0u;
   }
 
-  [objc_msgSend(-[VCSessionParticipantLocal objectForKeyedSubscript:](localParticipant objectForKeyedSubscript:{&unk_1F579A080), "stream"), "setIsEndToEndBasedBandwidthProbingEnabled:", v3}];
+  [objc_msgSend(-[VCSessionParticipantLocal objectForKeyedSubscript:](localParticipant objectForKeyedSubscript:{&unk_1F579A080), "stream"), "setIsEndToEndBasedBandwidthProbingEnabled:", probingCopy}];
   v6 = self->_localParticipant;
   if (v6)
   {
@@ -3720,10 +3720,10 @@ LABEL_4:
     v7 = 0u;
   }
 
-  [objc_msgSend(-[VCSessionParticipantLocal objectForKeyedSubscript:](v6 objectForKeyedSubscript:{&unk_1F579A098, v7, v8, v9, v10, v11, v12), "stream"), "setIsEndToEndBasedBandwidthProbingEnabled:", v3}];
+  [objc_msgSend(-[VCSessionParticipantLocal objectForKeyedSubscript:](v6 objectForKeyedSubscript:{&unk_1F579A098, v7, v8, v9, v10, v11, v12), "stream"), "setIsEndToEndBasedBandwidthProbingEnabled:", probingCopy}];
 }
 
-- (void)vcSessionParticipant:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)vcSessionParticipant:(id)participant didStart:(BOOL)start error:(id)error
 {
   v8 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -3732,9 +3732,9 @@ LABEL_4:
   block[2] = __49__VCSession_vcSessionParticipant_didStart_error___block_invoke;
   block[3] = &unk_1E85F5E38;
   block[4] = self;
-  block[5] = a3;
-  v7 = a4;
-  block[6] = a5;
+  block[5] = participant;
+  startCopy = start;
+  block[6] = error;
   dispatch_async(sessionQueue, block);
 }
 
@@ -3751,7 +3751,7 @@ uint64_t __49__VCSession_vcSessionParticipant_didStart_error___block_invoke(uint
   return result;
 }
 
-- (void)vcSessionParticipant:(id)a3 didStopWithError:(id)a4
+- (void)vcSessionParticipant:(id)participant didStopWithError:(id)error
 {
   v5[7] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -3760,8 +3760,8 @@ uint64_t __49__VCSession_vcSessionParticipant_didStart_error___block_invoke(uint
   v5[2] = __51__VCSession_vcSessionParticipant_didStopWithError___block_invoke;
   v5[3] = &unk_1E85F3E30;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = participant;
+  v5[6] = error;
   dispatch_async(sessionQueue, v5);
 }
 
@@ -3773,7 +3773,7 @@ uint64_t __51__VCSession_vcSessionParticipant_didStopWithError___block_invoke(ui
   return kdebug_trace();
 }
 
-- (void)vcSessionParticipant:(id)a3 audioEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)vcSessionParticipant:(id)participant audioEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -3781,11 +3781,11 @@ uint64_t __51__VCSession_vcSessionParticipant_didStopWithError___block_invoke(ui
   block[1] = 3221225472;
   block[2] = __64__VCSession_vcSessionParticipant_audioEnabled_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F7940;
-  v8 = a5;
-  block[4] = a3;
+  succeedCopy = succeed;
+  block[4] = participant;
   block[5] = self;
-  v9 = a4;
-  block[6] = a6;
+  enabledCopy = enabled;
+  block[6] = error;
   dispatch_async(sessionQueue, block);
 }
 
@@ -3909,7 +3909,7 @@ uint64_t __64__VCSession_vcSessionParticipant_audioEnabled_didSucceed_error___bl
   return [v2 vcSession:v3 participantID:v4 audioEnabled:v5 didSucceed:v6 error:v7];
 }
 
-- (void)vcSessionParticipant:(id)a3 videoEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)vcSessionParticipant:(id)participant videoEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -3917,11 +3917,11 @@ uint64_t __64__VCSession_vcSessionParticipant_audioEnabled_didSucceed_error___bl
   block[1] = 3221225472;
   block[2] = __64__VCSession_vcSessionParticipant_videoEnabled_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F7940;
-  v8 = a5;
-  block[4] = a3;
+  succeedCopy = succeed;
+  block[4] = participant;
   block[5] = self;
-  v9 = a4;
-  block[6] = a6;
+  enabledCopy = enabled;
+  block[6] = error;
   dispatch_async(sessionQueue, block);
 }
 
@@ -4057,7 +4057,7 @@ uint64_t __64__VCSession_vcSessionParticipant_videoEnabled_didSucceed_error___bl
   return [v2 vcSession:v3 participantID:v4 videoEnabled:v5 didSucceed:v6 error:v7];
 }
 
-- (void)vcSessionParticipant:(id)a3 screenEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)vcSessionParticipant:(id)participant screenEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -4065,11 +4065,11 @@ uint64_t __64__VCSession_vcSessionParticipant_videoEnabled_didSucceed_error___bl
   block[1] = 3221225472;
   block[2] = __65__VCSession_vcSessionParticipant_screenEnabled_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F7940;
-  v8 = a5;
-  block[4] = a3;
+  succeedCopy = succeed;
+  block[4] = participant;
   block[5] = self;
-  v9 = a4;
-  block[6] = a6;
+  enabledCopy = enabled;
+  block[6] = error;
   dispatch_async(sessionQueue, block);
 }
 
@@ -4240,7 +4240,7 @@ uint64_t __65__VCSession_vcSessionParticipant_screenEnabled_didSucceed_error___b
   return [v2 vcSession:v3 participantID:v4 screenEnabled:v5 didSucceed:v6 error:v7];
 }
 
-- (void)vcSessionParticipantFetchStreamGroupState:(id)a3
+- (void)vcSessionParticipantFetchStreamGroupState:(id)state
 {
   block[6] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -4248,7 +4248,7 @@ uint64_t __65__VCSession_vcSessionParticipant_screenEnabled_didSucceed_error___b
   block[1] = 3221225472;
   block[2] = __55__VCSession_vcSessionParticipantFetchStreamGroupState___block_invoke;
   block[3] = &unk_1E85F37F0;
-  block[4] = a3;
+  block[4] = state;
   block[5] = self;
   dispatch_async(sessionQueue, block);
 }
@@ -4268,7 +4268,7 @@ void *__55__VCSession_vcSessionParticipantFetchStreamGroupState___block_invoke(u
   return result;
 }
 
-- (void)vcSessionParticipant:(id)a3 remoteAudioEnabledDidChange:(BOOL)a4
+- (void)vcSessionParticipant:(id)participant remoteAudioEnabledDidChange:(BOOL)change
 {
   v7 = *MEMORY[0x1E69E9840];
   notificationQueue = self->_notificationQueue;
@@ -4277,8 +4277,8 @@ void *__55__VCSession_vcSessionParticipantFetchStreamGroupState___block_invoke(u
   v5[2] = __62__VCSession_vcSessionParticipant_remoteAudioEnabledDidChange___block_invoke;
   v5[3] = &unk_1E85F37C8;
   v5[4] = self;
-  v5[5] = a3;
-  v6 = a4;
+  v5[5] = participant;
+  changeCopy = change;
   dispatch_async(notificationQueue, v5);
 }
 
@@ -4294,7 +4294,7 @@ uint64_t __62__VCSession_vcSessionParticipant_remoteAudioEnabledDidChange___bloc
   return [v2 vcSession:v3 participantID:v4 remoteAudioEnabledDidChange:v5];
 }
 
-- (void)vcSessionParticipant:(id)a3 remoteVideoEnabledDidChange:(BOOL)a4
+- (void)vcSessionParticipant:(id)participant remoteVideoEnabledDidChange:(BOOL)change
 {
   v11 = *MEMORY[0x1E69E9840];
   notificationQueue = self->_notificationQueue;
@@ -4303,8 +4303,8 @@ uint64_t __62__VCSession_vcSessionParticipant_remoteAudioEnabledDidChange___bloc
   block[2] = __62__VCSession_vcSessionParticipant_remoteVideoEnabledDidChange___block_invoke;
   block[3] = &unk_1E85F37C8;
   block[4] = self;
-  block[5] = a3;
-  v10 = a4;
+  block[5] = participant;
+  changeCopy = change;
   dispatch_async(notificationQueue, block);
   sessionQueue = self->_sessionQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -4312,7 +4312,7 @@ uint64_t __62__VCSession_vcSessionParticipant_remoteAudioEnabledDidChange___bloc
   v8[2] = __62__VCSession_vcSessionParticipant_remoteVideoEnabledDidChange___block_invoke_2;
   v8[3] = &unk_1E85F37F0;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = participant;
   dispatch_async(sessionQueue, v8);
 }
 
@@ -4327,7 +4327,7 @@ uint64_t __62__VCSession_vcSessionParticipant_remoteVideoEnabledDidChange___bloc
   return [v2 vcSession:v3 participantID:v4 remoteVideoEnabledDidChange:v5];
 }
 
-- (void)vcSessionParticipant:(id)a3 remoteScreenEnabledDidChange:(BOOL)a4
+- (void)vcSessionParticipant:(id)participant remoteScreenEnabledDidChange:(BOOL)change
 {
   v13 = *MEMORY[0x1E69E9840];
   notificationQueue = self->_notificationQueue;
@@ -4335,18 +4335,18 @@ uint64_t __62__VCSession_vcSessionParticipant_remoteVideoEnabledDidChange___bloc
   block[1] = 3221225472;
   block[2] = __63__VCSession_vcSessionParticipant_remoteScreenEnabledDidChange___block_invoke;
   block[3] = &unk_1E85F37C8;
-  v12 = a4;
+  changeCopy = change;
   block[4] = self;
-  block[5] = a3;
+  block[5] = participant;
   dispatch_async(notificationQueue, block);
   sessionQueue = self->_sessionQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__VCSession_vcSessionParticipant_remoteScreenEnabledDidChange___block_invoke_2;
   v9[3] = &unk_1E85F37C8;
-  v10 = a4;
+  changeCopy2 = change;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = participant;
   dispatch_async(sessionQueue, v9);
 }
 
@@ -4371,7 +4371,7 @@ uint64_t __63__VCSession_vcSessionParticipant_remoteScreenEnabledDidChange___blo
   return [v2 mediaStateChangedForParticipant:v3];
 }
 
-- (void)vcSessionParticipant:(id)a3 audioPaused:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)vcSessionParticipant:(id)participant audioPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -4379,11 +4379,11 @@ uint64_t __63__VCSession_vcSessionParticipant_remoteScreenEnabledDidChange___blo
   block[1] = 3221225472;
   block[2] = __63__VCSession_vcSessionParticipant_audioPaused_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F7940;
-  v8 = a5;
-  block[4] = a3;
+  succeedCopy = succeed;
+  block[4] = participant;
   block[5] = self;
-  v9 = a4;
-  block[6] = a6;
+  pausedCopy = paused;
+  block[6] = error;
   dispatch_async(sessionQueue, block);
 }
 
@@ -4513,7 +4513,7 @@ uint64_t __63__VCSession_vcSessionParticipant_audioPaused_didSucceed_error___blo
   return [v3 vcSession:v4 participantID:v5 audioPaused:v6 didSucceed:v7 error:v8];
 }
 
-- (void)vcSessionParticipant:(id)a3 videoPaused:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)vcSessionParticipant:(id)participant videoPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -4521,11 +4521,11 @@ uint64_t __63__VCSession_vcSessionParticipant_audioPaused_didSucceed_error___blo
   block[1] = 3221225472;
   block[2] = __63__VCSession_vcSessionParticipant_videoPaused_didSucceed_error___block_invoke;
   block[3] = &unk_1E85F7940;
-  v8 = a5;
-  block[4] = a3;
+  succeedCopy = succeed;
+  block[4] = participant;
   block[5] = self;
-  v9 = a4;
-  block[6] = a6;
+  pausedCopy = paused;
+  block[6] = error;
   dispatch_async(sessionQueue, block);
 }
 
@@ -4650,7 +4650,7 @@ uint64_t __63__VCSession_vcSessionParticipant_videoPaused_didSucceed_error___blo
   return [v2 vcSession:v3 participantID:v4 videoPaused:v5 didSucceed:v6 error:v7];
 }
 
-- (void)vcSessionParticipant:(id)a3 remoteAudioPausedDidChange:(BOOL)a4
+- (void)vcSessionParticipant:(id)participant remoteAudioPausedDidChange:(BOOL)change
 {
   v7 = *MEMORY[0x1E69E9840];
   notificationQueue = self->_notificationQueue;
@@ -4659,8 +4659,8 @@ uint64_t __63__VCSession_vcSessionParticipant_videoPaused_didSucceed_error___blo
   v5[2] = __61__VCSession_vcSessionParticipant_remoteAudioPausedDidChange___block_invoke;
   v5[3] = &unk_1E85F37C8;
   v5[4] = self;
-  v5[5] = a3;
-  v6 = a4;
+  v5[5] = participant;
+  changeCopy = change;
   dispatch_async(notificationQueue, v5);
 }
 
@@ -4682,7 +4682,7 @@ uint64_t __61__VCSession_vcSessionParticipant_remoteAudioPausedDidChange___block
   return [v3 vcSession:v4 participantID:v5 remoteAudioPausedDidChange:v6];
 }
 
-- (void)vcSessionParticipant:(id)a3 remoteVideoPausedDidChange:(BOOL)a4
+- (void)vcSessionParticipant:(id)participant remoteVideoPausedDidChange:(BOOL)change
 {
   v11 = *MEMORY[0x1E69E9840];
   notificationQueue = self->_notificationQueue;
@@ -4691,8 +4691,8 @@ uint64_t __61__VCSession_vcSessionParticipant_remoteAudioPausedDidChange___block
   block[2] = __61__VCSession_vcSessionParticipant_remoteVideoPausedDidChange___block_invoke;
   block[3] = &unk_1E85F37C8;
   block[4] = self;
-  block[5] = a3;
-  v10 = a4;
+  block[5] = participant;
+  changeCopy = change;
   dispatch_async(notificationQueue, block);
   sessionQueue = self->_sessionQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -4700,7 +4700,7 @@ uint64_t __61__VCSession_vcSessionParticipant_remoteAudioPausedDidChange___block
   v8[2] = __61__VCSession_vcSessionParticipant_remoteVideoPausedDidChange___block_invoke_2;
   v8[3] = &unk_1E85F37F0;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = participant;
   dispatch_async(sessionQueue, v8);
 }
 
@@ -4715,7 +4715,7 @@ uint64_t __61__VCSession_vcSessionParticipant_remoteVideoPausedDidChange___block
   return [v2 remoteVideoDidPause:v3 streamToken:v4];
 }
 
-- (void)vcSessionParticipant:(id)a3 didChangeMediaPriority:(unsigned __int8)a4 description:(id)a5
+- (void)vcSessionParticipant:(id)participant didChangeMediaPriority:(unsigned __int8)priority description:(id)description
 {
   v8 = *MEMORY[0x1E69E9840];
   notificationQueue = self->_notificationQueue;
@@ -4724,9 +4724,9 @@ uint64_t __61__VCSession_vcSessionParticipant_remoteVideoPausedDidChange___block
   block[2] = __69__VCSession_vcSessionParticipant_didChangeMediaPriority_description___block_invoke;
   block[3] = &unk_1E85F5E38;
   block[4] = self;
-  block[5] = a3;
-  v7 = a4;
-  block[6] = a5;
+  block[5] = participant;
+  priorityCopy = priority;
+  block[6] = description;
   dispatch_async(notificationQueue, block);
 }
 
@@ -4767,11 +4767,11 @@ uint64_t __69__VCSession_vcSessionParticipant_didChangeMediaPriority_description
   return result;
 }
 
-- (void)vcSessionParticipant:(id)a3 requestKeyFrameGenerationWithStreamID:(unsigned __int16)a4 streamGroupID:(unsigned int)a5 firType:(int)a6
+- (void)vcSessionParticipant:(id)participant requestKeyFrameGenerationWithStreamID:(unsigned __int16)d streamGroupID:(unsigned int)iD firType:(int)type
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  v8 = a4;
+  v6 = *&type;
+  v7 = *&iD;
+  dCopy = d;
   v27 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -4786,25 +4786,25 @@ uint64_t __69__VCSession_vcSessionParticipant_didChangeMediaPriority_description
       v19 = 1024;
       v20 = 1608;
       v21 = 2112;
-      v22 = [a3 uuid];
+      uuid = [participant uuid];
       v23 = 1024;
-      v24 = v8;
+      v24 = dCopy;
       v25 = 1024;
       v26 = v6;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, "VCSession [%s] %s:%d Participant:%@ requestKeyFrameGenerationWithStreamID:%d FIRType:%d", buf, 0x32u);
     }
   }
 
-  v14[0] = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{v8, @"VCSessionMessageStreamID"}];
+  v14[0] = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{dCopy, @"VCSessionMessageStreamID"}];
   v13[1] = @"VCSessionMessageFIRType";
   v14[1] = [MEMORY[0x1E696AD98] numberWithInt:v6];
   v13[2] = @"VCSessionMesageStreamGroupID";
   v14[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7];
-  -[VCSessionMessaging sendMessageDictionary:withTopic:participantID:](self->_sessionMessaging, "sendMessageDictionary:withTopic:participantID:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3], @"VCSessionMessageTopicGenerateKeyFrame", objc_msgSend(a3, "idsParticipantID"));
-  [(VCSession *)self reportingSessionParticipantEvent:232 withParticipant:a3 streamGroupID:v7 streamID:v8];
+  -[VCSessionMessaging sendMessageDictionary:withTopic:participantID:](self->_sessionMessaging, "sendMessageDictionary:withTopic:participantID:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3], @"VCSessionMessageTopicGenerateKeyFrame", objc_msgSend(participant, "idsParticipantID"));
+  [(VCSession *)self reportingSessionParticipantEvent:232 withParticipant:participant streamGroupID:v7 streamID:dCopy];
 }
 
-- (void)vcSessionParticipant:(id)a3 didSwitchFromStreamID:(unsigned __int16)a4 toStreamID:(unsigned __int16)a5
+- (void)vcSessionParticipant:(id)participant didSwitchFromStreamID:(unsigned __int16)d toStreamID:(unsigned __int16)iD
 {
   v6[5] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -4827,7 +4827,7 @@ _BYTE *__67__VCSession_vcSessionParticipant_didSwitchFromStreamID_toStreamID___b
   return result;
 }
 
-- (void)vcSessionParticipant:(id)a3 didRequestVideoRedundancy:(BOOL)a4
+- (void)vcSessionParticipant:(id)participant didRequestVideoRedundancy:(BOOL)redundancy
 {
   v7 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -4835,9 +4835,9 @@ _BYTE *__67__VCSession_vcSessionParticipant_didSwitchFromStreamID_toStreamID___b
   v5[1] = 3221225472;
   v5[2] = __60__VCSession_vcSessionParticipant_didRequestVideoRedundancy___block_invoke;
   v5[3] = &unk_1E85F37C8;
-  v6 = a4;
+  redundancyCopy = redundancy;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = participant;
   dispatch_async(sessionQueue, v5);
 }
 
@@ -4866,7 +4866,7 @@ uint64_t __60__VCSession_vcSessionParticipant_didRequestVideoRedundancy___block_
   return [v4 sendMessage:v3 withTopic:@"VCSessionMessageTopicVideoRedundancyState" participantID:v5];
 }
 
-- (void)vcSessionParticipantDidChangeSendingStreams:(id)a3
+- (void)vcSessionParticipantDidChangeSendingStreams:(id)streams
 {
   v4[5] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -4886,7 +4886,7 @@ uint64_t __57__VCSession_vcSessionParticipantDidChangeSendingStreams___block_inv
   return [v3 setExpectedBitrate:v2];
 }
 
-- (void)vcSessionParticipantDidChangeReceivingStreams:(id)a3
+- (void)vcSessionParticipantDidChangeReceivingStreams:(id)streams
 {
   v4[5] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -4906,7 +4906,7 @@ uint64_t __59__VCSession_vcSessionParticipantDidChangeReceivingStreams___block_i
   return [v3 setExpectedBitrate:v2];
 }
 
-- (void)vcSessionParticipantDidMediaDecryptionTimeOut:(id)a3
+- (void)vcSessionParticipantDidMediaDecryptionTimeOut:(id)out
 {
   block[6] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -4915,7 +4915,7 @@ uint64_t __59__VCSession_vcSessionParticipantDidChangeReceivingStreams___block_i
   block[2] = __59__VCSession_vcSessionParticipantDidMediaDecryptionTimeOut___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = out;
   dispatch_async(sessionQueue, block);
 }
 
@@ -5012,7 +5012,7 @@ LABEL_12:
   }
 }
 
-- (void)vcSessionParticipantDidMediaDecryptionTimeOutForMKMRecovery:(id)a3
+- (void)vcSessionParticipantDidMediaDecryptionTimeOutForMKMRecovery:(id)recovery
 {
   block[6] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -5021,7 +5021,7 @@ LABEL_12:
   block[2] = __73__VCSession_vcSessionParticipantDidMediaDecryptionTimeOutForMKMRecovery___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = recovery;
   dispatch_async(sessionQueue, block);
 }
 
@@ -5126,7 +5126,7 @@ LABEL_12:
   }
 }
 
-- (void)vcSessionParticipantDidRemoteMediaStallTimeout:(id)a3 duration:(double)a4
+- (void)vcSessionParticipantDidRemoteMediaStallTimeout:(id)timeout duration:(double)duration
 {
   v5[7] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -5134,9 +5134,9 @@ LABEL_12:
   v5[1] = 3221225472;
   v5[2] = __69__VCSession_vcSessionParticipantDidRemoteMediaStallTimeout_duration___block_invoke;
   v5[3] = &unk_1E85F50D8;
-  *&v5[6] = a4;
+  *&v5[6] = duration;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = timeout;
   dispatch_async(sessionQueue, v5);
 }
 
@@ -5294,7 +5294,7 @@ LABEL_17:
   return result;
 }
 
-- (void)vcSessionParticipant:(id)a3 oneToOneModeDidChange:(BOOL)a4
+- (void)vcSessionParticipant:(id)participant oneToOneModeDidChange:(BOOL)change
 {
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -5319,11 +5319,11 @@ LABEL_17:
   v9[2] = __56__VCSession_vcSessionParticipant_oneToOneModeDidChange___block_invoke;
   v9[3] = &unk_1E85F37A0;
   v9[4] = self;
-  v10 = a4;
+  changeCopy = change;
   dispatch_async(sessionQueue, v9);
 }
 
-- (void)vcSessionParticipant:(id)a3 didDetectError:(id)a4
+- (void)vcSessionParticipant:(id)participant didDetectError:(id)error
 {
   v5[7] = *MEMORY[0x1E69E9840];
   notificationQueue = self->_notificationQueue;
@@ -5332,8 +5332,8 @@ LABEL_17:
   v5[2] = __49__VCSession_vcSessionParticipant_didDetectError___block_invoke;
   v5[3] = &unk_1E85F3E30;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = participant;
+  v5[6] = error;
   dispatch_async(notificationQueue, v5);
 }
 
@@ -5347,7 +5347,7 @@ uint64_t __49__VCSession_vcSessionParticipant_didDetectError___block_invoke(uint
   return [v2 vcSession:v3 participantID:v4 didDetectError:v5];
 }
 
-- (void)vcSessionParticipant:(id)a3 mediaStateDidChange:(unsigned int)a4 forMediaType:(unsigned int)a5 didSucceed:(BOOL)a6 error:(id)a7
+- (void)vcSessionParticipant:(id)participant mediaStateDidChange:(unsigned int)change forMediaType:(unsigned int)type didSucceed:(BOOL)succeed error:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -5355,12 +5355,12 @@ uint64_t __49__VCSession_vcSessionParticipant_didDetectError___block_invoke(uint
   v8[1] = 3221225472;
   v8[2] = __84__VCSession_vcSessionParticipant_mediaStateDidChange_forMediaType_didSucceed_error___block_invoke;
   v8[3] = &unk_1E85F7968;
-  v11 = a6;
-  v8[4] = a3;
+  succeedCopy = succeed;
+  v8[4] = participant;
   v8[5] = self;
-  v9 = a5;
-  v10 = a4;
-  v8[6] = a7;
+  typeCopy = type;
+  changeCopy = change;
+  v8[6] = error;
   dispatch_async(sessionQueue, v8);
 }
 
@@ -5469,7 +5469,7 @@ uint64_t __84__VCSession_vcSessionParticipant_mediaStateDidChange_forMediaType_d
   return [v2 vcSession:v3 participantID:v4 mediaStateDidChange:v5 forMediaType:v6 didSucceed:v7 error:v8];
 }
 
-- (void)vcSessionParticipant:(id)a3 remoteMediaStateDidChange:(unsigned int)a4 forMediaType:(unsigned int)a5
+- (void)vcSessionParticipant:(id)participant remoteMediaStateDidChange:(unsigned int)change forMediaType:(unsigned int)type
 {
   v9 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -5478,9 +5478,9 @@ uint64_t __84__VCSession_vcSessionParticipant_mediaStateDidChange_forMediaType_d
   v6[2] = __73__VCSession_vcSessionParticipant_remoteMediaStateDidChange_forMediaType___block_invoke;
   v6[3] = &unk_1E85F50D8;
   v6[4] = self;
-  v6[5] = a3;
-  v7 = a4;
-  v8 = a5;
+  v6[5] = participant;
+  changeCopy = change;
+  typeCopy = type;
   dispatch_async(sessionQueue, v6);
 }
 
@@ -5510,7 +5510,7 @@ uint64_t __73__VCSession_vcSessionParticipant_remoteMediaStateDidChange_forMedia
   return [v2 vcSession:v3 participantID:v4 remoteMediaStateDidChange:v5 forMediaType:v6];
 }
 
-- (void)vcSessionParticipant:(id)a3 mediaMixingDidChangeForMediaType:(unsigned int)a4 mixingMediaType:(unsigned int)a5
+- (void)vcSessionParticipant:(id)participant mediaMixingDidChangeForMediaType:(unsigned int)type mixingMediaType:(unsigned int)mediaType
 {
   v9 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -5518,10 +5518,10 @@ uint64_t __73__VCSession_vcSessionParticipant_remoteMediaStateDidChange_forMedia
   v6[1] = 3221225472;
   v6[2] = __83__VCSession_vcSessionParticipant_mediaMixingDidChangeForMediaType_mixingMediaType___block_invoke;
   v6[3] = &unk_1E85F50D8;
-  v6[4] = a3;
+  v6[4] = participant;
   v6[5] = self;
-  v7 = a4;
-  v8 = a5;
+  typeCopy = type;
+  mediaTypeCopy = mediaType;
   dispatch_async(sessionQueue, v6);
 }
 
@@ -5626,7 +5626,7 @@ uint64_t __83__VCSession_vcSessionParticipant_mediaMixingDidChangeForMediaType_m
   return [v2 vcSession:v3 participantID:v4 mixingDidChangeForMediaType:v5 mixingMediaType:v6];
 }
 
-- (void)vcSessionParticipant:(id)a3 reactionDidStart:(id)a4
+- (void)vcSessionParticipant:(id)participant reactionDidStart:(id)start
 {
   v5[7] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -5634,9 +5634,9 @@ uint64_t __83__VCSession_vcSessionParticipant_mediaMixingDidChangeForMediaType_m
   v5[1] = 3221225472;
   v5[2] = __51__VCSession_vcSessionParticipant_reactionDidStart___block_invoke;
   v5[3] = &unk_1E85F3E30;
-  v5[4] = a3;
+  v5[4] = participant;
   v5[5] = self;
-  v5[6] = a4;
+  v5[6] = start;
   dispatch_async(sessionQueue, v5);
 }
 
@@ -5750,7 +5750,7 @@ uint64_t __51__VCSession_vcSessionParticipant_reactionDidStart___block_invoke_27
   return [v2 vcSession:v3 participantID:v4 reactionDidStart:v5];
 }
 
-- (void)vcSessionParticipantDidStopReacting:(id)a3
+- (void)vcSessionParticipantDidStopReacting:(id)reacting
 {
   block[6] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -5758,7 +5758,7 @@ uint64_t __51__VCSession_vcSessionParticipant_reactionDidStart___block_invoke_27
   block[1] = 3221225472;
   block[2] = __49__VCSession_vcSessionParticipantDidStopReacting___block_invoke;
   block[3] = &unk_1E85F37F0;
-  block[4] = a3;
+  block[4] = reacting;
   block[5] = self;
   dispatch_async(sessionQueue, block);
 }
@@ -5863,7 +5863,7 @@ uint64_t __49__VCSession_vcSessionParticipantDidStopReacting___block_invoke_282(
   return [v2 vcSession:v3 participantDidStopReacting:v4];
 }
 
-- (void)vcSessionParticipantDidMediaReceiveFlushRequestWithPayloads:(id)a3
+- (void)vcSessionParticipantDidMediaReceiveFlushRequestWithPayloads:(id)payloads
 {
   if (self->_oneToOneModeEnabled && [VCTransportSession flushBasebandQueueWithPayloads:"flushBasebandQueueWithPayloads:flushCount:" flushCount:?]&& VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -5875,7 +5875,7 @@ uint64_t __49__VCSession_vcSessionParticipantDidStopReacting___block_invoke_282(
   }
 }
 
-- (void)vcSessionParticipantDidDetectMKICollision:(id)a3
+- (void)vcSessionParticipantDidDetectMKICollision:(id)collision
 {
   block[6] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -5884,7 +5884,7 @@ uint64_t __49__VCSession_vcSessionParticipantDidStopReacting___block_invoke_282(
   block[2] = __55__VCSession_vcSessionParticipantDidDetectMKICollision___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = collision;
   dispatch_async(sessionQueue, block);
 }
 
@@ -5974,7 +5974,7 @@ uint64_t __55__VCSession_vcSessionParticipantDidDetectMKICollision___block_invok
   return [*(a1 + 32) dispatchedStopWithError:{+[VCSessionErrorUtils VCSessionErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionErrorEvent:errorPath:returnCode:", 26, objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCSession.m", 1820), 0)}];
 }
 
-- (void)vcSessionParticipant:(id)a3 didChangeDeviceOrientation:(int)a4
+- (void)vcSessionParticipant:(id)participant didChangeDeviceOrientation:(int)orientation
 {
   v7 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -5982,9 +5982,9 @@ uint64_t __55__VCSession_vcSessionParticipantDidDetectMKICollision___block_invok
   v5[1] = 3221225472;
   v5[2] = __61__VCSession_vcSessionParticipant_didChangeDeviceOrientation___block_invoke;
   v5[3] = &unk_1E85F3890;
-  v5[4] = a3;
+  v5[4] = participant;
   v5[5] = self;
-  v6 = a4;
+  orientationCopy = orientation;
   dispatch_async(sessionQueue, v5);
 }
 
@@ -6193,7 +6193,7 @@ uint64_t __25__VCSession_serverDidDie__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)didReceivedSessionStatsAtTime:(double)a3
+- (void)didReceivedSessionStatsAtTime:(double)time
 {
   v10 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -6207,10 +6207,10 @@ uint64_t __25__VCSession_serverDidDie__block_invoke(uint64_t result)
   [(VCNetworkFeedbackController *)feedbackController sendFeedbackControllerReport:v5];
 }
 
-- (void)updateNetworkFeedbackControllerReport:(id *)a3
+- (void)updateNetworkFeedbackControllerReport:(id *)report
 {
   v17 = *MEMORY[0x1E69E9840];
-  a3->var0 = self->_currentConnectionType == 3;
+  report->var0 = self->_currentConnectionType == 3;
   v16 = 0;
   v14 = 0u;
   v15 = 0u;
@@ -6221,19 +6221,19 @@ uint64_t __25__VCSession_serverDidDie__block_invoke(uint64_t result)
   v9 = 0u;
   VCRateControlGetStatistics([(AVCRateController *)self->_uplinkRateController statisticsCollector:0], 5, &v7);
   v5 = (*&v9 * 100.0);
-  a3->var5 = self->_uplinkTargetBitrate;
-  a3->var6 = v5;
-  a3->var7 = HIDWORD(v8);
-  a3->var8 = [(AVCStatisticsCollector *)[(AVCRateController *)self->_uplinkRateController statisticsCollector] estimatedBandwidthCap]!= 0;
+  report->var5 = self->_uplinkTargetBitrate;
+  report->var6 = v5;
+  report->var7 = HIDWORD(v8);
+  report->var8 = [(AVCStatisticsCollector *)[(AVCRateController *)self->_uplinkRateController statisticsCollector] estimatedBandwidthCap]!= 0;
   VCRateControlGetStatistics([(AVCRateController *)self->_downlinkRateController statisticsCollector], 5, &v7);
   v6 = (*&v9 * 100.0);
-  a3->var1 = self->_downlinkTargetBitrate;
-  a3->var2 = v6;
-  a3->var3 = HIDWORD(v8);
-  a3->var4 = [(AVCStatisticsCollector *)[(AVCRateController *)self->_downlinkRateController statisticsCollector] estimatedBandwidthCap]!= 0;
+  report->var1 = self->_downlinkTargetBitrate;
+  report->var2 = v6;
+  report->var3 = HIDWORD(v8);
+  report->var4 = [(AVCStatisticsCollector *)[(AVCRateController *)self->_downlinkRateController statisticsCollector] estimatedBandwidthCap]!= 0;
 }
 
-- (void)rateController:(id)a3 targetBitrateDidChange:(unsigned int)a4 rateChangeCounter:(unsigned int)a5
+- (void)rateController:(id)controller targetBitrateDidChange:(unsigned int)change rateChangeCounter:(unsigned int)counter
 {
   v9 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -6241,10 +6241,10 @@ uint64_t __25__VCSession_serverDidDie__block_invoke(uint64_t result)
   v6[1] = 3221225472;
   v6[2] = __69__VCSession_rateController_targetBitrateDidChange_rateChangeCounter___block_invoke;
   v6[3] = &unk_1E85F50D8;
-  v6[4] = a3;
+  v6[4] = controller;
   v6[5] = self;
-  v7 = a4;
-  v8 = a5;
+  changeCopy = change;
+  counterCopy = counter;
   dispatch_async(sessionQueue, v6);
 }
 
@@ -6406,17 +6406,17 @@ uint64_t __69__VCSession_rateController_targetBitrateDidChange_rateChangeCounter
   }
 }
 
-- (int)learntBitrateForSegment:(id)a3 defaultValue:(int)a4
+- (int)learntBitrateForSegment:(id)segment defaultValue:(int)value
 {
   [(VCObject *)self reportingAgent];
 
   return reportingGetLearntBitrateForSegment();
 }
 
-- (void)rateController:(id)a3 isECNEnabled:(BOOL)isECNForcedByNetwork isECNCapable:(BOOL)a5
+- (void)rateController:(id)controller isECNEnabled:(BOOL)isECNForcedByNetwork isECNCapable:(BOOL)capable
 {
   v41 = *MEMORY[0x1E69E9840];
-  if (self->_oneToOneSettings.rateController == a3 && self->_isECNCapable)
+  if (self->_oneToOneSettings.rateController == controller && self->_isECNCapable)
   {
     if (self->_ecnLinkType == 3)
     {
@@ -6426,7 +6426,7 @@ uint64_t __69__VCSession_rateController_targetBitrateDidChange_rateChangeCounter
     self->_isECNEnabled = isECNForcedByNetwork;
     if (self->_isECNCapable)
     {
-      self->_isECNCapable = a5;
+      self->_isECNCapable = capable;
       isECNForcedByNetwork = self->_isECNEnabled;
     }
 
@@ -6577,17 +6577,17 @@ LABEL_29:
   }
 }
 
-- (void)mediaController:(void *)a3 mediaSuggestionDidChange:(VCRateControlMediaSuggestion)a4
+- (void)mediaController:(void *)controller mediaSuggestionDidChange:(VCRateControlMediaSuggestion)change
 {
   v43 = *MEMORY[0x1E69E9840];
-  v28 = a4;
-  if (self->_oneToOneSettings.mediaController == a3)
+  changeCopy = change;
+  if (self->_oneToOneSettings.mediaController == controller)
   {
-    [(VCSessionParticipantLocal *)self->_localParticipant setMediaSuggestion:&v28];
+    [(VCSessionParticipantLocal *)self->_localParticipant setMediaSuggestion:&changeCopy];
     return;
   }
 
-  if ((*&a4.var0 & 0x1000000) == 0)
+  if ((*&change.var0 & 0x1000000) == 0)
   {
     v6 = 0;
     goto LABEL_16;
@@ -6602,7 +6602,7 @@ LABEL_29:
       v9 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(VCSessionParticipantLocal *)self->_localParticipant videoPayloadTypes];
+        videoPayloadTypes = [(VCSessionParticipantLocal *)self->_localParticipant videoPayloadTypes];
         *buf = 136316162;
         v30 = v8;
         v31 = 2080;
@@ -6610,9 +6610,9 @@ LABEL_29:
         v33 = 1024;
         v34 = 1958;
         v35 = 2112;
-        v36 = v10;
+        v36 = videoPayloadTypes;
         v37 = 1024;
-        LODWORD(v38) = v6;
+        LODWORD(selfCopy2) = v6;
         v11 = "VCSession [%s] %s:%d flush baseband for videoPayloads:%@, successfulFlushCount: %d";
         v12 = v9;
         v13 = 44;
@@ -6640,7 +6640,7 @@ LABEL_15:
       v15 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(VCSessionParticipantLocal *)self->_localParticipant videoPayloadTypes];
+        videoPayloadTypes2 = [(VCSessionParticipantLocal *)self->_localParticipant videoPayloadTypes];
         *buf = 136316674;
         v30 = v14;
         v31 = 2080;
@@ -6650,9 +6650,9 @@ LABEL_15:
         v35 = 2112;
         v36 = v7;
         v37 = 2048;
-        v38 = self;
+        selfCopy2 = self;
         v39 = 2112;
-        v40 = v16;
+        v40 = videoPayloadTypes2;
         v41 = 1024;
         v42 = v6;
         v11 = "VCSession [%s] %s:%d %@(%p) flush baseband for videoPayloads:%@, successfulFlushCount: %d";
@@ -6664,7 +6664,7 @@ LABEL_15:
   }
 
 LABEL_16:
-  if ((*&a4 & 0x100000000) == 0)
+  if ((*&change & 0x100000000) == 0)
   {
     return;
   }
@@ -6678,7 +6678,7 @@ LABEL_16:
       v20 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(VCSessionParticipantLocal *)self->_localParticipant audioPayloadTypes];
+        audioPayloadTypes = [(VCSessionParticipantLocal *)self->_localParticipant audioPayloadTypes];
         *buf = 136316162;
         v30 = v19;
         v31 = 2080;
@@ -6686,9 +6686,9 @@ LABEL_16:
         v33 = 1024;
         v34 = 1962;
         v35 = 2112;
-        v36 = v21;
+        v36 = audioPayloadTypes;
         v37 = 1024;
-        LODWORD(v38) = v17;
+        LODWORD(selfCopy2) = v17;
         v22 = "VCSession [%s] %s:%d flush baseband for audioPayloads:%@, successfulFlushCount: %d";
         v23 = v20;
         v24 = 44;
@@ -6716,7 +6716,7 @@ LABEL_27:
       v26 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(VCSessionParticipantLocal *)self->_localParticipant audioPayloadTypes];
+        audioPayloadTypes2 = [(VCSessionParticipantLocal *)self->_localParticipant audioPayloadTypes];
         *buf = 136316674;
         v30 = v25;
         v31 = 2080;
@@ -6726,9 +6726,9 @@ LABEL_27:
         v35 = 2112;
         v36 = v18;
         v37 = 2048;
-        v38 = self;
+        selfCopy2 = self;
         v39 = 2112;
-        v40 = v27;
+        v40 = audioPayloadTypes2;
         v41 = 1024;
         v42 = v17;
         v22 = "VCSession [%s] %s:%d %@(%p) flush baseband for audioPayloads:%@, successfulFlushCount: %d";
@@ -6740,7 +6740,7 @@ LABEL_27:
   }
 }
 
-- (int)flushBasebandWithPayloads:(id)a3
+- (int)flushBasebandWithPayloads:(id)payloads
 {
   v20 = *MEMORY[0x1E69E9840];
   v12 = 0;
@@ -6749,7 +6749,7 @@ LABEL_27:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [a3 countByEnumeratingWithState:&v16 objects:v15 count:16];
+  v3 = [payloads countByEnumeratingWithState:&v16 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -6761,7 +6761,7 @@ LABEL_27:
       {
         if (*v17 != v5)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(payloads);
         }
 
         v7 = *(*(&v16 + 1) + 8 * v6);
@@ -6780,7 +6780,7 @@ LABEL_27:
       }
 
       while (v4 != v6);
-      v4 = [a3 countByEnumeratingWithState:&v16 objects:v15 count:16];
+      v4 = [payloads countByEnumeratingWithState:&v16 objects:v15 count:16];
     }
 
     while (v4);
@@ -6792,17 +6792,17 @@ LABEL_27:
   return v12;
 }
 
-- (void)updatePresentationInfo:(id)a3
+- (void)updatePresentationInfo:(id)info
 {
   v27 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_sessionQueue);
   v5 = VCVideoCaptureServer_CopyLocalVideoAttributes(+[VCVideoCaptureServer VCVideoCaptureServerSingleton]);
-  v6 = [v5 orientation];
+  orientation = [v5 orientation];
 
-  VCSpatialAudioMetadata_UpdateOrientation(self->_spatialMetadata, v6);
-  if (a3 && (presentationInfo = self->_presentationInfo) != 0)
+  VCSpatialAudioMetadata_UpdateOrientation(self->_spatialMetadata, orientation);
+  if (info && (presentationInfo = self->_presentationInfo) != 0)
   {
-    [(VCSessionPresentationInfo *)presentationInfo unserialize:a3];
+    [(VCSessionPresentationInfo *)presentationInfo unserialize:info];
     if ([(VCSessionPresentationInfo *)self->_presentationInfo hasPendingChanges])
     {
       VCSpatialAudioMetadata_UpdateGlobalInfo(self->_spatialMetadata, [(VCSessionPresentationInfo *)self->_presentationInfo metadataGlobalInfo]);
@@ -6812,8 +6812,8 @@ LABEL_27:
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v8 = [(VCSession *)self remoteParticipants];
-        v9 = [(NSArray *)v8 countByEnumeratingWithState:&v23 objects:v22 count:16];
+        remoteParticipants = [(VCSession *)self remoteParticipants];
+        v9 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v23 objects:v22 count:16];
         if (v9)
         {
           v10 = v9;
@@ -6825,7 +6825,7 @@ LABEL_27:
             {
               if (*v24 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(remoteParticipants);
               }
 
               v13 = *(*(&v23 + 1) + 8 * v12);
@@ -6835,7 +6835,7 @@ LABEL_27:
             }
 
             while (v10 != v12);
-            v10 = [(NSArray *)v8 countByEnumeratingWithState:&v23 objects:v22 count:16];
+            v10 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v23 objects:v22 count:16];
           }
 
           while (v10);
@@ -6964,45 +6964,45 @@ LABEL_5:
   return IsQUICPod;
 }
 
-- (void)sendThermalAndSliceMessageToPariticipant:(id)a3
+- (void)sendThermalAndSliceMessageToPariticipant:(id)pariticipant
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_lastThermalLevel), @"Thermal"}];
-  [(VCSession *)self sendDeviceStateMessageToParticipant:a3 withStatus:v5 checkDNUStatus:1];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_lastThermalLevel), @"Thermal"}];
+  [(VCSession *)self sendDeviceStateMessageToParticipant:pariticipant withStatus:dictionary checkDNUStatus:1];
   if (!self->_oneToOneModeEnabled)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", VCConnection_ReportingSliceStatus(self->_currentActiveConnection)), @"sliceStatus"}];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", VCConnection_ReportingSliceStatus(self->_currentActiveConnection)), @"sliceStatus"}];
 
-    [(VCSession *)self sendDeviceStateMessageToParticipant:a3 withStatus:v6 checkDNUStatus:0];
+    [(VCSession *)self sendDeviceStateMessageToParticipant:pariticipant withStatus:dictionary2 checkDNUStatus:0];
   }
 }
 
-- (void)sendDeviceStateMessageToParticipant:(id)a3 withStatus:(id)a4 checkDNUStatus:(BOOL)a5
+- (void)sendDeviceStateMessageToParticipant:(id)participant withStatus:(id)status checkDNUStatus:(BOOL)uStatus
 {
-  if (a5 && !self->_isDNUCollectionEnabled)
+  if (uStatus && !self->_isDNUCollectionEnabled)
   {
     [VCSession sendDeviceStateMessageToParticipant:withStatus:checkDNUStatus:];
   }
 
   else
   {
-    [a3 capabilities];
+    [participant capabilities];
     if (v8 != 1)
     {
-      v9 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:a4];
+      v9 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:status];
       sessionMessaging = self->_sessionMessaging;
-      v11 = [a3 idsParticipantID];
+      idsParticipantID = [participant idsParticipantID];
 
-      [(VCSessionMessaging *)sessionMessaging sendMessageDictionary:v9 withTopic:@"VCSessionMessageTopicDeviceState" participantID:v11];
+      [(VCSessionMessaging *)sessionMessaging sendMessageDictionary:v9 withTopic:@"VCSessionMessageTopicDeviceState" participantID:idsParticipantID];
     }
   }
 }
 
-- (void)sendNetworkCapabilitiesMessageToParticipant:(id)a3
+- (void)sendNetworkCapabilitiesMessageToParticipant:(id)participant
 {
   v11[6] = *MEMORY[0x1E69E9840];
-  [a3 capabilities];
+  [participant capabilities];
   if (v5 != 1)
   {
     if (self->_oneToOneModeEnabled)
@@ -7030,13 +7030,13 @@ LABEL_5:
     v11[4] = [MEMORY[0x1E696AD98] numberWithBool:{-[VCSession isTLEEnabledOnPrimaryConnection](self, "isTLEEnabledOnPrimaryConnection")}];
     v10[5] = @"MQSchP";
     v11[5] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_mediaQueueConfiguration.schedulePolicy];
-    -[VCSessionMessaging sendMessageDictionary:withTopic:participantID:](self->_sessionMessaging, "sendMessageDictionary:withTopic:participantID:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:6], @"VCSessionMessageTopicRateControlConfig", objc_msgSend(a3, "idsParticipantID"));
+    -[VCSessionMessaging sendMessageDictionary:withTopic:participantID:](self->_sessionMessaging, "sendMessageDictionary:withTopic:participantID:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:6], @"VCSessionMessageTopicRateControlConfig", objc_msgSend(participant, "idsParticipantID"));
   }
 }
 
 - (void)updateParticipantWindowState
 {
-  v3 = [(VCSessionPresentationInfo *)self->_presentationInfo uiState];
+  uiState = [(VCSessionPresentationInfo *)self->_presentationInfo uiState];
   presentationInfo = self->_presentationInfo;
   if (presentationInfo)
   {
@@ -7055,9 +7055,9 @@ LABEL_5:
     v6 = 0.0;
   }
 
-  [(VCSessionParticipantLocal *)self->_localParticipant updateWindowState:v3 isLocal:1 windowRect:v6, v5, v8, v7];
+  [(VCSessionParticipantLocal *)self->_localParticipant updateWindowState:uiState isLocal:1 windowRect:v6, v5, v8, v7];
   v9 = objc_alloc(MEMORY[0x1E695DF20]);
-  v10 = [MEMORY[0x1E696AD98] numberWithInt:v3];
+  v10 = [MEMORY[0x1E696AD98] numberWithInt:uiState];
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:v6];
   v12 = [MEMORY[0x1E696AD98] numberWithDouble:v5];
   v13 = [MEMORY[0x1E696AD98] numberWithDouble:v8];
@@ -7068,35 +7068,35 @@ LABEL_5:
   }
 }
 
-- (void)updateParticipantUUID:(id)a3 withUpdateConfig:(id)a4 redistributeBitrate:(BOOL *)a5
+- (void)updateParticipantUUID:(id)d withUpdateConfig:(id)config redistributeBitrate:(BOOL *)bitrate
 {
   v27 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:{-[VCSessionParticipant uuid](self->_localParticipant, "uuid")}])
+  if ([d isEqualToString:{-[VCSessionParticipant uuid](self->_localParticipant, "uuid")}])
   {
 
-    [(VCSession *)self updatePlaybackSynchronizationGroupUUIDWithUpdateConfig:a4];
+    [(VCSession *)self updatePlaybackSynchronizationGroupUUIDWithUpdateConfig:config];
   }
 
   else
   {
-    v9 = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID objectForKeyedSubscript:a3];
+    v9 = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID objectForKeyedSubscript:d];
     if (v9)
     {
       v10 = v9;
-      [(VCSession *)self updateMicrophoneMuted:1 withUpdateConfig:a4 forParticipant:v9];
+      [(VCSession *)self updateMicrophoneMuted:1 withUpdateConfig:config forParticipant:v9];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __72__VCSession_updateParticipantUUID_withUpdateConfig_redistributeBitrate___block_invoke;
       v14[3] = &unk_1E85F7990;
       v14[4] = v10;
       v14[5] = self;
-      [a4 enumerateCachedTransitionsWithBlock:v14];
-      [(VCSession *)self updateMicrophoneMuted:0 withUpdateConfig:a4 forParticipant:v10];
-      [(VCSession *)self updateVideoQualityWithUpdateConfig:a4 forParticipant:v10 redistributeBitrate:a5];
-      [(VCSession *)self updateVisibilityIndexWithUpdateConfig:a4 forParticipant:v10 redistributeBitrate:a5];
-      [(VCSession *)self updateProminenceIndexWithUpdateConfig:a4 forParticipant:v10 redistributeBitrate:a5];
-      [(VCSession *)self updateIsPlaybackSynchronizationGroupMemberWithUpdateConfig:a4 forParticipant:v10];
-      [(VCSession *)self updatePositionalInfoWithUpdateConfig:a4 forParticipant:v10];
+      [config enumerateCachedTransitionsWithBlock:v14];
+      [(VCSession *)self updateMicrophoneMuted:0 withUpdateConfig:config forParticipant:v10];
+      [(VCSession *)self updateVideoQualityWithUpdateConfig:config forParticipant:v10 redistributeBitrate:bitrate];
+      [(VCSession *)self updateVisibilityIndexWithUpdateConfig:config forParticipant:v10 redistributeBitrate:bitrate];
+      [(VCSession *)self updateProminenceIndexWithUpdateConfig:config forParticipant:v10 redistributeBitrate:bitrate];
+      [(VCSession *)self updateIsPlaybackSynchronizationGroupMemberWithUpdateConfig:config forParticipant:v10];
+      [(VCSession *)self updatePositionalInfoWithUpdateConfig:config forParticipant:v10];
     }
 
     else if (objc_opt_class() == self)
@@ -7138,9 +7138,9 @@ LABEL_5:
           v21 = 2112;
           v22 = v11;
           v23 = 2048;
-          v24 = self;
+          selfCopy = self;
           v25 = 2112;
-          v26 = a3;
+          dCopy = d;
           _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, "VCSession [%s] %s:%d %@(%p) Failed to find participant with uuid=%@", buf, 0x3Au);
         }
       }
@@ -7184,7 +7184,7 @@ uint64_t __72__VCSession_updateParticipantUUID_withUpdateConfig_redistributeBitr
   return result;
 }
 
-- (void)updateParticipantConfigurations:(id)a3 sessionPresentationInfo:(id)a4
+- (void)updateParticipantConfigurations:(id)configurations sessionPresentationInfo:(id)info
 {
   v5[7] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -7193,8 +7193,8 @@ uint64_t __72__VCSession_updateParticipantUUID_withUpdateConfig_redistributeBitr
   v5[2] = __69__VCSession_updateParticipantConfigurations_sessionPresentationInfo___block_invoke;
   v5[3] = &unk_1E85F3E30;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = configurations;
+  v5[6] = info;
   dispatch_async(sessionQueue, v5);
 }
 
@@ -7327,10 +7327,10 @@ LABEL_18:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)distributeBitrateAndOptInToStreamIDsWithSeamlessTransition:(BOOL)a3
+- (void)distributeBitrateAndOptInToStreamIDsWithSeamlessTransition:(BOOL)transition
 {
-  v44 = a3;
-  v3 = self;
+  transitionCopy = transition;
+  selfCopy = self;
   v68 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -7347,7 +7347,7 @@ LABEL_18:
         v60 = 1024;
         v61 = 2274;
         v62 = 1024;
-        LODWORD(v63) = v44;
+        LODWORD(v63) = transitionCopy;
         v7 = "VCSession [%s] %s:%d forceSeamLess:%d";
         v8 = v6;
         v9 = 34;
@@ -7361,7 +7361,7 @@ LABEL_11:
   {
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(VCSession *)v3 performSelector:sel_logPrefix];
+      v4 = [(VCSession *)selfCopy performSelector:sel_logPrefix];
     }
 
     else
@@ -7384,9 +7384,9 @@ LABEL_11:
         v62 = 2112;
         v63 = v4;
         v64 = 2048;
-        v65 = v3;
+        v65 = selfCopy;
         v66 = 1024;
-        v67 = v44;
+        v67 = transitionCopy;
         v7 = "VCSession [%s] %s:%d %@(%p) forceSeamLess:%d";
         v8 = v11;
         v9 = 54;
@@ -7395,8 +7395,8 @@ LABEL_11:
     }
   }
 
-  v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSArray count](-[VCSession remoteParticipants](v3, "remoteParticipants"), "count")}];
-  v13 = [(VCSessionDownlinkBandwidthAllocator *)v3->_downlinkBandwidthAllocator distributeBitrate:v3->_downlinkTargetBitrate];
+  v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSArray count](-[VCSession remoteParticipants](selfCopy, "remoteParticipants"), "count")}];
+  v13 = [(VCSessionDownlinkBandwidthAllocator *)selfCopy->_downlinkBandwidthAllocator distributeBitrate:selfCopy->_downlinkTargetBitrate];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -7418,11 +7418,11 @@ LABEL_11:
         }
 
         v18 = *(*(&v52 + 1) + 8 * i);
-        v19 = v3;
-        v20 = [(NSMutableDictionary *)v3->_remoteParticipantsMapByUUID objectForKeyedSubscript:v18];
-        v21 = [v20 recommendedStreamIDsForSelectedMediaEntries:objc_msgSend(v45 forceSeamlessTransition:{"objectForKeyedSubscript:", v18), v44}];
+        v19 = selfCopy;
+        v20 = [(NSMutableDictionary *)selfCopy->_remoteParticipantsMapByUUID objectForKeyedSubscript:v18];
+        v21 = [v20 recommendedStreamIDsForSelectedMediaEntries:objc_msgSend(v45 forceSeamlessTransition:{"objectForKeyedSubscript:", v18), transitionCopy}];
         v22 = v20;
-        v3 = v19;
+        selfCopy = v19;
         [v12 setObject:v21 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", objc_msgSend(v22, "idsParticipantID"))}];
       }
 
@@ -7432,9 +7432,9 @@ LABEL_11:
     while (v15);
   }
 
-  if (([(NSMutableDictionary *)v3->_optInDictionary isEqualToDictionary:v12]& 1) == 0)
+  if (([(NSMutableDictionary *)selfCopy->_optInDictionary isEqualToDictionary:v12]& 1) == 0)
   {
-    if (objc_opt_class() == v3)
+    if (objc_opt_class() == selfCopy)
     {
       if (VRTraceGetErrorLogLevelForModule() < 7)
       {
@@ -7448,7 +7448,7 @@ LABEL_11:
         goto LABEL_31;
       }
 
-      downlinkTargetBitrate = v3->_downlinkTargetBitrate;
+      downlinkTargetBitrate = selfCopy->_downlinkTargetBitrate;
       *buf = 136315906;
       v57 = v24;
       v58 = 2080;
@@ -7466,7 +7466,7 @@ LABEL_11:
     {
       if (objc_opt_respondsToSelector())
       {
-        v23 = [(VCSession *)v3 performSelector:sel_logPrefix];
+        v23 = [(VCSession *)selfCopy performSelector:sel_logPrefix];
       }
 
       else
@@ -7486,7 +7486,7 @@ LABEL_11:
         goto LABEL_31;
       }
 
-      v32 = v3->_downlinkTargetBitrate;
+      v32 = selfCopy->_downlinkTargetBitrate;
       *buf = 136316418;
       v57 = v30;
       v58 = 2080;
@@ -7496,7 +7496,7 @@ LABEL_11:
       v62 = 2112;
       v63 = v23;
       v64 = 2048;
-      v65 = v3;
+      v65 = selfCopy;
       v66 = 1024;
       v67 = v32;
       v27 = "VCSession [%s] %s:%d %@(%p) New opt-in dictionary for new downlink target bitrate:[%u]";
@@ -7506,19 +7506,19 @@ LABEL_11:
 
     _os_log_impl(&dword_1DB56E000, v28, OS_LOG_TYPE_DEFAULT, v27, buf, v29);
 LABEL_31:
-    [-[VCTransportSession sessionInfoSynchronizer](v3->_transportSession "sessionInfoSynchronizer")];
+    [-[VCTransportSession sessionInfoSynchronizer](selfCopy->_transportSession "sessionInfoSynchronizer")];
     v33 = &OBJC_IVAR___VCMediaNegotiationBlob__faceTimeSettings;
     if ([v12 count])
     {
-      [(AVCRateController *)v3->_downlinkRateController setPaused:1];
+      [(AVCRateController *)selfCopy->_downlinkRateController setPaused:1];
     }
 
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v34 = [(VCSession *)v3 remoteParticipants];
-    v35 = [(NSArray *)v34 countByEnumeratingWithState:&v47 objects:v46 count:16];
+    remoteParticipants = [(VCSession *)selfCopy remoteParticipants];
+    v35 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v47 objects:v46 count:16];
     if (v35)
     {
       v36 = v35;
@@ -7530,25 +7530,25 @@ LABEL_31:
         {
           if (*v48 != v38)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(remoteParticipants);
           }
 
           v40 = *(*(&v47 + 1) + 8 * j);
           [v40 setActiveStreamIDs:{objc_msgSend(v12, "objectForKeyedSubscript:", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", objc_msgSend(v40, "idsParticipantID")))}];
           if ([v40 isVideoExpected] && objc_msgSend(v40, "optedInVideoStreamID"))
           {
-            v41 = 1;
+            isRemoteScreenEnabled = 1;
           }
 
           else
           {
-            v41 = [v40 isRemoteScreenEnabled];
+            isRemoteScreenEnabled = [v40 isRemoteScreenEnabled];
           }
 
-          v37 = v41 | v37 & 1;
+          v37 = isRemoteScreenEnabled | v37 & 1;
         }
 
-        v36 = [(NSArray *)v34 countByEnumeratingWithState:&v47 objects:v46 count:16];
+        v36 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v47 objects:v46 count:16];
       }
 
       while (v36);
@@ -7561,20 +7561,20 @@ LABEL_31:
       v42 = 1;
     }
 
-    [objc_msgSend(*(&v3->super.super.isa + v33[90]) "statisticsCollector")];
-    [(VCSession *)v3 reportingSessionDownlinkOptInEvent:v12 selectedMediaEntriesForParticipants:v45];
-    [(VCSession *)v3 setOptInDictionary:v12];
+    [objc_msgSend(*(&selfCopy->super.super.isa + v33[90]) "statisticsCollector")];
+    [(VCSession *)selfCopy reportingSessionDownlinkOptInEvent:v12 selectedMediaEntriesForParticipants:v45];
+    [(VCSession *)selfCopy setOptInDictionary:v12];
   }
 }
 
-- (void)reportingSessionDownlinkOptInEvent:(id)a3 selectedMediaEntriesForParticipants:(id)a4
+- (void)reportingSessionDownlinkOptInEvent:(id)event selectedMediaEntriesForParticipants:(id)participants
 {
-  v5 = self;
+  selfCopy = self;
   v37 = *MEMORY[0x1E69E9840];
   if ([(NSArray *)[(VCSession *)self remoteParticipants] count])
   {
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-    CFDictionaryAddValue(Mutable, @"VCSPTargetBitrate", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5->_downlinkTargetBitrate]);
+    CFDictionaryAddValue(Mutable, @"VCSPTargetBitrate", [MEMORY[0x1E696AD98] numberWithUnsignedInt:selfCopy->_downlinkTargetBitrate]);
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -7582,12 +7582,12 @@ LABEL_31:
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = [a4 allKeys];
+    obj = [participants allKeys];
     v26 = [obj countByEnumeratingWithState:&v33 objects:v32 count:16];
     if (v26)
     {
       v23 = *v34;
-      v24 = v5;
+      v24 = selfCopy;
       do
       {
         v8 = 0;
@@ -7599,11 +7599,11 @@ LABEL_31:
           }
 
           v9 = *(*(&v33 + 1) + 8 * v8);
-          v10 = [(NSMutableDictionary *)v5->_remoteParticipantsMapByUUID objectForKeyedSubscript:v9];
+          v10 = [(NSMutableDictionary *)selfCopy->_remoteParticipantsMapByUUID objectForKeyedSubscript:v9];
           v11 = v6;
           [v6 addObject:v9];
-          v12 = a4;
-          v13 = [a4 objectForKeyedSubscript:v9];
+          participantsCopy = participants;
+          v13 = [participants objectForKeyedSubscript:v9];
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
@@ -7638,16 +7638,16 @@ LABEL_31:
           }
 
           [v7 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v16)}];
-          v19 = [a3 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", objc_msgSend(v10, "idsParticipantID"))}];
+          v19 = [event objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", objc_msgSend(v10, "idsParticipantID"))}];
           if ([v19 count])
           {
             [v22 addObject:{objc_msgSend(v19, "componentsJoinedByString:", @", ")}];
           }
 
           ++v8;
-          v5 = v24;
+          selfCopy = v24;
           v6 = v11;
-          a4 = v12;
+          participants = participantsCopy;
         }
 
         while (v8 != v26);
@@ -7680,35 +7680,35 @@ LABEL_31:
   }
 }
 
-- (void)reportingSessionStopEventWithError:(id)a3
+- (void)reportingSessionStopEventWithError:(id)error
 {
   v9[3] = *MEMORY[0x1E69E9840];
   if (self->_oneToOneModeEnabled)
   {
-    if ([a3 domain])
+    if ([error domain])
     {
-      v5 = [a3 domain];
+      domain = [error domain];
     }
 
     else
     {
-      v5 = &stru_1F570E008;
+      domain = &stru_1F570E008;
     }
 
-    [a3 code];
-    [objc_msgSend(objc_msgSend(a3 "userInfo")];
-    [objc_msgSend(objc_msgSend(a3 "userInfo")];
+    [error code];
+    [objc_msgSend(objc_msgSend(error "userInfo")];
+    [objc_msgSend(objc_msgSend(error "userInfo")];
     [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] remoteNoRemotePacketInterval];
-    [(__CFString *)v5 UTF8String];
+    [(__CFString *)domain UTF8String];
     reportingCallEndError();
   }
 
   else
   {
     v8[0] = @"VCSCallEndReason";
-    if (a3)
+    if (error)
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a3, "code")}];
+      v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(error, "code")}];
     }
 
     else
@@ -7718,27 +7718,27 @@ LABEL_31:
 
     v9[0] = v6;
     v8[1] = @"VCSCallEndDetailedReason";
-    v9[1] = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(objc_msgSend(objc_msgSend(a3, "userInfo"), "objectForKeyedSubscript:", @"NSErrorUserInfoDetailedError", "intValue")}];
+    v9[1] = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(objc_msgSend(objc_msgSend(error, "userInfo"), "objectForKeyedSubscript:", @"NSErrorUserInfoDetailedError", "intValue")}];
     v8[2] = @"VCSErrorDomain";
-    if ([a3 domain])
+    if ([error domain])
     {
-      v7 = [a3 domain];
+      domain2 = [error domain];
     }
 
     else
     {
-      v7 = &stru_1F570E008;
+      domain2 = &stru_1F570E008;
     }
 
-    v9[2] = v7;
+    v9[2] = domain2;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:3];
     reportingGenericEvent();
   }
 }
 
-+ (int)deviceRoleForSessionMode:(int64_t)a3
++ (int)deviceRoleForSessionMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = 3;
   }
@@ -7748,7 +7748,7 @@ LABEL_31:
     v3 = 0;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     return 6;
   }
@@ -7883,9 +7883,9 @@ void __68__VCSession_setSessionInfoSynchronizerPeerSubscribedStreamsCallback__bl
   }
 }
 
-- (id)vcrcServerBagWithOperatingMode:(int)a3
+- (id)vcrcServerBagWithOperatingMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v17 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v5 = [VCRateControlServerBag keysWithMode:v3];
@@ -8029,8 +8029,8 @@ LABEL_24:
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v10 = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allValues];
-        v11 = [v10 countByEnumeratingWithState:&v22 objects:v21 count:16];
+        allValues = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allValues];
+        v11 = [allValues countByEnumeratingWithState:&v22 objects:v21 count:16];
         if (v11)
         {
           v12 = v11;
@@ -8041,13 +8041,13 @@ LABEL_24:
             {
               if (*v23 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(allValues);
               }
 
               [*(*(&v22 + 1) + 8 * i) setupSpatialAudioWithMetadata:self->_spatialMetadata spatialMetadataEntryMap:self->_mediaTypeToSpatialMetadataEntryMap];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v22 objects:v21 count:16];
+            v12 = [allValues countByEnumeratingWithState:&v22 objects:v21 count:16];
           }
 
           while (v12);
@@ -8087,11 +8087,11 @@ void __30__VCSession_setupSpatialAudio__block_invoke(uint64_t a1)
   }
 }
 
-- (int)reserveAudioChannelForMediaType:(unsigned int)a3
+- (int)reserveAudioChannelForMediaType:(unsigned int)type
 {
   v13 = *MEMORY[0x1E69E9840];
   v10 = 0;
-  valuePtr = a3;
+  valuePtr = type;
   value = 0;
   v4 = *MEMORY[0x1E695E480];
   if ((VCSpatialAudioMetadata_CreateEntry(*MEMORY[0x1E695E480], self->_spatialMetadata, &value) & 0x80000000) != 0)
@@ -8141,8 +8141,8 @@ LABEL_5:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allValues];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+    allValues = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allValues];
+    v4 = [allValues countByEnumeratingWithState:&v11 objects:v10 count:16];
     if (v4)
     {
       v5 = v4;
@@ -8154,14 +8154,14 @@ LABEL_5:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v11 + 1) + 8 * v7++) cleanupSpatialAudio];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v11 objects:v10 count:16];
       }
 
       while (v5);
@@ -8184,31 +8184,31 @@ LABEL_5:
   }
 }
 
-- (void)updateMultiwayRateControllerWithActiveConnection:(id)a3 isScreenEnabled:(BOOL)a4 isLocal:(BOOL)a5
+- (void)updateMultiwayRateControllerWithActiveConnection:(id)connection isScreenEnabled:(BOOL)enabled isLocal:(BOOL)local
 {
-  v5 = a4;
+  enabledCopy = enabled;
   v8 = &OBJC_IVAR___VCSession__downlinkRateController;
-  if (a5)
+  if (local)
   {
     v8 = &OBJC_IVAR___VCSession__uplinkRateController;
   }
 
   v9 = *(&self->super.super.isa + *v8);
-  if (a5)
+  if (local)
   {
-    v10 = [a3 uplinkBitrateCap];
+    uplinkBitrateCap = [connection uplinkBitrateCap];
   }
 
   else
   {
-    v10 = [a3 downlinkBitrateCap];
+    uplinkBitrateCap = [connection downlinkBitrateCap];
   }
 
-  v11 = v10;
+  v11 = uplinkBitrateCap;
   v12 = VCConnectionManager_CopyPrimaryConnection([(VCTransportSession *)self->_transportSession connectionManager]);
   if (VCConnection_IsLocalOnWiFiOrWired(v12))
   {
-    if (![(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] isDuplicationEnabled]&& !v5)
+    if (![(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] isDuplicationEnabled]&& !enabledCopy)
     {
 LABEL_9:
       v13 = 0;
@@ -8221,7 +8221,7 @@ LABEL_9:
     }
   }
 
-  else if (!v5)
+  else if (!enabledCopy)
   {
     goto LABEL_9;
   }
@@ -8234,28 +8234,28 @@ LABEL_13:
   }
 
 LABEL_14:
-  v14 = [AVCRateController rateControlTrafficTypeForScreen:v5 isPersona:0];
-  IsLocalOnCellular = VCConnection_IsLocalOnCellular(a3);
-  v16 = VCConnection_LocalCellTech(a3);
+  v14 = [AVCRateController rateControlTrafficTypeForScreen:enabledCopy isPersona:0];
+  IsLocalOnCellular = VCConnection_IsLocalOnCellular(connection);
+  v16 = VCConnection_LocalCellTech(connection);
   HIDWORD(v17) = v13;
   LOBYTE(v17) = v14;
-  [v9 configureWithOperatingMode:6 isLocalCellular:IsLocalOnCellular localCellTech:v16 isRemoteCellular:0 remoteCellTech:VCConnection_RemoteCellTech(a3) bitrateCapKbps:v11 / 0x3E8uLL trafficType:v17 featureFlags:?];
+  [v9 configureWithOperatingMode:6 isLocalCellular:IsLocalOnCellular localCellTech:v16 isRemoteCellular:0 remoteCellTech:VCConnection_RemoteCellTech(connection) bitrateCapKbps:v11 / 0x3E8uLL trafficType:v17 featureFlags:?];
 }
 
-- (void)startRateControllersMultiwayFromOneToOne:(BOOL)a3
+- (void)startRateControllersMultiwayFromOneToOne:(BOOL)one
 {
-  v3 = a3;
+  oneCopy = one;
   v22 = *MEMORY[0x1E69E9840];
-  v5 = 10000000;
+  downlinkBitrateCap = 10000000;
   [(VCRateControlMediaController *)self->_uplinkMediaController setIsAudioOnly:[(VCSessionParticipant *)self->_localParticipant isVideoEnabled]^ 1];
   currentActiveConnection = self->_currentActiveConnection;
-  v7 = 10000000;
+  uplinkBitrateCap = 10000000;
   if (currentActiveConnection)
   {
-    v7 = [(VCConnectionProtocol *)currentActiveConnection uplinkBitrateCap];
+    uplinkBitrateCap = [(VCConnectionProtocol *)currentActiveConnection uplinkBitrateCap];
   }
 
-  if (v3)
+  if (oneCopy)
   {
     localParticipant = self->_localParticipant;
     if (localParticipant)
@@ -8283,7 +8283,7 @@ LABEL_14:
   uplinkRateController = self->_uplinkRateController;
   v14 = 4;
   v15 = 0;
-  v16 = v7;
+  v16 = uplinkBitrateCap;
   LODWORD(v17) = 0;
   DWORD1(v17) = v10;
   v18 = 0uLL;
@@ -8292,13 +8292,13 @@ LABEL_14:
   v12 = self->_currentActiveConnection;
   if (v12)
   {
-    v5 = [(VCConnectionProtocol *)v12 downlinkBitrateCap];
+    downlinkBitrateCap = [(VCConnectionProtocol *)v12 downlinkBitrateCap];
   }
 
   downlinkRateController = self->_downlinkRateController;
   v14 = 5;
   v15 = 0;
-  v16 = v5;
+  v16 = downlinkBitrateCap;
   v17 = 0u;
   v18 = 0u;
   [(AVCRateController *)downlinkRateController configure:&v14];
@@ -8309,10 +8309,10 @@ LABEL_14:
 - (void)setupUplinkBitrateCaps
 {
   [(VCSessionParticipantLocal *)self->_localParticipant setUplinkBitrateCapWifi:[(VCSessionBitrateArbiter *)self->_bitrateArbiter maxBitrateWiFiUplink]];
-  v3 = [(VCSessionBitrateArbiter *)self->_bitrateArbiter maxBitrateNonExpensiveUplink];
+  maxBitrateNonExpensiveUplink = [(VCSessionBitrateArbiter *)self->_bitrateArbiter maxBitrateNonExpensiveUplink];
   localParticipant = self->_localParticipant;
 
-  [(VCSessionParticipantLocal *)localParticipant setUplinkBitrateCapCell:v3];
+  [(VCSessionParticipantLocal *)localParticipant setUplinkBitrateCapCell:maxBitrateNonExpensiveUplink];
 }
 
 - (void)createMediaQueue
@@ -8334,12 +8334,12 @@ uint64_t __29__VCSession_createMediaQueue__block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (void)updateVCMediaQueueForMediaType:(unsigned int)a3 mediaState:(unsigned int)a4
+- (void)updateVCMediaQueueForMediaType:(unsigned int)type mediaState:(unsigned int)state
 {
-  if (a3 == 6 && self->_mediaQueueConfiguration.schedulePolicy == 2)
+  if (type == 6 && self->_mediaQueueConfiguration.schedulePolicy == 2)
   {
     v4 = &OBJC_IVAR___VCSession__mediaQueueMinBitrateWithoutThrottlingDefault;
-    if (a4 == 1)
+    if (state == 1)
     {
       v4 = &OBJC_IVAR___VCSession__mediaQueueMinBitrateWithoutThrottling3DCamera;
     }
@@ -8348,12 +8348,12 @@ uint64_t __29__VCSession_createMediaQueue__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)handleMediaQueueSizeExceedThresholdWithQueueSize:(double)a3 mediaQueueStreamId:(unsigned int)a4 type:(int)a5
+- (void)handleMediaQueueSizeExceedThresholdWithQueueSize:(double)size mediaQueueStreamId:(unsigned int)id type:(int)type
 {
   v36[2] = *MEMORY[0x1E69E9840];
-  if (a5 != 2)
+  if (type != 2)
   {
-    if (a5 == 1)
+    if (type == 1)
     {
       if (objc_opt_class() == self)
       {
@@ -8376,9 +8376,9 @@ uint64_t __29__VCSession_createMediaQueue__block_invoke(uint64_t a1, void *a2)
         v30 = 1024;
         v31 = 2687;
         v32 = 1024;
-        *v33 = a4;
+        *v33 = id;
         *&v33[4] = 2048;
-        *&v33[6] = a3;
+        *&v33[6] = size;
         v14 = "VCSession [%s] %s:%d VCMediaQueue size threshold exceeded for mediaQueueStreamId=%u queueSizeInSecond=%f - FLUSHING!";
         v15 = v13;
         v16 = 44;
@@ -8419,9 +8419,9 @@ uint64_t __29__VCSession_createMediaQueue__block_invoke(uint64_t a1, void *a2)
         *&v33[8] = 2048;
         *&v33[10] = self;
         *&v33[18] = 1024;
-        v34 = a4;
+        typeCopy = id;
         v35 = 2048;
-        *v36 = a3;
+        *v36 = size;
         v14 = "VCSession [%s] %s:%d %@(%p) VCMediaQueue size threshold exceeded for mediaQueueStreamId=%u queueSizeInSecond=%f - FLUSHING!";
         v15 = v23;
         v16 = 64;
@@ -8429,7 +8429,7 @@ uint64_t __29__VCSession_createMediaQueue__block_invoke(uint64_t a1, void *a2)
 
       _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, v14, &v26, v16);
 LABEL_23:
-      VCMediaQueue_FlushPacketsInStream(self->_mediaQueue, a4, 1u);
+      VCMediaQueue_FlushPacketsInStream(self->_mediaQueue, id, 1u);
       return;
     }
 
@@ -8454,11 +8454,11 @@ LABEL_23:
       v30 = 1024;
       v31 = 2694;
       v32 = 1024;
-      *v33 = a5;
+      *v33 = type;
       *&v33[4] = 1024;
-      *&v33[6] = a4;
+      *&v33[6] = id;
       *&v33[10] = 2048;
-      *&v33[12] = a3;
+      *&v33[12] = size;
       v19 = "VCSession [%s] %s:%d Should not handle media queue threshold exceeded with type=%d for mediaQueueStreamId=%u queueSize=%f!";
       v20 = v18;
       v21 = 50;
@@ -8499,11 +8499,11 @@ LABEL_23:
       *&v33[8] = 2048;
       *&v33[10] = self;
       *&v33[18] = 1024;
-      v34 = a5;
+      typeCopy = type;
       v35 = 1024;
-      LODWORD(v36[0]) = a4;
+      LODWORD(v36[0]) = id;
       WORD2(v36[0]) = 2048;
-      *(v36 + 6) = a3;
+      *(v36 + 6) = size;
       v19 = "VCSession [%s] %s:%d %@(%p) Should not handle media queue threshold exceeded with type=%d for mediaQueueStreamId=%u queueSize=%f!";
       v20 = v25;
       v21 = 70;
@@ -8515,10 +8515,10 @@ LABEL_23:
 
   localParticipant = self->_localParticipant;
 
-  [(VCSessionParticipantLocal *)localParticipant updateVCMediaQueueSize:(a3 * 1000.0)];
+  [(VCSessionParticipantLocal *)localParticipant updateVCMediaQueueSize:(size * 1000.0)];
 }
 
-- (void)setMediaQueuePeakBitrateWithTargetBitrate:(unsigned int)a3
+- (void)setMediaQueuePeakBitrateWithTargetBitrate:(unsigned int)bitrate
 {
   if (self->_mediaQueue)
   {
@@ -8532,16 +8532,16 @@ LABEL_23:
       v5 = 1.5;
     }
 
-    v6 = [(VCSessionParticipant *)self->_localParticipant isScreenEnabled];
+    isScreenEnabled = [(VCSessionParticipant *)self->_localParticipant isScreenEnabled];
     v7 = 1.1;
-    if (!v6)
+    if (!isScreenEnabled)
     {
       v7 = v5;
     }
 
     mediaQueue = self->_mediaQueue;
 
-    VCMediaQueue_SetPeakBitrate(mediaQueue, (v7 * a3));
+    VCMediaQueue_SetPeakBitrate(mediaQueue, (v7 * bitrate));
   }
 
   else if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -8585,7 +8585,7 @@ LABEL_23:
         v13 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [(VCSessionParticipantLocal *)self->_localParticipant currentVideoCaptureFrameRate];
+          currentVideoCaptureFrameRate = [(VCSessionParticipantLocal *)self->_localParticipant currentVideoCaptureFrameRate];
           *v32 = 136316418;
           *&v32[4] = v19;
           *&v32[12] = 2080;
@@ -8595,9 +8595,9 @@ LABEL_23:
           WORD2(v33) = 2112;
           *(&v33 + 6) = v3;
           HIWORD(v33) = 2048;
-          v34 = self;
+          selfCopy4 = self;
           LOWORD(v35) = 1024;
-          *(&v35 + 2) = v20;
+          *(&v35 + 2) = currentVideoCaptureFrameRate;
           v11 = "VCSession [%s] %s:%d %@(%p) Screen is enabled, constraining the local camera framerate=%d fps";
           goto LABEL_32;
         }
@@ -8618,7 +8618,7 @@ LABEL_23:
       return;
     }
 
-    v16 = [(VCSessionParticipantLocal *)self->_localParticipant currentVideoCaptureFrameRate];
+    currentVideoCaptureFrameRate2 = [(VCSessionParticipantLocal *)self->_localParticipant currentVideoCaptureFrameRate];
     *v32 = 136315906;
     *&v32[4] = v15;
     *&v32[12] = 2080;
@@ -8626,7 +8626,7 @@ LABEL_23:
     *&v32[22] = 1024;
     LODWORD(v33) = 2733;
     WORD2(v33) = 1024;
-    *(&v33 + 6) = v16;
+    *(&v33 + 6) = currentVideoCaptureFrameRate2;
     v11 = "VCSession [%s] %s:%d Screen is enabled, constraining the local camera framerate=%d fps";
 LABEL_27:
     v17 = v9;
@@ -8659,7 +8659,7 @@ LABEL_49:
             WORD2(v33) = 2048;
             *(&v33 + 6) = [(NSArray *)[(VCSession *)self remoteParticipants] count];
             HIWORD(v33) = 1024;
-            LODWORD(v34) = 30;
+            LODWORD(selfCopy4) = 30;
             v11 = "VCSession [%s] %s:%d Removing or adding a remote participant %lu, changing max video capture framerate to %d fps";
             v17 = v27;
             v18 = 44;
@@ -8695,7 +8695,7 @@ LABEL_49:
             WORD2(v33) = 2112;
             *(&v33 + 6) = v7;
             HIWORD(v33) = 2048;
-            v34 = self;
+            selfCopy4 = self;
             LOWORD(v35) = 2048;
             *(&v35 + 2) = [(NSArray *)[(VCSession *)self remoteParticipants] count];
             WORD5(v35) = 1024;
@@ -8734,7 +8734,7 @@ LABEL_49:
       WORD2(v33) = 2048;
       *(&v33 + 6) = [(NSArray *)[(VCSession *)self remoteParticipants] count];
       HIWORD(v33) = 1024;
-      LODWORD(v34) = 15;
+      LODWORD(selfCopy4) = 15;
       v23 = "VCSession [%s] %s:%d Too many remote Participants %lu, constraining the local capture to %d fps";
       v24 = v22;
       v25 = 44;
@@ -8773,7 +8773,7 @@ LABEL_49:
       WORD2(v33) = 2112;
       *(&v33 + 6) = v6;
       HIWORD(v33) = 2048;
-      v34 = self;
+      selfCopy4 = self;
       LOWORD(v35) = 2048;
       *(&v35 + 2) = [(NSArray *)[(VCSession *)self remoteParticipants] count];
       WORD5(v35) = 1024;
@@ -8785,7 +8785,7 @@ LABEL_49:
 
     _os_log_impl(&dword_1DB56E000, v24, OS_LOG_TYPE_DEFAULT, v23, v32, v25);
 LABEL_44:
-    [(VCSessionParticipantLocal *)self->_localParticipant setCurrentVideoCaptureFrameRate:15, *v32, *&v32[16], v33, v34, v35];
+    [(VCSessionParticipantLocal *)self->_localParticipant setCurrentVideoCaptureFrameRate:15, *v32, *&v32[16], v33, selfCopy4, v35];
     return;
   }
 
@@ -8804,7 +8804,7 @@ LABEL_44:
       return;
     }
 
-    v10 = [(VCSessionParticipantLocal *)self->_localParticipant currentVideoCaptureFrameRate];
+    currentVideoCaptureFrameRate3 = [(VCSessionParticipantLocal *)self->_localParticipant currentVideoCaptureFrameRate];
     *v32 = 136315906;
     *&v32[4] = v8;
     *&v32[12] = 2080;
@@ -8812,7 +8812,7 @@ LABEL_44:
     *&v32[22] = 1024;
     LODWORD(v33) = 2744;
     WORD2(v33) = 1024;
-    *(&v33 + 6) = v10;
+    *(&v33 + 6) = currentVideoCaptureFrameRate3;
     v11 = "VCSession [%s] %s:%d Restoring camera capture framerate to %d fps";
     goto LABEL_27;
   }
@@ -8833,7 +8833,7 @@ LABEL_44:
     v13 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(VCSessionParticipantLocal *)self->_localParticipant currentVideoCaptureFrameRate];
+      currentVideoCaptureFrameRate4 = [(VCSessionParticipantLocal *)self->_localParticipant currentVideoCaptureFrameRate];
       *v32 = 136316418;
       *&v32[4] = v12;
       *&v32[12] = 2080;
@@ -8843,9 +8843,9 @@ LABEL_44:
       WORD2(v33) = 2112;
       *(&v33 + 6) = v4;
       HIWORD(v33) = 2048;
-      v34 = self;
+      selfCopy4 = self;
       LOWORD(v35) = 1024;
-      *(&v35 + 2) = v14;
+      *(&v35 + 2) = currentVideoCaptureFrameRate4;
       v11 = "VCSession [%s] %s:%d %@(%p) Restoring camera capture framerate to %d fps";
 LABEL_32:
       v17 = v13;
@@ -8857,25 +8857,25 @@ LABEL_32:
 
 - (void)updateLocalStreamConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v24 = *MEMORY[0x1E69E9840];
   v3 = [(NSMutableDictionary *)self->_remoteParticipantsMapByServerID count];
-  v4 = [+[VCDefaults sharedInstance](VCDefaults minParticipantCountSendVoiceActiveOnly];
-  [(VCSessionParticipantLocal *)v2->_localParticipant setEnableVADFiltering:v3 >= v4];
-  v5 = [-[VCSessionParticipantLocal supportedAudioRules](v2->_localParticipant "supportedAudioRules")];
+  minParticipantCountSendVoiceActiveOnly = [+[VCDefaults sharedInstance](VCDefaults minParticipantCountSendVoiceActiveOnly];
+  [(VCSessionParticipantLocal *)selfCopy->_localParticipant setEnableVADFiltering:v3 >= minParticipantCountSendVoiceActiveOnly];
+  v5 = [-[VCSessionParticipantLocal supportedAudioRules](selfCopy->_localParticipant "supportedAudioRules")];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(VCSession *)v2 remoteParticipants];
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v20 objects:v19 count:16];
+  remoteParticipants = [(VCSession *)selfCopy remoteParticipants];
+  v7 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v20 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
     v17 = 240;
-    v18 = v2;
+    v18 = selfCopy;
     LODWORD(v9) = 0;
-    v10 = v4;
+    v10 = minParticipantCountSendVoiceActiveOnly;
     v11 = *v21;
     do
     {
@@ -8883,7 +8883,7 @@ LABEL_32:
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(remoteParticipants);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
@@ -8895,11 +8895,11 @@ LABEL_32:
       }
 
       v16 = v15;
-      v8 = [(NSArray *)v6 countByEnumeratingWithState:&v20 objects:v19 count:16];
+      v8 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v20 objects:v19 count:16];
     }
 
     while (v8);
-    v2 = v18;
+    selfCopy = v18;
   }
 
   else
@@ -8909,12 +8909,12 @@ LABEL_32:
     v16 = 128;
   }
 
-  [(VCSessionParticipantLocal *)v2->_localParticipant updateSupportedAudioRules:v5, v17, v18];
-  [(VCSession *)v2 updateMediaRecorderCapabillities:v9 imageType:v14 videoCodec:v16];
-  [(VCSession *)v2 updateLocalVideoCaptureFrameRate];
+  [(VCSessionParticipantLocal *)selfCopy->_localParticipant updateSupportedAudioRules:v5, v17, v18];
+  [(VCSession *)selfCopy updateMediaRecorderCapabillities:v9 imageType:v14 videoCodec:v16];
+  [(VCSession *)selfCopy updateLocalVideoCaptureFrameRate];
 }
 
-- (void)optInStreamWithIDSStreamIDs:(id)a3
+- (void)optInStreamWithIDSStreamIDs:(id)ds
 {
   v7[5] = *MEMORY[0x1E69E9840];
   v5 = +[VCDatagramChannelManager sharedInstance];
@@ -8923,11 +8923,11 @@ LABEL_32:
   v7[1] = 3221225472;
   v7[2] = __41__VCSession_optInStreamWithIDSStreamIDs___block_invoke;
   v7[3] = &unk_1E85F79E0;
-  v7[4] = a3;
+  v7[4] = ds;
   [(VCDatagramChannelManager *)v5 executeBlockForIDSDestination:idsDestination blockToExecute:v7];
 }
 
-- (void)optOutStreamWithIDSStreamIDs:(id)a3
+- (void)optOutStreamWithIDSStreamIDs:(id)ds
 {
   v7[5] = *MEMORY[0x1E69E9840];
   v5 = +[VCDatagramChannelManager sharedInstance];
@@ -8936,11 +8936,11 @@ LABEL_32:
   v7[1] = 3221225472;
   v7[2] = __42__VCSession_optOutStreamWithIDSStreamIDs___block_invoke;
   v7[3] = &unk_1E85F79E0;
-  v7[4] = a3;
+  v7[4] = ds;
   [(VCDatagramChannelManager *)v5 executeBlockForIDSDestination:idsDestination blockToExecute:v7];
 }
 
-- (BOOL)detectSSRCCollision:(id)a3 resetNeeded:(BOOL *)a4
+- (BOOL)detectSSRCCollision:(id)collision resetNeeded:(BOOL *)needed
 {
   v31 = *MEMORY[0x1E69E9840];
   if (self->_isSSRCCollisionDetectionEnabled)
@@ -8949,21 +8949,21 @@ LABEL_32:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v7 = [a3 allParticipantStreamInfo];
-    v8 = [v7 countByEnumeratingWithState:&v27 objects:v26 count:16];
+    allParticipantStreamInfo = [collision allParticipantStreamInfo];
+    v8 = [allParticipantStreamInfo countByEnumeratingWithState:&v27 objects:v26 count:16];
     if (v8)
     {
       v9 = v8;
       v10 = *v28;
       v19 = *v28;
-      v20 = v7;
+      v20 = allParticipantStreamInfo;
       do
       {
         for (i = 0; i != v9; ++i)
         {
           if (*v28 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allParticipantStreamInfo);
           }
 
           v12 = *(*(&v27 + 1) + 8 * i);
@@ -8971,8 +8971,8 @@ LABEL_32:
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v13 = [v12 streamConfigs];
-          v14 = [v13 countByEnumeratingWithState:&v22 objects:v21 count:16];
+          streamConfigs = [v12 streamConfigs];
+          v14 = [streamConfigs countByEnumeratingWithState:&v22 objects:v21 count:16];
           if (v14)
           {
             v15 = v14;
@@ -8984,10 +8984,10 @@ LABEL_32:
               {
                 if (*v23 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(streamConfigs);
                 }
 
-                if (-[VCSession detectSSRCCollisionWithRemoteMediaStream:remoteBlobCreationTime:resetNeeded:](self, "detectSSRCCollisionWithRemoteMediaStream:remoteBlobCreationTime:resetNeeded:", *(*(&v22 + 1) + 8 * v17), [a3 creationTime], a4))
+                if (-[VCSession detectSSRCCollisionWithRemoteMediaStream:remoteBlobCreationTime:resetNeeded:](self, "detectSSRCCollisionWithRemoteMediaStream:remoteBlobCreationTime:resetNeeded:", *(*(&v22 + 1) + 8 * v17), [collision creationTime], needed))
                 {
                   LOBYTE(v8) = 1;
                   return v8;
@@ -8997,7 +8997,7 @@ LABEL_32:
               }
 
               while (v15 != v17);
-              v15 = [v13 countByEnumeratingWithState:&v22 objects:v21 count:16];
+              v15 = [streamConfigs countByEnumeratingWithState:&v22 objects:v21 count:16];
               if (v15)
               {
                 continue;
@@ -9008,7 +9008,7 @@ LABEL_32:
           }
 
           v10 = v19;
-          v7 = v20;
+          allParticipantStreamInfo = v20;
         }
 
         v9 = [v20 countByEnumeratingWithState:&v27 objects:v26 count:16];
@@ -9027,13 +9027,13 @@ LABEL_32:
   return v8;
 }
 
-- (BOOL)detectSSRCCollisionWithRemoteMediaStream:(id)a3 remoteBlobCreationTime:(tagNTP)a4 resetNeeded:(BOOL *)a5
+- (BOOL)detectSSRCCollisionWithRemoteMediaStream:(id)stream remoteBlobCreationTime:(tagNTP)time resetNeeded:(BOOL *)needed
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = -[VCSessionParticipantLocal containsStreamWithSSRC:](self->_localParticipant, "containsStreamWithSSRC:", [objc_msgSend(a3 "multiwayConfig")]);
+  v9 = -[VCSessionParticipantLocal containsStreamWithSSRC:](self->_localParticipant, "containsStreamWithSSRC:", [objc_msgSend(stream "multiwayConfig")]);
   if (v9)
   {
-    wide_high = HIDWORD(a4.wide);
+    wide_high = HIDWORD(time.wide);
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
       v11 = VRTraceErrorLogLevelToCSTR();
@@ -9047,7 +9047,7 @@ LABEL_32:
         v19 = 1024;
         v20 = 2805;
         v21 = 1024;
-        v22 = [objc_msgSend(a3 "multiwayConfig")];
+        v22 = [objc_msgSend(stream "multiwayConfig")];
         _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, "VCSession [%s] %s:%d SSRC collision detected! SSRC=%u", &v15, 0x22u);
       }
     }
@@ -9056,13 +9056,13 @@ LABEL_32:
     {
       v13 = 1;
 LABEL_9:
-      *a5 = v13;
+      *needed = v13;
       return v9;
     }
 
     if (wide_high == [(VCSessionParticipant *)self->_localParticipant creationTime]>> 32)
     {
-      v13 = [(VCSessionParticipant *)self->_localParticipant creationTime]> a4.time.frac;
+      v13 = [(VCSessionParticipant *)self->_localParticipant creationTime]> time.time.frac;
       goto LABEL_9;
     }
   }
@@ -9070,17 +9070,17 @@ LABEL_9:
   return v9;
 }
 
-- (void)handleEncryptionInfoEvent:(id)a3
+- (void)handleEncryptionInfoEvent:(id)event
 {
   v25[5] = *MEMORY[0x1E69E9840];
-  v5 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A5008]];
-  v6 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A5010]];
+  v5 = [event objectForKeyedSubscript:*MEMORY[0x1E69A5008]];
+  v6 = [event objectForKeyedSubscript:*MEMORY[0x1E69A5010]];
   v7 = [VCMediaKeyIndex alloc];
-  v8 = -[VCMediaKeyIndex initWithNSUUID:](v7, "initWithNSUUID:", [a3 objectForKeyedSubscript:*MEMORY[0x1E69A5000]]);
-  v9 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A5028]];
-  v10 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A4FF8]];
-  v11 = [a3 objectForKeyedSubscript:@"maxSN"];
-  v12 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A5020]];
+  v8 = -[VCMediaKeyIndex initWithNSUUID:](v7, "initWithNSUUID:", [event objectForKeyedSubscript:*MEMORY[0x1E69A5000]]);
+  v9 = [event objectForKeyedSubscript:*MEMORY[0x1E69A5028]];
+  v10 = [event objectForKeyedSubscript:*MEMORY[0x1E69A4FF8]];
+  v11 = [event objectForKeyedSubscript:@"maxSN"];
+  v12 = [event objectForKeyedSubscript:*MEMORY[0x1E69A5020]];
   v24[0] = @"SecurityKey";
   v24[1] = @"SecuritySalt";
   v25[0] = v5;
@@ -9118,7 +9118,7 @@ LABEL_9:
   }
 }
 
-- (void)handleMembershipChangeInfoEvent:(id)a3
+- (void)handleMembershipChangeInfoEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -9134,16 +9134,16 @@ LABEL_9:
       v11 = 1024;
       v12 = 2851;
       v13 = 2112;
-      v14 = a3;
+      eventCopy = event;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCSession [%s] %s:%d Start pruning keys in the security key manager due to membershipChangeReason: %@", &v7, 0x26u);
     }
   }
 
   [(VCSecurityKeyManager *)self->_securityKeyManager pruneSendKeyMaterialWithDelay:1.0];
-  [(VCSession *)self reportingSessionParticipantEvent:168 keyChangeReason:a3 newMKI:0];
+  [(VCSession *)self reportingSessionParticipantEvent:168 keyChangeReason:event newMKI:0];
 }
 
-- (void)messageMediaInitialStateToParticipant:(id)a3
+- (void)messageMediaInitialStateToParticipant:(id)participant
 {
   v30 = *MEMORY[0x1E69E9840];
   if ([(VCSessionParticipantLocal *)self->_localParticipant encryptionInfoReceived])
@@ -9154,10 +9154,10 @@ LABEL_9:
       v6 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [a3 uuid];
-        v8 = [(VCSessionParticipant *)self->_localParticipant isAudioEnabled];
-        v9 = [(VCSessionParticipant *)self->_localParticipant isVideoEnabled];
-        v10 = [(VCSessionParticipant *)self->_localParticipant isScreenEnabled];
+        uuid = [participant uuid];
+        isAudioEnabled = [(VCSessionParticipant *)self->_localParticipant isAudioEnabled];
+        isVideoEnabled = [(VCSessionParticipant *)self->_localParticipant isVideoEnabled];
+        isScreenEnabled = [(VCSessionParticipant *)self->_localParticipant isScreenEnabled];
         v16 = 136316674;
         v17 = v5;
         v18 = 2080;
@@ -9165,18 +9165,18 @@ LABEL_9:
         v20 = 1024;
         v21 = 2866;
         v22 = 2112;
-        v23 = v7;
+        v23 = uuid;
         v24 = 1024;
-        v25 = v8;
+        v25 = isAudioEnabled;
         v26 = 1024;
-        v27 = v9;
+        v27 = isVideoEnabled;
         v28 = 1024;
-        v29 = v10;
+        v29 = isScreenEnabled;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCSession [%s] %s:%d Send initial state to participant=%@. audioEnabled=%d videoEnabled=%d screenEnabled=%d", &v16, 0x38u);
       }
     }
 
-    [a3 capabilities];
+    [participant capabilities];
     if (v11 == 1)
     {
       sessionMessaging = self->_sessionMessaging;
@@ -9190,7 +9190,7 @@ LABEL_9:
         v13 = @"VCSessionMessageAudioDisabled";
       }
 
-      -[VCSessionMessaging sendMessage:withTopic:participantID:](sessionMessaging, "sendMessage:withTopic:participantID:", v13, @"VCSessionMessageTopicAudioEnabledState", [a3 idsParticipantID]);
+      -[VCSessionMessaging sendMessage:withTopic:participantID:](sessionMessaging, "sendMessage:withTopic:participantID:", v13, @"VCSessionMessageTopicAudioEnabledState", [participant idsParticipantID]);
       v14 = self->_sessionMessaging;
       if ([(VCSessionParticipant *)self->_localParticipant isVideoEnabled])
       {
@@ -9202,12 +9202,12 @@ LABEL_9:
         v15 = @"VCSessionMessageVideoDisabled";
       }
 
-      -[VCSessionMessaging sendMessage:withTopic:participantID:](v14, "sendMessage:withTopic:participantID:", v15, @"VCSessionMessageTopicVideoEnabledStateb", [a3 idsParticipantID]);
+      -[VCSessionMessaging sendMessage:withTopic:participantID:](v14, "sendMessage:withTopic:participantID:", v15, @"VCSessionMessageTopicVideoEnabledStateb", [participant idsParticipantID]);
     }
 
     else
     {
-      [(VCSession *)self sendMediaStateUpdateMessageToRemoteParticipant:a3];
+      [(VCSession *)self sendMediaStateUpdateMessageToRemoteParticipant:participant];
     }
   }
 }
@@ -9223,9 +9223,9 @@ LABEL_9:
       v4 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v5 = [(VCSessionParticipant *)self->_localParticipant isAudioEnabled];
-        v6 = [(VCSessionParticipant *)self->_localParticipant isVideoEnabled];
-        v7 = [(VCSessionParticipant *)self->_localParticipant isScreenEnabled];
+        isAudioEnabled = [(VCSessionParticipant *)self->_localParticipant isAudioEnabled];
+        isVideoEnabled = [(VCSessionParticipant *)self->_localParticipant isVideoEnabled];
+        isScreenEnabled = [(VCSessionParticipant *)self->_localParticipant isScreenEnabled];
         v10 = 136316418;
         v11 = v3;
         v12 = 2080;
@@ -9233,11 +9233,11 @@ LABEL_9:
         v14 = 1024;
         v15 = 2880;
         v16 = 1024;
-        v17 = v5;
+        v17 = isAudioEnabled;
         v18 = 1024;
-        v19 = v6;
+        v19 = isVideoEnabled;
         v20 = 1024;
-        v21 = v7;
+        v21 = isScreenEnabled;
         _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "VCSession [%s] %s:%d Broadcasting initial state. audioEnabled=%d videoEnabled=%d screenEnabled=%d", &v10, 0x2Eu);
       }
     }
@@ -9268,18 +9268,18 @@ LABEL_9:
   }
 }
 
-+ (void)addUUIDToMutableData:(id)a3 fromUUIDString:(id)a4
++ (void)addUUIDToMutableData:(id)data fromUUIDString:(id)string
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:a4];
+  v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:string];
   v6[0] = 0xAAAAAAAAAAAAAAAALL;
   v6[1] = 0xAAAAAAAAAAAAAAAALL;
   [v5 getUUIDBytes:v6];
 
-  [a3 appendBytes:v6 length:16];
+  [data appendBytes:v6 length:16];
 }
 
-- (id)newEncryptionLabelWithLocalUUID:(id)a3 remoteUUID:(id)a4
+- (id)newEncryptionLabelWithLocalUUID:(id)d remoteUUID:(id)iD
 {
   v7 = [objc_alloc(MEMORY[0x1E695DF88]) initWithBytes:"VCControlChannelV2" length:18];
   if (self->_forceFixedEncryptionLabel)
@@ -9289,36 +9289,36 @@ LABEL_9:
 
   else
   {
-    [VCSession addUUIDToMutableData:v7 fromUUIDString:a3];
-    [VCSession addUUIDToMutableData:v7 fromUUIDString:a4];
+    [VCSession addUUIDToMutableData:v7 fromUUIDString:d];
+    [VCSession addUUIDToMutableData:v7 fromUUIDString:iD];
   }
 
   return v7;
 }
 
-+ (void)cleanupControlChannelParticipantConfig:(id *)a3
++ (void)cleanupControlChannelParticipantConfig:(id *)config
 {
-  if (a3)
+  if (config)
   {
-    var4 = a3->var4;
+    var4 = config->var4;
     if (var4)
     {
       CFRelease(var4);
     }
 
-    var3 = a3->var3;
+    var3 = config->var3;
     if (var3)
     {
       CFRelease(var3);
     }
 
-    var2 = a3->var2;
+    var2 = config->var2;
     if (var2)
     {
       CFRelease(var2);
     }
 
-    var1 = a3->var1;
+    var1 = config->var1;
     if (var1)
     {
 
@@ -9327,10 +9327,10 @@ LABEL_9:
   }
 }
 
-- (BOOL)composeControlChannelParticipantConfig:(id *)a3 withRemoteParticipant:(id)a4
+- (BOOL)composeControlChannelParticipantConfig:(id *)config withRemoteParticipant:(id)participant
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!config)
   {
     [VCSession composeControlChannelParticipantConfig:v15 withRemoteParticipant:?];
 LABEL_15:
@@ -9339,25 +9339,25 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!participant)
   {
     [VCSession composeControlChannelParticipantConfig:withRemoteParticipant:];
     goto LABEL_15;
   }
 
-  [a4 capabilities];
-  a3->var0 = v7;
-  a3->var5 = 1;
-  v8 = -[VCSession newEncryptionLabelWithLocalUUID:remoteUUID:](self, "newEncryptionLabelWithLocalUUID:remoteUUID:", -[VCSessionParticipant uuid](self->_localParticipant, "uuid"), [a4 uuid]);
-  a3->var3 = v8;
+  [participant capabilities];
+  config->var0 = v7;
+  config->var5 = 1;
+  v8 = -[VCSession newEncryptionLabelWithLocalUUID:remoteUUID:](self, "newEncryptionLabelWithLocalUUID:remoteUUID:", -[VCSessionParticipant uuid](self->_localParticipant, "uuid"), [participant uuid]);
+  config->var3 = v8;
   if (!v8)
   {
     [VCSession composeControlChannelParticipantConfig:withRemoteParticipant:];
     goto LABEL_15;
   }
 
-  v9 = -[VCSession newEncryptionLabelWithLocalUUID:remoteUUID:](self, "newEncryptionLabelWithLocalUUID:remoteUUID:", [a4 uuid], -[VCSessionParticipant uuid](self->_localParticipant, "uuid"));
-  a3->var4 = v9;
+  v9 = -[VCSession newEncryptionLabelWithLocalUUID:remoteUUID:](self, "newEncryptionLabelWithLocalUUID:remoteUUID:", [participant uuid], -[VCSessionParticipant uuid](self->_localParticipant, "uuid"));
+  config->var4 = v9;
   if (!v9)
   {
     [VCSession composeControlChannelParticipantConfig:withRemoteParticipant:];
@@ -9365,13 +9365,13 @@ LABEL_15:
   }
 
   v10 = *MEMORY[0x1E695E480];
-  if (VCSecurityKeyHolder_Create(*MEMORY[0x1E695E480], self->_securityKeyManager, 1, [(VCSessionParticipant *)self->_localParticipant idsParticipantID], 0, 2u, &a3->var1))
+  if (VCSecurityKeyHolder_Create(*MEMORY[0x1E695E480], self->_securityKeyManager, 1, [(VCSessionParticipant *)self->_localParticipant idsParticipantID], 0, 2u, &config->var1))
   {
     [VCSession composeControlChannelParticipantConfig:withRemoteParticipant:];
     goto LABEL_15;
   }
 
-  if (VCSecurityKeyHolder_Create(v10, self->_securityKeyManager, 2, [a4 idsParticipantID], objc_msgSend(a4, "isParticipantIDBasedKeyLookupEnabled"), 2u, &a3->var2))
+  if (VCSecurityKeyHolder_Create(v10, self->_securityKeyManager, 2, [participant idsParticipantID], objc_msgSend(participant, "isParticipantIDBasedKeyLookupEnabled"), 2u, &config->var2))
   {
     [VCSession composeControlChannelParticipantConfig:withRemoteParticipant:];
     goto LABEL_15;
@@ -9442,16 +9442,16 @@ LABEL_8:
   return v2;
 }
 
-- (BOOL)isECNCapableWithRemoteParticipant:(id)a3
+- (BOOL)isECNCapableWithRemoteParticipant:(id)participant
 {
   v65 = *MEMORY[0x1E69E9840];
-  v5 = [(VCCallInfoBlob *)[(VCSessionParticipant *)self->_localParticipant callInfoBlob] frameworkVersion];
-  v6 = [objc_msgSend(a3 "callInfoBlob")];
-  LODWORD(v5) = [(NSString *)v5 integerValue];
-  v7 = [v6 integerValue];
-  v8 = [@"1965" integerValue];
-  v10 = v5 >= v8 && v7 >= v8;
-  v11 = v7 < [@"2045" integerValue];
+  frameworkVersion = [(VCCallInfoBlob *)[(VCSessionParticipant *)self->_localParticipant callInfoBlob] frameworkVersion];
+  v6 = [objc_msgSend(participant "callInfoBlob")];
+  LODWORD(frameworkVersion) = [(NSString *)frameworkVersion integerValue];
+  integerValue = [v6 integerValue];
+  integerValue2 = [@"1965" integerValue];
+  v10 = frameworkVersion >= integerValue2 && integerValue >= integerValue2;
+  v11 = integerValue < [@"2045" integerValue];
   v12 = arc4random() / 4294967300.0;
   [+[GKSConnectivitySettings getStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings getStorebagValueForStorebagKey:@"vc-ecn-enabled-p2p-only" userDefaultKey:@"ecnEnabledProbabiltyForP2POnly" defaultValue:&unk_1F579E4B0 isDoubleType:{1), "doubleValue"}];
   if (v12 >= v13 || v11)
@@ -9523,7 +9523,7 @@ LABEL_8:
       WORD2(v56) = 2112;
       *(&v56 + 6) = v21;
       HIWORD(v56) = 2048;
-      v57 = self;
+      selfCopy4 = self;
       v24 = "VCSession [%s] %s:%d %@(%p) Forced turned off ECN via network config settings";
 LABEL_41:
       v26 = v29;
@@ -9596,7 +9596,7 @@ LABEL_41:
       WORD2(v56) = 2112;
       *(&v56 + 6) = v20;
       HIWORD(v56) = 2048;
-      v57 = self;
+      selfCopy4 = self;
       v24 = "VCSession [%s] %s:%d %@(%p) Forced turned on ECN via network config settings";
       goto LABEL_41;
     }
@@ -9634,10 +9634,10 @@ LABEL_44:
     goto LABEL_56;
   }
 
-  v31 = [(VCSession *)self isECNPermittedFromNetworkingLayer];
-  self->_isECNForcedByNetwork = v31;
-  self->_isECNCapable = v31;
-  self->_isECNEnabled = v31;
+  isECNPermittedFromNetworkingLayer = [(VCSession *)self isECNPermittedFromNetworkingLayer];
+  self->_isECNForcedByNetwork = isECNPermittedFromNetworkingLayer;
+  self->_isECNCapable = isECNPermittedFromNetworkingLayer;
+  self->_isECNEnabled = isECNPermittedFromNetworkingLayer;
   self->_ecnLinkType = 3;
   if (objc_opt_class() == self)
   {
@@ -9689,7 +9689,7 @@ LABEL_55:
         WORD2(v56) = 2112;
         *(&v56 + 6) = v32;
         HIWORD(v56) = 2048;
-        v57 = self;
+        selfCopy4 = self;
         v35 = "VCSession [%s] %s:%d %@(%p) Forced ECN setting via networking layer default";
         v36 = v39;
         v37 = 48;
@@ -9720,9 +9720,9 @@ LABEL_56:
         *(&v56 + 6) = isECNEnabled;
         WORD5(v56) = 1024;
         HIDWORD(v56) = isECNCapable;
-        LOWORD(v57) = 1024;
-        *(&v57 + 2) = v10;
-        HIWORD(v57) = 1024;
+        LOWORD(selfCopy4) = 1024;
+        *(&selfCopy4 + 2) = v10;
+        HIWORD(selfCopy4) = 1024;
         *v58 = ecnLinkType;
         v46 = "VCSession [%s] %s:%d _isECNEnabled=%d, _isECNCapable=%d, buildSettingECNParam=%d, _ecnLinkType=%d";
         v47 = v42;
@@ -9763,7 +9763,7 @@ LABEL_66:
         WORD2(v56) = 2112;
         *(&v56 + 6) = v40;
         HIWORD(v56) = 2048;
-        v57 = self;
+        selfCopy4 = self;
         *v58 = 1024;
         *&v58[2] = v51;
         v59 = 1024;
@@ -9821,7 +9821,7 @@ LABEL_66:
     v19 = 2112;
     *v20 = v4;
     *&v20[8] = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 1024;
     v23 = keyExistsAndHasValidFormat;
     v24 = 1024;
@@ -9868,13 +9868,13 @@ LABEL_12:
   }
 }
 
-- (void)setBytesInFlightFlagWithParticipant:(id)a3
+- (void)setBytesInFlightFlagWithParticipant:(id)participant
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(objc_msgSend(a3 "callInfoBlob")];
-  v5 = [@"2015" integerValue];
+  v4 = [objc_msgSend(objc_msgSend(participant "callInfoBlob")];
+  integerValue = [@"2015" integerValue];
   v6 = _os_feature_enabled_impl();
-  self->_isBytesInFlightAdaptationEnabled = (v4 >= v5) & v6;
+  self->_isBytesInFlightAdaptationEnabled = (v4 >= integerValue) & v6;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v7 = VRTraceErrorLogLevelToCSTR();
@@ -9891,7 +9891,7 @@ LABEL_12:
       v16 = 1024;
       v17 = isBytesInFlightAdaptationEnabled;
       v18 = 1024;
-      v19 = v4 >= v5;
+      v19 = v4 >= integerValue;
       v20 = 1024;
       v21 = v6 & 1;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "VCSession [%s] %s:%d isBytesInFlightAdaptationEnabled=%d remoteBIFSupported=%d localBIFEnabled=%d", &v10, 0x2Eu);
@@ -9899,30 +9899,30 @@ LABEL_12:
   }
 }
 
-- (BOOL)registerRemoteParticipantToSession:(id)a3
+- (BOOL)registerRemoteParticipantToSession:(id)session
 {
   v21 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_sessionQueue);
   memset(v12, 0, sizeof(v12));
-  if (![(VCSession *)self composeControlChannelParticipantConfig:v12 withRemoteParticipant:a3])
+  if (![(VCSession *)self composeControlChannelParticipantConfig:v12 withRemoteParticipant:session])
   {
-    [(VCSession *)a3 registerRemoteParticipantToSession:buf];
+    [(VCSession *)session registerRemoteParticipantToSession:buf];
 LABEL_16:
     v10 = buf[0];
     goto LABEL_13;
   }
 
-  if (!-[VCControlChannelMultiWay addActiveParticipant:participantUUID:withConfiguration:](self->_controlChannel, "addActiveParticipant:participantUUID:withConfiguration:", [a3 idsParticipantID], objc_msgSend(a3, "uuid"), v12))
+  if (!-[VCControlChannelMultiWay addActiveParticipant:participantUUID:withConfiguration:](self->_controlChannel, "addActiveParticipant:participantUUID:withConfiguration:", [session idsParticipantID], objc_msgSend(session, "uuid"), v12))
   {
-    [(VCSession *)a3 registerRemoteParticipantToSession:buf];
+    [(VCSession *)session registerRemoteParticipantToSession:buf];
     goto LABEL_16;
   }
 
   sessionMessaging = self->_sessionMessaging;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "idsParticipantID")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(session, "idsParticipantID")}];
   [(VCSessionMessaging *)sessionMessaging addParticipant:v6 controlChannelProtocolVersion:LODWORD(v12[0])];
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_remoteParticipantsMapByUUID, "setObject:forKeyedSubscript:", a3, [a3 uuid]);
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_remoteParticipantsMapByServerID, "setObject:forKeyedSubscript:", a3, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "idsParticipantID")}]);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_remoteParticipantsMapByUUID, "setObject:forKeyedSubscript:", session, [session uuid]);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_remoteParticipantsMapByServerID, "setObject:forKeyedSubscript:", session, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(session, "idsParticipantID")}]);
   [(VCSessionParticipantLocal *)self->_localParticipant setRemoteParticipants:[(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allValues]];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -9943,24 +9943,24 @@ LABEL_16:
     }
   }
 
-  [(VCSession *)self sendThermalAndSliceMessageToPariticipant:a3];
-  [(VCSession *)self sendNetworkCapabilitiesMessageToParticipant:a3];
+  [(VCSession *)self sendThermalAndSliceMessageToPariticipant:session];
+  [(VCSession *)self sendNetworkCapabilitiesMessageToParticipant:session];
   [(VCSession *)self updateLocalStreamConfiguration];
-  [(VCSession *)self reportingSessionParticipantEvent:161 withParticipant:a3];
+  [(VCSession *)self reportingSessionParticipantEvent:161 withParticipant:session];
   if (self->_currentActiveConnection)
   {
-    [a3 handleActiveConnectionChange:?];
+    [session handleActiveConnectionChange:?];
   }
 
   if (!self->_oneToOneModeEnabled)
   {
-    [(VCSessionDownlinkBandwidthAllocator *)self->_downlinkBandwidthAllocator registerForBandwidthAllocationWithClient:a3];
+    [(VCSessionDownlinkBandwidthAllocator *)self->_downlinkBandwidthAllocator registerForBandwidthAllocationWithClient:session];
     [(VCSession *)self distributeBitrateAndOptInToStreamIDsWithSeamlessTransition:1];
   }
 
   if (self->_state == 3)
   {
-    [(VCSession *)self messageMediaInitialStateToParticipant:a3];
+    [(VCSession *)self messageMediaInitialStateToParticipant:session];
   }
 
   v10 = 1;
@@ -9969,19 +9969,19 @@ LABEL_13:
   return v10;
 }
 
-- (void)unregisterRemoteParticipantFromSession:(id)a3
+- (void)unregisterRemoteParticipantFromSession:(id)session
 {
   v16 = *MEMORY[0x1E69E9840];
   if (!self->_oneToOneModeEnabled)
   {
-    [(VCSessionDownlinkBandwidthAllocator *)self->_downlinkBandwidthAllocator deregisterForBandwidthAllocationWithClient:a3];
+    [(VCSessionDownlinkBandwidthAllocator *)self->_downlinkBandwidthAllocator deregisterForBandwidthAllocationWithClient:session];
     [(VCSession *)self distributeBitrateAndOptInToStreamIDsWithSeamlessTransition:1];
   }
 
-  [(VCSession *)self reportingSessionParticipantEvent:162 withParticipant:a3];
-  -[VCControlChannelMultiWay removeActiveParticipant:](self->_controlChannel, "removeActiveParticipant:", [a3 idsParticipantID]);
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_remoteParticipantsMapByUUID, "setObject:forKeyedSubscript:", 0, [a3 uuid]);
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_remoteParticipantsMapByServerID, "setObject:forKeyedSubscript:", 0, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "idsParticipantID")}]);
+  [(VCSession *)self reportingSessionParticipantEvent:162 withParticipant:session];
+  -[VCControlChannelMultiWay removeActiveParticipant:](self->_controlChannel, "removeActiveParticipant:", [session idsParticipantID]);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_remoteParticipantsMapByUUID, "setObject:forKeyedSubscript:", 0, [session uuid]);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_remoteParticipantsMapByServerID, "setObject:forKeyedSubscript:", 0, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(session, "idsParticipantID")}]);
   [(VCSessionParticipantLocal *)self->_localParticipant setRemoteParticipants:[(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allValues]];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -10005,7 +10005,7 @@ LABEL_13:
   [(VCSession *)self updateLocalStreamConfiguration];
 }
 
-- (void)sendSymptomsToRemoteParticipants:(id)a3 symptom:(id)a4 groupID:(id)a5
+- (void)sendSymptomsToRemoteParticipants:(id)participants symptom:(id)symptom groupID:(id)d
 {
   block[8] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -10013,9 +10013,9 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __62__VCSession_sendSymptomsToRemoteParticipants_symptom_groupID___block_invoke;
   block[3] = &unk_1E85F3B00;
-  block[4] = a4;
-  block[5] = a5;
-  block[6] = a3;
+  block[4] = symptom;
+  block[5] = d;
+  block[6] = participants;
   block[7] = self;
   dispatch_async(sessionQueue, block);
 }
@@ -10092,52 +10092,52 @@ void __62__VCSession_sendSymptomsToRemoteParticipants_symptom_groupID___block_in
   }
 }
 
-+ (void)initVideoFeatureStatusSettings:(tagVCReportingClientSettingsPersist *)a3
++ (void)initVideoFeatureStatusSettings:(tagVCReportingClientSettingsPersist *)settings
 {
-  if (a3)
+  if (settings)
   {
-    *&a3->var0 = -1;
+    *&settings->var0 = -1;
     v4 = [+[VCVideoCaptureServer VCVideoCaptureServerSingleton](VCVideoCaptureServer "VCVideoCaptureServerSingleton")];
     v5 = [v4 objectForKeyedSubscript:@"VideoEyeContact"];
     if (v5)
     {
-      a3->var0 = [v5 intValue];
+      settings->var0 = [v5 intValue];
     }
 
     v6 = [v4 objectForKeyedSubscript:@"REFENB"];
     if (v6)
     {
-      a3->var5 = [v6 intValue];
+      settings->var5 = [v6 intValue];
     }
 
     v7 = [v4 objectForKeyedSubscript:@"CSFENB"];
     if (v7)
     {
-      a3->var2 = [v7 intValue];
+      settings->var2 = [v7 intValue];
     }
 
     v8 = [v4 objectForKeyedSubscript:@"PMFENB"];
     if (v8)
     {
-      a3->var3 = [v8 intValue];
+      settings->var3 = [v8 intValue];
     }
 
     v9 = [v4 objectForKeyedSubscript:@"SLFENB"];
     if (v9)
     {
-      a3->var4 = [v9 intValue];
+      settings->var4 = [v9 intValue];
     }
 
     v10 = [v4 objectForKeyedSubscript:@"BGRFENB"];
     if (v10)
     {
-      a3->var6 = [v10 intValue];
+      settings->var6 = [v10 intValue];
     }
 
     v11 = [v4 objectForKeyedSubscript:@"AFBUPENB"];
     if (v11)
     {
-      a3->var7 = [v11 intValue];
+      settings->var7 = [v11 intValue];
     }
 
     if (v4)
@@ -10148,11 +10148,11 @@ void __62__VCSession_sendSymptomsToRemoteParticipants_symptom_groupID___block_in
   }
 }
 
-- (void)initAudioFeatureStatusSettings:(tagVCReportingClientSettingsPersist *)a3
+- (void)initAudioFeatureStatusSettings:(tagVCReportingClientSettingsPersist *)settings
 {
-  if (a3)
+  if (settings)
   {
-    a3->var9.var2 = self->_detectInactiveAudioFramesAACELD;
+    settings->var9.var2 = self->_detectInactiveAudioFramesAACELD;
   }
 }
 
@@ -10213,7 +10213,7 @@ void __62__VCSession_sendSymptomsToRemoteParticipants_symptom_groupID___block_in
     v4 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] useMediaDrivenDuplication];
+      useMediaDrivenDuplication = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] useMediaDrivenDuplication];
       v6 = 136315906;
       v7 = v3;
       v8 = 2080;
@@ -10221,18 +10221,18 @@ void __62__VCSession_sendSymptomsToRemoteParticipants_symptom_groupID___block_in
       v10 = 1024;
       v11 = 3278;
       v12 = 1024;
-      v13 = v5;
+      v13 = useMediaDrivenDuplication;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, "VCSession [%s] %s:%d Load switch useMediaDrivenDuplication %d", &v6, 0x22u);
     }
   }
 }
 
-- (void)setIsSpatialAudioSupported:(BOOL)a3
+- (void)setIsSpatialAudioSupported:(BOOL)supported
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  if (self->_isSpatialAudioSupported != a3)
+  if (self->_isSpatialAudioSupported != supported)
   {
-    self->_isSpatialAudioSupported = a3;
+    self->_isSpatialAudioSupported = supported;
     v3 = @"SpatialAudioSupported";
     v4[0] = [MEMORY[0x1E696AD98] numberWithBool:?];
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v4 forKeys:&v3 count:1];
@@ -10257,8 +10257,8 @@ void __62__VCSession_sendSymptomsToRemoteParticipants_symptom_groupID___block_in
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allValues];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  allValues = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allValues];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v5)
   {
     v6 = v5;
@@ -10270,14 +10270,14 @@ void __62__VCSession_sendSymptomsToRemoteParticipants_symptom_groupID___block_in
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) setLocalCameraCaptureActive:v3];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v6);
@@ -10318,15 +10318,15 @@ uint64_t __33__VCSession_registerQoSReporting__block_invoke_2(uint64_t a1, uint6
   [(VCQoSMonitorManager *)v3 unregisterQoSReportingSourceForToken:transportSessionID];
 }
 
-- (void)updateAlwaysHDCaptureScreenEnabledWithNewParticipant:(id)a3
+- (void)updateAlwaysHDCaptureScreenEnabledWithNewParticipant:(id)participant
 {
   v30 = *MEMORY[0x1E69E9840];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(VCSession *)self remoteParticipants];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v26 objects:v25 count:16];
+  remoteParticipants = [(VCSession *)self remoteParticipants];
+  v6 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -10338,7 +10338,7 @@ uint64_t __33__VCSession_registerQoSReporting__block_invoke_2(uint64_t a1, uint6
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(remoteParticipants);
         }
 
         if (v9)
@@ -10353,7 +10353,7 @@ uint64_t __33__VCSession_registerQoSReporting__block_invoke_2(uint64_t a1, uint6
         }
       }
 
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v26 objects:v25 count:16];
+      v7 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v26 objects:v25 count:16];
     }
 
     while (v7);
@@ -10364,10 +10364,10 @@ uint64_t __33__VCSession_registerQoSReporting__block_invoke_2(uint64_t a1, uint6
     LODWORD(v9) = 1;
   }
 
-  LOBYTE(v12) = (a3 == 0) & v9;
-  if (a3 && v9)
+  LOBYTE(v12) = (participant == 0) & v9;
+  if (participant && v9)
   {
-    [a3 capabilities];
+    [participant capabilities];
     v12 = HIBYTE(v13) & 1;
   }
 
@@ -10393,17 +10393,17 @@ uint64_t __33__VCSession_registerQoSReporting__block_invoke_2(uint64_t a1, uint6
   [(VCSessionParticipantLocal *)self->_localParticipant setAlwaysHDCaptureScreenEnabled:v14 & 1];
 }
 
-- (BOOL)handleEncryptionInfoChange:(id)a3
+- (BOOL)handleEncryptionInfoChange:(id)change
 {
   block[6] = *MEMORY[0x1E69E9840];
-  -[VCSession reportingSessionParticipantEvent:withParticipant:keyChangeReason:newMKI:](self, "reportingSessionParticipantEvent:withParticipant:keyChangeReason:newMKI:", 167, self->_localParticipant, 0, [a3 objectForKeyedSubscript:@"SecurityKeyIndex"]);
+  -[VCSession reportingSessionParticipantEvent:withParticipant:keyChangeReason:newMKI:](self, "reportingSessionParticipantEvent:withParticipant:keyChangeReason:newMKI:", 167, self->_localParticipant, 0, [change objectForKeyedSubscript:@"SecurityKeyIndex"]);
   sessionQueue = self->_sessionQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__VCSession_handleEncryptionInfoChange___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = change;
   dispatch_async(sessionQueue, block);
   return 1;
 }
@@ -10582,19 +10582,19 @@ uint64_t __35__VCSession_resetDecryptionTimeout__block_invoke(uint64_t a1)
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:3];
 }
 
-- (void)reportingSessionParticipantEvent:(unsigned __int16)a3 withParticipant:(id)a4 keyChangeReason:(id)a5 newMKI:(id)a6 withStreamGroupID:(unsigned int)a7 withStreamID:(unsigned __int16)a8
+- (void)reportingSessionParticipantEvent:(unsigned __int16)event withParticipant:(id)participant keyChangeReason:(id)reason newMKI:(id)i withStreamGroupID:(unsigned int)d withStreamID:(unsigned __int16)iD
 {
   v39 = *MEMORY[0x1E69E9840];
   v26 = 0;
   if (self->super._reportingAgent)
   {
-    v10 = *&a7;
-    v14 = a3;
-    if (a4 || (a3 - 170) > 8u)
+    v10 = *&d;
+    eventCopy = event;
+    if (participant || (event - 170) > 8u)
     {
       Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-      LOWORD(v25) = a8;
-      [(VCSession *)self collectSessionEventKeyFieldsAndSubtype:Mutable eventType:v14 withParticipant:a4 keyChangeReason:a5 newMKI:a6 withStreamGroupID:v10 withStreamID:v25 collectSubtype:&v26];
+      LOWORD(v25) = iD;
+      [(VCSession *)self collectSessionEventKeyFieldsAndSubtype:Mutable eventType:eventCopy withParticipant:participant keyChangeReason:reason newMKI:i withStreamGroupID:v10 withStreamID:v25 collectSubtype:&v26];
       reportingGenericEvent();
       if (Mutable)
       {
@@ -10637,9 +10637,9 @@ uint64_t __35__VCSession_resetDecryptionTimeout__block_invoke(uint64_t a1)
         v33 = 2112;
         v34 = v15;
         v35 = 2048;
-        v36 = self;
+        selfCopy2 = self;
         v37 = 1024;
-        v38 = v14;
+        v38 = eventCopy;
         v20 = "VCSession [%s] %s:%d %@(%p) Session Event failed - EventType:%d needs a participant but it is nil";
         v21 = v24;
         v22 = 54;
@@ -10698,7 +10698,7 @@ LABEL_27:
         v33 = 2112;
         v34 = v16;
         v35 = 2048;
-        v36 = self;
+        selfCopy2 = self;
         v20 = "VCSession [%s] %s:%d %@(%p) Reporting agent is not properly configured";
         v21 = v19;
         v22 = 48;
@@ -10708,10 +10708,10 @@ LABEL_27:
   }
 }
 
-- (void)reportingMomentsToGreenTeaWithRequest:(id)a3
+- (void)reportingMomentsToGreenTeaWithRequest:(id)request
 {
   v6 = *MEMORY[0x1E69E9840];
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"vcMomentsRequestMode", "unsignedIntValue"}] == 2)
+  if ([objc_msgSend(request objectForKeyedSubscript:{@"vcMomentsRequestMode", "unsignedIntValue"}] == 2)
   {
     ct_green_tea_logger_create_static();
     CTGreenTeaOsLogHandle = getCTGreenTeaOsLogHandle();
@@ -10727,47 +10727,47 @@ LABEL_27:
   }
 }
 
-- (void)addNegotiatedCipherSuitesForParticipant:(id)a3 toReportingDictionary:(id)a4
+- (void)addNegotiatedCipherSuitesForParticipant:(id)participant toReportingDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_ABT", @"CPHRS"];
-  [a4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", -[VCSessionConfiguration isOneToOneAuthenticationTagEnabled](self->_configuration, "isOneToOneAuthenticationTagEnabled")), v7}];
-  v8 = [MEMORY[0x1E696AD60] stringWithFormat:@"Negotiated ciphers for participant=%llu:\r\n", objc_msgSend(a3, "idsParticipantID")];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", -[VCSessionConfiguration isOneToOneAuthenticationTagEnabled](self->_configuration, "isOneToOneAuthenticationTagEnabled")), v7}];
+  v8 = [MEMORY[0x1E696AD60] stringWithFormat:@"Negotiated ciphers for participant=%llu:\r\n", objc_msgSend(participant, "idsParticipantID")];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%d", @"CPHRS", reportingStreamGroupFromStreamGroupID()];
-  v10 = [a3 negotiatedCipherSuiteForStreamGroupID:1835623282];
-  [a4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v10), v9}];
+  v10 = [participant negotiatedCipherSuiteForStreamGroupID:1835623282];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v10), v9}];
   [v8 appendFormat:@"{streamGroup=%@ : cipherSuite=%@}, \r\n", &unk_1F579A110, VCMediaStreamTransport_SRTPCipherSuiteForVCMediaStreamCipherSuite(v10)];
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%d", @"CPHRS", reportingStreamGroupFromStreamGroupID()];
-  v12 = [a3 negotiatedCipherSuiteForStreamGroupID:1667329381];
-  [a4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v12), v11}];
+  v12 = [participant negotiatedCipherSuiteForStreamGroupID:1667329381];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v12), v11}];
   [v8 appendFormat:@"{streamGroup=%@ : cipherSuite=%@}, \r\n", &unk_1F579A080, VCMediaStreamTransport_SRTPCipherSuiteForVCMediaStreamCipherSuite(v12)];
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%d", @"CPHRS", reportingStreamGroupFromStreamGroupID()];
-  v14 = [a3 negotiatedCipherSuiteForStreamGroupID:1937339233];
-  [a4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v14), v13}];
+  v14 = [participant negotiatedCipherSuiteForStreamGroupID:1937339233];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v14), v13}];
   [v8 appendFormat:@"{streamGroup=%@ : cipherSuite=%@}, \r\n", &unk_1F579A128, VCMediaStreamTransport_SRTPCipherSuiteForVCMediaStreamCipherSuite(v14)];
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%d", @"CPHRS", reportingStreamGroupFromStreamGroupID()];
-  v16 = [a3 negotiatedCipherSuiteForStreamGroupID:1935897189];
-  [a4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v16), v15}];
+  v16 = [participant negotiatedCipherSuiteForStreamGroupID:1935897189];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v16), v15}];
   [v8 appendFormat:@"{streamGroup=%@ : cipherSuite=%@}, \r\n", &unk_1F579A140, VCMediaStreamTransport_SRTPCipherSuiteForVCMediaStreamCipherSuite(v16)];
   v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%d", @"CPHRS", reportingStreamGroupFromStreamGroupID()];
-  v18 = [a3 negotiatedCipherSuiteForStreamGroupID:1667329399];
-  [a4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v18), v17}];
+  v18 = [participant negotiatedCipherSuiteForStreamGroupID:1667329399];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v18), v17}];
   [v8 appendFormat:@"{streamGroup=%@ : cipherSuite=%@}, \r\n", &unk_1F579A158, VCMediaStreamTransport_SRTPCipherSuiteForVCMediaStreamCipherSuite(v18)];
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%d", @"CPHRS", reportingStreamGroupFromStreamGroupID()];
-  v20 = [a3 negotiatedCipherSuiteForStreamGroupID:1835623287];
-  [a4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v20), v19}];
+  v20 = [participant negotiatedCipherSuiteForStreamGroupID:1835623287];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v20), v19}];
   [v8 appendFormat:@"{streamGroup=%@ : cipherSuite=%@}, \r\n", &unk_1F579A170, VCMediaStreamTransport_SRTPCipherSuiteForVCMediaStreamCipherSuite(v20)];
   v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%d", @"CPHRS", reportingStreamGroupFromStreamGroupID()];
-  v22 = [a3 negotiatedCipherSuiteForStreamGroupID:1667330164];
-  [a4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v22), v21}];
+  v22 = [participant negotiatedCipherSuiteForStreamGroupID:1667330164];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v22), v21}];
   [v8 appendFormat:@"{streamGroup=%@ : cipherSuite=%@}, \r\n", &unk_1F579A188, VCMediaStreamTransport_SRTPCipherSuiteForVCMediaStreamCipherSuite(v22)];
   v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%d", @"CPHRS", reportingStreamGroupFromStreamGroupID()];
-  v24 = [a3 negotiatedCipherSuiteForStreamGroupID:1718909044];
-  [a4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v24), v23}];
+  v24 = [participant negotiatedCipherSuiteForStreamGroupID:1718909044];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v24), v23}];
   [v8 appendFormat:@"{streamGroup=%@ : cipherSuite=%@}, \r\n", &unk_1F579A098, VCMediaStreamTransport_SRTPCipherSuiteForVCMediaStreamCipherSuite(v24)];
   v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%d", @"CPHRS", reportingStreamGroupFromStreamGroupID()];
-  v26 = [a3 negotiatedCipherSuiteForStreamGroupID:1650745716];
-  [a4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v26), v25}];
+  v26 = [participant negotiatedCipherSuiteForStreamGroupID:1650745716];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", v26), v25}];
   [v8 appendFormat:@"{streamGroup=%@ : cipherSuite=%@}, \r\n", &unk_1F579A1A0, VCMediaStreamTransport_SRTPCipherSuiteForVCMediaStreamCipherSuite(v26)];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -10788,12 +10788,12 @@ LABEL_27:
   }
 }
 
-- (void)collectSessionEventKeyFieldsAndSubtype:(__CFDictionary *)a3 eventType:(unsigned __int16)a4 withParticipant:(id)a5 keyChangeReason:(id)a6 newMKI:(id)a7 withStreamGroupID:(unsigned int)a8 withStreamID:(unsigned __int16)a9 collectSubtype:(unsigned __int16 *)a10
+- (void)collectSessionEventKeyFieldsAndSubtype:(__CFDictionary *)subtype eventType:(unsigned __int16)type withParticipant:(id)participant keyChangeReason:(id)reason newMKI:(id)i withStreamGroupID:(unsigned int)d withStreamID:(unsigned __int16)iD collectSubtype:(unsigned __int16 *)self0
 {
-  if (a10)
+  if (collectSubtype)
   {
-    *a10 = 0;
-    switch(a4)
+    *collectSubtype = 0;
+    switch(type)
     {
       case 0x9Fu:
         conversationID = [MEMORY[0x1E696AD98] numberWithInt:self->_currentConnectionType];
@@ -10804,40 +10804,40 @@ LABEL_27:
         v17 = 432;
         goto LABEL_14;
       case 0xA1u:
-        CFDictionaryAddValue(a3, @"VCSPIDSID", self->_idsDestination);
-        CFDictionaryAddValue(a3, @"VCSPAudioEnabled", [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a5, "isAudioEnabled")}]);
-        CFDictionaryAddValue(a3, @"VCSPVideoEnabled", [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a5, "isVideoEnabled")}]);
-        CFDictionaryAddValue(a3, @"REMBUILD", [objc_msgSend(a5 "callInfoBlob")]);
-        CFDictionaryAddValue(a3, @"RDT", [objc_msgSend(a5 "callInfoBlob")]);
-        CFDictionaryAddValue(a3, @"VCSECNLinkType", [MEMORY[0x1E696AD98] numberWithUnsignedChar:self->_ecnLinkType]);
-        CFDictionaryAddValue(a3, @"MicMode", [MEMORY[0x1E696AD98] numberWithInteger:{-[VCSession getCurrentMicMode](self, "getCurrentMicMode")}]);
-        [(VCSession *)self addNegotiatedCipherSuitesForParticipant:a5 toReportingDictionary:a3];
+        CFDictionaryAddValue(subtype, @"VCSPIDSID", self->_idsDestination);
+        CFDictionaryAddValue(subtype, @"VCSPAudioEnabled", [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(participant, "isAudioEnabled")}]);
+        CFDictionaryAddValue(subtype, @"VCSPVideoEnabled", [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(participant, "isVideoEnabled")}]);
+        CFDictionaryAddValue(subtype, @"REMBUILD", [objc_msgSend(participant "callInfoBlob")]);
+        CFDictionaryAddValue(subtype, @"RDT", [objc_msgSend(participant "callInfoBlob")]);
+        CFDictionaryAddValue(subtype, @"VCSECNLinkType", [MEMORY[0x1E696AD98] numberWithUnsignedChar:self->_ecnLinkType]);
+        CFDictionaryAddValue(subtype, @"MicMode", [MEMORY[0x1E696AD98] numberWithInteger:{-[VCSession getCurrentMicMode](self, "getCurrentMicMode")}]);
+        [(VCSession *)self addNegotiatedCipherSuitesForParticipant:participant toReportingDictionary:subtype];
         goto LABEL_20;
       case 0xA2u:
 LABEL_20:
-        v18 = [a5 capabilities] >> 32 == 1;
-        CFDictionaryAddValue(a3, @"VCSPIsWebUser", [MEMORY[0x1E696AD98] numberWithBool:v18]);
-        conversationID = [a5 uuid];
+        v18 = [participant capabilities] >> 32 == 1;
+        CFDictionaryAddValue(subtype, @"VCSPIsWebUser", [MEMORY[0x1E696AD98] numberWithBool:v18]);
+        conversationID = [participant uuid];
         v14 = @"VCSPUUID";
         goto LABEL_39;
       case 0xA3u:
-        CFDictionaryAddValue(a3, @"VCSPUUID", [(VCSessionParticipant *)self->_localParticipant uuid]);
-        CFDictionaryAddValue(a3, @"LocSw", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCSwitchManager localSwitches](self->_switchManager, "localSwitches")}]);
-        CFDictionaryAddValue(a3, @"SesSw", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[VCSessionSwitches switches](self->_abSwitches, "switches")}]);
+        CFDictionaryAddValue(subtype, @"VCSPUUID", [(VCSessionParticipant *)self->_localParticipant uuid]);
+        CFDictionaryAddValue(subtype, @"LocSw", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCSwitchManager localSwitches](self->_switchManager, "localSwitches")}]);
+        CFDictionaryAddValue(subtype, @"SesSw", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[VCSessionSwitches switches](self->_abSwitches, "switches")}]);
         v21 = [+[VCVideoCaptureServer VCVideoCaptureServerSingleton](VCVideoCaptureServer "VCVideoCaptureServerSingleton")];
-        VCUtil_AppendFromDictionary(a3, v21);
+        VCUtil_AppendFromDictionary(subtype, v21);
         if (v21)
         {
           CFRelease(v21);
         }
 
-        CFDictionaryAddValue(a3, @"MicMode", [MEMORY[0x1E696AD98] numberWithInteger:{-[VCSession getCurrentMicMode](self, "getCurrentMicMode")}]);
-        CFDictionaryAddValue(a3, @"SpatialAudioSupported", [MEMORY[0x1E696AD98] numberWithBool:self->_isSpatialAudioSupported]);
+        CFDictionaryAddValue(subtype, @"MicMode", [MEMORY[0x1E696AD98] numberWithInteger:{-[VCSession getCurrentMicMode](self, "getCurrentMicMode")}]);
+        CFDictionaryAddValue(subtype, @"SpatialAudioSupported", [MEMORY[0x1E696AD98] numberWithBool:self->_isSpatialAudioSupported]);
         goto LABEL_26;
       case 0xA4u:
-        CFDictionaryAddValue(a3, @"VCSPAudioEnabled", [MEMORY[0x1E696AD98] numberWithBool:{-[VCSessionParticipant isAudioEnabled](self->_localParticipant, "isAudioEnabled")}]);
-        CFDictionaryAddValue(a3, @"VCSPVideoEnabled", [MEMORY[0x1E696AD98] numberWithBool:{-[VCSessionParticipant isVideoEnabled](self->_localParticipant, "isVideoEnabled")}]);
-        CFDictionaryAddValue(a3, @"VCSPScreenEnabled", [MEMORY[0x1E696AD98] numberWithBool:{-[VCSessionParticipant isScreenEnabled](self->_localParticipant, "isScreenEnabled")}]);
+        CFDictionaryAddValue(subtype, @"VCSPAudioEnabled", [MEMORY[0x1E696AD98] numberWithBool:{-[VCSessionParticipant isAudioEnabled](self->_localParticipant, "isAudioEnabled")}]);
+        CFDictionaryAddValue(subtype, @"VCSPVideoEnabled", [MEMORY[0x1E696AD98] numberWithBool:{-[VCSessionParticipant isVideoEnabled](self->_localParticipant, "isVideoEnabled")}]);
+        CFDictionaryAddValue(subtype, @"VCSPScreenEnabled", [MEMORY[0x1E696AD98] numberWithBool:{-[VCSessionParticipant isScreenEnabled](self->_localParticipant, "isScreenEnabled")}]);
         if (self->_conversationID)
         {
           conversationID = self->_conversationID;
@@ -10867,20 +10867,20 @@ LABEL_20:
       case 0xBBu:
         return;
       case 0xA7u:
-        if ([a5 uuid])
+        if ([participant uuid])
         {
-          v20 = [a5 uuid];
+          uuid = [participant uuid];
         }
 
         else
         {
-          v20 = @"nil";
+          uuid = @"nil";
         }
 
-        CFDictionaryAddValue(a3, @"VCSPUUID", v20);
-        if (a7)
+        CFDictionaryAddValue(subtype, @"VCSPUUID", uuid);
+        if (i)
         {
-          conversationID = [a7 description];
+          conversationID = [i description];
         }
 
         else
@@ -10891,9 +10891,9 @@ LABEL_20:
         v14 = @"VCSNewMKI";
         goto LABEL_39;
       case 0xA8u:
-        if (a6)
+        if (reason)
         {
-          conversationID = [a6 stringValue];
+          conversationID = [reason stringValue];
         }
 
         else
@@ -10905,29 +10905,29 @@ LABEL_20:
         goto LABEL_39;
       case 0xA9u:
 LABEL_26:
-        CFDictionaryAddValue(a3, @"VCSOneToOneModeEnabled", [MEMORY[0x1E696AD98] numberWithBool:self->_oneToOneModeEnabled]);
-        CFDictionaryAddValue(a3, @"VCSMode", [MEMORY[0x1E696AD98] numberWithInteger:{-[VCSessionConfiguration sessionMode](self->_configuration, "sessionMode")}]);
+        CFDictionaryAddValue(subtype, @"VCSOneToOneModeEnabled", [MEMORY[0x1E696AD98] numberWithBool:self->_oneToOneModeEnabled]);
+        CFDictionaryAddValue(subtype, @"VCSMode", [MEMORY[0x1E696AD98] numberWithInteger:{-[VCSessionConfiguration sessionMode](self->_configuration, "sessionMode")}]);
         conversationID = [MEMORY[0x1E696AD98] numberWithBool:{-[VCSessionConfiguration outOfProcessCodecsEnabled](self->_configuration, "outOfProcessCodecsEnabled")}];
         v14 = @"VCSOOPCodecs";
         goto LABEL_39;
       case 0xAAu:
-        CFDictionaryAddValue(a3, @"VCSPUUID", [a5 uuid]);
-        conversationID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a5, "isAudioEnabled")}];
+        CFDictionaryAddValue(subtype, @"VCSPUUID", [participant uuid]);
+        conversationID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(participant, "isAudioEnabled")}];
         v14 = @"VCSPAudioEnabled";
         goto LABEL_39;
       case 0xABu:
-        CFDictionaryAddValue(a3, @"VCSPUUID", [a5 uuid]);
-        CFDictionaryAddValue(a3, @"VCSPVideoEnabled", [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a5, "isVideoEnabled")}]);
-        *a10 = 1;
+        CFDictionaryAddValue(subtype, @"VCSPUUID", [participant uuid]);
+        CFDictionaryAddValue(subtype, @"VCSPVideoEnabled", [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(participant, "isVideoEnabled")}]);
+        *collectSubtype = 1;
         return;
       case 0xACu:
-        CFDictionaryAddValue(a3, @"VCSPUUID", [a5 uuid]);
-        conversationID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a5, "isAudioPaused")}];
+        CFDictionaryAddValue(subtype, @"VCSPUUID", [participant uuid]);
+        conversationID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(participant, "isAudioPaused")}];
         v14 = @"VCSPAudioPaused";
         goto LABEL_39;
       case 0xADu:
-        CFDictionaryAddValue(a3, @"VCSPUUID", [a5 uuid]);
-        conversationID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a5, "isVideoPaused")}];
+        CFDictionaryAddValue(subtype, @"VCSPUUID", [participant uuid]);
+        conversationID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(participant, "isVideoPaused")}];
         v14 = @"VCSPVideoPaused";
         goto LABEL_39;
       case 0xB5u:
@@ -10938,34 +10938,34 @@ LABEL_14:
         v14 = @"VCSPTargetBitrate";
         goto LABEL_39;
       case 0xBCu:
-        CFDictionaryAddValue(a3, @"VCSPUUID", [a5 uuid]);
-        CFDictionaryAddValue(a3, @"VCSPScreenEnabled", [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a5, "isScreenEnabled")}]);
-        conversationID = [MEMORY[0x1E696AD98] numberWithInt:self->_localParticipant == a5];
+        CFDictionaryAddValue(subtype, @"VCSPUUID", [participant uuid]);
+        CFDictionaryAddValue(subtype, @"VCSPScreenEnabled", [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(participant, "isScreenEnabled")}]);
+        conversationID = [MEMORY[0x1E696AD98] numberWithInt:self->_localParticipant == participant];
         v14 = @"VCSPIsLocalParticipant";
         goto LABEL_39;
       default:
-        if ((a4 - 232) >= 2)
+        if ((type - 232) >= 2)
         {
           return;
         }
 
-        CFDictionaryAddValue(a3, @"VCMSStreamGroup", [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a8]);
-        if ([a5 uuid])
+        CFDictionaryAddValue(subtype, @"VCMSStreamGroup", [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&d]);
+        if ([participant uuid])
         {
-          v15 = [a5 uuid];
+          uuid2 = [participant uuid];
         }
 
         else
         {
-          v15 = @"nil";
+          uuid2 = @"nil";
         }
 
-        CFDictionaryAddValue(a3, @"VCSPUUID", v15);
-        conversationID = [MEMORY[0x1E696AD98] numberWithUnsignedShort:a9];
+        CFDictionaryAddValue(subtype, @"VCSPUUID", uuid2);
+        conversationID = [MEMORY[0x1E696AD98] numberWithUnsignedShort:iD];
         v14 = @"VCASStreamIDs";
 LABEL_39:
 
-        CFDictionaryAddValue(a3, v14, conversationID);
+        CFDictionaryAddValue(subtype, v14, conversationID);
         break;
     }
   }
@@ -10976,20 +10976,20 @@ LABEL_39:
   }
 }
 
-- (void)reportingSessionRemoteParticipantEvent:(unsigned __int16)a3 withParticipant:(id)a4 value:(id)a5
+- (void)reportingSessionRemoteParticipantEvent:(unsigned __int16)event withParticipant:(id)participant value:(id)value
 {
-  v7 = a3;
+  eventCopy = event;
   v26 = *MEMORY[0x1E69E9840];
-  if (a3 <= 175)
+  if (event <= 175)
   {
-    if (a3 == 174)
+    if (event == 174)
     {
       v9 = @"VCSPAudioEnabled";
     }
 
     else
     {
-      if (a3 != 175)
+      if (event != 175)
       {
         goto LABEL_16;
       }
@@ -10999,8 +10999,8 @@ LABEL_39:
 
 LABEL_12:
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-    CFDictionaryAddValue(Mutable, @"VCSPUUID", [a4 uuid]);
-    CFDictionaryAddValue(Mutable, v9, a5);
+    CFDictionaryAddValue(Mutable, @"VCSPUUID", [participant uuid]);
+    CFDictionaryAddValue(Mutable, v9, value);
     reportingGenericEvent();
     if (Mutable)
     {
@@ -11011,7 +11011,7 @@ LABEL_12:
     return;
   }
 
-  switch(a3)
+  switch(event)
   {
     case 0xB0u:
       v9 = @"VCSPAudioPaused";
@@ -11064,9 +11064,9 @@ LABEL_16:
         v20 = 2112;
         v21 = v11;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 1024;
-        v25 = v7;
+        v25 = eventCopy;
         _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, "VCSession [%s] %s:%d %@(%p) EventType:%d is not relevant for Session Remote Participant Event logging", &v14, 0x36u);
       }
     }
@@ -11099,18 +11099,18 @@ LABEL_16:
   reportingGenericEvent();
 }
 
-- (void)handleMicModeNotification:(id)a3
+- (void)handleMicModeNotification:(id)notification
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E6986B80]];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E6986B80]];
   if (v5)
   {
     if ([v5 isEqualToString:@"com.apple.facetime"])
     {
-      v6 = [(VCSession *)self getCurrentMicMode];
+      getCurrentMicMode = [(VCSession *)self getCurrentMicMode];
       v7 = @"MicMode";
-      v8[0] = [MEMORY[0x1E696AD98] numberWithInteger:v6];
+      v8[0] = [MEMORY[0x1E696AD98] numberWithInteger:getCurrentMicMode];
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
       reportingGenericEvent();
     }
@@ -11119,21 +11119,21 @@ LABEL_16:
 
 - (void)registerForThermalFeatureNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E6986B78];
 
-  [v3 addObserver:self selector:sel_handleMicModeNotification_ name:v4 object:0];
+  [defaultCenter addObserver:self selector:sel_handleMicModeNotification_ name:v4 object:0];
 }
 
 - (void)deregisterForThermalFeatureNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E6986B78];
 
-  [v3 removeObserver:self name:v4 object:0];
+  [defaultCenter removeObserver:self name:v4 object:0];
 }
 
-- (void)dispatchedAddParticipantWithConfig:(id)a3
+- (void)dispatchedAddParticipantWithConfig:(id)config
 {
   v60 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCSession-dispatchedAddParticipantWithConfig");
@@ -11143,9 +11143,9 @@ LABEL_16:
     v6 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (config)
       {
-        v7 = [objc_msgSend(a3 "description")];
+        v7 = [objc_msgSend(config "description")];
       }
 
       else
@@ -11165,7 +11165,7 @@ LABEL_16:
     }
   }
 
-  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_remoteParticipantsMapByServerID, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "idsParticipantID")}]))
+  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_remoteParticipantsMapByServerID, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(config, "idsParticipantID")}]))
   {
     if (objc_opt_class() == self)
     {
@@ -11197,7 +11197,7 @@ LABEL_16:
         v14 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          v37 = [a3 idsParticipantID];
+          idsParticipantID = [config idsParticipantID];
           *buf = 136316418;
           v49 = v13;
           v50 = 2080;
@@ -11207,9 +11207,9 @@ LABEL_16:
           v54 = 2112;
           v55 = v8;
           v56 = 2048;
-          v57 = self;
+          selfCopy3 = self;
           v58 = 2048;
-          v59 = v37;
+          v59 = idsParticipantID;
           _os_log_error_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_ERROR, "VCSession [%s] %s:%d %@(%p) Another participant with same idsParticipantID=%llu already exists!", buf, 0x3Au);
         }
       }
@@ -11222,13 +11222,13 @@ LABEL_16:
     block[2] = __48__VCSession_dispatchedAddParticipantWithConfig___block_invoke;
     block[3] = &unk_1E85F3E30;
     block[4] = self;
-    block[5] = a3;
+    block[5] = config;
     block[6] = v15;
     v17 = block;
     goto LABEL_29;
   }
 
-  if (self->_localParticipant && [objc_msgSend(a3 "uuid")])
+  if (self->_localParticipant && [objc_msgSend(config "uuid")])
   {
     if (objc_opt_class() == self)
     {
@@ -11260,7 +11260,7 @@ LABEL_16:
         v33 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          v41 = [a3 uuid];
+          uuid = [config uuid];
           *buf = 136316418;
           v49 = v32;
           v50 = 2080;
@@ -11270,9 +11270,9 @@ LABEL_16:
           v54 = 2112;
           v55 = v9;
           v56 = 2048;
-          v57 = self;
+          selfCopy3 = self;
           v58 = 2112;
-          v59 = v41;
+          v59 = uuid;
           _os_log_error_impl(&dword_1DB56E000, v33, OS_LOG_TYPE_ERROR, "VCSession [%s] %s:%d %@(%p) Attempting to add a remote participant that is using same uuid as local participant's uuid=%@!", buf, 0x3Au);
         }
       }
@@ -11285,49 +11285,49 @@ LABEL_16:
     v46[2] = __48__VCSession_dispatchedAddParticipantWithConfig___block_invoke_603;
     v46[3] = &unk_1E85F3E30;
     v46[4] = self;
-    v46[5] = a3;
+    v46[5] = config;
     v46[6] = v34;
     v17 = v46;
     goto LABEL_29;
   }
 
-  [a3 setOutOfProcessCodecsEnabled:{-[VCSessionConfiguration outOfProcessCodecsEnabled](self->_configuration, "outOfProcessCodecsEnabled")}];
-  [a3 setSpatialMetadata:self->_spatialMetadata];
-  [a3 setSpatialMetadataEntryMap:self->_mediaTypeToSpatialMetadataEntryMap];
-  [a3 setMediaNegotiator:{-[VCSessionParticipant mediaNegotiator](self->_localParticipant, "mediaNegotiator")}];
-  [a3 setSecurityKeyManager:self->_securityKeyManager];
-  [a3 setSessionUUID:self->_uuid];
-  [a3 setTransportSessionID:self->_transportSessionID];
-  [a3 setIdsDestination:self->_idsDestination];
-  [a3 setIsGKVoiceChat:self->_isGKVoiceChat];
-  [a3 setSessionMode:{-[VCSessionConfiguration sessionMode](self->_configuration, "sessionMode")}];
-  [a3 setNetworkFeedbackController:self->_feedbackController];
-  [a3 setAudioMachineLearningCoordinator:self->_audioMachineLearningCoordinatorDownlink];
-  [a3 setIsLowLatencyAudio:{+[VCHardwareSettings deviceClass](VCHardwareSettings, "deviceClass") == 8}];
-  [a3 setIsOneToOneModeEnabled:{-[VCSessionConfiguration isOneToOneModeEnabled](self->_configuration, "isOneToOneModeEnabled")}];
-  [a3 setOneToOneAuthenticationTagEnabled:{-[VCSessionConfiguration isOneToOneAuthenticationTagEnabled](self->_configuration, "isOneToOneAuthenticationTagEnabled")}];
+  [config setOutOfProcessCodecsEnabled:{-[VCSessionConfiguration outOfProcessCodecsEnabled](self->_configuration, "outOfProcessCodecsEnabled")}];
+  [config setSpatialMetadata:self->_spatialMetadata];
+  [config setSpatialMetadataEntryMap:self->_mediaTypeToSpatialMetadataEntryMap];
+  [config setMediaNegotiator:{-[VCSessionParticipant mediaNegotiator](self->_localParticipant, "mediaNegotiator")}];
+  [config setSecurityKeyManager:self->_securityKeyManager];
+  [config setSessionUUID:self->_uuid];
+  [config setTransportSessionID:self->_transportSessionID];
+  [config setIdsDestination:self->_idsDestination];
+  [config setIsGKVoiceChat:self->_isGKVoiceChat];
+  [config setSessionMode:{-[VCSessionConfiguration sessionMode](self->_configuration, "sessionMode")}];
+  [config setNetworkFeedbackController:self->_feedbackController];
+  [config setAudioMachineLearningCoordinator:self->_audioMachineLearningCoordinatorDownlink];
+  [config setIsLowLatencyAudio:{+[VCHardwareSettings deviceClass](VCHardwareSettings, "deviceClass") == 8}];
+  [config setIsOneToOneModeEnabled:{-[VCSessionConfiguration isOneToOneModeEnabled](self->_configuration, "isOneToOneModeEnabled")}];
+  [config setOneToOneAuthenticationTagEnabled:{-[VCSessionConfiguration isOneToOneAuthenticationTagEnabled](self->_configuration, "isOneToOneAuthenticationTagEnabled")}];
   v10 = nw_activity_create();
-  [a3 setNwActivity:v10];
+  [config setNwActivity:v10];
   nw_release(v10);
   if (self->_nwActivity)
   {
-    [a3 nwActivity];
+    [config nwActivity];
     nw_activity_set_parent_activity();
   }
 
-  [a3 nwActivity];
+  [config nwActivity];
   nw_activity_activate();
-  [a3 setIsServerRTxEnabled:self->_isServerPacketRetransmissionForVideoEnabled];
-  [a3 setIsEnhancedJBAdaptationsEnabled:{-[VCSession isEnhancedJBAdaptationsEnabled](self, "isEnhancedJBAdaptationsEnabled")}];
-  [a3 setDetectInactiveAudioFramesAACELD:self->_detectInactiveAudioFramesAACELD];
-  [a3 setEnableMaxCameraBitrateVideoQualityNewTier:{-[VCExperimentManager isEnabledExperiment:forceDisable:](self->_experimentManager, "isEnabledExperiment:forceDisable:", @"enableMaxCameraBitrateVideoQualityV4", _os_feature_enabled_impl() ^ 1)}];
-  [a3 setIsLateKeyFrameDetectionEnabled:{-[VCSession isLateKeyFrameDetectionEnabled](self, "isLateKeyFrameDetectionEnabled")}];
-  [a3 setExperimentManager:self->_experimentManager];
-  [a3 setIsACC24ForU1Enabled:{-[VCExperimentManager isEnabledExperiment:forceDisable:](self->_experimentManager, "isEnabledExperiment:forceDisable:", @"enableACC24ForU1", !VCFeatureFlagManager_UseAudioCodecACC24ForU1())}];
-  [a3 setIsACC24ForGFTEnabled:{-[VCExperimentManager isEnabledExperiment:forceDisable:](self->_experimentManager, "isEnabledExperiment:forceDisable:", @"enableACC24ForGFT", !VCFeatureFlagManager_UseAudioCodecACC24ForGFT())}];
+  [config setIsServerRTxEnabled:self->_isServerPacketRetransmissionForVideoEnabled];
+  [config setIsEnhancedJBAdaptationsEnabled:{-[VCSession isEnhancedJBAdaptationsEnabled](self, "isEnhancedJBAdaptationsEnabled")}];
+  [config setDetectInactiveAudioFramesAACELD:self->_detectInactiveAudioFramesAACELD];
+  [config setEnableMaxCameraBitrateVideoQualityNewTier:{-[VCExperimentManager isEnabledExperiment:forceDisable:](self->_experimentManager, "isEnabledExperiment:forceDisable:", @"enableMaxCameraBitrateVideoQualityV4", _os_feature_enabled_impl() ^ 1)}];
+  [config setIsLateKeyFrameDetectionEnabled:{-[VCSession isLateKeyFrameDetectionEnabled](self, "isLateKeyFrameDetectionEnabled")}];
+  [config setExperimentManager:self->_experimentManager];
+  [config setIsACC24ForU1Enabled:{-[VCExperimentManager isEnabledExperiment:forceDisable:](self->_experimentManager, "isEnabledExperiment:forceDisable:", @"enableACC24ForU1", !VCFeatureFlagManager_UseAudioCodecACC24ForU1())}];
+  [config setIsACC24ForGFTEnabled:{-[VCExperimentManager isEnabledExperiment:forceDisable:](self->_experimentManager, "isEnabledExperiment:forceDisable:", @"enableACC24ForGFT", !VCFeatureFlagManager_UseAudioCodecACC24ForGFT())}];
   [+[VCVideoCaptureServer VCVideoCaptureServerSingleton](VCVideoCaptureServer "VCVideoCaptureServerSingleton")];
-  v11 = [(VCSession *)self isJBLatencySensitiveModeEnabled];
-  [a3 setIsJBLatencySensitiveModeEnabled:v11];
+  isJBLatencySensitiveModeEnabled = [(VCSession *)self isJBLatencySensitiveModeEnabled];
+  [config setIsJBLatencySensitiveModeEnabled:isJBLatencySensitiveModeEnabled];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -11343,7 +11343,7 @@ LABEL_16:
         v52 = 1024;
         v53 = 3758;
         v54 = 1024;
-        LODWORD(v55) = v11;
+        LODWORD(v55) = isJBLatencySensitiveModeEnabled;
         v20 = "VCSession [%s] %s:%d isJBLatencySensitiveModeEnabled=%{BOOL}d";
         v21 = v19;
         v22 = 34;
@@ -11380,9 +11380,9 @@ LABEL_37:
         v54 = 2112;
         v55 = v12;
         v56 = 2048;
-        v57 = self;
+        selfCopy3 = self;
         v58 = 1024;
-        LODWORD(v59) = v11;
+        LODWORD(v59) = isJBLatencySensitiveModeEnabled;
         v20 = "VCSession [%s] %s:%d %@(%p) isJBLatencySensitiveModeEnabled=%{BOOL}d";
         v21 = v24;
         v22 = 54;
@@ -11391,7 +11391,7 @@ LABEL_37:
     }
   }
 
-  v25 = [[VCSessionParticipantRemote alloc] initWithConfig:a3 delegate:self];
+  v25 = [[VCSessionParticipantRemote alloc] initWithConfig:config delegate:self];
   if (!v25)
   {
     v28 = +[VCSessionErrorUtils VCSessionErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionErrorEvent:errorPath:returnCode:", 15, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCSession.m", 3762], 0);
@@ -11401,7 +11401,7 @@ LABEL_37:
     v45[2] = __48__VCSession_dispatchedAddParticipantWithConfig___block_invoke_606;
     v45[3] = &unk_1E85F3E30;
     v45[4] = self;
-    v45[5] = a3;
+    v45[5] = config;
     v45[6] = v28;
     v17 = v45;
 LABEL_29:
@@ -11457,7 +11457,7 @@ LABEL_51:
     v44[2] = __48__VCSession_dispatchedAddParticipantWithConfig___block_invoke_2;
     v44[3] = &unk_1E85F3E30;
     v44[4] = self;
-    v44[5] = a3;
+    v44[5] = config;
     v44[6] = v30;
     dispatch_async(v31, v44);
     if (self->_localSourceNeedsReset && (self->_state | 2) == 3)
@@ -11504,7 +11504,7 @@ LABEL_51:
       v43[2] = __48__VCSession_dispatchedAddParticipantWithConfig___block_invoke_607;
       v43[3] = &unk_1E85F3E30;
       v43[4] = self;
-      v43[5] = a3;
+      v43[5] = config;
       v43[6] = v38;
       dispatch_async(v39, v43);
       goto LABEL_89;
@@ -11515,7 +11515,7 @@ LABEL_51:
 
   else
   {
-    if (![(VCSession *)self configureRemoteParticipant:v26 withConfig:a3])
+    if (![(VCSession *)self configureRemoteParticipant:v26 withConfig:config])
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -11538,17 +11538,17 @@ LABEL_51:
 
   if ([(VCSessionParticipant *)v26 isVideoEnabled])
   {
-    v35 = [(VCTransportSession *)self->_transportSession connectionManager];
-    -[VCConnectionManager addMediaHealthStatsHistoryEntryForParticipantID:](v35, "addMediaHealthStatsHistoryEntryForParticipantID:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "idsParticipantID")}]);
+    connectionManager = [(VCTransportSession *)self->_transportSession connectionManager];
+    -[VCConnectionManager addMediaHealthStatsHistoryEntryForParticipantID:](connectionManager, "addMediaHealthStatsHistoryEntryForParticipantID:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(config, "idsParticipantID")}]);
   }
 
   if ((self->_state | 2) == 3)
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_remoteParticipantsMapByServerID, "setObject:forKeyedSubscript:", v26, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "idsParticipantID")}]);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_remoteParticipantsMapByServerID, "setObject:forKeyedSubscript:", v26, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(config, "idsParticipantID")}]);
     [(VCSessionParticipantRemote *)v26 start];
   }
 
-  -[VCSessionParticipantRemote updatePositionalInfoWithData:shouldReapply:](v26, "updatePositionalInfoWithData:shouldReapply:", [a3 positionalInfo], 0);
+  -[VCSessionParticipantRemote updatePositionalInfoWithData:shouldReapply:](v26, "updatePositionalInfoWithData:shouldReapply:", [config positionalInfo], 0);
   [(VCSession *)self applySpatialMetadata];
   if ((self->_state | 2) != 3)
   {
@@ -11638,14 +11638,14 @@ uint64_t __48__VCSession_dispatchedAddParticipantWithConfig___block_invoke_2_608
   return [v2 vcSession:v3 addParticipantWithID:v4 didSucceed:v5 error:?];
 }
 
-- (BOOL)configureRemoteParticipant:(id)a3 withConfig:(id)a4
+- (BOOL)configureRemoteParticipant:(id)participant withConfig:(id)config
 {
   v14[7] = *MEMORY[0x1E69E9840];
   if ([(VCSession *)self setOneToOneConfigOnRemoteParticipant:?])
   {
-    if ([a3 configureWithDeviceRole:+[VCSession deviceRoleForSessionMode:](VCSession negotiatedVideoEnabled:"deviceRoleForSessionMode:" negotiatedScreenEnabled:-[VCSessionConfiguration sessionMode](self->_configuration operatingMode:{"sessionMode")), 0, 0, 6}])
+    if ([participant configureWithDeviceRole:+[VCSession deviceRoleForSessionMode:](VCSession negotiatedVideoEnabled:"deviceRoleForSessionMode:" negotiatedScreenEnabled:-[VCSessionConfiguration sessionMode](self->_configuration operatingMode:{"sessionMode")), 0, 0, 6}])
     {
-      [(NSMutableArray *)self->_initializingParticipants addObject:a3];
+      [(NSMutableArray *)self->_initializingParticipants addObject:participant];
       return 1;
     }
 
@@ -11656,7 +11656,7 @@ uint64_t __48__VCSession_dispatchedAddParticipantWithConfig___block_invoke_2_608
     block[2] = __51__VCSession_configureRemoteParticipant_withConfig___block_invoke_2;
     block[3] = &unk_1E85F3E30;
     block[4] = self;
-    block[5] = a4;
+    block[5] = config;
     block[6] = v12;
     v11 = block;
   }
@@ -11668,7 +11668,7 @@ uint64_t __48__VCSession_dispatchedAddParticipantWithConfig___block_invoke_2_608
       v8 = VRTraceErrorLogLevelToCSTR();
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        [VCSession configureRemoteParticipant:v8 withConfig:a3];
+        [VCSession configureRemoteParticipant:v8 withConfig:participant];
       }
     }
 
@@ -11679,7 +11679,7 @@ uint64_t __48__VCSession_dispatchedAddParticipantWithConfig___block_invoke_2_608
     v14[2] = __51__VCSession_configureRemoteParticipant_withConfig___block_invoke;
     v14[3] = &unk_1E85F3E30;
     v14[4] = self;
-    v14[5] = a4;
+    v14[5] = config;
     v14[6] = v9;
     v11 = v14;
   }
@@ -11708,14 +11708,14 @@ uint64_t __51__VCSession_configureRemoteParticipant_withConfig___block_invoke_2(
   return [v2 vcSession:v3 addParticipantWithID:v4 didSucceed:0 error:v5];
 }
 
-- (void)dispatchedAddParticipantConfigurations:(id)a3
+- (void)dispatchedAddParticipantConfigurations:(id)configurations
 {
   v14 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  v5 = [configurations countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v5)
   {
     v6 = v5;
@@ -11727,14 +11727,14 @@ uint64_t __51__VCSession_configureRemoteParticipant_withConfig___block_invoke_2(
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(configurations);
         }
 
         [(VCSession *)self dispatchedAddParticipantWithConfig:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v6 = [configurations countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v6);
@@ -11746,7 +11746,7 @@ uint64_t __51__VCSession_configureRemoteParticipant_withConfig___block_invoke_2(
   }
 }
 
-- (void)dispatchedRemoveParticipant:(id)a3
+- (void)dispatchedRemoveParticipant:(id)participant
 {
   v35 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -11764,7 +11764,7 @@ uint64_t __51__VCSession_configureRemoteParticipant_withConfig___block_invoke_2(
         v27 = 1024;
         v28 = 3893;
         v29 = 2112;
-        v30 = a3;
+        participantCopy = participant;
         v8 = "VCSession [%s] %s:%d Removing participant[%@]";
         v9 = v7;
         v10 = 38;
@@ -11799,11 +11799,11 @@ LABEL_11:
         v27 = 1024;
         v28 = 3893;
         v29 = 2112;
-        v30 = v5;
+        participantCopy = v5;
         v31 = 2048;
-        v32 = self;
+        selfCopy = self;
         v33 = 2112;
-        v34 = a3;
+        participantCopy2 = participant;
         v8 = "VCSession [%s] %s:%d %@(%p) Removing participant[%@]";
         v9 = v12;
         v10 = 58;
@@ -11812,7 +11812,7 @@ LABEL_11:
     }
   }
 
-  v13 = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID objectForKeyedSubscript:a3];
+  v13 = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID objectForKeyedSubscript:participant];
   if (v13)
   {
     v14 = v13;
@@ -11826,8 +11826,8 @@ LABEL_11:
       }
     }
 
-    v19 = [(VCTransportSession *)self->_transportSession connectionManager];
-    -[VCConnectionManager removeMediaHealthStatsHistoryEntryForParticipantID:](v19, "removeMediaHealthStatsHistoryEntryForParticipantID:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[VCSessionParticipant idsParticipantID](v14, "idsParticipantID")}]);
+    connectionManager = [(VCTransportSession *)self->_transportSession connectionManager];
+    -[VCConnectionManager removeMediaHealthStatsHistoryEntryForParticipantID:](connectionManager, "removeMediaHealthStatsHistoryEntryForParticipantID:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[VCSessionParticipant idsParticipantID](v14, "idsParticipantID")}]);
     if ((self->_state | 2) == 3)
     {
       [(VCSessionParticipantRemote *)v14 stop];
@@ -11854,7 +11854,7 @@ LABEL_11:
     block[2] = __41__VCSession_dispatchedRemoveParticipant___block_invoke_2;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = participant;
     v17 = block;
   }
 
@@ -11867,7 +11867,7 @@ LABEL_11:
     v22[2] = __41__VCSession_dispatchedRemoveParticipant___block_invoke;
     v22[3] = &unk_1E85F3E30;
     v22[4] = self;
-    v22[5] = a3;
+    v22[5] = participant;
     v22[6] = v15;
     v17 = v22;
     notificationQueue = v16;
@@ -11933,7 +11933,7 @@ uint64_t __28__VCSession_dispatchedStart__block_invoke_612(uint64_t a1)
 - (void)reportInitialThermalLevel
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [VCPowerManager_DefaultManager() thermalLevel];
+  thermalLevel = [VCPowerManager_DefaultManager() thermalLevel];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -11949,7 +11949,7 @@ uint64_t __28__VCSession_dispatchedStart__block_invoke_612(uint64_t a1)
         *&v12[22] = 1024;
         LODWORD(v13) = 4059;
         WORD2(v13) = 1024;
-        *(&v13 + 6) = v3;
+        *(&v13 + 6) = thermalLevel;
         v7 = "VCSession [%s] %s:%d Reporting thermalLevel=%d as initial thermal level";
         v8 = v6;
         v9 = 34;
@@ -11986,9 +11986,9 @@ LABEL_11:
         WORD2(v13) = 2112;
         *(&v13 + 6) = v4;
         HIWORD(v13) = 2048;
-        v14 = self;
+        selfCopy = self;
         LOWORD(v15) = 1024;
-        *(&v15 + 2) = v3;
+        *(&v15 + 2) = thermalLevel;
         v7 = "VCSession [%s] %s:%d %@(%p) Reporting thermalLevel=%d as initial thermal level";
         v8 = v11;
         v9 = 54;
@@ -12026,7 +12026,7 @@ LABEL_11:
   }
 }
 
-- (void)dispatchedStopWithError:(id)a3 didRemoteCancel:(BOOL)a4
+- (void)dispatchedStopWithError:(id)error didRemoteCancel:(BOOL)cancel
 {
   v58 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -12034,12 +12034,12 @@ LABEL_11:
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       __str = 0;
-      v7 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
+      v7 = error ? [objc_msgSend(error "description")] : "<nil>";
       v15 = [(VCSession *)self remoteParticipants]? [(NSString *)[(NSArray *)[(VCSession *)self remoteParticipants] description] UTF8String]: "<nil>";
       asprintf(&__str, "Stop called. error=%s, remoteParticipants=%s", v7, v15);
       if (__str)
       {
-        v41 = a3;
+        errorCopy2 = error;
         __lasts = 0;
         v16 = strtok_r(__str, "\n", &__lasts);
         v17 = MEMORY[0x1E6986650];
@@ -12089,13 +12089,13 @@ LABEL_11:
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       __str = 0;
-      v8 = [(__CFString *)v6 UTF8String];
-      v9 = a3 ? [objc_msgSend(a3 "description")] : "<nil>";
+      uTF8String = [(__CFString *)v6 UTF8String];
+      v9 = error ? [objc_msgSend(error "description")] : "<nil>";
       v10 = [(VCSession *)self remoteParticipants]? [(NSString *)[(NSArray *)[(VCSession *)self remoteParticipants] description] UTF8String]: "<nil>";
-      asprintf(&__str, "%s(%p) Stop called. error=%s, remoteParticipants=%s", v8, self, v9, v10);
+      asprintf(&__str, "%s(%p) Stop called. error=%s, remoteParticipants=%s", uTF8String, self, v9, v10);
       if (__str)
       {
-        v41 = a3;
+        errorCopy2 = error;
         __lasts = 0;
         v11 = strtok_r(__str, "\n", &__lasts);
         v12 = MEMORY[0x1E6986650];
@@ -12127,7 +12127,7 @@ LABEL_11:
         while (v11);
 LABEL_32:
         free(__str);
-        a3 = v41;
+        error = errorCopy2;
       }
     }
   }
@@ -12184,7 +12184,7 @@ LABEL_32:
     }
 
 LABEL_50:
-    stopError = a3;
+    stopError = error;
     self->_stopError = stopError;
 LABEL_56:
     [(VCSession *)self reportingSessionStopEventWithError:stopError];
@@ -12359,7 +12359,7 @@ uint64_t __53__VCSession_dispatchedStopWithError_didRemoteCancel___block_invoke_
   [(VCSession *)self stopRateControllerOneToOne];
 }
 
-- (void)dispatchedUpdateConfiguration:(id)a3
+- (void)dispatchedUpdateConfiguration:(id)configuration
 {
   v51 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -12377,9 +12377,9 @@ uint64_t __53__VCSession_dispatchedStopWithError_didRemoteCancel___block_invoke_
         v41 = 1024;
         v42 = 4162;
         v43 = 2048;
-        v44 = self;
+        selfCopy = self;
         v45 = 2112;
-        v46 = a3;
+        selfCopy2 = configuration;
         v8 = "VCSession [%s] %s:%d VCSession:[%p] configurationDict:[%@]";
         v9 = v7;
         v10 = 48;
@@ -12414,13 +12414,13 @@ LABEL_11:
         v41 = 1024;
         v42 = 4162;
         v43 = 2112;
-        v44 = v5;
+        selfCopy = v5;
         v45 = 2048;
-        v46 = self;
+        selfCopy2 = self;
         v47 = 2048;
-        v48 = self;
+        selfCopy3 = self;
         v49 = 2112;
-        v50 = a3;
+        configurationCopy2 = configuration;
         v8 = "VCSession [%s] %s:%d %@(%p) VCSession:[%p] configurationDict:[%@]";
         v9 = v12;
         v10 = 68;
@@ -12429,30 +12429,30 @@ LABEL_11:
     }
   }
 
-  v13 = [(VCSessionConfiguration *)self->_configuration sessionMode];
-  v14 = [(VCSessionConfiguration *)self->_configuration isOneToOneModeEnabled];
-  v15 = [(VCSessionConfiguration *)self->_configuration isRemoteScreenControlEnabled];
-  if (![(VCSessionConfiguration *)self->_configuration updateWithClientDictionary:a3])
+  sessionMode = [(VCSessionConfiguration *)self->_configuration sessionMode];
+  isOneToOneModeEnabled = [(VCSessionConfiguration *)self->_configuration isOneToOneModeEnabled];
+  isRemoteScreenControlEnabled = [(VCSessionConfiguration *)self->_configuration isRemoteScreenControlEnabled];
+  if (![(VCSessionConfiguration *)self->_configuration updateWithClientDictionary:configuration])
   {
     [VCSession dispatchedUpdateConfiguration:];
     goto LABEL_40;
   }
 
-  if (v13 != [(VCSessionConfiguration *)self->_configuration sessionMode])
+  if (sessionMode != [(VCSessionConfiguration *)self->_configuration sessionMode])
   {
     v16 = [VCSession deviceRoleForSessionMode:[(VCSessionConfiguration *)self->_configuration sessionMode]];
     if ([(VCSessionParticipant *)self->_localParticipant updateConfigurationWithDeviceRole:v16])
     {
-      v28 = v15;
+      v28 = isRemoteScreenControlEnabled;
       [(VCSession *)self setupSpatialAudio];
-      v29 = a3;
-      v17 = [(VCSessionConfiguration *)self->_configuration sessionMode]!= 1 && +[VCHardwareSettings isSpatialAudioSupported];
+      configurationCopy3 = configuration;
+      isSpatialAudioSupported = [(VCSessionConfiguration *)self->_configuration sessionMode]!= 1 && +[VCHardwareSettings isSpatialAudioSupported];
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v18 = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allValues];
-      v19 = [v18 countByEnumeratingWithState:&v33 objects:v32 count:16];
+      allValues = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allValues];
+      v19 = [allValues countByEnumeratingWithState:&v33 objects:v32 count:16];
       if (v19)
       {
         v20 = v19;
@@ -12463,24 +12463,24 @@ LABEL_11:
           {
             if (*v34 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(allValues);
             }
 
             v23 = *(*(&v33 + 1) + 8 * i);
             if (([v23 updateConfigurationWithDeviceRole:v16] & 1) == 0)
             {
               [(VCSession *)self dispatchedUpdateConfiguration:v23];
-              a3 = v29;
+              configuration = configurationCopy3;
               goto LABEL_40;
             }
 
-            if (v17)
+            if (isSpatialAudioSupported)
             {
               [v23 updatePositionalInfoWithData:objc_msgSend(objc_msgSend(v23 shouldReapply:{"positionalInfo"), "serialize"), 1}];
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v33 objects:v32 count:16];
+          v20 = [allValues countByEnumeratingWithState:&v33 objects:v32 count:16];
           if (v20)
           {
             continue;
@@ -12490,12 +12490,12 @@ LABEL_11:
         }
       }
 
-      if (v17)
+      if (isSpatialAudioSupported)
       {
         [(VCSession *)self applySpatialMetadata];
       }
 
-      a3 = v29;
+      configuration = configurationCopy3;
       if (v28 != [(VCSessionConfiguration *)self->_configuration isRemoteScreenControlEnabled])
       {
         [(VCSession *)self setRemoteScreenControlEnabled:[(VCSessionConfiguration *)self->_configuration isRemoteScreenControlEnabled]];
@@ -12512,16 +12512,16 @@ LABEL_40:
   }
 
 LABEL_32:
-  if (v14 != [(VCSessionConfiguration *)self->_configuration isOneToOneModeEnabled])
+  if (isOneToOneModeEnabled != [(VCSessionConfiguration *)self->_configuration isOneToOneModeEnabled])
   {
-    [(VCSession *)self setOneToOneModeEnabled:[(VCSessionConfiguration *)self->_configuration isOneToOneModeEnabled] configurationDict:a3];
+    [(VCSession *)self setOneToOneModeEnabled:[(VCSessionConfiguration *)self->_configuration isOneToOneModeEnabled] configurationDict:configuration];
   }
 
   v24 = 0;
   v25 = 1;
 LABEL_35:
-  v26 = [(VCSessionConfiguration *)self->_configuration isOneToOneModeEnabled];
-  if (!v25 || ((v14 ^ v26) & 1) == 0)
+  isOneToOneModeEnabled2 = [(VCSessionConfiguration *)self->_configuration isOneToOneModeEnabled];
+  if (!v25 || ((isOneToOneModeEnabled ^ isOneToOneModeEnabled2) & 1) == 0)
   {
     notificationQueue = self->_notificationQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -12529,7 +12529,7 @@ LABEL_35:
     block[2] = __43__VCSession_dispatchedUpdateConfiguration___block_invoke;
     block[3] = &unk_1E85F5E38;
     block[4] = self;
-    block[5] = a3;
+    block[5] = configuration;
     v31 = v25;
     block[6] = v24;
     dispatch_async(notificationQueue, block);
@@ -12592,9 +12592,9 @@ uint64_t __43__VCSession_dispatchedUpdateConfiguration___block_invoke(uint64_t a
   -[VCSession vcSessionParticipant:didChangeDeviceOrientation:](self, "vcSessionParticipant:didChangeDeviceOrientation:", self->_localParticipant, [v3 orientation]);
 }
 
-- (void)dispatchedParticipant:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)dispatchedParticipant:(id)participant didStart:(BOOL)start error:(id)error
 {
-  v6 = a4;
+  startCopy = start;
   v59 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -12611,13 +12611,13 @@ uint64_t __43__VCSession_dispatchedUpdateConfiguration___block_invoke(uint64_t a
         v49 = 1024;
         v50 = 4238;
         v51 = 1024;
-        *v52 = v6;
+        *v52 = startCopy;
         *&v52[4] = 2112;
-        *&v52[6] = a5;
+        *&v52[6] = error;
         *&v52[14] = 2112;
-        *&v52[16] = [a3 uuid];
+        *&v52[16] = [participant uuid];
         v53 = 2112;
-        v54 = [(VCSession *)self participantsToString];
+        errorCopy = [(VCSession *)self participantsToString];
         v12 = "VCSession [%s] %s:%d Participant didStart:%d error:[%@] participantID[%@] %@";
         v13 = v11;
         v14 = 64;
@@ -12656,13 +12656,13 @@ LABEL_11:
         *&v52[8] = 2048;
         *&v52[10] = self;
         *&v52[18] = 1024;
-        *&v52[20] = v6;
+        *&v52[20] = startCopy;
         v53 = 2112;
-        v54 = a5;
+        errorCopy = error;
         v55 = 2112;
-        v56 = [a3 uuid];
+        uuid = [participant uuid];
         v57 = 2112;
-        v58 = [(VCSession *)self participantsToString];
+        participantsToString = [(VCSession *)self participantsToString];
         v12 = "VCSession [%s] %s:%d %@(%p) Participant didStart:%d error:[%@] participantID[%@] %@";
         v13 = v16;
         v14 = 84;
@@ -12671,8 +12671,8 @@ LABEL_11:
     }
   }
 
-  [(NSMutableArray *)self->_startingParticipants removeObject:a3];
-  if (!v6 && self->_state == 1)
+  [(NSMutableArray *)self->_startingParticipants removeObject:participant];
+  if (!startCopy && self->_state == 1)
   {
     [(VCSession *)self setState:2];
     if (objc_opt_class() == self)
@@ -12721,13 +12721,13 @@ LABEL_11:
     }
   }
 
-  v20 = v6;
+  v20 = startCopy;
   if (![(NSMutableArray *)self->_startingParticipants count])
   {
     state = self->_state;
     if (state != 4 && state != 2)
     {
-      v20 = v6;
+      v20 = startCopy;
       if (state == 1)
       {
         [(VCSession *)self setState:3];
@@ -12750,7 +12750,7 @@ LABEL_11:
           }
         }
 
-        [a3 logAllStreamTokens];
+        [participant logAllStreamTokens];
         [(VCSession *)self broadcastInitialMediaState];
         [(VCSession *)self reportNearbyStart];
         notificationQueue = self->_notificationQueue;
@@ -12760,7 +12760,7 @@ LABEL_11:
         block[3] = &unk_1E85F3778;
         block[4] = self;
         dispatch_async(notificationQueue, block);
-        v20 = v6;
+        v20 = startCopy;
       }
 
       goto LABEL_47;
@@ -12785,8 +12785,8 @@ LABEL_11:
       }
 
       v29 = self->_state;
-      v30 = [a3 uuid];
-      v31 = [(VCSession *)self participantsToString];
+      uuid2 = [participant uuid];
+      participantsToString2 = [(VCSession *)self participantsToString];
       *buf = 136316418;
       v46 = v27;
       v47 = 2080;
@@ -12796,9 +12796,9 @@ LABEL_11:
       v51 = 1024;
       *v52 = v29;
       *&v52[4] = 2112;
-      *&v52[6] = v30;
+      *&v52[6] = uuid2;
       *&v52[14] = 2112;
-      *&v52[16] = v31;
+      *&v52[16] = participantsToString2;
       v32 = "VCSession [%s] %s:%d Resetting Participant shouldStart to false as session state=%d failed to move to start, participantID[%@] %@";
       v33 = v28;
       v34 = 54;
@@ -12829,8 +12829,8 @@ LABEL_11:
       }
 
       v37 = self->_state;
-      v38 = [a3 uuid];
-      v39 = [(VCSession *)self participantsToString];
+      uuid3 = [participant uuid];
+      participantsToString3 = [(VCSession *)self participantsToString];
       *buf = 136316930;
       v46 = v35;
       v47 = 2080;
@@ -12844,9 +12844,9 @@ LABEL_11:
       *&v52[18] = 1024;
       *&v52[20] = v37;
       v53 = 2112;
-      v54 = v38;
+      errorCopy = uuid3;
       v55 = 2112;
-      v56 = v39;
+      uuid = participantsToString3;
       v32 = "VCSession [%s] %s:%d %@(%p) Resetting Participant shouldStart to false as session state=%d failed to move to start, participantID[%@] %@";
       v33 = v36;
       v34 = 74;
@@ -12858,7 +12858,7 @@ LABEL_46:
   }
 
 LABEL_47:
-  if (![(NSMutableArray *)self->_initializingParticipants containsObject:a3])
+  if (![(NSMutableArray *)self->_initializingParticipants containsObject:participant])
   {
     if (!v20)
     {
@@ -12868,26 +12868,26 @@ LABEL_47:
     goto LABEL_59;
   }
 
-  if (v6)
+  if (startCopy)
   {
-    if ([(VCSession *)self registerRemoteParticipantToSession:a3])
+    if ([(VCSession *)self registerRemoteParticipantToSession:participant])
     {
       v40 = 1;
       goto LABEL_58;
     }
 
-    a5 = +[VCSessionErrorUtils VCSessionErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionErrorEvent:errorPath:returnCode:", 17, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCSession.m", 4275], 0);
+    error = +[VCSessionErrorUtils VCSessionErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionErrorEvent:errorPath:returnCode:", 17, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCSession.m", 4275], 0);
     LOBYTE(v20) = 0;
   }
 
   else
   {
-    if (!-[NSMutableDictionary objectForKeyedSubscript:](self->_remoteParticipantsMapByUUID, "objectForKeyedSubscript:", [a3 uuid]))
+    if (!-[NSMutableDictionary objectForKeyedSubscript:](self->_remoteParticipantsMapByUUID, "objectForKeyedSubscript:", [participant uuid]))
     {
-      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_remoteParticipantsMapByServerID, "setObject:forKeyedSubscript:", 0, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "idsParticipantID")}]);
+      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_remoteParticipantsMapByServerID, "setObject:forKeyedSubscript:", 0, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(participant, "idsParticipantID")}]);
     }
 
-    [(VCSession *)self removeDelegatesForRemoteParticipant:a3];
+    [(VCSession *)self removeDelegatesForRemoteParticipant:participant];
   }
 
   v40 = 0;
@@ -12898,11 +12898,11 @@ LABEL_58:
   v42[2] = __50__VCSession_dispatchedParticipant_didStart_error___block_invoke_624;
   v42[3] = &unk_1E85F5E38;
   v42[4] = self;
-  v42[5] = a3;
+  v42[5] = participant;
   v43 = v40;
-  v42[6] = a5;
+  v42[6] = error;
   dispatch_async(v41, v42);
-  [(NSMutableArray *)self->_initializingParticipants removeObject:a3];
+  [(NSMutableArray *)self->_initializingParticipants removeObject:participant];
   if (!v20)
   {
     return;
@@ -12948,15 +12948,15 @@ uint64_t __50__VCSession_dispatchedParticipant_didStart_error___block_invoke_624
 {
   if (self->_oneToOneModeEnabled)
   {
-    v3 = [(NSArray *)[(VCSession *)self remoteParticipants] firstObject];
-    if (v3)
+    firstObject = [(NSArray *)[(VCSession *)self remoteParticipants] firstObject];
+    if (firstObject)
     {
-      v4 = v3;
-      v5 = [(VCSessionParticipantLocal *)self->_localParticipant feedbackDelegate];
-      if (v5)
+      v4 = firstObject;
+      feedbackDelegate = [(VCSessionParticipantLocal *)self->_localParticipant feedbackDelegate];
+      if (feedbackDelegate)
       {
 
-        [v4 setVideoReceiverFeedbackDelegate:v5];
+        [v4 setVideoReceiverFeedbackDelegate:feedbackDelegate];
       }
     }
   }
@@ -13053,7 +13053,7 @@ uint64_t __27__VCSession_processDidStop__block_invoke_2(uint64_t a1)
   return [v2 vcSession:v3 didStart:0 error:v4];
 }
 
-- (void)dispatchedParticipant:(id)a3 didStopWithError:(id)a4
+- (void)dispatchedParticipant:(id)participant didStopWithError:(id)error
 {
   v33 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -13077,11 +13077,11 @@ uint64_t __27__VCSession_processDidStop__block_invoke_2(uint64_t a1)
     v21 = 1024;
     v22 = 4364;
     v23 = 2112;
-    v24 = a4;
+    errorCopy = error;
     v25 = 2112;
-    v26 = [a3 uuid];
+    selfCopy = [participant uuid];
     v27 = 2112;
-    v28 = [(VCSession *)self participantsToString];
+    errorCopy2 = [(VCSession *)self participantsToString];
     v10 = "VCSession [%s] %s:%d Participant didStopWithError:[%@] participantID[%@] %@";
     v11 = v9;
     v12 = 58;
@@ -13111,15 +13111,15 @@ uint64_t __27__VCSession_processDidStop__block_invoke_2(uint64_t a1)
       v21 = 1024;
       v22 = 4364;
       v23 = 2112;
-      v24 = v7;
+      errorCopy = v7;
       v25 = 2048;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
-      v28 = a4;
+      errorCopy2 = error;
       v29 = 2112;
-      v30 = [a3 uuid];
+      uuid = [participant uuid];
       v31 = 2112;
-      v32 = [(VCSession *)self participantsToString];
+      participantsToString = [(VCSession *)self participantsToString];
       v10 = "VCSession [%s] %s:%d %@(%p) Participant didStopWithError:[%@] participantID[%@] %@";
       v11 = v14;
       v12 = 78;
@@ -13132,7 +13132,7 @@ LABEL_12:
   state = self->_state;
   if (state == 4 || state == 2)
   {
-    [(NSMutableSet *)self->_stoppingParticipants removeObject:a3];
+    [(NSMutableSet *)self->_stoppingParticipants removeObject:participant];
     if (![(NSMutableSet *)self->_stoppingParticipants count])
     {
       [(VCSession *)self processDidStop];
@@ -13140,19 +13140,19 @@ LABEL_12:
   }
 }
 
-- (id)newNetworkBitrateString:(id *)a3
+- (id)newNetworkBitrateString:(id *)string
 {
   v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:5];
   for (i = 0; i != 4; ++i)
   {
-    [v4 appendFormat:@"%d ", a3->var1[i]];
+    [v4 appendFormat:@"%d ", string->var1[i]];
   }
 
-  [v4 appendFormat:@"%d", a3->var1[4]];
+  [v4 appendFormat:@"%d", string->var1[4]];
   return v4;
 }
 
-- (void)generateReportDictionary:(__CFDictionary *)a3
+- (void)generateReportDictionary:(__CFDictionary *)dictionary
 {
   v93 = *MEMORY[0x1E69E9840];
   v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -13192,7 +13192,7 @@ LABEL_12:
     [(VCSessionParticipantLocal *)localParticipant collectVideoChannelMetrics:v84];
     [(VCSessionParticipantLocal *)self->_localParticipant collectAudioChannelMetrics:v77];
     [(VCSessionParticipant *)self->_localParticipant collectCaptionsChannelMetrics:v73];
-    CFDictionaryAddValue(a3, @"VCSActiveStreamsList", [(VCSessionParticipantLocal *)self->_localParticipant activeStreamKeys]);
+    CFDictionaryAddValue(dictionary, @"VCSActiveStreamsList", [(VCSessionParticipantLocal *)self->_localParticipant activeStreamKeys]);
   }
 
   v37 = v5;
@@ -13212,14 +13212,14 @@ LABEL_12:
 
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
   v10 = [v9 initWithFormat:@"[hostTime:%f/%f sampleTime:%u/%u (Audio/Video)]", *(&v86 + 1), *(&v87 + 1), v87, v88];
-  CFDictionaryAddValue(a3, @"VCSECNEnabled", [MEMORY[0x1E696AD98] numberWithBool:self->_isECNEnabled]);
+  CFDictionaryAddValue(dictionary, @"VCSECNEnabled", [MEMORY[0x1E696AD98] numberWithBool:self->_isECNEnabled]);
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v11 = VRTraceErrorLogLevelToCSTR();
     v12 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(VCSessionParticipant *)self->_localParticipant uuid];
+      uuid = [(VCSessionParticipant *)self->_localParticipant uuid];
       *buf = 136317442;
       v47 = v11;
       v48 = 2080;
@@ -13227,7 +13227,7 @@ LABEL_12:
       v50 = 1024;
       v51 = 4423;
       v52 = 2112;
-      v53 = v13;
+      v53 = uuid;
       v54 = 1024;
       *v55 = v84[0];
       *&v55[4] = 2112;
@@ -13244,16 +13244,16 @@ LABEL_12:
     }
   }
 
-  CFDictionaryAddValue(a3, @"VCSVTxBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:LODWORD(v84[0])]);
-  CFDictionaryAddValue(a3, @"VCSATxBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:LODWORD(v77[0])]);
-  CFDictionaryAddValue(a3, @"VCSCTxBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:LODWORD(v73[0])]);
-  theDict = a3;
-  CFDictionaryAddValue(a3, @"VCSTxBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:LODWORD(v91[0])]);
+  CFDictionaryAddValue(dictionary, @"VCSVTxBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:LODWORD(v84[0])]);
+  CFDictionaryAddValue(dictionary, @"VCSATxBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:LODWORD(v77[0])]);
+  CFDictionaryAddValue(dictionary, @"VCSCTxBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:LODWORD(v73[0])]);
+  theDict = dictionary;
+  CFDictionaryAddValue(dictionary, @"VCSTxBR", [MEMORY[0x1E696AD98] numberWithUnsignedInt:LODWORD(v91[0])]);
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v34 = self;
+  selfCopy = self;
   obj = [(VCSession *)self remoteParticipants];
   v42 = [(NSArray *)obj countByEnumeratingWithState:&v61 objects:v60 count:16];
   v14 = 0;
@@ -13274,7 +13274,7 @@ LABEL_12:
         }
 
         v20 = *(*(&v61 + 1) + 8 * i);
-        v21 = [v20 isInCanvas];
+        isInCanvas = [v20 isInCanvas];
         [v20 collectVideoChannelMetrics:v79];
         [v20 collectAudioChannelMetrics:v75];
         [v20 collectCaptionsChannelMetrics:v71];
@@ -13290,7 +13290,7 @@ LABEL_12:
           v23 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
           {
-            v39 = [v20 uuid];
+            uuid2 = [v20 uuid];
             v24 = [v20 activeDownlinkStreamIDForStreamGroupID:1667329381];
             v25 = [v20 activeDownlinkStreamIDForStreamGroupID:1835623282];
             width_low = LODWORD(v79[0].width);
@@ -13306,7 +13306,7 @@ LABEL_12:
             v50 = 1024;
             v51 = 4451;
             v52 = 2112;
-            v53 = v39;
+            v53 = uuid2;
             v54 = 2112;
             *v55 = v24;
             *&v55[8] = 2112;
@@ -13329,7 +13329,7 @@ LABEL_12:
           }
         }
 
-        v14 = (v14 + v21);
+        v14 = (v14 + isInCanvas);
       }
 
       v42 = [(NSArray *)obj countByEnumeratingWithState:&v61 objects:v60 count:16];
@@ -13368,11 +13368,11 @@ LABEL_12:
     CFRelease(v30);
   }
 
-  v31 = [(VCTransportSession *)v34->_transportSession connectionManager];
-  if (v31)
+  connectionManager = [(VCTransportSession *)selfCopy->_transportSession connectionManager];
+  if (connectionManager)
   {
-    v32 = v31;
-    -[__CFDictionary setObject:forKeyedSubscript:](theDict, "setObject:forKeyedSubscript:", [*(v15 + 3480) numberWithUnsignedLongLong:{-[VCConnectionManager mediaCellularTxBytes](v31, "mediaCellularTxBytes")}], @"CTxDb");
+    v32 = connectionManager;
+    -[__CFDictionary setObject:forKeyedSubscript:](theDict, "setObject:forKeyedSubscript:", [*(v15 + 3480) numberWithUnsignedLongLong:{-[VCConnectionManager mediaCellularTxBytes](connectionManager, "mediaCellularTxBytes")}], @"CTxDb");
     -[__CFDictionary setObject:forKeyedSubscript:](theDict, "setObject:forKeyedSubscript:", [*(v15 + 3480) numberWithUnsignedLongLong:{-[VCConnectionManager mediaCellularRxBytes](v32, "mediaCellularRxBytes")}], @"CRxDb");
     -[__CFDictionary setObject:forKeyedSubscript:](theDict, "setObject:forKeyedSubscript:", [*(v15 + 3480) numberWithUnsignedLongLong:{-[VCConnectionManager mediaExcessiveCellularTxBytes](v32, "mediaExcessiveCellularTxBytes") + -[VCConnectionManager signalingExcessiveCellularTxBytes](v32, "signalingExcessiveCellularTxBytes")}], @"CDupTxDb");
     -[__CFDictionary setObject:forKeyedSubscript:](theDict, "setObject:forKeyedSubscript:", [*(v15 + 3480) numberWithUnsignedLongLong:{-[VCConnectionManager mediaExcessiveCellularRxBytes](v32, "mediaExcessiveCellularRxBytes") + -[VCConnectionManager signalingExcessiveCellularRxBytes](v32, "signalingExcessiveCellularRxBytes")}], @"CDupRxDb");
@@ -13395,7 +13395,7 @@ LABEL_12:
   CFRelease(v33);
   valuePtr = 0;
   v43 = 0;
-  [(VCTransportSession *)v34->_transportSession getSignalStrengthBars:&valuePtr displayBars:&v43 + 4 maxDisplayBars:&v43];
+  [(VCTransportSession *)selfCopy->_transportSession getSignalStrengthBars:&valuePtr displayBars:&v43 + 4 maxDisplayBars:&v43];
   CFDictionaryAddValue(theDict, @"SS", [*(v15 + 3480) numberWithInt:valuePtr]);
 }
 
@@ -13439,24 +13439,24 @@ void __34__VCSession_registerReportingTask__block_invoke(uint64_t a1, uint64_t a
   VCReporting_finalizeAggregation();
 }
 
-- (void)recommendedSettingsChanged:(id)a3
+- (void)recommendedSettingsChanged:(id)changed
 {
-  v4 = [a3 targetBitrateCap];
+  targetBitrateCap = [changed targetBitrateCap];
   uplinkRateController = self->_uplinkRateController;
 
-  [(AVCRateController *)uplinkRateController setTargetBitrateCap:v4];
+  [(AVCRateController *)uplinkRateController setTargetBitrateCap:targetBitrateCap];
 }
 
-- (void)preWarmStateChanged:(BOOL)a3
+- (void)preWarmStateChanged:(BOOL)changed
 {
   if (self->_oneToOneModeEnabled)
   {
-    v3 = a3;
-    if ([(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] isPreWarmStateEnabled]!= a3)
+    changedCopy = changed;
+    if ([(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] isPreWarmStateEnabled]!= changed)
     {
       if ([(VCSession *)self oneToOneRemoteParticipant])
       {
-        if (v3)
+        if (changedCopy)
         {
           v5 = @"VCWRMAlertStateEnabled";
         }
@@ -13467,23 +13467,23 @@ void __34__VCSession_registerReportingTask__block_invoke(uint64_t a1, uint64_t a
         }
 
         [(VCSessionMessaging *)self->_sessionMessaging sendMessage:v5 withTopic:@"VCWRMAlertStateUpdateMessageTopic" participantID:[(VCSessionParticipant *)[(VCSession *)self oneToOneRemoteParticipant] idsParticipantID]];
-        v6 = [(VCTransportSession *)self->_transportSession connectionManager];
+        connectionManager = [(VCTransportSession *)self->_transportSession connectionManager];
 
-        VCConnectionManager_SetPreWarmState(v6, v3);
+        VCConnectionManager_SetPreWarmState(connectionManager, changedCopy);
       }
     }
   }
 }
 
-- (void)mediaQualityDegraded:(BOOL)a3
+- (void)mediaQualityDegraded:(BOOL)degraded
 {
   if (self->_oneToOneModeEnabled)
   {
-    v3 = a3;
+    degradedCopy = degraded;
     if ([(VCSession *)self oneToOneRemoteParticipant])
     {
       sessionMessaging = self->_sessionMessaging;
-      if (v3)
+      if (degradedCopy)
       {
         v6 = @"VCMediaQualityDegraded";
       }
@@ -13493,14 +13493,14 @@ void __34__VCSession_registerReportingTask__block_invoke(uint64_t a1, uint64_t a
         v6 = @"VCMediaQualityRecovered";
       }
 
-      v7 = [(VCSessionParticipant *)[(VCSession *)self oneToOneRemoteParticipant] idsParticipantID];
+      idsParticipantID = [(VCSessionParticipant *)[(VCSession *)self oneToOneRemoteParticipant] idsParticipantID];
 
-      [(VCSessionMessaging *)sessionMessaging sendMessage:v6 withTopic:@"VCMediaQualityDegradedMessageTopic" participantID:v7];
+      [(VCSessionMessaging *)sessionMessaging sendMessage:v6 withTopic:@"VCMediaQualityDegradedMessageTopic" participantID:idsParticipantID];
     }
   }
 }
 
-- (void)setIsUplinkRetransmissionEnabled:(BOOL)a3
+- (void)setIsUplinkRetransmissionEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -13508,7 +13508,7 @@ void __34__VCSession_registerReportingTask__block_invoke(uint64_t a1, uint64_t a
   block[1] = 3221225472;
   block[2] = __46__VCSession_setIsUplinkRetransmissionEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
-  v5 = a3;
+  enabledCopy = enabled;
   block[4] = self;
   dispatch_async(sessionQueue, block);
 }
@@ -13546,7 +13546,7 @@ uint64_t __46__VCSession_setIsUplinkRetransmissionEnabled___block_invoke(uint64_
   return result;
 }
 
-- (void)didLocalNetworkConditionChange:(BOOL)a3 isLocalNetworkQualityDegraded:(BOOL)a4 isRemoteNetworkQualityDegraded:(BOOL)a5
+- (void)didLocalNetworkConditionChange:(BOOL)change isLocalNetworkQualityDegraded:(BOOL)degraded isRemoteNetworkQualityDegraded:(BOOL)qualityDegraded
 {
   v10 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -13555,9 +13555,9 @@ uint64_t __46__VCSession_setIsUplinkRetransmissionEnabled___block_invoke(uint64_
   block[2] = __105__VCSession_didLocalNetworkConditionChange_isLocalNetworkQualityDegraded_isRemoteNetworkQualityDegraded___block_invoke;
   block[3] = &unk_1E85F6BF8;
   block[4] = self;
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  changeCopy = change;
+  degradedCopy = degraded;
+  qualityDegradedCopy = qualityDegraded;
   dispatch_async(sessionQueue, block);
 }
 
@@ -13644,18 +13644,18 @@ _BYTE *__105__VCSession_didLocalNetworkConditionChange_isLocalNetworkQualityDegr
   return v3;
 }
 
-- (void)mediaRecorder:(id)a3 shouldProcessRequest:(id)a4 recipientID:(id)a5
+- (void)mediaRecorder:(id)recorder shouldProcessRequest:(id)request recipientID:(id)d
 {
   block[8] = *MEMORY[0x1E69E9840];
-  v8 = [a4 mutableCopy];
+  v8 = [request mutableCopy];
   sessionQueue = self->_sessionQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__VCSession_mediaRecorder_shouldProcessRequest_recipientID___block_invoke;
   block[3] = &unk_1E85F3B00;
   block[4] = self;
-  block[5] = a5;
-  block[6] = a4;
+  block[5] = d;
+  block[6] = request;
   block[7] = v8;
   dispatch_async(sessionQueue, block);
 }
@@ -13694,7 +13694,7 @@ void __60__VCSession_mediaRecorder_shouldProcessRequest_recipientID___block_invo
   [*(*(a1 + 32) + 224) sendMessageDictionary:*(a1 + 56) withTopic:@"VCSessionMomentsStateMessageTopic" participantID:{objc_msgSend(v2, "idsParticipantID")}];
 }
 
-- (void)didReceiveMomentsRequest:(id)a3
+- (void)didReceiveMomentsRequest:(id)request
 {
   block[6] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -13703,11 +13703,11 @@ void __60__VCSession_mediaRecorder_shouldProcessRequest_recipientID___block_invo
   block[2] = __38__VCSession_didReceiveMomentsRequest___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = request;
   dispatch_async(sessionQueue, block);
 }
 
-- (void)updateMediaRecorderCapabillities:(unsigned int)a3 imageType:(int)a4 videoCodec:(int)a5
+- (void)updateMediaRecorderCapabillities:(unsigned int)capabillities imageType:(int)type videoCodec:(int)codec
 {
   v10 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -13716,9 +13716,9 @@ void __60__VCSession_mediaRecorder_shouldProcessRequest_recipientID___block_invo
   v6[2] = __67__VCSession_updateMediaRecorderCapabillities_imageType_videoCodec___block_invoke;
   v6[3] = &unk_1E85F3908;
   v6[4] = self;
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  capabillitiesCopy = capabillities;
+  typeCopy = type;
+  codecCopy = codec;
   dispatch_async(sessionQueue, v6);
 }
 
@@ -13754,7 +13754,7 @@ void __67__VCSession_updateMediaRecorderCapabillities_imageType_videoCodec___blo
   }
 }
 
-- (void)additionalFlushCountToOneToOneRateController:(unsigned int)a3
+- (void)additionalFlushCountToOneToOneRateController:(unsigned int)controller
 {
   v22 = *MEMORY[0x1E69E9840];
   if (self->_oneToOneModeEnabled)
@@ -13773,15 +13773,15 @@ void __67__VCSession_updateMediaRecorderCapabillities_imageType_videoCodec___blo
     v19 = 0u;
     v20 = 0u;
     v21 = 0;
-    v4 = [(AVCRateController *)self->_oneToOneSettings.rateController statisticsCollector];
+    statisticsCollector = [(AVCRateController *)self->_oneToOneSettings.rateController statisticsCollector];
     v5 = 10;
     v9 = 1;
-    v10 = a3;
-    VCRateControlSetStatistics(v4, &v5);
+    controllerCopy = controller;
+    VCRateControlSetStatistics(statisticsCollector, &v5);
   }
 }
 
-- (void)didChangeThermalLevel:(int)a3
+- (void)didChangeThermalLevel:(int)level
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = @"Thermal";
@@ -13794,7 +13794,7 @@ void __67__VCSession_updateMediaRecorderCapabillities_imageType_videoCodec___blo
   v7[3] = &unk_1E85F3890;
   v7[4] = self;
   v7[5] = v5;
-  v8 = a3;
+  levelCopy = level;
   dispatch_async(sessionQueue, v7);
 }
 
@@ -13844,10 +13844,10 @@ uint64_t __35__VCSession_didChangeThermalLevel___block_invoke(uint64_t a1)
 - (int)setupOneToOne
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(VCSession *)self setupOneToOneMediaQueue];
-  if (v3 < 0)
+  setupOneToOneMediaQueue = [(VCSession *)self setupOneToOneMediaQueue];
+  if (setupOneToOneMediaQueue < 0)
   {
-    v4 = v3;
+    setupRateControllerOneToOne = setupOneToOneMediaQueue;
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -13887,9 +13887,9 @@ uint64_t __35__VCSession_didChangeThermalLevel___block_invoke(uint64_t a1)
           v18 = 2112;
           v19 = v6;
           v20 = 2048;
-          v21 = self;
+          selfCopy2 = self;
           v22 = 1024;
-          v23 = v4;
+          v23 = setupRateControllerOneToOne;
           v10 = " [%s] %s:%d %@(%p) Failed to create the media queue. error=%x";
 LABEL_25:
           _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, v10, &v12, 0x36u);
@@ -13900,11 +13900,11 @@ LABEL_25:
 
   else
   {
-    v4 = [(VCSession *)self setupRateControllerOneToOne];
-    if ((v4 & 0x80000000) == 0)
+    setupRateControllerOneToOne = [(VCSession *)self setupRateControllerOneToOne];
+    if ((setupRateControllerOneToOne & 0x80000000) == 0)
     {
       [(VCSession *)self initWithRelevantStorebagEntries];
-      return v4;
+      return setupRateControllerOneToOne;
     }
 
     if (objc_opt_class() == self)
@@ -13946,9 +13946,9 @@ LABEL_25:
           v18 = 2112;
           v19 = v7;
           v20 = 2048;
-          v21 = self;
+          selfCopy2 = self;
           v22 = 1024;
-          v23 = v4;
+          v23 = setupRateControllerOneToOne;
           v10 = " [%s] %s:%d %@(%p) Failed to create rate controller. error=%x";
           goto LABEL_25;
         }
@@ -13956,7 +13956,7 @@ LABEL_25:
     }
   }
 
-  return v4;
+  return setupRateControllerOneToOne;
 }
 
 - (int)setupOneToOneMediaQueue
@@ -14026,7 +14026,7 @@ LABEL_25:
       v24 = 2112;
       v25 = v5;
       v26 = 2048;
-      v27 = self;
+      selfCopy2 = self;
       v9 = " [%s] %s:%d %@(%p) Using VCMediaQueue2.0";
       v10 = v14;
       v11 = 48;
@@ -14078,7 +14078,7 @@ LABEL_25:
           v24 = 2112;
           v25 = v12;
           v26 = 2048;
-          v27 = self;
+          selfCopy2 = self;
           v28 = 1024;
           v29 = Handle;
           _os_log_error_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create the media queue. error=%x", &v18, 0x36u);
@@ -14095,7 +14095,7 @@ LABEL_25:
   return Handle;
 }
 
-- (id)newNegotiatorForOneToOneWithRemoteParticipant:(id)a3
+- (id)newNegotiatorForOneToOneWithRemoteParticipant:(id)participant
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = [(VCMediaNegotiatorLocalConfiguration *)[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] localSettings] copy];
@@ -14107,7 +14107,7 @@ LABEL_25:
     if (v7)
     {
       v8 = v7;
-      v9 = [+[VCSessionParticipant participantInfoWithParticipantData:](VCSessionParticipant participantInfoWithParticipantData:{objc_msgSend(a3, "opaqueData")), "objectForKeyedSubscript:", @"vcSessionParticipantKeyMediaNegotiationData"}];
+      v9 = [+[VCSessionParticipant participantInfoWithParticipantData:](VCSessionParticipant participantInfoWithParticipantData:{objc_msgSend(participant, "opaqueData")), "objectForKeyedSubscript:", @"vcSessionParticipantKeyMediaNegotiationData"}];
       if (v9)
       {
         if ([(VCSessionMediaNegotiator *)v8 processRemoteNegotiationData:v9])
@@ -14177,9 +14177,9 @@ LABEL_25:
         v20 = 2112;
         v21 = v12;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2048;
-        v25 = a3;
+        participantCopy = participant;
         _os_log_error_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unable to negotiate oneToOne data with participant=%p", v15, 0x3Au);
       }
     }
@@ -14188,15 +14188,15 @@ LABEL_25:
   return 0;
 }
 
-- (BOOL)setOneToOneConfigOnRemoteParticipant:(id)a3
+- (BOOL)setOneToOneConfigOnRemoteParticipant:(id)participant
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = [(VCSession *)self newNegotiatorForOneToOneWithRemoteParticipant:?];
-  v6 = -[VCSession newParticipantOneToOneConfigWithIDSParticipantID:isLocal:mediaControlInfoVersion:videoEnabled:screenEnabled:remoteParticipant:](self, "newParticipantOneToOneConfigWithIDSParticipantID:isLocal:mediaControlInfoVersion:videoEnabled:screenEnabled:remoteParticipant:", -[VCSessionParticipant idsParticipantID](-[VCSession oneToOneRemoteParticipant](self, "oneToOneRemoteParticipant"), "idsParticipantID"), 0, [objc_msgSend(v5 "negotiatedSettings")], objc_msgSend(objc_msgSend(v5, "negotiatedVideoSettings"), "isSupported"), objc_msgSend(objc_msgSend(v5, "negotiatedScreenSettings"), "isSupported"), a3);
+  v6 = -[VCSession newParticipantOneToOneConfigWithIDSParticipantID:isLocal:mediaControlInfoVersion:videoEnabled:screenEnabled:remoteParticipant:](self, "newParticipantOneToOneConfigWithIDSParticipantID:isLocal:mediaControlInfoVersion:videoEnabled:screenEnabled:remoteParticipant:", -[VCSessionParticipant idsParticipantID](-[VCSession oneToOneRemoteParticipant](self, "oneToOneRemoteParticipant"), "idsParticipantID"), 0, [objc_msgSend(v5 "negotiatedSettings")], objc_msgSend(objc_msgSend(v5, "negotiatedVideoSettings"), "isSupported"), objc_msgSend(objc_msgSend(v5, "negotiatedScreenSettings"), "isSupported"), participant);
 
   if (v6)
   {
-    [a3 setOneToOneConfig:v6];
+    [participant setOneToOneConfig:v6];
   }
 
   else if (objc_opt_class() == self)
@@ -14238,7 +14238,7 @@ LABEL_25:
         v17 = 2112;
         v18 = v8;
         v19 = 2048;
-        v20 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) OneToOne config was nil", &v11, 0x30u);
       }
     }
@@ -14285,9 +14285,9 @@ LABEL_14:
   *&v15 = reportingAgent;
   BYTE8(v15) = 1;
   BYTE8(v16) = 1;
-  v7 = [(VCRateControlMLEnrollment *)self->_vcrcMLEnrollment modelPath];
+  modelPath = [(VCRateControlMLEnrollment *)self->_vcrcMLEnrollment modelPath];
   experimentManager = self->_experimentManager;
-  v18 = v7;
+  v18 = modelPath;
   v19 = experimentManager;
   v9 = [[AVCRateController alloc] initWithDelegate:self params:&v13];
   p_oneToOneSettings->rateController = v9;
@@ -14314,7 +14314,7 @@ LABEL_14:
   return 0;
 }
 
-- (void)updateOneToOneRateControllerForVideoEnabled:(BOOL)a3 screenEnabled:(BOOL)a4
+- (void)updateOneToOneRateControllerForVideoEnabled:(BOOL)enabled screenEnabled:(BOOL)screenEnabled
 {
   v8 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -14323,8 +14323,8 @@ LABEL_14:
   block[2] = __81__VCSession_OneToOne__updateOneToOneRateControllerForVideoEnabled_screenEnabled___block_invoke;
   block[3] = &unk_1E85F41F8;
   block[4] = self;
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  screenEnabledCopy = screenEnabled;
   dispatch_async(sessionQueue, block);
 }
 
@@ -14356,12 +14356,12 @@ uint64_t __81__VCSession_OneToOne__updateOneToOneRateControllerForVideoEnabled_s
   return [v4 configureOneToOneRateController:v5 isUsingCamera:v2 & 1 isUsingScreen:v3 & 1];
 }
 
-- (void)updateOneToOneRateControllerForVideoEnabled:(BOOL)a3
+- (void)updateOneToOneRateControllerForVideoEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(VCSession *)self isOneToOneUsingScreen];
+  enabledCopy = enabled;
+  isOneToOneUsingScreen = [(VCSession *)self isOneToOneUsingScreen];
 
-  [(VCSession *)self updateOneToOneRateControllerForVideoEnabled:v3 screenEnabled:v5];
+  [(VCSession *)self updateOneToOneRateControllerForVideoEnabled:enabledCopy screenEnabled:isOneToOneUsingScreen];
 }
 
 - (VCSession)initWithRelevantStorebagEntries
@@ -14378,9 +14378,9 @@ uint64_t __81__VCSession_OneToOne__updateOneToOneRateControllerForVideoEnabled_s
   self->_remoteMediaStallReconnectTimeout = v5;
   +[GKSConnectivitySettings getNoRemoteDuplicationThresholdFast];
   v7 = v6;
-  v8 = [(VCTransportSession *)self->_transportSession connectionManager];
+  connectionManager = [(VCTransportSession *)self->_transportSession connectionManager];
 
-  return [(VCConnectionManager *)v8 setNoRemoteDuplicationThresholdFast:v7];
+  return [(VCConnectionManager *)connectionManager setNoRemoteDuplicationThresholdFast:v7];
 }
 
 - (void)cleanupRateControllerOneToOne
@@ -14391,43 +14391,43 @@ uint64_t __81__VCSession_OneToOne__updateOneToOneRateControllerForVideoEnabled_s
   p_oneToOneSettings->mediaController = 0;
 }
 
-- (BOOL)configureLocalParticipantWithOneToOneRemoteParticipant:(id)a3 isInitialConfiguration:(BOOL)a4
+- (BOOL)configureLocalParticipantWithOneToOneRemoteParticipant:(id)participant isInitialConfiguration:(BOOL)configuration
 {
-  v4 = a4;
+  configurationCopy = configuration;
   v39 = *MEMORY[0x1E69E9840];
-  v7 = [(VCMediaNegotiatorResultsVideo *)[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedVideoSettings] isSupported];
-  v8 = [(VCMediaNegotiatorResultsVideo *)[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedScreenSettings] isSupported];
-  v9 = [(VCMediaNegotiatorResults *)[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedSettings] mediaControlInfoVersion];
-  if (v7 && [(VCSessionParticipant *)self->_localParticipant isVideoEnabled])
+  isSupported = [(VCMediaNegotiatorResultsVideo *)[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedVideoSettings] isSupported];
+  isSupported2 = [(VCMediaNegotiatorResultsVideo *)[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedScreenSettings] isSupported];
+  mediaControlInfoVersion = [(VCMediaNegotiatorResults *)[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedSettings] mediaControlInfoVersion];
+  if (isSupported && [(VCSessionParticipant *)self->_localParticipant isVideoEnabled])
   {
-    v10 = 1;
-    if (!v8)
+    isUsingPersonaCamera = 1;
+    if (!isSupported2)
     {
 LABEL_4:
-      v11 = 0;
+      isScreenEnabled = 0;
       goto LABEL_7;
     }
   }
 
   else
   {
-    v10 = [(VCSession *)self isUsingPersonaCamera];
-    if (!v8)
+    isUsingPersonaCamera = [(VCSession *)self isUsingPersonaCamera];
+    if (!isSupported2)
     {
       goto LABEL_4;
     }
   }
 
-  v11 = [(VCSessionParticipant *)self->_localParticipant isScreenEnabled];
+  isScreenEnabled = [(VCSessionParticipant *)self->_localParticipant isScreenEnabled];
 LABEL_7:
-  [(VCSession *)self configureOneToOneRateController:self->_currentActiveConnection isUsingCamera:v10 isUsingScreen:v11];
+  [(VCSession *)self configureOneToOneRateController:self->_currentActiveConnection isUsingCamera:isUsingPersonaCamera isUsingScreen:isScreenEnabled];
   v12 = [+[VCAudioManager sharedVoiceChatInstance](VCAudioManager "sharedVoiceChatInstance")];
   if (v12)
   {
     goto LABEL_8;
   }
 
-  if (v10)
+  if (isUsingPersonaCamera)
   {
     v12 = 1;
   }
@@ -14454,7 +14454,7 @@ LABEL_7:
         v32 = 1024;
         *v33 = v12;
         *&v33[4] = 1024;
-        *&v33[6] = v10;
+        *&v33[6] = isUsingPersonaCamera;
         v19 = " [%s] %s:%d Failed to get pre-warming client's operating mode from VCAudioManager! Defaulting to operatingMode=%d (due to isUsingCamera=%{BOOL}d)";
         v20 = v18;
         v21 = 40;
@@ -14492,11 +14492,11 @@ LABEL_25:
         v32 = 2112;
         *v33 = v25;
         *&v33[8] = 2048;
-        v34 = self;
+        selfCopy = self;
         v35 = 1024;
         v36 = v12;
         v37 = 1024;
-        v38 = v10;
+        v38 = isUsingPersonaCamera;
         v19 = " [%s] %s:%d %@(%p) Failed to get pre-warming client's operating mode from VCAudioManager! Defaulting to operatingMode=%d (due to isUsingCamera=%{BOOL}d)";
         v20 = v22;
         v21 = 60;
@@ -14507,7 +14507,7 @@ LABEL_25:
 
 LABEL_8:
   [(VCSession *)self applyNegotiatedOneToOneFaceTimeSettings];
-  v13 = -[VCSession newParticipantOneToOneConfigWithIDSParticipantID:isLocal:mediaControlInfoVersion:videoEnabled:screenEnabled:remoteParticipant:](self, "newParticipantOneToOneConfigWithIDSParticipantID:isLocal:mediaControlInfoVersion:videoEnabled:screenEnabled:remoteParticipant:", [a3 idsParticipantID], 1, v9, v7, v8, a3);
+  v13 = -[VCSession newParticipantOneToOneConfigWithIDSParticipantID:isLocal:mediaControlInfoVersion:videoEnabled:screenEnabled:remoteParticipant:](self, "newParticipantOneToOneConfigWithIDSParticipantID:isLocal:mediaControlInfoVersion:videoEnabled:screenEnabled:remoteParticipant:", [participant idsParticipantID], 1, mediaControlInfoVersion, isSupported, isSupported2, participant);
   v14 = v13;
   if (!v13)
   {
@@ -14518,13 +14518,13 @@ LABEL_28:
   }
 
   [v13 setOperatingMode:v12];
-  if (![(VCSessionParticipantLocal *)self->_localParticipant configureWithOneToOneParticipantConfig:v14 shouldConfigureGFTStreams:v4])
+  if (![(VCSessionParticipantLocal *)self->_localParticipant configureWithOneToOneParticipantConfig:v14 shouldConfigureGFTStreams:configurationCopy])
   {
     [VCSession(OneToOne) configureLocalParticipantWithOneToOneRemoteParticipant:isInitialConfiguration:];
     goto LABEL_28;
   }
 
-  [(VCSession *)self setDelegatesForRemoteParticipant:a3];
+  [(VCSession *)self setDelegatesForRemoteParticipant:participant];
   MediaQueue_CleanupTxHistory();
   v15 = 1;
 LABEL_11:
@@ -14532,20 +14532,20 @@ LABEL_11:
   return v15;
 }
 
-- (int)setupOneToOneMediaControlInfoGeneratorsWithVersion:(unsigned __int8)a3 oneToOneConfig:(id)a4 videoEnabled:(BOOL)a5
+- (int)setupOneToOneMediaControlInfoGeneratorsWithVersion:(unsigned __int8)version oneToOneConfig:(id)config videoEnabled:(BOOL)enabled
 {
-  v7 = a3;
-  v9 = VCMediaControlInfoGeneratorCreateWithTypeAndVersion(0, a3);
+  versionCopy = version;
+  v9 = VCMediaControlInfoGeneratorCreateWithTypeAndVersion(0, version);
   if (v9)
   {
-    [a4 setAudioMediaControlInfoGenerator:v9];
-    VCMediaControlInfoGeneratoSetFECFeedbackVersion([a4 audioMediaControlInfoGenerator], 1);
+    [config setAudioMediaControlInfoGenerator:v9];
+    VCMediaControlInfoGeneratoSetFECFeedbackVersion([config audioMediaControlInfoGenerator], 1);
     if (self->_isECNCapable)
     {
-      VCMediaControlInfoGeneratorAddOptions([a4 audioMediaControlInfoGenerator], 2);
+      VCMediaControlInfoGeneratorAddOptions([config audioMediaControlInfoGenerator], 2);
     }
 
-    if (!a5)
+    if (!enabled)
     {
       v12 = v9;
       goto LABEL_10;
@@ -14553,15 +14553,15 @@ LABEL_11:
 
     if ([(VCSessionParticipant *)self->_localParticipant isVideoEnabled])
     {
-      VCMediaControlInfoGeneratorAddOptions([a4 audioMediaControlInfoGenerator], 1);
+      VCMediaControlInfoGeneratorAddOptions([config audioMediaControlInfoGenerator], 1);
     }
 
-    v10 = VCMediaControlInfoGeneratorCreateWithTypeAndVersion(1, v7);
+    v10 = VCMediaControlInfoGeneratorCreateWithTypeAndVersion(1, versionCopy);
     if (v10)
     {
       v11 = v10;
-      [a4 setVideoMediaControlInfoGenerator:v10];
-      VCMediaControlInfoGeneratoSetFECFeedbackVersion([a4 videoMediaControlInfoGenerator], 1);
+      [config setVideoMediaControlInfoGenerator:v10];
+      VCMediaControlInfoGeneratoSetFECFeedbackVersion([config videoMediaControlInfoGenerator], 1);
       CFRelease(v9);
       v12 = v11;
 LABEL_10:
@@ -14578,8 +14578,8 @@ LABEL_10:
   }
 
   v13 = -2143813630;
-  [a4 setAudioMediaControlInfoGenerator:0];
-  [a4 setVideoMediaControlInfoGenerator:0];
+  [config setAudioMediaControlInfoGenerator:0];
+  [config setVideoMediaControlInfoGenerator:0];
   if (v9)
   {
     CFRelease(v9);
@@ -14588,12 +14588,12 @@ LABEL_10:
   return v13;
 }
 
-- (id)newParticipantOneToOneConfigWithIDSParticipantID:(unint64_t)a3 isLocal:(BOOL)a4 mediaControlInfoVersion:(unsigned __int8)a5 videoEnabled:(BOOL)a6 screenEnabled:(BOOL)a7 remoteParticipant:(id)a8
+- (id)newParticipantOneToOneConfigWithIDSParticipantID:(unint64_t)d isLocal:(BOOL)local mediaControlInfoVersion:(unsigned __int8)version videoEnabled:(BOOL)enabled screenEnabled:(BOOL)screenEnabled remoteParticipant:(id)participant
 {
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  screenEnabledCopy = screenEnabled;
+  enabledCopy = enabled;
+  versionCopy = version;
+  localCopy = local;
   v15 = objc_alloc_init(VCSessionParticipantOneToOneConfig);
   if (!v15)
   {
@@ -14601,9 +14601,9 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  if (!v12)
+  if (!localCopy)
   {
-    if (([(VCSession *)self setupOneToOneMediaControlInfoGeneratorsWithVersion:v11 oneToOneConfig:v15 videoEnabled:v10]& 0x80000000) == 0)
+    if (([(VCSession *)self setupOneToOneMediaControlInfoGeneratorsWithVersion:versionCopy oneToOneConfig:v15 videoEnabled:enabledCopy]& 0x80000000) == 0)
     {
       goto LABEL_5;
     }
@@ -14614,16 +14614,16 @@ LABEL_14:
     return 0;
   }
 
-  -[VCSessionParticipantOneToOneConfig setAudioMediaControlInfoGenerator:](v15, "setAudioMediaControlInfoGenerator:", [objc_msgSend(a8 "oneToOneConfig")]);
-  -[VCSessionParticipantOneToOneConfig setVideoMediaControlInfoGenerator:](v15, "setVideoMediaControlInfoGenerator:", [objc_msgSend(a8 "oneToOneConfig")]);
+  -[VCSessionParticipantOneToOneConfig setAudioMediaControlInfoGenerator:](v15, "setAudioMediaControlInfoGenerator:", [objc_msgSend(participant "oneToOneConfig")]);
+  -[VCSessionParticipantOneToOneConfig setVideoMediaControlInfoGenerator:](v15, "setVideoMediaControlInfoGenerator:", [objc_msgSend(participant "oneToOneConfig")]);
 LABEL_5:
-  [(VCSessionParticipantOneToOneConfig *)v15 setIdsParticipantID:a3];
+  [(VCSessionParticipantOneToOneConfig *)v15 setIdsParticipantID:d];
   [(VCSessionParticipantOneToOneConfig *)v15 setDeviceRole:[VCSession deviceRoleForSessionMode:[(VCSessionConfiguration *)self->_configuration sessionMode]]];
   [(VCSessionParticipantOneToOneConfig *)v15 setFeedbackController:[(AVCRateController *)self->_oneToOneSettings.rateController feedbackController]];
   [(VCSessionParticipantOneToOneConfig *)v15 setStatisticsCollector:[(AVCRateController *)self->_oneToOneSettings.rateController statisticsCollector]];
   [(VCSessionParticipantOneToOneConfig *)v15 setBasebandCongestionDetector:[(AVCRateController *)self->_oneToOneSettings.rateController basebandCongestionDetector]];
   [(VCSessionParticipantOneToOneConfig *)v15 setMediaController:self->_oneToOneSettings.mediaController];
-  if (v12)
+  if (localCopy)
   {
     [(VCSessionParticipantOneToOneConfig *)v15 setMediaQueue:self->_oneToOneSettings.mediaQueue];
     vcMediaQueue = self->_oneToOneSettings.vcMediaQueue;
@@ -14636,8 +14636,8 @@ LABEL_5:
   }
 
   [(VCSessionParticipantOneToOneConfig *)v15 setVcMediaQueue:vcMediaQueue];
-  [(VCSessionParticipantOneToOneConfig *)v15 setNegotiatedVideoEnabled:v10];
-  [(VCSessionParticipantOneToOneConfig *)v15 setNegotiatedScreenEnabled:v9];
+  [(VCSessionParticipantOneToOneConfig *)v15 setNegotiatedVideoEnabled:enabledCopy];
+  [(VCSessionParticipantOneToOneConfig *)v15 setNegotiatedScreenEnabled:screenEnabledCopy];
   v17 = VCConnectionManager_CopyPrimaryConnection([(VCTransportSession *)[(VCSession *)self transportSession] connectionManager]);
   -[VCSessionParticipantOneToOneConfig setInitUsingWifiTiers:](v15, "setInitUsingWifiTiers:", [v17 isWifiToWifi]);
   if (v17)
@@ -14662,76 +14662,76 @@ LABEL_5:
 {
   if ([(VCSessionParticipantOneToOneConfig *)[(VCSessionParticipant *)[(VCSession *)self oneToOneRemoteParticipant] oneToOneConfig] negotiatedVideoEnabled])
   {
-    v3 = [(VCSessionParticipant *)self->_localParticipant isVideoEnabled];
+    isVideoEnabled = [(VCSessionParticipant *)self->_localParticipant isVideoEnabled];
   }
 
   else
   {
-    v3 = 0;
+    isVideoEnabled = 0;
   }
 
-  return (v3 | [(VCSession *)self isUsingPersonaCamera]) & 1;
+  return (isVideoEnabled | [(VCSession *)self isUsingPersonaCamera]) & 1;
 }
 
 - (BOOL)isUsingPersonaCamera
 {
-  v3 = [(VCSession *)self isPersonaCameraSupported];
-  if (v3)
+  isPersonaCameraSupported = [(VCSession *)self isPersonaCameraSupported];
+  if (isPersonaCameraSupported)
   {
     localParticipant = self->_localParticipant;
 
-    LOBYTE(v3) = [(VCSessionParticipant *)localParticipant isPersonaCameraEnabled];
+    LOBYTE(isPersonaCameraSupported) = [(VCSessionParticipant *)localParticipant isPersonaCameraEnabled];
   }
 
-  return v3;
+  return isPersonaCameraSupported;
 }
 
 - (BOOL)isPersonaCameraSupported
 {
-  v2 = [(VCSessionParticipant *)self->_localParticipant mediaNegotiator];
-  if ([-[VCSessionMediaNegotiator negotiatedResultsForGroupID:](v2 negotiatedResultsForGroupID:{1718909044), "isSupported"}])
+  mediaNegotiator = [(VCSessionParticipant *)self->_localParticipant mediaNegotiator];
+  if ([-[VCSessionMediaNegotiator negotiatedResultsForGroupID:](mediaNegotiator negotiatedResultsForGroupID:{1718909044), "isSupported"}])
   {
     return 1;
   }
 
-  v4 = [(VCSessionMediaNegotiator *)v2 negotiatedResultsForGroupID:1650745716];
+  v4 = [(VCSessionMediaNegotiator *)mediaNegotiator negotiatedResultsForGroupID:1650745716];
 
   return [v4 isSupported];
 }
 
 - (BOOL)isOneToOneUsingScreen
 {
-  v3 = [(VCSessionParticipantOneToOneConfig *)[(VCSessionParticipant *)[(VCSession *)self oneToOneRemoteParticipant] oneToOneConfig] negotiatedScreenEnabled];
-  if (v3)
+  negotiatedScreenEnabled = [(VCSessionParticipantOneToOneConfig *)[(VCSessionParticipant *)[(VCSession *)self oneToOneRemoteParticipant] oneToOneConfig] negotiatedScreenEnabled];
+  if (negotiatedScreenEnabled)
   {
     localParticipant = self->_localParticipant;
 
-    LOBYTE(v3) = [(VCSessionParticipant *)localParticipant isScreenEnabled];
+    LOBYTE(negotiatedScreenEnabled) = [(VCSessionParticipant *)localParticipant isScreenEnabled];
   }
 
-  return v3;
+  return negotiatedScreenEnabled;
 }
 
 - (BOOL)isOneToOneRemoteParticipantUsingScreen
 {
-  v3 = [(VCSessionParticipantOneToOneConfig *)[(VCSessionParticipant *)[(VCSession *)self oneToOneRemoteParticipant] oneToOneConfig] negotiatedScreenEnabled];
-  if (v3)
+  negotiatedScreenEnabled = [(VCSessionParticipantOneToOneConfig *)[(VCSessionParticipant *)[(VCSession *)self oneToOneRemoteParticipant] oneToOneConfig] negotiatedScreenEnabled];
+  if (negotiatedScreenEnabled)
   {
-    v4 = [(VCSession *)self oneToOneRemoteParticipant];
+    oneToOneRemoteParticipant = [(VCSession *)self oneToOneRemoteParticipant];
 
-    LOBYTE(v3) = [(VCSessionParticipant *)v4 isScreenEnabled];
+    LOBYTE(negotiatedScreenEnabled) = [(VCSessionParticipant *)oneToOneRemoteParticipant isScreenEnabled];
   }
 
-  return v3;
+  return negotiatedScreenEnabled;
 }
 
-- (BOOL)configureRemoteParticipantForOneToOne:(id)a3
+- (BOOL)configureRemoteParticipantForOneToOne:(id)one
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [(VCMediaNegotiatorResultsVideo *)[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedVideoSettings] isSupported];
-  v6 = [(VCMediaNegotiatorResultsVideo *)[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedScreenSettings] isSupported];
-  v7 = v5 && [(VCSessionParticipant *)self->_localParticipant isVideoEnabled]|| [(VCSession *)self isUsingPersonaCamera];
-  v8 = [(VCMediaNegotiatorResults *)[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedSettings] mediaControlInfoVersion];
+  isSupported = [(VCMediaNegotiatorResultsVideo *)[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedVideoSettings] isSupported];
+  isSupported2 = [(VCMediaNegotiatorResultsVideo *)[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedScreenSettings] isSupported];
+  v7 = isSupported && [(VCSessionParticipant *)self->_localParticipant isVideoEnabled]|| [(VCSession *)self isUsingPersonaCamera];
+  mediaControlInfoVersion = [(VCMediaNegotiatorResults *)[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedSettings] mediaControlInfoVersion];
   v9 = [+[VCAudioManager sharedVoiceChatInstance](VCAudioManager "sharedVoiceChatInstance")];
   if (!v9)
   {
@@ -14807,7 +14807,7 @@ LABEL_5:
       WORD2(v22) = 2112;
       *(&v22 + 6) = v13;
       HIWORD(v22) = 2048;
-      v23 = self;
+      selfCopy = self;
       LOWORD(v24) = 1024;
       *(&v24 + 2) = v9;
       HIWORD(v24) = 1024;
@@ -14821,7 +14821,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v10 = -[VCSession newParticipantOneToOneConfigWithIDSParticipantID:isLocal:mediaControlInfoVersion:videoEnabled:screenEnabled:remoteParticipant:](self, "newParticipantOneToOneConfigWithIDSParticipantID:isLocal:mediaControlInfoVersion:videoEnabled:screenEnabled:remoteParticipant:", [a3 idsParticipantID], 0, v8, v5, v6, a3);
+  v10 = -[VCSession newParticipantOneToOneConfigWithIDSParticipantID:isLocal:mediaControlInfoVersion:videoEnabled:screenEnabled:remoteParticipant:](self, "newParticipantOneToOneConfigWithIDSParticipantID:isLocal:mediaControlInfoVersion:videoEnabled:screenEnabled:remoteParticipant:", [one idsParticipantID], 0, mediaControlInfoVersion, isSupported, isSupported2, one);
   if (!v10)
   {
     [VCSession(OneToOne) configureRemoteParticipantForOneToOne:];
@@ -14830,13 +14830,13 @@ LABEL_26:
     goto LABEL_9;
   }
 
-  if (([a3 configureWithOneToOneParticipantConfig:v10 operatingMode:v9] & 1) == 0)
+  if (([one configureWithOneToOneParticipantConfig:v10 operatingMode:v9] & 1) == 0)
   {
     [VCSession(OneToOne) configureRemoteParticipantForOneToOne:];
     goto LABEL_26;
   }
 
-  [(VCSession *)self setDelegatesForRemoteParticipant:a3];
+  [(VCSession *)self setDelegatesForRemoteParticipant:one];
   v11 = 1;
 LABEL_9:
 
@@ -14845,14 +14845,14 @@ LABEL_9:
 
 - (unsigned)detailedErrorCodeForNoRemotePacketsError
 {
-  v2 = [(VCTransportSession *)[(VCSession *)self transportSession] connectionManager];
-  if (![(VCConnectionManager *)v2 isEndToEndLinkAvailable])
+  connectionManager = [(VCTransportSession *)[(VCSession *)self transportSession] connectionManager];
+  if (![(VCConnectionManager *)connectionManager isEndToEndLinkAvailable])
   {
     return 24;
   }
 
-  v3 = [(VCConnectionManager *)v2 isEndToEndLinkWithCellAvailable:1];
-  if ((v3 | [(VCConnectionManager *)v2 isEndToEndLinkWithCellAvailable:0]))
+  v3 = [(VCConnectionManager *)connectionManager isEndToEndLinkWithCellAvailable:1];
+  if ((v3 | [(VCConnectionManager *)connectionManager isEndToEndLinkWithCellAvailable:0]))
   {
     return 14;
   }
@@ -14866,13 +14866,13 @@ LABEL_9:
 - (void)reportExistingParticipantsAnew
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allKeys];
+  allKeys = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allKeys];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v3;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v15 count:16];
+  obj = allKeys;
+  v4 = [allKeys countByEnumeratingWithState:&v16 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -14912,16 +14912,16 @@ LABEL_9:
   }
 }
 
-- (void)reportStartedSwitchingToOneToOne:(BOOL)a3
+- (void)reportStartedSwitchingToOneToOne:(BOOL)one
 {
   reportingGenericEvent();
 
   [(VCSession *)self reportClientPersistentSettings];
 }
 
-- (void)reportCompletedSwitchingToOneToOne:(BOOL)a3
+- (void)reportCompletedSwitchingToOneToOne:(BOOL)one
 {
-  v3 = a3;
+  oneCopy = one;
   v32[1] = *MEMORY[0x1E69E9840];
   if (self->_oneToOneSwitchStartTime != 0.0)
   {
@@ -14929,7 +14929,7 @@ LABEL_9:
     oneToOneSwitchStartTime = self->_oneToOneSwitchStartTime;
     v7 = @"VCSOTOST";
     v8 = v5 - oneToOneSwitchStartTime;
-    if (v3)
+    if (oneCopy)
     {
       v7 = @"VCGFTSWTT";
     }
@@ -14955,7 +14955,7 @@ LABEL_9:
           v23 = 2048;
           v24 = v8;
           v25 = 1024;
-          LODWORD(v26) = v3;
+          LODWORD(selfCopy) = oneCopy;
           v12 = " [%s] %s:%d SwitchTime=%f switchingToOneToOne=%d";
           v13 = v11;
           v14 = 44;
@@ -14992,11 +14992,11 @@ LABEL_15:
           v23 = 2112;
           v24 = *&v9;
           v25 = 2048;
-          v26 = self;
+          selfCopy = self;
           v27 = 2048;
           v28 = v8;
           v29 = 1024;
-          v30 = v3;
+          v30 = oneCopy;
           v12 = " [%s] %s:%d %@(%p) SwitchTime=%f switchingToOneToOne=%d";
           v13 = v16;
           v14 = 64;
@@ -15010,11 +15010,11 @@ LABEL_15:
   [(VCSession *)self reportLocalRateControlExperimentConfiguration];
 }
 
-- (void)reportSwitchingError:(BOOL)a3 errorEvent:(unsigned int)a4
+- (void)reportSwitchingError:(BOOL)error errorEvent:(unsigned int)event
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v4 = @"VCSErrorDetected";
-  v5[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
+  v5[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&event];
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   reportingGenericEvent();
 }
@@ -15078,8 +15078,8 @@ LABEL_15:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(VCSession *)self remoteParticipants];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  remoteParticipants = [(VCSession *)self remoteParticipants];
+  v4 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v4)
   {
     v5 = v4;
@@ -15090,7 +15090,7 @@ LABEL_15:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(remoteParticipants);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -15098,7 +15098,7 @@ LABEL_15:
         [v8 setOneToOneModeEnabled:0];
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v5 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v5);
@@ -15190,7 +15190,7 @@ LABEL_14:
         v18 = 2112;
         v19 = v4;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v7 = " [%s] %s:%d %@(%p) Already switched to GFT, ignoring.";
         v8 = v11;
         v9 = 48;
@@ -15205,13 +15205,13 @@ LABEL_14:
 - (void)messageExistingParticipantsPostOneToOneModeSwitch
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allKeys];
+  allKeys = [(NSMutableDictionary *)self->_remoteParticipantsMapByUUID allKeys];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  obj = v3;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  obj = allKeys;
+  v4 = [allKeys countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -15252,9 +15252,9 @@ LABEL_14:
     [(AVCRateController *)self->_uplinkRateController stop];
     [(AVCRateController *)self->_downlinkRateController stop];
     downlinkBandwidthAllocator = self->_downlinkBandwidthAllocator;
-    v5 = [(VCSession *)self oneToOneRemoteParticipant];
+    oneToOneRemoteParticipant = [(VCSession *)self oneToOneRemoteParticipant];
 
-    [(VCSessionDownlinkBandwidthAllocator *)downlinkBandwidthAllocator deregisterForBandwidthAllocationWithClient:v5];
+    [(VCSessionDownlinkBandwidthAllocator *)downlinkBandwidthAllocator deregisterForBandwidthAllocationWithClient:oneToOneRemoteParticipant];
   }
 }
 
@@ -15279,8 +15279,8 @@ LABEL_14:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(VCSession *)self remoteParticipants];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  remoteParticipants = [(VCSession *)self remoteParticipants];
+  v4 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v4)
   {
     v5 = v4;
@@ -15291,7 +15291,7 @@ LABEL_14:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(remoteParticipants);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -15299,7 +15299,7 @@ LABEL_14:
         [v8 setOneToOneModeEnabled:0];
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v5 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v5);
@@ -15369,9 +15369,9 @@ LABEL_10:
   }
 
   [(VCSession *)self setTransportConnectionSelectionVersionWithLocalFrameWorkVersion:[(VCCallInfoBlob *)[(VCSessionParticipant *)self->_localParticipant callInfoBlob] frameworkVersion] remoteFrameworkVersion:[(VCCallInfoBlob *)[(VCSessionParticipant *)[(VCSession *)self oneToOneRemoteParticipant] callInfoBlob] frameworkVersion]];
-  v4 = [(VCSession *)self oneToOneRemoteParticipant];
+  oneToOneRemoteParticipant = [(VCSession *)self oneToOneRemoteParticipant];
   v5 = 1;
-  [(VCSessionParticipantRemote *)v4 setOneToOneModeEnabled:1];
+  [(VCSessionParticipantRemote *)oneToOneRemoteParticipant setOneToOneModeEnabled:1];
   return v5;
 }
 
@@ -15438,7 +15438,7 @@ LABEL_10:
       v19 = 2112;
       v20 = v3;
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       v7 = " [%s] %s:%d %@(%p) Already switched to OneToOne, ignoring.";
       v8 = v11;
       v9 = 48;
@@ -15505,9 +15505,9 @@ LABEL_10:
 {
   if (self->_oneToOneModeEnabled)
   {
-    v4 = [(VCSession *)self oneToOneRemoteParticipant];
+    oneToOneRemoteParticipant = [(VCSession *)self oneToOneRemoteParticipant];
 
-    [(VCSessionParticipantRemote *)v4 setVideoReceiverFeedbackDelegate:0];
+    [(VCSessionParticipantRemote *)oneToOneRemoteParticipant setVideoReceiverFeedbackDelegate:0];
   }
 }
 
@@ -15521,12 +15521,12 @@ LABEL_10:
   }
 }
 
-- (void)startReportingForOneToOneEnabled:(BOOL)a3 withPayload:(id)a4
+- (void)startReportingForOneToOneEnabled:(BOOL)enabled withPayload:(id)payload
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v34 = *MEMORY[0x1E69E9840];
   v6 = objc_opt_class();
-  if (v4)
+  if (enabledCopy)
   {
     if (v6 == self)
     {
@@ -15591,7 +15591,7 @@ LABEL_19:
       v30 = 2112;
       v31 = v7;
       v32 = 2048;
-      v33 = self;
+      selfCopy2 = self;
       v11 = " [%s] %s:%d %@(%p) RTCReporting: Switching to one-to-one mode reporting";
       v12 = v20;
       v13 = 48;
@@ -15654,7 +15654,7 @@ LABEL_27:
       v30 = 2112;
       v31 = v8;
       v32 = 2048;
-      v33 = self;
+      selfCopy2 = self;
       v16 = " [%s] %s:%d %@(%p) RTCReporting: Switching to one-to-many mode reporting";
       v17 = v23;
       v18 = 48;
@@ -15768,20 +15768,20 @@ uint64_t __68__VCSession_OneToOne__startReportingForOneToOneEnabled_withPayload_
   createAdaptiveLearningForAgent();
 }
 
-- (BOOL)negotiateOneToOneWithRemoteParticipant:(id)a3
+- (BOOL)negotiateOneToOneWithRemoteParticipant:(id)participant
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = [(VCSessionParticipantLocal *)self->_localParticipant negotiateOneToOne:a3];
+  v4 = [(VCSessionParticipantLocal *)self->_localParticipant negotiateOneToOne:participant];
   if (v4 < 0)
   {
     [VCSession(OneToOne) negotiateOneToOneWithRemoteParticipant:?];
     return v4 >= 0;
   }
 
-  v5 = [(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedVideoSettings];
-  v6 = [(VCMediaNegotiatorResultsVideo *)v5 isSupported];
+  negotiatedVideoSettings = [(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedVideoSettings];
+  isSupported = [(VCMediaNegotiatorResultsVideo *)negotiatedVideoSettings isSupported];
   v7 = objc_opt_class();
-  if (!v6)
+  if (!isSupported)
   {
     if (v7 != self)
     {
@@ -15810,7 +15810,7 @@ uint64_t __68__VCSession_OneToOne__startReportingForOneToOneEnabled_withPayload_
           WORD2(v51) = 2112;
           *(&v51 + 6) = v9;
           HIWORD(v51) = 2048;
-          v52 = self;
+          selfCopy5 = self;
           v12 = " [%s] %s:%d %@(%p) Negotiated 1:1 camera not supported";
           v13 = v20;
           v14 = 48;
@@ -15868,7 +15868,7 @@ LABEL_23:
     *&v50[22] = 1024;
     LODWORD(v51) = 785;
     WORD2(v51) = 2112;
-    *(&v51 + 6) = [(VCMediaNegotiatorResultsVideo *)v5 videoRuleCollections];
+    *(&v51 + 6) = [(VCMediaNegotiatorResultsVideo *)negotiatedVideoSettings videoRuleCollections];
     v12 = " [%s] %s:%d Negotiated 1:1 camera rules: %@";
     v13 = v11;
     v14 = 38;
@@ -15900,9 +15900,9 @@ LABEL_23:
       WORD2(v51) = 2112;
       *(&v51 + 6) = v8;
       HIWORD(v51) = 2048;
-      v52 = self;
+      selfCopy5 = self;
       LOWORD(v53) = 2112;
-      *(&v53 + 2) = [(VCMediaNegotiatorResultsVideo *)v5 videoRuleCollections];
+      *(&v53 + 2) = [(VCMediaNegotiatorResultsVideo *)negotiatedVideoSettings videoRuleCollections];
       v12 = " [%s] %s:%d %@(%p) Negotiated 1:1 camera rules: %@";
       v13 = v18;
       v14 = 58;
@@ -15911,10 +15911,10 @@ LABEL_23:
   }
 
 LABEL_24:
-  v21 = [(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator:*v50] negotiatedScreenSettings];
-  v22 = [(VCMediaNegotiatorResultsVideo *)v21 isSupported];
+  negotiatedScreenSettings = [(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator:*v50] negotiatedScreenSettings];
+  isSupported2 = [(VCMediaNegotiatorResultsVideo *)negotiatedScreenSettings isSupported];
   v23 = objc_opt_class();
-  if (!v22)
+  if (!isSupported2)
   {
     if (v23 != self)
     {
@@ -15943,7 +15943,7 @@ LABEL_24:
           WORD2(v51) = 2112;
           *(&v51 + 6) = v25;
           HIWORD(v51) = 2048;
-          v52 = self;
+          selfCopy5 = self;
           v29 = " [%s] %s:%d %@(%p) Negotiated 1:1 screen not supported";
           v30 = v38;
           v31 = 48;
@@ -15994,7 +15994,7 @@ LABEL_45:
       goto LABEL_46;
     }
 
-    v28 = [(VCMediaNegotiatorResultsVideo *)v21 videoRuleCollections];
+    videoRuleCollections = [(VCMediaNegotiatorResultsVideo *)negotiatedScreenSettings videoRuleCollections];
     *v50 = 136315906;
     *&v50[4] = v26;
     *&v50[12] = 2080;
@@ -16002,7 +16002,7 @@ LABEL_45:
     *&v50[22] = 1024;
     LODWORD(v51) = 792;
     WORD2(v51) = 2112;
-    *(&v51 + 6) = v28;
+    *(&v51 + 6) = videoRuleCollections;
     v29 = " [%s] %s:%d Negotiated 1:1 screen rules: %@";
     v30 = v27;
     v31 = 38;
@@ -16025,7 +16025,7 @@ LABEL_45:
     v35 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [(VCMediaNegotiatorResultsVideo *)v21 videoRuleCollections];
+      videoRuleCollections2 = [(VCMediaNegotiatorResultsVideo *)negotiatedScreenSettings videoRuleCollections];
       *v50 = 136316418;
       *&v50[4] = v34;
       *&v50[12] = 2080;
@@ -16035,9 +16035,9 @@ LABEL_45:
       WORD2(v51) = 2112;
       *(&v51 + 6) = v24;
       HIWORD(v51) = 2048;
-      v52 = self;
+      selfCopy5 = self;
       LOWORD(v53) = 2112;
-      *(&v53 + 2) = v36;
+      *(&v53 + 2) = videoRuleCollections2;
       v29 = " [%s] %s:%d %@(%p) Negotiated 1:1 screen rules: %@";
       v30 = v35;
       v31 = 58;
@@ -16056,7 +16056,7 @@ LABEL_46:
       v41 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v42 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] isP2PEncryptionExperimentEnabled];
+        isP2PEncryptionExperimentEnabled = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] isP2PEncryptionExperimentEnabled];
         *v50 = 136315906;
         *&v50[4] = v40;
         *&v50[12] = 2080;
@@ -16064,7 +16064,7 @@ LABEL_46:
         *&v50[22] = 1024;
         LODWORD(v51) = 799;
         WORD2(v51) = 1024;
-        *(&v51 + 6) = v42;
+        *(&v51 + 6) = isP2PEncryptionExperimentEnabled;
         v43 = " [%s] %s:%d Negotiated p2pEncryptionExperimentEnabled=%d";
         v44 = v41;
         v45 = 34;
@@ -16092,7 +16092,7 @@ LABEL_56:
       v47 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v48 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] isP2PEncryptionExperimentEnabled];
+        isP2PEncryptionExperimentEnabled2 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] isP2PEncryptionExperimentEnabled];
         *v50 = 136316418;
         *&v50[4] = v46;
         *&v50[12] = 2080;
@@ -16102,9 +16102,9 @@ LABEL_56:
         WORD2(v51) = 2112;
         *(&v51 + 6) = v39;
         HIWORD(v51) = 2048;
-        v52 = self;
+        selfCopy5 = self;
         LOWORD(v53) = 1024;
-        *(&v53 + 2) = v48;
+        *(&v53 + 2) = isP2PEncryptionExperimentEnabled2;
         v43 = " [%s] %s:%d %@(%p) Negotiated p2pEncryptionExperimentEnabled=%d";
         v44 = v47;
         v45 = 54;
@@ -16116,24 +16116,24 @@ LABEL_56:
   return v4 >= 0;
 }
 
-- (void)configureOneToOneRateController:(id)a3
+- (void)configureOneToOneRateController:(id)controller
 {
-  v5 = [(VCSession *)self isOneToOneUsingVideo];
-  v6 = [(VCSession *)self isOneToOneUsingScreen];
+  isOneToOneUsingVideo = [(VCSession *)self isOneToOneUsingVideo];
+  isOneToOneUsingScreen = [(VCSession *)self isOneToOneUsingScreen];
 
-  [(VCSession *)self configureOneToOneRateController:a3 isUsingCamera:v5 isUsingScreen:v6];
+  [(VCSession *)self configureOneToOneRateController:controller isUsingCamera:isOneToOneUsingVideo isUsingScreen:isOneToOneUsingScreen];
 }
 
-- (void)configureOneToOneRateController:(id)a3 isUsingCamera:(BOOL)a4 isUsingScreen:(BOOL)a5
+- (void)configureOneToOneRateController:(id)controller isUsingCamera:(BOOL)camera isUsingScreen:(BOOL)screen
 {
-  v5 = a5;
-  v6 = a4;
+  screenCopy = screen;
+  cameraCopy = camera;
   v52 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_sessionQueue);
-  if (a3)
+  if (controller)
   {
     [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] updateNegotiatedSettingsOnetoOne:[(VCSessionMediaNegotiator *)[(VCSessionParticipant *)self->_localParticipant mediaNegotiator] negotiatedSettings]];
-    [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] updateAllBitrateCapsForConnection:a3];
+    [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] updateAllBitrateCapsForConnection:controller];
     v9 = VCConnectionManager_CopyPrimaryConnection([(VCTransportSession *)self->_transportSession connectionManager]);
     if (VCConnection_IsLocalOnWiFiOrWired(v9))
     {
@@ -16181,7 +16181,7 @@ LABEL_56:
     if (self->_forceHighDataRateFaceTime)
     {
       v13 |= 0x10000u;
-      [a3 setUplinkBitrateCapOneToOne:23000000];
+      [controller setUplinkBitrateCapOneToOne:23000000];
     }
 
     if (v9)
@@ -16190,18 +16190,18 @@ LABEL_56:
     }
 
     IsInterfaceOnCellularForActiveConnectionWithQuality = VCConnectionManager_IsInterfaceOnCellularForActiveConnectionWithQuality([(VCTransportSession *)self->_transportSession connectionManager], 1, 0);
-    v14 = v6 || v5;
-    if (v6 || v5)
+    v14 = cameraCopy || screenCopy;
+    if (cameraCopy || screenCopy)
     {
-      v15 = [a3 uplinkBitrateCapOneToOne];
+      uplinkBitrateCapOneToOne = [controller uplinkBitrateCapOneToOne];
     }
 
     else
     {
-      v15 = [a3 uplinkAudioBitrateCapOneToOne];
+      uplinkBitrateCapOneToOne = [controller uplinkAudioBitrateCapOneToOne];
     }
 
-    v16 = v15;
+    v16 = uplinkBitrateCapOneToOne;
     if ([(VCSession *)self isUsingPersonaCamera])
     {
       v17 = VCFeatureFlagManager_PersonaV2Enabled();
@@ -16212,7 +16212,7 @@ LABEL_56:
       v17 = 0;
     }
 
-    v18 = [AVCRateController rateControlTrafficTypeForScreen:v5 isPersona:v17];
+    v18 = [AVCRateController rateControlTrafficTypeForScreen:screenCopy isPersona:v17];
     rateController = self->_oneToOneSettings.rateController;
     if (v14)
     {
@@ -16224,11 +16224,11 @@ LABEL_56:
       v20 = 2;
     }
 
-    IsLocalOnCellular = VCConnection_IsLocalOnCellular(a3);
-    v22 = VCConnection_LocalCellTech(a3);
+    IsLocalOnCellular = VCConnection_IsLocalOnCellular(controller);
+    v22 = VCConnection_LocalCellTech(controller);
     HIDWORD(v37) = v13;
     LOBYTE(v37) = v18;
-    [(AVCRateController *)rateController configureWithOperatingMode:v20 isLocalCellular:IsLocalOnCellular localCellTech:v22 isRemoteCellular:IsInterfaceOnCellularForActiveConnectionWithQuality remoteCellTech:VCConnection_RemoteCellTech(a3) bitrateCapKbps:v16 / 0x3E8uLL trafficType:v37 featureFlags:?];
+    [(AVCRateController *)rateController configureWithOperatingMode:v20 isLocalCellular:IsLocalOnCellular localCellTech:v22 isRemoteCellular:IsInterfaceOnCellularForActiveConnectionWithQuality remoteCellTech:VCConnection_RemoteCellTech(controller) bitrateCapKbps:v16 / 0x3E8uLL trafficType:v37 featureFlags:?];
     v23 = self->_oneToOneSettings.rateController;
     v24 = (!v23 || ([(AVCRateController *)v23 configuration], v39 != v20)) && (self->_state | 2) == 3 && [(AVCRateController *)self->_oneToOneSettings.rateController start];
     if (objc_opt_class() == self)
@@ -16283,7 +16283,7 @@ LABEL_53:
           v46 = 2112;
           v47 = v25;
           v48 = 2048;
-          v49 = self;
+          selfCopy2 = self;
           v50 = 1024;
           v51 = v24;
           v28 = " [%s] %s:%d %@(%p) Configured rate controller with status=%{BOOL}d";
@@ -16344,7 +16344,7 @@ LABEL_53:
         v46 = 2112;
         v47 = v11;
         v48 = 2048;
-        v49 = self;
+        selfCopy2 = self;
         v28 = " [%s] %s:%d %@(%p) We cannot configure the OneToOne RateController as there is not an active connection yet";
         v29 = v36;
         v30 = 48;
@@ -16394,7 +16394,7 @@ LABEL_53:
       v21 = 2112;
       v22 = v4;
       v23 = 1024;
-      LODWORD(v24) = 0;
+      LODWORD(selfCopy) = 0;
       v10 = " [%s] %s:%d Could not find server bag config for key=%@. Using default value=%d";
       v11 = v9;
       v12 = 44;
@@ -16433,7 +16433,7 @@ LABEL_53:
       v21 = 2112;
       v22 = v7;
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
       v26 = v4;
       v27 = 1024;
@@ -16450,7 +16450,7 @@ LABEL_53:
   return [v5 unsignedIntValue];
 }
 
-- (BOOL)addOneToOneParticipant:(id)a3
+- (BOOL)addOneToOneParticipant:(id)participant
 {
   v31 = *MEMORY[0x1E69E9840];
   v5 = +[VCSessionErrorUtils VCSessionErrorEvent:errorPath:returnCode:](VCSessionErrorUtils, "VCSessionErrorEvent:errorPath:returnCode:", 16, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCSession+OneToOne.m", 873], 0);
@@ -16522,7 +16522,7 @@ LABEL_36:
       v27 = 2112;
       v28 = v6;
       v29 = 2048;
-      v30 = self;
+      selfCopy = self;
       v13 = " [%s] %s:%d %@(%p) Attempting to add another participant while in 1:1 mode!";
       v14 = v17;
       v15 = 48;
@@ -16538,7 +16538,7 @@ LABEL_26:
     block[2] = __46__VCSession_OneToOne__addOneToOneParticipant___block_invoke;
     block[3] = &unk_1E85F3E30;
     block[4] = self;
-    block[5] = a3;
+    block[5] = participant;
     block[6] = v5;
     dispatch_async(notificationQueue, block);
     if (v18)
@@ -16549,13 +16549,13 @@ LABEL_26:
     return 0;
   }
 
-  if (![(VCSession *)self negotiateOneToOneWithRemoteParticipant:a3])
+  if (![(VCSession *)self negotiateOneToOneWithRemoteParticipant:participant])
   {
     [VCSession(OneToOne) addOneToOneParticipant:];
     goto LABEL_36;
   }
 
-  if (![(VCSession *)self configureRemoteParticipantForOneToOne:a3])
+  if (![(VCSession *)self configureRemoteParticipantForOneToOne:participant])
   {
     [VCSession(OneToOne) addOneToOneParticipant:];
     goto LABEL_36;
@@ -16571,17 +16571,17 @@ LABEL_26:
     }
   }
 
-  if (![(VCSession *)self configureLocalParticipantWithOneToOneRemoteParticipant:a3 isInitialConfiguration:1])
+  if (![(VCSession *)self configureLocalParticipantWithOneToOneRemoteParticipant:participant isInitialConfiguration:1])
   {
     [VCSession(OneToOne) addOneToOneParticipant:];
     goto LABEL_36;
   }
 
-  [(NSMutableArray *)self->_initializingParticipants addObject:a3];
+  [(NSMutableArray *)self->_initializingParticipants addObject:participant];
   state = self->_state;
   if (state == 1)
   {
-    [(NSMutableArray *)self->_startingParticipants addObject:a3];
+    [(NSMutableArray *)self->_startingParticipants addObject:participant];
     state = self->_state;
   }
 
@@ -16618,16 +16618,16 @@ uint64_t __46__VCSession_OneToOne__addOneToOneParticipant___block_invoke(uint64_
   return [v2 vcSession:v3 addParticipantWithID:v4 didSucceed:0 error:v5];
 }
 
-- (BOOL)completeTransitionToOneToOneEnabled:(BOOL)a3
+- (BOOL)completeTransitionToOneToOneEnabled:(BOOL)enabled
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (self->_oneToOneModeEnabled == a3)
+  if (self->_oneToOneModeEnabled == enabled)
   {
     LOBYTE(v3) = 1;
     return v3;
   }
 
-  v4 = a3;
+  enabledCopy = enabled;
   if (self->_oneToOneModeEnabled)
   {
     if (![(VCSession *)self switchFromOneToOneToMultiway])
@@ -16669,7 +16669,7 @@ LABEL_8:
         v23 = 2080;
         v24 = v9;
         v25 = 1024;
-        LODWORD(v26) = v4;
+        LODWORD(selfCopy) = enabledCopy;
         v10 = " [%s] %s:%d %s transition to oneToOneModeEnabled=%d";
         v11 = v8;
         v12 = 44;
@@ -16711,11 +16711,11 @@ LABEL_8:
         v23 = 2112;
         v24 = v6;
         v25 = 2048;
-        v26 = self;
+        selfCopy = self;
         v27 = 2080;
         v28 = v15;
         v29 = 1024;
-        v30 = v4;
+        v30 = enabledCopy;
         v10 = " [%s] %s:%d %@(%p) %s transition to oneToOneModeEnabled=%d";
         v11 = v14;
         v12 = 64;
@@ -16728,7 +16728,7 @@ LABEL_22:
   return v3;
 }
 
-- (void)completionHandlerOneToOneEnabled:(BOOL)a3 didSucceed:(BOOL)a4 configurationDict:(id)a5
+- (void)completionHandlerOneToOneEnabled:(BOOL)enabled didSucceed:(BOOL)succeed configurationDict:(id)dict
 {
   v9 = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -16736,10 +16736,10 @@ LABEL_22:
   v6[1] = 3221225472;
   v6[2] = __85__VCSession_OneToOne__completionHandlerOneToOneEnabled_didSucceed_configurationDict___block_invoke;
   v6[3] = &unk_1E85F63F0;
-  v7 = a4;
-  v8 = a3;
+  succeedCopy = succeed;
+  enabledCopy = enabled;
   v6[4] = self;
-  v6[5] = a5;
+  v6[5] = dict;
   dispatch_async(sessionQueue, v6);
 }
 
@@ -16909,21 +16909,21 @@ uint64_t __85__VCSession_OneToOne__completionHandlerOneToOneEnabled_didSucceed_c
   return [v4 vcSession:v5 oneToOneModeEnabled:v6 didSucceed:v7 error:v2];
 }
 
-- (void)dispatchedSetOneToOneModeEnabled:(BOOL)a3 isLocal:(BOOL)a4 configurationDict:(id)a5
+- (void)dispatchedSetOneToOneModeEnabled:(BOOL)enabled isLocal:(BOOL)local configurationDict:(id)dict
 {
-  v6 = a3;
+  enabledCopy = enabled;
   v76 = *MEMORY[0x1E69E9840];
-  if (self->_oneToOneModeEnabled == a3)
+  if (self->_oneToOneModeEnabled == enabled)
   {
     goto LABEL_54;
   }
 
-  v8 = a4;
-  v9 = [(VCSession *)self oneToOneRemoteParticipant];
-  v10 = v9;
-  if (v9)
+  localCopy = local;
+  oneToOneRemoteParticipant = [(VCSession *)self oneToOneRemoteParticipant];
+  v10 = oneToOneRemoteParticipant;
+  if (oneToOneRemoteParticipant)
   {
-    [(VCSessionParticipantRemote *)v9 capabilities];
+    [(VCSessionParticipantRemote *)oneToOneRemoteParticipant capabilities];
     v12 = HIDWORD(v11) & 1;
   }
 
@@ -16932,7 +16932,7 @@ uint64_t __85__VCSession_OneToOne__completionHandlerOneToOneEnabled_didSucceed_c
     LODWORD(v12) = 1;
   }
 
-  if (v6 && (self->_switchFromGFTToOneToOneEnabled & v12 & 1) == 0)
+  if (enabledCopy && (self->_switchFromGFTToOneToOneEnabled & v12 & 1) == 0)
   {
     if (objc_opt_class() == self)
     {
@@ -17013,7 +17013,7 @@ uint64_t __85__VCSession_OneToOne__completionHandlerOneToOneEnabled_didSucceed_c
   }
 
   v13 = [(NSMutableDictionary *)self->_remoteParticipantsMapByServerID count];
-  if (!v6 || (v14 = v13, v13 < 2))
+  if (!enabledCopy || (v14 = v13, v13 < 2))
   {
     if (objc_opt_class() == self)
     {
@@ -17039,9 +17039,9 @@ uint64_t __85__VCSession_OneToOne__completionHandlerOneToOneEnabled_didSucceed_c
       v68 = 1024;
       *v69 = oneToOneModeEnabled;
       *&v69[4] = 1024;
-      *&v69[6] = v6;
+      *&v69[6] = enabledCopy;
       *v70 = 1024;
-      *&v70[2] = v8;
+      *&v70[2] = localCopy;
       v20 = " [%s] %s:%d Starting Switch _oneToOneModeEnabled=%d to oneToOneEnabled=%d isLocal=%d";
       v21 = v18;
       v22 = 46;
@@ -17085,9 +17085,9 @@ uint64_t __85__VCSession_OneToOne__completionHandlerOneToOneEnabled_didSucceed_c
       *&v70[8] = 1024;
       v71 = v30;
       v72 = 1024;
-      v73 = v6;
+      v73 = enabledCopy;
       v74 = 1024;
-      LODWORD(v75) = v8;
+      LODWORD(v75) = localCopy;
       v20 = " [%s] %s:%d %@(%p) Starting Switch _oneToOneModeEnabled=%d to oneToOneEnabled=%d isLocal=%d";
       v21 = v29;
       v22 = 66;
@@ -17095,12 +17095,12 @@ uint64_t __85__VCSession_OneToOne__completionHandlerOneToOneEnabled_didSucceed_c
 
     _os_log_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_DEFAULT, v20, buf, v22);
 LABEL_26:
-    if (v6 && [(NSString *)[(VCSessionParticipant *)self->_localParticipant uuid] compare:[(VCSessionParticipant *)[(VCSession *)self oneToOneRemoteParticipant] uuid]]== NSOrderedDescending)
+    if (enabledCopy && [(NSString *)[(VCSessionParticipant *)self->_localParticipant uuid] compare:[(VCSessionParticipant *)[(VCSession *)self oneToOneRemoteParticipant] uuid]]== NSOrderedDescending)
     {
       self->_isOneToOneInitiator = 1;
     }
 
-    if (v8)
+    if (localCopy)
     {
       self->_oneToOneSwitchStartTime = micro();
     }
@@ -17110,11 +17110,11 @@ LABEL_26:
       [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] setIsOneToOneScreenEnabled:1];
     }
 
-    if (v10 && v8 && [(VCSession *)self shouldSendControlChannelMessages])
+    if (v10 && localCopy && [(VCSession *)self shouldSendControlChannelMessages])
     {
       v31 = objc_alloc_init(VCControlChannelMessageOptions);
       [(VCControlChannelMessageOptions *)v31 setDuplicateMessageOnServerLink:1];
-      if (v6)
+      if (enabledCopy)
       {
         v32 = @"VCSessionMessageOneToOneEnabled";
       }
@@ -17125,15 +17125,15 @@ LABEL_26:
       }
 
       sessionMessaging = self->_sessionMessaging;
-      v34 = [(VCSessionParticipant *)v10 idsParticipantID];
+      idsParticipantID = [(VCSessionParticipant *)v10 idsParticipantID];
       v60[0] = MEMORY[0x1E69E9820];
       v60[1] = 3221225472;
       v60[2] = __82__VCSession_OneToOne__dispatchedSetOneToOneModeEnabled_isLocal_configurationDict___block_invoke;
       v60[3] = &unk_1E85F9760;
-      v61 = v6;
+      v61 = enabledCopy;
       v60[4] = self;
-      v60[5] = a5;
-      if ([(VCSessionMessaging *)sessionMessaging sendReliableMessage:v32 withTopic:@"VCSessionMessageTopicOneToOneEnabledState" participantID:v34 withOptions:v31 completion:v60])
+      v60[5] = dict;
+      if ([(VCSessionMessaging *)sessionMessaging sendReliableMessage:v32 withTopic:@"VCSessionMessageTopicOneToOneEnabledState" participantID:idsParticipantID withOptions:v31 completion:v60])
       {
         return;
       }
@@ -17180,7 +17180,7 @@ LABEL_74:
       *&v69[8] = 2048;
       *v70 = self;
       *&v70[8] = 1024;
-      v71 = v6;
+      v71 = enabledCopy;
       v72 = 1024;
       v73 = 1;
       v51 = " [%s] %s:%d %@(%p) Failed to send the oneToOneEnabledState message oneToOneEnabled=%d isLocal=%d";
@@ -17188,7 +17188,7 @@ LABEL_74:
       goto LABEL_72;
     }
 
-    if (![(VCSession *)self completeTransitionToOneToOneEnabled:v6])
+    if (![(VCSession *)self completeTransitionToOneToOneEnabled:enabledCopy])
     {
       if (objc_opt_class() == self)
       {
@@ -17211,9 +17211,9 @@ LABEL_74:
         v66 = 1024;
         v67 = 1011;
         v68 = 1024;
-        *v69 = v6;
+        *v69 = enabledCopy;
         *&v69[4] = 1024;
-        *&v69[6] = v8;
+        *&v69[6] = localCopy;
         v51 = " [%s] %s:%d Failed to complete the switch to oneToOneEnabled=%d isLocal=%d";
         v52 = v55;
         v53 = 40;
@@ -17253,9 +17253,9 @@ LABEL_74:
       *&v69[8] = 2048;
       *v70 = self;
       *&v70[8] = 1024;
-      v71 = v6;
+      v71 = enabledCopy;
       v72 = 1024;
-      v73 = v8;
+      v73 = localCopy;
       v51 = " [%s] %s:%d %@(%p) Failed to complete the switch to oneToOneEnabled=%d isLocal=%d";
       v52 = v58;
 LABEL_72:
@@ -17268,7 +17268,7 @@ LABEL_73:
 LABEL_54:
     v37 = 1;
 LABEL_75:
-    [(VCSession(OneToOne) *)self dispatchedSetOneToOneModeEnabled:v59 isLocal:v37 configurationDict:v6, a5];
+    [(VCSession(OneToOne) *)self dispatchedSetOneToOneModeEnabled:v59 isLocal:v37 configurationDict:enabledCopy, dict];
     return;
   }
 
@@ -17291,7 +17291,7 @@ LABEL_75:
         v68 = 1024;
         *v69 = 0;
         *&v69[4] = 1024;
-        *&v69[6] = v6;
+        *&v69[6] = enabledCopy;
         *v70 = 2048;
         *&v70[2] = v14;
         v25 = " [%s] %s:%d Switch to U+1 requested at improper time - canSwitch=%{BOOL}d, oneToOneModeEnabled=%{BOOL}d, remoteParticipantCount=%lu";
@@ -17317,7 +17317,7 @@ LABEL_75:
   if (VRTraceGetErrorLogLevelForModule() < 5 || (v35 = VRTraceErrorLogLevelToCSTR(), v36 = *MEMORY[0x1E6986650], !os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT)))
   {
 LABEL_51:
-    if (!v8)
+    if (!localCopy)
     {
       return;
     }
@@ -17338,7 +17338,7 @@ LABEL_51:
   *&v70[8] = 1024;
   v71 = 0;
   v72 = 1024;
-  v73 = v6;
+  v73 = enabledCopy;
   v74 = 2048;
   v75 = v14;
   v25 = " [%s] %s:%d %@(%p) Switch to U+1 requested at improper time - canSwitch=%{BOOL}d, oneToOneModeEnabled=%{BOOL}d, remoteParticipantCount=%lu";
@@ -17346,7 +17346,7 @@ LABEL_51:
   v27 = 70;
 LABEL_49:
   _os_log_impl(&dword_1DB56E000, v26, OS_LOG_TYPE_DEFAULT, v25, buf, v27);
-  if (v8)
+  if (localCopy)
   {
     goto LABEL_74;
   }
@@ -17458,7 +17458,7 @@ uint64_t __82__VCSession_OneToOne__dispatchedSetOneToOneModeEnabled_isLocal_conf
             v132 = 2080;
             v133 = "[VCSession(OneToOne) setupOneToOneABTesting]";
             v134 = 2080;
-            v135 = v6;
+            selfCopy11 = v6;
             _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s %s", buf, 0x30u);
           }
         }
@@ -17531,7 +17531,7 @@ LABEL_25:
         v132 = 2112;
         v133 = v11;
         v134 = 2048;
-        v135 = self;
+        selfCopy11 = self;
         v136 = 1024;
         v137 = v10;
         v14 = " [%s] %s:%d %@(%p) Load switch iRATMetricsEnabled %d";
@@ -17595,7 +17595,7 @@ LABEL_36:
         v132 = 2112;
         v133 = v20;
         v134 = 2048;
-        v135 = self;
+        selfCopy11 = self;
         v136 = 1024;
         v137 = v19;
         v23 = " [%s] %s:%d %@(%p) Load switch iRATRtpEnabled %d";
@@ -17661,7 +17661,7 @@ LABEL_47:
         v132 = 2112;
         v133 = v30;
         v134 = 2048;
-        v135 = self;
+        selfCopy11 = self;
         v136 = 1024;
         v137 = v28;
         v33 = " [%s] %s:%d %@(%p) Load switch preWarmCellEnabled %d";
@@ -17738,7 +17738,7 @@ LABEL_62:
         v132 = 2112;
         v133 = v41;
         v134 = 2048;
-        v135 = self;
+        selfCopy11 = self;
         v136 = 1024;
         v137 = v40;
         v44 = " [%s] %s:%d %@(%p) Load switch wrmRSSIThresholdEnabled %d";
@@ -17759,7 +17759,7 @@ LABEL_62:
       v51 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v52 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] preferRelayOverP2PEnabled];
+        preferRelayOverP2PEnabled = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] preferRelayOverP2PEnabled];
         *buf = 136315906;
         v127 = v50;
         v128 = 2080;
@@ -17767,7 +17767,7 @@ LABEL_62:
         v130 = 1024;
         v131 = 1058;
         v132 = 1024;
-        LODWORD(v133) = v52;
+        LODWORD(v133) = preferRelayOverP2PEnabled;
         v53 = " [%s] %s:%d Load switch preferRelayOverP2P %d";
         v54 = v51;
         v55 = 34;
@@ -17795,7 +17795,7 @@ LABEL_73:
       v57 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v58 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] preferRelayOverP2PEnabled];
+        preferRelayOverP2PEnabled2 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] preferRelayOverP2PEnabled];
         *buf = 136316418;
         v127 = v56;
         v128 = 2080;
@@ -17805,9 +17805,9 @@ LABEL_73:
         v132 = 2112;
         v133 = v49;
         v134 = 2048;
-        v135 = self;
+        selfCopy11 = self;
         v136 = 1024;
-        v137 = v58;
+        v137 = preferRelayOverP2PEnabled2;
         v53 = " [%s] %s:%d %@(%p) Load switch preferRelayOverP2P %d";
         v54 = v57;
         v55 = 54;
@@ -17825,7 +17825,7 @@ LABEL_73:
       v61 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v62 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] fastMediaDuplicationEnabled];
+        fastMediaDuplicationEnabled = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] fastMediaDuplicationEnabled];
         *buf = 136315906;
         v127 = v60;
         v128 = 2080;
@@ -17833,7 +17833,7 @@ LABEL_73:
         v130 = 1024;
         v131 = 1060;
         v132 = 1024;
-        LODWORD(v133) = v62;
+        LODWORD(v133) = fastMediaDuplicationEnabled;
         v63 = " [%s] %s:%d Load switch fastMediaDuplicationEnabled %d";
         v64 = v61;
         v65 = 34;
@@ -17861,7 +17861,7 @@ LABEL_84:
       v67 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v68 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] fastMediaDuplicationEnabled];
+        fastMediaDuplicationEnabled2 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] fastMediaDuplicationEnabled];
         *buf = 136316418;
         v127 = v66;
         v128 = 2080;
@@ -17871,9 +17871,9 @@ LABEL_84:
         v132 = 2112;
         v133 = v59;
         v134 = 2048;
-        v135 = self;
+        selfCopy11 = self;
         v136 = 1024;
-        v137 = v68;
+        v137 = fastMediaDuplicationEnabled2;
         v63 = " [%s] %s:%d %@(%p) Load switch fastMediaDuplicationEnabled %d";
         v64 = v67;
         v65 = 54;
@@ -17891,7 +17891,7 @@ LABEL_84:
       v71 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v72 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] duplicateImportantPktsEnabled];
+        duplicateImportantPktsEnabled = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] duplicateImportantPktsEnabled];
         *buf = 136315906;
         v127 = v70;
         v128 = 2080;
@@ -17899,7 +17899,7 @@ LABEL_84:
         v130 = 1024;
         v131 = 1062;
         v132 = 1024;
-        LODWORD(v133) = v72;
+        LODWORD(v133) = duplicateImportantPktsEnabled;
         v73 = " [%s] %s:%d Load switch duplicateImportantPktsEnabled %d";
         v74 = v71;
         v75 = 34;
@@ -17927,7 +17927,7 @@ LABEL_95:
       v77 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v78 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] duplicateImportantPktsEnabled];
+        duplicateImportantPktsEnabled2 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] duplicateImportantPktsEnabled];
         *buf = 136316418;
         v127 = v76;
         v128 = 2080;
@@ -17937,9 +17937,9 @@ LABEL_95:
         v132 = 2112;
         v133 = v69;
         v134 = 2048;
-        v135 = self;
+        selfCopy11 = self;
         v136 = 1024;
-        v137 = v78;
+        v137 = duplicateImportantPktsEnabled2;
         v73 = " [%s] %s:%d %@(%p) Load switch duplicateImportantPktsEnabled %d";
         v74 = v77;
         v75 = 54;
@@ -17957,7 +17957,7 @@ LABEL_95:
       v81 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v82 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] lowNetworkModeEnabled];
+        lowNetworkModeEnabled = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] lowNetworkModeEnabled];
         *buf = 136315906;
         v127 = v80;
         v128 = 2080;
@@ -17965,7 +17965,7 @@ LABEL_95:
         v130 = 1024;
         v131 = 1064;
         v132 = 1024;
-        LODWORD(v133) = v82;
+        LODWORD(v133) = lowNetworkModeEnabled;
         v83 = " [%s] %s:%d Load switch lowNetworkModeEnabled %d";
         v84 = v81;
         v85 = 34;
@@ -17993,7 +17993,7 @@ LABEL_106:
       v87 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v88 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] lowNetworkModeEnabled];
+        lowNetworkModeEnabled2 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] lowNetworkModeEnabled];
         *buf = 136316418;
         v127 = v86;
         v128 = 2080;
@@ -18003,9 +18003,9 @@ LABEL_106:
         v132 = 2112;
         v133 = v79;
         v134 = 2048;
-        v135 = self;
+        selfCopy11 = self;
         v136 = 1024;
-        v137 = v88;
+        v137 = lowNetworkModeEnabled2;
         v83 = " [%s] %s:%d %@(%p) Load switch lowNetworkModeEnabled %d";
         v84 = v87;
         v85 = 54;
@@ -18023,7 +18023,7 @@ LABEL_106:
       v91 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v92 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] duplicationEnhancementEnabled];
+        duplicationEnhancementEnabled = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] duplicationEnhancementEnabled];
         *buf = 136315906;
         v127 = v90;
         v128 = 2080;
@@ -18031,7 +18031,7 @@ LABEL_106:
         v130 = 1024;
         v131 = 1066;
         v132 = 1024;
-        LODWORD(v133) = v92;
+        LODWORD(v133) = duplicationEnhancementEnabled;
         v93 = " [%s] %s:%d Load switch duplicationEnhancementEnabled %d";
         v94 = v91;
         v95 = 34;
@@ -18059,7 +18059,7 @@ LABEL_117:
       v97 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v98 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] duplicationEnhancementEnabled];
+        duplicationEnhancementEnabled2 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] duplicationEnhancementEnabled];
         *buf = 136316418;
         v127 = v96;
         v128 = 2080;
@@ -18069,9 +18069,9 @@ LABEL_117:
         v132 = 2112;
         v133 = v89;
         v134 = 2048;
-        v135 = self;
+        selfCopy11 = self;
         v136 = 1024;
-        v137 = v98;
+        v137 = duplicationEnhancementEnabled2;
         v93 = " [%s] %s:%d %@(%p) Load switch duplicationEnhancementEnabled %d";
         v94 = v97;
         v95 = 54;
@@ -18089,7 +18089,7 @@ LABEL_117:
       v101 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v102 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] iRATDuplicationEnabled];
+        iRATDuplicationEnabled = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] iRATDuplicationEnabled];
         *buf = 136315906;
         v127 = v100;
         v128 = 2080;
@@ -18097,7 +18097,7 @@ LABEL_117:
         v130 = 1024;
         v131 = 1068;
         v132 = 1024;
-        LODWORD(v133) = v102;
+        LODWORD(v133) = iRATDuplicationEnabled;
         v103 = " [%s] %s:%d Load switch iRATDuplicationEnabled %d";
         v104 = v101;
         v105 = 34;
@@ -18125,7 +18125,7 @@ LABEL_128:
       v107 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v108 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] iRATDuplicationEnabled];
+        iRATDuplicationEnabled2 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] iRATDuplicationEnabled];
         *buf = 136316418;
         v127 = v106;
         v128 = 2080;
@@ -18135,9 +18135,9 @@ LABEL_128:
         v132 = 2112;
         v133 = v99;
         v134 = 2048;
-        v135 = self;
+        selfCopy11 = self;
         v136 = 1024;
-        v137 = v108;
+        v137 = iRATDuplicationEnabled2;
         v103 = " [%s] %s:%d %@(%p) Load switch iRATDuplicationEnabled %d";
         v104 = v107;
         v105 = 54;
@@ -18161,7 +18161,7 @@ LABEL_128:
       goto LABEL_140;
     }
 
-    v112 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] useMediaDrivenDuplication];
+    useMediaDrivenDuplication = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] useMediaDrivenDuplication];
     *buf = 136315906;
     v127 = v110;
     v128 = 2080;
@@ -18169,7 +18169,7 @@ LABEL_128:
     v130 = 1024;
     v131 = 1070;
     v132 = 1024;
-    LODWORD(v133) = v112;
+    LODWORD(v133) = useMediaDrivenDuplication;
     v113 = " [%s] %s:%d Load switch useMediaDrivenDuplication %d";
     v114 = v111;
     v115 = 34;
@@ -18192,7 +18192,7 @@ LABEL_128:
     v117 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v118 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] useMediaDrivenDuplication];
+      useMediaDrivenDuplication2 = [(VCConnectionManager *)[(VCTransportSession *)self->_transportSession connectionManager] useMediaDrivenDuplication];
       *buf = 136316418;
       v127 = v116;
       v128 = 2080;
@@ -18202,9 +18202,9 @@ LABEL_128:
       v132 = 2112;
       v133 = v109;
       v134 = 2048;
-      v135 = self;
+      selfCopy11 = self;
       v136 = 1024;
-      v137 = v118;
+      v137 = useMediaDrivenDuplication2;
       v113 = " [%s] %s:%d %@(%p) Load switch useMediaDrivenDuplication %d";
       v114 = v117;
       v115 = 54;
@@ -18250,7 +18250,7 @@ LABEL_140:
             v20 = 1024;
             v21 = 1082;
             v22 = 2048;
-            v23 = self;
+            selfCopy = self;
             _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCSession-startOneToOne (%p)", buf, 0x26u);
           }
         }
@@ -18287,8 +18287,8 @@ LABEL_140:
         v15 = 0u;
         v12 = 0u;
         v13 = 0u;
-        v6 = [(VCSession *)self remoteParticipants];
-        v7 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+        remoteParticipants = [(VCSession *)self remoteParticipants];
+        v7 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v12 objects:v11 count:16];
         if (v7)
         {
           v8 = v7;
@@ -18300,14 +18300,14 @@ LABEL_140:
             {
               if (*v13 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(remoteParticipants);
               }
 
               [*(*(&v12 + 1) + 8 * v10++) handleActiveConnectionChange:self->_currentActiveConnection];
             }
 
             while (v8 != v10);
-            v8 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+            v8 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v12 objects:v11 count:16];
           }
 
           while (v8);
@@ -18361,11 +18361,11 @@ uint64_t __56__VCSession_OneToOne__setIsOneToOneRemoteMediaStalling___block_invo
   v14 = *MEMORY[0x1E69E9840];
   if (self->_oneToOneSettings.receivedFirstConnection)
   {
-    v3 = [(VCTransportSession *)self->_transportSession connectionManager];
+    connectionManager = [(VCTransportSession *)self->_transportSession connectionManager];
     currentActiveConnection = self->_currentActiveConnection;
     v5 = [(VCSession *)self isOneToOneUsingVideo]^ 1;
 
-    [(VCConnectionManager *)v3 reportActiveConnectionOneToOne:currentActiveConnection isAudioOnly:v5];
+    [(VCConnectionManager *)connectionManager reportActiveConnectionOneToOne:currentActiveConnection isAudioOnly:v5];
   }
 
   else if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -18389,10 +18389,10 @@ uint64_t __56__VCSession_OneToOne__setIsOneToOneRemoteMediaStalling___block_invo
 {
   v10[7] = *MEMORY[0x1E69E9840];
   v3 = VCConnectionManager_CopyConnectionForQuality([(VCTransportSession *)self->_transportSession connectionManager], 1);
-  v4 = [(NSArray *)[(VCSession *)self remoteParticipants] firstObject];
+  firstObject = [(NSArray *)[(VCSession *)self remoteParticipants] firstObject];
   if (v3)
   {
-    v5 = v4;
+    v5 = firstObject;
     if (VCConnection_IsRelay(v3))
     {
       v6 = @"RLY-";
@@ -18437,9 +18437,9 @@ uint64_t __62__VCSession_OneToOne__notifyDelegateActiveConnectionDidChange__bloc
   return [v2 connectionDidChangeWithLocalInterfaceType:v3 remoteInterfaceType:v4 streamToken:v5];
 }
 
-- (void)setLinkTypeForFeedbackController:(id)a3 withActiveConnection:(id)a4
+- (void)setLinkTypeForFeedbackController:(id)controller withActiveConnection:(id)connection
 {
-  if (VCConnection_IsRelay(a4))
+  if (VCConnection_IsRelay(connection))
   {
     v5 = 2;
   }
@@ -18449,18 +18449,18 @@ uint64_t __62__VCSession_OneToOne__notifyDelegateActiveConnectionDidChange__bloc
     v5 = 1;
   }
 
-  VCRateControlFeedbackController_UpdateTxLinkType(a3, v5);
+  VCRateControlFeedbackController_UpdateTxLinkType(controller, v5);
 }
 
-- (void)handleActiveConnectionChangeForOneToOne:(id)a3
+- (void)handleActiveConnectionChangeForOneToOne:(id)one
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_maxConnectionMTU = [a3 updateMaxConnectionMTU:self->_maxConnectionMTU];
-  [(VCSession *)self configureOneToOneRateController:a3];
+  self->_maxConnectionMTU = [one updateMaxConnectionMTU:self->_maxConnectionMTU];
+  [(VCSession *)self configureOneToOneRateController:one];
   p_oneToOneSettings = &self->_oneToOneSettings;
   receivedFirstConnection = self->_oneToOneSettings.receivedFirstConnection;
-  self->_oneToOneSettings.receivedFirstConnection = a3 != 0;
-  if (a3 && !receivedFirstConnection && [(NSArray *)[(VCSession *)self remoteParticipants] count])
+  self->_oneToOneSettings.receivedFirstConnection = one != 0;
+  if (one && !receivedFirstConnection && [(NSArray *)[(VCSession *)self remoteParticipants] count])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -18493,12 +18493,12 @@ uint64_t __62__VCSession_OneToOne__notifyDelegateActiveConnectionDidChange__bloc
     [(VCSession *)self reportActiveConnectionOneToOne];
   }
 
-  if (VCConnection_IsLocalOnCellular(a3))
+  if (VCConnection_IsLocalOnCellular(one))
   {
     [(VCSessionParticipant *)self->_localParticipant setBasebandCongestionDetector:[(AVCRateController *)p_oneToOneSettings->rateController basebandCongestionDetector]];
   }
 
-  [(VCSession *)self setLinkTypeForFeedbackController:[(AVCRateController *)p_oneToOneSettings->rateController feedbackController] withActiveConnection:a3];
+  [(VCSession *)self setLinkTypeForFeedbackController:[(AVCRateController *)p_oneToOneSettings->rateController feedbackController] withActiveConnection:one];
   [(VCSession *)self notifyDelegateActiveConnectionDidChange];
 }
 
@@ -18508,10 +18508,10 @@ uint64_t __62__VCSession_OneToOne__notifyDelegateActiveConnectionDidChange__bloc
   {
     [VCSession deviceRoleForSessionMode:[(VCSessionConfiguration *)self->_configuration sessionMode]];
     reportingModeRoleTransportLog();
-    v3 = [(VCTransportSession *)self->_transportSession connectionManager];
+    connectionManager = [(VCTransportSession *)self->_transportSession connectionManager];
     currentActiveConnection = self->_currentActiveConnection;
 
-    [(VCConnectionManager *)v3 reportActiveConnectionOneToOne:currentActiveConnection isAudioOnly:0];
+    [(VCConnectionManager *)connectionManager reportActiveConnectionOneToOne:currentActiveConnection isAudioOnly:0];
   }
 }
 
@@ -18583,15 +18583,15 @@ uint64_t __62__VCSession_OneToOne__notifyDelegateActiveConnectionDidChange__bloc
   [(VCControlChannelMultiWay *)controlChannel stop];
 }
 
-- (void)broadcastMessage:(id)a3 withTopic:(id)a4
+- (void)broadcastMessage:(id)message withTopic:(id)topic
 {
   v17 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(VCSession *)self remoteParticipants];
-  v8 = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  remoteParticipants = [(VCSession *)self remoteParticipants];
+  v8 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v8)
   {
     v9 = v8;
@@ -18603,29 +18603,29 @@ uint64_t __62__VCSession_OneToOne__notifyDelegateActiveConnectionDidChange__bloc
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(remoteParticipants);
         }
 
-        -[VCSessionMessaging sendMessage:withTopic:participantID:](self->_sessionMessaging, "sendMessage:withTopic:participantID:", a3, a4, [*(*(&v13 + 1) + 8 * v11++) idsParticipantID]);
+        -[VCSessionMessaging sendMessage:withTopic:participantID:](self->_sessionMessaging, "sendMessage:withTopic:participantID:", message, topic, [*(*(&v13 + 1) + 8 * v11++) idsParticipantID]);
       }
 
       while (v9 != v11);
-      v9 = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v9 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v13 objects:v12 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)broadcastMessageDictionary:(id)a3 withTopic:(id)a4
+- (void)broadcastMessageDictionary:(id)dictionary withTopic:(id)topic
 {
   v17 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(VCSession *)self remoteParticipants];
-  v8 = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  remoteParticipants = [(VCSession *)self remoteParticipants];
+  v8 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v8)
   {
     v9 = v8;
@@ -18637,29 +18637,29 @@ uint64_t __62__VCSession_OneToOne__notifyDelegateActiveConnectionDidChange__bloc
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(remoteParticipants);
         }
 
-        -[VCSessionMessaging sendMessageDictionary:withTopic:participantID:](self->_sessionMessaging, "sendMessageDictionary:withTopic:participantID:", a3, a4, [*(*(&v13 + 1) + 8 * v11++) idsParticipantID]);
+        -[VCSessionMessaging sendMessageDictionary:withTopic:participantID:](self->_sessionMessaging, "sendMessageDictionary:withTopic:participantID:", dictionary, topic, [*(*(&v13 + 1) + 8 * v11++) idsParticipantID]);
       }
 
       while (v9 != v11);
-      v9 = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v9 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v13 objects:v12 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)broadcastSingleStateMessage:(id)a3 withTopic:(id)a4
+- (void)broadcastSingleStateMessage:(id)message withTopic:(id)topic
 {
   v19 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(VCSession *)self remoteParticipants];
-  v8 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  remoteParticipants = [(VCSession *)self remoteParticipants];
+  v8 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v8)
   {
     v9 = v8;
@@ -18670,18 +18670,18 @@ uint64_t __62__VCSession_OneToOne__notifyDelegateActiveConnectionDidChange__bloc
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(remoteParticipants);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
         [v12 capabilities];
         if (v13 == 1)
         {
-          -[VCSessionMessaging sendMessage:withTopic:participantID:](self->_sessionMessaging, "sendMessage:withTopic:participantID:", a3, a4, [v12 idsParticipantID]);
+          -[VCSessionMessaging sendMessage:withTopic:participantID:](self->_sessionMessaging, "sendMessage:withTopic:participantID:", message, topic, [v12 idsParticipantID]);
         }
       }
 
-      v9 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v9 = [(NSArray *)remoteParticipants countByEnumeratingWithState:&v15 objects:v14 count:16];
     }
 
     while (v9);
@@ -19056,21 +19056,21 @@ uint64_t __55__VCSession_Messaging__setupKeyFrameGenerationMessages__block_invok
   return [v6 generateKeyFrameWithReceivedMessage:a2 forParticipant:a4];
 }
 
-- (void)processSymptomFromMessage:(id)a3 participantID:(id)a4 isLocalInitiated:(BOOL)a5 isLocalSideOnly:(BOOL)a6
+- (void)processSymptomFromMessage:(id)message participantID:(id)d isLocalInitiated:(BOOL)initiated isLocalSideOnly:(BOOL)only
 {
-  v6 = a6;
-  v7 = a5;
+  onlyCopy = only;
+  initiatedCopy = initiated;
   v43 = *MEMORY[0x1E69E9840];
   v10 = [objc_msgSend(MEMORY[0x1E6986630] weakObjectHolderWithObject:{self), "strong"}];
   v11 = [objc_msgSend(v10 "remoteParticipantsMapByServerID")];
-  if (a3)
+  if (message)
   {
     v12 = v11;
     if (v11)
     {
-      [a3 objectForKeyedSubscript:@"VCSessionMessageSymptom"];
+      [message objectForKeyedSubscript:@"VCSessionMessageSymptom"];
       v13 = processGroupSymptoms();
-      v14 = [a3 objectForKeyedSubscript:@"VCSessionMessageGroupID"];
+      v14 = [message objectForKeyedSubscript:@"VCSessionMessageGroupID"];
       if (VRTraceGetErrorLogLevelForModule() >= 6)
       {
         v15 = VRTraceErrorLogLevelToCSTR();
@@ -19084,19 +19084,19 @@ uint64_t __55__VCSession_Messaging__setupKeyFrameGenerationMessages__block_invok
           v23 = 1024;
           v24 = 260;
           v25 = 2112;
-          v26 = [v10 uuid];
+          uuid = [v10 uuid];
           v27 = 1024;
-          v28 = [v10 transportSessionID];
+          transportSessionID = [v10 transportSessionID];
           v29 = 2112;
-          v30 = a4;
+          dCopy = d;
           v31 = 2112;
-          v32 = [v12 uuid];
+          uuid2 = [v12 uuid];
           v33 = 1024;
-          v34 = v7;
+          v34 = initiatedCopy;
           v35 = 1024;
-          v36 = v6;
+          v36 = onlyCopy;
           v37 = 2112;
-          v38 = a3;
+          messageCopy = message;
           v39 = 1024;
           v40 = v13;
           v41 = 2112;
@@ -19110,7 +19110,7 @@ uint64_t __55__VCSession_Messaging__setupKeyFrameGenerationMessages__block_invok
         Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
         CFDictionarySetValue(Mutable, @"SymptomReporterOptionalKeyGroupID", v14);
         v18 = MEMORY[0x1E695E4D0];
-        if (!v6)
+        if (!onlyCopy)
         {
           v18 = MEMORY[0x1E695E4C0];
         }
@@ -19752,24 +19752,24 @@ void __47__VCSession_Messaging__setupDeviceStateMessage__block_invoke(uint64_t a
   dispatch_async(v7, v8);
 }
 
-- (void)handleDeviceStateMessage:(id)a3 forParticipantId:(id)a4
+- (void)handleDeviceStateMessage:(id)message forParticipantId:(id)id
 {
   v28 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_sessionQueue);
-  if (a3)
+  if (message)
   {
-    v7 = [(NSMutableDictionary *)self->_remoteParticipantsMapByServerID objectForKeyedSubscript:a4];
+    v7 = [(NSMutableDictionary *)self->_remoteParticipantsMapByServerID objectForKeyedSubscript:id];
     if (v7)
     {
       v8 = v7;
-      v9 = [v7 uuid];
+      uuid = [v7 uuid];
       ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
-      if (v9)
+      if (uuid)
       {
         if (ErrorLogLevelForModule >= 7)
         {
           __str = 0;
-          asprintf(&__str, "%s", [objc_msgSend(a3 "description")]);
+          asprintf(&__str, "%s", [objc_msgSend(message "description")]);
           if (__str)
           {
             __lasts = 0;
@@ -19805,15 +19805,15 @@ void __47__VCSession_Messaging__setupDeviceStateMessage__block_invoke(uint64_t a
           }
         }
 
-        v15 = [MEMORY[0x1E695DF90] dictionary];
-        if ([a3 objectForKeyedSubscript:@"Thermal"])
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        if ([message objectForKeyedSubscript:@"Thermal"])
         {
-          [(VCSession *)self reportKeysForDeviceStateMessage:362 stateMessage:a3 InPayload:v15 ForParitcipant:v8];
+          [(VCSession *)self reportKeysForDeviceStateMessage:362 stateMessage:message InPayload:dictionary ForParitcipant:v8];
         }
 
-        if ([a3 objectForKeyedSubscript:@"sliceStatus"])
+        if ([message objectForKeyedSubscript:@"sliceStatus"])
         {
-          [(VCSession *)self reportKeysForDeviceStateMessage:38 stateMessage:a3 InPayload:v15 ForParitcipant:v8];
+          [(VCSession *)self reportKeysForDeviceStateMessage:38 stateMessage:message InPayload:dictionary ForParitcipant:v8];
         }
       }
 
@@ -19835,9 +19835,9 @@ void __47__VCSession_Messaging__setupDeviceStateMessage__block_invoke(uint64_t a
   }
 }
 
-- (void)reportKeysForDeviceStateMessage:(unsigned __int16)a3 stateMessage:(id)a4 InPayload:(id)a5 ForParitcipant:(id)a6
+- (void)reportKeysForDeviceStateMessage:(unsigned __int16)message stateMessage:(id)stateMessage InPayload:(id)payload ForParitcipant:(id)paritcipant
 {
-  if (a3 == 362)
+  if (message == 362)
   {
     v10 = @"Thermal";
     v9 = @"Thermal";
@@ -19845,7 +19845,7 @@ void __47__VCSession_Messaging__setupDeviceStateMessage__block_invoke(uint64_t a
 
   else
   {
-    if (a3 != 38)
+    if (message != 38)
     {
       goto LABEL_6;
     }
@@ -19854,32 +19854,32 @@ void __47__VCSession_Messaging__setupDeviceStateMessage__block_invoke(uint64_t a
     v10 = @"sliceStatus";
   }
 
-  [a5 setObject:objc_msgSend(a6 forKeyedSubscript:{"uuid"), @"VCSPUUID"}];
-  [a5 setObject:objc_msgSend(a4 forKeyedSubscript:{"objectForKeyedSubscript:", v10), v9}];
+  [payload setObject:objc_msgSend(paritcipant forKeyedSubscript:{"uuid"), @"VCSPUUID"}];
+  [payload setObject:objc_msgSend(stateMessage forKeyedSubscript:{"objectForKeyedSubscript:", v10), v9}];
 LABEL_6:
   [(VCObject *)self reportingAgent];
 
   reportingGenericEvent();
 }
 
-- (void)handleNetworkCapabilityMessage:(id)a3 forParticipantId:(id)a4
+- (void)handleNetworkCapabilityMessage:(id)message forParticipantId:(id)id
 {
-  v6 = self;
+  selfCopy = self;
   v29 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_sessionQueue);
-  if (a3)
+  if (message)
   {
-    v7 = [(NSMutableDictionary *)v6->_remoteParticipantsMapByServerID objectForKeyedSubscript:a4];
+    v7 = [(NSMutableDictionary *)selfCopy->_remoteParticipantsMapByServerID objectForKeyedSubscript:id];
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
     if (v7)
     {
       if (ErrorLogLevelForModule >= 7)
       {
         __str = 0;
-        asprintf(&__str, "%s", [objc_msgSend(a3 "description")]);
+        asprintf(&__str, "%s", [objc_msgSend(message "description")]);
         if (__str)
         {
-          v14 = v6;
+          v14 = selfCopy;
           __lasts = 0;
           v9 = strtok_r(__str, "\n", &__lasts);
           v10 = MEMORY[0x1E6986650];
@@ -19910,40 +19910,40 @@ LABEL_6:
 
           while (v9);
           free(__str);
-          v6 = v14;
+          selfCopy = v14;
         }
       }
 
-      if ([v7 uuid] && objc_msgSend(a3, "objectForKeyedSubscript:", @"RCEV") && objc_msgSend(a3, "objectForKeyedSubscript:", @"RCEG"))
+      if ([v7 uuid] && objc_msgSend(message, "objectForKeyedSubscript:", @"RCEV") && objc_msgSend(message, "objectForKeyedSubscript:", @"RCEG"))
       {
         v17[0] = @"VCSPUUID";
         v18[0] = [v7 uuid];
         v17[1] = @"RCEV";
-        v18[1] = [a3 objectForKeyedSubscript:@"RCEV"];
+        v18[1] = [message objectForKeyedSubscript:@"RCEV"];
         v17[2] = @"RCEG";
-        v18[2] = [a3 objectForKeyedSubscript:@"RCEG"];
+        v18[2] = [message objectForKeyedSubscript:@"RCEG"];
         v13 = [objc_msgSend(MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:{3), "mutableCopy"}];
-        if ([a3 objectForKeyedSubscript:@"SBVERS"])
+        if ([message objectForKeyedSubscript:@"SBVERS"])
         {
-          [v13 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", @"SBVERS", @"SBVERS"}];
+          [v13 setObject:objc_msgSend(message forKeyedSubscript:{"objectForKeyedSubscript:", @"SBVERS", @"SBVERS"}];
         }
 
-        if ([a3 objectForKeyedSubscript:@"RULRTX"])
+        if ([message objectForKeyedSubscript:@"RULRTX"])
         {
-          [v13 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", @"RULRTX", @"RULRTX"}];
+          [v13 setObject:objc_msgSend(message forKeyedSubscript:{"objectForKeyedSubscript:", @"RULRTX", @"RULRTX"}];
         }
 
-        if ([a3 objectForKeyedSubscript:@"RTLE"])
+        if ([message objectForKeyedSubscript:@"RTLE"])
         {
-          [v13 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", @"RTLE", @"RTLE"}];
+          [v13 setObject:objc_msgSend(message forKeyedSubscript:{"objectForKeyedSubscript:", @"RTLE", @"RTLE"}];
         }
 
-        if ([a3 objectForKeyedSubscript:@"MQSchP"])
+        if ([message objectForKeyedSubscript:@"MQSchP"])
         {
-          [v13 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", @"MQSchP", @"MQSchP"}];
+          [v13 setObject:objc_msgSend(message forKeyedSubscript:{"objectForKeyedSubscript:", @"MQSchP", @"MQSchP"}];
         }
 
-        [(VCObject *)v6 reportingAgent];
+        [(VCObject *)selfCopy reportingAgent];
         reportingGenericEvent();
       }
     }
@@ -19988,7 +19988,7 @@ void __53__VCSession_Messaging__setupNetworkCapabilityMessage__block_invoke(uint
   dispatch_async(v7, v8);
 }
 
-- (void)dispatchedRemoteCellTechStateUpdate:(id)a3 maxRemoteBitrate:(id)a4
+- (void)dispatchedRemoteCellTechStateUpdate:(id)update maxRemoteBitrate:(id)bitrate
 {
   v19 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_sessionQueue);
@@ -20005,21 +20005,21 @@ void __53__VCSession_Messaging__setupNetworkCapabilityMessage__block_invoke(uint
       v13 = 1024;
       v14 = 574;
       v15 = 1024;
-      v16 = [a3 intValue];
+      intValue = [update intValue];
       v17 = 1024;
-      v18 = [a4 unsignedIntValue];
+      unsignedIntValue = [bitrate unsignedIntValue];
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCSession received message about CellTech change :%d, remote bitrate %u", &v9, 0x28u);
     }
   }
 
-  -[VCSession remoteCellTechStateUpdate:maxRemoteBitrate:](self, "remoteCellTechStateUpdate:maxRemoteBitrate:", [a3 intValue], objc_msgSend(a4, "unsignedIntValue"));
+  -[VCSession remoteCellTechStateUpdate:maxRemoteBitrate:](self, "remoteCellTechStateUpdate:maxRemoteBitrate:", [update intValue], objc_msgSend(bitrate, "unsignedIntValue"));
 }
 
-- (void)remoteCellTechStateUpdate:(int)a3 maxRemoteBitrate:(unsigned int)a4
+- (void)remoteCellTechStateUpdate:(int)update maxRemoteBitrate:(unsigned int)bitrate
 {
-  v4 = *&a3;
+  v4 = *&update;
   v25 = *MEMORY[0x1E69E9840];
-  if (a3 && a3 < 10)
+  if (update && update < 10)
   {
     v7 = CelltechToStr();
     v8 = [objc_msgSend(MEMORY[0x1E6986630] weakObjectHolderWithObject:{self), "strong"}];
@@ -20027,15 +20027,15 @@ void __53__VCSession_Messaging__setupNetworkCapabilityMessage__block_invoke(uint
     [v8 configureOneToOneRateController:self->_currentActiveConnection];
     if (([v8 isOneToOneUsingVideo] & 1) != 0 || objc_msgSend(v8, "isOneToOneUsingScreen"))
     {
-      v9 = [(VCConnectionProtocol *)self->_currentActiveConnection uplinkBitrateCapOneToOne];
+      uplinkBitrateCapOneToOne = [(VCConnectionProtocol *)self->_currentActiveConnection uplinkBitrateCapOneToOne];
     }
 
     else
     {
-      v9 = [(VCConnectionProtocol *)self->_currentActiveConnection uplinkAudioBitrateCapOneToOne];
+      uplinkBitrateCapOneToOne = [(VCConnectionProtocol *)self->_currentActiveConnection uplinkAudioBitrateCapOneToOne];
     }
 
-    v10 = v9;
+    v10 = uplinkBitrateCapOneToOne;
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       v11 = VRTraceErrorLogLevelToCSTR();
@@ -20053,7 +20053,7 @@ void __53__VCSession_Messaging__setupNetworkCapabilityMessage__block_invoke(uint
         v21 = 1024;
         v22 = v10;
         v23 = 1024;
-        v24 = a4;
+        bitrateCopy = bitrate;
         _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCSession: Remote CellTech has changed %s, max bitrate %u, max remote bitrate %u", &v13, 0x32u);
       }
     }
@@ -20439,21 +20439,21 @@ void __53__VCSession_Messaging__setUpDeviceOrientationMessage__block_invoke_2(ui
   }
 }
 
-+ (id)mediaStateMessageStreamGroupKeysForMediaType:(unsigned int)a3
++ (id)mediaStateMessageStreamGroupKeysForMediaType:(unsigned int)type
 {
   v3 = MEMORY[0x1E695DFD8];
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 > 5)
+    if (type > 5)
     {
-      if (a3 == 6)
+      if (type == 6)
       {
-        v4 = [&unk_1F579BD00 stringValue];
+        stringValue = [&unk_1F579BD00 stringValue];
         v5 = &unk_1F579BD18;
-        return [v3 setWithObjects:{v4, objc_msgSend(v5, "stringValue"), 0}];
+        return [v3 setWithObjects:{stringValue, objc_msgSend(v5, "stringValue"), 0}];
       }
 
-      if (a3 == 8)
+      if (type == 8)
       {
         return [MEMORY[0x1E695DFD8] setWithObjects:{objc_msgSend(&unk_1F579BD18, "stringValue"), 0, v10}];
       }
@@ -20464,7 +20464,7 @@ LABEL_22:
       return [v9 set];
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       v6 = &unk_1F579BCD0;
     }
@@ -20477,26 +20477,26 @@ LABEL_22:
 
   else
   {
-    if (a3 <= 1)
+    if (type <= 1)
     {
-      if (!a3)
+      if (!type)
       {
-        v4 = [&unk_1F579BC40 stringValue];
+        stringValue = [&unk_1F579BC40 stringValue];
         v5 = &unk_1F579BC58;
-        return [v3 setWithObjects:{v4, objc_msgSend(v5, "stringValue"), 0}];
+        return [v3 setWithObjects:{stringValue, objc_msgSend(v5, "stringValue"), 0}];
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
-        v4 = [&unk_1F579BC70 stringValue];
+        stringValue = [&unk_1F579BC70 stringValue];
         v5 = &unk_1F579BC88;
-        return [v3 setWithObjects:{v4, objc_msgSend(v5, "stringValue"), 0}];
+        return [v3 setWithObjects:{stringValue, objc_msgSend(v5, "stringValue"), 0}];
       }
 
       goto LABEL_22;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v6 = &unk_1F579BCA0;
     }
@@ -20507,16 +20507,16 @@ LABEL_22:
     }
   }
 
-  v8 = [v6 stringValue];
+  stringValue2 = [v6 stringValue];
 
-  return [v3 setWithObject:v8];
+  return [v3 setWithObject:stringValue2];
 }
 
-+ (id)mediaStateMessageKeyForMediaType:(unsigned int)a3
++ (id)mediaStateMessageKeyForMediaType:(unsigned int)type
 {
-  if (a3 <= 8 && ((0x17Fu >> a3) & 1) != 0)
+  if (type <= 8 && ((0x17Fu >> type) & 1) != 0)
   {
-    return [off_1E85F98B8[a3] stringValue];
+    return [off_1E85F98B8[type] stringValue];
   }
 
   else
@@ -20525,19 +20525,19 @@ LABEL_22:
   }
 }
 
-+ (unsigned)mediaTypeForMediaStateMessageKey:(id)a3
++ (unsigned)mediaTypeForMediaStateMessageKey:(id)key
 {
-  v3 = [a3 unsignedIntValue];
+  unsignedIntValue = [key unsignedIntValue];
   result = 0;
-  if (v3 <= 127)
+  if (unsignedIntValue <= 127)
   {
-    if (v3 <= 5)
+    if (unsignedIntValue <= 5)
     {
-      if (v3 > 2)
+      if (unsignedIntValue > 2)
       {
-        if (v3 != 3)
+        if (unsignedIntValue != 3)
         {
-          if (v3 != 4)
+          if (unsignedIntValue != 4)
           {
             return 1;
           }
@@ -20548,9 +20548,9 @@ LABEL_22:
         return 2;
       }
 
-      if (v3 != 1)
+      if (unsignedIntValue != 1)
       {
-        if (v3 == 2)
+        if (unsignedIntValue == 2)
         {
           return result;
         }
@@ -20561,14 +20561,14 @@ LABEL_22:
       return 1;
     }
 
-    if (v3 <= 8)
+    if (unsignedIntValue <= 8)
     {
-      if (v3 == 6)
+      if (unsignedIntValue == 6)
       {
         return result;
       }
 
-      if (v3 != 7)
+      if (unsignedIntValue != 7)
       {
         return 5;
       }
@@ -20576,7 +20576,7 @@ LABEL_22:
       return 4;
     }
 
-    if ((v3 - 9) >= 2)
+    if ((unsignedIntValue - 9) >= 2)
     {
       return -1;
     }
@@ -20584,11 +20584,11 @@ LABEL_22:
     return -2;
   }
 
-  if (v3 > 131)
+  if (unsignedIntValue > 131)
   {
-    if (v3 <= 133)
+    if (unsignedIntValue <= 133)
     {
-      if (v3 != 132)
+      if (unsignedIntValue != 132)
       {
         return 5;
       }
@@ -20596,17 +20596,17 @@ LABEL_22:
       return 4;
     }
 
-    if (v3 == 134)
+    if (unsignedIntValue == 134)
     {
       return 6;
     }
 
-    if (v3 == 136)
+    if (unsignedIntValue == 136)
     {
       return 8;
     }
 
-    if (v3 != 140)
+    if (unsignedIntValue != 140)
     {
       return -1;
     }
@@ -20614,9 +20614,9 @@ LABEL_22:
     return -2;
   }
 
-  if (v3 > 129)
+  if (unsignedIntValue > 129)
   {
-    if (v3 != 130)
+    if (unsignedIntValue != 130)
     {
       return 3;
     }
@@ -20624,7 +20624,7 @@ LABEL_22:
     return 2;
   }
 
-  if (v3 == 128)
+  if (unsignedIntValue == 128)
   {
     return 1;
   }
@@ -20632,22 +20632,22 @@ LABEL_22:
   return result;
 }
 
-+ (id)mediaStateMessageValueForMediaState:(unsigned int)a3
++ (id)mediaStateMessageValueForMediaState:(unsigned int)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_1E85F9900[a3];
+    return qword_1E85F9900[state];
   }
 }
 
-+ (unsigned)mediaStateForMediaStateMessageValue:(id)a3
++ (unsigned)mediaStateForMediaStateMessageValue:(id)value
 {
-  result = [a3 unsignedIntValue];
+  result = [value unsignedIntValue];
   if (result >= 3)
   {
     return -1;
@@ -20656,22 +20656,22 @@ LABEL_22:
   return result;
 }
 
-- (void)updateStateMessage:(id)a3 stateState:(unsigned int)a4 streamGroupKey:(id)a5
+- (void)updateStateMessage:(id)message stateState:(unsigned int)state streamGroupKey:(id)key
 {
-  v6 = *&a4;
-  v8 = [a3 objectForKeyedSubscript:a5];
+  v6 = *&state;
+  v8 = [message objectForKeyedSubscript:key];
   if (!v8 || (v9 = [v8 unsignedIntValue]) == 0 || v9 == 2 && v6 == 1)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
 
-    [a3 setObject:v10 forKeyedSubscript:a5];
+    [message setObject:v10 forKeyedSubscript:key];
   }
 }
 
-- (id)stateMessageWithSupportsNestedDictionary:(BOOL)a3
+- (id)stateMessageWithSupportsNestedDictionary:(BOOL)dictionary
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v5 = 0;
   *&v6 = 136316162;
   v50 = v6;
@@ -20690,7 +20690,7 @@ LABEL_22:
       v10 = [VCSession mediaStateMessageKeyForMediaType:v5];
       if (v10)
       {
-        [v4 setObject:v9 forKeyedSubscript:v10];
+        [dictionary setObject:v9 forKeyedSubscript:v10];
         v55 = 0u;
         v56 = 0u;
         v53 = 0u;
@@ -20710,7 +20710,7 @@ LABEL_22:
                 objc_enumerationMutation(v11);
               }
 
-              [(VCSession *)self updateStateMessage:v4 stateState:v7 streamGroupKey:*(*(&v53 + 1) + 8 * i), v50];
+              [(VCSession *)self updateStateMessage:dictionary stateState:v7 streamGroupKey:*(*(&v53 + 1) + 8 * i), v50];
             }
 
             v13 = [v11 countByEnumeratingWithState:&v53 objects:v52 count:16];
@@ -20738,7 +20738,7 @@ LABEL_22:
               v63 = 2112;
               v64 = v39;
               v65 = 2112;
-              v66 = v40;
+              selfCopy3 = v40;
               v21 = v38;
               v22 = " [%s] %s:%d Sending State Update: mediaType=%@ mediaState=%@";
               v23 = 48;
@@ -20772,7 +20772,7 @@ LABEL_22:
               v63 = 2112;
               v64 = v16;
               v65 = 2048;
-              v66 = self;
+              selfCopy3 = self;
               v67 = 2112;
               v68 = v19;
               v69 = 2112;
@@ -20806,7 +20806,7 @@ LABEL_36:
             v63 = 2112;
             v64 = v47;
             v65 = 2112;
-            v66 = v48;
+            selfCopy3 = v48;
             v29 = v46;
             v30 = " [%s] %s:%d Sending State Update: Failed to add message entry for mediaType=%@ mediaState=%@. Key is nil.";
             goto LABEL_43;
@@ -20839,7 +20839,7 @@ LABEL_36:
             v63 = 2112;
             v64 = v31;
             v65 = 2048;
-            v66 = self;
+            selfCopy3 = self;
             v67 = 2112;
             v68 = v34;
             v69 = 2112;
@@ -20874,7 +20874,7 @@ LABEL_44:
           v63 = 2112;
           v64 = v43;
           v65 = 2112;
-          v66 = v44;
+          selfCopy3 = v44;
           v29 = v42;
           v30 = " [%s] %s:%d Sending State Update: Failed to add message entry for mediaType=%@ mediaState=%@. Value is nil.";
 LABEL_43:
@@ -20909,7 +20909,7 @@ LABEL_43:
           v63 = 2112;
           v64 = v24;
           v65 = 2048;
-          v66 = self;
+          selfCopy3 = self;
           v67 = 2112;
           v68 = v27;
           v69 = 2112;
@@ -20926,24 +20926,24 @@ LABEL_3:
   }
 
   while (v5 != 9);
-  if (a3)
+  if (dictionary)
   {
-    [(VCSession *)self appendMediaTypeMixingListToMessageDictionary:v4];
+    [(VCSession *)self appendMediaTypeMixingListToMessageDictionary:dictionary];
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (void)appendMediaTypeMixingListToMessageDictionary:(id)a3
+- (void)appendMediaTypeMixingListToMessageDictionary:(id)dictionary
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [(VCSessionParticipant *)self->_localParticipant mediaTypeMixingList];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  mediaTypeMixingList = [(VCSessionParticipant *)self->_localParticipant mediaTypeMixingList];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [(NSDictionary *)v6 countByEnumeratingWithState:&v32 objects:v31 count:16];
+  v7 = [(NSDictionary *)mediaTypeMixingList countByEnumeratingWithState:&v32 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -20954,21 +20954,21 @@ LABEL_3:
       {
         if (*v33 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(mediaTypeMixingList);
         }
 
-        -[__CFString setObject:forKeyedSubscript:](v5, "setObject:forKeyedSubscript:", -[NSDictionary objectForKeyedSubscript:](v6, "objectForKeyedSubscript:", *(*(&v32 + 1) + 8 * i)), [*(*(&v32 + 1) + 8 * i) stringValue]);
+        -[__CFString setObject:forKeyedSubscript:](dictionary, "setObject:forKeyedSubscript:", -[NSDictionary objectForKeyedSubscript:](mediaTypeMixingList, "objectForKeyedSubscript:", *(*(&v32 + 1) + 8 * i)), [*(*(&v32 + 1) + 8 * i) stringValue]);
       }
 
-      v8 = [(NSDictionary *)v6 countByEnumeratingWithState:&v32 objects:v31 count:16];
+      v8 = [(NSDictionary *)mediaTypeMixingList countByEnumeratingWithState:&v32 objects:v31 count:16];
     }
 
     while (v8);
   }
 
-  if ([(__CFString *)v5 count])
+  if ([(__CFString *)dictionary count])
   {
-    [a3 setObject:v5 forKeyedSubscript:{objc_msgSend(&unk_1F579BE08, "stringValue")}];
+    [dictionary setObject:dictionary forKeyedSubscript:{objc_msgSend(&unk_1F579BE08, "stringValue")}];
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -20984,7 +20984,7 @@ LABEL_3:
           v23 = 1024;
           v24 = 888;
           v25 = 2112;
-          v26 = v5;
+          v26 = dictionary;
           v14 = " [%s] %s:%d Sending State Update: appending mediaTypeMixingList=%@";
           v15 = v13;
           v16 = 38;
@@ -21021,9 +21021,9 @@ LABEL_19:
           v25 = 2112;
           v26 = v11;
           v27 = 2048;
-          v28 = self;
+          selfCopy = self;
           v29 = 2112;
-          v30 = v5;
+          v30 = dictionary;
           v14 = " [%s] %s:%d %@(%p) Sending State Update: appending mediaTypeMixingList=%@";
           v15 = v18;
           v16 = 58;
@@ -21036,14 +21036,14 @@ LABEL_19:
 
 - (void)broadcastMediaStateUpdateMessage
 {
-  v2 = self;
+  selfCopy = self;
   v48 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_sessionQueue);
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = [(VCSession *)v2 remoteParticipants];
+  obj = [(VCSession *)selfCopy remoteParticipants];
   v3 = [(NSArray *)obj countByEnumeratingWithState:&v44 objects:v43 count:16];
   if (v3)
   {
@@ -21051,7 +21051,7 @@ LABEL_19:
     v5 = 0;
     v6 = 0;
     v7 = *v45;
-    v26 = v2;
+    v26 = selfCopy;
     v28 = *v45;
     do
     {
@@ -21074,7 +21074,7 @@ LABEL_19:
           {
             if ((v11 & 0x1000000000000) == 0 && !v5)
             {
-              v5 = [(VCSession *)v2 stateMessageWithSupportsNestedDictionary:0];
+              v5 = [(VCSession *)selfCopy stateMessageWithSupportsNestedDictionary:0];
               if (VRTraceGetErrorLogLevelForModule() >= 7)
               {
                 __str = 0;
@@ -21126,14 +21126,14 @@ LABEL_32:
                 }
 
 LABEL_33:
-                v2 = v26;
+                selfCopy = v26;
               }
             }
           }
 
           else
           {
-            v6 = [(VCSession *)v2 stateMessageWithSupportsNestedDictionary:1];
+            v6 = [(VCSession *)selfCopy stateMessageWithSupportsNestedDictionary:1];
             if (VRTraceGetErrorLogLevelForModule() >= 7)
             {
               __str = 0;
@@ -21197,11 +21197,11 @@ LABEL_33:
           }
 
           v22 = v5;
-          sessionMessaging = v2->_sessionMessaging;
-          v24 = [v9 idsParticipantID];
+          sessionMessaging = selfCopy->_sessionMessaging;
+          idsParticipantID = [v9 idsParticipantID];
           v25 = sessionMessaging;
           v5 = v22;
-          [(VCSessionMessaging *)v25 sendMessageDictionary:v21 withTopic:@"VCSessionMessageTopicStreamGroupsState" participantID:v24];
+          [(VCSessionMessaging *)v25 sendMessageDictionary:v21 withTopic:@"VCSessionMessageTopicStreamGroupsState" participantID:idsParticipantID];
           v7 = v28;
           v4 = v29;
         }
@@ -21217,22 +21217,22 @@ LABEL_33:
   }
 }
 
-- (void)sendMediaStateUpdateMessageToRemoteParticipant:(id)a3
+- (void)sendMediaStateUpdateMessageToRemoteParticipant:(id)participant
 {
-  [a3 capabilities];
+  [participant capabilities];
   v6 = [(VCSession *)self stateMessageWithSupportsNestedDictionary:HIWORD(v5) & 1];
   sessionMessaging = self->_sessionMessaging;
-  v8 = [a3 idsParticipantID];
+  idsParticipantID = [participant idsParticipantID];
 
-  [(VCSessionMessaging *)sessionMessaging sendMessageDictionary:v6 withTopic:@"VCSessionMessageTopicStreamGroupsState" participantID:v8];
+  [(VCSessionMessaging *)sessionMessaging sendMessageDictionary:v6 withTopic:@"VCSessionMessageTopicStreamGroupsState" participantID:idsParticipantID];
 }
 
-- (BOOL)validateStreamGroup:(id)a3 state:(id)a4
+- (BOOL)validateStreamGroup:(id)group state:(id)state
 {
-  if (!a3)
+  if (!group)
   {
     v5 = 0;
-    if (a4)
+    if (state)
     {
       goto LABEL_3;
     }
@@ -21242,15 +21242,15 @@ LABEL_5:
     return v5 && v6;
   }
 
-  v5 = [a3 unsignedIntValue] != 0;
-  if (!a4)
+  v5 = [group unsignedIntValue] != 0;
+  if (!state)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [a4 unsignedIntValue];
-  v6 = [a4 unsignedIntValue] < 3;
+  [state unsignedIntValue];
+  v6 = [state unsignedIntValue] < 3;
   return v5 && v6;
 }
 
@@ -21274,7 +21274,7 @@ uint64_t __52__VCSession_Messaging__setupMediaStateUpdateMessage__block_invoke(u
   return [v6 processMediaStateMessage:a2 remoteParticipantID:a4];
 }
 
-- (void)processMediaTypeStatesWithMessage:(id)a3 mediaTypeStates:(id)a4
+- (void)processMediaTypeStatesWithMessage:(id)message mediaTypeStates:(id)states
 {
   v7 = 0;
   v53 = *MEMORY[0x1E69E9840];
@@ -21290,7 +21290,7 @@ uint64_t __52__VCSession_Messaging__setupMediaStateUpdateMessage__block_invoke(u
     v10 = [VCSession mediaStateMessageKeyForMediaType:v7];
     if (v10)
     {
-      v11 = [a3 objectForKeyedSubscript:v10];
+      v11 = [message objectForKeyedSubscript:v10];
       if (!v11)
       {
         goto LABEL_3;
@@ -21298,7 +21298,7 @@ uint64_t __52__VCSession_Messaging__setupMediaStateUpdateMessage__block_invoke(u
 
       v12 = [VCSession mediaStateForMediaStateMessageValue:v11];
       v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v12];
-      [a4 setObject:v13 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v7)}];
+      [states setObject:v13 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v7)}];
       if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -21318,7 +21318,7 @@ uint64_t __52__VCSession_Messaging__setupMediaStateUpdateMessage__block_invoke(u
             v45 = 2112;
             v46 = v34;
             v47 = 2112;
-            v48 = v35;
+            selfCopy2 = v35;
             v22 = v33;
             v23 = " [%s] %s:%d Received State Update: mediaType=%@ mediaState=%@";
             v24 = 48;
@@ -21342,8 +21342,8 @@ uint64_t __52__VCSession_Messaging__setupMediaStateUpdateMessage__block_invoke(u
           if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
           {
             v17 = v8;
-            v18 = a3;
-            v19 = a4;
+            messageCopy = message;
+            statesCopy = states;
             v20 = VCSessionMediaType_Name(v7);
             v21 = VCSessionMediaState_Name(v12);
             *buf = 136316674;
@@ -21355,11 +21355,11 @@ uint64_t __52__VCSession_Messaging__setupMediaStateUpdateMessage__block_invoke(u
             v45 = 2112;
             v46 = v14;
             v47 = 2048;
-            v48 = self;
+            selfCopy2 = self;
             v49 = 2112;
             v50 = v20;
-            a4 = v19;
-            a3 = v18;
+            states = statesCopy;
+            message = messageCopy;
             v8 = v17;
             v9 = MEMORY[0x1E6986650];
             v51 = 2112;
@@ -21423,7 +21423,7 @@ LABEL_22:
           v45 = 2112;
           v46 = v25;
           v47 = 2048;
-          v48 = self;
+          selfCopy2 = self;
           v49 = 2112;
           v50 = v28;
           v29 = v27;
@@ -21442,25 +21442,25 @@ LABEL_3:
   while (v7 != 9);
 }
 
-- (void)processMediaStateMessage:(id)a3 remoteParticipantID:(id)a4
+- (void)processMediaStateMessage:(id)message remoteParticipantID:(id)d
 {
   v68 = *MEMORY[0x1E69E9840];
-  v6 = [(NSMutableDictionary *)self->_remoteParticipantsMapByServerID objectForKeyedSubscript:a4];
-  if (a3)
+  v6 = [(NSMutableDictionary *)self->_remoteParticipantsMapByServerID objectForKeyedSubscript:d];
+  if (message)
   {
     if (v6)
     {
       v40 = v6;
       v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      [(VCSession *)self processMediaTypeStatesWithMessage:a3 mediaTypeStates:v7];
+      [(VCSession *)self processMediaTypeStatesWithMessage:message mediaTypeStates:v7];
       if (![v7 count])
       {
         v66 = 0u;
         v67 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v8 = [a3 allKeys];
-        v9 = [v8 countByEnumeratingWithState:&v64 objects:v63 count:16];
+        allKeys = [message allKeys];
+        v9 = [allKeys countByEnumeratingWithState:&v64 objects:v63 count:16];
         if (v9)
         {
           v10 = v9;
@@ -21471,30 +21471,30 @@ LABEL_3:
             {
               if (*v65 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(allKeys);
               }
 
-              -[VCSession processStreamGroupStateMessageKey:value:mediaTypeStates:](self, "processStreamGroupStateMessageKey:value:mediaTypeStates:", *(*(&v64 + 1) + 8 * i), [a3 objectForKeyedSubscript:*(*(&v64 + 1) + 8 * i)], v7);
+              -[VCSession processStreamGroupStateMessageKey:value:mediaTypeStates:](self, "processStreamGroupStateMessageKey:value:mediaTypeStates:", *(*(&v64 + 1) + 8 * i), [message objectForKeyedSubscript:*(*(&v64 + 1) + 8 * i)], v7);
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v64 objects:v63 count:16];
+            v10 = [allKeys countByEnumeratingWithState:&v64 objects:v63 count:16];
           }
 
           while (v10);
         }
       }
 
-      v36 = a3;
+      messageCopy = message;
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v13 = [v7 allKeys];
-      v41 = [v13 countByEnumeratingWithState:&v59 objects:v58 count:16];
+      allKeys2 = [v7 allKeys];
+      v41 = [allKeys2 countByEnumeratingWithState:&v59 objects:v58 count:16];
       if (v41)
       {
         v14 = *v60;
-        v37 = v13;
+        v37 = allKeys2;
         v38 = *v60;
         do
         {
@@ -21502,11 +21502,11 @@ LABEL_3:
           {
             if (*v60 != v14)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(allKeys2);
             }
 
             v16 = *(*(&v59 + 1) + 8 * j);
-            v17 = [v16 unsignedIntValue];
+            unsignedIntValue = [v16 unsignedIntValue];
             v18 = [objc_msgSend(v7 objectForKeyedSubscript:{v16), "unsignedIntValue"}];
             if (objc_opt_class() == self)
             {
@@ -21517,8 +21517,8 @@ LABEL_3:
                 if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
                 {
                   transportSessionID = self->_transportSessionID;
-                  v33 = [v40 uuid];
-                  v34 = VCSessionMediaType_Name(v17);
+                  uuid = [v40 uuid];
+                  v34 = VCSessionMediaType_Name(unsignedIntValue);
                   v35 = VCSessionMediaState_Name(v18);
                   *buf = 136316930;
                   v43 = v30;
@@ -21530,11 +21530,11 @@ LABEL_3:
                   *v49 = transportSessionID;
                   v14 = v38;
                   *&v49[4] = 2112;
-                  *&v49[6] = a4;
+                  *&v49[6] = d;
                   *&v49[14] = 2112;
-                  *&v49[16] = v33;
+                  *&v49[16] = uuid;
                   v50 = 2112;
-                  v51 = v34;
+                  dCopy = v34;
                   v52 = 2112;
                   v53 = v35;
                   v27 = v31;
@@ -21561,8 +21561,8 @@ LABEL_3:
                 {
                   v22 = v7;
                   v23 = self->_transportSessionID;
-                  v24 = [v40 uuid];
-                  v25 = VCSessionMediaType_Name(v17);
+                  uuid2 = [v40 uuid];
+                  v25 = VCSessionMediaType_Name(unsignedIntValue);
                   v26 = VCSessionMediaState_Name(v18);
                   *buf = 136317442;
                   v43 = v20;
@@ -21578,10 +21578,10 @@ LABEL_3:
                   *&v49[20] = v23;
                   v7 = v22;
                   v50 = 2112;
-                  v51 = a4;
+                  dCopy = d;
                   v52 = 2112;
-                  v53 = v24;
-                  v13 = v37;
+                  v53 = uuid2;
+                  allKeys2 = v37;
                   v14 = v38;
                   v54 = 2112;
                   v55 = v25;
@@ -21598,7 +21598,7 @@ LABEL_25:
             }
           }
 
-          v41 = [v13 countByEnumeratingWithState:&v59 objects:v58 count:16];
+          v41 = [allKeys2 countByEnumeratingWithState:&v59 objects:v58 count:16];
         }
 
         while (v41);
@@ -21606,7 +21606,7 @@ LABEL_25:
 
       [v40 setRemoteMediaTypeStates:v7];
 
-      -[VCSession processMediaTypeMixingList:forRemoteParticipant:](self, "processMediaTypeMixingList:forRemoteParticipant:", [v36 objectForKeyedSubscript:{objc_msgSend(&unk_1F579BE08, "stringValue")}], v40);
+      -[VCSession processMediaTypeMixingList:forRemoteParticipant:](self, "processMediaTypeMixingList:forRemoteParticipant:", [messageCopy objectForKeyedSubscript:{objc_msgSend(&unk_1F579BE08, "stringValue")}], v40);
     }
 
     else
@@ -21621,7 +21621,7 @@ LABEL_25:
   }
 }
 
-- (void)processMediaTypeMixingList:(id)a3 forRemoteParticipant:(id)a4
+- (void)processMediaTypeMixingList:(id)list forRemoteParticipant:(id)participant
 {
   v6 = 0;
   do
@@ -21629,8 +21629,8 @@ LABEL_25:
     if (v6 != 7)
     {
       v7 = [objc_msgSend(MEMORY[0x1E696AD98] numberWithUnsignedInt:{v6), "stringValue"}];
-      v8 = [a3 objectForKeyedSubscript:v7];
-      v9 = [v7 integerValue];
+      v8 = [list objectForKeyedSubscript:v7];
+      integerValue = [v7 integerValue];
       if (v8)
       {
         v10 = v8;
@@ -21641,7 +21641,7 @@ LABEL_25:
         v10 = v7;
       }
 
-      [a4 setMediaType:v9 mixingWithMediaType:{objc_msgSend(v10, "integerValue")}];
+      [participant setMediaType:integerValue mixingWithMediaType:{objc_msgSend(v10, "integerValue")}];
     }
 
     v6 = (v6 + 1);
@@ -21650,7 +21650,7 @@ LABEL_25:
   while (v6 != 9);
 }
 
-- (void)enableDataCollectionInReportingConfig:(id *)a3
+- (void)enableDataCollectionInReportingConfig:(id *)config
 {
   OUTLINED_FUNCTION_49_1();
   v26 = v3;
@@ -21760,11 +21760,11 @@ LABEL_19:
   OUTLINED_FUNCTION_46_3();
 }
 
-- (void)updateOneToOneVideoReceiverDelegate:(BOOL)a3
+- (void)updateOneToOneVideoReceiverDelegate:(BOOL)delegate
 {
   if (self->_oneToOneModeEnabled)
   {
-    if (a3)
+    if (delegate)
     {
       [(VCSession *)self setupOneToOneVideoReceiverDelegate];
     }
@@ -21776,7 +21776,7 @@ LABEL_19:
   }
 }
 
-- (void)updateVideoQualityWithUpdateConfig:(id)a3 forParticipant:(id)a4 redistributeBitrate:(BOOL *)a5
+- (void)updateVideoQualityWithUpdateConfig:(id)config forParticipant:(id)participant redistributeBitrate:(BOOL *)bitrate
 {
   OUTLINED_FUNCTION_49_1();
   OUTLINED_FUNCTION_33_4();
@@ -21790,10 +21790,10 @@ LABEL_19:
   objc_opt_class();
   if (OUTLINED_FUNCTION_41())
   {
-    v11 = [v10 unsignedIntValue];
-    if ([v7 videoQuality] != v11)
+    unsignedIntValue = [v10 unsignedIntValue];
+    if ([v7 videoQuality] != unsignedIntValue)
     {
-      [v7 setVideoQuality:v11];
+      [v7 setVideoQuality:unsignedIntValue];
       *v6 = 1;
     }
 
@@ -21848,7 +21848,7 @@ LABEL_5:
   OUTLINED_FUNCTION_46_3();
 }
 
-- (void)updateVisibilityIndexWithUpdateConfig:(id)a3 forParticipant:(id)a4 redistributeBitrate:(BOOL *)a5
+- (void)updateVisibilityIndexWithUpdateConfig:(id)config forParticipant:(id)participant redistributeBitrate:(BOOL *)bitrate
 {
   OUTLINED_FUNCTION_49_1();
   OUTLINED_FUNCTION_33_4();
@@ -21862,10 +21862,10 @@ LABEL_5:
   objc_opt_class();
   if (OUTLINED_FUNCTION_41())
   {
-    v11 = [v10 unsignedIntValue];
-    if (v11 != [v7 visibilityIndex])
+    unsignedIntValue = [v10 unsignedIntValue];
+    if (unsignedIntValue != [v7 visibilityIndex])
     {
-      [v7 setVisibilityIndex:v11];
+      [v7 setVisibilityIndex:unsignedIntValue];
       *v6 = 1;
     }
 
@@ -21920,7 +21920,7 @@ LABEL_5:
   OUTLINED_FUNCTION_46_3();
 }
 
-- (void)updateProminenceIndexWithUpdateConfig:(id)a3 forParticipant:(id)a4 redistributeBitrate:(BOOL *)a5
+- (void)updateProminenceIndexWithUpdateConfig:(id)config forParticipant:(id)participant redistributeBitrate:(BOOL *)bitrate
 {
   OUTLINED_FUNCTION_49_1();
   OUTLINED_FUNCTION_33_4();
@@ -21934,10 +21934,10 @@ LABEL_5:
   objc_opt_class();
   if (OUTLINED_FUNCTION_41())
   {
-    v11 = [v10 unsignedIntValue];
-    if (v11 != [v7 prominenceIndex])
+    unsignedIntValue = [v10 unsignedIntValue];
+    if (unsignedIntValue != [v7 prominenceIndex])
     {
-      [v7 setProminenceIndex:v11];
+      [v7 setProminenceIndex:unsignedIntValue];
       *v6 = 1;
     }
 
@@ -21992,7 +21992,7 @@ LABEL_5:
   OUTLINED_FUNCTION_46_3();
 }
 
-- (void)updateMicrophoneMuted:(BOOL)a3 withUpdateConfig:(id)a4 forParticipant:(id)a5
+- (void)updateMicrophoneMuted:(BOOL)muted withUpdateConfig:(id)config forParticipant:(id)participant
 {
   OUTLINED_FUNCTION_49_1();
   v6 = v5;
@@ -22061,8 +22061,8 @@ LABEL_16:
     return;
   }
 
-  v14 = [v13 BOOLValue];
-  if (v14 != v8 || v14 == [v6 isMuted])
+  bOOLValue = [v13 BOOLValue];
+  if (bOOLValue != v8 || bOOLValue == [v6 isMuted])
   {
     goto LABEL_16;
   }
@@ -22072,7 +22072,7 @@ LABEL_16:
   [v15 setMuted:?];
 }
 
-- (void)updateIsPlaybackSynchronizationGroupMemberWithUpdateConfig:(id)a3 forParticipant:(id)a4
+- (void)updateIsPlaybackSynchronizationGroupMemberWithUpdateConfig:(id)config forParticipant:(id)participant
 {
   OUTLINED_FUNCTION_49_1();
   v5 = v4;
@@ -22140,8 +22140,8 @@ LABEL_15:
     return;
   }
 
-  v11 = [v10 BOOLValue];
-  if (v11 == [v5 isPlaybackSynchronizationGroupMember])
+  bOOLValue = [v10 BOOLValue];
+  if (bOOLValue == [v5 isPlaybackSynchronizationGroupMember])
   {
     goto LABEL_15;
   }
@@ -22151,7 +22151,7 @@ LABEL_15:
   [v12 setIsPlaybackSynchronizationGroupMember:?];
 }
 
-- (void)updatePlaybackSynchronizationGroupUUIDWithUpdateConfig:(id)a3
+- (void)updatePlaybackSynchronizationGroupUUIDWithUpdateConfig:(id)config
 {
   OUTLINED_FUNCTION_49_1();
   v4 = v3;
@@ -22231,7 +22231,7 @@ LABEL_7:
   OUTLINED_FUNCTION_46_3();
 }
 
-- (void)updatePositionalInfoWithUpdateConfig:(id)a3 forParticipant:(id)a4
+- (void)updatePositionalInfoWithUpdateConfig:(id)config forParticipant:(id)participant
 {
   OUTLINED_FUNCTION_49_1();
   v5 = v4;
@@ -22308,37 +22308,37 @@ LABEL_14:
   v29 = v3;
   v5 = v4;
   v27 = *MEMORY[0x1E69E9840];
-  v6 = [*(v4 + 240) maxCaptureCameraFrameRate];
+  maxCaptureCameraFrameRate = [*(v4 + 240) maxCaptureCameraFrameRate];
   if (v5[849] == 1)
   {
-    v7 = [VCPowerManager_DefaultManager() mode];
-    v8 = v7;
-    if (v6 >= 24)
+    mode = [VCPowerManager_DefaultManager() mode];
+    v8 = mode;
+    if (maxCaptureCameraFrameRate >= 24)
     {
       v9 = 24;
     }
 
     else
     {
-      v9 = v6;
+      v9 = maxCaptureCameraFrameRate;
     }
 
-    if (v6 >= 15)
+    if (maxCaptureCameraFrameRate >= 15)
     {
       v10 = 15;
     }
 
     else
     {
-      v10 = v6;
+      v10 = maxCaptureCameraFrameRate;
     }
 
-    if (v7 != 2)
+    if (mode != 2)
     {
-      v10 = v6;
+      v10 = maxCaptureCameraFrameRate;
     }
 
-    if (v7 == 1)
+    if (mode == 1)
     {
       v11 = v9;
     }
@@ -22430,9 +22430,9 @@ LABEL_23:
   if (self->_experimentManager && v3)
   {
     v14[0] = 0;
-    v5 = [(VCSessionParticipant *)self->_localParticipant isVideoEnabled];
+    isVideoEnabled = [(VCSessionParticipant *)self->_localParticipant isVideoEnabled];
     v6 = kVCExperimentEnhancedJBAdaptationsForFTV;
-    if (!v5)
+    if (!isVideoEnabled)
     {
       v6 = kVCExperimentEnhancedJBAdaptationsForFTA;
     }
@@ -23190,7 +23190,7 @@ void __85__VCSession_OneToOne__completionHandlerOneToOneEnabled_didSucceed_confi
   _os_log_error_impl(v0, v1, v2, v3, v4, 0x22u);
 }
 
-- (void)processStreamGroupStateMessageKey:(id)a3 value:(id)a4 mediaTypeStates:(id)a5
+- (void)processStreamGroupStateMessageKey:(id)key value:(id)value mediaTypeStates:(id)states
 {
   v53 = *MEMORY[0x1E69E9840];
   v9 = [VCSession mediaTypeForMediaStateMessageKey:?];
@@ -23198,7 +23198,7 @@ void __85__VCSession_OneToOne__completionHandlerOneToOneEnabled_didSucceed_confi
   {
     v10 = v9;
     v11 = VCSessionMediaType_Name(v9);
-    v12 = [VCSession mediaStateForMediaStateMessageValue:a4];
+    v12 = [VCSession mediaStateForMediaStateMessageValue:value];
     if (v10 == -2)
     {
       return;
@@ -23206,19 +23206,19 @@ void __85__VCSession_OneToOne__completionHandlerOneToOneEnabled_didSucceed_confi
 
     v13 = v12;
     v14 = VCSessionMediaState_Name(v12);
-    v15 = [a5 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v10)}];
+    v15 = [states objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v10)}];
     if (!v15)
     {
       goto LABEL_19;
     }
 
-    v16 = [v15 unsignedIntValue];
-    if (v16 == v13)
+    unsignedIntValue = [v15 unsignedIntValue];
+    if (unsignedIntValue == v13)
     {
       goto LABEL_19;
     }
 
-    v17 = v16;
+    v17 = unsignedIntValue;
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() < 5)
@@ -23239,11 +23239,11 @@ void __85__VCSession_OneToOne__completionHandlerOneToOneEnabled_didSucceed_confi
       v41 = 2080;
       OUTLINED_FUNCTION_5_13();
       OUTLINED_FUNCTION_5_37();
-      v44 = v11;
+      keyCopy = v11;
       v45 = v20;
       v46 = v14;
       v47 = v20;
-      v48 = v21;
+      keyCopy2 = v21;
       v22 = " [%s] %s:%d Media states for mediaType=%@ are mismatched state=%@ != state=%@";
       v23 = v19;
       v24 = 58;
@@ -23280,9 +23280,9 @@ void __85__VCSession_OneToOne__completionHandlerOneToOneEnabled_didSucceed_confi
       v42 = "[VCSession(Messaging) processStreamGroupStateMessageKey:value:mediaTypeStates:]";
       v43 = 1024;
       OUTLINED_FUNCTION_5_37();
-      v44 = v38;
+      keyCopy = v38;
       OUTLINED_FUNCTION_10_25();
-      v48 = v11;
+      keyCopy2 = v11;
       v49 = v27;
       v50 = v14;
       v51 = v27;
@@ -23306,7 +23306,7 @@ LABEL_16:
 
 LABEL_19:
     v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v13];
-    [a5 setObject:v29 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v10)}];
+    [states setObject:v29 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v10)}];
     return;
   }
 
@@ -23323,7 +23323,7 @@ LABEL_19:
         v41 = 2080;
         OUTLINED_FUNCTION_5_13();
         OUTLINED_FUNCTION_5_37();
-        v44 = a3;
+        keyCopy = key;
         v33 = " [%s] %s:%d Found unsupported key=%@";
         v34 = v32;
         v35 = 38;
@@ -23356,9 +23356,9 @@ LABEL_31:
         v41 = 2080;
         OUTLINED_FUNCTION_5_13();
         OUTLINED_FUNCTION_5_37();
-        v44 = v30;
+        keyCopy = v30;
         OUTLINED_FUNCTION_10_25();
-        v48 = a3;
+        keyCopy2 = key;
         v33 = " [%s] %s:%d %@(%p) Found unsupported key=%@";
         v34 = v37;
         v35 = 58;

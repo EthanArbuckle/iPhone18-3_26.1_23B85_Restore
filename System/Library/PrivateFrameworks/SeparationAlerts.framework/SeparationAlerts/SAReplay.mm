@@ -1,31 +1,31 @@
 @interface SAReplay
-- (BOOL)activityStream:(id)a3 deviceUDID:(id)a4 deviceID:(id)a5 status:(int64_t)a6 error:(id)a7;
-- (BOOL)activityStream:(id)a3 results:(id)a4;
-- (BOOL)persistence:(id)a3 results:(id)a4 error:(id)a5;
-- (SAReplay)initWithLogArchive:(id)a3 outputPath:(id)a4 inputPersistencePath:(id)a5;
-- (SAReplay)replayWithStartDate:(id)a3 endDate:(id)a4;
-- (void)persistenceDidFinishReadingForStartDate:(id)a3 endDate:(id)a4;
-- (void)replaySingleEventLogString:(id)a3;
-- (void)streamDidStart:(id)a3;
-- (void)streamDidStop:(id)a3;
+- (BOOL)activityStream:(id)stream deviceUDID:(id)d deviceID:(id)iD status:(int64_t)status error:(id)error;
+- (BOOL)activityStream:(id)stream results:(id)results;
+- (BOOL)persistence:(id)persistence results:(id)results error:(id)error;
+- (SAReplay)initWithLogArchive:(id)archive outputPath:(id)path inputPersistencePath:(id)persistencePath;
+- (SAReplay)replayWithStartDate:(id)date endDate:(id)endDate;
+- (void)persistenceDidFinishReadingForStartDate:(id)date endDate:(id)endDate;
+- (void)replaySingleEventLogString:(id)string;
+- (void)streamDidStart:(id)start;
+- (void)streamDidStop:(id)stop;
 @end
 
 @implementation SAReplay
 
-- (SAReplay)initWithLogArchive:(id)a3 outputPath:(id)a4 inputPersistencePath:(id)a5
+- (SAReplay)initWithLogArchive:(id)archive outputPath:(id)path inputPersistencePath:(id)persistencePath
 {
   v47[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  archiveCopy = archive;
+  pathCopy = path;
+  persistencePathCopy = persistencePath;
   v45.receiver = self;
   v45.super_class = SAReplay;
   v11 = [(SAReplay *)&v45 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_outputPath, a4);
-    objc_storeStrong(&v12->_inputPersistencePath, a5);
+    objc_storeStrong(&v11->_outputPath, path);
+    objc_storeStrong(&v12->_inputPersistencePath, persistencePath);
     v13 = [SAAnalytics alloc];
     v14 = [[SAAnalyticsSettings alloc] initWithEnableSubmission:0];
     v15 = [(SAAnalytics *)v13 initWithSettings:v14];
@@ -40,10 +40,10 @@
     persistence = v12->_persistence;
     v12->_persistence = v19;
 
-    [(OSLogPersistence *)v12->_persistence setLogArchive:v8];
+    [(OSLogPersistence *)v12->_persistence setLogArchive:archiveCopy];
     [(OSLogPersistence *)v12->_persistence setOptions:3];
     [(OSLogPersistence *)v12->_persistence setDelegate:v12];
-    v44 = v9;
+    v44 = pathCopy;
     v21 = [MEMORY[0x277CCAC30] predicateWithFormat:@"process == 'locationd'"];
     v22 = [MEMORY[0x277CCAC30] predicateWithFormat:@"subsystem == 'com.apple.TrackingAvoidance'"];
     v23 = [MEMORY[0x277CCAC30] predicateWithFormat:@"category == 'SeparationAlertsEvents'"];
@@ -51,7 +51,7 @@
     v47[0] = v21;
     v47[1] = v22;
     v47[2] = v23;
-    v43 = v10;
+    v43 = persistencePathCopy;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:3];
     v26 = [v24 andPredicateWithSubpredicates:v25];
     [(OSLogPersistence *)v12->_persistence setPredicate:v26];
@@ -64,8 +64,8 @@
     [(OSActivityStream *)v12->_stream setDeviceDelegate:v12];
     [(OSActivityStream *)v12->_stream setOptions:772];
     v29 = MEMORY[0x277CCAC30];
-    v30 = [MEMORY[0x277CCAC38] processInfo];
-    v31 = [v29 predicateWithFormat:@"processID == %d", objc_msgSend(v30, "processIdentifier")];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v31 = [v29 predicateWithFormat:@"processID == %d", objc_msgSend(processInfo, "processIdentifier")];
 
     v32 = [MEMORY[0x277CCAC30] predicateWithFormat:@"subsystem == 'com.apple.TrackingAvoidance'"];
     v33 = [MEMORY[0x277CCAC30] predicateWithFormat:@"category == 'SeparationAlerts'"];
@@ -77,8 +77,8 @@
     v36 = [v34 andPredicateWithSubpredicates:v35];
     [(OSActivityStream *)v12->_stream setPredicate:v36];
 
-    v9 = v44;
-    v10 = v43;
+    pathCopy = v44;
+    persistencePathCopy = v43;
     v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
     eventOrder = v12->_eventOrder;
     v12->_eventOrder = v37;
@@ -92,12 +92,12 @@
   return v12;
 }
 
-- (BOOL)activityStream:(id)a3 results:(id)a4
+- (BOOL)activityStream:(id)stream results:(id)results
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  streamCopy = stream;
+  resultsCopy = results;
+  v8 = resultsCopy;
   outputPath = self->_outputPath;
   if (outputPath)
   {
@@ -115,7 +115,7 @@
 
     else
     {
-      v29 = v6;
+      v29 = streamCopy;
       [v10 seekToEndOfFile];
       v34 = 0u;
       v35 = 0u;
@@ -136,8 +136,8 @@
               objc_enumerationMutation(v19);
             }
 
-            v24 = [*(*(&v34 + 1) + 8 * i) eventMessage];
-            v25 = [v24 stringByAppendingString:@"\n"];
+            eventMessage = [*(*(&v34 + 1) + 8 * i) eventMessage];
+            v25 = [eventMessage stringByAppendingString:@"\n"];
             v26 = [v25 dataUsingEncoding:4];
             [v10 writeData:v26];
           }
@@ -150,7 +150,7 @@
 
       [v10 closeFile];
       v13 = 1;
-      v6 = v29;
+      streamCopy = v29;
     }
   }
 
@@ -160,7 +160,7 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v14 = [v7 countByEnumeratingWithState:&v30 objects:v39 count:16];
+    v14 = [resultsCopy countByEnumeratingWithState:&v30 objects:v39 count:16];
     if (v14)
     {
       v15 = v14;
@@ -174,8 +174,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v18 = [*(*(&v30 + 1) + 8 * j) eventMessage];
-          NSLog(&cfstr_ReplaystatusS.isa, [v18 UTF8String]);
+          eventMessage2 = [*(*(&v30 + 1) + 8 * j) eventMessage];
+          NSLog(&cfstr_ReplaystatusS.isa, [eventMessage2 UTF8String]);
         }
 
         v15 = [v8 countByEnumeratingWithState:&v30 objects:v39 count:16];
@@ -191,9 +191,9 @@
   return v13;
 }
 
-- (void)streamDidStop:(id)a3
+- (void)streamDidStop:(id)stop
 {
-  NSLog(&cfstr_LogStreamStopp.isa, a2, a3);
+  NSLog(&cfstr_LogStreamStopp.isa, a2, stop);
   streamWait = self->_streamWait;
   if (streamWait)
   {
@@ -202,9 +202,9 @@
   }
 }
 
-- (void)streamDidStart:(id)a3
+- (void)streamDidStart:(id)start
 {
-  NSLog(&cfstr_LogStreamStart.isa, a2, a3);
+  NSLog(&cfstr_LogStreamStart.isa, a2, start);
   streamWait = self->_streamWait;
   if (streamWait)
   {
@@ -213,31 +213,31 @@
   }
 }
 
-- (BOOL)activityStream:(id)a3 deviceUDID:(id)a4 deviceID:(id)a5 status:(int64_t)a6 error:(id)a7
+- (BOOL)activityStream:(id)stream deviceUDID:(id)d deviceID:(id)iD status:(int64_t)status error:(id)error
 {
-  if (!a6)
+  if (!status)
   {
-    [a3 setDevice:{a5, a4}];
+    [stream setDevice:{iD, d}];
   }
 
   return 1;
 }
 
-- (SAReplay)replayWithStartDate:(id)a3 endDate:(id)a4
+- (SAReplay)replayWithStartDate:(id)date endDate:(id)endDate
 {
-  v29 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
-  v8 = [v29 descriptionWithLocale:v7];
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v6 descriptionWithLocale:v9];
+  dateCopy = date;
+  endDateCopy = endDate;
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v8 = [dateCopy descriptionWithLocale:currentLocale];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [endDateCopy descriptionWithLocale:currentLocale2];
   NSLog(&cfstr_ReplayingWithS.isa, v8, v10);
 
   outputPath = self->_outputPath;
   if (outputPath)
   {
-    v12 = [(NSURL *)outputPath absoluteString];
-    NSLog(&cfstr_WritingOutputT.isa, v12);
+    absoluteString = [(NSURL *)outputPath absoluteString];
+    NSLog(&cfstr_WritingOutputT.isa, absoluteString);
   }
 
   v13 = dispatch_semaphore_create(0);
@@ -261,7 +261,7 @@
     persistenceWait = self->_persistenceWait;
     self->_persistenceWait = v18;
 
-    [(OSLogPersistence *)self->_persistence fetchFromStartDate:v29 toEndDate:v6];
+    [(OSLogPersistence *)self->_persistence fetchFromStartDate:dateCopy toEndDate:endDateCopy];
     v20 = self->_persistenceWait;
     v21 = dispatch_time(0, 60000000000);
     if (dispatch_semaphore_wait(v20, v21))
@@ -292,11 +292,11 @@
   return result;
 }
 
-- (void)replaySingleEventLogString:(id)a3
+- (void)replaySingleEventLogString:(id)string
 {
   v16[19] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"'" withString:&stru_287709218];
+  stringCopy = string;
+  v5 = [stringCopy stringByReplacingOccurrencesOfString:@"'" withString:&stru_287709218];
   v6 = [v5 stringByReplacingOccurrencesOfString:@" " withString:&stru_287709218];
 
   v7 = [MEMORY[0x277CBEA90] dataWithHexString:v6];
@@ -340,25 +340,25 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)persistence:(id)a3 results:(id)a4 error:(id)a5
+- (BOOL)persistence:(id)persistence results:(id)results error:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  resultsCopy = results;
+  errorCopy = error;
   NSLog(&cfstr_GotActivityEve.isa);
-  if (v8)
+  if (errorCopy)
   {
-    NSLog(&cfstr_ErrorInReplayi.isa, v8);
+    NSLog(&cfstr_ErrorInReplayi.isa, errorCopy);
   }
 
   else
   {
-    v23 = v7;
+    v23 = resultsCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    obj = v7;
+    obj = resultsCopy;
     v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v9)
     {
@@ -374,16 +374,16 @@
           }
 
           v13 = *(*(&v25 + 1) + 8 * i);
-          v14 = [v13 eventMessage];
-          v15 = [SALoggingUtilities extractUniqueIdentifierFromMessage:v14];
+          eventMessage = [v13 eventMessage];
+          v15 = [SALoggingUtilities extractUniqueIdentifierFromMessage:eventMessage];
 
           v16 = [(NSMutableDictionary *)self->_eventMessages objectForKey:v15];
 
           if (v16)
           {
-            v17 = [(NSMutableDictionary *)self->_eventMessages objectForKey:v15];
-            v18 = [v13 eventMessage];
-            [v17 addObject:v18];
+            eventMessage3 = [(NSMutableDictionary *)self->_eventMessages objectForKey:v15];
+            eventMessage2 = [v13 eventMessage];
+            [eventMessage3 addObject:eventMessage2];
           }
 
           else
@@ -391,9 +391,9 @@
             [(NSMutableArray *)self->_eventOrder addObject:v15];
             eventMessages = self->_eventMessages;
             v20 = objc_alloc(MEMORY[0x277CBEB18]);
-            v17 = [v13 eventMessage];
-            v18 = [v20 initWithObjects:{v17, 0}];
-            [(NSMutableDictionary *)eventMessages setObject:v18 forKey:v15];
+            eventMessage3 = [v13 eventMessage];
+            eventMessage2 = [v20 initWithObjects:{eventMessage3, 0}];
+            [(NSMutableDictionary *)eventMessages setObject:eventMessage2 forKey:v15];
           }
         }
 
@@ -403,18 +403,18 @@
       while (v10);
     }
 
-    v8 = 0;
-    v7 = v23;
+    errorCopy = 0;
+    resultsCopy = v23;
   }
 
   v21 = *MEMORY[0x277D85DE8];
-  return v8 == 0;
+  return errorCopy == 0;
 }
 
-- (void)persistenceDidFinishReadingForStartDate:(id)a3 endDate:(id)a4
+- (void)persistenceDidFinishReadingForStartDate:(id)date endDate:(id)endDate
 {
   v20 = *MEMORY[0x277D85DE8];
-  NSLog(&cfstr_FinishedFetchi.isa, a2, a3, a4);
+  NSLog(&cfstr_FinishedFetchi.isa, a2, date, endDate);
   persistenceWait = self->_persistenceWait;
   if (persistenceWait)
   {

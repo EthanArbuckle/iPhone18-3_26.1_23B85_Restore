@@ -1,14 +1,14 @@
 @interface NEIKEv2VendorIDPayload
 - (BOOL)generatePayloadData;
 - (BOOL)hasRequiredFields;
-- (BOOL)parsePayloadData:(id)a3;
+- (BOOL)parsePayloadData:(id)data;
 @end
 
 @implementation NEIKEv2VendorIDPayload
 
-- (BOOL)parsePayloadData:(id)a3
+- (BOOL)parsePayloadData:(id)data
 {
-  v5 = [a3 copy];
+  v5 = [data copy];
   if (self)
   {
     objc_setProperty_atomic(self, v4, v5, 32);
@@ -22,9 +22,9 @@
   v13[1] = *MEMORY[0x1E69E9840];
   if (!self)
   {
-    v9 = [0 hasRequiredFields];
+    hasRequiredFields = [0 hasRequiredFields];
     Property = 0;
-    if (v9)
+    if (hasRequiredFields)
     {
       goto LABEL_6;
     }

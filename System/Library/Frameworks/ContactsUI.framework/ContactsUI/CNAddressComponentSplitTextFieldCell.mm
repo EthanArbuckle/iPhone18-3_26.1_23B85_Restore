@@ -1,10 +1,10 @@
 @interface CNAddressComponentSplitTextFieldCell
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5;
-- (CNAddressComponentSplitTextFieldCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame;
+- (CNAddressComponentSplitTextFieldCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)newSeparatorView;
 - (id)textAttributes;
 - (id)textFields;
-- (void)setTextAttributes:(id)a3;
+- (void)setTextAttributes:(id)attributes;
 - (void)setupTextFields;
 @end
 
@@ -12,35 +12,35 @@
 
 - (id)textAttributes
 {
-  v2 = [(CNAddressComponentSplitTextFieldCell *)self textFieldLeft];
-  v3 = [v2 ab_textAttributes];
+  textFieldLeft = [(CNAddressComponentSplitTextFieldCell *)self textFieldLeft];
+  ab_textAttributes = [textFieldLeft ab_textAttributes];
 
-  return v3;
+  return ab_textAttributes;
 }
 
-- (void)setTextAttributes:(id)a3
+- (void)setTextAttributes:(id)attributes
 {
-  v8 = a3;
-  v4 = [(CNAddressComponentSplitTextFieldCell *)self textFieldLeft];
-  v5 = [v4 ab_textAttributes];
+  attributesCopy = attributes;
+  textFieldLeft = [(CNAddressComponentSplitTextFieldCell *)self textFieldLeft];
+  ab_textAttributes = [textFieldLeft ab_textAttributes];
 
-  if (v5 != v8)
+  if (ab_textAttributes != attributesCopy)
   {
-    v6 = [(CNAddressComponentSplitTextFieldCell *)self textFieldLeft];
-    [v6 setAb_textAttributes:v8];
+    textFieldLeft2 = [(CNAddressComponentSplitTextFieldCell *)self textFieldLeft];
+    [textFieldLeft2 setAb_textAttributes:attributesCopy];
 
-    v7 = [(CNAddressComponentSplitTextFieldCell *)self textFieldRight];
-    [v7 setAb_textAttributes:v8];
+    textFieldRight = [(CNAddressComponentSplitTextFieldCell *)self textFieldRight];
+    [textFieldRight setAb_textAttributes:attributesCopy];
   }
 }
 
 - (id)textFields
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNAddressComponentSplitTextFieldCell *)self textFieldLeft];
-  v7[0] = v3;
-  v4 = [(CNAddressComponentSplitTextFieldCell *)self textFieldRight];
-  v7[1] = v4;
+  textFieldLeft = [(CNAddressComponentSplitTextFieldCell *)self textFieldLeft];
+  v7[0] = textFieldLeft;
+  textFieldRight = [(CNAddressComponentSplitTextFieldCell *)self textFieldRight];
+  v7[1] = textFieldRight;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
 
   return v5;
@@ -48,30 +48,30 @@
 
 - (void)setupTextFields
 {
-  v3 = [(CNAddressComponentTextFieldCell *)self newTextField];
-  [(CNAddressComponentSplitTextFieldCell *)self setTextFieldLeft:v3];
+  newTextField = [(CNAddressComponentTextFieldCell *)self newTextField];
+  [(CNAddressComponentSplitTextFieldCell *)self setTextFieldLeft:newTextField];
 
-  v4 = [(NUITableViewContainerCell *)self containerView];
-  v5 = [(CNAddressComponentSplitTextFieldCell *)self textFieldLeft];
-  [v4 addArrangedSubview:v5];
+  containerView = [(NUITableViewContainerCell *)self containerView];
+  textFieldLeft = [(CNAddressComponentSplitTextFieldCell *)self textFieldLeft];
+  [containerView addArrangedSubview:textFieldLeft];
 
-  v6 = [(CNAddressComponentSplitTextFieldCell *)self newSeparatorView];
-  [(CNAddressComponentSplitTextFieldCell *)self setSeparator:v6];
+  newSeparatorView = [(CNAddressComponentSplitTextFieldCell *)self newSeparatorView];
+  [(CNAddressComponentSplitTextFieldCell *)self setSeparator:newSeparatorView];
 
-  v7 = [(NUITableViewContainerCell *)self containerView];
-  v8 = [(CNAddressComponentSplitTextFieldCell *)self separator];
-  [v7 addArrangedSubview:v8];
+  containerView2 = [(NUITableViewContainerCell *)self containerView];
+  separator = [(CNAddressComponentSplitTextFieldCell *)self separator];
+  [containerView2 addArrangedSubview:separator];
 
-  v9 = [(NUITableViewContainerCell *)self containerView];
-  v10 = [(CNAddressComponentSplitTextFieldCell *)self separator];
-  [v9 setMinimumSpacing:v10 adjacentToView:{0.0, 0.0, 0.0, 8.0}];
+  containerView3 = [(NUITableViewContainerCell *)self containerView];
+  separator2 = [(CNAddressComponentSplitTextFieldCell *)self separator];
+  [containerView3 setMinimumSpacing:separator2 adjacentToView:{0.0, 0.0, 0.0, 8.0}];
 
-  v11 = [(CNAddressComponentTextFieldCell *)self newTextField];
-  [(CNAddressComponentSplitTextFieldCell *)self setTextFieldRight:v11];
+  newTextField2 = [(CNAddressComponentTextFieldCell *)self newTextField];
+  [(CNAddressComponentSplitTextFieldCell *)self setTextFieldRight:newTextField2];
 
-  v13 = [(NUITableViewContainerCell *)self containerView];
-  v12 = [(CNAddressComponentSplitTextFieldCell *)self textFieldRight];
-  [v13 addArrangedSubview:v12];
+  containerView4 = [(NUITableViewContainerCell *)self containerView];
+  textFieldRight = [(CNAddressComponentSplitTextFieldCell *)self textFieldRight];
+  [containerView4 addArrangedSubview:textFieldRight];
 }
 
 - (id)newSeparatorView
@@ -80,27 +80,27 @@
   v4 = [(CNRepeatingGradientSeparatorView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(CNAddressComponentSplitTextFieldCell *)self setSeparator:v4];
 
-  v5 = [(CNAddressComponentSplitTextFieldCell *)self separator];
+  separator = [(CNAddressComponentSplitTextFieldCell *)self separator];
   LODWORD(v6) = 1148846080;
-  [v5 setLayoutSize:0.5 withContentPriority:{0.5, v6}];
+  [separator setLayoutSize:0.5 withContentPriority:{0.5, v6}];
 
   [(CNAddressComponentSplitTextFieldCell *)self separator];
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
-  v13 = [(CNAddressComponentSplitTextFieldCell *)self separator];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  subviewCopy = subview;
+  separator = [(CNAddressComponentSplitTextFieldCell *)self separator];
 
-  if (v13 == v12)
+  if (separator == subviewCopy)
   {
-    [v11 bounds];
+    [viewCopy bounds];
     height = v14;
     y = 0.0;
   }
@@ -116,19 +116,19 @@
   return result;
 }
 
-- (CNAddressComponentSplitTextFieldCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNAddressComponentSplitTextFieldCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = CNAddressComponentSplitTextFieldCell;
-  v4 = [(CNAddressComponentTextFieldCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNAddressComponentTextFieldCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(NUITableViewContainerCell *)v4 containerView];
-    [v6 setAxis:0];
-    [v6 setAlignment:3];
-    [v6 setDistribution:0];
-    [v6 setDelegate:v5];
+    containerView = [(NUITableViewContainerCell *)v4 containerView];
+    [containerView setAxis:0];
+    [containerView setAlignment:3];
+    [containerView setDistribution:0];
+    [containerView setDelegate:v5];
   }
 
   return v5;

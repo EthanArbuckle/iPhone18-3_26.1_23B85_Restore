@@ -1,24 +1,24 @@
 @interface FIAppStoreAvailability
 + (BOOL)_isDeviceTablet;
-+ (void)_isSupportedDeviceAvailableWithCompletion:(id)a3;
-+ (void)fetchIsFitnessAvailableForDeviceWithCompletion:(id)a3;
-+ (void)isFitnessPlusStorefrontContentAvailableWithCompletion:(id)a3;
++ (void)_isSupportedDeviceAvailableWithCompletion:(id)completion;
++ (void)fetchIsFitnessAvailableForDeviceWithCompletion:(id)completion;
++ (void)isFitnessPlusStorefrontContentAvailableWithCompletion:(id)completion;
 @end
 
 @implementation FIAppStoreAvailability
 
-+ (void)fetchIsFitnessAvailableForDeviceWithCompletion:(id)a3
++ (void)fetchIsFitnessAvailableForDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
-  if ([a1 _isDeviceTablet])
+  completionCopy = completion;
+  if ([self _isDeviceTablet])
   {
     v5 = dispatch_get_global_queue(21, 0);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __73__FIAppStoreAvailability_fetchIsFitnessAvailableForDeviceWithCompletion___block_invoke;
     v7[3] = &unk_279004870;
-    v9 = a1;
-    v8 = v4;
+    selfCopy = self;
+    v8 = completionCopy;
     dispatch_async(v5, v7);
   }
 
@@ -32,7 +32,7 @@
       _os_log_impl(&dword_24B35E000, v6, OS_LOG_TYPE_DEFAULT, "FIAppStoreAvailability - device not tablet; calling completion with YES", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -111,17 +111,17 @@ uint64_t __41__FIAppStoreAvailability__isDeviceTablet__block_invoke()
   return result;
 }
 
-+ (void)isFitnessPlusStorefrontContentAvailableWithCompletion:(id)a3
++ (void)isFitnessPlusStorefrontContentAvailableWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = [MEMORY[0x277CEE3F8] bagForProfile:@"Fitness" profileVersion:@"1"];
   v5 = [v4 BOOLForKey:@"fitnessPlusEnabled"];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__FIAppStoreAvailability_isFitnessPlusStorefrontContentAvailableWithCompletion___block_invoke;
   v7[3] = &unk_279004898;
-  v8 = v3;
-  v6 = v3;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 valueWithCompletion:v7];
 }
 
@@ -157,21 +157,21 @@ void __80__FIAppStoreAvailability_isFitnessPlusStorefrontContentAvailableWithCom
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_isSupportedDeviceAvailableWithCompletion:(id)a3
++ (void)_isSupportedDeviceAvailableWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CF0130];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
+  completionCopy = completion;
+  sharedInstance = [v3 sharedInstance];
   v6 = objc_alloc_init(MEMORY[0x277CF0178]);
-  v7 = [v5 allAuthKitAccounts];
+  allAuthKitAccounts = [sharedInstance allAuthKitAccounts];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__FIAppStoreAvailability__isSupportedDeviceAvailableWithCompletion___block_invoke;
   v12[3] = &unk_279004908;
   v8 = v6;
   v13 = v8;
-  v9 = [v7 hk_firstObjectPassingTest:v12];
+  v9 = [allAuthKitAccounts hk_firstObjectPassingTest:v12];
 
   _HKInitializeLogging();
   v10 = *MEMORY[0x277CCC270];
@@ -182,7 +182,7 @@ void __80__FIAppStoreAvailability_isFitnessPlusStorefrontContentAvailableWithCom
     _os_log_impl(&dword_24B35E000, v10, OS_LOG_TYPE_DEFAULT, "FIAppStoreAvailability - isSupportedDeviceAvailable: %d", buf, 8u);
   }
 
-  v4[2](v4, v9 != 0);
+  completionCopy[2](completionCopy, v9 != 0);
 
   v11 = *MEMORY[0x277D85DE8];
 }

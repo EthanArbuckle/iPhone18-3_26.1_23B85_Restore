@@ -1,16 +1,16 @@
 @interface WLKArtworkVariantListing
-- (WLKArtworkVariantListing)initWithArtworkDictionary:(id)a3;
-- (id)artworkVariantOfType:(int64_t)a3;
-- (id)bestArtworkVariantOfType:(int64_t)a3 forSize:(CGSize)a4;
+- (WLKArtworkVariantListing)initWithArtworkDictionary:(id)dictionary;
+- (id)artworkVariantOfType:(int64_t)type;
+- (id)bestArtworkVariantOfType:(int64_t)type forSize:(CGSize)size;
 @end
 
 @implementation WLKArtworkVariantListing
 
-- (WLKArtworkVariantListing)initWithArtworkDictionary:(id)a3
+- (WLKArtworkVariantListing)initWithArtworkDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 count])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [dictionaryCopy count])
   {
     v14.receiver = self;
     v14.super_class = WLKArtworkVariantListing;
@@ -24,22 +24,22 @@
       v12[3] = &unk_279E5F110;
       v13 = v6;
       v7 = v6;
-      [v4 enumerateKeysAndObjectsUsingBlock:v12];
+      [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v12];
       v8 = [v7 copy];
       artworkVariants = v5->_artworkVariants;
       v5->_artworkVariants = v8;
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 void __54__WLKArtworkVariantListing_initWithArtworkDictionary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -74,10 +74,10 @@ void __54__WLKArtworkVariantListing_initWithArtworkDictionary___block_invoke(uin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)bestArtworkVariantOfType:(int64_t)a3 forSize:(CGSize)a4
+- (id)bestArtworkVariantOfType:(int64_t)type forSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v39 = *MEMORY[0x277D85DE8];
   v34 = 0u;
   v35 = 0u;
@@ -103,7 +103,7 @@ void __54__WLKArtworkVariantListing_initWithArtworkDictionary___block_invoke(uin
         }
 
         v16 = *(*(&v34 + 1) + 8 * i);
-        if (!a3 || [*(*(&v34 + 1) + 8 * i) artworkType] == a3)
+        if (!type || [*(*(&v34 + 1) + 8 * i) artworkType] == type)
         {
           [v16 artworkSize];
           v19 = v18;
@@ -168,7 +168,7 @@ LABEL_34:
   return v11;
 }
 
-- (id)artworkVariantOfType:(int64_t)a3
+- (id)artworkVariantOfType:(int64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -191,7 +191,7 @@ LABEL_34:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 artworkType] == a3)
+        if ([v9 artworkType] == type)
         {
           v10 = v9;
           goto LABEL_11;

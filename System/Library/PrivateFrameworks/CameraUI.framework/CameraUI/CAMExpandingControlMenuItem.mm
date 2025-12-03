@@ -1,29 +1,29 @@
 @interface CAMExpandingControlMenuItem
-+ (id)_menuItemWithState:(id)a3 subtitle:(id)a4 selectedSubtitle:(id)a5 configuration:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToItem:(id)a3;
++ (id)_menuItemWithState:(id)state subtitle:(id)subtitle selectedSubtitle:(id)selectedSubtitle configuration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToItem:(id)item;
 @end
 
 @implementation CAMExpandingControlMenuItem
 
-+ (id)_menuItemWithState:(id)a3 subtitle:(id)a4 selectedSubtitle:(id)a5 configuration:(id)a6
++ (id)_menuItemWithState:(id)state subtitle:(id)subtitle selectedSubtitle:(id)selectedSubtitle configuration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
+  stateCopy = state;
+  subtitleCopy = subtitle;
+  configurationCopy = configuration;
+  selectedSubtitleCopy = selectedSubtitle;
   v13 = objc_alloc_init(objc_opt_class());
   v14 = *(v13 + 1);
-  *(v13 + 1) = v9;
-  v15 = v9;
+  *(v13 + 1) = stateCopy;
+  v15 = stateCopy;
 
   v16 = *(v13 + 2);
-  *(v13 + 2) = v10;
-  v17 = v10;
+  *(v13 + 2) = subtitleCopy;
+  v17 = subtitleCopy;
 
-  if (v12)
+  if (selectedSubtitleCopy)
   {
-    v18 = v12;
+    v18 = selectedSubtitleCopy;
   }
 
   else
@@ -32,7 +32,7 @@
   }
 
   objc_storeStrong(v13 + 3, v18);
-  v19 = [v11 copy];
+  v19 = [configurationCopy copy];
 
   v20 = *(v13 + 4);
   *(v13 + 4) = v19;
@@ -40,12 +40,12 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(CAMExpandingControlMenuItem *)self isEqualToItem:v4];
+    v5 = [(CAMExpandingControlMenuItem *)self isEqualToItem:equalCopy];
   }
 
   else
@@ -56,34 +56,34 @@
   return v5;
 }
 
-- (BOOL)isEqualToItem:(id)a3
+- (BOOL)isEqualToItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    if (v4 == self)
+    if (itemCopy == self)
     {
       v14 = 1;
     }
 
     else
     {
-      v6 = [(CAMExpandingControlMenuItem *)self state];
-      v7 = [(CAMExpandingControlMenuItem *)v5 state];
-      if ([v6 isEqualToValue:v7])
+      state = [(CAMExpandingControlMenuItem *)self state];
+      state2 = [(CAMExpandingControlMenuItem *)v5 state];
+      if ([state isEqualToValue:state2])
       {
-        v8 = [(CAMExpandingControlMenuItem *)self subtitle];
-        v9 = [(CAMExpandingControlMenuItem *)v5 subtitle];
-        if ([v8 isEqualToString:v9])
+        subtitle = [(CAMExpandingControlMenuItem *)self subtitle];
+        subtitle2 = [(CAMExpandingControlMenuItem *)v5 subtitle];
+        if ([subtitle isEqualToString:subtitle2])
         {
-          v10 = [(CAMExpandingControlMenuItem *)self selectedSubtitle];
-          v11 = [(CAMExpandingControlMenuItem *)v5 selectedSubtitle];
-          if ([v10 isEqualToString:v11])
+          selectedSubtitle = [(CAMExpandingControlMenuItem *)self selectedSubtitle];
+          selectedSubtitle2 = [(CAMExpandingControlMenuItem *)v5 selectedSubtitle];
+          if ([selectedSubtitle isEqualToString:selectedSubtitle2])
           {
-            v12 = [(CAMExpandingControlMenuItem *)self _configuration];
-            v13 = [(CAMExpandingControlMenuItem *)v5 _configuration];
-            v14 = [v12 isEqualToConfiguration:v13];
+            _configuration = [(CAMExpandingControlMenuItem *)self _configuration];
+            _configuration2 = [(CAMExpandingControlMenuItem *)v5 _configuration];
+            v14 = [_configuration isEqualToConfiguration:_configuration2];
           }
 
           else

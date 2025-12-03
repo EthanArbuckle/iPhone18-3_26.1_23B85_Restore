@@ -1,19 +1,19 @@
 @interface DOCRemoteBarButtonTrackingView
-- (DOCRemoteBarButtonTrackingView)initWithUUID:(id)a3;
+- (DOCRemoteBarButtonTrackingView)initWithUUID:(id)d;
 @end
 
 @implementation DOCRemoteBarButtonTrackingView
 
-- (DOCRemoteBarButtonTrackingView)initWithUUID:(id)a3
+- (DOCRemoteBarButtonTrackingView)initWithUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = DOCRemoteBarButtonTrackingView;
   v6 = [(DOCRemoteBarButtonTrackingView *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uuid, a3);
+    objc_storeStrong(&v6->_uuid, d);
     [(DOCRemoteBarButtonTrackingView *)v7 setBackgroundColor:0];
     [(DOCRemoteBarButtonTrackingView *)v7 setOpaque:0];
     v8 = v7;

@@ -11,9 +11,9 @@
   v2 = [(_CNVirtualFile *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
     contents = v2->_contents;
-    v2->_contents = v3;
+    v2->_contents = data;
 
     v5 = objc_opt_new();
     extendedAttributes = v2->_extendedAttributes;

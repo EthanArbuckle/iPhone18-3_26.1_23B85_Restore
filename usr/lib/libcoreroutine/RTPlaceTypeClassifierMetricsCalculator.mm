@@ -1,62 +1,62 @@
 @interface RTPlaceTypeClassifierMetricsCalculator
-+ (BOOL)inferredAddressComponent:(id)a3 consistentWithTrueComponent:(id)a4;
++ (BOOL)inferredAddressComponent:(id)component consistentWithTrueComponent:(id)trueComponent;
 + (id)allPlaceTypes;
-+ (id)cacheMetricsKeyToString:(unint64_t)a3;
-+ (id)collectPlaceVersionsFromInferredPlaces:(id)a3 contactsPlaces:(id)a4 rottedPlaces:(id)a5;
-+ (id)keyForMetricType:(unint64_t)a3 placeType:(unint64_t)a4 source:(unint64_t)a5 metricKey:(unint64_t)a6;
-+ (id)keyForMetricType:(unint64_t)a3 sourcePlaceType:(unint64_t)a4 source:(unint64_t)a5 referenceSourcePlaceType:(unint64_t)a6 referenceSource:(unint64_t)a7 metricKey:(unint64_t)a8;
-+ (id)keyForSourceType:(unint64_t)a3 placeType:(unint64_t)a4;
-+ (id)metricsKeyToString:(unint64_t)a3;
-+ (id)metricsSourceToString:(unint64_t)a3;
-+ (id)metricsTypeToString:(unint64_t)a3;
-+ (id)newAlgorithmInstanceWithInference:(id)a3 distanceCalculator:(id)a4;
-+ (id)normalize:(id)a3;
-+ (unint64_t)addressComponentMatchesBetweenInferredAddress:(id)a3 trueAddress:(id)a4;
-+ (void)submitMetricsForInferredPlaces:(id)a3 contactsPlaces:(id)a4 rottedPlaces:(id)a5 distanceCalculator:(id)a6 metricManager:(id)a7;
-+ (void)updateAlgorithmInstance:(id)a3 byComparingInferredMapItem:(id)a4 withTruthfulMapItem:(id)a5 withDistanceCalculator:(id)a6;
-- (RTPlaceTypeClassifierMetricsCalculator)initWithDistanceCalculator:(id)a3 learnedLocationStore:(id)a4 learnedPlaceTypeInferenceStore:(id)a5 metricManager:(id)a6;
-- (id)_computeCountOfLOIsForCacheMetricsFromLOIs:(id)a3;
-- (id)_computeCountOfNonNillLearnedPlaceTypeInferences:(id)a3;
-- (id)_computeCountOfTotalLearnedPlaceTypeInferences:(id)a3;
-- (id)_computeCountOfUniqueLearnedPlaceTypeInferences:(id)a3;
-- (id)_computeDurationOfGraphForCacheMetricsFromLOIs:(id)a3;
-- (id)_computeFlipFlopCountLearnedPlaceTypeInferences:(id)a3;
-- (id)_computeLengthOfLatestClassificationForLearnedPlaceTypeInferences:(id)a3;
-- (id)_computeLengthOfLatestClassificationSinceChangedForLearnedPlaceTypeInferences:(id)a3;
++ (id)cacheMetricsKeyToString:(unint64_t)string;
++ (id)collectPlaceVersionsFromInferredPlaces:(id)places contactsPlaces:(id)contactsPlaces rottedPlaces:(id)rottedPlaces;
++ (id)keyForMetricType:(unint64_t)type placeType:(unint64_t)placeType source:(unint64_t)source metricKey:(unint64_t)key;
++ (id)keyForMetricType:(unint64_t)type sourcePlaceType:(unint64_t)placeType source:(unint64_t)source referenceSourcePlaceType:(unint64_t)sourcePlaceType referenceSource:(unint64_t)referenceSource metricKey:(unint64_t)key;
++ (id)keyForSourceType:(unint64_t)type placeType:(unint64_t)placeType;
++ (id)metricsKeyToString:(unint64_t)string;
++ (id)metricsSourceToString:(unint64_t)string;
++ (id)metricsTypeToString:(unint64_t)string;
++ (id)newAlgorithmInstanceWithInference:(id)inference distanceCalculator:(id)calculator;
++ (id)normalize:(id)normalize;
++ (unint64_t)addressComponentMatchesBetweenInferredAddress:(id)address trueAddress:(id)trueAddress;
++ (void)submitMetricsForInferredPlaces:(id)places contactsPlaces:(id)contactsPlaces rottedPlaces:(id)rottedPlaces distanceCalculator:(id)calculator metricManager:(id)manager;
++ (void)updateAlgorithmInstance:(id)instance byComparingInferredMapItem:(id)item withTruthfulMapItem:(id)mapItem withDistanceCalculator:(id)calculator;
+- (RTPlaceTypeClassifierMetricsCalculator)initWithDistanceCalculator:(id)calculator learnedLocationStore:(id)store learnedPlaceTypeInferenceStore:(id)inferenceStore metricManager:(id)manager;
+- (id)_computeCountOfLOIsForCacheMetricsFromLOIs:(id)is;
+- (id)_computeCountOfNonNillLearnedPlaceTypeInferences:(id)inferences;
+- (id)_computeCountOfTotalLearnedPlaceTypeInferences:(id)inferences;
+- (id)_computeCountOfUniqueLearnedPlaceTypeInferences:(id)inferences;
+- (id)_computeDurationOfGraphForCacheMetricsFromLOIs:(id)is;
+- (id)_computeFlipFlopCountLearnedPlaceTypeInferences:(id)inferences;
+- (id)_computeLengthOfLatestClassificationForLearnedPlaceTypeInferences:(id)inferences;
+- (id)_computeLengthOfLatestClassificationSinceChangedForLearnedPlaceTypeInferences:(id)inferences;
 - (id)_computeOverAllMetricsForCacheMetrics;
-- (id)_filterLearnedPlaceTypeInferencesWithPlaceType:(unint64_t)a3 dateInterval:(id)a4 metricsSource:(unint64_t)a5 learnedPlaceTypeInferences:(id)a6;
+- (id)_filterLearnedPlaceTypeInferencesWithPlaceType:(unint64_t)type dateInterval:(id)interval metricsSource:(unint64_t)source learnedPlaceTypeInferences:(id)inferences;
 - (id)_getLearnedLocationOfInterests;
-- (id)_getLearnedPlaceTypeInferencesWithDateInterval:(id)a3;
+- (id)_getLearnedPlaceTypeInferencesWithDateInterval:(id)interval;
 - (id)_retrieveMetricsFromCacheStore;
-- (id)computeDistanceMetricForSourcePlaces:(id)a3 referencePlaces:(id)a4 bins:(id)a5;
-- (id)computeMetricsForSourcePlaceType:(unint64_t)a3 source:(unint64_t)a4 referenceSourcePlaceType:(unint64_t)a5 referenceSource:(unint64_t)a6 metricType:(unint64_t)a7 bins:(id)a8;
-- (id)computeMetricsForWorkCandidates:(id)a3 sourceType:(unint64_t)a4 homeLOIs:(id)a5 workTruths:(id)a6 distanceBins:(id)a7 homeLOIMethodLabel:(id)a8;
-- (id)filterLearnedPlacesOfType:(unint64_t)a3 places:(id)a4;
+- (id)computeDistanceMetricForSourcePlaces:(id)places referencePlaces:(id)referencePlaces bins:(id)bins;
+- (id)computeMetricsForSourcePlaceType:(unint64_t)type source:(unint64_t)source referenceSourcePlaceType:(unint64_t)placeType referenceSource:(unint64_t)referenceSource metricType:(unint64_t)metricType bins:(id)bins;
+- (id)computeMetricsForWorkCandidates:(id)candidates sourceType:(unint64_t)type homeLOIs:(id)is workTruths:(id)truths distanceBins:(id)bins homeLOIMethodLabel:(id)label;
+- (id)filterLearnedPlacesOfType:(unint64_t)type places:(id)places;
 - (id)generateAllMultipleWorkMetrics;
-- (id)retrieveComputedMetricsForSourcePlaceType:(unint64_t)a3 source:(unint64_t)a4;
+- (id)retrieveComputedMetricsForSourcePlaceType:(unint64_t)type source:(unint64_t)source;
 - (id)retrieveMetrics;
 - (void)_storeLearnedPlaceTypeInferencesToCacheStore;
-- (void)ensureMetricsDataHasKeysForSource:(unint64_t)a3 placeType:(unint64_t)a4 metricKey:(unint64_t)a5;
-- (void)fetchWorkInferenceStatsForLookbackDays:(int64_t)a3 handler:(id)a4;
-- (void)onDailyMetricNotification:(id)a3;
+- (void)ensureMetricsDataHasKeysForSource:(unint64_t)source placeType:(unint64_t)type metricKey:(unint64_t)key;
+- (void)fetchWorkInferenceStatsForLookbackDays:(int64_t)days handler:(id)handler;
+- (void)onDailyMetricNotification:(id)notification;
 - (void)resetStates;
 - (void)setup;
-- (void)storeMetricsData:(id)a3 source:(unint64_t)a4;
-- (void)storeMetricsData:(id)a3 source:(unint64_t)a4 placeType:(unint64_t)a5;
-- (void)storeMetricsData:(id)a3 source:(unint64_t)a4 placeType:(unint64_t)a5 metricKey:(unint64_t)a6;
+- (void)storeMetricsData:(id)data source:(unint64_t)source;
+- (void)storeMetricsData:(id)data source:(unint64_t)source placeType:(unint64_t)type;
+- (void)storeMetricsData:(id)data source:(unint64_t)source placeType:(unint64_t)type metricKey:(unint64_t)key;
 - (void)submitMetrics;
 @end
 
 @implementation RTPlaceTypeClassifierMetricsCalculator
 
-- (RTPlaceTypeClassifierMetricsCalculator)initWithDistanceCalculator:(id)a3 learnedLocationStore:(id)a4 learnedPlaceTypeInferenceStore:(id)a5 metricManager:(id)a6
+- (RTPlaceTypeClassifierMetricsCalculator)initWithDistanceCalculator:(id)calculator learnedLocationStore:(id)store learnedPlaceTypeInferenceStore:(id)inferenceStore metricManager:(id)manager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v11)
+  calculatorCopy = calculator;
+  storeCopy = store;
+  inferenceStoreCopy = inferenceStore;
+  managerCopy = manager;
+  v15 = managerCopy;
+  if (!calculatorCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -71,7 +71,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v12)
+  if (!storeCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -84,7 +84,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v13)
+  if (!inferenceStoreCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -97,7 +97,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v14)
+  if (!managerCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -109,7 +109,7 @@ LABEL_16:
 
 LABEL_17:
 
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -119,10 +119,10 @@ LABEL_17:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_distanceCalculator, a3);
-    objc_storeStrong(&v17->_learnedLocationStore, a4);
-    objc_storeStrong(&v17->_learnedPlaceTypeInferenceStore, a5);
-    objc_storeStrong(&v17->_metricManager, a6);
+    objc_storeStrong(&v16->_distanceCalculator, calculator);
+    objc_storeStrong(&v17->_learnedLocationStore, store);
+    objc_storeStrong(&v17->_learnedPlaceTypeInferenceStore, inferenceStore);
+    objc_storeStrong(&v17->_metricManager, manager);
     v18 = objc_opt_new();
     metricsData = v17->_metricsData;
     v17->_metricsData = v18;
@@ -135,88 +135,88 @@ LABEL_17:
   }
 
   self = v17;
-  v22 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v22;
+  return selfCopy;
 }
 
 - (void)setup
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_onDailyMetricNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onDailyMetricNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
 }
 
-+ (id)metricsSourceToString:(unint64_t)a3
++ (id)metricsSourceToString:(unint64_t)string
 {
-  if (a3 - 1 > 0x13)
+  if (string - 1 > 0x13)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788CB200[a3 - 1];
+    return off_2788CB200[string - 1];
   }
 }
 
-+ (id)metricsKeyToString:(unint64_t)a3
++ (id)metricsKeyToString:(unint64_t)string
 {
-  if (a3 - 1 > 0x20)
+  if (string - 1 > 0x20)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788CB2A0[a3 - 1];
+    return off_2788CB2A0[string - 1];
   }
 }
 
-+ (id)cacheMetricsKeyToString:(unint64_t)a3
++ (id)cacheMetricsKeyToString:(unint64_t)string
 {
-  if (a3 > 0xB)
+  if (string > 0xB)
   {
     return @"NonNilCount";
   }
 
   else
   {
-    return off_2788CB3A8[a3];
+    return off_2788CB3A8[string];
   }
 }
 
 - (void)resetStates
 {
-  v3 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+  metricsData = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
 
-  if (v3)
+  if (metricsData)
   {
-    v4 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-    [v4 removeAllObjects];
+    metricsData2 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+    [metricsData2 removeAllObjects];
   }
 
-  v5 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
+  learnedPlaceTypeInferences = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
 
-  if (v5)
+  if (learnedPlaceTypeInferences)
   {
-    v6 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
-    [v6 removeAllObjects];
+    learnedPlaceTypeInferences2 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
+    [learnedPlaceTypeInferences2 removeAllObjects];
   }
 
   [(RTPlaceTypeClassifierMetricsCalculator *)self setSessionId:0];
 }
 
-- (void)storeMetricsData:(id)a3 source:(unint64_t)a4 placeType:(unint64_t)a5
+- (void)storeMetricsData:(id)data source:(unint64_t)source placeType:(unint64_t)type
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeType___block_invoke;
   v5[3] = &unk_2788CB100;
   v5[4] = self;
-  v5[5] = a4;
-  v5[6] = a5;
-  [a3 enumerateKeysAndObjectsUsingBlock:v5];
+  v5[5] = source;
+  v5[6] = type;
+  [data enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeType___block_invoke(void *a1, void *a2, void *a3)
@@ -228,10 +228,10 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
   [v4 storeMetricsData:v7 source:v5 placeType:v6 metricKey:{objc_msgSend(a2, "unsignedIntValue")}];
 }
 
-- (void)storeMetricsData:(id)a3 source:(unint64_t)a4
+- (void)storeMetricsData:(id)data source:(unint64_t)source
 {
   v108 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
@@ -240,7 +240,7 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
       v10 = NSStringFromSelector(a2);
-      v11 = [objc_opt_class() metricsSourceToString:a4];
+      v11 = [objc_opt_class() metricsSourceToString:source];
       *buf = 138413058;
       v95 = v9;
       v96 = 2112;
@@ -248,7 +248,7 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
       v98 = 2112;
       v99 = v11;
       v100 = 2048;
-      v101 = [v6 count];
+      v101 = [dataCopy count];
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, %@, source, %@, number of inferred places, %lu", buf, 0x2Au);
     }
   }
@@ -273,9 +273,9 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
         }
 
         v16 = *(*(&v90 + 1) + 8 * v15);
-        if ([v16 unsignedIntValue] == 1 || objc_msgSend(v16, "unsignedIntValue") == 2 || a4 == 2 && objc_msgSend(v16, "unsignedIntValue") == 3)
+        if ([v16 unsignedIntValue] == 1 || objc_msgSend(v16, "unsignedIntValue") == 2 || source == 2 && objc_msgSend(v16, "unsignedIntValue") == 3)
         {
-          -[RTPlaceTypeClassifierMetricsCalculator ensureMetricsDataHasKeysForSource:placeType:metricKey:](self, "ensureMetricsDataHasKeysForSource:placeType:metricKey:", a4, [v16 unsignedIntValue], 1);
+          -[RTPlaceTypeClassifierMetricsCalculator ensureMetricsDataHasKeysForSource:placeType:metricKey:](self, "ensureMetricsDataHasKeysForSource:placeType:metricKey:", source, [v16 unsignedIntValue], 1);
         }
 
         ++v15;
@@ -289,22 +289,22 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
     while (v17);
   }
 
-  v76 = a4;
+  sourceCopy = source;
   v77 = objc_opt_new();
-  v75 = [MEMORY[0x277CBEAA8] date];
-  v18 = [(RTPlaceTypeClassifierMetricsCalculator *)self sessionId];
+  date = [MEMORY[0x277CBEAA8] date];
+  sessionId = [(RTPlaceTypeClassifierMetricsCalculator *)self sessionId];
 
-  if (!v18)
+  if (!sessionId)
   {
-    v19 = [MEMORY[0x277CCAD78] UUID];
-    [(RTPlaceTypeClassifierMetricsCalculator *)self setSessionId:v19];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(RTPlaceTypeClassifierMetricsCalculator *)self setSessionId:uUID];
   }
 
   v88 = 0u;
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = v6;
+  obj = dataCopy;
   v20 = [obj countByEnumeratingWithState:&v86 objects:v106 count:16];
   if (v20)
   {
@@ -325,15 +325,15 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
         [v77 setObject:v24 forKeyedSubscript:v26];
 
         v27 = [RTLearnedPlaceTypeInference alloc];
-        v28 = [MEMORY[0x277CCAD78] UUID];
-        v29 = [(RTPlaceTypeClassifierMetricsCalculator *)self sessionId];
-        v30 = [v24 identifier];
-        v31 = -[RTLearnedPlaceTypeInference initWithIdentifier:sessionId:learnedPlaceIdentifier:placeType:metricSource:creationDate:](v27, "initWithIdentifier:sessionId:learnedPlaceIdentifier:placeType:metricSource:creationDate:", v28, v29, v30, [v24 type], v76, v75);
+        uUID2 = [MEMORY[0x277CCAD78] UUID];
+        sessionId2 = [(RTPlaceTypeClassifierMetricsCalculator *)self sessionId];
+        identifier = [v24 identifier];
+        v31 = -[RTLearnedPlaceTypeInference initWithIdentifier:sessionId:learnedPlaceIdentifier:placeType:metricSource:creationDate:](v27, "initWithIdentifier:sessionId:learnedPlaceIdentifier:placeType:metricSource:creationDate:", uUID2, sessionId2, identifier, [v24 type], sourceCopy, date);
 
         if (v31)
         {
-          v32 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
-          [v32 addObject:v31];
+          learnedPlaceTypeInferences = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
+          [learnedPlaceTypeInferences addObject:v31];
         }
 
         objc_autoreleasePoolPop(v25);
@@ -349,8 +349,8 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v33 = [objc_opt_class() placeTypesForCacheMetrics];
-  v34 = [v33 countByEnumeratingWithState:&v82 objects:v105 count:16];
+  placeTypesForCacheMetrics = [objc_opt_class() placeTypesForCacheMetrics];
+  v34 = [placeTypesForCacheMetrics countByEnumeratingWithState:&v82 objects:v105 count:16];
   if (v34)
   {
     v35 = v34;
@@ -361,7 +361,7 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
       {
         if (*v83 != v36)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(placeTypesForCacheMetrics);
         }
 
         v38 = *(*(&v82 + 1) + 8 * j);
@@ -371,27 +371,27 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
         if (!v40)
         {
           v41 = [RTLearnedPlaceTypeInference alloc];
-          v42 = [MEMORY[0x277CCAD78] UUID];
-          v43 = [(RTPlaceTypeClassifierMetricsCalculator *)self sessionId];
-          v44 = -[RTLearnedPlaceTypeInference initWithIdentifier:sessionId:learnedPlaceIdentifier:placeType:metricSource:creationDate:](v41, "initWithIdentifier:sessionId:learnedPlaceIdentifier:placeType:metricSource:creationDate:", v42, v43, 0, [v38 unsignedIntValue], v76, v75);
+          uUID3 = [MEMORY[0x277CCAD78] UUID];
+          sessionId3 = [(RTPlaceTypeClassifierMetricsCalculator *)self sessionId];
+          v44 = -[RTLearnedPlaceTypeInference initWithIdentifier:sessionId:learnedPlaceIdentifier:placeType:metricSource:creationDate:](v41, "initWithIdentifier:sessionId:learnedPlaceIdentifier:placeType:metricSource:creationDate:", uUID3, sessionId3, 0, [v38 unsignedIntValue], sourceCopy, date);
 
           if (v44)
           {
-            v45 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
-            [v45 addObject:v44];
+            learnedPlaceTypeInferences2 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
+            [learnedPlaceTypeInferences2 addObject:v44];
           }
         }
 
         objc_autoreleasePoolPop(v39);
       }
 
-      v35 = [v33 countByEnumeratingWithState:&v82 objects:v105 count:16];
+      v35 = [placeTypesForCacheMetrics countByEnumeratingWithState:&v82 objects:v105 count:16];
     }
 
     while (v35);
   }
 
-  v46 = v76;
+  v46 = sourceCopy;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v47 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
@@ -400,8 +400,8 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
       v48 = objc_opt_class();
       v49 = NSStringFromClass(v48);
       v50 = NSStringFromSelector(a2);
-      v51 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
-      v52 = [v51 count];
+      learnedPlaceTypeInferences3 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
+      v52 = [learnedPlaceTypeInferences3 count];
       *buf = 138412802;
       v95 = v49;
       v96 = 2112;
@@ -438,14 +438,14 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
         v59 = objc_autoreleasePoolPush();
         v55 = [objc_opt_class() keyForSourceType:v46 placeType:{objc_msgSend(v58, "type")}];
 
-        v60 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-        v61 = [v60 objectForKeyedSubscript:v55];
+        metricsData = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+        v61 = [metricsData objectForKeyedSubscript:v55];
         v62 = [v61 objectForKeyedSubscript:&unk_28459DE90];
 
         if (v62)
         {
-          v63 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-          v64 = [v63 objectForKeyedSubscript:v55];
+          metricsData2 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+          v64 = [metricsData2 objectForKeyedSubscript:v55];
           v65 = [v64 objectForKeyedSubscript:&unk_28459DE90];
           [v65 addObject:v58];
 
@@ -468,7 +468,7 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
             v103 = v58;
             _os_log_impl(&dword_2304B3000, v66, OS_LOG_TYPE_DEFAULT, "%@, %@, metricsDataMainKey, %@, metricKey, %@, learnedplace, %{sensitive}@", buf, 0x34u);
 
-            v46 = v76;
+            v46 = sourceCopy;
           }
         }
 
@@ -485,21 +485,21 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
   }
 }
 
-- (void)storeMetricsData:(id)a3 source:(unint64_t)a4 placeType:(unint64_t)a5 metricKey:(unint64_t)a6
+- (void)storeMetricsData:(id)data source:(unint64_t)source placeType:(unint64_t)type metricKey:(unint64_t)key
 {
   v37 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  if (a6 == 1)
+  dataCopy = data;
+  if (key == 1)
   {
-    [(RTPlaceTypeClassifierMetricsCalculator *)self storeMetricsData:v11 source:a4];
+    [(RTPlaceTypeClassifierMetricsCalculator *)self storeMetricsData:dataCopy source:source];
   }
 
-  [(RTPlaceTypeClassifierMetricsCalculator *)self ensureMetricsDataHasKeysForSource:a4 placeType:a5 metricKey:a6];
-  v12 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-  v13 = [objc_opt_class() keyForSourceType:a4 placeType:a5];
-  v14 = [v12 objectForKeyedSubscript:v13];
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
-  [v14 setObject:v11 forKeyedSubscript:v15];
+  [(RTPlaceTypeClassifierMetricsCalculator *)self ensureMetricsDataHasKeysForSource:source placeType:type metricKey:key];
+  metricsData = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+  v13 = [objc_opt_class() keyForSourceType:source placeType:type];
+  v14 = [metricsData objectForKeyedSubscript:v13];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:key];
+  [v14 setObject:dataCopy forKeyedSubscript:v15];
 
   v16 = objc_opt_new();
   objc_opt_class();
@@ -510,7 +510,7 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
     v25[2] = __86__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeType_metricKey___block_invoke;
     v25[3] = &unk_2788CB128;
     v26 = v16;
-    [v11 enumerateKeysAndObjectsUsingBlock:v25];
+    [dataCopy enumerateKeysAndObjectsUsingBlock:v25];
   }
 
   v17 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
@@ -519,8 +519,8 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     v20 = NSStringFromSelector(a2);
-    v21 = [objc_opt_class() keyForSourceType:a4 placeType:a5];
-    v22 = [objc_opt_class() metricsKeyToString:a6];
+    v21 = [objc_opt_class() keyForSourceType:source placeType:type];
+    v22 = [objc_opt_class() metricsKeyToString:key];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     *buf = 138413314;
@@ -531,7 +531,7 @@ void __76__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
 
     else
     {
-      v24 = v11;
+      v24 = dataCopy;
     }
 
     v28 = v19;
@@ -555,49 +555,49 @@ void __86__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
   [v4 appendFormat:@"%@, %@, ", v5, v6];
 }
 
-- (void)ensureMetricsDataHasKeysForSource:(unint64_t)a3 placeType:(unint64_t)a4 metricKey:(unint64_t)a5
+- (void)ensureMetricsDataHasKeysForSource:(unint64_t)source placeType:(unint64_t)type metricKey:(unint64_t)key
 {
-  v19 = [objc_opt_class() keyForSourceType:a3 placeType:a4];
-  v7 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-  v8 = [v7 objectForKeyedSubscript:v19];
+  v19 = [objc_opt_class() keyForSourceType:source placeType:type];
+  metricsData = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+  v8 = [metricsData objectForKeyedSubscript:v19];
 
   if (!v8)
   {
     v9 = objc_opt_new();
-    v10 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-    [v10 setObject:v9 forKeyedSubscript:v19];
+    metricsData2 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+    [metricsData2 setObject:v9 forKeyedSubscript:v19];
   }
 
-  v11 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-  v12 = [v11 objectForKeyedSubscript:v19];
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  metricsData3 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+  v12 = [metricsData3 objectForKeyedSubscript:v19];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:key];
   v14 = [v12 objectForKeyedSubscript:v13];
 
   if (!v14)
   {
     v15 = objc_opt_new();
-    v16 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-    v17 = [v16 objectForKeyedSubscript:v19];
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+    metricsData4 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+    v17 = [metricsData4 objectForKeyedSubscript:v19];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:key];
     [v17 setObject:v15 forKeyedSubscript:v18];
   }
 }
 
-- (void)onDailyMetricNotification:(id)a3
+- (void)onDailyMetricNotification:(id)notification
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
-  v7 = [v6 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  v7 = [name isEqualToString:@"RTMetricManagerDailyMetricNotification"];
 
   if ((v7 & 1) == 0)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v5 name];
+      name2 = [notificationCopy name];
       *buf = 138412802;
-      v23 = v19;
+      v23 = name2;
       v24 = 2080;
       v25 = "[RTPlaceTypeClassifierMetricsCalculator onDailyMetricNotification:]";
       v26 = 1024;
@@ -606,13 +606,13 @@ void __86__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
     }
   }
 
-  v9 = [v5 name];
-  v10 = [v9 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
+  name3 = [notificationCopy name];
+  v10 = [name3 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
 
   if (v10)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = [(RTPlaceTypeClassifierMetricsCalculator *)self _retrieveMetricsFromCacheStore];
+    _retrieveMetricsFromCacheStore = [(RTPlaceTypeClassifierMetricsCalculator *)self _retrieveMetricsFromCacheStore];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v13 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
@@ -621,7 +621,7 @@ void __86__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
         v16 = NSStringFromSelector(a2);
-        v17 = [v12 count];
+        v17 = [_retrieveMetricsFromCacheStore count];
         *buf = 138412802;
         v23 = v15;
         v24 = 2112;
@@ -638,7 +638,7 @@ void __86__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
     v21[3] = &unk_2788CB150;
     v21[4] = self;
     v21[5] = a2;
-    [v12 enumerateObjectsUsingBlock:v21];
+    [_retrieveMetricsFromCacheStore enumerateObjectsUsingBlock:v21];
 
     objc_autoreleasePoolPop(v11);
   }
@@ -648,9 +648,9 @@ void __86__RTPlaceTypeClassifierMetricsCalculator_storeMetricsData_source_placeT
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v5 name];
+      name4 = [notificationCopy name];
       *buf = 138412290;
-      v23 = v20;
+      v23 = name4;
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "unknown notification name, %@", buf, 0xCu);
     }
   }
@@ -691,10 +691,10 @@ void __68__RTPlaceTypeClassifierMetricsCalculator_onDailyMetricNotification___bl
 {
   v56 = *MEMORY[0x277D85DE8];
   v34 = objc_autoreleasePoolPush();
-  v3 = [(RTPlaceTypeClassifierMetricsCalculator *)self retrieveMetrics];
+  retrieveMetrics = [(RTPlaceTypeClassifierMetricsCalculator *)self retrieveMetrics];
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v5 = [v4 initWithCString:RTAnalyticsEventPlaceTypeClassification encoding:1];
-  log_analytics_submission(v5, v3);
+  log_analytics_submission(v5, retrieveMetrics);
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v5];
   AnalyticsSendEvent();
 
@@ -756,17 +756,17 @@ void __68__RTPlaceTypeClassifierMetricsCalculator_onDailyMetricNotification___bl
               v18 = objc_autoreleasePoolPush();
               v11 = [objc_opt_class() keyForSourceType:objc_msgSend(v14 placeType:{"unsignedIntValue"), objc_msgSend(v17, "unsignedIntValue")}];
 
-              v19 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-              v20 = [v19 objectForKeyedSubscript:v11];
+              metricsData = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+              v20 = [metricsData objectForKeyedSubscript:v11];
               [v20 objectForKeyedSubscript:v12];
-              v21 = self;
+              selfCopy = self;
               v23 = v22 = v12;
 
               if (v23)
               {
                 v24 = [v39 objectForKeyedSubscript:v14];
-                v25 = [(RTPlaceTypeClassifierMetricsCalculator *)v21 metricsData];
-                v26 = [v25 objectForKeyedSubscript:v11];
+                metricsData2 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy metricsData];
+                v26 = [metricsData2 objectForKeyedSubscript:v11];
                 v27 = [v26 objectForKeyedSubscript:v22];
                 [v24 addObjectsFromArray:v27];
               }
@@ -775,7 +775,7 @@ void __68__RTPlaceTypeClassifierMetricsCalculator_onDailyMetricNotification___bl
               ++v15;
               v16 = v11;
               v12 = v22;
-              self = v21;
+              self = selfCopy;
             }
 
             while (v41 != v15);
@@ -796,22 +796,22 @@ void __68__RTPlaceTypeClassifierMetricsCalculator_onDailyMetricNotification___bl
     while (v36);
   }
 
-  v28 = [(RTPlaceTypeClassifierMetricsCalculator *)self distanceCalculator];
-  v29 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricManager];
-  v30 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricManager];
+  distanceCalculator = [(RTPlaceTypeClassifierMetricsCalculator *)self distanceCalculator];
+  metricManager = [(RTPlaceTypeClassifierMetricsCalculator *)self metricManager];
+  metricManager2 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricManager];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __55__RTPlaceTypeClassifierMetricsCalculator_submitMetrics__block_invoke;
   v42[3] = &unk_2788CAEB0;
   v43 = v39;
-  v44 = v28;
-  v45 = v29;
-  v31 = v29;
-  v32 = v28;
-  [v30 fetchDiagnosticsEnabled:v42];
+  v44 = distanceCalculator;
+  v45 = metricManager;
+  v31 = metricManager;
+  v32 = distanceCalculator;
+  [metricManager2 fetchDiagnosticsEnabled:v42];
 
-  v33 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-  [v33 removeAllObjects];
+  metricsData3 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+  [metricsData3 removeAllObjects];
 
   objc_autoreleasePoolPop(v34);
 }
@@ -838,8 +838,8 @@ void __55__RTPlaceTypeClassifierMetricsCalculator_submitMetrics__block_invoke(ui
   v39 = __Block_byref_object_dispose__79;
   v40 = 0;
   v4 = dispatch_semaphore_create(0);
-  v5 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferenceStore];
-  v6 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
+  learnedPlaceTypeInferenceStore = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferenceStore];
+  learnedPlaceTypeInferences = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferencesToCacheStore__block_invoke;
@@ -847,7 +847,7 @@ void __55__RTPlaceTypeClassifierMetricsCalculator_submitMetrics__block_invoke(ui
   v34 = &v35;
   v7 = v4;
   v33 = v7;
-  [v5 storeLearnedPlaceTypeInferences:v6 handler:v32];
+  [learnedPlaceTypeInferenceStore storeLearnedPlaceTypeInferences:learnedPlaceTypeInferences handler:v32];
 
   v8 = v7;
   v9 = [MEMORY[0x277CBEAA8] now];
@@ -859,11 +859,11 @@ void __55__RTPlaceTypeClassifierMetricsCalculator_submitMetrics__block_invoke(ui
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_682];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -910,8 +910,8 @@ void __55__RTPlaceTypeClassifierMetricsCalculator_submitMetrics__block_invoke(ui
     }
   }
 
-  v30 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
-  [v30 removeAllObjects];
+  learnedPlaceTypeInferences2 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferences];
+  [learnedPlaceTypeInferences2 removeAllObjects];
 
   [(RTPlaceTypeClassifierMetricsCalculator *)self setSessionId:0];
   _Block_object_dispose(&v35, 8);
@@ -929,23 +929,23 @@ void __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferenc
 - (id)_retrieveMetricsFromCacheStore
 {
   v95 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = objc_alloc(MEMORY[0x277CCA970]);
-  v5 = [v3 dateByAddingTimeInterval:-2419200.0];
-  v59 = v3;
-  v6 = [v4 initWithStartDate:v5 endDate:v3];
+  v5 = [date dateByAddingTimeInterval:-2419200.0];
+  v59 = date;
+  v6 = [v4 initWithStartDate:v5 endDate:date];
   v58 = [(RTPlaceTypeClassifierMetricsCalculator *)self _getLearnedPlaceTypeInferencesWithDateInterval:v6];
 
   v57 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [objc_opt_class() modelSources];
-  [v7 addObjectsFromArray:v8];
+  modelSources = [objc_opt_class() modelSources];
+  [v7 addObjectsFromArray:modelSources];
 
-  v9 = [objc_opt_class() nonModelSources];
-  [v7 addObjectsFromArray:v9];
+  nonModelSources = [objc_opt_class() nonModelSources];
+  [v7 addObjectsFromArray:nonModelSources];
 
-  v63 = self;
-  v56 = [(RTPlaceTypeClassifierMetricsCalculator *)self _computeOverAllMetricsForCacheMetrics];
+  selfCopy = self;
+  _computeOverAllMetricsForCacheMetrics = [(RTPlaceTypeClassifierMetricsCalculator *)self _computeOverAllMetricsForCacheMetrics];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
@@ -975,8 +975,8 @@ void __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferenc
           v75 = 0u;
           v72 = 0u;
           v73 = 0u;
-          v50 = [objc_opt_class() placeTypesForCacheMetrics];
-          v52 = [v50 countByEnumeratingWithState:&v72 objects:v93 count:16];
+          placeTypesForCacheMetrics = [objc_opt_class() placeTypesForCacheMetrics];
+          v52 = [placeTypesForCacheMetrics countByEnumeratingWithState:&v72 objects:v93 count:16];
           if (v52)
           {
             v51 = *v73;
@@ -987,7 +987,7 @@ void __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferenc
               {
                 if (*v73 != v51)
                 {
-                  objc_enumerationMutation(v50);
+                  objc_enumerationMutation(placeTypesForCacheMetrics);
                 }
 
                 v54 = v13;
@@ -997,8 +997,8 @@ void __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferenc
                 v69 = 0u;
                 v70 = 0u;
                 v71 = 0u;
-                v55 = [objc_opt_class() durationsForCacheMetrics];
-                v64 = [v55 countByEnumeratingWithState:&v68 objects:v92 count:16];
+                durationsForCacheMetrics = [objc_opt_class() durationsForCacheMetrics];
+                v64 = [durationsForCacheMetrics countByEnumeratingWithState:&v68 objects:v92 count:16];
                 if (v64)
                 {
                   v61 = *v69;
@@ -1009,7 +1009,7 @@ void __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferenc
                     {
                       if (*v69 != v61)
                       {
-                        objc_enumerationMutation(v55);
+                        objc_enumerationMutation(durationsForCacheMetrics);
                       }
 
                       v15 = *(*(&v68 + 1) + 8 * v14);
@@ -1020,7 +1020,7 @@ void __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferenc
                       v18 = [v59 dateByAddingTimeInterval:-v17];
                       v65 = [v16 initWithStartDate:v18 endDate:v59];
 
-                      v19 = -[RTPlaceTypeClassifierMetricsCalculator _filterLearnedPlaceTypeInferencesWithPlaceType:dateInterval:metricsSource:learnedPlaceTypeInferences:](v63, "_filterLearnedPlaceTypeInferencesWithPlaceType:dateInterval:metricsSource:learnedPlaceTypeInferences:", [v62 unsignedIntValue], v65, objc_msgSend(v60, "unsignedIntValue"), v58);
+                      v19 = -[RTPlaceTypeClassifierMetricsCalculator _filterLearnedPlaceTypeInferencesWithPlaceType:dateInterval:metricsSource:learnedPlaceTypeInferences:](selfCopy, "_filterLearnedPlaceTypeInferencesWithPlaceType:dateInterval:metricsSource:learnedPlaceTypeInferences:", [v62 unsignedIntValue], v65, objc_msgSend(v60, "unsignedIntValue"), v58);
                       v20 = objc_opt_new();
                       v21 = [objc_opt_class() cacheMetricsKeyToString:9];
                       v90 = v21;
@@ -1045,25 +1045,25 @@ void __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferenc
                       v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
                       [v20 addEntriesFromDictionary:v31];
 
-                      v32 = [(RTPlaceTypeClassifierMetricsCalculator *)v63 _computeCountOfNonNillLearnedPlaceTypeInferences:v19];
+                      v32 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy _computeCountOfNonNillLearnedPlaceTypeInferences:v19];
                       [v20 addEntriesFromDictionary:v32];
 
-                      v33 = [(RTPlaceTypeClassifierMetricsCalculator *)v63 _computeCountOfUniqueLearnedPlaceTypeInferences:v19];
+                      v33 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy _computeCountOfUniqueLearnedPlaceTypeInferences:v19];
                       [v20 addEntriesFromDictionary:v33];
 
-                      v34 = [(RTPlaceTypeClassifierMetricsCalculator *)v63 _computeCountOfTotalLearnedPlaceTypeInferences:v19];
+                      v34 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy _computeCountOfTotalLearnedPlaceTypeInferences:v19];
                       [v20 addEntriesFromDictionary:v34];
 
-                      v35 = [(RTPlaceTypeClassifierMetricsCalculator *)v63 _computeFlipFlopCountLearnedPlaceTypeInferences:v19];
+                      v35 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy _computeFlipFlopCountLearnedPlaceTypeInferences:v19];
                       [v20 addEntriesFromDictionary:v35];
 
-                      v36 = [(RTPlaceTypeClassifierMetricsCalculator *)v63 _computeLengthOfLatestClassificationForLearnedPlaceTypeInferences:v19];
+                      v36 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy _computeLengthOfLatestClassificationForLearnedPlaceTypeInferences:v19];
                       [v20 addEntriesFromDictionary:v36];
 
-                      v37 = [(RTPlaceTypeClassifierMetricsCalculator *)v63 _computeLengthOfLatestClassificationSinceChangedForLearnedPlaceTypeInferences:v19];
+                      v37 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy _computeLengthOfLatestClassificationSinceChangedForLearnedPlaceTypeInferences:v19];
                       [v20 addEntriesFromDictionary:v37];
 
-                      [v20 addEntriesFromDictionary:v56];
+                      [v20 addEntriesFromDictionary:_computeOverAllMetricsForCacheMetrics];
                       [v57 addObject:v20];
 
                       objc_autoreleasePoolPop(context);
@@ -1071,7 +1071,7 @@ void __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferenc
                     }
 
                     while (v64 != v67 + 1);
-                    v64 = [v55 countByEnumeratingWithState:&v68 objects:v92 count:16];
+                    v64 = [durationsForCacheMetrics countByEnumeratingWithState:&v68 objects:v92 count:16];
                   }
 
                   while (v64);
@@ -1082,7 +1082,7 @@ void __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferenc
               }
 
               while (v54 + 1 != v52);
-              v52 = [v50 countByEnumeratingWithState:&v72 objects:v93 count:16];
+              v52 = [placeTypesForCacheMetrics countByEnumeratingWithState:&v72 objects:v93 count:16];
             }
 
             while (v52);
@@ -1125,25 +1125,25 @@ void __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferenc
 
 - (id)_computeOverAllMetricsForCacheMetrics
 {
-  v3 = [(RTPlaceTypeClassifierMetricsCalculator *)self _getLearnedLocationOfInterests];
+  _getLearnedLocationOfInterests = [(RTPlaceTypeClassifierMetricsCalculator *)self _getLearnedLocationOfInterests];
   v4 = objc_opt_new();
-  v5 = [(RTPlaceTypeClassifierMetricsCalculator *)self _computeCountOfLOIsForCacheMetricsFromLOIs:v3];
+  v5 = [(RTPlaceTypeClassifierMetricsCalculator *)self _computeCountOfLOIsForCacheMetricsFromLOIs:_getLearnedLocationOfInterests];
   [v4 addEntriesFromDictionary:v5];
 
-  v6 = [(RTPlaceTypeClassifierMetricsCalculator *)self _computeDurationOfGraphForCacheMetricsFromLOIs:v3];
+  v6 = [(RTPlaceTypeClassifierMetricsCalculator *)self _computeDurationOfGraphForCacheMetricsFromLOIs:_getLearnedLocationOfInterests];
   [v4 addEntriesFromDictionary:v6];
 
   return v4;
 }
 
-- (id)_computeCountOfLOIsForCacheMetricsFromLOIs:(id)a3
+- (id)_computeCountOfLOIsForCacheMetricsFromLOIs:(id)is
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  isCopy = is;
   v4 = [objc_opt_class() cacheMetricsKeyToString:7];
   v10 = v4;
   v5 = MEMORY[0x277CCABB0];
-  v6 = [v3 count];
+  v6 = [isCopy count];
 
   v7 = [v5 numberWithUnsignedInteger:v6];
   v11[0] = v7;
@@ -1152,26 +1152,26 @@ void __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferenc
   return v8;
 }
 
-- (id)_computeDurationOfGraphForCacheMetricsFromLOIs:(id)a3
+- (id)_computeDurationOfGraphForCacheMetricsFromLOIs:(id)is
 {
   v44 = *MEMORY[0x277D85DE8];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = a3;
+  obj = is;
   v3 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (!v3)
   {
-    v6 = 0;
-    v5 = 0;
+    firstObject = 0;
+    lastObject = 0;
     v26 = &unk_28459DF08;
     goto LABEL_21;
   }
 
   v4 = v3;
-  v5 = 0;
-  v6 = 0;
+  lastObject = 0;
+  firstObject = 0;
   v36 = *v38;
   do
   {
@@ -1184,9 +1184,9 @@ void __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferenc
       }
 
       v8 = *(*(&v37 + 1) + 8 * v7);
-      if (v6)
+      if (firstObject)
       {
-        if (v5)
+        if (lastObject)
         {
           goto LABEL_8;
         }
@@ -1194,45 +1194,45 @@ void __86__RTPlaceTypeClassifierMetricsCalculator__storeLearnedPlaceTypeInferenc
 
       else
       {
-        v23 = [*(*(&v37 + 1) + 8 * v7) visits];
-        v6 = [v23 firstObject];
+        visits = [*(*(&v37 + 1) + 8 * v7) visits];
+        firstObject = [visits firstObject];
 
-        if (v5)
+        if (lastObject)
         {
           goto LABEL_8;
         }
       }
 
-      v24 = [v8 visits];
-      v5 = [v24 lastObject];
+      visits2 = [v8 visits];
+      lastObject = [visits2 lastObject];
 
 LABEL_8:
-      v9 = [v6 entryDate];
-      v10 = [v8 visits];
-      v11 = [v10 firstObject];
-      v12 = [v11 entryDate];
-      v13 = [v9 compare:v12];
+      entryDate = [firstObject entryDate];
+      visits3 = [v8 visits];
+      firstObject2 = [visits3 firstObject];
+      entryDate2 = [firstObject2 entryDate];
+      v13 = [entryDate compare:entryDate2];
 
       if (v13 == 1)
       {
-        v14 = [v8 visits];
-        v15 = [v14 firstObject];
+        visits4 = [v8 visits];
+        firstObject3 = [visits4 firstObject];
 
-        v6 = v15;
+        firstObject = firstObject3;
       }
 
-      v16 = [v5 entryDate];
-      v17 = [v8 visits];
-      v18 = [v17 lastObject];
-      v19 = [v18 entryDate];
-      v20 = [v16 compare:v19];
+      entryDate3 = [lastObject entryDate];
+      visits5 = [v8 visits];
+      lastObject2 = [visits5 lastObject];
+      entryDate4 = [lastObject2 entryDate];
+      v20 = [entryDate3 compare:entryDate4];
 
       if (v20 == -1)
       {
-        v21 = [v8 visits];
-        v22 = [v21 lastObject];
+        visits6 = [v8 visits];
+        lastObject3 = [visits6 lastObject];
 
-        v5 = v22;
+        lastObject = lastObject3;
       }
 
       ++v7;
@@ -1245,12 +1245,12 @@ LABEL_8:
 
   while (v25);
   v26 = &unk_28459DF08;
-  if (v6 && v5)
+  if (firstObject && lastObject)
   {
     v27 = MEMORY[0x277CCABB0];
-    v28 = [v5 entryDate];
-    v29 = [v6 entryDate];
-    [v28 timeIntervalSinceDate:v29];
+    entryDate5 = [lastObject entryDate];
+    entryDate6 = [firstObject entryDate];
+    [entryDate5 timeIntervalSinceDate:entryDate6];
     v31 = v30 / 86400.0;
     *&v31 = v31;
     *&v31 = roundf(*&v31);
@@ -1282,7 +1282,7 @@ LABEL_21:
   v40 = __Block_byref_object_dispose__79;
   v41 = 0;
   v4 = dispatch_semaphore_create(0);
-  v5 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedLocationStore];
+  learnedLocationStore = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedLocationStore];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __72__RTPlaceTypeClassifierMetricsCalculator__getLearnedLocationOfInterests__block_invoke;
@@ -1291,7 +1291,7 @@ LABEL_21:
   v35 = &v42;
   v6 = v4;
   v33 = v6;
-  [v5 fetchRecentLocationsOfInterestWithHandler:v32];
+  [learnedLocationStore fetchRecentLocationsOfInterestWithHandler:v32];
 
   v7 = v6;
   v8 = [MEMORY[0x277CBEAA8] now];
@@ -1303,11 +1303,11 @@ LABEL_21:
     v12 = v11;
     v13 = objc_opt_new();
     v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_682];
-    v15 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v16 = [v15 filteredArrayUsingPredicate:v14];
-    v17 = [v16 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v16 = [callStackSymbols filteredArrayUsingPredicate:v14];
+    firstObject = [v16 firstObject];
 
-    [v13 submitToCoreAnalytics:v17 type:1 duration:v12];
+    [v13 submitToCoreAnalytics:firstObject type:1 duration:v12];
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
@@ -1382,10 +1382,10 @@ void __72__RTPlaceTypeClassifierMetricsCalculator__getLearnedLocationOfInterests
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getLearnedPlaceTypeInferencesWithDateInterval:(id)a3
+- (id)_getLearnedPlaceTypeInferencesWithDateInterval:(id)interval
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v34 = a3;
+  intervalCopy = interval;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -1399,8 +1399,8 @@ void __72__RTPlaceTypeClassifierMetricsCalculator__getLearnedLocationOfInterests
   v43 = __Block_byref_object_dispose__79;
   v44 = 0;
   v4 = dispatch_semaphore_create(0);
-  v5 = [[RTLearnedPlaceTypeInferenceEnumerationOptions alloc] initWithDateInterval:v34 sortByCreationDate:1 ascending:1 filteredToPlaceTypes:0 filteredToIdentifiers:0 filteredToSessionIds:0 filteredToLearnedPlaceIdentifiers:0];
-  v6 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferenceStore];
+  v5 = [[RTLearnedPlaceTypeInferenceEnumerationOptions alloc] initWithDateInterval:intervalCopy sortByCreationDate:1 ascending:1 filteredToPlaceTypes:0 filteredToIdentifiers:0 filteredToSessionIds:0 filteredToLearnedPlaceIdentifiers:0];
+  learnedPlaceTypeInferenceStore = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferenceStore];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __89__RTPlaceTypeClassifierMetricsCalculator__getLearnedPlaceTypeInferencesWithDateInterval___block_invoke;
@@ -1409,7 +1409,7 @@ void __72__RTPlaceTypeClassifierMetricsCalculator__getLearnedLocationOfInterests
   v38 = &v45;
   v7 = v4;
   v36 = v7;
-  [v6 fetchLearnedPlaceTypeInferencesWithOptions:v5 handler:v35];
+  [learnedPlaceTypeInferenceStore fetchLearnedPlaceTypeInferencesWithOptions:v5 handler:v35];
 
   v8 = v7;
   v9 = [MEMORY[0x277CBEAA8] now];
@@ -1421,11 +1421,11 @@ void __72__RTPlaceTypeClassifierMetricsCalculator__getLearnedLocationOfInterests
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_682];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -1500,21 +1500,21 @@ void __89__RTPlaceTypeClassifierMetricsCalculator__getLearnedPlaceTypeInferences
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_filterLearnedPlaceTypeInferencesWithPlaceType:(unint64_t)a3 dateInterval:(id)a4 metricsSource:(unint64_t)a5 learnedPlaceTypeInferences:(id)a6
+- (id)_filterLearnedPlaceTypeInferencesWithPlaceType:(unint64_t)type dateInterval:(id)interval metricsSource:(unint64_t)source learnedPlaceTypeInferences:(id)inferences
 {
-  v9 = a4;
+  intervalCopy = interval;
   v10 = MEMORY[0x277CCAC30];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __143__RTPlaceTypeClassifierMetricsCalculator__filterLearnedPlaceTypeInferencesWithPlaceType_dateInterval_metricsSource_learnedPlaceTypeInferences___block_invoke;
   v17[3] = &unk_2788CB178;
-  v18 = v9;
-  v19 = a3;
-  v20 = a5;
-  v11 = v9;
-  v12 = a6;
+  v18 = intervalCopy;
+  typeCopy = type;
+  sourceCopy = source;
+  v11 = intervalCopy;
+  inferencesCopy = inferences;
   v13 = [v10 predicateWithBlock:v17];
-  v14 = [v12 filteredArrayUsingPredicate:v13];
+  v14 = [inferencesCopy filteredArrayUsingPredicate:v13];
 
   v15 = [v14 sortedArrayUsingComparator:&__block_literal_global_62];
 
@@ -1557,12 +1557,12 @@ uint64_t __143__RTPlaceTypeClassifierMetricsCalculator__filterLearnedPlaceTypeIn
   return v7;
 }
 
-- (id)_computeFlipFlopCountLearnedPlaceTypeInferences:(id)a3
+- (id)_computeFlipFlopCountLearnedPlaceTypeInferences:(id)inferences
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inferencesCopy = inferences;
   v5 = [objc_opt_class() cacheMetricsKeyToString:4];
-  if (![v4 count])
+  if (![inferencesCopy count])
   {
     v27 = v5;
     v28[0] = &unk_28459DF08;
@@ -1571,16 +1571,16 @@ uint64_t __143__RTPlaceTypeClassifierMetricsCalculator__filterLearnedPlaceTypeIn
   }
 
   v20 = v5;
-  if ([v4 count] != 1)
+  if ([inferencesCopy count] != 1)
   {
     v8 = 0;
     v6 = 0;
     while (1)
     {
-      v9 = [v4 objectAtIndexedSubscript:v8];
+      v9 = [inferencesCopy objectAtIndexedSubscript:v8];
       if (v9)
       {
-        v5 = [v4 objectAtIndexedSubscript:v8 + 1];
+        v5 = [inferencesCopy objectAtIndexedSubscript:v8 + 1];
         if (!v5)
         {
           v17 = 1;
@@ -1588,10 +1588,10 @@ uint64_t __143__RTPlaceTypeClassifierMetricsCalculator__filterLearnedPlaceTypeIn
         }
       }
 
-      v10 = [v4 objectAtIndexedSubscript:v8];
+      v10 = [inferencesCopy objectAtIndexedSubscript:v8];
       if (!v10)
       {
-        v3 = [v4 objectAtIndexedSubscript:v8 + 1];
+        v3 = [inferencesCopy objectAtIndexedSubscript:v8 + 1];
         if (v3)
         {
           v17 = 1;
@@ -1599,14 +1599,14 @@ uint64_t __143__RTPlaceTypeClassifierMetricsCalculator__filterLearnedPlaceTypeIn
         }
       }
 
-      v11 = [v4 objectAtIndexedSubscript:v8];
+      v11 = [inferencesCopy objectAtIndexedSubscript:v8];
       if (!v11)
       {
         goto LABEL_17;
       }
 
       v12 = v11;
-      v13 = [v4 objectAtIndexedSubscript:v8 + 1];
+      v13 = [inferencesCopy objectAtIndexedSubscript:v8 + 1];
       if (!v13)
       {
         break;
@@ -1615,11 +1615,11 @@ uint64_t __143__RTPlaceTypeClassifierMetricsCalculator__filterLearnedPlaceTypeIn
       v23 = v3;
       v24 = v5;
       v22 = v13;
-      v21 = [v4 objectAtIndexedSubscript:v8];
-      v14 = [v21 learnedPlaceIdentifier];
-      v15 = [v4 objectAtIndexedSubscript:v8 + 1];
-      v16 = [v15 learnedPlaceIdentifier];
-      v17 = [v14 isEqual:v16] ^ 1;
+      v21 = [inferencesCopy objectAtIndexedSubscript:v8];
+      learnedPlaceIdentifier = [v21 learnedPlaceIdentifier];
+      v15 = [inferencesCopy objectAtIndexedSubscript:v8 + 1];
+      learnedPlaceIdentifier2 = [v15 learnedPlaceIdentifier];
+      v17 = [learnedPlaceIdentifier isEqual:learnedPlaceIdentifier2] ^ 1;
 
       if (v10)
       {
@@ -1649,7 +1649,7 @@ LABEL_21:
 LABEL_23:
 
       v6 += v17;
-      if ([v4 count] - 1 <= ++v8)
+      if ([inferencesCopy count] - 1 <= ++v8)
       {
         goto LABEL_24;
       }
@@ -1678,13 +1678,13 @@ LABEL_25:
   return v7;
 }
 
-- (id)_computeCountOfNonNillLearnedPlaceTypeInferences:(id)a3
+- (id)_computeCountOfNonNillLearnedPlaceTypeInferences:(id)inferences
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  inferencesCopy = inferences;
   v5 = [v3 predicateWithFormat:@"%K != nil", @"learnedPlaceIdentifier"];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [inferencesCopy filteredArrayUsingPredicate:v5];
 
   v7 = [objc_opt_class() cacheMetricsKeyToString:1];
   v11 = v7;
@@ -1695,16 +1695,16 @@ LABEL_25:
   return v9;
 }
 
-- (id)_computeCountOfUniqueLearnedPlaceTypeInferences:(id)a3
+- (id)_computeCountOfUniqueLearnedPlaceTypeInferences:(id)inferences
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  inferencesCopy = inferences;
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = inferencesCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
@@ -1721,12 +1721,12 @@ LABEL_25:
 
         v10 = *(*(&v18 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 learnedPlaceIdentifier];
+        learnedPlaceIdentifier = [v10 learnedPlaceIdentifier];
 
-        if (v12)
+        if (learnedPlaceIdentifier)
         {
-          v13 = [v10 learnedPlaceIdentifier];
-          [v4 addObject:v13];
+          learnedPlaceIdentifier2 = [v10 learnedPlaceIdentifier];
+          [v4 addObject:learnedPlaceIdentifier2];
         }
 
         objc_autoreleasePoolPop(v11);
@@ -1747,14 +1747,14 @@ LABEL_25:
   return v16;
 }
 
-- (id)_computeCountOfTotalLearnedPlaceTypeInferences:(id)a3
+- (id)_computeCountOfTotalLearnedPlaceTypeInferences:(id)inferences
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  inferencesCopy = inferences;
   v4 = [objc_opt_class() cacheMetricsKeyToString:3];
   v10 = v4;
   v5 = MEMORY[0x277CCABB0];
-  v6 = [v3 count];
+  v6 = [inferencesCopy count];
 
   v7 = [v5 numberWithUnsignedInteger:v6];
   v11[0] = v7;
@@ -1763,19 +1763,19 @@ LABEL_25:
   return v8;
 }
 
-- (id)_computeLengthOfLatestClassificationForLearnedPlaceTypeInferences:(id)a3
+- (id)_computeLengthOfLatestClassificationForLearnedPlaceTypeInferences:(id)inferences
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 lastObject];
+  inferencesCopy = inferences;
+  lastObject = [inferencesCopy lastObject];
 
-  if (v4)
+  if (lastObject)
   {
     v5 = MEMORY[0x277CCABB0];
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [v3 lastObject];
-    v8 = [v7 creationDate];
-    [v6 timeIntervalSinceDate:v8];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastObject2 = [inferencesCopy lastObject];
+    creationDate = [lastObject2 creationDate];
+    [date timeIntervalSinceDate:creationDate];
     v10 = v9 / 3600.0;
     *&v10 = v10;
     *&v10 = roundf(*&v10);
@@ -1795,13 +1795,13 @@ LABEL_25:
   return v13;
 }
 
-- (id)_computeLengthOfLatestClassificationSinceChangedForLearnedPlaceTypeInferences:(id)a3
+- (id)_computeLengthOfLatestClassificationSinceChangedForLearnedPlaceTypeInferences:(id)inferences
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 lastObject];
+  inferencesCopy = inferences;
+  lastObject = [inferencesCopy lastObject];
 
-  if (!v4)
+  if (!lastObject)
   {
     v22 = &unk_28459DF08;
     goto LABEL_17;
@@ -1811,17 +1811,17 @@ LABEL_25:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [v3 reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  reverseObjectEnumerator = [inferencesCopy reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (!v6)
   {
-    v4 = 0;
+    lastObject = 0;
     v22 = &unk_28459DF08;
     goto LABEL_15;
   }
 
   v7 = v6;
-  obj = v5;
+  obj = reverseObjectEnumerator;
   v27 = 0;
   v8 = *v29;
   do
@@ -1835,11 +1835,11 @@ LABEL_25:
 
       v10 = *(*(&v28 + 1) + 8 * i);
       v11 = objc_autoreleasePoolPush();
-      v12 = [v10 learnedPlaceIdentifier];
-      v13 = v3;
-      v14 = [v3 lastObject];
-      v15 = [v14 learnedPlaceIdentifier];
-      v16 = [v12 isEqual:v15];
+      learnedPlaceIdentifier = [v10 learnedPlaceIdentifier];
+      v13 = inferencesCopy;
+      lastObject2 = [inferencesCopy lastObject];
+      learnedPlaceIdentifier2 = [lastObject2 learnedPlaceIdentifier];
+      v16 = [learnedPlaceIdentifier isEqual:learnedPlaceIdentifier2];
 
       if (v16)
       {
@@ -1849,7 +1849,7 @@ LABEL_25:
       }
 
       objc_autoreleasePoolPop(v11);
-      v3 = v13;
+      inferencesCopy = v13;
     }
 
     v7 = [obj countByEnumeratingWithState:&v28 objects:v34 count:16];
@@ -1857,13 +1857,13 @@ LABEL_25:
 
   while (v7);
 
-  v4 = v27;
+  lastObject = v27;
   if (v27)
   {
     v18 = MEMORY[0x277CCABB0];
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v19 = [v27 creationDate];
-    [v5 timeIntervalSinceDate:v19];
+    reverseObjectEnumerator = [MEMORY[0x277CBEAA8] date];
+    creationDate = [v27 creationDate];
+    [reverseObjectEnumerator timeIntervalSinceDate:creationDate];
     v21 = v20 / 3600.0;
     *&v21 = v21;
     *&v21 = roundf(*&v21);
@@ -1883,12 +1883,12 @@ LABEL_17:
   return v24;
 }
 
-+ (void)submitMetricsForInferredPlaces:(id)a3 contactsPlaces:(id)a4 rottedPlaces:(id)a5 distanceCalculator:(id)a6 metricManager:(id)a7
++ (void)submitMetricsForInferredPlaces:(id)places contactsPlaces:(id)contactsPlaces rottedPlaces:(id)rottedPlaces distanceCalculator:(id)calculator metricManager:(id)manager
 {
   v28 = *MEMORY[0x277D85DE8];
-  v12 = a6;
-  v13 = a7;
-  v14 = [a1 collectPlaceVersionsFromInferredPlaces:a3 contactsPlaces:a4 rottedPlaces:a5];
+  calculatorCopy = calculator;
+  managerCopy = manager;
+  v14 = [self collectPlaceVersionsFromInferredPlaces:places contactsPlaces:contactsPlaces rottedPlaces:rottedPlaces];
   v15 = [RTMetricManager metricForType:18];
   v23 = 0u;
   v24 = 0u;
@@ -1910,7 +1910,7 @@ LABEL_17:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [a1 newAlgorithmInstanceWithInference:*(*(&v23 + 1) + 8 * v20) distanceCalculator:{v12, v23}];
+        v21 = [self newAlgorithmInstanceWithInference:*(*(&v23 + 1) + 8 * v20) distanceCalculator:{calculatorCopy, v23}];
         if (v21)
         {
           [v15 addInstance:v21];
@@ -1932,7 +1932,7 @@ LABEL_17:
     [v15 addInstance:v22];
   }
 
-  [v13 submitMetric:v15 withHandler:{&__block_literal_global_326, v23}];
+  [managerCopy submitMetric:v15 withHandler:{&__block_literal_global_326, v23}];
 }
 
 void __134__RTPlaceTypeClassifierMetricsCalculator_submitMetricsForInferredPlaces_contactsPlaces_rottedPlaces_distanceCalculator_metricManager___block_invoke(uint64_t a1, void *a2)
@@ -1951,16 +1951,16 @@ void __134__RTPlaceTypeClassifierMetricsCalculator_submitMetricsForInferredPlace
   }
 }
 
-+ (id)newAlgorithmInstanceWithInference:(id)a3 distanceCalculator:(id)a4
++ (id)newAlgorithmInstanceWithInference:(id)inference distanceCalculator:(id)calculator
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  inferenceCopy = inference;
+  calculatorCopy = calculator;
   v8 = [RTMetricManager metricForType:17];
-  v9 = [v6 inferredVersion];
-  v10 = [v9 type];
-  v11 = v10 - 1;
-  if ((v10 - 1) >= 3)
+  inferredVersion = [inferenceCopy inferredVersion];
+  type = [inferredVersion type];
+  v11 = type - 1;
+  if ((type - 1) >= 3)
   {
   }
 
@@ -1970,19 +1970,19 @@ void __134__RTPlaceTypeClassifierMetricsCalculator_submitMetricsForInferredPlace
     [v8 setType:(v11 + 1)];
   }
 
-  v12 = [v6 inferredVersion];
-  v13 = [v12 typeSource];
-  v14 = ((v13 & 6) != 0) | (2 * (v13 & 1u));
+  inferredVersion2 = [inferenceCopy inferredVersion];
+  typeSource = [inferredVersion2 typeSource];
+  v14 = ((typeSource & 6) != 0) | (2 * (typeSource & 1u));
 
   if (v14)
   {
     [v8 setSource:v14];
   }
 
-  v15 = [v6 existingVersion];
-  v16 = [v15 type];
-  v17 = v16 - 1;
-  if ((v16 - 1) >= 3)
+  existingVersion = [inferenceCopy existingVersion];
+  type2 = [existingVersion type];
+  v17 = type2 - 1;
+  if ((type2 - 1) >= 3)
   {
   }
 
@@ -1992,65 +1992,65 @@ void __134__RTPlaceTypeClassifierMetricsCalculator_submitMetricsForInferredPlace
     [v8 setPreviousType:(v17 + 1)];
   }
 
-  v18 = [v6 trueVersion];
-  v19 = [v18 type];
-  if ((v19 - 1) <= 2)
+  trueVersion = [inferenceCopy trueVersion];
+  type3 = [trueVersion type];
+  if ((type3 - 1) <= 2)
   {
-    [v8 setTruthType:v19];
+    [v8 setTruthType:type3];
   }
 
-  v20 = [v18 typeSource];
-  if (((v20 & 6) != 0) | (2 * (v20 & 1)))
+  typeSource2 = [trueVersion typeSource];
+  if (((typeSource2 & 6) != 0) | (2 * (typeSource2 & 1)))
   {
     [v8 setTruthSource:?];
   }
 
-  v21 = [v6 inferredVersion];
+  inferredVersion3 = [inferenceCopy inferredVersion];
 
-  if (v21)
+  if (inferredVersion3)
   {
-    v22 = [v6 truthfulCounterpart];
+    truthfulCounterpart = [inferenceCopy truthfulCounterpart];
 
-    if (v22)
+    if (truthfulCounterpart)
     {
-      v23 = [v6 inferredVersion];
-      v24 = [v23 mapItem];
-      v25 = [v6 truthfulCounterpart];
-      v26 = [v25 mapItem];
-      [a1 updateAlgorithmInstance:v8 byComparingInferredMapItem:v24 withTruthfulMapItem:v26 withDistanceCalculator:v7];
+      inferredVersion4 = [inferenceCopy inferredVersion];
+      mapItem = [inferredVersion4 mapItem];
+      truthfulCounterpart2 = [inferenceCopy truthfulCounterpart];
+      mapItem2 = [truthfulCounterpart2 mapItem];
+      [self updateAlgorithmInstance:v8 byComparingInferredMapItem:mapItem withTruthfulMapItem:mapItem2 withDistanceCalculator:calculatorCopy];
     }
   }
 
-  [v8 setIsRotted:{objc_msgSend(v6, "isRotted")}];
+  [v8 setIsRotted:{objc_msgSend(inferenceCopy, "isRotted")}];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
-      v29 = [v8 type];
-      v30 = [v8 source];
-      v31 = [v8 previousType];
-      v32 = [v8 truthType];
-      v33 = [v8 truthSource];
+      type4 = [v8 type];
+      source = [v8 source];
+      previousType = [v8 previousType];
+      truthType = [v8 truthType];
+      truthSource = [v8 truthSource];
       [v8 distanceFromTruth];
       v35 = v34;
-      v36 = [v8 isRotted];
+      isRotted = [v8 isRotted];
       v38 = 134219522;
       v37 = "false";
-      v39 = v29;
+      v39 = type4;
       v40 = 2048;
-      if (v36)
+      if (isRotted)
       {
         v37 = "true";
       }
 
-      v41 = v30;
+      v41 = source;
       v42 = 2048;
-      v43 = v31;
+      v43 = previousType;
       v44 = 2048;
-      v45 = v32;
+      v45 = truthType;
       v46 = 2048;
-      v47 = v33;
+      v47 = truthSource;
       v48 = 2048;
       v49 = v35;
       v50 = 2080;
@@ -2062,139 +2062,139 @@ void __134__RTPlaceTypeClassifierMetricsCalculator_submitMetricsForInferredPlace
   return v8;
 }
 
-+ (void)updateAlgorithmInstance:(id)a3 byComparingInferredMapItem:(id)a4 withTruthfulMapItem:(id)a5 withDistanceCalculator:(id)a6
++ (void)updateAlgorithmInstance:(id)instance byComparingInferredMapItem:(id)item withTruthfulMapItem:(id)mapItem withDistanceCalculator:(id)calculator
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 location];
-  v15 = [v12 location];
+  instanceCopy = instance;
+  itemCopy = item;
+  mapItemCopy = mapItem;
+  calculatorCopy = calculator;
+  location = [itemCopy location];
+  location2 = [mapItemCopy location];
   v25 = 0;
-  [v13 distanceFromLocation:v14 toLocation:v15 error:&v25];
+  [calculatorCopy distanceFromLocation:location toLocation:location2 error:&v25];
   v17 = v16;
 
   v18 = v25;
   if (!v18)
   {
-    [v10 setDistanceFromTruth:(10 * llround(v17 / 10.0))];
+    [instanceCopy setDistanceFromTruth:(10 * llround(v17 / 10.0))];
   }
 
-  v19 = [v11 address];
-  v20 = [v12 address];
-  v21 = [v19 isEqual:v20];
+  address = [itemCopy address];
+  address2 = [mapItemCopy address];
+  v21 = [address isEqual:address2];
 
   if (v21)
   {
-    [v10 setAddressComponentMatches:-1];
+    [instanceCopy setAddressComponentMatches:-1];
   }
 
   else
   {
-    v22 = [v11 address];
-    v23 = [v12 address];
-    v24 = [a1 addressComponentMatchesBetweenInferredAddress:v22 trueAddress:v23];
+    address3 = [itemCopy address];
+    address4 = [mapItemCopy address];
+    v24 = [self addressComponentMatchesBetweenInferredAddress:address3 trueAddress:address4];
     if (v24)
     {
-      [v10 setAddressComponentMatches:v24];
+      [instanceCopy setAddressComponentMatches:v24];
     }
   }
 }
 
-+ (unint64_t)addressComponentMatchesBetweenInferredAddress:(id)a3 trueAddress:(id)a4
++ (unint64_t)addressComponentMatchesBetweenInferredAddress:(id)address trueAddress:(id)trueAddress
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 subThoroughfare];
-  v9 = [v7 subThoroughfare];
-  v10 = [a1 inferredAddressComponent:v8 consistentWithTrueComponent:v9];
+  addressCopy = address;
+  trueAddressCopy = trueAddress;
+  subThoroughfare = [addressCopy subThoroughfare];
+  subThoroughfare2 = [trueAddressCopy subThoroughfare];
+  v10 = [self inferredAddressComponent:subThoroughfare consistentWithTrueComponent:subThoroughfare2];
 
   v11 = v10;
-  v12 = [v6 thoroughfare];
-  v13 = [v7 thoroughfare];
-  v14 = [a1 inferredAddressComponent:v12 consistentWithTrueComponent:v13];
+  thoroughfare = [addressCopy thoroughfare];
+  thoroughfare2 = [trueAddressCopy thoroughfare];
+  v14 = [self inferredAddressComponent:thoroughfare consistentWithTrueComponent:thoroughfare2];
 
   if (v14)
   {
     v11 |= 2uLL;
   }
 
-  v15 = [v6 subLocality];
-  v16 = [v7 subLocality];
-  v17 = [a1 inferredAddressComponent:v15 consistentWithTrueComponent:v16];
+  subLocality = [addressCopy subLocality];
+  subLocality2 = [trueAddressCopy subLocality];
+  v17 = [self inferredAddressComponent:subLocality consistentWithTrueComponent:subLocality2];
 
   if (v17)
   {
     v11 |= 4uLL;
   }
 
-  v18 = [v6 locality];
-  v19 = [v7 locality];
-  v20 = [a1 inferredAddressComponent:v18 consistentWithTrueComponent:v19];
+  locality = [addressCopy locality];
+  locality2 = [trueAddressCopy locality];
+  v20 = [self inferredAddressComponent:locality consistentWithTrueComponent:locality2];
 
   if (v20)
   {
     v11 |= 8uLL;
   }
 
-  v21 = [v6 subAdministrativeArea];
-  v22 = [v7 subAdministrativeArea];
-  v23 = [a1 inferredAddressComponent:v21 consistentWithTrueComponent:v22];
+  subAdministrativeArea = [addressCopy subAdministrativeArea];
+  subAdministrativeArea2 = [trueAddressCopy subAdministrativeArea];
+  v23 = [self inferredAddressComponent:subAdministrativeArea consistentWithTrueComponent:subAdministrativeArea2];
 
   if (v23)
   {
     v11 |= 0x10uLL;
   }
 
-  v24 = [v6 administrativeArea];
-  v25 = [v7 administrativeArea];
-  v26 = [a1 inferredAddressComponent:v24 consistentWithTrueComponent:v25];
+  administrativeArea = [addressCopy administrativeArea];
+  administrativeArea2 = [trueAddressCopy administrativeArea];
+  v26 = [self inferredAddressComponent:administrativeArea consistentWithTrueComponent:administrativeArea2];
 
   if (v26)
   {
     v11 |= 0x20uLL;
   }
 
-  v27 = [v6 administrativeAreaCode];
-  v28 = [v7 administrativeAreaCode];
-  v29 = [a1 inferredAddressComponent:v27 consistentWithTrueComponent:v28];
+  administrativeAreaCode = [addressCopy administrativeAreaCode];
+  administrativeAreaCode2 = [trueAddressCopy administrativeAreaCode];
+  v29 = [self inferredAddressComponent:administrativeAreaCode consistentWithTrueComponent:administrativeAreaCode2];
 
   if (v29)
   {
     v11 |= 0x40uLL;
   }
 
-  v30 = [v6 postalCode];
-  v31 = [v7 postalCode];
-  v32 = [a1 inferredAddressComponent:v30 consistentWithTrueComponent:v31];
+  postalCode = [addressCopy postalCode];
+  postalCode2 = [trueAddressCopy postalCode];
+  v32 = [self inferredAddressComponent:postalCode consistentWithTrueComponent:postalCode2];
 
   if (v32)
   {
     v11 |= 0x80uLL;
   }
 
-  v33 = [v6 country];
-  v34 = [v7 country];
-  v35 = [a1 inferredAddressComponent:v33 consistentWithTrueComponent:v34];
+  country = [addressCopy country];
+  country2 = [trueAddressCopy country];
+  v35 = [self inferredAddressComponent:country consistentWithTrueComponent:country2];
 
   if (v35)
   {
     v11 |= 0x100uLL;
   }
 
-  v36 = [v6 countryCode];
-  v37 = [v7 countryCode];
-  v38 = [a1 inferredAddressComponent:v36 consistentWithTrueComponent:v37];
+  countryCode = [addressCopy countryCode];
+  countryCode2 = [trueAddressCopy countryCode];
+  v38 = [self inferredAddressComponent:countryCode consistentWithTrueComponent:countryCode2];
 
   if (v38)
   {
     v11 |= 0x200uLL;
   }
 
-  v39 = [v6 inlandWater];
-  v40 = [v7 inlandWater];
-  v41 = [a1 inferredAddressComponent:v39 consistentWithTrueComponent:v40];
+  inlandWater = [addressCopy inlandWater];
+  inlandWater2 = [trueAddressCopy inlandWater];
+  v41 = [self inferredAddressComponent:inlandWater consistentWithTrueComponent:inlandWater2];
 
   if (v41)
   {
@@ -2206,9 +2206,9 @@ void __134__RTPlaceTypeClassifierMetricsCalculator_submitMetricsForInferredPlace
     v42 = v11;
   }
 
-  v43 = [v6 ocean];
-  v44 = [v7 ocean];
-  v45 = [a1 inferredAddressComponent:v43 consistentWithTrueComponent:v44];
+  ocean = [addressCopy ocean];
+  ocean2 = [trueAddressCopy ocean];
+  v45 = [self inferredAddressComponent:ocean consistentWithTrueComponent:ocean2];
 
   if (v45)
   {
@@ -2220,10 +2220,10 @@ void __134__RTPlaceTypeClassifierMetricsCalculator_submitMetricsForInferredPlace
     v46 = v42;
   }
 
-  v47 = [v6 isIsland];
+  isIsland = [addressCopy isIsland];
   v58 = 0u;
   v59 = 0u;
-  if (v47 != [v7 isIsland])
+  if (isIsland != [trueAddressCopy isIsland])
   {
     v48 = v46;
   }
@@ -2236,8 +2236,8 @@ void __134__RTPlaceTypeClassifierMetricsCalculator_submitMetricsForInferredPlace
   v49 = v48 | 0x1000;
   v60 = 0uLL;
   v61 = 0uLL;
-  v50 = [v6 areasOfInterest];
-  v51 = [v50 countByEnumeratingWithState:&v58 objects:v62 count:16];
+  areasOfInterest = [addressCopy areasOfInterest];
+  v51 = [areasOfInterest countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (v51)
   {
     v52 = v51;
@@ -2248,12 +2248,12 @@ void __134__RTPlaceTypeClassifierMetricsCalculator_submitMetricsForInferredPlace
       {
         if (*v59 != v53)
         {
-          objc_enumerationMutation(v50);
+          objc_enumerationMutation(areasOfInterest);
         }
 
         v55 = *(*(&v58 + 1) + 8 * i);
-        v56 = [v7 areasOfInterest];
-        LOBYTE(v55) = [v56 containsObject:v55];
+        areasOfInterest2 = [trueAddressCopy areasOfInterest];
+        LOBYTE(v55) = [areasOfInterest2 containsObject:v55];
 
         if ((v55 & 1) == 0)
         {
@@ -2262,7 +2262,7 @@ void __134__RTPlaceTypeClassifierMetricsCalculator_submitMetricsForInferredPlace
         }
       }
 
-      v52 = [v50 countByEnumeratingWithState:&v58 objects:v62 count:16];
+      v52 = [areasOfInterest countByEnumeratingWithState:&v58 objects:v62 count:16];
       if (v52)
       {
         continue;
@@ -2277,13 +2277,13 @@ LABEL_38:
   return v49;
 }
 
-+ (BOOL)inferredAddressComponent:(id)a3 consistentWithTrueComponent:(id)a4
++ (BOOL)inferredAddressComponent:(id)component consistentWithTrueComponent:(id)trueComponent
 {
-  v6 = a4;
-  v7 = [a1 normalize:a3];
+  trueComponentCopy = trueComponent;
+  v7 = [self normalize:component];
   if (v7)
   {
-    v8 = [a1 normalize:v6];
+    v8 = [self normalize:trueComponentCopy];
     v9 = [v7 isEqual:v8];
   }
 
@@ -2295,27 +2295,27 @@ LABEL_38:
   return v9;
 }
 
-+ (id)normalize:(id)a3
++ (id)normalize:(id)normalize
 {
-  v3 = [a3 lowercaseString];
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  lowercaseString = [normalize lowercaseString];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v5 = [lowercaseString stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v5;
 }
 
-+ (id)collectPlaceVersionsFromInferredPlaces:(id)a3 contactsPlaces:(id)a4 rottedPlaces:(id)a5
++ (id)collectPlaceVersionsFromInferredPlaces:(id)places contactsPlaces:(id)contactsPlaces rottedPlaces:(id)rottedPlaces
 {
   v96 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
+  placesCopy = places;
+  contactsPlacesCopy = contactsPlaces;
+  rottedPlacesCopy = rottedPlaces;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  obj = v7;
+  obj = placesCopy;
   v11 = [obj countByEnumeratingWithState:&v87 objects:v95 count:16];
   if (v11)
   {
@@ -2333,8 +2333,8 @@ LABEL_38:
         v15 = *(*(&v87 + 1) + 8 * i);
         v16 = objc_opt_new();
         [v16 setInferredVersion:v15];
-        v17 = [v15 identifier];
-        [v10 setObject:v16 forKeyedSubscript:v17];
+        identifier = [v15 identifier];
+        [dictionary setObject:v16 forKeyedSubscript:identifier];
       }
 
       v12 = [obj countByEnumeratingWithState:&v87 objects:v95 count:16];
@@ -2343,14 +2343,14 @@ LABEL_38:
     while (v12);
   }
 
-  v70 = [MEMORY[0x277CBEB18] array];
-  v69 = [MEMORY[0x277CBEB18] array];
-  v62 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v67 = v8;
+  v67 = contactsPlacesCopy;
   v18 = [v67 countByEnumeratingWithState:&v83 objects:v94 count:16];
   if (v18)
   {
@@ -2366,22 +2366,22 @@ LABEL_38:
         }
 
         v22 = *(*(&v83 + 1) + 8 * j);
-        v23 = [v22 identifier];
-        v24 = [v10 objectForKeyedSubscript:v23];
+        identifier2 = [v22 identifier];
+        v24 = [dictionary objectForKeyedSubscript:identifier2];
 
         if (!v24)
         {
           v24 = objc_opt_new();
-          v25 = [v22 identifier];
-          [v10 setObject:v24 forKeyedSubscript:v25];
+          identifier3 = [v22 identifier];
+          [dictionary setObject:v24 forKeyedSubscript:identifier3];
         }
 
         [v24 setExistingVersion:v22];
         if (([v22 typeSource] & 6) != 0)
         {
-          v26 = [v22 type];
-          v27 = v70;
-          if (v26 == 1 || (v28 = [v22 type], v27 = v69, v28 == 2) || (v29 = objc_msgSend(v22, "type"), v27 = v62, v29 == 3))
+          type = [v22 type];
+          v27 = array;
+          if (type == 1 || (v28 = [v22 type], v27 = array2, v28 == 2) || (v29 = objc_msgSend(v22, "type"), v27 = array3, v29 == 3))
           {
             [v27 addObject:v22];
           }
@@ -2398,7 +2398,7 @@ LABEL_38:
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v30 = v9;
+  v30 = rottedPlacesCopy;
   v31 = [v30 countByEnumeratingWithState:&v79 objects:v93 count:16];
   if (v31)
   {
@@ -2413,8 +2413,8 @@ LABEL_38:
           objc_enumerationMutation(v30);
         }
 
-        v35 = [*(*(&v79 + 1) + 8 * k) identifier];
-        v36 = [v10 objectForKeyedSubscript:v35];
+        identifier4 = [*(*(&v79 + 1) + 8 * k) identifier];
+        v36 = [dictionary objectForKeyedSubscript:identifier4];
 
         if (v36)
         {
@@ -2430,19 +2430,19 @@ LABEL_38:
 
   v61 = v30;
 
-  v37 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v66 = [v10 allValues];
-  v38 = [v66 countByEnumeratingWithState:&v75 objects:v92 count:16];
+  allValues = [dictionary allValues];
+  v38 = [allValues countByEnumeratingWithState:&v75 objects:v92 count:16];
   if (v38)
   {
     v39 = v38;
     v40 = *v76;
     v63 = *v76;
-    v64 = v10;
+    v64 = dictionary;
     do
     {
       v41 = 0;
@@ -2451,15 +2451,15 @@ LABEL_38:
       {
         if (*v76 != v40)
         {
-          objc_enumerationMutation(v66);
+          objc_enumerationMutation(allValues);
         }
 
         v42 = *(*(&v75 + 1) + 8 * v41);
-        v43 = [v42 inferredVersion];
-        v44 = [v43 type];
+        inferredVersion = [v42 inferredVersion];
+        type2 = [inferredVersion type];
 
-        v45 = v70;
-        if (v44 == 1 || ([v42 inferredVersion], v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v46, "type"), v46, v45 = v69, v47 == 2) || (objc_msgSend(v42, "inferredVersion"), v48 = objc_claimAutoreleasedReturnValue(), v49 = objc_msgSend(v48, "type"), v48, v45 = v62, v49 == 3))
+        v45 = array;
+        if (type2 == 1 || ([v42 inferredVersion], v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v46, "type"), v46, v45 = array2, v47 == 2) || (objc_msgSend(v42, "inferredVersion"), v48 = objc_claimAutoreleasedReturnValue(), v49 = objc_msgSend(v48, "type"), v48, v45 = array3, v49 == 3))
         {
           v50 = v45;
         }
@@ -2493,7 +2493,7 @@ LABEL_38:
                 v57 = *(*(&v71 + 1) + 8 * m);
                 v58 = [v42 copy];
                 [v58 setTruthfulCounterpart:v57];
-                [v37 addObject:v58];
+                [array4 addObject:v58];
               }
 
               v54 = [v52 countByEnumeratingWithState:&v71 objects:v91 count:16];
@@ -2503,30 +2503,30 @@ LABEL_38:
           }
 
           v40 = v63;
-          v10 = v64;
+          dictionary = v64;
           v39 = v65;
         }
 
         else
         {
-          v51 = [v50 firstObject];
-          [v42 setTruthfulCounterpart:v51];
+          firstObject = [v50 firstObject];
+          [v42 setTruthfulCounterpart:firstObject];
 
-          [v37 addObject:v42];
+          [array4 addObject:v42];
         }
 
         ++v41;
       }
 
       while (v41 != v39);
-      v59 = [v66 countByEnumeratingWithState:&v75 objects:v92 count:16];
+      v59 = [allValues countByEnumeratingWithState:&v75 objects:v92 count:16];
       v39 = v59;
     }
 
     while (v59);
   }
 
-  return v37;
+  return array4;
 }
 
 - (id)retrieveMetrics
@@ -2617,8 +2617,8 @@ LABEL_38:
   v290 = 0u;
   v289 = 0u;
   v288 = 0u;
-  v178 = [objc_opt_class() nonInferredPlaceTypes];
-  v186 = [v178 countByEnumeratingWithState:&v288 objects:v317 count:16];
+  nonInferredPlaceTypes = [objc_opt_class() nonInferredPlaceTypes];
+  v186 = [nonInferredPlaceTypes countByEnumeratingWithState:&v288 objects:v317 count:16];
   if (v186)
   {
     v182 = *v289;
@@ -2630,7 +2630,7 @@ LABEL_38:
         if (*v289 != v182)
         {
           v18 = v17;
-          objc_enumerationMutation(v178);
+          objc_enumerationMutation(nonInferredPlaceTypes);
           v17 = v18;
         }
 
@@ -2686,7 +2686,7 @@ LABEL_38:
       }
 
       while ((v192 + 1) != v186);
-      v186 = [v178 countByEnumeratingWithState:&v288 objects:v317 count:16];
+      v186 = [nonInferredPlaceTypes countByEnumeratingWithState:&v288 objects:v317 count:16];
     }
 
     while (v186);
@@ -2696,8 +2696,8 @@ LABEL_38:
   v282 = 0u;
   v281 = 0u;
   v280 = 0u;
-  v30 = [objc_opt_class() inferredPlaceTypes];
-  v31 = [v30 countByEnumeratingWithState:&v280 objects:v315 count:16];
+  inferredPlaceTypes = [objc_opt_class() inferredPlaceTypes];
+  v31 = [inferredPlaceTypes countByEnumeratingWithState:&v280 objects:v315 count:16];
   if (v31)
   {
     v32 = *v281;
@@ -2707,7 +2707,7 @@ LABEL_38:
       {
         if (*v281 != v32)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(inferredPlaceTypes);
         }
 
         v34 = *(*(&v280 + 1) + 8 * k);
@@ -2736,7 +2736,7 @@ LABEL_38:
         objc_autoreleasePoolPop(v35);
       }
 
-      v31 = [v30 countByEnumeratingWithState:&v280 objects:v315 count:16];
+      v31 = [inferredPlaceTypes countByEnumeratingWithState:&v280 objects:v315 count:16];
     }
 
     while (v31);
@@ -2746,8 +2746,8 @@ LABEL_38:
   v278 = 0u;
   v277 = 0u;
   v276 = 0u;
-  v183 = [objc_opt_class() inferredPlaceTypes];
-  v193 = [v183 countByEnumeratingWithState:&v276 objects:v314 count:16];
+  inferredPlaceTypes2 = [objc_opt_class() inferredPlaceTypes];
+  v193 = [inferredPlaceTypes2 countByEnumeratingWithState:&v276 objects:v314 count:16];
   if (v193)
   {
     v187 = *v277;
@@ -2759,7 +2759,7 @@ LABEL_38:
         if (*v277 != v187)
         {
           v44 = v43;
-          objc_enumerationMutation(v183);
+          objc_enumerationMutation(inferredPlaceTypes2);
           v43 = v44;
         }
 
@@ -2829,7 +2829,7 @@ LABEL_38:
       }
 
       while (contextb + 1 != v193);
-      v193 = [v183 countByEnumeratingWithState:&v276 objects:v314 count:16];
+      v193 = [inferredPlaceTypes2 countByEnumeratingWithState:&v276 objects:v314 count:16];
     }
 
     while (v193);
@@ -2962,8 +2962,8 @@ LABEL_38:
         v255 = 0u;
         v252 = 0u;
         v253 = 0u;
-        v161 = [objc_opt_class() allPlaceTypes];
-        v164 = [v161 countByEnumeratingWithState:&v252 objects:v308 count:16];
+        allPlaceTypes = [objc_opt_class() allPlaceTypes];
+        v164 = [allPlaceTypes countByEnumeratingWithState:&v252 objects:v308 count:16];
         if (v164)
         {
           v162 = *v253;
@@ -2973,7 +2973,7 @@ LABEL_38:
             {
               if (*v253 != v162)
               {
-                objc_enumerationMutation(v161);
+                objc_enumerationMutation(allPlaceTypes);
               }
 
               v172 = *(*(&v252 + 1) + 8 * mm);
@@ -2990,9 +2990,9 @@ LABEL_38:
                   v245 = 0u;
                   v246 = 0u;
                   v247 = 0u;
-                  v88 = [v2 metricsData];
+                  metricsData = [v2 metricsData];
                   v89 = [objc_opt_class() keyForSourceType:objc_msgSend(v166 placeType:{"unsignedIntValue"), objc_msgSend(v172, "unsignedIntValue")}];
-                  v90 = [v88 objectForKeyedSubscript:v89];
+                  v90 = [metricsData objectForKeyedSubscript:v89];
                   v174 = [v90 objectForKeyedSubscript:&unk_28459DE90];
 
                   v91 = [v174 countByEnumeratingWithState:&v244 objects:v307 count:16];
@@ -3013,8 +3013,8 @@ LABEL_38:
                         v93 = *(*(&v244 + 1) + 8 * v92);
                         objc = objc_autoreleasePoolPush();
                         v94 = dispatch_semaphore_create(0);
-                        v95 = [v2 learnedLocationStore];
-                        v96 = [v93 identifier];
+                        learnedLocationStore = [v2 learnedLocationStore];
+                        identifier = [v93 identifier];
                         v241[0] = MEMORY[0x277D85DD0];
                         v241[1] = 3221225472;
                         v241[2] = __57__RTPlaceTypeClassifierMetricsCalculator_retrieveMetrics__block_invoke;
@@ -3022,7 +3022,7 @@ LABEL_38:
                         v243 = &v248;
                         v97 = v94;
                         v242 = v97;
-                        [v95 fetchLastVisitToPlaceWithIdentifier:v96 handler:v241];
+                        [learnedLocationStore fetchLastVisitToPlaceWithIdentifier:identifier handler:v241];
 
                         v98 = v97;
                         v99 = [MEMORY[0x277CBEAA8] now];
@@ -3034,11 +3034,11 @@ LABEL_38:
                           v102 = v101;
                           v103 = objc_opt_new();
                           v104 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_682];
-                          v105 = [MEMORY[0x277CCACC8] callStackSymbols];
-                          v106 = [v105 filteredArrayUsingPredicate:v104];
-                          v107 = [v106 firstObject];
+                          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+                          v106 = [callStackSymbols filteredArrayUsingPredicate:v104];
+                          firstObject = [v106 firstObject];
 
-                          [v103 submitToCoreAnalytics:v107 type:1 duration:v102];
+                          [v103 submitToCoreAnalytics:firstObject type:1 duration:v102];
                           v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
                           if (os_log_type_enabled(v108, OS_LOG_TYPE_FAULT))
                           {
@@ -3088,7 +3088,7 @@ LABEL_38:
               objc_autoreleasePoolPop(v168);
             }
 
-            v164 = [v161 countByEnumeratingWithState:&v252 objects:v308 count:16];
+            v164 = [allPlaceTypes countByEnumeratingWithState:&v252 objects:v308 count:16];
           }
 
           while (v164);
@@ -3107,8 +3107,8 @@ LABEL_38:
   v240 = 0u;
   v237 = 0u;
   v238 = 0u;
-  v163 = [objc_opt_class() allPlaceTypes];
-  v167 = [v163 countByEnumeratingWithState:&v237 objects:v306 count:16];
+  allPlaceTypes2 = [objc_opt_class() allPlaceTypes];
+  v167 = [allPlaceTypes2 countByEnumeratingWithState:&v237 objects:v306 count:16];
   if (v167)
   {
     v165 = *v238;
@@ -3118,19 +3118,19 @@ LABEL_38:
       {
         if (*v238 != v165)
         {
-          objc_enumerationMutation(v163);
+          objc_enumerationMutation(allPlaceTypes2);
         }
 
         v189 = *(*(&v237 + 1) + 8 * nn);
         v169 = objc_autoreleasePoolPush();
-        v115 = [v2 metricsData];
+        metricsData2 = [v2 metricsData];
         v116 = [objc_opt_class() keyForSourceType:14 placeType:{objc_msgSend(v189, "unsignedIntValue")}];
-        v117 = [v115 objectForKeyedSubscript:v116];
+        v117 = [metricsData2 objectForKeyedSubscript:v116];
         v175 = [v117 objectForKeyedSubscript:&unk_28459DE90];
 
-        v118 = [v2 metricsData];
+        metricsData3 = [v2 metricsData];
         v119 = [objc_opt_class() keyForSourceType:3 placeType:{objc_msgSend(v189, "unsignedIntValue")}];
-        v120 = [v118 objectForKeyedSubscript:v119];
+        v120 = [metricsData3 objectForKeyedSubscript:v119];
         v184 = [v120 objectForKeyedSubscript:&unk_28459DE90];
 
         v121 = [v175 count];
@@ -3187,12 +3187,12 @@ LABEL_131:
                     }
 
                     v129 = *(*(&v229 + 1) + 8 * i1);
-                    v130 = [v129 type];
-                    if (v130 == [v124 type])
+                    type = [v129 type];
+                    if (type == [v124 type])
                     {
-                      v131 = [v129 mapItem];
-                      v132 = [v124 mapItem];
-                      v133 = [v131 isEqualToMapItem:v132];
+                      mapItem = [v129 mapItem];
+                      mapItem2 = [v124 mapItem];
+                      v133 = [mapItem isEqualToMapItem:mapItem2];
 
                       v126 |= v133;
                     }
@@ -3235,7 +3235,7 @@ LABEL_132:
         objc_autoreleasePoolPop(v169);
       }
 
-      v167 = [v163 countByEnumeratingWithState:&v237 objects:v306 count:16];
+      v167 = [allPlaceTypes2 countByEnumeratingWithState:&v237 objects:v306 count:16];
     }
 
     while (v167);
@@ -3264,8 +3264,8 @@ LABEL_132:
         v224 = 0u;
         v221 = 0u;
         v222 = 0u;
-        v136 = [objc_opt_class() inferredPlaceTypes];
-        v137 = [v136 countByEnumeratingWithState:&v221 objects:v302 count:16];
+        inferredPlaceTypes3 = [objc_opt_class() inferredPlaceTypes];
+        v137 = [inferredPlaceTypes3 countByEnumeratingWithState:&v221 objects:v302 count:16];
         if (v137)
         {
           v138 = *v222;
@@ -3275,7 +3275,7 @@ LABEL_132:
             {
               if (*v222 != v138)
               {
-                objc_enumerationMutation(v136);
+                objc_enumerationMutation(inferredPlaceTypes3);
               }
 
               v140 = *(*(&v221 + 1) + 8 * i3);
@@ -3286,7 +3286,7 @@ LABEL_132:
               objc_autoreleasePoolPop(v141);
             }
 
-            v137 = [v136 countByEnumeratingWithState:&v221 objects:v302 count:16];
+            v137 = [inferredPlaceTypes3 countByEnumeratingWithState:&v221 objects:v302 count:16];
           }
 
           while (v137);
@@ -3305,8 +3305,8 @@ LABEL_132:
   v220 = 0u;
   v217 = 0u;
   v218 = 0u;
-  v190 = [objc_opt_class() schoolGymEligibleSources];
-  contextf = [v190 countByEnumeratingWithState:&v217 objects:v301 count:16];
+  schoolGymEligibleSources = [objc_opt_class() schoolGymEligibleSources];
+  contextf = [schoolGymEligibleSources countByEnumeratingWithState:&v217 objects:v301 count:16];
   if (contextf)
   {
     v197 = *v218;
@@ -3316,7 +3316,7 @@ LABEL_132:
       {
         if (*v218 != v197)
         {
-          objc_enumerationMutation(v190);
+          objc_enumerationMutation(schoolGymEligibleSources);
         }
 
         v144 = *(*(&v217 + 1) + 8 * i4);
@@ -3325,8 +3325,8 @@ LABEL_132:
         v216 = 0u;
         v213 = 0u;
         v214 = 0u;
-        v145 = [objc_opt_class() nonInferredPlaceTypes];
-        v146 = [v145 countByEnumeratingWithState:&v213 objects:v300 count:16];
+        nonInferredPlaceTypes2 = [objc_opt_class() nonInferredPlaceTypes];
+        v146 = [nonInferredPlaceTypes2 countByEnumeratingWithState:&v213 objects:v300 count:16];
         if (v146)
         {
           v147 = *v214;
@@ -3336,7 +3336,7 @@ LABEL_132:
             {
               if (*v214 != v147)
               {
-                objc_enumerationMutation(v145);
+                objc_enumerationMutation(nonInferredPlaceTypes2);
               }
 
               v149 = *(*(&v213 + 1) + 8 * i5);
@@ -3347,7 +3347,7 @@ LABEL_132:
               objc_autoreleasePoolPop(v150);
             }
 
-            v146 = [v145 countByEnumeratingWithState:&v213 objects:v300 count:16];
+            v146 = [nonInferredPlaceTypes2 countByEnumeratingWithState:&v213 objects:v300 count:16];
           }
 
           while (v146);
@@ -3356,7 +3356,7 @@ LABEL_132:
         objc_autoreleasePoolPop(objf);
       }
 
-      contextf = [v190 countByEnumeratingWithState:&v217 objects:v301 count:16];
+      contextf = [schoolGymEligibleSources countByEnumeratingWithState:&v217 objects:v301 count:16];
     }
 
     while (contextf);
@@ -3368,8 +3368,8 @@ LABEL_132:
   v153 = [v2 computeMetricsForSourcePlaceType:1 source:18 referenceSourcePlaceType:0 referenceSource:0 metricType:1 bins:0];
   [v3 addEntriesFromDictionary:v153];
 
-  v154 = [v2 generateAllMultipleWorkMetrics];
-  [v3 addEntriesFromDictionary:v154];
+  generateAllMultipleWorkMetrics = [v2 generateAllMultipleWorkMetrics];
+  [v3 addEntriesFromDictionary:generateAllMultipleWorkMetrics];
   v155 = v3;
 
   return v3;
@@ -3398,36 +3398,36 @@ void __57__RTPlaceTypeClassifierMetricsCalculator_retrieveMetrics__block_invoke(
 
 + (id)allPlaceTypes
 {
-  v2 = [objc_opt_class() inferredPlaceTypes];
-  v3 = [objc_opt_class() nonInferredPlaceTypes];
-  v4 = [v2 arrayByAddingObjectsFromArray:v3];
+  inferredPlaceTypes = [objc_opt_class() inferredPlaceTypes];
+  nonInferredPlaceTypes = [objc_opt_class() nonInferredPlaceTypes];
+  v4 = [inferredPlaceTypes arrayByAddingObjectsFromArray:nonInferredPlaceTypes];
 
   return v4;
 }
 
-- (id)computeMetricsForSourcePlaceType:(unint64_t)a3 source:(unint64_t)a4 referenceSourcePlaceType:(unint64_t)a5 referenceSource:(unint64_t)a6 metricType:(unint64_t)a7 bins:(id)a8
+- (id)computeMetricsForSourcePlaceType:(unint64_t)type source:(unint64_t)source referenceSourcePlaceType:(unint64_t)placeType referenceSource:(unint64_t)referenceSource metricType:(unint64_t)metricType bins:(id)bins
 {
-  v13 = a8;
+  binsCopy = bins;
   v14 = objc_opt_new();
   v15 = objc_autoreleasePoolPush();
-  if (a3 == a5 && a4 == a6)
+  if (type == placeType && source == referenceSource)
   {
     goto LABEL_21;
   }
 
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a7];
-  v17 = [&unk_2845A1040 containsObject:v16];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:metricType];
+  notHomeEligibleSources = [&unk_2845A1040 containsObject:v16];
 
-  if (!v17)
+  if (!notHomeEligibleSources)
   {
     goto LABEL_21;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    v17 = [objc_opt_class() notHomeEligibleSources];
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    if (([v17 containsObject:v16] & 1) == 0)
+    notHomeEligibleSources = [objc_opt_class() notHomeEligibleSources];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:source];
+    if (([notHomeEligibleSources containsObject:v16] & 1) == 0)
     {
       v18 = 0;
       goto LABEL_12;
@@ -3436,11 +3436,11 @@ void __57__RTPlaceTypeClassifierMetricsCalculator_retrieveMetrics__block_invoke(
     goto LABEL_9;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    v17 = [objc_opt_class() notWorkEligibleSources];
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    if ([v17 containsObject:v16])
+    notHomeEligibleSources = [objc_opt_class() notWorkEligibleSources];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:source];
+    if ([notHomeEligibleSources containsObject:v16])
     {
 LABEL_9:
 
@@ -3460,18 +3460,18 @@ LABEL_21:
 
 LABEL_12:
   v41 = v16;
-  if (a5 == 2)
+  if (placeType == 2)
   {
     v37 = v18;
-    v19 = [objc_opt_class() notWorkEligibleSources];
+    notWorkEligibleSources = [objc_opt_class() notWorkEligibleSources];
 LABEL_16:
-    v20 = v19;
-    v36 = v19;
-    [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
-    v21 = v39 = v17;
+    v20 = notWorkEligibleSources;
+    v36 = notWorkEligibleSources;
+    [MEMORY[0x277CCABB0] numberWithUnsignedInteger:referenceSource];
+    v21 = v39 = notHomeEligibleSources;
     v22 = [v20 containsObject:v21];
 
-    v17 = v39;
+    notHomeEligibleSources = v39;
     if ((v37 & 1) == 0)
     {
       goto LABEL_18;
@@ -3480,10 +3480,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a5 == 1)
+  if (placeType == 1)
   {
     v37 = v18;
-    v19 = [objc_opt_class() notHomeEligibleSources];
+    notWorkEligibleSources = [objc_opt_class() notHomeEligibleSources];
     goto LABEL_16;
   }
 
@@ -3494,7 +3494,7 @@ LABEL_17:
   }
 
 LABEL_18:
-  if (a3 == 1)
+  if (type == 1)
   {
   }
 
@@ -3503,31 +3503,31 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  v42 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-  v25 = [objc_opt_class() keyForSourceType:a4 placeType:a3];
-  v26 = [v42 objectForKeyedSubscript:v25];
+  metricsData = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+  v25 = [objc_opt_class() keyForSourceType:source placeType:type];
+  v26 = [metricsData objectForKeyedSubscript:v25];
   v40 = [v26 objectForKeyedSubscript:&unk_28459DE90];
 
-  v38 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-  v27 = [objc_opt_class() keyForSourceType:a6 placeType:a5];
-  v28 = [v38 objectForKeyedSubscript:v27];
+  metricsData2 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+  v27 = [objc_opt_class() keyForSourceType:referenceSource placeType:placeType];
+  v28 = [metricsData2 objectForKeyedSubscript:v27];
   v43 = [v28 objectForKeyedSubscript:&unk_28459DE90];
 
-  v29 = [objc_opt_class() keyForMetricType:a7 sourcePlaceType:a3 source:a4 referenceSourcePlaceType:a5 referenceSource:a6 metricKey:0];
+  v29 = [objc_opt_class() keyForMetricType:metricType sourcePlaceType:type source:source referenceSourcePlaceType:placeType referenceSource:referenceSource metricKey:0];
   [v14 setObject:&unk_28459DF08 forKeyedSubscript:v29];
   if (v40)
   {
-    if (a7 == 2)
+    if (metricType == 2)
     {
-      v33 = self;
+      selfCopy = self;
       v30 = v43;
-      v31 = [(RTPlaceTypeClassifierMetricsCalculator *)v33 computeDistanceMetricForSourcePlaces:v40 referencePlaces:v43 bins:v13];
+      v31 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy computeDistanceMetricForSourcePlaces:v40 referencePlaces:v43 bins:binsCopy];
     }
 
     else
     {
       v30 = v43;
-      if (a7 != 1)
+      if (metricType != 1)
       {
         goto LABEL_34;
       }
@@ -3558,37 +3558,37 @@ LABEL_22:
   return v14;
 }
 
-- (id)computeMetricsForWorkCandidates:(id)a3 sourceType:(unint64_t)a4 homeLOIs:(id)a5 workTruths:(id)a6 distanceBins:(id)a7 homeLOIMethodLabel:(id)a8
+- (id)computeMetricsForWorkCandidates:(id)candidates sourceType:(unint64_t)type homeLOIs:(id)is workTruths:(id)truths distanceBins:(id)bins homeLOIMethodLabel:(id)label
 {
   v119 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v87 = a7;
-  v17 = a8;
+  candidatesCopy = candidates;
+  isCopy = is;
+  truthsCopy = truths;
+  binsCopy = bins;
+  labelCopy = label;
   v18 = objc_opt_new();
   v88 = [RTMetric binsFromStart:&unk_28459DF20 toEnd:&unk_28459DF50 gap:&unk_2845A1BE8];
-  v84 = [objc_opt_class() keyForMetricType:1 placeType:2 source:a4 metricKey:14];
-  v85 = v17;
-  [v18 setObject:v17 forKeyedSubscript:?];
-  v104 = self;
-  v93 = a4;
-  v19 = [objc_opt_class() keyForMetricType:1 placeType:2 source:a4 metricKey:13];
-  v86 = v16;
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v16, "count")}];
+  v84 = [objc_opt_class() keyForMetricType:1 placeType:2 source:type metricKey:14];
+  v85 = labelCopy;
+  [v18 setObject:labelCopy forKeyedSubscript:?];
+  selfCopy = self;
+  typeCopy = type;
+  v19 = [objc_opt_class() keyForMetricType:1 placeType:2 source:type metricKey:13];
+  v86 = truthsCopy;
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(truthsCopy, "count")}];
   v91 = v18;
   v83 = v19;
   [v18 setObject:v20 forKeyedSubscript:v19];
 
-  v103 = v14;
-  v90 = v15;
-  if ([v14 count] && objc_msgSend(v15, "count"))
+  v103 = candidatesCopy;
+  v90 = isCopy;
+  if ([candidatesCopy count] && objc_msgSend(isCopy, "count"))
   {
     v111 = 0u;
     v112 = 0u;
     v109 = 0u;
     v110 = 0u;
-    obj = v15;
+    obj = isCopy;
     v21 = [obj countByEnumeratingWithState:&v109 objects:v118 count:16];
     if (v21)
     {
@@ -3606,14 +3606,14 @@ LABEL_22:
           }
 
           v25 = *(*(&v109 + 1) + 8 * i);
-          v26 = [(RTPlaceTypeClassifierMetricsCalculator *)v104 distanceCalculator];
-          v27 = [v25 mapItem];
-          v28 = [v27 location];
+          distanceCalculator = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy distanceCalculator];
+          mapItem = [v25 mapItem];
+          location = [mapItem location];
           v29 = [v103 objectAtIndexedSubscript:0];
-          v30 = [v29 secondObject];
-          v31 = [v30 mapItem];
-          v32 = [v31 location];
-          [v26 distanceFromLocation:v28 toLocation:v32 error:0];
+          secondObject = [v29 secondObject];
+          mapItem2 = [secondObject mapItem];
+          location2 = [mapItem2 location];
+          [distanceCalculator distanceFromLocation:location toLocation:location2 error:0];
           v34 = v33;
 
           if (v34 < v23)
@@ -3636,7 +3636,7 @@ LABEL_22:
       v102 = 0;
     }
 
-    v14 = v103;
+    candidatesCopy = v103;
   }
 
   else
@@ -3646,10 +3646,10 @@ LABEL_22:
 
   for (j = 0; j != 5; ++j)
   {
-    if (j < [v14 count] && (objc_msgSend(v14, "objectAtIndexedSubscript:", j), (v37 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (j < [candidatesCopy count] && (objc_msgSend(candidatesCopy, "objectAtIndexedSubscript:", j), (v37 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v38 = v37;
-      v89 = [v37 firstObject];
+      firstObject = [v37 firstObject];
       v101 = v38;
       if ([v86 count])
       {
@@ -3673,23 +3673,23 @@ LABEL_22:
               }
 
               v40 = *(*(&v105 + 1) + 8 * k);
-              v41 = [v40 mapItem];
-              v42 = [v38 secondObject];
-              v43 = [v42 mapItem];
-              if ([v41 isEqualToMapItem:v43])
+              mapItem3 = [v40 mapItem];
+              secondObject2 = [v38 secondObject];
+              mapItem4 = [secondObject2 mapItem];
+              if ([mapItem3 isEqualToMapItem:mapItem4])
               {
 
                 v52 = 1;
                 goto LABEL_35;
               }
 
-              v44 = [(RTPlaceTypeClassifierMetricsCalculator *)v104 distanceCalculator];
-              v45 = [v38 secondObject];
-              v46 = [v45 mapItem];
-              v47 = [v46 location];
-              v48 = [v40 mapItem];
-              v49 = [v48 location];
-              [v44 distanceFromLocation:v47 toLocation:v49 error:0];
+              distanceCalculator2 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy distanceCalculator];
+              secondObject3 = [v38 secondObject];
+              mapItem5 = [secondObject3 mapItem];
+              location3 = [mapItem5 location];
+              mapItem6 = [v40 mapItem];
+              location4 = [mapItem6 location];
+              [distanceCalculator2 distanceFromLocation:location3 toLocation:location4 error:0];
               v51 = v50;
 
               if (v51 <= 250.0)
@@ -3732,12 +3732,12 @@ LABEL_35:
 
       if (v102)
       {
-        v57 = [v38 secondObject];
-        v116 = v57;
+        secondObject4 = [v38 secondObject];
+        v116 = secondObject4;
         v58 = [MEMORY[0x277CBEA60] arrayWithObjects:&v116 count:1];
         v115 = v102;
         v59 = [MEMORY[0x277CBEA60] arrayWithObjects:&v115 count:1];
-        objb = [(RTPlaceTypeClassifierMetricsCalculator *)v104 computeDistanceMetricForSourcePlaces:v58 referencePlaces:v59 bins:v87];
+        objb = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy computeDistanceMetricForSourcePlaces:v58 referencePlaces:v59 bins:binsCopy];
       }
 
       else
@@ -3748,14 +3748,14 @@ LABEL_35:
       v55 = v56;
       if (j)
       {
-        v60 = [v38 secondObject];
-        v114 = v60;
+        secondObject5 = [v38 secondObject];
+        v114 = secondObject5;
         v61 = [MEMORY[0x277CBEA60] arrayWithObjects:&v114 count:1];
         v62 = [v103 objectAtIndexedSubscript:0];
-        v63 = [v62 secondObject];
-        v113 = v63;
+        secondObject6 = [v62 secondObject];
+        v113 = secondObject6;
         v64 = [MEMORY[0x277CBEA60] arrayWithObjects:&v113 count:1];
-        v53 = [(RTPlaceTypeClassifierMetricsCalculator *)v104 computeDistanceMetricForSourcePlaces:v61 referencePlaces:v64 bins:v87];
+        v53 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy computeDistanceMetricForSourcePlaces:v61 referencePlaces:v64 bins:binsCopy];
       }
 
       else
@@ -3763,7 +3763,7 @@ LABEL_35:
         v53 = &unk_28459E1C0;
       }
 
-      v54 = v89;
+      v54 = firstObject;
     }
 
     else
@@ -3777,15 +3777,15 @@ LABEL_35:
 
     v65 = objc_opt_class();
     v66 = [&unk_2845A1058 objectAtIndexedSubscript:j];
-    v67 = [v65 keyForMetricType:3 placeType:2 source:v93 metricKey:{objc_msgSend(v66, "unsignedIntegerValue")}];
+    v67 = [v65 keyForMetricType:3 placeType:2 source:typeCopy metricKey:{objc_msgSend(v66, "unsignedIntegerValue")}];
 
     v68 = objc_opt_class();
     v69 = [&unk_2845A1070 objectAtIndexedSubscript:j];
-    v70 = [v68 keyForMetricType:3 placeType:2 source:v93 metricKey:{objc_msgSend(v69, "unsignedIntegerValue")}];
+    v70 = [v68 keyForMetricType:3 placeType:2 source:typeCopy metricKey:{objc_msgSend(v69, "unsignedIntegerValue")}];
 
     v71 = objc_opt_class();
     v72 = [&unk_2845A1088 objectAtIndexedSubscript:j];
-    v73 = [v71 keyForMetricType:3 placeType:2 source:v93 metricKey:{objc_msgSend(v72, "unsignedIntegerValue")}];
+    v73 = [v71 keyForMetricType:3 placeType:2 source:typeCopy metricKey:{objc_msgSend(v72, "unsignedIntegerValue")}];
 
     [v54 doubleValue];
     v74 = v54;
@@ -3809,14 +3809,14 @@ LABEL_35:
       v78 = v74;
       v79 = objc_opt_class();
       v80 = [&unk_2845A10A0 objectAtIndexedSubscript:j];
-      v81 = [v79 keyForMetricType:3 placeType:2 source:v93 metricKey:{objc_msgSend(v80, "unsignedIntegerValue")}];
+      v81 = [v79 keyForMetricType:3 placeType:2 source:typeCopy metricKey:{objc_msgSend(v80, "unsignedIntegerValue")}];
 
       [v91 setObject:v53 forKeyedSubscript:v81];
       v74 = v78;
       v55 = v96;
     }
 
-    v14 = v103;
+    candidatesCopy = v103;
   }
 
   return v91;
@@ -3825,25 +3825,25 @@ LABEL_35:
 - (id)generateAllMultipleWorkMetrics
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+  metricsData = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
   v4 = [objc_opt_class() keyForSourceType:14 placeType:1];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [metricsData objectForKeyedSubscript:v4];
   v6 = [v5 objectForKeyedSubscript:&unk_28459DE90];
 
-  v7 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+  metricsData2 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
   v8 = [objc_opt_class() keyForSourceType:19 placeType:2];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [metricsData2 objectForKeyedSubscript:v8];
   v10 = [v9 objectForKeyedSubscript:&unk_28459DE90];
 
   v11 = [RTMetric exponentialBinsFromStart:20 toEnd:1.0 binCount:200000.0];
-  v12 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+  metricsData3 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
   v13 = [objc_opt_class() keyForSourceType:6 placeType:2];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  v14 = [metricsData3 objectForKeyedSubscript:v13];
   v15 = [v14 objectForKeyedSubscript:&unk_28459E040];
 
-  v16 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+  metricsData4 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
   v17 = [objc_opt_class() keyForSourceType:8 placeType:2];
-  v18 = [v16 objectForKeyedSubscript:v17];
+  v18 = [metricsData4 objectForKeyedSubscript:v17];
   v19 = [v18 objectForKeyedSubscript:&unk_28459E040];
 
   v20 = [(RTPlaceTypeClassifierMetricsCalculator *)self computeMetricsForWorkCandidates:v15 sourceType:6 homeLOIs:v6 workTruths:v10 distanceBins:v11 homeLOIMethodLabel:@"rule_engine"];
@@ -3890,17 +3890,17 @@ LABEL_35:
   return v24;
 }
 
-- (id)retrieveComputedMetricsForSourcePlaceType:(unint64_t)a3 source:(unint64_t)a4
+- (id)retrieveComputedMetricsForSourcePlaceType:(unint64_t)type source:(unint64_t)source
 {
   v131 = *MEMORY[0x277D85DE8];
   v118 = objc_opt_new();
-  v108 = a3 - 1;
-  v113 = a4;
-  if (a3 == 1)
+  v108 = type - 1;
+  sourceCopy = source;
+  if (type == 1)
   {
-    v7 = [objc_opt_class() notHomeEligibleSources];
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    v9 = [v7 containsObject:v8];
+    notHomeEligibleSources = [objc_opt_class() notHomeEligibleSources];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:source];
+    v9 = [notHomeEligibleSources containsObject:v8];
 
     if (v9)
     {
@@ -3911,11 +3911,11 @@ LABEL_35:
     goto LABEL_13;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
-    v17 = [objc_opt_class() schoolGymEligibleSources];
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    v19 = [v17 containsObject:v18];
+    schoolGymEligibleSources = [objc_opt_class() schoolGymEligibleSources];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:source];
+    v19 = [schoolGymEligibleSources containsObject:v18];
 
     if (!v19)
     {
@@ -3925,17 +3925,17 @@ LABEL_35:
     goto LABEL_12;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       v107 = &unk_2845A1130;
       goto LABEL_15;
     }
 
-    v11 = [objc_opt_class() notWorkEligibleSources];
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    v13 = [v11 containsObject:v12];
+    notWorkEligibleSources = [objc_opt_class() notWorkEligibleSources];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:source];
+    v13 = [notWorkEligibleSources containsObject:v12];
 
     if (v13)
     {
@@ -3945,9 +3945,9 @@ LABEL_35:
     goto LABEL_12;
   }
 
-  v14 = [objc_opt_class() schoolGymEligibleSources];
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v16 = [v14 containsObject:v15];
+  schoolGymEligibleSources2 = [objc_opt_class() schoolGymEligibleSources];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:source];
+  v16 = [schoolGymEligibleSources2 containsObject:v15];
 
   if (v16)
   {
@@ -3955,27 +3955,27 @@ LABEL_12:
     v10 = &unk_2845A1130;
 LABEL_13:
     v107 = v10;
-    a4 = v113;
+    source = sourceCopy;
 LABEL_15:
-    v20 = [objc_opt_class() keyForSourceType:a4 placeType:a3];
+    v20 = [objc_opt_class() keyForSourceType:source placeType:type];
     v21 = 0;
-    v109 = a4 | a3;
+    v109 = source | type;
     v22 = 1;
     v23 = 0x277CCA000uLL;
-    v116 = a3;
-    v117 = self;
+    typeCopy = type;
+    selfCopy = self;
     while (1)
     {
       v123 = v21;
-      v24 = [*(v23 + 2992) numberWithUnsignedInteger:a4];
+      v24 = [*(v23 + 2992) numberWithUnsignedInteger:source];
       if ([&unk_2845A10B8 containsObject:v24])
       {
-        v25 = [*(v23 + 2992) numberWithUnsignedInteger:a3];
+        v25 = [*(v23 + 2992) numberWithUnsignedInteger:type];
         if ([&unk_2845A10E8 containsObject:v25])
         {
-          v26 = [objc_opt_class() modelDictionaryMetricKeys];
+          modelDictionaryMetricKeys = [objc_opt_class() modelDictionaryMetricKeys];
           v27 = [*(v23 + 2992) numberWithInt:v22];
-          v119 = [v26 containsObject:v27];
+          v119 = [modelDictionaryMetricKeys containsObject:v27];
         }
 
         else
@@ -3989,15 +3989,15 @@ LABEL_15:
         v119 = 0;
       }
 
-      v28 = [*(v23 + 2992) numberWithUnsignedInteger:a4];
+      v28 = [*(v23 + 2992) numberWithUnsignedInteger:source];
       if ([&unk_2845A10B8 containsObject:v28])
       {
-        v29 = [*(v23 + 2992) numberWithUnsignedInteger:a3];
+        v29 = [*(v23 + 2992) numberWithUnsignedInteger:type];
         if ([&unk_2845A10E8 containsObject:v29])
         {
-          v30 = [objc_opt_class() modelNonDictionaryMetricKeys];
+          modelNonDictionaryMetricKeys = [objc_opt_class() modelNonDictionaryMetricKeys];
           v31 = [*(v23 + 2992) numberWithInt:v22];
-          v114 = [v30 containsObject:v31];
+          v114 = [modelNonDictionaryMetricKeys containsObject:v31];
         }
 
         else
@@ -4018,22 +4018,22 @@ LABEL_15:
 
       else
       {
-        v32 = [objc_opt_class() genericOnlyMetricKeys];
+        genericOnlyMetricKeys = [objc_opt_class() genericOnlyMetricKeys];
         v33 = [*(v23 + 2992) numberWithInt:v22];
-        obj = [v32 containsObject:v33];
+        obj = [genericOnlyMetricKeys containsObject:v33];
       }
 
       v34 = 0;
-      if (a4)
+      if (source)
       {
-        if (a4 == 14)
+        if (source == 14)
         {
-          v35 = [*(v23 + 2992) numberWithUnsignedInteger:a3];
+          v35 = [*(v23 + 2992) numberWithUnsignedInteger:type];
           if ([&unk_2845A10D0 containsObject:v35])
           {
-            v36 = [objc_opt_class() shownToEndUserOnlyMetricKeys];
+            shownToEndUserOnlyMetricKeys = [objc_opt_class() shownToEndUserOnlyMetricKeys];
             v37 = [*(v23 + 2992) numberWithInt:v22];
-            v34 = [v36 containsObject:v37];
+            v34 = [shownToEndUserOnlyMetricKeys containsObject:v37];
           }
 
           else
@@ -4043,12 +4043,12 @@ LABEL_15:
         }
 
         v38 = v34;
-        v39 = [*(v23 + 2992) numberWithUnsignedInteger:a3];
+        v39 = [*(v23 + 2992) numberWithUnsignedInteger:type];
         if ([&unk_2845A10D0 containsObject:v39])
         {
-          v40 = [objc_opt_class() anySourceMetricKeys];
+          anySourceMetricKeys = [objc_opt_class() anySourceMetricKeys];
           v41 = [*(v23 + 2992) numberWithInt:v22];
-          v110 = [v40 containsObject:v41];
+          v110 = [anySourceMetricKeys containsObject:v41];
         }
 
         else
@@ -4063,9 +4063,9 @@ LABEL_15:
         v110 = 0;
       }
 
-      v42 = [objc_opt_class() ignoredMetricKeys];
+      ignoredMetricKeys = [objc_opt_class() ignoredMetricKeys];
       v43 = [*(v23 + 2992) numberWithInt:v22];
-      v44 = [v42 containsObject:v43];
+      v44 = [ignoredMetricKeys containsObject:v43];
 
       if (v44)
       {
@@ -4082,8 +4082,8 @@ LABEL_15:
           {
             v46 = objc_opt_new();
             v47 = [RTRuntime objToDictionary:v46 filterProperties:v107];
-            v48 = [v47 allKeys];
-            [v45 addObjectsFromArray:v48];
+            allKeys = [v47 allKeys];
+            [v45 addObjectsFromArray:allKeys];
           }
 
           v128 = 0u;
@@ -4107,12 +4107,12 @@ LABEL_15:
                 }
 
                 v50 = *(*(&v126 + 1) + 8 * v49);
-                v51 = [objc_opt_class() keyForMetricType:3 placeType:a3 source:a4 metricKey:v22];
+                v51 = [objc_opt_class() keyForMetricType:3 placeType:type source:source metricKey:v22];
 
                 v124 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v51, v50];
 
-                v52 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-                v53 = [v52 objectForKeyedSubscript:v20];
+                metricsData = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+                v53 = [metricsData objectForKeyedSubscript:v20];
                 [*(v23 + 2992) numberWithInt:v22];
                 v55 = v54 = self;
                 v56 = [v53 objectForKeyedSubscript:v55];
@@ -4121,8 +4121,8 @@ LABEL_15:
 
                 if (v58)
                 {
-                  v59 = [(RTPlaceTypeClassifierMetricsCalculator *)v54 metricsData];
-                  v60 = [v59 objectForKeyedSubscript:v20];
+                  metricsData2 = [(RTPlaceTypeClassifierMetricsCalculator *)v54 metricsData];
+                  v60 = [metricsData2 objectForKeyedSubscript:v20];
                   v61 = [*(v57 + 2992) numberWithInt:v122];
                   v62 = [v60 objectForKeyedSubscript:v61];
                   v63 = [v62 objectForKeyedSubscript:v50];
@@ -4139,9 +4139,9 @@ LABEL_15:
 
                 ++v49;
                 v22 = v122;
-                a4 = v113;
-                a3 = v116;
-                self = v117;
+                source = sourceCopy;
+                type = typeCopy;
+                self = selfCopy;
                 v23 = 0x277CCA000;
               }
 
@@ -4164,10 +4164,10 @@ LABEL_15:
         v21 = v123;
         if (v64)
         {
-          v65 = [objc_opt_class() keyForMetricType:3 placeType:a3 source:a4 metricKey:v22];
+          v65 = [objc_opt_class() keyForMetricType:3 placeType:type source:source metricKey:v22];
 
-          v66 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
-          v67 = [v66 objectForKeyedSubscript:v20];
+          metricsData3 = [(RTPlaceTypeClassifierMetricsCalculator *)self metricsData];
+          v67 = [metricsData3 objectForKeyedSubscript:v20];
           v68 = [*(v23 + 2992) numberWithInt:v22];
           v69 = [v67 objectForKeyedSubscript:v68];
 
@@ -4175,27 +4175,27 @@ LABEL_15:
           {
             if ((v22 - 3) <= 1)
             {
-              v70 = objc_opt_new();
+              metricsData6 = objc_opt_new();
               v71 = [RTMetric binsFromStart:&unk_28459DF20 toEnd:&unk_28459E238 gap:&unk_28459DF50];
-              [v70 addObjectsFromArray:v71];
+              [metricsData6 addObjectsFromArray:v71];
 
               v72 = [RTMetric binsFromStart:&unk_28459E250 toEnd:&unk_28459E268 gap:&unk_28459E280];
-              [v70 addObjectsFromArray:v72];
+              [metricsData6 addObjectsFromArray:v72];
 
               v73 = [RTMetric binsFromStart:&unk_28459E298 toEnd:&unk_28459E2B0 gap:&unk_28459E2C8];
-              [v70 addObjectsFromArray:v73];
+              [metricsData6 addObjectsFromArray:v73];
 
-              v74 = [(RTPlaceTypeClassifierMetricsCalculator *)v117 metricsData];
-              v75 = [v74 objectForKeyedSubscript:v20];
+              metricsData4 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy metricsData];
+              v75 = [metricsData4 objectForKeyedSubscript:v20];
               v76 = [MEMORY[0x277CCABB0] numberWithInt:v22];
               v77 = [v75 objectForKeyedSubscript:v76];
-              v78 = [RTMetric binForNumber:v77 bins:v70];
+              v78 = [RTMetric binForNumber:v77 bins:metricsData6];
               [v118 setObject:v78 forKeyedSubscript:v65];
 
-              a4 = v113;
+              source = sourceCopy;
               v23 = 0x277CCA000uLL;
 
-              self = v117;
+              self = selfCopy;
               goto LABEL_62;
             }
 
@@ -4212,8 +4212,8 @@ LABEL_15:
               v89 = [RTMetric binsFromStart:&unk_28459E268 toEnd:&unk_28459DF38 gap:&unk_28459E2C8];
               [v86 addObjectsFromArray:v89];
 
-              v90 = [(RTPlaceTypeClassifierMetricsCalculator *)v117 metricsData];
-              [v90 objectForKeyedSubscript:v20];
+              metricsData5 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy metricsData];
+              [metricsData5 objectForKeyedSubscript:v20];
               v91 = v125 = v20;
               v92 = [MEMORY[0x277CCABB0] numberWithInt:v22];
               v93 = [v91 objectForKeyedSubscript:v92];
@@ -4223,19 +4223,19 @@ LABEL_15:
               [v118 setObject:v95 forKeyedSubscript:v121];
 
               v23 = 0x277CCA000;
-              self = v117;
+              self = selfCopy;
 
               v20 = v125;
               goto LABEL_73;
             }
 
             v79 = v22 - 9;
-            if (v116 != 1 || v79 > 1)
+            if (typeCopy != 1 || v79 > 1)
             {
-              if (v116 == 2 && v79 <= 1)
+              if (typeCopy == 2 && v79 <= 1)
               {
-                v70 = [(RTPlaceTypeClassifierMetricsCalculator *)v117 metricsData];
-                v96 = [v70 objectForKeyedSubscript:v20];
+                metricsData6 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy metricsData];
+                v96 = [metricsData6 objectForKeyedSubscript:v20];
                 v97 = [MEMORY[0x277CCABB0] numberWithInt:v22];
                 v98 = [v96 objectForKeyedSubscript:v97];
                 v99 = [RTMetric binsFromStart:&unk_28459DF20 toEnd:&unk_28459DF50 gap:&unk_2845A1BE8];
@@ -4243,41 +4243,41 @@ LABEL_15:
                 [v118 setObject:v100 forKeyedSubscript:v65];
 
                 v23 = 0x277CCA000;
-                self = v117;
+                self = selfCopy;
 
 LABEL_62:
               }
 
               else
               {
-                v101 = [(RTPlaceTypeClassifierMetricsCalculator *)v117 metricsData];
-                v102 = [v101 objectForKeyedSubscript:v20];
+                metricsData7 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy metricsData];
+                v102 = [metricsData7 objectForKeyedSubscript:v20];
                 v103 = [MEMORY[0x277CCABB0] numberWithInt:v22];
                 v104 = [v102 objectForKeyedSubscript:v103];
                 [v118 setObject:v104 forKeyedSubscript:v65];
 
                 v23 = 0x277CCA000;
-                self = v117;
+                self = selfCopy;
               }
 
               v21 = v65;
 LABEL_73:
-              a3 = v116;
+              type = typeCopy;
               goto LABEL_74;
             }
 
-            v80 = [(RTPlaceTypeClassifierMetricsCalculator *)v117 metricsData];
-            v81 = [v80 objectForKeyedSubscript:v20];
+            metricsData8 = [(RTPlaceTypeClassifierMetricsCalculator *)selfCopy metricsData];
+            v81 = [metricsData8 objectForKeyedSubscript:v20];
             v82 = [MEMORY[0x277CCABB0] numberWithInt:v22];
             v83 = [v81 objectForKeyedSubscript:v82];
             v84 = [RTMetric binsFromStart:&unk_2845A1BF8 toEnd:&unk_2845A1C08 gap:&unk_2845A1BE8];
             v85 = [RTMetric binForNumber:v83 bins:v84];
             [v118 setObject:v85 forKeyedSubscript:v65];
 
-            a3 = 1;
+            type = 1;
             v23 = 0x277CCA000;
 
-            self = v117;
+            self = selfCopy;
             v21 = v65;
           }
 
@@ -4285,8 +4285,8 @@ LABEL_73:
           {
             [v118 setObject:&unk_28459DF08 forKeyedSubscript:v65];
             v21 = v65;
-            a3 = v116;
-            self = v117;
+            type = typeCopy;
+            self = selfCopy;
             v23 = 0x277CCA000;
           }
         }
@@ -4307,27 +4307,27 @@ LABEL_80:
   return v118;
 }
 
-+ (id)keyForMetricType:(unint64_t)a3 sourcePlaceType:(unint64_t)a4 source:(unint64_t)a5 referenceSourcePlaceType:(unint64_t)a6 referenceSource:(unint64_t)a7 metricKey:(unint64_t)a8
++ (id)keyForMetricType:(unint64_t)type sourcePlaceType:(unint64_t)placeType source:(unint64_t)source referenceSourcePlaceType:(unint64_t)sourcePlaceType referenceSource:(unint64_t)referenceSource metricKey:(unint64_t)key
 {
   v8 = &stru_284528390;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v8 = [a1 keyForMetricType:2 placeType:a4 source:a5 metricKey:a8];
-      if (a6)
+      v8 = [self keyForMetricType:2 placeType:placeType source:source metricKey:key];
+      if (sourcePlaceType)
       {
         v11 = MEMORY[0x277CCACA8];
-        v12 = [RTLearnedPlace placeTypeToString:a6];
+        v12 = [RTLearnedPlace placeTypeToString:sourcePlaceType];
         v13 = [v11 stringWithFormat:@"%@_%@", v8, v12];
 
         v8 = v13;
       }
 
-      if (a7)
+      if (referenceSource)
       {
         v14 = MEMORY[0x277CCACA8];
-        v15 = [objc_opt_class() metricsSourceToString:a7];
+        v15 = [objc_opt_class() metricsSourceToString:referenceSource];
         v16 = [v14 stringWithFormat:@"%@_%@", v8, v15];
 
         v8 = v16;
@@ -4336,7 +4336,7 @@ LABEL_80:
       goto LABEL_12;
     }
 
-    if (a3 != 3)
+    if (type != 3)
     {
       goto LABEL_13;
     }
@@ -4344,17 +4344,17 @@ LABEL_80:
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!type)
   {
 LABEL_12:
     v8 = v8;
     goto LABEL_13;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
 LABEL_7:
-    v8 = [a1 keyForMetricType:? placeType:? source:? metricKey:?];
+    v8 = [self keyForMetricType:? placeType:? source:? metricKey:?];
     goto LABEL_12;
   }
 
@@ -4363,31 +4363,31 @@ LABEL_13:
   return v8;
 }
 
-+ (id)keyForMetricType:(unint64_t)a3 placeType:(unint64_t)a4 source:(unint64_t)a5 metricKey:(unint64_t)a6
++ (id)keyForMetricType:(unint64_t)type placeType:(unint64_t)placeType source:(unint64_t)source metricKey:(unint64_t)key
 {
-  v9 = [objc_opt_class() metricsTypeToString:a3];
-  if (a4)
+  v9 = [objc_opt_class() metricsTypeToString:type];
+  if (placeType)
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [RTLearnedPlace placeTypeToString:a4];
+    v11 = [RTLearnedPlace placeTypeToString:placeType];
     v12 = [v10 stringWithFormat:@"%@_%@", v9, v11];
 
     v9 = v12;
   }
 
-  if (a5)
+  if (source)
   {
     v13 = MEMORY[0x277CCACA8];
-    v14 = [objc_opt_class() metricsSourceToString:a5];
+    v14 = [objc_opt_class() metricsSourceToString:source];
     v15 = [v13 stringWithFormat:@"%@_%@", v9, v14];
 
     v9 = v15;
   }
 
-  if (a6)
+  if (key)
   {
     v16 = MEMORY[0x277CCACA8];
-    v17 = [objc_opt_class() metricsKeyToString:a6];
+    v17 = [objc_opt_class() metricsKeyToString:key];
     v18 = [v16 stringWithFormat:@"%@_%@", v9, v17];
 
     v9 = v18;
@@ -4396,64 +4396,64 @@ LABEL_13:
   return v9;
 }
 
-+ (id)keyForSourceType:(unint64_t)a3 placeType:(unint64_t)a4
++ (id)keyForSourceType:(unint64_t)type placeType:(unint64_t)placeType
 {
-  v5 = [objc_opt_class() metricsSourceToString:a3];
+  v5 = [objc_opt_class() metricsSourceToString:type];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [RTLearnedPlace placeTypeToString:a4];
+  v7 = [RTLearnedPlace placeTypeToString:placeType];
   v8 = [v6 stringWithFormat:@"%@_%@", v5, v7];
 
   return v8;
 }
 
-+ (id)metricsTypeToString:(unint64_t)a3
++ (id)metricsTypeToString:(unint64_t)string
 {
-  if (a3 - 1 > 2)
+  if (string - 1 > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_2788CB408[a3 - 1];
+    return off_2788CB408[string - 1];
   }
 }
 
-- (id)filterLearnedPlacesOfType:(unint64_t)a3 places:(id)a4
+- (id)filterLearnedPlacesOfType:(unint64_t)type places:(id)places
 {
   v4 = MEMORY[0x277CCAC30];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__RTPlaceTypeClassifierMetricsCalculator_filterLearnedPlacesOfType_places___block_invoke;
   v9[3] = &__block_descriptor_40_e41_B24__0__RTLearnedPlace_8__NSDictionary_16l;
-  v9[4] = a3;
-  v5 = a4;
+  v9[4] = type;
+  placesCopy = places;
   v6 = [v4 predicateWithBlock:v9];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  v7 = [placesCopy filteredArrayUsingPredicate:v6];
 
   return v7;
 }
 
-- (id)computeDistanceMetricForSourcePlaces:(id)a3 referencePlaces:(id)a4 bins:(id)a5
+- (id)computeDistanceMetricForSourcePlaces:(id)places referencePlaces:(id)referencePlaces bins:(id)bins
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count] && objc_msgSend(v8, "count"))
+  placesCopy = places;
+  referencePlacesCopy = referencePlaces;
+  binsCopy = bins;
+  if ([placesCopy count] && objc_msgSend(referencePlacesCopy, "count"))
   {
-    v29 = v9;
+    v29 = binsCopy;
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    obj = v7;
+    obj = placesCopy;
     v34 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
-    v30 = v7;
+    v30 = placesCopy;
     if (v34)
     {
       v32 = *v42;
-      v33 = v8;
+      v33 = referencePlacesCopy;
       v10 = INFINITY;
       do
       {
@@ -4471,7 +4471,7 @@ LABEL_13:
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v13 = v8;
+          v13 = referencePlacesCopy;
           v14 = [v13 countByEnumeratingWithState:&v37 objects:v45 count:16];
           if (v14)
           {
@@ -4488,11 +4488,11 @@ LABEL_13:
 
                 v18 = *(*(&v37 + 1) + 8 * i);
                 distanceCalculator = self->_distanceCalculator;
-                v20 = [v12 mapItem];
-                v21 = [v20 location];
-                v22 = [v18 mapItem];
-                v23 = [v22 location];
-                [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v21 toLocation:v23 error:0];
+                mapItem = [v12 mapItem];
+                location = [mapItem location];
+                mapItem2 = [v18 mapItem];
+                location2 = [mapItem2 location];
+                [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:location toLocation:location2 error:0];
                 v25 = v24;
 
                 if (v10 > v25)
@@ -4508,7 +4508,7 @@ LABEL_13:
           }
 
           v11 = v35 + 1;
-          v8 = v33;
+          referencePlacesCopy = v33;
         }
 
         while (v35 + 1 != v34);
@@ -4524,10 +4524,10 @@ LABEL_13:
     }
 
     v27 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
-    v9 = v29;
+    binsCopy = v29;
     v26 = [RTMetric binForNumber:v27 bins:v29];
 
-    v7 = v30;
+    placesCopy = v30;
   }
 
   else
@@ -4538,11 +4538,11 @@ LABEL_13:
   return v26;
 }
 
-- (void)fetchWorkInferenceStatsForLookbackDays:(int64_t)a3 handler:(id)a4
+- (void)fetchWorkInferenceStatsForLookbackDays:(int64_t)days handler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -4555,21 +4555,21 @@ LABEL_13:
     }
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v9 dateByAddingTimeInterval:(-86400 * a3)];
-  v11 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v10 endDate:v9];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [date dateByAddingTimeInterval:(-86400 * days)];
+  v11 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v10 endDate:date];
   v12 = [[RTLearnedPlaceTypeInferenceEnumerationOptions alloc] initWithDateInterval:v11 sortByCreationDate:1 ascending:0 filteredToPlaceTypes:&unk_2845A1148 filteredToIdentifiers:0 filteredToSessionIds:0 filteredToLearnedPlaceIdentifiers:0];
-  v13 = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferenceStore];
+  learnedPlaceTypeInferenceStore = [(RTPlaceTypeClassifierMetricsCalculator *)self learnedPlaceTypeInferenceStore];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __89__RTPlaceTypeClassifierMetricsCalculator_fetchWorkInferenceStatsForLookbackDays_handler___block_invoke;
   v15[3] = &unk_2788C54E0;
   v15[4] = self;
-  v16 = v7;
+  v16 = handlerCopy;
   v17 = a2;
-  v18 = a3;
-  v14 = v7;
-  [v13 fetchLearnedPlaceTypeInferencesWithOptions:v12 handler:v15];
+  daysCopy = days;
+  v14 = handlerCopy;
+  [learnedPlaceTypeInferenceStore fetchLearnedPlaceTypeInferencesWithOptions:v12 handler:v15];
 }
 
 void __89__RTPlaceTypeClassifierMetricsCalculator_fetchWorkInferenceStatsForLookbackDays_handler___block_invoke(uint64_t a1, void *a2, void *a3)

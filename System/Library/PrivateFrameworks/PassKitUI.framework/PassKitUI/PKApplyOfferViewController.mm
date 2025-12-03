@@ -1,60 +1,60 @@
 @interface PKApplyOfferViewController
-- (PKApplyOfferViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 applyPage:(id)a6;
+- (PKApplyOfferViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context applyPage:(id)page;
 - (id)analyticsAdditionalValues;
 - (id)analyticsPageTag;
 - (void)_openTermsAndConditions;
-- (void)_setupForBroadwayApplication:(id)a3;
+- (void)_setupForBroadwayApplication:(id)application;
 - (void)_terminateApplyFlowWithoutDeclining;
-- (void)_termsAccepted:(BOOL)a3 actionIdentifier:(id)a4;
+- (void)_termsAccepted:(BOOL)accepted actionIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)explanationViewDidSelectSetupLater:(id)later;
+- (void)preflightWithCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKApplyOfferViewController
 
-- (PKApplyOfferViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 applyPage:(id)a6
+- (PKApplyOfferViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context applyPage:(id)page
 {
-  v10 = a3;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = PKApplyOfferViewController;
-  v11 = [(PKApplyExplanationViewController *)&v22 initWithController:v10 setupDelegate:a4 context:a5 applyPage:a6];
+  v11 = [(PKApplyExplanationViewController *)&v22 initWithController:controllerCopy setupDelegate:delegate context:context applyPage:page];
   if (v11)
   {
-    v12 = [v10 featureApplication];
-    v13 = [v12 applicationOfferDetails];
+    featureApplication = [controllerCopy featureApplication];
+    applicationOfferDetails = [featureApplication applicationOfferDetails];
 
-    v14 = [v13 detailsInfo];
-    v15 = [v13 offerTermsIdentifier];
+    detailsInfo = [applicationOfferDetails detailsInfo];
+    offerTermsIdentifier = [applicationOfferDetails offerTermsIdentifier];
     offerTermsIdentifier = v11->_offerTermsIdentifier;
-    v11->_offerTermsIdentifier = v15;
+    v11->_offerTermsIdentifier = offerTermsIdentifier;
 
-    v17 = [v10 installmentConfiguration];
+    installmentConfiguration = [controllerCopy installmentConfiguration];
     installmentConfiguration = v11->_installmentConfiguration;
-    v11->_installmentConfiguration = v17;
+    v11->_installmentConfiguration = installmentConfiguration;
 
-    if ([v14 layout])
+    if ([detailsInfo layout])
     {
-      v19 = [v14 layout];
+      layout = [detailsInfo layout];
     }
 
     else if (v11->_installmentConfiguration)
     {
-      v19 = 2;
+      layout = 2;
     }
 
     else
     {
-      v19 = 1;
+      layout = 1;
     }
 
-    v11->_layout = v19;
-    v20 = [v10 featureApplication];
-    v11->_hasSufficientOTBForInstallment = [v20 hasSufficientOTBForInstallmentConfiguration:v11->_installmentConfiguration];
+    v11->_layout = layout;
+    featureApplication2 = [controllerCopy featureApplication];
+    v11->_hasSufficientOTBForInstallment = [featureApplication2 hasSufficientOTBForInstallmentConfiguration:v11->_installmentConfiguration];
   }
 
   return v11;
@@ -80,15 +80,15 @@
   v8.receiver = self;
   v8.super_class = PKApplyOfferViewController;
   [(PKApplyExplanationViewController *)&v8 viewDidLoad];
-  v3 = [(PKApplyExplanationViewController *)self controller];
-  v4 = [v3 featureApplication];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  featureApplication = [controller featureApplication];
 
-  v5 = [v4 feature];
-  if (v5 <= 5)
+  feature = [featureApplication feature];
+  if (feature <= 5)
   {
-    if (v5 == 2)
+    if (feature == 2)
     {
-      [(PKApplyOfferViewController *)self _setupForBroadwayApplication:v4];
+      [(PKApplyOfferViewController *)self _setupForBroadwayApplication:featureApplication];
     }
 
     else
@@ -103,20 +103,20 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKApplyOfferViewController;
-  [(PKApplyExplanationViewController *)&v5 viewDidAppear:a3];
-  v4 = [(PKApplyExplanationViewController *)self controller];
-  [v4 termsShownWithIdentifier:self->_offerTermsIdentifier];
+  [(PKApplyExplanationViewController *)&v5 viewDidAppear:appear];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  [controller termsShownWithIdentifier:self->_offerTermsIdentifier];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PKApplyOfferViewController;
-  [(PKApplyOfferViewController *)&v6 viewWillDisappear:a3];
+  [(PKApplyOfferViewController *)&v6 viewWillDisappear:disappear];
   inUseAssertion = self->_inUseAssertion;
   if (inUseAssertion)
   {
@@ -126,14 +126,14 @@
   }
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_heroImage)
   {
-    if (v4)
+    if (completionCopy)
     {
 LABEL_3:
       v5[2](v5, 1);
@@ -142,12 +142,12 @@ LABEL_3:
 
   else
   {
-    v6 = [(PKApplyExplanationViewController *)self currentPage];
-    v7 = [v6 heroImageURL];
+    currentPage = [(PKApplyExplanationViewController *)self currentPage];
+    heroImageURL = [currentPage heroImageURL];
 
-    if (v7)
+    if (heroImageURL)
     {
-      v8 = [MEMORY[0x1E695DFF8] URLWithString:v7];
+      v8 = [MEMORY[0x1E695DFF8] URLWithString:heroImageURL];
       v9 = PKLogFacilityTypeGetObject();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
       if (v8)
@@ -163,11 +163,11 @@ LABEL_3:
         aBlock[2] = __54__PKApplyOfferViewController_preflightWithCompletion___block_invoke;
         aBlock[3] = &unk_1E8017E48;
         aBlock[4] = self;
-        v19 = v7;
+        v19 = heroImageURL;
         v20 = v5;
         v11 = _Block_copy(aBlock);
-        v12 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
-        v13 = [v12 cachedDataForURL:v8];
+        mEMORY[0x1E69B8A08] = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
+        v13 = [mEMORY[0x1E69B8A08] cachedDataForURL:v8];
 
         if (v13)
         {
@@ -176,13 +176,13 @@ LABEL_3:
 
         else
         {
-          v15 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
+          mEMORY[0x1E69B8A08]2 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
           v16[0] = MEMORY[0x1E69E9820];
           v16[1] = 3221225472;
           v16[2] = __54__PKApplyOfferViewController_preflightWithCompletion___block_invoke_2;
           v16[3] = &unk_1E8013E70;
           v17 = v11;
-          [v15 downloadFromUrl:v8 completionHandler:v16];
+          [mEMORY[0x1E69B8A08]2 downloadFromUrl:v8 completionHandler:v16];
         }
       }
 
@@ -191,7 +191,7 @@ LABEL_3:
         if (v10)
         {
           *buf = 138412290;
-          v22 = v7;
+          v22 = heroImageURL;
           _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Could not create valid URL for :%@", buf, 0xCu);
         }
 
@@ -268,7 +268,7 @@ LABEL_7:
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v4 = PKLogFacilityTypeGetObject();
@@ -288,20 +288,20 @@ LABEL_7:
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
   v9 = [v5 initWithDictionary:v8];
 
-  v10 = [(PKApplyOfferViewController *)self analyticsAdditionalValues];
-  [v9 addEntriesFromDictionary:v10];
+  analyticsAdditionalValues = [(PKApplyOfferViewController *)self analyticsAdditionalValues];
+  [v9 addEntriesFromDictionary:analyticsAdditionalValues];
 
-  v11 = [(PKApplyExplanationViewController *)self controller];
-  v12 = [(PKApplyExplanationViewController *)self currentPage];
-  v13 = [(PKApplyOfferViewController *)self analyticsPageTag];
-  [v11 reportAnalyticsDictionaryForPage:v12 pageTag:v13 additionalValues:v9];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  currentPage = [(PKApplyExplanationViewController *)self currentPage];
+  analyticsPageTag = [(PKApplyOfferViewController *)self analyticsPageTag];
+  [controller reportAnalyticsDictionaryForPage:currentPage pageTag:analyticsPageTag additionalValues:v9];
 
-  v14 = [(PKApplyExplanationViewController *)self currentPage];
-  v15 = [v14 primaryActionIdentifier];
-  [(PKApplyOfferViewController *)self _termsAccepted:1 actionIdentifier:v15];
+  currentPage2 = [(PKApplyExplanationViewController *)self currentPage];
+  primaryActionIdentifier = [currentPage2 primaryActionIdentifier];
+  [(PKApplyOfferViewController *)self _termsAccepted:1 actionIdentifier:primaryActionIdentifier];
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E695DF90]);
@@ -314,13 +314,13 @@ LABEL_7:
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
   v8 = [v4 initWithDictionary:v7];
 
-  v9 = [(PKApplyOfferViewController *)self analyticsAdditionalValues];
-  [v8 addEntriesFromDictionary:v9];
+  analyticsAdditionalValues = [(PKApplyOfferViewController *)self analyticsAdditionalValues];
+  [v8 addEntriesFromDictionary:analyticsAdditionalValues];
 
-  v10 = [(PKApplyExplanationViewController *)self controller];
-  v11 = [(PKApplyExplanationViewController *)self currentPage];
-  v12 = [(PKApplyOfferViewController *)self analyticsPageTag];
-  [v10 reportAnalyticsDictionaryForPage:v11 pageTag:v12 additionalValues:v8];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  currentPage = [(PKApplyExplanationViewController *)self currentPage];
+  analyticsPageTag = [(PKApplyOfferViewController *)self analyticsPageTag];
+  [controller reportAnalyticsDictionaryForPage:currentPage pageTag:analyticsPageTag additionalValues:v8];
 
   installmentConfiguration = self->_installmentConfiguration;
   v14 = PKLogFacilityTypeGetObject();
@@ -344,9 +344,9 @@ LABEL_7:
       _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "Offer terms declined", v18, 2u);
     }
 
-    v16 = [(PKApplyExplanationViewController *)self currentPage];
-    v17 = [v16 secondaryActionIdentifier];
-    [(PKApplyOfferViewController *)self _termsAccepted:0 actionIdentifier:v17];
+    currentPage2 = [(PKApplyExplanationViewController *)self currentPage];
+    secondaryActionIdentifier = [currentPage2 secondaryActionIdentifier];
+    [(PKApplyOfferViewController *)self _termsAccepted:0 actionIdentifier:secondaryActionIdentifier];
   }
 }
 
@@ -376,49 +376,49 @@ LABEL_7:
   return v4;
 }
 
-- (void)_setupForBroadwayApplication:(id)a3
+- (void)_setupForBroadwayApplication:(id)application
 {
-  v4 = a3;
-  v59 = [(PKApplyExplanationViewController *)self currentPage];
-  v5 = [(PKExplanationViewController *)self explanationView];
-  v6 = [v4 feature];
-  v7 = [v4 applicationOfferDetails];
-  v62 = [v7 detailsInfo];
-  v8 = [(PKApplyExplanationViewController *)self controller];
-  v63 = [v8 preferredLanguage];
+  applicationCopy = application;
+  currentPage = [(PKApplyExplanationViewController *)self currentPage];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  feature = [applicationCopy feature];
+  applicationOfferDetails = [applicationCopy applicationOfferDetails];
+  detailsInfo = [applicationOfferDetails detailsInfo];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  preferredLanguage = [controller preferredLanguage];
 
-  v9 = [(PKApplyOfferViewController *)self heroImage];
-  v10 = [v4 applicationType];
-  v11 = self->_layout == 2 || v10 == 2;
-  v55 = v9;
+  heroImage = [(PKApplyOfferViewController *)self heroImage];
+  applicationType = [applicationCopy applicationType];
+  v11 = self->_layout == 2 || applicationType == 2;
+  v55 = heroImage;
   if (v11)
   {
-    v12 = PKFeatureApplicationHeaderImageWithImage(v6, v9);
-    [v5 setImage:v12];
-    [v5 setTopMargin:30.0];
+    v12 = PKFeatureApplicationHeaderImageWithImage(feature, heroImage);
+    [explanationView setImage:v12];
+    [explanationView setTopMargin:30.0];
   }
 
   else
   {
-    if (v9)
+    if (heroImage)
     {
-      [v5 setImage:v9];
+      [explanationView setImage:heroImage];
       goto LABEL_11;
     }
 
     v12 = PKProvisioningSecondaryBackgroundColor();
-    [v5 setTopBackgroundColor:v12];
-    v13 = [[PKApplyHeroCardView alloc] initWithFeatureIdentifier:v6];
+    [explanationView setTopBackgroundColor:v12];
+    v13 = [[PKApplyHeroCardView alloc] initWithFeatureIdentifier:feature];
     [(PKApplyHeroCardView *)v13 setBackgroundColor:v12];
-    [v5 setHeroView:v13];
+    [explanationView setHeroView:v13];
   }
 
 LABEL_11:
-  v14 = [v7 aprForPurchase];
-  v57 = v14;
-  if (v14)
+  aprForPurchase = [applicationOfferDetails aprForPurchase];
+  v57 = aprForPurchase;
+  if (aprForPurchase)
   {
-    v15 = v14;
+    v15 = aprForPurchase;
     v16 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     [v16 setNumberStyle:3];
     if (([v15 pk_isIntegralNumber] & 1) == 0)
@@ -442,11 +442,11 @@ LABEL_11:
   v64[3] = &unk_1E8010A60;
   objc_copyWeak(&v65, location);
   v61 = [v17 actionWithHandler:v64];
-  v18 = [v62 disclosureTitle];
-  v19 = v18;
-  if (v18)
+  disclosureTitle = [detailsInfo disclosureTitle];
+  v19 = disclosureTitle;
+  if (disclosureTitle)
   {
-    v60 = v18;
+    v60 = disclosureTitle;
   }
 
   else
@@ -459,58 +459,58 @@ LABEL_11:
   self->_offerView = v20;
 
   v58 = PKOBKLearnMoreButton(@"info.circle.fill", v60, v61);
-  v22 = [v5 dockView];
-  [v22 setAdditionalView:v58];
+  dockView = [explanationView dockView];
+  [dockView setAdditionalView:v58];
 
-  v23 = [v59 body];
+  body = [currentPage body];
   if (self->_layout != 2)
   {
-    v24 = [v7 currencyCode];
+    currencyCode = [applicationOfferDetails currencyCode];
     v52 = PKMutableNumberFormatterForCurrencyCode();
-    v50 = [v52 minimumFractionDigits];
-    v25 = [(PKApplyOfferCreditCardView *)self->_offerView creditLimitTitleLabel];
+    minimumFractionDigits = [v52 minimumFractionDigits];
+    creditLimitTitleLabel = [(PKApplyOfferCreditCardView *)self->_offerView creditLimitTitleLabel];
     v26 = PKLocalizedApplyFeatureString();
-    [v25 setText:v26];
+    [creditLimitTitleLabel setText:v26];
 
-    v54 = [v7 creditLimit];
+    creditLimit = [applicationOfferDetails creditLimit];
     v53 = @"-";
-    if (v24 && v54)
+    if (currencyCode && creditLimit)
     {
-      if ([v54 pk_isIntegralNumber])
+      if ([creditLimit pk_isIntegralNumber])
       {
         v27 = 0;
       }
 
       else
       {
-        v27 = v50;
+        v27 = minimumFractionDigits;
       }
 
       [v52 setMinimumFractionDigits:v27];
-      v53 = [v52 stringFromNumber:v54];
+      v53 = [v52 stringFromNumber:creditLimit];
     }
 
-    v28 = [(PKApplyOfferCreditCardView *)self->_offerView creditLimitLabel];
-    [v28 setText:v53];
+    creditLimitLabel = [(PKApplyOfferCreditCardView *)self->_offerView creditLimitLabel];
+    [creditLimitLabel setText:v53];
 
-    v29 = [(PKApplyOfferCreditCardView *)self->_offerView aprForPurchaseTitleLabel];
+    aprForPurchaseTitleLabel = [(PKApplyOfferCreditCardView *)self->_offerView aprForPurchaseTitleLabel];
     v30 = PKLocalizedApplyFeatureString();
-    [v29 setText:v30];
+    [aprForPurchaseTitleLabel setText:v30];
 
-    v31 = [(PKApplyOfferCreditCardView *)self->_offerView aprForPurchaseLabel];
-    [v31 setText:v56];
+    aprForPurchaseLabel = [(PKApplyOfferCreditCardView *)self->_offerView aprForPurchaseLabel];
+    [aprForPurchaseLabel setText:v56];
 
-    v32 = [v4 applicationType];
-    if (v32 < 2)
+    applicationType2 = [applicationCopy applicationType];
+    if (applicationType2 < 2)
     {
-      v36 = [(PKApplyOfferCreditCardView *)self->_offerView feeTitleLabel];
+      feeTitleLabel = [(PKApplyOfferCreditCardView *)self->_offerView feeTitleLabel];
       v37 = PKLocalizedApplyFeatureString();
-      [v36 setText:v37];
-      v51 = v24;
+      [feeTitleLabel setText:v37];
+      v51 = currencyCode;
 
-      v38 = [v7 annualFee];
-      v39 = [MEMORY[0x1E696AB90] zero];
-      v40 = [v38 isEqualToNumber:v39];
+      annualFee = [applicationOfferDetails annualFee];
+      zero = [MEMORY[0x1E696AB90] zero];
+      v40 = [annualFee isEqualToNumber:zero];
 
       if (v40)
       {
@@ -520,73 +520,73 @@ LABEL_11:
       else
       {
         v41 = @"-";
-        if (v51 && v38)
+        if (v51 && annualFee)
         {
           v42 = PKMutableNumberFormatterForCurrencyCode();
-          if ([v38 pk_isIntegralNumber])
+          if ([annualFee pk_isIntegralNumber])
           {
             v43 = 0;
           }
 
           else
           {
-            v43 = v50;
+            v43 = minimumFractionDigits;
           }
 
           [v42 setMinimumFractionDigits:v43];
-          v41 = [v42 stringFromNumber:v38];
+          v41 = [v42 stringFromNumber:annualFee];
         }
       }
 
-      v44 = [(PKApplyOfferCreditCardView *)self->_offerView feeLabel];
-      [v44 setText:v41];
+      feeLabel = [(PKApplyOfferCreditCardView *)self->_offerView feeLabel];
+      [feeLabel setText:v41];
     }
 
     else
     {
-      if (v32 - 2 > 1)
+      if (applicationType2 - 2 > 1)
       {
 LABEL_42:
 
         goto LABEL_43;
       }
 
-      v33 = [v7 balance];
-      v34 = v33;
-      if (v33)
+      balance = [applicationOfferDetails balance];
+      v34 = balance;
+      if (balance)
       {
-        v35 = v33;
+        zero2 = balance;
       }
 
       else
       {
-        v35 = [MEMORY[0x1E696AB90] zero];
+        zero2 = [MEMORY[0x1E696AB90] zero];
       }
 
-      v41 = v35;
+      v41 = zero2;
 
-      v45 = [(PKApplyOfferCreditCardView *)self->_offerView feeTitleLabel];
+      feeTitleLabel2 = [(PKApplyOfferCreditCardView *)self->_offerView feeTitleLabel];
       v46 = PKLocalizedApplyFeatureString();
-      [v45 setText:v46];
-      v51 = v24;
+      [feeTitleLabel2 setText:v46];
+      v51 = currencyCode;
 
-      v47 = [v7 currencyCode];
+      currencyCode2 = [applicationOfferDetails currencyCode];
       v48 = PKCurrencyAmountMake();
-      v38 = [v48 formattedStringValue];
+      annualFee = [v48 formattedStringValue];
 
-      v44 = [(PKApplyOfferCreditCardView *)self->_offerView feeLabel];
-      [v44 setText:v38];
+      feeLabel = [(PKApplyOfferCreditCardView *)self->_offerView feeLabel];
+      [feeLabel setText:annualFee];
     }
 
-    v24 = v51;
+    currencyCode = v51;
     goto LABEL_42;
   }
 
 LABEL_43:
-  v49 = [(PKApplyOfferCreditCardView *)self->_offerView bodyLabel];
-  [v49 setText:v23];
+  bodyLabel = [(PKApplyOfferCreditCardView *)self->_offerView bodyLabel];
+  [bodyLabel setText:body];
 
-  [v5 setBodyView:self->_offerView];
+  [explanationView setBodyView:self->_offerView];
   objc_destroyWeak(&v65);
   objc_destroyWeak(location);
 }
@@ -610,13 +610,13 @@ void __59__PKApplyOfferViewController__setupForBroadwayApplication___block_invok
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
   v7 = [v3 initWithDictionary:v6];
 
-  v8 = [(PKApplyOfferViewController *)self analyticsAdditionalValues];
-  [v7 addEntriesFromDictionary:v8];
+  analyticsAdditionalValues = [(PKApplyOfferViewController *)self analyticsAdditionalValues];
+  [v7 addEntriesFromDictionary:analyticsAdditionalValues];
 
-  v9 = [(PKApplyExplanationViewController *)self controller];
-  v10 = [(PKApplyExplanationViewController *)self currentPage];
-  v11 = [(PKApplyOfferViewController *)self analyticsPageTag];
-  [v9 reportAnalyticsDictionaryForPage:v10 pageTag:v11 additionalValues:v7];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  currentPage = [(PKApplyExplanationViewController *)self currentPage];
+  analyticsPageTag = [(PKApplyOfferViewController *)self analyticsPageTag];
+  [controller reportAnalyticsDictionaryForPage:currentPage pageTag:analyticsPageTag additionalValues:v7];
 
   v12 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -626,22 +626,22 @@ void __59__PKApplyOfferViewController__setupForBroadwayApplication___block_invok
   }
 
   v13 = [PKApplyTermsAndConditionsViewController alloc];
-  v14 = [(PKApplyExplanationViewController *)self controller];
-  v15 = [(PKApplyExplanationViewController *)self setupDelegate];
-  v16 = [(PKApplyTermsAndConditionsViewController *)v13 initWithController:v14 setupDelegate:v15 context:[(PKExplanationViewController *)self context] termsIdentifier:self->_offerTermsIdentifier];
+  controller2 = [(PKApplyExplanationViewController *)self controller];
+  setupDelegate = [(PKApplyExplanationViewController *)self setupDelegate];
+  v16 = [(PKApplyTermsAndConditionsViewController *)v13 initWithController:controller2 setupDelegate:setupDelegate context:[(PKExplanationViewController *)self context] termsIdentifier:self->_offerTermsIdentifier];
 
   [(PKFeatureTermsAndConditionsViewController *)v16 setUseModalPresentation:1];
-  v17 = [(PKApplyOfferViewController *)self navigationController];
-  [v17 pk_presentPaymentSetupViewController:v16 animated:1 completion:0];
+  navigationController = [(PKApplyOfferViewController *)self navigationController];
+  [navigationController pk_presentPaymentSetupViewController:v16 animated:1 completion:0];
 }
 
 - (void)_terminateApplyFlowWithoutDeclining
 {
-  v3 = [(PKApplyExplanationViewController *)self setupDelegate];
-  v4 = v3;
+  setupDelegate = [(PKApplyExplanationViewController *)self setupDelegate];
+  v4 = setupDelegate;
   if (self->_installmentConfiguration)
   {
-    v5 = v3 == 0;
+    v5 = setupDelegate == 0;
   }
 
   else
@@ -656,8 +656,8 @@ void __59__PKApplyOfferViewController__setupForBroadwayApplication___block_invok
 
   else
   {
-    v6 = [(PKApplyExplanationViewController *)self controller];
-    v7 = [v6 featureApplication];
+    controller = [(PKApplyExplanationViewController *)self controller];
+    featureApplication = [controller featureApplication];
 
     [(PKApplyExplanationViewController *)self showNavigationBarSpinner:1];
     objc_initWeak(&location, self);
@@ -666,7 +666,7 @@ void __59__PKApplyOfferViewController__setupForBroadwayApplication___block_invok
     v8[2] = __65__PKApplyOfferViewController__terminateApplyFlowWithoutDeclining__block_invoke;
     v8[3] = &unk_1E8010998;
     objc_copyWeak(&v9, &location);
-    [v4 viewController:self canProceedWithInstallment:0 featureApplication:v7 completion:v8];
+    [v4 viewController:self canProceedWithInstallment:0 featureApplication:featureApplication completion:v8];
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
@@ -695,10 +695,10 @@ void __65__PKApplyOfferViewController__terminateApplyFlowWithoutDeclining__block
   }
 }
 
-- (void)_termsAccepted:(BOOL)a3 actionIdentifier:(id)a4
+- (void)_termsAccepted:(BOOL)accepted actionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = a4;
+  acceptedCopy = accepted;
+  identifierCopy = identifier;
   if (!self->_inUseAssertion)
   {
     v7 = MEMORY[0x1E695FBE0];
@@ -710,16 +710,16 @@ void __65__PKApplyOfferViewController__terminateApplyFlowWithoutDeclining__block
 
   [(PKApplyExplanationViewController *)self showNavigationBarSpinner:1];
   objc_initWeak(&location, self);
-  v11 = [(PKApplyExplanationViewController *)self controller];
+  controller = [(PKApplyExplanationViewController *)self controller];
   offerTermsIdentifier = self->_offerTermsIdentifier;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__PKApplyOfferViewController__termsAccepted_actionIdentifier___block_invoke;
   v13[3] = &unk_1E801CA18;
   objc_copyWeak(&v14, &location);
-  v15 = v4;
+  v15 = acceptedCopy;
   v13[4] = self;
-  [v11 termsAccepted:v4 termsIdentifier:offerTermsIdentifier secondaryIdentifier:0 actionIdentifier:v6 completion:v13];
+  [controller termsAccepted:acceptedCopy termsIdentifier:offerTermsIdentifier secondaryIdentifier:0 actionIdentifier:identifierCopy completion:v13];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);

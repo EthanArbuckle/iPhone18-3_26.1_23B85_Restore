@@ -1,8 +1,8 @@
 @interface SCATGestureProvider
 - (BOOL)allowsDwellScanningToAbortAfterTimeout;
 - (BOOL)allowsDwellSelection;
-- (BOOL)drawingViewController:(id)a3 moveFingersToPoints:(id)a4;
-- (BOOL)handleInputAction:(id)a3 withElement:(id)a4;
+- (BOOL)drawingViewController:(id)controller moveFingersToPoints:(id)points;
+- (BOOL)handleInputAction:(id)action withElement:(id)element;
 - (BOOL)shouldKeepScannerAwake;
 - (CGPoint)_startingPointForGestures;
 - (CGPoint)currentHoldPoint;
@@ -11,154 +11,154 @@
 - (CGPoint)lastSelectedKeyboardSlidePoint;
 - (CGPoint)pinchFulcrum;
 - (CGPoint)startingScreenPointForGestures;
-- (CGRect)_rectForFingers:(id)a3;
+- (CGRect)_rectForFingers:(id)fingers;
 - (CGRect)_rectToClearForPinchGesture;
-- (CGRect)rectToClearForFingersWithGestureSheet:(BOOL)a3;
-- (CGRect)rectToClearForStop:(id)a3;
+- (CGRect)rectToClearForFingersWithGestureSheet:(BOOL)sheet;
+- (CGRect)rectToClearForStop:(id)stop;
 - (SCATElement)elementForFingers;
-- (SCATGestureProvider)initWithMenu:(id)a3;
+- (SCATGestureProvider)initWithMenu:(id)menu;
 - (SCATGestureProviderDelegate)delegate;
-- (double)_pinchAngleAdjustedByDelta:(double)a3;
-- (double)_pinchRadiusAdjustedByDelta:(double)a3;
+- (double)_pinchAngleAdjustedByDelta:(double)delta;
+- (double)_pinchRadiusAdjustedByDelta:(double)delta;
 - (id)_fingerController;
-- (id)_panPositionsAdjustedByDelta:(CGSize)a3;
-- (id)_pinchPositionsWithRadius:(double)a3 angle:(double)a4;
-- (id)_pointStringForPoint:(CGPoint)a3;
-- (id)_promptForLineGesture:(unint64_t)a3;
-- (id)_repositionedGestureFromOriginalGesture:(id)a3;
+- (id)_panPositionsAdjustedByDelta:(CGSize)delta;
+- (id)_pinchPositionsWithRadius:(double)radius angle:(double)angle;
+- (id)_pointStringForPoint:(CGPoint)point;
+- (id)_promptForLineGesture:(unint64_t)gesture;
+- (id)_repositionedGestureFromOriginalGesture:(id)gesture;
 - (id)_startingPointsAsStrings;
-- (id)contextForCustomGestureItemsViewController:(id)a3;
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)firstElementWithOptions:(int *)a3;
+- (id)contextForCustomGestureItemsViewController:(id)controller;
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options;
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options;
+- (id)firstElementWithOptions:(int *)options;
 - (id)gesturesSheet;
-- (id)lastElementWithOptions:(int *)a3;
-- (id)nameForConfirmationButton:(id)a3;
+- (id)lastElementWithOptions:(int *)options;
+- (id)nameForConfirmationButton:(id)button;
 - (unint64_t)_numberOfFingers;
-- (unint64_t)_numberOfFingersWithGestureSheet:(BOOL)a3;
-- (void)_addPointsToContinuousGestureData:(id)a3;
+- (unint64_t)_numberOfFingersWithGestureSheet:(BOOL)sheet;
+- (void)_addPointsToContinuousGestureData:(id)data;
 - (void)_clearArrowView;
 - (void)_clearLineGestureState;
 - (void)_clearTellMeWhenTimer;
-- (void)_continueKeyboardSlideWithGesture:(id)a3;
-- (void)_didChooseFlickWithAngle:(double)a3 name:(id)a4;
-- (void)_didChoosePanWithName:(id)a3 selector:(SEL)a4;
-- (void)_didChoosePinchItemWithName:(id)a3 selector:(SEL)a4;
+- (void)_continueKeyboardSlideWithGesture:(id)gesture;
+- (void)_didChooseFlickWithAngle:(double)angle name:(id)name;
+- (void)_didChoosePanWithName:(id)name selector:(SEL)selector;
+- (void)_didChoosePinchItemWithName:(id)name selector:(SEL)selector;
 - (void)_endKeyboardSlideGesture;
 - (void)_endKeyboardSlideGestureSegment;
 - (void)_endPinchMode;
 - (void)_finishLineGesture;
 - (void)_handleCompletedContinuousGesture;
-- (void)_initializeContinuousGestureDataWithName:(id)a3 points:(id)a4;
-- (void)_panByDelta:(CGSize)a3;
-- (void)_performFlickGestureWithAngle:(double)a3 name:(id)a4;
+- (void)_initializeContinuousGestureDataWithName:(id)name points:(id)points;
+- (void)_panByDelta:(CGSize)delta;
+- (void)_performFlickGestureWithAngle:(double)angle name:(id)name;
 - (void)_performForceTouchGesture;
-- (void)_performGesture:(id)a3;
-- (void)_performGesture:(id)a3 withBlock:(id)a4;
-- (void)_performTapGestureForDoubleTap:(BOOL)a3;
+- (void)_performGesture:(id)gesture;
+- (void)_performGesture:(id)gesture withBlock:(id)block;
+- (void)_performTapGestureForDoubleTap:(BOOL)tap;
 - (void)_prepareToBeginContinuousGesture;
 - (void)_requestSwitchControllerPrivileges;
 - (void)_resetContinuousGestureData;
 - (void)_resignSwitchControllerPrivileges;
-- (void)_saveRecentGesture:(id)a3;
-- (void)_selectNextPointForKeyboardSlide:(CGPoint)a3;
-- (void)_setNumberOfFingersForGestures:(unint64_t)a3;
-- (void)_setShowsFingers:(BOOL)a3;
-- (void)_startConfirmingLineGestureWithEndpoint:(CGPoint)a3;
-- (void)_startKeyboardSlideGesture:(id)a3;
-- (void)_startNextKeyboardSlideGestureSegmentAtPoint:(CGPoint)a3 element:(id)a4;
-- (void)_startPickingNextPointForLineGesture:(unint64_t)a3;
+- (void)_saveRecentGesture:(id)gesture;
+- (void)_selectNextPointForKeyboardSlide:(CGPoint)slide;
+- (void)_setNumberOfFingersForGestures:(unint64_t)gestures;
+- (void)_setShowsFingers:(BOOL)fingers;
+- (void)_startConfirmingLineGestureWithEndpoint:(CGPoint)endpoint;
+- (void)_startKeyboardSlideGesture:(id)gesture;
+- (void)_startNextKeyboardSlideGestureSegmentAtPoint:(CGPoint)point element:(id)element;
+- (void)_startPickingNextPointForLineGesture:(unint64_t)gesture;
 - (void)_startPinchMode;
-- (void)_startTellMeWhenTimerWithSelector:(SEL)a3 interval:(double)a4;
-- (void)_updatePinchPositionsWithAttemptedRadiusDelta:(double)a3 angleDelta:(double)a4;
+- (void)_startTellMeWhenTimerWithSelector:(SEL)selector interval:(double)interval;
+- (void)_updatePinchPositionsWithAttemptedRadiusDelta:(double)delta angleDelta:(double)angleDelta;
 - (void)_updateShowsFingers;
-- (void)_updateStartingPointForGesturesWithScreenPoint:(id)a3 forDisplayID:(unsigned int)a4;
+- (void)_updateStartingPointForGesturesWithScreenPoint:(id)point forDisplayID:(unsigned int)d;
 - (void)_updateVisibleFingers;
-- (void)customGestureItemsViewController:(id)a3 didChooseGesture:(id)a4;
+- (void)customGestureItemsViewController:(id)controller didChooseGesture:(id)gesture;
 - (void)dealloc;
-- (void)didChooseActiveHoldAndDragGesture:(id)a3;
-- (void)didChooseAddRecentInCustomGestureItemsViewController:(id)a3;
-- (void)didChooseContinuousSlideGesture:(id)a3 completion:(id)a4;
-- (void)didChooseCreateInCustomGestureItemsViewController:(id)a3;
-- (void)didChooseDoubleTapGesture:(id)a3;
-- (void)didChooseDrawingGesture:(id)a3;
-- (void)didChooseFavorites:(id)a3;
-- (void)didChooseFingers:(id)a3;
-- (void)didChooseFlickGesture:(id)a3;
-- (void)didChooseForceTouchGesture:(id)a3;
-- (void)didChoosePanGesture:(id)a3;
-- (void)didChoosePinchGesture:(id)a3;
-- (void)didChooseSlideGesture:(id)a3 startElement:(id)a4 completion:(id)a5;
-- (void)didChooseStop:(id)a3;
-- (void)didConfirmGesture:(id)a3;
-- (void)didRequestRedoGesture:(id)a3;
-- (void)drawingViewController:(id)a3 shouldResetScanningFromElement:(id)a4;
-- (void)driver:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5;
-- (void)driver:(id)a3 willFocusOnContext:(id)a4;
-- (void)driver:(id)a3 willUnfocusFromContext:(id)a4;
-- (void)exitDrawingViewController:(id)a3;
-- (void)fingerItemsViewController:(id)a3 didChooseNumberOfFingers:(unint64_t)a4;
-- (void)fingersElement:(id)a3 didBecomeFocused:(BOOL)a4;
-- (void)menuDidAppear:(id)a3;
-- (void)menuDidDisappear:(id)a3;
-- (void)menuDidFinishTransition:(id)a3;
-- (void)menuWillAppear:(id)a3;
-- (void)orientationDidChange:(id)a3;
-- (void)performHoldAtPoint:(CGPoint)a3 isDown:(BOOL)a4;
+- (void)didChooseActiveHoldAndDragGesture:(id)gesture;
+- (void)didChooseAddRecentInCustomGestureItemsViewController:(id)controller;
+- (void)didChooseContinuousSlideGesture:(id)gesture completion:(id)completion;
+- (void)didChooseCreateInCustomGestureItemsViewController:(id)controller;
+- (void)didChooseDoubleTapGesture:(id)gesture;
+- (void)didChooseDrawingGesture:(id)gesture;
+- (void)didChooseFavorites:(id)favorites;
+- (void)didChooseFingers:(id)fingers;
+- (void)didChooseFlickGesture:(id)gesture;
+- (void)didChooseForceTouchGesture:(id)gesture;
+- (void)didChoosePanGesture:(id)gesture;
+- (void)didChoosePinchGesture:(id)gesture;
+- (void)didChooseSlideGesture:(id)gesture startElement:(id)element completion:(id)completion;
+- (void)didChooseStop:(id)stop;
+- (void)didConfirmGesture:(id)gesture;
+- (void)didRequestRedoGesture:(id)gesture;
+- (void)drawingViewController:(id)controller shouldResetScanningFromElement:(id)element;
+- (void)driver:(id)driver didFocusOnContext:(id)context oldContext:(id)oldContext;
+- (void)driver:(id)driver willFocusOnContext:(id)context;
+- (void)driver:(id)driver willUnfocusFromContext:(id)context;
+- (void)exitDrawingViewController:(id)controller;
+- (void)fingerItemsViewController:(id)controller didChooseNumberOfFingers:(unint64_t)fingers;
+- (void)fingersElement:(id)element didBecomeFocused:(BOOL)focused;
+- (void)menuDidAppear:(id)appear;
+- (void)menuDidDisappear:(id)disappear;
+- (void)menuDidFinishTransition:(id)transition;
+- (void)menuWillAppear:(id)appear;
+- (void)orientationDidChange:(id)change;
+- (void)performHoldAtPoint:(CGPoint)point isDown:(BOOL)down;
 - (void)performTap;
 - (void)performTapAndHold;
-- (void)pointPicker:(id)a3 didPickPoint:(CGPoint)a4;
-- (void)replayGesture:(id)a3;
-- (void)scannerWillMakeManagerActive:(id)a3;
-- (void)scannerWillMakeManagerActive:(id)a3 forDisplayID:(unsigned int)a4;
-- (void)scannerWillMakeManagerInactive:(id)a3 activeElementManager:(id)a4;
-- (void)setAlphaForFingers:(double)a3;
-- (void)setCurrentSwitchController:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setShouldAllowFingersForContinuousGesture:(BOOL)a3;
-- (void)setStartingDisplayIDForGestures:(unsigned int)a3;
-- (void)systemApertureLayoutDidChange:(id)a3;
-- (void)toggleActiveHoldAndDragGestureAtScreenPoint:(CGPoint)a3 withDisplayID:(unsigned int)a4;
-- (void)touchDownForDrawingViewController:(id)a3;
-- (void)touchUpForDrawingViewController:(id)a3;
+- (void)pointPicker:(id)picker didPickPoint:(CGPoint)point;
+- (void)replayGesture:(id)gesture;
+- (void)scannerWillMakeManagerActive:(id)active;
+- (void)scannerWillMakeManagerActive:(id)active forDisplayID:(unsigned int)d;
+- (void)scannerWillMakeManagerInactive:(id)inactive activeElementManager:(id)manager;
+- (void)setAlphaForFingers:(double)fingers;
+- (void)setCurrentSwitchController:(id)controller;
+- (void)setHidden:(BOOL)hidden;
+- (void)setShouldAllowFingersForContinuousGesture:(BOOL)gesture;
+- (void)setStartingDisplayIDForGestures:(unsigned int)gestures;
+- (void)systemApertureLayoutDidChange:(id)change;
+- (void)toggleActiveHoldAndDragGestureAtScreenPoint:(CGPoint)point withDisplayID:(unsigned int)d;
+- (void)touchDownForDrawingViewController:(id)controller;
+- (void)touchUpForDrawingViewController:(id)controller;
 @end
 
 @implementation SCATGestureProvider
 
-- (SCATGestureProvider)initWithMenu:(id)a3
+- (SCATGestureProvider)initWithMenu:(id)menu
 {
-  v5 = a3;
+  menuCopy = menu;
   v15.receiver = self;
   v15.super_class = SCATGestureProvider;
   v6 = [(SCATGestureProvider *)&v15 init];
   if (v6)
   {
-    if (!v5)
+    if (!menuCopy)
     {
       _AXAssert();
     }
 
-    objc_storeStrong(v6 + 5, a3);
+    objc_storeStrong(v6 + 5, menu);
     v7 = +[HNDDefaults sharedDefaults];
     v8 = [v7 preferenceForKey:@"ScannerNumberOfFingers"];
 
     if (v8)
     {
-      v9 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     else
     {
-      v9 = 1;
+      integerValue = 1;
     }
 
-    *(v6 + 13) = v9;
-    [v5 registerMenuObserver:v6];
+    *(v6 + 13) = integerValue;
+    [menuCopy registerMenuObserver:v6];
     *(v6 + 24) = AXSwitchRecipeHoldPointNone;
     *(v6 + 37) = 0x3FF0000000000000;
     v10 = +[HNDHandManager sharedManager];
-    v11 = [v10 mainDisplayManager];
-    *(v6 + 51) = [v11 displayID];
+    mainDisplayManager = [v10 mainDisplayManager];
+    *(v6 + 51) = [mainDisplayManager displayID];
 
     v12 = objc_alloc_init(SBSSystemApertureLayoutMonitor);
     v13 = *(v6 + 20);
@@ -182,14 +182,14 @@
   [(SCATGestureProvider *)&v3 dealloc];
 }
 
-- (void)orientationDidChange:(id)a3
+- (void)orientationDidChange:(id)change
 {
   menu = self->_menu;
-  v5 = a3;
-  v13 = [(SCATMenu *)menu element];
-  if (v13)
+  changeCopy = change;
+  element = [(SCATMenu *)menu element];
+  if (element)
   {
-    [v13 scatFrame];
+    [element scatFrame];
     x = v15.origin.x;
     y = v15.origin.y;
     width = v15.size.width;
@@ -204,27 +204,27 @@
   }
 
   [(SCATGestureProvider *)self _updateVisibleFingers];
-  v12 = [(SCATGestureDrawingElementManager *)self->_drawingElementManager drawingViewController];
-  [v12 orientationDidChange:v5];
+  drawingViewController = [(SCATGestureDrawingElementManager *)self->_drawingElementManager drawingViewController];
+  [drawingViewController orientationDidChange:changeCopy];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  if (self->_hidden != a3)
+  if (self->_hidden != hidden)
   {
-    v4 = a3;
-    self->_hidden = a3;
+    hiddenCopy = hidden;
+    self->_hidden = hidden;
     [(SCATGestureProvider *)self _updateShowsFingers];
-    v6 = [(SCATGestureProvider *)self arrowView];
-    [v6 setHidden:v4];
+    arrowView = [(SCATGestureProvider *)self arrowView];
+    [arrowView setHidden:hiddenCopy];
   }
 }
 
-- (void)setAlphaForFingers:(double)a3
+- (void)setAlphaForFingers:(double)fingers
 {
-  if (self->_alphaForFingers != a3)
+  if (self->_alphaForFingers != fingers)
   {
-    self->_alphaForFingers = a3;
+    self->_alphaForFingers = fingers;
     [(SCATGestureProvider *)self _updateVisibleFingers];
   }
 }
@@ -245,11 +245,11 @@
   return elementForFingers;
 }
 
-- (void)setStartingDisplayIDForGestures:(unsigned int)a3
+- (void)setStartingDisplayIDForGestures:(unsigned int)gestures
 {
-  if (a3)
+  if (gestures)
   {
-    self->_startingDisplayIDForGestures = a3;
+    self->_startingDisplayIDForGestures = gestures;
   }
 }
 
@@ -257,34 +257,34 @@
 {
   v3 = +[HNDHandManager sharedManager];
   v4 = [v3 displayManagerForDisplayId:{-[SCATGestureProvider startingDisplayIDForGestures](self, "startingDisplayIDForGestures")}];
-  v5 = [v4 fingerController];
+  fingerController = [v4 fingerController];
 
-  return v5;
+  return fingerController;
 }
 
-- (void)_updateStartingPointForGesturesWithScreenPoint:(id)a3 forDisplayID:(unsigned int)a4
+- (void)_updateStartingPointForGesturesWithScreenPoint:(id)point forDisplayID:(unsigned int)d
 {
-  v4 = *&a4;
-  v6 = a3;
-  v15 = v6;
-  if (v6)
+  v4 = *&d;
+  pointCopy = point;
+  v15 = pointCopy;
+  if (pointCopy)
   {
-    [v6 pointValue];
+    [pointCopy pointValue];
     v8 = v7;
     v10 = v9;
   }
 
   else
   {
-    v11 = [(SCATMenu *)self->_menu element];
+    element = [(SCATMenu *)self->_menu element];
 
-    if (!v11)
+    if (!element)
     {
       goto LABEL_6;
     }
 
-    v12 = [(SCATMenu *)self->_menu element];
-    [v12 scatFrame];
+    element2 = [(SCATMenu *)self->_menu element];
+    [element2 scatFrame];
     AX_CGRectGetCenter();
     v8 = v13;
     v10 = v14;
@@ -331,21 +331,21 @@ LABEL_6:
   return [(SCATGestureProvider *)self _pointStringForPoint:?];
 }
 
-- (id)_pointStringForPoint:(CGPoint)a3
+- (id)_pointStringForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   p_foreheadRect = &self->_foreheadRect;
-  if (self->_foreheadRect.origin.y + self->_foreheadRect.size.height + 17.0 + 5.0 > a3.y && AXDeviceHasJindo())
+  if (self->_foreheadRect.origin.y + self->_foreheadRect.size.height + 17.0 + 5.0 > point.y && AXDeviceHasJindo())
   {
     y = p_foreheadRect->origin.y + p_foreheadRect->size.height + 17.0 + 5.0;
   }
 
-  v7 = [(SCATGestureProvider *)self _numberOfFingers];
-  v8 = [(SCATGestureProvider *)self _fingerController];
-  v9 = [v8 fingerContainerView];
-  [v9 bounds];
-  v14 = [AXPIFingerUtilities defaultLocationsForNumberOfFingers:v7 aroundPoint:x withinBounds:y, v10, v11, v12, v13];
+  _numberOfFingers = [(SCATGestureProvider *)self _numberOfFingers];
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  fingerContainerView = [_fingerController fingerContainerView];
+  [fingerContainerView bounds];
+  v14 = [AXPIFingerUtilities defaultLocationsForNumberOfFingers:_numberOfFingers aroundPoint:x withinBounds:y, v10, v11, v12, v13];
 
   return v14;
 }
@@ -373,13 +373,13 @@ LABEL_6:
   [(SCATGestureProvider *)self setAlphaForFingers:v2];
 }
 
-- (void)_initializeContinuousGestureDataWithName:(id)a3 points:(id)a4
+- (void)_initializeContinuousGestureDataWithName:(id)name points:(id)points
 {
-  v22 = a3;
-  v7 = a4;
+  nameCopy = name;
+  pointsCopy = points;
   [(SCATGestureProvider *)self _resetContinuousGestureData];
-  objc_storeStrong(&self->_continuousGestureName, a3);
-  v8 = [v7 count];
+  objc_storeStrong(&self->_continuousGestureName, name);
+  v8 = [pointsCopy count];
   v9 = [[NSMutableArray alloc] initWithCapacity:v8];
   continuousGesturePoints = self->_continuousGesturePoints;
   self->_continuousGesturePoints = v9;
@@ -393,7 +393,7 @@ LABEL_6:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v7;
+  obj = pointsCopy;
   v14 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v14)
   {
@@ -410,8 +410,8 @@ LABEL_6:
         }
 
         v18 = self->_continuousGesturePoints;
-        v19 = [NSMutableArray arrayWithObject:*(*(&v24 + 1) + 8 * v17), v22];
-        [(NSMutableArray *)v18 addObject:v19];
+        nameCopy = [NSMutableArray arrayWithObject:*(*(&v24 + 1) + 8 * v17), nameCopy];
+        [(NSMutableArray *)v18 addObject:nameCopy];
 
         v20 = self->_continuousGestureTimes;
         v21 = [NSMutableArray arrayWithObject:v13];
@@ -428,10 +428,10 @@ LABEL_6:
   }
 }
 
-- (void)_addPointsToContinuousGestureData:(id)a3
+- (void)_addPointsToContinuousGestureData:(id)data
 {
-  v12 = a3;
-  v4 = [v12 count];
+  dataCopy = data;
+  v4 = [dataCopy count];
   v5 = [NSNumber numberWithDouble:CFAbsoluteTimeGetCurrent()];
   if ([(NSMutableArray *)self->_continuousGesturePoints count]!= v4)
   {
@@ -446,7 +446,7 @@ LABEL_6:
     {
       v7 = [(NSMutableArray *)self->_continuousGesturePoints objectAtIndex:i, v10, v11];
       v8 = [(NSMutableArray *)self->_continuousGestureTimes objectAtIndex:i];
-      v9 = [v12 objectAtIndex:i];
+      v9 = [dataCopy objectAtIndex:i];
       [v7 addObject:v9];
 
       [v8 addObject:v5];
@@ -456,10 +456,10 @@ LABEL_6:
 
 - (void)_handleCompletedContinuousGesture
 {
-  v3 = [(SCATGestureProvider *)self _fingerController];
-  v5 = [v3 legacyLiftFingersUp];
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  legacyLiftFingersUp = [_fingerController legacyLiftFingersUp];
 
-  [(SCATGestureProvider *)self _addPointsToContinuousGestureData:v5];
+  [(SCATGestureProvider *)self _addPointsToContinuousGestureData:legacyLiftFingersUp];
   v4 = [AXNamedReplayableGesture gestureWithPoints:self->_continuousGesturePoints times:self->_continuousGestureTimes forces:0];
   [v4 setName:self->_continuousGestureName];
   [v4 setShouldPerformAtOriginalLocation:1];
@@ -472,16 +472,16 @@ LABEL_6:
   [(SCATGestureProvider *)self _updateVisibleFingers];
 }
 
-- (void)_saveRecentGesture:(id)a3
+- (void)_saveRecentGesture:(id)gesture
 {
-  v3 = a3;
+  gestureCopy = gesture;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchRecentGestures];
-  v8 = [v5 mutableCopy];
+  assistiveTouchRecentGestures = [v4 assistiveTouchRecentGestures];
+  v8 = [assistiveTouchRecentGestures mutableCopy];
 
   if (v8)
   {
-    [v8 removeObject:v3];
+    [v8 removeObject:gestureCopy];
   }
 
   else
@@ -489,7 +489,7 @@ LABEL_6:
     v8 = [NSMutableArray arrayWithCapacity:1];
   }
 
-  [v8 insertObject:v3 atIndex:0];
+  [v8 insertObject:gestureCopy atIndex:0];
 
   v6 = [v8 count];
   if (v6 >= 4)
@@ -501,40 +501,40 @@ LABEL_6:
   [v7 setAssistiveTouchRecentGestures:v8];
 }
 
-- (void)_performGesture:(id)a3
+- (void)_performGesture:(id)gesture
 {
-  if (a3)
+  if (gesture)
   {
     v3[0] = _NSConcreteStackBlock;
     v3[1] = 3221225472;
     v3[2] = sub_10008CE10;
     v3[3] = &unk_1001D5E70;
     v3[4] = self;
-    [(SCATGestureProvider *)self _performGesture:a3 withBlock:v3];
+    [(SCATGestureProvider *)self _performGesture:gesture withBlock:v3];
   }
 }
 
-- (void)_performGesture:(id)a3 withBlock:(id)a4
+- (void)_performGesture:(id)gesture withBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  gestureCopy = gesture;
   v7 = +[SCATScannerManager sharedManager];
   [v7 addReasonToDisableScanning:@"PerformingGesture"];
-  v5[2](v5, v6);
+  blockCopy[2](blockCopy, gestureCopy);
 
   +[HNDDisplayManager fadeDuration];
   v8 = v7;
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
-- (void)_performTapGestureForDoubleTap:(BOOL)a3
+- (void)_performTapGestureForDoubleTap:(BOOL)tap
 {
-  v3 = a3;
+  tapCopy = tap;
   [(SCATGestureProvider *)self _startingPointForGestures];
-  v7 = [AXNamedReplayableGesture tapGestureAtPoint:v3 isDoubleTap:[(SCATGestureProvider *)self _numberOfFingers] numberOfFingers:v5, v6];
+  v7 = [AXNamedReplayableGesture tapGestureAtPoint:tapCopy isDoubleTap:[(SCATGestureProvider *)self _numberOfFingers] numberOfFingers:v5, v6];
   v9 = v7;
   v8 = &off_1001D6CF8;
-  if (!v3)
+  if (!tapCopy)
   {
     v8 = &off_1001D6C68;
   }
@@ -545,16 +545,16 @@ LABEL_6:
   [(SCATGestureProvider *)self _performGesture:v9];
 }
 
-- (void)_performFlickGestureWithAngle:(double)a3 name:(id)a4
+- (void)_performFlickGestureWithAngle:(double)angle name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   [(SCATGestureProvider *)self _startingPointForGestures];
-  v9 = [AXNamedReplayableGesture flickGestureAtPoint:[(SCATGestureProvider *)self _numberOfFingers] angle:v7 numberOfFingers:v8, a3];
-  [v9 setName:v6];
+  angle = [AXNamedReplayableGesture flickGestureAtPoint:[(SCATGestureProvider *)self _numberOfFingers] angle:v7 numberOfFingers:v8, angle];
+  [angle setName:nameCopy];
 
-  [v9 setHasLocalizableName:1];
-  [v9 setShouldPerformAtOriginalLocation:1];
-  [(SCATGestureProvider *)self _performGesture:v9];
+  [angle setHasLocalizableName:1];
+  [angle setShouldPerformAtOriginalLocation:1];
+  [(SCATGestureProvider *)self _performGesture:angle];
 }
 
 - (void)_performForceTouchGesture
@@ -567,22 +567,22 @@ LABEL_6:
   [(SCATGestureProvider *)self _performGesture:v3];
 }
 
-- (id)_pinchPositionsWithRadius:(double)a3 angle:(double)a4
+- (id)_pinchPositionsWithRadius:(double)radius angle:(double)angle
 {
   [(SCATGestureProvider *)self pinchFulcrum];
   v8 = v7;
-  v9 = __sincos_stret(a4);
+  v9 = __sincos_stret(angle);
   [(SCATGestureProvider *)self pinchFulcrum];
-  v11 = v10 + a3 * v9.__sinval;
+  v11 = v10 + radius * v9.__sinval;
   [(SCATGestureProvider *)self pinchFulcrum];
   v13 = v12;
-  v14 = __sincos_stret(a4 + 3.14159265);
+  v14 = __sincos_stret(angle + 3.14159265);
   [(SCATGestureProvider *)self pinchFulcrum];
-  v16 = v15 + a3 * v14.__sinval;
-  v22.x = v8 + a3 * v9.__cosval;
+  v16 = v15 + radius * v14.__sinval;
+  v22.x = v8 + radius * v9.__cosval;
   v22.y = v11;
   v17 = NSStringFromCGPoint(v22);
-  v23.x = v13 + a3 * v14.__cosval;
+  v23.x = v13 + radius * v14.__cosval;
   v23.y = v16;
   v18 = NSStringFromCGPoint(v23);
   v19 = [NSArray arrayWithObjects:v17, v18, 0];
@@ -590,7 +590,7 @@ LABEL_6:
   return v19;
 }
 
-- (double)_pinchRadiusAdjustedByDelta:(double)a3
+- (double)_pinchRadiusAdjustedByDelta:(double)delta
 {
   if (self->_isReversingContinuousGesture)
   {
@@ -603,10 +603,10 @@ LABEL_6:
   }
 
   [(SCATGestureProvider *)self pinchRadius];
-  return v5 + a3 * v4;
+  return v5 + delta * v4;
 }
 
-- (double)_pinchAngleAdjustedByDelta:(double)a3
+- (double)_pinchAngleAdjustedByDelta:(double)delta
 {
   if (self->_isReversingContinuousGesture)
   {
@@ -619,16 +619,16 @@ LABEL_6:
   }
 
   [(SCATGestureProvider *)self pinchAngle];
-  return v5 + a3 * v4;
+  return v5 + delta * v4;
 }
 
-- (void)_updatePinchPositionsWithAttemptedRadiusDelta:(double)a3 angleDelta:(double)a4
+- (void)_updatePinchPositionsWithAttemptedRadiusDelta:(double)delta angleDelta:(double)angleDelta
 {
   [(SCATGestureProvider *)self _pinchRadiusAdjustedByDelta:?];
   v8 = v7;
-  [(SCATGestureProvider *)self _pinchAngleAdjustedByDelta:a4];
+  [(SCATGestureProvider *)self _pinchAngleAdjustedByDelta:angleDelta];
   v10 = v9;
-  v29 = [(SCATGestureProvider *)self pinchFingerOriginalPositions];
+  pinchFingerOriginalPositions = [(SCATGestureProvider *)self pinchFingerOriginalPositions];
   if (v8 < 20.0 || v8 > 200.0)
   {
     v12 = 0;
@@ -636,8 +636,8 @@ LABEL_6:
   }
 
   v12 = [(SCATGestureProvider *)self _pinchPositionsWithRadius:v8 angle:v10];
-  v13 = [(SCATGestureProvider *)self _fingerController];
-  v14 = [v13 moveFingersToPoints:v12];
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  v14 = [_fingerController moveFingersToPoints:v12];
 
   if ((v14 & 1) == 0)
   {
@@ -653,7 +653,7 @@ LABEL_8:
       v17 = v16;
       [(SCATGestureProvider *)self pinchAngle];
       v19 = [(SCATGestureProvider *)self _pinchPositionsWithRadius:v17 angle:v18];
-      v20 = [v19 isEqualToArray:v29];
+      v20 = [v19 isEqualToArray:pinchFingerOriginalPositions];
 
       if (v20)
       {
@@ -664,16 +664,16 @@ LABEL_8:
     }
 
     self->_isReversingContinuousGesture = v15;
-    [(SCATGestureProvider *)self _pinchRadiusAdjustedByDelta:a3];
+    [(SCATGestureProvider *)self _pinchRadiusAdjustedByDelta:delta];
     v8 = v21;
-    [(SCATGestureProvider *)self _pinchAngleAdjustedByDelta:a4];
+    [(SCATGestureProvider *)self _pinchAngleAdjustedByDelta:angleDelta];
     v10 = v22;
     if (v8 >= 20.0 && v8 <= 200.0)
     {
       v23 = [(SCATGestureProvider *)self _pinchPositionsWithRadius:v8 angle:v22];
 
-      v24 = [(SCATGestureProvider *)self _fingerController];
-      v25 = [v24 moveFingersToPoints:v23];
+      _fingerController2 = [(SCATGestureProvider *)self _fingerController];
+      v25 = [_fingerController2 moveFingersToPoints:v23];
 
       v12 = v23;
       if (v25)
@@ -684,7 +684,7 @@ LABEL_8:
 
     v27 = v12;
     isReversingContinuousGesture = self->_isReversingContinuousGesture;
-    v26 = v29;
+    v26 = pinchFingerOriginalPositions;
     _AXAssert();
 LABEL_20:
     [(SCATGestureProvider *)self _clearTellMeWhenTimer:v26];
@@ -695,7 +695,7 @@ LABEL_15:
   [(SCATGestureProvider *)self setPinchRadius:v8];
   [(SCATGestureProvider *)self setPinchAngle:v10];
   [(SCATGestureProvider *)self _addPointsToContinuousGestureData:v12];
-  if ([v12 isEqualToArray:v29])
+  if ([v12 isEqualToArray:pinchFingerOriginalPositions])
   {
     if (!self->_isReversingContinuousGesture)
     {
@@ -708,12 +708,12 @@ LABEL_15:
 LABEL_21:
 }
 
-- (id)_panPositionsAdjustedByDelta:(CGSize)a3
+- (id)_panPositionsAdjustedByDelta:(CGSize)delta
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SCATGestureProvider *)self panFingerPositions];
-  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+  height = delta.height;
+  width = delta.width;
+  panFingerPositions = [(SCATGestureProvider *)self panFingerPositions];
+  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [panFingerPositions count]);
 
   if (self->_isReversingContinuousGesture)
   {
@@ -729,8 +729,8 @@ LABEL_21:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(SCATGestureProvider *)self panFingerPositions];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  panFingerPositions2 = [(SCATGestureProvider *)self panFingerPositions];
+  v10 = [panFingerPositions2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -741,7 +741,7 @@ LABEL_21:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(panFingerPositions2);
         }
 
         v14 = CGPointFromString(*(*(&v17 + 1) + 8 * i));
@@ -751,7 +751,7 @@ LABEL_21:
         [v7 addObject:v15];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [panFingerPositions2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
@@ -760,13 +760,13 @@ LABEL_21:
   return v7;
 }
 
-- (void)_panByDelta:(CGSize)a3
+- (void)_panByDelta:(CGSize)delta
 {
-  height = a3.height;
-  width = a3.width;
+  height = delta.height;
+  width = delta.width;
   v6 = [(SCATGestureProvider *)self _panPositionsAdjustedByDelta:?];
-  v7 = [(SCATGestureProvider *)self _startingPointsAsStrings];
-  if ([v6 isEqualToArray:v7])
+  _startingPointsAsStrings = [(SCATGestureProvider *)self _startingPointsAsStrings];
+  if ([v6 isEqualToArray:_startingPointsAsStrings])
   {
     if (!self->_isReversingContinuousGesture)
     {
@@ -776,41 +776,41 @@ LABEL_21:
     self->_isReversingContinuousGesture = 0;
   }
 
-  v8 = [(SCATGestureProvider *)self _fingerController];
-  v9 = [v8 moveFingersToPoints:v6];
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  v9 = [_fingerController moveFingersToPoints:v6];
 
   if (v9)
   {
-    v18 = v6;
+    height = v6;
 LABEL_7:
     [(SCATGestureProvider *)self setPanFingerPositions:v6];
     [(SCATGestureProvider *)self _addPointsToContinuousGestureData:v6];
     goto LABEL_12;
   }
 
-  if (self->_isReversingContinuousGesture || (-[SCATGestureProvider panFingerPositions](self, "panFingerPositions"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEqualToArray:v7], v10, (v11 & 1) != 0))
+  if (self->_isReversingContinuousGesture || (-[SCATGestureProvider panFingerPositions](self, "panFingerPositions"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEqualToArray:_startingPointsAsStrings], v10, (v11 & 1) != 0))
   {
-    v18 = v6;
+    height = v6;
     [(SCATGestureProvider *)self _clearTellMeWhenTimer:v14];
   }
 
   else
   {
     self->_isReversingContinuousGesture = 1;
-    v18 = [(SCATGestureProvider *)self _panPositionsAdjustedByDelta:width, height];
+    height = [(SCATGestureProvider *)self _panPositionsAdjustedByDelta:width, height];
 
-    v12 = [(SCATGestureProvider *)self _fingerController];
-    v13 = [v12 moveFingersToPoints:v18];
+    _fingerController2 = [(SCATGestureProvider *)self _fingerController];
+    v13 = [_fingerController2 moveFingersToPoints:height];
 
     if (v13)
     {
-      v6 = v18;
+      v6 = height;
       goto LABEL_7;
     }
 
     isReversingContinuousGesture = self->_isReversingContinuousGesture;
     _AXAssert();
-    [(SCATGestureProvider *)self _clearTellMeWhenTimer:v7];
+    [(SCATGestureProvider *)self _clearTellMeWhenTimer:_startingPointsAsStrings];
   }
 
 LABEL_12:
@@ -824,8 +824,8 @@ LABEL_12:
   [(SCATGestureProvider *)self endPointForLineGesture];
   v8 = v7;
   v10 = v9;
-  v11 = [(SCATGestureProvider *)self lineGestureType];
-  if (v11 == 2)
+  lineGestureType = [(SCATGestureProvider *)self lineGestureType];
+  if (lineGestureType == 2)
   {
     AX_CGPointGetDistanceToPoint();
     v18 = v17 / 80.0;
@@ -841,13 +841,13 @@ LABEL_12:
     [v22 setName:@"HOLD_AND_DRAG"];
   }
 
-  else if (v11 == 1)
+  else if (lineGestureType == 1)
   {
     v22 = [AXNamedReplayableGesture flickGestureStartingAtPoint:[(SCATGestureProvider *)self _numberOfFingers] endingAtPoint:v4 numberOfFingers:v6, v8, v10];
     [v22 setName:@"FLICK_ARBITRARY"];
   }
 
-  else if (v11)
+  else if (lineGestureType)
   {
     v22 = 0;
   }
@@ -878,48 +878,48 @@ LABEL_12:
   [(SCATGestureProvider *)self setIsPinching:1];
   [(SCATGestureProvider *)self alphaForFingers];
   v4 = v3;
-  v5 = [(SCATGestureProvider *)self _fingerController];
-  v6 = [v5 fingerContainerView];
-  [v6 setAlpha:v4];
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  fingerContainerView = [_fingerController fingerContainerView];
+  [fingerContainerView setAlpha:v4];
 
-  v7 = [(SCATGestureProvider *)self _fingerController];
+  _fingerController2 = [(SCATGestureProvider *)self _fingerController];
   [(SCATGestureProvider *)self _startingPointForGestures];
-  [v7 showPinchFingersAnimated:1 midpoint:?];
+  [_fingerController2 showPinchFingersAnimated:1 midpoint:?];
 }
 
 - (void)_endPinchMode
 {
   [(SCATGestureProvider *)self setIsPinching:0];
-  v3 = [(SCATGestureProvider *)self _fingerController];
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
   [(SCATGestureProvider *)self _startingPointForGestures];
-  [v3 clearAllFingersAnimated:1 endPointForAnimation:?];
+  [_fingerController clearAllFingersAnimated:1 endPointForAnimation:?];
 
   [(SCATGestureProvider *)self _updateVisibleFingers];
 }
 
 - (void)_updateVisibleFingers
 {
-  v3 = [(SCATGestureProvider *)self _fingerController];
-  if ([v3 isPerformingGesture])
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  if ([_fingerController isPerformingGesture])
   {
-    v4 = ASTLogCommon();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    _startingPointsAsStrings = ASTLogCommon();
+    if (os_log_type_enabled(_startingPointsAsStrings, OS_LOG_TYPE_DEFAULT))
     {
       *v21 = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Not updating visible fingers because a gesture is in progress", v21, 2u);
+      _os_log_impl(&_mh_execute_header, _startingPointsAsStrings, OS_LOG_TYPE_DEFAULT, "Not updating visible fingers because a gesture is in progress", v21, 2u);
     }
 
     goto LABEL_17;
   }
 
-  v5 = [v3 numberOfFingers];
+  numberOfFingers = [_fingerController numberOfFingers];
   if (self->_showsFingers)
   {
-    v6 = v5;
+    v6 = numberOfFingers;
     [(SCATGestureProvider *)self alphaForFingers];
     v8 = v7;
-    v9 = [v3 fingerContainerView];
-    [v9 setAlpha:v8];
+    fingerContainerView = [_fingerController fingerContainerView];
+    [fingerContainerView setAlpha:v8];
 
     drawingElementManager = self->_drawingElementManager;
     if (!drawingElementManager)
@@ -931,41 +931,41 @@ LABEL_12:
         if ([(SCATGestureProvider *)self isPinching])
         {
           [(SCATGestureProvider *)self _startingPointForGestures];
-          [v3 showPinchFingersAnimated:v18 midpoint:?];
+          [_fingerController showPinchFingersAnimated:v18 midpoint:?];
           goto LABEL_18;
         }
 
-        v4 = [(SCATGestureProvider *)self _startingPointsAsStrings];
-        v19 = [AXPIFingerUtilities fingerModelsForPointStrings:v4];
+        _startingPointsAsStrings = [(SCATGestureProvider *)self _startingPointsAsStrings];
+        v19 = [AXPIFingerUtilities fingerModelsForPointStrings:_startingPointsAsStrings];
       }
 
       else
       {
         v18 = v6 == 0;
         [(SCATGestureProvider *)self currentHoldPoint];
-        v4 = [AXPIFingerModel fingerModelForLocation:?];
-        v22 = v4;
+        _startingPointsAsStrings = [AXPIFingerModel fingerModelForLocation:?];
+        v22 = _startingPointsAsStrings;
         v19 = [NSArray arrayWithObjects:&v22 count:1];
       }
 
       v20 = v19;
-      [v3 showFingerModels:v19 animated:v18 startPointForAnimation:{CGPointZero.x, CGPointZero.y}];
+      [_fingerController showFingerModels:v19 animated:v18 startPointForAnimation:{CGPointZero.x, CGPointZero.y}];
 
 LABEL_17:
       goto LABEL_18;
     }
 
     v11 = v6 == 0;
-    v12 = [(SCATGestureDrawingElementManager *)drawingElementManager drawingViewController];
-    v13 = [v12 fingerPositions];
-    v14 = [AXPIFingerUtilities fingerModelsForPointStrings:v13];
-    [v3 showFingerModels:v14 animated:v11 startPointForAnimation:{CGPointZero.x, CGPointZero.y}];
+    drawingViewController = [(SCATGestureDrawingElementManager *)drawingElementManager drawingViewController];
+    fingerPositions = [drawingViewController fingerPositions];
+    v14 = [AXPIFingerUtilities fingerModelsForPointStrings:fingerPositions];
+    [_fingerController showFingerModels:v14 animated:v11 startPointForAnimation:{CGPointZero.x, CGPointZero.y}];
   }
 
   else
   {
     [(SCATGestureProvider *)self _startingPointForGestures];
-    [v3 clearAllFingersAnimated:1 endPointForAnimation:?];
+    [_fingerController clearAllFingersAnimated:1 endPointForAnimation:?];
   }
 
 LABEL_18:
@@ -978,20 +978,20 @@ LABEL_18:
   self->_tellMeWhenGestureTimer = 0;
 }
 
-- (void)_startTellMeWhenTimerWithSelector:(SEL)a3 interval:(double)a4
+- (void)_startTellMeWhenTimerWithSelector:(SEL)selector interval:(double)interval
 {
   if (self->_tellMeWhenGestureTimer)
   {
     _AXAssert();
   }
 
-  if (a4 == 0.0)
+  if (interval == 0.0)
   {
     v7 = +[AXSettings sharedInstance];
-    a4 = dbl_1001BD3C0[[v7 switchControlScanningStyle] == 0];
+    interval = dbl_1001BD3C0[[v7 switchControlScanningStyle] == 0];
   }
 
-  v8 = [NSTimer scheduledTimerWithTimeInterval:self target:a3 selector:0 userInfo:1 repeats:a4];
+  v8 = [NSTimer scheduledTimerWithTimeInterval:self target:selector selector:0 userInfo:1 repeats:interval];
   tellMeWhenGestureTimer = self->_tellMeWhenGestureTimer;
   self->_tellMeWhenGestureTimer = v8;
 
@@ -1000,27 +1000,27 @@ LABEL_18:
 
 - (void)_clearArrowView
 {
-  v3 = [(SCATGestureProvider *)self arrowView];
-  [v3 removeFromSuperview];
+  arrowView = [(SCATGestureProvider *)self arrowView];
+  [arrowView removeFromSuperview];
 
   [(SCATGestureProvider *)self setArrowView:0];
 }
 
-- (void)_setNumberOfFingersForGestures:(unint64_t)a3
+- (void)_setNumberOfFingersForGestures:(unint64_t)gestures
 {
-  if (self->_numberOfFingersForGestures != a3)
+  if (self->_numberOfFingersForGestures != gestures)
   {
-    self->_numberOfFingersForGestures = a3;
+    self->_numberOfFingersForGestures = gestures;
     [(SCATGestureProvider *)self _updateVisibleFingers];
     v6 = +[HNDDefaults sharedDefaults];
-    v5 = [NSNumber numberWithInteger:a3];
+    v5 = [NSNumber numberWithInteger:gestures];
     [v6 setPreference:v5 forKey:@"ScannerNumberOfFingers"];
   }
 }
 
-- (unint64_t)_numberOfFingersWithGestureSheet:(BOOL)a3
+- (unint64_t)_numberOfFingersWithGestureSheet:(BOOL)sheet
 {
-  if (a3)
+  if (sheet)
   {
     return self->_numberOfFingersForGestures;
   }
@@ -1030,9 +1030,9 @@ LABEL_18:
     return self->_numberOfFingersForGestures;
   }
 
-  v4 = [(SCATGestureProvider *)self currentSwitchController];
+  currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
 
-  if (v4)
+  if (currentSwitchController)
   {
     return self->_numberOfFingersForGestures;
   }
@@ -1045,54 +1045,54 @@ LABEL_18:
 
 - (unint64_t)_numberOfFingers
 {
-  v3 = [(SCATMenu *)self->_menu containsGestureSheet];
+  containsGestureSheet = [(SCATMenu *)self->_menu containsGestureSheet];
 
-  return [(SCATGestureProvider *)self _numberOfFingersWithGestureSheet:v3];
+  return [(SCATGestureProvider *)self _numberOfFingersWithGestureSheet:containsGestureSheet];
 }
 
-- (void)_setShowsFingers:(BOOL)a3
+- (void)_setShowsFingers:(BOOL)fingers
 {
-  if (self->_showsFingers != a3)
+  if (self->_showsFingers != fingers)
   {
-    v4 = a3;
-    self->_showsFingers = a3;
+    fingersCopy = fingers;
+    self->_showsFingers = fingers;
     [(SCATGestureProvider *)self _updateVisibleFingers];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained gestureProvider:self didShowFingers:v4];
+    [WeakRetained gestureProvider:self didShowFingers:fingersCopy];
   }
 }
 
 - (void)_updateShowsFingers
 {
-  v3 = [(SCATGestureProvider *)self isHidden];
-  if ((v3 & 1) != 0 || [(SCATMenu *)self->_menu tipObject]== 1 || [(SCATGestureProvider *)self lineGestureState])
+  isHidden = [(SCATGestureProvider *)self isHidden];
+  if ((isHidden & 1) != 0 || [(SCATMenu *)self->_menu tipObject]== 1 || [(SCATGestureProvider *)self lineGestureState])
   {
 
-    [(SCATGestureProvider *)self _setShowsFingers:v3 ^ 1];
+    [(SCATGestureProvider *)self _setShowsFingers:isHidden ^ 1];
   }
 
   else
   {
-    v5 = [(SCATGestureProvider *)self currentSwitchController];
-    if (v5)
+    currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
+    if (currentSwitchController)
     {
-      v4 = 1;
+      shouldAllowFingersForContinuousGesture = 1;
     }
 
     else
     {
-      v4 = [(SCATGestureProvider *)self shouldAllowFingersForContinuousGesture];
+      shouldAllowFingersForContinuousGesture = [(SCATGestureProvider *)self shouldAllowFingersForContinuousGesture];
     }
 
-    [(SCATGestureProvider *)self _setShowsFingers:v4];
+    [(SCATGestureProvider *)self _setShowsFingers:shouldAllowFingersForContinuousGesture];
   }
 }
 
-- (CGRect)_rectForFingers:(id)a3
+- (CGRect)_rectForFingers:(id)fingers
 {
-  v4 = a3;
-  v5 = [(SCATGestureProvider *)self _fingerController];
-  [v5 rectForFingersAtPoints:v4];
+  fingersCopy = fingers;
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  [_fingerController rectForFingersAtPoints:fingersCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1114,9 +1114,9 @@ LABEL_18:
   [(SCATGestureProvider *)self _startingPointForGestures];
   v4 = v3;
   v6 = v5;
-  v7 = [(SCATGestureProvider *)self _fingerController];
-  v8 = [v7 fingerContainerView];
-  [v8 bounds];
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  fingerContainerView = [_fingerController fingerContainerView];
+  [fingerContainerView bounds];
   v13 = [AXPIFingerUtilities defaultPinchLocationsAroundPoint:v4 withinBounds:v6, v9, v10, v11, v12];
   [(SCATGestureProvider *)self _rectForFingers:v13];
   v15 = v14;
@@ -1135,16 +1135,16 @@ LABEL_18:
   return result;
 }
 
-- (CGRect)rectToClearForFingersWithGestureSheet:(BOOL)a3
+- (CGRect)rectToClearForFingersWithGestureSheet:(BOOL)sheet
 {
-  v3 = a3;
+  sheetCopy = sheet;
   [(SCATGestureProvider *)self _startingPointForGestures];
   v6 = v5;
   v8 = v7;
-  v9 = [(SCATGestureProvider *)self _numberOfFingersWithGestureSheet:v3];
-  v10 = [(SCATGestureProvider *)self _fingerController];
-  v11 = [v10 fingerContainerView];
-  [v11 bounds];
+  v9 = [(SCATGestureProvider *)self _numberOfFingersWithGestureSheet:sheetCopy];
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  fingerContainerView = [_fingerController fingerContainerView];
+  [fingerContainerView bounds];
   v16 = [AXPIFingerUtilities defaultLocationsForNumberOfFingers:v9 aroundPoint:v6 withinBounds:v8, v12, v13, v14, v15];
 
   [(SCATGestureProvider *)self _rectForFingers:v16];
@@ -1169,10 +1169,10 @@ LABEL_18:
   if ([(SCATGestureProvider *)self lineGestureState])
   {
     [(SCATGestureProvider *)self setLineGestureState:0];
-    v3 = [(SCATGestureProvider *)self currentSwitchController];
+    currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
     lineGesturePointPicker = self->_lineGesturePointPicker;
 
-    if (v3 == lineGesturePointPicker)
+    if (currentSwitchController == lineGesturePointPicker)
     {
       [(SCATGestureProvider *)self setCurrentSwitchController:0];
       v5 = self->_lineGesturePointPicker;
@@ -1188,38 +1188,38 @@ LABEL_18:
   }
 }
 
-- (id)_promptForLineGesture:(unint64_t)a3
+- (id)_promptForLineGesture:(unint64_t)gesture
 {
-  if (a3 > 4)
+  if (gesture > 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = sub_100042B24(*(&off_1001D5EB8 + a3));
+    v4 = sub_100042B24(*(&off_1001D5EB8 + gesture));
   }
 
   return v4;
 }
 
-- (void)_startPickingNextPointForLineGesture:(unint64_t)a3
+- (void)_startPickingNextPointForLineGesture:(unint64_t)gesture
 {
   if ([(SCATGestureProvider *)self lineGestureState]&& [(SCATGestureProvider *)self lineGestureState]!= 2)
   {
-    v21 = [(SCATGestureProvider *)self lineGestureState];
+    lineGestureState = [(SCATGestureProvider *)self lineGestureState];
     _AXAssert();
   }
 
-  [(SCATGestureProvider *)self setLineGestureState:1, v21];
-  [(SCATGestureProvider *)self setLineGestureType:a3];
+  [(SCATGestureProvider *)self setLineGestureState:1, lineGestureState];
+  [(SCATGestureProvider *)self setLineGestureType:gesture];
   lineGesturePointPicker = self->_lineGesturePointPicker;
   if (!lineGesturePointPicker)
   {
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 assistiveTouchScanningMode];
+    assistiveTouchScanningMode = [v6 assistiveTouchScanningMode];
 
-    if (v7)
+    if (assistiveTouchScanningMode)
     {
       [SCATPointPicker mostSuitablePointPickerWithMenu:self->_menu];
     }
@@ -1237,18 +1237,18 @@ LABEL_18:
     lineGesturePointPicker = self->_lineGesturePointPicker;
   }
 
-  v10 = [(SCATElementManager *)lineGesturePointPicker visualProvider];
-  [v10 setPromptPosition:{-[SCATGestureProvider lineGestureType](self, "lineGestureType") != 4}];
+  visualProvider = [(SCATElementManager *)lineGesturePointPicker visualProvider];
+  [visualProvider setPromptPosition:{-[SCATGestureProvider lineGestureType](self, "lineGestureType") != 4}];
 
-  v11 = [(SCATElementManager *)self->_lineGesturePointPicker visualProvider];
-  v12 = [(SCATGestureProvider *)self _promptForLineGesture:a3];
-  [v11 setPrompt:v12];
+  visualProvider2 = [(SCATElementManager *)self->_lineGesturePointPicker visualProvider];
+  v12 = [(SCATGestureProvider *)self _promptForLineGesture:gesture];
+  [visualProvider2 setPrompt:v12];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SCATElementManager *)self->_lineGesturePointPicker redisplayIfNeeded:0];
-    if (a3 == 3)
+    if (gesture == 3)
     {
       [(SCATGestureProvider *)self _startingPointForGestures];
       v14 = v13;
@@ -1277,28 +1277,28 @@ LABEL_18:
   [(SCATGestureProvider *)self setCurrentSwitchController:v20];
 }
 
-- (void)_startConfirmingLineGestureWithEndpoint:(CGPoint)a3
+- (void)_startConfirmingLineGestureWithEndpoint:(CGPoint)endpoint
 {
-  y = a3.y;
-  x = a3.x;
+  y = endpoint.y;
+  x = endpoint.x;
   if ([(SCATGestureProvider *)self lineGestureState]!= 1)
   {
-    v17 = [(SCATGestureProvider *)self lineGestureState];
+    lineGestureState = [(SCATGestureProvider *)self lineGestureState];
     _AXAssert();
   }
 
-  [(SCATGestureProvider *)self setLineGestureState:2, v17];
+  [(SCATGestureProvider *)self setLineGestureState:2, lineGestureState];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (+[SCATScannerManager sharedManager](SCATScannerManager, "sharedManager"), v6 = objc_claimAutoreleasedReturnValue(), [v6 removePointerPointPickerForMovementNotifications:self->_lineGesturePointPicker], v6, self->_lineGestureType == 3))
   {
     [(SCATPointPicker *)self->_lineGesturePointPicker pressFingersDown:0];
     [(SCATGestureProvider *)self _clearLineGestureState];
-    v7 = [(SCATGestureProvider *)self keyboardSlideGestureCompletion];
+    keyboardSlideGestureCompletion = [(SCATGestureProvider *)self keyboardSlideGestureCompletion];
 
-    if (v7)
+    if (keyboardSlideGestureCompletion)
     {
-      v8 = [(SCATGestureProvider *)self keyboardSlideGestureCompletion];
-      v8[2](v8, 1);
+      keyboardSlideGestureCompletion2 = [(SCATGestureProvider *)self keyboardSlideGestureCompletion];
+      keyboardSlideGestureCompletion2[2](keyboardSlideGestureCompletion2, 1);
 
       [(SCATGestureProvider *)self setKeyboardSlideGestureCompletion:0];
     }
@@ -1328,13 +1328,13 @@ LABEL_18:
   }
 }
 
-- (void)_selectNextPointForKeyboardSlide:(CGPoint)a3
+- (void)_selectNextPointForKeyboardSlide:(CGPoint)slide
 {
-  y = a3.y;
-  x = a3.x;
+  y = slide.y;
+  x = slide.x;
   if ([(SCATGestureProvider *)self lineGestureState]!= 1)
   {
-    v24 = [(SCATGestureProvider *)self lineGestureState];
+    lineGestureState = [(SCATGestureProvider *)self lineGestureState];
     _AXAssert();
   }
 
@@ -1369,11 +1369,11 @@ LABEL_18:
   [v25 setName:@"DRAG_AND_DROP"];
   if (v12)
   {
-    v22 = [(SCATElementManager *)self->_lineGesturePointPicker visualProvider];
-    [v22 setPrompt:0];
+    visualProvider = [(SCATElementManager *)self->_lineGesturePointPicker visualProvider];
+    [visualProvider setPrompt:0];
 
-    v23 = [(SCATGestureProvider *)self _fingerController];
-    [v23 clearAllFingersAnimated:1 endPointForAnimation:{CGPointZero.x, CGPointZero.y}];
+    _fingerController = [(SCATGestureProvider *)self _fingerController];
+    [_fingerController clearAllFingersAnimated:1 endPointForAnimation:{CGPointZero.x, CGPointZero.y}];
 
     [(SCATGestureProvider *)self _startKeyboardSlideGesture:v25];
   }
@@ -1386,60 +1386,60 @@ LABEL_18:
   [(SCATGestureProvider *)self setLastSelectedKeyboardSlidePoint:x, y];
 }
 
-- (void)didChooseFavorites:(id)a3
+- (void)didChooseFavorites:(id)favorites
 {
   v4 = [[SCATModernMenuCustomGesturesSheet alloc] initWithType:0 menu:self->_menu];
   [(SCATModernMenuCustomGesturesSheet *)v4 setDelegate:self];
   [(SCATMenu *)self->_menu pushSheet:v4];
 }
 
-- (void)didChooseFlickGesture:(id)a3
+- (void)didChooseFlickGesture:(id)gesture
 {
   v4 = [(SCATModernMenuSheet *)[SCATModernMenuGestureFlickSheet alloc] initWithMenu:self->_menu];
   [(SCATModernMenuGestureFlickSheet *)v4 setDelegate:self];
   [(SCATMenu *)self->_menu pushSheet:v4];
 }
 
-- (void)didChoosePanGesture:(id)a3
+- (void)didChoosePanGesture:(id)gesture
 {
   v4 = [(SCATModernMenuSheet *)[SCATModernMenuGesturePanSheet alloc] initWithMenu:self->_menu];
   [(SCATModernMenuGesturePanSheet *)v4 setDelegate:self];
   [(SCATMenu *)self->_menu pushSheet:v4];
 }
 
-- (void)didChoosePinchGesture:(id)a3
+- (void)didChoosePinchGesture:(id)gesture
 {
   v4 = [(SCATModernMenuSheet *)[SCATModernMenuGesturePinchSheet alloc] initWithMenu:self->_menu];
   [(SCATModernMenuGesturePinchSheet *)v4 setDelegate:self];
   [(SCATMenu *)self->_menu pushSheet:v4];
 }
 
-- (void)didChooseContinuousSlideGesture:(id)a3 completion:(id)a4
+- (void)didChooseContinuousSlideGesture:(id)gesture completion:(id)completion
 {
-  v6 = a3;
-  [(SCATGestureProvider *)self setKeyboardSlideGestureCompletion:a4];
-  [(SCATGestureProvider *)self didChooseActiveHoldAndDragGesture:v6];
+  gestureCopy = gesture;
+  [(SCATGestureProvider *)self setKeyboardSlideGestureCompletion:completion];
+  [(SCATGestureProvider *)self didChooseActiveHoldAndDragGesture:gestureCopy];
 }
 
-- (void)didChooseSlideGesture:(id)a3 startElement:(id)a4 completion:(id)a5
+- (void)didChooseSlideGesture:(id)gesture startElement:(id)element completion:(id)completion
 {
-  v7 = a5;
-  [(SCATGestureProvider *)self setKeyboardSlideStartElement:a4];
+  completionCopy = completion;
+  [(SCATGestureProvider *)self setKeyboardSlideStartElement:element];
   [(SCATGestureProvider *)self setIsStartingNextKeyboardSlideSegment:0];
   [(SCATGestureProvider *)self _startingPointForGestures];
   [(SCATGestureProvider *)self setKeyboardSlideStartPoint:?];
   [(SCATGestureProvider *)self keyboardSlideStartPoint];
   [(SCATGestureProvider *)self setLastSelectedKeyboardSlidePoint:?];
-  [(SCATGestureProvider *)self setKeyboardSlideGestureCompletion:v7];
+  [(SCATGestureProvider *)self setKeyboardSlideGestureCompletion:completionCopy];
 
   [(SCATGestureProvider *)self _startPickingNextPointForLineGesture:4];
 }
 
-- (void)toggleActiveHoldAndDragGestureAtScreenPoint:(CGPoint)a3 withDisplayID:(unsigned int)a4
+- (void)toggleActiveHoldAndDragGestureAtScreenPoint:(CGPoint)point withDisplayID:(unsigned int)d
 {
-  v4 = *&a4;
-  y = a3.y;
-  x = a3.x;
+  v4 = *&d;
+  y = point.y;
+  x = point.x;
   if ([(SCATGestureProvider *)self lineGestureType]!= 4)
   {
     if ([(SCATGestureProvider *)self lineGestureState]== 1)
@@ -1458,45 +1458,45 @@ LABEL_18:
   }
 }
 
-- (void)didChooseActiveHoldAndDragGesture:(id)a3
+- (void)didChooseActiveHoldAndDragGesture:(id)gesture
 {
-  v4 = [a3 menu];
-  -[SCATGestureProvider setStartingDisplayIDForGestures:](self, "setStartingDisplayIDForGestures:", [v4 currentDisplayID]);
+  menu = [gesture menu];
+  -[SCATGestureProvider setStartingDisplayIDForGestures:](self, "setStartingDisplayIDForGestures:", [menu currentDisplayID]);
 
   [(SCATGestureProvider *)self _startPickingNextPointForLineGesture:3];
 }
 
-- (void)didChooseDoubleTapGesture:(id)a3
+- (void)didChooseDoubleTapGesture:(id)gesture
 {
-  v4 = [a3 menu];
-  -[SCATGestureProvider setStartingDisplayIDForGestures:](self, "setStartingDisplayIDForGestures:", [v4 currentDisplayID]);
+  menu = [gesture menu];
+  -[SCATGestureProvider setStartingDisplayIDForGestures:](self, "setStartingDisplayIDForGestures:", [menu currentDisplayID]);
 
   [(SCATGestureProvider *)self _performTapGestureForDoubleTap:1];
 
   [(SCATGestureProvider *)self _updateVisibleFingers];
 }
 
-- (void)didChooseFingers:(id)a3
+- (void)didChooseFingers:(id)fingers
 {
-  v4 = [a3 menu];
-  -[SCATGestureProvider setStartingDisplayIDForGestures:](self, "setStartingDisplayIDForGestures:", [v4 currentDisplayID]);
+  menu = [fingers menu];
+  -[SCATGestureProvider setStartingDisplayIDForGestures:](self, "setStartingDisplayIDForGestures:", [menu currentDisplayID]);
 
   v5 = [(SCATModernMenuSheet *)[SCATModernMenuGestureFingersSheet alloc] initWithMenu:self->_menu];
   [(SCATModernMenuGestureFingersSheet *)v5 setDelegate:self];
   [(SCATMenu *)self->_menu pushSheet:v5];
 }
 
-- (void)didChooseDrawingGesture:(id)a3
+- (void)didChooseDrawingGesture:(id)gesture
 {
-  v4 = [a3 menu];
-  -[SCATGestureProvider setStartingDisplayIDForGestures:](self, "setStartingDisplayIDForGestures:", [v4 currentDisplayID]);
+  menu = [gesture menu];
+  -[SCATGestureProvider setStartingDisplayIDForGestures:](self, "setStartingDisplayIDForGestures:", [menu currentDisplayID]);
 
   v5 = [SCATGestureDrawingElementManager alloc];
-  v6 = [(SCATGestureProvider *)self _startingPointsAsStrings];
-  v7 = [(SCATGestureDrawingElementManager *)v5 initWithStartingFingerPositions:v6 menu:self->_menu];
+  _startingPointsAsStrings = [(SCATGestureProvider *)self _startingPointsAsStrings];
+  v7 = [(SCATGestureDrawingElementManager *)v5 initWithStartingFingerPositions:_startingPointsAsStrings menu:self->_menu];
 
-  v8 = [(SCATGestureDrawingElementManager *)v7 drawingViewController];
-  [v8 setDelegate:self];
+  drawingViewController = [(SCATGestureDrawingElementManager *)v7 drawingViewController];
+  [drawingViewController setDelegate:self];
 
   [(SCATGestureProvider *)self setCurrentSwitchController:v7];
   drawingElementManager = self->_drawingElementManager;
@@ -1505,59 +1505,59 @@ LABEL_18:
   [(SCATGestureProvider *)self setAlphaForFingers:0.0];
 }
 
-- (void)_didChooseFlickWithAngle:(double)a3 name:(id)a4
+- (void)_didChooseFlickWithAngle:(double)angle name:(id)name
 {
-  [(SCATGestureProvider *)self _performFlickGestureWithAngle:a4 name:a3];
+  [(SCATGestureProvider *)self _performFlickGestureWithAngle:name name:angle];
 
   [(SCATGestureProvider *)self _updateVisibleFingers];
 }
 
-- (void)didChooseForceTouchGesture:(id)a3
+- (void)didChooseForceTouchGesture:(id)gesture
 {
   [(SCATGestureProvider *)self _performForceTouchGesture];
 
   [(SCATGestureProvider *)self _updateVisibleFingers];
 }
 
-- (void)_didChoosePanWithName:(id)a3 selector:(SEL)a4
+- (void)_didChoosePanWithName:(id)name selector:(SEL)selector
 {
-  v6 = a3;
+  nameCopy = name;
   v10 = [(SCATModernMenuSheet *)[SCATModernMenuStopContinuousGestureSheet alloc] initWithMenu:self->_menu];
   [(SCATModernMenuStopContinuousGestureSheet *)v10 setDelegate:self];
   [(SCATMenu *)self->_menu pushSheet:v10];
   [(SCATGestureProvider *)self _prepareToBeginContinuousGesture];
-  v7 = [(SCATGestureProvider *)self _fingerController];
-  v8 = [v7 legacyPressFingersDown];
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  legacyPressFingersDown = [_fingerController legacyPressFingersDown];
 
-  [(SCATGestureProvider *)self _startTellMeWhenTimerWithSelector:a4];
-  [(SCATGestureProvider *)self _initializeContinuousGestureDataWithName:v6 points:v8];
+  [(SCATGestureProvider *)self _startTellMeWhenTimerWithSelector:selector];
+  [(SCATGestureProvider *)self _initializeContinuousGestureDataWithName:nameCopy points:legacyPressFingersDown];
 
-  v9 = [(SCATGestureProvider *)self _startingPointsAsStrings];
-  [(SCATGestureProvider *)self setPanFingerPositions:v9];
+  _startingPointsAsStrings = [(SCATGestureProvider *)self _startingPointsAsStrings];
+  [(SCATGestureProvider *)self setPanFingerPositions:_startingPointsAsStrings];
 }
 
-- (void)_didChoosePinchItemWithName:(id)a3 selector:(SEL)a4
+- (void)_didChoosePinchItemWithName:(id)name selector:(SEL)selector
 {
-  v6 = a3;
+  nameCopy = name;
   v15 = [(SCATModernMenuSheet *)[SCATModernMenuStopContinuousGestureSheet alloc] initWithMenu:self->_menu];
   [(SCATModernMenuStopContinuousGestureSheet *)v15 setDelegate:self];
   [(SCATMenu *)self->_menu pushSheet:v15];
   [(SCATGestureProvider *)self _prepareToBeginContinuousGesture];
-  v7 = [(SCATGestureProvider *)self _fingerController];
-  v8 = [v7 legacyPressFingersDown];
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  legacyPressFingersDown = [_fingerController legacyPressFingersDown];
 
-  [(SCATGestureProvider *)self _startTellMeWhenTimerWithSelector:a4];
-  [(SCATGestureProvider *)self _initializeContinuousGestureDataWithName:v6 points:v8];
+  [(SCATGestureProvider *)self _startTellMeWhenTimerWithSelector:selector];
+  [(SCATGestureProvider *)self _initializeContinuousGestureDataWithName:nameCopy points:legacyPressFingersDown];
 
-  if ([v8 count] != 2)
+  if ([legacyPressFingersDown count] != 2)
   {
     _AXAssert();
   }
 
-  v9 = [v8 objectAtIndex:0];
+  v9 = [legacyPressFingersDown objectAtIndex:0];
   v10 = CGPointFromString(v9);
 
-  v11 = [v8 objectAtIndex:1];
+  v11 = [legacyPressFingersDown objectAtIndex:1];
   CGPointFromString(v11);
 
   AX_CGPointGetMidpointToPoint();
@@ -1569,17 +1569,17 @@ LABEL_18:
   [(SCATGestureProvider *)self pinchFulcrum];
   AX_CGPointGetDistanceToPoint();
   [(SCATGestureProvider *)self setPinchRadius:?];
-  [(SCATGestureProvider *)self setPinchFingerOriginalPositions:v8];
+  [(SCATGestureProvider *)self setPinchFingerOriginalPositions:legacyPressFingersDown];
 }
 
-- (void)didChooseStop:(id)a3
+- (void)didChooseStop:(id)stop
 {
   [(SCATGestureProvider *)self _clearTellMeWhenTimer];
 
   [(SCATGestureProvider *)self _handleCompletedContinuousGesture];
 }
 
-- (CGRect)rectToClearForStop:(id)a3
+- (CGRect)rectToClearForStop:(id)stop
 {
   if ([(SCATGestureProvider *)self isPinching])
   {
@@ -1601,45 +1601,45 @@ LABEL_18:
   return result;
 }
 
-- (id)nameForConfirmationButton:(id)a3
+- (id)nameForConfirmationButton:(id)button
 {
-  v3 = [(SCATGestureProvider *)self lineGestureType];
-  if (v3 > 2)
+  lineGestureType = [(SCATGestureProvider *)self lineGestureType];
+  if (lineGestureType > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = sub_100042B24(*(&off_1001D5EE0 + v3));
+    v4 = sub_100042B24(*(&off_1001D5EE0 + lineGestureType));
   }
 
   return v4;
 }
 
-- (void)didConfirmGesture:(id)a3
+- (void)didConfirmGesture:(id)gesture
 {
   [(SCATGestureProvider *)self _finishLineGesture];
 
   [(SCATGestureProvider *)self _clearLineGestureState];
 }
 
-- (void)didRequestRedoGesture:(id)a3
+- (void)didRequestRedoGesture:(id)gesture
 {
-  v4 = [(SCATGestureProvider *)self lineGestureType];
+  lineGestureType = [(SCATGestureProvider *)self lineGestureType];
 
-  [(SCATGestureProvider *)self _startPickingNextPointForLineGesture:v4];
+  [(SCATGestureProvider *)self _startPickingNextPointForLineGesture:lineGestureType];
 }
 
-- (void)fingerItemsViewController:(id)a3 didChooseNumberOfFingers:(unint64_t)a4
+- (void)fingerItemsViewController:(id)controller didChooseNumberOfFingers:(unint64_t)fingers
 {
-  [(SCATGestureProvider *)self _setNumberOfFingersForGestures:a4];
+  [(SCATGestureProvider *)self _setNumberOfFingersForGestures:fingers];
   menu = self->_menu;
 
   [(SCATMenu *)menu popSheet];
 }
 
-- (id)contextForCustomGestureItemsViewController:(id)a3
+- (id)contextForCustomGestureItemsViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained contentViewForGestureProvider:self];
@@ -1647,79 +1647,79 @@ LABEL_18:
   return v5;
 }
 
-- (id)_repositionedGestureFromOriginalGesture:(id)a3
+- (id)_repositionedGestureFromOriginalGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SCATGestureProvider *)self _fingerController];
-  [v5 midpointOfStartingFingersForGesture:v4];
+  gestureCopy = gesture;
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  [_fingerController midpointOfStartingFingersForGesture:gestureCopy];
   v7 = v6;
   v9 = v8;
 
   [(SCATGestureProvider *)self _startingPointForGestures];
-  v12 = [v4 gestureShiftedByOffset:{v10 - v7, v11 - v9}];
+  v12 = [gestureCopy gestureShiftedByOffset:{v10 - v7, v11 - v9}];
 
   [v12 setShouldPerformAtOriginalLocation:1];
 
   return v12;
 }
 
-- (void)customGestureItemsViewController:(id)a3 didChooseGesture:(id)a4
+- (void)customGestureItemsViewController:(id)controller didChooseGesture:(id)gesture
 {
-  v11 = a4;
-  if ([a3 type] == 1)
+  gestureCopy = gesture;
+  if ([controller type] == 1)
   {
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 assistiveTouchSavedGestures];
-    v8 = [v7 mutableCopy];
+    assistiveTouchSavedGestures = [v6 assistiveTouchSavedGestures];
+    v8 = [assistiveTouchSavedGestures mutableCopy];
 
     if (!v8)
     {
       v8 = [[NSMutableArray alloc] initWithCapacity:1];
     }
 
-    [v8 addObject:v11];
+    [v8 addObject:gestureCopy];
     [v6 setAssistiveTouchSavedGestures:v8];
     [(SCATMenu *)self->_menu popSheet];
   }
 
   else
   {
-    if ([v11 shouldPerformAtOriginalLocation])
+    if ([gestureCopy shouldPerformAtOriginalLocation])
     {
-      v9 = v11;
+      v9 = gestureCopy;
     }
 
     else
     {
-      v10 = [(SCATGestureProvider *)self _repositionedGestureFromOriginalGesture:v11];
+      v10 = [(SCATGestureProvider *)self _repositionedGestureFromOriginalGesture:gestureCopy];
 
       v9 = v10;
     }
 
-    v11 = v9;
+    gestureCopy = v9;
     [(SCATGestureProvider *)self _performGesture:v9];
     [(SCATGestureProvider *)self _updateVisibleFingers];
   }
 }
 
-- (void)didChooseAddRecentInCustomGestureItemsViewController:(id)a3
+- (void)didChooseAddRecentInCustomGestureItemsViewController:(id)controller
 {
   v4 = [[SCATModernMenuCustomGesturesSheet alloc] initWithType:1 menu:self->_menu];
   [(SCATModernMenuCustomGesturesSheet *)v4 setDelegate:self];
   [(SCATMenu *)self->_menu pushSheet:v4];
 }
 
-- (void)didChooseCreateInCustomGestureItemsViewController:(id)a3
+- (void)didChooseCreateInCustomGestureItemsViewController:(id)controller
 {
-  v4 = [(SCATGestureProvider *)self delegate];
-  [v4 didChooseCreateCustomGestureFromGestureProvider:self];
+  delegate = [(SCATGestureProvider *)self delegate];
+  [delegate didChooseCreateCustomGestureFromGestureProvider:self];
 }
 
-- (void)setShouldAllowFingersForContinuousGesture:(BOOL)a3
+- (void)setShouldAllowFingersForContinuousGesture:(BOOL)gesture
 {
-  if (self->_shouldAllowFingersForContinuousGesture != a3)
+  if (self->_shouldAllowFingersForContinuousGesture != gesture)
   {
-    self->_shouldAllowFingersForContinuousGesture = a3;
+    self->_shouldAllowFingersForContinuousGesture = gesture;
     [(SCATGestureProvider *)self _updateShowsFingers];
   }
 }
@@ -1731,10 +1731,10 @@ LABEL_18:
   [(SCATMenu *)self->_menu pushSheet:v5];
   [(SCATGestureProvider *)self setShouldAllowFingersForContinuousGesture:1];
   [(SCATGestureProvider *)self _prepareToBeginContinuousGesture];
-  v3 = [(SCATGestureProvider *)self _fingerController];
-  v4 = [v3 legacyPressFingersDown];
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  legacyPressFingersDown = [_fingerController legacyPressFingersDown];
 
-  [(SCATGestureProvider *)self _initializeContinuousGestureDataWithName:@"TAP_AND_HOLD" points:v4];
+  [(SCATGestureProvider *)self _initializeContinuousGestureDataWithName:@"TAP_AND_HOLD" points:legacyPressFingersDown];
 }
 
 - (void)performTap
@@ -1749,33 +1749,33 @@ LABEL_18:
   v3 = [SCATModernMenuGesturesSheet alloc];
   menu = self->_menu;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 switchControlGesturesMenuItems];
-  v7 = [(SCATModernMenuSimpleSheet *)v3 initWithMenu:menu menuItemDictionaryArray:v6];
+  switchControlGesturesMenuItems = [v5 switchControlGesturesMenuItems];
+  v7 = [(SCATModernMenuSimpleSheet *)v3 initWithMenu:menu menuItemDictionaryArray:switchControlGesturesMenuItems];
 
   return v7;
 }
 
-- (void)replayGesture:(id)a3
+- (void)replayGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   [(SCATGestureProvider *)self _fingerController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10008FF3C;
   v7 = v6[3] = &unk_1001D3750;
   v5 = v7;
-  [v5 performGesture:v4 completion:v6];
+  [v5 performGesture:gestureCopy completion:v6];
 }
 
-- (void)performHoldAtPoint:(CGPoint)a3 isDown:(BOOL)a4
+- (void)performHoldAtPoint:(CGPoint)point isDown:(BOOL)down
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  downCopy = down;
+  y = point.y;
+  x = point.x;
   v8 = SWCHLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100129F14(v4, v8, x, y);
+    sub_100129F14(downCopy, v8, x, y);
   }
 
   v10 = AXSwitchRecipeHoldPointNone[0];
@@ -1786,7 +1786,7 @@ LABEL_18:
   }
 
   [(SCATGestureProvider *)self currentHoldPoint];
-  if (v4)
+  if (downCopy)
   {
     if (v12 != v10 || v13 != v9)
     {
@@ -1796,23 +1796,23 @@ LABEL_18:
         sub_10012A00C(self, v15);
       }
 
-      v16 = [(SCATGestureProvider *)self _fingerController];
-      [v16 liftFingersUpAnimated:1];
+      _fingerController = [(SCATGestureProvider *)self _fingerController];
+      [_fingerController liftFingersUpAnimated:1];
     }
 
     [(SCATGestureProvider *)self setCurrentHoldPoint:x, y];
     [(SCATGestureProvider *)self _setShowsFingers:1];
     [(SCATGestureProvider *)self _updateVisibleFingers];
-    v17 = [(SCATGestureProvider *)self _fingerController];
-    [v17 pressFingersDownAnimated:1];
+    _fingerController2 = [(SCATGestureProvider *)self _fingerController];
+    [_fingerController2 pressFingersDownAnimated:1];
   }
 
   else
   {
     if (v12 == x && v13 == y)
     {
-      v18 = [(SCATGestureProvider *)self _fingerController];
-      [v18 liftFingersUpAnimated:1];
+      _fingerController3 = [(SCATGestureProvider *)self _fingerController];
+      [_fingerController3 liftFingersUpAnimated:1];
 
       [(SCATGestureProvider *)self _setShowsFingers:0];
       [(SCATGestureProvider *)self _updateVisibleFingers];
@@ -1820,49 +1820,49 @@ LABEL_18:
       return;
     }
 
-    v17 = SWCHLogCommon();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+    _fingerController2 = SWCHLogCommon();
+    if (os_log_type_enabled(_fingerController2, OS_LOG_TYPE_DEBUG))
     {
-      sub_100129FC8(v17);
+      sub_100129FC8(_fingerController2);
     }
   }
 }
 
-- (void)_startKeyboardSlideGesture:(id)a3
+- (void)_startKeyboardSlideGesture:(id)gesture
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000901BC;
   v4[3] = &unk_1001D5E98;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(SCATGestureProvider *)v5 _performGesture:v3 withBlock:v4];
+  selfCopy = self;
+  gestureCopy = gesture;
+  v3 = gestureCopy;
+  [(SCATGestureProvider *)selfCopy _performGesture:v3 withBlock:v4];
 }
 
-- (void)_continueKeyboardSlideWithGesture:(id)a3
+- (void)_continueKeyboardSlideWithGesture:(id)gesture
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000902A8;
   v4[3] = &unk_1001D5E98;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(SCATGestureProvider *)v5 _performGesture:v3 withBlock:v4];
+  selfCopy = self;
+  gestureCopy = gesture;
+  v3 = gestureCopy;
+  [(SCATGestureProvider *)selfCopy _performGesture:v3 withBlock:v4];
 }
 
-- (void)_startNextKeyboardSlideGestureSegmentAtPoint:(CGPoint)a3 element:(id)a4
+- (void)_startNextKeyboardSlideGestureSegmentAtPoint:(CGPoint)point element:(id)element
 {
-  y = a3.y;
-  x = a3.x;
-  [(SCATGestureProvider *)self setKeyboardSlideStartElement:a4];
+  y = point.y;
+  x = point.x;
+  [(SCATGestureProvider *)self setKeyboardSlideStartElement:element];
   [(SCATGestureProvider *)self setKeyboardSlideStartPoint:x, y];
   [(SCATGestureProvider *)self setLastSelectedKeyboardSlidePoint:x, y];
-  v9 = [(SCATGestureProvider *)self _fingerController];
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
   v7 = [(SCATGestureProvider *)self _pointStringForPoint:x, y];
   v8 = [AXPIFingerUtilities fingerModelsForPointStrings:v7];
-  [v9 showFingerModels:v8 animated:1 startPointForAnimation:{CGPointZero.x, CGPointZero.y}];
+  [_fingerController showFingerModels:v8 animated:1 startPointForAnimation:{CGPointZero.x, CGPointZero.y}];
 }
 
 - (void)_endKeyboardSlideGestureSegment
@@ -1888,30 +1888,30 @@ LABEL_18:
   v5[1] = 3221225472;
   v5[2] = sub_100090544;
   v6 = v5[3] = &unk_1001D4048;
-  v7 = self;
+  selfCopy = self;
   v4 = v6;
   [v4 endGestureWithCompletion:v5];
 }
 
-- (void)menuWillAppear:(id)a3
+- (void)menuWillAppear:(id)appear
 {
-  v5 = a3;
+  appearCopy = appear;
   if ([(SCATGestureProvider *)self lineGestureState]!= 2)
   {
-    v4 = [v5 screenPoint];
-    -[SCATGestureProvider _updateStartingPointForGesturesWithScreenPoint:forDisplayID:](self, "_updateStartingPointForGesturesWithScreenPoint:forDisplayID:", v4, [v5 currentDisplayID]);
+    screenPoint = [appearCopy screenPoint];
+    -[SCATGestureProvider _updateStartingPointForGesturesWithScreenPoint:forDisplayID:](self, "_updateStartingPointForGesturesWithScreenPoint:forDisplayID:", screenPoint, [appearCopy currentDisplayID]);
   }
 
   [(SCATGestureProvider *)self _updateShowsFingers];
 }
 
-- (void)menuDidAppear:(id)a3
+- (void)menuDidAppear:(id)appear
 {
-  v4 = [a3 currentSheet];
-  v5 = [v4 allowsExitAction];
+  currentSheet = [appear currentSheet];
+  allowsExitAction = [currentSheet allowsExitAction];
 
   v6 = 1.0;
-  if (v5)
+  if (allowsExitAction)
   {
     v6 = 0.5;
   }
@@ -1919,7 +1919,7 @@ LABEL_18:
   [(SCATGestureProvider *)self setAlphaForFingers:v6];
 }
 
-- (void)menuDidDisappear:(id)a3
+- (void)menuDidDisappear:(id)disappear
 {
   if ([(SCATGestureProvider *)self lineGestureState]== 2)
   {
@@ -1945,7 +1945,7 @@ LABEL_18:
   [(SCATGestureProvider *)self _updateShowsFingers];
 }
 
-- (void)menuDidFinishTransition:(id)a3
+- (void)menuDidFinishTransition:(id)transition
 {
   if (![(SCATGestureProvider *)self _isPerformingContinuousGesture])
   {
@@ -1954,26 +1954,26 @@ LABEL_18:
   }
 }
 
-- (void)pointPicker:(id)a3 didPickPoint:(CGPoint)a4
+- (void)pointPicker:(id)picker didPickPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v23 = a3;
-  v7 = [(SCATGestureProvider *)self lineGestureType];
-  if (v7 < 4)
+  y = point.y;
+  x = point.x;
+  pickerCopy = picker;
+  lineGestureType = [(SCATGestureProvider *)self lineGestureType];
+  if (lineGestureType < 4)
   {
     [(SCATGestureProvider *)self _startConfirmingLineGestureWithEndpoint:x, y];
     goto LABEL_17;
   }
 
-  if (v7 == 4)
+  if (lineGestureType == 4)
   {
     v8 = +[SCATScannerManager sharedManager];
-    [v23 pickedPointInDeviceCoordinates];
+    [pickerCopy pickedPointInDeviceCoordinates];
     v9 = [v8 focusContextAtPoint:?];
 
-    v10 = [v9 element];
-    if ([v10 scatIsKeyboardKey])
+    element = [v9 element];
+    if ([element scatIsKeyboardKey])
     {
       [(SCATGestureProvider *)self lastSelectedKeyboardSlidePoint];
       v12 = v11;
@@ -1981,23 +1981,23 @@ LABEL_18:
       [(SCATGestureProvider *)self keyboardSlideStartPoint];
       v16 = v15;
       v18 = v17;
-      v19 = [(SCATGestureProvider *)self keyboardSlideStartElement];
-      v20 = [v10 isEqual:v19];
+      keyboardSlideStartElement = [(SCATGestureProvider *)self keyboardSlideStartElement];
+      v20 = [element isEqual:keyboardSlideStartElement];
 
       if (v20 && v12 == v16 && v14 == v18)
       {
         goto LABEL_16;
       }
 
-      v21 = [v10 scatIdentifier];
-      v22 = [v21 isEqualToString:@"space"];
+      scatIdentifier = [element scatIdentifier];
+      v22 = [scatIdentifier isEqualToString:@"space"];
 
       if (!v22)
       {
         if ([(SCATGestureProvider *)self isStartingNextKeyboardSlideSegment])
         {
           [(SCATGestureProvider *)self setIsStartingNextKeyboardSlideSegment:0];
-          [(SCATGestureProvider *)self _startNextKeyboardSlideGestureSegmentAtPoint:v10 element:x, y];
+          [(SCATGestureProvider *)self _startNextKeyboardSlideGestureSegmentAtPoint:element element:x, y];
         }
 
         else
@@ -2011,13 +2011,13 @@ LABEL_18:
 
     else
     {
-      if (![v10 scatIsAutocorrectCandidate] || !objc_msgSend(v10, "scatIsAXElement"))
+      if (![element scatIsAutocorrectCandidate] || !objc_msgSend(element, "scatIsAXElement"))
       {
         [(SCATGestureProvider *)self _endKeyboardSlideGesture];
         goto LABEL_16;
       }
 
-      [v10 simulateTapWithFingerIndex:2];
+      [element simulateTapWithFingerIndex:2];
     }
 
     [(SCATGestureProvider *)self _endKeyboardSlideGestureSegment];
@@ -2027,15 +2027,15 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)touchDownForDrawingViewController:(id)a3
+- (void)touchDownForDrawingViewController:(id)controller
 {
-  v4 = [(SCATGestureProvider *)self _fingerController];
-  v5 = [v4 legacyPressFingersDown];
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  legacyPressFingersDown = [_fingerController legacyPressFingersDown];
 
-  [(SCATGestureProvider *)self _initializeContinuousGestureDataWithName:@"DRAWING" points:v5];
+  [(SCATGestureProvider *)self _initializeContinuousGestureDataWithName:@"DRAWING" points:legacyPressFingersDown];
 }
 
-- (void)touchUpForDrawingViewController:(id)a3
+- (void)touchUpForDrawingViewController:(id)controller
 {
   if ([(SCATGestureProvider *)self _isPerformingContinuousGesture])
   {
@@ -2044,21 +2044,21 @@ LABEL_17:
   }
 }
 
-- (BOOL)drawingViewController:(id)a3 moveFingersToPoints:(id)a4
+- (BOOL)drawingViewController:(id)controller moveFingersToPoints:(id)points
 {
-  v5 = a4;
-  v6 = [(SCATGestureProvider *)self _fingerController];
-  v7 = [v6 moveFingersToPoints:v5];
+  pointsCopy = points;
+  _fingerController = [(SCATGestureProvider *)self _fingerController];
+  v7 = [_fingerController moveFingersToPoints:pointsCopy];
 
   if (v7 && [(SCATGestureProvider *)self _isPerformingContinuousGesture])
   {
-    [(SCATGestureProvider *)self _addPointsToContinuousGestureData:v5];
+    [(SCATGestureProvider *)self _addPointsToContinuousGestureData:pointsCopy];
   }
 
   return v7;
 }
 
-- (void)exitDrawingViewController:(id)a3
+- (void)exitDrawingViewController:(id)controller
 {
   drawingElementManager = self->_drawingElementManager;
   if (drawingElementManager)
@@ -2069,28 +2069,28 @@ LABEL_17:
   }
 }
 
-- (void)drawingViewController:(id)a3 shouldResetScanningFromElement:(id)a4
+- (void)drawingViewController:(id)controller shouldResetScanningFromElement:(id)element
 {
-  v9 = a4;
-  v6 = [a3 drawingElementManager];
-  v7 = [(SCATGestureProvider *)self currentSwitchController];
+  elementCopy = element;
+  drawingElementManager = [controller drawingElementManager];
+  currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
 
-  if (v6 == v7)
+  if (drawingElementManager == currentSwitchController)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained gestureProvider:self shouldResetScanningFromElement:v9];
+    [WeakRetained gestureProvider:self shouldResetScanningFromElement:elementCopy];
   }
 }
 
-- (void)setCurrentSwitchController:(id)a3
+- (void)setCurrentSwitchController:(id)controller
 {
-  v5 = a3;
-  if (self->_currentSwitchController != v5)
+  controllerCopy = controller;
+  if (self->_currentSwitchController != controllerCopy)
   {
-    v7 = v5;
-    if (v5)
+    v7 = controllerCopy;
+    if (controllerCopy)
     {
-      objc_storeStrong(&self->_currentSwitchController, a3);
+      objc_storeStrong(&self->_currentSwitchController, controller);
       [(SCATGestureProvider *)self _requestSwitchControllerPrivileges];
     }
 
@@ -2102,7 +2102,7 @@ LABEL_17:
     }
 
     [(SCATGestureProvider *)self _updateShowsFingers];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
@@ -2120,151 +2120,151 @@ LABEL_17:
   [WeakRetained shouldEndScanningGestureProvider:self];
 }
 
-- (id)firstElementWithOptions:(int *)a3
+- (id)firstElementWithOptions:(int *)options
 {
-  v4 = [(SCATGestureProvider *)self currentSwitchController];
-  v5 = [v4 firstElementWithOptions:a3];
+  currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
+  v5 = [currentSwitchController firstElementWithOptions:options];
 
   return v5;
 }
 
-- (id)lastElementWithOptions:(int *)a3
+- (id)lastElementWithOptions:(int *)options
 {
-  v4 = [(SCATGestureProvider *)self currentSwitchController];
-  v5 = [v4 lastElementWithOptions:a3];
+  currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
+  v5 = [currentSwitchController lastElementWithOptions:options];
 
   return v5;
 }
 
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options
 {
-  v8 = a3;
-  v9 = [(SCATGestureProvider *)self currentSwitchController];
-  v10 = [v9 elementAfter:v8 didWrap:a4 options:a5];
+  afterCopy = after;
+  currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
+  v10 = [currentSwitchController elementAfter:afterCopy didWrap:wrap options:options];
 
   return v10;
 }
 
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options
 {
-  v8 = a3;
-  v9 = [(SCATGestureProvider *)self currentSwitchController];
-  v10 = [v9 elementBefore:v8 didWrap:a4 options:a5];
+  beforeCopy = before;
+  currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
+  v10 = [currentSwitchController elementBefore:beforeCopy didWrap:wrap options:options];
 
   return v10;
 }
 
-- (void)scannerWillMakeManagerActive:(id)a3
+- (void)scannerWillMakeManagerActive:(id)active
 {
-  v4 = a3;
-  v5 = [(SCATGestureProvider *)self currentSwitchController];
-  [v5 scannerWillMakeManagerActive:v4];
+  activeCopy = active;
+  currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
+  [currentSwitchController scannerWillMakeManagerActive:activeCopy];
 }
 
-- (void)scannerWillMakeManagerActive:(id)a3 forDisplayID:(unsigned int)a4
+- (void)scannerWillMakeManagerActive:(id)active forDisplayID:(unsigned int)d
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [(SCATGestureProvider *)self currentSwitchController];
-  [v7 scannerWillMakeManagerActive:v6 forDisplayID:v4];
+  v4 = *&d;
+  activeCopy = active;
+  currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
+  [currentSwitchController scannerWillMakeManagerActive:activeCopy forDisplayID:v4];
 }
 
-- (void)scannerWillMakeManagerInactive:(id)a3 activeElementManager:(id)a4
+- (void)scannerWillMakeManagerInactive:(id)inactive activeElementManager:(id)manager
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SCATGestureProvider *)self currentSwitchController];
-  [v8 scannerWillMakeManagerInactive:v7 activeElementManager:v6];
+  managerCopy = manager;
+  inactiveCopy = inactive;
+  currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
+  [currentSwitchController scannerWillMakeManagerInactive:inactiveCopy activeElementManager:managerCopy];
 }
 
 - (BOOL)shouldKeepScannerAwake
 {
-  v2 = [(SCATGestureProvider *)self currentSwitchController];
-  v3 = [v2 shouldKeepScannerAwake];
+  currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
+  shouldKeepScannerAwake = [currentSwitchController shouldKeepScannerAwake];
 
-  return v3;
+  return shouldKeepScannerAwake;
 }
 
 - (BOOL)allowsDwellSelection
 {
-  v2 = [(SCATGestureProvider *)self currentSwitchController];
-  v3 = [v2 allowsDwellSelection];
+  currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
+  allowsDwellSelection = [currentSwitchController allowsDwellSelection];
 
-  return v3;
+  return allowsDwellSelection;
 }
 
 - (BOOL)allowsDwellScanningToAbortAfterTimeout
 {
-  v2 = [(SCATGestureProvider *)self currentSwitchController];
-  v3 = [v2 allowsDwellScanningToAbortAfterTimeout];
+  currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
+  allowsDwellScanningToAbortAfterTimeout = [currentSwitchController allowsDwellScanningToAbortAfterTimeout];
 
-  return v3;
+  return allowsDwellScanningToAbortAfterTimeout;
 }
 
-- (BOOL)handleInputAction:(id)a3 withElement:(id)a4
+- (BOOL)handleInputAction:(id)action withElement:(id)element
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SCATGestureProvider *)self currentSwitchController];
-  v9 = [v8 handleInputAction:v7 withElement:v6];
+  elementCopy = element;
+  actionCopy = action;
+  currentSwitchController = [(SCATGestureProvider *)self currentSwitchController];
+  v9 = [currentSwitchController handleInputAction:actionCopy withElement:elementCopy];
 
   return v9;
 }
 
-- (void)driver:(id)a3 willFocusOnContext:(id)a4
+- (void)driver:(id)driver willFocusOnContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = SCATGestureProvider;
-  v6 = a4;
-  v7 = a3;
-  [(SCATElementManager *)&v9 driver:v7 willFocusOnContext:v6];
+  contextCopy = context;
+  driverCopy = driver;
+  [(SCATElementManager *)&v9 driver:driverCopy willFocusOnContext:contextCopy];
   v8 = [(SCATGestureProvider *)self currentSwitchController:v9.receiver];
-  [v8 driver:v7 willFocusOnContext:v6];
+  [v8 driver:driverCopy willFocusOnContext:contextCopy];
 }
 
-- (void)driver:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5
+- (void)driver:(id)driver didFocusOnContext:(id)context oldContext:(id)oldContext
 {
   v12.receiver = self;
   v12.super_class = SCATGestureProvider;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(SCATElementManager *)&v12 driver:v10 didFocusOnContext:v9 oldContext:v8];
+  oldContextCopy = oldContext;
+  contextCopy = context;
+  driverCopy = driver;
+  [(SCATElementManager *)&v12 driver:driverCopy didFocusOnContext:contextCopy oldContext:oldContextCopy];
   v11 = [(SCATGestureProvider *)self currentSwitchController:v12.receiver];
-  [v11 driver:v10 didFocusOnContext:v9 oldContext:v8];
+  [v11 driver:driverCopy didFocusOnContext:contextCopy oldContext:oldContextCopy];
 }
 
-- (void)driver:(id)a3 willUnfocusFromContext:(id)a4
+- (void)driver:(id)driver willUnfocusFromContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = SCATGestureProvider;
-  v6 = a4;
-  v7 = a3;
-  [(SCATElementManager *)&v9 driver:v7 willUnfocusFromContext:v6];
+  contextCopy = context;
+  driverCopy = driver;
+  [(SCATElementManager *)&v9 driver:driverCopy willUnfocusFromContext:contextCopy];
   v8 = [(SCATGestureProvider *)self currentSwitchController:v9.receiver];
-  [v8 driver:v7 willUnfocusFromContext:v6];
+  [v8 driver:driverCopy willUnfocusFromContext:contextCopy];
 }
 
-- (void)fingersElement:(id)a3 didBecomeFocused:(BOOL)a4
+- (void)fingersElement:(id)element didBecomeFocused:(BOOL)focused
 {
-  if (a4)
+  if (focused)
   {
-    [(SCATGestureProvider *)self setAlphaForFingers:a3, 1.0];
+    [(SCATGestureProvider *)self setAlphaForFingers:element, 1.0];
   }
 
   else
   {
-    [(SCATGestureProvider *)self setAlphaForFingers:a3, 0.5];
+    [(SCATGestureProvider *)self setAlphaForFingers:element, 0.5];
   }
 }
 
-- (void)systemApertureLayoutDidChange:(id)a3
+- (void)systemApertureLayoutDidChange:(id)change
 {
-  v24 = a3;
-  if ([v24 count] == 1)
+  changeCopy = change;
+  if ([changeCopy count] == 1)
   {
     p_foreheadRect = &self->_foreheadRect;
-    v5 = [v24 objectAtIndexedSubscript:0];
+    v5 = [changeCopy objectAtIndexedSubscript:0];
     [v5 CGRectValue];
     p_foreheadRect->origin.x = v6;
     p_foreheadRect->origin.y = v7;
@@ -2274,19 +2274,19 @@ LABEL_17:
 
   else
   {
-    if ([v24 count] != 2)
+    if ([changeCopy count] != 2)
     {
       goto LABEL_6;
     }
 
     v10 = &self->_foreheadRect;
-    v5 = [v24 objectAtIndexedSubscript:0];
+    v5 = [changeCopy objectAtIndexedSubscript:0];
     [v5 CGRectValue];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [v24 objectAtIndexedSubscript:1];
+    v19 = [changeCopy objectAtIndexedSubscript:1];
     [v19 CGRectValue];
     v27.origin.x = v20;
     v27.origin.y = v21;

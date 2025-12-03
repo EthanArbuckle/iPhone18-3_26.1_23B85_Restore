@@ -4,24 +4,24 @@
 - (CGPoint)upperLeftPoint;
 - (CGPoint)upperRightPoint;
 - (CGSize)size;
-- (CHRectangleSketchRecognitionResult)initWithCoder:(id)a3;
-- (CHRectangleSketchRecognitionResult)initWithString:(id)a3 score:(double)a4 rotation:(double)a5 upperLeftPoint:(CGPoint)a6 upperRightPoint:(CGPoint)a7 lowerLeftPoint:(CGPoint)a8 lowerRightPoint:(CGPoint)a9 size:(CGSize)a10;
-- (void)encodeWithCoder:(id)a3;
+- (CHRectangleSketchRecognitionResult)initWithCoder:(id)coder;
+- (CHRectangleSketchRecognitionResult)initWithString:(id)string score:(double)score rotation:(double)rotation upperLeftPoint:(CGPoint)point upperRightPoint:(CGPoint)rightPoint lowerLeftPoint:(CGPoint)leftPoint lowerRightPoint:(CGPoint)lowerRightPoint size:(CGSize)self0;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHRectangleSketchRecognitionResult
 
-- (CHRectangleSketchRecognitionResult)initWithString:(id)a3 score:(double)a4 rotation:(double)a5 upperLeftPoint:(CGPoint)a6 upperRightPoint:(CGPoint)a7 lowerLeftPoint:(CGPoint)a8 lowerRightPoint:(CGPoint)a9 size:(CGSize)a10
+- (CHRectangleSketchRecognitionResult)initWithString:(id)string score:(double)score rotation:(double)rotation upperLeftPoint:(CGPoint)point upperRightPoint:(CGPoint)rightPoint lowerLeftPoint:(CGPoint)leftPoint lowerRightPoint:(CGPoint)lowerRightPoint size:(CGSize)self0
 {
-  y = a8.y;
-  x = a8.x;
-  v12 = a7.y;
-  v13 = a7.x;
-  v14 = a6.y;
-  v15 = a6.x;
+  y = leftPoint.y;
+  x = leftPoint.x;
+  v12 = rightPoint.y;
+  v13 = rightPoint.x;
+  v14 = point.y;
+  v15 = point.x;
   v17.receiver = self;
   v17.super_class = CHRectangleSketchRecognitionResult;
-  result = [(CHSketchRecognitionResult *)&v17 initWithString:a3 score:*&a9.x rotation:*&a9.y, *&a10.width, *&a10.height, a4, a5];
+  result = [(CHSketchRecognitionResult *)&v17 initWithString:string score:*&lowerRightPoint.x rotation:*&lowerRightPoint.y, *&size.width, *&size.height, score, rotation];
   if (result)
   {
     result->_upperLeftPoint.x = v15;
@@ -39,16 +39,16 @@
   return result;
 }
 
-- (CHRectangleSketchRecognitionResult)initWithCoder:(id)a3
+- (CHRectangleSketchRecognitionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = CHRectangleSketchRecognitionResult;
-  v5 = [(CHSketchRecognitionResult *)&v41 initWithCoder:v4];
+  v5 = [(CHSketchRecognitionResult *)&v41 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
-    v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"upperLeftPoint", v8, v9);
+    v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"upperLeftPoint", v8, v9);
     sub_1837A97C4(v10, &v42);
     if (v43 - v42 == 8)
     {
@@ -72,7 +72,7 @@ LABEL_6:
     v5->_upperLeftPoint.y = v12;
 
     v13 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v14, v13, @"upperRightPoint", v15, v16);
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v14, v13, @"upperRightPoint", v15, v16);
     sub_1837A97C4(v17, &v42);
     if (v43 - v42 == 8)
     {
@@ -96,7 +96,7 @@ LABEL_10:
     v5->_upperRightPoint.y = v19;
 
     v20 = objc_opt_class();
-    v24 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v21, v20, @"lowerLeftPoint", v22, v23);
+    v24 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v21, v20, @"lowerLeftPoint", v22, v23);
     sub_1837A97C4(v24, &v42);
     if (v43 - v42 == 8)
     {
@@ -120,7 +120,7 @@ LABEL_14:
     v5->_lowerLeftPoint.y = v26;
 
     v27 = objc_opt_class();
-    v31 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v28, v27, @"lowerRightPoint", v29, v30);
+    v31 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v28, v27, @"lowerRightPoint", v29, v30);
     sub_1837A97C4(v31, &v42);
     if (v43 - v42 == 8)
     {
@@ -139,7 +139,7 @@ LABEL_18:
         v5->_lowerRightPoint.y = v33;
 
         v34 = objc_opt_class();
-        v38 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v35, v34, @"size", v36, v37);
+        v38 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v35, v34, @"size", v36, v37);
         v5->_size.width = sub_1837A9AC8(v38);
         v5->_size.height = v39;
 
@@ -156,26 +156,26 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v55.receiver = self;
   v55.super_class = CHRectangleSketchRecognitionResult;
-  v5 = [(CHSketchRecognitionResult *)&v55 encodeWithCoder:v4];
+  v5 = [(CHSketchRecognitionResult *)&v55 encodeWithCoder:coderCopy];
   v11 = sub_1837A9A94(self->_upperLeftPoint.x, self->_upperLeftPoint.y, v5, v6, v7, v8, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v4, v12, v11, @"upperLeftPoint", v13, v14);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"upperLeftPoint", v13, v14);
 
   v21 = sub_1837A9A94(self->_upperRightPoint.x, self->_upperRightPoint.y, v15, v16, v17, v18, v19, v20);
-  objc_msgSend_encodeObject_forKey_(v4, v22, v21, @"upperRightPoint", v23, v24);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v22, v21, @"upperRightPoint", v23, v24);
 
   v31 = sub_1837A9A94(self->_lowerLeftPoint.x, self->_lowerLeftPoint.y, v25, v26, v27, v28, v29, v30);
-  objc_msgSend_encodeObject_forKey_(v4, v32, v31, @"lowerLeftPoint", v33, v34);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v32, v31, @"lowerLeftPoint", v33, v34);
 
   v41 = sub_1837A9A94(self->_lowerRightPoint.x, self->_lowerRightPoint.y, v35, v36, v37, v38, v39, v40);
-  objc_msgSend_encodeObject_forKey_(v4, v42, v41, @"lowerRightPoint", v43, v44);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v42, v41, @"lowerRightPoint", v43, v44);
 
   v51 = sub_1837A9A94(self->_size.width, self->_size.height, v45, v46, v47, v48, v49, v50);
-  objc_msgSend_encodeObject_forKey_(v4, v52, v51, @"size", v53, v54);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v52, v51, @"size", v53, v54);
 }
 
 - (CGPoint)upperLeftPoint

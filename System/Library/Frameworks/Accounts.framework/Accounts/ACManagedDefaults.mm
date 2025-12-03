@@ -1,8 +1,8 @@
 @interface ACManagedDefaults
 + (id)sharedInstance;
-- (id)valueForManagedDefault:(id)a3;
-- (void)_writeManagedDefaults:(id)a3;
-- (void)setValue:(id)a3 forManagedDefault:(id)a4;
+- (id)valueForManagedDefault:(id)default;
+- (void)_writeManagedDefaults:(id)defaults;
+- (void)setValue:(id)value forManagedDefault:(id)default;
 @end
 
 @implementation ACManagedDefaults
@@ -26,7 +26,7 @@ uint64_t __35__ACManagedDefaults_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_writeManagedDefaults:(id)a3
+- (void)_writeManagedDefaults:(id)defaults
 {
   _CFPreferencesWriteManagedDomainForUser();
   _CFPreferencesPostValuesChangedInDomains();
@@ -34,11 +34,11 @@ uint64_t __35__ACManagedDefaults_sharedInstance__block_invoke()
   MEMORY[0x1EEDB8420](&unk_1F21188E0);
 }
 
-- (id)valueForManagedDefault:(id)a3
+- (id)valueForManagedDefault:(id)default
 {
-  v4 = a3;
-  v5 = [(ACManagedDefaults *)self _readManagedDefaults];
-  v6 = [v5 objectForKey:v4];
+  defaultCopy = default;
+  _readManagedDefaults = [(ACManagedDefaults *)self _readManagedDefaults];
+  v6 = [_readManagedDefaults objectForKey:defaultCopy];
 
   if (v6)
   {
@@ -63,16 +63,16 @@ LABEL_8:
   return v8;
 }
 
-- (void)setValue:(id)a3 forManagedDefault:(id)a4
+- (void)setValue:(id)value forManagedDefault:(id)default
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ACManagedDefaults *)self _readManagedDefaults];
-  v8 = [v7 mutableCopy];
+  valueCopy = value;
+  defaultCopy = default;
+  _readManagedDefaults = [(ACManagedDefaults *)self _readManagedDefaults];
+  v8 = [_readManagedDefaults mutableCopy];
 
-  if ([v9 intValue] == -1)
+  if ([valueCopy intValue] == -1)
   {
-    [v8 removeObjectForKey:v6];
+    [v8 removeObjectForKey:defaultCopy];
   }
 
   else
@@ -82,7 +82,7 @@ LABEL_8:
       v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
     }
 
-    [v8 setValue:v9 forKey:v6];
+    [v8 setValue:valueCopy forKey:defaultCopy];
   }
 
   [(ACManagedDefaults *)self _writeManagedDefaults:v8];

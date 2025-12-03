@@ -1,5 +1,5 @@
 @interface PUEditingExtensionUndoProxyExtensionSide
-- (PUEditingExtensionUndoProxyExtensionSide)initWithEndpoint:(id)a3;
+- (PUEditingExtensionUndoProxyExtensionSide)initWithEndpoint:(id)endpoint;
 - (PUEditingExtensionUndoTarget)target;
 - (id)remoteObject;
 - (void)performRedo;
@@ -17,33 +17,33 @@
 
 - (id)remoteObject
 {
-  v2 = [(PUEditingExtensionUndoProxyExtensionSide *)self connection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_107_330];
+  connection = [(PUEditingExtensionUndoProxyExtensionSide *)self connection];
+  v3 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_107_330];
 
   return v3;
 }
 
 - (void)performRedo
 {
-  v2 = [(PUEditingExtensionUndoProxyExtensionSide *)self target];
-  [v2 performRedo];
+  target = [(PUEditingExtensionUndoProxyExtensionSide *)self target];
+  [target performRedo];
 }
 
 - (void)performUndo
 {
-  v2 = [(PUEditingExtensionUndoProxyExtensionSide *)self target];
-  [v2 performUndo];
+  target = [(PUEditingExtensionUndoProxyExtensionSide *)self target];
+  [target performUndo];
 }
 
-- (PUEditingExtensionUndoProxyExtensionSide)initWithEndpoint:(id)a3
+- (PUEditingExtensionUndoProxyExtensionSide)initWithEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v11.receiver = self;
   v11.super_class = PUEditingExtensionUndoProxyExtensionSide;
   v5 = [(PUEditingExtensionUndoProxyExtensionSide *)&v11 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v4];
+    v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
     connection = v5->_connection;
     v5->_connection = v6;
 

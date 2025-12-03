@@ -1,12 +1,12 @@
 @interface __stdlib_ReturnAutoreleasedDummy
-- (id)returnsAutoreleased:(id)a3;
+- (id)returnsAutoreleased:(id)autoreleased;
 @end
 
 @implementation __stdlib_ReturnAutoreleasedDummy
 
-- (id)returnsAutoreleased:(id)a3
+- (id)returnsAutoreleased:(id)autoreleased
 {
-  v3 = swift_unknownObjectRetain(a3);
+  v3 = swift_unknownObjectRetain(autoreleased);
 
   return v3;
 }

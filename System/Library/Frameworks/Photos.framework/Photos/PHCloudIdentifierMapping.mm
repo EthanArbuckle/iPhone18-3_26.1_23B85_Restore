@@ -1,21 +1,21 @@
 @interface PHCloudIdentifierMapping
-- (PHCloudIdentifierMapping)initWithCloudIdentifier:(id)a3 error:(id)a4;
+- (PHCloudIdentifierMapping)initWithCloudIdentifier:(id)identifier error:(id)error;
 @end
 
 @implementation PHCloudIdentifierMapping
 
-- (PHCloudIdentifierMapping)initWithCloudIdentifier:(id)a3 error:(id)a4
+- (PHCloudIdentifierMapping)initWithCloudIdentifier:(id)identifier error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = PHCloudIdentifierMapping;
   v9 = [(PHCloudIdentifierMapping *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cloudIdentifier, a3);
-    objc_storeStrong(&v10->_error, a4);
+    objc_storeStrong(&v9->_cloudIdentifier, identifier);
+    objc_storeStrong(&v10->_error, error);
   }
 
   return v10;

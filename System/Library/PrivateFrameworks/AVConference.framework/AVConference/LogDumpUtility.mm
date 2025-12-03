@@ -1,22 +1,22 @@
 @interface LogDumpUtility
 + (BOOL)shouldCleanupFiles;
-+ (id)logFilename:(int)a3 dumpID:(id)a4 logNameType:(int)a5 prefix:(id)a6 suffix:(id)a7;
-+ (id)newLogDumpListSortedByTimestamp:(id)a3;
-+ (void)removeLogDumpsInDirectory:(id)a3 olderThan:(id)a4;
++ (id)logFilename:(int)filename dumpID:(id)d logNameType:(int)type prefix:(id)prefix suffix:(id)suffix;
++ (id)newLogDumpListSortedByTimestamp:(id)timestamp;
++ (void)removeLogDumpsInDirectory:(id)directory olderThan:(id)than;
 + (void)removeOldFilesInDefaultLogDumpPath;
 @end
 
 @implementation LogDumpUtility
 
-+ (id)logFilename:(int)a3 dumpID:(id)a4 logNameType:(int)a5 prefix:(id)a6 suffix:(id)a7
++ (id)logFilename:(int)filename dumpID:(id)d logNameType:(int)type prefix:(id)prefix suffix:(id)suffix
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  if (a3 == 2)
+  if (filename == 2)
   {
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v17[0] = 0xAAAAAAAAAAAAAAAALL;
-    v11 = @"/var/mobile/tmp/com.apple.audiomxd/AudioCapture/AVC/";
-    if (([v12 fileExistsAtPath:@"/var/mobile/tmp/com.apple.audiomxd/AudioCapture/AVC/"] & 1) == 0 && (objc_msgSend(v12, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", @"/var/mobile/tmp/com.apple.audiomxd/AudioCapture/AVC/", 1, 0, v17) & 1) == 0 && VRTraceGetErrorLogLevelForModule() >= 3)
+    getDefaultLogDumpPath = @"/var/mobile/tmp/com.apple.audiomxd/AudioCapture/AVC/";
+    if (([defaultManager fileExistsAtPath:@"/var/mobile/tmp/com.apple.audiomxd/AudioCapture/AVC/"] & 1) == 0 && (objc_msgSend(defaultManager, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", @"/var/mobile/tmp/com.apple.audiomxd/AudioCapture/AVC/", 1, 0, v17) & 1) == 0 && VRTraceGetErrorLogLevelForModule() >= 3)
     {
       v13 = VRTraceErrorLogLevelToCSTR();
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
@@ -24,36 +24,36 @@
         [LogDumpUtility logFilename:v13 dumpID:v17 logNameType:? prefix:? suffix:?];
       }
 
-      v11 = @"/var/mobile/tmp/com.apple.audiomxd/AudioCapture/AVC/";
+      getDefaultLogDumpPath = @"/var/mobile/tmp/com.apple.audiomxd/AudioCapture/AVC/";
     }
   }
 
-  else if (a3)
+  else if (filename)
   {
-    v11 = &stru_1F570E008;
+    getDefaultLogDumpPath = &stru_1F570E008;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E6986628] getDefaultLogDumpPath];
+    getDefaultLogDumpPath = [MEMORY[0x1E6986628] getDefaultLogDumpPath];
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
     memset(v17, 170, 20);
     VRLogfile_CreateTimeAndDateString(v17, 20);
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s-%@-%@%@", v17, a4, a6, a7];
+    suffix = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s-%@-%@%@", v17, d, prefix, suffix];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@%@", a4, a6, a7, v16];
+    suffix = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@%@", d, prefix, suffix, v16];
   }
 
-  return [(__CFString *)v11 stringByAppendingString:v14];
+  return [(__CFString *)getDefaultLogDumpPath stringByAppendingString:suffix];
 }
 
-+ (id)newLogDumpListSortedByTimestamp:(id)a3
++ (id)newLogDumpListSortedByTimestamp:(id)timestamp
 {
   v37 = *MEMORY[0x1E69E9840];
   v21 = 0;
@@ -66,7 +66,7 @@
       v6 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        v17 = [v21 localizedDescription];
+        localizedDescription = [v21 localizedDescription];
         *buf = 136316162;
         v28 = v5;
         v29 = 2080;
@@ -74,9 +74,9 @@
         v31 = 1024;
         v32 = 438;
         v33 = 2112;
-        v34 = a3;
+        timestampCopy = timestamp;
         v35 = 2112;
-        v36 = v17;
+        v36 = localizedDescription;
         _os_log_error_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_ERROR, " [%s] %s:%d failed to read directory %@ (%@)", buf, 0x30u);
       }
     }
@@ -107,7 +107,7 @@
         v11 = *(*(&v23 + 1) + 8 * v10);
         if (v11 && ([objc_msgSend(*(*(&v23 + 1) + 8 * v10) "lowercaseString")] & 1) == 0)
         {
-          v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", a3, v11];
+          v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", timestamp, v11];
           v13 = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
           if (!v21)
           {
@@ -145,12 +145,12 @@ uint64_t __50__LogDumpUtility_newLogDumpListSortedByTimestamp___block_invoke(uin
   return [v7 compare:v8];
 }
 
-+ (void)removeLogDumpsInDirectory:(id)a3 olderThan:(id)a4
++ (void)removeLogDumpsInDirectory:(id)directory olderThan:(id)than
 {
   v80 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (directory)
   {
-    v6 = [objc_opt_class() newLogDumpListSortedByTimestamp:a3];
+    v6 = [objc_opt_class() newLogDumpListSortedByTimestamp:directory];
     if (v6)
     {
       v7 = v6;
@@ -167,14 +167,14 @@ uint64_t __50__LogDumpUtility_newLogDumpListSortedByTimestamp___block_invoke(uin
           v58 = 1024;
           v59 = 474;
           v60 = 2112;
-          v61 = a3;
+          directoryCopy = directory;
           v62 = 2048;
           v63 = [v7 count];
           _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d directory=%@, fileList.count=%lu", buf, 0x30u);
         }
       }
 
-      v47 = a3;
+      directoryCopy2 = directory;
       v78 = 0u;
       v79 = 0u;
       v76 = 0u;
@@ -223,7 +223,7 @@ uint64_t __50__LogDumpUtility_newLogDumpListSortedByTimestamp___block_invoke(uin
           v58 = 1024;
           v59 = 480;
           v60 = 2048;
-          v61 = v13;
+          directoryCopy = v13;
           _os_log_impl(&dword_1DB56E000, v18, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Total size: %llu", buf, 0x26u);
         }
       }
@@ -237,16 +237,16 @@ uint64_t __50__LogDumpUtility_newLogDumpListSortedByTimestamp___block_invoke(uin
       v52 = [v7 countByEnumeratingWithState:&v71 objects:v70 count:16];
       if (v52)
       {
-        v19 = 0;
+        integerValue = 0;
         v50 = *MEMORY[0x1E696A350];
         v51 = *v72;
         v48 = *v11;
-        v46 = a4;
+        thanCopy = than;
         do
         {
           for (j = 0; j != v52; ++j)
           {
-            v21 = v19;
+            v21 = integerValue;
             if (*v72 != v51)
             {
               objc_enumerationMutation(v7);
@@ -256,27 +256,27 @@ uint64_t __50__LogDumpUtility_newLogDumpListSortedByTimestamp___block_invoke(uin
             v23 = [v22 objectAtIndexedSubscript:0];
             v24 = [objc_msgSend(v22 objectAtIndexedSubscript:{1), "objectForKeyedSubscript:", v50}];
             v25 = v24;
-            if (!a4 || [v24 compare:a4] == -1)
+            if (!than || [v24 compare:than] == -1)
             {
               v29 = [objc_msgSend(objc_msgSend(v22 objectAtIndexedSubscript:{1), "objectForKeyedSubscript:", v48), "integerValue"}];
               v30 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:v23];
               [v49 replaceMatchesInString:v30 options:0 range:0 withTemplate:{objc_msgSend(v23, "length"), @"$2"}];
               if (v30)
               {
-                v19 = [v30 integerValue];
+                integerValue = [v30 integerValue];
               }
 
               else
               {
-                v19 = 0;
+                integerValue = 0;
               }
 
-              if (v13 <= 0xF4240 && v19 && (!v21 || v19 != v21))
+              if (v13 <= 0xF4240 && integerValue && (!v21 || integerValue != v21))
               {
                 goto LABEL_53;
               }
 
-              v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", v47, v23];
+              v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", directoryCopy2, v23];
               if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")])
               {
                 v32 = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
@@ -296,13 +296,13 @@ uint64_t __50__LogDumpUtility_newLogDumpListSortedByTimestamp___block_invoke(uin
                       v58 = 1024;
                       v59 = 503;
                       v60 = 2112;
-                      v61 = v23;
+                      directoryCopy = v23;
                       v62 = 2112;
                       v63 = v25;
                       v64 = 2048;
                       v65 = v29;
                       v66 = 1024;
-                      v67 = v19;
+                      v67 = integerValue;
                       v68 = 2048;
                       v69 = v13;
                       v36 = v35;
@@ -319,7 +319,7 @@ uint64_t __50__LogDumpUtility_newLogDumpListSortedByTimestamp___block_invoke(uin
                   v42 = *MEMORY[0x1E6986650];
                   if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
                   {
-                    v43 = [v53 localizedDescription];
+                    localizedDescription = [v53 localizedDescription];
                     *buf = 136316162;
                     v55 = v41;
                     v56 = 2080;
@@ -327,9 +327,9 @@ uint64_t __50__LogDumpUtility_newLogDumpListSortedByTimestamp___block_invoke(uin
                     v58 = 1024;
                     v59 = 505;
                     v60 = 2112;
-                    v61 = v31;
+                    directoryCopy = v31;
                     v62 = 2112;
-                    v63 = v43;
+                    v63 = localizedDescription;
                     _os_log_error_impl(&dword_1DB56E000, v42, OS_LOG_TYPE_ERROR, " [%s] %s:%d failed to remove %@ (%@)", buf, 0x30u);
                   }
                 }
@@ -348,7 +348,7 @@ uint64_t __50__LogDumpUtility_newLogDumpListSortedByTimestamp___block_invoke(uin
                   v58 = 1024;
                   v59 = 501;
                   v60 = 2112;
-                  v61 = v31;
+                  directoryCopy = v31;
                   v36 = v40;
                   v37 = " [%s] %s:%d file no longer exists at %@";
                   v38 = 38;
@@ -358,7 +358,7 @@ LABEL_44:
               }
 
               v13 -= v29;
-              a4 = v46;
+              than = thanCopy;
               continue;
             }
 
@@ -378,7 +378,7 @@ LABEL_44:
                   v58 = 1024;
                   v59 = 514;
                   v60 = 2112;
-                  v61 = v23;
+                  directoryCopy = v23;
                   v62 = 2112;
                   v63 = v25;
                   _os_log_impl(&dword_1DB56E000, v27, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Skipping filename=%@, date=%@", buf, 0x30u);
@@ -394,7 +394,7 @@ LABEL_44:
                 v58 = 1024;
                 v59 = 514;
                 v60 = 2112;
-                v61 = v23;
+                directoryCopy = v23;
                 v62 = 2112;
                 v63 = v25;
                 _os_log_debug_impl(&dword_1DB56E000, v27, OS_LOG_TYPE_DEBUG, " [%s] %s:%d Skipping filename=%@, date=%@", buf, 0x30u);
@@ -423,7 +423,7 @@ LABEL_53:
           v58 = 1024;
           v59 = 519;
           v60 = 2048;
-          v61 = v13;
+          directoryCopy = v13;
           _os_log_impl(&dword_1DB56E000, v45, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Completed: Total size: %llu", buf, 0x26u);
         }
       }

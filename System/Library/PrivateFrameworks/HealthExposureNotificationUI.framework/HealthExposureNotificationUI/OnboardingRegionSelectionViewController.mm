@@ -1,10 +1,10 @@
 @interface OnboardingRegionSelectionViewController
-- (_TtC28HealthExposureNotificationUI39OnboardingRegionSelectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC28HealthExposureNotificationUI39OnboardingRegionSelectionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)didTapCancel;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -12,7 +12,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   OnboardingRegionSelectionViewController.viewDidLoad()();
 }
 
@@ -23,17 +23,17 @@
   v5 = *(&self->super.super._responderFlags + OBJC_IVAR____TtC28HealthExposureNotificationUI39OnboardingRegionSelectionViewController_flow);
   ObjectType = swift_getObjectType();
   v7 = *(v5 + 64);
-  v11 = self;
+  selfCopy = self;
   v7(MEMORY[0x277D84F90], ObjectType, v5);
   v9 = *v3;
   v8 = v3[1];
   v10 = swift_getObjectType();
-  (*(v8 + 128))(v11, &protocol witness table for OnboardingRegionSelectionViewController, v10, v8);
+  (*(v8 + 128))(selfCopy, &protocol witness table for OnboardingRegionSelectionViewController, v10, v8);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_2516B63A0();
 
   v6 = *(v5 + 16);
@@ -41,7 +41,7 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_251702EE4();
   v7 = *(v6 - 8);
@@ -49,16 +49,16 @@
   MEMORY[0x28223BE20](v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_251702EC4();
-  v11 = a3;
-  v12 = self;
-  v13 = OnboardingRegionSelectionViewController.tableView(_:cellForRowAt:)(v11);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = OnboardingRegionSelectionViewController.tableView(_:cellForRowAt:)(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 
   return v13;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_251702EE4();
   v7 = *(v6 - 8);
@@ -66,25 +66,25 @@
   MEMORY[0x28223BE20](v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_251702EC4();
-  v11 = a3;
-  v12 = self;
-  OnboardingRegionSelectionViewController.tableView(_:didSelectRowAt:)(v11, v10);
+  viewCopy = view;
+  selfCopy = self;
+  OnboardingRegionSelectionViewController.tableView(_:didSelectRowAt:)(viewCopy, v10);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v9 = self;
-  v4 = a3;
-  v5 = [(OnboardingRegionSelectionViewController *)v9 traitCollection];
-  if (v5)
+  selfCopy = self;
+  changeCopy = change;
+  traitCollection = [(OnboardingRegionSelectionViewController *)selfCopy traitCollection];
+  if (traitCollection)
   {
-    v6 = v5;
-    if (v4)
+    v6 = traitCollection;
+    if (changeCopy)
     {
       sub_25168CD90(0, &qword_27F4541E0, 0x277D75C80);
-      v7 = v4;
+      v7 = changeCopy;
       v8 = sub_2517033B4();
 
       if (v8)
@@ -99,13 +99,13 @@
 
 LABEL_8:
     sub_2516B72E8();
-    v7 = v4;
+    v7 = changeCopy;
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if (v4)
+  if (changeCopy)
   {
     goto LABEL_8;
   }
@@ -113,7 +113,7 @@ LABEL_9:
 LABEL_10:
 }
 
-- (_TtC28HealthExposureNotificationUI39OnboardingRegionSelectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC28HealthExposureNotificationUI39OnboardingRegionSelectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

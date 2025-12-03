@@ -1,7 +1,7 @@
 @interface CPSDeveloperSettingsLocalOverrideController
 - (id)_loadOverrideSpecifiers;
 - (id)specifiers;
-- (void)addURLOverride:(id)a3;
+- (void)addURLOverride:(id)override;
 @end
 
 @implementation CPSDeveloperSettingsLocalOverrideController
@@ -20,11 +20,11 @@
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = [(CPSDeveloperSettingsLocalOverrideController *)self loadSpecifiersFromPlistName:@"DeveloperSettings" target:self bundle:v6];
 
-    v8 = [(CPSDeveloperSettingsLocalOverrideController *)self _loadOverrideSpecifiers];
-    if ([v8 count])
+    _loadOverrideSpecifiers = [(CPSDeveloperSettingsLocalOverrideController *)self _loadOverrideSpecifiers];
+    if ([_loadOverrideSpecifiers count])
     {
       v9 = [v7 specifierForID:@"URL_OVERRIDES"];
-      [v7 ps_insertObjectsFromArray:v8 afterObject:v9];
+      [v7 ps_insertObjectsFromArray:_loadOverrideSpecifiers afterObject:v9];
     }
 
     v10 = *&self->PSListController_opaque[v2];
@@ -61,8 +61,8 @@
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 title];
-        v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:0 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+        title = [v8 title];
+        v10 = [PSSpecifier preferenceSpecifierNamed:title target:0 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
         [v10 setProperty:v8 forKey:@"DeveloperOverride"];
         [v3 addObject:v10];
@@ -77,7 +77,7 @@
   return v3;
 }
 
-- (void)addURLOverride:(id)a3
+- (void)addURLOverride:(id)override
 {
   v4 = objc_alloc_init(CPSURLOverrideDetailsController);
   v6[0] = _NSConcreteStackBlock;
@@ -86,8 +86,8 @@
   v6[3] = &unk_30F30;
   v6[4] = self;
   [(CPSURLOverrideDetailsController *)v4 setDismissHandler:v6];
-  v5 = [(CPSDeveloperSettingsLocalOverrideController *)self navigationController];
-  [v5 pushViewController:v4 animated:1];
+  navigationController = [(CPSDeveloperSettingsLocalOverrideController *)self navigationController];
+  [navigationController pushViewController:v4 animated:1];
 }
 
 @end

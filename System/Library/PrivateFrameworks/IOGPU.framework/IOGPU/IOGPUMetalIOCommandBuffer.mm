@@ -6,19 +6,19 @@
 - (void)commit;
 - (void)completeCommandCallbackBlocks;
 - (void)dealloc;
-- (void)didCompleteWithStatus:(int64_t)a3;
+- (void)didCompleteWithStatus:(int64_t)status;
 - (void)enqueue;
-- (void)getCommandBufferBytes:(unsigned int)a3;
-- (void)growKernelCommandBuffer:(unsigned int)a3;
-- (void)loadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 sourceHandle:(id)a6 sourceHandleOffset:(unint64_t)a7;
-- (void)loadBytes:(void *)a3 size:(unint64_t)a4 sourceHandle:(id)a5 sourceHandleOffset:(unint64_t)a6;
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8 dstOrigin:(id *)a9 handle:(id)a10 handleOffset:(unint64_t)a11;
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 sourceBytesPerRow:(unint64_t)a7 sourceBytesPerImage:(unint64_t)a8 destinationOrigin:(id *)a9 sourceHandle:(id)a10 sourceHandleOffset:(unint64_t)a11;
-- (void)setLabel:(id)a3;
-- (void)signalEvent:(id)a3 value:(unint64_t)a4;
+- (void)getCommandBufferBytes:(unsigned int)bytes;
+- (void)growKernelCommandBuffer:(unsigned int)buffer;
+- (void)loadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)handleOffset;
+- (void)loadBytes:(void *)bytes size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)offset;
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image dstOrigin:(id *)origin handle:(id)self0 handleOffset:(unint64_t)self1;
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image destinationOrigin:(id *)origin sourceHandle:(id)self0 sourceHandleOffset:(unint64_t)self1;
+- (void)setLabel:(id)label;
+- (void)signalEvent:(id)event value:(unint64_t)value;
 - (void)tryCancel;
 - (void)validateNotificationCount;
-- (void)waitForEvent:(id)a3 value:(unint64_t)a4;
+- (void)waitForEvent:(id)event value:(unint64_t)value;
 @end
 
 @implementation IOGPUMetalIOCommandBuffer
@@ -65,9 +65,9 @@
   [(_MTLIOCommandBuffer *)&v7 dealloc];
 }
 
-- (void)loadBytes:(void *)a3 size:(unint64_t)a4 sourceHandle:(id)a5 sourceHandleOffset:(unint64_t)a6
+- (void)loadBytes:(void *)bytes size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)offset
 {
-  v11 = [a5 stagingBufferSize:a4 offset:a6];
+  v11 = [handle stagingBufferSize:size offset:offset];
   v12 = *MEMORY[0x1E6974318];
   v13 = *MEMORY[0x1E6974328];
   if (*(&self->super.super.super.isa + v13) >= v11)
@@ -107,26 +107,26 @@
   v16 = [(IOGPUMetalIOCommandBuffer *)self getCommandBufferBytes:56];
   *v16 = 0x3800000000;
   bzero(v16 + 1, 0x30uLL);
-  *(v16 + 2) = [a5 vnioID];
+  *(v16 + 2) = [handle vnioID];
   if (v11)
   {
-    v16[2] = [a5 getHandleOffset:a4 offset:a6];
+    v16[2] = [handle getHandleOffset:size offset:offset];
     v16[3] = v11;
     v17 = [objc_msgSend(v14 "buffer")];
     v18 = *MEMORY[0x1E6974320];
     v19 = *(&self->super.super.super.isa + v18) + v17;
-    v20 = [(IOGPUMetalIOCommandQueue *)self->_queue globalTraceObjectID];
+    globalTraceObjectID = [(IOGPUMetalIOCommandQueue *)self->_queue globalTraceObjectID];
     v16[4] = v19;
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __76__IOGPUMetalIOCommandBuffer_loadBytes_size_sourceHandle_sourceHandleOffset___block_invoke;
     v24[3] = &unk_1E8362E88;
     v24[4] = self;
-    v24[5] = a5;
-    v24[6] = v20;
-    v24[7] = a3;
-    v24[8] = a4;
-    v24[9] = a6;
+    v24[5] = handle;
+    v24[6] = globalTraceObjectID;
+    v24[7] = bytes;
+    v24[8] = size;
+    v24[9] = offset;
     v24[10] = v19;
     v24[11] = v11;
     v16[6] = _Block_copy(v24);
@@ -138,9 +138,9 @@
 
   else
   {
-    v16[2] = a6;
-    v16[3] = a4;
-    v16[4] = a3;
+    v16[2] = offset;
+    v16[3] = size;
+    v16[4] = bytes;
   }
 
   if (*(&self->super.super.super.isa + *MEMORY[0x1E6974348]) == 1)
@@ -209,28 +209,28 @@ unint64_t __76__IOGPUMetalIOCommandBuffer_loadBytes_size_sourceHandle_sourceHand
   return result;
 }
 
-- (void)loadBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 sourceHandle:(id)a6 sourceHandleOffset:(unint64_t)a7
+- (void)loadBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size sourceHandle:(id)handle sourceHandleOffset:(unint64_t)handleOffset
 {
-  v10 = a3;
-  v46 = [a3 storageMode];
-  if (v46 == 2)
+  bufferCopy = buffer;
+  storageMode = [buffer storageMode];
+  if (storageMode == 2)
   {
-    v12 = a5;
+    sizeCopy = size;
   }
 
   else
   {
-    v12 = 0;
+    sizeCopy = 0;
   }
 
-  v13 = [a6 stagingBufferSize:a5 offset:a7];
+  v13 = [handle stagingBufferSize:size offset:handleOffset];
   v14 = v13;
-  v15 = v12 + v13;
+  v15 = sizeCopy + v13;
   v16 = *MEMORY[0x1E6974318];
   v44 = *MEMORY[0x1E6974328];
-  if (*(&self->super.super.super.isa + v44) >= (v12 + v13))
+  if (*(&self->super.super.super.isa + v44) >= (sizeCopy + v13))
   {
-    v42 = v12 + v13;
+    v42 = sizeCopy + v13;
     v17 = *(&self->super.super.super.isa + v16);
   }
 
@@ -267,58 +267,58 @@ unint64_t __76__IOGPUMetalIOCommandBuffer_loadBytes_size_sourceHandle_sourceHand
   v19 = [(IOGPUMetalIOCommandBuffer *)self getCommandBufferBytes:56];
   *v19 = 0x3800000000;
   bzero(v19 + 1, 0x30uLL);
-  *(v19 + 2) = [a6 vnioID];
-  v43 = a6;
-  v20 = a4;
+  *(v19 + 2) = [handle vnioID];
+  handleCopy = handle;
+  offsetCopy3 = offset;
   if (v14)
   {
-    v41 = v10;
-    v19[2] = [a6 getHandleOffset:a5 offset:a7];
+    v41 = bufferCopy;
+    v19[2] = [handle getHandleOffset:size offset:handleOffset];
     v19[3] = v14;
     v21 = [objc_msgSend(v17 "buffer")];
     v22 = *MEMORY[0x1E6974320];
-    v23 = *(&self->super.super.super.isa + v22) + v12 + v21;
-    if (v46 == 2)
+    v23 = *(&self->super.super.super.isa + v22) + sizeCopy + v21;
+    if (storageMode == 2)
     {
-      v24 = [objc_msgSend(v17 "buffer")];
-      v25 = *(&self->super.super.super.isa + v22);
+      contents = [objc_msgSend(v17 "buffer")];
+      offsetCopy2 = *(&self->super.super.super.isa + v22);
     }
 
     else
     {
-      v24 = [v41 contents];
-      v25 = a4;
+      contents = [v41 contents];
+      offsetCopy2 = offset;
     }
 
-    v28 = v24 + v25;
-    v29 = [(IOGPUMetalIOCommandQueue *)self->_queue globalTraceObjectID];
-    v30 = [v43 globalTraceObjectID];
+    v28 = contents + offsetCopy2;
+    globalTraceObjectID = [(IOGPUMetalIOCommandQueue *)self->_queue globalTraceObjectID];
+    globalTraceObjectID2 = [handleCopy globalTraceObjectID];
     v19[4] = v23;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __84__IOGPUMetalIOCommandBuffer_loadBuffer_offset_size_sourceHandle_sourceHandleOffset___block_invoke;
     aBlock[3] = &unk_1E8362ED8;
-    aBlock[6] = v29;
-    aBlock[7] = v30;
+    aBlock[6] = globalTraceObjectID;
+    aBlock[7] = globalTraceObjectID2;
     aBlock[4] = self;
-    aBlock[5] = v43;
+    aBlock[5] = handleCopy;
     aBlock[8] = v28;
-    aBlock[9] = a5;
-    aBlock[10] = a7;
+    aBlock[9] = size;
+    aBlock[10] = handleOffset;
     aBlock[11] = v23;
     aBlock[12] = v14;
     v19[6] = _Block_copy(aBlock);
     std::vector<IOGPUIOCommandQueueCommandBufferCallbackBlock>::push_back[abi:ne200100](&self->_commandCallbackBlocks, v19 + 6);
     atomic_fetch_add(&self->_notificationCount, 1u);
-    v10 = v41;
-    v20 = a4;
+    bufferCopy = v41;
+    offsetCopy3 = offset;
   }
 
   else
   {
-    v19[2] = a7;
-    v19[3] = a5;
-    if (v46 == 2)
+    v19[2] = handleOffset;
+    v19[3] = size;
+    if (storageMode == 2)
     {
       v26 = [objc_msgSend(v17 "buffer")];
       v27 = *(&self->super.super.super.isa + *MEMORY[0x1E6974320]) + v26;
@@ -326,26 +326,26 @@ unint64_t __76__IOGPUMetalIOCommandBuffer_loadBytes_size_sourceHandle_sourceHand
 
     else
     {
-      v27 = ([v10 contents] + a4);
+      v27 = ([bufferCopy contents] + offset);
     }
 
     v19[4] = v27;
   }
 
-  if (v46 == 2)
+  if (storageMode == 2)
   {
     if (!self->_hasFollowOnGPUWork)
     {
-      v33 = [(MTLCommandQueue *)[(_MTLIOCommandQueue *)self->_queue gpuQueue] commandBuffer];
-      self->_gpuCommandBuffer = v33;
-      if (!v33)
+      commandBuffer = [(MTLCommandQueue *)[(_MTLIOCommandQueue *)self->_queue gpuQueue] commandBuffer];
+      self->_gpuCommandBuffer = commandBuffer;
+      if (!commandBuffer)
       {
         [IOGPUMetalIOCommandBuffer loadBuffer:offset:size:sourceHandle:sourceHandleOffset:];
       }
 
-      v34 = [(MTLCommandBuffer *)v33 blitCommandEncoder];
-      self->_gpuBlitEncoder = v34;
-      if (!v34)
+      blitCommandEncoder = [(MTLCommandBuffer *)commandBuffer blitCommandEncoder];
+      self->_gpuBlitEncoder = blitCommandEncoder;
+      if (!blitCommandEncoder)
       {
         [IOGPUMetalIOCommandBuffer loadBuffer:offset:size:sourceHandle:sourceHandleOffset:];
       }
@@ -364,9 +364,9 @@ unint64_t __76__IOGPUMetalIOCommandBuffer_loadBytes_size_sourceHandle_sourceHand
       }
     }
 
-    v36 = [v17 buffer];
+    buffer = [v17 buffer];
     v32 = *MEMORY[0x1E6974320];
-    [(MTLBlitCommandEncoder *)gpuBlitEncoder copyFromBuffer:v36 sourceOffset:*(&self->super.super.super.isa + v32) toBuffer:v10 destinationOffset:v20 size:a5];
+    [(MTLBlitCommandEncoder *)gpuBlitEncoder copyFromBuffer:buffer sourceOffset:*(&self->super.super.super.isa + v32) toBuffer:bufferCopy destinationOffset:offsetCopy3 size:size];
   }
 
   else
@@ -447,24 +447,24 @@ unint64_t __84__IOGPUMetalIOCommandBuffer_loadBuffer_offset_size_sourceHandle_so
   return result;
 }
 
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 sourceBytesPerRow:(unint64_t)a7 sourceBytesPerImage:(unint64_t)a8 destinationOrigin:(id *)a9 sourceHandle:(id)a10 sourceHandleOffset:(unint64_t)a11
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image destinationOrigin:(id *)origin sourceHandle:(id)self0 sourceHandleOffset:(unint64_t)self1
 {
   v75 = 0;
   v76 = 0;
-  v73 = *&a9->var0;
+  v73 = *&origin->var0;
   v74 = 0;
-  v71 = *&a6->var0;
+  v71 = *&size->var0;
   v72 = 1;
   MTLCalculateSourceBufferSizeAndAlignment();
   v73 = 0uLL;
   v74 = 0;
-  v55 = [(IOGPUMetalIOCommandQueue *)self->_queue globalTraceObjectID];
-  v54 = [a10 globalTraceObjectID];
-  if (a6->var2)
+  globalTraceObjectID = [(IOGPUMetalIOCommandQueue *)self->_queue globalTraceObjectID];
+  globalTraceObjectID2 = [handle globalTraceObjectID];
+  if (size->var2)
   {
-    for (i = 0; i < a6->var2; ++i)
+    for (i = 0; i < size->var2; ++i)
     {
-      v14 = [a10 stagingBufferSize:v76 offset:a11];
+      v14 = [handle stagingBufferSize:v76 offset:offset];
       v15 = v75;
       v16 = (v76 + v75 + v14);
       v17 = *MEMORY[0x1E6974318];
@@ -513,10 +513,10 @@ unint64_t __84__IOGPUMetalIOCommandBuffer_loadBuffer_offset_size_sourceHandle_so
       *v25 = 0x3800000000;
       bzero(v25 + 1, 0x30uLL);
       v26 = (v24 + v15 - 1) / v15 * v15;
-      *(v25 + 2) = [a10 vnioID];
+      *(v25 + 2) = [handle vnioID];
       if (v14)
       {
-        v25[2] = [a10 getHandleOffset:v76 offset:a11];
+        v25[2] = [handle getHandleOffset:v76 offset:offset];
         v25[3] = v14;
         v27 = [objc_msgSend(v19 "buffer")];
         v28 = v76;
@@ -524,19 +524,19 @@ unint64_t __84__IOGPUMetalIOCommandBuffer_loadBuffer_offset_size_sourceHandle_so
         v30 = v27 + v26 + v28;
         v31 = v29 + v26;
         v25[4] = v30;
-        if (a6->var2 < 2)
+        if (size->var2 < 2)
         {
           aBlock[0] = MEMORY[0x1E69E9820];
           aBlock[1] = 3221225472;
           aBlock[2] = __146__IOGPUMetalIOCommandBuffer_loadTexture_slice_level_size_sourceBytesPerRow_sourceBytesPerImage_destinationOrigin_sourceHandle_sourceHandleOffset___block_invoke;
           aBlock[3] = &unk_1E8362ED8;
-          aBlock[6] = v55;
-          aBlock[7] = v54;
+          aBlock[6] = globalTraceObjectID;
+          aBlock[7] = globalTraceObjectID2;
           aBlock[4] = self;
-          aBlock[5] = a10;
+          aBlock[5] = handle;
           aBlock[8] = v29 + v26;
           aBlock[9] = v76;
-          aBlock[10] = a11;
+          aBlock[10] = offset;
           aBlock[11] = v30;
           aBlock[12] = v14;
           v25[6] = _Block_copy(aBlock);
@@ -581,7 +581,7 @@ unint64_t __84__IOGPUMetalIOCommandBuffer_loadBuffer_offset_size_sourceHandle_so
             v38 = (8 * ((*(&v73 + 1) - v73) >> 3));
             *v38 = v31;
             v38[1] = v53;
-            v38[2] = a11;
+            v38[2] = offset;
             v38[3] = v30;
             v38[4] = v14;
             v34 = 40 * v35 + 40;
@@ -601,7 +601,7 @@ unint64_t __84__IOGPUMetalIOCommandBuffer_loadBuffer_offset_size_sourceHandle_so
           {
             **(&v73 + 1) = v31;
             v33[1] = v32;
-            v33[2] = a11;
+            v33[2] = offset;
             v33[3] = v30;
             v34 = (v33 + 5);
             v33[4] = v14;
@@ -613,25 +613,25 @@ unint64_t __84__IOGPUMetalIOCommandBuffer_loadBuffer_offset_size_sourceHandle_so
 
       else
       {
-        v25[2] = a11;
+        v25[2] = offset;
         v25[3] = v62;
         v25[4] = *(&self->super.super.super.isa + v23) + [objc_msgSend(v19 "buffer")];
       }
 
       if (!self->_hasFollowOnGPUWork)
       {
-        v41 = [(MTLCommandQueue *)[(_MTLIOCommandQueue *)self->_queue gpuQueue] commandBuffer];
-        self->_gpuCommandBuffer = v41;
-        if (!v41)
+        commandBuffer = [(MTLCommandQueue *)[(_MTLIOCommandQueue *)self->_queue gpuQueue] commandBuffer];
+        self->_gpuCommandBuffer = commandBuffer;
+        if (!commandBuffer)
         {
           v51 = 627;
           v52 = "_gpuCommandBuffer";
           goto LABEL_49;
         }
 
-        v42 = [(MTLCommandBuffer *)v41 blitCommandEncoder];
-        self->_gpuBlitEncoder = v42;
-        if (!v42)
+        blitCommandEncoder = [(MTLCommandBuffer *)commandBuffer blitCommandEncoder];
+        self->_gpuBlitEncoder = blitCommandEncoder;
+        if (!blitCommandEncoder)
         {
           v51 = 629;
 LABEL_48:
@@ -655,16 +655,16 @@ LABEL_49:
         }
       }
 
-      v44 = [v19 buffer];
-      v71 = *&a6->var0;
+      buffer = [v19 buffer];
+      v71 = *&size->var0;
       v72 = 1;
-      v45 = i + a9->var2;
-      v68 = *&a9->var0;
+      v45 = i + origin->var2;
+      v68 = *&origin->var0;
       v69 = v45;
-      [(MTLBlitCommandEncoder *)gpuBlitEncoder copyFromBuffer:v44 sourceOffset:v26 sourceBytesPerRow:a7 sourceBytesPerImage:a8 sourceSize:&v71 toTexture:a3 destinationSlice:a4 destinationLevel:a5 destinationOrigin:&v68];
+      [(MTLBlitCommandEncoder *)gpuBlitEncoder copyFromBuffer:buffer sourceOffset:v26 sourceBytesPerRow:row sourceBytesPerImage:image sourceSize:&v71 toTexture:texture destinationSlice:slice destinationLevel:level destinationOrigin:&v68];
       *(&self->super.super.super.isa + v23) = (*(&self->super.super.super.isa + v23) + v62);
       *(&self->super.super.super.isa + v60) = (*(&self->super.super.super.isa + v60) - v62);
-      a11 += a8;
+      offset += image;
     }
   }
 
@@ -679,13 +679,13 @@ LABEL_49:
     v64[2] = __146__IOGPUMetalIOCommandBuffer_loadTexture_slice_level_size_sourceBytesPerRow_sourceBytesPerImage_destinationOrigin_sourceHandle_sourceHandleOffset___block_invoke_3;
     v64[3] = &unk_1F49BFE10;
     v64[4] = self;
-    v64[6] = v55;
-    v64[7] = v54;
+    v64[6] = globalTraceObjectID;
+    v64[7] = globalTraceObjectID2;
     __p = 0;
     v66 = 0;
     v67 = 0;
     std::vector<IOGPUIODecompressionArgs>::__init_with_size[abi:ne200100]<IOGPUIODecompressionArgs*,IOGPUIODecompressionArgs*>(&__p, v73, *(&v73 + 1), 0xCCCCCCCCCCCCCCCDLL * ((*(&v73 + 1) - v73) >> 3));
-    v64[5] = a10;
+    v64[5] = handle;
     *v47 = _Block_copy(v64);
     std::vector<IOGPUIOCommandQueueCommandBufferCallbackBlock>::push_back[abi:ne200100](&self->_commandCallbackBlocks, v47);
     atomic_fetch_add(&self->_notificationCount, 1u);
@@ -860,11 +860,11 @@ LABEL_11:
   return result;
 }
 
-- (void)loadTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 size:(id *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8 dstOrigin:(id *)a9 handle:(id)a10 handleOffset:(unint64_t)a11
+- (void)loadTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level size:(id *)size bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image dstOrigin:(id *)origin handle:(id)self0 handleOffset:(unint64_t)self1
 {
-  v12 = *a6;
-  v11 = *a9;
-  [(IOGPUMetalIOCommandBuffer *)self loadTexture:a3 slice:a4 level:a5 size:&v12 sourceBytesPerRow:a7 sourceBytesPerImage:a8 destinationOrigin:&v11 sourceHandle:a10 sourceHandleOffset:a11];
+  v12 = *size;
+  v11 = *origin;
+  [(IOGPUMetalIOCommandBuffer *)self loadTexture:texture slice:slice level:level size:&v12 sourceBytesPerRow:row sourceBytesPerImage:image destinationOrigin:&v11 sourceHandle:handle sourceHandleOffset:offset];
 }
 
 - (void)addBarrier
@@ -874,8 +874,8 @@ LABEL_11:
   bzero(v3 + 8, 0x10uLL);
   if (self->_hasFollowOnGPUWork)
   {
-    v4 = [(IOGPUMetalIOCommandQueue *)self->_queue globalTraceObjectID];
-    v5 = [(MTLCommandBuffer *)self->_gpuCommandBuffer globalTraceObjectID];
+    globalTraceObjectID = [(IOGPUMetalIOCommandQueue *)self->_queue globalTraceObjectID];
+    globalTraceObjectID2 = [(MTLCommandBuffer *)self->_gpuCommandBuffer globalTraceObjectID];
     gpuBlitEncoder = self->_gpuBlitEncoder;
     if (gpuBlitEncoder)
     {
@@ -898,8 +898,8 @@ LABEL_11:
     aBlock[3] = &unk_1E8362F50;
     aBlock[4] = self;
     aBlock[5] = v8;
-    aBlock[6] = v4;
-    aBlock[7] = v5;
+    aBlock[6] = globalTraceObjectID;
+    aBlock[7] = globalTraceObjectID2;
     *(v3 + 1) = _Block_copy(aBlock);
     v3[16] = 1;
     atomic_fetch_add(&self->_notificationCount, 1u);
@@ -1030,12 +1030,12 @@ uint64_t __39__IOGPUMetalIOCommandBuffer_addBarrier__block_invoke_5(uint64_t a1)
   return result;
 }
 
-- (void)waitForEvent:(id)a3 value:(unint64_t)a4
+- (void)waitForEvent:(id)event value:(unint64_t)value
 {
   v7 = [(IOGPUMetalIOCommandBuffer *)self getCommandBufferBytes:24];
   bzero(v7 + 1, 0x10uLL);
-  *(v7 + 2) = [a3 eventPort];
-  v7[2] = a4;
+  *(v7 + 2) = [event eventPort];
+  v7[2] = value;
   *v7 = 0x1800000003;
   if (*(&self->super.super.super.isa + *MEMORY[0x1E6974348]) == 1)
   {
@@ -1045,13 +1045,13 @@ uint64_t __39__IOGPUMetalIOCommandBuffer_addBarrier__block_invoke_5(uint64_t a1)
   }
 }
 
-- (void)signalEvent:(id)a3 value:(unint64_t)a4
+- (void)signalEvent:(id)event value:(unint64_t)value
 {
   [(IOGPUMetalIOCommandBuffer *)self addBarrier];
   v7 = [(IOGPUMetalIOCommandBuffer *)self getCommandBufferBytes:24];
   bzero(v7 + 1, 0x10uLL);
-  *(v7 + 2) = [a3 eventPort];
-  v7[2] = a4;
+  *(v7 + 2) = [event eventPort];
+  v7[2] = value;
   *v7 = 0x1800000002;
   if (*(&self->super.super.super.isa + *MEMORY[0x1E6974348]) == 1)
   {
@@ -1092,15 +1092,15 @@ uint64_t __39__IOGPUMetalIOCommandBuffer_addBarrier__block_invoke_5(uint64_t a1)
   [(IOGPUMetalIOCommandQueue *)queue commitCommandBuffer:self];
 }
 
-- (void)didCompleteWithStatus:(int64_t)a3
+- (void)didCompleteWithStatus:(int64_t)status
 {
-  v5 = [(IOGPUMetalIOCommandQueue *)self->_queue globalTraceObjectID];
-  v6 = [(MTLCommandBuffer *)self->_gpuCommandBuffer globalTraceObjectID];
+  globalTraceObjectID = [(IOGPUMetalIOCommandQueue *)self->_queue globalTraceObjectID];
+  globalTraceObjectID2 = [(MTLCommandBuffer *)self->_gpuCommandBuffer globalTraceObjectID];
   dispatch_group_wait(self->_ioCompletionGroup, 0xFFFFFFFFFFFFFFFFLL);
   v7 = *MEMORY[0x1E6974350];
   if (!*(&self->super.super.super.isa + v7))
   {
-    *(&self->super.super.super.isa + v7) = a3;
+    *(&self->super.super.super.isa + v7) = status;
   }
 
   if (self->_hasFollowOnGPUWork)
@@ -1131,8 +1131,8 @@ uint64_t __39__IOGPUMetalIOCommandBuffer_addBarrier__block_invoke_5(uint64_t a1)
       v20[2] = __51__IOGPUMetalIOCommandBuffer_didCompleteWithStatus___block_invoke;
       v20[3] = &unk_1E8362FA0;
       v20[4] = self;
-      v20[5] = v5;
-      v20[6] = v6;
+      v20[5] = globalTraceObjectID;
+      v20[6] = globalTraceObjectID2;
       [(MTLCommandBuffer *)gpuCommandBuffer addCompletedHandler:v20];
       [(MTLCommandBuffer *)self->_gpuCommandBuffer commit];
       if (*__globalGPUCommPage)
@@ -1222,7 +1222,7 @@ id __51__IOGPUMetalIOCommandBuffer_didCompleteWithStatus___block_invoke(uint64_t
   }
 }
 
-- (void)growKernelCommandBuffer:(unsigned int)a3
+- (void)growKernelCommandBuffer:(unsigned int)buffer
 {
   ioKernelCommandShmem = self->_ioKernelCommandShmem;
   if (!ioKernelCommandShmem)
@@ -1247,7 +1247,7 @@ id __51__IOGPUMetalIOCommandBuffer_didCompleteWithStatus___block_invoke(uint64_t
     [IOGPUMetalIOCommandBuffer growKernelCommandBuffer:];
   }
 
-  v9 = a3 + ioKernelCommandShmemEnd - ioKernelCommandShmemStart + 8;
+  v9 = buffer + ioKernelCommandShmemEnd - ioKernelCommandShmemStart + 8;
   pool = ioKernelCommandShmem->_priv.pool;
   v11 = *(pool + 48);
   while (v11 < v9)
@@ -1302,9 +1302,9 @@ id __51__IOGPUMetalIOCommandBuffer_didCompleteWithStatus___block_invoke(uint64_t
   self->_commandListHeader = self->_ioKernelCommandShmemStart;
 }
 
-- (void)getCommandBufferBytes:(unsigned int)a3
+- (void)getCommandBufferBytes:(unsigned int)bytes
 {
-  if (a3 <= 7)
+  if (bytes <= 7)
   {
     [IOGPUMetalIOCommandBuffer getCommandBufferBytes:];
   }
@@ -1330,31 +1330,31 @@ id __51__IOGPUMetalIOCommandBuffer_didCompleteWithStatus___block_invoke(uint64_t
     [IOGPUMetalIOCommandBuffer getCommandBufferBytes:];
   }
 
-  v7 = a3;
-  if (ioKernelCommandShmemEnd - result < a3)
+  bytesCopy = bytes;
+  if (ioKernelCommandShmemEnd - result < bytes)
   {
     [(IOGPUMetalIOCommandBuffer *)self growKernelCommandBuffer:?];
     result = self->_ioKernelCommandShmemCurrent;
   }
 
-  self->_ioKernelCommandShmemCurrent = result + v7;
-  self->_commandListHeader->var1 = result + v7 - LODWORD(self->_ioKernelCommandShmemStart);
+  self->_ioKernelCommandShmemCurrent = result + bytesCopy;
+  self->_commandListHeader->var1 = result + bytesCopy - LODWORD(self->_ioKernelCommandShmemStart);
   return result;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v9.receiver = self;
   v9.super_class = IOGPUMetalIOCommandBuffer;
   [(_MTLObjectWithLabel *)&v9 setLabel:?];
   if (*__globalGPUCommPage)
   {
-    v5 = [(MTLDevice *)self->_device deviceRef];
+    deviceRef = [(MTLDevice *)self->_device deviceRef];
     globalTraceObjectID = self->_globalTraceObjectID;
     v7 = *MEMORY[0x1E6974338];
     v8 = *(&self->super.super.super.isa + v7);
-    [a3 cStringUsingEncoding:1];
-    *(&self->super.super.super.isa + v7) = IOGPUDeviceTraceObjectLabel(v5, 8, 0, globalTraceObjectID, v8);
+    [label cStringUsingEncoding:1];
+    *(&self->super.super.super.isa + v7) = IOGPUDeviceTraceObjectLabel(deviceRef, 8, 0, globalTraceObjectID, v8);
   }
 }
 
@@ -1458,7 +1458,7 @@ uint64_t __39__IOGPUMetalIOCommandBuffer_addBarrier__block_invoke_2_cold_1(uint6
 - (void)validateNotificationCount
 {
   v6 = *MEMORY[0x1E69E9840];
-  v1 = atomic_load(a1);
+  v1 = atomic_load(self);
   v3[0] = 67109376;
   v3[1] = v1;
   v4 = 1024;

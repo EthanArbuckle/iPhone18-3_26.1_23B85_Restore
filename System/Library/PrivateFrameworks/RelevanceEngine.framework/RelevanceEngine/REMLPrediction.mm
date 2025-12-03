@@ -1,32 +1,32 @@
 @interface REMLPrediction
-+ (id)predictionWithProbability:(float)a3 mean:(float)a4 variance:(float)a5 pessimistic:(float)a6;
++ (id)predictionWithProbability:(float)probability mean:(float)mean variance:(float)variance pessimistic:(float)pessimistic;
 - (NSSet)explanations;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)explanationDescription;
-- (void)addExplanation:(id)a3;
+- (void)addExplanation:(id)explanation;
 @end
 
 @implementation REMLPrediction
 
-+ (id)predictionWithProbability:(float)a3 mean:(float)a4 variance:(float)a5 pessimistic:(float)a6
++ (id)predictionWithProbability:(float)probability mean:(float)mean variance:(float)variance pessimistic:(float)pessimistic
 {
   v10 = objc_opt_new();
-  *(v10 + 16) = a4;
-  *(v10 + 20) = a5;
-  *(v10 + 24) = a3;
-  *(v10 + 28) = a6;
+  *(v10 + 16) = mean;
+  *(v10 + 20) = variance;
+  *(v10 + 24) = probability;
+  *(v10 + 28) = pessimistic;
   *(v10 + 32) = 0;
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   *&v4 = self->_mean;
   *&v5 = self->_variance;
   *&v3 = self->_probability;
   *&v6 = self->_pessimistic;
-  v8 = [REMLPrediction predictionWithProbability:a3 mean:v3 variance:v4 pessimistic:v5, v6];
+  v8 = [REMLPrediction predictionWithProbability:zone mean:v3 variance:v4 pessimistic:v5, v6];
   *(v8 + 32) = self->_bias;
   v9 = [*(v8 + 8) mutableCopy];
   v10 = *(v8 + 8);
@@ -35,13 +35,13 @@
   return v8;
 }
 
-- (void)addExplanation:(id)a3
+- (void)addExplanation:(id)explanation
 {
-  v4 = a3;
-  if (v4)
+  explanationCopy = explanation;
+  if (explanationCopy)
   {
     explanations = self->_explanations;
-    v8 = v4;
+    v8 = explanationCopy;
     if (!explanations)
     {
       v6 = [MEMORY[0x277CBEB58] set];

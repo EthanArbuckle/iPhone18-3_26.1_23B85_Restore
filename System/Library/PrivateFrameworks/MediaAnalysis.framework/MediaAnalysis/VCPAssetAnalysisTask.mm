@@ -1,31 +1,31 @@
 @interface VCPAssetAnalysisTask
-+ (id)taskWithAnalysisTypes:(unint64_t)a3 forAsset:(id)a4 withExistingAnalysis:(id)a5;
-- (VCPAssetAnalysisTask)initWithAnalysisTypes:(unint64_t)a3 forAsset:(id)a4 withExistingAnalysis:(id)a5;
++ (id)taskWithAnalysisTypes:(unint64_t)types forAsset:(id)asset withExistingAnalysis:(id)analysis;
+- (VCPAssetAnalysisTask)initWithAnalysisTypes:(unint64_t)types forAsset:(id)asset withExistingAnalysis:(id)analysis;
 - (double)cost;
 - (int)mainInternal;
-- (int64_t)_valueForKey:(id)a3;
-- (void)_reportCoreAnalyticsWithAnalysis:(id)a3 analysisStatus:(int64_t)a4 processingInterval:(double)a5 extendedAnalysisStatus:(id)a6;
-- (void)publishLivePhotoEffectsAnalysis:(id)a3 toAsset:(id)a4;
+- (int64_t)_valueForKey:(id)key;
+- (void)_reportCoreAnalyticsWithAnalysis:(id)analysis analysisStatus:(int64_t)status processingInterval:(double)interval extendedAnalysisStatus:(id)analysisStatus;
+- (void)publishLivePhotoEffectsAnalysis:(id)analysis toAsset:(id)asset;
 @end
 
 @implementation VCPAssetAnalysisTask
 
-- (VCPAssetAnalysisTask)initWithAnalysisTypes:(unint64_t)a3 forAsset:(id)a4 withExistingAnalysis:(id)a5
+- (VCPAssetAnalysisTask)initWithAnalysisTypes:(unint64_t)types forAsset:(id)asset withExistingAnalysis:(id)analysis
 {
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  assetCopy = asset;
+  analysisCopy = analysis;
+  if (assetCopy)
   {
-    v11 = [v9 photoLibrary];
+    photoLibrary = [assetCopy photoLibrary];
     v20.receiver = self;
     v20.super_class = VCPAssetAnalysisTask;
-    v12 = [(VCPTask *)&v20 initWithPhotoLibrary:v11];
+    v12 = [(VCPTask *)&v20 initWithPhotoLibrary:photoLibrary];
 
     if (v12)
     {
-      v12->_types = a3;
-      objc_storeStrong(&v12->_asset, a4);
-      objc_storeStrong(&v12->_existingAnalysis, a5);
+      v12->_types = types;
+      objc_storeStrong(&v12->_asset, asset);
+      objc_storeStrong(&v12->_existingAnalysis, analysis);
       v12->_allowStreaming = 0;
       v13 = _os_feature_enabled_impl();
       v14 = 254;
@@ -35,47 +35,47 @@
       }
 
       v12->_taskID = v14;
-      v15 = [(PHAsset *)v12->_asset photoLibrary];
-      v16 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v15];
+      photoLibrary2 = [(PHAsset *)v12->_asset photoLibrary];
+      v16 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:photoLibrary2];
       database = v12->_database;
       v12->_database = v16;
     }
 
     self = v12;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (int64_t)_valueForKey:(id)a3
+- (int64_t)_valueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (+[MADManagedKeyValueStore isMACDReadEnabled])
   {
-    v5 = [(VCPTask *)self photoLibrary];
-    v6 = [v5 mad_fetchRequest];
-    v7 = [v6 dataStoreValueForKey:v4];
+    photoLibrary = [(VCPTask *)self photoLibrary];
+    mad_fetchRequest = [photoLibrary mad_fetchRequest];
+    v7 = [mad_fetchRequest dataStoreValueForKey:keyCopy];
   }
 
   else
   {
-    v7 = [(VCPDatabaseWriter *)self->_database valueForKey:v4];
+    v7 = [(VCPDatabaseWriter *)self->_database valueForKey:keyCopy];
   }
 
   return v7;
 }
 
-+ (id)taskWithAnalysisTypes:(unint64_t)a3 forAsset:(id)a4 withExistingAnalysis:(id)a5
++ (id)taskWithAnalysisTypes:(unint64_t)types forAsset:(id)asset withExistingAnalysis:(id)analysis
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [objc_alloc(objc_opt_class()) initWithAnalysisTypes:a3 forAsset:v7 withExistingAnalysis:v8];
+  assetCopy = asset;
+  analysisCopy = analysis;
+  v9 = [objc_alloc(objc_opt_class()) initWithAnalysisTypes:types forAsset:assetCopy withExistingAnalysis:analysisCopy];
 
   return v9;
 }
@@ -106,13 +106,13 @@
   return result;
 }
 
-- (void)publishLivePhotoEffectsAnalysis:(id)a3 toAsset:(id)a4
+- (void)publishLivePhotoEffectsAnalysis:(id)analysis toAsset:(id)asset
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  analysisCopy = analysis;
+  assetCopy = asset;
+  if (assetCopy)
   {
-    v7 = [v5 objectForKeyedSubscript:MediaAnalysisResultsKey];
+    v7 = [analysisCopy objectForKeyedSubscript:MediaAnalysisResultsKey];
     v8 = [v7 objectForKeyedSubscript:MediaAnalysisLivePhotoEffectsResultsKey];
 
     if ([v8 count])
@@ -123,21 +123,21 @@
       if (v10)
       {
         v11 = [v10 objectForKeyedSubscript:MediaAnalysisResultLoopSuggestionStateAttributeKey];
-        v12 = [v11 intValue];
+        intValue = [v11 intValue];
 
         v13 = [v10 objectForKeyedSubscript:MediaAnalysisResultLongExposureSuggestionStateAttributeKey];
-        v14 = [v13 intValue];
+        intValue2 = [v13 intValue];
 
-        v15 = [v6 photoLibrary];
+        photoLibrary = [assetCopy photoLibrary];
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_1000B93B8;
         v21[3] = &unk_1002836E8;
-        v22 = v6;
-        v23 = v12;
-        v24 = v14;
+        v22 = assetCopy;
+        v23 = intValue;
+        v24 = intValue2;
         v20 = 0;
-        v16 = [v15 performChangesAndWait:v21 error:&v20];
+        v16 = [photoLibrary performChangesAndWait:v21 error:&v20];
         v17 = v20;
 
         if (MediaAnalysisLogLevel() >= 7)
@@ -161,25 +161,25 @@
   }
 }
 
-- (void)_reportCoreAnalyticsWithAnalysis:(id)a3 analysisStatus:(int64_t)a4 processingInterval:(double)a5 extendedAnalysisStatus:(id)a6
+- (void)_reportCoreAnalyticsWithAnalysis:(id)analysis analysisStatus:(int64_t)status processingInterval:(double)interval extendedAnalysisStatus:(id)analysisStatus
 {
-  v39 = a3;
-  v10 = a6;
-  v37 = v10;
+  analysisCopy = analysis;
+  analysisStatusCopy = analysisStatus;
+  v37 = analysisStatusCopy;
   v11 = +[NSMutableDictionary dictionary];
-  v38 = [v39 vcp_flags];
-  v12 = [NSNumber numberWithBool:a4 == 2];
+  vcp_flags = [analysisCopy vcp_flags];
+  v12 = [NSNumber numberWithBool:status == 2];
   [v11 setObject:v12 forKeyedSubscript:@"AnalyzeSuccess"];
 
-  v13 = [(PHAsset *)self->_asset vcp_typeDescription];
-  [v11 setObject:v13 forKeyedSubscript:@"AssetType"];
+  vcp_typeDescription = [(PHAsset *)self->_asset vcp_typeDescription];
+  [v11 setObject:vcp_typeDescription forKeyedSubscript:@"AssetType"];
 
-  v14 = [NSNumber numberWithDouble:a5];
+  v14 = [NSNumber numberWithDouble:interval];
   [v11 setObject:v14 forKeyedSubscript:@"TimeAnalyzing"];
 
   if (([(PHAsset *)self->_asset vcp_isLivePhoto]& 1) != 0 || [(PHAsset *)self->_asset isVideo])
   {
-    v15 = [NSNumber numberWithBool:(v38 >> 29) & 1];
+    v15 = [NSNumber numberWithBool:(vcp_flags >> 29) & 1];
     [v11 setObject:v15 forKeyedSubscript:@"IsStreamAnalysis"];
 
     if ([(PHAsset *)self->_asset isVideo])
@@ -190,9 +190,9 @@
     }
   }
 
-  if (v10)
+  if (analysisStatusCopy)
   {
-    v17 = v10;
+    v17 = analysisStatusCopy;
   }
 
   else
@@ -201,33 +201,33 @@
   }
 
   [v11 setObject:v17 forKeyedSubscript:@"AnalysisStatusExtension"];
-  v18 = [(PHAsset *)self->_asset vcp_fullAnalysisTypes];
-  v19 = v18 & ~[v39 vcp_types] & 0xFFFFFFFFFFEFFFFFLL;
+  vcp_fullAnalysisTypes = [(PHAsset *)self->_asset vcp_fullAnalysisTypes];
+  v19 = vcp_fullAnalysisTypes & ~[analysisCopy vcp_types] & 0xFFFFFFFFFFEFFFFFLL;
   v20 = [NSNumber numberWithBool:v19 == 0];
   [v11 setObject:v20 forKeyedSubscript:@"ResourceCondition"];
 
   [v11 setObject:@"full" forKeyedSubscript:@"Activity"];
-  v21 = [v39 vcp_dateAnalyzed];
-  [v21 timeIntervalSinceReferenceDate];
+  vcp_dateAnalyzed = [analysisCopy vcp_dateAnalyzed];
+  [vcp_dateAnalyzed timeIntervalSinceReferenceDate];
   v23 = v22;
 
-  v24 = [(PHAsset *)self->_asset creationDate];
-  [v24 timeIntervalSinceReferenceDate];
+  creationDate = [(PHAsset *)self->_asset creationDate];
+  [creationDate timeIntervalSinceReferenceDate];
   v26 = v25;
 
   if (+[MADManagedKeyValueStore isMACDReadEnabled])
   {
-    v27 = [(PHAsset *)self->_asset photoLibrary];
-    v28 = [v27 mad_fetchRequest];
+    photoLibrary = [(PHAsset *)self->_asset photoLibrary];
+    mad_fetchRequest = [photoLibrary mad_fetchRequest];
     v29 = VCPStartTimestampKeyForTask();
-    v30 = [v28 dataStoreValueForKey:v29];
+    v30 = [mad_fetchRequest dataStoreValueForKey:v29];
   }
 
   else
   {
     database = self->_database;
-    v27 = VCPStartTimestampKeyForTask();
-    v30 = [(VCPDatabaseWriter *)database valueForKey:v27];
+    photoLibrary = VCPStartTimestampKeyForTask();
+    v30 = [(VCPDatabaseWriter *)database valueForKey:photoLibrary];
   }
 
   if (v30 <= v26)
@@ -245,12 +245,12 @@
 
   v34 = +[VCPMADCoreAnalyticsManager sharedManager];
   [v34 sendEvent:@"com.apple.mediaanalysisd.AnalysisPerAssetInfo" withAnalytics:v11];
-  if (a4 == 3)
+  if (status == 3)
   {
     [v34 accumulateInt64Value:1 forField:@"NumberOfAssetsIntoBlacklist" andEvent:@"com.apple.mediaanalysisd.FullAnalysisRunSession"];
   }
 
-  if ((v38 & 0x20000000) != 0)
+  if ((vcp_flags & 0x20000000) != 0)
   {
     [v34 accumulateInt64Value:1 forField:@"NumberOfAssetsSteamed" andEvent:@"com.apple.mediaanalysisd.FullAnalysisRunSession"];
   }
@@ -283,19 +283,19 @@
 
 - (int)mainInternal
 {
-  v139 = [(PHAsset *)self->_asset localIdentifier];
+  localIdentifier = [(PHAsset *)self->_asset localIdentifier];
   if (MediaAnalysisLogLevel() >= 5)
   {
     v3 = &_os_log_default;
     v4 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v4))
     {
-      v5 = [(PHAsset *)self->_asset vcp_typeDescription];
+      vcp_typeDescription = [(PHAsset *)self->_asset vcp_typeDescription];
       v6 = MediaAnalysisTypeShortDescription();
       *buf = 138412802;
-      v163 = v139;
+      v163 = localIdentifier;
       v164 = 2112;
-      v165 = *&v5;
+      v165 = *&vcp_typeDescription;
       v166 = 2112;
       v167 = v6;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v4, "  [%@] Analyzing %@ (%@)", buf, 0x20u);
@@ -303,7 +303,7 @@
   }
 
   v138 = +[NSDate date];
-  v7 = [(PHAsset *)self->_asset isVideo];
+  isVideo = [(PHAsset *)self->_asset isVideo];
   types = self->_types;
   if (types == VCPMAFullAnalysisTypesThumbnail)
   {
@@ -312,7 +312,7 @@
 
   else
   {
-    v9 = v7;
+    v9 = isVideo;
   }
 
   if (v9 == 1)
@@ -339,24 +339,24 @@
 LABEL_14:
     if ((self->_types & 0x34000000) != 0)
     {
-      v17 = [v10 vcp_results];
-      v18 = [v17 objectForKeyedSubscript:MediaAnalysisMovieSummaryResultsKey];
+      vcp_results = [v10 vcp_results];
+      v18 = [vcp_results objectForKeyedSubscript:MediaAnalysisMovieSummaryResultsKey];
 
       if ([v18 count] && (objc_msgSend(v18, "objectAtIndexedSubscript:", 0), v19 = objc_claimAutoreleasedReturnValue(), v20 = (objc_msgSend(v19, "vcp_flags") & 0x80000) == 0, v19, !v20))
       {
-        v23 = [[VCPPhotoAnalyzer alloc] initWithPHAsset:self->_asset withExistingAnalysis:0 forAnalysisTypes:self->_types & 0x34000000];
-        [v23 setAllowStreaming:{-[VCPAssetAnalysisTask allowStreaming](self, "allowStreaming")}];
+        0x34000000 = [[VCPPhotoAnalyzer alloc] initWithPHAsset:self->_asset withExistingAnalysis:0 forAnalysisTypes:self->_types & 0x34000000];
+        [0x34000000 setAllowStreaming:{-[VCPAssetAnalysisTask allowStreaming](self, "allowStreaming")}];
         v159[0] = _NSConcreteStackBlock;
         v159[1] = 3221225472;
         v159[2] = sub_1000BB64C;
         v159[3] = &unk_100283000;
         v159[4] = self;
-        v24 = [v23 analyzeAsset:v159 withOptions:0];
-        asset = [v23 status];
+        v24 = [0x34000000 analyzeAsset:v159 withOptions:0];
+        asset = [0x34000000 status];
         if (asset == 2)
         {
-          v25 = [v24 vcp_results];
-          [v10 vcp_addEntriesFromResults:v25];
+          vcp_results2 = [v24 vcp_results];
+          [v10 vcp_addEntriesFromResults:vcp_results2];
 
           [v10 vcp_addTypes:self->_types & 0x34000000];
         }
@@ -371,7 +371,7 @@ LABEL_14:
           if (os_log_type_enabled(&_os_log_default, v22))
           {
             *buf = 138412290;
-            v163 = v139;
+            v163 = localIdentifier;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "  [%@] Pre-gating for stabilization not passed.", buf, 0xCu);
           }
         }
@@ -389,17 +389,17 @@ LABEL_14:
     goto LABEL_27;
   }
 
-  v15 = [[VCPPhotoAnalyzer alloc] initWithPHAsset:self->_asset withExistingAnalysis:self->_existingAnalysis forAnalysisTypes:self->_types & 0xFFFFFFFFCBFFFFFFLL];
-  [v15 setAllowStreaming:{-[VCPAssetAnalysisTask allowStreaming](self, "allowStreaming")}];
+  0xFFFFFFFFCBFFFFFFLL = [[VCPPhotoAnalyzer alloc] initWithPHAsset:self->_asset withExistingAnalysis:self->_existingAnalysis forAnalysisTypes:self->_types & 0xFFFFFFFFCBFFFFFFLL];
+  [0xFFFFFFFFCBFFFFFFLL setAllowStreaming:{-[VCPAssetAnalysisTask allowStreaming](self, "allowStreaming")}];
   v160[0] = _NSConcreteStackBlock;
   v160[1] = 3221225472;
   v160[2] = sub_1000BB5D4;
   v160[3] = &unk_100283000;
   v160[4] = self;
-  v16 = [v15 analyzeAsset:v160 withOptions:0];
+  v16 = [0xFFFFFFFFCBFFFFFFLL analyzeAsset:v160 withOptions:0];
   v10 = [v16 mutableCopy];
 
-  asset = [v15 status];
+  asset = [0xFFFFFFFFCBFFFFFFLL status];
   if (asset == 2)
   {
     goto LABEL_14;
@@ -422,8 +422,8 @@ LABEL_27:
 LABEL_30:
 
   objc_storeStrong(&self->_analysisResults, v11);
-  v26 = [(VCPTask *)self photoLibrary];
-  v137 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v26];
+  photoLibrary = [(VCPTask *)self photoLibrary];
+  v137 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:photoLibrary];
 
   if (asset == 4)
   {
@@ -433,7 +433,7 @@ LABEL_30:
       if (os_log_type_enabled(&_os_log_default, v47))
       {
         *buf = 138412290;
-        v163 = v139;
+        v163 = localIdentifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v47, "  [%@] Analysis cancelled", buf, 0xCu);
       }
     }
@@ -446,7 +446,7 @@ LABEL_30:
         if (os_log_type_enabled(&_os_log_default, v48))
         {
           *buf = 138412290;
-          v163 = v139;
+          v163 = localIdentifier;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v48, "  [%@] Analysis cancelled with partially valid results", buf, 0xCu);
         }
       }
@@ -457,21 +457,21 @@ LABEL_30:
       {
         if (+[MADManagedProcessingStatus isMACDPersistEnabled])
         {
-          v50 = [(PHAsset *)self->_asset photoLibrary];
+          photoLibrary2 = [(PHAsset *)self->_asset photoLibrary];
           v146 = 0;
           v147[0] = _NSConcreteStackBlock;
           v147[1] = 3221225472;
           v147[2] = sub_1000BB850;
           v147[3] = &unk_100283AD0;
           v147[4] = self;
-          v51 = [v50 mad_performAnalysisDataStoreChanges:v147 error:&v146];
+          v51 = [photoLibrary2 mad_performAnalysisDataStoreChanges:v147 error:&v146];
           v52 = v146;
 
           if ((v51 & 1) == 0)
           {
-            v53 = [v52 code];
+            code = [v52 code];
 LABEL_169:
-            LODWORD(asset) = v53;
+            LODWORD(asset) = code;
 
 LABEL_173:
             goto LABEL_174;
@@ -491,12 +491,12 @@ LABEL_167:
           goto LABEL_174;
         }
 
-        v77 = [(VCPAssetAnalysisTask *)self previousAttempts];
+        previousAttempts = [(VCPAssetAnalysisTask *)self previousAttempts];
         asset = self->_asset;
         taskID = self->_taskID;
-        v79 = [(VCPAssetAnalysisTask *)self previousStatus];
-        v80 = [(VCPAssetAnalysisTask *)self lastAttemptDate];
-        LODWORD(asset) = [v137 setAttempts:v77 asset:asset taskID:taskID status:v79 lastAttemptDate:v80];
+        previousStatus = [(VCPAssetAnalysisTask *)self previousStatus];
+        lastAttemptDate = [(VCPAssetAnalysisTask *)self lastAttemptDate];
+        LODWORD(asset) = [v137 setAttempts:previousAttempts asset:asset taskID:taskID status:previousStatus lastAttemptDate:lastAttemptDate];
       }
 
       else
@@ -505,27 +505,27 @@ LABEL_167:
         v74 = self->_asset;
         if (v73)
         {
-          v75 = [(PHAsset *)v74 photoLibrary];
+          photoLibrary3 = [(PHAsset *)v74 photoLibrary];
           v144 = 0;
           v145[0] = _NSConcreteStackBlock;
           v145[1] = 3221225472;
           v145[2] = sub_1000BB924;
           v145[3] = &unk_100283AD0;
           v145[4] = self;
-          v76 = [v75 mad_performAnalysisDataStoreChanges:v145 error:&v144];
+          v76 = [photoLibrary3 mad_performAnalysisDataStoreChanges:v145 error:&v144];
           v52 = v144;
 
           if ((v76 & 1) == 0)
           {
-            v53 = [v52 code];
+            code = [v52 code];
             goto LABEL_169;
           }
 
           goto LABEL_109;
         }
 
-        v86 = [(PHAsset *)v74 localIdentifier];
-        LODWORD(asset) = [v137 removeProcessingStatusForLocalIdentifier:v86 andTaskID:self->_taskID];
+        localIdentifier2 = [(PHAsset *)v74 localIdentifier];
+        LODWORD(asset) = [v137 removeProcessingStatusForLocalIdentifier:localIdentifier2 andTaskID:self->_taskID];
       }
 
       if (asset == -108 || asset == -36 || asset == -23)
@@ -548,7 +548,7 @@ LABEL_167:
         if (os_log_type_enabled(&_os_log_default, v70))
         {
           *buf = 138412546;
-          v163 = v139;
+          v163 = localIdentifier;
           v164 = 2048;
           v165 = v56;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v70, "  [%@] Analysis failed to progress in extended processing interval (%.0fs)", buf, 0x16u);
@@ -567,7 +567,7 @@ LABEL_167:
         if (os_log_type_enabled(&_os_log_default, v57))
         {
           *buf = 138412290;
-          v163 = v139;
+          v163 = localIdentifier;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v57, "  [%@] Analysis cancelled after resource streamed", buf, 0xCu);
         }
       }
@@ -580,14 +580,14 @@ LABEL_167:
     {
       if (+[MADManagedProcessingStatus isMACDPersistEnabled])
       {
-        v71 = [(PHAsset *)self->_asset photoLibrary];
+        photoLibrary4 = [(PHAsset *)self->_asset photoLibrary];
         v142 = 0;
         v143[0] = _NSConcreteStackBlock;
         v143[1] = 3221225472;
         v143[2] = sub_1000BB9C4;
         v143[3] = &unk_100283AD0;
         v143[4] = self;
-        v72 = [v71 mad_performAnalysisDataStoreChanges:v143 error:&v142];
+        v72 = [photoLibrary4 mad_performAnalysisDataStoreChanges:v143 error:&v142];
         v49 = v142;
 
         if (v72)
@@ -598,16 +598,16 @@ LABEL_166:
           goto LABEL_167;
         }
 
-        v130 = [v49 code];
+        code2 = [v49 code];
         goto LABEL_172;
       }
 
-      v87 = [(VCPAssetAnalysisTask *)self previousAttempts];
+      previousAttempts2 = [(VCPAssetAnalysisTask *)self previousAttempts];
       asset = self->_asset;
       v88 = self->_taskID;
-      v89 = [(VCPAssetAnalysisTask *)self previousStatus];
-      v90 = [(VCPAssetAnalysisTask *)self lastAttemptDate];
-      LODWORD(asset) = [v137 setAttempts:v87 asset:asset taskID:v88 status:v89 lastAttemptDate:v90];
+      previousStatus2 = [(VCPAssetAnalysisTask *)self previousStatus];
+      lastAttemptDate2 = [(VCPAssetAnalysisTask *)self lastAttemptDate];
+      LODWORD(asset) = [v137 setAttempts:previousAttempts2 asset:asset taskID:v88 status:previousStatus2 lastAttemptDate:lastAttemptDate2];
     }
 
     else
@@ -616,14 +616,14 @@ LABEL_166:
       v83 = self->_asset;
       if (v82)
       {
-        v84 = [(PHAsset *)v83 photoLibrary];
+        photoLibrary5 = [(PHAsset *)v83 photoLibrary];
         v140 = 0;
         v141[0] = _NSConcreteStackBlock;
         v141[1] = 3221225472;
         v141[2] = sub_1000BBA98;
         v141[3] = &unk_100283AD0;
         v141[4] = self;
-        v85 = [v84 mad_performAnalysisDataStoreChanges:v141 error:&v140];
+        v85 = [photoLibrary5 mad_performAnalysisDataStoreChanges:v141 error:&v140];
         v49 = v140;
 
         if (v85)
@@ -632,14 +632,14 @@ LABEL_166:
           goto LABEL_166;
         }
 
-        v130 = [v49 code];
+        code2 = [v49 code];
 LABEL_172:
-        LODWORD(asset) = v130;
+        LODWORD(asset) = code2;
         goto LABEL_173;
       }
 
-      v127 = [(PHAsset *)v83 localIdentifier];
-      LODWORD(asset) = [v137 removeProcessingStatusForLocalIdentifier:v127 andTaskID:self->_taskID];
+      localIdentifier3 = [(PHAsset *)v83 localIdentifier];
+      LODWORD(asset) = [v137 removeProcessingStatusForLocalIdentifier:localIdentifier3 andTaskID:self->_taskID];
     }
 
     if (asset == -108 || asset == -36 || asset == -23)
@@ -658,7 +658,7 @@ LABEL_172:
       if (os_log_type_enabled(&_os_log_default, v41))
       {
         *buf = 138412290;
-        v163 = v139;
+        v163 = localIdentifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v41, "  [%@] Analysis failed", buf, 0xCu);
       }
     }
@@ -669,15 +669,15 @@ LABEL_172:
 
     if (+[MADManagedProcessingStatus isMACDPersistEnabled])
     {
-      v44 = [(PHAsset *)self->_asset photoLibrary];
+      photoLibrary6 = [(PHAsset *)self->_asset photoLibrary];
       v149[0] = _NSConcreteStackBlock;
       v149[1] = 3221225472;
       v149[2] = sub_1000BB7A0;
       v149[3] = &unk_100282938;
       v150 = v43;
-      v151 = self;
+      selfCopy = self;
       v148 = 0;
-      v45 = [v44 mad_performAnalysisDataStoreChanges:v149 error:&v148];
+      v45 = [photoLibrary6 mad_performAnalysisDataStoreChanges:v149 error:&v148];
       v46 = v148;
 
       if ((v45 & 1) == 0)
@@ -694,8 +694,8 @@ LABEL_172:
     else
     {
       asset = self->_database;
-      v59 = [(PHAsset *)self->_asset localIdentifier];
-      LODWORD(asset) = [asset updateProcessingStatus:3 andNextAttemptDate:v43 forLocalIdentifier:v59 andTaskID:self->_taskID];
+      localIdentifier4 = [(PHAsset *)self->_asset localIdentifier];
+      LODWORD(asset) = [asset updateProcessingStatus:3 andNextAttemptDate:v43 forLocalIdentifier:localIdentifier4 andTaskID:self->_taskID];
 
       if (asset != -108 && asset != -36 && asset != -23)
       {
@@ -729,7 +729,7 @@ LABEL_83:
     if (os_log_type_enabled(&_os_log_default, v28))
     {
       *buf = 138412290;
-      v163 = v139;
+      v163 = localIdentifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v28, "  [%@] Analysis completed", buf, 0xCu);
     }
   }
@@ -744,7 +744,7 @@ LABEL_83:
       if (os_log_type_enabled(&_os_log_default, v31))
       {
         *buf = 138412290;
-        v163 = v139;
+        v163 = localIdentifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v31, "[%@][MACD] Persisting results to CoreData", buf, 0xCu);
       }
     }
@@ -760,7 +760,7 @@ LABEL_83:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v34, OS_SIGNPOST_INTERVAL_BEGIN, asset, "VCPAssetAnalysisTask_PublishCoreData_Single", "", buf, 2u);
     }
 
-    v35 = [(VCPTask *)self photoLibrary];
+    photoLibrary7 = [(VCPTask *)self photoLibrary];
     v156[0] = _NSConcreteStackBlock;
     v156[1] = 3221225472;
     v156[2] = sub_1000BB6C4;
@@ -768,9 +768,9 @@ LABEL_83:
     v156[4] = self;
     v36 = v29;
     v157 = v36;
-    v158 = v139;
+    v158 = localIdentifier;
     v155 = 0;
-    v37 = [v35 mad_performAnalysisDataStoreChanges:v156 error:&v155];
+    v37 = [photoLibrary7 mad_performAnalysisDataStoreChanges:v156 error:&v155];
     v38 = v155;
 
     if (v37)
@@ -833,7 +833,7 @@ LABEL_83:
     goto LABEL_175;
   }
 
-  v81 = [v137 removeProcessingStatusForLocalIdentifier:v139 andTaskID:self->_taskID];
+  v81 = [v137 removeProcessingStatusForLocalIdentifier:localIdentifier andTaskID:self->_taskID];
   if (v81 == -108 || v81 == -36)
   {
     LODWORD(asset) = v81;
@@ -879,18 +879,18 @@ LABEL_132:
   v97 = self->_asset;
   if (v96)
   {
-    v98 = [(PHAsset *)v97 photoLibrary];
-    v99 = [v98 mad_fetchRequest];
+    photoLibrary8 = [(PHAsset *)v97 photoLibrary];
+    mad_fetchRequest = [photoLibrary8 mad_fetchRequest];
 
-    v100 = [(PHAsset *)self->_asset localIdentifier];
-    v136 = [v99 fetchAnalysisWithLocalIdentifier:v100 predicate:0];
+    localIdentifier5 = [(PHAsset *)self->_asset localIdentifier];
+    v136 = [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier5 predicate:0];
   }
 
   else
   {
-    v101 = [(PHAsset *)v97 localIdentifier];
+    localIdentifier6 = [(PHAsset *)v97 localIdentifier];
     v153 = 0;
-    v102 = [v137 analysisForAsset:v101 analysis:&v153];
+    v102 = [v137 analysisForAsset:localIdentifier6 analysis:&v153];
     v136 = v153;
 
     if (v102 == -108 || v102 == -36)
@@ -918,11 +918,11 @@ LABEL_132:
     LODWORD(asset) = v103;
   }
 
-  v104 = [v11 vcp_results];
-  v134 = [v104 objectForKeyedSubscript:MediaAnalysisKeyFrameResourceResultsKey];
+  vcp_results3 = [v11 vcp_results];
+  v134 = [vcp_results3 objectForKeyedSubscript:MediaAnalysisKeyFrameResourceResultsKey];
 
-  v105 = [v11 vcp_results];
-  v133 = [v105 objectForKeyedSubscript:MediaAnalysisVideoThumbnailResourcesResultsKey];
+  vcp_results4 = [v11 vcp_results];
+  v133 = [vcp_results4 objectForKeyedSubscript:MediaAnalysisVideoThumbnailResourcesResultsKey];
 
   v106 = MergeKeyFrameResourceResultsIntoExistingAnalysis(v134, v136);
 
@@ -931,10 +931,10 @@ LABEL_132:
   photosChangeManager = self->_photosChangeManager;
   if (photosChangeManager)
   {
-    v108 = [(PHAsset *)self->_asset mediaAnalysisProperties];
-    v109 = v108;
-    v132 = v108;
-    if (!v108 || (v110 = [v108 mediaAnalysisVersion], v110 < MediaAnalysisVersion) || (objc_msgSend(v109, "mediaAnalysisTimeStamp"), v111 = objc_claimAutoreleasedReturnValue(), -[PHAsset vcp_modificationDate](self->_asset, "vcp_modificationDate"), v112 = objc_claimAutoreleasedReturnValue(), v113 = objc_msgSend(v111, "isEqualToDate:", v112), v112, v111, v113))
+    mediaAnalysisProperties = [(PHAsset *)self->_asset mediaAnalysisProperties];
+    v109 = mediaAnalysisProperties;
+    v132 = mediaAnalysisProperties;
+    if (!mediaAnalysisProperties || (v110 = [mediaAnalysisProperties mediaAnalysisVersion], v110 < MediaAnalysisVersion) || (objc_msgSend(v109, "mediaAnalysisTimeStamp"), v111 = objc_claimAutoreleasedReturnValue(), -[PHAsset vcp_modificationDate](self->_asset, "vcp_modificationDate"), v112 = objc_claimAutoreleasedReturnValue(), v113 = objc_msgSend(v111, "isEqualToDate:", v112), v112, v111, v113))
     {
       v114 = self->_photosChangeManager;
       v115 = self->_asset;
@@ -952,7 +952,7 @@ LABEL_132:
           if (os_log_type_enabled(&_os_log_default, v117))
           {
             *buf = 138412290;
-            v163 = v139;
+            v163 = localIdentifier;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v117, "  [%@] Failed to store PHAssetMediaAnalysisProperties", buf, 0xCu);
           }
         }
@@ -963,17 +963,17 @@ LABEL_132:
     [v118 timeIntervalSinceDate:v138];
     v120 = v119;
 
-    v121 = [(VCPTask *)self photoLibrary];
-    v122 = [VCPBackgroundProcessingMetrics sharedMetricsWithPhotoLibrary:v121];
+    photoLibrary9 = [(VCPTask *)self photoLibrary];
+    v122 = [VCPBackgroundProcessingMetrics sharedMetricsWithPhotoLibrary:photoLibrary9];
 
     [v122 loadMetrics];
     [v122 reportAnalyzedAsset:self->_asset withAnalysis:v63 andProcessingTime:v120];
     [(VCPAssetAnalysisTask *)self _reportCoreAnalyticsWithAnalysis:v63 analysisStatus:2 processingInterval:0 extendedAnalysisStatus:v120];
     v123 = VCPTaskIDDescription();
-    v124 = [(PHAsset *)self->_asset vcp_typeDescription];
-    v125 = [NSString stringWithFormat:@"%@-Analyze-%@", v123, v124];
+    vcp_typeDescription2 = [(PHAsset *)self->_asset vcp_typeDescription];
+    v124 = [NSString stringWithFormat:@"%@-Analyze-%@", v123, vcp_typeDescription2];
 
-    VCPCoreAnalyticsQoSReportSpeed(v125, v120 * 1000.0);
+    VCPCoreAnalyticsQoSReportSpeed(v124, v120 * 1000.0);
   }
 
   else

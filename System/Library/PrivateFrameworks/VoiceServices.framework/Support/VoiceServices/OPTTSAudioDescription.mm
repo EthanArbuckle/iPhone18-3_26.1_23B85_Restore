@@ -1,7 +1,7 @@
 @interface OPTTSAudioDescription
 - (AudioStreamBasicDescription)audioStreamBasicDescription;
-- (OPTTSAudioDescription)initWithFlatbuffData:(id)a3 root:(const AudioDescription *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::AudioDescription>)addObjectToBuffer:(void *)a3;
+- (OPTTSAudioDescription)initWithFlatbuffData:(id)data root:(const AudioDescription *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::AudioDescription>)addObjectToBuffer:(void *)buffer;
 - (double)sample_rate;
 - (id)flatbuffData;
 - (unsigned)bits_per_channel;
@@ -45,73 +45,73 @@ flatbuffers::DetachedBuffer *__37__OPTTSAudioDescription_flatbuffData__block_inv
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::AudioDescription>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::AudioDescription>)addObjectToBuffer:(void *)buffer
 {
   [(OPTTSAudioDescription *)self sample_rate];
   v6 = v5;
-  v7 = [(OPTTSAudioDescription *)self format_id];
-  v8 = [(OPTTSAudioDescription *)self format_flags];
-  v9 = [(OPTTSAudioDescription *)self bytes_per_packet];
-  v10 = [(OPTTSAudioDescription *)self frames_per_packet];
-  v11 = [(OPTTSAudioDescription *)self bytes_per_frame];
-  v31 = [(OPTTSAudioDescription *)self channels_per_frame];
-  v30 = [(OPTTSAudioDescription *)self bits_per_channel];
-  v12 = [(OPTTSAudioDescription *)self reserved];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 5);
-  v13 = *(a3 + 6);
-  v15 = *(a3 + 4);
-  if (v6 != 0.0 || *(a3 + 80) == 1)
+  format_id = [(OPTTSAudioDescription *)self format_id];
+  format_flags = [(OPTTSAudioDescription *)self format_flags];
+  bytes_per_packet = [(OPTTSAudioDescription *)self bytes_per_packet];
+  frames_per_packet = [(OPTTSAudioDescription *)self frames_per_packet];
+  bytes_per_frame = [(OPTTSAudioDescription *)self bytes_per_frame];
+  channels_per_frame = [(OPTTSAudioDescription *)self channels_per_frame];
+  bits_per_channel = [(OPTTSAudioDescription *)self bits_per_channel];
+  reserved = [(OPTTSAudioDescription *)self reserved];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 5);
+  v13 = *(buffer + 6);
+  v15 = *(buffer + 4);
+  if (v6 != 0.0 || *(buffer + 80) == 1)
   {
-    v29 = *(a3 + 6);
-    flatbuffers::FlatBufferBuilder::Align(a3, 8uLL);
-    flatbuffers::vector_downward::ensure_space(a3, 8uLL);
-    v16 = *(a3 + 6);
+    v29 = *(buffer + 6);
+    flatbuffers::FlatBufferBuilder::Align(buffer, 8uLL);
+    flatbuffers::vector_downward::ensure_space(buffer, 8uLL);
+    v16 = *(buffer + 6);
     *(v16 - 8) = v6;
     v16 -= 8;
-    *(a3 + 6) = v16;
+    *(buffer + 6) = v16;
     v17 = v14;
-    v18 = v12;
-    v19 = v11;
-    v20 = v10;
-    v21 = v9;
-    v22 = v8;
-    v23 = v7;
-    v24 = (*(a3 + 8) - v16 + *(a3 + 10));
-    flatbuffers::vector_downward::ensure_space(a3, 8uLL);
+    v18 = reserved;
+    v19 = bytes_per_frame;
+    v20 = frames_per_packet;
+    v21 = bytes_per_packet;
+    v22 = format_flags;
+    v23 = format_id;
+    v24 = (*(buffer + 8) - v16 + *(buffer + 10));
+    flatbuffers::vector_downward::ensure_space(buffer, 8uLL);
     v25 = v24 | 0x400000000;
-    v7 = v23;
-    v8 = v22;
-    v9 = v21;
-    v10 = v20;
-    v11 = v19;
-    v12 = v18;
+    format_id = v23;
+    format_flags = v22;
+    bytes_per_packet = v21;
+    frames_per_packet = v20;
+    bytes_per_frame = v19;
+    reserved = v18;
     LODWORD(v14) = v17;
-    **(a3 + 7) = v25;
-    *(a3 + 7) += 8;
-    ++*(a3 + 16);
-    v26 = *(a3 + 34);
+    **(buffer + 7) = v25;
+    *(buffer + 7) += 8;
+    ++*(buffer + 16);
+    v26 = *(buffer + 34);
     if (v26 <= 4)
     {
       LOWORD(v26) = 4;
     }
 
     LODWORD(v13) = v29;
-    *(a3 + 34) = v26;
+    *(buffer + 34) = v26;
   }
 
   v27 = v15 - v13;
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v7);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v8);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v9);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 12, v10);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 14, v11);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 16, v31);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 18, v30);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 20, v12);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, format_id);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, format_flags);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, bytes_per_packet);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 12, frames_per_packet);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 14, bytes_per_frame);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 16, channels_per_frame);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 18, bits_per_channel);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 20, reserved);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v27 + v14);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v27 + v14);
 }
 
 - (unsigned)reserved
@@ -251,42 +251,42 @@ flatbuffers::DetachedBuffer *__37__OPTTSAudioDescription_flatbuffData__block_inv
   return result;
 }
 
-- (OPTTSAudioDescription)initWithFlatbuffData:(id)a3 root:(const AudioDescription *)a4 verify:(BOOL)a5
+- (OPTTSAudioDescription)initWithFlatbuffData:(id)data root:(const AudioDescription *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = OPTTSAudioDescription;
   v10 = [(OPTTSAudioDescription *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_2728326B0;
       v27 = 0;
@@ -308,9 +308,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

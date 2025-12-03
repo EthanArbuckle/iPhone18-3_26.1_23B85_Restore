@@ -1,7 +1,7 @@
 @interface nw_listener_inbox_protocol
 - (BOOL)cancel;
 - (id)description;
-- (void)initWithProtocol:(void *)a3 delegate:;
+- (void)initWithProtocol:(void *)protocol delegate:;
 @end
 
 @implementation nw_listener_inbox_protocol
@@ -42,19 +42,19 @@
   return 0;
 }
 
-- (void)initWithProtocol:(void *)a3 delegate:
+- (void)initWithProtocol:(void *)protocol delegate:
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!a1)
+  protocolCopy = protocol;
+  if (!self)
   {
     goto LABEL_15;
   }
 
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = nw_listener_inbox_protocol;
-  v6 = objc_msgSendSuper2(&v19, sel_initWithDelegate_, v5);
-  a1 = v6;
+  v6 = objc_msgSendSuper2(&v19, sel_initWithDelegate_, protocolCopy);
+  self = v6;
   if (!v6)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -136,7 +136,7 @@
     if (!v9)
     {
 LABEL_14:
-      a1 = 0;
+      self = 0;
       goto LABEL_15;
     }
 
@@ -166,7 +166,7 @@ LABEL_13:
 
 LABEL_15:
 
-  return a1;
+  return self;
 }
 
 @end

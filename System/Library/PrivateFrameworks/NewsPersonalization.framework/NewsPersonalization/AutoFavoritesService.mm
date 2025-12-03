@@ -1,16 +1,16 @@
 @interface AutoFavoritesService
-- (void)prepareFavorites:(id)a3;
+- (void)prepareFavorites:(id)favorites;
 @end
 
 @implementation AutoFavoritesService
 
-- (void)prepareFavorites:(id)a3
+- (void)prepareFavorites:(id)favorites
 {
   sub_1C6CE3674(0, qword_1EDCE65F0, MEMORY[0x1E69E85F0], MEMORY[0x1E69E6720]);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(favorites);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

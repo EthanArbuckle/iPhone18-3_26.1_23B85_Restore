@@ -22,14 +22,14 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  _getNSValueBytes(a1, v2, 0x10uLL, "CGSize");
+  _getNSValueBytes(self, v2, 0x10uLL, "CGSize");
   return *v2;
 }
 
 - (double)CGRectValue
 {
   memset(v2, 0, sizeof(v2));
-  _getNSValueBytes(a1, v2, 0x20uLL, "CGRect");
+  _getNSValueBytes(self, v2, 0x20uLL, "CGRect");
   return *v2;
 }
 
@@ -37,21 +37,21 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  _getNSValueBytes(a1, v2, 0x10uLL, "CGPoint");
+  _getNSValueBytes(self, v2, 0x10uLL, "CGPoint");
   return *v2;
 }
 
 - (double)UIEdgeInsetsValue
 {
   memset(v2, 0, sizeof(v2));
-  _getNSValueBytes(a1, v2, 0x20uLL, "UIEdgeInsets");
+  _getNSValueBytes(self, v2, 0x20uLL, "UIEdgeInsets");
   return *v2;
 }
 
 - (double)directionalEdgeInsetsValue
 {
   memset(v2, 0, sizeof(v2));
-  _getNSValueBytes(a1, v2, 0x20uLL, "NSDirectionalEdgeInsets");
+  _getNSValueBytes(self, v2, 0x20uLL, "NSDirectionalEdgeInsets");
   return *v2;
 }
 
@@ -60,7 +60,7 @@
   v6 = 0u;
   v7 = 0u;
   v5 = 0u;
-  _getNSValueBytes(a1, &v5, 0x30uLL, "CGAffineTransform");
+  _getNSValueBytes(self, &v5, 0x30uLL, "CGAffineTransform");
   v3 = v6;
   *a2 = v5;
   a2[1] = v3;
@@ -71,7 +71,7 @@
 
 + (id)valueWithCGPoint:()NSValueUIGeometryExtensions
 {
-  *v4 = a1;
+  *v4 = self;
   *&v4[1] = a2;
   v2 = [MEMORY[0x1E696B098] valueWithBytes:v4 objCType:"{CGPoint=dd}"];
 
@@ -80,7 +80,7 @@
 
 + (id)valueWithCGVector:()NSValueUIGeometryExtensions
 {
-  *v4 = a1;
+  *v4 = self;
   *&v4[1] = a2;
   v2 = [MEMORY[0x1E696B098] valueWithBytes:v4 objCType:"{CGVector=dd}"];
 
@@ -89,7 +89,7 @@
 
 + (id)valueWithCGSize:()NSValueUIGeometryExtensions
 {
-  *v4 = a1;
+  *v4 = self;
   *&v4[1] = a2;
   v2 = [MEMORY[0x1E696B098] valueWithBytes:v4 objCType:"{CGSize=dd}"];
 
@@ -98,7 +98,7 @@
 
 + (id)valueWithCGRect:()NSValueUIGeometryExtensions
 {
-  *v6 = a1;
+  *v6 = self;
   *&v6[1] = a2;
   *&v6[2] = a3;
   *&v6[3] = a4;
@@ -109,7 +109,7 @@
 
 + (id)valueWithUIEdgeInsets:()NSValueUIGeometryExtensions
 {
-  *v6 = a1;
+  *v6 = self;
   *&v6[1] = a2;
   *&v6[2] = a3;
   *&v6[3] = a4;
@@ -120,7 +120,7 @@
 
 + (id)valueWithDirectionalEdgeInsets:()NSValueUIGeometryExtensions
 {
-  *v6 = a1;
+  *v6 = self;
   *&v6[1] = a2;
   *&v6[2] = a3;
   *&v6[3] = a4;
@@ -131,7 +131,7 @@
 
 + (id)valueWithUIOffset:()NSValueUIGeometryExtensions
 {
-  *v4 = a1;
+  *v4 = self;
   *&v4[1] = a2;
   v2 = [MEMORY[0x1E696B098] valueWithBytes:v4 objCType:"{UIOffset=dd}"];
 
@@ -142,7 +142,7 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  _getNSValueBytes(a1, v2, 0x10uLL, "CGVector");
+  _getNSValueBytes(self, v2, 0x10uLL, "CGVector");
   return *v2;
 }
 
@@ -150,7 +150,7 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  _getNSValueBytes(a1, v2, 0x10uLL, "UIOffset");
+  _getNSValueBytes(self, v2, 0x10uLL, "UIOffset");
   return *v2;
 }
 

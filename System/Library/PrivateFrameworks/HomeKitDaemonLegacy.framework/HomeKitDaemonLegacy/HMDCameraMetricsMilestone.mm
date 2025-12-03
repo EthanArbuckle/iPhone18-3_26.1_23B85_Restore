@@ -1,5 +1,5 @@
 @interface HMDCameraMetricsMilestone
-- (HMDCameraMetricsMilestone)initWithKey:(id)a3 timestamp:(int64_t)a4;
+- (HMDCameraMetricsMilestone)initWithKey:(id)key timestamp:(int64_t)timestamp;
 - (id)attributeDescriptions;
 @end
 
@@ -23,17 +23,17 @@
   return v9;
 }
 
-- (HMDCameraMetricsMilestone)initWithKey:(id)a3 timestamp:(int64_t)a4
+- (HMDCameraMetricsMilestone)initWithKey:(id)key timestamp:(int64_t)timestamp
 {
-  v7 = a3;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = HMDCameraMetricsMilestone;
   v8 = [(HMDCameraMetricsMilestone *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_key, a3);
-    v9->_timestamp = a4;
+    objc_storeStrong(&v8->_key, key);
+    v9->_timestamp = timestamp;
   }
 
   return v9;

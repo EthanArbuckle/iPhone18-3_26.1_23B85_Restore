@@ -1,17 +1,17 @@
 @interface AMSUICommonView
-- (AMSUICommonView)initWithCoder:(id)a3;
-- (AMSUICommonView)initWithFrame:(CGRect)a3;
+- (AMSUICommonView)initWithCoder:(id)coder;
+- (AMSUICommonView)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
 - (id)tintColor;
 @end
 
 @implementation AMSUICommonView
 
-- (AMSUICommonView)initWithCoder:(id)a3
+- (AMSUICommonView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AMSUICommonView;
-  v3 = [(AMSUICommonView *)&v6 initWithCoder:a3];
+  v3 = [(AMSUICommonView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -21,11 +21,11 @@
   return v4;
 }
 
-- (AMSUICommonView)initWithFrame:(CGRect)a3
+- (AMSUICommonView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AMSUICommonView;
-  v3 = [(AMSUICommonView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AMSUICommonView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -40,40 +40,40 @@
 {
   v7.receiver = self;
   v7.super_class = AMSUICommonView;
-  v2 = [(AMSUICommonView *)&v7 tintColor];
-  v3 = v2;
-  if (v2)
+  tintColor = [(AMSUICommonView *)&v7 tintColor];
+  v3 = tintColor;
+  if (tintColor)
   {
-    v4 = v2;
+    ams_appTint = tintColor;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] ams_appTint];
+    ams_appTint = [MEMORY[0x1E69DC888] ams_appTint];
   }
 
-  v5 = v4;
+  v5 = ams_appTint;
 
   return v5;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(AMSUICommonView *)self accessibilityElementLabel];
-  v4 = v3;
-  if (v3)
+  accessibilityElementLabel = [(AMSUICommonView *)self accessibilityElementLabel];
+  v4 = accessibilityElementLabel;
+  if (accessibilityElementLabel)
   {
-    v5 = v3;
+    accessibilityLabel = accessibilityElementLabel;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = AMSUICommonView;
-    v5 = [(AMSUICommonView *)&v8 accessibilityLabel];
+    accessibilityLabel = [(AMSUICommonView *)&v8 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }

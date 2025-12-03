@@ -1,13 +1,13 @@
 @interface MTIDCompositeSecretStore
 - (MTIDCompositeSecretStore)init;
 - (id)debugInfo;
-- (id)maintainSchemes:(id)a3 options:(id)a4;
-- (id)resetSchemes:(id)a3 options:(id)a4;
-- (id)schemesGroupedByStore:(id)a3;
-- (id)secretForScheme:(id)a3 options:(id)a4;
-- (id)secretStoreForScheme:(id)a3;
-- (id)storeKeyForScheme:(id)a3;
-- (id)syncForSchemes:(id)a3 options:(id)a4;
+- (id)maintainSchemes:(id)schemes options:(id)options;
+- (id)resetSchemes:(id)schemes options:(id)options;
+- (id)schemesGroupedByStore:(id)store;
+- (id)secretForScheme:(id)scheme options:(id)options;
+- (id)secretStoreForScheme:(id)scheme;
+- (id)storeKeyForScheme:(id)scheme;
+- (id)syncForSchemes:(id)schemes options:(id)options;
 - (void)clearLocalData;
 @end
 
@@ -27,33 +27,33 @@
   return v2;
 }
 
-- (id)storeKeyForScheme:(id)a3
+- (id)storeKeyForScheme:(id)scheme
 {
-  v3 = a3;
-  v4 = [v3 idType];
+  schemeCopy = scheme;
+  idType = [schemeCopy idType];
   v5 = @"Local";
-  if (v4 == 2)
+  if (idType == 2)
   {
     v5 = @"Cloud";
   }
 
   v6 = MEMORY[0x277CCACA8];
   v7 = v5;
-  v8 = [v3 containerIdentifier];
+  containerIdentifier = [schemeCopy containerIdentifier];
 
-  v9 = [v6 stringWithFormat:@"%@-%@", v7, v8];
+  v9 = [v6 stringWithFormat:@"%@-%@", v7, containerIdentifier];
 
   return v9;
 }
 
-- (id)secretStoreForScheme:(id)a3
+- (id)secretStoreForScheme:(id)scheme
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MTIDCompositeSecretStore *)v5 storeKeyForScheme:v4];
-  v7 = [(MTIDCompositeSecretStore *)v5 stores];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  schemeCopy = scheme;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(MTIDCompositeSecretStore *)selfCopy storeKeyForScheme:schemeCopy];
+  stores = [(MTIDCompositeSecretStore *)selfCopy stores];
+  v8 = [stores objectForKeyedSubscript:v6];
 
   if (v8)
   {
@@ -63,28 +63,28 @@
   else
   {
     v10 = [MTIDCloudKitStore alloc];
-    v11 = [v4 containerIdentifier];
-    v9 = -[MTIDCloudKitStore initWithContainerIdentifer:enableSync:](v10, "initWithContainerIdentifer:enableSync:", v11, [v4 idType] == 2);
+    containerIdentifier = [schemeCopy containerIdentifier];
+    v9 = -[MTIDCloudKitStore initWithContainerIdentifer:enableSync:](v10, "initWithContainerIdentifer:enableSync:", containerIdentifier, [schemeCopy idType] == 2);
 
-    v12 = [(MTIDCompositeSecretStore *)v5 stores];
-    [v12 setObject:v9 forKeyedSubscript:v6];
+    stores2 = [(MTIDCompositeSecretStore *)selfCopy stores];
+    [stores2 setObject:v9 forKeyedSubscript:v6];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (id)schemesGroupedByStore:(id)a3
+- (id)schemesGroupedByStore:(id)store
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  storeCopy = store;
   v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:1];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = storeCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -130,24 +130,24 @@
   return v5;
 }
 
-- (id)secretForScheme:(id)a3 options:(id)a4
+- (id)secretForScheme:(id)scheme options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:v7];
-  v9 = [v8 secretForScheme:v7 options:v6];
+  optionsCopy = options;
+  schemeCopy = scheme;
+  v8 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:schemeCopy];
+  v9 = [v8 secretForScheme:schemeCopy options:optionsCopy];
 
   return v9;
 }
 
-- (id)resetSchemes:(id)a3 options:(id)a4
+- (id)resetSchemes:(id)schemes options:(id)options
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v22 = v6;
-  v9 = [(MTIDCompositeSecretStore *)self schemesGroupedByStore:v6];
+  schemesCopy = schemes;
+  optionsCopy = options;
+  array = [MEMORY[0x277CBEB18] array];
+  v22 = schemesCopy;
+  v9 = [(MTIDCompositeSecretStore *)self schemesGroupedByStore:schemesCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -167,11 +167,11 @@
         }
 
         v14 = [v9 objectForKeyedSubscript:*(*(&v23 + 1) + 8 * i)];
-        v15 = [v14 firstObject];
-        v16 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:v15];
+        firstObject = [v14 firstObject];
+        v16 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:firstObject];
 
-        v17 = [v16 resetSchemes:v14 options:v7];
-        [v8 addObject:v17];
+        v17 = [v16 resetSchemes:v14 options:optionsCopy];
+        [array addObject:v17];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -180,9 +180,9 @@
     while (v11);
   }
 
-  if ([v8 count])
+  if ([array count])
   {
-    v18 = [MTPromise promiseWithAll:v8];
+    v18 = [MTPromise promiseWithAll:array];
     v19 = [v18 thenWithBlock:&__block_literal_global_17];
   }
 
@@ -196,14 +196,14 @@
   return v19;
 }
 
-- (id)maintainSchemes:(id)a3 options:(id)a4
+- (id)maintainSchemes:(id)schemes options:(id)options
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v22 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v21 = v6;
-  v8 = [(MTIDCompositeSecretStore *)self schemesGroupedByStore:v6];
+  schemesCopy = schemes;
+  optionsCopy = options;
+  array = [MEMORY[0x277CBEB18] array];
+  v21 = schemesCopy;
+  v8 = [(MTIDCompositeSecretStore *)self schemesGroupedByStore:schemesCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -223,13 +223,13 @@
         }
 
         v13 = [v8 objectForKeyedSubscript:*(*(&v23 + 1) + 8 * i)];
-        v14 = [v13 firstObject];
-        v15 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:v14];
+        firstObject = [v13 firstObject];
+        v15 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:firstObject];
 
         if (objc_opt_respondsToSelector())
         {
-          v16 = [v15 maintainSchemes:v13 options:v22];
-          [v7 addObject:v16];
+          v16 = [v15 maintainSchemes:v13 options:optionsCopy];
+          [array addObject:v16];
         }
       }
 
@@ -239,9 +239,9 @@
     while (v10);
   }
 
-  if ([v7 count])
+  if ([array count])
   {
-    v17 = [MTPromise promiseWithAll:v7];
+    v17 = [MTPromise promiseWithAll:array];
     v18 = [v17 thenWithBlock:&__block_literal_global_15];
   }
 
@@ -257,24 +257,24 @@
 
 - (void)clearLocalData
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTIDCompositeSecretStore *)v2 stores];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  stores = [(MTIDCompositeSecretStore *)selfCopy stores];
+  v4 = [stores copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   [v4 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_18];
 }
 
 - (id)debugInfo
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTIDCompositeSecretStore *)v2 stores];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  stores = [(MTIDCompositeSecretStore *)selfCopy stores];
+  v4 = [stores copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
@@ -303,14 +303,14 @@ void __37__MTIDCompositeSecretStore_debugInfo__block_invoke(uint64_t a1, uint64_
   }
 }
 
-- (id)syncForSchemes:(id)a3 options:(id)a4
+- (id)syncForSchemes:(id)schemes options:(id)options
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v22 = v6;
-  v9 = [(MTIDCompositeSecretStore *)self schemesGroupedByStore:v6];
+  schemesCopy = schemes;
+  optionsCopy = options;
+  array = [MEMORY[0x277CBEB18] array];
+  v22 = schemesCopy;
+  v9 = [(MTIDCompositeSecretStore *)self schemesGroupedByStore:schemesCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -330,13 +330,13 @@ void __37__MTIDCompositeSecretStore_debugInfo__block_invoke(uint64_t a1, uint64_
         }
 
         v14 = [v9 objectForKeyedSubscript:*(*(&v23 + 1) + 8 * i)];
-        v15 = [v14 firstObject];
-        v16 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:v15];
+        firstObject = [v14 firstObject];
+        v16 = [(MTIDCompositeSecretStore *)self secretStoreForScheme:firstObject];
 
-        v17 = [v16 syncForSchemes:v14 options:v7];
+        v17 = [v16 syncForSchemes:v14 options:optionsCopy];
         if (v17)
         {
-          [v8 addObject:v17];
+          [array addObject:v17];
         }
       }
 
@@ -346,9 +346,9 @@ void __37__MTIDCompositeSecretStore_debugInfo__block_invoke(uint64_t a1, uint64_
     while (v11);
   }
 
-  if ([v8 count])
+  if ([array count])
   {
-    v18 = [MTPromise promiseWithAll:v8];
+    v18 = [MTPromise promiseWithAll:array];
     v19 = [v18 thenWithBlock:&__block_literal_global_27];
   }
 

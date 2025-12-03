@@ -1,15 +1,15 @@
 @interface StockServiceURLSessionDelegate
 - (_TtC9StocksKit30StockServiceURLSessionDelegate)init;
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3;
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session;
 @end
 
 @implementation StockServiceURLSessionDelegate
 
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session
 {
-  v4 = a3;
-  v5 = self;
-  sub_26BB5924C(v4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_26BB5924C(sessionCopy);
 }
 
 - (_TtC9StocksKit30StockServiceURLSessionDelegate)init

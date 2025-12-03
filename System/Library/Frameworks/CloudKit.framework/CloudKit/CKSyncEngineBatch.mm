@@ -1,7 +1,7 @@
 @interface CKSyncEngineBatch
 + (void)initialize;
-- (CKSyncEngineBatch)initWithRecordsToSave:(id)a3 recordIDsToDelete:(id)a4;
-- (id)CKDescriptionPropertiesWithPublic:(BOOL)a3 private:(BOOL)a4 shouldExpand:(BOOL)a5;
+- (CKSyncEngineBatch)initWithRecordsToSave:(id)save recordIDsToDelete:(id)delete;
+- (id)CKDescriptionPropertiesWithPublic:(BOOL)public private:(BOOL)private shouldExpand:(BOOL)expand;
 @end
 
 @implementation CKSyncEngineBatch
@@ -14,10 +14,10 @@
   sub_1886CEE50(v3, v2, 0, 0, 0);
 }
 
-- (CKSyncEngineBatch)initWithRecordsToSave:(id)a3 recordIDsToDelete:(id)a4
+- (CKSyncEngineBatch)initWithRecordsToSave:(id)save recordIDsToDelete:(id)delete
 {
-  v6 = a3;
-  v7 = a4;
+  saveCopy = save;
+  deleteCopy = delete;
   v21.receiver = self;
   v21.super_class = CKSyncEngineBatch;
   v8 = [(CKSyncEngineBatch *)&v21 init];
@@ -25,11 +25,11 @@
   if (v8)
   {
     v8->_atomic = 1;
-    v12 = objc_msgSend_copy(v6, v9, v10);
+    v12 = objc_msgSend_copy(saveCopy, v9, v10);
     recordsToSave = v11->_recordsToSave;
     v11->_recordsToSave = v12;
 
-    v16 = objc_msgSend_copy(v7, v14, v15);
+    v16 = objc_msgSend_copy(deleteCopy, v14, v15);
     recordIDsToDelete = v11->_recordIDsToDelete;
     v11->_recordIDsToDelete = v16;
 
@@ -45,7 +45,7 @@
   return v11;
 }
 
-- (id)CKDescriptionPropertiesWithPublic:(BOOL)a3 private:(BOOL)a4 shouldExpand:(BOOL)a5
+- (id)CKDescriptionPropertiesWithPublic:(BOOL)public private:(BOOL)private shouldExpand:(BOOL)expand
 {
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9 = objc_msgSend_recordsToSave(self, v7, v8);

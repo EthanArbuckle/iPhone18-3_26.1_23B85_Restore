@@ -1,14 +1,14 @@
 @interface HMDKeyPaths
-- (BOOL)containsKey:(id)a3;
+- (BOOL)containsKey:(id)key;
 - (BOOL)popKey;
-- (BOOL)pushKey:(id)a3;
+- (BOOL)pushKey:(id)key;
 - (HMDKeyPaths)init;
-- (id)initFor:(id)a3;
+- (id)initFor:(id)for;
 @end
 
 @implementation HMDKeyPaths
 
-- (id)initFor:(id)a3
+- (id)initFor:(id)for
 {
   v4 = sub_22A4DD83C();
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87C350, &qword_22A576E40);
@@ -24,11 +24,11 @@
   return [(HMDKeyPaths *)&v8 init];
 }
 
-- (BOOL)pushKey:(id)a3
+- (BOOL)pushKey:(id)key
 {
   v4 = sub_22A4DD5EC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   LOBYTE(v4) = KeyPaths.push(key:)(v8);
@@ -38,13 +38,13 @@
 
 - (BOOL)popKey
 {
-  v2 = self;
+  selfCopy = self;
   v3 = KeyPaths.popKey()();
 
   return v3;
 }
 
-- (BOOL)containsKey:(id)a3
+- (BOOL)containsKey:(id)key
 {
   v5 = sub_22A4DD5EC();
   v7 = v6;
@@ -82,7 +82,7 @@ LABEL_11:
   if ((v9 & 0xC000000000000001) != 0)
   {
 LABEL_12:
-    v14 = self;
+    selfCopy = self;
 
     MEMORY[0x22AAD13F0](v3, v9);
 
@@ -103,7 +103,7 @@ LABEL_14:
   }
 
   v11 = *(v9 + 8 * v3 + 32);
-  v12 = self;
+  selfCopy2 = self;
 
 LABEL_8:
   v13 = sub_2295AF2AC(v5, v7);

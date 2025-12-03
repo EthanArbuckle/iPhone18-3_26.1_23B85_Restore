@@ -1,59 +1,59 @@
 @interface PKPaymentTransactionAward
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPaymentTransactionAward:(id)a3;
-- (PKPaymentTransactionAward)initWithCoder:(id)a3;
-- (PKPaymentTransactionAward)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPaymentTransactionAward:(id)award;
+- (PKPaymentTransactionAward)initWithCoder:(id)coder;
+- (PKPaymentTransactionAward)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (id)formattedStringValue;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setType:(int64_t)a3;
-- (void)setTypeString:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setType:(int64_t)type;
+- (void)setTypeString:(id)string;
 @end
 
 @implementation PKPaymentTransactionAward
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentTransactionAward allocWithZone:](PKPaymentTransactionAward init];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [(NSString *)self->_typeString copyWithZone:a3];
+  v8 = [(NSString *)self->_typeString copyWithZone:zone];
   typeString = v5->_typeString;
   v5->_typeString = v8;
 
   v5->_type = self->_type;
-  v10 = [(NSString *)self->_subtype copyWithZone:a3];
+  v10 = [(NSString *)self->_subtype copyWithZone:zone];
   subtype = v5->_subtype;
   v5->_subtype = v10;
 
-  v12 = [(NSString *)self->_awardDescription copyWithZone:a3];
+  v12 = [(NSString *)self->_awardDescription copyWithZone:zone];
   awardDescription = v5->_awardDescription;
   v5->_awardDescription = v12;
 
   v5->_order = self->_order;
-  v14 = [(PKTransactionAmount *)self->_amount copyWithZone:a3];
+  v14 = [(PKTransactionAmount *)self->_amount copyWithZone:zone];
   amount = v5->_amount;
   v5->_amount = v14;
 
-  v16 = [(NSString *)self->_localizedAmount copyWithZone:a3];
+  v16 = [(NSString *)self->_localizedAmount copyWithZone:zone];
   localizedAmount = v5->_localizedAmount;
   v5->_localizedAmount = v16;
 
-  v18 = [(NSString *)self->_relevantAccountName copyWithZone:a3];
+  v18 = [(NSString *)self->_relevantAccountName copyWithZone:zone];
   relevantAccountName = v5->_relevantAccountName;
   v5->_relevantAccountName = v18;
 
   v5->_hasDeepLink = self->_hasDeepLink;
-  v20 = [(NSDate *)self->_claimExpiryDate copyWithZone:a3];
+  v20 = [(NSDate *)self->_claimExpiryDate copyWithZone:zone];
   claimExpiryDate = v5->_claimExpiryDate;
   v5->_claimExpiryDate = v20;
 
   v5->_claimExpired = self->_claimExpired;
-  v22 = [(NSDate *)self->_redeemExpiryDate copyWithZone:a3];
+  v22 = [(NSDate *)self->_redeemExpiryDate copyWithZone:zone];
   redeemExpiryDate = v5->_redeemExpiryDate;
   v5->_redeemExpiryDate = v22;
 
@@ -61,129 +61,129 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"awardIdentifier"];
-  [v5 encodeObject:self->_typeString forKey:@"type"];
-  [v5 encodeObject:self->_subtype forKey:@"subtype"];
-  [v5 encodeObject:self->_awardDescription forKey:@"description"];
-  [v5 encodeInteger:self->_order forKey:@"order"];
-  [v5 encodeObject:self->_amount forKey:@"amount"];
-  [v5 encodeObject:self->_localizedAmount forKey:@"localizedAmount"];
-  [v5 encodeObject:self->_relevantAccountName forKey:@"relevantAccountName"];
-  [v5 encodeBool:self->_hasDeepLink forKey:@"hasDeepLink"];
-  [v5 encodeObject:self->_claimExpiryDate forKey:@"claimExpiryDate"];
-  [v5 encodeBool:self->_claimExpired forKey:@"claimExpired"];
-  [v5 encodeObject:self->_redeemExpiryDate forKey:@"redeemExpiryDate"];
-  [v5 encodeBool:self->_redeemExpired forKey:@"redeemExpired"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"awardIdentifier"];
+  [coderCopy encodeObject:self->_typeString forKey:@"type"];
+  [coderCopy encodeObject:self->_subtype forKey:@"subtype"];
+  [coderCopy encodeObject:self->_awardDescription forKey:@"description"];
+  [coderCopy encodeInteger:self->_order forKey:@"order"];
+  [coderCopy encodeObject:self->_amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_localizedAmount forKey:@"localizedAmount"];
+  [coderCopy encodeObject:self->_relevantAccountName forKey:@"relevantAccountName"];
+  [coderCopy encodeBool:self->_hasDeepLink forKey:@"hasDeepLink"];
+  [coderCopy encodeObject:self->_claimExpiryDate forKey:@"claimExpiryDate"];
+  [coderCopy encodeBool:self->_claimExpired forKey:@"claimExpired"];
+  [coderCopy encodeObject:self->_redeemExpiryDate forKey:@"redeemExpiryDate"];
+  [coderCopy encodeBool:self->_redeemExpired forKey:@"redeemExpired"];
 }
 
-- (PKPaymentTransactionAward)initWithCoder:(id)a3
+- (PKPaymentTransactionAward)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = PKPaymentTransactionAward;
   v5 = [(PKPaymentTransactionAward *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"awardIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"awardIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     typeString = v5->_typeString;
     v5->_typeString = v8;
 
     v5->_type = PKPaymentTransactionAwardTypeFromString(v5->_typeString);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtype"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtype"];
     subtype = v5->_subtype;
     v5->_subtype = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"description"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"description"];
     awardDescription = v5->_awardDescription;
     v5->_awardDescription = v12;
 
-    v5->_order = [v4 decodeIntegerForKey:@"order"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v5->_order = [coderCopy decodeIntegerForKey:@"order"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedAmount"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedAmount"];
     localizedAmount = v5->_localizedAmount;
     v5->_localizedAmount = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relevantAccountName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relevantAccountName"];
     relevantAccountName = v5->_relevantAccountName;
     v5->_relevantAccountName = v18;
 
-    v5->_hasDeepLink = [v4 decodeBoolForKey:@"hasDeepLink"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"claimExpiryDate"];
+    v5->_hasDeepLink = [coderCopy decodeBoolForKey:@"hasDeepLink"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"claimExpiryDate"];
     claimExpiryDate = v5->_claimExpiryDate;
     v5->_claimExpiryDate = v20;
 
-    v5->_claimExpired = [v4 decodeBoolForKey:@"claimExpired"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"redeemExpiryDate"];
+    v5->_claimExpired = [coderCopy decodeBoolForKey:@"claimExpired"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"redeemExpiryDate"];
     redeemExpiryDate = v5->_redeemExpiryDate;
     v5->_redeemExpiryDate = v22;
 
-    v5->_redeemExpired = [v4 decodeBoolForKey:@"redeemExpired"];
+    v5->_redeemExpired = [coderCopy decodeBoolForKey:@"redeemExpired"];
   }
 
   return v5;
 }
 
-- (PKPaymentTransactionAward)initWithDictionary:(id)a3
+- (PKPaymentTransactionAward)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = PKPaymentTransactionAward;
   v5 = [(PKPaymentTransactionAward *)&v26 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"awardIdentifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"awardIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"type"];
+    v8 = [dictionaryCopy PKStringForKey:@"type"];
     typeString = v5->_typeString;
     v5->_typeString = v8;
 
     v5->_type = PKPaymentTransactionAwardTypeFromString(v5->_typeString);
-    v10 = [v4 PKStringForKey:@"subtype"];
+    v10 = [dictionaryCopy PKStringForKey:@"subtype"];
     subtype = v5->_subtype;
     v5->_subtype = v10;
 
-    v12 = [v4 PKStringForKey:@"description"];
+    v12 = [dictionaryCopy PKStringForKey:@"description"];
     awardDescription = v5->_awardDescription;
     v5->_awardDescription = v12;
 
     v5->_order = 0x7FFFFFFFFFFFFFFFLL;
-    v14 = [v4 PKDictionaryForKey:@"amount"];
+    v14 = [dictionaryCopy PKDictionaryForKey:@"amount"];
     v15 = [[PKTransactionAmount alloc] initWithDictionary:v14];
     amount = v5->_amount;
     v5->_amount = v15;
 
-    v17 = [v4 PKStringForKey:@"localizedAmount"];
+    v17 = [dictionaryCopy PKStringForKey:@"localizedAmount"];
     localizedAmount = v5->_localizedAmount;
     v5->_localizedAmount = v17;
 
-    v19 = [v4 PKStringForKey:@"relevantAccountName"];
+    v19 = [dictionaryCopy PKStringForKey:@"relevantAccountName"];
     relevantAccountName = v5->_relevantAccountName;
     v5->_relevantAccountName = v19;
 
-    v5->_hasDeepLink = [v4 PKBoolForKey:@"hasDeepLink"];
-    v21 = [v4 PKDateForKey:@"claimExpiryDate"];
+    v5->_hasDeepLink = [dictionaryCopy PKBoolForKey:@"hasDeepLink"];
+    v21 = [dictionaryCopy PKDateForKey:@"claimExpiryDate"];
     claimExpiryDate = v5->_claimExpiryDate;
     v5->_claimExpiryDate = v21;
 
-    v5->_claimExpired = [v4 PKBoolForKey:@"claimExpired"];
-    v23 = [v4 PKDateForKey:@"redeemExpiryDate"];
+    v5->_claimExpired = [dictionaryCopy PKBoolForKey:@"claimExpired"];
+    v23 = [dictionaryCopy PKDateForKey:@"redeemExpiryDate"];
     redeemExpiryDate = v5->_redeemExpiryDate;
     v5->_redeemExpiryDate = v23;
 
-    v5->_redeemExpired = [v4 PKBoolForKey:@"redeemExpired"];
+    v5->_redeemExpired = [dictionaryCopy PKBoolForKey:@"redeemExpired"];
   }
 
   return v5;
@@ -197,9 +197,9 @@
     awardDescription = self->_awardDescription;
     if (amount)
     {
-      v6 = [(PKTransactionAmount *)amount amount];
-      v7 = [v6 formattedStringValue];
-      v8 = PKLocalizedAquamanString(&cfstr_TransactionDet_0.isa, &cfstr_12_0.isa, awardDescription, v7);
+      amount = [(PKTransactionAmount *)amount amount];
+      formattedStringValue = [amount formattedStringValue];
+      v8 = PKLocalizedAquamanString(&cfstr_TransactionDet_0.isa, &cfstr_12_0.isa, awardDescription, formattedStringValue);
 
       goto LABEL_8;
     }
@@ -218,24 +218,24 @@ LABEL_8:
   return v8;
 }
 
-- (void)setTypeString:(id)a3
+- (void)setTypeString:(id)string
 {
-  objc_storeStrong(&self->_typeString, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_typeString, string);
+  stringCopy = string;
   v6 = PKPaymentTransactionAwardTypeFromString(self->_typeString);
 
   self->_type = v6;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   v3 = @"unknown";
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"nonMonetary";
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = @"monetary";
   }
@@ -258,8 +258,8 @@ LABEL_8:
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:self->_order];
   [v3 setObject:v4 forKeyedSubscript:@"order"];
 
-  v5 = [(PKTransactionAmount *)self->_amount dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"amount"];
+  dictionaryRepresentation = [(PKTransactionAmount *)self->_amount dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"amount"];
 
   [v3 setObject:self->_localizedAmount forKeyedSubscript:@"localizedAmount"];
   [v3 setObject:self->_relevantAccountName forKeyedSubscript:@"relevantAccountName"];
@@ -283,17 +283,17 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_typeString];
-  [v3 safelyAddObject:self->_subtype];
-  [v3 safelyAddObject:self->_awardDescription];
-  [v3 safelyAddObject:self->_amount];
-  [v3 safelyAddObject:self->_relevantAccountName];
-  [v3 safelyAddObject:self->_localizedAmount];
-  [v3 safelyAddObject:self->_claimExpiryDate];
-  [v3 safelyAddObject:self->_redeemExpiryDate];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_typeString];
+  [array safelyAddObject:self->_subtype];
+  [array safelyAddObject:self->_awardDescription];
+  [array safelyAddObject:self->_amount];
+  [array safelyAddObject:self->_relevantAccountName];
+  [array safelyAddObject:self->_localizedAmount];
+  [array safelyAddObject:self->_claimExpiryDate];
+  [array safelyAddObject:self->_redeemExpiryDate];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_order - v4 + 32 * v4;
   v6 = self->_type - v5 + 32 * v5;
   v7 = self->_hasDeepLink - v6 + 32 * v6;
@@ -303,27 +303,27 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionAward *)self isEqualToPaymentTransactionAward:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionAward *)self isEqualToPaymentTransactionAward:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPaymentTransactionAward:(id)a3
+- (BOOL)isEqualToPaymentTransactionAward:(id)award
 {
-  v4 = a3;
-  v5 = v4[12];
+  awardCopy = award;
+  v5 = awardCopy[12];
   v6 = self->_typeString;
   v7 = v5;
   v8 = v7;
@@ -356,7 +356,7 @@ LABEL_8:
     }
   }
 
-  v11 = v4[2];
+  v11 = awardCopy[2];
   v6 = self->_identifier;
   v12 = v11;
   v8 = v12;
@@ -379,7 +379,7 @@ LABEL_8:
     }
   }
 
-  v14 = v4[8];
+  v14 = awardCopy[8];
   v6 = self->_awardDescription;
   v15 = v14;
   v8 = v15;
@@ -402,12 +402,12 @@ LABEL_8:
     }
   }
 
-  if (self->_order != v4[5] || self->_type != v4[3])
+  if (self->_order != awardCopy[5] || self->_type != awardCopy[3])
   {
     goto LABEL_46;
   }
 
-  v17 = v4[4];
+  v17 = awardCopy[4];
   v6 = self->_subtype;
   v18 = v17;
   v8 = v18;
@@ -431,7 +431,7 @@ LABEL_8:
   }
 
   amount = self->_amount;
-  v21 = v4[6];
+  v21 = awardCopy[6];
   if (amount && v21)
   {
     if (![(PKTransactionAmount *)amount isEqual:?])
@@ -445,7 +445,7 @@ LABEL_8:
     goto LABEL_46;
   }
 
-  v22 = v4[7];
+  v22 = awardCopy[7];
   v6 = self->_localizedAmount;
   v23 = v22;
   v8 = v23;
@@ -468,7 +468,7 @@ LABEL_8:
     }
   }
 
-  v25 = v4[9];
+  v25 = awardCopy[9];
   v6 = self->_relevantAccountName;
   v26 = v25;
   v8 = v26;
@@ -492,10 +492,10 @@ LABEL_45:
   }
 
 LABEL_49:
-  if (self->_hasDeepLink == *(v4 + 8))
+  if (self->_hasDeepLink == *(awardCopy + 8))
   {
     claimExpiryDate = self->_claimExpiryDate;
-    v31 = v4[10];
+    v31 = awardCopy[10];
     if (claimExpiryDate && v31)
     {
       if (([(NSDate *)claimExpiryDate isEqual:?]& 1) == 0)
@@ -509,10 +509,10 @@ LABEL_49:
       goto LABEL_46;
     }
 
-    if (self->_claimExpired == *(v4 + 9))
+    if (self->_claimExpired == *(awardCopy + 9))
     {
       redeemExpiryDate = self->_redeemExpiryDate;
-      v33 = v4[11];
+      v33 = awardCopy[11];
       if (redeemExpiryDate && v33)
       {
         if (([(NSDate *)redeemExpiryDate isEqual:?]& 1) != 0)
@@ -524,7 +524,7 @@ LABEL_49:
       else if (redeemExpiryDate == v33)
       {
 LABEL_61:
-        v28 = self->_redeemExpired == *(v4 + 10);
+        v28 = self->_redeemExpired == *(awardCopy + 10);
         goto LABEL_47;
       }
     }

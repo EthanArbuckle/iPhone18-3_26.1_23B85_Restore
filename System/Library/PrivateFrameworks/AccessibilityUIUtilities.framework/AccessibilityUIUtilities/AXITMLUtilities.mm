@@ -1,45 +1,45 @@
 @interface AXITMLUtilities
-+ (id)_listTemplateForViewElement:(id)a3;
-+ (id)firstItemTitleForViewElement:(id)a3;
-+ (id)textByReconcilingClientText:(id)a3 withServerText:(id)a4;
-+ (unint64_t)listItemElementCountForViewElement:(id)a3;
++ (id)_listTemplateForViewElement:(id)element;
++ (id)firstItemTitleForViewElement:(id)element;
++ (id)textByReconcilingClientText:(id)text withServerText:(id)serverText;
++ (unint64_t)listItemElementCountForViewElement:(id)element;
 @end
 
 @implementation AXITMLUtilities
 
-+ (id)textByReconcilingClientText:(id)a3 withServerText:(id)a4
++ (id)textByReconcilingClientText:(id)text withServerText:(id)serverText
 {
-  v5 = a3;
-  v6 = a4;
+  textCopy = text;
+  serverTextCopy = serverText;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 string];
-    v8 = [v7 stringByReplacingOccurrencesOfString:@"\uFFFC" withString:&stru_1F4041FC0];
+    string = [textCopy string];
+    v8 = [string stringByReplacingOccurrencesOfString:@"\uFFFC" withString:&stru_1F4041FC0];
 
-    v9 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v5 = [v8 stringByTrimmingCharactersInSet:v9];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    textCopy = [v8 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v6 string];
-    v11 = [v10 stringByReplacingOccurrencesOfString:@"\uFFFC" withString:&stru_1F4041FC0];
+    string2 = [serverTextCopy string];
+    v11 = [string2 stringByReplacingOccurrencesOfString:@"\uFFFC" withString:&stru_1F4041FC0];
 
-    v12 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v6 = [v11 stringByTrimmingCharactersInSet:v12];
+    whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    serverTextCopy = [v11 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
   }
 
-  v13 = [v5 length];
-  v14 = [v6 length];
+  v13 = [textCopy length];
+  v14 = [serverTextCopy length];
   if (!(v13 | v14))
   {
     v16 = 0;
     goto LABEL_14;
   }
 
-  if (v5 && !v14)
+  if (textCopy && !v14)
   {
     goto LABEL_8;
   }
@@ -47,13 +47,13 @@
   if (v14 && !v13)
   {
 LABEL_12:
-    v15 = v6;
+    v15 = serverTextCopy;
     goto LABEL_13;
   }
 
-  if (![v5 localizedCaseInsensitiveContainsString:v6])
+  if (![textCopy localizedCaseInsensitiveContainsString:serverTextCopy])
   {
-    if (![v6 localizedCaseInsensitiveContainsString:v5])
+    if (![serverTextCopy localizedCaseInsensitiveContainsString:textCopy])
     {
       v15 = __AXStringForVariables();
       goto LABEL_13;
@@ -63,7 +63,7 @@ LABEL_12:
   }
 
 LABEL_8:
-  v15 = v5;
+  v15 = textCopy;
 LABEL_13:
   v16 = v15;
 LABEL_14:
@@ -71,17 +71,17 @@ LABEL_14:
   return v16;
 }
 
-+ (unint64_t)listItemElementCountForViewElement:(id)a3
++ (unint64_t)listItemElementCountForViewElement:(id)element
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a1 _listTemplateForViewElement:a3];
-  v4 = [v3 list];
-  v5 = [v4 sections];
+  v3 = [self _listTemplateForViewElement:element];
+  list = [v3 list];
+  sections = [list sections];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [sections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -93,14 +93,14 @@ LABEL_14:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sections);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) items];
-        v8 += [v11 count];
+        items = [*(*(&v13 + 1) + 8 * i) items];
+        v8 += [items count];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [sections countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -114,19 +114,19 @@ LABEL_14:
   return v8;
 }
 
-+ (id)firstItemTitleForViewElement:(id)a3
++ (id)firstItemTitleForViewElement:(id)element
 {
-  v3 = [a1 _listTemplateForViewElement:a3];
-  v4 = [v3 list];
-  v5 = [v4 sections];
-  v6 = [v5 firstObject];
+  v3 = [self _listTemplateForViewElement:element];
+  list = [v3 list];
+  sections = [list sections];
+  firstObject = [sections firstObject];
 
-  v7 = [v6 items];
-  v8 = [v7 firstObject];
+  items = [firstObject items];
+  firstObject2 = [items firstObject];
 
   getIKListItemLockupElementClass();
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 && v8)
+  if ((objc_opt_isKindOfClass() & 1) == 0 && firstObject2)
   {
     _AXAssert();
   }
@@ -135,23 +135,23 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 title];
-    v10 = [v9 text];
-    v11 = [v10 string];
+    title = [firstObject2 title];
+    text = [title text];
+    string = [text string];
   }
 
   else
   {
-    v11 = 0;
+    string = 0;
   }
 
-  return v11;
+  return string;
 }
 
-+ (id)_listTemplateForViewElement:(id)a3
++ (id)_listTemplateForViewElement:(id)element
 {
   v28 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  elementCopy = element;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -173,7 +173,7 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v13 children];
+    [elementCopy children];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;

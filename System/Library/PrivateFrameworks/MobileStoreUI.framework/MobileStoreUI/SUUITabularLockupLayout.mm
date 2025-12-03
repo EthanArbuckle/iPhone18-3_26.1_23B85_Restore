@@ -1,14 +1,14 @@
 @interface SUUITabularLockupLayout
-+ (id)fontForLabelViewElement:(id)a3 context:(id)a4;
-- (SUUITabularLockupLayout)initWithLockup:(id)a3 context:(id)a4;
-- (void)sizeColumnsToFitWidth:(double)a3 context:(id)a4;
++ (id)fontForLabelViewElement:(id)element context:(id)context;
+- (SUUITabularLockupLayout)initWithLockup:(id)lockup context:(id)context;
+- (void)sizeColumnsToFitWidth:(double)width context:(id)context;
 @end
 
 @implementation SUUITabularLockupLayout
 
-- (SUUITabularLockupLayout)initWithLockup:(id)a3 context:(id)a4
+- (SUUITabularLockupLayout)initWithLockup:(id)lockup context:(id)context
 {
-  v5 = a3;
+  lockupCopy = lockup;
   v15.receiver = self;
   v15.super_class = SUUITabularLockupLayout;
   v6 = [(SUUITabularLockupLayout *)&v15 init];
@@ -26,7 +26,7 @@
     v13[2] = __50__SUUITabularLockupLayout_initWithLockup_context___block_invoke;
     v13[3] = &unk_2798F5B20;
     v14 = v6;
-    [v5 enumerateChildrenUsingBlock:v13];
+    [lockupCopy enumerateChildrenUsingBlock:v13];
   }
 
   return v6;
@@ -54,26 +54,26 @@ void __50__SUUITabularLockupLayout_initWithLockup_context___block_invoke(uint64_
   }
 }
 
-+ (id)fontForLabelViewElement:(id)a3 context:(id)a4
++ (id)fontForLabelViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
+  elementCopy = element;
+  contextCopy = context;
+  style = [elementCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
 
   if (!v8)
   {
-    v9 = [v5 labelViewStyle];
-    if (v9 > 5)
+    labelViewStyle = [elementCopy labelViewStyle];
+    if (labelViewStyle > 5)
     {
       v8 = 0;
     }
 
     else
     {
-      if (((1 << v9) & 0x1B) != 0)
+      if (((1 << labelViewStyle) & 0x1B) != 0)
       {
-        if ([v6 containerViewElementType] == 118)
+        if ([contextCopy containerViewElementType] == 118)
         {
           v10 = 8;
         }
@@ -84,7 +84,7 @@ void __50__SUUITabularLockupLayout_initWithLockup_context___block_invoke(uint64_
         }
       }
 
-      else if ([v6 containerViewElementType] == 118)
+      else if ([contextCopy containerViewElementType] == 118)
       {
         v10 = 6;
       }
@@ -101,10 +101,10 @@ void __50__SUUITabularLockupLayout_initWithLockup_context___block_invoke(uint64_
   return v8;
 }
 
-- (void)sizeColumnsToFitWidth:(double)a3 context:(id)a4
+- (void)sizeColumnsToFitWidth:(double)width context:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  contextCopy = context;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -125,10 +125,10 @@ void __50__SUUITabularLockupLayout_initWithLockup_context___block_invoke(uint64_
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 childViewElements];
-        v14 = [v13 firstObject];
+        childViewElements = [v12 childViewElements];
+        firstObject = [childViewElements firstObject];
 
-        [v6 sizeForViewElement:v14 width:a3];
+        [contextCopy sizeForViewElement:firstObject width:width];
         [v12 setSize:?];
       }
 

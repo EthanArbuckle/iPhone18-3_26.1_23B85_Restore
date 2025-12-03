@@ -1,38 +1,38 @@
 @interface TUIAttributedStringBuilder
-- (TUIAttributedStringBuilder)initWithFontSpec:(id)a3 style:(unint64_t)a4 color:(id)a5 textAlignment:(int64_t)a6;
-- (_NSRange)appendWithBlock:(id)a3;
-- (id)finalizeTextModelWithContext:(id)a3;
-- (void)addImageModel:(id)a3 forRole:(id)a4;
-- (void)appendHyperlinkWithURL:(id)a3 block:(id)a4;
-- (void)appendString:(id)a3;
-- (void)appendWithStyle:(unint64_t)a3 color:(id)a4 fontSpec:(id)a5 block:(id)a6;
+- (TUIAttributedStringBuilder)initWithFontSpec:(id)spec style:(unint64_t)style color:(id)color textAlignment:(int64_t)alignment;
+- (_NSRange)appendWithBlock:(id)block;
+- (id)finalizeTextModelWithContext:(id)context;
+- (void)addImageModel:(id)model forRole:(id)role;
+- (void)appendHyperlinkWithURL:(id)l block:(id)block;
+- (void)appendString:(id)string;
+- (void)appendWithStyle:(unint64_t)style color:(id)color fontSpec:(id)spec block:(id)block;
 @end
 
 @implementation TUIAttributedStringBuilder
 
-- (TUIAttributedStringBuilder)initWithFontSpec:(id)a3 style:(unint64_t)a4 color:(id)a5 textAlignment:(int64_t)a6
+- (TUIAttributedStringBuilder)initWithFontSpec:(id)spec style:(unint64_t)style color:(id)color textAlignment:(int64_t)alignment
 {
-  v10 = a3;
-  v11 = a5;
+  specCopy = spec;
+  colorCopy = color;
   v36.receiver = self;
   v36.super_class = TUIAttributedStringBuilder;
   v12 = [(TUIAttributedStringBuilder *)&v36 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [specCopy copy];
     fontSpec = v12->_fontSpec;
     v12->_fontSpec = v13;
 
-    v15 = [v11 copy];
+    v15 = [colorCopy copy];
     color = v12->_color;
     v12->_color = v15;
 
-    v17 = [v10 caps];
-    v12->_style = a4;
-    v12->_caps = v17;
-    v18 = [v10 attributesForAttributedString];
-    v19 = [v18 attributes];
-    v20 = [v19 mutableCopy];
+    caps = [specCopy caps];
+    v12->_style = style;
+    v12->_caps = caps;
+    attributesForAttributedString = [specCopy attributesForAttributedString];
+    attributes = [attributesForAttributedString attributes];
+    v20 = [attributes mutableCopy];
     v21 = v20;
     if (v20)
     {
@@ -52,7 +52,7 @@
       [v23 setObject:v24 forKeyedSubscript:NSForegroundColorAttributeName];
     }
 
-    if (a6 != 4)
+    if (alignment != 4)
     {
       v25 = [v23 objectForKeyedSubscript:NSParagraphStyleAttributeName];
       v26 = v25;
@@ -69,7 +69,7 @@
       v28 = v27;
 
       v29 = [v28 mutableCopy];
-      [v29 setAlignment:a6];
+      [v29 setAlignment:alignment];
       v30 = [v29 copy];
       [v23 setObject:v30 forKeyedSubscript:NSParagraphStyleAttributeName];
     }
@@ -86,14 +86,14 @@
   return v12;
 }
 
-- (void)appendHyperlinkWithURL:(id)a3 block:(id)a4
+- (void)appendHyperlinkWithURL:(id)l block:(id)block
 {
-  v18 = a4;
+  blockCopy = block;
   attributes = self->_attributes;
   p_attributes = &self->_attributes;
   v8 = attributes;
   v9 = *p_attributes;
-  v10 = a3;
+  lCopy = l;
   v11 = [v9 mutableCopy];
   v12 = v11;
   if (v11)
@@ -108,14 +108,14 @@
 
   v14 = v13;
 
-  [v14 setObject:v10 forKeyedSubscript:NSLinkAttributeName];
+  [v14 setObject:lCopy forKeyedSubscript:NSLinkAttributeName];
   v15 = +[UIColor clearColor];
   [v14 setObject:v15 forKeyedSubscript:NSUnderlineColorAttributeName];
 
   objc_storeStrong(p_attributes, v14);
-  if (v18)
+  if (blockCopy)
   {
-    v18[2]();
+    blockCopy[2]();
   }
 
   v16 = *p_attributes;
@@ -123,28 +123,28 @@
   v17 = v8;
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v4 = a3;
-  if (!v4)
+  stringCopy = string;
+  if (!stringCopy)
   {
     return;
   }
 
   caps = self->_caps;
-  v10 = v4;
+  v10 = stringCopy;
   switch(caps)
   {
     case 5uLL:
-      v6 = [v4 localizedLowercaseString];
+      localizedLowercaseString = [stringCopy localizedLowercaseString];
       goto LABEL_9;
     case 4uLL:
-      v6 = [v4 localizedCapitalizedString];
+      localizedLowercaseString = [stringCopy localizedCapitalizedString];
       goto LABEL_9;
     case 2uLL:
-      v6 = [v4 localizedUppercaseString];
+      localizedLowercaseString = [stringCopy localizedUppercaseString];
 LABEL_9:
-      v7 = v6;
+      v7 = localizedLowercaseString;
 
       v10 = v7;
       break;
@@ -155,39 +155,39 @@ LABEL_9:
   [(NSMutableAttributedString *)attributedString appendAttributedString:v9];
 }
 
-- (void)appendWithStyle:(unint64_t)a3 color:(id)a4 fontSpec:(id)a5 block:(id)a6
+- (void)appendWithStyle:(unint64_t)style color:(id)color fontSpec:(id)spec block:(id)block
 {
-  v42 = a4;
-  v11 = a5;
-  v12 = a6;
+  colorCopy = color;
+  specCopy = spec;
+  blockCopy = block;
   v13 = self->_attributes;
   v41 = *&self->_style;
   v40 = self->_color;
-  v14 = self->_style | a3;
+  v14 = self->_style | style;
   self->_style = v14;
-  if (v11)
+  if (specCopy)
   {
-    if ([v11 caps])
+    if ([specCopy caps])
     {
-      self->_caps = [v11 caps];
+      self->_caps = [specCopy caps];
     }
   }
 
   else if (v14 == v41)
   {
-    if (!v42 || ([(UIColor *)self->_color isEqual:v42]& 1) != 0)
+    if (!colorCopy || ([(UIColor *)self->_color isEqual:colorCopy]& 1) != 0)
     {
-      v12[2](v12);
+      blockCopy[2](blockCopy);
       goto LABEL_23;
     }
 
     goto LABEL_9;
   }
 
-  if (v42)
+  if (colorCopy)
   {
 LABEL_9:
-    objc_storeStrong(&self->_color, a4);
+    objc_storeStrong(&self->_color, color);
     v15 = 0;
     goto LABEL_11;
   }
@@ -208,21 +208,21 @@ LABEL_11:
 
   v19 = v18;
 
-  if (v11)
+  if (specCopy)
   {
-    v20 = [v11 attributesForAttributedString];
-    v21 = [v20 attributes];
-    [v19 addEntriesFromDictionary:v21];
+    attributesForAttributedString = [specCopy attributesForAttributedString];
+    attributes = [attributesForAttributedString attributes];
+    [v19 addEntriesFromDictionary:attributes];
   }
 
   if ((v15 & 1) == 0)
   {
-    [v19 setObject:v42 forKeyedSubscript:NSForegroundColorAttributeName];
+    [v19 setObject:colorCopy forKeyedSubscript:NSForegroundColorAttributeName];
   }
 
-  if ((a3 & 1) == 0)
+  if ((style & 1) == 0)
   {
-    if ((a3 & 2) == 0)
+    if ((style & 2) == 0)
     {
       goto LABEL_20;
     }
@@ -232,19 +232,19 @@ LABEL_29:
     v33 = v32;
     if (v32)
     {
-      v34 = [v32 fontDescriptor];
-      v35 = [v34 fontDescriptorWithSymbolicTraits:1];
-      v39 = v12;
+      fontDescriptor = [v32 fontDescriptor];
+      v35 = [fontDescriptor fontDescriptorWithSymbolicTraits:1];
+      v39 = blockCopy;
       v36 = v13;
       [v33 pointSize];
       v37 = [UIFont fontWithDescriptor:v35 size:?];
       [v19 setObject:v37 forKeyedSubscript:NSFontAttributeName];
 
       v13 = v36;
-      v12 = v39;
+      blockCopy = v39;
     }
 
-    if ((a3 & 8) == 0)
+    if ((style & 8) == 0)
     {
       goto LABEL_22;
     }
@@ -266,13 +266,13 @@ LABEL_29:
     v13 = v38;
   }
 
-  if ((a3 & 2) != 0)
+  if ((style & 2) != 0)
   {
     goto LABEL_29;
   }
 
 LABEL_20:
-  if ((a3 & 8) != 0)
+  if ((style & 8) != 0)
   {
 LABEL_21:
     [v19 setObject:&off_2733A0 forKeyedSubscript:NSStrikethroughStyleAttributeName];
@@ -283,7 +283,7 @@ LABEL_22:
   attributes = self->_attributes;
   self->_attributes = v22;
 
-  v12[2](v12);
+  blockCopy[2](blockCopy);
 LABEL_23:
   v24 = self->_attributes;
   self->_attributes = v13;
@@ -294,13 +294,13 @@ LABEL_23:
   self->_color = v40;
 }
 
-- (_NSRange)appendWithBlock:(id)a3
+- (_NSRange)appendWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableAttributedString *)self->_attributedString length];
-  if (v4)
+  if (blockCopy)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
   v6 = ([(NSMutableAttributedString *)self->_attributedString length]- v5);
@@ -312,27 +312,27 @@ LABEL_23:
   return result;
 }
 
-- (id)finalizeTextModelWithContext:(id)a3
+- (id)finalizeTextModelWithContext:(id)context
 {
   v3 = [(NSMutableAttributedString *)self->_attributedString copy];
 
   return v3;
 }
 
-- (void)addImageModel:(id)a3 forRole:(id)a4
+- (void)addImageModel:(id)model forRole:(id)role
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6 || [v6 isEqualToString:@"content"])
+  modelCopy = model;
+  roleCopy = role;
+  v7 = roleCopy;
+  if (!roleCopy || [roleCopy isEqualToString:@"content"])
   {
-    v8 = [v12 image];
-    v9 = [NSTextAttachment textAttachmentWithImage:v8];
+    image = [modelCopy image];
+    v9 = [NSTextAttachment textAttachmentWithImage:image];
     attributedString = self->_attributedString;
     v11 = [NSAttributedString attributedStringWithAttachment:v9];
     [(NSMutableAttributedString *)attributedString appendAttributedString:v11];
 
-    if (self->_color && [v8 isSymbolImage])
+    if (self->_color && [image isSymbolImage])
     {
       [(NSMutableAttributedString *)self->_attributedString addAttribute:NSForegroundColorAttributeName value:self->_color range:[(NSMutableAttributedString *)self->_attributedString length]- 1, 1];
     }

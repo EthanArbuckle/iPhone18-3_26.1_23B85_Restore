@@ -1,19 +1,19 @@
 @interface FPFavoriteFoldersQueryDescriptor
-- (id)queryStringForMountPoint:(id)a3;
+- (id)queryStringForMountPoint:(id)point;
 @end
 
 @implementation FPFavoriteFoldersQueryDescriptor
 
-- (id)queryStringForMountPoint:(id)a3
+- (id)queryStringForMountPoint:(id)point
 {
-  v4 = [(FPSpotlightQueryDescriptor *)self settings];
-  [v4 excludedParentOIDs];
+  settings = [(FPSpotlightQueryDescriptor *)self settings];
+  [settings excludedParentOIDs];
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = FPIsTrashedQueryStringFragment(0);
-  v7 = [(FPSpotlightQueryDescriptor *)self settings];
-  v8 = [v7 excludedParentOIDs];
-  v9 = FPExcludedOIDParentsQueryStringFragment(v8);
+  settings2 = [(FPSpotlightQueryDescriptor *)self settings];
+  excludedParentOIDs = [settings2 excludedParentOIDs];
+  v9 = FPExcludedOIDParentsQueryStringFragment(excludedParentOIDs);
   v10 = [v5 stringWithFormat:@"(kMDItemFavoriteRank == \"*\" && kMDItemContentTypeTree == \"public.folder\"", v6, v9];
 
   return v10;

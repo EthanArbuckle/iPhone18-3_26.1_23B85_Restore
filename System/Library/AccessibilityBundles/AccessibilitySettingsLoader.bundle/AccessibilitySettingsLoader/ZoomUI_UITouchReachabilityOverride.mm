@@ -1,24 +1,24 @@
 @interface ZoomUI_UITouchReachabilityOverride
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
 @end
 
 @implementation ZoomUI_UITouchReachabilityOverride
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   v15.receiver = self;
   v15.super_class = ZoomUI_UITouchReachabilityOverride;
-  [(ZoomUI_UITouchReachabilityOverride *)&v15 locationInView:a3];
+  [(ZoomUI_UITouchReachabilityOverride *)&v15 locationInView:view];
   v5 = v4;
   v7 = v6;
-  v8 = [(ZoomUI_UITouchReachabilityOverride *)self accessibilityIdentifier];
-  if (![v8 isEqualToString:@"AXSBReachabilityTouch"] || !+[ZoomServicesUI _shouldUnmapPointsForFluidGestures](ZoomServicesUI, "_shouldUnmapPointsForFluidGestures"))
+  accessibilityIdentifier = [(ZoomUI_UITouchReachabilityOverride *)self accessibilityIdentifier];
+  if (![accessibilityIdentifier isEqualToString:@"AXSBReachabilityTouch"] || !+[ZoomServicesUI _shouldUnmapPointsForFluidGestures](ZoomServicesUI, "_shouldUnmapPointsForFluidGestures"))
   {
     goto LABEL_5;
   }
 
-  v9 = [getAXSettingsClass() sharedInstance];
-  if ([v9 zoomInStandby])
+  sharedInstance = [getAXSettingsClass() sharedInstance];
+  if ([sharedInstance zoomInStandby])
   {
 
 LABEL_5:

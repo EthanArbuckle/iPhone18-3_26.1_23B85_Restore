@@ -1,27 +1,27 @@
 @interface WiFiUsageLQMKernelSamplePerACTxStats
-+ (id)sampleWithTimestamp:(id)a3;
-- (WiFiUsageLQMKernelSamplePerACTxStats)initWithTimestamp:(id)a3;
++ (id)sampleWithTimestamp:(id)timestamp;
+- (WiFiUsageLQMKernelSamplePerACTxStats)initWithTimestamp:(id)timestamp;
 - (id)description;
 @end
 
 @implementation WiFiUsageLQMKernelSamplePerACTxStats
 
-+ (id)sampleWithTimestamp:(id)a3
++ (id)sampleWithTimestamp:(id)timestamp
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithTimestamp:v3];
+  timestampCopy = timestamp;
+  v4 = [objc_alloc(objc_opt_class()) initWithTimestamp:timestampCopy];
 
   return v4;
 }
 
-- (WiFiUsageLQMKernelSamplePerACTxStats)initWithTimestamp:(id)a3
+- (WiFiUsageLQMKernelSamplePerACTxStats)initWithTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   v8.receiver = self;
   v8.super_class = WiFiUsageLQMKernelSamplePerACTxStats;
   v5 = [(WiFiUsageLQMKernelSamplePerACTxStats *)&v8 init];
   timestamp = v5->_timestamp;
-  v5->_timestamp = v4;
+  v5->_timestamp = timestampCopy;
 
   return v5;
 }
@@ -34,8 +34,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [objc_opt_class() allLQMProperties];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allLQMProperties = [objc_opt_class() allLQMProperties];
+  v5 = [allLQMProperties countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -46,7 +46,7 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allLQMProperties);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -59,7 +59,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [allLQMProperties countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);

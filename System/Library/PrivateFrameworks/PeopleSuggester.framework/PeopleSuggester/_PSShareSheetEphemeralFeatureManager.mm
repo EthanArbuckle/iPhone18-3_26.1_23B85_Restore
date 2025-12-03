@@ -1,30 +1,30 @@
 @interface _PSShareSheetEphemeralFeatureManager
-- (_PSShareSheetEphemeralFeatureManager)initWithContext:(id)a3 candidates:(id)a4 caches:(id)a5 store:(id)a6;
-- (id)computeFeaturesWithHistogramFeatures:(id)a3;
+- (_PSShareSheetEphemeralFeatureManager)initWithContext:(id)context candidates:(id)candidates caches:(id)caches store:(id)store;
+- (id)computeFeaturesWithHistogramFeatures:(id)features;
 - (id)loadPSConfig;
-- (void)setCandidates:(id)a3;
-- (void)setContext:(id)a3;
+- (void)setCandidates:(id)candidates;
+- (void)setContext:(id)context;
 - (void)setFeatureManagerProperties;
 @end
 
 @implementation _PSShareSheetEphemeralFeatureManager
 
-- (_PSShareSheetEphemeralFeatureManager)initWithContext:(id)a3 candidates:(id)a4 caches:(id)a5 store:(id)a6
+- (_PSShareSheetEphemeralFeatureManager)initWithContext:(id)context candidates:(id)candidates caches:(id)caches store:(id)store
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  candidatesCopy = candidates;
+  cachesCopy = caches;
+  storeCopy = store;
   v18.receiver = self;
   v18.super_class = _PSShareSheetEphemeralFeatureManager;
   v15 = [(_PSShareSheetEphemeralFeatureManager *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_context, a3);
-    objc_storeStrong(&v16->_candidates, a4);
-    objc_storeStrong(&v16->_caches, a5);
-    objc_storeStrong(&v16->_store, a6);
+    objc_storeStrong(&v15->_context, context);
+    objc_storeStrong(&v16->_candidates, candidates);
+    objc_storeStrong(&v16->_caches, caches);
+    objc_storeStrong(&v16->_store, store);
     v16->_lock._os_unfair_lock_opaque = 0;
     os_unfair_lock_lock(&v16->_lock);
     [(_PSShareSheetEphemeralFeatureManager *)v16 setFeatureManagerProperties];
@@ -56,10 +56,10 @@
 - (void)setFeatureManagerProperties
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(_PSShareSheetEphemeralFeatureManager *)self loadPSConfig];
+  loadPSConfig = [(_PSShareSheetEphemeralFeatureManager *)self loadPSConfig];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [v3 objectForKeyedSubscript:v5];
+  v6 = [loadPSConfig objectForKeyedSubscript:v5];
 
   if (v6)
   {
@@ -140,42 +140,42 @@
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCandidates:(id)a3
+- (void)setCandidates:(id)candidates
 {
-  v4 = a3;
+  candidatesCopy = candidates;
   os_unfair_lock_lock(&self->_lock);
   candidates = self->_candidates;
-  self->_candidates = v4;
+  self->_candidates = candidatesCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
   context = self->_context;
-  self->_context = v4;
+  self->_context = contextCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)computeFeaturesWithHistogramFeatures:(id)a3
+- (id)computeFeaturesWithHistogramFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   v5 = objc_opt_new();
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(NSSet *)self->_features allObjects];
+  allObjects = [(NSSet *)self->_features allObjects];
   v7 = objc_alloc(MEMORY[0x1E695DF20]);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __77___PSShareSheetEphemeralFeatureManager_computeFeaturesWithHistogramFeatures___block_invoke;
   v18[3] = &unk_1E7C27188;
   v18[4] = self;
-  v19 = v4;
-  v8 = v4;
-  v9 = [v6 _pas_mappedArrayWithTransform:v18];
-  v10 = [v6 _pas_mappedArrayWithTransform:&__block_literal_global_48];
+  v19 = featuresCopy;
+  v8 = featuresCopy;
+  v9 = [allObjects _pas_mappedArrayWithTransform:v18];
+  v10 = [allObjects _pas_mappedArrayWithTransform:&__block_literal_global_48];
   v11 = [v7 initWithObjects:v9 forKeys:v10];
 
   v16[0] = MEMORY[0x1E69E9820];

@@ -1,15 +1,15 @@
 @interface CKSyncEngineRecordZoneChangeBatch
 - (CKSyncEngineRecordZoneChangeBatch)init;
 - (CKSyncEngineRecordZoneChangeBatch)initWithRecordsToSave:(NSArray *)recordsToSave recordIDsToDelete:(NSArray *)recordIDsToDelete atomicByZone:(BOOL)atomicByZone;
-- (CKSyncEngineRecordZoneChangeBatch)initWith__pendingChanges:(id)a3 recordProvider:(id)a4;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (CKSyncEngineRecordZoneChangeBatch)initWith__pendingChanges:(id)changes recordProvider:(id)provider;
+- (void)CKDescribePropertiesUsing:(id)using;
 @end
 
 @implementation CKSyncEngineRecordZoneChangeBatch
 
-- (CKSyncEngineRecordZoneChangeBatch)initWith__pendingChanges:(id)a3 recordProvider:(id)a4
+- (CKSyncEngineRecordZoneChangeBatch)initWith__pendingChanges:(id)changes recordProvider:(id)provider
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(provider);
   sub_1883F4C5C(0, &qword_1EA90C7C0, off_1E70BA890);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -73,9 +73,9 @@
   objc_exception_throw(v7);
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v29 = a3;
+  usingCopy = using;
   v6 = objc_msgSend_recordsToSave(self, v4, v5);
   v9 = objc_msgSend_count(v6, v7, v8);
 
@@ -84,7 +84,7 @@
     v12 = objc_msgSend_recordsToSave(self, v10, v11);
     v14 = objc_msgSend_CKMap_(v12, v13, &unk_1EFA2FD28);
 
-    objc_msgSend_addProperty_value_shouldRedact_(v29, v15, @"recordIDsToSave", v14, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v15, @"recordIDsToSave", v14, 0);
   }
 
   v16 = objc_msgSend_recordIDsToDelete(self, v10, v11);
@@ -93,13 +93,13 @@
   if (v19)
   {
     v22 = objc_msgSend_recordIDsToDelete(self, v20, v21);
-    objc_msgSend_addProperty_value_shouldRedact_(v29, v23, @"recordIDsToDelete", v22, 0);
+    objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v23, @"recordIDsToDelete", v22, 0);
   }
 
   v24 = MEMORY[0x1E696AD98];
   v25 = objc_msgSend_atomicByZone(self, v20, v21);
   v27 = objc_msgSend_numberWithBool_(v24, v26, v25);
-  objc_msgSend_addProperty_value_shouldRedact_(v29, v28, @"atomicByZone", v27, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v28, @"atomicByZone", v27, 0);
 }
 
 @end

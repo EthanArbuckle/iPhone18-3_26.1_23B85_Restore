@@ -1,22 +1,22 @@
 @interface CarNavigationGuidanceSignCompression
-+ ($54484288989FF125F1D7A2C3F8B348DC)compressionForStage:(SEL)a3 hasSecondary:(unint64_t)a4 hasJunctionView:(BOOL)a5 forDestination:(BOOL)a6;
++ ($54484288989FF125F1D7A2C3F8B348DC)compressionForStage:(SEL)stage hasSecondary:(unint64_t)secondary hasJunctionView:(BOOL)view forDestination:(BOOL)destination;
 @end
 
 @implementation CarNavigationGuidanceSignCompression
 
-+ ($54484288989FF125F1D7A2C3F8B348DC)compressionForStage:(SEL)a3 hasSecondary:(unint64_t)a4 hasJunctionView:(BOOL)a5 forDestination:(BOOL)a6
++ ($54484288989FF125F1D7A2C3F8B348DC)compressionForStage:(SEL)stage hasSecondary:(unint64_t)secondary hasJunctionView:(BOOL)view forDestination:(BOOL)destination
 {
-  if (!a6)
+  if (!destination)
   {
-    if (a4 <= 4)
+    if (secondary <= 4)
     {
-      if (a4 > 1)
+      if (secondary > 1)
       {
-        if (a4 != 2)
+        if (secondary != 2)
         {
-          v7 = 0;
+          secondaryCopy2 = 0;
           v8 = 0;
-          if (a4 == 3)
+          if (secondary == 3)
           {
             v9 = 2;
           }
@@ -26,14 +26,14 @@
             v9 = 3;
           }
 
-          if (a5)
+          if (view)
           {
-            a4 = v9;
+            secondary = v9;
           }
 
           else
           {
-            a4 = v9 + 1;
+            secondary = v9 + 1;
           }
 
           goto LABEL_66;
@@ -42,88 +42,88 @@
         goto LABEL_34;
       }
 
-      if (!a4)
+      if (!secondary)
       {
         goto LABEL_37;
       }
 
-      if (a4 == 1)
+      if (secondary == 1)
       {
 LABEL_34:
-        v10 = 0;
-        v7 = 0;
+        secondaryCopy = 0;
+        secondaryCopy2 = 0;
         v8 = 0;
         goto LABEL_78;
       }
 
 LABEL_73:
-      v7 = 0;
-      if (a5)
+      secondaryCopy2 = 0;
+      if (view)
       {
-        v10 = 2;
+        secondaryCopy = 2;
       }
 
       else
       {
-        v10 = 0;
+        secondaryCopy = 0;
       }
 
       v8 = 1;
 LABEL_77:
-      a4 = 6;
+      secondary = 6;
       goto LABEL_78;
     }
 
-    if (a4 <= 6)
+    if (secondary <= 6)
     {
-      if (a4 == 5)
+      if (secondary == 5)
       {
-        v7 = 0;
+        secondaryCopy2 = 0;
         v8 = 0;
-        if (a5)
+        if (view)
         {
-          a4 = 2;
+          secondary = 2;
         }
 
         else
         {
-          a4 = 5;
+          secondary = 5;
         }
 
-        if (a5)
+        if (view)
         {
-          v10 = 2;
+          secondaryCopy = 2;
         }
 
         else
         {
-          v10 = 0;
+          secondaryCopy = 0;
         }
 
         goto LABEL_78;
       }
 
-      v7 = 0;
+      secondaryCopy2 = 0;
       v8 = 0;
-      v11 = !a5;
+      v11 = !view;
       v12 = 3;
     }
 
     else
     {
-      if (a4 != 7)
+      if (secondary != 7)
       {
-        if (a4 != 8)
+        if (secondary != 8)
         {
-          if (a4 == 9)
+          if (secondary == 9)
           {
 LABEL_29:
-            v7 = 0;
+            secondaryCopy2 = 0;
             v8 = 0;
-            v10 = 2;
-            if (!a5)
+            secondaryCopy = 2;
+            if (!view)
             {
-              v10 = 0;
+              secondaryCopy = 0;
             }
 
             goto LABEL_77;
@@ -132,61 +132,61 @@ LABEL_29:
           goto LABEL_73;
         }
 
-        v7 = 0;
+        secondaryCopy2 = 0;
         v8 = 0;
-        v11 = !a5;
-        if (a5)
+        v11 = !view;
+        if (view)
         {
-          a4 = 5;
+          secondary = 5;
         }
 
         else
         {
-          a4 = 6;
+          secondary = 6;
         }
 
 LABEL_70:
-        v10 = 2;
+        secondaryCopy = 2;
         if (v11)
         {
-          v10 = 0;
+          secondaryCopy = 0;
         }
 
         goto LABEL_78;
       }
 
-      v7 = 0;
+      secondaryCopy2 = 0;
       v8 = 0;
-      v11 = !a5;
+      v11 = !view;
       v12 = 4;
     }
 
     if (v11)
     {
-      a4 = 6;
+      secondary = 6;
     }
 
     else
     {
-      a4 = v12;
+      secondary = v12;
     }
 
     goto LABEL_70;
   }
 
-  if (a4 <= 3)
+  if (secondary <= 3)
   {
-    if (a4 <= 1)
+    if (secondary <= 1)
     {
-      if (a4)
+      if (secondary)
       {
-        if (a4 == 1)
+        if (secondary == 1)
         {
-          v7 = 0;
+          secondaryCopy2 = 0;
           v8 = 0;
-          a4 = 3;
+          secondary = 3;
 LABEL_66:
-          v10 = a5;
+          secondaryCopy = view;
           goto LABEL_78;
         }
 
@@ -195,63 +195,63 @@ LABEL_66:
 
 LABEL_37:
       v8 = 0;
-      v10 = a4;
-      v7 = a4;
+      secondaryCopy = secondary;
+      secondaryCopy2 = secondary;
       goto LABEL_78;
     }
 
-    if (a4 == 2)
+    if (secondary == 2)
     {
-      v7 = 0;
+      secondaryCopy2 = 0;
       v8 = 0;
-      a4 = 4;
+      secondary = 4;
       goto LABEL_66;
     }
 
-    v7 = 0;
+    secondaryCopy2 = 0;
     v8 = 0;
-    v10 = 2;
-    if (!a5)
+    secondaryCopy = 2;
+    if (!view)
     {
-      v10 = 0;
+      secondaryCopy = 0;
     }
 
 LABEL_26:
-    a4 = 4;
+    secondary = 4;
     goto LABEL_78;
   }
 
-  if (a4 > 5)
+  if (secondary > 5)
   {
-    if (a4 == 6)
+    if (secondary == 6)
     {
-      v7 = 0;
+      secondaryCopy2 = 0;
       v8 = 0;
-      v10 = 2;
-      if (!a5)
+      secondaryCopy = 2;
+      if (!view)
       {
-        v10 = 0;
+        secondaryCopy = 0;
       }
 
-      a4 = 5;
+      secondary = 5;
       goto LABEL_78;
     }
 
-    if (a4 != 7)
+    if (secondary != 7)
     {
 LABEL_48:
-      if (a5)
+      if (view)
       {
-        v10 = 2;
+        secondaryCopy = 2;
       }
 
       else
       {
-        v10 = 0;
+        secondaryCopy = 0;
       }
 
-      v7 = 1;
-      a4 = 6;
+      secondaryCopy2 = 1;
+      secondary = 6;
       v8 = 1;
       goto LABEL_78;
     }
@@ -259,49 +259,49 @@ LABEL_48:
     goto LABEL_29;
   }
 
-  if (a4 != 4)
+  if (secondary != 4)
   {
     v8 = 0;
-    if (a5)
+    if (view)
     {
-      v10 = 2;
+      secondaryCopy = 2;
     }
 
     else
     {
-      v10 = 0;
+      secondaryCopy = 0;
     }
 
-    v7 = 1;
+    secondaryCopy2 = 1;
     goto LABEL_26;
   }
 
   v8 = 0;
-  if (a5)
+  if (view)
   {
-    a4 = 4;
+    secondary = 4;
   }
 
   else
   {
-    a4 = 3;
+    secondary = 3;
   }
 
-  v7 = 1;
-  if (a5)
+  secondaryCopy2 = 1;
+  if (view)
   {
-    v10 = 1;
+    secondaryCopy = 1;
   }
 
   else
   {
-    v10 = 2;
+    secondaryCopy = 2;
   }
 
 LABEL_78:
-  retstr->var0 = a4;
-  retstr->var1 = v10;
-  retstr->var2 = v7;
+  retstr->var0 = secondary;
+  retstr->var1 = secondaryCopy;
+  retstr->var2 = secondaryCopy2;
   *&retstr->var3 = 0;
   retstr->var3 = v8;
   return result;

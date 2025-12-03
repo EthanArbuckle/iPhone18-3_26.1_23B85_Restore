@@ -1,31 +1,31 @@
 @interface TKVibrationRecorderView
-- (BOOL)vibrationRecorderTouchSurfaceDidEnterRecordingMode:(id)a3;
-- (TKVibrationRecorderView)initWithVibrationPatternMaximumDuration:(double)a3;
+- (BOOL)vibrationRecorderTouchSurfaceDidEnterRecordingMode:(id)mode;
+- (TKVibrationRecorderView)initWithVibrationPatternMaximumDuration:(double)duration;
 - (TKVibrationRecorderViewDelegate)delegate;
-- (id)_titleForControlsToolbarButtonWithIdentifier:(int)a3;
-- (void)_exitWaitingModeWithAnimation:(BOOL)a3;
-- (void)_handleLeftButtonTapped:(id)a3;
-- (void)_handleRightButtonTapped:(id)a3;
-- (void)_handleScreenPeripheryInsetsDidChangeNotification:(id)a3;
+- (id)_titleForControlsToolbarButtonWithIdentifier:(int)identifier;
+- (void)_exitWaitingModeWithAnimation:(BOOL)animation;
+- (void)_handleLeftButtonTapped:(id)tapped;
+- (void)_handleRightButtonTapped:(id)tapped;
+- (void)_handleScreenPeripheryInsetsDidChangeNotification:(id)notification;
 - (void)_updateBottomLineToolbarForPeripheryInsetsChange;
-- (void)_updateProgress:(id)a3;
+- (void)_updateProgress:(id)progress;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)enterRecordingMode;
-- (void)enterReplayModeWithVibrationPattern:(id)a3;
+- (void)enterReplayModeWithVibrationPattern:(id)pattern;
 - (void)exitReplayMode;
 - (void)safeAreaInsetsDidChange;
 - (void)startAnimatingProgress;
 - (void)stopAnimatingProgress;
-- (void)vibrationComponentDidEndForVibrationRecorderTouchSurface:(id)a3;
-- (void)vibrationComponentDidStartForVibrationRecorderTouchSurface:(id)a3;
-- (void)vibrationRecorderTouchSurface:(id)a3 didExitRecordingModeWithContextObject:(id)a4;
-- (void)vibrationRecorderTouchSurfaceDidFinishReplayingVibration:(id)a3;
+- (void)vibrationComponentDidEndForVibrationRecorderTouchSurface:(id)surface;
+- (void)vibrationComponentDidStartForVibrationRecorderTouchSurface:(id)surface;
+- (void)vibrationRecorderTouchSurface:(id)surface didExitRecordingModeWithContextObject:(id)object;
+- (void)vibrationRecorderTouchSurfaceDidFinishReplayingVibration:(id)vibration;
 @end
 
 @implementation TKVibrationRecorderView
 
-- (TKVibrationRecorderView)initWithVibrationPatternMaximumDuration:(double)a3
+- (TKVibrationRecorderView)initWithVibrationPatternMaximumDuration:(double)duration
 {
   v70.receiver = self;
   v70.super_class = TKVibrationRecorderView;
@@ -33,15 +33,15 @@
   v5 = v4;
   if (v4)
   {
-    v4->_vibrationPatternMaximumDuration = a3;
+    v4->_vibrationPatternMaximumDuration = duration;
     v6 = objc_alloc_init(TKStyleProvider);
     styleProvider = v5->_styleProvider;
     v5->_styleProvider = v6;
 
-    v8 = [(TKVibrationRecorderStyleProvider *)v5->_styleProvider vibrationRecorderBarsBackgroundColor];
-    [(TKVibrationRecorderView *)v5 setBackgroundColor:v8];
+    vibrationRecorderBarsBackgroundColor = [(TKVibrationRecorderStyleProvider *)v5->_styleProvider vibrationRecorderBarsBackgroundColor];
+    [(TKVibrationRecorderView *)v5 setBackgroundColor:vibrationRecorderBarsBackgroundColor];
 
-    v9 = [(TKVibrationRecorderView *)v5 safeAreaLayoutGuide];
+    safeAreaLayoutGuide = [(TKVibrationRecorderView *)v5 safeAreaLayoutGuide];
     v10 = objc_alloc_init(MEMORY[0x277D75C58]);
     bottomLineToolbar = v5->_bottomLineToolbar;
     v5->_bottomLineToolbar = v10;
@@ -49,7 +49,7 @@
     [(UIToolbar *)v5->_bottomLineToolbar setTranslatesAutoresizingMaskIntoConstraints:0];
     [(TKVibrationRecorderView *)v5 addSubview:v5->_bottomLineToolbar];
     [(UIToolbar *)v5->_bottomLineToolbar intrinsicContentSize];
-    v13 = [(UIToolbar *)v5->_bottomLineToolbar tk_addedConstraintForLayoutAttribute:4 asEqualToValueOfItem:v9 withOffset:v12];
+    v13 = [(UIToolbar *)v5->_bottomLineToolbar tk_addedConstraintForLayoutAttribute:4 asEqualToValueOfItem:safeAreaLayoutGuide withOffset:v12];
     bottomLineToolbarBottomConstraint = v5->_bottomLineToolbarBottomConstraint;
     v5->_bottomLineToolbarBottomConstraint = v13;
 
@@ -90,7 +90,7 @@
     [v25 tk_constrainLayoutAttribute:1 asEqualToValueOfItem:v5];
     [v25 tk_constrainLayoutAttribute:2 asEqualToValueOfItem:v5];
     [v25 tk_constrainLayoutAttribute:8 asEqualToConstant:v29 + v31];
-    v34 = [[TKVibrationRecorderProgressView alloc] initWithMaximumTimeInterval:v5->_styleProvider styleProvider:a3];
+    v34 = [[TKVibrationRecorderProgressView alloc] initWithMaximumTimeInterval:v5->_styleProvider styleProvider:duration];
     progressView = v5->_progressView;
     v5->_progressView = v34;
 
@@ -98,11 +98,11 @@
     [(TKVibrationRecorderView *)v5 addSubview:v5->_progressView];
     [(TKVibrationRecorderStyleProvider *)v5->_styleProvider vibrationRecorderProgressViewHorizontalOffsetFromEdge];
     v37 = v36;
-    [(UIView *)v5->_progressView tk_constrainLayoutAttribute:1 asEqualToValueOfItem:v9 withOffset:?];
-    [(UIView *)v5->_progressView tk_constrainLayoutAttribute:2 asEqualToValueOfItem:v9 withOffset:-v37];
+    [(UIView *)v5->_progressView tk_constrainLayoutAttribute:1 asEqualToValueOfItem:safeAreaLayoutGuide withOffset:?];
+    [(UIView *)v5->_progressView tk_constrainLayoutAttribute:2 asEqualToValueOfItem:safeAreaLayoutGuide withOffset:-v37];
     [(UIView *)v5->_progressView tk_constrainLayoutAttribute:10 asEqualToValueOfItem:v25];
     v38 = TLLocalizedString();
-    v39 = [[TKVibrationRecorderTouchSurface alloc] initWithVibrationPatternMaximumDuration:v5->_styleProvider styleProvider:a3];
+    v39 = [[TKVibrationRecorderTouchSurface alloc] initWithVibrationPatternMaximumDuration:v5->_styleProvider styleProvider:duration];
     touchSurface = v5->_touchSurface;
     v5->_touchSurface = v39;
 
@@ -135,16 +135,16 @@
 
     [(UILabel *)v5->_instructionsLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v49 = v5->_instructionsLabel;
-    v50 = [(TKVibrationRecorderStyleProvider *)v5->_styleProvider vibrationRecorderInstructionsLabelFont];
-    [(UILabel *)v49 setFont:v50];
+    vibrationRecorderInstructionsLabelFont = [(TKVibrationRecorderStyleProvider *)v5->_styleProvider vibrationRecorderInstructionsLabelFont];
+    [(UILabel *)v49 setFont:vibrationRecorderInstructionsLabelFont];
 
     v51 = v5->_instructionsLabel;
-    v52 = [(TKVibrationRecorderStyleProvider *)v5->_styleProvider vibrationRecorderInstructionsLabelTextColor];
-    [(UILabel *)v51 setTextColor:v52];
+    vibrationRecorderInstructionsLabelTextColor = [(TKVibrationRecorderStyleProvider *)v5->_styleProvider vibrationRecorderInstructionsLabelTextColor];
+    [(UILabel *)v51 setTextColor:vibrationRecorderInstructionsLabelTextColor];
 
     v53 = v5->_instructionsLabel;
-    v54 = [(TKVibrationRecorderStyleProvider *)v5->_styleProvider vibrationRecorderInstructionsLabelBackgroundColor];
-    [(UILabel *)v53 setBackgroundColor:v54];
+    vibrationRecorderInstructionsLabelBackgroundColor = [(TKVibrationRecorderStyleProvider *)v5->_styleProvider vibrationRecorderInstructionsLabelBackgroundColor];
+    [(UILabel *)v53 setBackgroundColor:vibrationRecorderInstructionsLabelBackgroundColor];
 
     [(UILabel *)v5->_instructionsLabel setText:v38];
     [(UILabel *)v5->_instructionsLabel setTextAlignment:1];
@@ -161,8 +161,8 @@
     [(TKVibrationRecorderStyleProvider *)v5->_styleProvider vibrationRecorderInstructionsLabelPositionOffset];
     v64 = v63;
     v66 = v65;
-    [(UILabel *)v5->_instructionsLabel tk_constrainLayoutAttribute:1 asGreaterThanOrEqualToValueOfItem:v9 withOffset:v58];
-    [(UILabel *)v5->_instructionsLabel tk_constrainLayoutAttribute:2 asLessThanOrEqualToValueOfItem:v9 withOffset:-v62];
+    [(UILabel *)v5->_instructionsLabel tk_constrainLayoutAttribute:1 asGreaterThanOrEqualToValueOfItem:safeAreaLayoutGuide withOffset:v58];
+    [(UILabel *)v5->_instructionsLabel tk_constrainLayoutAttribute:2 asLessThanOrEqualToValueOfItem:safeAreaLayoutGuide withOffset:-v62];
     [(UILabel *)v5->_instructionsLabel tk_constrainLayoutAttribute:3 asGreaterThanOrEqualToValueOfItem:v5 withOffset:v56];
     [(UILabel *)v5->_instructionsLabel tk_constrainLayoutAttribute:4 asLessThanOrEqualToValueOfItem:v5 withOffset:-v60];
     [(UILabel *)v5->_instructionsLabel tk_constrainLayoutAttribute:9 asEqualToValueOfItem:v5->_touchSurface withOffset:v64];
@@ -171,8 +171,8 @@
     v67 = +[TKDisplayLinkManager currentDisplayLinkManager];
     [v67 beginRequiringWarmUpMode];
 
-    v68 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v68 addObserver:v5 selector:sel__handleScreenPeripheryInsetsDidChangeNotification_ name:*MEMORY[0x277D77550] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__handleScreenPeripheryInsetsDidChangeNotification_ name:*MEMORY[0x277D77550] object:0];
   }
 
   return v5;
@@ -180,8 +180,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D77550] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D77550] object:0];
 
   v4 = +[TKDisplayLinkManager currentDisplayLinkManager];
   [v4 endRequiringWarmUpMode];
@@ -192,32 +192,32 @@
   [(TKVibrationRecorderView *)&v5 dealloc];
 }
 
-- (id)_titleForControlsToolbarButtonWithIdentifier:(int)a3
+- (id)_titleForControlsToolbarButtonWithIdentifier:(int)identifier
 {
-  if ((a3 - 1) <= 3)
+  if ((identifier - 1) <= 3)
   {
-    v3 = off_278316978[a3 - 1];
+    v3 = off_278316978[identifier - 1];
   }
 
   return TLLocalizedString();
 }
 
-- (void)_handleLeftButtonTapped:(id)a3
+- (void)_handleLeftButtonTapped:(id)tapped
 {
-  v4 = [(TKVibrationRecorderView *)self delegate];
-  [v4 vibrationRecorderView:self buttonTappedWithIdentifier:self->_leftButtonIdentifier];
+  delegate = [(TKVibrationRecorderView *)self delegate];
+  [delegate vibrationRecorderView:self buttonTappedWithIdentifier:self->_leftButtonIdentifier];
 }
 
-- (void)_handleRightButtonTapped:(id)a3
+- (void)_handleRightButtonTapped:(id)tapped
 {
-  v4 = [(TKVibrationRecorderView *)self delegate];
-  [v4 vibrationRecorderView:self buttonTappedWithIdentifier:self->_rightButtonIdentifier];
+  delegate = [(TKVibrationRecorderView *)self delegate];
+  [delegate vibrationRecorderView:self buttonTappedWithIdentifier:self->_rightButtonIdentifier];
 }
 
-- (void)_exitWaitingModeWithAnimation:(BOOL)a3
+- (void)_exitWaitingModeWithAnimation:(BOOL)animation
 {
   v4 = 0.0;
-  if (a3)
+  if (animation)
   {
     [(TKVibrationRecorderStyleProvider *)self->_styleProvider vibrationRecorderInstructionsLabelFadeAnimationDuration];
   }
@@ -243,15 +243,15 @@
   [(TKVibrationRecorderTouchSurface *)touchSurface enterRecordingMode];
 }
 
-- (void)enterReplayModeWithVibrationPattern:(id)a3
+- (void)enterReplayModeWithVibrationPattern:(id)pattern
 {
   if (!self->_isReplayModeEnabled)
   {
     self->_isReplayModeEnabled = 1;
-    v5 = a3;
+    patternCopy = pattern;
     [(TKVibrationRecorderView *)self _exitWaitingModeWithAnimation:1];
     [(TKVibrationRecorderView *)self _setLeftButtonIdentifier:3 enabled:0 rightButtonIdentifier:4 enabled:1 animated:1];
-    [(TKVibrationRecorderTouchSurface *)self->_touchSurface enterReplayModeWithVibrationPattern:v5];
+    [(TKVibrationRecorderTouchSurface *)self->_touchSurface enterReplayModeWithVibrationPattern:patternCopy];
 
     [(TKVibrationRecorderProgressView *)self->_progressView setRoundedCornersCompensationDelayMode:2];
 
@@ -304,7 +304,7 @@
   self->_isAnimatingProgress = 0;
 }
 
-- (void)_updateProgress:(id)a3
+- (void)_updateProgress:(id)progress
 {
   if (self->_isAnimatingProgress)
   {
@@ -326,8 +326,8 @@
       [(TKVibrationRecorderView *)self stopAnimatingProgress];
       [(TKVibrationRecorderProgressView *)self->_progressView setRoundedCornersCompensationDelayMode:0];
       self->_currentVibrationProgressDidStartTimestamp = 0.0;
-      v7 = [(TKVibrationRecorderView *)self delegate];
-      [v7 vibrationRecorderViewDidReachVibrationRecordingMaximumDuration:self];
+      delegate = [(TKVibrationRecorderView *)self delegate];
+      [delegate vibrationRecorderViewDidReachVibrationRecordingMaximumDuration:self];
     }
   }
 }
@@ -337,13 +337,13 @@
   v9.receiver = self;
   v9.super_class = TKVibrationRecorderView;
   [(TKVibrationRecorderView *)&v9 didMoveToWindow];
-  v3 = [(TKVibrationRecorderView *)self window];
-  v4 = v3;
-  if (v3)
+  window = [(TKVibrationRecorderView *)self window];
+  v4 = window;
+  if (window)
   {
     styleProvider = self->_styleProvider;
-    v6 = [v3 screen];
-    [(TKVibrationRecorderStyleProvider *)styleProvider setScreen:v6];
+    screen = [window screen];
+    [(TKVibrationRecorderStyleProvider *)styleProvider setScreen:screen];
 
     controlsToolbarTopConstraint = self->_controlsToolbarTopConstraint;
     [(TKVibrationRecorderStyleProvider *)self->_styleProvider vibrationRecorderControlsToolbarVerticalOffset];
@@ -356,17 +356,17 @@
   [(TKVibrationRecorderView *)self _updateBottomLineToolbarForPeripheryInsetsChange];
 }
 
-- (void)_handleScreenPeripheryInsetsDidChangeNotification:(id)a3
+- (void)_handleScreenPeripheryInsetsDidChangeNotification:(id)notification
 {
-  v7 = [a3 object];
-  v4 = [(TKVibrationRecorderView *)self window];
-  v5 = [v4 screen];
+  object = [notification object];
+  window = [(TKVibrationRecorderView *)self window];
+  screen = [window screen];
 
-  v6 = v7;
-  if (v7 == v5)
+  v6 = object;
+  if (object == screen)
   {
     [(TKVibrationRecorderView *)self _updateBottomLineToolbarForPeripheryInsetsChange];
-    v6 = v7;
+    v6 = object;
   }
 }
 
@@ -374,12 +374,12 @@
 {
   [(UIToolbar *)self->_bottomLineToolbar intrinsicContentSize];
   v4 = v3;
-  v5 = [(TKVibrationRecorderView *)self window];
-  v10 = [v5 screen];
+  window = [(TKVibrationRecorderView *)self window];
+  screen = [window screen];
 
-  if (v10 && ([v10 _peripheryInsets], !TKFloatEqualToFloat(v6, 0.0)))
+  if (screen && ([screen _peripheryInsets], !TKFloatEqualToFloat(v6, 0.0)))
   {
-    [v10 scale];
+    [screen scale];
     TKFloatGetSafeScaleForValue(v8);
     v4 = v4 + 1.0 / v9;
     v7 = 1;
@@ -403,11 +403,11 @@
   v4 = v3;
   v6 = v5;
   v7 = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[UIToolbar semanticContentAttribute](self->_controlsToolbar, "semanticContentAttribute")}];
-  v8 = [(UIToolbar *)self->_controlsToolbar items];
+  items = [(UIToolbar *)self->_controlsToolbar items];
   [(TKVibrationRecorderStyleProvider *)self->_styleProvider vibrationRecorderControlsToolbarItemsHorizontalOffsetFromEdge];
   v10 = v9;
-  v11 = [v8 firstObject];
-  v12 = v11;
+  firstObject = [items firstObject];
+  v12 = firstObject;
   if (v7)
   {
     v13 = v6;
@@ -424,16 +424,16 @@
     v4 = v6;
   }
 
-  [v11 setWidth:v14];
-  v15 = [v8 lastObject];
-  [v15 setWidth:v4 + v10];
+  [firstObject setWidth:v14];
+  lastObject = [items lastObject];
+  [lastObject setWidth:v4 + v10];
   [(UIToolbar *)self->_controlsToolbar setNeedsLayout];
 }
 
-- (void)vibrationComponentDidStartForVibrationRecorderTouchSurface:(id)a3
+- (void)vibrationComponentDidStartForVibrationRecorderTouchSurface:(id)surface
 {
-  v4 = [(TKVibrationRecorderView *)self delegate];
-  [v4 vibrationComponentDidStartForVibrationRecorderView:self];
+  delegate = [(TKVibrationRecorderView *)self delegate];
+  [delegate vibrationComponentDidStartForVibrationRecorderView:self];
 
   [(TKVibrationRecorderProgressView *)self->_progressView vibrationComponentDidStart];
   self->_isWaitingForEndOfCurrentVibrationComponent = 1;
@@ -441,20 +441,20 @@
   self->_currentVibrationComponentDidStartTimestamp = v5;
 }
 
-- (void)vibrationComponentDidEndForVibrationRecorderTouchSurface:(id)a3
+- (void)vibrationComponentDidEndForVibrationRecorderTouchSurface:(id)surface
 {
-  v4 = [(TKVibrationRecorderView *)self delegate];
-  [v4 vibrationComponentDidEndForVibrationRecorderView:self];
+  delegate = [(TKVibrationRecorderView *)self delegate];
+  [delegate vibrationComponentDidEndForVibrationRecorderView:self];
 
   [(TKVibrationRecorderProgressView *)self->_progressView vibrationComponentDidEnd];
   self->_isWaitingForEndOfCurrentVibrationComponent = 0;
   self->_currentVibrationComponentDidStartTimestamp = 0.0;
 }
 
-- (void)vibrationRecorderTouchSurfaceDidFinishReplayingVibration:(id)a3
+- (void)vibrationRecorderTouchSurfaceDidFinishReplayingVibration:(id)vibration
 {
-  v4 = [(TKVibrationRecorderView *)self delegate];
-  [v4 vibrationRecorderViewDidFinishReplayingVibration:self];
+  delegate = [(TKVibrationRecorderView *)self delegate];
+  [delegate vibrationRecorderViewDidFinishReplayingVibration:self];
 
   [(TKVibrationRecorderView *)self stopAnimatingProgress];
   [(TKVibrationRecorderView *)self _enterWaitingModeWithAnimation:1 enablePlayButton:1];
@@ -473,20 +473,20 @@
   }
 }
 
-- (BOOL)vibrationRecorderTouchSurfaceDidEnterRecordingMode:(id)a3
+- (BOOL)vibrationRecorderTouchSurfaceDidEnterRecordingMode:(id)mode
 {
-  v3 = self;
-  v4 = [(TKVibrationRecorderView *)self delegate];
-  LOBYTE(v3) = [v4 vibrationRecorderViewDidEnterRecordingMode:v3];
+  selfCopy = self;
+  delegate = [(TKVibrationRecorderView *)self delegate];
+  LOBYTE(selfCopy) = [delegate vibrationRecorderViewDidEnterRecordingMode:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)vibrationRecorderTouchSurface:(id)a3 didExitRecordingModeWithContextObject:(id)a4
+- (void)vibrationRecorderTouchSurface:(id)surface didExitRecordingModeWithContextObject:(id)object
 {
-  v5 = a4;
-  v6 = [(TKVibrationRecorderView *)self delegate];
-  [v6 vibrationRecorderView:self didExitRecordingModeWithContextObject:v5];
+  objectCopy = object;
+  delegate = [(TKVibrationRecorderView *)self delegate];
+  [delegate vibrationRecorderView:self didExitRecordingModeWithContextObject:objectCopy];
 }
 
 - (TKVibrationRecorderViewDelegate)delegate

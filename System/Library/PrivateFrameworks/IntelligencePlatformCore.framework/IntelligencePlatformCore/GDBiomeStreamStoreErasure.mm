@@ -1,14 +1,14 @@
 @interface GDBiomeStreamStoreErasure
-+ (BOOL)validateBookmark:(id)a3 publisher:(id)a4 error:(id *)a5;
-+ (id)_createOrLookupStreamWithIdentifier:(id)a3;
-+ (id)_streamWithIdentifier:(id)a3 error:(id *)a4;
-+ (id)deletedEventTimestampsForStream:(id)a3 account:(id)a4 device:(id)a5 bookmark:(id)a6 error:(id *)a7;
-+ (id)iterateStream:(id)a3 device:(id)a4 account:(id)a5 bookmark:(id)a6 startTime:(id)a7 endTime:(id)a8 maxEvents:(id)a9 lastN:(id)a10 reversed:(BOOL)a11 body:(id)a12;
-+ (id)latestDeleteBookmarkForStream:(id)a3 account:(id)a4 device:(id)a5 bookmark:(id)a6 error:(id *)a7;
-+ (id)publisherForStream:(id)a3 device:(id)a4 account:(id)a5 startTime:(id)a6 endTime:(id)a7 maxEvents:(id)a8 lastN:(id)a9 reversed:(BOOL)a10;
-+ (id)tombstonePublisherForStream:(id)a3 device:(id)a4 account:(id)a5 startTime:(id)a6 endTime:(id)a7 maxEvents:(id)a8 lastN:(id)a9 reversed:(BOOL)a10;
++ (BOOL)validateBookmark:(id)bookmark publisher:(id)publisher error:(id *)error;
++ (id)_createOrLookupStreamWithIdentifier:(id)identifier;
++ (id)_streamWithIdentifier:(id)identifier error:(id *)error;
++ (id)deletedEventTimestampsForStream:(id)stream account:(id)account device:(id)device bookmark:(id)bookmark error:(id *)error;
++ (id)iterateStream:(id)stream device:(id)device account:(id)account bookmark:(id)bookmark startTime:(id)time endTime:(id)endTime maxEvents:(id)events lastN:(id)self0 reversed:(BOOL)self1 body:(id)self2;
++ (id)latestDeleteBookmarkForStream:(id)stream account:(id)account device:(id)device bookmark:(id)bookmark error:(id *)error;
++ (id)publisherForStream:(id)stream device:(id)device account:(id)account startTime:(id)time endTime:(id)endTime maxEvents:(id)events lastN:(id)n reversed:(BOOL)self0;
++ (id)tombstonePublisherForStream:(id)stream device:(id)device account:(id)account startTime:(id)time endTime:(id)endTime maxEvents:(id)events lastN:(id)n reversed:(BOOL)self0;
 + (void)clearCache;
-+ (void)pruneStream:(id)a3 withReason:(unint64_t)a4;
++ (void)pruneStream:(id)stream withReason:(unint64_t)reason;
 @end
 
 @implementation GDBiomeStreamStoreErasure
@@ -19,13 +19,13 @@
   objc_msgSend_clearCache(v5, v2, v3, v4);
 }
 
-+ (id)_streamWithIdentifier:(id)a3 error:(id *)a4
++ (id)_streamWithIdentifier:(id)identifier error:(id *)error
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = BiomeLibrary();
   v34 = 0;
-  v8 = objc_msgSend_streamWithIdentifier_error_(v6, v7, v5, &v34);
+  v8 = objc_msgSend_streamWithIdentifier_error_(v6, v7, identifierCopy, &v34);
   v9 = v34;
 
   if (v8)
@@ -38,7 +38,7 @@
   {
     v10 = 0;
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -75,10 +75,10 @@
 
   v15 = v11();
   v33 = 0;
-  v8 = objc_msgSend_streamWithIdentifier_error_(v15, v16, v5, &v33);
+  v8 = objc_msgSend_streamWithIdentifier_error_(v15, v16, identifierCopy, &v33);
   v10 = v33;
 
-  if (a4)
+  if (error)
   {
 LABEL_10:
     if (!v8)
@@ -109,7 +109,7 @@ LABEL_10:
 
       v41[1] = v22;
       v23 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v17, v41, v40, 2);
-      *a4 = objc_msgSend_initWithDomain_code_userInfo_(v20, v24, *MEMORY[0x1E69A9E30], 1, v23);
+      *error = objc_msgSend_initWithDomain_code_userInfo_(v20, v24, *MEMORY[0x1E69A9E30], 1, v23);
 
       if (v10)
       {
@@ -130,13 +130,13 @@ LABEL_22:
   return v8;
 }
 
-+ (id)_createOrLookupStreamWithIdentifier:(id)a3
++ (id)_createOrLookupStreamWithIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = sub_1C4447514();
   v12 = 0;
-  v6 = objc_msgSend_getLibraryStreamWithIdentifier_error_(v4, v5, v3, &v12);
+  v6 = objc_msgSend_getLibraryStreamWithIdentifier_error_(v4, v5, identifierCopy, &v12);
   v7 = v12;
 
   if (v6)
@@ -150,7 +150,7 @@ LABEL_22:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v14 = v3;
+      v14 = identifierCopy;
       v15 = 2112;
       v16 = v7;
       _os_log_error_impl(&dword_1C43F8000, v9, OS_LOG_TYPE_ERROR, "GDBiomeStreamStoreErasure: _streamWithIdentifier: failed to retrieve stream %@. Error: %@", buf, 0x16u);
@@ -162,18 +162,18 @@ LABEL_22:
   return v6;
 }
 
-+ (id)latestDeleteBookmarkForStream:(id)a3 account:(id)a4 device:(id)a5 bookmark:(id)a6 error:(id *)a7
++ (id)latestDeleteBookmarkForStream:(id)stream account:(id)account device:(id)device bookmark:(id)bookmark error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  streamCopy = stream;
+  accountCopy = account;
+  deviceCopy = device;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
   v45 = sub_1C446339C;
   v46 = sub_1C4463498;
-  v14 = a6;
-  v47 = v14;
+  bookmarkCopy = bookmark;
+  v47 = bookmarkCopy;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -192,7 +192,7 @@ LABEL_22:
     goto LABEL_4;
   }
 
-  v17 = objc_msgSend_tombstonePublisherForStream_device_account_startTime_endTime_maxEvents_lastN_reversed_(GDBiomeStreamStoreErasure, v15, v11, v13, v12, 0, 0, 0, 0, 1);
+  v17 = objc_msgSend_tombstonePublisherForStream_device_account_startTime_endTime_maxEvents_lastN_reversed_(GDBiomeStreamStoreErasure, v15, streamCopy, deviceCopy, accountCopy, 0, 0, 0, 0, 1);
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = sub_1C4EF32E0;
@@ -205,7 +205,7 @@ LABEL_22:
 
 LABEL_4:
     LOBYTE(v27) = 0;
-    v17 = objc_msgSend_tombstonePublisherForStream_device_account_startTime_endTime_maxEvents_lastN_reversed_(GDBiomeStreamStoreErasure, v15, v11, v13, v12, 0, 0, 0, 0, v27);
+    v17 = objc_msgSend_tombstonePublisherForStream_device_account_startTime_endTime_maxEvents_lastN_reversed_(GDBiomeStreamStoreErasure, v15, streamCopy, deviceCopy, accountCopy, 0, 0, 0, 0, v27);
     v20 = v43[5];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
@@ -219,9 +219,9 @@ LABEL_4:
   }
 
   v23 = 0;
-  if (a7)
+  if (error)
   {
-    *a7 = v31[5];
+    *error = v31[5];
   }
 
 LABEL_5:
@@ -230,9 +230,9 @@ LABEL_5:
   if (v23)
   {
     v24 = v37[5];
-    if (a7 && !v24)
+    if (error && !v24)
     {
-      *a7 = v31[5];
+      *error = v31[5];
       v24 = v37[5];
     }
 
@@ -252,12 +252,12 @@ LABEL_5:
   return v25;
 }
 
-+ (id)deletedEventTimestampsForStream:(id)a3 account:(id)a4 device:(id)a5 bookmark:(id)a6 error:(id *)a7
++ (id)deletedEventTimestampsForStream:(id)stream account:(id)account device:(id)device bookmark:(id)bookmark error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  streamCopy = stream;
+  accountCopy = account;
+  deviceCopy = device;
+  bookmarkCopy = bookmark;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -272,20 +272,20 @@ LABEL_5:
   v41 = 0;
   v16 = objc_opt_new();
   v17 = objc_autoreleasePoolPush();
-  v20 = objc_msgSend__createOrLookupStreamWithIdentifier_(a1, v18, v12, v19);
+  v20 = objc_msgSend__createOrLookupStreamWithIdentifier_(self, v18, streamCopy, v19);
   v21 = objc_alloc(MEMORY[0x1E698F2D0]);
   started = objc_msgSend_initWithStartDate_endDate_maxEvents_lastN_reversed_(v21, v22, 0, 0, 0, 0, 0);
   v25 = *MEMORY[0x1E698E920];
-  if (v13)
+  if (accountCopy)
   {
-    v26 = objc_msgSend_tombstonePublisherWithUseCase_account_device_options_(v20, v23, v25, v13, v14, started);
+    v26 = objc_msgSend_tombstonePublisherWithUseCase_account_device_options_(v20, v23, v25, accountCopy, deviceCopy, started);
   }
 
   else
   {
-    if (v14)
+    if (deviceCopy)
     {
-      objc_msgSend_tombstonePublisherWithUseCase_device_options_(v20, v23, v25, v14, started);
+      objc_msgSend_tombstonePublisherWithUseCase_device_options_(v20, v23, v25, deviceCopy, started);
     }
 
     else
@@ -308,7 +308,7 @@ LABEL_5:
   v33[3] = &unk_1E81EF888;
   v28 = v16;
   v34 = v28;
-  v30 = objc_msgSend_drivableSinkWithBookmark_completion_shouldContinue_(v27, v29, v15, v35, v33);
+  v30 = objc_msgSend_drivableSinkWithBookmark_completion_shouldContinue_(v27, v29, bookmarkCopy, v35, v33);
 
   objc_autoreleasePoolPop(v17);
   if (v37[5])
@@ -319,9 +319,9 @@ LABEL_5:
   else
   {
     v31 = 0;
-    if (a7)
+    if (error)
     {
-      *a7 = v43[5];
+      *error = v43[5];
     }
   }
 
@@ -331,25 +331,25 @@ LABEL_5:
   return v31;
 }
 
-+ (BOOL)validateBookmark:(id)a3 publisher:(id)a4 error:(id *)a5
++ (BOOL)validateBookmark:(id)bookmark publisher:(id)publisher error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  bookmarkCopy = bookmark;
+  publisherCopy = publisher;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = objc_msgSend_validateBookmarkNode_(v8, v9, v7, v10);
-    if (a5 && v11)
+    v11 = objc_msgSend_validateBookmarkNode_(publisherCopy, v9, bookmarkCopy, v10);
+    if (error && v11)
     {
       v11 = v11;
-      *a5 = v11;
+      *error = v11;
     }
 
-    LOBYTE(a5) = v11 == 0;
+    LOBYTE(error) = v11 == 0;
   }
 
-  else if (a5)
+  else if (error)
   {
     v12 = MEMORY[0x1E696ABC0];
     v13 = *MEMORY[0x1E69A9E30];
@@ -359,19 +359,19 @@ LABEL_5:
     v18 = objc_msgSend_initWithFormat_(v14, v16, @"Bookmark of unexpected type: %@", v17, v15, v24);
     v25[0] = v18;
     v20 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v19, v25, &v24, 1);
-    *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v12, v21, v13, 15, v20);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v12, v21, v13, 15, v20);
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
   }
 
   v22 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
-+ (void)pruneStream:(id)a3 withReason:(unint64_t)a4
++ (void)pruneStream:(id)stream withReason:(unint64_t)reason
 {
-  v15 = a3;
-  v7 = objc_msgSend__createOrLookupStreamWithIdentifier_(a1, v5, v15, v6);
+  streamCopy = stream;
+  v7 = objc_msgSend__createOrLookupStreamWithIdentifier_(self, v5, streamCopy, v6);
   v8 = objc_autoreleasePoolPush();
   v12 = objc_msgSend_pruner(v7, v9, v10, v11);
   objc_msgSend_deleteEventsPassingTest_(v12, v13, &unk_1F4415E78, v14);
@@ -379,26 +379,26 @@ LABEL_5:
   objc_autoreleasePoolPop(v8);
 }
 
-+ (id)tombstonePublisherForStream:(id)a3 device:(id)a4 account:(id)a5 startTime:(id)a6 endTime:(id)a7 maxEvents:(id)a8 lastN:(id)a9 reversed:(BOOL)a10
++ (id)tombstonePublisherForStream:(id)stream device:(id)device account:(id)account startTime:(id)time endTime:(id)endTime maxEvents:(id)events lastN:(id)n reversed:(BOOL)self0
 {
-  v61 = a3;
-  v59 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v60 = a9;
+  streamCopy = stream;
+  deviceCopy = device;
+  accountCopy = account;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  eventsCopy = events;
+  nCopy = n;
   context = objc_autoreleasePoolPush();
-  if (v16)
+  if (timeCopy)
   {
     v19 = objc_alloc(MEMORY[0x1E695DF00]);
-    objc_msgSend_doubleValue(v16, v20, v21, v22);
+    objc_msgSend_doubleValue(timeCopy, v20, v21, v22);
     v26 = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v19, v23, v24, v25);
-    if (v17)
+    if (endTimeCopy)
     {
 LABEL_3:
       v27 = objc_alloc(MEMORY[0x1E695DF00]);
-      objc_msgSend_doubleValue(v17, v28, v29, v30);
+      objc_msgSend_doubleValue(endTimeCopy, v28, v29, v30);
       v34 = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v27, v31, v32, v33);
       goto LABEL_6;
     }
@@ -407,7 +407,7 @@ LABEL_3:
   else
   {
     v26 = 0;
-    if (v17)
+    if (endTimeCopy)
     {
       goto LABEL_3;
     }
@@ -416,25 +416,25 @@ LABEL_3:
   v34 = 0;
 LABEL_6:
   v35 = objc_alloc(MEMORY[0x1E698F2D0]);
-  v36 = v18;
-  v40 = objc_msgSend_unsignedIntegerValue(v18, v37, v38, v39);
-  v44 = objc_msgSend_unsignedIntegerValue(v60, v41, v42, v43);
-  started = objc_msgSend_initWithStartDate_endDate_maxEvents_lastN_reversed_(v35, v45, v26, v34, v40, v44, a10);
-  v49 = objc_msgSend__createOrLookupStreamWithIdentifier_(a1, v47, v61, v48);
+  v36 = eventsCopy;
+  v40 = objc_msgSend_unsignedIntegerValue(eventsCopy, v37, v38, v39);
+  v44 = objc_msgSend_unsignedIntegerValue(nCopy, v41, v42, v43);
+  started = objc_msgSend_initWithStartDate_endDate_maxEvents_lastN_reversed_(v35, v45, v26, v34, v40, v44, reversed);
+  v49 = objc_msgSend__createOrLookupStreamWithIdentifier_(self, v47, streamCopy, v48);
   v51 = v49;
   v52 = *MEMORY[0x1E698E928];
-  if (v15)
+  if (accountCopy)
   {
-    v53 = v59;
-    v54 = objc_msgSend_tombstonePublisherWithUseCase_account_device_options_(v49, v50, v52, v15, v59, started);
+    v53 = deviceCopy;
+    v54 = objc_msgSend_tombstonePublisherWithUseCase_account_device_options_(v49, v50, v52, accountCopy, deviceCopy, started);
   }
 
   else
   {
-    v53 = v59;
-    if (v59)
+    v53 = deviceCopy;
+    if (deviceCopy)
     {
-      objc_msgSend_tombstonePublisherWithUseCase_device_options_(v49, v50, v52, v59, started);
+      objc_msgSend_tombstonePublisherWithUseCase_device_options_(v49, v50, v52, deviceCopy, started);
     }
 
     else
@@ -451,26 +451,26 @@ LABEL_6:
   return v55;
 }
 
-+ (id)publisherForStream:(id)a3 device:(id)a4 account:(id)a5 startTime:(id)a6 endTime:(id)a7 maxEvents:(id)a8 lastN:(id)a9 reversed:(BOOL)a10
++ (id)publisherForStream:(id)stream device:(id)device account:(id)account startTime:(id)time endTime:(id)endTime maxEvents:(id)events lastN:(id)n reversed:(BOOL)self0
 {
-  v61 = a3;
-  v59 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v60 = a9;
+  streamCopy = stream;
+  deviceCopy = device;
+  accountCopy = account;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  eventsCopy = events;
+  nCopy = n;
   context = objc_autoreleasePoolPush();
-  if (v16)
+  if (timeCopy)
   {
     v19 = objc_alloc(MEMORY[0x1E695DF00]);
-    objc_msgSend_doubleValue(v16, v20, v21, v22);
+    objc_msgSend_doubleValue(timeCopy, v20, v21, v22);
     v26 = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v19, v23, v24, v25);
-    if (v17)
+    if (endTimeCopy)
     {
 LABEL_3:
       v27 = objc_alloc(MEMORY[0x1E695DF00]);
-      objc_msgSend_doubleValue(v17, v28, v29, v30);
+      objc_msgSend_doubleValue(endTimeCopy, v28, v29, v30);
       v34 = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v27, v31, v32, v33);
       goto LABEL_6;
     }
@@ -479,7 +479,7 @@ LABEL_3:
   else
   {
     v26 = 0;
-    if (v17)
+    if (endTimeCopy)
     {
       goto LABEL_3;
     }
@@ -488,24 +488,24 @@ LABEL_3:
   v34 = 0;
 LABEL_6:
   v35 = objc_alloc(MEMORY[0x1E698F2D0]);
-  v36 = v18;
-  v40 = objc_msgSend_unsignedIntegerValue(v18, v37, v38, v39);
-  v44 = objc_msgSend_unsignedIntegerValue(v60, v41, v42, v43);
-  started = objc_msgSend_initWithStartDate_endDate_maxEvents_lastN_reversed_(v35, v45, v26, v34, v40, v44, a10);
-  v49 = objc_msgSend__createOrLookupStreamWithIdentifier_(a1, v47, v61, v48);
+  v36 = eventsCopy;
+  v40 = objc_msgSend_unsignedIntegerValue(eventsCopy, v37, v38, v39);
+  v44 = objc_msgSend_unsignedIntegerValue(nCopy, v41, v42, v43);
+  started = objc_msgSend_initWithStartDate_endDate_maxEvents_lastN_reversed_(v35, v45, v26, v34, v40, v44, reversed);
+  v49 = objc_msgSend__createOrLookupStreamWithIdentifier_(self, v47, streamCopy, v48);
   v52 = v49;
-  if (v15)
+  if (accountCopy)
   {
-    v53 = v59;
-    v54 = objc_msgSend_publisherForAccount_device_withUseCase_options_(v49, v50, v15, v59, *MEMORY[0x1E698E928], started);
+    v53 = deviceCopy;
+    v54 = objc_msgSend_publisherForAccount_device_withUseCase_options_(v49, v50, accountCopy, deviceCopy, *MEMORY[0x1E698E928], started);
   }
 
   else
   {
-    v53 = v59;
-    if (v59)
+    v53 = deviceCopy;
+    if (deviceCopy)
     {
-      objc_msgSend_publisherForDevice_withUseCase_options_(v49, v50, v59, *MEMORY[0x1E698E928], started);
+      objc_msgSend_publisherForDevice_withUseCase_options_(v49, v50, deviceCopy, *MEMORY[0x1E698E928], started);
     }
 
     else
@@ -522,17 +522,17 @@ LABEL_6:
   return v55;
 }
 
-+ (id)iterateStream:(id)a3 device:(id)a4 account:(id)a5 bookmark:(id)a6 startTime:(id)a7 endTime:(id)a8 maxEvents:(id)a9 lastN:(id)a10 reversed:(BOOL)a11 body:(id)a12
++ (id)iterateStream:(id)stream device:(id)device account:(id)account bookmark:(id)bookmark startTime:(id)time endTime:(id)endTime maxEvents:(id)events lastN:(id)self0 reversed:(BOOL)self1 body:(id)self2
 {
-  v37 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a12;
+  streamCopy = stream;
+  deviceCopy = device;
+  accountCopy = account;
+  bookmarkCopy = bookmark;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  eventsCopy = events;
+  nCopy = n;
+  bodyCopy = body;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -540,11 +540,11 @@ LABEL_6:
   v47 = sub_1C4463498;
   v48 = 0;
   v25 = objc_autoreleasePoolPush();
-  v26 = a1;
-  v39 = v17;
-  v27 = v17;
-  v28 = v18;
-  v30 = objc_msgSend_publisherForStream_device_account_startTime_endTime_maxEvents_lastN_reversed_(v26, v29, v37, v27, v18, v20, v21, v22, v23, a11);
+  selfCopy = self;
+  v39 = deviceCopy;
+  v27 = deviceCopy;
+  v28 = accountCopy;
+  v30 = objc_msgSend_publisherForStream_device_account_startTime_endTime_maxEvents_lastN_reversed_(selfCopy, v29, streamCopy, v27, accountCopy, timeCopy, endTimeCopy, eventsCopy, nCopy, reversed);
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = sub_1C4EF414C;
@@ -554,9 +554,9 @@ LABEL_6:
   v40[1] = 3221225472;
   v40[2] = sub_1C4EF4160;
   v40[3] = &unk_1E81EF818;
-  v31 = v24;
+  v31 = bodyCopy;
   v41 = v31;
-  v33 = objc_msgSend_sinkWithBookmark_completion_receiveInput_(v30, v32, v19, v42, v40);
+  v33 = objc_msgSend_sinkWithBookmark_completion_receiveInput_(v30, v32, bookmarkCopy, v42, v40);
 
   objc_autoreleasePoolPop(v25);
   v34 = v44[5];

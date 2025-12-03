@@ -1,6 +1,6 @@
 @interface _FBDefaultFencingProvider
 + (id)sharedInstance;
-- (void)synchronizeDrawingWithFence:(id)a3;
+- (void)synchronizeDrawingWithFence:(id)fence;
 @end
 
 @implementation _FBDefaultFencingProvider
@@ -17,15 +17,15 @@
   return v3;
 }
 
-- (void)synchronizeDrawingWithFence:(id)a3
+- (void)synchronizeDrawingWithFence:(id)fence
 {
-  v4 = a3;
+  fenceCopy = fence;
   if (UIKitLibraryCore())
   {
     v3 = getUIWindowClass();
     if (v3)
     {
-      [v3 _synchronizeDrawingWithFence:v4];
+      [v3 _synchronizeDrawingWithFence:fenceCopy];
     }
   }
 }

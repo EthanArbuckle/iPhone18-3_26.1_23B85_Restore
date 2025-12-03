@@ -1,13 +1,13 @@
 @interface SeekTimeIntent
-- (SeekTimeIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (SeekTimeIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (SeekTimeIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (SeekTimeIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation SeekTimeIntent
 
-- (SeekTimeIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (SeekTimeIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_268B37BF4();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return SeekTimeIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return SeekTimeIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (SeekTimeIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (SeekTimeIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   sub_268B37BF4();
   sub_268B37BF4();
-  if (a5)
+  if (name)
   {
     sub_268B37B64();
   }

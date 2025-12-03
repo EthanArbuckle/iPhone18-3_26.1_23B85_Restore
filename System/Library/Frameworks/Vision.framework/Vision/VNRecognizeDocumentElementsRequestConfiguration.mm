@@ -1,15 +1,15 @@
 @interface VNRecognizeDocumentElementsRequestConfiguration
-- (VNRecognizeDocumentElementsRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNRecognizeDocumentElementsRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNRecognizeDocumentElementsRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = VNRecognizeDocumentElementsRequestConfiguration;
-  v4 = [(VNImageBasedRequestConfiguration *)&v13 copyWithZone:a3];
+  v4 = [(VNImageBasedRequestConfiguration *)&v13 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -30,11 +30,11 @@
   return v5;
 }
 
-- (VNRecognizeDocumentElementsRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNRecognizeDocumentElementsRequestConfiguration)initWithRequestClass:(Class)class
 {
   v12.receiver = self;
   v12.super_class = VNRecognizeDocumentElementsRequestConfiguration;
-  v3 = [(VNImageBasedRequestConfiguration *)&v12 initWithRequestClass:a3];
+  v3 = [(VNImageBasedRequestConfiguration *)&v12 initWithRequestClass:class];
   v4 = v3;
   if (v3)
   {

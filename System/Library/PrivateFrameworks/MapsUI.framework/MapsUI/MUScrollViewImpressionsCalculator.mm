@@ -1,5 +1,5 @@
 @interface MUScrollViewImpressionsCalculator
-- (MUScrollViewImpressionsCalculator)initWithConfiguration:(id)a3 visibleItemsProvider:(id)a4;
+- (MUScrollViewImpressionsCalculator)initWithConfiguration:(id)configuration visibleItemsProvider:(id)provider;
 - (void)logImpressions;
 @end
 
@@ -11,18 +11,18 @@
   if ([(MUImpressionsCalculator *)self isActive])
   {
     v3 = MEMORY[0x1E695DFA8];
-    v4 = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
-    v5 = [v4 allKeys];
-    v6 = [v3 setWithArray:v5];
+    uiElementsByIdentifiers = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
+    allKeys = [uiElementsByIdentifiers allKeys];
+    v6 = [v3 setWithArray:allKeys];
 
     WeakRetained = objc_loadWeakRetained(&self->_visibleItemsProvider);
-    v8 = [WeakRetained visibleImpressionElements];
+    visibleImpressionElements = [WeakRetained visibleImpressionElements];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v9 = v8;
+    v9 = visibleImpressionElements;
     v10 = [v9 countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v10)
     {
@@ -39,16 +39,16 @@
           }
 
           v14 = *(*(&v36 + 1) + 8 * v13);
-          v15 = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
-          v16 = [v14 elementIdentifier];
-          v17 = [v15 objectForKey:v16];
+          uiElementsByIdentifiers2 = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
+          elementIdentifier = [v14 elementIdentifier];
+          v17 = [uiElementsByIdentifiers2 objectForKey:elementIdentifier];
 
           if (v17)
           {
             [v14 frame];
             [(_MUImpressionUIElement *)v17 setFrame:?];
-            v18 = [v14 elementIdentifier];
-            [v6 removeObject:v18];
+            elementIdentifier2 = [v14 elementIdentifier];
+            [v6 removeObject:elementIdentifier2];
           }
 
           else
@@ -57,9 +57,9 @@
             [v14 frame];
             [(_MUImpressionUIElement *)v17 setFrame:?];
             [(_MUImpressionUIElement *)v17 setClientElement:v14];
-            v18 = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
-            v19 = [v14 elementIdentifier];
-            [v18 setObject:v17 forKey:v19];
+            elementIdentifier2 = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
+            elementIdentifier3 = [v14 elementIdentifier];
+            [elementIdentifier2 setObject:v17 forKey:elementIdentifier3];
           }
 
           ++v13;
@@ -74,13 +74,13 @@
 
     v31 = v9;
 
-    v20 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v21 = [v6 allObjects];
-    v22 = [v21 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    allObjects = [v6 allObjects];
+    v22 = [allObjects countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v22)
     {
       v23 = v22;
@@ -92,43 +92,43 @@
         {
           if (*v33 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(allObjects);
           }
 
           v26 = *(*(&v32 + 1) + 8 * v25);
-          v27 = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
-          v28 = [v27 objectForKey:v26];
+          uiElementsByIdentifiers3 = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
+          v28 = [uiElementsByIdentifiers3 objectForKey:v26];
 
-          [(MUImpressionsCalculator *)self _logExitForImpressionUIElement:v28 usingExitDate:v20];
-          v29 = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
-          [v29 removeObjectForKey:v26];
+          [(MUImpressionsCalculator *)self _logExitForImpressionUIElement:v28 usingExitDate:date];
+          uiElementsByIdentifiers4 = [(MUImpressionsCalculator *)self uiElementsByIdentifiers];
+          [uiElementsByIdentifiers4 removeObjectForKey:v26];
 
           ++v25;
         }
 
         while (v23 != v25);
-        v23 = [v21 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v23 = [allObjects countByEnumeratingWithState:&v32 objects:v40 count:16];
       }
 
       while (v23);
     }
 
-    [(MUImpressionsCalculator *)self _checkVisibilityForAllItemsOnDate:v20];
+    [(MUImpressionsCalculator *)self _checkVisibilityForAllItemsOnDate:date];
   }
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (MUScrollViewImpressionsCalculator)initWithConfiguration:(id)a3 visibleItemsProvider:(id)a4
+- (MUScrollViewImpressionsCalculator)initWithConfiguration:(id)configuration visibleItemsProvider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = MUScrollViewImpressionsCalculator;
-  v7 = [(MUImpressionsCalculator *)&v10 initWithConfiguration:a3];
+  v7 = [(MUImpressionsCalculator *)&v10 initWithConfiguration:configuration];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_visibleItemsProvider, v6);
+    objc_storeWeak(&v7->_visibleItemsProvider, providerCopy);
   }
 
   return v8;

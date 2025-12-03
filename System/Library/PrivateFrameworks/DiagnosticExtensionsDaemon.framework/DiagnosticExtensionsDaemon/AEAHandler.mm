@@ -1,11 +1,11 @@
 @interface AEAHandler
-+ (BOOL)encryptWithSourceURL:(id)a3 destinationURL:(id)a4;
++ (BOOL)encryptWithSourceURL:(id)l destinationURL:(id)rL;
 - (_TtC26DiagnosticExtensionsDaemon10AEAHandler)init;
 @end
 
 @implementation AEAHandler
 
-+ (BOOL)encryptWithSourceURL:(id)a3 destinationURL:(id)a4
++ (BOOL)encryptWithSourceURL:(id)l destinationURL:(id)rL
 {
   v4 = sub_248B4B6C8();
   v5 = *(v4 - 8);

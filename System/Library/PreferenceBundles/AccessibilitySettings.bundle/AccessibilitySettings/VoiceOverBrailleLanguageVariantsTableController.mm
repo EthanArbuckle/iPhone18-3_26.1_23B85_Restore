@@ -1,23 +1,23 @@
 @interface VoiceOverBrailleLanguageVariantsTableController
-- (BOOL)_isSystemBundle:(id)a3;
+- (BOOL)_isSystemBundle:(id)bundle;
 - (BRLTTableEnumerator)tableEnumerator;
 - (id)_translatorBundlesWithSystemAtFirst;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)_indexOfDefaultRotorItem;
 - (void)_ensureDefaultRotorItemExists;
 - (void)_popToTopOfBrailleSettings;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateTableCheckedSelection:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateTableCheckedSelection:(id)selection;
 @end
 
 @implementation VoiceOverBrailleLanguageVariantsTableController
 
 - (BRLTTableEnumerator)tableEnumerator
 {
-  v2 = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
-  v3 = [v2 propertyForKey:@"TableEnumerator"];
+  specifier = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
+  v3 = [specifier propertyForKey:@"TableEnumerator"];
 
   return v3;
 }
@@ -29,9 +29,9 @@
   {
     v37 = OBJC_IVAR___PSListController__specifiers;
     v43 = +[NSMutableArray array];
-    v4 = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
-    v5 = [v4 propertyForKey:@"IsLanguageAgnostic"];
-    v41 = [v5 BOOLValue];
+    specifier = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
+    v5 = [specifier propertyForKey:@"IsLanguageAgnostic"];
+    bOOLValue = [v5 BOOLValue];
 
     v54 = 0u;
     v55 = 0u;
@@ -54,14 +54,14 @@
           }
 
           v8 = *(*(&v52 + 1) + 8 * i);
-          v9 = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
-          v10 = v9;
-          if (v41)
+          specifier2 = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
+          v10 = specifier2;
+          if (bOOLValue)
           {
-            v11 = [v9 propertyForKey:@"TableIdentifier"];
+            v11 = [specifier2 propertyForKey:@"TableIdentifier"];
 
-            v12 = [(VoiceOverBrailleLanguageVariantsTableController *)self tableEnumerator];
-            v13 = [v12 languageAgnosticTablesForIdentifier:v11 inBundle:v8];
+            tableEnumerator = [(VoiceOverBrailleLanguageVariantsTableController *)self tableEnumerator];
+            v13 = [tableEnumerator languageAgnosticTablesForIdentifier:v11 inBundle:v8];
 
             v14 = [NSString stringWithFormat:@"%@.footer", v11];
             v15 = settingsLocString(v14, @"VoiceOverSettings");
@@ -79,20 +79,20 @@
 
           else
           {
-            v11 = [v9 propertyForKey:@"Locale"];
+            v11 = [specifier2 propertyForKey:@"Locale"];
 
-            v18 = [(VoiceOverBrailleLanguageVariantsTableController *)self tableEnumerator];
-            v13 = [v18 tablesForLocale:v11 inBundle:v8];
+            tableEnumerator2 = [(VoiceOverBrailleLanguageVariantsTableController *)self tableEnumerator];
+            v13 = [tableEnumerator2 tablesForLocale:v11 inBundle:v8];
 
             v14 = BRLLogTranslation();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [v11 languageCode];
+              languageCode = [v11 languageCode];
               v20 = [v13 debugDescription];
               *buf = 138412802;
               v58 = v11;
               v59 = 2112;
-              v60 = v19;
+              v60 = languageCode;
               v61 = 2112;
               v62 = v20;
               _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Finding tables for locale %@ %@ %@", buf, 0x20u);
@@ -107,8 +107,8 @@
             v21 = +[NSMutableArray array];
             if ((v6 & 1) == 0 || ![(VoiceOverBrailleLanguageVariantsTableController *)self _isSystemBundle:v8])
             {
-              v22 = [v8 bundleIdentifier];
-              v23 = [BRLTTableEnumerator localizedNameForServiceWithIdentifier:v22];
+              bundleIdentifier = [v8 bundleIdentifier];
+              v23 = [BRLTTableEnumerator localizedNameForServiceWithIdentifier:bundleIdentifier];
 
               v24 = [PSSpecifier groupSpecifierWithName:v23];
               if ([v17 length])
@@ -144,8 +144,8 @@
                   v30 = *(*(&v48 + 1) + 8 * j);
                   if (VOSCustomBrailleEnabled())
                   {
-                    v31 = [v30 replacements];
-                    v32 = [v31 count];
+                    replacements = [v30 replacements];
+                    v32 = [replacements count];
 
                     if (v32)
                     {
@@ -158,8 +158,8 @@
                     continue;
                   }
 
-                  v33 = [v30 localizedName];
-                  v34 = [PSSpecifier preferenceSpecifierNamed:v33 target:self set:0 get:0 detail:0 cell:3 edit:0];
+                  localizedName = [v30 localizedName];
+                  v34 = [PSSpecifier preferenceSpecifierNamed:localizedName target:self set:0 get:0 detail:0 cell:3 edit:0];
                   [v34 setProperty:v30 forKey:@"Table"];
                   [v21 addObject:v34];
                 }
@@ -208,8 +208,8 @@ int64_t __61__VoiceOverBrailleLanguageVariantsTableController_specifiers__block_
 
 - (id)_translatorBundlesWithSystemAtFirst
 {
-  v3 = [(VoiceOverBrailleLanguageVariantsTableController *)self tableEnumerator];
-  v4 = [v3 translatorBundles];
+  tableEnumerator = [(VoiceOverBrailleLanguageVariantsTableController *)self tableEnumerator];
+  translatorBundles = [tableEnumerator translatorBundles];
 
   v5 = objc_opt_new();
   v6 = objc_opt_new();
@@ -217,7 +217,7 @@ int64_t __61__VoiceOverBrailleLanguageVariantsTableController_specifiers__block_
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = translatorBundles;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -257,50 +257,50 @@ int64_t __61__VoiceOverBrailleLanguageVariantsTableController_specifiers__block_
   return v5;
 }
 
-- (BOOL)_isSystemBundle:(id)a3
+- (BOOL)_isSystemBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.scrod.braille.table.duxbury"];
+  bundleCopy = bundle;
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.scrod.braille.table.duxbury"];
 
-  v6 = [v3 bundleIdentifier];
+  bundleIdentifier2 = [bundleCopy bundleIdentifier];
 
-  LOBYTE(v3) = [v6 isEqualToString:@"com.apple.scrod.braille.table.apple"];
-  return (v5 | v3) & 1;
+  LOBYTE(bundleCopy) = [bundleIdentifier2 isEqualToString:@"com.apple.scrod.braille.table.apple"];
+  return (v5 | bundleCopy) & 1;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = VoiceOverBrailleLanguageVariantsTableController;
-  v4 = [(VoiceOverBrailleLanguageVariantsTableController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 textLabel];
-  [v5 setNumberOfLines:0];
+  v4 = [(VoiceOverBrailleLanguageVariantsTableController *)&v7 tableView:view cellForRowAtIndexPath:path];
+  textLabel = [v4 textLabel];
+  [textLabel setNumberOfLines:0];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v43 = a4;
-  v41 = [v43 specifier];
-  v6 = [v41 propertyForKey:@"Table"];
-  v44 = self;
-  v7 = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
-  v8 = [v7 identifier];
-  v9 = [v8 isEqualToString:@"DefaultLanguage"];
+  cellCopy = cell;
+  specifier = [cellCopy specifier];
+  v6 = [specifier propertyForKey:@"Table"];
+  selfCopy = self;
+  specifier2 = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
+  identifier = [specifier2 identifier];
+  v9 = [identifier isEqualToString:@"DefaultLanguage"];
 
   v10 = +[AXLanguageManager sharedInstance];
-  v46 = [v10 userLocale];
+  userLocale = [v10 userLocale];
 
   v11 = +[AXSettings sharedInstance];
-  v12 = [v11 voiceOverBrailleLanguageRotorItems];
+  voiceOverBrailleLanguageRotorItems = [v11 voiceOverBrailleLanguageRotorItems];
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v12;
+  obj = voiceOverBrailleLanguageRotorItems;
   v13 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (v13)
   {
@@ -320,15 +320,15 @@ int64_t __61__VoiceOverBrailleLanguageVariantsTableController_specifiers__block_
         if (v9 && ([*(*(&v47 + 1) + 8 * i) objectForKeyedSubscript:@"Default"], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "BOOLValue"), v18, v19))
         {
           v20 = [v17 objectForKeyedSubscript:@"LanguageDefaults"];
-          v21 = [v46 localeIdentifier];
-          v22 = [v20 objectForKeyedSubscript:v21];
+          localeIdentifier = [userLocale localeIdentifier];
+          v22 = [v20 objectForKeyedSubscript:localeIdentifier];
 
-          v23 = [v6 identifier];
-          LODWORD(v21) = [v23 isEqualToString:v22];
+          identifier2 = [v6 identifier];
+          LODWORD(localeIdentifier) = [identifier2 isEqualToString:v22];
 
-          if (v21)
+          if (localeIdentifier)
           {
-            [v43 setChecked:1];
+            [cellCopy setChecked:1];
           }
 
           v42 = 1;
@@ -337,18 +337,18 @@ int64_t __61__VoiceOverBrailleLanguageVariantsTableController_specifiers__block_
         else
         {
           v24 = [v17 objectForKeyedSubscript:@"Default"];
-          v25 = [v24 BOOLValue];
+          bOOLValue = [v24 BOOLValue];
 
-          if (v25)
+          if (bOOLValue)
           {
             v26 = [v17 objectForKeyedSubscript:@"LanguageDefaults"];
-            v27 = [v46 localeIdentifier];
-            v28 = [v26 objectForKeyedSubscript:v27];
+            localeIdentifier2 = [userLocale localeIdentifier];
+            v28 = [v26 objectForKeyedSubscript:localeIdentifier2];
 
-            v29 = [v6 identifier];
-            LOBYTE(v27) = [v29 isEqualToString:v28];
+            identifier3 = [v6 identifier];
+            LOBYTE(localeIdentifier2) = [identifier3 isEqualToString:v28];
 
-            if ((v27 & 1) == 0)
+            if ((localeIdentifier2 & 1) == 0)
             {
               continue;
             }
@@ -356,9 +356,9 @@ int64_t __61__VoiceOverBrailleLanguageVariantsTableController_specifiers__block_
 
           else
           {
-            v30 = [v6 identifier];
+            identifier4 = [v6 identifier];
             v31 = [v17 objectForKeyedSubscript:@"RotorItem"];
-            v32 = [v30 isEqualToString:v31];
+            v32 = [identifier4 isEqualToString:v31];
 
             if (!v32)
             {
@@ -366,14 +366,14 @@ int64_t __61__VoiceOverBrailleLanguageVariantsTableController_specifiers__block_
             }
           }
 
-          v33 = [(VoiceOverBrailleLanguageVariantsTableController *)v44 specifier];
-          v34 = [v33 propertyForKey:@"AllowDuplicatesKey"];
-          v35 = [v34 BOOLValue];
+          specifier3 = [(VoiceOverBrailleLanguageVariantsTableController *)selfCopy specifier];
+          v34 = [specifier3 propertyForKey:@"AllowDuplicatesKey"];
+          bOOLValue2 = [v34 BOOLValue];
 
-          if ((v35 & 1) == 0)
+          if ((bOOLValue2 & 1) == 0)
           {
-            [v43 setUserInteractionEnabled:0];
-            [v43 setCellEnabled:0];
+            [cellCopy setUserInteractionEnabled:0];
+            [cellCopy setCellEnabled:0];
           }
         }
       }
@@ -392,36 +392,36 @@ LABEL_21:
   if (v9 && (v42 & 1) == 0)
   {
     v36 = +[AXLanguageManager sharedInstance];
-    v37 = [v36 userLocale];
-    v38 = [BRLTTableEnumerator defaultTableForLocale:v37];
+    userLocale2 = [v36 userLocale];
+    v38 = [BRLTTableEnumerator defaultTableForLocale:userLocale2];
 
-    v39 = [v6 identifier];
-    v40 = [v38 identifier];
-    [v43 setChecked:{objc_msgSend(v39, "isEqualToString:", v40)}];
+    identifier5 = [v6 identifier];
+    identifier6 = [v38 identifier];
+    [cellCopy setChecked:{objc_msgSend(identifier5, "isEqualToString:", identifier6)}];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v70.receiver = self;
   v70.super_class = VoiceOverBrailleLanguageVariantsTableController;
-  v6 = a4;
-  v7 = a3;
-  [(VoiceOverBrailleLanguageVariantsTableController *)&v70 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  [(VoiceOverBrailleLanguageVariantsTableController *)&v70 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
-  v9 = [v8 specifier];
+  specifier = [v8 specifier];
 
-  v10 = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
-  v11 = [v10 propertyForKey:@"TableSelectionBlockKey"];
+  specifier2 = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
+  v11 = [specifier2 propertyForKey:@"TableSelectionBlockKey"];
 
-  v12 = [v9 propertyForKey:@"Table"];
-  [(VoiceOverBrailleLanguageVariantsTableController *)self updateTableCheckedSelection:v6];
+  v12 = [specifier propertyForKey:@"Table"];
+  [(VoiceOverBrailleLanguageVariantsTableController *)self updateTableCheckedSelection:pathCopy];
 
   if (v11)
   {
-    v13 = [v12 identifier];
-    (v11)[2](v11, v13);
+    identifier = [v12 identifier];
+    (v11)[2](v11, identifier);
 
     [(VoiceOverBrailleLanguageVariantsTableController *)self _popToTopOfBrailleSettings];
     goto LABEL_41;
@@ -430,43 +430,43 @@ LABEL_21:
   [(VoiceOverBrailleLanguageVariantsTableController *)self _ensureDefaultRotorItemExists];
   v14 = AXValidationManager_ptr;
   v15 = +[AXSettings sharedInstance];
-  v16 = [v15 voiceOverBrailleLanguageRotorItems];
-  v17 = [v16 mutableCopy];
+  voiceOverBrailleLanguageRotorItems = [v15 voiceOverBrailleLanguageRotorItems];
+  v17 = [voiceOverBrailleLanguageRotorItems mutableCopy];
 
   if (!v17)
   {
     v17 = +[NSMutableArray array];
   }
 
-  v18 = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
-  v19 = [v18 identifier];
-  v20 = [v19 isEqualToString:@"DefaultLanguage"];
+  specifier3 = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
+  identifier2 = [specifier3 identifier];
+  v20 = [identifier2 isEqualToString:@"DefaultLanguage"];
 
   if (v20)
   {
-    v21 = [(VoiceOverBrailleLanguageVariantsTableController *)self _indexOfDefaultRotorItem];
-    if (v21 == 0x7FFFFFFFFFFFFFFFLL)
+    _indexOfDefaultRotorItem = [(VoiceOverBrailleLanguageVariantsTableController *)self _indexOfDefaultRotorItem];
+    if (_indexOfDefaultRotorItem == 0x7FFFFFFFFFFFFFFFLL)
     {
       v69 = 0;
 LABEL_25:
-      v48 = [v14[375] sharedInstance];
-      v23 = [v48 voiceOverBrailleTableIdentifier];
+      sharedInstance = [v14[375] sharedInstance];
+      voiceOverBrailleTableIdentifier = [sharedInstance voiceOverBrailleTableIdentifier];
 
-      if (v23)
+      if (voiceOverBrailleTableIdentifier)
       {
         v68 = v20;
         v66 = v17;
         v49 = v14;
-        v50 = [[BRLTTable alloc] initWithIdentifier:v23];
-        v51 = [v12 language];
-        v52 = [v50 language];
-        v53 = [v51 isEqualToString:v52];
+        v50 = [[BRLTTable alloc] initWithIdentifier:voiceOverBrailleTableIdentifier];
+        language = [v12 language];
+        language2 = [v50 language];
+        v53 = [language isEqualToString:language2];
 
         if (v53)
         {
-          v54 = [v12 identifier];
-          v55 = [v49[375] sharedInstance];
-          [v55 setVoiceOverBrailleTableIdentifier:v54];
+          identifier3 = [v12 identifier];
+          sharedInstance2 = [v49[375] sharedInstance];
+          [sharedInstance2 setVoiceOverBrailleTableIdentifier:identifier3];
         }
 
         v14 = v49;
@@ -474,8 +474,8 @@ LABEL_25:
         LOBYTE(v20) = v68;
       }
 
-      v56 = [v14[375] sharedInstance];
-      [v56 setVoiceOverBrailleLanguageRotorItems:v17];
+      sharedInstance3 = [v14[375] sharedInstance];
+      [sharedInstance3 setVoiceOverBrailleLanguageRotorItems:v17];
 
       v57 = BRLLogTranslation();
       if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
@@ -486,56 +486,56 @@ LABEL_25:
       goto LABEL_32;
     }
 
-    v24 = v21;
+    v24 = _indexOfDefaultRotorItem;
     v67 = v20;
-    v25 = [v17 objectAtIndexedSubscript:v21];
-    v23 = [v25 mutableCopy];
+    v25 = [v17 objectAtIndexedSubscript:_indexOfDefaultRotorItem];
+    voiceOverBrailleTableIdentifier = [v25 mutableCopy];
 
-    v26 = [v23 objectForKeyedSubscript:?];
+    v26 = [voiceOverBrailleTableIdentifier objectForKeyedSubscript:?];
     v27 = [v26 mutableCopy];
 
     v28 = +[AXLanguageManager sharedInstance];
-    v29 = [v28 userLocale];
+    userLocale = [v28 userLocale];
 
-    v30 = [v29 localeIdentifier];
-    v65 = [v27 objectForKeyedSubscript:v30];
+    localeIdentifier = [userLocale localeIdentifier];
+    v65 = [v27 objectForKeyedSubscript:localeIdentifier];
 
-    v31 = [v12 identifier];
-    v63 = v29;
-    v32 = [v29 localeIdentifier];
-    [v27 setObject:v31 forKeyedSubscript:v32];
+    identifier4 = [v12 identifier];
+    v63 = userLocale;
+    localeIdentifier2 = [userLocale localeIdentifier];
+    [v27 setObject:identifier4 forKeyedSubscript:localeIdentifier2];
 
     v64 = v27;
-    [v23 setObject:v27 forKeyedSubscript:@"LanguageDefaults"];
-    [v17 setObject:v23 atIndexedSubscript:v24];
+    [voiceOverBrailleTableIdentifier setObject:v27 forKeyedSubscript:@"LanguageDefaults"];
+    [v17 setObject:voiceOverBrailleTableIdentifier atIndexedSubscript:v24];
     if (VOSCustomBrailleEnabled())
     {
       v14 = AXValidationManager_ptr;
       v33 = +[AXSettings sharedInstance];
-      v34 = [v33 voiceOverTouchBrailleDisplayOutputTableIdentifier];
-      v35 = [v65 isEqualToString:v34];
+      voiceOverTouchBrailleDisplayOutputTableIdentifier = [v33 voiceOverTouchBrailleDisplayOutputTableIdentifier];
+      v35 = [v65 isEqualToString:voiceOverTouchBrailleDisplayOutputTableIdentifier];
 
       if (v35)
       {
-        v36 = [v12 identifier];
+        identifier5 = [v12 identifier];
         v37 = +[AXSettings sharedInstance];
-        [v37 setVoiceOverTouchBrailleDisplayOutputTableIdentifier:v36];
+        [v37 setVoiceOverTouchBrailleDisplayOutputTableIdentifier:identifier5];
       }
 
       v38 = +[AXSettings sharedInstance];
-      v39 = [v38 voiceOverTouchBrailleDisplayInputTableIdentifier];
-      v40 = [v65 isEqualToString:v39];
+      voiceOverTouchBrailleDisplayInputTableIdentifier = [v38 voiceOverTouchBrailleDisplayInputTableIdentifier];
+      v40 = [v65 isEqualToString:voiceOverTouchBrailleDisplayInputTableIdentifier];
 
       if (v40)
       {
-        v41 = [v12 identifier];
+        identifier6 = [v12 identifier];
         v42 = +[AXSettings sharedInstance];
-        [v42 setVoiceOverTouchBrailleDisplayInputTableIdentifier:v41];
+        [v42 setVoiceOverTouchBrailleDisplayInputTableIdentifier:identifier6];
       }
 
       v43 = +[AXSettings sharedInstance];
-      v44 = [v43 voiceOverTouchBrailleGesturesInputTableIdentifier];
-      v45 = [v65 isEqualToString:v44];
+      voiceOverTouchBrailleGesturesInputTableIdentifier = [v43 voiceOverTouchBrailleGesturesInputTableIdentifier];
+      v45 = [v65 isEqualToString:voiceOverTouchBrailleGesturesInputTableIdentifier];
 
       if (v45)
       {
@@ -548,9 +548,9 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v46 = [v12 identifier];
+        identifier7 = [v12 identifier];
         v47 = +[AXSettings sharedInstance];
-        [v47 setVoiceOverTouchBrailleGesturesInputTableIdentifier:v46];
+        [v47 setVoiceOverTouchBrailleGesturesInputTableIdentifier:identifier7];
       }
 
       v69 = 0;
@@ -563,15 +563,15 @@ LABEL_23:
   }
 
   v71[0] = @"RotorItem";
-  v22 = [v12 identifier];
+  identifier8 = [v12 identifier];
   v71[1] = @"Enabled";
-  v72[0] = v22;
+  v72[0] = identifier8;
   v72[1] = &__kCFBooleanTrue;
-  v23 = [NSDictionary dictionaryWithObjects:v72 forKeys:v71 count:2];
+  voiceOverBrailleTableIdentifier = [NSDictionary dictionaryWithObjects:v72 forKeys:v71 count:2];
 
-  if (([v17 containsObject:v23] & 1) == 0)
+  if (([v17 containsObject:voiceOverBrailleTableIdentifier] & 1) == 0)
   {
-    [v17 addObject:v23];
+    [v17 addObject:voiceOverBrailleTableIdentifier];
     v69 = 0;
 LABEL_24:
 
@@ -586,9 +586,9 @@ LABEL_32:
     v58 = VOSFirstGesturesCompatibleBrailleTable();
     if ((v69 & 1) != 0 || ([v14[375] sharedInstance], v59 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v59, "voiceOverTouchBrailleGesturesInputTableIdentifier"), v60 = objc_claimAutoreleasedReturnValue(), v60, v59, !v60) && v58)
     {
-      v61 = [v58 identifier];
-      v62 = [v14[375] sharedInstance];
-      [v62 setVoiceOverTouchBrailleGesturesInputTableIdentifier:v61];
+      identifier9 = [v58 identifier];
+      sharedInstance4 = [v14[375] sharedInstance];
+      [sharedInstance4 setVoiceOverTouchBrailleGesturesInputTableIdentifier:identifier9];
     }
   }
 
@@ -600,9 +600,9 @@ LABEL_32:
 LABEL_41:
 }
 
-- (void)updateTableCheckedSelection:(id)a3
+- (void)updateTableCheckedSelection:(id)selection
 {
-  v9 = a3;
+  selectionCopy = selection;
   v4 = OBJC_IVAR___PSListController__table;
   if ([*&self->AXUISettingsListController_opaque[OBJC_IVAR___PSListController__table] numberOfSections] >= 1)
   {
@@ -616,7 +616,7 @@ LABEL_41:
         {
           v7 = [NSIndexPath indexPathForRow:v6 inSection:v5];
           v8 = [*&self->AXUISettingsListController_opaque[v4] cellForRowAtIndexPath:v7];
-          [v8 setChecked:{objc_msgSend(v7, "isEqual:", v9)}];
+          [v8 setChecked:{objc_msgSend(v7, "isEqual:", selectionCopy)}];
 
           ++v6;
         }
@@ -634,11 +634,11 @@ LABEL_41:
 - (int64_t)_indexOfDefaultRotorItem
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 voiceOverBrailleLanguageRotorItems];
+  voiceOverBrailleLanguageRotorItems = [v2 voiceOverBrailleLanguageRotorItems];
 
-  if (v3)
+  if (voiceOverBrailleLanguageRotorItems)
   {
-    v4 = [v3 indexOfObjectPassingTest:&__block_literal_global_314];
+    v4 = [voiceOverBrailleLanguageRotorItems indexOfObjectPassingTest:&__block_literal_global_314];
   }
 
   else
@@ -667,8 +667,8 @@ BOOL __75__VoiceOverBrailleLanguageVariantsTableController__indexOfDefaultRotorI
   if ([(VoiceOverBrailleLanguageVariantsTableController *)self _indexOfDefaultRotorItem]== 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = +[AXSettings sharedInstance];
-    v4 = [v3 voiceOverBrailleLanguageRotorItems];
-    v5 = [v4 mutableCopy];
+    voiceOverBrailleLanguageRotorItems = [v3 voiceOverBrailleLanguageRotorItems];
+    v5 = [voiceOverBrailleLanguageRotorItems mutableCopy];
 
     if (!v5)
     {
@@ -676,15 +676,15 @@ BOOL __75__VoiceOverBrailleLanguageVariantsTableController__indexOfDefaultRotorI
     }
 
     v6 = +[AXLanguageManager sharedInstance];
-    v7 = [v6 userLocale];
+    userLocale = [v6 userLocale];
 
-    v8 = [(VoiceOverBrailleLanguageVariantsTableController *)self tableEnumerator];
-    v9 = [objc_opt_class() defaultTableForLocale:v7];
+    tableEnumerator = [(VoiceOverBrailleLanguageVariantsTableController *)self tableEnumerator];
+    v9 = [objc_opt_class() defaultTableForLocale:userLocale];
 
-    v10 = [v7 localeIdentifier];
-    v17 = v10;
-    v11 = [v9 identifier];
-    v18 = v11;
+    localeIdentifier = [userLocale localeIdentifier];
+    v17 = localeIdentifier;
+    identifier = [v9 identifier];
+    v18 = identifier;
     v12 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
 
     v15[0] = @"Enabled";
@@ -702,20 +702,20 @@ BOOL __75__VoiceOverBrailleLanguageVariantsTableController__indexOfDefaultRotorI
 
 - (void)_popToTopOfBrailleSettings
 {
-  v3 = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
-  v4 = [v3 propertyForKey:@"DismissBlock"];
+  specifier = [(VoiceOverBrailleLanguageVariantsTableController *)self specifier];
+  v4 = [specifier propertyForKey:@"DismissBlock"];
 
-  v5 = [(VoiceOverBrailleLanguageVariantsTableController *)self presentingViewController];
+  presentingViewController = [(VoiceOverBrailleLanguageVariantsTableController *)self presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
     if (v4)
     {
       v4[2](v4);
     }
 
-    v6 = [(VoiceOverBrailleLanguageVariantsTableController *)self presentingViewController];
-    [v6 dismissViewControllerWithTransition:9 completion:0];
+    presentingViewController2 = [(VoiceOverBrailleLanguageVariantsTableController *)self presentingViewController];
+    [presentingViewController2 dismissViewControllerWithTransition:9 completion:0];
   }
 
   else
@@ -724,11 +724,11 @@ BOOL __75__VoiceOverBrailleLanguageVariantsTableController__indexOfDefaultRotorI
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(VoiceOverBrailleLanguageVariantsTableController *)self navigationController];
-    v8 = [v7 viewControllers];
-    v9 = [v8 reverseObjectEnumerator];
+    navigationController = [(VoiceOverBrailleLanguageVariantsTableController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    reverseObjectEnumerator = [viewControllers reverseObjectEnumerator];
 
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -739,7 +739,7 @@ LABEL_7:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v14 = *(*(&v16 + 1) + 8 * v13);
@@ -751,7 +751,7 @@ LABEL_7:
 
         if (v11 == ++v13)
         {
-          v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
           if (v11)
           {
             goto LABEL_7;
@@ -779,7 +779,7 @@ LABEL_7:
     else
     {
 LABEL_13:
-      v15 = v9;
+      v15 = reverseObjectEnumerator;
     }
   }
 

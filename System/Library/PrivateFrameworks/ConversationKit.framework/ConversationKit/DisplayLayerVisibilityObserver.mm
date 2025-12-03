@@ -1,11 +1,11 @@
 @interface DisplayLayerVisibilityObserver
-- (void)screenSharingInteractionController:(id)a3 didUpdateRemoteControlStatus:(BOOL)a4;
-- (void)screenSharingStateMonitor:(id)a3 didUpdateScreenSharingBroadcastingState:(BOOL)a4;
+- (void)screenSharingInteractionController:(id)controller didUpdateRemoteControlStatus:(BOOL)status;
+- (void)screenSharingStateMonitor:(id)monitor didUpdateScreenSharingBroadcastingState:(BOOL)state;
 @end
 
 @implementation DisplayLayerVisibilityObserver
 
-- (void)screenSharingStateMonitor:(id)a3 didUpdateScreenSharingBroadcastingState:(BOOL)a4
+- (void)screenSharingStateMonitor:(id)monitor didUpdateScreenSharingBroadcastingState:(BOOL)state
 {
   swift_unknownObjectRetain();
 
@@ -13,7 +13,7 @@
   swift_unknownObjectRelease();
 }
 
-- (void)screenSharingInteractionController:(id)a3 didUpdateRemoteControlStatus:(BOOL)a4
+- (void)screenSharingInteractionController:(id)controller didUpdateRemoteControlStatus:(BOOL)status
 {
   swift_unknownObjectRetain();
 

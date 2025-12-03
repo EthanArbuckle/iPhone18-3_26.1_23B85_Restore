@@ -1,20 +1,20 @@
 @interface MFStream
 + (id)_networkDispatchQueue;
 + (id)networkThread;
-+ (void)setNetworkThread:(id)a3;
++ (void)setNetworkThread:(id)thread;
 - (BOOL)isOpen;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (id)_copyPropertyForKey:(id)a3;
-- (id)initCallBack:(id)a3 onDispatchQueue:(id)a4;
-- (id)propertyForKey:(id)a3;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
-- (void)_closeAndReleaseStream:(id)a3 logMessage:(id)a4;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (id)_copyPropertyForKey:(id)key;
+- (id)initCallBack:(id)back onDispatchQueue:(id)queue;
+- (id)propertyForKey:(id)key;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length;
+- (void)_closeAndReleaseStream:(id)stream logMessage:(id)message;
 - (void)_readBytesFromStream;
 - (void)close;
 - (void)dealloc;
-- (void)openToHostName:(id)a3 port:(int64_t)a4;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)openToHostName:(id)name port:(int64_t)port;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation MFStream
@@ -44,14 +44,14 @@
   return v4;
 }
 
-+ (void)setNetworkThread:(id)a3
++ (void)setNetworkThread:(id)thread
 {
   if (!NetworkThread)
   {
     pthread_mutex_lock(&NetworkThreadLock);
     if (!NetworkThread)
     {
-      NetworkThread = a3;
+      NetworkThread = thread;
     }
 
     pthread_mutex_unlock(&NetworkThreadLock);
@@ -63,8 +63,8 @@
   result = _networkDispatchQueue_NetworkDispatchQueue;
   if (!_networkDispatchQueue_NetworkDispatchQueue)
   {
-    v5 = [objc_opt_class() networkThread];
-    if ([v5 isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}])
+    networkThread = [objc_opt_class() networkThread];
+    if ([networkThread isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}])
     {
       result = dispatch_queue_create("MFStreamDispatchQueue", 0);
       _networkDispatchQueue_NetworkDispatchQueue = result;
@@ -72,11 +72,11 @@
 
     else
     {
-      v6 = [a1 methodSignatureForSelector:a2];
+      v6 = [self methodSignatureForSelector:a2];
       v7 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v6];
-      [v7 setTarget:a1];
+      [v7 setTarget:self];
       [v7 setSelector:a2];
-      [v7 performSelector:sel_invoke onThread:v5 withObject:0 waitUntilDone:1];
+      [v7 performSelector:sel_invoke onThread:networkThread withObject:0 waitUntilDone:1];
       return _networkDispatchQueue_NetworkDispatchQueue;
     }
   }
@@ -84,7 +84,7 @@
   return result;
 }
 
-- (id)initCallBack:(id)a3 onDispatchQueue:(id)a4
+- (id)initCallBack:(id)back onDispatchQueue:(id)queue
 {
   v14 = *MEMORY[0x277D85DE8];
   v11.receiver = self;
@@ -92,28 +92,28 @@
   v6 = [(MFStream *)&v11 init];
   if (v6)
   {
-    if (a4)
+    if (queue)
     {
-      dispatch_retain(a4);
+      dispatch_retain(queue);
     }
 
     else
     {
-      a4 = dispatch_queue_create(0, 0);
+      queue = dispatch_queue_create(0, 0);
     }
 
-    v6->_location = a4;
-    if (a3)
+    v6->_location = queue;
+    if (back)
     {
-      v7 = a3;
+      backCopy = back;
     }
 
     else
     {
-      v7 = &__block_literal_global;
+      backCopy = &__block_literal_global;
     }
 
-    v6->_callback = _Block_copy(v7);
+    v6->_callback = _Block_copy(backCopy);
     v8 = MFLogGeneral();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -152,19 +152,19 @@
   return 0;
 }
 
-- (id)_copyPropertyForKey:(id)a3
+- (id)_copyPropertyForKey:(id)key
 {
   v14 = 0;
-  v15 = a3;
-  v6 = [objc_opt_class() networkThread];
-  if (([v6 isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}] & 1) == 0)
+  keyCopy = key;
+  networkThread = [objc_opt_class() networkThread];
+  if (([networkThread isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}] & 1) == 0)
   {
     v10 = [(MFStream *)self methodSignatureForSelector:a2];
     v11 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v10];
     [v11 setTarget:self];
     [v11 setSelector:a2];
-    [v11 setArgument:&v15 atIndex:2];
-    [v11 performSelector:sel_invoke onThread:v6 withObject:0 waitUntilDone:1];
+    [v11 setArgument:&keyCopy atIndex:2];
+    [v11 performSelector:sel_invoke onThread:networkThread withObject:0 waitUntilDone:1];
     [v11 getReturnValue:&v14];
     return v14;
   }
@@ -172,54 +172,54 @@
   properties = self->_properties;
   if (!properties)
   {
-    v12 = [(NSInputStream *)self->_rStream propertyForKey:a3];
+    v12 = [(NSInputStream *)self->_rStream propertyForKey:key];
     if (!v12)
     {
-      v12 = [(NSOutputStream *)self->_wStream propertyForKey:a3];
+      v12 = [(NSOutputStream *)self->_wStream propertyForKey:key];
     }
 
     v13 = v12;
     return v12;
   }
 
-  v8 = [(NSMutableDictionary *)properties objectForKey:a3];
+  v8 = [(NSMutableDictionary *)properties objectForKey:key];
 
   return v8;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v3 = [(MFStream *)self _copyPropertyForKey:a3];
+  v3 = [(MFStream *)self _copyPropertyForKey:key];
 
   return v3;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v28 = *MEMORY[0x277D85DE8];
-  v20 = a4;
-  v21 = a3;
+  keyCopy = key;
+  propertyCopy = property;
   v19 = 1;
-  v8 = [objc_opt_class() networkThread];
-  if ([v8 isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}])
+  networkThread = [objc_opt_class() networkThread];
+  if ([networkThread isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}])
   {
     rStream = self->_rStream;
     if (rStream || (rStream = self->_wStream) != 0)
     {
-      v10 = [rStream setProperty:a3 forKey:a4];
+      v10 = [rStream setProperty:property forKey:key];
       v11 = MFLogGeneral();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         v12 = "out";
         *buf = 134218498;
-        v23 = self;
+        selfCopy = self;
         if (v10)
         {
           v12 = "";
         }
 
         v24 = 2112;
-        v25 = a4;
+        keyCopy2 = key;
         v26 = 2080;
         v27 = v12;
         _os_log_debug_impl(&dword_258BDA000, v11, OS_LOG_TYPE_DEBUG, "#Streams (%p) set property %@ with%s success", buf, 0x20u);
@@ -235,7 +235,7 @@
         self->_properties = properties;
       }
 
-      [(NSMutableDictionary *)properties setValue:a3 forKey:a4];
+      [(NSMutableDictionary *)properties setValue:property forKey:key];
       v18 = MFLogGeneral();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
@@ -252,9 +252,9 @@
     v14 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v13];
     [v14 setTarget:self];
     [v14 setSelector:a2];
-    [v14 setArgument:&v21 atIndex:2];
-    [v14 setArgument:&v20 atIndex:3];
-    [v14 performSelector:sel_invoke onThread:v8 withObject:0 waitUntilDone:1];
+    [v14 setArgument:&propertyCopy atIndex:2];
+    [v14 setArgument:&keyCopy atIndex:3];
+    [v14 performSelector:sel_invoke onThread:networkThread withObject:0 waitUntilDone:1];
     [v14 getReturnValue:&v19];
     LOBYTE(v10) = v19;
   }
@@ -263,13 +263,13 @@
   return v10 & 1;
 }
 
-- (void)openToHostName:(id)a3 port:(int64_t)a4
+- (void)openToHostName:(id)name port:(int64_t)port
 {
   v37 = *MEMORY[0x277D85DE8];
-  v26 = a4;
-  v27 = a3;
-  v8 = [objc_opt_class() networkThread];
-  if ([v8 isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}])
+  portCopy = port;
+  nameCopy = name;
+  networkThread = [objc_opt_class() networkThread];
+  if ([networkThread isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}])
   {
     if (self->_rStream || self->_wStream)
     {
@@ -280,31 +280,31 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 134218498;
-      v32 = self;
+      selfCopy = self;
       v33 = 2112;
-      v34 = a3;
+      nameCopy2 = name;
       v35 = 2048;
-      v36 = a4;
+      portCopy2 = port;
       _os_log_impl(&dword_258BDA000, v9, OS_LOG_TYPE_INFO, "#Streams Opening stream (%p) to %@:%ld", buf, 0x20u);
     }
 
     v29[0] = @"stream";
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p", self];
-    v11 = &stru_2869ED3E0;
-    if (a3)
+    nameCopy3 = &stru_2869ED3E0;
+    if (name)
     {
-      v11 = a3;
+      nameCopy3 = name;
     }
 
     v30[0] = v10;
-    v30[1] = v11;
+    v30[1] = nameCopy3;
     v29[1] = @"host";
     v29[2] = @"port";
-    v30[2] = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v30[2] = [MEMORY[0x277CCABB0] numberWithInteger:port];
     +[MFPowerController powerlog:eventData:](MFPowerController, "powerlog:eventData:", @"StreamOpen", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:3]);
 
     self->_error = 0;
-    [(MFStream *)self _createPairWithSocketToHostName:a3 port:a4];
+    [(MFStream *)self _createPairWithSocketToHostName:name port:port];
     [(NSInputStream *)self->_rStream setDelegate:self];
     [(NSOutputStream *)self->_wStream setDelegate:self];
     v24 = 0u;
@@ -336,10 +336,10 @@
     }
 
     self->_properties = 0;
-    v17 = [MEMORY[0x277CBEB88] currentRunLoop];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
     v18 = *MEMORY[0x277CBE640];
-    [(NSInputStream *)self->_rStream scheduleInRunLoop:v17 forMode:*MEMORY[0x277CBE640]];
-    [(NSOutputStream *)self->_wStream scheduleInRunLoop:v17 forMode:v18];
+    [(NSInputStream *)self->_rStream scheduleInRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
+    [(NSOutputStream *)self->_wStream scheduleInRunLoop:currentRunLoop forMode:v18];
     [(NSInputStream *)self->_rStream open];
     [(NSOutputStream *)self->_wStream open];
   }
@@ -351,33 +351,33 @@
     [v20 setTarget:self];
     [v20 setSelector:a2];
     [v20 retainArguments];
-    [v20 setArgument:&v27 atIndex:2];
-    [v20 setArgument:&v26 atIndex:3];
-    [v20 performSelector:sel_invoke onThread:v8 withObject:0 waitUntilDone:0];
+    [v20 setArgument:&nameCopy atIndex:2];
+    [v20 setArgument:&portCopy atIndex:3];
+    [v20 performSelector:sel_invoke onThread:networkThread withObject:0 waitUntilDone:0];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_closeAndReleaseStream:(id)a3 logMessage:(id)a4
+- (void)_closeAndReleaseStream:(id)stream logMessage:(id)message
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (stream)
   {
-    [a3 setDelegate:0];
-    v7 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [a3 removeFromRunLoop:v7 forMode:*MEMORY[0x277CBE640]];
-    [a3 close];
+    [stream setDelegate:0];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [stream removeFromRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
+    [stream close];
 
-    if (a4)
+    if (message)
     {
       v8 = MFLogGeneral();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 134218242;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2112;
-        v16 = a4;
+        messageCopy = message;
         _os_log_impl(&dword_258BDA000, v8, OS_LOG_TYPE_INFO, "#Streams (%p) %@", buf, 0x16u);
       }
     }
@@ -388,7 +388,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v14 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_258BDA000, v9, OS_LOG_TYPE_INFO, "#Streams (%p) has closed", buf, 0xCu);
       }
 
@@ -405,39 +405,39 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
   v39 = *MEMORY[0x277D85DE8];
-  v30 = a4;
-  v31 = a3;
-  v8 = [objc_opt_class() networkThread];
-  if ([v8 isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}])
+  lengthCopy = length;
+  readCopy = read;
+  networkThread = [objc_opt_class() networkThread];
+  if ([networkThread isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}])
   {
     length = self->_length;
     if (length)
     {
-      if (a4 >= length)
+      if (length >= length)
       {
-        v10 = self->_length;
+        lengthCopy2 = self->_length;
       }
 
       else
       {
-        v10 = a4;
+        lengthCopy2 = length;
       }
 
-      memmove(a3, self->_buffer, v10);
+      memmove(read, self->_buffer, lengthCopy2);
       buffer = self->_buffer;
-      v12 = self->_length - v10;
+      v12 = self->_length - lengthCopy2;
       self->_length = v12;
-      memmove(buffer, &buffer[v10], v12);
+      memmove(buffer, &buffer[lengthCopy2], v12);
       v13 = MFLogGeneral();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         [MFStream read:maxLength:];
       }
 
-      self->_bytesRead += v10;
+      self->_bytesRead += lengthCopy2;
       self->_dispatchedBytesAvailable = 0;
       if (!self->_streamCanRead)
       {
@@ -490,11 +490,11 @@
               v25 = &stru_2869ED3E0;
             }
 
-            v26 = [(NSError *)error ef_publicDescription];
+            ef_publicDescription = [(NSError *)error ef_publicDescription];
             *buf = 134218754;
-            if (v26)
+            if (ef_publicDescription)
             {
-              v27 = v26;
+              v27 = ef_publicDescription;
             }
 
             else
@@ -531,7 +531,7 @@
 
     else
     {
-      v10 = -1;
+      lengthCopy2 = -1;
     }
   }
 
@@ -543,26 +543,26 @@
     v16 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v15];
     [v16 setTarget:self];
     [v16 setSelector:a2];
-    [v16 setArgument:&v31 atIndex:2];
-    [v16 setArgument:&v30 atIndex:3];
-    [v16 performSelector:sel_invoke onThread:v8 withObject:0 waitUntilDone:1];
+    [v16 setArgument:&readCopy atIndex:2];
+    [v16 setArgument:&lengthCopy atIndex:3];
+    [v16 performSelector:sel_invoke onThread:networkThread withObject:0 waitUntilDone:1];
     [v16 getReturnValue:buf];
     objc_autoreleasePoolPop(v14);
-    v10 = *buf;
+    lengthCopy2 = *buf;
   }
 
 LABEL_23:
   v22 = *MEMORY[0x277D85DE8];
-  return v10;
+  return lengthCopy2;
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length
 {
   v36 = *MEMORY[0x277D85DE8];
-  v27 = a4;
-  v28 = a3;
-  v8 = [objc_opt_class() networkThread];
-  if ([v8 isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}])
+  lengthCopy = length;
+  writeCopy = write;
+  networkThread = [objc_opt_class() networkThread];
+  if ([networkThread isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}])
   {
     wStream = self->_wStream;
     if (wStream)
@@ -573,7 +573,7 @@ LABEL_23:
       }
 
       self->_streamCanWrite = 0;
-      v10 = [(NSOutputStream *)wStream write:a3 maxLength:a4];
+      v10 = [(NSOutputStream *)wStream write:write maxLength:length];
       v11 = MFLogGeneral();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
@@ -617,11 +617,11 @@ LABEL_23:
               v23 = &stru_2869ED3E0;
             }
 
-            v24 = [(NSError *)error ef_publicDescription];
+            ef_publicDescription = [(NSError *)error ef_publicDescription];
             *buf = 134218754;
-            if (v24)
+            if (ef_publicDescription)
             {
-              v25 = v24;
+              v25 = ef_publicDescription;
             }
 
             else
@@ -631,7 +631,7 @@ LABEL_23:
 
             *&buf[4] = self;
             v30 = 2112;
-            v31 = v13;
+            lengthCopy2 = v13;
             v32 = 2112;
             v33 = v23;
             v34 = 2114;
@@ -659,7 +659,7 @@ LABEL_23:
         *buf = 134218240;
         *&buf[4] = self;
         v30 = 2048;
-        v31 = a4;
+        lengthCopy2 = length;
         _os_log_impl(&dword_258BDA000, v19, OS_LOG_TYPE_INFO, "#Streams (%p) no longer has an open write stream, aborting write of %lu bytes", buf, 0x16u);
       }
 
@@ -675,9 +675,9 @@ LABEL_23:
     v18 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v17];
     [v18 setTarget:self];
     [v18 setSelector:a2];
-    [v18 setArgument:&v28 atIndex:2];
-    [v18 setArgument:&v27 atIndex:3];
-    [v18 performSelector:sel_invoke onThread:v8 withObject:0 waitUntilDone:1];
+    [v18 setArgument:&writeCopy atIndex:2];
+    [v18 setArgument:&lengthCopy atIndex:3];
+    [v18 performSelector:sel_invoke onThread:networkThread withObject:0 waitUntilDone:1];
     [v18 getReturnValue:buf];
     objc_autoreleasePoolPop(v16);
     v10 = *buf;
@@ -689,8 +689,8 @@ LABEL_23:
 
 - (void)close
 {
-  v4 = [objc_opt_class() networkThread];
-  if ([v4 isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}])
+  networkThread = [objc_opt_class() networkThread];
+  if ([networkThread isEqual:{objc_msgSend(MEMORY[0x277CCACC8], "currentThread")}])
   {
     *&self->_streamCanRead = 0;
     rStream = self->_rStream;
@@ -722,7 +722,7 @@ LABEL_23:
     [v8 setTarget:self];
     [v8 setSelector:a2];
 
-    [v8 performSelector:sel_invoke onThread:v4 withObject:0 waitUntilDone:1];
+    [v8 performSelector:sel_invoke onThread:networkThread withObject:0 waitUntilDone:1];
   }
 }
 
@@ -734,24 +734,24 @@ LABEL_23:
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   v33 = *MEMORY[0x277D85DE8];
   p_rStream = &self->_rStream;
   rStream = self->_rStream;
-  if (rStream != a3 && self->_wStream != a3)
+  if (rStream != stream && self->_wStream != stream)
   {
     goto LABEL_31;
   }
 
-  v8 = __ROR8__(a4 - 2, 1);
+  v8 = __ROR8__(event - 2, 1);
   if (v8 > 2)
   {
     if (v8 == 3)
     {
       if (!self->_error)
       {
-        self->_error = [a3 streamError];
+        self->_error = [stream streamError];
       }
     }
 
@@ -760,7 +760,7 @@ LABEL_23:
       goto LABEL_31;
     }
 
-    if (rStream == a3)
+    if (rStream == stream)
     {
       self->_streamCanRead = 0;
       v13 = @"read";
@@ -786,7 +786,7 @@ LABEL_23:
       error = &stru_2869ED3E0;
     }
 
-    -[MFStream _closeAndReleaseStream:logMessage:](self, "_closeAndReleaseStream:logMessage:", a3, [MEMORY[0x277CCACA8] stringWithFormat:@"%@ stream %@%@", v13, v14, error]);
+    -[MFStream _closeAndReleaseStream:logMessage:](self, "_closeAndReleaseStream:logMessage:", stream, [MEMORY[0x277CCACA8] stringWithFormat:@"%@ stream %@%@", v13, v14, error]);
     if ([(MFStream *)self isOpen])
     {
       goto LABEL_31;
@@ -816,11 +816,11 @@ LABEL_23:
         v20 = &stru_2869ED3E0;
       }
 
-      v21 = [(NSError *)v19 ef_publicDescription];
+      ef_publicDescription = [(NSError *)v19 ef_publicDescription];
       *buf = 134218754;
-      if (v21)
+      if (ef_publicDescription)
       {
-        v22 = v21;
+        v22 = ef_publicDescription;
       }
 
       else
@@ -828,7 +828,7 @@ LABEL_23:
         v22 = &stru_2869ED3E0;
       }
 
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
       v28 = v16;
       v29 = 2112;
@@ -877,7 +877,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (rStream != a3)
+  if (rStream != stream)
   {
     [MFStream stream:handleEvent:];
   }

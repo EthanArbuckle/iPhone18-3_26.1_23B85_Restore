@@ -8,7 +8,7 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v0 = objc_opt_new();
-  v1 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -29,7 +29,7 @@
         }
 
         v7 = *(*(&v15 + 1) + 8 * i);
-        if ([v1 applicationIsInstalled:v7])
+        if ([defaultWorkspace applicationIsInstalled:v7])
         {
           [v0 addObject:v7];
         }
@@ -48,11 +48,11 @@
   if ([v0 count] == 1)
   {
     v10 = [DMCApplicationProxy alloc];
-    v11 = [v0 firstObject];
-    v12 = [(DMCApplicationProxy *)v10 initWithBundleID:v11 dataSource:0];
+    firstObject = [v0 firstObject];
+    v12 = [(DMCApplicationProxy *)v10 initWithBundleID:firstObject dataSource:0];
 
-    v13 = [(DMCApplicationProxy *)v12 name];
-    [v8 setObject:v13 forKeyedSubscript:@"MDMManagedMediaNameKey"];
+    name = [(DMCApplicationProxy *)v12 name];
+    [v8 setObject:name forKeyedSubscript:@"MDMManagedMediaNameKey"];
   }
 
   return v8;

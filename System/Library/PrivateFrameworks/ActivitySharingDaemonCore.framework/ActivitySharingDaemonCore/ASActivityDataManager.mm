@@ -3,11 +3,11 @@
 - (ASCloudKitManager)cloudKitManager;
 - (ASFriendListManager)friendListManager;
 - (ASPeriodicUpdateManager)periodicUpdateManager;
-- (BOOL)_hasMoveGoalForActivitySummary:(id)a3;
+- (BOOL)_hasMoveGoalForActivitySummary:(id)summary;
 - (BOOL)_isAlertSuppressionEnabled;
-- (BOOL)_queue_deleteActivityDataForFriendWithUUID:(id)a3;
+- (BOOL)_queue_deleteActivityDataForFriendWithUUID:(id)d;
 - (BOOL)_queue_deleteAllActivitySharingData;
-- (BOOL)deleteActivityDataForFriendWithUUID:(id)a3;
+- (BOOL)deleteActivityDataForFriendWithUUID:(id)d;
 - (BOOL)deleteAllActivitySharingData;
 - (HKActivitySummary)currentActivitySummary;
 - (HKActivitySummary)yesterdayActivitySummary;
@@ -16,84 +16,84 @@
 - (NSSet)yesterdayWorkouts;
 - (_HKFitnessFriendActivitySnapshot)currentActivitySnapshot;
 - (_HKFitnessFriendActivitySnapshot)yesterdayActivitySnapshot;
-- (id)_achievementsToPushWithYesterdaySnapshot:(id)a3 todaySnapshot:(id)a4 currentTodayAchievementAnchorToken:(id)a5 currentYesterdayAchievementAnchorToken:(id)a6;
-- (id)_activitySnapshotsToPushWithYesterdaySnapshot:(id)a3 todaySnapshot:(id)a4;
+- (id)_achievementsToPushWithYesterdaySnapshot:(id)snapshot todaySnapshot:(id)todaySnapshot currentTodayAchievementAnchorToken:(id)token currentYesterdayAchievementAnchorToken:(id)anchorToken;
+- (id)_activitySnapshotsToPushWithYesterdaySnapshot:(id)snapshot todaySnapshot:(id)todaySnapshot;
 - (id)_endDatePredicate;
-- (id)_filterAchievements:(id)a3 forSnapshotIndex:(int64_t)a4;
-- (id)_fitnessFriendAchievementPredicateForFriendUUID:(id)a3;
-- (id)_fitnessFriendActivitySnapshotPredicateForFriendUUID:(id)a3;
-- (id)_fitnessFriendSamplePredicateForFriendUUID:(id)a3;
-- (id)_fitnessFriendWorkoutPredicateForFriendUUID:(id)a3;
-- (id)_persistedAnchorTokenWithKey:(id)a3;
-- (id)_persistedAnchorWithKey:(id)a3;
-- (id)_workoutsAfterAnchor:(id *)a3 withPredicate:(id)a4;
-- (id)_workoutsToPushWithYesterdaySnapshot:(id)a3 todaySnapshot:(id)a4 currentWorkoutAnchor:(id)a5;
-- (id)achievementsFromFitnessFriendSamples:(id)a3;
-- (id)activitySnapshotsFromFitnessFriendSamples:(id)a3;
-- (id)fitnessFriendSamplesForFriendWithUUID:(id)a3;
+- (id)_filterAchievements:(id)achievements forSnapshotIndex:(int64_t)index;
+- (id)_fitnessFriendAchievementPredicateForFriendUUID:(id)d;
+- (id)_fitnessFriendActivitySnapshotPredicateForFriendUUID:(id)d;
+- (id)_fitnessFriendSamplePredicateForFriendUUID:(id)d;
+- (id)_fitnessFriendWorkoutPredicateForFriendUUID:(id)d;
+- (id)_persistedAnchorTokenWithKey:(id)key;
+- (id)_persistedAnchorWithKey:(id)key;
+- (id)_workoutsAfterAnchor:(id *)anchor withPredicate:(id)predicate;
+- (id)_workoutsToPushWithYesterdaySnapshot:(id)snapshot todaySnapshot:(id)todaySnapshot currentWorkoutAnchor:(id)anchor;
+- (id)achievementsFromFitnessFriendSamples:(id)samples;
+- (id)activitySnapshotsFromFitnessFriendSamples:(id)samples;
+- (id)fitnessFriendSamplesForFriendWithUUID:(id)d;
 - (id)localSourceUUID;
-- (id)notificationEventsToPushWithYesterdaySnapshot:(id)a3 todaySnapshot:(id)a4 achievements:(id)a5 workouts:(id)a6 currentDeletedWorkoutAnchor:(id)a7 currentGoalCompletionAnchor:(id)a8;
+- (id)notificationEventsToPushWithYesterdaySnapshot:(id)snapshot todaySnapshot:(id)todaySnapshot achievements:(id)achievements workouts:(id)workouts currentDeletedWorkoutAnchor:(id)anchor currentGoalCompletionAnchor:(id)completionAnchor;
 - (id)recordIDsToDelete;
-- (id)recordsFromActivityDataCodables:(id)a3 recordEncryptionType:(int64_t)a4;
+- (id)recordsFromActivityDataCodables:(id)codables recordEncryptionType:(int64_t)type;
 - (id)recordsToSave;
-- (id)workoutsFromFitnessFriendSamples:(id)a3;
-- (void)_ckQueue_handleDeletedWorkoutEvents:(id)a3 completion:(id)a4;
-- (void)_ckQueue_handleNewSnapshotsForSelf:(id)a3 moreComing:(BOOL)a4;
-- (void)_ckQueue_processActivitySnapshotsForSelf:(id)a3;
-- (void)_handleNewSnapshots:(id)a3 workouts:(id)a4 achievements:(id)a5 moreComing:(BOOL)a6;
+- (id)workoutsFromFitnessFriendSamples:(id)samples;
+- (void)_ckQueue_handleDeletedWorkoutEvents:(id)events completion:(id)completion;
+- (void)_ckQueue_handleNewSnapshotsForSelf:(id)self moreComing:(BOOL)coming;
+- (void)_ckQueue_processActivitySnapshotsForSelf:(id)self;
+- (void)_handleNewSnapshots:(id)snapshots workouts:(id)workouts achievements:(id)achievements moreComing:(BOOL)coming;
 - (void)_isAlertSuppressionEnabled;
 - (void)_queue_getAndHandleAllActivitySharingData;
-- (void)_queue_handleNewSnapshots:(id)a3 workouts:(id)a4 achievements:(id)a5;
-- (void)_queue_insertSamples:(id)a3;
-- (void)_queue_persistAnchorTokenValue:(id)a3 forKey:(id)a4;
-- (void)_queue_persistAnchorValue:(id)a3 forKey:(id)a4;
-- (void)_queue_samplesAdded:(id)a3;
-- (void)_queue_setLastPushedDeletedWorkoutAnchor:(id)a3;
-- (void)_queue_setLastPushedGoalCompletionAnchor:(id)a3;
-- (void)_queue_setLastPushedTodayAchievementAnchorToken:(id)a3;
-- (void)_queue_setLastPushedWorkoutAnchor:(id)a3;
-- (void)_queue_setSecureCloudGoalCompletionAnchor:(id)a3;
-- (void)_workoutsForActivitySnapshot:(id)a3 anchor:(id)a4 completion:(id)a5;
-- (void)activitySharingManagerReady:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_queue_handleNewSnapshots:(id)snapshots workouts:(id)workouts achievements:(id)achievements;
+- (void)_queue_insertSamples:(id)samples;
+- (void)_queue_persistAnchorTokenValue:(id)value forKey:(id)key;
+- (void)_queue_persistAnchorValue:(id)value forKey:(id)key;
+- (void)_queue_samplesAdded:(id)added;
+- (void)_queue_setLastPushedDeletedWorkoutAnchor:(id)anchor;
+- (void)_queue_setLastPushedGoalCompletionAnchor:(id)anchor;
+- (void)_queue_setLastPushedTodayAchievementAnchorToken:(id)token;
+- (void)_queue_setLastPushedWorkoutAnchor:(id)anchor;
+- (void)_queue_setSecureCloudGoalCompletionAnchor:(id)anchor;
+- (void)_workoutsForActivitySnapshot:(id)snapshot anchor:(id)anchor completion:(id)completion;
+- (void)activitySharingManagerReady:(id)ready;
+- (void)addObserver:(id)observer;
 - (void)beginObservingData;
-- (void)cloudKitManager:(id)a3 didReceiveNewActivitySnapshots:(id)a4 moreComing:(BOOL)a5 changesProcessedHandler:(id)a6;
-- (void)cloudKitManager:(id)a3 didReceiveNewActivitySnapshotsForSelf:(id)a4 moreComing:(BOOL)a5 changesProcessedHandler:(id)a6;
-- (void)cloudKitManager:(id)a3 didReceiveNewFriendAchievements:(id)a4 moreComing:(BOOL)a5 changesProcessedHandler:(id)a6;
-- (void)cloudKitManager:(id)a3 didReceiveNewFriendWorkouts:(id)a4 moreComing:(BOOL)a5 changesProcessedHandler:(id)a6;
-- (void)cloudKitManager:(id)a3 didReceiveNewNotificationEvents:(id)a4 moreComing:(BOOL)a5 changesProcessedHandler:(id)a6;
+- (void)cloudKitManager:(id)manager didReceiveNewActivitySnapshots:(id)snapshots moreComing:(BOOL)coming changesProcessedHandler:(id)handler;
+- (void)cloudKitManager:(id)manager didReceiveNewActivitySnapshotsForSelf:(id)self moreComing:(BOOL)coming changesProcessedHandler:(id)handler;
+- (void)cloudKitManager:(id)manager didReceiveNewFriendAchievements:(id)achievements moreComing:(BOOL)coming changesProcessedHandler:(id)handler;
+- (void)cloudKitManager:(id)manager didReceiveNewFriendWorkouts:(id)workouts moreComing:(BOOL)coming changesProcessedHandler:(id)handler;
+- (void)cloudKitManager:(id)manager didReceiveNewNotificationEvents:(id)events moreComing:(BOOL)coming changesProcessedHandler:(id)handler;
 - (void)currentAchievements;
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateTodayActivitySummary:(id)a4 changedFields:(unint64_t)a5;
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateYesterdayActivitySummary:(id)a4 changedFields:(unint64_t)a5;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)currentActivitySummaryHelper:(id)helper didUpdateTodayActivitySummary:(id)summary changedFields:(unint64_t)fields;
+- (void)currentActivitySummaryHelper:(id)helper didUpdateYesterdayActivitySummary:(id)summary changedFields:(unint64_t)fields;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
 - (void)endObservingData;
-- (void)fetchAreMultipleDevicesSharingDataForSnapshotIndex:(id)a3 withCompletion:(id)a4;
-- (void)findDeletedWorkoutEventsWithAnchor:(id)a3 completion:(id)a4;
+- (void)fetchAreMultipleDevicesSharingDataForSnapshotIndex:(id)index withCompletion:(id)completion;
+- (void)findDeletedWorkoutEventsWithAnchor:(id)anchor completion:(id)completion;
 - (void)loadLocalActivityDataIfNeeded;
-- (void)periodicUpdateManager:(id)a3 didFailToSaveRecords:(id)a4 activity:(id)a5;
-- (void)periodicUpdateManager:(id)a3 didSaveRecords:(id)a4 activity:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)saveActivitySnapshots:(id)a3 workouts:(id)a4 achievements:(id)a5 isInvitationData:(BOOL)a6;
-- (void)updateSecureCloudGoalCompletionAnchor:(id)a3;
+- (void)periodicUpdateManager:(id)manager didFailToSaveRecords:(id)records activity:(id)activity;
+- (void)periodicUpdateManager:(id)manager didSaveRecords:(id)records activity:(id)activity;
+- (void)removeObserver:(id)observer;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)saveActivitySnapshots:(id)snapshots workouts:(id)workouts achievements:(id)achievements isInvitationData:(BOOL)data;
+- (void)updateSecureCloudGoalCompletionAnchor:(id)anchor;
 @end
 
 @implementation ASActivityDataManager
 
-- (void)activitySharingManagerReady:(id)a3
+- (void)activitySharingManagerReady:(id)ready
 {
-  v4 = a3;
-  [(ASActivityDataManager *)self setActivitySharingManager:v4];
-  v5 = [v4 cloudKitManager];
-  [(ASActivityDataManager *)self setCloudKitManager:v5];
+  readyCopy = ready;
+  [(ASActivityDataManager *)self setActivitySharingManager:readyCopy];
+  cloudKitManager = [readyCopy cloudKitManager];
+  [(ASActivityDataManager *)self setCloudKitManager:cloudKitManager];
 
-  v6 = [v4 friendListManager];
-  [(ASActivityDataManager *)self setFriendListManager:v6];
+  friendListManager = [readyCopy friendListManager];
+  [(ASActivityDataManager *)self setFriendListManager:friendListManager];
 
-  v7 = [v4 periodicUpdateManager];
+  periodicUpdateManager = [readyCopy periodicUpdateManager];
 
-  [(ASActivityDataManager *)self setPeriodicUpdateManager:v7];
+  [(ASActivityDataManager *)self setPeriodicUpdateManager:periodicUpdateManager];
   WeakRetained = objc_loadWeakRetained(&self->_periodicUpdateManager);
   [WeakRetained addProvider:self];
 }
@@ -109,8 +109,8 @@
 - (void)beginObservingData
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v3 = [(ASActivityDataManager *)self cloudKitManager];
-  [v3 addObserver:self];
+  cloudKitManager = [(ASActivityDataManager *)self cloudKitManager];
+  [cloudKitManager addObserver:self];
 
   v4 = [(ASActivityDataManager *)self _persistedAnchorWithKey:@"LastPushedWorkoutAnchor"];
   lastPushedWorkoutAnchor = self->_lastPushedWorkoutAnchor;
@@ -136,12 +136,12 @@
   secureCloudGoalCompletionAnchor = self->_secureCloudGoalCompletionAnchor;
   self->_secureCloudGoalCompletionAnchor = v12;
 
-  v14 = [MEMORY[0x277CCD8D8] fitnessFriendActivitySnapshotType];
-  v23[0] = v14;
-  v15 = [MEMORY[0x277CCD8D8] fitnessFriendAchievementType];
-  v23[1] = v15;
-  v16 = [MEMORY[0x277CCD8D8] fitnessFriendWorkoutType];
-  v23[2] = v16;
+  fitnessFriendActivitySnapshotType = [MEMORY[0x277CCD8D8] fitnessFriendActivitySnapshotType];
+  v23[0] = fitnessFriendActivitySnapshotType;
+  fitnessFriendAchievementType = [MEMORY[0x277CCD8D8] fitnessFriendAchievementType];
+  v23[1] = fitnessFriendAchievementType;
+  fitnessFriendWorkoutType = [MEMORY[0x277CCD8D8] fitnessFriendWorkoutType];
+  v23[2] = fitnessFriendWorkoutType;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:3];
 
   [(ASDatabaseClient *)self->_databaseClient addSampleObserver:self sampleTypes:v17];
@@ -183,107 +183,107 @@ void __43__ASActivityDataManager_beginObservingData__block_invoke(uint64_t a1)
 - (void)endObservingData
 {
   v9[3] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCD8D8] fitnessFriendActivitySnapshotType];
-  v4 = [MEMORY[0x277CCD8D8] fitnessFriendAchievementType];
-  v9[1] = v4;
-  v5 = [MEMORY[0x277CCD8D8] fitnessFriendWorkoutType];
-  v9[2] = v5;
+  fitnessFriendActivitySnapshotType = [MEMORY[0x277CCD8D8] fitnessFriendActivitySnapshotType];
+  fitnessFriendAchievementType = [MEMORY[0x277CCD8D8] fitnessFriendAchievementType];
+  v9[1] = fitnessFriendAchievementType;
+  fitnessFriendWorkoutType = [MEMORY[0x277CCD8D8] fitnessFriendWorkoutType];
+  v9[2] = fitnessFriendWorkoutType;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:3];
 
   [(ASDatabaseClient *)self->_databaseClient removeSampleObserver:self sampleTypes:v6];
   [(ASDatabaseClient *)self->_databaseClient removeActivitySummaryObserver:self];
   [(ASDatabaseClient *)self->_databaseClient removeProtectedDataObserver:self];
-  v7 = [(ASActivityDataManager *)self cloudKitManager];
-  [v7 removeObserver:self];
+  cloudKitManager = [(ASActivityDataManager *)self cloudKitManager];
+  [cloudKitManager removeObserver:self];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__ASActivityDataManager_addObserver___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(observerQueue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__ASActivityDataManager_removeObserver___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(observerQueue, v7);
 }
 
-- (void)_handleNewSnapshots:(id)a3 workouts:(id)a4 achievements:(id)a5 moreComing:(BOOL)a6
+- (void)_handleNewSnapshots:(id)snapshots workouts:(id)workouts achievements:(id)achievements moreComing:(BOOL)coming
 {
-  v24 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v24)
+  snapshotsCopy = snapshots;
+  workoutsCopy = workouts;
+  achievementsCopy = achievements;
+  if (snapshotsCopy)
   {
     newSnapshots = self->_newSnapshots;
     if (newSnapshots)
     {
-      v13 = [(NSArray *)newSnapshots arrayByAddingObjectsFromArray:v24];
+      v13 = [(NSArray *)newSnapshots arrayByAddingObjectsFromArray:snapshotsCopy];
     }
 
     else
     {
-      v13 = [v24 copy];
+      v13 = [snapshotsCopy copy];
     }
 
     v14 = self->_newSnapshots;
     self->_newSnapshots = v13;
   }
 
-  if (v10)
+  if (workoutsCopy)
   {
     newWorkouts = self->_newWorkouts;
     if (newWorkouts)
     {
-      v16 = [(NSArray *)newWorkouts arrayByAddingObjectsFromArray:v10];
+      v16 = [(NSArray *)newWorkouts arrayByAddingObjectsFromArray:workoutsCopy];
     }
 
     else
     {
-      v16 = [v10 copy];
+      v16 = [workoutsCopy copy];
     }
 
     v17 = self->_newWorkouts;
     self->_newWorkouts = v16;
   }
 
-  if (v11)
+  if (achievementsCopy)
   {
     newAchievements = self->_newAchievements;
     if (newAchievements)
     {
-      v19 = [(NSArray *)newAchievements arrayByAddingObjectsFromArray:v11];
+      v19 = [(NSArray *)newAchievements arrayByAddingObjectsFromArray:achievementsCopy];
     }
 
     else
     {
-      v19 = [v11 copy];
+      v19 = [achievementsCopy copy];
     }
 
     v20 = self->_newAchievements;
     self->_newAchievements = v19;
   }
 
-  if (!a6)
+  if (!coming)
   {
     [(ASActivityDataManager *)self saveActivitySnapshots:self->_newSnapshots workouts:self->_newWorkouts achievements:self->_newAchievements isInvitationData:0];
     v21 = self->_newSnapshots;
@@ -297,27 +297,27 @@ void __43__ASActivityDataManager_beginObservingData__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_ckQueue_handleNewSnapshotsForSelf:(id)a3 moreComing:(BOOL)a4
+- (void)_ckQueue_handleNewSnapshotsForSelf:(id)self moreComing:(BOOL)coming
 {
-  v6 = a3;
-  if (v6)
+  selfCopy = self;
+  if (selfCopy)
   {
     newSnapshotsForSelf = self->_newSnapshotsForSelf;
     if (newSnapshotsForSelf)
     {
-      v8 = [(NSArray *)newSnapshotsForSelf arrayByAddingObjectsFromArray:v6];
+      v8 = [(NSArray *)newSnapshotsForSelf arrayByAddingObjectsFromArray:selfCopy];
     }
 
     else
     {
-      v8 = [v6 copy];
+      v8 = [selfCopy copy];
     }
 
     v9 = self->_newSnapshotsForSelf;
     self->_newSnapshotsForSelf = v8;
   }
 
-  if (!a4)
+  if (!coming)
   {
     [(ASActivityDataManager *)self _ckQueue_processActivitySnapshotsForSelf:self->_newSnapshotsForSelf];
     v10 = self->_newSnapshotsForSelf;
@@ -327,21 +327,21 @@ void __43__ASActivityDataManager_beginObservingData__block_invoke(uint64_t a1)
   MEMORY[0x2821F96F8]();
 }
 
-- (void)cloudKitManager:(id)a3 didReceiveNewActivitySnapshotsForSelf:(id)a4 moreComing:(BOOL)a5 changesProcessedHandler:(id)a6
+- (void)cloudKitManager:(id)manager didReceiveNewActivitySnapshotsForSelf:(id)self moreComing:(BOOL)coming changesProcessedHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a6;
+  selfCopy = self;
+  handlerCopy = handler;
   cloudKitManagerObserverQueue = self->_cloudKitManagerObserverQueue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __114__ASActivityDataManager_cloudKitManager_didReceiveNewActivitySnapshotsForSelf_moreComing_changesProcessedHandler___block_invoke;
   v14[3] = &unk_278C4B9C0;
   v14[4] = self;
-  v15 = v9;
-  v17 = a5;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = selfCopy;
+  comingCopy = coming;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = selfCopy;
   dispatch_async(cloudKitManagerObserverQueue, v14);
 }
 
@@ -356,21 +356,21 @@ void __114__ASActivityDataManager_cloudKitManager_didReceiveNewActivitySnapshots
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)cloudKitManager:(id)a3 didReceiveNewActivitySnapshots:(id)a4 moreComing:(BOOL)a5 changesProcessedHandler:(id)a6
+- (void)cloudKitManager:(id)manager didReceiveNewActivitySnapshots:(id)snapshots moreComing:(BOOL)coming changesProcessedHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a6;
+  snapshotsCopy = snapshots;
+  handlerCopy = handler;
   cloudKitManagerObserverQueue = self->_cloudKitManagerObserverQueue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __107__ASActivityDataManager_cloudKitManager_didReceiveNewActivitySnapshots_moreComing_changesProcessedHandler___block_invoke;
   v14[3] = &unk_278C4B9C0;
   v14[4] = self;
-  v15 = v9;
-  v17 = a5;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = snapshotsCopy;
+  comingCopy = coming;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = snapshotsCopy;
   dispatch_async(cloudKitManagerObserverQueue, v14);
 }
 
@@ -385,21 +385,21 @@ void __107__ASActivityDataManager_cloudKitManager_didReceiveNewActivitySnapshots
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)cloudKitManager:(id)a3 didReceiveNewFriendWorkouts:(id)a4 moreComing:(BOOL)a5 changesProcessedHandler:(id)a6
+- (void)cloudKitManager:(id)manager didReceiveNewFriendWorkouts:(id)workouts moreComing:(BOOL)coming changesProcessedHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a6;
+  workoutsCopy = workouts;
+  handlerCopy = handler;
   cloudKitManagerObserverQueue = self->_cloudKitManagerObserverQueue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __104__ASActivityDataManager_cloudKitManager_didReceiveNewFriendWorkouts_moreComing_changesProcessedHandler___block_invoke;
   v14[3] = &unk_278C4B9C0;
   v14[4] = self;
-  v15 = v9;
-  v17 = a5;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = workoutsCopy;
+  comingCopy = coming;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = workoutsCopy;
   dispatch_async(cloudKitManagerObserverQueue, v14);
 }
 
@@ -414,21 +414,21 @@ void __104__ASActivityDataManager_cloudKitManager_didReceiveNewFriendWorkouts_mo
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)cloudKitManager:(id)a3 didReceiveNewFriendAchievements:(id)a4 moreComing:(BOOL)a5 changesProcessedHandler:(id)a6
+- (void)cloudKitManager:(id)manager didReceiveNewFriendAchievements:(id)achievements moreComing:(BOOL)coming changesProcessedHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a6;
+  achievementsCopy = achievements;
+  handlerCopy = handler;
   cloudKitManagerObserverQueue = self->_cloudKitManagerObserverQueue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __108__ASActivityDataManager_cloudKitManager_didReceiveNewFriendAchievements_moreComing_changesProcessedHandler___block_invoke;
   v14[3] = &unk_278C4B9C0;
   v14[4] = self;
-  v15 = v9;
-  v17 = a5;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = achievementsCopy;
+  comingCopy = coming;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = achievementsCopy;
   dispatch_async(cloudKitManagerObserverQueue, v14);
 }
 
@@ -443,17 +443,17 @@ void __108__ASActivityDataManager_cloudKitManager_didReceiveNewFriendAchievement
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)cloudKitManager:(id)a3 didReceiveNewNotificationEvents:(id)a4 moreComing:(BOOL)a5 changesProcessedHandler:(id)a6
+- (void)cloudKitManager:(id)manager didReceiveNewNotificationEvents:(id)events moreComing:(BOOL)coming changesProcessedHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a6;
+  eventsCopy = events;
+  handlerCopy = handler;
   ASLoggingInitialize();
   v11 = *MEMORY[0x277CE8FC8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FC8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v9;
+    v22 = eventsCopy;
     _os_log_impl(&dword_23E5E3000, v11, OS_LOG_TYPE_DEFAULT, "Received new notification events: %@", buf, 0xCu);
   }
 
@@ -462,12 +462,12 @@ void __108__ASActivityDataManager_cloudKitManager_didReceiveNewFriendAchievement
   v16[1] = 3221225472;
   v16[2] = __108__ASActivityDataManager_cloudKitManager_didReceiveNewNotificationEvents_moreComing_changesProcessedHandler___block_invoke;
   v16[3] = &unk_278C4B9C0;
-  v17 = v9;
-  v18 = self;
-  v20 = a5;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
+  v17 = eventsCopy;
+  selfCopy = self;
+  comingCopy = coming;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = eventsCopy;
   dispatch_async(cloudKitManagerObserverQueue, v16);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -606,10 +606,10 @@ void __108__ASActivityDataManager_cloudKitManager_didReceiveNewNotificationEvent
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_ckQueue_processActivitySnapshotsForSelf:(id)a3
+- (void)_ckQueue_processActivitySnapshotsForSelf:(id)self
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  selfCopy = self;
   ASLoggingInitialize();
   v5 = MEMORY[0x277CE8FC8];
   v6 = *MEMORY[0x277CE8FC8];
@@ -617,7 +617,7 @@ void __108__ASActivityDataManager_cloudKitManager_didReceiveNewNotificationEvent
   {
     v7 = v6;
     *buf = 134217984;
-    v34 = [v4 count];
+    v34 = [selfCopy count];
     _os_log_impl(&dword_23E5E3000, v7, OS_LOG_TYPE_DEFAULT, "Processing %lu snapshots of self.", buf, 0xCu);
   }
 
@@ -626,17 +626,17 @@ void __108__ASActivityDataManager_cloudKitManager_didReceiveNewNotificationEvent
   if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v4;
+    v34 = selfCopy;
     _os_log_impl(&dword_23E5E3000, v8, OS_LOG_TYPE_DEFAULT, "Incoming snapshots for self are: %@", buf, 0xCu);
   }
 
-  v27 = self;
+  selfCopy2 = self;
   v9 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:self->_snapshotSourceUUIDsByIndex];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = v4;
+  v10 = selfCopy;
   v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v11)
   {
@@ -652,9 +652,9 @@ void __108__ASActivityDataManager_cloudKitManager_didReceiveNewNotificationEvent
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
-        v16 = [v15 sourceUUID];
+        sourceUUID = [v15 sourceUUID];
 
-        if (v16)
+        if (sourceUUID)
         {
           v17 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v15, "snapshotIndex")}];
           v18 = [v9 objectForKeyedSubscript:v17];
@@ -664,8 +664,8 @@ void __108__ASActivityDataManager_cloudKitManager_didReceiveNewNotificationEvent
             v18 = [MEMORY[0x277CBEB98] set];
           }
 
-          v19 = [v15 sourceUUID];
-          v20 = [v18 setByAddingObject:v19];
+          sourceUUID2 = [v15 sourceUUID];
+          v20 = [v18 setByAddingObject:sourceUUID2];
 
           v21 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v15, "snapshotIndex")}];
           [v9 setObject:v20 forKeyedSubscript:v21];
@@ -679,14 +679,14 @@ void __108__ASActivityDataManager_cloudKitManager_didReceiveNewNotificationEvent
   }
 
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v9];
-  snapshotSourceUUIDsByIndex = v27->_snapshotSourceUUIDsByIndex;
-  v27->_snapshotSourceUUIDsByIndex = v22;
+  snapshotSourceUUIDsByIndex = selfCopy2->_snapshotSourceUUIDsByIndex;
+  selfCopy2->_snapshotSourceUUIDsByIndex = v22;
 
   ASLoggingInitialize();
   v24 = *MEMORY[0x277CE8FC8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FC8], OS_LOG_TYPE_DEFAULT))
   {
-    v25 = v27->_snapshotSourceUUIDsByIndex;
+    v25 = selfCopy2->_snapshotSourceUUIDsByIndex;
     *buf = 138412290;
     v34 = v25;
     _os_log_impl(&dword_23E5E3000, v24, OS_LOG_TYPE_DEFAULT, "Final snapshot dict for self: %@", buf, 0xCu);
@@ -695,20 +695,20 @@ void __108__ASActivityDataManager_cloudKitManager_didReceiveNewNotificationEvent
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAreMultipleDevicesSharingDataForSnapshotIndex:(id)a3 withCompletion:(id)a4
+- (void)fetchAreMultipleDevicesSharingDataForSnapshotIndex:(id)index withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  indexCopy = index;
+  completionCopy = completion;
   cloudKitManagerObserverQueue = self->_cloudKitManagerObserverQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__ASActivityDataManager_fetchAreMultipleDevicesSharingDataForSnapshotIndex_withCompletion___block_invoke;
   block[3] = &unk_278C4BA30;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = indexCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = indexCopy;
   dispatch_async(cloudKitManagerObserverQueue, block);
 }
 
@@ -933,13 +933,13 @@ uint64_t __50__ASActivityDataManager_yesterdayActivitySnapshot__block_invoke(uin
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v3 = [(ASActivityDataManager *)self currentActivitySnapshot];
+  currentActivitySnapshot = [(ASActivityDataManager *)self currentActivitySnapshot];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__ASActivityDataManager_currentWorkouts__block_invoke;
   v6[3] = &unk_278C4BA80;
   v6[4] = &v7;
-  [(ASActivityDataManager *)self _workoutsForActivitySnapshot:v3 anchor:0 completion:v6];
+  [(ASActivityDataManager *)self _workoutsForActivitySnapshot:currentActivitySnapshot anchor:0 completion:v6];
   v4 = v8[5];
 
   _Block_object_dispose(&v7, 8);
@@ -955,13 +955,13 @@ uint64_t __50__ASActivityDataManager_yesterdayActivitySnapshot__block_invoke(uin
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v3 = [(ASActivityDataManager *)self yesterdayActivitySnapshot];
+  yesterdayActivitySnapshot = [(ASActivityDataManager *)self yesterdayActivitySnapshot];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__ASActivityDataManager_yesterdayWorkouts__block_invoke;
   v6[3] = &unk_278C4BA80;
   v6[4] = &v7;
-  [(ASActivityDataManager *)self _workoutsForActivitySnapshot:v3 anchor:0 completion:v6];
+  [(ASActivityDataManager *)self _workoutsForActivitySnapshot:yesterdayActivitySnapshot anchor:0 completion:v6];
   v4 = v8[5];
 
   _Block_object_dispose(&v7, 8);
@@ -971,7 +971,7 @@ uint64_t __50__ASActivityDataManager_yesterdayActivitySnapshot__block_invoke(uin
 
 - (NSSet)currentAchievements
 {
-  v3 = [(ASActivityDataManager *)self currentActivitySnapshot];
+  currentActivitySnapshot = [(ASActivityDataManager *)self currentActivitySnapshot];
   v4 = objc_alloc_init(MEMORY[0x277CE8DE0]);
   v10 = 0;
   v5 = [v4 allAchievementsWithError:&v10];
@@ -986,21 +986,21 @@ uint64_t __50__ASActivityDataManager_yesterdayActivitySnapshot__block_invoke(uin
   }
 
   v7 = [MEMORY[0x277CBEB98] setWithArray:v5];
-  v8 = -[ASActivityDataManager _filterAchievements:forSnapshotIndex:](self, "_filterAchievements:forSnapshotIndex:", v7, [v3 snapshotIndex]);
+  v8 = -[ASActivityDataManager _filterAchievements:forSnapshotIndex:](self, "_filterAchievements:forSnapshotIndex:", v7, [currentActivitySnapshot snapshotIndex]);
 
   return v8;
 }
 
-- (void)_queue_insertSamples:(id)a3
+- (void)_queue_insertSamples:(id)samples
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  samplesCopy = samples;
   dispatch_assert_queue_V2(self->_healthDataQueue);
-  if ([v4 count])
+  if ([samplesCopy count])
   {
     databaseClient = self->_databaseClient;
     v13 = 0;
-    v6 = [(ASDatabaseClient *)databaseClient insertDataObjects:v4 error:&v13];
+    v6 = [(ASDatabaseClient *)databaseClient insertDataObjects:samplesCopy error:&v13];
     v7 = v13;
     ASLoggingInitialize();
     v8 = *MEMORY[0x277CE8FC8];
@@ -1015,7 +1015,7 @@ uint64_t __50__ASActivityDataManager_yesterdayActivitySnapshot__block_invoke(uin
     else if (os_log_type_enabled(*MEMORY[0x277CE8FC8], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v4 count];
+      v10 = [samplesCopy count];
       *buf = 134217984;
       v15 = v10;
       _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "Saved activity sharing data to database: %lu samples.", buf, 0xCu);
@@ -1036,24 +1036,24 @@ uint64_t __50__ASActivityDataManager_yesterdayActivitySnapshot__block_invoke(uin
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveActivitySnapshots:(id)a3 workouts:(id)a4 achievements:(id)a5 isInvitationData:(BOOL)a6
+- (void)saveActivitySnapshots:(id)snapshots workouts:(id)workouts achievements:(id)achievements isInvitationData:(BOOL)data
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  snapshotsCopy = snapshots;
+  workoutsCopy = workouts;
+  achievementsCopy = achievements;
   healthDataQueue = self->_healthDataQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__ASActivityDataManager_saveActivitySnapshots_workouts_achievements_isInvitationData___block_invoke;
   block[3] = &unk_278C4BAA8;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21 = a6;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = snapshotsCopy;
+  v19 = workoutsCopy;
+  v20 = achievementsCopy;
+  dataCopy = data;
+  v14 = achievementsCopy;
+  v15 = workoutsCopy;
+  v16 = snapshotsCopy;
   dispatch_sync(healthDataQueue, block);
 }
 
@@ -1069,21 +1069,21 @@ uint64_t __50__ASActivityDataManager_yesterdayActivitySnapshot__block_invoke(uin
     _os_log_impl(&dword_23E5E3000, v3, OS_LOG_TYPE_DEFAULT, "Deleting all friend data!", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CCD720] fitnessFriendAchievementType];
-  v42[0] = v4;
-  v5 = [MEMORY[0x277CCD720] fitnessFriendActivitySnapshotType];
-  v42[1] = v5;
-  v6 = [MEMORY[0x277CCD720] fitnessFriendWorkoutType];
-  v42[2] = v6;
+  fitnessFriendAchievementType = [MEMORY[0x277CCD720] fitnessFriendAchievementType];
+  v42[0] = fitnessFriendAchievementType;
+  fitnessFriendActivitySnapshotType = [MEMORY[0x277CCD720] fitnessFriendActivitySnapshotType];
+  v42[1] = fitnessFriendActivitySnapshotType;
+  fitnessFriendWorkoutType = [MEMORY[0x277CCD720] fitnessFriendWorkoutType];
+  v42[2] = fitnessFriendWorkoutType;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:3];
 
   v8 = MEMORY[0x277CCD838];
-  v9 = [MEMORY[0x277CBEAA8] distantPast];
-  v10 = [MEMORY[0x277CBEAA8] distantFuture];
-  v11 = [v8 predicateForSamplesWithStartDate:v9 endDate:v10 options:0];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v11 = [v8 predicateForSamplesWithStartDate:distantPast endDate:distantFuture options:0];
 
-  v12 = [MEMORY[0x277D10B70] truePredicate];
-  v13 = [[ASPredicateContainer alloc] initWithHealthKitPredicate:v11 healthDaemonPredicate:v12];
+  truePredicate = [MEMORY[0x277D10B70] truePredicate];
+  v13 = [[ASPredicateContainer alloc] initWithHealthKitPredicate:v11 healthDaemonPredicate:truePredicate];
   v36 = 0;
   v32 = 0u;
   v33 = 0u;
@@ -1094,7 +1094,7 @@ uint64_t __50__ASActivityDataManager_yesterdayActivitySnapshot__block_invoke(uin
   if (v14)
   {
     v15 = v14;
-    v28 = v12;
+    v28 = truePredicate;
     v29 = v11;
     v16 = 0;
     v17 = *v33;
@@ -1150,7 +1150,7 @@ uint64_t __50__ASActivityDataManager_yesterdayActivitySnapshot__block_invoke(uin
 
     while (v15);
 
-    v12 = v28;
+    truePredicate = v28;
     v11 = v29;
   }
 
@@ -1189,17 +1189,17 @@ uint64_t __53__ASActivityDataManager_deleteAllActivitySharingData__block_invoke(
   return result;
 }
 
-- (BOOL)_queue_deleteActivityDataForFriendWithUUID:(id)a3
+- (BOOL)_queue_deleteActivityDataForFriendWithUUID:(id)d
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v31 = 0;
   databaseClient = self->_databaseClient;
-  v6 = [MEMORY[0x277CCD8D8] fitnessFriendAchievementType];
-  v7 = [(ASActivityDataManager *)self _fitnessFriendAchievementPredicateForFriendUUID:v4];
+  fitnessFriendAchievementType = [MEMORY[0x277CCD8D8] fitnessFriendAchievementType];
+  v7 = [(ASActivityDataManager *)self _fitnessFriendAchievementPredicateForFriendUUID:dCopy];
   v8 = *MEMORY[0x277D10C08];
   v30 = 0;
-  v9 = [(ASDatabaseClient *)databaseClient deleteDataObjectsOfType:v6 predicate:v7 limit:v8 deletedSampleCount:&v31 notifyObservers:1 generateDeletedObjects:1 error:&v30];
+  v9 = [(ASDatabaseClient *)databaseClient deleteDataObjectsOfType:fitnessFriendAchievementType predicate:v7 limit:v8 deletedSampleCount:&v31 notifyObservers:1 generateDeletedObjects:1 error:&v30];
   v10 = v30;
 
   ASLoggingInitialize();
@@ -1212,7 +1212,7 @@ uint64_t __53__ASActivityDataManager_deleteAllActivitySharingData__block_invoke(
       *buf = 134218242;
       v33 = v31;
       v34 = 2114;
-      v35 = v4;
+      v35 = dCopy;
       _os_log_impl(&dword_23E5E3000, v11, OS_LOG_TYPE_DEFAULT, "Removed %ld ASAchievementEntity samples for friend UUUD: %{public}@", buf, 0x16u);
     }
   }
@@ -1223,10 +1223,10 @@ uint64_t __53__ASActivityDataManager_deleteAllActivitySharingData__block_invoke(
   }
 
   v14 = self->_databaseClient;
-  v15 = [MEMORY[0x277CCD8D8] fitnessFriendActivitySnapshotType];
-  v16 = [(ASActivityDataManager *)self _fitnessFriendActivitySnapshotPredicateForFriendUUID:v4];
+  fitnessFriendActivitySnapshotType = [MEMORY[0x277CCD8D8] fitnessFriendActivitySnapshotType];
+  v16 = [(ASActivityDataManager *)self _fitnessFriendActivitySnapshotPredicateForFriendUUID:dCopy];
   v29 = v10;
-  v17 = [(ASDatabaseClient *)v14 deleteDataObjectsOfType:v15 predicate:v16 limit:v8 deletedSampleCount:&v31 notifyObservers:1 generateDeletedObjects:1 error:&v29];
+  v17 = [(ASDatabaseClient *)v14 deleteDataObjectsOfType:fitnessFriendActivitySnapshotType predicate:v16 limit:v8 deletedSampleCount:&v31 notifyObservers:1 generateDeletedObjects:1 error:&v29];
   v18 = v29;
 
   ASLoggingInitialize();
@@ -1244,15 +1244,15 @@ uint64_t __53__ASActivityDataManager_deleteAllActivitySharingData__block_invoke(
     *buf = 134218242;
     v33 = v31;
     v34 = 2114;
-    v35 = v4;
+    v35 = dCopy;
     _os_log_impl(&dword_23E5E3000, v19, OS_LOG_TYPE_DEFAULT, "Removed %ld ASActivitySnapshotEntity samples for friend UUUD: %{public}@", buf, 0x16u);
   }
 
   v20 = self->_databaseClient;
-  v21 = [MEMORY[0x277CCD8D8] fitnessFriendWorkoutType];
-  v22 = [(ASActivityDataManager *)self _fitnessFriendWorkoutPredicateForFriendUUID:v4];
+  fitnessFriendWorkoutType = [MEMORY[0x277CCD8D8] fitnessFriendWorkoutType];
+  v22 = [(ASActivityDataManager *)self _fitnessFriendWorkoutPredicateForFriendUUID:dCopy];
   v28 = v18;
-  v23 = [(ASDatabaseClient *)v20 deleteDataObjectsOfType:v21 predicate:v22 limit:v8 deletedSampleCount:&v31 notifyObservers:1 generateDeletedObjects:1 error:&v28];
+  v23 = [(ASDatabaseClient *)v20 deleteDataObjectsOfType:fitnessFriendWorkoutType predicate:v22 limit:v8 deletedSampleCount:&v31 notifyObservers:1 generateDeletedObjects:1 error:&v28];
   v24 = v28;
 
   ASLoggingInitialize();
@@ -1270,7 +1270,7 @@ uint64_t __53__ASActivityDataManager_deleteAllActivitySharingData__block_invoke(
     *buf = 134218242;
     v33 = v31;
     v34 = 2114;
-    v35 = v4;
+    v35 = dCopy;
     _os_log_impl(&dword_23E5E3000, v25, OS_LOG_TYPE_DEFAULT, "Removed %ld ASWorkoutEntity samples for friend UUUD: %{public}@", buf, 0x16u);
   }
 
@@ -1278,9 +1278,9 @@ uint64_t __53__ASActivityDataManager_deleteAllActivitySharingData__block_invoke(
   return v9 && v17 && v23;
 }
 
-- (BOOL)deleteActivityDataForFriendWithUUID:(id)a3
+- (BOOL)deleteActivityDataForFriendWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1290,10 +1290,10 @@ uint64_t __53__ASActivityDataManager_deleteAllActivitySharingData__block_invoke(
   block[1] = 3221225472;
   block[2] = __61__ASActivityDataManager_deleteActivityDataForFriendWithUUID___block_invoke;
   block[3] = &unk_278C4BAD0;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(healthDataQueue, block);
   LOBYTE(healthDataQueue) = *(v12 + 24);
 
@@ -1322,8 +1322,8 @@ uint64_t __61__ASActivityDataManager_deleteActivityDataForFriendWithUUID___block
 
   v4 = *v3;
   calendar = self->_calendar;
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [(NSCalendar *)calendar startOfDayForDate:v6];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [(NSCalendar *)calendar startOfDayForDate:date];
 
   v8 = [(NSCalendar *)self->_calendar dateByAddingUnit:16 value:-v4 toDate:v7 options:0];
   v9 = [MEMORY[0x277CCD838] predicateForSamplesWithStartDate:v8 endDate:0 options:0];
@@ -1333,11 +1333,11 @@ uint64_t __61__ASActivityDataManager_deleteActivityDataForFriendWithUUID___block
   return v11;
 }
 
-- (id)_fitnessFriendAchievementPredicateForFriendUUID:(id)a3
+- (id)_fitnessFriendAchievementPredicateForFriendUUID:(id)d
 {
   v3 = MEMORY[0x277CCD838];
-  v4 = a3;
-  v5 = [v3 predicateForFitnessFriendAchievementsForFriendUUID:v4];
+  dCopy = d;
+  v5 = [v3 predicateForFitnessFriendAchievementsForFriendUUID:dCopy];
   v6 = HDFitnessFriendAchievementEntityPredicateForFriendUUID();
 
   v7 = [[ASPredicateContainer alloc] initWithHealthKitPredicate:v5 healthDaemonPredicate:v6];
@@ -1345,11 +1345,11 @@ uint64_t __61__ASActivityDataManager_deleteActivityDataForFriendWithUUID___block
   return v7;
 }
 
-- (id)_fitnessFriendActivitySnapshotPredicateForFriendUUID:(id)a3
+- (id)_fitnessFriendActivitySnapshotPredicateForFriendUUID:(id)d
 {
   v3 = MEMORY[0x277CCD838];
-  v4 = a3;
-  v5 = [v3 predicateForFitnessFriendActivitySnapshotsForFriendUUID:v4];
+  dCopy = d;
+  v5 = [v3 predicateForFitnessFriendActivitySnapshotsForFriendUUID:dCopy];
   v6 = HDFitnessFriendActivitySnapshotEntityPredicateForFriendUUID();
 
   v7 = [[ASPredicateContainer alloc] initWithHealthKitPredicate:v5 healthDaemonPredicate:v6];
@@ -1357,11 +1357,11 @@ uint64_t __61__ASActivityDataManager_deleteActivityDataForFriendWithUUID___block
   return v7;
 }
 
-- (id)_fitnessFriendWorkoutPredicateForFriendUUID:(id)a3
+- (id)_fitnessFriendWorkoutPredicateForFriendUUID:(id)d
 {
   v3 = MEMORY[0x277CCD838];
-  v4 = a3;
-  v5 = [v3 predicateForFitnessFriendWorkoutsForFriendUUID:v4];
+  dCopy = d;
+  v5 = [v3 predicateForFitnessFriendWorkoutsForFriendUUID:dCopy];
   v6 = HDFitnessFriendWorkoutEntityEntityPredicateForFriendUUID();
 
   v7 = [[ASPredicateContainer alloc] initWithHealthKitPredicate:v5 healthDaemonPredicate:v6];
@@ -1369,14 +1369,14 @@ uint64_t __61__ASActivityDataManager_deleteActivityDataForFriendWithUUID___block
   return v7;
 }
 
-- (id)_fitnessFriendSamplePredicateForFriendUUID:(id)a3
+- (id)_fitnessFriendSamplePredicateForFriendUUID:(id)d
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASActivityDataManager *)self _fitnessFriendAchievementPredicateForFriendUUID:v4];
-  v6 = [(ASActivityDataManager *)self _fitnessFriendActivitySnapshotPredicateForFriendUUID:v4, v5];
+  dCopy = d;
+  v5 = [(ASActivityDataManager *)self _fitnessFriendAchievementPredicateForFriendUUID:dCopy];
+  v6 = [(ASActivityDataManager *)self _fitnessFriendActivitySnapshotPredicateForFriendUUID:dCopy, v5];
   v12[1] = v6;
-  v7 = [(ASActivityDataManager *)self _fitnessFriendWorkoutPredicateForFriendUUID:v4];
+  v7 = [(ASActivityDataManager *)self _fitnessFriendWorkoutPredicateForFriendUUID:dCopy];
 
   v12[2] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:3];
@@ -1388,16 +1388,16 @@ uint64_t __61__ASActivityDataManager_deleteActivityDataForFriendWithUUID___block
   return v9;
 }
 
-- (id)fitnessFriendSamplesForFriendWithUUID:(id)a3
+- (id)fitnessFriendSamplesForFriendWithUUID:(id)d
 {
   v20[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  dCopy = d;
   v6 = objc_alloc_init(v4);
-  v7 = [(ASActivityDataManager *)self _endDatePredicate];
-  v8 = [(ASActivityDataManager *)self _fitnessFriendSamplePredicateForFriendUUID:v5];
+  _endDatePredicate = [(ASActivityDataManager *)self _endDatePredicate];
+  v8 = [(ASActivityDataManager *)self _fitnessFriendSamplePredicateForFriendUUID:dCopy];
 
-  v20[0] = v7;
+  v20[0] = _endDatePredicate;
   v20[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
   v10 = [ASPredicateContainer predicateMatchingAllPredicates:v9];
@@ -1433,16 +1433,16 @@ uint64_t __61__ASActivityDataManager_deleteActivityDataForFriendWithUUID___block
   return v14;
 }
 
-- (id)activitySnapshotsFromFitnessFriendSamples:(id)a3
+- (id)activitySnapshotsFromFitnessFriendSamples:(id)samples
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  samplesCopy = samples;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = samplesCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -1483,16 +1483,16 @@ uint64_t __61__ASActivityDataManager_deleteActivityDataForFriendWithUUID___block
   return v16;
 }
 
-- (id)achievementsFromFitnessFriendSamples:(id)a3
+- (id)achievementsFromFitnessFriendSamples:(id)samples
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  samplesCopy = samples;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = samplesCopy;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
@@ -1515,7 +1515,7 @@ uint64_t __61__ASActivityDataManager_deleteActivityDataForFriendWithUUID___block
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v11 completedDate];
+          completedDate = [v11 completedDate];
           v13 = ASCacheIndexForLocalDate();
 
           v14 = v8;
@@ -1560,16 +1560,16 @@ uint64_t __61__ASActivityDataManager_deleteActivityDataForFriendWithUUID___block
   return v22;
 }
 
-- (id)workoutsFromFitnessFriendSamples:(id)a3
+- (id)workoutsFromFitnessFriendSamples:(id)samples
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  samplesCopy = samples;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = samplesCopy;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
@@ -1592,7 +1592,7 @@ uint64_t __61__ASActivityDataManager_deleteActivityDataForFriendWithUUID___block
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v11 endDate];
+          endDate = [v11 endDate];
           v13 = ASCacheIndexForLocalDate();
 
           v14 = v8;
@@ -1684,7 +1684,7 @@ LABEL_8:
   return 1;
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
   healthDataQueue = self->_healthDataQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1708,23 +1708,23 @@ uint64_t __66__ASActivityDataManager_database_protectedDataDidBecomeAvailable___
   return [*(a1 + 32) _queue_getAndHandleAllActivitySharingData];
 }
 
-- (void)_queue_handleNewSnapshots:(id)a3 workouts:(id)a4 achievements:(id)a5
+- (void)_queue_handleNewSnapshots:(id)snapshots workouts:(id)workouts achievements:(id)achievements
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  snapshotsCopy = snapshots;
+  workoutsCopy = workouts;
+  achievementsCopy = achievements;
   dispatch_assert_queue_V2(self->_healthDataQueue);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73__ASActivityDataManager__queue_handleNewSnapshots_workouts_achievements___block_invoke;
   v14[3] = &unk_278C4BB48;
   v14[4] = self;
-  v15 = v8;
-  v16 = v10;
-  v17 = v9;
-  v11 = v9;
-  v12 = v10;
-  v13 = v8;
+  v15 = snapshotsCopy;
+  v16 = achievementsCopy;
+  v17 = workoutsCopy;
+  v11 = workoutsCopy;
+  v12 = achievementsCopy;
+  v13 = snapshotsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v14);
 }
 
@@ -1734,17 +1734,17 @@ void __73__ASActivityDataManager__queue_handleNewSnapshots_workouts_achievements
   [v2 updateFriendListWithNewSnapshots:*(a1 + 40) achievements:*(a1 + 48) workouts:*(a1 + 56)];
 }
 
-- (void)_queue_samplesAdded:(id)a3
+- (void)_queue_samplesAdded:(id)added
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v30 = self;
+  addedCopy = added;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_healthDataQueue);
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = v4;
+  v5 = addedCopy;
   v6 = [v5 countByEnumeratingWithState:&v31 objects:v41 count:16];
   if (v6)
   {
@@ -1842,14 +1842,14 @@ void __73__ASActivityDataManager__queue_handleNewSnapshots_workouts_achievements
     _os_log_impl(&dword_23E5E3000, v25, OS_LOG_TYPE_DEFAULT, "Friend samples were added to database: %lu snapshots, %lu workouts, %lu achievements.", buf, 0x20u);
   }
 
-  [(ASActivityDataManager *)v30 _queue_handleNewSnapshots:v11 workouts:v8 achievements:v10];
+  [(ASActivityDataManager *)selfCopy _queue_handleNewSnapshots:v11 workouts:v8 achievements:v10];
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
-  v5 = a3;
+  addedCopy = added;
   objc_initWeak(&location, self);
   healthDataQueue = self->_healthDataQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1857,8 +1857,8 @@ void __73__ASActivityDataManager__queue_handleNewSnapshots_workouts_achievements
   block[2] = __45__ASActivityDataManager_samplesAdded_anchor___block_invoke;
   block[3] = &unk_278C4BB70;
   objc_copyWeak(&v10, &location);
-  v9 = v5;
-  v7 = v5;
+  v9 = addedCopy;
+  v7 = addedCopy;
   dispatch_async(healthDataQueue, block);
 
   objc_destroyWeak(&v10);
@@ -1876,20 +1876,20 @@ void __45__ASActivityDataManager_samplesAdded_anchor___block_invoke(uint64_t a1)
   }
 }
 
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateTodayActivitySummary:(id)a4 changedFields:(unint64_t)a5
+- (void)currentActivitySummaryHelper:(id)helper didUpdateTodayActivitySummary:(id)summary changedFields:(unint64_t)fields
 {
-  v6 = a4;
-  v7 = [v6 copy];
+  summaryCopy = summary;
+  v7 = [summaryCopy copy];
   activitySummaryQueue = self->_activitySummaryQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __98__ASActivityDataManager_currentActivitySummaryHelper_didUpdateTodayActivitySummary_changedFields___block_invoke;
   block[3] = &unk_278C4BB98;
-  v12 = v6;
-  v13 = self;
+  v12 = summaryCopy;
+  selfCopy = self;
   v14 = v7;
   v9 = v7;
-  v10 = v6;
+  v10 = summaryCopy;
   dispatch_async(activitySummaryQueue, block);
 }
 
@@ -2031,36 +2031,36 @@ void __98__ASActivityDataManager_currentActivitySummaryHelper_didUpdateTodayActi
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_hasMoveGoalForActivitySummary:(id)a3
+- (BOOL)_hasMoveGoalForActivitySummary:(id)summary
 {
-  v3 = a3;
-  if ([v3 _hasAppleMoveMinutesGoal])
+  summaryCopy = summary;
+  if ([summaryCopy _hasAppleMoveMinutesGoal])
   {
-    v4 = 1;
+    _hasEnergyBurnedGoal = 1;
   }
 
   else
   {
-    v4 = [v3 _hasEnergyBurnedGoal];
+    _hasEnergyBurnedGoal = [summaryCopy _hasEnergyBurnedGoal];
   }
 
-  return v4;
+  return _hasEnergyBurnedGoal;
 }
 
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateYesterdayActivitySummary:(id)a4 changedFields:(unint64_t)a5
+- (void)currentActivitySummaryHelper:(id)helper didUpdateYesterdayActivitySummary:(id)summary changedFields:(unint64_t)fields
 {
-  v6 = a4;
-  v7 = [v6 copy];
+  summaryCopy = summary;
+  v7 = [summaryCopy copy];
   activitySummaryQueue = self->_activitySummaryQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __102__ASActivityDataManager_currentActivitySummaryHelper_didUpdateYesterdayActivitySummary_changedFields___block_invoke;
   block[3] = &unk_278C4BB98;
-  v12 = v6;
-  v13 = self;
+  v12 = summaryCopy;
+  selfCopy = self;
   v14 = v7;
   v9 = v7;
-  v10 = v6;
+  v10 = summaryCopy;
   dispatch_async(activitySummaryQueue, block);
 }
 
@@ -2111,29 +2111,29 @@ uint64_t __54__ASActivityDataManager_loadLocalActivityDataIfNeeded__block_invoke
   return result;
 }
 
-- (void)_workoutsForActivitySnapshot:(id)a3 anchor:(id)a4 completion:(id)a5
+- (void)_workoutsForActivitySnapshot:(id)snapshot anchor:(id)anchor completion:(id)completion
 {
   v85[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7)
+  snapshotCopy = snapshot;
+  anchorCopy = anchor;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (snapshotCopy)
   {
-    v65 = v9;
+    v65 = completionCopy;
     v11 = MEMORY[0x277CCD838];
-    v12 = [v7 startDate];
-    v13 = [v7 endDate];
-    v14 = [v11 predicateForSamplesWithStartDate:v12 endDate:v13 options:0];
+    startDate = [snapshotCopy startDate];
+    endDate = [snapshotCopy endDate];
+    v14 = [v11 predicateForSamplesWithStartDate:startDate endDate:endDate options:0];
 
     v15 = MEMORY[0x277D10B18];
     v16 = *MEMORY[0x277D104A8];
-    v17 = [v7 startDate];
+    startDate2 = [snapshotCopy startDate];
     v18 = _HDSQLiteValueForDate();
     v19 = [v15 predicateWithProperty:v16 greaterThanOrEqualToValue:v18];
 
     v20 = MEMORY[0x277D10B18];
-    v21 = [v7 endDate];
+    endDate2 = [snapshotCopy endDate];
     v22 = _HDSQLiteValueForDate();
     v23 = [v20 predicateWithProperty:v16 lessThanValue:v22];
 
@@ -2142,10 +2142,10 @@ uint64_t __54__ASActivityDataManager_loadLocalActivityDataIfNeeded__block_invoke
     [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v19 otherPredicate:v23];
     v61 = v64 = v14;
     v24 = [[ASPredicateContainer alloc] initWithHealthKitPredicate:v14 healthDaemonPredicate:v61];
-    v25 = [MEMORY[0x277CCD838] _predicateForObjectsFromAppleWatches];
-    if (v25)
+    _predicateForObjectsFromAppleWatches = [MEMORY[0x277CCD838] _predicateForObjectsFromAppleWatches];
+    if (_predicateForObjectsFromAppleWatches)
     {
-      v26 = [MEMORY[0x277CCA920] notPredicateWithSubpredicate:v25];
+      v26 = [MEMORY[0x277CCA920] notPredicateWithSubpredicate:_predicateForObjectsFromAppleWatches];
     }
 
     else
@@ -2157,17 +2157,17 @@ uint64_t __54__ASActivityDataManager_loadLocalActivityDataIfNeeded__block_invoke
       }
 
       v27 = MEMORY[0x277CCD838];
-      v28 = [MEMORY[0x277CBEAA8] distantPast];
-      v29 = [MEMORY[0x277CBEAA8] distantFuture];
-      v26 = [v27 predicateForSamplesWithStartDate:v28 endDate:v29 options:0];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+      v26 = [v27 predicateForSamplesWithStartDate:distantPast endDate:distantFuture options:0];
 
-      v25 = 0;
+      _predicateForObjectsFromAppleWatches = 0;
     }
 
     v30 = HDDataEntityPredicateForOriginProductType();
     if (v30)
     {
-      v31 = [MEMORY[0x277D10B20] negatedPredicate:v30];
+      truePredicate = [MEMORY[0x277D10B20] negatedPredicate:v30];
     }
 
     else
@@ -2178,24 +2178,24 @@ uint64_t __54__ASActivityDataManager_loadLocalActivityDataIfNeeded__block_invoke
         [ASActivityDataManager _workoutsForActivitySnapshot:anchor:completion:];
       }
 
-      v31 = [MEMORY[0x277D10B70] truePredicate];
+      truePredicate = [MEMORY[0x277D10B70] truePredicate];
     }
 
-    v32 = v31;
+    v32 = truePredicate;
     v59 = v30;
-    v33 = [[ASPredicateContainer alloc] initWithHealthKitPredicate:v25 healthDaemonPredicate:v30];
+    v33 = [[ASPredicateContainer alloc] initWithHealthKitPredicate:_predicateForObjectsFromAppleWatches healthDaemonPredicate:v30];
     v58 = v32;
     v69 = [[ASPredicateContainer alloc] initWithHealthKitPredicate:v26 healthDaemonPredicate:v32];
     v34 = [MEMORY[0x277CBEB58] set];
-    v35 = v8;
+    v35 = anchorCopy;
     v36 = v35;
-    v60 = v25;
+    v60 = _predicateForObjectsFromAppleWatches;
     v67 = v26;
     v68 = v24;
     v66 = v33;
-    if (v25)
+    if (_predicateForObjectsFromAppleWatches)
     {
-      v57 = v8;
+      v57 = anchorCopy;
       v85[0] = v24;
       v85[1] = v33;
       v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v85 count:2];
@@ -2235,7 +2235,7 @@ uint64_t __54__ASActivityDataManager_loadLocalActivityDataIfNeeded__block_invoke
         while (v42);
       }
 
-      v8 = v57;
+      anchorCopy = v57;
       v26 = v67;
       v24 = v68;
       v33 = v66;
@@ -2296,13 +2296,13 @@ uint64_t __54__ASActivityDataManager_loadLocalActivityDataIfNeeded__block_invoke
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_workoutsAfterAnchor:(id *)a3 withPredicate:(id)a4
+- (id)_workoutsAfterAnchor:(id *)anchor withPredicate:(id)predicate
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  predicateCopy = predicate;
   databaseClient = self->_databaseClient;
   v25 = 0;
-  v8 = [(ASDatabaseClient *)databaseClient healthKitWorkoutsWithPredicate:v6 anchor:a3 error:&v25];
+  v8 = [(ASDatabaseClient *)databaseClient healthKitWorkoutsWithPredicate:predicateCopy anchor:anchor error:&v25];
   v9 = v25;
   if (v9)
   {
@@ -2310,11 +2310,11 @@ uint64_t __54__ASActivityDataManager_loadLocalActivityDataIfNeeded__block_invoke
     v10 = *MEMORY[0x277CE8FC8];
     if (os_log_type_enabled(*MEMORY[0x277CE8FC8], OS_LOG_TYPE_ERROR))
     {
-      v20 = *a3;
+      v20 = *anchor;
       *buf = 138543874;
       v28 = v9;
       v29 = 2114;
-      v30 = v6;
+      v30 = predicateCopy;
       v31 = 2114;
       v32 = v20;
       _os_log_error_impl(&dword_23E5E3000, v10, OS_LOG_TYPE_ERROR, "Error: %{public}@ fetching workouts with predicate: %{public}@, anchor: %{public}@", buf, 0x20u);
@@ -2361,32 +2361,32 @@ uint64_t __54__ASActivityDataManager_loadLocalActivityDataIfNeeded__block_invoke
   return v11;
 }
 
-- (id)_filterAchievements:(id)a3 forSnapshotIndex:(int64_t)a4
+- (id)_filterAchievements:(id)achievements forSnapshotIndex:(int64_t)index
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  achievementsCopy = achievements;
   v6 = _HKStartDateForSnapshotIndex();
   ASLoggingInitialize();
   v7 = *MEMORY[0x277CE8FC8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FC8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v18 = a4;
+    indexCopy = index;
     v19 = 2112;
     v20 = v6;
     _os_log_impl(&dword_23E5E3000, v7, OS_LOG_TYPE_DEFAULT, "Looking for achievements for snapshot index: %lld, date: %@", buf, 0x16u);
   }
 
-  v8 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __62__ASActivityDataManager__filterAchievements_forSnapshotIndex___block_invoke;
   v14[3] = &unk_278C4BBC0;
-  v15 = v8;
+  v15 = hk_gregorianCalendar;
   v16 = v6;
   v9 = v6;
-  v10 = v8;
-  v11 = [v5 hk_map:v14];
+  v10 = hk_gregorianCalendar;
+  v11 = [achievementsCopy hk_map:v14];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -2479,22 +2479,22 @@ void __40__ASActivityDataManager_localSourceUUID__block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_activitySnapshotsToPushWithYesterdaySnapshot:(id)a3 todaySnapshot:(id)a4
+- (id)_activitySnapshotsToPushWithYesterdaySnapshot:(id)snapshot todaySnapshot:(id)todaySnapshot
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  snapshotCopy = snapshot;
+  todaySnapshotCopy = todaySnapshot;
   v8 = [(HKActivitySummary *)self->_currentActivitySummary isEqual:self->_currentLastPushedActivitySummary];
   v9 = MEMORY[0x277CBEBF8];
-  if (v7 && (v8 & 1) == 0 && ([(HKActivitySummary *)self->_currentActivitySummary isPaused]& 1) == 0)
+  if (todaySnapshotCopy && (v8 & 1) == 0 && ([(HKActivitySummary *)self->_currentActivitySummary isPaused]& 1) == 0)
   {
-    v9 = [MEMORY[0x277CBEBF8] arrayByAddingObject:v7];
+    v9 = [MEMORY[0x277CBEBF8] arrayByAddingObject:todaySnapshotCopy];
   }
 
   v10 = [(HKActivitySummary *)self->_yesterdayActivitySummary isEqual:self->_yesterdayLastPushedActivitySummary];
-  if (v6 && (v10 & 1) == 0 && ([(HKActivitySummary *)self->_yesterdayActivitySummary isPaused]& 1) == 0)
+  if (snapshotCopy && (v10 & 1) == 0 && ([(HKActivitySummary *)self->_yesterdayActivitySummary isPaused]& 1) == 0)
   {
-    v11 = [v9 arrayByAddingObject:v6];
+    v11 = [v9 arrayByAddingObject:snapshotCopy];
 
     v9 = v11;
   }
@@ -2519,8 +2519,8 @@ void __40__ASActivityDataManager_localSourceUUID__block_invoke(uint64_t a1)
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
-        v18 = [(ASActivityDataManager *)self localSourceUUID];
-        [v17 setSourceUUID:v18];
+        localSourceUUID = [(ASActivityDataManager *)self localSourceUUID];
+        [v17 setSourceUUID:localSourceUUID];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -2534,13 +2534,13 @@ void __40__ASActivityDataManager_localSourceUUID__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (id)_achievementsToPushWithYesterdaySnapshot:(id)a3 todaySnapshot:(id)a4 currentTodayAchievementAnchorToken:(id)a5 currentYesterdayAchievementAnchorToken:(id)a6
+- (id)_achievementsToPushWithYesterdaySnapshot:(id)snapshot todaySnapshot:(id)todaySnapshot currentTodayAchievementAnchorToken:(id)token currentYesterdayAchievementAnchorToken:(id)anchorToken
 {
   v83 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  snapshotCopy = snapshot;
+  todaySnapshotCopy = todaySnapshot;
+  tokenCopy = token;
+  anchorTokenCopy = anchorToken;
   if ([(ASActivityDataManager *)self _isAlertSuppressionEnabled])
   {
     ASLoggingInitialize();
@@ -2560,7 +2560,7 @@ LABEL_35:
   ASLoggingInitialize();
   v14 = *MEMORY[0x277CE8FC8];
   v16 = os_log_type_enabled(*MEMORY[0x277CE8FC8], OS_LOG_TYPE_DEFAULT);
-  if (!v11)
+  if (!todaySnapshotCopy)
   {
     if (v16)
     {
@@ -2593,8 +2593,8 @@ LABEL_36:
     }
   }
 
-  v65 = v13;
-  v68 = v10;
+  v65 = anchorTokenCopy;
+  v68 = snapshotCopy;
   ASLoggingInitialize();
   v19 = *MEMORY[0x277CE8FC8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FC8], OS_LOG_TYPE_DEFAULT))
@@ -2609,15 +2609,15 @@ LABEL_36:
   v61 = v18;
   v62 = v17;
   [MEMORY[0x277CBEB98] setWithArray:v17];
-  v67 = v11;
+  v67 = todaySnapshotCopy;
   v60 = v64 = self;
-  v22 = -[ASActivityDataManager _filterAchievements:forSnapshotIndex:](self, "_filterAchievements:forSnapshotIndex:", v60, [v11 snapshotIndex]);
-  v23 = [v22 allObjects];
-  v24 = [v23 hk_map:&__block_literal_global_667];
+  v22 = -[ASActivityDataManager _filterAchievements:forSnapshotIndex:](self, "_filterAchievements:forSnapshotIndex:", v60, [todaySnapshotCopy snapshotIndex]);
+  allObjects = [v22 allObjects];
+  v24 = [allObjects hk_map:&__block_literal_global_667];
 
   v25 = [v24 sortedArrayUsingComparator:&__block_literal_global_670];
 
-  v26 = [MEMORY[0x277CCACA8] string];
+  string = [MEMORY[0x277CCACA8] string];
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
@@ -2631,7 +2631,7 @@ LABEL_36:
     do
     {
       v31 = 0;
-      v32 = v26;
+      v32 = string;
       do
       {
         if (*v76 != v30)
@@ -2639,10 +2639,10 @@ LABEL_36:
           objc_enumerationMutation(v27);
         }
 
-        v26 = [v32 stringByAppendingString:*(*(&v75 + 1) + 8 * v31)];
+        string = [v32 stringByAppendingString:*(*(&v75 + 1) + 8 * v31)];
 
         ++v31;
-        v32 = v26;
+        v32 = string;
       }
 
       while (v29 != v31);
@@ -2664,8 +2664,8 @@ LABEL_36:
   }
 
   v36 = v22;
-  v66 = v12;
-  v69 = v12;
+  v66 = tokenCopy;
+  v69 = tokenCopy;
   v37 = [MEMORY[0x277CBEB98] set];
   v75 = 0u;
   v76 = 0u;
@@ -2688,10 +2688,10 @@ LABEL_36:
         }
 
         v43 = *(*(&v75 + 1) + 8 * i);
-        v44 = [v43 templateUniqueName];
-        if (([v41 containsString:v44] & 1) == 0)
+        templateUniqueName = [v43 templateUniqueName];
+        if (([v41 containsString:templateUniqueName] & 1) == 0)
         {
-          v45 = v26;
+          v45 = string;
           v46 = v39;
           v47 = v40;
           ASLoggingInitialize();
@@ -2699,9 +2699,9 @@ LABEL_36:
           if (os_log_type_enabled(*MEMORY[0x277CE8FC8], OS_LOG_TYPE_DEFAULT))
           {
             v49 = v48;
-            v50 = [v43 templateUniqueName];
+            templateUniqueName2 = [v43 templateUniqueName];
             *v79 = 138412290;
-            v80 = v50;
+            v80 = templateUniqueName2;
             _os_log_impl(&dword_23E5E3000, v49, OS_LOG_TYPE_DEFAULT, "New achievement not yet pushed: %@", v79, 0xCu);
 
             v41 = v69;
@@ -2712,7 +2712,7 @@ LABEL_36:
           v37 = v51;
           v40 = v47;
           v39 = v46;
-          v26 = v45;
+          string = v45;
         }
       }
 
@@ -2732,7 +2732,7 @@ LABEL_36:
   if (os_log_type_enabled(*MEMORY[0x277CE8FC8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v82 = v26;
+    v82 = string;
     _os_log_impl(&dword_23E5E3000, v53, OS_LOG_TYPE_DEFAULT, "New today anchor token is: %@", buf, 0xCu);
   }
 
@@ -2743,17 +2743,17 @@ LABEL_36:
   block[3] = &unk_278C4BB98;
   block[4] = v64;
   v72 = v60;
-  v73 = v26;
-  v55 = v26;
+  v73 = string;
+  v55 = string;
   v56 = v60;
   dispatch_async(activitySummaryQueue, block);
   v57 = v73;
   v52 = v37;
 
-  v11 = v67;
-  v10 = v68;
-  v13 = v65;
-  v12 = v66;
+  todaySnapshotCopy = v67;
+  snapshotCopy = v68;
+  anchorTokenCopy = v65;
+  tokenCopy = v66;
 LABEL_41:
 
   v58 = *MEMORY[0x277D85DE8];
@@ -2772,12 +2772,12 @@ void __154__ASActivityDataManager__achievementsToPushWithYesterdaySnapshot_today
   }
 }
 
-- (id)_workoutsToPushWithYesterdaySnapshot:(id)a3 todaySnapshot:(id)a4 currentWorkoutAnchor:(id)a5
+- (id)_workoutsToPushWithYesterdaySnapshot:(id)snapshot todaySnapshot:(id)todaySnapshot currentWorkoutAnchor:(id)anchor
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  snapshotCopy = snapshot;
+  todaySnapshotCopy = todaySnapshot;
+  anchorCopy = anchor;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2789,7 +2789,7 @@ void __154__ASActivityDataManager__achievementsToPushWithYesterdaySnapshot_today
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__1;
   v22[4] = __Block_byref_object_dispose__1;
-  v11 = v10;
+  v11 = anchorCopy;
   v23 = v11;
   ASLoggingInitialize();
   v12 = MEMORY[0x277CE8FC8];
@@ -2807,7 +2807,7 @@ void __154__ASActivityDataManager__achievementsToPushWithYesterdaySnapshot_today
   v21[3] = &unk_278C4BBE8;
   v21[4] = &v24;
   v21[5] = v22;
-  [(ASActivityDataManager *)self _workoutsForActivitySnapshot:v9 anchor:v11 completion:v21];
+  [(ASActivityDataManager *)self _workoutsForActivitySnapshot:todaySnapshotCopy anchor:v11 completion:v21];
   ASLoggingInitialize();
   v14 = *v12;
   if (os_log_type_enabled(*v12, OS_LOG_TYPE_DEFAULT))
@@ -2823,7 +2823,7 @@ void __154__ASActivityDataManager__achievementsToPushWithYesterdaySnapshot_today
   v20[3] = &unk_278C4BBE8;
   v20[4] = &v24;
   v20[5] = v22;
-  [(ASActivityDataManager *)self _workoutsForActivitySnapshot:v8 anchor:v11 completion:v20];
+  [(ASActivityDataManager *)self _workoutsForActivitySnapshot:snapshotCopy anchor:v11 completion:v20];
   activitySummaryQueue = self->_activitySummaryQueue;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -2901,18 +2901,18 @@ void __97__ASActivityDataManager__workoutsToPushWithYesterdaySnapshot_todaySnaps
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)notificationEventsToPushWithYesterdaySnapshot:(id)a3 todaySnapshot:(id)a4 achievements:(id)a5 workouts:(id)a6 currentDeletedWorkoutAnchor:(id)a7 currentGoalCompletionAnchor:(id)a8
+- (id)notificationEventsToPushWithYesterdaySnapshot:(id)snapshot todaySnapshot:(id)todaySnapshot achievements:(id)achievements workouts:(id)workouts currentDeletedWorkoutAnchor:(id)anchor currentGoalCompletionAnchor:(id)completionAnchor
 {
-  v38 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v36 = v16;
-  v19 = [v16 hk_map:&__block_literal_global_382];
-  v37 = v15;
-  v20 = [v15 hk_map:&__block_literal_global_386];
+  snapshotCopy = snapshot;
+  todaySnapshotCopy = todaySnapshot;
+  achievementsCopy = achievements;
+  workoutsCopy = workouts;
+  anchorCopy = anchor;
+  completionAnchorCopy = completionAnchor;
+  v36 = workoutsCopy;
+  v19 = [workoutsCopy hk_map:&__block_literal_global_382];
+  v37 = achievementsCopy;
+  v20 = [achievementsCopy hk_map:&__block_literal_global_386];
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -2924,7 +2924,7 @@ void __97__ASActivityDataManager__workoutsToPushWithYesterdaySnapshot_todaySnaps
   v43[2] = 0x3032000000;
   v43[3] = __Block_byref_object_copy__1;
   v43[4] = __Block_byref_object_dispose__1;
-  v21 = v17;
+  v21 = anchorCopy;
   v44 = v21;
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -2933,15 +2933,15 @@ void __97__ASActivityDataManager__workoutsToPushWithYesterdaySnapshot_todaySnaps
   v42[4] = &v45;
   v42[5] = v43;
   [(ASActivityDataManager *)self findDeletedWorkoutEventsWithAnchor:v21 completion:v42];
-  v22 = v18;
-  if (ASAllGoalsMetForSnapshot() && (v23 = [v14 snapshotIndex], v23 > -[NSNumber integerValue](self->_lastPushedGoalCompletionAnchor, "integerValue")))
+  v22 = completionAnchorCopy;
+  if (ASAllGoalsMetForSnapshot() && (v23 = [todaySnapshotCopy snapshotIndex], v23 > -[NSNumber integerValue](self->_lastPushedGoalCompletionAnchor, "integerValue")))
   {
     v24 = MEMORY[0x277CE9110];
-    v25 = [v14 activitySummary];
-    v26 = [v24 goalCompletionEventWithActivitySummary:v25];
+    activitySummary = [todaySnapshotCopy activitySummary];
+    v26 = [v24 goalCompletionEventWithActivitySummary:activitySummary];
 
     v27 = [MEMORY[0x277CBEBF8] arrayByAddingObject:v26];
-    v28 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v14, "snapshotIndex")}];
+    v28 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(todaySnapshotCopy, "snapshotIndex")}];
   }
 
   else
@@ -2996,15 +2996,15 @@ void __163__ASActivityDataManager_notificationEventsToPushWithYesterdaySnapshot_
   objc_storeStrong(v3, v2);
 }
 
-- (id)recordsFromActivityDataCodables:(id)a3 recordEncryptionType:(int64_t)a4
+- (id)recordsFromActivityDataCodables:(id)codables recordEncryptionType:(int64_t)type
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(ASActivityDataManager *)self cloudKitManager];
-  v7 = [objc_opt_class() activityDataRecordZoneID];
+  codablesCopy = codables;
+  cloudKitManager = [(ASActivityDataManager *)self cloudKitManager];
+  activityDataRecordZoneID = [objc_opt_class() activityDataRecordZoneID];
 
-  v20 = v7;
-  v21 = v5;
+  v20 = activityDataRecordZoneID;
+  v21 = codablesCopy;
   v8 = _ASCreateRecordsFromCloudKitCodablesAndRecordZoneID();
   v22 = 0u;
   v23 = 0u;
@@ -3027,8 +3027,8 @@ void __163__ASActivityDataManager_notificationEventsToPushWithYesterdaySnapshot_
         v13 = *(*(&v22 + 1) + 8 * i);
         v14 = objc_alloc(MEMORY[0x277CBC620]);
         v15 = [(ASActivityDataManager *)self cloudKitManager:v20];
-        v16 = [objc_opt_class() activityDataRootRecordID];
-        v17 = [v14 initWithRecordID:v16 action:0];
+        activityDataRootRecordID = [objc_opt_class() activityDataRootRecordID];
+        v17 = [v14 initWithRecordID:activityDataRootRecordID action:0];
         [v13 setParent:v17];
       }
 
@@ -3126,20 +3126,20 @@ void __163__ASActivityDataManager_notificationEventsToPushWithYesterdaySnapshot_
   }
 
   v11 = [(ASActivityDataManager *)self _achievementsToPushWithYesterdaySnapshot:v4 todaySnapshot:v5 currentTodayAchievementAnchorToken:v41[5] currentYesterdayAchievementAnchorToken:0];
-  v12 = [v11 allObjects];
+  allObjects = [v11 allObjects];
 
   v13 = [(ASActivityDataManager *)self _workoutsToPushWithYesterdaySnapshot:v4 todaySnapshot:v5 currentWorkoutAnchor:v53[5]];
-  v14 = [v13 allObjects];
+  allObjects2 = [v13 allObjects];
 
-  v15 = [(ASActivityDataManager *)self notificationEventsToPushWithYesterdaySnapshot:v4 todaySnapshot:v5 achievements:v12 workouts:v14 currentDeletedWorkoutAnchor:v47[5] currentGoalCompletionAnchor:v35[5]];
+  v15 = [(ASActivityDataManager *)self notificationEventsToPushWithYesterdaySnapshot:v4 todaySnapshot:v5 achievements:allObjects workouts:allObjects2 currentDeletedWorkoutAnchor:v47[5] currentGoalCompletionAnchor:v35[5]];
   ASLoggingInitialize();
   v16 = *MEMORY[0x277CE8FC8];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v28 = v4;
     v17 = [v6 count];
-    v18 = [v12 count];
-    v19 = [v14 count];
+    v18 = [allObjects count];
+    v19 = [allObjects2 count];
     v20 = [v15 count];
     *buf = 134218752;
     v71 = v17;
@@ -3154,9 +3154,9 @@ void __163__ASActivityDataManager_notificationEventsToPushWithYesterdaySnapshot_
   }
 
   v21 = [MEMORY[0x277CBEA60] arrayWithArray:v6];
-  v22 = [v21 arrayByAddingObjectsFromArray:v12];
+  v22 = [v21 arrayByAddingObjectsFromArray:allObjects];
 
-  v23 = [v22 arrayByAddingObjectsFromArray:v14];
+  v23 = [v22 arrayByAddingObjectsFromArray:allObjects2];
 
   v24 = [v23 arrayByAddingObjectsFromArray:v15];
 
@@ -3273,8 +3273,8 @@ void __38__ASActivityDataManager_recordsToSave__block_invoke(void *a1)
   v24 = [MEMORY[0x277CCDDC8] snapshotWithActivitySummary:v45[5]];
   v4 = [MEMORY[0x277CCDDC8] snapshotWithActivitySummary:v51[5]];
   v5 = [(ASActivityDataManager *)self notificationEventsToPushWithYesterdaySnapshot:v24 todaySnapshot:v4 achievements:0 workouts:0 currentDeletedWorkoutAnchor:v37[5] currentGoalCompletionAnchor:v31[5]];
-  v6 = [(ASActivityDataManager *)self cloudKitManager];
-  v7 = [objc_opt_class() activityDataRecordZoneID];
+  cloudKitManager = [(ASActivityDataManager *)self cloudKitManager];
+  activityDataRecordZoneID = [objc_opt_class() activityDataRecordZoneID];
 
   v27 = 0u;
   v28 = 0u;
@@ -3298,12 +3298,12 @@ void __38__ASActivityDataManager_recordsToSave__block_invoke(void *a1)
         v13 = *(*(&v25 + 1) + 8 * i);
         if ([v13 type] == 3)
         {
-          v14 = [v13 triggerUUID];
+          triggerUUID = [v13 triggerUUID];
           v15 = ASWorkoutRecordIDForUUID();
 
           v16 = [v11 arrayByAddingObject:v15];
 
-          v17 = [v13 triggerUUID];
+          triggerUUID2 = [v13 triggerUUID];
           v18 = ASWorkoutNotificationRecordIDForType();
 
           v11 = [v16 arrayByAddingObject:v18];
@@ -3360,7 +3360,7 @@ void __42__ASActivityDataManager_recordIDsToDelete__block_invoke(void *a1)
   objc_storeStrong(v3, v2);
 }
 
-- (void)periodicUpdateManager:(id)a3 didSaveRecords:(id)a4 activity:(id)a5
+- (void)periodicUpdateManager:(id)manager didSaveRecords:(id)records activity:(id)activity
 {
   activitySummaryQueue = self->_activitySummaryQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -3388,7 +3388,7 @@ void __71__ASActivityDataManager_periodicUpdateManager_didSaveRecords_activity__
   *(v4 + 176) = 0;
 }
 
-- (void)periodicUpdateManager:(id)a3 didFailToSaveRecords:(id)a4 activity:(id)a5
+- (void)periodicUpdateManager:(id)manager didFailToSaveRecords:(id)records activity:(id)activity
 {
   activitySummaryQueue = self->_activitySummaryQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -3410,25 +3410,25 @@ void __77__ASActivityDataManager_periodicUpdateManager_didFailToSaveRecords_acti
   *(v4 + 176) = 0;
 }
 
-- (void)findDeletedWorkoutEventsWithAnchor:(id)a3 completion:(id)a4
+- (void)findDeletedWorkoutEventsWithAnchor:(id)anchor completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  anchorCopy = anchor;
+  completionCopy = completion;
   ASLoggingInitialize();
   v8 = MEMORY[0x277CE8FC8];
   v9 = *MEMORY[0x277CE8FC8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FC8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v6;
+    v21 = anchorCopy;
     _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "Looking for deleted workouts with anchor: %{public}@", buf, 0xCu);
   }
 
   databaseClient = self->_databaseClient;
   v18 = 0;
-  v19 = v6;
-  v11 = v6;
+  v19 = anchorCopy;
+  v11 = anchorCopy;
   v12 = [(ASDatabaseClient *)databaseClient deletedHealthKitWorkoutsWithinLastNumberOfDays:7 maxBatchSize:100 anchor:&v19 error:&v18];
   v13 = v19;
 
@@ -3451,7 +3451,7 @@ void __77__ASActivityDataManager_periodicUpdateManager_didFailToSaveRecords_acti
     }
   }
 
-  v7[2](v7, v15, v13);
+  completionCopy[2](completionCopy, v15, v13);
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -3476,19 +3476,19 @@ id __71__ASActivityDataManager_findDeletedWorkoutEventsWithAnchor_completion___b
   return v4;
 }
 
-- (void)_ckQueue_handleDeletedWorkoutEvents:(id)a3 completion:(id)a4
+- (void)_ckQueue_handleDeletedWorkoutEvents:(id)events completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v24 = a4;
-  v25 = self;
+  eventsCopy = events;
+  completionCopy = completion;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_cloudKitManagerObserverQueue);
   v7 = objc_alloc_init(MEMORY[0x277CBEB98]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v6;
+  v8 = eventsCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v9)
   {
@@ -3512,14 +3512,14 @@ id __71__ASActivityDataManager_findDeletedWorkoutEventsWithAnchor_completion___b
         if (os_log_type_enabled(*v12, OS_LOG_TYPE_DEFAULT))
         {
           v17 = v16;
-          v18 = [v15 triggerUUID];
+          triggerUUID = [v15 triggerUUID];
           *buf = 138412290;
-          v35 = v18;
+          v35 = triggerUUID;
           _os_log_impl(&dword_23E5E3000, v17, OS_LOG_TYPE_DEFAULT, "Received an event for deleted workout: %@", buf, 0xCu);
         }
 
-        v19 = [v15 triggerUUID];
-        v7 = [v14 setByAddingObject:v19];
+        triggerUUID2 = [v15 triggerUUID];
+        v7 = [v14 setByAddingObject:triggerUUID2];
 
         ++v13;
         v14 = v7;
@@ -3532,15 +3532,15 @@ id __71__ASActivityDataManager_findDeletedWorkoutEventsWithAnchor_completion___b
     while (v10);
   }
 
-  healthDataQueue = v25->_healthDataQueue;
+  healthDataQueue = selfCopy->_healthDataQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__ASActivityDataManager__ckQueue_handleDeletedWorkoutEvents_completion___block_invoke;
   block[3] = &unk_278C4BA30;
   v27 = v7;
-  v28 = v25;
-  v29 = v24;
-  v21 = v24;
+  v28 = selfCopy;
+  v29 = completionCopy;
+  v21 = completionCopy;
   v22 = v7;
   dispatch_async(healthDataQueue, block);
 
@@ -3596,15 +3596,15 @@ void __72__ASActivityDataManager__ckQueue_handleDeletedWorkoutEvents_completion_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_persistedAnchorWithKey:(id)a3
+- (id)_persistedAnchorWithKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_activitySharingManager);
-  v6 = [WeakRetained deviceLocalActivitySharingKeyValueDomain];
+  deviceLocalActivitySharingKeyValueDomain = [WeakRetained deviceLocalActivitySharingKeyValueDomain];
 
   v13 = 0;
-  v7 = [v6 numberForKey:v4 error:&v13];
+  v7 = [deviceLocalActivitySharingKeyValueDomain numberForKey:keyCopy error:&v13];
   v8 = v13;
   ASLoggingInitialize();
   v9 = *MEMORY[0x277CE8FC8];
@@ -3620,7 +3620,7 @@ void __72__ASActivityDataManager__ckQueue_handleDeletedWorkoutEvents_completion_
   else if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = v4;
+    v15 = keyCopy;
     v16 = 2114;
     v17 = v7;
     _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "Loaded %{public}@: %{public}@", buf, 0x16u);
@@ -3631,15 +3631,15 @@ void __72__ASActivityDataManager__ckQueue_handleDeletedWorkoutEvents_completion_
   return v7;
 }
 
-- (id)_persistedAnchorTokenWithKey:(id)a3
+- (id)_persistedAnchorTokenWithKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_activitySharingManager);
-  v6 = [WeakRetained deviceLocalActivitySharingKeyValueDomain];
+  deviceLocalActivitySharingKeyValueDomain = [WeakRetained deviceLocalActivitySharingKeyValueDomain];
 
   v13 = 0;
-  v7 = [v6 stringForKey:v4 error:&v13];
+  v7 = [deviceLocalActivitySharingKeyValueDomain stringForKey:keyCopy error:&v13];
   v8 = v13;
   ASLoggingInitialize();
   v9 = *MEMORY[0x277CE8FC8];
@@ -3655,7 +3655,7 @@ void __72__ASActivityDataManager__ckQueue_handleDeletedWorkoutEvents_completion_
   else if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = v4;
+    v15 = keyCopy;
     v16 = 2114;
     v17 = v7;
     _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "Loaded %{public}@: [%{public}@]", buf, 0x16u);
@@ -3666,39 +3666,39 @@ void __72__ASActivityDataManager__ckQueue_handleDeletedWorkoutEvents_completion_
   return v7;
 }
 
-- (void)_queue_setLastPushedWorkoutAnchor:(id)a3
+- (void)_queue_setLastPushedWorkoutAnchor:(id)anchor
 {
-  v5 = a3;
+  anchorCopy = anchor;
   dispatch_assert_queue_V2(self->_activitySummaryQueue);
-  if (![(NSNumber *)self->_lastPushedWorkoutAnchor isEqualToNumber:v5])
+  if (![(NSNumber *)self->_lastPushedWorkoutAnchor isEqualToNumber:anchorCopy])
   {
-    objc_storeStrong(&self->_lastPushedWorkoutAnchor, a3);
-    [(ASActivityDataManager *)self _queue_persistAnchorValue:v5 forKey:@"LastPushedWorkoutAnchor"];
+    objc_storeStrong(&self->_lastPushedWorkoutAnchor, anchor);
+    [(ASActivityDataManager *)self _queue_persistAnchorValue:anchorCopy forKey:@"LastPushedWorkoutAnchor"];
   }
 }
 
-- (void)_queue_setLastPushedDeletedWorkoutAnchor:(id)a3
+- (void)_queue_setLastPushedDeletedWorkoutAnchor:(id)anchor
 {
-  v5 = a3;
+  anchorCopy = anchor;
   dispatch_assert_queue_V2(self->_activitySummaryQueue);
-  if (![(NSNumber *)self->_lastPushedDeletedWorkoutAnchor isEqualToNumber:v5])
+  if (![(NSNumber *)self->_lastPushedDeletedWorkoutAnchor isEqualToNumber:anchorCopy])
   {
-    objc_storeStrong(&self->_lastPushedDeletedWorkoutAnchor, a3);
-    [(ASActivityDataManager *)self _queue_persistAnchorValue:v5 forKey:@"LastPushedDeletedWorkoutAnchor"];
+    objc_storeStrong(&self->_lastPushedDeletedWorkoutAnchor, anchor);
+    [(ASActivityDataManager *)self _queue_persistAnchorValue:anchorCopy forKey:@"LastPushedDeletedWorkoutAnchor"];
   }
 }
 
-- (void)_queue_persistAnchorValue:(id)a3 forKey:(id)a4
+- (void)_queue_persistAnchorValue:(id)value forKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   dispatch_assert_queue_V2(self->_activitySummaryQueue);
   WeakRetained = objc_loadWeakRetained(&self->_activitySharingManager);
-  v9 = [WeakRetained deviceLocalActivitySharingKeyValueDomain];
+  deviceLocalActivitySharingKeyValueDomain = [WeakRetained deviceLocalActivitySharingKeyValueDomain];
 
   v14 = 0;
-  [v9 setNumber:v6 forKey:v7 error:&v14];
+  [deviceLocalActivitySharingKeyValueDomain setNumber:valueCopy forKey:keyCopy error:&v14];
   v10 = v14;
   ASLoggingInitialize();
   v11 = *MEMORY[0x277CE8FC8];
@@ -3714,48 +3714,48 @@ void __72__ASActivityDataManager__ckQueue_handleDeletedWorkoutEvents_completion_
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = v7;
+    v16 = keyCopy;
     v17 = 2114;
-    v18 = v6;
+    v18 = valueCopy;
     _os_log_impl(&dword_23E5E3000, v11, OS_LOG_TYPE_DEFAULT, "Updated %{public}@ to %{public}@", buf, 0x16u);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setLastPushedTodayAchievementAnchorToken:(id)a3
+- (void)_queue_setLastPushedTodayAchievementAnchorToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_activitySummaryQueue);
-  if (![(NSString *)self->_lastPushedTodayAchievementAnchorToken isEqualToString:v5])
+  if (![(NSString *)self->_lastPushedTodayAchievementAnchorToken isEqualToString:tokenCopy])
   {
-    objc_storeStrong(&self->_lastPushedTodayAchievementAnchorToken, a3);
-    [(ASActivityDataManager *)self _queue_persistAnchorTokenValue:v5 forKey:@"LastPushedTodayAchievementAnchorToken"];
+    objc_storeStrong(&self->_lastPushedTodayAchievementAnchorToken, token);
+    [(ASActivityDataManager *)self _queue_persistAnchorTokenValue:tokenCopy forKey:@"LastPushedTodayAchievementAnchorToken"];
   }
 }
 
-- (void)_queue_setLastPushedGoalCompletionAnchor:(id)a3
+- (void)_queue_setLastPushedGoalCompletionAnchor:(id)anchor
 {
-  v5 = a3;
+  anchorCopy = anchor;
   dispatch_assert_queue_V2(self->_activitySummaryQueue);
-  if (![(NSNumber *)self->_lastPushedGoalCompletionAnchor isEqualToNumber:v5])
+  if (![(NSNumber *)self->_lastPushedGoalCompletionAnchor isEqualToNumber:anchorCopy])
   {
-    objc_storeStrong(&self->_lastPushedGoalCompletionAnchor, a3);
+    objc_storeStrong(&self->_lastPushedGoalCompletionAnchor, anchor);
     [(ASActivityDataManager *)self _queue_persistAnchorValue:self->_lastPushedGoalCompletionAnchor forKey:@"LastPushedGoalCompletionAnchor"];
   }
 }
 
-- (void)_queue_persistAnchorTokenValue:(id)a3 forKey:(id)a4
+- (void)_queue_persistAnchorTokenValue:(id)value forKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   dispatch_assert_queue_V2(self->_activitySummaryQueue);
   WeakRetained = objc_loadWeakRetained(&self->_activitySharingManager);
-  v9 = [WeakRetained deviceLocalActivitySharingKeyValueDomain];
+  deviceLocalActivitySharingKeyValueDomain = [WeakRetained deviceLocalActivitySharingKeyValueDomain];
 
   v14 = 0;
-  [v9 setString:v6 forKey:v7 error:&v14];
+  [deviceLocalActivitySharingKeyValueDomain setString:valueCopy forKey:keyCopy error:&v14];
   v10 = v14;
   ASLoggingInitialize();
   v11 = *MEMORY[0x277CE8FC8];
@@ -3771,9 +3771,9 @@ void __72__ASActivityDataManager__ckQueue_handleDeletedWorkoutEvents_completion_
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = v7;
+    v16 = keyCopy;
     v17 = 2114;
-    v18 = v6;
+    v18 = valueCopy;
     _os_log_impl(&dword_23E5E3000, v11, OS_LOG_TYPE_DEFAULT, "Updated %{public}@ to [%{public}@]", buf, 0x16u);
   }
 
@@ -3826,29 +3826,29 @@ void __72__ASActivityDataManager__ckQueue_handleDeletedWorkoutEvents_completion_
   return v9 & 1;
 }
 
-- (void)updateSecureCloudGoalCompletionAnchor:(id)a3
+- (void)updateSecureCloudGoalCompletionAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   activitySummaryQueue = self->_activitySummaryQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__ASActivityDataManager_updateSecureCloudGoalCompletionAnchor___block_invoke;
   v7[3] = &unk_278C4B250;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = anchorCopy;
+  v6 = anchorCopy;
   dispatch_async(activitySummaryQueue, v7);
 }
 
-- (void)_queue_setSecureCloudGoalCompletionAnchor:(id)a3
+- (void)_queue_setSecureCloudGoalCompletionAnchor:(id)anchor
 {
-  v6 = a3;
+  anchorCopy = anchor;
   dispatch_assert_queue_V2(self->_activitySummaryQueue);
-  v5 = [(NSNumber *)self->_secureCloudGoalCompletionAnchor integerValue];
-  if (v5 < [v6 integerValue])
+  integerValue = [(NSNumber *)self->_secureCloudGoalCompletionAnchor integerValue];
+  if (integerValue < [anchorCopy integerValue])
   {
-    objc_storeStrong(&self->_secureCloudGoalCompletionAnchor, a3);
-    [(ASActivityDataManager *)self _queue_persistAnchorValue:v6 forKey:@"SecureCloudGoalCompletionAnchor"];
+    objc_storeStrong(&self->_secureCloudGoalCompletionAnchor, anchor);
+    [(ASActivityDataManager *)self _queue_persistAnchorValue:anchorCopy forKey:@"SecureCloudGoalCompletionAnchor"];
   }
 }
 

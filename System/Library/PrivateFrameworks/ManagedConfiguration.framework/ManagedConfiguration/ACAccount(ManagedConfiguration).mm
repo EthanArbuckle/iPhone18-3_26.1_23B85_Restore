@@ -28,376 +28,376 @@
 
 - (uint64_t)MCIsManaged
 {
-  v2 = [a1 accountPropertyForKey:@"MCAccountIsManaged"];
+  v2 = [self accountPropertyForKey:@"MCAccountIsManaged"];
   if ([v2 BOOLValue])
   {
-    v3 = 1;
+    mCIsManaged = 1;
   }
 
   else
   {
-    v4 = [a1 parentAccount];
-    v3 = [v4 MCIsManaged];
+    parentAccount = [self parentAccount];
+    mCIsManaged = [parentAccount MCIsManaged];
   }
 
-  return v3;
+  return mCIsManaged;
 }
 
 - (id)mcAccountIdentifier
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 mcAccountIdentifier];
+    parentAccount2 = [self parentAccount];
+    mcAccountIdentifier = [parentAccount2 mcAccountIdentifier];
   }
 
   else
   {
-    v4 = [a1 accountPropertyForKey:@"MCAccountIdentifer"];
+    mcAccountIdentifier = [self accountPropertyForKey:@"MCAccountIdentifer"];
   }
 
-  return v4;
+  return mcAccountIdentifier;
 }
 
 - (void)setMcAccountIdentifier:()ManagedConfiguration
 {
   v6 = a3;
-  v4 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [a1 parentAccount];
-    [v5 setMcAccountIdentifier:v6];
+    parentAccount2 = [self parentAccount];
+    [parentAccount2 setMcAccountIdentifier:v6];
   }
 
   else
   {
-    [a1 setAccountProperty:v6 forKey:@"MCAccountIdentifer"];
+    [self setAccountProperty:v6 forKey:@"MCAccountIdentifer"];
   }
 }
 
 - (id)mcConfigurationProfileIdentifier
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 mcConfigurationProfileIdentifier];
+    parentAccount2 = [self parentAccount];
+    mcConfigurationProfileIdentifier = [parentAccount2 mcConfigurationProfileIdentifier];
   }
 
   else
   {
-    v4 = [a1 accountPropertyForKey:*MEMORY[0x1E6959728]];
+    mcConfigurationProfileIdentifier = [self accountPropertyForKey:*MEMORY[0x1E6959728]];
   }
 
-  return v4;
+  return mcConfigurationProfileIdentifier;
 }
 
 - (void)setMcConfigurationProfileIdentifier:()ManagedConfiguration
 {
   v6 = a3;
-  v4 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [a1 parentAccount];
-    [v5 setMcConfigurationProfileIdentifier:v6];
+    parentAccount2 = [self parentAccount];
+    [parentAccount2 setMcConfigurationProfileIdentifier:v6];
   }
 
   else
   {
-    [a1 setAccountProperty:v6 forKey:*MEMORY[0x1E6959728]];
+    [self setAccountProperty:v6 forKey:*MEMORY[0x1E6959728]];
   }
 }
 
 - (id)mcProfileUUID
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 mcProfileUUID];
+    parentAccount2 = [self parentAccount];
+    mcProfileUUID = [parentAccount2 mcProfileUUID];
   }
 
   else
   {
-    v4 = [a1 accountPropertyForKey:@"mcProfileUUID"];
+    mcProfileUUID = [self accountPropertyForKey:@"mcProfileUUID"];
   }
 
-  return v4;
+  return mcProfileUUID;
 }
 
 - (void)setMcProfileUUID:()ManagedConfiguration
 {
   v6 = a3;
-  v4 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [a1 parentAccount];
-    [v5 setMcProfileUUID:v6];
+    parentAccount2 = [self parentAccount];
+    [parentAccount2 setMcProfileUUID:v6];
   }
 
   else
   {
-    [a1 setAccountProperty:v6 forKey:@"mcProfileUUID"];
+    [self setAccountProperty:v6 forKey:@"mcProfileUUID"];
   }
 }
 
 - (id)mcPayloadUUID
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 mcPayloadUUID];
+    parentAccount2 = [self parentAccount];
+    mcPayloadUUID = [parentAccount2 mcPayloadUUID];
   }
 
   else
   {
-    v4 = [a1 accountPropertyForKey:@"mcPayloadUUID"];
+    mcPayloadUUID = [self accountPropertyForKey:@"mcPayloadUUID"];
   }
 
-  return v4;
+  return mcPayloadUUID;
 }
 
 - (void)setMcPayloadUUID:()ManagedConfiguration
 {
   v6 = a3;
-  v4 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [a1 parentAccount];
-    [v5 setMcPayloadUUID:v6];
+    parentAccount2 = [self parentAccount];
+    [parentAccount2 setMcPayloadUUID:v6];
   }
 
   else
   {
-    [a1 setAccountProperty:v6 forKey:@"mcPayloadUUID"];
+    [self setAccountProperty:v6 forKey:@"mcPayloadUUID"];
   }
 }
 
 - (id)mcEASAccountEnableNotes
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 mcEASAccountEnableNotes];
+    parentAccount2 = [self parentAccount];
+    mcEASAccountEnableNotes = [parentAccount2 mcEASAccountEnableNotes];
   }
 
   else
   {
-    v4 = [a1 accountPropertyForKey:@"mcEnableNotes"];
+    mcEASAccountEnableNotes = [self accountPropertyForKey:@"mcEnableNotes"];
   }
 
-  return v4;
+  return mcEASAccountEnableNotes;
 }
 
 - (void)setMcEASAccountEnableNotes:()ManagedConfiguration
 {
   v6 = a3;
-  v4 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [a1 parentAccount];
-    [v5 setMcEASAccountEnableNotes:v6];
+    parentAccount2 = [self parentAccount];
+    [parentAccount2 setMcEASAccountEnableNotes:v6];
   }
 
   else
   {
-    [a1 setAccountProperty:v6 forKey:@"mcEnableNotes"];
+    [self setAccountProperty:v6 forKey:@"mcEnableNotes"];
   }
 }
 
 - (id)mcEnableMailUserOverridable
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 mcEnableMailUserOverridable];
+    parentAccount2 = [self parentAccount];
+    mcEnableMailUserOverridable = [parentAccount2 mcEnableMailUserOverridable];
   }
 
   else
   {
-    v4 = [a1 accountPropertyForKey:@"mcEnableMailUserOverridable"];
+    mcEnableMailUserOverridable = [self accountPropertyForKey:@"mcEnableMailUserOverridable"];
   }
 
-  return v4;
+  return mcEnableMailUserOverridable;
 }
 
 - (void)setMcEnableMailUserOverridable:()ManagedConfiguration
 {
   v6 = a3;
-  v4 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [a1 parentAccount];
-    [v5 setMcEnableMailUserOverridable:v6];
+    parentAccount2 = [self parentAccount];
+    [parentAccount2 setMcEnableMailUserOverridable:v6];
   }
 
   else
   {
-    [a1 setAccountProperty:v6 forKey:@"mcEnableMailUserOverridable"];
+    [self setAccountProperty:v6 forKey:@"mcEnableMailUserOverridable"];
   }
 }
 
 - (id)mcEnableContactsUserOverridable
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 mcEnableContactsUserOverridable];
+    parentAccount2 = [self parentAccount];
+    mcEnableContactsUserOverridable = [parentAccount2 mcEnableContactsUserOverridable];
   }
 
   else
   {
-    v4 = [a1 accountPropertyForKey:@"mcEnableContactsUserOverridable"];
+    mcEnableContactsUserOverridable = [self accountPropertyForKey:@"mcEnableContactsUserOverridable"];
   }
 
-  return v4;
+  return mcEnableContactsUserOverridable;
 }
 
 - (void)setMcEnableContactsUserOverridable:()ManagedConfiguration
 {
   v6 = a3;
-  v4 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [a1 parentAccount];
-    [v5 setMcEnableContactsUserOverridable:v6];
+    parentAccount2 = [self parentAccount];
+    [parentAccount2 setMcEnableContactsUserOverridable:v6];
   }
 
   else
   {
-    [a1 setAccountProperty:v6 forKey:@"mcEnableContactsUserOverridable"];
+    [self setAccountProperty:v6 forKey:@"mcEnableContactsUserOverridable"];
   }
 }
 
 - (id)mcEnableCalendarsUserOverridable
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 mcEnableCalendarsUserOverridable];
+    parentAccount2 = [self parentAccount];
+    mcEnableCalendarsUserOverridable = [parentAccount2 mcEnableCalendarsUserOverridable];
   }
 
   else
   {
-    v4 = [a1 accountPropertyForKey:@"mcEnableCalendarsUserOverridable"];
+    mcEnableCalendarsUserOverridable = [self accountPropertyForKey:@"mcEnableCalendarsUserOverridable"];
   }
 
-  return v4;
+  return mcEnableCalendarsUserOverridable;
 }
 
 - (void)setMcEnableCalendarsUserOverridable:()ManagedConfiguration
 {
   v6 = a3;
-  v4 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [a1 parentAccount];
-    [v5 setMcEnableCalendarsUserOverridable:v6];
+    parentAccount2 = [self parentAccount];
+    [parentAccount2 setMcEnableCalendarsUserOverridable:v6];
   }
 
   else
   {
-    [a1 setAccountProperty:v6 forKey:@"mcEnableCalendarsUserOverridable"];
+    [self setAccountProperty:v6 forKey:@"mcEnableCalendarsUserOverridable"];
   }
 }
 
 - (id)mcEnableRemindersUserOverridable
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 mcEnableRemindersUserOverridable];
+    parentAccount2 = [self parentAccount];
+    mcEnableRemindersUserOverridable = [parentAccount2 mcEnableRemindersUserOverridable];
   }
 
   else
   {
-    v4 = [a1 accountPropertyForKey:@"mcEnableRemindersUserOverridable"];
+    mcEnableRemindersUserOverridable = [self accountPropertyForKey:@"mcEnableRemindersUserOverridable"];
   }
 
-  return v4;
+  return mcEnableRemindersUserOverridable;
 }
 
 - (void)setMcEnableRemindersUserOverridable:()ManagedConfiguration
 {
   v6 = a3;
-  v4 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [a1 parentAccount];
-    [v5 setMcEnableRemindersUserOverridable:v6];
+    parentAccount2 = [self parentAccount];
+    [parentAccount2 setMcEnableRemindersUserOverridable:v6];
   }
 
   else
   {
-    [a1 setAccountProperty:v6 forKey:@"mcEnableRemindersUserOverridable"];
+    [self setAccountProperty:v6 forKey:@"mcEnableRemindersUserOverridable"];
   }
 }
 
 - (id)mcEnableNotesUserOverridable
 {
-  v2 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v2)
+  if (parentAccount)
   {
-    v3 = [a1 parentAccount];
-    v4 = [v3 mcEnableNotesUserOverridable];
+    parentAccount2 = [self parentAccount];
+    mcEnableNotesUserOverridable = [parentAccount2 mcEnableNotesUserOverridable];
   }
 
   else
   {
-    v4 = [a1 accountPropertyForKey:@"mcEnableNotesUserOverridable"];
+    mcEnableNotesUserOverridable = [self accountPropertyForKey:@"mcEnableNotesUserOverridable"];
   }
 
-  return v4;
+  return mcEnableNotesUserOverridable;
 }
 
 - (void)setMcEnableNotesUserOverridable:()ManagedConfiguration
 {
   v6 = a3;
-  v4 = [a1 parentAccount];
+  parentAccount = [self parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [a1 parentAccount];
-    [v5 setMcEnableNotesUserOverridable:v6];
+    parentAccount2 = [self parentAccount];
+    [parentAccount2 setMcEnableNotesUserOverridable:v6];
   }
 
   else
   {
-    [a1 setAccountProperty:v6 forKey:@"mcEnableNotesUserOverridable"];
+    [self setAccountProperty:v6 forKey:@"mcEnableNotesUserOverridable"];
   }
 }
 
 - (id)mcBackingProfile
 {
   v20 = *MEMORY[0x1E69E9840];
-  v1 = [a1 mcProfileUUID];
-  if (v1)
+  mcProfileUUID = [self mcProfileUUID];
+  if (mcProfileUUID)
   {
     v2 = +[MCProfileConnection sharedConnection];
     [v2 installedProfileIdentifiersWithFilterFlags:3];
@@ -422,8 +422,8 @@
           v8 = *(*(&v15 + 1) + 8 * i);
           v9 = objc_autoreleasePoolPush();
           v10 = [v2 installedProfileWithIdentifier:{v8, v15}];
-          v11 = [v10 UUID];
-          v12 = [v11 isEqualToString:v1];
+          uUID = [v10 UUID];
+          v12 = [uUID isEqualToString:mcProfileUUID];
 
           if (v12)
           {
@@ -461,11 +461,11 @@ LABEL_12:
 - (id)mcBackingPayload
 {
   v43 = *MEMORY[0x1E69E9840];
-  v2 = [a1 mcProfileUUID];
-  v3 = [a1 mcPayloadUUID];
-  v4 = v3;
+  mcProfileUUID = [self mcProfileUUID];
+  mcPayloadUUID = [self mcPayloadUUID];
+  v4 = mcPayloadUUID;
   v5 = 0;
-  if (v2 && v3)
+  if (mcProfileUUID && mcPayloadUUID)
   {
     v6 = +[MCProfileConnection sharedConnection];
     [v6 installedProfileIdentifiersWithFilterFlags:3];
@@ -478,7 +478,7 @@ LABEL_12:
     {
       v8 = *v38;
       v29 = v6;
-      v30 = v2;
+      v30 = mcProfileUUID;
       v27 = *v38;
       v28 = v7;
       do
@@ -494,19 +494,19 @@ LABEL_12:
           v11 = *(*(&v37 + 1) + 8 * i);
           v12 = objc_autoreleasePoolPush();
           v13 = [v6 installedProfileWithIdentifier:v11];
-          v14 = [v13 UUID];
-          v15 = [v14 isEqualToString:v2];
+          uUID = [v13 UUID];
+          v15 = [uUID isEqualToString:mcProfileUUID];
 
           v8 = v10;
           if (v15)
           {
             context = v12;
-            v16 = [v13 payloads];
+            payloads = [v13 payloads];
             v33 = 0u;
             v34 = 0u;
             v35 = 0u;
             v36 = 0u;
-            v17 = v16;
+            v17 = payloads;
             v18 = [v17 countByEnumeratingWithState:&v33 objects:v41 count:16];
             if (v18)
             {
@@ -522,8 +522,8 @@ LABEL_12:
                   }
 
                   v22 = *(*(&v33 + 1) + 8 * j);
-                  v23 = [v22 UUID];
-                  v24 = [v23 isEqualToString:v4];
+                  uUID2 = [v22 UUID];
+                  v24 = [uUID2 isEqualToString:v4];
 
                   if (v24)
                   {
@@ -531,7 +531,7 @@ LABEL_12:
 
                     objc_autoreleasePoolPop(context);
                     v6 = v29;
-                    v2 = v30;
+                    mcProfileUUID = v30;
                     v7 = v28;
                     goto LABEL_23;
                   }
@@ -548,7 +548,7 @@ LABEL_12:
             }
 
             v6 = v29;
-            v2 = v30;
+            mcProfileUUID = v30;
             v8 = v27;
             v7 = v28;
             v12 = context;

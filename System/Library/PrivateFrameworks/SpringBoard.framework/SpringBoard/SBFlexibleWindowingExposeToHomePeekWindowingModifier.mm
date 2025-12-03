@@ -1,37 +1,37 @@
 @interface SBFlexibleWindowingExposeToHomePeekWindowingModifier
-- (BOOL)shouldInterruptForActivity:(id)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBFlexibleWindowingExposeToHomePeekWindowingModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 exposeModifier:(id)a5;
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3;
-- (SBWindowingItemFrame)frameForItem:(SEL)a3;
-- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)a3;
-- (double)opacityForItem:(id)a3;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)animationAttributesForItem:(id)a3;
+- (BOOL)shouldInterruptForActivity:(id)activity;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBFlexibleWindowingExposeToHomePeekWindowingModifier)initWithTransitionID:(id)d direction:(int64_t)direction exposeModifier:(id)modifier;
+- (SBWindowingItemCorners)cornersForItem:(SEL)item;
+- (SBWindowingItemFrame)frameForItem:(SEL)item;
+- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)item;
+- (double)opacityForItem:(id)item;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)animationAttributesForItem:(id)item;
 - (id)visibleItems;
-- (void)transitionWillBegin:(id)a3;
+- (void)transitionWillBegin:(id)begin;
 @end
 
 @implementation SBFlexibleWindowingExposeToHomePeekWindowingModifier
 
-- (SBFlexibleWindowingExposeToHomePeekWindowingModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 exposeModifier:(id)a5
+- (SBFlexibleWindowingExposeToHomePeekWindowingModifier)initWithTransitionID:(id)d direction:(int64_t)direction exposeModifier:(id)modifier
 {
-  v10 = a3;
-  v11 = a5;
+  dCopy = d;
+  modifierCopy = modifier;
   v20.receiver = self;
   v20.super_class = SBFlexibleWindowingExposeToHomePeekWindowingModifier;
   v12 = [(SBWindowingModifier *)&v20 init];
   if (v12)
   {
-    if (!v11)
+    if (!modifierCopy)
     {
       [SBFlexibleWindowingExposeToHomePeekWindowingModifier initWithTransitionID:a2 direction:v12 exposeModifier:?];
     }
 
-    objc_storeStrong(&v12->_exposeModifier, a5);
-    objc_storeStrong(&v12->_transitionID, a3);
-    v12->_direction = a4;
+    objc_storeStrong(&v12->_exposeModifier, modifier);
+    objc_storeStrong(&v12->_transitionID, d);
+    v12->_direction = direction;
     exposeModifier = v12->_exposeModifier;
     v14 = objc_opt_class();
     v15 = exposeModifier;
@@ -56,7 +56,7 @@
     v17 = v16;
 
     [(SBWindowingModifierBase *)v17 setStaticTemporaryChildModifier:1];
-    v18 = [(SBHomeToSwitcherSwitcherModifier *)[SBHomeToGridSwitcherModifier alloc] initWithTransitionID:v10 direction:a4 != 0 multitaskingModifier:v12->_exposeModifier];
+    v18 = [(SBHomeToSwitcherSwitcherModifier *)[SBHomeToGridSwitcherModifier alloc] initWithTransitionID:dCopy direction:direction != 0 multitaskingModifier:v12->_exposeModifier];
 
     [(SBChainableModifier *)v12 addChildModifier:v18];
   }
@@ -64,35 +64,35 @@
   return v12;
 }
 
-- (BOOL)shouldInterruptForActivity:(id)a3
+- (BOOL)shouldInterruptForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_transitionID && [v4 isTransitionEvent])
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (self->_transitionID && [activityCopy isTransitionEvent])
   {
-    v6 = [v5 transitionID];
+    transitionID = [v5 transitionID];
     if (BSEqualObjects())
     {
-      v7 = [v5 isGestureEvent];
+      isGestureEvent = [v5 isGestureEvent];
     }
 
     else
     {
-      v7 = 1;
+      isGestureEvent = 1;
     }
   }
 
   else
   {
-    v7 = [v5 isGestureEvent];
+    isGestureEvent = [v5 isGestureEvent];
   }
 
-  return v7;
+  return isGestureEvent;
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v10 = a3;
+  beginCopy = begin;
   if (self->_direction)
   {
     [(SBWindowingModifier *)self transitioningFromAppLayout];
@@ -105,29 +105,29 @@
   v4 = ;
   if (self->_direction)
   {
-    v5 = [v10 fromPeekConfiguration];
+    fromPeekConfiguration = [beginCopy fromPeekConfiguration];
   }
 
   else
   {
-    v5 = [v10 toPeekConfiguration];
+    fromPeekConfiguration = [beginCopy toPeekConfiguration];
   }
 
-  v6 = [[SBHomePeekWindowingModifier alloc] initWithPeekingAppLayout:v4 configuration:v5];
+  v6 = [[SBHomePeekWindowingModifier alloc] initWithPeekingAppLayout:v4 configuration:fromPeekConfiguration];
   homePeekModifier = self->_homePeekModifier;
   self->_homePeekModifier = v6;
 
-  v8 = [v10 transitionID];
+  transitionID = [beginCopy transitionID];
   transitionID = self->_transitionID;
-  self->_transitionID = v8;
+  self->_transitionID = transitionID;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBFlexibleWindowingExposeToHomePeekWindowingModifier *)self appLayout];
-  v6 = [(SBFlexibleWindowingExposeToHomePeekWindowingModifier *)self appLayouts];
-  v7 = [v6 objectAtIndex:a3];
-  v8 = [v5 isOrContainsAppLayout:v7];
+  appLayout = [(SBFlexibleWindowingExposeToHomePeekWindowingModifier *)self appLayout];
+  appLayouts = [(SBFlexibleWindowingExposeToHomePeekWindowingModifier *)self appLayouts];
+  v7 = [appLayouts objectAtIndex:space];
+  v8 = [appLayout isOrContainsAppLayout:v7];
 
   if (v8)
   {
@@ -136,10 +136,10 @@
 
   v10.receiver = self;
   v10.super_class = SBFlexibleWindowingExposeToHomePeekWindowingModifier;
-  return [(SBFlexibleWindowingExposeToHomePeekWindowingModifier *)&v10 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+  return [(SBFlexibleWindowingExposeToHomePeekWindowingModifier *)&v10 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
 }
 
-- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)a3
+- (SBWindowingItemTitleStyle)titleStyleForItem:(SEL)item
 {
   v6 = a4;
   v15 = 0;
@@ -184,16 +184,16 @@ double __74__SBFlexibleWindowingExposeToHomePeekWindowingModifier_titleStyleForI
 {
   v7.receiver = self;
   v7.super_class = SBFlexibleWindowingExposeToHomePeekWindowingModifier;
-  v3 = [(SBWindowingModifier *)&v7 visibleItems];
-  v4 = [(SBWindowingModifier *)self transitioningToAppLayout];
-  v5 = [v3 setByAddingObject:v4];
+  visibleItems = [(SBWindowingModifier *)&v7 visibleItems];
+  transitioningToAppLayout = [(SBWindowingModifier *)self transitioningToAppLayout];
+  v5 = [visibleItems setByAddingObject:transitioningToAppLayout];
 
   return v5;
 }
 
-- (double)opacityForItem:(id)a3
+- (double)opacityForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -205,7 +205,7 @@ double __74__SBFlexibleWindowingExposeToHomePeekWindowingModifier_titleStyleForI
   v9[3] = &unk_2783AB258;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = itemCopy;
   v10 = v6;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:homePeekModifier usingBlock:v9];
   v7 = v13[3];
@@ -221,7 +221,7 @@ uint64_t __71__SBFlexibleWindowingExposeToHomePeekWindowingModifier_opacityForIt
   return result;
 }
 
-- (SBWindowingItemFrame)frameForItem:(SEL)a3
+- (SBWindowingItemFrame)frameForItem:(SEL)item
 {
   v6 = a4;
   if ([v6 isAppLayout] && (-[SBFlexibleWindowingExposeToHomePeekWindowingModifier appLayout](self, "appLayout"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "appLayout"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isOrContainsAppLayout:", v8), v8, v7, v9))
@@ -240,13 +240,13 @@ uint64_t __71__SBFlexibleWindowingExposeToHomePeekWindowingModifier_opacityForIt
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   v30 = 0;
   v31 = &v30;
   v32 = 0x4010000000;
@@ -259,9 +259,9 @@ uint64_t __71__SBFlexibleWindowingExposeToHomePeekWindowingModifier_opacityForIt
   v22[2] = __98__SBFlexibleWindowingExposeToHomePeekWindowingModifier_frameForLayoutRole_inAppLayout_withBounds___block_invoke;
   v22[3] = &unk_2783AA640;
   v24 = &v30;
-  v25 = a3;
+  roleCopy = role;
   v22[4] = self;
-  v13 = v11;
+  v13 = layoutCopy;
   v23 = v13;
   v26 = x;
   v27 = y;
@@ -296,9 +296,9 @@ uint64_t __98__SBFlexibleWindowingExposeToHomePeekWindowingModifier_frameForLayo
   return result;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -309,9 +309,9 @@ uint64_t __98__SBFlexibleWindowingExposeToHomePeekWindowingModifier_frameForLayo
   v11[2] = __87__SBFlexibleWindowingExposeToHomePeekWindowingModifier_scaleForLayoutRole_inAppLayout___block_invoke;
   v11[3] = &unk_2783AA668;
   v13 = &v15;
-  v14 = a3;
+  roleCopy = role;
   v11[4] = self;
-  v8 = v6;
+  v8 = layoutCopy;
   v12 = v8;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:homePeekModifier usingBlock:v11];
   v9 = v16[3];
@@ -327,7 +327,7 @@ uint64_t __87__SBFlexibleWindowingExposeToHomePeekWindowingModifier_scaleForLayo
   return result;
 }
 
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3
+- (SBWindowingItemCorners)cornersForItem:(SEL)item
 {
   v6 = a4;
   v15 = 0;
@@ -368,24 +368,24 @@ double __71__SBFlexibleWindowingExposeToHomePeekWindowingModifier_cornersForItem
   return result;
 }
 
-- (id)animationAttributesForItem:(id)a3
+- (id)animationAttributesForItem:(id)item
 {
-  v4 = a3;
-  if ([v4 isAppLayout] && (-[SBFlexibleWindowingExposeToHomePeekWindowingModifier appLayout](self, "appLayout"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "appLayout"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isOrContainsAppLayout:", v6), v6, v5, v7))
+  itemCopy = item;
+  if ([itemCopy isAppLayout] && (-[SBFlexibleWindowingExposeToHomePeekWindowingModifier appLayout](self, "appLayout"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(itemCopy, "appLayout"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isOrContainsAppLayout:", v6), v6, v5, v7))
   {
     v8 = objc_alloc_init(SBMutableSwitcherAnimationAttributes);
     [(SBSwitcherAnimationAttributes *)v8 setUpdateMode:3];
-    v9 = [(SBFlexibleWindowingExposeToHomePeekWindowingModifier *)self switcherSettings];
-    v10 = [v9 windowingSettings];
-    v11 = [v10 appToPeekLayoutSettings];
-    [(SBSwitcherAnimationAttributes *)v8 setLayoutSettings:v11];
+    switcherSettings = [(SBFlexibleWindowingExposeToHomePeekWindowingModifier *)self switcherSettings];
+    windowingSettings = [switcherSettings windowingSettings];
+    appToPeekLayoutSettings = [windowingSettings appToPeekLayoutSettings];
+    [(SBSwitcherAnimationAttributes *)v8 setLayoutSettings:appToPeekLayoutSettings];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = SBFlexibleWindowingExposeToHomePeekWindowingModifier;
-    v8 = [(SBWindowingModifier *)&v13 animationAttributesForItem:v4];
+    v8 = [(SBWindowingModifier *)&v13 animationAttributesForItem:itemCopy];
   }
 
   return v8;

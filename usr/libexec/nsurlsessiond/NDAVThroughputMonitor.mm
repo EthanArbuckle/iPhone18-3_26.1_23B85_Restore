@@ -1,15 +1,15 @@
 @interface NDAVThroughputMonitor
-- (NDAVThroughputMonitor)initWithWrapper:(id)a3 monitoredApplication:(id)a4 priority:(int64_t)a5 options:(unint64_t)a6 queue:(id)a7;
+- (NDAVThroughputMonitor)initWithWrapper:(id)wrapper monitoredApplication:(id)application priority:(int64_t)priority options:(unint64_t)options queue:(id)queue;
 - (int64_t)currentIntervalDuration;
-- (void)applicationEnteredForeground:(id)a3;
-- (void)applicationNoLongerInForeground:(id)a3;
+- (void)applicationEnteredForeground:(id)foreground;
+- (void)applicationNoLongerInForeground:(id)foreground;
 - (void)calculateThroughput;
 - (void)cancel;
 - (void)setThroughputTimerForCurrentInterval;
 - (void)startThroughputMonitoring;
 - (void)startThroughputMonitoringIfAppropriate;
 - (void)stopThroughputMonitoring;
-- (void)wrapperTransferredData:(unint64_t)a3;
+- (void)wrapperTransferredData:(unint64_t)data;
 @end
 
 @implementation NDAVThroughputMonitor
@@ -33,7 +33,7 @@
   }
 }
 
-- (void)applicationNoLongerInForeground:(id)a3
+- (void)applicationNoLongerInForeground:(id)foreground
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -44,7 +44,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)applicationEnteredForeground:(id)a3
+- (void)applicationEnteredForeground:(id)foreground
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -119,11 +119,11 @@
     v8 = 0.0;
   }
 
-  v9 = [(NSMutableArray *)self->_progressTimestamps firstObject];
-  v10 = [(NSMutableArray *)self->_progressTimestamps lastObject];
-  [v10 doubleValue];
+  firstObject = [(NSMutableArray *)self->_progressTimestamps firstObject];
+  lastObject = [(NSMutableArray *)self->_progressTimestamps lastObject];
+  [lastObject doubleValue];
   v12 = v11;
-  [v9 doubleValue];
+  [firstObject doubleValue];
   v14 = v13;
   [(NDAVThroughputMonitor *)self currentIntervalThroughputThreshold];
   v15 = v8 / (v12 - v14);
@@ -186,7 +186,7 @@
   }
 }
 
-- (void)wrapperTransferredData:(unint64_t)a3
+- (void)wrapperTransferredData:(unint64_t)data
 {
   if (!self->_hasTransferredData)
   {
@@ -202,8 +202,8 @@
 
   if (-[NSMutableArray count](self->_progressTimestamps, "count") && (-[NSMutableArray lastObject](self->_progressTimestamps, "lastObject"), v6 = objc_claimAutoreleasedReturnValue(), [v6 doubleValue], v8 = Current - v7, v6, v8 <= 1.0))
   {
-    v14 = [(NSMutableArray *)self->_progressValues lastObject];
-    v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v14 unsignedLongLongValue] + a3);
+    lastObject = [(NSMutableArray *)self->_progressValues lastObject];
+    v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [lastObject unsignedLongLongValue] + data);
 
     [(NSMutableArray *)self->_progressValues removeLastObject];
     [(NSMutableArray *)self->_progressValues addObject:v13];
@@ -222,7 +222,7 @@
     [(NSMutableArray *)progressTimestamps addObject:v10];
 
     progressValues = self->_progressValues;
-    v12 = [NSNumber numberWithUnsignedLongLong:a3];
+    v12 = [NSNumber numberWithUnsignedLongLong:data];
     [(NSMutableArray *)progressValues addObject:v12];
     v13 = v12;
   }
@@ -242,25 +242,25 @@
   [(NDApplication *)monitoredApplication removeObserver:self];
 }
 
-- (NDAVThroughputMonitor)initWithWrapper:(id)a3 monitoredApplication:(id)a4 priority:(int64_t)a5 options:(unint64_t)a6 queue:(id)a7
+- (NDAVThroughputMonitor)initWithWrapper:(id)wrapper monitoredApplication:(id)application priority:(int64_t)priority options:(unint64_t)options queue:(id)queue
 {
-  v8 = a6;
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  optionsCopy = options;
+  wrapperCopy = wrapper;
+  applicationCopy = application;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = NDAVThroughputMonitor;
   v16 = [(NDAVThroughputMonitor *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_wrapper, a3);
-    objc_storeStrong(&v17->_queue, a7);
-    objc_storeStrong(&v17->_monitoredApplication, a4);
-    v17->_basePriority = a5;
-    v17->_discretionary = v8 & 1;
-    v17->_explicitlyDiscretionary = (v8 & 2) != 0;
-    v17->_performsNonDiscretionaryThroughputMonitoring = (v8 & 4) != 0;
+    objc_storeStrong(&v16->_wrapper, wrapper);
+    objc_storeStrong(&v17->_queue, queue);
+    objc_storeStrong(&v17->_monitoredApplication, application);
+    v17->_basePriority = priority;
+    v17->_discretionary = optionsCopy & 1;
+    v17->_explicitlyDiscretionary = (optionsCopy & 2) != 0;
+    v17->_performsNonDiscretionaryThroughputMonitoring = (optionsCopy & 4) != 0;
     [(NDApplication *)v17->_monitoredApplication addObserver:v17];
   }
 

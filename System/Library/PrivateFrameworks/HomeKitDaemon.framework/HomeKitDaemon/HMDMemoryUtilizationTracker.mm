@@ -1,9 +1,9 @@
 @interface HMDMemoryUtilizationTracker
 + (id)logCategory;
 - (HMDMemoryUtilizationTracker)init;
-- (HMDMemoryUtilizationTracker)initWithLogEventSubmitter:(id)a3;
+- (HMDMemoryUtilizationTracker)initWithLogEventSubmitter:(id)submitter;
 - (HMMLogEventSubmitting)logEventSubmitter;
-- (void)trackMemoryUsageWithReason:(int64_t)a3;
+- (void)trackMemoryUsageWithReason:(int64_t)reason;
 @end
 
 @implementation HMDMemoryUtilizationTracker
@@ -15,7 +15,7 @@
   return WeakRetained;
 }
 
-- (void)trackMemoryUsageWithReason:(int64_t)a3
+- (void)trackMemoryUsageWithReason:(int64_t)reason
 {
   v54 = *MEMORY[0x277D85DE8];
   v52 = 0u;
@@ -51,7 +51,7 @@
   if (proc_pid_rusage(v5, 6, buffer))
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -70,9 +70,9 @@
     v11 = *(&v42 + 1);
     getpid();
     proc_reset_footprint_interval();
-    v12 = [[HMDMemoryLogEvent alloc] initWithReason:a3 currentMemoryUsage:v10 intervalMaxMemoryUsage:v11];
+    v12 = [[HMDMemoryLogEvent alloc] initWithReason:reason currentMemoryUsage:v10 intervalMaxMemoryUsage:v11];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -80,26 +80,26 @@
       v19 = 138543874;
       v20 = v16;
       v21 = 2048;
-      v22 = [(HMDMemoryLogEvent *)v12 currentMemoryUsage];
+      currentMemoryUsage = [(HMDMemoryLogEvent *)v12 currentMemoryUsage];
       v23 = 2048;
-      v24 = [(HMDMemoryLogEvent *)v12 intervalMaxMemoryUsage];
+      intervalMaxMemoryUsage = [(HMDMemoryLogEvent *)v12 intervalMaxMemoryUsage];
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Current process memory utilization: %lld, Interval peak memory utilization (Since last timer-based sample): %lld", &v19, 0x20u);
     }
 
     objc_autoreleasePoolPop(v13);
-    v17 = [(HMDMemoryUtilizationTracker *)v14 logEventSubmitter];
-    [v17 submitLogEvent:v12];
+    logEventSubmitter = [(HMDMemoryUtilizationTracker *)selfCopy2 logEventSubmitter];
+    [logEventSubmitter submitLogEvent:v12];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMemoryUtilizationTracker)initWithLogEventSubmitter:(id)a3
+- (HMDMemoryUtilizationTracker)initWithLogEventSubmitter:(id)submitter
 {
-  v4 = a3;
-  if (v4)
+  submitterCopy = submitter;
+  if (submitterCopy)
   {
-    v5 = v4;
+    v5 = submitterCopy;
     v11.receiver = self;
     v11.super_class = HMDMemoryUtilizationTracker;
     v6 = [(HMDMemoryUtilizationTracker *)&v11 init];

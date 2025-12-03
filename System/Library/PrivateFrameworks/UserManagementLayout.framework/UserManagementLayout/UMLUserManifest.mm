@@ -1,5 +1,5 @@
 @interface UMLUserManifest
-+ (id)manifestFromData:(id)a3;
++ (id)manifestFromData:(id)data;
 - (NSData)dataValue;
 - (UMLUserManifest)init;
 @end
@@ -53,8 +53,8 @@
   v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[UMLUserManifest apnsIDStart](self, "apnsIDStart")}];
   [v3 setObject:v6 forKeyedSubscript:@"APNSID"];
 
-  v7 = [(UMLUserManifest *)self fsVolumeType];
-  [v3 setObject:v7 forKeyedSubscript:@"MKBUserSessionVolumeFSType"];
+  fsVolumeType = [(UMLUserManifest *)self fsVolumeType];
+  [v3 setObject:fsVolumeType forKeyedSubscript:@"MKBUserSessionVolumeFSType"];
 
   if (([(UMLUserManifest *)self maxUsers]& 0x80000000) == 0)
   {
@@ -77,48 +77,48 @@
   v12 = [MEMORY[0x277CCABB0] numberWithInt:{-[UMLUserManifest networkBG](self, "networkBG")}];
   [v3 setObject:v12 forKeyedSubscript:@"DEVICENETWORKBG"];
 
-  v13 = [(UMLUserManifest *)self syncUserList];
-  v14 = [v13 count];
+  syncUserList = [(UMLUserManifest *)self syncUserList];
+  v14 = [syncUserList count];
 
   if (v14)
   {
     v15 = MEMORY[0x277CCABB0];
-    v16 = [(UMLUserManifest *)self syncUserList];
-    v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(v16, "count")}];
+    syncUserList2 = [(UMLUserManifest *)self syncUserList];
+    v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(syncUserList2, "count")}];
     [v3 setObject:v17 forKeyedSubscript:@"SYNCENT"];
 
-    v18 = [(UMLUserManifest *)self syncUserList];
-    v19 = sub_22EE7596C(v18);
+    syncUserList3 = [(UMLUserManifest *)self syncUserList];
+    v19 = sub_22EE7596C(syncUserList3);
     [v3 setObject:v19 forKeyedSubscript:@"SYNCBLOB"];
   }
 
-  v20 = [(UMLUserManifest *)self lruList];
-  v21 = [v20 count];
+  lruList = [(UMLUserManifest *)self lruList];
+  v21 = [lruList count];
 
   if (v21)
   {
     v22 = MEMORY[0x277CCABB0];
-    v23 = [(UMLUserManifest *)self lruList];
-    v24 = [v22 numberWithUnsignedInteger:{objc_msgSend(v23, "count")}];
+    lruList2 = [(UMLUserManifest *)self lruList];
+    v24 = [v22 numberWithUnsignedInteger:{objc_msgSend(lruList2, "count")}];
     [v3 setObject:v24 forKeyedSubscript:@"LRUENT"];
 
-    v25 = [(UMLUserManifest *)self lruList];
-    v26 = sub_22EE7596C(v25);
+    lruList3 = [(UMLUserManifest *)self lruList];
+    v26 = sub_22EE7596C(lruList3);
     [v3 setObject:v26 forKeyedSubscript:@"LRUBLOB"];
   }
 
-  v27 = [(UMLUserManifest *)self users];
-  v28 = [v27 count];
+  users = [(UMLUserManifest *)self users];
+  v28 = [users count];
 
   if (v28)
   {
     v29 = MEMORY[0x277CCABB0];
-    v30 = [(UMLUserManifest *)self users];
-    v31 = [v29 numberWithUnsignedInteger:{objc_msgSend(v30, "count")}];
+    users2 = [(UMLUserManifest *)self users];
+    v31 = [v29 numberWithUnsignedInteger:{objc_msgSend(users2, "count")}];
     [v3 setObject:v31 forKeyedSubscript:@"NUMENT"];
 
-    v32 = [(UMLUserManifest *)self users];
-    v33 = sub_22EE7596C(v32);
+    users3 = [(UMLUserManifest *)self users];
+    v33 = sub_22EE7596C(users3);
     [v3 setObject:v33 forKeyedSubscript:@"BLOB"];
   }
 
@@ -130,9 +130,9 @@
   return v35;
 }
 
-+ (id)manifestFromData:(id)a3
++ (id)manifestFromData:(id)data
 {
-  v3 = sub_22EE75AA8(a3);
+  v3 = sub_22EE75AA8(data);
   if (!v3)
   {
     if (qword_27DA9CC78 != -1)
@@ -264,9 +264,9 @@
   v20 = sub_22EE75468(v3, @"MKBUserSessionVolumeFSType");
   [(UMLUserManifest *)v4 setFsVolumeType:v20];
 
-  v21 = [(UMLUserManifest *)v4 fsVolumeType];
+  fsVolumeType = [(UMLUserManifest *)v4 fsVolumeType];
 
-  if (!v21)
+  if (!fsVolumeType)
   {
     [(UMLUserManifest *)v4 setFsVolumeType:@"UserVolumeAPFSNative"];
   }

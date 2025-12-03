@@ -12,8 +12,8 @@
 - (SAUIListenAfterSpeakingBehavior)listenAfterSpeakingBehavior;
 - (SVXActivationContext)activationContext;
 - (SVXDeactivationContext)deactivationContext;
-- (SVXTaskTracker)initWithContext:(id)a3 instrumentationContext:(id)a4 delegate:(id)a5;
-- (id)beginChildWithContext:(id)a3;
+- (SVXTaskTracker)initWithContext:(id)context instrumentationContext:(id)instrumentationContext delegate:(id)delegate;
+- (id)beginChildWithContext:(id)context;
 - (int64_t)origin;
 - (unint64_t)timestamp;
 - (void)dealloc;
@@ -23,249 +23,249 @@
 
 - (NSError)error
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 error];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    error = [context error];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !error);
 
-  return v5;
+  return error;
 }
 
 - (SVXDeactivationContext)deactivationContext
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 deactivationContext];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    deactivationContext = [context deactivationContext];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !deactivationContext);
 
-  return v5;
+  return deactivationContext;
 }
 
 - (SVXActivationContext)activationContext
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 activationContext];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    activationContext = [context activationContext];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !activationContext);
 
-  return v5;
+  return activationContext;
 }
 
 - (SAUIListenAfterSpeakingBehavior)listenAfterSpeakingBehavior
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 listenAfterSpeakingBehavior];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    listenAfterSpeakingBehavior = [context listenAfterSpeakingBehavior];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !listenAfterSpeakingBehavior);
 
-  return v5;
+  return listenAfterSpeakingBehavior;
 }
 
 - (BOOL)listensAfterSpeaking
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 listensAfterSpeaking];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    listensAfterSpeaking = [context listensAfterSpeaking];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !listensAfterSpeaking);
 
-  return v5;
+  return listensAfterSpeaking;
 }
 
 - (BOOL)isUUFR
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 isUUFR];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    isUUFR = [context isUUFR];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !isUUFR);
 
-  return v5;
+  return isUUFR;
 }
 
 - (NSString)dialogPhase
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 dialogPhase];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    dialogPhase = [context dialogPhase];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !dialogPhase);
 
-  return v5;
+  return dialogPhase;
 }
 
 - (NSString)dialogIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 dialogIdentifier];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    dialogIdentifier = [context dialogIdentifier];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !dialogIdentifier);
 
-  return v5;
+  return dialogIdentifier;
 }
 
 - (NSString)refId
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 refId];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    refId = [context refId];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !refId);
 
-  return v5;
+  return refId;
 }
 
 - (NSString)aceId
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 aceId];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    aceId = [context aceId];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !aceId);
 
-  return v5;
+  return aceId;
 }
 
 - (NSUUID)requestUUID
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 requestUUID];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    requestUUID = [context requestUUID];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !requestUUID);
 
-  return v5;
+  return requestUUID;
 }
 
 - (NSUUID)sessionUUID
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 sessionUUID];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    sessionUUID = [context sessionUUID];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !sessionUUID);
 
-  return v5;
+  return sessionUUID;
 }
 
 - (unint64_t)timestamp
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 timestamp];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    timestamp = [context timestamp];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !timestamp);
 
-  return v5;
+  return timestamp;
 }
 
 - (int64_t)origin
 {
-  v2 = self;
+  selfCopy = self;
   do
   {
-    v3 = v2;
-    v4 = [(SVXTaskTracker *)v2 context];
-    v5 = [v4 origin];
+    v3 = selfCopy;
+    context = [(SVXTaskTracker *)selfCopy context];
+    origin = [context origin];
 
-    v2 = [(SVXTaskTracker *)v3 parent];
+    selfCopy = [(SVXTaskTracker *)v3 parent];
   }
 
-  while (v2 && !v5);
+  while (selfCopy && !origin);
 
-  return v5;
+  return origin;
 }
 
-- (id)beginChildWithContext:(id)a3
+- (id)beginChildWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc(objc_opt_class());
   instrumentationContext = self->_instrumentationContext;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [v5 initWithContext:v4 instrumentationContext:instrumentationContext delegate:WeakRetained];
+  v8 = [v5 initWithContext:contextCopy instrumentationContext:instrumentationContext delegate:WeakRetained];
 
   objc_storeStrong(v8 + 3, self);
   v9 = objc_loadWeakRetained(&self->_delegate);
@@ -274,22 +274,22 @@
   return v8;
 }
 
-- (SVXTaskTracker)initWithContext:(id)a3 instrumentationContext:(id)a4 delegate:(id)a5
+- (SVXTaskTracker)initWithContext:(id)context instrumentationContext:(id)instrumentationContext delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  instrumentationContextCopy = instrumentationContext;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = SVXTaskTracker;
   v11 = [(SVXTaskTracker *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [contextCopy copy];
     context = v11->_context;
     v11->_context = v12;
 
-    objc_storeStrong(&v11->_instrumentationContext, a4);
-    objc_storeWeak(&v11->_delegate, v10);
+    objc_storeStrong(&v11->_instrumentationContext, instrumentationContext);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
   }
 
   return v11;

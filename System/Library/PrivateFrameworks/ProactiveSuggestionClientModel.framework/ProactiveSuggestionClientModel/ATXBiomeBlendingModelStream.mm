@@ -1,10 +1,10 @@
 @interface ATXBiomeBlendingModelStream
-- (ATXBiomeBlendingModelStream)initWithStoreConfig:(id)a3;
-- (id)_innerStreamForStreamId:(id)a3;
-- (id)deprecatedPublisherFromStartTime:(double)a3;
-- (id)publisherFromStartTime:(double)a3;
+- (ATXBiomeBlendingModelStream)initWithStoreConfig:(id)config;
+- (id)_innerStreamForStreamId:(id)id;
+- (id)deprecatedPublisherFromStartTime:(double)time;
+- (id)publisherFromStartTime:(double)time;
 - (id)streamIdentifiers;
-- (void)donateBlendingModelUICacheUpdate:(id)a3;
+- (void)donateBlendingModelUICacheUpdate:(id)update;
 @end
 
 @implementation ATXBiomeBlendingModelStream
@@ -17,8 +17,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(ATXBiomeBlendingModelStream *)self _validBlendingStreamConsumerSubTypes];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _validBlendingStreamConsumerSubTypes = [(ATXBiomeBlendingModelStream *)self _validBlendingStreamConsumerSubTypes];
+  v5 = [_validBlendingStreamConsumerSubTypes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -29,7 +29,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_validBlendingStreamConsumerSubTypes);
         }
 
         v9 = -[ATXBiomeBlendingModelStream _streamIdForConsumerSubType:](self, "_streamIdForConsumerSubType:", [*(*(&v13 + 1) + 8 * i) unsignedIntValue]);
@@ -39,7 +39,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [_validBlendingStreamConsumerSubTypes countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -51,26 +51,26 @@
   return v10;
 }
 
-- (ATXBiomeBlendingModelStream)initWithStoreConfig:(id)a3
+- (ATXBiomeBlendingModelStream)initWithStoreConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v13.receiver = self;
   v13.super_class = ATXBiomeBlendingModelStream;
   v5 = [(ATXBiomeBlendingModelStream *)&v13 init];
   if (v5)
   {
-    if (v4)
+    if (configCopy)
     {
-      v6 = v4;
+      atx_storeConfig = configCopy;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E698F130] atx_storeConfig];
+      atx_storeConfig = [MEMORY[0x1E698F130] atx_storeConfig];
     }
 
     storeConfig = v5->_storeConfig;
-    v5->_storeConfig = v6;
+    v5->_storeConfig = atx_storeConfig;
 
     v8 = objc_alloc(MEMORY[0x1E69C5D60]);
     v9 = objc_opt_new();
@@ -82,19 +82,19 @@
   return v5;
 }
 
-- (id)publisherFromStartTime:(double)a3
+- (id)publisherFromStartTime:(double)time
 {
   v5 = [objc_alloc(MEMORY[0x1E698F318]) initWithPrivateStreamIdentifier:@"blending" storeConfig:self->_storeConfig eventDataClass:objc_opt_class()];
-  v6 = [v5 publisherFromStartTime:a3];
+  v6 = [v5 publisherFromStartTime:time];
 
-  v7 = [(ATXBiomeBlendingModelStream *)self streamIdentifiers];
+  streamIdentifiers = [(ATXBiomeBlendingModelStream *)self streamIdentifiers];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__ATXBiomeBlendingModelStream_publisherFromStartTime___block_invoke;
   v11[3] = &unk_1E86A4468;
   v11[4] = self;
-  *&v11[5] = a3;
-  v8 = [v7 _pas_mappedArrayWithTransform:v11];
+  *&v11[5] = time;
+  v8 = [streamIdentifiers _pas_mappedArrayWithTransform:v11];
 
   v9 = [v6 orderedMergeWithOthers:v8 comparator:&__block_literal_global_9];
 
@@ -125,27 +125,27 @@ uint64_t __54__ATXBiomeBlendingModelStream_publisherFromStartTime___block_invoke
   return v11;
 }
 
-- (id)deprecatedPublisherFromStartTime:(double)a3
+- (id)deprecatedPublisherFromStartTime:(double)time
 {
   v4 = [objc_alloc(MEMORY[0x1E698F318]) initWithPrivateStreamIdentifier:@"blending" storeConfig:self->_storeConfig eventDataClass:objc_opt_class()];
-  v5 = [v4 publisherFromStartTime:a3];
+  v5 = [v4 publisherFromStartTime:time];
 
   return v5;
 }
 
-- (void)donateBlendingModelUICacheUpdate:(id)a3
+- (void)donateBlendingModelUICacheUpdate:(id)update
 {
-  v4 = a3;
-  v6 = -[ATXBiomeBlendingModelStream _innerStreamForConsumerSubType:](self, "_innerStreamForConsumerSubType:", [v4 consumerSubType]);
-  v5 = [v6 source];
-  [v5 sendEvent:v4];
+  updateCopy = update;
+  v6 = -[ATXBiomeBlendingModelStream _innerStreamForConsumerSubType:](self, "_innerStreamForConsumerSubType:", [updateCopy consumerSubType]);
+  source = [v6 source];
+  [source sendEvent:updateCopy];
 }
 
-- (id)_innerStreamForStreamId:(id)a3
+- (id)_innerStreamForStreamId:(id)id
 {
-  v4 = a3;
-  v5 = [(ATXBiomeBlendingModelStream *)self streamIdentifiers];
-  v6 = [v5 containsObject:v4];
+  idCopy = id;
+  streamIdentifiers = [(ATXBiomeBlendingModelStream *)self streamIdentifiers];
+  v6 = [streamIdentifiers containsObject:idCopy];
 
   if (v6)
   {
@@ -161,8 +161,8 @@ uint64_t __54__ATXBiomeBlendingModelStream_publisherFromStartTime___block_invoke
     v11[2] = __55__ATXBiomeBlendingModelStream__innerStreamForStreamId___block_invoke;
     v11[3] = &unk_1E86A44B0;
     v14 = &v15;
-    v12 = v4;
-    v13 = self;
+    v12 = idCopy;
+    selfCopy = self;
     [(_PASLock *)lock runWithLockAcquired:v11];
     v8 = v16[5];
 
@@ -174,7 +174,7 @@ uint64_t __54__ATXBiomeBlendingModelStream_publisherFromStartTime___block_invoke
     v9 = __atxlog_handle_blending();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [(ATXBiomeBlendingModelStream *)self _innerStreamForStreamId:v4, v9];
+      [(ATXBiomeBlendingModelStream *)self _innerStreamForStreamId:idCopy, v9];
     }
 
     v8 = 0;

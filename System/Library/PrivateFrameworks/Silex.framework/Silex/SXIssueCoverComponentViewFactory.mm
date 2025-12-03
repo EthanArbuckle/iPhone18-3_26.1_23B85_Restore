@@ -1,35 +1,35 @@
 @interface SXIssueCoverComponentViewFactory
-- (SXIssueCoverComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6 viewProvider:(id)a7;
-- (id)componentViewForComponent:(id)a3;
+- (SXIssueCoverComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory viewProvider:(id)viewProvider;
+- (id)componentViewForComponent:(id)component;
 @end
 
 @implementation SXIssueCoverComponentViewFactory
 
-- (SXIssueCoverComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6 viewProvider:(id)a7
+- (SXIssueCoverComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory viewProvider:(id)viewProvider
 {
-  v13 = a7;
+  viewProviderCopy = viewProvider;
   v17.receiver = self;
   v17.super_class = SXIssueCoverComponentViewFactory;
-  v14 = [(SXComponentViewFactory *)&v17 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegateProvider:a5 componentStyleRendererFactory:a6];
+  v14 = [(SXComponentViewFactory *)&v17 initWithDOMObjectProvider:provider viewport:viewport presentationDelegateProvider:delegateProvider componentStyleRendererFactory:factory];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_viewProvider, a7);
+    objc_storeStrong(&v14->_viewProvider, viewProvider);
   }
 
   return v15;
 }
 
-- (id)componentViewForComponent:(id)a3
+- (id)componentViewForComponent:(id)component
 {
   v4 = [SXIssueCoverComponentView alloc];
-  v5 = [(SXComponentViewFactory *)self DOMObjectProvider];
-  v6 = [(SXIssueCoverComponentViewFactory *)self viewProvider];
-  v7 = [(SXComponentViewFactory *)self presentationDelegateProvider];
-  v8 = [v7 presentationDelegate];
-  v9 = [(SXComponentViewFactory *)self componentStyleRendererFactory];
-  v10 = [(SXIssueCoverComponentViewFactory *)self viewProvider];
-  v11 = [(SXIssueCoverComponentView *)v4 initWithDOMObjectProvider:v5 viewport:v6 presentationDelegate:v8 componentStyleRendererFactory:v9 viewProvider:v10];
+  dOMObjectProvider = [(SXComponentViewFactory *)self DOMObjectProvider];
+  viewProvider = [(SXIssueCoverComponentViewFactory *)self viewProvider];
+  presentationDelegateProvider = [(SXComponentViewFactory *)self presentationDelegateProvider];
+  presentationDelegate = [presentationDelegateProvider presentationDelegate];
+  componentStyleRendererFactory = [(SXComponentViewFactory *)self componentStyleRendererFactory];
+  viewProvider2 = [(SXIssueCoverComponentViewFactory *)self viewProvider];
+  v11 = [(SXIssueCoverComponentView *)v4 initWithDOMObjectProvider:dOMObjectProvider viewport:viewProvider presentationDelegate:presentationDelegate componentStyleRendererFactory:componentStyleRendererFactory viewProvider:viewProvider2];
 
   return v11;
 }

@@ -4,18 +4,18 @@
 - (CGRect)drawableGraphRect;
 - (CGRect)graphRect;
 - (NTKRichComplicationRectangularDailyGraphView)init;
-- (double)_calculateGraphXBasedOnRect:(CGRect)a3 constants:(id *)a4;
+- (double)_calculateGraphXBasedOnRect:(CGRect)rect constants:(id *)constants;
 - (double)timeMarkerPadding;
-- (id)_datesForGraphInTimezone:(id)a3;
+- (id)_datesForGraphInTimezone:(id)timezone;
 - (void)_addConstraints;
 - (void)_addSubviews;
 - (void)_applyPausedUpdate;
-- (void)_drawVerticalHourLines:(CGContext *)a3 rect:(CGRect)a4 bottomLabelPadding:(double)a5;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
-- (void)_updateTimeMarkerLabelsForDates:(id)a3 timezone:(id)a4;
-- (void)drawRect:(CGRect)a3;
-- (void)resetToNoDataState:(id)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)_drawVerticalHourLines:(CGContext *)lines rect:(CGRect)rect bottomLabelPadding:(double)padding;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
+- (void)_updateTimeMarkerLabelsForDates:(id)dates timezone:(id)timezone;
+- (void)drawRect:(CGRect)rect;
+- (void)resetToNoDataState:(id)state;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -69,13 +69,13 @@ double __57__NTKRichComplicationRectangularDailyGraphView_graphSize__block_invok
     v8 = *(MEMORY[0x277CBF3A0] + 16);
     v3->_cachedBounds.origin = *MEMORY[0x277CBF3A0];
     v3->_cachedBounds.size = v8;
-    v9 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     accentColor = v3->_accentColor;
-    v3->_accentColor = v9;
+    v3->_accentColor = whiteColor;
 
-    v11 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
     nonAccentColor = v3->_nonAccentColor;
-    v3->_nonAccentColor = v11;
+    v3->_nonAccentColor = whiteColor2;
 
     [(NTKRichComplicationRectangularDailyGraphView *)v3 _addSubviews];
     [(NTKRichComplicationRectangularDailyGraphView *)v3 _addConstraints];
@@ -84,12 +84,12 @@ double __57__NTKRichComplicationRectangularDailyGraphView_graphSize__block_invok
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   v19.origin.x = x;
   v19.origin.y = y;
@@ -109,31 +109,31 @@ double __57__NTKRichComplicationRectangularDailyGraphView_graphSize__block_invok
   [(NTKRichComplicationRectangularDailyGraphView *)self drawGraph:CurrentContext rect:?];
 }
 
-- (void)resetToNoDataState:(id)a3
+- (void)resetToNoDataState:(id)state
 {
-  v4 = [MEMORY[0x277CBBB88] textProviderWithText:a3];
-  v5 = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
-  [v5 setTextProvider:v4];
+  v4 = [MEMORY[0x277CBBB88] textProviderWithText:state];
+  titleLabel = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
+  [titleLabel setTextProvider:v4];
 
-  v6 = [(NTKRichComplicationRectangularDailyGraphView *)self noDataTextColor];
-  v7 = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
-  [v7 setColor:v6];
+  noDataTextColor = [(NTKRichComplicationRectangularDailyGraphView *)self noDataTextColor];
+  titleLabel2 = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
+  [titleLabel2 setColor:noDataTextColor];
 
   v8 = +[NTKRichComplicationRectangularDailyGraphView dailyFormattedNoData];
-  v9 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
-  [v9 setText:v8];
+  dailyHighLabel = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
+  [dailyHighLabel setText:v8];
 
-  v10 = [(NTKRichComplicationRectangularDailyGraphView *)self noDataTextColor];
-  v11 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
-  [v11 setTextColor:v10];
+  noDataTextColor2 = [(NTKRichComplicationRectangularDailyGraphView *)self noDataTextColor];
+  dailyHighLabel2 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
+  [dailyHighLabel2 setTextColor:noDataTextColor2];
 
   v12 = +[NTKRichComplicationRectangularDailyGraphView dailyFormattedNoData];
-  v13 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
-  [v13 setText:v12];
+  dailyLowLabel = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
+  [dailyLowLabel setText:v12];
 
-  v15 = [(NTKRichComplicationRectangularDailyGraphView *)self noDataTextColor];
-  v14 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
-  [v14 setTextColor:v15];
+  noDataTextColor3 = [(NTKRichComplicationRectangularDailyGraphView *)self noDataTextColor];
+  dailyLowLabel2 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
+  [dailyLowLabel2 setTextColor:noDataTextColor3];
 }
 
 - (void)_addConstraints
@@ -144,54 +144,54 @@ double __57__NTKRichComplicationRectangularDailyGraphView_graphSize__block_invok
   v49 = 0u;
   v50 = 0u;
   v48 = 0u;
-  v3 = [(CDRichComplicationView *)self device];
-  ___LayoutConstants_block_invoke_3(v3, &v48);
+  device = [(CDRichComplicationView *)self device];
+  ___LayoutConstants_block_invoke_3(device, &v48);
 
-  v4 = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
-  v5 = [v4 leadingAnchor];
-  v6 = [(NTKRichComplicationRectangularDailyGraphView *)self leadingAnchor];
+  titleLabel = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
+  leadingAnchor = [titleLabel leadingAnchor];
+  leadingAnchor2 = [(NTKRichComplicationRectangularDailyGraphView *)self leadingAnchor];
   [(NTKRichComplicationRectangularBaseView *)self contentMargin];
-  v38 = [v5 constraintEqualToAnchor:v6 constant:?];
+  v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
 
-  v7 = [(NTKRichComplicationRectangularDailyGraphView *)self trailingAnchor];
-  v8 = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
-  v9 = [v8 trailingAnchor];
+  trailingAnchor = [(NTKRichComplicationRectangularDailyGraphView *)self trailingAnchor];
+  titleLabel2 = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
+  trailingAnchor2 = [titleLabel2 trailingAnchor];
   [(NTKRichComplicationRectangularBaseView *)self contentMargin];
-  v10 = [v7 constraintGreaterThanOrEqualToAnchor:v9 constant:?];
+  v10 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:?];
 
   LODWORD(v11) = 1148829696;
   [v10 setPriority:v11];
-  v12 = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
-  v13 = [v12 firstBaselineAnchor];
-  v14 = [(NTKRichComplicationRectangularDailyGraphView *)self topAnchor];
-  v37 = [v13 constraintEqualToAnchor:v14 constant:*(&v48 + 1)];
+  titleLabel3 = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
+  firstBaselineAnchor = [titleLabel3 firstBaselineAnchor];
+  topAnchor = [(NTKRichComplicationRectangularDailyGraphView *)self topAnchor];
+  v37 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:*(&v48 + 1)];
 
-  v15 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
-  v16 = [v15 leadingAnchor];
-  v17 = [(NTKRichComplicationRectangularDailyGraphView *)self leadingAnchor];
+  dailyHighLabel = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
+  leadingAnchor3 = [dailyHighLabel leadingAnchor];
+  leadingAnchor4 = [(NTKRichComplicationRectangularDailyGraphView *)self leadingAnchor];
   [(NTKRichComplicationRectangularBaseView *)self contentMargin];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:?];
+  v18 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:?];
 
-  v19 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
-  v20 = [v19 firstBaselineAnchor];
-  v21 = [(NTKRichComplicationRectangularDailyGraphView *)self topAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21 constant:*(&v49 + 1)];
+  dailyHighLabel2 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
+  firstBaselineAnchor2 = [dailyHighLabel2 firstBaselineAnchor];
+  topAnchor2 = [(NTKRichComplicationRectangularDailyGraphView *)self topAnchor];
+  v22 = [firstBaselineAnchor2 constraintEqualToAnchor:topAnchor2 constant:*(&v49 + 1)];
 
-  v23 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
-  v24 = [v23 leadingAnchor];
-  v25 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
-  v26 = [v25 leadingAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  dailyLowLabel = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
+  leadingAnchor5 = [dailyLowLabel leadingAnchor];
+  dailyHighLabel3 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
+  leadingAnchor6 = [dailyHighLabel3 leadingAnchor];
+  v27 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
 
-  v28 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
-  v29 = [v28 firstBaselineAnchor];
-  v30 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
-  v31 = [v30 firstBaselineAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31 constant:*(&v50 + 1)];
+  dailyLowLabel2 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
+  firstBaselineAnchor3 = [dailyLowLabel2 firstBaselineAnchor];
+  dailyHighLabel4 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
+  firstBaselineAnchor4 = [dailyHighLabel4 firstBaselineAnchor];
+  v32 = [firstBaselineAnchor3 constraintEqualToAnchor:firstBaselineAnchor4 constant:*(&v50 + 1)];
 
   v33 = [MEMORY[0x277CBEB18] arrayWithObjects:{v38, v10, v37, v18, v22, v27, v32, 0}];
   v34 = *(&v52 + 1) * 0.25;
-  v35 = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
+  timeMarkerLabels = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __63__NTKRichComplicationRectangularDailyGraphView__addConstraints__block_invoke;
@@ -206,7 +206,7 @@ double __57__NTKRichComplicationRectangularDailyGraphView_graphSize__block_invok
   v39[4] = self;
   v40 = v33;
   v36 = v33;
-  [v35 enumerateObjectsUsingBlock:v39];
+  [timeMarkerLabels enumerateObjectsUsingBlock:v39];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v36];
 }
@@ -265,18 +265,18 @@ void __63__NTKRichComplicationRectangularDailyGraphView__addConstraints__block_i
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
-  v3 = [(CDRichComplicationView *)self device];
-  ___LayoutConstants_block_invoke_3(v3, &v29);
+  device = [(CDRichComplicationView *)self device];
+  ___LayoutConstants_block_invoke_3(device, &v29);
 
   v4 = MEMORY[0x277CBB6C0];
   v5 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:*&v29 design:*MEMORY[0x277D74410]];
-  v6 = [v5 CLKFontWithLocalizedSmallCaps];
+  cLKFontWithLocalizedSmallCaps = [v5 CLKFontWithLocalizedSmallCaps];
 
   v7 = objc_opt_new();
-  v8 = [MEMORY[0x277D75348] whiteColor];
-  [(CLKUIColoringLabel *)v7 setTextColor:v8];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(CLKUIColoringLabel *)v7 setTextColor:whiteColor];
 
-  [(CLKUIColoringLabel *)v7 setFont:v6];
+  [(CLKUIColoringLabel *)v7 setFont:cLKFontWithLocalizedSmallCaps];
   [(CLKUIColoringLabel *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CLKUIColoringLabel *)v7 setUsesTextProviderTintColoring:1];
   [(CLKUIColoringLabel *)v7 setTwoToneStyleInMonochrome:1];
@@ -289,11 +289,11 @@ void __63__NTKRichComplicationRectangularDailyGraphView__addConstraints__block_i
   v10 = objc_opt_new();
   v11 = *MEMORY[0x277D74420];
   v12 = [MEMORY[0x277CBBB08] systemFontOfSize:*v4 weight:*&v30 design:*MEMORY[0x277D74420]];
-  v13 = [v12 CLKFontWithAlternativePunctuation];
-  [(UILabel *)v10 setFont:v13];
+  cLKFontWithAlternativePunctuation = [v12 CLKFontWithAlternativePunctuation];
+  [(UILabel *)v10 setFont:cLKFontWithAlternativePunctuation];
 
-  v14 = [(NTKRichComplicationRectangularDailyGraphView *)self accentColor];
-  [(UILabel *)v10 setTextColor:v14];
+  accentColor = [(NTKRichComplicationRectangularDailyGraphView *)self accentColor];
+  [(UILabel *)v10 setTextColor:accentColor];
 
   [(UILabel *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(NTKRichComplicationRectangularDailyGraphView *)self addSubview:v10];
@@ -302,11 +302,11 @@ void __63__NTKRichComplicationRectangularDailyGraphView__addConstraints__block_i
 
   v16 = objc_opt_new();
   v17 = [MEMORY[0x277CBBB08] systemFontOfSize:*v4 weight:*&v31 design:v11];
-  v18 = [v17 CLKFontWithAlternativePunctuation];
-  [(UILabel *)v16 setFont:v18];
+  cLKFontWithAlternativePunctuation2 = [v17 CLKFontWithAlternativePunctuation];
+  [(UILabel *)v16 setFont:cLKFontWithAlternativePunctuation2];
 
-  v19 = [(NTKRichComplicationRectangularDailyGraphView *)self accentColor];
-  [(UILabel *)v16 setTextColor:v19];
+  accentColor2 = [(NTKRichComplicationRectangularDailyGraphView *)self accentColor];
+  [(UILabel *)v16 setTextColor:accentColor2];
 
   [(UILabel *)v16 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(NTKRichComplicationRectangularDailyGraphView *)self addSubview:v16];
@@ -324,8 +324,8 @@ void __63__NTKRichComplicationRectangularDailyGraphView__addConstraints__block_i
     [v24 setFont:v25];
 
     [v24 setMinimumScaleFactor:0.85];
-    v26 = [(NTKRichComplicationRectangularDailyGraphView *)self graphLabelAndGridColor];
-    [v24 setTextColor:v26];
+    graphLabelAndGridColor = [(NTKRichComplicationRectangularDailyGraphView *)self graphLabelAndGridColor];
+    [v24 setTextColor:graphLabelAndGridColor];
 
     [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v24 setTextAlignment:0];
@@ -342,12 +342,12 @@ void __63__NTKRichComplicationRectangularDailyGraphView__addConstraints__block_i
   self->_timeMarkerLabels = v27;
 }
 
-- (double)_calculateGraphXBasedOnRect:(CGRect)a3 constants:(id *)a4
+- (double)_calculateGraphXBasedOnRect:(CGRect)rect constants:(id *)constants
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (CLKLayoutIsRTL())
   {
 
@@ -362,20 +362,20 @@ void __63__NTKRichComplicationRectangularDailyGraphView__addConstraints__block_i
     v14.size.height = height;
     v11 = CGRectGetWidth(v14);
     [(NTKRichComplicationRectangularBaseView *)self contentMargin];
-    return v11 - (v12 + a4->var9);
+    return v11 - (v12 + constants->var9);
   }
 
   return result;
 }
 
-- (id)_datesForGraphInTimezone:(id)a3
+- (id)_datesForGraphInTimezone:(id)timezone
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 componentsInTimeZone:v3 fromDate:v4];
-  v7 = [v4 dateByAddingTimeInterval:{objc_msgSend(v6, "minute") * -60.0 + objc_msgSend(v6, "hour") * -3600.0 - objc_msgSend(v6, "second") + -1.0}];
-  v8 = [v5 components:192 fromDate:v7];
+  timezoneCopy = timezone;
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar componentsInTimeZone:timezoneCopy fromDate:date];
+  v7 = [date dateByAddingTimeInterval:{objc_msgSend(v6, "minute") * -60.0 + objc_msgSend(v6, "hour") * -3600.0 - objc_msgSend(v6, "second") + -1.0}];
+  v8 = [currentCalendar components:192 fromDate:v7];
 
   [v8 setSecond:0];
   [v8 setMinute:0];
@@ -391,7 +391,7 @@ void __63__NTKRichComplicationRectangularDailyGraphView__addConstraints__block_i
   v10 = v9;
   v17 = v10;
   v18 = v19;
-  [v5 enumerateDatesStartingAfterDate:v7 matchingComponents:v8 options:2 usingBlock:&v13];
+  [currentCalendar enumerateDatesStartingAfterDate:v7 matchingComponents:v8 options:2 usingBlock:&v13];
   v11 = [v10 copy];
 
   _Block_object_dispose(v19, 8);
@@ -413,23 +413,23 @@ uint64_t __73__NTKRichComplicationRectangularDailyGraphView__datesForGraphInTime
   return result;
 }
 
-- (void)_drawVerticalHourLines:(CGContext *)a3 rect:(CGRect)a4 bottomLabelPadding:(double)a5
+- (void)_drawVerticalHourLines:(CGContext *)lines rect:(CGRect)rect bottomLabelPadding:(double)padding
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  CGContextSaveGState(a3);
-  CGContextSetLineWidth(a3, 1.0);
-  v12 = [(NTKRichComplicationRectangularDailyGraphView *)self graphLabelAndGridColor];
-  CGContextSetStrokeColorWithColor(a3, [v12 CGColor]);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSaveGState(lines);
+  CGContextSetLineWidth(lines, 1.0);
+  graphLabelAndGridColor = [(NTKRichComplicationRectangularDailyGraphView *)self graphLabelAndGridColor];
+  CGContextSetStrokeColorWithColor(lines, [graphLabelAndGridColor CGColor]);
 
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
   v21.size.height = height;
   v13 = 0;
-  v14 = CGRectGetHeight(v21) - a5;
+  v14 = CGRectGetHeight(v21) - padding;
   do
   {
     v22.origin.x = x;
@@ -451,22 +451,22 @@ uint64_t __73__NTKRichComplicationRectangularDailyGraphView__datesForGraphInTime
 
     v18 = x + v13 / 24.0 * v15;
     v19 = y + v17;
-    CGContextBeginPath(a3);
-    CGContextMoveToPoint(a3, v18, y);
-    CGContextAddLineToPoint(a3, v18, v19);
-    CGContextStrokePath(a3);
+    CGContextBeginPath(lines);
+    CGContextMoveToPoint(lines, v18, y);
+    CGContextAddLineToPoint(lines, v18, v19);
+    CGContextStrokePath(lines);
     ++v13;
   }
 
   while (v13 != 25);
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(lines);
 }
 
-- (void)_updateTimeMarkerLabelsForDates:(id)a3 timezone:(id)a4
+- (void)_updateTimeMarkerLabelsForDates:(id)dates timezone:(id)timezone
 {
-  v35 = a3;
-  v6 = a4;
+  datesCopy = dates;
+  timezoneCopy = timezone;
   if (!_updateTimeMarkerLabelsForDates_timezone__TimeFormatter)
   {
     v7 = objc_opt_new();
@@ -475,15 +475,15 @@ uint64_t __73__NTKRichComplicationRectangularDailyGraphView__datesForGraphInTime
   }
 
   v9 = MEMORY[0x277CBEAF8];
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 preferredLocalizations];
-  v12 = [v11 firstObject];
-  v13 = [v9 localeWithLocaleIdentifier:v12];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
+  v13 = [v9 localeWithLocaleIdentifier:firstObject];
 
-  v14 = [v13 languageCode];
-  LODWORD(v11) = [@"zh" isEqualToString:v14];
+  languageCode = [v13 languageCode];
+  LODWORD(preferredLocalizations) = [@"zh" isEqualToString:languageCode];
 
-  if (v11)
+  if (preferredLocalizations)
   {
     v15 = @"J";
   }
@@ -496,14 +496,14 @@ uint64_t __73__NTKRichComplicationRectangularDailyGraphView__datesForGraphInTime
   v16 = [MEMORY[0x277CCA968] dateFormatFromTemplate:v15 options:0 locale:v13];
   [_updateTimeMarkerLabelsForDates_timezone__TimeFormatter setDateFormat:v16];
 
-  v34 = v6;
-  [_updateTimeMarkerLabelsForDates_timezone__TimeFormatter setTimeZone:v6];
-  v17 = [v35 count];
-  v18 = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
-  v19 = [v18 count];
+  v34 = timezoneCopy;
+  [_updateTimeMarkerLabelsForDates_timezone__TimeFormatter setTimeZone:timezoneCopy];
+  v17 = [datesCopy count];
+  timeMarkerLabels = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
+  v19 = [timeMarkerLabels count];
 
-  v20 = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
-  v21 = [v20 count];
+  timeMarkerLabels2 = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
+  v21 = [timeMarkerLabels2 count];
 
   if (v21)
   {
@@ -511,12 +511,12 @@ uint64_t __73__NTKRichComplicationRectangularDailyGraphView__datesForGraphInTime
     v23 = v17 / v19;
     do
     {
-      v24 = [v35 objectAtIndexedSubscript:v22 * v23];
+      v24 = [datesCopy objectAtIndexedSubscript:v22 * v23];
       v25 = [_updateTimeMarkerLabelsForDates_timezone__TimeFormatter stringFromDate:v24];
       v26 = [v25 uppercaseStringWithLocale:v13];
 
-      v27 = [v13 languageCode];
-      v28 = [@"hi" isEqualToString:v27];
+      languageCode2 = [v13 languageCode];
+      v28 = [@"hi" isEqualToString:languageCode2];
 
       if ((v28 & 1) == 0)
       {
@@ -525,13 +525,13 @@ uint64_t __73__NTKRichComplicationRectangularDailyGraphView__datesForGraphInTime
         v26 = v29;
       }
 
-      v30 = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
-      v31 = [v30 objectAtIndexedSubscript:v22];
+      timeMarkerLabels3 = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
+      v31 = [timeMarkerLabels3 objectAtIndexedSubscript:v22];
       [v31 setText:v26];
 
       ++v22;
-      v32 = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
-      v33 = [v32 count];
+      timeMarkerLabels4 = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
+      v33 = [timeMarkerLabels4 count];
     }
 
     while (v22 < v33);
@@ -540,33 +540,33 @@ uint64_t __73__NTKRichComplicationRectangularDailyGraphView__datesForGraphInTime
 
 - (void)_applyPausedUpdate
 {
-  v3 = [(CDRichComplicationView *)self paused];
-  v5 = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
-  v4 = [v5 textProvider];
-  [v4 setPaused:v3];
+  paused = [(CDRichComplicationView *)self paused];
+  titleLabel = [(NTKRichComplicationRectangularDailyGraphView *)self titleLabel];
+  textProvider = [titleLabel textProvider];
+  [textProvider setPaused:paused];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v10 = [a3 metadata];
-  v5 = [v10 objectForKeyedSubscript:@"NTKDailyGraphRichComplicationMetadataKeyTimeZone"];
+  metadata = [template metadata];
+  v5 = [metadata objectForKeyedSubscript:@"NTKDailyGraphRichComplicationMetadataKeyTimeZone"];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    localTimeZone = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEBB0] localTimeZone];
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
   }
 
-  v8 = v7;
+  v8 = localTimeZone;
 
   v9 = [(NTKRichComplicationRectangularDailyGraphView *)self _datesForGraphInTimezone:v8];
   [(NTKRichComplicationRectangularDailyGraphView *)self _updateTimeMarkerLabelsForDates:v9 timezone:v8];
 
-  [(NTKRichComplicationRectangularDailyGraphView *)self loadWithMetadata:v10];
+  [(NTKRichComplicationRectangularDailyGraphView *)self loadWithMetadata:metadata];
 }
 
 - (CGRect)drawableGraphRect
@@ -625,8 +625,8 @@ uint64_t __73__NTKRichComplicationRectangularDailyGraphView__datesForGraphInTime
     v33 = 0u;
     v34 = 0u;
     v32 = 0u;
-    v23 = [(CDRichComplicationView *)self device];
-    ___LayoutConstants_block_invoke_3(v23, &v32);
+    device = [(CDRichComplicationView *)self device];
+    ___LayoutConstants_block_invoke_3(device, &v32);
 
     v30[2] = v34;
     v30[3] = v35;
@@ -662,24 +662,24 @@ uint64_t __73__NTKRichComplicationRectangularDailyGraphView__datesForGraphInTime
   v3 = [(CDRichComplicationView *)self device:0];
   ___LayoutConstants_block_invoke_3(v3, &v8);
 
-  v4 = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
-  v5 = [v4 firstObject];
-  [v5 frame];
+  timeMarkerLabels = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
+  firstObject = [timeMarkerLabels firstObject];
+  [firstObject frame];
   v6 = CGRectGetHeight(v11) - *&v9;
 
   return v6;
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  [(CLKUIColoringLabel *)self->_titleLabel transitionToMonochromeWithFraction:2 style:a3];
-  v4 = [(CDRichComplicationView *)self filterProvider];
-  v5 = [v4 colorForView:self accented:1];
+  [(CLKUIColoringLabel *)self->_titleLabel transitionToMonochromeWithFraction:2 style:fraction];
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v5 = [filterProvider colorForView:self accented:1];
   accentColor = self->_accentColor;
   self->_accentColor = v5;
 
-  v7 = [(CDRichComplicationView *)self filterProvider];
-  v8 = [v7 colorForView:self accented:0];
+  filterProvider2 = [(CDRichComplicationView *)self filterProvider];
+  v8 = [filterProvider2 colorForView:self accented:0];
   nonAccentColor = self->_nonAccentColor;
   self->_nonAccentColor = v8;
 
@@ -691,21 +691,21 @@ uint64_t __73__NTKRichComplicationRectangularDailyGraphView__datesForGraphInTime
   graphLabelAndGridColor = self->_graphLabelAndGridColor;
   self->_graphLabelAndGridColor = v12;
 
-  v14 = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
+  timeMarkerLabels = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __83__NTKRichComplicationRectangularDailyGraphView_transitionToMonochromeWithFraction___block_invoke;
   v19[3] = &unk_27877ED20;
   v19[4] = self;
-  [v14 enumerateObjectsUsingBlock:v19];
+  [timeMarkerLabels enumerateObjectsUsingBlock:v19];
 
   v15 = self->_accentColor;
-  v16 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
-  [v16 setTextColor:v15];
+  dailyLowLabel = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
+  [dailyLowLabel setTextColor:v15];
 
   v17 = self->_accentColor;
-  v18 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
-  [v18 setTextColor:v17];
+  dailyHighLabel = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
+  [dailyHighLabel setTextColor:v17];
 
   [(NTKRichComplicationRectangularDailyGraphView *)self setNeedsDisplay];
 }
@@ -721,13 +721,13 @@ void __83__NTKRichComplicationRectangularDailyGraphView_transitionToMonochromeWi
 - (void)updateMonochromeColor
 {
   [(CLKUIColoringLabel *)self->_titleLabel updateMonochromeColorWithStyle:2];
-  v3 = [(CDRichComplicationView *)self filterProvider];
-  v4 = [v3 colorForView:self accented:1];
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v4 = [filterProvider colorForView:self accented:1];
   accentColor = self->_accentColor;
   self->_accentColor = v4;
 
-  v6 = [(CDRichComplicationView *)self filterProvider];
-  v7 = [v6 colorForView:self accented:0];
+  filterProvider2 = [(CDRichComplicationView *)self filterProvider];
+  v7 = [filterProvider2 colorForView:self accented:0];
   nonAccentColor = self->_nonAccentColor;
   self->_nonAccentColor = v7;
 
@@ -739,21 +739,21 @@ void __83__NTKRichComplicationRectangularDailyGraphView_transitionToMonochromeWi
   graphLabelAndGridColor = self->_graphLabelAndGridColor;
   self->_graphLabelAndGridColor = v11;
 
-  v13 = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
+  timeMarkerLabels = [(NTKRichComplicationRectangularDailyGraphView *)self timeMarkerLabels];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __69__NTKRichComplicationRectangularDailyGraphView_updateMonochromeColor__block_invoke;
   v18[3] = &unk_27877ED20;
   v18[4] = self;
-  [v13 enumerateObjectsUsingBlock:v18];
+  [timeMarkerLabels enumerateObjectsUsingBlock:v18];
 
   v14 = self->_accentColor;
-  v15 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
-  [v15 setTextColor:v14];
+  dailyLowLabel = [(NTKRichComplicationRectangularDailyGraphView *)self dailyLowLabel];
+  [dailyLowLabel setTextColor:v14];
 
   v16 = self->_accentColor;
-  v17 = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
-  [v17 setTextColor:v16];
+  dailyHighLabel = [(NTKRichComplicationRectangularDailyGraphView *)self dailyHighLabel];
+  [dailyHighLabel setTextColor:v16];
 
   [(NTKRichComplicationRectangularDailyGraphView *)self setNeedsDisplay];
 }

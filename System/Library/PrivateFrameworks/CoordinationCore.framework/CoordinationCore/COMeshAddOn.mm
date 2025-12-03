@@ -1,14 +1,14 @@
 @interface COMeshAddOn
 - (COMeshAddOn)init;
 - (COMeshController)meshController;
-- (void)didAddToMeshController:(id)a3;
-- (void)didChangeNodesForMeshController:(id)a3;
-- (void)didStartMeshController:(id)a3;
-- (void)didStopMeshController:(id)a3;
-- (void)meshController:(id)a3 didTransitionToState:(unint64_t)a4;
-- (void)meshController:(id)a3 willTransitionToState:(unint64_t)a4;
-- (void)willStartMeshController:(id)a3;
-- (void)willStopMeshController:(id)a3;
+- (void)didAddToMeshController:(id)controller;
+- (void)didChangeNodesForMeshController:(id)controller;
+- (void)didStartMeshController:(id)controller;
+- (void)didStopMeshController:(id)controller;
+- (void)meshController:(id)controller didTransitionToState:(unint64_t)state;
+- (void)meshController:(id)controller willTransitionToState:(unint64_t)state;
+- (void)willStartMeshController:(id)controller;
+- (void)willStopMeshController:(id)controller;
 @end
 
 @implementation COMeshAddOn
@@ -27,55 +27,55 @@
   return v3;
 }
 
-- (void)didAddToMeshController:(id)a3
+- (void)didAddToMeshController:(id)controller
 {
-  v4 = a3;
-  [(COMeshAddOn *)self setMeshController:v4];
-  v5 = [v4 dispatchQueue];
+  controllerCopy = controller;
+  [(COMeshAddOn *)self setMeshController:controllerCopy];
+  dispatchQueue = [controllerCopy dispatchQueue];
 
-  [(COMeshAddOn *)self setMeshControllerQueue:v5];
+  [(COMeshAddOn *)self setMeshControllerQueue:dispatchQueue];
 }
 
-- (void)willStartMeshController:(id)a3
+- (void)willStartMeshController:(id)controller
 {
-  v3 = [a3 dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [controller dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 }
 
-- (void)didStartMeshController:(id)a3
+- (void)didStartMeshController:(id)controller
 {
-  v3 = [a3 dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [controller dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 }
 
-- (void)willStopMeshController:(id)a3
+- (void)willStopMeshController:(id)controller
 {
-  v3 = [a3 dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [controller dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 }
 
-- (void)didStopMeshController:(id)a3
+- (void)didStopMeshController:(id)controller
 {
-  v3 = [a3 dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [controller dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 }
 
-- (void)meshController:(id)a3 willTransitionToState:(unint64_t)a4
+- (void)meshController:(id)controller willTransitionToState:(unint64_t)state
 {
-  v4 = [a3 dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  dispatchQueue = [controller dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 }
 
-- (void)meshController:(id)a3 didTransitionToState:(unint64_t)a4
+- (void)meshController:(id)controller didTransitionToState:(unint64_t)state
 {
-  v4 = [a3 dispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  dispatchQueue = [controller dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 }
 
-- (void)didChangeNodesForMeshController:(id)a3
+- (void)didChangeNodesForMeshController:(id)controller
 {
-  v3 = [a3 dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [controller dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 }
 
 - (COMeshController)meshController

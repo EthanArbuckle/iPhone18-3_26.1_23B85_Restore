@@ -1,18 +1,18 @@
 @interface _OSChargingPredictor
 + (id)predictor;
-- (BOOL)longChargeExpectedWithConfidence:(double)a3;
+- (BOOL)longChargeExpectedWithConfidence:(double)confidence;
 - (_OSChargingPredictor)init;
 - (double)predictedChargeDuration;
-- (double)timeUntilNextChargeSessionOfMinDuration:(double)a3 fromSOC:(int64_t)a4 WithError:(id *)a5;
-- (id)chargePredictionOutputOfScheme:(unint64_t)a3 withError:(id *)a4;
-- (id)fixModelOutput:(id)a3;
+- (double)timeUntilNextChargeSessionOfMinDuration:(double)duration fromSOC:(int64_t)c WithError:(id *)error;
+- (id)chargePredictionOutputOfScheme:(unint64_t)scheme withError:(id *)error;
+- (id)fixModelOutput:(id)output;
 - (id)unfixModelOutput;
 - (id)validConnection;
 - (void)dealloc;
-- (void)fixModelOutput:(id)a3 withHandler:(id)a4;
+- (void)fixModelOutput:(id)output withHandler:(id)handler;
 - (void)handleInterruption;
 - (void)initConnection;
-- (void)unfixModelOutputWithHandler:(id)a3;
+- (void)unfixModelOutputWithHandler:(id)handler;
 @end
 
 @implementation _OSChargingPredictor
@@ -107,11 +107,11 @@
   return v2;
 }
 
-- (BOOL)longChargeExpectedWithConfidence:(double)a3
+- (BOOL)longChargeExpectedWithConfidence:(double)confidence
 {
   v4 = [(_OSChargingPredictor *)self chargePredictionOutputOfScheme:1 withError:0];
   v5 = v4;
-  if (v4 && ([v4 confidence], v6 > a3))
+  if (v4 && ([v4 confidence], v6 > confidence))
   {
     [v5 chargingDuration];
     v8 = v7 > 1800.0;
@@ -139,7 +139,7 @@
   return v4;
 }
 
-- (id)chargePredictionOutputOfScheme:(unint64_t)a3 withError:(id *)a4
+- (id)chargePredictionOutputOfScheme:(unint64_t)scheme withError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -153,7 +153,7 @@
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
-  v8 = [(_OSChargingPredictor *)self validConnection];
+  validConnection = [(_OSChargingPredictor *)self validConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65___OSChargingPredictor_chargePredictionOutputOfScheme_withError___block_invoke;
@@ -161,7 +161,7 @@
   v13[5] = &v14;
   v13[6] = a2;
   v13[4] = self;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v9 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65___OSChargingPredictor_chargePredictionOutputOfScheme_withError___block_invoke_62;
@@ -170,11 +170,11 @@
   v12[5] = &v20;
   v12[6] = &v14;
   v12[7] = a2;
-  [v9 chargeDurationPredictionOfScheme:a3 withHandler:v12];
+  [v9 chargeDurationPredictionOfScheme:scheme withHandler:v12];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v10 = v21[5];
@@ -185,7 +185,7 @@
   return v10;
 }
 
-- (double)timeUntilNextChargeSessionOfMinDuration:(double)a3 fromSOC:(int64_t)a4 WithError:(id *)a5
+- (double)timeUntilNextChargeSessionOfMinDuration:(double)duration fromSOC:(int64_t)c WithError:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -199,7 +199,7 @@
   v20 = __Block_byref_object_copy_;
   v21 = __Block_byref_object_dispose_;
   v22 = 0;
-  v10 = [(_OSChargingPredictor *)self validConnection];
+  validConnection = [(_OSChargingPredictor *)self validConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __82___OSChargingPredictor_timeUntilNextChargeSessionOfMinDuration_fromSOC_WithError___block_invoke;
@@ -207,7 +207,7 @@
   v16[5] = &v17;
   v16[6] = a2;
   v16[4] = self;
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v16];
+  v11 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:v16];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __82___OSChargingPredictor_timeUntilNextChargeSessionOfMinDuration_fromSOC_WithError___block_invoke_64;
@@ -216,11 +216,11 @@
   v15[5] = &v23;
   v15[6] = &v17;
   v15[7] = a2;
-  [v11 timeUntilNextChargeSessionOfMinDuration:a4 fromSOC:v15 withHandler:a3];
+  [v11 timeUntilNextChargeSessionOfMinDuration:c fromSOC:v15 withHandler:duration];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v18[5];
+    *error = v18[5];
   }
 
   [v24[5] doubleValue];
@@ -231,28 +231,28 @@
   return v13;
 }
 
-- (id)fixModelOutput:(id)a3
+- (id)fixModelOutput:(id)output
 {
-  v4 = a3;
+  outputCopy = output;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
-  v5 = [(_OSChargingPredictor *)self validConnection];
+  validConnection = [(_OSChargingPredictor *)self validConnection];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39___OSChargingPredictor_fixModelOutput___block_invoke;
   v10[3] = &unk_2799C15C8;
   v10[4] = self;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v6 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __39___OSChargingPredictor_fixModelOutput___block_invoke_66;
   v9[3] = &unk_2799C15F0;
   v9[4] = &v11;
-  [v6 fixModelOutput:v4 withHandler:v9];
+  [v6 fixModelOutput:outputCopy withHandler:v9];
 
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -260,18 +260,18 @@
   return v7;
 }
 
-- (void)fixModelOutput:(id)a3 withHandler:(id)a4
+- (void)fixModelOutput:(id)output withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_OSChargingPredictor *)self validConnection];
+  handlerCopy = handler;
+  outputCopy = output;
+  validConnection = [(_OSChargingPredictor *)self validConnection];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51___OSChargingPredictor_fixModelOutput_withHandler___block_invoke;
   v10[3] = &unk_2799C15C8;
   v10[4] = self;
-  v9 = [v8 remoteObjectProxyWithErrorHandler:v10];
-  [v9 fixModelOutput:v7 withHandler:v6];
+  v9 = [validConnection remoteObjectProxyWithErrorHandler:v10];
+  [v9 fixModelOutput:outputCopy withHandler:handlerCopy];
 }
 
 - (id)unfixModelOutput
@@ -282,13 +282,13 @@
   v12 = __Block_byref_object_copy_;
   v13 = __Block_byref_object_dispose_;
   v14 = 0;
-  v3 = [(_OSChargingPredictor *)self validConnection];
+  validConnection = [(_OSChargingPredictor *)self validConnection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40___OSChargingPredictor_unfixModelOutput__block_invoke;
   v8[3] = &unk_2799C15C8;
   v8[4] = self;
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v8];
+  v4 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:v8];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40___OSChargingPredictor_unfixModelOutput__block_invoke_68;
@@ -302,17 +302,17 @@
   return v5;
 }
 
-- (void)unfixModelOutputWithHandler:(id)a3
+- (void)unfixModelOutputWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(_OSChargingPredictor *)self validConnection];
+  handlerCopy = handler;
+  validConnection = [(_OSChargingPredictor *)self validConnection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52___OSChargingPredictor_unfixModelOutputWithHandler___block_invoke;
   v7[3] = &unk_2799C15C8;
   v7[4] = self;
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v7];
-  [v6 unfixModelOutputWithHandler:v4];
+  v6 = [validConnection remoteObjectProxyWithErrorHandler:v7];
+  [v6 unfixModelOutputWithHandler:handlerCopy];
 }
 
 @end

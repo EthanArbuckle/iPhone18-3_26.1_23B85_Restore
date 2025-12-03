@@ -1,52 +1,52 @@
 @interface TSWPDrawableAttachment
 - (BOOL)isAnchored;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHTMLWrap;
 - (BOOL)isHorizontallyCentered;
 - (BOOL)isPartitioned;
 - (BOOL)isVerticallyCentered;
-- (BOOL)needsUpdateForStyleChangeToStorage:(id)a3 charIndex:(unint64_t)a4;
+- (BOOL)needsUpdateForStyleChangeToStorage:(id)storage charIndex:(unint64_t)index;
 - (BOOL)preserveAttributesOverSelectionWhenInserting;
 - (BOOL)shouldInvalidateWhenTextPropertiesChange;
 - (BOOL)specifiesEnabledKnobMask;
-- (TSWPDrawableAttachment)initWithContext:(id)a3 drawable:(id)a4;
+- (TSWPDrawableAttachment)initWithContext:(id)context drawable:(id)drawable;
 - (id)childEnumerator;
-- (id)copyWithContext:(id)a3;
+- (id)copyWithContext:(id)context;
 - (id)detachDrawable;
 - (id)objectsForStyleMigrating;
 - (id)p_descriptionForAssertion;
-- (id)p_stringForNoOwningAttachmentAssertionForDrawable:(id)a3;
+- (id)p_stringForNoOwningAttachmentAssertionForDrawable:(id)drawable;
 - (unint64_t)hash;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
-- (void)attachDrawable:(id)a3;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
+- (void)attachDrawable:(id)drawable;
 - (void)clearParentStorageForDealloc;
 - (void)dealloc;
-- (void)didFinalizeUnarchivingFromWPStorage:(id)a3;
+- (void)didFinalizeUnarchivingFromWPStorage:(id)storage;
 - (void)infoChanged;
 - (void)invalidate;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)loadMessage:(const void *)a3 fromUnarchiver:(id)a4;
-- (void)saveMessage:(void *)a3 toArchiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setOffsets:(_TSWPCharIndexAndPosition *)a3;
-- (void)setParentStorage:(id)a3;
-- (void)updateForStyleChangeToStorage:(id)a3 charIndex:(unint64_t)a4;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
-- (void)willBeRemovedFromDocumentRoot:(id)a3 storage:(id)a4;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)loadMessage:(const void *)message fromUnarchiver:(id)unarchiver;
+- (void)saveMessage:(void *)message toArchiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setOffsets:(_TSWPCharIndexAndPosition *)offsets;
+- (void)setParentStorage:(id)storage;
+- (void)updateForStyleChangeToStorage:(id)storage charIndex:(unint64_t)index;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
+- (void)willBeRemovedFromDocumentRoot:(id)root storage:(id)storage;
 @end
 
 @implementation TSWPDrawableAttachment
 
-- (void)setOffsets:(_TSWPCharIndexAndPosition *)a3
+- (void)setOffsets:(_TSWPCharIndexAndPosition *)offsets
 {
-  objc_msgSend_willModify(self, a2, a3);
-  self->_vOffset = a3->var4;
-  self->_vOffsetType = a3->var3;
-  self->_hOffset = a3->var2;
-  self->_hOffsetType = a3->var1;
+  objc_msgSend_willModify(self, a2, offsets);
+  self->_vOffset = offsets->var4;
+  self->_vOffsetType = offsets->var3;
+  self->_hOffset = offsets->var2;
+  self->_hOffsetType = offsets->var1;
 }
 
 - (void)dealloc
@@ -86,11 +86,11 @@
   return v19;
 }
 
-- (id)p_stringForNoOwningAttachmentAssertionForDrawable:(id)a3
+- (id)p_stringForNoOwningAttachmentAssertionForDrawable:(id)drawable
 {
-  v4 = a3;
+  drawableCopy = drawable;
   objc_opt_class();
-  v7 = objc_msgSend_owningAttachmentNoRecurse(v4, v5, v6);
+  v7 = objc_msgSend_owningAttachmentNoRecurse(drawableCopy, v5, v6);
   v8 = TSUDynamicCast();
 
   if (!v8)
@@ -98,7 +98,7 @@
     v20 = MEMORY[0x277CCACA8];
     v21 = objc_opt_class();
     v11 = NSStringFromClass(v21);
-    v14 = objc_msgSend_owningAttachmentNoRecurse(v4, v22, v23);
+    v14 = objc_msgSend_owningAttachmentNoRecurse(drawableCopy, v22, v23);
     v24 = objc_opt_class();
     v17 = NSStringFromClass(v24);
     v19 = objc_msgSend_stringWithFormat_(v20, v25, @"attaching %@ already attached to %@", v11, v17);
@@ -128,11 +128,11 @@ LABEL_7:
   return v26;
 }
 
-- (TSWPDrawableAttachment)initWithContext:(id)a3 drawable:(id)a4
+- (TSWPDrawableAttachment)initWithContext:(id)context drawable:(id)drawable
 {
-  v6 = a3;
-  v8 = a4;
-  if (!v8)
+  contextCopy = context;
+  drawableCopy = drawable;
+  if (!drawableCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSWPDrawableAttachment initWithContext:drawable:]");
@@ -146,13 +146,13 @@ LABEL_7:
 
   v41.receiver = self;
   v41.super_class = TSWPDrawableAttachment;
-  v18 = [(TSWPAttachment *)&v41 initWithContext:v6];
+  v18 = [(TSWPAttachment *)&v41 initWithContext:contextCopy];
   v19 = v18;
   v20 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_drawableInfo, a4);
-    v23 = objc_msgSend_objectUUID(v8, v21, v22);
+    objc_storeStrong(&v18->_drawableInfo, drawable);
+    v23 = objc_msgSend_objectUUID(drawableCopy, v21, v22);
     v24 = *(v20 + 80);
     *(v20 + 80) = v23;
 
@@ -167,7 +167,7 @@ LABEL_7:
         v31 = MEMORY[0x277D81150];
         v32 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v28, "[TSWPDrawableAttachment initWithContext:drawable:]");
         v34 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v33, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPDrawableAttachment.mm");
-        v36 = objc_msgSend_p_stringForNoOwningAttachmentAssertionForDrawable_(v20, v35, v8);
+        v36 = objc_msgSend_p_stringForNoOwningAttachmentAssertionForDrawable_(v20, v35, drawableCopy);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v31, v37, v32, v34, 153, 0, "For new attachment: %{public}@", v36);
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v38, v39);
@@ -185,38 +185,38 @@ LABEL_7:
   return v20;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812DC408[128]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812DC408[128]);
 
-  objc_msgSend_loadMessage_fromUnarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadMessage_fromUnarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)loadMessage:(const void *)a3 fromUnarchiver:(id)a4
+- (void)loadMessage:(const void *)message fromUnarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v9 = v6;
-  v10 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  v9 = unarchiverCopy;
+  v10 = *(message + 4);
   if (v10)
   {
-    v11 = *(a3 + 3);
+    v11 = *(message + 3);
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = sub_276DCD53C;
     v19[3] = &unk_27A6F45E0;
     v19[4] = self;
-    v12 = v6;
+    v12 = unarchiverCopy;
     v13 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v12, v14, v11, v13, 0, v19);
 
-    v10 = *(a3 + 4);
+    v10 = *(message + 4);
   }
 
   if ((v10 & 2) != 0)
   {
-    self->_hOffsetType = *(a3 + 8);
+    self->_hOffsetType = *(message + 8);
     if ((v10 & 4) == 0)
     {
 LABEL_5:
@@ -226,7 +226,7 @@ LABEL_5:
       }
 
 LABEL_11:
-      self->_vOffsetType = *(a3 + 10);
+      self->_vOffsetType = *(message + 10);
       if ((v10 & 0x10) == 0)
       {
         goto LABEL_8;
@@ -241,7 +241,7 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  self->_hOffset = *(a3 + 9);
+  self->_hOffset = *(message + 9);
   if ((v10 & 8) != 0)
   {
     goto LABEL_11;
@@ -251,7 +251,7 @@ LABEL_6:
   if ((v10 & 0x10) != 0)
   {
 LABEL_7:
-    self->_vOffset = *(a3 + 11);
+    self->_vOffset = *(message + 11);
   }
 
 LABEL_8:
@@ -265,49 +265,49 @@ LABEL_8:
   objc_msgSend_addFinalizeHandler_(v9, v16, v17);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276DCF80C, off_2812DC408[128]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276DCF80C, off_2812DC408[128]);
 
-  objc_msgSend_saveMessage_toArchiver_(self, v6, v5, v7);
+  objc_msgSend_saveMessage_toArchiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)didFinalizeUnarchivingFromWPStorage:(id)a3
+- (void)didFinalizeUnarchivingFromWPStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   objc_opt_class();
   v3 = TSUDynamicCast();
-  objc_msgSend_didFinalizeUnarchivingFromWPStorage_(v3, v4, v5);
+  objc_msgSend_didFinalizeUnarchivingFromWPStorage_(v3, v4, storageCopy);
 }
 
-- (void)saveMessage:(void *)a3 toArchiver:(id)a4
+- (void)saveMessage:(void *)message toArchiver:(id)archiver
 {
-  v47 = a4;
+  archiverCopy = archiver;
   drawableInfo = self->_drawableInfo;
   if (drawableInfo)
   {
-    *(a3 + 4) |= 1u;
-    v8 = *(a3 + 3);
+    *(message + 4) |= 1u;
+    v8 = *(message + 3);
     if (!v8)
     {
-      v9 = *(a3 + 1);
+      v9 = *(message + 1);
       if (v9)
       {
         v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v8 = MEMORY[0x277CA3250](v9);
-      *(a3 + 3) = v8;
+      *(message + 3) = v8;
     }
 
-    objc_msgSend_setStrongReference_message_(v47, v6, drawableInfo, v8);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v6, drawableInfo, v8);
   }
 
   hOffsetType = self->_hOffsetType;
-  *(a3 + 4) |= 2u;
-  *(a3 + 8) = hOffsetType;
+  *(message + 4) |= 2u;
+  *(message + 8) = hOffsetType;
   hOffset = self->_hOffset;
   if ((*&hOffset & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
   {
@@ -345,11 +345,11 @@ LABEL_12:
 
   v12 = *&v24;
 LABEL_13:
-  v13 = *(a3 + 4);
+  v13 = *(message + 4);
   vOffsetType = self->_vOffsetType;
-  *(a3 + 9) = v12;
-  *(a3 + 4) = v13 | 0xC;
-  *(a3 + 10) = vOffsetType;
+  *(message + 9) = v12;
+  *(message + 4) = v13 | 0xC;
+  *(message + 10) = vOffsetType;
   vOffset = self->_vOffset;
   if ((*&vOffset & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
   {
@@ -387,15 +387,15 @@ LABEL_18:
 
   v16 = *&v32;
 LABEL_19:
-  *(a3 + 4) |= 0x10u;
-  *(a3 + 11) = v16;
+  *(message + 4) |= 0x10u;
+  *(message + 11) = v16;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v25.receiver = self;
   v25.super_class = TSWPDrawableAttachment;
-  v6 = [(TSWPAttachment *)&v25 copyWithContext:a3];
+  v6 = [(TSWPAttachment *)&v25 copyWithContext:context];
   if (v6)
   {
     v7 = objc_msgSend_replicateForReinsertion(self->_drawableInfo, v4, v5);
@@ -431,12 +431,12 @@ LABEL_19:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v18.receiver = self;
   v18.super_class = TSWPDrawableAttachment;
-  if ([(TSWPAttachment *)&v18 isEqual:v4])
+  if ([(TSWPAttachment *)&v18 isEqual:equalCopy])
   {
     objc_opt_class();
     v7 = TSUDynamicCast();
@@ -504,10 +504,10 @@ LABEL_19:
   return v4;
 }
 
-- (void)attachDrawable:(id)a3
+- (void)attachDrawable:(id)drawable
 {
-  v49 = a3;
-  if (!v49)
+  drawableCopy = drawable;
+  if (!drawableCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPDrawableAttachment attachDrawable:]");
@@ -521,7 +521,7 @@ LABEL_19:
 
   if (self->_drawableUUID)
   {
-    v16 = objc_msgSend_objectUUID(v49, v5, v6);
+    v16 = objc_msgSend_objectUUID(drawableCopy, v5, v6);
     isEqual = objc_msgSend_isEqual_(v16, v17, self->_drawableUUID);
 
     if ((isEqual & 1) == 0)
@@ -530,7 +530,7 @@ LABEL_19:
       v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPDrawableAttachment attachDrawable:]");
       v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPDrawableAttachment.mm");
       drawableUUID = self->_drawableUUID;
-      v26 = objc_msgSend_objectUUID(v49, v24, v25);
+      v26 = objc_msgSend_objectUUID(drawableCopy, v24, v25);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v27, v20, v22, 321, 0, "UUID mismatch for attached drawable: %{public}@ vs %{public}@", drawableUUID, v26);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29);
@@ -538,8 +538,8 @@ LABEL_19:
   }
 
   objc_msgSend_willModify(self, v5, v6);
-  objc_storeStrong(&self->_drawableInfo, a3);
-  v32 = objc_msgSend_objectUUID(v49, v30, v31);
+  objc_storeStrong(&self->_drawableInfo, drawable);
+  v32 = objc_msgSend_objectUUID(drawableCopy, v30, v31);
   v33 = self->_drawableUUID;
   self->_drawableUUID = v32;
 
@@ -554,7 +554,7 @@ LABEL_19:
       v40 = MEMORY[0x277D81150];
       v41 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v37, "[TSWPDrawableAttachment attachDrawable:]");
       v43 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v42, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPDrawableAttachment.mm");
-      v45 = objc_msgSend_p_stringForNoOwningAttachmentAssertionForDrawable_(self, v44, v49);
+      v45 = objc_msgSend_p_stringForNoOwningAttachmentAssertionForDrawable_(self, v44, drawableCopy);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v40, v46, v41, v43, 333, 0, "Attachment: %{public}@", v45);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v47, v48);
@@ -564,13 +564,13 @@ LABEL_19:
   objc_msgSend_setOwningAttachment_(self->_drawableInfo, v37, self);
 }
 
-- (void)setParentStorage:(id)a3
+- (void)setParentStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v6.receiver = self;
   v6.super_class = TSWPDrawableAttachment;
-  [(TSWPAttachment *)&v6 setParentStorage:v4];
-  objc_msgSend_setParentInfo_(self->_drawableInfo, v5, v4);
+  [(TSWPAttachment *)&v6 setParentStorage:storageCopy];
+  objc_msgSend_setParentInfo_(self->_drawableInfo, v5, storageCopy);
 }
 
 - (void)clearParentStorageForDealloc
@@ -736,16 +736,16 @@ LABEL_16:
   }
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend_pushMappingContext_(v7, v8, self);
+  stylesheetCopy = stylesheet;
+  mapperCopy = mapper;
+  objc_msgSend_pushMappingContext_(mapperCopy, v8, self);
   v11.receiver = self;
   v11.super_class = TSWPDrawableAttachment;
-  [(TSWPAttachment *)&v11 adoptStylesheet:v6 withMapper:v7];
-  objc_msgSend_adoptStylesheet_withMapper_(self->_drawableInfo, v9, v6, v7);
-  objc_msgSend_popMappingContext_(v7, v10, self);
+  [(TSWPAttachment *)&v11 adoptStylesheet:stylesheetCopy withMapper:mapperCopy];
+  objc_msgSend_adoptStylesheet_withMapper_(self->_drawableInfo, v9, stylesheetCopy, mapperCopy);
+  objc_msgSend_popMappingContext_(mapperCopy, v10, self);
 }
 
 - (id)objectsForStyleMigrating
@@ -767,45 +767,45 @@ LABEL_16:
   return v13;
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   if (objc_opt_respondsToSelector())
   {
     v10 = objc_msgSend_drawable(self, v8, v9);
-    objc_msgSend_performSelector_withObject_(v6, v11, sel_willAddDrawable_, v10);
+    objc_msgSend_performSelector_withObject_(rootCopy, v11, sel_willAddDrawable_, v10);
   }
 
   v13.receiver = self;
   v13.super_class = TSWPDrawableAttachment;
-  [(TSWPAttachment *)&v13 willBeAddedToDocumentRoot:v6 dolcContext:v7];
-  objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(self->_drawableInfo, v12, v6, v7);
+  [(TSWPAttachment *)&v13 willBeAddedToDocumentRoot:rootCopy dolcContext:contextCopy];
+  objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(self->_drawableInfo, v12, rootCopy, contextCopy);
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = TSWPDrawableAttachment;
-  [(TSWPAttachment *)&v13 wasAddedToDocumentRoot:v6 dolcContext:v7];
-  objc_msgSend_wasAddedToDocumentRoot_dolcContext_(self->_drawableInfo, v8, v6, v7);
+  [(TSWPAttachment *)&v13 wasAddedToDocumentRoot:rootCopy dolcContext:contextCopy];
+  objc_msgSend_wasAddedToDocumentRoot_dolcContext_(self->_drawableInfo, v8, rootCopy, contextCopy);
   if (objc_opt_respondsToSelector())
   {
     v11 = objc_msgSend_drawable(self, v9, v10);
-    objc_msgSend_performSelector_withObject_(v6, v12, sel_didAddDrawable_, v11);
+    objc_msgSend_performSelector_withObject_(rootCopy, v12, sel_didAddDrawable_, v11);
   }
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3 storage:(id)a4
+- (void)willBeRemovedFromDocumentRoot:(id)root storage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  storageCopy = storage;
   if (objc_opt_respondsToSelector())
   {
     v10 = objc_msgSend_drawable(self, v8, v9);
-    objc_msgSend_performSelector_withObject_withObject_(v6, v11, sel_willRemoveDrawable_storage_, v10, v7);
+    objc_msgSend_performSelector_withObject_withObject_(rootCopy, v11, sel_willRemoveDrawable_storage_, v10, storageCopy);
 LABEL_5:
 
     goto LABEL_6;
@@ -814,18 +814,18 @@ LABEL_5:
   if (objc_opt_respondsToSelector())
   {
     v10 = objc_msgSend_drawable(self, v12, v13);
-    objc_msgSend_performSelector_withObject_(v6, v14, sel_willRemoveDrawable_, v10);
+    objc_msgSend_performSelector_withObject_(rootCopy, v14, sel_willRemoveDrawable_, v10);
     goto LABEL_5;
   }
 
 LABEL_6:
-  objc_msgSend_willBeRemovedFromDocumentRoot_(self->_drawableInfo, v12, v6);
+  objc_msgSend_willBeRemovedFromDocumentRoot_(self->_drawableInfo, v12, rootCopy);
   v15.receiver = self;
   v15.super_class = TSWPDrawableAttachment;
-  [(TSWPAttachment *)&v15 willBeRemovedFromDocumentRoot:v6];
+  [(TSWPAttachment *)&v15 willBeRemovedFromDocumentRoot:rootCopy];
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPDrawableAttachment willBeRemovedFromDocumentRoot:]");
@@ -837,17 +837,17 @@ LABEL_6:
   objc_msgSend_logBacktraceThrottled(v10, v8, v9);
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
-  v4 = a3;
-  objc_msgSend_wasRemovedFromDocumentRoot_(self->_drawableInfo, v5, v4);
+  rootCopy = root;
+  objc_msgSend_wasRemovedFromDocumentRoot_(self->_drawableInfo, v5, rootCopy);
   v10.receiver = self;
   v10.super_class = TSWPDrawableAttachment;
-  [(TSWPAttachment *)&v10 wasRemovedFromDocumentRoot:v4];
+  [(TSWPAttachment *)&v10 wasRemovedFromDocumentRoot:rootCopy];
   if (objc_opt_respondsToSelector())
   {
     v8 = objc_msgSend_drawable(self, v6, v7);
-    objc_msgSend_performSelector_withObject_(v4, v9, sel_didRemoveDrawable_, v8);
+    objc_msgSend_performSelector_withObject_(rootCopy, v9, sel_didRemoveDrawable_, v8);
   }
 }
 
@@ -887,15 +887,15 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)needsUpdateForStyleChangeToStorage:(id)a3 charIndex:(unint64_t)a4
+- (BOOL)needsUpdateForStyleChangeToStorage:(id)storage charIndex:(unint64_t)index
 {
-  v6 = a3;
+  storageCopy = storage;
   objc_opt_class();
   v7 = TSUDynamicCast();
   if (objc_opt_respondsToSelector())
   {
     isAnchored = objc_msgSend_isAnchored(self, v8, v9);
-    v12 = objc_msgSend_needsUpdateForStyleChangeToStorage_charIndex_isAnchoredOrFloating_(v7, v11, v6, a4, isAnchored);
+    v12 = objc_msgSend_needsUpdateForStyleChangeToStorage_charIndex_isAnchoredOrFloating_(v7, v11, storageCopy, index, isAnchored);
   }
 
   else
@@ -906,15 +906,15 @@ LABEL_6:
   return v12;
 }
 
-- (void)updateForStyleChangeToStorage:(id)a3 charIndex:(unint64_t)a4
+- (void)updateForStyleChangeToStorage:(id)storage charIndex:(unint64_t)index
 {
-  v11 = a3;
+  storageCopy = storage;
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (objc_opt_respondsToSelector())
   {
     isAnchored = objc_msgSend_isAnchored(self, v7, v8);
-    objc_msgSend_updateForStyleChangeToStorage_charIndex_isAnchoredOrFloating_(v6, v10, v11, a4, isAnchored);
+    objc_msgSend_updateForStyleChangeToStorage_charIndex_isAnchoredOrFloating_(v6, v10, storageCopy, index, isAnchored);
   }
 }
 

@@ -1,14 +1,14 @@
 @interface HDCodableRoutineLocationRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLocationType:(id)a3;
+- (int)StringAsLocationType:(id)type;
 - (int)locationType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableRoutineLocationRequest
@@ -26,13 +26,13 @@
   }
 }
 
-- (int)StringAsLocationType:(id)a3
+- (int)StringAsLocationType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"CurrentLocation"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"CurrentLocation"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"CachedLocation"])
+    if ([typeCopy isEqualToString:@"CachedLocation"])
     {
       v4 = 2;
     }
@@ -52,15 +52,15 @@
   v8.receiver = self;
   v8.super_class = HDCodableRoutineLocationRequest;
   v4 = [(HDCodableRoutineLocationRequest *)&v8 description];
-  v5 = [(HDCodableRoutineLocationRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableRoutineLocationRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     locationType = self->_locationType;
@@ -79,13 +79,13 @@
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_locationType];
     }
 
-    [v3 setObject:v5 forKey:@"locationType"];
+    [dictionary setObject:v5 forKey:@"locationType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -94,18 +94,18 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_locationType;
-    *(a3 + 12) |= 1u;
+    *(to + 2) = self->_locationType;
+    *(to + 12) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 2) = self->_locationType;
@@ -115,18 +115,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
-  v5 = (*(v4 + 12) & 1) == 0;
+  v5 = (*(equalCopy + 12) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 12) & 1) != 0 && self->_locationType == *(v4 + 2))
+    if ((*(equalCopy + 12) & 1) != 0 && self->_locationType == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_7;
@@ -154,11 +154,11 @@ LABEL_7:
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
-    self->_locationType = *(a3 + 2);
+    self->_locationType = *(from + 2);
     *&self->_has |= 1u;
   }
 }

@@ -1,27 +1,27 @@
 @interface SUUIIndexBarDynamicElementEntryListController
 - (BOOL)hidesIndexBar;
-- (SUUIIndexBarDynamicElementEntryListController)initWithEntryListViewElement:(id)a3;
-- (id)entryDescriptorAtIndex:(int64_t)a3;
-- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)a3 returningRelativeSectionIndex:(int64_t *)a4;
+- (SUUIIndexBarDynamicElementEntryListController)initWithEntryListViewElement:(id)element;
+- (id)entryDescriptorAtIndex:(int64_t)index;
+- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)index returningRelativeSectionIndex:(int64_t *)sectionIndex;
 - (int64_t)numberOfEntryDescriptors;
-- (void)_entityProviderDidInvalidateNotification:(id)a3;
+- (void)_entityProviderDidInvalidateNotification:(id)notification;
 - (void)dealloc;
 - (void)reloadViewElementData;
-- (void)setRootTargetViewElement:(id)a3;
+- (void)setRootTargetViewElement:(id)element;
 @end
 
 @implementation SUUIIndexBarDynamicElementEntryListController
 
-- (SUUIIndexBarDynamicElementEntryListController)initWithEntryListViewElement:(id)a3
+- (SUUIIndexBarDynamicElementEntryListController)initWithEntryListViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUIIndexBarDynamicElementEntryListController;
   v6 = [(SUUIIndexBarDynamicElementEntryListController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entryListViewElement, a3);
+    objc_storeStrong(&v6->_entryListViewElement, element);
   }
 
   return v7;
@@ -29,11 +29,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = v3;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v4 = defaultCenter;
   if (self->_entityProvider)
   {
-    [v3 removeObserver:self name:*MEMORY[0x277D1AF58] object:?];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D1AF58] object:?];
   }
 
   v5.receiver = self;
@@ -41,9 +41,9 @@
   [(SUUIIndexBarDynamicElementEntryListController *)&v5 dealloc];
 }
 
-- (id)entryDescriptorAtIndex:(int64_t)a3
+- (id)entryDescriptorAtIndex:(int64_t)index
 {
-  v4 = [(SUUIEntityProviding *)self->_entityProvider indexBarEntryEntityValueProviderAtIndex:a3];
+  v4 = [(SUUIEntityProviding *)self->_entityProvider indexBarEntryEntityValueProviderAtIndex:index];
   [(SUUIViewElement *)self->_templateElement setEntityValueProvider:v4];
   v5 = SUUIIndexBarEntryDescriptorForIndexBarEntryViewElement(self->_indexBarEntryViewElement, self->_templateElement);
   [v5 setVisibilityPriority:{objc_msgSend(v4, "visibilityPriority")}];
@@ -53,14 +53,14 @@
 
 - (BOOL)hidesIndexBar
 {
-  v3 = [(SUUIIndexBarEntryListViewElement *)self->_entryListViewElement isIndexBarHiddenWhenEmpty];
-  if (v3)
+  isIndexBarHiddenWhenEmpty = [(SUUIIndexBarEntryListViewElement *)self->_entryListViewElement isIndexBarHiddenWhenEmpty];
+  if (isIndexBarHiddenWhenEmpty)
   {
-    v4 = [(SUUIDynamicPageSectionIndexMapper *)self->_dynamicIndexMapper totalNumberOfEntities];
-    LOBYTE(v3) = v4 < [(SUUIIndexBarEntryListViewElement *)self->_entryListViewElement minimumEntityCount];
+    totalNumberOfEntities = [(SUUIDynamicPageSectionIndexMapper *)self->_dynamicIndexMapper totalNumberOfEntities];
+    LOBYTE(isIndexBarHiddenWhenEmpty) = totalNumberOfEntities < [(SUUIIndexBarEntryListViewElement *)self->_entryListViewElement minimumEntityCount];
   }
 
-  return v3;
+  return isIndexBarHiddenWhenEmpty;
 }
 
 - (int64_t)numberOfEntryDescriptors
@@ -70,8 +70,8 @@
     return 0;
   }
 
-  v3 = [(SUUIDynamicPageSectionIndexMapper *)self->_dynamicIndexMapper totalNumberOfEntities];
-  if (v3 < [(SUUIIndexBarEntryListViewElement *)self->_entryListViewElement minimumEntityCount]|| (objc_opt_respondsToSelector() & 1) == 0)
+  totalNumberOfEntities = [(SUUIDynamicPageSectionIndexMapper *)self->_dynamicIndexMapper totalNumberOfEntities];
+  if (totalNumberOfEntities < [(SUUIIndexBarEntryListViewElement *)self->_entryListViewElement minimumEntityCount]|| (objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
@@ -86,24 +86,24 @@
   v9.receiver = self;
   v9.super_class = SUUIIndexBarDynamicElementEntryListController;
   [(SUUIIndexBarEntryListController *)&v9 reloadViewElementData];
-  v3 = [(SUUIIndexBarEntryListViewElement *)self->_entryListViewElement childIndexBarEntryElements];
-  v4 = [v3 firstObject];
+  childIndexBarEntryElements = [(SUUIIndexBarEntryListViewElement *)self->_entryListViewElement childIndexBarEntryElements];
+  firstObject = [childIndexBarEntryElements firstObject];
 
   indexBarEntryViewElement = self->_indexBarEntryViewElement;
-  if (indexBarEntryViewElement == v4 || ([(SUUIIndexBarEntryViewElement *)indexBarEntryViewElement isEqual:v4]& 1) != 0)
+  if (indexBarEntryViewElement == firstObject || ([(SUUIIndexBarEntryViewElement *)indexBarEntryViewElement isEqual:firstObject]& 1) != 0)
   {
     v6 = 0;
   }
 
   else
   {
-    objc_storeStrong(&self->_indexBarEntryViewElement, v4);
+    objc_storeStrong(&self->_indexBarEntryViewElement, firstObject);
     v6 = 1;
   }
 
-  v7 = [(SUUIIndexBarEntryViewElement *)v4 childElement];
+  childElement = [(SUUIIndexBarEntryViewElement *)firstObject childElement];
   templateElement = self->_templateElement;
-  if (templateElement == v7 || ([(SUUIViewElement *)templateElement isEqual:v7]& 1) != 0)
+  if (templateElement == childElement || ([(SUUIViewElement *)templateElement isEqual:childElement]& 1) != 0)
   {
     if (!v6)
     {
@@ -113,34 +113,34 @@
 
   else
   {
-    objc_storeStrong(&self->_templateElement, v7);
+    objc_storeStrong(&self->_templateElement, childElement);
   }
 
   [(SUUIIndexBarEntryListController *)self _didInvalidate];
 LABEL_11:
 }
 
-- (void)setRootTargetViewElement:(id)a3
+- (void)setRootTargetViewElement:(id)element
 {
   v14.receiver = self;
   v14.super_class = SUUIIndexBarDynamicElementEntryListController;
-  [(SUUIIndexBarEntryListController *)&v14 setRootTargetViewElement:a3];
-  v4 = [(SUUIIndexBarEntryListController *)self rootTargetViewElement];
+  [(SUUIIndexBarEntryListController *)&v14 setRootTargetViewElement:element];
+  rootTargetViewElement = [(SUUIIndexBarEntryListController *)self rootTargetViewElement];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 entityProvider];
+    entityProvider = [rootTargetViewElement entityProvider];
     entityProvider = self->_entityProvider;
-    if (entityProvider != v5 && ([(SUUIEntityProviding *)entityProvider isEqual:v5]& 1) == 0)
+    if (entityProvider != entityProvider && ([(SUUIEntityProviding *)entityProvider isEqual:entityProvider]& 1) == 0)
     {
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      v8 = v7;
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      v8 = defaultCenter;
       v9 = MEMORY[0x277D1AF58];
       if (self->_entityProvider)
       {
-        [v7 removeObserver:self name:*MEMORY[0x277D1AF58] object:?];
+        [defaultCenter removeObserver:self name:*MEMORY[0x277D1AF58] object:?];
       }
 
-      objc_storeStrong(&self->_entityProvider, v5);
+      objc_storeStrong(&self->_entityProvider, entityProvider);
       v10 = self->_entityProvider;
       dynamicIndexMapper = self->_dynamicIndexMapper;
       if (v10)
@@ -169,17 +169,17 @@ LABEL_11:
   }
 }
 
-- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)a3 returningRelativeSectionIndex:(int64_t *)a4
+- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)index returningRelativeSectionIndex:(int64_t *)sectionIndex
 {
-  if (a4)
+  if (sectionIndex)
   {
-    v6 = a3;
+    indexCopy = index;
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(SUUIEntityProviding *)self->_entityProvider sectionForSectionIndexBarEntryAtIndex:v6];
+      indexCopy = [(SUUIEntityProviding *)self->_entityProvider sectionForSectionIndexBarEntryAtIndex:indexCopy];
     }
 
-    *a4 = v6;
+    *sectionIndex = indexCopy;
   }
 
   entryListViewElement = self->_entryListViewElement;
@@ -187,7 +187,7 @@ LABEL_11:
   return [(SUUIIndexBarEntryListViewElement *)entryListViewElement targetIndexBarEntryID];
 }
 
-- (void)_entityProviderDidInvalidateNotification:(id)a3
+- (void)_entityProviderDidInvalidateNotification:(id)notification
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;

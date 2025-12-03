@@ -1,39 +1,39 @@
 @interface RTDefaultsManager
-- (BOOL)_generateDiagnosticFilesAtURL:(id)a3 error:(id *)a4;
+- (BOOL)_generateDiagnosticFilesAtURL:(id)l error:(id *)error;
 - (RTDefaultsManager)init;
-- (RTDefaultsManager)initWithUserDefaults:(id)a3 customDomain:(id)a4;
-- (id)copyKeyListContainingString:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)objectForKey:(id)a3 domain:(id)a4;
-- (id)objectForKey:(id)a3 value:(id)a4;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)addDomain:(id)a3;
-- (void)fetchDiagnosticLogsWithHandler:(id)a3;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)notifyUpdatedKeys:(id)a3;
-- (void)registerDefault:(id)a3 forKey:(id)a4;
-- (void)sendDiagnosticsToURL:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4 domain:(id)a5;
+- (RTDefaultsManager)initWithUserDefaults:(id)defaults customDomain:(id)domain;
+- (id)copyKeyListContainingString:(id)string;
+- (id)objectForKey:(id)key;
+- (id)objectForKey:(id)key domain:(id)domain;
+- (id)objectForKey:(id)key value:(id)value;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)addDomain:(id)domain;
+- (void)fetchDiagnosticLogsWithHandler:(id)handler;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)notifyUpdatedKeys:(id)keys;
+- (void)registerDefault:(id)default forKey:(id)key;
+- (void)sendDiagnosticsToURL:(id)l options:(id)options handler:(id)handler;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key domain:(id)domain;
 @end
 
 @implementation RTDefaultsManager
 
 - (RTDefaultsManager)init
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v4 = [MEMORY[0x277CCAA00] pathInCacheDirectory:@"defaults.plist"];
-  v5 = [(RTDefaultsManager *)self initWithUserDefaults:v3 customDomain:v4];
+  v5 = [(RTDefaultsManager *)self initWithUserDefaults:standardUserDefaults customDomain:v4];
 
   return v5;
 }
 
-- (RTDefaultsManager)initWithUserDefaults:(id)a3 customDomain:(id)a4
+- (RTDefaultsManager)initWithUserDefaults:(id)defaults customDomain:(id)domain
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  defaultsCopy = defaults;
+  domainCopy = domain;
+  if (defaultsCopy)
   {
     v13.receiver = self;
     v13.super_class = RTDefaultsManager;
@@ -41,55 +41,55 @@
     p_isa = &v9->super.super.super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_userDefaults, a3);
-      if (v8)
+      objc_storeStrong(&v9->_userDefaults, defaults);
+      if (domainCopy)
       {
-        [p_isa[4] addSuiteNamed:v8];
+        [p_isa[4] addSuiteNamed:domainCopy];
       }
     }
 
     self = p_isa;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)registerDefault:(id)a3 forKey:(id)a4
+- (void)registerDefault:(id)default forKey:(id)key
 {
   v11[1] = *MEMORY[0x277D85DE8];
   userDefaults = self->_userDefaults;
-  v10 = a4;
-  v11[0] = a3;
+  keyCopy = key;
+  v11[0] = default;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 dictionaryWithObjects:v11 forKeys:&v10 count:1];
+  keyCopy2 = key;
+  defaultCopy = default;
+  v9 = [v6 dictionaryWithObjects:v11 forKeys:&keyCopy count:1];
   [(RTUserDefaults *)userDefaults registerDefaults:v9];
 }
 
-- (void)addDomain:(id)a3
+- (void)addDomain:(id)domain
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  domainCopy = domain;
+  if (domainCopy)
   {
-    [(RTUserDefaults *)self->_userDefaults addSuiteNamed:v4];
-    [(RTUserDefaults *)self->_userDefaults rt_refreshDomain:v4];
-    v5 = [(RTUserDefaults *)self->_userDefaults rt_copyKeyListForDomain:v4];
+    [(RTUserDefaults *)self->_userDefaults addSuiteNamed:domainCopy];
+    [(RTUserDefaults *)self->_userDefaults rt_refreshDomain:domainCopy];
+    v5 = [(RTUserDefaults *)self->_userDefaults rt_copyKeyListForDomain:domainCopy];
     [(RTDefaultsManager *)self notifyUpdatedKeys:v5];
   }
 
@@ -107,10 +107,10 @@
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (key)
   {
     v3 = [(RTUserDefaults *)self->_userDefaults objectForKey:?];
   }
@@ -133,15 +133,15 @@
   return v3;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
-    [(RTUserDefaults *)self->_userDefaults setObject:a3 forKey:v6];
+    [(RTUserDefaults *)self->_userDefaults setObject:object forKey:keyCopy];
     [(RTUserDefaults *)self->_userDefaults rt_synchronize];
-    v8 = v6;
+    v8 = keyCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v8 count:1];
     [(RTDefaultsManager *)self notifyUpdatedKeys:v7];
   }
@@ -160,17 +160,17 @@
   }
 }
 
-- (id)objectForKey:(id)a3 domain:(id)a4
+- (id)objectForKey:(id)key domain:(id)domain
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  keyCopy = key;
+  domainCopy = domain;
+  v8 = domainCopy;
+  if (keyCopy)
   {
-    if (v7)
+    if (domainCopy)
     {
-      v9 = [(RTUserDefaults *)self->_userDefaults rt_objectForKey:v6 domain:v7];
+      v9 = [(RTUserDefaults *)self->_userDefaults rt_objectForKey:keyCopy domain:domainCopy];
       goto LABEL_11;
     }
   }
@@ -210,18 +210,18 @@ LABEL_11:
   return v9;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 domain:(id)a5
+- (void)setObject:(id)object forKey:(id)key domain:(id)domain
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  objectCopy = object;
+  keyCopy = key;
+  domainCopy = domain;
+  v11 = domainCopy;
+  if (keyCopy)
   {
-    if (v10)
+    if (domainCopy)
     {
-      [(RTUserDefaults *)self->_userDefaults rt_setObject:v8 forKey:v9 domain:v10];
+      [(RTUserDefaults *)self->_userDefaults rt_setObject:objectCopy forKey:keyCopy domain:domainCopy];
       [(RTUserDefaults *)self->_userDefaults rt_synchronizeDomain:v11];
       goto LABEL_10;
     }
@@ -256,19 +256,19 @@ LABEL_7:
 LABEL_10:
 }
 
-- (void)notifyUpdatedKeys:(id)a3
+- (void)notifyUpdatedKeys:(id)keys
 {
-  v4 = a3;
-  if ([v4 count])
+  keysCopy = keys;
+  if ([keysCopy count])
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __39__RTDefaultsManager_notifyUpdatedKeys___block_invoke;
     v6[3] = &unk_2788C4A70;
-    v7 = v4;
-    v8 = self;
-    dispatch_async(v5, v6);
+    v7 = keysCopy;
+    selfCopy = self;
+    dispatch_async(queue, v6);
   }
 }
 
@@ -278,20 +278,20 @@ void __39__RTDefaultsManager_notifyUpdatedKeys___block_invoke(uint64_t a1)
   [*(a1 + 40) postNotification:v2];
 }
 
-- (id)copyKeyListContainingString:(id)a3
+- (id)copyKeyListContainingString:(id)string
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [(RTUserDefaults *)self->_userDefaults dictionaryRepresentation];
-    v6 = [v5 allKeys];
-    v7 = [MEMORY[0x277CBEB18] array];
+    dictionaryRepresentation = [(RTUserDefaults *)self->_userDefaults dictionaryRepresentation];
+    allKeys = [dictionaryRepresentation allKeys];
+    array = [MEMORY[0x277CBEB18] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v6;
+    v8 = allKeys;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v9)
     {
@@ -307,9 +307,9 @@ void __39__RTDefaultsManager_notifyUpdatedKeys___block_invoke(uint64_t a1)
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
-          if ([v13 containsString:{v4, v15}])
+          if ([v13 containsString:{stringCopy, v15}])
           {
-            [v7 addObject:v13];
+            [array addObject:v13];
           }
         }
 
@@ -322,28 +322,28 @@ void __39__RTDefaultsManager_notifyUpdatedKeys___block_invoke(uint64_t a1)
 
   else
   {
-    v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    dictionaryRepresentation = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(dictionaryRepresentation, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: keySubstring", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, dictionaryRepresentation, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: keySubstring", buf, 2u);
     }
 
-    v7 = 0;
+    array = 0;
   }
 
-  return v7;
+  return array;
 }
 
-- (id)objectForKey:(id)a3 value:(id)a4
+- (id)objectForKey:(id)key value:(id)value
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTDefaultsManager *)self objectForKey:v7];
+  keyCopy = key;
+  valueCopy = value;
+  v9 = [(RTDefaultsManager *)self objectForKey:keyCopy];
   if (!v9)
   {
-    v9 = v8;
+    v9 = valueCopy;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -355,7 +355,7 @@ void __39__RTDefaultsManager_notifyUpdatedKeys___block_invoke(uint64_t a1)
       v13 = 138412802;
       v14 = v11;
       v15 = 2112;
-      v16 = v7;
+      v16 = keyCopy;
       v17 = 2112;
       v18 = v9;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, key, %@, value, %@", &v13, 0x20u);
@@ -365,13 +365,13 @@ void __39__RTDefaultsManager_notifyUpdatedKeys___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   v8 = +[(RTNotification *)RTDefaultsManagerNotificationDefaultsChanged];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [nameCopy isEqualToString:v8];
 
   if ((v9 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -382,21 +382,21 @@ void __39__RTDefaultsManager_notifyUpdatedKeys___block_invoke(uint64_t a1)
       v12 = 138412802;
       v13 = v11;
       v14 = 2112;
-      v15 = v7;
+      v15 = nameCopy;
       v16 = 2112;
-      v17 = v6;
+      v17 = observerCopy;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, unsupported notification, %@, observer, %@", &v12, 0x20u);
     }
   }
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   v8 = +[(RTNotification *)RTDefaultsManagerNotificationDefaultsChanged];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [nameCopy isEqualToString:v8];
 
   if ((v9 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -407,24 +407,24 @@ void __39__RTDefaultsManager_notifyUpdatedKeys___block_invoke(uint64_t a1)
       v12 = 138412802;
       v13 = v11;
       v14 = 2112;
-      v15 = v7;
+      v15 = nameCopy;
       v16 = 2112;
-      v17 = v6;
+      v17 = observerCopy;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, unsupported notification, %@, observer, %@", &v12, 0x20u);
     }
   }
 }
 
-- (BOOL)_generateDiagnosticFilesAtURL:(id)a3 error:(id *)a4
+- (BOOL)_generateDiagnosticFilesAtURL:(id)l error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = [a3 path];
-  v8 = [MEMORY[0x277CCAA00] routinePreferencesPath];
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  path = [l path];
+  routinePreferencesPath = [MEMORY[0x277CCAA00] routinePreferencesPath];
+  v9 = [path stringByAppendingPathComponent:routinePreferencesPath];
 
-  v10 = [v9 stringByDeletingLastPathComponent];
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  v12 = [v11 fileExistsAtPath:v10];
+  stringByDeletingLastPathComponent = [v9 stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v12 = [defaultManager fileExistsAtPath:stringByDeletingLastPathComponent];
 
   if (v12)
   {
@@ -444,21 +444,21 @@ void __39__RTDefaultsManager_notifyUpdatedKeys___block_invoke(uint64_t a1)
       v30 = 2112;
       v31 = v16;
       v32 = 2112;
-      v33 = v10;
+      v33 = stringByDeletingLastPathComponent;
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "%@ %@, creating destination directory, %@", buf, 0x20u);
     }
   }
 
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v27 = 0;
-  v18 = [v17 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v27];
-  v19 = v27;
+  v18 = [defaultManager2 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v27];
+  dictionaryRepresentation = v27;
 
-  if (v18 && !v19)
+  if (v18 && !dictionaryRepresentation)
   {
 LABEL_8:
-    v19 = [(RTUserDefaults *)self->_userDefaults dictionaryRepresentation];
-    [v19 writeToFile:v9 atomically:0];
+    dictionaryRepresentation = [(RTUserDefaults *)self->_userDefaults dictionaryRepresentation];
+    [dictionaryRepresentation writeToFile:v9 atomically:0];
     v20 = 1;
   }
 
@@ -475,17 +475,17 @@ LABEL_8:
       v30 = 2112;
       v31 = v26;
       v32 = 2112;
-      v33 = v10;
+      v33 = stringByDeletingLastPathComponent;
       v34 = 2112;
-      v35 = v19;
+      v35 = dictionaryRepresentation;
       _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "%@ %@, failed to create directory, %@, error, %@", buf, 0x2Au);
     }
 
-    if (a4)
+    if (error)
     {
-      v23 = v19;
+      v23 = dictionaryRepresentation;
       v20 = 0;
-      *a4 = v19;
+      *error = dictionaryRepresentation;
     }
 
     else
@@ -497,25 +497,25 @@ LABEL_8:
   return v20;
 }
 
-- (void)sendDiagnosticsToURL:(id)a3 options:(id)a4 handler:(id)a5
+- (void)sendDiagnosticsToURL:(id)l options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(RTNotifier *)self queue];
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__RTDefaultsManager_sendDiagnosticsToURL_options_handler___block_invoke;
   block[3] = &unk_2788C47F8;
-  v19 = v11;
+  v19 = handlerCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v10;
-  v18 = v9;
-  v13 = v9;
-  v14 = v11;
-  v15 = v10;
-  dispatch_async(v12, block);
+  v17 = optionsCopy;
+  v18 = lCopy;
+  v13 = lCopy;
+  v14 = handlerCopy;
+  v15 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
 void __58__RTDefaultsManager_sendDiagnosticsToURL_options_handler___block_invoke(uint64_t a1)
@@ -587,18 +587,18 @@ void __58__RTDefaultsManager_sendDiagnosticsToURL_options_handler___block_invoke
   }
 }
 
-- (void)fetchDiagnosticLogsWithHandler:(id)a3
+- (void)fetchDiagnosticLogsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__RTDefaultsManager_fetchDiagnosticLogsWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __52__RTDefaultsManager_fetchDiagnosticLogsWithHandler___block_invoke(uint64_t a1)

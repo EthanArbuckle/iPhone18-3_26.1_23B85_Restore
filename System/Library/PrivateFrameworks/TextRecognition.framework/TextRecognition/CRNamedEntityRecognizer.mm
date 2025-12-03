@@ -1,20 +1,20 @@
 @interface CRNamedEntityRecognizer
-+ (id)_NLLanguageFromLocale:(id)a3;
-- (CRNamedEntityRecognizer)initWithNameGazetteerURL:(id)a3 lastNameGazetteerURL:(id)a4;
-- (double)personNameScoreForStringWithGazetteers:(id)a3 locale:(id)a4 useLastNameGazetteer:(BOOL)a5;
-- (double)personNameScoreForStringWithTagger:(id)a3 locale:(id)a4;
-- (id)_labelForString:(id)a3 useLastNameGazetteer:(BOOL)a4;
-- (id)_nameCandidateTokensFromString:(id)a3;
-- (id)_tokenizeString:(id)a3;
++ (id)_NLLanguageFromLocale:(id)locale;
+- (CRNamedEntityRecognizer)initWithNameGazetteerURL:(id)l lastNameGazetteerURL:(id)rL;
+- (double)personNameScoreForStringWithGazetteers:(id)gazetteers locale:(id)locale useLastNameGazetteer:(BOOL)gazetteer;
+- (double)personNameScoreForStringWithTagger:(id)tagger locale:(id)locale;
+- (id)_labelForString:(id)string useLastNameGazetteer:(BOOL)gazetteer;
+- (id)_nameCandidateTokensFromString:(id)string;
+- (id)_tokenizeString:(id)string;
 @end
 
 @implementation CRNamedEntityRecognizer
 
-- (CRNamedEntityRecognizer)initWithNameGazetteerURL:(id)a3 lastNameGazetteerURL:(id)a4
+- (CRNamedEntityRecognizer)initWithNameGazetteerURL:(id)l lastNameGazetteerURL:(id)rL
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v19.receiver = self;
   v19.super_class = CRNamedEntityRecognizer;
   v8 = [(CRNamedEntityRecognizer *)&v19 init];
@@ -22,11 +22,11 @@
   {
     v20[0] = *MEMORY[0x1E69779D0];
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-    v10 = [objc_alloc(MEMORY[0x1E6977A40]) initWithContentsOfURL:v6 error:0];
+    v10 = [objc_alloc(MEMORY[0x1E6977A40]) initWithContentsOfURL:lCopy error:0];
     nameGazetteer = v8->_nameGazetteer;
     v8->_nameGazetteer = v10;
 
-    v12 = [objc_alloc(MEMORY[0x1E6977A40]) initWithContentsOfURL:v7 error:0];
+    v12 = [objc_alloc(MEMORY[0x1E6977A40]) initWithContentsOfURL:rLCopy error:0];
     lastNameGazetteer = v8->_lastNameGazetteer;
     v8->_lastNameGazetteer = v12;
 
@@ -42,13 +42,13 @@
   return v8;
 }
 
-- (id)_tokenizeString:(id)a3
+- (id)_tokenizeString:(id)string
 {
   tokenizer = self->_tokenizer;
-  v5 = a3;
-  [(NLTokenizer *)tokenizer setString:v5];
+  stringCopy = string;
+  [(NLTokenizer *)tokenizer setString:stringCopy];
   v6 = self->_tokenizer;
-  v7 = [v5 length];
+  v7 = [stringCopy length];
 
   v8 = [(NLTokenizer *)v6 tokensForRange:0, v7];
   [(NLTokenizer *)self->_tokenizer setString:&stru_1F2BB4348];
@@ -56,22 +56,22 @@
   return v8;
 }
 
-- (id)_labelForString:(id)a3 useLastNameGazetteer:(BOOL)a4
+- (id)_labelForString:(id)string useLastNameGazetteer:(BOOL)gazetteer
 {
-  v4 = a4;
-  v6 = a3;
+  gazetteerCopy = gazetteer;
+  stringCopy = string;
   if (qword_1ED95FE78 != -1)
   {
     dispatch_once(&qword_1ED95FE78, &__block_literal_global_5);
   }
 
-  v7 = [v6 lowercaseString];
-  if ([_MergedGlobals_13 containsObject:v7])
+  lowercaseString = [stringCopy lowercaseString];
+  if ([_MergedGlobals_13 containsObject:lowercaseString])
   {
     v8 = @"PersonName";
   }
 
-  else if ([qword_1ED95FE70 containsObject:v7])
+  else if ([qword_1ED95FE70 containsObject:lowercaseString])
   {
     v8 = 0;
   }
@@ -79,12 +79,12 @@
   else
   {
     v9 = 8;
-    if (v4)
+    if (gazetteerCopy)
     {
       v9 = 16;
     }
 
-    v8 = [*(&self->super.isa + v9) labelForString:v6];
+    v8 = [*(&self->super.isa + v9) labelForString:stringCopy];
   }
 
   return v8;
@@ -101,16 +101,16 @@ void __64__CRNamedEntityRecognizer__labelForString_useLastNameGazetteer___block_
   qword_1ED95FE70 = v2;
 }
 
-+ (id)_NLLanguageFromLocale:(id)a3
++ (id)_NLLanguageFromLocale:(id)locale
 {
   v3 = qword_1ED95FE88;
-  v4 = a3;
+  localeCopy = locale;
   if (v3 != -1)
   {
     dispatch_once(&qword_1ED95FE88, &__block_literal_global_28);
   }
 
-  v5 = [qword_1ED95FE80 valueForKey:v4];
+  v5 = [qword_1ED95FE80 valueForKey:localeCopy];
 
   return v5;
 }
@@ -140,15 +140,15 @@ void __49__CRNamedEntityRecognizer__NLLanguageFromLocale___block_invoke()
   qword_1ED95FE80 = v5;
 }
 
-- (id)_nameCandidateTokensFromString:(id)a3
+- (id)_nameCandidateTokensFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (qword_1ED95FE90 != -1)
   {
     dispatch_once(&qword_1ED95FE90, &__block_literal_global_31);
   }
 
-  v4 = [v3 componentsSeparatedByString:@" "];
+  v4 = [stringCopy componentsSeparatedByString:@" "];
   if ([v4 count] < 2 || objc_msgSend(v4, "count") > 4)
   {
     v5 = 0;
@@ -169,8 +169,8 @@ LABEL_18:
     v8 = [v4 objectAtIndexedSubscript:v7];
     if (v7 && v7 < [v4 count] - 1 && objc_msgSend(v8, "length") == 2)
     {
-      v9 = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
-      if ([v9 characterIsMember:{objc_msgSend(v8, "characterAtIndex:", 0)}])
+      uppercaseLetterCharacterSet = [MEMORY[0x1E696AB08] uppercaseLetterCharacterSet];
+      if ([uppercaseLetterCharacterSet characterIsMember:{objc_msgSend(v8, "characterAtIndex:", 0)}])
       {
         v10 = [v8 characterAtIndex:1];
 
@@ -186,8 +186,8 @@ LABEL_18:
     }
 
     v11 = qword_1ED95FE98;
-    v12 = [v8 lowercaseString];
-    LOBYTE(v11) = [v11 containsObject:v12];
+    lowercaseString = [v8 lowercaseString];
+    LOBYTE(v11) = [v11 containsObject:lowercaseString];
 
     if (v11)
     {
@@ -218,12 +218,12 @@ void __58__CRNamedEntityRecognizer__nameCandidateTokensFromString___block_invoke
   qword_1ED95FE98 = v0;
 }
 
-- (double)personNameScoreForStringWithGazetteers:(id)a3 locale:(id)a4 useLastNameGazetteer:(BOOL)a5
+- (double)personNameScoreForStringWithGazetteers:(id)gazetteers locale:(id)locale useLastNameGazetteer:(BOOL)gazetteer
 {
-  v5 = a5;
+  gazetteerCopy = gazetteer;
   v27 = *MEMORY[0x1E69E9840];
-  v7 = [a3 lowercaseString];
-  v8 = [(CRNamedEntityRecognizer *)self _nameCandidateTokensFromString:v7];
+  lowercaseString = [gazetteers lowercaseString];
+  v8 = [(CRNamedEntityRecognizer *)self _nameCandidateTokensFromString:lowercaseString];
   v9 = v8;
   if (v8)
   {
@@ -255,14 +255,14 @@ void __58__CRNamedEntityRecognizer__nameCandidateTokensFromString___block_invoke
           else
           {
             v17 = -1.0;
-            if (!v5)
+            if (!gazetteerCopy)
             {
               goto LABEL_17;
             }
 
-            v18 = [v10 lastObject];
-            v19 = v18;
-            if (v15 != v18)
+            lastObject = [v10 lastObject];
+            v19 = lastObject;
+            if (v15 != lastObject)
             {
 
               goto LABEL_17;
@@ -299,14 +299,14 @@ LABEL_17:
   return v17;
 }
 
-- (double)personNameScoreForStringWithTagger:(id)a3 locale:(id)a4
+- (double)personNameScoreForStringWithTagger:(id)tagger locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRNamedEntityRecognizer *)self _nameCandidateTokensFromString:v6];
+  taggerCopy = tagger;
+  localeCopy = locale;
+  v8 = [(CRNamedEntityRecognizer *)self _nameCandidateTokensFromString:taggerCopy];
   if (v8)
   {
-    v9 = [objc_opt_class() _NLLanguageFromLocale:v7];
+    v9 = [objc_opt_class() _NLLanguageFromLocale:localeCopy];
     v10 = v9;
     if (!self->_tagger || !v9)
     {

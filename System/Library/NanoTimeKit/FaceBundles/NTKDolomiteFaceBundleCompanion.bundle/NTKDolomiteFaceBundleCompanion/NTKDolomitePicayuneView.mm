@@ -1,27 +1,27 @@
 @interface NTKDolomitePicayuneView
-- (NTKDolomitePicayuneView)initWithDevice:(id)a3 clockTimer:(id)a4;
+- (NTKDolomitePicayuneView)initWithDevice:(id)device clockTimer:(id)timer;
 - (void)_startTimer;
 - (void)_stopTimer;
 - (void)_updateDate;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
-- (void)setOverrideDate:(id)a3;
-- (void)traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)setConfiguration:(id)configuration;
+- (void)setOverrideDate:(id)date;
+- (void)traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 @end
 
 @implementation NTKDolomitePicayuneView
 
-- (NTKDolomitePicayuneView)initWithDevice:(id)a3 clockTimer:(id)a4
+- (NTKDolomitePicayuneView)initWithDevice:(id)device clockTimer:(id)timer
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  timerCopy = timer;
   v38.receiver = self;
   v38.super_class = NTKDolomitePicayuneView;
-  v8 = [(NTKDolomitePicayuneView *)&v38 initWithDevice:v6 clockTimer:v7];
+  v8 = [(NTKDolomitePicayuneView *)&v38 initWithDevice:deviceCopy clockTimer:timerCopy];
   if (v8)
   {
-    [v6 screenBounds];
+    [deviceCopy screenBounds];
     x = v39.origin.x;
     y = v39.origin.y;
     width = v39.size.width;
@@ -32,7 +32,7 @@
     v40.size.width = width;
     v40.size.height = height;
     v14 = CGRectGetWidth(v40);
-    v16 = sub_3AC4(v15, v6);
+    v16 = sub_3AC4(v15, deviceCopy);
     objc_initWeak(&location, v8);
     v32 = _NSConcreteStackBlock;
     v33 = 3221225472;
@@ -45,7 +45,7 @@
     v20 = +[NSLocale currentLocale];
     v21 = v14 * (v16 / v13);
     LOWORD(v30) = CLKLocaleIs24HourMode();
-    v22 = [(NTKDolomiteContentView *)v18 initWithFrame:0 role:0 numeral:0 style:v19 palette:3 backgroundStyle:0 digitStyle:0.0 dateProvider:0.0 is24HourMode:v21 forceDynamicIndexZero:v16 contentOption:v17 device:v30, 9, v6, v32, v33, v34, v35];
+    v22 = [(NTKDolomiteContentView *)v18 initWithFrame:0 role:0 numeral:0 style:v19 palette:3 backgroundStyle:0 digitStyle:0.0 dateProvider:0.0 is24HourMode:v21 forceDynamicIndexZero:v16 contentOption:v17 device:v30, 9, deviceCopy, v32, v33, v34, v35];
     contentView = v8->_contentView;
     v8->_contentView = v22;
 
@@ -53,9 +53,9 @@
     v25 = +[NTKDolomiteColorPalette defaultColorPalette];
     v26 = +[NSLocale currentLocale];
     LOWORD(v31) = CLKLocaleIs24HourMode();
-    v27 = [(NTKDolomiteContentView *)v24 initWithFrame:1 role:0 numeral:0 style:v25 palette:3 backgroundStyle:1 digitStyle:0.0 dateProvider:0.0 is24HourMode:v21 forceDynamicIndexZero:v16 contentOption:v17 device:v31, 9, v6];
+    deviceCopy = [(NTKDolomiteContentView *)v24 initWithFrame:1 role:0 numeral:0 style:v25 palette:3 backgroundStyle:1 digitStyle:0.0 dateProvider:0.0 is24HourMode:v21 forceDynamicIndexZero:v16 contentOption:v17 device:v31, 9, deviceCopy];
     inactiveContentView = v8->_inactiveContentView;
-    v8->_inactiveContentView = v27;
+    v8->_inactiveContentView = deviceCopy;
 
     [(NTKDolomiteContentView *)v8->_inactiveContentView setAlpha:0.0];
     [(NTKDolomiteContentView *)v8->_inactiveContentView setPaused:1];
@@ -91,42 +91,42 @@
   [(NTKDolomiteContentView *)self->_inactiveContentView setCenter:v4, v6];
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = NTKDolomitePicayuneView;
-  [(NTKDolomitePicayuneView *)&v10 setConfiguration:v4];
+  [(NTKDolomitePicayuneView *)&v10 setConfiguration:configurationCopy];
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[NTKDolomitePicayuneView setConfiguration:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = configurationCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[miniclock: %s] Updating date, configuration: %@", buf, 0x16u);
   }
 
-  -[NTKDolomiteContentView setNumeral:](self->_contentView, "setNumeral:", [v4 numeral]);
-  -[NTKDolomiteContentView setNumeral:](self->_inactiveContentView, "setNumeral:", [v4 numeral]);
+  -[NTKDolomiteContentView setNumeral:](self->_contentView, "setNumeral:", [configurationCopy numeral]);
+  -[NTKDolomiteContentView setNumeral:](self->_inactiveContentView, "setNumeral:", [configurationCopy numeral]);
   contentView = self->_contentView;
-  v7 = [v4 palette];
-  [(NTKDolomiteContentView *)contentView setPalette:v7];
+  palette = [configurationCopy palette];
+  [(NTKDolomiteContentView *)contentView setPalette:palette];
 
   inactiveContentView = self->_inactiveContentView;
-  v9 = [v4 palette];
-  [(NTKDolomiteContentView *)inactiveContentView setPalette:v9];
+  palette2 = [configurationCopy palette];
+  [(NTKDolomiteContentView *)inactiveContentView setPalette:palette2];
 
   [(NTKDolomiteContentView *)self->_contentView updateDate];
   [(NTKDolomiteContentView *)self->_inactiveContentView updateDate];
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
   v5.receiver = self;
   v5.super_class = NTKDolomitePicayuneView;
   [(NTKDolomitePicayuneView *)&v5 setOverrideDate:?];
-  if (a3)
+  if (date)
   {
     [(NTKDolomitePicayuneView *)self _stopTimer];
   }
@@ -144,13 +144,13 @@
   if (!self->_clockTimerToken)
   {
     objc_initWeak(&location, self);
-    v3 = [(NTKDolomitePicayuneView *)self clockTimer];
+    clockTimer = [(NTKDolomitePicayuneView *)self clockTimer];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_382C;
     v6[3] = &unk_D5C4A8;
     objc_copyWeak(&v7, &location);
-    v4 = [v3 startUpdatesWithUpdateFrequency:1 withHandler:v6 identificationLog:&stru_D5C4E8];
+    v4 = [clockTimer startUpdatesWithUpdateFrequency:1 withHandler:v6 identificationLog:&stru_D5C4E8];
     clockTimerToken = self->_clockTimerToken;
     self->_clockTimerToken = v4;
 
@@ -163,8 +163,8 @@
 {
   if (self->_clockTimerToken)
   {
-    v3 = [(NTKDolomitePicayuneView *)self clockTimer];
-    [v3 stopUpdatesForToken:self->_clockTimerToken];
+    clockTimer = [(NTKDolomitePicayuneView *)self clockTimer];
+    [clockTimer stopUpdatesForToken:self->_clockTimerToken];
 
     clockTimerToken = self->_clockTimerToken;
     self->_clockTimerToken = 0;
@@ -179,17 +179,17 @@
   [(NTKDolomiteContentView *)inactiveContentView updateDate];
 }
 
-- (void)traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(NTKDolomitePicayuneView *)self traitCollection];
-  v7 = [v6 activeAppearance];
-  v8 = [v5 activeAppearance];
+  collectionCopy = collection;
+  traitCollection = [(NTKDolomitePicayuneView *)self traitCollection];
+  activeAppearance = [traitCollection activeAppearance];
+  activeAppearance2 = [collectionCopy activeAppearance];
 
-  if (v7 != v8)
+  if (activeAppearance != activeAppearance2)
   {
-    v9 = [(NTKDolomitePicayuneView *)self traitCollection];
-    if ([v9 activeAppearance])
+    traitCollection2 = [(NTKDolomitePicayuneView *)self traitCollection];
+    if ([traitCollection2 activeAppearance])
     {
       v10 = 1.0;
     }

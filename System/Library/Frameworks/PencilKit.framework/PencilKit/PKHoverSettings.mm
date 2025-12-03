@@ -2,8 +2,8 @@
 + (BOOL)allowDoubleTapOnlyWithPencilHover;
 + (BOOL)isHoverEnabled;
 + (id)sharedSettings;
-+ (void)checkIfHoverIsEnabled:(id)a3;
-+ (void)checkIfHoverIsSupported:(id)a3;
++ (void)checkIfHoverIsEnabled:(id)enabled;
++ (void)checkIfHoverIsSupported:(id)supported;
 + (void)prewarmIfNecessary;
 - (BOOL)_shouldSaveSettings;
 - (BOOL)toolPreviewActive;
@@ -13,17 +13,17 @@
 - (double)toolShadowMaxOpacity;
 - (double)toolShadowMaxOpacityInDrawingCanvas;
 - (id)settingsDictionaryRepresentation;
-- (void)_darkerSystemColorsStatusDidChange:(id)a3;
+- (void)_darkerSystemColorsStatusDidChange:(id)change;
 - (void)_loadDefaultValues;
 - (void)_scheduleSavingSettingsSoon;
 - (void)dealloc;
-- (void)loadSettingsFromDictionary:(id)a3;
+- (void)loadSettingsFromDictionary:(id)dictionary;
 - (void)loadSettingsFromUserDefaults;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)resetToDefaultValues;
 - (void)saveSettingsToUserDefaults;
-- (void)setToolPreviewActive:(BOOL)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setToolPreviewActive:(BOOL)active;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation PKHoverSettings
@@ -37,16 +37,16 @@
   }
 }
 
-+ (void)checkIfHoverIsSupported:(id)a3
++ (void)checkIfHoverIsSupported:(id)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   v4 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__PKHoverSettings_checkIfHoverIsSupported___block_invoke;
   block[3] = &unk_1E82D6F70;
-  v7 = v3;
-  v5 = v3;
+  v7 = supportedCopy;
+  v5 = supportedCopy;
   dispatch_async(v4, block);
 }
 
@@ -62,17 +62,17 @@ void __43__PKHoverSettings_checkIfHoverIsSupported___block_invoke(uint64_t a1)
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
-+ (void)checkIfHoverIsEnabled:(id)a3
++ (void)checkIfHoverIsEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = dispatch_get_global_queue(25, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__PKHoverSettings_checkIfHoverIsEnabled___block_invoke;
   v7[3] = &unk_1E82D7760;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
+  v8 = enabledCopy;
+  selfCopy = self;
+  v6 = enabledCopy;
   dispatch_async(v5, v7);
 }
 
@@ -127,8 +127,8 @@ void __33__PKHoverSettings_sharedSettings__block_invoke()
     }
 
     v2->_increasedContrastEnabled = UIAccessibilityDarkerSystemColorsEnabled();
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__darkerSystemColorsStatusDidChange_ name:*MEMORY[0x1E69DD8B8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__darkerSystemColorsStatusDidChange_ name:*MEMORY[0x1E69DD8B8] object:0];
   }
 
   return v2;
@@ -136,8 +136,8 @@ void __33__PKHoverSettings_sharedSettings__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (self->_didAddObserver)
   {
@@ -149,19 +149,19 @@ void __33__PKHoverSettings_sharedSettings__block_invoke()
   [(PKHoverSettings *)&v4 dealloc];
 }
 
-- (void)_darkerSystemColorsStatusDidChange:(id)a3
+- (void)_darkerSystemColorsStatusDidChange:(id)change
 {
   v4 = UIAccessibilityDarkerSystemColorsEnabled();
 
   [(PKHoverSettings *)self setIncreasedContrastEnabled:v4];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (kKVOContext_0 == a6 && [v10 isEqualToString:@"HoverDefaultsV14"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (kKVOContext_0 == context && [pathCopy isEqualToString:@"HoverDefaultsV14"])
   {
     [(PKHoverSettings *)self loadSettingsFromUserDefaults];
   }
@@ -170,24 +170,24 @@ void __33__PKHoverSettings_sharedSettings__block_invoke()
   {
     v13.receiver = self;
     v13.super_class = PKHoverSettings;
-    [(PKHoverSettings *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PKHoverSettings *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
 - (BOOL)_shouldSaveSettings
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.Preferences"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.Preferences"];
 
   return v4;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   v5.receiver = self;
   v5.super_class = PKHoverSettings;
-  [(PKHoverSettings *)&v5 setValue:a3 forKey:a4];
+  [(PKHoverSettings *)&v5 setValue:value forKey:key];
   if ([(PKHoverSettings *)self _shouldSaveSettings])
   {
     [(PKHoverSettings *)self _scheduleSavingSettingsSoon];
@@ -197,7 +197,7 @@ void __33__PKHoverSettings_sharedSettings__block_invoke()
 + (BOOL)isHoverEnabled
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  if ([a1 isHoverActive] && (v2 = IOHIDEventSystemClientCreateWithType()) != 0)
+  if ([self isHoverActive] && (v2 = IOHIDEventSystemClientCreateWithType()) != 0)
   {
     v3 = v2;
     v18[0] = @"PrimaryUsagePage";
@@ -262,7 +262,7 @@ LABEL_14:
 + (BOOL)allowDoubleTapOnlyWithPencilHover
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  if (![a1 isHoverActive])
+  if (![self isHoverActive])
   {
     return 0;
   }
@@ -303,7 +303,7 @@ LABEL_14:
         if (v10)
         {
           v12 = v10;
-          v11 = [v10 BOOLValue];
+          bOOLValue = [v10 BOOLValue];
 
           goto LABEL_14;
         }
@@ -319,11 +319,11 @@ LABEL_14:
     }
   }
 
-  v11 = 0;
+  bOOLValue = 0;
 LABEL_14:
 
   CFRelease(v3);
-  return v11;
+  return bOOLValue;
 }
 
 - (id)settingsDictionaryRepresentation
@@ -550,467 +550,467 @@ LABEL_14:
   return v39;
 }
 
-- (void)loadSettingsFromDictionary:(id)a3
+- (void)loadSettingsFromDictionary:(id)dictionary
 {
-  v112 = a3;
-  if (v112)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v4 = [v112 objectForKeyedSubscript:@"showDebugLayer"];
+    v4 = [dictionaryCopy objectForKeyedSubscript:@"showDebugLayer"];
 
     if (v4)
     {
-      v5 = [v112 objectForKeyedSubscript:@"showDebugLayer"];
+      v5 = [dictionaryCopy objectForKeyedSubscript:@"showDebugLayer"];
       -[PKHoverSettings setShowDebugLayer:](self, "setShowDebugLayer:", [v5 BOOLValue]);
     }
 
-    v6 = [v112 objectForKeyedSubscript:@"supportTouchPad"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"supportTouchPad"];
 
     if (v6)
     {
-      v7 = [v112 objectForKeyedSubscript:@"supportTouchPad"];
+      v7 = [dictionaryCopy objectForKeyedSubscript:@"supportTouchPad"];
       -[PKHoverSettings setSupportTouchPad:](self, "setSupportTouchPad:", [v7 BOOLValue]);
     }
 
-    v8 = [v112 objectForKeyedSubscript:@"debugCursorType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"debugCursorType"];
 
     if (v8)
     {
-      v9 = [v112 objectForKeyedSubscript:@"debugCursorType"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"debugCursorType"];
       -[PKHoverSettings setDebugCursorType:](self, "setDebugCursorType:", [v9 integerValue]);
     }
 
-    v10 = [v112 objectForKeyedSubscript:@"tooltipsActive"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"tooltipsActive"];
 
     if (v10)
     {
-      v11 = [v112 objectForKeyedSubscript:@"tooltipsActive"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"tooltipsActive"];
       -[PKHoverSettings setTooltipsActive:](self, "setTooltipsActive:", [v11 BOOLValue]);
     }
 
-    v12 = [v112 objectForKeyedSubscript:@"snapToShapeActive"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"snapToShapeActive"];
 
     if (v12)
     {
-      v13 = [v112 objectForKeyedSubscript:@"snapToShapeActive"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"snapToShapeActive"];
       -[PKHoverSettings setSnapToShapeActive:](self, "setSnapToShapeActive:", [v13 BOOLValue]);
     }
 
-    v14 = [v112 objectForKeyedSubscript:@"toolIndicatorActive"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"toolIndicatorActive"];
 
     if (v14)
     {
-      v15 = [v112 objectForKeyedSubscript:@"toolIndicatorActive"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"toolIndicatorActive"];
       -[PKHoverSettings setToolIndicatorActive:](self, "setToolIndicatorActive:", [v15 BOOLValue]);
     }
 
-    v16 = [v112 objectForKeyedSubscript:@"toolShadowActive"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowActive"];
 
     if (v16)
     {
-      v17 = [v112 objectForKeyedSubscript:@"toolShadowActive"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowActive"];
       -[PKHoverSettings setToolShadowActive:](self, "setToolShadowActive:", [v17 BOOLValue]);
     }
 
-    v18 = [v112 objectForKeyedSubscript:@"toolShadowActiveOutsideNotes"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowActiveOutsideNotes"];
 
     if (v18)
     {
-      v19 = [v112 objectForKeyedSubscript:@"toolShadowActiveOutsideNotes"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowActiveOutsideNotes"];
       -[PKHoverSettings setToolShadowActiveOutsideNotes:](self, "setToolShadowActiveOutsideNotes:", [v19 BOOLValue]);
     }
 
-    v20 = [v112 objectForKeyedSubscript:@"toolShadowLocationWorkaround"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowLocationWorkaround"];
 
     if (v20)
     {
-      v21 = [v112 objectForKeyedSubscript:@"toolShadowLocationWorkaround"];
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowLocationWorkaround"];
       -[PKHoverSettings setToolShadowLocationWorkaround:](self, "setToolShadowLocationWorkaround:", [v21 BOOLValue]);
     }
 
-    v22 = [v112 objectForKeyedSubscript:@"toolShadowActiveOnOldPencils"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowActiveOnOldPencils"];
 
     if (v22)
     {
-      v23 = [v112 objectForKeyedSubscript:@"toolShadowActiveOnOldPencils"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowActiveOnOldPencils"];
       -[PKHoverSettings setToolShadowActiveOnOldPencils:](self, "setToolShadowActiveOnOldPencils:", [v23 BOOLValue]);
     }
 
-    v24 = [v112 objectForKeyedSubscript:@"toolShadowMaxOpacityNormal"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowMaxOpacityNormal"];
 
     if (v24)
     {
-      v25 = [v112 objectForKeyedSubscript:@"toolShadowMaxOpacityNormal"];
+      v25 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowMaxOpacityNormal"];
       [v25 doubleValue];
       [(PKHoverSettings *)self setToolShadowMaxOpacityNormal:?];
     }
 
-    v26 = [v112 objectForKeyedSubscript:@"toolShadowMaxOpacityForIncreasedContrast"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowMaxOpacityForIncreasedContrast"];
 
     if (v26)
     {
-      v27 = [v112 objectForKeyedSubscript:@"toolShadowMaxOpacityForIncreasedContrast"];
+      v27 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowMaxOpacityForIncreasedContrast"];
       [v27 doubleValue];
       [(PKHoverSettings *)self setToolShadowMaxOpacityForIncreasedContrast:?];
     }
 
-    v28 = [v112 objectForKeyedSubscript:@"toolShadowMaxOpacityInDrawingCanvasNormal"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowMaxOpacityInDrawingCanvasNormal"];
 
     if (v28)
     {
-      v29 = [v112 objectForKeyedSubscript:@"toolShadowMaxOpacityInDrawingCanvasNormal"];
+      v29 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowMaxOpacityInDrawingCanvasNormal"];
       [v29 doubleValue];
       [(PKHoverSettings *)self setToolShadowMaxOpacityInDrawingCanvasNormal:?];
     }
 
-    v30 = [v112 objectForKeyedSubscript:@"toolShadowMaxOpacityInDrawingCanvasForIncreasedContrast"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowMaxOpacityInDrawingCanvasForIncreasedContrast"];
 
     if (v30)
     {
-      v31 = [v112 objectForKeyedSubscript:@"toolShadowMaxOpacityInDrawingCanvasForIncreasedContrast"];
+      v31 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowMaxOpacityInDrawingCanvasForIncreasedContrast"];
       [v31 doubleValue];
       [(PKHoverSettings *)self setToolShadowMaxOpacityInDrawingCanvasForIncreasedContrast:?];
     }
 
-    v32 = [v112 objectForKeyedSubscript:@"toolShadowFadeInDistance"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowFadeInDistance"];
 
     if (v32)
     {
-      v33 = [v112 objectForKeyedSubscript:@"toolShadowFadeInDistance"];
+      v33 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowFadeInDistance"];
       [v33 doubleValue];
       [(PKHoverSettings *)self setToolShadowFadeInDistance:?];
     }
 
-    v34 = [v112 objectForKeyedSubscript:@"toolShadowMaxBlurRadius"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowMaxBlurRadius"];
 
     if (v34)
     {
-      v35 = [v112 objectForKeyedSubscript:@"toolShadowMaxBlurRadius"];
+      v35 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowMaxBlurRadius"];
       [v35 doubleValue];
       [(PKHoverSettings *)self setToolShadowMaxBlurRadius:?];
     }
 
-    v36 = [v112 objectForKeyedSubscript:@"toolShadowMovementSpeedHideThreshold"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowMovementSpeedHideThreshold"];
 
     if (v36)
     {
-      v37 = [v112 objectForKeyedSubscript:@"toolShadowMovementSpeedHideThreshold"];
+      v37 = [dictionaryCopy objectForKeyedSubscript:@"toolShadowMovementSpeedHideThreshold"];
       [v37 doubleValue];
       [(PKHoverSettings *)self setToolShadowMovementSpeedHideThreshold:?];
     }
 
-    v38 = [v112 objectForKeyedSubscript:@"toolPreviewShouldWaitForHoverAndHold"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"toolPreviewShouldWaitForHoverAndHold"];
 
     if (v38)
     {
-      v39 = [v112 objectForKeyedSubscript:@"toolPreviewShouldWaitForHoverAndHold"];
+      v39 = [dictionaryCopy objectForKeyedSubscript:@"toolPreviewShouldWaitForHoverAndHold"];
       -[PKHoverSettings setToolPreviewShouldWaitForHoverAndHold:](self, "setToolPreviewShouldWaitForHoverAndHold:", [v39 BOOLValue]);
     }
 
-    v40 = [v112 objectForKeyedSubscript:@"toolSwitchIndicatorActive"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"toolSwitchIndicatorActive"];
 
     if (v40)
     {
-      v41 = [v112 objectForKeyedSubscript:@"toolSwitchIndicatorActive"];
+      v41 = [dictionaryCopy objectForKeyedSubscript:@"toolSwitchIndicatorActive"];
       -[PKHoverSettings setToolSwitchIndicatorActive:](self, "setToolSwitchIndicatorActive:", [v41 BOOLValue]);
     }
 
-    v42 = [v112 objectForKeyedSubscript:@"avoidSwitchingToolsOutsideHoverRange"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"avoidSwitchingToolsOutsideHoverRange"];
 
     if (v42)
     {
-      v43 = [v112 objectForKeyedSubscript:@"avoidSwitchingToolsOutsideHoverRange"];
+      v43 = [dictionaryCopy objectForKeyedSubscript:@"avoidSwitchingToolsOutsideHoverRange"];
       -[PKHoverSettings setAvoidSwitchingToolsOutsideHoverRange:](self, "setAvoidSwitchingToolsOutsideHoverRange:", [v43 BOOLValue]);
     }
 
-    v44 = [v112 objectForKeyedSubscript:@"screenEdgeSizeInMillimeters"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"screenEdgeSizeInMillimeters"];
 
     if (v44)
     {
-      v45 = [v112 objectForKeyedSubscript:@"screenEdgeSizeInMillimeters"];
+      v45 = [dictionaryCopy objectForKeyedSubscript:@"screenEdgeSizeInMillimeters"];
       [v45 doubleValue];
       [(PKHoverSettings *)self setScreenEdgeSizeInMillimeters:?];
     }
 
-    v46 = [v112 objectForKeyedSubscript:@"maxZDistance"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"maxZDistance"];
 
     if (v46)
     {
-      v47 = [v112 objectForKeyedSubscript:@"maxZDistance"];
+      v47 = [dictionaryCopy objectForKeyedSubscript:@"maxZDistance"];
       [v47 doubleValue];
       [(PKHoverSettings *)self setMaxZDistance:?];
     }
 
-    v48 = [v112 objectForKeyedSubscript:@"erasePreviewAlphaFactor"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"erasePreviewAlphaFactor"];
 
     if (v48)
     {
-      v49 = [v112 objectForKeyedSubscript:@"erasePreviewAlphaFactor"];
+      v49 = [dictionaryCopy objectForKeyedSubscript:@"erasePreviewAlphaFactor"];
       [v49 doubleValue];
       [(PKHoverSettings *)self setErasePreviewAlphaFactor:?];
     }
 
-    v50 = [v112 objectForKeyedSubscript:@"toolPreviewMaxZDistance"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"toolPreviewMaxZDistance"];
 
     if (v50)
     {
-      v51 = [v112 objectForKeyedSubscript:@"toolPreviewMaxZDistance"];
+      v51 = [dictionaryCopy objectForKeyedSubscript:@"toolPreviewMaxZDistance"];
       [v51 doubleValue];
       [(PKHoverSettings *)self setToolPreviewMaxZDistance:?];
     }
 
-    v52 = [v112 objectForKeyedSubscript:@"toolPreviewFadeOutDistance"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"toolPreviewFadeOutDistance"];
 
     if (v52)
     {
-      v53 = [v112 objectForKeyedSubscript:@"toolPreviewFadeOutDistance"];
+      v53 = [dictionaryCopy objectForKeyedSubscript:@"toolPreviewFadeOutDistance"];
       [v53 doubleValue];
       [(PKHoverSettings *)self setToolPreviewFadeOutDistance:?];
     }
 
-    v54 = [v112 objectForKeyedSubscript:@"toolPreviewAzimuthTiltMaxZDistance"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"toolPreviewAzimuthTiltMaxZDistance"];
 
     if (v54)
     {
-      v55 = [v112 objectForKeyedSubscript:@"toolPreviewAzimuthTiltMaxZDistance"];
+      v55 = [dictionaryCopy objectForKeyedSubscript:@"toolPreviewAzimuthTiltMaxZDistance"];
       [v55 doubleValue];
       [(PKHoverSettings *)self setToolPreviewAzimuthTiltMaxZDistance:?];
     }
 
-    v56 = [v112 objectForKeyedSubscript:@"deactivateExtraDistance"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"deactivateExtraDistance"];
 
     if (v56)
     {
-      v57 = [v112 objectForKeyedSubscript:@"deactivateExtraDistance"];
+      v57 = [dictionaryCopy objectForKeyedSubscript:@"deactivateExtraDistance"];
       [v57 doubleValue];
       [(PKHoverSettings *)self setDeactivateExtraDistance:?];
     }
 
-    v58 = [v112 objectForKeyedSubscript:@"predictionTimeInterval"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"predictionTimeInterval"];
 
     if (v58)
     {
-      v59 = [v112 objectForKeyedSubscript:@"predictionTimeInterval"];
+      v59 = [dictionaryCopy objectForKeyedSubscript:@"predictionTimeInterval"];
       [v59 doubleValue];
       [(PKHoverSettings *)self setPredictionTimeInterval:?];
     }
 
-    v60 = [v112 objectForKeyedSubscript:@"extraHoverPreviewDelay"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"extraHoverPreviewDelay"];
 
     if (v60)
     {
-      v61 = [v112 objectForKeyedSubscript:@"extraHoverPreviewDelay"];
+      v61 = [dictionaryCopy objectForKeyedSubscript:@"extraHoverPreviewDelay"];
       [v61 doubleValue];
       [(PKHoverSettings *)self setExtraHoverPreviewDelay:?];
     }
 
-    v62 = [v112 objectForKeyedSubscript:@"inactivityTimeInterval"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"inactivityTimeInterval"];
 
     if (v62)
     {
-      v63 = [v112 objectForKeyedSubscript:@"inactivityTimeInterval"];
+      v63 = [dictionaryCopy objectForKeyedSubscript:@"inactivityTimeInterval"];
       [v63 doubleValue];
       [(PKHoverSettings *)self setInactivityTimeInterval:?];
     }
 
-    v64 = [v112 objectForKeyedSubscript:@"hoverAndHoldTriggerTimeInterval"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"hoverAndHoldTriggerTimeInterval"];
 
     if (v64)
     {
-      v65 = [v112 objectForKeyedSubscript:@"hoverAndHoldTriggerTimeInterval"];
+      v65 = [dictionaryCopy objectForKeyedSubscript:@"hoverAndHoldTriggerTimeInterval"];
       [v65 doubleValue];
       [(PKHoverSettings *)self setHoverAndHoldTriggerTimeInterval:?];
     }
 
-    v66 = [v112 objectForKeyedSubscript:@"hoverAndHoldActionTimeInterval"];
+    v66 = [dictionaryCopy objectForKeyedSubscript:@"hoverAndHoldActionTimeInterval"];
 
     if (v66)
     {
-      v67 = [v112 objectForKeyedSubscript:@"hoverAndHoldActionTimeInterval"];
+      v67 = [dictionaryCopy objectForKeyedSubscript:@"hoverAndHoldActionTimeInterval"];
       [v67 doubleValue];
       [(PKHoverSettings *)self setHoverAndHoldActionTimeInterval:?];
     }
 
-    v68 = [v112 objectForKeyedSubscript:@"numFramesExtraLatency"];
+    v68 = [dictionaryCopy objectForKeyedSubscript:@"numFramesExtraLatency"];
 
     if (v68)
     {
-      v69 = [v112 objectForKeyedSubscript:@"numFramesExtraLatency"];
+      v69 = [dictionaryCopy objectForKeyedSubscript:@"numFramesExtraLatency"];
       -[PKHoverSettings setNumFramesExtraLatency:](self, "setNumFramesExtraLatency:", [v69 integerValue]);
     }
 
-    v70 = [v112 objectForKeyedSubscript:@"numFramesReduceFramerate"];
+    v70 = [dictionaryCopy objectForKeyedSubscript:@"numFramesReduceFramerate"];
 
     if (v70)
     {
-      v71 = [v112 objectForKeyedSubscript:@"numFramesReduceFramerate"];
+      v71 = [dictionaryCopy objectForKeyedSubscript:@"numFramesReduceFramerate"];
       -[PKHoverSettings setNumFramesReduceFramerate:](self, "setNumFramesReduceFramerate:", [v71 integerValue]);
     }
 
-    v72 = [v112 objectForKeyedSubscript:@"weightedAverageLocationFactor"];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"weightedAverageLocationFactor"];
 
     if (v72)
     {
-      v73 = [v112 objectForKeyedSubscript:@"weightedAverageLocationFactor"];
+      v73 = [dictionaryCopy objectForKeyedSubscript:@"weightedAverageLocationFactor"];
       [v73 doubleValue];
       [(PKHoverSettings *)self setWeightedAverageLocationFactor:?];
     }
 
-    v74 = [v112 objectForKeyedSubscript:@"weightedAverageAzimuthFactor"];
+    v74 = [dictionaryCopy objectForKeyedSubscript:@"weightedAverageAzimuthFactor"];
 
     if (v74)
     {
-      v75 = [v112 objectForKeyedSubscript:@"weightedAverageAzimuthFactor"];
+      v75 = [dictionaryCopy objectForKeyedSubscript:@"weightedAverageAzimuthFactor"];
       [v75 doubleValue];
       [(PKHoverSettings *)self setWeightedAverageAzimuthFactor:?];
     }
 
-    v76 = [v112 objectForKeyedSubscript:@"weightedAverageAltitudeFactor"];
+    v76 = [dictionaryCopy objectForKeyedSubscript:@"weightedAverageAltitudeFactor"];
 
     if (v76)
     {
-      v77 = [v112 objectForKeyedSubscript:@"weightedAverageAltitudeFactor"];
+      v77 = [dictionaryCopy objectForKeyedSubscript:@"weightedAverageAltitudeFactor"];
       [v77 doubleValue];
       [(PKHoverSettings *)self setWeightedAverageAltitudeFactor:?];
     }
 
-    v78 = [v112 objectForKeyedSubscript:@"scribbleFocusActive"];
+    v78 = [dictionaryCopy objectForKeyedSubscript:@"scribbleFocusActive"];
 
     if (v78)
     {
-      v79 = [v112 objectForKeyedSubscript:@"scribbleFocusActive"];
+      v79 = [dictionaryCopy objectForKeyedSubscript:@"scribbleFocusActive"];
       -[PKHoverSettings setScribbleFocusActive:](self, "setScribbleFocusActive:", [v79 BOOLValue]);
     }
 
-    v80 = [v112 objectForKeyedSubscript:@"scribbleFlashCursorActive"];
+    v80 = [dictionaryCopy objectForKeyedSubscript:@"scribbleFlashCursorActive"];
 
     if (v80)
     {
-      v81 = [v112 objectForKeyedSubscript:@"scribbleFlashCursorActive"];
+      v81 = [dictionaryCopy objectForKeyedSubscript:@"scribbleFlashCursorActive"];
       -[PKHoverSettings setScribbleFlashCursorActive:](self, "setScribbleFlashCursorActive:", [v81 BOOLValue]);
     }
 
-    v82 = [v112 objectForKeyedSubscript:@"scribbleShowWritableElementsActive"];
+    v82 = [dictionaryCopy objectForKeyedSubscript:@"scribbleShowWritableElementsActive"];
 
     if (v82)
     {
-      v83 = [v112 objectForKeyedSubscript:@"scribbleShowWritableElementsActive"];
+      v83 = [dictionaryCopy objectForKeyedSubscript:@"scribbleShowWritableElementsActive"];
       -[PKHoverSettings setScribbleShowWritableElementsActive:](self, "setScribbleShowWritableElementsActive:", [v83 BOOLValue]);
     }
 
-    v84 = [v112 objectForKeyedSubscript:@"scribbleHoverStrongActive"];
+    v84 = [dictionaryCopy objectForKeyedSubscript:@"scribbleHoverStrongActive"];
 
     if (v84)
     {
-      v85 = [v112 objectForKeyedSubscript:@"scribbleHoverStrongActive"];
+      v85 = [dictionaryCopy objectForKeyedSubscript:@"scribbleHoverStrongActive"];
       -[PKHoverSettings setScribbleHoverStrongActive:](self, "setScribbleHoverStrongActive:", [v85 BOOLValue]);
     }
 
-    v86 = [v112 objectForKeyedSubscript:@"scribbleCommitOnLift"];
+    v86 = [dictionaryCopy objectForKeyedSubscript:@"scribbleCommitOnLift"];
 
     if (v86)
     {
-      v87 = [v112 objectForKeyedSubscript:@"scribbleCommitOnLift"];
+      v87 = [dictionaryCopy objectForKeyedSubscript:@"scribbleCommitOnLift"];
       -[PKHoverSettings setScribbleCommitOnLift:](self, "setScribbleCommitOnLift:", [v87 BOOLValue]);
     }
 
-    v88 = [v112 objectForKeyedSubscript:@"scribbleLineBreakHandling"];
+    v88 = [dictionaryCopy objectForKeyedSubscript:@"scribbleLineBreakHandling"];
 
     if (v88)
     {
-      v89 = [v112 objectForKeyedSubscript:@"scribbleLineBreakHandling"];
+      v89 = [dictionaryCopy objectForKeyedSubscript:@"scribbleLineBreakHandling"];
       -[PKHoverSettings setScribbleLineBreakHandling:](self, "setScribbleLineBreakHandling:", [v89 BOOLValue]);
     }
 
-    v90 = [v112 objectForKeyedSubscript:@"scribbleLineBreakMultiLineDelay"];
+    v90 = [dictionaryCopy objectForKeyedSubscript:@"scribbleLineBreakMultiLineDelay"];
 
     if (v90)
     {
-      v91 = [v112 objectForKeyedSubscript:@"scribbleLineBreakMultiLineDelay"];
+      v91 = [dictionaryCopy objectForKeyedSubscript:@"scribbleLineBreakMultiLineDelay"];
       [v91 doubleValue];
       [(PKHoverSettings *)self setScribbleLineBreakMultiLineDelay:?];
     }
 
-    v92 = [v112 objectForKeyedSubscript:@"scribbleLineBreakMultiLineEnabled"];
+    v92 = [dictionaryCopy objectForKeyedSubscript:@"scribbleLineBreakMultiLineEnabled"];
 
     if (v92)
     {
-      v93 = [v112 objectForKeyedSubscript:@"scribbleLineBreakMultiLineEnabled"];
+      v93 = [dictionaryCopy objectForKeyedSubscript:@"scribbleLineBreakMultiLineEnabled"];
       -[PKHoverSettings setScribbleLineBreakMultiLineEnabled:](self, "setScribbleLineBreakMultiLineEnabled:", [v93 BOOLValue]);
     }
 
-    v94 = [v112 objectForKeyedSubscript:@"scribbleLineBreakMultiLineMaxLines"];
+    v94 = [dictionaryCopy objectForKeyedSubscript:@"scribbleLineBreakMultiLineMaxLines"];
 
     if (v94)
     {
-      v95 = [v112 objectForKeyedSubscript:@"scribbleLineBreakMultiLineMaxLines"];
+      v95 = [dictionaryCopy objectForKeyedSubscript:@"scribbleLineBreakMultiLineMaxLines"];
       -[PKHoverSettings setScribbleLineBreakMultiLineMaxLines:](self, "setScribbleLineBreakMultiLineMaxLines:", [v95 intValue]);
     }
 
-    v96 = [v112 objectForKeyedSubscript:@"scribbleIBeamActive"];
+    v96 = [dictionaryCopy objectForKeyedSubscript:@"scribbleIBeamActive"];
 
     if (v96)
     {
-      v97 = [v112 objectForKeyedSubscript:@"scribbleIBeamActive"];
+      v97 = [dictionaryCopy objectForKeyedSubscript:@"scribbleIBeamActive"];
       -[PKHoverSettings setScribbleIBeamActive:](self, "setScribbleIBeamActive:", [v97 BOOLValue]);
     }
 
-    v98 = [v112 objectForKeyedSubscript:@"azimuthJitterNoise"];
+    v98 = [dictionaryCopy objectForKeyedSubscript:@"azimuthJitterNoise"];
 
     if (v98)
     {
-      v99 = [v112 objectForKeyedSubscript:@"azimuthJitterNoise"];
+      v99 = [dictionaryCopy objectForKeyedSubscript:@"azimuthJitterNoise"];
       [v99 doubleValue];
       [(PKHoverSettings *)self setAzimuthJitterNoise:?];
     }
 
-    v100 = [v112 objectForKeyedSubscript:@"altitudeJitterNoise"];
+    v100 = [dictionaryCopy objectForKeyedSubscript:@"altitudeJitterNoise"];
 
     if (v100)
     {
-      v101 = [v112 objectForKeyedSubscript:@"altitudeJitterNoise"];
+      v101 = [dictionaryCopy objectForKeyedSubscript:@"altitudeJitterNoise"];
       [v101 doubleValue];
       [(PKHoverSettings *)self setAltitudeJitterNoise:?];
     }
 
-    v102 = [v112 objectForKeyedSubscript:@"azimuthOffsetNoise"];
+    v102 = [dictionaryCopy objectForKeyedSubscript:@"azimuthOffsetNoise"];
 
     if (v102)
     {
-      v103 = [v112 objectForKeyedSubscript:@"azimuthOffsetNoise"];
+      v103 = [dictionaryCopy objectForKeyedSubscript:@"azimuthOffsetNoise"];
       [v103 doubleValue];
       [(PKHoverSettings *)self setAzimuthOffsetNoise:?];
     }
 
-    v104 = [v112 objectForKeyedSubscript:@"altitudeOffsetNoise"];
+    v104 = [dictionaryCopy objectForKeyedSubscript:@"altitudeOffsetNoise"];
 
     if (v104)
     {
-      v105 = [v112 objectForKeyedSubscript:@"altitudeOffsetNoise"];
+      v105 = [dictionaryCopy objectForKeyedSubscript:@"altitudeOffsetNoise"];
       [v105 doubleValue];
       [(PKHoverSettings *)self setAltitudeOffsetNoise:?];
     }
 
-    v106 = [v112 objectForKeyedSubscript:@"azimuthBuckets"];
+    v106 = [dictionaryCopy objectForKeyedSubscript:@"azimuthBuckets"];
 
     if (v106)
     {
-      v107 = [v112 objectForKeyedSubscript:@"azimuthBuckets"];
+      v107 = [dictionaryCopy objectForKeyedSubscript:@"azimuthBuckets"];
       -[PKHoverSettings setAzimuthBuckets:](self, "setAzimuthBuckets:", [v107 intValue]);
     }
 
-    v108 = [v112 objectForKeyedSubscript:@"altitudeBuckets"];
+    v108 = [dictionaryCopy objectForKeyedSubscript:@"altitudeBuckets"];
 
     if (v108)
     {
-      v109 = [v112 objectForKeyedSubscript:@"altitudeBuckets"];
+      v109 = [dictionaryCopy objectForKeyedSubscript:@"altitudeBuckets"];
       -[PKHoverSettings setAltitudeBuckets:](self, "setAltitudeBuckets:", [v109 intValue]);
     }
 
-    v110 = [v112 objectForKeyedSubscript:@"noiseIsHeightBased"];
+    v110 = [dictionaryCopy objectForKeyedSubscript:@"noiseIsHeightBased"];
 
     if (v110)
     {
-      v111 = [v112 objectForKeyedSubscript:@"noiseIsHeightBased"];
+      v111 = [dictionaryCopy objectForKeyedSubscript:@"noiseIsHeightBased"];
       -[PKHoverSettings setNoiseIsHeightBased:](self, "setNoiseIsHeightBased:", [v111 BOOLValue]);
     }
   }
@@ -1026,8 +1026,8 @@ LABEL_14:
 {
   if ([(PKHoverSettings *)self _shouldSaveSettings])
   {
-    v3 = [(PKHoverSettings *)self settingsDictionaryRepresentation];
-    [(NSUserDefaults *)self->_pencilDefaults setObject:v3 forKey:@"HoverDefaultsV14"];
+    settingsDictionaryRepresentation = [(PKHoverSettings *)self settingsDictionaryRepresentation];
+    [(NSUserDefaults *)self->_pencilDefaults setObject:settingsDictionaryRepresentation forKey:@"HoverDefaultsV14"];
   }
 }
 
@@ -1172,16 +1172,16 @@ LABEL_14:
   }
 }
 
-- (void)setToolPreviewActive:(BOOL)a3
+- (void)setToolPreviewActive:(BOOL)active
 {
   if (sForceHoverSupportedForTesting == 1)
   {
-    [(PKHoverSettings *)self setToolPreviewActiveForTesting:a3];
+    [(PKHoverSettings *)self setToolPreviewActiveForTesting:active];
   }
 
   else
   {
-    [PKSettingsDaemon setPrefersPencilHoverPreviewEnabled:a3 withCompletion:0];
+    [PKSettingsDaemon setPrefersPencilHoverPreviewEnabled:active withCompletion:0];
   }
 }
 

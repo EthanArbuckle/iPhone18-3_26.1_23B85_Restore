@@ -1,30 +1,30 @@
 @interface MapsUIImagePublisherSpec
-- (BOOL)isEqual:(id)a3;
-- (MapsUIImagePublisherSpec)initWithIconIdentifier:(unsigned int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)imageForScale:(double)a3 isCarPlay:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (MapsUIImagePublisherSpec)initWithIconIdentifier:(unsigned int)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)imageForScale:(double)scale isCarPlay:(BOOL)play;
 @end
 
 @implementation MapsUIImagePublisherSpec
 
-- (id)imageForScale:(double)a3 isCarPlay:(BOOL)a4
+- (id)imageForScale:(double)scale isCarPlay:(BOOL)play
 {
-  v5 = [(MapsUIImagePublisherSpec *)self iconIdentifier];
+  iconIdentifier = [(MapsUIImagePublisherSpec *)self iconIdentifier];
 
-  return [MKIconManager imageForIconID:v5 contentScale:1 sizeGroup:0 nightMode:a3];
+  return [MKIconManager imageForIconID:iconIdentifier contentScale:1 sizeGroup:0 nightMode:scale];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MapsUIImagePublisherSpec);
   [(MapsUIImagePublisherSpec *)v4 setIconIdentifier:[(MapsUIImagePublisherSpec *)self iconIdentifier]];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -34,11 +34,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MapsUIImagePublisherSpec *)self iconIdentifier];
-      v7 = [(MapsUIImagePublisherSpec *)v5 iconIdentifier];
+      v5 = equalCopy;
+      iconIdentifier = [(MapsUIImagePublisherSpec *)self iconIdentifier];
+      iconIdentifier2 = [(MapsUIImagePublisherSpec *)v5 iconIdentifier];
 
-      v8 = v6 == v7;
+      v8 = iconIdentifier == iconIdentifier2;
     }
 
     else
@@ -50,14 +50,14 @@
   return v8;
 }
 
-- (MapsUIImagePublisherSpec)initWithIconIdentifier:(unsigned int)a3
+- (MapsUIImagePublisherSpec)initWithIconIdentifier:(unsigned int)identifier
 {
   v5.receiver = self;
   v5.super_class = MapsUIImagePublisherSpec;
   result = [(MapsUIImagePublisherSpec *)&v5 init];
   if (result)
   {
-    *(&result->super._isRTL + 3) = a3;
+    *(&result->super._isRTL + 3) = identifier;
   }
 
   return result;

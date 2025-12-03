@@ -1,23 +1,23 @@
 @interface MPSInstanceAccelerationStructure
 - (BOOL)useResourceBuffer;
-- (MPSInstanceAccelerationStructure)initWithCoder:(id)a3 device:(id)a4;
-- (MPSInstanceAccelerationStructure)initWithCoder:(id)a3 group:(id)a4;
-- (MPSInstanceAccelerationStructure)initWithDevice:(id)a3;
-- (MPSInstanceAccelerationStructure)initWithGroup:(id)a3;
+- (MPSInstanceAccelerationStructure)initWithCoder:(id)coder device:(id)device;
+- (MPSInstanceAccelerationStructure)initWithCoder:(id)coder group:(id)group;
+- (MPSInstanceAccelerationStructure)initWithDevice:(id)device;
+- (MPSInstanceAccelerationStructure)initWithGroup:(id)group;
 - (_MPSAxisAlignedBoundingBox)boundingBox;
-- (id)copyInstanceAccelerationStructureWithZone:(_NSZone *)a3 device:(id)a4 group:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3 group:(id)a4;
+- (id)copyInstanceAccelerationStructureWithZone:(_NSZone *)zone device:(id)device group:(id)group;
+- (id)copyWithZone:(_NSZone *)zone group:(id)group;
 - (id)description;
 - (id)statistics;
-- (void)bindResourcesWithEncoder:(id)a3 commandBuffer:(id)a4 retainedResources:(id)a5;
+- (void)bindResourcesWithEncoder:(id)encoder commandBuffer:(id)buffer retainedResources:(id)resources;
 - (void)dealloc;
-- (void)decodeInstanceAccelerationStructureWithCoder:(id)a3;
-- (void)encodeInstanceOffsetsToBuffer:(id)a3;
-- (void)encodeRefitToCommandBuffer:(id)a3;
-- (void)encodeResourcesToBuffer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)decodeInstanceAccelerationStructureWithCoder:(id)coder;
+- (void)encodeInstanceOffsetsToBuffer:(id)buffer;
+- (void)encodeRefitToCommandBuffer:(id)buffer;
+- (void)encodeResourcesToBuffer:(id)buffer;
+- (void)encodeWithCoder:(id)coder;
 - (void)rebuild;
-- (void)rebuildWithCompletionHandler:(id)a3;
+- (void)rebuildWithCompletionHandler:(id)handler;
 - (void)setTransformType:(MPSTransformType)transformType;
 - (void)validate;
 @end
@@ -61,11 +61,11 @@
   }
 }
 
-- (MPSInstanceAccelerationStructure)initWithDevice:(id)a3
+- (MPSInstanceAccelerationStructure)initWithDevice:(id)device
 {
   v10.receiver = self;
   v10.super_class = MPSInstanceAccelerationStructure;
-  v3 = [(MPSAccelerationStructure *)&v10 initWithDevice:a3];
+  v3 = [(MPSAccelerationStructure *)&v10 initWithDevice:device];
   v8 = v3;
   if (v3)
   {
@@ -75,11 +75,11 @@
   return v8;
 }
 
-- (MPSInstanceAccelerationStructure)initWithGroup:(id)a3
+- (MPSInstanceAccelerationStructure)initWithGroup:(id)group
 {
   v10.receiver = self;
   v10.super_class = MPSInstanceAccelerationStructure;
-  v3 = [(MPSAccelerationStructure *)&v10 initWithGroup:a3];
+  v3 = [(MPSAccelerationStructure *)&v10 initWithGroup:group];
   v8 = v3;
   if (v3)
   {
@@ -89,10 +89,10 @@
   return v8;
 }
 
-- (void)decodeInstanceAccelerationStructureWithCoder:(id)a3
+- (void)decodeInstanceAccelerationStructureWithCoder:(id)coder
 {
-  self->_instanceCount = objc_msgSend_decodeInt64ForKey_(a3, a2, @"MPSInstanceAccelerationStructureKeyInstanceCount", v3, v4);
-  self->_transformType = objc_msgSend_decodeInt64ForKey_(a3, v7, @"MPSInstanceAccelerationStructureKeyTransformType", v8, v9);
+  self->_instanceCount = objc_msgSend_decodeInt64ForKey_(coder, a2, @"MPSInstanceAccelerationStructureKeyInstanceCount", v3, v4);
+  self->_transformType = objc_msgSend_decodeInt64ForKey_(coder, v7, @"MPSInstanceAccelerationStructureKeyTransformType", v8, v9);
   if (objc_msgSend_status(self, v10, v11, v12, v13) == 1)
   {
     v18 = objc_msgSend_group(self, v14, v15, v16, v17);
@@ -105,31 +105,31 @@
   }
 }
 
-- (MPSInstanceAccelerationStructure)initWithCoder:(id)a3 device:(id)a4
+- (MPSInstanceAccelerationStructure)initWithCoder:(id)coder device:(id)device
 {
   v15.receiver = self;
   v15.super_class = MPSInstanceAccelerationStructure;
-  v5 = [(MPSAccelerationStructure *)&v15 initWithCoder:a3 device:a4];
+  v5 = [(MPSAccelerationStructure *)&v15 initWithCoder:coder device:device];
   v10 = v5;
   if (v5)
   {
     objc_msgSend_sharedInitInstanceAccelerationStructure(v5, v6, v7, v8, v9);
-    objc_msgSend_decodeInstanceAccelerationStructureWithCoder_(v10, v11, a3, v12, v13);
+    objc_msgSend_decodeInstanceAccelerationStructureWithCoder_(v10, v11, coder, v12, v13);
   }
 
   return v10;
 }
 
-- (MPSInstanceAccelerationStructure)initWithCoder:(id)a3 group:(id)a4
+- (MPSInstanceAccelerationStructure)initWithCoder:(id)coder group:(id)group
 {
   v15.receiver = self;
   v15.super_class = MPSInstanceAccelerationStructure;
-  v5 = [(MPSAccelerationStructure *)&v15 initWithCoder:a3 group:a4];
+  v5 = [(MPSAccelerationStructure *)&v15 initWithCoder:coder group:group];
   v10 = v5;
   if (v5)
   {
     objc_msgSend_sharedInitInstanceAccelerationStructure(v5, v6, v7, v8, v9);
-    objc_msgSend_decodeInstanceAccelerationStructureWithCoder_(v10, v11, a3, v12, v13);
+    objc_msgSend_decodeInstanceAccelerationStructureWithCoder_(v10, v11, coder, v12, v13);
   }
 
   return v10;
@@ -153,13 +153,13 @@
   [(MPSAccelerationStructure *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = MPSInstanceAccelerationStructure;
   [(MPSAccelerationStructure *)&v13 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_instanceCount, @"MPSInstanceAccelerationStructureKeyInstanceCount", v6);
-  objc_msgSend_encodeInt64_forKey_(a3, v7, self->_transformType, @"MPSInstanceAccelerationStructureKeyTransformType", v8);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_instanceCount, @"MPSInstanceAccelerationStructureKeyInstanceCount", v6);
+  objc_msgSend_encodeInt64_forKey_(coder, v7, self->_transformType, @"MPSInstanceAccelerationStructureKeyTransformType", v8);
   if (objc_msgSend_status(self, v9, v10, v11, v12) == 1)
   {
     operator new();
@@ -435,23 +435,23 @@
   v320 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rebuildWithCompletionHandler:(id)a3
+- (void)rebuildWithCompletionHandler:(id)handler
 {
   kdebug_trace();
   kdebug_trace();
-  v5 = self;
+  selfCopy = self;
   global_queue = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239DF38B8;
   block[3] = &unk_278B3B328;
   block[4] = self;
-  block[5] = v5;
-  block[6] = a3;
+  block[5] = selfCopy;
+  block[6] = handler;
   dispatch_async(global_queue, block);
 }
 
-- (void)encodeInstanceOffsetsToBuffer:(id)a3
+- (void)encodeInstanceOffsetsToBuffer:(id)buffer
 {
   v127 = *MEMORY[0x277D85DE8];
   __src = 0;
@@ -584,7 +584,7 @@
     v109 = __src;
     if (v124 != __src)
     {
-      v110 = objc_msgSend_contents(a3, v3, v4, v5, v6);
+      v110 = objc_msgSend_contents(buffer, v3, v4, v5, v6);
       memcpy(v110, __src, v124 - __src);
       v109 = __src;
     }
@@ -606,7 +606,7 @@
   [(MPSAccelerationStructure *)&v2 rebuild];
 }
 
-- (void)encodeResourcesToBuffer:(id)a3
+- (void)encodeResourcesToBuffer:(id)buffer
 {
   v25 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -632,7 +632,7 @@
         v15 = *(*(&v20 + 1) + 8 * i);
         if ((objc_msgSend_containsObject_(v5, v9, v15, v10, v11) & 1) == 0)
         {
-          objc_msgSend_encodeResourcesToBuffer_(v15, v9, a3, v10, v11);
+          objc_msgSend_encodeResourcesToBuffer_(v15, v9, buffer, v10, v11);
           objc_msgSend_addObject_(v5, v16, v15, v17, v18);
         }
       }
@@ -716,20 +716,20 @@ LABEL_15:
   return v6;
 }
 
-- (void)bindResourcesWithEncoder:(id)a3 commandBuffer:(id)a4 retainedResources:(id)a5
+- (void)bindResourcesWithEncoder:(id)encoder commandBuffer:(id)buffer retainedResources:(id)resources
 {
   v199 = *MEMORY[0x277D85DE8];
-  objc_msgSend_device(a4, a2, a3, a4, a5);
+  objc_msgSend_device(buffer, a2, encoder, buffer, resources);
   MPSDevice = MPSDevice::GetMPSDevice();
   if (MPSDevice)
   {
     v10 = (*(*MPSDevice + 24))(MPSDevice);
-    v197 = self;
+    selfCopy = self;
     v198.receiver = self;
     v198.super_class = MPSInstanceAccelerationStructure;
-    [(MPSAccelerationStructure *)&v198 bindResourcesWithEncoder:a3 commandBuffer:a4 retainedResources:a5];
-    v15 = objc_msgSend_device(a4, v11, v12, v13, v14);
-    v20 = objc_msgSend_count(v197->_accelerationStructures, v16, v17, v18, v19);
+    [(MPSAccelerationStructure *)&v198 bindResourcesWithEncoder:encoder commandBuffer:buffer retainedResources:resources];
+    v15 = objc_msgSend_device(buffer, v11, v12, v13, v14);
+    v20 = objc_msgSend_count(selfCopy->_accelerationStructures, v16, v17, v18, v19);
     if (v20 <= 1)
     {
       v23 = 1;
@@ -741,35 +741,35 @@ LABEL_15:
     }
 
     v196 = objc_msgSend_newBufferWithLength_options_(v15, v21, 40 * v23, 16 * v10, v22);
-    objc_msgSend_encodeInstanceOffsetsToBuffer_(v197, v24, v196, v25, v26);
-    v31 = objc_msgSend_group(v197, v27, v28, v29, v30);
+    objc_msgSend_encodeInstanceOffsetsToBuffer_(selfCopy, v24, v196, v25, v26);
+    v31 = objc_msgSend_group(selfCopy, v27, v28, v29, v30);
     v36 = objc_msgSend_bvhGroup(v31, v32, v33, v34, v35);
     v195 = objc_msgSend_objectAtIndexedSubscript_(*(*(v36 + 32) + 24), v37, 0, v38, v39);
-    v44 = objc_msgSend_group(v197, v40, v41, v42, v43);
+    v44 = objc_msgSend_group(selfCopy, v40, v41, v42, v43);
     v49 = objc_msgSend_bvhGroup(v44, v45, v46, v47, v48);
     v53 = objc_msgSend_objectAtIndexedSubscript_(*(*(v49 + 32) + 24), v50, 1, v51, v52);
-    v58 = objc_msgSend_group(v197, v54, v55, v56, v57);
+    v58 = objc_msgSend_group(selfCopy, v54, v55, v56, v57);
     v63 = objc_msgSend_bvhGroup(v58, v59, v60, v61, v62);
     v194 = objc_msgSend_objectAtIndexedSubscript_(*(*(v63 + 40) + 24), v64, 0, v65, v66);
-    v71 = objc_msgSend_group(v197, v67, v68, v69, v70);
+    v71 = objc_msgSend_group(selfCopy, v67, v68, v69, v70);
     v76 = objc_msgSend_bvhGroup(v71, v72, v73, v74, v75);
     v193 = objc_msgSend_objectAtIndexedSubscript_(*(*(v76 + 48) + 24), v77, 0, v78, v79);
-    v84 = objc_msgSend_group(v197, v80, v81, v82, v83);
+    v84 = objc_msgSend_group(selfCopy, v80, v81, v82, v83);
     v89 = objc_msgSend_bvhGroup(v84, v85, v86, v87, v88);
     v192 = objc_msgSend_objectAtIndexedSubscript_(*(*(v89 + 56) + 24), v90, 0, v91, v92);
-    v97 = objc_msgSend_group(v197, v93, v94, v95, v96);
+    v97 = objc_msgSend_group(selfCopy, v93, v94, v95, v96);
     v102 = objc_msgSend_bvhGroup(v97, v98, v99, v100, v101);
     v191 = objc_msgSend_objectAtIndexedSubscript_(*(*(v102 + 64) + 24), v103, 0, v104, v105);
-    v110 = objc_msgSend_group(v197, v106, v107, v108, v109);
+    v110 = objc_msgSend_group(selfCopy, v106, v107, v108, v109);
     v115 = objc_msgSend_bvhGroup(v110, v111, v112, v113, v114);
     v190 = objc_msgSend_objectAtIndexedSubscript_(*(*(v115 + 72) + 24), v116, 0, v117, v118);
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v119, *(v197->_bvh + 15), 0, 6);
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v120, v196, 0, 7);
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v121, v197->_instanceBuffer, v197->_instanceBufferOffset, 26);
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v122, v197->_maskBuffer, v197->_maskBufferOffset, 11);
-    if (objc_msgSend_count(v197->_accelerationStructures, v123, v124, v125, v126))
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v119, *(selfCopy->_bvh + 15), 0, 6);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v120, v196, 0, 7);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v121, selfCopy->_instanceBuffer, selfCopy->_instanceBufferOffset, 26);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v122, selfCopy->_maskBuffer, selfCopy->_maskBufferOffset, 11);
+    if (objc_msgSend_count(selfCopy->_accelerationStructures, v123, v124, v125, v126))
     {
-      v131 = objc_msgSend_objectAtIndexedSubscript_(v197->_accelerationStructures, v127, 0, v129, v130);
+      v131 = objc_msgSend_objectAtIndexedSubscript_(selfCopy->_accelerationStructures, v127, 0, v129, v130);
       v136 = objc_msgSend_polygonBuffers(v131, v132, v133, v134, v135);
       v140 = objc_msgSend_objectAtIndexedSubscript_(v136, v137, 0, v138, v139);
       v145 = objc_msgSend_vertexBuffer(v140, v141, v142, v143, v144);
@@ -779,26 +779,26 @@ LABEL_15:
       v163 = objc_msgSend_polygonBuffers(v131, v159, v160, v161, v162);
       v167 = objc_msgSend_objectAtIndexedSubscript_(v163, v164, 0, v165, v166);
       v188 = objc_msgSend_maskBuffer(v167, v168, v169, v170, v171);
-      objc_msgSend_setBuffer_offset_atIndex_(a3, v172, v145, 0, 8, v145);
+      objc_msgSend_setBuffer_offset_atIndex_(encoder, v172, v145, 0, 8, v145);
     }
 
     else
     {
-      v174 = objc_msgSend_device(a4, v127, v128, v129, v130);
+      v174 = objc_msgSend_device(buffer, v127, v128, v129, v130);
       v188 = objc_msgSend_newBufferWithLength_options_(v174, v175, 16, 32, v176);
       v189 = v188;
-      objc_msgSend_setBuffer_offset_atIndex_(a3, v177, v188, 0, 8, v188);
+      objc_msgSend_setBuffer_offset_atIndex_(encoder, v177, v188, 0, 8, v188);
     }
 
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v173, v189, 0, 9);
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v178, v188, 0, 10);
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v179, v194, 0, 12);
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v180, v193, 0, 13);
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v181, v195, 0, 14);
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v182, v53, 0, 30);
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v183, v192, 0, 15);
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v184, v191, 0, 16);
-    objc_msgSend_setBuffer_offset_atIndex_(a3, v185, v190, 0, 17);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v173, v189, 0, 9);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v178, v188, 0, 10);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v179, v194, 0, 12);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v180, v193, 0, 13);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v181, v195, 0, 14);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v182, v53, 0, 30);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v183, v192, 0, 15);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v184, v191, 0, 16);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, v185, v190, 0, 17);
     v186 = objc_alloc_init(MEMORY[0x277CBEB58]);
     operator new();
   }
@@ -806,13 +806,13 @@ LABEL_15:
   v187 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyInstanceAccelerationStructureWithZone:(_NSZone *)a3 device:(id)a4 group:(id)a5
+- (id)copyInstanceAccelerationStructureWithZone:(_NSZone *)zone device:(id)device group:(id)group
 {
-  if (a5)
+  if (group)
   {
     v29.receiver = self;
     v29.super_class = MPSInstanceAccelerationStructure;
-    v6 = [(MPSAccelerationStructure *)&v29 copyWithZone:a3 group:a5];
+    v6 = [(MPSAccelerationStructure *)&v29 copyWithZone:zone group:group];
     objc_msgSend_sharedInitInstanceAccelerationStructure(v6, v7, v8, v9, v10);
   }
 
@@ -820,7 +820,7 @@ LABEL_15:
   {
     v28.receiver = self;
     v28.super_class = MPSInstanceAccelerationStructure;
-    v6 = [(MPSAccelerationStructure *)&v28 copyWithZone:a3 device:a4];
+    v6 = [(MPSAccelerationStructure *)&v28 copyWithZone:zone device:device];
     objc_msgSend_group(v6, v15, v16, v17, v18);
     objc_msgSend_sharedInitInstanceAccelerationStructure(v6, v19, v20, v21, v22);
   }
@@ -835,18 +835,18 @@ LABEL_15:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 group:(id)a4
+- (id)copyWithZone:(_NSZone *)zone group:(id)group
 {
-  v8 = objc_msgSend_device(a4, a2, a3, a4, v4);
+  v8 = objc_msgSend_device(group, a2, zone, group, v4);
 
-  return MEMORY[0x2821F9670](self, sel_copyInstanceAccelerationStructureWithZone_device_group_, a3, v8, a4);
+  return MEMORY[0x2821F9670](self, sel_copyInstanceAccelerationStructureWithZone_device_group_, zone, v8, group);
 }
 
-- (void)encodeRefitToCommandBuffer:(id)a3
+- (void)encodeRefitToCommandBuffer:(id)buffer
 {
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0)
   {
-    objc_msgSend_validate(self, a2, a3, v3, v4);
+    objc_msgSend_validate(self, a2, buffer, v3, v4);
     objc_msgSend_status(self, v7, v8, v9, v10);
     if (objc_msgSend_status(self, v11, v12, v13, v14) != 1)
     {
@@ -888,18 +888,18 @@ LABEL_15:
   memset(v238 + 8, 0, 32);
   v231 = sub_239DE7190(@"refitInnerNodeKernel", v34, v35, v238);
   v225 = 0;
-  if ((objc_msgSend_retainedReferences(a3, v36, v37, v38, v39) & 1) == 0)
+  if ((objc_msgSend_retainedReferences(buffer, v36, v37, v38, v39) & 1) == 0)
   {
     v225 = objc_alloc_init(MEMORY[0x277CBEB18]);
   }
 
-  v44 = objc_msgSend_device(a3, v40, v41, v42, v43);
+  v44 = objc_msgSend_device(buffer, v40, v41, v42, v43);
   v49 = 40 * objc_msgSend_count(self->_accelerationStructures, v45, v46, v47, v48);
   v50 = (*(**(&self->super.super.super.isa + v29) + 24))(*(&self->super.super.super.isa + v29));
   v53 = objc_msgSend_newBufferWithLength_options_(v44, v51, v49, 16 * v50, v52);
   objc_msgSend_encodeInstanceOffsetsToBuffer_(self, v54, v53, v55, v56);
-  v224 = a3;
-  v61 = objc_msgSend_computeCommandEncoder(a3, v57, v58, v59, v60);
+  bufferCopy = buffer;
+  v61 = objc_msgSend_computeCommandEncoder(buffer, v57, v58, v59, v60);
   v66 = objc_msgSend_group(self, v62, v63, v64, v65);
   v71 = objc_msgSend_bvhGroup(v66, v67, v68, v69, v70);
   v75 = objc_msgSend_objectAtIndexedSubscript_(*(*(v71 + 40) + 24), v72, 0, v73, v74);
@@ -1038,7 +1038,7 @@ LABEL_15:
     v233[2] = sub_239DF5D50;
     v233[3] = &unk_278B3B370;
     v233[4] = v225;
-    objc_msgSend_addCompletedHandler_(v224, v215, v233, v216, v217);
+    objc_msgSend_addCompletedHandler_(bufferCopy, v215, v233, v216, v217);
   }
 
   v218 = self->_bvh;
@@ -1048,7 +1048,7 @@ LABEL_15:
   v232[2] = sub_239DF5D58;
   v232[3] = &unk_278B3BCE8;
   v232[4] = v218;
-  objc_msgSend_addCompletedHandler_(v224, v219, v232, v220, v221);
+  objc_msgSend_addCompletedHandler_(bufferCopy, v219, v232, v220, v221);
 }
 
 @end

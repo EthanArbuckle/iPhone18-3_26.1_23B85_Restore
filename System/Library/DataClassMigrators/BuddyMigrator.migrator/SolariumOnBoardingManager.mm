@@ -1,19 +1,19 @@
 @interface SolariumOnBoardingManager
 - (BOOL)shouldLaunchToOnBoardUserToSolarium;
 - (_TtC13BuddyMigrator25SolariumOnBoardingManager)init;
-- (_TtC13BuddyMigrator25SolariumOnBoardingManager)initWithChronicle:(id)a3 featureFlags:(id)a4;
+- (_TtC13BuddyMigrator25SolariumOnBoardingManager)initWithChronicle:(id)chronicle featureFlags:(id)flags;
 - (void)recordUserWasOnBoardedToSolarium;
 @end
 
 @implementation SolariumOnBoardingManager
 
-- (_TtC13BuddyMigrator25SolariumOnBoardingManager)initWithChronicle:(id)a3 featureFlags:(id)a4
+- (_TtC13BuddyMigrator25SolariumOnBoardingManager)initWithChronicle:(id)chronicle featureFlags:(id)flags
 {
-  *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator25SolariumOnBoardingManager_chronicle) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator25SolariumOnBoardingManager_featureFlags) = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator25SolariumOnBoardingManager_chronicle) = chronicle;
+  *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator25SolariumOnBoardingManager_featureFlags) = flags;
   v7.receiver = self;
   v7.super_class = type metadata accessor for SolariumOnBoardingManager();
-  v5 = a3;
+  chronicleCopy = chronicle;
   swift_unknownObjectRetain();
   return [(SolariumOnBoardingManager *)&v7 init];
 }
@@ -21,12 +21,12 @@
 - (BOOL)shouldLaunchToOnBoardUserToSolarium
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator25SolariumOnBoardingManager_featureFlags);
-  v3 = self;
+  selfCopy = self;
   if ([v2 isSolariumEnabled])
   {
-    v4 = [*(&v3->super.isa + OBJC_IVAR____TtC13BuddyMigrator25SolariumOnBoardingManager_chronicle) entryForFeature:6];
+    v4 = [*(&selfCopy->super.isa + OBJC_IVAR____TtC13BuddyMigrator25SolariumOnBoardingManager_chronicle) entryForFeature:6];
 
-    v3 = v4;
+    selfCopy = v4;
     if (!v4)
     {
       return 1;
@@ -38,7 +38,7 @@
 
 - (void)recordUserWasOnBoardedToSolarium
 {
-  v2 = self;
+  selfCopy = self;
   sub_188BC();
 }
 

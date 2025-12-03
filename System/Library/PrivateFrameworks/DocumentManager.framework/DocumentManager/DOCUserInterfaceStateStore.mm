@@ -1,17 +1,17 @@
 @interface DOCUserInterfaceStateStore
 + (DOCUserInterfaceStateStore)sharedStore;
 - (DOCUserInterfaceStateStore)init;
-- (id)_loadUserInterfaceStateFromDefaultsForConfiguration:(id)a3;
-- (id)_mostRecentInterfaceStateForConfiguration:(id)a3;
+- (id)_loadUserInterfaceStateFromDefaultsForConfiguration:(id)configuration;
+- (id)_mostRecentInterfaceStateForConfiguration:(id)configuration;
 - (id)docUserDefaults;
-- (id)interfaceStateForConfiguration:(id)a3;
+- (id)interfaceStateForConfiguration:(id)configuration;
 - (void)_pruneOldState;
-- (void)_writeMostRecentUserInterfaceStateToDefaultsForConfiguration:(id)a3;
-- (void)_writeUserInterfaceStateToDefaultsForConfiguration:(id)a3;
-- (void)purgeApplicationStateExcludingIdentifiers:(id)a3 configuration:(id)a4;
-- (void)purgeApplicationStateForIdentifiers:(id)a3 configuration:(id)a4;
-- (void)purgeStateForConfiguration:(id)a3;
-- (void)updateInterfaceState:(id)a3 forConfiguration:(id)a4;
+- (void)_writeMostRecentUserInterfaceStateToDefaultsForConfiguration:(id)configuration;
+- (void)_writeUserInterfaceStateToDefaultsForConfiguration:(id)configuration;
+- (void)purgeApplicationStateExcludingIdentifiers:(id)identifiers configuration:(id)configuration;
+- (void)purgeApplicationStateForIdentifiers:(id)identifiers configuration:(id)configuration;
+- (void)purgeStateForConfiguration:(id)configuration;
+- (void)updateInterfaceState:(id)state forConfiguration:(id)configuration;
 @end
 
 @implementation DOCUserInterfaceStateStore
@@ -47,8 +47,8 @@ uint64_t __41__DOCUserInterfaceStateStore_sharedStore__block_invoke()
     v2->_uiStateMap = 0;
   }
 
-  v5 = [MEMORY[0x1E699A400] shared];
-  [v5 performAfterLaunch:&__block_literal_global_3];
+  mEMORY[0x1E699A400] = [MEMORY[0x1E699A400] shared];
+  [mEMORY[0x1E699A400] performAfterLaunch:&__block_literal_global_3];
 
   return v3;
 }
@@ -63,7 +63,7 @@ uint64_t __41__DOCUserInterfaceStateStore_sharedStore__block_invoke()
 
 - (void)_pruneOldState
 {
-  v2 = *a1;
+  v2 = *self;
   v3 = a2;
   [v2 count];
   [OUTLINED_FUNCTION_7() count];
@@ -72,27 +72,27 @@ uint64_t __41__DOCUserInterfaceStateStore_sharedStore__block_invoke()
   _os_log_debug_impl(v4, v5, v6, v7, v8, 0x34u);
 }
 
-- (id)interfaceStateForConfiguration:(id)a3
+- (id)interfaceStateForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 stateIdentifier];
-  v6 = v5;
+  configurationCopy = configuration;
+  stateIdentifier = [configurationCopy stateIdentifier];
+  v6 = stateIdentifier;
   v7 = 0;
   v8 = MEMORY[0x1E699A470];
-  if (v4 && v5)
+  if (configurationCopy && stateIdentifier)
   {
     uiStateMap = self->_uiStateMap;
     if (!uiStateMap)
     {
-      v10 = [(DOCUserInterfaceStateStore *)self _loadUserInterfaceStateFromDefaultsForConfiguration:v4];
+      v10 = [(DOCUserInterfaceStateStore *)self _loadUserInterfaceStateFromDefaultsForConfiguration:configurationCopy];
       v11 = self->_uiStateMap;
       self->_uiStateMap = v10;
 
       uiStateMap = self->_uiStateMap;
     }
 
-    v12 = [v4 stateIdentifier];
-    v7 = [(NSMutableDictionary *)uiStateMap objectForKey:v12];
+    stateIdentifier2 = [configurationCopy stateIdentifier];
+    v7 = [(NSMutableDictionary *)uiStateMap objectForKey:stateIdentifier2];
 
     if (v7)
     {
@@ -111,7 +111,7 @@ uint64_t __41__DOCUserInterfaceStateStore_sharedStore__block_invoke()
 
     else
     {
-      v14 = [(DOCUserInterfaceStateStore *)self _mostRecentInterfaceStateForConfiguration:v4];
+      v14 = [(DOCUserInterfaceStateStore *)self _mostRecentInterfaceStateForConfiguration:configurationCopy];
       v7 = [v14 copy];
 
       if (v7)
@@ -139,7 +139,7 @@ uint64_t __41__DOCUserInterfaceStateStore_sharedStore__block_invoke()
 
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        [(DOCUserInterfaceStateStore *)v16 interfaceStateForConfiguration:v4];
+        [(DOCUserInterfaceStateStore *)v16 interfaceStateForConfiguration:configurationCopy];
         if (v7)
         {
           goto LABEL_24;
@@ -163,7 +163,7 @@ uint64_t __41__DOCUserInterfaceStateStore_sharedStore__block_invoke()
         [DOCUserInterfaceStateStore interfaceStateForConfiguration:v17];
       }
 
-      v7 = [MEMORY[0x1E699A440] stateWithDefaultSettingsForConfiguration:v4];
+      v7 = [MEMORY[0x1E699A440] stateWithDefaultSettingsForConfiguration:configurationCopy];
       [(NSMutableDictionary *)self->_uiStateMap setObject:v7 forKey:v6];
     }
   }
@@ -184,16 +184,16 @@ LABEL_24:
   return v7;
 }
 
-- (id)_mostRecentInterfaceStateForConfiguration:(id)a3
+- (id)_mostRecentInterfaceStateForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(DOCUserInterfaceStateStore *)self docUserDefaults];
-  v6 = [v5 doc_roleSpecificKeyForKey:@"DOCUserDefaultsMostRecentSceneState" configuration:v4];
-  v7 = [v5 objectForKey:v6];
+  configurationCopy = configuration;
+  docUserDefaults = [(DOCUserInterfaceStateStore *)self docUserDefaults];
+  v6 = [docUserDefaults doc_roleSpecificKeyForKey:@"DOCUserDefaultsMostRecentSceneState" configuration:configurationCopy];
+  v7 = [docUserDefaults objectForKey:v6];
   if (v7)
   {
     v23 = 0;
-    v8 = [MEMORY[0x1E699A440] unarchivedFromData:v7 configuration:v4 error:&v23];
+    v8 = [MEMORY[0x1E699A440] unarchivedFromData:v7 configuration:configurationCopy error:&v23];
     v9 = v23;
     v10 = MEMORY[0x1E699A470];
     v11 = *MEMORY[0x1E699A470];
@@ -249,10 +249,10 @@ LABEL_24:
   return v8;
 }
 
-- (void)updateInterfaceState:(id)a3 forConfiguration:(id)a4
+- (void)updateInterfaceState:(id)state forConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  configurationCopy = configuration;
   v8 = MEMORY[0x1E699A470];
   v9 = *MEMORY[0x1E699A470];
   if (!*MEMORY[0x1E699A470])
@@ -263,19 +263,19 @@ LABEL_24:
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [DOCUserInterfaceStateStore updateInterfaceState:v9 forConfiguration:v7];
+    [DOCUserInterfaceStateStore updateInterfaceState:v9 forConfiguration:configurationCopy];
   }
 
-  [v6 bumpLastUpdatedDate];
-  [(DOCUserInterfaceStateStore *)self _writeUserInterfaceStateToDefaultsForConfiguration:v7];
-  [(DOCUserInterfaceStateStore *)self _writeMostRecentUserInterfaceStateToDefaultsForConfiguration:v7];
+  [stateCopy bumpLastUpdatedDate];
+  [(DOCUserInterfaceStateStore *)self _writeUserInterfaceStateToDefaultsForConfiguration:configurationCopy];
+  [(DOCUserInterfaceStateStore *)self _writeMostRecentUserInterfaceStateToDefaultsForConfiguration:configurationCopy];
 }
 
-- (void)purgeStateForConfiguration:(id)a3
+- (void)purgeStateForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 stateIdentifier];
-  if (v5)
+  configurationCopy = configuration;
+  stateIdentifier = [configurationCopy stateIdentifier];
+  if (stateIdentifier)
   {
     v6 = MEMORY[0x1E699A470];
     v7 = *MEMORY[0x1E699A470];
@@ -290,16 +290,16 @@ LABEL_24:
       [DOCUserInterfaceStateStore purgeStateForConfiguration:];
     }
 
-    [(NSMutableDictionary *)self->_uiStateMap removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_uiStateMap removeObjectForKey:stateIdentifier];
   }
 
-  [(DOCUserInterfaceStateStore *)self _writeUserInterfaceStateToDefaultsForConfiguration:v4];
+  [(DOCUserInterfaceStateStore *)self _writeUserInterfaceStateToDefaultsForConfiguration:configurationCopy];
 }
 
-- (void)purgeApplicationStateForIdentifiers:(id)a3 configuration:(id)a4
+- (void)purgeApplicationStateForIdentifiers:(id)identifiers configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  configurationCopy = configuration;
   v8 = MEMORY[0x1E699A470];
   v9 = *MEMORY[0x1E699A470];
   if (!*MEMORY[0x1E699A470])
@@ -313,14 +313,14 @@ LABEL_24:
     [DOCUserInterfaceStateStore purgeApplicationStateForIdentifiers:configuration:];
   }
 
-  [(NSMutableDictionary *)self->_uiStateMap removeObjectsForKeys:v6];
-  [(DOCUserInterfaceStateStore *)self _writeUserInterfaceStateToDefaultsForConfiguration:v7];
+  [(NSMutableDictionary *)self->_uiStateMap removeObjectsForKeys:identifiersCopy];
+  [(DOCUserInterfaceStateStore *)self _writeUserInterfaceStateToDefaultsForConfiguration:configurationCopy];
 }
 
-- (void)purgeApplicationStateExcludingIdentifiers:(id)a3 configuration:(id)a4
+- (void)purgeApplicationStateExcludingIdentifiers:(id)identifiers configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  configurationCopy = configuration;
   v8 = MEMORY[0x1E699A470];
   v9 = *MEMORY[0x1E699A470];
   if (!*MEMORY[0x1E699A470])
@@ -335,10 +335,10 @@ LABEL_24:
   }
 
   v10 = MEMORY[0x1E695DFA8];
-  v11 = [(NSMutableDictionary *)self->_uiStateMap allKeys];
-  v12 = [v10 setWithArray:v11];
+  allKeys = [(NSMutableDictionary *)self->_uiStateMap allKeys];
+  v12 = [v10 setWithArray:allKeys];
 
-  v13 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+  v13 = [MEMORY[0x1E695DFD8] setWithArray:identifiersCopy];
   [v12 minusSet:v13];
 
   v14 = *v8;
@@ -353,26 +353,26 @@ LABEL_24:
     [DOCUserInterfaceStateStore purgeApplicationStateExcludingIdentifiers:configuration:];
   }
 
-  v15 = [v12 allObjects];
-  [(DOCUserInterfaceStateStore *)self purgeApplicationStateForIdentifiers:v15 configuration:v7];
+  allObjects = [v12 allObjects];
+  [(DOCUserInterfaceStateStore *)self purgeApplicationStateForIdentifiers:allObjects configuration:configurationCopy];
 }
 
-- (id)_loadUserInterfaceStateFromDefaultsForConfiguration:(id)a3
+- (id)_loadUserInterfaceStateFromDefaultsForConfiguration:(id)configuration
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v35 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [(DOCUserInterfaceStateStore *)self docUserDefaults];
-  v6 = v4;
-  v7 = [v5 doc_roleSpecificKeyForKey:@"DOCUserDefaultsSceneState" configuration:v4];
-  v8 = [v5 objectForKey:v7];
+  configurationCopy = configuration;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  docUserDefaults = [(DOCUserInterfaceStateStore *)self docUserDefaults];
+  v6 = configurationCopy;
+  v7 = [docUserDefaults doc_roleSpecificKeyForKey:@"DOCUserDefaultsSceneState" configuration:configurationCopy];
+  v8 = [docUserDefaults objectForKey:v7];
   v9 = MEMORY[0x1E699A470];
   if (v8)
   {
     v10 = objc_alloc(MEMORY[0x1E695DFD8]);
-    v11 = [MEMORY[0x1E695DF20] classForKeyedUnarchiver];
+    classForKeyedUnarchiver = [MEMORY[0x1E695DF20] classForKeyedUnarchiver];
     v12 = objc_opt_class();
-    v13 = [v10 initWithObjects:{v11, v12, objc_opt_class(), 0}];
+    v13 = [v10 initWithObjects:{classForKeyedUnarchiver, v12, objc_opt_class(), 0}];
     v41 = 0;
     v14 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v13 fromData:v8 error:&v41];
     v15 = v41;
@@ -383,7 +383,7 @@ LABEL_24:
       v30 = v13;
       v31 = v8;
       v32 = v7;
-      v33 = v5;
+      v33 = docUserDefaults;
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
@@ -428,7 +428,7 @@ LABEL_24:
                 _os_log_error_impl(&dword_1E57D8000, v25, OS_LOG_TYPE_ERROR, "%s: Unarchived state for id: %@ error: %@", buf, 0x20u);
               }
 
-              [v35 setObject:v23 forKey:v21];
+              [dictionary setObject:v23 forKey:v21];
             }
 
             else
@@ -459,7 +459,7 @@ LABEL_24:
       }
 
       v7 = v32;
-      v5 = v33;
+      docUserDefaults = v33;
       v13 = v30;
       v8 = v31;
       v9 = MEMORY[0x1E699A470];
@@ -491,18 +491,18 @@ LABEL_24:
 
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
-    [(DOCUserInterfaceStateStore *)v27 _loadUserInterfaceStateFromDefaultsForConfiguration:v35];
+    [(DOCUserInterfaceStateStore *)v27 _loadUserInterfaceStateFromDefaultsForConfiguration:dictionary];
   }
 
-  return v35;
+  return dictionary;
 }
 
-- (void)_writeUserInterfaceStateToDefaultsForConfiguration:(id)a3
+- (void)_writeUserInterfaceStateToDefaultsForConfiguration:(id)configuration
 {
   v37 = *MEMORY[0x1E69E9840];
-  v21 = a3;
+  configurationCopy = configuration;
   [(DOCUserInterfaceStateStore *)self _pruneOldState];
-  v23 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -547,7 +547,7 @@ LABEL_24:
             _os_log_error_impl(&dword_1E57D8000, v14, OS_LOG_TYPE_ERROR, "%s: Encoded state to archive for id: %@", buf, 0x16u);
           }
 
-          [v23 setValue:v11 forKey:v9];
+          [dictionary setValue:v11 forKey:v9];
         }
 
         else
@@ -579,10 +579,10 @@ LABEL_24:
     while (v6);
   }
 
-  if ([v23 count])
+  if ([dictionary count])
   {
     v24 = 0;
-    v15 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v23 requiringSecureCoding:1 error:&v24];
+    v15 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dictionary requiringSecureCoding:1 error:&v24];
     v16 = v24;
     v17 = v16;
     if (!v15 || v16)
@@ -607,7 +607,7 @@ LABEL_24:
     v17 = 0;
   }
 
-  v19 = [(DOCUserInterfaceStateStore *)self docUserDefaults];
+  docUserDefaults = [(DOCUserInterfaceStateStore *)self docUserDefaults];
   v20 = *v5;
   if (!*v5)
   {
@@ -617,24 +617,24 @@ LABEL_24:
 
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    [(DOCUserInterfaceStateStore *)v20 _writeUserInterfaceStateToDefaultsForConfiguration:v23];
+    [(DOCUserInterfaceStateStore *)v20 _writeUserInterfaceStateToDefaultsForConfiguration:dictionary];
   }
 
-  [v19 doc_setObject:v15 forRoleKey:@"DOCUserDefaultsSceneState" configuation:v21];
+  [docUserDefaults doc_setObject:v15 forRoleKey:@"DOCUserDefaultsSceneState" configuation:configurationCopy];
 }
 
-- (void)_writeMostRecentUserInterfaceStateToDefaultsForConfiguration:(id)a3
+- (void)_writeMostRecentUserInterfaceStateToDefaultsForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(DOCUserInterfaceStateStore *)self _sortedInterfaceStateKeys];
-  if (![v5 count])
+  configurationCopy = configuration;
+  _sortedInterfaceStateKeys = [(DOCUserInterfaceStateStore *)self _sortedInterfaceStateKeys];
+  if (![_sortedInterfaceStateKeys count])
   {
-    v6 = 0;
+    firstObject = 0;
     goto LABEL_9;
   }
 
-  v6 = [v5 firstObject];
-  v7 = [(NSMutableDictionary *)self->_uiStateMap valueForKey:v6];
+  firstObject = [_sortedInterfaceStateKeys firstObject];
+  docUserDefaults = [(NSMutableDictionary *)self->_uiStateMap valueForKey:firstObject];
   v8 = MEMORY[0x1E699A470];
   v9 = *MEMORY[0x1E699A470];
   if (!*MEMORY[0x1E699A470])
@@ -645,20 +645,20 @@ LABEL_24:
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [(DOCUserInterfaceStateStore *)v6 _writeMostRecentUserInterfaceStateToDefaultsForConfiguration:v9, v7];
+    [(DOCUserInterfaceStateStore *)firstObject _writeMostRecentUserInterfaceStateToDefaultsForConfiguration:v9, docUserDefaults];
   }
 
   v14 = 0;
-  v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v14];
+  v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:docUserDefaults requiringSecureCoding:1 error:&v14];
   v11 = v14;
   v12 = v11;
   if (v10)
   {
 
-    v6 = v10;
+    firstObject = v10;
 LABEL_9:
-    v7 = [(DOCUserInterfaceStateStore *)self docUserDefaults];
-    [v7 doc_setObject:v6 forRoleKey:@"DOCUserDefaultsMostRecentSceneState" configuation:v4];
+    docUserDefaults = [(DOCUserInterfaceStateStore *)self docUserDefaults];
+    [docUserDefaults doc_setObject:firstObject forRoleKey:@"DOCUserDefaultsMostRecentSceneState" configuation:configurationCopy];
     goto LABEL_15;
   }
 

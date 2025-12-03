@@ -1,21 +1,21 @@
 @interface MBURLConnection
-+ (id)connectionWithRequest:(id)a3 properties:(id)a4;
-+ (id)sendAsyncRequest:(id)a3 properties:(id)a4 block:(id)a5;
-+ (id)sendSyncRequest:(id)a3 properties:(id)a4 connection:(id *)a5 response:(id *)a6 error:(id *)a7;
-- (MBURLConnection)initWithRequest:(id)a3 properties:(id)a4;
++ (id)connectionWithRequest:(id)request properties:(id)properties;
++ (id)sendAsyncRequest:(id)request properties:(id)properties block:(id)block;
++ (id)sendSyncRequest:(id)request properties:(id)properties connection:(id *)connection response:(id *)response error:(id *)error;
+- (MBURLConnection)initWithRequest:(id)request properties:(id)properties;
 - (void)cancel;
-- (void)connection:(id)a3 didFailWithError:(id)a4;
-- (void)connection:(id)a3 didReceiveData:(id)a4;
-- (void)connection:(id)a3 didReceiveResponse:(id)a4;
-- (void)connection:(id)a3 willSendRequestForAuthenticationChallenge:(id)a4;
-- (void)connectionDidFinishLoading:(id)a3;
+- (void)connection:(id)connection didFailWithError:(id)error;
+- (void)connection:(id)connection didReceiveData:(id)data;
+- (void)connection:(id)connection didReceiveResponse:(id)response;
+- (void)connection:(id)connection willSendRequestForAuthenticationChallenge:(id)challenge;
+- (void)connectionDidFinishLoading:(id)loading;
 - (void)dealloc;
 - (void)start;
 @end
 
 @implementation MBURLConnection
 
-+ (id)sendSyncRequest:(id)a3 properties:(id)a4 connection:(id *)a5 response:(id *)a6 error:(id *)a7
++ (id)sendSyncRequest:(id)request properties:(id)properties connection:(id *)connection response:(id *)response error:(id *)error
 {
   v12 = dispatch_semaphore_create(0);
   v33 = 0;
@@ -45,16 +45,16 @@
   v20[7] = &v21;
   v20[4] = v12;
   v20[5] = &v33;
-  v14 = [MBURLConnection sendAsyncRequest:a3 properties:a4 block:v20];
-  if (a5)
+  v14 = [MBURLConnection sendAsyncRequest:request properties:properties block:v20];
+  if (connection)
   {
-    *a5 = v14;
+    *connection = v14;
   }
 
   MBSemaphoreWaitForever();
-  if (a5)
+  if (connection)
   {
-    *a5 = 0;
+    *connection = 0;
   }
 
   objc_autoreleasePoolPop(v13);
@@ -62,14 +62,14 @@
   v16 = v28[5];
   v17 = v22[5];
   dispatch_release(v12);
-  if (a6)
+  if (response)
   {
-    *a6 = v34[5];
+    *response = v34[5];
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v22[5];
+    *error = v22[5];
   }
 
   v18 = v28[5];
@@ -79,14 +79,14 @@
   return v18;
 }
 
-+ (id)sendAsyncRequest:(id)a3 properties:(id)a4 block:(id)a5
++ (id)sendAsyncRequest:(id)request properties:(id)properties block:(id)block
 {
   v14 = 0;
   v15 = &v14;
   v16 = 0x3052000000;
   v17 = sub_1000055B0;
   v18 = sub_1000055C0;
-  v19 = [MBURLConnection connectionWithRequest:a3 properties:a4];
+  v19 = [MBURLConnection connectionWithRequest:request properties:properties];
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3052000000;
@@ -111,7 +111,7 @@
   v10[3] = &unk_1000FD3F0;
   v10[5] = v12;
   v10[6] = &v14;
-  v10[4] = a5;
+  v10[4] = block;
   [v15[5] setDataReceived:v10];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -119,13 +119,13 @@
   v9[3] = &unk_1000FD418;
   v9[5] = v13;
   v9[6] = v12;
-  v9[4] = a5;
+  v9[4] = block;
   [v15[5] setFailure:v9];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100005AFC;
   v8[3] = &unk_1000FD440;
-  v8[4] = a5;
+  v8[4] = block;
   v8[5] = v13;
   v8[6] = v12;
   [v15[5] setFinishedLoading:v8];
@@ -137,21 +137,21 @@
   return v6;
 }
 
-+ (id)connectionWithRequest:(id)a3 properties:(id)a4
++ (id)connectionWithRequest:(id)request properties:(id)properties
 {
-  v4 = [[MBURLConnection alloc] initWithRequest:a3 properties:a4];
+  v4 = [[MBURLConnection alloc] initWithRequest:request properties:properties];
 
   return v4;
 }
 
-- (MBURLConnection)initWithRequest:(id)a3 properties:(id)a4
+- (MBURLConnection)initWithRequest:(id)request properties:(id)properties
 {
   v13.receiver = self;
   v13.super_class = MBURLConnection;
   v6 = [(MBURLConnection *)&v13 init];
   if (v6)
   {
-    v6->_request = a3;
+    v6->_request = request;
     v7 = objc_opt_class();
     Name = class_getName(v7);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -160,7 +160,7 @@
     [(NSOperationQueue *)v10 setMaxConcurrentOperationCount:1];
     [(NSOperationQueue *)v10 setUnderlyingQueue:v6->_queue];
     v6->_operationQueue = v10;
-    v11 = [[NSURLConnection alloc] _initWithRequest:objc_msgSend(a3 delegate:"NSURLRequest") usesCache:v6 maxContentLength:1 startImmediately:0 connectionProperties:{0, a4}];
+    v11 = [[NSURLConnection alloc] _initWithRequest:objc_msgSend(request delegate:"NSURLRequest") usesCache:v6 maxContentLength:1 startImmediately:0 connectionProperties:{0, properties}];
     v6->_connection = v11;
     [(NSURLConnection *)v11 setDelegateQueue:v10];
   }
@@ -179,32 +179,32 @@
 
 - (void)start
 {
-  v3 = [(NSURL *)[(MBURLRequest *)self->_request URL] path];
-  v4 = [(NSURL *)[(MBURLRequest *)self->_request URL] query];
-  if (v4)
+  path = [(NSURL *)[(MBURLRequest *)self->_request URL] path];
+  query = [(NSURL *)[(MBURLRequest *)self->_request URL] query];
+  if (query)
   {
-    v3 = [(NSString *)v3 stringByAppendingFormat:@"?%@", v4];
+    path = [(NSString *)path stringByAppendingFormat:@"?%@", query];
   }
 
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(MBURLRequest *)self->_request method];
+    method = [(MBURLRequest *)self->_request method];
     v7 = [(NSData *)[(MBURLRequest *)self->_request data] length];
     *buf = 138413058;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v6;
+    v18 = method;
     v19 = 2112;
-    v20 = v3;
+    v20 = path;
     v21 = 2048;
     v22 = v7;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@: starting: %@ %@ (%lu)", buf, 0x2Au);
-    v8 = [(MBURLRequest *)self->_request method];
-    v13 = v3;
+    method2 = [(MBURLRequest *)self->_request method];
+    v13 = path;
     v14 = [(NSData *)[(MBURLRequest *)self->_request data] length];
-    v11 = self;
-    v12 = v8;
+    selfCopy2 = self;
+    v12 = method2;
     _MBLog();
   }
 
@@ -214,14 +214,14 @@
     [(MBURLRequest *)self->_request headers];
     v10 = MBStringWithDictionary();
     *buf = 138412290;
-    v16 = v10;
+    selfCopy = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     [(MBURLRequest *)self->_request headers];
-    v11 = MBStringWithDictionary();
+    selfCopy2 = MBStringWithDictionary();
     _MBLog();
   }
 
-  [(NSURLConnection *)self->_connection start:v11];
+  [(NSURLConnection *)self->_connection start:selfCopy2];
 }
 
 - (void)cancel
@@ -230,7 +230,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@: canceling", buf, 0xCu);
     _MBLog();
   }
@@ -244,41 +244,41 @@
   dispatch_async(queue, block);
 }
 
-- (void)connection:(id)a3 didReceiveResponse:(id)a4
+- (void)connection:(id)connection didReceiveResponse:(id)response
 {
   dispatch_assert_queue_V2(self->_queue);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [a4 statusCode];
+    statusCode = [response statusCode];
     v7 = MBGetDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v13 = self;
+      selfCopy = self;
       v14 = 2048;
-      v15 = v6;
+      v15 = statusCode;
       v16 = 2112;
-      v17 = [NSHTTPURLResponse localizedStringForStatusCode:v6];
+      v17 = [NSHTTPURLResponse localizedStringForStatusCode:statusCode];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%@: response received: %ld (%@)", buf, 0x20u);
-      [NSHTTPURLResponse localizedStringForStatusCode:v6];
+      [NSHTTPURLResponse localizedStringForStatusCode:statusCode];
       _MBLog();
     }
 
     v8 = MBGetDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [a4 allHeaderFields];
+      [response allHeaderFields];
       v10 = MBStringWithDictionary();
       *buf = 138412290;
-      v13 = v10;
+      selfCopy = v10;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
-      [a4 allHeaderFields];
+      [response allHeaderFields];
       MBStringWithDictionary();
       _MBLog();
     }
 
-    (*(self->_responseReceived + 2))(self->_responseReceived, a4, v9);
+    (*(self->_responseReceived + 2))(self->_responseReceived, response, v9);
   }
 
   else
@@ -289,25 +289,25 @@
   }
 }
 
-- (void)connection:(id)a3 didReceiveData:(id)a4
+- (void)connection:(id)connection didReceiveData:(id)data
 {
   dispatch_assert_queue_V2(self->_queue);
   v6 = MBGetDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = [a4 length];
+    v10 = [data length];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@: data received (%lu bytes)", buf, 0x16u);
-    [a4 length];
+    [data length];
     _MBLog();
   }
 
-  (*(self->_dataReceived + 2))(self->_dataReceived, a4);
+  (*(self->_dataReceived + 2))(self->_dataReceived, data);
 }
 
-- (void)connection:(id)a3 didFailWithError:(id)a4
+- (void)connection:(id)connection didFailWithError:(id)error
 {
   dispatch_assert_queue_V2(self->_queue);
   if (self->_done)
@@ -319,18 +319,18 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = a4;
+    errorCopy = error;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%@: failure: %@", buf, 0x16u);
     _MBLog();
   }
 
   self->_done = 1;
-  (*(self->_failure + 2))(self->_failure, a4);
+  (*(self->_failure + 2))(self->_failure, error);
 }
 
-- (void)connectionDidFinishLoading:(id)a3
+- (void)connectionDidFinishLoading:(id)loading
 {
   dispatch_assert_queue_V2(self->_queue);
   if (self->_done)
@@ -342,7 +342,7 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%@: finished loading", buf, 0xCu);
     _MBLog();
   }
@@ -351,41 +351,41 @@
   (*(self->_finishedLoading + 2))(self->_finishedLoading);
 }
 
-- (void)connection:(id)a3 willSendRequestForAuthenticationChallenge:(id)a4
+- (void)connection:(id)connection willSendRequestForAuthenticationChallenge:(id)challenge
 {
-  v5 = [objc_msgSend(a4 protectionSpace];
-  v6 = [a4 sender];
+  protectionSpace = [objc_msgSend(challenge protectionSpace];
+  sender = [challenge sender];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return;
   }
 
-  if ([v5 isEqualToString:@"NSURLAuthenticationMethodXMobileMeAuthToken"])
+  if ([protectionSpace isEqualToString:@"NSURLAuthenticationMethodXMobileMeAuthToken"])
   {
-    if ([a4 previousFailureCount] < 1)
+    if ([challenge previousFailureCount] < 1)
     {
-      v7 = [a4 proposedCredential];
+      proposedCredential = [challenge proposedCredential];
 
-      [v6 useCredential:v7 forAuthenticationChallenge:a4];
+      [sender useCredential:proposedCredential forAuthenticationChallenge:challenge];
       return;
     }
 
     goto LABEL_11;
   }
 
-  if (([v5 isEqualToString:NSURLAuthenticationMethodServerTrust] & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", NSURLAuthenticationMethodClientCertificate))
+  if (([protectionSpace isEqualToString:NSURLAuthenticationMethodServerTrust] & 1) == 0 && !objc_msgSend(protectionSpace, "isEqualToString:", NSURLAuthenticationMethodClientCertificate))
   {
 LABEL_11:
     v9 = "cancelAuthenticationChallenge:";
-    v8 = v6;
+    v8 = sender;
     goto LABEL_12;
   }
 
-  v8 = v6;
+  v8 = sender;
   v9 = "performDefaultHandlingForAuthenticationChallenge:";
 LABEL_12:
 
-  [v8 performSelector:v9 withObject:a4];
+  [v8 performSelector:v9 withObject:challenge];
 }
 
 @end

@@ -1,115 +1,115 @@
 @interface SKOrientationConstraint
-+ (id)constraintOrientingToNode:(id)a3 offset:(id)a4;
-+ (id)constraintOrientingToPoint:(CGPoint)a3 inNode:(id)a4 offset:(id)a5;
-+ (id)constraintOrientingToPoint:(CGPoint)a3 offset:(id)a4;
-- (BOOL)isEqualToOrientationConstraint:(id)a3;
++ (id)constraintOrientingToNode:(id)node offset:(id)offset;
++ (id)constraintOrientingToPoint:(CGPoint)point inNode:(id)node offset:(id)offset;
++ (id)constraintOrientingToPoint:(CGPoint)point offset:(id)offset;
+- (BOOL)isEqualToOrientationConstraint:(id)constraint;
 - (CGPoint)point;
 - (SKNode)node;
-- (SKOrientationConstraint)initWithCoder:(id)a3;
-- (SKOrientationConstraint)initWithNode:(id)a3 point:(CGPoint)a4 offset:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SKOrientationConstraint)initWithCoder:(id)coder;
+- (SKOrientationConstraint)initWithNode:(id)node point:(CGPoint)point offset:(id)offset;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKOrientationConstraint
 
-- (SKOrientationConstraint)initWithNode:(id)a3 point:(CGPoint)a4 offset:(id)a5
+- (SKOrientationConstraint)initWithNode:(id)node point:(CGPoint)point offset:(id)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
+  y = point.y;
+  x = point.x;
+  nodeCopy = node;
+  offsetCopy = offset;
   v14.receiver = self;
   v14.super_class = SKOrientationConstraint;
   v11 = [(SKConstraint *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(SKOrientationConstraint *)v11 setNode:v9];
-    [(SKOrientationConstraint *)v12 setOffset:v10];
+    [(SKOrientationConstraint *)v11 setNode:nodeCopy];
+    [(SKOrientationConstraint *)v12 setOffset:offsetCopy];
     [(SKOrientationConstraint *)v12 setPoint:x, y];
   }
 
   return v12;
 }
 
-- (SKOrientationConstraint)initWithCoder:(id)a3
+- (SKOrientationConstraint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SKOrientationConstraint;
-  v5 = [(SKConstraint *)&v9 initWithCoder:v4];
+  v5 = [(SKConstraint *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_node"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_node"];
     [(SKOrientationConstraint *)v5 setNode:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_offset"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_offset"];
     [(SKOrientationConstraint *)v5 setOffset:v7];
 
-    [v4 decodeCGPointForKey:@"_point"];
+    [coderCopy decodeCGPointForKey:@"_point"];
     [(SKOrientationConstraint *)v5 setPoint:?];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SKOrientationConstraint;
-  [(SKConstraint *)&v7 encodeWithCoder:v4];
-  v5 = [(SKOrientationConstraint *)self node];
-  [v4 encodeObject:v5 forKey:@"_node"];
+  [(SKConstraint *)&v7 encodeWithCoder:coderCopy];
+  node = [(SKOrientationConstraint *)self node];
+  [coderCopy encodeObject:node forKey:@"_node"];
 
-  v6 = [(SKOrientationConstraint *)self offset];
-  [v4 encodeObject:v6 forKey:@"_offset"];
+  offset = [(SKOrientationConstraint *)self offset];
+  [coderCopy encodeObject:offset forKey:@"_offset"];
 
   [(SKOrientationConstraint *)self point];
-  [v4 encodeCGPoint:@"_point" forKey:?];
+  [coderCopy encodeCGPoint:@"_point" forKey:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SKOrientationConstraint;
-  v4 = [(SKConstraint *)&v8 copyWithZone:a3];
-  v5 = [(SKOrientationConstraint *)self node];
-  [v4 setNode:v5];
+  v4 = [(SKConstraint *)&v8 copyWithZone:zone];
+  node = [(SKOrientationConstraint *)self node];
+  [v4 setNode:node];
 
-  v6 = [(SKOrientationConstraint *)self offset];
-  [v4 setOffset:v6];
+  offset = [(SKOrientationConstraint *)self offset];
+  [v4 setOffset:offset];
 
   [(SKOrientationConstraint *)self point];
   [v4 setPoint:?];
   return v4;
 }
 
-- (BOOL)isEqualToOrientationConstraint:(id)a3
+- (BOOL)isEqualToOrientationConstraint:(id)constraint
 {
-  v4 = a3;
-  if (self != v4)
+  constraintCopy = constraint;
+  if (self != constraintCopy)
   {
-    v5 = [(SKOrientationConstraint *)self offset];
-    v6 = [(SKOrientationConstraint *)v4 offset];
-    v7 = [v5 isEqualToRange:v6];
+    offset = [(SKOrientationConstraint *)self offset];
+    offset2 = [(SKOrientationConstraint *)constraintCopy offset];
+    v7 = [offset isEqualToRange:offset2];
 
     if (v7)
     {
-      v8 = [(SKOrientationConstraint *)self node];
-      if (v8 || ([(SKOrientationConstraint *)v4 node], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+      node = [(SKOrientationConstraint *)self node];
+      if (node || ([(SKOrientationConstraint *)constraintCopy node], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v9 = [(SKOrientationConstraint *)self node];
-        if (v9)
+        node2 = [(SKOrientationConstraint *)self node];
+        if (node2)
         {
-          v10 = [(SKOrientationConstraint *)v4 node];
+          node3 = [(SKOrientationConstraint *)constraintCopy node];
 
-          if (v8)
+          if (node)
           {
           }
 
-          if (!v10)
+          if (!node3)
           {
             goto LABEL_18;
           }
@@ -118,13 +118,13 @@
         else
         {
 
-          if (v8)
+          if (node)
           {
           }
         }
 
-        v13 = [(SKOrientationConstraint *)self node];
-        if (!v13 || (-[SKOrientationConstraint node](v4, "node"), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, !v14) || (-[SKOrientationConstraint node](self, "node"), v15 = objc_claimAutoreleasedReturnValue(), -[SKOrientationConstraint node](v4, "node"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v15 isEqualToNode:v16], v16, v15, (v17 & 1) != 0))
+        node4 = [(SKOrientationConstraint *)self node];
+        if (!node4 || (-[SKOrientationConstraint node](constraintCopy, "node"), v14 = objc_claimAutoreleasedReturnValue(), v14, node4, !v14) || (-[SKOrientationConstraint node](self, "node"), v15 = objc_claimAutoreleasedReturnValue(), -[SKOrientationConstraint node](constraintCopy, "node"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v15 isEqualToNode:v16], v16, v15, (v17 & 1) != 0))
         {
           [(SKOrientationConstraint *)self point];
           v19 = v18;
@@ -158,32 +158,32 @@ LABEL_19:
   return v11;
 }
 
-+ (id)constraintOrientingToPoint:(CGPoint)a3 inNode:(id)a4 offset:(id)a5
++ (id)constraintOrientingToPoint:(CGPoint)point inNode:(id)node offset:(id)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(objc_opt_class()) initWithNode:v8 point:v9 offset:{x, y}];
+  y = point.y;
+  x = point.x;
+  nodeCopy = node;
+  offsetCopy = offset;
+  v10 = [objc_alloc(objc_opt_class()) initWithNode:nodeCopy point:offsetCopy offset:{x, y}];
 
   return v10;
 }
 
-+ (id)constraintOrientingToNode:(id)a3 offset:(id)a4
++ (id)constraintOrientingToNode:(id)node offset:(id)offset
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithNode:v5 point:v6 offset:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  nodeCopy = node;
+  offsetCopy = offset;
+  v7 = [objc_alloc(objc_opt_class()) initWithNode:nodeCopy point:offsetCopy offset:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 
   return v7;
 }
 
-+ (id)constraintOrientingToPoint:(CGPoint)a3 offset:(id)a4
++ (id)constraintOrientingToPoint:(CGPoint)point offset:(id)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithNode:0 point:v6 offset:{x, y}];
+  y = point.y;
+  x = point.x;
+  offsetCopy = offset;
+  v7 = [objc_alloc(objc_opt_class()) initWithNode:0 point:offsetCopy offset:{x, y}];
 
   return v7;
 }

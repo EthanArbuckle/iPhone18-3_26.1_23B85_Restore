@@ -1,9 +1,9 @@
 @interface SBFMachNextMinuteDateProvider
-- (SBFMachNextMinuteDateProvider)initWithReferenceView:(id)a3;
-- (__n128)setMachTimer:(uint64_t)a1;
+- (SBFMachNextMinuteDateProvider)initWithReferenceView:(id)view;
+- (__n128)setMachTimer:(uint64_t)timer;
 - (double)machTimer;
-- (id)_nextMinuteDateWithContinuousTime:(unint64_t *)a3 machContinuousTimeForNextMinute:;
-- (id)observeMinuteUpdatesWithHandler:(id)a3;
+- (id)_nextMinuteDateWithContinuousTime:(unint64_t *)time machContinuousTimeForNextMinute:;
+- (id)observeMinuteUpdatesWithHandler:(id)handler;
 - (id)referenceView;
 - (id)setReferenceView:(id *)result;
 - (uint64_t)_setupClockSetNotification;
@@ -17,29 +17,29 @@
 - (void)_onNotifyClockSet;
 - (void)_updateHandlers;
 - (void)dealloc;
-- (void)removeMinuteUpdateHandler:(id)a3;
+- (void)removeMinuteUpdateHandler:(id)handler;
 @end
 
 @implementation SBFMachNextMinuteDateProvider
 
-- (SBFMachNextMinuteDateProvider)initWithReferenceView:(id)a3
+- (SBFMachNextMinuteDateProvider)initWithReferenceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = SBFMachNextMinuteDateProvider;
   v5 = [(SBFMachNextMinuteDateProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_referenceView, v4);
+    objc_storeWeak(&v5->_referenceView, viewCopy);
   }
 
   return v6;
 }
 
-- (id)observeMinuteUpdatesWithHandler:(id)a3
+- (id)observeMinuteUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->_minuteHandlers)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -50,7 +50,7 @@
   v7 = MEMORY[0x1E696AD98];
   ++self->_nextToken;
   v8 = [v7 numberWithUnsignedInteger:?];
-  v9 = [v4 copy];
+  v9 = [handlerCopy copy];
   v10 = MEMORY[0x1BFB4D9B0]();
   [(NSMutableDictionary *)self->_minuteHandlers setObject:v10 forKeyedSubscript:v8];
 
@@ -61,13 +61,13 @@
 
 - (double)machTimer
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 40);
-    v3 = *(a1 + 56);
+    v2 = *(self + 40);
+    v3 = *(self + 56);
     *a2 = v2;
     *(a2 + 16) = v3;
-    *(a2 + 32) = *(a1 + 72);
+    *(a2 + 32) = *(self + 72);
   }
 
   else
@@ -124,19 +124,19 @@
   return result;
 }
 
-- (id)_nextMinuteDateWithContinuousTime:(unint64_t *)a3 machContinuousTimeForNextMinute:
+- (id)_nextMinuteDateWithContinuousTime:(unint64_t *)time machContinuousTimeForNextMinute:
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    WeakRetained = objc_loadWeakRetained((self + 24));
     v6 = WeakRetained;
     if (WeakRetained)
     {
-      v7 = [WeakRetained window];
-      v8 = [v7 windowScene];
-      v9 = [v8 screen];
-      v10 = 1.0 / [v9 maximumFramesPerSecond];
+      window = [WeakRetained window];
+      windowScene = [window windowScene];
+      screen = [windowScene screen];
+      v10 = 1.0 / [screen maximumFramesPerSecond];
 
       v11 = v10 + v10;
     }
@@ -162,9 +162,9 @@
     }
 
     v15 = llround(v13);
-    if (a3)
+    if (time)
     {
-      *a3 = v15;
+      *time = v15;
     }
 
     v16 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v14];
@@ -231,9 +231,9 @@
   return result;
 }
 
-- (void)removeMinuteUpdateHandler:(id)a3
+- (void)removeMinuteUpdateHandler:(id)handler
 {
-  [(NSMutableDictionary *)self->_minuteHandlers removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_minuteHandlers removeObjectForKey:handler];
 
   [(SBFMachNextMinuteDateProvider *)self _updateTimerEnablement];
 }
@@ -281,10 +281,10 @@
 - (void)_updateHandlers
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v8 = 0;
-    v2 = [(SBFMachNextMinuteDateProvider *)a1 _nextMinuteDateWithContinuousTime:&v8 machContinuousTimeForNextMinute:?];
+    v2 = [(SBFMachNextMinuteDateProvider *)self _nextMinuteDateWithContinuousTime:&v8 machContinuousTimeForNextMinute:?];
     v3 = SBLogStatusBarish();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
@@ -295,7 +295,7 @@
       _os_log_impl(&dword_1BEA11000, v3, OS_LOG_TYPE_DEFAULT, "Re-arming timer at %@ for %lu", buf, 0x16u);
     }
 
-    v4 = *(a1 + 32);
+    v4 = *(self + 32);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __48__SBFMachNextMinuteDateProvider__updateHandlers__block_invoke;
@@ -303,7 +303,7 @@
     v7 = v2;
     v5 = v2;
     [v4 enumerateKeysAndObjectsUsingBlock:v6];
-    _SBFMachTimerArm((a1 + 40));
+    _SBFMachTimerArm((self + 40));
   }
 }
 
@@ -320,7 +320,7 @@
 
 - (void)_onNotifyClockSet
 {
-  if (a1)
+  if (self)
   {
     v3 = SBLogStatusBarish();
     if (OUTLINED_FUNCTION_1_4(v3))
@@ -328,7 +328,7 @@
       OUTLINED_FUNCTION_0_6(&dword_1BEA11000, v4, v5, "Handle clock change notification", v6, v7, v8, v9, 0);
     }
 
-    [(SBFMachNextMinuteDateProvider *)a1 _updateHandlers];
+    [(SBFMachNextMinuteDateProvider *)self _updateHandlers];
   }
 }
 
@@ -353,15 +353,15 @@
   return result;
 }
 
-- (__n128)setMachTimer:(uint64_t)a1
+- (__n128)setMachTimer:(uint64_t)timer
 {
-  if (a1)
+  if (timer)
   {
     result = *a2;
     v3 = *(a2 + 16);
-    *(a1 + 72) = *(a2 + 32);
-    *(a1 + 56) = v3;
-    *(a1 + 40) = result;
+    *(timer + 72) = *(a2 + 32);
+    *(timer + 56) = v3;
+    *(timer + 40) = result;
   }
 
   return result;

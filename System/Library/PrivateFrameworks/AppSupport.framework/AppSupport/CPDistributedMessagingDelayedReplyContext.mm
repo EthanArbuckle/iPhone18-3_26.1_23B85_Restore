@@ -1,19 +1,19 @@
 @interface CPDistributedMessagingDelayedReplyContext
-- (CPDistributedMessagingDelayedReplyContext)initWithReplyPort:(unsigned int)a3 portPassing:(BOOL)a4;
+- (CPDistributedMessagingDelayedReplyContext)initWithReplyPort:(unsigned int)port portPassing:(BOOL)passing;
 - (void)dealloc;
 @end
 
 @implementation CPDistributedMessagingDelayedReplyContext
 
-- (CPDistributedMessagingDelayedReplyContext)initWithReplyPort:(unsigned int)a3 portPassing:(BOOL)a4
+- (CPDistributedMessagingDelayedReplyContext)initWithReplyPort:(unsigned int)port portPassing:(BOOL)passing
 {
   v7.receiver = self;
   v7.super_class = CPDistributedMessagingDelayedReplyContext;
   result = [(CPDistributedMessagingDelayedReplyContext *)&v7 init];
   if (result)
   {
-    result->_replyPort = a3;
-    result->_portPassing = a4;
+    result->_replyPort = port;
+    result->_portPassing = passing;
   }
 
   return result;

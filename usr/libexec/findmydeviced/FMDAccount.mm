@@ -1,27 +1,27 @@
 @interface FMDAccount
 - (NSString)apsEnvironmentConstant;
-- (void)copyInfoFromAccount:(id)a3;
-- (void)setApsEnvironment:(id)a3;
+- (void)copyInfoFromAccount:(id)account;
+- (void)setApsEnvironment:(id)environment;
 @end
 
 @implementation FMDAccount
 
 - (NSString)apsEnvironmentConstant
 {
-  v2 = [(FMDAccount *)self apsEnvironment];
-  v3 = [FMAPSHandler constantForEnvironmentString:v2];
+  apsEnvironment = [(FMDAccount *)self apsEnvironment];
+  v3 = [FMAPSHandler constantForEnvironmentString:apsEnvironment];
 
   return v3;
 }
 
-- (void)setApsEnvironment:(id)a3
+- (void)setApsEnvironment:(id)environment
 {
-  v5 = a3;
-  objc_storeStrong(&self->_apsEnvironment, a3);
+  environmentCopy = environment;
+  objc_storeStrong(&self->_apsEnvironment, environment);
   v6 = +[FMSystemInfo sharedInstance];
-  v7 = [v6 isInternalBuild];
+  isInternalBuild = [v6 isInternalBuild];
 
-  if (v7)
+  if (isInternalBuild)
   {
     v8 = [FMPreferencesUtil stringForKey:@"ApsEnvOverride" inDomain:kFMDNotBackedUpPrefDomain];
     if (v8)
@@ -39,28 +39,28 @@
   }
 }
 
-- (void)copyInfoFromAccount:(id)a3
+- (void)copyInfoFromAccount:(id)account
 {
-  v10 = a3;
-  if ([v10 isMemberOfClass:objc_opt_class()])
+  accountCopy = account;
+  if ([accountCopy isMemberOfClass:objc_opt_class()])
   {
-    v4 = [v10 username];
-    [(FMDAccount *)self setUsername:v4];
+    username = [accountCopy username];
+    [(FMDAccount *)self setUsername:username];
 
-    v5 = [v10 serverHost];
-    [(FMDAccount *)self setServerHost:v5];
+    serverHost = [accountCopy serverHost];
+    [(FMDAccount *)self setServerHost:serverHost];
 
-    v6 = [v10 serverProtocolScheme];
-    [(FMDAccount *)self setServerProtocolScheme:v6];
+    serverProtocolScheme = [accountCopy serverProtocolScheme];
+    [(FMDAccount *)self setServerProtocolScheme:serverProtocolScheme];
 
-    v7 = [v10 apsEnvironment];
-    [(FMDAccount *)self setApsEnvironment:v7];
+    apsEnvironment = [accountCopy apsEnvironment];
+    [(FMDAccount *)self setApsEnvironment:apsEnvironment];
 
-    v8 = [v10 versionHistory];
-    [(FMDAccount *)self setVersionHistory:v8];
+    versionHistory = [accountCopy versionHistory];
+    [(FMDAccount *)self setVersionHistory:versionHistory];
 
-    v9 = [v10 accountAddTime];
-    [(FMDAccount *)self setAccountAddTime:v9];
+    accountAddTime = [accountCopy accountAddTime];
+    [(FMDAccount *)self setAccountAddTime:accountAddTime];
   }
 }
 

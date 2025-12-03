@@ -1,58 +1,58 @@
 @interface _EXExtensionProcess
-+ (id)extensionProcessWithConfiguration:(id)a3 error:(id *)a4;
-+ (void)extensionProcessWithConfiguration:(id)a3 completionHandler:(id)a4;
++ (id)extensionProcessWithConfiguration:(id)configuration error:(id *)error;
++ (void)extensionProcessWithConfiguration:(id)configuration completionHandler:(id)handler;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (BOOL)isValid;
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 - (RBSProcessIdentity)processIdentity;
 - (_EXExtensionIdentity)extensionIdentity;
 - (_EXExtensionProcess)init;
-- (_EXExtensionProcess)initWithProcessHandle:(id)a3;
-- (_EXExtensionProcess)initWithProcessHandle:(id)a3 configuration:(id)a4;
+- (_EXExtensionProcess)initWithProcessHandle:(id)handle;
+- (_EXExtensionProcess)initWithProcessHandle:(id)handle configuration:(id)configuration;
 - (_EXHostConfiguration)configuration;
-- (id)makeLibXPCConnectionWithError:(id *)a3;
-- (id)makeSessionXPCConnectionWithError:(id *)a3;
-- (id)makeXPCConnectionWithError:(id *)a3;
-- (id)newXPCConnectionWithError:(id *)a3;
+- (id)makeLibXPCConnectionWithError:(id *)error;
+- (id)makeSessionXPCConnectionWithError:(id *)error;
+- (id)makeXPCConnectionWithError:(id *)error;
+- (id)newXPCConnectionWithError:(id *)error;
 - (id)processPredicate;
 - (void)invalidate;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation _EXExtensionProcess
 
-+ (id)extensionProcessWithConfiguration:(id)a3 error:(id *)a4
++ (id)extensionProcessWithConfiguration:(id)configuration error:(id *)error
 {
-  v4 = a3;
-  v5 = specialized static _EXExtensionProcess.extensionProcess(configuration:)(v4);
+  configurationCopy = configuration;
+  v5 = specialized static _EXExtensionProcess.extensionProcess(configuration:)(configurationCopy);
 
   return v5;
 }
 
-+ (void)extensionProcessWithConfiguration:(id)a3 completionHandler:(id)a4
++ (void)extensionProcessWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = a3;
-  specialized static _EXExtensionProcess.extensionProcess(configuration:completionHandler:)(v7, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned _EXExtensionProcess?, @unowned NSError?) -> (), v6);
+  configurationCopy = configuration;
+  specialized static _EXExtensionProcess.extensionProcess(configuration:completionHandler:)(configurationCopy, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned _EXExtensionProcess?, @unowned NSError?) -> (), v6);
 }
 
-- (id)newXPCConnectionWithError:(id *)a3
+- (id)newXPCConnectionWithError:(id *)error
 {
   v4 = *(&self->super.isa + OBJC_IVAR____EXExtensionProcess__processHandle);
-  v5 = self;
+  selfCopy = self;
   v6.super.isa = _EXExtensionProcessHandle.makeXPCConnectionRetainProcess(_:)(1).super.isa;
 
   if (v7.super.isa)
   {
-    if (a3)
+    if (error)
     {
       v8 = _convertErrorToNSError(_:)();
 
       v9 = v8;
       result = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -79,38 +79,38 @@
   return result;
 }
 
-- (_EXExtensionProcess)initWithProcessHandle:(id)a3 configuration:(id)a4
+- (_EXExtensionProcess)initWithProcessHandle:(id)handle configuration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = specialized _EXExtensionProcess.init(processHandle:configuration:)(v5, v6);
+  handleCopy = handle;
+  configurationCopy = configuration;
+  v7 = specialized _EXExtensionProcess.init(processHandle:configuration:)(handleCopy, configurationCopy);
 
   return v7;
 }
 
-- (_EXExtensionProcess)initWithProcessHandle:(id)a3
+- (_EXExtensionProcess)initWithProcessHandle:(id)handle
 {
-  v3 = a3;
-  v4 = specialized _EXExtensionProcess.init(processHandle:)(v3);
+  handleCopy = handle;
+  v4 = specialized _EXExtensionProcess.init(processHandle:)(handleCopy);
 
   return v4;
 }
 
-- (id)makeXPCConnectionWithError:(id *)a3
+- (id)makeXPCConnectionWithError:(id *)error
 {
   v4 = *(&self->super.isa + OBJC_IVAR____EXExtensionProcess__processHandle);
-  v5 = self;
+  selfCopy = self;
   v6.super.isa = _EXExtensionProcessHandle.makeXPCConnectionRetainProcess(_:)(0).super.isa;
 
   if (v7.super.isa)
   {
-    if (a3)
+    if (error)
     {
       v8 = _convertErrorToNSError(_:)();
 
       v9 = v8;
       isa = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -128,18 +128,18 @@
   return isa;
 }
 
-- (id)makeLibXPCConnectionWithError:(id *)a3
+- (id)makeLibXPCConnectionWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = _EXExtensionProcess.makeLibXPCConnection()();
 
   return v4;
 }
 
-- (id)makeSessionXPCConnectionWithError:(id *)a3
+- (id)makeSessionXPCConnectionWithError:(id *)error
 {
   v4 = *(&self->super.isa + OBJC_IVAR____EXExtensionProcess__processHandle);
-  v5 = self;
+  selfCopy = self;
   v6 = _EXExtensionProcessHandle.makeSessionXPCConnection()();
   if (v6)
   {
@@ -152,16 +152,16 @@
   {
     v9 = objc_opt_self();
     v10 = MEMORY[0x1865F36D0](0xD000000000000027, 0x80000001848C4DD0);
-    v11 = [v9 _EX_errorWithCode_description_];
+    _EX_errorWithCode_description_ = [v9 _EX_errorWithCode_description_];
 
     swift_willThrow();
-    if (a3)
+    if (error)
     {
       v12 = _convertErrorToNSError(_:)();
 
       v13 = v12;
       v8 = 0;
-      *a3 = v12;
+      *error = v12;
     }
 
     else
@@ -176,13 +176,13 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   _EXExtensionProcess.invalidate()();
 }
 
 - (BOOL)isValid
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _EXExtensionProcess.isValid.getter();
 
   return v3 & 1;
@@ -195,38 +195,38 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v5 = OBJC_IVAR____EXExtensionProcess_configuration;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = configuration;
+  configurationCopy = configuration;
 }
 
 - (_EXExtensionIdentity)extensionIdentity
 {
-  v2 = self;
-  v3 = [(_EXExtensionProcess *)v2 configuration];
-  v4 = [(_EXHostConfiguration *)v3 extensionIdentity];
+  selfCopy = self;
+  configuration = [(_EXExtensionProcess *)selfCopy configuration];
+  extensionIdentity = [(_EXHostConfiguration *)configuration extensionIdentity];
 
-  return v4;
+  return extensionIdentity;
 }
 
 - (RBSProcessIdentity)processIdentity
 {
-  v2 = [*(*(&self->super.isa + OBJC_IVAR____EXExtensionProcess__processHandle) + OBJC_IVAR____EXExtensionProcessHandle_innerProcessHandle) identity];
+  identity = [*(*(&self->super.isa + OBJC_IVAR____EXExtensionProcess__processHandle) + OBJC_IVAR____EXExtensionProcessHandle_innerProcessHandle) identity];
 
-  return v2;
+  return identity;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  [(_EXExtensionProcess *)v5 auditToken];
-  [v4 auditToken];
+  processCopy = process;
+  selfCopy = self;
+  [(_EXExtensionProcess *)selfCopy auditToken];
+  [processCopy auditToken];
   LOBYTE(self) = _EXAuditTokenEqual(&v9, &v8);
 
   v6 = *MEMORY[0x1E69E9840];
@@ -235,12 +235,12 @@
 
 - (id)processPredicate
 {
-  v2 = self;
-  [(_EXExtensionProcess *)v2 rbs_pid];
+  selfCopy = self;
+  [(_EXExtensionProcess *)selfCopy rbs_pid];
   isa = Int32._bridgeToObjectiveC()().super.super.isa;
-  v4 = [objc_opt_self() predicateMatchingIdentifier_];
+  predicateMatchingIdentifier_ = [objc_opt_self() predicateMatchingIdentifier_];
 
-  return v4;
+  return predicateMatchingIdentifier_;
 }
 
 - (_EXExtensionProcess)init

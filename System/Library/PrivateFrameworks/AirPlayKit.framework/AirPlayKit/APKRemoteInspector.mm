@@ -1,17 +1,17 @@
 @interface APKRemoteInspector
-+ (id)computedStyleWithName:(id)a3 value:(id)a4;
-+ (id)resourceWithURL:(id)a3 type:(int64_t)a4 MIMEType:(id)a5;
-+ (id)styleWithProperties:(id)a3;
-- (APKRemoteInspector)initWithName:(id)a3;
++ (id)computedStyleWithName:(id)name value:(id)value;
++ (id)resourceWithURL:(id)l type:(int64_t)type MIMEType:(id)eType;
++ (id)styleWithProperties:(id)properties;
+- (APKRemoteInspector)initWithName:(id)name;
 - (BOOL)isConnected;
 - (void)dealloc;
 @end
 
 @implementation APKRemoteInspector
 
-- (APKRemoteInspector)initWithName:(id)a3
+- (APKRemoteInspector)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v28.receiver = self;
   v28.super_class = APKRemoteInspector;
   v5 = [(APKRemoteInspector *)&v28 init];
@@ -23,46 +23,46 @@
     context = v5->_context;
     v5->_context = v6;
 
-    [(JSContext *)v5->_context setName:v4];
+    [(JSContext *)v5->_context setName:nameCopy];
     [(JSContext *)v5->_context _setITMLDebuggableType];
     [(JSContext *)v5->_context _setDebuggerRunLoop:CFRunLoopGetCurrent()];
     [(JSContext *)v5->_context _setRemoteInspectionEnabled:1];
     JSRemoteInspectorSetInspectionEnabledByDefault();
-    v8 = [(JSContext *)v5->_context _inspector];
-    v9 = [v8 configuration];
+    _inspector = [(JSContext *)v5->_context _inspector];
+    configuration = [_inspector configuration];
 
-    v26 = [v9 domEventDispatcher];
-    v10 = [[APKRemoteInspectorDOMAgent alloc] initWithDispatcher:v26];
-    v27 = v4;
+    domEventDispatcher = [configuration domEventDispatcher];
+    v10 = [[APKRemoteInspectorDOMAgent alloc] initWithDispatcher:domEventDispatcher];
+    v27 = nameCopy;
     DOMAgent = v5->_DOMAgent;
     v5->_DOMAgent = v10;
     v12 = v10;
 
-    v13 = [v9 cssEventDispatcher];
-    v14 = [[APKRemoteInspectorCSSAgent alloc] initWithDispatcher:v13];
+    cssEventDispatcher = [configuration cssEventDispatcher];
+    v14 = [[APKRemoteInspectorCSSAgent alloc] initWithDispatcher:cssEventDispatcher];
     CSSAgent = v5->_CSSAgent;
     v5->_CSSAgent = v14;
     v16 = v14;
 
-    v17 = [v9 networkEventDispatcher];
-    v18 = [[APKRemoteInspectorNetworkAgent alloc] initWithDispatcher:v17];
+    networkEventDispatcher = [configuration networkEventDispatcher];
+    v18 = [[APKRemoteInspectorNetworkAgent alloc] initWithDispatcher:networkEventDispatcher];
     networkAgent = v5->_networkAgent;
     v5->_networkAgent = v18;
     v20 = v18;
 
-    v21 = [v9 pageEventDispatcher];
-    v22 = [[APKRemoteInspectorPageAgent alloc] initWithDispatcher:v21];
+    pageEventDispatcher = [configuration pageEventDispatcher];
+    v22 = [[APKRemoteInspectorPageAgent alloc] initWithDispatcher:pageEventDispatcher];
     pageAgent = v5->_pageAgent;
     v5->_pageAgent = v22;
     v24 = v22;
 
-    [v9 setDOMHandler:v12];
-    [v9 setCSSHandler:v16];
+    [configuration setDOMHandler:v12];
+    [configuration setCSSHandler:v16];
 
-    [v9 setNetworkHandler:v20];
-    [v9 setPageHandler:v24];
+    [configuration setNetworkHandler:v20];
+    [configuration setPageHandler:v24];
 
-    v4 = v27;
+    nameCopy = v27;
   }
 
   return v5;
@@ -70,13 +70,13 @@
 
 - (void)dealloc
 {
-  v3 = [(JSContext *)self->_context _inspector];
-  v4 = [v3 configuration];
+  _inspector = [(JSContext *)self->_context _inspector];
+  configuration = [_inspector configuration];
 
-  [v4 setDOMHandler:0];
-  [v4 setCSSHandler:0];
-  [v4 setNetworkHandler:0];
-  [v4 setPageHandler:0];
+  [configuration setDOMHandler:0];
+  [configuration setCSSHandler:0];
+  [configuration setNetworkHandler:0];
+  [configuration setPageHandler:0];
 
   v5.receiver = self;
   v5.super_class = APKRemoteInspector;
@@ -85,23 +85,23 @@
 
 - (BOOL)isConnected
 {
-  v2 = [(APKRemoteInspector *)self context];
-  v3 = [v2 _inspector];
-  v4 = [v3 connected];
+  context = [(APKRemoteInspector *)self context];
+  _inspector = [context _inspector];
+  connected = [_inspector connected];
 
-  return v4;
+  return connected;
 }
 
-+ (id)styleWithProperties:(id)a3
++ (id)styleWithProperties:(id)properties
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  propertiesCopy = properties;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = propertiesCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -149,22 +149,22 @@ uint64_t __42__APKRemoteInspector_styleWithProperties___block_invoke(uint64_t a1
   return v7;
 }
 
-+ (id)computedStyleWithName:(id)a3 value:(id)a4
++ (id)computedStyleWithName:(id)name value:(id)value
 {
   v5 = MEMORY[0x277D7B668];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithName:v7 value:v6];
+  valueCopy = value;
+  nameCopy = name;
+  v8 = [[v5 alloc] initWithName:nameCopy value:valueCopy];
 
   return v8;
 }
 
-+ (id)resourceWithURL:(id)a3 type:(int64_t)a4 MIMEType:(id)a5
++ (id)resourceWithURL:(id)l type:(int64_t)type MIMEType:(id)eType
 {
   v7 = MEMORY[0x277D7B7A0];
-  v8 = a5;
-  v9 = a3;
-  v10 = [[v7 alloc] initWithUrl:v9 type:a4 mimeType:v8];
+  eTypeCopy = eType;
+  lCopy = l;
+  v10 = [[v7 alloc] initWithUrl:lCopy type:type mimeType:eTypeCopy];
 
   return v10;
 }

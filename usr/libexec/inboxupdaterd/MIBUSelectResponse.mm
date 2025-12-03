@@ -1,5 +1,5 @@
 @interface MIBUSelectResponse
-- (BOOL)_deserialize:(id)a3;
+- (BOOL)_deserialize:(id)_deserialize;
 - (MIBUSelectResponse)init;
 - (id)serialize;
 @end
@@ -25,19 +25,19 @@
   v3 = objc_opt_new();
   if (![(MIBUNFCResponse *)self rejected])
   {
-    v4 = [(MIBUSelectResponse *)self protocolVersion];
-    v17 = v4;
+    protocolVersion = [(MIBUSelectResponse *)self protocolVersion];
+    v17 = protocolVersion;
     v5 = [NSArray arrayWithObjects:&v17 count:1];
     v6 = [v3 serialize:&off_1000A9C20 withValue:v5];
 
     if (v6)
     {
-      v7 = [(MIBUNFCResponse *)self error];
-      v8 = [v3 serializeResponseError:v7];
+      error = [(MIBUNFCResponse *)self error];
+      v8 = [v3 serializeResponseError:error];
 
       if (v8)
       {
-        v9 = [v3 serializedData];
+        serializedData = [v3 serializedData];
         goto LABEL_5;
       }
 
@@ -50,9 +50,9 @@
       if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_ERROR))
       {
         v13 = v12;
-        v14 = [(MIBUNFCResponse *)self error];
+        error2 = [(MIBUNFCResponse *)self error];
         v15 = 138543362;
-        v16 = v14;
+        v16 = error2;
         _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to serialize response error: %{public}@", &v15, 0xCu);
       }
     }
@@ -73,19 +73,19 @@
     }
   }
 
-  v9 = 0;
+  serializedData = 0;
 LABEL_5:
 
-  return v9;
+  return serializedData;
 }
 
-- (BOOL)_deserialize:(id)a3
+- (BOOL)_deserialize:(id)_deserialize
 {
-  v4 = a3;
-  v5 = [[MIBUDeserializer alloc] initWithData:v4];
+  _deserializeCopy = _deserialize;
+  v5 = [[MIBUDeserializer alloc] initWithData:_deserializeCopy];
 
-  v6 = [(MIBUDeserializer *)v5 deserialize];
-  if (!v6)
+  deserialize = [(MIBUDeserializer *)v5 deserialize];
+  if (!deserialize)
   {
     if (qword_1000B84A8[0] != -1)
     {
@@ -132,7 +132,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v10 = [v6 objectForKey:&off_1000A85F8];
+  v10 = [deserialize objectForKey:&off_1000A85F8];
   if (!v10)
   {
     if (qword_1000B84A8[0] != -1)

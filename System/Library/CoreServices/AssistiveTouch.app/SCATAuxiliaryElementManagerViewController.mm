@@ -1,7 +1,7 @@
 @interface SCATAuxiliaryElementManagerViewController
-- (BOOL)_elementContainsAllSubviewsOfView:(id)a3 view:(id)a4;
+- (BOOL)_elementContainsAllSubviewsOfView:(id)view view:(id)a4;
 - (void)loadView;
-- (void)updateCustomFocusingViewStateForViewsWithElement:(id)a3;
+- (void)updateCustomFocusingViewStateForViewsWithElement:(id)element;
 - (void)viewDidLoad;
 @end
 
@@ -22,26 +22,26 @@
   [(SCATAuxiliaryElementManagerViewController *)self updateCustomFocusingViewStateForViewsWithElement:0];
 }
 
-- (void)updateCustomFocusingViewStateForViewsWithElement:(id)a3
+- (void)updateCustomFocusingViewStateForViewsWithElement:(id)element
 {
-  v4 = a3;
-  if ([v4 isGroup])
+  elementCopy = element;
+  if ([elementCopy isGroup])
   {
-    v5 = v4;
+    parentGroup = elementCopy;
   }
 
   else
   {
-    v5 = [v4 parentGroup];
+    parentGroup = [elementCopy parentGroup];
   }
 
-  v6 = v5;
+  v6 = parentGroup;
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(SCATAuxiliaryElementManagerViewController *)self viewsRequiringStateUpdate];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  viewsRequiringStateUpdate = [(SCATAuxiliaryElementManagerViewController *)self viewsRequiringStateUpdate];
+  v8 = [viewsRequiringStateUpdate countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -53,18 +53,18 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(viewsRequiringStateUpdate);
         }
 
         v12 = *(*(&v18 + 1) + 8 * v11);
-        v13 = [v4 isGroup];
-        if (v13)
+        isGroup = [elementCopy isGroup];
+        if (isGroup)
         {
-          LOBYTE(v13) = [(SCATAuxiliaryElementManagerViewController *)self _elementContainsAllSubviewsOfView:v4 view:v12];
+          LOBYTE(isGroup) = [(SCATAuxiliaryElementManagerViewController *)self _elementContainsAllSubviewsOfView:elementCopy view:v12];
         }
 
         v14 = 1;
-        if (v12 != v4 && (v13 & 1) == 0)
+        if (v12 != elementCopy && (isGroup & 1) == 0)
         {
           v15 = [v6 containsObject:v12];
           if ((v15 & 1) != 0 || (sub_1000A8484(v15, v6, v12) & 1) != 0 || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 assistiveTouchGroupElementsEnabled], v16, (v17 & 1) == 0))
@@ -83,22 +83,22 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [viewsRequiringStateUpdate countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
   }
 }
 
-- (BOOL)_elementContainsAllSubviewsOfView:(id)a3 view:(id)a4
+- (BOOL)_elementContainsAllSubviewsOfView:(id)view view:(id)a4
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = a4;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = viewCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {

@@ -1,8 +1,8 @@
 @interface CycleChartsCollectionViewDataSource
 - (_TtC24MenstrualCyclesAppPlugin35CycleChartsCollectionViewDataSource)init;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 @end
 
 @implementation CycleChartsCollectionViewDataSource
@@ -14,17 +14,17 @@
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_29E0EC66C(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_29E0EC66C(section);
   v9 = v8;
 
   return v9;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v19 = sub_29E2C31A4();
   v6 = *(v19 - 8);
@@ -36,10 +36,10 @@
   v12 = &v18 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
   v13 = *(&self->super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin35CycleChartsCollectionViewDataSource_cellProvider);
-  v14 = a3;
-  v15 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_29E0EBFA8();
-  v16 = v13(v14, v12, v8);
+  v16 = v13(viewCopy, v12, v8);
 
   (*(v6 + 8))(v8, v19);
   (*(v10 + 8))(v12, v9);
@@ -47,7 +47,7 @@
   return v16;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = sub_29E2BCFB4();
   v8 = *(v7 - 8);
@@ -57,9 +57,9 @@
   v13 = v12;
   sub_29E2BCF44();
   v14 = *(&self->super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin35CycleChartsCollectionViewDataSource_supplementaryViewProvider);
-  v15 = a3;
-  v16 = self;
-  v17 = v14(v15, v11, v13, v10);
+  viewCopy = view;
+  selfCopy = self;
+  v17 = v14(viewCopy, v11, v13, v10);
 
   (*(v8 + 8))(v10, v7);
 

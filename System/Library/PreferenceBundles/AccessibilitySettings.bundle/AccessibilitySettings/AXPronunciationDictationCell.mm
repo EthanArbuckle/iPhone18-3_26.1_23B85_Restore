@@ -1,52 +1,52 @@
 @interface AXPronunciationDictationCell
-- (AXPronunciationDictationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (AXPronunciationDictationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)dictateView;
 - (void)layoutSubviews;
-- (void)setDictateView:(id)a3;
-- (void)setDictationButtonEnabled:(BOOL)a3;
-- (void)setShowsDictationButton:(BOOL)a3;
-- (void)setShowsSpinner:(BOOL)a3;
+- (void)setDictateView:(id)view;
+- (void)setDictationButtonEnabled:(BOOL)enabled;
+- (void)setShowsDictationButton:(BOOL)button;
+- (void)setShowsSpinner:(BOOL)spinner;
 @end
 
 @implementation AXPronunciationDictationCell
 
-- (AXPronunciationDictationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (AXPronunciationDictationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v35.receiver = self;
   v35.super_class = AXPronunciationDictationCell;
-  v5 = [(AXPronunciationDictationCell *)&v35 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(AXPronunciationDictationCell *)&v35 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   if (v5)
   {
     v6 = [UIButton buttonWithType:0];
     [(AXPronunciationDictationCell *)v5 setDictateButton:v6];
 
-    v7 = [(AXPronunciationDictationCell *)v5 dictateButton];
-    [v7 setTitle:0 forState:0];
+    dictateButton = [(AXPronunciationDictationCell *)v5 dictateButton];
+    [dictateButton setTitle:0 forState:0];
 
-    v8 = [(AXPronunciationDictationCell *)v5 dictateButton];
+    dictateButton2 = [(AXPronunciationDictationCell *)v5 dictateButton];
     v9 = settingsLocString(@"DICTATE_BUTTON_TITLE", @"VoiceOverSettings");
-    [v8 setAccessibilityLabel:v9];
+    [dictateButton2 setAccessibilityLabel:v9];
 
     v10 = UIAccessibilityTraitButton;
     v11 = UIAccessibilityTraitStartsMediaSession;
-    v12 = [(AXPronunciationDictationCell *)v5 dictateButton];
-    [v12 setAccessibilityTraits:v11 | v10];
+    dictateButton3 = [(AXPronunciationDictationCell *)v5 dictateButton];
+    [dictateButton3 setAccessibilityTraits:v11 | v10];
 
     v13 = settingsLocString(@"DICTATE_HINT", @"VoiceOverSettings");
-    v14 = [(AXPronunciationDictationCell *)v5 dictateButton];
-    [v14 setAccessibilityHint:v13];
+    dictateButton4 = [(AXPronunciationDictationCell *)v5 dictateButton];
+    [dictateButton4 setAccessibilityHint:v13];
 
     v15 = [NSBundle bundleForClass:objc_opt_class()];
     v16 = [UIImage imageNamed:@"dictate" inBundle:v15];
 
-    v17 = [(AXPronunciationDictationCell *)v5 tintColor];
-    v18 = [v16 imageWithTintColor:v17 renderingMode:1];
+    tintColor = [(AXPronunciationDictationCell *)v5 tintColor];
+    v18 = [v16 imageWithTintColor:tintColor renderingMode:1];
 
-    v19 = [(AXPronunciationDictationCell *)v5 dictateButton];
-    [v19 setImage:v18 forState:0];
+    dictateButton5 = [(AXPronunciationDictationCell *)v5 dictateButton];
+    [dictateButton5 setImage:v18 forState:0];
 
-    v20 = [(AXPronunciationDictationCell *)v5 dictateButton];
-    [(AXPronunciationDictationCell *)v5 setDictateView:v20];
+    dictateButton6 = [(AXPronunciationDictationCell *)v5 dictateButton];
+    [(AXPronunciationDictationCell *)v5 setDictateView:dictateButton6];
 
     v21 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     [(AXPronunciationDictationCell *)v5 setIndicatorView:v21];
@@ -54,10 +54,10 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v22 = [(AXPronunciationDictationCell *)v5 dictateButton];
-    v36[0] = v22;
-    v23 = [(AXPronunciationDictationCell *)v5 indicatorView];
-    v36[1] = v23;
+    dictateButton7 = [(AXPronunciationDictationCell *)v5 dictateButton];
+    v36[0] = dictateButton7;
+    indicatorView = [(AXPronunciationDictationCell *)v5 indicatorView];
+    v36[1] = indicatorView;
     v24 = [NSArray arrayWithObjects:v36 count:2];
 
     v25 = [v24 countByEnumeratingWithState:&v31 objects:v37 count:16];
@@ -86,8 +86,8 @@
       while (v26);
     }
 
-    v29 = [(AXPronunciationDictationCell *)v5 textField];
-    [v29 setAccessibilityIdentifier:@"UIAccessibilityPronunciationEditorDictationCell"];
+    textField = [(AXPronunciationDictationCell *)v5 textField];
+    [textField setAccessibilityIdentifier:@"UIAccessibilityPronunciationEditorDictationCell"];
   }
 
   return v5;
@@ -104,21 +104,21 @@
     goto LABEL_7;
   }
 
-  v4 = [(AXPronunciationDictationCell *)self dictateButton];
-  [v4 frame];
+  dictateButton = [(AXPronunciationDictationCell *)self dictateButton];
+  [dictateButton frame];
   if (v5 <= 0.0)
   {
   }
 
   else
   {
-    v6 = [(AXPronunciationDictationCell *)self dictateButton];
-    v7 = [v6 isHidden];
+    dictateButton2 = [(AXPronunciationDictationCell *)self dictateButton];
+    isHidden = [dictateButton2 isHidden];
 
-    if ((v7 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v8 = [(AXPronunciationDictationCell *)self dictateButton];
-      [v8 frame];
+      dictateButton3 = [(AXPronunciationDictationCell *)self dictateButton];
+      [dictateButton3 frame];
       v10 = v9 * 0.5;
 
       v11 = +[CAShapeLayer layer];
@@ -128,15 +128,15 @@
       v13 = +[UIColor clearColor];
       -[CAShapeLayer setFillColor:](v11, "setFillColor:", [v13 CGColor]);
 
-      v14 = [(AXPronunciationDictationCell *)self tintColor];
-      -[CAShapeLayer setStrokeColor:](v11, "setStrokeColor:", [v14 CGColor]);
+      tintColor = [(AXPronunciationDictationCell *)self tintColor];
+      -[CAShapeLayer setStrokeColor:](v11, "setStrokeColor:", [tintColor CGColor]);
 
       [(CAShapeLayer *)v11 setLineWidth:1.0];
-      v15 = [(AXPronunciationDictationCell *)self dictateButton];
-      v16 = [v15 layer];
-      [v16 addSublayer:v11];
+      dictateButton4 = [(AXPronunciationDictationCell *)self dictateButton];
+      layer = [dictateButton4 layer];
+      [layer addSublayer:v11];
 
-      v17 = self->_listeningCircle;
+      dictateButton6 = self->_listeningCircle;
       self->_listeningCircle = v11;
 LABEL_9:
 
@@ -149,17 +149,17 @@ LABEL_9:
   {
 LABEL_7:
     [(CAShapeLayer *)listeningCircle removeFromSuperlayer];
-    v18 = [(AXPronunciationDictationCell *)self dictateButton];
-    v19 = [v18 isHidden];
+    dictateButton5 = [(AXPronunciationDictationCell *)self dictateButton];
+    isHidden2 = [dictateButton5 isHidden];
 
-    if ((v19 & 1) == 0)
+    if ((isHidden2 & 1) == 0)
     {
-      v17 = [(AXPronunciationDictationCell *)self dictateButton];
-      v20 = [v17 layer];
+      dictateButton6 = [(AXPronunciationDictationCell *)self dictateButton];
+      layer2 = [dictateButton6 layer];
       v21 = self->_listeningCircle;
-      v22 = [(AXPronunciationDictationCell *)self layer];
-      v23 = [v22 sublayers];
-      [v20 insertSublayer:v21 atIndex:{objc_msgSend(v23, "count")}];
+      layer3 = [(AXPronunciationDictationCell *)self layer];
+      sublayers = [layer3 sublayers];
+      [layer2 insertSublayer:v21 atIndex:{objc_msgSend(sublayers, "count")}];
 
       goto LABEL_9;
     }
@@ -168,93 +168,93 @@ LABEL_7:
 LABEL_10:
   [(AXPronunciationDictationCell *)self bounds];
   v25 = v24;
-  v26 = [(AXPronunciationDictationCell *)self textField];
-  [v26 frame];
+  textField = [(AXPronunciationDictationCell *)self textField];
+  [textField frame];
   v28 = v27;
   v30 = v29;
   v32 = v31;
 
-  v33 = [(AXPronunciationDictationCell *)self textField];
-  [v33 setFrame:{v28, v30, (v25 - v28) * 0.75, v32}];
+  textField2 = [(AXPronunciationDictationCell *)self textField];
+  [textField2 setFrame:{v28, v30, (v25 - v28) * 0.75, v32}];
 }
 
-- (void)setShowsSpinner:(BOOL)a3
+- (void)setShowsSpinner:(BOOL)spinner
 {
-  if (self->_showsSpinner != a3)
+  if (self->_showsSpinner != spinner)
   {
-    self->_showsSpinner = a3;
-    if (a3)
+    self->_showsSpinner = spinner;
+    if (spinner)
     {
-      v5 = [(AXPronunciationDictationCell *)self dictateButton];
-      [v5 removeFromSuperview];
+      dictateButton = [(AXPronunciationDictationCell *)self dictateButton];
+      [dictateButton removeFromSuperview];
 
-      v6 = [(AXPronunciationDictationCell *)self indicatorView];
-      [(AXPronunciationDictationCell *)self setDictateView:v6];
+      indicatorView = [(AXPronunciationDictationCell *)self indicatorView];
+      [(AXPronunciationDictationCell *)self setDictateView:indicatorView];
 
-      v7 = [(AXPronunciationDictationCell *)self indicatorView];
-      [v7 startAnimating];
+      indicatorView2 = [(AXPronunciationDictationCell *)self indicatorView];
+      [indicatorView2 startAnimating];
     }
 
     else
     {
-      v8 = [(AXPronunciationDictationCell *)self indicatorView];
-      [v8 stopAnimating];
+      indicatorView3 = [(AXPronunciationDictationCell *)self indicatorView];
+      [indicatorView3 stopAnimating];
 
-      v9 = [(AXPronunciationDictationCell *)self indicatorView];
-      [v9 removeFromSuperview];
+      indicatorView4 = [(AXPronunciationDictationCell *)self indicatorView];
+      [indicatorView4 removeFromSuperview];
 
-      v7 = [(AXPronunciationDictationCell *)self dictateButton];
-      [(AXPronunciationDictationCell *)self setDictateView:v7];
+      indicatorView2 = [(AXPronunciationDictationCell *)self dictateButton];
+      [(AXPronunciationDictationCell *)self setDictateView:indicatorView2];
     }
 
     [(AXPronunciationDictationCell *)self layoutSubviews];
   }
 }
 
-- (void)setDictationButtonEnabled:(BOOL)a3
+- (void)setDictationButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_dictationButtonEnabled = a3;
-  v5 = [(AXPronunciationDictationCell *)self dictateButton];
-  [v5 setEnabled:v3];
+  enabledCopy = enabled;
+  self->_dictationButtonEnabled = enabled;
+  dictateButton = [(AXPronunciationDictationCell *)self dictateButton];
+  [dictateButton setEnabled:enabledCopy];
 
   [(AXPronunciationDictationCell *)self layoutSubviews];
 }
 
-- (void)setShowsDictationButton:(BOOL)a3
+- (void)setShowsDictationButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(AXPronunciationDictationCell *)self dictateButton];
-  [v5 setHidden:!v3];
+  buttonCopy = button;
+  dictateButton = [(AXPronunciationDictationCell *)self dictateButton];
+  [dictateButton setHidden:!buttonCopy];
 
   [(AXPronunciationDictationCell *)self layoutSubviews];
 }
 
-- (void)setDictateView:(id)a3
+- (void)setDictateView:(id)view
 {
-  v4 = a3;
-  v15 = [(AXPronunciationDictationCell *)self contentView];
-  v5 = [(AXPronunciationDictationCell *)self contentView];
-  [v5 addSubview:v4];
+  viewCopy = view;
+  contentView = [(AXPronunciationDictationCell *)self contentView];
+  contentView2 = [(AXPronunciationDictationCell *)self contentView];
+  [contentView2 addSubview:viewCopy];
 
-  v6 = [NSLayoutConstraint constraintWithItem:v4 attribute:6 relatedBy:0 toItem:v15 attribute:6 multiplier:1.0 constant:-15.0];
-  [v15 addConstraint:v6];
+  v6 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:6 relatedBy:0 toItem:contentView attribute:6 multiplier:1.0 constant:-15.0];
+  [contentView addConstraint:v6];
 
-  v7 = [NSLayoutConstraint constraintWithItem:v4 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:30.0];
-  [v15 addConstraint:v7];
+  v7 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:30.0];
+  [contentView addConstraint:v7];
 
-  v8 = [(AXPronunciationDictationCell *)self dictateButton];
-  v9 = [v8 imageForState:0];
+  dictateButton = [(AXPronunciationDictationCell *)self dictateButton];
+  v9 = [dictateButton imageForState:0];
 
   [v9 size];
   v11 = v10 * 30.0;
   [v9 size];
-  v13 = [NSLayoutConstraint constraintWithItem:v4 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v11 / v12];
-  [v15 addConstraint:v13];
+  v13 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v11 / v12];
+  [contentView addConstraint:v13];
 
-  v14 = [NSLayoutConstraint constraintWithItem:v4 attribute:10 relatedBy:0 toItem:v15 attribute:10 multiplier:1.0 constant:0.0];
+  v14 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
 
-  [v15 addConstraint:v14];
+  [contentView addConstraint:v14];
 }
 
 - (id)dictateView

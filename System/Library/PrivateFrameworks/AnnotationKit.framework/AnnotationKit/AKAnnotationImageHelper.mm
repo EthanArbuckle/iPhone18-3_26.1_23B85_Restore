@@ -1,28 +1,28 @@
 @interface AKAnnotationImageHelper
-+ (CGImage)createImageOfAnnotation:(id)a3 withScale:(double)a4;
-+ (id)_imageOfSize:(CGSize)a3 forAnnotation:(id)a4 strokeWidth:(double)a5 withFillColor:(BOOL)a6;
-+ (id)imageForShapeTag:(int64_t)a3;
-+ (id)imageOfSize:(CGSize)a3 forAnnotation:(id)a4;
-+ (id)imageOfSize:(CGSize)a3 forAnnotationTag:(int64_t)a4;
-+ (id)imageOfSize:(CGSize)a3 forPath:(id)a4;
-+ (id)imageOfSize:(CGSize)a3 withFillColor:(id)a4 forSignature:(id)a5;
-+ (void)_drawFilledShapeImageForAnnotation:(id)a3 inRect:(CGRect)a4 inContext:(CGContext *)a5;
-+ (void)_drawImageForPath:(id)a3 inRect:(CGRect)a4 inContext:(CGContext *)a5;
-+ (void)_drawImageForSignature:(id)a3 withFillColor:(id)a4 scale:(double)a5 pathOffset:(CGPoint)a6 inContext:(CGContext *)a7;
++ (CGImage)createImageOfAnnotation:(id)annotation withScale:(double)scale;
++ (id)_imageOfSize:(CGSize)size forAnnotation:(id)annotation strokeWidth:(double)width withFillColor:(BOOL)color;
++ (id)imageForShapeTag:(int64_t)tag;
++ (id)imageOfSize:(CGSize)size forAnnotation:(id)annotation;
++ (id)imageOfSize:(CGSize)size forAnnotationTag:(int64_t)tag;
++ (id)imageOfSize:(CGSize)size forPath:(id)path;
++ (id)imageOfSize:(CGSize)size withFillColor:(id)color forSignature:(id)signature;
++ (void)_drawFilledShapeImageForAnnotation:(id)annotation inRect:(CGRect)rect inContext:(CGContext *)context;
++ (void)_drawImageForPath:(id)path inRect:(CGRect)rect inContext:(CGContext *)context;
++ (void)_drawImageForSignature:(id)signature withFillColor:(id)color scale:(double)scale pathOffset:(CGPoint)offset inContext:(CGContext *)context;
 @end
 
 @implementation AKAnnotationImageHelper
 
-+ (id)imageForShapeTag:(int64_t)a3
++ (id)imageForShapeTag:(int64_t)tag
 {
-  if ((a3 - 764000) > 0x15)
+  if ((tag - 764000) > 0x15)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_278C7C000[a3 - 764000];
+    v3 = off_278C7C000[tag - 764000];
   }
 
   v4 = MEMORY[0x277D755B8];
@@ -32,31 +32,31 @@
   return v6;
 }
 
-+ (id)imageOfSize:(CGSize)a3 forAnnotationTag:(int64_t)a4
++ (id)imageOfSize:(CGSize)size forAnnotationTag:(int64_t)tag
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [MEMORY[0x277D75348] blackColor];
-  v8 = [MEMORY[0x277D75348] clearColor];
+  height = size.height;
+  width = size.width;
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   v9 = 0;
-  if (a4 > 764004)
+  if (tag > 764004)
   {
-    if (a4 > 764007)
+    if (tag > 764007)
     {
-      if (a4 == 764008)
+      if (tag == 764008)
       {
         v9 = objc_opt_new();
         [(AKRectangularShapeAnnotation *)v9 setRectangle:0.0, 0.0, width, height];
-        [(AKShapeAnnotation *)v9 setFillColor:v8];
+        [(AKShapeAnnotation *)v9 setFillColor:clearColor];
         [(AKStrokedAnnotation *)v9 setStrokeWidth:1.5];
-        [(AKRectangularShapeAnnotation *)v9 setStrokeColor:v7];
+        [(AKRectangularShapeAnnotation *)v9 setStrokeColor:blackColor];
         [(AKOvalAnnotation *)v9 setPointCount:5];
         [AKStarAnnotationRenderer defaultInnerRadiusForStar:v9];
         [(AKOvalAnnotation *)v9 setInnerRadiusFactor:?];
         goto LABEL_18;
       }
 
-      if (a4 != 765110)
+      if (tag != 765110)
       {
         goto LABEL_18;
       }
@@ -66,9 +66,9 @@
 
     else
     {
-      if (a4 != 764005)
+      if (tag != 764005)
       {
-        if (a4 == 764007)
+        if (tag == 764007)
         {
           v9 = objc_opt_new();
           [(AKRectangularShapeAnnotation *)v9 setRectangle:0.0, 0.0, width, height];
@@ -76,8 +76,8 @@
           v11 = CGRectGetMinX(v19) + -10.0;
           [(AKRectangularShapeAnnotation *)v9 rectangle];
           [(AKOvalAnnotation *)v9 setPointyBitPoint:v11, CGRectGetMinY(v20) + -10.0];
-          [(AKShapeAnnotation *)v9 setFillColor:v8];
-          [(AKRectangularShapeAnnotation *)v9 setStrokeColor:v7];
+          [(AKShapeAnnotation *)v9 setFillColor:clearColor];
+          [(AKRectangularShapeAnnotation *)v9 setStrokeColor:blackColor];
           [(AKStrokedAnnotation *)v9 setStrokeWidth:1.5];
           [(AKOvalAnnotation *)v9 setPointyBitBaseWidthAngle:25.0];
         }
@@ -92,7 +92,7 @@ LABEL_17:
     v9 = objc_opt_new();
     [(AKOvalAnnotation *)v9 setArrowHeadStyle:v12];
     [(AKStrokedAnnotation *)v9 setStrokeWidth:1.5];
-    [(AKRectangularShapeAnnotation *)v9 setStrokeColor:v7];
+    [(AKRectangularShapeAnnotation *)v9 setStrokeColor:blackColor];
     v21.origin.x = 0.0;
     v21.origin.y = 0.0;
     v21.size.width = width;
@@ -126,13 +126,13 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (a4 > 764002)
+  if (tag > 764002)
   {
-    v12 = a4 != 764003;
+    v12 = tag != 764003;
     goto LABEL_17;
   }
 
-  if (a4 == 764000)
+  if (tag == 764000)
   {
     v10 = objc_opt_new();
     v9 = v10;
@@ -140,7 +140,7 @@ LABEL_17:
 
   else
   {
-    if (a4 != 764002)
+    if (tag != 764002)
     {
       goto LABEL_18;
     }
@@ -150,9 +150,9 @@ LABEL_17:
     v10 = v9;
   }
 
-  [(AKShapeAnnotation *)v10 setFillColor:v8];
+  [(AKShapeAnnotation *)v10 setFillColor:clearColor];
   [(AKStrokedAnnotation *)v9 setStrokeWidth:1.5];
-  [(AKRectangularShapeAnnotation *)v9 setStrokeColor:v7];
+  [(AKRectangularShapeAnnotation *)v9 setStrokeColor:blackColor];
   [(AKRectangularShapeAnnotation *)v9 setRectangle:0.0, 0.0, width, height];
 LABEL_18:
   [(AKAnnotation *)v9 setOriginalModelBaseScaleFactor:1.0];
@@ -162,60 +162,60 @@ LABEL_18:
   return v16;
 }
 
-+ (id)imageOfSize:(CGSize)a3 forAnnotation:(id)a4
++ (id)imageOfSize:(CGSize)size forAnnotation:(id)annotation
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
-  v7 = [objc_opt_class() _imageOfSize:v6 forAnnotation:1 strokeWidth:width withFillColor:{height, 1.0}];
+  height = size.height;
+  width = size.width;
+  annotationCopy = annotation;
+  v7 = [objc_opt_class() _imageOfSize:annotationCopy forAnnotation:1 strokeWidth:width withFillColor:{height, 1.0}];
 
   return v7;
 }
 
-+ (id)_imageOfSize:(CGSize)a3 forAnnotation:(id)a4 strokeWidth:(double)a5 withFillColor:(BOOL)a6
++ (id)_imageOfSize:(CGSize)size forAnnotation:(id)annotation strokeWidth:(double)width withFillColor:(BOOL)color
 {
-  v6 = a6;
-  height = a3.height;
-  width = a3.width;
-  v10 = a4;
+  colorCopy = color;
+  height = size.height;
+  width = size.width;
+  annotationCopy = annotation;
   if (objc_opt_respondsToSelector())
   {
     if (objc_opt_respondsToSelector())
     {
-      [v10 setHasShadow:0];
+      [annotationCopy setHasShadow:0];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v10 setStrokeWidth:a5];
+      [annotationCopy setStrokeWidth:width];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v10 setDashed:0];
+      [annotationCopy setDashed:0];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v11 = [MEMORY[0x277D75348] blackColor];
-      [v10 performSelector:sel_setStrokeColor_ withObject:v11];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [annotationCopy performSelector:sel_setStrokeColor_ withObject:blackColor];
     }
 
-    if (v6 && (objc_opt_respondsToSelector() & 1) != 0 && ([v10 isMemberOfClass:objc_opt_class()] & 1) == 0)
+    if (colorCopy && (objc_opt_respondsToSelector() & 1) != 0 && ([annotationCopy isMemberOfClass:objc_opt_class()] & 1) == 0)
     {
       v12 = [MEMORY[0x277D75348] akColorWithWhite:0.2 alpha:0.2];
-      [v10 performSelector:sel_setFillColor_ withObject:v12];
+      [annotationCopy performSelector:sel_setFillColor_ withObject:v12];
     }
 
     if (objc_opt_respondsToSelector())
     {
       v13 = [objc_alloc(MEMORY[0x277D742D8]) initWithString:&stru_28519E870];
-      [v10 performSelector:sel_setAnnotationText_ withObject:v13];
+      [annotationCopy performSelector:sel_setAnnotationText_ withObject:v13];
     }
   }
 
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v16 = v15;
   v21.width = width;
   v21.height = height;
@@ -224,27 +224,27 @@ LABEL_18:
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextTranslateCTM(CurrentContext, 0.0, height);
   CGContextScaleCTM(CurrentContext, 1.0, -1.0);
-  [objc_opt_class() _drawFilledShapeImageForAnnotation:v10 inRect:CurrentContext inContext:{0.0, 0.0, width, height}];
+  [objc_opt_class() _drawFilledShapeImageForAnnotation:annotationCopy inRect:CurrentContext inContext:{0.0, 0.0, width, height}];
   v18 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v18;
 }
 
-+ (void)_drawFilledShapeImageForAnnotation:(id)a3 inRect:(CGRect)a4 inContext:(CGContext *)a5
++ (void)_drawFilledShapeImageForAnnotation:(id)annotation inRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
-  CGContextSaveGState(a5);
-  v11 = [v10 originalExifOrientation];
-  v12 = objc_getAssociatedObject(v10, @"com.apple.AnnotationKit.AnnotationImageHelperAdditionalExifHintKey");
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  annotationCopy = annotation;
+  CGContextSaveGState(context);
+  originalExifOrientation = [annotationCopy originalExifOrientation];
+  v12 = objc_getAssociatedObject(annotationCopy, @"com.apple.AnnotationKit.AnnotationImageHelperAdditionalExifHintKey");
   v13 = v12;
   if (v12)
   {
-    v11 = [v12 integerValue];
+    originalExifOrientation = [v12 integerValue];
   }
 
   memset(&v43, 0, sizeof(v43));
@@ -257,12 +257,12 @@ LABEL_18:
   v46.origin.y = y;
   v46.size.width = width;
   v46.size.height = height;
-  [AKGeometryHelper affineTransformForExifOrientation:v11 aboutCenter:MidX, CGRectGetMidY(v46)];
+  [AKGeometryHelper affineTransformForExifOrientation:originalExifOrientation aboutCenter:MidX, CGRectGetMidY(v46)];
   transform = v43;
-  CGContextConcatCTM(a5, &transform);
+  CGContextConcatCTM(context, &transform);
   v44.width = 1.0;
   v44.height = 1.0;
-  v15 = CGContextConvertSizeToDeviceSpace(a5, v44);
+  v15 = CGContextConvertSizeToDeviceSpace(context, v44);
   v47.origin.x = x;
   v47.origin.y = y;
   v47.size.width = width;
@@ -270,7 +270,7 @@ LABEL_18:
   v48 = CGRectInset(v47, 4.0, 4.0);
   v16 = v48.size.width;
   v17 = v48.size.height;
-  [AKAnnotationRenderer drawingBoundsOfAnnotation:v10, v48.origin.x, v48.origin.y];
+  [AKAnnotationRenderer drawingBoundsOfAnnotation:annotationCopy, v48.origin.x, v48.origin.y];
   v39 = width;
   v40 = height;
   v22 = v18;
@@ -304,10 +304,10 @@ LABEL_18:
   v51.size.width = v39;
   v51.size.height = v40;
   v30 = CGRectGetHeight(v51);
-  CGContextTranslateCTM(a5, v29, (v30 - v28) * 0.5);
-  CGContextScaleCTM(a5, v26, v26);
-  *&v31 = *&CGContextConvertSizeToUserSpace(a5, v15);
-  v32 = v10;
+  CGContextTranslateCTM(context, v29, (v30 - v28) * 0.5);
+  CGContextScaleCTM(context, v26, v26);
+  *&v31 = *&CGContextConvertSizeToUserSpace(context, v15);
+  v32 = annotationCopy;
   v33 = v32;
   if (objc_opt_respondsToSelector())
   {
@@ -328,27 +328,27 @@ LABEL_18:
   }
 
   [AKAnnotationRenderer drawingBoundsOfAnnotation:v33, *&v39, *&v40];
-  CGContextTranslateCTM(a5, v36 - v41, v37 - v23);
-  v38 = [AKAnnotationRenderer _optionsForContext:a5 forDisplay:0];
-  [AKAnnotationRenderer renderAnnotation:v33 intoContext:a5 options:v38 pageControllerOrNil:0];
-  CGContextRestoreGState(a5);
+  CGContextTranslateCTM(context, v36 - v41, v37 - v23);
+  v38 = [AKAnnotationRenderer _optionsForContext:context forDisplay:0];
+  [AKAnnotationRenderer renderAnnotation:v33 intoContext:context options:v38 pageControllerOrNil:0];
+  CGContextRestoreGState(context);
 }
 
-+ (id)imageOfSize:(CGSize)a3 forPath:(id)a4
++ (id)imageOfSize:(CGSize)size forPath:(id)path
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = MEMORY[0x277D759A0];
-  v7 = a4;
-  v8 = [v6 mainScreen];
-  [v8 scale];
+  pathCopy = path;
+  mainScreen = [v6 mainScreen];
+  [mainScreen scale];
   v10 = v9;
   v15.width = width;
   v15.height = height;
   UIGraphicsBeginImageContextWithOptions(v15, 0, v10);
 
   CurrentContext = UIGraphicsGetCurrentContext();
-  [objc_opt_class() _drawImageForPath:v7 inRect:CurrentContext inContext:{0.0, 0.0, width, height}];
+  [objc_opt_class() _drawImageForPath:pathCopy inRect:CurrentContext inContext:{0.0, 0.0, width, height}];
 
   v12 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -356,22 +356,22 @@ LABEL_18:
   return v12;
 }
 
-+ (void)_drawImageForPath:(id)a3 inRect:(CGRect)a4 inContext:(CGContext *)a5
++ (void)_drawImageForPath:(id)path inRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
-  [v10 bounds];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pathCopy = path;
+  [pathCopy bounds];
   v26 = v11;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  CGContextSaveGState(a5);
+  CGContextSaveGState(context);
   v28.width = 1.0;
   v28.height = 1.0;
-  v18 = CGContextConvertSizeToDeviceSpace(a5, v28);
+  v18 = CGContextConvertSizeToDeviceSpace(context, v28);
   v29.origin.x = x;
   v29.origin.y = y;
   v29.size.width = width;
@@ -382,7 +382,7 @@ LABEL_18:
   v30.size.width = width;
   v30.size.height = height;
   MidY = CGRectGetMidY(v30);
-  CGContextTranslateCTM(a5, MidX, MidY);
+  CGContextTranslateCTM(context, MidX, MidY);
   v31.origin.x = x;
   v31.origin.y = y;
   v31.size.width = width;
@@ -394,7 +394,7 @@ LABEL_18:
     v21 = v32.size.height / v17;
   }
 
-  CGContextScaleCTM(a5, v21, v21);
+  CGContextScaleCTM(context, v21, v21);
   v33.origin.x = v26;
   v33.origin.y = v13;
   v33.size.width = v15;
@@ -405,26 +405,26 @@ LABEL_18:
   v34.size.width = v15;
   v34.size.height = v17;
   v23 = CGRectGetMidY(v34);
-  CGContextTranslateCTM(a5, v22, -v23);
-  *&v24 = *&CGContextConvertSizeToUserSpace(a5, v18);
-  v25 = [MEMORY[0x277D75348] blackColor];
-  [v25 set];
+  CGContextTranslateCTM(context, v22, -v23);
+  *&v24 = *&CGContextConvertSizeToUserSpace(context, v18);
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [blackColor set];
 
-  [v10 setLineWidth:v24];
-  [v10 stroke];
+  [pathCopy setLineWidth:v24];
+  [pathCopy stroke];
 
-  CGContextRestoreGState(a5);
+  CGContextRestoreGState(context);
 }
 
-+ (id)imageOfSize:(CGSize)a3 withFillColor:(id)a4 forSignature:(id)a5
++ (id)imageOfSize:(CGSize)size withFillColor:(id)color forSignature:(id)signature
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 path] && !CGPathIsEmpty(objc_msgSend(v9, "path")))
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
+  signatureCopy = signature;
+  if ([signatureCopy path] && !CGPathIsEmpty(objc_msgSend(signatureCopy, "path")))
   {
-    [v9 pathBounds];
+    [signatureCopy pathBounds];
     v14 = v13;
     v16 = v15;
     if (width / v11 >= height / v12)
@@ -448,7 +448,7 @@ LABEL_18:
     *&v21.d = xmmword_23F4D9490;
     v21.ty = v18;
     CGContextConcatCTM(CurrentContext, &v21);
-    [objc_opt_class() _drawImageForSignature:v9 withFillColor:v8 scale:CurrentContext pathOffset:v17 inContext:{v14, v16}];
+    [objc_opt_class() _drawImageForSignature:signatureCopy withFillColor:colorCopy scale:CurrentContext pathOffset:v17 inContext:{v14, v16}];
     v10 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
   }
@@ -461,43 +461,43 @@ LABEL_18:
   return v10;
 }
 
-+ (void)_drawImageForSignature:(id)a3 withFillColor:(id)a4 scale:(double)a5 pathOffset:(CGPoint)a6 inContext:(CGContext *)a7
++ (void)_drawImageForSignature:(id)signature withFillColor:(id)color scale:(double)scale pathOffset:(CGPoint)offset inContext:(CGContext *)context
 {
-  y = a6.y;
-  x = a6.x;
-  v14 = a3;
-  v12 = a4;
-  CGContextSaveGState(a7);
-  CGContextScaleCTM(a7, a5, a5);
-  CGContextTranslateCTM(a7, -x, -y);
-  v13 = [v12 CGColor];
+  y = offset.y;
+  x = offset.x;
+  signatureCopy = signature;
+  colorCopy = color;
+  CGContextSaveGState(context);
+  CGContextScaleCTM(context, scale, scale);
+  CGContextTranslateCTM(context, -x, -y);
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(a7, v13);
-  if ([v14 path])
+  CGContextSetFillColorWithColor(context, cGColor);
+  if ([signatureCopy path])
   {
-    CGContextAddPath(a7, [v14 path]);
-    CGContextFillPath(a7);
+    CGContextAddPath(context, [signatureCopy path]);
+    CGContextFillPath(context);
   }
 
-  CGContextRestoreGState(a7);
+  CGContextRestoreGState(context);
 }
 
-+ (CGImage)createImageOfAnnotation:(id)a3 withScale:(double)a4
++ (CGImage)createImageOfAnnotation:(id)annotation withScale:(double)scale
 {
-  v5 = a3;
+  annotationCopy = annotation;
   v6 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF4B8]);
   if (v6)
   {
     v7 = v6;
-    [v5 drawingBounds];
-    v9 = vcvtpd_u64_f64(v8 * a4);
-    v11 = CGBitmapContextCreate(0, v9, vcvtpd_u64_f64(v10 * a4), 8uLL, 4 * v9, v7, 2u);
+    [annotationCopy drawingBounds];
+    v9 = vcvtpd_u64_f64(v8 * scale);
+    v11 = CGBitmapContextCreate(0, v9, vcvtpd_u64_f64(v10 * scale), 8uLL, 4 * v9, v7, 2u);
     if (v11)
     {
       v12 = v11;
       v13 = [AKAnnotationRenderer _optionsForContext:v11 forDisplay:0];
-      CGContextScaleCTM(v12, a4, a4);
-      [AKAnnotationRenderer renderAnnotation:v5 intoContext:v12 options:v13 pageControllerOrNil:0];
+      CGContextScaleCTM(v12, scale, scale);
+      [AKAnnotationRenderer renderAnnotation:annotationCopy intoContext:v12 options:v13 pageControllerOrNil:0];
       Image = CGBitmapContextCreateImage(v12);
       CGContextRelease(v12);
     }

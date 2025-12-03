@@ -1,18 +1,18 @@
 @interface FMPlatteredTableViewCell
 - (BOOL)isSelected;
-- (_TtC6FindMy24FMPlatteredTableViewCell)initWithCoder:(id)a3;
-- (_TtC6FindMy24FMPlatteredTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC6FindMy24FMPlatteredTableViewCell)initWithCoder:(id)coder;
+- (_TtC6FindMy24FMPlatteredTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation FMPlatteredTableViewCell
 
-- (_TtC6FindMy24FMPlatteredTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC6FindMy24FMPlatteredTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -21,10 +21,10 @@
     v6 = 0;
   }
 
-  return sub_1001CBDBC(a3, a4, v6);
+  return sub_1001CBDBC(style, identifier, v6);
 }
 
-- (_TtC6FindMy24FMPlatteredTableViewCell)initWithCoder:(id)a3
+- (_TtC6FindMy24FMPlatteredTableViewCell)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -37,8 +37,8 @@
   v4.super_class = type metadata accessor for FMPlatteredTableViewCell();
   v2 = v4.receiver;
   [(FMPlatteredTableViewCell *)&v4 layoutSubviews];
-  v3 = [objc_opt_self() secondarySystemBackgroundColor];
-  [v2 setBackgroundColor:v3];
+  secondarySystemBackgroundColor = [objc_opt_self() secondarySystemBackgroundColor];
+  [v2 setBackgroundColor:secondarySystemBackgroundColor];
 }
 
 - (BOOL)isSelected
@@ -48,13 +48,13 @@
   return [(FMPlatteredTableViewCell *)&v3 isSelected];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5.receiver = self;
   v5.super_class = type metadata accessor for FMPlatteredTableViewCell();
   v4 = v5.receiver;
-  [(FMPlatteredTableViewCell *)&v5 setSelected:v3];
+  [(FMPlatteredTableViewCell *)&v5 setSelected:selectedCopy];
   [v4 setNeedsLayout];
 }
 

@@ -7,8 +7,8 @@
 
 - (CGRect)scatFrame
 {
-  v3 = [(SCATPointPickerSquare *)self delegate];
-  [v3 scannerFrameForPointPickerSquare:self];
+  delegate = [(SCATPointPickerSquare *)self delegate];
+  [delegate scannerFrameForPointPickerSquare:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;

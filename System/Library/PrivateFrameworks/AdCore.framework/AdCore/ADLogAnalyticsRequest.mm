@@ -1,14 +1,14 @@
 @interface ADLogAnalyticsRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEvents:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEvents:(id)events;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ADLogAnalyticsRequest
@@ -31,22 +31,22 @@ void __32__ADLogAnalyticsRequest_options__block_invoke()
   options_sOptions_0 = &unk_285104C40;
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   events = self->_events;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!events)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_events;
     self->_events = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     events = self->_events;
   }
 
-  [(NSMutableArray *)events addObject:v4];
+  [(NSMutableArray *)events addObject:eventsCopy];
 }
 
 - (id)description
@@ -55,8 +55,8 @@ void __32__ADLogAnalyticsRequest_options__block_invoke()
   v8.receiver = self;
   v8.super_class = ADLogAnalyticsRequest;
   v4 = [(ADLogAnalyticsRequest *)&v8 description];
-  v5 = [(ADLogAnalyticsRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ADLogAnalyticsRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -64,12 +64,12 @@ void __32__ADLogAnalyticsRequest_options__block_invoke()
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   iAdID = self->_iAdID;
   if (iAdID)
   {
-    [v3 setObject:iAdID forKey:@"iAdID"];
+    [dictionary setObject:iAdID forKey:@"iAdID"];
   }
 
   bundleID = self->_bundleID;
@@ -112,8 +112,8 @@ void __32__ADLogAnalyticsRequest_options__block_invoke()
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -130,10 +130,10 @@ void __32__ADLogAnalyticsRequest_options__block_invoke()
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_iAdID)
   {
     PBDataWriterWriteDataField();
@@ -189,62 +189,62 @@ void __32__ADLogAnalyticsRequest_options__block_invoke()
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_iAdID)
   {
-    [v8 setIAdID:?];
+    [toCopy setIAdID:?];
   }
 
   if (self->_bundleID)
   {
-    [v8 setBundleID:?];
+    [toCopy setBundleID:?];
   }
 
   if (self->_contentiAdID)
   {
-    [v8 setContentiAdID:?];
+    [toCopy setContentiAdID:?];
   }
 
   if (self->_dPID)
   {
-    [v8 setDPID:?];
+    [toCopy setDPID:?];
   }
 
   if ([(ADLogAnalyticsRequest *)self eventsCount])
   {
-    [v8 clearEvents];
-    v4 = [(ADLogAnalyticsRequest *)self eventsCount];
-    if (v4)
+    [toCopy clearEvents];
+    eventsCount = [(ADLogAnalyticsRequest *)self eventsCount];
+    if (eventsCount)
     {
-      v5 = v4;
+      v5 = eventsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ADLogAnalyticsRequest *)self eventsAtIndex:i];
-        [v8 addEvents:v7];
+        [toCopy addEvents:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_iAdID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_iAdID copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleID copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSData *)self->_contentiAdID copyWithZone:a3];
+  v10 = [(NSData *)self->_contentiAdID copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSData *)self->_dPID copyWithZone:a3];
+  v12 = [(NSData *)self->_dPID copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
@@ -268,7 +268,7 @@ void __32__ADLogAnalyticsRequest_options__block_invoke()
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addEvents:v19];
 
         ++v18;
@@ -285,13 +285,13 @@ void __32__ADLogAnalyticsRequest_options__block_invoke()
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((iAdID = self->_iAdID, !(iAdID | v4[5])) || -[NSData isEqual:](iAdID, "isEqual:")) && ((bundleID = self->_bundleID, !(bundleID | v4[1])) || -[NSString isEqual:](bundleID, "isEqual:")) && ((contentiAdID = self->_contentiAdID, !(contentiAdID | v4[2])) || -[NSData isEqual:](contentiAdID, "isEqual:")) && ((dPID = self->_dPID, !(dPID | v4[3])) || -[NSData isEqual:](dPID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((iAdID = self->_iAdID, !(iAdID | equalCopy[5])) || -[NSData isEqual:](iAdID, "isEqual:")) && ((bundleID = self->_bundleID, !(bundleID | equalCopy[1])) || -[NSString isEqual:](bundleID, "isEqual:")) && ((contentiAdID = self->_contentiAdID, !(contentiAdID | equalCopy[2])) || -[NSData isEqual:](contentiAdID, "isEqual:")) && ((dPID = self->_dPID, !(dPID | equalCopy[3])) || -[NSData isEqual:](dPID, "isEqual:")))
   {
     events = self->_events;
-    if (events | v4[4])
+    if (events | equalCopy[4])
     {
       v10 = [(NSMutableArray *)events isEqual:?];
     }
@@ -319,26 +319,26 @@ void __32__ADLogAnalyticsRequest_options__block_invoke()
   return v6 ^ [(NSMutableArray *)self->_events hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(ADLogAnalyticsRequest *)self setIAdID:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ADLogAnalyticsRequest *)self setBundleID:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ADLogAnalyticsRequest *)self setContentiAdID:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ADLogAnalyticsRequest *)self setDPID:?];
   }
@@ -347,7 +347,7 @@ void __32__ADLogAnalyticsRequest_options__block_invoke()
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

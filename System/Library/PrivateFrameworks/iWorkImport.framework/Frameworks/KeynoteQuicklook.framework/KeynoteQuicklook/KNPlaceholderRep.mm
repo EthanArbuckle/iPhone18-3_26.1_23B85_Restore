@@ -1,18 +1,18 @@
 @interface KNPlaceholderRep
 + (id)mixableObjectClasses;
-- (id)textureForDescription:(id)a3;
+- (id)textureForDescription:(id)description;
 @end
 
 @implementation KNPlaceholderRep
 
-- (id)textureForDescription:(id)a3
+- (id)textureForDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v7 = objc_msgSend_layout(self, v5, v6);
   v10 = objc_msgSend_info(v7, v8, v9);
   v13 = objc_msgSend_textStorage(v10, v11, v12);
 
-  v16 = objc_msgSend_copy(v4, v14, v15);
+  v16 = objc_msgSend_copy(descriptionCopy, v14, v15);
   objc_msgSend_setShouldNotAddShapeAttributes_(v16, v17, 1);
   if (!objc_msgSend_length(v13, v18, v19))
   {

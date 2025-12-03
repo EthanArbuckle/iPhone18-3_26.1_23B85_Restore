@@ -1,25 +1,25 @@
 @interface USOGraph
 - (USOGraph)init;
-- (USOGraph)initWithCoder:(id)a3;
-- (USOGraph)initWithCppUsoGraph:()unique_ptr<siri:(std::default_delete<siri::ontology::UsoGraph>>)a3 :ontology::UsoGraph;
-- (id)createIntNode:(id)a3;
-- (id)createStringNode:(id)a3;
+- (USOGraph)initWithCoder:(id)coder;
+- (USOGraph)initWithCppUsoGraph:()unique_ptr<siri:(std::default_delete<siri::ontology::UsoGraph>>)siri :ontology::UsoGraph;
+- (id)createIntNode:(id)node;
+- (id)createStringNode:(id)node;
 - (id)getRoot;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation USOGraph
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [[USOSerializedGraph alloc] initWithUsoGraph:self->_usoGraph.__ptr_ withError:0];
-  [v5 encodeObject:v4 forKey:@"usoGraph"];
+  [coderCopy encodeObject:v4 forKey:@"usoGraph"];
 }
 
-- (USOGraph)initWithCoder:(id)a3
+- (USOGraph)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = USOGraph;
   v5 = [(USOGraph *)&v17 init];
@@ -34,7 +34,7 @@
       atomic_fetch_add_explicit((unk_1EBE27900 + 8), 1uLL, memory_order_relaxed);
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"usoGraph"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"usoGraph"];
     v10 = v9;
     v14 = v8;
     v15 = v7;
@@ -85,12 +85,12 @@
   return v2;
 }
 
-- (id)createIntNode:(id)a3
+- (id)createIntNode:(id)node
 {
-  v4 = a3;
-  if (v4)
+  nodeCopy = node;
+  if (nodeCopy)
   {
-    [v4 longLongValue];
+    [nodeCopy longLongValue];
     ptr = self->_usoGraph.__ptr_;
     siri::ontology::UsoGraph::createIntNode();
   }
@@ -99,12 +99,12 @@
   siri::ontology::UsoGraph::createIntNode();
 }
 
-- (id)createStringNode:(id)a3
+- (id)createStringNode:(id)node
 {
-  v4 = a3;
-  if (v4)
+  nodeCopy = node;
+  if (nodeCopy)
   {
-    std::string::basic_string[abi:ne200100]<0>(&v10, [v4 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(&v10, [nodeCopy UTF8String]);
     ptr = self->_usoGraph.__ptr_;
     if (SHIBYTE(v10.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -126,7 +126,7 @@
   siri::ontology::UsoGraph::createStringNode();
 }
 
-- (USOGraph)initWithCppUsoGraph:()unique_ptr<siri:(std::default_delete<siri::ontology::UsoGraph>>)a3 :ontology::UsoGraph
+- (USOGraph)initWithCppUsoGraph:()unique_ptr<siri:(std::default_delete<siri::ontology::UsoGraph>>)siri :ontology::UsoGraph
 {
   v8.receiver = self;
   v8.super_class = USOGraph;
@@ -134,8 +134,8 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *a3.__ptr_;
-    *a3.__ptr_ = 0;
+    v6 = *siri.__ptr_;
+    *siri.__ptr_ = 0;
     std::unique_ptr<siri::ontology::UsoGraph>::reset[abi:ne200100](v4 + 1, v6);
   }
 

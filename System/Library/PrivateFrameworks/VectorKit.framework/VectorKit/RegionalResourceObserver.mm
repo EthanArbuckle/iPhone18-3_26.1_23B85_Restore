@@ -1,5 +1,5 @@
 @interface RegionalResourceObserver
-- (RegionalResourceObserver)initWithResourceProvider:(void *)a3;
+- (RegionalResourceObserver)initWithResourceProvider:(void *)provider;
 - (id).cxx_construct;
 - (void)clearProvider;
 @end
@@ -21,11 +21,11 @@
   std::mutex::lock((self + 16));
   *(self + 1) = 0;
   std::mutex::unlock((self + 16));
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:*(self + 10)];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:*(self + 10)];
 }
 
-- (RegionalResourceObserver)initWithResourceProvider:(void *)a3
+- (RegionalResourceObserver)initWithResourceProvider:(void *)provider
 {
   v13.receiver = self;
   v13.super_class = RegionalResourceObserver;
@@ -33,15 +33,15 @@
   v5 = v4;
   if (v4)
   {
-    *(v4 + 1) = a3;
+    *(v4 + 1) = provider;
     objc_initWeak(&location, v4);
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __53__RegionalResourceObserver_initWithResourceProvider___block_invoke;
     v10[3] = &unk_1E7B39898;
     objc_copyWeak(&v11, &location);
-    v7 = [v6 addObserverForName:@"GEOTileLoaderDidUpdateRegionalResourcesNotification" object:0 queue:0 usingBlock:v10];
+    v7 = [defaultCenter addObserverForName:@"GEOTileLoaderDidUpdateRegionalResourcesNotification" object:0 queue:0 usingBlock:v10];
     v8 = *(v5 + 10);
     *(v5 + 10) = v7;
 

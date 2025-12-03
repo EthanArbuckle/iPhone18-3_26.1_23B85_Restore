@@ -1,16 +1,16 @@
 @interface TRIFactorDownloadValidator
-+ (BOOL)validateDownloadForFactors:(id)a3 withNamespace:(id)a4 paths:(id)a5 container:(int *)a6 factorsState:(id)a7 assetIndexesByTreatment:(id *)a8 experimentIds:(id *)a9 assetIdsByFactorPack:(id *)a10 rolloutFactorNames:(id *)location rolloutDeployments:(id *)a12 error:(id *)a13;
++ (BOOL)validateDownloadForFactors:(id)factors withNamespace:(id)namespace paths:(id)paths container:(int *)container factorsState:(id)state assetIndexesByTreatment:(id *)treatment experimentIds:(id *)ids assetIdsByFactorPack:(id *)self0 rolloutFactorNames:(id *)location rolloutDeployments:(id *)self2 error:(id *)self3;
 @end
 
 @implementation TRIFactorDownloadValidator
 
-+ (BOOL)validateDownloadForFactors:(id)a3 withNamespace:(id)a4 paths:(id)a5 container:(int *)a6 factorsState:(id)a7 assetIndexesByTreatment:(id *)a8 experimentIds:(id *)a9 assetIdsByFactorPack:(id *)a10 rolloutFactorNames:(id *)location rolloutDeployments:(id *)a12 error:(id *)a13
++ (BOOL)validateDownloadForFactors:(id)factors withNamespace:(id)namespace paths:(id)paths container:(int *)container factorsState:(id)state assetIndexesByTreatment:(id *)treatment experimentIds:(id *)ids assetIdsByFactorPack:(id *)self0 rolloutFactorNames:(id *)location rolloutDeployments:(id *)self2 error:(id *)self3
 {
   v82[1] = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v48 = a7;
+  factorsCopy = factors;
+  namespaceCopy = namespace;
+  pathsCopy = paths;
+  stateCopy = state;
   context = objc_autoreleasePoolPush();
   v67 = 0;
   v68 = &v67;
@@ -33,14 +33,14 @@
   v57[2] = __203__TRIFactorDownloadValidator_validateDownloadForFactors_withNamespace_paths_container_factorsState_assetIndexesByTreatment_experimentIds_assetIdsByFactorPack_rolloutFactorNames_rolloutDeployments_error___block_invoke;
   v57[3] = &unk_27885F630;
   v21 = MEMORY[0x2318F2490](v57);
-  v22 = a13;
-  if (![v18 count])
+  errorCopy = error;
+  if (![factorsCopy count])
   {
     v32 = objc_alloc(MEMORY[0x277CCA9B8]);
     v81 = *MEMORY[0x277CCA450];
     v82[0] = @"Factors must be non-empty.";
-    v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v82 forKeys:&v81 count:1];
-    v33 = [v32 initWithDomain:@"TRIGeneralErrorDomain" code:2 userInfo:v31];
+    namespaceCopy = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v82 forKeys:&v81 count:1];
+    v33 = [v32 initWithDomain:@"TRIGeneralErrorDomain" code:2 userInfo:namespaceCopy];
 LABEL_12:
     v35 = v33;
 LABEL_14:
@@ -48,34 +48,34 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v19)
+  if (!namespaceCopy)
   {
     v34 = objc_alloc(MEMORY[0x277CCA9B8]);
     v79 = *MEMORY[0x277CCA450];
     v80 = @"Namespace name must be non-nil.";
-    v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
-    v33 = [v34 initWithDomain:@"TRIGeneralErrorDomain" code:2 userInfo:v31];
+    namespaceCopy = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
+    v33 = [v34 initWithDomain:@"TRIGeneralErrorDomain" code:2 userInfo:namespaceCopy];
     goto LABEL_12;
   }
 
-  if (![TRIXPCUtils validateSafeASCIISubsetIdentifier:v19])
+  if (![TRIXPCUtils validateSafeASCIISubsetIdentifier:namespaceCopy])
   {
-    v31 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"namespaceName(%@) can only contain alphanumeric characters, underscore (_), hyphen (-) or period (.)", v19];
+    namespaceCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"namespaceName(%@) can only contain alphanumeric characters, underscore (_), hyphen (-) or period (.)", namespaceCopy];
     v36 = objc_alloc(MEMORY[0x277CCA9B8]);
     v77 = *MEMORY[0x277CCA450];
-    v78 = v31;
+    v78 = namespaceCopy;
     v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
     v35 = [v36 initWithDomain:@"TRIGeneralErrorDomain" code:2 userInfo:v37];
 
     goto LABEL_14;
   }
 
-  v23 = [[TRINamespaceResolver alloc] initWithPaths:v20 factorsState:v48];
+  v23 = [[TRINamespaceResolver alloc] initWithPaths:pathsCopy factorsState:stateCopy];
   v24 = v23;
   if (v23)
   {
     v56 = 0;
-    v25 = [(TRINamespaceResolver *)v23 resolveFactorProviderChainForNamespaceName:v19 faultOnMissingInstalledFactors:0 installedFactorsAccessible:&v56];
+    v25 = [(TRINamespaceResolver *)v23 resolveFactorProviderChainForNamespaceName:namespaceCopy faultOnMissingInstalledFactors:0 installedFactorsAccessible:&v56];
     v26 = v25;
     if ((v56 & 1) == 0)
     {
@@ -85,14 +85,14 @@ LABEL_14:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v74 = v19;
+        v74 = namespaceCopy;
         _os_log_impl(&dword_22EA6B000, v28, OS_LOG_TYPE_DEFAULT, "encountered inaccessible installed factors during on-demand validation for namespace %@", buf, 0xCu);
       }
 
       v26 = v27;
     }
 
-    v29 = [[TRINamespaceFactorProviderChain alloc] initWithNamespaceName:v19 typedProviderChain:v26 paths:v20];
+    v29 = [[TRINamespaceFactorProviderChain alloc] initWithNamespaceName:namespaceCopy typedProviderChain:v26 paths:pathsCopy];
 
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
@@ -100,24 +100,24 @@ LABEL_14:
     v49[3] = &unk_27885F678;
     v52 = &v67;
     v54 = a2;
-    v55 = a1;
-    v50 = v19;
+    selfCopy = self;
+    v50 = namespaceCopy;
     v53 = &v63;
     v51 = v21;
-    [(TRINamespaceFactorProviderChain *)v29 computeTreatmentAssetIndexes:&v62 withAssociatedExperimentIds:&v61 andFactorPackAssetIds:&v60 withAssociatedRolloutDeployments:&v58 withExperimentFactorNames:0 andRolloutFactorNames:&obj forFactors:v18 usingFilter:v49];
+    [(TRINamespaceFactorProviderChain *)v29 computeTreatmentAssetIndexes:&v62 withAssociatedExperimentIds:&v61 andFactorPackAssetIds:&v60 withAssociatedRolloutDeployments:&v58 withExperimentFactorNames:0 andRolloutFactorNames:&obj forFactors:factorsCopy usingFilter:v49];
 
     v30 = 0;
-    v31 = 0;
+    namespaceCopy = 0;
   }
 
   else
   {
-    v40 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unable to resolve namespaces for stale factorsState: %@", v48];
+    stateCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unable to resolve namespaces for stale factorsState: %@", stateCopy];
     v41 = objc_alloc(MEMORY[0x277CCA9B8]);
     v75 = *MEMORY[0x277CCA450];
-    v76 = v40;
+    v76 = stateCopy;
     v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-    v31 = [v41 initWithDomain:@"TRIGeneralErrorDomain" code:2 userInfo:v42];
+    namespaceCopy = [v41 initWithDomain:@"TRIGeneralErrorDomain" code:2 userInfo:v42];
 
     v29 = 0;
     v30 = 2;
@@ -126,8 +126,8 @@ LABEL_14:
   [(TRINamespaceFactorProviderChain *)v29 dispose];
   if (v30 == 2)
   {
-    v35 = v31;
-    if (!a13)
+    v35 = namespaceCopy;
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -146,51 +146,51 @@ LABEL_14:
     v35 = v43;
 LABEL_15:
 
-    if (!a13)
+    if (!error)
     {
 LABEL_17:
-      v31 = v35;
+      namespaceCopy = v35;
       goto LABEL_18;
     }
 
 LABEL_16:
-    objc_storeStrong(a13, v35);
-    v22 = 0;
+    objc_storeStrong(error, v35);
+    errorCopy = 0;
     goto LABEL_17;
   }
 
-  if (a13)
+  if (error)
   {
-    v44 = *a13;
-    *a13 = 0;
+    v44 = *error;
+    *error = 0;
   }
 
-  if (a8)
+  if (treatment)
   {
-    objc_storeStrong(a8, v62);
+    objc_storeStrong(treatment, v62);
   }
 
-  if (a9)
+  if (ids)
   {
-    objc_storeStrong(a9, v61);
+    objc_storeStrong(ids, v61);
   }
 
-  if (a10)
+  if (pack)
   {
-    objc_storeStrong(a10, v60);
+    objc_storeStrong(pack, v60);
   }
 
-  if (a12)
+  if (deployments)
   {
-    objc_storeStrong(a12, v58);
+    objc_storeStrong(deployments, v58);
   }
 
-  if (a6)
+  if (container)
   {
-    *a6 = *(v64 + 6);
+    *container = *(v64 + 6);
   }
 
-  v22 = 1;
+  errorCopy = 1;
 LABEL_18:
 
   _Block_object_dispose(&v63, 8);
@@ -198,7 +198,7 @@ LABEL_18:
 
   objc_autoreleasePoolPop(context);
   v38 = *MEMORY[0x277D85DE8];
-  return v22 & 1;
+  return errorCopy & 1;
 }
 
 void __203__TRIFactorDownloadValidator_validateDownloadForFactors_withNamespace_paths_container_factorsState_assetIndexesByTreatment_experimentIds_assetIdsByFactorPack_rolloutFactorNames_rolloutDeployments_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)

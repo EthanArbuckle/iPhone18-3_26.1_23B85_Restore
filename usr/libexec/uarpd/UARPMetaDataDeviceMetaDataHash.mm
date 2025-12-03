@@ -1,7 +1,7 @@
 @interface UARPMetaDataDeviceMetaDataHash
 - (UARPMetaDataDeviceMetaDataHash)init;
-- (UARPMetaDataDeviceMetaDataHash)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataDeviceMetaDataHash)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataDeviceMetaDataHash)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataDeviceMetaDataHash)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 @end
 
@@ -23,16 +23,16 @@
   return v3;
 }
 
-- (UARPMetaDataDeviceMetaDataHash)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataDeviceMetaDataHash)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataDeviceMetaDataHash *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataDeviceMetaDataHash;
-    v8 = [(UARPMetaData *)&v12 dataFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 dataFromPlistValue:valueCopy];
     metaDataHash = v7->_metaDataHash;
     v7->_metaDataHash = v8;
 
@@ -52,12 +52,12 @@
   return v10;
 }
 
-- (UARPMetaDataDeviceMetaDataHash)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataDeviceMetaDataHash)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataDeviceMetaDataHash *)self init];
   if (v6)
   {
-    v7 = [[NSData alloc] initWithBytes:a4 length:a3];
+    v7 = [[NSData alloc] initWithBytes:value length:length];
     metaDataHash = v6->_metaDataHash;
     v6->_metaDataHash = v7;
 
@@ -69,9 +69,9 @@
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataDeviceMetaDataHash *)self metaDataHash];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  metaDataHash = [(UARPMetaDataDeviceMetaDataHash *)self metaDataHash];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, metaDataHash];
 
   return v5;
 }

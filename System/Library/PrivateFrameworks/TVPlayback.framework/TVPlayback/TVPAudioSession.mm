@@ -1,10 +1,10 @@
 @interface TVPAudioSession
 + (id)sharedInstance;
 - (TVPAudioSession)init;
-- (void)_mediaServicesReset:(id)a3;
+- (void)_mediaServicesReset:(id)reset;
 - (void)_updateIfNecessary;
 - (void)dealloc;
-- (void)setConfigurationBlock:(id)a3;
+- (void)setConfigurationBlock:(id)block;
 @end
 
 @implementation TVPAudioSession
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __33__TVPAudioSession_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -44,8 +44,8 @@ uint64_t __33__TVPAudioSession_sharedInstance__block_invoke(uint64_t a1)
   v2 = [(TVPAudioSession *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__mediaServicesReset_ name:*MEMORY[0x277CB80A0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__mediaServicesReset_ name:*MEMORY[0x277CB80A0] object:0];
   }
 
   return v2;
@@ -53,24 +53,24 @@ uint64_t __33__TVPAudioSession_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TVPAudioSession;
   [(TVPAudioSession *)&v4 dealloc];
 }
 
-- (void)setConfigurationBlock:(id)a3
+- (void)setConfigurationBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   configurationBlock = self->_configurationBlock;
   self->_configurationBlock = v4;
 
   [(TVPAudioSession *)self _updateIfNecessary];
 }
 
-- (void)_mediaServicesReset:(id)a3
+- (void)_mediaServicesReset:(id)reset
 {
   v4 = sLogObject_6;
   if (os_log_type_enabled(sLogObject_6, OS_LOG_TYPE_DEFAULT))
@@ -87,8 +87,8 @@ uint64_t __33__TVPAudioSession_sharedInstance__block_invoke(uint64_t a1)
   configurationBlock = self->_configurationBlock;
   if (configurationBlock)
   {
-    v3 = [MEMORY[0x277CB83F8] sharedInstance];
-    configurationBlock[2](configurationBlock, v3);
+    mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+    configurationBlock[2](configurationBlock, mEMORY[0x277CB83F8]);
   }
 }
 

@@ -6,38 +6,38 @@
 
 - (ATXActionCriteria)atxActionCriteria
 {
-  v2 = [a1 atxActionExecutableObject];
-  v3 = [a1 atxSpotlightActionExecutableObject];
-  v4 = [a1 atxShortcutsActionExecutableObject];
-  v5 = [v2 criteria];
+  atxActionExecutableObject = [self atxActionExecutableObject];
+  atxSpotlightActionExecutableObject = [self atxSpotlightActionExecutableObject];
+  atxShortcutsActionExecutableObject = [self atxShortcutsActionExecutableObject];
+  criteria = [atxActionExecutableObject criteria];
 
-  if (v5)
+  if (criteria)
   {
-    v6 = v2;
+    v6 = atxActionExecutableObject;
 LABEL_7:
-    v9 = [v6 criteria];
+    criteria2 = [v6 criteria];
     goto LABEL_8;
   }
 
-  v7 = [v3 criteria];
+  criteria3 = [atxSpotlightActionExecutableObject criteria];
 
-  if (v7)
+  if (criteria3)
   {
-    v6 = v3;
+    v6 = atxSpotlightActionExecutableObject;
     goto LABEL_7;
   }
 
-  v8 = [v4 criteria];
+  criteria4 = [atxShortcutsActionExecutableObject criteria];
 
-  if (v8)
+  if (criteria4)
   {
-    v6 = v4;
+    v6 = atxShortcutsActionExecutableObject;
     goto LABEL_7;
   }
 
-  v9 = objc_alloc_init(ATXActionCriteria);
+  criteria2 = objc_alloc_init(ATXActionCriteria);
 LABEL_8:
-  v10 = v9;
+  v10 = criteria2;
 
   return v10;
 }

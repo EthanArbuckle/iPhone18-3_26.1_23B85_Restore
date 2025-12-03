@@ -1,44 +1,44 @@
 @interface MastheadTitleViewBarCompressionAnimator
-- (BOOL)animationShouldBeginForScrollView:(id)a3 currentlyFullyCompressed:(BOOL)a4;
-- (double)maximumBarHeightForTraitCollection:(id)a3;
+- (BOOL)animationShouldBeginForScrollView:(id)view currentlyFullyCompressed:(BOOL)compressed;
+- (double)maximumBarHeightForTraitCollection:(id)collection;
 - (void)prepareForUpdates;
-- (void)scrollViewIsAtTop:(BOOL)a3 offset:(double)a4;
-- (void)updateWithPercentage:(double)a3;
+- (void)scrollViewIsAtTop:(BOOL)top offset:(double)offset;
+- (void)updateWithPercentage:(double)percentage;
 @end
 
 @implementation MastheadTitleViewBarCompressionAnimator
 
 - (void)prepareForUpdates
 {
-  v2 = self;
+  selfCopy = self;
   MastheadTitleViewBarCompressionAnimator.prepareForUpdates()();
 }
 
-- (void)updateWithPercentage:(double)a3
+- (void)updateWithPercentage:(double)percentage
 {
-  v4 = self;
-  MastheadTitleViewBarCompressionAnimator.update(withPercentage:)(a3);
+  selfCopy = self;
+  MastheadTitleViewBarCompressionAnimator.update(withPercentage:)(percentage);
 }
 
-- (void)scrollViewIsAtTop:(BOOL)a3 offset:(double)a4
+- (void)scrollViewIsAtTop:(BOOL)top offset:(double)offset
 {
-  v5 = self;
-  MastheadTitleViewBarCompressionAnimator.scrollViewIs(atTop:offset:)(a3);
+  selfCopy = self;
+  MastheadTitleViewBarCompressionAnimator.scrollViewIs(atTop:offset:)(top);
 }
 
-- (BOOL)animationShouldBeginForScrollView:(id)a3 currentlyFullyCompressed:(BOOL)a4
+- (BOOL)animationShouldBeginForScrollView:(id)view currentlyFullyCompressed:(BOOL)compressed
 {
-  v5 = a3;
-  v6 = self;
-  LOBYTE(self) = MastheadTitleViewBarCompressionAnimator.animationShouldBegin(for:currentlyFullyCompressed:)(v5, 0);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(self) = MastheadTitleViewBarCompressionAnimator.animationShouldBegin(for:currentlyFullyCompressed:)(viewCopy, 0);
 
   return self & 1;
 }
 
-- (double)maximumBarHeightForTraitCollection:(id)a3
+- (double)maximumBarHeightForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   v6 = MastheadTitleViewBarCompressionAnimator.maximumBarHeight(for:)();
 
   return v6;

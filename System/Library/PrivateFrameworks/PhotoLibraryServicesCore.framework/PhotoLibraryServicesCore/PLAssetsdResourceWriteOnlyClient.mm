@@ -1,14 +1,14 @@
 @interface PLAssetsdResourceWriteOnlyClient
-- (void)saveAssetWithJobDictionary:(id)a3 imageSurface:(__IOSurface *)a4 previewImageSurface:(__IOSurface *)a5 completionHandler:(id)a6;
+- (void)saveAssetWithJobDictionary:(id)dictionary imageSurface:(__IOSurface *)surface previewImageSurface:(__IOSurface *)imageSurface completionHandler:(id)handler;
 @end
 
 @implementation PLAssetsdResourceWriteOnlyClient
 
-- (void)saveAssetWithJobDictionary:(id)a3 imageSurface:(__IOSurface *)a4 previewImageSurface:(__IOSurface *)a5 completionHandler:(id)a6
+- (void)saveAssetWithJobDictionary:(id)dictionary imageSurface:(__IOSurface *)surface previewImageSurface:(__IOSurface *)imageSurface completionHandler:(id)handler
 {
   v50 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
   v44 = 0u;
   v45 = 0u;
   v43 = 0u;
@@ -23,14 +23,14 @@
     os_activity_scope_enter(v14, (&v44 + 8));
   }
 
-  if (!v12)
+  if (!handlerCopy)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceWriteOnlyClient.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdResourceWriteOnlyClient.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   v16 = objc_autoreleasePoolPush();
-  v17 = [v11 objectForKey:@"callStack"];
+  v17 = [dictionaryCopy objectForKey:@"callStack"];
   if (v17)
   {
     v18 = PLGatekeeperXPCGetLog();
@@ -45,27 +45,27 @@
     }
 
     v20 = [MEMORY[0x1E695DFD8] setWithObject:@"callStack"];
-    _PLJobLogDictionary(v11, 0, v20);
+    _PLJobLogDictionary(dictionaryCopy, 0, v20);
   }
 
-  if (a4)
+  if (surface)
   {
-    CFRetain(a4);
+    CFRetain(surface);
   }
 
-  if (a5)
+  if (imageSurface)
   {
-    CFRetain(a5);
+    CFRetain(imageSurface);
   }
 
-  v21 = [(PLAssetsdBaseClient *)self proxyFactory];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __114__PLAssetsdResourceWriteOnlyClient_saveAssetWithJobDictionary_imageSurface_previewImageSurface_completionHandler___block_invoke;
   v39[3] = &unk_1E79326F0;
-  v41 = a4;
-  v42 = a5;
-  v40 = v12;
+  surfaceCopy = surface;
+  imageSurfaceCopy = imageSurface;
+  v40 = handlerCopy;
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3254779904;
   v29[2] = __114__PLAssetsdResourceWriteOnlyClient_saveAssetWithJobDictionary_imageSurface_previewImageSurface_completionHandler___block_invoke_13;
@@ -75,13 +75,13 @@
   v34 = v44;
   v35 = v45;
   v36 = a2;
-  v22 = v11;
+  v22 = dictionaryCopy;
   v30 = v22;
-  v37 = a4;
-  v38 = a5;
+  surfaceCopy2 = surface;
+  imageSurfaceCopy2 = imageSurface;
   v23 = v40;
   v31 = v23;
-  [v21 remoteObjectProxyWithErrorHandler:v39 handler:v29];
+  [proxyFactory remoteObjectProxyWithErrorHandler:v39 handler:v29];
 
   objc_autoreleasePoolPop(v16);
   if (v43 == 1)

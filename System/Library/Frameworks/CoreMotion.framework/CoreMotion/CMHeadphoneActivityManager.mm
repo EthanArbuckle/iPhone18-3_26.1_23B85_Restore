@@ -5,17 +5,17 @@
 - (void)dealloc;
 - (void)notifyDeviceConnectedEventToClientPrivate;
 - (void)notifyDeviceDisconnectedEventToClientPrivate;
-- (void)onActivityPrivate:(id)a3 error:(id)a4;
-- (void)onStatusEventPrivate:(id)a3;
+- (void)onActivityPrivate:(id)private error:(id)error;
+- (void)onStatusEventPrivate:(id)private;
 - (void)pauseActivityStreamingPrivate;
 - (void)pauseStatusStreamingPrivate;
 - (void)resumeActivityStreamingPrivate;
 - (void)resumeStatusStreamingPrivate;
-- (void)startActivityUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)startActivityUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)startMslLoggingWithFilenamePrefix:(id)a3 filePath:(id)a4;
-- (void)startStatusUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)startStatusUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)startActivityUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)startActivityUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)startMslLoggingWithFilenamePrefix:(id)prefix filePath:(id)path;
+- (void)startStatusUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)startStatusUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)stopActivityUpdates;
 - (void)stopActivityUpdatesPrivate;
 - (void)stopMslLogging;
@@ -74,15 +74,15 @@
   return byte_1ED71D630;
 }
 
-- (void)startActivityUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startActivityUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = sub_19B736A14;
   v4[3] = &unk_1E7532C08;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = queue;
+  v4[6] = handler;
   objc_msgSend_tccServiceMotionAccessAllowingMacWithBlock_(CMMotionUtils, a2, v4);
 }
 
@@ -96,7 +96,7 @@
   objc_msgSend_tccServiceMotionAccessAllowingMacWithBlock_(CMMotionUtils, a2, v2);
 }
 
-- (void)startStatusUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startStatusUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   dispatchQueue = self->_internal->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -104,8 +104,8 @@
   block[2] = sub_19B736C20;
   block[3] = &unk_1E7532C08;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = queue;
+  block[6] = handler;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -139,7 +139,7 @@
   return v3;
 }
 
-- (void)startMslLoggingWithFilenamePrefix:(id)a3 filePath:(id)a4
+- (void)startMslLoggingWithFilenamePrefix:(id)prefix filePath:(id)path
 {
   dispatchQueue = self->_internal->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -147,8 +147,8 @@
   block[2] = sub_19B736E14;
   block[3] = &unk_1E7535040;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = prefix;
+  block[6] = path;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -163,15 +163,15 @@
   dispatch_sync(dispatchQueue, block);
 }
 
-- (void)startActivityUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startActivityUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   dispatch_assert_queue_V2(self->_internal->_dispatchQueue);
   if (objc_msgSend_isActivityAvailable(self, v7, v8))
   {
     if (!self->_internal->_activityActive)
     {
-      self->_internal->_activityCallbackQueue = a3;
-      self->_internal->_activityHandler = objc_msgSend_copy(a4, v9, v10);
+      self->_internal->_activityCallbackQueue = queue;
+      self->_internal->_activityHandler = objc_msgSend_copy(handler, v9, v10);
       objc_msgSend_resumeActivityStreamingPrivate(self, v11, v12);
       self->_internal->_activityActive = 1;
     }
@@ -238,7 +238,7 @@
   }
 }
 
-- (void)onActivityPrivate:(id)a3 error:(id)a4
+- (void)onActivityPrivate:(id)private error:(id)error
 {
   dispatch_assert_queue_V2(self->_internal->_dispatchQueue);
   Current = CFAbsoluteTimeGetCurrent();
@@ -248,7 +248,7 @@
     activityHandler = internal->_activityHandler;
     if (activityHandler)
     {
-      v11 = (a3 | a4) == 0;
+      v11 = (private | error) == 0;
     }
 
     else
@@ -263,23 +263,23 @@
       v13[1] = 3221225472;
       v13[2] = sub_19B737454;
       v13[3] = &unk_1E7532C08;
-      v13[4] = a3;
-      v13[5] = a4;
+      v13[4] = private;
+      v13[5] = error;
       v13[6] = activityHandler;
       objc_msgSend_addOperationWithBlock_(activityCallbackQueue, v7, v13);
     }
   }
 }
 
-- (void)startStatusUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startStatusUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   dispatch_assert_queue_V2(self->_internal->_dispatchQueue);
   if (objc_msgSend_isStatusAvailable(self, v7, v8))
   {
     if (!self->_internal->_statusActive)
     {
-      self->_internal->_statusCallbackQueue = a3;
-      self->_internal->_statusHandler = objc_msgSend_copy(a4, v9, v10);
+      self->_internal->_statusCallbackQueue = queue;
+      self->_internal->_statusHandler = objc_msgSend_copy(handler, v9, v10);
       objc_msgSend_resumeStatusStreamingPrivate(self, v11, v12);
       self->_internal->_statusActive = 1;
     }
@@ -358,11 +358,11 @@
   }
 }
 
-- (void)onStatusEventPrivate:(id)a3
+- (void)onStatusEventPrivate:(id)private
 {
   v20 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_internal->_dispatchQueue);
-  v6 = objc_msgSend_objectForKeyedSubscript_(a3, v5, @"EventType");
+  v6 = objc_msgSend_objectForKeyedSubscript_(private, v5, @"EventType");
   if (objc_msgSend_isEqualToString_(v6, v7, @"Connect"))
   {
     self->_internal->_startTime = CFAbsoluteTimeGetCurrent() + 1.0;

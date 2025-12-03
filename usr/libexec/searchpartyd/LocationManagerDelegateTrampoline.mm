@@ -1,13 +1,13 @@
 @interface LocationManagerDelegateTrampoline
 - (_TtC12searchpartydP33_59DB3DB2CFFD0A5DD2F04F14E73C8D1533LocationManagerDelegateTrampoline)init;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation LocationManagerDelegateTrampoline
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v4 = sub_1000BC4D4(&qword_101698C00, &qword_10138B570);
   v5 = *(*(v4 - 8) + 64);
@@ -34,7 +34,7 @@
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v5 = sub_1000BC4D4(&qword_101698C00, &qword_10138B570);
   v6 = *(*(v5 - 8) + 64);
@@ -50,13 +50,13 @@
     v12[2] = 0;
     v12[3] = 0;
     v12[4] = v10;
-    v12[5] = a4;
-    v13 = a4;
+    v12[5] = error;
+    errorCopy = error;
     sub_10025EDD4(0, 0, v8, &unk_1013F52B0, v12);
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v3 = sub_1000BC4D4(&qword_101698C00, &qword_10138B570);
   v4 = *(*(v3 - 8) + 64);

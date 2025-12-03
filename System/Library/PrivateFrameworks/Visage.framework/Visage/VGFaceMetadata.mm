@@ -1,19 +1,19 @@
 @interface VGFaceMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)bounds;
-- (VGFaceMetadata)initWithCoder:(id)a3;
-- (VGFaceMetadata)initWithFaceId:(int64_t)a3 bounds:(CGRect)a4 yawAngle:(double)a5 rollAngle:(double)a6;
-- (void)encodeWithCoder:(id)a3;
+- (VGFaceMetadata)initWithCoder:(id)coder;
+- (VGFaceMetadata)initWithFaceId:(int64_t)id bounds:(CGRect)bounds yawAngle:(double)angle rollAngle:(double)rollAngle;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VGFaceMetadata
 
-- (VGFaceMetadata)initWithFaceId:(int64_t)a3 bounds:(CGRect)a4 yawAngle:(double)a5 rollAngle:(double)a6
+- (VGFaceMetadata)initWithFaceId:(int64_t)id bounds:(CGRect)bounds yawAngle:(double)angle rollAngle:(double)rollAngle
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v14.receiver = self;
   v14.super_class = VGFaceMetadata;
   result = [(VGFaceMetadata *)&v14 init];
@@ -23,59 +23,59 @@
     result->_bounds.origin.y = y;
     result->_bounds.size.width = width;
     result->_bounds.size.height = height;
-    result->_faceID = a3;
-    result->_rollAngle = a6;
-    result->_yawAngle = a5;
+    result->_faceID = id;
+    result->_rollAngle = rollAngle;
+    result->_yawAngle = angle;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInt64:-[VGFaceMetadata faceID](self forKey:{"faceID"), @"faceID"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[VGFaceMetadata faceID](self forKey:{"faceID"), @"faceID"}];
   [(VGFaceMetadata *)self bounds];
-  [v7 encodeDouble:@"boundsOriginX" forKey:?];
+  [coderCopy encodeDouble:@"boundsOriginX" forKey:?];
   [(VGFaceMetadata *)self bounds];
-  [v7 encodeDouble:@"boundsOriginY" forKey:v4];
+  [coderCopy encodeDouble:@"boundsOriginY" forKey:v4];
   [(VGFaceMetadata *)self bounds];
-  [v7 encodeDouble:@"boundsSizeH" forKey:v5];
+  [coderCopy encodeDouble:@"boundsSizeH" forKey:v5];
   [(VGFaceMetadata *)self bounds];
-  [v7 encodeDouble:@"boundsSizeW" forKey:v6];
+  [coderCopy encodeDouble:@"boundsSizeW" forKey:v6];
   [(VGFaceMetadata *)self rollAngle];
-  [v7 encodeDouble:@"rollAngle" forKey:?];
+  [coderCopy encodeDouble:@"rollAngle" forKey:?];
   [(VGFaceMetadata *)self yawAngle];
-  [v7 encodeDouble:@"yawAngle" forKey:?];
+  [coderCopy encodeDouble:@"yawAngle" forKey:?];
 }
 
-- (VGFaceMetadata)initWithCoder:(id)a3
+- (VGFaceMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"faceID"];
-  [v4 decodeDoubleForKey:@"boundsOriginX"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"faceID"];
+  [coderCopy decodeDoubleForKey:@"boundsOriginX"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"boundsOriginY"];
+  [coderCopy decodeDoubleForKey:@"boundsOriginY"];
   v9 = v8;
-  [v4 decodeDoubleForKey:@"boundsSizeH"];
+  [coderCopy decodeDoubleForKey:@"boundsSizeH"];
   v11 = v10;
-  [v4 decodeDoubleForKey:@"boundsSizeW"];
+  [coderCopy decodeDoubleForKey:@"boundsSizeW"];
   v13 = v12;
-  [v4 decodeDoubleForKey:@"rollAngle"];
+  [coderCopy decodeDoubleForKey:@"rollAngle"];
   v15 = v14;
-  [v4 decodeDoubleForKey:@"yawAngle"];
+  [coderCopy decodeDoubleForKey:@"yawAngle"];
   v17 = v16;
 
   return [(VGFaceMetadata *)self initWithFaceId:v5 bounds:v7 yawAngle:v9 rollAngle:v13, v11, v17, v15];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     faceID = self->_faceID;
     if (faceID == [v5 faceID] && (objc_msgSend(v5, "bounds"), v17.origin.x = v7, v17.origin.y = v8, v17.size.width = v9, v17.size.height = v10, CGRectEqualToRect(self->_bounds, v17)) && (yawAngle = self->_yawAngle, objc_msgSend(v5, "yawAngle"), yawAngle == v12))
     {

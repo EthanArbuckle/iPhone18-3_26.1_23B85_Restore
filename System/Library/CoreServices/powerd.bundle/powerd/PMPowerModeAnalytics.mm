@@ -1,35 +1,35 @@
 @interface PMPowerModeAnalytics
-+ (void)sendAnalyticsDaily:(id)a3 forStream:(id)a4;
-+ (void)sendAnalyticsEvent:(id)a3 withBatteryLevel:(id)a4 fromSource:(id)a5 withCharger:(id)a6 withDurationInMinutes:(id)a7 forStream:(id)a8;
++ (void)sendAnalyticsDaily:(id)daily forStream:(id)stream;
++ (void)sendAnalyticsEvent:(id)event withBatteryLevel:(id)level fromSource:(id)source withCharger:(id)charger withDurationInMinutes:(id)minutes forStream:(id)stream;
 @end
 
 @implementation PMPowerModeAnalytics
 
-+ (void)sendAnalyticsEvent:(id)a3 withBatteryLevel:(id)a4 fromSource:(id)a5 withCharger:(id)a6 withDurationInMinutes:(id)a7 forStream:(id)a8
++ (void)sendAnalyticsEvent:(id)event withBatteryLevel:(id)level fromSource:(id)source withCharger:(id)charger withDurationInMinutes:(id)minutes forStream:(id)stream
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  eventCopy = event;
+  levelCopy = level;
+  sourceCopy = source;
+  chargerCopy = charger;
+  minutesCopy = minutes;
   if (&_AnalyticsSendEventLazy)
   {
-    v17 = v12;
-    v18 = v13;
-    v19 = v14;
-    v20 = v15;
-    v21 = v16;
+    v17 = eventCopy;
+    v18 = levelCopy;
+    v19 = sourceCopy;
+    v20 = chargerCopy;
+    v21 = minutesCopy;
     AnalyticsSendEventLazy();
   }
 }
 
-+ (void)sendAnalyticsDaily:(id)a3 forStream:(id)a4
++ (void)sendAnalyticsDaily:(id)daily forStream:(id)stream
 {
-  v4 = a3;
-  v5 = v4;
+  dailyCopy = daily;
+  v5 = dailyCopy;
   if (&_AnalyticsSendEventLazy)
   {
-    v6 = v4;
+    v6 = dailyCopy;
     AnalyticsSendEventLazy();
   }
 }

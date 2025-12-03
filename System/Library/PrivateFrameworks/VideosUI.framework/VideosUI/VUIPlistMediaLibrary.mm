@@ -1,30 +1,30 @@
 @interface VUIPlistMediaLibrary
-- (VUIPlistMediaLibrary)initWithIdentifier:(id)a3 type:(unint64_t)a4 manager:(id)a5;
-- (VUIPlistMediaLibrary)initWithURL:(id)a3 manager:(id)a4;
-- (id)_imageLoadOperationWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5;
-- (id)_imageLoadParamsForImageLoaderObject:(id)a3;
+- (VUIPlistMediaLibrary)initWithIdentifier:(id)identifier type:(unint64_t)type manager:(id)manager;
+- (VUIPlistMediaLibrary)initWithURL:(id)l manager:(id)manager;
+- (id)_imageLoadOperationWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit;
+- (id)_imageLoadParamsForImageLoaderObject:(id)object;
 - (id)_imageLoaderIdentifier;
-- (id)enqueueFetchRequests:(id)a3 completionHandler:(id)a4;
-- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)a3;
-- (id)saveMediaEntity:(id)a3 completionHandler:(id)a4;
-- (void)_enqueueProcessingBlock:(id)a3;
+- (id)enqueueFetchRequests:(id)requests completionHandler:(id)handler;
+- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)handler;
+- (id)saveMediaEntity:(id)entity completionHandler:(id)handler;
+- (void)_enqueueProcessingBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation VUIPlistMediaLibrary
 
-- (VUIPlistMediaLibrary)initWithURL:(id)a3 manager:(id)a4
+- (VUIPlistMediaLibrary)initWithURL:(id)l manager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[VUIPlistMediaLibraryIdentifier alloc] initWithURL:v6];
+  lCopy = l;
+  managerCopy = manager;
+  v8 = [[VUIPlistMediaLibraryIdentifier alloc] initWithURL:lCopy];
   v18.receiver = self;
   v18.super_class = VUIPlistMediaLibrary;
-  v9 = [(VUIMediaLibrary *)&v18 initWithIdentifier:v8 type:0 manager:v7];
+  v9 = [(VUIMediaLibrary *)&v18 initWithIdentifier:v8 type:0 manager:managerCopy];
 
   if (v9)
   {
-    v10 = [[VUIPlistMediaDatabase alloc] initWithURL:v6];
+    v10 = [[VUIPlistMediaDatabase alloc] initWithURL:lCopy];
     database = v9->_database;
     v9->_database = v10;
 
@@ -37,14 +37,14 @@
     v9->_serialOperationQueue = v14;
 
     [(NSOperationQueue *)v9->_serialOperationQueue setMaxConcurrentOperationCount:1];
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v9 selector:sel__handleMediaDatabaseContentsDidChangeNotification_ name:@"VUIPlistMediaDatabaseContentsDidChangeNotification" object:v9->_database];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__handleMediaDatabaseContentsDidChangeNotification_ name:@"VUIPlistMediaDatabaseContentsDidChangeNotification" object:v9->_database];
   }
 
   return v9;
 }
 
-- (VUIPlistMediaLibrary)initWithIdentifier:(id)a3 type:(unint64_t)a4 manager:(id)a5
+- (VUIPlistMediaLibrary)initWithIdentifier:(id)identifier type:(unint64_t)type manager:(id)manager
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D940];
@@ -56,18 +56,18 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIPlistMediaLibrary;
   [(VUIMediaLibraryImageLoader *)&v4 dealloc];
 }
 
-- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)a3
+- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"completionHandler"}];
   }
@@ -82,7 +82,7 @@
   v8[1] = 3221225472;
   v8[2] = __78__VUIPlistMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E8737080;
-  v5 = v4;
+  v5 = handlerCopy;
   v9 = v5;
   v10 = &v11;
   [(VUIPlistMediaLibrary *)self _enqueueProcessingBlock:v8];
@@ -153,11 +153,11 @@ void __78__VUIPlistMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompletionHa
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)enqueueFetchRequests:(id)a3 completionHandler:(id)a4
+- (id)enqueueFetchRequests:(id)requests completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  requestsCopy = requests;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"completionHandler"}];
   }
@@ -172,9 +172,9 @@ void __78__VUIPlistMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompletionHa
   v12[1] = 3221225472;
   v12[2] = __63__VUIPlistMediaLibrary_enqueueFetchRequests_completionHandler___block_invoke;
   v12[3] = &unk_1E87370A8;
-  v8 = v6;
+  v8 = requestsCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = handlerCopy;
   v14 = v9;
   v15 = &v16;
   [(VUIPlistMediaLibrary *)self _enqueueProcessingBlock:v12];
@@ -242,18 +242,18 @@ void __63__VUIPlistMediaLibrary_enqueueFetchRequests_completionHandler___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)saveMediaEntity:(id)a3 completionHandler:(id)a4
+- (id)saveMediaEntity:(id)entity completionHandler:(id)handler
 {
-  v5 = a4;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v6 = [(VUIMediaLibrary *)self manager];
+    manager = [(VUIMediaLibrary *)self manager];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __58__VUIPlistMediaLibrary_saveMediaEntity_completionHandler___block_invoke;
     v9[3] = &unk_1E872D7E0;
-    v10 = v5;
-    [v6 _enqueueCompletionQueueBlock:v9];
+    v10 = handlerCopy;
+    [manager _enqueueCompletionQueueBlock:v9];
   }
 
   v7 = [objc_alloc(MEMORY[0x1E69DF690]) initWithOperation:0];
@@ -263,13 +263,13 @@ void __63__VUIPlistMediaLibrary_enqueueFetchRequests_completionHandler___block_i
 
 - (id)_imageLoaderIdentifier
 {
-  v2 = [(VUIPlistMediaLibrary *)self database];
-  v3 = [v2 fileURL];
-  v4 = [v3 absoluteString];
+  database = [(VUIPlistMediaLibrary *)self database];
+  fileURL = [database fileURL];
+  absoluteString = [fileURL absoluteString];
 
-  if (v4)
+  if (absoluteString)
   {
-    v5 = v4;
+    v5 = absoluteString;
   }
 
   else
@@ -280,20 +280,20 @@ void __63__VUIPlistMediaLibrary_enqueueFetchRequests_completionHandler___block_i
   return v5;
 }
 
-- (id)_imageLoadParamsForImageLoaderObject:(id)a3
+- (id)_imageLoadParamsForImageLoaderObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [VUIMediaEntityImageLoadParamsFactory imageLoadParamsWithMediaEntity:v3 imageType:0];
+    v4 = [VUIMediaEntityImageLoadParamsFactory imageLoadParamsWithMediaEntity:objectCopy imageType:0];
     goto LABEL_5;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
 LABEL_5:
     v5 = v4;
     if (v4)
@@ -309,27 +309,27 @@ LABEL_7:
   return v5;
 }
 
-- (id)_imageLoadOperationWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5
+- (id)_imageLoadOperationWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit
 {
-  v5 = a3;
-  v6 = [[VUIPlistMediaEntityImageLoadOperation alloc] initWithParams:v5];
+  paramsCopy = params;
+  v6 = [[VUIPlistMediaEntityImageLoadOperation alloc] initWithParams:paramsCopy];
 
   return v6;
 }
 
-- (void)_enqueueProcessingBlock:(id)a3
+- (void)_enqueueProcessingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  v5 = [(VUIPlistMediaLibrary *)self serialProcessingDispatchQueue];
+  serialProcessingDispatchQueue = [(VUIPlistMediaLibrary *)self serialProcessingDispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__VUIPlistMediaLibrary__enqueueProcessingBlock___block_invoke;
   block[3] = &unk_1E872E828;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_sync(serialProcessingDispatchQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);

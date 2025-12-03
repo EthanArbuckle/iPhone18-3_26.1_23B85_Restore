@@ -2,21 +2,21 @@
 + (id)sharedInstance;
 - (SPCompanionAppServer)companionAppServer;
 - (SPGizmoCacheManager)init;
-- (id)assetPath:(id)a3 cacheIdentifier:(id)a4 cacheType:(unint64_t)a5;
-- (id)cacheAssets:(id)a3 cacheType:(unint64_t)a4 cacheIdentifier:(id)a5;
+- (id)assetPath:(id)path cacheIdentifier:(id)identifier cacheType:(unint64_t)type;
+- (id)cacheAssets:(id)assets cacheType:(unint64_t)type cacheIdentifier:(id)identifier;
 - (id)cacheDirectory;
-- (id)cacheDirectoryWithCacheIdentifier:(id)a3;
-- (id)cacheDirectoryWithCacheIdentifier:(id)a3 cacheType:(unint64_t)a4;
-- (void)addData:(id)a3 cacheIdentifier:(id)a4 completion:(id)a5;
-- (void)clearAllCachedImages:(id)a3 cacheIdentifier:(id)a4 completion:(id)a5;
-- (void)deleteCache:(id)a3;
-- (void)deleteData:(id)a3 cacheIdentifier:(id)a4 completion:(id)a5;
-- (void)getData:(id)a3 cacheIdentifier:(id)a4 completion:(id)a5;
-- (void)processCacheDictionary:(id)a3 connectionIdentifier:(id)a4 completion:(id)a5;
-- (void)processCacheMessage:(id)a3 connectionIdentifier:(id)a4 completion:(id)a5;
-- (void)processCacheMessageData:(id)a3 connectionIdentifier:(id)a4;
-- (void)sendCacheReply:(id)a3 cacheIdentifier:(id)a4;
-- (void)setupCacheWithIdentifier:(id)a3 completion:(id)a4;
+- (id)cacheDirectoryWithCacheIdentifier:(id)identifier;
+- (id)cacheDirectoryWithCacheIdentifier:(id)identifier cacheType:(unint64_t)type;
+- (void)addData:(id)data cacheIdentifier:(id)identifier completion:(id)completion;
+- (void)clearAllCachedImages:(id)images cacheIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteCache:(id)cache;
+- (void)deleteData:(id)data cacheIdentifier:(id)identifier completion:(id)completion;
+- (void)getData:(id)data cacheIdentifier:(id)identifier completion:(id)completion;
+- (void)processCacheDictionary:(id)dictionary connectionIdentifier:(id)identifier completion:(id)completion;
+- (void)processCacheMessage:(id)message connectionIdentifier:(id)identifier completion:(id)completion;
+- (void)processCacheMessageData:(id)data connectionIdentifier:(id)identifier;
+- (void)sendCacheReply:(id)reply cacheIdentifier:(id)identifier;
+- (void)setupCacheWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SPGizmoCacheManager
@@ -59,12 +59,12 @@
   return v3;
 }
 
-- (id)cacheDirectoryWithCacheIdentifier:(id)a3
+- (id)cacheDirectoryWithCacheIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SPGizmoCacheManager *)self cacheDirectory];
-  v9[0] = v5;
-  v9[1] = v4;
+  identifierCopy = identifier;
+  cacheDirectory = [(SPGizmoCacheManager *)self cacheDirectory];
+  v9[0] = cacheDirectory;
+  v9[1] = identifierCopy;
   v6 = [NSArray arrayWithObjects:v9 count:2];
 
   v7 = [NSString pathWithComponents:v6];
@@ -72,14 +72,14 @@
   return v7;
 }
 
-- (id)cacheDirectoryWithCacheIdentifier:(id)a3 cacheType:(unint64_t)a4
+- (id)cacheDirectoryWithCacheIdentifier:(id)identifier cacheType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [(SPGizmoCacheManager *)self cacheDirectory];
+  identifierCopy = identifier;
+  cacheDirectory = [(SPGizmoCacheManager *)self cacheDirectory];
   v8 = @"t";
-  v12 = v7;
-  v13 = v6;
-  if (a4 == 1)
+  v12 = cacheDirectory;
+  v13 = identifierCopy;
+  if (type == 1)
   {
     v8 = @"p";
   }
@@ -92,23 +92,23 @@
   return v10;
 }
 
-- (id)assetPath:(id)a3 cacheIdentifier:(id)a4 cacheType:(unint64_t)a5
+- (id)assetPath:(id)path cacheIdentifier:(id)identifier cacheType:(unint64_t)type
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SPGizmoCacheManager *)self cacheDirectory];
+  identifierCopy = identifier;
+  pathCopy = path;
+  cacheDirectory = [(SPGizmoCacheManager *)self cacheDirectory];
   v11 = @"t";
-  v16[0] = v10;
-  v16[1] = v8;
-  if (a5 == 1)
+  v16[0] = cacheDirectory;
+  v16[1] = identifierCopy;
+  if (type == 1)
   {
     v11 = @"p";
   }
 
   v16[2] = v11;
-  v12 = [v9 _sp_stringByEncodingIllegalFilenameCharacters];
+  _sp_stringByEncodingIllegalFilenameCharacters = [pathCopy _sp_stringByEncodingIllegalFilenameCharacters];
 
-  v16[3] = v12;
+  v16[3] = _sp_stringByEncodingIllegalFilenameCharacters;
   v13 = [NSArray arrayWithObjects:v16 count:4];
 
   v14 = [NSString pathWithComponents:v13];
@@ -116,9 +116,9 @@
   return v14;
 }
 
-- (void)deleteCache:(id)a3
+- (void)deleteCache:(id)cache
 {
-  v3 = [(SPGizmoCacheManager *)self cacheDirectoryWithCacheIdentifier:a3];
+  v3 = [(SPGizmoCacheManager *)self cacheDirectoryWithCacheIdentifier:cache];
   v4 = +[NSFileManager defaultManager];
   v5 = [v4 fileExistsAtPath:v3];
 
@@ -140,62 +140,62 @@
   }
 }
 
-- (void)processCacheMessageData:(id)a3 connectionIdentifier:(id)a4
+- (void)processCacheMessageData:(id)data connectionIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [SPProtoSerializer objectWithData:a3];
-  [(SPGizmoCacheManager *)self processCacheMessage:v7 connectionIdentifier:v6 completion:0];
+  identifierCopy = identifier;
+  v7 = [SPProtoSerializer objectWithData:data];
+  [(SPGizmoCacheManager *)self processCacheMessage:v7 connectionIdentifier:identifierCopy completion:0];
 }
 
-- (void)processCacheDictionary:(id)a3 connectionIdentifier:(id)a4 completion:(id)a5
+- (void)processCacheDictionary:(id)dictionary connectionIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[SPCacheMessage alloc] initWithDictionary:v10];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  v11 = [[SPCacheMessage alloc] initWithDictionary:dictionaryCopy];
 
-  [(SPGizmoCacheManager *)self processCacheMessage:v11 connectionIdentifier:v9 completion:v8];
+  [(SPGizmoCacheManager *)self processCacheMessage:v11 connectionIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)processCacheMessage:(id)a3 connectionIdentifier:(id)a4 completion:(id)a5
+- (void)processCacheMessage:(id)message connectionIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v10 messageType] == 11)
+  messageCopy = message;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ([messageCopy messageType] == 11)
   {
-    [(SPGizmoCacheManager *)self setupCacheWithIdentifier:v8 completion:v9];
+    [(SPGizmoCacheManager *)self setupCacheWithIdentifier:identifierCopy completion:completionCopy];
   }
 
-  else if ([v10 messageType] == 3)
+  else if ([messageCopy messageType] == 3)
   {
-    [(SPGizmoCacheManager *)self getData:v10 cacheIdentifier:v8 completion:v9];
+    [(SPGizmoCacheManager *)self getData:messageCopy cacheIdentifier:identifierCopy completion:completionCopy];
   }
 
-  else if ([v10 messageType] == 2)
+  else if ([messageCopy messageType] == 2)
   {
-    [(SPGizmoCacheManager *)self addData:v10 cacheIdentifier:v8 completion:v9];
+    [(SPGizmoCacheManager *)self addData:messageCopy cacheIdentifier:identifierCopy completion:completionCopy];
   }
 
-  else if ([v10 messageType] == 4)
+  else if ([messageCopy messageType] == 4)
   {
-    [(SPGizmoCacheManager *)self deleteData:v10 cacheIdentifier:v8 completion:v9];
+    [(SPGizmoCacheManager *)self deleteData:messageCopy cacheIdentifier:identifierCopy completion:completionCopy];
   }
 
-  else if ([v10 messageType] == 5)
+  else if ([messageCopy messageType] == 5)
   {
-    [(SPGizmoCacheManager *)self clearAllCachedImages:v10 cacheIdentifier:v8 completion:v9];
+    [(SPGizmoCacheManager *)self clearAllCachedImages:messageCopy cacheIdentifier:identifierCopy completion:completionCopy];
   }
 }
 
-- (void)getData:(id)a3 cacheIdentifier:(id)a4 completion:(id)a5
+- (void)getData:(id)data cacheIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 assetKey];
+  dataCopy = data;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  assetKey = [dataCopy assetKey];
   v12 = 2;
-  v13 = [(SPGizmoCacheManager *)self assetPath:v11 cacheIdentifier:v9 cacheType:2];
+  v13 = [(SPGizmoCacheManager *)self assetPath:assetKey cacheIdentifier:identifierCopy cacheType:2];
 
   v14 = [NSData dataWithContentsOfFile:v13];
   if (v14)
@@ -205,9 +205,9 @@
 
   else
   {
-    v16 = [v8 assetKey];
+    assetKey2 = [dataCopy assetKey];
     v12 = 1;
-    v17 = [(SPGizmoCacheManager *)self assetPath:v16 cacheIdentifier:v9 cacheType:1];
+    v17 = [(SPGizmoCacheManager *)self assetPath:assetKey2 cacheIdentifier:identifierCopy cacheType:1];
 
     v18 = [NSData dataWithContentsOfFile:v17];
     if (!v18)
@@ -215,10 +215,10 @@
       v25 = wk_default_log();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        sub_10002AF4C(v9, v8, v25);
+        sub_10002AF4C(identifierCopy, dataCopy, v25);
       }
 
-      if (!v10)
+      if (!completionCopy)
       {
         v15 = 0;
         goto LABEL_11;
@@ -238,21 +238,21 @@
   v19 = wk_default_log();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v8 assetKey];
+    assetKey3 = [dataCopy assetKey];
     *buf = 136447234;
     v31 = "[SPGizmoCacheManager getData:cacheIdentifier:completion:]";
     v32 = 1024;
     v33 = 132;
     v34 = 2114;
-    v35 = v9;
+    v35 = identifierCopy;
     v36 = 1024;
     v37 = v12;
     v38 = 2114;
-    v39 = v20;
+    v39 = assetKey3;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: cache id: %{public}@, type: %d, asset key: %{public}@", buf, 0x2Cu);
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     v17 = v13;
     goto LABEL_11;
@@ -268,37 +268,37 @@
   v24 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
   v17 = v13;
 LABEL_9:
-  v10[2](v10, v24);
+  completionCopy[2](completionCopy, v24);
 
 LABEL_11:
 }
 
-- (void)addData:(id)a3 cacheIdentifier:(id)a4 completion:(id)a5
+- (void)addData:(id)data cacheIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = wk_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 cacheType];
-    v13 = [v8 assetKey];
+    cacheType = [dataCopy cacheType];
+    assetKey = [dataCopy assetKey];
     *buf = 136447234;
     v49 = "[SPGizmoCacheManager addData:cacheIdentifier:completion:]";
     v50 = 1024;
     v51 = 151;
     v52 = 2114;
-    v53 = v9;
+    v53 = identifierCopy;
     v54 = 1024;
-    v55 = v12;
+    v55 = cacheType;
     v56 = 2114;
-    v57 = v13;
+    v57 = assetKey;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: cache id: %{public}@, type: %d, asset key: %{public}@", buf, 0x2Cu);
   }
 
-  v14 = [v8 assetData];
-  v15 = [v8 assetKey];
-  v16 = -[SPGizmoCacheManager assetPath:cacheIdentifier:cacheType:](self, "assetPath:cacheIdentifier:cacheType:", v15, v9, [v8 cacheType]);
+  assetData = [dataCopy assetData];
+  assetKey2 = [dataCopy assetKey];
+  v16 = -[SPGizmoCacheManager assetPath:cacheIdentifier:cacheType:](self, "assetPath:cacheIdentifier:cacheType:", assetKey2, identifierCopy, [dataCopy cacheType]);
 
   v17 = +[NSFileManager defaultManager];
   v18 = [v17 fileExistsAtPath:v16];
@@ -318,7 +318,7 @@ LABEL_11:
         sub_10002B018();
       }
 
-      if (v10)
+      if (completionCopy)
       {
         v46 = @"e";
         v47 = &off_10004AC80;
@@ -330,10 +330,10 @@ LABEL_11:
       v45[0] = &off_10004AC98;
       v44[0] = @"cmsg";
       v44[1] = @"a";
-      v28 = [v8 assetKey];
-      v45[1] = v28;
+      assetKey3 = [dataCopy assetKey];
+      v45[1] = assetKey3;
       v44[2] = @"t";
-      v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 cacheType]);
+      v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dataCopy cacheType]);
       v44[3] = @"e";
       v45[2] = v29;
       v45[3] = &off_10004AC80;
@@ -341,30 +341,30 @@ LABEL_11:
       v31 = v44;
 LABEL_21:
       v32 = [NSDictionary dictionaryWithObjects:v30 forKeys:v31 count:4];
-      [(SPGizmoCacheManager *)self sendCacheReply:v32 cacheIdentifier:v9];
+      [(SPGizmoCacheManager *)self sendCacheReply:v32 cacheIdentifier:identifierCopy];
 
       goto LABEL_23;
     }
   }
 
   v36 = 0;
-  [v14 writeToFile:v16 options:1 error:&v36];
+  [assetData writeToFile:v16 options:1 error:&v36];
   v24 = v36;
   v20 = v24;
-  if (!v10)
+  if (!completionCopy)
   {
     if (!v24)
     {
       v41[0] = &off_10004AC98;
       v40[0] = @"cmsg";
       v40[1] = @"a";
-      v33 = [v8 assetKey];
-      v41[1] = v33;
+      assetKey4 = [dataCopy assetKey];
+      v41[1] = assetKey4;
       v40[2] = @"t";
-      v34 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 cacheType]);
+      v34 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dataCopy cacheType]);
       v41[2] = v34;
       v35 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:3];
-      [(SPGizmoCacheManager *)self sendCacheReply:v35 cacheIdentifier:v9];
+      [(SPGizmoCacheManager *)self sendCacheReply:v35 cacheIdentifier:identifierCopy];
 
       v20 = 0;
       goto LABEL_23;
@@ -379,10 +379,10 @@ LABEL_21:
     v39[0] = &off_10004AC98;
     v38[0] = @"cmsg";
     v38[1] = @"a";
-    v28 = [v8 assetKey];
-    v39[1] = v28;
+    assetKey3 = [dataCopy assetKey];
+    v39[1] = assetKey3;
     v38[2] = @"t";
-    v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 cacheType]);
+    v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dataCopy cacheType]);
     v38[3] = @"e";
     v39[2] = v29;
     v39[3] = &off_10004AC80;
@@ -393,7 +393,7 @@ LABEL_21:
 
   if (!v24)
   {
-    v10[2](v10, &__NSDictionary0__struct);
+    completionCopy[2](completionCopy, &__NSDictionary0__struct);
     goto LABEL_23;
   }
 
@@ -409,43 +409,43 @@ LABEL_21:
   v23 = &v42;
 LABEL_14:
   v26 = [NSDictionary dictionaryWithObjects:v22 forKeys:v23 count:1];
-  v10[2](v10, v26);
+  completionCopy[2](completionCopy, v26);
 
 LABEL_23:
 }
 
-- (void)deleteData:(id)a3 cacheIdentifier:(id)a4 completion:(id)a5
+- (void)deleteData:(id)data cacheIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = wk_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 cacheType];
-    v13 = [v8 assetKey];
+    cacheType = [dataCopy cacheType];
+    assetKey = [dataCopy assetKey];
     *buf = 136447234;
     v35 = "[SPGizmoCacheManager deleteData:cacheIdentifier:completion:]";
     v36 = 1024;
     v37 = 189;
     v38 = 2114;
-    v39 = v9;
+    v39 = identifierCopy;
     v40 = 1024;
-    v41 = v12;
+    v41 = cacheType;
     v42 = 2114;
-    v43 = v13;
+    v43 = assetKey;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: cache id: %{public}@, type: %d, asset key: %{public}@", buf, 0x2Cu);
   }
 
-  v14 = [v8 assetKey];
-  v15 = -[SPGizmoCacheManager assetPath:cacheIdentifier:cacheType:](self, "assetPath:cacheIdentifier:cacheType:", v14, v9, [v8 cacheType]);
+  assetKey2 = [dataCopy assetKey];
+  v15 = -[SPGizmoCacheManager assetPath:cacheIdentifier:cacheType:](self, "assetPath:cacheIdentifier:cacheType:", assetKey2, identifierCopy, [dataCopy cacheType]);
 
   v16 = +[NSFileManager defaultManager];
   v27 = 0;
   [v16 removeItemAtPath:v15 error:&v27];
   v17 = v27;
 
-  if (v10)
+  if (completionCopy)
   {
     if (v17)
     {
@@ -458,12 +458,12 @@ LABEL_23:
       v32 = @"e";
       v33 = &off_10004AC80;
       v19 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-      v10[2](v10, v19);
+      completionCopy[2](completionCopy, v19);
     }
 
     else
     {
-      v10[2](v10, &__NSDictionary0__struct);
+      completionCopy[2](completionCopy, &__NSDictionary0__struct);
     }
   }
 
@@ -480,10 +480,10 @@ LABEL_23:
       v29[0] = &off_10004ACB0;
       v28[0] = @"cmsg";
       v28[1] = @"a";
-      v21 = [v8 assetKey];
-      v29[1] = v21;
+      assetKey3 = [dataCopy assetKey];
+      v29[1] = assetKey3;
       v28[2] = @"t";
-      v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 cacheType]);
+      v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dataCopy cacheType]);
       v28[3] = @"e";
       v29[2] = v22;
       v29[3] = &off_10004AC80;
@@ -497,10 +497,10 @@ LABEL_23:
       v31[0] = &off_10004ACB0;
       v30[0] = @"cmsg";
       v30[1] = @"a";
-      v21 = [v8 assetKey];
-      v31[1] = v21;
+      assetKey3 = [dataCopy assetKey];
+      v31[1] = assetKey3;
       v30[2] = @"t";
-      v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 cacheType]);
+      v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dataCopy cacheType]);
       v31[2] = v22;
       v23 = v31;
       v24 = v30;
@@ -508,15 +508,15 @@ LABEL_23:
     }
 
     v26 = [NSDictionary dictionaryWithObjects:v23 forKeys:v24 count:v25];
-    [(SPGizmoCacheManager *)self sendCacheReply:v26 cacheIdentifier:v9];
+    [(SPGizmoCacheManager *)self sendCacheReply:v26 cacheIdentifier:identifierCopy];
   }
 }
 
-- (void)clearAllCachedImages:(id)a3 cacheIdentifier:(id)a4 completion:(id)a5
+- (void)clearAllCachedImages:(id)images cacheIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v33 = a5;
+  imagesCopy = images;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10 = wk_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -525,15 +525,15 @@ LABEL_23:
     v47 = 1024;
     v48 = 214;
     v49 = 2114;
-    v50 = v9;
+    v50 = identifierCopy;
     v51 = 1024;
-    LODWORD(v52) = [v8 cacheType];
+    LODWORD(v52) = [imagesCopy cacheType];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: cache id: %{public}@, type: %d", buf, 0x22u);
   }
 
-  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 cacheType]);
-  v32 = self;
-  v12 = -[SPGizmoCacheManager cacheDirectoryWithCacheIdentifier:cacheType:](self, "cacheDirectoryWithCacheIdentifier:cacheType:", v9, [v11 integerValue]);
+  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [imagesCopy cacheType]);
+  selfCopy = self;
+  v12 = -[SPGizmoCacheManager cacheDirectoryWithCacheIdentifier:cacheType:](self, "cacheDirectoryWithCacheIdentifier:cacheType:", identifierCopy, [v11 integerValue]);
 
   v13 = +[NSFileManager defaultManager];
   v14 = [v13 contentsOfDirectoryAtPath:v12 error:0];
@@ -547,8 +547,8 @@ LABEL_23:
   if (!v16)
   {
 
-    v25 = v33;
-    if (v33)
+    v25 = completionCopy;
+    if (completionCopy)
     {
       goto LABEL_18;
     }
@@ -557,17 +557,17 @@ LABEL_22:
     v42[0] = &off_10004ACC8;
     v41[0] = @"cmsg";
     v41[1] = @"t";
-    v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 cacheType]);
+    v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [imagesCopy cacheType]);
     v42[1] = v28;
     v29 = [NSDictionary dictionaryWithObjects:v42 forKeys:v41 count:2];
-    [(SPGizmoCacheManager *)v32 sendCacheReply:v29 cacheIdentifier:v9];
+    [(SPGizmoCacheManager *)selfCopy sendCacheReply:v29 cacheIdentifier:identifierCopy];
 
     goto LABEL_23;
   }
 
   v17 = v16;
-  v30 = v9;
-  v31 = v8;
+  v30 = identifierCopy;
+  v31 = imagesCopy;
   v18 = 0;
   v19 = *v36;
   do
@@ -614,11 +614,11 @@ LABEL_22:
 
   while (v17);
 
-  v25 = v33;
-  if (!v33)
+  v25 = completionCopy;
+  if (!completionCopy)
   {
-    v9 = v30;
-    v8 = v31;
+    identifierCopy = v30;
+    imagesCopy = v31;
     if (v18)
     {
       v40[0] = &off_10004ACC8;
@@ -629,7 +629,7 @@ LABEL_22:
       v40[1] = v26;
       v40[2] = &off_10004AC80;
       v27 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:3];
-      [(SPGizmoCacheManager *)v32 sendCacheReply:v27 cacheIdentifier:v30];
+      [(SPGizmoCacheManager *)selfCopy sendCacheReply:v27 cacheIdentifier:v30];
 
       goto LABEL_21;
     }
@@ -637,14 +637,14 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v9 = v30;
-  v8 = v31;
+  identifierCopy = v30;
+  imagesCopy = v31;
   if (v18)
   {
     v43 = @"e";
     v44 = &off_10004AC80;
     v26 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-    (*(v33 + 2))(v33, v26);
+    (*(completionCopy + 2))(completionCopy, v26);
 LABEL_21:
 
     goto LABEL_23;
@@ -655,35 +655,35 @@ LABEL_18:
 LABEL_23:
 }
 
-- (void)setupCacheWithIdentifier:(id)a3 completion:(id)a4
+- (void)setupCacheWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000260C8;
   block[3] = &unk_100045600;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(v8, block);
 }
 
-- (id)cacheAssets:(id)a3 cacheType:(unint64_t)a4 cacheIdentifier:(id)a5
+- (id)cacheAssets:(id)assets cacheType:(unint64_t)type cacheIdentifier:(id)identifier
 {
-  v6 = a3;
+  assetsCopy = assets;
   v87 = 0;
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 fileExistsAtPath:v6 isDirectory:&v87];
+  v8 = [v7 fileExistsAtPath:assetsCopy isDirectory:&v87];
 
-  if ((v8 & 1) != 0 || (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v9 = objc_claimAutoreleasedReturnValue(), v86 = 0, [v9 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v86], v10 = v86, v9, !v10))
+  if ((v8 & 1) != 0 || (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v9 = objc_claimAutoreleasedReturnValue(), v86 = 0, [v9 createDirectoryAtPath:assetsCopy withIntermediateDirectories:1 attributes:0 error:&v86], v10 = v86, v9, !v10))
   {
     v12 = +[NSFileManager defaultManager];
-    v63 = v6;
-    v13 = [[NSURL alloc] initFileURLWithPath:v6 isDirectory:1];
+    v63 = assetsCopy;
+    v13 = [[NSURL alloc] initFileURLWithPath:assetsCopy isDirectory:1];
     v14 = NSURLContentModificationDateKey;
     v15 = NSURLFileSizeKey;
     v100[0] = NSURLContentModificationDateKey;
@@ -702,7 +702,7 @@ LABEL_23:
         goto LABEL_9;
       }
 
-      v6 = v63;
+      assetsCopy = v63;
       sub_10002B388();
       v65 = 0;
 LABEL_10:
@@ -711,7 +711,7 @@ LABEL_10:
     }
 
     v65 = objc_opt_new();
-    if (a4 == 2)
+    if (type == 2)
     {
       v83 = 0uLL;
       v84 = 0uLL;
@@ -754,10 +754,10 @@ LABEL_10:
 
               if ((v25 & 1) == 0)
               {
-                v35 = wk_default_log();
-                if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+                lastPathComponent = wk_default_log();
+                if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_ERROR))
                 {
-                  v36 = [v21 path];
+                  path = [v21 path];
                   *buf = 136447234;
                   v90 = "[SPGizmoCacheManager cacheAssets:cacheType:cacheIdentifier:]";
                   v91 = 1024;
@@ -765,10 +765,10 @@ LABEL_10:
                   v93 = 2114;
                   v94 = v63;
                   v95 = 2114;
-                  v96 = v36;
+                  v96 = path;
                   v97 = 2114;
                   v98 = v10;
-                  _os_log_error_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "%{public}s:%d: NSURLFileSizeKey failed at: %{public}@, for: %{public}@, error: %{public}@", buf, 0x30u);
+                  _os_log_error_impl(&_mh_execute_header, lastPathComponent, OS_LOG_TYPE_ERROR, "%{public}s:%d: NSURLFileSizeKey failed at: %{public}@, for: %{public}@, error: %{public}@", buf, 0x30u);
                 }
 
                 goto LABEL_35;
@@ -782,38 +782,38 @@ LABEL_10:
 
               if (v31 <= 2592000.0)
               {
-                v37 = [v21 path];
-                v35 = [v37 lastPathComponent];
+                path2 = [v21 path];
+                lastPathComponent = [path2 lastPathComponent];
 
                 v38 = [SPCacheAsset alloc];
-                v39 = [v35 stringByRemovingPercentEncoding];
-                v40 = [(SPCacheAsset *)v38 initWithName:v39 size:[v26 unsignedIntegerValue] state:0 accessDate:v23];
+                stringByRemovingPercentEncoding = [lastPathComponent stringByRemovingPercentEncoding];
+                v40 = [(SPCacheAsset *)v38 initWithName:stringByRemovingPercentEncoding size:[v26 unsignedIntegerValue] state:0 accessDate:v23];
 
                 [v65 addAsset:v40];
                 goto LABEL_34;
               }
 
               v32 = +[NSFileManager defaultManager];
-              v33 = [v21 path];
+              path3 = [v21 path];
               v76 = v10;
-              [v32 removeItemAtPath:v33 error:&v76];
+              [v32 removeItemAtPath:path3 error:&v76];
               v34 = v76;
 
               if (v34)
               {
-                v35 = wk_default_log();
-                if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+                lastPathComponent = wk_default_log();
+                if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_ERROR))
                 {
-                  v42 = [v21 path];
+                  path4 = [v21 path];
                   *buf = v61;
                   v90 = "[SPGizmoCacheManager cacheAssets:cacheType:cacheIdentifier:]";
                   v91 = 1024;
                   v92 = 317;
                   v93 = 2114;
-                  v94 = v42;
+                  v94 = path4;
                   v95 = 2114;
                   v96 = v34;
-                  _os_log_error_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "%{public}s:%d: removeItemAtPath failed at: %{public}@, error: %{public}@", buf, 0x26u);
+                  _os_log_error_impl(&_mh_execute_header, lastPathComponent, OS_LOG_TYPE_ERROR, "%{public}s:%d: removeItemAtPath failed at: %{public}@, error: %{public}@", buf, 0x26u);
                 }
 
                 v10 = v34;
@@ -837,7 +837,7 @@ LABEL_35:
               v26 = wk_default_log();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
               {
-                v41 = [v21 path];
+                path5 = [v21 path];
                 *buf = 136447234;
                 v90 = "[SPGizmoCacheManager cacheAssets:cacheType:cacheIdentifier:]";
                 v91 = 1024;
@@ -845,7 +845,7 @@ LABEL_35:
                 v93 = 2114;
                 v94 = v63;
                 v95 = 2114;
-                v96 = v41;
+                v96 = path5;
                 v97 = 2114;
                 v98 = v24;
                 _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%{public}s:%d: NSURLContentModificationDateKey failed at: %{public}@, for: %{public}@, error: %{public}@", buf, 0x30u);
@@ -871,7 +871,7 @@ LABEL_36:
 
 LABEL_60:
       v10 = 0;
-      v6 = v63;
+      assetsCopy = v63;
 LABEL_11:
 
       goto LABEL_12;
@@ -913,7 +913,7 @@ LABEL_43:
         v53 = wk_default_log();
         if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
         {
-          v59 = [v48 path];
+          path6 = [v48 path];
           *buf = 136447234;
           v90 = "[SPGizmoCacheManager cacheAssets:cacheType:cacheIdentifier:]";
           v91 = 1024;
@@ -921,7 +921,7 @@ LABEL_43:
           v93 = 2114;
           v94 = v63;
           v95 = 2114;
-          v96 = v59;
+          v96 = path6;
           v97 = 2114;
           v98 = v51;
           _os_log_error_impl(&_mh_execute_header, v53, OS_LOG_TYPE_ERROR, "%{public}s:%d: NSURLContentModificationDateKey failed at: %{public}@, for: %{public}@, error: %{public}@", buf, 0x30u);
@@ -939,25 +939,25 @@ LABEL_43:
 
       if (v52)
       {
-        v54 = [v48 path];
-        v55 = [v54 lastPathComponent];
+        path7 = [v48 path];
+        lastPathComponent2 = [path7 lastPathComponent];
 
         v56 = [SPCacheAsset alloc];
-        v57 = [v55 stringByRemovingPercentEncoding];
-        v58 = [(SPCacheAsset *)v56 initWithName:v57 size:[v53 unsignedIntegerValue] state:0 accessDate:v50];
+        stringByRemovingPercentEncoding2 = [lastPathComponent2 stringByRemovingPercentEncoding];
+        path8 = [(SPCacheAsset *)v56 initWithName:stringByRemovingPercentEncoding2 size:[v53 unsignedIntegerValue] state:0 accessDate:v50];
 
-        [v65 addAsset:v58];
+        [v65 addAsset:path8];
       }
 
       else
       {
-        v55 = wk_default_log();
-        if (!os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
+        lastPathComponent2 = wk_default_log();
+        if (!os_log_type_enabled(lastPathComponent2, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_54;
         }
 
-        v58 = [v48 path];
+        path8 = [v48 path];
         *buf = 136447234;
         v90 = "[SPGizmoCacheManager cacheAssets:cacheType:cacheIdentifier:]";
         v91 = 1024;
@@ -965,10 +965,10 @@ LABEL_43:
         v93 = 2114;
         v94 = v63;
         v95 = 2114;
-        v96 = v58;
+        v96 = path8;
         v97 = 2114;
         v98 = v10;
-        _os_log_error_impl(&_mh_execute_header, v55, OS_LOG_TYPE_ERROR, "%{public}s:%d: NSURLFileSizeKey failed at: %{public}@, for: %{public}@, error: %{public}@", buf, 0x30u);
+        _os_log_error_impl(&_mh_execute_header, lastPathComponent2, OS_LOG_TYPE_ERROR, "%{public}s:%d: NSURLFileSizeKey failed at: %{public}@, for: %{public}@, error: %{public}@", buf, 0x30u);
       }
 
 LABEL_54:
@@ -981,7 +981,7 @@ LABEL_55:
         if (!v60)
         {
 LABEL_9:
-          v6 = v63;
+          assetsCopy = v63;
           goto LABEL_10;
         }
 
@@ -1002,18 +1002,18 @@ LABEL_12:
   return v65;
 }
 
-- (void)sendCacheReply:(id)a3 cacheIdentifier:(id)a4
+- (void)sendCacheReply:(id)reply cacheIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SPCacheMessage alloc] initWithDictionary:v6];
+  identifierCopy = identifier;
+  replyCopy = reply;
+  v7 = [[SPCacheMessage alloc] initWithDictionary:replyCopy];
 
   v8 = [SPProtoSerializer dataWithObject:v7];
   if (v8)
   {
-    v9 = [SPIDSProtobuf cacheRequestWithProtoData:v8 identifier:v5];
+    v9 = [SPIDSProtobuf cacheRequestWithProtoData:v8 identifier:identifierCopy];
     v10 = +[SPTransport sharedInstance];
-    [v10 sendProtobuf:v9 sender:v5 timeOut:0 securityType:&stru_100046480 withCompletion:60.0];
+    [v10 sendProtobuf:v9 sender:identifierCopy timeOut:0 securityType:&stru_100046480 withCompletion:60.0];
   }
 
   else

@@ -1,24 +1,24 @@
 @interface PGGraphIngestPrefetchLocationProcessor
-- (BOOL)prefetchLocationsWithRegions:(id)a3 loggingConnection:(id)a4 progressBlock:(id)a5;
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestPrefetchLocationProcessor)initWithGraphBuilder:(id)a3;
-- (id)regionsWithMoments:(id)a3 progressBlock:(id)a4;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)prefetchLocationsWithRegions:(id)regions loggingConnection:(id)connection progressBlock:(id)block;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestPrefetchLocationProcessor)initWithGraphBuilder:(id)builder;
+- (id)regionsWithMoments:(id)moments progressBlock:(id)block;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestPrefetchLocationProcessor
 
-- (BOOL)prefetchLocationsWithRegions:(id)a3 loggingConnection:(id)a4 progressBlock:(id)a5
+- (BOOL)prefetchLocationsWithRegions:(id)regions loggingConnection:(id)connection progressBlock:(id)block
 {
   v61[6] = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v8 = a4;
-  aBlock = a5;
-  v9 = v8;
+  regionsCopy = regions;
+  connectionCopy = connection;
+  aBlock = block;
+  v9 = connectionCopy;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf[0]) = 67109120;
-    HIDWORD(buf[0]) = [v41 count];
+    HIDWORD(buf[0]) = [regionsCopy count];
     _os_log_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_DEFAULT, "[PGGraphIngestPrefetchLocationProcessor] Starting to prefetch locations for %d regions", buf, 8u);
   }
 
@@ -57,30 +57,30 @@
     }
   }
 
-  if ([v41 count])
+  if ([regionsCopy count])
   {
-    v14 = [(PGGraphBuilder *)self->_graphBuilder locationCache];
-    v37 = [(PGGraphBuilder *)self->_graphBuilder aoiCache];
-    v39 = [(PGGraphBuilder *)self->_graphBuilder poiCache];
-    v36 = [(PGGraphBuilder *)self->_graphBuilder roiCache];
-    v35 = [(PGGraphBuilder *)self->_graphBuilder natureCache];
-    v15 = [objc_alloc(MEMORY[0x277D27720]) initWithLocationCache:v14];
+    locationCache = [(PGGraphBuilder *)self->_graphBuilder locationCache];
+    aoiCache = [(PGGraphBuilder *)self->_graphBuilder aoiCache];
+    poiCache = [(PGGraphBuilder *)self->_graphBuilder poiCache];
+    roiCache = [(PGGraphBuilder *)self->_graphBuilder roiCache];
+    natureCache = [(PGGraphBuilder *)self->_graphBuilder natureCache];
+    v15 = [objc_alloc(MEMORY[0x277D27720]) initWithLocationCache:locationCache];
     v61[0] = v15;
-    v16 = [objc_alloc(MEMORY[0x277D27668]) initWithAOICache:v37 locationCache:v14];
+    v16 = [objc_alloc(MEMORY[0x277D27668]) initWithAOICache:aoiCache locationCache:locationCache];
     v61[1] = v16;
-    v17 = [objc_alloc(MEMORY[0x277D27768]) initWithPOICache:v39 locationCache:v14];
+    v17 = [objc_alloc(MEMORY[0x277D27768]) initWithPOICache:poiCache locationCache:locationCache];
     v61[2] = v17;
-    v18 = [objc_alloc(MEMORY[0x277D27770]) initWithPOICache:v39 locationCache:v14];
+    v18 = [objc_alloc(MEMORY[0x277D27770]) initWithPOICache:poiCache locationCache:locationCache];
     v61[3] = v18;
-    v19 = [objc_alloc(MEMORY[0x277D277A8]) initWithROICache:v36 locationCache:v14];
+    v19 = [objc_alloc(MEMORY[0x277D277A8]) initWithROICache:roiCache locationCache:locationCache];
     v61[4] = v19;
-    v20 = [objc_alloc(MEMORY[0x277D27748]) initWithNatureCache:v35 locationCache:v14];
+    v20 = [objc_alloc(MEMORY[0x277D27748]) initWithNatureCache:natureCache locationCache:locationCache];
     v61[5] = v20;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:6];
 
     v21 = [objc_alloc(MEMORY[0x277D277A0]) initWithQueryPerformers:v38];
     [v21 setLoggingConnection:v9];
-    v22 = [v41 allObjects];
+    allObjects = [regionsCopy allObjects];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __103__PGGraphIngestPrefetchLocationProcessor_prefetchLocationsWithRegions_loggingConnection_progressBlock___block_invoke;
@@ -91,7 +91,7 @@
     v47 = &v53;
     v48 = 0x3F847AE147AE147BLL;
     v43 = 0;
-    v24 = [v21 createCacheForRegions:v22 progressBlock:v44 error:&v43];
+    v24 = [v21 createCacheForRegions:allObjects progressBlock:v44 error:&v43];
     v25 = v43;
 
     if (*(v54 + 24) == 1)
@@ -117,11 +117,11 @@ LABEL_13:
 
     v60 = 0;
     memset(buf, 0, sizeof(buf));
-    v28 = [v38 firstObject];
-    v29 = v28;
-    if (v28)
+    firstObject = [v38 firstObject];
+    v29 = firstObject;
+    if (firstObject)
     {
-      [v28 statistics];
+      [firstObject statistics];
     }
 
     else
@@ -250,17 +250,17 @@ void __103__PGGraphIngestPrefetchLocationProcessor_prefetchLocationsWithRegions_
   }
 }
 
-- (id)regionsWithMoments:(id)a3 progressBlock:(id)a4
+- (id)regionsWithMoments:(id)moments progressBlock:(id)block
 {
   v86 = *MEMORY[0x277D85DE8];
-  v49 = a3;
-  aBlock = a4;
-  v6 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  momentsCopy = moments;
+  aBlock = block;
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = [v49 count];
-    _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_DEFAULT, "[PGGraphIngestPrefetchLocationProcessor] Starting to cluster %d moments", &buf, 8u);
+    HIDWORD(buf) = [momentsCopy count];
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[PGGraphIngestPrefetchLocationProcessor] Starting to cluster %d moments", &buf, 8u);
   }
 
   v50 = _Block_copy(aBlock);
@@ -275,9 +275,9 @@ void __103__PGGraphIngestPrefetchLocationProcessor_prefetchLocationsWithRegions_
   v75 = 0;
   if (!v50 || (v7 = CFAbsoluteTimeGetCurrent(), v7 - v73[3] < 0.01) || (v73[3] = v7, LOBYTE(v70[0]) = 0, (*(v50 + 2))(v50, v70, 0.0), v8 = *(p_buf + 24) | LOBYTE(v70[0]), *(p_buf + 24) = v8, (v8 & 1) == 0))
   {
-    v10 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-    v11 = os_signpost_id_generate(v10);
-    v12 = v10;
+    loggingConnection2 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    v11 = os_signpost_id_generate(loggingConnection2);
+    v12 = loggingConnection2;
     v13 = v12;
     spid = v11;
     v14 = v11 - 1;
@@ -292,11 +292,11 @@ void __103__PGGraphIngestPrefetchLocationProcessor_prefetchLocationsWithRegions_
     v44 = mach_absolute_time();
     v15 = [MEMORY[0x277CBEB58] set];
     v16 = objc_alloc(MEMORY[0x277D3C790]);
-    v17 = [(PGGraphBuilder *)self->_graphBuilder photoLibrary];
-    v18 = [v16 initWithPhotoLibrary:v17];
+    photoLibrary = [(PGGraphBuilder *)self->_graphBuilder photoLibrary];
+    v18 = [v16 initWithPhotoLibrary:photoLibrary];
 
-    v19 = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
-    if (!v19)
+    serviceManager = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
+    if (!serviceManager)
     {
       __assert_rtn("[PGGraphIngestPrefetchLocationProcessor regionsWithMoments:progressBlock:]", "PGGraphIngestPrefetchLocationProcessor.m", 110, "serviceManager != nil");
     }
@@ -305,7 +305,7 @@ void __103__PGGraphIngestPrefetchLocationProcessor_prefetchLocationsWithRegions_
     *&v80 = &v79;
     *(&v80 + 1) = 0x2020000000;
     v81 = 0;
-    v20 = [v49 count];
+    v20 = [momentsCopy count];
     v70[0] = 0;
     v70[1] = v70;
     v70[2] = 0x2020000000;
@@ -334,9 +334,9 @@ void __103__PGGraphIngestPrefetchLocationProcessor_prefetchLocationsWithRegions_
     v68 = v21;
     v25 = v15;
     v59 = v25;
-    v26 = v19;
+    v26 = serviceManager;
     v60 = v26;
-    [v49 enumerateObjectsUsingBlock:v56];
+    [momentsCopy enumerateObjectsUsingBlock:v56];
     v43 = v23;
     [v26 fetchImportantLocationsOfInterest];
     v54 = 0u;
@@ -357,10 +357,10 @@ void __103__PGGraphIngestPrefetchLocationProcessor_prefetchLocationsWithRegions_
             objc_enumerationMutation(v27);
           }
 
-          v31 = [*(*(&v52 + 1) + 8 * i) placemarkRegion];
-          if (v31)
+          placemarkRegion = [*(*(&v52 + 1) + 8 * i) placemarkRegion];
+          if (placemarkRegion)
           {
-            [v25 addObject:v31];
+            [v25 addObject:placemarkRegion];
           }
         }
 
@@ -647,11 +647,11 @@ void __75__PGGraphIngestPrefetchLocationProcessor_regionsWithMoments_progressBlo
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   *(&v56[2] + 4) = *MEMORY[0x277D85DE8];
-  v34 = a3;
-  v32 = a4;
+  updateCopy = update;
+  blockCopy = block;
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
@@ -660,12 +660,12 @@ void __75__PGGraphIngestPrefetchLocationProcessor_regionsWithMoments_progressBlo
   v48 = &v47;
   v49 = 0x2020000000;
   v50 = 0;
-  v33 = _Block_copy(v32);
+  v33 = _Block_copy(blockCopy);
   if (!v33 || (v6 = CFAbsoluteTimeGetCurrent(), v6 - v48[3] < 0.01) || (v48[3] = v6, LOBYTE(info.numer) = 0, (*(v33 + 2))(v33, &info, 0.0), v7 = *(v52 + 24) | LOBYTE(info.numer), *(v52 + 24) = v7, (v7 & 1) == 0))
   {
-    v8 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-    v9 = os_signpost_id_generate(v8);
-    v10 = v8;
+    loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    v9 = os_signpost_id_generate(loggingConnection);
+    v10 = loggingConnection;
     v11 = v10;
     if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
     {
@@ -676,7 +676,7 @@ void __75__PGGraphIngestPrefetchLocationProcessor_regionsWithMoments_progressBlo
     info = 0;
     mach_timebase_info(&info);
     v29 = mach_absolute_time();
-    v12 = [v34 momentsToProcessForMomentUpdateTypes:4 includeMomentsToIngest:1];
+    v12 = [updateCopy momentsToProcessForMomentUpdateTypes:4 includeMomentsToIngest:1];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __75__PGGraphIngestPrefetchLocationProcessor_runWithGraphUpdate_progressBlock___block_invoke;
@@ -702,11 +702,11 @@ void __75__PGGraphIngestPrefetchLocationProcessor_regionsWithMoments_progressBlo
       goto LABEL_31;
     }
 
-    v30 = [v34 additionalLocationsToPrefetch];
-    if (v30)
+    additionalLocationsToPrefetch = [updateCopy additionalLocationsToPrefetch];
+    if (additionalLocationsToPrefetch)
     {
-      v15 = [v34 additionalLocationsToPrefetch];
-      v16 = [v14 setByAddingObjectsFromSet:v15];
+      additionalLocationsToPrefetch2 = [updateCopy additionalLocationsToPrefetch];
+      v16 = [v14 setByAddingObjectsFromSet:additionalLocationsToPrefetch2];
 
       v14 = v16;
     }
@@ -741,7 +741,7 @@ LABEL_31:
     else
     {
       v20 = v18;
-      if ([v34 isResumingFullAnalysis])
+      if ([updateCopy isResumingFullAnalysis])
       {
         [(PGGraphBuilder *)self->_graphBuilder setCanUseLocationDomain:v20];
       }
@@ -852,41 +852,41 @@ void __75__PGGraphIngestPrefetchLocationProcessor_runWithGraphUpdate_progressBlo
   }
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 hasMomentsToInsert])
+  updateCopy = update;
+  if ([updateCopy hasMomentsToInsert])
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v5 = [v3 additionalLocationsToPrefetch];
-    if ([v5 count])
+    additionalLocationsToPrefetch = [updateCopy additionalLocationsToPrefetch];
+    if ([additionalLocationsToPrefetch count])
     {
       LOBYTE(v4) = 1;
     }
 
     else
     {
-      v4 = ([v3 momentUpdateTypes] >> 2) & 1;
+      v4 = ([updateCopy momentUpdateTypes] >> 2) & 1;
     }
   }
 
   return v4;
 }
 
-- (PGGraphIngestPrefetchLocationProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestPrefetchLocationProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = PGGraphIngestPrefetchLocationProcessor;
   v6 = [(PGGraphIngestPrefetchLocationProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
   }
 
   return v7;

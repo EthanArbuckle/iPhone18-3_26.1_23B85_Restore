@@ -1,34 +1,34 @@
 @interface CATIDSMessagePayload
-+ (id)instanceWithDictionary:(id)a3;
-- (CATIDSMessagePayload)initWithMessage:(id)a3;
-- (CATIDSMessagePayload)initWithMetadata:(id)a3 message:(id)a4;
++ (id)instanceWithDictionary:(id)dictionary;
+- (CATIDSMessagePayload)initWithMessage:(id)message;
+- (CATIDSMessagePayload)initWithMetadata:(id)metadata message:(id)message;
 - (NSDictionary)dictionaryValue;
 - (id)messageContent;
 @end
 
 @implementation CATIDSMessagePayload
 
-- (CATIDSMessagePayload)initWithMessage:(id)a3
+- (CATIDSMessagePayload)initWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = -[CATIDSMessageMetadata initWithMessageType:]([CATIDSMessageMetadata alloc], "initWithMessageType:", [v4 messageType]);
-  v6 = [(CATIDSMessagePayload *)self initWithMetadata:v5 message:v4];
+  messageCopy = message;
+  v5 = -[CATIDSMessageMetadata initWithMessageType:]([CATIDSMessageMetadata alloc], "initWithMessageType:", [messageCopy messageType]);
+  v6 = [(CATIDSMessagePayload *)self initWithMetadata:v5 message:messageCopy];
 
   return v6;
 }
 
-- (CATIDSMessagePayload)initWithMetadata:(id)a3 message:(id)a4
+- (CATIDSMessagePayload)initWithMetadata:(id)metadata message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
+  metadataCopy = metadata;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = CATIDSMessagePayload;
   v9 = [(CATIDSMessagePayload *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_metadata, a3);
-    objc_storeStrong(&v10->_message, a4);
+    objc_storeStrong(&v9->_metadata, metadata);
+    objc_storeStrong(&v10->_message, message);
   }
 
   return v10;
@@ -38,12 +38,12 @@
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"MessageMetadata";
-  v3 = [(CATIDSMessagePayload *)self metadata];
-  v4 = [v3 dictionaryValue];
+  metadata = [(CATIDSMessagePayload *)self metadata];
+  dictionaryValue = [metadata dictionaryValue];
   v9[1] = @"MessageContent";
-  v10[0] = v4;
-  v5 = [(CATIDSMessagePayload *)self messageContent];
-  v10[1] = v5;
+  v10[0] = dictionaryValue;
+  messageContent = [(CATIDSMessagePayload *)self messageContent];
+  v10[1] = messageContent;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -51,10 +51,10 @@
   return v6;
 }
 
-+ (id)instanceWithDictionary:(id)a3
++ (id)instanceWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"MessageMetadata"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"MessageMetadata"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -68,7 +68,7 @@
 
   v6 = v5;
 
-  v7 = [v3 objectForKeyedSubscript:@"MessageContent"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"MessageContent"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -100,15 +100,15 @@
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 messageType];
-      if (v14 == 101)
+      messageType = [v12 messageType];
+      if (messageType == 101)
       {
         v15 = off_278DA6BD0;
       }
 
       else
       {
-        if (v14 != 102)
+        if (messageType != 102)
         {
           goto LABEL_18;
         }
@@ -139,9 +139,9 @@ LABEL_20:
 
 - (id)messageContent
 {
-  v2 = [(CATIDSMessagePayload *)self message];
-  v3 = [v2 dictionaryValue];
-  v4 = [v3 mutableCopy];
+  message = [(CATIDSMessagePayload *)self message];
+  dictionaryValue = [message dictionaryValue];
+  v4 = [dictionaryValue mutableCopy];
 
   [v4 setObject:@"Catalyst" forKeyedSubscript:@"Yo"];
   v5 = [v4 copy];

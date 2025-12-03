@@ -1,13 +1,13 @@
 @interface ATXSuggestedPagesModeAffinityAppDataSource
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4;
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment;
 @end
 
 @implementation ATXSuggestedPagesModeAffinityAppDataSource
 
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment
 {
-  v5 = a4;
-  if ((a3 - 3) < 9 && ((0x143u >> (a3 - 3)) & 1) != 0 || (v6 = [ATXSuggestedPagesUtils modeForSuggestedPageType:a3], v6 == 16))
+  environmentCopy = environment;
+  if ((type - 3) < 9 && ((0x143u >> (type - 3)) & 1) != 0 || (v6 = [ATXSuggestedPagesUtils modeForSuggestedPageType:type], v6 == 16))
   {
     v7 = 0;
   }

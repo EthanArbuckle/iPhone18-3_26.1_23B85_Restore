@@ -1,14 +1,14 @@
 @interface AMAudioMessagesControlInterface
 + (BOOL)isCurrentEntryViewEmpty;
-- (AMAudioMessagesControlInterface)initWithDelegate:(id)a3;
+- (AMAudioMessagesControlInterface)initWithDelegate:(id)delegate;
 - (AMAudioMessagesControlInterfaceDelegate)controlInterfaceDelegate;
 - (BOOL)audioMessageRecordingAvailable;
 - (CKMessageEntryView)currentEntryView;
 - (NSArray)powerLevels;
 - (double)duration;
 - (void)audioMessageDidCancelMessage;
-- (void)audioMessageDidChangeAudioPowerLevel:(float)a3 duration:(double)a4;
-- (void)audioMessageDidChangeCurrentPlaybackTime:(double)a3;
+- (void)audioMessageDidChangeAudioPowerLevel:(float)level duration:(double)duration;
+- (void)audioMessageDidChangeCurrentPlaybackTime:(double)time;
 - (void)audioMessageDidEndPlayback;
 - (void)audioMessageDidSendMessage;
 - (void)audioMessageDidStartPlayback;
@@ -26,9 +26,9 @@
 
 @implementation AMAudioMessagesControlInterface
 
-- (AMAudioMessagesControlInterface)initWithDelegate:(id)a3
+- (AMAudioMessagesControlInterface)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = AMAudioMessagesControlInterface;
   v5 = [(AMAudioMessagesControlInterface *)&v9 init];
@@ -40,7 +40,7 @@
     WeakRetained = objc_loadWeakRetained(&v5->_currentEntryView);
     [WeakRetained setAudioMessageAppDelegate:v5];
 
-    objc_storeWeak(&v5->_controlInterfaceDelegate, v4);
+    objc_storeWeak(&v5->_controlInterfaceDelegate, delegateCopy);
   }
 
   return v5;
@@ -49,17 +49,17 @@
 - (BOOL)audioMessageRecordingAvailable
 {
   WeakRetained = objc_loadWeakRetained(&self->_currentEntryView);
-  v3 = [WeakRetained isAudioMessageRecordingAvailable];
+  isAudioMessageRecordingAvailable = [WeakRetained isAudioMessageRecordingAvailable];
 
-  return v3;
+  return isAudioMessageRecordingAvailable;
 }
 
 - (NSArray)powerLevels
 {
   WeakRetained = objc_loadWeakRetained(&self->_currentEntryView);
-  v3 = [WeakRetained powerLevels];
+  powerLevels = [WeakRetained powerLevels];
 
-  return v3;
+  return powerLevels;
 }
 
 - (double)duration
@@ -171,10 +171,10 @@
 + (BOOL)isCurrentEntryViewEmpty
 {
   v2 = +[CKMessageEntryView currentEntryView];
-  v3 = [v2 composition];
-  v4 = [v3 hasContent];
+  composition = [v2 composition];
+  hasContent = [composition hasContent];
 
-  return v4 ^ 1;
+  return hasContent ^ 1;
 }
 
 - (void)audioMessageDidCancelMessage
@@ -190,7 +190,7 @@
   [WeakRetained audioMessageDidCancelMessage];
 }
 
-- (void)audioMessageDidChangeAudioPowerLevel:(float)a3 duration:(double)a4
+- (void)audioMessageDidChangeAudioPowerLevel:(float)level duration:(double)duration
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -200,11 +200,11 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_controlInterfaceDelegate);
-  *&v8 = a3;
-  [WeakRetained audioMessageDidChangeAudioPowerLevel:v8 duration:a4];
+  *&v8 = level;
+  [WeakRetained audioMessageDidChangeAudioPowerLevel:v8 duration:duration];
 }
 
-- (void)audioMessageDidChangeCurrentPlaybackTime:(double)a3
+- (void)audioMessageDidChangeCurrentPlaybackTime:(double)time
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -214,7 +214,7 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_controlInterfaceDelegate);
-  [WeakRetained audioMessageDidChangeCurrentPlaybackTime:a3];
+  [WeakRetained audioMessageDidChangeCurrentPlaybackTime:time];
 }
 
 - (void)audioMessageDidEndPlayback

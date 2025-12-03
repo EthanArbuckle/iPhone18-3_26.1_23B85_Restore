@@ -3,15 +3,15 @@
 + (id)remoteInterface;
 + (void)initialize;
 - (SRDebugInfoClient)init;
-- (SRDebugInfoClient)initWithConnection:(id)a3;
-- (void)datastoreListingWithReply:(id)a3;
+- (SRDebugInfoClient)initWithConnection:(id)connection;
+- (void)datastoreListingWithReply:(id)reply;
 - (void)dealloc;
-- (void)dumpClientsWithReply:(id)a3;
-- (void)dumpConfigurationsWithReply:(id)a3;
-- (void)dumpDefaultsWithReply:(id)a3;
-- (void)dumpStateCacheWithReply:(id)a3;
-- (void)fetchDeviceInformationForDeviceIdentifiers:(id)a3 reply:(id)a4;
-- (void)fetchEligibilityStatusForBundleIdentifier:(id)a3 sensor:(id)a4 reply:(id)a5;
+- (void)dumpClientsWithReply:(id)reply;
+- (void)dumpConfigurationsWithReply:(id)reply;
+- (void)dumpDefaultsWithReply:(id)reply;
+- (void)dumpStateCacheWithReply:(id)reply;
+- (void)fetchDeviceInformationForDeviceIdentifiers:(id)identifiers reply:(id)reply;
+- (void)fetchEligibilityStatusForBundleIdentifier:(id)identifier sensor:(id)sensor reply:(id)reply;
 - (void)invalidate;
 - (void)setupConnection;
 @end
@@ -20,7 +20,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRDebugInfoClientLog = os_log_create("com.apple.SensorKit", "SRDebugInfoClient");
   }
@@ -28,19 +28,19 @@
 
 - (SRDebugInfoClient)init
 {
-  v3 = [objc_opt_class() connectionToDaemon];
+  connectionToDaemon = [objc_opt_class() connectionToDaemon];
 
-  return [(SRDebugInfoClient *)self initWithConnection:v3];
+  return [(SRDebugInfoClient *)self initWithConnection:connectionToDaemon];
 }
 
-- (SRDebugInfoClient)initWithConnection:(id)a3
+- (SRDebugInfoClient)initWithConnection:(id)connection
 {
   v6.receiver = self;
   v6.super_class = SRDebugInfoClient;
   v4 = [(SRDebugInfoClient *)&v6 init];
   if (v4)
   {
-    v4->_connection = a3;
+    v4->_connection = connection;
     [(SRDebugInfoClient *)v4 setupConnection];
   }
 
@@ -50,9 +50,9 @@
 - (void)invalidate
 {
   [(NSXPCConnection *)[(SRDebugInfoClient *)self connection] setExportedObject:0];
-  v3 = [(SRDebugInfoClient *)self connection];
+  connection = [(SRDebugInfoClient *)self connection];
 
-  [(NSXPCConnection *)v3 invalidate];
+  [(NSXPCConnection *)connection invalidate];
 }
 
 - (void)dealloc
@@ -92,20 +92,20 @@
   [(NSXPCConnection *)connection resume];
 }
 
-- (void)dumpClientsWithReply:(id)a3
+- (void)dumpClientsWithReply:(id)reply
 {
   connection = self->_connection;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__SRDebugInfoClient_dumpClientsWithReply___block_invoke;
   v7[3] = &unk_1E8330408;
-  v7[4] = a3;
+  v7[4] = reply;
   v5 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v7];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__SRDebugInfoClient_dumpClientsWithReply___block_invoke_30;
   v6[3] = &unk_1E83309E8;
-  v6[4] = a3;
+  v6[4] = reply;
   [v5 dumpClientsWithReply:v6];
 }
 
@@ -127,20 +127,20 @@ uint64_t __42__SRDebugInfoClient_dumpClientsWithReply___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)dumpStateCacheWithReply:(id)a3
+- (void)dumpStateCacheWithReply:(id)reply
 {
   connection = self->_connection;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__SRDebugInfoClient_dumpStateCacheWithReply___block_invoke;
   v7[3] = &unk_1E8330408;
-  v7[4] = a3;
+  v7[4] = reply;
   v5 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v7];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__SRDebugInfoClient_dumpStateCacheWithReply___block_invoke_32;
   v6[3] = &unk_1E83309E8;
-  v6[4] = a3;
+  v6[4] = reply;
   [v5 dumpStateCacheWithReply:v6];
 }
 
@@ -160,20 +160,20 @@ uint64_t __45__SRDebugInfoClient_dumpStateCacheWithReply___block_invoke(uint64_t
   return result;
 }
 
-- (void)datastoreListingWithReply:(id)a3
+- (void)datastoreListingWithReply:(id)reply
 {
   connection = self->_connection;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__SRDebugInfoClient_datastoreListingWithReply___block_invoke;
   v7[3] = &unk_1E8330408;
-  v7[4] = a3;
+  v7[4] = reply;
   v5 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v7];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__SRDebugInfoClient_datastoreListingWithReply___block_invoke_33;
   v6[3] = &unk_1E8330BB0;
-  v6[4] = a3;
+  v6[4] = reply;
   [v5 listDatastoreWithReply:v6];
 }
 
@@ -205,20 +205,20 @@ uint64_t __47__SRDebugInfoClient_datastoreListingWithReply___block_invoke_33(uin
   return v3();
 }
 
-- (void)dumpConfigurationsWithReply:(id)a3
+- (void)dumpConfigurationsWithReply:(id)reply
 {
   connection = self->_connection;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__SRDebugInfoClient_dumpConfigurationsWithReply___block_invoke;
   v7[3] = &unk_1E8330408;
-  v7[4] = a3;
+  v7[4] = reply;
   v5 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v7];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__SRDebugInfoClient_dumpConfigurationsWithReply___block_invoke_36;
   v6[3] = &unk_1E83309E8;
-  v6[4] = a3;
+  v6[4] = reply;
   [v5 dumpConfigurationsWithReply:v6];
 }
 
@@ -240,20 +240,20 @@ uint64_t __49__SRDebugInfoClient_dumpConfigurationsWithReply___block_invoke(uint
   return result;
 }
 
-- (void)dumpDefaultsWithReply:(id)a3
+- (void)dumpDefaultsWithReply:(id)reply
 {
   connection = self->_connection;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__SRDebugInfoClient_dumpDefaultsWithReply___block_invoke;
   v7[3] = &unk_1E8330408;
-  v7[4] = a3;
+  v7[4] = reply;
   v5 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v7];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__SRDebugInfoClient_dumpDefaultsWithReply___block_invoke_37;
   v6[3] = &unk_1E83309E8;
-  v6[4] = a3;
+  v6[4] = reply;
   [v5 dumpDefaultsWithReply:v6];
 }
 
@@ -275,15 +275,15 @@ uint64_t __43__SRDebugInfoClient_dumpDefaultsWithReply___block_invoke(uint64_t a
   return result;
 }
 
-- (void)fetchEligibilityStatusForBundleIdentifier:(id)a3 sensor:(id)a4 reply:(id)a5
+- (void)fetchEligibilityStatusForBundleIdentifier:(id)identifier sensor:(id)sensor reply:(id)reply
 {
   connection = self->_connection;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__SRDebugInfoClient_fetchEligibilityStatusForBundleIdentifier_sensor_reply___block_invoke;
   v6[3] = &unk_1E8330408;
-  v6[4] = a5;
-  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](connection remoteObjectProxyWithErrorHandler:{v6), "fetchEligibilityStatusForBundleIdentifier:sensor:reply:", a3, a4, a5}];
+  v6[4] = reply;
+  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](connection remoteObjectProxyWithErrorHandler:{v6), "fetchEligibilityStatusForBundleIdentifier:sensor:reply:", identifier, sensor, reply}];
 }
 
 uint64_t __76__SRDebugInfoClient_fetchEligibilityStatusForBundleIdentifier_sensor_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -302,15 +302,15 @@ uint64_t __76__SRDebugInfoClient_fetchEligibilityStatusForBundleIdentifier_senso
   return result;
 }
 
-- (void)fetchDeviceInformationForDeviceIdentifiers:(id)a3 reply:(id)a4
+- (void)fetchDeviceInformationForDeviceIdentifiers:(id)identifiers reply:(id)reply
 {
   connection = self->_connection;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __70__SRDebugInfoClient_fetchDeviceInformationForDeviceIdentifiers_reply___block_invoke;
   v5[3] = &unk_1E8330408;
-  v5[4] = a4;
-  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](connection remoteObjectProxyWithErrorHandler:{v5), "fetchDeviceInformationForDeviceIdentifiers:reply:", a3, a4}];
+  v5[4] = reply;
+  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](connection remoteObjectProxyWithErrorHandler:{v5), "fetchDeviceInformationForDeviceIdentifiers:reply:", identifiers, reply}];
 }
 
 uint64_t __70__SRDebugInfoClient_fetchDeviceInformationForDeviceIdentifiers_reply___block_invoke(uint64_t a1, uint64_t a2)

@@ -2,22 +2,22 @@
 - (BOOL)isBundleIdentifierValid;
 - (BOOL)isEntitledForSPI;
 - (BOOL)isTeamIdentifierValid;
-- (SHMediaLibraryClient)initWithCredentials:(id)a3;
+- (SHMediaLibraryClient)initWithCredentials:(id)credentials;
 - (int64_t)type;
 @end
 
 @implementation SHMediaLibraryClient
 
-- (SHMediaLibraryClient)initWithCredentials:(id)a3
+- (SHMediaLibraryClient)initWithCredentials:(id)credentials
 {
-  v5 = a3;
+  credentialsCopy = credentials;
   v9.receiver = self;
   v9.super_class = SHMediaLibraryClient;
   v6 = [(SHMediaLibraryClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_credentials, a3);
+    objc_storeStrong(&v6->_credentials, credentials);
   }
 
   return v7;
@@ -44,10 +44,10 @@ LABEL_9:
 
   if (![(SHMediaLibraryClient *)self isEntitledForSPI])
   {
-    v8 = [(SHMediaLibraryClient *)self isTeamIdentifierValid];
+    isTeamIdentifierValid = [(SHMediaLibraryClient *)self isTeamIdentifierValid];
     v3 = sh_log_object();
     v9 = os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (isTeamIdentifierValid)
     {
       if (v9)
       {
@@ -90,33 +90,33 @@ LABEL_10:
 
 - (BOOL)isEntitledForSPI
 {
-  v3 = [(SHMediaLibraryClient *)self credentials];
-  v4 = [v3 clientType] == 1;
+  credentials = [(SHMediaLibraryClient *)self credentials];
+  v4 = [credentials clientType] == 1;
 
-  v5 = [(SHMediaLibraryClient *)self credentials];
-  v6 = [v5 attribution];
-  v7 = [v6 containingAppBundleIdentifier];
-  LOBYTE(v3) = [SHAttribution requiresMediaLibraryAttributionForBundleIdentifier:v7];
+  credentials2 = [(SHMediaLibraryClient *)self credentials];
+  attribution = [credentials2 attribution];
+  containingAppBundleIdentifier = [attribution containingAppBundleIdentifier];
+  LOBYTE(credentials) = [SHAttribution requiresMediaLibraryAttributionForBundleIdentifier:containingAppBundleIdentifier];
 
-  return v4 || (v3 & 1) == 0;
+  return v4 || (credentials & 1) == 0;
 }
 
 - (BOOL)isBundleIdentifierValid
 {
-  v2 = [(SHMediaLibraryClient *)self credentials];
-  v3 = [v2 attribution];
-  v4 = [v3 containingAppBundleIdentifier];
-  v5 = [v4 length] != 0;
+  credentials = [(SHMediaLibraryClient *)self credentials];
+  attribution = [credentials attribution];
+  containingAppBundleIdentifier = [attribution containingAppBundleIdentifier];
+  v5 = [containingAppBundleIdentifier length] != 0;
 
   return v5;
 }
 
 - (BOOL)isTeamIdentifierValid
 {
-  v2 = [(SHMediaLibraryClient *)self credentials];
-  v3 = [v2 attribution];
-  v4 = [v3 teamIdentifier];
-  v5 = [v4 length] != 0;
+  credentials = [(SHMediaLibraryClient *)self credentials];
+  attribution = [credentials attribution];
+  teamIdentifier = [attribution teamIdentifier];
+  v5 = [teamIdentifier length] != 0;
 
   return v5;
 }

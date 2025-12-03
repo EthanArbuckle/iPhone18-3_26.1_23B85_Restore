@@ -1,68 +1,68 @@
 @interface CSUSearchableKnowledgeObject
-+ (BOOL)labelDictionaryFromString:(id)a3 directoryWriteBack:(id *)a4 error:(id *)a5;
-+ (BOOL)synonymsDictionaryFromLocaleString:(id)a3 directoryWriteBack:(id *)a4 error:(id *)a5;
-+ (id)searchDictionary:(id)a3 withLocale:(id)a4;
-+ (id)stringFromLabelDictionary:(id)a3;
-+ (id)stringFromSynonymsDictionary:(id)a3;
-- (CSUSearchableKnowledgeObject)initWithQID:(unint64_t)a3 idType:(signed __int16)a4 localizedLabelDictionary:(id)a5 confidence:(double)a6 sensitiveLocation:(BOOL)a7 category:(id)a8 vertical:(id)a9 localizedSynonymsDictionary:(id)a10 longitude:(double)a11 latitude:(double)a12 version:(int)a13;
-- (id)localizedLabelWithLocale:(id)a3;
-- (id)localizedSynonymsWithLocale:(id)a3;
-- (void)setLocalizedLabel:(id)a3 forLocale:(id)a4;
-- (void)setLocalizedSynonyms:(id)a3 forLocale:(id)a4;
++ (BOOL)labelDictionaryFromString:(id)string directoryWriteBack:(id *)back error:(id *)error;
++ (BOOL)synonymsDictionaryFromLocaleString:(id)string directoryWriteBack:(id *)back error:(id *)error;
++ (id)searchDictionary:(id)dictionary withLocale:(id)locale;
++ (id)stringFromLabelDictionary:(id)dictionary;
++ (id)stringFromSynonymsDictionary:(id)dictionary;
+- (CSUSearchableKnowledgeObject)initWithQID:(unint64_t)d idType:(signed __int16)type localizedLabelDictionary:(id)dictionary confidence:(double)confidence sensitiveLocation:(BOOL)location category:(id)category vertical:(id)vertical localizedSynonymsDictionary:(id)self0 longitude:(double)self1 latitude:(double)self2 version:(int)self3;
+- (id)localizedLabelWithLocale:(id)locale;
+- (id)localizedSynonymsWithLocale:(id)locale;
+- (void)setLocalizedLabel:(id)label forLocale:(id)locale;
+- (void)setLocalizedSynonyms:(id)synonyms forLocale:(id)locale;
 @end
 
 @implementation CSUSearchableKnowledgeObject
 
-- (CSUSearchableKnowledgeObject)initWithQID:(unint64_t)a3 idType:(signed __int16)a4 localizedLabelDictionary:(id)a5 confidence:(double)a6 sensitiveLocation:(BOOL)a7 category:(id)a8 vertical:(id)a9 localizedSynonymsDictionary:(id)a10 longitude:(double)a11 latitude:(double)a12 version:(int)a13
+- (CSUSearchableKnowledgeObject)initWithQID:(unint64_t)d idType:(signed __int16)type localizedLabelDictionary:(id)dictionary confidence:(double)confidence sensitiveLocation:(BOOL)location category:(id)category vertical:(id)vertical localizedSynonymsDictionary:(id)self0 longitude:(double)self1 latitude:(double)self2 version:(int)self3
 {
-  v22 = a5;
-  v43 = a8;
-  v23 = a9;
-  v24 = a10;
+  dictionaryCopy = dictionary;
+  categoryCopy = category;
+  verticalCopy = vertical;
+  synonymsDictionaryCopy = synonymsDictionary;
   v44.receiver = self;
   v44.super_class = CSUSearchableKnowledgeObject;
   v25 = [(CSUSearchableKnowledgeObject *)&v44 init];
   v26 = v25;
   if (v25)
   {
-    v25->_idType = a4;
+    v25->_idType = type;
     localizedLabel = v25->_localizedLabel;
-    v25->_qid = a3;
+    v25->_qid = d;
     v25->_localizedLabel = 0;
 
-    v32 = objc_msgSend_copy(v22, v28, v29, v30, v31);
+    v32 = objc_msgSend_copy(dictionaryCopy, v28, v29, v30, v31);
     localizedLabelDictionary = v26->_localizedLabelDictionary;
     v26->_localizedLabelDictionary = v32;
 
-    v26->_confidenceValue = a6;
-    v26->_sensitiveLocation = a7;
-    objc_storeStrong(&v26->_category, a8);
-    objc_storeStrong(&v26->_vertical, a9);
+    v26->_confidenceValue = confidence;
+    v26->_sensitiveLocation = location;
+    objc_storeStrong(&v26->_category, category);
+    objc_storeStrong(&v26->_vertical, vertical);
     localizedSynonyms = v26->_localizedSynonyms;
     v26->_localizedSynonyms = 0;
 
-    v39 = objc_msgSend_copy(v24, v35, v36, v37, v38);
+    v39 = objc_msgSend_copy(synonymsDictionaryCopy, v35, v36, v37, v38);
     localizedSynonymsDictionary = v26->_localizedSynonymsDictionary;
     v26->_localizedSynonymsDictionary = v39;
 
-    v26->_longitude = a11;
-    v26->_latitude = a12;
-    v26->_version = a13;
+    v26->_longitude = longitude;
+    v26->_latitude = latitude;
+    v26->_version = version;
     v41 = v26;
   }
 
   return v26;
 }
 
-+ (BOOL)labelDictionaryFromString:(id)a3 directoryWriteBack:(id *)a4 error:(id *)a5
++ (BOOL)labelDictionaryFromString:(id)string directoryWriteBack:(id *)back error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v49 = a3;
-  if (a4)
+  stringCopy = string;
+  if (back)
   {
     v10 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v6, v7, v8, v9);
-    v47 = a4;
-    objc_msgSend_componentsSeparatedByString_(v49, v11, @";", v12, v13);
+    backCopy = back;
+    objc_msgSend_componentsSeparatedByString_(stringCopy, v11, @";", v12, v13);
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
@@ -84,10 +84,10 @@
           if (objc_msgSend_count(v22, v23, v24, v25, v26) != 2)
           {
             v44 = objc_msgSend_errorForDictionaryDeserialization_(CSUError, v27, @"Corrupted dictionary", v28, v29);
-            if (a5)
+            if (error)
             {
               v44 = v44;
-              *a5 = v44;
+              *error = v44;
             }
 
             v43 = 0;
@@ -113,7 +113,7 @@
     }
 
     v42 = v10;
-    *v47 = v10;
+    *backCopy = v10;
     v43 = 1;
 LABEL_14:
   }
@@ -127,16 +127,16 @@ LABEL_14:
   return v43;
 }
 
-+ (id)stringFromLabelDictionary:(id)a3
++ (id)stringFromLabelDictionary:(id)dictionary
 {
   v42 = *MEMORY[0x1E69E9840];
-  v36 = a3;
+  dictionaryCopy = dictionary;
   v7 = objc_msgSend_array(MEMORY[0x1E695DF70], v3, v4, v5, v6);
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v8 = v36;
+  v8 = dictionaryCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v37, v41, 16);
   if (v14)
   {
@@ -170,15 +170,15 @@ LABEL_14:
   return v33;
 }
 
-+ (BOOL)synonymsDictionaryFromLocaleString:(id)a3 directoryWriteBack:(id *)a4 error:(id *)a5
++ (BOOL)synonymsDictionaryFromLocaleString:(id)string directoryWriteBack:(id *)back error:(id *)error
 {
   v66 = *MEMORY[0x1E69E9840];
-  v58 = a3;
-  v56 = a4;
-  if (a4)
+  stringCopy = string;
+  backCopy = back;
+  if (back)
   {
     v60 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v6, v7, v8, v9);
-    objc_msgSend_componentsSeparatedByString_(v58, v10, @";", v11, v12);
+    objc_msgSend_componentsSeparatedByString_(stringCopy, v10, @";", v11, v12);
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
@@ -200,13 +200,13 @@ LABEL_14:
           if (objc_msgSend_count(v20, v21, v22, v23, v24) != 2)
           {
             v53 = objc_msgSend_errorForDictionaryDeserialization_(CSUError, v25, @"Corrupted dictionary", v26, v27);
-            if (a5)
+            if (error)
             {
               v53 = v53;
-              *a5 = v53;
+              *error = v53;
             }
 
-            LOBYTE(a4) = 0;
+            LOBYTE(back) = 0;
             goto LABEL_14;
           }
 
@@ -233,21 +233,21 @@ LABEL_14:
     }
 
     v52 = v60;
-    *v56 = v60;
-    LOBYTE(a4) = 1;
+    *backCopy = v60;
+    LOBYTE(back) = 1;
 LABEL_14:
   }
 
   v54 = *MEMORY[0x1E69E9840];
-  return a4;
+  return back;
 }
 
-+ (id)stringFromSynonymsDictionary:(id)a3
++ (id)stringFromSynonymsDictionary:(id)dictionary
 {
   v55 = *MEMORY[0x1E69E9840];
-  v48 = a3;
+  dictionaryCopy = dictionary;
   v49 = objc_msgSend_array(MEMORY[0x1E695DF70], v3, v4, v5, v6);
-  objc_msgSend_allKeys(v48, v7, v8, v9, v10);
+  objc_msgSend_allKeys(dictionaryCopy, v7, v8, v9, v10);
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
@@ -267,7 +267,7 @@ LABEL_14:
 
         v19 = *(*(&v50 + 1) + 8 * i);
         v20 = objc_msgSend_localeIdentifier(v19, v12, v13, v14, v15);
-        v24 = objc_msgSend_objectForKeyedSubscript_(v48, v21, v19, v22, v23);
+        v24 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v21, v19, v22, v23);
         v29 = objc_msgSend_allObjects(v24, v25, v26, v27, v28);
         v33 = objc_msgSend_componentsJoinedByString_(v29, v30, @", ", v31, v32);
 
@@ -288,12 +288,12 @@ LABEL_14:
   return v44;
 }
 
-+ (id)searchDictionary:(id)a3 withLocale:(id)a4
++ (id)searchDictionary:(id)dictionary withLocale:(id)locale
 {
   v129 = *MEMORY[0x1E69E9840];
-  v110 = a3;
-  v111 = a4;
-  v8 = objc_msgSend_objectForKeyedSubscript_(v110, v5, v111, v6, v7);
+  dictionaryCopy = dictionary;
+  localeCopy = locale;
+  v8 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, localeCopy, v6, v7);
   v12 = v8;
   if (v8)
   {
@@ -303,14 +303,14 @@ LABEL_14:
   else
   {
     v14 = *MEMORY[0x1E695D9B0];
-    v15 = objc_msgSend_objectForKey_(v111, v9, *MEMORY[0x1E695D9B0], v10, v11);
+    v15 = objc_msgSend_objectForKey_(localeCopy, v9, *MEMORY[0x1E695D9B0], v10, v11);
     v16 = *MEMORY[0x1E695D978];
-    v112 = objc_msgSend_objectForKey_(v111, v17, *MEMORY[0x1E695D978], v18, v19);
+    v112 = objc_msgSend_objectForKey_(localeCopy, v17, *MEMORY[0x1E695D978], v18, v19);
     v124 = 0u;
     v125 = 0u;
     v122 = 0u;
     v123 = 0u;
-    obj = v110;
+    obj = dictionaryCopy;
     v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v20, &v122, v128, 16);
     if (v24)
     {
@@ -483,38 +483,38 @@ LABEL_36:
   return v13;
 }
 
-- (id)localizedLabelWithLocale:(id)a3
+- (id)localizedLabelWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v9 = objc_msgSend_localizedLabelDictionary(self, v5, v6, v7, v8);
-  v12 = objc_msgSend_searchDictionary_withLocale_(CSUSearchableKnowledgeObject, v10, v9, v4, v11);
+  v12 = objc_msgSend_searchDictionary_withLocale_(CSUSearchableKnowledgeObject, v10, v9, localeCopy, v11);
 
   return v12;
 }
 
-- (id)localizedSynonymsWithLocale:(id)a3
+- (id)localizedSynonymsWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v9 = objc_msgSend_localizedSynonymsDictionary(self, v5, v6, v7, v8);
-  v12 = objc_msgSend_searchDictionary_withLocale_(CSUSearchableKnowledgeObject, v10, v9, v4, v11);
+  v12 = objc_msgSend_searchDictionary_withLocale_(CSUSearchableKnowledgeObject, v10, v9, localeCopy, v11);
 
   return v12;
 }
 
-- (void)setLocalizedLabel:(id)a3 forLocale:(id)a4
+- (void)setLocalizedLabel:(id)label forLocale:(id)locale
 {
-  v14 = a3;
-  v6 = a4;
+  labelCopy = label;
+  localeCopy = locale;
   v11 = objc_msgSend_localizedLabelDictionary(self, v7, v8, v9, v10);
-  objc_msgSend_setObject_forKey_(v11, v12, v14, v6, v13);
+  objc_msgSend_setObject_forKey_(v11, v12, labelCopy, localeCopy, v13);
 }
 
-- (void)setLocalizedSynonyms:(id)a3 forLocale:(id)a4
+- (void)setLocalizedSynonyms:(id)synonyms forLocale:(id)locale
 {
-  v14 = a3;
-  v6 = a4;
+  synonymsCopy = synonyms;
+  localeCopy = locale;
   v11 = objc_msgSend_localizedSynonymsDictionary(self, v7, v8, v9, v10);
-  objc_msgSend_setObject_forKey_(v11, v12, v14, v6, v13);
+  objc_msgSend_setObject_forKey_(v11, v12, synonymsCopy, localeCopy, v13);
 }
 
 @end

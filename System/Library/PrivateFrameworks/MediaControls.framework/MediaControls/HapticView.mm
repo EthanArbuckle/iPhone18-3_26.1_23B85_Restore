@@ -1,11 +1,11 @@
 @interface HapticView
-- (_TtC13MediaControls10HapticView)initWithCoder:(id)a3;
-- (void)didTapHapticView:(id)a3;
+- (_TtC13MediaControls10HapticView)initWithCoder:(id)coder;
+- (void)didTapHapticView:(id)view;
 @end
 
 @implementation HapticView
 
-- (_TtC13MediaControls10HapticView)initWithCoder:(id)a3
+- (_TtC13MediaControls10HapticView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13MediaControls10HapticView_presenter) = 0;
   v4 = OBJC_IVAR____TtC13MediaControls10HapticView_hapticView;
@@ -19,10 +19,10 @@
   return result;
 }
 
-- (void)didTapHapticView:(id)a3
+- (void)didTapHapticView:(id)view
 {
   v3 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0x68);
-  v5 = self;
+  selfCopy = self;
   v4 = v3();
   if (v4)
   {

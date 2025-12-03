@@ -1,56 +1,56 @@
 @interface STPersistenceController
-- (BOOL)saveContext:(id)a3 error:(id *)a4;
+- (BOOL)saveContext:(id)context error:(id *)error;
 - (NSManagedObjectContext)viewContext;
 - (NSPersistentStore)cloudStore;
 - (NSPersistentStore)localStore;
 - (STPersistenceController)init;
-- (STPersistenceController)initWithPersistentContainer:(id)a3 persistentStoreChangeHandler:(id)a4 notificationDebouncer:(id)a5;
-- (id)descriptionForPersistentStore:(id)a3;
+- (STPersistenceController)initWithPersistentContainer:(id)container persistentStoreChangeHandler:(id)handler notificationDebouncer:(id)debouncer;
+- (id)descriptionForPersistentStore:(id)store;
 - (id)newBackgroundContext;
-- (void)_logAboutMissingStoreName:(id)a3;
-- (void)_persistentStoreCoordinatorStoresDidChange:(id)a3;
-- (void)_remotePersistentStoreChangesDidCoalesce:(id)a3;
-- (void)debouncer:(id)a3 didDebounce:(id)a4;
-- (void)performBackgroundTask:(id)a3;
-- (void)performBackgroundTaskAndWait:(id)a3;
-- (void)remotePersistentStoreDidChange:(id)a3;
+- (void)_logAboutMissingStoreName:(id)name;
+- (void)_persistentStoreCoordinatorStoresDidChange:(id)change;
+- (void)_remotePersistentStoreChangesDidCoalesce:(id)coalesce;
+- (void)debouncer:(id)debouncer didDebounce:(id)debounce;
+- (void)performBackgroundTask:(id)task;
+- (void)performBackgroundTaskAndWait:(id)wait;
+- (void)remotePersistentStoreDidChange:(id)change;
 @end
 
 @implementation STPersistenceController
 
-- (STPersistenceController)initWithPersistentContainer:(id)a3 persistentStoreChangeHandler:(id)a4 notificationDebouncer:(id)a5
+- (STPersistenceController)initWithPersistentContainer:(id)container persistentStoreChangeHandler:(id)handler notificationDebouncer:(id)debouncer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  handlerCopy = handler;
+  debouncerCopy = debouncer;
   v25.receiver = self;
   v25.super_class = STPersistenceController;
   v11 = [(STPersistenceController *)&v25 init];
   persistentContainer = v11->_persistentContainer;
-  v11->_persistentContainer = v8;
-  v13 = v8;
+  v11->_persistentContainer = containerCopy;
+  v13 = containerCopy;
 
   v14 = dispatch_queue_create("com.apple.ScreenTimeAgent.core-data", 0);
   coreDataQueue = v11->_coreDataQueue;
   v11->_coreDataQueue = v14;
 
   changeHandler = v11->_changeHandler;
-  v11->_changeHandler = v9;
-  v17 = v9;
+  v11->_changeHandler = handlerCopy;
+  v17 = handlerCopy;
 
   changeNotificationDebouncer = v11->_changeNotificationDebouncer;
-  v11->_changeNotificationDebouncer = v10;
-  v19 = v10;
+  v11->_changeNotificationDebouncer = debouncerCopy;
+  v19 = debouncerCopy;
 
-  v20 = [(NSPersistentContainer *)v11->_persistentContainer persistentStoreCoordinator];
-  v21 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v21 addObserver:v11 selector:sel_remotePersistentStoreDidChange_ name:*MEMORY[0x1E695D420] object:v20];
+  persistentStoreCoordinator = [(NSPersistentContainer *)v11->_persistentContainer persistentStoreCoordinator];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v11 selector:sel_remotePersistentStoreDidChange_ name:*MEMORY[0x1E695D420] object:persistentStoreCoordinator];
 
-  v22 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v22 addObserver:v11 selector:sel_remotePersistentStoreDidChange_ name:*MEMORY[0x1E695D470] object:v20];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:v11 selector:sel_remotePersistentStoreDidChange_ name:*MEMORY[0x1E695D470] object:persistentStoreCoordinator];
 
-  v23 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v23 addObserver:v11 selector:sel__persistentStoreCoordinatorStoresDidChange_ name:*MEMORY[0x1E695D3E0] object:v20];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:v11 selector:sel__persistentStoreCoordinatorStoresDidChange_ name:*MEMORY[0x1E695D3E0] object:persistentStoreCoordinator];
 
   return v11;
 }
@@ -71,12 +71,12 @@
   return v10;
 }
 
-- (BOOL)saveContext:(id)a3 error:(id *)a4
+- (BOOL)saveContext:(id)context error:(id *)error
 {
-  v5 = a3;
-  if ([v5 hasChanges])
+  contextCopy = context;
+  if ([contextCopy hasChanges])
   {
-    v6 = [v5 save:a4];
+    v6 = [contextCopy save:error];
   }
 
   else
@@ -87,23 +87,23 @@
   return v6;
 }
 
-- (void)performBackgroundTask:(id)a3
+- (void)performBackgroundTask:(id)task
 {
-  v4 = a3;
-  v5 = [(STPersistenceController *)self coreDataQueue];
+  taskCopy = task;
+  coreDataQueue = [(STPersistenceController *)self coreDataQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__STPersistenceController_performBackgroundTask___block_invoke;
   v7[3] = &unk_1E7CE6C98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = taskCopy;
+  v6 = taskCopy;
+  dispatch_async(coreDataQueue, v7);
 }
 
-- (void)performBackgroundTaskAndWait:(id)a3
+- (void)performBackgroundTaskAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   v5 = +[STLog persistence];
   v6 = os_signpost_id_generate(v5);
 
@@ -117,15 +117,15 @@
 
   v9 = self->_coreDataQueue;
   objc_sync_enter(v9);
-  v10 = [(STPersistenceController *)self newBackgroundContext];
-  [v10 setMergePolicy:*MEMORY[0x1E695D370]];
+  newBackgroundContext = [(STPersistenceController *)self newBackgroundContext];
+  [newBackgroundContext setMergePolicy:*MEMORY[0x1E695D370]];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __56__STPersistenceController_performBackgroundTaskAndWait___block_invoke;
   v18 = &unk_1E7CE6948;
-  v11 = v4;
+  v11 = waitCopy;
   v20 = v11;
-  v12 = v10;
+  v12 = newBackgroundContext;
   v19 = v12;
   [v12 performBlockAndWait:&v15];
 
@@ -141,33 +141,33 @@
 
 - (id)newBackgroundContext
 {
-  v2 = [(STPersistenceController *)self persistentContainer];
-  v3 = [v2 newBackgroundContext];
+  persistentContainer = [(STPersistenceController *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
-  [v3 setMergePolicy:*MEMORY[0x1E695D370]];
-  return v3;
+  [newBackgroundContext setMergePolicy:*MEMORY[0x1E695D370]];
+  return newBackgroundContext;
 }
 
 - (NSManagedObjectContext)viewContext
 {
-  v2 = [(STPersistenceController *)self persistentContainer];
-  v3 = [v2 viewContext];
+  persistentContainer = [(STPersistenceController *)self persistentContainer];
+  viewContext = [persistentContainer viewContext];
 
-  return v3;
+  return viewContext;
 }
 
 - (NSPersistentStore)localStore
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(STPersistenceController *)self persistentContainer];
-  v4 = [v3 persistentStoreCoordinator];
-  v5 = [v4 persistentStores];
+  persistentContainer = [(STPersistenceController *)self persistentContainer];
+  persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v5;
+  v6 = persistentStores;
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v7)
   {
@@ -183,8 +183,8 @@ LABEL_3:
       }
 
       v11 = *(*(&v30 + 1) + 8 * v10);
-      v12 = [v11 configurationName];
-      v13 = [v12 isEqualToString:@"Local"];
+      configurationName = [v11 configurationName];
+      v13 = [configurationName isEqualToString:@"Local"];
 
       if (v13)
       {
@@ -238,8 +238,8 @@ LABEL_9:
 
         v20 = *(*(&v26 + 1) + 8 * i);
         v21 = [v20 URL];
-        v22 = [v21 lastPathComponent];
-        v23 = [v22 containsString:@"Local"];
+        lastPathComponent = [v21 lastPathComponent];
+        v23 = [lastPathComponent containsString:@"Local"];
 
         if (v23)
         {
@@ -270,15 +270,15 @@ LABEL_22:
 - (NSPersistentStore)cloudStore
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(STPersistenceController *)self persistentContainer];
-  v4 = [v3 persistentStoreCoordinator];
-  v5 = [v4 persistentStores];
+  persistentContainer = [(STPersistenceController *)self persistentContainer];
+  persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v5;
+  v6 = persistentStores;
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v7)
   {
@@ -294,8 +294,8 @@ LABEL_3:
       }
 
       v11 = *(*(&v30 + 1) + 8 * v10);
-      v12 = [v11 configurationName];
-      v13 = [v12 isEqualToString:@"Cloud"];
+      configurationName = [v11 configurationName];
+      v13 = [configurationName isEqualToString:@"Cloud"];
 
       if (v13)
       {
@@ -349,8 +349,8 @@ LABEL_9:
 
         v20 = *(*(&v26 + 1) + 8 * i);
         v21 = [v20 URL];
-        v22 = [v21 lastPathComponent];
-        v23 = [v22 containsString:@"Cloud"];
+        lastPathComponent = [v21 lastPathComponent];
+        v23 = [lastPathComponent containsString:@"Cloud"];
 
         if (v23)
         {
@@ -378,32 +378,32 @@ LABEL_22:
   return v14;
 }
 
-- (void)debouncer:(id)a3 didDebounce:(id)a4
+- (void)debouncer:(id)debouncer didDebounce:(id)debounce
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(STPersistenceController *)self changeNotificationDebouncer];
+  debounceCopy = debounce;
+  debouncerCopy = debouncer;
+  changeNotificationDebouncer = [(STPersistenceController *)self changeNotificationDebouncer];
 
-  v8 = v9;
-  if (v7 == v6 && v9)
+  v8 = debounceCopy;
+  if (changeNotificationDebouncer == debouncerCopy && debounceCopy)
   {
-    [(STPersistenceController *)self _remotePersistentStoreChangesDidCoalesce:v9];
-    v8 = v9;
+    [(STPersistenceController *)self _remotePersistentStoreChangesDidCoalesce:debounceCopy];
+    v8 = debounceCopy;
   }
 }
 
-- (id)descriptionForPersistentStore:(id)a3
+- (id)descriptionForPersistentStore:(id)store
 {
-  v3 = a3;
-  v4 = [v3 configurationName];
-  v5 = [v3 URL];
-  v6 = [v3 URL];
+  storeCopy = store;
+  configurationName = [storeCopy configurationName];
+  v5 = [storeCopy URL];
+  v6 = [storeCopy URL];
   v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/dev/null"];
   v8 = [v6 isEqual:v7];
 
   if (v8)
   {
-    [v3 type];
+    [storeCopy type];
   }
 
   else
@@ -411,42 +411,42 @@ LABEL_22:
     [v5 lastPathComponent];
   }
   v9 = ;
-  v10 = [v4 stringByAppendingPathComponent:v9];
+  v10 = [configurationName stringByAppendingPathComponent:v9];
 
   return v10;
 }
 
-- (void)remotePersistentStoreDidChange:(id)a3
+- (void)remotePersistentStoreDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = +[STLog persistence];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [STPersistenceController remotePersistentStoreDidChange:v5];
   }
 
-  v6 = [(STPersistenceController *)self changeNotificationDebouncer];
-  [v6 bounce:v4];
+  changeNotificationDebouncer = [(STPersistenceController *)self changeNotificationDebouncer];
+  [changeNotificationDebouncer bounce:changeCopy];
 }
 
-- (void)_remotePersistentStoreChangesDidCoalesce:(id)a3
+- (void)_remotePersistentStoreChangesDidCoalesce:(id)coalesce
 {
-  v4 = a3;
+  coalesceCopy = coalesce;
   v5 = +[STLog persistence];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [STPersistenceController _remotePersistentStoreChangesDidCoalesce:v5];
   }
 
-  v6 = [(STPersistenceController *)self coreDataQueue];
+  coreDataQueue = [(STPersistenceController *)self coreDataQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__STPersistenceController__remotePersistentStoreChangesDidCoalesce___block_invoke;
   v8[3] = &unk_1E7CE7AA0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = coalesceCopy;
+  v7 = coalesceCopy;
+  dispatch_async(coreDataQueue, v8);
 }
 
 void __68__STPersistenceController__remotePersistentStoreChangesDidCoalesce___block_invoke(uint64_t a1)
@@ -459,23 +459,23 @@ void __68__STPersistenceController__remotePersistentStoreChangesDidCoalesce___bl
   [v3 handleRemotePersistentStoreDidChange:*(a1 + 40) inContext:v4];
 }
 
-- (void)_persistentStoreCoordinatorStoresDidChange:(id)a3
+- (void)_persistentStoreCoordinatorStoresDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(STPersistenceController *)self changeHandler];
-  [v5 handlePersistentStoreCoordinatorStoresDidChange:v4];
+  changeCopy = change;
+  changeHandler = [(STPersistenceController *)self changeHandler];
+  [changeHandler handlePersistentStoreCoordinatorStoresDidChange:changeCopy];
 }
 
-- (void)_logAboutMissingStoreName:(id)a3
+- (void)_logAboutMissingStoreName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__STPersistenceController__logAboutMissingStoreName___block_invoke;
   block[3] = &unk_1E7CE7AC8;
-  v7 = v3;
+  v7 = nameCopy;
   v4 = _logAboutMissingStoreName__onceToken;
-  v5 = v3;
+  v5 = nameCopy;
   if (v4 != -1)
   {
     dispatch_once(&_logAboutMissingStoreName__onceToken, block);

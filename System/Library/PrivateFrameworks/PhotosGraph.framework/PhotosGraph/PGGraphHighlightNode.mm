@@ -1,33 +1,33 @@
 @interface PGGraphHighlightNode
-+ ($74357DB5E33013E4F0FB9D3992AAC0CD)_promotionScoreDescriptorWithMomentNodes:(SEL)a3 neighborScoreComputer:(id)a4;
++ ($74357DB5E33013E4F0FB9D3992AAC0CD)_promotionScoreDescriptorWithMomentNodes:(SEL)nodes neighborScoreComputer:(id)computer;
 + (MARelation)highlightGroupOfHighlight;
 + (MARelation)highlightWithPrivateAndSharedAssetsOfHighlight;
 + (MARelation)highlightWithPrivateAssetsOfHighlight;
 + (MARelation)highlightWithSharedAssetsOfHighlight;
 + (MARelation)momentInDayHighlight;
 + (MARelation)momentInHighlight;
-+ (double)aboveAveragePromotionScoreWithPromotionScoreDescriptor:(id *)a3;
-+ (double)averagePromotionScoreWithPromotionScoreDescriptor:(id *)a3;
-+ (double)belowAveragePromotionScoreWithPromotionScoreDescriptor:(id *)a3;
-+ (double)nonMeaningfulPromotionScoreWithPromotionScoreDescriptor:(id *)a3 isAggregation:(BOOL)a4 enrichmentState:(unsigned __int16)a5;
++ (double)aboveAveragePromotionScoreWithPromotionScoreDescriptor:(id *)descriptor;
++ (double)averagePromotionScoreWithPromotionScoreDescriptor:(id *)descriptor;
++ (double)belowAveragePromotionScoreWithPromotionScoreDescriptor:(id *)descriptor;
++ (double)nonMeaningfulPromotionScoreWithPromotionScoreDescriptor:(id *)descriptor isAggregation:(BOOL)aggregation enrichmentState:(unsigned __int16)state;
 + (id)allHighlightsFilter;
 + (id)dayHighlightsFilter;
 + (id)filter;
-+ (id)filterWithUUID:(id)a3;
-+ (id)filterWithUUIDs:(id)a3;
-+ (id)inclusivePathFromTargetNodeDomain:(unsigned __int16)a3 withName:(id)a4;
-+ (id)inclusivePathToTargetNodeDomain:(unsigned __int16)a3 withName:(id)a4;
++ (id)filterWithUUID:(id)d;
++ (id)filterWithUUIDs:(id)ds;
++ (id)inclusivePathFromTargetNodeDomain:(unsigned __int16)domain withName:(id)name;
++ (id)inclusivePathToTargetNodeDomain:(unsigned __int16)domain withName:(id)name;
 + (id)otherVeryMeaningfulMeanings;
-+ (id)pathFromTargetNodeDomain:(unsigned __int16)a3;
-+ (id)pathToTargetNodeDomain:(unsigned __int16)a3;
++ (id)pathFromTargetNodeDomain:(unsigned __int16)domain;
++ (id)pathToTargetNodeDomain:(unsigned __int16)domain;
 + (id)promotionScoreSortDescriptors;
-+ (id)propertiesWithHighlight:(id)a3;
-- (BOOL)happensPartiallyAtHomeOfPersonNodes:(id)a3;
-- (BOOL)happensPartiallyAtHomeOrWorkOfPersonNodes:(id)a3;
-- (BOOL)happensPartiallyAtWorkOfPersonNodes:(id)a3;
++ (id)propertiesWithHighlight:(id)highlight;
+- (BOOL)happensPartiallyAtHomeOfPersonNodes:(id)nodes;
+- (BOOL)happensPartiallyAtHomeOrWorkOfPersonNodes:(id)nodes;
+- (BOOL)happensPartiallyAtWorkOfPersonNodes:(id)nodes;
 - (BOOL)hasLocation;
-- (BOOL)hasPeopleCountingMe:(BOOL)a3;
-- (BOOL)hasProperties:(id)a3;
+- (BOOL)hasPeopleCountingMe:(BOOL)me;
+- (BOOL)hasProperties:(id)properties;
 - (BOOL)isInteresting;
 - (BOOL)isInterestingWithAlternateJunking;
 - (BOOL)isPartOfAggregation;
@@ -38,27 +38,27 @@
 - (BOOL)petIsPresent;
 - (NSString)featureIdentifier;
 - (PGGraphHighlightGroupNode)highlightGroupNode;
-- (PGGraphHighlightNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
+- (PGGraphHighlightNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
 - (PGGraphHighlightNodeCollection)collection;
 - (double)contentScore;
-- (double)weightForMoment:(id)a3;
+- (double)weightForMoment:(id)moment;
 - (id)addressNodes;
 - (id)anniversaryPersonNodes;
 - (id)birthdayPersonNodes;
 - (id)businessNodes;
 - (id)celebratedHolidayNodes;
-- (id)connectedEventsWithTargetDomain:(unsigned __int16)a3;
+- (id)connectedEventsWithTargetDomain:(unsigned __int16)domain;
 - (id)consolidatedPersonNodes;
 - (id)consolidatedPersonNodesPresentInAssets;
 - (id)dateNodes;
-- (id)debugDictionaryWithServiceManager:(id)a3;
+- (id)debugDictionaryWithServiceManager:(id)manager;
 - (id)eventEnrichmentMomentNodes;
 - (id)eventEnrichmentSortedMomentNodes;
 - (id)eventSortedMomentNodes;
-- (id)fetchAssetCollectionInPhotoLibrary:(id)a3;
+- (id)fetchAssetCollectionInPhotoLibrary:(id)library;
 - (id)holidayNodes;
-- (id)initFromHighlight:(id)a3;
-- (id)keywordsForRelatedType:(unint64_t)a3 focusOnNodes:(id)a4;
+- (id)initFromHighlight:(id)highlight;
+- (id)keywordsForRelatedType:(unint64_t)type focusOnNodes:(id)nodes;
 - (id)meaningLabels;
 - (id)naturalLanguageFeatures;
 - (id)personNodes;
@@ -66,14 +66,14 @@
 - (id)petNodes;
 - (id)poiNodes;
 - (id)propertyDictionary;
-- (id)propertyForKey:(id)a3;
+- (id)propertyForKey:(id)key;
 - (id)publicEventNodes;
 - (id)reliableMeaningLabels;
 - (id)roiNodes;
 - (id)seasonNodes;
 - (id)socialGroupNodes;
-- (void)enumerateBusinessesUsingBlock:(id)a3;
-- (void)setLocalProperties:(id)a3;
+- (void)enumerateBusinessesUsingBlock:(id)block;
+- (void)setLocalProperties:(id)properties;
 @end
 
 @implementation PGGraphHighlightNode
@@ -81,15 +81,15 @@
 - (id)naturalLanguageFeatures
 {
   v3 = [PGTextFeatureGenerator alloc];
-  v4 = [(PGGraphHighlightNode *)self collection];
-  v5 = [v4 momentNodes];
-  v6 = [v5 temporarySet];
-  v7 = [(MANode *)self graph];
-  v8 = [(PGTextFeatureGenerator *)v3 initWithMomentNodes:v6 graph:v7];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  temporarySet = [momentNodes temporarySet];
+  graph = [(MANode *)self graph];
+  v8 = [(PGTextFeatureGenerator *)v3 initWithMomentNodes:temporarySet graph:graph];
 
-  v9 = [(PGTextFeatureGenerator *)v8 naturalLanguageFeatures];
+  naturalLanguageFeatures = [(PGTextFeatureGenerator *)v8 naturalLanguageFeatures];
 
-  return v9;
+  return naturalLanguageFeatures;
 }
 
 - (NSString)featureIdentifier
@@ -97,63 +97,63 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphHighlightNode *)self localIdentifier];
-  v7 = [v3 stringWithFormat:@"%@|%@", v5, v6];
+  localIdentifier = [(PGGraphHighlightNode *)self localIdentifier];
+  v7 = [v3 stringWithFormat:@"%@|%@", v5, localIdentifier];
 
   return v7;
 }
 
-- (id)keywordsForRelatedType:(unint64_t)a3 focusOnNodes:(id)a4
+- (id)keywordsForRelatedType:(unint64_t)type focusOnNodes:(id)nodes
 {
   v127 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v90 = self;
-  v7 = [(PGGraphHighlightNode *)self collection];
-  v8 = [v7 momentNodes];
-  v9 = [v8 temporarySet];
+  nodesCopy = nodes;
+  selfCopy = self;
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  temporarySet = [momentNodes temporarySet];
 
-  if ([v9 count] == 1)
+  if ([temporarySet count] == 1)
   {
-    v10 = [v9 anyObject];
-    v11 = [v10 keywordsForRelatedType:a3 focusOnNodes:v6];
+    anyObject = [temporarySet anyObject];
+    v11 = [anyObject keywordsForRelatedType:type focusOnNodes:nodesCopy];
 
     goto LABEL_62;
   }
 
-  v76 = [MEMORY[0x277CBEB18] array];
-  v87 = [MEMORY[0x277CBEB18] array];
-  v88 = [MEMORY[0x277CBEB18] array];
-  v86 = [MEMORY[0x277CBEB18] array];
-  v85 = [MEMORY[0x277CBEB18] array];
-  v84 = [MEMORY[0x277CBEB18] array];
-  if ((a3 & 2) != 0)
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
+  array5 = [MEMORY[0x277CBEB18] array];
+  array6 = [MEMORY[0x277CBEB18] array];
+  if ((type & 2) != 0)
   {
     v12 = MEMORY[0x277CCACA8];
-    v13 = [(PGGraphHighlightNode *)v90 localStartDate];
-    v14 = [v12 stringWithFormat:@"[EventStart] %@", v13];
+    localStartDate = [(PGGraphHighlightNode *)selfCopy localStartDate];
+    v14 = [v12 stringWithFormat:@"[EventStart] %@", localStartDate];
 
     v15 = MEMORY[0x277CCACA8];
-    [(PGGraphHighlightNode *)v90 localEndDate];
-    v17 = v16 = a3;
+    [(PGGraphHighlightNode *)selfCopy localEndDate];
+    v17 = v16 = type;
     v18 = [v15 stringWithFormat:@"[EventEnd] %@", v17];
 
-    a3 = v16;
-    [v88 addObject:v14];
-    [v88 addObject:v18];
+    type = v16;
+    [array3 addObject:v14];
+    [array3 addObject:v18];
   }
 
-  v83 = a3;
-  v77 = v9;
-  if (a3)
+  typeCopy = type;
+  v77 = temporarySet;
+  if (type)
   {
-    v19 = [(MANode *)v90 graph];
-    v80 = [v19 meNode];
+    graph = [(MANode *)selfCopy graph];
+    meNode = [graph meNode];
 
     v118 = 0u;
     v119 = 0u;
     v116 = 0u;
     v117 = 0u;
-    obj = [(PGGraphHighlightNode *)v90 personNodes];
+    obj = [(PGGraphHighlightNode *)selfCopy personNodes];
     v79 = [obj countByEnumeratingWithState:&v116 objects:v126 count:16];
     if (!v79)
     {
@@ -161,7 +161,7 @@
     }
 
     v78 = *v117;
-    v75 = v6;
+    v75 = nodesCopy;
     while (1)
     {
       for (i = 0; i != v79; ++i)
@@ -172,17 +172,17 @@
         }
 
         v21 = *(*(&v116 + 1) + 8 * i);
-        if (v6 && ![v6 containsObject:*(*(&v116 + 1) + 8 * i)])
+        if (nodesCopy && ![nodesCopy containsObject:*(*(&v116 + 1) + 8 * i)])
         {
           continue;
         }
 
         v81 = i;
         v22 = MEMORY[0x277CCAB68];
-        v23 = [v21 keywordDescription];
-        v82 = [v22 stringWithString:v23];
+        keywordDescription = [v21 keywordDescription];
+        v82 = [v22 stringWithString:keywordDescription];
 
-        if (!v80 || ([v21 isEqualToNode:v80] & 1) != 0)
+        if (!meNode || ([v21 isEqualToNode:meNode] & 1) != 0)
         {
           goto LABEL_32;
         }
@@ -193,7 +193,7 @@
           goto LABEL_31;
         }
 
-        v25 = [MEMORY[0x277CBEB18] array];
+        array7 = [MEMORY[0x277CBEB18] array];
         v112 = 0u;
         v113 = 0u;
         v114 = 0u;
@@ -223,8 +223,8 @@
             v32 = [v31 oppositeNode:v21];
             if ([v32 domain] == 300)
             {
-              v33 = [v32 label];
-              if ([v33 isEqualToString:@"People"])
+              label = [v32 label];
+              if ([label isEqualToString:@"People"])
               {
               }
 
@@ -233,12 +233,12 @@
                 [v32 label];
                 v34 = v29;
                 v35 = v26;
-                v36 = v25;
+                v36 = array7;
                 v38 = v37 = v21;
                 v39 = [v38 isEqualToString:@"Me"];
 
                 v21 = v37;
-                v25 = v36;
+                array7 = v36;
                 v26 = v35;
                 v29 = v34;
                 v28 = v89;
@@ -249,8 +249,8 @@
                 }
               }
 
-              v40 = [v31 label];
-              [v25 addObject:v40];
+              label2 = [v31 label];
+              [array7 addObject:label2];
             }
 
 LABEL_26:
@@ -265,9 +265,9 @@ LABEL_26:
         while (v28);
 LABEL_28:
 
-        if ([v25 count])
+        if ([array7 count])
         {
-          v41 = [v25 componentsJoinedByString:@"/"];
+          v41 = [array7 componentsJoinedByString:@"/"];
           [v82 appendFormat:@" - %@ -", v41];
         }
 
@@ -275,7 +275,7 @@ LABEL_28:
 LABEL_31:
 
 LABEL_32:
-        v42 = [v21 collection];
+        collection2 = [v21 collection];
         v108 = 0u;
         v109 = 0u;
         v110 = 0u;
@@ -297,13 +297,13 @@ LABEL_32:
               }
 
               v49 = *(*(&v108 + 1) + 8 * j);
-              v50 = [v49 collection];
-              v51 = [(PGGraphEdgeCollection *)PGGraphPersonPresentEdgeCollection edgesFromNodes:v42 toNodes:v50];
-              v52 = [v51 anyEdge];
-              [v52 importance];
+              collection3 = [v49 collection];
+              v51 = [(PGGraphEdgeCollection *)PGGraphPersonPresentEdgeCollection edgesFromNodes:collection2 toNodes:collection3];
+              anyEdge = [v51 anyEdge];
+              [anyEdge importance];
               v54 = v53;
 
-              [(PGGraphHighlightNode *)v90 weightForMoment:v49];
+              [(PGGraphHighlightNode *)selfCopy weightForMoment:v49];
               v47 = v47 + v55 * v54;
             }
 
@@ -319,9 +319,9 @@ LABEL_32:
         }
 
         [v82 appendFormat:@" (%0.2f)", *&v47];
-        [v76 addObject:v82];
+        [array addObject:v82];
 
-        v6 = v75;
+        nodesCopy = v75;
         i = v81;
       }
 
@@ -334,7 +334,7 @@ LABEL_44:
         v107 = 0u;
         v104 = 0u;
         v105 = 0u;
-        v9 = v77;
+        temporarySet = v77;
         v56 = v77;
         v57 = [v56 countByEnumeratingWithState:&v104 objects:v123 count:16];
         if (v57)
@@ -366,7 +366,7 @@ LABEL_44:
         }
 
         v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"[All Persons] %lu", v59];
-        [v76 addObject:v62];
+        [array addObject:v62];
 
         break;
       }
@@ -377,7 +377,7 @@ LABEL_44:
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v63 = v9;
+  v63 = temporarySet;
   v64 = [v63 countByEnumeratingWithState:&v100 objects:v122 count:16];
   if (v64)
   {
@@ -393,20 +393,20 @@ LABEL_44:
         }
 
         v68 = *(*(&v100 + 1) + 8 * m);
-        [(PGGraphHighlightNode *)v90 weightForMoment:v68];
+        [(PGGraphHighlightNode *)selfCopy weightForMoment:v68];
         v70 = v69;
         v91[0] = MEMORY[0x277D85DD0];
         v91[1] = 3221225472;
         v91[2] = __60__PGGraphHighlightNode_keywordsForRelatedType_focusOnNodes___block_invoke;
         v91[3] = &unk_27887F650;
-        v92 = v6;
-        v98 = v83;
+        v92 = nodesCopy;
+        v98 = typeCopy;
         v99 = v70;
-        v93 = v87;
-        v94 = v88;
-        v95 = v86;
-        v96 = v85;
-        v97 = v84;
+        v93 = array2;
+        v94 = array3;
+        v95 = array4;
+        v96 = array5;
+        v97 = array6;
         [v68 enumerateNeighborEdgesAndNodesThroughOutEdgesUsingBlock:v91];
       }
 
@@ -418,19 +418,19 @@ LABEL_44:
 
   v120[0] = &unk_284482310;
   v120[1] = &unk_284482328;
-  v121[0] = v76;
-  v121[1] = v87;
+  v121[0] = array;
+  v121[1] = array2;
   v120[2] = &unk_284482340;
   v120[3] = &unk_284482358;
-  v121[2] = v88;
-  v121[3] = v86;
+  v121[2] = array3;
+  v121[3] = array4;
   v120[4] = &unk_284482370;
   v120[5] = &unk_284482388;
-  v121[4] = v85;
-  v121[5] = v84;
+  v121[4] = array5;
+  v121[5] = array6;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v121 forKeys:v120 count:6];
 
-  v9 = v77;
+  temporarySet = v77;
 LABEL_62:
 
   v71 = *MEMORY[0x277D85DE8];
@@ -674,68 +674,68 @@ void __60__PGGraphHighlightNode_keywordsForRelatedType_focusOnNodes___block_invo
   [*(a1 + 40) addObject:v8];
 }
 
-- (id)connectedEventsWithTargetDomain:(unsigned __int16)a3
+- (id)connectedEventsWithTargetDomain:(unsigned __int16)domain
 {
-  v3 = a3;
+  domainCopy = domain;
   v13 = *MEMORY[0x277D85DE8];
-  if ([(PGGraphHighlightNode *)self domain]== a3)
+  if ([(PGGraphHighlightNode *)self domain]== domain)
   {
-    v5 = [MEMORY[0x277CBEB98] setWithObject:self];
+    temporarySet = [MEMORY[0x277CBEB98] setWithObject:self];
   }
 
-  else if (v3 == 100)
+  else if (domainCopy == 100)
   {
-    v6 = [(PGGraphHighlightNode *)self eventCollection];
-    v7 = [v6 eventMomentNodes];
-    v5 = [v7 temporarySet];
+    eventCollection = [(PGGraphHighlightNode *)self eventCollection];
+    eventMomentNodes = [eventCollection eventMomentNodes];
+    temporarySet = [eventMomentNodes temporarySet];
   }
 
   else
   {
     v8 = +[PGLogging sharedLogging];
-    v9 = [v8 loggingConnection];
+    loggingConnection = [v8 loggingConnection];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v12[0] = 67109120;
-      v12[1] = v3;
-      _os_log_error_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_ERROR, "Unsupported target domain: %u", v12, 8u);
+      v12[1] = domainCopy;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Unsupported target domain: %u", v12, 8u);
     }
 
-    v5 = 0;
+    temporarySet = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return temporarySet;
 }
 
-- (double)weightForMoment:(id)a3
+- (double)weightForMoment:(id)moment
 {
-  v3 = [(MANode *)self anyEdgeTowardNode:a3];
+  v3 = [(MANode *)self anyEdgeTowardNode:moment];
   [v3 weight];
   v5 = v4;
 
   return v5;
 }
 
-- (id)debugDictionaryWithServiceManager:(id)a3
+- (id)debugDictionaryWithServiceManager:(id)manager
 {
   v35[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   v5 = [PGTitleGenerationContext alloc];
-  v6 = [(MANode *)self graph];
-  v7 = [(PGTitleGenerationContext *)v5 initWithGraph:v6 serviceManager:v4];
+  graph = [(MANode *)self graph];
+  v7 = [(PGTitleGenerationContext *)v5 initWithGraph:graph serviceManager:managerCopy];
 
   v33 = v7;
   v8 = [[PGHighlightTitleGenerator alloc] initWithCollection:self curatedAssetCollection:0 keyAsset:0 createVerboseTitle:0 titleGenerationContext:v7];
-  v9 = [(PGHighlightTitleGenerator *)v8 titleTuple];
-  v10 = [v9 title];
-  v11 = [v10 stringValue];
-  v12 = v11;
-  if (v11)
+  titleTuple = [(PGHighlightTitleGenerator *)v8 titleTuple];
+  title = [titleTuple title];
+  stringValue = [title stringValue];
+  v12 = stringValue;
+  if (stringValue)
   {
-    v13 = v11;
+    v13 = stringValue;
   }
 
   else
@@ -745,12 +745,12 @@ void __60__PGGraphHighlightNode_keywordsForRelatedType_focusOnNodes___block_invo
 
   v32 = v13;
 
-  v14 = [v9 subtitle];
-  v15 = [v14 stringValue];
-  v16 = v15;
-  if (v15)
+  subtitle = [titleTuple subtitle];
+  stringValue2 = [subtitle stringValue];
+  v16 = stringValue2;
+  if (stringValue2)
   {
-    v17 = v15;
+    v17 = stringValue2;
   }
 
   else
@@ -760,12 +760,12 @@ void __60__PGGraphHighlightNode_keywordsForRelatedType_focusOnNodes___block_invo
 
   v18 = v17;
 
-  v19 = [v10 category];
+  category = [title category];
   v20 = [[PGHighlightTitleGenerator alloc] initWithCollection:self curatedAssetCollection:0 keyAsset:0 createVerboseTitle:1 titleGenerationContext:v7];
 
-  v21 = [(PGHighlightTitleGenerator *)v20 titleTuple];
-  v22 = [v21 subtitle];
-  v23 = [v22 stringValue];
+  titleTuple2 = [(PGHighlightTitleGenerator *)v20 titleTuple];
+  subtitle2 = [titleTuple2 subtitle];
+  stringValue3 = [subtitle2 stringValue];
 
   v34[0] = @"weightedAverageContentScore";
   v24 = MEMORY[0x277CCABB0];
@@ -776,15 +776,15 @@ void __60__PGGraphHighlightNode_keywordsForRelatedType_focusOnNodes___block_invo
   v34[1] = @"title";
   v34[2] = @"subtitle";
   v35[2] = v18;
-  v35[3] = v23;
+  v35[3] = stringValue3;
   v34[3] = @"verboseSmartDescription";
   v34[4] = @"titleCategory";
-  v26 = [MEMORY[0x277CCABB0] numberWithInteger:v19];
+  v26 = [MEMORY[0x277CCABB0] numberWithInteger:category];
   v35[4] = v26;
   v34[5] = @"meaningLabels";
-  v27 = [(PGGraphHighlightNode *)self meaningLabels];
-  v28 = [v27 allObjects];
-  v35[5] = v28;
+  meaningLabels = [(PGGraphHighlightNode *)self meaningLabels];
+  allObjects = [meaningLabels allObjects];
+  v35[5] = allObjects;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:6];
 
   v30 = *MEMORY[0x277D85DE8];
@@ -792,33 +792,33 @@ void __60__PGGraphHighlightNode_keywordsForRelatedType_focusOnNodes___block_invo
   return v29;
 }
 
-- (void)enumerateBusinessesUsingBlock:(id)a3
+- (void)enumerateBusinessesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PGGraphHighlightNode *)self collection];
-  v6 = [v5 momentNodes];
+  blockCopy = block;
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__PGGraphHighlightNode_enumerateBusinessesUsingBlock___block_invoke;
   v8[3] = &unk_278883DC0;
-  v9 = v4;
-  v7 = v4;
-  [v6 enumerateNodesUsingBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [momentNodes enumerateNodesUsingBlock:v8];
 }
 
 - (id)seasonNodes
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(PGGraphHighlightNode *)self collection];
-  v5 = [v4 momentNodes];
-  v6 = [v5 dateNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  dateNodes = [momentNodes dateNodes];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __35__PGGraphHighlightNode_seasonNodes__block_invoke;
   v9[3] = &unk_2788875A8;
   v7 = v3;
   v10 = v7;
-  [v6 enumerateNodesUsingBlock:v9];
+  [dateNodes enumerateNodesUsingBlock:v9];
 
   return v7;
 }
@@ -837,15 +837,15 @@ void __35__PGGraphHighlightNode_seasonNodes__block_invoke(uint64_t a1, void *a2)
 - (id)publicEventNodes
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(PGGraphHighlightNode *)self collection];
-  v5 = [v4 momentNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__PGGraphHighlightNode_publicEventNodes__block_invoke;
   v8[3] = &unk_278889290;
   v6 = v3;
   v9 = v6;
-  [v5 enumerateNodesUsingBlock:v8];
+  [momentNodes enumerateNodesUsingBlock:v8];
 
   return v6;
 }
@@ -863,15 +863,15 @@ void __40__PGGraphHighlightNode_publicEventNodes__block_invoke(uint64_t a1, void
 - (id)businessNodes
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(PGGraphHighlightNode *)self collection];
-  v5 = [v4 momentNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__PGGraphHighlightNode_businessNodes__block_invoke;
   v8[3] = &unk_278889290;
   v6 = v3;
   v9 = v6;
-  [v5 enumerateNodesUsingBlock:v8];
+  [momentNodes enumerateNodesUsingBlock:v8];
 
   return v6;
 }
@@ -888,10 +888,10 @@ void __37__PGGraphHighlightNode_businessNodes__block_invoke(uint64_t a1, void *a
 
 - (id)addressNodes
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 addressNodes];
-  v5 = [v4 set];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  addressNodes = [momentNodes addressNodes];
+  v5 = [addressNodes set];
 
   return v5;
 }
@@ -902,18 +902,18 @@ void __37__PGGraphHighlightNode_businessNodes__block_invoke(uint64_t a1, void *a
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __35__PGGraphHighlightNode_hasLocation__block_invoke;
   v5[3] = &unk_278885948;
   v5[4] = &v6;
-  [v3 enumerateNodesUsingBlock:v5];
+  [momentNodes enumerateNodesUsingBlock:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(collection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return collection;
 }
 
 uint64_t __35__PGGraphHighlightNode_hasLocation__block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -931,15 +931,15 @@ uint64_t __35__PGGraphHighlightNode_hasLocation__block_invoke(uint64_t a1, void 
 - (id)roiNodes
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(PGGraphHighlightNode *)self collection];
-  v5 = [v4 momentNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __32__PGGraphHighlightNode_roiNodes__block_invoke;
   v8[3] = &unk_278889290;
   v6 = v3;
   v9 = v6;
-  [v5 enumerateNodesUsingBlock:v8];
+  [momentNodes enumerateNodesUsingBlock:v8];
 
   return v6;
 }
@@ -957,15 +957,15 @@ void __32__PGGraphHighlightNode_roiNodes__block_invoke(uint64_t a1, void *a2)
 - (id)poiNodes
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(PGGraphHighlightNode *)self collection];
-  v5 = [v4 momentNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __32__PGGraphHighlightNode_poiNodes__block_invoke;
   v8[3] = &unk_278889290;
   v6 = v3;
   v9 = v6;
-  [v5 enumerateNodesUsingBlock:v8];
+  [momentNodes enumerateNodesUsingBlock:v8];
 
   return v6;
 }
@@ -983,16 +983,16 @@ void __32__PGGraphHighlightNode_poiNodes__block_invoke(uint64_t a1, void *a2)
 - (id)celebratedHolidayNodes
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(PGGraphHighlightNode *)self collection];
-  v5 = [v4 momentNodes];
-  v6 = [v5 dateNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  dateNodes = [momentNodes dateNodes];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__PGGraphHighlightNode_celebratedHolidayNodes__block_invoke;
   v9[3] = &unk_2788875A8;
   v7 = v3;
   v10 = v7;
-  [v6 enumerateNodesUsingBlock:v9];
+  [dateNodes enumerateNodesUsingBlock:v9];
 
   return v7;
 }
@@ -1019,16 +1019,16 @@ void __46__PGGraphHighlightNode_celebratedHolidayNodes__block_invoke_2(uint64_t 
 - (id)holidayNodes
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(PGGraphHighlightNode *)self collection];
-  v5 = [v4 momentNodes];
-  v6 = [v5 dateNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  dateNodes = [momentNodes dateNodes];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __36__PGGraphHighlightNode_holidayNodes__block_invoke;
   v9[3] = &unk_2788875A8;
   v7 = v3;
   v10 = v7;
-  [v6 enumerateNodesUsingBlock:v9];
+  [dateNodes enumerateNodesUsingBlock:v9];
 
   return v7;
 }
@@ -1046,99 +1046,99 @@ void __36__PGGraphHighlightNode_holidayNodes__block_invoke(uint64_t a1, void *a2
 - (id)dateNodes
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(PGGraphHighlightNode *)self collection];
-  v5 = [v4 momentNodes];
-  v6 = [v5 dateNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  dateNodes = [momentNodes dateNodes];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __33__PGGraphHighlightNode_dateNodes__block_invoke;
   v9[3] = &unk_2788875A8;
   v7 = v3;
   v10 = v7;
-  [v6 enumerateNodesUsingBlock:v9];
+  [dateNodes enumerateNodesUsingBlock:v9];
 
   return v7;
 }
 
 - (id)consolidatedPersonNodesPresentInAssets
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 consolidatedPersonNodesPresentInAssets];
-  v5 = [v4 set];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  consolidatedPersonNodesPresentInAssets = [momentNodes consolidatedPersonNodesPresentInAssets];
+  v5 = [consolidatedPersonNodesPresentInAssets set];
 
   return v5;
 }
 
 - (id)consolidatedPersonNodes
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 consolidatedPersonNodes];
-  v5 = [v4 set];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  consolidatedPersonNodes = [momentNodes consolidatedPersonNodes];
+  v5 = [consolidatedPersonNodes set];
 
   return v5;
 }
 
 - (id)personNodesInProximity
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 personNodesInProximity];
-  v5 = [v4 set];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  personNodesInProximity = [momentNodes personNodesInProximity];
+  v5 = [personNodesInProximity set];
 
   return v5;
 }
 
 - (id)socialGroupNodes
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 socialGroupNodes];
-  v5 = [v4 set];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  socialGroupNodes = [momentNodes socialGroupNodes];
+  v5 = [socialGroupNodes set];
 
   return v5;
 }
 
 - (id)petNodes
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 petNodes];
-  v5 = [v4 set];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  petNodes = [momentNodes petNodes];
+  v5 = [petNodes set];
 
   return v5;
 }
 
 - (id)personNodes
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 personNodes];
-  v5 = [v4 set];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  personNodes = [momentNodes personNodes];
+  v5 = [personNodes set];
 
   return v5;
 }
 
-- (BOOL)hasPeopleCountingMe:(BOOL)a3
+- (BOOL)hasPeopleCountingMe:(BOOL)me
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v4 = [(PGGraphHighlightNode *)self collection];
-  v5 = [v4 momentNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__PGGraphHighlightNode_hasPeopleCountingMe___block_invoke;
   v7[3] = &unk_27887F5D8;
-  v8 = a3;
+  meCopy = me;
   v7[4] = &v9;
-  [v5 enumerateNodesUsingBlock:v7];
+  [momentNodes enumerateNodesUsingBlock:v7];
 
-  LOBYTE(v4) = *(v10 + 24);
+  LOBYTE(collection) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v4;
+  return collection;
 }
 
 uint64_t __44__PGGraphHighlightNode_hasPeopleCountingMe___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -1153,58 +1153,58 @@ uint64_t __44__PGGraphHighlightNode_hasPeopleCountingMe___block_invoke(uint64_t 
   return result;
 }
 
-- (id)fetchAssetCollectionInPhotoLibrary:(id)a3
+- (id)fetchAssetCollectionInPhotoLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [(MANode *)self graph];
-  v6 = [v5 highlightForHighlightNode:self inPhotoLibrary:v4];
+  libraryCopy = library;
+  graph = [(MANode *)self graph];
+  v6 = [graph highlightForHighlightNode:self inPhotoLibrary:libraryCopy];
 
   return v6;
 }
 
 - (id)anniversaryPersonNodes
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 anniversaryPersonNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  anniversaryPersonNodes = [momentNodes anniversaryPersonNodes];
 
-  return v4;
+  return anniversaryPersonNodes;
 }
 
 - (id)birthdayPersonNodes
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 birthdayPersonNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  birthdayPersonNodes = [momentNodes birthdayPersonNodes];
 
-  return v4;
+  return birthdayPersonNodes;
 }
 
 - (id)reliableMeaningLabels
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 reliableMeaningNodes];
-  v5 = [v4 meaningLabels];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  reliableMeaningNodes = [momentNodes reliableMeaningNodes];
+  meaningLabels = [reliableMeaningNodes meaningLabels];
 
-  return v5;
+  return meaningLabels;
 }
 
 - (id)meaningLabels
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 meaningNodes];
-  v5 = [v4 meaningLabels];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  meaningNodes = [momentNodes meaningNodes];
+  meaningLabels = [meaningNodes meaningLabels];
 
-  return v5;
+  return meaningLabels;
 }
 
 - (id)eventEnrichmentSortedMomentNodes
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
   v4 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"universalStartDate" ascending:1];
   v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"universalEndDate" ascending:{1, v4}];
   v11[1] = v5;
@@ -1212,7 +1212,7 @@ uint64_t __44__PGGraphHighlightNode_hasPeopleCountingMe___block_invoke(uint64_t 
   v11[2] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:3];
 
-  v8 = [v3 sortedArrayUsingDescriptors:v7];
+  v8 = [momentNodes sortedArrayUsingDescriptors:v7];
 
   v9 = *MEMORY[0x277D85DE8];
 
@@ -1221,17 +1221,17 @@ uint64_t __44__PGGraphHighlightNode_hasPeopleCountingMe___block_invoke(uint64_t 
 
 - (id)eventEnrichmentMomentNodes
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
 
-  return v3;
+  return momentNodes;
 }
 
 - (id)eventSortedMomentNodes
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
   v4 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"universalStartDate" ascending:1];
   v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"universalEndDate" ascending:{1, v4}];
   v11[1] = v5;
@@ -1239,7 +1239,7 @@ uint64_t __44__PGGraphHighlightNode_hasPeopleCountingMe___block_invoke(uint64_t 
   v11[2] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:3];
 
-  v8 = [v3 sortedArrayUsingDescriptors:v7];
+  v8 = [momentNodes sortedArrayUsingDescriptors:v7];
 
   v9 = *MEMORY[0x277D85DE8];
 
@@ -1256,15 +1256,15 @@ uint64_t __44__PGGraphHighlightNode_hasPeopleCountingMe___block_invoke(uint64_t 
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__PGGraphHighlightNode_contentScore__block_invoke;
   v7[3] = &unk_2788879A0;
   v7[4] = &v12;
   v7[5] = &v8;
-  [v3 enumerateNodesUsingBlock:v7];
+  [momentNodes enumerateNodesUsingBlock:v7];
 
   v4 = v9[3];
   if (v4)
@@ -1297,17 +1297,17 @@ double __36__PGGraphHighlightNode_contentScore__block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (BOOL)happensPartiallyAtHomeOrWorkOfPersonNodes:(id)a3
+- (BOOL)happensPartiallyAtHomeOrWorkOfPersonNodes:(id)nodes
 {
-  v4 = a3;
-  if ([v4 count])
+  nodesCopy = nodes;
+  if ([nodesCopy count])
   {
-    v5 = [(PGGraphHighlightNode *)self collection];
-    v6 = [v5 momentNodes];
-    v7 = [v6 preciseAddressNodes];
-    v8 = [v4 homeOrWorkNodes];
-    v9 = [v8 addressNodes];
-    v10 = [v7 intersectsCollection:v9];
+    collection = [(PGGraphHighlightNode *)self collection];
+    momentNodes = [collection momentNodes];
+    preciseAddressNodes = [momentNodes preciseAddressNodes];
+    homeOrWorkNodes = [nodesCopy homeOrWorkNodes];
+    addressNodes = [homeOrWorkNodes addressNodes];
+    v10 = [preciseAddressNodes intersectsCollection:addressNodes];
   }
 
   else
@@ -1318,17 +1318,17 @@ double __36__PGGraphHighlightNode_contentScore__block_invoke(uint64_t a1, void *
   return v10;
 }
 
-- (BOOL)happensPartiallyAtWorkOfPersonNodes:(id)a3
+- (BOOL)happensPartiallyAtWorkOfPersonNodes:(id)nodes
 {
-  v4 = a3;
-  if ([v4 count])
+  nodesCopy = nodes;
+  if ([nodesCopy count])
   {
-    v5 = [(PGGraphHighlightNode *)self collection];
-    v6 = [v5 momentNodes];
-    v7 = [v6 preciseAddressNodes];
-    v8 = [v4 workNodes];
-    v9 = [v8 addressNodes];
-    v10 = [v7 intersectsCollection:v9];
+    collection = [(PGGraphHighlightNode *)self collection];
+    momentNodes = [collection momentNodes];
+    preciseAddressNodes = [momentNodes preciseAddressNodes];
+    workNodes = [nodesCopy workNodes];
+    addressNodes = [workNodes addressNodes];
+    v10 = [preciseAddressNodes intersectsCollection:addressNodes];
   }
 
   else
@@ -1339,17 +1339,17 @@ double __36__PGGraphHighlightNode_contentScore__block_invoke(uint64_t a1, void *
   return v10;
 }
 
-- (BOOL)happensPartiallyAtHomeOfPersonNodes:(id)a3
+- (BOOL)happensPartiallyAtHomeOfPersonNodes:(id)nodes
 {
-  v4 = a3;
-  if ([v4 count])
+  nodesCopy = nodes;
+  if ([nodesCopy count])
   {
-    v5 = [(PGGraphHighlightNode *)self collection];
-    v6 = [v5 momentNodes];
-    v7 = [v6 preciseAddressNodes];
-    v8 = [v4 homeNodes];
-    v9 = [v8 addressNodes];
-    v10 = [v7 intersectsCollection:v9];
+    collection = [(PGGraphHighlightNode *)self collection];
+    momentNodes = [collection momentNodes];
+    preciseAddressNodes = [momentNodes preciseAddressNodes];
+    homeNodes = [nodesCopy homeNodes];
+    addressNodes = [homeNodes addressNodes];
+    v10 = [preciseAddressNodes intersectsCollection:addressNodes];
   }
 
   else
@@ -1362,83 +1362,83 @@ double __36__PGGraphHighlightNode_contentScore__block_invoke(uint64_t a1, void *
 
 - (BOOL)isSmartInteresting
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 smartInterestingSubset];
-  v5 = [v4 count] != 0;
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  smartInterestingSubset = [momentNodes smartInterestingSubset];
+  v5 = [smartInterestingSubset count] != 0;
 
   return v5;
 }
 
 - (BOOL)isInterestingWithAlternateJunking
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 interestingWithAlternateJunkingSubset];
-  v5 = [v4 count] != 0;
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  interestingWithAlternateJunkingSubset = [momentNodes interestingWithAlternateJunkingSubset];
+  v5 = [interestingWithAlternateJunkingSubset count] != 0;
 
   return v5;
 }
 
 - (BOOL)isInteresting
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 interestingSubset];
-  v5 = [v4 count] != 0;
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  interestingSubset = [momentNodes interestingSubset];
+  v5 = [interestingSubset count] != 0;
 
   return v5;
 }
 
 - (BOOL)petIsPresent
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 petNodes];
-  v5 = [v4 count] != 0;
+  collection = [(PGGraphHighlightNode *)self collection];
+  momentNodes = [collection momentNodes];
+  petNodes = [momentNodes petNodes];
+  v5 = [petNodes count] != 0;
 
   return v5;
 }
 
 - (BOOL)isPartOfAggregation
 {
-  v2 = [(PGGraphHighlightNode *)self highlightGroupNode];
-  v3 = [v2 isAggregation];
+  highlightGroupNode = [(PGGraphHighlightNode *)self highlightGroupNode];
+  isAggregation = [highlightGroupNode isAggregation];
 
-  return v3;
+  return isAggregation;
 }
 
 - (BOOL)isPartOfShortTrip
 {
-  v2 = [(PGGraphHighlightNode *)self highlightGroupNode];
-  v3 = [v2 isShortTrip];
+  highlightGroupNode = [(PGGraphHighlightNode *)self highlightGroupNode];
+  isShortTrip = [highlightGroupNode isShortTrip];
 
-  return v3;
+  return isShortTrip;
 }
 
 - (BOOL)isPartOfLongTrip
 {
-  v2 = [(PGGraphHighlightNode *)self highlightGroupNode];
-  v3 = [v2 isLongTrip];
+  highlightGroupNode = [(PGGraphHighlightNode *)self highlightGroupNode];
+  isLongTrip = [highlightGroupNode isLongTrip];
 
-  return v3;
+  return isLongTrip;
 }
 
 - (BOOL)isPartOfTrip
 {
-  v2 = [(PGGraphHighlightNode *)self highlightGroupNode];
-  v3 = [v2 isTrip];
+  highlightGroupNode = [(PGGraphHighlightNode *)self highlightGroupNode];
+  isTrip = [highlightGroupNode isTrip];
 
-  return v3;
+  return isTrip;
 }
 
 - (PGGraphHighlightGroupNode)highlightGroupNode
 {
-  v2 = [(PGGraphHighlightNode *)self collection];
-  v3 = [v2 highlightGroupNodes];
-  v4 = [v3 anyNode];
+  collection = [(PGGraphHighlightNode *)self collection];
+  highlightGroupNodes = [collection highlightGroupNodes];
+  anyNode = [highlightGroupNodes anyNode];
 
-  return v4;
+  return anyNode;
 }
 
 - (PGGraphHighlightNodeCollection)collection
@@ -1448,11 +1448,11 @@ double __36__PGGraphHighlightNode_contentScore__block_invoke(uint64_t a1, void *
   return v2;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"name"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"name"])
   {
     v5 = 56;
 LABEL_3:
@@ -1466,7 +1466,7 @@ LABEL_3:
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"utcs"])
+  if ([keyCopy isEqualToString:@"utcs"])
   {
     v8 = MEMORY[0x277CCABB0];
     v9 = 72;
@@ -1477,34 +1477,34 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v4 isEqualToString:@"utce"])
+  if ([keyCopy isEqualToString:@"utce"])
   {
     v8 = MEMORY[0x277CCABB0];
     v9 = 80;
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:@"tzs"])
+  if ([keyCopy isEqualToString:@"tzs"])
   {
     v8 = MEMORY[0x277CCABB0];
     v9 = 32;
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:@"tze"])
+  if ([keyCopy isEqualToString:@"tze"])
   {
     v8 = MEMORY[0x277CCABB0];
     v9 = 40;
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:@"id"])
+  if ([keyCopy isEqualToString:@"id"])
   {
     v5 = 64;
     goto LABEL_3;
   }
 
-  if ([v4 isEqualToString:@"sharingComposition"])
+  if ([keyCopy isEqualToString:@"sharingComposition"])
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:self->_sharingComposition];
     goto LABEL_15;
@@ -1515,7 +1515,7 @@ LABEL_15:
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
     v15 = 138412546;
-    v16 = v4;
+    v16 = keyCopy;
     v17 = 2112;
     v18 = v14;
     _os_log_fault_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "Unsupported property '%@' accessed on %@.", &v15, 0x16u);
@@ -1571,11 +1571,11 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"id"];
     v7 = v6;
@@ -1616,60 +1616,60 @@ LABEL_11:
   return v10;
 }
 
-- (void)setLocalProperties:(id)a3
+- (void)setLocalProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"name"];
+  propertiesCopy = properties;
+  v5 = [propertiesCopy objectForKeyedSubscript:@"name"];
   name = self->_name;
   self->_name = v5;
 
-  v7 = [v4 objectForKeyedSubscript:@"utcs"];
+  v7 = [propertiesCopy objectForKeyedSubscript:@"utcs"];
   [v7 doubleValue];
   self->_universalStartTimestamp = v8;
 
-  v9 = [v4 objectForKeyedSubscript:@"utce"];
+  v9 = [propertiesCopy objectForKeyedSubscript:@"utce"];
   [v9 doubleValue];
   self->_universalEndTimestamp = v10;
 
-  v11 = [v4 objectForKeyedSubscript:@"tzs"];
+  v11 = [propertiesCopy objectForKeyedSubscript:@"tzs"];
   [v11 doubleValue];
   self->_localStartTimestamp = v12;
 
-  v13 = [v4 objectForKeyedSubscript:@"tze"];
+  v13 = [propertiesCopy objectForKeyedSubscript:@"tze"];
   [v13 doubleValue];
   self->_localEndTimestamp = v14;
 
-  v15 = [v4 objectForKeyedSubscript:@"id"];
+  v15 = [propertiesCopy objectForKeyedSubscript:@"id"];
   uuid = self->_uuid;
   self->_uuid = v15;
 
-  v17 = [v4 objectForKeyedSubscript:@"sharingComposition"];
+  v17 = [propertiesCopy objectForKeyedSubscript:@"sharingComposition"];
 
   self->_sharingComposition = [v17 unsignedShortValue];
 }
 
-- (PGGraphHighlightNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphHighlightNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v6 = a5;
+  propertiesCopy = properties;
   v7 = [(PGGraphNode *)self init];
   v8 = v7;
   if (v7)
   {
-    [(PGGraphHighlightNode *)v7 setLocalProperties:v6];
+    [(PGGraphHighlightNode *)v7 setLocalProperties:propertiesCopy];
   }
 
   return v8;
 }
 
-- (id)initFromHighlight:(id)a3
+- (id)initFromHighlight:(id)highlight
 {
-  v4 = a3;
+  highlightCopy = highlight;
   v8.receiver = self;
   v8.super_class = PGGraphHighlightNode;
   v5 = [(PGGraphNode *)&v8 init];
   if (v5)
   {
-    v6 = [objc_opt_class() propertiesWithHighlight:v4];
+    v6 = [objc_opt_class() propertiesWithHighlight:highlightCopy];
     [(PGGraphHighlightNode *)v5 setLocalProperties:v6];
   }
 
@@ -1685,11 +1685,11 @@ LABEL_11:
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v4 = [v2 filterBySettingProperties:v3];
 
-  v5 = [v4 relation];
+  relation = [v4 relation];
 
   v6 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return relation;
 }
 
 + (MARelation)highlightWithSharedAssetsOfHighlight
@@ -1702,11 +1702,11 @@ LABEL_11:
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v5 = [v2 filterBySettingProperties:v4];
 
-  v6 = [v5 relation];
+  relation = [v5 relation];
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return relation;
 }
 
 + (MARelation)highlightWithPrivateAssetsOfHighlight
@@ -1719,11 +1719,11 @@ LABEL_11:
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v5 = [v2 filterBySettingProperties:v4];
 
-  v6 = [v5 relation];
+  relation = [v5 relation];
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return relation;
 }
 
 + (MARelation)momentInHighlight
@@ -1731,10 +1731,10 @@ LABEL_11:
   v11[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D22C90];
   v4 = +[PGGraphHighlightGroupNode highlightOfHighlightGroup];
-  v5 = [v4 optionalStep];
-  v11[0] = v5;
-  v6 = [a1 momentInDayHighlight];
-  v11[1] = v6;
+  optionalStep = [v4 optionalStep];
+  v11[0] = optionalStep;
+  momentInDayHighlight = [self momentInDayHighlight];
+  v11[1] = momentInDayHighlight;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v8 = [v3 chain:v7];
 
@@ -1746,42 +1746,42 @@ LABEL_11:
 + (MARelation)highlightGroupOfHighlight
 {
   v2 = +[PGGraphGroupContainsEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MARelation)momentInDayHighlight
 {
   v2 = +[PGGraphContainsEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
-+ (id)inclusivePathToTargetNodeDomain:(unsigned __int16)a3 withName:(id)a4
++ (id)inclusivePathToTargetNodeDomain:(unsigned __int16)domain withName:(id)name
 {
-  v4 = a3;
+  domainCopy = domain;
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v4 == 102)
+  nameCopy = name;
+  if (domainCopy == 102)
   {
     v7 = &stru_2843F5C58;
-    if (v5)
+    if (nameCopy)
     {
-      v7 = v5;
+      v7 = nameCopy;
     }
 
     [MEMORY[0x277CCACA8] stringWithFormat:@"(%@:Highlight)", v7];
     goto LABEL_9;
   }
 
-  if (v4 == 100)
+  if (domainCopy == 100)
   {
     v6 = &stru_2843F5C58;
-    if (v5)
+    if (nameCopy)
     {
-      v6 = v5;
+      v6 = nameCopy;
     }
 
     [MEMORY[0x277CCACA8] stringWithFormat:@"(:Highlight)-[:CONTAINS]->(%@:Moment)", v6];
@@ -1790,13 +1790,13 @@ LABEL_11:
   }
 
   v9 = +[PGLogging sharedLogging];
-  v10 = [v9 loggingConnection];
+  loggingConnection = [v9 loggingConnection];
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *buf = 67109120;
-    v14 = v4;
-    _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "Unsupported target event domain: %u", buf, 8u);
+    v14 = domainCopy;
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Unsupported target event domain: %u", buf, 8u);
   }
 
   v8 = 0;
@@ -1807,29 +1807,29 @@ LABEL_13:
   return v8;
 }
 
-+ (id)inclusivePathFromTargetNodeDomain:(unsigned __int16)a3 withName:(id)a4
++ (id)inclusivePathFromTargetNodeDomain:(unsigned __int16)domain withName:(id)name
 {
-  v4 = a3;
+  domainCopy = domain;
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v4 == 102)
+  nameCopy = name;
+  if (domainCopy == 102)
   {
     v7 = &stru_2843F5C58;
-    if (v5)
+    if (nameCopy)
     {
-      v7 = v5;
+      v7 = nameCopy;
     }
 
     [MEMORY[0x277CCACA8] stringWithFormat:@"(%@:Highlight)", v7];
     goto LABEL_9;
   }
 
-  if (v4 == 100)
+  if (domainCopy == 100)
   {
     v6 = &stru_2843F5C58;
-    if (v5)
+    if (nameCopy)
     {
-      v6 = v5;
+      v6 = nameCopy;
     }
 
     [MEMORY[0x277CCACA8] stringWithFormat:@"(%@:Moment)<-[:CONTAINS]-(:Highlight)", v6];
@@ -1838,13 +1838,13 @@ LABEL_13:
   }
 
   v9 = +[PGLogging sharedLogging];
-  v10 = [v9 loggingConnection];
+  loggingConnection = [v9 loggingConnection];
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *buf = 67109120;
-    v14 = v4;
-    _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "Unsupported target event domain: %u", buf, 8u);
+    v14 = domainCopy;
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Unsupported target event domain: %u", buf, 8u);
   }
 
   v8 = 0;
@@ -1855,78 +1855,78 @@ LABEL_13:
   return v8;
 }
 
-+ (id)pathToTargetNodeDomain:(unsigned __int16)a3
++ (id)pathToTargetNodeDomain:(unsigned __int16)domain
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a3 == 102)
+  if (domain == 102)
   {
-    v4 = &stru_2843F5C58;
+    pathToMoment = &stru_2843F5C58;
   }
 
   else
   {
-    v3 = a3;
-    if (a3 == 100)
+    domainCopy = domain;
+    if (domain == 100)
     {
-      v4 = [objc_opt_class() pathToMoment];
+      pathToMoment = [objc_opt_class() pathToMoment];
     }
 
     else
     {
       v5 = +[PGLogging sharedLogging];
-      v6 = [v5 loggingConnection];
+      loggingConnection = [v5 loggingConnection];
 
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v9[0] = 67109120;
-        v9[1] = v3;
-        _os_log_error_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_ERROR, "Unsupported target event domain: %u", v9, 8u);
+        v9[1] = domainCopy;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Unsupported target event domain: %u", v9, 8u);
       }
 
-      v4 = 0;
+      pathToMoment = 0;
     }
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return pathToMoment;
 }
 
-+ (id)pathFromTargetNodeDomain:(unsigned __int16)a3
++ (id)pathFromTargetNodeDomain:(unsigned __int16)domain
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a3 == 102)
+  if (domain == 102)
   {
-    v4 = &stru_2843F5C58;
+    pathFromMoment = &stru_2843F5C58;
   }
 
   else
   {
-    v3 = a3;
-    if (a3 == 100)
+    domainCopy = domain;
+    if (domain == 100)
     {
-      v4 = [objc_opt_class() pathFromMoment];
+      pathFromMoment = [objc_opt_class() pathFromMoment];
     }
 
     else
     {
       v5 = +[PGLogging sharedLogging];
-      v6 = [v5 loggingConnection];
+      loggingConnection = [v5 loggingConnection];
 
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v9[0] = 67109120;
-        v9[1] = v3;
-        _os_log_error_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_ERROR, "Unsupported target event domain: %u", v9, 8u);
+        v9[1] = domainCopy;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Unsupported target event domain: %u", v9, 8u);
       }
 
-      v4 = 0;
+      pathFromMoment = 0;
     }
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return pathFromMoment;
 }
 
 + (id)promotionScoreSortDescriptors
@@ -1956,72 +1956,72 @@ void __53__PGGraphHighlightNode_promotionScoreSortDescriptors__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)propertiesWithHighlight:(id)a3
++ (id)propertiesWithHighlight:(id)highlight
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 uuid];
-  [v5 setObject:v6 forKeyedSubscript:@"id"];
+  highlightCopy = highlight;
+  dictionary = [v3 dictionary];
+  uuid = [highlightCopy uuid];
+  [dictionary setObject:uuid forKeyedSubscript:@"id"];
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v4 localStartDate];
-  [v8 timeIntervalSince1970];
+  localStartDate = [highlightCopy localStartDate];
+  [localStartDate timeIntervalSince1970];
   v9 = [v7 numberWithDouble:?];
-  [v5 setObject:v9 forKeyedSubscript:@"tzs"];
+  [dictionary setObject:v9 forKeyedSubscript:@"tzs"];
 
   v10 = MEMORY[0x277CCABB0];
-  v11 = [v4 startDate];
-  [v11 timeIntervalSince1970];
+  startDate = [highlightCopy startDate];
+  [startDate timeIntervalSince1970];
   v12 = [v10 numberWithDouble:?];
-  [v5 setObject:v12 forKeyedSubscript:@"utcs"];
+  [dictionary setObject:v12 forKeyedSubscript:@"utcs"];
 
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v4 localEndDate];
-  [v14 timeIntervalSince1970];
+  localEndDate = [highlightCopy localEndDate];
+  [localEndDate timeIntervalSince1970];
   v15 = [v13 numberWithDouble:?];
-  [v5 setObject:v15 forKeyedSubscript:@"tze"];
+  [dictionary setObject:v15 forKeyedSubscript:@"tze"];
 
   v16 = MEMORY[0x277CCABB0];
-  v17 = [v4 endDate];
-  [v17 timeIntervalSince1970];
+  endDate = [highlightCopy endDate];
+  [endDate timeIntervalSince1970];
   v18 = [v16 numberWithDouble:?];
-  [v5 setObject:v18 forKeyedSubscript:@"utce"];
+  [dictionary setObject:v18 forKeyedSubscript:@"utce"];
 
   v19 = MEMORY[0x277CCABB0];
-  v20 = [v4 sharingComposition];
+  sharingComposition = [highlightCopy sharingComposition];
 
-  v21 = [v19 numberWithUnsignedShort:v20];
-  [v5 setObject:v21 forKeyedSubscript:@"sharingComposition"];
+  v21 = [v19 numberWithUnsignedShort:sharingComposition];
+  [dictionary setObject:v21 forKeyedSubscript:@"sharingComposition"];
 
-  return v5;
+  return dictionary;
 }
 
-+ (id)filterWithUUID:(id)a3
++ (id)filterWithUUID:(id)d
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 allHighlightsFilter];
+  dCopy = d;
+  allHighlightsFilter = [self allHighlightsFilter];
   v10 = @"id";
-  v11[0] = v4;
+  v11[0] = dCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [v5 filterBySettingProperties:v6];
+  v7 = [allHighlightsFilter filterBySettingProperties:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (id)filterWithUUIDs:(id)a3
++ (id)filterWithUUIDs:(id)ds
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 allHighlightsFilter];
+  dsCopy = ds;
+  allHighlightsFilter = [self allHighlightsFilter];
   v10 = @"id";
-  v11[0] = v4;
+  v11[0] = dsCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [v5 filterBySettingProperties:v6];
+  v7 = [allHighlightsFilter filterBySettingProperties:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 
@@ -2049,15 +2049,15 @@ void __53__PGGraphHighlightNode_promotionScoreSortDescriptors__block_invoke()
   return v2;
 }
 
-+ (double)belowAveragePromotionScoreWithPromotionScoreDescriptor:(id *)a3
++ (double)belowAveragePromotionScoreWithPromotionScoreDescriptor:(id *)descriptor
 {
-  if (a3->var11)
+  if (descriptor->var11)
   {
     return 0.35;
   }
 
   result = 0.25;
-  if (a3->var14 > 0.5)
+  if (descriptor->var14 > 0.5)
   {
     return 0.33;
   }
@@ -2065,10 +2065,10 @@ void __53__PGGraphHighlightNode_promotionScoreSortDescriptors__block_invoke()
   return result;
 }
 
-+ (double)averagePromotionScoreWithPromotionScoreDescriptor:(id *)a3
++ (double)averagePromotionScoreWithPromotionScoreDescriptor:(id *)descriptor
 {
   result = 0.25;
-  if (!a3->var5 && (a3->var1 || a3->var12 >= 0x11 && a3->var14 > 0.3))
+  if (!descriptor->var5 && (descriptor->var1 || descriptor->var12 >= 0x11 && descriptor->var14 > 0.3))
   {
     return 0.4;
   }
@@ -2076,16 +2076,16 @@ void __53__PGGraphHighlightNode_promotionScoreSortDescriptors__block_invoke()
   return result;
 }
 
-+ (double)aboveAveragePromotionScoreWithPromotionScoreDescriptor:(id *)a3
++ (double)aboveAveragePromotionScoreWithPromotionScoreDescriptor:(id *)descriptor
 {
-  if (a3->var0)
+  if (descriptor->var0)
   {
     return 0.6;
   }
 
-  if (a3->var7)
+  if (descriptor->var7)
   {
-    if (a3->var1)
+    if (descriptor->var1)
     {
       return 0.55;
     }
@@ -2093,9 +2093,9 @@ void __53__PGGraphHighlightNode_promotionScoreSortDescriptors__block_invoke()
     else
     {
       result = 0.45;
-      if (!a3->var2 && !a3->var3)
+      if (!descriptor->var2 && !descriptor->var3)
       {
-        v4 = a3->var14 > 0.3 && a3->var12 > 0x10;
+        v4 = descriptor->var14 > 0.3 && descriptor->var12 > 0x10;
         result = 0.43;
         if (!v4)
         {
@@ -2108,7 +2108,7 @@ void __53__PGGraphHighlightNode_promotionScoreSortDescriptors__block_invoke()
   else
   {
     result = 0.25;
-    if (!a3->var5 && (a3->var2 || a3->var3))
+    if (!descriptor->var5 && (descriptor->var2 || descriptor->var3))
     {
       return 0.41;
     }
@@ -2117,23 +2117,23 @@ void __53__PGGraphHighlightNode_promotionScoreSortDescriptors__block_invoke()
   return result;
 }
 
-+ (double)nonMeaningfulPromotionScoreWithPromotionScoreDescriptor:(id *)a3 isAggregation:(BOOL)a4 enrichmentState:(unsigned __int16)a5
++ (double)nonMeaningfulPromotionScoreWithPromotionScoreDescriptor:(id *)descriptor isAggregation:(BOOL)aggregation enrichmentState:(unsigned __int16)state
 {
-  v5 = a4;
-  if (a3->var6 && !a3->var8)
+  aggregationCopy = aggregation;
+  if (descriptor->var6 && !descriptor->var8)
   {
     return 0.25;
   }
 
-  if (a5 < 3u)
+  if (state < 3u)
   {
-    if (a3->var9)
+    if (descriptor->var9)
     {
       goto LABEL_17;
     }
 
     v8 = 0.25;
-    if (a3->var14 >= 0.4)
+    if (descriptor->var14 >= 0.4)
     {
       goto LABEL_17;
     }
@@ -2141,9 +2141,9 @@ void __53__PGGraphHighlightNode_promotionScoreSortDescriptors__block_invoke()
 
   else
   {
-    if (a3->var5)
+    if (descriptor->var5)
     {
-      if (a3->var10)
+      if (descriptor->var10)
       {
         goto LABEL_17;
       }
@@ -2151,45 +2151,45 @@ void __53__PGGraphHighlightNode_promotionScoreSortDescriptors__block_invoke()
 
     else
     {
-      v9 = a5 == 3 || a3->var4;
-      if (a3->var9 || a3->var10 && v9)
+      v9 = state == 3 || descriptor->var4;
+      if (descriptor->var9 || descriptor->var10 && v9)
       {
         goto LABEL_17;
       }
     }
 
     v8 = 0.25;
-    if (a3->var13 > 4)
+    if (descriptor->var13 > 4)
     {
 LABEL_17:
-      v11 = *&a3->var12;
-      v15 = *&a3->var0;
+      v11 = *&descriptor->var12;
+      v15 = *&descriptor->var0;
       v16 = v11;
-      var14 = a3->var14;
-      [a1 aboveAveragePromotionScoreWithPromotionScoreDescriptor:&v15];
+      var14 = descriptor->var14;
+      [self aboveAveragePromotionScoreWithPromotionScoreDescriptor:&v15];
       if (v12 == 0.25)
       {
-        v13 = *&a3->var12;
-        v15 = *&a3->var0;
+        v13 = *&descriptor->var12;
+        v15 = *&descriptor->var0;
         v16 = v13;
-        var14 = a3->var14;
-        [a1 averagePromotionScoreWithPromotionScoreDescriptor:&v15];
+        var14 = descriptor->var14;
+        [self averagePromotionScoreWithPromotionScoreDescriptor:&v15];
       }
 
       if (v12 == 0.25)
       {
-        v14 = *&a3->var12;
-        v15 = *&a3->var0;
+        v14 = *&descriptor->var12;
+        v15 = *&descriptor->var0;
         v16 = v14;
-        var14 = a3->var14;
-        [a1 belowAveragePromotionScoreWithPromotionScoreDescriptor:&v15];
+        var14 = descriptor->var14;
+        [self belowAveragePromotionScoreWithPromotionScoreDescriptor:&v15];
       }
 
       v8 = 0.31;
       if (v12 != 0.25)
       {
         v8 = v12;
-        if (v5)
+        if (aggregationCopy)
         {
           v8 = fmin(v12, 0.39);
         }
@@ -2198,7 +2198,7 @@ LABEL_17:
   }
 
   result = fmin(v8, 0.31);
-  if (!a3->var6)
+  if (!descriptor->var6)
   {
     return v8;
   }
@@ -2206,26 +2206,26 @@ LABEL_17:
   return result;
 }
 
-+ ($74357DB5E33013E4F0FB9D3992AAC0CD)_promotionScoreDescriptorWithMomentNodes:(SEL)a3 neighborScoreComputer:(id)a4
++ ($74357DB5E33013E4F0FB9D3992AAC0CD)_promotionScoreDescriptorWithMomentNodes:(SEL)nodes neighborScoreComputer:(id)computer
 {
   v64 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  computerCopy = computer;
   v48 = a5;
   *&retstr->var0 = 0u;
   *&retstr->var12 = 0u;
-  v8 = [v7 anyObject];
-  v9 = [v8 graph];
+  anyObject = [computerCopy anyObject];
+  graph = [anyObject graph];
 
-  v47 = [v9 meNodeCollection];
+  meNodeCollection = [graph meNodeCollection];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v7;
+  obj = computerCopy;
   v49 = [obj countByEnumeratingWithState:&v59 objects:v63 count:16];
   if (v49)
   {
-    v43 = v9;
+    v43 = graph;
     v44 = retstr;
     v10 = 0;
     v57 = 0;
@@ -2257,35 +2257,35 @@ LABEL_17:
         v22 = v11;
         if (v15)
         {
-          v23 = 1;
+          isInteresting = 1;
         }
 
         else
         {
-          v23 = [v20 isInteresting];
+          isInteresting = [v20 isInteresting];
         }
 
         v24 = v17;
-        v25 = v23;
+        v25 = isInteresting;
         if (v14)
         {
-          v26 = 1;
+          isSmartInteresting = 1;
         }
 
         else
         {
-          v26 = [v20 isSmartInteresting];
+          isSmartInteresting = [v20 isSmartInteresting];
         }
 
         v27 = v16;
-        v56 = v26;
+        v56 = isSmartInteresting;
         v55 = v10;
         v28 = v13 || [v20 numberOfAssetsWithPersons] != 0;
-        v29 = [v20 numberOfAssets];
-        v30 = [v20 happensPartiallyAtWorkOfPersonNodes:v47];
+        numberOfAssets = [v20 numberOfAssets];
+        v30 = [v20 happensPartiallyAtWorkOfPersonNodes:meNodeCollection];
         if (v30)
         {
-          v31 = v29;
+          v31 = numberOfAssets;
         }
 
         else
@@ -2294,9 +2294,9 @@ LABEL_17:
         }
 
         v51 = v31;
-        if (v30 | [v20 happensPartiallyAtHomeOfPersonNodes:v47])
+        if (v30 | [v20 happensPartiallyAtHomeOfPersonNodes:meNodeCollection])
         {
-          v32 = v29;
+          v32 = numberOfAssets;
         }
 
         else
@@ -2349,7 +2349,7 @@ LABEL_17:
         v16 = v35 | v52;
         v11 = v51 + v22;
         v12 = v32 + v54;
-        v10 = v55 + v29;
+        v10 = v55 + numberOfAssets;
         [v20 contentScore];
         v18 = v37 + v18;
         v14 = v56;
@@ -2369,7 +2369,7 @@ LABEL_17:
     v38 = v12;
     v39 = v11;
     v40 = v10;
-    v9 = v43;
+    graph = v43;
   }
 
   else

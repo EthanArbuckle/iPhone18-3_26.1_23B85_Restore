@@ -1,33 +1,33 @@
 @interface FCCPercentageOfDayRule
-- (FCCPercentageOfDayRule)initWithMinimumDayDuration:(double)a3 percentOfDay:(double)a4;
-- (FCCPercentageOfDayRule)initWithProtobuf:(id)a3;
-- (FCCPercentageOfDayRule)initWithTransportData:(id)a3;
+- (FCCPercentageOfDayRule)initWithMinimumDayDuration:(double)duration percentOfDay:(double)day;
+- (FCCPercentageOfDayRule)initWithProtobuf:(id)protobuf;
+- (FCCPercentageOfDayRule)initWithTransportData:(id)data;
 - (id)protobuf;
 - (id)transportData;
 @end
 
 @implementation FCCPercentageOfDayRule
 
-- (FCCPercentageOfDayRule)initWithMinimumDayDuration:(double)a3 percentOfDay:(double)a4
+- (FCCPercentageOfDayRule)initWithMinimumDayDuration:(double)duration percentOfDay:(double)day
 {
   v7.receiver = self;
   v7.super_class = FCCPercentageOfDayRule;
   result = [(FCCPercentageOfDayRule *)&v7 init];
   if (result)
   {
-    result->_minimumDayDuration = a3;
-    result->_percentOfDay = a4;
+    result->_minimumDayDuration = duration;
+    result->_percentOfDay = day;
   }
 
   return result;
 }
 
-- (FCCPercentageOfDayRule)initWithProtobuf:(id)a3
+- (FCCPercentageOfDayRule)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  [v4 minimumDayDuration];
+  protobufCopy = protobuf;
+  [protobufCopy minimumDayDuration];
   v6 = v5;
-  [v4 percentOfDay];
+  [protobufCopy percentOfDay];
   v8 = v7;
 
   return [(FCCPercentageOfDayRule *)self initWithMinimumDayDuration:v6 percentOfDay:v8];
@@ -42,10 +42,10 @@
   return v3;
 }
 
-- (FCCPercentageOfDayRule)initWithTransportData:(id)a3
+- (FCCPercentageOfDayRule)initWithTransportData:(id)data
 {
-  v4 = a3;
-  v5 = [[FCCPercentageOfDayRuleProtobuf alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[FCCPercentageOfDayRuleProtobuf alloc] initWithData:dataCopy];
 
   v6 = [(FCCPercentageOfDayRule *)self initWithProtobuf:v5];
   return v6;
@@ -53,10 +53,10 @@
 
 - (id)transportData
 {
-  v2 = [(FCCPercentageOfDayRule *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(FCCPercentageOfDayRule *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 @end

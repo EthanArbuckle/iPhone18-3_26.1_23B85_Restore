@@ -1,40 +1,40 @@
 @interface DataStreamBulkSendSessionCandidate
 - (DataStreamBulkSendProtocol)bulkSendProtocol;
-- (DataStreamBulkSendSessionCandidate)initWithProtocol:(id)a3 requestHeader:(id)a4 metadata:(id)a5;
-- (void)acceptBulkSendSessionOnQueue:(id)a3 callback:(id)a4;
+- (DataStreamBulkSendSessionCandidate)initWithProtocol:(id)protocol requestHeader:(id)header metadata:(id)metadata;
+- (void)acceptBulkSendSessionOnQueue:(id)queue callback:(id)callback;
 @end
 
 @implementation DataStreamBulkSendSessionCandidate
 
-- (DataStreamBulkSendSessionCandidate)initWithProtocol:(id)a3 requestHeader:(id)a4 metadata:(id)a5
+- (DataStreamBulkSendSessionCandidate)initWithProtocol:(id)protocol requestHeader:(id)header metadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  protocolCopy = protocol;
+  headerCopy = header;
+  metadataCopy = metadata;
   v16.receiver = self;
   v16.super_class = DataStreamBulkSendSessionCandidate;
   v11 = [(DataStreamBulkSendSessionCandidate *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_bulkSendProtocol, v8);
-    objc_storeStrong(&v12->_requestHeader, a4);
+    objc_storeWeak(&v11->_bulkSendProtocol, protocolCopy);
+    objc_storeStrong(&v12->_requestHeader, header);
     v13 = +[NSMutableArray array];
     pendingReads = v12->_pendingReads;
     v12->_pendingReads = v13;
 
-    objc_storeStrong(&v12->_metadata, a5);
+    objc_storeStrong(&v12->_metadata, metadata);
   }
 
   return v12;
 }
 
-- (void)acceptBulkSendSessionOnQueue:(id)a3 callback:(id)a4
+- (void)acceptBulkSendSessionOnQueue:(id)queue callback:(id)callback
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DataStreamBulkSendSessionCandidate *)self bulkSendProtocol];
-  [v8 asyncBulkSendSessionCandidate:self didAcceptOnQueue:v7 callback:v6];
+  callbackCopy = callback;
+  queueCopy = queue;
+  bulkSendProtocol = [(DataStreamBulkSendSessionCandidate *)self bulkSendProtocol];
+  [bulkSendProtocol asyncBulkSendSessionCandidate:self didAcceptOnQueue:queueCopy callback:callbackCopy];
 }
 
 - (DataStreamBulkSendProtocol)bulkSendProtocol

@@ -1,7 +1,7 @@
 @interface IPAAffineImageTransform
-- (IPAAffineImageTransform)initWithInputGeometry:(id)a3 intrinsicGeometry:(id)a4 matrix:(const Matrix4d *)a5 canAlignToPixelsExactly:(BOOL)a6;
+- (IPAAffineImageTransform)initWithInputGeometry:(id)geometry intrinsicGeometry:(id)intrinsicGeometry matrix:(const Matrix4d *)matrix canAlignToPixelsExactly:(BOOL)exactly;
 - (Matrix4d)matrix;
-- (Vector2d)mapVector:(Vector2d)a3;
+- (Vector2d)mapVector:(Vector2d)vector;
 - (id)description;
 - (id)inverseTransform;
 @end
@@ -13,18 +13,18 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(IPAImageTransform *)self inputGeometry];
-  v7 = [(IPAImageTransform *)self intrinsicGeometry];
+  inputGeometry = [(IPAImageTransform *)self inputGeometry];
+  intrinsicGeometry = [(IPAImageTransform *)self intrinsicGeometry];
   canAlignToPixelsExactly = self->_canAlignToPixelsExactly;
   v9 = PA::Matrix4d::description(&self->_matrix);
-  v10 = [v3 stringWithFormat:@"<%@.%p inputGeometry:%@ intrinsicGeometry:%@ canAlignToPixelsExactly:%d matrix:\n%@>", v5, self, v6, v7, canAlignToPixelsExactly, v9];
+  v10 = [v3 stringWithFormat:@"<%@.%p inputGeometry:%@ intrinsicGeometry:%@ canAlignToPixelsExactly:%d matrix:\n%@>", v5, self, inputGeometry, intrinsicGeometry, canAlignToPixelsExactly, v9];
 
   return v10;
 }
 
-- (Vector2d)mapVector:(Vector2d)a3
+- (Vector2d)mapVector:(Vector2d)vector
 {
-  v5[0] = a3;
+  v5[0] = vector;
   v5[1] = xmmword_25E5E03C0;
   v3 = PA::operator*(self->_matrix.m, &v5[0].X);
   result.Y = v4;
@@ -50,9 +50,9 @@
   if (PA::Matrix4d::invert(v13))
   {
     v8 = objc_alloc(objc_opt_class());
-    v9 = [(IPAImageTransform *)self intrinsicGeometry];
-    v10 = [(IPAImageTransform *)self inputGeometry];
-    v11 = [v8 initWithInputGeometry:v9 intrinsicGeometry:v10 matrix:v13 canAlignToPixelsExactly:self->_canAlignToPixelsExactly];
+    intrinsicGeometry = [(IPAImageTransform *)self intrinsicGeometry];
+    inputGeometry = [(IPAImageTransform *)self inputGeometry];
+    v11 = [v8 initWithInputGeometry:intrinsicGeometry intrinsicGeometry:inputGeometry matrix:v13 canAlignToPixelsExactly:self->_canAlignToPixelsExactly];
 
     return v11;
   }
@@ -85,28 +85,28 @@
   return self;
 }
 
-- (IPAAffineImageTransform)initWithInputGeometry:(id)a3 intrinsicGeometry:(id)a4 matrix:(const Matrix4d *)a5 canAlignToPixelsExactly:(BOOL)a6
+- (IPAAffineImageTransform)initWithInputGeometry:(id)geometry intrinsicGeometry:(id)intrinsicGeometry matrix:(const Matrix4d *)matrix canAlignToPixelsExactly:(BOOL)exactly
 {
   v15.receiver = self;
   v15.super_class = IPAAffineImageTransform;
-  result = [(IPAImageTransform *)&v15 initWithInputGeometry:a3 intrinsicGeometry:a4];
+  result = [(IPAImageTransform *)&v15 initWithInputGeometry:geometry intrinsicGeometry:intrinsicGeometry];
   if (result)
   {
-    v9 = *&a5->m[6];
-    v11 = *a5->m;
-    v10 = *&a5->m[2];
-    *&result->_matrix.m[4] = *&a5->m[4];
+    v9 = *&matrix->m[6];
+    v11 = *matrix->m;
+    v10 = *&matrix->m[2];
+    *&result->_matrix.m[4] = *&matrix->m[4];
     *&result->_matrix.m[6] = v9;
     *result->_matrix.m = v11;
     *&result->_matrix.m[2] = v10;
-    v12 = *&a5->m[14];
-    v14 = *&a5->m[8];
-    v13 = *&a5->m[10];
-    *&result->_matrix.m[12] = *&a5->m[12];
+    v12 = *&matrix->m[14];
+    v14 = *&matrix->m[8];
+    v13 = *&matrix->m[10];
+    *&result->_matrix.m[12] = *&matrix->m[12];
     *&result->_matrix.m[14] = v12;
     *&result->_matrix.m[8] = v14;
     *&result->_matrix.m[10] = v13;
-    result->_canAlignToPixelsExactly = a6;
+    result->_canAlignToPixelsExactly = exactly;
   }
 
   return result;

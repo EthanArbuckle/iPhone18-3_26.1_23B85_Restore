@@ -1,5 +1,5 @@
 @interface _UIAlertControllerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (id)accessibilityHeaderElements;
 - (id)accessibilityLabel;
@@ -13,14 +13,14 @@
 
 @implementation _UIAlertControllerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v11 = location;
   v10 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIAlertControllerActionView";
   v4 = @"action";
   v7 = "@";
@@ -45,26 +45,26 @@
 
 - (unint64_t)_accessibilityAutomationType
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v2 = [(_UIAlertControllerViewAccessibility *)self accessibilityTraits];
-  if ((v2 & *MEMORY[0x29EDC74F0]) == *MEMORY[0x29EDC74F0])
+  accessibilityTraits = [(_UIAlertControllerViewAccessibility *)self accessibilityTraits];
+  if ((accessibilityTraits & *MEMORY[0x29EDC74F0]) == *MEMORY[0x29EDC74F0])
   {
     return 6;
   }
 
-  v4.receiver = v6;
+  v4.receiver = selfCopy;
   v4.super_class = _UIAlertControllerViewAccessibility;
   return [(_UIAlertControllerViewAccessibility *)&v4 _accessibilityAutomationType];
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v6 = 0;
   objc_opt_class();
-  v3 = [(_UIAlertControllerViewAccessibility *)v8 safeValueForKey:@"alertController"];
+  v3 = [(_UIAlertControllerViewAccessibility *)selfCopy safeValueForKey:@"alertController"];
   v5 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v3);
   v4 = MEMORY[0x29EDC9748](v5);
@@ -86,25 +86,25 @@
 
 - (id)accessibilityLabel
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v7 = 0;
   objc_opt_class();
-  v4 = [(_UIAlertControllerViewAccessibility *)v9 safeValueForKey:@"alertController"];
+  v4 = [(_UIAlertControllerViewAccessibility *)selfCopy safeValueForKey:@"alertController"];
   v6 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v4);
   v5 = MEMORY[0x29EDC9748](v6);
   objc_storeStrong(&v6, 0);
   v8[0] = v5;
-  v3 = [v5 title];
+  title = [v5 title];
   objc_storeStrong(v8, 0);
 
-  return v3;
+  return title;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UIAlertControllerViewAccessibility;
@@ -113,41 +113,41 @@
 
 - (void)_prepareTitleLabel
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UIAlertControllerViewAccessibility;
   [(_UIAlertControllerViewAccessibility *)&v2 _prepareTitleLabel];
-  [(_UIAlertControllerViewAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
+  [(_UIAlertControllerViewAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
 }
 
 - (void)_prepareMesssageLabel
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UIAlertControllerViewAccessibility;
   [(_UIAlertControllerViewAccessibility *)&v2 _prepareMesssageLabel];
-  [(_UIAlertControllerViewAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
+  [(_UIAlertControllerViewAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
 }
 
 - (void)_prepareDetailMessageLabel
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UIAlertControllerViewAccessibility;
   [(_UIAlertControllerViewAccessibility *)&v2 _prepareDetailMessageLabel];
-  [(_UIAlertControllerViewAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
+  [(_UIAlertControllerViewAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v13 = 0;
   objc_opt_class();
-  v4 = [(_UIAlertControllerViewAccessibility *)v15 safeValueForKey:@"cancelAction"];
+  v4 = [(_UIAlertControllerViewAccessibility *)selfCopy safeValueForKey:@"cancelAction"];
   v12 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v4);
   v11 = MEMORY[0x29EDC9748](v12);
@@ -155,7 +155,7 @@
   v14[0] = v11;
   v9 = 0;
   objc_opt_class();
-  v3 = [(_UIAlertControllerViewAccessibility *)v15 safeValueForKey:@"alertController"];
+  v3 = [(_UIAlertControllerViewAccessibility *)selfCopy safeValueForKey:@"alertController"];
   v8 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v3);
   v7 = MEMORY[0x29EDC9748](v8);
@@ -177,7 +177,7 @@
 
 - (id)accessibilityHeaderElements
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = _UIAlertControllerViewAccessibility;

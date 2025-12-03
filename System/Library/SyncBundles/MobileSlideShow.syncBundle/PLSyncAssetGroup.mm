@@ -9,10 +9,10 @@
   v9.receiver = self;
   v9.super_class = PLSyncAssetGroup;
   v3 = [(PLSyncAssetGroup *)&v9 description];
-  v4 = [(PLSyncAssetGroup *)self UUID];
-  v5 = [(PLSyncAssetGroup *)self date];
-  v6 = [(PLSyncAssetGroup *)self assetPairs];
-  v7 = [v3 stringByAppendingFormat:@" uuid:%@ date:%@ files:%d", v4, v5, objc_msgSend(v6, "count")];
+  uUID = [(PLSyncAssetGroup *)self UUID];
+  date = [(PLSyncAssetGroup *)self date];
+  assetPairs = [(PLSyncAssetGroup *)self assetPairs];
+  v7 = [v3 stringByAppendingFormat:@" uuid:%@ date:%@ files:%d", uUID, date, objc_msgSend(assetPairs, "count")];
 
   return v7;
 }

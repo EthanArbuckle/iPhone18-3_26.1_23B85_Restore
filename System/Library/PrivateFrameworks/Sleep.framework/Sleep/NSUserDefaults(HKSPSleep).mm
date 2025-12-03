@@ -39,8 +39,8 @@
 - (id)hksp_dictionaryRepresentationForKeys:()HKSPSleep
 {
   v4 = a3;
-  v5 = [a1 hksp_dictionaryRepresentation];
-  v6 = [v5 hksp_dictionaryByFilteringKeys:v4];
+  hksp_dictionaryRepresentation = [self hksp_dictionaryRepresentation];
+  v6 = [hksp_dictionaryRepresentation hksp_dictionaryByFilteringKeys:v4];
 
   return v6;
 }
@@ -51,7 +51,7 @@
   v4[1] = 3221225472;
   v4[2] = __49__NSUserDefaults_HKSPSleep__hksp_saveDictionary___block_invoke;
   v4[3] = &unk_279C760A8;
-  v4[4] = a1;
+  v4[4] = self;
   return [a3 enumerateKeysAndObjectsUsingBlock:v4];
 }
 
@@ -61,36 +61,36 @@
   v4[1] = 3221225472;
   v4[2] = __55__NSUserDefaults_HKSPSleep__hksp_removeObjectsForKeys___block_invoke;
   v4[3] = &unk_279C75810;
-  v4[4] = a1;
+  v4[4] = self;
   return [a3 na_each:v4];
 }
 
 - (void)hksp_reset
 {
-  v2 = [objc_opt_class() hksp_sleepdUserDefaults];
+  hksp_sleepdUserDefaults = [objc_opt_class() hksp_sleepdUserDefaults];
 
-  if (v2 == a1)
+  if (hksp_sleepdUserDefaults == self)
   {
     v5 = @"com.apple.sleepd";
   }
 
   else
   {
-    v3 = [objc_opt_class() hksp_internalUserDefaults];
+    hksp_internalUserDefaults = [objc_opt_class() hksp_internalUserDefaults];
 
-    if (v3 == a1)
+    if (hksp_internalUserDefaults == self)
     {
       v5 = @"com.apple.internal.sleep";
     }
 
     else
     {
-      v4 = [objc_opt_class() hksp_analyticsUserDefaults];
+      hksp_analyticsUserDefaults = [objc_opt_class() hksp_analyticsUserDefaults];
 
-      if (v4 != a1)
+      if (hksp_analyticsUserDefaults != self)
       {
 
-        HKSPResetUserDefaults(a1);
+        HKSPResetUserDefaults(self);
         return;
       }
 
@@ -98,7 +98,7 @@
     }
   }
 
-  [a1 removePersistentDomainForName:v5];
+  [self removePersistentDomainForName:v5];
 }
 
 + (id)hksp_internalUserDefaults
@@ -127,7 +127,7 @@
 
 - (float)hksp_debugSleepModeAlpha:()HKSPSleep
 {
-  v4 = [a1 objectForKey:@"DebugSleepModeAlpha"];
+  v4 = [self objectForKey:@"DebugSleepModeAlpha"];
   v5 = v4;
   if (a3)
   {

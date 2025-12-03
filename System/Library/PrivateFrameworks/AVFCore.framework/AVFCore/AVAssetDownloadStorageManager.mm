@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __61__AVAssetDownloadStorageManager_sharedDownloadStorageManager__block_invoke;
   block[3] = &unk_1E7460C00;
-  block[4] = a1;
+  block[4] = self;
   if (sharedDownloadStorageManager_sAVAssetDownloadStorageManager_Once != -1)
   {
     dispatch_once(&sharedDownloadStorageManager_sAVAssetDownloadStorageManager_Once, block);
@@ -54,7 +54,7 @@ id __61__AVAssetDownloadStorageManager_sharedDownloadStorageManager__block_invok
 - (void)setStorageManagementPolicy:(AVAssetDownloadStorageManagementPolicy *)storageManagementPolicy forURL:(NSURL *)downloadStorageURL
 {
   v8 = [objc_msgSend(MEMORY[0x1E696AAE8] "mainBundle")];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   if (!storageManagementPolicy)
   {
     v29 = MEMORY[0x1E695DF30];
@@ -83,7 +83,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v15 = v9;
+  v15 = defaultManager;
   if (![(NSURL *)downloadStorageURL isFileURL])
   {
     v35 = MEMORY[0x1E695DF30];
@@ -105,17 +105,17 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v26 = [(AVAssetDownloadStorageManagementPolicy *)storageManagementPolicy expirationDate];
-  v27 = [(AVAssetDownloadStorageManagementPolicy *)storageManagementPolicy priority];
+  expirationDate = [(AVAssetDownloadStorageManagementPolicy *)storageManagementPolicy expirationDate];
+  priority = [(AVAssetDownloadStorageManagementPolicy *)storageManagementPolicy priority];
   ivarAccessQueue = self->_ivarAccessQueue;
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __67__AVAssetDownloadStorageManager_setStorageManagementPolicy_forURL___block_invoke;
   v38[3] = &unk_1E7462140;
-  v38[4] = v26;
+  v38[4] = expirationDate;
   v38[5] = downloadStorageURL;
   v38[6] = v8;
-  v38[7] = v27;
+  v38[7] = priority;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v38);
 }
 
@@ -123,7 +123,7 @@ LABEL_14:
 {
   v6 = [objc_msgSend(MEMORY[0x1E696AAE8] "mainBundle")];
   v7 = objc_alloc_init(AVMutableAssetDownloadStorageManagementPolicy);
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   if (!downloadStorageURL)
   {
     v27 = MEMORY[0x1E695DF30];
@@ -144,7 +144,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v14 = v8;
+  v14 = defaultManager;
   if (![(NSURL *)downloadStorageURL isFileURL])
   {
     v33 = MEMORY[0x1E695DF30];

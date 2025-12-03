@@ -1,24 +1,24 @@
 @interface LocationSectionManager
-- (void)setTrashObserver:(id)a3;
-- (void)setTrashSubscriber:(id)a3;
+- (void)setTrashObserver:(id)observer;
+- (void)setTrashSubscriber:(id)subscriber;
 @end
 
 @implementation LocationSectionManager
 
-- (void)setTrashObserver:(id)a3
+- (void)setTrashObserver:(id)observer
 {
   swift_beginAccess();
   trashObserver = self->trashObserver;
-  self->trashObserver = a3;
-  v6 = a3;
+  self->trashObserver = observer;
+  observerCopy = observer;
 }
 
-- (void)setTrashSubscriber:(id)a3
+- (void)setTrashSubscriber:(id)subscriber
 {
   swift_beginAccess();
   trashSubscriber = self->trashSubscriber;
-  self->trashSubscriber = a3;
-  v6 = a3;
+  self->trashSubscriber = subscriber;
+  subscriberCopy = subscriber;
 }
 
 @end

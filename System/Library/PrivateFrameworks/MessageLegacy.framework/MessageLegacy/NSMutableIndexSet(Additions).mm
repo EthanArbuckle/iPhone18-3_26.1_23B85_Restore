@@ -7,7 +7,7 @@
 - (uint64_t)mf_intersectIndexes:()Additions
 {
   v12[64] = *MEMORY[0x277D85DE8];
-  result = [a1 count];
+  result = [self count];
   if (!result)
   {
 LABEL_13:
@@ -15,13 +15,13 @@ LABEL_13:
     return result;
   }
 
-  v6 = [a1 firstIndex];
-  v7 = [a1 lastIndex];
-  if ([a3 firstIndex] <= v7 && objc_msgSend(a3, "lastIndex") >= v6)
+  firstIndex = [self firstIndex];
+  lastIndex = [self lastIndex];
+  if ([a3 firstIndex] <= lastIndex && objc_msgSend(a3, "lastIndex") >= firstIndex)
   {
-    v11[0] = v6;
-    v11[1] = v7 - v6 + 1;
-    result = [a1 getIndexes:v12 maxCount:64 inIndexRange:v11];
+    v11[0] = firstIndex;
+    v11[1] = lastIndex - firstIndex + 1;
+    result = [self getIndexes:v12 maxCount:64 inIndexRange:v11];
     if (result)
     {
       v9 = result;
@@ -29,12 +29,12 @@ LABEL_13:
       {
         if (([a3 containsIndex:v12[--v9]] & 1) == 0)
         {
-          [a1 removeIndex:v12[v9]];
+          [self removeIndex:v12[v9]];
         }
 
         if (!v9)
         {
-          result = [a1 getIndexes:v12 maxCount:64 inIndexRange:v11];
+          result = [self getIndexes:v12 maxCount:64 inIndexRange:v11];
           v9 = result;
           if (!result)
           {
@@ -49,7 +49,7 @@ LABEL_13:
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return [a1 removeAllIndexes];
+  return [self removeAllIndexes];
 }
 
 @end

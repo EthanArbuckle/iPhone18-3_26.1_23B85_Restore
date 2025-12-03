@@ -1,45 +1,45 @@
 @interface HMIHomePersonClusteringTask
-- (HMIHomePersonClusteringTask)initWithTaskID:(int)a3 homeUUID:(id)a4 dataSource:(id)a5 sourceUUID:(id)a6 personsModelManager:(id)a7 doImpurePersonCleanup:(BOOL)a8 error:(id *)a9;
-- (id)personCreatedDateFromFaceCrops:(id)a3;
-- (void)_stageFive_associateFaceCropsWithClusterMapping:(id)a3 faceprints:(id)a4;
-- (void)_stageFour_clusterFaceprints:(id)a3;
+- (HMIHomePersonClusteringTask)initWithTaskID:(int)d homeUUID:(id)iD dataSource:(id)source sourceUUID:(id)uID personsModelManager:(id)manager doImpurePersonCleanup:(BOOL)cleanup error:(id *)error;
+- (id)personCreatedDateFromFaceCrops:(id)crops;
+- (void)_stageFive_associateFaceCropsWithClusterMapping:(id)mapping faceprints:(id)faceprints;
+- (void)_stageFour_clusterFaceprints:(id)faceprints;
 - (void)_stageOne_fetchFaceCrops;
-- (void)_stageThree_generateFaceprintsForFaceCrops:(id)a3 existingFaceprints:(id)a4;
-- (void)_stageTwo_fetchFaceprints:(id)a3;
+- (void)_stageThree_generateFaceprintsForFaceCrops:(id)crops existingFaceprints:(id)faceprints;
+- (void)_stageTwo_fetchFaceprints:(id)faceprints;
 - (void)_stageZero_expireUnnamedPersons;
 - (void)finish;
 - (void)mainInsideAutoreleasePool;
-- (void)removePerson:(id)a3;
+- (void)removePerson:(id)person;
 @end
 
 @implementation HMIHomePersonClusteringTask
 
-- (HMIHomePersonClusteringTask)initWithTaskID:(int)a3 homeUUID:(id)a4 dataSource:(id)a5 sourceUUID:(id)a6 personsModelManager:(id)a7 doImpurePersonCleanup:(BOOL)a8 error:(id *)a9
+- (HMIHomePersonClusteringTask)initWithTaskID:(int)d homeUUID:(id)iD dataSource:(id)source sourceUUID:(id)uID personsModelManager:(id)manager doImpurePersonCleanup:(BOOL)cleanup error:(id *)error
 {
-  v9 = a8;
-  v14 = *&a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  cleanupCopy = cleanup;
+  v14 = *&d;
+  sourceCopy = source;
+  uIDCopy = uID;
+  managerCopy = manager;
   v19 = 500.0;
-  if (v9)
+  if (cleanupCopy)
   {
     v19 = 1000.0;
   }
 
   v34.receiver = self;
   v34.super_class = HMIHomePersonClusteringTask;
-  v20 = [(HMIHomeTask *)&v34 initWithTaskID:v14 homeUUID:a4 timeout:v19];
+  v20 = [(HMIHomeTask *)&v34 initWithTaskID:v14 homeUUID:iD timeout:v19];
   v21 = v20;
   if (!v20)
   {
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v20->_dataSource, a5);
-  objc_storeStrong(&v21->_sourceUUID, a6);
-  objc_storeStrong(&v21->_personsModelManager, a7);
-  v21->_doImpurePersonCleanup = v9;
+  objc_storeStrong(&v20->_dataSource, source);
+  objc_storeStrong(&v21->_sourceUUID, uID);
+  objc_storeStrong(&v21->_personsModelManager, manager);
+  v21->_doImpurePersonCleanup = cleanupCopy;
   v22 = [[HMIGreedyClustering alloc] initWithError:0];
   clusterer = v21->_clusterer;
   v21->_clusterer = v22;
@@ -62,15 +62,15 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if (a9)
+  if (error)
   {
     v30 = v25;
-    *a9 = v25;
+    *error = v25;
   }
 
   HMIErrorLogC(v25);
   v31 = v25;
-  *a9 = v25;
+  *error = v25;
 
   v29 = 0;
 LABEL_10:
@@ -81,40 +81,40 @@ LABEL_10:
 - (void)mainInsideAutoreleasePool
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   startTime = self->_startTime;
-  self->_startTime = v3;
+  self->_startTime = date;
 
   if ([(HMIHomePersonClusteringTask *)self doImpurePersonCleanup])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = HMFGetLogIdentifier();
-      v9 = [(HMIHomeTask *)v6 homeUUID];
-      v10 = [v9 UUIDString];
+      homeUUID = [(HMIHomeTask *)selfCopy homeUUID];
+      uUIDString = [homeUUID UUIDString];
       *buf = 138543618;
       v28 = v8;
       v29 = 2112;
-      v30 = v10;
+      v30 = uUIDString;
       _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_INFO, "%{public}@Spawning CleanupImpureHomePersonsOperation for %@ before home person clustering", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v5);
     v11 = [HMICleanupImpureHomePersonsOperation alloc];
-    v12 = [(HMIHomeTask *)v6 homeUUID];
-    v13 = [(HMIHomePersonClusteringTask *)v6 dataSource];
-    v14 = [(HMICleanupImpureHomePersonsOperation *)v11 initWithHomeUUID:v12 dataSource:v13];
+    homeUUID2 = [(HMIHomeTask *)selfCopy homeUUID];
+    dataSource = [(HMIHomePersonClusteringTask *)selfCopy dataSource];
+    v14 = [(HMICleanupImpureHomePersonsOperation *)v11 initWithHomeUUID:homeUUID2 dataSource:dataSource];
 
     [(HMFOperation *)v14 start];
     [(HMICleanupImpureHomePersonsOperation *)v14 waitUntilFinished];
-    v15 = [(HMFOperation *)v14 error];
+    error = [(HMFOperation *)v14 error];
 
-    v16 = v15 == 0;
+    v16 = error == 0;
     v17 = objc_autoreleasePoolPush();
-    v18 = v6;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     v20 = v19;
     if (v16)
@@ -131,11 +131,11 @@ LABEL_10:
     else if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [(HMFOperation *)v14 error];
+      error2 = [(HMFOperation *)v14 error];
       *buf = 138543618;
       v28 = v21;
       v29 = 2112;
-      v30 = v22;
+      v30 = error2;
       _os_log_impl(&dword_22D12F000, v20, OS_LOG_TYPE_ERROR, "%{public}@CleanupImpureHomePersonOperation finished with error:%@", buf, 0x16u);
     }
 
@@ -143,13 +143,13 @@ LABEL_10:
   }
 
   objc_initWeak(buf, self);
-  v24 = [(HMIHomePersonClusteringTask *)self dataSource];
+  dataSource2 = [(HMIHomePersonClusteringTask *)self dataSource];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __56__HMIHomePersonClusteringTask_mainInsideAutoreleasePool__block_invoke;
   v25[3] = &unk_2787528E0;
   objc_copyWeak(&v26, buf);
-  [v24 performCloudPullWithCompletion:v25];
+  [dataSource2 performCloudPullWithCompletion:v25];
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(buf);
@@ -188,7 +188,7 @@ void __56__HMIHomePersonClusteringTask_mainInsideAutoreleasePool__block_invoke(u
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -199,14 +199,14 @@ void __56__HMIHomePersonClusteringTask_mainInsideAutoreleasePool__block_invoke(u
   }
 
   objc_autoreleasePoolPop(v3);
-  objc_initWeak(buf, v4);
-  v7 = [(HMIHomePersonClusteringTask *)v4 dataSource];
+  objc_initWeak(buf, selfCopy);
+  dataSource = [(HMIHomePersonClusteringTask *)selfCopy dataSource];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__HMIHomePersonClusteringTask__stageZero_expireUnnamedPersons__block_invoke;
   v8[3] = &unk_278753D20;
   objc_copyWeak(&v9, buf);
-  [v7 fetchAllPersonsWithCompletion:v8];
+  [dataSource fetchAllPersonsWithCompletion:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(buf);
@@ -525,7 +525,7 @@ void __62__HMIHomePersonClusteringTask__stageZero_expireUnnamedPersons__block_in
   if ([(HMIHomePersonClusteringTask *)self isCancelled])
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -541,13 +541,13 @@ void __62__HMIHomePersonClusteringTask__stageZero_expireUnnamedPersons__block_in
   else
   {
     objc_initWeak(buf, self);
-    v7 = [(HMIHomePersonClusteringTask *)self dataSource];
+    dataSource = [(HMIHomePersonClusteringTask *)self dataSource];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __55__HMIHomePersonClusteringTask__stageOne_fetchFaceCrops__block_invoke;
     v8[3] = &unk_278753D20;
     objc_copyWeak(&v9, buf);
-    [v7 fetchAllUnassociatedFaceCropsWithCompletion:v8];
+    [dataSource fetchAllUnassociatedFaceCropsWithCompletion:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(buf);
@@ -589,14 +589,14 @@ void __55__HMIHomePersonClusteringTask__stageOne_fetchFaceCrops__block_invoke(ui
   }
 }
 
-- (void)_stageTwo_fetchFaceprints:(id)a3
+- (void)_stageTwo_fetchFaceprints:(id)faceprints
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  faceprintsCopy = faceprints;
   if ([(HMIHomePersonClusteringTask *)self isCancelled])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -611,16 +611,16 @@ void __55__HMIHomePersonClusteringTask__stageOne_fetchFaceCrops__block_invoke(ui
 
   else
   {
-    v9 = [v4 na_map:&__block_literal_global_244];
+    v9 = [faceprintsCopy na_map:&__block_literal_global_244];
     objc_initWeak(buf, self);
-    v10 = [(HMIHomePersonClusteringTask *)self dataSource];
+    dataSource = [(HMIHomePersonClusteringTask *)self dataSource];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __57__HMIHomePersonClusteringTask__stageTwo_fetchFaceprints___block_invoke_2;
     v11[3] = &unk_278754268;
     objc_copyWeak(&v13, buf);
-    v12 = v4;
-    [v10 fetchFaceprintsForFaceCropsWithUUIDs:v9 completion:v11];
+    v12 = faceprintsCopy;
+    [dataSource fetchFaceprintsForFaceCropsWithUUIDs:v9 completion:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
@@ -662,15 +662,15 @@ void __57__HMIHomePersonClusteringTask__stageTwo_fetchFaceprints___block_invoke_
   }
 }
 
-- (void)_stageThree_generateFaceprintsForFaceCrops:(id)a3 existingFaceprints:(id)a4
+- (void)_stageThree_generateFaceprintsForFaceCrops:(id)crops existingFaceprints:(id)faceprints
 {
   v65 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v51 = a4;
+  cropsCopy = crops;
+  faceprintsCopy = faceprints;
   if ([(HMIHomePersonClusteringTask *)self isCancelled])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -685,47 +685,47 @@ void __57__HMIHomePersonClusteringTask__stageTwo_fetchFaceprints___block_invoke_
 
   else
   {
-    v54 = self;
-    v46 = [MEMORY[0x277CBEAA8] date];
+    selfCopy2 = self;
+    date = [MEMORY[0x277CBEAA8] date];
     v49 = objc_alloc_init(HMIFaceprinter);
     v50 = [MEMORY[0x277CBEB58] set];
-    v10 = [v47 count];
-    v53 = [v47 allObjects];
+    v10 = [cropsCopy count];
+    allObjects = [cropsCopy allObjects];
     v48 = vcvtpd_s64_f64(v10 / 100.0) | 0x4059000000000000;
     if (v48 < 1)
     {
       v32 = 0;
 LABEL_20:
       v12 = v32;
-      v33 = [MEMORY[0x277CBEAA8] date];
-      [v33 timeIntervalSinceDate:v46];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [date2 timeIntervalSinceDate:date];
       v35 = v34;
-      v36 = [(HMIHomePersonClusteringTask *)v54 summary];
-      [v36 setFaceprintingDuration:v35];
+      summary = [(HMIHomePersonClusteringTask *)selfCopy2 summary];
+      [summary setFaceprintingDuration:v35];
 
-      v37 = [v50 allObjects];
-      [(HMIHomePersonClusteringTask *)v54 _stageFour_clusterFaceprints:v37];
+      allObjects2 = [v50 allObjects];
+      [(HMIHomePersonClusteringTask *)selfCopy2 _stageFour_clusterFaceprints:allObjects2];
     }
 
     else
     {
       v11 = 0;
       v12 = 0;
-      while (![(HMIHomePersonClusteringTask *)v54 isCancelled])
+      while (![(HMIHomePersonClusteringTask *)selfCopy2 isCancelled])
       {
-        [v53 count];
+        [allObjects count];
         v13 = MEMORY[0x277CBEB98];
-        v14 = [v53 subarrayWithRange:?];
+        v14 = [allObjects subarrayWithRange:?];
         v55 = [v13 setWithArray:v14];
 
         v60 = v12;
-        v15 = [(HMIFaceprinter *)v49 updatedFaceprintsForFaceCrops:v55 withExistingFaceprints:v51 error:&v60];
+        v15 = [(HMIFaceprinter *)v49 updatedFaceprintsForFaceCrops:v55 withExistingFaceprints:faceprintsCopy error:&v60];
         v52 = v60;
 
         if (!v15)
         {
           v42 = objc_autoreleasePoolPush();
-          v43 = v54;
+          v43 = selfCopy2;
           v44 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
           {
@@ -744,18 +744,18 @@ LABEL_20:
           goto LABEL_27;
         }
 
-        v16 = [v15 allAtCurrentVersion];
-        [v50 unionSet:v16];
-        v17 = [v15 createdAtCurrentVersion];
-        if ([v17 count])
+        allAtCurrentVersion = [v15 allAtCurrentVersion];
+        [v50 unionSet:allAtCurrentVersion];
+        createdAtCurrentVersion = [v15 createdAtCurrentVersion];
+        if ([createdAtCurrentVersion count])
         {
           v18 = objc_autoreleasePoolPush();
-          v19 = v54;
+          v19 = selfCopy2;
           v20 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
             v21 = HMFGetLogIdentifier();
-            v22 = [v17 count];
+            v22 = [createdAtCurrentVersion count];
             *buf = 138543618;
             v62 = v21;
             v63 = 2048;
@@ -765,29 +765,29 @@ LABEL_20:
 
           objc_autoreleasePoolPop(v18);
           objc_initWeak(buf, v19);
-          v23 = [(HMIHomePersonClusteringTask *)v19 dataSource];
+          dataSource = [(HMIHomePersonClusteringTask *)v19 dataSource];
           v58[0] = MEMORY[0x277D85DD0];
           v58[1] = 3221225472;
           v58[2] = __93__HMIHomePersonClusteringTask__stageThree_generateFaceprintsForFaceCrops_existingFaceprints___block_invoke;
           v58[3] = &unk_2787528E0;
           objc_copyWeak(&v59, buf);
-          [v23 addFaceprints:v17 completion:v58];
+          [dataSource addFaceprints:createdAtCurrentVersion completion:v58];
 
           objc_destroyWeak(&v59);
           objc_destroyWeak(buf);
         }
 
-        v24 = [v15 existingAtOtherVersions];
-        if ([v24 count])
+        existingAtOtherVersions = [v15 existingAtOtherVersions];
+        if ([existingAtOtherVersions count])
         {
-          v25 = [v24 na_map:&__block_literal_global_250_0];
+          v25 = [existingAtOtherVersions na_map:&__block_literal_global_250_0];
           v26 = objc_autoreleasePoolPush();
-          v27 = v54;
+          v27 = selfCopy2;
           v28 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
           {
             v29 = HMFGetLogIdentifier();
-            v30 = [v24 count];
+            v30 = [existingAtOtherVersions count];
             *buf = 138543618;
             v62 = v29;
             v63 = 2048;
@@ -797,13 +797,13 @@ LABEL_20:
 
           objc_autoreleasePoolPop(v26);
           objc_initWeak(buf, v27);
-          v31 = [(HMIHomePersonClusteringTask *)v27 dataSource];
+          dataSource2 = [(HMIHomePersonClusteringTask *)v27 dataSource];
           v56[0] = MEMORY[0x277D85DD0];
           v56[1] = 3221225472;
           v56[2] = __93__HMIHomePersonClusteringTask__stageThree_generateFaceprintsForFaceCrops_existingFaceprints___block_invoke_251;
           v56[3] = &unk_2787528E0;
           objc_copyWeak(&v57, buf);
-          [v31 removeFaceprintsWithUUIDs:v25 completion:v56];
+          [dataSource2 removeFaceprintsWithUUIDs:v25 completion:v56];
 
           objc_destroyWeak(&v57);
           objc_destroyWeak(buf);
@@ -819,7 +819,7 @@ LABEL_20:
       }
 
       v38 = objc_autoreleasePoolPush();
-      v39 = v54;
+      v39 = selfCopy2;
       v40 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
@@ -886,14 +886,14 @@ void __93__HMIHomePersonClusteringTask__stageThree_generateFaceprintsForFaceCrop
   }
 }
 
-- (void)_stageFour_clusterFaceprints:(id)a3
+- (void)_stageFour_clusterFaceprints:(id)faceprints
 {
   v90 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  faceprintsCopy = faceprints;
   if ([(HMIHomePersonClusteringTask *)self isCancelled])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -907,9 +907,9 @@ void __93__HMIHomePersonClusteringTask__stageThree_generateFaceprintsForFaceCrop
     goto LABEL_39;
   }
 
-  v76 = [HMIFaceUtilities faceObservationsFromFaceprintsForClustering:v4];
+  v76 = [HMIFaceUtilities faceObservationsFromFaceprintsForClustering:faceprintsCopy];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy2 = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -923,26 +923,26 @@ void __93__HMIHomePersonClusteringTask__stageThree_generateFaceprintsForFaceCrop
 
   objc_autoreleasePoolPop(v9);
   v13 = [v76 count];
-  v14 = [(HMIHomePersonClusteringTask *)v10 summary];
-  [v14 setNumberOfFaceprintsClustered:v13];
+  summary = [(HMIHomePersonClusteringTask *)selfCopy2 summary];
+  [summary setNumberOfFaceprintsClustered:v13];
 
-  v15 = [MEMORY[0x277CBEAA8] date];
-  clusterer = v10->_clusterer;
+  date = [MEMORY[0x277CBEAA8] date];
+  clusterer = selfCopy2->_clusterer;
   v82 = 0;
   v17 = [(HMIGreedyClustering *)clusterer getClustersWithFaces:v76 error:&v82];
   v18 = v82;
-  v19 = [MEMORY[0x277CBEAA8] date];
-  v69 = v15;
-  [v19 timeIntervalSinceDate:v15];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v69 = date;
+  [date2 timeIntervalSinceDate:date];
   v21 = v20;
-  v22 = [(HMIHomePersonClusteringTask *)v10 summary];
-  [v22 setClusteringDuration:v21];
+  summary2 = [(HMIHomePersonClusteringTask *)selfCopy2 summary];
+  [summary2 setClusteringDuration:v21];
 
   v70 = v17;
   if (!v17)
   {
     v60 = objc_autoreleasePoolPush();
-    v61 = v10;
+    v61 = selfCopy2;
     v62 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
     {
@@ -959,10 +959,10 @@ void __93__HMIHomePersonClusteringTask__stageThree_generateFaceprintsForFaceCrop
     goto LABEL_38;
   }
 
-  v68 = v4;
-  v73 = [MEMORY[0x277CBEB38] dictionary];
+  v68 = faceprintsCopy;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v23 = objc_autoreleasePoolPush();
-  v24 = v10;
+  v24 = selfCopy2;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
@@ -977,8 +977,8 @@ void __93__HMIHomePersonClusteringTask__stageThree_generateFaceprintsForFaceCrop
 
   objc_autoreleasePoolPop(v23);
   v28 = [v17 count];
-  v29 = [(HMIHomePersonClusteringTask *)v24 summary];
-  [v29 setNumberOfClusters:v28];
+  summary3 = [(HMIHomePersonClusteringTask *)v24 summary];
+  [summary3 setNumberOfClusters:v28];
 
   v80 = 0u;
   v81 = 0u;
@@ -990,8 +990,8 @@ void __93__HMIHomePersonClusteringTask__stageThree_generateFaceprintsForFaceCrop
   {
 LABEL_33:
 
-    v4 = v68;
-    [(HMIHomePersonClusteringTask *)v24 _stageFive_associateFaceCropsWithClusterMapping:v73 faceprints:v68];
+    faceprintsCopy = v68;
+    [(HMIHomePersonClusteringTask *)v24 _stageFive_associateFaceCropsWithClusterMapping:dictionary faceprints:v68];
     goto LABEL_37;
   }
 
@@ -1007,8 +1007,8 @@ LABEL_12:
     }
 
     v34 = *(*(&v78 + 1) + 8 * v33);
-    v35 = [v34 objects];
-    v36 = [v35 count];
+    objects = [v34 objects];
+    v36 = [objects count];
 
     if (v36 > 9)
     {
@@ -1021,8 +1021,8 @@ LABEL_12:
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
     {
       v40 = HMFGetLogIdentifier();
-      v41 = [v34 objects];
-      v42 = [v41 count];
+      objects2 = [v34 objects];
+      v42 = [objects2 count];
       *buf = 138543874;
       v84 = v40;
       v85 = 2048;
@@ -1049,19 +1049,19 @@ LABEL_25:
   v43 = v31;
   v44 = v32;
   v45 = [HMIGreedyClustering centermostFaceprintInCluster:v34 faceObservations:v76];
-  v46 = [(HMIHomePersonClusteringTask *)v24 personsModelManager];
+  personsModelManager = [(HMIHomePersonClusteringTask *)v24 personsModelManager];
   v47 = v24;
-  v48 = [(HMIHomeTask *)v24 homeUUID];
+  homeUUID = [(HMIHomeTask *)v24 homeUUID];
   v77 = v18;
-  v49 = [v46 predictHomePersonFromFaceObservation:v45 homeUUID:v48 error:&v77];
+  v49 = [personsModelManager predictHomePersonFromFaceObservation:v45 homeUUID:homeUUID error:&v77];
   v50 = v77;
   v51 = v18;
   v18 = v50;
 
   if (v49)
   {
-    v52 = [v49 confidence];
-    [v52 floatValue];
+    confidence = [v49 confidence];
+    [confidence floatValue];
     v54 = v53;
 
     if (v54 > 0.83)
@@ -1073,20 +1073,20 @@ LABEL_25:
       {
         v71 = HMFGetLogIdentifier();
         v72 = v45;
-        v57 = [v49 personUUID];
+        personUUID = [v49 personUUID];
         *buf = 138543618;
         v84 = v71;
         v85 = 2112;
-        v86 = v57;
-        v58 = v57;
+        v86 = personUUID;
+        v58 = personUUID;
         _os_log_impl(&dword_22D12F000, v56, OS_LOG_TYPE_INFO, "%{public}@Assigning cluster to existing person with UUID: %@", buf, 0x16u);
 
         v45 = v72;
       }
 
       objc_autoreleasePoolPop(context);
-      v59 = [v49 personUUID];
-      [v73 setObject:v59 forKeyedSubscript:v34];
+      personUUID2 = [v49 personUUID];
+      [dictionary setObject:personUUID2 forKeyedSubscript:v34];
     }
 
     v24 = v47;
@@ -1118,32 +1118,32 @@ LABEL_25:
   objc_autoreleasePoolPop(v64);
   [(HMFOperation *)v65 cancelWithError:v18];
 
-  v4 = v68;
+  faceprintsCopy = v68;
 LABEL_37:
 
 LABEL_38:
 LABEL_39:
 }
 
-- (void)_stageFive_associateFaceCropsWithClusterMapping:(id)a3 faceprints:(id)a4
+- (void)_stageFive_associateFaceCropsWithClusterMapping:(id)mapping faceprints:(id)faceprints
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  mappingCopy = mapping;
+  faceprintsCopy = faceprints;
   v8 = dispatch_group_create();
   v9 = [MEMORY[0x277CBEB58] set];
   v33 = MEMORY[0x277D85DD0];
   v34 = 3221225472;
   v35 = __90__HMIHomePersonClusteringTask__stageFive_associateFaceCropsWithClusterMapping_faceprints___block_invoke;
   v36 = &unk_278755768;
-  v10 = v7;
+  v10 = faceprintsCopy;
   v37 = v10;
-  v38 = self;
+  selfCopy = self;
   v11 = v8;
   v39 = v11;
   v12 = v9;
   v40 = v12;
-  [v6 enumerateKeysAndObjectsUsingBlock:&v33];
+  [mappingCopy enumerateKeysAndObjectsUsingBlock:&v33];
   v13 = dispatch_time(0, 10000000000);
   if (dispatch_group_wait(v11, v13))
   {
@@ -1154,7 +1154,7 @@ LABEL_39:
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -1167,14 +1167,14 @@ LABEL_39:
     objc_autoreleasePoolPop(v15);
     os_unfair_lock_lock_with_options();
     v19 = MEMORY[0x277CBEA60];
-    v20 = [v12 allObjects];
-    v14 = [v19 arrayWithArray:v20];
+    allObjects = [v12 allObjects];
+    v14 = [v19 arrayWithArray:allObjects];
 
-    os_unfair_lock_unlock(&v16->_lock);
+    os_unfair_lock_unlock(&selfCopy2->_lock);
     if (([v14 hmf_isEmpty] & 1) == 0)
     {
-      v21 = [MEMORY[0x277CCAB68] string];
-      objc_msgSend(v21, "appendFormat:", @"Error associating face crops for %lu person(s): ("), objc_msgSend(v14, "count");
+      string = [MEMORY[0x277CCAB68] string];
+      objc_msgSend(string, "appendFormat:", @"Error associating face crops for %lu person(s): ("), objc_msgSend(v14, "count");
       v22 = MEMORY[0x277CCACA8];
       v23 = [v14 count];
       if (v23 >= 3)
@@ -1196,18 +1196,18 @@ LABEL_39:
         v28 = @" ...";
       }
 
-      v29 = [v22 stringWithFormat:@"%@%@", v26, v28, v33, v34, v35, v36, v37, v38, v39];
+      v29 = [v22 stringWithFormat:@"%@%@", v26, v28, v33, v34, v35, v36, v37, selfCopy, v39];
 
-      [v21 appendString:v29];
-      [v21 appendString:@""]);
+      [string appendString:v29];
+      [string appendString:@""]);
       v30 = MEMORY[0x277CCA9B8];
-      v31 = [v21 copy];
+      v31 = [string copy];
       v32 = [v30 hmiPrivateErrorWithCode:1048 description:v31];
 
-      [(HMFOperation *)v16 cancelWithError:v32];
+      [(HMFOperation *)selfCopy2 cancelWithError:v32];
     }
 
-    [(HMIHomePersonClusteringTask *)v16 finish];
+    [(HMIHomePersonClusteringTask *)selfCopy2 finish];
   }
 }
 
@@ -1294,28 +1294,28 @@ void __90__HMIHomePersonClusteringTask__stageFive_associateFaceCropsWithClusterM
 
 - (void)finish
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(HMIHomePersonClusteringTask *)self startTime];
-  [v3 timeIntervalSinceDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  startTime = [(HMIHomePersonClusteringTask *)self startTime];
+  [date timeIntervalSinceDate:startTime];
   v6 = v5;
-  v7 = [(HMIHomePersonClusteringTask *)self summary];
-  [v7 setTotalDuration:v6];
+  summary = [(HMIHomePersonClusteringTask *)self summary];
+  [summary setTotalDuration:v6];
 
-  v8 = [(HMFOperation *)self error];
-  v9 = [(HMIHomePersonClusteringTask *)self summary];
-  [v9 setError:v8];
+  error = [(HMFOperation *)self error];
+  summary2 = [(HMIHomePersonClusteringTask *)self summary];
+  [summary2 setError:error];
 
-  v10 = [(HMIHomePersonClusteringTask *)self summary];
-  [HMIAnalytics sendEventForClusteringTask:v10];
+  summary3 = [(HMIHomePersonClusteringTask *)self summary];
+  [HMIAnalytics sendEventForClusteringTask:summary3];
 
   v11.receiver = self;
   v11.super_class = HMIHomePersonClusteringTask;
   [(HMFOperation *)&v11 finish];
 }
 
-- (id)personCreatedDateFromFaceCrops:(id)a3
+- (id)personCreatedDateFromFaceCrops:(id)crops
 {
-  v3 = a3;
+  cropsCopy = crops;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -1327,7 +1327,7 @@ void __90__HMIHomePersonClusteringTask__stageFive_associateFaceCropsWithClusterM
   v6[2] = __62__HMIHomePersonClusteringTask_personCreatedDateFromFaceCrops___block_invoke;
   v6[3] = &unk_278755790;
   v6[4] = &v7;
-  [v3 na_each:v6];
+  [cropsCopy na_each:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -1350,15 +1350,15 @@ void __62__HMIHomePersonClusteringTask_personCreatedDateFromFaceCrops___block_in
   }
 }
 
-- (void)removePerson:(id)a3
+- (void)removePerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v5 = MEMORY[0x277CBEB98];
-  v6 = [v4 UUID];
-  v7 = [v5 setWithObject:v6];
+  uUID = [personCopy UUID];
+  v7 = [v5 setWithObject:uUID];
 
   objc_initWeak(&location, self);
-  v8 = [(HMIHomePersonClusteringTask *)self dataSource];
+  dataSource = [(HMIHomePersonClusteringTask *)self dataSource];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __44__HMIHomePersonClusteringTask_removePerson___block_invoke;
@@ -1366,9 +1366,9 @@ void __62__HMIHomePersonClusteringTask_personCreatedDateFromFaceCrops___block_in
   objc_copyWeak(&v14, &location);
   v9 = v7;
   v12 = v9;
-  v10 = v4;
+  v10 = personCopy;
   v13 = v10;
-  [v8 removePersonsWithUUIDs:v9 completion:v11];
+  [dataSource removePersonsWithUUIDs:v9 completion:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);

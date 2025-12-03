@@ -4,30 +4,30 @@
 + (RBDevice)appleGPUFamily;
 + (RBDevice)sharedDefaultDevice;
 + (id)sharedDefaultDevice;
-+ (id)sharedDevice:(id)a3;
++ (id)sharedDevice:(id)device;
 + (uint64_t)purgeResources;
 + (unint64_t)defaultBackgroundGPUPriority;
 + (unint64_t)defaultGPUPriority;
 + (void)allDevices;
-+ (void)didEnterBackground:(id)a3;
++ (void)didEnterBackground:(id)background;
 + (void)purgeResources;
-+ (void)setDefaultBackgroundGPUPriority:(unint64_t)a3;
-+ (void)setDefaultGPUPriority:(unint64_t)a3;
-+ (void)willEnterForeground:(id)a3;
-- (BOOL)compileShader:(id)a3 error:(id *)a4;
-- (RBDevice)initWithDevice:(id)a3;
++ (void)setDefaultBackgroundGPUPriority:(unint64_t)priority;
++ (void)setDefaultGPUPriority:(unint64_t)priority;
++ (void)willEnterForeground:(id)foreground;
+- (BOOL)compileShader:(id)shader error:(id *)error;
+- (RBDevice)initWithDevice:(id)device;
 - (id).cxx_construct;
-- (id)pipelineDescriptions:(id)a3 format:(int)a4;
+- (id)pipelineDescriptions:(id)descriptions format:(int)format;
 - (uint64_t)_purgeResources;
 - (unint64_t)GPUPriority;
 - (unint64_t)backgroundGPUPriority;
-- (unint64_t)pixelFormatForColorMode:(int)a3 displayList:(id)a4 flags:(unsigned int)a5;
+- (unint64_t)pixelFormatForColorMode:(int)mode displayList:(id)list flags:(unsigned int)flags;
 - (void)collectResources;
-- (void)compileShader:(id)a3 completionQueue:(id)a4 handler:(id)a5;
+- (void)compileShader:(id)shader completionQueue:(id)queue handler:(id)handler;
 - (void)dealloc;
 - (void)purgeResources;
-- (void)setBackgroundGPUPriority:(unint64_t)a3;
-- (void)setGPUPriority:(unint64_t)a3;
+- (void)setBackgroundGPUPriority:(unint64_t)priority;
+- (void)setGPUPriority:(unint64_t)priority;
 @end
 
 @implementation RBDevice
@@ -90,51 +90,51 @@
   return self;
 }
 
-- (BOOL)compileShader:(id)a3 error:(id *)a4
+- (BOOL)compileShader:(id)shader error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v7 = rb_shader_type([a3 type]);
+  v7 = rb_shader_type([shader type]);
   if ((v7 & 0x100000000) != 0)
   {
     v9 = v7;
-    v10 = [(RBDecodedFontMetadata *)self fontUID];
+    fontUID = [(RBDecodedFontMetadata *)self fontUID];
 
-    return RB::FunctionLibrary::compile_shader(v10, a3 + 2, v9, a4);
+    return RB::FunctionLibrary::compile_shader(fontUID, shader + 2, v9, error);
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v11 = *MEMORY[0x1E696A578];
       v12[0] = @"Missing shader type.";
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.RenderBox.RBShaderError" code:5 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v12, &v11, 1)}];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.RenderBox.RBShaderError" code:5 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v12, &v11, 1)}];
     }
 
     return 0;
   }
 }
 
-- (void)compileShader:(id)a3 completionQueue:(id)a4 handler:(id)a5
+- (void)compileShader:(id)shader completionQueue:(id)queue handler:(id)handler
 {
   if ((atomic_load_explicit(&qword_1ED6D5388, memory_order_acquire) & 1) == 0)
   {
     [RBDevice(RBShader) compileShader:completionQueue:handler:];
   }
 
-  v9 = self;
-  v10 = a3;
-  v11 = a4;
-  v12 = [a5 copy];
+  selfCopy = self;
+  shaderCopy = shader;
+  queueCopy = queue;
+  v12 = [handler copy];
   v13 = _MergedGlobals_1;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3321888768;
   v14[2] = __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invoke;
   v14[3] = &__block_descriptor_64_e8_32c30_ZTSN2RB8objc_ptrIP8RBDeviceEE40c30_ZTSN2RB8objc_ptrIP8RBShaderEE48c48_ZTSN2RB8objc_ptrIU13block_pointerFvP7NSErrorEEE56c61_ZTSN2RB8objc_ptrIPU28objcproto17OS_dispatch_queue8NSObjectEE_e5_v8__0l;
-  v15 = v9;
-  v16 = v10;
+  v15 = selfCopy;
+  v16 = shaderCopy;
   v17 = v12;
-  v18 = v11;
+  v18 = queueCopy;
   dispatch_async(v13, v14);
 }
 
@@ -178,7 +178,7 @@ void __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invo
   return result;
 }
 
-+ (id)sharedDevice:(id)a3
++ (id)sharedDevice:(id)device
 {
   lock = &devices_lock;
   v11 = 1;
@@ -189,7 +189,7 @@ void __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invo
   }
 
   v12 = 0;
-  v5 = RB::UntypedTable::lookup(device_table, a3, &v12);
+  v5 = RB::UntypedTable::lookup(device_table, device, &v12);
   if (v12)
   {
     v6 = v5;
@@ -199,10 +199,10 @@ void __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invo
   {
     os_unfair_lock_unlock(&devices_lock);
     v11 = 0;
-    v6 = [[a1 alloc] initWithDevice:a3];
+    v6 = [[self alloc] initWithDevice:device];
     std::unique_lock<RB::spin_lock>::lock[abi:nn200100](&lock);
     v12 = 0;
-    v7 = RB::UntypedTable::lookup(device_table, a3, &v12);
+    v7 = RB::UntypedTable::lookup(device_table, device, &v12);
     if (v12)
     {
       v8 = v7;
@@ -212,7 +212,7 @@ void __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invo
 
     else
     {
-      RB::UntypedTable::insert(device_table, a3, v6);
+      RB::UntypedTable::insert(device_table, device, v6);
 
       all_devices = 0;
     }
@@ -280,9 +280,9 @@ void __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invo
   }
 }
 
-+ (void)setDefaultGPUPriority:(unint64_t)a3
++ (void)setDefaultGPUPriority:(unint64_t)priority
 {
-  if (a3 > 0xFF)
+  if (priority > 0xFF)
   {
     if (HIBYTE(RB::Device::default_gpu_priority) == 1)
     {
@@ -292,7 +292,7 @@ void __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invo
 
   else
   {
-    RB::Device::default_gpu_priority = a3 | 0x100;
+    RB::Device::default_gpu_priority = priority | 0x100;
   }
 }
 
@@ -309,9 +309,9 @@ void __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invo
   }
 }
 
-+ (void)setDefaultBackgroundGPUPriority:(unint64_t)a3
++ (void)setDefaultBackgroundGPUPriority:(unint64_t)priority
 {
-  if (a3 > 0xFF)
+  if (priority > 0xFF)
   {
     if (HIBYTE(RB::Device::default_bg_gpu_priority) == 1)
     {
@@ -321,7 +321,7 @@ void __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invo
 
   else
   {
-    RB::Device::default_bg_gpu_priority = a3 | 0x100;
+    RB::Device::default_bg_gpu_priority = priority | 0x100;
   }
 }
 
@@ -341,7 +341,7 @@ void __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invo
   [(RBDevice *)&v4 dealloc];
 }
 
-- (RBDevice)initWithDevice:(id)a3
+- (RBDevice)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = RBDevice;
@@ -356,21 +356,21 @@ void __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invo
 + (void)purgeResources
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [a1 allDevices];
-  v3 = [v2 countByEnumeratingWithState:&v5 objects:v6 count:16];
+  allDevices = [self allDevices];
+  v3 = [allDevices countByEnumeratingWithState:&v5 objects:v6 count:16];
   if (v3)
   {
-    v3 = [(RBDevice *)&v5 purgeResources:v2];
+    v3 = [(RBDevice *)&v5 purgeResources:allDevices];
   }
 
   v4 = RB::SurfacePool::shared(v3);
   RB::SurfacePool::collect(v4, 1);
 }
 
-+ (void)didEnterBackground:(id)a3
++ (void)didEnterBackground:(id)background
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = RB::misc_log(a1);
+  v3 = RB::misc_log(self);
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT);
   if (v4)
   {
@@ -429,10 +429,10 @@ void __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invo
   }
 }
 
-+ (void)willEnterForeground:(id)a3
++ (void)willEnterForeground:(id)foreground
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = RB::misc_log(a1);
+  v3 = RB::misc_log(self);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4[0] = 67109376;
@@ -462,7 +462,7 @@ void __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invo
   }
 }
 
-- (void)setGPUPriority:(unint64_t)a3
+- (void)setGPUPriority:(unint64_t)priority
 {
   v3 = *(self->_device._p + 4);
   v4[0] = MEMORY[0x1E69E9820];
@@ -470,7 +470,7 @@ void __60__RBDevice_RBShader__compileShader_completionQueue_handler___block_invo
   v4[2] = __27__RBDevice_setGPUPriority___block_invoke;
   v4[3] = &unk_1E744C670;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = priority;
   dispatch_sync(v3, v4);
 }
 
@@ -504,7 +504,7 @@ uint64_t __27__RBDevice_setGPUPriority___block_invoke(uint64_t result)
   }
 }
 
-- (void)setBackgroundGPUPriority:(unint64_t)a3
+- (void)setBackgroundGPUPriority:(unint64_t)priority
 {
   v3 = *(self->_device._p + 4);
   v4[0] = MEMORY[0x1E69E9820];
@@ -512,7 +512,7 @@ uint64_t __27__RBDevice_setGPUPriority___block_invoke(uint64_t result)
   v4[2] = __37__RBDevice_setBackgroundGPUPriority___block_invoke;
   v4[3] = &unk_1E744C670;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = priority;
   dispatch_sync(v3, v4);
 }
 
@@ -533,32 +533,32 @@ uint64_t __37__RBDevice_setBackgroundGPUPriority___block_invoke(uint64_t result)
   return result;
 }
 
-- (unint64_t)pixelFormatForColorMode:(int)a3 displayList:(id)a4 flags:(unsigned int)a5
+- (unint64_t)pixelFormatForColorMode:(int)mode displayList:(id)list flags:(unsigned int)flags
 {
-  v5 = a5;
-  RB::ColorMode::ColorMode(v12, *&a3);
-  if ((v5 & 2) == 0)
+  flagsCopy = flags;
+  RB::ColorMode::ColorMode(v12, *&mode);
+  if ((flagsCopy & 2) == 0)
   {
-    v8 = [a4 _rb_contents];
-    if (v8)
+    _rb_contents = [list _rb_contents];
+    if (_rb_contents)
     {
-      v10 = RB::DisplayList::Layer::color_info((v8 + 320), v9);
+      v10 = RB::DisplayList::Layer::color_info((_rb_contents + 320), v9);
       RB::ColorMode::merge_depth(v12, v10);
     }
   }
 
-  return RB::ColorMode::pixel_format(v12, self->_device._p, v5 & 1, 0);
+  return RB::ColorMode::pixel_format(v12, self->_device._p, flagsCopy & 1, 0);
 }
 
-- (id)pipelineDescriptions:(id)a3 format:(int)a4
+- (id)pipelineDescriptions:(id)descriptions format:(int)format
 {
-  v5 = a3;
+  descriptionsCopy = descriptions;
   v22 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 1065353216;
   memset(v15, 0, sizeof(v15));
-  if ([a3 countByEnumeratingWithState:v15 objects:v21 count:16])
+  if ([descriptions countByEnumeratingWithState:v15 objects:v21 count:16])
   {
     RB::FormattedRenderState::ID::ID(&v19, [**(&v15[0] + 1) UTF8String]);
     std::__hash_table<RB::FormattedRenderState,std::hash<RB::FormattedRenderState>,std::equal_to<RB::FormattedRenderState>,std::allocator<RB::FormattedRenderState>>::__emplace_unique_impl<RB::FormattedRenderState::ID>();
@@ -566,13 +566,13 @@ uint64_t __37__RBDevice_setBackgroundGPUPriority___block_invoke(uint64_t result)
 
   if (!*(&v17 + 1))
   {
-    v9 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     goto LABEL_8;
   }
 
-  if (a4 == 1)
+  if (format == 1)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    descriptionsCopy = [MEMORY[0x1E695DF70] array];
     for (i = v17; i; i = *i)
     {
       v19 = i[2];
@@ -580,7 +580,7 @@ uint64_t __37__RBDevice_setBackgroundGPUPriority___block_invoke(uint64_t result)
       RB::FormattedRenderState::description(&v19, &v13);
       if (v13)
       {
-        [v5 addObject:?];
+        [descriptionsCopy addObject:?];
         v12 = v13;
       }
 
@@ -591,25 +591,25 @@ uint64_t __37__RBDevice_setBackgroundGPUPriority___block_invoke(uint64_t result)
     }
   }
 
-  else if (!a4)
+  else if (!format)
   {
     p = self->_device._p;
     std::unordered_set<RB::FormattedRenderState>::unordered_set(v14, &v16);
     pipeline_set = RB::JSONPipeline::make_pipeline_set(p, v14);
     std::__hash_table<RB::FormattedRenderState,std::hash<RB::FormattedRenderState>,std::equal_to<RB::FormattedRenderState>,std::allocator<RB::FormattedRenderState>>::~__hash_table(v14);
-    v9 = pipeline_set;
+    array = pipeline_set;
 LABEL_8:
-    v5 = v9;
+    descriptionsCopy = array;
   }
 
   std::__hash_table<RB::FormattedRenderState,std::hash<RB::FormattedRenderState>,std::equal_to<RB::FormattedRenderState>,std::allocator<RB::FormattedRenderState>>::~__hash_table(&v16);
-  return v5;
+  return descriptionsCopy;
 }
 
 - (uint64_t)_purgeResources
 {
-  RB::Device::prune_caches(a1, 1);
-  v2 = *(a1 + 3);
+  RB::Device::prune_caches(self, 1);
+  v2 = *(self + 3);
   result = objc_opt_respondsToSelector();
   if (result)
   {
@@ -657,18 +657,18 @@ LABEL_8:
 
 + (uint64_t)purgeResources
 {
-  v8 = **(a1 + 16);
+  v8 = **(self + 16);
   do
   {
     v9 = 0;
     do
     {
-      if (**(a1 + 16) != v8)
+      if (**(self + 16) != v8)
       {
         objc_enumerationMutation(obj);
       }
 
-      v10 = *(a1 + 8);
+      v10 = *(self + 8);
       if (*(v10 + 8 * v9))
       {
         [*(v10 + 8 * v9) queue];
@@ -680,7 +680,7 @@ LABEL_8:
     }
 
     while (a3 != v9);
-    result = [obj countByEnumeratingWithState:a1 objects:a4 count:16];
+    result = [obj countByEnumeratingWithState:self objects:a4 count:16];
     a3 = result;
   }
 

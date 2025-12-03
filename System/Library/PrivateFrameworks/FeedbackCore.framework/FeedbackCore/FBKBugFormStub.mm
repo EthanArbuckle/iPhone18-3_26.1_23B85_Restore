@@ -1,30 +1,30 @@
 @interface FBKBugFormStub
-+ (id)bugFormStubsMatchingBuild:(id)a3 forPlatform:(id)a4 withStubs:(id)a5;
++ (id)bugFormStubsMatchingBuild:(id)build forPlatform:(id)platform withStubs:(id)stubs;
 + (id)predicateForAllStubs;
-+ (id)predicateForTeam:(id)a3;
++ (id)predicateForTeam:(id)team;
 + (id)sortDescriptor;
 - (NSSet)stubsWithMatchingID;
 - (NSSet)teamsMatchingFormID;
 - (id)debugDescription;
-- (id)preferredTeamForStubPreferringTeam:(id)a3;
+- (id)preferredTeamForStubPreferringTeam:(id)team;
 - (id)signatureDescription;
-- (void)setPropertiesFromJSONObject:(id)a3;
+- (void)setPropertiesFromJSONObject:(id)object;
 @end
 
 @implementation FBKBugFormStub
 
-+ (id)bugFormStubsMatchingBuild:(id)a3 forPlatform:(id)a4 withStubs:(id)a5
++ (id)bugFormStubsMatchingBuild:(id)build forPlatform:(id)platform withStubs:(id)stubs
 {
   v41 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v7 = a4;
-  v8 = a5;
-  v32 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  buildCopy = build;
+  platformCopy = platform;
+  stubsCopy = stubs;
+  v32 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(stubsCopy, "count")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v9 = v8;
+  v9 = stubsCopy;
   v10 = [v9 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v10)
   {
@@ -57,10 +57,10 @@ LABEL_3:
         goto LABEL_25;
       }
 
-      if (v7)
+      if (platformCopy)
       {
-        v16 = [v15 platform];
-        v17 = [v16 isEqualToString:v7];
+        platform = [v15 platform];
+        v17 = [platform isEqualToString:platformCopy];
 
         if (!v17)
         {
@@ -68,34 +68,34 @@ LABEL_3:
         }
       }
 
-      v18 = [v15 buildPrefix];
-      if (![v18 length])
+      buildPrefix = [v15 buildPrefix];
+      if (![buildPrefix length])
       {
         break;
       }
 
-      v19 = [v15 buildPrefix];
-      v20 = [v33 hasPrefix:v19];
+      buildPrefix2 = [v15 buildPrefix];
+      v20 = [buildCopy hasPrefix:buildPrefix2];
 
       if (!v20)
       {
         goto LABEL_15;
       }
 
-      v21 = [v15 buildPrefix];
-      v22 = [v21 length];
+      buildPrefix3 = [v15 buildPrefix];
+      v22 = [buildPrefix3 length];
 
       if (v22 != v12)
       {
-        v23 = [v15 buildPrefix];
-        v24 = [v23 length];
+        buildPrefix4 = [v15 buildPrefix];
+        v24 = [buildPrefix4 length];
 
         if (v24 > v12)
         {
           [v32 removeAllObjects];
           [v32 addObject:v15];
-          v25 = [v15 buildPrefix];
-          v12 = [v25 length];
+          buildPrefix5 = [v15 buildPrefix];
+          v12 = [buildPrefix5 length];
         }
 
         goto LABEL_18;
@@ -117,7 +117,7 @@ LABEL_18:
     }
 
 LABEL_15:
-    if (!v7 || v12)
+    if (!platformCopy || v12)
     {
       goto LABEL_18;
     }
@@ -172,11 +172,11 @@ void __32__FBKBugFormStub_sortDescriptor__block_invoke()
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPropertiesFromJSONObject:(id)a3
+- (void)setPropertiesFromJSONObject:(id)object
 {
-  v30 = a3;
-  [(FBKManagedLocalIDObject *)self setPropertiesForLocalIDKeys:v30];
-  v4 = [v30 objectForKeyedSubscript:@"build_prefix"];
+  objectCopy = object;
+  [(FBKManagedLocalIDObject *)self setPropertiesForLocalIDKeys:objectCopy];
+  v4 = [objectCopy objectForKeyedSubscript:@"build_prefix"];
   v5 = FBKNilIfNSNull(v4);
 
   if (v5)
@@ -184,7 +184,7 @@ void __32__FBKBugFormStub_sortDescriptor__block_invoke()
     [(FBKBugFormStub *)self setBuildPrefix:v5];
   }
 
-  v6 = [v30 objectForKeyedSubscript:@"description"];
+  v6 = [objectCopy objectForKeyedSubscript:@"description"];
   v7 = FBKNilIfNSNull(v6);
 
   if (v7)
@@ -192,7 +192,7 @@ void __32__FBKBugFormStub_sortDescriptor__block_invoke()
     [(FBKBugFormStub *)self setFormDescription:v7];
   }
 
-  v8 = [v30 objectForKeyedSubscript:@"name"];
+  v8 = [objectCopy objectForKeyedSubscript:@"name"];
   v9 = FBKNilIfNSNull(v8);
 
   if (v9)
@@ -200,7 +200,7 @@ void __32__FBKBugFormStub_sortDescriptor__block_invoke()
     [(FBKBugFormStub *)self setName:v9];
   }
 
-  v10 = [v30 objectForKeyedSubscript:@"platform"];
+  v10 = [objectCopy objectForKeyedSubscript:@"platform"];
   v11 = FBKNilIfNSNull(v10);
 
   if (v11)
@@ -208,7 +208,7 @@ void __32__FBKBugFormStub_sortDescriptor__block_invoke()
     [(FBKBugFormStub *)self setPlatform:v11];
   }
 
-  v12 = [v30 objectForKeyedSubscript:@"priority"];
+  v12 = [objectCopy objectForKeyedSubscript:@"priority"];
   v13 = FBKNilIfNSNull(v12);
 
   if (v13)
@@ -222,7 +222,7 @@ void __32__FBKBugFormStub_sortDescriptor__block_invoke()
   }
 
   [(FBKBugFormStub *)self setPriority:v14];
-  v15 = [v30 objectForKeyedSubscript:@"plugins"];
+  v15 = [objectCopy objectForKeyedSubscript:@"plugins"];
   v16 = FBKNilIfNSNull(v15);
 
   if (v16)
@@ -235,7 +235,7 @@ void __32__FBKBugFormStub_sortDescriptor__block_invoke()
     }
   }
 
-  v18 = [v30 objectForKeyedSubscript:{@"signature", v9}];
+  v18 = [objectCopy objectForKeyedSubscript:{@"signature", v9}];
   v19 = FBKNilIfNSNull(v18);
 
   if (v19)
@@ -254,22 +254,22 @@ void __32__FBKBugFormStub_sortDescriptor__block_invoke()
   }
 
   v21 = v7;
-  v22 = [v30 objectForKeyedSubscript:@"always_show_picker"];
+  v22 = [objectCopy objectForKeyedSubscript:@"always_show_picker"];
   v23 = FBKNilIfNSNull(v22);
 
   v24 = v5;
   if (v23)
   {
-    v25 = [v23 BOOLValue];
+    bOOLValue = [v23 BOOLValue];
   }
 
   else
   {
-    v25 = 0;
+    bOOLValue = 0;
   }
 
-  [(FBKBugFormStub *)self setForcePicker:v25];
-  v26 = [v30 objectForKeyedSubscript:@"tat"];
+  [(FBKBugFormStub *)self setForcePicker:bOOLValue];
+  v26 = [objectCopy objectForKeyedSubscript:@"tat"];
   v27 = FBKNilIfNSNull(v26);
 
   if (v27)
@@ -301,21 +301,21 @@ uint64_t __46__FBKBugFormStub_setPropertiesFromJSONObject___block_invoke(uint64_
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [(FBKManagedLocalIDObject *)self ID];
-  v5 = [v4 intValue];
-  v6 = [(FBKBugFormStub *)self pluginIDs];
-  v7 = [v6 componentsJoinedByString:{@", "}];
-  v8 = [(FBKBugFormStub *)self signature];
-  v9 = [v3 stringWithFormat:@"Stub [%i] <%@:%@>", v5, v7, v8];
+  intValue = [v4 intValue];
+  pluginIDs = [(FBKBugFormStub *)self pluginIDs];
+  v7 = [pluginIDs componentsJoinedByString:{@", "}];
+  signature = [(FBKBugFormStub *)self signature];
+  v9 = [v3 stringWithFormat:@"Stub [%i] <%@:%@>", intValue, v7, signature];
 
   return v9;
 }
 
-- (id)preferredTeamForStubPreferringTeam:(id)a3
+- (id)preferredTeamForStubPreferringTeam:(id)team
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FBKBugFormStub *)self teams];
-  v6 = [v5 count];
+  teamCopy = team;
+  teams = [(FBKBugFormStub *)self teams];
+  v6 = [teams count];
 
   if (!v6)
   {
@@ -325,22 +325,22 @@ uint64_t __46__FBKBugFormStub_setPropertiesFromJSONObject___block_invoke(uint64_
     [v7 raise:v8 format:{@"Form stub [%lu] belongs to no teams.", objc_msgSend(v9, "unsignedIntegerValue")}];
   }
 
-  if (v4 && (-[FBKBugFormStub teams](self, "teams"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 containsObject:v4], v10, v11))
+  if (teamCopy && (-[FBKBugFormStub teams](self, "teams"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 containsObject:teamCopy], v10, v11))
   {
     v12 = +[FBKLog model];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = [(FBKManagedLocalIDObject *)self ID];
-      v14 = [v13 integerValue];
-      v15 = [v4 ID];
+      integerValue = [v13 integerValue];
+      v15 = [teamCopy ID];
       *buf = 134218240;
-      v35 = v14;
+      v35 = integerValue;
       v36 = 2048;
-      v37 = [v15 integerValue];
+      integerValue2 = [v15 integerValue];
       _os_log_impl(&dword_1E54BE000, v12, OS_LOG_TYPE_DEFAULT, "Preferred team for stub [%ld] with ID: [%ld]", buf, 0x16u);
     }
 
-    v16 = v4;
+    v16 = teamCopy;
   }
 
   else
@@ -349,8 +349,8 @@ uint64_t __46__FBKBugFormStub_setPropertiesFromJSONObject___block_invoke(uint64_
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v17 = [(FBKBugFormStub *)self teams];
-    v18 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    teams2 = [(FBKBugFormStub *)self teams];
+    v18 = [teams2 countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v18)
     {
       v19 = v18;
@@ -361,7 +361,7 @@ uint64_t __46__FBKBugFormStub_setPropertiesFromJSONObject___block_invoke(uint64_
         {
           if (*v30 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(teams2);
           }
 
           v22 = *(*(&v29 + 1) + 8 * i);
@@ -371,18 +371,18 @@ uint64_t __46__FBKBugFormStub_setPropertiesFromJSONObject___block_invoke(uint64_
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
               v25 = [(FBKManagedLocalIDObject *)self ID];
-              v26 = [v25 integerValue];
+              integerValue3 = [v25 integerValue];
               *buf = 134217984;
-              v35 = v26;
+              v35 = integerValue3;
               _os_log_impl(&dword_1E54BE000, v24, OS_LOG_TYPE_DEFAULT, "Preferred team for stub [%ld] unavailable, choosing personal team", buf, 0xCu);
             }
 
-            v23 = v22;
+            anyObject = v22;
             goto LABEL_20;
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v19 = [teams2 countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v19)
         {
           continue;
@@ -392,10 +392,10 @@ uint64_t __46__FBKBugFormStub_setPropertiesFromJSONObject___block_invoke(uint64_
       }
     }
 
-    v17 = [(FBKBugFormStub *)self teams];
-    v23 = [v17 anyObject];
+    teams2 = [(FBKBugFormStub *)self teams];
+    anyObject = [teams2 anyObject];
 LABEL_20:
-    v16 = v23;
+    v16 = anyObject;
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -405,12 +405,12 @@ LABEL_20:
 
 - (NSSet)stubsWithMatchingID
 {
-  v3 = [(FBKBugFormStub *)self user];
-  v4 = [v3 bugFormStubs];
+  user = [(FBKBugFormStub *)self user];
+  bugFormStubs = [user bugFormStubs];
   v5 = MEMORY[0x1E696AE18];
-  v6 = [(FBKBugFormStub *)self serverID];
-  v7 = [v5 predicateWithFormat:@"serverID == %@", v6];
-  v8 = [v4 filteredSetUsingPredicate:v7];
+  serverID = [(FBKBugFormStub *)self serverID];
+  v7 = [v5 predicateWithFormat:@"serverID == %@", serverID];
+  v8 = [bugFormStubs filteredSetUsingPredicate:v7];
 
   return v8;
 }
@@ -418,17 +418,17 @@ LABEL_20:
 - (NSSet)teamsMatchingFormID
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(FBKBugFormStub *)self stubsWithMatchingID];
+  stubsWithMatchingID = [(FBKBugFormStub *)self stubsWithMatchingID];
   v4 = MEMORY[0x1E695DFA8];
-  v5 = [(FBKBugFormStub *)self user];
-  v6 = [v5 teams];
-  v7 = [v4 setWithCapacity:{objc_msgSend(v6, "count")}];
+  user = [(FBKBugFormStub *)self user];
+  teams = [user teams];
+  v7 = [v4 setWithCapacity:{objc_msgSend(teams, "count")}];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v3;
+  v8 = stubsWithMatchingID;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -443,8 +443,8 @@ LABEL_20:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) teams];
-        [v7 unionSet:v13];
+        teams2 = [*(*(&v17 + 1) + 8 * i) teams];
+        [v7 unionSet:teams2];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -466,15 +466,15 @@ LABEL_20:
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [(FBKManagedLocalIDObject *)self ID];
-  v7 = [(FBKBugFormStub *)self signature];
-  v8 = [v3 stringWithFormat:@"%@: %@ - %@", v5, v6, v7];
+  signature = [(FBKBugFormStub *)self signature];
+  v8 = [v3 stringWithFormat:@"%@: %@ - %@", v5, v6, signature];
 
   return v8;
 }
 
-+ (id)predicateForTeam:(id)a3
++ (id)predicateForTeam:(id)team
 {
-  v3 = a3;
+  teamCopy = team;
   if (+[FBKSharedConstants listsFormsFetchedByTat])
   {
     v4 = @"%@ IN teams";
@@ -485,9 +485,9 @@ LABEL_20:
     v4 = @"%@ IN teams AND self.wasFetchedByTat == NO";
   }
 
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:v4, v3];
+  teamCopy = [MEMORY[0x1E696AE18] predicateWithFormat:v4, teamCopy];
 
-  return v5;
+  return teamCopy;
 }
 
 + (id)predicateForAllStubs

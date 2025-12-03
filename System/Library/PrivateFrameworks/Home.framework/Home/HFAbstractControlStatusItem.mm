@@ -1,36 +1,36 @@
 @interface HFAbstractControlStatusItem
-+ (BOOL)_isControlItem:(id)a3 identicalToControlItem:(id)a4;
-+ (BOOL)_isControlItem:(id)a3 similarToControlItem:(id)a4;
++ (BOOL)_isControlItem:(id)item identicalToControlItem:(id)controlItem;
++ (BOOL)_isControlItem:(id)item similarToControlItem:(id)controlItem;
 + (NSSet)serviceTypes;
-- (id)_aggregatedValueSourceWithServiceItems:(id)a3;
-- (id)_buildControlItemsForServices:(id)a3;
-- (id)_buildServiceItemsForServices:(id)a3;
-- (id)_primaryServiceDescriptorForServices:(id)a3;
-- (id)standardResultsForBatchReadResponse:(id)a3 serviceTypes:(id)a4;
+- (id)_aggregatedValueSourceWithServiceItems:(id)items;
+- (id)_buildControlItemsForServices:(id)services;
+- (id)_buildServiceItemsForServices:(id)services;
+- (id)_primaryServiceDescriptorForServices:(id)services;
+- (id)standardResultsForBatchReadResponse:(id)response serviceTypes:(id)types;
 @end
 
 @implementation HFAbstractControlStatusItem
 
-- (id)standardResultsForBatchReadResponse:(id)a3 serviceTypes:(id)a4
+- (id)standardResultsForBatchReadResponse:(id)response serviceTypes:(id)types
 {
   v20.receiver = self;
   v20.super_class = HFAbstractControlStatusItem;
-  v5 = [(HFStatusItem *)&v20 standardResultsForBatchReadResponse:a3 serviceTypes:a4];
+  v5 = [(HFStatusItem *)&v20 standardResultsForBatchReadResponse:response serviceTypes:types];
   v6 = [v5 mutableCopy];
 
   v7 = [v6 objectForKeyedSubscript:@"representedHomeKitObjects"];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 anyObject];
+    anyObject = [v7 anyObject];
     v10 = objc_opt_class();
     v11 = objc_opt_class();
 
     if (v10 == v11)
     {
       v12 = [(HFAbstractControlStatusItem *)self _buildControlItemsForServices:v8];
-      v13 = [(HFItem *)self latestResults];
-      v14 = [v13 objectForKeyedSubscript:@"childItems"];
+      latestResults = [(HFItem *)self latestResults];
+      v14 = [latestResults objectForKeyedSubscript:@"childItems"];
       v15 = v14;
       if (v14)
       {
@@ -57,14 +57,14 @@
   return v6;
 }
 
-- (id)_buildServiceItemsForServices:(id)a3
+- (id)_buildServiceItemsForServices:(id)services
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __61__HFAbstractControlStatusItem__buildServiceItemsForServices___block_invoke;
   v5[3] = &unk_277DF4A10;
   v5[4] = self;
-  v3 = [a3 na_map:v5];
+  v3 = [services na_map:v5];
 
   return v3;
 }
@@ -79,21 +79,21 @@ id __61__HFAbstractControlStatusItem__buildServiceItemsForServices___block_invok
   return v5;
 }
 
-- (id)_buildControlItemsForServices:(id)a3
+- (id)_buildControlItemsForServices:(id)services
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFAbstractControlStatusItem *)self _buildServiceItemsForServices:v4];
+  servicesCopy = services;
+  v5 = [(HFAbstractControlStatusItem *)self _buildServiceItemsForServices:servicesCopy];
   if ([v5 count])
   {
-    v29 = v4;
+    v29 = servicesCopy;
     v6 = [(HFAbstractControlStatusItem *)self _aggregatedValueSourceWithServiceItems:v5];
-    v7 = [v5 anyObject];
+    anyObject = [v5 anyObject];
     v53 = HFItemUpdateOptionDisableOptionalData;
     v54[0] = MEMORY[0x277CBEC38];
     [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:&v53 count:1];
-    v31 = v33 = v7;
-    v27 = [v7 createControlItemsWithOptions:?];
+    v31 = v33 = anyObject;
+    v27 = [anyObject createControlItemsWithOptions:?];
     v8 = [v27 na_filter:&__block_literal_global_24];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
@@ -157,8 +157,8 @@ id __61__HFAbstractControlStatusItem__buildServiceItemsForServices___block_invok
                   v17 = [v39 na_firstObjectPassingTest:v40];
                   if (v17)
                   {
-                    v18 = [v16 characteristicOptions];
-                    v19 = [v18 characteristicTypesForUsage:0];
+                    characteristicOptions = [v16 characteristicOptions];
+                    v19 = [characteristicOptions characteristicTypesForUsage:0];
                     v20 = [v19 count];
 
                     if (v20)
@@ -170,9 +170,9 @@ id __61__HFAbstractControlStatusItem__buildServiceItemsForServices___block_invok
 
                       else
                       {
-                        v21 = [v16 characteristicOptions];
-                        v22 = [v17 characteristicOptions];
-                        v23 = [v21 optionsByIntersectingWithOptions:v22];
+                        characteristicOptions2 = [v16 characteristicOptions];
+                        characteristicOptions3 = [v17 characteristicOptions];
+                        v23 = [characteristicOptions2 optionsByIntersectingWithOptions:characteristicOptions3];
 
                         if ([v17 canCopyWithCharacteristicOptions:v23])
                         {
@@ -202,7 +202,7 @@ id __61__HFAbstractControlStatusItem__buildServiceItemsForServices___block_invok
     }
 
     v5 = v28;
-    v4 = v29;
+    servicesCopy = v29;
   }
 
   else
@@ -240,16 +240,16 @@ uint64_t __61__HFAbstractControlStatusItem__buildControlItemsForServices___block
   return v5;
 }
 
-+ (BOOL)_isControlItem:(id)a3 similarToControlItem:(id)a4
++ (BOOL)_isControlItem:(id)item similarToControlItem:(id)controlItem
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isMemberOfClass:objc_opt_class()])
+  itemCopy = item;
+  controlItemCopy = controlItem;
+  if ([itemCopy isMemberOfClass:objc_opt_class()])
   {
-    v7 = [v5 characteristicOptions];
-    v8 = [v7 objectForKeyedSubscript:&unk_282523550];
-    v9 = [v6 characteristicOptions];
-    v10 = [v9 objectForKeyedSubscript:&unk_282523550];
+    characteristicOptions = [itemCopy characteristicOptions];
+    v8 = [characteristicOptions objectForKeyedSubscript:&unk_282523550];
+    characteristicOptions2 = [controlItemCopy characteristicOptions];
+    v10 = [characteristicOptions2 objectForKeyedSubscript:&unk_282523550];
     v11 = [v8 intersectsSet:v10];
   }
 
@@ -261,15 +261,15 @@ uint64_t __61__HFAbstractControlStatusItem__buildControlItemsForServices___block
   return v11;
 }
 
-+ (BOOL)_isControlItem:(id)a3 identicalToControlItem:(id)a4
++ (BOOL)_isControlItem:(id)item identicalToControlItem:(id)controlItem
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isMemberOfClass:objc_opt_class()])
+  itemCopy = item;
+  controlItemCopy = controlItem;
+  if ([itemCopy isMemberOfClass:objc_opt_class()])
   {
-    v7 = [v5 characteristicOptions];
-    v8 = [v6 characteristicOptions];
-    v9 = [v7 isEqual:v8];
+    characteristicOptions = [itemCopy characteristicOptions];
+    characteristicOptions2 = [controlItemCopy characteristicOptions];
+    v9 = [characteristicOptions isEqual:characteristicOptions2];
   }
 
   else
@@ -280,31 +280,31 @@ uint64_t __61__HFAbstractControlStatusItem__buildControlItemsForServices___block
   return v9;
 }
 
-- (id)_primaryServiceDescriptorForServices:(id)a3
+- (id)_primaryServiceDescriptorForServices:(id)services
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 na_map:&__block_literal_global_12_0];
-  v5 = [v4 anyObject];
+  v4 = [services na_map:&__block_literal_global_12_0];
+  anyObject = [v4 anyObject];
   if ([v4 count] != 1)
   {
     v6 = HFLogForCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v9 = 138413058;
-      v10 = self;
+      selfCopy = self;
       v11 = 2048;
       v12 = [v4 count];
       v13 = 2112;
       v14 = v4;
       v15 = 2112;
-      v16 = v5;
+      v16 = anyObject;
       _os_log_error_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_ERROR, "%@ Invalid number of service descriptors (expected 1, found %lu): %@. Defaulting to %@.", &v9, 0x2Au);
     }
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return anyObject;
 }
 
 id __68__HFAbstractControlStatusItem__primaryServiceDescriptorForServices___block_invoke(uint64_t a1, void *a2)
@@ -323,13 +323,13 @@ id __68__HFAbstractControlStatusItem__primaryServiceDescriptorForServices___bloc
   return v3;
 }
 
-- (id)_aggregatedValueSourceWithServiceItems:(id)a3
+- (id)_aggregatedValueSourceWithServiceItems:(id)items
 {
-  v4 = [a3 na_flatMap:&__block_literal_global_15_0];
+  v4 = [items na_flatMap:&__block_literal_global_15_0];
   v5 = [(HFAbstractControlStatusItem *)self _primaryServiceDescriptorForServices:v4];
   v6 = [HFSimpleAggregatedCharacteristicValueSource alloc];
-  v7 = [(HFStatusItem *)self valueSource];
-  v8 = [(HFSimpleAggregatedCharacteristicValueSource *)v6 initWithValueSource:v7 services:v4 primaryServiceDescriptor:v5];
+  valueSource = [(HFStatusItem *)self valueSource];
+  v8 = [(HFSimpleAggregatedCharacteristicValueSource *)v6 initWithValueSource:valueSource services:v4 primaryServiceDescriptor:v5];
 
   return v8;
 }
@@ -348,8 +348,8 @@ id __70__HFAbstractControlStatusItem__aggregatedValueSourceWithServiceItems___bl
 
 + (NSSet)serviceTypes
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAbstractControlStatusItem.m" lineNumber:179 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractControlStatusItem serviceTypes]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractControlStatusItem.m" lineNumber:179 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractControlStatusItem serviceTypes]", objc_opt_class()}];
 
   return 0;
 }

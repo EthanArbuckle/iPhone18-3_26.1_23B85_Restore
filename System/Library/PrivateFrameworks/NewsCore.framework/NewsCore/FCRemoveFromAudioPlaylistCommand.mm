@@ -1,18 +1,18 @@
 @interface FCRemoveFromAudioPlaylistCommand
-- (FCRemoveFromAudioPlaylistCommand)initWithArticleID:(id)a3;
-- (FCRemoveFromAudioPlaylistCommand)initWithItemID:(id)a3;
+- (FCRemoveFromAudioPlaylistCommand)initWithArticleID:(id)d;
+- (FCRemoveFromAudioPlaylistCommand)initWithItemID:(id)d;
 @end
 
 @implementation FCRemoveFromAudioPlaylistCommand
 
-- (FCRemoveFromAudioPlaylistCommand)initWithItemID:(id)a3
+- (FCRemoveFromAudioPlaylistCommand)initWithItemID:(id)d
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695BA90];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 alloc];
   v7 = [v6 initWithZoneName:@"AudioPlaylist" ownerName:*MEMORY[0x1E695B728]];
-  v8 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v5 zoneID:v7];
+  v8 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:dCopy zoneID:v7];
 
   if (v8)
   {
@@ -30,9 +30,9 @@
   return v10;
 }
 
-- (FCRemoveFromAudioPlaylistCommand)initWithArticleID:(id)a3
+- (FCRemoveFromAudioPlaylistCommand)initWithArticleID:(id)d
 {
-  v4 = [MEMORY[0x1E69B6D18] identifierFromArticleID:a3];
+  v4 = [MEMORY[0x1E69B6D18] identifierFromArticleID:d];
   v5 = [(FCRemoveFromAudioPlaylistCommand *)self initWithItemID:v4];
 
   return v5;

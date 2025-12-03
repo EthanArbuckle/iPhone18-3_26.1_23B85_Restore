@@ -3,12 +3,12 @@
 - (BOOL)_allowsSelectionDuringEditing;
 - (BOOL)allowsMultipleSelection;
 - (BOOL)allowsSelection;
-- (_TtC12NowPlayingUI23CompositeCollectionView)initWithCoder:(id)a3;
-- (_TtC12NowPlayingUI23CompositeCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (void)_applyLayoutAttributes:(id)a3 toView:(id)a4;
+- (_TtC12NowPlayingUI23CompositeCollectionView)initWithCoder:(id)coder;
+- (_TtC12NowPlayingUI23CompositeCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (void)_applyLayoutAttributes:(id)attributes toView:(id)view;
 - (void)layoutSubviews;
-- (void)performBatchUpdates:(id)a3 completion:(id)a4;
-- (void)setCollectionViewLayout:(id)a3;
+- (void)performBatchUpdates:(id)updates completion:(id)completion;
+- (void)setCollectionViewLayout:(id)layout;
 @end
 
 @implementation CompositeCollectionView
@@ -30,17 +30,17 @@
   }
 }
 
-- (void)_applyLayoutAttributes:(id)a3 toView:(id)a4
+- (void)_applyLayoutAttributes:(id)attributes toView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_BCA0C(a3, a4);
+  attributesCopy = attributes;
+  viewCopy = view;
+  selfCopy = self;
+  sub_BCA0C(attributes, view);
 }
 
 - (BOOL)allowsMultipleSelection
 {
-  v2 = self;
+  selfCopy = self;
   sub_BD224(&selRef_allowsMultipleSelection);
   v4 = v3;
 
@@ -49,7 +49,7 @@
 
 - (BOOL)_allowsMultipleSelectionDuringEditing
 {
-  v2 = self;
+  selfCopy = self;
   sub_BD224(&selRef__allowsMultipleSelectionDuringEditing);
   v4 = v3;
 
@@ -58,7 +58,7 @@
 
 - (BOOL)allowsSelection
 {
-  v2 = self;
+  selfCopy = self;
   sub_BD224(&selRef_allowsSelection);
   v4 = v3;
 
@@ -67,27 +67,27 @@
 
 - (BOOL)_allowsSelectionDuringEditing
 {
-  v2 = self;
+  selfCopy = self;
   sub_BD224(&selRef__allowsSelectionDuringEditing);
   v4 = v3;
 
   return v4 & 1;
 }
 
-- (void)setCollectionViewLayout:(id)a3
+- (void)setCollectionViewLayout:(id)layout
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  layoutCopy = layout;
   v5 = v6.receiver;
-  [(CompositeCollectionView *)&v6 setCollectionViewLayout:v4];
+  [(CompositeCollectionView *)&v6 setCollectionViewLayout:layoutCopy];
   sub_BD484();
 }
 
-- (void)performBatchUpdates:(id)a3 completion:(id)a4
+- (void)performBatchUpdates:(id)updates completion:(id)completion
 {
-  v6 = _Block_copy(a3);
-  v7 = _Block_copy(a4);
+  v6 = _Block_copy(updates);
+  v7 = _Block_copy(completion);
   v8 = v7;
   if (v6)
   {
@@ -116,28 +116,28 @@ LABEL_3:
   v11 = 0;
   v10 = 0;
 LABEL_6:
-  v12 = self;
+  selfCopy = self;
   sub_BC770(v6, v9, v11, v10);
   sub_2173C(v11);
   sub_2173C(v6);
 }
 
-- (_TtC12NowPlayingUI23CompositeCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC12NowPlayingUI23CompositeCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI23CompositeCollectionView_layoutSubviewsIgnoreCount) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI23CompositeCollectionView_didIgnoreLayoutSubviews) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI23CompositeCollectionView_isPerformingBatchUpdates) = 0;
   v12.receiver = self;
   v12.super_class = ObjectType;
-  return [(CompositeCollectionView *)&v12 initWithFrame:a4 collectionViewLayout:x, y, width, height];
+  return [(CompositeCollectionView *)&v12 initWithFrame:layout collectionViewLayout:x, y, width, height];
 }
 
-- (_TtC12NowPlayingUI23CompositeCollectionView)initWithCoder:(id)a3
+- (_TtC12NowPlayingUI23CompositeCollectionView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI23CompositeCollectionView_layoutSubviewsIgnoreCount) = 0;
@@ -145,8 +145,8 @@ LABEL_6:
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI23CompositeCollectionView_isPerformingBatchUpdates) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(CompositeCollectionView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(CompositeCollectionView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

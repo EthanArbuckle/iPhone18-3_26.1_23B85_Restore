@@ -1,79 +1,79 @@
 @interface PLPersonContactInfoMigrator
 + (id)migrationQueue;
-+ (void)migratePersonContactInfoInPhotoLibrary:(id)a3;
++ (void)migratePersonContactInfoInPhotoLibrary:(id)library;
 - (PLPersonContactInfoMigrator)init;
-- (id)enumerateResultsWithIncrementalSaveUsingFetchRequest:(id)a3 inContext:(id)a4 withBlock:(id)a5;
-- (void)migratePerson:(id)a3;
-- (void)migratePersonContactInfoInContext:(id)a3;
-- (void)migratePersonContactInfoInPhotoLibrary:(id)a3;
-- (void)populateMatchingDictionaryOfPerson:(id)a3 withContact:(id)a4;
-- (void)updateNameOfPerson:(id)a3 withContact:(id)a4;
+- (id)enumerateResultsWithIncrementalSaveUsingFetchRequest:(id)request inContext:(id)context withBlock:(id)block;
+- (void)migratePerson:(id)person;
+- (void)migratePersonContactInfoInContext:(id)context;
+- (void)migratePersonContactInfoInPhotoLibrary:(id)library;
+- (void)populateMatchingDictionaryOfPerson:(id)person withContact:(id)contact;
+- (void)updateNameOfPerson:(id)person withContact:(id)contact;
 @end
 
 @implementation PLPersonContactInfoMigrator
 
-- (void)populateMatchingDictionaryOfPerson:(id)a3 withContact:(id)a4
+- (void)populateMatchingDictionaryOfPerson:(id)person withContact:(id)contact
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 contactMatchingDictionary];
+  personCopy = person;
+  contactCopy = contact;
+  contactMatchingDictionary = [personCopy contactMatchingDictionary];
 
-  if (!v7)
+  if (!contactMatchingDictionary)
   {
-    v8 = [PLContactStoreUtilitiesWorkaround matchingDictionaryForContact:v6 contactStore:self->_contactStore];
-    [v9 setContactMatchingDictionary:v8];
+    v8 = [PLContactStoreUtilitiesWorkaround matchingDictionaryForContact:contactCopy contactStore:self->_contactStore];
+    [personCopy setContactMatchingDictionary:v8];
     ++self->_populateMatchingDictionaryCount;
   }
 }
 
-- (void)updateNameOfPerson:(id)a3 withContact:(id)a4
+- (void)updateNameOfPerson:(id)person withContact:(id)contact
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v12 fullName];
-  if (v7)
+  personCopy = person;
+  contactCopy = contact;
+  fullName = [personCopy fullName];
+  if (fullName)
   {
-    v8 = v7;
-    v9 = [v12 displayName];
+    v8 = fullName;
+    displayName = [personCopy displayName];
 
-    if (!v9)
+    if (!displayName)
     {
-      v10 = [PLPerson fullNameFromContact:v6];
-      v11 = [PLPerson displayNameFromContact:v6];
-      [v12 setFullName:v10];
-      [v12 setDisplayName:v11];
+      v10 = [PLPerson fullNameFromContact:contactCopy];
+      v11 = [PLPerson displayNameFromContact:contactCopy];
+      [personCopy setFullName:v10];
+      [personCopy setDisplayName:v11];
       ++self->_updateNameCount;
     }
   }
 }
 
-- (void)migratePerson:(id)a3
+- (void)migratePerson:(id)person
 {
-  v6 = a3;
-  v4 = [v6 personUri];
-  v5 = [(CNContactStore *)self->_contactStore unifiedContactWithIdentifier:v4 keysToFetch:self->_keysToFetch error:0];
+  personCopy = person;
+  personUri = [personCopy personUri];
+  v5 = [(CNContactStore *)self->_contactStore unifiedContactWithIdentifier:personUri keysToFetch:self->_keysToFetch error:0];
   if (v5)
   {
-    [(PLPersonContactInfoMigrator *)self updateNameOfPerson:v6 withContact:v5];
-    [(PLPersonContactInfoMigrator *)self populateMatchingDictionaryOfPerson:v6 withContact:v5];
+    [(PLPersonContactInfoMigrator *)self updateNameOfPerson:personCopy withContact:v5];
+    [(PLPersonContactInfoMigrator *)self populateMatchingDictionaryOfPerson:personCopy withContact:v5];
   }
 
   else
   {
-    [v6 setPersonUri:0];
+    [personCopy setPersonUri:0];
   }
 }
 
-- (id)enumerateResultsWithIncrementalSaveUsingFetchRequest:(id)a3 inContext:(id)a4 withBlock:(id)a5
+- (id)enumerateResultsWithIncrementalSaveUsingFetchRequest:(id)request inContext:(id)context withBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
+  contextCopy = context;
+  blockCopy = block;
   v14 = 0;
-  v9 = [v7 executeFetchRequest:a3 error:&v14];
+  v9 = [contextCopy executeFetchRequest:request error:&v14];
   v10 = v14;
   if (v9)
   {
-    v11 = [v7 enumerateWithIncrementalSaveUsingObjects:v9 shouldRefreshAfterSave:1 withBlock:v8];
+    v11 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v9 shouldRefreshAfterSave:1 withBlock:blockCopy];
 
     v10 = v11;
   }
@@ -83,11 +83,11 @@
   return v10;
 }
 
-- (void)migratePersonContactInfoInContext:(id)a3
+- (void)migratePersonContactInfoInContext:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695D5E0];
-  v6 = a3;
+  contextCopy = context;
   v7 = +[PLPerson entityName];
   v8 = [v5 fetchRequestWithEntityName:v7];
 
@@ -100,7 +100,7 @@
   v21[2] = __65__PLPersonContactInfoMigrator_migratePersonContactInfoInContext___block_invoke;
   v21[3] = &unk_1E7572300;
   v21[4] = self;
-  v10 = [(PLPersonContactInfoMigrator *)self enumerateResultsWithIncrementalSaveUsingFetchRequest:v8 inContext:v6 withBlock:v21];
+  v10 = [(PLPersonContactInfoMigrator *)self enumerateResultsWithIncrementalSaveUsingFetchRequest:v8 inContext:contextCopy withBlock:v21];
 
   v11 = PLMigrationGetLog();
   v12 = v11;
@@ -153,16 +153,16 @@ LABEL_8:
   }
 }
 
-- (void)migratePersonContactInfoInPhotoLibrary:(id)a3
+- (void)migratePersonContactInfoInPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__PLPersonContactInfoMigrator_migratePersonContactInfoInPhotoLibrary___block_invoke;
   v6[3] = &unk_1E7578848;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = libraryCopy;
+  v5 = libraryCopy;
   [v5 performTransactionAndWait:v6];
 }
 
@@ -171,33 +171,6 @@ void __70__PLPersonContactInfoMigrator_migratePersonContactInfoInPhotoLibrary___
   v1 = *(a1 + 32);
   v2 = [*(a1 + 40) managedObjectContext];
   [v1 migratePersonContactInfoInContext:v2];
-}
-
-{
-  v2 = sDidMigrate;
-  v3 = PLMigrationGetLog();
-  v4 = os_log_type_enabled(&v3->super, OS_LOG_TYPE_DEFAULT);
-  if (v2 == 1)
-  {
-    if (v4)
-    {
-      *buf = 0;
-      _os_log_impl(&dword_19BF1F000, &v3->super, OS_LOG_TYPE_DEFAULT, "Already migrated person contacts info", buf, 2u);
-    }
-  }
-
-  else
-  {
-    if (v4)
-    {
-      *v5 = 0;
-      _os_log_impl(&dword_19BF1F000, &v3->super, OS_LOG_TYPE_DEFAULT, "Migrating person contacts info", v5, 2u);
-    }
-
-    v3 = objc_alloc_init(PLPersonContactInfoMigrator);
-    [(PLPersonContactInfoMigrator *)v3 migratePersonContactInfoInPhotoLibrary:*(a1 + 32)];
-    sDidMigrate = 1;
-  }
 }
 
 - (PLPersonContactInfoMigrator)init
@@ -214,8 +187,8 @@ void __70__PLPersonContactInfoMigrator_migratePersonContactInfoInPhotoLibrary___
 
     v5 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
     v12[0] = v5;
-    v6 = [(CNContactStore *)v2->_contactStore descriptorForRequiredKeysForMatchingDictionary];
-    v12[1] = v6;
+    descriptorForRequiredKeysForMatchingDictionary = [(CNContactStore *)v2->_contactStore descriptorForRequiredKeysForMatchingDictionary];
+    v12[1] = descriptorForRequiredKeysForMatchingDictionary;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
     keysToFetch = v2->_keysToFetch;
     v2->_keysToFetch = v7;
@@ -226,12 +199,12 @@ void __70__PLPersonContactInfoMigrator_migratePersonContactInfoInPhotoLibrary___
   return v2;
 }
 
-+ (void)migratePersonContactInfoInPhotoLibrary:(id)a3
++ (void)migratePersonContactInfoInPhotoLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [a1 migrationQueue];
-  v7 = v4;
-  v6 = v4;
+  libraryCopy = library;
+  migrationQueue = [self migrationQueue];
+  v7 = libraryCopy;
+  v6 = libraryCopy;
   pl_dispatch_sync();
 }
 

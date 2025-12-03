@@ -1,5 +1,5 @@
 @interface CAMFlashExpandableStatusIndicatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)_axCurrentFlashValue;
 - (id)accessibilityValue;
@@ -8,29 +8,29 @@
 
 @implementation CAMFlashExpandableStatusIndicatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMFlashExpandableStatusIndicator" hasInstanceMethod:@"flashMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMFlashExpandableStatusIndicator" hasInstanceMethod:@"isFlashUnavailable" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMFlashExpandableStatusIndicator" hasInstanceMethod:@"flashMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMFlashExpandableStatusIndicator" hasInstanceMethod:@"isFlashUnavailable" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(CAMFlashExpandableStatusIndicatorAccessibility *)self _axCurrentFlashValue];
-  if (v3)
+  _axCurrentFlashValue = [(CAMFlashExpandableStatusIndicatorAccessibility *)self _axCurrentFlashValue];
+  if (_axCurrentFlashValue)
   {
-    v4 = [(CAMFlashExpandableStatusIndicatorAccessibility *)self _axCurrentFlashValue];
+    _axCurrentFlashValue2 = [(CAMFlashExpandableStatusIndicatorAccessibility *)self _axCurrentFlashValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = CAMFlashExpandableStatusIndicatorAccessibility;
-    v4 = [(CAMFlashExpandableStatusIndicatorAccessibility *)&v7 accessibilityValue];
+    _axCurrentFlashValue2 = [(CAMFlashExpandableStatusIndicatorAccessibility *)&v7 accessibilityValue];
   }
 
-  v5 = v4;
+  v5 = _axCurrentFlashValue2;
 
   return v5;
 }
@@ -39,16 +39,16 @@
 {
   v8.receiver = self;
   v8.super_class = CAMFlashExpandableStatusIndicatorAccessibility;
-  v3 = [(CAMFlashExpandableStatusIndicatorAccessibility *)&v8 accessibilityActivate];
-  v4 = [(CAMFlashExpandableStatusIndicatorAccessibility *)self _axCurrentFlashValue];
-  v5 = v4;
-  if (v4)
+  accessibilityActivate = [(CAMFlashExpandableStatusIndicatorAccessibility *)&v8 accessibilityActivate];
+  _axCurrentFlashValue = [(CAMFlashExpandableStatusIndicatorAccessibility *)self _axCurrentFlashValue];
+  v5 = _axCurrentFlashValue;
+  if (_axCurrentFlashValue)
   {
-    v7 = v4;
+    v7 = _axCurrentFlashValue;
     AXPerformBlockOnMainThreadAfterDelay();
   }
 
-  return v3;
+  return accessibilityActivate;
 }
 
 - (id)_axCurrentFlashValue
@@ -62,9 +62,9 @@ LABEL_3:
   }
 
   v6 = [(CAMFlashExpandableStatusIndicatorAccessibility *)self safeValueForKey:@"flashMode"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  switch(v7)
+  switch(integerValue)
   {
     case 2:
       v3 = @"FLASH_MODE_BUTTON_VALUE_AUTO";
@@ -80,7 +80,7 @@ LABEL_3:
   v8 = AXLogAppAccessibility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(CAMFlashExpandableStatusIndicatorAccessibility *)v7 _axCurrentFlashValue];
+    [(CAMFlashExpandableStatusIndicatorAccessibility *)integerValue _axCurrentFlashValue];
   }
 
   v4 = 0;
@@ -93,7 +93,7 @@ LABEL_4:
 {
   v4 = *MEMORY[0x29EDCA608];
   v2 = 134217984;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_29BC67000, a2, OS_LOG_TYPE_ERROR, "CAMFlashMode unhandled : %lu", &v2, 0xCu);
 }
 

@@ -1,25 +1,25 @@
 @interface BMSyncCRDTLocationRow
-- (BMSyncCRDTLocationRow)initWithFMResultSet:(id)a3 modifier:(unint64_t)a4;
-- (BMSyncCRDTLocationRow)initWithLocation:(id)a3 state:(unint64_t)a4 primaryKey:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMSyncCRDTLocationRow)initWithFMResultSet:(id)set modifier:(unint64_t)modifier;
+- (BMSyncCRDTLocationRow)initWithLocation:(id)location state:(unint64_t)state primaryKey:(unint64_t)key;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation BMSyncCRDTLocationRow
 
-- (BMSyncCRDTLocationRow)initWithLocation:(id)a3 state:(unint64_t)a4 primaryKey:(unint64_t)a5
+- (BMSyncCRDTLocationRow)initWithLocation:(id)location state:(unint64_t)state primaryKey:(unint64_t)key
 {
-  v9 = a3;
+  locationCopy = location;
   v13.receiver = self;
   v13.super_class = BMSyncCRDTLocationRow;
   v10 = [(BMSyncCRDTLocationRow *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_location, a3);
-    v11->_state = a4;
-    v11->_primaryKey = a5;
+    objc_storeStrong(&v10->_location, location);
+    v11->_state = state;
+    v11->_primaryKey = key;
   }
 
   return v11;
@@ -32,11 +32,11 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -44,8 +44,8 @@
   else
   {
     location = self->_location;
-    v7 = [(BMSyncCRDTLocationRow *)v4 location];
-    if ([(BMStreamCRDTLocation *)location isEqual:v7])
+    location = [(BMSyncCRDTLocationRow *)equalCopy location];
+    if ([(BMStreamCRDTLocation *)location isEqual:location])
     {
       state = self->_state;
       v9 = state == [(BMSyncCRDTLocationRow *)v5 state];
@@ -69,15 +69,15 @@
   return v5 ^ v3;
 }
 
-- (BMSyncCRDTLocationRow)initWithFMResultSet:(id)a3 modifier:(unint64_t)a4
+- (BMSyncCRDTLocationRow)initWithFMResultSet:(id)set modifier:(unint64_t)modifier
 {
-  v6 = a3;
-  if (a4 >= 3)
+  setCopy = set;
+  if (modifier >= 3)
   {
     v25 = __biome_log_for_category();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      sub_1000476D4(a4, v25);
+      sub_1000476D4(modifier, v25);
     }
 
     v17 = 0;
@@ -85,34 +85,34 @@
 
   else
   {
-    v7 = *(&off_100078AF8 + a4);
+    v7 = *(&off_100078AF8 + modifier);
     v8 = [[NSString alloc] initWithFormat:@"%@%@", v7, @"stream"];
-    v9 = [v6 stringForColumn:v8];
+    v9 = [setCopy stringForColumn:v8];
 
     v10 = [[NSString alloc] initWithFormat:@"%@%@", v7, @"site"];
-    v11 = [v6 stringForColumn:v10];
+    v11 = [setCopy stringForColumn:v10];
 
     v12 = [[NSString alloc] initWithFormat:@"%@%@", v7, @"day"];
-    [v6 doubleForColumn:v12];
+    [setCopy doubleForColumn:v12];
     v14 = v13;
 
     v15 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:v14];
     v16 = v15;
-    if (a4 == 1 || (v17 = 0, v9) && v11 && v15)
+    if (modifier == 1 || (v17 = 0, v9) && v11 && v15)
     {
       v18 = [[BMStreamCRDTLocation alloc] initWithStreamName:v9 siteIdentifier:v11 day:v15];
       if (v18)
       {
-        v27 = self;
+        selfCopy = self;
         v19 = [[NSString alloc] initWithFormat:@"%@%@", v7, @"state"];
-        v20 = [v6 intForColumn:v19];
+        v20 = [setCopy intForColumn:v19];
 
         v21 = [[NSString alloc] initWithFormat:@"%@%@", v7, @"id"];
-        v22 = [v6 intForColumn:v21];
+        v22 = [setCopy intForColumn:v21];
 
         v23 = [BMSyncCRDTLocationRow alloc];
         v24 = v22;
-        self = v27;
+        self = selfCopy;
         v17 = [(BMSyncCRDTLocationRow *)v23 initWithLocation:v18 state:v20 primaryKey:v24];
       }
 

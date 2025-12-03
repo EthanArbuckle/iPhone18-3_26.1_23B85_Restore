@@ -1,101 +1,101 @@
 @interface TCProgressContext
 + (double)currentPosition;
 + (id)contextForCurrentThread;
-+ (id)createBranchWithSteps:(double)a3 takingSteps:(double)a4 name:(id)a5;
++ (id)createBranchWithSteps:(double)steps takingSteps:(double)takingSteps name:(id)name;
 + (id)stageForCurrentThread;
-+ (void)addProgressObserver:(id)a3 selector:(SEL)a4;
-+ (void)advanceProgress:(double)a3;
-+ (void)advanceProgressInContext:(id)a3 progress:(double)a4;
-+ (void)createContextForCurrentThreadWithParentContext:(id)a3;
-+ (void)createStageWithSteps:(double)a3 takingSteps:(double)a4 name:(id)a5;
++ (void)addProgressObserver:(id)observer selector:(SEL)selector;
++ (void)advanceProgress:(double)progress;
++ (void)advanceProgressInContext:(id)context progress:(double)progress;
++ (void)createContextForCurrentThreadWithParentContext:(id)context;
++ (void)createStageWithSteps:(double)steps takingSteps:(double)takingSteps name:(id)name;
 + (void)endStage;
 + (void)popBranch;
-+ (void)pushBranch:(id)a3;
++ (void)pushBranch:(id)branch;
 + (void)removeContextForCurrentThread;
-+ (void)removeProgressObserver:(id)a3;
-+ (void)setMessage:(id)a3;
-+ (void)setProgress:(double)a3;
-- (TCProgressContext)initWithParentContext:(id)a3;
++ (void)removeProgressObserver:(id)observer;
++ (void)setMessage:(id)message;
++ (void)setProgress:(double)progress;
+- (TCProgressContext)initWithParentContext:(id)context;
 - (id)rootStage;
 - (void)dealloc;
-- (void)reportProgress:(double)a3;
+- (void)reportProgress:(double)progress;
 @end
 
 @implementation TCProgressContext
 
-+ (void)createContextForCurrentThreadWithParentContext:(id)a3
++ (void)createContextForCurrentThreadWithParentContext:(id)context
 {
-  v6 = a3;
-  v3 = [[TCProgressContext alloc] initWithParentContext:v6];
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [v4 threadDictionary];
-  [v5 setObject:v3 forKey:@"TCProgressContext Instance"];
+  contextCopy = context;
+  v3 = [[TCProgressContext alloc] initWithParentContext:contextCopy];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  [threadDictionary setObject:v3 forKey:@"TCProgressContext Instance"];
 }
 
 + (void)removeContextForCurrentThread
 {
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v2 = [v3 threadDictionary];
-  [v2 removeObjectForKey:@"TCProgressContext Instance"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  [threadDictionary removeObjectForKey:@"TCProgressContext Instance"];
 }
 
-+ (void)addProgressObserver:(id)a3 selector:(SEL)a4
++ (void)addProgressObserver:(id)observer selector:(SEL)selector
 {
-  v8 = a3;
-  v6 = [a1 contextForCurrentThread];
-  if (v6)
+  observerCopy = observer;
+  contextForCurrentThread = [self contextForCurrentThread];
+  if (contextForCurrentThread)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v8 selector:a4 name:@"TCProgressNotification" object:v6];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:observerCopy selector:selector name:@"TCProgressNotification" object:contextForCurrentThread];
   }
 }
 
-+ (void)removeProgressObserver:(id)a3
++ (void)removeProgressObserver:(id)observer
 {
-  v6 = a3;
-  v4 = [a1 contextForCurrentThread];
-  if (v4)
+  observerCopy = observer;
+  contextForCurrentThread = [self contextForCurrentThread];
+  if (contextForCurrentThread)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 removeObserver:v6 name:@"TCProgressNotification" object:v4];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:observerCopy name:@"TCProgressNotification" object:contextForCurrentThread];
   }
 }
 
-+ (void)createStageWithSteps:(double)a3 takingSteps:(double)a4 name:(id)a5
++ (void)createStageWithSteps:(double)steps takingSteps:(double)takingSteps name:(id)name
 {
-  v11 = a5;
-  v8 = [a1 contextForCurrentThread];
-  if (v8)
+  nameCopy = name;
+  contextForCurrentThread = [self contextForCurrentThread];
+  if (contextForCurrentThread)
   {
-    v9 = [[TCProgressStage alloc] initWithSteps:v11 takingSteps:v8 name:a3 inContext:a4];
-    v10 = v8[2];
-    v8[2] = v9;
+    v9 = [[TCProgressStage alloc] initWithSteps:nameCopy takingSteps:contextForCurrentThread name:steps inContext:takingSteps];
+    v10 = contextForCurrentThread[2];
+    contextForCurrentThread[2] = v9;
   }
 }
 
 + (void)endStage
 {
-  v2 = [a1 contextForCurrentThread];
-  if (v2)
+  contextForCurrentThread = [self contextForCurrentThread];
+  if (contextForCurrentThread)
   {
-    v6 = v2;
-    v3 = v2[2];
+    v6 = contextForCurrentThread;
+    v3 = contextForCurrentThread[2];
     [v3 end];
-    v4 = [v3 parentStage];
+    parentStage = [v3 parentStage];
     v5 = v6[2];
-    v6[2] = v4;
+    v6[2] = parentStage;
 
-    v2 = v6;
+    contextForCurrentThread = v6;
   }
 }
 
-+ (id)createBranchWithSteps:(double)a3 takingSteps:(double)a4 name:(id)a5
++ (id)createBranchWithSteps:(double)steps takingSteps:(double)takingSteps name:(id)name
 {
-  v8 = a5;
-  v9 = [a1 contextForCurrentThread];
-  if (v9)
+  nameCopy = name;
+  contextForCurrentThread = [self contextForCurrentThread];
+  if (contextForCurrentThread)
   {
-    v10 = [[TCProgressStage alloc] initBranchWithSteps:v8 takingSteps:v9 name:a3 inContext:a4];
+    v10 = [[TCProgressStage alloc] initBranchWithSteps:nameCopy takingSteps:contextForCurrentThread name:steps inContext:takingSteps];
   }
 
   else
@@ -106,69 +106,69 @@
   return v10;
 }
 
-+ (void)pushBranch:(id)a3
++ (void)pushBranch:(id)branch
 {
-  v7 = a3;
-  v5 = [a1 contextForCurrentThread];
-  v6 = v5;
-  if (v5)
+  branchCopy = branch;
+  contextForCurrentThread = [self contextForCurrentThread];
+  v6 = contextForCurrentThread;
+  if (contextForCurrentThread)
   {
-    [*(v5 + 32) addObject:*(v5 + 16)];
-    objc_storeStrong(v6 + 2, a3);
+    [*(contextForCurrentThread + 32) addObject:*(contextForCurrentThread + 16)];
+    objc_storeStrong(v6 + 2, branch);
   }
 }
 
 + (void)popBranch
 {
-  v4 = [a1 contextForCurrentThread];
-  if (v4)
+  contextForCurrentThread = [self contextForCurrentThread];
+  if (contextForCurrentThread)
   {
-    v2 = [v4[4] lastObject];
-    v3 = v4[2];
-    v4[2] = v2;
+    lastObject = [contextForCurrentThread[4] lastObject];
+    v3 = contextForCurrentThread[2];
+    contextForCurrentThread[2] = lastObject;
 
-    [v4[4] removeLastObject];
+    [contextForCurrentThread[4] removeLastObject];
   }
 }
 
-+ (void)advanceProgress:(double)a3
++ (void)advanceProgress:(double)progress
 {
-  v4 = [a1 stageForCurrentThread];
-  [v4 advanceProgress:a3];
+  stageForCurrentThread = [self stageForCurrentThread];
+  [stageForCurrentThread advanceProgress:progress];
 }
 
-+ (void)advanceProgressInContext:(id)a3 progress:(double)a4
++ (void)advanceProgressInContext:(id)context progress:(double)progress
 {
-  v5 = [a3 currentStage];
-  [v5 advanceProgress:a4];
+  currentStage = [context currentStage];
+  [currentStage advanceProgress:progress];
 }
 
-+ (void)setProgress:(double)a3
++ (void)setProgress:(double)progress
 {
-  v4 = [a1 stageForCurrentThread];
-  [v4 setProgress:a3];
+  stageForCurrentThread = [self stageForCurrentThread];
+  [stageForCurrentThread setProgress:progress];
 }
 
-+ (void)setMessage:(id)a3
++ (void)setMessage:(id)message
 {
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObject:a3 forKey:@"TCProgressMessage"];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  v5 = [a1 contextForCurrentThread];
-  [v4 postNotificationName:@"TCProgressNotification" object:v5 userInfo:v6];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObject:message forKey:@"TCProgressMessage"];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  contextForCurrentThread = [self contextForCurrentThread];
+  [defaultCenter postNotificationName:@"TCProgressNotification" object:contextForCurrentThread userInfo:v6];
 }
 
 + (double)currentPosition
 {
-  v2 = [a1 stageForCurrentThread];
-  [v2 currentPosition];
+  stageForCurrentThread = [self stageForCurrentThread];
+  [stageForCurrentThread currentPosition];
   v4 = v3;
 
   return v4;
 }
 
-- (TCProgressContext)initWithParentContext:(id)a3
+- (TCProgressContext)initWithParentContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = TCProgressContext;
   v6 = [(TCProgressContext *)&v12 init];
@@ -182,7 +182,7 @@
     m_stackOfBranches = v6->m_stackOfBranches;
     v6->m_stackOfBranches = v9;
 
-    objc_storeStrong(&v6->m_parentProgressContext, a3);
+    objc_storeStrong(&v6->m_parentProgressContext, context);
   }
 
   return v6;
@@ -209,44 +209,44 @@
 
 + (id)contextForCurrentThread
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"TCProgressContext Instance"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"TCProgressContext Instance"];
 
   return v4;
 }
 
 + (id)stageForCurrentThread
 {
-  v2 = [a1 contextForCurrentThread];
-  v3 = [v2 currentStage];
+  contextForCurrentThread = [self contextForCurrentThread];
+  currentStage = [contextForCurrentThread currentStage];
 
-  return v3;
+  return currentStage;
 }
 
 - (id)rootStage
 {
-  for (i = self->m_currentStage; ; i = v4)
+  for (i = self->m_currentStage; ; i = parentStage2)
   {
-    v3 = [(TCProgressStage *)i parentStage];
+    parentStage = [(TCProgressStage *)i parentStage];
 
-    if (!v3)
+    if (!parentStage)
     {
       break;
     }
 
-    v4 = [(TCProgressStage *)i parentStage];
+    parentStage2 = [(TCProgressStage *)i parentStage];
   }
 
   return i;
 }
 
-- (void)reportProgress:(double)a3
+- (void)reportProgress:(double)progress
 {
   m_parentProgressContext = self->m_parentProgressContext;
   if (m_parentProgressContext)
   {
-    [(OITSUProgressContext *)m_parentProgressContext setPercentageProgressFromTCProgressContext:a3];
+    [(OITSUProgressContext *)m_parentProgressContext setPercentageProgressFromTCProgressContext:progress];
   }
 }
 

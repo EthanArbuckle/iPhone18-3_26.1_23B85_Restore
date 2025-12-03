@@ -1,5 +1,5 @@
 @interface FCNewsTabiChannelPickerSuggestionsUserContextConfiguration
-- (FCNewsTabiChannelPickerSuggestionsUserContextConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiChannelPickerSuggestionsUserContextConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -15,18 +15,18 @@
   return v3;
 }
 
-- (FCNewsTabiChannelPickerSuggestionsUserContextConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiChannelPickerSuggestionsUserContextConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = FCNewsTabiChannelPickerSuggestionsUserContextConfiguration;
   v5 = [(FCNewsTabiChannelPickerSuggestionsUserContextConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = FCAppConfigurationNumberValue(v4, @"maximumTagCount", &unk_1F2E70590);
+    v6 = FCAppConfigurationNumberValue(dictionaryCopy, @"maximumTagCount", &unk_1F2E70590);
     v5->_maximumTagCount = [v6 integerValue];
 
-    v7 = FCAppConfigurationNumberValue(v4, @"maximumTopicTagsPerHeadline", &unk_1F2E705A8);
+    v7 = FCAppConfigurationNumberValue(dictionaryCopy, @"maximumTopicTagsPerHeadline", &unk_1F2E705A8);
     v5->_maximumTopicTagsPerHeadline = [v7 integerValue];
   }
 

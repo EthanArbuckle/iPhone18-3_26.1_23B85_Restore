@@ -1,15 +1,15 @@
 @interface GKLeaderboardCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation GKLeaderboardCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GKLeaderboardCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKLeaderboardCell" hasInstanceMethod:@"countLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GKLeaderboardCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKLeaderboardCell" hasInstanceMethod:@"countLabel" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

@@ -1,5 +1,5 @@
 @interface PSUITopAppUsageGroup
-- (PSUITopAppUsageGroup)initWithHostController:(id)a3 cellularManagementCache:(id)a4 dataUsageStatisticsCache:(id)a5 carrierSpaceManager:(id)a6 appsAndCategoriesSubgroup:(id)a7;
+- (PSUITopAppUsageGroup)initWithHostController:(id)controller cellularManagementCache:(id)cache dataUsageStatisticsCache:(id)statisticsCache carrierSpaceManager:(id)manager appsAndCategoriesSubgroup:(id)subgroup;
 - (id)specifiers;
 - (void)clearStoredSpecifiers;
 - (void)createSpecifiers;
@@ -7,24 +7,24 @@
 
 @implementation PSUITopAppUsageGroup
 
-- (PSUITopAppUsageGroup)initWithHostController:(id)a3 cellularManagementCache:(id)a4 dataUsageStatisticsCache:(id)a5 carrierSpaceManager:(id)a6 appsAndCategoriesSubgroup:(id)a7
+- (PSUITopAppUsageGroup)initWithHostController:(id)controller cellularManagementCache:(id)cache dataUsageStatisticsCache:(id)statisticsCache carrierSpaceManager:(id)manager appsAndCategoriesSubgroup:(id)subgroup
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v27 = a6;
-  v16 = a7;
+  controllerCopy = controller;
+  cacheCopy = cache;
+  statisticsCacheCopy = statisticsCache;
+  managerCopy = manager;
+  subgroupCopy = subgroup;
   v28.receiver = self;
   v28.super_class = PSUITopAppUsageGroup;
   v17 = [(PSUITopAppUsageGroup *)&v28 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_hostController, a3);
-    objc_storeStrong(&v18->_managementCache, a4);
-    objc_storeStrong(&v18->_statisticsCache, a5);
-    objc_storeStrong(&v18->_carrierSpaceManager, a6);
-    objc_storeStrong(&v18->_appsAndCategoriesSubgroup, a7);
+    objc_storeStrong(&v17->_hostController, controller);
+    objc_storeStrong(&v18->_managementCache, cache);
+    objc_storeStrong(&v18->_statisticsCache, statisticsCache);
+    objc_storeStrong(&v18->_carrierSpaceManager, manager);
+    objc_storeStrong(&v18->_appsAndCategoriesSubgroup, subgroup);
     v19 = MEMORY[0x277D3FAD8];
     v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v21 = [v20 localizedStringForKey:@"APP_DATA_USAGE" value:&stru_287733598 table:@"Cellular"];
@@ -32,7 +32,7 @@
     loadingGroupSpecifier = v18->_loadingGroupSpecifier;
     v18->_loadingGroupSpecifier = v22;
 
-    v24 = [objc_alloc(MEMORY[0x277D3FAD8]) initWithName:&stru_287733598 target:0 set:0 get:0 detail:0 cell:15 edit:{0, v27}];
+    v24 = [objc_alloc(MEMORY[0x277D3FAD8]) initWithName:&stru_287733598 target:0 set:0 get:0 detail:0 cell:15 edit:{0, managerCopy}];
     spinnerSpecifier = v18->_spinnerSpecifier;
     v18->_spinnerSpecifier = v24;
 
@@ -67,33 +67,33 @@
 
 - (void)createSpecifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_specifierCreationInProgress)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_specifierCreationInProgress)
   {
-    v3 = [(PSUITopAppUsageGroup *)v2 getLogger];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUITopAppUsageGroup *)selfCopy getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf[0]) = 0;
-      _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Refresh already in progress", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Refresh already in progress", buf, 2u);
     }
 
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v2->_specifierCreationInProgress = 1;
-    objc_sync_exit(v2);
+    selfCopy->_specifierCreationInProgress = 1;
+    objc_sync_exit(selfCopy);
 
-    objc_initWeak(buf, v2);
+    objc_initWeak(buf, selfCopy);
     v4 = dispatch_get_global_queue(25, 0);
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __40__PSUITopAppUsageGroup_createSpecifiers__block_invoke;
     v5[3] = &unk_279BAA050;
     objc_copyWeak(&v6, buf);
-    v5[4] = v2;
+    v5[4] = selfCopy;
     dispatch_async(v4, v5);
 
     objc_destroyWeak(&v6);

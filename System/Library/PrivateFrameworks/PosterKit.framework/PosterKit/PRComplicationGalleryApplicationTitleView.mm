@@ -2,25 +2,25 @@
 + (CGSize)iconImageSize;
 - (CGSize)imageSize;
 - (NSDirectionalEdgeInsets)contentInsets;
-- (PRComplicationGalleryApplicationTitleView)initWithFrame:(CGRect)a3;
+- (PRComplicationGalleryApplicationTitleView)initWithFrame:(CGRect)frame;
 - (id)_textLabelFont;
 - (unint64_t)_textLabelNumberOfLines;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)dealloc;
-- (void)setContentInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setIconImage:(id)a3;
-- (void)setImageSize:(CGSize)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setContentInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setIconImage:(id)image;
+- (void)setImageSize:(CGSize)size;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PRComplicationGalleryApplicationTitleView
 
-- (PRComplicationGalleryApplicationTitleView)initWithFrame:(CGRect)a3
+- (PRComplicationGalleryApplicationTitleView)initWithFrame:(CGRect)frame
 {
   v47[2] = *MEMORY[0x1E69E9840];
   v44.receiver = self;
   v44.super_class = PRComplicationGalleryApplicationTitleView;
-  v3 = [(PRComplicationGalleryApplicationTitleView *)&v44 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PRComplicationGalleryApplicationTitleView *)&v44 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -31,15 +31,15 @@
     [*(v3 + 52) setTranslatesAutoresizingMaskIntoConstraints:0];
     [v3 addSubview:*(v3 + 52)];
     *(v3 + 472) = vdupq_n_s64(0x4048000000000000uLL);
-    v6 = [*(v3 + 52) widthAnchor];
-    v7 = [v6 constraintEqualToConstant:48.0];
+    widthAnchor = [*(v3 + 52) widthAnchor];
+    v7 = [widthAnchor constraintEqualToConstant:48.0];
     v8 = *(v3 + 53);
     *(v3 + 53) = v7;
 
     LODWORD(v9) = 1148829696;
     [*(v3 + 53) setPriority:v9];
-    v10 = [*(v3 + 52) heightAnchor];
-    v11 = [v10 constraintEqualToConstant:48.0];
+    heightAnchor = [*(v3 + 52) heightAnchor];
+    v11 = [heightAnchor constraintEqualToConstant:48.0];
     v12 = *(v3 + 54);
     *(v3 + 54) = v11;
 
@@ -56,8 +56,8 @@
     *(v3 + 51) = v16;
 
     v18 = *(v3 + 51);
-    v19 = [v3 _textLabelFont];
-    [v18 setFont:v19];
+    _textLabelFont = [v3 _textLabelFont];
+    [v18 setFont:_textLabelFont];
 
     [*(v3 + 51) setNumberOfLines:{objc_msgSend(v3, "_textLabelNumberOfLines")}];
     LODWORD(v20) = 1148846080;
@@ -72,27 +72,27 @@
     [v23 setAxis:0];
     [v23 setSpacing:16.0];
     [v3 addSubview:v23];
-    v24 = [v23 leadingAnchor];
-    v25 = [v3 leadingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    leadingAnchor = [v23 leadingAnchor];
+    leadingAnchor2 = [v3 leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v27 = *(v3 + 55);
     *(v3 + 55) = v26;
 
-    v28 = [v23 trailingAnchor];
-    v29 = [v3 trailingAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    trailingAnchor = [v23 trailingAnchor];
+    trailingAnchor2 = [v3 trailingAnchor];
+    v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v31 = *(v3 + 56);
     *(v3 + 56) = v30;
 
-    v32 = [v23 topAnchor];
-    v33 = [v3 topAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    topAnchor = [v23 topAnchor];
+    topAnchor2 = [v3 topAnchor];
+    v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v35 = *(v3 + 57);
     *(v3 + 57) = v34;
 
-    v36 = [v23 bottomAnchor];
-    v37 = [v3 bottomAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    bottomAnchor = [v23 bottomAnchor];
+    bottomAnchor2 = [v3 bottomAnchor];
+    v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v39 = *(v3 + 58);
     *(v3 + 58) = v38;
 
@@ -105,8 +105,8 @@
     [v40 activateConstraints:v41];
 
     [v3 setContentInsets:{12.0, 27.0, 12.0, 27.0}];
-    v42 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v42 addObserver:v3 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v3;
@@ -114,29 +114,29 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = PRComplicationGalleryApplicationTitleView;
   [(PRComplicationGalleryApplicationTitleView *)&v4 dealloc];
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
   [(UIImageView *)self->_imageView setImage:?];
   imageView = self->_imageView;
 
-  [(UIImageView *)imageView setHidden:a3 == 0];
+  [(UIImageView *)imageView setHidden:image == 0];
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
   p_imageSize = &self->_imageSize;
-  if (self->_imageSize.width != a3.width || self->_imageSize.height != a3.height)
+  if (self->_imageSize.width != size.width || self->_imageSize.height != size.height)
   {
-    p_imageSize->width = a3.width;
-    self->_imageSize.height = a3.height;
+    p_imageSize->width = size.width;
+    self->_imageSize.height = size.height;
     [(NSLayoutConstraint *)self->_imageWidthConstraint setConstant:?];
     height = p_imageSize->height;
     imageHeightConstraint = self->_imageHeightConstraint;
@@ -154,20 +154,20 @@
   return result;
 }
 
-- (void)setContentInsets:(NSDirectionalEdgeInsets)a3
+- (void)setContentInsets:(NSDirectionalEdgeInsets)insets
 {
   p_contentInsets = &self->_contentInsets;
-  v4.f64[0] = a3.top;
-  v4.f64[1] = a3.leading;
-  v5.f64[0] = a3.bottom;
-  v5.f64[1] = a3.trailing;
+  v4.f64[0] = insets.top;
+  v4.f64[1] = insets.leading;
+  v5.f64[0] = insets.bottom;
+  v5.f64[1] = insets.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v4), vceqq_f64(*&self->_contentInsets.bottom, v5)))) & 1) == 0)
   {
-    p_contentInsets->top = a3.top;
-    self->_contentInsets.leading = a3.leading;
-    self->_contentInsets.bottom = a3.bottom;
-    self->_contentInsets.trailing = a3.trailing;
-    [(NSLayoutConstraint *)self->_contentLeadingConstraint setConstant:a3.leading];
+    p_contentInsets->top = insets.top;
+    self->_contentInsets.leading = insets.leading;
+    self->_contentInsets.bottom = insets.bottom;
+    self->_contentInsets.trailing = insets.trailing;
+    [(NSLayoutConstraint *)self->_contentLeadingConstraint setConstant:insets.leading];
     [(NSLayoutConstraint *)self->_contentTrailingConstraint setConstant:-p_contentInsets->trailing];
     [(NSLayoutConstraint *)self->_contentTopConstraint setConstant:p_contentInsets->top];
     contentBottomConstraint = self->_contentBottomConstraint;
@@ -179,23 +179,23 @@
 
 - (id)_textLabelFont
 {
-  v3 = [MEMORY[0x1E698E7E8] preferredFontProvider];
+  preferredFontProvider = [MEMORY[0x1E698E7E8] preferredFontProvider];
   v4 = *MEMORY[0x1E69DDCF8];
-  v5 = [(PRComplicationGalleryApplicationTitleView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v3 preferredFontForTextStyle:v4 hiFontStyle:4 contentSizeCategory:v6];
+  traitCollection = [(PRComplicationGalleryApplicationTitleView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v7 = [preferredFontProvider preferredFontForTextStyle:v4 hiFontStyle:4 contentSizeCategory:preferredContentSizeCategory];
 
   return v7;
 }
 
 - (unint64_t)_textLabelNumberOfLines
 {
-  v2 = [(PRComplicationGalleryApplicationTitleView *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(PRComplicationGalleryApplicationTitleView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (v3)
+  if (preferredContentSizeCategory)
   {
-    if (UIContentSizeCategoryIsAccessibilityCategory(v3))
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
       v4 = 2;
     }
@@ -214,28 +214,28 @@
   return v4;
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
-  v5 = [(PRComplicationGalleryApplicationTitleView *)self textLabel];
-  v4 = [(PRComplicationGalleryApplicationTitleView *)self _textLabelFont];
-  [v5 setFont:v4];
+  textLabel = [(PRComplicationGalleryApplicationTitleView *)self textLabel];
+  _textLabelFont = [(PRComplicationGalleryApplicationTitleView *)self _textLabelFont];
+  [textLabel setFont:_textLabelFont];
 
-  [v5 setNumberOfLines:{-[PRComplicationGalleryApplicationTitleView _textLabelNumberOfLines](self, "_textLabelNumberOfLines")}];
+  [textLabel setNumberOfLines:{-[PRComplicationGalleryApplicationTitleView _textLabelNumberOfLines](self, "_textLabelNumberOfLines")}];
   [(PRComplicationGalleryApplicationTitleView *)self setNeedsLayout];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PRComplicationGalleryApplicationTitleView;
-  v4 = a3;
-  [(PRComplicationGalleryApplicationTitleView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PRComplicationGalleryApplicationTitleView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(PRComplicationGalleryApplicationTitleView *)self traitCollection:v8.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  LOBYTE(v4) = [v6 isEqualToString:v7];
-  if ((v4 & 1) == 0)
+  LOBYTE(changeCopy) = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
+  if ((changeCopy & 1) == 0)
   {
     [(PRComplicationGalleryApplicationTitleView *)self _contentSizeCategoryDidChange:0];
   }

@@ -1,84 +1,84 @@
 @interface FPDDomainDeadEndBackend
-- (BOOL)isProviderForRealPathURL:(id)a3;
-- (FPDDomainDeadEndBackend)initWithDomain:(id)a3;
-- (FPDDomainDeadEndBackend)initWithDomain:(id)a3 materializationError:(id)a4;
+- (BOOL)isProviderForRealPathURL:(id)l;
+- (FPDDomainDeadEndBackend)initWithDomain:(id)domain;
+- (FPDDomainDeadEndBackend)initWithDomain:(id)domain materializationError:(id)error;
 - (NSArray)checkableURLs;
 - (NSArray)coordinationRootURLs;
 - (NSArray)rootURLs;
-- (id)createRootByImportingURL:(id)a3 knownFolders:(id)a4 error:(id *)a5;
-- (id)startProvidingItemAtURL:(id)a3 readerID:(id)a4 readingOptions:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7;
-- (void)URLForItemID:(id)a3 creatingPlaceholderIfMissing:(BOOL)a4 ignoreAlternateContentsURL:(BOOL)a5 forBookmarkResolution:(BOOL)a6 request:(id)a7 completionHandler:(id)a8;
-- (void)clearDiagnosticState:(id)a3;
-- (void)copyDatabaseToURL:(id)a3 completionHandler:(id)a4;
-- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)enumerateSearchResultForRequest:(id)a3 lifetimeExtender:(id)a4 completionHandler:(id)a5;
-- (void)fetchOperationServiceOrEndpointWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)fetchServicesForItemID:(id)a3 allowRestrictedSources:(BOOL)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)fetchTelemetryReportWithAlwaysFetchExpandedUsageStats:(BOOL)a3 completionHandler:(id)a4;
-- (void)fetchThumbnailsAtURL:(id)a3 versions:(id)a4 size:(CGSize)a5 perThumbnailCompletionHandler:(id)a6 completionHandler:(id)a7;
-- (void)fetchVendorEndpointWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)forceUpdateBlockedProcessNamesFromDomain:(id)a3 completionHandler:(id)a4;
-- (void)getSavedDiagnostics:(id)a3;
-- (void)hasNonUploadedFilesWithCompletionHandler:(id)a3;
-- (void)hierarchyForURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)launchFeedbackForDomain:(id)a3 itemIdentifier:(id)a4 triggeringError:(id)a5 when:(id)a6 useDiagnostic:(BOOL)a7 completionHandler:(id)a8;
-- (void)listRemoteVersionsOfItemAtURL:(id)a3 includeCachedVersions:(BOOL)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)movingItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5;
-- (void)reimportItemsBelowItemWithID:(id)a3 markItemDataless:(BOOL)a4 completionHandler:(id)a5;
-- (void)reindexAllItemsWithDropReason:(unint64_t)a3 completionHandler:(id)a4;
-- (void)reindexItemsWithIndexReason:(int64_t)a3 identifiers:(id)a4 completionHandler:(id)a5;
-- (void)requestDiagnosticCollectionForItemWithID:(id)a3 errorReason:(id)a4 completionHandler:(id)a5;
-- (void)resolveConflictAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)stateWithCompletionHandler:(id)a3;
-- (void)trashItemAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)triggerFeedbackApprovalRequestForItemURL:(id)a3 domain:(id)a4 uiOnly:(BOOL)a5 completionHandler:(id)a6;
-- (void)wakeForPushWithCompletionHandler:(id)a3;
+- (id)createRootByImportingURL:(id)l knownFolders:(id)folders error:(id *)error;
+- (id)startProvidingItemAtURL:(id)l readerID:(id)d readingOptions:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (void)URLForItemID:(id)d creatingPlaceholderIfMissing:(BOOL)missing ignoreAlternateContentsURL:(BOOL)l forBookmarkResolution:(BOOL)resolution request:(id)request completionHandler:(id)handler;
+- (void)clearDiagnosticState:(id)state;
+- (void)copyDatabaseToURL:(id)l completionHandler:(id)handler;
+- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)enumerateSearchResultForRequest:(id)request lifetimeExtender:(id)extender completionHandler:(id)handler;
+- (void)fetchOperationServiceOrEndpointWithRequest:(id)request completionHandler:(id)handler;
+- (void)fetchServicesForItemID:(id)d allowRestrictedSources:(BOOL)sources request:(id)request completionHandler:(id)handler;
+- (void)fetchTelemetryReportWithAlwaysFetchExpandedUsageStats:(BOOL)stats completionHandler:(id)handler;
+- (void)fetchThumbnailsAtURL:(id)l versions:(id)versions size:(CGSize)size perThumbnailCompletionHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)fetchVendorEndpointWithRequest:(id)request completionHandler:(id)handler;
+- (void)forceUpdateBlockedProcessNamesFromDomain:(id)domain completionHandler:(id)handler;
+- (void)getSavedDiagnostics:(id)diagnostics;
+- (void)hasNonUploadedFilesWithCompletionHandler:(id)handler;
+- (void)hierarchyForURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)launchFeedbackForDomain:(id)domain itemIdentifier:(id)identifier triggeringError:(id)error when:(id)when useDiagnostic:(BOOL)diagnostic completionHandler:(id)handler;
+- (void)listRemoteVersionsOfItemAtURL:(id)l includeCachedVersions:(BOOL)versions request:(id)request completionHandler:(id)handler;
+- (void)movingItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler;
+- (void)reimportItemsBelowItemWithID:(id)d markItemDataless:(BOOL)dataless completionHandler:(id)handler;
+- (void)reindexAllItemsWithDropReason:(unint64_t)reason completionHandler:(id)handler;
+- (void)reindexItemsWithIndexReason:(int64_t)reason identifiers:(id)identifiers completionHandler:(id)handler;
+- (void)requestDiagnosticCollectionForItemWithID:(id)d errorReason:(id)reason completionHandler:(id)handler;
+- (void)resolveConflictAtURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)stateWithCompletionHandler:(id)handler;
+- (void)trashItemAtURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)triggerFeedbackApprovalRequestForItemURL:(id)l domain:(id)domain uiOnly:(BOOL)only completionHandler:(id)handler;
+- (void)wakeForPushWithCompletionHandler:(id)handler;
 @end
 
 @implementation FPDDomainDeadEndBackend
 
-- (FPDDomainDeadEndBackend)initWithDomain:(id)a3
+- (FPDDomainDeadEndBackend)initWithDomain:(id)domain
 {
   v4 = MEMORY[0x1E696ABC0];
   v5 = *MEMORY[0x1E6967190];
-  v6 = a3;
+  domainCopy = domain;
   v7 = [v4 errorWithDomain:v5 code:-1004 userInfo:0];
-  v8 = [(FPDDomainDeadEndBackend *)self initWithDomain:v6 materializationError:v7];
+  v8 = [(FPDDomainDeadEndBackend *)self initWithDomain:domainCopy materializationError:v7];
 
   return v8;
 }
 
-- (FPDDomainDeadEndBackend)initWithDomain:(id)a3 materializationError:(id)a4
+- (FPDDomainDeadEndBackend)initWithDomain:(id)domain materializationError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 providerDomainID];
-  v9 = [v8 fp_toProviderID];
+  domainCopy = domain;
+  errorCopy = error;
+  providerDomainID = [domainCopy providerDomainID];
+  fp_toProviderID = [providerDomainID fp_toProviderID];
 
-  if ([v6 unableToStartup] && +[FPDynamicErrorDecider shouldSendFor:](_TtC18FileProviderDaemon21FPDynamicErrorDecider, "shouldSendFor:", v9))
+  if ([domainCopy unableToStartup] && +[FPDynamicErrorDecider shouldSendFor:](_TtC18FileProviderDaemon21FPDynamicErrorDecider, "shouldSendFor:", fp_toProviderID))
   {
-    v10 = [MEMORY[0x1E699C730] defaultManager];
-    v11 = [v6 provider];
-    v12 = [v11 bundleVersion];
-    v13 = [v10 sessionForProviderID:v9 version:v12];
+    defaultManager = [MEMORY[0x1E699C730] defaultManager];
+    provider = [domainCopy provider];
+    bundleVersion = [provider bundleVersion];
+    v13 = [defaultManager sessionForProviderID:fp_toProviderID version:bundleVersion];
 
-    [v13 postReportWithCategory:1 type:1 payload:&unk_1F4C62AA8 error:v7];
+    [v13 postReportWithCategory:1 type:1 payload:&unk_1F4C62AA8 error:errorCopy];
   }
 
-  if ([v7 fp_isPOSIXErrorCode:28])
+  if ([errorCopy fp_isPOSIXErrorCode:28])
   {
-    v14 = [v6 volume];
-    v15 = [v14 isDiskSpaceMonitorRunning];
+    volume = [domainCopy volume];
+    isDiskSpaceMonitorRunning = [volume isDiskSpaceMonitorRunning];
 
-    if ((v15 & 1) == 0)
+    if ((isDiskSpaceMonitorRunning & 1) == 0)
     {
       v16 = objc_alloc_init(FPDTapToRadarManager);
       v17 = MEMORY[0x1E696AEC0];
-      v18 = [v6 volume];
-      v19 = [v17 stringWithFormat:@"Domain was disconnected due to low disk space, but the disk space monitor wasn't triggered for the volume\n\ndomain: %@\nvolume: %@\n", v6, v18];
+      volume2 = [domainCopy volume];
+      v19 = [v17 stringWithFormat:@"Domain was disconnected due to low disk space, but the disk space monitor wasn't triggered for the volume\n\ndomain: %@\nvolume: %@\n", domainCopy, volume2];
 
       LOBYTE(v23) = 1;
-      [(FPDTapToRadarManager *)v16 requestTapToRadarWithTitle:@"Disk space monitor not running for low disk domain" description:v19 keywords:MEMORY[0x1E695E0F0] attachments:MEMORY[0x1E695E0F0] displayReason:@"disconnecting a domain found an issue" providerID:v9 skipSysdiagnose:v23];
+      [(FPDTapToRadarManager *)v16 requestTapToRadarWithTitle:@"Disk space monitor not running for low disk domain" description:v19 keywords:MEMORY[0x1E695E0F0] attachments:MEMORY[0x1E695E0F0] displayReason:@"disconnecting a domain found an issue" providerID:fp_toProviderID skipSysdiagnose:v23];
     }
   }
 
@@ -88,19 +88,19 @@
   v21 = v20;
   if (v20)
   {
-    objc_storeWeak(&v20->_domain, v6);
-    objc_storeStrong(&v21->_materializationError, a4);
+    objc_storeWeak(&v20->_domain, domainCopy);
+    objc_storeStrong(&v21->_materializationError, error);
   }
 
   return v21;
 }
 
-- (BOOL)isProviderForRealPathURL:(id)a3
+- (BOOL)isProviderForRealPathURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v6 = [WeakRetained deactivatedBackend];
-  v7 = [v6 isProviderForRealPathURL:v4];
+  deactivatedBackend = [WeakRetained deactivatedBackend];
+  v7 = [deactivatedBackend isProviderForRealPathURL:lCopy];
 
   return v7;
 }
@@ -108,68 +108,68 @@
 - (NSArray)rootURLs
 {
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v3 = [WeakRetained deactivatedBackend];
-  v4 = [v3 rootURLs];
+  deactivatedBackend = [WeakRetained deactivatedBackend];
+  rootURLs = [deactivatedBackend rootURLs];
 
-  return v4;
+  return rootURLs;
 }
 
 - (NSArray)coordinationRootURLs
 {
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v3 = [WeakRetained deactivatedBackend];
-  v4 = [v3 coordinationRootURLs];
+  deactivatedBackend = [WeakRetained deactivatedBackend];
+  coordinationRootURLs = [deactivatedBackend coordinationRootURLs];
 
-  return v4;
+  return coordinationRootURLs;
 }
 
 - (NSArray)checkableURLs
 {
   WeakRetained = objc_loadWeakRetained(&self->_domain);
-  v3 = [WeakRetained deactivatedBackend];
-  v4 = [v3 checkableURLs];
+  deactivatedBackend = [WeakRetained deactivatedBackend];
+  checkableURLs = [deactivatedBackend checkableURLs];
 
-  return v4;
+  return checkableURLs;
 }
 
-- (id)startProvidingItemAtURL:(id)a3 readerID:(id)a4 readingOptions:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7
+- (id)startProvidingItemAtURL:(id)l readerID:(id)d readingOptions:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
-  v9 = a7;
-  v10 = [a3 fp_isDatalessWithError:0];
-  v11 = [v10 BOOLValue];
+  handlerCopy = handler;
+  v10 = [l fp_isDatalessWithError:0];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    v9[2](v9, self->_materializationError);
+    handlerCopy[2](handlerCopy, self->_materializationError);
   }
 
-  v9[2](v9, 0);
+  handlerCopy[2](handlerCopy, 0);
 
   return 0;
 }
 
-- (void)URLForItemID:(id)a3 creatingPlaceholderIfMissing:(BOOL)a4 ignoreAlternateContentsURL:(BOOL)a5 forBookmarkResolution:(BOOL)a6 request:(id)a7 completionHandler:(id)a8
+- (void)URLForItemID:(id)d creatingPlaceholderIfMissing:(BOOL)missing ignoreAlternateContentsURL:(BOOL)l forBookmarkResolution:(BOOL)resolution request:(id)request completionHandler:(id)handler
 {
-  v15 = a8;
-  v10 = [a3 identifier];
-  v11 = [v10 isEqualToString:*MEMORY[0x1E6967258]];
+  handlerCopy = handler;
+  identifier = [d identifier];
+  v11 = [identifier isEqualToString:*MEMORY[0x1E6967258]];
 
   if (v11 && (-[FPDDomainDeadEndBackend rootURLs](self, "rootURLs"), v12 = objc_claimAutoreleasedReturnValue(), [v12 firstObject], v13 = objc_claimAutoreleasedReturnValue(), v12, v13))
   {
     v14 = [MEMORY[0x1E6967408] wrapperWithURL:v13 readonly:1 error:0];
-    (*(v15 + 2))(v15, 0, v14, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, v14, 0);
   }
 
   else
   {
-    (*(v15 + 2))(v15, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   }
 }
 
-- (void)fetchTelemetryReportWithAlwaysFetchExpandedUsageStats:(BOOL)a3 completionHandler:(id)a4
+- (void)fetchTelemetryReportWithAlwaysFetchExpandedUsageStats:(BOOL)stats completionHandler:(id)handler
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_domain);
   v7 = WeakRetained;
   if (WeakRetained)
@@ -181,153 +181,153 @@
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v7, "disconnectionState")}];
     v13[1] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-    v5[2](v5, v10, 0);
+    handlerCopy[2](handlerCopy, v10, 0);
   }
 
   else
   {
-    v5[2](v5, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyDatabaseToURL:(id)a3 completionHandler:(id)a4
+- (void)copyDatabaseToURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = FPNotSupportedError();
-  (*(a4 + 2))(v5, v6);
+  (*(handler + 2))(handlerCopy, v6);
 }
 
-- (void)reimportItemsBelowItemWithID:(id)a3 markItemDataless:(BOOL)a4 completionHandler:(id)a5
+- (void)reimportItemsBelowItemWithID:(id)d markItemDataless:(BOOL)dataless completionHandler:(id)handler
 {
   if (self->_materializationError)
   {
-    v6 = *(a5 + 2);
-    v8 = a5;
+    v6 = *(handler + 2);
+    handlerCopy = handler;
     v6();
   }
 
   else
   {
-    v7 = a5;
-    v8 = FPNotSupportedError();
-    (*(a5 + 2))(v7);
+    handlerCopy2 = handler;
+    handlerCopy = FPNotSupportedError();
+    (*(handler + 2))(handlerCopy2);
   }
 }
 
-- (id)createRootByImportingURL:(id)a3 knownFolders:(id)a4 error:(id *)a5
+- (id)createRootByImportingURL:(id)l knownFolders:(id)folders error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = FPNotSupportedError();
+    *error = FPNotSupportedError();
   }
 
   return 0;
 }
 
-- (void)fetchOperationServiceOrEndpointWithRequest:(id)a3 completionHandler:(id)a4
+- (void)fetchOperationServiceOrEndpointWithRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = FPDomainUnavailableError();
-  (*(a4 + 2))(v5, 0, 0, v6);
+  (*(handler + 2))(handlerCopy, 0, 0, v6);
 }
 
-- (void)forceUpdateBlockedProcessNamesFromDomain:(id)a3 completionHandler:(id)a4
+- (void)forceUpdateBlockedProcessNamesFromDomain:(id)domain completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = FPDomainUnavailableError();
-  (*(a4 + 2))(v5, v6);
+  (*(handler + 2))(handlerCopy, v6);
 }
 
-- (void)fetchServicesForItemID:(id)a3 allowRestrictedSources:(BOOL)a4 request:(id)a5 completionHandler:(id)a6
+- (void)fetchServicesForItemID:(id)d allowRestrictedSources:(BOOL)sources request:(id)request completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v8 = FPDomainUnavailableError();
-  (*(a6 + 2))(v7, 0, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, 0, v8);
 }
 
-- (void)fetchVendorEndpointWithRequest:(id)a3 completionHandler:(id)a4
+- (void)fetchVendorEndpointWithRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = FPDomainUnavailableError();
-  (*(a4 + 2))(v5, 0, v6);
+  (*(handler + 2))(handlerCopy, 0, v6);
 }
 
-- (void)trashItemAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)trashItemAtURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = FPNotSupportedError();
-  (*(a5 + 2))(v6, 0, v7);
+  (*(handler + 2))(handlerCopy, 0, v7);
 }
 
-- (void)movingItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5
+- (void)movingItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E696AC10];
-  v7 = a5;
-  v8 = [v6 providingRequiredResponse];
-  (*(a5 + 2))(v7, v8);
+  handlerCopy = handler;
+  providingRequiredResponse = [v6 providingRequiredResponse];
+  (*(handler + 2))(handlerCopy, providingRequiredResponse);
 }
 
-- (void)stateWithCompletionHandler:(id)a3
+- (void)stateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = FPNotSupportedError();
-  (*(a3 + 2))(v4, 0, v5);
+  (*(handler + 2))(handlerCopy, 0, v5);
 }
 
-- (void)wakeForPushWithCompletionHandler:(id)a3
+- (void)wakeForPushWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = FPDomainUnavailableError();
-  (*(a3 + 2))(v4, v5);
+  (*(handler + 2))(handlerCopy, v5);
 }
 
-- (void)resolveConflictAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)resolveConflictAtURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = FPNotSupportedError();
-  (*(a5 + 2))(v6, v7);
+  (*(handler + 2))(handlerCopy, v7);
 }
 
-- (void)listRemoteVersionsOfItemAtURL:(id)a3 includeCachedVersions:(BOOL)a4 request:(id)a5 completionHandler:(id)a6
+- (void)listRemoteVersionsOfItemAtURL:(id)l includeCachedVersions:(BOOL)versions request:(id)request completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v8 = FPNotSupportedError();
-  (*(a6 + 2))(v7, 0, MEMORY[0x1E695E0F0], v8);
+  (*(handler + 2))(handlerCopy, 0, MEMORY[0x1E695E0F0], v8);
 }
 
-- (void)fetchThumbnailsAtURL:(id)a3 versions:(id)a4 size:(CGSize)a5 perThumbnailCompletionHandler:(id)a6 completionHandler:(id)a7
+- (void)fetchThumbnailsAtURL:(id)l versions:(id)versions size:(CGSize)size perThumbnailCompletionHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a7;
+  completionHandlerCopy = completionHandler;
   v9 = FPNotSupportedError();
-  (*(a7 + 2))(v8, v9);
+  (*(completionHandler + 2))(completionHandlerCopy, v9);
 }
 
-- (void)hasNonUploadedFilesWithCompletionHandler:(id)a3
+- (void)hasNonUploadedFilesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = FPNotSupportedError();
-  (*(a3 + 2))(v4, 0, v5);
+  (*(handler + 2))(handlerCopy, 0, v5);
 }
 
-- (void)hierarchyForURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)hierarchyForURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = FPNotSupportedError();
-  (*(a5 + 2))(v6, MEMORY[0x1E695E0F0], v7);
+  (*(handler + 2))(handlerCopy, MEMORY[0x1E695E0F0], v7);
 }
 
-- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = FPNotSupportedError();
-  (*(a5 + 2))(v6, v7);
+  (*(handler + 2))(handlerCopy, v7);
 }
 
-- (void)reindexAllItemsWithDropReason:(unint64_t)a3 completionHandler:(id)a4
+- (void)reindexAllItemsWithDropReason:(unint64_t)reason completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -335,12 +335,12 @@
   }
 
   v6 = FPNotSupportedError();
-  v4[2](v4, v6);
+  handlerCopy[2](handlerCopy, v6);
 }
 
-- (void)reindexItemsWithIndexReason:(int64_t)a3 identifiers:(id)a4 completionHandler:(id)a5
+- (void)reindexItemsWithIndexReason:(int64_t)reason identifiers:(id)identifiers completionHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = fp_current_or_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -348,24 +348,24 @@
   }
 
   v7 = FPNotSupportedError();
-  v5[2](v5, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)triggerFeedbackApprovalRequestForItemURL:(id)a3 domain:(id)a4 uiOnly:(BOOL)a5 completionHandler:(id)a6
+- (void)triggerFeedbackApprovalRequestForItemURL:(id)l domain:(id)domain uiOnly:(BOOL)only completionHandler:(id)handler
 {
-  v6 = a6;
+  handlerCopy = handler;
   v7 = fp_current_or_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     [FPDDomainDeadEndBackend triggerFeedbackApprovalRequestForItemURL:domain:uiOnly:completionHandler:];
   }
 
-  v6[2](v6, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)launchFeedbackForDomain:(id)a3 itemIdentifier:(id)a4 triggeringError:(id)a5 when:(id)a6 useDiagnostic:(BOOL)a7 completionHandler:(id)a8
+- (void)launchFeedbackForDomain:(id)domain itemIdentifier:(id)identifier triggeringError:(id)error when:(id)when useDiagnostic:(BOOL)diagnostic completionHandler:(id)handler
 {
-  v8 = a8;
+  handlerCopy = handler;
   v9 = fp_current_or_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -373,12 +373,12 @@
   }
 
   v10 = FPNotSupportedError();
-  v8[2](v8, v10);
+  handlerCopy[2](handlerCopy, v10);
 }
 
-- (void)getSavedDiagnostics:(id)a3
+- (void)getSavedDiagnostics:(id)diagnostics
 {
-  v3 = a3;
+  diagnosticsCopy = diagnostics;
   v4 = fp_current_or_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -386,12 +386,12 @@
   }
 
   v5 = FPNotSupportedError();
-  v3[2](v3, 0, v5);
+  diagnosticsCopy[2](diagnosticsCopy, 0, v5);
 }
 
-- (void)clearDiagnosticState:(id)a3
+- (void)clearDiagnosticState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = fp_current_or_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -399,12 +399,12 @@
   }
 
   v5 = FPNotSupportedError();
-  v3[2](v3, v5);
+  stateCopy[2](stateCopy, v5);
 }
 
-- (void)requestDiagnosticCollectionForItemWithID:(id)a3 errorReason:(id)a4 completionHandler:(id)a5
+- (void)requestDiagnosticCollectionForItemWithID:(id)d errorReason:(id)reason completionHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = fp_current_or_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -412,12 +412,12 @@
   }
 
   v7 = FPNotSupportedError();
-  v5[2](v5, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)enumerateSearchResultForRequest:(id)a3 lifetimeExtender:(id)a4 completionHandler:(id)a5
+- (void)enumerateSearchResultForRequest:(id)request lifetimeExtender:(id)extender completionHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = fp_current_or_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -425,7 +425,7 @@
   }
 
   v7 = FPNotSupportedError();
-  v5[2](v5, 0, v7);
+  handlerCopy[2](handlerCopy, 0, v7);
 }
 
 @end

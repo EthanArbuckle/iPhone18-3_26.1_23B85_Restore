@@ -1,20 +1,20 @@
 @interface HMSettingsMessageHandler
-- (void)configureWithContext:(id)a3;
-- (void)sendUpdateValueMessage:(id)a3 value:(id)a4 completionHandler:(id)a5;
+- (void)configureWithContext:(id)context;
+- (void)sendUpdateValueMessage:(id)message value:(id)value completionHandler:(id)handler;
 @end
 
 @implementation HMSettingsMessageHandler
 
-- (void)sendUpdateValueMessage:(id)a3 value:(id)a4 completionHandler:(id)a5
+- (void)sendUpdateValueMessage:(id)message value:(id)value completionHandler:(id)handler
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v12 = v10;
+  messageCopy = message;
+  valueCopy = value;
+  handlerCopy = handler;
+  v12 = handlerCopy;
   if (!self)
   {
-    if (v10)
+    if (handlerCopy)
     {
       goto LABEL_6;
     }
@@ -22,7 +22,7 @@
 LABEL_10:
     v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMSettingsMessageHandler sendUpdateValueMessage:value:completionHandler:]", @"completionHandler"];
     v41 = objc_autoreleasePoolPush();
-    v42 = self;
+    selfCopy = self;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
@@ -50,8 +50,8 @@ LABEL_10:
   {
     v52[0] = @"value";
     v52[1] = @"keyPath";
-    v53[0] = v9;
-    v53[1] = v8;
+    v53[0] = valueCopy;
+    v53[1] = messageCopy;
     v52[2] = @"SettingTargetType";
     Property = objc_getProperty(self, v14, 32, 1);
     v52[3] = @"kUserUUIDKey";
@@ -73,30 +73,30 @@ LABEL_10:
     v51 = v12;
     v26 = _Block_copy(aBlock);
     v28 = [objc_getProperty(self v27];
-    v29 = [v25 identifier];
+    identifier = [v25 identifier];
     v30 = _Block_copy(v26);
-    [v28 addCompletionBlock:v30 forIdentifier:v29];
+    [v28 addCompletionBlock:v30 forIdentifier:identifier];
 
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __75__HMSettingsMessageHandler_sendUpdateValueMessage_value_completionHandler___block_invoke_2;
     v46[3] = &unk_1E754E480;
     v47 = v28;
-    v48 = v29;
+    v48 = identifier;
     v49 = v26;
     v31 = v26;
-    v32 = v29;
+    v32 = identifier;
     v33 = v28;
     [v25 setResponseHandler:v46];
-    v34 = [v15 messageDispatcher];
-    [v34 sendMessage:v25 completionHandler:0];
+    messageDispatcher = [v15 messageDispatcher];
+    [messageDispatcher sendMessage:v25 completionHandler:0];
 
     goto LABEL_9;
   }
 
 LABEL_6:
   v35 = objc_autoreleasePoolPush();
-  v36 = self;
+  selfCopy2 = self;
   v37 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
   {
@@ -126,11 +126,11 @@ void __75__HMSettingsMessageHandler_sendUpdateValueMessage_value_completionHandl
   }
 }
 
-- (void)configureWithContext:(id)a3
+- (void)configureWithContext:(id)context
 {
   if (self)
   {
-    objc_setProperty_atomic(self, a2, a3, 8);
+    objc_setProperty_atomic(self, a2, context, 8);
   }
 }
 

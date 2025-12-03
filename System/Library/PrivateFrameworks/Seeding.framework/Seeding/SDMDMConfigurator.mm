@@ -1,40 +1,40 @@
 @interface SDMDMConfigurator
-+ (id)loadMDMConfigurationWithError:(id *)a3;
-+ (void)configureWithOfferProgramTokens:(id)a3 requireProgramToken:(id)a4 enrollmentPolicy:(int64_t)a5 error:(id *)a6;
-+ (void)enrollInProgramWithMDMToken:(id)a3 completion:(id)a4;
-+ (void)resetMDMConfigurationWithError:(id *)a3;
++ (id)loadMDMConfigurationWithError:(id *)error;
++ (void)configureWithOfferProgramTokens:(id)tokens requireProgramToken:(id)token enrollmentPolicy:(int64_t)policy error:(id *)error;
++ (void)enrollInProgramWithMDMToken:(id)token completion:(id)completion;
++ (void)resetMDMConfigurationWithError:(id *)error;
 @end
 
 @implementation SDMDMConfigurator
 
-+ (void)configureWithOfferProgramTokens:(id)a3 requireProgramToken:(id)a4 enrollmentPolicy:(int64_t)a5 error:(id *)a6
++ (void)configureWithOfferProgramTokens:(id)tokens requireProgramToken:(id)token enrollmentPolicy:(int64_t)policy error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  tokensCopy = tokens;
+  tokenCopy = token;
   v11 = +[SDSeedingLogging mdmHandle];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    if (a5 > 3)
+    if (policy > 3)
     {
       v12 = "Unknown";
     }
 
     else
     {
-      v12 = off_2787CB910[a5];
+      v12 = off_2787CB910[policy];
     }
 
     *buf = 136446723;
     v36 = "+[SDMDMConfigurator configureWithOfferProgramTokens:requireProgramToken:enrollmentPolicy:error:]";
     v37 = 2113;
-    v38 = v10;
+    v38 = tokenCopy;
     v39 = 2082;
     v40 = v12;
     _os_log_impl(&dword_22E41E000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}s requireToken [%{private}@] policy [%{public}s]", buf, 0x20u);
   }
 
-  v13 = [v9 count];
+  v13 = [tokensCopy count];
   v14 = +[SDSeedingLogging mdmHandle];
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
   if (v13)
@@ -49,15 +49,15 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v14 = v9;
+    v14 = tokensCopy;
     v16 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v16)
     {
       v17 = v16;
-      v26 = v10;
-      v27 = v9;
-      v28 = a5;
-      v29 = a6;
+      v26 = tokenCopy;
+      v27 = tokensCopy;
+      policyCopy = policy;
+      errorCopy = error;
       v18 = *v31;
       do
       {
@@ -82,10 +82,10 @@
       }
 
       while (v17);
-      a5 = v28;
-      a6 = v29;
-      v10 = v26;
-      v9 = v27;
+      policy = policyCopy;
+      error = errorCopy;
+      tokenCopy = v26;
+      tokensCopy = v27;
     }
   }
 
@@ -95,8 +95,8 @@
     _os_log_impl(&dword_22E41E000, v14, OS_LOG_TYPE_DEFAULT, "No offer-tokens given.", buf, 2u);
   }
 
-  v22 = [v9 count];
-  if (a5 <= 1 && !v10 && !v22)
+  v22 = [tokensCopy count];
+  if (policy <= 1 && !tokenCopy && !v22)
   {
     v23 = +[SDSeedingLogging mdmHandle];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -107,12 +107,12 @@
   }
 
   v24 = +[SDBetaEnrollmentServiceProxy sharedInstance];
-  [v24 configureWithOfferProgramTokens:v9 requireProgramToken:v10 enrollmentPolicy:a5 error:a6];
+  [v24 configureWithOfferProgramTokens:tokensCopy requireProgramToken:tokenCopy enrollmentPolicy:policy error:error];
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)resetMDMConfigurationWithError:(id *)a3
++ (void)resetMDMConfigurationWithError:(id *)error
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = +[SDSeedingLogging mdmHandle];
@@ -124,12 +124,12 @@
   }
 
   v6 = objc_opt_new();
-  [a1 configureWithOfferProgramTokens:v6 requireProgramToken:0 enrollmentPolicy:0 error:a3];
+  [self configureWithOfferProgramTokens:v6 requireProgramToken:0 enrollmentPolicy:0 error:error];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)loadMDMConfigurationWithError:(id *)a3
++ (id)loadMDMConfigurationWithError:(id *)error
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = +[SDSeedingLogging mdmHandle];
@@ -141,30 +141,30 @@
   }
 
   v5 = +[SDBetaEnrollmentServiceProxy sharedInstance];
-  v6 = [v5 loadMDMConfigurationWithError:a3];
+  v6 = [v5 loadMDMConfigurationWithError:error];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-+ (void)enrollInProgramWithMDMToken:(id)a3 completion:(id)a4
++ (void)enrollInProgramWithMDMToken:(id)token completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   v7 = +[SDSeedingLogging mdmHandle];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136446467;
     v11 = "+[SDMDMConfigurator enrollInProgramWithMDMToken:completion:]";
     v12 = 2113;
-    v13 = v5;
+    v13 = tokenCopy;
     _os_log_impl(&dword_22E41E000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}s token [%{private}@]", &v10, 0x16u);
   }
 
   v8 = +[SDBetaEnrollmentServiceProxy sharedInstance];
-  [v8 enrollInProgramWithToken:v5 completion:v6];
+  [v8 enrollInProgramWithToken:tokenCopy completion:completionCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }

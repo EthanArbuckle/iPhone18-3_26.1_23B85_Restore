@@ -1,12 +1,12 @@
 @interface SecureAssetsPreinstalledBundle
 - (SecureAssetsPreinstalledBundle)init;
-- (id)assetVersion:(id)a3;
-- (id)resourcePathURL:(id)a3;
+- (id)assetVersion:(id)version;
+- (id)resourcePathURL:(id)l;
 @end
 
 @implementation SecureAssetsPreinstalledBundle
 
-- (id)resourcePathURL:(id)a3
+- (id)resourcePathURL:(id)l
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE59398, &qword_247996518);
   v5 = *(*(v4 - 8) + 64);
@@ -14,7 +14,7 @@
   v7 = &v18 - v6;
   v8 = sub_247994E84();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   SecureAssetsPreinstalledBundle.resourcePathURLForLocale(locale:)(v8, v10, v7);
 
   v12 = sub_247994C14();
@@ -31,11 +31,11 @@
   return v15;
 }
 
-- (id)assetVersion:(id)a3
+- (id)assetVersion:(id)version
 {
   v4 = sub_247994E84();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   object = SecureAssetsPreinstalledBundle.assetVersionForLocale(locale:)(v8).value._object;

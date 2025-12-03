@@ -46,72 +46,72 @@
 
 - (id)copyWithCuratingBirthdaySuggestion
 {
-  v1 = a1;
-  v2 = [v1 dates];
-  v3 = [v2 _cn_firstObjectPassingTest:&__block_literal_global_63_31208];
+  selfCopy = self;
+  dates = [selfCopy dates];
+  v3 = [dates _cn_firstObjectPassingTest:&__block_literal_global_63_31208];
 
   if (v3)
   {
-    v4 = [v1 birthday];
-    if (v4)
+    birthday = [selfCopy birthday];
+    if (birthday)
     {
     }
 
     else
     {
-      v5 = [v1 nonGregorianBirthday];
+      nonGregorianBirthday = [selfCopy nonGregorianBirthday];
 
-      if (!v5)
+      if (!nonGregorianBirthday)
       {
-        v8 = [v1 mutableCopy];
-        v9 = [v3 value];
+        v8 = [selfCopy mutableCopy];
+        value = [v3 value];
         v10 = [objc_opt_class() calendarForBirthdayLabel:@"_systemCalendar"];
-        [v9 setCalendar:v10];
+        [value setCalendar:v10];
 
-        [v8 setBirthday:v9];
-        v11 = [v8 dates];
+        [v8 setBirthday:value];
+        dates2 = [v8 dates];
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __60__CNContact_UIAdditions__copyWithCuratingBirthdaySuggestion__block_invoke_2;
         v13[3] = &unk_1E74E3F80;
         v14 = v3;
-        v12 = [v11 _cn_filter:v13];
+        v12 = [dates2 _cn_filter:v13];
         [v8 setDates:v12];
 
-        v6 = [v8 freezeWithSelfAsSnapshot];
+        freezeWithSelfAsSnapshot = [v8 freezeWithSelfAsSnapshot];
 
         goto LABEL_6;
       }
     }
   }
 
-  v6 = v1;
+  freezeWithSelfAsSnapshot = selfCopy;
 LABEL_6:
 
-  return v6;
+  return freezeWithSelfAsSnapshot;
 }
 
 - (uint64_t)copyWithCuratingAllSuggestionsAndBirthdaySuggestion
 {
-  v1 = [a1 copyWithCuratingBirthdaySuggestion];
-  v2 = [v1 copyWithCuratingAllSuggestions];
+  copyWithCuratingBirthdaySuggestion = [self copyWithCuratingBirthdaySuggestion];
+  copyWithCuratingAllSuggestions = [copyWithCuratingBirthdaySuggestion copyWithCuratingAllSuggestions];
 
-  return v2;
+  return copyWithCuratingAllSuggestions;
 }
 
 - (uint64_t)hasImageOfType:()UIAdditions
 {
   v4 = [objc_opt_class() stringIdentifierForImageType:a3];
-  if (v4 && ([a1 imageType], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (v4 && ([self imageType], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [a1 imageType];
-    v7 = [v6 isEqualToString:v4];
+    imageType = [self imageType];
+    v7 = [imageType isEqualToString:v4];
   }
 
   else
   {
-    v6 = [a1 imageType];
-    v7 = v4 == v6;
+    imageType = [self imageType];
+    v7 = v4 == imageType;
   }
 
   return v7;
@@ -120,8 +120,8 @@ LABEL_6:
 - (uint64_t)rawImageSource
 {
   v2 = objc_opt_class();
-  v3 = [a1 imageType];
-  v4 = [v2 rawImageSourceForIdentifier:v3];
+  imageType = [self imageType];
+  v4 = [v2 rawImageSourceForIdentifier:imageType];
 
   return v4;
 }
@@ -129,8 +129,8 @@ LABEL_6:
 - (uint64_t)rawImageType
 {
   v2 = objc_opt_class();
-  v3 = [a1 imageType];
-  v4 = [v2 rawImageTypeForIdentifier:v3];
+  imageType = [self imageType];
+  v4 = [v2 rawImageTypeForIdentifier:imageType];
 
   return v4;
 }
@@ -138,13 +138,13 @@ LABEL_6:
 - (id)vCardRepresentation
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69E4B40] optionsFromPreferences];
-  [v2 setIncludePhotos:1];
-  [v2 setIncludeNotes:1];
+  optionsFromPreferences = [MEMORY[0x1E69E4B40] optionsFromPreferences];
+  [optionsFromPreferences setIncludePhotos:1];
+  [optionsFromPreferences setIncludeNotes:1];
   v3 = MEMORY[0x1E695CE30];
-  v7[0] = a1;
+  v7[0] = self;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
-  v5 = [v3 dataWithContacts:v4 options:v2 error:0];
+  v5 = [v3 dataWithContacts:v4 options:optionsFromPreferences error:0];
 
   return v5;
 }
@@ -154,16 +154,16 @@ LABEL_6:
   v36 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v24 = [MEMORY[0x1E695DF70] array];
-  v8 = [objc_opt_class() multiValuePropertiesSupportingPredicateValidation];
+  array = [MEMORY[0x1E695DF70] array];
+  multiValuePropertiesSupportingPredicateValidation = [objc_opt_class() multiValuePropertiesSupportingPredicateValidation];
 
-  if (v8 != v7)
+  if (multiValuePropertiesSupportingPredicateValidation != v7)
   {
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __86__CNContact_UIAdditions__validPropertiesByEvaluatingPredicate_onMultiValueProperties___block_invoke;
     v33[3] = &unk_1E74E5A18;
-    v33[4] = a1;
+    v33[4] = self;
     v9 = [v7 _cn_filter:v33];
 
     v7 = v9;
@@ -190,7 +190,7 @@ LABEL_6:
 
         v23 = v10;
         v11 = *(*(&v29 + 1) + 8 * v10);
-        v12 = [a1 valueForKey:v11];
+        v12 = [self valueForKey:v11];
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
@@ -209,11 +209,11 @@ LABEL_6:
                 objc_enumerationMutation(v12);
               }
 
-              v17 = [*(*(&v25 + 1) + 8 * i) identifier];
-              v18 = [MEMORY[0x1E695CE08] contactPropertyWithContact:a1 propertyKey:v11 identifier:v17];
+              identifier = [*(*(&v25 + 1) + 8 * i) identifier];
+              v18 = [MEMORY[0x1E695CE08] contactPropertyWithContact:self propertyKey:v11 identifier:identifier];
               if ([v6 evaluateWithObject:v18])
               {
-                [v24 addObject:v18];
+                [array addObject:v18];
               }
             }
 
@@ -233,50 +233,50 @@ LABEL_6:
     while (v22);
   }
 
-  return v24;
+  return array;
 }
 
 - (id)contactPosterBackgroundColors
 {
-  v1 = [a1 backgroundColors];
-  v2 = [v1 contactPoster];
+  backgroundColors = [self backgroundColors];
+  contactPoster = [backgroundColors contactPoster];
 
-  return v2;
+  return contactPoster;
 }
 
 - (id)contactImageBackgroundColors
 {
-  v1 = [a1 backgroundColors];
-  v2 = [v1 contactImage];
+  backgroundColors = [self backgroundColors];
+  contactImage = [backgroundColors contactImage];
 
-  return v2;
+  return contactImage;
 }
 
 - (id)birthdays
 {
   v2 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-  v3 = [a1 birthday];
-  if (v3)
+  birthday = [self birthday];
+  if (birthday)
   {
-    v4 = [MEMORY[0x1E695CEE0] entryWithIdentifier:@"_systemCalendar" label:@"_systemCalendar" value:v3];
+    v4 = [MEMORY[0x1E695CEE0] entryWithIdentifier:@"_systemCalendar" label:@"_systemCalendar" value:birthday];
     [v2 addObject:v4];
   }
 
-  v5 = [a1 nonGregorianBirthday];
-  v6 = v5;
-  if (v5)
+  nonGregorianBirthday = [self nonGregorianBirthday];
+  v6 = nonGregorianBirthday;
+  if (nonGregorianBirthday)
   {
-    v7 = [v5 calendar];
-    v8 = [v7 calendarIdentifier];
+    calendar = [nonGregorianBirthday calendar];
+    calendarIdentifier = [calendar calendarIdentifier];
 
-    v9 = [MEMORY[0x1E695CEE0] entryWithIdentifier:v8 label:v8 value:v6];
+    v9 = [MEMORY[0x1E695CEE0] entryWithIdentifier:calendarIdentifier label:calendarIdentifier value:v6];
     [v2 addObject:v9];
   }
 
   if (![v2 count])
   {
-    v10 = [a1 dates];
-    v11 = [v10 _cn_firstObjectPassingTest:&__block_literal_global_51_31211];
+    dates = [self dates];
+    v11 = [dates _cn_firstObjectPassingTest:&__block_literal_global_51_31211];
 
     [v2 _cn_addNonNilObject:v11];
   }
@@ -286,41 +286,41 @@ LABEL_6:
 
 - (__CFString)posterFallbackDisplayName
 {
-  v2 = [a1 phoneNumbers];
-  v3 = [v2 firstObject];
-  v4 = [v3 value];
-  v5 = [v4 formattedStringValue];
+  phoneNumbers = [self phoneNumbers];
+  firstObject = [phoneNumbers firstObject];
+  value = [firstObject value];
+  formattedStringValue = [value formattedStringValue];
 
   v6 = *MEMORY[0x1E6996568];
-  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v5))
+  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], formattedStringValue))
   {
-    v7 = [a1 emailAddresses];
-    v8 = [v7 firstObject];
-    v9 = [v8 value];
+    emailAddresses = [self emailAddresses];
+    firstObject2 = [emailAddresses firstObject];
+    value2 = [firstObject2 value];
 
-    if ((*(v6 + 16))(v6, v9))
+    if ((*(v6 + 16))(v6, value2))
     {
-      v10 = [a1 organizationName];
-      if ((*(v6 + 16))(v6, v10))
+      organizationName = [self organizationName];
+      if ((*(v6 + 16))(v6, organizationName))
       {
         v11 = &stru_1F0CE7398;
       }
 
       else
       {
-        v11 = v10;
+        v11 = organizationName;
       }
     }
 
     else
     {
-      v11 = v9;
+      v11 = value2;
     }
   }
 
   else
   {
-    v11 = v5;
+    v11 = formattedStringValue;
   }
 
   return v11;
@@ -328,7 +328,7 @@ LABEL_6:
 
 - (id)posterName
 {
-  v2 = [MEMORY[0x1E695CD80] posterNameComponentsForContact:a1];
+  v2 = [MEMORY[0x1E695CD80] posterNameComponentsForContact:self];
   if ([v2 singleNameComponentIndex])
   {
     [v2 secondNameComponent];
@@ -341,15 +341,15 @@ LABEL_6:
   v3 = ;
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
-    v4 = [a1 posterFallbackDisplayName];
+    posterFallbackDisplayName = [self posterFallbackDisplayName];
   }
 
   else
   {
-    v4 = v3;
+    posterFallbackDisplayName = v3;
   }
 
-  v5 = v4;
+  v5 = posterFallbackDisplayName;
 
   return v5;
 }
@@ -358,35 +358,35 @@ LABEL_6:
 {
   v2 = objc_alloc_init(MEMORY[0x1E695CD80]);
   [v2 setIgnoresOrganization:1];
-  v3 = [v2 stringFromContact:a1];
+  v3 = [v2 stringFromContact:self];
 
   return v3;
 }
 
 - (BOOL)overrideSensitiveContent
 {
-  v1 = [a1 sensitiveContentConfiguration];
-  v2 = [v1 override] == 1;
+  sensitiveContentConfiguration = [self sensitiveContentConfiguration];
+  v2 = [sensitiveContentConfiguration override] == 1;
 
   return v2;
 }
 
 - (uint64_t)isUnknown
 {
-  if ([a1 isSuggested])
+  if ([self isSuggested])
   {
-    return [a1 isSuggestedMe] ^ 1;
+    return [self isSuggestedMe] ^ 1;
   }
 
-  if ([a1 isCoreRecentsAccepted])
+  if ([self isCoreRecentsAccepted])
   {
-    return [a1 isSuggestedMe] ^ 1;
+    return [self isSuggestedMe] ^ 1;
   }
 
-  v2 = [a1 iOSLegacyIdentifier];
-  if (v2 == *MEMORY[0x1E695C248])
+  iOSLegacyIdentifier = [self iOSLegacyIdentifier];
+  if (iOSLegacyIdentifier == *MEMORY[0x1E695C248])
   {
-    return [a1 isSuggestedMe] ^ 1;
+    return [self isSuggestedMe] ^ 1;
   }
 
   else

@@ -1,13 +1,13 @@
 @interface AWDCountersDiscoveryJoinS
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (unsigned)accessoryNodesCountHistogramAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)accessoryNodesCountHistogramAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCountersDiscoveryJoinS
@@ -20,18 +20,18 @@
   [(AWDCountersDiscoveryJoinS *)&v3 dealloc];
 }
 
-- (unsigned)accessoryNodesCountHistogramAtIndex:(unint64_t)a3
+- (unsigned)accessoryNodesCountHistogramAtIndex:(unint64_t)index
 {
   p_accessoryNodesCountHistograms = &self->_accessoryNodesCountHistograms;
   count = self->_accessoryNodesCountHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_accessoryNodesCountHistograms->list[a3];
+  return p_accessoryNodesCountHistograms->list[index];
 }
 
 - (id)description
@@ -39,8 +39,8 @@
   v7.receiver = self;
   v7.super_class = AWDCountersDiscoveryJoinS;
   v3 = [(AWDCountersDiscoveryJoinS *)&v7 description];
-  v4 = [(AWDCountersDiscoveryJoinS *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDCountersDiscoveryJoinS *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -54,17 +54,17 @@
   sCntrsJoiner = self->_sCntrsJoiner;
   if (sCntrsJoiner)
   {
-    v6 = [(AWDCountersJoinerS *)sCntrsJoiner dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"s_cntrs_joiner"];
+    dictionaryRepresentation = [(AWDCountersJoinerS *)sCntrsJoiner dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"s_cntrs_joiner"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_accessoryNodesCountHistograms.count)
   {
     v5 = 0;
@@ -72,7 +72,7 @@
     {
       v6 = self->_accessoryNodesCountHistograms.list[v5];
       PBDataWriterWriteUint32Field();
-      v4 = v7;
+      toCopy = v7;
       ++v5;
     }
 
@@ -82,51 +82,51 @@
   if (self->_sCntrsJoiner)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(AWDCountersDiscoveryJoinS *)self accessoryNodesCountHistogramsCount])
   {
-    [v7 clearAccessoryNodesCountHistograms];
-    v4 = [(AWDCountersDiscoveryJoinS *)self accessoryNodesCountHistogramsCount];
-    if (v4)
+    [toCopy clearAccessoryNodesCountHistograms];
+    accessoryNodesCountHistogramsCount = [(AWDCountersDiscoveryJoinS *)self accessoryNodesCountHistogramsCount];
+    if (accessoryNodesCountHistogramsCount)
     {
-      v5 = v4;
+      v5 = accessoryNodesCountHistogramsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v7 addAccessoryNodesCountHistogram:{-[AWDCountersDiscoveryJoinS accessoryNodesCountHistogramAtIndex:](self, "accessoryNodesCountHistogramAtIndex:", i)}];
+        [toCopy addAccessoryNodesCountHistogram:{-[AWDCountersDiscoveryJoinS accessoryNodesCountHistogramAtIndex:](self, "accessoryNodesCountHistogramAtIndex:", i)}];
       }
     }
   }
 
   if (self->_sCntrsJoiner)
   {
-    [v7 setSCntrsJoiner:?];
+    [toCopy setSCntrsJoiner:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedUInt32Copy();
-  v6 = [(AWDCountersJoinerS *)self->_sCntrsJoiner copyWithZone:a3];
+  v6 = [(AWDCountersJoinerS *)self->_sCntrsJoiner copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && PBRepeatedUInt32IsEqual())
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && PBRepeatedUInt32IsEqual())
   {
     sCntrsJoiner = self->_sCntrsJoiner;
-    if (sCntrsJoiner | v4[4])
+    if (sCntrsJoiner | equalCopy[4])
     {
       v7 = [(AWDCountersJoinerS *)sCntrsJoiner isEqual:?];
 
@@ -147,22 +147,22 @@
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v10 = a3;
-  v4 = [v10 accessoryNodesCountHistogramsCount];
-  if (v4)
+  fromCopy = from;
+  accessoryNodesCountHistogramsCount = [fromCopy accessoryNodesCountHistogramsCount];
+  if (accessoryNodesCountHistogramsCount)
   {
-    v5 = v4;
+    v5 = accessoryNodesCountHistogramsCount;
     for (i = 0; i != v5; ++i)
     {
-      -[AWDCountersDiscoveryJoinS addAccessoryNodesCountHistogram:](self, "addAccessoryNodesCountHistogram:", [v10 accessoryNodesCountHistogramAtIndex:i]);
+      -[AWDCountersDiscoveryJoinS addAccessoryNodesCountHistogram:](self, "addAccessoryNodesCountHistogram:", [fromCopy accessoryNodesCountHistogramAtIndex:i]);
     }
   }
 
   sCntrsJoiner = self->_sCntrsJoiner;
-  v8 = v10;
-  v9 = v10[4];
+  v8 = fromCopy;
+  v9 = fromCopy[4];
   if (sCntrsJoiner)
   {
     if (!v9)
@@ -183,7 +183,7 @@
     [(AWDCountersDiscoveryJoinS *)self setSCntrsJoiner:?];
   }
 
-  v8 = v10;
+  v8 = fromCopy;
 LABEL_10:
 }
 

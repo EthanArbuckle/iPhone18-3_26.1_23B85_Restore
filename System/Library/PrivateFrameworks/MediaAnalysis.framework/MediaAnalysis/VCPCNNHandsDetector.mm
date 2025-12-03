@@ -1,36 +1,36 @@
 @interface VCPCNNHandsDetector
-+ (id)detector:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5 inputConfig:(id)a6 revision:(int)a7;
-- (VCPCNNHandsDetector)initWithMaxNumRegions:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5 inputConfig:(id)a6 revision:(int)a7;
++ (id)detector:(int)detector forceCPU:(BOOL)u sharedModel:(BOOL)model inputConfig:(id)config revision:(int)revision;
+- (VCPCNNHandsDetector)initWithMaxNumRegions:(int)regions forceCPU:(BOOL)u sharedModel:(BOOL)model inputConfig:(id)config revision:(int)revision;
 - (id).cxx_construct;
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4;
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4;
-- (int)createModelWithResConfig:(id)a3;
-- (int)drawLine:(char *)a3 width:(int)a4 height:(int)a5 stride:(int)a6 point0:(CGPoint)a7 point1:(CGPoint)a8 drawPoint:(int)a9;
-- (int)drawRectangle:(char *)a3 width:(int)a4 height:(int)a5 stride:(int)a6 keypoints:(CGPoint *)a7;
-- (int)generateHandsBoxes:(id)a3;
-- (int)generateHandsRegions:(const void *)a3 boxes:(id)a4 maxNumRegions:(int)a5;
-- (int)handsDetection:(__CVBuffer *)a3 handsRegions:(id)a4 cancel:(id)a5;
-- (int)retrieveBoxes:(float *)a3 outHeight:(int)a4 outWidth:(int)a5 boxes:(id)a6 anchorBox:(float)a7[3][2];
-- (int)updateModelWithResConfig:(id)a3;
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data;
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer;
+- (int)createModelWithResConfig:(id)config;
+- (int)drawLine:(char *)line width:(int)width height:(int)height stride:(int)stride point0:(CGPoint)point0 point1:(CGPoint)point1 drawPoint:(int)point;
+- (int)drawRectangle:(char *)rectangle width:(int)width height:(int)height stride:(int)stride keypoints:(CGPoint *)keypoints;
+- (int)generateHandsBoxes:(id)boxes;
+- (int)generateHandsRegions:(const void *)regions boxes:(id)boxes maxNumRegions:(int)numRegions;
+- (int)handsDetection:(__CVBuffer *)detection handsRegions:(id)regions cancel:(id)cancel;
+- (int)retrieveBoxes:(float *)boxes outHeight:(int)height outWidth:(int)width boxes:(id)a6 anchorBox:(float)box[3][2];
+- (int)updateModelWithResConfig:(id)config;
 - (void)dealloc;
-- (void)nonMaxSuppression:(id)a3;
+- (void)nonMaxSuppression:(id)suppression;
 @end
 
 @implementation VCPCNNHandsDetector
 
-+ (id)detector:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5 inputConfig:(id)a6 revision:(int)a7
++ (id)detector:(int)detector forceCPU:(BOOL)u sharedModel:(BOOL)model inputConfig:(id)config revision:(int)revision
 {
-  v7 = *&a7;
-  v8 = a5;
-  v9 = a4;
-  v10 = *&a3;
-  v11 = a6;
+  v7 = *&revision;
+  modelCopy = model;
+  uCopy = u;
+  v10 = *&detector;
+  configCopy = config;
   if (+[VCPCNNHandsDetector detector:forceCPU:sharedModel:inputConfig:revision:]::once != -1)
   {
     +[VCPCNNHandsDetector detector:forceCPU:sharedModel:inputConfig:revision:];
   }
 
-  v12 = [objc_alloc(+[VCPCNNHandsDetector detector:forceCPU:sharedModel:inputConfig:revision:]::analyzerClass) initWithMaxNumRegions:v10 forceCPU:v9 sharedModel:v8 inputConfig:v11 revision:v7];
+  v12 = [objc_alloc(+[VCPCNNHandsDetector detector:forceCPU:sharedModel:inputConfig:revision:]::analyzerClass) initWithMaxNumRegions:v10 forceCPU:uCopy sharedModel:modelCopy inputConfig:configCopy revision:v7];
 
   return v12;
 }
@@ -42,15 +42,15 @@ uint64_t __74__VCPCNNHandsDetector_detector_forceCPU_sharedModel_inputConfig_rev
   return result;
 }
 
-- (VCPCNNHandsDetector)initWithMaxNumRegions:(int)a3 forceCPU:(BOOL)a4 sharedModel:(BOOL)a5 inputConfig:(id)a6 revision:(int)a7
+- (VCPCNNHandsDetector)initWithMaxNumRegions:(int)regions forceCPU:(BOOL)u sharedModel:(BOOL)model inputConfig:(id)config revision:(int)revision
 {
-  v8 = a5;
-  v9 = a4;
+  modelCopy = model;
+  uCopy = u;
   v48[2] = *MEMORY[0x1E69E9840];
-  v12 = a6;
-  self->_maxNumRegions = a3;
+  configCopy = config;
+  self->_maxNumRegions = regions;
   self->_numClass = 2;
-  self->_revision = a7;
+  self->_revision = revision;
   outputNames = self->_outputNames;
   self->_outputNames = &unk_1F49BF010;
 
@@ -60,8 +60,8 @@ uint64_t __74__VCPCNNHandsDetector_detector_forceCPU_sharedModel_inputConfig_rev
   v15 = v14;
   if (v14)
   {
-    v16 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v17 = [v16 resourceURL];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
@@ -70,14 +70,14 @@ uint64_t __74__VCPCNNHandsDetector_detector_forceCPU_sharedModel_inputConfig_rev
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "CNNHandsDetector: Loading model %@", buf, 0xCu);
     }
 
-    v18 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_hand_detector_v2.espresso.net" relativeToURL:v17];
+    v18 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_hand_detector_v2.espresso.net" relativeToURL:resourceURL];
     v19 = [VCPCNNModelEspresso alloc];
     v20 = v14->_outputNames;
     v47[0] = @"forceCPU";
-    v21 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+    v21 = [MEMORY[0x1E696AD98] numberWithBool:uCopy];
     v48[0] = v21;
     v47[1] = @"sharedContext";
-    v22 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+    v22 = [MEMORY[0x1E696AD98] numberWithBool:modelCopy];
     v48[1] = v22;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
     v24 = [(VCPCNNModelEspresso *)v19 initWithParameters:v18 inputNames:0 outputNames:v20 properties:v23];
@@ -92,11 +92,11 @@ uint64_t __74__VCPCNNHandsDetector_detector_forceCPU_sharedModel_inputConfig_rev
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v44 = v12;
+      v44 = configCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "CNNHandsDetector: adopting model config: %@", buf, 0xCu);
     }
 
-    if ([(VCPCNNModelEspresso *)v14->_modelEspresso prepareModelWithConfig:v12])
+    if ([(VCPCNNModelEspresso *)v14->_modelEspresso prepareModelWithConfig:configCopy])
     {
 LABEL_10:
 
@@ -181,20 +181,20 @@ LABEL_12:
   return v26;
 }
 
-- (int)updateModelWithResConfig:(id)a3
+- (int)updateModelWithResConfig:(id)config
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configCopy = config;
   if (self->_modelEspresso)
   {
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = configCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "CNNHandsDetectorEspresso: updating model config to %@", &v7, 0xCu);
     }
 
-    v5 = [(VCPCNNHandsDetector *)self createModelWithResConfig:v4];
+    v5 = [(VCPCNNHandsDetector *)self createModelWithResConfig:configCopy];
   }
 
   else
@@ -219,9 +219,9 @@ LABEL_12:
   [(VCPCNNHandsDetector *)&v4 dealloc];
 }
 
-- (int)createModelWithResConfig:(id)a3
+- (int)createModelWithResConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   inputData = self->_inputData;
   if (inputData)
   {
@@ -229,7 +229,7 @@ LABEL_12:
     self->_inputData = 0;
   }
 
-  v6 = [(VCPCNNModelEspresso *)self->_modelEspresso prepareModelWithConfig:v4];
+  v6 = [(VCPCNNModelEspresso *)self->_modelEspresso prepareModelWithConfig:configCopy];
   if (!v6)
   {
     modelEspresso = self->_modelEspresso;
@@ -308,7 +308,7 @@ LABEL_21:
   return v6;
 }
 
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data
 {
   v6 = VCPSignPostLog();
   v7 = os_signpost_id_generate(v6);
@@ -321,19 +321,19 @@ LABEL_21:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "copyImageToBGRHandDetectorCallFromSPI", "", buf, 2u);
   }
 
-  if (CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (a3)
+  if (image)
   {
     v12 = Height;
-    v13 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v13 = CVPixelBufferLockBaseAddress(image, 1uLL);
     *buf = v13;
     if (v13)
     {
@@ -346,14 +346,14 @@ LABEL_21:
 
     else
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-      bzero(a4, 3 * 4 * Width * v12);
+      BaseAddress = CVPixelBufferGetBaseAddress(image);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+      bzero(data, 3 * 4 * Width * v12);
       if (v12 >= 1)
       {
         v18 = 0;
-        v19 = &a4[2 * v12 * Width];
-        v20 = &a4[v12 * Width];
+        v19 = &data[2 * v12 * Width];
+        v20 = &data[v12 * Width];
         v21 = 4 * Width;
         do
         {
@@ -365,7 +365,7 @@ LABEL_21:
             {
               LOBYTE(v17) = BaseAddress[(v22 * 4) + 2];
               v24 = LODWORD(v17);
-              a4[v22] = v24;
+              data[v22] = v24;
               LOBYTE(v24) = BaseAddress[(v22 * 4) + 1];
               v25 = LODWORD(v24);
               v20[v22] = v25;
@@ -382,7 +382,7 @@ LABEL_21:
           ++v18;
           v19 = (v19 + v21);
           v20 = (v20 + v21);
-          a4 = (a4 + v21);
+          data = (data + v21);
         }
 
         while (v18 != v12);
@@ -423,9 +423,9 @@ LABEL_21:
   return v14;
 }
 
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer
 {
-  if (!a3)
+  if (!input)
   {
     return -108;
   }
@@ -442,7 +442,7 @@ LABEL_21:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "scalerHandDetectorCallFromSPI", "", buf, 2u);
   }
 
-  Scaler::Scale(&self->_scaler, a4, &cf, self->_cnnInputWidth, self->_cnnInputHeight, 1111970369);
+  Scaler::Scale(&self->_scaler, buffer, &cf, self->_cnnInputWidth, self->_cnnInputHeight, 1111970369);
   v12 = v11;
   if (!v11)
   {
@@ -454,7 +454,7 @@ LABEL_21:
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v14, OS_SIGNPOST_INTERVAL_END, v8, "scalerHandDetectorCallFromSPI", "", v16, 2u);
     }
 
-    v12 = [(VCPCNNHandsDetector *)self copyImage:cf toData:a3];
+    v12 = [(VCPCNNHandsDetector *)self copyImage:cf toData:input];
   }
 
   if (cf)
@@ -465,9 +465,9 @@ LABEL_21:
   return v12;
 }
 
-- (int)generateHandsBoxes:(id)a3
+- (int)generateHandsBoxes:(id)boxes
 {
-  v4 = a3;
+  boxesCopy = boxes;
   v5 = VCPSignPostLog();
   v6 = os_signpost_id_generate(v5);
 
@@ -503,7 +503,7 @@ LABEL_21:
       v16 = 0;
     }
 
-    v9 = [(VCPCNNHandsDetector *)self generateHandsRegions:&__p boxes:v4 maxNumRegions:self->_maxNumRegions];
+    v9 = [(VCPCNNHandsDetector *)self generateHandsRegions:&__p boxes:boxesCopy maxNumRegions:self->_maxNumRegions];
     if (__p)
     {
       v15 = __p;
@@ -514,15 +514,15 @@ LABEL_21:
   return v9;
 }
 
-- (void)nonMaxSuppression:(id)a3
+- (void)nonMaxSuppression:(id)suppression
 {
-  v19 = a3;
-  v3 = [v19 count];
+  suppressionCopy = suppression;
+  v3 = [suppressionCopy count];
   if (v3)
   {
     for (i = 0; i != v3; ++i)
     {
-      v5 = [v19 objectAtIndexedSubscript:i];
+      v5 = [suppressionCopy objectAtIndexedSubscript:i];
       LODWORD(v6) = 1.0;
       [v5 setFlag:v6];
     }
@@ -531,7 +531,7 @@ LABEL_21:
     v8 = 1;
     do
     {
-      v9 = [v19 objectAtIndexedSubscript:v7];
+      v9 = [suppressionCopy objectAtIndexedSubscript:v7];
       [v9 flag];
       v11 = v10 == 1.0 && v3 > ++v7;
       v12 = v8;
@@ -539,7 +539,7 @@ LABEL_21:
       {
         do
         {
-          v13 = [v19 objectAtIndexedSubscript:v12];
+          v13 = [suppressionCopy objectAtIndexedSubscript:v12];
           [v13 flag];
           if (v14 == 1.0)
           {
@@ -573,7 +573,7 @@ LABEL_21:
   }
 }
 
-- (int)retrieveBoxes:(float *)a3 outHeight:(int)a4 outWidth:(int)a5 boxes:(id)a6 anchorBox:(float)a7[3][2]
+- (int)retrieveBoxes:(float *)boxes outHeight:(int)height outWidth:(int)width boxes:(id)a6 anchorBox:(float)box[3][2]
 {
   v62 = a6;
   if ((atomic_load_explicit(&qword_1ED942850, memory_order_acquire) & 1) == 0)
@@ -581,23 +581,23 @@ LABEL_21:
     [VCPCNNHandsDetector retrieveBoxes:? outHeight:? outWidth:? boxes:? anchorBox:?];
   }
 
-  if (a4 >= 1)
+  if (height >= 1)
   {
     v56 = 0;
-    v59 = a5 * a4;
-    v57 = a4;
-    v58 = a5;
-    v65 = a5;
-    v66 = a5 * a4;
-    v54 = &a3[4 * a5 * a4];
+    v59 = width * height;
+    heightCopy = height;
+    widthCopy = width;
+    widthCopy2 = width;
+    v66 = width * height;
+    v54 = &boxes[4 * width * height];
     v55 = 0;
-    v51 = 4 * a5;
-    v52 = a4;
+    v51 = 4 * width;
+    heightCopy2 = height;
     v10 = 0.5;
-    v53 = a5;
+    widthCopy3 = width;
     do
     {
-      if (a5 >= 1)
+      if (width >= 1)
       {
         v11 = 0;
         v12 = v54;
@@ -626,7 +626,7 @@ LABEL_21:
           if (v17 > v10)
           {
             v20 = v16 * v66 * v13;
-            v21 = &a3[v20 + v11 + v55 * v65];
+            v21 = &boxes[v20 + v11 + v55 * widthCopy2];
             v22 = expf(-*v21);
             cnnInputWidth = self->_cnnInputWidth;
             v23 = &v21[v59];
@@ -634,7 +634,7 @@ LABEL_21:
             cnnInputHeight = self->_cnnInputHeight;
             v26 = &v23[v59];
             v27 = expf(-*v26);
-            v28 = &(*a7)[2 * v16];
+            v28 = &(*box)[2 * v16];
             v63 = *v28;
             v29 = expf(-v26[v59]);
             v30 = v28[1];
@@ -647,10 +647,10 @@ LABEL_21:
 
             else
             {
-              v32 = self;
+              selfCopy = self;
               v33 = 0;
               v34 = 0;
-              v35 = &a3[4 * v59 + v14 + v20];
+              v35 = &boxes[4 * v59 + v14 + v20];
               v36 = -1.0;
               do
               {
@@ -676,13 +676,13 @@ LABEL_21:
                 v38 = 1;
               }
 
-              self = v32;
+              self = selfCopy;
             }
 
             v39 = [VCPBoundingBox alloc];
-            v40 = (v11 + (1.0 / (v22 + 1.0)) * 2.0 + -0.5) * cnnInputWidth / v58;
+            v40 = (v11 + (1.0 / (v22 + 1.0)) * 2.0 + -0.5) * cnnInputWidth / widthCopy;
             *&v40 = v40;
-            v41 = (v55 + (1.0 / (v24 + 1.0)) * 2.0 + -0.5) * cnnInputHeight / v57;
+            v41 = (v55 + (1.0 / (v24 + 1.0)) * 2.0 + -0.5) * cnnInputHeight / heightCopy;
             *&v41 = v41;
             v42 = ((1.0 / (v27 + 1.0)) + (1.0 / (v27 + 1.0)));
             v43 = v42 * v42 * v63;
@@ -726,24 +726,24 @@ LABEL_21:
           ++v14;
         }
 
-        while (v11 != v65);
+        while (v11 != widthCopy2);
       }
 
       v54 = (v54 + v51);
       ++v55;
-      a5 = v53;
-      v56 += v53;
+      width = widthCopy3;
+      v56 += widthCopy3;
     }
 
-    while (v55 != v52);
+    while (v55 != heightCopy2);
   }
 
   return 0;
 }
 
-- (int)generateHandsRegions:(const void *)a3 boxes:(id)a4 maxNumRegions:(int)a5
+- (int)generateHandsRegions:(const void *)regions boxes:(id)boxes maxNumRegions:(int)numRegions
 {
-  v8 = a4;
+  boxesCopy = boxes;
   v9 = VCPSignPostLog();
   v10 = os_signpost_id_generate(v9);
 
@@ -755,46 +755,46 @@ LABEL_21:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "postProcessingHandDetectorCallFromSPI", "", buf, 2u);
   }
 
-  v13 = *a3;
-  if (*a3 != *(a3 + 1))
+  v13 = *regions;
+  if (*regions != *(regions + 1))
   {
     v14 = &kAnchorBoxes;
     do
     {
-      [(VCPCNNHandsDetector *)self retrieveBoxes:*v13 outHeight:*(v13 + 88) outWidth:*(v13 + 80) boxes:v8 anchorBox:v14];
+      [(VCPCNNHandsDetector *)self retrieveBoxes:*v13 outHeight:*(v13 + 88) outWidth:*(v13 + 80) boxes:boxesCopy anchorBox:v14];
       v13 += 168;
       v14 += 24;
     }
 
-    while (v13 != *(a3 + 1));
+    while (v13 != *(regions + 1));
   }
 
-  [v8 sortUsingComparator:&__block_literal_global_24];
-  [(VCPCNNHandsDetector *)self nonMaxSuppression:v8];
-  [v8 sortUsingComparator:&__block_literal_global_26];
-  while ([v8 count] > a5)
+  [boxesCopy sortUsingComparator:&__block_literal_global_24];
+  [(VCPCNNHandsDetector *)self nonMaxSuppression:boxesCopy];
+  [boxesCopy sortUsingComparator:&__block_literal_global_26];
+  while ([boxesCopy count] > numRegions)
   {
-    [v8 removeLastObject];
+    [boxesCopy removeLastObject];
   }
 
-  v15 = [v8 lastObject];
-  if (v15)
+  lastObject = [boxesCopy lastObject];
+  if (lastObject)
   {
     do
     {
-      [v15 flag];
+      [lastObject flag];
       if (v16 != 0.0)
       {
         break;
       }
 
-      [v8 removeLastObject];
-      v17 = [v8 lastObject];
+      [boxesCopy removeLastObject];
+      lastObject2 = [boxesCopy lastObject];
 
-      v15 = v17;
+      lastObject = lastObject2;
     }
 
-    while (v17);
+    while (lastObject2);
   }
 
   v18 = VCPSignPostLog();
@@ -885,32 +885,32 @@ uint64_t __64__VCPCNNHandsDetector_generateHandsRegions_boxes_maxNumRegions___bl
   return v26;
 }
 
-- (int)drawLine:(char *)a3 width:(int)a4 height:(int)a5 stride:(int)a6 point0:(CGPoint)a7 point1:(CGPoint)a8 drawPoint:(int)a9
+- (int)drawLine:(char *)line width:(int)width height:(int)height stride:(int)stride point0:(CGPoint)point0 point1:(CGPoint)point1 drawPoint:(int)point
 {
-  x = a7.x;
-  v10 = a8.x;
-  y = a7.y;
-  v12 = a8.y;
-  v13 = a8.x - a7.x;
-  v14 = a8.y - a7.y;
+  x = point0.x;
+  v10 = point1.x;
+  y = point0.y;
+  v12 = point1.y;
+  v13 = point1.x - point0.x;
+  v14 = point1.y - point0.y;
   if (v13 >= 0)
   {
-    v15 = a8.x - a7.x;
+    v15 = point1.x - point0.x;
   }
 
   else
   {
-    v15 = a7.x - a8.x;
+    v15 = point0.x - point1.x;
   }
 
   if (v14 >= 0)
   {
-    v16 = a8.y - a7.y;
+    v16 = point1.y - point0.y;
   }
 
   else
   {
-    v16 = a7.y - a8.y;
+    v16 = point0.y - point1.y;
   }
 
   if (v15 <= v16)
@@ -918,7 +918,7 @@ uint64_t __64__VCPCNNHandsDetector_generateHandsRegions_boxes_maxNumRegions___bl
     v15 = v16;
   }
 
-  if (a9)
+  if (point)
   {
     if (y <= 5)
     {
@@ -930,9 +930,9 @@ uint64_t __64__VCPCNNHandsDetector_generateHandsRegions_boxes_maxNumRegions___bl
       v17 = y;
     }
 
-    v18 = a5 - 1;
+    v18 = height - 1;
     LODWORD(v19) = y + 5;
-    if (y + 5 >= a5 - 1)
+    if (y + 5 >= height - 1)
     {
       v19 = v18;
     }
@@ -955,8 +955,8 @@ uint64_t __64__VCPCNNHandsDetector_generateHandsRegions_boxes_maxNumRegions___bl
       }
 
       v21 = v20 - 5;
-      LODWORD(v22) = a4 - 1;
-      if (x + 5 >= a4 - 1)
+      LODWORD(v22) = width - 1;
+      if (x + 5 >= width - 1)
       {
         v22 = v22;
       }
@@ -967,7 +967,7 @@ uint64_t __64__VCPCNNHandsDetector_generateHandsRegions_boxes_maxNumRegions___bl
       }
 
       v23 = v17 - 5;
-      v24 = &a3[4 * v20 - 19 + v23 * a6];
+      v24 = &line[4 * v20 - 19 + v23 * stride];
       v25 = v22 - v20 + 5;
       do
       {
@@ -986,7 +986,7 @@ uint64_t __64__VCPCNNHandsDetector_generateHandsRegions_boxes_maxNumRegions___bl
         }
 
         ++v23;
-        v24 += a6;
+        v24 += stride;
       }
 
       while (v23 != v19);
@@ -1027,9 +1027,9 @@ uint64_t __64__VCPCNNHandsDetector_generateHandsRegions_boxes_maxNumRegions___bl
 
       v31 = v30 - 5;
       LODWORD(v32) = v10 + 5;
-      if (v32 >= a4 - 1)
+      if (v32 >= width - 1)
       {
-        v32 = (a4 - 1);
+        v32 = (width - 1);
       }
 
       else
@@ -1038,7 +1038,7 @@ uint64_t __64__VCPCNNHandsDetector_generateHandsRegions_boxes_maxNumRegions___bl
       }
 
       v33 = v28 - 5;
-      v34 = &a3[4 * v30 - 19 + v33 * a6];
+      v34 = &line[4 * v30 - 19 + v33 * stride];
       v35 = v32 - v30 + 5;
       do
       {
@@ -1057,7 +1057,7 @@ uint64_t __64__VCPCNNHandsDetector_generateHandsRegions_boxes_maxNumRegions___bl
         }
 
         ++v33;
-        v34 += a6;
+        v34 += stride;
       }
 
       while (v33 != v29);
@@ -1090,9 +1090,9 @@ uint64_t __64__VCPCNNHandsDetector_generateHandsRegions_boxes_maxNumRegions___bl
     do
     {
       v44 = (((v40 * v38) / v41) + v39);
-      if (v44 >= a4 - 1)
+      if (v44 >= width - 1)
       {
-        v45 = a4 - 1;
+        v45 = width - 1;
       }
 
       else
@@ -1102,9 +1102,9 @@ uint64_t __64__VCPCNNHandsDetector_generateHandsRegions_boxes_maxNumRegions___bl
 
       v46 = (((v43 * v38) / v41) + v42);
       v47 = 4 * v45;
-      if (v46 >= a5 - 1)
+      if (v46 >= height - 1)
       {
-        v48 = a5 - 1;
+        v48 = height - 1;
       }
 
       else
@@ -1132,7 +1132,7 @@ uint64_t __64__VCPCNNHandsDetector_generateHandsRegions_boxes_maxNumRegions___bl
         v50 = v47;
       }
 
-      v51 = &a3[v50 + v49 * a6];
+      v51 = &line[v50 + v49 * stride];
       v51[2] = -1;
       *v51 = 0;
       ++v38;
@@ -1144,27 +1144,27 @@ uint64_t __64__VCPCNNHandsDetector_generateHandsRegions_boxes_maxNumRegions___bl
   return 0;
 }
 
-- (int)drawRectangle:(char *)a3 width:(int)a4 height:(int)a5 stride:(int)a6 keypoints:(CGPoint *)a7
+- (int)drawRectangle:(char *)rectangle width:(int)width height:(int)height stride:(int)stride keypoints:(CGPoint *)keypoints
 {
-  v8 = *&a6;
-  v9 = *&a5;
-  v10 = *&a4;
+  v8 = *&stride;
+  v9 = *&height;
+  v10 = *&width;
   for (i = 0; i != 3; ++i)
   {
-    [(VCPCNNHandsDetector *)self drawLine:a3 width:v10 height:v9 stride:v8 point0:0 point1:a7[i].x drawPoint:a7[i].y, a7[i + 1].x, a7[i + 1].y];
+    [(VCPCNNHandsDetector *)self drawLine:rectangle width:v10 height:v9 stride:v8 point0:0 point1:keypoints[i].x drawPoint:keypoints[i].y, keypoints[i + 1].x, keypoints[i + 1].y];
   }
 
-  [(VCPCNNHandsDetector *)self drawLine:a3 width:v10 height:v9 stride:v8 point0:0 point1:a7[3].x drawPoint:a7[3].y, a7->x, a7->y];
+  [(VCPCNNHandsDetector *)self drawLine:rectangle width:v10 height:v9 stride:v8 point0:0 point1:keypoints[3].x drawPoint:keypoints[3].y, keypoints->x, keypoints->y];
   return 0;
 }
 
-- (int)handsDetection:(__CVBuffer *)a3 handsRegions:(id)a4 cancel:(id)a5
+- (int)handsDetection:(__CVBuffer *)detection handsRegions:(id)regions cancel:(id)cancel
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10 && ((*(v10 + 2))(v10) & 1) != 0)
+  regionsCopy = regions;
+  cancelCopy = cancel;
+  v11 = cancelCopy;
+  if (cancelCopy && ((*(cancelCopy + 2))(cancelCopy) & 1) != 0)
   {
     v12 = -128;
 LABEL_19:
@@ -1173,11 +1173,11 @@ LABEL_19:
   }
 
   v13 = objc_autoreleasePoolPush();
-  CVPixelBufferGetBaseAddress(a3);
-  CVPixelBufferGetBytesPerRow(a3);
-  CVPixelBufferGetWidthOfPlane(a3, 0);
-  CVPixelBufferGetHeightOfPlane(a3, 0);
-  v12 = [(VCPCNNHandsDetector *)self createInput:self->_inputData withBuffer:a3];
+  CVPixelBufferGetBaseAddress(detection);
+  CVPixelBufferGetBytesPerRow(detection);
+  CVPixelBufferGetWidthOfPlane(detection, 0);
+  CVPixelBufferGetHeightOfPlane(detection, 0);
+  v12 = [(VCPCNNHandsDetector *)self createInput:self->_inputData withBuffer:detection];
   if (v12)
   {
     v14 = 4;
@@ -1185,8 +1185,8 @@ LABEL_19:
 
   else
   {
-    v15 = [MEMORY[0x1E695DF70] array];
-    v5 = [(VCPCNNHandsDetector *)self generateHandsBoxes:v15];
+    array = [MEMORY[0x1E695DF70] array];
+    v5 = [(VCPCNNHandsDetector *)self generateHandsBoxes:array];
     if (v5)
     {
       v12 = 0;
@@ -1200,19 +1200,19 @@ LABEL_19:
       v24 = v16;
       while (1)
       {
-        if ([v15 count] <= v17)
+        if ([array count] <= v17)
         {
           v14 = 0;
           v12 = 0;
           goto LABEL_17;
         }
 
-        v18 = [v15 objectAtIndexedSubscript:v17];
+        v18 = [array objectAtIndexedSubscript:v17];
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v22 = [v18 classIndex];
+          classIndex = [v18 classIndex];
           *buf = v24;
-          v26 = v22;
+          v26 = classIndex;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "CNNHandsDetector: hand class index: %d", buf, 8u);
         }
 
@@ -1225,7 +1225,7 @@ LABEL_19:
           break;
         }
 
-        [v9 addObject:v18];
+        [regionsCopy addObject:v18];
 
         ++v17;
       }

@@ -1,21 +1,21 @@
 @interface ClipMetadataManager
-- (ClipMetadataManager)initWithAppInfoFetcher:(id)a3;
-- (void)_fetchMetadataForURL:(id)a3 sourceBundleID:(id)a4 downloadIcon:(BOOL)a5 completion:(id)a6;
-- (void)fetchClipURLForURLHash:(id)a3 sourceBundleID:(id)a4 completion:(id)a5;
+- (ClipMetadataManager)initWithAppInfoFetcher:(id)fetcher;
+- (void)_fetchMetadataForURL:(id)l sourceBundleID:(id)d downloadIcon:(BOOL)icon completion:(id)completion;
+- (void)fetchClipURLForURLHash:(id)hash sourceBundleID:(id)d completion:(id)completion;
 @end
 
 @implementation ClipMetadataManager
 
-- (ClipMetadataManager)initWithAppInfoFetcher:(id)a3
+- (ClipMetadataManager)initWithAppInfoFetcher:(id)fetcher
 {
-  v5 = a3;
+  fetcherCopy = fetcher;
   v12.receiver = self;
   v12.super_class = ClipMetadataManager;
   v6 = [(ClipMetadataManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appInfoFetcher, a3);
+    objc_storeStrong(&v6->_appInfoFetcher, fetcher);
     v8 = objc_alloc_init(CPSBusinessItemFetcher);
     businessItemFetcher = v7->_businessItemFetcher;
     v7->_businessItemFetcher = v8;
@@ -26,10 +26,10 @@
   return v7;
 }
 
-- (void)fetchClipURLForURLHash:(id)a3 sourceBundleID:(id)a4 completion:(id)a5
+- (void)fetchClipURLForURLHash:(id)hash sourceBundleID:(id)d completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  hashCopy = hash;
   v9 = sub_100004064();
   if (os_signpost_enabled(v9))
   {
@@ -42,16 +42,16 @@
   v12[1] = 3221225472;
   v12[2] = sub_100003A44;
   v12[3] = &unk_1000146C0;
-  v13 = v7;
-  v11 = v7;
-  [(CPSBusinessItemFetching *)businessItemFetcher fetchBusinessMetadataForURLHash:v8 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(CPSBusinessItemFetching *)businessItemFetcher fetchBusinessMetadataForURLHash:hashCopy completion:v12];
 }
 
-- (void)_fetchMetadataForURL:(id)a3 sourceBundleID:(id)a4 downloadIcon:(BOOL)a5 completion:(id)a6
+- (void)_fetchMetadataForURL:(id)l sourceBundleID:(id)d downloadIcon:(BOOL)icon completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  dCopy = d;
+  completionCopy = completion;
   v13 = sub_100004064();
   if (os_signpost_enabled(v13))
   {
@@ -65,13 +65,13 @@
   v18[2] = sub_100003C58;
   v18[3] = &unk_100014710;
   v18[4] = self;
-  v19 = v11;
-  v22 = a5;
-  v20 = v10;
-  v21 = v12;
-  v15 = v10;
-  v16 = v11;
-  v17 = v12;
+  v19 = dCopy;
+  iconCopy = icon;
+  v20 = lCopy;
+  v21 = completionCopy;
+  v15 = lCopy;
+  v16 = dCopy;
+  v17 = completionCopy;
   [(CPSBusinessItemFetching *)businessItemFetcher fetchBusinessMetadataForURL:v15 availabilityHandler:0 completion:v18];
 }
 

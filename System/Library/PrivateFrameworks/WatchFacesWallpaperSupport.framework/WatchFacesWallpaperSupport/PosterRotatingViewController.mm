@@ -1,13 +1,13 @@
 @interface PosterRotatingViewController
-- (_TtC26WatchFacesWallpaperSupport28PosterRotatingViewController)initWithCoder:(id)a3;
-- (_TtC26WatchFacesWallpaperSupport28PosterRotatingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (_TtC26WatchFacesWallpaperSupport28PosterRotatingViewController)initWithCoder:(id)coder;
+- (_TtC26WatchFacesWallpaperSupport28PosterRotatingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation PosterRotatingViewController
 
-- (_TtC26WatchFacesWallpaperSupport28PosterRotatingViewController)initWithCoder:(id)a3
+- (_TtC26WatchFacesWallpaperSupport28PosterRotatingViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC26WatchFacesWallpaperSupport28PosterRotatingViewController_rotatingResponders) = MEMORY[0x1E69E7CC0];
   type metadata accessor for PosterRotatingViewController();
@@ -15,18 +15,18 @@
   return 0;
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v14.receiver = self;
   v14.super_class = type metadata accessor for PosterRotatingViewController();
   v4 = v14.receiver;
-  v5 = a3;
-  [(PosterRotatingViewController *)&v14 willMoveToParentViewController:v5];
-  v6 = [v4 view];
-  if (v6)
+  controllerCopy = controller;
+  [(PosterRotatingViewController *)&v14 willMoveToParentViewController:controllerCopy];
+  view = [v4 view];
+  if (view)
   {
-    v7 = v6;
-    [v6 bounds];
+    v7 = view;
+    [view bounds];
     v9 = v8;
     v11 = v10;
 
@@ -46,17 +46,17 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1D96C4150(a4, width, height);
+  selfCopy = self;
+  sub_1D96C4150(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC26WatchFacesWallpaperSupport28PosterRotatingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26WatchFacesWallpaperSupport28PosterRotatingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

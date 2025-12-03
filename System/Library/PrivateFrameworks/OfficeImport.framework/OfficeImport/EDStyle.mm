@@ -1,37 +1,37 @@
 @interface EDStyle
-+ (id)styleWithResources:(id)a3;
++ (id)styleWithResources:(id)resources;
 - (BOOL)isCenterAcrossAligned;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStyle:(id)a3;
-- (BOOL)isEquivalentToStyle:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStyle:(id)style;
+- (BOOL)isEquivalentToStyle:(id)style;
 - (EDAlignmentInfo)alignmentInfo;
 - (EDBorders)borders;
 - (EDContentFormat)contentFormat;
 - (EDFill)fill;
 - (EDFont)font;
-- (EDStyle)initWithResources:(id)a3;
+- (EDStyle)initWithResources:(id)resources;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)parent;
-- (void)setAlignmentInfo:(id)a3;
-- (void)setAlignmentInfoIndex:(unint64_t)a3;
-- (void)setAlignmentInfoOverridden:(BOOL)a3;
-- (void)setBorders:(id)a3;
-- (void)setBordersIndex:(unint64_t)a3;
-- (void)setBordersOverridden:(BOOL)a3;
-- (void)setContentFormat:(id)a3;
-- (void)setContentFormatId:(unint64_t)a3;
-- (void)setContentFormatOverridden:(BOOL)a3;
-- (void)setFill:(id)a3;
-- (void)setFillIndex:(unint64_t)a3;
-- (void)setFillOverridden:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setFontIndex:(unint64_t)a3;
-- (void)setFontOverridden:(BOOL)a3;
-- (void)setParent:(id)a3;
-- (void)setParentIndex:(unint64_t)a3;
-- (void)setProtection:(id)a3;
-- (void)setProtectionOverridden:(BOOL)a3;
+- (void)setAlignmentInfo:(id)info;
+- (void)setAlignmentInfoIndex:(unint64_t)index;
+- (void)setAlignmentInfoOverridden:(BOOL)overridden;
+- (void)setBorders:(id)borders;
+- (void)setBordersIndex:(unint64_t)index;
+- (void)setBordersOverridden:(BOOL)overridden;
+- (void)setContentFormat:(id)format;
+- (void)setContentFormatId:(unint64_t)id;
+- (void)setContentFormatOverridden:(BOOL)overridden;
+- (void)setFill:(id)fill;
+- (void)setFillIndex:(unint64_t)index;
+- (void)setFillOverridden:(BOOL)overridden;
+- (void)setFont:(id)font;
+- (void)setFontIndex:(unint64_t)index;
+- (void)setFontOverridden:(BOOL)overridden;
+- (void)setParent:(id)parent;
+- (void)setParentIndex:(unint64_t)index;
+- (void)setProtection:(id)protection;
+- (void)setProtectionOverridden:(BOOL)overridden;
 @end
 
 @implementation EDStyle
@@ -39,9 +39,9 @@
 - (EDFont)font
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained fonts];
+  fonts = [WeakRetained fonts];
 
-  v5 = [v4 objectAtIndex:self->mFontIndex];
+  v5 = [fonts objectAtIndex:self->mFontIndex];
 
   return v5;
 }
@@ -49,9 +49,9 @@
 - (EDFill)fill
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained fills];
+  fills = [WeakRetained fills];
 
-  v5 = [v4 objectAtIndex:self->mFillIndex];
+  v5 = [fills objectAtIndex:self->mFillIndex];
 
   return v5;
 }
@@ -59,9 +59,9 @@
 - (EDAlignmentInfo)alignmentInfo
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained alignmentInfos];
+  alignmentInfos = [WeakRetained alignmentInfos];
 
-  v5 = [v4 objectAtIndex:self->mAlignmentInfoIndex];
+  v5 = [alignmentInfos objectAtIndex:self->mAlignmentInfoIndex];
 
   return v5;
 }
@@ -69,9 +69,9 @@
 - (EDBorders)borders
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained borders];
+  borders = [WeakRetained borders];
 
-  v5 = [v4 objectAtIndex:self->mBordersIndex];
+  v5 = [borders objectAtIndex:self->mBordersIndex];
 
   return v5;
 }
@@ -79,23 +79,23 @@
 - (EDContentFormat)contentFormat
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained contentFormats];
+  contentFormats = [WeakRetained contentFormats];
 
-  v5 = [v4 objectWithKey:self->mContentFormatId];
+  v5 = [contentFormats objectWithKey:self->mContentFormatId];
 
   return v5;
 }
 
-- (EDStyle)initWithResources:(id)a3
+- (EDStyle)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = EDStyle;
   v5 = [(EDStyle *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
     *&v7 = -1;
     *(&v7 + 1) = -1;
     *&v6->mParentIndex = xmmword_25D6FE620;
@@ -109,15 +109,15 @@
   return v6;
 }
 
-+ (id)styleWithResources:(id)a3
++ (id)styleWithResources:(id)resources
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithResources:v3];
+  resourcesCopy = resources;
+  v4 = [objc_alloc(objc_opt_class()) initWithResources:resourcesCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
   WeakRetained = objc_loadWeakRetained(&self->mResources);
@@ -131,7 +131,7 @@
     *(v7 + 40) = self->mFillIndex;
     *(v7 + 48) = self->mAlignmentInfoIndex;
     *(v7 + 56) = self->mBordersIndex;
-    v8 = [(EDProtection *)self->mProtection copyWithZone:a3];
+    v8 = [(EDProtection *)self->mProtection copyWithZone:zone];
     v9 = *(v7 + 64);
     *(v7 + 64) = v8;
 
@@ -155,11 +155,11 @@
   return v7;
 }
 
-- (BOOL)isEquivalentToStyle:(id)a3
+- (BOOL)isEquivalentToStyle:(id)style
 {
-  v4 = a3;
-  v5 = v4;
-  if (*&self->mContentFormatId == *(v4 + 24) && self->mFillIndex == *(v4 + 5) && self->mBordersIndex == *(v4 + 7) && self->mAlignmentInfoIndex == *(v4 + 6))
+  styleCopy = style;
+  v5 = styleCopy;
+  if (*&self->mContentFormatId == *(styleCopy + 24) && self->mFillIndex == *(styleCopy + 5) && self->mBordersIndex == *(styleCopy + 7) && self->mAlignmentInfoIndex == *(styleCopy + 6))
   {
     mProtection = self->mProtection;
     if (mProtection == v5[8])
@@ -181,129 +181,129 @@
   return v7;
 }
 
-- (BOOL)isEqualToStyle:(id)a3
+- (BOOL)isEqualToStyle:(id)style
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = self->mContentFormatOverridden == v4[80] && self->mFontOverridden == v4[82] && self->mFillOverridden == v4[84] && self->mAlignmentInfoOverridden == v4[86] && self->mBordersOverridden == v4[88] && self->mProtectionOverridden == v4[90] && self->mParentIndex == *(v4 + 2) && [(EDStyle *)self isEquivalentToStyle:v4];
+  styleCopy = style;
+  v5 = styleCopy;
+  v6 = self->mContentFormatOverridden == styleCopy[80] && self->mFontOverridden == styleCopy[82] && self->mFillOverridden == styleCopy[84] && self->mAlignmentInfoOverridden == styleCopy[86] && self->mBordersOverridden == styleCopy[88] && self->mProtectionOverridden == styleCopy[90] && self->mParentIndex == *(styleCopy + 2) && [(EDStyle *)self isEquivalentToStyle:styleCopy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDStyle *)self isEqualToStyle:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(EDStyle *)self isEqualToStyle:v5];
   }
 
   return v6;
 }
 
-- (void)setContentFormatOverridden:(BOOL)a3
+- (void)setContentFormatOverridden:(BOOL)overridden
 {
   if (!self->mDoNotModify)
   {
-    self->mContentFormatOverridden = a3;
+    self->mContentFormatOverridden = overridden;
   }
 }
 
-- (void)setContentFormat:(id)a3
+- (void)setContentFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   if (!self->mDoNotModify)
   {
     *&self->mContentFormatOverridden = 257;
-    v9 = v4;
-    v5 = [v4 formatId];
-    if (v5 == -1)
+    v9 = formatCopy;
+    formatId = [formatCopy formatId];
+    if (formatId == -1)
     {
       WeakRetained = objc_loadWeakRetained(&self->mResources);
-      v7 = [WeakRetained contentFormats];
+      contentFormats = [WeakRetained contentFormats];
 
-      v8 = [v7 objectAtIndex:{objc_msgSend(v7, "addOrEquivalentObject:", v9)}];
+      v8 = [contentFormats objectAtIndex:{objc_msgSend(contentFormats, "addOrEquivalentObject:", v9)}];
       self->mContentFormatId = [v8 formatId];
     }
 
     else
     {
-      self->mContentFormatId = v5;
+      self->mContentFormatId = formatId;
     }
 
-    v4 = v9;
+    formatCopy = v9;
   }
 }
 
-- (void)setFontOverridden:(BOOL)a3
+- (void)setFontOverridden:(BOOL)overridden
 {
   if (!self->mDoNotModify)
   {
-    self->mFontOverridden = a3;
+    self->mFontOverridden = overridden;
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   if (!self->mDoNotModify)
   {
-    v7 = v4;
+    v7 = fontCopy;
     WeakRetained = objc_loadWeakRetained(&self->mResources);
-    v6 = [WeakRetained fonts];
+    fonts = [WeakRetained fonts];
 
-    self->mFontIndex = [v6 addOrEquivalentObject:v7];
+    self->mFontIndex = [fonts addOrEquivalentObject:v7];
     *&self->mFontOverridden = 257;
 
-    v4 = v7;
+    fontCopy = v7;
   }
 }
 
-- (void)setFillOverridden:(BOOL)a3
+- (void)setFillOverridden:(BOOL)overridden
 {
   if (!self->mDoNotModify)
   {
-    self->mFillOverridden = a3;
+    self->mFillOverridden = overridden;
   }
 }
 
-- (void)setFill:(id)a3
+- (void)setFill:(id)fill
 {
-  v4 = a3;
+  fillCopy = fill;
   if (!self->mDoNotModify)
   {
-    v7 = v4;
+    v7 = fillCopy;
     WeakRetained = objc_loadWeakRetained(&self->mResources);
-    v6 = [WeakRetained fills];
+    fills = [WeakRetained fills];
 
-    self->mFillIndex = [v6 addOrEquivalentObject:v7];
+    self->mFillIndex = [fills addOrEquivalentObject:v7];
     *&self->mFillOverridden = 257;
 
-    v4 = v7;
+    fillCopy = v7;
   }
 }
 
-- (void)setAlignmentInfoOverridden:(BOOL)a3
+- (void)setAlignmentInfoOverridden:(BOOL)overridden
 {
   if (!self->mDoNotModify)
   {
-    self->mAlignmentInfoOverridden = a3;
+    self->mAlignmentInfoOverridden = overridden;
   }
 }
 
 - (BOOL)isCenterAcrossAligned
 {
-  v2 = [(EDStyle *)self alignmentInfo];
-  v3 = v2;
-  if (v2)
+  alignmentInfo = [(EDStyle *)self alignmentInfo];
+  v3 = alignmentInfo;
+  if (alignmentInfo)
   {
-    v4 = [v2 horizontalAlignment] == 6;
+    v4 = [alignmentInfo horizontalAlignment] == 6;
   }
 
   else
@@ -314,62 +314,62 @@
   return v4;
 }
 
-- (void)setAlignmentInfo:(id)a3
+- (void)setAlignmentInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (!self->mDoNotModify)
   {
-    v7 = v4;
+    v7 = infoCopy;
     WeakRetained = objc_loadWeakRetained(&self->mResources);
-    v6 = [WeakRetained alignmentInfos];
+    alignmentInfos = [WeakRetained alignmentInfos];
 
-    self->mAlignmentInfoIndex = [v6 addOrEquivalentObject:v7];
+    self->mAlignmentInfoIndex = [alignmentInfos addOrEquivalentObject:v7];
     *&self->mAlignmentInfoOverridden = 257;
 
-    v4 = v7;
+    infoCopy = v7;
   }
 }
 
-- (void)setBordersOverridden:(BOOL)a3
+- (void)setBordersOverridden:(BOOL)overridden
 {
   if (!self->mDoNotModify)
   {
-    self->mBordersOverridden = a3;
+    self->mBordersOverridden = overridden;
   }
 }
 
-- (void)setBorders:(id)a3
+- (void)setBorders:(id)borders
 {
-  v4 = a3;
+  bordersCopy = borders;
   if (!self->mDoNotModify)
   {
-    v7 = v4;
+    v7 = bordersCopy;
     WeakRetained = objc_loadWeakRetained(&self->mResources);
-    v6 = [WeakRetained borders];
+    borders = [WeakRetained borders];
 
-    self->mBordersIndex = [v6 addOrEquivalentObject:v7];
+    self->mBordersIndex = [borders addOrEquivalentObject:v7];
     *&self->mBordersOverridden = 257;
 
-    v4 = v7;
+    bordersCopy = v7;
   }
 }
 
-- (void)setProtectionOverridden:(BOOL)a3
+- (void)setProtectionOverridden:(BOOL)overridden
 {
   if (!self->mDoNotModify)
   {
-    self->mProtectionOverridden = a3;
+    self->mProtectionOverridden = overridden;
   }
 }
 
-- (void)setProtection:(id)a3
+- (void)setProtection:(id)protection
 {
-  v5 = a3;
-  if (!self->mDoNotModify && self->mProtection != v5)
+  protectionCopy = protection;
+  if (!self->mDoNotModify && self->mProtection != protectionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mProtection, a3);
-    v5 = v6;
+    v6 = protectionCopy;
+    objc_storeStrong(&self->mProtection, protection);
+    protectionCopy = v6;
     *&self->mProtectionOverridden = 257;
   }
 }
@@ -377,77 +377,77 @@
 - (id)parent
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained styles];
+  styles = [WeakRetained styles];
 
-  v5 = [v4 objectAtIndex:self->mParentIndex];
+  v5 = [styles objectAtIndex:self->mParentIndex];
 
   return v5;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   if (!self->mDoNotModify)
   {
-    v7 = v4;
+    v7 = parentCopy;
     WeakRetained = objc_loadWeakRetained(&self->mResources);
-    v6 = [WeakRetained styles];
+    styles = [WeakRetained styles];
 
-    self->mParentIndex = [v6 addObject:v7];
-    v4 = v7;
+    self->mParentIndex = [styles addObject:v7];
+    parentCopy = v7;
   }
 }
 
-- (void)setFontIndex:(unint64_t)a3
+- (void)setFontIndex:(unint64_t)index
 {
   if (!self->mDoNotModify)
   {
     *&self->mFontOverridden = 257;
-    self->mFontIndex = a3;
+    self->mFontIndex = index;
   }
 }
 
-- (void)setContentFormatId:(unint64_t)a3
+- (void)setContentFormatId:(unint64_t)id
 {
   if (!self->mDoNotModify)
   {
     *&self->mContentFormatOverridden = 257;
-    self->mContentFormatId = a3;
+    self->mContentFormatId = id;
   }
 }
 
-- (void)setParentIndex:(unint64_t)a3
+- (void)setParentIndex:(unint64_t)index
 {
   if (!self->mDoNotModify)
   {
-    self->mParentIndex = a3;
+    self->mParentIndex = index;
   }
 }
 
-- (void)setBordersIndex:(unint64_t)a3
+- (void)setBordersIndex:(unint64_t)index
 {
   if (!self->mDoNotModify)
   {
     *&self->mBordersOverridden = 257;
-    self->mBordersIndex = a3;
+    self->mBordersIndex = index;
   }
 }
 
-- (void)setFillIndex:(unint64_t)a3
+- (void)setFillIndex:(unint64_t)index
 {
   if (!self->mDoNotModify)
   {
     *&self->mFillOverridden = 257;
-    self->mFillIndex = a3;
+    self->mFillIndex = index;
   }
 }
 
-- (void)setAlignmentInfoIndex:(unint64_t)a3
+- (void)setAlignmentInfoIndex:(unint64_t)index
 {
   if (!self->mDoNotModify)
   {
     *&self->mAlignmentInfoOverridden = 257;
-    self->mAlignmentInfoIndex = a3;
+    self->mAlignmentInfoIndex = index;
   }
 }
 

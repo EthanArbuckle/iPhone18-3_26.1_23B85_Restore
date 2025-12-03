@@ -1,20 +1,20 @@
 @interface OrgApacheLuceneUtilVersion
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)onOrAfterWithOrgApacheLuceneUtilVersion:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)onOrAfterWithOrgApacheLuceneUtilVersion:(id)version;
 - (id)description;
 @end
 
 @implementation OrgApacheLuceneUtilVersion
 
-- (BOOL)onOrAfterWithOrgApacheLuceneUtilVersion:(id)a3
+- (BOOL)onOrAfterWithOrgApacheLuceneUtilVersion:(id)version
 {
-  if (!a3)
+  if (!version)
   {
     JreThrowNullPointerException();
   }
 
-  return self->encodedValue_ >= *(a3 + 6);
+  return self->encodedValue_ >= *(version + 6);
 }
 
 - (id)description
@@ -37,9 +37,9 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -56,12 +56,12 @@
     JreThrowClassCastException();
   }
 
-  return *(a3 + 6) == self->encodedValue_;
+  return *(equal + 6) == self->encodedValue_;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgApacheLuceneUtilVersion alloc];
     *&v2->major_ = xmmword_100314690;

@@ -1,14 +1,14 @@
 @interface PSISynonym
-- (BOOL)isEqual:(id)a3;
-- (PSISynonym)initWithText:(id)a3 category:(unint64_t)a4 owningGroupId:(unint64_t)a5 identifier:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (PSISynonym)initWithText:(id)text category:(unint64_t)category owningGroupId:(unint64_t)id identifier:(id)identifier;
 @end
 
 @implementation PSISynonym
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -20,9 +20,9 @@
     {
       category = self->_category;
       owningGroupId = self->_owningGroupId;
-      v10 = v4->_category;
-      v9 = v4->_owningGroupId;
-      v11 = v4;
+      v10 = equalCopy->_category;
+      v9 = equalCopy->_owningGroupId;
+      v11 = equalCopy;
       IsEqual = PLObjectIsEqual();
 
       v13 = PLObjectIsEqual();
@@ -39,22 +39,22 @@
   return v6;
 }
 
-- (PSISynonym)initWithText:(id)a3 category:(unint64_t)a4 owningGroupId:(unint64_t)a5 identifier:(id)a6
+- (PSISynonym)initWithText:(id)text category:(unint64_t)category owningGroupId:(unint64_t)id identifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a6;
+  textCopy = text;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = PSISynonym;
   v12 = [(PSISynonym *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [textCopy copy];
     text = v12->_text;
     v12->_text = v13;
 
-    v12->_category = a4;
-    v12->_owningGroupId = a5;
-    v15 = [v11 copy];
+    v12->_category = category;
+    v12->_owningGroupId = id;
+    v15 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v15;
   }

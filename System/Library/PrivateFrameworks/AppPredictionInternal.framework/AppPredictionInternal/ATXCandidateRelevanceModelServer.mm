@@ -1,25 +1,25 @@
 @interface ATXCandidateRelevanceModelServer
-+ (id)currentContextForConfig:(id)a3 contextOverride:(id)a4;
-+ (id)mergeHeuristicSuggestions:(id)a3 withSuggestions:(id)a4;
-+ (id)suggestionExecutableIdsFromSuggestions:(id)a3;
-- (ATXCandidateRelevanceModelServer)initWithConfig:(id)a3;
-- (id)sortedProactiveSuggestionsForContext:(id)a3;
++ (id)currentContextForConfig:(id)config contextOverride:(id)override;
++ (id)mergeHeuristicSuggestions:(id)suggestions withSuggestions:(id)withSuggestions;
++ (id)suggestionExecutableIdsFromSuggestions:(id)suggestions;
+- (ATXCandidateRelevanceModelServer)initWithConfig:(id)config;
+- (id)sortedProactiveSuggestionsForContext:(id)context;
 - (void)sendSuggestionsToBlending;
-- (void)sendSuggestionsToBlendingForContext:(id)a3;
+- (void)sendSuggestionsToBlendingForContext:(id)context;
 @end
 
 @implementation ATXCandidateRelevanceModelServer
 
-- (ATXCandidateRelevanceModelServer)initWithConfig:(id)a3
+- (ATXCandidateRelevanceModelServer)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v9.receiver = self;
   v9.super_class = ATXCandidateRelevanceModelServer;
   v6 = [(ATXCandidateRelevanceModelServer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
   }
 
   return v7;
@@ -30,14 +30,14 @@
   v29 = *MEMORY[0x277D85DE8];
   if (-[ATXCandidateRelevanceModelConfig isEnabled](self->_config, "isEnabled") && (+[ATXCandidateRelevanceModelGlobals sharedInstance](ATXCandidateRelevanceModelGlobals, "sharedInstance"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 isPipelineEnabled], v3, (v4 & 1) != 0))
   {
-    v5 = [(ATXCandidateRelevanceModelConfig *)self->_config datastore];
-    v6 = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
-    v7 = [v6 clientModelId];
-    v8 = [v5 mostRecentVerifiedTrainDateForClientModelName:v7];
+    datastore = [(ATXCandidateRelevanceModelConfig *)self->_config datastore];
+    clientModel = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
+    clientModelId = [clientModel clientModelId];
+    clientModel5 = [datastore mostRecentVerifiedTrainDateForClientModelName:clientModelId];
 
     v9 = [MEMORY[0x277CBEAA8] now];
     v10 = v9;
-    if (v8 && ([v9 timeIntervalSinceDate:v8], v11 <= 604800.0))
+    if (clientModel5 && ([v9 timeIntervalSinceDate:clientModel5], v11 <= 604800.0))
     {
       v23 = [objc_opt_class() currentContextForConfig:self->_config contextOverride:MEMORY[0x277CBEC10]];
       [(ATXCandidateRelevanceModelServer *)self sendSuggestionsToBlendingForContext:v23];
@@ -50,17 +50,17 @@
       {
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
-        v15 = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
-        v16 = [v15 clientModelId];
+        clientModel2 = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
+        clientModelId2 = [clientModel2 clientModelId];
         v25 = 138412546;
         v26 = v14;
         v27 = 2112;
-        v28 = v16;
+        v28 = clientModelId2;
         _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_DEFAULT, "%@ - There doesn't exist a trained model in the last week to use for config with client model %@. Sending empty suggestions to blending.", &v25, 0x16u);
       }
 
-      v17 = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
-      [v17 updateSuggestions:MEMORY[0x277CBEBF8]];
+      clientModel3 = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
+      [clientModel3 updateSuggestions:MEMORY[0x277CBEBF8]];
     }
   }
 
@@ -71,38 +71,38 @@
     {
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
-      v21 = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
-      v22 = [v21 clientModelId];
+      clientModel4 = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
+      clientModelId3 = [clientModel4 clientModelId];
       v25 = 138412546;
       v26 = v20;
       v27 = 2112;
-      v28 = v22;
+      v28 = clientModelId3;
       _os_log_impl(&dword_2263AA000, v18, OS_LOG_TYPE_DEFAULT, "%@ - Config for client model %@ is not enabled or the pipeline is not enabled. Sending empty suggestions to blending.", &v25, 0x16u);
     }
 
-    v8 = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
-    [v8 updateSuggestions:MEMORY[0x277CBEBF8]];
+    clientModel5 = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
+    [clientModel5 updateSuggestions:MEMORY[0x277CBEBF8]];
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)currentContextForConfig:(id)a3 contextOverride:(id)a4
++ (id)currentContextForConfig:(id)config contextOverride:(id)override
 {
-  v5 = a4;
-  v6 = a3;
+  overrideCopy = override;
+  configCopy = config;
   v7 = +[ATXPredictionContextBuilder sharedInstance];
-  v8 = [v6 candidatePublisherFromStartTime:-259200.0];
+  v8 = [configCopy candidatePublisherFromStartTime:-259200.0];
 
-  v9 = [v7 predictionContextForCurrentContextAndCandidatePublisher:v8 contextOverride:v5];
+  v9 = [v7 predictionContextForCurrentContextAndCandidatePublisher:v8 contextOverride:overrideCopy];
 
   return v9;
 }
 
-- (void)sendSuggestionsToBlendingForContext:(id)a3
+- (void)sendSuggestionsToBlendingForContext:(id)context
 {
-  v4 = [(ATXCandidateRelevanceModelServer *)self sortedProactiveSuggestionsForContext:a3];
-  v5 = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
+  v4 = [(ATXCandidateRelevanceModelServer *)self sortedProactiveSuggestionsForContext:context];
+  clientModel = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__ATXCandidateRelevanceModelServer_sendSuggestionsToBlendingForContext___block_invoke;
@@ -110,7 +110,7 @@
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  [v5 updateSuggestions:v6 completionHandler:v7];
+  [clientModel updateSuggestions:v6 completionHandler:v7];
 }
 
 void __72__ATXCandidateRelevanceModelServer_sendSuggestionsToBlendingForContext___block_invoke(uint64_t a1, int a2, void *a3)
@@ -147,12 +147,12 @@ void __72__ATXCandidateRelevanceModelServer_sendSuggestionsToBlendingForContext_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sortedProactiveSuggestionsForContext:(id)a3
+- (id)sortedProactiveSuggestionsForContext:(id)context
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
-  v6 = [v5 clientModelId];
+  contextCopy = context;
+  clientModel = [(ATXCandidateRelevanceModelConfig *)self->_config clientModel];
+  clientModelId = [clientModel clientModelId];
 
   v7 = __atxlog_handle_relevance_model();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -162,7 +162,7 @@ void __72__ATXCandidateRelevanceModelServer_sendSuggestionsToBlendingForContext_
     *buf = 138412546;
     *&buf[4] = v9;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = clientModelId;
     _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "%@ - Beginning model serving for config with client model: %@.", buf, 0x16u);
   }
 
@@ -178,26 +178,26 @@ void __72__ATXCandidateRelevanceModelServer_sendSuggestionsToBlendingForContext_
   v50 = __Block_byref_object_copy__1;
   v51 = __Block_byref_object_dispose__1;
   v52 = objc_opt_new();
-  v10 = [(ATXCandidateRelevanceModelConfig *)self->_config datastore];
+  datastore = [(ATXCandidateRelevanceModelConfig *)self->_config datastore];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __73__ATXCandidateRelevanceModelServer_sortedProactiveSuggestionsForContext___block_invoke;
   v43[3] = &unk_278596CB0;
   v43[4] = self;
   v45 = buf;
-  v11 = v4;
+  v11 = contextCopy;
   v44 = v11;
   v46 = &v47;
   v35 = MEMORY[0x277D85DD0];
   v36 = 3221225472;
   v37 = __73__ATXCandidateRelevanceModelServer_sortedProactiveSuggestionsForContext___block_invoke_29;
   v38 = &unk_278596CD8;
-  v39 = self;
-  v12 = v6;
+  selfCopy = self;
+  v12 = clientModelId;
   v40 = v12;
   v41 = buf;
   v42 = &v47;
-  [v10 receiveMostRecentVerifiedTrainedModelTrainingResults:v43 clientModelName:v12 completion:&v35];
+  [datastore receiveMostRecentVerifiedTrainedModelTrainingResults:v43 clientModelName:v12 completion:&v35];
 
   v13 = objc_opt_new();
   v14 = objc_opt_new();
@@ -216,9 +216,9 @@ void __72__ATXCandidateRelevanceModelServer_sendSuggestionsToBlendingForContext_
     v23 = v22;
     if (v22)
     {
-      v24 = [v22 executableSpecification];
-      v25 = [v24 executableIdentifier];
-      [v14 addObject:v25];
+      executableSpecification = [v22 executableSpecification];
+      executableIdentifier = [executableSpecification executableIdentifier];
+      [v14 addObject:executableIdentifier];
 
       [v13 addObject:v23];
     }
@@ -400,22 +400,22 @@ uint64_t __73__ATXCandidateRelevanceModelServer_sortedProactiveSuggestionsForCon
   return v11;
 }
 
-+ (id)mergeHeuristicSuggestions:(id)a3 withSuggestions:(id)a4
++ (id)mergeHeuristicSuggestions:(id)suggestions withSuggestions:(id)withSuggestions
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  suggestionsCopy = suggestions;
+  withSuggestionsCopy = withSuggestions;
+  if ([suggestionsCopy count])
   {
-    v7 = [v5 mutableCopy];
-    v21 = v5;
-    v8 = [objc_opt_class() suggestionExecutableIdsFromSuggestions:v5];
+    v7 = [suggestionsCopy mutableCopy];
+    v21 = suggestionsCopy;
+    v8 = [objc_opt_class() suggestionExecutableIdsFromSuggestions:suggestionsCopy];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v20 = v6;
-    v9 = v6;
+    v20 = withSuggestionsCopy;
+    v9 = withSuggestionsCopy;
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v10)
     {
@@ -431,9 +431,9 @@ uint64_t __73__ATXCandidateRelevanceModelServer_sortedProactiveSuggestionsForCon
           }
 
           v14 = *(*(&v22 + 1) + 8 * i);
-          v15 = [v14 executableSpecification];
-          v16 = [v15 executableIdentifier];
-          v17 = [v8 containsObject:v16];
+          executableSpecification = [v14 executableSpecification];
+          executableIdentifier = [executableSpecification executableIdentifier];
+          v17 = [v8 containsObject:executableIdentifier];
 
           if ((v17 & 1) == 0)
           {
@@ -447,13 +447,13 @@ uint64_t __73__ATXCandidateRelevanceModelServer_sortedProactiveSuggestionsForCon
       while (v11);
     }
 
-    v6 = v20;
-    v5 = v21;
+    withSuggestionsCopy = v20;
+    suggestionsCopy = v21;
   }
 
   else
   {
-    v7 = v6;
+    v7 = withSuggestionsCopy;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -461,16 +461,16 @@ uint64_t __73__ATXCandidateRelevanceModelServer_sortedProactiveSuggestionsForCon
   return v7;
 }
 
-+ (id)suggestionExecutableIdsFromSuggestions:(id)a3
++ (id)suggestionExecutableIdsFromSuggestions:(id)suggestions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  suggestionsCopy = suggestions;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = suggestionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -485,9 +485,9 @@ uint64_t __73__ATXCandidateRelevanceModelServer_sortedProactiveSuggestionsForCon
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) executableSpecification];
-        v11 = [v10 executableIdentifier];
-        [v4 addObject:v11];
+        executableSpecification = [*(*(&v14 + 1) + 8 * i) executableSpecification];
+        executableIdentifier = [executableSpecification executableIdentifier];
+        [v4 addObject:executableIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];

@@ -1,35 +1,35 @@
 @interface UIVibrancyEffect
 + (UIVibrancyEffect)effectForBlurEffect:(UIBlurEffect *)blurEffect;
 + (UIVibrancyEffect)effectForBlurEffect:(UIBlurEffect *)blurEffect style:(UIVibrancyEffectStyle)style;
-+ (id)_darkVibrantEffectWithLightenColor:(id)a3 dodgeColor:(id)a4 compositingColor:(id)a5;
-+ (id)_effectForBlurEffect:(id)a3 vibrancyStyle:(int64_t)a4;
-+ (id)_effectWithStyle:(int64_t)a3 ignoreSimpleVibrancy:(BOOL)a4;
-+ (id)_lightVibrantEffectWithDarkenColor:(id)a3 burnColor:(id)a4 compositingColor:(id)a5;
-+ (id)_vibrancyEntryWithType:(id)a3 inputColor1:(id)a4 inputColor2:(id)a5 inputReversed:(BOOL)a6;
-+ (id)_vibrantEffectForLightMaterial:(id)a3 darkMaterial:(id)a4 vibrancyStyle:(int64_t)a5;
-+ (id)_vibrantEffectWithCAColorMatrix:(CAColorMatrix *)a3 alpha:(double)a4;
-+ (id)_vibrantEffectWithLightCAColorMatrix:(CAColorMatrix *)a3 darkCAColorMatrix:(CAColorMatrix *)a4 alpha:(double)a5;
-+ (id)_vibrantEffectWithLightCAColorMatrix:(CAColorMatrix *)a3 darkCAColorMatrix:(CAColorMatrix *)a4 tintColor:(id)a5;
-+ (id)_vibrantEffectWithLightVibrantColorMatrix:(id)a3 darkVibrantColorMatrix:(id)a4 alpha:(double)a5;
++ (id)_darkVibrantEffectWithLightenColor:(id)color dodgeColor:(id)dodgeColor compositingColor:(id)compositingColor;
++ (id)_effectForBlurEffect:(id)effect vibrancyStyle:(int64_t)style;
++ (id)_effectWithStyle:(int64_t)style ignoreSimpleVibrancy:(BOOL)vibrancy;
++ (id)_lightVibrantEffectWithDarkenColor:(id)color burnColor:(id)burnColor compositingColor:(id)compositingColor;
++ (id)_vibrancyEntryWithType:(id)type inputColor1:(id)color1 inputColor2:(id)color2 inputReversed:(BOOL)reversed;
++ (id)_vibrantEffectForLightMaterial:(id)material darkMaterial:(id)darkMaterial vibrancyStyle:(int64_t)style;
++ (id)_vibrantEffectWithCAColorMatrix:(CAColorMatrix *)matrix alpha:(double)alpha;
++ (id)_vibrantEffectWithLightCAColorMatrix:(CAColorMatrix *)matrix darkCAColorMatrix:(CAColorMatrix *)colorMatrix alpha:(double)alpha;
++ (id)_vibrantEffectWithLightCAColorMatrix:(CAColorMatrix *)matrix darkCAColorMatrix:(CAColorMatrix *)colorMatrix tintColor:(id)color;
++ (id)_vibrantEffectWithLightVibrantColorMatrix:(id)matrix darkVibrantColorMatrix:(id)colorMatrix alpha:(double)alpha;
 + (id)_vibrantShadowEffect;
-+ (id)darkVibrantEffectWithDodgeColor:(id)a3 lightenColor:(id)a4 compositingColor:(id)a5;
-+ (id)lightVibrantEffectWithBurnColor:(id)a3 darkenColor:(id)a4 compositingColor:(id)a5;
++ (id)darkVibrantEffectWithDodgeColor:(id)color lightenColor:(id)lightenColor compositingColor:(id)compositingColor;
++ (id)lightVibrantEffectWithBurnColor:(id)color darkenColor:(id)darkenColor compositingColor:(id)compositingColor;
 + (id)vibrantChromeShadowEffect;
-+ (id)vibrantEffectWithCompositingMode:(int64_t)a3 compositingColor:(id)a4;
++ (id)vibrantEffectWithCompositingMode:(int64_t)mode compositingColor:(id)color;
 + (id)vibrantHeavyShadowEffect;
 + (id)vibrantMediumShadowEffect;
 - (BOOL)_isAutomaticStyle;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIVibrancyEffect)init;
-- (UIVibrancyEffect)initWithCoder:(id)a3;
-- (id)_effectReplacingTintColor:(id)a3;
-- (id)_initWithImplementation:(id)a3;
+- (UIVibrancyEffect)initWithCoder:(id)coder;
+- (id)_effectReplacingTintColor:(id)color;
+- (id)_initWithImplementation:(id)implementation;
 - (id)_reduceTransparencyEffectConfig;
 - (id)description;
-- (id)effectConfigForQuality:(int64_t)a3;
-- (id)effectConfigForReducedTransperancy:(BOOL)a3;
-- (id)effectForUserInterfaceStyle:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)effectConfigForQuality:(int64_t)quality;
+- (id)effectConfigForReducedTransperancy:(BOOL)transperancy;
+- (id)effectForUserInterfaceStyle:(int64_t)style;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIVibrancyEffect
@@ -56,7 +56,7 @@
   }
 
   v6 = v5;
-  v7 = [[a1 alloc] _initWithImplementation:v5];
+  v7 = [[self alloc] _initWithImplementation:v5];
 
   return v7;
 }
@@ -67,150 +67,150 @@
   if ([(UIBlurEffect *)v6 _canProvideVibrancyEffect]&& [(UIBlurEffect *)v6 _canProvideCoreMaterialVibrancyEffect])
   {
     v7 = [[_UIVibrancyEffectCoreMaterialImpl alloc] initWithStyle:[(UIBlurEffect *)v6 _style] vibrancyStyle:style];
-    v8 = [[a1 alloc] _initWithImplementation:v7];
+    v8 = [[self alloc] _initWithImplementation:v7];
   }
 
   else
   {
-    v8 = [a1 effectForBlurEffect:v6];
+    v8 = [self effectForBlurEffect:v6];
   }
 
   return v8;
 }
 
-+ (id)darkVibrantEffectWithDodgeColor:(id)a3 lightenColor:(id)a4 compositingColor:(id)a5
++ (id)darkVibrantEffectWithDodgeColor:(id)color lightenColor:(id)lightenColor compositingColor:(id)compositingColor
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  compositingColorCopy = compositingColor;
+  lightenColorCopy = lightenColor;
+  colorCopy = color;
   v11 = [_UIVibrancyEffectModernVibrancyImpl alloc];
-  v12 = [(_UIVibrancyEffectModernVibrancyImpl *)v11 initWithFilter:*MEMORY[0x1E6979D90] inputColor1:v10 inputColor2:v9 compositingColor:v8 inputReversed:0];
+  v12 = [(_UIVibrancyEffectModernVibrancyImpl *)v11 initWithFilter:*MEMORY[0x1E6979D90] inputColor1:colorCopy inputColor2:lightenColorCopy compositingColor:compositingColorCopy inputReversed:0];
 
-  v13 = [[a1 alloc] _initWithImplementation:v12];
+  v13 = [[self alloc] _initWithImplementation:v12];
 
   return v13;
 }
 
-+ (id)lightVibrantEffectWithBurnColor:(id)a3 darkenColor:(id)a4 compositingColor:(id)a5
++ (id)lightVibrantEffectWithBurnColor:(id)color darkenColor:(id)darkenColor compositingColor:(id)compositingColor
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  compositingColorCopy = compositingColor;
+  darkenColorCopy = darkenColor;
+  colorCopy = color;
   v11 = [_UIVibrancyEffectModernVibrancyImpl alloc];
-  v12 = [(_UIVibrancyEffectModernVibrancyImpl *)v11 initWithFilter:*MEMORY[0x1E6979D88] inputColor1:v10 inputColor2:v9 compositingColor:v8 inputReversed:0];
+  v12 = [(_UIVibrancyEffectModernVibrancyImpl *)v11 initWithFilter:*MEMORY[0x1E6979D88] inputColor1:colorCopy inputColor2:darkenColorCopy compositingColor:compositingColorCopy inputReversed:0];
 
-  v13 = [[a1 alloc] _initWithImplementation:v12];
+  v13 = [[self alloc] _initWithImplementation:v12];
 
   return v13;
 }
 
-+ (id)vibrantEffectWithCompositingMode:(int64_t)a3 compositingColor:(id)a4
++ (id)vibrantEffectWithCompositingMode:(int64_t)mode compositingColor:(id)color
 {
-  v6 = a4;
-  v7 = [[_UIVibrancyEffectModernCompositedImpl alloc] initWithCompositingMode:a3 compositingColor:v6];
+  colorCopy = color;
+  v7 = [[_UIVibrancyEffectModernCompositedImpl alloc] initWithCompositingMode:mode compositingColor:colorCopy];
 
-  v8 = [[a1 alloc] _initWithImplementation:v7];
+  v8 = [[self alloc] _initWithImplementation:v7];
 
   return v8;
 }
 
-+ (id)_darkVibrantEffectWithLightenColor:(id)a3 dodgeColor:(id)a4 compositingColor:(id)a5
++ (id)_darkVibrantEffectWithLightenColor:(id)color dodgeColor:(id)dodgeColor compositingColor:(id)compositingColor
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  compositingColorCopy = compositingColor;
+  dodgeColorCopy = dodgeColor;
+  colorCopy = color;
   v11 = [_UIVibrancyEffectModernVibrancyImpl alloc];
-  v12 = [(_UIVibrancyEffectModernVibrancyImpl *)v11 initWithFilter:*MEMORY[0x1E6979D90] inputColor1:v9 inputColor2:v10 compositingColor:v8 inputReversed:1];
+  v12 = [(_UIVibrancyEffectModernVibrancyImpl *)v11 initWithFilter:*MEMORY[0x1E6979D90] inputColor1:dodgeColorCopy inputColor2:colorCopy compositingColor:compositingColorCopy inputReversed:1];
 
-  v13 = [[a1 alloc] _initWithImplementation:v12];
+  v13 = [[self alloc] _initWithImplementation:v12];
 
   return v13;
 }
 
-+ (id)_lightVibrantEffectWithDarkenColor:(id)a3 burnColor:(id)a4 compositingColor:(id)a5
++ (id)_lightVibrantEffectWithDarkenColor:(id)color burnColor:(id)burnColor compositingColor:(id)compositingColor
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  compositingColorCopy = compositingColor;
+  burnColorCopy = burnColor;
+  colorCopy = color;
   v11 = [_UIVibrancyEffectModernVibrancyImpl alloc];
-  v12 = [(_UIVibrancyEffectModernVibrancyImpl *)v11 initWithFilter:*MEMORY[0x1E6979D88] inputColor1:v9 inputColor2:v10 compositingColor:v8 inputReversed:1];
+  v12 = [(_UIVibrancyEffectModernVibrancyImpl *)v11 initWithFilter:*MEMORY[0x1E6979D88] inputColor1:burnColorCopy inputColor2:colorCopy compositingColor:compositingColorCopy inputReversed:1];
 
-  v13 = [[a1 alloc] _initWithImplementation:v12];
+  v13 = [[self alloc] _initWithImplementation:v12];
 
   return v13;
 }
 
-+ (id)_vibrantEffectWithCAColorMatrix:(CAColorMatrix *)a3 alpha:(double)a4
++ (id)_vibrantEffectWithCAColorMatrix:(CAColorMatrix *)matrix alpha:(double)alpha
 {
   v7 = [_UIVibrancyEffectVibrantColorMatrixImpl alloc];
-  v8 = *&a3->m33;
-  v13[2] = *&a3->m24;
+  v8 = *&matrix->m33;
+  v13[2] = *&matrix->m24;
   v13[3] = v8;
-  v13[4] = *&a3->m42;
-  v9 = *&a3->m15;
-  v13[0] = *&a3->m11;
+  v13[4] = *&matrix->m42;
+  v9 = *&matrix->m15;
+  v13[0] = *&matrix->m11;
   v13[1] = v9;
-  v10 = [(_UIVibrancyEffectVibrantColorMatrixImpl *)v7 initWithCAColorMatrix:v13 alpha:a4];
-  v11 = [[a1 alloc] _initWithImplementation:v10];
+  v10 = [(_UIVibrancyEffectVibrantColorMatrixImpl *)v7 initWithCAColorMatrix:v13 alpha:alpha];
+  v11 = [[self alloc] _initWithImplementation:v10];
 
   return v11;
 }
 
-+ (id)_vibrantEffectWithLightCAColorMatrix:(CAColorMatrix *)a3 darkCAColorMatrix:(CAColorMatrix *)a4 alpha:(double)a5
++ (id)_vibrantEffectWithLightCAColorMatrix:(CAColorMatrix *)matrix darkCAColorMatrix:(CAColorMatrix *)colorMatrix alpha:(double)alpha
 {
   v9 = [_UIVibrancyEffectVibrantColorMatrixImpl alloc];
-  v10 = *&a3->m33;
-  v18[2] = *&a3->m24;
+  v10 = *&matrix->m33;
+  v18[2] = *&matrix->m24;
   v18[3] = v10;
-  v18[4] = *&a3->m42;
-  v11 = *&a3->m15;
-  v18[0] = *&a3->m11;
+  v18[4] = *&matrix->m42;
+  v11 = *&matrix->m15;
+  v18[0] = *&matrix->m11;
   v18[1] = v11;
-  v12 = *&a4->m33;
-  v17[2] = *&a4->m24;
+  v12 = *&colorMatrix->m33;
+  v17[2] = *&colorMatrix->m24;
   v17[3] = v12;
-  v17[4] = *&a4->m42;
-  v13 = *&a4->m15;
-  v17[0] = *&a4->m11;
+  v17[4] = *&colorMatrix->m42;
+  v13 = *&colorMatrix->m15;
+  v17[0] = *&colorMatrix->m11;
   v17[1] = v13;
-  v14 = [(_UIVibrancyEffectVibrantColorMatrixImpl *)v9 initWithLightCAColorMatrix:v18 darkCAColorMatrix:v17 alpha:a5];
-  v15 = [[a1 alloc] _initWithImplementation:v14];
+  v14 = [(_UIVibrancyEffectVibrantColorMatrixImpl *)v9 initWithLightCAColorMatrix:v18 darkCAColorMatrix:v17 alpha:alpha];
+  v15 = [[self alloc] _initWithImplementation:v14];
 
   return v15;
 }
 
-+ (id)_vibrantEffectWithLightCAColorMatrix:(CAColorMatrix *)a3 darkCAColorMatrix:(CAColorMatrix *)a4 tintColor:(id)a5
++ (id)_vibrantEffectWithLightCAColorMatrix:(CAColorMatrix *)matrix darkCAColorMatrix:(CAColorMatrix *)colorMatrix tintColor:(id)color
 {
-  v8 = a5;
+  colorCopy = color;
   v9 = [_UIVibrancyEffectVibrantColorMatrixImpl alloc];
-  v10 = *&a3->m33;
-  v18[2] = *&a3->m24;
+  v10 = *&matrix->m33;
+  v18[2] = *&matrix->m24;
   v18[3] = v10;
-  v18[4] = *&a3->m42;
-  v11 = *&a3->m15;
-  v18[0] = *&a3->m11;
+  v18[4] = *&matrix->m42;
+  v11 = *&matrix->m15;
+  v18[0] = *&matrix->m11;
   v18[1] = v11;
-  v12 = *&a4->m33;
-  v17[2] = *&a4->m24;
+  v12 = *&colorMatrix->m33;
+  v17[2] = *&colorMatrix->m24;
   v17[3] = v12;
-  v17[4] = *&a4->m42;
-  v13 = *&a4->m15;
-  v17[0] = *&a4->m11;
+  v17[4] = *&colorMatrix->m42;
+  v13 = *&colorMatrix->m15;
+  v17[0] = *&colorMatrix->m11;
   v17[1] = v13;
-  v14 = [(_UIVibrancyEffectVibrantColorMatrixImpl *)v9 initWithLightCAColorMatrix:v18 darkCAColorMatrix:v17 tintColor:v8];
+  v14 = [(_UIVibrancyEffectVibrantColorMatrixImpl *)v9 initWithLightCAColorMatrix:v18 darkCAColorMatrix:v17 tintColor:colorCopy];
 
-  v15 = [[a1 alloc] _initWithImplementation:v14];
+  v15 = [[self alloc] _initWithImplementation:v14];
 
   return v15;
 }
 
-+ (id)_vibrantEffectWithLightVibrantColorMatrix:(id)a3 darkVibrantColorMatrix:(id)a4 alpha:(double)a5
++ (id)_vibrantEffectWithLightVibrantColorMatrix:(id)matrix darkVibrantColorMatrix:(id)colorMatrix alpha:(double)alpha
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_UIVibrancyEffectVibrantColorMatrixImpl alloc] initWithLightConfiguration:v9 darkConfiguration:v8 alpha:a5];
+  colorMatrixCopy = colorMatrix;
+  matrixCopy = matrix;
+  v10 = [[_UIVibrancyEffectVibrantColorMatrixImpl alloc] initWithLightConfiguration:matrixCopy darkConfiguration:colorMatrixCopy alpha:alpha];
 
-  v11 = [[a1 alloc] _initWithImplementation:v10];
+  v11 = [[self alloc] _initWithImplementation:v10];
 
   return v11;
 }
@@ -222,7 +222,7 @@
   v4[2] = xmmword_18A678240;
   v4[3] = xmmword_18A678250;
   v4[4] = xmmword_18A678260;
-  v2 = [a1 _vibrantEffectWithCAColorMatrix:v4 alpha:1.0];
+  v2 = [self _vibrantEffectWithCAColorMatrix:v4 alpha:1.0];
 
   return v2;
 }
@@ -230,7 +230,7 @@
 + (id)vibrantMediumShadowEffect
 {
   v3 = [[_UIVibrancyEffectVibrantColorMatrixImpl alloc] initWithSystemName:1];
-  v4 = [[a1 alloc] _initWithImplementation:v3];
+  v4 = [[self alloc] _initWithImplementation:v3];
 
   return v4;
 }
@@ -238,7 +238,7 @@
 + (id)vibrantHeavyShadowEffect
 {
   v3 = [[_UIVibrancyEffectVibrantColorMatrixImpl alloc] initWithSystemName:2];
-  v4 = [[a1 alloc] _initWithImplementation:v3];
+  v4 = [[self alloc] _initWithImplementation:v3];
 
   return v4;
 }
@@ -246,21 +246,21 @@
 + (id)vibrantChromeShadowEffect
 {
   v3 = [[_UIVibrancyEffectVibrantColorMatrixImpl alloc] initWithSystemName:3];
-  v4 = [[a1 alloc] _initWithImplementation:v3];
+  v4 = [[self alloc] _initWithImplementation:v3];
 
   return v4;
 }
 
-+ (id)_vibrantEffectForLightMaterial:(id)a3 darkMaterial:(id)a4 vibrancyStyle:(int64_t)a5
++ (id)_vibrantEffectForLightMaterial:(id)material darkMaterial:(id)darkMaterial vibrancyStyle:(int64_t)style
 {
-  v8 = a4;
-  v9 = _UICoreMaterialSanitizeMaterial(a3);
-  v10 = _UICoreMaterialSanitizeMaterial(v8);
+  darkMaterialCopy = darkMaterial;
+  v9 = _UICoreMaterialSanitizeMaterial(material);
+  v10 = _UICoreMaterialSanitizeMaterial(darkMaterialCopy);
 
   if (v9 | v10)
   {
-    v12 = [[_UIVibrancyEffectCoreMaterialImpl alloc] initWithLightMaterial:v9 darkMaterial:v10 vibrancyStyle:_UIVibrancyStyleConvertToPublic(a5)];
-    v11 = [[a1 alloc] _initWithImplementation:v12];
+    v12 = [[_UIVibrancyEffectCoreMaterialImpl alloc] initWithLightMaterial:v9 darkMaterial:v10 vibrancyStyle:_UIVibrancyStyleConvertToPublic(style)];
+    v11 = [[self alloc] _initWithImplementation:v12];
   }
 
   else
@@ -271,45 +271,45 @@
   return v11;
 }
 
-+ (id)_effectWithStyle:(int64_t)a3 ignoreSimpleVibrancy:(BOOL)a4
++ (id)_effectWithStyle:(int64_t)style ignoreSimpleVibrancy:(BOOL)vibrancy
 {
-  v5 = [[_UIVibrancyEffectLegacyImpl alloc] initWithStyle:a3 invertAutomaticStyle:0 ignoreSimpleVibrancy:a4];
-  v6 = [[a1 alloc] _initWithImplementation:v5];
+  v5 = [[_UIVibrancyEffectLegacyImpl alloc] initWithStyle:style invertAutomaticStyle:0 ignoreSimpleVibrancy:vibrancy];
+  v6 = [[self alloc] _initWithImplementation:v5];
 
   return v6;
 }
 
-- (id)_effectReplacingTintColor:(id)a3
+- (id)_effectReplacingTintColor:(id)color
 {
-  if (a3)
+  if (color)
   {
     v4 = [(_UIVibrancyEffectImpl *)self->_impl implementationReplacingTintColor:?];
     if (self->_impl == v4)
     {
-      v5 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v5 = [objc_alloc(objc_opt_class()) _initWithImplementation:v4];
+      selfCopy = [objc_alloc(objc_opt_class()) _initWithImplementation:v4];
     }
 
-    v6 = v5;
+    selfCopy2 = selfCopy;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
-  return v6;
+  return selfCopy2;
 }
 
-+ (id)_effectForBlurEffect:(id)a3 vibrancyStyle:(int64_t)a4
++ (id)_effectForBlurEffect:(id)effect vibrancyStyle:(int64_t)style
 {
-  v6 = _UIVibrancyStyleConvertToPublic(a4);
+  v6 = _UIVibrancyStyleConvertToPublic(style);
 
-  return [a1 effectForBlurEffect:a3 style:v6];
+  return [self effectForBlurEffect:effect style:v6];
 }
 
 - (UIVibrancyEffect)init
@@ -335,31 +335,31 @@
   return v6;
 }
 
-- (id)_initWithImplementation:(id)a3
+- (id)_initWithImplementation:(id)implementation
 {
-  v5 = a3;
+  implementationCopy = implementation;
   v9.receiver = self;
   v9.super_class = UIVibrancyEffect;
   v6 = [(UIVibrancyEffect *)&v9 init];
   p_isa = &v6->super.super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_impl, a3);
+    objc_storeStrong(&v6->_impl, implementation);
     [p_isa[1] setEffect:p_isa];
   }
 
   return p_isa;
 }
 
-- (UIVibrancyEffect)initWithCoder:(id)a3
+- (UIVibrancyEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UIVibrancyEffect;
-  v5 = [(UIVisualEffect *)&v9 initWithCoder:v4];
+  v5 = [(UIVisualEffect *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [_UIVibrancyEffectImpl implementationFromCoder:v4];
+    v6 = [_UIVibrancyEffectImpl implementationFromCoder:coderCopy];
     impl = v5->_impl;
     v5->_impl = v6;
 
@@ -369,25 +369,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UIVibrancyEffect;
-  v4 = a3;
-  [(UIVisualEffect *)&v5 encodeWithCoder:v4];
-  [(_UIVibrancyEffectImpl *)self->_impl encodeWithCoder:v4, v5.receiver, v5.super_class];
+  coderCopy = coder;
+  [(UIVisualEffect *)&v5 encodeWithCoder:coderCopy];
+  [(_UIVibrancyEffectImpl *)self->_impl encodeWithCoder:coderCopy, v5.receiver, v5.super_class];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  p_isa = &v4->super.super.isa;
-  if (v4 == self)
+  equalCopy = equal;
+  p_isa = &equalCopy->super.super.isa;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4 && [(UIVibrancyEffect *)v4 isMemberOfClass:objc_opt_class()])
+  else if (equalCopy && [(UIVibrancyEffect *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v6 = [p_isa[1] isEqual:self->_impl];
   }
@@ -408,86 +408,86 @@
   return v4;
 }
 
-- (id)effectConfigForQuality:(int64_t)a3
+- (id)effectConfigForQuality:(int64_t)quality
 {
   v5 = +[_UILegacyEffectConverter sharedConverter];
-  v6 = [(_UIVibrancyEffectImpl *)self->_impl style];
-  if (a3 == 10)
+  style = [(_UIVibrancyEffectImpl *)self->_impl style];
+  if (quality == 10)
   {
-    [v5 vibrancyConfigForLowQualityVibrancyStyle:v6];
+    [v5 vibrancyConfigForLowQualityVibrancyStyle:style];
   }
 
   else
   {
-    [v5 vibrancyConfigForHighQualityVibrancyStyle:v6];
+    [v5 vibrancyConfigForHighQualityVibrancyStyle:style];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)effectConfigForReducedTransperancy:(BOOL)a3
+- (id)effectConfigForReducedTransperancy:(BOOL)transperancy
 {
-  v3 = a3;
+  transperancyCopy = transperancy;
   _AXSEnhanceBackgroundContrastEnabled();
-  if (v3)
+  if (transperancyCopy)
   {
-    v5 = [(UIVibrancyEffect *)self _reduceTransparencyEffectConfig];
+    _reduceTransparencyEffectConfig = [(UIVibrancyEffect *)self _reduceTransparencyEffectConfig];
   }
 
   else
   {
     v6 = +[UIDevice currentDevice];
-    v5 = -[UIVibrancyEffect effectConfigForQuality:](self, "effectConfigForQuality:", [v6 _graphicsQuality]);
+    _reduceTransparencyEffectConfig = -[UIVibrancyEffect effectConfigForQuality:](self, "effectConfigForQuality:", [v6 _graphicsQuality]);
   }
 
-  return v5;
+  return _reduceTransparencyEffectConfig;
 }
 
-+ (id)_vibrancyEntryWithType:(id)a3 inputColor1:(id)a4 inputColor2:(id)a5 inputReversed:(BOOL)a6
++ (id)_vibrancyEntryWithType:(id)type inputColor1:(id)color1 inputColor2:(id)color2 inputReversed:(BOOL)reversed
 {
-  v6 = a6;
+  reversedCopy = reversed;
   v20[3] = *MEMORY[0x1E69E9840];
   v19[0] = @"inputColor0";
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
-  v20[0] = [a4 CGColor];
+  color1Copy = color1;
+  color2Copy = color2;
+  typeCopy = type;
+  v20[0] = [color1 CGColor];
   v19[1] = @"inputColor1";
-  v13 = [v11 CGColor];
+  cGColor = [color2Copy CGColor];
 
-  v20[1] = v13;
+  v20[1] = cGColor;
   v19[2] = @"inputReversed";
-  v14 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  v14 = [MEMORY[0x1E696AD98] numberWithBool:reversedCopy];
   v20[2] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
   v16 = [_UIVisualEffectFilterEntry alloc];
-  v17 = [(_UIVisualEffectFilterEntry *)v16 initWithFilterType:v12 configurationValues:v15 requestedValues:MEMORY[0x1E695E0F8] identityValues:MEMORY[0x1E695E0F8]];
+  v17 = [(_UIVisualEffectFilterEntry *)v16 initWithFilterType:typeCopy configurationValues:v15 requestedValues:MEMORY[0x1E695E0F8] identityValues:MEMORY[0x1E695E0F8]];
 
   return v17;
 }
 
 - (BOOL)_isAutomaticStyle
 {
-  v2 = [(_UIVibrancyEffectImpl *)self->_impl style];
+  style = [(_UIVibrancyEffectImpl *)self->_impl style];
   result = 1;
-  if ((v2 - 4) >= 2 && v2 != 1000)
+  if ((style - 4) >= 2 && style != 1000)
   {
-    return v2 > 4999;
+    return style > 4999;
   }
 
   return result;
 }
 
-- (id)effectForUserInterfaceStyle:(int64_t)a3
+- (id)effectForUserInterfaceStyle:(int64_t)style
 {
   v5 = [(_UIVibrancyEffectImpl *)self->_impl implementationForUserInterfaceStyle:?];
   if (v5 == self->_impl)
   {
     v9.receiver = self;
     v9.super_class = UIVibrancyEffect;
-    v6 = [(UIVisualEffect *)&v9 effectForUserInterfaceStyle:a3];
+    v6 = [(UIVisualEffect *)&v9 effectForUserInterfaceStyle:style];
   }
 
   else

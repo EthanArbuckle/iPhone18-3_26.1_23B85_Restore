@@ -1,16 +1,16 @@
 @interface ICAttributionLayoutManager
 + (OS_dispatch_queue)reloadQueue;
-- (ICAttributionLayoutManager)initWithTextView:(id)a3 managedObjectContext:(id)a4 panelWidth:(double)a5 previewPanelWidth:(double)a6;
+- (ICAttributionLayoutManager)initWithTextView:(id)view managedObjectContext:(id)context panelWidth:(double)width previewPanelWidth:(double)panelWidth;
 - (ICBaseTextView)textView;
 - (NSArray)visibleConfigurations;
 - (double)currentTextViewOffset;
 - (void)addObservers;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)reloadConfigurationsWithCompletion:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)reloadConfigurationsWithCompletion:(id)completion;
 - (void)reloadViewConfigurationsSynchronously;
 - (void)removeObservers;
-- (void)setVisiblePanelWidth:(double)a3;
+- (void)setVisiblePanelWidth:(double)width;
 - (void)updateViewConfigurationsForTextViewOffset;
 @end
 
@@ -25,37 +25,37 @@
 
 - (void)addObservers
 {
-  v3 = [(ICAttributionLayoutManager *)self textView];
-  [v3 ic_addObserver:self forKeyPath:@"contentOffset" context:&compoundliteral_9];
+  textView = [(ICAttributionLayoutManager *)self textView];
+  [textView ic_addObserver:self forKeyPath:@"contentOffset" context:&compoundliteral_9];
 }
 
 - (void)updateViewConfigurationsForTextViewOffset
 {
   v61 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(ICAttributionLayoutManager *)self visibleConfigurations];
+  visibleConfigurations = [(ICAttributionLayoutManager *)self visibleConfigurations];
   [(ICAttributionLayoutManager *)self currentTextViewOffset];
   v6 = v5;
-  v50 = [v4 firstObject];
-  if (v50)
+  firstObject = [visibleConfigurations firstObject];
+  if (firstObject)
   {
-    if ([v4 count] < 2)
+    if ([visibleConfigurations count] < 2)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = [v4 objectAtIndexedSubscript:1];
+      v7 = [visibleConfigurations objectAtIndexedSubscript:1];
     }
 
-    v47 = v4;
-    [v50 adjustedFrame];
+    v47 = visibleConfigurations;
+    [firstObject adjustedFrame];
     v9 = v8;
-    [v50 associatedTextFrame];
+    [firstObject associatedTextFrame];
     v11 = v10;
     v13 = v12;
-    [v50 frame];
+    [firstObject frame];
     if (v6 >= v14)
     {
       v15 = v6 + v9;
@@ -63,9 +63,9 @@
       {
         if (!v7 || ([v7 frame], v15 < v16))
         {
-          [v50 adjustedFrame];
-          [v50 setAdjustedFrame:?];
-          [v3 addObject:v50];
+          [firstObject adjustedFrame];
+          [firstObject setAdjustedFrame:?];
+          [v3 addObject:firstObject];
         }
       }
     }
@@ -96,7 +96,7 @@
           [v20 setPreferredHighlightValue:?];
           [v20 frame];
           v22 = v21;
-          if ([v20 isEqualToAttributionViewConfiguration:v50])
+          if ([v20 isEqualToAttributionViewConfiguration:firstObject])
           {
             [v20 adjustedFrame];
           }
@@ -126,8 +126,8 @@
           v54 = 0u;
           v51 = 0u;
           v52 = 0u;
-          v34 = [v20 highlightConfigurations];
-          v35 = [v34 countByEnumeratingWithState:&v51 objects:v59 count:16];
+          highlightConfigurations = [v20 highlightConfigurations];
+          v35 = [highlightConfigurations countByEnumeratingWithState:&v51 objects:v59 count:16];
           if (v35)
           {
             v36 = v35;
@@ -139,7 +139,7 @@
               {
                 if (*v52 != v37)
                 {
-                  objc_enumerationMutation(v34);
+                  objc_enumerationMutation(highlightConfigurations);
                 }
 
                 v39 = *(*(&v51 + 1) + 8 * v38);
@@ -161,7 +161,7 @@
               }
 
               while (v36 != v38);
-              v36 = [v34 countByEnumeratingWithState:&v51 objects:v59 count:16];
+              v36 = [highlightConfigurations countByEnumeratingWithState:&v51 objects:v59 count:16];
             }
 
             while (v36);
@@ -182,34 +182,34 @@
       while (v18);
     }
 
-    v4 = v47;
+    visibleConfigurations = v47;
   }
 
-  v43 = [(ICAttributionLayoutManager *)self updatedConfigurationHandler];
+  updatedConfigurationHandler = [(ICAttributionLayoutManager *)self updatedConfigurationHandler];
 
-  if (v43)
+  if (updatedConfigurationHandler)
   {
-    v44 = [(ICAttributionLayoutManager *)self updatedConfigurationHandler];
-    v45 = [v3 allObjects];
-    (v44)[2](v44, v45);
+    updatedConfigurationHandler2 = [(ICAttributionLayoutManager *)self updatedConfigurationHandler];
+    allObjects = [v3 allObjects];
+    (updatedConfigurationHandler2)[2](updatedConfigurationHandler2, allObjects);
   }
 }
 
 - (NSArray)visibleConfigurations
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [(ICAttributionLayoutManager *)self currentTextViewOffset];
   v5 = v4;
-  v6 = [(ICAttributionLayoutManager *)self viewConfigurations];
+  viewConfigurations = [(ICAttributionLayoutManager *)self viewConfigurations];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__ICAttributionLayoutManager_visibleConfigurations__block_invoke;
   v10[3] = &unk_2781AF9B0;
   v12 = v5;
   v10[4] = self;
-  v11 = v3;
-  v7 = v3;
-  [v6 enumerateObjectsUsingBlock:v10];
+  v11 = array;
+  v7 = array;
+  [viewConfigurations enumerateObjectsUsingBlock:v10];
 
   v8 = [v7 copy];
 
@@ -218,12 +218,12 @@
 
 - (double)currentTextViewOffset
 {
-  v3 = [(ICAttributionLayoutManager *)self textView];
-  [v3 contentOffset];
+  textView = [(ICAttributionLayoutManager *)self textView];
+  [textView contentOffset];
   v5 = v4;
-  v6 = [(ICAttributionLayoutManager *)self textView];
-  v7 = [v6 editorContainer];
-  [v7 ic_safeAreaDistanceFromTop];
+  textView2 = [(ICAttributionLayoutManager *)self textView];
+  editorContainer = [textView2 editorContainer];
+  [editorContainer ic_safeAreaDistanceFromTop];
   v9 = v5 + v8 + 0.0;
 
   return v9;
@@ -251,11 +251,11 @@ void __41__ICAttributionLayoutManager_reloadQueue__block_invoke()
   reloadQueue_reloadQueue = v1;
 }
 
-- (void)setVisiblePanelWidth:(double)a3
+- (void)setVisiblePanelWidth:(double)width
 {
-  if (vabdd_f64(a3, self->_visiblePanelWidth) >= 0.00999999978)
+  if (vabdd_f64(width, self->_visiblePanelWidth) >= 0.00999999978)
   {
-    self->_visiblePanelWidth = a3;
+    self->_visiblePanelWidth = width;
     [(ICAttributionLayoutManager *)self visiblePanelWidth];
     v6 = v5;
     [(ICAttributionLayoutManager *)self previewPanelWidth];
@@ -271,24 +271,24 @@ void __41__ICAttributionLayoutManager_reloadQueue__block_invoke()
     }
 
     self->_preferredHighlightValue = v8;
-    v9 = [(ICAttributionLayoutManager *)self textView];
-    v10 = [v9 ic_isRTL];
-    if (a3 >= 16.0)
+    textView = [(ICAttributionLayoutManager *)self textView];
+    ic_isRTL = [textView ic_isRTL];
+    if (width >= 16.0)
     {
-      v11 = 16.0;
+      widthCopy = 16.0;
     }
 
     else
     {
-      v11 = a3;
+      widthCopy = width;
     }
 
-    if (v10)
+    if (ic_isRTL)
     {
-      v11 = -v11;
+      widthCopy = -widthCopy;
     }
 
-    self->_appliedHorizontalAdjustment = v11;
+    self->_appliedHorizontalAdjustment = widthCopy;
 
     self->_appliedHorizontalAdjustmentRatio = self->_appliedHorizontalAdjustment / 16.0;
 
@@ -296,28 +296,28 @@ void __41__ICAttributionLayoutManager_reloadQueue__block_invoke()
   }
 }
 
-- (ICAttributionLayoutManager)initWithTextView:(id)a3 managedObjectContext:(id)a4 panelWidth:(double)a5 previewPanelWidth:(double)a6
+- (ICAttributionLayoutManager)initWithTextView:(id)view managedObjectContext:(id)context panelWidth:(double)width previewPanelWidth:(double)panelWidth
 {
-  v10 = a3;
-  v11 = a4;
+  viewCopy = view;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = ICAttributionLayoutManager;
   v12 = [(ICAttributionLayoutManager *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_textView, v10);
-    objc_storeStrong(&v13->_managedObjectContext, a4);
-    v13->_panelWidth = a5;
-    v13->_previewPanelWidth = a6;
+    objc_storeWeak(&v12->_textView, viewCopy);
+    objc_storeStrong(&v13->_managedObjectContext, context);
+    v13->_panelWidth = width;
+    v13->_previewPanelWidth = panelWidth;
     viewConfigurations = v13->_viewConfigurations;
     v13->_viewConfigurations = MEMORY[0x277CBEBF8];
 
-    v15 = [v10 editorContainer];
-    v16 = [v15 note];
-    v17 = [v16 lastOpenedDate];
+    editorContainer = [viewCopy editorContainer];
+    note = [editorContainer note];
+    lastOpenedDate = [note lastOpenedDate];
     noteLastOpenedDate = v13->_noteLastOpenedDate;
-    v13->_noteLastOpenedDate = v17;
+    v13->_noteLastOpenedDate = lastOpenedDate;
 
     [(ICAttributionLayoutManager *)v13 addObservers];
   }
@@ -336,13 +336,13 @@ void __41__ICAttributionLayoutManager_reloadQueue__block_invoke()
 - (void)reloadViewConfigurationsSynchronously
 {
   v116 = *MEMORY[0x277D85DE8];
-  v2 = [(ICAttributionLayoutManager *)self textView];
-  v3 = [v2 editorContainer];
-  v4 = [v3 note];
-  v69 = [v4 objectID];
+  textView = [(ICAttributionLayoutManager *)self textView];
+  editorContainer = [textView editorContainer];
+  note = [editorContainer note];
+  objectID = [note objectID];
 
-  v5 = v69;
-  if (!v69)
+  v5 = objectID;
+  if (!objectID)
   {
     [(ICAttributionLayoutManager *)self setViewConfigurations:MEMORY[0x277CBEBF8]];
     goto LABEL_42;
@@ -354,15 +354,15 @@ void __41__ICAttributionLayoutManager_reloadQueue__block_invoke()
   v110 = __Block_byref_object_copy__24;
   v111 = __Block_byref_object_dispose__24;
   v112 = 0;
-  v6 = [(ICAttributionLayoutManager *)self managedObjectContext];
+  managedObjectContext = [(ICAttributionLayoutManager *)self managedObjectContext];
   v104[0] = MEMORY[0x277D85DD0];
   v104[1] = 3221225472;
   v104[2] = __67__ICAttributionLayoutManager_reloadViewConfigurationsSynchronously__block_invoke;
   v104[3] = &unk_2781ACE30;
   v106 = &v107;
   v104[4] = self;
-  v105 = v69;
-  [v6 performBlockAndWait:v104];
+  v105 = objectID;
+  [managedObjectContext performBlockAndWait:v104];
 
   if (!v108[5])
   {
@@ -375,7 +375,7 @@ void __41__ICAttributionLayoutManager_reloadQueue__block_invoke()
   v101 = __Block_byref_object_copy__24;
   v102 = __Block_byref_object_dispose__24;
   v103 = 0;
-  v7 = [(ICAttributionLayoutManager *)self managedObjectContext];
+  managedObjectContext2 = [(ICAttributionLayoutManager *)self managedObjectContext];
   v97[0] = MEMORY[0x277D85DD0];
   v97[1] = 3221225472;
   v97[2] = __67__ICAttributionLayoutManager_reloadViewConfigurationsSynchronously__block_invoke_2;
@@ -383,11 +383,11 @@ void __41__ICAttributionLayoutManager_reloadQueue__block_invoke()
   v97[4] = self;
   v97[5] = &v107;
   v97[6] = &v98;
-  [v7 performBlockAndWait:v97];
+  [managedObjectContext2 performBlockAndWait:v97];
 
   v8 = [ICAttributionViewConfigurationSharedState alloc];
-  v9 = [(ICAttributionLayoutManager *)self textView];
-  v10 = [(ICAttributionViewConfigurationSharedState *)v8 initWithTextView:v9 note:v108[5]];
+  textView2 = [(ICAttributionLayoutManager *)self textView];
+  v10 = [(ICAttributionViewConfigurationSharedState *)v8 initWithTextView:textView2 note:v108[5]];
 
   v91 = 0;
   v92 = &v91;
@@ -400,19 +400,19 @@ void __41__ICAttributionLayoutManager_reloadQueue__block_invoke()
   v86 = __67__ICAttributionLayoutManager_reloadViewConfigurationsSynchronously__block_invoke_3;
   v87 = &unk_2781AF968;
   v88 = v10;
-  v89 = self;
+  selfCopy = self;
   v90 = &v91;
   performBlockOnMainThreadAndWait();
   [(ICAttributionViewConfigurationSharedState *)v88 synchronouslyLoadDataForEditGroups:v99[5]];
   v73 = v88;
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v82 = 0u;
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
   obj = v99[5];
   v12 = [obj countByEnumeratingWithState:&v80 objects:v115 count:16];
-  v71 = v11;
+  v71 = array;
   v13 = 0;
   if (!v12)
   {
@@ -437,8 +437,8 @@ void __41__ICAttributionLayoutManager_reloadQueue__block_invoke()
       v18 = [(ICAttributionViewConfiguration *)v16 initWithSharedState:v73 editGroups:v17 parentConfiguration:0];
 
       v19 = [v92[5] attribute:*MEMORY[0x277D35DA8] atIndex:-[ICAttributionViewConfiguration range](v18 effectiveRange:{"range"), 0}];
-      v20 = [v19 uuid];
-      if (v20 && ([v92[5] outlineController], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "uuid"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "isUUIDHidden:", v22), v22, v21, v20, v23))
+      uuid = [v19 uuid];
+      if (uuid && ([v92[5] outlineController], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "uuid"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "isUUIDHidden:", v22), v22, v21, uuid, v23))
       {
         [(ICAttributionViewConfiguration *)v13 frame];
         [(ICAttributionViewConfiguration *)v18 setFrame:?];
@@ -496,9 +496,9 @@ void __41__ICAttributionLayoutManager_reloadQueue__block_invoke()
         }
       }
 
-      v47 = [(ICAttributionViewConfiguration *)v13 range];
+      range = [(ICAttributionViewConfiguration *)v13 range];
       v49 = v48;
-      if (v47 == [(ICAttributionViewConfiguration *)v18 range]&& v49 == v50)
+      if (range == [(ICAttributionViewConfiguration *)v18 range]&& v49 == v50)
       {
         v52 = 1;
       }
@@ -593,7 +593,7 @@ LABEL_32:
 LABEL_40:
   _Block_object_dispose(&v107, 8);
 
-  v5 = v69;
+  v5 = objectID;
 LABEL_42:
 }
 
@@ -698,18 +698,18 @@ uint64_t __67__ICAttributionLayoutManager_reloadViewConfigurationsSynchronously_
   return v12;
 }
 
-- (void)reloadConfigurationsWithCompletion:(id)a3
+- (void)reloadConfigurationsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() reloadQueue];
+  completionCopy = completion;
+  reloadQueue = [objc_opt_class() reloadQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__ICAttributionLayoutManager_reloadConfigurationsWithCompletion___block_invoke;
   v7[3] = &unk_2781AE4F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(reloadQueue, v7);
 }
 
 void __65__ICAttributionLayoutManager_reloadConfigurationsWithCompletion___block_invoke(uint64_t a1)
@@ -725,20 +725,20 @@ void __65__ICAttributionLayoutManager_reloadConfigurationsWithCompletion___block
 
 - (void)removeObservers
 {
-  v3 = [(ICAttributionLayoutManager *)self textView];
-  [v3 ic_removeObserver:self forKeyPath:@"contentOffset" context:&compoundliteral_9];
+  textView = [(ICAttributionLayoutManager *)self textView];
+  [textView ic_removeObserver:self forKeyPath:@"contentOffset" context:&compoundliteral_9];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  if (([(ICAttributionLayoutManager *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/Common/Author Attributions/Layout/ICAttributionLayoutManager.m"]& 1) != 0)
+  changeCopy = change;
+  objectCopy = object;
+  pathCopy = path;
+  if (([(ICAttributionLayoutManager *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/Common/Author Attributions/Layout/ICAttributionLayoutManager.m"]& 1) != 0)
   {
-    v13 = [(ICAttributionLayoutManager *)self ic_shouldIgnoreObserveValue:v10 ofObject:v11 forKeyPath:v12];
+    v13 = [(ICAttributionLayoutManager *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == &compoundliteral_9 && (v13 & 1) == 0)
+    if (context == &compoundliteral_9 && (v13 & 1) == 0)
     {
 
       [(ICAttributionLayoutManager *)self updateViewConfigurationsForTextViewOffset];
@@ -749,7 +749,7 @@ void __65__ICAttributionLayoutManager_reloadConfigurationsWithCompletion___block
   {
     v14.receiver = self;
     v14.super_class = ICAttributionLayoutManager;
-    [(ICAttributionLayoutManager *)&v14 observeValueForKeyPath:v12 ofObject:v11 change:v10 context:a6];
+    [(ICAttributionLayoutManager *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

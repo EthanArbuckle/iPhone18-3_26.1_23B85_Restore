@@ -1,60 +1,60 @@
 @interface ML3ArtworkColorAnalysis
-- (ML3ArtworkColorAnalysis)initWithCoder:(id)a3;
-- (ML3ArtworkColorAnalysis)initWithColorAnalysis:(id)a3;
-- (ML3ArtworkColorAnalysis)initWithColorAnalysisDictionary:(id)a3;
+- (ML3ArtworkColorAnalysis)initWithCoder:(id)coder;
+- (ML3ArtworkColorAnalysis)initWithColorAnalysis:(id)analysis;
+- (ML3ArtworkColorAnalysis)initWithColorAnalysisDictionary:(id)dictionary;
 - (id)dictRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ML3ArtworkColorAnalysis
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(ML3ArtworkColorAnalysis *)self backgroundColor];
-  [v8 encodeObject:v4 forKey:@"backgroundColor"];
+  coderCopy = coder;
+  backgroundColor = [(ML3ArtworkColorAnalysis *)self backgroundColor];
+  [coderCopy encodeObject:backgroundColor forKey:@"backgroundColor"];
 
-  [v8 encodeBool:-[ML3ArtworkColorAnalysis isBackgroundColorLight](self forKey:{"isBackgroundColorLight"), @"backgroundColorLight"}];
-  v5 = [(ML3ArtworkColorAnalysis *)self primaryTextColor];
-  [v8 encodeObject:v5 forKey:@"primaryTextColor"];
+  [coderCopy encodeBool:-[ML3ArtworkColorAnalysis isBackgroundColorLight](self forKey:{"isBackgroundColorLight"), @"backgroundColorLight"}];
+  primaryTextColor = [(ML3ArtworkColorAnalysis *)self primaryTextColor];
+  [coderCopy encodeObject:primaryTextColor forKey:@"primaryTextColor"];
 
-  [v8 encodeBool:-[ML3ArtworkColorAnalysis isPrimaryTextColorLight](self forKey:{"isPrimaryTextColorLight"), @"primaryTextColorLight"}];
-  v6 = [(ML3ArtworkColorAnalysis *)self secondaryTextColor];
-  [v8 encodeObject:v6 forKey:@"secondaryTextColor"];
+  [coderCopy encodeBool:-[ML3ArtworkColorAnalysis isPrimaryTextColorLight](self forKey:{"isPrimaryTextColorLight"), @"primaryTextColorLight"}];
+  secondaryTextColor = [(ML3ArtworkColorAnalysis *)self secondaryTextColor];
+  [coderCopy encodeObject:secondaryTextColor forKey:@"secondaryTextColor"];
 
-  [v8 encodeBool:-[ML3ArtworkColorAnalysis isSecondaryTextColorLight](self forKey:{"isSecondaryTextColorLight"), @"secondaryTextColorLight"}];
-  v7 = [(ML3ArtworkColorAnalysis *)self tertiaryTextColor];
-  [v8 encodeObject:v7 forKey:@"tertiaryTextColor"];
+  [coderCopy encodeBool:-[ML3ArtworkColorAnalysis isSecondaryTextColorLight](self forKey:{"isSecondaryTextColorLight"), @"secondaryTextColorLight"}];
+  tertiaryTextColor = [(ML3ArtworkColorAnalysis *)self tertiaryTextColor];
+  [coderCopy encodeObject:tertiaryTextColor forKey:@"tertiaryTextColor"];
 
-  [v8 encodeBool:-[ML3ArtworkColorAnalysis isTertiaryTextColorLight](self forKey:{"isTertiaryTextColorLight"), @"tertiaryTextColorLight"}];
+  [coderCopy encodeBool:-[ML3ArtworkColorAnalysis isTertiaryTextColorLight](self forKey:{"isTertiaryTextColorLight"), @"tertiaryTextColorLight"}];
 }
 
-- (ML3ArtworkColorAnalysis)initWithCoder:(id)a3
+- (ML3ArtworkColorAnalysis)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ML3ArtworkColorAnalysis *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v6;
 
-    v5->_backgroundColorLight = [v4 decodeBoolForKey:@"backgroundColorLight"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryTextColor"];
+    v5->_backgroundColorLight = [coderCopy decodeBoolForKey:@"backgroundColorLight"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryTextColor"];
     primaryTextColor = v5->_primaryTextColor;
     v5->_primaryTextColor = v8;
 
-    v5->_primaryTextColorLight = [v4 decodeBoolForKey:@"primaryTextColorLight"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryTextColor"];
+    v5->_primaryTextColorLight = [coderCopy decodeBoolForKey:@"primaryTextColorLight"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryTextColor"];
     secondaryTextColor = v5->_secondaryTextColor;
     v5->_secondaryTextColor = v10;
 
-    v5->_secondaryTextColorLight = [v4 decodeBoolForKey:@"secondaryTextColorLight"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tertiaryTextColor"];
+    v5->_secondaryTextColorLight = [coderCopy decodeBoolForKey:@"secondaryTextColorLight"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tertiaryTextColor"];
     tertiaryTextColor = v5->_tertiaryTextColor;
     v5->_tertiaryTextColor = v12;
 
-    v5->_tertiaryTextColorLight = [v4 decodeBoolForKey:@"tertiaryTextColorLight"];
+    v5->_tertiaryTextColorLight = [coderCopy decodeBoolForKey:@"tertiaryTextColorLight"];
   }
 
   return v5;
@@ -64,17 +64,17 @@
 {
   v14[8] = *MEMORY[0x277D85DE8];
   v13[0] = @"backgroundColor";
-  v3 = [(ML3ArtworkColorAnalysis *)self backgroundColor];
-  v14[0] = v3;
+  backgroundColor = [(ML3ArtworkColorAnalysis *)self backgroundColor];
+  v14[0] = backgroundColor;
   v13[1] = @"primaryTextColor";
-  v4 = [(ML3ArtworkColorAnalysis *)self primaryTextColor];
-  v14[1] = v4;
+  primaryTextColor = [(ML3ArtworkColorAnalysis *)self primaryTextColor];
+  v14[1] = primaryTextColor;
   v13[2] = @"secondaryTextColor";
-  v5 = [(ML3ArtworkColorAnalysis *)self secondaryTextColor];
-  v14[2] = v5;
+  secondaryTextColor = [(ML3ArtworkColorAnalysis *)self secondaryTextColor];
+  v14[2] = secondaryTextColor;
   v13[3] = @"tertiaryTextColor";
-  v6 = [(ML3ArtworkColorAnalysis *)self tertiaryTextColor];
-  v14[3] = v6;
+  tertiaryTextColor = [(ML3ArtworkColorAnalysis *)self tertiaryTextColor];
+  v14[3] = tertiaryTextColor;
   v13[4] = @"backgroundColorLight";
   if ([(ML3ArtworkColorAnalysis *)self isBackgroundColorLight])
   {
@@ -128,46 +128,46 @@
   return v11;
 }
 
-- (ML3ArtworkColorAnalysis)initWithColorAnalysisDictionary:(id)a3
+- (ML3ArtworkColorAnalysis)initWithColorAnalysisDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = ML3ArtworkColorAnalysis;
   v5 = [(ML3ArtworkColorAnalysis *)&v20 init];
   if (v5)
   {
-    if (!v4)
+    if (!dictionaryCopy)
     {
       v18 = 0;
       goto LABEL_6;
     }
 
-    v6 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"primaryTextColor"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"primaryTextColor"];
     primaryTextColor = v5->_primaryTextColor;
     v5->_primaryTextColor = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"secondaryTextColor"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"secondaryTextColor"];
     secondaryTextColor = v5->_secondaryTextColor;
     v5->_secondaryTextColor = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"tertiaryTextColor"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"tertiaryTextColor"];
     tertiaryTextColor = v5->_tertiaryTextColor;
     v5->_tertiaryTextColor = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"backgroundColorLight"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColorLight"];
     v5->_backgroundColorLight = [v14 isEqual:@"YES"];
 
-    v15 = [v4 objectForKeyedSubscript:@"primaryTextColorLight"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"primaryTextColorLight"];
     v5->_primaryTextColorLight = [v15 isEqual:@"YES"];
 
-    v16 = [v4 objectForKeyedSubscript:@"secondaryTextColorLight"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"secondaryTextColorLight"];
     v5->_secondaryTextColorLight = [v16 isEqual:@"YES"];
 
-    v17 = [v4 objectForKeyedSubscript:@"tertiaryTextColorLight"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"tertiaryTextColorLight"];
     v5->_tertiaryTextColorLight = [v17 isEqual:@"YES"];
   }
 
@@ -177,40 +177,40 @@ LABEL_6:
   return v18;
 }
 
-- (ML3ArtworkColorAnalysis)initWithColorAnalysis:(id)a3
+- (ML3ArtworkColorAnalysis)initWithColorAnalysis:(id)analysis
 {
-  v4 = a3;
+  analysisCopy = analysis;
   v16.receiver = self;
   v16.super_class = ML3ArtworkColorAnalysis;
   v5 = [(ML3ArtworkColorAnalysis *)&v16 init];
   if (v5)
   {
-    if (!v4)
+    if (!analysisCopy)
     {
       v14 = 0;
       goto LABEL_6;
     }
 
-    v6 = [v4 backgroundColorHex];
+    backgroundColorHex = [analysisCopy backgroundColorHex];
     backgroundColor = v5->_backgroundColor;
-    v5->_backgroundColor = v6;
+    v5->_backgroundColor = backgroundColorHex;
 
-    v8 = [v4 primaryTextColorHex];
+    primaryTextColorHex = [analysisCopy primaryTextColorHex];
     primaryTextColor = v5->_primaryTextColor;
-    v5->_primaryTextColor = v8;
+    v5->_primaryTextColor = primaryTextColorHex;
 
-    v10 = [v4 secondaryTextColorHex];
+    secondaryTextColorHex = [analysisCopy secondaryTextColorHex];
     secondaryTextColor = v5->_secondaryTextColor;
-    v5->_secondaryTextColor = v10;
+    v5->_secondaryTextColor = secondaryTextColorHex;
 
-    v12 = [v4 tertiaryTextColorHex];
+    tertiaryTextColorHex = [analysisCopy tertiaryTextColorHex];
     tertiaryTextColor = v5->_tertiaryTextColor;
-    v5->_tertiaryTextColor = v12;
+    v5->_tertiaryTextColor = tertiaryTextColorHex;
 
-    v5->_backgroundColorLight = [v4 isBackgroundColorLight];
-    v5->_primaryTextColorLight = [v4 isPrimaryTextColorLight];
-    v5->_secondaryTextColorLight = [v4 isSecondaryTextColorLight];
-    v5->_tertiaryTextColorLight = [v4 isTertiaryTextColorLight];
+    v5->_backgroundColorLight = [analysisCopy isBackgroundColorLight];
+    v5->_primaryTextColorLight = [analysisCopy isPrimaryTextColorLight];
+    v5->_secondaryTextColorLight = [analysisCopy isSecondaryTextColorLight];
+    v5->_tertiaryTextColorLight = [analysisCopy isTertiaryTextColorLight];
   }
 
   v14 = v5;

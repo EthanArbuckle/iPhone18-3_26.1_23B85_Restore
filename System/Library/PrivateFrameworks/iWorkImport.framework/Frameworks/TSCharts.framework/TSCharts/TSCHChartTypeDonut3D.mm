@@ -1,5 +1,5 @@
 @interface TSCHChartTypeDonut3D
-- (id)imageWithPreset:(id)a3 target:(int)a4 imageSize:(CGSize)a5 imageScale:(double)a6 swatchFrame:(CGRect)a7 documentRoot:(id)a8 shouldCache:(BOOL *)a9;
+- (id)imageWithPreset:(id)preset target:(int)target imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame documentRoot:(id)root shouldCache:(BOOL *)cache;
 - (id)userInterfaceName;
 @end
 
@@ -13,11 +13,11 @@
   return v10;
 }
 
-- (id)imageWithPreset:(id)a3 target:(int)a4 imageSize:(CGSize)a5 imageScale:(double)a6 swatchFrame:(CGRect)a7 documentRoot:(id)a8 shouldCache:(BOOL *)a9
+- (id)imageWithPreset:(id)preset target:(int)target imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame documentRoot:(id)root shouldCache:(BOOL *)cache
 {
   v11.receiver = self;
   v11.super_class = TSCHChartTypeDonut3D;
-  v9 = [(TSCHChartType *)&v11 imageWithPreset:a3 target:*&a4 imageSize:a8 imageScale:a9 swatchFrame:a5.width documentRoot:a5.height shouldCache:a6, a7.origin.x, a7.origin.y, a7.size.width, a7.size.height];
+  v9 = [(TSCHChartType *)&v11 imageWithPreset:preset target:*&target imageSize:root imageScale:cache swatchFrame:size.width documentRoot:size.height shouldCache:scale, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   return v9;
 }

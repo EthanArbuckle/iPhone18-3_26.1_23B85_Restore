@@ -1,7 +1,7 @@
 @interface STUIStatusBarControlCenterItem
 - (STUIStatusBarControlCenterGrabberView)grabberView;
-- (id)systemImageNameForUpdate:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (id)systemImageNameForUpdate:(id)update;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_grabberView;
 @end
 
@@ -27,33 +27,33 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (id)systemImageNameForUpdate:(id)a3
+- (id)systemImageNameForUpdate:(id)update
 {
-  v3 = [a3 data];
-  v4 = [v3 controlCenterEntry];
-  v5 = [v4 imageName];
+  data = [update data];
+  controlCenterEntry = [data controlCenterEntry];
+  imageName = [controlCenterEntry imageName];
 
-  return v5;
+  return imageName;
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[STUIStatusBarControlCenterItem grabberIdentifier];
 
-  if (v5 == v4)
+  if (v5 == identifierCopy)
   {
-    v6 = [(STUIStatusBarControlCenterItem *)self grabberView];
+    grabberView = [(STUIStatusBarControlCenterItem *)self grabberView];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = STUIStatusBarControlCenterItem;
-    v6 = [(STUIStatusBarIndicatorItem *)&v9 viewForIdentifier:v4];
+    grabberView = [(STUIStatusBarIndicatorItem *)&v9 viewForIdentifier:identifierCopy];
   }
 
-  v7 = v6;
+  v7 = grabberView;
 
   return v7;
 }

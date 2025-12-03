@@ -1,35 +1,35 @@
 @interface HDSyncAnchorMap
-+ (HDSyncAnchorMap)syncAnchorMapWithCodableSyncAnchorRangeMap:(id)a3;
-+ (HDSyncAnchorMap)syncAnchorMapWithDictionary:(id)a3;
-+ (HDSyncAnchorMap)syncAnchorMapWithSyncAnchorRangeMap:(id)a3;
++ (HDSyncAnchorMap)syncAnchorMapWithCodableSyncAnchorRangeMap:(id)map;
++ (HDSyncAnchorMap)syncAnchorMapWithDictionary:(id)dictionary;
++ (HDSyncAnchorMap)syncAnchorMapWithSyncAnchorRangeMap:(id)map;
 - (BOOL)isAllZero;
-- (BOOL)isEqual:(id)a3;
-- (HDSyncAnchorMap)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDSyncAnchorMap)initWithCoder:(id)coder;
 - (NSString)description;
 - (id)codableSyncAnchorRangeMap;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)anchorForSyncEntityClass:(Class)a3;
-- (int64_t)anchorForSyncEntityIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAnchorsAndEntityIdentifiersWithBlock:(id)a3;
-- (void)setAnchor:(int64_t)a3 forSyncEntity:(Class)a4;
-- (void)setAnchor:(int64_t)a3 forSyncEntityIdentifier:(id)a4;
-- (void)setAnchorsFromMap:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)anchorForSyncEntityClass:(Class)class;
+- (int64_t)anchorForSyncEntityIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAnchorsAndEntityIdentifiersWithBlock:(id)block;
+- (void)setAnchor:(int64_t)anchor forSyncEntity:(Class)entity;
+- (void)setAnchor:(int64_t)anchor forSyncEntityIdentifier:(id)identifier;
+- (void)setAnchorsFromMap:(id)map;
 @end
 
 @implementation HDSyncAnchorMap
 
-+ (HDSyncAnchorMap)syncAnchorMapWithCodableSyncAnchorRangeMap:(id)a3
++ (HDSyncAnchorMap)syncAnchorMapWithCodableSyncAnchorRangeMap:(id)map
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  mapCopy = map;
   v4 = objc_alloc_init(HDSyncAnchorMap);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v3 anchorRanges];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  anchorRanges = [mapCopy anchorRanges];
+  v6 = [anchorRanges countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -40,18 +40,18 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(anchorRanges);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [HDSyncEntityIdentifier alloc];
-        v12 = [v10 entityIdentifier];
-        v13 = [(HDSyncEntityIdentifier *)v11 initWithCodableEntityIdentifier:v12];
+        entityIdentifier = [v10 entityIdentifier];
+        v13 = [(HDSyncEntityIdentifier *)v11 initWithCodableEntityIdentifier:entityIdentifier];
 
         -[HDSyncAnchorMap setAnchor:forSyncEntityIdentifier:](v4, "setAnchor:forSyncEntityIdentifier:", [v10 endAnchor], v13);
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [anchorRanges countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -62,9 +62,9 @@
   return v4;
 }
 
-+ (HDSyncAnchorMap)syncAnchorMapWithDictionary:(id)a3
++ (HDSyncAnchorMap)syncAnchorMapWithDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(HDSyncAnchorMap);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -72,7 +72,7 @@
   v7[3] = &unk_2786287F0;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -110,21 +110,21 @@ void __44__HDSyncAnchorMap_codableSyncAnchorRangeMap__block_invoke(uint64_t a1, 
   [*(a1 + 32) addAnchorRanges:v7];
 }
 
-- (void)setAnchor:(int64_t)a3 forSyncEntity:(Class)a4
+- (void)setAnchor:(int64_t)anchor forSyncEntity:(Class)entity
 {
-  if (!a4)
+  if (!entity)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HDSyncAnchorMap.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"syncEntityClass != Nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSyncAnchorMap.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"syncEntityClass != Nil"}];
   }
 
-  v9 = [(objc_class *)a4 syncEntityIdentifier];
-  [(HDSyncAnchorMap *)self setAnchor:a3 forSyncEntityIdentifier:v9];
+  syncEntityIdentifier = [(objc_class *)entity syncEntityIdentifier];
+  [(HDSyncAnchorMap *)self setAnchor:anchor forSyncEntityIdentifier:syncEntityIdentifier];
 }
 
-- (void)setAnchor:(int64_t)a3 forSyncEntityIdentifier:(id)a4
+- (void)setAnchor:(int64_t)anchor forSyncEntityIdentifier:(id)identifier
 {
-  v9 = a4;
+  identifierCopy = identifier;
   if (!self->_anchorsByEntityIdentifier)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -132,42 +132,42 @@ void __44__HDSyncAnchorMap_codableSyncAnchorRangeMap__block_invoke(uint64_t a1, 
     self->_anchorsByEntityIdentifier = v6;
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-  [(NSMutableDictionary *)self->_anchorsByEntityIdentifier setObject:v8 forKeyedSubscript:v9];
+  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:anchor];
+  [(NSMutableDictionary *)self->_anchorsByEntityIdentifier setObject:v8 forKeyedSubscript:identifierCopy];
 }
 
-- (int64_t)anchorForSyncEntityClass:(Class)a3
+- (int64_t)anchorForSyncEntityClass:(Class)class
 {
-  if (!a3)
+  if (!class)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HDSyncAnchorMap.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"syncEntityClass != Nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSyncAnchorMap.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"syncEntityClass != Nil"}];
   }
 
-  v5 = [(objc_class *)a3 syncEntityIdentifier];
-  v6 = [(HDSyncAnchorMap *)self anchorForSyncEntityIdentifier:v5];
+  syncEntityIdentifier = [(objc_class *)class syncEntityIdentifier];
+  v6 = [(HDSyncAnchorMap *)self anchorForSyncEntityIdentifier:syncEntityIdentifier];
 
   return v6;
 }
 
-- (int64_t)anchorForSyncEntityIdentifier:(id)a3
+- (int64_t)anchorForSyncEntityIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_anchorsByEntityIdentifier objectForKeyedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSMutableDictionary *)self->_anchorsByEntityIdentifier objectForKeyedSubscript:identifier];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)enumerateAnchorsAndEntityIdentifiersWithBlock:(id)a3
+- (void)enumerateAnchorsAndEntityIdentifiersWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   anchorsByEntityIdentifier = self->_anchorsByEntityIdentifier;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__HDSyncAnchorMap_enumerateAnchorsAndEntityIdentifiersWithBlock___block_invoke;
   v7[3] = &unk_278628818;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)anchorsByEntityIdentifier enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -178,22 +178,22 @@ void __65__HDSyncAnchorMap_enumerateAnchorsAndEntityIdentifiersWithBlock___block
   (*(v6 + 16))(v6, v7, [a3 integerValue], a4);
 }
 
-- (void)setAnchorsFromMap:(id)a3
+- (void)setAnchorsFromMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   anchorsByEntityIdentifier = self->_anchorsByEntityIdentifier;
-  v8 = v4;
+  v8 = mapCopy;
   if (!anchorsByEntityIdentifier)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v7 = self->_anchorsByEntityIdentifier;
     self->_anchorsByEntityIdentifier = v6;
 
-    v4 = v8;
+    mapCopy = v8;
     anchorsByEntityIdentifier = self->_anchorsByEntityIdentifier;
   }
 
-  [(NSMutableDictionary *)anchorsByEntityIdentifier addEntriesFromDictionary:*(v4 + 1)];
+  [(NSMutableDictionary *)anchorsByEntityIdentifier addEntriesFromDictionary:*(mapCopy + 1)];
 }
 
 - (BOOL)isAllZero
@@ -256,9 +256,9 @@ uint64_t __28__HDSyncAnchorMap_isAllZero__block_invoke(uint64_t a1, uint64_t a2,
 
         v9 = *(*(&v19 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->_anchorsByEntityIdentifier objectForKeyedSubscript:v9];
-        v11 = [v10 integerValue];
+        integerValue = [v10 integerValue];
 
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %lld", v9, v11];
+        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %lld", v9, integerValue];
         [v3 addObject:v12];
       }
 
@@ -279,9 +279,9 @@ uint64_t __28__HDSyncAnchorMap_isAllZero__block_invoke(uint64_t a1, uint64_t a2,
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -289,7 +289,7 @@ uint64_t __28__HDSyncAnchorMap_isAllZero__block_invoke(uint64_t a1, uint64_t a2,
   }
 
   anchorsByEntityIdentifier = self->_anchorsByEntityIdentifier;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (anchorsByEntityIdentifier != v6)
   {
     if (v6)
@@ -304,7 +304,7 @@ uint64_t __28__HDSyncAnchorMap_isAllZero__block_invoke(uint64_t a1, uint64_t a2,
 
     if (![(NSMutableDictionary *)anchorsByEntityIdentifier count])
     {
-      v7 = [v4[1] count] == 0;
+      v7 = [equalCopy[1] count] == 0;
       goto LABEL_9;
     }
 
@@ -320,7 +320,7 @@ LABEL_9:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HDSyncAnchorMap);
   v5 = [(NSMutableDictionary *)self->_anchorsByEntityIdentifier mutableCopy];
@@ -330,11 +330,11 @@ LABEL_9:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v21 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  [v15 encodeObject:self->_anchorsByEntityIdentifier forKey:@"AnchorByEntityIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_anchorsByEntityIdentifier forKey:@"AnchorByEntityIdentifier"];
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v16 = 0u;
   v17 = 0u;
@@ -356,9 +356,9 @@ LABEL_9:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 schemaIdentifier];
+        schemaIdentifier = [v10 schemaIdentifier];
 
-        if (!v11)
+        if (!schemaIdentifier)
         {
           v12 = [(NSMutableDictionary *)self->_anchorsByEntityIdentifier objectForKeyedSubscript:v10];
           v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "entityIdentifier")}];
@@ -372,14 +372,14 @@ LABEL_9:
     while (v7);
   }
 
-  [v15 encodeObject:v4 forKey:@"AnchorByObjectType"];
+  [coderCopy encodeObject:v4 forKey:@"AnchorByObjectType"];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (HDSyncAnchorMap)initWithCoder:(id)a3
+- (HDSyncAnchorMap)initWithCoder:(id)coder
 {
   v35[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = HDSyncAnchorMap;
   v5 = [(HDSyncAnchorMap *)&v32 init];
@@ -392,7 +392,7 @@ LABEL_9:
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:3];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"AnchorByEntityIdentifier"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"AnchorByEntityIdentifier"];
     anchorsByEntityIdentifier = v5->_anchorsByEntityIdentifier;
     v5->_anchorsByEntityIdentifier = v9;
 
@@ -404,7 +404,7 @@ LABEL_9:
       v34[1] = objc_opt_class();
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
       v13 = [v11 setWithArray:v12];
-      v14 = [v4 decodeObjectOfClasses:v13 forKey:@"AnchorByObjectType"];
+      v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"AnchorByObjectType"];
 
       v30 = 0u;
       v31 = 0u;
@@ -456,9 +456,9 @@ LABEL_9:
   return v5;
 }
 
-+ (HDSyncAnchorMap)syncAnchorMapWithSyncAnchorRangeMap:(id)a3
++ (HDSyncAnchorMap)syncAnchorMapWithSyncAnchorRangeMap:(id)map
 {
-  v3 = a3;
+  mapCopy = map;
   v4 = objc_alloc_init(HDSyncAnchorMap);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -466,7 +466,7 @@ LABEL_9:
   v7[3] = &unk_278615E50;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateAnchorRangesAndEntityIdentifiersWithBlock:v7];
+  [mapCopy enumerateAnchorRangesAndEntityIdentifiersWithBlock:v7];
 
   return v5;
 }

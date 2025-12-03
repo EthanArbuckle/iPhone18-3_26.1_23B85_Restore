@@ -1,33 +1,33 @@
 @interface PPMutableTopicRecord
 - (PPMutableTopicRecord)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setExtractionOsBuild:(id)a3;
-- (void)setSource:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setExtractionOsBuild:(id)build;
+- (void)setSource:(id)source;
 @end
 
 @implementation PPMutableTopicRecord
 
-- (void)setExtractionOsBuild:(id)a3
+- (void)setExtractionOsBuild:(id)build
 {
-  v4 = a3;
+  buildCopy = build;
   v7 = PPGetStringInternPool();
-  v5 = [v7 intern:v4];
+  v5 = [v7 intern:buildCopy];
 
   extractionOsBuild = self->super._extractionOsBuild;
   self->super._extractionOsBuild = v5;
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v7 = PPGetSourceInternPool();
-  v5 = [v7 intern:v4];
+  v5 = [v7 intern:sourceCopy];
 
   source = self->super._source;
   self->super._source = v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   objc_storeStrong((v4 + 8), self->super._topic);

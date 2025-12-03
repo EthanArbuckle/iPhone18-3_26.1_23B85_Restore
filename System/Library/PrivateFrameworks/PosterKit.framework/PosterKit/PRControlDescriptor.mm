@@ -1,69 +1,69 @@
 @interface PRControlDescriptor
 - (BOOL)providerHasMatchingDescriptor;
-- (PRControlDescriptor)initWithCoder:(id)a3;
-- (PRControlDescriptor)initWithPRSControl:(id)a3;
-- (PRControlDescriptor)initWithUniqueIdentifier:(id)a3 controlIdentity:(id)a4 controlType:(unint64_t)a5;
+- (PRControlDescriptor)initWithCoder:(id)coder;
+- (PRControlDescriptor)initWithPRSControl:(id)control;
+- (PRControlDescriptor)initWithUniqueIdentifier:(id)identifier controlIdentity:(id)identity controlType:(unint64_t)type;
 - (id)controlDescriptorFromProvider;
-- (id)copyWithIntent:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithIntent:(id)intent;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)intent;
 - (id)prsControl;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRControlDescriptor
 
-- (PRControlDescriptor)initWithUniqueIdentifier:(id)a3 controlIdentity:(id)a4 controlType:(unint64_t)a5
+- (PRControlDescriptor)initWithUniqueIdentifier:(id)identifier controlIdentity:(id)identity controlType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  identityCopy = identity;
   v14.receiver = self;
   v14.super_class = PRControlDescriptor;
   v11 = [(PRControlDescriptor *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_uniqueIdentifier, a3);
-    objc_storeStrong(&v12->_controlIdentity, a4);
-    v12->_controlType = a5;
+    objc_storeStrong(&v11->_uniqueIdentifier, identifier);
+    objc_storeStrong(&v12->_controlIdentity, identity);
+    v12->_controlType = type;
   }
 
   return v12;
 }
 
-- (PRControlDescriptor)initWithPRSControl:(id)a3
+- (PRControlDescriptor)initWithPRSControl:(id)control
 {
-  if (a3)
+  if (control)
   {
-    v4 = a3;
-    v5 = [v4 uniqueIdentifier];
-    v6 = [v4 controlIdentity];
-    v7 = [v4 controlType];
+    controlCopy = control;
+    uniqueIdentifier = [controlCopy uniqueIdentifier];
+    controlIdentity = [controlCopy controlIdentity];
+    controlType = [controlCopy controlType];
 
-    self = [(PRControlDescriptor *)self initWithUniqueIdentifier:v5 controlIdentity:v6 controlType:v7];
-    v8 = self;
+    self = [(PRControlDescriptor *)self initWithUniqueIdentifier:uniqueIdentifier controlIdentity:controlIdentity controlType:controlType];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)prsControl
 {
-  v3 = [(CHSControlIdentity *)self->_controlIdentity extensionIdentity];
+  extensionIdentity = [(CHSControlIdentity *)self->_controlIdentity extensionIdentity];
   v4 = objc_alloc(MEMORY[0x1E69C4FE0]);
   uniqueIdentifier = self->_uniqueIdentifier;
-  v6 = [(CHSControlIdentity *)self->_controlIdentity kind];
-  v7 = [v3 extensionBundleIdentifier];
-  v8 = [v3 containerBundleIdentifier];
+  kind = [(CHSControlIdentity *)self->_controlIdentity kind];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
   controlType = self->_controlType;
-  v10 = [(CHSControlIdentity *)self->_controlIdentity intentReference];
-  v11 = [v10 intent];
-  v12 = [v4 initWithUniqueIdentifier:uniqueIdentifier kind:v6 extensionBundleIdentifier:v7 containerBundleIdentifier:v8 controlType:controlType intent:v11];
+  intentReference = [(CHSControlIdentity *)self->_controlIdentity intentReference];
+  intent = [intentReference intent];
+  v12 = [v4 initWithUniqueIdentifier:uniqueIdentifier kind:kind extensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier controlType:controlType intent:intent];
 
   return v12;
 }
@@ -78,20 +78,20 @@
 
 - (id)intent
 {
-  v2 = [(CHSControlIdentity *)self->_controlIdentity intentReference];
-  v3 = [v2 intent];
+  intentReference = [(CHSControlIdentity *)self->_controlIdentity intentReference];
+  intent = [intentReference intent];
 
-  return v3;
+  return intent;
 }
 
-- (id)copyWithIntent:(id)a3
+- (id)copyWithIntent:(id)intent
 {
   v4 = MEMORY[0x1E6994260];
-  v5 = a3;
+  intentCopy = intent;
   v6 = [v4 alloc];
-  v7 = [(PRControlDescriptor *)self extensionIdentity];
-  v8 = [(CHSControlIdentity *)self->_controlIdentity kind];
-  v9 = [v6 initWithExtensionIdentity:v7 kind:v8 intent:v5];
+  extensionIdentity = [(PRControlDescriptor *)self extensionIdentity];
+  kind = [(CHSControlIdentity *)self->_controlIdentity kind];
+  v9 = [v6 initWithExtensionIdentity:extensionIdentity kind:kind intent:intentCopy];
 
   v10 = [(PRControlDescriptor *)self copy];
   [v10 setControlIdentity:v9];
@@ -101,13 +101,13 @@
 
 - (BOOL)providerHasMatchingDescriptor
 {
-  v2 = [(PRControlDescriptor *)self controlDescriptorFromProvider];
-  v3 = v2 != 0;
+  controlDescriptorFromProvider = [(PRControlDescriptor *)self controlDescriptorFromProvider];
+  v3 = controlDescriptorFromProvider != 0;
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PRControlDescriptor alloc];
   v5 = [(NSString *)self->_uniqueIdentifier copy];
@@ -117,21 +117,21 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uniqueIdentifier = self->_uniqueIdentifier;
-  v5 = a3;
-  [v5 encodeObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
-  [v5 encodeObject:self->_controlIdentity forKey:@"controlIdentity"];
-  [v5 encodeInteger:self->_controlType forKey:@"controlType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
+  [coderCopy encodeObject:self->_controlIdentity forKey:@"controlIdentity"];
+  [coderCopy encodeInteger:self->_controlType forKey:@"controlType"];
 }
 
-- (PRControlDescriptor)initWithCoder:(id)a3
+- (PRControlDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"controlIdentity"];
-  v7 = [v4 decodeIntegerForKey:@"controlType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"controlIdentity"];
+  v7 = [coderCopy decodeIntegerForKey:@"controlType"];
 
   v8 = [(PRControlDescriptor *)self initWithUniqueIdentifier:v5 controlIdentity:v6 controlType:v7];
   return v8;

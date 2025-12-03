@@ -1,38 +1,38 @@
 @interface TIKeyboardInputManager_zh_RetroCorrection
 - (BOOL)supportsCandidateGeneration;
 - (BOOL)supportsSetPhraseBoundary;
-- (TIKeyboardInputManager_zh_RetroCorrection)initWithInputMode:(id)a3 keyboardState:(id)a4 inputString:(id)a5;
-- (id)deleteFromInput:(unint64_t *)a3;
-- (id)didAcceptCandidate:(id)a3;
-- (id)groupedCandidatesFromCandidates:(id)a3 usingSortingMethod:(id)a4;
-- (id)handleKeyboardInput:(id)a3;
+- (TIKeyboardInputManager_zh_RetroCorrection)initWithInputMode:(id)mode keyboardState:(id)state inputString:(id)string;
+- (id)deleteFromInput:(unint64_t *)input;
+- (id)didAcceptCandidate:(id)candidate;
+- (id)groupedCandidatesFromCandidates:(id)candidates usingSortingMethod:(id)method;
+- (id)handleKeyboardInput:(id)input;
 - (id)inputString;
 - (id)internalInputString;
 - (id)rawInputString;
 - (unsigned)inputCount;
 - (unsigned)inputIndex;
-- (void)_addInputToInternal:(id)a3;
-- (void)addInputToInternal:(id)a3;
+- (void)_addInputToInternal:(id)internal;
+- (void)addInputToInternal:(id)internal;
 - (void)clearInput;
-- (void)setPhraseBoundary:(unint64_t)a3;
+- (void)setPhraseBoundary:(unint64_t)boundary;
 - (void)updateInlineCandidate;
 @end
 
 @implementation TIKeyboardInputManager_zh_RetroCorrection
 
-- (TIKeyboardInputManager_zh_RetroCorrection)initWithInputMode:(id)a3 keyboardState:(id)a4 inputString:(id)a5
+- (TIKeyboardInputManager_zh_RetroCorrection)initWithInputMode:(id)mode keyboardState:(id)state inputString:(id)string
 {
-  v8 = a5;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = TIKeyboardInputManager_zh_RetroCorrection;
-  v9 = [(TIKeyboardInputManagerBase *)&v13 initWithInputMode:a3 keyboardState:a4];
+  v9 = [(TIKeyboardInputManagerBase *)&v13 initWithInputMode:mode keyboardState:state];
   if (v9)
   {
     v10 = objc_alloc_init(TIZhuyinInputManager);
     zhuyinInputManager = v9->_zhuyinInputManager;
     v9->_zhuyinInputManager = v10;
 
-    [(TIKeyboardInputManager_zh_RetroCorrection *)v9 addInputToInternal:v8];
+    [(TIKeyboardInputManager_zh_RetroCorrection *)v9 addInputToInternal:stringCopy];
   }
 
   return v9;
@@ -40,53 +40,53 @@
 
 - (id)rawInputString
 {
-  v2 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-  v3 = [v2 inputBuffer];
+  zhuyinInputManager = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+  inputBuffer = [zhuyinInputManager inputBuffer];
 
-  return v3;
+  return inputBuffer;
 }
 
 - (id)internalInputString
 {
-  v2 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-  v3 = [v2 inputBuffer];
+  zhuyinInputManager = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+  inputBuffer = [zhuyinInputManager inputBuffer];
 
-  return v3;
+  return inputBuffer;
 }
 
 - (unsigned)inputCount
 {
-  v2 = [(TIKeyboardInputManager_zh_RetroCorrection *)self inputString];
-  v3 = [v2 length];
+  inputString = [(TIKeyboardInputManager_zh_RetroCorrection *)self inputString];
+  v3 = [inputString length];
 
   return v3;
 }
 
 - (BOOL)supportsSetPhraseBoundary
 {
-  v2 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-  v3 = [v2 syllableBuffersOccupied];
+  zhuyinInputManager = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+  syllableBuffersOccupied = [zhuyinInputManager syllableBuffersOccupied];
 
-  return v3 ^ 1;
+  return syllableBuffersOccupied ^ 1;
 }
 
-- (void)setPhraseBoundary:(unint64_t)a3
+- (void)setPhraseBoundary:(unint64_t)boundary
 {
   v11.receiver = self;
   v11.super_class = TIKeyboardInputManager_zh_RetroCorrection;
   [(TIKeyboardInputManagerChinesePhonetic *)&v11 setPhraseBoundary:?];
-  v5 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-  v6 = [v5 cursorLocation];
+  zhuyinInputManager = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+  cursorLocation = [zhuyinInputManager cursorLocation];
 
-  v7 = v6 - a3;
-  if (v6 >= a3)
+  v7 = cursorLocation - boundary;
+  if (cursorLocation >= boundary)
   {
-    if (v6 > a3)
+    if (cursorLocation > boundary)
     {
       do
       {
-        v10 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-        [v10 moveCursorBackward];
+        zhuyinInputManager2 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+        [zhuyinInputManager2 moveCursorBackward];
 
         --v7;
       }
@@ -97,11 +97,11 @@
 
   else
   {
-    v8 = a3 - v6;
+    v8 = boundary - cursorLocation;
     do
     {
-      v9 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-      [v9 moveCursorForward];
+      zhuyinInputManager3 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+      [zhuyinInputManager3 moveCursorForward];
 
       --v8;
     }
@@ -112,42 +112,42 @@
 
 - (id)inputString
 {
-  v3 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-  v4 = [v3 composedText];
+  zhuyinInputManager = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+  composedText = [zhuyinInputManager composedText];
 
-  if (v4)
+  if (composedText)
   {
-    v5 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-    v6 = [v5 composedText];
+    zhuyinInputManager2 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+    composedText2 = [zhuyinInputManager2 composedText];
   }
 
   else
   {
-    v6 = &stru_2A252F9A8;
+    composedText2 = &stru_2A252F9A8;
   }
 
-  return v6;
+  return composedText2;
 }
 
 - (unsigned)inputIndex
 {
-  v2 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-  v3 = [v2 cursorLocation];
+  zhuyinInputManager = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+  cursorLocation = [zhuyinInputManager cursorLocation];
 
-  return v3;
+  return cursorLocation;
 }
 
-- (id)handleKeyboardInput:(id)a3
+- (id)handleKeyboardInput:(id)input
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
-  v6 = [v5 handleKeyboardInput:v4];
+  inputCopy = input;
+  composingKeyboardInputManager = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
+  v6 = [composingKeyboardInputManager handleKeyboardInput:inputCopy];
 
   if (!v6)
   {
     v8.receiver = self;
     v8.super_class = TIKeyboardInputManager_zh_RetroCorrection;
-    v6 = [(TIKeyboardInputManagerChinesePhonetic *)&v8 handleKeyboardInput:v4];
+    v6 = [(TIKeyboardInputManagerChinesePhonetic *)&v8 handleKeyboardInput:inputCopy];
   }
 
   return v6;
@@ -156,26 +156,26 @@
 - (void)clearInput
 {
   [(TIKeyboardInputManager_zh_RetroCorrection *)self setDefaultCandidate:0];
-  v3 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-  [v3 reset];
+  zhuyinInputManager = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+  [zhuyinInputManager reset];
 
   v4.receiver = self;
   v4.super_class = TIKeyboardInputManager_zh_RetroCorrection;
   [(TIKeyboardInputManagerChinesePhonetic *)&v4 clearInput];
 }
 
-- (id)groupedCandidatesFromCandidates:(id)a3 usingSortingMethod:(id)a4
+- (id)groupedCandidatesFromCandidates:(id)candidates usingSortingMethod:(id)method
 {
   v31 = *MEMORY[0x29EDCA608];
-  v6 = a4;
+  methodCopy = method;
   v29.receiver = self;
   v29.super_class = TIKeyboardInputManager_zh_RetroCorrection;
-  v7 = [(TIKeyboardInputManagerChinese *)&v29 groupedCandidatesFromCandidates:a3 usingSortingMethod:v6];
-  v8 = [(TIKeyboardInputManager_zh_RetroCorrection *)self inputString];
-  if ([v6 integerValue] == 1 && v8)
+  v7 = [(TIKeyboardInputManagerChinese *)&v29 groupedCandidatesFromCandidates:candidates usingSortingMethod:methodCopy];
+  inputString = [(TIKeyboardInputManager_zh_RetroCorrection *)self inputString];
+  if ([methodCopy integerValue] == 1 && inputString)
   {
     v20 = v7;
-    v21 = v6;
+    v21 = methodCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -196,15 +196,15 @@
           }
 
           v13 = *(*(&v25 + 1) + 8 * i);
-          v14 = [v13 candidates];
+          candidates = [v13 candidates];
           v15 = MEMORY[0x29EDBA0A8];
           v23[0] = MEMORY[0x29EDCA5F8];
           v23[1] = 3221225472;
           v23[2] = __96__TIKeyboardInputManager_zh_RetroCorrection_groupedCandidatesFromCandidates_usingSortingMethod___block_invoke;
           v23[3] = &unk_29F37D3F0;
-          v24 = v8;
+          v24 = inputString;
           v16 = [v15 predicateWithBlock:v23];
-          v17 = [v14 filteredOrderedSetUsingPredicate:v16];
+          v17 = [candidates filteredOrderedSetUsingPredicate:v16];
           [v13 setCandidates:v17];
         }
 
@@ -215,7 +215,7 @@
     }
 
     v7 = v20;
-    v6 = v21;
+    methodCopy = v21;
   }
 
   v18 = *MEMORY[0x29EDCA608];
@@ -223,13 +223,13 @@
   return v7;
 }
 
-- (id)didAcceptCandidate:(id)a3
+- (id)didAcceptCandidate:(id)candidate
 {
   v10.receiver = self;
   v10.super_class = TIKeyboardInputManager_zh_RetroCorrection;
-  v4 = [(TIKeyboardInputManagerChinesePhonetic *)&v10 didAcceptCandidate:a3];
-  v5 = [(TIKeyboardInputManagerChinesePhonetic *)self remainingInput];
-  v6 = [v5 length];
+  v4 = [(TIKeyboardInputManagerChinesePhonetic *)&v10 didAcceptCandidate:candidate];
+  remainingInput = [(TIKeyboardInputManagerChinesePhonetic *)self remainingInput];
+  v6 = [remainingInput length];
 
   if (!v6)
   {
@@ -251,42 +251,42 @@
   return v7;
 }
 
-- (void)addInputToInternal:(id)a3
+- (void)addInputToInternal:(id)internal
 {
-  v6 = a3;
-  if ([v6 length] == 1)
+  internalCopy = internal;
+  if ([internalCopy length] == 1)
   {
-    [(TIKeyboardInputManager_zh_RetroCorrection *)self _addInputToInternal:v6];
+    [(TIKeyboardInputManager_zh_RetroCorrection *)self _addInputToInternal:internalCopy];
   }
 
-  else if ([v6 length])
+  else if ([internalCopy length])
   {
     v4 = 0;
     do
     {
-      v5 = [v6 substringWithRange:{v4, 1}];
+      v5 = [internalCopy substringWithRange:{v4, 1}];
       [(TIKeyboardInputManager_zh_RetroCorrection *)self _addInputToInternal:v5];
 
       ++v4;
     }
 
-    while (v4 < [v6 length]);
+    while (v4 < [internalCopy length]);
   }
 }
 
-- (id)deleteFromInput:(unint64_t *)a3
+- (id)deleteFromInput:(unint64_t *)input
 {
-  v5 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-  [v5 deleteFromInput];
+  zhuyinInputManager = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+  [zhuyinInputManager deleteFromInput];
 
-  if (a3)
+  if (input)
   {
-    *a3 = 1;
+    *input = 1;
   }
 
-  v6 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-  v7 = [v6 inputBuffer];
-  v8 = [v7 length];
+  zhuyinInputManager2 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+  inputBuffer = [zhuyinInputManager2 inputBuffer];
+  v8 = [inputBuffer length];
 
   if (!v8)
   {
@@ -298,33 +298,33 @@
 
 - (BOOL)supportsCandidateGeneration
 {
-  v2 = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
-  v3 = v2 == 0;
+  composingKeyboardInputManager = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
+  v3 = composingKeyboardInputManager == 0;
 
   return v3;
 }
 
-- (void)_addInputToInternal:(id)a3
+- (void)_addInputToInternal:(id)internal
 {
-  v7 = a3;
-  v4 = [MEMORY[0x29EDB9F50] zhuyinCharacterSet];
-  v5 = TIStringContainsCharacterFromSet(v7, v4);
+  internalCopy = internal;
+  zhuyinCharacterSet = [MEMORY[0x29EDB9F50] zhuyinCharacterSet];
+  v5 = TIStringContainsCharacterFromSet(internalCopy, zhuyinCharacterSet);
 
   if (v5)
   {
-    v6 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-    [v6 addZhuyinInput:v7];
+    zhuyinInputManager = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+    [zhuyinInputManager addZhuyinInput:internalCopy];
   }
 
   else
   {
-    if ([v7 isEqualToString:@" "])
+    if ([internalCopy isEqualToString:@" "])
     {
       goto LABEL_6;
     }
 
-    v6 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-    [v6 addNonZhuyinInput:v7];
+    zhuyinInputManager = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+    [zhuyinInputManager addNonZhuyinInput:internalCopy];
   }
 
 LABEL_6:
@@ -339,55 +339,55 @@ LABEL_6:
     goto LABEL_26;
   }
 
-  v3 = [(TIKeyboardInputManager_zh_RetroCorrection *)self rawInputString];
-  if (![v3 length])
+  rawInputString = [(TIKeyboardInputManager_zh_RetroCorrection *)self rawInputString];
+  if (![rawInputString length])
   {
     goto LABEL_25;
   }
 
-  v4 = [(TIKeyboardInputManagerMecabra *)self geometryModelData];
+  geometryModelData = [(TIKeyboardInputManagerMecabra *)self geometryModelData];
   v5 = objc_alloc(MEMORY[0x29EDC7148]);
-  v6 = [(TIKeyboardInputManagerChinese *)self wordSearch];
-  v7 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-  v8 = [(TIKeyboardInputManagerChinesePhonetic *)self logger];
+  wordSearch = [(TIKeyboardInputManagerChinese *)self wordSearch];
+  composingInput = [(TIKeyboardInputManagerMecabra *)self composingInput];
+  logger = [(TIKeyboardInputManagerChinesePhonetic *)self logger];
   LOBYTE(v31) = 1;
   BYTE2(v30) = 0;
   LOWORD(v30) = 1;
-  v9 = [v5 initWithWordSearch:v6 inputString:v3 keyboardInput:v7 segmentBreakIndex:0x7FFFFFFFFFFFFFFFLL disambiguationCandidates:0 unambiguousSyllableCount:0 selectedDisambiguationCandidateIndex:0x7FFFFFFFFFFFFFFFLL regenerateDisambiguationCandidates:v30 predictionEnabled:0 reanalysisMode:0 target:v4 action:v31 geometryModelData:v8 hardwareKeyboardMode:? logger:?];
+  v9 = [v5 initWithWordSearch:wordSearch inputString:rawInputString keyboardInput:composingInput segmentBreakIndex:0x7FFFFFFFFFFFFFFFLL disambiguationCandidates:0 unambiguousSyllableCount:0 selectedDisambiguationCandidateIndex:0x7FFFFFFFFFFFFFFFLL regenerateDisambiguationCandidates:v30 predictionEnabled:0 reanalysisMode:0 target:geometryModelData action:v31 geometryModelData:logger hardwareKeyboardMode:? logger:?];
 
-  v10 = [v9 results];
+  results = [v9 results];
 
-  if (!v10)
+  if (!results)
   {
-    v11 = [(TIKeyboardInputManagerChinese *)self wordSearch];
-    [v11 performOperationAsync:v9];
+    wordSearch2 = [(TIKeyboardInputManagerChinese *)self wordSearch];
+    [wordSearch2 performOperationAsync:v9];
 
     [v9 waitUntilFinished];
   }
 
-  v12 = [v9 results];
-  v13 = [v12 candidates];
-  v14 = [v13 count];
+  results2 = [v9 results];
+  candidates = [results2 candidates];
+  v14 = [candidates count];
 
   if (!v14)
   {
-    v28 = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
-    [v28 cancelComposition];
+    composingKeyboardInputManager = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
+    [composingKeyboardInputManager cancelComposition];
 
     goto LABEL_24;
   }
 
-  v32 = v4;
-  v33 = v3;
+  v32 = geometryModelData;
+  v33 = rawInputString;
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v15 = [v9 results];
-  v16 = [v15 candidates];
+  results3 = [v9 results];
+  candidates2 = [results3 candidates];
 
-  obj = v16;
-  v17 = [v16 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  obj = candidates2;
+  v17 = [candidates2 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (!v17)
   {
     goto LABEL_22;
@@ -409,22 +409,22 @@ LABEL_6:
       {
 LABEL_21:
         [(TIKeyboardInputManager_zh_RetroCorrection *)self setDefaultCandidate:v21];
-        v27 = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
-        [v27 updateWithCandidate:v21 isWholeInputCandidate:1];
+        zhuyinInputManager = [(TIKeyboardInputManager_zh_RetroCorrection *)self zhuyinInputManager];
+        [zhuyinInputManager updateWithCandidate:v21 isWholeInputCandidate:1];
 
         goto LABEL_22;
       }
 
-      v22 = [v21 candidate];
-      if ([v22 _containsBopomofoOnly])
+      candidate = [v21 candidate];
+      if ([candidate _containsBopomofoOnly])
       {
         goto LABEL_17;
       }
 
-      v23 = [v21 input];
+      input = [v21 input];
       v24 = v9;
-      v25 = [v9 inputString];
-      if (([v23 isEqualToString:v25] & 1) == 0)
+      inputString = [v9 inputString];
+      if (([input isEqualToString:inputString] & 1) == 0)
       {
 
         v9 = v24;
@@ -433,10 +433,10 @@ LABEL_17:
         continue;
       }
 
-      v26 = [v21 hasUnsupportedReading];
+      hasUnsupportedReading = [v21 hasUnsupportedReading];
 
       v9 = v24;
-      if ((v26 & 1) == 0)
+      if ((hasUnsupportedReading & 1) == 0)
       {
         goto LABEL_21;
       }
@@ -454,8 +454,8 @@ LABEL_17:
 LABEL_22:
 
   [(TIKeyboardInputManager_zh_RetroCorrection *)self setMarkedText];
-  v4 = v32;
-  v3 = v33;
+  geometryModelData = v32;
+  rawInputString = v33;
 LABEL_24:
 
 LABEL_25:

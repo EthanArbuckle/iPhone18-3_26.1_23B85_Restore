@@ -1,7 +1,7 @@
 @interface BlurViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC10Blackbeard18BlurViewController)initWithCoder:(id)a3;
-- (_TtC10Blackbeard18BlurViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10Blackbeard18BlurViewController)initWithCoder:(id)coder;
+- (_TtC10Blackbeard18BlurViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -21,11 +21,11 @@
   return v6;
 }
 
-- (_TtC10Blackbeard18BlurViewController)initWithCoder:(id)a3
+- (_TtC10Blackbeard18BlurViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC10Blackbeard18BlurViewController_blurView;
-  v5 = [objc_opt_self() effectWithStyle_];
-  v6 = [objc_allocWithZone(MEMORY[0x1E69DD298]) initWithEffect_];
+  effectWithStyle_ = [objc_opt_self() effectWithStyle_];
+  initWithEffect_ = [objc_allocWithZone(MEMORY[0x1E69DD298]) initWithEffect_];
 
   v7 = sub_1E65E6508();
   *(&self->super.super.super.isa + v4) = v7;
@@ -36,11 +36,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E630B96C();
 }
 
-- (_TtC10Blackbeard18BlurViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10Blackbeard18BlurViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

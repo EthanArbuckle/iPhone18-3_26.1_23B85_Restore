@@ -26,7 +26,7 @@
   *uu2 = 0;
   v7 = 0;
   v4 = a3;
-  [a1 getUUIDBytes:uu1];
+  [self getUUIDBytes:uu1];
   [v4 getUUIDBytes:uu2];
 
   return uuid_compare(uu1, uu2);
@@ -37,7 +37,7 @@
   v3[2] = *MEMORY[0x1E69E9840];
   v3[0] = 0;
   v3[1] = 0;
-  [a1 getUUIDBytes:v3];
+  [self getUUIDBytes:v3];
   v1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02X%02X", LOBYTE(v3[0]), BYTE1(v3[0])];
 
   return v1;

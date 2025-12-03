@@ -1,6 +1,6 @@
 @interface HMDShortcutActionModel
 + (id)properties;
-- (void)loadModelWithActionInformation:(id)a3;
+- (void)loadModelWithActionInformation:(id)information;
 @end
 
 @implementation HMDShortcutActionModel
@@ -8,7 +8,7 @@
 + (id)properties
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___HMDShortcutActionModel;
   v2 = objc_msgSendSuper2(&v10, sel_properties);
   v3 = [v2 mutableCopy];
@@ -26,13 +26,13 @@
   return v7;
 }
 
-- (void)loadModelWithActionInformation:(id)a3
+- (void)loadModelWithActionInformation:(id)information
 {
   v6.receiver = self;
   v6.super_class = HMDShortcutActionModel;
-  v4 = a3;
-  [(HMDActionModel *)&v6 loadModelWithActionInformation:v4];
-  v5 = [v4 hmf_dataForKey:{*MEMORY[0x277CD1598], v6.receiver, v6.super_class}];
+  informationCopy = information;
+  [(HMDActionModel *)&v6 loadModelWithActionInformation:informationCopy];
+  v5 = [informationCopy hmf_dataForKey:{*MEMORY[0x277CD1598], v6.receiver, v6.super_class}];
 
   [(HMDShortcutActionModel *)self setData:v5];
 }

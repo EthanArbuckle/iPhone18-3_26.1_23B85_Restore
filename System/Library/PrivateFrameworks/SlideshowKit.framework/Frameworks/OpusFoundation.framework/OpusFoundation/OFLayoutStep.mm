@@ -1,10 +1,10 @@
 @interface OFLayoutStep
-+ (BOOL)_parseCGPoint:(CGPoint *)a3 withScanner:(id)a4;
-+ (id)_stepFrom1DString:(id)a3 targetView:(id)a4 anchorView:(id)a5;
-+ (id)_stepsFrom2DString:(id)a3 targetView:(id)a4 anchorView:(id)a5;
-+ (id)stepForTarget:(id)a3 attribute:(unint64_t)a4 sizeMultiplier:(double)a5 relatedBy:(int64_t)a6 toAnchorView:(id)a7 attribute:(unint64_t)a8 sizeMultiplier:(double)a9 multiplier:(double)a10 constant:(double)a11;
-+ (id)stepsFromString:(id)a3 targetView:(id)a4 anchorView:(id)a5;
-+ (unint64_t)layoutAttributeFromScanner:(id)a3;
++ (BOOL)_parseCGPoint:(CGPoint *)point withScanner:(id)scanner;
++ (id)_stepFrom1DString:(id)string targetView:(id)view anchorView:(id)anchorView;
++ (id)_stepsFrom2DString:(id)string targetView:(id)view anchorView:(id)anchorView;
++ (id)stepForTarget:(id)target attribute:(unint64_t)attribute sizeMultiplier:(double)multiplier relatedBy:(int64_t)by toAnchorView:(id)view attribute:(unint64_t)a8 sizeMultiplier:(double)sizeMultiplier multiplier:(double)self0 constant:(double)self1;
++ (id)stepsFromString:(id)string targetView:(id)view anchorView:(id)anchorView;
++ (unint64_t)layoutAttributeFromScanner:(id)scanner;
 - (OFLayoutStep)init;
 - (void)run;
 @end
@@ -233,49 +233,49 @@ LABEL_47:
   layoutInfo->var0.size.height = v29;
 }
 
-+ (id)stepForTarget:(id)a3 attribute:(unint64_t)a4 sizeMultiplier:(double)a5 relatedBy:(int64_t)a6 toAnchorView:(id)a7 attribute:(unint64_t)a8 sizeMultiplier:(double)a9 multiplier:(double)a10 constant:(double)a11
++ (id)stepForTarget:(id)target attribute:(unint64_t)attribute sizeMultiplier:(double)multiplier relatedBy:(int64_t)by toAnchorView:(id)view attribute:(unint64_t)a8 sizeMultiplier:(double)sizeMultiplier multiplier:(double)self0 constant:(double)self1
 {
-  if (a3)
+  if (target)
   {
     result = objc_alloc_init(objc_opt_class());
-    *(result + 1) = a3;
-    *(result + 2) = a4;
-    *(result + 3) = a5;
-    *(result + 4) = a6;
-    *(result + 5) = a7;
+    *(result + 1) = target;
+    *(result + 2) = attribute;
+    *(result + 3) = multiplier;
+    *(result + 4) = by;
+    *(result + 5) = view;
     *(result + 6) = a8;
-    *(result + 7) = a9;
+    *(result + 7) = sizeMultiplier;
     *(result + 8) = a10;
-    *(result + 9) = a11;
+    *(result + 9) = constant;
   }
 
   else
   {
-    NSLog(&cfstr_STargetviewMus.isa, a2, 0, a4, a6, a7, a8, a5, a9, a10, a11, "+[OFLayoutStep stepForTarget:attribute:sizeMultiplier:relatedBy:toAnchorView:attribute:sizeMultiplier:multiplier:constant:]");
+    NSLog(&cfstr_STargetviewMus.isa, a2, 0, attribute, by, view, a8, multiplier, sizeMultiplier, a10, constant, "+[OFLayoutStep stepForTarget:attribute:sizeMultiplier:relatedBy:toAnchorView:attribute:sizeMultiplier:multiplier:constant:]");
     return 0;
   }
 
   return result;
 }
 
-+ (id)stepsFromString:(id)a3 targetView:(id)a4 anchorView:(id)a5
++ (id)stepsFromString:(id)string targetView:(id)view anchorView:(id)anchorView
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (view)
   {
     v9 = [MEMORY[0x277CCAC80] scannerWithString:?];
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v12 = 0;
     if ([v9 scanString:@"t.size" intoString:&v12] & 1) != 0 || (objc_msgSend(v9, "scanString:intoString:", @"t.location", &v12) & 1) != 0 || (objc_msgSend(v9, "scanString:intoString:", @"t.x", &v12) & 1) != 0 || (objc_msgSend(v9, "scanString:intoString:", @"t.y", &v12) & 1) != 0 || (objc_msgSend(v9, "scanString:intoString:", @"t.width", &v12) & 1) != 0 || (objc_msgSend(v9, "scanString:intoString:", @"t.height", &v12))
     {
       if (([v12 isEqualToString:@"t.size"] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"t.location"))
       {
-        return [a1 _stepsFrom2DString:a3 targetView:a4 anchorView:a5];
+        return [self _stepsFrom2DString:string targetView:view anchorView:anchorView];
       }
 
       else
       {
-        result = [a1 _stepFrom1DString:a3 targetView:a4 anchorView:a5];
+        result = [self _stepFrom1DString:string targetView:view anchorView:anchorView];
         if (result)
         {
           v13[0] = result;
@@ -287,27 +287,27 @@ LABEL_47:
     else
     {
       NSLog(&cfstr_SLayoutStringM.isa, "+[OFLayoutStep stepsFromString:targetView:anchorView:]");
-      return [v10 copy];
+      return [array copy];
     }
   }
 
   else
   {
-    NSLog(&cfstr_STargetviewCan.isa, a2, a3, 0, a5, "+[OFLayoutStep stepsFromString:targetView:anchorView:]");
+    NSLog(&cfstr_STargetviewCan.isa, a2, string, 0, anchorView, "+[OFLayoutStep stepsFromString:targetView:anchorView:]");
     return 0;
   }
 
   return result;
 }
 
-+ (id)_stepFrom1DString:(id)a3 targetView:(id)a4 anchorView:(id)a5
++ (id)_stepFrom1DString:(id)string targetView:(id)view anchorView:(id)anchorView
 {
   v9 = objc_alloc_init(objc_opt_class());
-  v9[1] = a4;
-  v9[5] = a5;
-  v10 = [MEMORY[0x277CCAC80] scannerWithString:a3];
+  v9[1] = view;
+  v9[5] = anchorView;
+  v10 = [MEMORY[0x277CCAC80] scannerWithString:string];
   [v10 scanString:@"t." intoString:0];
-  v9[2] = [a1 layoutAttributeFromScanner:v10];
+  v9[2] = [self layoutAttributeFromScanner:v10];
   if ([v10 scanString:@"(" intoString:0)]
   {
     if (([v10 scanDouble:v9 + 3] & 1) == 0)
@@ -345,7 +345,7 @@ LABEL_47:
   v9[4] = v12;
   if ([v10 scanString:@"a." intoString:0])
   {
-    v9[6] = [a1 layoutAttributeFromScanner:v10];
+    v9[6] = [self layoutAttributeFromScanner:v10];
     if (![v10 scanString:@"(" intoString:0)]
     {
 LABEL_13:
@@ -397,16 +397,16 @@ LABEL_15:
   return v9;
 }
 
-+ (id)_stepsFrom2DString:(id)a3 targetView:(id)a4 anchorView:(id)a5
++ (id)_stepsFrom2DString:(id)string targetView:(id)view anchorView:(id)anchorView
 {
   v30[2] = *MEMORY[0x277D85DE8];
   v9 = objc_alloc_init(objc_opt_class());
-  v9[1] = a4;
-  v9[5] = a5;
+  v9[1] = view;
+  v9[5] = anchorView;
   v10 = objc_alloc_init(objc_opt_class());
-  v10[1] = a4;
-  v10[5] = a5;
-  v11 = [MEMORY[0x277CCAC80] scannerWithString:a3];
+  v10[1] = view;
+  v10[5] = anchorView;
+  v11 = [MEMORY[0x277CCAC80] scannerWithString:string];
   [v11 scanString:@"t." intoString:0];
   if ([v11 scanString:@"size" intoString:0])
   {
@@ -431,7 +431,7 @@ LABEL_15:
   v10[2] = v12;
   v28 = 0;
   v29 = 0;
-  if ([a1 _parseCGPoint:&v28 withScanner:v11])
+  if ([self _parseCGPoint:&v28 withScanner:v11])
   {
     v16 = v29;
     v9[3] = v28;
@@ -469,7 +469,7 @@ LABEL_15:
     v10[6] = v17;
     v26 = 0;
     v27 = 0;
-    if ([a1 _parseCGPoint:&v26 withScanner:v11])
+    if ([self _parseCGPoint:&v26 withScanner:v11])
     {
       v20 = v29;
       v9[7] = v28;
@@ -480,7 +480,7 @@ LABEL_15:
     {
       v24 = 0;
       v25 = 0;
-      if ([a1 _parseCGPoint:&v24 withScanner:v11])
+      if ([self _parseCGPoint:&v24 withScanner:v11])
       {
         v21 = v25;
         v9[8] = v24;
@@ -492,7 +492,7 @@ LABEL_15:
   v22 = [v11 scanString:@"+" intoString:0];
   v26 = 0;
   v27 = 0;
-  if (![a1 _parseCGPoint:&v26 withScanner:v11])
+  if (![self _parseCGPoint:&v26 withScanner:v11])
   {
     if (!v22)
     {
@@ -512,24 +512,24 @@ LABEL_24:
   return [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
 }
 
-+ (unint64_t)layoutAttributeFromScanner:(id)a3
++ (unint64_t)layoutAttributeFromScanner:(id)scanner
 {
-  if ([a3 scanString:@"x" intoString:0])
+  if ([scanner scanString:@"x" intoString:0])
   {
     return 1;
   }
 
-  if ([a3 scanString:@"y" intoString:0])
+  if ([scanner scanString:@"y" intoString:0])
   {
     return 2;
   }
 
-  if ([a3 scanString:@"width" intoString:0])
+  if ([scanner scanString:@"width" intoString:0])
   {
     return 3;
   }
 
-  if ([a3 scanString:@"height" intoString:0])
+  if ([scanner scanString:@"height" intoString:0])
   {
     return 4;
   }
@@ -537,18 +537,18 @@ LABEL_24:
   return 0;
 }
 
-+ (BOOL)_parseCGPoint:(CGPoint *)a3 withScanner:(id)a4
++ (BOOL)_parseCGPoint:(CGPoint *)point withScanner:(id)scanner
 {
-  v6 = objc_msgSend(a4, "scanString:intoString:", @"("), 0;
+  v6 = objc_msgSend(scanner, "scanString:intoString:", @"("), 0;
   if (v6)
   {
-    if ([a4 scanDouble:a3])
+    if ([scanner scanDouble:point])
     {
-      if ([a4 scanString:@" intoString:{", 0}])
+      if ([scanner scanString:@" intoString:{", 0}])
       {
-        if ([a4 scanDouble:&a3->y])
+        if ([scanner scanDouble:&point->y])
         {
-          if ([a4 scanString:@"" intoString:?], 0))
+          if ([scanner scanString:@"" intoString:?], 0))
           {
             LOBYTE(v6) = 1;
             return v6;

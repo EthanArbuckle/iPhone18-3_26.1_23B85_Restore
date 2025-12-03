@@ -1,10 +1,10 @@
 @interface PIParallaxInactiveStyleData
-+ (id)loadFromSerializedData:(id)a3 error:(id *)a4;
++ (id)loadFromSerializedData:(id)data error:(id *)error;
 - (CGSize)imageSize;
 - (PIParallaxInactiveStyleData)init;
-- (PIParallaxInactiveStyleData)initWithData:(id)a3 imageSize:(CGSize)a4 configuration:(id)a5 tuningParameters:(id)a6;
+- (PIParallaxInactiveStyleData)initWithData:(id)data imageSize:(CGSize)size configuration:(id)configuration tuningParameters:(id)parameters;
 - (id)description;
-- (id)serializedDataWithError:(id *)a3;
+- (id)serializedDataWithError:(id *)error;
 @end
 
 @implementation PIParallaxInactiveStyleData
@@ -18,10 +18,10 @@
   return result;
 }
 
-- (id)serializedDataWithError:(id *)a3
+- (id)serializedDataWithError:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!error)
   {
     v16 = NUAssertLogger_4909();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -43,8 +43,8 @@
         v24 = dispatch_get_specific(*v18);
         v25 = MEMORY[0x1E696AF00];
         v26 = v24;
-        v27 = [v25 callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v25 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v24;
         v32 = 2114;
@@ -55,8 +55,8 @@
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v23;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -90,7 +90,7 @@
     v13 = [v11 errorWithCode:1 reason:@"Failed to serialize style data" object:self underlyingError:v12];
     v14 = v13;
 
-    *a3 = v13;
+    *error = v13;
   }
 
   return v9;
@@ -100,27 +100,27 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PIParallaxInactiveStyleData *)self configuration];
-  v6 = [(PIParallaxInactiveStyleData *)self tuningParameters];
+  configuration = [(PIParallaxInactiveStyleData *)self configuration];
+  tuningParameters = [(PIParallaxInactiveStyleData *)self tuningParameters];
   [(PIParallaxInactiveStyleData *)self imageSize];
   v8 = v7;
   [(PIParallaxInactiveStyleData *)self imageSize];
   v10 = v9;
-  v11 = [(PIParallaxInactiveStyleData *)self data];
-  v12 = [v3 stringWithFormat:@"<%@:%p config: %@, tuning: %@, size: %fx%f data: [%lu bytes]>", v4, self, v5, v6, v8, v10, objc_msgSend(v11, "length")];
+  data = [(PIParallaxInactiveStyleData *)self data];
+  v12 = [v3 stringWithFormat:@"<%@:%p config: %@, tuning: %@, size: %fx%f data: [%lu bytes]>", v4, self, configuration, tuningParameters, v8, v10, objc_msgSend(data, "length")];
 
   return v12;
 }
 
-- (PIParallaxInactiveStyleData)initWithData:(id)a3 imageSize:(CGSize)a4 configuration:(id)a5 tuningParameters:(id)a6
+- (PIParallaxInactiveStyleData)initWithData:(id)data imageSize:(CGSize)size configuration:(id)configuration tuningParameters:(id)parameters
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v68 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  dataCopy = data;
+  configurationCopy = configuration;
+  parametersCopy = parameters;
+  if (!dataCopy)
   {
     v23 = NUAssertLogger_4909();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -131,7 +131,7 @@
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v25 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v27 = NUAssertLogger_4909();
     v28 = os_log_type_enabled(v27, OS_LOG_TYPE_ERROR);
@@ -139,11 +139,11 @@
     {
       if (v28)
       {
-        v46 = dispatch_get_specific(*v25);
+        v46 = dispatch_get_specific(*callStackSymbols);
         v47 = MEMORY[0x1E696AF00];
         v48 = v46;
-        v25 = [v47 callStackSymbols];
-        v49 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v47 callStackSymbols];
+        v49 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v65 = v46;
         v66 = 2114;
@@ -154,10 +154,10 @@
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v65 = v25;
+      v65 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -176,7 +176,7 @@
       _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v25 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v32 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v27 = NUAssertLogger_4909();
     v33 = os_log_type_enabled(v27, OS_LOG_TYPE_ERROR);
@@ -184,10 +184,10 @@
     {
       if (v33)
       {
-        v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v25 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v65 = v25;
+        v65 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -200,11 +200,11 @@ LABEL_32:
 LABEL_30:
     if (v33)
     {
-      v50 = dispatch_get_specific(*v25);
+      v50 = dispatch_get_specific(*callStackSymbols);
       v51 = MEMORY[0x1E696AF00];
       v52 = v50;
-      v25 = [v51 callStackSymbols];
-      v53 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v51 callStackSymbols];
+      v53 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v65 = v50;
       v66 = 2114;
@@ -215,7 +215,7 @@ LABEL_30:
     goto LABEL_32;
   }
 
-  if (!v12)
+  if (!configurationCopy)
   {
     v35 = NUAssertLogger_4909();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -226,7 +226,7 @@ LABEL_30:
       _os_log_error_impl(&dword_1C7694000, v35, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v25 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v37 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v27 = NUAssertLogger_4909();
     v38 = os_log_type_enabled(v27, OS_LOG_TYPE_ERROR);
@@ -234,10 +234,10 @@ LABEL_30:
     {
       if (v38)
       {
-        v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v25 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v65 = v25;
+        v65 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -250,11 +250,11 @@ LABEL_35:
 LABEL_33:
     if (v38)
     {
-      v54 = dispatch_get_specific(*v25);
+      v54 = dispatch_get_specific(*callStackSymbols);
       v55 = MEMORY[0x1E696AF00];
       v56 = v54;
-      v25 = [v55 callStackSymbols];
-      v57 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v55 callStackSymbols];
+      v57 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v65 = v54;
       v66 = 2114;
@@ -265,8 +265,8 @@ LABEL_33:
     goto LABEL_35;
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = parametersCopy;
+  if (!parametersCopy)
   {
     v40 = NUAssertLogger_4909();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -277,7 +277,7 @@ LABEL_33:
       _os_log_error_impl(&dword_1C7694000, v40, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v25 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v42 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v27 = NUAssertLogger_4909();
     v43 = os_log_type_enabled(v27, OS_LOG_TYPE_ERROR);
@@ -285,8 +285,8 @@ LABEL_33:
     {
       if (v43)
       {
-        v44 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v45 = [v44 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v45 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v65 = v45;
         _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -298,11 +298,11 @@ LABEL_33:
 LABEL_36:
     if (v43)
     {
-      v58 = dispatch_get_specific(*v25);
+      v58 = dispatch_get_specific(*callStackSymbols);
       v59 = MEMORY[0x1E696AF00];
       v60 = v58;
-      v61 = [v59 callStackSymbols];
-      v62 = [v61 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [v59 callStackSymbols];
+      v62 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v65 = v58;
       v66 = 2114;
@@ -318,13 +318,13 @@ LABEL_38:
   v63.receiver = self;
   v63.super_class = PIParallaxInactiveStyleData;
   v15 = [(PIParallaxInactiveStyleData *)&v63 init];
-  v16 = [v11 copy];
+  v16 = [dataCopy copy];
   data = v15->_data;
   v15->_data = v16;
 
   v15->_imageSize.width = width;
   v15->_imageSize.height = height;
-  v18 = [v12 copy];
+  v18 = [configurationCopy copy];
   configuration = v15->_configuration;
   v15->_configuration = v18;
 
@@ -376,8 +376,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -404,8 +404,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -423,11 +423,11 @@ LABEL_14:
   }
 }
 
-+ (id)loadFromSerializedData:(id)a3 error:(id *)a4
++ (id)loadFromSerializedData:(id)data error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v21 = NUAssertLogger_4909();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -438,7 +438,7 @@ LABEL_14:
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v23 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v25 = NUAssertLogger_4909();
     v26 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
@@ -446,11 +446,11 @@ LABEL_14:
     {
       if (v26)
       {
-        v34 = dispatch_get_specific(*v23);
+        v34 = dispatch_get_specific(*callStackSymbols);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v23 = [v35 callStackSymbols];
-        v37 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v37 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v34;
         v46 = 2114;
@@ -461,10 +461,10 @@ LABEL_14:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v45 = v23;
+      v45 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -472,7 +472,7 @@ LABEL_14:
     goto LABEL_40;
   }
 
-  if (!a4)
+  if (!error)
   {
     v28 = NUAssertLogger_4909();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -483,7 +483,7 @@ LABEL_14:
       _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v23 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v30 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v25 = NUAssertLogger_4909();
     v31 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
@@ -491,8 +491,8 @@ LABEL_14:
     {
       if (v31)
       {
-        v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v33 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v45 = v33;
         _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -504,11 +504,11 @@ LABEL_14:
 LABEL_40:
     if (v31)
     {
-      v38 = dispatch_get_specific(*v23);
+      v38 = dispatch_get_specific(*callStackSymbols);
       v39 = MEMORY[0x1E696AF00];
       v40 = v38;
-      v41 = [v39 callStackSymbols];
-      v42 = [v41 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v39 callStackSymbols];
+      v42 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v45 = v38;
       v46 = 2114;
@@ -521,16 +521,16 @@ LABEL_42:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
+  v7 = dataCopy;
   v43 = 0;
-  v8 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:&v43];
+  v8 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:0 error:&v43];
   v9 = v43;
   if (!v8)
   {
     v19 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to deserialize style data" object:v7 underlyingError:v9];
 LABEL_13:
     v18 = 0;
-    *a4 = v19;
+    *error = v19;
     goto LABEL_24;
   }
 
@@ -564,41 +564,41 @@ LABEL_13:
             [v10 doubleValue];
             v16 = v15;
             [v11 doubleValue];
-            v18 = [[a1 alloc] initWithData:v14 imageSize:v12 configuration:v13 tuningParameters:{v16, v17}];
+            v18 = [[self alloc] initWithData:v14 imageSize:v12 configuration:v13 tuningParameters:{v16, v17}];
           }
 
           else
           {
             [MEMORY[0x1E69B3A48] invalidError:@"Invalid style data (data)" object:v14];
-            *a4 = v18 = 0;
+            *error = v18 = 0;
           }
         }
 
         else
         {
           [MEMORY[0x1E69B3A48] invalidError:@"Invalid style data (params)" object:v13];
-          *a4 = v18 = 0;
+          *error = v18 = 0;
         }
       }
 
       else
       {
         [MEMORY[0x1E69B3A48] invalidError:@"Invalid style data (config)" object:v12];
-        *a4 = v18 = 0;
+        *error = v18 = 0;
       }
     }
 
     else
     {
       [MEMORY[0x1E69B3A48] invalidError:@"Invalid style data (height)" object:v11];
-      *a4 = v18 = 0;
+      *error = v18 = 0;
     }
   }
 
   else
   {
     [MEMORY[0x1E69B3A48] invalidError:@"Invalid style data (width)" object:v10];
-    *a4 = v18 = 0;
+    *error = v18 = 0;
   }
 
 LABEL_24:

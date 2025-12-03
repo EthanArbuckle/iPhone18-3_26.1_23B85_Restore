@@ -1,11 +1,11 @@
 @interface UNNotificationOnboardingNavigationController
-- (UNNotificationOnboardingNavigationController)initWithCoder:(id)a3;
-- (UNNotificationOnboardingNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (UNNotificationOnboardingNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (UNNotificationOnboardingNavigationController)initWithRootViewController:(id)a3;
+- (UNNotificationOnboardingNavigationController)initWithCoder:(id)coder;
+- (UNNotificationOnboardingNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (UNNotificationOnboardingNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (UNNotificationOnboardingNavigationController)initWithRootViewController:(id)controller;
 - (UNNotificationOnboardingNavigationControllerDelegate)onboardingDelegate;
-- (void)onboardingController:(id)a3 requestsPushingTo:(id)a4;
-- (void)onboardingControllerRequestsGoingBack:(id)a3;
+- (void)onboardingController:(id)controller requestsPushingTo:(id)to;
+- (void)onboardingControllerRequestsGoingBack:(id)back;
 @end
 
 @implementation UNNotificationOnboardingNavigationController
@@ -17,15 +17,15 @@
   return Strong;
 }
 
-- (UNNotificationOnboardingNavigationController)initWithRootViewController:(id)a3
+- (UNNotificationOnboardingNavigationController)initWithRootViewController:(id)controller
 {
   swift_unknownObjectWeakInit();
   v6.receiver = self;
   v6.super_class = UNNotificationOnboardingNavigationController;
-  return [(UNNotificationOnboardingNavigationController *)&v6 initWithRootViewController:a3];
+  return [(UNNotificationOnboardingNavigationController *)&v6 initWithRootViewController:controller];
 }
 
-- (UNNotificationOnboardingNavigationController)initWithCoder:(id)a3
+- (UNNotificationOnboardingNavigationController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = sub_270A89450();
@@ -33,33 +33,33 @@
   return result;
 }
 
-- (UNNotificationOnboardingNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (UNNotificationOnboardingNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (UNNotificationOnboardingNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (UNNotificationOnboardingNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)onboardingControllerRequestsGoingBack:(id)a3
+- (void)onboardingControllerRequestsGoingBack:(id)back
 {
-  v4 = a3;
-  v5 = self;
+  backCopy = back;
+  selfCopy = self;
   _sSo44UNNotificationOnboardingNavigationControllerC20UserNotificationsKitE010onboardingD17RequestsGoingBackyySo0abD0_So06UIViewD0CXcF_0();
 }
 
-- (void)onboardingController:(id)a3 requestsPushingTo:(id)a4
+- (void)onboardingController:(id)controller requestsPushingTo:(id)to
 {
-  v5 = a4;
-  v6 = self;
-  [v5 setDelegate_];
-  [(UNNotificationOnboardingNavigationController *)v6 pushViewController:v5 animated:1];
+  toCopy = to;
+  selfCopy = self;
+  [toCopy setDelegate_];
+  [(UNNotificationOnboardingNavigationController *)selfCopy pushViewController:toCopy animated:1];
 }
 
 @end

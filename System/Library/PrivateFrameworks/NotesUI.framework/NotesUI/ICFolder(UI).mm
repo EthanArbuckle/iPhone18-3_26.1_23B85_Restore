@@ -15,9 +15,9 @@
   v23 = *MEMORY[0x1E69E9840];
   v3 = a3;
   v4 = MEMORY[0x1E69B7760];
-  v5 = [v3 standardizedContent];
-  v6 = [v3 account];
-  v7 = [v4 visibleSmartFoldersForHashtagStandardizedContent:v5 account:v6];
+  standardizedContent = [v3 standardizedContent];
+  account = [v3 account];
+  v7 = [v4 visibleSmartFoldersForHashtagStandardizedContent:standardizedContent account:account];
 
   v20 = 0u;
   v21 = 0u;
@@ -39,15 +39,15 @@
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 smartFolderQuery];
-        v15 = [v3 standardizedContent];
-        v16 = [v14 removingTagIdentifier:v15];
+        smartFolderQuery = [v13 smartFolderQuery];
+        standardizedContent2 = [v3 standardizedContent];
+        v16 = [smartFolderQuery removingTagIdentifier:standardizedContent2];
         [v13 setSmartFolderQuery:v16];
 
         [v13 updateChangeCountWithReason:@"Removed tag"];
-        v17 = [v13 smartFolderQuery];
+        smartFolderQuery2 = [v13 smartFolderQuery];
 
-        if (!v17)
+        if (!smartFolderQuery2)
         {
           [v13 markForDeletion];
         }
@@ -64,9 +64,9 @@
 {
   v3 = a3;
   v4 = MEMORY[0x1E69B7760];
-  v5 = [v3 standardizedContent];
-  v6 = [v3 account];
-  v7 = [v4 visibleSmartFoldersForHashtagStandardizedContent:v5 account:v6];
+  standardizedContent = [v3 standardizedContent];
+  account = [v3 account];
+  v7 = [v4 visibleSmartFoldersForHashtagStandardizedContent:standardizedContent account:account];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -110,13 +110,13 @@
 
           v10 = *(*(&v45 + 1) + 8 * i);
           v11 = MEMORY[0x1E69B7760];
-          v12 = [v10 standardizedContent];
-          v13 = [v10 account];
-          v14 = [v11 visibleSmartFoldersForHashtagStandardizedContent:v12 account:v13];
+          standardizedContent = [v10 standardizedContent];
+          account = [v10 account];
+          v14 = [v11 visibleSmartFoldersForHashtagStandardizedContent:standardizedContent account:account];
 
           [v4 ic_addObjectsFromNonNilArray:v14];
-          v15 = [v10 standardizedContent];
-          [v5 ic_addNonNilObject:v15];
+          standardizedContent2 = [v10 standardizedContent];
+          [v5 ic_addNonNilObject:standardizedContent2];
         }
 
         v7 = [obj countByEnumeratingWithState:&v45 objects:v50 count:16];
@@ -145,26 +145,26 @@
           }
 
           v19 = *(*(&v41 + 1) + 8 * j);
-          v20 = [v19 smartFolderQuery];
-          v21 = [v19 managedObjectContext];
-          v22 = [v19 account];
-          v23 = [v22 objectID];
-          v24 = [v20 filterSelectionWithManagedObjectContext:v21 account:v23];
+          smartFolderQuery = [v19 smartFolderQuery];
+          managedObjectContext = [v19 managedObjectContext];
+          account2 = [v19 account];
+          objectID = [account2 objectID];
+          v24 = [smartFolderQuery filterSelectionWithManagedObjectContext:managedObjectContext account:objectID];
 
           objc_opt_class();
           v25 = [v24 filterTypeSelectionForFilterType:0];
           v26 = ICDynamicCast();
 
           v27 = MEMORY[0x1E695DFD8];
-          v28 = [v26 tagIdentifiers];
-          v29 = [v27 setWithArray:v28];
+          tagIdentifiers = [v26 tagIdentifiers];
+          v29 = [v27 setWithArray:tagIdentifiers];
           v30 = [MEMORY[0x1E695DFD8] setWithArray:v5];
           v31 = [v29 isSubsetOfSet:v30];
 
           if (v31)
           {
-            v32 = [v24 filterTypeSelections];
-            v33 = [v32 count];
+            filterTypeSelections = [v24 filterTypeSelections];
+            v33 = [filterTypeSelections count];
 
             if (v33 == 1)
             {
@@ -193,57 +193,57 @@
 
 - (__CFString)systemImageName
 {
-  if ([a1 isTrashFolder])
+  if ([self isTrashFolder])
   {
-    v2 = @"trash";
+    defaultSystemImageName = @"trash";
   }
 
-  else if ([a1 isSmartFolder])
+  else if ([self isSmartFolder])
   {
-    v2 = @"gearshape";
+    defaultSystemImageName = @"gearshape";
   }
 
-  else if ([a1 isSharedViaICloud])
+  else if ([self isSharedViaICloud])
   {
-    v2 = @"folder.badge.person.crop";
+    defaultSystemImageName = @"folder.badge.person.crop";
   }
 
   else
   {
-    v2 = [objc_opt_class() defaultSystemImageName];
+    defaultSystemImageName = [objc_opt_class() defaultSystemImageName];
   }
 
-  return v2;
+  return defaultSystemImageName;
 }
 
 - (__CFString)filledSystemImageName
 {
-  if ([a1 isTrashFolder])
+  if ([self isTrashFolder])
   {
-    v2 = @"trash.fill";
+    defaultFilledSystemImageName = @"trash.fill";
   }
 
-  else if ([a1 isSmartFolder])
+  else if ([self isSmartFolder])
   {
-    v2 = @"gearshape.fill";
+    defaultFilledSystemImageName = @"gearshape.fill";
   }
 
-  else if ([a1 isSharedViaICloud])
+  else if ([self isSharedViaICloud])
   {
-    v2 = @"folder.fill.badge.person.crop";
+    defaultFilledSystemImageName = @"folder.fill.badge.person.crop";
   }
 
   else
   {
-    v2 = [objc_opt_class() defaultFilledSystemImageName];
+    defaultFilledSystemImageName = [objc_opt_class() defaultFilledSystemImageName];
   }
 
-  return v2;
+  return defaultFilledSystemImageName;
 }
 
 - (id)navigationBarIconOverlaySystemImage
 {
-  if ([a1 isTrashFolder])
+  if ([self isTrashFolder])
   {
     v2 = @"trash.fill";
 LABEL_7:
@@ -251,13 +251,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([a1 isSmartFolder])
+  if ([self isSmartFolder])
   {
     v2 = @"gearshape.fill";
     goto LABEL_7;
   }
 
-  if ([a1 isSharedViaICloud])
+  if ([self isSharedViaICloud])
   {
     v2 = @"person.crop.circle.fill";
     goto LABEL_7;
@@ -276,7 +276,7 @@ LABEL_8:
   v9[1] = 3221225472;
   v9[2] = __42__ICFolder_UI__navigationBarIconWithSize___block_invoke;
   v9[3] = &unk_1E8468C80;
-  v9[4] = a1;
+  v9[4] = self;
   *&v9[5] = a2;
   *&v9[6] = a3;
   v7 = [v6 imageWithActions:v9];

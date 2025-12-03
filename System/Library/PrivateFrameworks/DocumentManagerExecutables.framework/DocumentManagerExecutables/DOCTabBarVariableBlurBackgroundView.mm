@@ -1,5 +1,5 @@
 @interface DOCTabBarVariableBlurBackgroundView
-- (_TtC26DocumentManagerExecutables35DOCTabBarVariableBlurBackgroundView)initWithFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutables35DOCTabBarVariableBlurBackgroundView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DOCTabBarVariableBlurBackgroundView.layoutSubviews()();
 }
 
-- (_TtC26DocumentManagerExecutables35DOCTabBarVariableBlurBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables35DOCTabBarVariableBlurBackgroundView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

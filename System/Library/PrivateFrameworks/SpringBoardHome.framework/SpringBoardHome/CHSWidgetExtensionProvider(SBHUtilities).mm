@@ -21,8 +21,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a1 containers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  containers = [self containers];
+  v4 = [containers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -33,14 +33,14 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(containers);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) allExtensions];
-        [v2 unionSet:v8];
+        allExtensions = [*(*(&v10 + 1) + 8 * i) allExtensions];
+        [v2 unionSet:allExtensions];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [containers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -57,8 +57,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a1 sbh_extensions];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  sbh_extensions = [self sbh_extensions];
+  v4 = [sbh_extensions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -69,14 +69,14 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sbh_extensions);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) orderedWidgetDescriptors];
-        [v2 addObjectsFromArray:v8];
+        orderedWidgetDescriptors = [*(*(&v10 + 1) + 8 * i) orderedWidgetDescriptors];
+        [v2 addObjectsFromArray:orderedWidgetDescriptors];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [sbh_extensions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -93,8 +93,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a1 sbh_extensions];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sbh_extensions = [self sbh_extensions];
+  v4 = [sbh_extensions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -105,17 +105,17 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sbh_extensions);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 identity];
-        v10 = [v9 extensionBundleIdentifier];
-        v11 = [v8 orderedWidgetDescriptors];
-        [v2 setObject:v11 forKey:v10];
+        identity = [v8 identity];
+        extensionBundleIdentifier = [identity extensionBundleIdentifier];
+        orderedWidgetDescriptors = [v8 orderedWidgetDescriptors];
+        [v2 setObject:orderedWidgetDescriptors forKey:extensionBundleIdentifier];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [sbh_extensions countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -132,8 +132,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [a1 sbh_extensions];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  sbh_extensions = [self sbh_extensions];
+  v6 = [sbh_extensions countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -144,7 +144,7 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sbh_extensions);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
@@ -152,8 +152,8 @@
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v11 = [v10 orderedWidgetDescriptors];
-        v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        orderedWidgetDescriptors = [v10 orderedWidgetDescriptors];
+        v12 = [orderedWidgetDescriptors countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v12)
         {
           v13 = v12;
@@ -164,7 +164,7 @@
             {
               if (*v20 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(orderedWidgetDescriptors);
               }
 
               v16 = *(*(&v19 + 1) + 8 * j);
@@ -176,7 +176,7 @@
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v13 = [orderedWidgetDescriptors countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v13)
             {
               continue;
@@ -187,7 +187,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v7 = [sbh_extensions countByEnumeratingWithState:&v23 objects:v28 count:16];
       v17 = 0;
     }
 
@@ -206,22 +206,22 @@ LABEL_19:
 
 - (id)sbh_extensionForWidget:()SBHUtilities
 {
-  v4 = [a3 extensionIdentity];
-  v5 = [v4 extensionBundleIdentifier];
-  v6 = [a1 widgetExtensionContainerForExtensionBundleIdentifier:v5];
+  extensionIdentity = [a3 extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  v6 = [self widgetExtensionContainerForExtensionBundleIdentifier:extensionBundleIdentifier];
 
-  v7 = [v6 extensionForExtensionIdentity:v4];
+  v7 = [v6 extensionForExtensionIdentity:extensionIdentity];
 
   return v7;
 }
 
 - (id)sbh_extensionForWidgetIdentifiable:()SBHUtilities
 {
-  v4 = [a3 extensionIdentity];
-  v5 = [v4 extensionBundleIdentifier];
-  v6 = [a1 widgetExtensionContainerForExtensionBundleIdentifier:v5];
+  extensionIdentity = [a3 extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  v6 = [self widgetExtensionContainerForExtensionBundleIdentifier:extensionBundleIdentifier];
 
-  v7 = [v6 extensionForExtensionIdentity:v4];
+  v7 = [v6 extensionForExtensionIdentity:extensionIdentity];
 
   return v7;
 }
@@ -236,12 +236,12 @@ LABEL_19:
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v9 = [a1 sbh_extensions];
-  v30 = [v9 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  sbh_extensions = [self sbh_extensions];
+  v30 = [sbh_extensions countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v30)
   {
     v10 = *v41;
-    v32 = v9;
+    v32 = sbh_extensions;
     v29 = *v41;
     do
     {
@@ -250,7 +250,7 @@ LABEL_19:
       {
         if (*v41 != v10)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(sbh_extensions);
         }
 
         v31 = v11;
@@ -259,8 +259,8 @@ LABEL_19:
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v13 = [v12 orderedWidgetDescriptors];
-        v14 = [v13 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        orderedWidgetDescriptors = [v12 orderedWidgetDescriptors];
+        v14 = [orderedWidgetDescriptors countByEnumeratingWithState:&v36 objects:v44 count:16];
         if (v14)
         {
           v15 = v14;
@@ -273,24 +273,24 @@ LABEL_19:
             {
               if (*v37 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(orderedWidgetDescriptors);
               }
 
               v18 = *(*(&v36 + 1) + 8 * v17);
-              v19 = [v18 extensionIdentity];
-              v20 = [v18 kind];
-              if ([v20 isEqualToString:v8])
+              extensionIdentity = [v18 extensionIdentity];
+              kind = [v18 kind];
+              if ([kind isEqualToString:v8])
               {
-                v21 = [v19 extensionBundleIdentifier];
-                if ([v21 isEqualToString:v35])
+                extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+                if ([extensionBundleIdentifier isEqualToString:v35])
                 {
-                  [v19 containerBundleIdentifier];
+                  [extensionIdentity containerBundleIdentifier];
                   v22 = v16;
                   v23 = v8;
-                  v25 = v24 = v13;
+                  v25 = v24 = orderedWidgetDescriptors;
                   v26 = [v25 isEqualToString:v33];
 
-                  v13 = v24;
+                  orderedWidgetDescriptors = v24;
                   v8 = v23;
                   v16 = v22;
                   v15 = v34;
@@ -299,7 +299,7 @@ LABEL_19:
                   {
                     v27 = v18;
 
-                    v9 = v32;
+                    sbh_extensions = v32;
                     goto LABEL_22;
                   }
                 }
@@ -313,14 +313,14 @@ LABEL_19:
             }
 
             while (v15 != v17);
-            v15 = [v13 countByEnumeratingWithState:&v36 objects:v44 count:16];
+            v15 = [orderedWidgetDescriptors countByEnumeratingWithState:&v36 objects:v44 count:16];
           }
 
           while (v15);
         }
 
         v11 = v31 + 1;
-        v9 = v32;
+        sbh_extensions = v32;
         v10 = v29;
       }
 
@@ -346,7 +346,7 @@ LABEL_22:
 {
   v4 = a3;
   v5 = +[SBHIconGridSizeClassDomain globalDomain];
-  v6 = [a1 sbh_defaultDescriptorForContainerBundleIdentifier:v4 gridSizeClassDomain:v5];
+  v6 = [self sbh_defaultDescriptorForContainerBundleIdentifier:v4 gridSizeClassDomain:v5];
 
   return v6;
 }
@@ -355,15 +355,15 @@ LABEL_22:
 {
   v22 = *MEMORY[0x1E69E9840];
   v6 = a4;
-  v7 = [a1 widgetExtensionContainerForContainerBundleIdentifier:a3];
+  v7 = [self widgetExtensionContainerForContainerBundleIdentifier:a3];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 localExtensions];
-    if ([v9 count])
+    localExtensions = [v7 localExtensions];
+    if ([localExtensions count])
     {
-      v10 = [v9 firstObject];
-      [v10 orderedWidgetDescriptors];
+      firstObject = [localExtensions firstObject];
+      [firstObject orderedWidgetDescriptors];
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
@@ -424,8 +424,8 @@ LABEL_14:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a1 sbh_extensions];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sbh_extensions = [self sbh_extensions];
+  v4 = [sbh_extensions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -436,20 +436,20 @@ LABEL_14:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sbh_extensions);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 identity];
-        v10 = [v9 extensionBundleIdentifier];
-        v11 = [v8 orderedControlDescriptors];
-        if ([v11 count])
+        identity = [v8 identity];
+        extensionBundleIdentifier = [identity extensionBundleIdentifier];
+        orderedControlDescriptors = [v8 orderedControlDescriptors];
+        if ([orderedControlDescriptors count])
         {
-          [v2 setObject:v11 forKey:v10];
+          [v2 setObject:orderedControlDescriptors forKey:extensionBundleIdentifier];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [sbh_extensions countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);

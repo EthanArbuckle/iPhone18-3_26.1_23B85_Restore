@@ -1,5 +1,5 @@
 @interface PKMerchantTokenDemoData
-+ (id)responseForPageNumber:(id)a3;
++ (id)responseForPageNumber:(id)number;
 + (id)responseForSingleAMPMerchantToken;
 + (id)responseForSingleCashMerchantToken;
 + (id)responseForSingleMerchantToken;
@@ -42,10 +42,10 @@
   return v5;
 }
 
-+ (id)responseForPageNumber:(id)a3
++ (id)responseForPageNumber:(id)number
 {
   v36[5] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  numberCopy = number;
   v4 = MEMORY[0x1E695E0F0];
   v5 = [PKMerchantTokenDemoData _generateTokensWithIdsUsing:MEMORY[0x1E695E0F0]];
   v6 = [PKMerchantTokenDemoData _generateTokensWithIdsUsing:v4];
@@ -59,9 +59,9 @@
   v36[3] = v8;
   v36[4] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:5];
-  v12 = [v3 integerValue];
-  v13 = v12 - 1;
-  if (v12 < 1 || v13 >= [v11 count])
+  integerValue = [numberCopy integerValue];
+  v13 = integerValue - 1;
+  if (integerValue < 1 || v13 >= [v11 count])
   {
     v20 = [PKRetrieveMerchantTokensResponse alloc];
     v21 = [(PKRetrieveMerchantTokensResponse *)v20 initWithMerchantTokens:MEMORY[0x1E695E0F0] totalMerchantTokens:&unk_1F23B4D00 pageSize:&unk_1F23B4CE8 totalPages:&unk_1F23B4CD0 pageNumber:&unk_1F23B4CD0];
@@ -77,7 +77,7 @@
     v32 = 0u;
     v14 = v11;
     v15 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
-    v30 = v3;
+    v30 = numberCopy;
     if (v15)
     {
       v16 = v15;
@@ -113,7 +113,7 @@
     v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v14, "count")}];
     v21 = [(PKRetrieveMerchantTokensResponse *)v23 initWithMerchantTokens:v22 totalMerchantTokens:v24 pageSize:v25 totalPages:v26 pageNumber:v30];
 
-    v3 = v30;
+    numberCopy = v30;
     v9 = v28;
     v5 = v29;
   }

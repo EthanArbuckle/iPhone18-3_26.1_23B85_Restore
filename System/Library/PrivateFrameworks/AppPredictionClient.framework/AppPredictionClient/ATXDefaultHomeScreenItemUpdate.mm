@@ -1,17 +1,17 @@
 @interface ATXDefaultHomeScreenItemUpdate
-- (ATXDefaultHomeScreenItemUpdate)initWithDictionary:(id)a3;
-- (ATXDefaultHomeScreenItemUpdate)initWithStack:(id)a3 todayStack:(id)a4 onboardingStacks:(id)a5 smallWidgets:(id)a6 mediumWidgets:(id)a7 largeWidgets:(id)a8 extraLargeWidgets:(id)a9 shouldSuggestStackInGallery:(BOOL)a10;
-- (BOOL)isEqual:(id)a3;
+- (ATXDefaultHomeScreenItemUpdate)initWithDictionary:(id)dictionary;
+- (ATXDefaultHomeScreenItemUpdate)initWithStack:(id)stack todayStack:(id)todayStack onboardingStacks:(id)stacks smallWidgets:(id)widgets mediumWidgets:(id)mediumWidgets largeWidgets:(id)largeWidgets extraLargeWidgets:(id)extraLargeWidgets shouldSuggestStackInGallery:(BOOL)self0;
+- (BOOL)isEqual:(id)equal;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation ATXDefaultHomeScreenItemUpdate
 
-- (ATXDefaultHomeScreenItemUpdate)initWithDictionary:(id)a3
+- (ATXDefaultHomeScreenItemUpdate)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"defaultWidgetStack"];
-  if (!v5 || (v6 = v5, [v4 objectForKeyedSubscript:@"defaultWidgetStack"], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, v6, (isKindOfClass & 1) == 0))
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetStack"];
+  if (!v5 || (v6 = v5, [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetStack"], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, v6, (isKindOfClass & 1) == 0))
   {
     v9 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -22,9 +22,9 @@
     goto LABEL_38;
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"defaultWidgetStack"];
-  v10 = [v4 objectForKeyedSubscript:@"defaultWidgetTodayStack"];
-  if (!v10 || (v11 = v10, [v4 objectForKeyedSubscript:@"defaultWidgetTodayStack"], v12 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v13 = objc_opt_isKindOfClass(), v12, v11, (v13 & 1) == 0))
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetStack"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetTodayStack"];
+  if (!v10 || (v11 = v10, [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetTodayStack"], v12 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v13 = objc_opt_isKindOfClass(), v12, v11, (v13 & 1) == 0))
   {
     v14 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -35,9 +35,9 @@
     goto LABEL_37;
   }
 
-  v14 = [v4 objectForKeyedSubscript:@"defaultWidgetTodayStack"];
-  v15 = [v4 objectForKeyedSubscript:@"defaultWidgetOnboardingStacks"];
-  if (!v15 || (v16 = v15, [v4 objectForKeyedSubscript:@"defaultWidgetOnboardingStacks"], v17 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v18 = objc_opt_isKindOfClass(), v17, v16, (v18 & 1) == 0))
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetTodayStack"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetOnboardingStacks"];
+  if (!v15 || (v16 = v15, [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetOnboardingStacks"], v17 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v18 = objc_opt_isKindOfClass(), v17, v16, (v18 & 1) == 0))
   {
     v19 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -48,9 +48,9 @@
     goto LABEL_36;
   }
 
-  v19 = [v4 objectForKeyedSubscript:@"defaultWidgetOnboardingStacks"];
-  v20 = [v4 objectForKeyedSubscript:@"defaultWidgetsSmall"];
-  if (!v20 || (v21 = v20, [v4 objectForKeyedSubscript:@"defaultWidgetsSmall"], v22 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v23 = objc_opt_isKindOfClass(), v22, v21, (v23 & 1) == 0))
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetOnboardingStacks"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetsSmall"];
+  if (!v20 || (v21 = v20, [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetsSmall"], v22 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v23 = objc_opt_isKindOfClass(), v22, v21, (v23 & 1) == 0))
   {
     v24 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -61,9 +61,9 @@
     goto LABEL_35;
   }
 
-  v24 = [v4 objectForKeyedSubscript:@"defaultWidgetsSmall"];
-  v25 = [v4 objectForKeyedSubscript:@"defaultWidgetsMedium"];
-  if (!v25 || (v26 = v25, [v4 objectForKeyedSubscript:@"defaultWidgetsMedium"], v27 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v28 = objc_opt_isKindOfClass(), v27, v26, (v28 & 1) == 0))
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetsSmall"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetsMedium"];
+  if (!v25 || (v26 = v25, [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetsMedium"], v27 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v28 = objc_opt_isKindOfClass(), v27, v26, (v28 & 1) == 0))
   {
     v75 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
@@ -74,9 +74,9 @@
     goto LABEL_28;
   }
 
-  v29 = [v4 objectForKeyedSubscript:@"defaultWidgetsMedium"];
-  v30 = [v4 objectForKeyedSubscript:@"defaultWidgetsLarge"];
-  if (!v30 || (v31 = v30, [v4 objectForKeyedSubscript:@"defaultWidgetsLarge"], v111 = v29, v32 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v33 = objc_opt_isKindOfClass(), v32, v29 = v111, v31, (v33 & 1) == 0))
+  v29 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetsMedium"];
+  v30 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetsLarge"];
+  if (!v30 || (v31 = v30, [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetsLarge"], v111 = v29, v32 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v33 = objc_opt_isKindOfClass(), v32, v29 = v111, v31, (v33 & 1) == 0))
   {
     v83 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v83, OS_LOG_TYPE_ERROR))
@@ -87,9 +87,9 @@
     goto LABEL_35;
   }
 
-  v34 = [v4 objectForKeyedSubscript:@"defaultWidgetsLarge"];
-  v35 = [v4 objectForKeyedSubscript:@"defaultWidgetsExtraLarge"];
-  if (!v35 || (v36 = v35, [v4 objectForKeyedSubscript:@"defaultWidgetsExtraLarge"], v110 = v34, v37 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v38 = objc_opt_isKindOfClass(), v37, v34 = v110, v36, (v38 & 1) == 0))
+  v34 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetsLarge"];
+  v35 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetsExtraLarge"];
+  if (!v35 || (v36 = v35, [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetsExtraLarge"], v110 = v34, v37 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v38 = objc_opt_isKindOfClass(), v37, v34 = v110, v36, (v38 & 1) == 0))
   {
     v91 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v91, OS_LOG_TYPE_ERROR))
@@ -100,9 +100,9 @@
     goto LABEL_35;
   }
 
-  v39 = [v4 objectForKeyedSubscript:@"defaultWidgetsExtraLarge"];
-  v40 = [v4 objectForKeyedSubscript:@"shouldSuggestSmartStackInGallery"];
-  if (!v40 || (v41 = v40, [v4 objectForKeyedSubscript:@"shouldSuggestSmartStackInGallery"], v42 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v43 = objc_opt_isKindOfClass(), v42, v41, (v43 & 1) == 0))
+  v39 = [dictionaryCopy objectForKeyedSubscript:@"defaultWidgetsExtraLarge"];
+  v40 = [dictionaryCopy objectForKeyedSubscript:@"shouldSuggestSmartStackInGallery"];
+  if (!v40 || (v41 = v40, [dictionaryCopy objectForKeyedSubscript:@"shouldSuggestSmartStackInGallery"], v42 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v43 = objc_opt_isKindOfClass(), v42, v41, (v43 & 1) == 0))
   {
     v100 = v39;
     v101 = __atxlog_handle_home_screen();
@@ -119,45 +119,45 @@ LABEL_36:
 LABEL_37:
 
 LABEL_38:
-    v46 = 0;
+    selfCopy = 0;
     goto LABEL_39;
   }
 
-  v44 = [v4 objectForKeyedSubscript:@"shouldSuggestSmartStackInGallery"];
-  v45 = [v44 BOOLValue];
+  v44 = [dictionaryCopy objectForKeyedSubscript:@"shouldSuggestSmartStackInGallery"];
+  bOOLValue = [v44 BOOLValue];
 
-  LOBYTE(v109) = v45;
+  LOBYTE(v109) = bOOLValue;
   self = [(ATXDefaultHomeScreenItemUpdate *)self initWithStack:v9 todayStack:v14 onboardingStacks:v19 smallWidgets:v24 mediumWidgets:v111 largeWidgets:v110 extraLargeWidgets:v39 shouldSuggestStackInGallery:v109];
 
-  v46 = self;
+  selfCopy = self;
 LABEL_39:
 
-  return v46;
+  return selfCopy;
 }
 
-- (ATXDefaultHomeScreenItemUpdate)initWithStack:(id)a3 todayStack:(id)a4 onboardingStacks:(id)a5 smallWidgets:(id)a6 mediumWidgets:(id)a7 largeWidgets:(id)a8 extraLargeWidgets:(id)a9 shouldSuggestStackInGallery:(BOOL)a10
+- (ATXDefaultHomeScreenItemUpdate)initWithStack:(id)stack todayStack:(id)todayStack onboardingStacks:(id)stacks smallWidgets:(id)widgets mediumWidgets:(id)mediumWidgets largeWidgets:(id)largeWidgets extraLargeWidgets:(id)extraLargeWidgets shouldSuggestStackInGallery:(BOOL)self0
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v17 = a8;
-  v18 = a9;
+  stackCopy = stack;
+  todayStackCopy = todayStack;
+  stacksCopy = stacks;
+  widgetsCopy = widgets;
+  mediumWidgetsCopy = mediumWidgets;
+  largeWidgetsCopy = largeWidgets;
+  extraLargeWidgetsCopy = extraLargeWidgets;
   v27.receiver = self;
   v27.super_class = ATXDefaultHomeScreenItemUpdate;
   v19 = [(ATXDefaultHomeScreenItemUpdate *)&v27 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_stack, a3);
-    objc_storeStrong(&v20->_todayStack, a4);
-    objc_storeStrong(&v20->_onboardingStacks, a5);
-    objc_storeStrong(&v20->_smallWidgets, a6);
-    objc_storeStrong(&v20->_mediumWidgets, a7);
-    objc_storeStrong(&v20->_largeWidgets, a8);
-    objc_storeStrong(&v20->_extraLargeWidgets, a9);
-    v20->_shouldSuggestStackInGallery = a10;
+    objc_storeStrong(&v19->_stack, stack);
+    objc_storeStrong(&v20->_todayStack, todayStack);
+    objc_storeStrong(&v20->_onboardingStacks, stacks);
+    objc_storeStrong(&v20->_smallWidgets, widgets);
+    objc_storeStrong(&v20->_mediumWidgets, mediumWidgets);
+    objc_storeStrong(&v20->_largeWidgets, largeWidgets);
+    objc_storeStrong(&v20->_extraLargeWidgets, extraLargeWidgets);
+    v20->_shouldSuggestStackInGallery = gallery;
   }
 
   return v20;
@@ -179,10 +179,10 @@ LABEL_39:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -192,7 +192,7 @@ LABEL_39:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_stack;
       v7 = v6;
       if (v6 == v5->_stack)

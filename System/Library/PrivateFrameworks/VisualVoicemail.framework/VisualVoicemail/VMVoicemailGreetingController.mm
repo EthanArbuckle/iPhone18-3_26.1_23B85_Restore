@@ -1,32 +1,32 @@
 @interface VMVoicemailGreetingController
-- (VMVoicemailGreetingController)initWithService:(id)a3;
+- (VMVoicemailGreetingController)initWithService:(id)service;
 - (VVService)voicemailService;
-- (void)_greetingFetchEnded:(id)a3;
-- (void)_greetingSaveCompleted:(id)a3;
-- (void)_handleGreetingTaskNotification:(id)a3;
+- (void)_greetingFetchEnded:(id)ended;
+- (void)_greetingSaveCompleted:(id)completed;
+- (void)_handleGreetingTaskNotification:(id)notification;
 - (void)dealloc;
-- (void)greetingWithCompletion:(id)a3;
-- (void)setGreeting:(id)a3 completion:(id)a4;
+- (void)greetingWithCompletion:(id)completion;
+- (void)setGreeting:(id)greeting completion:(id)completion;
 @end
 
 @implementation VMVoicemailGreetingController
 
-- (VMVoicemailGreetingController)initWithService:(id)a3
+- (VMVoicemailGreetingController)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v25.receiver = self;
   v25.super_class = VMVoicemailGreetingController;
   v5 = [(VMVoicemailGreetingController *)&v25 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_voicemailService, v4);
+    objc_storeWeak(&v5->_voicemailService, serviceCopy);
     v7 = [NSBundle bundleForClass:objc_opt_class()];
-    v8 = [v7 bundleIdentifier];
+    bundleIdentifier = [v7 bundleIdentifier];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     v11 = NSStringFromSelector("queue");
-    v12 = [NSString stringWithFormat:@"%@.%@.%@", v8, v10, v11];
+    v12 = [NSString stringWithFormat:@"%@.%@.%@", bundleIdentifier, v10, v11];
 
     v13 = dispatch_queue_create([v12 UTF8String], 0);
     queue = v6->_queue;
@@ -35,24 +35,24 @@
     v15 = vm_vmd_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(VMVoicemailGreetingController *)v6 voicemailService];
-      v17 = [v16 serviceLabelID];
-      v18 = [(VMVoicemailGreetingController *)v6 voicemailService];
-      v19 = [v18 contextInfo];
+      voicemailService = [(VMVoicemailGreetingController *)v6 voicemailService];
+      serviceLabelID = [voicemailService serviceLabelID];
+      voicemailService2 = [(VMVoicemailGreetingController *)v6 voicemailService];
+      contextInfo = [voicemailService2 contextInfo];
       *buf = 138412546;
-      v27 = v17;
+      v27 = serviceLabelID;
       v28 = 2112;
-      v29 = v19;
+      v29 = contextInfo;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Adding greeting observers for account %@, subscription %@", buf, 0x16u);
     }
 
     v20 = +[NSNotificationCenter defaultCenter];
-    v21 = [(VMVoicemailGreetingController *)v6 voicemailService];
-    [v20 addObserver:v6 selector:"_handleGreetingTaskNotification:" name:@"VVServiceTaskEndedNotification" object:v21];
+    voicemailService3 = [(VMVoicemailGreetingController *)v6 voicemailService];
+    [v20 addObserver:v6 selector:"_handleGreetingTaskNotification:" name:@"VVServiceTaskEndedNotification" object:voicemailService3];
 
     v22 = +[NSNotificationCenter defaultCenter];
-    v23 = [(VMVoicemailGreetingController *)v6 voicemailService];
-    [v22 addObserver:v6 selector:"_handleGreetingTaskNotification:" name:@"VVServiceTaskCancelledNotification" object:v23];
+    voicemailService4 = [(VMVoicemailGreetingController *)v6 voicemailService];
+    [v22 addObserver:v6 selector:"_handleGreetingTaskNotification:" name:@"VVServiceTaskCancelledNotification" object:voicemailService4];
   }
 
   return v6;
@@ -68,36 +68,36 @@
   [(VMVoicemailGreetingController *)&v4 dealloc];
 }
 
-- (void)greetingWithCompletion:(id)a3
+- (void)greetingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = vm_vmd_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VMVoicemailGreetingController *)self voicemailService];
-    v7 = [v6 serviceLabelID];
-    v8 = [(VMVoicemailGreetingController *)self voicemailService];
-    v9 = [v8 contextInfo];
+    voicemailService = [(VMVoicemailGreetingController *)self voicemailService];
+    serviceLabelID = [voicemailService serviceLabelID];
+    voicemailService2 = [(VMVoicemailGreetingController *)self voicemailService];
+    contextInfo = [voicemailService2 contextInfo];
     v11 = 138412546;
-    v12 = v7;
+    v12 = serviceLabelID;
     v13 = 2112;
-    v14 = v9;
+    v14 = contextInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Get greeting for account %@, subscription %@", &v11, 0x16u);
   }
 
-  v10 = [(VMVoicemailGreetingController *)self voicemailService];
-  [v10 retrieveGreeting:v4];
+  voicemailService3 = [(VMVoicemailGreetingController *)self voicemailService];
+  [voicemailService3 retrieveGreeting:completionCopy];
 }
 
-- (void)setGreeting:(id)a3 completion:(id)a4
+- (void)setGreeting:(id)greeting completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  greetingCopy = greeting;
+  completionCopy = completion;
   v8 = vm_vmd_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = v7;
-    if ([v6 type] == 2)
+    v9 = completionCopy;
+    if ([greetingCopy type] == 2)
     {
       v10 = @"custom";
     }
@@ -107,54 +107,54 @@
       v10 = @"standard";
     }
 
-    v23 = [(VMVoicemailGreetingController *)self voicemailService];
-    v11 = [v23 serviceLabelID];
-    v12 = [(VMVoicemailGreetingController *)self voicemailService];
-    v13 = [v12 contextInfo];
-    v14 = [v6 url];
-    v15 = [v14 path];
+    voicemailService = [(VMVoicemailGreetingController *)self voicemailService];
+    serviceLabelID = [voicemailService serviceLabelID];
+    voicemailService2 = [(VMVoicemailGreetingController *)self voicemailService];
+    contextInfo = [voicemailService2 contextInfo];
+    v14 = [greetingCopy url];
+    path = [v14 path];
     *buf = 138413314;
     v25 = v10;
-    v7 = v9;
+    completionCopy = v9;
     v26 = 2112;
-    v27 = v6;
+    v27 = greetingCopy;
     v28 = 2112;
-    v29 = v11;
+    v29 = serviceLabelID;
     v30 = 2112;
-    v31 = v13;
+    v31 = contextInfo;
     v32 = 2112;
-    v33 = v15;
+    v33 = path;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Set %@ greeting %@ for account %@, subscription %@ from file at %@", buf, 0x34u);
   }
 
-  if ([v6 type] != 2)
+  if ([greetingCopy type] != 2)
   {
-    [v6 setDuration:0.0];
+    [greetingCopy setDuration:0.0];
     v17 = 0;
     goto LABEL_12;
   }
 
-  v16 = [v6 url];
+  v16 = [greetingCopy url];
   v17 = [NSData dataWithContentsOfURL:v16];
 
   if (v17)
   {
 LABEL_12:
-    [(VMVoicemailGreetingController *)self setSetVoicemailReply:v7];
-    v19 = [(VMVoicemailGreetingController *)self voicemailService];
-    v20 = [v6 type];
-    if (v20 >= 3)
+    [(VMVoicemailGreetingController *)self setSetVoicemailReply:completionCopy];
+    voicemailService3 = [(VMVoicemailGreetingController *)self voicemailService];
+    type = [greetingCopy type];
+    if (type >= 3)
     {
       v21 = 3;
     }
 
     else
     {
-      v21 = v20;
+      v21 = type;
     }
 
-    [v6 duration];
-    [v19 setGreetingType:v21 data:v17 duration:v22];
+    [greetingCopy duration];
+    [voicemailService3 setGreetingType:v21 data:v17 duration:v22];
 
     goto LABEL_16;
   }
@@ -162,89 +162,89 @@ LABEL_12:
   v18 = vm_vmd_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
-    sub_10009DE58(v6, self, v18);
+    sub_10009DE58(greetingCopy, self, v18);
   }
 
   v17 = [NSError errorWithDomain:kVVErrorDomain code:1032 userInfo:0];
-  v7[2](v7, 0, v17);
+  completionCopy[2](completionCopy, 0, v17);
 LABEL_16:
 }
 
-- (void)_handleGreetingTaskNotification:(id)a3
+- (void)_handleGreetingTaskNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = vm_vmd_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *v12 = 138412546;
     *&v12[4] = objc_opt_class();
     *&v12[12] = 2112;
-    *&v12[14] = v4;
+    *&v12[14] = notificationCopy;
     v6 = *&v12[4];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", v12, 0x16u);
   }
 
-  v7 = [v4 userInfo];
-  v8 = [v7 valueForKey:@"VVTaskWillBeRetried"];
-  v9 = [v8 BOOLValue];
+  userInfo = [notificationCopy userInfo];
+  v8 = [userInfo valueForKey:@"VVTaskWillBeRetried"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v4 userInfo];
-  v11 = [v10 valueForKey:@"VVTaskType"];
+  userInfo2 = [notificationCopy userInfo];
+  v11 = [userInfo2 valueForKey:@"VVTaskType"];
 
-  if (![v11 isEqual:&off_1000F58C0] || (v9 & 1) != 0)
+  if (![v11 isEqual:&off_1000F58C0] || (bOOLValue & 1) != 0)
   {
     if ([v11 isEqual:{&off_1000F58D8, *v12, *&v12[16]}])
     {
-      if (v9)
+      if (bOOLValue)
       {
         goto LABEL_11;
       }
     }
 
-    else if (v9 & 1 | (([v11 isEqual:&off_1000F58F0] & 1) == 0))
+    else if (bOOLValue & 1 | (([v11 isEqual:&off_1000F58F0] & 1) == 0))
     {
       goto LABEL_11;
     }
 
-    [(VMVoicemailGreetingController *)self _greetingSaveCompleted:v4];
+    [(VMVoicemailGreetingController *)self _greetingSaveCompleted:notificationCopy];
     goto LABEL_11;
   }
 
-  [(VMVoicemailGreetingController *)self _greetingFetchEnded:v4];
+  [(VMVoicemailGreetingController *)self _greetingFetchEnded:notificationCopy];
 LABEL_11:
 }
 
-- (void)_greetingFetchEnded:(id)a3
+- (void)_greetingFetchEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   v5 = vm_vmd_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 userInfo];
+    userInfo = [endedCopy userInfo];
     v33 = 138412290;
-    v34 = v6;
+    v34 = userInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Retrieving greeting finished with user info %@", &v33, 0xCu);
   }
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"VVBlock"];
+  userInfo2 = [endedCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:@"VVBlock"];
 
   if (v8)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"VVError"];
+    userInfo3 = [endedCopy userInfo];
+    v10 = [userInfo3 objectForKeyedSubscript:@"VVError"];
 
     if (v10)
     {
-      v11 = [v4 userInfo];
-      v12 = [v11 objectForKeyedSubscript:@"VVError"];
+      userInfo4 = [endedCopy userInfo];
+      v12 = [userInfo4 objectForKeyedSubscript:@"VVError"];
 
-      v13 = [v12 domain];
-      if ([v13 isEqualToString:kVVErrorDomain])
+      domain = [v12 domain];
+      if ([domain isEqualToString:kVVErrorDomain])
       {
-        v14 = [v12 code];
+        code = [v12 code];
 
-        if (v14 == 1033)
+        if (code == 1033)
         {
           v15 = vm_vmd_log();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -257,10 +257,10 @@ LABEL_11:
           v16 = vm_vmd_log();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [(VMVoicemailGreetingController *)self voicemailService];
-            v18 = [v17 contextInfo];
+            voicemailService = [(VMVoicemailGreetingController *)self voicemailService];
+            contextInfo = [voicemailService contextInfo];
             v33 = 138412290;
-            v34 = v18;
+            v34 = contextInfo;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Retrieving greeting completed, but greeting message does not exist for subscription %@", &v33, 0xCu);
           }
 
@@ -282,10 +282,10 @@ LABEL_23:
       v30 = vm_vmd_log();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [(VMVoicemailGreetingController *)self voicemailService];
-        v32 = [v31 contextInfo];
+        voicemailService2 = [(VMVoicemailGreetingController *)self voicemailService];
+        contextInfo2 = [voicemailService2 contextInfo];
         v33 = 138412290;
-        v34 = v32;
+        v34 = contextInfo2;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Retrieving greeting failed for subscription %@", &v33, 0xCu);
       }
 
@@ -297,31 +297,31 @@ LABEL_23:
     v20 = vm_vmd_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [(VMVoicemailGreetingController *)self voicemailService];
-      v22 = [v21 contextInfo];
+      voicemailService3 = [(VMVoicemailGreetingController *)self voicemailService];
+      contextInfo3 = [voicemailService3 contextInfo];
       v33 = 138412290;
-      v34 = v22;
+      v34 = contextInfo3;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Retrieved greeting successfully for subscription %@", &v33, 0xCu);
     }
 
     v19 = objc_alloc_init(VMVoicemailGreeting);
-    v23 = [(VMVoicemailGreetingController *)self voicemailService];
-    v24 = [v23 mailboxGreetingType];
-    if (v24 >= 3)
+    voicemailService4 = [(VMVoicemailGreetingController *)self voicemailService];
+    mailboxGreetingType = [voicemailService4 mailboxGreetingType];
+    if (mailboxGreetingType >= 3)
     {
       v25 = 3;
     }
 
     else
     {
-      v25 = v24;
+      v25 = mailboxGreetingType;
     }
 
     [v19 setType:v25];
 
-    v26 = [(VMVoicemailGreetingController *)self voicemailService];
-    v27 = [v26 accountDir];
-    v29 = sub_1000856A8(v27, v28);
+    voicemailService5 = [(VMVoicemailGreetingController *)self voicemailService];
+    accountDir = [voicemailService5 accountDir];
+    v29 = sub_1000856A8(accountDir, v28);
     [v19 setUrl:v29];
 
     goto LABEL_18;
@@ -330,24 +330,24 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)_greetingSaveCompleted:(id)a3
+- (void)_greetingSaveCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   v5 = vm_vmd_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VMVoicemailGreetingController *)self voicemailService];
-    v7 = [v6 contextInfo];
-    v8 = [v4 userInfo];
+    voicemailService = [(VMVoicemailGreetingController *)self voicemailService];
+    contextInfo = [voicemailService contextInfo];
+    userInfo = [completedCopy userInfo];
     v14 = 138412546;
-    v15 = v7;
+    v15 = contextInfo;
     v16 = 2112;
-    v17 = v8;
+    v17 = userInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Saving greeting completed for subscription %@ with user info %@", &v14, 0x16u);
   }
 
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"VVError"];
+  userInfo2 = [completedCopy userInfo];
+  v10 = [userInfo2 objectForKeyedSubscript:@"VVError"];
 
   if (v10)
   {
@@ -359,12 +359,12 @@ LABEL_24:
     v11 = 0;
   }
 
-  v12 = [(VMVoicemailGreetingController *)self setVoicemailReply];
+  setVoicemailReply = [(VMVoicemailGreetingController *)self setVoicemailReply];
 
-  if (v12)
+  if (setVoicemailReply)
   {
-    v13 = [(VMVoicemailGreetingController *)self setVoicemailReply];
-    (v13)[2](v13, v11 == 0, v11);
+    setVoicemailReply2 = [(VMVoicemailGreetingController *)self setVoicemailReply];
+    (setVoicemailReply2)[2](setVoicemailReply2, v11 == 0, v11);
   }
 }
 

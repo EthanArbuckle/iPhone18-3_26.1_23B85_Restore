@@ -1,17 +1,17 @@
 @interface ShowcaseCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation ShowcaseCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.ShowcaseCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicApplication.ShowcaseCell" hasInstanceMethod:@"accessibilityHeadline" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.ShowcaseCell" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.ShowcaseCell" hasInstanceMethod:@"accessibilitySubtitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.ShowcaseCell" hasInstanceMethod:@"accessibilityIsExplicit" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicApplication.ShowcaseCell" hasInstanceMethod:@"accessibilityHeadline" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.ShowcaseCell" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.ShowcaseCell" hasInstanceMethod:@"accessibilitySubtitle" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

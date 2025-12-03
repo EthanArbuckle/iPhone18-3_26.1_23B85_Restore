@@ -1,9 +1,9 @@
 @interface _UIShareInvitationViewServiceViewController
 + (id)_exportedInterface;
 + (void)initialize;
-- (BOOL)_getTitle:(id *)a3 getMessage:(id *)a4 forError:(id)a5;
-- (BOOL)_setContainerFromID:(id)a3;
-- (BOOL)_shouldPresentError:(id)a3;
+- (BOOL)_getTitle:(id *)title getMessage:(id *)message forError:(id)error;
+- (BOOL)_setContainerFromID:(id)d;
+- (BOOL)_shouldPresentError:(id)error;
 - (BOOL)currentUserIsOwner;
 - (BOOL)currentUserIsOwnerOrAdmin;
 - (BOOL)isFolderShare;
@@ -11,91 +11,91 @@
 - (BOOL)isShowingSpinner;
 - (BOOL)itemIsInsideFolderShare;
 - (BOOL)itemIsShareRoot;
-- (BOOL)shareViewControllerIsFolderShare:(id)a3;
-- (BOOL)shareViewControllerIsNotesOrRemindersOrDocSharing:(id)a3;
+- (BOOL)shareViewControllerIsFolderShare:(id)share;
+- (BOOL)shareViewControllerIsNotesOrRemindersOrDocSharing:(id)sharing;
 - (BOOL)shareViewControllerShowFullSettingsControls;
-- (_UIShareInvitationViewServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_alertControllerForLegacyApplication:(id)a3;
-- (id)_fetchTopLevelSharedFolderURLWithError:(id *)a3;
+- (_UIShareInvitationViewServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_alertControllerForLegacyApplication:(id)application;
+- (id)_fetchTopLevelSharedFolderURLWithError:(id *)error;
 - (id)editableParticipants;
-- (id)fetchFPItemForID:(id)a3;
-- (id)modifiedByStringForSharedByMe:(BOOL)a3 owner:(id)a4 modifiedByMe:(BOOL)a5 lastEditor:(id)a6;
+- (id)fetchFPItemForID:(id)d;
+- (id)modifiedByStringForSharedByMe:(BOOL)me owner:(id)owner modifiedByMe:(BOOL)byMe lastEditor:(id)editor;
 - (id)ownerNameComponents;
-- (id)ownerStringForPerson:(id)a3;
+- (id)ownerStringForPerson:(id)person;
 - (id)rootItemName;
-- (id)shareViewControllerItemUTI:(id)a3;
-- (id)shareViewControllerSubtitle:(id)a3;
+- (id)shareViewControllerItemUTI:(id)i;
+- (id)shareViewControllerSubtitle:(id)subtitle;
 - (id)sharingAppBundleIdentifier;
 - (id)sharingAppBundleIdentifierOverride;
 - (id)sharingAppName;
 - (int64_t)_hostApplicationType;
 - (int64_t)shareViewControllerCurrentParticipantsState;
 - (void)_actuallyStopSharing;
-- (void)_addParticipantsAndSaveForController:(id)a3 participants:(id)a4 permission:(int64_t)a5 completion:(id)a6;
-- (void)_copyShareFromURLWithForceCreate:(BOOL)a3 completion:(id)a4;
-- (void)_dismissForRecordWithError:(id)a3;
-- (void)_enqueueCopyShareURLOperation:(id)a3 completion:(id)a4;
-- (void)_getTitle:(id *)a3 getMessage:(id *)a4 forMAIDError:(id)a5;
-- (void)_handleCopyShareURLError:(id)a3;
+- (void)_addParticipantsAndSaveForController:(id)controller participants:(id)participants permission:(int64_t)permission completion:(id)completion;
+- (void)_copyShareFromURLWithForceCreate:(BOOL)create completion:(id)completion;
+- (void)_dismissForRecordWithError:(id)error;
+- (void)_enqueueCopyShareURLOperation:(id)operation completion:(id)completion;
+- (void)_getTitle:(id *)title getMessage:(id *)message forMAIDError:(id)error;
+- (void)_handleCopyShareURLError:(id)error;
 - (void)_loadInitialViewController;
-- (void)_loadThumbnailForFileURL:(id)a3;
-- (void)_makeExistingSubsharePreflightCheckWithCompletion:(id)a3;
-- (void)_modifyAndSaveShare:(id)a3 existingError:(id)a4 controller:(id)a5 modifyBlock:(id)a6 completion:(id)a7;
-- (void)_prepareForDisplayWithCompletion:(id)a3;
+- (void)_loadThumbnailForFileURL:(id)l;
+- (void)_makeExistingSubsharePreflightCheckWithCompletion:(id)completion;
+- (void)_modifyAndSaveShare:(id)share existingError:(id)error controller:(id)controller modifyBlock:(id)block completion:(id)completion;
+- (void)_prepareForDisplayWithCompletion:(id)completion;
 - (void)_prepareForFolderSharingIfNeeded;
 - (void)_presentedURLChanged;
-- (void)_processSubitemsWithProcessType:(unint64_t)a3 completion:(id)a4;
-- (void)_refetchShareAndRetry:(id)a3;
+- (void)_processSubitemsWithProcessType:(unint64_t)type completion:(id)completion;
+- (void)_refetchShareAndRetry:(id)retry;
 - (void)_registerObserver;
-- (void)_sanitizeForAvailablePermissions:(id)a3;
-- (void)_saveShare:(id)a3 completion:(id)a4;
-- (void)_setAppName:(id)a3;
-- (void)_setAvailablePermissions:(unint64_t)a3;
-- (void)_setCloudKitContainerSetupInfo:(id)a3;
-- (void)_setCloudKitShare:(id)a3 containerID:(id)a4;
-- (void)_setCloudKitThumbnail:(id)a3 title:(id)a4 type:(id)a5;
-- (void)_setFolderSubitemName:(id)a3;
-- (void)_setIsInPopoverMode:(BOOL)a3;
-- (void)_setItemName:(id)a3;
-- (void)_setMailSubject:(id)a3 template:(id)a4;
-- (void)_setParticipantDetails:(id)a3;
-- (void)_setRootFolderTitle:(id)a3;
-- (void)_setSandboxingURLWrapper:(id)a3;
-- (void)_setThumbnail:(id)a3;
-- (void)_setTintColor:(id)a3;
-- (void)_setupDocumentURL:(id)a3;
+- (void)_sanitizeForAvailablePermissions:(id)permissions;
+- (void)_saveShare:(id)share completion:(id)completion;
+- (void)_setAppName:(id)name;
+- (void)_setAvailablePermissions:(unint64_t)permissions;
+- (void)_setCloudKitContainerSetupInfo:(id)info;
+- (void)_setCloudKitShare:(id)share containerID:(id)d;
+- (void)_setCloudKitThumbnail:(id)thumbnail title:(id)title type:(id)type;
+- (void)_setFolderSubitemName:(id)name;
+- (void)_setIsInPopoverMode:(BOOL)mode;
+- (void)_setItemName:(id)name;
+- (void)_setMailSubject:(id)subject template:(id)template;
+- (void)_setParticipantDetails:(id)details;
+- (void)_setRootFolderTitle:(id)title;
+- (void)_setSandboxingURLWrapper:(id)wrapper;
+- (void)_setThumbnail:(id)thumbnail;
+- (void)_setTintColor:(id)color;
+- (void)_setupDocumentURL:(id)l;
 - (void)_setupViewControllerInContainedNavController;
 - (void)_updateAllowInvitingFromShare;
 - (void)_updateCloudDocsShare;
 - (void)_updateCloudKitShare;
-- (void)_willAppearInRemoteViewController:(id)a3;
+- (void)_willAppearInRemoteViewController:(id)controller;
 - (void)changeToTopLevelSharedFolderURL;
 - (void)createUnreachableViewControllerIfNecessary;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didReceiveMessageNamed:(id)a3 userInfo:(id)a4 reply:(id)a5;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didReceiveMessageNamed:(id)named userInfo:(id)info reply:(id)reply;
 - (void)invalidate;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)performAfterFullscreenPresentation:(id)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)preflightAndPrepareIfFolderShare:(id)a3 completion:(id)a4;
-- (void)reachabilityMonitor:(id)a3 didChangeReachabilityStatusTo:(BOOL)a4;
-- (void)shareViewController:(id)a3 activityType:(id)a4 waitForUploadWithProgress:(id)a5 completion:(id)a6;
-- (void)shareViewController:(id)a3 addParticipants:(id)a4 activityType:(id)a5 permission:(int64_t)a6 completion:(id)a7;
-- (void)shareViewController:(id)a3 modifyShare:(id)a4 completion:(id)a5;
-- (void)shareViewController:(id)a3 prepareActivity:(id)a4 completion:(id)a5;
-- (void)shareViewController:(id)a3 presentError:(id)a4;
-- (void)shareViewController:(id)a3 willStartActivity:(id)a4 completion:(id)a5;
-- (void)shareViewControllerCopyShareURL:(id)a3 completion:(id)a4;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)performAfterFullscreenPresentation:(id)presentation;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)preflightAndPrepareIfFolderShare:(id)share completion:(id)completion;
+- (void)reachabilityMonitor:(id)monitor didChangeReachabilityStatusTo:(BOOL)to;
+- (void)shareViewController:(id)controller activityType:(id)type waitForUploadWithProgress:(id)progress completion:(id)completion;
+- (void)shareViewController:(id)controller addParticipants:(id)participants activityType:(id)type permission:(int64_t)permission completion:(id)completion;
+- (void)shareViewController:(id)controller modifyShare:(id)share completion:(id)completion;
+- (void)shareViewController:(id)controller prepareActivity:(id)activity completion:(id)completion;
+- (void)shareViewController:(id)controller presentError:(id)error;
+- (void)shareViewController:(id)controller willStartActivity:(id)activity completion:(id)completion;
+- (void)shareViewControllerCopyShareURL:(id)l completion:(id)completion;
 - (void)shareViewControllerDidActivateShowSharedFolder;
-- (void)shareViewControllerDidChooseTransport:(id)a3;
-- (void)shareViewControllerDidFinishActivity:(id)a3;
-- (void)shareViewControllerDismiss:(id)a3;
-- (void)shareViewControllerLeaveShare:(id)a3;
-- (void)shareViewControllerPerformAuxiliaryAction:(id)a3 completion:(id)a4;
-- (void)shareViewControllerPerformHeaderAction:(id)a3 completion:(id)a4;
-- (void)shareViewControllerStopSharing:(id)a3 overrideAlert:(BOOL)a4;
-- (void)updateSharedOrModifiedByForURL:(id)a3;
+- (void)shareViewControllerDidChooseTransport:(id)transport;
+- (void)shareViewControllerDidFinishActivity:(id)activity;
+- (void)shareViewControllerDismiss:(id)dismiss;
+- (void)shareViewControllerLeaveShare:(id)share;
+- (void)shareViewControllerPerformAuxiliaryAction:(id)action completion:(id)completion;
+- (void)shareViewControllerPerformHeaderAction:(id)action completion:(id)completion;
+- (void)shareViewControllerStopSharing:(id)sharing overrideAlert:(BOOL)alert;
+- (void)updateSharedOrModifiedByForURL:(id)l;
 - (void)updateTemplateStrings;
 @end
 
@@ -107,11 +107,11 @@
   [v2 startReceiver];
 }
 
-- (_UIShareInvitationViewServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_UIShareInvitationViewServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v23.receiver = self;
   v23.super_class = _UIShareInvitationViewServiceViewController;
-  v4 = [(_UIShareInvitationViewServiceViewController *)&v23 initWithNibName:a3 bundle:a4];
+  v4 = [(_UIShareInvitationViewServiceViewController *)&v23 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[BRUITestMessageCenter defaultCenter];
@@ -137,12 +137,12 @@
     v9 = objc_alloc_init(NSOperationQueue);
     [(_UIShareInvitationViewServiceViewController *)v4 setWorkerQueue:v9];
 
-    v10 = [(_UIShareInvitationViewServiceViewController *)v4 workerQueue];
-    [v10 setMaxConcurrentOperationCount:1];
+    workerQueue = [(_UIShareInvitationViewServiceViewController *)v4 workerQueue];
+    [workerQueue setMaxConcurrentOperationCount:1];
 
     [(_UIShareInvitationViewServiceViewController *)v4 setAppName:@"Unknown app"];
-    v11 = [(_UIShareInvitationViewServiceViewController *)v4 containedNavController];
-    [v11 setDelegate:v4];
+    containedNavController = [(_UIShareInvitationViewServiceViewController *)v4 containedNavController];
+    [containedNavController setDelegate:v4];
 
     v12 = [(_UIShareOverviewController *)[_UIWaitingForShareViewController alloc] initWithDelegate:v4];
     [(_UIShareInvitationViewServiceViewController *)v4 setViewController:v12];
@@ -150,8 +150,8 @@
     v13 = +[BRReachabilityMonitor sharedReachabilityMonitor];
     [(_UIShareInvitationViewServiceViewController *)v4 setReachabilityMonitor:v13];
 
-    v14 = [(_UIShareInvitationViewServiceViewController *)v4 reachabilityMonitor];
-    [v14 addObserver:v4];
+    reachabilityMonitor = [(_UIShareInvitationViewServiceViewController *)v4 reachabilityMonitor];
+    [reachabilityMonitor addObserver:v4];
 
     [(_UIShareInvitationViewServiceViewController *)v4 _setAvailablePermissions:0];
     v15 = dispatch_semaphore_create(0);
@@ -165,9 +165,9 @@
 
     [(_UIShareInvitationViewServiceViewController *)v4 setSharedByModifiedByText:&stru_10004DE38];
     v18 = +[UIShareFeature coOwners];
-    v19 = [v18 isEnabled];
+    isEnabled = [v18 isEnabled];
 
-    if (v19)
+    if (isEnabled)
     {
       [(_UIShareInvitationViewServiceViewController *)v4 setAllowInvitingOthers:1];
     }
@@ -183,24 +183,24 @@
   return v4;
 }
 
-- (void)didReceiveMessageNamed:(id)a3 userInfo:(id)a4 reply:(id)a5
+- (void)didReceiveMessageNamed:(id)named userInfo:(id)info reply:(id)reply
 {
-  v6 = a5;
+  replyCopy = reply;
   v7 = [BRGeometry alloc];
-  v8 = [(_UIShareInvitationViewServiceViewController *)self view];
-  v9 = [v8 window];
-  v10 = [v7 initWithView:v9];
+  view = [(_UIShareInvitationViewServiceViewController *)self view];
+  window = [view window];
+  v10 = [v7 initWithView:window];
 
   v11 = [NSKeyedArchiver archivedDataWithRootObject:v10];
   v17[0] = v11;
   v16[0] = BRUITestViewHierarchyRecursiveDescription;
   v16[1] = BRUITestViewHierarchyLayerSnapshot;
-  v12 = [(_UIShareInvitationViewServiceViewController *)self view];
-  v13 = [v12 window];
+  view2 = [(_UIShareInvitationViewServiceViewController *)self view];
+  window2 = [view2 window];
   v14 = BRLayerSnapshot();
   v17[1] = v14;
   v15 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
-  v6[2](v6, v15);
+  replyCopy[2](replyCopy, v15);
 }
 
 - (void)invalidate
@@ -231,13 +231,13 @@
   [(_UIShareInvitationViewServiceViewController *)&v3 dealloc];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  if (!a3)
+  if (!controller)
   {
-    v4 = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
+    hostingViewController = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
 
-    if (!v4)
+    if (!hostingViewController)
     {
 
       [(_UIShareInvitationViewServiceViewController *)self invalidate];
@@ -245,16 +245,16 @@
   }
 }
 
-- (void)shareViewControllerDismiss:(id)a3
+- (void)shareViewControllerDismiss:(id)dismiss
 {
   if ([(_UIShareInvitationViewServiceViewController *)self initialSharing])
   {
-    v4 = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
-    [v4 cancelAllOperations];
+    workerQueue = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
+    [workerQueue cancelAllOperations];
   }
 
-  v5 = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
-  [v5 _dismissViewControllerWithError:0];
+  hostingViewController = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
+  [hostingViewController _dismissViewControllerWithError:0];
 }
 
 + (id)_exportedInterface
@@ -272,59 +272,59 @@
   return v2;
 }
 
-- (void)shareViewControllerPerformAuxiliaryAction:(id)a3 completion:(id)a4
+- (void)shareViewControllerPerformAuxiliaryAction:(id)action completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
-  [v6 _performAuxiliaryActionWithCompletion:v5];
+  completionCopy = completion;
+  hostingViewController = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
+  [hostingViewController _performAuxiliaryActionWithCompletion:completionCopy];
 }
 
-- (void)shareViewControllerPerformHeaderAction:(id)a3 completion:(id)a4
+- (void)shareViewControllerPerformHeaderAction:(id)action completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
-  [v6 _performHeaderActionWithCompletion:v5];
+  completionCopy = completion;
+  hostingViewController = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
+  [hostingViewController _performHeaderActionWithCompletion:completionCopy];
 }
 
-- (void)_setupDocumentURL:(id)a3
+- (void)_setupDocumentURL:(id)l
 {
-  v4 = a3;
-  [(_UIShareInvitationViewServiceViewController *)self setItemURL:v4];
+  lCopy = l;
+  [(_UIShareInvitationViewServiceViewController *)self setItemURL:lCopy];
   v5 = cdui_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[INFO] Initializing for BR sharing with item %@", buf, 0xCu);
   }
 
-  v6 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+  itemURL = [(_UIShareInvitationViewServiceViewController *)self itemURL];
   v7 = _CFURLPromiseCopyPhysicalURL();
 
-  v8 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
-  [v8 startAccessingSecurityScopedResource];
+  itemURL2 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+  [itemURL2 startAccessingSecurityScopedResource];
 
   [v7 startAccessingSecurityScopedResource];
   v19 = 0;
-  [(NSString *)v4 getPromisedItemResourceValue:&v19 forKey:NSURLLocalizedNameKey error:0];
+  [(NSString *)lCopy getPromisedItemResourceValue:&v19 forKey:NSURLLocalizedNameKey error:0];
   v9 = v19;
   v18 = 0;
   v17 = 0;
-  [(NSString *)v4 getPromisedItemResourceValue:&v18 forKey:NSURLTypeIdentifierKey error:&v17];
+  [(NSString *)lCopy getPromisedItemResourceValue:&v18 forKey:NSURLTypeIdentifierKey error:&v17];
   v10 = v18;
   v11 = v17;
   [(_UIShareInvitationViewServiceViewController *)self setItemUTI:v10];
   if (v11)
   {
-    v12 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-    [v12 presentError:v11];
+    viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
+    [viewController presentError:v11];
   }
 
   else
   {
     [(_UIShareInvitationViewServiceViewController *)self setItemName:v9];
-    v13 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-    [v13 setItemName:v9];
+    viewController2 = [(_UIShareInvitationViewServiceViewController *)self viewController];
+    [viewController2 setItemName:v9];
 
     v14 = cdui_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -345,19 +345,19 @@
   }
 }
 
-- (void)_setSandboxingURLWrapper:(id)a3
+- (void)_setSandboxingURLWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
   [(_UIShareInvitationViewServiceViewController *)self setMode:0];
-  v5 = [v4 url];
+  v5 = [wrapperCopy url];
 
   [(_UIShareInvitationViewServiceViewController *)self _setupDocumentURL:v5];
 }
 
 - (BOOL)isPartOfCloudKitSharedFolder
 {
-  v2 = [(_UIShareInvitationViewServiceViewController *)self _rootFolderTitle];
-  v3 = v2 != 0;
+  _rootFolderTitle = [(_UIShareInvitationViewServiceViewController *)self _rootFolderTitle];
+  v3 = _rootFolderTitle != 0;
 
   return v3;
 }
@@ -373,12 +373,12 @@
 
   else
   {
-    v3 = [(_UIShareInvitationViewServiceViewController *)self shareRootItemURL];
-    if (v3)
+    shareRootItemURL = [(_UIShareInvitationViewServiceViewController *)self shareRootItemURL];
+    if (shareRootItemURL)
     {
       topLevelSharedFolderURL = self->_topLevelSharedFolderURL;
       self->_topLevelSharedFolderURL = 0;
-      v8 = v3;
+      v8 = shareRootItemURL;
 
       share = self->_share;
       self->_share = 0;
@@ -391,21 +391,21 @@
       self->_originalShare = 0;
 
       [(_UIShareInvitationViewServiceViewController *)self _setupDocumentURL:v8];
-      v3 = v8;
+      shareRootItemURL = v8;
     }
   }
 }
 
 - (void)_prepareForFolderSharingIfNeeded
 {
-  v3 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
-  if (v3)
+  itemURL = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+  if (itemURL)
   {
-    v4 = v3;
-    v5 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-    v6 = [v5 delegate];
-    v7 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-    v8 = [v6 shareViewControllerIsFolderShare:v7];
+    v4 = itemURL;
+    viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
+    delegate = [viewController delegate];
+    viewController2 = [(_UIShareInvitationViewServiceViewController *)self viewController];
+    v8 = [delegate shareViewControllerIsFolderShare:viewController2];
 
     if (v8)
     {
@@ -416,53 +416,53 @@
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[INFO] preparing for folder sharing", buf, 2u);
       }
 
-      v10 = self;
-      objc_sync_enter(v10);
-      if ([(_UIShareInvitationViewServiceViewController *)v10 hasPreparedForFolderSharing]&& ([(_UIShareInvitationViewServiceViewController *)v10 folderSharingPreparationError], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      if ([(_UIShareInvitationViewServiceViewController *)selfCopy hasPreparedForFolderSharing]&& ([(_UIShareInvitationViewServiceViewController *)selfCopy folderSharingPreparationError], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
       {
-        objc_sync_exit(v10);
+        objc_sync_exit(selfCopy);
       }
 
       else
       {
-        [(_UIShareInvitationViewServiceViewController *)v10 setHasPreparedForFolderSharing:1];
-        [(_UIShareInvitationViewServiceViewController *)v10 setFolderSharingPreparationError:0];
-        objc_sync_exit(v10);
+        [(_UIShareInvitationViewServiceViewController *)selfCopy setHasPreparedForFolderSharing:1];
+        [(_UIShareInvitationViewServiceViewController *)selfCopy setFolderSharingPreparationError:0];
+        objc_sync_exit(selfCopy);
 
         v12 = [BRSharePrepFolderForSharing alloc];
-        v13 = [(_UIShareInvitationViewServiceViewController *)v10 itemURL];
-        v14 = [v12 initWithURL:v13];
+        itemURL2 = [(_UIShareInvitationViewServiceViewController *)selfCopy itemURL];
+        v14 = [v12 initWithURL:itemURL2];
 
-        v15 = [(_UIShareInvitationViewServiceViewController *)v10 folderSharingPreparationGroup];
-        dispatch_group_enter(v15);
+        folderSharingPreparationGroup = [(_UIShareInvitationViewServiceViewController *)selfCopy folderSharingPreparationGroup];
+        dispatch_group_enter(folderSharingPreparationGroup);
         objc_initWeak(buf, v14);
         v18[0] = _NSConcreteStackBlock;
         v18[1] = 3221225472;
         v18[2] = sub_100015344;
         v18[3] = &unk_10004CF60;
-        v18[4] = v10;
+        v18[4] = selfCopy;
         objc_copyWeak(&v20, buf);
-        v16 = v15;
+        v16 = folderSharingPreparationGroup;
         v19 = v16;
         [(_UIShareInvitationViewServiceViewController *)v14 setPrepFolderSharingCompletionBlock:v18];
-        v17 = [(_UIShareInvitationViewServiceViewController *)v10 workerQueue];
-        [v17 addOperation:v14];
+        workerQueue = [(_UIShareInvitationViewServiceViewController *)selfCopy workerQueue];
+        [workerQueue addOperation:v14];
 
         objc_destroyWeak(&v20);
         objc_destroyWeak(buf);
 
-        v10 = v14;
+        selfCopy = v14;
       }
     }
   }
 }
 
-- (void)_copyShareFromURLWithForceCreate:(BOOL)a3 completion:(id)a4
+- (void)_copyShareFromURLWithForceCreate:(BOOL)create completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = [BRShareCopyOperation alloc];
-  v7 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
-  v8 = [v6 initWithURL:v7];
+  itemURL = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+  v8 = [v6 initWithURL:itemURL];
 
   v9 = cdui_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -475,20 +475,20 @@
   v13 = 3221225472;
   v14 = sub_100015608;
   v15 = &unk_10004CFB0;
-  v16 = self;
-  v17 = v5;
-  v10 = v5;
+  selfCopy = self;
+  v17 = completionCopy;
+  v10 = completionCopy;
   [v8 setRootShareCopyCompletionBlock:&v12];
-  [v8 setQualityOfService:{25, v12, v13, v14, v15, v16}];
-  v11 = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
-  [v11 addOperation:v8];
+  [v8 setQualityOfService:{25, v12, v13, v14, v15, selfCopy}];
+  workerQueue = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
+  [workerQueue addOperation:v8];
 }
 
 - (void)_updateCloudDocsShare
 {
-  v3 = [(_UIShareInvitationViewServiceViewController *)self unreachableViewController];
+  unreachableViewController = [(_UIShareInvitationViewServiceViewController *)self unreachableViewController];
 
-  if (v3)
+  if (unreachableViewController)
   {
     self->_updateCloudDocsShareSkipped = 1;
   }
@@ -515,10 +515,10 @@
   }
 }
 
-- (void)preflightAndPrepareIfFolderShare:(id)a3 completion:(id)a4
+- (void)preflightAndPrepareIfFolderShare:(id)share completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  completionCopy = completion;
   v8 = +[NSDate date];
   shareInvitationViewStartDate = self->_shareInvitationViewStartDate;
   self->_shareInvitationViewStartDate = v8;
@@ -528,16 +528,16 @@
   v12[2] = sub_10001628C;
   v12[3] = &unk_10004D0A0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = shareCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = shareCopy;
   [(_UIShareInvitationViewServiceViewController *)self _makeExistingSubsharePreflightCheckWithCompletion:v12];
 }
 
-- (id)fetchFPItemForID:(id)a3
+- (id)fetchFPItemForID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -553,7 +553,7 @@
   v11 = &v12;
   v6 = v4;
   v10 = v6;
-  [v5 fetchItemForItemID:v3 completionHandler:v9];
+  [v5 fetchItemForItemID:dCopy completionHandler:v9];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[5];
 
@@ -562,20 +562,20 @@
   return v7;
 }
 
-- (void)_makeExistingSubsharePreflightCheckWithCompletion:(id)a3
+- (void)_makeExistingSubsharePreflightCheckWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
-  if (!v5)
+  completionCopy = completion;
+  itemURL = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+  if (!itemURL)
   {
     goto LABEL_4;
   }
 
-  v6 = v5;
-  v7 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-  v8 = [v7 delegate];
-  v9 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-  v10 = [v8 shareViewControllerIsFolderShare:v9];
+  v6 = itemURL;
+  viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
+  delegate = [viewController delegate];
+  viewController2 = [(_UIShareInvitationViewServiceViewController *)self viewController];
+  v10 = [delegate shareViewControllerIsFolderShare:viewController2];
 
   if (v10)
   {
@@ -584,51 +584,51 @@
     v11[2] = sub_1000167B0;
     v11[3] = &unk_10004D168;
     v11[4] = self;
-    v12 = v4;
+    v12 = completionCopy;
     [(_UIShareInvitationViewServiceViewController *)self _processSubitemsWithProcessType:1 completion:v11];
   }
 
   else
   {
 LABEL_4:
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)_processSubitemsWithProcessType:(unint64_t)a3 completion:(id)a4
+- (void)_processSubitemsWithProcessType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
-  v8 = [[BRShareProcessSubitems alloc] initWithURL:v7 processType:a3];
+  completionCopy = completion;
+  itemURL = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+  v8 = [[BRShareProcessSubitems alloc] initWithURL:itemURL processType:type];
   [v8 setMaxSharedSubitemsBeforeFailure:4];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100016FBC;
   v11[3] = &unk_10004D0F0;
-  v12 = v6;
-  v9 = v6;
+  v12 = completionCopy;
+  v9 = completionCopy;
   [v8 setProcessSubitemsCompletionBlock:v11];
   [v8 setQualityOfService:25];
-  v10 = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
-  [v10 addOperation:v8];
+  workerQueue = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
+  [workerQueue addOperation:v8];
 }
 
 - (int64_t)_hostApplicationType
 {
-  v2 = [(_UIShareInvitationViewServiceViewController *)self _hostApplicationBundleIdentifier];
-  v3 = [v2 lowercaseString];
+  _hostApplicationBundleIdentifier = [(_UIShareInvitationViewServiceViewController *)self _hostApplicationBundleIdentifier];
+  lowercaseString = [_hostApplicationBundleIdentifier lowercaseString];
 
-  if ([v3 isEqualToString:@"com.apple.pages"])
+  if ([lowercaseString isEqualToString:@"com.apple.pages"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.numbers"])
+  else if ([lowercaseString isEqualToString:@"com.apple.numbers"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.keynote"])
+  else if ([lowercaseString isEqualToString:@"com.apple.keynote"])
   {
     v4 = 4;
   }
@@ -641,12 +641,12 @@ LABEL_4:
   return v4;
 }
 
-- (id)_alertControllerForLegacyApplication:(id)a3
+- (id)_alertControllerForLegacyApplication:(id)application
 {
-  v4 = [(_UIShareInvitationViewServiceViewController *)self _hostApplicationType];
+  _hostApplicationType = [(_UIShareInvitationViewServiceViewController *)self _hostApplicationType];
   v5 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v6 = v5;
-  switch(v4)
+  switch(_hostApplicationType)
   {
     case 4:
       v7 = [v5 localizedStringForKey:@"IWORK_LEGACY_TEXT_KEYNOTE" value:@"To share this presentation table:{get the latest version of Keynote from the App Store.", @"Localizable"}];
@@ -694,7 +694,7 @@ LABEL_9:
     v20[2] = sub_100017524;
     v20[3] = &unk_10004CB70;
     v21 = v9;
-    v22 = self;
+    selfCopy = self;
     v18 = [UIAlertAction actionWithTitle:v17 style:0 handler:v20];
     [v12 addAction:v18];
   }
@@ -704,7 +704,7 @@ LABEL_9:
 
 - (BOOL)isShowingSpinner
 {
-  v2 = [(_UIShareInvitationViewServiceViewController *)self viewController];
+  viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -713,44 +713,44 @@ LABEL_9:
 
 - (void)_setupViewControllerInContainedNavController
 {
-  v3 = [(_UIShareInvitationViewServiceViewController *)self containedNavController];
-  if (v3)
+  containedNavController = [(_UIShareInvitationViewServiceViewController *)self containedNavController];
+  if (containedNavController)
   {
-    v4 = v3;
-    v5 = [(_UIShareInvitationViewServiceViewController *)self containedNavController];
-    v6 = [v5 viewControllers];
-    v7 = [v6 firstObject];
-    v8 = [(_UIShareInvitationViewServiceViewController *)self viewController];
+    v4 = containedNavController;
+    containedNavController2 = [(_UIShareInvitationViewServiceViewController *)self containedNavController];
+    viewControllers = [containedNavController2 viewControllers];
+    firstObject = [viewControllers firstObject];
+    viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
 
-    if (v7 != v8)
+    if (firstObject != viewController)
     {
-      v9 = [(_UIShareInvitationViewServiceViewController *)self containedNavController];
-      v10 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-      v17 = v10;
+      containedNavController3 = [(_UIShareInvitationViewServiceViewController *)self containedNavController];
+      viewController2 = [(_UIShareInvitationViewServiceViewController *)self viewController];
+      v17 = viewController2;
       v11 = [NSArray arrayWithObjects:&v17 count:1];
-      [v9 setViewControllers:v11 animated:0];
+      [containedNavController3 setViewControllers:v11 animated:0];
 
-      v12 = [(_UIShareInvitationViewServiceViewController *)self unreachableViewController];
-      if (![(_UIShareInvitationViewServiceViewController *)self isShowingSpinner]&& (v12 || ([(BRReachabilityMonitor *)self->_reachabilityMonitor isNetworkReachable]& 1) == 0))
+      unreachableViewController = [(_UIShareInvitationViewServiceViewController *)self unreachableViewController];
+      if (![(_UIShareInvitationViewServiceViewController *)self isShowingSpinner]&& (unreachableViewController || ([(BRReachabilityMonitor *)self->_reachabilityMonitor isNetworkReachable]& 1) == 0))
       {
-        v13 = [v12 presentingViewController];
-        v14 = [(_UIShareInvitationViewServiceViewController *)self viewController];
+        presentingViewController = [unreachableViewController presentingViewController];
+        viewController3 = [(_UIShareInvitationViewServiceViewController *)self viewController];
 
-        if (v13 != v14)
+        if (presentingViewController != viewController3)
         {
-          if (v12)
+          if (unreachableViewController)
           {
-            if (v13)
+            if (presentingViewController)
             {
-              [v13 dismissViewControllerAnimated:0 completion:0];
+              [presentingViewController dismissViewControllerAnimated:0 completion:0];
             }
           }
 
           [(_UIShareInvitationViewServiceViewController *)self setUnreachableViewController:0];
           [(_UIShareInvitationViewServiceViewController *)self createUnreachableViewControllerIfNecessary];
-          v15 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-          v16 = [(_UIShareInvitationViewServiceViewController *)self unreachableViewController];
-          [v15 presentReachabilityViewController:v16 animated:0];
+          viewController4 = [(_UIShareInvitationViewServiceViewController *)self viewController];
+          unreachableViewController2 = [(_UIShareInvitationViewServiceViewController *)self unreachableViewController];
+          [viewController4 presentReachabilityViewController:unreachableViewController2 animated:0];
         }
       }
     }
@@ -759,9 +759,9 @@ LABEL_9:
 
 - (void)_updateAllowInvitingFromShare
 {
-  v3 = [(_UIShareInvitationViewServiceViewController *)self currentUserIsOwnerOrAdmin];
+  currentUserIsOwnerOrAdmin = [(_UIShareInvitationViewServiceViewController *)self currentUserIsOwnerOrAdmin];
 
-  [(_UIShareInvitationViewServiceViewController *)self setAllowInvitingOthers:v3];
+  [(_UIShareInvitationViewServiceViewController *)self setAllowInvitingOthers:currentUserIsOwnerOrAdmin];
 }
 
 - (void)_loadInitialViewController
@@ -782,9 +782,9 @@ LABEL_9:
   else
   {
     [(_UIShareInvitationViewServiceViewController *)self _updateAllowInvitingFromShare];
-    v4 = [(_UIShareInvitationViewServiceViewController *)self initialSharing];
+    initialSharing = [(_UIShareInvitationViewServiceViewController *)self initialSharing];
     v5 = off_10004C3C0;
-    if ((v4 & 1) == 0 && !self->_showAddPeople)
+    if ((initialSharing & 1) == 0 && !self->_showAddPeople)
     {
       v5 = &off_10004C3C8;
     }
@@ -792,9 +792,9 @@ LABEL_9:
     v6 = [objc_alloc(*v5) initWithDelegate:self];
     [(_UIShareInvitationViewServiceViewController *)self setViewController:v6];
 
-    v7 = [(_UIShareInvitationViewServiceViewController *)self itemName];
-    v8 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-    [v8 setItemName:v7];
+    itemName = [(_UIShareInvitationViewServiceViewController *)self itemName];
+    viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
+    [viewController setItemName:itemName];
 
     [(_UIShareInvitationViewServiceViewController *)self _setupViewControllerInContainedNavController];
 
@@ -804,18 +804,18 @@ LABEL_9:
 
 - (void)_presentedURLChanged
 {
-  v3 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
-  [(_UIShareInvitationViewServiceViewController *)self _loadThumbnailForFileURL:v3];
+  itemURL = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+  [(_UIShareInvitationViewServiceViewController *)self _loadThumbnailForFileURL:itemURL];
 
   if (self->_refetchShareOnChange)
   {
-    v4 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+    itemURL2 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
     v6 = 0;
-    [v4 getPromisedItemResourceValue:&v6 forKey:NSURLUbiquitousItemIsUploadedKey error:0];
+    [itemURL2 getPromisedItemResourceValue:&v6 forKey:NSURLUbiquitousItemIsUploadedKey error:0];
     v5 = v6;
 
-    LODWORD(v4) = [v5 BOOLValue];
-    if (v4)
+    LODWORD(itemURL2) = [v5 BOOLValue];
+    if (itemURL2)
     {
       [(_UIShareInvitationViewServiceViewController *)self _updateCloudDocsShare];
     }
@@ -842,12 +842,12 @@ LABEL_9:
   }
 }
 
-- (void)_loadThumbnailForFileURL:(id)a3
+- (void)_loadThumbnailForFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 startAccessingSecurityScopedResource];
-  v6 = [(_UIShareInvitationViewServiceViewController *)self traitCollection];
-  [v6 displayScale];
+  lCopy = l;
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
+  traitCollection = [(_UIShareInvitationViewServiceViewController *)self traitCollection];
+  [traitCollection displayScale];
   v8 = v7;
 
   if (self->_legacyAppearance)
@@ -870,92 +870,92 @@ LABEL_9:
     v10 = 128.0;
   }
 
-  v11 = [[QLThumbnailGenerationRequest alloc] initWithFileAtURL:v4 size:-1 scale:v9 representationTypes:{v10, v8}];
+  v11 = [[QLThumbnailGenerationRequest alloc] initWithFileAtURL:lCopy size:-1 scale:v9 representationTypes:{v10, v8}];
   v12 = +[QLThumbnailGenerator sharedGenerator];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100017E54;
   v14[3] = &unk_10004D1B8;
-  v15 = v4;
-  v16 = self;
-  v17 = v5;
-  v13 = v4;
+  v15 = lCopy;
+  selfCopy = self;
+  v17 = startAccessingSecurityScopedResource;
+  v13 = lCopy;
   [v12 generateBestRepresentationForRequest:v11 completionHandler:v14];
 }
 
-- (void)_setThumbnail:(id)a3
+- (void)_setThumbnail:(id)thumbnail
 {
-  [(_UIShareInvitationViewServiceViewController *)self setThumbnail:a3];
-  v4 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-  [v4 updateThumbnail];
+  [(_UIShareInvitationViewServiceViewController *)self setThumbnail:thumbnail];
+  viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
+  [viewController updateThumbnail];
 }
 
-- (void)_setTintColor:(id)a3
+- (void)_setTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationViewServiceViewController *)self view];
-  [v5 setTintColor:v4];
+  colorCopy = color;
+  view = [(_UIShareInvitationViewServiceViewController *)self view];
+  [view setTintColor:colorCopy];
 }
 
-- (void)_setAppName:(id)a3
+- (void)_setAppName:(id)name
 {
-  [(_UIShareInvitationViewServiceViewController *)self setAppName:a3];
+  [(_UIShareInvitationViewServiceViewController *)self setAppName:name];
 
   [(_UIShareInvitationViewServiceViewController *)self _updateAllowInvitingFromShare];
 }
 
-- (void)_prepareForDisplayWithCompletion:(id)a3
+- (void)_prepareForDisplayWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[UIColor systemGroupedBackgroundColor];
-  v6 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-  v7 = [v6 view];
-  [v7 setBackgroundColor:v5];
+  viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
+  view = [viewController view];
+  [view setBackgroundColor:v5];
 
-  v8 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-  [v8 setDelegate:self];
+  viewController2 = [(_UIShareInvitationViewServiceViewController *)self viewController];
+  [viewController2 setDelegate:self];
 
   [(_UIShareInvitationViewServiceViewController *)self _setupViewControllerInContainedNavController];
-  v9 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-  [v9 preferredContentSize];
-  v4[2](v4);
+  viewController3 = [(_UIShareInvitationViewServiceViewController *)self viewController];
+  [viewController3 preferredContentSize];
+  completionCopy[2](completionCopy);
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v10.receiver = self;
   v10.super_class = _UIShareInvitationViewServiceViewController;
-  v4 = a3;
-  [(_UIShareInvitationViewServiceViewController *)&v10 preferredContentSizeDidChangeForChildContentContainer:v4];
+  containerCopy = container;
+  [(_UIShareInvitationViewServiceViewController *)&v10 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
   v5 = [(_UIShareInvitationViewServiceViewController *)self hostingViewController:v10.receiver];
-  [v4 preferredContentSize];
+  [containerCopy preferredContentSize];
   v7 = v6;
   v9 = v8;
 
   [v5 _requestContentSize:{v7, v9}];
 }
 
-- (void)_setMailSubject:(id)a3 template:(id)a4
+- (void)_setMailSubject:(id)subject template:(id)template
 {
-  v6 = a4;
-  [(_UIShareInvitationViewServiceViewController *)self _setMailSubject:a3];
-  [(_UIShareInvitationViewServiceViewController *)self _setMailTemplate:v6];
+  templateCopy = template;
+  [(_UIShareInvitationViewServiceViewController *)self _setMailSubject:subject];
+  [(_UIShareInvitationViewServiceViewController *)self _setMailTemplate:templateCopy];
 }
 
-- (void)_setParticipantDetails:(id)a3
+- (void)_setParticipantDetails:(id)details
 {
-  v5 = a3;
-  if (self->_participantDetails != v5)
+  detailsCopy = details;
+  if (self->_participantDetails != detailsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_participantDetails, a3);
-    v5 = v6;
+    v6 = detailsCopy;
+    objc_storeStrong(&self->_participantDetails, details);
+    detailsCopy = v6;
   }
 }
 
-- (void)_setIsInPopoverMode:(BOOL)a3
+- (void)_setIsInPopoverMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -966,30 +966,30 @@ LABEL_9:
   }
 
   self->_popoverPresentationMode = v3;
-  v4 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-  [v4 setPopoverPresentationMode:v3];
+  viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
+  [viewController setPopoverPresentationMode:v3];
 }
 
-- (void)_setCloudKitContainerSetupInfo:(id)a3
+- (void)_setCloudKitContainerSetupInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     [(_UIShareInvitationViewServiceViewController *)self setContainerSetupInfo:?];
   }
 }
 
-- (void)_willAppearInRemoteViewController:(id)a3
+- (void)_willAppearInRemoteViewController:(id)controller
 {
-  v4 = [(_UIShareInvitationViewServiceViewController *)self view];
-  v3 = [v4 window];
-  [v3 makeKeyWindow];
+  view = [(_UIShareInvitationViewServiceViewController *)self view];
+  window = [view window];
+  [window makeKeyWindow];
 }
 
 - (void)_updateCloudKitShare
 {
   self->_refetchShareOnChange = 0;
-  v3 = [(CKShare *)self->_share participants];
-  v4 = [v3 count];
+  participants = [(CKShare *)self->_share participants];
+  v4 = [participants count];
 
   share = self->_share;
   if (v4 > 1)
@@ -1013,43 +1013,43 @@ LABEL_9:
   {
     [(_UIShareInvitationViewServiceViewController *)self _sanitizeForAvailablePermissions:share];
     [(_UIShareInvitationViewServiceViewController *)self _setupWithShare:self->_share error:0 initialShare:1];
-    v9 = [(_UIShareInvitationViewServiceViewController *)self itemName];
-    v6 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-    [v6 setItemName:v9];
+    itemName = [(_UIShareInvitationViewServiceViewController *)self itemName];
+    viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
+    [viewController setItemName:itemName];
   }
 }
 
-- (BOOL)_setContainerFromID:(id)a3
+- (BOOL)_setContainerFromID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   if (self->_containerSetupInfo)
   {
     v6 = [[CKContainer alloc] initWithContainerSetupInfo:self->_containerSetupInfo];
     goto LABEL_5;
   }
 
-  if (v4)
+  if (dCopy)
   {
-    v6 = [[CKContainer alloc] initWithContainerID:v4];
+    v6 = [[CKContainer alloc] initWithContainerID:dCopy];
 LABEL_5:
     v7 = v6;
     [(_UIShareInvitationViewServiceViewController *)self setContainer:v6];
 
-    v8 = [(_UIShareInvitationViewServiceViewController *)self _hostApplicationBundleIdentifier];
-    v9 = [(_UIShareInvitationViewServiceViewController *)self container];
-    [v9 setSourceApplicationBundleIdentifier:v8];
+    _hostApplicationBundleIdentifier = [(_UIShareInvitationViewServiceViewController *)self _hostApplicationBundleIdentifier];
+    container = [(_UIShareInvitationViewServiceViewController *)self container];
+    [container setSourceApplicationBundleIdentifier:_hostApplicationBundleIdentifier];
 
     v10 = cdui_default_log();
     v11 = 1;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v12 = [(_UIShareInvitationViewServiceViewController *)self container];
-      v13 = [v12 sourceApplicationBundleIdentifier];
+      container2 = [(_UIShareInvitationViewServiceViewController *)self container];
+      sourceApplicationBundleIdentifier = [container2 sourceApplicationBundleIdentifier];
       v16 = 138412546;
       v17 = v5;
       v18 = 2112;
-      v19 = v13;
+      v19 = sourceApplicationBundleIdentifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[INFO] Set up container with ID %@, source app id %@", &v16, 0x16u);
     }
 
@@ -1070,15 +1070,15 @@ LABEL_10:
   return v11;
 }
 
-- (void)_setCloudKitThumbnail:(id)a3 title:(id)a4 type:(id)a5
+- (void)_setCloudKitThumbnail:(id)thumbnail title:(id)title type:(id)type
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  thumbnailCopy = thumbnail;
+  titleCopy = title;
+  typeCopy = type;
   [(_UIShareInvitationViewServiceViewController *)self setMode:1];
-  if (v8)
+  if (titleCopy)
   {
-    [(_UIShareInvitationViewServiceViewController *)self setItemName:v8];
+    [(_UIShareInvitationViewServiceViewController *)self setItemName:titleCopy];
   }
 
   else
@@ -1088,9 +1088,9 @@ LABEL_10:
     [(_UIShareInvitationViewServiceViewController *)self setItemName:v11];
   }
 
-  if (v9)
+  if (typeCopy)
   {
-    v12 = v9;
+    v12 = typeCopy;
   }
 
   else
@@ -1100,20 +1100,20 @@ LABEL_10:
 
   [(_UIShareInvitationViewServiceViewController *)self setItemUTI:v12];
 
-  if (v16)
+  if (thumbnailCopy)
   {
-    v13 = [UIImage imageWithData:v16];
+    v13 = [UIImage imageWithData:thumbnailCopy];
     [(_UIShareInvitationViewServiceViewController *)self setThumbnail:v13];
 
-    v14 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-    [v14 updateThumbnail];
+    viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
+    [viewController updateThumbnail];
   }
 
-  if (v8)
+  if (titleCopy)
   {
-    [(_UIShareInvitationViewServiceViewController *)self setItemName:v8];
-    v15 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-    [v15 setItemName:v8];
+    [(_UIShareInvitationViewServiceViewController *)self setItemName:titleCopy];
+    viewController2 = [(_UIShareInvitationViewServiceViewController *)self viewController];
+    [viewController2 setItemName:titleCopy];
   }
 
   [(_UIShareInvitationViewServiceViewController *)self setInitialSharing:1];
@@ -1121,25 +1121,25 @@ LABEL_10:
   [(_UIShareInvitationViewServiceViewController *)self _loadInitialViewController];
 }
 
-- (void)_setCloudKitShare:(id)a3 containerID:(id)a4
+- (void)_setCloudKitShare:(id)share containerID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  dCopy = d;
   [(_UIShareInvitationViewServiceViewController *)self setMode:1];
-  v8 = [v6 valueForKey:CKShareTitleKey];
+  v8 = [shareCopy valueForKey:CKShareTitleKey];
   if (v8)
   {
     [(_UIShareInvitationViewServiceViewController *)self setItemName:v8];
   }
 
   [(_UIShareInvitationViewServiceViewController *)self setItemUTI:qword_100060308];
-  v9 = [v6 objectForKeyedSubscript:CKShareTypeKey];
+  v9 = [shareCopy objectForKeyedSubscript:CKShareTypeKey];
   if (([v9 isEqualToString:@"com.apple.notes.note"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"com.apple.notes.folder"))
   {
     [(_UIShareInvitationViewServiceViewController *)self setItemUTI:v9];
   }
 
-  v10 = [v6 valueForKey:CKShareThumbnailImageDataKey];
+  v10 = [shareCopy valueForKey:CKShareThumbnailImageDataKey];
   v11 = [UIImage imageWithData:v10];
 
   if (v11)
@@ -1147,20 +1147,20 @@ LABEL_10:
     [(_UIShareInvitationViewServiceViewController *)self setThumbnail:v11];
   }
 
-  [(_UIShareInvitationViewServiceViewController *)self setShare:v6];
-  v12 = [(_UIShareInvitationViewServiceViewController *)self _setContainerFromID:v7];
+  [(_UIShareInvitationViewServiceViewController *)self setShare:shareCopy];
+  v12 = [(_UIShareInvitationViewServiceViewController *)self _setContainerFromID:dCopy];
 
   if (v12)
   {
     v13 = cdui_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(_UIShareInvitationViewServiceViewController *)self itemName];
+      itemName = [(_UIShareInvitationViewServiceViewController *)self itemName];
       share = self->_share;
       v17 = 138412546;
-      v18 = v14;
+      v18 = itemName;
       v19 = 2112;
-      v20 = share;
+      shareCopy2 = share;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[INFO] Initializing for CK sharing with item name %@, share %@", &v17, 0x16u);
     }
 
@@ -1168,50 +1168,50 @@ LABEL_10:
     [(_UIShareInvitationViewServiceViewController *)self updateTemplateStrings];
   }
 
-  v16 = [(_UIShareInvitationViewServiceViewController *)self shareCreationSema];
-  dispatch_semaphore_signal(v16);
+  shareCreationSema = [(_UIShareInvitationViewServiceViewController *)self shareCreationSema];
+  dispatch_semaphore_signal(shareCreationSema);
 }
 
 - (void)updateTemplateStrings
 {
   v3 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v4 = [v3 localizedStringForKey:@"MAIL_TEMPLATE_BODY" value:@"<br><br>#LINK_FRAGMENT#" table:@"Localizable"];
-  v5 = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
+  itemUTI = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
   v6 = _CDAdaptLocalizedStringForItemType();
   [(_UIShareInvitationViewServiceViewController *)self _setMailTemplate:v6];
 
   v7 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v8 = [v7 localizedStringForKey:@"MAIL_TEMPLATE_SUBJECT" value:@"“#ITEM_NAME#”" table:@"Localizable"];
-  v9 = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
+  itemUTI2 = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
   v10 = _CDAdaptLocalizedStringForItemType();
   [(_UIShareInvitationViewServiceViewController *)self _setMailSubject:v10];
 
   [(_UIShareInvitationViewServiceViewController *)self _setMessageTemplate:&stru_10004DE38];
 }
 
-- (void)_setAvailablePermissions:(unint64_t)a3
+- (void)_setAvailablePermissions:(unint64_t)permissions
 {
-  if ((~a3 & 3) != 0)
+  if ((~permissions & 3) != 0)
   {
-    v4 = a3;
+    permissionsCopy = permissions;
   }
 
   else
   {
-    v4 = a3 & 0xFFFFFFFFFFFFFFFCLL;
+    permissionsCopy = permissions & 0xFFFFFFFFFFFFFFFCLL;
   }
 
-  if ((~v4 & 0xC) == 0)
+  if ((~permissionsCopy & 0xC) == 0)
   {
-    v4 &= 0xFFFFFFFFFFFFFFF3;
+    permissionsCopy &= 0xFFFFFFFFFFFFFFF3;
   }
 
   if (self->_hasValidPermissionOptions)
   {
     availablePermissions = self->_availablePermissions;
-    self->_availablePermissions = v4;
+    self->_availablePermissions = permissionsCopy;
     self->_hasValidPermissionOptions = 1;
-    if (availablePermissions == v4)
+    if (availablePermissions == permissionsCopy)
     {
       return;
     }
@@ -1219,28 +1219,28 @@ LABEL_10:
 
   else
   {
-    self->_availablePermissions = v4;
+    self->_availablePermissions = permissionsCopy;
     self->_hasValidPermissionOptions = 1;
   }
 
-  v6 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-  [v6 updatePermissionOptions];
+  viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
+  [viewController updatePermissionOptions];
 }
 
-- (void)_sanitizeForAvailablePermissions:(id)a3
+- (void)_sanitizeForAvailablePermissions:(id)permissions
 {
-  v10 = a3;
-  v4 = [v10 owner];
-  v5 = [v4 isCurrentUser];
+  permissionsCopy = permissions;
+  owner = [permissionsCopy owner];
+  isCurrentUser = [owner isCurrentUser];
 
-  v6 = v10;
-  if (v5)
+  v6 = permissionsCopy;
+  if (isCurrentUser)
   {
     availablePermissions = self->_availablePermissions;
     if ((availablePermissions & 2) != 0)
     {
-      v8 = [v10 publicPermission] == 1;
-      v6 = v10;
+      v8 = [permissionsCopy publicPermission] == 1;
+      v6 = permissionsCopy;
       if (v8)
       {
         goto LABEL_15;
@@ -1252,10 +1252,10 @@ LABEL_10:
 
     if ((availablePermissions & 4) != 0)
     {
-      if ([v10 publicPermission] == 3)
+      if ([permissionsCopy publicPermission] == 3)
       {
-        v8 = [v10 publicPermission] == 2;
-        v6 = v10;
+        v8 = [permissionsCopy publicPermission] == 2;
+        v6 = permissionsCopy;
         if (v8)
         {
           goto LABEL_15;
@@ -1268,17 +1268,17 @@ LABEL_10:
       availablePermissions = self->_availablePermissions;
     }
 
-    v6 = v10;
+    v6 = permissionsCopy;
     if ((availablePermissions & 8) != 0)
     {
-      v8 = [v10 publicPermission] == 2;
-      v6 = v10;
+      v8 = [permissionsCopy publicPermission] == 2;
+      v6 = permissionsCopy;
       if (v8)
       {
         v9 = 3;
 LABEL_14:
-        [v10 setPublicPermission:v9];
-        v6 = v10;
+        [permissionsCopy setPublicPermission:v9];
+        v6 = permissionsCopy;
       }
     }
   }
@@ -1286,68 +1286,68 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_dismissForRecordWithError:(id)a3
+- (void)_dismissForRecordWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(_UIShareInvitationViewServiceViewController *)self initialSharing])
   {
-    v5 = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
-    [v5 cancelAllOperations];
+    workerQueue = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
+    [workerQueue cancelAllOperations];
   }
 
   v6 = cdui_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[INFO] record: dismissing because of error (%@)", &v8, 0xCu);
   }
 
-  v7 = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
-  [v7 _dismissViewControllerWithError:v4];
+  hostingViewController = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
+  [hostingViewController _dismissViewControllerWithError:errorCopy];
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v9 = a4;
-  if ([v9 conformsToProtocol:&OBJC_PROTOCOL___BRShareInvitationNavigationStackController])
+  viewControllerCopy = viewController;
+  if ([viewControllerCopy conformsToProtocol:&OBJC_PROTOCOL___BRShareInvitationNavigationStackController])
   {
-    v6 = v9;
-    v7 = [(_UIShareInvitationViewServiceViewController *)self containedNavController];
-    v8 = [v7 disappearingViewController];
-    [v6 willNavigateFromViewController:v8];
+    v6 = viewControllerCopy;
+    containedNavController = [(_UIShareInvitationViewServiceViewController *)self containedNavController];
+    disappearingViewController = [containedNavController disappearingViewController];
+    [v6 willNavigateFromViewController:disappearingViewController];
   }
 }
 
-- (void)reachabilityMonitor:(id)a3 didChangeReachabilityStatusTo:(BOOL)a4
+- (void)reachabilityMonitor:(id)monitor didChangeReachabilityStatusTo:(BOOL)to
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100019270;
   v4[3] = &unk_10004D208;
   v4[4] = self;
-  v5 = a4;
+  toCopy = to;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
 - (void)createUnreachableViewControllerIfNecessary
 {
-  v3 = [(_UIShareInvitationViewServiceViewController *)self unreachableViewController];
+  unreachableViewController = [(_UIShareInvitationViewServiceViewController *)self unreachableViewController];
 
-  if (!v3)
+  if (!unreachableViewController)
   {
     v7 = [[BRNetworkUnreachableViewController alloc] initForInitialSharing:[(_UIShareInvitationViewServiceViewController *)self initialSharing]];
     v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"dismissAction:"];
-    v5 = [v7 topViewController];
-    v6 = [v5 navigationItem];
-    [v6 setRightBarButtonItem:v4];
+    topViewController = [v7 topViewController];
+    navigationItem = [topViewController navigationItem];
+    [navigationItem setRightBarButtonItem:v4];
 
     [v7 setModalTransitionStyle:2];
     [(_UIShareInvitationViewServiceViewController *)self setUnreachableViewController:v7];
   }
 }
 
-- (id)shareViewControllerSubtitle:(id)a3
+- (id)shareViewControllerSubtitle:(id)subtitle
 {
   if ([(_UIShareInvitationViewServiceViewController *)self initialSharing])
   {
@@ -1365,15 +1365,15 @@ LABEL_15:
 
 - (void)shareViewControllerDidActivateShowSharedFolder
 {
-  v2 = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
-  [v2 _cloudSharingControllerDidActivateShowSharedFolder];
+  hostingViewController = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
+  [hostingViewController _cloudSharingControllerDidActivateShowSharedFolder];
 }
 
 - (int64_t)shareViewControllerCurrentParticipantsState
 {
-  v3 = [(_UIShareInvitationViewServiceViewController *)self editableParticipants];
-  v4 = v3;
-  if (self->_share && [v3 count] > 1)
+  editableParticipants = [(_UIShareInvitationViewServiceViewController *)self editableParticipants];
+  v4 = editableParticipants;
+  if (self->_share && [editableParticipants count] > 1)
   {
     v15 = 0u;
     v16 = 0u;
@@ -1461,10 +1461,10 @@ LABEL_24:
     return 1;
   }
 
-  v3 = [(_UIShareInvitationViewServiceViewController *)self share];
-  v4 = [v3 publicPermission];
+  share = [(_UIShareInvitationViewServiceViewController *)self share];
+  publicPermission = [share publicPermission];
 
-  if (v4 != 1)
+  if (publicPermission != 1)
   {
     return 0;
   }
@@ -1472,29 +1472,29 @@ LABEL_24:
   return [(_UIShareInvitationViewServiceViewController *)self currentUserIsOwner];
 }
 
-- (void)shareViewControllerDidChooseTransport:(id)a3
+- (void)shareViewControllerDidChooseTransport:(id)transport
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
-  [v5 _cloudSharingControllerDidChooseTransport:v4];
+  transportCopy = transport;
+  hostingViewController = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
+  [hostingViewController _cloudSharingControllerDidChooseTransport:transportCopy];
 }
 
-- (void)performAfterFullscreenPresentation:(id)a3
+- (void)performAfterFullscreenPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if (self->_hasBeenRepresentedInFullscreen)
   {
-    v5 = dispatch_get_global_queue(25, 0);
+    hostingViewController = dispatch_get_global_queue(25, 0);
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100019E18;
     v11[3] = &unk_10004D230;
     v6 = &v12;
     v11[4] = self;
-    v12 = v4;
-    v7 = v4;
-    dispatch_async(v5, v11);
+    v12 = presentationCopy;
+    v7 = presentationCopy;
+    dispatch_async(hostingViewController, v11);
   }
 
   else
@@ -1507,38 +1507,38 @@ LABEL_24:
     }
 
     self->_hasBeenRepresentedInFullscreen = 1;
-    v9 = [(_UIShareInvitationViewServiceViewController *)self fullscreenRepresentationGroup];
-    dispatch_group_enter(v9);
+    fullscreenRepresentationGroup = [(_UIShareInvitationViewServiceViewController *)self fullscreenRepresentationGroup];
+    dispatch_group_enter(fullscreenRepresentationGroup);
 
-    v5 = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
+    hostingViewController = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100019BD8;
     v13[3] = &unk_10004D230;
     v6 = &v14;
     v13[4] = self;
-    v14 = v4;
-    v10 = v4;
-    [v5 _dismissForActivityRepresentation:v13];
+    v14 = presentationCopy;
+    v10 = presentationCopy;
+    [hostingViewController _dismissForActivityRepresentation:v13];
   }
 }
 
-- (void)shareViewController:(id)a3 willStartActivity:(id)a4 completion:(id)a5
+- (void)shareViewController:(id)controller willStartActivity:(id)activity completion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100019F04;
   v6[3] = &unk_10004D258;
-  v7 = self;
-  v8 = a5;
-  v5 = v8;
-  [(_UIShareInvitationViewServiceViewController *)v7 performAfterFullscreenPresentation:v6];
+  selfCopy = self;
+  completionCopy = completion;
+  v5 = completionCopy;
+  [(_UIShareInvitationViewServiceViewController *)selfCopy performAfterFullscreenPresentation:v6];
 }
 
 - (id)sharingAppBundleIdentifierOverride
 {
-  v2 = [(_UIShareInvitationViewServiceViewController *)self share];
-  v3 = [v2 objectForKeyedSubscript:CKShareTypeKey];
+  share = [(_UIShareInvitationViewServiceViewController *)self share];
+  v3 = [share objectForKeyedSubscript:CKShareTypeKey];
 
   if (v3)
   {
@@ -1573,135 +1573,135 @@ LABEL_24:
 
 - (id)sharingAppBundleIdentifier
 {
-  v3 = [(_UIShareInvitationViewServiceViewController *)self sharingAppBundleIdentifierOverride];
-  v4 = v3;
-  if (v3)
+  sharingAppBundleIdentifierOverride = [(_UIShareInvitationViewServiceViewController *)self sharingAppBundleIdentifierOverride];
+  v4 = sharingAppBundleIdentifierOverride;
+  if (sharingAppBundleIdentifierOverride)
   {
-    v5 = v3;
+    _hostApplicationBundleIdentifier = sharingAppBundleIdentifierOverride;
   }
 
   else
   {
-    v5 = [(_UIShareInvitationViewServiceViewController *)self _hostApplicationBundleIdentifier];
+    _hostApplicationBundleIdentifier = [(_UIShareInvitationViewServiceViewController *)self _hostApplicationBundleIdentifier];
   }
 
-  v6 = v5;
+  v6 = _hostApplicationBundleIdentifier;
 
   return v6;
 }
 
 - (id)sharingAppName
 {
-  v3 = [(_UIShareInvitationViewServiceViewController *)self shareURL];
-  v4 = v3;
-  if (v3)
+  shareURL = [(_UIShareInvitationViewServiceViewController *)self shareURL];
+  v4 = shareURL;
+  if (shareURL)
   {
-    v5 = [v3 path];
-    v6 = [v5 componentsSeparatedByString:@"/"];
+    path = [shareURL path];
+    v6 = [path componentsSeparatedByString:@"/"];
 
     if ([v6 count] < 2)
     {
-      v8 = 0;
+      capitalizedString = 0;
     }
 
     else
     {
       v7 = [v6 objectAtIndexedSubscript:1];
-      v8 = [v7 capitalizedString];
+      capitalizedString = [v7 capitalizedString];
     }
 
-    if ([v8 isEqualToString:@"Iclouddrive"])
+    if ([capitalizedString isEqualToString:@"Iclouddrive"])
     {
       v9 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v10 = [v9 localizedStringForKey:@"MAIL_TEMPLATE_BRICK_ICLOUD_DRIVE" value:@"iCloud Drive" table:@"Localizable"];
 
-      v8 = v10;
+      capitalizedString = v10;
     }
 
-    else if ([v8 isEqualToString:@"Share"])
+    else if ([capitalizedString isEqualToString:@"Share"])
     {
-      v11 = [(_UIShareInvitationViewServiceViewController *)self appName];
+      appName = [(_UIShareInvitationViewServiceViewController *)self appName];
 LABEL_11:
-      v12 = v11;
+      appName2 = appName;
 
       goto LABEL_14;
     }
 
-    if (v8)
+    if (capitalizedString)
     {
-      v11 = v8;
-      v8 = v11;
+      appName = capitalizedString;
+      capitalizedString = appName;
       goto LABEL_11;
     }
   }
 
-  v12 = [(_UIShareInvitationViewServiceViewController *)self appName];
+  appName2 = [(_UIShareInvitationViewServiceViewController *)self appName];
 LABEL_14:
 
-  return v12;
+  return appName2;
 }
 
-- (void)shareViewController:(id)a3 prepareActivity:(id)a4 completion:(id)a5
+- (void)shareViewController:(id)controller prepareActivity:(id)activity completion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001A270;
   v10[3] = &unk_10004D280;
-  v11 = a4;
-  v12 = a5;
+  activityCopy = activity;
+  completionCopy = completion;
   v10[4] = self;
-  v8 = v11;
-  v9 = v12;
-  [(_UIShareInvitationViewServiceViewController *)self shareViewControllerCopyShareURL:a3 completion:v10];
+  v8 = activityCopy;
+  v9 = completionCopy;
+  [(_UIShareInvitationViewServiceViewController *)self shareViewControllerCopyShareURL:controller completion:v10];
 }
 
-- (void)shareViewControllerDidFinishActivity:(id)a3
+- (void)shareViewControllerDidFinishActivity:(id)activity
 {
   if (![(_UIShareInvitationViewServiceViewController *)self presentingError])
   {
-    v4 = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
-    [v4 _dismissViewControllerWithError:0];
+    hostingViewController = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
+    [hostingViewController _dismissViewControllerWithError:0];
 
     [(_UIShareInvitationViewServiceViewController *)self setViewController:0];
   }
 }
 
-- (void)_getTitle:(id *)a3 getMessage:(id *)a4 forMAIDError:(id)a5
+- (void)_getTitle:(id *)title getMessage:(id *)message forMAIDError:(id)error
 {
-  v12 = a5;
-  if (a3)
+  errorCopy = error;
+  if (title)
   {
     v8 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
-    *a3 = [v8 localizedStringForKey:@"ERROR_TITLE_MAID" value:@"Couldn’t Complete Request" table:@"Localizable"];
+    *title = [v8 localizedStringForKey:@"ERROR_TITLE_MAID" value:@"Couldn’t Complete Request" table:@"Localizable"];
   }
 
-  if (a4)
+  if (message)
   {
     v9 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v10 = [v9 localizedStringForKey:@"ERROR_MESSAGE_MAID" value:@"This account has restrictions on the people you can share with." table:@"Localizable"];
-    v11 = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
-    *a4 = _CDAdaptLocalizedStringForItemType();
+    itemUTI = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
+    *message = _CDAdaptLocalizedStringForItemType();
   }
 }
 
-- (BOOL)_getTitle:(id *)a3 getMessage:(id *)a4 forError:(id)a5
+- (BOOL)_getTitle:(id *)title getMessage:(id *)message forError:(id)error
 {
-  v8 = a5;
-  v9 = [v8 domain];
-  if ([v9 isEqualToString:@"_UIShareErrorDomain"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"_UIShareErrorDomain"])
   {
-    v10 = [v8 code];
+    code = [errorCopy code];
 
-    if (!v10)
+    if (!code)
     {
-      v11 = [v8 userInfo];
-      v12 = [v11 objectForKey:NSUnderlyingErrorKey];
+      userInfo = [errorCopy userInfo];
+      appName = [userInfo objectForKey:NSUnderlyingErrorKey];
 
-      if (v12)
+      if (appName)
       {
         v64 = 0;
         v65 = 0;
-        v13 = [(_UIShareInvitationViewServiceViewController *)self _getTitle:&v65 getMessage:&v64 forError:v12];
+        v13 = [(_UIShareInvitationViewServiceViewController *)self _getTitle:&v65 getMessage:&v64 forError:appName];
         v14 = v65;
         v15 = v64;
         if (v13)
@@ -1719,8 +1719,8 @@ LABEL_14:
       v32 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v33 = [v32 localizedStringForKey:@"ERROR_TITLE_COULD_NOT_ADD_PARTICIPANTS" value:@"Couldn’t Add People" table:@"Localizable"];
 
-      v34 = [v8 userInfo];
-      v35 = [v34 objectForKeyedSubscript:@"addr"];
+      userInfo2 = [errorCopy userInfo];
+      v35 = [userInfo2 objectForKeyedSubscript:@"addr"];
 
       v36 = [v35 count];
       if (v36 == 1)
@@ -1728,8 +1728,8 @@ LABEL_14:
         v38 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
         [v38 localizedStringForKey:@"ERROR_MESSAGE_COULD_NOT_ADD_PARTICIPANTS_WITH_SINGLE_ADDRESS" value:@"“%@” is not valid. Please enter a valid email address or phone number table:{then try sharing again.", @"Localizable"}];
         v41 = v59 = v33;
-        v42 = [v35 firstObject];
-        v43 = [NSString localizedStringWithFormat:v41, v42];
+        firstObject = [v35 firstObject];
+        v43 = [NSString localizedStringWithFormat:v41, firstObject];
 
         v15 = v41;
         v33 = v59;
@@ -1760,7 +1760,7 @@ LABEL_14:
       v14 = v33;
 LABEL_50:
 
-      if (!a3)
+      if (!title)
       {
         goto LABEL_52;
       }
@@ -1773,19 +1773,19 @@ LABEL_50:
   {
   }
 
-  v16 = [v8 domain];
-  v17 = [v16 isEqualToString:BRCloudDocsErrorDomain];
+  domain2 = [errorCopy domain];
+  v17 = [domain2 isEqualToString:BRCloudDocsErrorDomain];
 
   if (v17)
   {
-    if ([v8 code] == 17)
+    if ([errorCopy code] == 17)
     {
-      v18 = [v8 userInfo];
-      v12 = [v18 objectForKey:NSUnderlyingErrorKey];
+      userInfo3 = [errorCopy userInfo];
+      appName = [userInfo3 objectForKey:NSUnderlyingErrorKey];
 
       v62 = 0;
       v63 = 0;
-      [(_UIShareInvitationViewServiceViewController *)self _getTitle:&v63 getMessage:&v62 forError:v12];
+      [(_UIShareInvitationViewServiceViewController *)self _getTitle:&v63 getMessage:&v62 forError:appName];
       v14 = v63;
       v19 = v62;
 LABEL_10:
@@ -1796,29 +1796,29 @@ LABEL_10:
 LABEL_26:
     v15 = 0;
     v14 = 0;
-    if (!a3)
+    if (!title)
     {
       goto LABEL_52;
     }
 
 LABEL_51:
     v54 = v14;
-    *a3 = v14;
+    *title = v14;
     goto LABEL_52;
   }
 
-  v20 = [v8 domain];
-  v21 = [v20 isEqualToString:CKErrorDomain];
+  domain3 = [errorCopy domain];
+  v21 = [domain3 isEqualToString:CKErrorDomain];
 
   if (v21)
   {
-    v12 = [(_UIShareInvitationViewServiceViewController *)self appName];
-    v22 = [(_UIShareInvitationViewServiceViewController *)self initialSharing];
-    v23 = [v8 code];
+    appName = [(_UIShareInvitationViewServiceViewController *)self appName];
+    initialSharing = [(_UIShareInvitationViewServiceViewController *)self initialSharing];
+    code2 = [errorCopy code];
     v15 = 0;
-    if (v23 > 28)
+    if (code2 > 28)
     {
-      switch(v23)
+      switch(code2)
       {
         case 29:
           v44 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
@@ -1841,7 +1841,7 @@ LABEL_51:
         case 32:
           v60 = 0;
           v61 = 0;
-          [(_UIShareInvitationViewServiceViewController *)self _getTitle:&v61 getMessage:&v60 forMAIDError:v8];
+          [(_UIShareInvitationViewServiceViewController *)self _getTitle:&v61 getMessage:&v60 forMAIDError:errorCopy];
           v14 = v61;
           v19 = v60;
           goto LABEL_10;
@@ -1856,11 +1856,11 @@ LABEL_46:
       goto LABEL_50;
     }
 
-    if (v23 == 3)
+    if (code2 == 3)
     {
       v50 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v51 = v50;
-      if (!v22)
+      if (!initialSharing)
       {
         v14 = [v50 localizedStringForKey:@"ERROR_TITLE_NETWORK_UNAVAILABLE" value:@"Couldn’t Connect" table:@"Localizable"];
 
@@ -1880,14 +1880,14 @@ LABEL_46:
 
     else
     {
-      if (v23 != 4)
+      if (code2 != 4)
       {
         goto LABEL_46;
       }
 
       v27 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       v28 = v27;
-      if (!v22)
+      if (!initialSharing)
       {
         v14 = [v27 localizedStringForKey:@"ERROR_TITLE_NETWORK_FAILURE" value:@"Couldn’t Connect" table:@"Localizable"];
 
@@ -1908,21 +1908,21 @@ LABEL_46:
     v52 = @"%@ couldn’t connect to iCloud. There may be a problem with the server or network. Please try again later.";
 LABEL_49:
     v53 = [v29 localizedStringForKey:v31 value:v52 table:@"Localizable"];
-    v15 = [NSString localizedStringWithFormat:v53, v12];
+    v15 = [NSString localizedStringWithFormat:v53, appName];
 
     goto LABEL_50;
   }
 
-  v24 = [v8 domain];
-  v25 = [v24 isEqualToString:NSCocoaErrorDomain];
+  domain4 = [errorCopy domain];
+  v25 = [domain4 isEqualToString:NSCocoaErrorDomain];
 
   if (!v25)
   {
     goto LABEL_26;
   }
 
-  v26 = [v8 code];
-  if (v26 == 3328)
+  code3 = [errorCopy code];
+  if (code3 == 3328)
   {
     v15 = @"This feature is not supported yet.";
   }
@@ -1932,7 +1932,7 @@ LABEL_49:
     v15 = 0;
   }
 
-  if (v26 == 3328)
+  if (code3 == 3328)
   {
     v14 = @"Not implemented yet";
   }
@@ -1942,16 +1942,16 @@ LABEL_49:
     v14 = 0;
   }
 
-  if (a3)
+  if (title)
   {
     goto LABEL_51;
   }
 
 LABEL_52:
-  if (a4)
+  if (message)
   {
     v55 = v15;
-    *a4 = v15;
+    *message = v15;
   }
 
   if (v14)
@@ -1969,21 +1969,21 @@ LABEL_52:
   return v57;
 }
 
-- (BOOL)_shouldPresentError:(id)a3
+- (BOOL)_shouldPresentError:(id)error
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationViewServiceViewController *)self unreachableViewController];
-  if (v5)
+  errorCopy = error;
+  unreachableViewController = [(_UIShareInvitationViewServiceViewController *)self unreachableViewController];
+  if (unreachableViewController)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v4 domain];
-    if ([v7 isEqualToString:NSCocoaErrorDomain])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v6 = [v4 code] != 3072;
+      v6 = [errorCopy code] != 3072;
     }
 
     else
@@ -1995,13 +1995,13 @@ LABEL_52:
   return v6;
 }
 
-- (void)shareViewController:(id)a3 presentError:(id)a4
+- (void)shareViewController:(id)controller presentError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(_UIShareInvitationViewServiceViewController *)self _shouldPresentError:v7])
+  controllerCopy = controller;
+  errorCopy = error;
+  if ([(_UIShareInvitationViewServiceViewController *)self _shouldPresentError:errorCopy])
   {
-    if (!v6)
+    if (!controllerCopy)
     {
       BRTelemetryReportShareInvitation();
     }
@@ -2014,7 +2014,7 @@ LABEL_52:
       v33[2] = sub_10001B534;
       v33[3] = &unk_10004CA08;
       v33[4] = self;
-      v34 = v7;
+      v34 = errorCopy;
       [(_UIShareInvitationViewServiceViewController *)self performAfterFullscreenPresentation:v33];
     }
 
@@ -2022,15 +2022,15 @@ LABEL_52:
     {
       v31 = 0;
       v32 = 0;
-      v8 = [(_UIShareInvitationViewServiceViewController *)self _getTitle:&v32 getMessage:&v31 forError:v7];
+      v8 = [(_UIShareInvitationViewServiceViewController *)self _getTitle:&v32 getMessage:&v31 forError:errorCopy];
       v9 = v32;
       v10 = v31;
       if ((v8 & 1) == 0)
       {
-        v11 = [(_UIShareInvitationViewServiceViewController *)self initialSharing];
+        initialSharing = [(_UIShareInvitationViewServiceViewController *)self initialSharing];
         v12 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
         v13 = v12;
-        if (v11)
+        if (initialSharing)
         {
           v14 = [v12 localizedStringForKey:@"ERROR_TITLE_INITIAL_DEFAULT" value:@"Sorry table:{this document can’t be shared right now.", @"Localizable"}];
           v15 = @"ERROR_MESSAGE_INITIAL_DEFAULT";
@@ -2057,8 +2057,8 @@ LABEL_52:
 
       if (CPIsInternalDevice())
       {
-        v19 = [v7 localizedDescription];
-        v20 = [NSString stringWithFormat:@"%@ (INTERNAL: %@)", v10, v19];
+        localizedDescription = [errorCopy localizedDescription];
+        v20 = [NSString stringWithFormat:@"%@ (INTERNAL: %@)", v10, localizedDescription];
 
         v10 = v20;
       }
@@ -2071,13 +2071,13 @@ LABEL_52:
       v29[2] = sub_10001B540;
       v29[3] = &unk_10004CB70;
       v29[4] = self;
-      v30 = v6;
+      v30 = controllerCopy;
       v24 = [UIAlertAction actionWithTitle:v23 style:0 handler:v29];
       [v21 addAction:v24];
 
-      v25 = [(_UIShareInvitationViewServiceViewController *)self presentedViewController];
+      presentedViewController = [(_UIShareInvitationViewServiceViewController *)self presentedViewController];
 
-      if (v25)
+      if (presentedViewController)
       {
         [(_UIShareInvitationViewServiceViewController *)self dismissViewControllerAnimated:0 completion:0];
       }
@@ -2094,20 +2094,20 @@ LABEL_52:
   }
 }
 
-- (BOOL)shareViewControllerIsFolderShare:(id)a3
+- (BOOL)shareViewControllerIsFolderShare:(id)share
 {
   if (self->_mode)
   {
-    v4 = [(_UIShareInvitationViewServiceViewController *)self _folderSubitemName];
-    if (v4)
+    _folderSubitemName = [(_UIShareInvitationViewServiceViewController *)self _folderSubitemName];
+    if (_folderSubitemName)
     {
       v5 = 0;
     }
 
     else
     {
-      v6 = [(_UIShareInvitationViewServiceViewController *)self _rootFolderTitle];
-      v5 = v6 != 0;
+      _rootFolderTitle = [(_UIShareInvitationViewServiceViewController *)self _rootFolderTitle];
+      v5 = _rootFolderTitle != 0;
     }
   }
 
@@ -2118,32 +2118,32 @@ LABEL_52:
       return 0;
     }
 
-    v4 = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
-    v5 = UTTypeConformsTo(kUTTypeFolder, v4) != 0;
+    _folderSubitemName = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
+    v5 = UTTypeConformsTo(kUTTypeFolder, _folderSubitemName) != 0;
   }
 
   return v5;
 }
 
-- (id)shareViewControllerItemUTI:(id)a3
+- (id)shareViewControllerItemUTI:(id)i
 {
-  v4 = [(_UIShareInvitationViewServiceViewController *)self _hostApplicationBundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.reminders"];
+  _hostApplicationBundleIdentifier = [(_UIShareInvitationViewServiceViewController *)self _hostApplicationBundleIdentifier];
+  v5 = [_hostApplicationBundleIdentifier isEqualToString:@"com.apple.reminders"];
 
   if (v5)
   {
-    v6 = @"com.apple.reminders.list";
+    itemUTI = @"com.apple.reminders.list";
   }
 
   else
   {
-    v6 = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
+    itemUTI = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
   }
 
-  return v6;
+  return itemUTI;
 }
 
-- (BOOL)shareViewControllerIsNotesOrRemindersOrDocSharing:(id)a3
+- (BOOL)shareViewControllerIsNotesOrRemindersOrDocSharing:(id)sharing
 {
   v4 = [(_UIShareInvitationViewServiceViewController *)self shareViewControllerItemUTI:0];
   v5 = v4;
@@ -2165,38 +2165,38 @@ LABEL_52:
   share = self->_share;
   if (share)
   {
-    v3 = [(CKShare *)share owner];
-    v4 = v3;
-    if (v3)
+    owner = [(CKShare *)share owner];
+    v4 = owner;
+    if (owner)
     {
-      v5 = [v3 userIdentity];
+      userIdentity = [owner userIdentity];
 
-      if (v5)
+      if (userIdentity)
       {
-        v6 = [v4 userIdentity];
-        v5 = [v6 nameComponents];
+        userIdentity2 = [v4 userIdentity];
+        userIdentity = [userIdentity2 nameComponents];
       }
     }
 
     else
     {
-      v5 = 0;
+      userIdentity = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    userIdentity = 0;
   }
 
-  return v5;
+  return userIdentity;
 }
 
-- (id)ownerStringForPerson:(id)a3
+- (id)ownerStringForPerson:(id)person
 {
-  if (a3)
+  if (person)
   {
-    v4 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:a3 style:0 options:0];
+    v4 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:person style:0 options:0];
   }
 
   else
@@ -2207,19 +2207,19 @@ LABEL_52:
   return v4;
 }
 
-- (id)modifiedByStringForSharedByMe:(BOOL)a3 owner:(id)a4 modifiedByMe:(BOOL)a5 lastEditor:(id)a6
+- (id)modifiedByStringForSharedByMe:(BOOL)me owner:(id)owner modifiedByMe:(BOOL)byMe lastEditor:(id)editor
 {
-  v7 = a5;
-  v8 = a3;
-  v10 = a4;
-  if (v7)
+  byMeCopy = byMe;
+  meCopy = me;
+  ownerCopy = owner;
+  if (byMeCopy)
   {
     v11 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v12 = [v11 localizedStringForKey:@"MODIFIED_BY_ME_TEXT" value:@"Modified by Me" table:@"Localizable"];
     goto LABEL_10;
   }
 
-  v11 = [(_UIShareInvitationViewServiceViewController *)self ownerStringForPerson:a6];
+  v11 = [(_UIShareInvitationViewServiceViewController *)self ownerStringForPerson:editor];
   if (v11)
   {
     v13 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
@@ -2230,9 +2230,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!meCopy)
   {
-    v13 = [(_UIShareInvitationViewServiceViewController *)self ownerStringForPerson:v10];
+    v13 = [(_UIShareInvitationViewServiceViewController *)self ownerStringForPerson:ownerCopy];
     v14 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v15 = [v14 localizedStringForKey:@"SHARED_BY_OTHER_TEXT" value:@"Shared by %@" table:@"Localizable"];
     v12 = [NSString localizedStringWithFormat:v15, v13];
@@ -2249,9 +2249,9 @@ LABEL_10:
   return v12;
 }
 
-- (void)updateSharedOrModifiedByForURL:(id)a3
+- (void)updateSharedOrModifiedByForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if ([(_UIShareInvitationViewServiceViewController *)self isFolderShare]|| !FPURLMightBeInFileProvider())
   {
     if ([(_UIShareInvitationViewServiceViewController *)self currentUserIsOwner])
@@ -2262,8 +2262,8 @@ LABEL_10:
 
     else
     {
-      v7 = [(_UIShareInvitationViewServiceViewController *)self ownerNameComponents];
-      v6 = [(_UIShareInvitationViewServiceViewController *)self ownerStringForPerson:v7];
+      ownerNameComponents = [(_UIShareInvitationViewServiceViewController *)self ownerNameComponents];
+      v6 = [(_UIShareInvitationViewServiceViewController *)self ownerStringForPerson:ownerNameComponents];
 
       v8 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
       if (v6)
@@ -2299,20 +2299,20 @@ LABEL_10:
     v12[2] = sub_10001BCA4;
     v12[3] = &unk_10004D2A8;
     v12[4] = self;
-    [v5 fetchItemForURL:v4 completionHandler:v12];
+    [v5 fetchItemForURL:lCopy completionHandler:v12];
   }
 }
 
 - (id)editableParticipants
 {
-  v2 = [(_UIShareInvitationViewServiceViewController *)self share];
-  v3 = [v2 allParticipants];
-  v4 = [NSMutableArray arrayWithArray:v3];
+  share = [(_UIShareInvitationViewServiceViewController *)self share];
+  allParticipants = [share allParticipants];
+  v4 = [NSMutableArray arrayWithArray:allParticipants];
 
   return v4;
 }
 
-- (id)_fetchTopLevelSharedFolderURLWithError:(id *)a3
+- (id)_fetchTopLevelSharedFolderURLWithError:(id *)error
 {
   topLevelSharedFolderURL = self->_topLevelSharedFolderURL;
   if (topLevelSharedFolderURL)
@@ -2348,10 +2348,10 @@ LABEL_10:
         sub_10002CDC0(&self->_itemURL);
       }
 
-      if (a3)
+      if (error)
       {
         v14 = v10;
-        *a3 = v10;
+        *error = v10;
       }
     }
 
@@ -2366,14 +2366,14 @@ LABEL_10:
   if (self->_itemURL)
   {
     v6 = 0;
-    v2 = [(_UIShareInvitationViewServiceViewController *)self _fetchTopLevelSharedFolderURLWithError:&v6];
-    v3 = (v2 | v6) == 0;
+    _folderSubitemName = [(_UIShareInvitationViewServiceViewController *)self _fetchTopLevelSharedFolderURLWithError:&v6];
+    v3 = (_folderSubitemName | v6) == 0;
   }
 
   else
   {
-    v2 = [(_UIShareInvitationViewServiceViewController *)self _folderSubitemName];
-    v3 = v2 == 0;
+    _folderSubitemName = [(_UIShareInvitationViewServiceViewController *)self _folderSubitemName];
+    v3 = _folderSubitemName == 0;
   }
 
   v4 = v3;
@@ -2388,16 +2388,16 @@ LABEL_10:
     return 0;
   }
 
-  v4 = [(_UIShareInvitationViewServiceViewController *)self shareRootItemURL];
-  if (v4)
+  shareRootItemURL = [(_UIShareInvitationViewServiceViewController *)self shareRootItemURL];
+  if (shareRootItemURL)
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [(_UIShareInvitationViewServiceViewController *)self _rootFolderTitle];
-    v3 = v5 != 0;
+    _rootFolderTitle = [(_UIShareInvitationViewServiceViewController *)self _rootFolderTitle];
+    v3 = _rootFolderTitle != 0;
   }
 
   return v3;
@@ -2405,74 +2405,74 @@ LABEL_10:
 
 - (id)rootItemName
 {
-  v3 = [(_UIShareInvitationViewServiceViewController *)self shareRootItemURL];
-  v4 = v3;
-  if (v3)
+  shareRootItemURL = [(_UIShareInvitationViewServiceViewController *)self shareRootItemURL];
+  v4 = shareRootItemURL;
+  if (shareRootItemURL)
   {
     v8 = 0;
-    [v3 getPromisedItemResourceValue:&v8 forKey:NSURLLocalizedNameKey error:0];
-    v5 = v8;
+    [shareRootItemURL getPromisedItemResourceValue:&v8 forKey:NSURLLocalizedNameKey error:0];
+    _rootFolderTitle = v8;
   }
 
   else
   {
-    v5 = [(_UIShareInvitationViewServiceViewController *)self _rootFolderTitle];
+    _rootFolderTitle = [(_UIShareInvitationViewServiceViewController *)self _rootFolderTitle];
   }
 
-  v6 = v5;
+  v6 = _rootFolderTitle;
 
   return v6;
 }
 
-- (void)_setRootFolderTitle:(id)a3
+- (void)_setRootFolderTitle:(id)title
 {
-  v6 = a3;
-  objc_storeStrong(&self->_ckRootFolderTitle, a3);
-  v5 = v6;
-  if (v6 && !self->_ckFolderSubitemName)
+  titleCopy = title;
+  objc_storeStrong(&self->_ckRootFolderTitle, title);
+  v5 = titleCopy;
+  if (titleCopy && !self->_ckFolderSubitemName)
   {
-    objc_storeStrong(&self->_itemName, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_itemName, title);
+    v5 = titleCopy;
   }
 }
 
-- (void)_setFolderSubitemName:(id)a3
+- (void)_setFolderSubitemName:(id)name
 {
-  v5 = a3;
-  objc_storeStrong(&self->_ckFolderSubitemName, a3);
-  if (v5)
+  nameCopy = name;
+  objc_storeStrong(&self->_ckFolderSubitemName, name);
+  if (nameCopy)
   {
-    objc_storeStrong(&self->_itemName, a3);
+    objc_storeStrong(&self->_itemName, name);
   }
 }
 
-- (void)_setItemName:(id)a3
+- (void)_setItemName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if (*&self->_ckRootFolderTitle == 0)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_itemName, a3);
-    v5 = v6;
+    v6 = nameCopy;
+    objc_storeStrong(&self->_itemName, name);
+    nameCopy = v6;
   }
 }
 
 - (BOOL)isFolderShare
 {
-  v3 = [(_UIShareInvitationViewServiceViewController *)self _rootFolderTitle];
+  _rootFolderTitle = [(_UIShareInvitationViewServiceViewController *)self _rootFolderTitle];
 
-  if (v3)
+  if (_rootFolderTitle)
   {
-    v4 = [(_UIShareInvitationViewServiceViewController *)self _folderSubitemName];
-    v5 = v4 == 0;
+    _folderSubitemName = [(_UIShareInvitationViewServiceViewController *)self _folderSubitemName];
+    v5 = _folderSubitemName == 0;
   }
 
   else
   {
-    v4 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-    v6 = [v4 delegate];
-    v7 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-    v5 = [v6 shareViewControllerIsFolderShare:v7];
+    _folderSubitemName = [(_UIShareInvitationViewServiceViewController *)self viewController];
+    delegate = [_folderSubitemName delegate];
+    viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
+    v5 = [delegate shareViewControllerIsFolderShare:viewController];
   }
 
   return v5;
@@ -2486,11 +2486,11 @@ LABEL_10:
     return 0;
   }
 
-  v4 = [(CKShare *)share currentUserParticipant];
-  v5 = [(CKShare *)self->_share owner];
-  if (v5)
+  currentUserParticipant = [(CKShare *)share currentUserParticipant];
+  owner = [(CKShare *)self->_share owner];
+  if (owner)
   {
-    v6 = [v4 isEqual:v5];
+    v6 = [currentUserParticipant isEqual:owner];
   }
 
   else
@@ -2506,16 +2506,16 @@ LABEL_10:
   share = self->_share;
   if (share)
   {
-    v4 = [(CKShare *)share currentUserParticipant];
-    v5 = [(CKShare *)self->_share owner];
-    if ([v4 role] == 2)
+    currentUserParticipant = [(CKShare *)share currentUserParticipant];
+    owner = [(CKShare *)self->_share owner];
+    if ([currentUserParticipant role] == 2)
     {
       v6 = 1;
     }
 
-    else if (v5)
+    else if (owner)
     {
-      v6 = [v4 isEqual:v5];
+      v6 = [currentUserParticipant isEqual:owner];
     }
 
     else
@@ -2533,12 +2533,12 @@ LABEL_10:
   }
 }
 
-- (void)shareViewController:(id)a3 activityType:(id)a4 waitForUploadWithProgress:(id)a5 completion:(id)a6
+- (void)shareViewController:(id)controller activityType:(id)type waitForUploadWithProgress:(id)progress completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v36 = a5;
-  v12 = a6;
+  controllerCopy = controller;
+  typeCopy = type;
+  progressCopy = progress;
+  completionCopy = completion;
   v13 = dispatch_group_create();
   v54 = 0;
   v55 = &v54;
@@ -2548,8 +2548,8 @@ LABEL_10:
   v59 = 0;
   if (self->_mode)
   {
-    v14 = [(_UIShareInvitationViewServiceViewController *)self container];
-    v15 = v14 == 0;
+    container = [(_UIShareInvitationViewServiceViewController *)self container];
+    v15 = container == 0;
 
     if (v15)
     {
@@ -2560,14 +2560,14 @@ LABEL_10:
       }
 
       dispatch_group_enter(v13);
-      v29 = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
+      hostingViewController = [(_UIShareInvitationViewServiceViewController *)self hostingViewController];
       v46[0] = _NSConcreteStackBlock;
       v46[1] = 3221225472;
       v46[2] = sub_10001CD54;
       v46[3] = &unk_10004D348;
       v46[4] = self;
       v47 = v13;
-      [v29 _requestSavedShareWithCompletion:v46];
+      [hostingViewController _requestSavedShareWithCompletion:v46];
     }
 
     else
@@ -2587,23 +2587,23 @@ LABEL_10:
     v17 = cdui_default_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+      itemURL = [(_UIShareInvitationViewServiceViewController *)self itemURL];
       *buf = 138412290;
-      v61 = v18;
+      v61 = itemURL;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[INFO] subscribing for progress on %@", buf, 0xCu);
     }
 
-    v19 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+    itemURL2 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
     v52[0] = _NSConcreteStackBlock;
     v52[1] = 3221225472;
     v52[2] = sub_10001CB6C;
     v52[3] = &unk_10004D2F8;
-    v53 = v36;
-    v20 = [NSProgress _addSubscriberForFileURL:v19 withPublishingHandler:v52];
+    v53 = progressCopy;
+    v20 = [NSProgress _addSubscriberForFileURL:itemURL2 withPublishingHandler:v52];
 
-    v21 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+    itemURL3 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
     v51 = 0;
-    [v21 getPromisedItemResourceValue:&v51 forKey:NSURLUbiquitousItemIsUploadedKey error:0];
+    [itemURL3 getPromisedItemResourceValue:&v51 forKey:NSURLUbiquitousItemIsUploadedKey error:0];
     v22 = v51;
 
     if (([v22 BOOLValue] & 1) == 0)
@@ -2615,8 +2615,8 @@ LABEL_10:
         sub_10002CE9C();
       }
 
-      v24 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
-      v25 = [BRObservableFile observerForKey:NSURLUbiquitousItemIsUploadedKey onFileURL:v24];
+      itemURL4 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+      v25 = [BRObservableFile observerForKey:NSURLUbiquitousItemIsUploadedKey onFileURL:itemURL4];
       v48[0] = _NSConcreteStackBlock;
       v48[1] = 3221225472;
       v48[2] = sub_10001CC8C;
@@ -2642,25 +2642,25 @@ LABEL_10:
   v37[2] = sub_10001CE40;
   v37[3] = &unk_10004D3E0;
   v38 = v13;
-  v39 = self;
-  v40 = v10;
-  v41 = v11;
+  selfCopy = self;
+  v40 = controllerCopy;
+  v41 = typeCopy;
   v42 = v20;
-  v43 = v12;
+  v43 = completionCopy;
   v44 = &v54;
   v31 = v20;
-  v32 = v12;
-  v33 = v11;
-  v34 = v10;
+  v32 = completionCopy;
+  v33 = typeCopy;
+  v34 = controllerCopy;
   v35 = v13;
   dispatch_async(v30, v37);
 
   _Block_object_dispose(&v54, 8);
 }
 
-- (void)shareViewControllerStopSharing:(id)a3 overrideAlert:(BOOL)a4
+- (void)shareViewControllerStopSharing:(id)sharing overrideAlert:(BOOL)alert
 {
-  if (a4)
+  if (alert)
   {
 
     [(_UIShareInvitationViewServiceViewController *)self _actuallyStopSharing];
@@ -2694,10 +2694,10 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[INFO] stopping sharing", buf, 2u);
   }
 
-  v5 = [(_UIShareInvitationViewServiceViewController *)self mode];
+  mode = [(_UIShareInvitationViewServiceViewController *)self mode];
   v6 = cdui_default_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (mode)
   {
     if (v7)
     {
@@ -2706,9 +2706,9 @@ LABEL_10:
     }
 
     v8 = [CKModifyRecordsOperation alloc];
-    v9 = [(_UIShareInvitationViewServiceViewController *)self share];
-    v10 = [v9 recordID];
-    v33 = v10;
+    share = [(_UIShareInvitationViewServiceViewController *)self share];
+    recordID = [share recordID];
+    v33 = recordID;
     v11 = [NSArray arrayWithObjects:&v33 count:1];
     v12 = [v8 initWithRecordsToSave:&__NSArray0__struct recordIDsToDelete:v11];
 
@@ -2721,20 +2721,20 @@ LABEL_10:
     v14 = v3;
     [v12 setModifyRecordsCompletionBlock:&v24];
     [v12 setQualityOfService:{25, v24, v25, v26, v27}];
-    v15 = [(_UIShareInvitationViewServiceViewController *)self share];
-    v16 = [v15 currentUserParticipant];
-    v17 = [v16 role];
+    share2 = [(_UIShareInvitationViewServiceViewController *)self share];
+    currentUserParticipant = [share2 currentUserParticipant];
+    role = [currentUserParticipant role];
 
-    v18 = [(_UIShareInvitationViewServiceViewController *)self container];
-    v19 = v18;
-    if (v17 == 1)
+    container = [(_UIShareInvitationViewServiceViewController *)self container];
+    workerQueue = container;
+    if (role == 1)
     {
-      [v18 privateCloudDatabase];
+      [container privateCloudDatabase];
     }
 
     else
     {
-      [v18 sharedCloudDatabase];
+      [container sharedCloudDatabase];
     }
     v23 = ;
     [v23 addOperation:v12];
@@ -2749,8 +2749,8 @@ LABEL_10:
     }
 
     v20 = [BRShareUnshareOperation alloc];
-    v21 = [(_UIShareInvitationViewServiceViewController *)self share];
-    v12 = [v20 initWithShare:v21];
+    share3 = [(_UIShareInvitationViewServiceViewController *)self share];
+    v12 = [v20 initWithShare:share3];
 
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
@@ -2761,12 +2761,12 @@ LABEL_10:
     v22 = v3;
     [v12 setUnshareCompletionBlock:v29];
     [v12 setQualityOfService:25];
-    v19 = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
-    [v19 addOperation:v12];
+    workerQueue = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
+    [workerQueue addOperation:v12];
   }
 }
 
-- (void)shareViewControllerLeaveShare:(id)a3
+- (void)shareViewControllerLeaveShare:(id)share
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -2776,13 +2776,13 @@ LABEL_10:
   [(_UIShareInvitationViewServiceViewController *)self performAfterFullscreenPresentation:v3];
 }
 
-- (void)_refetchShareAndRetry:(id)a3
+- (void)_refetchShareAndRetry:(id)retry
 {
-  v4 = a3;
-  v5 = [(_UIShareInvitationViewServiceViewController *)self mode];
+  retryCopy = retry;
+  mode = [(_UIShareInvitationViewServiceViewController *)self mode];
   v6 = cdui_default_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (mode)
   {
     if (v7)
     {
@@ -2791,9 +2791,9 @@ LABEL_10:
     }
 
     v8 = [CKFetchRecordsOperation alloc];
-    v9 = [(_UIShareInvitationViewServiceViewController *)self share];
-    v10 = [v9 recordID];
-    v30 = v10;
+    share = [(_UIShareInvitationViewServiceViewController *)self share];
+    recordID = [share recordID];
+    v30 = recordID;
     v11 = [NSArray arrayWithObjects:&v30 count:1];
     v12 = [v8 initWithRecordIDs:v11];
 
@@ -2802,24 +2802,24 @@ LABEL_10:
     v25[2] = sub_10001E34C;
     v25[3] = &unk_10004D480;
     v25[4] = self;
-    v26 = v4;
-    v13 = v4;
+    v26 = retryCopy;
+    v13 = retryCopy;
     [v12 setFetchRecordsCompletionBlock:v25];
     [v12 setQualityOfService:25];
-    v14 = [(_UIShareInvitationViewServiceViewController *)self share];
-    v15 = [v14 currentUserParticipant];
-    v16 = [v15 role];
+    share2 = [(_UIShareInvitationViewServiceViewController *)self share];
+    currentUserParticipant = [share2 currentUserParticipant];
+    role = [currentUserParticipant role];
 
-    v17 = [(_UIShareInvitationViewServiceViewController *)self container];
-    v18 = v17;
-    if (v16 == 1)
+    container = [(_UIShareInvitationViewServiceViewController *)self container];
+    v18 = container;
+    if (role == 1)
     {
-      [v17 privateCloudDatabase];
+      [container privateCloudDatabase];
     }
 
     else
     {
-      [v17 sharedCloudDatabase];
+      [container sharedCloudDatabase];
     }
     v24 = ;
     [v24 addOperation:v12];
@@ -2836,58 +2836,58 @@ LABEL_10:
     }
 
     v19 = [BRShareCopyOperation alloc];
-    v20 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
-    v12 = [v19 initWithURL:v20];
+    itemURL = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+    v12 = [v19 initWithURL:itemURL];
 
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_10001E330;
     v27[3] = &unk_10004D458;
-    v28 = v4;
-    v21 = v4;
+    v28 = retryCopy;
+    v21 = retryCopy;
     [v12 setRootShareCopyCompletionBlock:v27];
     [v12 setQualityOfService:25];
-    v22 = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
-    [v22 addOperation:v12];
+    workerQueue = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
+    [workerQueue addOperation:v12];
 
     v23 = v28;
   }
 }
 
-- (void)_modifyAndSaveShare:(id)a3 existingError:(id)a4 controller:(id)a5 modifyBlock:(id)a6 completion:(id)a7
+- (void)_modifyAndSaveShare:(id)share existingError:(id)error controller:(id)controller modifyBlock:(id)block completion:(id)completion
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = v14;
-  if (a4)
+  controllerCopy = controller;
+  blockCopy = block;
+  completionCopy = completion;
+  v15 = completionCopy;
+  if (error)
   {
-    v16 = v14[2];
-    v17 = a3;
-    v16(v15, v17, a4);
+    v16 = completionCopy[2];
+    shareCopy = share;
+    v16(v15, shareCopy, error);
   }
 
   else
   {
-    v18 = v13[2];
-    v19 = a3;
-    v18(v13, v19);
+    v18 = blockCopy[2];
+    shareCopy2 = share;
+    v18(blockCopy, shareCopy2);
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_10001E550;
     v20[3] = &unk_10004D4A8;
     v20[4] = self;
-    v21 = v12;
-    v22 = v13;
+    v21 = controllerCopy;
+    v22 = blockCopy;
     v23 = v15;
-    [(_UIShareInvitationViewServiceViewController *)self _saveShare:v19 completion:v20];
+    [(_UIShareInvitationViewServiceViewController *)self _saveShare:shareCopy2 completion:v20];
   }
 }
 
-- (void)_saveShare:(id)a3 completion:(id)a4
+- (void)_saveShare:(id)share completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  completionCopy = completion;
   v8 = cdui_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -2899,7 +2899,7 @@ LABEL_10:
   if ([(_UIShareInvitationViewServiceViewController *)self mode])
   {
     v9 = [CKModifyRecordsOperation alloc];
-    v31 = v6;
+    v31 = shareCopy;
     v10 = [NSArray arrayWithObjects:&v31 count:1];
     v11 = [v9 initWithRecordsToSave:v10 recordIDsToDelete:&__NSArray0__struct];
 
@@ -2909,23 +2909,23 @@ LABEL_10:
     v23[3] = &unk_10004D520;
     v12 = &v24;
     v23[4] = self;
-    v24 = v7;
-    v13 = v7;
+    v24 = completionCopy;
+    v13 = completionCopy;
     [v11 setModifyRecordsCompletionBlock:v23];
     [v11 setQualityOfService:25];
-    v14 = [v6 currentUserParticipant];
-    v15 = [v14 role];
+    currentUserParticipant = [shareCopy currentUserParticipant];
+    role = [currentUserParticipant role];
 
-    v16 = [(_UIShareInvitationViewServiceViewController *)self container];
-    v17 = v16;
-    if (v15 == 1)
+    container = [(_UIShareInvitationViewServiceViewController *)self container];
+    v17 = container;
+    if (role == 1)
     {
-      [v16 privateCloudDatabase];
+      [container privateCloudDatabase];
     }
 
     else
     {
-      [v16 sharedCloudDatabase];
+      [container sharedCloudDatabase];
     }
     v22 = ;
     [v22 addOperation:v11];
@@ -2933,18 +2933,18 @@ LABEL_10:
 
   else
   {
-    v18 = [[BRShareSaveOperation alloc] initWithShare:v6];
+    v18 = [[BRShareSaveOperation alloc] initWithShare:shareCopy];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_10001EB48;
     v28[3] = &unk_10004D050;
     v28[4] = self;
     v12 = &v29;
-    v19 = v7;
+    v19 = completionCopy;
     v29 = v19;
     [v18 setShareSaveCompletionBlock:v28];
     [v18 setQualityOfService:25];
-    v20 = [(_UIShareInvitationViewServiceViewController *)self folderSharingPreparationGroup];
+    folderSharingPreparationGroup = [(_UIShareInvitationViewServiceViewController *)self folderSharingPreparationGroup];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001EC70;
@@ -2954,30 +2954,30 @@ LABEL_10:
     block[4] = self;
     v21 = v19;
     v11 = v18;
-    dispatch_group_notify(v20, &_dispatch_main_q, block);
+    dispatch_group_notify(folderSharingPreparationGroup, &_dispatch_main_q, block);
   }
 }
 
-- (void)shareViewController:(id)a3 modifyShare:(id)a4 completion:(id)a5
+- (void)shareViewController:(id)controller modifyShare:(id)share completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_UIShareInvitationViewServiceViewController *)self share];
-  [(_UIShareInvitationViewServiceViewController *)self _modifyAndSaveShare:v11 existingError:0 controller:v10 modifyBlock:v9 completion:v8];
+  completionCopy = completion;
+  shareCopy = share;
+  controllerCopy = controller;
+  share = [(_UIShareInvitationViewServiceViewController *)self share];
+  [(_UIShareInvitationViewServiceViewController *)self _modifyAndSaveShare:share existingError:0 controller:controllerCopy modifyBlock:shareCopy completion:completionCopy];
 }
 
-- (void)_handleCopyShareURLError:(id)a3
+- (void)_handleCopyShareURLError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   if (!self->_showAddPeople)
   {
-    v4 = [v7 domain];
-    if ([v4 isEqualToString:BRCloudDocsErrorDomain])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:BRCloudDocsErrorDomain])
     {
-      v5 = [v7 code];
+      code = [errorCopy code];
 
-      if (v5 == 8)
+      if (code == 8)
       {
         [(_UIShareInvitationViewServiceViewController *)self setShareURL:0];
         [(_UIShareInvitationViewServiceViewController *)self setShareURLUnreachable:1];
@@ -2990,68 +2990,68 @@ LABEL_10:
     }
   }
 
-  v6 = [(_UIShareInvitationViewServiceViewController *)self viewController];
-  [v6 presentError:v7];
+  viewController = [(_UIShareInvitationViewServiceViewController *)self viewController];
+  [viewController presentError:errorCopy];
 
 LABEL_7:
 }
 
-- (void)_enqueueCopyShareURLOperation:(id)a3 completion:(id)a4
+- (void)_enqueueCopyShareURLOperation:(id)operation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIShareInvitationViewServiceViewController *)self originalShare];
+  operationCopy = operation;
+  completionCopy = completion;
+  originalShare = [(_UIShareInvitationViewServiceViewController *)self originalShare];
 
   v9 = [BRShareCopyShareURLOperation alloc];
-  if (v8)
+  if (originalShare)
   {
-    v10 = [(_UIShareInvitationViewServiceViewController *)self itemURL];
-    v11 = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
-    v12 = [v9 initWithFileURL:v10 documentType:v11];
+    itemURL = [(_UIShareInvitationViewServiceViewController *)self itemURL];
+    itemUTI = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
+    v12 = [v9 initWithFileURL:itemURL documentType:itemUTI];
 
     [(_UIShareInvitationViewServiceViewController *)self originalShare];
-    v6 = v13 = v6;
+    operationCopy = itemUTI2 = operationCopy;
   }
 
   else
   {
-    v13 = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
-    v12 = [v9 initWithShare:v6 documentType:v13];
+    itemUTI2 = [(_UIShareInvitationViewServiceViewController *)self itemUTI];
+    v12 = [v9 initWithShare:operationCopy documentType:itemUTI2];
   }
 
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_10001F14C;
   v19 = &unk_10004D548;
-  v20 = self;
-  v21 = v7;
-  v14 = v7;
+  selfCopy = self;
+  v21 = completionCopy;
+  v14 = completionCopy;
   [v12 setCopyShareURLCompletionBlock:&v16];
-  [v12 setQualityOfService:{33, v16, v17, v18, v19, v20}];
-  v15 = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
-  [v15 addOperation:v12];
+  [v12 setQualityOfService:{33, v16, v17, v18, v19, selfCopy}];
+  workerQueue = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
+  [workerQueue addOperation:v12];
 }
 
-- (void)shareViewControllerCopyShareURL:(id)a3 completion:(id)a4
+- (void)shareViewControllerCopyShareURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10001F518;
   v21[3] = &unk_10004D548;
   v21[4] = self;
-  v8 = v7;
+  v8 = completionCopy;
   v22 = v8;
   v9 = objc_retainBlock(v21);
-  v10 = [(_UIShareInvitationViewServiceViewController *)self shareURL];
-  if (v10)
+  shareURL = [(_UIShareInvitationViewServiceViewController *)self shareURL];
+  if (shareURL)
   {
 
 LABEL_4:
-    v11 = [(_UIShareInvitationViewServiceViewController *)self shareURL];
-    (v9[2])(v9, v11, 0);
+    shareURL2 = [(_UIShareInvitationViewServiceViewController *)self shareURL];
+    (v9[2])(v9, shareURL2, 0);
     goto LABEL_5;
   }
 
@@ -3062,13 +3062,13 @@ LABEL_4:
 
   if ([(_UIShareInvitationViewServiceViewController *)self mode])
   {
-    v12 = [(_UIShareInvitationViewServiceViewController *)self share];
-    v13 = [v12 URL];
+    share = [(_UIShareInvitationViewServiceViewController *)self share];
+    v13 = [share URL];
 
     if (v13)
     {
-      v11 = [(_UIShareInvitationViewServiceViewController *)self share];
-      v14 = [v11 URL];
+      shareURL2 = [(_UIShareInvitationViewServiceViewController *)self share];
+      v14 = [shareURL2 URL];
       (v9[2])(v9, v14, 0);
     }
 
@@ -3080,8 +3080,8 @@ LABEL_4:
       v17[3] = &unk_10004D590;
       v17[4] = self;
       v18 = v9;
-      [(_UIShareInvitationViewServiceViewController *)self shareViewController:v6 modifyShare:&stru_10004D568 completion:v17];
-      v11 = v18;
+      [(_UIShareInvitationViewServiceViewController *)self shareViewController:lCopy modifyShare:&stru_10004D568 completion:v17];
+      shareURL2 = v18;
     }
   }
 
@@ -3095,36 +3095,36 @@ LABEL_4:
     v20 = v9;
     v15 = [NSBlockOperation blockOperationWithBlock:v19];
     [v15 setQualityOfService:33];
-    v16 = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
-    [v16 addOperation:v15];
+    workerQueue = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
+    [workerQueue addOperation:v15];
 
-    v11 = v20;
+    shareURL2 = v20;
   }
 
 LABEL_5:
 }
 
-- (void)shareViewController:(id)a3 addParticipants:(id)a4 activityType:(id)a5 permission:(int64_t)a6 completion:(id)a7
+- (void)shareViewController:(id)controller addParticipants:(id)participants activityType:(id)type permission:(int64_t)permission completion:(id)completion
 {
-  v40 = a3;
-  v42 = a4;
-  v12 = a5;
-  v13 = a7;
+  controllerCopy = controller;
+  participantsCopy = participants;
+  typeCopy = type;
+  completionCopy = completion;
   v14 = objc_alloc_init(BRModalProgressController);
-  v15 = [(_UIShareInvitationViewServiceViewController *)self view];
-  v16 = [v15 window];
-  if (v16)
+  view = [(_UIShareInvitationViewServiceViewController *)self view];
+  window = [view window];
+  if (window)
   {
-    v17 = v16;
+    window2 = window;
   }
 
   else
   {
-    v18 = [(_UIShareInvitationViewServiceViewController *)self presentedViewController];
-    v19 = [v18 view];
-    v17 = [v19 window];
+    presentedViewController = [(_UIShareInvitationViewServiceViewController *)self presentedViewController];
+    view2 = [presentedViewController view];
+    window2 = [view2 window];
 
-    if (!v17)
+    if (!window2)
     {
       v20 = cdui_default_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -3132,28 +3132,28 @@ LABEL_5:
         sub_10002D0D4();
       }
 
-      v17 = 0;
+      window2 = 0;
     }
   }
 
-  v21 = [(BRModalProgressController *)v14 view];
-  [v17 addSubview:v21];
+  view3 = [(BRModalProgressController *)v14 view];
+  [window2 addSubview:view3];
 
-  v22 = [(BRModalProgressController *)v14 view];
-  [v22 setAutoresizingMask:18];
+  view4 = [(BRModalProgressController *)v14 view];
+  [view4 setAutoresizingMask:18];
 
-  [v17 bounds];
+  [window2 bounds];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = [(BRModalProgressController *)v14 view];
-  [v31 setFrame:{v24, v26, v28, v30}];
+  view5 = [(BRModalProgressController *)v14 view];
+  [view5 setFrame:{v24, v26, v28, v30}];
 
-  v32 = [v12 pathExtension];
+  pathExtension = [typeCopy pathExtension];
   shareInvitationViewStartDate = self->_shareInvitationViewStartDate;
   BRTelemetryReportShareInvitation();
-  [(_UIShareInvitationViewServiceViewController *)self shareViewControllerDidChooseTransport:v12];
+  [(_UIShareInvitationViewServiceViewController *)self shareViewControllerDidChooseTransport:typeCopy];
   +[NSDate timeIntervalSinceReferenceDate];
   v34 = self->_shareInvitationViewStartDate;
   objc_initWeak(&location, self);
@@ -3163,28 +3163,28 @@ LABEL_5:
   v43[3] = &unk_10004D5B8;
   v35 = v14;
   v44 = v35;
-  v36 = v13;
+  v36 = completionCopy;
   v48 = v36;
-  v37 = v32;
+  v37 = pathExtension;
   v45 = v37;
   v38 = v34;
   v46 = v38;
-  v49[1] = a6;
+  v49[1] = permission;
   objc_copyWeak(v49, &location);
   v39 = v41;
   v47 = v39;
-  [(_UIShareInvitationViewServiceViewController *)self _addParticipantsAndSaveForController:v39 participants:v42 permission:a6 completion:v43];
+  [(_UIShareInvitationViewServiceViewController *)self _addParticipantsAndSaveForController:v39 participants:participantsCopy permission:permission completion:v43];
 
   objc_destroyWeak(v49);
   objc_destroyWeak(&location);
 }
 
-- (void)_addParticipantsAndSaveForController:(id)a3 participants:(id)a4 permission:(int64_t)a5 completion:(id)a6
+- (void)_addParticipantsAndSaveForController:(id)controller participants:(id)participants permission:(int64_t)permission completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
-  v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v12 count]);
+  controllerCopy = controller;
+  completionCopy = completion;
+  participantsCopy = participants;
+  v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [participantsCopy count]);
   v14 = objc_opt_new();
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
@@ -3194,13 +3194,13 @@ LABEL_5:
   v42 = v15;
   v16 = v14;
   v43 = v16;
-  [v12 enumerateObjectsUsingBlock:v41];
+  [participantsCopy enumerateObjectsUsingBlock:v41];
 
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_1000201D4;
   v39[3] = &unk_10004D608;
-  v17 = v11;
+  v17 = completionCopy;
   v40 = v17;
   v18 = objc_retainBlock(v39);
   v35[0] = _NSConcreteStackBlock;
@@ -3210,9 +3210,9 @@ LABEL_5:
   v19 = v17;
   v37 = v19;
   v35[4] = self;
-  v20 = v10;
+  v20 = controllerCopy;
   v36 = v20;
-  v38 = a5;
+  permissionCopy = permission;
   v21 = objc_retainBlock(v35);
   if ([v16 count])
   {
@@ -3226,7 +3226,7 @@ LABEL_5:
     v30[1] = 3221225472;
     v30[2] = sub_1000209A0;
     v30[3] = &unk_10004D6D0;
-    v32 = a5;
+    permissionCopy2 = permission;
     v23 = objc_opt_new();
     v31 = v23;
     [v22 setShareParticipantFetchedBlock:v30];
@@ -3252,8 +3252,8 @@ LABEL_5:
     v34 = v21;
     [v25 setLookupParticipantsCompletionBlock:v33];
     [v25 setQualityOfService:25];
-    v26 = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
-    [v26 addOperation:v25];
+    workerQueue = [(_UIShareInvitationViewServiceViewController *)self workerQueue];
+    [workerQueue addOperation:v25];
   }
 }
 

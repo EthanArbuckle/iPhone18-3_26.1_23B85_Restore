@@ -1,14 +1,14 @@
 @interface _UINavigationBarVisualStyle
-+ (id)visualStyleForIdiom:(int64_t)a3;
++ (id)visualStyleForIdiom:(int64_t)idiom;
 - (UIEdgeInsets)buttonContentEdgeInsets;
-- (_UINavigationBarVisualStyle)initWithIdiom:(int64_t)a3;
+- (_UINavigationBarVisualStyle)initWithIdiom:(int64_t)idiom;
 - (double)backButtonIndicatorSpacing;
-- (double)barHeightForMetrics:(int64_t)a3;
-- (double)leftBackTitleMarginForCustomBackButtonBackground:(id)a3;
-- (id)buttonFontForStyle:(int64_t)a3;
-- (id)defaultTitleColorForUserInterfaceStyle:(int64_t)a3 barStyle:(int64_t)a4;
-- (id)timingFunctionForAnimationInView:(id)a3 withKeyPath:(id)a4 isInteractive:(BOOL)a5;
-- (int64_t)navigationBar:(id)a3 metricsForOrientation:(int64_t)a4 hasPrompt:(BOOL)a5;
+- (double)barHeightForMetrics:(int64_t)metrics;
+- (double)leftBackTitleMarginForCustomBackButtonBackground:(id)background;
+- (id)buttonFontForStyle:(int64_t)style;
+- (id)defaultTitleColorForUserInterfaceStyle:(int64_t)style barStyle:(int64_t)barStyle;
+- (id)timingFunctionForAnimationInView:(id)view withKeyPath:(id)path isInteractive:(BOOL)interactive;
+- (int64_t)navigationBar:(id)bar metricsForOrientation:(int64_t)orientation hasPrompt:(BOOL)prompt;
 @end
 
 @implementation _UINavigationBarVisualStyle
@@ -26,51 +26,51 @@
   return result;
 }
 
-+ (id)visualStyleForIdiom:(int64_t)a3
++ (id)visualStyleForIdiom:(int64_t)idiom
 {
-  v3 = a3;
-  if (a3 == -1)
+  idiomCopy = idiom;
+  if (idiom == -1)
   {
     v4 = +[UIDevice currentDevice];
-    v3 = [v4 userInterfaceIdiom];
+    idiomCopy = [v4 userInterfaceIdiom];
   }
 
-  if ((v3 - 2) > 6)
+  if ((idiomCopy - 2) > 6)
   {
     v5 = off_1E70EBCC0;
   }
 
   else
   {
-    v5 = off_1E70F7E70[v3 - 2];
+    v5 = off_1E70F7E70[idiomCopy - 2];
   }
 
-  v6 = [objc_alloc(*v5) initWithIdiom:v3];
+  v6 = [objc_alloc(*v5) initWithIdiom:idiomCopy];
 
   return v6;
 }
 
-- (_UINavigationBarVisualStyle)initWithIdiom:(int64_t)a3
+- (_UINavigationBarVisualStyle)initWithIdiom:(int64_t)idiom
 {
   v5.receiver = self;
   v5.super_class = _UINavigationBarVisualStyle;
   result = [(_UINavigationBarVisualStyle *)&v5 init];
   if (result)
   {
-    result->_idiom = a3;
+    result->_idiom = idiom;
   }
 
   return result;
 }
 
-- (id)timingFunctionForAnimationInView:(id)a3 withKeyPath:(id)a4 isInteractive:(BOOL)a5
+- (id)timingFunctionForAnimationInView:(id)view withKeyPath:(id)path isInteractive:(BOOL)interactive
 {
-  v7 = a3;
-  if ([a4 isEqualToString:@"opacity"])
+  viewCopy = view;
+  if ([path isEqualToString:@"opacity"])
   {
-    [v7 alpha];
+    [viewCopy alpha];
     HIDWORD(v11) = 1068079513;
-    if (v8 < 0.05 || (objc_opt_respondsToSelector() & 1) != 0 && [v7 _isFadingInFromCustomAlpha])
+    if (v8 < 0.05 || (objc_opt_respondsToSelector() & 1) != 0 && [viewCopy _isFadingInFromCustomAlpha])
     {
       v12 = MEMORY[0x1E69793D0];
       LODWORD(v11) = 1036831949;
@@ -92,7 +92,7 @@
 
   else
   {
-    if (a5)
+    if (interactive)
     {
       v13 = MEMORY[0x1E6979ED8];
     }
@@ -122,11 +122,11 @@
   return result;
 }
 
-- (double)barHeightForMetrics:(int64_t)a3
+- (double)barHeightForMetrics:(int64_t)metrics
 {
   metrics = self->_metrics;
-  self->_metrics = a3;
-  if ((a3 - 101) >= 2)
+  self->_metrics = metrics;
+  if ((metrics - 101) >= 2)
   {
     [(_UINavigationBarVisualStyle *)self barHeight];
   }
@@ -140,10 +140,10 @@
   return result;
 }
 
-- (id)buttonFontForStyle:(int64_t)a3
+- (id)buttonFontForStyle:(int64_t)style
 {
   [(_UINavigationBarVisualStyle *)self buttonFontSize];
-  if (a3 == 2)
+  if (style == 2)
   {
     [off_1E70ECC18 boldSystemFontOfSize:?];
   }
@@ -157,10 +157,10 @@
   return v4;
 }
 
-- (double)leftBackTitleMarginForCustomBackButtonBackground:(id)a3
+- (double)leftBackTitleMarginForCustomBackButtonBackground:(id)background
 {
-  v4 = a3;
-  if ([(_UINavigationBarVisualStyle *)self shouldForceLegacyLeftBackTitleMarginForCustomBackButtonBackground:v4])
+  backgroundCopy = background;
+  if ([(_UINavigationBarVisualStyle *)self shouldForceLegacyLeftBackTitleMarginForCustomBackButtonBackground:backgroundCopy])
   {
     [(_UINavigationBarVisualStyle *)self _legacyLeftTitleMargin];
   }
@@ -171,34 +171,34 @@
   }
 
   v6 = v5;
-  [v4 capInsets];
+  [backgroundCopy capInsets];
   v8 = v7;
 
   return fmax(v6, v8);
 }
 
-- (int64_t)navigationBar:(id)a3 metricsForOrientation:(int64_t)a4 hasPrompt:(BOOL)a5
+- (int64_t)navigationBar:(id)bar metricsForOrientation:(int64_t)orientation hasPrompt:(BOOL)prompt
 {
   v5 = 101;
-  if ((a4 - 1) >= 2)
+  if ((orientation - 1) >= 2)
   {
     v5 = 102;
   }
 
-  if (a5)
+  if (prompt)
   {
     return v5;
   }
 
   else
   {
-    return (a4 - 3) < 0xFFFFFFFFFFFFFFFELL;
+    return (orientation - 3) < 0xFFFFFFFFFFFFFFFELL;
   }
 }
 
-- (id)defaultTitleColorForUserInterfaceStyle:(int64_t)a3 barStyle:(int64_t)a4
+- (id)defaultTitleColorForUserInterfaceStyle:(int64_t)style barStyle:(int64_t)barStyle
 {
-  if ((a4 - 3) > 0xFFFFFFFFFFFFFFFDLL)
+  if ((barStyle - 3) > 0xFFFFFFFFFFFFFFFDLL)
   {
     +[UIColor whiteColor];
   }

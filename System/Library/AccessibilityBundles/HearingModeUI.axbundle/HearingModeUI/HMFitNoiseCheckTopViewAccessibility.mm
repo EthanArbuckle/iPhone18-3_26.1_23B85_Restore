@@ -1,19 +1,19 @@
 @interface HMFitNoiseCheckTopViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation HMFitNoiseCheckTopViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HearingModeUI.HMFitNoiseCheckTopView" hasSwiftFieldOfAnyClass:@"topFitCheckView"];
-  [v3 validateClass:@"_TtCC13HearingModeUI22HMFitNoiseCheckTopViewP33_6442BD22BF01B0421AF5366A801593E921FitNoiseCheckBudsView" hasSwiftFieldOfAnyClass:@"leftBudLabel"];
-  [v3 validateClass:@"_TtCC13HearingModeUI22HMFitNoiseCheckTopViewP33_6442BD22BF01B0421AF5366A801593E921FitNoiseCheckBudsView" hasSwiftFieldOfAnyClass:@"leftResultLabel"];
-  [v3 validateClass:@"_TtCC13HearingModeUI22HMFitNoiseCheckTopViewP33_6442BD22BF01B0421AF5366A801593E921FitNoiseCheckBudsView" hasSwiftFieldOfAnyClass:@"rightBudLabel"];
-  [v3 validateClass:@"_TtCC13HearingModeUI22HMFitNoiseCheckTopViewP33_6442BD22BF01B0421AF5366A801593E921FitNoiseCheckBudsView" hasSwiftFieldOfAnyClass:@"rightResultLabel"];
-  [v3 validateClass:@"_TtCC13HearingModeUI22HMFitNoiseCheckTopViewP33_6442BD22BF01B0421AF5366A801593E921FitNoiseCheckBudsView" hasSwiftFieldOfAnyClass:@"spacerLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HearingModeUI.HMFitNoiseCheckTopView" hasSwiftFieldOfAnyClass:@"topFitCheckView"];
+  [validationsCopy validateClass:@"_TtCC13HearingModeUI22HMFitNoiseCheckTopViewP33_6442BD22BF01B0421AF5366A801593E921FitNoiseCheckBudsView" hasSwiftFieldOfAnyClass:@"leftBudLabel"];
+  [validationsCopy validateClass:@"_TtCC13HearingModeUI22HMFitNoiseCheckTopViewP33_6442BD22BF01B0421AF5366A801593E921FitNoiseCheckBudsView" hasSwiftFieldOfAnyClass:@"leftResultLabel"];
+  [validationsCopy validateClass:@"_TtCC13HearingModeUI22HMFitNoiseCheckTopViewP33_6442BD22BF01B0421AF5366A801593E921FitNoiseCheckBudsView" hasSwiftFieldOfAnyClass:@"rightBudLabel"];
+  [validationsCopy validateClass:@"_TtCC13HearingModeUI22HMFitNoiseCheckTopViewP33_6442BD22BF01B0421AF5366A801593E921FitNoiseCheckBudsView" hasSwiftFieldOfAnyClass:@"rightResultLabel"];
+  [validationsCopy validateClass:@"_TtCC13HearingModeUI22HMFitNoiseCheckTopViewP33_6442BD22BF01B0421AF5366A801593E921FitNoiseCheckBudsView" hasSwiftFieldOfAnyClass:@"spacerLabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,30 +1,30 @@
 @interface PSISuggestionOptions
-- (PSISuggestionOptions)initWithSuggestionType:(unint64_t)a3 suggestionLimit:(unint64_t)a4;
+- (PSISuggestionOptions)initWithSuggestionType:(unint64_t)type suggestionLimit:(unint64_t)limit;
 - (id)_minMatchPercentByCategoriesTypeDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (unint64_t)minMatchPercentForCategoriesType:(unint64_t)a3;
-- (void)setMinMatchPercent:(unint64_t)a3 forCategoriesType:(unint64_t)a4;
+- (unint64_t)minMatchPercentForCategoriesType:(unint64_t)type;
+- (void)setMinMatchPercent:(unint64_t)percent forCategoriesType:(unint64_t)type;
 @end
 
 @implementation PSISuggestionOptions
 
 - (id)_minMatchPercentByCategoriesTypeDescription
 {
-  v3 = [(PSISuggestionOptions *)self minMatchPercentByCategoriesType];
-  v4 = [v3 count];
+  minMatchPercentByCategoriesType = [(PSISuggestionOptions *)self minMatchPercentByCategoriesType];
+  v4 = [minMatchPercentByCategoriesType count];
 
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v6 = [(PSISuggestionOptions *)self minMatchPercentByCategoriesType];
+    minMatchPercentByCategoriesType2 = [(PSISuggestionOptions *)self minMatchPercentByCategoriesType];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __67__PSISuggestionOptions__minMatchPercentByCategoriesTypeDescription__block_invoke;
     v9[3] = &unk_1E7568710;
     v7 = v5;
     v10 = v7;
-    [v6 enumerateKeysAndObjectsUsingBlock:v9];
+    [minMatchPercentByCategoriesType2 enumerateKeysAndObjectsUsingBlock:v9];
   }
 
   else
@@ -60,8 +60,8 @@ void __67__PSISuggestionOptions__minMatchPercentByCategoriesTypeDescription__blo
 
 - (id)description
 {
-  v3 = [(PSISuggestionOptions *)self suggestionResultTypes];
-  v4 = [(PSISuggestionOptions *)self suggestionResultTypes];
+  suggestionResultTypes = [(PSISuggestionOptions *)self suggestionResultTypes];
+  suggestionResultTypes2 = [(PSISuggestionOptions *)self suggestionResultTypes];
   v29 = MEMORY[0x1E696AEC0];
   v5 = self->_searchSuggestionType - 1;
   if (v5 > 3)
@@ -75,12 +75,12 @@ void __67__PSISuggestionOptions__minMatchPercentByCategoriesTypeDescription__blo
   }
 
   v7 = @"collections";
-  if ((v4 & 2) == 0)
+  if ((suggestionResultTypes2 & 2) == 0)
   {
     v7 = 0;
   }
 
-  if ((v3 & ((v4 & 2) >> 1)) != 0)
+  if ((suggestionResultTypes & ((suggestionResultTypes2 & 2) >> 1)) != 0)
   {
     v8 = @"assets & collections";
   }
@@ -90,7 +90,7 @@ void __67__PSISuggestionOptions__minMatchPercentByCategoriesTypeDescription__blo
     v8 = @"assets";
   }
 
-  if (v3)
+  if (suggestionResultTypes)
   {
     v9 = v8;
   }
@@ -102,8 +102,8 @@ void __67__PSISuggestionOptions__minMatchPercentByCategoriesTypeDescription__blo
 
   v10 = v6;
   searchSuggestionLimit = self->_searchSuggestionLimit;
-  v28 = [(PSISuggestionOptions *)self suggestionCategories];
-  v11 = PLDebugStringsForPLSearchSuggestionCategoriesTypes(v28);
+  suggestionCategories = [(PSISuggestionOptions *)self suggestionCategories];
+  v11 = PLDebugStringsForPLSearchSuggestionCategoriesTypes(suggestionCategories);
   v12 = @"NO";
   if (self->_limitSuggestionsToExactTextMatches)
   {
@@ -144,43 +144,43 @@ void __67__PSISuggestionOptions__minMatchPercentByCategoriesTypeDescription__blo
   v17 = v15;
   v18 = v14;
   v19 = v13;
-  v20 = [(PSISuggestionOptions *)self _minMatchPercentByCategoriesTypeDescription];
-  v21 = [(PSISuggestionOptions *)self substringMatchedCategories];
-  v22 = PLDebugStringsForPLSearchSuggestionCategoriesTypes(v21);
+  _minMatchPercentByCategoriesTypeDescription = [(PSISuggestionOptions *)self _minMatchPercentByCategoriesTypeDescription];
+  substringMatchedCategories = [(PSISuggestionOptions *)self substringMatchedCategories];
+  v22 = PLDebugStringsForPLSearchSuggestionCategoriesTypes(substringMatchedCategories);
   v26 = v9;
   v23 = v10;
-  v24 = [v29 stringWithFormat:@"Suggestion type: %@, \nsuggestion limit: %tu, \nsuggestion result types: %@, \nsuggestion categories:%@, \nlimit suggestions to exact matches only: %@, \nwants unscoped suggestions:%@, \nenable next token suggestions: %@, \nwantsPairedSuggestions: %@, \nmin match percent by categories type: %@, \nsubstring matched suggestion categories: %@", v10, searchSuggestionLimit, v26, v11, v19, v18, v17, v16, v20, v22];
+  v24 = [v29 stringWithFormat:@"Suggestion type: %@, \nsuggestion limit: %tu, \nsuggestion result types: %@, \nsuggestion categories:%@, \nlimit suggestions to exact matches only: %@, \nwants unscoped suggestions:%@, \nenable next token suggestions: %@, \nwantsPairedSuggestions: %@, \nmin match percent by categories type: %@, \nsubstring matched suggestion categories: %@", v10, searchSuggestionLimit, v26, v11, v19, v18, v17, v16, _minMatchPercentByCategoriesTypeDescription, v22];
 
   return v24;
 }
 
-- (unint64_t)minMatchPercentForCategoriesType:(unint64_t)a3
+- (unint64_t)minMatchPercentForCategoriesType:(unint64_t)type
 {
-  v4 = [(PSISuggestionOptions *)self minMatchPercentByCategoriesType];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 unsignedIntegerValue];
+  minMatchPercentByCategoriesType = [(PSISuggestionOptions *)self minMatchPercentByCategoriesType];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v6 = [minMatchPercentByCategoriesType objectForKeyedSubscript:v5];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (void)setMinMatchPercent:(unint64_t)a3 forCategoriesType:(unint64_t)a4
+- (void)setMinMatchPercent:(unint64_t)percent forCategoriesType:(unint64_t)type
 {
-  v7 = [(PSISuggestionOptions *)self minMatchPercentByCategoriesType];
+  minMatchPercentByCategoriesType = [(PSISuggestionOptions *)self minMatchPercentByCategoriesType];
 
-  if (!v7)
+  if (!minMatchPercentByCategoriesType)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [(PSISuggestionOptions *)self setMinMatchPercentByCategoriesType:v8];
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v9 = [(PSISuggestionOptions *)self minMatchPercentByCategoriesType];
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [v9 setObject:v11 forKeyedSubscript:v10];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:percent];
+  minMatchPercentByCategoriesType2 = [(PSISuggestionOptions *)self minMatchPercentByCategoriesType];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  [minMatchPercentByCategoriesType2 setObject:v11 forKeyedSubscript:v10];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PSISuggestionOptions alloc] initWithSuggestionType:self->_searchSuggestionType suggestionLimit:self->_searchSuggestionLimit];
   [(PSISuggestionOptions *)v4 setSuggestionResultTypes:self->_suggestionResultTypes];
@@ -195,11 +195,11 @@ void __67__PSISuggestionOptions__minMatchPercentByCategoriesTypeDescription__blo
   return v4;
 }
 
-- (PSISuggestionOptions)initWithSuggestionType:(unint64_t)a3 suggestionLimit:(unint64_t)a4
+- (PSISuggestionOptions)initWithSuggestionType:(unint64_t)type suggestionLimit:(unint64_t)limit
 {
-  if (a4)
+  if (limit)
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_3;
     }
@@ -207,17 +207,17 @@ void __67__PSISuggestionOptions__minMatchPercentByCategoriesTypeDescription__blo
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PSISuggestionOptions.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"suggestionLimit != 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PSISuggestionOptions.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"suggestionLimit != 0"}];
 
-    if (a3)
+    if (type)
     {
       goto LABEL_3;
     }
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"PSISuggestionOptions.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"suggestionType != PLSearchSuggestionTypeNone"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PSISuggestionOptions.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"suggestionType != PLSearchSuggestionTypeNone"}];
 
 LABEL_3:
   v11.receiver = self;
@@ -225,8 +225,8 @@ LABEL_3:
   result = [(PSISuggestionOptions *)&v11 init];
   if (result)
   {
-    result->_searchSuggestionType = a3;
-    result->_searchSuggestionLimit = a4;
+    result->_searchSuggestionType = type;
+    result->_searchSuggestionLimit = limit;
     result->_locationInQueryStringForSuggestionGeneration = 0x7FFFFFFFFFFFFFFFLL;
   }
 

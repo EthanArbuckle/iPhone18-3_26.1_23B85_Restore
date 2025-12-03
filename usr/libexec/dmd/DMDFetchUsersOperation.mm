@@ -1,6 +1,6 @@
 @interface DMDFetchUsersOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,16 +20,16 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
   v4 = +[UMUserManager sharedManager];
-  v5 = [v4 allUsers];
-  v6 = v5;
-  if (v5)
+  allUsers = [v4 allUsers];
+  v6 = allUsers;
+  if (allUsers)
   {
-    v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+    v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [allUsers count]);
     v16 = v4;
-    v8 = [v4 currentUser];
+    currentUser = [v4 currentUser];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -49,7 +49,7 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [[DMFUser alloc] initWithUser:*(*(&v17 + 1) + 8 * i) isCurrentUser:{objc_msgSend(*(*(&v17 + 1) + 8 * i), "isEqualToUser:", v8)}];
+          v14 = [[DMFUser alloc] initWithUser:*(*(&v17 + 1) + 8 * i) isCurrentUser:{objc_msgSend(*(*(&v17 + 1) + 8 * i), "isEqualToUser:", currentUser)}];
           [v7 addObject:v14];
         }
 

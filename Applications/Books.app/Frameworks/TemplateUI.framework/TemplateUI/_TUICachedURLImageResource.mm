@@ -1,40 +1,40 @@
 @interface _TUICachedURLImageResource
-+ (id)sizedKeyFromTemplatedURL:(id)a3 baseURL:(id)a4 naturalSize:(CGSize)a5 contentScale:(double)a6;
-+ (id)sizedKeyFromURL:(id)a3;
-+ (id)sizedURLFromTemplatedURL:(id)a3 baseURL:(id)a4 naturalSize:(CGSize)a5 contentsScale:(double)a6;
-+ (id)unsizedKeyFromTemplatedURL:(id)a3 baseURL:(id)a4;
-+ (id)unsizedKeyFromURL:(id)a3;
-- (_TUICachedURLImageResource)initWithCache:(id)a3 unsizedCacheSet:(id)a4 queue:(id)a5 templateURL:(id)a6 baseURL:(id)a7 url:(id)a8 naturalSize:(CGSize)a9 contentsScale:(double)a10 loader:(id)a11;
-- (id)newImageResourceWithSize:(CGSize)a3;
++ (id)sizedKeyFromTemplatedURL:(id)l baseURL:(id)rL naturalSize:(CGSize)size contentScale:(double)scale;
++ (id)sizedKeyFromURL:(id)l;
++ (id)sizedURLFromTemplatedURL:(id)l baseURL:(id)rL naturalSize:(CGSize)size contentsScale:(double)scale;
++ (id)unsizedKeyFromTemplatedURL:(id)l baseURL:(id)rL;
++ (id)unsizedKeyFromURL:(id)l;
+- (_TUICachedURLImageResource)initWithCache:(id)cache unsizedCacheSet:(id)set queue:(id)queue templateURL:(id)l baseURL:(id)rL url:(id)url naturalSize:(CGSize)size contentsScale:(double)self0 loader:(id)self1;
+- (id)newImageResourceWithSize:(CGSize)size;
 - (id)sizedKey;
 - (id)unsizedKey;
-- (void)_q_loadedImage:(id)a3 insets:(UIEdgeInsets)a4;
+- (void)_q_loadedImage:(id)image insets:(UIEdgeInsets)insets;
 - (void)loadResource;
 @end
 
 @implementation _TUICachedURLImageResource
 
-- (_TUICachedURLImageResource)initWithCache:(id)a3 unsizedCacheSet:(id)a4 queue:(id)a5 templateURL:(id)a6 baseURL:(id)a7 url:(id)a8 naturalSize:(CGSize)a9 contentsScale:(double)a10 loader:(id)a11
+- (_TUICachedURLImageResource)initWithCache:(id)cache unsizedCacheSet:(id)set queue:(id)queue templateURL:(id)l baseURL:(id)rL url:(id)url naturalSize:(CGSize)size contentsScale:(double)self0 loader:(id)self1
 {
-  height = a9.height;
-  width = a9.width;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a11;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  rLCopy = rL;
+  urlCopy = url;
+  loaderCopy = loader;
   v31.receiver = self;
   v31.super_class = _TUICachedURLImageResource;
-  v24 = [(_TUICachedImageResource *)&v31 initWithCache:a3 unsizedCacheSet:a4 queue:a5 naturalSize:width contentsScale:height, a10];
-  v25 = v24;
-  if (v24)
+  scale = [(_TUICachedImageResource *)&v31 initWithCache:cache unsizedCacheSet:set queue:queue naturalSize:width contentsScale:height, scale];
+  v25 = scale;
+  if (scale)
   {
-    objc_storeStrong(&v24->_loader, a11);
-    objc_storeStrong(&v25->super._url, a8);
-    v26 = [v20 copy];
+    objc_storeStrong(&scale->_loader, loader);
+    objc_storeStrong(&v25->super._url, url);
+    v26 = [lCopy copy];
     templateURL = v25->_templateURL;
     v25->_templateURL = v26;
 
-    v28 = [v21 copy];
+    v28 = [rLCopy copy];
     baseURL = v25->_baseURL;
     v25->_baseURL = v28;
   }
@@ -42,12 +42,12 @@
   return v25;
 }
 
-+ (id)sizedURLFromTemplatedURL:(id)a3 baseURL:(id)a4 naturalSize:(CGSize)a5 contentsScale:(double)a6
++ (id)sizedURLFromTemplatedURL:(id)l baseURL:(id)rL naturalSize:(CGSize)size contentsScale:(double)scale
 {
-  v7 = a5.width * a6;
-  v8 = a5.height * a6;
-  v9 = a4;
-  v10 = [a3 mutableCopy];
+  v7 = size.width * scale;
+  v8 = size.height * scale;
+  rLCopy = rL;
+  v10 = [l mutableCopy];
   v11 = v7;
   v12 = [NSString stringWithFormat:@"%d", llroundf(v11)];
   [v10 replaceOccurrencesOfString:@"{w}" withString:v12 options:2 range:{0, objc_msgSend(v10, "length")}];
@@ -58,46 +58,46 @@
 
   [v10 replaceOccurrencesOfString:@"{c}" withString:&stru_264550 options:2 range:{0, objc_msgSend(v10, "length")}];
   [v10 replaceOccurrencesOfString:@"{f}" withString:@"jpg" options:2 range:{0, objc_msgSend(v10, "length")}];
-  v15 = [NSURL URLWithString:v10 relativeToURL:v9];
+  v15 = [NSURL URLWithString:v10 relativeToURL:rLCopy];
 
   return v15;
 }
 
-+ (id)sizedKeyFromTemplatedURL:(id)a3 baseURL:(id)a4 naturalSize:(CGSize)a5 contentScale:(double)a6
++ (id)sizedKeyFromTemplatedURL:(id)l baseURL:(id)rL naturalSize:(CGSize)size contentScale:(double)scale
 {
-  v6 = [a1 sizedURLFromTemplatedURL:a3 baseURL:a4 naturalSize:a5.width contentsScale:{a5.height, a6}];
+  v6 = [self sizedURLFromTemplatedURL:l baseURL:rL naturalSize:size.width contentsScale:{size.height, scale}];
   v7 = [[TUIImageResourceCacheKey alloc] initWithURL:v6];
 
   return v7;
 }
 
-+ (id)unsizedKeyFromTemplatedURL:(id)a3 baseURL:(id)a4
++ (id)unsizedKeyFromTemplatedURL:(id)l baseURL:(id)rL
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
+  rLCopy = rL;
+  v6 = [l mutableCopy];
   [v6 replaceOccurrencesOfString:@"{w}" withString:@"W" options:2 range:{0, objc_msgSend(v6, "length")}];
   [v6 replaceOccurrencesOfString:@"{h}" withString:@"H" options:2 range:{0, objc_msgSend(v6, "length")}];
   [v6 replaceOccurrencesOfString:@"{c}" withString:&stru_264550 options:2 range:{0, objc_msgSend(v6, "length")}];
   [v6 replaceOccurrencesOfString:@"{f}" withString:@"jpg" options:2 range:{0, objc_msgSend(v6, "length")}];
-  v7 = [NSURL URLWithString:v6 relativeToURL:v5];
+  v7 = [NSURL URLWithString:v6 relativeToURL:rLCopy];
 
   v8 = [[TUIImageResourceCacheKey alloc] initWithURL:v7];
 
   return v8;
 }
 
-+ (id)sizedKeyFromURL:(id)a3
++ (id)sizedKeyFromURL:(id)l
 {
-  v3 = a3;
-  v4 = [[TUIImageResourceCacheKey alloc] initWithURL:v3];
+  lCopy = l;
+  v4 = [[TUIImageResourceCacheKey alloc] initWithURL:lCopy];
 
   return v4;
 }
 
-+ (id)unsizedKeyFromURL:(id)a3
++ (id)unsizedKeyFromURL:(id)l
 {
-  v3 = a3;
-  v4 = [[TUIImageResourceCacheKey alloc] initWithURL:v3];
+  lCopy = l;
+  v4 = [[TUIImageResourceCacheKey alloc] initWithURL:lCopy];
 
   return v4;
 }
@@ -138,7 +138,7 @@
   v7[3] = &unk_260A48;
   v6 = v3;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   objc_copyWeak(&v10, &location);
   [(TUIResourceLoading *)loader loadResourceWithURL:url completion:v7];
   objc_destroyWeak(&v10);
@@ -146,13 +146,13 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_q_loadedImage:(id)a3 insets:(UIEdgeInsets)a4
+- (void)_q_loadedImage:(id)image insets:(UIEdgeInsets)insets
 {
-  v7 = a3;
+  imageCopy = image;
   dispatch_assert_queue_V2(self->super._queue);
-  if (v7)
+  if (imageCopy)
   {
-    [v7 size];
+    [imageCopy size];
   }
 
   else
@@ -164,7 +164,7 @@
   [(_TUICachedImageResource *)self _q_loadIntrinsicSize:width, height];
 }
 
-- (id)newImageResourceWithSize:(CGSize)a3
+- (id)newImageResourceWithSize:(CGSize)size
 {
   templateURL = self->_templateURL;
   WeakRetained = objc_loadWeakRetained(&self->super._cache);

@@ -1,15 +1,15 @@
 @interface AutofillManualEntryViewController
-- (_TtC9PassKitUIP33_1468669D2D95B1C429D5ECCF8200656633AutofillManualEntryViewController)initWithCoder:(id)a3;
-- (_TtC9PassKitUIP33_1468669D2D95B1C429D5ECCF8200656633AutofillManualEntryViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6;
+- (_TtC9PassKitUIP33_1468669D2D95B1C429D5ECCF8200656633AutofillManualEntryViewController)initWithCoder:(id)coder;
+- (_TtC9PassKitUIP33_1468669D2D95B1C429D5ECCF8200656633AutofillManualEntryViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model;
 - (id)defaultHeaderViewSubTitle;
 - (id)defaultHeaderViewTitle;
-- (void)handleNextButtonTapped:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)handleNextButtonTapped:(id)tapped;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AutofillManualEntryViewController
 
-- (_TtC9PassKitUIP33_1468669D2D95B1C429D5ECCF8200656633AutofillManualEntryViewController)initWithCoder:(id)a3
+- (_TtC9PassKitUIP33_1468669D2D95B1C429D5ECCF8200656633AutofillManualEntryViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC9PassKitUIP33_1468669D2D95B1C429D5ECCF8200656633AutofillManualEntryViewController_manualEntryDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -27,13 +27,13 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for AutofillManualEntryViewController();
   v4 = v5.receiver;
-  [(PKPaymentSetupFieldsViewController *)&v5 viewWillAppear:v3];
+  [(PKPaymentSetupFieldsViewController *)&v5 viewWillAppear:appearCopy];
   sub_1BD889BEC();
 }
 
@@ -65,11 +65,11 @@
   return v8;
 }
 
-- (void)handleNextButtonTapped:(id)a3
+- (void)handleNextButtonTapped:(id)tapped
 {
-  if (a3)
+  if (tapped)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1BE053624();
     swift_unknownObjectRelease();
@@ -78,7 +78,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1BD88A130();
@@ -86,7 +86,7 @@
   sub_1BD14EC0C(v6);
 }
 
-- (_TtC9PassKitUIP33_1468669D2D95B1C429D5ECCF8200656633AutofillManualEntryViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6
+- (_TtC9PassKitUIP33_1468669D2D95B1C429D5ECCF8200656633AutofillManualEntryViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

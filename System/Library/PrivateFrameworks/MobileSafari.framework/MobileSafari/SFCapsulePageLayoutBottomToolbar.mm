@@ -1,34 +1,34 @@
 @interface SFCapsulePageLayoutBottomToolbar
-- (CGSize)capsuleSizeForPage:(id)a3;
+- (CGSize)capsuleSizeForPage:(id)page;
 - (NSArray)supplementaryIdentifiers;
 - (SFCapsulePageContainer)container;
-- (SFCapsulePageLayoutBottomToolbar)initWithContainer:(id)a3;
+- (SFCapsulePageLayoutBottomToolbar)initWithContainer:(id)container;
 - (UIEdgeInsets)capsulePadding;
 - (UIEdgeInsets)layoutMargins;
-- (double)offsetForDodgingKeyboardOnPage:(id)a3;
+- (double)offsetForDodgingKeyboardOnPage:(id)page;
 - (double)pageWidth;
-- (double)spacingAboveLockdownStatusBarOnPage:(id)a3;
-- (double)spacingBelowLockdownStatusBarOnPage:(id)a3;
-- (id)bottomBackdropInfoForPage:(id)a3;
-- (id)capsuleInfoForPage:(id)a3;
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4;
-- (id)lockdownStatusBarInfoOnPage:(id)a3;
-- (id)toolbarInfoOnPage:(id)a3;
-- (id)topBackdropInfoForPage:(id)a3;
+- (double)spacingAboveLockdownStatusBarOnPage:(id)page;
+- (double)spacingBelowLockdownStatusBarOnPage:(id)page;
+- (id)bottomBackdropInfoForPage:(id)page;
+- (id)capsuleInfoForPage:(id)page;
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page;
+- (id)lockdownStatusBarInfoOnPage:(id)page;
+- (id)toolbarInfoOnPage:(id)page;
+- (id)topBackdropInfoForPage:(id)page;
 @end
 
 @implementation SFCapsulePageLayoutBottomToolbar
 
-- (SFCapsulePageLayoutBottomToolbar)initWithContainer:(id)a3
+- (SFCapsulePageLayoutBottomToolbar)initWithContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = SFCapsulePageLayoutBottomToolbar;
   v5 = [(SFCapsulePageLayoutBottomToolbar *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_container, v4);
+    objc_storeWeak(&v5->_container, containerCopy);
     v7 = v6;
   }
 
@@ -55,16 +55,16 @@
   return v18;
 }
 
-- (id)capsuleInfoForPage:(id)a3
+- (id)capsuleInfoForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   [WeakRetained bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [(SFCapsulePageLayoutBottomToolbar *)self capsuleSizeForPage:v4];
+  [(SFCapsulePageLayoutBottomToolbar *)self capsuleSizeForPage:pageCopy];
   v15 = v14;
   v17 = v16;
   v27.origin.x = v7;
@@ -74,7 +74,7 @@
   Height = CGRectGetHeight(v27);
   [WeakRetained safeAreaInsets];
   v20 = Height - v19 - 44.0 - self->_capsulePadding.bottom - v17;
-  [(SFCapsulePageLayoutBottomToolbar *)self offsetForDodgingKeyboardOnPage:v4];
+  [(SFCapsulePageLayoutBottomToolbar *)self offsetForDodgingKeyboardOnPage:pageCopy];
   v22 = v21;
 
   v28.origin.x = v7;
@@ -89,9 +89,9 @@
   return v24;
 }
 
-- (CGSize)capsuleSizeForPage:(id)a3
+- (CGSize)capsuleSizeForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   [WeakRetained bounds];
   v7 = v6;
@@ -106,7 +106,7 @@
   v26.origin.y = v15;
   v26.size.width = v18;
   Width = CGRectGetWidth(v26);
-  [v4 capsuleHeightForWidth:0 defaultHeight:Width state:44.0];
+  [pageCopy capsuleHeightForWidth:0 defaultHeight:Width state:44.0];
   v22 = v21;
 
   v23 = Width;
@@ -146,18 +146,18 @@
   return v2;
 }
 
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"SFCapsuleSupplementaryViewToolbar"])
+  identifierCopy = identifier;
+  pageCopy = page;
+  if ([identifierCopy isEqualToString:@"SFCapsuleSupplementaryViewToolbar"])
   {
-    v8 = [(SFCapsulePageLayoutBottomToolbar *)self toolbarInfoOnPage:v7];
+    v8 = [(SFCapsulePageLayoutBottomToolbar *)self toolbarInfoOnPage:pageCopy];
   }
 
-  else if ([v6 isEqualToString:@"SFCapsuleSupplementaryViewLockdownStatusBar"])
+  else if ([identifierCopy isEqualToString:@"SFCapsuleSupplementaryViewLockdownStatusBar"])
   {
-    v8 = [(SFCapsulePageLayoutBottomToolbar *)self lockdownStatusBarInfoOnPage:v7];
+    v8 = [(SFCapsulePageLayoutBottomToolbar *)self lockdownStatusBarInfoOnPage:pageCopy];
   }
 
   else
@@ -170,17 +170,17 @@
   return v9;
 }
 
-- (id)toolbarInfoOnPage:(id)a3
+- (id)toolbarInfoOnPage:(id)page
 {
-  v4 = a3;
-  v5 = [(SFCapsulePageLayoutBottomToolbar *)self bottomBackdropInfoForPage:v4];
+  pageCopy = page;
+  v5 = [(SFCapsulePageLayoutBottomToolbar *)self bottomBackdropInfoForPage:pageCopy];
   [v5 frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(SFCapsulePageLayoutBottomToolbar *)self capsuleInfoForPage:v4];
+  v14 = [(SFCapsulePageLayoutBottomToolbar *)self capsuleInfoForPage:pageCopy];
 
   [v14 frame];
   rect = v15;
@@ -219,27 +219,27 @@
   return v22;
 }
 
-- (id)bottomBackdropInfoForPage:(id)a3
+- (id)bottomBackdropInfoForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   [WeakRetained bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v4 lockdownStatusBar];
+  lockdownStatusBar = [pageCopy lockdownStatusBar];
 
-  if (!v14 || (-[SFCapsulePageLayoutBottomToolbar spacingAboveLockdownStatusBarOnPage:](self, "spacingAboveLockdownStatusBarOnPage:", v4), v16 = v15 + 0.0, -[SFCapsulePageLayoutBottomToolbar spacingBelowLockdownStatusBarOnPage:](self, "spacingBelowLockdownStatusBarOnPage:", v4), v18 = v16 + v17, [v4 lockdownStatusBar], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "preferredSize"), top = v18 + v20, v19, top == 0.0))
+  if (!lockdownStatusBar || (-[SFCapsulePageLayoutBottomToolbar spacingAboveLockdownStatusBarOnPage:](self, "spacingAboveLockdownStatusBarOnPage:", pageCopy), v16 = v15 + 0.0, -[SFCapsulePageLayoutBottomToolbar spacingBelowLockdownStatusBarOnPage:](self, "spacingBelowLockdownStatusBarOnPage:", pageCopy), v18 = v16 + v17, [pageCopy lockdownStatusBar], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "preferredSize"), top = v18 + v20, v19, top == 0.0))
   {
     top = self->_capsulePadding.top;
   }
 
-  [(SFCapsulePageLayoutBottomToolbar *)self capsuleSizeForPage:v4];
+  [(SFCapsulePageLayoutBottomToolbar *)self capsuleSizeForPage:pageCopy];
   v23 = v22;
   [WeakRetained safeAreaInsets];
   v25 = self->_capsulePadding.bottom + v23 + top + v24 + 44.0;
-  [(SFCapsulePageLayoutBottomToolbar *)self offsetForDodgingKeyboardOnPage:v4];
+  [(SFCapsulePageLayoutBottomToolbar *)self offsetForDodgingKeyboardOnPage:pageCopy];
   v27 = v26 + v25;
   v28 = objc_alloc_init(_TtC12MobileSafari23SFCapsulePageLayoutInfo);
   v32.origin.x = v7;
@@ -256,7 +256,7 @@
   return v28;
 }
 
-- (double)offsetForDodgingKeyboardOnPage:(id)a3
+- (double)offsetForDodgingKeyboardOnPage:(id)page
 {
   WeakRetained = objc_loadWeakRetained(&self->_container);
   bottom = self->_capsulePadding.bottom;
@@ -270,7 +270,7 @@
   return v10;
 }
 
-- (id)topBackdropInfoForPage:(id)a3
+- (id)topBackdropInfoForPage:(id)page
 {
   WeakRetained = objc_loadWeakRetained(&self->_container);
   v4 = objc_alloc_init(_TtC12MobileSafari23SFCapsulePageLayoutInfo);
@@ -282,9 +282,9 @@
   return v4;
 }
 
-- (id)lockdownStatusBarInfoOnPage:(id)a3
+- (id)lockdownStatusBarInfoOnPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   [WeakRetained bounds];
   v7 = v6;
@@ -292,8 +292,8 @@
   v11 = v10;
   v13 = v12;
 
-  v14 = [v4 lockdownStatusBar];
-  v15 = [(SFCapsulePageLayoutBottomToolbar *)self bottomBackdropInfoForPage:v4];
+  lockdownStatusBar = [pageCopy lockdownStatusBar];
+  v15 = [(SFCapsulePageLayoutBottomToolbar *)self bottomBackdropInfoForPage:pageCopy];
   [v15 frame];
   v17 = v16;
   v19 = v18;
@@ -306,9 +306,9 @@
   v34.size.width = v21;
   v34.size.height = v23;
   MinY = CGRectGetMinY(v34);
-  [(SFCapsulePageLayoutBottomToolbar *)self spacingAboveLockdownStatusBarOnPage:v4];
+  [(SFCapsulePageLayoutBottomToolbar *)self spacingAboveLockdownStatusBarOnPage:pageCopy];
   v27 = MinY + v26;
-  [(SFCapsulePageLayoutBottomToolbar *)self offsetForDodgingKeyboardOnPage:v4];
+  [(SFCapsulePageLayoutBottomToolbar *)self offsetForDodgingKeyboardOnPage:pageCopy];
   v29 = v28;
 
   v35.origin.x = v7;
@@ -316,25 +316,25 @@
   v35.size.width = v11;
   v35.size.height = v13;
   Width = CGRectGetWidth(v35);
-  [v14 preferredSize];
+  [lockdownStatusBar preferredSize];
   [(SFCapsulePageLayoutInfo *)v24 setFrame:0.0, v27 + v29, Width, v31];
 
   return v24;
 }
 
-- (double)spacingAboveLockdownStatusBarOnPage:(id)a3
+- (double)spacingAboveLockdownStatusBarOnPage:(id)page
 {
-  v3 = [a3 lockdownStatusBar];
-  [v3 titleCapHeightInsetFromTop];
+  lockdownStatusBar = [page lockdownStatusBar];
+  [lockdownStatusBar titleCapHeightInsetFromTop];
   v5 = 10.0 - v4;
 
   return v5;
 }
 
-- (double)spacingBelowLockdownStatusBarOnPage:(id)a3
+- (double)spacingBelowLockdownStatusBarOnPage:(id)page
 {
-  v3 = [a3 lockdownStatusBar];
-  [v3 titleBaselineInsetFromBottom];
+  lockdownStatusBar = [page lockdownStatusBar];
+  [lockdownStatusBar titleBaselineInsetFromBottom];
   v5 = 10.0 - v4;
 
   return v5;

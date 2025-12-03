@@ -1,20 +1,20 @@
 @interface AddBookmarkUIActivity
-- (BOOL)addBookmarkNavControllerCanSaveBookmarkChanges:(id)a3;
-- (BOOL)canPerformWithActivityItems:(id)a3;
-- (void)activityDidFinish:(BOOL)a3;
-- (void)addBookmarkNavController:(id)a3 didFinishWithResult:(BOOL)a4 bookmark:(id)a5;
-- (void)prepareWithActivityItems:(id)a3;
+- (BOOL)addBookmarkNavControllerCanSaveBookmarkChanges:(id)changes;
+- (BOOL)canPerformWithActivityItems:(id)items;
+- (void)activityDidFinish:(BOOL)finish;
+- (void)addBookmarkNavController:(id)controller didFinishWithResult:(BOOL)result bookmark:(id)bookmark;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation AddBookmarkUIActivity
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = [a3 safari_firstObjectPassingTest:&__block_literal_global_63];
-  v4 = [v3 isShowingStartPageOverriddenByExtension];
+  v3 = [items safari_firstObjectPassingTest:&__block_literal_global_63];
+  isShowingStartPageOverriddenByExtension = [v3 isShowingStartPageOverriddenByExtension];
   if (v3)
   {
-    v5 = ([v3 isBlank] | v4) ^ 1;
+    v5 = ([v3 isBlank] | isShowingStartPageOverriddenByExtension) ^ 1;
   }
 
   else
@@ -34,24 +34,24 @@ uint64_t __53__AddBookmarkUIActivity_canPerformWithActivityItems___block_invoke(
   return isKindOfClass & 1;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
-  v4 = [a3 safari_firstObjectPassingTest:&__block_literal_global_2];
+  v4 = [items safari_firstObjectPassingTest:&__block_literal_global_2];
   tabDocument = self->_tabDocument;
   self->_tabDocument = v4;
 
-  v18 = [(_SFActivity *)self delegate];
+  delegate = [(_SFActivity *)self delegate];
   bookmarkNavController = self->_bookmarkNavController;
   if (!bookmarkNavController)
   {
     v7 = objc_alloc(MEMORY[0x277CDB8C8]);
-    v8 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-    v9 = [v7 initWithCollection:v8];
+    mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+    v9 = [v7 initWithCollection:mainBookmarkCollection];
     v10 = self->_bookmarkNavController;
     self->_bookmarkNavController = v9;
 
-    v11 = [v18 addBookmarkActivityTabGroupProvider];
-    [(_SFSingleBookmarkNavigationController *)self->_bookmarkNavController setSyntheticBookmarkProvider:v11];
+    addBookmarkActivityTabGroupProvider = [delegate addBookmarkActivityTabGroupProvider];
+    [(_SFSingleBookmarkNavigationController *)self->_bookmarkNavController setSyntheticBookmarkProvider:addBookmarkActivityTabGroupProvider];
 
     bookmarkNavController = self->_bookmarkNavController;
   }
@@ -60,10 +60,10 @@ uint64_t __53__AddBookmarkUIActivity_canPerformWithActivityItems___block_invoke(
   v13 = self->_bookmarkNavController;
   if (v12)
   {
-    v14 = [(TabDocument *)self->_tabDocument titleForNewBookmark];
-    v15 = [(TabDocument *)self->_tabDocument cachedCanonicalURLOrURLForSharing];
-    v16 = [v15 absoluteString];
-    v17 = [(_SFSingleBookmarkNavigationController *)v13 addBookmarkWithTitle:v14 address:v16 parentBookmark:0];
+    titleForNewBookmark = [(TabDocument *)self->_tabDocument titleForNewBookmark];
+    cachedCanonicalURLOrURLForSharing = [(TabDocument *)self->_tabDocument cachedCanonicalURLOrURLForSharing];
+    absoluteString = [cachedCanonicalURLOrURLForSharing absoluteString];
+    v17 = [(_SFSingleBookmarkNavigationController *)v13 addBookmarkWithTitle:titleForNewBookmark address:absoluteString parentBookmark:0];
 
     [(_SFSingleBookmarkNavigationController *)self->_bookmarkNavController setBookmarkNavDelegate:self];
   }
@@ -72,7 +72,7 @@ uint64_t __53__AddBookmarkUIActivity_canPerformWithActivityItems___block_invoke(
   {
     self->_bookmarkNavController = 0;
 
-    [v18 addBookmarkActivityFailedToAcquireBookmarkLock:self];
+    [delegate addBookmarkActivityFailedToAcquireBookmarkLock:self];
   }
 }
 
@@ -85,35 +85,35 @@ uint64_t __50__AddBookmarkUIActivity_prepareWithActivityItems___block_invoke(uin
   return isKindOfClass & 1;
 }
 
-- (void)activityDidFinish:(BOOL)a3
+- (void)activityDidFinish:(BOOL)finish
 {
-  v3 = a3;
+  finishCopy = finish;
   v5.receiver = self;
   v5.super_class = AddBookmarkUIActivity;
   [(_SFActivity *)&v5 activityDidFinish:?];
-  if (v3)
+  if (finishCopy)
   {
-    v4 = [MEMORY[0x277D499B8] sharedLogger];
-    [v4 didAddBookmarkWithMethod:3];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] didAddBookmarkWithMethod:3];
   }
 }
 
-- (void)addBookmarkNavController:(id)a3 didFinishWithResult:(BOOL)a4 bookmark:(id)a5
+- (void)addBookmarkNavController:(id)controller didFinishWithResult:(BOOL)result bookmark:(id)bookmark
 {
-  v5 = a4;
-  v7 = a5;
-  [(AddBookmarkUIActivity *)self activityDidFinish:v5];
-  if (v5)
+  resultCopy = result;
+  bookmarkCopy = bookmark;
+  [(AddBookmarkUIActivity *)self activityDidFinish:resultCopy];
+  if (resultCopy)
   {
     v8 = MEMORY[0x277D4A7A0];
-    v9 = [(TabDocument *)self->_tabDocument webView];
-    v10 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+    webView = [(TabDocument *)self->_tabDocument webView];
+    mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __79__AddBookmarkUIActivity_addBookmarkNavController_didFinishWithResult_bookmark___block_invoke;
     v11[3] = &unk_2781D7480;
-    v12 = v7;
-    [v8 saveLeadImageFromWebView:v9 toLeadImageCacheRegisteredWithMetadataManager:v10 completionHandler:v11];
+    v12 = bookmarkCopy;
+    [v8 saveLeadImageFromWebView:webView toLeadImageCacheRegisteredWithMetadataManager:mEMORY[0x277D28F58] completionHandler:v11];
   }
 }
 
@@ -149,13 +149,13 @@ void __79__AddBookmarkUIActivity_addBookmarkNavController_didFinishWithResult_bo
   [(WebBookmarkCollection *)v2 updateBookmark:*(a1 + 40) withLeadImageURL:?];
 }
 
-- (BOOL)addBookmarkNavControllerCanSaveBookmarkChanges:(id)a3
+- (BOOL)addBookmarkNavControllerCanSaveBookmarkChanges:(id)changes
 {
-  v3 = self;
-  v4 = [(_SFActivity *)self delegate];
-  LOBYTE(v3) = [v4 addBookmarkActivityCanSaveBookmarkChanges:v3];
+  selfCopy = self;
+  delegate = [(_SFActivity *)self delegate];
+  LOBYTE(selfCopy) = [delegate addBookmarkActivityCanSaveBookmarkChanges:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 void __79__AddBookmarkUIActivity_addBookmarkNavController_didFinishWithResult_bookmark___block_invoke_cold_1(void *a1, void *a2)

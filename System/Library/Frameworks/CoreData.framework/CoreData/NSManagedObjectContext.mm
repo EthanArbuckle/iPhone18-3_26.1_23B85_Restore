@@ -1,18 +1,18 @@
 @interface NSManagedObjectContext
-+ (id)createFutureForFileAtURL:(id)a3;
-+ (uint64_t)_handleError:(uint64_t *)a3 withError:;
-+ (void)_mergeChangesFromRemoteContextSave:(void *)a3 intoContexts:(uint64_t)a4 withClientQueryGeneration:;
++ (id)createFutureForFileAtURL:(id)l;
++ (uint64_t)_handleError:(uint64_t *)error withError:;
++ (void)_mergeChangesFromRemoteContextSave:(void *)save intoContexts:(uint64_t)contexts withClientQueryGeneration:;
 + (void)initialize;
 - (BOOL)_attemptCoalesceChangesForFetch;
-- (BOOL)_parentObtainPermanentIDsForObjects:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)_performImmediate:(id)a3;
-- (BOOL)_setChangeTrackingTokenFromToken:(id)a3 error:(id *)a4;
-- (BOOL)_setQueryGenerationFromToken:(id)a3 error:(id *)a4;
-- (BOOL)_updateLocationsOfObjectsToLocationByOrderKey:(id)a3 inRelationshipWithName:(id)a4 onObjectWithID:(id)a5 error:(id *)a6;
+- (BOOL)_parentObtainPermanentIDsForObjects:(id)objects context:(id)context error:(id *)error;
+- (BOOL)_performImmediate:(id)immediate;
+- (BOOL)_setChangeTrackingTokenFromToken:(id)token error:(id *)error;
+- (BOOL)_setQueryGenerationFromToken:(id)token error:(id *)error;
+- (BOOL)_updateLocationsOfObjectsToLocationByOrderKey:(id)key inRelationshipWithName:(id)name onObjectWithID:(id)d error:(id *)error;
 - (BOOL)automaticallyMergesChangesFromParent;
 - (BOOL)commitEditing;
-- (BOOL)commitEditingAndReturnError:(id *)a3;
-- (BOOL)evictFuture:(id)a3 withError:(id *)a4;
+- (BOOL)commitEditingAndReturnError:(id *)error;
+- (BOOL)evictFuture:(id)future withError:(id *)error;
 - (BOOL)hasChanges;
 - (BOOL)obtainPermanentIDsForObjects:(NSArray *)objects error:(NSError *)error;
 - (BOOL)propagatesDeletesAtEndOfEvent;
@@ -29,7 +29,7 @@
 - (NSManagedObject)objectRegisteredForID:(NSManagedObjectID *)objectID;
 - (NSManagedObject)objectWithID:(NSManagedObjectID *)objectID;
 - (NSManagedObjectContext)init;
-- (NSManagedObjectContext)initWithCoder:(id)a3;
+- (NSManagedObjectContext)initWithCoder:(id)coder;
 - (NSManagedObjectContext)initWithConcurrencyType:(NSManagedObjectContextConcurrencyType)ct;
 - (NSManagedObjectContext)parentContext;
 - (NSManagedObjectContextConcurrencyType)concurrencyType;
@@ -46,30 +46,30 @@
 - (NSString)transactionAuthor;
 - (NSUInteger)countForFetchRequest:(NSFetchRequest *)request error:(NSError *)error;
 - (NSUndoManager)undoManager;
-- (id)_allOrderKeysForDestination:(id)a3 inRelationship:(id)a4 error:(id *)a5;
+- (id)_allOrderKeysForDestination:(id)destination inRelationship:(id)relationship error:(id *)error;
 - (id)_changeTrackingToken__;
-- (id)_createStoreFetchRequestForFetchRequest:(id *)a1;
-- (id)_newOrderedRelationshipInformationForRelationship:(id)a3 forObjectWithID:(id)a4 withContext:(id)a5 error:(id *)a6;
-- (id)_orderKeysForRelationshipWithName__:(id)a3 onObjectWithID:(id)a4;
-- (id)_orderedSetWithResultsFromFetchRequest:(id)a3;
+- (id)_createStoreFetchRequestForFetchRequest:(id *)request;
+- (id)_newOrderedRelationshipInformationForRelationship:(id)relationship forObjectWithID:(id)d withContext:(id)context error:(id *)error;
+- (id)_orderKeysForRelationshipWithName__:(id)name__ onObjectWithID:(id)d;
+- (id)_orderedSetWithResultsFromFetchRequest:(id)request;
 - (id)_queryGenerationToken__;
-- (id)_retainedCurrentQueryGeneration:(id)a3;
-- (id)_retainedObjectWithID:(void *)a1 optionalHandler:(void *)a2 withInlineStorage:(uint64_t)a3;
-- (id)_retainedObjectsFromRemovedStore:(id)a3;
+- (id)_retainedCurrentQueryGeneration:(id)generation;
+- (id)_retainedObjectWithID:(void *)d optionalHandler:(void *)handler withInlineStorage:(uint64_t)storage;
+- (id)_retainedObjectsFromRemovedStore:(id)store;
 - (id)databaseStatistics;
 - (id)description;
-- (id)executeRequest:(id)a3 withContext:(id)a4 error:(id *)a5;
+- (id)executeRequest:(id)request withContext:(id)context error:(id *)error;
 - (id)mergePolicy;
-- (id)newValueForRelationship:(id)a3 forObjectWithID:(id)a4 withContext:(id)a5 error:(id *)a6;
-- (id)newValuesForObjectWithID:(id)a3 withContext:(id)a4 error:(id *)a5;
-- (id)performBlockWithResult:(id)a3;
-- (int64x2_t)_updateDatabaseStaticsWithCacheStats:(uint64_t)a1;
+- (id)newValueForRelationship:(id)relationship forObjectWithID:(id)d withContext:(id)context error:(id *)error;
+- (id)newValuesForObjectWithID:(id)d withContext:(id)context error:(id *)error;
+- (id)performBlockWithResult:(id)result;
+- (int64x2_t)_updateDatabaseStaticsWithCacheStats:(uint64_t)stats;
 - (uint64_t)_addObjectIDsInsertUpdatedByDATriggers:(uint64_t)result;
 - (uint64_t)_addObjectIDsUpdatedByDATriggers:(uint64_t)result;
 - (uint64_t)_addObjectIDsUpdatedByTriggers:(uint64_t)result;
-- (uint64_t)_batchRetainedObjects:(uint64_t)a1 forCount:(uint64_t)a2 withIDs:(uint64_t)a3 optionalHandler:(id *)a4 withInlineStorage:(uint64_t)a5;
-- (uint64_t)_changeIDsForManagedObjects:(void *)a3 toIDs:;
-- (uint64_t)_checkObjectForExistenceAndCacheRow:(uint64_t)a1;
+- (uint64_t)_batchRetainedObjects:(uint64_t)objects forCount:(uint64_t)count withIDs:(uint64_t)ds optionalHandler:(id *)handler withInlineStorage:(uint64_t)storage;
+- (uint64_t)_changeIDsForManagedObjects:(void *)objects toIDs:;
+- (uint64_t)_checkObjectForExistenceAndCacheRow:(uint64_t)row;
 - (uint64_t)_clearDeletions;
 - (uint64_t)_clearInsertions;
 - (uint64_t)_clearUnprocessedDeletions;
@@ -77,101 +77,101 @@
 - (uint64_t)_clearUnprocessedUpdates;
 - (uint64_t)_clearUpdates;
 - (uint64_t)_committedSnapshotForObject:(uint64_t)result;
-- (uint64_t)_countForFetchRequest_:(id *)a3 error:;
-- (uint64_t)_countWithNoChangesForRequest:(id *)a3 error:;
+- (uint64_t)_countForFetchRequest_:(id *)request_ error:;
+- (uint64_t)_countWithNoChangesForRequest:(id *)request error:;
 - (uint64_t)_dispose:(uint64_t)result;
 - (uint64_t)_enqueueEndOfEventNotification;
 - (uint64_t)_generateOptLockExceptionForConstraintFailure:(uint64_t)result;
-- (uint64_t)_handleError:(uint64_t *)a3 withError:;
-- (uint64_t)_implicitObservationInfoForEntity:(void *)a3 forResultingClass:;
-- (uint64_t)_initWithParentObjectStore:(void *)a1;
-- (uint64_t)_mergeRefreshEpilogueForObject:(uint64_t)a3 mergeChanges:;
-- (uint64_t)_mergeRefreshObject:(char)a3 mergeChanges:(NSKnownKeysDictionary *)a4 withPersistentSnapshot:;
-- (uint64_t)_parentProcessSaveRequest:(uint64_t)result inContext:(void *)a2 error:;
-- (uint64_t)_postContextDidSaveNotificationWithUserInfo:(uint64_t)a1;
+- (uint64_t)_handleError:(uint64_t *)error withError:;
+- (uint64_t)_implicitObservationInfoForEntity:(void *)entity forResultingClass:;
+- (uint64_t)_initWithParentObjectStore:(void *)store;
+- (uint64_t)_mergeRefreshEpilogueForObject:(uint64_t)object mergeChanges:;
+- (uint64_t)_mergeRefreshObject:(char)object mergeChanges:(NSKnownKeysDictionary *)changes withPersistentSnapshot:;
+- (uint64_t)_parentProcessSaveRequest:(uint64_t)result inContext:(void *)context error:;
+- (uint64_t)_postContextDidSaveNotificationWithUserInfo:(uint64_t)info;
 - (uint64_t)_postObjectsDidChangeNotificationWithUserInfo:(uint64_t)result;
-- (uint64_t)_prepareForPushChanges:(uint64_t)a1;
-- (uint64_t)_processPendingDeletions:(void *)a3 withInsertions:(void *)a4 withUpdates:withNewlyForgottenList:withRemovedChangedObjects:;
-- (uint64_t)_processRecentChanges:(uint64_t)a1;
+- (uint64_t)_prepareForPushChanges:(uint64_t)changes;
+- (uint64_t)_processPendingDeletions:(void *)deletions withInsertions:(void *)insertions withUpdates:withNewlyForgottenList:withRemovedChangedObjects:;
+- (uint64_t)_processRecentChanges:(uint64_t)changes;
 - (uint64_t)_registerClearStateWithUndoManager;
 - (uint64_t)_registerForNotificationsWithCoordinator:(uint64_t)result;
-- (uint64_t)_registerUndoForOperation:(void *)a3 withObjects:(uint64_t)a4 withExtraArguments:;
+- (uint64_t)_registerUndoForOperation:(void *)operation withObjects:(uint64_t)objects withExtraArguments:;
 - (uint64_t)_retainedRegisteredObjects;
-- (uint64_t)_sendCommitEditingSelectorToTarget:(uint64_t)a3 sender:(uint64_t)a4 selector:(char)a5 flag:(uint64_t)a6 contextInfo:(int)a7 delayed:;
+- (uint64_t)_sendCommitEditingSelectorToTarget:(uint64_t)target sender:(uint64_t)sender selector:(char)selector flag:(uint64_t)flag contextInfo:(int)info delayed:;
 - (uint64_t)_setPersistentStoreCoordinator:(uint64_t)result;
 - (uint64_t)_startObservingUndoManagerNotifications;
 - (uint64_t)_stopObservingUndoManagerNotifications;
-- (uint64_t)_validateObjects:(int)a3 forOperation:(uint64_t *)a4 error:(int)a5 exhaustive:(int)a6 forSave:;
+- (uint64_t)_validateObjects:(int)objects forOperation:(uint64_t *)operation error:(int)error exhaustive:(int)exhaustive forSave:;
 - (uint64_t)lockObjectStore;
 - (uint64_t)unlockObjectStore;
 - (unsigned)_setParentContext:(unsigned __int8 *)result;
 - (void)_PFAutoreleasePoolReferenceQueueTrampoline;
 - (void)_advanceQueryGenerationForSave;
-- (void)_automaticallyMergeChangesFromContextDidSaveNotification:(id)a3;
-- (void)_clearChangedThisTransaction:(id)a3;
+- (void)_automaticallyMergeChangesFromContextDidSaveNotification:(id)notification;
+- (void)_clearChangedThisTransaction:(id)transaction;
 - (void)_clearOriginalSnapshotAndInitializeRec:(void *)result;
-- (void)_copyChildObject:(uint64_t)a1 toParentObject:(_BYTE *)a2 fromChildContext:(void *)a3;
-- (void)_coreMergeChangesFromDidSaveDictionary:(int)a3 usingObjectIDs:(uint64_t)a4 withClientQueryGeneration:;
-- (void)_createAndPostChangeNotification:(void *)a3 deletions:(void *)a4 updates:(void *)a5 refreshes:(void *)a6 deferrals:(int)a7 wasMerge:;
+- (void)_copyChildObject:(uint64_t)object toParentObject:(_BYTE *)parentObject fromChildContext:(void *)context;
+- (void)_coreMergeChangesFromDidSaveDictionary:(int)dictionary usingObjectIDs:(uint64_t)ds withClientQueryGeneration:;
+- (void)_createAndPostChangeNotification:(void *)notification deletions:(void *)deletions updates:(void *)updates refreshes:(void *)refreshes deferrals:(int)deferrals wasMerge:;
 - (void)_dealloc__;
 - (void)_didSaveChanges;
-- (void)_establishEventSnapshotsForObject:(uint64_t)a1;
-- (void)_forceInsertionForObject:(id)a3;
-- (void)_forceMoveInsertToUpdatedList:(uint64_t)a1;
-- (void)_forceRegisterLostFault:(uint64_t)a1;
-- (void)_forgetObject:(id)a3 propagateToObjectStore:(BOOL)a4 removeFromRegistry:(BOOL)a5;
-- (void)_informParentStoreNoLongerInterestedInObjectIDs:(uint64_t)a3 generation:;
-- (void)_insertObjectWithGlobalID:(void *)a3 globalID:;
-- (void)_managedObjectContextEditor:(id)a3 didCommit:(BOOL)a4 contextInfo:(id *)a5;
-- (void)_mergeChangesFromRemoteContextSave:(id)a3;
-- (void)_mergeChangesFromRemoteContextSave:(id)a3 presupposingQueryGeneration:(id)a4;
+- (void)_establishEventSnapshotsForObject:(uint64_t)object;
+- (void)_forceInsertionForObject:(id)object;
+- (void)_forceMoveInsertToUpdatedList:(uint64_t)list;
+- (void)_forceRegisterLostFault:(uint64_t)fault;
+- (void)_forgetObject:(id)object propagateToObjectStore:(BOOL)store removeFromRegistry:(BOOL)registry;
+- (void)_informParentStoreNoLongerInterestedInObjectIDs:(uint64_t)ds generation:;
+- (void)_insertObjectWithGlobalID:(void *)d globalID:;
+- (void)_managedObjectContextEditor:(id)editor didCommit:(BOOL)commit contextInfo:(id *)info;
+- (void)_mergeChangesFromRemoteContextSave:(id)save;
+- (void)_mergeChangesFromRemoteContextSave:(id)save presupposingQueryGeneration:(id)generation;
 - (void)_newUnchangedLockedObjects;
-- (void)_persistentStoreDidUpdateAdditionalRows:(void *)a1;
+- (void)_persistentStoreDidUpdateAdditionalRows:(void *)rows;
 - (void)_postRefreshedObjectsNotificationAndClearList;
-- (void)_prepareUnprocessedDeletionAfterRefresh:(_DWORD *)a1;
-- (void)_processChangedStoreConfigurationNotification:(id)a3;
-- (void)_processPendingInsertions:(id *)a1 withDeletions:(void *)a2 withUpdates:(void *)a3;
-- (void)_processPendingUpdates:(uint64_t)a1;
-- (void)_processRecentlyForgottenObjects:(void *)a1;
-- (void)_processReferenceQueue:(uint64_t)a1;
-- (void)_refaultObject:(id *)a1 globalID:(uint64_t)a2 BOOLean:(int)a3;
+- (void)_prepareUnprocessedDeletionAfterRefresh:(_DWORD *)refresh;
+- (void)_processChangedStoreConfigurationNotification:(id)notification;
+- (void)_processPendingInsertions:(id *)insertions withDeletions:(void *)deletions withUpdates:(void *)updates;
+- (void)_processPendingUpdates:(uint64_t)updates;
+- (void)_processRecentlyForgottenObjects:(void *)objects;
+- (void)_processReferenceQueue:(uint64_t)queue;
+- (void)_refaultObject:(id *)object globalID:(uint64_t)d BOOLean:(int)lean;
 - (void)_registerAsyncReferenceCallback;
-- (void)_registerObject:(void *)a3 withID:;
+- (void)_registerObject:(void *)object withID:;
 - (void)_resetAllChanges;
-- (void)_setAllowAncillaryEntities:(BOOL)a3;
-- (void)_setAllowsExpandedUserInfoKeys:(BOOL)a3;
-- (void)_setDisableDiscardEditing:(BOOL)a3;
-- (void)_setFaultingError:(id)a3;
-- (void)_setRetainsRegisteredObjects:(uint64_t)a1;
-- (void)_setUndoManager:(uint64_t)a1;
-- (void)_stopConflictDetectionForObject:(id)a3;
-- (void)_storeConfigurationChanged:(id)a3;
+- (void)_setAllowAncillaryEntities:(BOOL)entities;
+- (void)_setAllowsExpandedUserInfoKeys:(BOOL)keys;
+- (void)_setDisableDiscardEditing:(BOOL)editing;
+- (void)_setFaultingError:(id)error;
+- (void)_setRetainsRegisteredObjects:(uint64_t)objects;
+- (void)_setUndoManager:(uint64_t)manager;
+- (void)_stopConflictDetectionForObject:(id)object;
+- (void)_storeConfigurationChanged:(id)changed;
 - (void)_thereIsNoSadnessLikeTheDeathOfOptimism;
-- (void)_undoDeletions:(id)a3;
-- (void)_undoDeletionsMovedToUpdates:(id)a3;
-- (void)_undoInsertions:(id)a3;
-- (void)_undoManagerCheckpoint:(id)a3;
-- (void)_undoUpdates:(id)a3;
-- (void)_unlimitRequest:(void *)a1;
+- (void)_undoDeletions:(id)deletions;
+- (void)_undoDeletionsMovedToUpdates:(id)updates;
+- (void)_undoInsertions:(id)insertions;
+- (void)_undoManagerCheckpoint:(id)checkpoint;
+- (void)_undoUpdates:(id)updates;
+- (void)_unlimitRequest:(void *)request;
 - (void)_youcreatedanNSManagedObjectContextOnthemainthreadandillegallypassedittoabackgroundthread;
 - (void)assignObject:(id)object toPersistentStore:(NSPersistentStore *)store;
-- (void)commitEditingWithDelegate:(id)a3 didCommitSelector:(SEL)a4 contextInfo:(void *)a5;
+- (void)commitEditingWithDelegate:(id)delegate didCommitSelector:(SEL)selector contextInfo:(void *)info;
 - (void)dealloc;
 - (void)deleteObject:(NSManagedObject *)object;
 - (void)detectConflictsForObject:(NSManagedObject *)object;
 - (void)discardEditing;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)insertObject:(NSManagedObject *)object;
 - (void)lock;
-- (void)managedObjectContextDidRegisterObjectsWithIDs:(id)a3 generation:(id)a4;
-- (void)managedObjectContextDidUnregisterObjectsWithIDs:(id)a3 generation:(id)a4;
+- (void)managedObjectContextDidRegisterObjectsWithIDs:(id)ds generation:(id)generation;
+- (void)managedObjectContextDidUnregisterObjectsWithIDs:(id)ds generation:(id)generation;
 - (void)mergeChangesFromContextDidSaveNotification:(NSNotification *)notification;
-- (void)objectDidBeginEditing:(id)a3;
-- (void)objectDidEndEditing:(id)a3;
+- (void)objectDidBeginEditing:(id)editing;
+- (void)objectDidEndEditing:(id)editing;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
 - (void)performBlock:(void *)block;
 - (void)performBlockAndWait:(void *)block;
-- (void)performWithOptions:(unint64_t)a3 andBlock:(id)a4;
+- (void)performWithOptions:(unint64_t)options andBlock:(id)block;
 - (void)processPendingChanges;
 - (void)redo;
 - (void)refreshAllObjects;
@@ -185,13 +185,13 @@
 - (void)setPropagatesDeletesAtEndOfEvent:(BOOL)propagatesDeletesAtEndOfEvent;
 - (void)setRetainsRegisteredObjects:(BOOL)retainsRegisteredObjects;
 - (void)setShouldDeleteInaccessibleFaults:(BOOL)shouldDeleteInaccessibleFaults;
-- (void)setShouldPerformSecureOperation:(BOOL)a3;
-- (void)setShouldRefreshAfterSave:(BOOL)a3;
+- (void)setShouldPerformSecureOperation:(BOOL)operation;
+- (void)setShouldRefreshAfterSave:(BOOL)save;
 - (void)setStalenessInterval:(NSTimeInterval)stalenessInterval;
-- (void)setTrackSQLiteDatabaseStatistics:(BOOL)a3;
+- (void)setTrackSQLiteDatabaseStatistics:(BOOL)statistics;
 - (void)setTransactionAuthor:(NSString *)transactionAuthor;
 - (void)setUndoManager:(NSUndoManager *)undoManager;
-- (void)set_isSwiftBound:(BOOL)a3;
+- (void)set_isSwiftBound:(BOOL)bound;
 - (void)undo;
 - (void)unlock;
 @end
@@ -533,12 +533,12 @@ void __68__NSManagedObjectContext__PFAutoreleasePoolReferenceQueueTrampoline__bl
 
 - (void)_postRefreshedObjectsNotificationAndClearList
 {
-  if ([*(a1 + 112) count] || (v2 = *(a1 + 168), *(v2 + 88)) || *(v2 + 104))
+  if ([*(self + 112) count] || (v2 = *(self + 168), *(v2 + 88)) || *(v2 + 104))
   {
     v3 = objc_autoreleasePoolPush();
-    if ([*(a1 + 112) count])
+    if ([*(self + 112) count])
     {
-      v4 = [*(a1 + 112) copy];
+      v4 = [*(self + 112) copy];
     }
 
     else
@@ -546,10 +546,10 @@ void __68__NSManagedObjectContext__PFAutoreleasePoolReferenceQueueTrampoline__bl
       v4 = 0;
     }
 
-    v5 = *(*(a1 + 168) + 88);
-    [*(a1 + 112) removeAllObjects];
-    *(*(a1 + 168) + 88) = 0;
-    [(NSManagedObjectContext *)a1 _createAndPostChangeNotification:0 deletions:0 updates:v4 refreshes:v5 deferrals:*(*(a1 + 168) + 104) != 0 wasMerge:?];
+    v5 = *(*(self + 168) + 88);
+    [*(self + 112) removeAllObjects];
+    *(*(self + 168) + 88) = 0;
+    [(NSManagedObjectContext *)self _createAndPostChangeNotification:0 deletions:0 updates:v4 refreshes:v5 deferrals:*(*(self + 168) + 104) != 0 wasMerge:?];
 
     objc_autoreleasePoolPop(v3);
   }
@@ -557,18 +557,18 @@ void __68__NSManagedObjectContext__PFAutoreleasePoolReferenceQueueTrampoline__bl
 
 - (void)_registerAsyncReferenceCallback
 {
-  if (a1)
+  if (self)
   {
     if (_PF_shouldAsyncProcessReferenceQueue)
     {
-      if (*(a1 + 24))
+      if (*(self + 24))
       {
-        if (!*(a1 + 16) && ([a1 _isDeallocating] & 1) == 0 && !atomic_fetch_add((a1 + 51), 1u))
+        if (!*(self + 16) && ([self _isDeallocating] & 1) == 0 && !atomic_fetch_add((self + 51), 1u))
         {
-          v2 = *(a1 + 152);
+          v2 = *(self + 152);
           if (v2)
           {
-            v3 = [[_PFWeakReference alloc] initWithObject:a1];
+            v3 = [[_PFWeakReference alloc] initWithObject:self];
             if (v3)
             {
               v4 = v3;
@@ -579,7 +579,7 @@ void __68__NSManagedObjectContext__PFAutoreleasePoolReferenceQueueTrampoline__bl
               v5[3] = &unk_1E6EC2720;
               v5[4] = v4;
               v5[5] = v2;
-              [a1 performWithOptions:24577 andBlock:v5];
+              [self performWithOptions:24577 andBlock:v5];
             }
           }
         }
@@ -590,14 +590,14 @@ void __68__NSManagedObjectContext__PFAutoreleasePoolReferenceQueueTrampoline__bl
 
 - (NSSaveChangesRequest)_newSaveRequestForCurrentState
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if ([*(a1 + 80) count])
+  if ([*(self + 80) count])
   {
-    v2 = *(a1 + 80);
+    v2 = *(self + 80);
   }
 
   else
@@ -605,9 +605,9 @@ void __68__NSManagedObjectContext__PFAutoreleasePoolReferenceQueueTrampoline__bl
     v2 = 0;
   }
 
-  if ([*(a1 + 96) count])
+  if ([*(self + 96) count])
   {
-    v3 = *(a1 + 96);
+    v3 = *(self + 96);
   }
 
   else
@@ -615,9 +615,9 @@ void __68__NSManagedObjectContext__PFAutoreleasePoolReferenceQueueTrampoline__bl
     v3 = 0;
   }
 
-  if ([*(a1 + 88) count])
+  if ([*(self + 88) count])
   {
-    v4 = *(a1 + 88);
+    v4 = *(self + 88);
   }
 
   else
@@ -625,12 +625,12 @@ void __68__NSManagedObjectContext__PFAutoreleasePoolReferenceQueueTrampoline__bl
     v4 = 0;
   }
 
-  if ([*(a1 + 104) count])
+  if ([*(self + 104) count])
   {
-    v5 = [(NSManagedObjectContext *)a1 _newUnchangedLockedObjects];
-    if ([v5 count])
+    _newUnchangedLockedObjects = [(NSManagedObjectContext *)self _newUnchangedLockedObjects];
+    if ([_newUnchangedLockedObjects count])
     {
-      v6 = v5;
+      v6 = _newUnchangedLockedObjects;
     }
 
     else
@@ -642,17 +642,17 @@ void __68__NSManagedObjectContext__PFAutoreleasePoolReferenceQueueTrampoline__bl
   else
   {
     v6 = 0;
-    v5 = 0;
+    _newUnchangedLockedObjects = 0;
   }
 
   v7 = [[NSSaveChangesRequest alloc] initWithInsertedObjects:v2 updatedObjects:v3 deletedObjects:v4 lockedObjects:v6];
   v8 = v7;
-  if (*(a1 + 43))
+  if (*(self + 43))
   {
     [(NSSaveChangesRequest *)v7 _setSecureOperation:1];
   }
 
-  if (v5)
+  if (_newUnchangedLockedObjects)
   {
   }
 
@@ -693,18 +693,18 @@ void __68__NSManagedObjectContext__PFAutoreleasePoolReferenceQueueTrampoline__bl
     do
     {
       v12 = v8[v10];
-      v13 = [v12 objectID];
+      objectID = [v12 objectID];
       v14 = v12;
-      v15 = [v13 isTemporaryID];
-      if (v12 && !(((*(v12 + 17) & 2) == 0) | v15 & 1))
+      isTemporaryID = [objectID isTemporaryID];
+      if (v12 && !(((*(v12 + 17) & 2) == 0) | isTemporaryID & 1))
       {
-        [v4 addObject:v13];
+        [v4 addObject:objectID];
         *(v12 + 16) &= ~0x200u;
       }
 
-      else if (v15)
+      else if (isTemporaryID)
       {
-        [v5 addObject:v13];
+        [v5 addObject:objectID];
       }
 
       if (v12)
@@ -793,7 +793,7 @@ void __68__NSManagedObjectContext__PFAutoreleasePoolReferenceQueueTrampoline__bl
 - (uint64_t)_clearUnprocessedUpdates
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = [*(a1 + 56) count];
+  v2 = [*(self + 56) count];
   v3 = v2;
   if (v2 <= 1)
   {
@@ -819,13 +819,13 @@ void __68__NSManagedObjectContext__PFAutoreleasePoolReferenceQueueTrampoline__bl
   if (v2 >= 0x201)
   {
     v6 = NSAllocateScannedUncollectable();
-    [*(a1 + 56) getObjects:v6];
+    [*(self + 56) getObjects:v6];
   }
 
   else
   {
     bzero(v11 - ((8 * v5 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v4);
-    [*(a1 + 56) getObjects:v6];
+    [*(self + 56) getObjects:v6];
     if (!v3)
     {
       goto LABEL_17;
@@ -851,7 +851,7 @@ void __68__NSManagedObjectContext__PFAutoreleasePoolReferenceQueueTrampoline__bl
   }
 
 LABEL_17:
-  result = [*(a1 + 56) removeAllObjects];
+  result = [*(self + 56) removeAllObjects];
   v10 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -859,7 +859,7 @@ LABEL_17:
 - (uint64_t)_clearUpdates
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = [*(a1 + 96) count];
+  v2 = [*(self + 96) count];
   v3 = v2;
   if (v2 <= 1)
   {
@@ -885,13 +885,13 @@ LABEL_17:
   if (v2 >= 0x201)
   {
     v6 = NSAllocateScannedUncollectable();
-    [*(a1 + 96) getObjects:v6];
+    [*(self + 96) getObjects:v6];
   }
 
   else
   {
     bzero(v11 - ((8 * v5 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v4);
-    [*(a1 + 96) getObjects:v6];
+    [*(self + 96) getObjects:v6];
     if (!v3)
     {
       goto LABEL_17;
@@ -917,7 +917,7 @@ LABEL_17:
   }
 
 LABEL_17:
-  result = [*(a1 + 96) removeAllObjects];
+  result = [*(self + 96) removeAllObjects];
   v10 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -925,7 +925,7 @@ LABEL_17:
 - (uint64_t)_clearUnprocessedInsertions
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = [*(a1 + 72) count];
+  v2 = [*(self + 72) count];
   v3 = v2;
   if (v2 <= 1)
   {
@@ -951,13 +951,13 @@ LABEL_17:
   if (v2 >= 0x201)
   {
     v6 = NSAllocateScannedUncollectable();
-    [*(a1 + 72) getObjects:v6];
+    [*(self + 72) getObjects:v6];
   }
 
   else
   {
     bzero(v11 - ((8 * v5 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v4);
-    [*(a1 + 72) getObjects:v6];
+    [*(self + 72) getObjects:v6];
     if (!v3)
     {
       goto LABEL_17;
@@ -983,7 +983,7 @@ LABEL_17:
   }
 
 LABEL_17:
-  result = [*(a1 + 72) removeAllObjects];
+  result = [*(self + 72) removeAllObjects];
   v10 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -991,7 +991,7 @@ LABEL_17:
 - (uint64_t)_clearInsertions
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = [*(a1 + 80) count];
+  v2 = [*(self + 80) count];
   v3 = v2;
   if (v2 <= 1)
   {
@@ -1017,13 +1017,13 @@ LABEL_17:
   if (v2 >= 0x201)
   {
     v6 = NSAllocateScannedUncollectable();
-    [*(a1 + 80) getObjects:v6];
+    [*(self + 80) getObjects:v6];
   }
 
   else
   {
     bzero(v11 - ((8 * v5 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v4);
-    [*(a1 + 80) getObjects:v6];
+    [*(self + 80) getObjects:v6];
     if (!v3)
     {
       goto LABEL_17;
@@ -1049,7 +1049,7 @@ LABEL_17:
   }
 
 LABEL_17:
-  result = [*(a1 + 80) removeAllObjects];
+  result = [*(self + 80) removeAllObjects];
   v10 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -1057,7 +1057,7 @@ LABEL_17:
 - (uint64_t)_clearUnprocessedDeletions
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = [*(a1 + 64) count];
+  v2 = [*(self + 64) count];
   v3 = v2;
   if (v2 <= 1)
   {
@@ -1083,13 +1083,13 @@ LABEL_17:
   if (v2 >= 0x201)
   {
     v6 = NSAllocateScannedUncollectable();
-    [*(a1 + 64) getObjects:v6];
+    [*(self + 64) getObjects:v6];
   }
 
   else
   {
     bzero(v11 - ((8 * v5 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v4);
-    [*(a1 + 64) getObjects:v6];
+    [*(self + 64) getObjects:v6];
     if (!v3)
     {
       goto LABEL_17;
@@ -1115,7 +1115,7 @@ LABEL_17:
   }
 
 LABEL_17:
-  result = [*(a1 + 64) removeAllObjects];
+  result = [*(self + 64) removeAllObjects];
   v10 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -1123,7 +1123,7 @@ LABEL_17:
 - (uint64_t)_clearDeletions
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v2 = [*(a1 + 88) count];
+  v2 = [*(self + 88) count];
   v3 = v2;
   if (v2 <= 1)
   {
@@ -1149,13 +1149,13 @@ LABEL_17:
   if (v2 >= 0x201)
   {
     v6 = NSAllocateScannedUncollectable();
-    [*(a1 + 88) getObjects:v6];
+    [*(self + 88) getObjects:v6];
   }
 
   else
   {
     bzero(v11 - ((8 * v5 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v4);
-    [*(a1 + 88) getObjects:v6];
+    [*(self + 88) getObjects:v6];
     if (!v3)
     {
       goto LABEL_17;
@@ -1181,7 +1181,7 @@ LABEL_17:
   }
 
 LABEL_17:
-  result = [*(a1 + 88) removeAllObjects];
+  result = [*(self + 88) removeAllObjects];
   v10 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -1227,13 +1227,13 @@ LABEL_17:
 - (void)_didSaveChanges
 {
   v111 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_111;
   }
 
   v82 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:5];
-  v2 = *(*(a1 + 168) + 136);
+  v2 = *(*(self + 168) + 136);
   if ([v2 count])
   {
     v104 = 0u;
@@ -1254,29 +1254,29 @@ LABEL_17:
           }
 
           v6 = *(*(&v102 + 1) + 8 * i);
-          v7 = [a1 objectRegisteredForID:{objc_msgSend(v6, "firstObject")}];
+          v7 = [self objectRegisteredForID:{objc_msgSend(v6, "firstObject")}];
           v8 = v7;
           if (v7)
           {
-            v9 = [v7 entity];
+            entity = [v7 entity];
             v10 = [v6 objectAtIndex:1];
-            if (v9)
+            if (entity)
             {
-              if ([objc_msgSend(v9 "propertiesByName")])
+              if ([objc_msgSend(entity "propertiesByName")])
               {
                 [v6 lastObject];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v11 = 0;
+                  lastObject = 0;
                 }
 
                 else
                 {
-                  v11 = [v6 lastObject];
+                  lastObject = [v6 lastObject];
                 }
 
-                [v8 setValue:v11 forKey:{objc_msgSend(v6, "objectAtIndex:", 1)}];
+                [v8 setValue:lastObject forKey:{objc_msgSend(v6, "objectAtIndex:", 1)}];
               }
             }
           }
@@ -1288,10 +1288,10 @@ LABEL_17:
       while (v3);
     }
 
-    *(a1 + 40) &= 0xFFFFFCFF;
+    *(self + 40) &= 0xFFFFFCFF;
   }
 
-  v12 = *(*(a1 + 168) + 144);
+  v12 = *(*(self + 168) + 144);
   if ([v12 count])
   {
     v100 = 0u;
@@ -1312,29 +1312,29 @@ LABEL_17:
           }
 
           v16 = *(*(&v98 + 1) + 8 * j);
-          v17 = [a1 objectRegisteredForID:{objc_msgSend(v16, "firstObject")}];
+          v17 = [self objectRegisteredForID:{objc_msgSend(v16, "firstObject")}];
           v18 = v17;
           if (v17)
           {
-            v19 = [v17 entity];
+            entity2 = [v17 entity];
             v20 = [v16 objectAtIndex:1];
-            if (v19)
+            if (entity2)
             {
-              if ([objc_msgSend(v19 "propertiesByName")])
+              if ([objc_msgSend(entity2 "propertiesByName")])
               {
                 [v16 lastObject];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v21 = 0;
+                  lastObject2 = 0;
                 }
 
                 else
                 {
-                  v21 = [v16 lastObject];
+                  lastObject2 = [v16 lastObject];
                 }
 
-                [v18 setValue:v21 forKey:{objc_msgSend(v16, "objectAtIndex:", 1)}];
+                [v18 setValue:lastObject2 forKey:{objc_msgSend(v16, "objectAtIndex:", 1)}];
               }
             }
           }
@@ -1346,10 +1346,10 @@ LABEL_17:
       while (v13);
     }
 
-    *(a1 + 40) &= 0xFFFFFCFF;
+    *(self + 40) &= 0xFFFFFCFF;
   }
 
-  v22 = [*(a1 + 80) copy];
+  v22 = [*(self + 80) copy];
   v85 = [v22 count];
   v79 = v77;
   MEMORY[0x1EEE9AC00](v85);
@@ -1357,13 +1357,13 @@ LABEL_17:
   if (v26 >= 0x201)
   {
     v84 = NSAllocateScannedUncollectable();
-    [*(a1 + 80) getObjects:v84];
+    [*(self + 80) getObjects:v84];
   }
 
   else
   {
     bzero(&v77[-v24], 8 * v23);
-    v27 = *(a1 + 80);
+    v27 = *(self + 80);
     v84 = v25;
     [v27 getObjects:v25];
     if (!v85)
@@ -1387,20 +1387,20 @@ LABEL_17:
 LABEL_41:
   [v82 setObject:v22 forKey:@"inserted"];
 
-  v30 = [*(a1 + 96) count];
-  v31 = [*(a1 + 96) copy];
+  v30 = [*(self + 96) count];
+  v31 = [*(self + 96) copy];
   MEMORY[0x1EEE9AC00](v31);
   v34 = &v77[-v33];
   if (v30 >= 0x201)
   {
     v83 = NSAllocateScannedUncollectable();
-    [*(a1 + 96) getObjects:v83];
+    [*(self + 96) getObjects:v83];
   }
 
   else
   {
     bzero(&v77[-v33], 8 * v32);
-    v35 = *(a1 + 96);
+    v35 = *(self + 96);
     v83 = v34;
     [v35 getObjects:v34];
     if (!v30)
@@ -1421,7 +1421,7 @@ LABEL_41:
 LABEL_48:
   [v82 setObject:v31 forKey:@"updated"];
 
-  v38 = [*(a1 + 88) count];
+  v38 = [*(self + 88) count];
   v39 = MEMORY[0x1EEE9AC00](v38);
   v42 = &v77[-v41];
   if (v39 >= 0x201)
@@ -1429,7 +1429,7 @@ LABEL_48:
     v42 = NSAllocateScannedUncollectable();
 LABEL_52:
     v81 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v38];
-    [objc_msgSend(*(a1 + 88) "allObjects")];
+    [objc_msgSend(*(self + 88) "allObjects")];
     v43 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:v42 count:v38];
     [v82 setObject:v43 forKey:@"deleted"];
 
@@ -1451,24 +1451,24 @@ LABEL_52:
 
   v81 = 0;
 LABEL_54:
-  [(NSManagedObjectContext *)a1 _clearInsertions];
-  [(NSManagedObjectContext *)a1 _clearUnprocessedInsertions];
-  [(NSManagedObjectContext *)a1 _clearDeletions];
-  [(NSManagedObjectContext *)a1 _clearUnprocessedDeletions];
-  [(NSManagedObjectContext *)a1 _clearUpdates];
-  [(NSManagedObjectContext *)a1 _clearUnprocessedUpdates];
-  v45 = *(a1 + 40);
-  ++*(a1 + 44);
-  *(a1 + 40) = v45 & 0xFFFFFFDF;
-  [*(a1 + 104) removeAllObjects];
-  [*(a1 + 112) removeAllObjects];
+  [(NSManagedObjectContext *)self _clearInsertions];
+  [(NSManagedObjectContext *)self _clearUnprocessedInsertions];
+  [(NSManagedObjectContext *)self _clearDeletions];
+  [(NSManagedObjectContext *)self _clearUnprocessedDeletions];
+  [(NSManagedObjectContext *)self _clearUpdates];
+  [(NSManagedObjectContext *)self _clearUnprocessedUpdates];
+  v45 = *(self + 40);
+  ++*(self + 44);
+  *(self + 40) = v45 & 0xFFFFFFDF;
+  [*(self + 104) removeAllObjects];
+  [*(self + 112) removeAllObjects];
 
-  **(a1 + 168) = 0;
-  if ((*(a1 + 41) & 4) != 0)
+  **(self + 168) = 0;
+  if ((*(self + 41) & 4) != 0)
   {
-    [a1 willChangeValueForKey:@"hasChanges"];
-    *(a1 + 40) &= ~0x400u;
-    [a1 didChangeValueForKey:@"hasChanges"];
+    [self willChangeValueForKey:@"hasChanges"];
+    *(self + 40) &= ~0x400u;
+    [self didChangeValueForKey:@"hasChanges"];
   }
 
   v46 = [v82 objectForKey:@"inserted"];
@@ -1560,16 +1560,16 @@ LABEL_54:
     while (v59);
   }
 
-  if ([*(*(a1 + 168) + 96) _isEnabled])
+  if ([*(*(self + 168) + 96) _isEnabled])
   {
-    v62 = *(*(a1 + 168) + 96);
+    v62 = *(*(self + 168) + 96);
     if (v62 != +[NSQueryGenerationToken currentQueryGenerationToken])
     {
-      [v82 setValue:*(*(a1 + 168) + 96) forKey:@"newQueryGeneration"];
+      [v82 setValue:*(*(self + 168) + 96) forKey:@"newQueryGeneration"];
     }
   }
 
-  v63 = *(*(a1 + 168) + 120);
+  v63 = *(*(self + 168) + 120);
   if (v63)
   {
     [v82 setValue:v63 forKey:@"newChangeToken"];
@@ -1577,13 +1577,13 @@ LABEL_54:
 
   if (byte_1ED4BEEC6 == 1)
   {
-    v64 = [_PFWeakReference weakReferenceWithObject:a1];
+    v64 = [_PFWeakReference weakReferenceWithObject:self];
     [v82 setValue:v64 forKey:@"managedObjectContext"];
   }
 
-  if (*(a1 + 42))
+  if (*(self + 42))
   {
-    [(NSManagedObjectContext *)a1 _postContextDidSaveNotificationWithUserInfo:v82];
+    [(NSManagedObjectContext *)self _postContextDidSaveNotificationWithUserInfo:v82];
   }
 
   if ((v80 & 1) == 0)
@@ -1627,13 +1627,13 @@ LABEL_54:
     for (jj = 0; jj != v38; ++jj)
     {
       v70 = *&v42[8 * jj];
-      v71 = [v70 objectID];
+      objectID = [v70 objectID];
       if (v70)
       {
         if ((v70[17] & 2) != 0)
         {
-          v72 = v71;
-          if (([v71 isTemporaryID] & 1) == 0)
+          v72 = objectID;
+          if (([objectID isTemporaryID] & 1) == 0)
           {
             [v81 addObject:v72];
           }
@@ -1650,8 +1650,8 @@ LABEL_54:
         v73 = 0;
       }
 
-      [(NSFaultHandler *)v73 turnObject:v70 intoFaultWithContext:a1];
-      [a1 _forgetObject:v70 propagateToObjectStore:0 removeFromRegistry:1];
+      [(NSFaultHandler *)v73 turnObject:v70 intoFaultWithContext:self];
+      [self _forgetObject:v70 propagateToObjectStore:0 removeFromRegistry:1];
     }
 
     if (v38 >= 0x201)
@@ -1662,11 +1662,11 @@ LABEL_54:
 
   if ([v81 count])
   {
-    [(NSManagedObjectContext *)a1 lockObjectStore];
-    v74 = *(a1 + 32);
-    v75 = [a1 _queryGenerationToken];
-    [v74 managedObjectContextDidUnregisterObjectsWithIDs:v81 generation:v75];
-    [(NSManagedObjectContext *)a1 unlockObjectStore];
+    [(NSManagedObjectContext *)self lockObjectStore];
+    v74 = *(self + 32);
+    _queryGenerationToken = [self _queryGenerationToken];
+    [v74 managedObjectContextDidUnregisterObjectsWithIDs:v81 generation:_queryGenerationToken];
+    [(NSManagedObjectContext *)self unlockObjectStore];
   }
 
 LABEL_111:
@@ -1791,15 +1791,15 @@ LABEL_111:
 
 - (void)_dealloc__
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if (!*(a1 + 168))
+  if (!*(self + 168))
   {
-    *(a1 + 168) = PF_CALLOC_OBJECT_ARRAY(22);
-    if (!*(a1 + 136))
+    *(self + 168) = PF_CALLOC_OBJECT_ARRAY(22);
+    if (!*(self + 136))
     {
       v2 = 0x1E696AE68;
       if (_PF_Threading_Debugging_level <= 0)
@@ -1807,7 +1807,7 @@ LABEL_111:
         v2 = off_1E6EC0C58;
       }
 
-      *(a1 + 136) = objc_alloc_init(*v2);
+      *(self + 136) = objc_alloc_init(*v2);
     }
 
     if (!_PF_Threading_Debugging_level)
@@ -1821,21 +1821,21 @@ LABEL_111:
       v12 = malloc_default_zone();
     }
 
-    *(*(a1 + 168) + 56) = malloc_type_zone_malloc(v12, 0x30uLL, 0x80040B8603338uLL);
+    *(*(self + 168) + 56) = malloc_type_zone_malloc(v12, 0x30uLL, 0x80040B8603338uLL);
     v13 = pthread_self();
-    **(*(a1 + 168) + 56) = v13;
-    *(*(*(a1 + 168) + 56) + 8) = v13;
-    *(*(*(a1 + 168) + 56) + 16) = 0;
-    *(*(*(a1 + 168) + 56) + 24) = 0;
-    *(*(*(a1 + 168) + 56) + 32) = objc_alloc_init(MEMORY[0x1E695DF70]);
-    *(*(*(a1 + 168) + 56) + 40) = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v14 = atomic_load((a1 + 49));
+    **(*(self + 168) + 56) = v13;
+    *(*(*(self + 168) + 56) + 8) = v13;
+    *(*(*(self + 168) + 56) + 16) = 0;
+    *(*(*(self + 168) + 56) + 24) = 0;
+    *(*(*(self + 168) + 56) + 32) = objc_alloc_init(MEMORY[0x1E695DF70]);
+    *(*(*(self + 168) + 56) + 40) = objc_alloc_init(MEMORY[0x1E695DF70]);
+    v14 = atomic_load((self + 49));
     if ((v14 & 1) == 0)
     {
-      v15 = [MEMORY[0x1E696ADC8] currentQueue];
-      if ([v15 maxConcurrentOperationCount] == 1)
+      currentQueue = [MEMORY[0x1E696ADC8] currentQueue];
+      if ([currentQueue maxConcurrentOperationCount] == 1)
       {
-        v16 = v15;
+        v16 = currentQueue;
       }
 
       else
@@ -1843,7 +1843,7 @@ LABEL_111:
         v16 = 0;
       }
 
-      *(*(*(a1 + 168) + 56) + 16) = v16;
+      *(*(*(self + 168) + 56) + 16) = v16;
       current_queue = dispatch_get_current_queue();
       if (current_queue == dispatch_get_global_queue(0, 0))
       {
@@ -1855,99 +1855,99 @@ LABEL_111:
         v18 = current_queue;
       }
 
-      *(*(*(a1 + 168) + 56) + 24) = v18;
+      *(*(*(self + 168) + 56) + 24) = v18;
     }
   }
 
   if (_PF_Threading_Debugging_level)
   {
-    *(*(*(a1 + 168) + 56) + 8) = pthread_self();
+    *(*(*(self + 168) + 56) + 8) = pthread_self();
     if (_PF_Threading_Debugging_level)
     {
-      _PFAssertSafeMultiThreadedAccess_impl(a1, sel__dealloc__);
+      _PFAssertSafeMultiThreadedAccess_impl(self, sel__dealloc__);
     }
   }
 
 LABEL_11:
-  v3 = *(a1 + 24);
-  if (!v3 || (v4 = atomic_load((a1 + 49)), (v4 & 1) != 0))
+  v3 = *(self + 24);
+  if (!v3 || (v4 = atomic_load((self + 49)), (v4 & 1) != 0))
   {
-    [(_PFManagedObjectReferenceQueue *)*(a1 + 152) _unregisterRunloopObservers];
+    [(_PFManagedObjectReferenceQueue *)*(self + 152) _unregisterRunloopObservers];
   }
 
-  if ((*(a1 + 41) & 4) != 0)
+  if ((*(self + 41) & 4) != 0)
   {
-    [a1 willChangeValueForKey:@"hasChanges"];
-    *(a1 + 40) &= ~0x400u;
-    [a1 didChangeValueForKey:@"hasChanges"];
+    [self willChangeValueForKey:@"hasChanges"];
+    *(self + 40) &= ~0x400u;
+    [self didChangeValueForKey:@"hasChanges"];
   }
 
-  if (*(a1 + 16))
+  if (*(self + 16))
   {
-    v5 = *(a1 + 168);
+    v5 = *(self + 168);
     if (v5)
     {
       if (v5[7])
       {
         PF_FREE_OBJECT_ARRAY(v5[7]);
-        *(*(a1 + 168) + 56) = 0;
-        v5 = *(a1 + 168);
+        *(*(self + 168) + 56) = 0;
+        v5 = *(self + 168);
       }
 
       PF_FREE_OBJECT_ARRAY(v5);
-      *(a1 + 168) = 0;
+      *(self + 168) = 0;
     }
 
-    v6 = *(a1 + 136);
+    v6 = *(self + 136);
     if (v6)
     {
 
-      *(a1 + 136) = 0;
+      *(self + 136) = 0;
     }
   }
 
   else
   {
-    *(a1 + 16) = 1;
-    if (*(a1 + 168))
+    *(self + 16) = 1;
+    if (*(self + 168))
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [(NSManagedObjectContext *)a1 _stopObservingUndoManagerNotifications];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [(NSManagedObjectContext *)self _stopObservingUndoManagerNotifications];
 
-      *(*(a1 + 168) + 40) = 0;
-      v8 = [a1 persistentStoreCoordinator];
-      if (v8)
+      *(*(self + 168) + 40) = 0;
+      persistentStoreCoordinator = [self persistentStoreCoordinator];
+      if (persistentStoreCoordinator)
       {
-        [v7 removeObserver:a1 name:@"_NSPersistentStoreCoordinatorStoresDidChangePrivateNotification" object:v8];
+        [defaultCenter removeObserver:self name:@"_NSPersistentStoreCoordinatorStoresDidChangePrivateNotification" object:persistentStoreCoordinator];
       }
 
-      if ((*(a1 + 42) & 0x40) != 0 && *(a1 + 32))
+      if ((*(self + 42) & 0x40) != 0 && *(self + 32))
       {
         [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
       }
     }
 
-    v9 = *(*(a1 + 168) + 72);
+    v9 = *(*(self + 168) + 72);
     if (v9)
     {
 
-      *(*(a1 + 168) + 72) = 0;
+      *(*(self + 168) + 72) = 0;
     }
 
-    Count = _PFCMT_GetCount(*(a1 + 120));
+    Count = _PFCMT_GetCount(*(self + 120));
     if (v3 || Count < 0x12C)
     {
-      [NSManagedObjectContext _dispose:a1];
+      [NSManagedObjectContext _dispose:self];
       if (!v3)
       {
 
-        _PFDeallocateObject(a1);
+        _PFDeallocateObject(self);
       }
     }
 
     else
     {
-      v11 = [[_PFTask alloc] initWithFunction:_deallocateContextBackgroundThread withArgument:a1 andPriority:0];
+      v11 = [[_PFTask alloc] initWithFunction:_deallocateContextBackgroundThread withArgument:self andPriority:0];
       if (v11)
       {
       }
@@ -1960,8 +1960,8 @@ LABEL_11:
   if (*(*(result + 168) + 40))
   {
     v1 = result;
-    v2 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v2 removeObserver:v1 name:*MEMORY[0x1E696AA10] object:*(*(v1 + 168) + 40)];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:v1 name:*MEMORY[0x1E696AA10] object:*(*(v1 + 168) + 40)];
     v3 = *(*(v1 + 168) + 40);
 
     return [v3 removeAllActionsWithTarget:v1];
@@ -2003,33 +2003,33 @@ LABEL_11:
     v4 = [_PFRoutines stringValueForOverride:?];
     if ([v4 length])
     {
-      v5 = [v4 intValue];
+      intValue = [v4 intValue];
     }
 
     else
     {
-      v5 = -1;
+      intValue = -1;
     }
 
     v6 = [_PFRoutines stringValueForOverride:?];
     if ([v6 length])
     {
-      v7 = [v6 intValue];
+      intValue2 = [v6 intValue];
     }
 
     else
     {
-      v7 = -1;
+      intValue2 = -1;
     }
 
-    if ((v5 & 0x80000000) == 0)
+    if ((intValue & 0x80000000) == 0)
     {
-      _pflogging_enable_oslog = v5;
+      _pflogging_enable_oslog = intValue;
     }
 
-    if ((v7 & 0x80000000) == 0)
+    if ((intValue2 & 0x80000000) == 0)
     {
-      _pflogging_enable_stderr = v7;
+      _pflogging_enable_stderr = intValue2;
     }
 
     byte_1ED4BEA2A = HIBYTE(dword_1ED4BEEC0);
@@ -2207,7 +2207,7 @@ id __46__NSManagedObjectContext_queryGenerationToken__block_invoke(uint64_t a1)
   v7 = 3221225472;
   v8 = __46__NSManagedObjectContext_queryGenerationToken__block_invoke;
   v9 = &unk_1E6EC1860;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   if (self->_dispatchQueue)
   {
@@ -2219,9 +2219,9 @@ id __46__NSManagedObjectContext_queryGenerationToken__block_invoke(uint64_t a1)
     *(v11[1] + 40) = [(NSManagedObjectContext *)self _queryGenerationToken:v6];
   }
 
-  v2 = [v13[5] _isEnabled];
+  _isEnabled = [v13[5] _isEnabled];
   v3 = v13[5];
-  if ((v2 & 1) == 0)
+  if ((_isEnabled & 1) == 0)
   {
 
     v3 = 0;
@@ -2270,7 +2270,7 @@ id __46__NSManagedObjectContext_queryGenerationToken__block_invoke(uint64_t a1)
   }
 
   [(NSManagedObjectContext *)self discardEditing];
-  v3 = [(NSManagedObjectContext *)self propagatesDeletesAtEndOfEvent];
+  propagatesDeletesAtEndOfEvent = [(NSManagedObjectContext *)self propagatesDeletesAtEndOfEvent];
   [(NSManagedObjectContext *)self setPropagatesDeletesAtEndOfEvent:0];
   [(NSManagedObjectContext *)self processPendingChanges];
 
@@ -2334,42 +2334,42 @@ id __46__NSManagedObjectContext_queryGenerationToken__block_invoke(uint64_t a1)
       }
     }
 
-    v15 = [(NSMutableSet *)self->_changedObjects allObjects];
-    v16 = [(NSMutableSet *)self->_insertedObjects allObjects];
-    v17 = [v16 count];
+    allObjects = [(NSMutableSet *)self->_changedObjects allObjects];
+    allObjects2 = [(NSMutableSet *)self->_insertedObjects allObjects];
+    v17 = [allObjects2 count];
     if (v17)
     {
       for (j = 0; j != v17; ++j)
       {
-        -[NSManagedObjectContext deleteObject:](self, "deleteObject:", [v16 objectAtIndex:j]);
+        -[NSManagedObjectContext deleteObject:](self, "deleteObject:", [allObjects2 objectAtIndex:j]);
       }
     }
 
-    v19 = [(NSMutableSet *)self->_deletedObjects allObjects];
-    v20 = [v19 count];
+    allObjects3 = [(NSMutableSet *)self->_deletedObjects allObjects];
+    v20 = [allObjects3 count];
     if (v20)
     {
       for (k = 0; k != v20; ++k)
       {
-        -[NSManagedObjectContext insertObject:](self, "insertObject:", [v19 objectAtIndex:k]);
+        -[NSManagedObjectContext insertObject:](self, "insertObject:", [allObjects3 objectAtIndex:k]);
       }
     }
 
-    if ([v15 count])
+    if ([allObjects count])
     {
-      v22 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v15];
+      v22 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:allObjects];
       [v5 setObject:v22 forKey:@"updated"];
     }
 
-    if ([v16 count])
+    if ([allObjects2 count])
     {
-      v23 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v16];
+      v23 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:allObjects2];
       [v5 setObject:v23 forKey:@"deleted"];
     }
 
-    if ([v19 count])
+    if ([allObjects3 count])
     {
-      v24 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v19];
+      v24 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:allObjects3];
       [v5 setObject:v24 forKey:@"inserted"];
     }
 
@@ -2387,7 +2387,7 @@ id __46__NSManagedObjectContext_queryGenerationToken__block_invoke(uint64_t a1)
     [v4 drain];
     [(NSManagedObjectContext *)self processPendingChanges];
     [(NSManagedObjectContext *)self _resetAllChanges];
-    [(NSManagedObjectContext *)self setPropagatesDeletesAtEndOfEvent:v3];
+    [(NSManagedObjectContext *)self setPropagatesDeletesAtEndOfEvent:propagatesDeletesAtEndOfEvent];
     v26 = *MEMORY[0x1E69E9840];
   }
 
@@ -2395,7 +2395,7 @@ id __46__NSManagedObjectContext_queryGenerationToken__block_invoke(uint64_t a1)
   {
     v27 = *MEMORY[0x1E69E9840];
 
-    [(NSManagedObjectContext *)self setPropagatesDeletesAtEndOfEvent:v3];
+    [(NSManagedObjectContext *)self setPropagatesDeletesAtEndOfEvent:propagatesDeletesAtEndOfEvent];
   }
 }
 
@@ -2421,7 +2421,7 @@ id __46__NSManagedObjectContext_queryGenerationToken__block_invoke(uint64_t a1)
   v5 = 3221225472;
   v6 = __43__NSManagedObjectContext_transactionAuthor__block_invoke;
   v7 = &unk_1E6EC1860;
-  v8 = self;
+  selfCopy = self;
   v9 = &v10;
   if (self->_dispatchQueue)
   {
@@ -2549,23 +2549,23 @@ uint64_t __30__NSManagedObjectContext_name__block_invoke(uint64_t a1)
 LABEL_14:
       if (v5)
       {
-        LOBYTE(v7) = 1;
+        LOBYTE(tryLock) = 1;
         goto LABEL_28;
       }
 
 LABEL_16:
       v8 = 0;
       v9 = 0;
-      v10 = self;
+      selfCopy = self;
       do
       {
-        v11 = v10 == v3;
-        if (v10 == v3)
+        v11 = selfCopy == v3;
+        if (selfCopy == v3)
         {
           v9 = 1;
         }
 
-        if (v10 == v8)
+        if (selfCopy == v8)
         {
           v11 = 1;
         }
@@ -2577,27 +2577,27 @@ LABEL_16:
 
         if (!v8)
         {
-          v8 = v10;
+          v8 = selfCopy;
         }
 
-        v10 = atomic_load(&v10->_queueOwner);
+        selfCopy = atomic_load(&selfCopy->_queueOwner);
       }
 
-      while (v10);
+      while (selfCopy);
       if (v9)
       {
-        LOBYTE(v7) = v11;
+        LOBYTE(tryLock) = v11;
       }
 
       else
       {
-        LOBYTE(v7) = 0;
+        LOBYTE(tryLock) = 0;
       }
     }
 
     else
     {
-      LOBYTE(v7) = 0;
+      LOBYTE(tryLock) = 0;
     }
 
 LABEL_28:
@@ -2607,8 +2607,8 @@ LABEL_28:
       v13 = atomic_load(&self->_isMainThreadBlessed);
       if ((v13 & 1) == 0 || !_PFIsSerializedWithMainQueue())
       {
-        LOBYTE(v7) = 0;
-        return v7;
+        LOBYTE(tryLock) = 0;
+        return tryLock;
       }
 
       goto LABEL_31;
@@ -2617,17 +2617,17 @@ LABEL_28:
 
   else
   {
-    v7 = [self->_lock tryLock];
-    if (v7)
+    tryLock = [self->_lock tryLock];
+    if (tryLock)
     {
       [(NSManagedObjectContext *)self lock];
       [self->_lock unlock];
 LABEL_31:
-      LOBYTE(v7) = 1;
+      LOBYTE(tryLock) = 1;
     }
   }
 
-  return v7;
+  return tryLock;
 }
 
 - (void)lock
@@ -2707,12 +2707,12 @@ LABEL_31:
   }
 
   v3 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v4 = [(NSManagedObjectContext *)self registeredObjects];
+  registeredObjects = [(NSManagedObjectContext *)self registeredObjects];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSSet *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [(NSSet *)registeredObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2724,7 +2724,7 @@ LABEL_31:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(registeredObjects);
         }
 
         -[NSManagedObjectContext refreshObject:mergeChanges:](self, "refreshObject:mergeChanges:", *(*(&v10 + 1) + 8 * v8), [*(*(&v10 + 1) + 8 * v8) hasChanges]);
@@ -2732,7 +2732,7 @@ LABEL_31:
       }
 
       while (v6 != v8);
-      v6 = [(NSSet *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSSet *)registeredObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -2746,12 +2746,12 @@ LABEL_31:
 
 - (uint64_t)_retainedRegisteredObjects
 {
-  v1 = a1;
+  selfCopy = self;
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [(NSManagedObjectContext *)a1 _processReferenceQueue:?];
-    Count = _PFCMT_GetCount(*(v1 + 120));
+    [(NSManagedObjectContext *)self _processReferenceQueue:?];
+    Count = _PFCMT_GetCount(*(selfCopy + 120));
     v3 = Count;
     if (Count <= 1)
     {
@@ -2784,7 +2784,7 @@ LABEL_31:
       bzero(v9 - ((8 * v5 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v4);
     }
 
-    v1 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:v6 count:{-[_PFContextMapTable getAllObjects:](*(v1 + 120), v6)}];
+    selfCopy = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:v6 count:{-[_PFContextMapTable getAllObjects:](*(selfCopy + 120), v6)}];
     if (v3 >= 0x201)
     {
       NSZoneFree(0, v6);
@@ -2792,7 +2792,7 @@ LABEL_31:
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v1;
+  return selfCopy;
 }
 
 - (NSSet)registeredObjects
@@ -2802,9 +2802,9 @@ LABEL_31:
     _PFAssertSafeMultiThreadedAccess_impl(self, a2);
   }
 
-  v3 = [(NSManagedObjectContext *)self _retainedRegisteredObjects];
+  _retainedRegisteredObjects = [(NSManagedObjectContext *)self _retainedRegisteredObjects];
 
-  return v3;
+  return _retainedRegisteredObjects;
 }
 
 void __33__NSManagedObjectContext_dealloc__block_invoke(uint64_t a1)
@@ -2842,9 +2842,9 @@ void __33__NSManagedObjectContext_dealloc__block_invoke(uint64_t a1)
   return (*(&self->_flags + 3) >> 5) & 1;
 }
 
-- (void)_processReferenceQueue:(uint64_t)a1
+- (void)_processReferenceQueue:(uint64_t)queue
 {
-  if (!a1)
+  if (!queue)
   {
     return;
   }
@@ -2853,9 +2853,9 @@ void __33__NSManagedObjectContext_dealloc__block_invoke(uint64_t a1)
   {
     if ((a2 & 1) == 0)
     {
-      _PFAssertSafeMultiThreadedAccess_impl(a1, sel__processReferenceQueue_);
+      _PFAssertSafeMultiThreadedAccess_impl(queue, sel__processReferenceQueue_);
 LABEL_4:
-      if ((*(a1 + 42) & 2) != 0)
+      if ((*(queue + 42) & 2) != 0)
       {
         return;
       }
@@ -2867,7 +2867,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v4 = *(a1 + 152);
+  v4 = *(queue + 152);
 
   [(_PFManagedObjectReferenceQueue *)v4 _processReferenceQueue:a2];
 }
@@ -2900,10 +2900,10 @@ LABEL_4:
         if (_PF_Threading_Debugging_level)
         {
           v4 = persistentStoreCoordinator;
-          v5 = self;
+          selfCopy = self;
           _PFAssertSafeMultiThreadedAccess_impl(self, a2);
           persistentStoreCoordinator = v4;
-          self = v5;
+          self = selfCopy;
         }
 
         [(NSManagedObjectContext *)self _setPersistentStoreCoordinator:?];
@@ -2943,16 +2943,16 @@ LABEL_4:
   return result;
 }
 
-- (void)_setRetainsRegisteredObjects:(uint64_t)a1
+- (void)_setRetainsRegisteredObjects:(uint64_t)objects
 {
-  if (a1)
+  if (objects)
   {
-    if (_PFCMT_GetCount(*(a1 + 120)))
+    if (_PFCMT_GetCount(*(objects + 120)))
     {
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"An NSManagedObjectContext's retain policy cannot be changed while it has registered objects.  Trying using reset() first." userInfo:0]);
     }
 
-    if (((((*(a1 + 40) & 0x40) == 0) ^ a2) & 1) == 0)
+    if (((((*(objects + 40) & 0x40) == 0) ^ a2) & 1) == 0)
     {
       if (a2)
       {
@@ -2964,13 +2964,13 @@ LABEL_4:
         v4 = 0;
       }
 
-      *(a1 + 40) = *(a1 + 40) & 0xFFFFFFBF | v4;
-      CFRelease(*(a1 + 120));
+      *(objects + 40) = *(objects + 40) & 0xFFFFFFBF | v4;
+      CFRelease(*(objects + 120));
       v5 = [[_PFContextMapTable alloc] initWithWeaksReferences:?];
-      *(a1 + 120) = v5;
-      -[_PFContextMapTable setForUseWithCoordinator:](v5, [a1 persistentStoreCoordinator]);
-      CFRetain(*(a1 + 120));
-      v6 = *(a1 + 120);
+      *(objects + 120) = v5;
+      -[_PFContextMapTable setForUseWithCoordinator:](v5, [objects persistentStoreCoordinator]);
+      CFRetain(*(objects + 120));
+      v6 = *(objects + 120);
     }
   }
 }
@@ -3143,9 +3143,9 @@ void *__41__NSManagedObjectContext_setMergePolicy___block_invoke(void *result)
     [v9 removeObjectForKey:@"refreshed_objectIDs"];
     v10 = [v9 copy];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:@"_NSObjectsChangedInManagingContextPrivateNotification" object:v3 userInfo:v8];
-    [v11 postNotificationName:@"NSObjectsChangedInManagingContextNotification" object:v3 userInfo:v10];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_NSObjectsChangedInManagingContextPrivateNotification" object:v3 userInfo:v8];
+    [defaultCenter postNotificationName:@"NSObjectsChangedInManagingContextNotification" object:v3 userInfo:v10];
     result = [NSManagedObject instancesRespondToSelector:sel__willChange_Swift_Trampoline];
     if (result)
     {
@@ -3289,7 +3289,7 @@ LABEL_13:
     do
     {
       v12 = *v11;
-      v13 = [*v11 objectID];
+      objectID = [*v11 objectID];
       v14 = !v3;
       if (!v12)
       {
@@ -3298,8 +3298,8 @@ LABEL_13:
 
       if ((v14 & 1) == 0 && (*(v12 + 17) & 2) != 0)
       {
-        v15 = v13;
-        if (([v13 isTemporaryID] & 1) == 0)
+        v15 = objectID;
+        if (([objectID isTemporaryID] & 1) == 0)
         {
           CFArrayAppendValue(v10, v15);
           v12[4] &= ~0x200u;
@@ -3530,20 +3530,20 @@ double __47__NSManagedObjectContext_setStalenessInterval___block_invoke(uint64_t
   return result;
 }
 
-- (void)_setUndoManager:(uint64_t)a1
+- (void)_setUndoManager:(uint64_t)manager
 {
-  if (a1)
+  if (manager)
   {
-    if (*(*(a1 + 168) + 40) != a2)
+    if (*(*(manager + 168) + 40) != a2)
     {
-      [(NSManagedObjectContext *)a1 _stopObservingUndoManagerNotifications];
+      [(NSManagedObjectContext *)manager _stopObservingUndoManagerNotifications];
 
-      *(*(a1 + 168) + 40) = a2;
+      *(*(manager + 168) + 40) = a2;
       if (a2)
       {
         v4 = a2;
 
-        [(NSManagedObjectContext *)a1 _startObservingUndoManagerNotifications];
+        [(NSManagedObjectContext *)manager _startObservingUndoManagerNotifications];
       }
     }
   }
@@ -3554,11 +3554,11 @@ double __47__NSManagedObjectContext_setStalenessInterval___block_invoke(uint64_t
   if (*(*(result + 168) + 40))
   {
     v1 = result;
-    v2 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v3 = *MEMORY[0x1E696AA10];
     v4 = *(*(v1 + 168) + 40);
 
-    return [v2 addObserver:v1 selector:sel__undoManagerCheckpoint_ name:v3 object:v4];
+    return [defaultCenter addObserver:v1 selector:sel__undoManagerCheckpoint_ name:v3 object:v4];
   }
 
   return result;
@@ -3598,22 +3598,22 @@ double __47__NSManagedObjectContext_setStalenessInterval___block_invoke(uint64_t
   return *(self->_additionalPrivateIvars + 5);
 }
 
-- (uint64_t)_processRecentChanges:(uint64_t)a1
+- (uint64_t)_processRecentChanges:(uint64_t)changes
 {
   v126 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!changes)
   {
     v4 = 0;
     goto LABEL_138;
   }
 
-  v2 = a1;
+  changesCopy = changes;
   if (_PF_Threading_Debugging_level)
   {
-    _PFAssertSafeMultiThreadedAccess_impl(a1, sel__processRecentChanges_);
+    _PFAssertSafeMultiThreadedAccess_impl(changes, sel__processRecentChanges_);
   }
 
-  v3 = *(v2 + 40);
+  v3 = *(changesCopy + 40);
   if ((v3 & 8) != 0)
   {
     goto LABEL_7;
@@ -3621,8 +3621,8 @@ double __47__NSManagedObjectContext_setStalenessInterval___block_invoke(uint64_t
 
   if ((v3 & 0x100) == 0)
   {
-    [(NSManagedObjectContext *)v2 _postRefreshedObjectsNotificationAndClearList];
-    [(NSManagedObjectContext *)v2 _processReferenceQueue:?];
+    [(NSManagedObjectContext *)changesCopy _postRefreshedObjectsNotificationAndClearList];
+    [(NSManagedObjectContext *)changesCopy _processReferenceQueue:?];
 LABEL_7:
     v4 = 1;
     goto LABEL_138;
@@ -3630,7 +3630,7 @@ LABEL_7:
 
   v76 = 0;
   v86 = 0;
-  *(v2 + 40) = v3 | 0x808;
+  *(changesCopy + 40) = v3 | 0x808;
   v99 = 0;
   v74 = *(MEMORY[0x1E695E9F8] + 8);
   v75 = *MEMORY[0x1E695E9F8];
@@ -3638,12 +3638,12 @@ LABEL_7:
   v73 = *(MEMORY[0x1E695E9F8] + 16);
   v4 = 1;
   allocator = *MEMORY[0x1E695E480];
-  v79 = v2;
+  v79 = changesCopy;
   while (1)
   {
-    v5 = [*(v2 + 56) count];
-    v6 = [*(v2 + 72) count];
-    if (!(v6 + v5 + [*(v2 + 64) count]))
+    v5 = [*(changesCopy + 56) count];
+    v6 = [*(changesCopy + 72) count];
+    if (!(v6 + v5 + [*(changesCopy + 64) count]))
     {
       break;
     }
@@ -3670,7 +3670,7 @@ LABEL_7:
     v82 = v9;
     v83 = v8;
     v81 = v10;
-    v2 = v79;
+    changesCopy = v79;
     if ((*(v79 + 40) & 2) != 0)
     {
       if ([*(v79 + 64) count] || objc_msgSend(*(v79 + 88), "count"))
@@ -3681,7 +3681,7 @@ LABEL_7:
         v112.copyDescription = v72;
         v112.equal = 0;
         v112.hash = 0;
-        v2 = v79;
+        changesCopy = v79;
         v12 = CFSetCreateMutable(allocator, 0, &v112);
         if ([*(v79 + 64) count])
         {
@@ -3885,7 +3885,7 @@ LABEL_7:
       else
       {
         v77 = 1;
-        v2 = v79;
+        changesCopy = v79;
       }
     }
 
@@ -3894,17 +3894,17 @@ LABEL_7:
       v77 = 1;
     }
 
-    v38 = [NSManagedObjectContext _processPendingDeletions:v2 withInsertions:v83 withUpdates:v81 withNewlyForgottenList:v84 withRemovedChangedObjects:?];
-    v39 = [NSManagedObjectContext _processPendingInsertions:v2 withDeletions:v85 withUpdates:v82];
-    v40 = [(NSManagedObjectContext *)v2 _processPendingUpdates:v82];
+    v38 = [NSManagedObjectContext _processPendingDeletions:changesCopy withInsertions:v83 withUpdates:v81 withNewlyForgottenList:v84 withRemovedChangedObjects:?];
+    v39 = [NSManagedObjectContext _processPendingInsertions:changesCopy withDeletions:v85 withUpdates:v82];
+    v40 = [(NSManagedObjectContext *)changesCopy _processPendingUpdates:v82];
     if (v40)
     {
-      [(NSManagedObjectContext *)v2 _registerUndoForOperation:v40 withObjects:0 withExtraArguments:?];
+      [(NSManagedObjectContext *)changesCopy _registerUndoForOperation:v40 withObjects:0 withExtraArguments:?];
     }
 
     if (v39)
     {
-      [(NSManagedObjectContext *)v2 _registerUndoForOperation:v39 withObjects:0 withExtraArguments:?];
+      [(NSManagedObjectContext *)changesCopy _registerUndoForOperation:v39 withObjects:0 withExtraArguments:?];
     }
 
     if (v38)
@@ -3939,7 +3939,7 @@ LABEL_7:
       v46 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v41];
       [v78 addObject:v46];
 
-      if (*(*(v2 + 168) + 40) && v41)
+      if (*(*(changesCopy + 168) + 40) && v41)
       {
         for (n = 0; n != v41; ++n)
         {
@@ -3970,39 +3970,39 @@ LABEL_7:
         }
       }
 
-      [(NSManagedObjectContext *)v2 _registerUndoForOperation:v38 withObjects:v78 withExtraArguments:?];
+      [(NSManagedObjectContext *)changesCopy _registerUndoForOperation:v38 withObjects:v78 withExtraArguments:?];
     }
 
-    if (([*(*(v2 + 168) + 40) groupsByEvent] & 1) == 0)
+    if (([*(*(changesCopy + 168) + 40) groupsByEvent] & 1) == 0)
     {
-      if (([*(*(v2 + 168) + 40) isUndoing] & 1) == 0 && (objc_msgSend(*(*(v2 + 168) + 40), "isRedoing") & 1) == 0)
+      if (([*(*(changesCopy + 168) + 40) isUndoing] & 1) == 0 && (objc_msgSend(*(*(changesCopy + 168) + 40), "isRedoing") & 1) == 0)
       {
-        [*(*(v2 + 168) + 40) endUndoGrouping];
+        [*(*(changesCopy + 168) + 40) endUndoGrouping];
       }
 
-      *(v2 + 40) &= ~0x20u;
+      *(changesCopy + 40) &= ~0x20u;
     }
 
-    [*(v2 + 72) removeAllObjects];
-    [*(v2 + 64) removeAllObjects];
-    [*(v2 + 56) removeAllObjects];
-    v53 = [*(v2 + 112) copy];
-    [*(v2 + 112) removeAllObjects];
+    [*(changesCopy + 72) removeAllObjects];
+    [*(changesCopy + 64) removeAllObjects];
+    [*(changesCopy + 56) removeAllObjects];
+    v53 = [*(changesCopy + 112) copy];
+    [*(changesCopy + 112) removeAllObjects];
     if ((v86 & 1) == 0)
     {
-      *(v2 + 40) &= 0xFFFFF6F6;
+      *(changesCopy + 40) &= 0xFFFFF6F6;
     }
 
-    v54 = *(v2 + 168);
+    v54 = *(changesCopy + 168);
     v55 = *(v54 + 88);
     if (v55)
     {
       *(v54 + 88) = 0;
-      v54 = *(v2 + 168);
+      v54 = *(changesCopy + 168);
     }
 
-    [(NSManagedObjectContext *)v2 _createAndPostChangeNotification:v85 deletions:v83 updates:v82 refreshes:v53 deferrals:v55 wasMerge:*(v54 + 104) != 0];
-    [(NSManagedObjectContext *)v2 _processRecentlyForgottenObjects:v81];
+    [(NSManagedObjectContext *)changesCopy _createAndPostChangeNotification:v85 deletions:v83 updates:v82 refreshes:v53 deferrals:v55 wasMerge:*(v54 + 104) != 0];
+    [(NSManagedObjectContext *)changesCopy _processRecentlyForgottenObjects:v81];
     v97 = 0u;
     v98 = 0u;
     v95 = 0u;
@@ -4085,19 +4085,19 @@ LABEL_7:
     v4 = v77;
   }
 
-  if ([*(v2 + 112) count])
+  if ([*(changesCopy + 112) count])
   {
     if (!v76)
     {
       v76 = objc_alloc_init(MEMORY[0x1E696AAC8]);
     }
 
-    [(NSManagedObjectContext *)v2 _postRefreshedObjectsNotificationAndClearList];
+    [(NSManagedObjectContext *)changesCopy _postRefreshedObjectsNotificationAndClearList];
   }
 
   if ((v86 & 1) == 0)
   {
-    *(v2 + 40) &= 0xFFFFF6F6;
+    *(changesCopy + 40) &= 0xFFFFF6F6;
   }
 
   v65 = v99;
@@ -4109,7 +4109,7 @@ LABEL_7:
   }
 
   v67 = 0;
-  [(NSManagedObjectContext *)v2 _processReferenceQueue:?];
+  [(NSManagedObjectContext *)changesCopy _processReferenceQueue:?];
 LABEL_138:
   v68 = *MEMORY[0x1E69E9840];
   return v4 & 1;
@@ -4141,12 +4141,12 @@ LABEL_138:
     goto LABEL_18;
   }
 
-  v7 = [object objectID];
-  if (![v7 isTemporaryID])
+  objectID = [object objectID];
+  if (![objectID isTemporaryID])
   {
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
-    v13 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{-[NSPersistentStore URL](store, "URL"), @"newStoreURL", objc_msgSend(objc_msgSend(v7, "persistentStore"), "URL"), @"originalStoreURL", v7, @"objectID", 0}];
+    v13 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{-[NSPersistentStore URL](store, "URL"), @"newStoreURL", objc_msgSend(objc_msgSend(objectID, "persistentStore"), "URL"), @"originalStoreURL", objectID, @"objectID", 0}];
     v12 = @"Can't reassign an object to a different store once it has been saved.";
 LABEL_17:
     v10 = v14;
@@ -4155,10 +4155,10 @@ LABEL_18:
     objc_exception_throw([v10 exceptionWithName:v11 reason:v12 userInfo:v13]);
   }
 
-  v8 = [(NSManagedObjectContext *)self persistentStoreCoordinator];
-  if (v8)
+  persistentStoreCoordinator = [(NSManagedObjectContext *)self persistentStoreCoordinator];
+  if (persistentStoreCoordinator)
   {
-    modelMap = v8->_modelMap;
+    modelMap = persistentStoreCoordinator->_modelMap;
   }
 
   else
@@ -4170,12 +4170,12 @@ LABEL_18:
   {
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
-    v13 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{-[NSPersistentStore URL](store, "URL"), @"storeURL", objc_msgSend(objc_msgSend(v7, "entity"), "name"), @"entityName", v7, @"objectID", 0}];
+    v13 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{-[NSPersistentStore URL](store, "URL"), @"storeURL", objc_msgSend(objc_msgSend(objectID, "entity"), "name"), @"entityName", objectID, @"objectID", 0}];
     v12 = @"Can't assign an object to a store that does not contain the object's entity.";
     goto LABEL_17;
   }
 
-  [v7 _setPersistentStore:store];
+  [objectID _setPersistentStore:store];
 }
 
 - (void)setPropagatesDeletesAtEndOfEvent:(BOOL)propagatesDeletesAtEndOfEvent
@@ -4223,17 +4223,17 @@ LABEL_18:
   Value = _PFCMT_GetValue(&self->_infoByGID->super.isa, objectID);
   if (!Value)
   {
-    v6 = [(NSManagedObjectID *)objectID persistentStore];
-    v7 = [(NSPersistentStore *)v6 _persistentStoreCoordinator];
-    v8 = [(NSManagedObjectContext *)self persistentStoreCoordinator];
-    v9 = [(NSManagedObjectID *)objectID _isPersistentStoreAlive];
-    if ((v7 != v8 || !v9) && (v6 || ![(NSManagedObjectID *)objectID isTemporaryID]))
+    persistentStore = [(NSManagedObjectID *)objectID persistentStore];
+    _persistentStoreCoordinator = [(NSPersistentStore *)persistentStore _persistentStoreCoordinator];
+    persistentStoreCoordinator = [(NSManagedObjectContext *)self persistentStoreCoordinator];
+    _isPersistentStoreAlive = [(NSManagedObjectID *)objectID _isPersistentStoreAlive];
+    if ((_persistentStoreCoordinator != persistentStoreCoordinator || !_isPersistentStoreAlive) && (persistentStore || ![(NSManagedObjectID *)objectID isTemporaryID]))
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = [(NSManagedObjectID *)objectID URIRepresentation];
-      if ([(NSPersistentStoreCoordinator *)v8 _persistentStoreForIdentifier:?])
+      uRIRepresentation = [(NSManagedObjectID *)objectID URIRepresentation];
+      if ([(NSPersistentStoreCoordinator *)persistentStoreCoordinator _persistentStoreForIdentifier:?])
       {
-        v12 = [(NSPersistentStoreCoordinator *)v8 managedObjectIDForURIRepresentation:v11 error:0];
+        v12 = [(NSPersistentStoreCoordinator *)persistentStoreCoordinator managedObjectIDForURIRepresentation:uRIRepresentation error:0];
         v13 = v12;
         if (v12)
         {
@@ -4269,11 +4269,11 @@ LABEL_14:
 
   if (qword_1ED4BEA30 == context && (!self || self->_ignoreChangeNotification <= 0) && (*(object + 17) & 0x20) == 0)
   {
-    v11 = [object entity];
-    v12 = v11;
-    if (v11)
+    entity = [object entity];
+    v12 = entity;
+    if (entity)
     {
-      v13 = [objc_msgSend(v11 "propertiesByName")];
+      v13 = [objc_msgSend(entity "propertiesByName")];
     }
 
     else
@@ -4288,12 +4288,12 @@ LABEL_14:
 
     if (v13)
     {
-      v14 = [v13 inverseRelationship];
+      inverseRelationship = [v13 inverseRelationship];
     }
 
     else
     {
-      v14 = 0;
+      inverseRelationship = 0;
     }
 
     if ([v13 _isToManyRelationship] && (v15 = objc_msgSend(v13, "_entitysReferenceID"), v16 = _kvcPropertysPrimitiveGetters(v12), (Property = _PF_Handler_Public_GetProperty(object, v15, keyPath, *(v16 + 8 * v15))) != 0) && ((v18 = Property, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)) && (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v18, "_shouldProcessKVOChange") & 1) == 0)
@@ -4305,7 +4305,7 @@ LABEL_14:
     else
     {
 
-      [object _didChangeValue:change forRelationship:v13 named:keyPath withInverse:v14];
+      [object _didChangeValue:change forRelationship:v13 named:keyPath withInverse:inverseRelationship];
     }
   }
 }
@@ -4317,8 +4317,8 @@ LABEL_14:
     _PFAssertSafeMultiThreadedAccess_impl(self, a2);
   }
 
-  v5 = [(NSManagedObject *)object entity];
-  if (!v5)
+  entity = [(NSManagedObject *)object entity];
+  if (!entity)
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D940];
@@ -4326,27 +4326,27 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  v6 = v5;
+  v6 = entity;
   if ([(NSManagedObjectContext *)self persistentStoreCoordinator])
   {
-    v7 = [(NSPersistentStoreCoordinator *)[(NSManagedObjectContext *)self persistentStoreCoordinator] managedObjectModel];
-    v8 = [(NSEntityDescription *)v6 name];
-    if ((!v7 || ![(NSMutableDictionary *)v7->_entities objectForKey:v8]) && ![(NSManagedObjectContext *)self _allowAncillaryEntities])
+    managedObjectModel = [(NSPersistentStoreCoordinator *)[(NSManagedObjectContext *)self persistentStoreCoordinator] managedObjectModel];
+    name = [(NSEntityDescription *)v6 name];
+    if ((!managedObjectModel || ![(NSMutableDictionary *)managedObjectModel->_entities objectForKey:name]) && ![(NSManagedObjectContext *)self _allowAncillaryEntities])
     {
       v14 = MEMORY[0x1E695DF30];
       v15 = *MEMORY[0x1E695D940];
       v16 = MEMORY[0x1E696AEC0];
       if ([(NSEntityDescription *)v6 name])
       {
-        v17 = [(NSEntityDescription *)v6 name];
+        name2 = [(NSEntityDescription *)v6 name];
       }
 
       else
       {
-        v17 = [MEMORY[0x1E695DFB0] null];
+        name2 = [MEMORY[0x1E695DFB0] null];
       }
 
-      v13 = [v16 stringWithFormat:@"Cannot insert '%@' in this managed object context because it is not found in the associated managed object model.", v17];
+      v13 = [v16 stringWithFormat:@"Cannot insert '%@' in this managed object context because it is not found in the associated managed object model.", name2];
       v11 = v14;
       v12 = v15;
 LABEL_16:
@@ -4354,10 +4354,10 @@ LABEL_16:
     }
   }
 
-  v9 = [(NSManagedObject *)object objectID];
-  if (v9)
+  objectID = [(NSManagedObject *)object objectID];
+  if (objectID)
   {
-    [(NSManagedObjectContext *)self _insertObjectWithGlobalID:v9 globalID:?];
+    [(NSManagedObjectContext *)self _insertObjectWithGlobalID:objectID globalID:?];
     if (object)
     {
 LABEL_10:
@@ -4382,7 +4382,7 @@ LABEL_10:
   [0 awakeFromInsert];
 }
 
-- (void)_insertObjectWithGlobalID:(void *)a3 globalID:
+- (void)_insertObjectWithGlobalID:(void *)d globalID:
 {
   if (result)
   {
@@ -4406,7 +4406,7 @@ LABEL_10:
 
     if (v7 != v5)
     {
-      [(NSManagedObjectContext *)v5 _registerObject:a2 withID:a3];
+      [(NSManagedObjectContext *)v5 _registerObject:a2 withID:d];
       v6 = *(a2 + 16);
     }
 
@@ -4434,7 +4434,7 @@ LABEL_10:
     if (result)
     {
 
-      return [result removeObject:a3];
+      return [result removeObject:d];
     }
   }
 
@@ -4512,9 +4512,9 @@ LABEL_9:
   }
 }
 
-- (void)_establishEventSnapshotsForObject:(uint64_t)a1
+- (void)_establishEventSnapshotsForObject:(uint64_t)object
 {
-  if (!a1)
+  if (!object)
   {
     return;
   }
@@ -4531,7 +4531,7 @@ LABEL_22:
     goto LABEL_9;
   }
 
-  _PFAssertSafeMultiThreadedAccess_impl(a1, sel__establishEventSnapshotsForObject_);
+  _PFAssertSafeMultiThreadedAccess_impl(object, sel__establishEventSnapshotsForObject_);
   if (!a2)
   {
     goto LABEL_22;
@@ -4582,24 +4582,24 @@ LABEL_9:
   [(NSManagedObject *)a2 _setLastSnapshot__:v4];
 }
 
-- (void)_prepareUnprocessedDeletionAfterRefresh:(_DWORD *)a1
+- (void)_prepareUnprocessedDeletionAfterRefresh:(_DWORD *)refresh
 {
-  if (a1 && [a2 isDeleted])
+  if (refresh && [a2 isDeleted])
   {
-    v3 = a1[10];
+    v3 = refresh[10];
     if ((v3 & 0x200) != 0 && (v3 & 0x100) == 0)
     {
       _PFFaultLogExcessivePrepareForPendingChangesAttempts();
-      v3 = a1[10];
+      v3 = refresh[10];
     }
 
-    a1[10] = v3 | 0x100;
+    refresh[10] = v3 | 0x100;
     if ((v3 & 0x400) == 0)
     {
-      [a1 willChangeValueForKey:@"hasChanges"];
-      a1[10] |= 0x400u;
+      [refresh willChangeValueForKey:@"hasChanges"];
+      refresh[10] |= 0x400u;
 
-      [a1 didChangeValueForKey:@"hasChanges"];
+      [refresh didChangeValueForKey:@"hasChanges"];
     }
   }
 }
@@ -4670,9 +4670,9 @@ LABEL_9:
     }
 
     v15 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-    v16 = [(NSManagedObjectContext *)self persistentStoreCoordinator];
+    persistentStoreCoordinator = [(NSManagedObjectContext *)self persistentStoreCoordinator];
     [(NSManagedObjectContext *)self lockObjectStore];
-    v8 = [(NSPersistentStoreCoordinator *)v16 obtainPermanentIDsForObjects:v9 error:&v21];
+    v8 = [(NSPersistentStoreCoordinator *)persistentStoreCoordinator obtainPermanentIDsForObjects:v9 error:&v21];
     [(NSManagedObjectContext *)self unlockObjectStore];
 
     v17 = v21;
@@ -4705,11 +4705,11 @@ LABEL_28:
   return v8;
 }
 
-- (uint64_t)_handleError:(uint64_t *)a3 withError:
+- (uint64_t)_handleError:(uint64_t *)error withError:
 {
-  if (a1)
+  if (self)
   {
-    [NSManagedObjectContext _handleError:a2 withError:a3];
+    [NSManagedObjectContext _handleError:a2 withError:error];
   }
 
   return 0;
@@ -4822,12 +4822,12 @@ LABEL_7:
 - (void)_advanceQueryGenerationForSave
 {
   v1 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v3 = [a1 _retainedCurrentQueryGeneration:a1[20]];
+    v3 = [self _retainedCurrentQueryGeneration:self[20]];
     if (v3)
     {
-      [a1 _setQueryGenerationFromToken:v3 error:0];
+      [self _setQueryGenerationFromToken:v3 error:0];
       v4 = 1;
     }
 
@@ -4838,7 +4838,7 @@ LABEL_7:
 
     if ((v4 & 1) == 0)
     {
-      [a1 _setQueryGenerationFromToken:+[NSQueryGenerationToken unpinnedQueryGenerationToken](NSQueryGenerationToken error:{"unpinnedQueryGenerationToken"), 0}];
+      [self _setQueryGenerationFromToken:+[NSQueryGenerationToken unpinnedQueryGenerationToken](NSQueryGenerationToken error:{"unpinnedQueryGenerationToken"), 0}];
     }
   }
 
@@ -4919,7 +4919,7 @@ LABEL_10:
   if ([(NSManagedObjectContext *)self _prepareForPushChanges:?])
   {
     ++self->_ignoreChangeNotification;
-    v56 = [(NSManagedObjectContext *)self _newSaveRequestForCurrentState];
+    _newSaveRequestForCurrentState = [(NSManagedObjectContext *)self _newSaveRequestForCurrentState];
     v57 = 0;
     v16 = 0;
     v52 = *MEMORY[0x1E696A250];
@@ -4949,8 +4949,8 @@ LABEL_65:
         v62 = 0u;
         v59 = 0u;
         v60 = 0u;
-        v20 = [(NSManagedObjectContext *)self persistentStoreCoordinator];
-        if (v20 && (modelMap = v20->_modelMap) != 0)
+        persistentStoreCoordinator = [(NSManagedObjectContext *)self persistentStoreCoordinator];
+        if (persistentStoreCoordinator && (modelMap = persistentStoreCoordinator->_modelMap) != 0)
         {
           models = modelMap->_models;
         }
@@ -5016,7 +5016,7 @@ LABEL_39:
 LABEL_43:
         v27 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:self->_insertedObjects];
         [v27 unionSet:self->_changedObjects];
-        v28 = [v27 allObjects];
+        allObjects = [v27 allObjects];
 
         if ((*(&self->_flags + 2) & 0x80) == 0)
         {
@@ -5027,35 +5027,35 @@ LABEL_43:
             *(self->_additionalPrivateIvars + 9) = v29;
           }
 
-          [(NSConstraintValidator *)v29 registerObjects:v28];
-          v30 = [(NSConstraintValidator *)v29 validateForSave];
+          [(NSConstraintValidator *)v29 registerObjects:allObjects];
+          validateForSave = [(NSConstraintValidator *)v29 validateForSave];
           [(NSConstraintValidator *)v29 reset];
-          if (v30)
+          if (validateForSave)
           {
-            v42 = [(NSManagedObjectContext *)self _generateOptLockExceptionForConstraintFailure:v30];
+            v42 = [(NSManagedObjectContext *)self _generateOptLockExceptionForConstraintFailure:validateForSave];
             objc_exception_throw(v42);
           }
         }
       }
 
       v17 = 1;
-      if ([self->_parentObjectStore executeRequest:v56 withContext:self error:&v63])
+      if ([self->_parentObjectStore executeRequest:_newSaveRequestForCurrentState withContext:self error:&v63])
       {
         parentObjectStore = self->_parentObjectStore;
-        v32 = [(NSMutableSet *)self->_insertedObjects allObjects];
-        if ([v32 count])
+        allObjects2 = [(NSMutableSet *)self->_insertedObjects allObjects];
+        if ([allObjects2 count])
         {
-          v33 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v32, "count")}];
-          v34 = [v32 count];
+          v33 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allObjects2, "count")}];
+          v34 = [allObjects2 count];
           if (v34)
           {
             for (j = 0; j != v34; ++j)
             {
-              v36 = [v32 objectAtIndex:j];
-              v37 = [v36 objectID];
-              if (([v37 isTemporaryID] & 1) == 0)
+              v36 = [allObjects2 objectAtIndex:j];
+              objectID = [v36 objectID];
+              if (([objectID isTemporaryID] & 1) == 0)
               {
-                [v33 addObject:v37];
+                [v33 addObject:objectID];
                 if (v36)
                 {
                   v36[4] |= 0x200u;
@@ -5098,7 +5098,7 @@ LABEL_43:
   v8 = 0;
   v43 = 0;
   v16 = 0;
-  v56 = 0;
+  _newSaveRequestForCurrentState = 0;
 LABEL_66:
   v44 = v63;
 
@@ -5162,40 +5162,40 @@ LABEL_11:
   return v8 & 1;
 }
 
-- (uint64_t)_prepareForPushChanges:(uint64_t)a1
+- (uint64_t)_prepareForPushChanges:(uint64_t)changes
 {
-  if (!a1)
+  if (!changes)
   {
     return 0;
   }
 
-  [a1 discardEditing];
-  v4 = *(a1 + 40);
+  [changes discardEditing];
+  v4 = *(changes + 40);
   if (((v4 >> 1) & 1) == 0)
   {
-    *(a1 + 40) = v4 | 2;
+    *(changes + 40) = v4 | 2;
   }
 
   v5 = (v4 >> 1) & 1;
-  if (([(NSManagedObjectContext *)a1 _processRecentChanges:a2]& 1) == 0)
+  if (([(NSManagedObjectContext *)changes _processRecentChanges:a2]& 1) == 0)
   {
     v14 = 0;
-    *(a1 + 40) = *(a1 + 40) & 0xFFFFFDF5 | (2 * v5);
+    *(changes + 40) = *(changes + 40) & 0xFFFFFDF5 | (2 * v5);
     return v14;
   }
 
-  [*(*(a1 + 168) + 40) disableUndoRegistration];
+  [*(*(changes + 168) + 40) disableUndoRegistration];
   v6 = 0;
   v7 = 1;
-  while (!v6 || [(NSManagedObjectContext *)a1 _processRecentChanges:a2])
+  while (!v6 || [(NSManagedObjectContext *)changes _processRecentChanges:a2])
   {
-    v8 = *(a1 + 40);
-    *(a1 + 40) = v8 | 8;
+    v8 = *(changes + 40);
+    *(changes + 40) = v8 | 8;
     v9 = (v8 >> 2) & 1;
     v16 = 0;
-    if ([(NSManagedObjectContext *)a1 _validateObjects:2 forOperation:&v16 error:v9 exhaustive:1 forSave:?])
+    if ([(NSManagedObjectContext *)changes _validateObjects:2 forOperation:&v16 error:v9 exhaustive:1 forSave:?])
     {
-      v10 = [(NSManagedObjectContext *)a1 _validateObjects:0 forOperation:&v16 error:(v8 >> 2) & 1 exhaustive:1 forSave:?];
+      v10 = [(NSManagedObjectContext *)changes _validateObjects:0 forOperation:&v16 error:(v8 >> 2) & 1 exhaustive:1 forSave:?];
       if ((v8 & 4) == 0)
       {
         goto LABEL_12;
@@ -5215,24 +5215,24 @@ LABEL_12:
       }
     }
 
-    if ([*(a1 + 96) count])
+    if ([*(changes + 96) count])
     {
-      if ([*(a1 + 88) count] || objc_msgSend(*(a1 + 80), "count"))
+      if ([*(changes + 88) count] || objc_msgSend(*(changes + 80), "count"))
       {
-        v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:*(a1 + 96)];
-        [v11 minusSet:*(a1 + 88)];
-        [v11 minusSet:*(a1 + 80)];
+        v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithSet:*(changes + 96)];
+        [v11 minusSet:*(changes + 88)];
+        [v11 minusSet:*(changes + 80)];
       }
 
       else
       {
-        v11 = *(a1 + 96);
+        v11 = *(changes + 96);
         v13 = v11;
       }
 
       if (v10)
       {
-        v10 = [(NSManagedObjectContext *)a1 _validateObjects:v11 forOperation:1 error:&v16 exhaustive:v9 forSave:1];
+        v10 = [(NSManagedObjectContext *)changes _validateObjects:v11 forOperation:1 error:&v16 exhaustive:v9 forSave:1];
       }
     }
 
@@ -5247,14 +5247,14 @@ LABEL_20:
       break;
     }
 
-    v12 = *(a1 + 40);
-    *(a1 + 40) = v12 & 0xFFFFFDFF | ((v7 == 998) << 9);
+    v12 = *(changes + 40);
+    *(changes + 40) = v12 & 0xFFFFFDFF | ((v7 == 998) << 9);
     if (v7 == 1000)
     {
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Failed to process pending changes before save.  The context is still dirty after 1000 attempts.  Typically this recursive dirtying is caused by a bad validation method userInfo:{-willSave, or notification handler.", 0}]);
     }
 
-    *(a1 + 40) = v12 & 0xFFFFFDF7 | ((v7 == 998) << 9);
+    *(changes + 40) = v12 & 0xFFFFFDF7 | ((v7 == 998) << 9);
     --v6;
     ++v7;
     if ((v12 & 0x100) == 0)
@@ -5266,8 +5266,8 @@ LABEL_20:
 
   v14 = 0;
 LABEL_30:
-  [*(*(a1 + 168) + 40) enableUndoRegistration];
-  *(a1 + 40) = *(a1 + 40) & 0xFFFFFDF5 | (2 * v5);
+  [*(*(changes + 168) + 40) enableUndoRegistration];
+  *(changes + 40) = *(changes + 40) & 0xFFFFFDF5 | (2 * v5);
   return v14;
 }
 
@@ -5524,31 +5524,31 @@ LABEL_27:
   return v10;
 }
 
-- (uint64_t)_checkObjectForExistenceAndCacheRow:(uint64_t)a1
+- (uint64_t)_checkObjectForExistenceAndCacheRow:(uint64_t)row
 {
-  v4 = [a2 objectID];
+  objectID = [a2 objectID];
   v5 = *(a2 + 16);
-  if ([v4 isTemporaryID])
+  if ([objectID isTemporaryID])
   {
-    if (!*(a2 + 32) || (v6 = atomic_load((a1 + 48)), (v6 & 1) == 0))
+    if (!*(a2 + 32) || (v6 = atomic_load((row + 48)), (v6 & 1) == 0))
     {
       v12 = 0;
-      [a1 stalenessInterval];
+      [row stalenessInterval];
       return [a2 isFault];
     }
   }
 
   v12 = 0;
-  [a1 stalenessInterval];
+  [row stalenessInterval];
   if ((v5 & 0x12) != 0)
   {
     return [a2 isFault];
   }
 
   v9 = v7;
-  *(a1 + 144) = 0;
-  [(NSManagedObjectContext *)a1 lockObjectStore];
-  v10 = [*(a1 + 32) newValuesForObjectWithID:v4 withContext:a1 error:&v12];
+  *(row + 144) = 0;
+  [(NSManagedObjectContext *)row lockObjectStore];
+  v10 = [*(row + 32) newValuesForObjectWithID:objectID withContext:row error:&v12];
   if (v10)
   {
     v8 = 1;
@@ -5559,9 +5559,9 @@ LABEL_27:
     v8 = 0;
   }
 
-  *(a1 + 144) = v9;
+  *(row + 144) = v9;
 
-  [(NSManagedObjectContext *)a1 unlockObjectStore];
+  [(NSManagedObjectContext *)row unlockObjectStore];
   return v8;
 }
 
@@ -5589,14 +5589,14 @@ LABEL_7:
     goto LABEL_71;
   }
 
-  v10 = [(NSPersistentStoreRequest *)request requestType];
+  requestType = [(NSPersistentStoreRequest *)request requestType];
   [(NSManagedObjectContext *)self _PFAutoreleasePoolReferenceQueueTrampoline];
   if (objc_opt_respondsToSelector())
   {
     [(NSPersistentStoreRequest *)request _resolveEntityWithContext:self];
   }
 
-  if (v10 == NSSaveRequestType)
+  if (requestType == NSSaveRequestType)
   {
     if (error)
     {
@@ -5609,7 +5609,7 @@ LABEL_71:
     goto LABEL_112;
   }
 
-  if (v10 != NSFetchRequestType)
+  if (requestType != NSFetchRequestType)
   {
     goto LABEL_31;
   }
@@ -5625,21 +5625,21 @@ LABEL_71:
         _PFAssertSafeMultiThreadedAccess_impl(self, sel__executeAsynchronousFetchRequest_);
       }
 
-      v16 = [(NSPersistentStoreRequest *)request fetchRequest];
+      fetchRequest = [(NSPersistentStoreRequest *)request fetchRequest];
       v72 = 0;
       v73 = &v72;
       v74 = 0x2020000000;
       v75 = &v76;
       v76 = 0;
-      [v16 _resolveEntityWithContext:self];
-      if ([v16 entity])
+      [fetchRequest _resolveEntityWithContext:self];
+      if ([fetchRequest entity])
       {
         if (self->_dispatchQueue)
         {
-          v17 = [v16 resultType];
-          if (v17 == 4)
+          resultType = [fetchRequest resultType];
+          if (resultType == 4)
           {
-            v18 = [(NSManagedObjectContext *)self countForFetchRequest:v16 error:v73[3]];
+            v18 = [(NSManagedObjectContext *)self countForFetchRequest:fetchRequest error:v73[3]];
             if (v18 == 0x7FFFFFFFFFFFFFFFLL)
             {
               v9 = 0;
@@ -5655,7 +5655,7 @@ LABEL_71:
           else
           {
             v37 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-            if (-[NSManagedObjectContext hasChanges](self, "hasChanges") && ((v38 = [v16 includesPendingChanges], v17 != 2) ? (v39 = v38) : (v39 = 0), v39 == 1))
+            if (-[NSManagedObjectContext hasChanges](self, "hasChanges") && ((v38 = [fetchRequest includesPendingChanges], resultType != 2) ? (v39 = v38) : (v39 = 0), v39 == 1))
             {
               if (![(NSManagedObjectContext *)self _attemptCoalesceChangesForFetch])
               {
@@ -5670,7 +5670,7 @@ LABEL_71:
               v40 = 0;
             }
 
-            v41 = [(NSManagedObjectContext *)&self->super.isa _createStoreFetchRequestForFetchRequest:v16];
+            v41 = [(NSManagedObjectContext *)&self->super.isa _createStoreFetchRequestForFetchRequest:fetchRequest];
             v71[0] = 0;
             v71[1] = v71;
             v71[2] = 0x3052000000;
@@ -5678,7 +5678,7 @@ LABEL_71:
             v71[4] = __Block_byref_object_dispose__13;
             v71[5] = 0;
             v42 = [v41 resultType] == 0;
-            v43 = [v41 includesPropertyValues];
+            includesPropertyValues = [v41 includesPropertyValues];
             v70[0] = 0;
             v70[1] = v70;
             v70[2] = 0x3052000000;
@@ -5686,21 +5686,21 @@ LABEL_71:
             v70[4] = __Block_byref_object_dispose__13;
             v70[5] = 0;
             [v37 drain];
-            v44 = [MEMORY[0x1E696AE38] currentProgress];
-            if (v44 && (v44 = [objc_alloc(MEMORY[0x1E696AE38]) initWithParent:v44 userInfo:0]) != 0)
+            currentProgress = [MEMORY[0x1E696AE38] currentProgress];
+            if (currentProgress && (currentProgress = [objc_alloc(MEMORY[0x1E696AE38]) initWithParent:currentProgress userInfo:0]) != 0)
             {
               if ([(NSPersistentStoreRequest *)request estimatedResultCount]< 1)
               {
-                v45 = -1;
+                estimatedResultCount = -1;
               }
 
               else
               {
-                v45 = [(NSPersistentStoreRequest *)request estimatedResultCount];
+                estimatedResultCount = [(NSPersistentStoreRequest *)request estimatedResultCount];
               }
 
-              [v44 setTotalUnitCount:v45];
-              [v44 setKind:@"managed objects"];
+              [currentProgress setTotalUnitCount:estimatedResultCount];
+              [currentProgress setKind:@"managed objects"];
               v46 = 0;
             }
 
@@ -5714,7 +5714,7 @@ LABEL_71:
             v66 = 0x3052000000;
             v67 = __Block_byref_object_copy__13;
             v68 = __Block_byref_object_dispose__13;
-            v69 = [[NSAsynchronousFetchResult alloc] initForFetchRequest:request withContext:self andProgress:v44 completetionBlock:[(NSPersistentStoreRequest *)request completionBlock]];
+            v69 = [[NSAsynchronousFetchResult alloc] initForFetchRequest:request withContext:self andProgress:currentProgress completetionBlock:[(NSPersistentStoreRequest *)request completionBlock]];
             [v41 _setAsyncResultHandle:v65[5]];
             if ((v46 & 1) == 0)
             {
@@ -5724,7 +5724,7 @@ LABEL_71:
               v63[2] = __59__NSManagedObjectContext__executeAsynchronousFetchRequest___block_invoke;
               v63[3] = &unk_1E6EC16F0;
               v63[4] = v57;
-              [v44 setCancellationHandler:v63];
+              [currentProgress setCancellationHandler:v63];
             }
 
             parentObjectStore = self->_parentObjectStore;
@@ -5732,7 +5732,7 @@ LABEL_71:
             *&buf[8] = 3221225472;
             *&buf[16] = __59__NSManagedObjectContext__executeAsynchronousFetchRequest___block_invoke_2;
             v78 = &unk_1E6EC2440;
-            v79 = self;
+            selfCopy = self;
             v80 = v41;
             v83 = v70;
             v84 = v71;
@@ -5740,9 +5740,9 @@ LABEL_71:
             v86 = &v64;
             v87 = v40;
             v81 = request;
-            v82 = v16;
+            v82 = fetchRequest;
             v88 = v42;
-            v89 = v43;
+            v89 = includesPropertyValues;
             [parentObjectStore performBlock:buf];
             v9 = v65[5];
             _Block_object_dispose(&v64, 8);
@@ -5755,16 +5755,16 @@ LABEL_71:
         }
 
         v61 = MEMORY[0x1E695DF30];
-        v62 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NSConfinementConcurrencyType context %@ cannot support asynchronous fetch request %@.", self, request];
+        request = [MEMORY[0x1E696AEC0] stringWithFormat:@"NSConfinementConcurrencyType context %@ cannot support asynchronous fetch request %@.", self, request];
       }
 
       else
       {
         v61 = MEMORY[0x1E695DF30];
-        v62 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ A fetch request must have an entity.", NSStringFromSelector(sel__executeAsynchronousFetchRequest_)];
+        request = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ A fetch request must have an entity.", NSStringFromSelector(sel__executeAsynchronousFetchRequest_)];
       }
 
-      objc_exception_throw([v61 exceptionWithName:*MEMORY[0x1E695D940] reason:v62 userInfo:0]);
+      objc_exception_throw([v61 exceptionWithName:*MEMORY[0x1E695D940] reason:request userInfo:0]);
     }
 
 LABEL_31:
@@ -5839,9 +5839,9 @@ LABEL_31:
       goto LABEL_105;
     }
 
-    if (v10 - 5 > 2)
+    if (requestType - 5 > 2)
     {
-      switch(v10)
+      switch(requestType)
       {
         case 0xBuLL:
           v49 = [NSPersistentCloudKitContainerEventResult alloc];
@@ -5853,8 +5853,8 @@ LABEL_31:
           break;
         case 8uLL:
           v25 = [NSPersistentHistoryResult alloc];
-          v26 = [(NSPersistentStoreRequest *)request resultType];
-          v27 = [(NSPersistentHistoryResult *)v25 initWithResultType:v26 andResult:NSArray_EmptyArray];
+          resultType2 = [(NSPersistentStoreRequest *)request resultType];
+          v27 = [(NSPersistentHistoryResult *)v25 initWithResultType:resultType2 andResult:NSArray_EmptyArray];
           break;
         default:
           v50 = _PFLogGetLogStream(17);
@@ -5863,7 +5863,7 @@ LABEL_31:
             *buf = 138412546;
             *&buf[4] = request;
             *&buf[12] = 2048;
-            *&buf[14] = v10;
+            *&buf[14] = requestType;
             _os_log_error_impl(&dword_18565F000, v50, OS_LOG_TYPE_ERROR, "CoreData: fault: Unknown request - %@ - %lu\n", buf, 0x16u);
           }
 
@@ -5873,7 +5873,7 @@ LABEL_31:
             *buf = 138412546;
             *&buf[4] = request;
             *&buf[12] = 2048;
-            *&buf[14] = v10;
+            *&buf[14] = requestType;
             _os_log_fault_impl(&dword_18565F000, v51, OS_LOG_TYPE_FAULT, "CoreData: Unknown request - %@ - %lu", buf, 0x16u);
           }
 
@@ -5929,16 +5929,16 @@ LABEL_114:
 
     _NSCoreDataLog_console(v52, "Context does not have a coordinator; cannot perform executeRequest:error:.");
     objc_autoreleasePoolPop(v22);
-    if (v10 == NSBatchDeleteRequestType)
+    if (requestType == NSBatchDeleteRequestType)
     {
       v55 = [NSBatchDeleteResult alloc];
-      v56 = [(NSPersistentStoreRequest *)request resultType];
-      v27 = [(NSBatchDeleteResult *)v55 initWithResultType:v56 andObject:NSArray_EmptyArray];
+      resultType3 = [(NSPersistentStoreRequest *)request resultType];
+      v27 = [(NSBatchDeleteResult *)v55 initWithResultType:resultType3 andObject:NSArray_EmptyArray];
     }
 
     else
     {
-      if (v10 == NSBatchUpdateRequestType)
+      if (requestType == NSBatchUpdateRequestType)
       {
         v53 = [NSBatchUpdateResult alloc];
       }
@@ -5948,8 +5948,8 @@ LABEL_114:
         v53 = [NSBatchInsertResult alloc];
       }
 
-      v54 = [(NSPersistentStoreRequest *)request resultType];
-      v27 = [(NSBatchUpdateResult *)v53 initWithResultType:v54 andObject:NSArray_EmptyArray];
+      resultType4 = [(NSPersistentStoreRequest *)request resultType];
+      v27 = [(NSBatchUpdateResult *)v53 initWithResultType:resultType4 andObject:NSArray_EmptyArray];
     }
 
 LABEL_104:
@@ -6025,7 +6025,7 @@ LABEL_112:
   return v9;
 }
 
-- (uint64_t)_countForFetchRequest_:(id *)a3 error:
+- (uint64_t)_countForFetchRequest_:(id *)request_ error:
 {
   v100 = *MEMORY[0x1E69E9840];
   if (!result)
@@ -6042,11 +6042,11 @@ LABEL_112:
   v5 = *(*(v4 + 168) + 152);
   if (v5)
   {
-    if (a3)
+    if (request_)
     {
       v6 = v5;
       result = 0;
-      *a3 = v6;
+      *request_ = v6;
     }
 
     else
@@ -6060,7 +6060,7 @@ LABEL_112:
   [a2 _resolveEntityWithContext:v4];
   if (![v4 hasChanges] || !objc_msgSend(a2, "includesPendingChanges") || objc_msgSend(a2, "resultType") == 2)
   {
-    result = [(NSManagedObjectContext *)v4 _countWithNoChangesForRequest:a2 error:a3];
+    result = [(NSManagedObjectContext *)v4 _countWithNoChangesForRequest:a2 error:request_];
     if (result == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (z9dsptsiQ80etb9782fsrs98bfdle88)
@@ -6083,17 +6083,17 @@ LABEL_112:
   }
 
   v63 = v4;
-  v8 = [a2 affectedStores];
-  v9 = [a2 entity];
+  affectedStores = [a2 affectedStores];
+  entity = [a2 entity];
   v61 = a2;
-  if ([objc_msgSend(v9 "subentitiesByName")])
+  if ([objc_msgSend(entity "subentitiesByName")])
   {
-    v10 = [a2 includesSubentities];
+    includesSubentities = [a2 includesSubentities];
   }
 
   else
   {
-    v10 = 0;
+    includesSubentities = 0;
   }
 
   v11 = 0;
@@ -6128,10 +6128,10 @@ LABEL_112:
           }
 
           v18 = *(*(&v77 + 1) + 8 * i);
-          if (!v8 || [v8 indexOfObjectIdenticalTo:{objc_msgSend(objc_msgSend(*(*(&v77 + 1) + 8 * i), "objectID"), "persistentStore")}] != 0x7FFFFFFFFFFFFFFFLL)
+          if (!affectedStores || [affectedStores indexOfObjectIdenticalTo:{objc_msgSend(objc_msgSend(*(*(&v77 + 1) + 8 * i), "objectID"), "persistentStore")}] != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v19 = [v18 entity];
-            if (v19 == v9 || v10 && [v9 _subentitiesIncludes:v19])
+            entity2 = [v18 entity];
+            if (entity2 == entity || includesSubentities && [entity _subentitiesIncludes:entity2])
             {
               if (!v11)
               {
@@ -6174,8 +6174,8 @@ LABEL_112:
         }
 
         v24 = *(*(&v73 + 1) + 8 * j);
-        v25 = [v24 entity];
-        if (v25 == v9 || v10 && [v9 _subentitiesIncludes:v25])
+        entity3 = [v24 entity];
+        if (entity3 == entity || includesSubentities && [entity _subentitiesIncludes:entity3])
         {
           v26 = cfa;
           if (!cfa)
@@ -6201,7 +6201,7 @@ LABEL_112:
 
   if ([(__CFSet *)v11 count]|| [(__CFSet *)cfa count])
   {
-    v60 = [v61 fetchLimit];
+    fetchLimit = [v61 fetchLimit];
     v94 = 0;
     if (![v61 entity])
     {
@@ -6230,9 +6230,9 @@ LABEL_112:
     if (v94)
     {
       v32 = v94;
-      if (a3)
+      if (request_)
       {
-        *a3 = v94;
+        *request_ = v94;
       }
     }
 
@@ -6241,10 +6241,10 @@ LABEL_112:
       v66 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v29];
 
       v59 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-      v35 = [v61 predicate];
-      v36 = [v61 affectedStores];
-      v37 = [v61 entity];
-      if ([objc_msgSend(v37 "subentitiesByName")])
+      predicate = [v61 predicate];
+      affectedStores2 = [v61 affectedStores];
+      entity4 = [v61 entity];
+      if ([objc_msgSend(entity4 "subentitiesByName")])
       {
         allocatora = [v61 includesSubentities];
       }
@@ -6254,9 +6254,9 @@ LABEL_112:
         allocatora = 0;
       }
 
-      if (v35)
+      if (predicate)
       {
-        v70 = [+[_NSMemoryStorePredicateRemapper defaultInstance](_NSMemoryStorePredicateRemapper createPredicateForFetchFromPredicate:"createPredicateForFetchFromPredicate:withContext:" withContext:v35, 0];
+        v70 = [+[_NSMemoryStorePredicateRemapper defaultInstance](_NSMemoryStorePredicateRemapper createPredicateForFetchFromPredicate:"createPredicateForFetchFromPredicate:withContext:" withContext:predicate, 0];
         v38 = v70;
       }
 
@@ -6265,9 +6265,9 @@ LABEL_112:
         v70 = [MEMORY[0x1E696AE18] predicateWithValue:1];
       }
 
-      if ([v36 count])
+      if ([affectedStores2 count])
       {
-        v39 = v36;
+        v39 = affectedStores2;
       }
 
       else
@@ -6293,15 +6293,15 @@ LABEL_112:
             }
 
             v43 = *(*(&v90 + 1) + 8 * k);
-            v44 = [v43 objectID];
+            objectID = [v43 objectID];
             if ([v70 evaluateWithObject:v43])
             {
-              [v66 addObject:v44];
+              [v66 addObject:objectID];
             }
 
             else
             {
-              [v66 removeObject:v44];
+              [v66 removeObject:objectID];
             }
           }
 
@@ -6335,19 +6335,19 @@ LABEL_112:
               }
 
               v50 = *(*(&v86 + 1) + 8 * m);
-              v51 = [v50 objectID];
-              v52 = v51;
+              objectID2 = [v50 objectID];
+              v52 = objectID2;
               if (v39)
               {
-                v53 = [v51 persistentStore];
-                if (!v53 || [v39 indexOfObjectIdenticalTo:v53] == 0x7FFFFFFFFFFFFFFFLL)
+                persistentStore = [objectID2 persistentStore];
+                if (!persistentStore || [v39 indexOfObjectIdenticalTo:persistentStore] == 0x7FFFFFFFFFFFFFFFLL)
                 {
                   continue;
                 }
               }
 
-              v54 = [v50 entity];
-              if (v54 == v37 || allocatora && [v37 _subentitiesIncludes:v54])
+              entity5 = [v50 entity];
+              if (entity5 == entity4 || allocatora && [entity4 _subentitiesIncludes:entity5])
               {
                 if ([v70 evaluateWithObject:v50])
                 {
@@ -6396,9 +6396,9 @@ LABEL_112:
       [v59 drain];
       v33 = [v66 count];
 
-      if (v60 - 1 < v33)
+      if (fetchLimit - 1 < v33)
       {
-        v33 = v60;
+        v33 = fetchLimit;
       }
 
       goto LABEL_68;
@@ -6409,7 +6409,7 @@ LABEL_112:
 
   else
   {
-    v33 = [(NSManagedObjectContext *)v63 _countWithNoChangesForRequest:v61 error:a3];
+    v33 = [(NSManagedObjectContext *)v63 _countWithNoChangesForRequest:v61 error:request_];
   }
 
 LABEL_68:
@@ -6448,18 +6448,18 @@ LABEL_15:
   return result;
 }
 
-- (uint64_t)_countWithNoChangesForRequest:(id *)a3 error:
+- (uint64_t)_countWithNoChangesForRequest:(id *)request error:
 {
   v59 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_msgSend(a2 "substitutionVariables")])
   {
-    v40 = 1;
+    fetchLimit = 1;
   }
 
   else
   {
-    v40 = [a2 fetchLimit];
+    fetchLimit = [a2 fetchLimit];
   }
 
   v55 = 0;
@@ -6471,25 +6471,25 @@ LABEL_15:
 
   v6 = objc_alloc_init(MEMORY[0x1E696AAC8]);
   v7 = [a2 copy];
-  if (v40 && [a1 hasChanges])
+  if (fetchLimit && [self hasChanges])
   {
     [NSManagedObjectContext _unlimitRequest:v7];
   }
 
   [v7 setResultType:4];
-  [(NSManagedObjectContext *)a1 lockObjectStore];
-  v8 = [a1[4] executeRequest:v7 withContext:a1 error:&v55];
+  [(NSManagedObjectContext *)self lockObjectStore];
+  v8 = [self[4] executeRequest:v7 withContext:self error:&v55];
   v9 = v55;
   v10 = v8;
 
   [v6 drain];
-  [(NSManagedObjectContext *)a1 unlockObjectStore];
+  [(NSManagedObjectContext *)self unlockObjectStore];
   if (v55)
   {
     v11 = v55;
-    if (a3)
+    if (request)
     {
-      *a3 = v55;
+      *request = v55;
     }
 
     goto LABEL_16;
@@ -6512,24 +6512,24 @@ LABEL_16:
     v12 = 0;
   }
 
-  if ([a1 hasChanges] && objc_msgSend(a2, "includesPendingChanges"))
+  if ([self hasChanges] && objc_msgSend(a2, "includesPendingChanges"))
   {
     v39 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-    v15 = [a2 predicate];
-    v16 = [a2 affectedStores];
-    v17 = [a2 entity];
-    if ([objc_msgSend(v17 "subentitiesByName")])
+    predicate = [a2 predicate];
+    affectedStores = [a2 affectedStores];
+    entity = [a2 entity];
+    if ([objc_msgSend(entity "subentitiesByName")])
     {
-      v18 = [a2 includesSubentities];
-      if (v15)
+      includesSubentities = [a2 includesSubentities];
+      if (predicate)
       {
 LABEL_23:
-        v41 = [+[_NSMemoryStorePredicateRemapper defaultInstance](_NSMemoryStorePredicateRemapper createPredicateForFetchFromPredicate:"createPredicateForFetchFromPredicate:withContext:" withContext:v15, 0];
+        v41 = [+[_NSMemoryStorePredicateRemapper defaultInstance](_NSMemoryStorePredicateRemapper createPredicateForFetchFromPredicate:"createPredicateForFetchFromPredicate:withContext:" withContext:predicate, 0];
         v19 = v41;
 LABEL_26:
-        if (![v16 count])
+        if (![affectedStores count])
         {
-          v16 = 0;
+          affectedStores = 0;
         }
 
         callBacks.version = *MEMORY[0x1E695E9F8];
@@ -6538,18 +6538,18 @@ LABEL_26:
         callBacks.equal = 0;
         callBacks.hash = 0;
         callBacks.copyDescription = v20;
-        v21 = [a1[9] count];
-        v22 = a1[10];
+        v21 = [self[9] count];
+        v22 = self[10];
         if (v21)
         {
-          if ([a1[10] count])
+          if ([self[10] count])
           {
             v22 = CFSetCreateMutable(*MEMORY[0x1E695E480], 0, &callBacks);
             v52 = 0u;
             v53 = 0u;
             v50 = 0u;
             v51 = 0u;
-            v23 = a1[9];
+            v23 = self[9];
             v24 = [v23 countByEnumeratingWithState:&v50 objects:v58 count:16];
             if (v24)
             {
@@ -6576,7 +6576,7 @@ LABEL_26:
             v49 = 0u;
             v46 = 0u;
             v47 = 0u;
-            v27 = a1[10];
+            v27 = self[10];
             v28 = [v27 countByEnumeratingWithState:&v46 objects:v57 count:16];
             if (v28)
             {
@@ -6605,7 +6605,7 @@ LABEL_26:
           else
           {
             v38 = 0;
-            v22 = a1[9];
+            v22 = self[9];
           }
         }
 
@@ -6632,17 +6632,17 @@ LABEL_26:
               }
 
               v34 = *(*(&v42 + 1) + 8 * k);
-              if (v16)
+              if (affectedStores)
               {
                 v35 = [objc_msgSend(*(*(&v42 + 1) + 8 * k) "objectID")];
-                if (!v35 || [v16 indexOfObjectIdenticalTo:v35] == 0x7FFFFFFFFFFFFFFFLL)
+                if (!v35 || [affectedStores indexOfObjectIdenticalTo:v35] == 0x7FFFFFFFFFFFFFFFLL)
                 {
                   continue;
                 }
               }
 
-              v36 = [v34 entity];
-              if (v36 == v17 || v18 && [v17 _subentitiesIncludes:v36])
+              entity2 = [v34 entity];
+              if (entity2 == entity || includesSubentities && [entity _subentitiesIncludes:entity2])
               {
                 v12 += [v41 evaluateWithObject:v34];
               }
@@ -6666,8 +6666,8 @@ LABEL_26:
 
     else
     {
-      v18 = 0;
-      if (v15)
+      includesSubentities = 0;
+      if (predicate)
       {
         goto LABEL_23;
       }
@@ -6678,14 +6678,14 @@ LABEL_26:
   }
 
 LABEL_64:
-  if (v40 - 1 >= v12)
+  if (fetchLimit - 1 >= v12)
   {
     result = v12;
   }
 
   else
   {
-    result = v40;
+    result = fetchLimit;
   }
 
 LABEL_17:
@@ -6728,9 +6728,9 @@ LABEL_17:
 LABEL_179:
     v93 = MEMORY[0x1E695DF30];
     v94 = *MEMORY[0x1E695D940];
-    v95 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ is not a valid NSFetchRequest.", NSStringFromSelector(a2), request];
+    request = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@ is not a valid NSFetchRequest.", NSStringFromSelector(a2), request];
 LABEL_180:
-    v96 = v95;
+    v96 = request;
     v97 = v93;
     v98 = v94;
     goto LABEL_181;
@@ -6758,13 +6758,13 @@ LABEL_51:
   {
     v93 = MEMORY[0x1E695DF30];
     v94 = *MEMORY[0x1E695D940];
-    v95 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ A fetch request must have an entity.", NSStringFromSelector(a2), v101];
+    request = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ A fetch request must have an entity.", NSStringFromSelector(a2), v101];
     goto LABEL_180;
   }
 
-  v11 = [(NSPersistentStoreCoordinator *)[(NSManagedObjectContext *)self persistentStoreCoordinator] managedObjectModel];
-  v108 = self;
-  if (v11 != [(NSEntityDescription *)[(NSFetchRequest *)request entity] managedObjectModel]&& ![(NSManagedObjectContext *)self _allowAncillaryEntities])
+  managedObjectModel = [(NSPersistentStoreCoordinator *)[(NSManagedObjectContext *)self persistentStoreCoordinator] managedObjectModel];
+  selfCopy = self;
+  if (managedObjectModel != [(NSEntityDescription *)[(NSFetchRequest *)request entity] managedObjectModel]&& ![(NSManagedObjectContext *)self _allowAncillaryEntities])
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The fetch request's entity %p '%@' appears to be from a different NSManagedObjectModel than this context's", -[NSFetchRequest entity](request, "entity"), -[NSEntityDescription name](-[NSFetchRequest entity](request, "entity"), "name")];
     v13 = [(NSDictionary *)[(NSManagedObjectModel *)[(NSPersistentStoreCoordinator *)[(NSManagedObjectContext *)self persistentStoreCoordinator] managedObjectModel] entitiesByName] objectForKey:[(NSEntityDescription *)[(NSFetchRequest *)request entity] name]];
@@ -6816,10 +6816,10 @@ LABEL_181:
 LABEL_18:
   v107 = request;
   [(NSFetchRequest *)request allowEvaluation];
-  v19 = [(NSFetchRequest *)request resultType];
-  if (v19 == 4)
+  resultType = [(NSFetchRequest *)request resultType];
+  if (resultType == 4)
   {
-    v20 = [(NSManagedObjectContext *)v108 countForFetchRequest:request error:error];
+    v20 = [(NSManagedObjectContext *)selfCopy countForFetchRequest:request error:error];
     if (v20 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v20];
@@ -6831,11 +6831,11 @@ LABEL_18:
   }
 
   v22 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  if (v19 != 2 && [(NSFetchRequest *)request includesPendingChanges]&& [(NSManagedObjectContext *)v108 hasChanges])
+  if (resultType != 2 && [(NSFetchRequest *)request includesPendingChanges]&& [(NSManagedObjectContext *)selfCopy hasChanges])
   {
-    if (![(NSManagedObjectContext *)v108 _attemptCoalesceChangesForFetch])
+    if (![(NSManagedObjectContext *)selfCopy _attemptCoalesceChangesForFetch])
     {
-      [(NSManagedObjectContext *)v108 _processRecentChanges:?];
+      [(NSManagedObjectContext *)selfCopy _processRecentChanges:?];
     }
 
     v23 = 1;
@@ -6846,11 +6846,11 @@ LABEL_18:
     v23 = 0;
   }
 
-  v24 = [(NSManagedObjectContext *)&v108->super.isa _createStoreFetchRequestForFetchRequest:?];
-  v111 = [v24 resultType];
-  v106 = [v24 includesPropertyValues];
-  [(NSManagedObjectContext *)v108 lockObjectStore];
-  v25 = [v108->_parentObjectStore executeRequest:v24 withContext:v108 error:&v142];
+  v24 = [(NSManagedObjectContext *)&selfCopy->super.isa _createStoreFetchRequestForFetchRequest:?];
+  resultType2 = [v24 resultType];
+  includesPropertyValues = [v24 includesPropertyValues];
+  [(NSManagedObjectContext *)selfCopy lockObjectStore];
+  v25 = [selfCopy->_parentObjectStore executeRequest:v24 withContext:selfCopy error:&v142];
   v26 = v25;
   if (v25)
   {
@@ -6866,7 +6866,7 @@ LABEL_18:
   v29 = v142;
 
   [v22 drain];
-  [(NSManagedObjectContext *)v108 unlockObjectStore];
+  [(NSManagedObjectContext *)selfCopy unlockObjectStore];
   v30 = v142;
   if (v142)
   {
@@ -6932,23 +6932,23 @@ LABEL_18:
   if (v23)
   {
     v103 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-    v37 = [(NSFetchRequest *)v107 predicate];
-    v102 = [(NSFetchRequest *)v107 sortDescriptors];
-    v38 = [(NSFetchRequest *)v107 affectedStores];
-    v113 = [(NSFetchRequest *)v107 entity];
-    if ([(NSDictionary *)[(NSEntityDescription *)v113 subentitiesByName] count])
+    predicate = [(NSFetchRequest *)v107 predicate];
+    sortDescriptors = [(NSFetchRequest *)v107 sortDescriptors];
+    affectedStores = [(NSFetchRequest *)v107 affectedStores];
+    entity = [(NSFetchRequest *)v107 entity];
+    if ([(NSDictionary *)[(NSEntityDescription *)entity subentitiesByName] count])
     {
-      v112 = [(NSFetchRequest *)v107 includesSubentities];
+      includesSubentities = [(NSFetchRequest *)v107 includesSubentities];
     }
 
     else
     {
-      v112 = 0;
+      includesSubentities = 0;
     }
 
-    if (v37)
+    if (predicate)
     {
-      v110 = [+[_NSMemoryStorePredicateRemapper defaultInstance](_NSMemoryStorePredicateRemapper createPredicateForFetchFromPredicate:"createPredicateForFetchFromPredicate:withContext:" withContext:v37, 0];
+      v110 = [+[_NSMemoryStorePredicateRemapper defaultInstance](_NSMemoryStorePredicateRemapper createPredicateForFetchFromPredicate:"createPredicateForFetchFromPredicate:withContext:" withContext:predicate, 0];
     }
 
     else
@@ -6956,9 +6956,9 @@ LABEL_18:
       v110 = [MEMORY[0x1E696AE18] predicateWithValue:1];
     }
 
-    if ([(NSArray *)v38 count])
+    if ([(NSArray *)affectedStores count])
     {
-      v40 = v38;
+      v40 = affectedStores;
     }
 
     else
@@ -6973,18 +6973,18 @@ LABEL_18:
     callBacks.copyDescription = v42;
     callBacks.equal = 0;
     callBacks.hash = 0;
-    v43 = [(NSMutableSet *)v108->_unprocessedChanges count];
-    changedObjects = v108->_changedObjects;
+    v43 = [(NSMutableSet *)selfCopy->_unprocessedChanges count];
+    changedObjects = selfCopy->_changedObjects;
     if (v43)
     {
-      if ([(NSMutableSet *)v108->_changedObjects count])
+      if ([(NSMutableSet *)selfCopy->_changedObjects count])
       {
         changedObjects = CFSetCreateMutable(*MEMORY[0x1E695E480], 0, &callBacks);
         v140 = 0u;
         v141 = 0u;
         v138 = 0u;
         v139 = 0u;
-        unprocessedChanges = v108->_unprocessedChanges;
+        unprocessedChanges = selfCopy->_unprocessedChanges;
         v46 = [(NSMutableSet *)unprocessedChanges countByEnumeratingWithState:&v138 objects:v149 count:16];
         if (v46)
         {
@@ -7011,7 +7011,7 @@ LABEL_18:
         v137 = 0u;
         v134 = 0u;
         v135 = 0u;
-        v49 = v108->_changedObjects;
+        v49 = selfCopy->_changedObjects;
         v50 = [(NSMutableSet *)v49 countByEnumeratingWithState:&v134 objects:v148 count:16];
         if (v50)
         {
@@ -7040,7 +7040,7 @@ LABEL_18:
       else
       {
         v104 = 0;
-        changedObjects = v108->_unprocessedChanges;
+        changedObjects = selfCopy->_unprocessedChanges;
       }
     }
 
@@ -7068,12 +7068,12 @@ LABEL_18:
           }
 
           v57 = *(*(&v130 + 1) + 8 * k);
-          v58 = [v57 objectID];
-          v59 = v58;
-          if (!v40 || -[NSArray indexOfObjectIdenticalTo:](v40, "indexOfObjectIdenticalTo:", [v58 persistentStore]) != 0x7FFFFFFFFFFFFFFFLL)
+          objectID = [v57 objectID];
+          v59 = objectID;
+          if (!v40 || -[NSArray indexOfObjectIdenticalTo:](v40, "indexOfObjectIdenticalTo:", [objectID persistentStore]) != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v60 = [v57 entity];
-            if (v60 == v113 || v112 && [(NSEntityDescription *)v113 _subentitiesIncludes:v60])
+            entity2 = [v57 entity];
+            if (entity2 == entity || includesSubentities && [(NSEntityDescription *)entity _subentitiesIncludes:entity2])
             {
               if (!v53)
               {
@@ -7082,7 +7082,7 @@ LABEL_18:
 
               v61 = objc_autoreleasePoolPush();
               v62 = [v110 evaluateWithObject:v57];
-              if (v111)
+              if (resultType2)
               {
                 v63 = v59;
               }
@@ -7118,18 +7118,18 @@ LABEL_18:
       CFRelease(changedObjects);
     }
 
-    v64 = [(NSMutableSet *)v108->_unprocessedInserts count];
-    insertedObjects = v108->_insertedObjects;
+    v64 = [(NSMutableSet *)selfCopy->_unprocessedInserts count];
+    insertedObjects = selfCopy->_insertedObjects;
     if (v64)
     {
-      if ([(NSMutableSet *)v108->_insertedObjects count])
+      if ([(NSMutableSet *)selfCopy->_insertedObjects count])
       {
         insertedObjects = CFSetCreateMutable(*MEMORY[0x1E695E480], 0, &callBacks);
         v128 = 0u;
         v129 = 0u;
         v126 = 0u;
         v127 = 0u;
-        unprocessedInserts = v108->_unprocessedInserts;
+        unprocessedInserts = selfCopy->_unprocessedInserts;
         v67 = [(NSMutableSet *)unprocessedInserts countByEnumeratingWithState:&v126 objects:v146 count:16];
         if (v67)
         {
@@ -7156,7 +7156,7 @@ LABEL_18:
         v125 = 0u;
         v122 = 0u;
         v123 = 0u;
-        v70 = v108->_insertedObjects;
+        v70 = selfCopy->_insertedObjects;
         v71 = [(NSMutableSet *)v70 countByEnumeratingWithState:&v122 objects:v145 count:16];
         if (v71)
         {
@@ -7185,7 +7185,7 @@ LABEL_18:
       else
       {
         v105 = 0;
-        insertedObjects = v108->_unprocessedInserts;
+        insertedObjects = selfCopy->_unprocessedInserts;
       }
     }
 
@@ -7212,19 +7212,19 @@ LABEL_18:
           }
 
           v77 = *(*(&v118 + 1) + 8 * ii);
-          v78 = [v77 objectID];
-          v79 = v78;
+          objectID2 = [v77 objectID];
+          v79 = objectID2;
           if (v40)
           {
-            v80 = [v78 persistentStore];
-            if (!v80 || [(NSArray *)v40 indexOfObjectIdenticalTo:v80]== 0x7FFFFFFFFFFFFFFFLL)
+            persistentStore = [objectID2 persistentStore];
+            if (!persistentStore || [(NSArray *)v40 indexOfObjectIdenticalTo:persistentStore]== 0x7FFFFFFFFFFFFFFFLL)
             {
               continue;
             }
           }
 
-          v81 = [v77 entity];
-          if (v81 == v113 || v112 && [(NSEntityDescription *)v113 _subentitiesIncludes:v81])
+          entity3 = [v77 entity];
+          if (entity3 == entity || includesSubentities && [(NSEntityDescription *)entity _subentitiesIncludes:entity3])
           {
             if (!v53)
             {
@@ -7234,7 +7234,7 @@ LABEL_18:
             v82 = objc_autoreleasePoolPush();
             if ([v110 evaluateWithObject:v77])
             {
-              if (v111)
+              if (resultType2)
               {
                 v83 = v79;
               }
@@ -7266,7 +7266,7 @@ LABEL_18:
     v117 = 0u;
     v114 = 0u;
     v115 = 0u;
-    deletedObjects = v108->_deletedObjects;
+    deletedObjects = selfCopy->_deletedObjects;
     v85 = [(NSMutableSet *)deletedObjects countByEnumeratingWithState:&v114 objects:v143 count:16];
     if (v85)
     {
@@ -7280,23 +7280,23 @@ LABEL_18:
             objc_enumerationMutation(deletedObjects);
           }
 
-          v88 = *(*(&v114 + 1) + 8 * jj);
+          objectID3 = *(*(&v114 + 1) + 8 * jj);
           if (!v40 || -[NSArray indexOfObjectIdenticalTo:](v40, "indexOfObjectIdenticalTo:", [objc_msgSend(*(*(&v114 + 1) + 8 * jj) "objectID")]) != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v89 = [v88 entity];
-            if (v89 == v113 || v112 && [(NSEntityDescription *)v113 _subentitiesIncludes:v89])
+            entity4 = [objectID3 entity];
+            if (entity4 == entity || includesSubentities && [(NSEntityDescription *)entity _subentitiesIncludes:entity4])
             {
               if (!v53)
               {
                 v53 = [MEMORY[0x1E695DFA8] setWithArray:v109];
               }
 
-              if (v111)
+              if (resultType2)
               {
-                v88 = [v88 objectID];
+                objectID3 = [objectID3 objectID];
               }
 
-              [v53 removeObject:v88];
+              [v53 removeObject:objectID3];
             }
           }
         }
@@ -7309,22 +7309,22 @@ LABEL_18:
 
     if (v53)
     {
-      v90 = [v53 allObjects];
-      if ([(NSArray *)v102 count]!= 0 && v111 == 0 && ((v106 ^ 1) & 1) == 0)
+      allObjects = [v53 allObjects];
+      if ([(NSArray *)sortDescriptors count]!= 0 && resultType2 == 0 && ((includesPropertyValues ^ 1) & 1) == 0)
       {
-        v90 = [v90 sortedArrayUsingDescriptors:v102];
+        allObjects = [allObjects sortedArrayUsingDescriptors:sortDescriptors];
       }
 
-      v109 = v90;
+      v109 = allObjects;
     }
 
     [v103 drain];
   }
 
-  v91 = [(NSFetchRequest *)v107 fetchLimit];
-  if (v91 && [v109 count] > v91)
+  fetchLimit = [(NSFetchRequest *)v107 fetchLimit];
+  if (fetchLimit && [v109 count] > fetchLimit)
   {
-    v92 = [v109 subarrayWithRange:{0, v91}];
+    v92 = [v109 subarrayWithRange:{0, fetchLimit}];
   }
 
   else
@@ -7332,9 +7332,9 @@ LABEL_18:
     v92 = v109;
   }
 
-  if (v108->_dispatchQueue && !-[NSFetchRequest resultType](v107, "resultType") && [v92 count])
+  if (selfCopy->_dispatchQueue && !-[NSFetchRequest resultType](v107, "resultType") && [v92 count])
   {
-    [(NSManagedObjectContext *)v108 _registerAsyncReferenceCallback];
+    [(NSManagedObjectContext *)selfCopy _registerAsyncReferenceCallback];
   }
 
   result = v92;
@@ -7343,15 +7343,15 @@ LABEL_52:
   return result;
 }
 
-- (id)_createStoreFetchRequestForFetchRequest:(id *)a1
+- (id)_createStoreFetchRequestForFetchRequest:(id *)request
 {
-  v2 = a1;
+  requestCopy = request;
   v54 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (request)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [a2 resultType];
-    if (v5 == 2)
+    resultType = [a2 resultType];
+    if (resultType == 2)
     {
       LOBYTE(v6) = 1;
     }
@@ -7361,23 +7361,23 @@ LABEL_52:
       v6 = [a2 includesPendingChanges] ^ 1;
     }
 
-    v7 = [a2 fetchLimit];
-    v8 = [a2 propertiesToFetch];
-    v9 = [a2 relationshipKeyPathsForPrefetching];
-    if ([v8 count])
+    fetchLimit = [a2 fetchLimit];
+    propertiesToFetch = [a2 propertiesToFetch];
+    relationshipKeyPathsForPrefetching = [a2 relationshipKeyPathsForPrefetching];
+    if ([propertiesToFetch count])
     {
       v10 = [a2 copy];
       a2 = v10;
-      if (v5 == 4 || v5 == 1)
+      if (resultType == 4 || resultType == 1)
       {
         [v10 setPropertiesToFetch:0];
         [a2 setRelationshipKeyPathsForPrefetching:0];
       }
 
-      else if (!v5 && [v9 count])
+      else if (!resultType && [relationshipKeyPathsForPrefetching count])
       {
         v39 = v6;
-        v40 = v2;
+        v40 = requestCopy;
         v41 = a2;
         v42 = v4;
         v11 = [objc_msgSend(a2 "entity")];
@@ -7386,7 +7386,7 @@ LABEL_52:
         v49 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v13 = [v9 countByEnumeratingWithState:&v48 objects:v53 count:16];
+        v13 = [relationshipKeyPathsForPrefetching countByEnumeratingWithState:&v48 objects:v53 count:16];
         if (v13)
         {
           v14 = v13;
@@ -7397,7 +7397,7 @@ LABEL_52:
             {
               if (*v49 != v15)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(relationshipKeyPathsForPrefetching);
               }
 
               v17 = *(*(&v48 + 1) + 8 * i);
@@ -7432,7 +7432,7 @@ LABEL_52:
               }
             }
 
-            v14 = [v9 countByEnumeratingWithState:&v48 objects:v53 count:16];
+            v14 = [relationshipKeyPathsForPrefetching countByEnumeratingWithState:&v48 objects:v53 count:16];
           }
 
           while (v14);
@@ -7441,7 +7441,7 @@ LABEL_52:
         a2 = v41;
         if ([v12 count])
         {
-          v21 = [MEMORY[0x1E695DF70] arrayWithArray:v8];
+          v21 = [MEMORY[0x1E695DF70] arrayWithArray:propertiesToFetch];
           v43 = 0u;
           v44 = 0u;
           v45 = 0u;
@@ -7461,7 +7461,7 @@ LABEL_52:
                 }
 
                 v26 = *(*(&v43 + 1) + 8 * j);
-                if ([v8 indexOfObjectIdenticalTo:v26] == 0x7FFFFFFFFFFFFFFFLL)
+                if ([propertiesToFetch indexOfObjectIdenticalTo:v26] == 0x7FFFFFFFFFFFFFFFLL)
                 {
                   [v21 addObject:v26];
                 }
@@ -7477,32 +7477,32 @@ LABEL_52:
         }
 
         v4 = v42;
-        v2 = v40;
+        requestCopy = v40;
         LOBYTE(v6) = v39;
       }
     }
 
-    if (!((v7 == 0) | v6 & 1) && (*(v2 + 41) & 4) != 0 && (v27 = [v2[12] count], v28 = objc_msgSend(v2[7], "count") + v27, (v29 = v28 + objc_msgSend(v2[11], "count")) != 0))
+    if (!((fetchLimit == 0) | v6 & 1) && (*(requestCopy + 41) & 4) != 0 && (v27 = [requestCopy[12] count], v28 = objc_msgSend(requestCopy[7], "count") + v27, (v29 = v28 + objc_msgSend(requestCopy[11], "count")) != 0))
     {
-      v2 = [a2 _copyForDirtyContext];
+      requestCopy = [a2 _copyForDirtyContext];
       objc_opt_self();
       if (objc_opt_isKindOfClass())
       {
-        v30 = [objc_msgSend(v2 "substitutionVariables")];
+        v30 = [objc_msgSend(requestCopy "substitutionVariables")];
         v31 = [objc_msgSend(v30 objectForKey:{@"FETCH_REQUEST_LIMIT_SUBSTITUTION", "constantValue"}];
         if (v31)
         {
-          v7 = [v31 unsignedIntegerValue];
+          fetchLimit = [v31 unsignedIntegerValue];
         }
 
-        v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7 + v29];
+        v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:fetchLimit + v29];
         [v30 setObject:objc_msgSend(MEMORY[0x1E696ABC8] forKey:{"expressionForConstantValue:", v32), @"FETCH_REQUEST_LIMIT_SUBSTITUTION"}];
-        [v2 setSubstitutionVariables:v30];
+        [requestCopy setSubstitutionVariables:v30];
       }
 
       else
       {
-        [v2 setFetchLimit:v29 + v7];
+        [requestCopy setFetchLimit:v29 + fetchLimit];
       }
     }
 
@@ -7533,20 +7533,20 @@ LABEL_52:
       [(NSExpressionDescription *)v38 setExpressionResultType:2000];
       [v35 addObject:v38];
 
-      v2 = [a2 copy];
-      [v2 setPropertiesToFetch:v35];
+      requestCopy = [a2 copy];
+      [requestCopy setPropertiesToFetch:v35];
     }
 
     else
     {
-      v2 = a2;
+      requestCopy = a2;
     }
 
     objc_autoreleasePoolPop(v4);
   }
 
   v33 = *MEMORY[0x1E69E9840];
-  return v2;
+  return requestCopy;
 }
 
 void *__59__NSManagedObjectContext__executeAsynchronousFetchRequest___block_invoke(void *result)
@@ -8125,11 +8125,11 @@ LABEL_4:
   return result;
 }
 
-- (void)_refaultObject:(id *)a1 globalID:(uint64_t)a2 BOOLean:(int)a3
+- (void)_refaultObject:(id *)object globalID:(uint64_t)d BOOLean:(int)lean
 {
-  if (a1)
+  if (object)
   {
-    if ((a3 & 1) != 0 || (*(a2 + 16) & 0x3F) == 0)
+    if ((lean & 1) != 0 || (*(d + 16) & 0x3F) == 0)
     {
       v7 = 0;
       v11 = 0;
@@ -8137,14 +8137,14 @@ LABEL_4:
 
     else
     {
-      v6 = *(a2 + 48);
+      v6 = *(d + 48);
       if (v6)
       {
         v6 = v6[1];
       }
 
       v7 = v6;
-      v8 = *(a2 + 48);
+      v8 = *(d + 48);
       if (v8)
       {
         v8 = v8[2];
@@ -8153,7 +8153,7 @@ LABEL_4:
       v11 = v8;
     }
 
-    if (a2)
+    if (d)
     {
       v9 = _insertion_fault_handler;
     }
@@ -8163,49 +8163,49 @@ LABEL_4:
       v9 = 0;
     }
 
-    [(NSFaultHandler *)v9 turnObject:a2 intoFaultWithContext:a1];
-    if (a2 && a3)
+    [(NSFaultHandler *)v9 turnObject:d intoFaultWithContext:object];
+    if (d && lean)
     {
-      v10 = *(a2 + 16);
+      v10 = *(d + 16);
       if ((v10 & 9) != 0)
       {
-        [a1[7] removeObject:a2];
-        [a1[12] removeObject:a2];
-        v10 = *(a2 + 16);
+        [object[7] removeObject:d];
+        [object[12] removeObject:d];
+        v10 = *(d + 16);
       }
 
       if ((v10 & 0x12) != 0)
       {
-        [a1[9] removeObject:a2];
-        [a1[10] removeObject:a2];
-        v10 = *(a2 + 16);
+        [object[9] removeObject:d];
+        [object[10] removeObject:d];
+        v10 = *(d + 16);
       }
 
       if ((v10 & 0x24) != 0)
       {
-        [a1[11] removeObject:a2];
-        [a1[8] removeObject:a2];
-        v10 = *(a2 + 16);
+        [object[11] removeObject:d];
+        [object[8] removeObject:d];
+        v10 = *(d + 16);
       }
 
-      *(a2 + 16) = v10 & 0xFFFFFFC0;
-      [(NSManagedObject *)a2 _setOriginalSnapshot__:?];
-      [(NSManagedObject *)a2 _setLastSnapshot__:?];
+      *(d + 16) = v10 & 0xFFFFFFC0;
+      [(NSManagedObject *)d _setOriginalSnapshot__:?];
+      [(NSManagedObject *)d _setLastSnapshot__:?];
     }
 
     if (v7)
     {
-      [(NSManagedObjectContext *)a1 _committedSnapshotForObject:a2];
+      [(NSManagedObjectContext *)object _committedSnapshotForObject:d];
     }
 
     if (v11)
     {
-      [(NSManagedObject *)a2 _setLastSnapshot__:v11];
+      [(NSManagedObject *)d _setLastSnapshot__:v11];
     }
   }
 }
 
-- (uint64_t)_mergeRefreshObject:(char)a3 mergeChanges:(NSKnownKeysDictionary *)a4 withPersistentSnapshot:
+- (uint64_t)_mergeRefreshObject:(char)object mergeChanges:(NSKnownKeysDictionary *)changes withPersistentSnapshot:
 {
   v67 = *MEMORY[0x1E69E9840];
   if (!_PF_Threading_Debugging_level)
@@ -8220,7 +8220,7 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  _PFAssertSafeMultiThreadedAccess_impl(a1, sel__mergeRefreshObject_mergeChanges_withPersistentSnapshot_);
+  _PFAssertSafeMultiThreadedAccess_impl(self, sel__mergeRefreshObject_mergeChanges_withPersistentSnapshot_);
   if (!a2)
   {
     goto LABEL_49;
@@ -8239,21 +8239,21 @@ LABEL_3:
     goto LABEL_49;
   }
 
-  v11 = [a2 objectID];
-  values = v11;
-  if (a3)
+  objectID = [a2 objectID];
+  values = objectID;
+  if (object)
   {
-    v12 = v11;
+    v12 = objectID;
     [a2 willRefresh:1];
-    refreshed = a4;
-    if (!a4)
+    refreshed = changes;
+    if (!changes)
     {
       refreshed = [(NSManagedObject *)a2 _newChangedValuesForRefresh__];
     }
 
-    v14 = [(NSManagedObject *)a2 _changedTransientProperties__];
+    _changedTransientProperties__ = [(NSManagedObject *)a2 _changedTransientProperties__];
     v15 = _insertion_fault_handler;
-    v16 = [a2 entity];
+    entity = [a2 entity];
     v17 = *(a2 + 48);
     v33 = v15;
     if (v17)
@@ -8266,9 +8266,9 @@ LABEL_3:
       {
         if ((v19 & 0x2000) == 0)
         {
-          if (v16)
+          if (entity)
           {
-            v20 = *(*(v16 + 152) + 48);
+            v20 = *(*(entity + 152) + 48);
             if (v20)
             {
               *(a2 + 16) = v19 | 0x1000;
@@ -8289,12 +8289,12 @@ LABEL_3:
     }
 
     *(a2 + 16) = v19 | 0x2000;
-    [NSManagedObjectContext _refaultObject:a1 globalID:a2 BOOLean:0];
+    [NSManagedObjectContext _refaultObject:self globalID:a2 BOOLean:0];
     v22 = *(a2 + 16) & 0x12;
     v23 = v22 != 0;
     if ([v12 isTemporaryID])
     {
-      v24 = atomic_load((a1 + 48));
+      v24 = atomic_load((self + 48));
       v23 = v24 ^ 1 | (v22 != 0);
     }
 
@@ -8316,13 +8316,13 @@ LABEL_37:
         [(NSManagedObject *)a2 _updateFromRefreshSnapshot:0 includingTransients:?];
       }
 
-      if (!a4)
+      if (!changes)
       {
       }
 
-      if ([(NSKnownKeysDictionary *)v14 count])
+      if ([(NSKnownKeysDictionary *)_changedTransientProperties__ count])
       {
-        [(NSManagedObject *)a2 _updateFromSnapshot:v14];
+        [(NSManagedObject *)a2 _updateFromSnapshot:_changedTransientProperties__];
       }
 
       v30 = *(a2 + 16);
@@ -8342,8 +8342,8 @@ LABEL_37:
       goto LABEL_47;
     }
 
-    [(NSManagedObjectContext *)a1 lockObjectStore];
-    v26 = [*(a1 + 32) newValuesForObjectWithID:values withContext:a1 error:0];
+    [(NSManagedObjectContext *)self lockObjectStore];
+    v26 = [*(self + 32) newValuesForObjectWithID:values withContext:self error:0];
     v25 = v26 != 0;
     if (v26)
     {
@@ -8384,7 +8384,7 @@ LABEL_37:
         v36 = 0u;
         v28 = _PFStackAllocatorCreate(&v35, 1024);
         v29 = CFArrayCreate(v28, &values, 1, 0);
-        [*(a1 + 32) managedObjectContextDidRegisterObjectsWithIDs:v29 generation:{objc_msgSend(a1, "_queryGenerationToken")}];
+        [*(self + 32) managedObjectContextDidRegisterObjectsWithIDs:v29 generation:{objc_msgSend(self, "_queryGenerationToken")}];
         if (*(&v36 + 1) && v29)
         {
           CFRelease(v29);
@@ -8393,15 +8393,15 @@ LABEL_37:
         *(a2 + 16) |= 0x200u;
       }
 
-      _PFFaultHandlerFulfillFault(v33, a2, a1, v27, 0);
+      _PFFaultHandlerFulfillFault(v33, a2, self, v27, 0);
     }
 
-    [(NSManagedObjectContext *)a1 unlockObjectStore];
+    [(NSManagedObjectContext *)self unlockObjectStore];
     goto LABEL_37;
   }
 
   [a2 willRefresh:0];
-  [NSManagedObjectContext _refaultObject:a1 globalID:a2 BOOLean:1];
+  [NSManagedObjectContext _refaultObject:self globalID:a2 BOOLean:1];
 LABEL_47:
   result = 1;
 LABEL_50:
@@ -8409,16 +8409,16 @@ LABEL_50:
   return result;
 }
 
-- (uint64_t)_mergeRefreshEpilogueForObject:(uint64_t)a3 mergeChanges:
+- (uint64_t)_mergeRefreshEpilogueForObject:(uint64_t)object mergeChanges:
 {
   [a2 awakeFromSnapshotEvents:256];
-  [a2 didRefresh:a3];
-  [(NSManagedObjectContext *)a1 _prepareUnprocessedDeletionAfterRefresh:a2];
-  result = [*(a1 + 112) addObject:{objc_msgSend(a2, "objectID")}];
-  if ((*(a1 + 40) & 1) == 0)
+  [a2 didRefresh:object];
+  [(NSManagedObjectContext *)self _prepareUnprocessedDeletionAfterRefresh:a2];
+  result = [*(self + 112) addObject:{objc_msgSend(a2, "objectID")}];
+  if ((*(self + 40) & 1) == 0)
   {
 
-    return [(NSManagedObjectContext *)a1 _enqueueEndOfEventNotification];
+    return [(NSManagedObjectContext *)self _enqueueEndOfEventNotification];
   }
 
   return result;
@@ -8456,7 +8456,7 @@ LABEL_50:
   }
 }
 
-- (NSManagedObjectContext)initWithCoder:(id)a3
+- (NSManagedObjectContext)initWithCoder:(id)coder
 {
   objc_opt_class();
   v19.receiver = self;
@@ -8464,7 +8464,7 @@ LABEL_50:
   v5 = [(NSManagedObjectContext *)&v19 init];
   if (v5)
   {
-    v6 = [a3 decodeIntForKey:@"NSConcurrencyType"];
+    v6 = [coder decodeIntForKey:@"NSConcurrencyType"];
     v7 = v6;
     if (v6 == 2)
     {
@@ -8505,9 +8505,9 @@ LABEL_50:
         {
 LABEL_22:
           atomic_store(0, v5 + 1);
-          [a3 decodeFloatForKey:@"NSFetchTimestamp"];
+          [coder decodeFloatForKey:@"NSFetchTimestamp"];
           *(v5 + 18) = v15;
-          if ([a3 decodeBoolForKey:@"NSRetainsRegisteredObjects"])
+          if ([coder decodeBoolForKey:@"NSRetainsRegisteredObjects"])
           {
             v16 = 64;
           }
@@ -8518,7 +8518,7 @@ LABEL_22:
           }
 
           *(v5 + 10) = v5[5] & 0xFFFFFFBF | v16;
-          if ([a3 decodeBoolForKey:@"NSPropagatesDeleted"])
+          if ([coder decodeBoolForKey:@"NSPropagatesDeleted"])
           {
             v17 = 2;
           }
@@ -8529,7 +8529,7 @@ LABEL_22:
           }
 
           *(v5 + 10) = v5[5] & 0xFFFFFFFD | v17;
-          [v5 setMergePolicy:{objc_msgSend(a3, "decodeObjectForKey:", @"NSMergePolicy"}];
+          [v5 setMergePolicy:{objc_msgSend(coder, "decodeObjectForKey:", @"NSMergePolicy"}];
           return v5;
         }
 
@@ -8545,10 +8545,10 @@ LABEL_22:
   return v5;
 }
 
-- (uint64_t)_initWithParentObjectStore:(void *)a1
+- (uint64_t)_initWithParentObjectStore:(void *)store
 {
   objc_opt_self();
-  v29.receiver = a1;
+  v29.receiver = store;
   v29.super_class = NSManagedObjectContext;
   v4 = objc_msgSendSuper2(&v29, sel_init);
   v5 = v4;
@@ -8714,10 +8714,10 @@ LABEL_22:
       v23 = atomic_load((v5 + 49));
       if ((v23 & 1) == 0)
       {
-        v24 = [MEMORY[0x1E696ADC8] currentQueue];
-        if ([v24 maxConcurrentOperationCount] == 1)
+        currentQueue = [MEMORY[0x1E696ADC8] currentQueue];
+        if ([currentQueue maxConcurrentOperationCount] == 1)
         {
-          v25 = v24;
+          v25 = currentQueue;
         }
 
         else
@@ -8745,7 +8745,7 @@ LABEL_22:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -8754,13 +8754,13 @@ LABEL_22:
 
   fetchTimestamp = self->_fetchTimestamp;
   *&fetchTimestamp = fetchTimestamp;
-  [a3 encodeFloat:@"NSFetchTimestamp" forKey:fetchTimestamp];
-  [a3 encodeBool:(*&self->_flags >> 6) & 1 forKey:@"NSRetainsRegisteredObjects"];
-  [a3 encodeBool:(*&self->_flags >> 1) & 1 forKey:@"NSPropagatesDeleted"];
-  [a3 encodeObject:-[NSManagedObjectContext mergePolicy](self forKey:{"mergePolicy"), @"NSMergePolicy"}];
-  v6 = [(NSManagedObjectContext *)self concurrencyType];
+  [coder encodeFloat:@"NSFetchTimestamp" forKey:fetchTimestamp];
+  [coder encodeBool:(*&self->_flags >> 6) & 1 forKey:@"NSRetainsRegisteredObjects"];
+  [coder encodeBool:(*&self->_flags >> 1) & 1 forKey:@"NSPropagatesDeleted"];
+  [coder encodeObject:-[NSManagedObjectContext mergePolicy](self forKey:{"mergePolicy"), @"NSMergePolicy"}];
+  concurrencyType = [(NSManagedObjectContext *)self concurrencyType];
 
-  [a3 encodeInt:v6 forKey:@"NSConcurrencyType"];
+  [coder encodeInt:concurrencyType forKey:@"NSConcurrencyType"];
 }
 
 - (void)detectConflictsForObject:(NSManagedObject *)object
@@ -8806,12 +8806,12 @@ LABEL_7:
   }
 }
 
-- (void)_coreMergeChangesFromDidSaveDictionary:(int)a3 usingObjectIDs:(uint64_t)a4 withClientQueryGeneration:
+- (void)_coreMergeChangesFromDidSaveDictionary:(int)dictionary usingObjectIDs:(uint64_t)ds withClientQueryGeneration:
 {
-  v149 = a3;
+  dictionaryCopy = dictionary;
   v157 = a2;
   v161 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
 LABEL_228:
     v132 = *MEMORY[0x1E69E9840];
@@ -8820,7 +8820,7 @@ LABEL_228:
 
   if (_PF_Threading_Debugging_level)
   {
-    _PFAssertSafeMultiThreadedAccess_impl(a1, sel__coreMergeChangesFromDidSaveDictionary_usingObjectIDs_withClientQueryGeneration_);
+    _PFAssertSafeMultiThreadedAccess_impl(self, sel__coreMergeChangesFromDidSaveDictionary_usingObjectIDs_withClientQueryGeneration_);
   }
 
   v150 = objc_alloc_init(MEMORY[0x1E696AAC8]);
@@ -8847,16 +8847,16 @@ LABEL_11:
   }
 
   v8 = [MEMORY[0x1E695DFA8] set];
-  v9 = Weak;
+  parentContext = Weak;
   do
   {
-    [v8 addObject:v9];
-    v9 = [v9 parentContext];
+    [v8 addObject:parentContext];
+    parentContext = [parentContext parentContext];
   }
 
-  while (v9);
+  while (parentContext);
 LABEL_12:
-  if (Weak != a1 && (!v8 || ![v8 containsObject:a1]))
+  if (Weak != self && (!v8 || ![v8 containsObject:self]))
   {
     v11 = [v157 objectForKey:@"newQueryGeneration"];
     if ([v11 _isEnabled])
@@ -8869,10 +8869,10 @@ LABEL_12:
       v12 = 0;
     }
 
-    v148 = [a1 _queryGenerationToken];
-    if (!a4 && [v148 _isEnabled])
+    _queryGenerationToken = [self _queryGenerationToken];
+    if (!ds && [_queryGenerationToken _isEnabled])
     {
-      [a1 _setQueryGenerationFromToken:+[NSQueryGenerationToken currentQueryGenerationToken](NSQueryGenerationToken error:{"currentQueryGenerationToken"), 0}];
+      [self _setQueryGenerationFromToken:+[NSQueryGenerationToken currentQueryGenerationToken](NSQueryGenerationToken error:{"currentQueryGenerationToken"), 0}];
     }
 
     v13 = [v157 objectForKey:@"inserted"];
@@ -9081,14 +9081,14 @@ LABEL_12:
     }
 
     v160 = malloc_type_calloc(1uLL, v152, 0x100004077774924uLL);
-    v147 = *(a1 + 40) & 0x20000;
-    v134 = a4;
-    v46 = [a1 persistentStoreCoordinator];
-    *(a1 + 40) |= 0x21000u;
+    v147 = *(self + 40) & 0x20000;
+    dsCopy = ds;
+    persistentStoreCoordinator = [self persistentStoreCoordinator];
+    *(self + 40) |= 0x21000u;
     v137 = v31;
     if (v158)
     {
-      v47 = v149;
+      v47 = dictionaryCopy;
       v48 = [v13 count];
       v49 = v13;
       v50 = v48;
@@ -9097,18 +9097,18 @@ LABEL_12:
       v51 = 0;
       while (1)
       {
-        v52 = *&v42[8 * v51];
+        objectID = *&v42[8 * v51];
         if ((v47 & 1) == 0 && v51 < v50)
         {
-          v52 = [*&v42[8 * v51] objectID];
+          objectID = [*&v42[8 * v51] objectID];
         }
 
-        if (([v52 _isPersistentStoreAlive] & 1) == 0 && (objc_msgSend(v52, "isTemporaryID") & 1) == 0 && !objc_msgSend(v46, "persistentStoreForIdentifier:", objc_msgSend(v52, "_storeIdentifier")))
+        if (([objectID _isPersistentStoreAlive] & 1) == 0 && (objc_msgSend(objectID, "isTemporaryID") & 1) == 0 && !objc_msgSend(persistentStoreCoordinator, "persistentStoreForIdentifier:", objc_msgSend(objectID, "_storeIdentifier")))
         {
           break;
         }
 
-        v53 = [a1 objectWithID:v52];
+        v53 = [self objectWithID:objectID];
         v54 = v53;
         v156[v51] = v53;
         if (v53)
@@ -9117,12 +9117,12 @@ LABEL_12:
           {
             if ((*(v54 + 16) & 0x24) != 0)
             {
-              [*(a1 + 64) removeObject:v54];
-              [*(a1 + 88) removeObject:v54];
+              [*(self + 64) removeObject:v54];
+              [*(self + 88) removeObject:v54];
               *(v54 + 16) &= 0xFFFFFFDB;
             }
 
-            v56 = **(a1 + 168);
+            v56 = **(self + 168);
             if (v56)
             {
               [v56 removeObject:{objc_msgSend(v54, "objectID")}];
@@ -9173,7 +9173,7 @@ LABEL_12:
     {
       v136 = v32;
       v144 = 0;
-      v47 = v149;
+      v47 = dictionaryCopy;
 LABEL_100:
       v61 = v143;
       if (v151)
@@ -9186,19 +9186,19 @@ LABEL_100:
         v65 = v151;
         while (1)
         {
-          v66 = *&v42[8 * v63];
+          objectID2 = *&v42[8 * v63];
           if ((v47 & 1) == 0 && v63 < v62)
           {
-            v66 = [*&v42[8 * v63] objectID];
+            objectID2 = [*&v42[8 * v63] objectID];
           }
 
-          if (([v66 _isPersistentStoreAlive] & 1) == 0 && (objc_msgSend(v66, "isTemporaryID") & 1) == 0 && !objc_msgSend(v46, "persistentStoreForIdentifier:", objc_msgSend(v66, "_storeIdentifier")))
+          if (([objectID2 _isPersistentStoreAlive] & 1) == 0 && (objc_msgSend(objectID2, "isTemporaryID") & 1) == 0 && !objc_msgSend(persistentStoreCoordinator, "persistentStoreForIdentifier:", objc_msgSend(objectID2, "_storeIdentifier")))
           {
             break;
           }
 
-          v67 = [a1 objectRegisteredForID:v66];
-          v68 = v67;
+          v67 = [self objectRegisteredForID:objectID2];
+          _newChangedValuesForRefresh__ = v67;
           if (v67)
           {
             if (([(NSKnownKeysDictionary *)v67 hasChanges]& 1) != 0)
@@ -9208,23 +9208,23 @@ LABEL_100:
 
             else
             {
-              isa = v68[6].super.super.super.isa;
+              isa = _newChangedValuesForRefresh__[6].super.super.super.isa;
               if (isa)
               {
                 LOBYTE(isa) = *isa != 0;
               }
             }
 
-            v155[v63] = v68;
+            v155[v63] = _newChangedValuesForRefresh__;
             v160[v64] = isa;
-            if (([(NSKnownKeysDictionary *)v68 isFault]& 1) != 0)
+            if (([(NSKnownKeysDictionary *)_newChangedValuesForRefresh__ isFault]& 1) != 0)
             {
-              v68 = 0;
+              _newChangedValuesForRefresh__ = 0;
             }
 
             else
             {
-              v68 = [(NSManagedObject *)v68 _newChangedValuesForRefresh__];
+              _newChangedValuesForRefresh__ = [(NSManagedObject *)_newChangedValuesForRefresh__ _newChangedValuesForRefresh__];
             }
 
             v70 = v64;
@@ -9237,13 +9237,13 @@ LABEL_100:
             v160[v64] = 0;
           }
 
-          if (![(NSKnownKeysDictionary *)v68 count])
+          if (![(NSKnownKeysDictionary *)_newChangedValuesForRefresh__ count])
           {
 
-            v68 = 0;
+            _newChangedValuesForRefresh__ = 0;
           }
 
-          *&v159[8 * v70] = v68;
+          *&v159[8 * v70] = _newChangedValuesForRefresh__;
           ++v63;
           ++v64;
           if (!--v65)
@@ -9281,7 +9281,7 @@ LABEL_137:
                   v85 = NSDictionary_EmptyDictionary;
                 }
 
-                v86 = [(NSManagedObjectContext *)a1 _mergeRefreshObject:v83 != 0 mergeChanges:v85 withPersistentSnapshot:?];
+                v86 = [(NSManagedObjectContext *)self _mergeRefreshObject:v83 != 0 mergeChanges:v85 withPersistentSnapshot:?];
               }
 
               else
@@ -9326,7 +9326,7 @@ LABEL_137:
                   v94 = NSDictionary_EmptyDictionary;
                 }
 
-                v95 = [(NSManagedObjectContext *)a1 _mergeRefreshObject:v92 != 0 mergeChanges:v94 withPersistentSnapshot:?];
+                v95 = [(NSManagedObjectContext *)self _mergeRefreshObject:v92 != 0 mergeChanges:v94 withPersistentSnapshot:?];
               }
 
               else
@@ -9371,7 +9371,7 @@ LABEL_137:
 
               if (!v103)
               {
-                [(NSManagedObjectContext *)a1 _mergeRefreshEpilogueForObject:v100 & 1 mergeChanges:?];
+                [(NSManagedObjectContext *)self _mergeRefreshEpilogueForObject:v100 & 1 mergeChanges:?];
               }
 
               ++v97;
@@ -9403,7 +9403,7 @@ LABEL_137:
 
               if (!v110)
               {
-                [(NSManagedObjectContext *)a1 _mergeRefreshEpilogueForObject:v107 & 1 mergeChanges:?];
+                [(NSManagedObjectContext *)self _mergeRefreshEpilogueForObject:v107 & 1 mergeChanges:?];
               }
 
               ++v106;
@@ -9415,7 +9415,7 @@ LABEL_137:
 
           v111 = 1;
           v112 = 0;
-          *(a1 + 40) = *(a1 + 40) & 0xFFFDEFFF | v147;
+          *(self + 40) = *(self + 40) & 0xFFFDEFFF | v147;
           goto LABEL_179;
         }
 
@@ -9426,34 +9426,34 @@ LABEL_137:
         v73 = 0;
         while (1)
         {
-          v74 = *&v42[8 * v73];
+          objectID3 = *&v42[8 * v73];
           if ((v47 & 1) == 0 && v73 < v72)
           {
-            v74 = [*&v42[8 * v73] objectID];
+            objectID3 = [*&v42[8 * v73] objectID];
           }
 
-          if (([v74 _isPersistentStoreAlive] & 1) == 0 && (objc_msgSend(v74, "isTemporaryID") & 1) == 0 && !objc_msgSend(v46, "persistentStoreForIdentifier:", objc_msgSend(v74, "_storeIdentifier")))
+          if (([objectID3 _isPersistentStoreAlive] & 1) == 0 && (objc_msgSend(objectID3, "isTemporaryID") & 1) == 0 && !objc_msgSend(persistentStoreCoordinator, "persistentStoreForIdentifier:", objc_msgSend(objectID3, "_storeIdentifier")))
           {
             break;
           }
 
-          if (v74)
+          if (objectID3)
           {
-            v75 = **(a1 + 168);
+            v75 = **(self + 168);
             if (!v75)
             {
-              **(a1 + 168) = objc_alloc_init(MEMORY[0x1E695DFA8]);
-              v75 = **(a1 + 168);
+              **(self + 168) = objc_alloc_init(MEMORY[0x1E695DFA8]);
+              v75 = **(self + 168);
             }
 
-            [v75 addObject:v74];
+            [v75 addObject:objectID3];
           }
 
-          v76 = [a1 objectRegisteredForID:v74];
+          v76 = [self objectRegisteredForID:objectID3];
           v77 = v76;
           if (v76 && (v76[16] & 0x20) == 0)
           {
-            [a1 deleteObject:v76];
+            [self deleteObject:v76];
           }
 
           v78 = v154;
@@ -9468,7 +9468,7 @@ LABEL_137:
       v113 = v144;
     }
 
-    *(a1 + 40) = *(a1 + 40) & 0xFFFDEFFF | v147;
+    *(self + 40) = *(self + 40) & 0xFFFDEFFF | v147;
 
     v111 = 0;
     v144 = 0;
@@ -9527,7 +9527,7 @@ LABEL_179:
       [v116 drain];
     }
 
-    v117 = v149;
+    v117 = dictionaryCopy;
     if (v111)
     {
       if ((v112 & 1) == 0)
@@ -9535,11 +9535,11 @@ LABEL_179:
         v160 = objc_alloc_init(MEMORY[0x1E696AAC8]);
         if (v144)
         {
-          v118 = *(*(a1 + 168) + 88);
+          v118 = *(*(self + 168) + 88);
           if (!v118)
           {
             v118 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-            *(*(a1 + 168) + 88) = v118;
+            *(*(self + 168) + 88) = v118;
           }
 
           [v118 unionSet:v144];
@@ -9597,23 +9597,23 @@ LABEL_179:
           }
         }
 
-        v131 = v134 == 0;
-        *(*(a1 + 168) + 104) = [v121 copy];
+        v131 = dsCopy == 0;
+        *(*(self + 168) + 104) = [v121 copy];
 
-        if (v131 && [v148 _isEnabled])
+        if (v131 && [_queryGenerationToken _isEnabled])
         {
-          [a1 _setQueryGenerationFromToken:+[NSQueryGenerationToken currentQueryGenerationToken](NSQueryGenerationToken error:{"currentQueryGenerationToken"), 0}];
+          [self _setQueryGenerationFromToken:+[NSQueryGenerationToken currentQueryGenerationToken](NSQueryGenerationToken error:{"currentQueryGenerationToken"), 0}];
         }
 
-        [a1 processPendingChanges];
+        [self processPendingChanges];
         if (v160)
         {
           [v160 drain];
         }
 
-        if (*(a1 + 24))
+        if (*(self + 24))
         {
-          [(NSManagedObjectContext *)a1 _registerAsyncReferenceCallback];
+          [(NSManagedObjectContext *)self _registerAsyncReferenceCallback];
         }
       }
     }
@@ -9634,23 +9634,23 @@ LABEL_179:
     _PFAssertSafeMultiThreadedAccess_impl(self, a2);
   }
 
-  v5 = [(NSNotification *)notification object];
-  if (v5 == self)
+  object = [(NSNotification *)notification object];
+  if (object == self)
   {
     goto LABEL_7;
   }
 
-  v6 = v5;
+  v6 = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(NSManagedObjectContext *)v6 persistentStoreCoordinator];
-    if (v7 != [(NSManagedObjectContext *)self persistentStoreCoordinator])
+    persistentStoreCoordinator = [(NSManagedObjectContext *)v6 persistentStoreCoordinator];
+    if (persistentStoreCoordinator != [(NSManagedObjectContext *)self persistentStoreCoordinator])
     {
       v8 = objc_opt_class();
-      v9 = [(NSNotification *)notification userInfo];
+      userInfo = [(NSNotification *)notification userInfo];
       v13[0] = self;
-      [v8 _mergeChangesFromRemoteContextSave:v9 intoContexts:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v13, 1)}];
+      [v8 _mergeChangesFromRemoteContextSave:userInfo intoContexts:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v13, 1)}];
 LABEL_7:
       v10 = *MEMORY[0x1E69E9840];
       return;
@@ -9801,21 +9801,21 @@ LABEL_16:
 LABEL_17:
     v9 = 0;
     v10 = 0;
-    v11 = self;
-    while (v11 != v4)
+    selfCopy = self;
+    while (selfCopy != v4)
     {
-      if (v11 == v9)
+      if (selfCopy == v9)
       {
         goto LABEL_25;
       }
 
       if (!v9)
       {
-        v9 = v11;
+        v9 = selfCopy;
       }
 
-      v11 = atomic_load(&v11->_queueOwner);
-      if (!v11)
+      selfCopy = atomic_load(&selfCopy->_queueOwner);
+      if (!selfCopy)
       {
         goto LABEL_27;
       }
@@ -9857,18 +9857,18 @@ LABEL_30:
   {
     v3 = result;
     atomic_store(1u, result + 48);
-    v4 = [a2 persistentStoreCoordinator];
+    persistentStoreCoordinator = [a2 persistentStoreCoordinator];
     *(v3 + 32) = a2;
     if (a2)
     {
       CFRetain(a2);
     }
 
-    [(NSManagedObjectContext *)v3 _registerForNotificationsWithCoordinator:v4];
-    result = [(_PFContextMapTable *)*(v3 + 120) setForUseWithCoordinator:v4];
-    if (v4)
+    [(NSManagedObjectContext *)v3 _registerForNotificationsWithCoordinator:persistentStoreCoordinator];
+    result = [(_PFContextMapTable *)*(v3 + 120) setForUseWithCoordinator:persistentStoreCoordinator];
+    if (persistentStoreCoordinator)
     {
-      v5 = *(v4 + 96);
+      v5 = *(persistentStoreCoordinator + 96);
       if (v5)
       {
         v5 = *(v5 + 48);
@@ -9896,10 +9896,10 @@ LABEL_30:
       result = [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
       if ((*(v2 + 42) & 0x40) != 0 && *(v2 + 24) && *(v2 + 32))
       {
-        v3 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v4 = *(v2 + 32);
 
-        return [v3 addObserver:v2 selector:sel__automaticallyMergeChangesFromContextDidSaveNotification_ name:@"_NSManagedObjectContextDidSaveObjectIDsPrivateNotification" object:v4];
+        return [defaultCenter addObserver:v2 selector:sel__automaticallyMergeChangesFromContextDidSaveNotification_ name:@"_NSManagedObjectContextDidSaveObjectIDsPrivateNotification" object:v4];
       }
     }
   }
@@ -9956,10 +9956,10 @@ LABEL_16:
     if (_PF_Threading_Debugging_level)
     {
       v7 = parentContext;
-      v8 = self;
+      selfCopy = self;
       _PFAssertSafeMultiThreadedAccess_impl(self, a2);
       parentContext = v7;
-      self = v8;
+      self = selfCopy;
     }
 
     [(NSManagedObjectContext *)self _setParentContext:?];
@@ -10090,7 +10090,7 @@ uint64_t __47__NSManagedObjectContext_setTransactionAuthor___block_invoke(uint64
   return result;
 }
 
-- (id)_retainedCurrentQueryGeneration:(id)a3
+- (id)_retainedCurrentQueryGeneration:(id)generation
 {
   if (!self->_parentObjectStore)
   {
@@ -10109,10 +10109,10 @@ LABEL_5:
 
   parentObjectStore = self->_parentObjectStore;
 
-  return [parentObjectStore _retainedCurrentQueryGeneration:a3];
+  return [parentObjectStore _retainedCurrentQueryGeneration:generation];
 }
 
-- (BOOL)_setQueryGenerationFromToken:(id)a3 error:(id *)a4
+- (BOOL)_setQueryGenerationFromToken:(id)token error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   if (self->_parentObjectStore && (v5 = atomic_load(&self->_isParentStoreContext), (v5 & 1) != 0))
@@ -10136,7 +10136,7 @@ LABEL_5:
     v13[1] = 3221225472;
     v13[2] = __61__NSManagedObjectContext__setQueryGenerationFromToken_error___block_invoke;
     v13[3] = &unk_1E6EC1A00;
-    v13[4] = a3;
+    v13[4] = token;
     v13[5] = self;
     v13[6] = &v20;
     v13[7] = &v14;
@@ -10156,9 +10156,9 @@ LABEL_5:
       v7 = v15[5];
       if (v7)
       {
-        if (a4)
+        if (error)
         {
-          *a4 = v7;
+          *error = v7;
         }
       }
 
@@ -10287,7 +10287,7 @@ void __61__NSManagedObjectContext__setQueryGenerationFromToken_error___block_inv
   }
 }
 
-- (BOOL)_setChangeTrackingTokenFromToken:(id)a3 error:(id *)a4
+- (BOOL)_setChangeTrackingTokenFromToken:(id)token error:(id *)error
 {
   if (self->_parentObjectStore)
   {
@@ -10302,11 +10302,11 @@ void __61__NSManagedObjectContext__setQueryGenerationFromToken_error___block_inv
   v6[1] = 3221225472;
   v6[2] = __65__NSManagedObjectContext__setChangeTrackingTokenFromToken_error___block_invoke;
   v6[3] = &unk_1E6EC1600;
-  v6[4] = a3;
+  v6[4] = token;
   v6[5] = self;
   if (self->_dispatchQueue)
   {
-    [(NSManagedObjectContext *)self performBlockAndWait:v6, a4];
+    [(NSManagedObjectContext *)self performBlockAndWait:v6, error];
   }
 
   else
@@ -10394,14 +10394,14 @@ uint64_t __67__NSManagedObjectContext__setAutomaticallyMergesChangesFromParent__
   return result;
 }
 
-- (void)_automaticallyMergeChangesFromContextDidSaveNotification:(id)a3
+- (void)_automaticallyMergeChangesFromContextDidSaveNotification:(id)notification
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __83__NSManagedObjectContext__automaticallyMergeChangesFromContextDidSaveNotification___block_invoke;
   v3[3] = &unk_1E6EC1600;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = notification;
   [(NSManagedObjectContext *)self performBlock:v3];
 }
 
@@ -10416,7 +10416,7 @@ _BYTE *__83__NSManagedObjectContext__automaticallyMergeChangesFromContextDidSave
   return result;
 }
 
-- (void)objectDidBeginEditing:(id)a3
+- (void)objectDidBeginEditing:(id)editing
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -10432,9 +10432,9 @@ _BYTE *__83__NSManagedObjectContext__automaticallyMergeChangesFromContextDidSave
 
   v7.length = CFArrayGetCount(v5);
   v7.location = 0;
-  if (CFArrayGetFirstIndexOfValue(v5, v7, a3) == -1)
+  if (CFArrayGetFirstIndexOfValue(v5, v7, editing) == -1)
   {
-    CFArrayAppendValue(v5, a3);
+    CFArrayAppendValue(v5, editing);
     if ((*(&self->_flags + 1) & 0x20) == 0 && CFArrayGetCount(v5) >= 1)
     {
       [(NSManagedObjectContext *)self willChangeValueForKey:@"isEditing"];
@@ -10445,7 +10445,7 @@ _BYTE *__83__NSManagedObjectContext__automaticallyMergeChangesFromContextDidSave
   }
 }
 
-- (void)objectDidEndEditing:(id)a3
+- (void)objectDidEndEditing:(id)editing
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -10461,7 +10461,7 @@ _BYTE *__83__NSManagedObjectContext__automaticallyMergeChangesFromContextDidSave
 
   v8.length = CFArrayGetCount(v5);
   v8.location = 0;
-  FirstIndexOfValue = CFArrayGetFirstIndexOfValue(v5, v8, a3);
+  FirstIndexOfValue = CFArrayGetFirstIndexOfValue(v5, v8, editing);
   if (FirstIndexOfValue != -1)
   {
     CFArrayRemoveValueAtIndex(v5, FirstIndexOfValue);
@@ -10475,18 +10475,18 @@ _BYTE *__83__NSManagedObjectContext__automaticallyMergeChangesFromContextDidSave
   }
 }
 
-- (BOOL)commitEditingAndReturnError:(id *)a3
+- (BOOL)commitEditingAndReturnError:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(NSManagedObjectContext *)self commitEditing];
-  if (!v4)
+  commitEditing = [(NSManagedObjectContext *)self commitEditing];
+  if (!commitEditing)
   {
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:0];
     if (v5)
     {
-      if (a3)
+      if (error)
       {
-        *a3 = v5;
+        *error = v5;
       }
     }
 
@@ -10515,7 +10515,7 @@ _BYTE *__83__NSManagedObjectContext__automaticallyMergeChangesFromContextDidSave
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v4;
+  return commitEditing;
 }
 
 - (BOOL)commitEditing
@@ -10551,19 +10551,19 @@ _BYTE *__83__NSManagedObjectContext__automaticallyMergeChangesFromContextDidSave
   return v6;
 }
 
-- (uint64_t)_sendCommitEditingSelectorToTarget:(uint64_t)a3 sender:(uint64_t)a4 selector:(char)a5 flag:(uint64_t)a6 contextInfo:(int)a7 delayed:
+- (uint64_t)_sendCommitEditingSelectorToTarget:(uint64_t)target sender:(uint64_t)sender selector:(char)selector flag:(uint64_t)flag contextInfo:(int)info delayed:
 {
-  v13 = a3;
-  v12 = a5;
-  v11 = a6;
+  targetCopy = target;
+  selectorCopy = selector;
+  flagCopy = flag;
   if (result)
   {
-    v10 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:{objc_msgSend(a2, "methodSignatureForSelector:", a4)}];
-    [v10 setSelector:a4];
-    [v10 setArgument:&v13 atIndex:2];
-    [v10 setArgument:&v12 atIndex:3];
-    [v10 setArgument:&v11 atIndex:4];
-    if (a7)
+    v10 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:{objc_msgSend(a2, "methodSignatureForSelector:", sender)}];
+    [v10 setSelector:sender];
+    [v10 setArgument:&targetCopy atIndex:2];
+    [v10 setArgument:&selectorCopy atIndex:3];
+    [v10 setArgument:&flagCopy atIndex:4];
+    if (info)
     {
       return [v10 performSelector:sel_invokeWithTarget_ withObject:a2 afterDelay:objc_msgSend(MEMORY[0x1E695DEC8] inModes:{"arrayWithObject:", *MEMORY[0x1E695E8D0]), 0.0}];
     }
@@ -10577,7 +10577,7 @@ _BYTE *__83__NSManagedObjectContext__automaticallyMergeChangesFromContextDidSave
   return result;
 }
 
-- (void)commitEditingWithDelegate:(id)a3 didCommitSelector:(SEL)a4 contextInfo:(void *)a5
+- (void)commitEditingWithDelegate:(id)delegate didCommitSelector:(SEL)selector contextInfo:(void *)info
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -10591,20 +10591,20 @@ _BYTE *__83__NSManagedObjectContext__automaticallyMergeChangesFromContextDidSave
   }
 
   v10 = malloc_type_zone_calloc(v9, 1uLL, 0x18uLL, 0x80040D6874129uLL);
-  *v10 = a3;
-  v10[1] = a4;
-  v10[2] = a5;
+  *v10 = delegate;
+  v10[1] = selector;
+  v10[2] = info;
 
   [(NSManagedObjectContext *)self _sendCommitEditingSelectorToTarget:0 sender:sel__managedObjectContextEditor_didCommit_contextInfo_ selector:1 flag:v10 contextInfo:1 delayed:?];
 }
 
-- (void)_managedObjectContextEditor:(id)a3 didCommit:(BOOL)a4 contextInfo:(id *)a5
+- (void)_managedObjectContextEditor:(id)editor didCommit:(BOOL)commit contextInfo:(id *)info
 {
-  v6 = a4;
+  commitCopy = commit;
   v8 = *(self->_additionalPrivateIvars + 4);
   if (v8)
   {
-    if (!a4)
+    if (!commit)
     {
       goto LABEL_10;
     }
@@ -10614,17 +10614,17 @@ _BYTE *__83__NSManagedObjectContext__automaticallyMergeChangesFromContextDidSave
   {
     *(self->_additionalPrivateIvars + 4) = CFArrayCreateMutable(*MEMORY[0x1E695E480], 0, 0);
     v8 = *(self->_additionalPrivateIvars + 4);
-    if (!v6)
+    if (!commitCopy)
     {
 LABEL_10:
-      [(NSManagedObjectContext *)self _sendCommitEditingSelectorToTarget:self sender:a5->var1 selector:v6 flag:a5->var2 contextInfo:0 delayed:?];
+      [(NSManagedObjectContext *)self _sendCommitEditingSelectorToTarget:self sender:info->var1 selector:commitCopy flag:info->var2 contextInfo:0 delayed:?];
       v11 = _PF_Private_Malloc_Zone;
       if (!_PF_Private_Malloc_Zone)
       {
         v11 = malloc_default_zone();
       }
 
-      malloc_zone_free(v11, a5);
+      malloc_zone_free(v11, info);
       return;
     }
   }
@@ -10642,29 +10642,29 @@ LABEL_10:
 
   ValueAtIndex = CFArrayGetValueAtIndex(v8, Count - 1);
 
-  [ValueAtIndex commitEditingWithDelegate:self didCommitSelector:sel__managedObjectContextEditor_didCommit_contextInfo_ contextInfo:a5];
+  [ValueAtIndex commitEditingWithDelegate:self didCommitSelector:sel__managedObjectContextEditor_didCommit_contextInfo_ contextInfo:info];
 }
 
-- (void)_forceMoveInsertToUpdatedList:(uint64_t)a1
+- (void)_forceMoveInsertToUpdatedList:(uint64_t)list
 {
-  if (a1)
+  if (list)
   {
     if (a2)
     {
       a2[4] &= 0xFFFFFFED;
     }
 
-    [*(a1 + 72) removeObject:a2];
-    [*(a1 + 80) removeObject:a2];
+    [*(list + 72) removeObject:a2];
+    [*(list + 80) removeObject:a2];
 
-    _PFFastMOCObjectWillChange(a1, a2);
+    _PFFastMOCObjectWillChange(list, a2);
   }
 }
 
 - (void)_newUnchangedLockedObjects
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v2 = [*(a1 + 104) count];
+  v2 = [*(self + 104) count];
   v3 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:v2];
   MEMORY[0x1EEE9AC00](v3);
   v6 = (v12 - v5);
@@ -10678,7 +10678,7 @@ LABEL_10:
     bzero(v12 - v5, 8 * v4);
   }
 
-  [*(a1 + 104) getObjects:v6];
+  [*(self + 104) getObjects:v6];
   if (v2 >= 1)
   {
     v7 = v6;
@@ -10691,7 +10691,7 @@ LABEL_10:
         [v3 addObject:v9];
         if ((v9[17] & 0x80) != 0)
         {
-          [(NSFaultHandler *)_insertion_fault_handler fulfillFault:v9 withContext:a1];
+          [(NSFaultHandler *)_insertion_fault_handler fulfillFault:v9 withContext:self];
         }
       }
 
@@ -10711,28 +10711,28 @@ LABEL_10:
   return v3;
 }
 
-- (void)_unlimitRequest:(void *)a1
+- (void)_unlimitRequest:(void *)request
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [objc_msgSend(a1 "substitutionVariables")];
+    v2 = [objc_msgSend(request "substitutionVariables")];
     [v2 setValue:objc_msgSend(MEMORY[0x1E696ABC8] forKey:{"expressionForConstantValue:", 0), @"FETCH_REQUEST_LIMIT_SUBSTITUTION"}];
-    [a1 setSubstitutionVariables:v2];
+    [request setSubstitutionVariables:v2];
   }
 
   else
   {
 
-    [a1 setFetchLimit:0];
+    [request setFetchLimit:0];
   }
 }
 
-- (void)_registerObject:(void *)a3 withID:
+- (void)_registerObject:(void *)object withID:
 {
-  if (a1)
+  if (self)
   {
-    if (!a3)
+    if (!object)
     {
       v7 = MEMORY[0x1E695DF30];
       v8 = *MEMORY[0x1E695D940];
@@ -10744,7 +10744,7 @@ LABEL_19:
     v6 = *(a2 + 32);
     if (v6)
     {
-      if (v6 != a1)
+      if (v6 != self)
       {
         v7 = MEMORY[0x1E695DF30];
         v8 = *MEMORY[0x1E695D940];
@@ -10755,49 +10755,49 @@ LABEL_19:
 
     else
     {
-      *(a2 + 32) = a1;
+      *(a2 + 32) = self;
     }
 
     v10 = *(a2 + 40);
-    if (!v10 || v10 == a3)
+    if (!v10 || v10 == object)
     {
-      *(a2 + 40) = a3;
+      *(a2 + 40) = object;
     }
 
     else
     {
-      [(NSManagedObject *)a2 _setObjectID__:a3];
+      [(NSManagedObject *)a2 _setObjectID__:object];
       v11 = *(a2 + 24);
       if (v11)
       {
-        snapshot_set_objectID(v11, a3);
+        snapshot_set_objectID(v11, object);
       }
     }
 
     if (!*(a2 + 56))
     {
-      atomic_fetch_add((*(a1 + 152) + 8), 1u);
-      *(a2 + 56) = *(a1 + 152);
+      atomic_fetch_add((*(self + 152) + 8), 1u);
+      *(a2 + 56) = *(self + 152);
     }
 
     *(a2 + 16) &= 0xFFF7FF7F;
-    v12 = *(a1 + 120);
+    v12 = *(self + 120);
 
-    _PFCMT_SetValue(v12, a3, a2);
+    _PFCMT_SetValue(v12, object, a2);
   }
 }
 
-- (void)_forceRegisterLostFault:(uint64_t)a1
+- (void)_forceRegisterLostFault:(uint64_t)fault
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!fault)
   {
     v8 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  v4 = [a2 objectID];
-  Value = _PFCMT_GetValue(*(a1 + 120), v4);
+  objectID = [a2 objectID];
+  Value = _PFCMT_GetValue(*(fault + 120), objectID);
   if (Value)
   {
     v6 = Value == a2;
@@ -10827,11 +10827,11 @@ LABEL_16:
         *buf = 134218754;
         v15 = a2;
         v16 = 2112;
-        v17 = v4;
+        v17 = objectID;
         v18 = 2048;
-        v19 = [a2 managedObjectContext];
+        managedObjectContext = [a2 managedObjectContext];
         v20 = 2048;
-        v21 = a1;
+        faultCopy = fault;
         _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: fatal: Failed to re-registered lost fault. fault %p with oid %@ has a moc of %p but we expected %p\n\n", buf, 0x2Au);
       }
     }
@@ -10842,7 +10842,7 @@ LABEL_16:
     }
 
 LABEL_17:
-    _NSCoreDataLog_console(1, "fatal: Failed to re-registered lost fault. fault %p with oid %@ has a moc of %p but we expected %p\n", a2, v4, [a2 managedObjectContext], a1);
+    _NSCoreDataLog_console(1, "fatal: Failed to re-registered lost fault. fault %p with oid %@ has a moc of %p but we expected %p\n", a2, objectID, [a2 managedObjectContext], fault);
     objc_autoreleasePoolPop(v9);
     __break(1u);
     return;
@@ -10850,30 +10850,30 @@ LABEL_17:
 
   v7 = *MEMORY[0x1E69E9840];
 
-  [(NSManagedObjectContext *)a1 _registerObject:a2 withID:v4];
+  [(NSManagedObjectContext *)fault _registerObject:a2 withID:objectID];
 }
 
-- (void)_forgetObject:(id)a3 propagateToObjectStore:(BOOL)a4 removeFromRegistry:(BOOL)a5
+- (void)_forgetObject:(id)object propagateToObjectStore:(BOOL)store removeFromRegistry:(BOOL)registry
 {
   v54 = *MEMORY[0x1E69E9840];
-  values = a3;
-  if (a3)
+  values = object;
+  if (object)
   {
-    v5 = a5;
-    v6 = a4;
-    v7 = a3;
-    v9 = [a3 objectID];
-    v10 = v7[4];
+    registryCopy = registry;
+    storeCopy = store;
+    objectCopy = object;
+    objectID = [object objectID];
+    v10 = objectCopy[4];
     v11 = v10 | 0x80;
-    v7[4] = v10 | 0x80;
-    if (v5 && (v10 & 0x80000) == 0)
+    objectCopy[4] = v10 | 0x80;
+    if (registryCopy && (v10 & 0x80000) == 0)
     {
-      _PFCMT_RemoveValue(&self->_infoByGID->super.isa, v9);
-      v11 = v7[4];
+      _PFCMT_RemoveValue(&self->_infoByGID->super.isa, objectID);
+      v11 = objectCopy[4];
     }
 
-    v7[4] = v11 | 0x80080;
-    if (!v6 || (v11 & 0x200) == 0 || ([v9 isTemporaryID] & 1) != 0)
+    objectCopy[4] = v11 | 0x80080;
+    if (!storeCopy || (v11 & 0x200) == 0 || ([objectID isTemporaryID] & 1) != 0)
     {
       goto LABEL_31;
     }
@@ -10923,10 +10923,10 @@ LABEL_17:
         for (i = 0; i != v16; ++i)
         {
           v18 = [(__CFArray *)v13 objectAtIndex:i];
-          v19 = [v18 objectID];
-          if (([v19 isTemporaryID] & 1) == 0)
+          objectID2 = [v18 objectID];
+          if (([objectID2 isTemporaryID] & 1) == 0)
           {
-            [v15 addObject:v19];
+            [v15 addObject:objectID2];
             if (v18)
             {
               v18[4] &= ~0x200u;
@@ -10952,17 +10952,17 @@ LABEL_17:
       *(&v22 + 1) = v22;
     }
 
-    v7 = values;
+    objectCopy = values;
     if (values)
     {
 LABEL_31:
-      if ((v7[4] & 9) == 0 || ([(NSMutableSet *)self->_unprocessedChanges removeObject:v7], [(NSMutableSet *)self->_changedObjects removeObject:values], (v7 = values) != 0))
+      if ((objectCopy[4] & 9) == 0 || ([(NSMutableSet *)self->_unprocessedChanges removeObject:objectCopy], [(NSMutableSet *)self->_changedObjects removeObject:values], (objectCopy = values) != 0))
       {
-        if ((v7[4] & 0x12) == 0 || ([(NSMutableSet *)self->_unprocessedInserts removeObject:v7], [(NSMutableSet *)self->_insertedObjects removeObject:values], (v7 = values) != 0))
+        if ((objectCopy[4] & 0x12) == 0 || ([(NSMutableSet *)self->_unprocessedInserts removeObject:objectCopy], [(NSMutableSet *)self->_insertedObjects removeObject:values], (objectCopy = values) != 0))
         {
-          if ((v7[4] & 0x24) == 0 || ([(NSMutableSet *)self->_deletedObjects removeObject:v7], [(NSMutableSet *)self->_unprocessedDeletes removeObject:values], (v7 = values) != 0))
+          if ((objectCopy[4] & 0x24) == 0 || ([(NSMutableSet *)self->_deletedObjects removeObject:objectCopy], [(NSMutableSet *)self->_unprocessedDeletes removeObject:values], (objectCopy = values) != 0))
           {
-            v7[4] &= 0xFFFFFFC0;
+            objectCopy[4] &= 0xFFFFFFC0;
           }
         }
       }
@@ -10972,22 +10972,22 @@ LABEL_31:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_changeIDsForManagedObjects:(void *)a3 toIDs:
+- (uint64_t)_changeIDsForManagedObjects:(void *)objects toIDs:
 {
-  v3 = a1;
+  selfCopy = self;
   v25[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v6 = [a2 count];
     if (v6 < 1)
     {
-      v3 = 0;
+      selfCopy = 0;
     }
 
     else
     {
       v7 = v6;
-      v8 = atomic_load((v3 + 50));
+      v8 = atomic_load((selfCopy + 50));
       if (v8)
       {
         v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -11017,16 +11017,16 @@ LABEL_31:
       }
 
       [a2 getObjects:v11 range:{0, v7, v23}];
-      [a3 getObjects:v13 range:{0, objc_msgSend(a3, "count")}];
+      [objects getObjects:v13 range:{0, objc_msgSend(objects, "count")}];
       for (i = 0; i != v7; ++i)
       {
         v15 = *&v11[8 * i];
-        v16 = [v15 objectID];
+        objectID = [v15 objectID];
         v17 = *&v13[8 * i];
-        if (v17 != v16)
+        if (v17 != objectID)
         {
-          [v9 setObject:*&v13[8 * i] forKey:v16];
-          _PFCMT_RemoveValue(*(v3 + 120), v16);
+          [v9 setObject:*&v13[8 * i] forKey:objectID];
+          _PFCMT_RemoveValue(*(selfCopy + 120), objectID);
           [(NSManagedObject *)v15 _setObjectID__:v17];
           v18 = v15[3];
           if (v18)
@@ -11034,12 +11034,12 @@ LABEL_31:
             snapshot_set_objectID(v18, v17);
           }
 
-          _PFCMT_SetValue(*(v3 + 120), v17, v15);
-          v19 = *(*(v3 + 168) + 8);
+          _PFCMT_SetValue(*(selfCopy + 120), v17, v15);
+          v19 = *(*(selfCopy + 168) + 8);
           if (v19)
           {
-            [*v19 setObject:v17 forKey:v16];
-            [*(*(*(v3 + 168) + 8) + 8) setObject:v16 forKey:v17];
+            [*v19 setObject:v17 forKey:objectID];
+            [*(*(*(selfCopy + 168) + 8) + 8) setObject:objectID forKey:v17];
           }
         }
       }
@@ -11055,49 +11055,49 @@ LABEL_31:
         v20 = objc_alloc(MEMORY[0x1E696AD80]);
         v24 = @"_NSManagedObjectContextObjectIDMutationMappingKey";
         v25[0] = v9;
-        v3 = [v20 initWithName:@"_NSManagedObjectContextPrivateDidMutateObjectIDsNotification" object:v3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v25, &v24, 1)}];
+        selfCopy = [v20 initWithName:@"_NSManagedObjectContextPrivateDidMutateObjectIDsNotification" object:selfCopy userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v25, &v24, 1)}];
       }
 
       else
       {
-        v3 = 0;
+        selfCopy = 0;
       }
     }
   }
 
   v21 = *MEMORY[0x1E69E9840];
-  return v3;
+  return selfCopy;
 }
 
-- (id)_retainedObjectWithID:(void *)a1 optionalHandler:(void *)a2 withInlineStorage:(uint64_t)a3
+- (id)_retainedObjectWithID:(void *)d optionalHandler:(void *)handler withInlineStorage:(uint64_t)storage
 {
-  if (!a1)
+  if (!d)
   {
     return 0;
   }
 
   if (_PF_Threading_Debugging_level)
   {
-    _PFAssertSafeMultiThreadedAccess_impl(a1, sel__retainedObjectWithID_optionalHandler_withInlineStorage_);
+    _PFAssertSafeMultiThreadedAccess_impl(d, sel__retainedObjectWithID_optionalHandler_withInlineStorage_);
   }
 
-  Value = _PFCMT_GetValue(a1[15], a2);
+  Value = _PFCMT_GetValue(d[15], handler);
   if (!Value)
   {
-    v8 = [a2 entity];
-    v9 = [_PFFastEntityClass(v8) allocWithEntity:v8];
-    _PFfastOidRetain(0, a2);
-    v10 = [v9 _initWithEntity:v8 withID:a2 withHandler:a3 withContext:a1];
-    [(NSManagedObjectContext *)a1 _registerObject:v10 withID:a2];
-    v11 = *a1[21];
-    if (v11 && [v11 containsObject:a2])
+    entity = [handler entity];
+    v9 = [_PFFastEntityClass(entity) allocWithEntity:entity];
+    _PFfastOidRetain(0, handler);
+    v10 = [v9 _initWithEntity:entity withID:handler withHandler:storage withContext:d];
+    [(NSManagedObjectContext *)d _registerObject:v10 withID:handler];
+    v11 = *d[21];
+    if (v11 && [v11 containsObject:handler])
     {
       if (![v10 managedObjectContext])
       {
-        [(NSManagedObjectContext *)a1 _forceRegisterLostFault:v10];
+        [(NSManagedObjectContext *)d _forceRegisterLostFault:v10];
       }
 
-      [a1 deleteObject:v10];
+      [d deleteObject:v10];
     }
 
     return v10;
@@ -11106,50 +11106,50 @@ LABEL_31:
   return Value;
 }
 
-- (uint64_t)_batchRetainedObjects:(uint64_t)a1 forCount:(uint64_t)a2 withIDs:(uint64_t)a3 optionalHandler:(id *)a4 withInlineStorage:(uint64_t)a5
+- (uint64_t)_batchRetainedObjects:(uint64_t)objects forCount:(uint64_t)count withIDs:(uint64_t)ds optionalHandler:(id *)handler withInlineStorage:(uint64_t)storage
 {
-  v29 = a5;
+  storageCopy = storage;
   result = 0;
   v30 = *MEMORY[0x1E69E9840];
-  if (a1 && a3)
+  if (objects && ds)
   {
     v10 = 0;
-    v11 = 8 * a3;
-    v12 = a3;
+    v11 = 8 * ds;
+    dsCopy = ds;
     do
     {
-      Value = _PFCMT_GetValue(*(a1 + 120), a4[v10 / 8]);
+      Value = _PFCMT_GetValue(*(objects + 120), handler[v10 / 8]);
       if (Value)
       {
         Value = Value;
-        v12 = (v12 - 1);
+        dsCopy = (dsCopy - 1);
       }
 
-      *(a2 + v10) = Value;
+      *(count + v10) = Value;
       v10 += 8;
     }
 
     while (v11 != v10);
-    if (v12)
+    if (dsCopy)
     {
-      v26 = a3;
-      v28 = [*a4 entity];
-      v14 = _PFFastEntityClass(v28);
+      dsCopy2 = ds;
+      entity = [*handler entity];
+      v14 = _PFFastEntityClass(entity);
       v25 = &v25;
-      v27 = v12;
+      v27 = dsCopy;
       MEMORY[0x1EEE9AC00](v14);
       v16 = &v25 - v15;
-      if (v12 > 0x200)
+      if (dsCopy > 0x200)
       {
         v16 = NSAllocateScannedUncollectable();
       }
 
       else
       {
-        bzero(&v25 - v15, 8 * v12);
+        bzero(&v25 - v15, 8 * dsCopy);
       }
 
-      if ([v14 allocBatch:v16 withEntity:v28 count:{v12, v25}] < v12)
+      if ([v14 allocBatch:v16 withEntity:entity count:{dsCopy, v25}] < dsCopy)
       {
         [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:@"Could not allocate memory." userInfo:0];
       }
@@ -11164,40 +11164,40 @@ LABEL_31:
           v20 = v18;
         }
 
-        while (*(a2 + 8 * v18++));
-        v22 = a4[v20];
+        while (*(count + 8 * v18++));
+        v22 = handler[v20];
         _PFfastOidRetain(0, v22);
-        [v19 _initWithEntity:v28 withID:v22 withHandler:v29 withContext:a1];
-        v19[7] = *(a1 + 152);
-        *(a2 + 8 * v20) = v19;
-        _PFCMT_SetValue(*(a1 + 120), v22, v19);
-        v23 = **(a1 + 168);
+        [v19 _initWithEntity:entity withID:v22 withHandler:storageCopy withContext:objects];
+        v19[7] = *(objects + 152);
+        *(count + 8 * v20) = v19;
+        _PFCMT_SetValue(*(objects + 120), v22, v19);
+        v23 = **(objects + 168);
         if (v23 && [v23 containsObject:v22])
         {
           if (![v19 managedObjectContext])
           {
-            [(NSManagedObjectContext *)a1 _forceRegisterLostFault:v19];
+            [(NSManagedObjectContext *)objects _forceRegisterLostFault:v19];
           }
 
-          [a1 deleteObject:v19];
+          [objects deleteObject:v19];
         }
 
         ++v17;
       }
 
       while (v17 != v27);
-      atomic_fetch_add((*(a1 + 152) + 8), v12);
-      if (v12 >= 0x201)
+      atomic_fetch_add((*(objects + 152) + 8), dsCopy);
+      if (dsCopy >= 0x201)
       {
         NSZoneFree(0, v16);
       }
 
-      result = v26;
+      result = dsCopy2;
     }
 
     else
     {
-      result = a3;
+      result = ds;
     }
   }
 
@@ -11205,24 +11205,24 @@ LABEL_31:
   return result;
 }
 
-+ (uint64_t)_handleError:(uint64_t *)a3 withError:
++ (uint64_t)_handleError:(uint64_t *)error withError:
 {
   v19 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  if (!a3)
+  if (!error)
   {
     goto LABEL_18;
   }
 
-  v5 = [a2 userInfo];
-  v6 = [v5 objectForKey:@"NSCoreDataPrimaryError"];
+  userInfo = [a2 userInfo];
+  v6 = [userInfo objectForKey:@"NSCoreDataPrimaryError"];
   if (v6)
   {
-    *a3 = v6;
+    *error = v6;
     goto LABEL_18;
   }
 
-  v7 = [v5 mutableCopy];
+  v7 = [userInfo mutableCopy];
   if (v7)
   {
     v8 = v7;
@@ -11258,7 +11258,7 @@ LABEL_9:
   v10 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:v9 userInfo:v8];
   if (v10)
   {
-    *a3 = v10;
+    *error = v10;
   }
 
   else
@@ -11289,13 +11289,13 @@ LABEL_18:
   return 0;
 }
 
-- (uint64_t)_validateObjects:(int)a3 forOperation:(uint64_t *)a4 error:(int)a5 exhaustive:(int)a6 forSave:
+- (uint64_t)_validateObjects:(int)objects forOperation:(uint64_t *)operation error:(int)error exhaustive:(int)exhaustive forSave:
 {
-  v165 = a6;
-  v170 = a5;
-  v166 = a4;
-  v175 = a3;
-  v192 = a1;
+  exhaustiveCopy = exhaustive;
+  errorCopy = error;
+  operationCopy = operation;
+  objectsCopy = objects;
+  selfCopy = self;
   v216 = *MEMORY[0x1E69E9840];
   v7 = [a2 count];
   v8 = MEMORY[0x1EEE9AC00](v7);
@@ -11315,13 +11315,13 @@ LABEL_18:
     [a2 getObjects:v11];
     if (!v177)
     {
-      if (v165)
+      if (exhaustiveCopy)
       {
         v173 = 0;
-        v13 = (v192 + 40);
-        v14 = *(v192 + 10);
+        v13 = (selfCopy + 40);
+        v14 = *(selfCopy + 10);
         v15 = v14 | 8;
-        *(v192 + 10) = v14 | 8;
+        *(selfCopy + 10) = v14 | 8;
         v16 = v13;
         goto LABEL_216;
       }
@@ -11333,7 +11333,7 @@ LABEL_18:
 
   v173 = 0;
   v179 = 0;
-  v190 = (v192 + 40);
+  v190 = (selfCopy + 40);
   v171 = *MEMORY[0x1E696A250];
   v167 = @"NSDetailedErrors";
   v182 = @"NSValidationErrorKey";
@@ -11349,14 +11349,14 @@ LABEL_18:
     v178 = objc_alloc_init(MEMORY[0x1E696AAC8]);
     v189 = v176[v179];
     v205[0] = 0;
-    if (v175 == 2)
+    if (objectsCopy == 2)
     {
       v17 = [v189 validateForDelete:v205];
     }
 
     else
     {
-      if (v175 != 1)
+      if (objectsCopy != 1)
       {
         v18 = [v189 validateForInsert:v205];
         goto LABEL_165;
@@ -11370,7 +11370,7 @@ LABEL_18:
       goto LABEL_164;
     }
 
-    v19 = [objc_msgSend(v192 "mergePolicy")];
+    v19 = [objc_msgSend(selfCopy "mergePolicy")];
     if (v19 > 4)
     {
       v18 = 0;
@@ -11383,7 +11383,7 @@ LABEL_18:
       goto LABEL_165;
     }
 
-    if (([(NSManagedObjectContext *)v192 _checkObjectForExistenceAndCacheRow:v189]& 1) == 0)
+    if (([(NSManagedObjectContext *)selfCopy _checkObjectForExistenceAndCacheRow:v189]& 1) == 0)
     {
       *v190 |= 0x1000u;
       v22 = objc_autoreleasePoolPush();
@@ -11405,20 +11405,20 @@ LABEL_18:
               v24 = @"null";
             }
 
-            v25 = [v205[0] userInfo];
-            v26 = [v189 objectID];
+            userInfo = [v205[0] userInfo];
+            objectID = [v189 objectID];
             *buf = v187;
             v27 = @"null";
-            if (v25)
+            if (userInfo)
             {
-              v27 = v25;
+              v27 = userInfo;
             }
 
             v211 = v24;
             v212 = 2112;
             v213 = v27;
             v214 = 2112;
-            v215 = v26;
+            v215 = objectID;
             _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: repairing validation failure %@ (%@) by deleting %@ because it no longer exists and the merge policy allows it\n", buf, 0x20u);
           }
         }
@@ -11438,20 +11438,20 @@ LABEL_18:
               v107 = @"null";
             }
 
-            v108 = [v205[0] userInfo];
-            v109 = [v189 objectID];
+            userInfo2 = [v205[0] userInfo];
+            objectID2 = [v189 objectID];
             *buf = v187;
             v110 = @"null";
-            if (v108)
+            if (userInfo2)
             {
-              v110 = v108;
+              v110 = userInfo2;
             }
 
             v211 = v107;
             v212 = 2112;
             v213 = v110;
             v214 = 2112;
-            v215 = v109;
+            v215 = objectID2;
             _os_log_impl(&dword_18565F000, v106, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: repairing validation failure %@ (%@) by deleting %@ because it no longer exists and the merge policy allows it\n", buf, 0x20u);
           }
         }
@@ -11469,32 +11469,32 @@ LABEL_18:
 
       if (_pflogging_catastrophic_mode)
       {
-        v112 = [v205[0] userInfo];
-        v113 = [v189 objectID];
+        userInfo3 = [v205[0] userInfo];
+        objectID3 = [v189 objectID];
         v114 = 1;
       }
 
       else
       {
-        v112 = [v205[0] userInfo];
-        v113 = [v189 objectID];
+        userInfo3 = [v205[0] userInfo];
+        objectID3 = [v189 objectID];
         v114 = 4;
       }
 
       v115 = @"null";
-      if (v112)
+      if (userInfo3)
       {
-        v115 = v112;
+        v115 = userInfo3;
       }
 
-      _NSCoreDataLog_console(v114, "repairing validation failure %@ (%@) by deleting %@ because it no longer exists and the merge policy allows it", v111, v115, v113);
+      _NSCoreDataLog_console(v114, "repairing validation failure %@ (%@) by deleting %@ because it no longer exists and the merge policy allows it", v111, v115, objectID3);
       objc_autoreleasePoolPop(v22);
       if (![v189 managedObjectContext])
       {
-        [(NSManagedObjectContext *)v192 _forceRegisterLostFault:v189];
+        [(NSManagedObjectContext *)selfCopy _forceRegisterLostFault:v189];
       }
 
-      [v192 deleteObject:v189];
+      [selfCopy deleteObject:v189];
       [(NSManagedObject *)v189 _propagateDelete:?];
       *v190 &= ~0x1000u;
       v205[0] = 0;
@@ -11505,11 +11505,11 @@ LABEL_164:
 
     if ([objc_msgSend(v205[0] "userInfo")])
     {
-      v20 = [v205[0] domain];
-      if ([v20 isEqualToString:v171] && objc_msgSend(v205[0], "code") == 1560)
+      domain = [v205[0] domain];
+      if ([domain isEqualToString:v171] && objc_msgSend(v205[0], "code") == 1560)
       {
-        v21 = [v205[0] userInfo];
-        v180 = [v21 objectForKey:v167];
+        userInfo4 = [v205[0] userInfo];
+        v180 = [userInfo4 objectForKey:v167];
       }
 
       else
@@ -11537,7 +11537,7 @@ LABEL_164:
               objc_enumerationMutation(v180);
             }
 
-            v30 = [*(*(&v201 + 1) + 8 * v29) userInfo];
+            userInfo5 = [*(*(&v201 + 1) + 8 * v29) userInfo];
             v185 = v29;
             v31 = objc_autoreleasePoolPush();
             _pflogInitialize(2);
@@ -11554,7 +11554,7 @@ LABEL_164:
                 }
 
                 *buf = v174;
-                v211 = v30;
+                v211 = userInfo5;
                 v35 = v34;
                 v36 = "CoreData: error: checkpoint attempting validation failure recovery with error %@\n";
               }
@@ -11568,7 +11568,7 @@ LABEL_164:
                 }
 
                 *buf = v174;
-                v211 = v30;
+                v211 = userInfo5;
                 v35 = v37;
                 v36 = "CoreData: warning: checkpoint attempting validation failure recovery with error %@\n";
               }
@@ -11587,18 +11587,18 @@ LABEL_44:
               v38 = 2;
             }
 
-            _NSCoreDataLog_console(v38, "checkpoint attempting validation failure recovery with error %@", v30);
+            _NSCoreDataLog_console(v38, "checkpoint attempting validation failure recovery with error %@", userInfo5);
             objc_autoreleasePoolPop(v31);
-            v39 = [(__CFString *)v30 objectForKey:v182];
-            v40 = [v189 entity];
+            v39 = [(__CFString *)userInfo5 objectForKey:v182];
+            entity = [v189 entity];
             v41 = v184;
-            v42 = [(NSEntityDescription *)v40 _relationshipNamed:v39];
+            v42 = [(NSEntityDescription *)entity _relationshipNamed:v39];
             v43 = v42;
             if (v42 && ([v42 isToMany] & 1) == 0)
             {
-              v71 = [v43 name];
-              v72 = [v189 valueForKey:v71];
-              if ([v72 isFault] && (-[NSManagedObjectContext _checkObjectForExistenceAndCacheRow:](v192, v72) & 1) == 0)
+              name = [v43 name];
+              v72 = [v189 valueForKey:name];
+              if ([v72 isFault] && (-[NSManagedObjectContext _checkObjectForExistenceAndCacheRow:](selfCopy, v72) & 1) == 0)
               {
                 *v190 |= 0x1000u;
                 v73 = objc_autoreleasePoolPush();
@@ -11620,20 +11620,20 @@ LABEL_44:
                         v75 = @"null";
                       }
 
-                      v76 = [v205[0] userInfo];
-                      v77 = [v72 objectID];
+                      userInfo6 = [v205[0] userInfo];
+                      objectID4 = [v72 objectID];
                       *buf = v187;
                       v78 = @"null";
-                      if (v76)
+                      if (userInfo6)
                       {
-                        v78 = v76;
+                        v78 = userInfo6;
                       }
 
                       v211 = v75;
                       v212 = 2112;
                       v213 = v78;
                       v214 = 2112;
-                      v215 = v77;
+                      v215 = objectID4;
                       _os_log_error_impl(&dword_18565F000, v74, OS_LOG_TYPE_ERROR, "CoreData: error: repairing validation failure %@ (%@) by deleting %@ because it no longer exists and the merge policy allows it\n", buf, 0x20u);
                     }
                   }
@@ -11653,20 +11653,20 @@ LABEL_44:
                         v80 = @"null";
                       }
 
-                      v81 = [v205[0] userInfo];
-                      v82 = [v72 objectID];
+                      userInfo7 = [v205[0] userInfo];
+                      objectID5 = [v72 objectID];
                       *buf = v187;
                       v83 = @"null";
-                      if (v81)
+                      if (userInfo7)
                       {
-                        v83 = v81;
+                        v83 = userInfo7;
                       }
 
                       v211 = v80;
                       v212 = 2112;
                       v213 = v83;
                       v214 = 2112;
-                      v215 = v82;
+                      v215 = objectID5;
                       _os_log_impl(&dword_18565F000, v79, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: repairing validation failure %@ (%@) by deleting %@ because it no longer exists and the merge policy allows it\n", buf, 0x20u);
                     }
                   }
@@ -11684,21 +11684,21 @@ LABEL_44:
 
                 if (_pflogging_catastrophic_mode)
                 {
-                  v85 = [v205[0] userInfo];
+                  userInfo8 = [v205[0] userInfo];
                   v41 = v184;
                   v33 = v185;
-                  v86 = v85;
-                  v87 = [v72 objectID];
+                  v86 = userInfo8;
+                  objectID6 = [v72 objectID];
                   v88 = 1;
                 }
 
                 else
                 {
-                  v89 = [v205[0] userInfo];
+                  userInfo9 = [v205[0] userInfo];
                   v41 = v184;
                   v33 = v185;
-                  v86 = v89;
-                  v87 = [v72 objectID];
+                  v86 = userInfo9;
+                  objectID6 = [v72 objectID];
                   v88 = 4;
                 }
 
@@ -11708,14 +11708,14 @@ LABEL_44:
                   v90 = v86;
                 }
 
-                _NSCoreDataLog_console(v88, "repairing validation failure %@ (%@) by deleting %@ because it no longer exists and the merge policy allows it", v84, v90, v87);
+                _NSCoreDataLog_console(v88, "repairing validation failure %@ (%@) by deleting %@ because it no longer exists and the merge policy allows it", v84, v90, objectID6);
                 objc_autoreleasePoolPop(v73);
                 if (![v72 managedObjectContext])
                 {
-                  [(NSManagedObjectContext *)v192 _forceRegisterLostFault:v72];
+                  [(NSManagedObjectContext *)selfCopy _forceRegisterLostFault:v72];
                 }
 
-                [v192 deleteObject:v72];
+                [selfCopy deleteObject:v72];
                 [(NSManagedObject *)v72 _propagateDelete:?];
                 *v190 &= ~0x1000u;
               }
@@ -11723,9 +11723,9 @@ LABEL_44:
 
             else if ([v43 isToMany])
             {
-              v188 = [v43 isOrdered];
-              v44 = [v43 name];
-              v45 = [v189 valueForKey:v44];
+              isOrdered = [v43 isOrdered];
+              name2 = [v43 name];
+              v45 = [v189 valueForKey:name2];
               if ([v45 count])
               {
                 v46 = [v45 copy];
@@ -11750,7 +11750,7 @@ LABEL_44:
                       }
 
                       v51 = *(*(&v197 + 1) + 8 * i);
-                      if ([v51 isFault] && (-[NSManagedObjectContext _checkObjectForExistenceAndCacheRow:](v192, v51) & 1) == 0)
+                      if ([v51 isFault] && (-[NSManagedObjectContext _checkObjectForExistenceAndCacheRow:](selfCopy, v51) & 1) == 0)
                       {
                         *v190 |= 0x1000u;
                         v52 = objc_autoreleasePoolPush();
@@ -11769,20 +11769,20 @@ LABEL_44:
                               }
 
                               v183 = v54;
-                              v55 = [v205[0] userInfo];
-                              v56 = [v51 objectID];
+                              userInfo10 = [v205[0] userInfo];
+                              objectID7 = [v51 objectID];
                               *buf = v187;
                               v57 = @"null";
-                              if (v55)
+                              if (userInfo10)
                               {
-                                v57 = v55;
+                                v57 = userInfo10;
                               }
 
                               v211 = v183;
                               v212 = 2112;
                               v213 = v57;
                               v214 = 2112;
-                              v215 = v56;
+                              v215 = objectID7;
                               _os_log_error_impl(&dword_18565F000, v53, OS_LOG_TYPE_ERROR, "CoreData: error: repairing validation failure %@ (%@) by deleting %@ because it no longer exists and the merge policy allows it\n", buf, 0x20u);
                             }
                           }
@@ -11802,20 +11802,20 @@ LABEL_44:
                                 v59 = @"null";
                               }
 
-                              v60 = [v205[0] userInfo];
-                              v61 = [v51 objectID];
+                              userInfo11 = [v205[0] userInfo];
+                              objectID8 = [v51 objectID];
                               *buf = v187;
                               v62 = @"null";
-                              if (v60)
+                              if (userInfo11)
                               {
-                                v62 = v60;
+                                v62 = userInfo11;
                               }
 
                               v211 = v59;
                               v212 = 2112;
                               v213 = v62;
                               v214 = 2112;
-                              v215 = v61;
+                              v215 = objectID8;
                               _os_log_impl(&dword_18565F000, v58, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: repairing validation failure %@ (%@) by deleting %@ because it no longer exists and the merge policy allows it\n", buf, 0x20u);
                               v43 = v186;
                             }
@@ -11834,44 +11834,44 @@ LABEL_44:
 
                         if (_pflogging_catastrophic_mode)
                         {
-                          v64 = [v205[0] userInfo];
-                          v65 = [v51 objectID];
+                          userInfo12 = [v205[0] userInfo];
+                          objectID9 = [v51 objectID];
                           v66 = 1;
                         }
 
                         else
                         {
-                          v64 = [v205[0] userInfo];
-                          v65 = [v51 objectID];
+                          userInfo12 = [v205[0] userInfo];
+                          objectID9 = [v51 objectID];
                           v66 = 4;
                         }
 
                         v67 = @"null";
-                        if (v64)
+                        if (userInfo12)
                         {
-                          v67 = v64;
+                          v67 = userInfo12;
                         }
 
-                        _NSCoreDataLog_console(v66, "repairing validation failure %@ (%@) by deleting %@ because it no longer exists and the merge policy allows it", v63, v67, v65);
+                        _NSCoreDataLog_console(v66, "repairing validation failure %@ (%@) by deleting %@ because it no longer exists and the merge policy allows it", v63, v67, objectID9);
                         objc_autoreleasePoolPop(v52);
                         if (![v51 managedObjectContext])
                         {
-                          [(NSManagedObjectContext *)v192 _forceRegisterLostFault:v51];
+                          [(NSManagedObjectContext *)selfCopy _forceRegisterLostFault:v51];
                         }
 
-                        [v192 deleteObject:v51];
+                        [selfCopy deleteObject:v51];
                         if (!v48)
                         {
-                          if (v188)
+                          if (isOrdered)
                           {
-                            v68 = [v43 name];
-                            v69 = [v189 mutableOrderedSetValueForKey:v68];
+                            name3 = [v43 name];
+                            v69 = [v189 mutableOrderedSetValueForKey:name3];
                           }
 
                           else
                           {
-                            v70 = [v43 name];
-                            v69 = [v189 mutableSetValueForKey:v70];
+                            name4 = [v43 name];
+                            v69 = [v189 mutableSetValueForKey:name4];
                           }
 
                           v48 = v69;
@@ -11908,7 +11908,7 @@ LABEL_44:
     }
 
     v205[0] = 0;
-    if (v175 == 2)
+    if (objectsCopy == 2)
     {
       v18 = 1;
       v92 = [v189 validateForDelete:v205];
@@ -11916,7 +11916,7 @@ LABEL_44:
 
     else
     {
-      if (v175 != 1)
+      if (objectsCopy != 1)
       {
         goto LABEL_164;
       }
@@ -11930,8 +11930,8 @@ LABEL_44:
       goto LABEL_165;
     }
 
-    v93 = [v205[0] domain];
-    if (![v93 isEqualToString:v171] || objc_msgSend(v205[0], "code") != 1560)
+    domain2 = [v205[0] domain];
+    if (![domain2 isEqualToString:v171] || objc_msgSend(v205[0], "code") != 1560)
     {
       v100 = objc_autoreleasePoolPush();
       _pflogInitialize(2);
@@ -11943,11 +11943,11 @@ LABEL_44:
           if (os_log_type_enabled(v101, OS_LOG_TYPE_ERROR))
           {
             v102 = v205[0];
-            v103 = [v205[0] userInfo];
+            userInfo13 = [v205[0] userInfo];
             *buf = v169;
             v211 = v102;
             v212 = 2112;
-            v213 = v103;
+            v213 = userInfo13;
             v104 = v101;
             v105 = "CoreData: error: validation recovery attempt FAILED with %@ and %@.\n";
 LABEL_208:
@@ -11961,11 +11961,11 @@ LABEL_208:
           if (os_log_type_enabled(v123, OS_LOG_TYPE_ERROR))
           {
             v147 = v205[0];
-            v148 = [v205[0] userInfo];
+            userInfo14 = [v205[0] userInfo];
             *buf = v169;
             v211 = v147;
             v212 = 2112;
-            v213 = v148;
+            v213 = userInfo14;
             v104 = v123;
             v105 = "CoreData: warning: validation recovery attempt FAILED with %@ and %@.\n";
             goto LABEL_208;
@@ -11976,17 +11976,17 @@ LABEL_208:
       v124 = v205[0];
       if (_pflogging_catastrophic_mode)
       {
-        v125 = [v205[0] userInfo];
+        userInfo15 = [v205[0] userInfo];
         v126 = 1;
       }
 
       else
       {
-        v125 = [v205[0] userInfo];
+        userInfo15 = [v205[0] userInfo];
         v126 = 2;
       }
 
-      _NSCoreDataLog_console(v126, "validation recovery attempt FAILED with %@ and %@.", v124, v125);
+      _NSCoreDataLog_console(v126, "validation recovery attempt FAILED with %@ and %@.", v124, userInfo15);
       objc_autoreleasePoolPop(v100);
 LABEL_182:
       v18 = 0;
@@ -12003,11 +12003,11 @@ LABEL_182:
         if (os_log_type_enabled(v95, OS_LOG_TYPE_ERROR))
         {
           v96 = v205[0];
-          v97 = [v205[0] userInfo];
+          userInfo16 = [v205[0] userInfo];
           *buf = v169;
           v211 = v96;
           v212 = 2112;
-          v213 = v97;
+          v213 = userInfo16;
           v98 = v95;
           v99 = "CoreData: error: validation recovery attempt FAILED with multiple errors %@ and %@.\n";
 LABEL_210:
@@ -12021,11 +12021,11 @@ LABEL_210:
         if (os_log_type_enabled(v127, OS_LOG_TYPE_ERROR))
         {
           v149 = v205[0];
-          v150 = [v205[0] userInfo];
+          userInfo17 = [v205[0] userInfo];
           *buf = v169;
           v211 = v149;
           v212 = 2112;
-          v213 = v150;
+          v213 = userInfo17;
           v98 = v127;
           v99 = "CoreData: warning: validation recovery attempt FAILED with multiple errors %@ and %@.\n";
           goto LABEL_210;
@@ -12036,20 +12036,20 @@ LABEL_210:
     v128 = v205[0];
     if (_pflogging_catastrophic_mode)
     {
-      v129 = [v205[0] userInfo];
+      userInfo18 = [v205[0] userInfo];
       v130 = 1;
     }
 
     else
     {
-      v129 = [v205[0] userInfo];
+      userInfo18 = [v205[0] userInfo];
       v130 = 2;
     }
 
-    _NSCoreDataLog_console(v130, "validation recovery attempt FAILED with multiple errors %@ and %@.", v128, v129);
+    _NSCoreDataLog_console(v130, "validation recovery attempt FAILED with multiple errors %@ and %@.", v128, userInfo18);
     objc_autoreleasePoolPop(v94);
-    v131 = [v205[0] userInfo];
-    v132 = [v131 objectForKey:v167];
+    userInfo19 = [v205[0] userInfo];
+    v132 = [userInfo19 objectForKey:v167];
     v195 = 0u;
     v196 = 0u;
     v193 = 0u;
@@ -12084,11 +12084,11 @@ LABEL_210:
               goto LABEL_198;
             }
 
-            v139 = [(__CFString *)v136 userInfo];
+            userInfo20 = [(__CFString *)v136 userInfo];
             *buf = v169;
             v211 = v136;
             v212 = 2112;
-            v213 = v139;
+            v213 = userInfo20;
             v140 = v138;
             v141 = "CoreData: error: validation recovery attempt FAILED with %@ and %@.\n";
           }
@@ -12101,11 +12101,11 @@ LABEL_210:
               goto LABEL_198;
             }
 
-            v145 = [(__CFString *)v136 userInfo];
+            userInfo21 = [(__CFString *)v136 userInfo];
             *buf = v169;
             v211 = v136;
             v212 = 2112;
-            v213 = v145;
+            v213 = userInfo21;
             v140 = v142;
             v141 = "CoreData: warning: validation recovery attempt FAILED with %@ and %@.\n";
           }
@@ -12116,17 +12116,17 @@ LABEL_210:
 LABEL_198:
         if (_pflogging_catastrophic_mode)
         {
-          v143 = [(__CFString *)v136 userInfo];
+          userInfo22 = [(__CFString *)v136 userInfo];
           v144 = 1;
         }
 
         else
         {
-          v143 = [(__CFString *)v136 userInfo];
+          userInfo22 = [(__CFString *)v136 userInfo];
           v144 = 2;
         }
 
-        _NSCoreDataLog_console(v144, "validation recovery attempt FAILED with %@ and %@.", v136, v143);
+        _NSCoreDataLog_console(v144, "validation recovery attempt FAILED with %@ and %@.", v136, userInfo22);
         objc_autoreleasePoolPop(v137);
         ++v135;
       }
@@ -12156,11 +12156,11 @@ LABEL_165:
 
     if (v205[0])
     {
-      v120 = [v205[0] domain];
-      if ([v120 isEqual:v171] && objc_msgSend(v205[0], "code") == 1560)
+      domain3 = [v205[0] domain];
+      if ([domain3 isEqual:v171] && objc_msgSend(v205[0], "code") == 1560)
       {
-        v121 = [v205[0] userInfo];
-        v122 = [v121 objectForKey:v167];
+        userInfo23 = [v205[0] userInfo];
+        v122 = [userInfo23 objectForKey:v167];
         [v173 addObjectsFromArray:v122];
       }
 
@@ -12170,7 +12170,7 @@ LABEL_165:
       }
     }
 
-    if ((v170 & 1) == 0)
+    if ((errorCopy & 1) == 0)
     {
       goto LABEL_218;
     }
@@ -12186,18 +12186,18 @@ LABEL_175:
 LABEL_218:
     if ([v173 count] == 1)
     {
-      if (v166)
+      if (operationCopy)
       {
         v154 = [v173 objectAtIndex:0];
         v153 = 0;
-        *v166 = v154;
+        *operationCopy = v154;
         goto LABEL_226;
       }
     }
 
     else
     {
-      v155 = v166 != 0;
+      v155 = operationCopy != 0;
       v156 = [v173 count];
       v157 = !v155;
       if (v156 < 2)
@@ -12210,7 +12210,7 @@ LABEL_218:
         v158 = objc_alloc(MEMORY[0x1E695DF20]);
         v159 = [v158 initWithObjectsAndKeys:{v173, v167, 0}];
         v160 = [MEMORY[0x1E696ABC0] errorWithDomain:v171 code:1560 userInfo:v159];
-        *v166 = v160;
+        *operationCopy = v160;
       }
     }
 
@@ -12218,7 +12218,7 @@ LABEL_218:
     goto LABEL_226;
   }
 
-  if (v165)
+  if (exhaustiveCopy)
   {
     v151 = 0;
     v14 = *v190;
@@ -12265,7 +12265,7 @@ LABEL_229:
   return result;
 }
 
-- (uint64_t)_postContextDidSaveNotificationWithUserInfo:(uint64_t)a1
+- (uint64_t)_postContextDidSaveNotificationWithUserInfo:(uint64_t)info
 {
   v81 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -12280,9 +12280,9 @@ LABEL_229:
 
     else
     {
-      v8 = [_PFWeakReference weakReferenceWithObject:a1];
+      v8 = [_PFWeakReference weakReferenceWithObject:info];
       [v4 setObject:v8 forKey:@"managedObjectContext"];
-      if ((*(a1 + 43) & 0x10) == 0)
+      if ((*(info + 43) & 0x10) == 0)
       {
         goto LABEL_7;
       }
@@ -12295,7 +12295,7 @@ LABEL_229:
   }
 
 LABEL_7:
-  if ((*(a1 + 43) & 0x10) == 0)
+  if ((*(info + 43) & 0x10) == 0)
   {
     goto LABEL_13;
   }
@@ -12309,14 +12309,14 @@ LABEL_7:
 
   else
   {
-    v12 = [a1 transactionAuthor];
-    if (!v12)
+    transactionAuthor = [info transactionAuthor];
+    if (!transactionAuthor)
     {
       goto LABEL_13;
     }
 
-    v13 = v12;
-    [v4 setObject:v12 forKey:@"transactionAuthor"];
+    v13 = transactionAuthor;
+    [v4 setObject:transactionAuthor forKey:@"transactionAuthor"];
     v11 = a2;
     v10 = v13;
   }
@@ -12326,22 +12326,22 @@ LABEL_13:
   v14 = [a2 objectForKey:@"newQueryGeneration"];
   if (v14)
   {
-    v15 = v14;
+    _queryGenerationToken = v14;
 LABEL_17:
-    [v4 setObject:v15 forKey:@"newQueryGeneration"];
+    [v4 setObject:_queryGenerationToken forKey:@"newQueryGeneration"];
     goto LABEL_18;
   }
 
-  v15 = [a1 _queryGenerationToken];
-  v16 = [v15 _isEnabled];
-  if (v15 && v16)
+  _queryGenerationToken = [info _queryGenerationToken];
+  _isEnabled = [_queryGenerationToken _isEnabled];
+  if (_queryGenerationToken && _isEnabled)
   {
     goto LABEL_17;
   }
 
 LABEL_18:
   v17 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v18 = *(*(a1 + 168) + 136);
+  v18 = *(*(info + 168) + 136);
   v65 = v4;
   if ([v18 count])
   {
@@ -12369,7 +12369,7 @@ LABEL_18:
             objc_enumerationMutation(v18);
           }
 
-          v24 = [a1 objectWithID:{objc_msgSend(*(*(&v74 + 1) + 8 * i), "firstObject")}];
+          v24 = [info objectWithID:{objc_msgSend(*(*(&v74 + 1) + 8 * i), "firstObject")}];
           if (v24)
           {
             v25 = v24;
@@ -12386,11 +12386,11 @@ LABEL_18:
 
     [a2 setObject:v19 forKey:@"inserted"];
 
-    *(*(a1 + 168) + 136) = 0;
+    *(*(info + 168) + 136) = 0;
     v4 = v65;
   }
 
-  v26 = *(*(a1 + 168) + 144);
+  v26 = *(*(info + 168) + 144);
   if ([v26 count])
   {
     v27 = [objc_msgSend(a2 objectForKey:{@"updated", "mutableCopy"}];
@@ -12417,7 +12417,7 @@ LABEL_18:
             objc_enumerationMutation(v26);
           }
 
-          v32 = [a1 objectWithID:{objc_msgSend(*(*(&v70 + 1) + 8 * j), "firstObject")}];
+          v32 = [info objectWithID:{objc_msgSend(*(*(&v70 + 1) + 8 * j), "firstObject")}];
           if (v32)
           {
             v33 = v32;
@@ -12432,7 +12432,7 @@ LABEL_18:
       while (v29);
     }
 
-    *(*(a1 + 168) + 144) = 0;
+    *(*(info + 168) + 144) = 0;
     v4 = v65;
   }
 
@@ -12441,7 +12441,7 @@ LABEL_18:
     v27 = 0;
   }
 
-  v34 = *(*(a1 + 168) + 112);
+  v34 = *(*(info + 168) + 112);
   if ([v34 count])
   {
     if (!v27)
@@ -12471,7 +12471,7 @@ LABEL_18:
             objc_enumerationMutation(v34);
           }
 
-          v39 = [a1 objectWithID:*(*(&v66 + 1) + 8 * k)];
+          v39 = [info objectWithID:*(*(&v66 + 1) + 8 * k)];
           if (v39)
           {
             v40 = v39;
@@ -12486,7 +12486,7 @@ LABEL_18:
       while (v36);
     }
 
-    *(*(a1 + 168) + 112) = 0;
+    *(*(info + 168) + 112) = 0;
     v4 = v65;
   }
 
@@ -12583,7 +12583,7 @@ LABEL_88:
     v54 = 0;
     do
     {
-      v56 = [a1 objectRegisteredForID:*&v53[8 * v55]];
+      v56 = [info objectRegisteredForID:*&v53[8 * v55]];
       if (v56)
       {
         *&v53[8 * v54++] = v56;
@@ -12616,30 +12616,30 @@ LABEL_92:
 LABEL_95:
   v58 = [v4 copy];
 
-  v59 = [MEMORY[0x1E696AD88] defaultCenter];
-  v60 = v59;
-  v61 = atomic_load((a1 + 48));
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v60 = defaultCenter;
+  v61 = atomic_load((info + 48));
   if ((v61 & 1) == 0)
   {
-    [v59 postNotificationName:@"_NSManagedObjectContextDidSaveObjectIDsPrivateNotification" object:*(a1 + 32) userInfo:v58];
-    [v60 postNotificationName:@"NSManagedObjectContextDidSaveObjectIDsNotification" object:*(a1 + 32) userInfo:v58];
+    [defaultCenter postNotificationName:@"_NSManagedObjectContextDidSaveObjectIDsPrivateNotification" object:*(info + 32) userInfo:v58];
+    [v60 postNotificationName:@"NSManagedObjectContextDidSaveObjectIDsNotification" object:*(info + 32) userInfo:v58];
   }
 
-  [v60 postNotificationName:@"_NSManagedObjectContextDidSaveObjectIDsPrivateNotification" object:a1 userInfo:v58];
-  result = [v60 postNotificationName:@"NSManagedObjectContextDidSaveObjectIDsNotification" object:a1 userInfo:v58];
-  if ((*(a1 + 43) & 8) != 0)
+  [v60 postNotificationName:@"_NSManagedObjectContextDidSaveObjectIDsPrivateNotification" object:info userInfo:v58];
+  result = [v60 postNotificationName:@"NSManagedObjectContextDidSaveObjectIDsNotification" object:info userInfo:v58];
+  if ((*(info + 43) & 8) != 0)
   {
-    result = [v60 postNotificationName:@"NSManagingContextDidSaveChangesNotification" object:a1 userInfo:a2];
+    result = [v60 postNotificationName:@"NSManagingContextDidSaveChangesNotification" object:info userInfo:a2];
   }
 
   v63 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)_informParentStoreNoLongerInterestedInObjectIDs:(uint64_t)a3 generation:
+- (void)_informParentStoreNoLongerInterestedInObjectIDs:(uint64_t)ds generation:
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1 && [a2 count])
+  if (self && [a2 count])
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a2, "count")}];
     v13 = 0u;
@@ -12673,13 +12673,13 @@ LABEL_95:
       while (v8);
     }
 
-    [*(a1 + 32) managedObjectContextDidUnregisterObjectsWithIDs:v6 generation:a3];
+    [*(self + 32) managedObjectContextDidUnregisterObjectsWithIDs:v6 generation:ds];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_retainedObjectsFromRemovedStore:(id)a3
+- (id)_retainedObjectsFromRemovedStore:(id)store
 {
   v16[1] = *MEMORY[0x1E69E9840];
   Count = _PFCMT_GetCount(&self->_infoByGID->super.isa);
@@ -12723,7 +12723,7 @@ LABEL_95:
     do
     {
       v13 = *v12;
-      if ([objc_msgSend(*v12 "objectID")] == a3)
+      if ([objc_msgSend(*v12 "objectID")] == store)
       {
         [v11 addObject:v13];
       }
@@ -12744,9 +12744,9 @@ LABEL_95:
   return v11;
 }
 
-- (void)_setDisableDiscardEditing:(BOOL)a3
+- (void)_setDisableDiscardEditing:(BOOL)editing
 {
-  if (a3)
+  if (editing)
   {
     v3 = 0x8000;
   }
@@ -12759,9 +12759,9 @@ LABEL_95:
   self->_flags = (*&self->_flags & 0xFFFF7FFF | v3);
 }
 
-- (void)_persistentStoreDidUpdateAdditionalRows:(void *)a1
+- (void)_persistentStoreDidUpdateAdditionalRows:(void *)rows
 {
-  if (a1)
+  if (rows)
   {
     v4 = [a2 count];
     v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v4];
@@ -12770,7 +12770,7 @@ LABEL_95:
       for (i = 0; i != v4; ++i)
       {
         v6 = [a2 objectAtIndex:i];
-        v7 = [a1 objectRegisteredForID:v6];
+        v7 = [rows objectRegisteredForID:v6];
         if (v7)
         {
           v8 = v7;
@@ -12785,7 +12785,7 @@ LABEL_95:
             v8[4] = v9 | 0x200;
           }
 
-          [a1 refreshObject:v8 mergeChanges:0];
+          [rows refreshObject:v8 mergeChanges:0];
         }
 
         else
@@ -12797,14 +12797,14 @@ LABEL_95:
 
     if ([v10 count])
     {
-      -[NSManagedObjectContext _informParentStoreNoLongerInterestedInObjectIDs:generation:](a1, v10, [a1 queryGenerationToken]);
+      -[NSManagedObjectContext _informParentStoreNoLongerInterestedInObjectIDs:generation:](rows, v10, [rows queryGenerationToken]);
     }
   }
 }
 
-- (void)_setAllowAncillaryEntities:(BOOL)a3
+- (void)_setAllowAncillaryEntities:(BOOL)entities
 {
-  if (a3)
+  if (entities)
   {
     v3 = 0x4000000;
   }
@@ -12817,27 +12817,27 @@ LABEL_95:
   self->_flags = (*&self->_flags & 0xFBFFFFFF | v3);
 }
 
-- (void)_setFaultingError:(id)a3
+- (void)_setFaultingError:(id)error
 {
-  if (self->_additionalPrivateIvars[19] != a3)
+  if (self->_additionalPrivateIvars[19] != error)
   {
-    v5 = a3;
+    errorCopy = error;
 
-    *(self->_additionalPrivateIvars + 19) = a3;
+    *(self->_additionalPrivateIvars + 19) = error;
   }
 }
 
-- (int64x2_t)_updateDatabaseStaticsWithCacheStats:(uint64_t)a1
+- (int64x2_t)_updateDatabaseStaticsWithCacheStats:(uint64_t)stats
 {
-  if (a1)
+  if (stats)
   {
     if (_PF_Threading_Debugging_level)
     {
-      _PFAssertSafeMultiThreadedAccess_impl(a1, sel__updateDatabaseStaticsWithCacheStats_);
+      _PFAssertSafeMultiThreadedAccess_impl(stats, sel__updateDatabaseStaticsWithCacheStats_);
     }
 
-    v4 = *(*(a1 + 168) + 160);
-    if (v4 || (*(*(a1 + 168) + 160) = [[NSSQLiteDatabaseStatistics alloc] initWithPageSize:a2[1].i64[1]], (v4 = *(*(a1 + 168) + 160)) != 0))
+    v4 = *(*(stats + 168) + 160);
+    if (v4 || (*(*(stats + 168) + 160) = [[NSSQLiteDatabaseStatistics alloc] initWithPageSize:a2[1].i64[1]], (v4 = *(*(stats + 168) + 160)) != 0))
     {
       v6 = a2[1].i64[0];
       result = vaddq_s64(*(v4 + 8), vextq_s8(*a2, *a2, 8uLL));
@@ -12849,7 +12849,7 @@ LABEL_95:
   return result;
 }
 
-- (void)_undoInsertions:(id)a3
+- (void)_undoInsertions:(id)insertions
 {
   v22 = *MEMORY[0x1E69E9840];
   if (self)
@@ -12857,8 +12857,8 @@ LABEL_95:
     ++self->_ignoreChangeNotification;
   }
 
-  v5 = [a3 objectAtIndex:0];
-  v6 = [a3 objectAtIndex:1];
+  v5 = [insertions objectAtIndex:0];
+  v6 = [insertions objectAtIndex:1];
   v7 = [v5 count];
   if (v7)
   {
@@ -12916,16 +12916,16 @@ LABEL_95:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_registerUndoForOperation:(void *)a3 withObjects:(uint64_t)a4 withExtraArguments:
+- (uint64_t)_registerUndoForOperation:(void *)operation withObjects:(uint64_t)objects withExtraArguments:
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (!*(*(a1 + 168) + 40))
+  if (!*(*(self + 168) + 40))
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    result = [a3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    result = [operation countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (result)
     {
       v19 = result;
@@ -12937,14 +12937,14 @@ LABEL_95:
         {
           if (*v24 != v20)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(operation);
           }
 
           [(NSManagedObject *)*(*(&v23 + 1) + 8 * v21++) _setLastSnapshot__:?];
         }
 
         while (v19 != v21);
-        result = [a3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        result = [operation countByEnumeratingWithState:&v23 objects:v27 count:16];
         v19 = result;
       }
 
@@ -12954,7 +12954,7 @@ LABEL_95:
     goto LABEL_21;
   }
 
-  v8 = [a3 count];
+  v8 = [operation count];
   result = [MEMORY[0x1E695DF70] arrayWithCapacity:v8];
   if (!v8)
   {
@@ -12966,11 +12966,11 @@ LABEL_21:
   v10 = result;
   for (i = 0; i != v8; ++i)
   {
-    v12 = [a3 objectAtIndex:i];
-    v13 = [(NSManagedObject *)v12 _newSnapshotForUndo__];
-    if ([(NSKnownKeysDictionary *)v13 count])
+    v12 = [operation objectAtIndex:i];
+    _newSnapshotForUndo__ = [(NSManagedObject *)v12 _newSnapshotForUndo__];
+    if ([(NSKnownKeysDictionary *)_newSnapshotForUndo__ count])
     {
-      v14 = v13;
+      v14 = _newSnapshotForUndo__;
     }
 
     else
@@ -12983,39 +12983,39 @@ LABEL_21:
     [(NSManagedObject *)v12 _setLastSnapshot__:?];
   }
 
-  if (a4)
+  if (objects)
   {
-    v15 = a4;
+    objectsCopy = objects;
   }
 
   else
   {
-    v15 = NSKeyValueCoding_NullValue;
+    objectsCopy = NSKeyValueCoding_NullValue;
   }
 
-  v16 = *(*(a1 + 168) + 40);
-  v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:{a3, v10, v15, objc_msgSend(MEMORY[0x1E696AD98], "numberWithShort:", *(a1 + 44)), 0}];
+  v16 = *(*(self + 168) + 40);
+  v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:{operation, v10, objectsCopy, objc_msgSend(MEMORY[0x1E696AD98], "numberWithShort:", *(self + 44)), 0}];
   v18 = *MEMORY[0x1E69E9840];
 
-  return [v16 registerUndoWithTarget:a1 selector:a2 object:v17];
+  return [v16 registerUndoWithTarget:self selector:a2 object:v17];
 }
 
-- (void)_undoDeletionsMovedToUpdates:(id)a3
+- (void)_undoDeletionsMovedToUpdates:(id)updates
 {
-  v5 = [a3 count];
+  v5 = [updates count];
   if (v5)
   {
     v6 = v5;
     for (i = 0; i != v6; ++i)
     {
-      v8 = [a3 objectAtIndex:i];
+      v8 = [updates objectAtIndex:i];
       [(NSManagedObjectContext *)self deleteObject:v8];
       [v8 awakeFromSnapshotEvents:4];
     }
   }
 }
 
-- (void)_undoDeletions:(id)a3
+- (void)_undoDeletions:(id)deletions
 {
   v32 = *MEMORY[0x1E69E9840];
   if (self)
@@ -13023,11 +13023,11 @@ LABEL_21:
     ++self->_ignoreChangeNotification;
   }
 
-  v5 = [a3 objectAtIndex:0];
-  v6 = [a3 objectAtIndex:1];
-  v7 = [objc_msgSend(objc_msgSend(a3 objectAtIndex:{2), "objectAtIndex:", 0), "objectAtIndex:", 0}];
-  v26 = [objc_msgSend(a3 objectAtIndex:{2), "objectAtIndex:", 1}];
-  v8 = [a3 objectAtIndex:3];
+  v5 = [deletions objectAtIndex:0];
+  v6 = [deletions objectAtIndex:1];
+  v7 = [objc_msgSend(objc_msgSend(deletions objectAtIndex:{2), "objectAtIndex:", 0), "objectAtIndex:", 0}];
+  v26 = [objc_msgSend(deletions objectAtIndex:{2), "objectAtIndex:", 1}];
+  v8 = [deletions objectAtIndex:3];
   if (v7 == NSKeyValueCoding_NullValue)
   {
     v9 = 0;
@@ -13159,31 +13159,31 @@ LABEL_30:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_createAndPostChangeNotification:(void *)a3 deletions:(void *)a4 updates:(void *)a5 refreshes:(void *)a6 deferrals:(int)a7 wasMerge:
+- (void)_createAndPostChangeNotification:(void *)notification deletions:(void *)deletions updates:(void *)updates refreshes:(void *)refreshes deferrals:(int)deferrals wasMerge:
 {
   v75 = *MEMORY[0x1E69E9840];
-  v58 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v59 = v13;
-    v56 = a7;
-    v57 = a3;
-    if (![a6 count])
+    deferralsCopy = deferrals;
+    notificationCopy = notification;
+    if (![refreshes count])
     {
       v19 = 0;
       v14 = 0;
       goto LABEL_48;
     }
 
-    if ([a3 count])
+    if ([notification count])
     {
-      v14 = [a6 mutableCopy];
+      v14 = [refreshes mutableCopy];
       v68 = 0u;
       v69 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v15 = [a3 countByEnumeratingWithState:&v68 objects:v74 count:16];
+      v15 = [notification countByEnumeratingWithState:&v68 objects:v74 count:16];
       if (v15)
       {
         v16 = v15;
@@ -13194,13 +13194,13 @@ LABEL_30:
           {
             if (*v69 != v17)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(notification);
             }
 
             [v14 removeObject:*(*(&v68 + 1) + 8 * i)];
           }
 
-          v16 = [a3 countByEnumeratingWithState:&v68 objects:v74 count:16];
+          v16 = [notification countByEnumeratingWithState:&v68 objects:v74 count:16];
         }
 
         while (v16);
@@ -13243,7 +13243,7 @@ LABEL_17:
         }
 
 LABEL_16:
-        v14 = [a6 mutableCopy];
+        v14 = [refreshes mutableCopy];
         goto LABEL_17;
       }
     }
@@ -13265,18 +13265,18 @@ LABEL_16:
 
     else
     {
-      a2 = a6;
+      a2 = refreshes;
     }
 
 LABEL_29:
-    if ([a4 count])
+    if ([deletions count])
     {
-      v55 = a5;
+      updatesCopy = updates;
       v62 = 0u;
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v24 = [a4 countByEnumeratingWithState:&v60 objects:v72 count:16];
+      v24 = [deletions countByEnumeratingWithState:&v60 objects:v72 count:16];
       if (v24)
       {
         v25 = v24;
@@ -13284,7 +13284,7 @@ LABEL_29:
         v26 = *v61;
         if (v14)
         {
-          a6 = v14;
+          refreshes = v14;
         }
 
         do
@@ -13293,22 +13293,22 @@ LABEL_29:
           {
             if (*v61 != v26)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(deletions);
             }
 
             v28 = *(*(&v60 + 1) + 8 * k);
-            if ([a6 containsObject:v28])
+            if ([refreshes containsObject:v28])
             {
               if (!v19)
               {
-                v19 = [a4 mutableCopy];
+                v19 = [deletions mutableCopy];
               }
 
               [v19 removeObject:v28];
             }
           }
 
-          v25 = [a4 countByEnumeratingWithState:&v60 objects:v72 count:16];
+          v25 = [deletions countByEnumeratingWithState:&v60 objects:v72 count:16];
         }
 
         while (v25);
@@ -13321,11 +13321,11 @@ LABEL_29:
 
       if (v19)
       {
-        a4 = v19;
+        deletions = v19;
       }
 
       v13 = v59;
-      a5 = v55;
+      updates = updatesCopy;
     }
 
     else
@@ -13340,18 +13340,18 @@ LABEL_48:
       [v13 setObject:a2 forKey:@"inserted"];
     }
 
-    if ([v57 count])
+    if ([notificationCopy count])
     {
-      [v13 setObject:v57 forKey:@"deleted"];
+      [v13 setObject:notificationCopy forKey:@"deleted"];
     }
 
-    v29 = v58;
-    if ([a4 count])
+    v29 = selfCopy;
+    if ([deletions count])
     {
-      [v13 setObject:a4 forKey:@"updated"];
+      [v13 setObject:deletions forKey:@"updated"];
     }
 
-    if (![a5 count])
+    if (![updates count])
     {
 LABEL_72:
 
@@ -13362,7 +13362,7 @@ LABEL_72:
           [v13 setObject:+[_PFWeakReference weakReferenceWithObject:](_PFWeakReference forKey:{v29), @"managedObjectContext"}];
         }
 
-        if (v56)
+        if (deferralsCopy)
         {
           [v13 setObject:NSSet_EmptySet forKey:@"NSObjectsChangedByMergeChangesKey"];
         }
@@ -13407,8 +13407,8 @@ LABEL_98:
 
       else
       {
-        v53 = [v29 _queryGenerationToken];
-        if (!v53 || (v42 = v53, v53 == +[NSQueryGenerationToken unpinnedQueryGenerationToken](NSQueryGenerationToken, "unpinnedQueryGenerationToken")) || v42 == +[NSQueryGenerationToken currentQueryGenerationToken])
+        _queryGenerationToken = [v29 _queryGenerationToken];
+        if (!_queryGenerationToken || (v42 = _queryGenerationToken, _queryGenerationToken == +[NSQueryGenerationToken unpinnedQueryGenerationToken](NSQueryGenerationToken, "unpinnedQueryGenerationToken")) || v42 == +[NSQueryGenerationToken currentQueryGenerationToken])
         {
 LABEL_87:
           for (m = 0; m != 5; ++m)
@@ -13443,10 +13443,10 @@ LABEL_87:
 
           v50 = [v40 copy];
 
-          v51 = [MEMORY[0x1E696AD88] defaultCenter];
-          v29 = v58;
-          [v51 postNotificationName:@"_NSManagedObjectContextDidMergeChangesObjectIDsPrivateNotification" object:v58 userInfo:v50];
-          [v51 postNotificationName:@"NSManagedObjectContextDidMergeChangesObjectIDsNotification" object:v29 userInfo:v50];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          v29 = selfCopy;
+          [defaultCenter postNotificationName:@"_NSManagedObjectContextDidMergeChangesObjectIDsPrivateNotification" object:selfCopy userInfo:v50];
+          [defaultCenter postNotificationName:@"NSManagedObjectContextDidMergeChangesObjectIDsNotification" object:v29 userInfo:v50];
           v13 = v59;
           goto LABEL_97;
         }
@@ -13456,8 +13456,8 @@ LABEL_87:
       goto LABEL_87;
     }
 
-    [v13 setObject:a5 forKey:@"refreshed_objectIDs"];
-    v30 = [a5 count];
+    [v13 setObject:updates forKey:@"refreshed_objectIDs"];
+    v30 = [updates count];
     v31 = v30;
     if (v30 <= 1)
     {
@@ -13483,13 +13483,13 @@ LABEL_87:
     if (v30 >= 0x201)
     {
       v34 = NSAllocateScannedUncollectable();
-      [a5 getObjects:v34];
+      [updates getObjects:v34];
     }
 
     else
     {
       bzero(&v54 - ((8 * v33 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * v32);
-      [a5 getObjects:v34];
+      [updates getObjects:v34];
       if (!v31)
       {
         v35 = 0;
@@ -13528,7 +13528,7 @@ LABEL_99:
   v52 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_undoUpdates:(id)a3
+- (void)_undoUpdates:(id)updates
 {
   v22 = *MEMORY[0x1E69E9840];
   if (self)
@@ -13536,8 +13536,8 @@ LABEL_99:
     ++self->_ignoreChangeNotification;
   }
 
-  v5 = [a3 objectAtIndex:0];
-  v6 = [a3 objectAtIndex:1];
+  v5 = [updates objectAtIndex:0];
+  v6 = [updates objectAtIndex:1];
   v7 = [v5 count];
   if (v7)
   {
@@ -13594,53 +13594,53 @@ LABEL_99:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_forceInsertionForObject:(id)a3
+- (void)_forceInsertionForObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v5 = *(a3 + 4);
+    v5 = *(object + 4);
     if ((v5 & 0x24) != 0)
     {
-      [(NSMutableSet *)self->_unprocessedDeletes removeObject:a3];
-      [(NSMutableSet *)self->_deletedObjects removeObject:a3];
-      v5 = *(a3 + 4);
+      [(NSMutableSet *)self->_unprocessedDeletes removeObject:object];
+      [(NSMutableSet *)self->_deletedObjects removeObject:object];
+      v5 = *(object + 4);
     }
 
     if ((v5 & 9) != 0)
     {
-      [(NSMutableSet *)self->_unprocessedChanges removeObject:a3];
-      [(NSMutableSet *)self->_changedObjects removeObject:a3];
-      v5 = *(a3 + 4);
+      [(NSMutableSet *)self->_unprocessedChanges removeObject:object];
+      [(NSMutableSet *)self->_changedObjects removeObject:object];
+      v5 = *(object + 4);
     }
 
-    *(a3 + 4) = v5 & 0xFFFFFFC0;
+    *(object + 4) = v5 & 0xFFFFFFC0;
   }
 
-  v6 = [a3 objectID];
-  [(NSManagedObjectContext *)self _insertObjectWithGlobalID:a3 globalID:v6];
-  [(NSMutableSet *)self->_insertedObjects addObject:a3];
-  if (a3)
+  objectID = [object objectID];
+  [(NSManagedObjectContext *)self _insertObjectWithGlobalID:object globalID:objectID];
+  [(NSMutableSet *)self->_insertedObjects addObject:object];
+  if (object)
   {
-    *(a3 + 4) |= 0x10u;
+    *(object + 4) |= 0x10u;
   }
 
   v7 = *self->_additionalPrivateIvars;
   if (v7)
   {
 
-    [v7 removeObject:v6];
+    [v7 removeObject:objectID];
   }
 }
 
-- (void)_clearChangedThisTransaction:(id)a3
+- (void)_clearChangedThisTransaction:(id)transaction
 {
   v17[1] = *MEMORY[0x1E69E9840];
   [(NSManagedObjectContext *)self _processRecentChanges:?];
-  v5 = [a3 objectAtIndex:0];
+  v5 = [transaction objectAtIndex:0];
   undoTransactionID = self->_undoTransactionID;
   if (undoTransactionID == [v5 shortValue])
   {
-    v7 = [a3 objectAtIndex:1];
+    v7 = [transaction objectAtIndex:1];
     v8 = [(NSMutableSet *)self->_changedObjects count];
     if (v8)
     {
@@ -13691,10 +13691,10 @@ LABEL_99:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_processPendingDeletions:(void *)a3 withInsertions:(void *)a4 withUpdates:withNewlyForgottenList:withRemovedChangedObjects:
+- (uint64_t)_processPendingDeletions:(void *)deletions withInsertions:(void *)insertions withUpdates:withNewlyForgottenList:withRemovedChangedObjects:
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v8 = [*(a1 + 64) count];
+  v8 = [*(self + 64) count];
   if (!v8)
   {
     v10 = 0;
@@ -13725,42 +13725,42 @@ LABEL_99:
     bzero(v22 - v12, 8 * v9);
   }
 
-  [*(a1 + 64) getObjects:v13];
+  [*(self + 64) getObjects:v13];
   for (i = 0; i != v9; ++i)
   {
     v15 = *&v13[8 * i];
     if (v15)
     {
       *(v15 + 16) &= ~4u;
-      if (![*(a1 + 72) containsObject:v15])
+      if (![*(self + 72) containsObject:v15])
       {
         v18 = *(v15 + 16);
         if ((v18 & 0x10) != 0)
         {
-          [*(a1 + 80) removeObject:v15];
+          [*(self + 80) removeObject:v15];
           *(v15 + 16) &= ~0x10u;
-          v19 = a3;
+          deletionsCopy = deletions;
         }
 
         else
         {
           if ((v18 & 8) != 0)
           {
-            [*(a1 + 96) removeObject:v15];
-            [a4 addObject:v15];
+            [*(self + 96) removeObject:v15];
+            [insertions addObject:v15];
             v18 = *(v15 + 16) & 0xFFFFFFF7;
           }
 
           *(v15 + 16) = v18 | 0x20;
 LABEL_19:
-          v19 = *(a1 + 88);
+          deletionsCopy = *(self + 88);
         }
 
-        [v19 addObject:v15];
-        v17 = v10;
+        [deletionsCopy addObject:v15];
+        deletionsCopy2 = v10;
 LABEL_22:
-        [v17 addObject:v15];
-        [*(a1 + 56) removeObject:v15];
+        [deletionsCopy2 addObject:v15];
+        [*(self + 56) removeObject:v15];
         if (v15)
         {
           *(v15 + 16) &= ~1u;
@@ -13770,18 +13770,18 @@ LABEL_22:
       }
     }
 
-    else if (([*(a1 + 72) containsObject:0] & 1) == 0)
+    else if (([*(self + 72) containsObject:0] & 1) == 0)
     {
       goto LABEL_19;
     }
 
-    [*(a1 + 64) removeObject:v15];
-    [*(a1 + 72) removeObject:v15];
+    [*(self + 64) removeObject:v15];
+    [*(self + 72) removeObject:v15];
     if (v15)
     {
       v16 = *(v15 + 16);
       *(v15 + 16) = v16 & 0xFFFFFFFD;
-      v17 = a3;
+      deletionsCopy2 = deletions;
       if ((v16 & 0x38) != 0)
       {
         continue;
@@ -13790,8 +13790,8 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    [a3 addObject:0];
-    [*(a1 + 56) removeObject:0];
+    [deletions addObject:0];
+    [*(self + 56) removeObject:0];
 LABEL_24:
     [a2 addObject:v15];
   }
@@ -13806,10 +13806,10 @@ LABEL_32:
   return v10;
 }
 
-- (void)_processPendingInsertions:(id *)a1 withDeletions:(void *)a2 withUpdates:(void *)a3
+- (void)_processPendingInsertions:(id *)insertions withDeletions:(void *)deletions withUpdates:(void *)updates
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = [a1[9] count];
+  v6 = [insertions[9] count];
   if (!v6)
   {
     v8 = 0;
@@ -13840,13 +13840,13 @@ LABEL_32:
     bzero(v18 - v10, 8 * v7);
   }
 
-  [a1[9] getObjects:v11];
+  [insertions[9] getObjects:v11];
   for (i = 0; i != v7; ++i)
   {
     v13 = *&v11[8 * i];
     if (!v13)
     {
-      [a1[10] addObject:0];
+      [insertions[10] addObject:0];
       goto LABEL_19;
     }
 
@@ -13854,34 +13854,34 @@ LABEL_32:
     *(v13 + 16) = v14 & 0xFFFFFFFD;
     if ((v14 & 8) != 0)
     {
-      v15 = a3;
+      deletionsCopy = updates;
 LABEL_17:
-      [v15 addObject:v13];
+      [deletionsCopy addObject:v13];
       continue;
     }
 
     if ((v14 & 0x10) != 0)
     {
-      v15 = a2;
+      deletionsCopy = deletions;
       goto LABEL_17;
     }
 
     if ((v14 & 0x20) != 0)
     {
       *(v13 + 16) = v14 & 0xFFFFFFC5;
-      [a1[11] removeObject:v13];
+      [insertions[11] removeObject:v13];
     }
 
     else
     {
-      [a1[10] addObject:v13];
+      [insertions[10] addObject:v13];
       *(v13 + 16) |= 0x10u;
     }
 
 LABEL_19:
     [v8 addObject:v13];
-    [a2 addObject:v13];
-    [a1[7] removeObject:v13];
+    [deletions addObject:v13];
+    [insertions[7] removeObject:v13];
     if (v13)
     {
       *(v13 + 16) &= ~1u;
@@ -13898,10 +13898,10 @@ LABEL_26:
   return v8;
 }
 
-- (void)_processPendingUpdates:(uint64_t)a1
+- (void)_processPendingUpdates:(uint64_t)updates
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = [*(a1 + 56) count];
+  v4 = [*(updates + 56) count];
   if (!v4)
   {
     v6 = 0;
@@ -13932,7 +13932,7 @@ LABEL_26:
     bzero(v15 - v8, 8 * v5);
   }
 
-  [*(a1 + 56) getObjects:v9];
+  [*(updates + 56) getObjects:v9];
   for (i = 0; i != v5; ++i)
   {
     v11 = *&v9[8 * i];
@@ -13948,7 +13948,7 @@ LABEL_26:
       *(v11 + 16) = v12 & 0xFFFFFFF6 | 8;
     }
 
-    [*(a1 + 96) addObject:v11];
+    [*(updates + 96) addObject:v11];
 LABEL_14:
     [v6 addObject:v11];
     [a2 addObject:v11];
@@ -13964,7 +13964,7 @@ LABEL_17:
   return v6;
 }
 
-- (void)_processRecentlyForgottenObjects:(void *)a1
+- (void)_processRecentlyForgottenObjects:(void *)objects
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = [a2 count];
@@ -14000,8 +14000,8 @@ LABEL_17:
       v11 = 0;
     }
 
-    [(NSFaultHandler *)v11 turnObject:a1 intoFaultWithContext:?];
-    [a1 _forgetObject:v10 propagateToObjectStore:0 removeFromRegistry:1];
+    [(NSFaultHandler *)v11 turnObject:objects intoFaultWithContext:?];
+    [objects _forgetObject:v10 propagateToObjectStore:0 removeFromRegistry:1];
     ++v9;
   }
 
@@ -14229,7 +14229,7 @@ void __92__NSManagedObjectContext__NSInternalChangeProcessing___prefetchObjectsF
   return result;
 }
 
-- (void)_undoManagerCheckpoint:(id)a3
+- (void)_undoManagerCheckpoint:(id)checkpoint
 {
   if ((*(&self->_flags + 1) & 8) == 0)
   {
@@ -14242,12 +14242,12 @@ void __92__NSManagedObjectContext__NSInternalChangeProcessing___prefetchObjectsF
     v6[1] = 3221225472;
     v7 = __90__NSManagedObjectContext__NSInternalNotificationHandling___processEndOfEventNotification___block_invoke;
     v8 = &unk_1E6EC16F0;
-    v9 = self;
+    selfCopy = self;
     dispatchQueue = self->_dispatchQueue;
-    v5 = [(NSManagedObjectContext *)self tryLock];
+    tryLock = [(NSManagedObjectContext *)self tryLock];
     if (!dispatchQueue)
     {
-      if (!v5)
+      if (!tryLock)
       {
         return;
       }
@@ -14256,7 +14256,7 @@ void __92__NSManagedObjectContext__NSInternalChangeProcessing___prefetchObjectsF
       goto LABEL_9;
     }
 
-    if (v5)
+    if (tryLock)
     {
       [(NSManagedObjectContext *)self performBlockAndWait:v6];
 LABEL_9:
@@ -14286,14 +14286,14 @@ uint64_t __90__NSManagedObjectContext__NSInternalNotificationHandling___processE
   return result;
 }
 
-- (void)_storeConfigurationChanged:(id)a3
+- (void)_storeConfigurationChanged:(id)changed
 {
   if (self && !self->_wasDisposed && ([(NSManagedObjectContext *)self _isDeallocating]& 1) == 0)
   {
-    v4 = [a3 userInfo];
-    if (v4)
+    userInfo = [changed userInfo];
+    if (userInfo)
     {
-      v5 = v4;
+      v5 = userInfo;
     }
 
     else
@@ -14310,10 +14310,10 @@ uint64_t __90__NSManagedObjectContext__NSInternalNotificationHandling___processE
       v11[5] = v5;
       v11[6] = sel__processChangedStoreConfigurationNotification_;
       v11[4] = self;
-      v6 = self;
-      v7 = [(NSManagedObjectContext *)self tryLock];
-      v8 = self;
-      if (v7)
+      selfCopy = self;
+      tryLock = [(NSManagedObjectContext *)self tryLock];
+      selfCopy2 = self;
+      if (tryLock)
       {
         [(NSManagedObjectContext *)self performBlockAndWait:v11];
         [(NSManagedObjectContext *)self unlock];
@@ -14327,7 +14327,7 @@ uint64_t __90__NSManagedObjectContext__NSInternalNotificationHandling___processE
 
     else
     {
-      v9 = self;
+      selfCopy3 = self;
       if ([(NSManagedObjectContext *)self tryLock])
       {
         if (!self->_wasDisposed && ([(NSManagedObjectContext *)self _isDeallocating]& 1) == 0)
@@ -14347,7 +14347,7 @@ uint64_t __90__NSManagedObjectContext__NSInternalNotificationHandling___processE
   }
 }
 
-- (void)_processChangedStoreConfigurationNotification:(id)a3
+- (void)_processChangedStoreConfigurationNotification:(id)notification
 {
   v129 = *MEMORY[0x1E69E9840];
   if (_PF_Threading_Debugging_level)
@@ -14355,15 +14355,15 @@ uint64_t __90__NSManagedObjectContext__NSInternalNotificationHandling___processE
     _PFAssertSafeMultiThreadedAccess_impl(self, a2);
   }
 
-  v5 = [a3 lastObject];
-  v6 = self;
+  lastObject = [notification lastObject];
+  selfCopy = self;
   v82 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [v5 objectForKey:@"changedUUID"];
+  array = [MEMORY[0x1E695DF70] array];
+  v8 = [lastObject objectForKey:@"changedUUID"];
   if (v8)
   {
     v9 = v8;
-    v81 = v5;
+    v81 = lastObject;
     v96 = 0;
     v10 = [v8 objectAtIndex:0];
     v11 = [v9 objectAtIndex:1];
@@ -14394,17 +14394,17 @@ uint64_t __90__NSManagedObjectContext__NSInternalNotificationHandling___processE
       do
       {
         v96 = *&v17[8 * v18];
-        v19 = [v96 objectID];
-        if ([v19 persistentStore] == v10)
+        objectID = [v96 objectID];
+        if ([objectID persistentStore] == v10)
         {
-          if ([v19 isTemporaryID])
+          if ([objectID isTemporaryID])
           {
-            [v19 _setPersistentStore:v11];
+            [objectID _setPersistentStore:v11];
           }
 
           else
           {
-            v95.version = -[NSTemporaryObjectID initWithEntity:]([NSTemporaryObjectID alloc], "initWithEntity:", [v19 entity]);
+            v95.version = -[NSTemporaryObjectID initWithEntity:]([NSTemporaryObjectID alloc], "initWithEntity:", [objectID entity]);
             [v95.version _setPersistentStore:v11];
             v127 = 0u;
             v128 = 0u;
@@ -14443,7 +14443,7 @@ uint64_t __90__NSManagedObjectContext__NSInternalNotificationHandling___processE
             if (v23)
             {
               v24 = v23;
-              [v7 addObject:v23];
+              [array addObject:v23];
             }
 
             if (v99.copyDescription)
@@ -14551,7 +14551,7 @@ uint64_t __90__NSManagedObjectContext__NSInternalNotificationHandling___processE
       if (v47)
       {
         v48 = v47;
-        [v7 addObject:v47];
+        [array addObject:v47];
       }
 
       goto LABEL_36;
@@ -14573,8 +14573,8 @@ LABEL_36:
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
-    v51 = [(NSManagedObjectContext *)self registeredObjects];
-    v52 = [(NSSet *)v51 countByEnumeratingWithState:&v91 objects:v98 count:16];
+    registeredObjects = [(NSManagedObjectContext *)self registeredObjects];
+    v52 = [(NSSet *)registeredObjects countByEnumeratingWithState:&v91 objects:v98 count:16];
     if (v52)
     {
       v53 = v52;
@@ -14585,7 +14585,7 @@ LABEL_36:
         {
           if (*v92 != v54)
           {
-            objc_enumerationMutation(v51);
+            objc_enumerationMutation(registeredObjects);
           }
 
           v56 = *(*(&v91 + 1) + 8 * i);
@@ -14602,7 +14602,7 @@ LABEL_36:
           _PFFaultHandlerFixRelationshipsPostMigration(v57, v56, self, v50);
         }
 
-        v53 = [(NSSet *)v51 countByEnumeratingWithState:&v91 objects:v98 count:16];
+        v53 = [(NSSet *)registeredObjects countByEnumeratingWithState:&v91 objects:v98 count:16];
       }
 
       while (v53);
@@ -14618,11 +14618,11 @@ LABEL_36:
       NSZoneFree(0, v83);
     }
 
-    v5 = v81;
+    lastObject = v81;
   }
 
   Count = _PFCMT_GetCount(&self->_infoByGID->super.isa);
-  v59 = [v5 objectForKey:@"removed"];
+  v59 = [lastObject objectForKey:@"removed"];
   if (v59)
   {
     v60 = v59;
@@ -14675,13 +14675,13 @@ LABEL_36:
     }
   }
 
-  if (v7)
+  if (array)
   {
     v89 = 0u;
     v90 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v72 = [v7 countByEnumeratingWithState:&v87 objects:v97 count:16];
+    v72 = [array countByEnumeratingWithState:&v87 objects:v97 count:16];
     if (v72)
     {
       v73 = v72;
@@ -14692,13 +14692,13 @@ LABEL_36:
         {
           if (*v88 != v74)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(array);
           }
 
           [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
         }
 
-        v73 = [v7 countByEnumeratingWithState:&v87 objects:v97 count:16];
+        v73 = [array countByEnumeratingWithState:&v87 objects:v97 count:16];
       }
 
       while (v73);
@@ -14711,7 +14711,7 @@ LABEL_36:
   v76 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_implicitObservationInfoForEntity:(void *)a3 forResultingClass:
+- (uint64_t)_implicitObservationInfoForEntity:(void *)entity forResultingClass:
 {
   if (result)
   {
@@ -14723,10 +14723,10 @@ LABEL_36:
 
     if (*(v5 + 46) <= 0)
     {
-      v6 = [v5 persistentStoreCoordinator];
-      if (v6)
+      persistentStoreCoordinator = [v5 persistentStoreCoordinator];
+      if (persistentStoreCoordinator)
       {
-        v7 = *(v6 + 96);
+        v7 = *(persistentStoreCoordinator + 96);
       }
 
       else
@@ -14757,7 +14757,7 @@ LABEL_36:
 
       else
       {
-        v14 = [(NSEntityDescription *)a2 _new_implicitlyObservedKeys];
+        _new_implicitlyObservedKeys = [(NSEntityDescription *)a2 _new_implicitlyObservedKeys];
         _PFFastEntityClass(a2);
         v15 = objc_autoreleasePoolPush();
         ImplicitObservationInfo = _NSKeyValueCreateImplicitObservationInfo();
@@ -14786,7 +14786,7 @@ LABEL_36:
 
       if (result)
       {
-        *a3 = v13;
+        *entity = v13;
       }
     }
 
@@ -14822,9 +14822,9 @@ uint64_t __95__NSManagedObjectContext__NSInternalNotificationHandling___sendOrEn
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setAllowsExpandedUserInfoKeys:(BOOL)a3
+- (void)_setAllowsExpandedUserInfoKeys:(BOOL)keys
 {
-  v3 = a3;
+  keysCopy = keys;
   if (self->_dispatchQueue)
   {
     v6[0] = MEMORY[0x1E69E9820];
@@ -14832,7 +14832,7 @@ uint64_t __95__NSManagedObjectContext__NSInternalNotificationHandling___sendOrEn
     v6[2] = __73__NSManagedObjectContext__NSCoreDataSPI___setAllowsExpandedUserInfoKeys___block_invoke;
     v6[3] = &unk_1E6EC2770;
     v6[4] = self;
-    v7 = a3;
+    keysCopy2 = keys;
     [(NSManagedObjectContext *)self performBlockAndWait:v6];
   }
 
@@ -14843,7 +14843,7 @@ uint64_t __95__NSManagedObjectContext__NSInternalNotificationHandling___sendOrEn
       _PFAssertSafeMultiThreadedAccess_impl(self, a2);
     }
 
-    if (v3)
+    if (keysCopy)
     {
       v5 = 0x10000000;
     }
@@ -14857,9 +14857,9 @@ uint64_t __95__NSManagedObjectContext__NSInternalNotificationHandling___sendOrEn
   }
 }
 
-- (void)setShouldRefreshAfterSave:(BOOL)a3
+- (void)setShouldRefreshAfterSave:(BOOL)save
 {
-  v3 = a3;
+  saveCopy = save;
   if (self->_dispatchQueue)
   {
     v6[0] = MEMORY[0x1E69E9820];
@@ -14867,7 +14867,7 @@ uint64_t __95__NSManagedObjectContext__NSInternalNotificationHandling___sendOrEn
     v6[2] = __68__NSManagedObjectContext__NSCoreDataSPI__setShouldRefreshAfterSave___block_invoke;
     v6[3] = &unk_1E6EC2770;
     v6[4] = self;
-    v7 = a3;
+    saveCopy2 = save;
     [(NSManagedObjectContext *)self performBlockAndWait:v6];
   }
 
@@ -14878,7 +14878,7 @@ uint64_t __95__NSManagedObjectContext__NSInternalNotificationHandling___sendOrEn
       _PFAssertSafeMultiThreadedAccess_impl(self, a2);
     }
 
-    if (v3)
+    if (saveCopy)
     {
       v5 = 0x2000000;
     }
@@ -14902,9 +14902,9 @@ uint64_t __95__NSManagedObjectContext__NSInternalNotificationHandling___sendOrEn
   return (*(&self->_flags + 3) >> 1) & 1;
 }
 
-- (void)setShouldPerformSecureOperation:(BOOL)a3
+- (void)setShouldPerformSecureOperation:(BOOL)operation
 {
-  v3 = a3;
+  operationCopy = operation;
   if (self->_dispatchQueue)
   {
     v6[0] = MEMORY[0x1E69E9820];
@@ -14912,7 +14912,7 @@ uint64_t __95__NSManagedObjectContext__NSInternalNotificationHandling___sendOrEn
     v6[2] = __74__NSManagedObjectContext__NSCoreDataSPI__setShouldPerformSecureOperation___block_invoke;
     v6[3] = &unk_1E6EC2770;
     v6[4] = self;
-    v7 = a3;
+    operationCopy2 = operation;
     [(NSManagedObjectContext *)self performBlockAndWait:v6];
   }
 
@@ -14923,7 +14923,7 @@ uint64_t __95__NSManagedObjectContext__NSInternalNotificationHandling___sendOrEn
       _PFAssertSafeMultiThreadedAccess_impl(self, a2);
     }
 
-    if (v3)
+    if (operationCopy)
     {
       v5 = 0x1000000;
     }
@@ -14947,15 +14947,15 @@ uint64_t __95__NSManagedObjectContext__NSInternalNotificationHandling___sendOrEn
   return *(&self->_flags + 3) & 1;
 }
 
-- (void)setTrackSQLiteDatabaseStatistics:(BOOL)a3
+- (void)setTrackSQLiteDatabaseStatistics:(BOOL)statistics
 {
-  v3 = a3;
+  statisticsCopy = statistics;
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self, a2);
   }
 
-  if (v3)
+  if (statisticsCopy)
   {
     v5 = 0x20000000;
   }
@@ -14968,7 +14968,7 @@ uint64_t __95__NSManagedObjectContext__NSInternalNotificationHandling___sendOrEn
   self->_flags = (*&self->_flags & 0xDFFFFFFF | v5);
 }
 
-- (id)performBlockWithResult:(id)a3
+- (id)performBlockWithResult:(id)result
 {
   v6 = 0;
   v7 = &v6;
@@ -14980,7 +14980,7 @@ uint64_t __95__NSManagedObjectContext__NSInternalNotificationHandling___sendOrEn
   v5[1] = 3221225472;
   v5[2] = __65__NSManagedObjectContext__NSCoreDataSPI__performBlockWithResult___block_invoke;
   v5[3] = &unk_1E6EC25C0;
-  v5[4] = a3;
+  v5[4] = result;
   v5[5] = &v6;
   [(NSManagedObjectContext *)self performBlockAndWait:v5];
   v3 = v7[5];
@@ -14996,7 +14996,7 @@ id __65__NSManagedObjectContext__NSCoreDataSPI__performBlockWithResult___block_i
   return v2;
 }
 
-- (void)performWithOptions:(unint64_t)a3 andBlock:(id)a4
+- (void)performWithOptions:(unint64_t)options andBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
   if (!self || self->_wasDisposed || [(NSManagedObjectContext *)self _isDeallocating])
@@ -15034,7 +15034,7 @@ LABEL_53:
 
   if (self->_dispatchQueue)
   {
-    if ((a3 & 1) == 0)
+    if ((options & 1) == 0)
     {
       v7 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 712);
       v8 = atomic_load(&self->_isMainThreadBlessed);
@@ -15043,14 +15043,14 @@ LABEL_53:
         if (!_PFIsSerializedWithMainQueue())
         {
 LABEL_43:
-          if ((a3 & 0x1000) == 0)
+          if ((options & 0x1000) == 0)
           {
-            v22 = self;
+            selfCopy = self;
           }
 
-          *&context = a4;
+          *&context = block;
           *(&context + 1) = self;
-          v29 = a3 | 0x2000;
+          optionsCopy = options | 0x2000;
           v30 = v7;
           dispatch_sync_f(self->_dispatchQueue, &context, developerSubmittedBlockToNSManagedObjectContextPerform);
 LABEL_46:
@@ -15098,21 +15098,21 @@ LABEL_30:
 LABEL_31:
         v18 = 0;
         v19 = 0;
-        v20 = self;
-        while (v20 != v7)
+        selfCopy2 = self;
+        while (selfCopy2 != v7)
         {
-          if (v20 == v18)
+          if (selfCopy2 == v18)
           {
             goto LABEL_39;
           }
 
           if (!v18)
           {
-            v18 = v20;
+            v18 = selfCopy2;
           }
 
-          v20 = atomic_load(&v20->_queueOwner);
-          if (!v20)
+          selfCopy2 = atomic_load(&selfCopy2->_queueOwner);
+          if (!selfCopy2)
           {
             goto LABEL_43;
           }
@@ -15127,22 +15127,22 @@ LABEL_39:
       }
 
 LABEL_40:
-      if ((a3 & 0x1000) == 0)
+      if ((options & 0x1000) == 0)
       {
-        v21 = self;
+        selfCopy3 = self;
       }
 
-      *&context = a4;
+      *&context = block;
       *(&context + 1) = self;
-      v29 = a3;
+      optionsCopy = options;
       v30 = v7;
       developerSubmittedBlockToNSManagedObjectContextPerform(&context);
       goto LABEL_46;
     }
 
     v9 = malloc_type_malloc(0x20uLL, 0x80040B8603338uLL);
-    *v9 = _Block_copy(a4);
-    if ((a3 & 0x1000) != 0)
+    *v9 = _Block_copy(block);
+    if ((options & 0x1000) != 0)
     {
       v10 = 0;
     }
@@ -15153,7 +15153,7 @@ LABEL_40:
     }
 
     v9[1] = v10;
-    v9[2] = a3 | 0x2001;
+    v9[2] = options | 0x2001;
     v9[3] = 0;
     dispatchQueue = self->_dispatchQueue;
     v17 = *MEMORY[0x1E69E9840];
@@ -15163,9 +15163,9 @@ LABEL_40:
 
   else
   {
-    if ((a3 & 0x8000) == 0)
+    if ((options & 0x8000) == 0)
     {
-      if ((a3 & 0x4000) == 0)
+      if ((options & 0x4000) == 0)
       {
         objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"-performWithOptions:andBlock: was called on a MOC of NSConfinementConcurrencyType unexpectedly." userInfo:0]);
       }
@@ -15173,26 +15173,26 @@ LABEL_40:
       goto LABEL_46;
     }
 
-    v11 = *(a4 + 2);
+    v11 = *(block + 2);
     v12 = *MEMORY[0x1E69E9840];
 
-    v11(a4);
+    v11(block);
   }
 }
 
-- (id)_orderedSetWithResultsFromFetchRequest:(id)a3
+- (id)_orderedSetWithResultsFromFetchRequest:(id)request
 {
   if (_PF_Threading_Debugging_level)
   {
     _PFAssertSafeMultiThreadedAccess_impl(self, a2);
   }
 
-  v5 = [[_PFFetchedResultOrderedSetWrapper alloc] initWithArray:a3 andContext:self];
+  v5 = [[_PFFetchedResultOrderedSetWrapper alloc] initWithArray:request andContext:self];
 
   return v5;
 }
 
-- (void)_stopConflictDetectionForObject:(id)a3
+- (void)_stopConflictDetectionForObject:(id)object
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -15201,30 +15201,30 @@ LABEL_40:
 
   lockedObjects = self->_lockedObjects;
 
-  [(NSMutableSet *)lockedObjects removeObject:a3];
+  [(NSMutableSet *)lockedObjects removeObject:object];
 }
 
-+ (void)_mergeChangesFromRemoteContextSave:(void *)a3 intoContexts:(uint64_t)a4 withClientQueryGeneration:
++ (void)_mergeChangesFromRemoteContextSave:(void *)save intoContexts:(uint64_t)contexts withClientQueryGeneration:
 {
-  v75 = a4;
+  contextsCopy = contexts;
   v76 = a2;
   v115 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  if (a3 && [a3 count])
+  if (save && [save count])
   {
     v69 = objc_alloc_init(MEMORY[0x1E696AAC8]);
     v83 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5 = [v76 objectForKey:@"managedObjectContext"];
-    if (v5 && (Weak = objc_loadWeak((v5 + 8))) != 0 && (v7 = Weak, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (v5 && (Weak = objc_loadWeak((v5 + 8))) != 0 && (parentContext = Weak, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v8 = [MEMORY[0x1E695DFA8] set];
       do
       {
-        [v8 addObject:v7];
-        v7 = [v7 parentContext];
+        [v8 addObject:parentContext];
+        parentContext = [parentContext parentContext];
       }
 
-      while (v7);
+      while (parentContext);
     }
 
     else
@@ -15236,10 +15236,10 @@ LABEL_40:
     v111 = 0u;
     v108 = 0u;
     v109 = 0u;
-    v9 = [a3 countByEnumeratingWithState:&v108 objects:v114 count:16];
+    v9 = [save countByEnumeratingWithState:&v108 objects:v114 count:16];
     if (v9)
     {
-      v84 = 0;
+      persistentStoreCoordinator = 0;
       v10 = *v109;
       do
       {
@@ -15248,7 +15248,7 @@ LABEL_40:
         {
           if (*v109 != v10)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(save);
           }
 
           v12 = [[_PFWeakReference alloc] initWithObject:*(*(&v108 + 1) + 8 * v11)];
@@ -15259,9 +15259,9 @@ LABEL_40:
             if (WeakRetained && (!v8 || ([v8 containsObject:WeakRetained] & 1) == 0))
             {
               [v83 addObject:WeakRetained];
-              if (!v84)
+              if (!persistentStoreCoordinator)
               {
-                v84 = [WeakRetained persistentStoreCoordinator];
+                persistentStoreCoordinator = [WeakRetained persistentStoreCoordinator];
               }
             }
           }
@@ -15275,7 +15275,7 @@ LABEL_40:
         }
 
         while (v9 != v11);
-        v15 = [a3 countByEnumeratingWithState:&v108 objects:v114 count:16];
+        v15 = [save countByEnumeratingWithState:&v108 objects:v114 count:16];
         v9 = v15;
       }
 
@@ -15284,7 +15284,7 @@ LABEL_40:
 
     else
     {
-      v84 = 0;
+      persistentStoreCoordinator = 0;
     }
 
     v16 = [v83 count];
@@ -15296,7 +15296,7 @@ LABEL_40:
         break;
       }
 
-      if (v84 != [objc_msgSend(v83 objectAtIndex:{--v16), "persistentStoreCoordinator"}])
+      if (persistentStoreCoordinator != [objc_msgSend(v83 objectAtIndex:{--v16), "persistentStoreCoordinator"}])
       {
 
         [v69 drain];
@@ -15304,7 +15304,7 @@ LABEL_40:
       }
     }
 
-    if (v84 && (v18 = [v83 count], v17 = v83, v18))
+    if (persistentStoreCoordinator && (v18 = [v83 count], v17 = v83, v18))
     {
       v19 = [v76 objectForKey:@"newQueryGeneration"];
       if ([v19 _isEnabled])
@@ -15332,7 +15332,7 @@ LABEL_40:
       v101 = __Block_byref_object_copy__13;
       v102 = __Block_byref_object_dispose__13;
       v103 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v68 = [v84 managedObjectModel];
+      managedObjectModel = [persistentStoreCoordinator managedObjectModel];
       v21 = v83;
       v22 = [v74 count];
       v23 = v22;
@@ -15381,32 +15381,32 @@ LABEL_38:
         v32 = 0;
         while (1)
         {
-          v33 = *&v29[8 * v32];
+          objectID = *&v29[8 * v32];
           v34 = *(v30 + 2704);
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             if ((objc_opt_respondsToSelector() & 1) == 0)
             {
-              v37 = [(NSPersistentStoreCoordinator *)v84 managedObjectIDForURIRepresentation:v33 error:0];
+              v37 = [(NSPersistentStoreCoordinator *)persistentStoreCoordinator managedObjectIDForURIRepresentation:objectID error:0];
               goto LABEL_53;
             }
 
-            v33 = [(__CFURL *)v33 objectID];
+            objectID = [(__CFURL *)objectID objectID];
           }
 
-          v35 = [-[__CFURL persistentStore](v33 "persistentStore")];
-          if (v35 != v84)
+          v35 = [-[__CFURL persistentStore](objectID "persistentStore")];
+          if (v35 != persistentStoreCoordinator)
           {
-            v36 = [(__CFURL *)v33 URIRepresentation];
-            v37 = [(NSPersistentStoreCoordinator *)v84 managedObjectIDForURIRepresentation:v36 error:0];
+            uRIRepresentation = [(__CFURL *)objectID URIRepresentation];
+            v37 = [(NSPersistentStoreCoordinator *)persistentStoreCoordinator managedObjectIDForURIRepresentation:uRIRepresentation error:0];
 LABEL_53:
-            v33 = v37;
+            objectID = v37;
           }
 
-          if (v33)
+          if (objectID)
           {
-            *&v29[8 * v31++] = v33;
+            *&v29[8 * v31++] = objectID;
           }
 
           v38 = v83;
@@ -15497,23 +15497,23 @@ LABEL_82:
                 goto LABEL_82;
               }
 
-              v46 = [*&v29[8 * v44] entity];
-              if (v46)
+              entity = [*&v29[8 * v44] entity];
+              if (entity)
               {
-                if (atomic_load((v46 + 124)))
+                if (atomic_load((entity + 124)))
                 {
-                  v48 = *(v46 + 72);
+                  v48 = *(entity + 72);
                 }
 
                 else
                 {
                   do
                   {
-                    v48 = v46;
-                    v46 = [v46 superentity];
+                    v48 = entity;
+                    entity = [entity superentity];
                   }
 
-                  while (v46);
+                  while (entity);
                 }
               }
 
@@ -15522,12 +15522,12 @@ LABEL_82:
                 v48 = 0;
               }
 
-              v49 = [v48 name];
-              v50 = [v78 objectForKey:v49];
+              name = [v48 name];
+              v50 = [v78 objectForKey:name];
               if (!v50)
               {
                 v50 = objc_alloc_init(MEMORY[0x1E695DF70]);
-                [v78 setObject:v50 forKey:v49];
+                [v78 setObject:v50 forKey:name];
               }
 
               [v50 addObject:v45];
@@ -15576,13 +15576,13 @@ LABEL_94:
       if ([v78 count])
       {
         v55 = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
-        [(NSManagedObjectContext *)v55 setPersistentStoreCoordinator:v84];
+        [(NSManagedObjectContext *)v55 setPersistentStoreCoordinator:persistentStoreCoordinator];
         [(NSManagedObjectContext *)v55 setUndoManager:0];
         v92[0] = MEMORY[0x1E69E9820];
         v92[1] = 3221225472;
         v92[2] = __116__NSManagedObjectContext__NSCoreDataSPI___mergeChangesFromRemoteContextSave_intoContexts_withClientQueryGeneration___block_invoke_2;
         v92[3] = &unk_1E6EC2610;
-        v92[4] = v68;
+        v92[4] = managedObjectModel;
         v92[5] = v55;
         v92[6] = &v98;
         [v78 enumerateKeysAndObjectsUsingBlock:v92];
@@ -15607,7 +15607,7 @@ LABEL_94:
             v91[3] = &unk_1E6EC19D8;
             v91[4] = v58;
             v91[5] = v77;
-            v91[6] = v75;
+            v91[6] = contextsCopy;
             if (v58[3])
             {
               [v58 performBlockAndWait:v91];
@@ -15631,7 +15631,7 @@ LABEL_94:
             v90[3] = &unk_1E6EC19D8;
             v90[4] = v60;
             v90[5] = v77;
-            v90[6] = v75;
+            v90[6] = contextsCopy;
             if (v60[3])
             {
               [v60 performBlockAndWait:v90];
@@ -15710,13 +15710,13 @@ LABEL_94:
   v66 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_mergeChangesFromRemoteContextSave:(id)a3 presupposingQueryGeneration:(id)a4
+- (void)_mergeChangesFromRemoteContextSave:(id)save presupposingQueryGeneration:(id)generation
 {
   v8[1] = *MEMORY[0x1E69E9840];
   if ([(NSManagedObjectContext *)self persistentStoreCoordinator])
   {
     v8[0] = self;
-    +[NSManagedObjectContext _mergeChangesFromRemoteContextSave:intoContexts:withClientQueryGeneration:](NSManagedObjectContext, a3, [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1], a4);
+    +[NSManagedObjectContext _mergeChangesFromRemoteContextSave:intoContexts:withClientQueryGeneration:](NSManagedObjectContext, save, [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1], generation);
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -15846,7 +15846,7 @@ void __116__NSManagedObjectContext__NSCoreDataSPI___mergeChangesFromRemoteContex
   [(NSManagedObjectContext *)v5 _processReferenceQueue:?];
 }
 
-- (void)_mergeChangesFromRemoteContextSave:(id)a3
+- (void)_mergeChangesFromRemoteContextSave:(id)save
 {
   v6[1] = *MEMORY[0x1E69E9840];
   if (_PF_Threading_Debugging_level)
@@ -15857,52 +15857,52 @@ void __116__NSManagedObjectContext__NSCoreDataSPI___mergeChangesFromRemoteContex
   if ([(NSManagedObjectContext *)self persistentStoreCoordinator])
   {
     v6[0] = self;
-    [objc_opt_class() mergeChangesFromRemoteContextSave:a3 intoContexts:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v6, 1)}];
+    [objc_opt_class() mergeChangesFromRemoteContextSave:save intoContexts:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v6, 1)}];
   }
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_copyChildObject:(uint64_t)a1 toParentObject:(_BYTE *)a2 fromChildContext:(void *)a3
+- (void)_copyChildObject:(uint64_t)object toParentObject:(_BYTE *)parentObject fromChildContext:(void *)context
 {
   if (_PF_Threading_Debugging_level)
   {
-    _PFAssertSafeMultiThreadedAccess_impl(a1, sel__copyChildObject_toParentObject_fromChildContext_);
+    _PFAssertSafeMultiThreadedAccess_impl(object, sel__copyChildObject_toParentObject_fromChildContext_);
   }
 
-  v6 = [(NSManagedObject *)a2 _newNestedSaveChangedValuesForParent:a3];
+  v6 = [(NSManagedObject *)parentObject _newNestedSaveChangedValuesForParent:context];
   if (v6)
   {
     v30 = v6;
-    v7 = [a3 entity];
-    v8 = *(v7 + 112);
+    entity = [context entity];
+    v8 = *(entity + 112);
     v9 = *(v8 + 136);
     if (!v9)
     {
-      [(NSManagedObject *)a3 _updateFromRefreshSnapshot:v30 includingTransients:1];
+      [(NSManagedObject *)context _updateFromRefreshSnapshot:v30 includingTransients:1];
 LABEL_26:
 
       return;
     }
 
-    v10 = v7;
+    v10 = entity;
     v11 = *(v8 + 128);
     if (_PF_Threading_Debugging_level)
     {
-      _PFAssertSafeMultiThreadedAccess_impl(a1, sel__currentEventSnapshotForObject_);
-      if (a3)
+      _PFAssertSafeMultiThreadedAccess_impl(object, sel__currentEventSnapshotForObject_);
+      if (context)
       {
         goto LABEL_7;
       }
     }
 
-    else if (a3)
+    else if (context)
     {
 LABEL_7:
-      v12 = a3[6];
+      v12 = context[6];
       if (!v12 || (v13 = *(v12 + 16)) == 0)
       {
-        v13 = [(NSManagedObjectContext *)a1 _committedSnapshotForObject:a3];
+        v13 = [(NSManagedObjectContext *)object _committedSnapshotForObject:context];
       }
 
       goto LABEL_14;
@@ -15911,7 +15911,7 @@ LABEL_7:
     v13 = 0;
 LABEL_14:
     v14 = *(v10 + 104);
-    v15 = [v14 keys];
+    keys = [v14 keys];
     v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v14, "length")}];
     v28 = v11;
     v29 = v9;
@@ -15919,11 +15919,11 @@ LABEL_14:
     if (v11 < v9 + v11)
     {
       v17 = v9;
-      v18 = (v15 + 8 * v11);
+      v18 = (keys + 8 * v11);
       do
       {
         v19 = *v18;
-        v20 = [a3 valueForKey:*v18];
+        v20 = [context valueForKey:*v18];
         v21 = [v13 valueForKey:v19];
         if ([MEMORY[0x1E695DFB0] null] == v21)
         {
@@ -15936,7 +15936,7 @@ LABEL_14:
           v22 = [_PFRoutines newOrderedSetFromCollection:v20 byRemovingItems:v21];
           [v16 addObject:v22];
 
-          [objc_msgSend(a3 primitiveValueForKey:{v19), "removeObjectsInArray:", objc_msgSend(v22, "array")}];
+          [objc_msgSend(context primitiveValueForKey:{v19), "removeObjectsInArray:", objc_msgSend(v22, "array")}];
         }
 
         ++v18;
@@ -15946,18 +15946,18 @@ LABEL_14:
       while (v17);
     }
 
-    [(NSManagedObject *)a3 _updateFromRefreshSnapshot:v30 includingTransients:1];
-    v23 = [v14 keys];
+    [(NSManagedObject *)context _updateFromRefreshSnapshot:v30 includingTransients:1];
+    keys2 = [v14 keys];
     if (v28 < v27)
     {
       v24 = 0;
-      v25 = v23 + 8 * v28;
+      v25 = keys2 + 8 * v28;
       do
       {
         v26 = [v16 objectAtIndex:v24];
         if ([MEMORY[0x1E695DFB0] null] != v26)
         {
-          [objc_msgSend(a3 primitiveValueForKey:{*(v25 + 8 * v24)), "addObjectsFromArray:", objc_msgSend(v26, "array")}];
+          [objc_msgSend(context primitiveValueForKey:{*(v25 + 8 * v24)), "addObjectsFromArray:", objc_msgSend(v26, "array")}];
         }
 
         ++v24;
@@ -15970,7 +15970,7 @@ LABEL_14:
   }
 }
 
-- (uint64_t)_parentProcessSaveRequest:(uint64_t)result inContext:(void *)a2 error:
+- (uint64_t)_parentProcessSaveRequest:(uint64_t)result inContext:(void *)context error:
 {
   v66 = *MEMORY[0x1E69E9840];
   if (result)
@@ -15978,12 +15978,12 @@ LABEL_14:
     v3 = result;
     v51 = objc_alloc_init(MEMORY[0x1E696AAC8]);
     [v3 processPendingChanges];
-    v4 = [a2 insertedObjects];
-    v5 = [a2 updatedObjects];
-    v6 = [a2 deletedObjects];
-    v7 = [v4 count];
-    v53 = [v5 count];
-    v52 = [v6 count];
+    insertedObjects = [context insertedObjects];
+    updatedObjects = [context updatedObjects];
+    deletedObjects = [context deletedObjects];
+    v7 = [insertedObjects count];
+    v53 = [updatedObjects count];
+    v52 = [deletedObjects count];
     v50 = &v48;
     if (v7 <= 1)
     {
@@ -16094,7 +16094,7 @@ LABEL_14:
         bzero(&v48 - v17, 8 * v54);
       }
 
-      [v4 getObjects:v18];
+      [insertedObjects getObjects:v18];
       for (i = 0; i != v8; ++i)
       {
         v20 = _PFRetainedObjectForMappedChildObjectIDInParentContext([*&v18[8 * i] objectID], v3);
@@ -16113,12 +16113,12 @@ LABEL_14:
       }
     }
 
-    v49 = v6;
+    v49 = deletedObjects;
     v62 = 0u;
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v22 = [v5 countByEnumeratingWithState:&v60 objects:v65 count:16];
+    v22 = [updatedObjects countByEnumeratingWithState:&v60 objects:v65 count:16];
     if (v22)
     {
       v23 = 0;
@@ -16129,7 +16129,7 @@ LABEL_14:
         {
           if (*v61 != v24)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(updatedObjects);
           }
 
           v26 = *(*(&v60 + 1) + 8 * k);
@@ -16139,7 +16139,7 @@ LABEL_14:
           ++v23;
         }
 
-        v22 = [v5 countByEnumeratingWithState:&v60 objects:v65 count:16];
+        v22 = [updatedObjects countByEnumeratingWithState:&v60 objects:v65 count:16];
       }
 
       while (v22);
@@ -16279,7 +16279,7 @@ LABEL_14:
   return result;
 }
 
-- (id)executeRequest:(id)a3 withContext:(id)a4 error:(id *)a5
+- (id)executeRequest:(id)request withContext:(id)context error:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -16298,23 +16298,23 @@ LABEL_14:
   v15[2] = __82__NSManagedObjectContext__NestedContextSupport__executeRequest_withContext_error___block_invoke;
   v15[3] = &unk_1E6EC1900;
   v15[4] = self;
-  v15[5] = a3;
-  v15[6] = a4;
+  v15[5] = request;
+  v15[6] = context;
   v15[7] = &v16;
   v15[8] = &v22;
   _perform(self, v15);
   v7 = v17[5];
   v8 = v23[5];
-  if (a5)
+  if (error)
   {
     v9 = v17[5];
     if (v9)
     {
-      *a5 = v9;
+      *error = v9;
     }
   }
 
-  if ([a3 requestType] != 4 && (v23[5] == 0) == (v17[5] == 0))
+  if ([request requestType] != 4 && (v23[5] == 0) == (v17[5] == 0))
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
@@ -16742,15 +16742,15 @@ LABEL_7:
   return result;
 }
 
-- (void)managedObjectContextDidRegisterObjectsWithIDs:(id)a3 generation:(id)a4
+- (void)managedObjectContextDidRegisterObjectsWithIDs:(id)ds generation:(id)generation
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __106__NSManagedObjectContext__NestedContextSupport__managedObjectContextDidRegisterObjectsWithIDs_generation___block_invoke;
   v4[3] = &unk_1E6EC19D8;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = ds;
+  v4[6] = generation;
   _perform(self, v4);
 }
 
@@ -16807,15 +16807,15 @@ uint64_t __106__NSManagedObjectContext__NestedContextSupport__managedObjectConte
   return [(NSManagedObjectContext *)v11 unlockObjectStore];
 }
 
-- (void)managedObjectContextDidUnregisterObjectsWithIDs:(id)a3 generation:(id)a4
+- (void)managedObjectContextDidUnregisterObjectsWithIDs:(id)ds generation:(id)generation
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __108__NSManagedObjectContext__NestedContextSupport__managedObjectContextDidUnregisterObjectsWithIDs_generation___block_invoke;
   v4[3] = &unk_1E6EC19D8;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = ds;
+  v4[6] = generation;
   _perform(self, v4);
 }
 
@@ -16828,7 +16828,7 @@ uint64_t __108__NSManagedObjectContext__NestedContextSupport__managedObjectConte
   return [(NSManagedObjectContext *)v2 unlockObjectStore];
 }
 
-- (id)newValuesForObjectWithID:(id)a3 withContext:(id)a4 error:(id *)a5
+- (id)newValuesForObjectWithID:(id)d withContext:(id)context error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -16840,9 +16840,9 @@ uint64_t __108__NSManagedObjectContext__NestedContextSupport__managedObjectConte
   v7[1] = 3221225472;
   v7[2] = __92__NSManagedObjectContext__NestedContextSupport__newValuesForObjectWithID_withContext_error___block_invoke;
   v7[3] = &unk_1E6EC2748;
-  v7[4] = a3;
+  v7[4] = d;
   v7[5] = self;
-  v7[6] = a4;
+  v7[6] = context;
   v7[7] = &v8;
   _perform(self, v7);
   v5 = v9[5];
@@ -16931,7 +16931,7 @@ uint64_t __92__NSManagedObjectContext__NestedContextSupport__newValuesForObjectW
   return result;
 }
 
-- (id)newValueForRelationship:(id)a3 forObjectWithID:(id)a4 withContext:(id)a5 error:(id *)a6
+- (id)newValueForRelationship:(id)relationship forObjectWithID:(id)d withContext:(id)context error:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -16943,11 +16943,11 @@ uint64_t __92__NSManagedObjectContext__NestedContextSupport__newValuesForObjectW
   v8[1] = 3221225472;
   v8[2] = __107__NSManagedObjectContext__NestedContextSupport__newValueForRelationship_forObjectWithID_withContext_error___block_invoke;
   v8[3] = &unk_1E6EC2638;
-  v8[4] = a4;
+  v8[4] = d;
   v8[5] = self;
-  v8[7] = a5;
+  v8[7] = context;
   v8[8] = &v9;
-  v8[6] = a3;
+  v8[6] = relationship;
   _perform(self, v8);
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -17058,7 +17058,7 @@ void __107__NSManagedObjectContext__NestedContextSupport__newValueForRelationshi
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_newOrderedRelationshipInformationForRelationship:(id)a3 forObjectWithID:(id)a4 withContext:(id)a5 error:(id *)a6
+- (id)_newOrderedRelationshipInformationForRelationship:(id)relationship forObjectWithID:(id)d withContext:(id)context error:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -17076,10 +17076,10 @@ void __107__NSManagedObjectContext__NestedContextSupport__newValueForRelationshi
   v12[1] = 3221225472;
   v12[2] = __133__NSManagedObjectContext__NestedContextSupport___newOrderedRelationshipInformationForRelationship_forObjectWithID_withContext_error___block_invoke;
   v12[3] = &unk_1E6EC2660;
-  v12[4] = a4;
+  v12[4] = d;
   v12[5] = self;
-  v12[6] = a3;
-  v12[7] = a5;
+  v12[6] = relationship;
+  v12[7] = context;
   v12[8] = &v19;
   v12[9] = &v13;
   _perform(self, v12);
@@ -17087,9 +17087,9 @@ void __107__NSManagedObjectContext__NestedContextSupport__newValueForRelationshi
   v8 = v14[5];
   if (v8)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = v8;
+      *error = v8;
       v8 = v7[5];
     }
 
@@ -17134,7 +17134,7 @@ uint64_t __133__NSManagedObjectContext__NestedContextSupport___newOrderedRelatio
   return [(NSManagedObjectContext *)v6 unlockObjectStore];
 }
 
-- (BOOL)_parentObtainPermanentIDsForObjects:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)_parentObtainPermanentIDsForObjects:(id)objects context:(id)context error:(id *)error
 {
   v33 = 0;
   v34 = &v33;
@@ -17169,18 +17169,18 @@ uint64_t __133__NSManagedObjectContext__NestedContextSupport___newOrderedRelatio
   v13[2] = __99__NSManagedObjectContext__NestedContextSupport___parentObtainPermanentIDsForObjects_context_error___block_invoke;
   v13[3] = &unk_1E6EC2688;
   v13[4] = self;
-  v13[5] = a3;
+  v13[5] = objects;
   v13[8] = &v14;
   v13[9] = &v33;
   v13[10] = &v27;
   v13[11] = v26;
-  v13[12] = a5;
-  v13[6] = a4;
+  v13[12] = error;
+  v13[6] = context;
   v13[7] = &v20;
   _perform(self, v13);
   if ([v21[5] count])
   {
-    v7 = [(NSManagedObjectContext *)a4 _changeIDsForManagedObjects:v15[5] toIDs:?];
+    v7 = [(NSManagedObjectContext *)context _changeIDsForManagedObjects:v15[5] toIDs:?];
     if (v7)
     {
       v8 = objc_autoreleasePoolPush();
@@ -17192,12 +17192,12 @@ uint64_t __133__NSManagedObjectContext__NestedContextSupport___newOrderedRelatio
   v21[5] = 0;
   v15[5] = 0;
   v9 = v28[5];
-  if (a5)
+  if (error)
   {
     v10 = v28[5];
     if (v10)
     {
-      *a5 = v10;
+      *error = v10;
     }
   }
 
@@ -17392,21 +17392,21 @@ void __99__NSManagedObjectContext__NestedContextSupport___parentObtainPermanentI
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_orderKeysForRelationshipWithName__:(id)a3 onObjectWithID:(id)a4
+- (id)_orderKeysForRelationshipWithName__:(id)name__ onObjectWithID:(id)d
 {
-  v5 = [(NSManagedObjectContext *)self objectWithID:a4];
+  v5 = [(NSManagedObjectContext *)self objectWithID:d];
 
-  return [(NSManagedObject *)v5 _orderKeysForRelationshipWithName__:a3];
+  return [(NSManagedObject *)v5 _orderKeysForRelationshipWithName__:name__];
 }
 
-- (BOOL)_updateLocationsOfObjectsToLocationByOrderKey:(id)a3 inRelationshipWithName:(id)a4 onObjectWithID:(id)a5 error:(id *)a6
+- (BOOL)_updateLocationsOfObjectsToLocationByOrderKey:(id)key inRelationshipWithName:(id)name onObjectWithID:(id)d error:(id *)error
 {
-  v9 = [(NSManagedObjectContext *)self objectWithID:a5];
+  v9 = [(NSManagedObjectContext *)self objectWithID:d];
 
-  return [(NSManagedObject *)v9 _updateLocationsOfObjectsToLocationByOrderKey:a3 inRelationshipWithName:a4 error:a6];
+  return [(NSManagedObject *)v9 _updateLocationsOfObjectsToLocationByOrderKey:key inRelationshipWithName:name error:error];
 }
 
-- (id)_allOrderKeysForDestination:(id)a3 inRelationship:(id)a4 error:(id *)a5
+- (id)_allOrderKeysForDestination:(id)destination inRelationship:(id)relationship error:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -17414,31 +17414,31 @@ void __99__NSManagedObjectContext__NestedContextSupport___parentObtainPermanentI
   v25 = __Block_byref_object_copy__13;
   v26 = __Block_byref_object_dispose__13;
   v27 = 0;
-  v9 = [a4 destinationEntity];
+  destinationEntity = [relationship destinationEntity];
   if ([(NSManagedObjectContext *)self hasChanges])
   {
     v10 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:&unk_1EF4350A8];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:&unk_1EF4350A8];
     }
 
     goto LABEL_11;
   }
 
-  if (![objc_msgSend(a3 "entity")])
+  if (![objc_msgSend(destination "entity")])
   {
     v14 = @"Destination object is not kind of [relationship destinationEntity]";
     goto LABEL_15;
   }
 
-  if (![a4 isToMany])
+  if (![relationship isToMany])
   {
     v14 = @"Relationship must be a to-many.";
     goto LABEL_15;
   }
 
-  if (([a4 isOrdered] & 1) == 0)
+  if (([relationship isOrdered] & 1) == 0)
   {
     v14 = @"Can't find the order of objects in an unordered relationship";
 LABEL_15:
@@ -17456,8 +17456,8 @@ LABEL_15:
   v15[2] = __105__NSManagedObjectContext__PhotosOrderKeyUpdateSupport___allOrderKeysForDestination_inRelationship_error___block_invoke;
   v15[3] = &unk_1E6EC26B0;
   v15[4] = self;
-  v15[5] = a3;
-  v15[6] = a4;
+  v15[5] = destination;
+  v15[6] = relationship;
   v15[7] = &v22;
   v15[8] = &v16;
   [(NSManagedObjectContext *)self performBlockAndWait:v15];
@@ -17465,9 +17465,9 @@ LABEL_15:
   if (v11)
   {
     v12 = v11;
-    if (a5)
+    if (error)
     {
-      *a5 = v17[5];
+      *error = v17[5];
     }
   }
 
@@ -17491,9 +17491,9 @@ id __105__NSManagedObjectContext__PhotosOrderKeyUpdateSupport___allOrderKeysForD
   return result;
 }
 
-- (void)set_isSwiftBound:(BOOL)a3
+- (void)set_isSwiftBound:(BOOL)bound
 {
-  if (a3)
+  if (bound)
   {
     v3 = 0x40000000;
   }
@@ -17504,13 +17504,13 @@ id __105__NSManagedObjectContext__PhotosOrderKeyUpdateSupport___allOrderKeysForD
   }
 
   self->_flags = (*&self->_flags & 0xBFFFFFFF | v3);
-  if (a3)
+  if (bound)
   {
     atomic_store(1u, &self->_generatedMutatedIDsNotification);
   }
 }
 
-- (BOOL)_performImmediate:(id)a3
+- (BOOL)_performImmediate:(id)immediate
 {
   v18 = *MEMORY[0x1E69E9840];
   if (!self->_dispatchQueue)
@@ -17518,11 +17518,11 @@ id __105__NSManagedObjectContext__PhotosOrderKeyUpdateSupport___allOrderKeysForD
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Can only use -performBlockAndWait: on an NSManagedObjectContext that was created with a queue." userInfo:0]);
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 712);
-  v6 = self;
-  v15[0] = a3;
-  v15[1] = v6;
+  selfCopy2 = self;
+  v15[0] = immediate;
+  v15[1] = selfCopy2;
   v16 = 0;
   v17 = v5;
   if (byte_1ED4BEA2A)
@@ -17530,7 +17530,7 @@ id __105__NSManagedObjectContext__PhotosOrderKeyUpdateSupport___allOrderKeysForD
     v16 = 4;
   }
 
-  v7 = atomic_load(&v4->_isMainThreadBlessed);
+  v7 = atomic_load(&selfCopy->_isMainThreadBlessed);
   if (v7)
   {
     if (!_PFIsSerializedWithMainQueue())
@@ -17552,7 +17552,7 @@ LABEL_27:
     v8 = 0;
     v9 = 0;
     v10 = v5;
-    while (v10 != v4)
+    while (v10 != selfCopy)
     {
       if (v10 == v8)
       {
@@ -17581,20 +17581,20 @@ LABEL_16:
 LABEL_17:
     v11 = 0;
     v12 = 0;
-    while (v4 != v5)
+    while (selfCopy != v5)
     {
-      if (v4 == v11)
+      if (selfCopy == v11)
       {
         goto LABEL_25;
       }
 
       if (!v11)
       {
-        v11 = v4;
+        v11 = selfCopy;
       }
 
-      v4 = atomic_load(&v4->_queueOwner);
-      if (!v4)
+      selfCopy = atomic_load(&selfCopy->_queueOwner);
+      if (!selfCopy)
       {
         goto LABEL_27;
       }
@@ -17616,9 +17616,9 @@ LABEL_28:
   return result;
 }
 
-+ (id)createFutureForFileAtURL:(id)a3
++ (id)createFutureForFileAtURL:(id)l
 {
-  if (!a3 || ([a3 isFileURL] & 1) == 0)
+  if (!l || ([l isFileURL] & 1) == 0)
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
@@ -17629,7 +17629,7 @@ LABEL_28:
   v4 = [_NSDataFileBackedFuture alloc];
   if (v4)
   {
-    if (([a3 isFileURL] & 1) == 0)
+    if (([l isFileURL] & 1) == 0)
     {
 
       return 0;
@@ -17648,7 +17648,7 @@ LABEL_28:
         if ([v5 valueForKey:@"NSFileSize"])
         {
           v4->_fileSize = [objc_msgSend(v6 valueForKey:{@"NSFileSize", "unsignedIntegerValue"}];
-          v4->_originalFileURL = a3;
+          v4->_originalFileURL = l;
           v4->_uuid = [MEMORY[0x1E696AFB0] UUID];
           return v4;
         }
@@ -17656,7 +17656,7 @@ LABEL_28:
 
       v11 = MEMORY[0x1E695DF30];
       v12 = *MEMORY[0x1E695D940];
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No file exists at URL '%@'", a3];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No file exists at URL '%@'", l];
       v8 = v11;
       v9 = v12;
 LABEL_13:
@@ -17667,13 +17667,13 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)evictFuture:(id)a3 withError:(id *)a4
+- (BOOL)evictFuture:(id)future withError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (!a3)
+    if (!future)
     {
       goto LABEL_23;
     }
@@ -17683,8 +17683,8 @@ LABEL_13:
     LOBYTE(v7) = 1;
     if ((v6 & 1) == 0 && v20)
     {
-      v8 = [v20 domain];
-      if ([v8 isEqualToString:*MEMORY[0x1E696A250]] && objc_msgSend(v20, "code") == 4)
+      domain = [v20 domain];
+      if ([domain isEqualToString:*MEMORY[0x1E696A250]] && objc_msgSend(v20, "code") == 4)
       {
         LOBYTE(v7) = 1;
         goto LABEL_24;
@@ -17693,7 +17693,7 @@ LABEL_13:
       v14 = v20;
       if (v20)
       {
-        if (a4)
+        if (error)
         {
           goto LABEL_17;
         }
@@ -17735,12 +17735,12 @@ LABEL_13:
     v13 = [v9 errorWithDomain:v10 code:3328 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v22, &v21, 1)}];
     if (v13)
     {
-      if (a4)
+      if (error)
       {
         v14 = v13;
 LABEL_17:
         LOBYTE(v7) = 0;
-        *a4 = v14;
+        *error = v14;
         goto LABEL_24;
       }
 

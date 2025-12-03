@@ -1,21 +1,21 @@
 @interface PXPeopleUserFeedbackAction
-- (PXPeopleUserFeedbackAction)initWithPeople:(id)a3 feedbackType:(unint64_t)a4;
+- (PXPeopleUserFeedbackAction)initWithPeople:(id)people feedbackType:(unint64_t)type;
 - (id)actionNameLocalizationKey;
-- (void)performAction:(id)a3;
-- (void)performRedo:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performRedo:(id)redo;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXPeopleUserFeedbackAction
 
-- (void)performRedo:(id)a3
+- (void)performRedo:(id)redo
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __42__PXPeopleUserFeedbackAction_performRedo___block_invoke;
   v3[3] = &unk_1E774C648;
   v3[4] = self;
-  [(PXPhotosAction *)self performChanges:v3 completionHandler:a3];
+  [(PXPhotosAction *)self performChanges:v3 completionHandler:redo];
 }
 
 void __42__PXPeopleUserFeedbackAction_performRedo___block_invoke(uint64_t a1)
@@ -57,18 +57,18 @@ void __42__PXPeopleUserFeedbackAction_performRedo___block_invoke(uint64_t a1)
   }
 }
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXPeopleUserFeedbackAction *)self undoUserFeedbacks];
+  undoCopy = undo;
+  undoUserFeedbacks = [(PXPeopleUserFeedbackAction *)self undoUserFeedbacks];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__PXPeopleUserFeedbackAction_performUndo___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
-  [(PXPhotosAction *)self performChanges:v7 completionHandler:v4];
+  v8 = undoUserFeedbacks;
+  v6 = undoUserFeedbacks;
+  [(PXPhotosAction *)self performChanges:v7 completionHandler:undoCopy];
 }
 
 void __42__PXPeopleUserFeedbackAction_performUndo___block_invoke(uint64_t a1)
@@ -108,14 +108,14 @@ void __42__PXPeopleUserFeedbackAction_performUndo___block_invoke(uint64_t a1)
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __44__PXPeopleUserFeedbackAction_performAction___block_invoke;
   v3[3] = &unk_1E774C648;
   v3[4] = self;
-  [(PXPhotosAction *)self performChanges:v3 completionHandler:a3];
+  [(PXPhotosAction *)self performChanges:v3 completionHandler:action];
 }
 
 void __44__PXPeopleUserFeedbackAction_performAction___block_invoke(uint64_t a1)
@@ -164,16 +164,16 @@ void __44__PXPeopleUserFeedbackAction_performAction___block_invoke(uint64_t a1)
 
 - (id)actionNameLocalizationKey
 {
-  v2 = [(PXPeopleUserFeedbackAction *)self userFeedback];
-  v3 = [v2 type];
+  userFeedback = [(PXPeopleUserFeedbackAction *)self userFeedback];
+  type = [userFeedback type];
 
   v4 = @"PXNeverFeatureActionName";
-  if (v3 != 2)
+  if (type != 2)
   {
     v4 = 0;
   }
 
-  if (v3 == 3)
+  if (type == 3)
   {
     return @"PXFeatureLessActionName";
   }
@@ -184,39 +184,39 @@ void __44__PXPeopleUserFeedbackAction_performAction___block_invoke(uint64_t a1)
   }
 }
 
-- (PXPeopleUserFeedbackAction)initWithPeople:(id)a3 feedbackType:(unint64_t)a4
+- (PXPeopleUserFeedbackAction)initWithPeople:(id)people feedbackType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [v6 firstObject];
-  v8 = v7;
-  if (v7)
+  peopleCopy = people;
+  firstObject = [peopleCopy firstObject];
+  v8 = firstObject;
+  if (firstObject)
   {
-    v9 = [v7 photoLibrary];
+    photoLibrary = [firstObject photoLibrary];
     v17.receiver = self;
     v17.super_class = PXPeopleUserFeedbackAction;
-    v10 = [(PXPhotosAction *)&v17 initWithPhotoLibrary:v9];
+    v10 = [(PXPhotosAction *)&v17 initWithPhotoLibrary:photoLibrary];
 
     if (v10)
     {
-      v11 = [v6 copy];
+      v11 = [peopleCopy copy];
       collections = v10->_collections;
       v10->_collections = v11;
 
-      v13 = [objc_alloc(MEMORY[0x1E6978B00]) initWithType:a4 feature:0 context:0];
+      v13 = [objc_alloc(MEMORY[0x1E6978B00]) initWithType:type feature:0 context:0];
       userFeedback = v10->_userFeedback;
       v10->_userFeedback = v13;
     }
 
     self = v10;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 @end

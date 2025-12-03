@@ -1,24 +1,24 @@
 @interface APMediaServicesRanker
-+ (id)findValidObjectsInContentDataItems:(id)a3;
-+ (void)_sortByRank:(id)a3 completionHandler:(id)a4;
++ (id)findValidObjectsInContentDataItems:(id)items;
++ (void)_sortByRank:(id)rank completionHandler:(id)handler;
 @end
 
 @implementation APMediaServicesRanker
 
-+ (id)findValidObjectsInContentDataItems:(id)a3
++ (id)findValidObjectsInContentDataItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = [NSPredicate predicateWithBlock:&stru_100480938];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [itemsCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-+ (void)_sortByRank:(id)a3 completionHandler:(id)a4
++ (void)_sortByRank:(id)rank completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a1 sortByRank:a3];
-  v6[2](v6, v7, 0);
+  handlerCopy = handler;
+  v7 = [self sortByRank:rank];
+  handlerCopy[2](handlerCopy, v7, 0);
 }
 
 @end

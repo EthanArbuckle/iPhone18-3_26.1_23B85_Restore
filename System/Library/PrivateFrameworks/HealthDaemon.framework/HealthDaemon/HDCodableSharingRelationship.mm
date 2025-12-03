@@ -1,17 +1,17 @@
 @interface HDCodableSharingRelationship
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRecipientType:(id)a3;
+- (int)StringAsRecipientType:(id)type;
 - (int)recipientType;
 - (unint64_t)hash;
-- (void)addAuthorizationIdentifiers:(id)a3;
-- (void)addSharingAuthorizations:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRecipientType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAuthorizationIdentifiers:(id)identifiers;
+- (void)addSharingAuthorizations:(id)authorizations;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRecipientType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableSharingRelationship
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasRecipientType:(BOOL)a3
+- (void)setHasRecipientType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -44,56 +44,56 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsRecipientType:(id)a3
+- (int)StringAsRecipientType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SharedSummary"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"SharedSummary"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"ClinicalAccount"];
+    v4 = [typeCopy isEqualToString:@"ClinicalAccount"];
   }
 
   return v4;
 }
 
-- (void)addAuthorizationIdentifiers:(id)a3
+- (void)addAuthorizationIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   authorizationIdentifiers = self->_authorizationIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!authorizationIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_authorizationIdentifiers;
     self->_authorizationIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     authorizationIdentifiers = self->_authorizationIdentifiers;
   }
 
-  [(NSMutableArray *)authorizationIdentifiers addObject:v4];
+  [(NSMutableArray *)authorizationIdentifiers addObject:identifiersCopy];
 }
 
-- (void)addSharingAuthorizations:(id)a3
+- (void)addSharingAuthorizations:(id)authorizations
 {
-  v4 = a3;
+  authorizationsCopy = authorizations;
   sharingAuthorizations = self->_sharingAuthorizations;
-  v8 = v4;
+  v8 = authorizationsCopy;
   if (!sharingAuthorizations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_sharingAuthorizations;
     self->_sharingAuthorizations = v6;
 
-    v4 = v8;
+    authorizationsCopy = v8;
     sharingAuthorizations = self->_sharingAuthorizations;
   }
 
-  [(NSMutableArray *)sharingAuthorizations addObject:v4];
+  [(NSMutableArray *)sharingAuthorizations addObject:authorizationsCopy];
 }
 
 - (id)description
@@ -102,8 +102,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableSharingRelationship;
   v4 = [(HDCodableSharingRelationship *)&v8 description];
-  v5 = [(HDCodableSharingRelationship *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableSharingRelationship *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -111,12 +111,12 @@
 - (id)dictionaryRepresentation
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   recipientIdentifier = self->_recipientIdentifier;
   if (recipientIdentifier)
   {
-    [v3 setObject:recipientIdentifier forKey:@"recipientIdentifier"];
+    [dictionary setObject:recipientIdentifier forKey:@"recipientIdentifier"];
   }
 
   has = self->_has;
@@ -180,8 +180,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -196,8 +196,8 @@
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v19 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v4 setObject:v19 forKey:@"syncIdentity"];
+    dictionaryRepresentation2 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"syncIdentity"];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -205,10 +205,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_recipientIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -294,37 +294,37 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v14 = v4;
+  toCopy = to;
+  v14 = toCopy;
   if (self->_recipientIdentifier)
   {
-    [v4 setRecipientIdentifier:?];
-    v4 = v14;
+    [toCopy setRecipientIdentifier:?];
+    toCopy = v14;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 8) = self->_recipientType;
-    *(v4 + 56) |= 2u;
+    *(toCopy + 8) = self->_recipientType;
+    *(toCopy + 56) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_dateModified;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 1) = *&self->_dateModified;
+    *(toCopy + 56) |= 1u;
   }
 
   if ([(HDCodableSharingRelationship *)self authorizationIdentifiersCount])
   {
     [v14 clearAuthorizationIdentifiers];
-    v6 = [(HDCodableSharingRelationship *)self authorizationIdentifiersCount];
-    if (v6)
+    authorizationIdentifiersCount = [(HDCodableSharingRelationship *)self authorizationIdentifiersCount];
+    if (authorizationIdentifiersCount)
     {
-      v7 = v6;
+      v7 = authorizationIdentifiersCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(HDCodableSharingRelationship *)self authorizationIdentifiersAtIndex:i];
@@ -336,10 +336,10 @@
   if ([(HDCodableSharingRelationship *)self sharingAuthorizationsCount])
   {
     [v14 clearSharingAuthorizations];
-    v10 = [(HDCodableSharingRelationship *)self sharingAuthorizationsCount];
-    if (v10)
+    sharingAuthorizationsCount = [(HDCodableSharingRelationship *)self sharingAuthorizationsCount];
+    if (sharingAuthorizationsCount)
     {
-      v11 = v10;
+      v11 = sharingAuthorizationsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(HDCodableSharingRelationship *)self sharingAuthorizationsAtIndex:j];
@@ -354,11 +354,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_recipientIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_recipientIdentifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -395,7 +395,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v29 + 1) + 8 * i) copyWithZone:a3];
+        v14 = [*(*(&v29 + 1) + 8 * i) copyWithZone:zone];
         [v5 addAuthorizationIdentifiers:v14];
       }
 
@@ -424,7 +424,7 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v25 + 1) + 8 * j) copyWithZone:{a3, v25}];
+        v20 = [*(*(&v25 + 1) + 8 * j) copyWithZone:{zone, v25}];
         [v5 addSharingAuthorizations:v20];
       }
 
@@ -434,7 +434,7 @@
     while (v17);
   }
 
-  v21 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v21 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v22 = *(v5 + 48);
   *(v5 + 48) = v21;
 
@@ -442,16 +442,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   recipientIdentifier = self->_recipientIdentifier;
-  if (recipientIdentifier | *(v4 + 3))
+  if (recipientIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)recipientIdentifier isEqual:?])
     {
@@ -459,16 +459,16 @@
     }
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_recipientType != *(v4 + 8))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_recipientType != *(equalCopy + 8))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
 LABEL_20:
     v10 = 0;
@@ -477,25 +477,25 @@ LABEL_20:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_dateModified != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_dateModified != *(equalCopy + 1))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_20;
   }
 
   authorizationIdentifiers = self->_authorizationIdentifiers;
-  if (authorizationIdentifiers | *(v4 + 2) && ![(NSMutableArray *)authorizationIdentifiers isEqual:?])
+  if (authorizationIdentifiers | *(equalCopy + 2) && ![(NSMutableArray *)authorizationIdentifiers isEqual:?])
   {
     goto LABEL_20;
   }
 
   sharingAuthorizations = self->_sharingAuthorizations;
-  if (sharingAuthorizations | *(v4 + 5))
+  if (sharingAuthorizations | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)sharingAuthorizations isEqual:?])
     {
@@ -504,7 +504,7 @@ LABEL_20:
   }
 
   syncIdentity = self->_syncIdentity;
-  if (syncIdentity | *(v4 + 6))
+  if (syncIdentity | *(equalCopy + 6))
   {
     v10 = [(HDCodableSyncIdentity *)syncIdentity isEqual:?];
   }
@@ -573,26 +573,26 @@ LABEL_9:
   return v11 ^ v12 ^ [(HDCodableSyncIdentity *)self->_syncIdentity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(HDCodableSharingRelationship *)self setRecipientIdentifier:?];
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 2) != 0)
   {
-    self->_recipientType = *(v4 + 8);
+    self->_recipientType = *(fromCopy + 8);
     *&self->_has |= 2u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
   }
 
   if (v5)
   {
-    self->_dateModified = *(v4 + 1);
+    self->_dateModified = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -600,7 +600,7 @@ LABEL_9:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
@@ -628,7 +628,7 @@ LABEL_9:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = *(v4 + 5);
+  v11 = *(fromCopy + 5);
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v12)
   {
@@ -653,7 +653,7 @@ LABEL_9:
   }
 
   syncIdentity = self->_syncIdentity;
-  v17 = *(v4 + 6);
+  v17 = *(fromCopy + 6);
   if (syncIdentity)
   {
     if (v17)

@@ -1,11 +1,11 @@
 @interface CKDPCryptoRequirementsSigningKey
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPCryptoRequirementsSigningKey
@@ -41,66 +41,66 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_signingPublicKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_signingPublicKeySignature)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   signingPublicKey = self->_signingPublicKey;
-  v8 = v4;
+  v8 = toCopy;
   if (signingPublicKey)
   {
-    objc_msgSend_setSigningPublicKey_(v4, v5, signingPublicKey);
-    v4 = v8;
+    objc_msgSend_setSigningPublicKey_(toCopy, v5, signingPublicKey);
+    toCopy = v8;
   }
 
   signingPublicKeySignature = self->_signingPublicKeySignature;
   if (signingPublicKeySignature)
   {
     objc_msgSend_setSigningPublicKeySignature_(v8, v5, signingPublicKeySignature);
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_signingPublicKey, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_signingPublicKey, v11, zone);
   v13 = v10[1];
   v10[1] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_signingPublicKeySignature, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_signingPublicKeySignature, v14, zone);
   v16 = v10[2];
   v10[2] = v15;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((signingPublicKey = self->_signingPublicKey, v9 = v4[1], !(signingPublicKey | v9)) || objc_msgSend_isEqual_(signingPublicKey, v7, v9)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((signingPublicKey = self->_signingPublicKey, v9 = equalCopy[1], !(signingPublicKey | v9)) || objc_msgSend_isEqual_(signingPublicKey, v7, v9)))
   {
     signingPublicKeySignature = self->_signingPublicKeySignature;
-    v11 = v4[2];
+    v11 = equalCopy[2];
     if (signingPublicKeySignature | v11)
     {
       isEqual = objc_msgSend_isEqual_(signingPublicKeySignature, v7, v11);
@@ -120,22 +120,22 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4[1];
-  v8 = v4;
+  fromCopy = from;
+  v6 = fromCopy[1];
+  v8 = fromCopy;
   if (v6)
   {
     objc_msgSend_setSigningPublicKey_(self, v5, v6);
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = v4[2];
+  v7 = fromCopy[2];
   if (v7)
   {
     objc_msgSend_setSigningPublicKeySignature_(self, v5, v7);
-    v4 = v8;
+    fromCopy = v8;
   }
 }
 

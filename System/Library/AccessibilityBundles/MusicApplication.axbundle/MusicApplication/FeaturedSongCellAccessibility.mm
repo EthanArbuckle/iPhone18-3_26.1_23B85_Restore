@@ -1,16 +1,16 @@
 @interface FeaturedSongCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation FeaturedSongCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.FeaturedSongCell" hasInstanceMethod:@"headline" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.FeaturedSongCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.FeaturedSongCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.FeaturedSongCell" hasInstanceMethod:@"headline" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.FeaturedSongCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.FeaturedSongCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

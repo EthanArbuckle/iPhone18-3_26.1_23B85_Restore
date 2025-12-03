@@ -1,78 +1,78 @@
 @interface PKPaymentWebServiceConfiguration
-- (BOOL)AMPNonDefaultBehaviourDisabledForRegion:(id)a3;
-- (BOOL)_lock_supportedForOSVersion:(id)a3 inRegionDictionary:(id)a4 deviceClass:(id)a5 platform:(id)a6;
-- (BOOL)accountServiceEnabledForRegion:(id)a3;
-- (BOOL)applyServiceEnabledForRegion:(id)a3;
-- (BOOL)browseProvisioningBankAppsEnabledForRegion:(id)a3;
-- (BOOL)buddyManualProvisioningEnabledForRegion:(id)a3;
-- (BOOL)buddyProvisioningEnabledForRegion:(id)a3;
-- (BOOL)cameraFirstProvisioningEnabledForRegion:(id)a3;
-- (BOOL)cameraProvisioningEnabledForRegion:(id)a3;
-- (BOOL)deviceCheckInDisabledForRegion:(id)a3;
-- (BOOL)hasFeatureRequiringRegistrationInRegion:(id)a3 osVersion:(id)a4 deviceClass:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)manualProvisioningEnabledForRegion:(id)a3;
-- (BOOL)paymentTransactionIconsEnabledForRegion:(id)a3;
-- (BOOL)peerPaymentEnabledForRegion:(id)a3;
-- (BOOL)provisioningProximityVerificationInSetupAssistantEnabledForRegion:(id)a3;
+- (BOOL)AMPNonDefaultBehaviourDisabledForRegion:(id)region;
+- (BOOL)_lock_supportedForOSVersion:(id)version inRegionDictionary:(id)dictionary deviceClass:(id)class platform:(id)platform;
+- (BOOL)accountServiceEnabledForRegion:(id)region;
+- (BOOL)applyServiceEnabledForRegion:(id)region;
+- (BOOL)browseProvisioningBankAppsEnabledForRegion:(id)region;
+- (BOOL)buddyManualProvisioningEnabledForRegion:(id)region;
+- (BOOL)buddyProvisioningEnabledForRegion:(id)region;
+- (BOOL)cameraFirstProvisioningEnabledForRegion:(id)region;
+- (BOOL)cameraProvisioningEnabledForRegion:(id)region;
+- (BOOL)deviceCheckInDisabledForRegion:(id)region;
+- (BOOL)hasFeatureRequiringRegistrationInRegion:(id)region osVersion:(id)version deviceClass:(id)class;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)manualProvisioningEnabledForRegion:(id)region;
+- (BOOL)paymentTransactionIconsEnabledForRegion:(id)region;
+- (BOOL)peerPaymentEnabledForRegion:(id)region;
+- (BOOL)provisioningProximityVerificationInSetupAssistantEnabledForRegion:(id)region;
 - (BOOL)quickAccessForMoreRemovePassEnabled;
-- (BOOL)regionHasProvisioningEnablementPercentage:(id)a3;
+- (BOOL)regionHasProvisioningEnablementPercentage:(id)percentage;
 - (BOOL)remotePaymentsRequiredForVoiceover;
-- (BOOL)shouldEnableTransitServiceCheckInForRegion:(id)a3;
-- (BOOL)suppressCardholderNameFieldForRegion:(id)a3;
-- (BOOL)tapToProvisionEnabledForRegion:(id)a3;
-- (BOOL)tapToProvisionFirstProvisioningEnabledForRegion:(id)a3;
-- (BOOL)userCanResetCloudStoreApplePayViewForRegion:(id)a3;
+- (BOOL)shouldEnableTransitServiceCheckInForRegion:(id)region;
+- (BOOL)suppressCardholderNameFieldForRegion:(id)region;
+- (BOOL)tapToProvisionEnabledForRegion:(id)region;
+- (BOOL)tapToProvisionFirstProvisioningEnabledForRegion:(id)region;
+- (BOOL)userCanResetCloudStoreApplePayViewForRegion:(id)region;
 - (PKPaymentWebServiceConfiguration)init;
-- (PKPaymentWebServiceConfiguration)initWithCoder:(id)a3;
-- (PKPaymentWebServiceConfiguration)initWithConfiguration:(id)a3 url:(id)a4;
-- (double)cashStickersAssetPrefetchTimeIntervalForRegion:(id)a3;
-- (double)deviceCheckInIntervalForRegion:(id)a3;
-- (double)deviceUpgradeTaskEnablementPercentageForRegion:(id)a3;
-- (double)dynamicAssetPrefetchTimeIntervalForRegion:(id)a3;
-- (double)howToUseWalletAssetPrefetchTimeIntervalForRegion:(id)a3;
-- (double)paymentOfferCatalogVersionChangeUpdatePeriodForRegion:(id)a3;
-- (double)paymentSetupFeaturesCacheUpdateIntervalForRegion:(id)a3;
-- (double)provisioningEnablementPercentageForRegion:(id)a3;
+- (PKPaymentWebServiceConfiguration)initWithCoder:(id)coder;
+- (PKPaymentWebServiceConfiguration)initWithConfiguration:(id)configuration url:(id)url;
+- (double)cashStickersAssetPrefetchTimeIntervalForRegion:(id)region;
+- (double)deviceCheckInIntervalForRegion:(id)region;
+- (double)deviceUpgradeTaskEnablementPercentageForRegion:(id)region;
+- (double)dynamicAssetPrefetchTimeIntervalForRegion:(id)region;
+- (double)howToUseWalletAssetPrefetchTimeIntervalForRegion:(id)region;
+- (double)paymentOfferCatalogVersionChangeUpdatePeriodForRegion:(id)region;
+- (double)paymentSetupFeaturesCacheUpdateIntervalForRegion:(id)region;
+- (double)provisioningEnablementPercentageForRegion:(id)region;
 - (double)sharingMessageCacheTimeToLiveInterval;
-- (id)_featuresFromDictionary:(id)a3 withRegion:(id)a4 osVersion:(id)a5 deviceClass:(id)a6;
-- (id)_lock_featuresForRegion:(id)a3 osVersion:(id)a4 deviceClass:(id)a5;
-- (id)_lock_globalFeaturesForOSVersion:(id)a3 deviceClass:(id)a4;
-- (id)_lock_region:(id)a3;
-- (id)_lock_unsupported_region:(id)a3;
-- (id)_regionsForOSVersion:(id)a3 deviceClass:(id)a4 platform:(id)a5 supportedRegions:(BOOL)a6;
-- (id)allowedRelayServerHostsForRegion:(id)a3;
-- (id)applyServiceFeaturesForRegion:(id)a3;
-- (id)betaPaymentNetworkVersionsForRegion:(id)a3;
-- (id)betaPaymentNetworksForRegion:(id)a3;
-- (id)brokerURLForRegion:(id)a3;
+- (id)_featuresFromDictionary:(id)dictionary withRegion:(id)region osVersion:(id)version deviceClass:(id)class;
+- (id)_lock_featuresForRegion:(id)region osVersion:(id)version deviceClass:(id)class;
+- (id)_lock_globalFeaturesForOSVersion:(id)version deviceClass:(id)class;
+- (id)_lock_region:(id)_lock_region;
+- (id)_lock_unsupported_region:(id)_lock_unsupported_region;
+- (id)_regionsForOSVersion:(id)version deviceClass:(id)class platform:(id)platform supportedRegions:(BOOL)regions;
+- (id)allowedRelayServerHostsForRegion:(id)region;
+- (id)applyServiceFeaturesForRegion:(id)region;
+- (id)betaPaymentNetworkVersionsForRegion:(id)region;
+- (id)betaPaymentNetworksForRegion:(id)region;
+- (id)brokerURLForRegion:(id)region;
 - (id)contactFormatConfiguration;
 - (id)credentialTypesRequiringMetadata;
 - (id)defaultServerURL;
-- (id)discoveryManifestURLForRegion:(id)a3;
-- (id)featureWithType:(int64_t)a3 inRegion:(id)a4;
-- (id)featuresForRegion:(id)a3;
-- (id)heroImageManifestURLForRegion:(id)a3;
-- (id)marketGeoRegionNotificationNetworkThresholdsForRegion:(id)a3;
-- (id)marketGeoRegionNotificationTimeRangeForRegion:(id)a3;
+- (id)discoveryManifestURLForRegion:(id)region;
+- (id)featureWithType:(int64_t)type inRegion:(id)region;
+- (id)featuresForRegion:(id)region;
+- (id)heroImageManifestURLForRegion:(id)region;
+- (id)marketGeoRegionNotificationNetworkThresholdsForRegion:(id)region;
+- (id)marketGeoRegionNotificationTimeRangeForRegion:(id)region;
 - (id)marketsURL;
-- (id)numberOfDaysBetweenMapsReprocessingForRegion:(id)a3;
-- (id)paymentRelayServiceURLForRegion:(id)a3;
-- (id)paymentServicesMerchantURLForRegion:(id)a3;
-- (id)paymentServicesURLForRegion:(id)a3;
-- (id)paymentSetupBrowsableProductTypesForRegion:(id)a3;
-- (id)paymentSetupFeaturedNetworksForRegion:(id)a3;
-- (id)primaryFeaturedNetworkForRegion:(id)a3;
-- (id)relayServerHostForRegion:(id)a3;
-- (id)relayServerHostsToHandleUniversalLinksForRegion:(id)a3;
+- (id)numberOfDaysBetweenMapsReprocessingForRegion:(id)region;
+- (id)paymentRelayServiceURLForRegion:(id)region;
+- (id)paymentServicesMerchantURLForRegion:(id)region;
+- (id)paymentServicesURLForRegion:(id)region;
+- (id)paymentSetupBrowsableProductTypesForRegion:(id)region;
+- (id)paymentSetupFeaturedNetworksForRegion:(id)region;
+- (id)primaryFeaturedNetworkForRegion:(id)region;
+- (id)relayServerHostForRegion:(id)region;
+- (id)relayServerHostsToHandleUniversalLinksForRegion:(id)region;
 - (id)stationCodeProvidersUsingLocalLookup;
-- (id)supportedFeatureOfType:(int64_t)a3 inRegion:(id)a4 osVersion:(id)a5 deviceClass:(id)a6 didFailOSVersionRequirements:(BOOL *)a7;
+- (id)supportedFeatureOfType:(int64_t)type inRegion:(id)region osVersion:(id)version deviceClass:(id)class didFailOSVersionRequirements:(BOOL *)requirements;
 - (id)unsupportedProvisioningExtensions;
 - (id)unsupportedWebPaymentConfigurations;
-- (int64_t)paymentOfferCatalogVersionForRegion:(id)a3;
-- (unint64_t)autofillForegroundEligibilityCheckMaxCount:(id)a3;
+- (int64_t)paymentOfferCatalogVersionForRegion:(id)region;
+- (unint64_t)autofillForegroundEligibilityCheckMaxCount:(id)count;
 - (unint64_t)notificationAuthorizationPromptPresentationCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentWebServiceConfiguration
@@ -112,18 +112,18 @@
   return v4;
 }
 
-- (PKPaymentWebServiceConfiguration)initWithConfiguration:(id)a3 url:(id)a4
+- (PKPaymentWebServiceConfiguration)initWithConfiguration:(id)configuration url:(id)url
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  urlCopy = url;
   v8 = [(PKPaymentWebServiceConfiguration *)self init];
   if (v8)
   {
-    v9 = PKDeepCopyDeduplicatedWithHashTable(v6, 0);
+    v9 = PKDeepCopyDeduplicatedWithHashTable(configurationCopy, 0);
     configuration = v8->_configuration;
     v8->_configuration = v9;
 
-    v11 = [v7 copy];
+    v11 = [urlCopy copy];
     configurationURL = v8->_configurationURL;
     v8->_configurationURL = v11;
   }
@@ -131,20 +131,20 @@
   return v8;
 }
 
-- (PKPaymentWebServiceConfiguration)initWithCoder:(id)a3
+- (PKPaymentWebServiceConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKPaymentWebServiceConfiguration *)self init];
   v6 = v5;
   if (v5)
   {
     os_unfair_lock_lock(&v5->_lock);
-    v7 = [v4 decodePropertyListForKey:@"configuration"];
+    v7 = [coderCopy decodePropertyListForKey:@"configuration"];
     v8 = PKDeepCopyDeduplicatedWithHashTable(v7, 0);
     configuration = v6->_configuration;
     v6->_configuration = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configurationURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configurationURL"];
     configurationURL = v6->_configurationURL;
     v6->_configurationURL = v10;
 
@@ -154,30 +154,30 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
-  [v4 encodeObject:self->_configuration forKey:@"configuration"];
-  [v4 encodeObject:self->_configurationURL forKey:@"configurationURL"];
+  [coderCopy encodeObject:self->_configuration forKey:@"configuration"];
+  [coderCopy encodeObject:self->_configurationURL forKey:@"configurationURL"];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSDictionary *)self->_configuration isEqualToDictionary:v4[3]];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSDictionary *)self->_configuration isEqualToDictionary:equalCopy[3]];
 
   return v5;
 }
 
-- (id)brokerURLForRegion:(id)a3
+- (id)brokerURLForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   if (v5)
   {
@@ -203,11 +203,11 @@
   return v7;
 }
 
-- (id)paymentServicesURLForRegion:(id)a3
+- (id)paymentServicesURLForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   if (v5)
   {
@@ -233,11 +233,11 @@
   return v7;
 }
 
-- (id)paymentRelayServiceURLForRegion:(id)a3
+- (id)paymentRelayServiceURLForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   if (v5)
   {
@@ -263,11 +263,11 @@
   return v7;
 }
 
-- (id)paymentServicesMerchantURLForRegion:(id)a3
+- (id)paymentServicesMerchantURLForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   if (v5)
   {
@@ -293,106 +293,106 @@
   return v7;
 }
 
-- (BOOL)buddyProvisioningEnabledForRegion:(id)a3
+- (BOOL)buddyProvisioningEnabledForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 objectForKey:@"BuddyProvisioningEnabled"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = 1;
+    bOOLValue = 1;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)buddyManualProvisioningEnabledForRegion:(id)a3
+- (BOOL)buddyManualProvisioningEnabledForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 objectForKey:@"BuddyManualProvisioningEnabled"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   os_unfair_lock_unlock(&self->_lock);
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)manualProvisioningEnabledForRegion:(id)a3
+- (BOOL)manualProvisioningEnabledForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 objectForKey:@"ManualProvisioningEnabled"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   os_unfair_lock_unlock(&self->_lock);
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)cameraProvisioningEnabledForRegion:(id)a3
+- (BOOL)cameraProvisioningEnabledForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 objectForKey:@"CameraProvisioningEnabled"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = 1;
+    bOOLValue = 1;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)cameraFirstProvisioningEnabledForRegion:(id)a3
+- (BOOL)cameraFirstProvisioningEnabledForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 objectForKey:@"CameraFirstProvisioningEnabledV2"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = 1;
+    bOOLValue = 1;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)tapToProvisionEnabledForRegion:(id)a3
+- (BOOL)tapToProvisionEnabledForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 objectForKey:@"TapToProvisionEnabled"];
   v7 = v6;
@@ -419,35 +419,35 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)tapToProvisionFirstProvisioningEnabledForRegion:(id)a3
+- (BOOL)tapToProvisionFirstProvisioningEnabledForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 objectForKey:@"TapToProvisionFirstProvisioningEnabled"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = 1;
+    bOOLValue = 1;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v8;
+  return bOOLValue;
 }
 
-- (id)paymentSetupFeaturedNetworksForRegion:(id)a3
+- (id)paymentSetupFeaturedNetworksForRegion:(id)region
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
   v6 = [v5 PKArrayContaining:objc_opt_class() forKey:@"PaymentSetupFeaturedNetworksV3"];
   if (![v6 count])
   {
@@ -520,11 +520,11 @@ LABEL_9:
   return v17;
 }
 
-- (id)primaryFeaturedNetworkForRegion:(id)a3
+- (id)primaryFeaturedNetworkForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKStringForKey:@"PaymentSetupPrimaryFeaturedNetworkV2"];
   if (!v6)
@@ -538,11 +538,11 @@ LABEL_9:
   return v6;
 }
 
-- (id)heroImageManifestURLForRegion:(id)a3
+- (id)heroImageManifestURLForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 objectForKey:@"PaymentSetupImageManifestURLV3"];
   if (v6)
@@ -560,9 +560,9 @@ LABEL_9:
   return v7;
 }
 
-- (id)discoveryManifestURLForRegion:(id)a3
+- (id)discoveryManifestURLForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v5 = PKDiscoveryManifestOverrideURL();
   v6 = v5;
   if (v5)
@@ -573,7 +573,7 @@ LABEL_9:
   else
   {
     os_unfair_lock_lock(&self->_lock);
-    v8 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+    v8 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
     v9 = [v8 objectForKey:@"DiscoveryManifestURL"];
     if (v9)
     {
@@ -635,36 +635,36 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)suppressCardholderNameFieldForRegion:(id)a3
+- (BOOL)suppressCardholderNameFieldForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 objectForKey:@"PaymentSetupSuppressCardholderName"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v8;
+  return bOOLValue;
 }
 
-- (id)paymentSetupBrowsableProductTypesForRegion:(id)a3
+- (id)paymentSetupBrowsableProductTypesForRegion:(id)region
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  regionCopy = region;
+  array = [MEMORY[0x1E695DF70] array];
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v6 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
   v7 = [v6 PKArrayContaining:objc_opt_class() forKey:@"PaymentSetupBrowsableProductTypes"];
   v16 = 0u;
   v17 = 0u;
@@ -688,7 +688,7 @@ LABEL_5:
         if (v12)
         {
           v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
-          [v5 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -699,16 +699,16 @@ LABEL_5:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v14 = [v5 copy];
+  v14 = [array copy];
 
   return v14;
 }
 
-- (BOOL)regionHasProvisioningEnablementPercentage:(id)a3
+- (BOOL)regionHasProvisioningEnablementPercentage:(id)percentage
 {
-  v4 = a3;
+  percentageCopy = percentage;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:percentageCopy];
 
   v6 = [v5 objectForKey:@"ProvisioningEnablementPercentage"];
   os_unfair_lock_unlock(&self->_lock);
@@ -716,11 +716,11 @@ LABEL_5:
   return v6 != 0;
 }
 
-- (double)provisioningEnablementPercentageForRegion:(id)a3
+- (double)provisioningEnablementPercentageForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 objectForKey:@"ProvisioningEnablementPercentage"];
   v7 = v6;
@@ -740,11 +740,11 @@ LABEL_5:
   return v9;
 }
 
-- (double)deviceUpgradeTaskEnablementPercentageForRegion:(id)a3
+- (double)deviceUpgradeTaskEnablementPercentageForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 objectForKey:@"deviceUpgradeTasksEnablementPercentage"];
   os_unfair_lock_unlock(&self->_lock);
@@ -776,121 +776,121 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)paymentTransactionIconsEnabledForRegion:(id)a3
+- (BOOL)paymentTransactionIconsEnabledForRegion:(id)region
 {
-  v4 = a3;
-  if (![(__CFString *)v4 length])
+  regionCopy = region;
+  if (![(__CFString *)regionCopy length])
   {
 
-    v4 = @"US";
+    regionCopy = @"US";
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
   v6 = [v5 objectForKey:@"PaymentTransactionIconsEnabled"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    if (([(__CFString *)v4 isEqualToString:@"US"]& 1) != 0 || ([(__CFString *)v4 isEqualToString:@"GB"]& 1) != 0 || ([(__CFString *)v4 isEqualToString:@"CA"]& 1) != 0 || ([(__CFString *)v4 isEqualToString:@"DE"]& 1) != 0)
+    if (([(__CFString *)regionCopy isEqualToString:@"US"]& 1) != 0 || ([(__CFString *)regionCopy isEqualToString:@"GB"]& 1) != 0 || ([(__CFString *)regionCopy isEqualToString:@"CA"]& 1) != 0 || ([(__CFString *)regionCopy isEqualToString:@"DE"]& 1) != 0)
     {
       v9 = 1;
       goto LABEL_11;
     }
 
-    v8 = [(__CFString *)v4 isEqualToString:@"NL"];
+    bOOLValue = [(__CFString *)regionCopy isEqualToString:@"NL"];
   }
 
-  v9 = v8;
+  v9 = bOOLValue;
 LABEL_11:
   os_unfair_lock_unlock(&self->_lock);
 
   return v9;
 }
 
-- (unint64_t)autofillForegroundEligibilityCheckMaxCount:(id)a3
+- (unint64_t)autofillForegroundEligibilityCheckMaxCount:(id)count
 {
-  v4 = a3;
-  if (![(__CFString *)v4 length])
+  countCopy = count;
+  if (![(__CFString *)countCopy length])
   {
 
-    v4 = @"US";
+    countCopy = @"US";
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:countCopy];
   v6 = [v5 objectForKey:@"autofillForegroundEligibilityCheckMaxCount"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 5;
+    unsignedIntegerValue = 5;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)peerPaymentEnabledForRegion:(id)a3
+- (BOOL)peerPaymentEnabledForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 objectForKey:@"PeerPaymentSupported"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)userCanResetCloudStoreApplePayViewForRegion:(id)a3
+- (BOOL)userCanResetCloudStoreApplePayViewForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 objectForKey:@"UserCanResetCloudApplePayView"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v8;
+  return bOOLValue;
 }
 
-- (id)betaPaymentNetworksForRegion:(id)a3
+- (id)betaPaymentNetworksForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKArrayContaining:objc_opt_class() forKey:@"BetaPaymentNetworks"];
   if ([v6 count])
@@ -908,11 +908,11 @@ LABEL_11:
   return v7;
 }
 
-- (id)betaPaymentNetworkVersionsForRegion:(id)a3
+- (id)betaPaymentNetworkVersionsForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKArrayContaining:objc_opt_class() forKey:@"BetaPaymentNetworkVersions"];
   if ([v6 count])
@@ -941,28 +941,28 @@ LABEL_11:
   return v8;
 }
 
-- (id)_featuresFromDictionary:(id)a3 withRegion:(id)a4 osVersion:(id)a5 deviceClass:(id)a6
+- (id)_featuresFromDictionary:(id)dictionary withRegion:(id)region osVersion:(id)version deviceClass:(id)class
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v31 = a5;
-  v30 = a6;
+  dictionaryCopy = dictionary;
+  regionCopy = region;
+  versionCopy = version;
+  classCopy = class;
   os_unfair_lock_assert_owner(&self->_lock);
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v12 = v10;
+  v12 = dictionaryCopy;
   v13 = [v12 countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v13)
   {
     v15 = v13;
     v16 = *v34;
-    if (v31)
+    if (versionCopy)
     {
-      v17 = v30 == 0;
+      v17 = classCopy == 0;
     }
 
     else
@@ -988,11 +988,11 @@ LABEL_11:
         {
           v22 = v21;
           v23 = [v12 objectForKey:v20];
-          v24 = [PKWebServiceRegionFeature regionFeatureWithType:v22 dictionary:v23 region:v11];
+          v24 = [PKWebServiceRegionFeature regionFeatureWithType:v22 dictionary:v23 region:regionCopy];
 
           if (v24)
           {
-            if (!v18 || (-[NSObject versionRange](v24, "versionRange"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 versionMeetsRequirements:v31 deviceClass:v30], v25, v26))
+            if (!v18 || (-[NSObject versionRange](v24, "versionRange"), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 versionMeetsRequirements:versionCopy deviceClass:classCopy], v25, v26))
             {
               [v32 addObject:{v24, v29}];
             }
@@ -1022,24 +1022,24 @@ LABEL_11:
   return v27;
 }
 
-- (id)supportedFeatureOfType:(int64_t)a3 inRegion:(id)a4 osVersion:(id)a5 deviceClass:(id)a6 didFailOSVersionRequirements:(BOOL *)a7
+- (id)supportedFeatureOfType:(int64_t)type inRegion:(id)region osVersion:(id)version deviceClass:(id)class didFailOSVersionRequirements:(BOOL *)requirements
 {
-  v12 = a5;
-  v13 = a6;
-  if (a7)
+  versionCopy = version;
+  classCopy = class;
+  if (requirements)
   {
-    *a7 = 0;
+    *requirements = 0;
   }
 
-  v14 = [(PKPaymentWebServiceConfiguration *)self featureWithType:a3 inRegion:a4];
+  v14 = [(PKPaymentWebServiceConfiguration *)self featureWithType:type inRegion:region];
   v15 = v14;
   if (!v14)
   {
     goto LABEL_8;
   }
 
-  v16 = [v14 versionRange];
-  v17 = [v16 versionMeetsRequirements:v12 deviceClass:v13];
+  versionRange = [v14 versionRange];
+  v17 = [versionRange versionMeetsRequirements:versionCopy deviceClass:classCopy];
 
   if (v17)
   {
@@ -1047,10 +1047,10 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  if (a7)
+  if (requirements)
   {
     v18 = 0;
-    *a7 = 1;
+    *requirements = 1;
   }
 
   else
@@ -1064,12 +1064,12 @@ LABEL_9:
   return v18;
 }
 
-- (BOOL)hasFeatureRequiringRegistrationInRegion:(id)a3 osVersion:(id)a4 deviceClass:(id)a5
+- (BOOL)hasFeatureRequiringRegistrationInRegion:(id)region osVersion:(id)version deviceClass:(id)class
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  regionCopy = region;
+  versionCopy = version;
+  classCopy = class;
   os_unfair_lock_lock(&self->_lock);
   v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   PKRegionFeatureOverride();
@@ -1078,7 +1078,7 @@ LABEL_9:
   v55 = 0u;
   obj = v56 = 0u;
   v12 = [obj countByEnumeratingWithState:&v53 objects:v59 count:16];
-  v42 = v10;
+  v42 = classCopy;
   if (v12)
   {
     v13 = v12;
@@ -1119,14 +1119,14 @@ LABEL_9:
     }
   }
 
-  v18 = [(PKPaymentWebServiceConfiguration *)self _lock_featuresForRegion:v8 osVersion:v9 deviceClass:v10];
+  v18 = [(PKPaymentWebServiceConfiguration *)self _lock_featuresForRegion:regionCopy osVersion:versionCopy deviceClass:classCopy];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v19 = [v18 countByEnumeratingWithState:&v48 objects:v58 count:16];
-  v40 = self;
-  v41 = v9;
+  selfCopy = self;
+  v41 = versionCopy;
   if (v19)
   {
     v20 = v19;
@@ -1157,9 +1157,9 @@ LABEL_9:
 
     while (v20);
 
-    self = v40;
-    v9 = v41;
-    v10 = v42;
+    self = selfCopy;
+    versionCopy = v41;
+    classCopy = v42;
     if (v21)
     {
       v27 = 1;
@@ -1171,7 +1171,7 @@ LABEL_9:
   {
   }
 
-  v29 = [(PKPaymentWebServiceConfiguration *)self _lock_globalFeaturesForOSVersion:v9 deviceClass:v10];
+  v29 = [(PKPaymentWebServiceConfiguration *)self _lock_globalFeaturesForOSVersion:versionCopy deviceClass:classCopy];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -1180,7 +1180,7 @@ LABEL_9:
   if (v30)
   {
     v31 = v30;
-    v39 = v8;
+    v39 = regionCopy;
     v27 = 0;
     v32 = *v45;
     do
@@ -1210,9 +1210,9 @@ LABEL_9:
     }
 
     while (v31);
-    v8 = v39;
-    self = v40;
-    v9 = v41;
+    regionCopy = v39;
+    self = selfCopy;
+    versionCopy = v41;
   }
 
   else
@@ -1228,22 +1228,22 @@ LABEL_43:
   return v27 & 1;
 }
 
-- (id)_lock_globalFeaturesForOSVersion:(id)a3 deviceClass:(id)a4
+- (id)_lock_globalFeaturesForOSVersion:(id)version deviceClass:(id)class
 {
-  v6 = a4;
-  v7 = a3;
+  classCopy = class;
+  versionCopy = version;
   os_unfair_lock_assert_owner(&self->_lock);
   v8 = [(NSDictionary *)self->_configuration PKDictionaryForKey:@"globalFeatures"];
-  v9 = [(PKPaymentWebServiceConfiguration *)self _featuresFromDictionary:v8 withRegion:0 osVersion:v7 deviceClass:v6];
+  v9 = [(PKPaymentWebServiceConfiguration *)self _featuresFromDictionary:v8 withRegion:0 osVersion:versionCopy deviceClass:classCopy];
 
   return v9;
 }
 
-- (id)featuresForRegion:(id)a3
+- (id)featuresForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_featuresForRegion:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_featuresForRegion:regionCopy];
 
   v6 = [v5 copy];
   os_unfair_lock_unlock(&self->_lock);
@@ -1251,13 +1251,13 @@ LABEL_43:
   return v6;
 }
 
-- (id)_lock_featuresForRegion:(id)a3 osVersion:(id)a4 deviceClass:(id)a5
+- (id)_lock_featuresForRegion:(id)region osVersion:(id)version deviceClass:(id)class
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  regionCopy = region;
+  versionCopy = version;
+  classCopy = class;
   os_unfair_lock_assert_owner(&self->_lock);
-  v11 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v8];
+  v11 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
   v12 = [v11 PKDictionaryForKey:@"features"];
   if (v12)
   {
@@ -1266,21 +1266,21 @@ LABEL_43:
 
   else
   {
-    v14 = [(PKPaymentWebServiceConfiguration *)self _lock_unsupported_region:v8];
+    v14 = [(PKPaymentWebServiceConfiguration *)self _lock_unsupported_region:regionCopy];
 
     v13 = [v14 PKDictionaryForKey:@"features"];
     v11 = v14;
   }
 
-  v15 = [(PKPaymentWebServiceConfiguration *)self _featuresFromDictionary:v13 withRegion:v8 osVersion:v9 deviceClass:v10];
+  v15 = [(PKPaymentWebServiceConfiguration *)self _featuresFromDictionary:v13 withRegion:regionCopy osVersion:versionCopy deviceClass:classCopy];
 
   return v15;
 }
 
-- (id)featureWithType:(int64_t)a3 inRegion:(id)a4
+- (id)featureWithType:(int64_t)type inRegion:(id)region
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
   v7 = PKRegionFeatureOverride();
   v37 = 0u;
@@ -1294,7 +1294,7 @@ LABEL_43:
   }
 
   v9 = v8;
-  v28 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = *v38;
   do
@@ -1307,8 +1307,8 @@ LABEL_43:
       }
 
       v13 = *(*(&v37 + 1) + 8 * i);
-      v14 = [v13 region];
-      if ([v13 featureType] == a3 && (!v14 || v6 && objc_msgSend(v6, "isEqual:", v14)))
+      region = [v13 region];
+      if ([v13 featureType] == type && (!region || regionCopy && objc_msgSend(regionCopy, "isEqual:", region)))
       {
         v15 = v13;
 
@@ -1316,7 +1316,7 @@ LABEL_43:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v44 = a3;
+          typeCopy = type;
           _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Using override for feature of type: %ld", buf, 0xCu);
         }
 
@@ -1328,11 +1328,11 @@ LABEL_43:
   }
 
   while (v9);
-  self = v28;
+  self = selfCopy;
   if (!v10)
   {
 LABEL_16:
-    [(PKPaymentWebServiceConfiguration *)self _lock_featuresForRegion:v6];
+    [(PKPaymentWebServiceConfiguration *)self _lock_featuresForRegion:regionCopy];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -1352,7 +1352,7 @@ LABEL_18:
         }
 
         v22 = *(*(&v33 + 1) + 8 * v21);
-        if ([v22 featureType] == a3)
+        if ([v22 featureType] == type)
         {
           break;
         }
@@ -1401,7 +1401,7 @@ LABEL_24:
           }
 
           v26 = *(*(&v29 + 1) + 8 * j);
-          if ([v26 featureType] == a3)
+          if ([v26 featureType] == type)
           {
             v10 = v26;
             goto LABEL_36;
@@ -1446,12 +1446,12 @@ LABEL_37:
   return v3;
 }
 
-- (BOOL)accountServiceEnabledForRegion:(id)a3
+- (BOOL)accountServiceEnabledForRegion:(id)region
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
   v6 = [v5 objectForKey:@"accountServiceEnabled"];
   v7 = v6;
   if (v6)
@@ -1468,7 +1468,7 @@ LABEL_37:
 
   if ((v8 & 1) == 0 && v9)
   {
-    v8 = [(__CFString *)v4 isEqualToString:@"US"];
+    v8 = [(__CFString *)regionCopy isEqualToString:@"US"];
     v10 = PKLogFacilityTypeGetObject(0xFuLL);
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
     if (v8)
@@ -1486,7 +1486,7 @@ LABEL_11:
     else if (v11)
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = regionCopy;
       v12 = "Warning: Toggle region not allowed: %@";
       goto LABEL_11;
     }
@@ -1497,12 +1497,12 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)applyServiceEnabledForRegion:(id)a3
+- (BOOL)applyServiceEnabledForRegion:(id)region
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
   v6 = [v5 objectForKey:@"applyServiceEnabled"];
   v7 = v6;
   if (v6)
@@ -1519,7 +1519,7 @@ LABEL_11:
 
   if ((v8 & 1) == 0 && v9)
   {
-    v8 = [(__CFString *)v4 isEqualToString:@"US"];
+    v8 = [(__CFString *)regionCopy isEqualToString:@"US"];
     v10 = PKLogFacilityTypeGetObject(0xEuLL);
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
     if (v8)
@@ -1537,7 +1537,7 @@ LABEL_11:
     else if (v11)
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = regionCopy;
       v12 = "Warning: Toggle region not allowed: %@";
       goto LABEL_11;
     }
@@ -1548,11 +1548,11 @@ LABEL_11:
   return v8;
 }
 
-- (id)applyServiceFeaturesForRegion:(id)a3
+- (id)applyServiceFeaturesForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKDictionaryForKey:@"applyServiceFeatures"];
   v7 = [v6 copy];
@@ -1562,23 +1562,23 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)AMPNonDefaultBehaviourDisabledForRegion:(id)a3
+- (BOOL)AMPNonDefaultBehaviourDisabledForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
-  LOBYTE(v4) = [v5 PKBoolForKey:@"AMPNonDefaultBehaviorDisabled"];
+  LOBYTE(regionCopy) = [v5 PKBoolForKey:@"AMPNonDefaultBehaviorDisabled"];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return regionCopy;
 }
 
-- (id)numberOfDaysBetweenMapsReprocessingForRegion:(id)a3
+- (id)numberOfDaysBetweenMapsReprocessingForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKNumberForKey:@"MapsReprocessingWaitTime"];
   os_unfair_lock_unlock(&self->_lock);
@@ -1586,15 +1586,15 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)browseProvisioningBankAppsEnabledForRegion:(id)a3
+- (BOOL)browseProvisioningBankAppsEnabledForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
-  LOBYTE(v4) = [v5 PKBoolForKey:@"BrowseProvisioningBankAppsEnabled"];
+  LOBYTE(regionCopy) = [v5 PKBoolForKey:@"BrowseProvisioningBankAppsEnabled"];
   os_unfair_lock_unlock(&self->_lock);
-  if (v4)
+  if (regionCopy)
   {
     v6 = 1;
   }
@@ -1607,11 +1607,11 @@ LABEL_11:
   return v6;
 }
 
-- (id)marketGeoRegionNotificationTimeRangeForRegion:(id)a3
+- (id)marketGeoRegionNotificationTimeRangeForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKNumberForKey:@"MarketGeoRegionNotificationTimeRange"];
   os_unfair_lock_unlock(&self->_lock);
@@ -1619,11 +1619,11 @@ LABEL_11:
   return v6;
 }
 
-- (id)marketGeoRegionNotificationNetworkThresholdsForRegion:(id)a3
+- (id)marketGeoRegionNotificationNetworkThresholdsForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKDictionaryForKey:@"MarketGeoRegionNotificationNetworkThresholds"];
   os_unfair_lock_unlock(&self->_lock);
@@ -1642,11 +1642,11 @@ LABEL_11:
   return v7;
 }
 
-- (double)deviceCheckInIntervalForRegion:(id)a3
+- (double)deviceCheckInIntervalForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   [v5 PKDoubleForKey:@"DeviceCheckInInterval"];
   v7 = 604800.0;
@@ -1675,21 +1675,21 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)deviceCheckInDisabledForRegion:(id)a3
+- (BOOL)deviceCheckInDisabledForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
-  LOBYTE(v4) = [v5 PKBoolForKey:@"DeviceCheckInDisabled"];
+  LOBYTE(regionCopy) = [v5 PKBoolForKey:@"DeviceCheckInDisabled"];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return regionCopy;
 }
 
-- (BOOL)shouldEnableTransitServiceCheckInForRegion:(id)a3
+- (BOOL)shouldEnableTransitServiceCheckInForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   if (PKForceEnableTransitServiceCheckIn())
   {
     v5 = PKLogFacilityTypeGetObject(0xDuLL);
@@ -1705,7 +1705,7 @@ LABEL_11:
   else
   {
     os_unfair_lock_lock(&self->_lock);
-    v7 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+    v7 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
     v6 = [v7 PKBoolForKey:@"EnableTransitServiceCheckIn"];
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -1743,40 +1743,40 @@ LABEL_11:
   return v4;
 }
 
-- (id)relayServerHostForRegion:(id)a3
+- (id)relayServerHostForRegion:(id)region
 {
-  v3 = [(PKPaymentWebServiceConfiguration *)self featureWithType:5 inRegion:a3];
-  v4 = [v3 relayServerHost];
-  v5 = PKSharingRelayServerURLForCurrentEnvironment(v4);
+  v3 = [(PKPaymentWebServiceConfiguration *)self featureWithType:5 inRegion:region];
+  relayServerHost = [v3 relayServerHost];
+  v5 = PKSharingRelayServerURLForCurrentEnvironment(relayServerHost);
 
   return v5;
 }
 
-- (id)allowedRelayServerHostsForRegion:(id)a3
+- (id)allowedRelayServerHostsForRegion:(id)region
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebServiceConfiguration *)self featureWithType:5 inRegion:v4];
-  v6 = [v5 allowedRelayServerHosts];
+  regionCopy = region;
+  v5 = [(PKPaymentWebServiceConfiguration *)self featureWithType:5 inRegion:regionCopy];
+  allowedRelayServerHosts = [v5 allowedRelayServerHosts];
   v7 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v8 = [(PKPaymentWebServiceConfiguration *)self relayServerHostsToHandleUniversalLinksForRegion:v4];
+  v8 = [(PKPaymentWebServiceConfiguration *)self relayServerHostsToHandleUniversalLinksForRegion:regionCopy];
 
   v9 = [v7 initWithArray:v8];
-  if (v6)
+  if (allowedRelayServerHosts)
   {
-    [v9 addObjectsFromArray:v6];
+    [v9 addObjectsFromArray:allowedRelayServerHosts];
   }
 
   [v9 addObject:@"wallet.apple.com"];
-  v10 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v10;
+  return allObjects;
 }
 
-- (id)relayServerHostsToHandleUniversalLinksForRegion:(id)a3
+- (id)relayServerHostsToHandleUniversalLinksForRegion:(id)region
 {
-  v3 = [(PKPaymentWebServiceConfiguration *)self featureWithType:5 inRegion:a3];
-  v4 = [v3 relayServerHostsToHandleUniversalLinks];
-  v5 = [v4 mutableCopy];
+  v3 = [(PKPaymentWebServiceConfiguration *)self featureWithType:5 inRegion:region];
+  relayServerHostsToHandleUniversalLinks = [v3 relayServerHostsToHandleUniversalLinks];
+  v5 = [relayServerHostsToHandleUniversalLinks mutableCopy];
   v6 = v5;
   if (v5)
   {
@@ -1790,8 +1790,8 @@ LABEL_11:
 
   v8 = v7;
 
-  v9 = [v3 relayServerHost];
-  [v8 safelyAddObject:v9];
+  relayServerHost = [v3 relayServerHost];
+  [v8 safelyAddObject:relayServerHost];
 
   v10 = PKSharingRelayServerURLs();
   [v8 addObjectsFromArray:v10];
@@ -1801,11 +1801,11 @@ LABEL_11:
   return v11;
 }
 
-- (double)dynamicAssetPrefetchTimeIntervalForRegion:(id)a3
+- (double)dynamicAssetPrefetchTimeIntervalForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKNumberForKey:@"dynamicAssetPrefetchTimeInterval"];
   if (v6)
@@ -1832,11 +1832,11 @@ LABEL_5:
   return v9;
 }
 
-- (double)howToUseWalletAssetPrefetchTimeIntervalForRegion:(id)a3
+- (double)howToUseWalletAssetPrefetchTimeIntervalForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKNumberForKey:@"howToUseWalletAssetPrefetchTimeInterval"];
   if (v6)
@@ -1863,11 +1863,11 @@ LABEL_5:
   return v9;
 }
 
-- (double)cashStickersAssetPrefetchTimeIntervalForRegion:(id)a3
+- (double)cashStickersAssetPrefetchTimeIntervalForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKNumberForKey:@"appleCashStickerAssetPrefetchTimeInterval"];
   if (v6)
@@ -1894,11 +1894,11 @@ LABEL_5:
   return v9;
 }
 
-- (double)paymentSetupFeaturesCacheUpdateIntervalForRegion:(id)a3
+- (double)paymentSetupFeaturesCacheUpdateIntervalForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKNumberForKey:@"paymentSetupFeaturesCacheUpdateInterval"];
   if (v6)
@@ -1925,11 +1925,11 @@ LABEL_5:
   return v9;
 }
 
-- (double)paymentOfferCatalogVersionChangeUpdatePeriodForRegion:(id)a3
+- (double)paymentOfferCatalogVersionChangeUpdatePeriodForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKNumberForKey:@"paymentOfferCatalogVersionChangeUpdatePeriod"];
   os_unfair_lock_unlock(&self->_lock);
@@ -1939,11 +1939,11 @@ LABEL_5:
   return v8;
 }
 
-- (int64_t)paymentOfferCatalogVersionForRegion:(id)a3
+- (int64_t)paymentOfferCatalogVersionForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKIntegerForKey:@"paymentOfferCatalogVersion"];
   os_unfair_lock_unlock(&self->_lock);
@@ -1977,17 +1977,17 @@ LABEL_5:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)stationCodeProvidersUsingLocalLookup
@@ -2017,37 +2017,37 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)provisioningProximityVerificationInSetupAssistantEnabledForRegion:(id)a3
+- (BOOL)provisioningProximityVerificationInSetupAssistantEnabledForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:v4];
+  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_region:regionCopy];
 
   v6 = [v5 PKNumberForKey:@"ProximityVerificationInSetupAssistantEnabled"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = 1;
+    bOOLValue = 1;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v8;
+  return bOOLValue;
 }
 
-- (id)_regionsForOSVersion:(id)a3 deviceClass:(id)a4 platform:(id)a5 supportedRegions:(BOOL)a6
+- (id)_regionsForOSVersion:(id)version deviceClass:(id)class platform:(id)platform supportedRegions:(BOOL)regions
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  versionCopy = version;
+  classCopy = class;
+  platformCopy = platform;
   os_unfair_lock_lock(&self->_lock);
-  if (a6)
+  if (regions)
   {
     [(PKPaymentWebServiceConfiguration *)self _lock_regions];
   }
@@ -2079,7 +2079,7 @@ LABEL_5:
 
         v19 = *(*(&v24 + 1) + 8 * i);
         v20 = [v14 objectForKey:v19];
-        if (v20 && [(PKPaymentWebServiceConfiguration *)self _lock_supportedForOSVersion:v10 inRegionDictionary:v20 deviceClass:v11 platform:v12])
+        if (v20 && [(PKPaymentWebServiceConfiguration *)self _lock_supportedForOSVersion:versionCopy inRegionDictionary:v20 deviceClass:classCopy platform:platformCopy])
         {
           [v23 addObject:v19];
         }
@@ -2097,31 +2097,31 @@ LABEL_5:
   return v21;
 }
 
-- (BOOL)_lock_supportedForOSVersion:(id)a3 inRegionDictionary:(id)a4 deviceClass:(id)a5 platform:(id)a6
+- (BOOL)_lock_supportedForOSVersion:(id)version inRegionDictionary:(id)dictionary deviceClass:(id)class platform:(id)platform
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (a4)
+  versionCopy = version;
+  classCopy = class;
+  platformCopy = platform;
+  if (dictionary)
   {
-    v12 = [a4 objectForKey:@"minimumOSVersion"];
+    v12 = [dictionary objectForKey:@"minimumOSVersion"];
     v13 = v12;
     if (v12)
     {
       v14 = v12;
       v15 = v14;
-      if (v11)
+      if (platformCopy)
       {
-        v16 = [v14 objectForKey:v11];
+        v16 = [v14 objectForKey:platformCopy];
 
         v15 = v16;
       }
 
-      v17 = [v15 objectForKey:v10];
+      v17 = [v15 objectForKey:classCopy];
       v18 = v17;
       if (v17)
       {
-        v19 = ([v17 compare:v9 options:64] + 1) < 2;
+        v19 = ([v17 compare:versionCopy options:64] + 1) < 2;
       }
 
       else
@@ -2144,12 +2144,12 @@ LABEL_5:
   return v19;
 }
 
-- (id)_lock_region:(id)a3
+- (id)_lock_region:(id)_lock_region
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_regions];
-  v6 = [v5 objectForKey:v4];
+  _lock_regionCopy = _lock_region;
+  _lock_regions = [(PKPaymentWebServiceConfiguration *)self _lock_regions];
+  v6 = [_lock_regions objectForKey:_lock_regionCopy];
 
   if (!v6)
   {
@@ -2157,7 +2157,7 @@ LABEL_5:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = _lock_regionCopy;
       _os_log_error_impl(&dword_1AD337000, v7, OS_LOG_TYPE_ERROR, "Region %@ requested but no region data found!", &v9, 0xCu);
     }
   }
@@ -2165,11 +2165,11 @@ LABEL_5:
   return v6;
 }
 
-- (id)_lock_unsupported_region:(id)a3
+- (id)_lock_unsupported_region:(id)_lock_unsupported_region
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebServiceConfiguration *)self _lock_unsupported_regions];
-  v6 = [v5 objectForKey:v4];
+  _lock_unsupported_regionCopy = _lock_unsupported_region;
+  _lock_unsupported_regions = [(PKPaymentWebServiceConfiguration *)self _lock_unsupported_regions];
+  v6 = [_lock_unsupported_regions objectForKey:_lock_unsupported_regionCopy];
 
   return v6;
 }

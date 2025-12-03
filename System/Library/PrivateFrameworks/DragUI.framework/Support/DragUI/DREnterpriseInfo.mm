@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_100024C74;
   block[3] = &unk_100056158;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000637E8 != -1)
   {
     dispatch_once(&qword_1000637E8, block);
@@ -53,8 +53,8 @@
 - (void)updateMDMName
 {
   v6 = +[MCProfileConnection sharedConnection];
-  v3 = [v6 managingOrganizationInformation];
-  v4 = [v3 objectForKeyedSubscript:kMCCCOrganizationNameKey];
+  managingOrganizationInformation = [v6 managingOrganizationInformation];
+  v4 = [managingOrganizationInformation objectForKeyedSubscript:kMCCCOrganizationNameKey];
   orgName = self->_orgName;
   self->_orgName = v4;
 }

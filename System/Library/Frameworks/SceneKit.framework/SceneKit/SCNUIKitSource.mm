@@ -23,7 +23,7 @@
     block[1] = 3221225472;
     v5 = __39__SCNUIKitSource_prepareWindowIfNeeded__block_invoke;
     v6 = &unk_2782FB608;
-    v7 = self;
+    selfCopy = self;
     if (pthread_main_np() == 1)
     {
       v5(block);

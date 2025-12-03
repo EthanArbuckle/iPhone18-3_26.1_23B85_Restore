@@ -1,6 +1,6 @@
 @interface MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct
 - (MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,23 +33,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct);
-  v5 = [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)self triggerType];
-  [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)v4 setTriggerType:v5];
+  triggerType = [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)self triggerType];
+  [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)v4 setTriggerType:triggerType];
 
-  v6 = [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)self motionZones];
-  [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)v4 setMotionZones:v6];
+  motionZones = [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)self motionZones];
+  [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)v4 setMotionZones:motionZones];
 
-  v7 = [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)self motionSensitivity];
-  [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)v4 setMotionSensitivity:v7];
+  motionSensitivity = [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)self motionSensitivity];
+  [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)v4 setMotionSensitivity:motionSensitivity];
 
-  v8 = [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)self motionTimeControl];
-  [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)v4 setMotionTimeControl:v8];
+  motionTimeControl = [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)self motionTimeControl];
+  [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)v4 setMotionTimeControl:motionTimeControl];
 
-  v9 = [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)self maxPreRollLen];
-  [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)v4 setMaxPreRollLen:v9];
+  maxPreRollLen = [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)self maxPreRollLen];
+  [(MTRPushAVStreamTransportClusterTransportTriggerOptionsStruct *)v4 setMaxPreRollLen:maxPreRollLen];
 
   return v4;
 }

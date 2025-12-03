@@ -1,5 +1,5 @@
 @interface NTKDateComplicationLabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilityFocusRingTintColor;
 - (id)accessibilityPath;
@@ -8,12 +8,12 @@
 
 @implementation NTKDateComplicationLabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKDateComplicationLabel" hasInstanceVariable:@"_highlightView" withType:"UIView"];
-  [v3 validateClass:@"NTKDateComplicationLabel" hasInstanceVariable:@"_computedTextColor" withType:"UIColor"];
-  [v3 validateClass:@"NTKDateComplicationLabel" hasInstanceVariable:@"_internalLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKDateComplicationLabel" hasInstanceVariable:@"_highlightView" withType:"UIView"];
+  [validationsCopy validateClass:@"NTKDateComplicationLabel" hasInstanceVariable:@"_computedTextColor" withType:"UIColor"];
+  [validationsCopy validateClass:@"NTKDateComplicationLabel" hasInstanceVariable:@"_internalLabel" withType:"UILabel"];
 }
 
 - (BOOL)isAccessibilityElement
@@ -24,8 +24,8 @@
 
   if (v4)
   {
-    v5 = [v4 text];
-    v6 = [v5 length] != 0;
+    text = [v4 text];
+    v6 = [text length] != 0;
   }
 
   else
@@ -46,9 +46,9 @@
 - (id)accessibilityPath
 {
   v2 = [(NTKDateComplicationLabelAccessibility *)self safeValueForKey:@"_highlightView"];
-  v3 = [v2 accessibilityPath];
+  accessibilityPath = [v2 accessibilityPath];
 
-  return v3;
+  return accessibilityPath;
 }
 
 - (id)_accessibilityFocusRingTintColor

@@ -1,25 +1,25 @@
 @interface PKPaymentAuthorizationPrepareTransactionDetailsStateParam
-+ (id)paramWithMerchantSession:(id)a3 secureElementIdentifier:(id)a4 transactionAmount:(id)a5 currencyCode:(id)a6;
++ (id)paramWithMerchantSession:(id)session secureElementIdentifier:(id)identifier transactionAmount:(id)amount currencyCode:(id)code;
 - (id)description;
 @end
 
 @implementation PKPaymentAuthorizationPrepareTransactionDetailsStateParam
 
-+ (id)paramWithMerchantSession:(id)a3 secureElementIdentifier:(id)a4 transactionAmount:(id)a5 currencyCode:(id)a6
++ (id)paramWithMerchantSession:(id)session secureElementIdentifier:(id)identifier transactionAmount:(id)amount currencyCode:(id)code
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [a1 param];
-  [v14 setMerchantSession:v13];
+  codeCopy = code;
+  amountCopy = amount;
+  identifierCopy = identifier;
+  sessionCopy = session;
+  param = [self param];
+  [param setMerchantSession:sessionCopy];
 
-  [v14 setSecureElementIdentifier:v12];
-  [v14 setTransactionAmount:v11];
+  [param setSecureElementIdentifier:identifierCopy];
+  [param setTransactionAmount:amountCopy];
 
-  [v14 setCurrencyCode:v10];
+  [param setCurrencyCode:codeCopy];
 
-  return v14;
+  return param;
 }
 
 - (id)description

@@ -1,19 +1,19 @@
 @interface NSString
-- (id)_lowercaseFirstLetterOfString:(BOOL)a3;
+- (id)_lowercaseFirstLetterOfString:(BOOL)string;
 @end
 
 @implementation NSString
 
-- (id)_lowercaseFirstLetterOfString:(BOOL)a3
+- (id)_lowercaseFirstLetterOfString:(BOOL)string
 {
-  v3 = a3;
+  stringCopy = string;
   v5 = [(NSString *)self length];
   if (v5)
   {
     v6 = v5;
     v7 = [(NSString *)self substringToIndex:1];
     v8 = v7;
-    if (v3)
+    if (stringCopy)
     {
       [v7 lowercaseString];
     }
@@ -22,23 +22,23 @@
     {
       [v7 uppercaseString];
     }
-    v9 = ;
+    selfCopy = ;
 
     if (v6 != 1)
     {
       v10 = [(NSString *)self substringFromIndex:1];
-      v11 = [(NSString *)v9 stringByAppendingString:v10];
+      v11 = [(NSString *)selfCopy stringByAppendingString:v10];
 
-      v9 = v11;
+      selfCopy = v11;
     }
   }
 
   else
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

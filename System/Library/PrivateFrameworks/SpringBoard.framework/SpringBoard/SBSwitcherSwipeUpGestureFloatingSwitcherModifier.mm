@@ -1,22 +1,22 @@
 @interface SBSwitcherSwipeUpGestureFloatingSwitcherModifier
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBSwitcherSwipeUpGestureFloatingSwitcherModifier)initWithGestureID:(id)a3;
-- (double)scaleForIndex:(unint64_t)a3;
-- (id)handleGestureEvent:(id)a3;
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBSwitcherSwipeUpGestureFloatingSwitcherModifier)initWithGestureID:(id)d;
+- (double)scaleForIndex:(unint64_t)index;
+- (id)handleGestureEvent:(id)event;
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event;
 @end
 
 @implementation SBSwitcherSwipeUpGestureFloatingSwitcherModifier
 
-- (SBSwitcherSwipeUpGestureFloatingSwitcherModifier)initWithGestureID:(id)a3
+- (SBSwitcherSwipeUpGestureFloatingSwitcherModifier)initWithGestureID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = SBSwitcherSwipeUpGestureFloatingSwitcherModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v11 initWithGestureID:v4];
+  v5 = [(SBGestureSwitcherModifier *)&v11 initWithGestureID:dCopy];
   if (v5)
   {
-    v6 = [[SBGridSwipeUpGestureSwitcherModifier alloc] initWithGestureID:v4];
+    v6 = [[SBGridSwipeUpGestureSwitcherModifier alloc] initWithGestureID:dCopy];
     gridSwipeUpGestureModifier = v5->_gridSwipeUpGestureModifier;
     v5->_gridSwipeUpGestureModifier = v6;
 
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event
 {
   v12.receiver = self;
   v12.super_class = SBSwitcherSwipeUpGestureFloatingSwitcherModifier;
-  v8 = a4;
-  v9 = [(SBChainableModifier *)&v12 responseForProposedChildResponse:a3 childModifier:v8 event:a5];
+  modifierCopy = modifier;
+  v9 = [(SBChainableModifier *)&v12 responseForProposedChildResponse:response childModifier:modifierCopy event:event];
   gridSwipeUpGestureModifier = self->_gridSwipeUpGestureModifier;
 
-  if (gridSwipeUpGestureModifier == v8)
+  if (gridSwipeUpGestureModifier == modifierCopy)
   {
 
     v9 = 0;
@@ -48,13 +48,13 @@
   return v9;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = SBSwitcherSwipeUpGestureFloatingSwitcherModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v15 handleGestureEvent:v4];
-  if ([v4 phase] == 3)
+  v5 = [(SBGestureSwitcherModifier *)&v15 handleGestureEvent:eventCopy];
+  if ([eventCopy phase] == 3)
   {
     v14[0] = 0;
     v14[1] = v14;
@@ -67,7 +67,7 @@
     v11[3] = &unk_2783AB258;
     v13 = v14;
     v11[4] = self;
-    v12 = v4;
+    v12 = eventCopy;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:gridSwipeUpGestureModifier usingBlock:v11];
     v7 = objc_alloc_init(SBMutableSwitcherTransitionRequest);
     [(SBSwitcherTransitionRequest *)v7 setFloatingSwitcherVisible:BSSettingFlagIfYes()];
@@ -89,13 +89,13 @@ uint64_t __71__SBSwitcherSwipeUpGestureFloatingSwitcherModifier_handleGestureEve
   return result;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   [(SBSwitcherSwipeUpGestureFloatingSwitcherModifier *)self switcherViewBounds];
   UIRectGetCenter();
   v12.receiver = self;
   v12.super_class = SBSwitcherSwipeUpGestureFloatingSwitcherModifier;
-  [(SBSwitcherSwipeUpGestureFloatingSwitcherModifier *)&v12 frameForIndex:a3];
+  [(SBSwitcherSwipeUpGestureFloatingSwitcherModifier *)&v12 frameForIndex:index];
   UIRectGetCenter();
   v11.receiver = self;
   v11.super_class = SBSwitcherSwipeUpGestureFloatingSwitcherModifier;
@@ -110,11 +110,11 @@ uint64_t __71__SBSwitcherSwipeUpGestureFloatingSwitcherModifier_handleGestureEve
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   v9.receiver = self;
   v9.super_class = SBSwitcherSwipeUpGestureFloatingSwitcherModifier;
-  [(SBSwitcherSwipeUpGestureFloatingSwitcherModifier *)&v9 scaleForIndex:a3];
+  [(SBSwitcherSwipeUpGestureFloatingSwitcherModifier *)&v9 scaleForIndex:index];
   v5 = v4;
   v8.receiver = self;
   v8.super_class = SBSwitcherSwipeUpGestureFloatingSwitcherModifier;

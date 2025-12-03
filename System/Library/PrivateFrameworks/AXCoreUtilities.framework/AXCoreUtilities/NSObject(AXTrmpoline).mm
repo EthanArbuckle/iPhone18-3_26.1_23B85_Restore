@@ -6,17 +6,17 @@
 
 - (AXTrampoline)axSuperTrampoline
 {
-  Class = object_getClass(a1);
+  Class = object_getClass(self);
   isMetaClass = class_isMetaClass(Class);
-  v4 = a1;
+  selfCopy = self;
   if (!isMetaClass)
   {
-    v4 = object_getClass(a1);
+    selfCopy = object_getClass(self);
   }
 
-  Superclass = class_getSuperclass(v4);
+  Superclass = class_getSuperclass(selfCopy);
 
-  return [AXTrampoline trampolineWithCaller:a1 targetClass:Superclass];
+  return [AXTrampoline trampolineWithCaller:self targetClass:Superclass];
 }
 
 @end

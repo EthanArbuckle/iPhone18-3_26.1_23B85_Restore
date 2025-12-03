@@ -1,23 +1,23 @@
 @interface HFMediaAccessControlEditorItemProvider
-- (HFMediaAccessControlEditorItemProvider)initWithHome:(id)a3;
-- (HFMediaAccessControlEditorItemProvider)initWithItems:(id)a3;
+- (HFMediaAccessControlEditorItemProvider)initWithHome:(id)home;
+- (HFMediaAccessControlEditorItemProvider)initWithItems:(id)items;
 - (id)_buildItems;
 - (id)items;
 @end
 
 @implementation HFMediaAccessControlEditorItemProvider
 
-- (HFMediaAccessControlEditorItemProvider)initWithHome:(id)a3
+- (HFMediaAccessControlEditorItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
-  v6 = [(HFMediaAccessControlEditorItemProvider *)self _buildItems];
+  homeCopy = home;
+  _buildItems = [(HFMediaAccessControlEditorItemProvider *)self _buildItems];
   v11.receiver = self;
   v11.super_class = HFMediaAccessControlEditorItemProvider;
-  v7 = [(HFStaticItemProvider *)&v11 initWithItems:v6];
+  v7 = [(HFStaticItemProvider *)&v11 initWithItems:_buildItems];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_home, a3);
+    objc_storeStrong(&v7->_home, home);
     v8 = objc_opt_new();
     itemForIdentifier = v7->_itemForIdentifier;
     v7->_itemForIdentifier = v8;
@@ -26,11 +26,11 @@
   return v7;
 }
 
-- (HFMediaAccessControlEditorItemProvider)initWithItems:(id)a3
+- (HFMediaAccessControlEditorItemProvider)initWithItems:(id)items
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithHome_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HFMediaAccessControlEditorItemProvider.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HFMediaAccessControlEditorItemProvider initWithItems:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFMediaAccessControlEditorItemProvider.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HFMediaAccessControlEditorItemProvider initWithItems:]", v6}];
 
   return 0;
 }
@@ -39,8 +39,8 @@
 {
   v42[2] = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
-  v3 = [(HFMediaAccessControlEditorItemProvider *)self accessControlItems];
-  v4 = v3 == 0;
+  accessControlItems = [(HFMediaAccessControlEditorItemProvider *)self accessControlItems];
+  v4 = accessControlItems == 0;
 
   if (v4)
   {
@@ -62,8 +62,8 @@
       v39 = v10;
       v11 = [(HFStaticItem *)v9 initWithResultsBlock:v38];
       [v5 addObject:v11];
-      v12 = [(HFMediaAccessControlEditorItemProvider *)self itemForIdentifier];
-      [v12 setObject:v11 forKeyedSubscript:v10];
+      itemForIdentifier = [(HFMediaAccessControlEditorItemProvider *)self itemForIdentifier];
+      [itemForIdentifier setObject:v11 forKeyedSubscript:v10];
 
       objc_destroyWeak(v40);
       ++v6;
@@ -73,8 +73,8 @@
     [(HFMediaAccessControlEditorItemProvider *)self setAccessControlItems:v5];
   }
 
-  v13 = [(HFMediaAccessControlEditorItemProvider *)self passwordEnableItem];
-  v14 = v13 == 0;
+  passwordEnableItem = [(HFMediaAccessControlEditorItemProvider *)self passwordEnableItem];
+  v14 = passwordEnableItem == 0;
 
   if (v14)
   {
@@ -87,15 +87,15 @@
     v16 = [(HFStaticItem *)v15 initWithResultsBlock:v36];
     [(HFMediaAccessControlEditorItemProvider *)self setPasswordEnableItem:v16];
 
-    v17 = [(HFMediaAccessControlEditorItemProvider *)self passwordEnableItem];
-    v18 = [(HFMediaAccessControlEditorItemProvider *)self itemForIdentifier];
-    [v18 setObject:v17 forKeyedSubscript:@"PasswordItem"];
+    passwordEnableItem2 = [(HFMediaAccessControlEditorItemProvider *)self passwordEnableItem];
+    itemForIdentifier2 = [(HFMediaAccessControlEditorItemProvider *)self itemForIdentifier];
+    [itemForIdentifier2 setObject:passwordEnableItem2 forKeyedSubscript:@"PasswordItem"];
 
     objc_destroyWeak(&v37);
   }
 
-  v19 = [(HFMediaAccessControlEditorItemProvider *)self passwordItem];
-  v20 = v19 == 0;
+  passwordItem = [(HFMediaAccessControlEditorItemProvider *)self passwordItem];
+  v20 = passwordItem == 0;
 
   if (v20)
   {
@@ -108,21 +108,21 @@
     v22 = [(HFStaticItem *)v21 initWithResultsBlock:v34];
     [(HFMediaAccessControlEditorItemProvider *)self setPasswordItem:v22];
 
-    v23 = [(HFMediaAccessControlEditorItemProvider *)self passwordItem];
-    v24 = [(HFMediaAccessControlEditorItemProvider *)self itemForIdentifier];
-    [v24 setObject:v23 forKeyedSubscript:@"PasswordEnableItem"];
+    passwordItem2 = [(HFMediaAccessControlEditorItemProvider *)self passwordItem];
+    itemForIdentifier3 = [(HFMediaAccessControlEditorItemProvider *)self itemForIdentifier];
+    [itemForIdentifier3 setObject:passwordItem2 forKeyedSubscript:@"PasswordEnableItem"];
 
     objc_destroyWeak(&v35);
   }
 
   v25 = MEMORY[0x277CBEB98];
-  v26 = [(HFMediaAccessControlEditorItemProvider *)self accessControlItems];
-  v27 = [(HFMediaAccessControlEditorItemProvider *)self passwordItem];
-  v42[0] = v27;
-  v28 = [(HFMediaAccessControlEditorItemProvider *)self passwordEnableItem];
-  v42[1] = v28;
+  accessControlItems2 = [(HFMediaAccessControlEditorItemProvider *)self accessControlItems];
+  passwordItem3 = [(HFMediaAccessControlEditorItemProvider *)self passwordItem];
+  v42[0] = passwordItem3;
+  passwordEnableItem3 = [(HFMediaAccessControlEditorItemProvider *)self passwordEnableItem];
+  v42[1] = passwordEnableItem3;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
-  v30 = [v26 arrayByAddingObjectsFromArray:v29];
+  v30 = [accessControlItems2 arrayByAddingObjectsFromArray:v29];
   v31 = [v25 setWithArray:v30];
 
   objc_destroyWeak(&location);
@@ -260,14 +260,14 @@ id __53__HFMediaAccessControlEditorItemProvider__buildItems__block_invoke_3(uint
 - (id)items
 {
   v3 = MEMORY[0x277CBEB58];
-  v4 = [(HFMediaAccessControlEditorItemProvider *)self accessControlItems];
-  v5 = [v3 setWithArray:v4];
+  accessControlItems = [(HFMediaAccessControlEditorItemProvider *)self accessControlItems];
+  v5 = [v3 setWithArray:accessControlItems];
 
-  v6 = [(HFMediaAccessControlEditorItemProvider *)self passwordItem];
-  [v5 na_safeAddObject:v6];
+  passwordItem = [(HFMediaAccessControlEditorItemProvider *)self passwordItem];
+  [v5 na_safeAddObject:passwordItem];
 
-  v7 = [(HFMediaAccessControlEditorItemProvider *)self passwordEnableItem];
-  [v5 na_safeAddObject:v7];
+  passwordEnableItem = [(HFMediaAccessControlEditorItemProvider *)self passwordEnableItem];
+  [v5 na_safeAddObject:passwordEnableItem];
 
   return v5;
 }

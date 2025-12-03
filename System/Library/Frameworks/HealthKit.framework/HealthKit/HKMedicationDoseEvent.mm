@@ -1,62 +1,62 @@
 @interface HKMedicationDoseEvent
-+ (id)_metadataWithSyncIdentifier:(id)a3 syncVersion:(id)a4 isLastScheduledDose:(BOOL)a5;
-+ (id)_newMedicationDoseEventWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 logOrigin:(int64_t)a8 scheduleItemIdentifier:(id)a9 medicationUUID:(id)a10 medicationIdentifier:(id)a11 scheduledDoseQuantity:(id)a12 doseQuantity:(id)a13 scheduledDate:(id)a14 logStatus:(int64_t)a15 doseUnitString:(id)a16 config:(id)a17;
-+ (id)medicationDoseEventWithLogOrigin:(int64_t)a3 scheduleItemIdentifier:(id)a4 medicationIdentifier:(id)a5 scheduledDoseQuantity:(id)a6 doseQuantity:(id)a7 scheduledDate:(id)a8 startDate:(id)a9 logStatus:(int64_t)a10 doseUnitString:(id)a11 metadata:(id)a12;
-+ (id)medicationDoseEventWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 logOrigin:(int64_t)a8 scheduleItemIdentifier:(id)a9 medicationIdentifier:(id)a10 scheduledDoseQuantity:(double)a11 doseQuantity:(double)a12 scheduledDate:(id)a13 logStatus:(int64_t)a14 medicationUuid:(id)a15;
-+ (id)medicationDoseEventWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 logOrigin:(int64_t)a8 scheduleItemIdentifier:(id)a9 medicationIdentifier:(id)a10 scheduledDoseQuantity:(double)a11 doseQuantity:(double)a12 scheduledDate:(id)a13 logStatus:(int64_t)a14 medicationUuid:(id)a15 doseUnitString:(id)a16;
-- (BOOL)isEquivalent:(id)a3;
++ (id)_metadataWithSyncIdentifier:(id)identifier syncVersion:(id)version isLastScheduledDose:(BOOL)dose;
++ (id)_newMedicationDoseEventWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata logOrigin:(int64_t)origin scheduleItemIdentifier:(id)identifier medicationUUID:(id)self0 medicationIdentifier:(id)self1 scheduledDoseQuantity:(id)self2 doseQuantity:(id)self3 scheduledDate:(id)self4 logStatus:(int64_t)self5 doseUnitString:(id)self6 config:(id)self7;
++ (id)medicationDoseEventWithLogOrigin:(int64_t)origin scheduleItemIdentifier:(id)identifier medicationIdentifier:(id)medicationIdentifier scheduledDoseQuantity:(id)quantity doseQuantity:(id)doseQuantity scheduledDate:(id)date startDate:(id)startDate logStatus:(int64_t)self0 doseUnitString:(id)self1 metadata:(id)self2;
++ (id)medicationDoseEventWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata logOrigin:(int64_t)origin scheduleItemIdentifier:(id)identifier medicationIdentifier:(id)self0 scheduledDoseQuantity:(double)self1 doseQuantity:(double)self2 scheduledDate:(id)self3 logStatus:(int64_t)self4 medicationUuid:(id)self5;
++ (id)medicationDoseEventWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata logOrigin:(int64_t)origin scheduleItemIdentifier:(id)identifier medicationIdentifier:(id)self0 scheduledDoseQuantity:(double)self1 doseQuantity:(double)self2 scheduledDate:(id)self3 logStatus:(int64_t)self4 medicationUuid:(id)self5 doseUnitString:(id)self6;
+- (BOOL)isEquivalent:(id)equivalent;
 - (BOOL)isLastScheduledDose;
 - (HKMedicationDoseEvent)init;
-- (HKMedicationDoseEvent)initWithCoder:(id)a3;
+- (HKMedicationDoseEvent)initWithCoder:(id)coder;
 - (HKUnit)unit;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)sanitizedSample:(id)a3 forEntitlements:(id)a4;
-- (void)_setMedicationConceptIdentifier:(id)a3;
-- (void)_setMedicationIdentifier:(id)a3;
-- (void)_setMedicationUUID:(id)a3;
-- (void)_setScheduleItemIdentifier:(id)a3;
-- (void)_setScheduledDate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)sanitizedSample:(id)sample forEntitlements:(id)entitlements;
+- (void)_setMedicationConceptIdentifier:(id)identifier;
+- (void)_setMedicationIdentifier:(id)identifier;
+- (void)_setMedicationUUID:(id)d;
+- (void)_setScheduleItemIdentifier:(id)identifier;
+- (void)_setScheduledDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationDoseEvent
 
-- (id)sanitizedSample:(id)a3 forEntitlements:(id)a4
+- (id)sanitizedSample:(id)sample forEntitlements:(id)entitlements
 {
-  v5 = a3;
-  v6 = a4;
+  sampleCopy = sample;
+  entitlementsCopy = entitlements;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v8 = v5;
-  v9 = v8;
+  v8 = sampleCopy;
+  _copyByArchiving = v8;
   if (isKindOfClass)
   {
-    v9 = v8;
-    if (([v6 hasEntitlement:@"com.apple.private.healthkit"] & 1) == 0)
+    _copyByArchiving = v8;
+    if (([entitlementsCopy hasEntitlement:@"com.apple.private.healthkit"] & 1) == 0)
     {
-      v10 = [v8 scheduleItemIdentifier];
-      if (v10 || ([v8 medicationUUID], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+      scheduleItemIdentifier = [v8 scheduleItemIdentifier];
+      if (scheduleItemIdentifier || ([v8 medicationUUID], (scheduleItemIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
       {
 
 LABEL_6:
-        v9 = [v8 _copyByArchiving];
+        _copyByArchiving = [v8 _copyByArchiving];
 
-        [v9 _setScheduleItemIdentifier:0];
-        [v9 _setMedicationIdentifier:&stru_1F05FF230];
+        [_copyByArchiving _setScheduleItemIdentifier:0];
+        [_copyByArchiving _setMedicationIdentifier:&stru_1F05FF230];
         goto LABEL_7;
       }
 
-      v12 = [v8 medicationIdentifier];
-      v9 = v8;
-      if (v12 != &stru_1F05FF230)
+      medicationIdentifier = [v8 medicationIdentifier];
+      _copyByArchiving = v8;
+      if (medicationIdentifier != &stru_1F05FF230)
       {
-        v13 = v12;
-        v14 = [v8 medicationIdentifier];
-        v15 = [v14 isEqualToString:&stru_1F05FF230];
+        v13 = medicationIdentifier;
+        medicationIdentifier2 = [v8 medicationIdentifier];
+        v15 = [medicationIdentifier2 isEqualToString:&stru_1F05FF230];
 
-        v9 = v8;
+        _copyByArchiving = v8;
         if ((v15 & 1) == 0)
         {
           goto LABEL_6;
@@ -67,65 +67,65 @@ LABEL_6:
 
 LABEL_7:
 
-  return v9;
+  return _copyByArchiving;
 }
 
-+ (id)medicationDoseEventWithLogOrigin:(int64_t)a3 scheduleItemIdentifier:(id)a4 medicationIdentifier:(id)a5 scheduledDoseQuantity:(id)a6 doseQuantity:(id)a7 scheduledDate:(id)a8 startDate:(id)a9 logStatus:(int64_t)a10 doseUnitString:(id)a11 metadata:(id)a12
++ (id)medicationDoseEventWithLogOrigin:(int64_t)origin scheduleItemIdentifier:(id)identifier medicationIdentifier:(id)medicationIdentifier scheduledDoseQuantity:(id)quantity doseQuantity:(id)doseQuantity scheduledDate:(id)date startDate:(id)startDate logStatus:(int64_t)self0 doseUnitString:(id)self1 metadata:(id)self2
 {
-  v18 = a12;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
+  metadataCopy = metadata;
+  startDateCopy = startDate;
+  dateCopy = date;
+  doseQuantityCopy = doseQuantity;
+  quantityCopy = quantity;
+  medicationIdentifierCopy = medicationIdentifier;
+  identifierCopy = identifier;
   v25 = +[(HKObjectType *)HKMedicationDoseEventType];
-  v26 = [a1 _newMedicationDoseEventWithType:v25 startDate:v19 endDate:v19 device:0 metadata:v18 logOrigin:a3 scheduleItemIdentifier:v24 medicationUUID:0 medicationIdentifier:v23 scheduledDoseQuantity:v22 doseQuantity:v21 scheduledDate:v20 logStatus:a10 doseUnitString:0 config:0];
+  v26 = [self _newMedicationDoseEventWithType:v25 startDate:startDateCopy endDate:startDateCopy device:0 metadata:metadataCopy logOrigin:origin scheduleItemIdentifier:identifierCopy medicationUUID:0 medicationIdentifier:medicationIdentifierCopy scheduledDoseQuantity:quantityCopy doseQuantity:doseQuantityCopy scheduledDate:dateCopy logStatus:status doseUnitString:0 config:0];
 
   return v26;
 }
 
-+ (id)_newMedicationDoseEventWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 logOrigin:(int64_t)a8 scheduleItemIdentifier:(id)a9 medicationUUID:(id)a10 medicationIdentifier:(id)a11 scheduledDoseQuantity:(id)a12 doseQuantity:(id)a13 scheduledDate:(id)a14 logStatus:(int64_t)a15 doseUnitString:(id)a16 config:(id)a17
++ (id)_newMedicationDoseEventWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata logOrigin:(int64_t)origin scheduleItemIdentifier:(id)identifier medicationUUID:(id)self0 medicationIdentifier:(id)self1 scheduledDoseQuantity:(id)self2 doseQuantity:(id)self3 scheduledDate:(id)self4 logStatus:(int64_t)self5 doseUnitString:(id)self6 config:(id)self7
 {
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v21 = a12;
-  v22 = a13;
-  v23 = a14;
-  v24 = a16;
-  v25 = a17;
+  identifierCopy = identifier;
+  dCopy = d;
+  medicationIdentifierCopy = medicationIdentifier;
+  quantityCopy = quantity;
+  doseQuantityCopy = doseQuantity;
+  scheduledDateCopy = scheduledDate;
+  stringCopy = string;
+  configCopy = config;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __241__HKMedicationDoseEvent__newMedicationDoseEventWithType_startDate_endDate_device_metadata_logOrigin_scheduleItemIdentifier_medicationUUID_medicationIdentifier_scheduledDoseQuantity_doseQuantity_scheduledDate_logStatus_doseUnitString_config___block_invoke;
   aBlock[3] = &unk_1E73813A0;
-  v50 = v19;
-  v51 = v18;
-  v52 = v20;
-  v53 = v21;
-  v54 = v22;
-  v55 = v24;
-  v58 = a8;
-  v59 = a15;
-  v56 = v23;
-  v57 = v25;
-  v47 = v25;
-  v45 = v23;
-  v44 = v24;
-  v43 = v22;
-  v42 = v21;
-  v26 = v20;
-  v27 = v18;
-  v28 = v19;
-  v29 = a7;
-  v30 = a6;
-  v31 = a5;
-  v32 = a4;
-  v33 = a3;
+  v50 = dCopy;
+  v51 = identifierCopy;
+  v52 = medicationIdentifierCopy;
+  v53 = quantityCopy;
+  v54 = doseQuantityCopy;
+  v55 = stringCopy;
+  originCopy = origin;
+  statusCopy = status;
+  v56 = scheduledDateCopy;
+  v57 = configCopy;
+  v47 = configCopy;
+  v45 = scheduledDateCopy;
+  v44 = stringCopy;
+  v43 = doseQuantityCopy;
+  v42 = quantityCopy;
+  v26 = medicationIdentifierCopy;
+  v27 = identifierCopy;
+  v28 = dCopy;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  endDateCopy = endDate;
+  dateCopy = date;
+  typeCopy = type;
   v34 = _Block_copy(aBlock);
-  v48.receiver = a1;
+  v48.receiver = self;
   v48.super_class = &OBJC_METACLASS___HKMedicationDoseEvent;
-  v35 = objc_msgSendSuper2(&v48, sel__newSampleFromDatesWithType_startDate_endDate_device_metadata_config_, v33, v32, v31, v30, v29, v34);
+  v35 = objc_msgSendSuper2(&v48, sel__newSampleFromDatesWithType_startDate_endDate_device_metadata_config_, typeCopy, dateCopy, endDateCopy, deviceCopy, metadataCopy, v34);
 
   return v35;
 }
@@ -185,79 +185,79 @@ void __241__HKMedicationDoseEvent__newMedicationDoseEventWithType_startDate_endD
   v4 = [(HKSample *)&v12 description];
   logOrigin = self->_logOrigin;
   scheduleItemIdentifier = self->_scheduleItemIdentifier;
-  v7 = [(NSUUID *)self->_medicationUUID UUIDString];
-  v8 = [v11 stringWithFormat:@"<%@:%p super=%@, logOrigin = %ld, scheduleItemIdentifier = %@, medicationUUID = %@, medicationIdentifier = %@, scheduledDoseQuantity = %@, doseQuantity = %@, scheduledDate = %@, status = %ld, isLastScheduledDose = %d>", v10, self, v4, logOrigin, scheduleItemIdentifier, v7, self->_medicationIdentifier, self->_scheduledDoseQuantity, self->_doseQuantity, self->_scheduledDate, self->_logStatus, -[HKMedicationDoseEvent isLastScheduledDose](self, "isLastScheduledDose"), 0];
+  uUIDString = [(NSUUID *)self->_medicationUUID UUIDString];
+  v8 = [v11 stringWithFormat:@"<%@:%p super=%@, logOrigin = %ld, scheduleItemIdentifier = %@, medicationUUID = %@, medicationIdentifier = %@, scheduledDoseQuantity = %@, doseQuantity = %@, scheduledDate = %@, status = %ld, isLastScheduledDose = %d>", v10, self, v4, logOrigin, scheduleItemIdentifier, uUIDString, self->_medicationIdentifier, self->_scheduledDoseQuantity, self->_doseQuantity, self->_scheduledDate, self->_logStatus, -[HKMedicationDoseEvent isLastScheduledDose](self, "isLastScheduledDose"), 0];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKMedicationDoseEvent;
-  v4 = a3;
-  [(HKSample *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_logOrigin forKey:{@"LogOrigin", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_scheduleItemIdentifier forKey:@"ScheduleItemIdentifier"];
-  [v4 encodeObject:self->_medicationUUID forKey:@"MedicationUUID"];
-  [v4 encodeObject:self->_medicationIdentifier forKey:@"MedicationIdentifier"];
-  [v4 encodeObject:self->_scheduledDoseQuantity forKey:@"ScheduledDoseQuantity"];
-  [v4 encodeObject:self->_doseQuantity forKey:@"DoseQuantity"];
-  [v4 encodeObject:self->_doseUnitString forKey:@"DoseUnitString"];
-  [v4 encodeObject:self->_scheduledDate forKey:@"ScheduledDate"];
-  [v4 encodeInteger:self->_logStatus forKey:@"Status"];
+  coderCopy = coder;
+  [(HKSample *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_logOrigin forKey:{@"LogOrigin", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_scheduleItemIdentifier forKey:@"ScheduleItemIdentifier"];
+  [coderCopy encodeObject:self->_medicationUUID forKey:@"MedicationUUID"];
+  [coderCopy encodeObject:self->_medicationIdentifier forKey:@"MedicationIdentifier"];
+  [coderCopy encodeObject:self->_scheduledDoseQuantity forKey:@"ScheduledDoseQuantity"];
+  [coderCopy encodeObject:self->_doseQuantity forKey:@"DoseQuantity"];
+  [coderCopy encodeObject:self->_doseUnitString forKey:@"DoseUnitString"];
+  [coderCopy encodeObject:self->_scheduledDate forKey:@"ScheduledDate"];
+  [coderCopy encodeInteger:self->_logStatus forKey:@"Status"];
 }
 
-- (HKMedicationDoseEvent)initWithCoder:(id)a3
+- (HKMedicationDoseEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = HKMedicationDoseEvent;
-  v5 = [(HKSample *)&v21 initWithCoder:v4];
+  v5 = [(HKSample *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_logOrigin = [v4 decodeIntegerForKey:@"LogOrigin"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ScheduleItemIdentifier"];
+    v5->_logOrigin = [coderCopy decodeIntegerForKey:@"LogOrigin"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ScheduleItemIdentifier"];
     scheduleItemIdentifier = v5->_scheduleItemIdentifier;
     v5->_scheduleItemIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MedicationUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MedicationUUID"];
     medicationUUID = v5->_medicationUUID;
     v5->_medicationUUID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MedicationIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MedicationIdentifier"];
     medicationIdentifier = v5->_medicationIdentifier;
     v5->_medicationIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ScheduledDoseQuantity"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ScheduledDoseQuantity"];
     scheduledDoseQuantity = v5->_scheduledDoseQuantity;
     v5->_scheduledDoseQuantity = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DoseQuantity"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DoseQuantity"];
     doseQuantity = v5->_doseQuantity;
     v5->_doseQuantity = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DoseUnitString"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DoseUnitString"];
     doseUnitString = v5->_doseUnitString;
     v5->_doseUnitString = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ScheduledDate"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ScheduledDate"];
     scheduledDate = v5->_scheduledDate;
     v5->_scheduledDate = v18;
 
-    v5->_logStatus = [v4 decodeIntegerForKey:@"Status"];
+    v5->_logStatus = [coderCopy decodeIntegerForKey:@"Status"];
   }
 
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equivalentCopy;
     v49.receiver = self;
     v49.super_class = HKMedicationDoseEvent;
     if (![(HKSample *)&v49 isEquivalent:v5])
@@ -265,31 +265,31 @@ void __241__HKMedicationDoseEvent__newMedicationDoseEventWithType_startDate_endD
       goto LABEL_35;
     }
 
-    v6 = [(HKMedicationDoseEvent *)self logOrigin];
-    if (v6 != [v5 logOrigin])
+    logOrigin = [(HKMedicationDoseEvent *)self logOrigin];
+    if (logOrigin != [v5 logOrigin])
     {
       goto LABEL_35;
     }
 
-    v7 = [(HKMedicationDoseEvent *)self scheduleItemIdentifier];
-    v8 = [v5 scheduleItemIdentifier];
-    v9 = v8;
-    if (v7 == v8)
+    scheduleItemIdentifier = [(HKMedicationDoseEvent *)self scheduleItemIdentifier];
+    scheduleItemIdentifier2 = [v5 scheduleItemIdentifier];
+    v9 = scheduleItemIdentifier2;
+    if (scheduleItemIdentifier == scheduleItemIdentifier2)
     {
     }
 
     else
     {
-      v10 = [v5 scheduleItemIdentifier];
-      if (!v10)
+      scheduleItemIdentifier3 = [v5 scheduleItemIdentifier];
+      if (!scheduleItemIdentifier3)
       {
         goto LABEL_34;
       }
 
-      v11 = v10;
-      v12 = [(HKMedicationDoseEvent *)self scheduleItemIdentifier];
-      v13 = [v5 scheduleItemIdentifier];
-      v14 = [v12 isEqualToString:v13];
+      v11 = scheduleItemIdentifier3;
+      scheduleItemIdentifier4 = [(HKMedicationDoseEvent *)self scheduleItemIdentifier];
+      scheduleItemIdentifier5 = [v5 scheduleItemIdentifier];
+      v14 = [scheduleItemIdentifier4 isEqualToString:scheduleItemIdentifier5];
 
       if (!v14)
       {
@@ -297,25 +297,25 @@ void __241__HKMedicationDoseEvent__newMedicationDoseEventWithType_startDate_endD
       }
     }
 
-    v7 = [(HKMedicationDoseEvent *)self medicationIdentifier];
-    v16 = [v5 medicationIdentifier];
-    v9 = v16;
-    if (v7 == v16)
+    scheduleItemIdentifier = [(HKMedicationDoseEvent *)self medicationIdentifier];
+    medicationIdentifier = [v5 medicationIdentifier];
+    v9 = medicationIdentifier;
+    if (scheduleItemIdentifier == medicationIdentifier)
     {
     }
 
     else
     {
-      v17 = [v5 medicationIdentifier];
-      if (!v17)
+      medicationIdentifier2 = [v5 medicationIdentifier];
+      if (!medicationIdentifier2)
       {
         goto LABEL_34;
       }
 
-      v18 = v17;
-      v19 = [(HKMedicationDoseEvent *)self medicationIdentifier];
-      v20 = [v5 medicationIdentifier];
-      v21 = [v19 isEqualToString:v20];
+      v18 = medicationIdentifier2;
+      medicationIdentifier3 = [(HKMedicationDoseEvent *)self medicationIdentifier];
+      medicationIdentifier4 = [v5 medicationIdentifier];
+      v21 = [medicationIdentifier3 isEqualToString:medicationIdentifier4];
 
       if (!v21)
       {
@@ -323,25 +323,25 @@ void __241__HKMedicationDoseEvent__newMedicationDoseEventWithType_startDate_endD
       }
     }
 
-    v7 = [(HKMedicationDoseEvent *)self scheduledDoseQuantity];
-    v22 = [v5 scheduledDoseQuantity];
-    v9 = v22;
-    if (v7 == v22)
+    scheduleItemIdentifier = [(HKMedicationDoseEvent *)self scheduledDoseQuantity];
+    scheduledDoseQuantity = [v5 scheduledDoseQuantity];
+    v9 = scheduledDoseQuantity;
+    if (scheduleItemIdentifier == scheduledDoseQuantity)
     {
     }
 
     else
     {
-      v23 = [v5 scheduledDoseQuantity];
-      if (!v23)
+      scheduledDoseQuantity2 = [v5 scheduledDoseQuantity];
+      if (!scheduledDoseQuantity2)
       {
         goto LABEL_34;
       }
 
-      v24 = v23;
-      v25 = [(HKMedicationDoseEvent *)self scheduledDoseQuantity];
-      v26 = [v5 scheduledDoseQuantity];
-      v27 = [v25 isEqual:v26];
+      v24 = scheduledDoseQuantity2;
+      scheduledDoseQuantity3 = [(HKMedicationDoseEvent *)self scheduledDoseQuantity];
+      scheduledDoseQuantity4 = [v5 scheduledDoseQuantity];
+      v27 = [scheduledDoseQuantity3 isEqual:scheduledDoseQuantity4];
 
       if (!v27)
       {
@@ -349,25 +349,25 @@ void __241__HKMedicationDoseEvent__newMedicationDoseEventWithType_startDate_endD
       }
     }
 
-    v7 = [(HKMedicationDoseEvent *)self doseQuantity];
-    v28 = [v5 doseQuantity];
-    v9 = v28;
-    if (v7 == v28)
+    scheduleItemIdentifier = [(HKMedicationDoseEvent *)self doseQuantity];
+    doseQuantity = [v5 doseQuantity];
+    v9 = doseQuantity;
+    if (scheduleItemIdentifier == doseQuantity)
     {
     }
 
     else
     {
-      v29 = [v5 doseQuantity];
-      if (!v29)
+      doseQuantity2 = [v5 doseQuantity];
+      if (!doseQuantity2)
       {
         goto LABEL_34;
       }
 
-      v30 = v29;
-      v31 = [(HKMedicationDoseEvent *)self doseQuantity];
-      v32 = [v5 doseQuantity];
-      v33 = [v31 isEqual:v32];
+      v30 = doseQuantity2;
+      doseQuantity3 = [(HKMedicationDoseEvent *)self doseQuantity];
+      doseQuantity4 = [v5 doseQuantity];
+      v33 = [doseQuantity3 isEqual:doseQuantity4];
 
       if (!v33)
       {
@@ -375,25 +375,25 @@ void __241__HKMedicationDoseEvent__newMedicationDoseEventWithType_startDate_endD
       }
     }
 
-    v7 = [(HKMedicationDoseEvent *)self doseUnitString];
-    v34 = [v5 doseUnitString];
-    v9 = v34;
-    if (v7 == v34)
+    scheduleItemIdentifier = [(HKMedicationDoseEvent *)self doseUnitString];
+    doseUnitString = [v5 doseUnitString];
+    v9 = doseUnitString;
+    if (scheduleItemIdentifier == doseUnitString)
     {
     }
 
     else
     {
-      v35 = [v5 doseUnitString];
-      if (!v35)
+      doseUnitString2 = [v5 doseUnitString];
+      if (!doseUnitString2)
       {
         goto LABEL_34;
       }
 
-      v36 = v35;
-      v37 = [(HKMedicationDoseEvent *)self doseUnitString];
-      v38 = [v5 doseUnitString];
-      v39 = [v37 isEqual:v38];
+      v36 = doseUnitString2;
+      doseUnitString3 = [(HKMedicationDoseEvent *)self doseUnitString];
+      doseUnitString4 = [v5 doseUnitString];
+      v39 = [doseUnitString3 isEqual:doseUnitString4];
 
       if (!v39)
       {
@@ -401,18 +401,18 @@ void __241__HKMedicationDoseEvent__newMedicationDoseEventWithType_startDate_endD
       }
     }
 
-    v7 = [(HKMedicationDoseEvent *)self scheduledDate];
-    v40 = [v5 scheduledDate];
-    v9 = v40;
-    if (v7 == v40)
+    scheduleItemIdentifier = [(HKMedicationDoseEvent *)self scheduledDate];
+    scheduledDate = [v5 scheduledDate];
+    v9 = scheduledDate;
+    if (scheduleItemIdentifier == scheduledDate)
     {
 
 LABEL_39:
-      v47 = [(HKMedicationDoseEvent *)self logStatus];
-      if (v47 == [v5 logStatus])
+      logStatus = [(HKMedicationDoseEvent *)self logStatus];
+      if (logStatus == [v5 logStatus])
       {
-        v48 = [(HKMedicationDoseEvent *)self isLastScheduledDose];
-        v15 = v48 ^ [v5 isLastScheduledDose] ^ 1;
+        isLastScheduledDose = [(HKMedicationDoseEvent *)self isLastScheduledDose];
+        v15 = isLastScheduledDose ^ [v5 isLastScheduledDose] ^ 1;
         goto LABEL_36;
       }
 
@@ -423,13 +423,13 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    v41 = [v5 scheduledDate];
-    if (v41)
+    scheduledDate2 = [v5 scheduledDate];
+    if (scheduledDate2)
     {
-      v42 = v41;
-      v43 = [(HKMedicationDoseEvent *)self scheduledDate];
-      v44 = [v5 scheduledDate];
-      v45 = [v43 isEqual:v44];
+      v42 = scheduledDate2;
+      scheduledDate3 = [(HKMedicationDoseEvent *)self scheduledDate];
+      scheduledDate4 = [v5 scheduledDate];
+      v45 = [scheduledDate3 isEqual:scheduledDate4];
 
       if (!v45)
       {
@@ -450,45 +450,45 @@ LABEL_37:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_alloc(objc_opt_class()) _init];
-  v5 = [(HKSample *)self sampleType];
-  [v4 _setSampleType:v5];
+  _init = [objc_alloc(objc_opt_class()) _init];
+  sampleType = [(HKSample *)self sampleType];
+  [_init _setSampleType:sampleType];
 
-  v6 = [(HKSample *)self startDate];
-  [v4 _setStartDate:v6];
+  startDate = [(HKSample *)self startDate];
+  [_init _setStartDate:startDate];
 
-  v7 = [(HKSample *)self endDate];
-  [v4 _setEndDate:v7];
+  endDate = [(HKSample *)self endDate];
+  [_init _setEndDate:endDate];
 
-  [v4 _setLogOrigin:{-[HKMedicationDoseEvent logOrigin](self, "logOrigin")}];
-  [v4 _setLogStatus:{-[HKMedicationDoseEvent logStatus](self, "logStatus")}];
-  v8 = [(HKMedicationDoseEvent *)self medicationUUID];
-  [v4 _setMedicationUUID:v8];
+  [_init _setLogOrigin:{-[HKMedicationDoseEvent logOrigin](self, "logOrigin")}];
+  [_init _setLogStatus:{-[HKMedicationDoseEvent logStatus](self, "logStatus")}];
+  medicationUUID = [(HKMedicationDoseEvent *)self medicationUUID];
+  [_init _setMedicationUUID:medicationUUID];
 
-  v9 = [(HKMedicationDoseEvent *)self scheduleItemIdentifier];
-  [v4 _setScheduleItemIdentifier:v9];
+  scheduleItemIdentifier = [(HKMedicationDoseEvent *)self scheduleItemIdentifier];
+  [_init _setScheduleItemIdentifier:scheduleItemIdentifier];
 
-  v10 = [(HKMedicationDoseEvent *)self medicationIdentifier];
-  [v4 _setMedicationIdentifier:v10];
+  medicationIdentifier = [(HKMedicationDoseEvent *)self medicationIdentifier];
+  [_init _setMedicationIdentifier:medicationIdentifier];
 
-  v11 = [(HKMedicationDoseEvent *)self scheduledDoseQuantity];
-  [v4 _setScheduledDoseQuantity:v11];
+  scheduledDoseQuantity = [(HKMedicationDoseEvent *)self scheduledDoseQuantity];
+  [_init _setScheduledDoseQuantity:scheduledDoseQuantity];
 
-  v12 = [(HKMedicationDoseEvent *)self doseQuantity];
-  [v4 _setDoseQuantity:v12];
+  doseQuantity = [(HKMedicationDoseEvent *)self doseQuantity];
+  [_init _setDoseQuantity:doseQuantity];
 
-  v13 = [(HKMedicationDoseEvent *)self doseUnitString];
-  [v4 _setDoseUnitString:v13];
+  doseUnitString = [(HKMedicationDoseEvent *)self doseUnitString];
+  [_init _setDoseUnitString:doseUnitString];
 
-  v14 = [(HKMedicationDoseEvent *)self scheduledDate];
-  [v4 _setScheduledDate:v14];
+  scheduledDate = [(HKMedicationDoseEvent *)self scheduledDate];
+  [_init _setScheduledDate:scheduledDate];
 
-  v15 = [(HKMedicationDoseEvent *)self medicationConceptIdentifier];
-  [v4 _setMedicationConceptIdentifier:v15];
+  medicationConceptIdentifier = [(HKMedicationDoseEvent *)self medicationConceptIdentifier];
+  [_init _setMedicationConceptIdentifier:medicationConceptIdentifier];
 
-  return v4;
+  return _init;
 }
 
 - (HKUnit)unit
@@ -520,45 +520,45 @@ LABEL_37:
   return v4;
 }
 
-- (void)_setScheduleItemIdentifier:(id)a3
+- (void)_setScheduleItemIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   scheduleItemIdentifier = self->_scheduleItemIdentifier;
   self->_scheduleItemIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, scheduleItemIdentifier);
 }
 
-- (void)_setMedicationUUID:(id)a3
+- (void)_setMedicationUUID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   medicationUUID = self->_medicationUUID;
   self->_medicationUUID = v4;
 
   MEMORY[0x1EEE66BB8](v4, medicationUUID);
 }
 
-- (void)_setMedicationIdentifier:(id)a3
+- (void)_setMedicationIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   medicationIdentifier = self->_medicationIdentifier;
   self->_medicationIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, medicationIdentifier);
 }
 
-- (void)_setMedicationConceptIdentifier:(id)a3
+- (void)_setMedicationConceptIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   medicationConceptIdentifier = self->_medicationConceptIdentifier;
   self->_medicationConceptIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, medicationConceptIdentifier);
 }
 
-- (void)_setScheduledDate:(id)a3
+- (void)_setScheduledDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   scheduledDate = self->_scheduledDate;
   self->_scheduledDate = v4;
 
@@ -567,18 +567,18 @@ LABEL_37:
 
 - (BOOL)isLastScheduledDose
 {
-  v2 = [(HKObject *)self metadata];
-  v3 = [v2 objectForKeyedSubscript:@"_HKPrivateMetadataKeyIsLastScheduledDose"];
-  v4 = [v3 BOOLValue];
+  metadata = [(HKObject *)self metadata];
+  v3 = [metadata objectForKeyedSubscript:@"_HKPrivateMetadataKeyIsLastScheduledDose"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v10.receiver = self;
   v10.super_class = HKMedicationDoseEvent;
-  v5 = [(HKSample *)&v10 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKSample *)&v10 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {
@@ -600,21 +600,21 @@ LABEL_6:
   return v8;
 }
 
-+ (id)_metadataWithSyncIdentifier:(id)a3 syncVersion:(id)a4 isLastScheduledDose:(BOOL)a5
++ (id)_metadataWithSyncIdentifier:(id)identifier syncVersion:(id)version isLastScheduledDose:(BOOL)dose
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (dose)
   {
     v16[0] = @"HKMetadataKeySyncIdentifier";
     v16[1] = @"HKMetadataKeySyncVersion";
-    v17[0] = a3;
-    v17[1] = a4;
+    v17[0] = identifier;
+    v17[1] = version;
     v16[2] = @"_HKPrivateMetadataKeyIsLastScheduledDose";
     v6 = MEMORY[0x1E696AD98];
-    v7 = a4;
-    v8 = a3;
-    v9 = [v6 numberWithBool:1];
-    v17[2] = v9;
+    versionCopy = version;
+    versionCopy2 = identifier;
+    identifierCopy2 = [v6 numberWithBool:1];
+    v17[2] = identifierCopy2;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
   }
 
@@ -622,11 +622,11 @@ LABEL_6:
   {
     v14[0] = @"HKMetadataKeySyncIdentifier";
     v14[1] = @"HKMetadataKeySyncVersion";
-    v15[0] = a3;
-    v15[1] = a4;
+    v15[0] = identifier;
+    v15[1] = version;
     v11 = MEMORY[0x1E695DF20];
-    v8 = a4;
-    v9 = a3;
+    versionCopy2 = version;
+    identifierCopy2 = identifier;
     v10 = [v11 dictionaryWithObjects:v15 forKeys:v14 count:2];
   }
 
@@ -635,41 +635,41 @@ LABEL_6:
   return v10;
 }
 
-+ (id)medicationDoseEventWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 logOrigin:(int64_t)a8 scheduleItemIdentifier:(id)a9 medicationIdentifier:(id)a10 scheduledDoseQuantity:(double)a11 doseQuantity:(double)a12 scheduledDate:(id)a13 logStatus:(int64_t)a14 medicationUuid:(id)a15
++ (id)medicationDoseEventWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata logOrigin:(int64_t)origin scheduleItemIdentifier:(id)identifier medicationIdentifier:(id)self0 scheduledDoseQuantity:(double)self1 doseQuantity:(double)self2 scheduledDate:(id)self3 logStatus:(int64_t)self4 medicationUuid:(id)self5
 {
   v21 = MEMORY[0x1E696AD98];
-  v34 = a15;
-  v22 = a13;
-  v31 = a10;
-  v29 = a9;
-  v30 = a7;
-  v23 = a6;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
-  v33 = [v21 numberWithDouble:a11];
-  v27 = [MEMORY[0x1E696AD98] numberWithDouble:a12];
-  v37 = [a1 _newMedicationDoseEventWithType:v26 startDate:v25 endDate:v24 device:v23 metadata:v30 logOrigin:a8 scheduleItemIdentifier:v29 medicationUUID:v34 medicationIdentifier:v31 scheduledDoseQuantity:v33 doseQuantity:v27 scheduledDate:v22 logStatus:a14 doseUnitString:0 config:0];
+  uuidCopy = uuid;
+  scheduledDateCopy = scheduledDate;
+  medicationIdentifierCopy = medicationIdentifier;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  endDateCopy = endDate;
+  dateCopy = date;
+  typeCopy = type;
+  v33 = [v21 numberWithDouble:quantity];
+  v27 = [MEMORY[0x1E696AD98] numberWithDouble:doseQuantity];
+  v37 = [self _newMedicationDoseEventWithType:typeCopy startDate:dateCopy endDate:endDateCopy device:deviceCopy metadata:metadataCopy logOrigin:origin scheduleItemIdentifier:identifierCopy medicationUUID:uuidCopy medicationIdentifier:medicationIdentifierCopy scheduledDoseQuantity:v33 doseQuantity:v27 scheduledDate:scheduledDateCopy logStatus:status doseUnitString:0 config:0];
 
   return v37;
 }
 
-+ (id)medicationDoseEventWithType:(id)a3 startDate:(id)a4 endDate:(id)a5 device:(id)a6 metadata:(id)a7 logOrigin:(int64_t)a8 scheduleItemIdentifier:(id)a9 medicationIdentifier:(id)a10 scheduledDoseQuantity:(double)a11 doseQuantity:(double)a12 scheduledDate:(id)a13 logStatus:(int64_t)a14 medicationUuid:(id)a15 doseUnitString:(id)a16
++ (id)medicationDoseEventWithType:(id)type startDate:(id)date endDate:(id)endDate device:(id)device metadata:(id)metadata logOrigin:(int64_t)origin scheduleItemIdentifier:(id)identifier medicationIdentifier:(id)self0 scheduledDoseQuantity:(double)self1 doseQuantity:(double)self2 scheduledDate:(id)self3 logStatus:(int64_t)self4 medicationUuid:(id)self5 doseUnitString:(id)self6
 {
   v22 = MEMORY[0x1E696AD98];
-  v36 = a16;
-  v23 = a15;
-  v32 = a13;
-  v24 = a10;
-  v30 = a9;
-  v31 = a7;
-  v25 = a6;
-  v26 = a5;
-  v27 = a4;
-  v28 = a3;
-  v35 = [v22 numberWithDouble:a11];
-  v33 = [MEMORY[0x1E696AD98] numberWithDouble:a12];
-  v39 = [a1 _newMedicationDoseEventWithType:v28 startDate:v27 endDate:v26 device:v25 metadata:v31 logOrigin:a8 scheduleItemIdentifier:v30 medicationUUID:v23 medicationIdentifier:v24 scheduledDoseQuantity:v35 doseQuantity:v33 scheduledDate:v32 logStatus:a14 doseUnitString:v36 config:0];
+  stringCopy = string;
+  uuidCopy = uuid;
+  scheduledDateCopy = scheduledDate;
+  medicationIdentifierCopy = medicationIdentifier;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  endDateCopy = endDate;
+  dateCopy = date;
+  typeCopy = type;
+  v35 = [v22 numberWithDouble:quantity];
+  v33 = [MEMORY[0x1E696AD98] numberWithDouble:doseQuantity];
+  v39 = [self _newMedicationDoseEventWithType:typeCopy startDate:dateCopy endDate:endDateCopy device:deviceCopy metadata:metadataCopy logOrigin:origin scheduleItemIdentifier:identifierCopy medicationUUID:uuidCopy medicationIdentifier:medicationIdentifierCopy scheduledDoseQuantity:v35 doseQuantity:v33 scheduledDate:scheduledDateCopy logStatus:status doseUnitString:stringCopy config:0];
 
   return v39;
 }

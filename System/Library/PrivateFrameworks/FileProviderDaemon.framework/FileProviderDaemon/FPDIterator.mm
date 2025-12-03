@@ -1,70 +1,70 @@
 @interface FPDIterator
-+ (id)iteratorForLocator:(id)a3 manager:(id)a4;
-+ (id)iteratorForLocator:(id)a3 wantsDisk:(BOOL)a4 provider:(id)a5;
++ (id)iteratorForLocator:(id)locator manager:(id)manager;
++ (id)iteratorForLocator:(id)locator wantsDisk:(BOOL)disk provider:(id)provider;
 - (BOOL)done;
 - (id)nextItem;
-- (id)nextWithError:(id *)a3;
+- (id)nextWithError:(id *)error;
 - (unint64_t)numFoldersPopped;
 @end
 
 @implementation FPDIterator
 
-+ (id)iteratorForLocator:(id)a3 manager:(id)a4
++ (id)iteratorForLocator:(id)locator manager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isProviderItem] && (objc_msgSend(v5, "asFPItem"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "providerItemID"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  locatorCopy = locator;
+  managerCopy = manager;
+  if ([locatorCopy isProviderItem] && (objc_msgSend(locatorCopy, "asFPItem"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "providerItemID"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
-    v9 = [v5 asFPItem];
-    v10 = [v9 itemID];
-    v11 = [v10 providerID];
-    v12 = [v6 providerWithIdentifier:v11 reason:0];
+    asFPItem = [locatorCopy asFPItem];
+    itemID = [asFPItem itemID];
+    providerID = [itemID providerID];
+    fileURL = [managerCopy providerWithIdentifier:providerID reason:0];
 
-    v13 = [v12 asAppExtensionBackedProvider];
+    asAppExtensionBackedProvider = [fileURL asAppExtensionBackedProvider];
     v14 = [FPDItemIterator alloc];
-    v15 = [v5 asFPItem];
-    v16 = [(FPDItemIterator *)v14 initWithItem:v15 provider:v13];
+    asFPItem2 = [locatorCopy asFPItem];
+    v16 = [(FPDItemIterator *)v14 initWithItem:asFPItem2 provider:asAppExtensionBackedProvider];
   }
 
   else
   {
-    if ([v5 isProviderItem])
+    if ([locatorCopy isProviderItem])
     {
-      v17 = [v5 asFPItem];
-      v12 = [v17 fileURL];
+      asFPItem3 = [locatorCopy asFPItem];
+      fileURL = [asFPItem3 fileURL];
     }
 
     else
     {
-      v12 = [v5 asURL];
+      fileURL = [locatorCopy asURL];
     }
 
     v18 = [FPDDiskIterator alloc];
-    if ([v12 fp_isFolder])
+    if ([fileURL fp_isFolder])
     {
-      v19 = 1;
+      fp_isPackage = 1;
     }
 
     else
     {
-      v19 = [v12 fp_isPackage];
+      fp_isPackage = [fileURL fp_isPackage];
     }
 
-    v16 = [(FPDDiskIterator *)v18 initWithURL:v12 isDirectory:v19];
+    v16 = [(FPDDiskIterator *)v18 initWithURL:fileURL isDirectory:fp_isPackage];
   }
 
   return v16;
 }
 
-+ (id)iteratorForLocator:(id)a3 wantsDisk:(BOOL)a4 provider:(id)a5
++ (id)iteratorForLocator:(id)locator wantsDisk:(BOOL)disk provider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  if (![v7 isProviderItem])
+  diskCopy = disk;
+  locatorCopy = locator;
+  providerCopy = provider;
+  if (![locatorCopy isProviderItem])
   {
-    v13 = [v7 asURL];
-    if (!v13)
+    asURL = [locatorCopy asURL];
+    if (!asURL)
     {
       +[FPDIterator iteratorForLocator:wantsDisk:provider:];
     }
@@ -72,50 +72,50 @@
     goto LABEL_10;
   }
 
-  v9 = [v7 asFPItem];
-  v10 = [v9 providerItemID];
+  asFPItem = [locatorCopy asFPItem];
+  providerItemID = [asFPItem providerItemID];
 
-  if (!v10)
+  if (!providerItemID)
   {
     v11 = fp_current_or_default_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      [FPDIterator iteratorForLocator:v9 wantsDisk:v11 provider:?];
+      [FPDIterator iteratorForLocator:asFPItem wantsDisk:v11 provider:?];
     }
 
-    v6 = 1;
+    diskCopy = 1;
   }
 
-  v12 = [v9 fileURL];
-  v13 = v12;
-  if (v6 && v12)
+  fileURL = [asFPItem fileURL];
+  asURL = fileURL;
+  if (diskCopy && fileURL)
   {
 
 LABEL_10:
     v14 = [FPDDiskIterator alloc];
-    if ([v13 fp_isFolder])
+    if ([asURL fp_isFolder])
     {
-      v15 = 1;
+      fp_isPackage = 1;
     }
 
     else
     {
-      v15 = [v13 fp_isPackage];
+      fp_isPackage = [asURL fp_isPackage];
     }
 
-    v16 = [(FPDDiskIterator *)v14 initWithURL:v13 isDirectory:v15];
+    v16 = [(FPDDiskIterator *)v14 initWithURL:asURL isDirectory:fp_isPackage];
     goto LABEL_15;
   }
 
-  v17 = [v8 asAppExtensionBackedProvider];
-  v16 = [[FPDItemIterator alloc] initWithItem:v9 provider:v17];
+  asAppExtensionBackedProvider = [providerCopy asAppExtensionBackedProvider];
+  v16 = [[FPDItemIterator alloc] initWithItem:asFPItem provider:asAppExtensionBackedProvider];
 
 LABEL_15:
 
   return v16;
 }
 
-- (id)nextWithError:(id *)a3
+- (id)nextWithError:(id *)error
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ UNREACHABLE: missing override"];

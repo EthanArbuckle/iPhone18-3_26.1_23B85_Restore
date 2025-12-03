@@ -1,27 +1,27 @@
 @interface BWInferenceSynchronizerNode
 + (void)initialize;
-- (BWInferenceSynchronizerNode)initWithIndexOfInputProvidingOutputSampleBuffer:(int)a3 indexOfInputProvidingPreferredInferences:(int)a4 errorHandlingModel:(unsigned __int16)a5;
+- (BWInferenceSynchronizerNode)initWithIndexOfInputProvidingOutputSampleBuffer:(int)buffer indexOfInputProvidingPreferredInferences:(int)inferences errorHandlingModel:(unsigned __int16)model;
 - (BWNodeInput)inputProvidingOnlyInferences;
 - (BWNodeInput)inputProvidingOutputSampleBuffer;
 - (BWNodeInput)inputProvidingPreferredInferences;
-- (uint64_t)_synchronizedBufferFromQueue:(int)a3 withIdentifier:(uint64_t)a4 andPortType:;
+- (uint64_t)_synchronizedBufferFromQueue:(int)queue withIdentifier:(uint64_t)identifier andPortType:;
 - (void)_attemptBufferOrErrorEmission;
-- (void)_mergeInferencesForPreferredInferencesSampleBuffer:(CMAttachmentBearerRef)a3 otherSampleBuffer:(CMAttachmentBearerRef)a4 attachingSampleBuffer:(int)a5 synchronizesTopLevelAttachments:(void *)a6 attachedMediaKeysToSkip:;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_mergeInferencesForPreferredInferencesSampleBuffer:(CMAttachmentBearerRef)buffer otherSampleBuffer:(CMAttachmentBearerRef)sampleBuffer attachingSampleBuffer:(int)attachingSampleBuffer synchronizesTopLevelAttachments:(void *)attachments attachedMediaKeysToSkip:;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWInferenceSynchronizerNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -30,7 +30,7 @@
   }
 }
 
-- (BWInferenceSynchronizerNode)initWithIndexOfInputProvidingOutputSampleBuffer:(int)a3 indexOfInputProvidingPreferredInferences:(int)a4 errorHandlingModel:(unsigned __int16)a5
+- (BWInferenceSynchronizerNode)initWithIndexOfInputProvidingOutputSampleBuffer:(int)buffer indexOfInputProvidingPreferredInferences:(int)inferences errorHandlingModel:(unsigned __int16)model
 {
   v23.receiver = self;
   v23.super_class = BWInferenceSynchronizerNode;
@@ -41,10 +41,10 @@
     v10 = 1;
     [(BWNode *)v8 setSupportsLiveReconfiguration:1];
     v9->_mostRecentEmittedCaptureIdentifierByPortType = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v9->_indexOfInputProvidingOutputSampleBuffer = a3;
-    v9->_indexOfInputProvidingOnlyInferences = a3 == 0;
-    v9->_indexOfInputProvidingPreferredInferences = a4;
-    v9->_errorHandlingModel = a5;
+    v9->_indexOfInputProvidingOutputSampleBuffer = buffer;
+    v9->_indexOfInputProvidingOnlyInferences = buffer == 0;
+    v9->_indexOfInputProvidingPreferredInferences = inferences;
+    v9->_errorHandlingModel = model;
     [(BWNode *)v9 setSupportsConcurrentLiveInputCallbacks:1];
     v9->_bufferServicingLock._os_unfair_lock_opaque = 0;
     v11 = 0;
@@ -53,9 +53,9 @@
     {
       v12 = v10;
       v13 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v9 index:v11];
-      v14 = [(BWNodeInput *)v13 primaryMediaConfiguration];
-      [(BWNodeInputMediaConfiguration *)v14 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
-      [(BWNodeInputMediaConfiguration *)v14 setPassthroughMode:v11 == v9->_indexOfInputProvidingOutputSampleBuffer];
+      primaryMediaConfiguration = [(BWNodeInput *)v13 primaryMediaConfiguration];
+      [(BWNodeInputMediaConfiguration *)primaryMediaConfiguration setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
+      [(BWNodeInputMediaConfiguration *)primaryMediaConfiguration setPassthroughMode:v11 == v9->_indexOfInputProvidingOutputSampleBuffer];
       v15 = objc_alloc_init(BWNodeInputMediaConfiguration);
       [(BWNodeInputMediaConfiguration *)v15 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
       [(BWNodeInputMediaConfiguration *)v15 setPassthroughMode:1];
@@ -71,12 +71,12 @@
 
     while ((v12 & 1) != 0);
     v17 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v9];
-    v18 = [(BWNodeOutput *)v17 primaryMediaConfiguration];
-    [(BWNodeOutputMediaConfiguration *)v18 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
-    [(BWNodeOutputMediaConfiguration *)v18 setPassthroughMode:1];
+    primaryMediaConfiguration2 = [(BWNodeOutput *)v17 primaryMediaConfiguration];
+    [(BWNodeOutputMediaConfiguration *)primaryMediaConfiguration2 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
+    [(BWNodeOutputMediaConfiguration *)primaryMediaConfiguration2 setPassthroughMode:1];
     v22[0] = [MEMORY[0x1E696AD98] numberWithInt:v9->_indexOfInputProvidingOutputSampleBuffer];
     v22[1] = [MEMORY[0x1E696AD98] numberWithInt:v9->_indexOfInputProvidingOnlyInferences];
-    -[BWNodeOutputMediaConfiguration setIndexesOfInputsWhichDrivesThisOutput:](v18, "setIndexesOfInputsWhichDrivesThisOutput:", [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2]);
+    -[BWNodeOutputMediaConfiguration setIndexesOfInputsWhichDrivesThisOutput:](primaryMediaConfiguration2, "setIndexesOfInputsWhichDrivesThisOutput:", [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2]);
     v19 = objc_alloc_init(BWNodeOutputMediaConfiguration);
     [(BWNodeOutputMediaConfiguration *)v19 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [(BWNodeOutputMediaConfiguration *)v19 setPassthroughMode:1];
@@ -111,44 +111,44 @@
 
 - (BWNodeInput)inputProvidingOutputSampleBuffer
 {
-  v3 = [(BWNode *)self inputs];
+  inputs = [(BWNode *)self inputs];
   indexOfInputProvidingOutputSampleBuffer = self->_indexOfInputProvidingOutputSampleBuffer;
 
-  return [(NSArray *)v3 objectAtIndexedSubscript:indexOfInputProvidingOutputSampleBuffer];
+  return [(NSArray *)inputs objectAtIndexedSubscript:indexOfInputProvidingOutputSampleBuffer];
 }
 
 - (BWNodeInput)inputProvidingPreferredInferences
 {
-  v3 = [(BWNode *)self inputs];
+  inputs = [(BWNode *)self inputs];
   indexOfInputProvidingPreferredInferences = self->_indexOfInputProvidingPreferredInferences;
 
-  return [(NSArray *)v3 objectAtIndexedSubscript:indexOfInputProvidingPreferredInferences];
+  return [(NSArray *)inputs objectAtIndexedSubscript:indexOfInputProvidingPreferredInferences];
 }
 
 - (BWNodeInput)inputProvidingOnlyInferences
 {
-  v3 = [(BWNode *)self inputs];
+  inputs = [(BWNode *)self inputs];
   indexOfInputProvidingOnlyInferences = self->_indexOfInputProvidingOnlyInferences;
 
-  return [(NSArray *)v3 objectAtIndexedSubscript:indexOfInputProvidingOnlyInferences];
+  return [(NSArray *)inputs objectAtIndexedSubscript:indexOfInputProvidingOnlyInferences];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  v8 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:a5, a4];
-  if (!v8)
+  input = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:key, input];
+  if (!input)
   {
-    v8 = objc_alloc_init(BWNodeOutputMediaProperties);
-    [(BWNodeOutput *)self->super._output _setMediaProperties:v8 forAttachedMediaKey:a5];
+    input = objc_alloc_init(BWNodeOutputMediaProperties);
+    [(BWNodeOutput *)self->super._output _setMediaProperties:input forAttachedMediaKey:key];
   }
 
-  [(BWNodeOutputMediaProperties *)v8 setResolvedFormat:a3];
+  [(BWNodeOutputMediaProperties *)input setResolvedFormat:format];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  self->_contexts[[a5 index]].inputIsLive = 1;
+  self->_contexts[[input index]].inputIsLive = 1;
   if (self->_contexts[0].inputIsLive && self->_contexts[1].inputIsLive)
   {
     [(BWNodeOutput *)self->super._output makeConfiguredFormatLive];
@@ -157,46 +157,46 @@
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  self->_contexts[[a4 index]].inputIsLive = 0;
+  self->_contexts[[input index]].inputIsLive = 0;
   if (!self->_contexts[0].inputIsLive && !self->_contexts[1].inputIsLive)
   {
-    [(BWNodeOutput *)self->super._output markEndOfLiveOutputForConfigurationID:a3];
+    [(BWNodeOutput *)self->super._output markEndOfLiveOutputForConfigurationID:d];
   }
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   synchronizeInferencesResolver = self->_synchronizeInferencesResolver;
-  if (!synchronizeInferencesResolver || (synchronizeInferencesResolver[2](synchronizeInferencesResolver, a3) & 1) != 0)
+  if (!synchronizeInferencesResolver || (synchronizeInferencesResolver[2](synchronizeInferencesResolver, buffer) & 1) != 0)
   {
-    v9 = &self->_contexts[[a4 index]];
+    v9 = &self->_contexts[[input index]];
     v10 = *off_1E798A3C8;
-    v11 = [CMGetAttachment(a3 *off_1E798A3C8];
-    v12 = [CMGetAttachment(a3 v10];
+    v11 = [CMGetAttachment(buffer *off_1E798A3C8];
+    v12 = [CMGetAttachment(buffer v10];
     if (v12)
     {
-      v13 = [v12 intValue];
+      intValue = [v12 intValue];
     }
 
     else
     {
-      CMSampleBufferGetPresentationTimeStamp(&time, a3);
-      v13 = round(CMTimeGetSeconds(&time) * 1000.0);
+      CMSampleBufferGetPresentationTimeStamp(&time, buffer);
+      intValue = round(CMTimeGetSeconds(&time) * 1000.0);
     }
 
-    v14 = v13;
+    v14 = intValue;
     os_unfair_lock_lock(&self->_bufferServicingLock);
     v15 = [-[NSMutableDictionary objectForKeyedSubscript:](v9->numberOfWraparoundsByPortType objectForKeyedSubscript:{v11), "intValue"}];
     v16 = v15 + (([-[NSMutableDictionary objectForKeyedSubscript:](v9->mostRecentCaptureIdentifierByPortType objectForKeyedSubscript:{v11), "intValue"}] > v14) & ~self->_allowOutOfOrderInputs);
     -[NSMutableDictionary setObject:forKeyedSubscript:](v9->numberOfWraparoundsByPortType, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:v16], v11);
     -[NSMutableDictionary setObject:forKeyedSubscript:](v9->mostRecentCaptureIdentifierByPortType, "setObject:forKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:v14], v11);
-    CMSetAttachment(a3, @"ExtendedCaptureID", [MEMORY[0x1E696AD98] numberWithInt:v14 | (v16 << 12)], 0);
-    [(NSMutableArray *)v9->bufferQueue addObject:a3];
+    CMSetAttachment(buffer, @"ExtendedCaptureID", [MEMORY[0x1E696AD98] numberWithInt:v14 | (v16 << 12)], 0);
+    [(NSMutableArray *)v9->bufferQueue addObject:buffer];
     [(BWInferenceSynchronizerNode *)self _attemptBufferOrErrorEmission];
     os_unfair_lock_unlock(&self->_bufferServicingLock);
   }
@@ -212,31 +212,31 @@
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    if ([a4 index] == self->_indexOfInputProvidingOutputSampleBuffer)
+    if ([input index] == self->_indexOfInputProvidingOutputSampleBuffer)
     {
-      [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+      [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
     }
   }
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
-  v7 = [(BWNode *)self output];
+  output = [(BWNode *)self output];
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  v8 = [(BWInferenceSynchronizerNode *)self errorHandlingModel];
-  if (v8 == 1)
+  errorHandlingModel = [(BWInferenceSynchronizerNode *)self errorHandlingModel];
+  if (errorHandlingModel == 1)
   {
     goto LABEL_9;
   }
 
-  if (v8)
+  if (errorHandlingModel)
   {
     goto LABEL_10;
   }
 
-  if ([a3 errorCode] == -16800 || objc_msgSend(a3, "errorCode") == -16802 || objc_msgSend(a3, "errorCode") == -16806)
+  if ([error errorCode] == -16800 || objc_msgSend(error, "errorCode") == -16802 || objc_msgSend(error, "errorCode") == -16806)
   {
-    if ([objc_msgSend(objc_msgSend(a3 "stillImageSettings")] != 11 || objc_msgSend(a4, "index") == self->_indexOfInputProvidingOutputSampleBuffer)
+    if ([objc_msgSend(objc_msgSend(error "stillImageSettings")] != 11 || objc_msgSend(input, "index") == self->_indexOfInputProvidingOutputSampleBuffer)
     {
       [(NSMutableArray *)self->_contexts[0].bufferQueue removeAllObjects];
 
@@ -245,13 +245,13 @@
 
       self->_contexts[1].mostRecentError = 0;
 LABEL_9:
-      [(BWNodeOutput *)v7 emitNodeError:a3];
+      [(BWNodeOutput *)output emitNodeError:error];
     }
   }
 
   else
   {
-    [(BWInferenceSynchronizerNode *)a4 handleNodeError:v7 forInput:a3];
+    [(BWInferenceSynchronizerNode *)input handleNodeError:output forInput:error];
   }
 
 LABEL_10:
@@ -259,25 +259,25 @@ LABEL_10:
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  if ([a4 index] == self->_indexOfInputProvidingOutputSampleBuffer)
+  if ([input index] == self->_indexOfInputProvidingOutputSampleBuffer)
   {
     os_unfair_lock_lock(&self->_bufferServicingLock);
-    [(BWNodeOutput *)[(BWNode *)self output] emitDroppedSample:a3];
+    [(BWNodeOutput *)[(BWNode *)self output] emitDroppedSample:sample];
 
     os_unfair_lock_unlock(&self->_bufferServicingLock);
   }
 }
 
-- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3 forInput:(id)a4
+- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number forInput:(id)input
 {
-  v4 = *&a3;
-  if ([a4 index] == self->_indexOfInputProvidingOutputSampleBuffer)
+  v4 = *&number;
+  if ([input index] == self->_indexOfInputProvidingOutputSampleBuffer)
   {
-    v6 = [(BWNode *)self output];
+    output = [(BWNode *)self output];
 
-    [(BWNodeOutput *)v6 emitStillImageReferenceFrameBracketedCaptureSequenceNumberMessageWithSequenceNumber:v4];
+    [(BWNodeOutput *)output emitStillImageReferenceFrameBracketedCaptureSequenceNumberMessageWithSequenceNumber:v4];
   }
 }
 
@@ -310,16 +310,16 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
 
 - (void)_attemptBufferOrErrorEmission
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 output];
-    v42 = (a1 + 152 + 40 * *(a1 + 136));
+    output = [self output];
+    v42 = (self + 152 + 40 * *(self + 136));
     v3 = *v42;
     v43 = v42[1];
-    v4 = a1 + 152 + 40 * *(a1 + 140);
+    v4 = self + 152 + 40 * *(self + 140);
     v5 = *v4;
     v6 = *(v4 + 8);
-    v46 = v2;
+    v46 = output;
     v47 = v4;
     v49 = v6;
     v7 = 0;
@@ -331,21 +331,21 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
       v48 = v3;
       do
       {
-        v8 = [v3 firstObject];
-        v9 = CMGetAttachment(v8, key, 0);
-        v10 = [CMGetAttachment(v8 @"ExtendedCaptureID"];
+        firstObject = [v3 firstObject];
+        v9 = CMGetAttachment(firstObject, key, 0);
+        v10 = [CMGetAttachment(firstObject @"ExtendedCaptureID"];
         v11 = [v9 objectForKeyedSubscript:v44];
         v12 = [v3 count];
-        v13 = *(a1 + 236);
-        v14 = [(BWInferenceSynchronizerNode *)a1 _synchronizedBufferFromQueue:v5 withIdentifier:v10 andPortType:v11];
+        v13 = *(self + 236);
+        v14 = [(BWInferenceSynchronizerNode *)self _synchronizedBufferFromQueue:v5 withIdentifier:v10 andPortType:v11];
         v50 = v11;
         if (v14)
         {
-          v27 = *(a1 + 136);
-          v28 = *(a1 + 144);
+          v27 = *(self + 136);
+          v28 = *(self + 144);
           if (v27 == v28)
           {
-            v29 = v8;
+            v29 = firstObject;
           }
 
           else
@@ -361,10 +361,10 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
 
           else
           {
-            v30 = v8;
+            v30 = firstObject;
           }
 
-          -[BWInferenceSynchronizerNode _mergeInferencesForPreferredInferencesSampleBuffer:otherSampleBuffer:attachingSampleBuffer:synchronizesTopLevelAttachments:attachedMediaKeysToSkip:](a1, v29, v30, v8, [a1 synchronizesTopLevelAttachments], *(a1 + 248));
+          -[BWInferenceSynchronizerNode _mergeInferencesForPreferredInferencesSampleBuffer:otherSampleBuffer:attachingSampleBuffer:synchronizesTopLevelAttachments:attachedMediaKeysToSkip:](self, v29, v30, firstObject, [self synchronizesTopLevelAttachments], *(self + 248));
           v18 = 0;
           v3 = v48;
         }
@@ -382,7 +382,7 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
           }
         }
 
-        if (!*(a1 + 238) && dword_1EB58E3A0)
+        if (!*(self + 238) && dword_1EB58E3A0)
         {
           v69 = 0;
           v68 = OS_LOG_TYPE_DEFAULT;
@@ -402,12 +402,12 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
           {
             HIDWORD(v40) = v15 != 0;
             v24 = v12 >= v13;
-            v25 = [a1 name];
-            v26 = BWStillImageCaptureIDForSampleBuffer(v8);
+            name = [self name];
+            v26 = BWStillImageCaptureIDForSampleBuffer(firstObject);
             v52 = 136316930;
             v53 = "[BWInferenceSynchronizerNode _attemptBufferOrErrorEmission]";
             v54 = 2112;
-            v55 = v25;
+            v55 = name;
             v56 = 2050;
             v57 = v26;
             v58 = 1026;
@@ -429,15 +429,15 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
           v3 = v48;
         }
 
-        CMRemoveAttachment(v8, @"ExtendedCaptureID");
-        [v46 emitSampleBuffer:v8];
-        [v3 removeObject:v8];
+        CMRemoveAttachment(firstObject, @"ExtendedCaptureID");
+        [v46 emitSampleBuffer:firstObject];
+        [v3 removeObject:firstObject];
         if (v15)
         {
           [v5 removeObject:v15];
         }
 
-        [*(a1 + 128) setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v10, v39, v40), v50}];
+        [*(self + 128) setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v10, v39, v40), v50}];
         v7 = 1;
       }
 
@@ -478,10 +478,10 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
       v35 = *off_1E798B540;
       do
       {
-        v36 = [v5 firstObject];
-        v37 = [objc_msgSend(*(a1 + v31[376]) objectForKeyedSubscript:{objc_msgSend(CMGetAttachment(v36, v34, 0), "objectForKeyedSubscript:", v35)), "intValue"}];
-        v38 = [CMGetAttachment(v36 @"ExtendedCaptureID"];
-        if (*(a1 + 256))
+        firstObject2 = [v5 firstObject];
+        v37 = [objc_msgSend(*(self + v31[376]) objectForKeyedSubscript:{objc_msgSend(CMGetAttachment(firstObject2, v34, 0), "objectForKeyedSubscript:", v35)), "intValue"}];
+        v38 = [CMGetAttachment(firstObject2 @"ExtendedCaptureID"];
+        if (*(self + 256))
         {
           break;
         }
@@ -491,7 +491,7 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
           break;
         }
 
-        [v5 removeObject:v36];
+        [v5 removeObject:firstObject2];
       }
 
       while ([v5 count]);
@@ -506,7 +506,7 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
   }
 }
 
-- (uint64_t)_synchronizedBufferFromQueue:(int)a3 withIdentifier:(uint64_t)a4 andPortType:
+- (uint64_t)_synchronizedBufferFromQueue:(int)queue withIdentifier:(uint64_t)identifier andPortType:
 {
   if (result)
   {
@@ -514,8 +514,8 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
     v6[1] = 3221225472;
     v6[2] = __87__BWInferenceSynchronizerNode__synchronizedBufferFromQueue_withIdentifier_andPortType___block_invoke;
     v6[3] = &unk_1E7991F20;
-    v7 = a3;
-    v6[4] = a4;
+    queueCopy = queue;
+    v6[4] = identifier;
     v5 = [a2 indexOfObjectPassingTest:v6];
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -531,9 +531,9 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
   return result;
 }
 
-- (void)_mergeInferencesForPreferredInferencesSampleBuffer:(CMAttachmentBearerRef)a3 otherSampleBuffer:(CMAttachmentBearerRef)a4 attachingSampleBuffer:(int)a5 synchronizesTopLevelAttachments:(void *)a6 attachedMediaKeysToSkip:
+- (void)_mergeInferencesForPreferredInferencesSampleBuffer:(CMAttachmentBearerRef)buffer otherSampleBuffer:(CMAttachmentBearerRef)sampleBuffer attachingSampleBuffer:(int)attachingSampleBuffer synchronizesTopLevelAttachments:(void *)attachments attachedMediaKeysToSkip:
 {
-  if (a1)
+  if (self)
   {
     v11 = CMGetAttachment(target, @"Inferences", 0);
     v12 = MEMORY[0x1E695E0F8];
@@ -547,7 +547,7 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
       v13 = MEMORY[0x1E695E0F8];
     }
 
-    v14 = CMGetAttachment(a3, @"Inferences", 0);
+    v14 = CMGetAttachment(buffer, @"Inferences", 0);
     if (v14)
     {
       v15 = v14;
@@ -560,7 +560,7 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
 
     v16 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v15];
     [v16 addEntriesFromDictionary:v13];
-    CMSetAttachment(a4, @"Inferences", v16, 1u);
+    CMSetAttachment(sampleBuffer, @"Inferences", v16, 1u);
     v17 = BWSampleBufferCopyDictionaryOfAttachedMedia(target);
     if (v17)
     {
@@ -572,7 +572,7 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
       v18 = v12;
     }
 
-    v19 = BWSampleBufferCopyDictionaryOfAttachedMedia(a3);
+    v19 = BWSampleBufferCopyDictionaryOfAttachedMedia(buffer);
     if (v19)
     {
       v20 = v19;
@@ -600,10 +600,10 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
           }
 
           v34 = *(8 * i);
-          v35 = [a6 containsObject:v34];
+          v35 = [attachments containsObject:v34];
           if ((v35 & 1) == 0)
           {
-            BWSampleBufferSetAttachedMedia(a4, v34, [v21 objectForKeyedSubscript:v34]);
+            BWSampleBufferSetAttachedMedia(sampleBuffer, v34, [v21 objectForKeyedSubscript:v34]);
           }
         }
 
@@ -613,23 +613,23 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
       while (v31);
     }
 
-    if (a4 != target)
+    if (sampleBuffer != target)
     {
       BWSampleBufferRemoveAllAttachedMedia(target);
     }
 
-    if (a4 != a3)
+    if (sampleBuffer != buffer)
     {
-      BWSampleBufferRemoveAllAttachedMedia(a3);
+      BWSampleBufferRemoveAllAttachedMedia(buffer);
     }
 
-    if (a5)
+    if (attachingSampleBuffer)
     {
       v43 = *MEMORY[0x1E695E480];
       v44 = CMCopyDictionaryOfAttachments(*MEMORY[0x1E695E480], target, 1u);
-      v45 = CMCopyDictionaryOfAttachments(v43, a3, 1u);
+      v45 = CMCopyDictionaryOfAttachments(v43, buffer, 1u);
       v46 = v45;
-      if (a4 == target)
+      if (sampleBuffer == target)
       {
         v47 = v44;
       }
@@ -667,10 +667,10 @@ BOOL __60__BWInferenceSynchronizerNode__attemptBufferOrErrorEmission__block_invo
               v73 = CMGetAttachment(target, v64, 0);
               if (!v73)
               {
-                v73 = CMGetAttachment(a3, v64, 0);
+                v73 = CMGetAttachment(buffer, v64, 0);
               }
 
-              CMSetAttachment(a4, v64, v73, 1u);
+              CMSetAttachment(sampleBuffer, v64, v73, 1u);
             }
           }
 

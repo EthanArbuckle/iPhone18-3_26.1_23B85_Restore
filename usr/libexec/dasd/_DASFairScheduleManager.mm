@@ -1,9 +1,9 @@
 @interface _DASFairScheduleManager
 - (_DASFairScheduleManager)init;
-- (int64_t)compareActivity:(id)a3 withActivity:(id)a4;
-- (int64_t)dynamicRuntimeCompareActivity:(id)a3 withActivity:(id)a4;
-- (void)activityStarted:(id)a3;
-- (void)handleActivityEnd:(id)a3 withLoggingReason:(id)a4;
+- (int64_t)compareActivity:(id)activity withActivity:(id)withActivity;
+- (int64_t)dynamicRuntimeCompareActivity:(id)activity withActivity:(id)withActivity;
+- (void)activityStarted:(id)started;
+- (void)handleActivityEnd:(id)end withLoggingReason:(id)reason;
 - (void)handleTimerFired;
 - (void)loadFSMFromDefaults;
 - (void)reset;
@@ -157,43 +157,43 @@
   objc_sync_exit(obj);
 }
 
-- (int64_t)dynamicRuntimeCompareActivity:(id)a3 withActivity:(id)a4
+- (int64_t)dynamicRuntimeCompareActivity:(id)activity withActivity:(id)withActivity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 name];
-  v9 = [v7 name];
-  [(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator remainingAllocatedRuntimeForActivity:v6];
+  activityCopy = activity;
+  withActivityCopy = withActivity;
+  name = [activityCopy name];
+  name2 = [withActivityCopy name];
+  [(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator remainingAllocatedRuntimeForActivity:activityCopy];
   v11 = v10;
-  [(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator remainingAllocatedRuntimeForActivity:v7];
+  [(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator remainingAllocatedRuntimeForActivity:withActivityCopy];
   v13 = v12;
-  v14 = [(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isRuntimeAllocatedForActivity:v6];
-  v15 = [(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isRuntimeAllocatedForActivity:v7];
+  v14 = [(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isRuntimeAllocatedForActivity:activityCopy];
+  v15 = [(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isRuntimeAllocatedForActivity:withActivityCopy];
   if (v13 > 0.0 || v11 <= 0.0)
   {
-    if ((v11 > 0.0 || v13 <= 0.0) && (!v14 || v11 >= [v6 uninterruptibleDuration] || v13 < objc_msgSend(v7, "uninterruptibleDuration")))
+    if ((v11 > 0.0 || v13 <= 0.0) && (!v14 || v11 >= [activityCopy uninterruptibleDuration] || v13 < objc_msgSend(withActivityCopy, "uninterruptibleDuration")))
     {
-      if (v15 && v13 < [v7 uninterruptibleDuration] && v11 >= objc_msgSend(v6, "uninterruptibleDuration"))
+      if (v15 && v13 < [withActivityCopy uninterruptibleDuration] && v11 >= objc_msgSend(activityCopy, "uninterruptibleDuration"))
       {
         goto LABEL_3;
       }
 
-      v18 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:v8];
+      v18 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:name];
 
       v19 = 0.0;
       v20 = 0.0;
       if (v18)
       {
-        v21 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:v8];
+        v21 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:name];
         [v21 doubleValue];
         v20 = v22;
       }
 
-      v23 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:v9];
+      v23 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:name2];
 
       if (v23)
       {
-        v24 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:v9];
+        v24 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:name2];
         [v24 doubleValue];
         v19 = v25;
       }
@@ -205,15 +205,15 @@
 
       if (v20 <= v19)
       {
-        v26 = [v6 uninterruptibleDuration];
-        if (v26 <= [v7 uninterruptibleDuration])
+        uninterruptibleDuration = [activityCopy uninterruptibleDuration];
+        if (uninterruptibleDuration <= [withActivityCopy uninterruptibleDuration])
         {
-          v27 = [v6 uninterruptibleDuration];
-          if (v27 >= [v7 uninterruptibleDuration])
+          uninterruptibleDuration2 = [activityCopy uninterruptibleDuration];
+          if (uninterruptibleDuration2 >= [withActivityCopy uninterruptibleDuration])
           {
-            v28 = [v6 startBefore];
-            v29 = [v7 startBefore];
-            v16 = [v28 compare:v29];
+            startBefore = [activityCopy startBefore];
+            startBefore2 = [withActivityCopy startBefore];
+            v16 = [startBefore compare:startBefore2];
 
             goto LABEL_7;
           }
@@ -234,31 +234,31 @@ LABEL_7:
   return v16;
 }
 
-- (int64_t)compareActivity:(id)a3 withActivity:(id)a4
+- (int64_t)compareActivity:(id)activity withActivity:(id)withActivity
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  withActivityCopy = withActivity;
   v8 = self->_activityToDuration;
   objc_sync_enter(v8);
-  v9 = [v6 name];
-  v10 = [v7 name];
-  if ([v6 requiresPlugin] && (objc_msgSend(v7, "requiresPlugin") & 1) == 0)
+  name = [activityCopy name];
+  name2 = [withActivityCopy name];
+  if ([activityCopy requiresPlugin] && (objc_msgSend(withActivityCopy, "requiresPlugin") & 1) == 0)
   {
     goto LABEL_14;
   }
 
-  if ([v7 requiresPlugin] && !objc_msgSend(v6, "requiresPlugin"))
+  if ([withActivityCopy requiresPlugin] && !objc_msgSend(activityCopy, "requiresPlugin"))
   {
     goto LABEL_16;
   }
 
   if (![(_DASDynamicRuntimeAllocator *)self->_dynamicRuntimeAllocator isEngaged])
   {
-    v12 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:v9];
+    v12 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:name];
 
     if (v12)
     {
-      v13 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:v9];
+      v13 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:name];
       [v13 doubleValue];
       v15 = v14;
     }
@@ -268,11 +268,11 @@ LABEL_7:
       v15 = 0.0;
     }
 
-    v16 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:v10];
+    v16 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:name2];
 
     if (v16)
     {
-      v17 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:v10];
+      v17 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:name2];
       [v17 doubleValue];
       v19 = v18;
     }
@@ -294,46 +294,46 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    [v6 interval];
+    [activityCopy interval];
     v22 = v21;
-    [v7 interval];
+    [withActivityCopy interval];
     if (v22 <= v23)
     {
-      [v6 interval];
+      [activityCopy interval];
       v25 = v24;
-      [v7 interval];
+      [withActivityCopy interval];
       if (v25 < v26)
       {
         goto LABEL_16;
       }
 
-      v27 = [v6 schedulingPriority];
-      if (v27 <= [v7 schedulingPriority])
+      schedulingPriority = [activityCopy schedulingPriority];
+      if (schedulingPriority <= [withActivityCopy schedulingPriority])
       {
-        v28 = [v6 schedulingPriority];
-        if (v28 < [v7 schedulingPriority])
+        schedulingPriority2 = [activityCopy schedulingPriority];
+        if (schedulingPriority2 < [withActivityCopy schedulingPriority])
         {
           goto LABEL_16;
         }
 
-        v29 = [v6 staticPriority];
-        if (v29 >= [v7 staticPriority])
+        staticPriority = [activityCopy staticPriority];
+        if (staticPriority >= [withActivityCopy staticPriority])
         {
-          v30 = [v6 staticPriority];
-          if (v30 > [v7 staticPriority])
+          staticPriority2 = [activityCopy staticPriority];
+          if (staticPriority2 > [withActivityCopy staticPriority])
           {
             goto LABEL_16;
           }
 
-          v31 = [v6 maximumRuntime];
-          if (v31 >= [v7 maximumRuntime])
+          maximumRuntime = [activityCopy maximumRuntime];
+          if (maximumRuntime >= [withActivityCopy maximumRuntime])
           {
-            v32 = [v6 maximumRuntime];
-            if (v32 <= [v7 maximumRuntime])
+            maximumRuntime2 = [activityCopy maximumRuntime];
+            if (maximumRuntime2 <= [withActivityCopy maximumRuntime])
             {
-              v33 = [v6 startBefore];
-              v34 = [v7 startBefore];
-              v11 = [v33 compare:v34];
+              startBefore = [activityCopy startBefore];
+              startBefore2 = [withActivityCopy startBefore];
+              v11 = [startBefore compare:startBefore2];
 
               goto LABEL_17;
             }
@@ -349,40 +349,40 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v11 = [(_DASFairScheduleManager *)self dynamicRuntimeCompareActivity:v6 withActivity:v7];
+  v11 = [(_DASFairScheduleManager *)self dynamicRuntimeCompareActivity:activityCopy withActivity:withActivityCopy];
 LABEL_17:
 
   objc_sync_exit(v8);
   return v11;
 }
 
-- (void)handleActivityEnd:(id)a3 withLoggingReason:(id)a4
+- (void)handleActivityEnd:(id)end withLoggingReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  endCopy = end;
+  reasonCopy = reason;
   v8 = self->_activityToDuration;
   objc_sync_enter(v8);
-  v9 = [v6 name];
-  v10 = [v6 startDate];
-  [v10 timeIntervalSinceNow];
+  name = [endCopy name];
+  startDate = [endCopy startDate];
+  [startDate timeIntervalSinceNow];
   v12 = v11;
 
-  v13 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:v9];
+  v13 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:name];
   [v13 doubleValue];
   v15 = v14 - v12;
 
   v16 = [NSNumber numberWithDouble:v15];
-  [(NSMutableDictionary *)self->_activityToDuration setObject:v16 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_activityToDuration setObject:v16 forKeyedSubscript:name];
 
   [(_DASFairScheduleManager *)self savePriorityQueue];
   v17 = self->_log;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v6 name];
+    name2 = [endCopy name];
     v19 = 138413058;
-    v20 = v7;
+    v20 = reasonCopy;
     v21 = 2112;
-    v22 = v18;
+    v22 = name2;
     v23 = 2048;
     v24 = v12 / -60.0;
     v25 = 2048;
@@ -393,17 +393,17 @@ LABEL_17:
   objc_sync_exit(v8);
 }
 
-- (void)activityStarted:(id)a3
+- (void)activityStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   v5 = self->_activityToDuration;
   objc_sync_enter(v5);
-  v6 = [v4 name];
-  v7 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:v6];
+  name = [startedCopy name];
+  v7 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:name];
 
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:v6];
+    v8 = [(NSMutableDictionary *)self->_activityToDuration objectForKeyedSubscript:name];
     [v8 doubleValue];
     v10 = v9;
   }
@@ -418,13 +418,13 @@ LABEL_17:
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v12 = log;
-    v13 = [v4 name];
+    name2 = [startedCopy name];
     v14 = 138412802;
-    v15 = v13;
+    v15 = name2;
     v16 = 2048;
     v17 = v10 / 60.0;
     v18 = 2048;
-    v19 = [v4 maximumRuntime];
+    maximumRuntime = [startedCopy maximumRuntime];
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Started %@, total runtime from previous runs %0.1f mins, runtime limit %ld", &v14, 0x20u);
   }
 }

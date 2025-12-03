@@ -1,17 +1,17 @@
 @interface LIDConfirmationController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (_TtC17SequoiaTranslator25LIDConfirmationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)backgroundTappedWithRecognizer:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (_TtC17SequoiaTranslator25LIDConfirmationController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)backgroundTappedWithRecognizer:(id)recognizer;
 - (void)hintTapped;
-- (void)optionButtonPressedWithSender:(id)a3;
+- (void)optionButtonPressedWithSender:(id)sender;
 - (void)viewDidLoad;
 @end
 
 @implementation LIDConfirmationController
 
-- (_TtC17SequoiaTranslator25LIDConfirmationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17SequoiaTranslator25LIDConfirmationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -23,8 +23,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100149AF0(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100149AF0(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
@@ -37,14 +37,14 @@
   sub_10014A798();
 }
 
-- (void)optionButtonPressedWithSender:(id)a3
+- (void)optionButtonPressedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_10014AAE4();
 }
 
-- (void)backgroundTappedWithRecognizer:(id)a3
+- (void)backgroundTappedWithRecognizer:(id)recognizer
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -57,19 +57,19 @@
 
 - (void)hintTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_10014AF54();
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = self;
-  v7 = [v5 view];
-  if (v7)
+  touchCopy = touch;
+  selfCopy = self;
+  view = [touchCopy view];
+  if (view)
   {
-    v8 = v7;
-    v9 = [v7 isDescendantOfView:*(&v6->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator25LIDConfirmationController_layoutContainer)];
+    v8 = view;
+    v9 = [view isDescendantOfView:*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator25LIDConfirmationController_layoutContainer)];
 
     return v9 ^ 1;
   }

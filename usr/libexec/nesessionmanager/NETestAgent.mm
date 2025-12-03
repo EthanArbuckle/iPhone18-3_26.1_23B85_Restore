@@ -1,12 +1,12 @@
 @interface NETestAgent
-- (void)startWithCompletionHandler:(id)a3;
+- (void)startWithCompletionHandler:(id)handler;
 @end
 
 @implementation NETestAgent
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -23,8 +23,8 @@
   v9[2] = sub_10007550C;
   v9[3] = &unk_1000EB310;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(v7, v9);
 }
 

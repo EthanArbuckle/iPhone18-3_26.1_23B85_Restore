@@ -6,9 +6,9 @@
 
 - (uint64_t)_afpreferences_languageCodePrefix
 {
-  v2 = [a1 rangeOfString:@"-"];
+  v2 = [self rangeOfString:@"-"];
 
-  return [a1 substringToIndex:v2];
+  return [self substringToIndex:v2];
 }
 
 @end

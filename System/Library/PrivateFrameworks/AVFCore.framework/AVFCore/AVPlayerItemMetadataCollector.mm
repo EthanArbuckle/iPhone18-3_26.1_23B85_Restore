@@ -1,10 +1,10 @@
 @interface AVPlayerItemMetadataCollector
 - (AVPlayerItemMetadataCollector)initWithIdentifiers:(NSArray *)identifiers classifyingLabels:(NSArray *)classifyingLabels;
-- (BOOL)_attachToPlayerItem:(id)a3;
+- (BOOL)_attachToPlayerItem:(id)item;
 - (BOOL)_isAttachedToPlayerItem;
-- (id)_getFilteredMetadataGroups:(id)a3 fromIdentifiers:(id)a4 andClassifyingLabels:(id)a5 modifiedIndexesOut:(id *)a6 newIndexesOut:(id *)a7;
+- (id)_getFilteredMetadataGroups:(id)groups fromIdentifiers:(id)identifiers andClassifyingLabels:(id)labels modifiedIndexesOut:(id *)out newIndexesOut:(id *)indexesOut;
 - (void)_detatchFromPlayerItem;
-- (void)_updateTaggedRangeMetadataArray:(id)a3;
+- (void)_updateTaggedRangeMetadataArray:(id)array;
 - (void)dealloc;
 - (void)setDelegate:(id)delegate queue:(dispatch_queue_t)delegateQueue;
 @end
@@ -90,13 +90,13 @@ LABEL_9:
   [AVWeakReferencingDelegateStorage setDelegate:"setDelegate:queue:" queue:?];
 }
 
-- (BOOL)_attachToPlayerItem:(id)a3
+- (BOOL)_attachToPlayerItem:(id)item
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  if (!a3)
+  if (!item)
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v3, v4, v5, v6, v7, "playerItem != nil"), 0}];
     objc_exception_throw(v11);
@@ -107,7 +107,7 @@ LABEL_9:
   v12[1] = 3221225472;
   v12[2] = __94__AVPlayerItemMetadataCollector_AVPlayerItemMediaDataCollector_Internal___attachToPlayerItem___block_invoke;
   v12[3] = &unk_1E7461068;
-  v12[5] = a3;
+  v12[5] = item;
   v12[6] = &v13;
   v12[4] = self;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v12);
@@ -160,24 +160,24 @@ id __94__AVPlayerItemMetadataCollector_AVPlayerItemMediaDataCollector_Internal__
   return v4;
 }
 
-- (id)_getFilteredMetadataGroups:(id)a3 fromIdentifiers:(id)a4 andClassifyingLabels:(id)a5 modifiedIndexesOut:(id *)a6 newIndexesOut:(id *)a7
+- (id)_getFilteredMetadataGroups:(id)groups fromIdentifiers:(id)identifiers andClassifyingLabels:(id)labels modifiedIndexesOut:(id *)out newIndexesOut:(id *)indexesOut
 {
   v60 = *MEMORY[0x1E69E9840];
-  v11 = [MEMORY[0x1E695DF70] array];
-  v44 = [MEMORY[0x1E696AD50] indexSet];
-  v47 = [MEMORY[0x1E696AD50] indexSet];
+  array = [MEMORY[0x1E695DF70] array];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  indexSet2 = [MEMORY[0x1E696AD50] indexSet];
   v12 = self->_metadataCollectorInternal->mostRecentlyModifiedMetadataGroupTimestamp;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = a3;
-  v49 = [a3 countByEnumeratingWithState:&v54 objects:v59 count:16];
+  obj = groups;
+  v49 = [groups countByEnumeratingWithState:&v54 objects:v59 count:16];
   if (v49)
   {
     v48 = *v55;
-    v42 = a4;
-    v43 = a5;
+    identifiersCopy = identifiers;
+    labelsCopy = labels;
     v45 = v12;
     do
     {
@@ -190,13 +190,13 @@ id __94__AVPlayerItemMetadataCollector_AVPlayerItemMediaDataCollector_Internal__
 
         v14 = [[AVDateRangeMetadataGroup alloc] _initWithTaggedRangeMetadataDictionary:*(*(&v54 + 1) + 8 * i) items:0];
         v15 = v14;
-        if (!a5 || [v14 classifyingLabel] && objc_msgSend(a5, "containsObject:", objc_msgSend(v15, "classifyingLabel")))
+        if (!labels || [v14 classifyingLabel] && objc_msgSend(labels, "containsObject:", objc_msgSend(v15, "classifyingLabel")))
         {
-          v16 = [v15 modificationTimestamp];
-          if (a4)
+          modificationTimestamp = [v15 modificationTimestamp];
+          if (identifiers)
           {
-            v17 = self;
-            v18 = +[AVMetadataItem metadataItemsFromArray:filteredByIdentifiers:](AVMetadataItem, "metadataItemsFromArray:filteredByIdentifiers:", [v15 items], a4);
+            selfCopy = self;
+            v18 = +[AVMetadataItem metadataItemsFromArray:filteredByIdentifiers:](AVMetadataItem, "metadataItemsFromArray:filteredByIdentifiers:", [v15 items], identifiers);
             v19 = [v15 mutableCopy];
             [v19 setItems:v18];
 
@@ -209,7 +209,7 @@ id __94__AVPlayerItemMetadataCollector_AVPlayerItemMediaDataCollector_Internal__
             if (v20)
             {
               v21 = v20;
-              v22 = v11;
+              v22 = array;
               v23 = *v51;
               do
               {
@@ -223,10 +223,10 @@ id __94__AVPlayerItemMetadataCollector_AVPlayerItemMediaDataCollector_Internal__
                   v25 = *(*(&v50 + 1) + 8 * j);
                   [objc_msgSend(v25 "discoveryTimestamp")];
                   v27 = v26;
-                  [v16 timeIntervalSinceReferenceDate];
+                  [modificationTimestamp timeIntervalSinceReferenceDate];
                   if (v27 > v28)
                   {
-                    v16 = [v25 discoveryTimestamp];
+                    modificationTimestamp = [v25 discoveryTimestamp];
                   }
                 }
 
@@ -234,32 +234,32 @@ id __94__AVPlayerItemMetadataCollector_AVPlayerItemMediaDataCollector_Internal__
               }
 
               while (v21);
-              v11 = v22;
-              a4 = v42;
-              a5 = v43;
+              array = v22;
+              identifiers = identifiersCopy;
+              labels = labelsCopy;
             }
 
-            self = v17;
+            self = selfCopy;
             v12 = v45;
           }
 
-          [v11 addObject:v15];
+          [array addObject:v15];
           [objc_msgSend(v15 "discoveryTimestamp")];
           v30 = v29;
           [(NSDate *)v12 timeIntervalSinceReferenceDate];
-          v31 = v47;
-          if (v30 > v32 || ([v16 timeIntervalSinceReferenceDate], v34 = v33, -[NSDate timeIntervalSinceReferenceDate](v12, "timeIntervalSinceReferenceDate"), v31 = v44, v34 > v35))
+          v31 = indexSet2;
+          if (v30 > v32 || ([modificationTimestamp timeIntervalSinceReferenceDate], v34 = v33, -[NSDate timeIntervalSinceReferenceDate](v12, "timeIntervalSinceReferenceDate"), v31 = indexSet, v34 > v35))
           {
-            [v31 addIndex:{objc_msgSend(v11, "indexOfObject:", v15)}];
+            [v31 addIndex:{objc_msgSend(array, "indexOfObject:", v15)}];
           }
 
-          [v16 timeIntervalSinceReferenceDate];
+          [modificationTimestamp timeIntervalSinceReferenceDate];
           v37 = v36;
           [(NSDate *)self->_metadataCollectorInternal->mostRecentlyModifiedMetadataGroupTimestamp timeIntervalSinceReferenceDate];
           if (v37 > v38)
           {
 
-            self->_metadataCollectorInternal->mostRecentlyModifiedMetadataGroupTimestamp = v16;
+            self->_metadataCollectorInternal->mostRecentlyModifiedMetadataGroupTimestamp = modificationTimestamp;
           }
         }
       }
@@ -270,13 +270,13 @@ id __94__AVPlayerItemMetadataCollector_AVPlayerItemMediaDataCollector_Internal__
     while (v49);
   }
 
-  *a6 = [v44 copy];
-  *a7 = [v47 copy];
+  *out = [indexSet copy];
+  *indexesOut = [indexSet2 copy];
 
-  return v11;
+  return array;
 }
 
-- (void)_updateTaggedRangeMetadataArray:(id)a3
+- (void)_updateTaggedRangeMetadataArray:(id)array
 {
   ivarAccessQueue = self->_metadataCollectorInternal->ivarAccessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -284,7 +284,7 @@ id __94__AVPlayerItemMetadataCollector_AVPlayerItemMediaDataCollector_Internal__
   v4[2] = __106__AVPlayerItemMetadataCollector_AVPlayerItemMediaDataCollector_Internal___updateTaggedRangeMetadataArray___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = array;
   av_readwrite_dispatch_queue_read(ivarAccessQueue, v4);
 }
 

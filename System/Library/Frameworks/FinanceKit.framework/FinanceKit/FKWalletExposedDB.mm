@@ -1,10 +1,10 @@
 @interface FKWalletExposedDB
-- (BOOL)deleteAppleAccountWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)deleteTransactionsWithIdentifiers:(id)a3 forAssociatedAppleAccountWithIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)insertOrUpdateAccount:(id)a3 error:(id *)a4;
-- (BOOL)insertOrUpdateTransactions:(id)a3 forAppleAccountWithID:(id)a4 error:(id *)a5;
+- (BOOL)deleteAppleAccountWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)deleteTransactionsWithIdentifiers:(id)identifiers forAssociatedAppleAccountWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)insertOrUpdateAccount:(id)account error:(id *)error;
+- (BOOL)insertOrUpdateTransactions:(id)transactions forAppleAccountWithID:(id)d error:(id *)error;
 - (FKWalletExposedDB)init;
-- (id)fetchAppleAccountsWithError:(id *)a3;
+- (id)fetchAppleAccountsWithError:(id *)error;
 - (void)init;
 @end
 
@@ -46,79 +46,79 @@ LABEL_8:
   return v6;
 }
 
-- (id)fetchAppleAccountsWithError:(id *)a3
+- (id)fetchAppleAccountsWithError:(id *)error
 {
-  v4 = [(FKWalletExposedDB *)self walletExposedDB];
-  v5 = [v4 fetchAppleAccountsAndReturnError:a3];
+  walletExposedDB = [(FKWalletExposedDB *)self walletExposedDB];
+  v5 = [walletExposedDB fetchAppleAccountsAndReturnError:error];
 
   return v5;
 }
 
-- (BOOL)insertOrUpdateAccount:(id)a3 error:(id *)a4
+- (BOOL)insertOrUpdateAccount:(id)account error:(id *)error
 {
-  v6 = a3;
-  v7 = [(FKWalletExposedDB *)self walletExposedDB];
+  accountCopy = account;
+  walletExposedDB = [(FKWalletExposedDB *)self walletExposedDB];
   v11 = 0;
-  [v7 insertOrUpdateWithAppleAccount:v6 error:&v11];
+  [walletExposedDB insertOrUpdateWithAppleAccount:accountCopy error:&v11];
 
   v8 = v11;
-  if (a4)
+  if (error)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v8 == 0;
 }
 
-- (BOOL)deleteAppleAccountWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteAppleAccountWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(FKWalletExposedDB *)self walletExposedDB];
+  identifierCopy = identifier;
+  walletExposedDB = [(FKWalletExposedDB *)self walletExposedDB];
   v11 = 0;
-  [v7 deleteAppleAccountWith:v6 error:&v11];
+  [walletExposedDB deleteAppleAccountWith:identifierCopy error:&v11];
 
   v8 = v11;
-  if (a4)
+  if (error)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v8 == 0;
 }
 
-- (BOOL)insertOrUpdateTransactions:(id)a3 forAppleAccountWithID:(id)a4 error:(id *)a5
+- (BOOL)insertOrUpdateTransactions:(id)transactions forAppleAccountWithID:(id)d error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(FKWalletExposedDB *)self walletExposedDB];
+  dCopy = d;
+  transactionsCopy = transactions;
+  walletExposedDB = [(FKWalletExposedDB *)self walletExposedDB];
   v14 = 0;
-  [v10 insertOrUpdateTransactions:v9 forAppleAccountWithID:v8 error:&v14];
+  [walletExposedDB insertOrUpdateTransactions:transactionsCopy forAppleAccountWithID:dCopy error:&v14];
 
   v11 = v14;
-  if (a5)
+  if (error)
   {
     v12 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return v11 == 0;
 }
 
-- (BOOL)deleteTransactionsWithIdentifiers:(id)a3 forAssociatedAppleAccountWithIdentifier:(id)a4 error:(id *)a5
+- (BOOL)deleteTransactionsWithIdentifiers:(id)identifiers forAssociatedAppleAccountWithIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(FKWalletExposedDB *)self walletExposedDB];
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  walletExposedDB = [(FKWalletExposedDB *)self walletExposedDB];
   v14 = 0;
-  [v10 deleteTransactionsWithIdentifiers:v9 forAppleAccountIdentifier:v8 error:&v14];
+  [walletExposedDB deleteTransactionsWithIdentifiers:identifiersCopy forAppleAccountIdentifier:identifierCopy error:&v14];
 
   v11 = v14;
-  if (a5)
+  if (error)
   {
     v12 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return v11 == 0;
@@ -128,7 +128,7 @@ LABEL_8:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B7198000, a2, OS_LOG_TYPE_ERROR, "Error initializing WalletExposedDB: %@", &v2, 0xCu);
 }
 

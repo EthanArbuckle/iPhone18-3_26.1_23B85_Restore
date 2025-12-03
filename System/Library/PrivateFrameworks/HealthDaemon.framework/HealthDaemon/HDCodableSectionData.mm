@@ -1,41 +1,41 @@
 @interface HDCodableSectionData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addStringValues:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeleted:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addStringValues:(id)values;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeleted:(BOOL)deleted;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableSectionData
 
-- (void)addStringValues:(id)a3
+- (void)addStringValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   stringValues = self->_stringValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!stringValues)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_stringValues;
     self->_stringValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     stringValues = self->_stringValues;
   }
 
-  [(NSMutableArray *)stringValues addObject:v4];
+  [(NSMutableArray *)stringValues addObject:valuesCopy];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDeleted:(BOOL)a3
+- (void)setHasDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 8;
   }
@@ -84,20 +84,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableSectionData;
   v4 = [(HDCodableSectionData *)&v8 description];
-  v5 = [(HDCodableSectionData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableSectionData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   stringValues = self->_stringValues;
   if (stringValues)
   {
-    [v3 setObject:stringValues forKey:@"stringValues"];
+    [dictionary setObject:stringValues forKey:@"stringValues"];
   }
 
   has = self->_has;
@@ -155,10 +155,10 @@ LABEL_8:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -240,20 +240,20 @@ LABEL_13:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(HDCodableSectionData *)self stringValuesCount])
   {
-    [v9 clearStringValues];
-    v4 = [(HDCodableSectionData *)self stringValuesCount];
-    if (v4)
+    [toCopy clearStringValues];
+    stringValuesCount = [(HDCodableSectionData *)self stringValuesCount];
+    if (stringValuesCount)
     {
-      v5 = v4;
+      v5 = stringValuesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCodableSectionData *)self stringValuesAtIndex:i];
-        [v9 addStringValues:v7];
+        [toCopy addStringValues:v7];
       }
     }
   }
@@ -261,8 +261,8 @@ LABEL_13:
   has = self->_has;
   if (has)
   {
-    *(v9 + 1) = self->_sectionDataType;
-    *(v9 + 44) |= 1u;
+    *(toCopy + 1) = self->_sectionDataType;
+    *(toCopy + 44) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -281,8 +281,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v9 + 3) = self->_version;
-  *(v9 + 44) |= 4u;
+  *(toCopy + 3) = self->_version;
+  *(toCopy + 44) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -296,22 +296,22 @@ LABEL_8:
   }
 
 LABEL_15:
-  *(v9 + 2) = *&self->_timestamp;
-  *(v9 + 44) |= 2u;
+  *(toCopy + 2) = *&self->_timestamp;
+  *(toCopy + 44) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_9:
-    *(v9 + 40) = self->_deleted;
-    *(v9 + 44) |= 8u;
+    *(toCopy + 40) = self->_deleted;
+    *(toCopy + 44) |= 8u;
   }
 
 LABEL_10:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -331,7 +331,7 @@ LABEL_10:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{a3, v15}];
+        v11 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{zone, v15}];
         [v5 addStringValues:v11];
       }
 
@@ -393,16 +393,16 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   stringValues = self->_stringValues;
-  if (stringValues | *(v4 + 4))
+  if (stringValues | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)stringValues isEqual:?])
     {
@@ -412,47 +412,47 @@ LABEL_13:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_sectionDataType != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_sectionDataType != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_version != *(v4 + 3))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_version != *(equalCopy + 3))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_21;
   }
 
-  v6 = (*(v4 + 44) & 8) == 0;
+  v6 = (*(equalCopy + 44) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0)
+    if ((*(equalCopy + 44) & 8) == 0)
     {
 LABEL_21:
       v6 = 0;
@@ -461,13 +461,13 @@ LABEL_21:
 
     if (self->_deleted)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_21;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_21;
     }
@@ -556,15 +556,15 @@ LABEL_11:
   return v6 ^ v3 ^ v7 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -588,12 +588,12 @@ LABEL_11:
     while (v7);
   }
 
-  v10 = *(v4 + 44);
+  v10 = *(fromCopy + 44);
   if (v10)
   {
-    self->_sectionDataType = *(v4 + 1);
+    self->_sectionDataType = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v10 = *(v4 + 44);
+    v10 = *(fromCopy + 44);
     if ((v10 & 4) == 0)
     {
 LABEL_10:
@@ -603,9 +603,9 @@ LABEL_10:
       }
 
 LABEL_16:
-      self->_timestamp = *(v4 + 2);
+      self->_timestamp = *(fromCopy + 2);
       *&self->_has |= 2u;
-      if ((*(v4 + 44) & 8) == 0)
+      if ((*(fromCopy + 44) & 8) == 0)
       {
         goto LABEL_13;
       }
@@ -614,14 +614,14 @@ LABEL_16:
     }
   }
 
-  else if ((*(v4 + 44) & 4) == 0)
+  else if ((*(fromCopy + 44) & 4) == 0)
   {
     goto LABEL_10;
   }
 
-  self->_version = *(v4 + 3);
+  self->_version = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v10 = *(v4 + 44);
+  v10 = *(fromCopy + 44);
   if ((v10 & 2) != 0)
   {
     goto LABEL_16;
@@ -631,7 +631,7 @@ LABEL_11:
   if ((v10 & 8) != 0)
   {
 LABEL_12:
-    self->_deleted = *(v4 + 40);
+    self->_deleted = *(fromCopy + 40);
     *&self->_has |= 8u;
   }
 

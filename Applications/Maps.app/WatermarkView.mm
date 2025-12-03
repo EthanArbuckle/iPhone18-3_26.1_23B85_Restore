@@ -1,14 +1,14 @@
 @interface WatermarkView
 - (UIViewController)hostViewController;
-- (WatermarkView)initWithCoder:(id)a3;
-- (WatermarkView)initWithFrame:(CGRect)a3;
+- (WatermarkView)initWithCoder:(id)coder;
+- (WatermarkView)initWithFrame:(CGRect)frame;
 - (id)_clearImage;
 - (void)_commonInit;
 - (void)_updateWatermark;
 - (void)dealloc;
 - (void)flushTileCache;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WatermarkView
@@ -30,8 +30,8 @@
 {
   if (GEOShouldWatermark())
   {
-    v3 = GEOConfigGetString();
-    if ([v3 length])
+    imageView3 = GEOConfigGetString();
+    if ([imageView3 length])
     {
       if ((_GEOConfigHasValue() & 1) == 0)
       {
@@ -50,8 +50,8 @@
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Applying watermark", buf, 2u);
       }
 
-      v6 = [(WatermarkView *)self _clearImage];
-      v7 = v3;
+      _clearImage = [(WatermarkView *)self _clearImage];
+      topMostPresentedViewController = imageView3;
       if (sub_100B8C280())
       {
         sub_100B8C3AC();
@@ -60,14 +60,14 @@
           sub_100B8C48C();
           if (objc_opt_class())
           {
-            v8 = [(WatermarkView *)self imageEncoder];
-            v9 = [(WatermarkView *)self watermarkProperties];
+            imageEncoder = [(WatermarkView *)self imageEncoder];
+            watermarkProperties = [(WatermarkView *)self watermarkProperties];
             v20 = 0;
-            v10 = [v8 addBinaryGridWatermarkToImage:v6 ForId:v7 withProperties:v9 error:&v20];
+            v10 = [imageEncoder addBinaryGridWatermarkToImage:_clearImage ForId:topMostPresentedViewController withProperties:watermarkProperties error:&v20];
             v11 = v20;
 
-            v12 = [(WatermarkView *)self imageView];
-            [v12 setImage:v10];
+            imageView = [(WatermarkView *)self imageView];
+            [imageView setImage:v10];
 
             if (v11)
             {
@@ -90,27 +90,27 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109376;
-        LODWORD(v22[0]) = [v3 length] != 0;
+        LODWORD(v22[0]) = [imageView3 length] != 0;
         WORD2(v22[0]) = 1024;
         *(v22 + 6) = _GEOConfigHasValue();
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Can't apply watermark. Has personID %d, has valid token %d", buf, 0xEu);
       }
 
-      v16 = [(WatermarkView *)self imageView];
-      [v16 setImage:0];
+      imageView2 = [(WatermarkView *)self imageView];
+      [imageView2 setImage:0];
 
       v17 = +[GEOMapsAuthServiceHelper sharedAuthHelper];
       [v17 invalidateTokens];
 
       [(WatermarkView *)self flushTileCache];
-      v18 = [(WatermarkView *)self _maps_mapsSceneDelegate];
-      v6 = v18;
-      if (!v18)
+      _maps_mapsSceneDelegate = [(WatermarkView *)self _maps_mapsSceneDelegate];
+      _clearImage = _maps_mapsSceneDelegate;
+      if (!_maps_mapsSceneDelegate)
       {
         goto LABEL_27;
       }
 
-      v7 = [v18 topMostPresentedViewController];
+      topMostPresentedViewController = [_maps_mapsSceneDelegate topMostPresentedViewController];
       v19 = sub_100798EEC();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
@@ -118,7 +118,7 @@
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Requesting credentials from AppleConnect", buf, 2u);
       }
 
-      [MapsAppleConnectAuthViewController presentAppleConnectAuthControllerFrom:v7 withProxyURL:0];
+      [MapsAppleConnectAuthViewController presentAppleConnectAuthControllerFrom:topMostPresentedViewController withProxyURL:0];
     }
 
 LABEL_27:
@@ -132,8 +132,8 @@ LABEL_27:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "GEOShouldWatermark() returned NO, won't apply watermark", buf, 2u);
   }
 
-  v3 = [(WatermarkView *)self imageView];
-  [v3 setImage:0];
+  imageView3 = [(WatermarkView *)self imageView];
+  [imageView3 setImage:0];
 LABEL_28:
 }
 
@@ -161,18 +161,18 @@ LABEL_28:
   return v11;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = WatermarkView;
-  v4 = a3;
-  [(WatermarkView *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(WatermarkView *)&v8 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(WatermarkView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(WatermarkView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(WatermarkView *)self _updateWatermark];
   }
@@ -273,18 +273,18 @@ LABEL_28:
   [(WatermarkView *)self addSubview:self->_imageView];
   LODWORD(v16) = 1148846080;
   v17 = [(UIImageView *)self->_imageView _maps_constraintsEqualToEdgesOfView:self insets:-50.0 priority:-25.0, 0.0, 0.0, v16];
-  v18 = [v17 allConstraints];
-  [NSLayoutConstraint activateConstraints:v18];
+  allConstraints = [v17 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
 }
 
-- (WatermarkView)initWithCoder:(id)a3
+- (WatermarkView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WatermarkView;
-  v3 = [(WatermarkView *)&v6 initWithCoder:a3];
+  v3 = [(WatermarkView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -294,11 +294,11 @@ LABEL_28:
   return v4;
 }
 
-- (WatermarkView)initWithFrame:(CGRect)a3
+- (WatermarkView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = WatermarkView;
-  v3 = [(WatermarkView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WatermarkView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

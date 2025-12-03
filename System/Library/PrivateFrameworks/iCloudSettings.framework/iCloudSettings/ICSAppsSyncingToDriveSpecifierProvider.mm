@@ -1,30 +1,30 @@
 @interface ICSAppsSyncingToDriveSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (ICSAppsSyncingToDriveSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4;
+- (ICSAppsSyncingToDriveSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter;
 - (NSArray)specifiers;
 - (id)_specifiersForAppsSyncingToDrive;
 - (id)account;
 - (void)_fetchServerApps;
 - (void)_reloadSpecifier;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation ICSAppsSyncingToDriveSpecifierProvider
 
-- (ICSAppsSyncingToDriveSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4
+- (ICSAppsSyncingToDriveSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  presenterCopy = presenter;
   v23.receiver = self;
   v23.super_class = ICSAppsSyncingToDriveSpecifierProvider;
   v9 = [(ICSAppsSyncingToDriveSpecifierProvider *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
+    objc_storeStrong(&v9->_accountManager, manager);
     v11 = objc_alloc(MEMORY[0x277D7F338]);
-    v12 = [(AIDAAccountManager *)v10->_accountManager accounts];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+    accounts = [(AIDAAccountManager *)v10->_accountManager accounts];
+    v13 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
     v14 = [v11 initWithAccount:v13];
     datacontroller = v10->_datacontroller;
     v10->_datacontroller = v14;
@@ -41,7 +41,7 @@
     appsSyncingToDriveBundleIDs = v10->_appsSyncingToDriveBundleIDs;
     v10->_appsSyncingToDriveBundleIDs = v20;
 
-    objc_storeWeak(&v10->_listController, v8);
+    objc_storeWeak(&v10->_listController, presenterCopy);
     v10->_isAppsSyncToDriveRequestInProgress = 0;
   }
 
@@ -50,28 +50,28 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
 
 - (NSArray)specifiers
 {
-  v3 = [(ICSAppsSyncingToDriveSpecifierProvider *)self _specifiersForAppsSyncingToDrive];
+  _specifiersForAppsSyncingToDrive = [(ICSAppsSyncingToDriveSpecifierProvider *)self _specifiersForAppsSyncingToDrive];
   specifiers = self->_specifiers;
-  self->_specifiers = v3;
+  self->_specifiers = _specifiersForAppsSyncingToDrive;
 
   v5 = self->_specifiers;
 
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  v4 = objc_storeWeak(&self->_delegate, v5);
-  [(ICSUbiquitySpecifierProvider *)self->_ubiquitySpecifierProvider setDelegate:v5];
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_delegate, delegateCopy);
+  [(ICSUbiquitySpecifierProvider *)self->_ubiquitySpecifierProvider setDelegate:delegateCopy];
 
   [(ICSAppsSyncingToDriveSpecifierProvider *)self _fetchServerApps];
 }
@@ -81,14 +81,14 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([(NSMutableSet *)self->_appsSyncingToDriveBundleIDs count])
   {
-    v4 = [(ICSUbiquitySpecifierProvider *)self->_ubiquitySpecifierProvider specifiers];
+    specifiers = [(ICSUbiquitySpecifierProvider *)self->_ubiquitySpecifierProvider specifiers];
     v7 = MEMORY[0x277D85DD0];
     v8 = 3221225472;
     v9 = __74__ICSAppsSyncingToDriveSpecifierProvider__specifiersForAppsSyncingToDrive__block_invoke;
     v10 = &unk_27A666120;
-    v11 = self;
+    selfCopy = self;
     v12 = v3;
-    [v4 enumerateObjectsUsingBlock:&v7];
+    [specifiers enumerateObjectsUsingBlock:&v7];
   }
 
   v5 = [v3 copy];
@@ -125,8 +125,8 @@ void __74__ICSAppsSyncingToDriveSpecifierProvider__specifiersForAppsSyncingToDri
   [(NSMutableSet *)self->_serverApps removeAllObjects];
   self->_isAppsSyncToDriveRequestInProgress = 1;
   v3 = objc_alloc(MEMORY[0x277D7F338]);
-  v4 = [(ICSAppsSyncingToDriveSpecifierProvider *)self account];
-  v5 = [v3 initWithAccount:v4];
+  account = [(ICSAppsSyncingToDriveSpecifierProvider *)self account];
+  v5 = [v3 initWithAccount:account];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;

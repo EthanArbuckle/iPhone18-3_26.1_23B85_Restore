@@ -12,10 +12,10 @@
   v7 = &v15 - v6;
   v8 = objc_opt_self();
 
-  v9 = [v8 sharedManager];
-  if (v9)
+  sharedManager = [v8 sharedManager];
+  if (sharedManager)
   {
-    v10 = v9;
+    v10 = sharedManager;
     v11 = String._bridgeToObjectiveC()();
     [v10 logFaultInFunction:"MBLogFault(_:)" atLine:15 withString:v11];
 

@@ -1,49 +1,49 @@
 @interface PKPaymentSetupAssistantExpressController
-- (id)_provisioningContextWithProvisioningController:(id)a3 setupAssistantCredentials:(id)a4 maximumSelectable:(unint64_t)a5;
-- (id)_setupAssistantCredentialForPaymentCredential:(id)a3;
-- (id)_setupAssistantCredentialForPaymentPass:(id)a3;
-- (void)expressSetupFlowForSetupProvisioningContext:(id)a3 withCompletion:(id)a4;
-- (void)expressSetupProvisioningContext:(id)a3;
+- (id)_provisioningContextWithProvisioningController:(id)controller setupAssistantCredentials:(id)credentials maximumSelectable:(unint64_t)selectable;
+- (id)_setupAssistantCredentialForPaymentCredential:(id)credential;
+- (id)_setupAssistantCredentialForPaymentPass:(id)pass;
+- (void)expressSetupFlowForSetupProvisioningContext:(id)context withCompletion:(id)completion;
+- (void)expressSetupProvisioningContext:(id)context;
 @end
 
 @implementation PKPaymentSetupAssistantExpressController
 
-- (id)_provisioningContextWithProvisioningController:(id)a3 setupAssistantCredentials:(id)a4 maximumSelectable:(unint64_t)a5
+- (id)_provisioningContextWithProvisioningController:(id)controller setupAssistantCredentials:(id)credentials maximumSelectable:(unint64_t)selectable
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 webService];
-  v10 = [v9 targetDevice];
-  v11 = [v10 secureElementIdentifiers];
+  credentialsCopy = credentials;
+  controllerCopy = controller;
+  webService = [controllerCopy webService];
+  targetDevice = [webService targetDevice];
+  secureElementIdentifiers = [targetDevice secureElementIdentifiers];
 
-  v12 = [[PKPassSnapshotCoordinator alloc] initWithSEIDs:v11];
-  v13 = [objc_alloc(MEMORY[0x1E69BC778]) initWithProvisioningController:v8 snapshotCoordinator:v12 setupAssistantCredentials:v7 maximumSelectable:a5];
+  v12 = [[PKPassSnapshotCoordinator alloc] initWithSEIDs:secureElementIdentifiers];
+  v13 = [objc_alloc(MEMORY[0x1E69BC778]) initWithProvisioningController:controllerCopy snapshotCoordinator:v12 setupAssistantCredentials:credentialsCopy maximumSelectable:selectable];
 
   return v13;
 }
 
-- (id)_setupAssistantCredentialForPaymentCredential:(id)a3
+- (id)_setupAssistantCredentialForPaymentCredential:(id)credential
 {
   v3 = MEMORY[0x1E69BC770];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithPaymentCredential:v4];
+  credentialCopy = credential;
+  v5 = [[v3 alloc] initWithPaymentCredential:credentialCopy];
 
   return v5;
 }
 
-- (id)_setupAssistantCredentialForPaymentPass:(id)a3
+- (id)_setupAssistantCredentialForPaymentPass:(id)pass
 {
   v3 = MEMORY[0x1E69BC770];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithPaymentPass:v4];
+  passCopy = pass;
+  v5 = [[v3 alloc] initWithPaymentPass:passCopy];
 
   return v5;
 }
 
-- (void)expressSetupProvisioningContext:(id)a3
+- (void)expressSetupProvisioningContext:(id)context
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -51,7 +51,7 @@
     *buf = 138543618;
     v13 = v7;
     v14 = 2112;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ with: %@", buf, 0x16u);
   }
 
@@ -59,10 +59,10 @@
   v9[1] = 3221225472;
   v9[2] = __76__PKPaymentSetupAssistantExpressController_expressSetupProvisioningContext___block_invoke;
   v9[3] = &unk_1E8026C78;
-  v10 = v5;
+  v10 = contextCopy;
   v11 = a2;
   v9[4] = self;
-  v8 = v5;
+  v8 = contextCopy;
   [(PKPaymentSetupAssistantCoreController *)self _expressSetupProvisioningContext:v9];
 }
 
@@ -87,70 +87,70 @@ void __76__PKPaymentSetupAssistantExpressController_expressSetupProvisioningCont
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)expressSetupFlowForSetupProvisioningContext:(id)a3 withCompletion:(id)a4
+- (void)expressSetupFlowForSetupProvisioningContext:(id)context withCompletion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v9 = [v7 provisioningController];
-    v10 = [v7 availablePaymentCredentials];
-    v11 = v10;
-    if (!v7 || ![v10 count])
+    provisioningController = [contextCopy provisioningController];
+    availablePaymentCredentials = [contextCopy availablePaymentCredentials];
+    v11 = availablePaymentCredentials;
+    if (!contextCopy || ![availablePaymentCredentials count])
     {
       v19 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = NSStringFromSelector(a2);
         *buf = 138412546;
-        *&buf[4] = v7;
+        *&buf[4] = contextCopy;
         *&buf[12] = 2112;
         *&buf[14] = v20;
         _os_log_impl(&dword_1BD026000, v19, OS_LOG_TYPE_DEFAULT, "Error: Empty provisioning context %@ supplied to %@", buf, 0x16u);
       }
 
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
       goto LABEL_18;
     }
 
     v12 = [PKPaymentSetupAssistantDelegateProxy alloc];
-    v13 = [(PKPaymentSetupAssistantController *)self setupAssistantContext];
-    v14 = [v13 delegate];
-    v15 = [(PKPaymentSetupAssistantDelegateProxy *)v12 initWithDelegate:v14 provisioningController:v9];
+    setupAssistantContext = [(PKPaymentSetupAssistantController *)self setupAssistantContext];
+    delegate = [setupAssistantContext delegate];
+    v15 = [(PKPaymentSetupAssistantDelegateProxy *)v12 initWithDelegate:delegate provisioningController:provisioningController];
 
-    v16 = [(PKPaymentSetupAssistantController *)self setupAssistantContext];
-    v17 = [v16 setupAssistant];
+    setupAssistantContext2 = [(PKPaymentSetupAssistantController *)self setupAssistantContext];
+    setupAssistant = [setupAssistantContext2 setupAssistant];
 
-    if (v17 == 1)
+    if (setupAssistant == 1)
     {
       v18 = 2;
     }
 
     else
     {
-      if (v17 != 2)
+      if (setupAssistant != 2)
       {
         v25 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [(PKPaymentSetupAssistantController *)self setupAssistantContext];
+          setupAssistantContext3 = [(PKPaymentSetupAssistantController *)self setupAssistantContext];
           *buf = 134217984;
-          *&buf[4] = [v26 setupAssistant];
+          *&buf[4] = [setupAssistantContext3 setupAssistant];
           _os_log_impl(&dword_1BD026000, v25, OS_LOG_TYPE_DEFAULT, "Error: expressSetupFlowForSetupProvisioningContext called with unsupported type %lu. File a radar!", buf, 0xCu);
         }
 
-        v8[2](v8, 0);
+        completionCopy[2](completionCopy, 0);
         goto LABEL_17;
       }
 
       v18 = 6;
     }
 
-    v22 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:v18 provisioningController:v9 groupsController:0];
-    v23 = [(PKPaymentSetupAssistantController *)self setupAssistantContext];
-    v24 = [v23 proximitySetupLiaison];
-    [v22 setProximitySetupLiaison:v24];
+    v22 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:v18 provisioningController:provisioningController groupsController:0];
+    setupAssistantContext4 = [(PKPaymentSetupAssistantController *)self setupAssistantContext];
+    proximitySetupLiaison = [setupAssistantContext4 proximitySetupLiaison];
+    [v22 setProximitySetupLiaison:proximitySetupLiaison];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -160,7 +160,7 @@ void __76__PKPaymentSetupAssistantExpressController_expressSetupProvisioningCont
     v31[1] = 3221225472;
     v31[2] = __103__PKPaymentSetupAssistantExpressController_expressSetupFlowForSetupProvisioningContext_withCompletion___block_invoke;
     v31[3] = &unk_1E8018DF0;
-    v32 = v8;
+    v32 = completionCopy;
     v33 = buf;
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
@@ -178,13 +178,13 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v9 = PKLogFacilityTypeGetObject();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  provisioningController = PKLogFacilityTypeGetObject();
+  if (os_log_type_enabled(provisioningController, OS_LOG_TYPE_DEFAULT))
   {
     v21 = NSStringFromSelector(a2);
     *buf = 138412290;
     *&buf[4] = v21;
-    _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Error: No completion provided to %@", buf, 0xCu);
+    _os_log_impl(&dword_1BD026000, provisioningController, OS_LOG_TYPE_DEFAULT, "Error: No completion provided to %@", buf, 0xCu);
   }
 
 LABEL_19:

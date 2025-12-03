@@ -1,32 +1,32 @@
 @interface MKFCKModel
 + (NSArray)defaultPreloadedProperties;
 + (NSString)rootKeyPath;
-+ (id)appendDefaultPreloadedPropertiesTo:(id)a3;
-+ (id)canonicalModelForModels:(id)a3 context:(id)a4;
-+ (id)createWithLocalModel:(id)a3 context:(id)a4;
-+ (id)fetchWithLocalModel:(id)a3 context:(id)a4;
-+ (id)mergedDictionaryFromCloud:(id)a3 localModifications:(id)a4;
-+ (id)modelWithModelID:(id)a3 context:(id)a4 error:(id *)a5;
-+ (id)modelWithObjectID:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)copyPropertiesFromLocalModel:(id)a3 context:(id)a4;
-- (BOOL)copyPropertiesIntoLocalModel:(id)a3 context:(id)a4;
-- (BOOL)isDeletedLocallyWithContext:(id)a3;
++ (id)appendDefaultPreloadedPropertiesTo:(id)to;
++ (id)canonicalModelForModels:(id)models context:(id)context;
++ (id)createWithLocalModel:(id)model context:(id)context;
++ (id)fetchWithLocalModel:(id)model context:(id)context;
++ (id)mergedDictionaryFromCloud:(id)cloud localModifications:(id)modifications;
++ (id)modelWithModelID:(id)d context:(id)context error:(id *)error;
++ (id)modelWithObjectID:(id)d context:(id)context error:(id *)error;
+- (BOOL)copyPropertiesFromLocalModel:(id)model context:(id)context;
+- (BOOL)copyPropertiesIntoLocalModel:(id)model context:(id)context;
+- (BOOL)isDeletedLocallyWithContext:(id)context;
 - (BOOL)isFake;
-- (BOOL)shouldExportUpdatedPropertyInSet:(id)a3 name:(id)a4;
+- (BOOL)shouldExportUpdatedPropertyInSet:(id)set name:(id)name;
 - (BOOL)shouldSkipValidationDuringImport;
-- (BOOL)validateFlags:(id *)a3 error:(id *)a4;
-- (BOOL)validateModelID:(id *)a3 error:(id *)a4;
-- (BOOL)validateWriterTimestamp:(id *)a3 error:(id *)a4;
-- (BOOL)validateWriterVersion:(id *)a3 error:(id *)a4;
-- (id)createLocalModelWithContext:(id)a3;
+- (BOOL)validateFlags:(id *)flags error:(id *)error;
+- (BOOL)validateModelID:(id *)d error:(id *)error;
+- (BOOL)validateWriterTimestamp:(id *)timestamp error:(id *)error;
+- (BOOL)validateWriterVersion:(id *)version error:(id *)error;
+- (id)createLocalModelWithContext:(id)context;
 - (id)debugDescription;
 - (id)description;
-- (id)fetchEquivalentModels:(id *)a3;
-- (id)fetchLocalModelWithContext:(id)a3;
+- (id)fetchEquivalentModels:(id *)models;
+- (id)fetchLocalModelWithContext:(id)context;
 - (id)hmd_debugIdentifier;
 - (id)predicateMatchingEquivalentModels;
 - (id)redactedDescription;
-- (id)relationshipForLocalName:(id)a3 localModel:(id)a4;
+- (id)relationshipForLocalName:(id)name localModel:(id)model;
 - (int64_t)ensureCanonicalModel;
 - (void)awakeFromInsert;
 - (void)convertToFakeModel;
@@ -36,23 +36,23 @@
 
 @implementation MKFCKModel
 
-- (id)fetchEquivalentModels:(id *)a3
+- (id)fetchEquivalentModels:(id *)models
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = [objc_opt_class() fetchRequest];
-  v6 = [(MKFCKModel *)self predicateMatchingEquivalentModels];
-  [v5 setPredicate:v6];
+  fetchRequest = [objc_opt_class() fetchRequest];
+  predicateMatchingEquivalentModels = [(MKFCKModel *)self predicateMatchingEquivalentModels];
+  [fetchRequest setPredicate:predicateMatchingEquivalentModels];
 
-  v7 = [objc_opt_class() defaultPreloadedProperties];
-  [v5 setPropertiesToFetch:v7];
+  defaultPreloadedProperties = [objc_opt_class() defaultPreloadedProperties];
+  [fetchRequest setPropertiesToFetch:defaultPreloadedProperties];
 
-  v8 = [(MKFCKModel *)self objectID];
-  v9 = [v8 persistentStore];
-  v14[0] = v9;
+  objectID = [(MKFCKModel *)self objectID];
+  persistentStore = [objectID persistentStore];
+  v14[0] = persistentStore;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  [v5 setAffectedStores:v10];
+  [fetchRequest setAffectedStores:v10];
 
-  v11 = [v5 execute:a3];
+  v11 = [fetchRequest execute:models];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -62,14 +62,14 @@
 - (id)predicateMatchingEquivalentModels
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v3 = [(MKFCKModel *)self modelID];
-  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", @"modelID", v3];
-  v5 = [objc_opt_class() rootKeyPath];
-  if (v5)
+  modelID = [(MKFCKModel *)self modelID];
+  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", @"modelID", modelID];
+  rootKeyPath = [objc_opt_class() rootKeyPath];
+  if (rootKeyPath)
   {
     v6 = MEMORY[0x277CCAC30];
-    v7 = [(MKFCKModel *)self valueForKeyPath:v5];
-    v8 = [v6 predicateWithFormat:@"%K = %@", v5, v7];
+    v7 = [(MKFCKModel *)self valueForKeyPath:rootKeyPath];
+    v8 = [v6 predicateWithFormat:@"%K = %@", rootKeyPath, v7];
 
     v9 = MEMORY[0x277CCA920];
     v14[0] = v4;
@@ -90,54 +90,54 @@
 
 - (int64_t)ensureCanonicalModel
 {
-  v2 = self;
+  selfCopy = self;
   v100 = *MEMORY[0x277D85DE8];
   v3 = 64;
   canonical = self->_canonical;
   if (!canonical)
   {
     v5 = MEMORY[0x277CCABB0];
-    if (([(MKFCKModel *)v2 isDeleted]& 1) != 0)
+    if (([(MKFCKModel *)selfCopy isDeleted]& 1) != 0)
     {
       v6 = -2;
 LABEL_64:
       v68 = [v5 numberWithInteger:v6];
-      v69 = *(&v2->super.super.super.isa + v3);
-      *(&v2->super.super.super.isa + v3) = v68;
+      v69 = *(&selfCopy->super.super.super.isa + v3);
+      *(&selfCopy->super.super.super.isa + v3) = v68;
 
-      canonical = *(&v2->super.super.super.isa + v3);
+      canonical = *(&selfCopy->super.super.super.isa + v3);
       goto LABEL_65;
     }
 
-    v7 = [(MKFCKModel *)v2 objectID];
-    v8 = [v7 persistentStore];
+    objectID = [(MKFCKModel *)selfCopy objectID];
+    persistentStore = [objectID persistentStore];
 
-    v82 = [(MKFCKModel *)v2 managedObjectContext];
-    v9 = [v82 hmd_coreData];
-    v10 = [objc_opt_class() cloudStoreTypes];
-    v11 = [v9 cloudPrivateStore];
-    if (v8 == v11)
+    managedObjectContext = [(MKFCKModel *)selfCopy managedObjectContext];
+    hmd_coreData = [managedObjectContext hmd_coreData];
+    cloudStoreTypes = [objc_opt_class() cloudStoreTypes];
+    cloudPrivateStore = [hmd_coreData cloudPrivateStore];
+    if (persistentStore == cloudPrivateStore)
     {
       v13 = 1;
     }
 
     else
     {
-      v12 = [v9 cloudSharedStore];
-      v13 = 2 * (v8 == v12);
+      cloudSharedStore = [hmd_coreData cloudSharedStore];
+      v13 = 2 * (persistentStore == cloudSharedStore);
     }
 
-    v79 = v2;
-    if ((v13 & v10) == 0)
+    v79 = selfCopy;
+    if ((v13 & cloudStoreTypes) == 0)
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = v2;
+      v24 = selfCopy;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         v26 = HMFGetLogIdentifier();
         v27 = off_27867D3E0[v13];
-        v28 = off_27867D3F8[v10 & 3];
+        v28 = off_27867D3F8[cloudStoreTypes & 3];
         *buf = 138544130;
         v89 = v26;
         v90 = 2114;
@@ -151,19 +151,19 @@ LABEL_64:
 
       objc_autoreleasePoolPop(v23);
       v6 = -2;
-      v2 = v79;
+      selfCopy = v79;
       goto LABEL_63;
     }
 
-    v14 = [objc_opt_class() rootKeyPath];
-    v81 = v14;
-    if (v14)
+    rootKeyPath = [objc_opt_class() rootKeyPath];
+    v81 = rootKeyPath;
+    if (rootKeyPath)
     {
-      v15 = [(MKFCKModel *)v2 valueForKeyPath:v14];
+      v15 = [(MKFCKModel *)selfCopy valueForKeyPath:rootKeyPath];
       if (!v15)
       {
         v29 = objc_autoreleasePoolPush();
-        v30 = v2;
+        v30 = selfCopy;
         v31 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
@@ -182,21 +182,21 @@ LABEL_64:
       }
 
       v78 = v15;
-      v16 = [(MKFCKModel *)v15 ensureCanonicalModel];
-      v6 = v16;
-      if (v16 >= 0xFFFFFFFFFFFFFFFELL)
+      ensureCanonicalModel = [(MKFCKModel *)v15 ensureCanonicalModel];
+      v6 = ensureCanonicalModel;
+      if (ensureCanonicalModel >= 0xFFFFFFFFFFFFFFFELL)
       {
-        if (([(MKFCKModel *)v2 isDeleted]& 1) == 0 && v13 == 1)
+        if (([(MKFCKModel *)selfCopy isDeleted]& 1) == 0 && v13 == 1)
         {
           v17 = objc_autoreleasePoolPush();
-          v18 = v2;
+          v18 = selfCopy;
           v19 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
             HMFGetLogIdentifier();
             v20 = v73 = v5;
             [(MKFCKModel *)v18 debugDescription];
-            v22 = v21 = v9;
+            v22 = v21 = hmd_coreData;
             *buf = 138544130;
             v89 = v20;
             v90 = 2112;
@@ -207,12 +207,12 @@ LABEL_64:
             v95 = v22;
             _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Deleting model associated with non-canonical root %@: %@\n%@", buf, 0x2Au);
 
-            v9 = v21;
+            hmd_coreData = v21;
             v5 = v73;
           }
 
           objc_autoreleasePoolPop(v17);
-          [v82 deleteObject:v18];
+          [managedObjectContext deleteObject:v18];
         }
 
 LABEL_61:
@@ -223,10 +223,10 @@ LABEL_63:
         goto LABEL_64;
       }
 
-      if (!v16)
+      if (!ensureCanonicalModel)
       {
         v34 = objc_autoreleasePoolPush();
-        v35 = v2;
+        v35 = selfCopy;
         v36 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
@@ -247,21 +247,21 @@ LABEL_63:
     }
 
     v87 = 0;
-    v38 = [(MKFCKModel *)v2 fetchEquivalentModels:&v87];
+    v38 = [(MKFCKModel *)selfCopy fetchEquivalentModels:&v87];
     v77 = v38;
     v78 = v87;
     if (v38)
     {
-      if ([v38 count] == 1 && (objc_msgSend(v38, "firstObject"), v39 = objc_claimAutoreleasedReturnValue(), v39, v40 = v39 == v2, v38 = v77, v40))
+      if ([v38 count] == 1 && (objc_msgSend(v38, "firstObject"), v39 = objc_claimAutoreleasedReturnValue(), v39, v40 = v39 == selfCopy, v38 = v77, v40))
       {
         v6 = 1;
       }
 
       else
       {
-        v75 = v9;
-        v76 = v8;
-        v41 = [MKFCKModel canonicalModelForModels:v38 context:v82];
+        v75 = hmd_coreData;
+        v76 = persistentStore;
+        v41 = [MKFCKModel canonicalModelForModels:v38 context:managedObjectContext];
         if (v13 == 1)
         {
           v72 = 64;
@@ -291,7 +291,7 @@ LABEL_63:
                 {
                   [*(*(&v83 + 1) + 8 * i) willAccessValueForKey:0];
                   v48 = objc_autoreleasePoolPush();
-                  v49 = v2;
+                  v49 = selfCopy;
                   v50 = HMFGetOSLogHandle();
                   v51 = os_log_type_enabled(v50, OS_LOG_TYPE_ERROR);
                   if (v43)
@@ -308,22 +308,22 @@ LABEL_63:
                       v97 = v53;
                       _os_log_impl(&dword_229538000, v50, OS_LOG_TYPE_ERROR, "%{public}@Merging model with non-unique modelID: %@\n%@", v96, 0x20u);
 
-                      v2 = v79;
+                      selfCopy = v79;
                     }
 
                     objc_autoreleasePoolPop(v48);
                     v54 = v47;
                     if (v41)
                     {
-                      v55 = [(MKFCKModel *)v41 entity];
-                      v56 = [v55 relationshipsByName];
+                      entity = [(MKFCKModel *)v41 entity];
+                      relationshipsByName = [entity relationshipsByName];
                       *v96 = MEMORY[0x277D85DD0];
                       *&v96[8] = 3221225472;
                       *&v96[16] = __46__MKFCKModel_mergeRelationshipsFromDuplicate___block_invoke;
                       v97 = &unk_27867D378;
                       v98 = v41;
                       v99 = v54;
-                      [v56 enumerateKeysAndObjectsUsingBlock:v96];
+                      [relationshipsByName enumerateKeysAndObjectsUsingBlock:v96];
                     }
 
                     v43 = v81;
@@ -343,14 +343,14 @@ LABEL_63:
                       v97 = v58;
                       _os_log_impl(&dword_229538000, v50, OS_LOG_TYPE_ERROR, "%{public}@Deleting model with non-unique modelID: %@\n%@", v96, 0x20u);
 
-                      v2 = v79;
+                      selfCopy = v79;
                       v43 = v81;
                     }
 
                     objc_autoreleasePoolPop(v48);
                   }
 
-                  [v82 deleteObject:{v47, v72}];
+                  [managedObjectContext deleteObject:{v47, v72}];
                 }
               }
 
@@ -366,7 +366,7 @@ LABEL_63:
 
         [(MKFCKModel *)v41 willAccessValueForKey:0, v72];
         v59 = objc_autoreleasePoolPush();
-        v60 = v2;
+        v60 = selfCopy;
         v61 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
         {
@@ -380,7 +380,7 @@ LABEL_63:
           v97 = v63;
           _os_log_impl(&dword_229538000, v61, OS_LOG_TYPE_DEFAULT, "%{public}@Determined canonical model: %@\n%@", v96, 0x20u);
 
-          v2 = v79;
+          selfCopy = v79;
         }
 
         objc_autoreleasePoolPop(v59);
@@ -394,15 +394,15 @@ LABEL_63:
           v6 = -1;
         }
 
-        v9 = v75;
-        v8 = v76;
+        hmd_coreData = v75;
+        persistentStore = v76;
       }
     }
 
     else
     {
       v64 = objc_autoreleasePoolPush();
-      v65 = v2;
+      v65 = selfCopy;
       v66 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
       {
@@ -471,52 +471,52 @@ void __46__MKFCKModel_mergeRelationshipsFromDuplicate___block_invoke(uint64_t a1
 LABEL_9:
 }
 
-- (BOOL)isDeletedLocallyWithContext:(id)a3
+- (BOOL)isDeletedLocallyWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 hmd_coreData];
-  v6 = [v5 workingStore];
+  contextCopy = context;
+  hmd_coreData = [contextCopy hmd_coreData];
+  workingStore = [hmd_coreData workingStore];
 
-  v7 = [(MKFCKModel *)self entity];
-  v8 = [HMDCoreDataCloudTransform localTransformableEntityFromEntity:v7];
+  entity = [(MKFCKModel *)self entity];
+  v8 = [HMDCoreDataCloudTransform localTransformableEntityFromEntity:entity];
 
-  v9 = [(MKFCKModel *)self modelID];
-  LOBYTE(v7) = [v6 hmd_modelWasDeletedWithID:v9 modelIDKey:@"modelID" entity:v8 duration:v4 context:0.0];
+  modelID = [(MKFCKModel *)self modelID];
+  LOBYTE(entity) = [workingStore hmd_modelWasDeletedWithID:modelID modelIDKey:@"modelID" entity:v8 duration:contextCopy context:0.0];
 
-  return v7;
+  return entity;
 }
 
-- (id)createLocalModelWithContext:(id)a3
+- (id)createLocalModelWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(MKFCKModel *)self entity];
-  v6 = [HMDCoreDataCloudTransform localTransformableEntityFromEntity:v5];
+  contextCopy = context;
+  entity = [(MKFCKModel *)self entity];
+  v6 = [HMDCoreDataCloudTransform localTransformableEntityFromEntity:entity];
 
-  v7 = [objc_alloc(MEMORY[0x277CBE438]) initWithEntity:v6 insertIntoManagedObjectContext:v4];
+  v7 = [objc_alloc(MEMORY[0x277CBE438]) initWithEntity:v6 insertIntoManagedObjectContext:contextCopy];
   v8 = v7;
-  v9 = [(MKFCKModel *)self modelID];
-  [v8 setModelID:v9];
+  modelID = [(MKFCKModel *)self modelID];
+  [v8 setModelID:modelID];
 
-  v10 = [(MKFCKModel *)self writerTimestamp];
-  [v8 setWriterTimestamp:v10];
+  writerTimestamp = [(MKFCKModel *)self writerTimestamp];
+  [v8 setWriterTimestamp:writerTimestamp];
 
   return v8;
 }
 
-- (id)fetchLocalModelWithContext:(id)a3
+- (id)fetchLocalModelWithContext:(id)context
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MKFCKModel *)self entity];
-  v6 = [HMDCoreDataCloudTransform localTransformableEntityFromEntity:v5];
+  contextCopy = context;
+  entity = [(MKFCKModel *)self entity];
+  v6 = [HMDCoreDataCloudTransform localTransformableEntityFromEntity:entity];
 
   v7 = MEMORY[0x277CBE428];
-  v8 = [v6 name];
-  v9 = [v7 fetchRequestWithEntityName:v8];
+  name = [v6 name];
+  v9 = [v7 fetchRequestWithEntityName:name];
 
   v10 = objc_opt_class();
-  v11 = [(MKFCKModel *)self modelID];
-  v12 = [v10 predicateWithModelID:v11];
+  modelID = [(MKFCKModel *)self modelID];
+  v12 = [v10 predicateWithModelID:modelID];
   [v9 setPredicate:v12];
 
   v28[0] = @"modelID";
@@ -524,13 +524,13 @@ LABEL_9:
   [v9 setPropertiesToFetch:v13];
 
   v23 = 0;
-  v14 = [v4 executeFetchRequest:v9 error:&v23];
+  v14 = [contextCopy executeFetchRequest:v9 error:&v23];
   v15 = v23;
   if (v14)
   {
     if ([v14 count])
     {
-      v16 = [v14 firstObject];
+      firstObject = [v14 firstObject];
       goto LABEL_8;
     }
   }
@@ -538,7 +538,7 @@ LABEL_9:
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -553,12 +553,12 @@ LABEL_9:
     objc_autoreleasePoolPop(v17);
   }
 
-  v16 = 0;
+  firstObject = 0;
 LABEL_8:
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return firstObject;
 }
 
 - (void)willSave
@@ -566,24 +566,24 @@ LABEL_8:
   v11.receiver = self;
   v11.super_class = MKFCKModel;
   [(MKFCKModel *)&v11 willSave];
-  v3 = [(MKFCKModel *)self writerTimestamp];
-  if (([(MKFCKModel *)self isDeleted]& 1) == 0 && (!v3 || [(MKFCKModel *)self hasChanges]))
+  writerTimestamp = [(MKFCKModel *)self writerTimestamp];
+  if (([(MKFCKModel *)self isDeleted]& 1) == 0 && (!writerTimestamp || [(MKFCKModel *)self hasChanges]))
   {
-    v4 = [(MKFCKModel *)self writerVersion];
-    v5 = [(MKFCKModel *)self changedValues];
-    v6 = [v5 count];
-    if (!v3 || v6 || !v4)
+    writerVersion = [(MKFCKModel *)self writerVersion];
+    changedValues = [(MKFCKModel *)self changedValues];
+    v6 = [changedValues count];
+    if (!writerTimestamp || v6 || !writerVersion)
     {
-      if (!v3 || ([v5 objectForKeyedSubscript:@"writerTimestamp"], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+      if (!writerTimestamp || ([changedValues objectForKeyedSubscript:@"writerTimestamp"], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
       {
         v8 = [MEMORY[0x277CBEAA8] now];
         [(MKFCKModel *)self setWriterTimestamp:v8];
       }
 
-      if (!v4 || ([v5 objectForKeyedSubscript:@"writerVersion"], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+      if (!writerVersion || ([changedValues objectForKeyedSubscript:@"writerVersion"], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
       {
         v10 = MKFCKModelCurrentWriterVersionString();
-        if (([v4 isEqualToString:v10] & 1) == 0)
+        if (([writerVersion isEqualToString:v10] & 1) == 0)
         {
           [(MKFCKModel *)self setWriterVersion:v10];
         }
@@ -615,9 +615,9 @@ LABEL_8:
   v3 = MEMORY[0x277CCACA8];
   v8.receiver = self;
   v8.super_class = MKFCKModel;
-  v4 = [(NSManagedObject *)&v8 hmd_debugIdentifier];
-  v5 = [(MKFCKModel *)self modelID];
-  v6 = [v3 stringWithFormat:@"%@/%@", v4, v5];
+  hmd_debugIdentifier = [(NSManagedObject *)&v8 hmd_debugIdentifier];
+  modelID = [(MKFCKModel *)self modelID];
+  v6 = [v3 stringWithFormat:@"%@/%@", hmd_debugIdentifier, modelID];
 
   return v6;
 }
@@ -625,18 +625,18 @@ LABEL_8:
 - (id)redactedDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MKFCKModel *)self objectID];
-  v5 = [v4 hmd_debugIdentifier];
-  v6 = [(MKFCKModel *)self modelID];
-  v7 = [v6 hash];
-  v8 = [(MKFCKModel *)self isFake];
+  objectID = [(MKFCKModel *)self objectID];
+  hmd_debugIdentifier = [objectID hmd_debugIdentifier];
+  modelID = [(MKFCKModel *)self modelID];
+  v7 = [modelID hash];
+  isFake = [(MKFCKModel *)self isFake];
   v9 = "";
-  if (v8)
+  if (isFake)
   {
     v9 = " [FAKE]";
   }
 
-  v10 = [v3 stringWithFormat:@"<%@: %lu%s>", v5, v7, v9];
+  v10 = [v3 stringWithFormat:@"<%@: %lu%s>", hmd_debugIdentifier, v7, v9];
 
   return v10;
 }
@@ -647,9 +647,9 @@ LABEL_8:
   v9.receiver = self;
   v9.super_class = MKFCKModel;
   v4 = [(HMDManagedObject *)&v9 debugDescription];
-  v5 = [(MKFCKModel *)self isFake];
+  isFake = [(MKFCKModel *)self isFake];
   v6 = "";
-  if (v5)
+  if (isFake)
   {
     v6 = " [FAKE]";
   }
@@ -662,66 +662,66 @@ LABEL_8:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MKFCKModel *)self objectID];
-  v5 = [v4 hmd_debugIdentifier];
-  v6 = [(MKFCKModel *)self modelID];
-  v7 = [(MKFCKModel *)self isFake];
+  objectID = [(MKFCKModel *)self objectID];
+  hmd_debugIdentifier = [objectID hmd_debugIdentifier];
+  modelID = [(MKFCKModel *)self modelID];
+  isFake = [(MKFCKModel *)self isFake];
   v8 = "";
-  if (v7)
+  if (isFake)
   {
     v8 = " [FAKE]";
   }
 
-  v9 = [v3 stringWithFormat:@"<%@: %@%s>", v5, v6, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %@%s>", hmd_debugIdentifier, modelID, v8];
 
   return v9;
 }
 
-- (id)relationshipForLocalName:(id)a3 localModel:(id)a4
+- (id)relationshipForLocalName:(id)name localModel:(id)model
 {
-  v6 = a3;
-  v7 = [a4 entity];
-  v8 = [v7 relationshipsByName];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  nameCopy = name;
+  entity = [model entity];
+  relationshipsByName = [entity relationshipsByName];
+  v9 = [relationshipsByName objectForKeyedSubscript:nameCopy];
 
-  v10 = [v9 userInfo];
-  v11 = [v10 objectForKeyedSubscript:@"cloudSyncKey"];
-  if (!v11)
+  userInfo = [v9 userInfo];
+  name = [userInfo objectForKeyedSubscript:@"cloudSyncKey"];
+  if (!name)
   {
-    v12 = [v10 objectForKeyedSubscript:@"cloudSyncInclude"];
-    v13 = [v12 BOOLValue];
+    v12 = [userInfo objectForKeyedSubscript:@"cloudSyncInclude"];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
-      v11 = [v9 name];
+      name = [v9 name];
     }
 
     else
     {
-      v11 = 0;
+      name = 0;
     }
   }
 
-  v14 = [(MKFCKModel *)self entity];
-  v15 = [v14 relationshipsByName];
-  v16 = [v15 objectForKeyedSubscript:v11];
+  entity2 = [(MKFCKModel *)self entity];
+  relationshipsByName2 = [entity2 relationshipsByName];
+  v16 = [relationshipsByName2 objectForKeyedSubscript:name];
 
   return v16;
 }
 
-- (BOOL)copyPropertiesFromLocalModel:(id)a3 context:(id)a4
+- (BOOL)copyPropertiesFromLocalModel:(id)model context:(id)context
 {
-  v5 = a3;
-  v6 = [v5 entity];
-  v7 = [v6 attributesByName];
+  modelCopy = model;
+  entity = [modelCopy entity];
+  attributesByName = [entity attributesByName];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__MKFCKModel_copyPropertiesFromLocalModel_context___block_invoke;
   v10[3] = &unk_27867E278;
-  v11 = v5;
-  v12 = self;
-  v8 = v5;
-  [v7 enumerateKeysAndObjectsUsingBlock:v10];
+  v11 = modelCopy;
+  selfCopy = self;
+  v8 = modelCopy;
+  [attributesByName enumerateKeysAndObjectsUsingBlock:v10];
 
   return 1;
 }
@@ -763,11 +763,11 @@ void __51__MKFCKModel_copyPropertiesFromLocalModel_context___block_invoke(uint64
   }
 }
 
-- (BOOL)shouldExportUpdatedPropertyInSet:(id)a3 name:(id)a4
+- (BOOL)shouldExportUpdatedPropertyInSet:(id)set name:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hmf_isEmpty])
+  setCopy = set;
+  nameCopy = name;
+  if ([setCopy hmf_isEmpty])
   {
     v7 = 1;
   }
@@ -782,9 +782,9 @@ void __51__MKFCKModel_copyPropertiesFromLocalModel_context___block_invoke(uint64
     v9[1] = 3221225472;
     v9[2] = __52__MKFCKModel_shouldExportUpdatedPropertyInSet_name___block_invoke;
     v9[3] = &unk_278687A70;
-    v10 = v6;
+    v10 = nameCopy;
     v11 = &v12;
-    [v5 hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
+    [setCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
     v7 = *(v13 + 24);
 
     _Block_object_dispose(&v12, 8);
@@ -805,19 +805,19 @@ void __52__MKFCKModel_shouldExportUpdatedPropertyInSet_name___block_invoke(uint6
   }
 }
 
-- (BOOL)copyPropertiesIntoLocalModel:(id)a3 context:(id)a4
+- (BOOL)copyPropertiesIntoLocalModel:(id)model context:(id)context
 {
-  v5 = a3;
-  v6 = [v5 entity];
-  v7 = [v6 attributesByName];
+  modelCopy = model;
+  entity = [modelCopy entity];
+  attributesByName = [entity attributesByName];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__MKFCKModel_copyPropertiesIntoLocalModel_context___block_invoke;
   v10[3] = &unk_27867E278;
   v10[4] = self;
-  v11 = v5;
-  v8 = v5;
-  [v7 enumerateKeysAndObjectsUsingBlock:v10];
+  v11 = modelCopy;
+  v8 = modelCopy;
+  [attributesByName enumerateKeysAndObjectsUsingBlock:v10];
 
   return 1;
 }
@@ -871,10 +871,10 @@ void __51__MKFCKModel_copyPropertiesIntoLocalModel_context___block_invoke(uint64
 - (BOOL)isFake
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(MKFCKModel *)self flags];
+  flags = [(MKFCKModel *)self flags];
   v7 = 0;
   v8 = 0;
-  [v2 getUUIDBytes:&v7];
+  [flags getUUIDBytes:&v7];
   v3 = BYTE5(v8);
 
   v4 = *MEMORY[0x277D85DE8];
@@ -883,34 +883,34 @@ void __51__MKFCKModel_copyPropertiesIntoLocalModel_context___block_invoke(uint64
 
 - (BOOL)shouldSkipValidationDuringImport
 {
-  v2 = [(MKFCKModel *)self managedObjectContext];
-  v3 = [v2 hmd_transactionAuthor] == 0;
+  managedObjectContext = [(MKFCKModel *)self managedObjectContext];
+  v3 = [managedObjectContext hmd_transactionAuthor] == 0;
 
   return v3;
 }
 
-+ (id)mergedDictionaryFromCloud:(id)a3 localModifications:(id)a4
++ (id)mergedDictionaryFromCloud:(id)cloud localModifications:(id)modifications
 {
-  v5 = a3;
-  v6 = a4;
+  cloudCopy = cloud;
+  modificationsCopy = modifications;
   v7 = objc_autoreleasePoolPush();
-  if ([v5 count])
+  if ([cloudCopy count])
   {
-    v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count") + objc_msgSend(v5, "count")}];
-    [v8 addEntriesFromDictionary:v5];
+    v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(modificationsCopy, "count") + objc_msgSend(cloudCopy, "count")}];
+    [v8 addEntriesFromDictionary:cloudCopy];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __59__MKFCKModel_mergedDictionaryFromCloud_localModifications___block_invoke;
     v12[3] = &unk_2786866F8;
     v13 = v8;
     v9 = v8;
-    [v6 enumerateKeysAndObjectsUsingBlock:v12];
+    [modificationsCopy enumerateKeysAndObjectsUsingBlock:v12];
     v10 = [v9 copy];
   }
 
   else
   {
-    v10 = v6;
+    v10 = modificationsCopy;
   }
 
   objc_autoreleasePoolPop(v7);
@@ -918,12 +918,12 @@ void __51__MKFCKModel_copyPropertiesIntoLocalModel_context___block_invoke(uint64
   return v10;
 }
 
-+ (id)canonicalModelForModels:(id)a3 context:(id)a4
++ (id)canonicalModelForModels:(id)models context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 hmd_coreData];
-  v9 = [v8 container];
+  modelsCopy = models;
+  contextCopy = context;
+  hmd_coreData = [contextCopy hmd_coreData];
+  container = [hmd_coreData container];
 
   v20 = 0;
   v21 = &v20;
@@ -941,12 +941,12 @@ void __51__MKFCKModel_copyPropertiesIntoLocalModel_context___block_invoke(uint64
   v13[1] = 3221225472;
   v13[2] = __46__MKFCKModel_canonicalModelForModels_context___block_invoke;
   v13[3] = &unk_27867D3A0;
-  v10 = v9;
+  v10 = container;
   v14 = v10;
   v15 = &v20;
   v16 = v18;
-  v17 = a1;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
+  selfCopy = self;
+  [modelsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
   v11 = v21[5];
 
   _Block_object_dispose(v18, 8);
@@ -1041,39 +1041,39 @@ LABEL_7:
   [(MKFCKModel *)v19 createWithLocalModel:v20 context:v21, v22];
 }
 
-+ (id)createWithLocalModel:(id)a3 context:(id)a4
++ (id)createWithLocalModel:(id)model context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 modelID];
-  v9 = [[a1 alloc] initWithContext:v7];
+  modelCopy = model;
+  contextCopy = context;
+  modelID = [modelCopy modelID];
+  v9 = [[self alloc] initWithContext:contextCopy];
 
-  [v9 setModelID:v8];
+  [v9 setModelID:modelID];
 
   return v9;
 }
 
-+ (id)fetchWithLocalModel:(id)a3 context:(id)a4
++ (id)fetchWithLocalModel:(id)model context:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 fetchRequest];
-  v9 = [v6 modelID];
-  v10 = [a1 predicateWithModelID:v9];
-  [v8 setPredicate:v10];
+  modelCopy = model;
+  contextCopy = context;
+  fetchRequest = [self fetchRequest];
+  modelID = [modelCopy modelID];
+  v10 = [self predicateWithModelID:modelID];
+  [fetchRequest setPredicate:v10];
 
-  v11 = [a1 defaultPreloadedProperties];
-  [v8 setPropertiesToFetch:v11];
+  defaultPreloadedProperties = [self defaultPreloadedProperties];
+  [fetchRequest setPropertiesToFetch:defaultPreloadedProperties];
 
   v21 = 0;
-  v12 = [v7 executeFetchRequest:v8 error:&v21];
+  v12 = [contextCopy executeFetchRequest:fetchRequest error:&v21];
   v13 = v21;
   if (v12)
   {
     if ([v12 count])
     {
-      v14 = [v12 firstObject];
+      firstObject = [v12 firstObject];
       goto LABEL_8;
     }
   }
@@ -1081,7 +1081,7 @@ LABEL_7:
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = a1;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -1096,39 +1096,39 @@ LABEL_7:
     objc_autoreleasePoolPop(v15);
   }
 
-  v14 = 0;
+  firstObject = 0;
 LABEL_8:
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return firstObject;
 }
 
-+ (id)modelWithModelID:(id)a3 context:(id)a4 error:(id *)a5
++ (id)modelWithModelID:(id)d context:(id)context error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 fetchRequest];
-  v11 = [a1 predicateWithModelID:v8];
-  [v10 setPredicate:v11];
+  dCopy = d;
+  contextCopy = context;
+  fetchRequest = [self fetchRequest];
+  v11 = [self predicateWithModelID:dCopy];
+  [fetchRequest setPredicate:v11];
 
-  v12 = [a1 defaultPreloadedProperties];
-  [v10 setPropertiesToFetch:v12];
+  defaultPreloadedProperties = [self defaultPreloadedProperties];
+  [fetchRequest setPropertiesToFetch:defaultPreloadedProperties];
 
-  [v10 setFetchBatchSize:1];
+  [fetchRequest setFetchBatchSize:1];
   v23 = 0;
-  v13 = [v9 executeFetchRequest:v10 error:&v23];
+  v13 = [contextCopy executeFetchRequest:fetchRequest error:&v23];
   v14 = v23;
   if (v13)
   {
-    v15 = [v13 firstObject];
+    firstObject = [v13 firstObject];
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -1138,37 +1138,37 @@ LABEL_8:
       v26 = 2160;
       v27 = 1752392040;
       v28 = 2112;
-      v29 = v8;
+      v29 = dCopy;
       v30 = 2114;
       v31 = v14;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch model with ID %{mask.hash}@: %{public}@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v16);
-    if (a5)
+    if (error)
     {
       v20 = v14;
-      v15 = 0;
-      *a5 = v14;
+      firstObject = 0;
+      *error = v14;
     }
 
     else
     {
-      v15 = 0;
+      firstObject = 0;
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return firstObject;
 }
 
-+ (id)modelWithObjectID:(id)a3 context:(id)a4 error:(id *)a5
++ (id)modelWithObjectID:(id)d context:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 defaultPreloadedProperties];
-  v11 = [v8 hmd_fetchExistingObjectWithID:v9 propertiesToFetch:v10 error:a5];
+  contextCopy = context;
+  dCopy = d;
+  defaultPreloadedProperties = [self defaultPreloadedProperties];
+  v11 = [contextCopy hmd_fetchExistingObjectWithID:dCopy propertiesToFetch:defaultPreloadedProperties error:error];
 
   if (!v11)
   {
@@ -1177,36 +1177,36 @@ LABEL_8:
 
   if (objc_opt_isKindOfClass())
   {
-    a5 = v11;
+    error = v11;
     goto LABEL_7;
   }
 
-  if (a5)
+  if (error)
   {
     v12 = MEMORY[0x277CCA9B8];
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fetched object is not of the expected type: %@", v11];
-    *a5 = [v12 hmErrorWithCode:22 description:0 reason:v13 suggestion:0];
+    *error = [v12 hmErrorWithCode:22 description:0 reason:v13 suggestion:0];
 
 LABEL_6:
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_7:
 
-  return a5;
+  return error;
 }
 
-+ (id)appendDefaultPreloadedPropertiesTo:(id)a3
++ (id)appendDefaultPreloadedPropertiesTo:(id)to
 {
-  v4 = a3;
-  v5 = [a1 defaultPreloadedProperties];
-  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count") + objc_msgSend(v5, "count")}];
-  [v6 addObjectsFromArray:v5];
-  [v6 addObjectsFromArray:v4];
+  toCopy = to;
+  defaultPreloadedProperties = [self defaultPreloadedProperties];
+  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(toCopy, "count") + objc_msgSend(defaultPreloadedProperties, "count")}];
+  [v6 addObjectsFromArray:defaultPreloadedProperties];
+  [v6 addObjectsFromArray:toCopy];
 
-  v7 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
-  return v7;
+  return allObjects;
 }
 
 + (NSArray)defaultPreloadedProperties
@@ -1233,10 +1233,10 @@ LABEL_7:
   objc_exception_throw(v7);
 }
 
-- (BOOL)validateFlags:(id *)a3 error:(id *)a4
+- (BOOL)validateFlags:(id *)flags error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (-[MKFCKModel shouldSkipValidationDuringImport](self, "shouldSkipValidationDuringImport") || ([objc_opt_class() hmd_validateUUID:*a3 key:@"flags" error:a4] & 1) != 0)
+  if (-[MKFCKModel shouldSkipValidationDuringImport](self, "shouldSkipValidationDuringImport") || ([objc_opt_class() hmd_validateUUID:*flags key:@"flags" error:error] & 1) != 0)
   {
     result = 1;
   }
@@ -1244,12 +1244,12 @@ LABEL_7:
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = *a3;
+      v12 = *flags;
       v14 = 138543874;
       v15 = v11;
       v16 = 2114;
@@ -1267,7 +1267,7 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)validateWriterVersion:(id *)a3 error:(id *)a4
+- (BOOL)validateWriterVersion:(id *)version error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
   if ([(MKFCKModel *)self shouldSkipValidationDuringImport])
@@ -1275,8 +1275,8 @@ LABEL_7:
     goto LABEL_2;
   }
 
-  v8 = *a3;
-  if (!*a3)
+  v8 = *version;
+  if (!*version)
   {
     if (([(MKFCKModel *)self isInserted]& 1) != 0)
     {
@@ -1285,7 +1285,7 @@ LABEL_2:
       goto LABEL_19;
     }
 
-    v8 = *a3;
+    v8 = *version;
   }
 
   v9 = v8;
@@ -1316,19 +1316,19 @@ LABEL_2:
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     v17 = HMFGetLogIdentifier();
-    v18 = [(MKFCKModel *)v15 modelID];
+    modelID = [(MKFCKModel *)selfCopy modelID];
     v29 = v14;
-    v19 = *a3;
+    v19 = *version;
     v20 = MKFCKModelCurrentWriterVersionString();
     *buf = 138544130;
     v31 = v17;
     v32 = 2112;
-    v33 = v18;
+    v33 = modelID;
     v34 = 2112;
     v35 = v19;
     v14 = v29;
@@ -1338,7 +1338,7 @@ LABEL_2:
   }
 
   objc_autoreleasePoolPop(v14);
-  v21 = [objc_alloc(MEMORY[0x277D0F940]) initWithString:*a3];
+  v21 = [objc_alloc(MEMORY[0x277D0F940]) initWithString:*version];
 
   if (v21)
   {
@@ -1350,12 +1350,12 @@ LABEL_14:
   {
 LABEL_15:
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = *a3;
+      v26 = *version;
       *buf = 138543874;
       v31 = v25;
       v32 = 2114;
@@ -1366,8 +1366,8 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v22);
-    [objc_opt_class() hmd_errorForInvalidValue:*a3 key:@"writerVersion"];
-    *a4 = v7 = 0;
+    [objc_opt_class() hmd_errorForInvalidValue:*version key:@"writerVersion"];
+    *error = v7 = 0;
   }
 
 LABEL_19:
@@ -1375,7 +1375,7 @@ LABEL_19:
   return v7;
 }
 
-- (BOOL)validateWriterTimestamp:(id *)a3 error:(id *)a4
+- (BOOL)validateWriterTimestamp:(id *)timestamp error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   if ([(MKFCKModel *)self shouldSkipValidationDuringImport])
@@ -1383,8 +1383,8 @@ LABEL_19:
     goto LABEL_2;
   }
 
-  v8 = *a3;
-  if (!*a3)
+  v8 = *timestamp;
+  if (!*timestamp)
   {
     if (([(MKFCKModel *)self isInserted]& 1) != 0)
     {
@@ -1393,7 +1393,7 @@ LABEL_2:
       goto LABEL_14;
     }
 
-    v8 = *a3;
+    v8 = *timestamp;
   }
 
   v9 = v8;
@@ -1414,12 +1414,12 @@ LABEL_2:
   if (!v11)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = *a3;
+      v16 = *timestamp;
       v19 = 138543874;
       v20 = v15;
       v21 = 2114;
@@ -1430,7 +1430,7 @@ LABEL_2:
     }
 
     objc_autoreleasePoolPop(v12);
-    *a4 = [objc_opt_class() hmd_errorForInvalidValue:*a3 key:@"writerTimestamp"];
+    *error = [objc_opt_class() hmd_errorForInvalidValue:*timestamp key:@"writerTimestamp"];
   }
 
 LABEL_14:
@@ -1438,10 +1438,10 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)validateModelID:(id *)a3 error:(id *)a4
+- (BOOL)validateModelID:(id *)d error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (-[MKFCKModel shouldSkipValidationDuringImport](self, "shouldSkipValidationDuringImport") || ([objc_opt_class() hmd_validateUUID:*a3 key:@"modelID" error:a4] & 1) != 0)
+  if (-[MKFCKModel shouldSkipValidationDuringImport](self, "shouldSkipValidationDuringImport") || ([objc_opt_class() hmd_validateUUID:*d key:@"modelID" error:error] & 1) != 0)
   {
     result = 1;
   }
@@ -1449,12 +1449,12 @@ LABEL_14:
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = *a3;
+      v12 = *d;
       v14 = 138543874;
       v15 = v11;
       v16 = 2114;

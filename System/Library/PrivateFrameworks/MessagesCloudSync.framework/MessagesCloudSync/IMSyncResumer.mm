@@ -1,5 +1,5 @@
 @interface IMSyncResumer
-- (IMSyncResumer)initWithDelegate:(id)a3 syncStateManager:(id)a4;
+- (IMSyncResumer)initWithDelegate:(id)delegate syncStateManager:(id)manager;
 - (void)attemptToResumeSyncIfAppropriate;
 - (void)attemptToResumeSyncOnAccountUpdateIfAppropriate;
 - (void)attemptToResumeSyncOnIdentityUpdateIfAppropriate;
@@ -7,17 +7,17 @@
 
 @implementation IMSyncResumer
 
-- (IMSyncResumer)initWithDelegate:(id)a3 syncStateManager:(id)a4
+- (IMSyncResumer)initWithDelegate:(id)delegate syncStateManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = IMSyncResumer;
   v8 = [(IMSyncResumer *)&v17 init];
   if (v8)
   {
     v9 = [MCSSyncResumer alloc];
-    v12 = objc_msgSend_initWithDelegate_syncStateManager_(v9, v10, v6, v7, v11);
+    v12 = objc_msgSend_initWithDelegate_syncStateManager_(v9, v10, delegateCopy, managerCopy, v11);
     objc_msgSend_setResumer_(v8, v13, v12, v14, v15);
   }
 

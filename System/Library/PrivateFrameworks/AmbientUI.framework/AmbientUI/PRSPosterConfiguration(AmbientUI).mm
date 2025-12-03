@@ -7,24 +7,24 @@
 - (NSObject)amui_getConfiguredDisplayNameWithError:()AmbientUI
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [a1 pr_loadOtherMetadataWithError:?];
+  v5 = [self pr_loadOtherMetadataWithError:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 displayNameLocalizationKey];
-    if (!v7)
+    displayNameLocalizationKey = [v5 displayNameLocalizationKey];
+    if (!displayNameLocalizationKey)
     {
       v8 = AMUILogSwitcher();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(PRSPosterConfiguration(AmbientUI) *)a1 amui_getConfiguredDisplayNameWithError:v8];
+        [(PRSPosterConfiguration(AmbientUI) *)self amui_getConfiguredDisplayNameWithError:v8];
       }
     }
 
-    v9 = [a1 pr_posterProvider];
-    if (v9)
+    pr_posterProvider = [self pr_posterProvider];
+    if (pr_posterProvider)
     {
-      v10 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v9 error:a3];
+      v10 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:pr_posterProvider error:a3];
       if (v10)
       {
         v11 = v10;
@@ -34,7 +34,7 @@
         v14 = v13;
         if (v13)
         {
-          v15 = [v13 localizedStringForKey:v7 value:0 table:0];
+          v15 = [v13 localizedStringForKey:displayNameLocalizationKey value:0 table:0];
           v16 = v15;
           if (v15)
           {
@@ -48,11 +48,11 @@
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
               v21 = 138412802;
-              v22 = v7;
+              v22 = displayNameLocalizationKey;
               v23 = 2112;
               v24 = v14;
               v25 = 2112;
-              v26 = a1;
+              selfCopy = self;
               _os_log_error_impl(&dword_23F38B000, v18, OS_LOG_TYPE_ERROR, "Failed to load display name localization key %@ from bundle %@ for %@", &v21, 0x20u);
             }
 
@@ -86,7 +86,7 @@
       v12 = AMUILogSwitcher();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(PRSPosterConfiguration(AmbientUI) *)a1 amui_getConfiguredDisplayNameWithError:v12];
+        [(PRSPosterConfiguration(AmbientUI) *)self amui_getConfiguredDisplayNameWithError:v12];
       }
     }
 
@@ -98,16 +98,16 @@ LABEL_29:
 
   if (a3)
   {
-    v7 = *a3;
+    displayNameLocalizationKey = *a3;
   }
 
   else
   {
-    v7 = 0;
+    displayNameLocalizationKey = 0;
   }
 
-  v9 = AMUILogSwitcher();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  pr_posterProvider = AMUILogSwitcher();
+  if (os_log_type_enabled(pr_posterProvider, OS_LOG_TYPE_ERROR))
   {
     [PRSPosterConfiguration(AmbientUI) amui_getConfiguredDisplayNameWithError:];
   }

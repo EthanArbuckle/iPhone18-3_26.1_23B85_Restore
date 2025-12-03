@@ -1,10 +1,10 @@
 @interface ACTimedExpirer
-+ (ACTimedExpirer)expirerWithTimeout:(unint64_t)a3;
++ (ACTimedExpirer)expirerWithTimeout:(unint64_t)timeout;
 - (ACTimedExpirer)init;
 - (void)_unsafeCancelTimer;
 - (void)cancelTimer;
 - (void)dealloc;
-- (void)scheduleExpiration:(id)a3;
+- (void)scheduleExpiration:(id)expiration;
 @end
 
 @implementation ACTimedExpirer
@@ -39,7 +39,7 @@
   v4[1] = 3221225472;
   v5 = __29__ACTimedExpirer_cancelTimer__block_invoke;
   v6 = &unk_1E7975AD8;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_invalidationTimerLock);
   v5(v3);
@@ -54,23 +54,23 @@
   [(ACTimedExpirer *)&v3 dealloc];
 }
 
-+ (ACTimedExpirer)expirerWithTimeout:(unint64_t)a3
++ (ACTimedExpirer)expirerWithTimeout:(unint64_t)timeout
 {
-  v4 = objc_alloc_init(a1);
-  v4[1] = a3;
+  v4 = objc_alloc_init(self);
+  v4[1] = timeout;
 
   return v4;
 }
 
-- (void)scheduleExpiration:(id)a3
+- (void)scheduleExpiration:(id)expiration
 {
-  v4 = a3;
+  expirationCopy = expiration;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __37__ACTimedExpirer_scheduleExpiration___block_invoke;
   v9 = &unk_1E7977330;
-  v10 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = expirationCopy;
   v11 = v5;
   v6 = v7;
   os_unfair_lock_lock(&self->_invalidationTimerLock);

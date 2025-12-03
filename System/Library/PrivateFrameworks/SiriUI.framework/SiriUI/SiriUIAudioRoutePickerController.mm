@@ -1,66 +1,66 @@
 @interface SiriUIAudioRoutePickerController
-+ (id)_nameForRouteInfo:(id)a3 isSelected:(BOOL *)a4 isBluetooth:(BOOL *)a5 isOverride:(BOOL *)a6 audioRouteName:(id *)a7;
++ (id)_nameForRouteInfo:(id)info isSelected:(BOOL *)selected isBluetooth:(BOOL *)bluetooth isOverride:(BOOL *)override audioRouteName:(id *)name;
 - (BOOL)isShowingPicker;
-- (SiriUIAudioRoutePickerController)initWithCategory:(id)a3 mode:(id)a4 delegate:(id)a5;
+- (SiriUIAudioRoutePickerController)initWithCategory:(id)category mode:(id)mode delegate:(id)delegate;
 - (SiriUIAudioRoutePickerControllerDelegate)delegate;
-- (void)_dismissAlertController:(BOOL)a3;
-- (void)_fetchPickableRoutesWithCompletion:(id)a3;
-- (void)_pickableRoutesChanged:(id)a3;
+- (void)_dismissAlertController:(BOOL)controller;
+- (void)_fetchPickableRoutesWithCompletion:(id)completion;
+- (void)_pickableRoutesChanged:(id)changed;
 - (void)_removeWindow;
-- (void)_selectRouteWithInfo:(id)a3;
-- (void)_showAlertControllerFromViewController:(id)a3 animated:(BOOL)a4;
+- (void)_selectRouteWithInfo:(id)info;
+- (void)_showAlertControllerFromViewController:(id)controller animated:(BOOL)animated;
 - (void)dealloc;
-- (void)showPickerFromViewController:(id)a3 animated:(BOOL)a4;
+- (void)showPickerFromViewController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation SiriUIAudioRoutePickerController
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SiriUIAudioRoutePickerController;
   [(SiriUIAudioRoutePickerController *)&v4 dealloc];
 }
 
-- (SiriUIAudioRoutePickerController)initWithCategory:(id)a3 mode:(id)a4 delegate:(id)a5
+- (SiriUIAudioRoutePickerController)initWithCategory:(id)category mode:(id)mode delegate:(id)delegate
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  categoryCopy = category;
+  modeCopy = mode;
+  delegateCopy = delegate;
   v27.receiver = self;
   v27.super_class = SiriUIAudioRoutePickerController;
   v11 = [(SiriUIAudioRoutePickerController *)&v27 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v10);
-    v13 = [v8 copy];
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    v13 = [categoryCopy copy];
     audioCategory = v12->_audioCategory;
     v12->_audioCategory = v13;
 
-    v15 = [v9 copy];
+    v15 = [modeCopy copy];
     audioMode = v12->_audioMode;
     v12->_audioMode = v15;
 
-    v17 = [MEMORY[0x277D26E58] sharedAVSystemController];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
     v18 = MEMORY[0x277D26C68];
     v19 = *MEMORY[0x277D26B00];
     v28[0] = *MEMORY[0x277D26C68];
     v28[1] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
-    [v17 setAttribute:v20 forKey:*MEMORY[0x277D26DD0] error:0];
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
+    [mEMORY[0x277D26E58] setAttribute:v20 forKey:*MEMORY[0x277D26DD0] error:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v22 = *v18;
-    v23 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    [v21 addObserver:v12 selector:sel__pickableRoutesChanged_ name:v22 object:v23];
+    mEMORY[0x277D26E58]2 = [MEMORY[0x277D26E58] sharedAVSystemController];
+    [defaultCenter addObserver:v12 selector:sel__pickableRoutesChanged_ name:v22 object:mEMORY[0x277D26E58]2];
 
     v24 = *MEMORY[0x277D26B00];
-    v25 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    [v21 addObserver:v12 selector:sel__routeChanged_ name:v24 object:v25];
+    mEMORY[0x277D26E58]3 = [MEMORY[0x277D26E58] sharedAVSystemController];
+    [defaultCenter addObserver:v12 selector:sel__routeChanged_ name:v24 object:mEMORY[0x277D26E58]3];
 
     [(SiriUIAudioRoutePickerController *)v12 refreshRoutes];
   }
@@ -68,9 +68,9 @@
   return v12;
 }
 
-- (void)_fetchPickableRoutesWithCompletion:(id)a3
+- (void)_fetchPickableRoutesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(21, 0);
   v7[0] = MEMORY[0x277D85DD0];
@@ -79,8 +79,8 @@
   v7[3] = &unk_279C5A828;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 
   objc_destroyWeak(&v9);
@@ -180,32 +180,32 @@ void __71__SiriUIAudioRoutePickerController__fetchPickableRoutesWithCompletion__
   }
 }
 
-- (void)showPickerFromViewController:(id)a3 animated:(BOOL)a4
+- (void)showPickerFromViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained routePickerControllerWillShow:self];
 
-  [(SiriUIAudioRoutePickerController *)self _showAlertControllerFromViewController:v7 animated:v4];
+  [(SiriUIAudioRoutePickerController *)self _showAlertControllerFromViewController:controllerCopy animated:animatedCopy];
 }
 
-- (void)_showAlertControllerFromViewController:(id)a3 animated:(BOOL)a4
+- (void)_showAlertControllerFromViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = objc_alloc_init(MEMORY[0x277D75D28]);
   v7 = [SiriRoutePickerAlertWindow alloc];
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v9 = [(SiriRoutePickerAlertWindow *)v7 initWithFrame:?];
   window = self->_window;
   self->_window = v9;
 
   [(UIWindow *)self->_window setRootViewController:v6];
   [(UIWindow *)self->_window setHidden:0];
-  v11 = [v5 view];
-  v12 = [v11 window];
-  [v12 windowLevel];
+  view = [controllerCopy view];
+  window = [view window];
+  [window windowLevel];
   [(UIWindow *)self->_window setWindowLevel:v13 + 1.0];
 
   v14 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
@@ -345,18 +345,18 @@ void __84__SiriUIAudioRoutePickerController__showAlertControllerFromViewControll
   [WeakRetained _dismissAlertController:1];
 }
 
-+ (id)_nameForRouteInfo:(id)a3 isSelected:(BOOL *)a4 isBluetooth:(BOOL *)a5 isOverride:(BOOL *)a6 audioRouteName:(id *)a7
++ (id)_nameForRouteInfo:(id)info isSelected:(BOOL *)selected isBluetooth:(BOOL *)bluetooth isOverride:(BOOL *)override audioRouteName:(id *)name
 {
-  v11 = a3;
+  infoCopy = info;
   v12 = MEMORY[0x277D26D28];
-  v13 = [v11 objectForKey:*MEMORY[0x277D26D28]];
+  v13 = [infoCopy objectForKey:*MEMORY[0x277D26D28]];
   v14 = [v13 isEqualToString:*MEMORY[0x277D26C48]];
-  v15 = [v11 objectForKey:*MEMORY[0x277D26CA8]];
+  v15 = [infoCopy objectForKey:*MEMORY[0x277D26CA8]];
   v16 = [v15 isEqualToString:@"Speaker"];
   if (!v14 || (v16 & 1) == 0)
   {
-    v18 = [v11 objectForKey:*MEMORY[0x277D26D08]];
-    if (!a4)
+    localizedModel = [infoCopy objectForKey:*MEMORY[0x277D26D08]];
+    if (!selected)
     {
       goto LABEL_7;
     }
@@ -364,49 +364,49 @@ void __84__SiriUIAudioRoutePickerController__showAlertControllerFromViewControll
     goto LABEL_6;
   }
 
-  v17 = [MEMORY[0x277D75418] currentDevice];
-  v18 = [v17 localizedModel];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  localizedModel = [currentDevice localizedModel];
 
-  if (a4)
+  if (selected)
   {
 LABEL_6:
-    v19 = [v11 objectForKey:*MEMORY[0x277D26D00]];
-    *a4 = [v19 BOOLValue];
+    v19 = [infoCopy objectForKey:*MEMORY[0x277D26D00]];
+    *selected = [v19 BOOLValue];
   }
 
 LABEL_7:
-  if (a5 | a6)
+  if (bluetooth | override)
   {
-    v20 = [v11 objectForKey:*v12];
+    v20 = [infoCopy objectForKey:*v12];
     v21 = v20;
-    if (a5)
+    if (bluetooth)
     {
-      *a5 = [v20 isEqualToString:*MEMORY[0x277D26C58]];
+      *bluetooth = [v20 isEqualToString:*MEMORY[0x277D26C58]];
     }
 
-    if (a6)
+    if (override)
     {
-      *a6 = [v21 isEqualToString:*MEMORY[0x277D26C50]];
+      *override = [v21 isEqualToString:*MEMORY[0x277D26C50]];
     }
   }
 
-  if (a7)
+  if (name)
   {
     v22 = v15;
-    *a7 = v15;
+    *name = v15;
   }
 
-  return v18;
+  return localizedModel;
 }
 
-- (void)_selectRouteWithInfo:(id)a3
+- (void)_selectRouteWithInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   ADClientAddValueForScalarKey();
-  v4 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
   v5 = *MEMORY[0x277D26C70];
   v9 = 0;
-  v6 = [v4 setAttribute:v3 forKey:v5 error:&v9];
+  v6 = [mEMORY[0x277D26E58] setAttribute:infoCopy forKey:v5 error:&v9];
 
   v7 = v9;
   if ((v6 & 1) == 0)
@@ -419,13 +419,13 @@ LABEL_7:
   }
 }
 
-- (void)_dismissAlertController:(BOOL)a3
+- (void)_dismissAlertController:(BOOL)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained routePickerControllerWillDismiss:self];
 
-  [(SiriRoutePickerAlertController *)self->_pickerAlertController dismissViewControllerAnimated:v3 completion:0];
+  [(SiriRoutePickerAlertController *)self->_pickerAlertController dismissViewControllerAnimated:controllerCopy completion:0];
 
   [(SiriUIAudioRoutePickerController *)self _removeWindow];
 }
@@ -440,15 +440,15 @@ LABEL_7:
 
 - (BOOL)isShowingPicker
 {
-  v2 = [(SiriRoutePickerAlertController *)self->_pickerAlertController presentingViewController];
-  v3 = v2 != 0;
+  presentingViewController = [(SiriRoutePickerAlertController *)self->_pickerAlertController presentingViewController];
+  v3 = presentingViewController != 0;
 
   return v3;
 }
 
-- (void)_pickableRoutesChanged:(id)a3
+- (void)_pickableRoutesChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;

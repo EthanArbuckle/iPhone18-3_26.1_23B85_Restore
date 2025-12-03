@@ -3,28 +3,28 @@
 + (NSString)activitySummaryRangeNotificationKey;
 + (NSString)didUpdatePauseStateNotification;
 + (NSString)initialPauseStateLoadedNotification;
-- (BOOL)isPausedForActivitySummary:(id)a3;
-- (BOOL)isPausedForActivitySummaryCacheIndex:(int64_t)a3;
-- (BOOL)isPausedForActivitySummaryCacheIndexStart:(int64_t)a3 end:(int64_t)a4;
+- (BOOL)isPausedForActivitySummary:(id)summary;
+- (BOOL)isPausedForActivitySummaryCacheIndex:(int64_t)index;
+- (BOOL)isPausedForActivitySummaryCacheIndexStart:(int64_t)start end:(int64_t)end;
 - (FIPauseRingsCoordinator)init;
 - (NSDate)resumeDate;
 - (id)formattedResumeDate;
 - (void)dealloc;
-- (void)pauseRingsUntilDate:(id)a3 completionHandler:(id)a4;
-- (void)unpauseRingsWithCompletionHandler:(id)a3;
+- (void)pauseRingsUntilDate:(id)date completionHandler:(id)handler;
+- (void)unpauseRingsWithCompletionHandler:(id)handler;
 @end
 
 @implementation FIPauseRingsCoordinator
 
-- (BOOL)isPausedForActivitySummary:(id)a3
+- (BOOL)isPausedForActivitySummary:(id)summary
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  sub_24B364324(v3);
-  LOBYTE(v3) = v7;
+  summaryCopy = summary;
+  summaryCopy2 = summary;
+  selfCopy = self;
+  sub_24B364324(summaryCopy);
+  LOBYTE(summaryCopy) = v7;
 
-  return v3 & 1;
+  return summaryCopy & 1;
 }
 
 + (NSString)didUpdatePauseStateNotification
@@ -61,13 +61,13 @@
   if (v3)
   {
     v4 = *(&self->super.isa + OBJC_IVAR___FIPauseRingsCoordinator_healthStore);
-    v5 = self;
+    selfCopy = self;
     [v4 stopQuery_];
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7.receiver = self;
@@ -75,32 +75,32 @@
   [(FIPauseRingsCoordinator *)&v7 dealloc];
 }
 
-- (BOOL)isPausedForActivitySummaryCacheIndex:(int64_t)a3
+- (BOOL)isPausedForActivitySummaryCacheIndex:(int64_t)index
 {
-  v4 = self;
-  sub_24B3A00F8(a3);
-  LOBYTE(a3) = v5;
+  selfCopy = self;
+  sub_24B3A00F8(index);
+  LOBYTE(index) = v5;
 
-  return a3 & 1;
+  return index & 1;
 }
 
-- (BOOL)isPausedForActivitySummaryCacheIndexStart:(int64_t)a3 end:(int64_t)a4
+- (BOOL)isPausedForActivitySummaryCacheIndexStart:(int64_t)start end:(int64_t)end
 {
-  v6 = self;
-  sub_24B3A0360(a3, a4);
-  LOBYTE(a4) = v7;
+  selfCopy = self;
+  sub_24B3A0360(start, end);
+  LOBYTE(end) = v7;
 
-  return a4 & 1;
+  return end & 1;
 }
 
-- (void)pauseRingsUntilDate:(id)a3 completionHandler:(id)a4
+- (void)pauseRingsUntilDate:(id)date completionHandler:(id)handler
 {
   v6 = sub_24B3AB4C4();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   MEMORY[0x28223BE20](v6);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   sub_24B3AB494();
   if (v11)
   {
@@ -114,16 +114,16 @@
     v12 = 0;
   }
 
-  v13 = self;
+  selfCopy = self;
   sub_24B3A05E8(v10, v11, v12);
   sub_24B3A68E4(v11);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)unpauseRingsWithCompletionHandler:(id)a3
+- (void)unpauseRingsWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -138,7 +138,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_24B3A1FBC(v7, v6);
   sub_24B3A68E4(v7);
 }
@@ -149,7 +149,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_24B3A2BA4(v6);
 
   v8 = sub_24B3AB4C4();
@@ -168,7 +168,7 @@
 
 - (id)formattedResumeDate
 {
-  v2 = self;
+  selfCopy = self;
   sub_24B3A31D4();
   v4 = v3;
 

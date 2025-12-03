@@ -1,6 +1,6 @@
 @interface PLSFace
 - (CGRect)relativeRect;
-- (PLSFace)initWithFaceInfo:(id)a3;
+- (PLSFace)initWithFaceInfo:(id)info;
 @end
 
 @implementation PLSFace
@@ -18,21 +18,21 @@
   return result;
 }
 
-- (PLSFace)initWithFaceInfo:(id)a3
+- (PLSFace)initWithFaceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v11.receiver = self;
   v11.super_class = PLSFace;
   v5 = [(PLSFace *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:kPLSAssetFaceAlbumUUIDKey];
+    v6 = [infoCopy objectForKey:kPLSAssetFaceAlbumUUIDKey];
     [(PLSFace *)v5 setAlbumUUID:v6];
 
-    v7 = [v4 objectForKey:kPLSAssetFaceIndexKey];
+    v7 = [infoCopy objectForKey:kPLSAssetFaceIndexKey];
     -[PLSFace setIdentifier:](v5, "setIdentifier:", [v7 intValue]);
 
-    v8 = [v4 objectForKey:kPLSAssetFaceRectangleKey];
+    v8 = [infoCopy objectForKey:kPLSAssetFaceRectangleKey];
     memset(&rect, 0, sizeof(rect));
     if (CGRectMakeWithDictionaryRepresentation(v8, &rect))
     {
@@ -41,7 +41,7 @@
 
     else
     {
-      NSLog(@"[PLS] Unable to construct faceRect for faceInfo: %@", v4);
+      NSLog(@"[PLS] Unable to construct faceRect for faceInfo: %@", infoCopy);
     }
   }
 

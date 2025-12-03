@@ -1,46 +1,46 @@
 @interface MSCMSMultipleSignaturesAttribute
 - (MSCMSMultipleSignaturesAttribute)init;
-- (MSCMSMultipleSignaturesAttribute)initWithAttribute:(id)a3 error:(id *)a4;
+- (MSCMSMultipleSignaturesAttribute)initWithAttribute:(id)attribute error:(id *)error;
 - (MSCMSSignerInfo)containingSignerInfo;
 - (NSData)signedAttrsHash;
-- (id)encodeAttributeWithError:(id *)a3;
-- (void)setBodyHashAlgorithm:(id)a3;
-- (void)setSignatureAlgorithm:(id)a3;
-- (void)setSignedAttrsHashAlgorithm:(id)a3;
+- (id)encodeAttributeWithError:(id *)error;
+- (void)setBodyHashAlgorithm:(id)algorithm;
+- (void)setSignatureAlgorithm:(id)algorithm;
+- (void)setSignedAttrsHashAlgorithm:(id)algorithm;
 @end
 
 @implementation MSCMSMultipleSignaturesAttribute
 
-- (void)setBodyHashAlgorithm:(id)a3
+- (void)setBodyHashAlgorithm:(id)algorithm
 {
-  v5 = a3;
-  if (v5)
+  algorithmCopy = algorithm;
+  if (algorithmCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_bodyHashAlgorithm, a3);
-    v5 = v6;
+    v6 = algorithmCopy;
+    objc_storeStrong(&self->_bodyHashAlgorithm, algorithm);
+    algorithmCopy = v6;
   }
 }
 
-- (void)setSignatureAlgorithm:(id)a3
+- (void)setSignatureAlgorithm:(id)algorithm
 {
-  v5 = a3;
-  if (v5)
+  algorithmCopy = algorithm;
+  if (algorithmCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_signatureAlgorithm, a3);
-    v5 = v6;
+    v6 = algorithmCopy;
+    objc_storeStrong(&self->_signatureAlgorithm, algorithm);
+    algorithmCopy = v6;
   }
 }
 
-- (void)setSignedAttrsHashAlgorithm:(id)a3
+- (void)setSignedAttrsHashAlgorithm:(id)algorithm
 {
-  v5 = a3;
-  if (v5)
+  algorithmCopy = algorithm;
+  if (algorithmCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_signedAttrsHashAlgorithm, a3);
-    v5 = v6;
+    v6 = algorithmCopy;
+    objc_storeStrong(&self->_signedAttrsHashAlgorithm, algorithm);
+    algorithmCopy = v6;
   }
 }
 
@@ -68,22 +68,22 @@
   return v2;
 }
 
-- (id)encodeAttributeWithError:(id *)a3
+- (id)encodeAttributeWithError:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
   v39 = 0;
-  v40 = 0;
-  v5 = [(MSAlgorithmIdentifier *)self->_bodyHashAlgorithm asn1AlgId];
-  var1 = v5->var1;
-  var0 = v5->var0;
+  bytes = 0;
+  asn1AlgId = [(MSAlgorithmIdentifier *)self->_bodyHashAlgorithm asn1AlgId];
+  var1 = asn1AlgId->var1;
+  var0 = asn1AlgId->var0;
   v34 = var1;
-  v7 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm asn1AlgId];
-  v8 = v7->var1;
-  v35 = v7->var0;
+  asn1AlgId2 = [(MSAlgorithmIdentifier *)self->_signatureAlgorithm asn1AlgId];
+  v8 = asn1AlgId2->var1;
+  v35 = asn1AlgId2->var0;
   v36 = v8;
-  v9 = [(MSAlgorithmIdentifier *)self->_signedAttrsHashAlgorithm asn1AlgId];
-  v10 = v9->var1;
-  v37 = v9->var0;
+  asn1AlgId3 = [(MSAlgorithmIdentifier *)self->_signedAttrsHashAlgorithm asn1AlgId];
+  v10 = asn1AlgId3->var1;
+  v37 = asn1AlgId3->var0;
   v38 = v10;
   WeakRetained = objc_loadWeakRetained(&self->_signedAttrsHash);
 
@@ -93,7 +93,7 @@
     v39 = [v12 length];
 
     v13 = objc_loadWeakRetained(&self->_signedAttrsHash);
-    v40 = [v13 bytes];
+    bytes = [v13 bytes];
   }
 
   v32 = 0;
@@ -102,7 +102,7 @@
   if (!v15)
   {
     v19 = 12;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -117,7 +117,7 @@
     v18 = v17;
 
     v19 = v18;
-    if (!a3)
+    if (!error)
     {
 LABEL_7:
       v16 = 0;
@@ -129,7 +129,7 @@ LABEL_6:
     v41 = *MEMORY[0x277CCA450];
     v42[0] = @"Failed encoding type MultipleSignatures";
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:&v41 count:1];
-    *a3 = [v20 errorWithDomain:@"com.apple.HeimASN1" code:v19 userInfo:v21];
+    *error = [v20 errorWithDomain:@"com.apple.HeimASN1" code:v19 userInfo:v21];
 
     goto LABEL_7;
   }
@@ -142,7 +142,7 @@ LABEL_6:
 
 LABEL_11:
   v22 = [MSCMSAttribute alloc];
-  v23 = [MSOID OIDWithString:@"1.2.840.113549.1.9.2.51" error:a3];
+  v23 = [MSOID OIDWithString:@"1.2.840.113549.1.9.2.51" error:error];
   v24 = [MEMORY[0x277CBEA60] arrayWithObject:v16];
   v25 = [(MSCMSAttribute *)v22 initWithAttributeType:v23 values:v24];
 
@@ -151,21 +151,21 @@ LABEL_11:
   return v25;
 }
 
-- (MSCMSMultipleSignaturesAttribute)initWithAttribute:(id)a3 error:(id *)a4
+- (MSCMSMultipleSignaturesAttribute)initWithAttribute:(id)attribute error:(id *)error
 {
-  v6 = a3;
+  attributeCopy = attribute;
   v36.receiver = self;
   v36.super_class = MSCMSMultipleSignaturesAttribute;
   v7 = [(MSCMSMultipleSignaturesAttribute *)&v36 init];
-  v8 = [v6 attributeType];
-  v9 = [v8 isEqualToString:@"1.2.840.113549.1.9.2.51"];
+  attributeType = [attributeCopy attributeType];
+  v9 = [attributeType isEqualToString:@"1.2.840.113549.1.9.2.51"];
 
   if ((v9 & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v15 = MSErrorCMSDomain[0];
-      v17 = *a4;
+      v17 = *error;
       v18 = @"Not a Multiple Signatures attribute according to AttributeType";
       v16 = -26275;
       goto LABEL_10;
@@ -176,15 +176,15 @@ LABEL_11:
     goto LABEL_20;
   }
 
-  v10 = [v6 attributeValues];
-  v11 = [v10 count];
+  attributeValues = [attributeCopy attributeValues];
+  v11 = [attributeValues count];
 
   if (!v11)
   {
-    if (a4)
+    if (error)
     {
       v15 = MSErrorCMSDomain[0];
-      v17 = *a4;
+      v17 = *error;
       v18 = @"Missing value for Multiple Signatures attribute";
       v16 = -50;
       goto LABEL_10;
@@ -196,8 +196,8 @@ LABEL_11:
   v35 = 0;
   memset(v34, 0, sizeof(v34));
   memset(v33, 0, sizeof(v33));
-  v12 = [v6 attributeValues];
-  v13 = [v12 objectAtIndex:0];
+  attributeValues2 = [attributeCopy attributeValues];
+  v13 = [attributeValues2 objectAtIndex:0];
   v14 = nsheim_decode_MultipleSignatures(v13);
 
   if (!v14)
@@ -220,13 +220,13 @@ LABEL_11:
       if (!v7->_signatureAlgorithm)
       {
         v21 = v24;
-        if (a4)
+        if (error)
         {
 LABEL_17:
           if (v21)
           {
             v28 = v21;
-            *a4 = v21;
+            *error = v21;
           }
         }
 
@@ -250,7 +250,7 @@ LABEL_19:
       }
     }
 
-    if (a4)
+    if (error)
     {
       goto LABEL_17;
     }
@@ -258,19 +258,19 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_11;
   }
 
-  asn1ErrorToNSError(v14, a4);
+  asn1ErrorToNSError(v14, error);
   v15 = MSErrorASN1Domain[0];
   v16 = v14;
-  v17 = *a4;
+  v17 = *error;
   v18 = @"unable to decode Multiple Signatures attribute";
 LABEL_10:
   [MSError MSErrorWithDomain:v15 code:v16 underlyingError:v17 description:v18];
-  *a4 = v19 = 0;
+  *error = v19 = 0;
 LABEL_20:
 
   return v19;

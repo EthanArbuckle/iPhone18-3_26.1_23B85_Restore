@@ -1,58 +1,58 @@
 @interface PKSharingChannelHandleMessageWaiter
-- (PKSharingChannelHandleMessageWaiter)initWithTimeout:(double)a3 messageHandler:(id)a4 invalidationHandler:(id)a5 replyQueue:(id)a6;
+- (PKSharingChannelHandleMessageWaiter)initWithTimeout:(double)timeout messageHandler:(id)handler invalidationHandler:(id)invalidationHandler replyQueue:(id)queue;
 - (void)_endTimeoutTimer;
-- (void)_invalidateWithShouldNotify:(BOOL)a3 fromTimeout:(BOOL)a4;
+- (void)_invalidateWithShouldNotify:(BOOL)notify fromTimeout:(BOOL)timeout;
 - (void)_messageReceived;
 - (void)_startTimeoutTimer;
-- (void)startForHandle:(id)a3;
+- (void)startForHandle:(id)handle;
 @end
 
 @implementation PKSharingChannelHandleMessageWaiter
 
-- (PKSharingChannelHandleMessageWaiter)initWithTimeout:(double)a3 messageHandler:(id)a4 invalidationHandler:(id)a5 replyQueue:(id)a6
+- (PKSharingChannelHandleMessageWaiter)initWithTimeout:(double)timeout messageHandler:(id)handler invalidationHandler:(id)invalidationHandler replyQueue:(id)queue
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  handlerCopy = handler;
+  invalidationHandlerCopy = invalidationHandler;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = PKSharingChannelHandleMessageWaiter;
   v13 = [(PKSharingChannelHandleMessageWaiter *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    v13->_timeout = a3;
-    v15 = _Block_copy(v10);
+    v13->_timeout = timeout;
+    v15 = _Block_copy(handlerCopy);
     messageHandler = v14->_messageHandler;
     v14->_messageHandler = v15;
 
-    v17 = _Block_copy(v11);
+    v17 = _Block_copy(invalidationHandlerCopy);
     invalidationHandler = v14->_invalidationHandler;
     v14->_invalidationHandler = v17;
 
-    objc_storeStrong(&v14->_replyQueue, a6);
+    objc_storeStrong(&v14->_replyQueue, queue);
     v14->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v14;
 }
 
-- (void)startForHandle:(id)a3
+- (void)startForHandle:(id)handle
 {
-  v4 = a3;
-  objc_storeWeak(&self->_handle, v4);
+  handleCopy = handle;
+  objc_storeWeak(&self->_handle, handleCopy);
   [(PKSharingChannelHandleMessageWaiter *)self _startTimeoutTimer];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__PKSharingChannelHandleMessageWaiter_startForHandle___block_invoke;
   v6[3] = &unk_1E79C4E28;
   v6[4] = self;
-  [v4 setInvalidationHandler:v6];
+  [handleCopy setInvalidationHandler:v6];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__PKSharingChannelHandleMessageWaiter_startForHandle___block_invoke_2;
   v5[3] = &unk_1E79C4E28;
   v5[4] = self;
-  [v4 setMessageReceivedHandler:v5];
+  [handleCopy setMessageReceivedHandler:v5];
 }
 
 - (void)_messageReceived
@@ -207,10 +207,10 @@ LABEL_7:
   }
 }
 
-- (void)_invalidateWithShouldNotify:(BOOL)a3 fromTimeout:(BOOL)a4
+- (void)_invalidateWithShouldNotify:(BOOL)notify fromTimeout:(BOOL)timeout
 {
-  v4 = a4;
-  v5 = a3;
+  timeoutCopy = timeout;
+  notifyCopy = notify;
   os_unfair_lock_lock(&self->_lock);
   if (self->_isHandlingMessage)
   {
@@ -221,7 +221,7 @@ LABEL_7:
 
   else
   {
-    if (v5)
+    if (notifyCopy)
     {
       v11 = _Block_copy(self->_invalidationHandler);
     }
@@ -246,7 +246,7 @@ LABEL_7:
 
     if (v11)
     {
-      v11[2](v11, v4);
+      v11[2](v11, timeoutCopy);
     }
   }
 }

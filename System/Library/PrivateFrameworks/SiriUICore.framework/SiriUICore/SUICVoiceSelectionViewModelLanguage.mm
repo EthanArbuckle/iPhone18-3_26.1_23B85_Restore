@@ -1,25 +1,25 @@
 @interface SUICVoiceSelectionViewModelLanguage
-- (SUICVoiceSelectionViewModelLanguage)initWithLanguageCode:(id)a3 localizedDisplayName:(id)a4 isCurrentOutputLanguage:(BOOL)a5;
+- (SUICVoiceSelectionViewModelLanguage)initWithLanguageCode:(id)code localizedDisplayName:(id)name isCurrentOutputLanguage:(BOOL)language;
 @end
 
 @implementation SUICVoiceSelectionViewModelLanguage
 
-- (SUICVoiceSelectionViewModelLanguage)initWithLanguageCode:(id)a3 localizedDisplayName:(id)a4 isCurrentOutputLanguage:(BOOL)a5
+- (SUICVoiceSelectionViewModelLanguage)initWithLanguageCode:(id)code localizedDisplayName:(id)name isCurrentOutputLanguage:(BOOL)language
 {
-  v9 = a3;
-  v10 = a4;
+  codeCopy = code;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = SUICVoiceSelectionViewModelLanguage;
   v11 = [(SUICVoiceSelectionViewModelLanguage *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_languageCode, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_languageCode, code);
+    v13 = [nameCopy copy];
     localizedDisplayName = v12->_localizedDisplayName;
     v12->_localizedDisplayName = v13;
 
-    v12->_isCurrentOutputLanguage = a5;
+    v12->_isCurrentOutputLanguage = language;
   }
 
   return v12;

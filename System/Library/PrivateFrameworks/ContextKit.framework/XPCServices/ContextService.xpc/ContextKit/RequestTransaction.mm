@@ -1,21 +1,21 @@
 @interface RequestTransaction
-- (RequestTransaction)initWithTransactionId:(id)a3 decPending:(BOOL)a4;
+- (RequestTransaction)initWithTransactionId:(id)id decPending:(BOOL)pending;
 - (void)dealloc;
 - (void)discard;
 @end
 
 @implementation RequestTransaction
 
-- (RequestTransaction)initWithTransactionId:(id)a3 decPending:(BOOL)a4
+- (RequestTransaction)initWithTransactionId:(id)id decPending:(BOOL)pending
 {
-  v4 = a4;
-  v6 = a3;
+  pendingCopy = pending;
+  idCopy = id;
   v13.receiver = self;
   v13.super_class = RequestTransaction;
   v7 = [(RequestTransaction *)&v13 init];
   if (v7)
   {
-    [v6 UTF8String];
+    [idCopy UTF8String];
     v8 = os_transaction_create();
     tx = v7->_tx;
     v7->_tx = v8;
@@ -33,7 +33,7 @@
     }
 
     [qword_1005571A0 setActiveGauge:v11];
-    if (v4)
+    if (pendingCopy)
     {
       [qword_1005571A0 decPending];
     }

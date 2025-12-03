@@ -7,18 +7,18 @@
 
 - (NSString)currencyCode
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 currencyCode];
+  model = [(PKPaymentDataItem *)self model];
+  currencyCode = [model currencyCode];
 
-  return v3;
+  return currencyCode;
 }
 
 - (NSArray)paymentSummaryItems
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 paymentSummaryItems];
+  model = [(PKPaymentDataItem *)self model];
+  paymentSummaryItems = [model paymentSummaryItems];
 
-  return v3;
+  return paymentSummaryItems;
 }
 
 @end

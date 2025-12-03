@@ -1,6 +1,6 @@
 @interface SBPPTOperation
-+ (BOOL)_isLibraryDismissalAllowedWithCompletion:(id)a3;
-+ (BOOL)_isLibraryPresentationAllowedWithCompletion:(id)a3;
++ (BOOL)_isLibraryDismissalAllowedWithCompletion:(id)completion;
++ (BOOL)_isLibraryPresentationAllowedWithCompletion:(id)completion;
 + (BOOL)isLibraryPresented;
 + (id)_homeScreenController;
 + (id)_libraryViewController;
@@ -10,99 +10,99 @@
 + (id)configureAppLibraryForAllAppsInOnePod;
 + (id)configureAppLibraryForEachAppHavingOwnPod;
 + (id)dismissAppLibraryOverlay;
-+ (id)dismissAppLibraryPad:(BOOL)a3 forTestWithName:(id)a4;
++ (id)dismissAppLibraryPad:(BOOL)pad forTestWithName:(id)name;
 + (id)dismissAppLibrarySearch;
-+ (id)dismissOverlaysAndResetHomeScreenToFirstIconPageAnimated:(BOOL)a3;
-+ (id)dismissOverlaysAndResetHomeScreenToLastIconPageAnimated:(BOOL)a3;
-+ (id)dismissOverlaysAndResetHomeScreenToPage:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5;
++ (id)dismissOverlaysAndResetHomeScreenToFirstIconPageAnimated:(BOOL)animated;
++ (id)dismissOverlaysAndResetHomeScreenToLastIconPageAnimated:(BOOL)animated;
++ (id)dismissOverlaysAndResetHomeScreenToPage:(unint64_t)page animated:(BOOL)animated completion:(id)completion;
 + (id)embeddedWindowScene;
-+ (id)operationToActivateApplicationWithBundleIdentifier:(id)a3;
++ (id)operationToActivateApplicationWithBundleIdentifier:(id)identifier;
 + (id)operationToActivateNullOffscreenApp;
-+ (id)operationToCreateFolderWithName:(id)a3 containingIconsForBundleIdentifiers:(id)a4;
++ (id)operationToCreateFolderWithName:(id)name containingIconsForBundleIdentifiers:(id)identifiers;
 + (id)operationToDismissAppSwitcherAndReturnToSource;
 + (id)operationToDismissBannerNotification;
 + (id)operationToDismissCoverSheet;
 + (id)operationToDismissFloatingDock;
-+ (id)operationToDismissPageManagementForTestWithName:(id)a3;
-+ (id)operationToFinishTest:(id)a3;
++ (id)operationToDismissPageManagementForTestWithName:(id)name;
++ (id)operationToFinishTest:(id)test;
 + (id)operationToLoadPPTAppSwitcherState;
 + (id)operationToLockInterface;
-+ (id)operationToMonitorCoverSheetTransitionWithTestName:(id)a3 execute:(id)a4;
-+ (id)operationToOpenFolderWithName:(id)a3;
++ (id)operationToMonitorCoverSheetTransitionWithTestName:(id)name execute:(id)execute;
++ (id)operationToOpenFolderWithName:(id)name;
 + (id)operationToPresentAppSwitcher;
 + (id)operationToPresentBannerNotification;
 + (id)operationToPresentCoverSheet;
 + (id)operationToPresentFloatingDock;
-+ (id)operationToPresentPageManagementForTestWithName:(id)a3;
++ (id)operationToPresentPageManagementForTestWithName:(id)name;
 + (id)operationToPreventSystemIdle;
-+ (id)operationToPublishExampleNotificationsWithNotificationCount:(unint64_t)a3 threadCount:(unint64_t)a4;
++ (id)operationToPublishExampleNotificationsWithNotificationCount:(unint64_t)count threadCount:(unint64_t)threadCount;
 + (id)operationToRemoveExampleNotifications;
 + (id)operationToRestoreAppSwitcherState;
 + (id)operationToRestoreHomeScreenState;
 + (id)operationToResumeSystemIdle;
 + (id)operationToSaveAppSwitcherState;
 + (id)operationToSaveHomeScreenState;
-+ (id)operationToSetAllApplicationsBlockedForScreenTime:(BOOL)a3;
-+ (id)operationToSetApplicationWithBundleIdentifier:(id)a3 blockedForScreenTime:(BOOL)a4;
-+ (id)operationToSetInterfaceOrientation:(int64_t)a3;
-+ (id)operationToStartTest:(id)a3;
++ (id)operationToSetAllApplicationsBlockedForScreenTime:(BOOL)time;
++ (id)operationToSetApplicationWithBundleIdentifier:(id)identifier blockedForScreenTime:(BOOL)time;
++ (id)operationToSetInterfaceOrientation:(int64_t)orientation;
++ (id)operationToStartTest:(id)test;
 + (id)operationToSwipeDownInMiddleOfInterface;
 + (id)operationToSwipeLeftInMiddleOfInterface;
 + (id)operationToSwipeRightInMiddleOfInterface;
 + (id)operationToSwipeUpInMiddleOfInterface;
-+ (id)operationToSynthesizeEventsForCommandString:(id)a3;
-+ (id)operationToSynthesizeEventsForEventActions:(id)a3;
-+ (id)operationToSynthesizeEventsForEventStream:(id)a3;
-+ (id)operationToTerminateApplicationWithBundleIdentifier:(id)a3;
++ (id)operationToSynthesizeEventsForCommandString:(id)string;
++ (id)operationToSynthesizeEventsForEventActions:(id)actions;
++ (id)operationToSynthesizeEventsForEventStream:(id)stream;
++ (id)operationToTerminateApplicationWithBundleIdentifier:(id)identifier;
 + (id)operationToTerminateNullOffscreenApp;
 + (id)operationToTransitionToHomeScreen;
 + (id)operationToUnlockInterface;
-+ (id)operationToUnlockInterfaceFinishingUIUnlock:(BOOL)a3;
-+ (id)operationToUpdateHomeScreenPagesForActiveFocusModeForTestWithName:(id)a3;
-+ (id)operationToWaitForNotificationName:(id)a3 object:(id)a4 timeout:(double)a5;
-+ (id)operationToWaitForTimeInterval:(double)a3;
-+ (id)performTapAtPointWithBlock:(id)a3;
-+ (id)presentAppLibrary:(BOOL)a3 forTestWithName:(id)a4;
++ (id)operationToUnlockInterfaceFinishingUIUnlock:(BOOL)unlock;
++ (id)operationToUpdateHomeScreenPagesForActiveFocusModeForTestWithName:(id)name;
++ (id)operationToWaitForNotificationName:(id)name object:(id)object timeout:(double)timeout;
++ (id)operationToWaitForTimeInterval:(double)interval;
++ (id)performTapAtPointWithBlock:(id)block;
++ (id)presentAppLibrary:(BOOL)library forTestWithName:(id)name;
 + (id)presentAppLibraryPhone;
 + (id)presentAppLibrarySearchByTappingSearchField;
 + (id)pullToAppLibrarySearch;
 + (id)resetAndPrepareforNextTest;
 + (id)resetAppLibraryToTop;
-+ (void)_appLibrarySupport__performPanGesturesOnScreenFromPage:(unint64_t)a3 toPage:(unint64_t)a4 completion:(id)a5;
-+ (void)_appLibrarySupport_performDragFromPoint:(CGPoint)a3 andDragTo:(CGPoint)a4 duration:(double)a5 fromView:(id)a6 withCompletion:(id)a7;
-+ (void)_appLibrarySupport_performLeftToRightPanGestureOnScreenWithDuration:(double)a3 completion:(id)a4;
-+ (void)_appLibrarySupport_performPanGestureAwayFromUserInterfaceLayoutDirectionOnScreenWithDuration:(double)a3 completion:(id)a4;
-+ (void)_appLibrarySupport_performPanGestureTowardsUserInterfaceLayoutDirectionOnScreenWithDuration:(double)a3 completion:(id)a4;
-+ (void)_appLibrarySupport_performPanGesturesOnScreenUntilOnDefaultHomeScreenIconPageWithCompletion:(id)a3;
-+ (void)_appLibrarySupport_performPanGesturesOnScreenUntilOnDeweyOverlayWithCompletion:(id)a3;
-+ (void)_appLibrarySupport_performPanGesturesOnScreenUntilOnPage:(unint64_t)a3 withCompletion:(id)a4;
-+ (void)_appLibrarySupport_performPanWithComposer:(id)a3 startLocation:(CGPoint)a4 endLocation:(CGPoint)a5 duration:(double)a6;
-+ (void)_appLibrarySupport_performRightToLeftPanGestureOnScreenWithDuration:(double)a3 completion:(id)a4;
-+ (void)_appLibrarySupport_performTapAtPoint:(CGPoint)a3 fromView:(id)a4 withCompletion:(id)a5;
-+ (void)_dismissOverlaysAndResetHomeScreenToPage:(unint64_t)a3 animated:(BOOL)a4 operation:(id)a5 completion:(id)a6;
-+ (void)enqueueOperations:(id)a3;
++ (void)_appLibrarySupport__performPanGesturesOnScreenFromPage:(unint64_t)page toPage:(unint64_t)toPage completion:(id)completion;
++ (void)_appLibrarySupport_performDragFromPoint:(CGPoint)point andDragTo:(CGPoint)to duration:(double)duration fromView:(id)view withCompletion:(id)completion;
++ (void)_appLibrarySupport_performLeftToRightPanGestureOnScreenWithDuration:(double)duration completion:(id)completion;
++ (void)_appLibrarySupport_performPanGestureAwayFromUserInterfaceLayoutDirectionOnScreenWithDuration:(double)duration completion:(id)completion;
++ (void)_appLibrarySupport_performPanGestureTowardsUserInterfaceLayoutDirectionOnScreenWithDuration:(double)duration completion:(id)completion;
++ (void)_appLibrarySupport_performPanGesturesOnScreenUntilOnDefaultHomeScreenIconPageWithCompletion:(id)completion;
++ (void)_appLibrarySupport_performPanGesturesOnScreenUntilOnDeweyOverlayWithCompletion:(id)completion;
++ (void)_appLibrarySupport_performPanGesturesOnScreenUntilOnPage:(unint64_t)page withCompletion:(id)completion;
++ (void)_appLibrarySupport_performPanWithComposer:(id)composer startLocation:(CGPoint)location endLocation:(CGPoint)endLocation duration:(double)duration;
++ (void)_appLibrarySupport_performRightToLeftPanGestureOnScreenWithDuration:(double)duration completion:(id)completion;
++ (void)_appLibrarySupport_performTapAtPoint:(CGPoint)point fromView:(id)view withCompletion:(id)completion;
++ (void)_dismissOverlaysAndResetHomeScreenToPage:(unint64_t)page animated:(BOOL)animated operation:(id)operation completion:(id)completion;
++ (void)enqueueOperations:(id)operations;
 - (SBPPTOperation)init;
-- (id)markFinishedSubTest:(id)a3 forTestName:(id)a4;
-- (id)markFinishedTest:(id)a3;
-- (id)markStartSubTest:(id)a3 forTestName:(id)a4;
-- (id)markStartedTest:(id)a3;
+- (id)markFinishedSubTest:(id)test forTestName:(id)name;
+- (id)markFinishedTest:(id)test;
+- (id)markStartSubTest:(id)test forTestName:(id)name;
+- (id)markStartedTest:(id)test;
 - (void)operationDidFinish;
 - (void)operationWillStart;
 @end
 
 @implementation SBPPTOperation
 
-- (id)markStartedTest:(id)a3
+- (id)markStartedTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __34__SBPPTOperation_markStartedTest___block_invoke;
   v9[3] = &unk_2783A9CE8;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
-  v5 = v4;
+  v10 = testCopy;
+  v5 = testCopy;
   v6 = MEMORY[0x223D6F7F0](v9);
   startTestBlock = self->_startTestBlock;
   self->_startTestBlock = v6;
@@ -144,17 +144,17 @@ void __34__SBPPTOperation_markStartedTest___block_invoke(uint64_t a1)
   }
 }
 
-- (id)markFinishedTest:(id)a3
+- (id)markFinishedTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __35__SBPPTOperation_markFinishedTest___block_invoke;
   v9[3] = &unk_2783A9CE8;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
-  v5 = v4;
+  v10 = testCopy;
+  v5 = testCopy;
   v6 = MEMORY[0x223D6F7F0](v9);
   finishTestBlock = self->_finishTestBlock;
   self->_finishTestBlock = v6;
@@ -196,20 +196,20 @@ void __35__SBPPTOperation_markFinishedTest___block_invoke(uint64_t a1)
   }
 }
 
-- (id)markStartSubTest:(id)a3 forTestName:(id)a4
+- (id)markStartSubTest:(id)test forTestName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  nameCopy = name;
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __47__SBPPTOperation_markStartSubTest_forTestName___block_invoke;
   v13[3] = &unk_2783B00B0;
   objc_copyWeak(&v16, &location);
-  v14 = v6;
-  v15 = v7;
-  v8 = v7;
-  v9 = v6;
+  v14 = testCopy;
+  v15 = nameCopy;
+  v8 = nameCopy;
+  v9 = testCopy;
   v10 = MEMORY[0x223D6F7F0](v13);
   startSubTestBlock = self->_startSubTestBlock;
   self->_startSubTestBlock = v10;
@@ -254,20 +254,20 @@ void __47__SBPPTOperation_markStartSubTest_forTestName___block_invoke(uint64_t a
   }
 }
 
-- (id)markFinishedSubTest:(id)a3 forTestName:(id)a4
+- (id)markFinishedSubTest:(id)test forTestName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  nameCopy = name;
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __50__SBPPTOperation_markFinishedSubTest_forTestName___block_invoke;
   v13[3] = &unk_2783B00B0;
   objc_copyWeak(&v16, &location);
-  v14 = v6;
-  v15 = v7;
-  v8 = v7;
-  v9 = v6;
+  v14 = testCopy;
+  v15 = nameCopy;
+  v8 = nameCopy;
+  v9 = testCopy;
   v10 = MEMORY[0x223D6F7F0](v13);
   finishSubTestBlock = self->_finishSubTestBlock;
   self->_finishSubTestBlock = v10;
@@ -385,31 +385,31 @@ void __50__SBPPTOperation_markFinishedSubTest_forTestName___block_invoke(uint64_
   }
 }
 
-+ (void)enqueueOperations:(id)a3
++ (void)enqueueOperations:(id)operations
 {
   v3 = MEMORY[0x277CCABD8];
-  v4 = a3;
-  v5 = [v3 mainQueue];
-  [v5 addOperations:v4 waitUntilFinished:0];
+  operationsCopy = operations;
+  mainQueue = [v3 mainQueue];
+  [mainQueue addOperations:operationsCopy waitUntilFinished:0];
 }
 
 + (id)operationToUnlockInterface
 {
-  v3 = [a1 operationToUnlockInterfaceFinishingUIUnlock:1];
+  v3 = [self operationToUnlockInterfaceFinishingUIUnlock:1];
   v4 = NSStringFromSelector(a2);
   [v3 setName:v4];
 
   return v3;
 }
 
-+ (id)operationToUnlockInterfaceFinishingUIUnlock:(BOOL)a3
++ (id)operationToUnlockInterfaceFinishingUIUnlock:(BOOL)unlock
 {
   v4 = NSStringFromSelector(a2);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__SBPPTOperation_operationToUnlockInterfaceFinishingUIUnlock___block_invoke;
   v7[3] = &__block_descriptor_33_e29_v16__0__SBPPTBlockOperation_8l;
-  v8 = a3;
+  unlockCopy = unlock;
   v5 = [SBPPTBlockOperation operationWithName:v4 block:v7];
 
   return v5;
@@ -578,14 +578,14 @@ void __42__SBPPTOperation_operationToLockInterface__block_invoke_5(uint64_t a1)
   dispatch_after(v2, v4, v3);
 }
 
-+ (id)operationToSetInterfaceOrientation:(int64_t)a3
++ (id)operationToSetInterfaceOrientation:(int64_t)orientation
 {
   v4 = NSStringFromSelector(a2);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SBPPTOperation_operationToSetInterfaceOrientation___block_invoke;
   v7[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v7[4] = a3;
+  v7[4] = orientation;
   v5 = [SBPPTBlockOperation operationWithName:v4 block:v7];
 
   return v5;
@@ -616,19 +616,19 @@ void __53__SBPPTOperation_operationToSetInterfaceOrientation___block_invoke_2(ui
   dispatch_after(v2, MEMORY[0x277D85CD0], block);
 }
 
-+ (id)operationToMonitorCoverSheetTransitionWithTestName:(id)a3 execute:(id)a4
++ (id)operationToMonitorCoverSheetTransitionWithTestName:(id)name execute:(id)execute
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  executeCopy = execute;
   v8 = NSStringFromSelector(a2);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__SBPPTOperation_operationToMonitorCoverSheetTransitionWithTestName_execute___block_invoke;
   v13[3] = &unk_2783B2EA0;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = nameCopy;
+  v15 = executeCopy;
+  v9 = executeCopy;
+  v10 = nameCopy;
   v11 = [SBPPTBlockOperation operationWithName:v8 block:v13];
 
   return v11;
@@ -719,14 +719,14 @@ void __45__SBPPTOperation_operationToResumeSystemIdle__block_invoke(uint64_t a1,
   [v2 finish];
 }
 
-+ (id)operationToWaitForTimeInterval:(double)a3
++ (id)operationToWaitForTimeInterval:(double)interval
 {
   v4 = NSStringFromSelector(a2);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SBPPTOperation_operationToWaitForTimeInterval___block_invoke;
   v7[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  *&v7[4] = a3;
+  *&v7[4] = interval;
   v5 = [SBPPTBlockOperation operationWithName:v4 block:v7];
 
   return v5;
@@ -745,20 +745,20 @@ void __49__SBPPTOperation_operationToWaitForTimeInterval___block_invoke(uint64_t
   dispatch_after(v4, MEMORY[0x277D85CD0], block);
 }
 
-+ (id)operationToWaitForNotificationName:(id)a3 object:(id)a4 timeout:(double)a5
++ (id)operationToWaitForNotificationName:(id)name object:(id)object timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  objectCopy = object;
   v10 = NSStringFromSelector(a2);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__SBPPTOperation_operationToWaitForNotificationName_object_timeout___block_invoke;
   v15[3] = &unk_2783B2F10;
-  v16 = v8;
-  v17 = v9;
-  v18 = a5;
-  v11 = v9;
-  v12 = v8;
+  v16 = nameCopy;
+  v17 = objectCopy;
+  timeoutCopy = timeout;
+  v11 = objectCopy;
+  v12 = nameCopy;
   v13 = [SBPPTBlockOperation operationWithName:v10 block:v15];
 
   return v13;
@@ -852,7 +852,7 @@ void __51__SBPPTOperation_operationToTransitionToHomeScreen__block_invoke_3(uint
   v6[1] = 3221225472;
   v6[2] = __48__SBPPTOperation_operationToSaveHomeScreenState__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = [SBPPTBlockOperation operationWithName:v3 block:v6];
 
   return v4;
@@ -893,7 +893,7 @@ void __48__SBPPTOperation_operationToSaveHomeScreenState__block_invoke(uint64_t 
   v6[1] = 3221225472;
   v6[2] = __51__SBPPTOperation_operationToRestoreHomeScreenState__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = [SBPPTBlockOperation operationWithName:v3 block:v6];
 
   return v4;
@@ -909,20 +909,20 @@ void __51__SBPPTOperation_operationToRestoreHomeScreenState__block_invoke(uint64
   [v4 finish];
 }
 
-+ (id)operationToCreateFolderWithName:(id)a3 containingIconsForBundleIdentifiers:(id)a4
++ (id)operationToCreateFolderWithName:(id)name containingIconsForBundleIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  identifiersCopy = identifiers;
   v9 = NSStringFromSelector(a2);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __86__SBPPTOperation_operationToCreateFolderWithName_containingIconsForBundleIdentifiers___block_invoke;
   v14[3] = &unk_2783B2F10;
-  v16 = v7;
-  v17 = a1;
-  v15 = v8;
-  v10 = v7;
-  v11 = v8;
+  v16 = nameCopy;
+  selfCopy = self;
+  v15 = identifiersCopy;
+  v10 = nameCopy;
+  v11 = identifiersCopy;
   v12 = [SBPPTBlockOperation operationWithName:v9 block:v14];
 
   return v12;
@@ -1010,17 +1010,17 @@ void __86__SBPPTOperation_operationToCreateFolderWithName_containingIconsForBund
   [v25 finish];
 }
 
-+ (id)operationToOpenFolderWithName:(id)a3
++ (id)operationToOpenFolderWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = NSStringFromSelector(a2);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __48__SBPPTOperation_operationToOpenFolderWithName___block_invoke;
   v10[3] = &unk_2783B2F38;
-  v11 = v5;
-  v12 = a1;
-  v7 = v5;
+  v11 = nameCopy;
+  selfCopy = self;
+  v7 = nameCopy;
   v8 = [SBPPTBlockOperation operationWithName:v6 block:v10];
 
   return v8;
@@ -1102,7 +1102,7 @@ LABEL_12:
   v6[1] = 3221225472;
   v6[2] = __47__SBPPTOperation_operationToPresentAppSwitcher__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = [SBPPTBlockOperation operationWithName:v3 block:v6];
 
   return v4;
@@ -1141,7 +1141,7 @@ void __47__SBPPTOperation_operationToPresentAppSwitcher__block_invoke(uint64_t a
   v6[1] = 3221225472;
   v6[2] = __64__SBPPTOperation_operationToDismissAppSwitcherAndReturnToSource__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = [SBPPTBlockOperation operationWithName:v3 block:v6];
 
   return v4;
@@ -1302,7 +1302,7 @@ void __46__SBPPTOperation_operationToDismissCoverSheet__block_invoke(uint64_t a1
   v6[1] = 3221225472;
   v6[2] = __48__SBPPTOperation_operationToPresentFloatingDock__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = [SBPPTBlockOperation operationWithName:v3 block:v6];
 
   return v4;
@@ -1347,7 +1347,7 @@ void __48__SBPPTOperation_operationToPresentFloatingDock__block_invoke_2(uint64_
   v6[1] = 3221225472;
   v6[2] = __48__SBPPTOperation_operationToDismissFloatingDock__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = [SBPPTBlockOperation operationWithName:v3 block:v6];
 
   return v4;
@@ -1428,15 +1428,15 @@ void __54__SBPPTOperation_operationToDismissBannerNotification__block_invoke(uin
   [v3 finish];
 }
 
-+ (id)operationToPublishExampleNotificationsWithNotificationCount:(unint64_t)a3 threadCount:(unint64_t)a4
++ (id)operationToPublishExampleNotificationsWithNotificationCount:(unint64_t)count threadCount:(unint64_t)threadCount
 {
   v6 = NSStringFromSelector(a2);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __90__SBPPTOperation_operationToPublishExampleNotificationsWithNotificationCount_threadCount___block_invoke;
   v9[3] = &__block_descriptor_48_e29_v16__0__SBPPTBlockOperation_8l;
-  v9[4] = a3;
-  v9[5] = a4;
+  v9[4] = count;
+  v9[5] = threadCount;
   v7 = [SBPPTBlockOperation operationWithName:v6 block:v9];
 
   [v7 setTimeoutInterval:30.0];
@@ -1545,16 +1545,16 @@ void __55__SBPPTOperation_operationToRemoveExampleNotifications__block_invoke(ui
   [v3 finish];
 }
 
-+ (id)operationToActivateApplicationWithBundleIdentifier:(id)a3
++ (id)operationToActivateApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = NSStringFromSelector(a2);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__SBPPTOperation_operationToActivateApplicationWithBundleIdentifier___block_invoke;
   v9[3] = &unk_2783B2FA8;
-  v10 = v4;
-  v6 = v4;
+  v10 = identifierCopy;
+  v6 = identifierCopy;
   v7 = [SBPPTBlockOperation operationWithName:v5 block:v9];
 
   return v7;
@@ -1621,16 +1621,16 @@ void __69__SBPPTOperation_operationToActivateApplicationWithBundleIdentifier___b
   [v4 executeOrAppendEvent:v6];
 }
 
-+ (id)operationToTerminateApplicationWithBundleIdentifier:(id)a3
++ (id)operationToTerminateApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = NSStringFromSelector(a2);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__SBPPTOperation_operationToTerminateApplicationWithBundleIdentifier___block_invoke;
   v9[3] = &unk_2783B2FA8;
-  v10 = v4;
-  v6 = v4;
+  v10 = identifierCopy;
+  v6 = identifierCopy;
   v7 = [SBPPTBlockOperation operationWithName:v5 block:v9];
 
   return v7;
@@ -1679,7 +1679,7 @@ void __70__SBPPTOperation_operationToTerminateApplicationWithBundleIdentifier___
 
 + (id)operationToActivateNullOffscreenApp
 {
-  v3 = [a1 operationToActivateApplicationWithBundleIdentifier:@"com.apple.perf.NullOffscreen"];
+  v3 = [self operationToActivateApplicationWithBundleIdentifier:@"com.apple.perf.NullOffscreen"];
   v4 = NSStringFromSelector(a2);
   [v3 setOperationName:v4];
 
@@ -1688,24 +1688,24 @@ void __70__SBPPTOperation_operationToTerminateApplicationWithBundleIdentifier___
 
 + (id)operationToTerminateNullOffscreenApp
 {
-  v3 = [a1 operationToTerminateApplicationWithBundleIdentifier:@"com.apple.perf.NullOffscreen"];
+  v3 = [self operationToTerminateApplicationWithBundleIdentifier:@"com.apple.perf.NullOffscreen"];
   v4 = NSStringFromSelector(a2);
   [v3 setOperationName:v4];
 
   return v3;
 }
 
-+ (id)operationToSetApplicationWithBundleIdentifier:(id)a3 blockedForScreenTime:(BOOL)a4
++ (id)operationToSetApplicationWithBundleIdentifier:(id)identifier blockedForScreenTime:(BOOL)time
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = NSStringFromSelector(a2);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __85__SBPPTOperation_operationToSetApplicationWithBundleIdentifier_blockedForScreenTime___block_invoke;
   v11[3] = &unk_2783B2FD0;
-  v12 = v6;
-  v13 = a4;
-  v8 = v6;
+  v12 = identifierCopy;
+  timeCopy = time;
+  v8 = identifierCopy;
   v9 = [SBPPTBlockOperation operationWithName:v7 block:v11];
 
   return v9;
@@ -1723,14 +1723,14 @@ void __85__SBPPTOperation_operationToSetApplicationWithBundleIdentifier_blockedF
   [v4 finish];
 }
 
-+ (id)operationToSetAllApplicationsBlockedForScreenTime:(BOOL)a3
++ (id)operationToSetAllApplicationsBlockedForScreenTime:(BOOL)time
 {
   v4 = NSStringFromSelector(a2);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__SBPPTOperation_operationToSetAllApplicationsBlockedForScreenTime___block_invoke;
   v7[3] = &__block_descriptor_33_e29_v16__0__SBPPTBlockOperation_8l;
-  v8 = a3;
+  timeCopy = time;
   v5 = [SBPPTBlockOperation operationWithName:v4 block:v7];
 
   return v5;
@@ -1746,16 +1746,16 @@ void __68__SBPPTOperation_operationToSetAllApplicationsBlockedForScreenTime___bl
   [v5 finish];
 }
 
-+ (id)operationToSynthesizeEventsForEventActions:(id)a3
++ (id)operationToSynthesizeEventsForEventActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v5 = NSStringFromSelector(a2);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__SBPPTOperation_operationToSynthesizeEventsForEventActions___block_invoke;
   v9[3] = &unk_2783B2FF8;
-  v10 = v4;
-  v6 = v4;
+  v10 = actionsCopy;
+  v6 = actionsCopy;
   v7 = [SBPPTBlockOperation operationWithName:v5 block:v9];
 
   return v7;
@@ -1774,16 +1774,16 @@ void __61__SBPPTOperation_operationToSynthesizeEventsForEventActions___block_inv
   SBPPTSynthesizeEventsForEventActions(v4, v6);
 }
 
-+ (id)operationToSynthesizeEventsForCommandString:(id)a3
++ (id)operationToSynthesizeEventsForCommandString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = NSStringFromSelector(a2);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__SBPPTOperation_operationToSynthesizeEventsForCommandString___block_invoke;
   v9[3] = &unk_2783B2FA8;
-  v10 = v4;
-  v6 = v4;
+  v10 = stringCopy;
+  v6 = stringCopy;
   v7 = [SBPPTBlockOperation operationWithName:v5 block:v9];
 
   return v7;
@@ -1802,16 +1802,16 @@ void __62__SBPPTOperation_operationToSynthesizeEventsForCommandString___block_in
   SBPPTSynthesizeEventsForCommandString(v4, v6);
 }
 
-+ (id)operationToSynthesizeEventsForEventStream:(id)a3
++ (id)operationToSynthesizeEventsForEventStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = NSStringFromSelector(a2);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__SBPPTOperation_operationToSynthesizeEventsForEventStream___block_invoke;
   v9[3] = &unk_2783B2FA8;
-  v10 = v4;
-  v6 = v4;
+  v10 = streamCopy;
+  v6 = streamCopy;
   v7 = [SBPPTBlockOperation operationWithName:v5 block:v9];
 
   return v7;
@@ -1833,7 +1833,7 @@ void __60__SBPPTOperation_operationToSynthesizeEventsForEventStream___block_invo
 + (id)operationToSwipeUpInMiddleOfInterface
 {
   v4 = SBPPTEventActionsToSwipeUpInMiddleOfInterface();
-  v5 = [a1 operationToSynthesizeEventsForEventActions:v4];
+  v5 = [self operationToSynthesizeEventsForEventActions:v4];
 
   v6 = NSStringFromSelector(a2);
   [v5 setName:v6];
@@ -1844,7 +1844,7 @@ void __60__SBPPTOperation_operationToSynthesizeEventsForEventStream___block_invo
 + (id)operationToSwipeDownInMiddleOfInterface
 {
   v4 = SBPPTEventActionsToSwipeDownInMiddleOfInterface();
-  v5 = [a1 operationToSynthesizeEventsForEventActions:v4];
+  v5 = [self operationToSynthesizeEventsForEventActions:v4];
 
   v6 = NSStringFromSelector(a2);
   [v5 setName:v6];
@@ -1855,7 +1855,7 @@ void __60__SBPPTOperation_operationToSynthesizeEventsForEventStream___block_invo
 + (id)operationToSwipeLeftInMiddleOfInterface
 {
   v4 = SBPPTEventActionsToSwipeLeftInMiddleOfInterface();
-  v5 = [a1 operationToSynthesizeEventsForEventActions:v4];
+  v5 = [self operationToSynthesizeEventsForEventActions:v4];
 
   v6 = NSStringFromSelector(a2);
   [v5 setName:v6];
@@ -1866,7 +1866,7 @@ void __60__SBPPTOperation_operationToSynthesizeEventsForEventStream___block_invo
 + (id)operationToSwipeRightInMiddleOfInterface
 {
   v4 = SBPPTEventActionsToSwipeRightInMiddleOfInterface();
-  v5 = [a1 operationToSynthesizeEventsForEventActions:v4];
+  v5 = [self operationToSynthesizeEventsForEventActions:v4];
 
   v6 = NSStringFromSelector(a2);
   [v5 setName:v6];
@@ -1874,30 +1874,30 @@ void __60__SBPPTOperation_operationToSynthesizeEventsForEventStream___block_invo
   return v5;
 }
 
-+ (id)operationToStartTest:(id)a3
++ (id)operationToStartTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = [SBPPTBlockOperation operationWithBlock:&__block_literal_global_120_0];
   v6 = MEMORY[0x277CCACA8];
   v7 = NSStringFromSelector(a2);
-  v8 = [v6 stringWithFormat:@"%@%@", v7, v4];
-  [v5 setOperationName:v8];
+  testCopy = [v6 stringWithFormat:@"%@%@", v7, testCopy];
+  [v5 setOperationName:testCopy];
 
-  v9 = [v5 markStartedTest:v4];
+  v9 = [v5 markStartedTest:testCopy];
 
   return v5;
 }
 
-+ (id)operationToFinishTest:(id)a3
++ (id)operationToFinishTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = [SBPPTBlockOperation operationWithBlock:&__block_literal_global_125];
   v6 = MEMORY[0x277CCACA8];
   v7 = NSStringFromSelector(a2);
-  v8 = [v6 stringWithFormat:@"%@%@", v7, v4];
-  [v5 setOperationName:v8];
+  testCopy = [v6 stringWithFormat:@"%@%@", v7, testCopy];
+  [v5 setOperationName:testCopy];
 
-  v9 = [v5 markFinishedTest:v4];
+  v9 = [v5 markFinishedTest:testCopy];
 
   return v5;
 }
@@ -1922,36 +1922,36 @@ void __60__SBPPTOperation_operationToSynthesizeEventsForEventStream___block_invo
 
 + (id)_mainDisplayWindowScene
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 connectedWindowScenes];
-  v4 = [v3 bs_firstObjectPassingTest:&__block_literal_global_131];
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
+  v4 = [connectedWindowScenes bs_firstObjectPassingTest:&__block_literal_global_131];
 
   return v4;
 }
 
 + (id)_homeScreenController
 {
-  v2 = [a1 _mainDisplayWindowScene];
-  v3 = [v2 homeScreenController];
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
 
-  return v3;
+  return homeScreenController;
 }
 
-+ (id)operationToUpdateHomeScreenPagesForActiveFocusModeForTestWithName:(id)a3
++ (id)operationToUpdateHomeScreenPagesForActiveFocusModeForTestWithName:(id)name
 {
-  v4 = a3;
-  v5 = [SBApp windowSceneManager];
-  v6 = [v5 embeddedDisplayWindowScene];
+  nameCopy = name;
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  v7 = [v6 iconController];
+  iconController = [embeddedDisplayWindowScene iconController];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __105__SBPPTOperation_FocusModePPTSupport__operationToUpdateHomeScreenPagesForActiveFocusModeForTestWithName___block_invoke;
   v16 = &unk_2783BC300;
-  v17 = v4;
-  v18 = v7;
-  v8 = v7;
-  v9 = v4;
+  v17 = nameCopy;
+  v18 = iconController;
+  v8 = iconController;
+  v9 = nameCopy;
   v10 = [SBPPTBlockOperation operationWithBlock:&v13];
   v11 = NSStringFromSelector(a2);
   [v10 setName:{v11, v13, v14, v15, v16}];
@@ -1969,20 +1969,20 @@ void __105__SBPPTOperation_FocusModePPTSupport__operationToUpdateHomeScreenPages
   [v6 finish];
 }
 
-+ (id)operationToPresentPageManagementForTestWithName:(id)a3
++ (id)operationToPresentPageManagementForTestWithName:(id)name
 {
-  v5 = a3;
-  v6 = [a1 embeddedWindowScene];
-  v7 = [v6 homeScreenController];
+  nameCopy = name;
+  embeddedWindowScene = [self embeddedWindowScene];
+  homeScreenController = [embeddedWindowScene homeScreenController];
 
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __92__SBPPTOperation_PageManagementPPTSupport__operationToPresentPageManagementForTestWithName___block_invoke;
   v17 = &unk_2783BC300;
-  v18 = v7;
-  v19 = v5;
-  v8 = v5;
-  v9 = v7;
+  v18 = homeScreenController;
+  v19 = nameCopy;
+  v8 = nameCopy;
+  v9 = homeScreenController;
   v10 = [SBPPTBlockOperation operationWithBlock:&v14];
   v11 = NSStringFromSelector(a2);
   [v10 setName:{v11, v14, v15, v16, v17}];
@@ -2014,20 +2014,20 @@ uint64_t __92__SBPPTOperation_PageManagementPPTSupport__operationToPresentPageMa
   return [v3 finish];
 }
 
-+ (id)operationToDismissPageManagementForTestWithName:(id)a3
++ (id)operationToDismissPageManagementForTestWithName:(id)name
 {
-  v5 = a3;
-  v6 = [a1 embeddedWindowScene];
-  v7 = [v6 homeScreenController];
+  nameCopy = name;
+  embeddedWindowScene = [self embeddedWindowScene];
+  homeScreenController = [embeddedWindowScene homeScreenController];
 
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __92__SBPPTOperation_PageManagementPPTSupport__operationToDismissPageManagementForTestWithName___block_invoke;
   v17 = &unk_2783BC300;
-  v18 = v7;
-  v19 = v5;
-  v8 = v5;
-  v9 = v7;
+  v18 = homeScreenController;
+  v19 = nameCopy;
+  v8 = nameCopy;
+  v9 = homeScreenController;
   v10 = [SBPPTBlockOperation operationWithBlock:&v14];
   v11 = NSStringFromSelector(a2);
   [v10 setName:{v11, v14, v15, v16, v17}];
@@ -2059,22 +2059,22 @@ uint64_t __92__SBPPTOperation_PageManagementPPTSupport__operationToDismissPageMa
   return [v3 finish];
 }
 
-+ (id)presentAppLibrary:(BOOL)a3 forTestWithName:(id)a4
++ (id)presentAppLibrary:(BOOL)library forTestWithName:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__SBPPTOperation_SBAppLibrarySupport__presentAppLibrary_forTestWithName___block_invoke;
   v13[3] = &__block_descriptor_41_e29_v16__0__SBPPTBlockOperation_8l;
-  v13[4] = a1;
-  v14 = a3;
+  v13[4] = self;
+  libraryCopy = library;
   v8 = [SBPPTBlockOperation operationWithBlock:v13];
   v9 = NSStringFromSelector(a2);
   [v8 setOperationName:v9];
 
   [v8 setTimeoutInterval:30.0];
-  v10 = [v8 markStartSubTest:@"AppLibraryPresent" forTestName:v7];
-  v11 = [v8 markFinishedSubTest:@"AppLibraryPresent" forTestName:v7];
+  v10 = [v8 markStartSubTest:@"AppLibraryPresent" forTestName:nameCopy];
+  v11 = [v8 markFinishedSubTest:@"AppLibraryPresent" forTestName:nameCopy];
 
   return v8;
 }
@@ -2126,22 +2126,22 @@ void __73__SBPPTOperation_SBAppLibrarySupport__presentAppLibrary_forTestWithName
   }
 }
 
-+ (id)dismissAppLibraryPad:(BOOL)a3 forTestWithName:(id)a4
++ (id)dismissAppLibraryPad:(BOOL)pad forTestWithName:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __76__SBPPTOperation_SBAppLibrarySupport__dismissAppLibraryPad_forTestWithName___block_invoke;
   v13[3] = &__block_descriptor_41_e29_v16__0__SBPPTBlockOperation_8l;
-  v13[4] = a1;
-  v14 = a3;
+  v13[4] = self;
+  padCopy = pad;
   v8 = [SBPPTBlockOperation operationWithBlock:v13];
   v9 = NSStringFromSelector(a2);
   [v8 setOperationName:v9];
 
   [v8 setTimeoutInterval:30.0];
-  v10 = [v8 markStartSubTest:@"AppLibraryPadDismiss" forTestName:v7];
-  v11 = [v8 markFinishedSubTest:@"AppLibraryPadDismiss" forTestName:v7];
+  v10 = [v8 markStartSubTest:@"AppLibraryPadDismiss" forTestName:nameCopy];
+  v11 = [v8 markFinishedSubTest:@"AppLibraryPadDismiss" forTestName:nameCopy];
 
   return v8;
 }
@@ -2195,18 +2195,18 @@ void __76__SBPPTOperation_SBAppLibrarySupport__dismissAppLibraryPad_forTestWithN
   }
 }
 
-+ (BOOL)_isLibraryPresentationAllowedWithCompletion:(id)a3
++ (BOOL)_isLibraryPresentationAllowedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _mainDisplayWindowScene];
-  v6 = [v5 homeScreenController];
-  if (([v6 isAppLibraryAllowed] & 1) == 0)
+  completionCopy = completion;
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
+  if (([homeScreenController isAppLibraryAllowed] & 1) == 0)
   {
-    if (v4)
+    if (completionCopy)
     {
 LABEL_6:
       v9 = SBHLibraryPresentationErrorForCode();
-      v4[2](v4, v9);
+      completionCopy[2](completionCopy, v9);
     }
 
 LABEL_7:
@@ -2215,11 +2215,11 @@ LABEL_7:
   }
 
   v7 = +[SBLockScreenManager sharedInstance];
-  v8 = [v7 isUILocked];
+  isUILocked = [v7 isUILocked];
 
-  if (v8)
+  if (isUILocked)
   {
-    if (v4)
+    if (completionCopy)
     {
       goto LABEL_6;
     }
@@ -2227,19 +2227,19 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v12 = [v5 layoutStateProvider];
-  v13 = [v12 layoutState];
-  if ([v13 unlockedEnvironmentMode] == 1)
+  layoutStateProvider = [_mainDisplayWindowScene layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
+  if ([layoutState unlockedEnvironmentMode] == 1)
   {
   }
 
   else
   {
-    v14 = [v6 isModalAppLibrarySupported];
+    isModalAppLibrarySupported = [homeScreenController isModalAppLibrarySupported];
 
-    if ((v14 & 1) == 0)
+    if ((isModalAppLibrarySupported & 1) == 0)
     {
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_7;
       }
@@ -2248,9 +2248,9 @@ LABEL_7:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v10 = 1;
@@ -2259,42 +2259,42 @@ LABEL_8:
   return v10;
 }
 
-+ (BOOL)_isLibraryDismissalAllowedWithCompletion:(id)a3
++ (BOOL)_isLibraryDismissalAllowedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _mainDisplayWindowScene];
-  v6 = [v5 homeScreenController];
-  if (([v6 isAppLibraryAllowed] & 1) == 0)
+  completionCopy = completion;
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
+  if (([homeScreenController isAppLibraryAllowed] & 1) == 0)
   {
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_12;
     }
 
 LABEL_11:
     v12 = SBHLibraryPresentationErrorForCode();
-    v4[2](v4, v12);
+    completionCopy[2](completionCopy, v12);
 
     goto LABEL_12;
   }
 
-  if ([v6 isModalAppLibrarySupported])
+  if ([homeScreenController isModalAppLibrarySupported])
   {
-    v7 = [v5 modalLibraryController];
-    v8 = [v7 isPresentingLibrary];
+    modalLibraryController = [_mainDisplayWindowScene modalLibraryController];
+    isPresentingLibrary = [modalLibraryController isPresentingLibrary];
   }
 
   else
   {
-    v7 = [v6 iconManager];
-    v8 = [v7 isMainDisplayLibraryViewVisible];
+    modalLibraryController = [homeScreenController iconManager];
+    isPresentingLibrary = [modalLibraryController isMainDisplayLibraryViewVisible];
   }
 
-  v9 = v8;
+  v9 = isPresentingLibrary;
 
   if ((v9 & 1) == 0)
   {
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_12;
     }
@@ -2302,18 +2302,18 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v10 = [v5 layoutStateProvider];
-  v11 = [v10 layoutState];
-  if ([v11 unlockedEnvironmentMode] != 1)
+  layoutStateProvider = [_mainDisplayWindowScene layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
+  if ([layoutState unlockedEnvironmentMode] != 1)
   {
-    v15 = [v6 isModalAppLibrarySupported];
+    isModalAppLibrarySupported = [homeScreenController isModalAppLibrarySupported];
 
-    if (v15)
+    if (isModalAppLibrarySupported)
     {
       goto LABEL_15;
     }
 
-    if (v4)
+    if (completionCopy)
     {
       goto LABEL_11;
     }
@@ -2324,9 +2324,9 @@ LABEL_12:
   }
 
 LABEL_15:
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v13 = 1;
@@ -2341,7 +2341,7 @@ LABEL_13:
   v6[1] = 3221225472;
   v6[2] = __65__SBPPTOperation_SBAppLibrarySupport__resetAndPrepareforNextTest__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v3 = [SBPPTBlockOperation operationWithBlock:v6];
   v4 = NSStringFromSelector(a2);
   [v3 setOperationName:v4];
@@ -2403,9 +2403,9 @@ void __65__SBPPTOperation_SBAppLibrarySupport__resetAndPrepareforNextTest__block
 
 + (id)presentAppLibrarySearchByTappingSearchField
 {
-  v4 = [a1 _libraryViewController];
-  v5 = [v4 containerViewController];
-  v6 = [v5 searchBar];
+  _libraryViewController = [self _libraryViewController];
+  containerViewController = [_libraryViewController containerViewController];
+  searchBar = [containerViewController searchBar];
 
   v7 = +[SBApplicationTestingManager sharedInstance];
   v13[0] = MEMORY[0x277D85DD0];
@@ -2413,9 +2413,9 @@ void __65__SBPPTOperation_SBAppLibrarySupport__resetAndPrepareforNextTest__block
   v13[2] = __82__SBPPTOperation_SBAppLibrarySupport__presentAppLibrarySearchByTappingSearchField__block_invoke;
   v13[3] = &unk_2783B2F10;
   v14 = v7;
-  v15 = v6;
-  v16 = a1;
-  v8 = v6;
+  v15 = searchBar;
+  selfCopy = self;
+  v8 = searchBar;
   v9 = v7;
   v10 = [SBPPTBlockOperation operationWithBlock:v13];
   v11 = NSStringFromSelector(a2);
@@ -2462,7 +2462,7 @@ void __82__SBPPTOperation_SBAppLibrarySupport__presentAppLibrarySearchByTappingS
   v6[1] = 3221225472;
   v6[2] = __59__SBPPTOperation_SBAppLibrarySupport__resetAppLibraryToTop__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v3 = [SBPPTBlockOperation operationWithBlock:v6];
   v4 = NSStringFromSelector(a2);
   [v3 setOperationName:v4];
@@ -2493,7 +2493,7 @@ void __59__SBPPTOperation_SBAppLibrarySupport__resetAppLibraryToTop__block_invok
   v6[1] = 3221225472;
   v6[2] = __62__SBPPTOperation_SBAppLibrarySupport__dismissAppLibrarySearch__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v3 = [SBPPTBlockOperation operationWithBlock:v6];
   v4 = NSStringFromSelector(a2);
   [v3 setOperationName:v4];
@@ -2552,7 +2552,7 @@ void __62__SBPPTOperation_SBAppLibrarySupport__dismissAppLibrarySearch__block_in
   v6[1] = 3221225472;
   v6[2] = __61__SBPPTOperation_SBAppLibrarySupport__pullToAppLibrarySearch__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v3 = [SBPPTBlockOperation operationWithBlock:v6];
   v4 = NSStringFromSelector(a2);
   [v3 setOperationName:v4];
@@ -2667,7 +2667,7 @@ void __61__SBPPTOperation_SBAppLibrarySupport__pullToAppLibrarySearch__block_inv
   v6[1] = 3221225472;
   v6[2] = __61__SBPPTOperation_SBAppLibrarySupport__presentAppLibraryPhone__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = [SBPPTBlockOperation operationWithName:v3 block:v6];
 
   return v4;
@@ -2706,76 +2706,76 @@ void __61__SBPPTOperation_SBAppLibrarySupport__presentAppLibraryPhone__block_inv
   }
 }
 
-+ (id)dismissOverlaysAndResetHomeScreenToPage:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5
++ (id)dismissOverlaysAndResetHomeScreenToPage:(unint64_t)page animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v10 = NSStringFromSelector(a2);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __99__SBPPTOperation_SBAppLibrarySupport__dismissOverlaysAndResetHomeScreenToPage_animated_completion___block_invoke;
   v14[3] = &unk_2783C4740;
-  v16 = a1;
-  v17 = a3;
-  v18 = a4;
-  v15 = v9;
-  v11 = v9;
+  selfCopy = self;
+  pageCopy = page;
+  animatedCopy = animated;
+  v15 = completionCopy;
+  v11 = completionCopy;
   v12 = [SBPPTBlockOperation operationWithName:v10 block:v14];
 
   return v12;
 }
 
-+ (void)_dismissOverlaysAndResetHomeScreenToPage:(unint64_t)a3 animated:(BOOL)a4 operation:(id)a5 completion:(id)a6
++ (void)_dismissOverlaysAndResetHomeScreenToPage:(unint64_t)page animated:(BOOL)animated operation:(id)operation completion:(id)completion
 {
-  v9 = a5;
-  v10 = a6;
-  v28 = a1;
-  v11 = [a1 _mainDisplayWindowScene];
-  v12 = [v11 homeScreenController];
-  v13 = [v12 iconManager];
-  v14 = [v13 rootFolderController];
-  v15 = [v12 homeScreenOverlayController];
+  operationCopy = operation;
+  completionCopy = completion;
+  selfCopy = self;
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
+  iconManager = [homeScreenController iconManager];
+  rootFolderController = [iconManager rootFolderController];
+  homeScreenOverlayController = [homeScreenController homeScreenOverlayController];
   v16 = +[SBApplicationTestingManager sharedInstance];
-  v31 = [v16 currentTestName];
+  currentTestName = [v16 currentTestName];
   SBDismissSpotlight();
-  v29 = v13;
-  v30 = v11;
-  if ([v12 isModalAppLibrarySupported])
+  v29 = iconManager;
+  v30 = _mainDisplayWindowScene;
+  if ([homeScreenController isModalAppLibrarySupported])
   {
-    v17 = [v11 modalLibraryController];
-    v18 = [v17 libraryViewController];
-    v19 = [v17 isPresentingLibrary];
+    modalLibraryController = [_mainDisplayWindowScene modalLibraryController];
+    libraryViewController = [modalLibraryController libraryViewController];
+    isPresentingLibrary = [modalLibraryController isPresentingLibrary];
   }
 
   else
   {
-    v18 = [v12 overlayLibraryViewController];
-    v19 = [v13 isMainDisplayLibraryViewVisible];
-    v17 = 0;
+    libraryViewController = [homeScreenController overlayLibraryViewController];
+    isPresentingLibrary = [iconManager isMainDisplayLibraryViewVisible];
+    modalLibraryController = 0;
   }
 
-  if ([v18 isPresentingSearch])
+  if ([libraryViewController isPresentingSearch])
   {
-    [v18 dismissSearch];
+    [libraryViewController dismissSearch];
   }
 
-  [v18 _dismissExpandedPods:0 completion:0];
-  [v16 setupKeyboardAnimationSubTestsForTestName:v31];
+  [libraryViewController _dismissExpandedPods:0 completion:0];
+  [v16 setupKeyboardAnimationSubTestsForTestName:currentTestName];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __110__SBPPTOperation_SBAppLibrarySupport___dismissOverlaysAndResetHomeScreenToPage_animated_operation_completion___block_invoke;
   v36[3] = &unk_2783BC598;
-  v20 = v14;
+  v20 = rootFolderController;
   v37 = v20;
-  v41 = a3;
-  v21 = v15;
+  pageCopy = page;
+  v21 = homeScreenOverlayController;
   v38 = v21;
-  v22 = v10;
+  v22 = completionCopy;
   v40 = v22;
-  v23 = v9;
+  v23 = operationCopy;
   v39 = v23;
   v24 = MEMORY[0x223D6F7F0](v36);
   v25 = v24;
-  if (v19)
+  if (isPresentingLibrary)
   {
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
@@ -2785,16 +2785,16 @@ void __61__SBPPTOperation_SBAppLibrarySupport__presentAppLibraryPhone__block_inv
     v33 = v23;
     v35 = v25;
     v26 = v30;
-    if ([v28 _isLibraryDismissalAllowedWithCompletion:v32])
+    if ([selfCopy _isLibraryDismissalAllowedWithCompletion:v32])
     {
-      if (v17)
+      if (modalLibraryController)
       {
-        v27 = v17;
+        v27 = modalLibraryController;
       }
 
       else
       {
-        v27 = v12;
+        v27 = homeScreenController;
       }
 
       [v27 dismissLibraryAnimated:0 completion:0];
@@ -2908,51 +2908,51 @@ void __110__SBPPTOperation_SBAppLibrarySupport___dismissOverlaysAndResetHomeScre
 
 + (id)_libraryViewController
 {
-  v2 = [a1 _mainDisplayWindowScene];
-  v3 = [v2 homeScreenController];
-  if ([v3 isModalAppLibrarySupported])
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
+  if ([homeScreenController isModalAppLibrarySupported])
   {
-    v4 = [v2 modalLibraryController];
-    v5 = [v4 libraryViewController];
+    modalLibraryController = [_mainDisplayWindowScene modalLibraryController];
+    libraryViewController = [modalLibraryController libraryViewController];
   }
 
   else
   {
-    v5 = [v3 overlayLibraryViewController];
+    libraryViewController = [homeScreenController overlayLibraryViewController];
   }
 
-  return v5;
+  return libraryViewController;
 }
 
 + (BOOL)isLibraryPresented
 {
-  v2 = [a1 _mainDisplayWindowScene];
-  v3 = [v2 homeScreenController];
-  if ([v3 isModalAppLibrarySupported])
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
+  if ([homeScreenController isModalAppLibrarySupported])
   {
-    v4 = [v2 modalLibraryController];
-    v5 = [v4 isPresentingLibrary];
+    modalLibraryController = [_mainDisplayWindowScene modalLibraryController];
+    isPresentingLibrary = [modalLibraryController isPresentingLibrary];
   }
 
   else
   {
-    v4 = [v3 iconManager];
-    v5 = [v4 isMainDisplayLibraryViewVisible];
+    modalLibraryController = [homeScreenController iconManager];
+    isPresentingLibrary = [modalLibraryController isMainDisplayLibraryViewVisible];
   }
 
-  v6 = v5;
+  v6 = isPresentingLibrary;
 
   return v6;
 }
 
-+ (id)dismissOverlaysAndResetHomeScreenToLastIconPageAnimated:(BOOL)a3
++ (id)dismissOverlaysAndResetHomeScreenToLastIconPageAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v6 = [a1 _mainDisplayWindowScene];
-  v7 = [v6 homeScreenController];
-  v8 = [v7 iconManager];
-  v9 = [v8 rootFolderController];
-  v10 = [a1 dismissOverlaysAndResetHomeScreenToPage:objc_msgSend(v9 animated:"lastIconPageIndex") completion:{v3, 0}];
+  animatedCopy = animated;
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
+  iconManager = [homeScreenController iconManager];
+  rootFolderController = [iconManager rootFolderController];
+  v10 = [self dismissOverlaysAndResetHomeScreenToPage:objc_msgSend(rootFolderController animated:"lastIconPageIndex") completion:{animatedCopy, 0}];
   [v10 setTimeoutInterval:30.0];
   v11 = NSStringFromSelector(a2);
   [v10 setOperationName:v11];
@@ -2960,14 +2960,14 @@ void __110__SBPPTOperation_SBAppLibrarySupport___dismissOverlaysAndResetHomeScre
   return v10;
 }
 
-+ (id)dismissOverlaysAndResetHomeScreenToFirstIconPageAnimated:(BOOL)a3
++ (id)dismissOverlaysAndResetHomeScreenToFirstIconPageAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v6 = [a1 _mainDisplayWindowScene];
-  v7 = [v6 homeScreenController];
-  v8 = [v7 iconManager];
-  v9 = [v8 rootFolderController];
-  v10 = [a1 dismissOverlaysAndResetHomeScreenToPage:objc_msgSend(v9 animated:"firstIconPageIndex") completion:{v3, 0}];
+  animatedCopy = animated;
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
+  iconManager = [homeScreenController iconManager];
+  rootFolderController = [iconManager rootFolderController];
+  v10 = [self dismissOverlaysAndResetHomeScreenToPage:objc_msgSend(rootFolderController animated:"firstIconPageIndex") completion:{animatedCopy, 0}];
   [v10 setTimeoutInterval:30.0];
   v11 = NSStringFromSelector(a2);
   [v10 setOperationName:v11];
@@ -2982,7 +2982,7 @@ void __110__SBPPTOperation_SBAppLibrarySupport___dismissOverlaysAndResetHomeScre
   v6[1] = 3221225472;
   v6[2] = __63__SBPPTOperation_SBAppLibrarySupport__appLibraryExpandFirstPod__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = [SBPPTBlockOperation operationWithName:v3 block:v6];
 
   [v4 setTimeoutInterval:30.0];
@@ -3030,7 +3030,7 @@ void __63__SBPPTOperation_SBAppLibrarySupport__appLibraryExpandFirstPod__block_i
   v6[1] = 3221225472;
   v6[2] = __67__SBPPTOperation_SBAppLibrarySupport__appLibraryDismissExpandedPod__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = [SBPPTBlockOperation operationWithName:v3 block:v6];
 
   [v4 setTimeoutInterval:30.0];
@@ -3071,17 +3071,17 @@ void __67__SBPPTOperation_SBAppLibrarySupport__appLibraryDismissExpandedPod__blo
   }
 }
 
-+ (id)performTapAtPointWithBlock:(id)a3
++ (id)performTapAtPointWithBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = NSStringFromSelector(a2);
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __66__SBPPTOperation_SBAppLibrarySupport__performTapAtPointWithBlock___block_invoke;
   v13 = &unk_2783C4790;
-  v14 = v5;
-  v15 = a1;
-  v7 = v5;
+  v14 = blockCopy;
+  selfCopy = self;
+  v7 = blockCopy;
   v8 = [SBPPTBlockOperation operationWithName:v6 block:&v10];
 
   [v8 setTimeoutInterval:{30.0, v10, v11, v12, v13}];
@@ -3114,7 +3114,7 @@ void __66__SBPPTOperation_SBAppLibrarySupport__performTapAtPointWithBlock___bloc
   v6[1] = 3221225472;
   v6[2] = __63__SBPPTOperation_SBAppLibrarySupport__dismissAppLibraryOverlay__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v16__0__SBPPTBlockOperation_8l;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = [SBPPTBlockOperation operationWithName:v3 block:v6];
 
   [v4 setTimeoutInterval:30.0];
@@ -3174,15 +3174,15 @@ uint64_t __63__SBPPTOperation_SBAppLibrarySupport__dismissAppLibraryOverlay__blo
 
 + (id)configureAppLibraryForAllAppsInOnePod
 {
-  v3 = [a1 _mainDisplayWindowScene];
-  v4 = [v3 homeScreenController];
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
   v5 = NSStringFromSelector(a2);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__SBPPTOperation_SBAppLibrarySupport__configureAppLibraryForAllAppsInOnePod__block_invoke;
   v9[3] = &unk_2783B2FA8;
-  v10 = v4;
-  v6 = v4;
+  v10 = homeScreenController;
+  v6 = homeScreenController;
   v7 = [SBPPTBlockOperation operationWithName:v5 block:v9];
 
   [v7 setTimeoutInterval:30.0];
@@ -3216,15 +3216,15 @@ void __76__SBPPTOperation_SBAppLibrarySupport__configureAppLibraryForAllAppsInOn
 
 + (id)configureAppLibraryForEachAppHavingOwnPod
 {
-  v3 = [a1 _mainDisplayWindowScene];
-  v4 = [v3 homeScreenController];
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
   v5 = NSStringFromSelector(a2);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __80__SBPPTOperation_SBAppLibrarySupport__configureAppLibraryForEachAppHavingOwnPod__block_invoke;
   v9[3] = &unk_2783B2FA8;
-  v10 = v4;
-  v6 = v4;
+  v10 = homeScreenController;
+  v6 = homeScreenController;
   v7 = [SBPPTBlockOperation operationWithName:v5 block:v9];
 
   [v7 setTimeoutInterval:30.0];
@@ -3256,42 +3256,42 @@ void __80__SBPPTOperation_SBAppLibrarySupport__configureAppLibraryForEachAppHavi
   SBPPTPerformAfterCommitWithDelay(v2, 1.0);
 }
 
-+ (void)_appLibrarySupport_performPanGestureTowardsUserInterfaceLayoutDirectionOnScreenWithDuration:(double)a3 completion:(id)a4
++ (void)_appLibrarySupport_performPanGestureTowardsUserInterfaceLayoutDirectionOnScreenWithDuration:(double)duration completion:(id)completion
 {
   v6 = *MEMORY[0x277D76620];
-  v7 = a4;
+  completionCopy = completion;
   if ([v6 userInterfaceLayoutDirection] == 1)
   {
-    [a1 _appLibrarySupport_performRightToLeftPanGestureOnScreenWithDuration:v7 completion:a3];
+    [self _appLibrarySupport_performRightToLeftPanGestureOnScreenWithDuration:completionCopy completion:duration];
   }
 
   else
   {
-    [a1 _appLibrarySupport_performLeftToRightPanGestureOnScreenWithDuration:v7 completion:a3];
+    [self _appLibrarySupport_performLeftToRightPanGestureOnScreenWithDuration:completionCopy completion:duration];
   }
 }
 
-+ (void)_appLibrarySupport_performPanGestureAwayFromUserInterfaceLayoutDirectionOnScreenWithDuration:(double)a3 completion:(id)a4
++ (void)_appLibrarySupport_performPanGestureAwayFromUserInterfaceLayoutDirectionOnScreenWithDuration:(double)duration completion:(id)completion
 {
   v6 = *MEMORY[0x277D76620];
-  v7 = a4;
+  completionCopy = completion;
   if ([v6 userInterfaceLayoutDirection] == 1)
   {
-    [a1 _appLibrarySupport_performLeftToRightPanGestureOnScreenWithDuration:v7 completion:a3];
+    [self _appLibrarySupport_performLeftToRightPanGestureOnScreenWithDuration:completionCopy completion:duration];
   }
 
   else
   {
-    [a1 _appLibrarySupport_performRightToLeftPanGestureOnScreenWithDuration:v7 completion:a3];
+    [self _appLibrarySupport_performRightToLeftPanGestureOnScreenWithDuration:completionCopy completion:duration];
   }
 }
 
-+ (void)_appLibrarySupport_performRightToLeftPanGestureOnScreenWithDuration:(double)a3 completion:(id)a4
++ (void)_appLibrarySupport_performRightToLeftPanGestureOnScreenWithDuration:(double)duration completion:(id)completion
 {
   v6 = MEMORY[0x277D75DA0];
-  v7 = a4;
-  v8 = [v6 _applicationKeyWindow];
-  [v8 bounds];
+  completionCopy = completion;
+  _applicationKeyWindow = [v6 _applicationKeyWindow];
+  [_applicationKeyWindow bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -3321,23 +3321,23 @@ void __80__SBPPTOperation_SBAppLibrarySupport__configureAppLibraryForEachAppHavi
   v23[1] = 3221225472;
   v23[2] = __118__SBPPTOperation_SBAppLibrarySupport___appLibrarySupport_performRightToLeftPanGestureOnScreenWithDuration_completion___block_invoke;
   v23[3] = &__block_descriptor_80_e34_v16__0___RCPEventStreamComposer__8l;
-  v23[4] = a1;
+  v23[4] = self;
   *&v23[5] = MaxX;
   *&v23[6] = MidY;
   *&v23[7] = MinX;
   *&v23[8] = v20;
-  *&v23[9] = a3;
+  *&v23[9] = duration;
   v21 = [MEMORY[0x277D44358] eventStreamWithEventActions:v23];
   v22 = objc_opt_new();
-  [MEMORY[0x277D44348] playEventStream:v21 options:v22 completion:v7];
+  [MEMORY[0x277D44348] playEventStream:v21 options:v22 completion:completionCopy];
 }
 
-+ (void)_appLibrarySupport_performLeftToRightPanGestureOnScreenWithDuration:(double)a3 completion:(id)a4
++ (void)_appLibrarySupport_performLeftToRightPanGestureOnScreenWithDuration:(double)duration completion:(id)completion
 {
   v6 = MEMORY[0x277D75DA0];
-  v7 = a4;
-  v8 = [v6 _applicationKeyWindow];
-  [v8 bounds];
+  completionCopy = completion;
+  _applicationKeyWindow = [v6 _applicationKeyWindow];
+  [_applicationKeyWindow bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -3367,28 +3367,28 @@ void __80__SBPPTOperation_SBAppLibrarySupport__configureAppLibraryForEachAppHavi
   v23[1] = 3221225472;
   v23[2] = __118__SBPPTOperation_SBAppLibrarySupport___appLibrarySupport_performLeftToRightPanGestureOnScreenWithDuration_completion___block_invoke;
   v23[3] = &__block_descriptor_80_e34_v16__0___RCPEventStreamComposer__8l;
-  v23[4] = a1;
+  v23[4] = self;
   *&v23[5] = MinX;
   *&v23[6] = MidY;
   *&v23[7] = MaxX;
   *&v23[8] = v20;
-  *&v23[9] = a3;
+  *&v23[9] = duration;
   v21 = [MEMORY[0x277D44358] eventStreamWithEventActions:v23];
   v22 = objc_opt_new();
-  [MEMORY[0x277D44348] playEventStream:v21 options:v22 completion:v7];
+  [MEMORY[0x277D44348] playEventStream:v21 options:v22 completion:completionCopy];
 }
 
-+ (void)_appLibrarySupport_performPanWithComposer:(id)a3 startLocation:(CGPoint)a4 endLocation:(CGPoint)a5 duration:(double)a6
++ (void)_appLibrarySupport_performPanWithComposer:(id)composer startLocation:(CGPoint)location endLocation:(CGPoint)endLocation duration:(double)duration
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  y = endLocation.y;
+  x = endLocation.x;
+  v9 = location.y;
+  v10 = location.x;
   v11 = *MEMORY[0x277D76620];
   v12 = MEMORY[0x277D759A0];
-  v13 = a3;
-  v14 = [v12 mainScreen];
-  v21 = [v11 _keyWindowForScreen:v14];
+  composerCopy = composer;
+  mainScreen = [v12 mainScreen];
+  v21 = [v11 _keyWindowForScreen:mainScreen];
 
   [v21 convertPoint:0 toView:{v10, v9}];
   [v21 _convertPointToSceneReferenceSpace:?];
@@ -3396,53 +3396,53 @@ void __80__SBPPTOperation_SBAppLibrarySupport__configureAppLibraryForEachAppHavi
   v18 = v17;
   [v21 convertPoint:0 toView:{x, y}];
   [v21 _convertPointToSceneReferenceSpace:?];
-  [v13 sendFlickWithStartPoint:v16 endPoint:v18 duration:{v19, v20, a6}];
+  [composerCopy sendFlickWithStartPoint:v16 endPoint:v18 duration:{v19, v20, duration}];
 }
 
-+ (void)_appLibrarySupport_performPanGesturesOnScreenUntilOnPage:(unint64_t)a3 withCompletion:(id)a4
++ (void)_appLibrarySupport_performPanGesturesOnScreenUntilOnPage:(unint64_t)page withCompletion:(id)completion
 {
-  v6 = a4;
-  v10 = [a1 _mainDisplayWindowScene];
-  v7 = [v10 homeScreenController];
-  v8 = [v7 iconManager];
-  v9 = [v8 rootFolderController];
-  [a1 _appLibrarySupport__performPanGesturesOnScreenFromPage:objc_msgSend(v9 toPage:"currentPageIndex") completion:{a3, v6}];
+  completionCopy = completion;
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
+  iconManager = [homeScreenController iconManager];
+  rootFolderController = [iconManager rootFolderController];
+  [self _appLibrarySupport__performPanGesturesOnScreenFromPage:objc_msgSend(rootFolderController toPage:"currentPageIndex") completion:{page, completionCopy}];
 }
 
-+ (void)_appLibrarySupport_performPanGesturesOnScreenUntilOnDefaultHomeScreenIconPageWithCompletion:(id)a3
++ (void)_appLibrarySupport_performPanGesturesOnScreenUntilOnDefaultHomeScreenIconPageWithCompletion:(id)completion
 {
-  v4 = a3;
-  v11 = [a1 _mainDisplayWindowScene];
-  v5 = [v11 homeScreenController];
-  v6 = [v5 iconManager];
-  v7 = [v6 rootFolderController];
-  v8 = [v7 currentPageIndex];
-  v9 = [v5 iconManager];
-  v10 = [v9 rootFolderController];
-  [a1 _appLibrarySupport__performPanGesturesOnScreenFromPage:v8 toPage:objc_msgSend(v10 completion:{"defaultPageIndex"), v4}];
+  completionCopy = completion;
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
+  iconManager = [homeScreenController iconManager];
+  rootFolderController = [iconManager rootFolderController];
+  currentPageIndex = [rootFolderController currentPageIndex];
+  iconManager2 = [homeScreenController iconManager];
+  rootFolderController2 = [iconManager2 rootFolderController];
+  [self _appLibrarySupport__performPanGesturesOnScreenFromPage:currentPageIndex toPage:objc_msgSend(rootFolderController2 completion:{"defaultPageIndex"), completionCopy}];
 }
 
-+ (void)_appLibrarySupport_performPanGesturesOnScreenUntilOnDeweyOverlayWithCompletion:(id)a3
++ (void)_appLibrarySupport_performPanGesturesOnScreenUntilOnDeweyOverlayWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [a1 _mainDisplayWindowScene];
-  v6 = [v5 homeScreenController];
-  v7 = [v6 _rootFolderController];
-  v8 = [v7 currentPageIndex];
+  completionCopy = completion;
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
+  _rootFolderController = [homeScreenController _rootFolderController];
+  currentPageIndex = [_rootFolderController currentPageIndex];
 
-  v9 = [v6 _rootFolderController];
-  v10 = [v9 lastIconPageIndex];
+  _rootFolderController2 = [homeScreenController _rootFolderController];
+  lastIconPageIndex = [_rootFolderController2 lastIconPageIndex];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __118__SBPPTOperation_SBAppLibrarySupport___appLibrarySupport_performPanGesturesOnScreenUntilOnDeweyOverlayWithCompletion___block_invoke;
   v13[3] = &unk_2783B3D68;
-  v14 = v6;
-  v15 = v4;
-  v16 = a1;
-  v11 = v4;
-  v12 = v6;
-  [a1 _appLibrarySupport__performPanGesturesOnScreenFromPage:v8 toPage:v10 completion:v13];
+  v14 = homeScreenController;
+  v15 = completionCopy;
+  selfCopy = self;
+  v11 = completionCopy;
+  v12 = homeScreenController;
+  [self _appLibrarySupport__performPanGesturesOnScreenFromPage:currentPageIndex toPage:lastIconPageIndex completion:v13];
 }
 
 void __118__SBPPTOperation_SBAppLibrarySupport___appLibrarySupport_performPanGesturesOnScreenUntilOnDeweyOverlayWithCompletion___block_invoke(uint64_t a1)
@@ -3527,22 +3527,22 @@ void __118__SBPPTOperation_SBAppLibrarySupport___appLibrarySupport_performPanGes
   }
 }
 
-+ (void)_appLibrarySupport__performPanGesturesOnScreenFromPage:(unint64_t)a3 toPage:(unint64_t)a4 completion:(id)a5
++ (void)_appLibrarySupport__performPanGesturesOnScreenFromPage:(unint64_t)page toPage:(unint64_t)toPage completion:(id)completion
 {
-  v8 = a5;
-  v9 = [a1 _mainDisplayWindowScene];
-  v10 = [v9 homeScreenController];
-  v11 = [v10 iconManager];
-  v12 = [v11 rootFolderController];
+  completionCopy = completion;
+  _mainDisplayWindowScene = [self _mainDisplayWindowScene];
+  homeScreenController = [_mainDisplayWindowScene homeScreenController];
+  iconManager = [homeScreenController iconManager];
+  rootFolderController = [iconManager rootFolderController];
 
-  v13 = [v10 homeScreenOverlayController];
-  v14 = [v13 isPresented];
+  homeScreenOverlayController = [homeScreenController homeScreenOverlayController];
+  isPresented = [homeScreenOverlayController isPresented];
 
-  if ([v12 currentPageIndex] == a4)
+  if ([rootFolderController currentPageIndex] == toPage)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -3552,22 +3552,22 @@ void __118__SBPPTOperation_SBAppLibrarySupport___appLibrarySupport_performPanGes
     v16[1] = 3221225472;
     v16[2] = __112__SBPPTOperation_SBAppLibrarySupport___appLibrarySupport__performPanGesturesOnScreenFromPage_toPage_completion___block_invoke;
     v16[3] = &unk_2783C4820;
-    v17 = v10;
-    v20 = a3;
-    v23 = v14;
-    v18 = v12;
-    v21 = a4;
-    v19 = v8;
-    v22 = a1;
+    v17 = homeScreenController;
+    pageCopy = page;
+    v23 = isPresented;
+    v18 = rootFolderController;
+    toPageCopy = toPage;
+    v19 = completionCopy;
+    selfCopy = self;
     v15 = MEMORY[0x223D6F7F0](v16);
-    if (a3 >= a4 || [*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
+    if (page >= toPage || [*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
     {
-      [a1 _appLibrarySupport_performPanGestureAwayFromUserInterfaceLayoutDirectionOnScreenWithDuration:v15 completion:0.25];
+      [self _appLibrarySupport_performPanGestureAwayFromUserInterfaceLayoutDirectionOnScreenWithDuration:v15 completion:0.25];
     }
 
     else
     {
-      [a1 _appLibrarySupport_performPanGestureTowardsUserInterfaceLayoutDirectionOnScreenWithDuration:v15 completion:0.25];
+      [self _appLibrarySupport_performPanGestureTowardsUserInterfaceLayoutDirectionOnScreenWithDuration:v15 completion:0.25];
     }
   }
 }
@@ -3620,20 +3620,20 @@ LABEL_15:
   return [v13 _appLibrarySupport__performPanGesturesOnScreenFromPage:v4 toPage:? completion:?];
 }
 
-+ (void)_appLibrarySupport_performTapAtPoint:(CGPoint)a3 fromView:(id)a4 withCompletion:(id)a5
++ (void)_appLibrarySupport_performTapAtPoint:(CGPoint)point fromView:(id)view withCompletion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v8 = *MEMORY[0x277D76620];
   v9 = MEMORY[0x277D759A0];
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 mainScreen];
-  v13 = [v8 _keyWindowForScreen:v12];
+  completionCopy = completion;
+  viewCopy = view;
+  mainScreen = [v9 mainScreen];
+  v13 = [v8 _keyWindowForScreen:mainScreen];
 
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  v15 = [v14 coordinateSpace];
-  [v15 convertPoint:v11 fromCoordinateSpace:{x, y}];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  coordinateSpace = [mainScreen2 coordinateSpace];
+  [coordinateSpace convertPoint:viewCopy fromCoordinateSpace:{x, y}];
   v17 = v16;
   v19 = v18;
 
@@ -3647,31 +3647,31 @@ LABEL_15:
   v24[5] = v21;
   v22 = [MEMORY[0x277D44358] eventStreamWithEventActions:v24];
   v23 = objc_opt_new();
-  [MEMORY[0x277D44348] playEventStream:v22 options:v23 completion:v10];
+  [MEMORY[0x277D44348] playEventStream:v22 options:v23 completion:completionCopy];
 }
 
-+ (void)_appLibrarySupport_performDragFromPoint:(CGPoint)a3 andDragTo:(CGPoint)a4 duration:(double)a5 fromView:(id)a6 withCompletion:(id)a7
++ (void)_appLibrarySupport_performDragFromPoint:(CGPoint)point andDragTo:(CGPoint)to duration:(double)duration fromView:(id)view withCompletion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a3.y;
-  v12 = a3.x;
+  y = to.y;
+  x = to.x;
+  v11 = point.y;
+  v12 = point.x;
   v13 = *MEMORY[0x277D76620];
   v14 = MEMORY[0x277D759A0];
-  v15 = a7;
-  v16 = a6;
-  v17 = [v14 mainScreen];
-  v18 = [v13 _keyWindowForScreen:v17];
+  completionCopy = completion;
+  viewCopy = view;
+  mainScreen = [v14 mainScreen];
+  v18 = [v13 _keyWindowForScreen:mainScreen];
 
-  v19 = [MEMORY[0x277D759A0] mainScreen];
-  v20 = [v19 coordinateSpace];
-  [v20 convertPoint:v16 fromCoordinateSpace:{v12, v11}];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  coordinateSpace = [mainScreen2 coordinateSpace];
+  [coordinateSpace convertPoint:viewCopy fromCoordinateSpace:{v12, v11}];
   v22 = v21;
   v24 = v23;
 
-  v25 = [MEMORY[0x277D759A0] mainScreen];
-  v26 = [v25 coordinateSpace];
-  [v26 convertPoint:v16 fromCoordinateSpace:{x, y}];
+  mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+  coordinateSpace2 = [mainScreen3 coordinateSpace];
+  [coordinateSpace2 convertPoint:viewCopy fromCoordinateSpace:{x, y}];
   v28 = v27;
   v30 = v29;
 
@@ -3689,18 +3689,18 @@ LABEL_15:
   v39[5] = v34;
   v39[6] = v35;
   v39[7] = v36;
-  *&v39[8] = a5;
+  *&v39[8] = duration;
   v37 = [MEMORY[0x277D44358] eventStreamWithEventActions:v39];
   v38 = objc_opt_new();
-  [MEMORY[0x277D44348] playEventStream:v37 options:v38 completion:v15];
+  [MEMORY[0x277D44348] playEventStream:v37 options:v38 completion:completionCopy];
 }
 
 + (id)embeddedWindowScene
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 embeddedDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  return v3;
+  return embeddedDisplayWindowScene;
 }
 
 @end

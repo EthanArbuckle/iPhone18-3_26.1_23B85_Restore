@@ -1,5 +1,5 @@
 @interface FMDRequestIdentityV3Session
-- (FMDRequestIdentityV3Session)initWithProvider:(id)a3 activationLockRequestUUID:(id)a4 pscHelloMsg:(id)a5;
+- (FMDRequestIdentityV3Session)initWithProvider:(id)provider activationLockRequestUUID:(id)d pscHelloMsg:(id)msg;
 - (FMDServiceProvider)provider;
 - (id)requestBody;
 - (id)requestHeaders;
@@ -9,21 +9,21 @@
 
 @implementation FMDRequestIdentityV3Session
 
-- (FMDRequestIdentityV3Session)initWithProvider:(id)a3 activationLockRequestUUID:(id)a4 pscHelloMsg:(id)a5
+- (FMDRequestIdentityV3Session)initWithProvider:(id)provider activationLockRequestUUID:(id)d pscHelloMsg:(id)msg
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 account];
+  providerCopy = provider;
+  dCopy = d;
+  msgCopy = msg;
+  account = [providerCopy account];
   v14.receiver = self;
   v14.super_class = FMDRequestIdentityV3Session;
-  v12 = [(FMDRequest *)&v14 initWithAccount:v11];
+  v12 = [(FMDRequest *)&v14 initWithAccount:account];
 
   if (v12)
   {
-    [(FMDRequestIdentityV3Session *)v12 setActivationLockRequestUUID:v9];
-    [(FMDRequestIdentityV3Session *)v12 setProvider:v8];
-    [(FMDRequestIdentityV3Session *)v12 setPscHelloMsg:v10];
+    [(FMDRequestIdentityV3Session *)v12 setActivationLockRequestUUID:dCopy];
+    [(FMDRequestIdentityV3Session *)v12 setProvider:providerCopy];
+    [(FMDRequestIdentityV3Session *)v12 setPscHelloMsg:msgCopy];
     [(FMDRequestIdentityV3Session *)v12 setRequiresAuthentication:1];
   }
 
@@ -47,20 +47,20 @@
 {
   if ([(FMDRequestIdentityV3Session *)self requiresAuthentication])
   {
-    v3 = [(FMDRequestIdentityV3Session *)self provider];
-    v4 = [v3 account];
+    provider = [(FMDRequestIdentityV3Session *)self provider];
+    account = [provider account];
 
     v5 = +[FMDSystemConfig sharedInstance];
-    v6 = [v5 deviceUDID];
+    deviceUDID = [v5 deviceUDID];
 
     v7 = objc_alloc_init(RequestTemplateURL);
-    v8 = [(RequestTemplateURL *)v7 urlFromTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/identityV3Session" account:v4 udid:v6];
+    v8 = [(RequestTemplateURL *)v7 urlFromTemplate:@"${scheme}://${hostname}/fmipservice/${service}/${dsid}/${udid}/identityV3Session" account:account udid:deviceUDID];
   }
 
   else
   {
-    v4 = objc_alloc_init(RequestTemplateURL);
-    v8 = [(RequestTemplateURL *)v4 unauthenticatedURLFromTemplate:@"${scheme}://${hostname}/${service}/provision/init"];
+    account = objc_alloc_init(RequestTemplateURL);
+    v8 = [(RequestTemplateURL *)account unauthenticatedURLFromTemplate:@"${scheme}://${hostname}/${service}/provision/init"];
   }
 
   return v8;
@@ -70,36 +70,36 @@
 {
   v7.receiver = self;
   v7.super_class = FMDRequestIdentityV3Session;
-  v3 = [(FMDRequest *)&v7 requestHeaders];
-  v4 = [(FMDRequestIdentityV3Session *)self activationLockRequestUUID];
-  v5 = [v4 UUIDString];
-  [v3 fm_safelyMapKey:@"X-Apple-AL-ID" toObject:v5];
+  requestHeaders = [(FMDRequest *)&v7 requestHeaders];
+  activationLockRequestUUID = [(FMDRequestIdentityV3Session *)self activationLockRequestUUID];
+  uUIDString = [activationLockRequestUUID UUIDString];
+  [requestHeaders fm_safelyMapKey:@"X-Apple-AL-ID" toObject:uUIDString];
 
-  return v3;
+  return requestHeaders;
 }
 
 - (id)requestBody
 {
   v3 = +[NSMutableDictionary dictionary];
   v4 = +[FMSystemInfo sharedInstance];
-  v5 = [v4 serialNumber];
-  [v3 fm_safelyMapKey:@"serialNumber" toObject:v5];
+  serialNumber = [v4 serialNumber];
+  [v3 fm_safelyMapKey:@"serialNumber" toObject:serialNumber];
 
   v6 = +[FMSystemInfo sharedInstance];
-  v7 = [v6 deviceUDID];
-  [v3 fm_safelyMapKey:@"udid" toObject:v7];
+  deviceUDID = [v6 deviceUDID];
+  [v3 fm_safelyMapKey:@"udid" toObject:deviceUDID];
 
   v8 = +[FMSystemInfo sharedInstance];
-  v9 = [v8 osVersion];
-  [v3 fm_safelyMapKey:@"osVersion" toObject:v9];
+  osVersion = [v8 osVersion];
+  [v3 fm_safelyMapKey:@"osVersion" toObject:osVersion];
 
   v10 = +[FMSystemInfo sharedInstance];
-  v11 = [v10 osBuildVersion];
-  [v3 fm_safelyMapKey:@"osBuildVersion" toObject:v11];
+  osBuildVersion = [v10 osBuildVersion];
+  [v3 fm_safelyMapKey:@"osBuildVersion" toObject:osBuildVersion];
 
   v12 = +[FMSystemInfo sharedInstance];
-  v13 = [v12 productType];
-  [v3 fm_safelyMapKey:@"productType" toObject:v13];
+  productType = [v12 productType];
+  [v3 fm_safelyMapKey:@"productType" toObject:productType];
 
   v14 = +[FMDAbsintheV3SigningInterface sharedInterface];
   v23 = 0;
@@ -107,8 +107,8 @@
   v16 = v23;
   [v3 fm_safelyMapKey:@"ifcReceipt" toObject:v15];
 
-  v17 = [v16 fm_commaSeparatedString];
-  [v3 fm_safelyMapKey:@"collectionError" toObject:v17];
+  fm_commaSeparatedString = [v16 fm_commaSeparatedString];
+  [v3 fm_safelyMapKey:@"collectionError" toObject:fm_commaSeparatedString];
 
   v18 = +[FMSystemInfo sharedInstance];
   LODWORD(v15) = [v18 isInternalBuild];
@@ -119,11 +119,11 @@
     [v3 fm_safelyMapKey:@"collectionErrorDetail" toObject:v19];
   }
 
-  v20 = [(FMDRequestIdentityV3Session *)self pscHelloMsg];
-  [v3 fm_safelyMapKey:@"message" toObject:v20];
+  pscHelloMsg = [(FMDRequestIdentityV3Session *)self pscHelloMsg];
+  [v3 fm_safelyMapKey:@"message" toObject:pscHelloMsg];
 
-  v21 = [(FMDRequestIdentityV3Session *)self cause];
-  [v3 fm_safelyMapKey:@"cause" toObject:v21];
+  cause = [(FMDRequestIdentityV3Session *)self cause];
+  [v3 fm_safelyMapKey:@"cause" toObject:cause];
 
   return v3;
 }

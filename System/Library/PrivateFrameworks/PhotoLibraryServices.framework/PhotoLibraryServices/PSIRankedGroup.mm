@@ -1,18 +1,18 @@
 @interface PSIRankedGroup
-- (PSIRankedGroup)initWithGroup:(id)a3 score:(double)a4;
+- (PSIRankedGroup)initWithGroup:(id)group score:(double)score;
 @end
 
 @implementation PSIRankedGroup
 
-- (PSIRankedGroup)initWithGroup:(id)a3 score:(double)a4
+- (PSIRankedGroup)initWithGroup:(id)group score:(double)score
 {
-  v7 = a3;
+  groupCopy = group;
   v8 = [(PSIRankedGroup *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_group, a3);
-    v9->_score = a4;
+    objc_storeStrong(&v8->_group, group);
+    v9->_score = score;
   }
 
   return v9;

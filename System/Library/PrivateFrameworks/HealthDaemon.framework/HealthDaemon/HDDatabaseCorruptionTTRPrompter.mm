@@ -1,10 +1,10 @@
 @interface HDDatabaseCorruptionTTRPrompter
-- (BOOL)shouldAttemptTTRForProfileIdentier:(id)a3 component:(int64_t)a4;
+- (BOOL)shouldAttemptTTRForProfileIdentier:(id)identier component:(int64_t)component;
 - (HDDatabaseCorruptionTTRPrompter)init;
-- (HDDatabaseCorruptionTTRPrompter)initWithStore:(id)a3 behavior:(id)a4;
-- (id)TTRAttemptRecordForProfile:(id)a3;
-- (void)_popAlertWithRadarDescription:(id)a3;
-- (void)promptForEvent:(id)a3;
+- (HDDatabaseCorruptionTTRPrompter)initWithStore:(id)store behavior:(id)behavior;
+- (id)TTRAttemptRecordForProfile:(id)profile;
+- (void)_popAlertWithRadarDescription:(id)description;
+- (void)promptForEvent:(id)event;
 @end
 
 @implementation HDDatabaseCorruptionTTRPrompter
@@ -19,41 +19,41 @@
   return 0;
 }
 
-- (HDDatabaseCorruptionTTRPrompter)initWithStore:(id)a3 behavior:(id)a4
+- (HDDatabaseCorruptionTTRPrompter)initWithStore:(id)store behavior:(id)behavior
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  behaviorCopy = behavior;
   v12.receiver = self;
   v12.super_class = HDDatabaseCorruptionTTRPrompter;
   v9 = [(HDDatabaseCorruptionTTRPrompter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_corruptionStore, a3);
-    objc_storeStrong(&v10->_behavior, a4);
+    objc_storeStrong(&v9->_corruptionStore, store);
+    objc_storeStrong(&v10->_behavior, behavior);
   }
 
   return v10;
 }
 
-- (id)TTRAttemptRecordForProfile:(id)a3
+- (id)TTRAttemptRecordForProfile:(id)profile
 {
-  v4 = [a3 identifier];
-  v5 = [v4 UUIDString];
+  identifier = [profile identifier];
+  uUIDString = [identifier UUIDString];
 
-  v6 = [(_HKBehavior *)self->_behavior currentOSBuild];
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v5, v6];
+  currentOSBuild = [(_HKBehavior *)self->_behavior currentOSBuild];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", uUIDString, currentOSBuild];
 
   return v7;
 }
 
-- (BOOL)shouldAttemptTTRForProfileIdentier:(id)a3 component:(int64_t)a4
+- (BOOL)shouldAttemptTTRForProfileIdentier:(id)identier component:(int64_t)component
 {
-  v6 = a3;
+  identierCopy = identier;
   if ([(_HKBehavior *)self->_behavior isAppleInternalInstall]&& ([(_HKBehavior *)self->_behavior isTestingDevice]& 1) == 0)
   {
-    v8 = [(HDDatabaseCorruptionTTRPrompter *)self TTRAttemptRecordForProfile:v6];
-    v9 = [(HDDatabaseCorruptionEventStore *)self->_corruptionStore mostRecentTTRAttemptForProfileIdentifier:v6 component:a4];
+    v8 = [(HDDatabaseCorruptionTTRPrompter *)self TTRAttemptRecordForProfile:identierCopy];
+    v9 = [(HDDatabaseCorruptionEventStore *)self->_corruptionStore mostRecentTTRAttemptForProfileIdentifier:identierCopy component:component];
     v10 = v9;
     if (v9 == v8)
     {
@@ -79,41 +79,41 @@
   return v7;
 }
 
-- (void)promptForEvent:(id)a3
+- (void)promptForEvent:(id)event
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 profileIdentifier];
-  v6 = -[HDDatabaseCorruptionTTRPrompter shouldAttemptTTRForProfileIdentier:component:](self, "shouldAttemptTTRForProfileIdentier:component:", v5, [v4 component]);
+  eventCopy = event;
+  profileIdentifier = [eventCopy profileIdentifier];
+  v6 = -[HDDatabaseCorruptionTTRPrompter shouldAttemptTTRForProfileIdentier:component:](self, "shouldAttemptTTRForProfileIdentier:component:", profileIdentifier, [eventCopy component]);
 
   if (v6 && (atomic_exchange(_isPresenting, 1u) & 1) == 0)
   {
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
-    v8 = HDStringFromDatabaseComponentIdentifier([v4 component]);
-    v9 = [v4 error];
-    v33 = [v7 initWithFormat:@"Database corruption in %@: %@", v8, v9];
+    v8 = HDStringFromDatabaseComponentIdentifier([eventCopy component]);
+    error = [eventCopy error];
+    v33 = [v7 initWithFormat:@"Database corruption in %@: %@", v8, error];
 
     v30 = objc_alloc(MEMORY[0x277CCACA8]);
-    v32 = [v4 error];
-    v10 = [v32 domain];
-    v31 = [v4 error];
-    v11 = [v31 code];
-    v12 = [v4 error];
-    v13 = [v12 localizedDescription];
-    v14 = [v4 buildDescription];
-    v15 = HDStringFromDatabaseComponentIdentifier([v4 component]);
-    v16 = [v4 profileIdentifier];
-    v17 = [v4 date];
-    v29 = v11;
-    v18 = v10;
-    v19 = [v30 initWithFormat:@"%@\n\nError(%@, %ld):\n%@\n\nBuild:%@\nComponent:%@\nProfile:%@\nDate:%@\n", v33, v10, v29, v13, v14, v15, v16, v17];
+    error2 = [eventCopy error];
+    domain = [error2 domain];
+    error3 = [eventCopy error];
+    code = [error3 code];
+    error4 = [eventCopy error];
+    localizedDescription = [error4 localizedDescription];
+    buildDescription = [eventCopy buildDescription];
+    v15 = HDStringFromDatabaseComponentIdentifier([eventCopy component]);
+    profileIdentifier2 = [eventCopy profileIdentifier];
+    date = [eventCopy date];
+    v29 = code;
+    v18 = domain;
+    v19 = [v30 initWithFormat:@"%@\n\nError(%@, %ld):\n%@\n\nBuild:%@\nComponent:%@\nProfile:%@\nDate:%@\n", v33, domain, v29, localizedDescription, buildDescription, v15, profileIdentifier2, date];
 
-    v20 = [v4 failedObliterationReason];
+    failedObliterationReason = [eventCopy failedObliterationReason];
 
-    if (v20)
+    if (failedObliterationReason)
     {
-      v21 = [v4 failedObliterationReason];
-      v22 = [v19 stringByAppendingFormat:@"\n\n*** Resulted from failed obliteration attempt for reason <%@>", v21];
+      failedObliterationReason2 = [eventCopy failedObliterationReason];
+      v22 = [v19 stringByAppendingFormat:@"\n\n*** Resulted from failed obliteration attempt for reason <%@>", failedObliterationReason2];
 
       v19 = v22;
     }
@@ -123,7 +123,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v35 = self;
+      selfCopy = self;
       v36 = 2114;
       v37 = v19;
       _os_log_impl(&dword_228986000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: present database corruption alert %{public}@", buf, 0x16u);
@@ -131,25 +131,25 @@
 
     [(HDDatabaseCorruptionTTRPrompter *)self _popAlertWithRadarDescription:v19];
     corruptionStore = self->_corruptionStore;
-    v25 = [v4 profileIdentifier];
-    v26 = [(HDDatabaseCorruptionTTRPrompter *)self TTRAttemptRecordForProfile:v25];
-    v27 = [v4 profileIdentifier];
-    -[HDDatabaseCorruptionEventStore persistTTRAttempt:forProfileIdentifier:component:](corruptionStore, "persistTTRAttempt:forProfileIdentifier:component:", v26, v27, [v4 component]);
+    profileIdentifier3 = [eventCopy profileIdentifier];
+    v26 = [(HDDatabaseCorruptionTTRPrompter *)self TTRAttemptRecordForProfile:profileIdentifier3];
+    profileIdentifier4 = [eventCopy profileIdentifier];
+    -[HDDatabaseCorruptionEventStore persistTTRAttempt:forProfileIdentifier:component:](corruptionStore, "persistTTRAttempt:forProfileIdentifier:component:", v26, profileIdentifier4, [eventCopy component]);
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_popAlertWithRadarDescription:(id)a3
+- (void)_popAlertWithRadarDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   if (_HDIsUnitTesting)
   {
     v5 = _Block_copy(self->_unitTest_willPresentTTRAlertHandler);
     v6 = v5;
     if (v5)
     {
-      (*(v5 + 2))(v5, self, v4);
+      (*(v5 + 2))(v5, self, descriptionCopy);
     }
 
     atomic_store(0, _isPresenting);
@@ -167,7 +167,7 @@
     v7[2] = __65__HDDatabaseCorruptionTTRPrompter__popAlertWithRadarDescription___block_invoke;
     v7[3] = &unk_2786188C8;
     v7[4] = self;
-    v8 = v4;
+    v8 = descriptionCopy;
     [v6 presentWithResponseHandler:v7];
   }
 }

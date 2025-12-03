@@ -1,14 +1,14 @@
 @interface _GCSystemButtonServiceInternal
 - (_GCSystemButtonServiceInternal)init;
-- (id)beginConsumingPressesWithReason:(id)a3 consumer:(id)a4 priority:(int64_t)a5;
+- (id)beginConsumingPressesWithReason:(id)reason consumer:(id)consumer priority:(int64_t)priority;
 - (void)_applyLatestConsumerStatus;
-- (void)_buttonConsumerInvalidated:(uint64_t)a1;
+- (void)_buttonConsumerInvalidated:(uint64_t)invalidated;
 - (void)_invalidate;
 - (void)_resumeServerConnection;
-- (void)consumeSystemButtonPressEventAtPriority:(int64_t)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setActiveClientsRespondingToSystemButton:(id)a3;
-- (void)setSystemButtonAvailable:(BOOL)a3 localizedName:(id)a4 sfSymbolName:(id)a5;
+- (void)consumeSystemButtonPressEventAtPriority:(int64_t)priority;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setActiveClientsRespondingToSystemButton:(id)button;
+- (void)setSystemButtonAvailable:(BOOL)available localizedName:(id)name sfSymbolName:(id)symbolName;
 @end
 
 @implementation _GCSystemButtonServiceInternal
@@ -58,16 +58,16 @@
 
 - (void)_resumeServerConnection
 {
-  if (a1)
+  if (self)
   {
     v2 = _os_activity_create(&dword_1D2CD5000, "[GCSystemButtonService] Resume Connection To Server", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v4.opaque[0] = 0;
     v4.opaque[1] = 0;
     os_activity_scope_enter(v2, &v4);
-    v3 = [*(a1 + 16) remoteProxy];
-    [v3 refresh];
+    remoteProxy = [*(self + 16) remoteProxy];
+    [remoteProxy refresh];
 
-    [(_GCSystemButtonServiceInternal *)a1 _applyLatestConsumerStatus];
+    [(_GCSystemButtonServiceInternal *)self _applyLatestConsumerStatus];
     os_activity_scope_leave(&v4);
   }
 }
@@ -75,20 +75,20 @@
 - (void)_invalidate
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = _os_activity_create(&dword_1D2CD5000, "[GCSystemButtonService] Invalidate", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v2, &state);
-    [*(a1 + 16) invalidate];
-    v3 = *(a1 + 8);
+    [*(self + 16) invalidate];
+    v3 = *(self + 8);
     objc_sync_enter(v3);
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = *(a1 + 8);
+    v4 = *(self + 8);
     v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
     if (v5)
     {
@@ -103,7 +103,7 @@
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v9 + 1) + 8 * v7++) removeObserver:a1 forKeyPath:@"invalid" context:{0, v9}];
+          [*(*(&v9 + 1) + 8 * v7++) removeObserver:self forKeyPath:@"invalid" context:{0, v9}];
         }
 
         while (v5 != v7);
@@ -113,7 +113,7 @@
       while (v5);
     }
 
-    [*(a1 + 8) removeAllObjects];
+    [*(self + 8) removeAllObjects];
     objc_sync_exit(v3);
 
     os_activity_scope_leave(&state);
@@ -133,18 +133,18 @@
     _os_log_impl(&dword_1D2CD5000, v4, OS_LOG_TYPE_INFO, "Informing server that client wants presses for %@", &v8, 0xCu);
   }
 
-  v5 = [*(a1 + 16) remoteProxy];
-  [v5 setConsumesSystemButtonPressEvents:1 reason:objc_getProperty(a2 atMaximumPriority:{v6, 24, 1), a2[4]}];
+  remoteProxy = [*(self + 16) remoteProxy];
+  [remoteProxy setConsumesSystemButtonPressEvents:1 reason:objc_getProperty(a2 atMaximumPriority:{v6, 24, 1), a2[4]}];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_buttonConsumerInvalidated:(uint64_t)a1
+- (void)_buttonConsumerInvalidated:(uint64_t)invalidated
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1 && [v3 isInvalid])
+  if (invalidated && [v3 isInvalid])
   {
     v5 = _gc_log_system_button();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -154,24 +154,24 @@
       _os_log_impl(&dword_1D2CD5000, v5, OS_LOG_TYPE_INFO, "End consuming presses for %@", &v8, 0xCu);
     }
 
-    [v4 removeObserver:a1 forKeyPath:@"invalid" context:0];
-    v6 = *(a1 + 8);
+    [v4 removeObserver:invalidated forKeyPath:@"invalid" context:0];
+    v6 = *(invalidated + 8);
     objc_sync_enter(v6);
-    [*(a1 + 8) removeObject:v4];
+    [*(invalidated + 8) removeObject:v4];
     objc_sync_exit(v6);
 
-    [(_GCSystemButtonServiceInternal *)a1 _applyLatestConsumerStatus];
+    [(_GCSystemButtonServiceInternal *)invalidated _applyLatestConsumerStatus];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSystemButtonAvailable:(BOOL)a3 localizedName:(id)a4 sfSymbolName:(id)a5
+- (void)setSystemButtonAvailable:(BOOL)available localizedName:(id)name sfSymbolName:(id)symbolName
 {
-  v6 = a3;
+  availableCopy = available;
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  symbolNameCopy = symbolName;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v10 = _gc_log_system_button();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -180,20 +180,20 @@
     v16[0] = 67109376;
     v16[1] = available;
     v17 = 1024;
-    v18 = v6;
+    v18 = availableCopy;
     _os_log_impl(&dword_1D2CD5000, v10, OS_LOG_TYPE_INFO, "Reported availability changed: %{BOOL}d -> %{BOOL}d", v16, 0xEu);
   }
 
   [(_GCSystemButtonServiceInternal *)self willChangeValueForKey:@"available"];
   [(_GCSystemButtonServiceInternal *)self willChangeValueForKey:@"sfSymbolName"];
   [(_GCSystemButtonServiceInternal *)self willChangeValueForKey:@"localizedName"];
-  self->_available = v6;
+  self->_available = availableCopy;
   localizedName = self->_localizedName;
-  self->_localizedName = v8;
-  v13 = v8;
+  self->_localizedName = nameCopy;
+  v13 = nameCopy;
 
   sfSymbolName = self->_sfSymbolName;
-  self->_sfSymbolName = v9;
+  self->_sfSymbolName = symbolNameCopy;
 
   [(_GCSystemButtonServiceInternal *)self didChangeValueForKey:@"localizedName"];
   [(_GCSystemButtonServiceInternal *)self didChangeValueForKey:@"sfSymbolName"];
@@ -201,9 +201,9 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setActiveClientsRespondingToSystemButton:(id)a3
+- (void)setActiveClientsRespondingToSystemButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v5 = _gc_log_system_button();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -213,7 +213,7 @@
   }
 
   [(_GCSystemButtonServiceInternal *)self willChangeValueForKey:@"respondingProcessBundleIdentifiers"];
-  v6 = [v4 copy];
+  v6 = [buttonCopy copy];
 
   respondingProcessBundleIdentifiers = self->_respondingProcessBundleIdentifiers;
   self->_respondingProcessBundleIdentifiers = v6;
@@ -221,7 +221,7 @@
   [(_GCSystemButtonServiceInternal *)self didChangeValueForKey:@"respondingProcessBundleIdentifiers"];
 }
 
-- (void)consumeSystemButtonPressEventAtPriority:(int64_t)a3
+- (void)consumeSystemButtonPressEventAtPriority:(int64_t)priority
 {
   v4 = _os_activity_create(&dword_1D2CD5000, "[GCSystemButtonService] Consume Button Press", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
@@ -233,55 +233,55 @@
 
   v7 = self->_consumers;
   objc_sync_enter(v7);
-  v8 = [(NSMutableArray *)self->_consumers lastObject];
+  lastObject = [(NSMutableArray *)self->_consumers lastObject];
   objc_sync_exit(v7);
 
   v9 = _gc_log_system_button();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [(_GCSystemButtonServiceInternal *)v8 consumeSystemButtonPressEventAtPriority:v9];
+    [(_GCSystemButtonServiceInternal *)lastObject consumeSystemButtonPressEventAtPriority:v9];
   }
 
-  [(_GCSystemButtonConsumer *)v8 consumeSystemButtonPressEvent];
+  [(_GCSystemButtonConsumer *)lastObject consumeSystemButtonPressEvent];
   os_activity_scope_leave(&v10);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"invalid"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"invalid"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [(_GCSystemButtonServiceInternal *)self _buttonConsumerInvalidated:v11];
+    [(_GCSystemButtonServiceInternal *)self _buttonConsumerInvalidated:objectCopy];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = _GCSystemButtonServiceInternal;
-    [(_GCSystemButtonServiceInternal *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(_GCSystemButtonServiceInternal *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (id)beginConsumingPressesWithReason:(id)a3 consumer:(id)a4 priority:(int64_t)a5
+- (id)beginConsumingPressesWithReason:(id)reason consumer:(id)consumer priority:(int64_t)priority
 {
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  reasonCopy = reason;
+  consumerCopy = consumer;
+  v11 = consumerCopy;
+  if (reasonCopy)
   {
-    if (v10)
+    if (consumerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"GCSystemButtonService.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %s", "consumer != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCSystemButtonService.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %s", "consumer != nil"}];
 
-    if ((a5 & 0x8000000000000000) == 0)
+    if ((priority & 0x8000000000000000) == 0)
     {
       goto LABEL_4;
     }
@@ -289,8 +289,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"GCSystemButtonService.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %s", "reason != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"GCSystemButtonService.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %s", "reason != nil"}];
 
   if (!v11)
   {
@@ -298,17 +298,17 @@ LABEL_10:
   }
 
 LABEL_3:
-  if ((a5 & 0x8000000000000000) == 0)
+  if ((priority & 0x8000000000000000) == 0)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"GCSystemButtonService.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %s", "priority >= 0"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"GCSystemButtonService.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %s", "priority >= 0"}];
 
 LABEL_4:
-  v12 = [[_GCSystemButtonConsumer alloc] initWithEventConsumer:v11 reason:v9 priority:a5];
+  v12 = [[_GCSystemButtonConsumer alloc] initWithEventConsumer:v11 reason:reasonCopy priority:priority];
   v13 = _gc_log_system_button();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {

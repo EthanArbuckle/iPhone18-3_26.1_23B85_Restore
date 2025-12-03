@@ -1,6 +1,6 @@
 @interface SRCompressedOutputStream
 + (void)initialize;
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length;
 - (void)close;
 - (void)dealloc;
 - (void)open;
@@ -10,7 +10,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100071A30 = os_log_create("com.apple.SensorKit", "CompressedOutputStream");
   }
@@ -72,9 +72,9 @@
       self->_buffer = buffer;
     }
 
-    v7 = [(NSMutableData *)buffer mutableBytes];
+    mutableBytes = [(NSMutableData *)buffer mutableBytes];
     v8 = self->_bufferSize;
-    p_compression_stream->dst_ptr = v7;
+    p_compression_stream->dst_ptr = mutableBytes;
     p_compression_stream->dst_size = v8;
   }
 
@@ -124,15 +124,15 @@ LABEL_12:
   objc_setProperty_nonatomic(self, v16, 0, 80);
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length
 {
-  v4 = a4;
+  lengthCopy = length;
   p_compression_stream = &self->_compression_stream;
-  self->_compression_stream.src_ptr = a3;
-  self->_compression_stream.src_size = a4;
-  if (!a4)
+  self->_compression_stream.src_ptr = write;
+  self->_compression_stream.src_size = length;
+  if (!length)
   {
-    return v4;
+    return lengthCopy;
   }
 
   while (1)
@@ -147,7 +147,7 @@ LABEL_12:
 
       if (!p_compression_stream->src_size)
       {
-        return v4;
+        return lengthCopy;
       }
 
       if (!p_compression_stream->dst_size)
@@ -164,9 +164,9 @@ LABEL_12:
           self->_buffer = buffer;
         }
 
-        v10 = [(NSMutableData *)buffer mutableBytes];
+        mutableBytes = [(NSMutableData *)buffer mutableBytes];
         bufferSize = self->_bufferSize;
-        p_compression_stream->dst_ptr = v10;
+        p_compression_stream->dst_ptr = mutableBytes;
         p_compression_stream->dst_size = bufferSize;
         goto LABEL_4;
       }
@@ -192,7 +192,7 @@ LABEL_12:
 LABEL_4:
     if (!p_compression_stream->src_size)
     {
-      return v4;
+      return lengthCopy;
     }
   }
 

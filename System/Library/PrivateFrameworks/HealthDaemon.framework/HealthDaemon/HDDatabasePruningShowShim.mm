@@ -1,40 +1,40 @@
 @interface HDDatabasePruningShowShim
-+ (BOOL)canPerformRecentRecordRollWithProfile:(id)a3;
-+ (BOOL)datesMatchSampleStartDate:(id)a3 sampleEndDate:(id)a4 shardStartDate:(id)a5 shardEndDate:(id)a6;
-+ (id)_instantiateStores:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)_persistentIDForSyncIdentity:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)_syncStoresInProfile:(id)a3 error:(id *)a4;
-+ (id)activeStoresForMaxAnchorWithProfile:(id)a3 referenceDate:(id)a4 error:(id *)a5;
-+ (id)activeStoresForRestrictionPredicatesWithProfile:(id)a3 referenceDate:(id)a4 error:(id *)a5;
-+ (id)deletedSampleInProfile:(id)a3 sampleUUID:(id)a4 error:(id *)a5;
++ (BOOL)canPerformRecentRecordRollWithProfile:(id)profile;
++ (BOOL)datesMatchSampleStartDate:(id)date sampleEndDate:(id)endDate shardStartDate:(id)startDate shardEndDate:(id)shardEndDate;
++ (id)_instantiateStores:(id)stores profile:(id)profile error:(id *)error;
++ (id)_persistentIDForSyncIdentity:(id)identity profile:(id)profile error:(id *)error;
++ (id)_syncStoresInProfile:(id)profile error:(id *)error;
++ (id)activeStoresForMaxAnchorWithProfile:(id)profile referenceDate:(id)date error:(id *)error;
++ (id)activeStoresForRestrictionPredicatesWithProfile:(id)profile referenceDate:(id)date error:(id *)error;
++ (id)deletedSampleInProfile:(id)profile sampleUUID:(id)d error:(id *)error;
 + (id)deletedSampleSyncEntityClassName;
 + (id)deletedSampleSyncEntityIdentifier;
-+ (id)deletedSamplesInProfile:(id)a3 anchor:(int64_t)a4 limit:(unint64_t)a5 error:(id *)a6;
-+ (id)deletedSamplesInProfile:(id)a3 createdOnOrAfter:(id)a4 createdBefore:(id)a5 limit:(unint64_t)a6 error:(id *)a7;
-+ (id)entitiesInProfile:(id)a3 referenceDate:(id)a4 shouldIncludeEntity:(id)a5 error:(id *)a6;
-+ (id)syncIdentitiesInProfile:(id)a3 error:(id *)a4;
-+ (id)syncStoresInProfile:(id)a3 shouldIncludeEntityIdentifier:(id)a4 error:(id *)a5;
-+ (int64_t)currentSyncIdentityWithProfile:(id)a3;
++ (id)deletedSamplesInProfile:(id)profile anchor:(int64_t)anchor limit:(unint64_t)limit error:(id *)error;
++ (id)deletedSamplesInProfile:(id)profile createdOnOrAfter:(id)after createdBefore:(id)before limit:(unint64_t)limit error:(id *)error;
++ (id)entitiesInProfile:(id)profile referenceDate:(id)date shouldIncludeEntity:(id)entity error:(id *)error;
++ (id)syncIdentitiesInProfile:(id)profile error:(id *)error;
++ (id)syncStoresInProfile:(id)profile shouldIncludeEntityIdentifier:(id)identifier error:(id *)error;
++ (int64_t)currentSyncIdentityWithProfile:(id)profile;
 @end
 
 @implementation HDDatabasePruningShowShim
 
-+ (BOOL)canPerformRecentRecordRollWithProfile:(id)a3
++ (BOOL)canPerformRecentRecordRollWithProfile:(id)profile
 {
-  v3 = [a3 cloudSyncManager];
-  v4 = [v3 canPerformRecentRecordRoll];
+  cloudSyncManager = [profile cloudSyncManager];
+  canPerformRecentRecordRoll = [cloudSyncManager canPerformRecentRecordRoll];
 
-  return v4;
+  return canPerformRecentRecordRoll;
 }
 
-+ (int64_t)currentSyncIdentityWithProfile:(id)a3
++ (int64_t)currentSyncIdentityWithProfile:(id)profile
 {
-  v3 = [a3 syncIdentityManager];
-  v4 = [v3 currentSyncIdentity];
-  v5 = [v4 entity];
-  v6 = [v5 persistentID];
+  syncIdentityManager = [profile syncIdentityManager];
+  currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+  entity = [currentSyncIdentity entity];
+  persistentID = [entity persistentID];
 
-  return v6;
+  return persistentID;
 }
 
 + (id)deletedSampleSyncEntityClassName
@@ -51,18 +51,18 @@
   return [v2 syncEntityIdentifier];
 }
 
-+ (id)activeStoresForRestrictionPredicatesWithProfile:(id)a3 referenceDate:(id)a4 error:(id *)a5
++ (id)activeStoresForRestrictionPredicatesWithProfile:(id)profile referenceDate:(id)date error:(id *)error
 {
   v11 = 0;
-  v6 = [HDSyncStoreEntity activeStoresForRestrictionPredictePruningInProfile:a3 referenceDate:a4 error:&v11];
+  v6 = [HDSyncStoreEntity activeStoresForRestrictionPredictePruningInProfile:profile referenceDate:date error:&v11];
   v7 = v11;
   if (v7)
   {
-    if (a5)
+    if (error)
     {
       v8 = v7;
       v9 = 0;
-      *a5 = v7;
+      *error = v7;
     }
 
     else
@@ -80,18 +80,18 @@
   return v9;
 }
 
-+ (id)activeStoresForMaxAnchorWithProfile:(id)a3 referenceDate:(id)a4 error:(id *)a5
++ (id)activeStoresForMaxAnchorWithProfile:(id)profile referenceDate:(id)date error:(id *)error
 {
   v11 = 0;
-  v6 = [HDSyncStoreEntity activeStoresForMaxAnchorPruningInProfile:a3 referenceDate:a4 error:&v11];
+  v6 = [HDSyncStoreEntity activeStoresForMaxAnchorPruningInProfile:profile referenceDate:date error:&v11];
   v7 = v11;
   if (v7)
   {
-    if (a5)
+    if (error)
     {
       v8 = v7;
       v9 = 0;
-      *a5 = v7;
+      *error = v7;
     }
 
     else
@@ -109,12 +109,12 @@
   return v9;
 }
 
-+ (id)syncIdentitiesInProfile:(id)a3 error:(id *)a4
++ (id)syncIdentitiesInProfile:(id)profile error:(id *)error
 {
   v5 = MEMORY[0x277CBEB18];
-  v6 = a3;
+  profileCopy = profile;
   v7 = objc_alloc_init(v5);
-  v8 = [v6 syncIdentityManager];
+  syncIdentityManager = [profileCopy syncIdentityManager];
 
   v18 = 0;
   v16[0] = MEMORY[0x277D85DD0];
@@ -123,7 +123,7 @@
   v16[3] = &unk_27861EC18;
   v9 = v7;
   v17 = v9;
-  v10 = [v8 enumerateConcreteIdentitiesError:&v18 enumerationHandler:v16];
+  v10 = [syncIdentityManager enumerateConcreteIdentitiesError:&v18 enumerationHandler:v16];
   v11 = v18;
 
   if (v10)
@@ -136,10 +136,10 @@
     v13 = v11;
     if (v13)
     {
-      if (a4)
+      if (error)
       {
         v14 = v13;
-        *a4 = v13;
+        *error = v13;
       }
 
       else
@@ -174,12 +174,12 @@ uint64_t __59__HDDatabasePruningShowShim_syncIdentitiesInProfile_error___block_i
   return 1;
 }
 
-+ (id)_syncStoresInProfile:(id)a3 error:(id *)a4
++ (id)_syncStoresInProfile:(id)profile error:(id *)error
 {
   v5 = MEMORY[0x277CBEB18];
-  v6 = a3;
+  profileCopy = profile;
   v7 = objc_alloc_init(v5);
-  v8 = [v6 database];
+  database = [profileCopy database];
 
   v18 = 0;
   v16[0] = MEMORY[0x277D85DD0];
@@ -188,7 +188,7 @@ uint64_t __59__HDDatabasePruningShowShim_syncIdentitiesInProfile_error___block_i
   v16[3] = &unk_278616048;
   v9 = v7;
   v17 = v9;
-  v10 = [(HDHealthEntity *)HDSyncStoreEntity performReadTransactionWithHealthDatabase:v8 error:&v18 block:v16];
+  v10 = [(HDHealthEntity *)HDSyncStoreEntity performReadTransactionWithHealthDatabase:database error:&v18 block:v16];
   v11 = v18;
 
   if (v10)
@@ -201,10 +201,10 @@ uint64_t __59__HDDatabasePruningShowShim_syncIdentitiesInProfile_error___block_i
     v13 = v11;
     if (v13)
     {
-      if (a4)
+      if (error)
       {
         v14 = v13;
-        *a4 = v13;
+        *error = v13;
       }
 
       else
@@ -253,28 +253,28 @@ uint64_t __56__HDDatabasePruningShowShim__syncStoresInProfile_error___block_invo
   return 1;
 }
 
-+ (id)_persistentIDForSyncIdentity:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)_persistentIDForSyncIdentity:(id)identity profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  profileCopy = profile;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__77;
   v28 = __Block_byref_object_dispose__77;
   v29 = 0;
-  v9 = [v8 database];
+  database = [profileCopy database];
   v23 = 0;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __72__HDDatabasePruningShowShim__persistentIDForSyncIdentity_profile_error___block_invoke;
   v19[3] = &unk_278615F88;
-  v10 = v8;
+  v10 = profileCopy;
   v20 = v10;
-  v11 = v7;
+  v11 = identityCopy;
   v21 = v11;
   v22 = &v24;
-  v12 = [(HDHealthEntity *)HDSyncStoreEntity performReadTransactionWithHealthDatabase:v9 error:&v23 block:v19];
+  v12 = [(HDHealthEntity *)HDSyncStoreEntity performReadTransactionWithHealthDatabase:database error:&v23 block:v19];
   v13 = v23;
 
   if (v12)
@@ -288,10 +288,10 @@ uint64_t __56__HDDatabasePruningShowShim__syncStoresInProfile_error___block_invo
     v16 = v15;
     if (v15)
     {
-      if (a5)
+      if (error)
       {
         v17 = v15;
-        *a5 = v16;
+        *error = v16;
       }
 
       else
@@ -329,10 +329,10 @@ BOOL __72__HDDatabasePruningShowShim__persistentIDForSyncIdentity_profile_error_
   return v9 == 0;
 }
 
-+ (id)_instantiateStores:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)_instantiateStores:(id)stores profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  storesCopy = stores;
+  profileCopy = profile;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -344,19 +344,19 @@ BOOL __72__HDDatabasePruningShowShim__persistentIDForSyncIdentity_profile_error_
   v18[2] = __62__HDDatabasePruningShowShim__instantiateStores_profile_error___block_invoke;
   v18[3] = &unk_27861EC68;
   v20 = &v21;
-  v9 = v8;
+  v9 = profileCopy;
   v19 = v9;
-  v10 = [v7 hk_map:v18];
+  v10 = [storesCopy hk_map:v18];
   v11 = v10;
   v12 = v22[5];
   if (v12)
   {
     v13 = v12;
     v14 = v13;
-    if (a5)
+    if (error)
     {
       v15 = v13;
-      *a5 = v14;
+      *error = v14;
     }
 
     else
@@ -398,10 +398,10 @@ id __62__HDDatabasePruningShowShim__instantiateStores_profile_error___block_invo
   return v5;
 }
 
-+ (id)syncStoresInProfile:(id)a3 shouldIncludeEntityIdentifier:(id)a4 error:(id *)a5
++ (id)syncStoresInProfile:(id)profile shouldIncludeEntityIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  profileCopy = profile;
+  identifierCopy = identifier;
   v52 = 0;
   v53 = &v52;
   v54 = 0x3032000000;
@@ -409,7 +409,7 @@ id __62__HDDatabasePruningShowShim__instantiateStores_profile_error___block_invo
   v56 = __Block_byref_object_dispose__77;
   v57 = 0;
   obj = 0;
-  v10 = [a1 _syncStoresInProfile:v8 error:&obj];
+  v10 = [self _syncStoresInProfile:profileCopy error:&obj];
   objc_storeStrong(&v57, obj);
   v12 = (v53 + 5);
   v11 = v53[5];
@@ -417,11 +417,11 @@ id __62__HDDatabasePruningShowShim__instantiateStores_profile_error___block_invo
   {
     v13 = v11;
     v14 = v13;
-    if (a5)
+    if (error)
     {
       v15 = v13;
       v16 = 0;
-      *a5 = v14;
+      *error = v14;
     }
 
     else
@@ -434,7 +434,7 @@ id __62__HDDatabasePruningShowShim__instantiateStores_profile_error___block_invo
   else
   {
     v50 = 0;
-    v14 = [HDSyncAnchorEntity latestFrozenAnchorUpdatePerStoreInProfile:v8 error:&v50];
+    v14 = [HDSyncAnchorEntity latestFrozenAnchorUpdatePerStoreInProfile:profileCopy error:&v50];
     objc_storeStrong(v12, v50);
     v18 = (v53 + 5);
     v17 = v53[5];
@@ -442,11 +442,11 @@ id __62__HDDatabasePruningShowShim__instantiateStores_profile_error___block_invo
     {
       v19 = v17;
       v20 = v19;
-      if (a5)
+      if (error)
       {
         v21 = v19;
         v16 = 0;
-        *a5 = v20;
+        *error = v20;
       }
 
       else
@@ -459,18 +459,18 @@ id __62__HDDatabasePruningShowShim__instantiateStores_profile_error___block_invo
     else
     {
       v49 = 0;
-      v20 = [HDSyncAnchorEntity frozenAnchorMapPerStoreInProfile:v8 error:&v49];
+      v20 = [HDSyncAnchorEntity frozenAnchorMapPerStoreInProfile:profileCopy error:&v49];
       objc_storeStrong(v18, v49);
       v22 = v53[5];
       if (v22)
       {
         v23 = v22;
         v24 = v23;
-        if (a5)
+        if (error)
         {
           v25 = v23;
           v16 = 0;
-          *a5 = v24;
+          *error = v24;
         }
 
         else
@@ -485,18 +485,18 @@ id __62__HDDatabasePruningShowShim__instantiateStores_profile_error___block_invo
         v24 = [v10 hk_map:&__block_literal_global_439];
         v26 = (v53 + 5);
         v48 = v53[5];
-        v39 = [a1 _instantiateStores:v24 profile:v8 error:&v48];
+        v39 = [self _instantiateStores:v24 profile:profileCopy error:&v48];
         objc_storeStrong(v26, v48);
         v27 = v53[5];
         if (v27)
         {
           v28 = v27;
           v29 = v28;
-          if (a5)
+          if (error)
           {
             v30 = v28;
             v16 = 0;
-            *a5 = v29;
+            *error = v29;
           }
 
           else
@@ -516,10 +516,10 @@ id __62__HDDatabasePruningShowShim__instantiateStores_profile_error___block_invo
           v46 = &v52;
           v29 = v31;
           v41 = v29;
-          v47 = a1;
-          v42 = v8;
+          selfCopy = self;
+          v42 = profileCopy;
           v43 = v20;
-          v45 = v9;
+          v45 = identifierCopy;
           v44 = v14;
           v32 = [v10 hk_map:v40];
           v33 = v32;
@@ -528,10 +528,10 @@ id __62__HDDatabasePruningShowShim__instantiateStores_profile_error___block_invo
           {
             v35 = v34;
             v36 = v35;
-            if (a5)
+            if (error)
             {
               v37 = v35;
-              *a5 = v36;
+              *error = v36;
             }
 
             else
@@ -681,25 +681,25 @@ LABEL_17:
   return v5;
 }
 
-+ (id)entitiesInProfile:(id)a3 referenceDate:(id)a4 shouldIncludeEntity:(id)a5 error:(id *)a6
++ (id)entitiesInProfile:(id)profile referenceDate:(id)date shouldIncludeEntity:(id)entity error:(id *)error
 {
   v89 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [[HDDatabasePruningTask alloc] initWithProfile:v10];
-  v14 = [(HDDatabasePruningTask *)v13 _untypedEntityClasses];
+  profileCopy = profile;
+  dateCopy = date;
+  entityCopy = entity;
+  v13 = [[HDDatabasePruningTask alloc] initWithProfile:profileCopy];
+  _untypedEntityClasses = [(HDDatabasePruningTask *)v13 _untypedEntityClasses];
   v86 = 0;
-  v15 = [a1 _syncStoresInProfile:v10 error:&v86];
+  v15 = [self _syncStoresInProfile:profileCopy error:&v86];
   v16 = v86;
   if (v16)
   {
     v17 = v16;
-    if (a6)
+    if (error)
     {
       v18 = v16;
       v19 = 0;
-      *a6 = v17;
+      *error = v17;
     }
 
     else
@@ -711,19 +711,19 @@ LABEL_17:
 
   else
   {
-    v72 = a6;
+    errorCopy = error;
     v20 = [v15 hk_map:&__block_literal_global_449];
     v85 = 0;
-    v73 = [a1 _instantiateStores:v20 profile:v10 error:&v85];
+    v73 = [self _instantiateStores:v20 profile:profileCopy error:&v85];
     v21 = v85;
     if (v21)
     {
       v17 = v21;
-      if (v72)
+      if (errorCopy)
       {
         v22 = v21;
         v19 = 0;
-        *v72 = v17;
+        *errorCopy = v17;
       }
 
       else
@@ -736,16 +736,16 @@ LABEL_17:
     else
     {
       v84 = 0;
-      v71 = [(HDDatabasePruningTask *)v13 _minimumFrozenAnchorMapForPruningDate:v11 error:&v84];
+      v71 = [(HDDatabasePruningTask *)v13 _minimumFrozenAnchorMapForPruningDate:dateCopy error:&v84];
       v23 = v84;
       if (v23)
       {
         v17 = v23;
-        if (v72)
+        if (errorCopy)
         {
           v24 = v23;
           v19 = 0;
-          *v72 = v17;
+          *errorCopy = v17;
         }
 
         else
@@ -762,7 +762,7 @@ LABEL_17:
         v81 = 0u;
         v82 = 0u;
         v83 = 0u;
-        obj = v14;
+        obj = _untypedEntityClasses;
         v64 = [obj countByEnumeratingWithState:&v80 objects:v88 count:16];
         if (v64)
         {
@@ -770,9 +770,9 @@ LABEL_17:
           v26 = &selRef_predicateForMaximumQuantity_quantityType_operatorType_;
           v27 = &selRef_predicateForMaximumQuantity_quantityType_operatorType_;
           v67 = *v81;
-          v55 = v14;
-          v56 = v11;
-          v59 = v12;
+          v55 = _untypedEntityClasses;
+          v56 = dateCopy;
+          v59 = entityCopy;
           v53 = v20;
           v54 = v15;
           do
@@ -792,7 +792,7 @@ LABEL_17:
 
               v31 = *(*(&v80 + 1) + 8 * v28);
               v32 = NSStringFromClass(v31);
-              if (!v12 || v12[2](v12, v32))
+              if (!entityCopy || entityCopy[2](entityCopy, v32))
               {
                 if (objc_opt_respondsToSelector())
                 {
@@ -811,7 +811,7 @@ LABEL_17:
                   v57 = v33;
                   v58 = v28;
                   v63 = v32;
-                  v62 = [(objc_class *)v31 syncEntityIdentifier];
+                  syncEntityIdentifier = [(objc_class *)v31 syncEntityIdentifier];
                   v61 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v71, "anchorForSyncEntityClass:", v31)}];
                   v76 = 0u;
                   v77 = 0u;
@@ -841,10 +841,10 @@ LABEL_17:
                           if (v41)
                           {
                             v17 = v41;
-                            if (v72)
+                            if (errorCopy)
                             {
                               v50 = v41;
-                              *v72 = v17;
+                              *errorCopy = v17;
                             }
 
                             else
@@ -852,9 +852,9 @@ LABEL_17:
                               _HKLogDroppedError();
                             }
 
-                            v14 = v55;
-                            v11 = v56;
-                            v12 = v59;
+                            _untypedEntityClasses = v55;
+                            dateCopy = v56;
+                            entityCopy = v59;
                             v20 = v53;
                             v15 = v54;
 
@@ -865,8 +865,8 @@ LABEL_17:
 
                           if (v40)
                           {
-                            v42 = [v39 syncStoreIdentifier];
-                            [v74 setObject:v40 forKey:v42];
+                            syncStoreIdentifier = [v39 syncStoreIdentifier];
+                            [v74 setObject:v40 forKey:syncStoreIdentifier];
                           }
                         }
                       }
@@ -882,11 +882,11 @@ LABEL_17:
                   }
 
                   v28 = v58;
-                  v12 = v59;
+                  entityCopy = v59;
                   v32 = v63;
                   v29 = v64;
                   v44 = v61;
-                  v43 = v62;
+                  v43 = syncEntityIdentifier;
                   v33 = v57;
                 }
 
@@ -909,8 +909,8 @@ LABEL_17:
 
             while (v28 != v29);
             v48 = [obj countByEnumeratingWithState:&v80 objects:v88 count:16];
-            v14 = v55;
-            v11 = v56;
+            _untypedEntityClasses = v55;
+            dateCopy = v56;
             v20 = v53;
             v15 = v54;
             v25 = &selRef_predicateForMaximumQuantity_quantityType_operatorType_;
@@ -947,10 +947,10 @@ HDTypedSyncStoreIdentifier *__87__HDDatabasePruningShowShim_entitiesInProfile_re
   return v6;
 }
 
-+ (id)deletedSampleInProfile:(id)a3 sampleUUID:(id)a4 error:(id *)a5
++ (id)deletedSampleInProfile:(id)profile sampleUUID:(id)d error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  profileCopy = profile;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -962,7 +962,7 @@ HDTypedSyncStoreIdentifier *__87__HDDatabasePruningShowShim_entitiesInProfile_re
   v12[2] = __69__HDDatabasePruningShowShim_deletedSampleInProfile_sampleUUID_error___block_invoke;
   v12[3] = &unk_27861ED20;
   v12[4] = &v13;
-  if ([HDDeletedSampleEntity deletedSampleInProfile:v7 sampleUUID:v8 error:a5 handler:v12])
+  if ([HDDeletedSampleEntity deletedSampleInProfile:profileCopy sampleUUID:dCopy error:error handler:v12])
   {
     v9 = v14[5];
   }
@@ -991,10 +991,10 @@ void __69__HDDatabasePruningShowShim_deletedSampleInProfile_sampleUUID_error___b
   *(v18 + 40) = v17;
 }
 
-+ (id)deletedSamplesInProfile:(id)a3 anchor:(int64_t)a4 limit:(unint64_t)a5 error:(id *)a6
++ (id)deletedSamplesInProfile:(id)profile anchor:(int64_t)anchor limit:(unint64_t)limit error:(id *)error
 {
   v9 = MEMORY[0x277CBEB18];
-  v10 = a3;
+  profileCopy = profile;
   v11 = objc_alloc_init(v9);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -1002,9 +1002,9 @@ void __69__HDDatabasePruningShowShim_deletedSampleInProfile_sampleUUID_error___b
   v16[3] = &unk_27861ED48;
   v17 = v11;
   v12 = v11;
-  LODWORD(a6) = [HDDeletedSampleEntity enumerateDeletedSamplesInProfile:v10 anchor:a4 limit:a5 error:a6 handler:v16];
+  LODWORD(error) = [HDDeletedSampleEntity enumerateDeletedSamplesInProfile:profileCopy anchor:anchor limit:limit error:error handler:v16];
 
-  if (a6)
+  if (error)
   {
     v13 = v12;
   }
@@ -1031,12 +1031,12 @@ void __72__HDDatabasePruningShowShim_deletedSamplesInProfile_anchor_limit_error_
   [v12 addObject:v17];
 }
 
-+ (id)deletedSamplesInProfile:(id)a3 createdOnOrAfter:(id)a4 createdBefore:(id)a5 limit:(unint64_t)a6 error:(id *)a7
++ (id)deletedSamplesInProfile:(id)profile createdOnOrAfter:(id)after createdBefore:(id)before limit:(unint64_t)limit error:(id *)error
 {
   v11 = MEMORY[0x277CBEB18];
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  beforeCopy = before;
+  afterCopy = after;
+  profileCopy = profile;
   v15 = objc_alloc_init(v11);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -1044,9 +1044,9 @@ void __72__HDDatabasePruningShowShim_deletedSamplesInProfile_anchor_limit_error_
   v20[3] = &unk_27861ED48;
   v21 = v15;
   v16 = v15;
-  LODWORD(a7) = [HDDeletedSampleEntity enumerateDeletedSamplesInProfile:v14 createdOnOrAfter:v13 createdBefore:v12 limit:a6 error:a7 handler:v20];
+  LODWORD(error) = [HDDeletedSampleEntity enumerateDeletedSamplesInProfile:profileCopy createdOnOrAfter:afterCopy createdBefore:beforeCopy limit:limit error:error handler:v20];
 
-  if (a7)
+  if (error)
   {
     v17 = v16;
   }
@@ -1073,15 +1073,15 @@ void __96__HDDatabasePruningShowShim_deletedSamplesInProfile_createdOnOrAfter_cr
   [v12 addObject:v17];
 }
 
-+ (BOOL)datesMatchSampleStartDate:(id)a3 sampleEndDate:(id)a4 shardStartDate:(id)a5 shardEndDate:(id)a6
++ (BOOL)datesMatchSampleStartDate:(id)date sampleEndDate:(id)endDate shardStartDate:(id)startDate shardEndDate:(id)shardEndDate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [HDCloudSyncStore shardIntervalWithStartDate:a5 endDate:a6];
+  dateCopy = date;
+  endDateCopy = endDate;
+  v11 = [HDCloudSyncStore shardIntervalWithStartDate:startDate endDate:shardEndDate];
   v12 = v11;
-  if (v9)
+  if (dateCopy)
   {
-    v13 = v10 == 0;
+    v13 = endDateCopy == 0;
   }
 
   else
@@ -1102,23 +1102,23 @@ void __96__HDDatabasePruningShowShim_deletedSamplesInProfile_createdOnOrAfter_cr
 
   if ((v14 & 1) == 0 && v11)
   {
-    [v9 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     v17 = v16;
-    v18 = [v12 endDate];
-    [v18 timeIntervalSince1970];
+    endDate = [v12 endDate];
+    [endDate timeIntervalSince1970];
     if (v17 <= v19)
     {
-      [v9 timeIntervalSince1970];
+      [dateCopy timeIntervalSince1970];
       v21 = v20;
-      v22 = [v12 startDate];
-      v23 = [v22 dateByAddingTimeInterval:-*MEMORY[0x277CCCD58]];
+      startDate = [v12 startDate];
+      v23 = [startDate dateByAddingTimeInterval:-*MEMORY[0x277CCCD58]];
       [v23 timeIntervalSince1970];
       if (v21 >= v24)
       {
-        [v10 timeIntervalSince1970];
+        [endDateCopy timeIntervalSince1970];
         v26 = v25;
-        v27 = [v12 startDate];
-        [v27 timeIntervalSince1970];
+        startDate2 = [v12 startDate];
+        [startDate2 timeIntervalSince1970];
         v15 = v26 >= v28;
       }
 

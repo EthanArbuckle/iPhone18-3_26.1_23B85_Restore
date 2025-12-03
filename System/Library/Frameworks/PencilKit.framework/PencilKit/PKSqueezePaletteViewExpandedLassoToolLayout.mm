@@ -1,32 +1,32 @@
 @interface PKSqueezePaletteViewExpandedLassoToolLayout
 - (PKSqueezePaletteView)paletteView;
-- (id)initWithContext:(id *)a1;
-- (void)_performDrawingToolTapAction:(uint64_t)a1;
-- (void)handlePencilInteractionDidTap:(int64_t)a3;
+- (id)initWithContext:(id *)context;
+- (void)_performDrawingToolTapAction:(uint64_t)action;
+- (void)handlePencilInteractionDidTap:(int64_t)tap;
 - (void)setupUI;
 - (void)updateUI;
-- (void)willTransitionToLayout:(id)a3;
+- (void)willTransitionToLayout:(id)layout;
 @end
 
 @implementation PKSqueezePaletteViewExpandedLassoToolLayout
 
-- (id)initWithContext:(id *)a1
+- (id)initWithContext:(id *)context
 {
   v4 = a2;
-  if (a1)
+  if (context)
   {
-    v13.receiver = a1;
+    v13.receiver = context;
     v13.super_class = PKSqueezePaletteViewExpandedLassoToolLayout;
     v5 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v5;
+    context = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 9, a2);
-      *(a1 + 4) = PKSqueezePaletteButtonSize();
-      a1[5] = v6;
-      a1[6] = PKSqueezePaletteButtonInterItemSpacing;
+      *(context + 4) = PKSqueezePaletteButtonSize();
+      context[5] = v6;
+      context[6] = PKSqueezePaletteButtonInterItemSpacing;
       v7 = [PKFloatArray alloc];
-      v8 = a1[9];
+      v8 = context[9];
       if (v8)
       {
         v8 = v8[3];
@@ -34,26 +34,26 @@
 
       v9 = v8;
       v10 = -[PKFloatArray initWithCapacity:](v7, [v9 count]);
-      v11 = a1[7];
-      a1[7] = v10;
+      v11 = context[7];
+      context[7] = v10;
     }
   }
 
-  return a1;
+  return context;
 }
 
-- (void)_performDrawingToolTapAction:(uint64_t)a1
+- (void)_performDrawingToolTapAction:(uint64_t)action
 {
-  if (a1)
+  if (action)
   {
-    v2 = *(a1 + 72);
+    v2 = *(action + 72);
     if (v2)
     {
       v2 = v2[4];
     }
 
     v4 = v2;
-    WeakRetained = objc_loadWeakRetained((a1 + 64));
+    WeakRetained = objc_loadWeakRetained((action + 64));
     [(PKSqueezePaletteView *)WeakRetained setCurrentLayout:v4];
   }
 }
@@ -106,10 +106,10 @@
     }
 
     v11 = v10;
-    v12 = [(PKSqueezePaletteViewExpandedLassoToolLayoutContext *)v11 centerXAnchor];
+    centerXAnchor = [(PKSqueezePaletteViewExpandedLassoToolLayoutContext *)v11 centerXAnchor];
     v13 = objc_loadWeakRetained(&self->_paletteView);
-    v14 = [v13 centerXAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    centerXAnchor2 = [v13 centerXAnchor];
+    v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     lassoToolCenterXConstraint = self->_lassoToolCenterXConstraint;
     self->_lassoToolCenterXConstraint = v15;
 
@@ -120,10 +120,10 @@
     }
 
     v18 = v17;
-    v19 = [(PKSqueezePaletteViewExpandedLassoToolLayoutContext *)v18 centerYAnchor];
+    centerYAnchor = [(PKSqueezePaletteViewExpandedLassoToolLayoutContext *)v18 centerYAnchor];
     v20 = objc_loadWeakRetained(&self->_paletteView);
-    v21 = [v20 centerYAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21];
+    centerYAnchor2 = [v20 centerYAnchor];
+    v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     lassoToolCenterYConstraint = self->_lassoToolCenterYConstraint;
     self->_lassoToolCenterYConstraint = v22;
 
@@ -179,7 +179,7 @@
     v50 = &unk_1E82DBC98;
     v38 = v35;
     v51 = v38;
-    v52 = self;
+    selfCopy = self;
     v53 = &v54;
     [(PKSqueezePaletteViewExpandedLassoToolLayoutContext *)v37 enumerateObjectsUsingBlock:&v47];
 
@@ -354,7 +354,7 @@ void __55__PKSqueezePaletteViewExpandedLassoToolLayout_updateUI__block_invoke(ui
   [v5 setTransform:&v7];
 }
 
-- (void)willTransitionToLayout:(id)a3
+- (void)willTransitionToLayout:(id)layout
 {
   v11[2] = *MEMORY[0x1E69E9840];
   context = self->_context;
@@ -385,7 +385,7 @@ void __55__PKSqueezePaletteViewExpandedLassoToolLayout_updateUI__block_invoke(ui
   [(NSArray *)self->_barButtons makeObjectsPerformSelector:sel_removeFromSuperview];
 }
 
-- (void)handlePencilInteractionDidTap:(int64_t)a3
+- (void)handlePencilInteractionDidTap:(int64_t)tap
 {
   context = self->_context;
   if (context)

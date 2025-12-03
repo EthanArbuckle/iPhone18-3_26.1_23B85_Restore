@@ -1,25 +1,25 @@
 @interface PLLibraryScopeRuleManager
-- (BOOL)_shouldTryToPropagateResultsToMomentWithInclusiveMatchedConditions:(id)a3;
-- (BOOL)evaluateAssetObjectIDs:(id)a3 simulate:(BOOL)a4 predicateToFetchAssetsToEvaluate:(id)a5 withResultEnumerationBlock:(id)a6;
-- (BOOL)evaluateAssetObjectIDs:(id)a3 simulate:(BOOL)a4 withResultEnumerationBlock:(id)a5;
-- (BOOL)evaluateFaceObjectIDs:(id)a3 simulate:(BOOL)a4 withResultEnumerationBlock:(id)a5;
-- (PLLibraryScopeRuleManager)initWithLibraryScope:(id)a3;
-- (id)_fetchAssetObjectIDsContainedInMomentObjectIDs:(id)a3 excludingAssetObjectIDs:(id)a4 inManagedObjectContext:(id)a5 predicateToFetchAssetsToEvaluate:(id)a6;
-- (id)_fetchAssetObjectIDsContainedInMomentsToPropagateForMomentIdByAssetId:(id)a3 inManagedObjectContext:(id)a4;
+- (BOOL)_shouldTryToPropagateResultsToMomentWithInclusiveMatchedConditions:(id)conditions;
+- (BOOL)evaluateAssetObjectIDs:(id)ds simulate:(BOOL)simulate predicateToFetchAssetsToEvaluate:(id)evaluate withResultEnumerationBlock:(id)block;
+- (BOOL)evaluateAssetObjectIDs:(id)ds simulate:(BOOL)simulate withResultEnumerationBlock:(id)block;
+- (BOOL)evaluateFaceObjectIDs:(id)ds simulate:(BOOL)simulate withResultEnumerationBlock:(id)block;
+- (PLLibraryScopeRuleManager)initWithLibraryScope:(id)scope;
+- (id)_fetchAssetObjectIDsContainedInMomentObjectIDs:(id)ds excludingAssetObjectIDs:(id)iDs inManagedObjectContext:(id)context predicateToFetchAssetsToEvaluate:(id)evaluate;
+- (id)_fetchAssetObjectIDsContainedInMomentsToPropagateForMomentIdByAssetId:(id)id inManagedObjectContext:(id)context;
 - (id)_personUUIDsUsedInRules;
 @end
 
 @implementation PLLibraryScopeRuleManager
 
-- (BOOL)_shouldTryToPropagateResultsToMomentWithInclusiveMatchedConditions:(id)a3
+- (BOOL)_shouldTryToPropagateResultsToMomentWithInclusiveMatchedConditions:(id)conditions
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  conditionsCopy = conditions;
+  v4 = [conditionsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -29,7 +29,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(conditionsCopy);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) type] == 2)
@@ -39,7 +39,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [conditionsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -54,31 +54,31 @@ LABEL_11:
   return v4;
 }
 
-- (id)_fetchAssetObjectIDsContainedInMomentObjectIDs:(id)a3 excludingAssetObjectIDs:(id)a4 inManagedObjectContext:(id)a5 predicateToFetchAssetsToEvaluate:(id)a6
+- (id)_fetchAssetObjectIDsContainedInMomentObjectIDs:(id)ds excludingAssetObjectIDs:(id)iDs inManagedObjectContext:(id)context predicateToFetchAssetsToEvaluate:(id)evaluate
 {
   v30[3] = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  evaluateCopy = evaluate;
   v11 = MEMORY[0x1E695D5E0];
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  contextCopy = context;
+  iDsCopy = iDs;
+  dsCopy = ds;
   v15 = +[PLManagedAsset entityName];
   v16 = [v11 fetchRequestWithEntityName:v15];
 
   [v16 setResultType:1];
   v17 = MEMORY[0x1E696AB28];
-  v18 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@ AND NOT self IN %@", @"moment", v14, v13];
+  iDsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@ AND NOT self IN %@", @"moment", dsCopy, iDsCopy];
 
-  v30[0] = v18;
-  v30[1] = v10;
-  v19 = [(PLLibraryScopeRuleManager *)self _predicateToIncludeAssetsCapturedByCamera];
-  v30[2] = v19;
+  v30[0] = iDsCopy;
+  v30[1] = evaluateCopy;
+  _predicateToIncludeAssetsCapturedByCamera = [(PLLibraryScopeRuleManager *)self _predicateToIncludeAssetsCapturedByCamera];
+  v30[2] = _predicateToIncludeAssetsCapturedByCamera;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:3];
   v21 = [v17 andPredicateWithSubpredicates:v20];
   [v16 setPredicate:v21];
 
   v27 = 0;
-  v22 = [v12 executeFetchRequest:v16 error:&v27];
+  v22 = [contextCopy executeFetchRequest:v16 error:&v27];
 
   v23 = v27;
   if (v22)
@@ -102,12 +102,12 @@ LABEL_11:
   return v24;
 }
 
-- (id)_fetchAssetObjectIDsContainedInMomentsToPropagateForMomentIdByAssetId:(id)a3 inManagedObjectContext:(id)a4
+- (id)_fetchAssetObjectIDsContainedInMomentsToPropagateForMomentIdByAssetId:(id)id inManagedObjectContext:(id)context
 {
   v50[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  idCopy = id;
   v6 = MEMORY[0x1E695D5E0];
-  v40 = a4;
+  contextCopy = context;
   v7 = +[PLManagedAsset entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
 
@@ -120,9 +120,9 @@ LABEL_11:
   v13 = [v9 orPredicateWithSubpredicates:v12];
   v50[0] = v13;
   v14 = MEMORY[0x1E696AE18];
-  v41 = v5;
-  v15 = [v5 allValues];
-  v16 = [v14 predicateWithFormat:@"moment in %@", v15];
+  v41 = idCopy;
+  allValues = [idCopy allValues];
+  v16 = [v14 predicateWithFormat:@"moment in %@", allValues];
   v50[1] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
   v18 = [v9 andPredicateWithSubpredicates:v17];
@@ -131,7 +131,7 @@ LABEL_11:
   v19 = v8;
   [v8 setRelationshipKeyPathsForPrefetching:&unk_1F0FBFA60];
   v45 = 0;
-  v20 = [v40 executeFetchRequest:v8 error:&v45];
+  v20 = [contextCopy executeFetchRequest:v8 error:&v45];
 
   v21 = v45;
   if (v20)
@@ -139,8 +139,8 @@ LABEL_11:
     if ([v20 count])
     {
       v22 = MEMORY[0x1E696AB28];
-      v23 = [(PLLibraryScopeRuleManager *)self _predicateToIncludeAssetsSuggestedByCamera];
-      v46[0] = v23;
+      _predicateToIncludeAssetsSuggestedByCamera = [(PLLibraryScopeRuleManager *)self _predicateToIncludeAssetsSuggestedByCamera];
+      v46[0] = _predicateToIncludeAssetsSuggestedByCamera;
       v24 = PLManagedAssetPredicateToFetchAssetsSuggestedForSharing();
       v46[1] = v24;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:2];
@@ -215,10 +215,10 @@ id __122__PLLibraryScopeRuleManager__fetchAssetObjectIDsContainedInMomentsToProp
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(PLLibraryScopeRuleManager *)self ruleEvaluator];
-  v5 = [v4 rules];
+  ruleEvaluator = [(PLLibraryScopeRuleManager *)self ruleEvaluator];
+  rules = [ruleEvaluator rules];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [rules countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -229,19 +229,19 @@ id __122__PLLibraryScopeRuleManager__fetchAssetObjectIDsContainedInMomentsToProp
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(rules);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) personCondition];
-        v11 = v10;
-        if (v10)
+        personCondition = [*(*(&v14 + 1) + 8 * i) personCondition];
+        v11 = personCondition;
+        if (personCondition)
         {
-          v12 = [v10 personUUIDs];
-          [v3 addObjectsFromArray:v12];
+          personUUIDs = [personCondition personUUIDs];
+          [v3 addObjectsFromArray:personUUIDs];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [rules countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -250,14 +250,14 @@ id __122__PLLibraryScopeRuleManager__fetchAssetObjectIDsContainedInMomentsToProp
   return v3;
 }
 
-- (BOOL)evaluateFaceObjectIDs:(id)a3 simulate:(BOOL)a4 withResultEnumerationBlock:(id)a5
+- (BOOL)evaluateFaceObjectIDs:(id)ds simulate:(BOOL)simulate withResultEnumerationBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PLLibraryScopeRuleManager *)self _personUUIDsUsedInRules];
+  simulateCopy = simulate;
+  dsCopy = ds;
+  blockCopy = block;
+  _personUUIDsUsedInRules = [(PLLibraryScopeRuleManager *)self _personUUIDsUsedInRules];
   v11 = 1;
-  if ([v10 count])
+  if ([_personUUIDsUsedInRules count])
   {
     v26 = 0;
     v27 = &v26;
@@ -269,23 +269,23 @@ id __122__PLLibraryScopeRuleManager__fetchAssetObjectIDsContainedInMomentsToProp
     v23 = &v22;
     v24 = 0x2020000000;
     v25 = 1;
-    v12 = [(PLLibraryScopeRuleManager *)self libraryScope];
-    v13 = [v12 photoLibrary];
+    libraryScope = [(PLLibraryScopeRuleManager *)self libraryScope];
+    photoLibrary = [libraryScope photoLibrary];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __87__PLLibraryScopeRuleManager_evaluateFaceObjectIDs_simulate_withResultEnumerationBlock___block_invoke;
     v16[3] = &unk_1E75787D0;
-    v14 = v13;
+    v14 = photoLibrary;
     v17 = v14;
-    v18 = v8;
-    v19 = v10;
+    v18 = dsCopy;
+    v19 = _personUUIDsUsedInRules;
     v20 = &v22;
     v21 = &v26;
     [v14 performBlockAndWait:v16];
     if ([v27[5] count])
     {
-      v11 = [(PLLibraryScopeRuleManager *)self evaluateAssetObjectIDs:v27[5] simulate:v6 withResultEnumerationBlock:v9];
+      v11 = [(PLLibraryScopeRuleManager *)self evaluateAssetObjectIDs:v27[5] simulate:simulateCopy withResultEnumerationBlock:blockCopy];
     }
 
     else
@@ -366,12 +366,12 @@ void __87__PLLibraryScopeRuleManager_evaluateFaceObjectIDs_simulate_withResultEn
   }
 }
 
-- (BOOL)evaluateAssetObjectIDs:(id)a3 simulate:(BOOL)a4 predicateToFetchAssetsToEvaluate:(id)a5 withResultEnumerationBlock:(id)a6
+- (BOOL)evaluateAssetObjectIDs:(id)ds simulate:(BOOL)simulate predicateToFetchAssetsToEvaluate:(id)evaluate withResultEnumerationBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 count];
+  dsCopy = ds;
+  evaluateCopy = evaluate;
+  blockCopy = block;
+  v13 = [dsCopy count];
   if (v13)
   {
     v14 = v13;
@@ -379,21 +379,21 @@ void __87__PLLibraryScopeRuleManager_evaluateFaceObjectIDs_simulate_withResultEn
     v31 = buf;
     v32 = 0x2020000000;
     v33 = 1;
-    v15 = [(PLLibraryScopeRuleManager *)self libraryScope];
-    v16 = [v15 photoLibrary];
+    libraryScope = [(PLLibraryScopeRuleManager *)self libraryScope];
+    photoLibrary = [libraryScope photoLibrary];
 
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __121__PLLibraryScopeRuleManager_evaluateAssetObjectIDs_simulate_predicateToFetchAssetsToEvaluate_withResultEnumerationBlock___block_invoke;
     v21[3] = &unk_1E756AB80;
-    v17 = v16;
+    v17 = photoLibrary;
     v22 = v17;
     v28 = v14;
-    v23 = v10;
-    v24 = self;
-    v25 = v11;
-    v29 = a4;
-    v26 = v12;
+    v23 = dsCopy;
+    selfCopy = self;
+    v25 = evaluateCopy;
+    simulateCopy = simulate;
+    v26 = blockCopy;
     v27 = buf;
     [v17 performTransactionAndWait:v21];
     v18 = v31[24];
@@ -814,30 +814,30 @@ void __121__PLLibraryScopeRuleManager_evaluateAssetObjectIDs_simulate_predicateT
   }
 }
 
-- (BOOL)evaluateAssetObjectIDs:(id)a3 simulate:(BOOL)a4 withResultEnumerationBlock:(id)a5
+- (BOOL)evaluateAssetObjectIDs:(id)ds simulate:(BOOL)simulate withResultEnumerationBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == nil AND %K == %d AND (%K == %i OR %K == %i)", @"libraryScope", @"activeLibraryScopeParticipationState", 0, @"libraryScopeShareState", 0, @"libraryScopeShareState", 0x10000];
-  LOBYTE(v5) = [(PLLibraryScopeRuleManager *)self evaluateAssetObjectIDs:v9 simulate:v5 predicateToFetchAssetsToEvaluate:v10 withResultEnumerationBlock:v8];
+  simulateCopy = simulate;
+  blockCopy = block;
+  dsCopy = ds;
+  0x10000 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == nil AND %K == %d AND (%K == %i OR %K == %i)", @"libraryScope", @"activeLibraryScopeParticipationState", 0, @"libraryScopeShareState", 0, @"libraryScopeShareState", 0x10000];
+  LOBYTE(simulateCopy) = [(PLLibraryScopeRuleManager *)self evaluateAssetObjectIDs:dsCopy simulate:simulateCopy predicateToFetchAssetsToEvaluate:0x10000 withResultEnumerationBlock:blockCopy];
 
-  return v5;
+  return simulateCopy;
 }
 
-- (PLLibraryScopeRuleManager)initWithLibraryScope:(id)a3
+- (PLLibraryScopeRuleManager)initWithLibraryScope:(id)scope
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  scopeCopy = scope;
   v14.receiver = self;
   v14.super_class = PLLibraryScopeRuleManager;
   v5 = [(PLLibraryScopeRuleManager *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    [(PLLibraryScopeRuleManager *)v5 setLibraryScope:v4];
-    v7 = [v4 rulesData];
-    v8 = [PLLibraryScopeRule libraryScopeRulesForLibraryScopeRulesData:v7];
+    [(PLLibraryScopeRuleManager *)v5 setLibraryScope:scopeCopy];
+    rulesData = [scopeCopy rulesData];
+    v8 = [PLLibraryScopeRule libraryScopeRulesForLibraryScopeRulesData:rulesData];
 
     if ([v8 count])
     {
@@ -845,25 +845,25 @@ void __121__PLLibraryScopeRuleManager_evaluateAssetObjectIDs_simulate_predicateT
       [(PLLibraryScopeRuleManager *)v6 setInterpreter:v9];
 
       v10 = [PLLibraryScopeRuleEvaluator alloc];
-      v11 = [(PLLibraryScopeRuleManager *)v6 interpreter];
-      v12 = [(PLLibraryScopeRuleEvaluator *)v10 initWithRules:v8 andInterpreter:v11];
-      [(PLLibraryScopeRuleManager *)v6 setRuleEvaluator:v12];
+      interpreter = [(PLLibraryScopeRuleManager *)v6 interpreter];
+      libraryScope = [(PLLibraryScopeRuleEvaluator *)v10 initWithRules:v8 andInterpreter:interpreter];
+      [(PLLibraryScopeRuleManager *)v6 setRuleEvaluator:libraryScope];
     }
 
     else
     {
-      v11 = PLBackendSharingGetLog();
-      if (!os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+      interpreter = PLBackendSharingGetLog();
+      if (!os_log_type_enabled(interpreter, OS_LOG_TYPE_INFO))
       {
 LABEL_7:
 
         goto LABEL_8;
       }
 
-      v12 = [(PLLibraryScopeRuleManager *)v6 libraryScope];
+      libraryScope = [(PLLibraryScopeRuleManager *)v6 libraryScope];
       *buf = 138412290;
-      v16 = v12;
-      _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "Library scope %@ do not contain any rules.", buf, 0xCu);
+      v16 = libraryScope;
+      _os_log_impl(&dword_19BF1F000, interpreter, OS_LOG_TYPE_INFO, "Library scope %@ do not contain any rules.", buf, 0xCu);
     }
 
     goto LABEL_7;

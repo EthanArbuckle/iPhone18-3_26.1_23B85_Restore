@@ -1,29 +1,29 @@
 @interface VCPSceneprintDescriptor
-+ (id)descriptorWithData:(id)a3;
-+ (id)descriptorWithImage:(__CVBuffer *)a3;
-- (VCPSceneprintDescriptor)initWithData:(id)a3;
-- (VCPSceneprintDescriptor)initWithImage:(__CVBuffer *)a3;
-- (int)computeDistance:(float *)a3 toDescriptor:(id)a4;
++ (id)descriptorWithData:(id)data;
++ (id)descriptorWithImage:(__CVBuffer *)image;
+- (VCPSceneprintDescriptor)initWithData:(id)data;
+- (VCPSceneprintDescriptor)initWithImage:(__CVBuffer *)image;
+- (int)computeDistance:(float *)distance toDescriptor:(id)descriptor;
 @end
 
 @implementation VCPSceneprintDescriptor
 
-+ (id)descriptorWithImage:(__CVBuffer *)a3
++ (id)descriptorWithImage:(__CVBuffer *)image
 {
-  v3 = [[VCPSceneprintDescriptor alloc] initWithImage:a3];
+  v3 = [[VCPSceneprintDescriptor alloc] initWithImage:image];
 
   return v3;
 }
 
-+ (id)descriptorWithData:(id)a3
++ (id)descriptorWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[VCPSceneprintDescriptor alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[VCPSceneprintDescriptor alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-- (VCPSceneprintDescriptor)initWithImage:(__CVBuffer *)a3
+- (VCPSceneprintDescriptor)initWithImage:(__CVBuffer *)image
 {
   v34[1] = *MEMORY[0x1E69E9840];
   v33.receiver = self;
@@ -37,7 +37,7 @@
 
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x1E69845B8]);
-  v7 = [v6 initWithCVPixelBuffer:a3 options:MEMORY[0x1E695E0F8]];
+  v7 = [v6 initWithCVPixelBuffer:image options:MEMORY[0x1E695E0F8]];
   if (!v7)
   {
     v26 = 0;
@@ -52,8 +52,8 @@
     [v8 setPreferBackgroundProcessing:1];
     if (DeviceHasANE())
     {
-      v10 = [MEMORY[0x1E6984608] defaultANEDevice];
-      [v9 setProcessingDevice:v10];
+      defaultANEDevice = [MEMORY[0x1E6984608] defaultANEDevice];
+      [v9 setProcessingDevice:defaultANEDevice];
     }
 
     v32 = 0;
@@ -80,24 +80,24 @@
 
     if (v14)
     {
-      v16 = [v9 results];
-      v17 = [v16 count] == 1;
+      results = [v9 results];
+      v17 = [results count] == 1;
 
       if (v17)
       {
-        v18 = [v9 results];
-        v19 = [v18 objectAtIndexedSubscript:0];
+        results2 = [v9 results];
+        v19 = [results2 objectAtIndexedSubscript:0];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v21 = [v9 results];
-          v22 = [v21 objectAtIndexedSubscript:0];
-          v23 = [v22 sceneprints];
-          v24 = [v23 firstObject];
+          results3 = [v9 results];
+          v22 = [results3 objectAtIndexedSubscript:0];
+          sceneprints = [v22 sceneprints];
+          firstObject = [sceneprints firstObject];
           sceneprint = v4->_sceneprint;
-          v4->_sceneprint = v24;
+          v4->_sceneprint = firstObject;
 
           v26 = v4->_sceneprint != 0;
           v27 = 4 * (v4->_sceneprint == 0);
@@ -147,17 +147,17 @@ LABEL_30:
   return v7;
 }
 
-- (VCPSceneprintDescriptor)initWithData:(id)a3
+- (VCPSceneprintDescriptor)initWithData:(id)data
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = VCPSceneprintDescriptor;
   v5 = [(VCPSceneprintDescriptor *)&v14 init];
   if (v5)
   {
     v13 = 0;
-    v6 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v13];
+    v6 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v13];
     v7 = v13;
     sceneprint = v5->_sceneprint;
     v5->_sceneprint = v6;
@@ -187,11 +187,11 @@ LABEL_30:
   return v11;
 }
 
-- (int)computeDistance:(float *)a3 toDescriptor:(id)a4
+- (int)computeDistance:(float *)distance toDescriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && (v8 = v6[1]) != 0)
+  descriptorCopy = descriptor;
+  v7 = descriptorCopy;
+  if (descriptorCopy && (v8 = descriptorCopy[1]) != 0)
   {
     sceneprint = self->_sceneprint;
     v17 = 0;
@@ -212,7 +212,7 @@ LABEL_30:
     {
       [v10 floatValue];
       v14 = 0;
-      *a3 = v15;
+      *distance = v15;
     }
 
     else

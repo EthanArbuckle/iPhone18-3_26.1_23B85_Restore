@@ -1,22 +1,22 @@
 @interface ServerProxy
-- (void)debugUIManagerPresentPillBanner:(NSString *)a3 subtitle:(NSString *)a4 completionHandler:(id)a5;
-- (void)reportManagerReport:(NSString *)a3 report:(NSDictionary *)a4 completionHandler:(id)a5;
-- (void)spamDecisionManagerInference:(NSString *)a3 sender:(NSString *)a4 messageBody:(NSString *)a5 receiverISOCountryCode:(NSString *)a6 attachments:(NSArray *)a7 trustIndicator:(NSString *)a8 messageType:(NSString *)a9 inferenceType:(NSString *)a10 completionHandler:(id)a11;
-- (void)spamDecisioningManagerIsSetupWithCompletionHandler:(id)a3;
-- (void)spamDecisioningManagerSetupWithCompletionHandler:(id)a3;
+- (void)debugUIManagerPresentPillBanner:(NSString *)banner subtitle:(NSString *)subtitle completionHandler:(id)handler;
+- (void)reportManagerReport:(NSString *)report report:(NSDictionary *)a4 completionHandler:(id)handler;
+- (void)spamDecisionManagerInference:(NSString *)inference sender:(NSString *)sender messageBody:(NSString *)body receiverISOCountryCode:(NSString *)code attachments:(NSArray *)attachments trustIndicator:(NSString *)indicator messageType:(NSString *)type inferenceType:(NSString *)self0 completionHandler:(id)self1;
+- (void)spamDecisioningManagerIsSetupWithCompletionHandler:(id)handler;
+- (void)spamDecisioningManagerSetupWithCompletionHandler:(id)handler;
 @end
 
 @implementation ServerProxy
 
-- (void)reportManagerReport:(NSString *)a3 report:(NSDictionary *)a4 completionHandler:(id)a5
+- (void)reportManagerReport:(NSString *)report report:(NSDictionary *)a4 completionHandler:(id)handler
 {
   v9 = sub_100002074(&qword_1000B7580, &qword_10008EEC0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8, v11);
   v13 = &v21 - v12;
-  v14 = _Block_copy(a5);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  v15[2] = a3;
+  v15[2] = report;
   v15[3] = a4;
   v15[4] = v14;
   v15[5] = self;
@@ -32,19 +32,19 @@
   v18[3] = 0;
   v18[4] = &unk_100091278;
   v18[5] = v17;
-  v19 = a3;
+  reportCopy = report;
   v20 = a4;
 
   sub_10002C764(0, 0, v13, &unk_100091280, v18);
 }
 
-- (void)spamDecisioningManagerSetupWithCompletionHandler:(id)a3
+- (void)spamDecisioningManagerSetupWithCompletionHandler:(id)handler
 {
   v5 = sub_100002074(&qword_1000B7580, &qword_10008EEC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8, v7);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -64,13 +64,13 @@
   sub_10002C764(0, 0, v9, &unk_100091250, v14);
 }
 
-- (void)spamDecisioningManagerIsSetupWithCompletionHandler:(id)a3
+- (void)spamDecisioningManagerIsSetupWithCompletionHandler:(id)handler
 {
   v5 = sub_100002074(&qword_1000B7580, &qword_10008EEC0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8, v7);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -90,26 +90,26 @@
   sub_10002C764(0, 0, v9, &unk_100091220, v14);
 }
 
-- (void)spamDecisionManagerInference:(NSString *)a3 sender:(NSString *)a4 messageBody:(NSString *)a5 receiverISOCountryCode:(NSString *)a6 attachments:(NSArray *)a7 trustIndicator:(NSString *)a8 messageType:(NSString *)a9 inferenceType:(NSString *)a10 completionHandler:(id)a11
+- (void)spamDecisionManagerInference:(NSString *)inference sender:(NSString *)sender messageBody:(NSString *)body receiverISOCountryCode:(NSString *)code attachments:(NSArray *)attachments trustIndicator:(NSString *)indicator messageType:(NSString *)type inferenceType:(NSString *)self0 completionHandler:(id)self1
 {
-  v36 = self;
-  v37 = a8;
+  selfCopy = self;
+  indicatorCopy = indicator;
   v16 = sub_100002074(&qword_1000B7580, &qword_10008EEC0);
   v17 = *(*(v16 - 8) + 64);
   __chkstk_darwin(v16 - 8, v18);
-  v20 = &v36 - v19;
-  v21 = _Block_copy(a11);
+  v20 = &selfCopy - v19;
+  v21 = _Block_copy(handler);
   v22 = swift_allocObject();
-  v22[2] = a3;
-  v22[3] = a4;
-  v22[4] = a5;
-  v22[5] = a6;
-  v23 = v36;
-  v24 = v37;
-  v22[6] = a7;
+  v22[2] = inference;
+  v22[3] = sender;
+  v22[4] = body;
+  v22[5] = code;
+  v23 = selfCopy;
+  v24 = indicatorCopy;
+  v22[6] = attachments;
   v22[7] = v24;
-  v22[8] = a9;
-  v22[9] = a10;
+  v22[8] = type;
+  v22[9] = inferenceType;
   v22[10] = v21;
   v22[11] = v23;
   v25 = type metadata accessor for TaskPriority();
@@ -124,28 +124,28 @@
   v27[3] = 0;
   v27[4] = &unk_1000911F0;
   v27[5] = v26;
-  v28 = a3;
-  v29 = a4;
-  v30 = a5;
-  v31 = a6;
-  v32 = a7;
-  v33 = v37;
-  v34 = a9;
-  v35 = a10;
+  inferenceCopy = inference;
+  senderCopy = sender;
+  bodyCopy = body;
+  codeCopy = code;
+  attachmentsCopy = attachments;
+  v33 = indicatorCopy;
+  typeCopy = type;
+  inferenceTypeCopy = inferenceType;
 
   sub_10002C764(0, 0, v20, &unk_1000911F8, v27);
 }
 
-- (void)debugUIManagerPresentPillBanner:(NSString *)a3 subtitle:(NSString *)a4 completionHandler:(id)a5
+- (void)debugUIManagerPresentPillBanner:(NSString *)banner subtitle:(NSString *)subtitle completionHandler:(id)handler
 {
   v9 = sub_100002074(&qword_1000B7580, &qword_10008EEC0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8, v11);
   v13 = &v21 - v12;
-  v14 = _Block_copy(a5);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  v15[2] = a3;
-  v15[3] = a4;
+  v15[2] = banner;
+  v15[3] = subtitle;
   v15[4] = v14;
   v15[5] = self;
   v16 = type metadata accessor for TaskPriority();
@@ -160,8 +160,8 @@
   v18[3] = 0;
   v18[4] = &unk_1000911A8;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a4;
+  bannerCopy = banner;
+  subtitleCopy = subtitle;
 
   sub_10002C764(0, 0, v13, &unk_1000911B8, v18);
 }

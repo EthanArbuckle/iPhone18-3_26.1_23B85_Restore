@@ -1,17 +1,17 @@
 @interface MacMenuPresentationController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (ContaineeViewController)containeeViewController;
-- (MacMenuPresentationController)initWithContaineeViewController:(id)a3;
+- (MacMenuPresentationController)initWithContaineeViewController:(id)controller;
 - (UIViewController)containerViewController;
 - (void)_didDismiss;
-- (void)_dismissGestureFired:(id)a3;
+- (void)_dismissGestureFired:(id)fired;
 - (void)_willDismiss;
-- (void)addObserver:(id)a3;
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)setPassThroughViews:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)setPassThroughViews:(id)views;
 @end
 
 @implementation MacMenuPresentationController
@@ -30,29 +30,29 @@
   return WeakRetained;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(MacMenuPresentationController *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(MacMenuPresentationController *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(MacMenuPresentationController *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(MacMenuPresentationController *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   dismissTapGesture = self->_dismissTapGesture;
   dismissPanGesture = self->_dismissPanGesture;
-  if (dismissTapGesture != v6 || (v10 = dismissPanGesture == v7, dismissPanGesture = v7, v10))
+  if (dismissTapGesture != recognizerCopy || (v10 = dismissPanGesture == gestureRecognizerCopy, dismissPanGesture = gestureRecognizerCopy, v10))
   {
-    v10 = dismissTapGesture != v7 && dismissPanGesture == v6;
+    v10 = dismissTapGesture != gestureRecognizerCopy && dismissPanGesture == recognizerCopy;
     v11 = v10;
   }
 
@@ -64,21 +64,21 @@
   return v11;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = [a4 view];
+  view = [touch view];
   WeakRetained = objc_loadWeakRetained(&self->_containeeViewController);
-  v7 = [WeakRetained view];
-  v8 = v7;
-  if (v5 == v7)
+  view2 = [WeakRetained view];
+  v8 = view2;
+  if (view == view2)
   {
 
     goto LABEL_14;
   }
 
   v9 = objc_loadWeakRetained(&self->_containeeViewController);
-  v10 = [v9 view];
-  v11 = [v5 isDescendantOfView:v10];
+  view3 = [v9 view];
+  v11 = [view isDescendantOfView:view3];
 
   if (v11)
   {
@@ -106,7 +106,7 @@ LABEL_14:
           objc_enumerationMutation(v12);
         }
 
-        if (v5 == *(*(&v19 + 1) + 8 * i) || ([v5 isDescendantOfView:v19] & 1) != 0)
+        if (view == *(*(&v19 + 1) + 8 * i) || ([view isDescendantOfView:v19] & 1) != 0)
         {
           v17 = 0;
           goto LABEL_17;
@@ -135,10 +135,10 @@ LABEL_18:
   return v17;
 }
 
-- (void)_dismissGestureFired:(id)a3
+- (void)_dismissGestureFired:(id)fired
 {
-  v4 = a3;
-  if (self->_dismissPanGesture == v4 && (v6 = v4, v5 = [(UITapGestureRecognizer *)v4 state]== 1, v4 = v6, v5))
+  firedCopy = fired;
+  if (self->_dismissPanGesture == firedCopy && (v6 = firedCopy, v5 = [(UITapGestureRecognizer *)firedCopy state]== 1, firedCopy = v6, v5))
   {
     [(MacMenuPresentationController *)self dismissAnimated:1 completion:0];
     [(UITapGestureRecognizer *)v6 setEnabled:0];
@@ -147,16 +147,16 @@ LABEL_18:
 
   else
   {
-    if (self->_dismissTapGesture != v4)
+    if (self->_dismissTapGesture != firedCopy)
     {
       goto LABEL_8;
     }
 
-    v6 = v4;
+    v6 = firedCopy;
     [(MacMenuPresentationController *)self dismissAnimated:1 completion:0];
   }
 
-  v4 = v6;
+  firedCopy = v6;
 LABEL_8:
 }
 
@@ -164,61 +164,61 @@ LABEL_8:
 {
   self->_isDismissing = 0;
   WeakRetained = objc_loadWeakRetained(&self->_containeeViewController);
-  v6 = [WeakRetained containeeDelegate];
+  containeeDelegate = [WeakRetained containeeDelegate];
 
   if (objc_opt_respondsToSelector())
   {
     v4 = objc_loadWeakRetained(&self->_containeeViewController);
-    [v6 containeeViewControllerDidDismissExternally:v4];
+    [containeeDelegate containeeViewControllerDidDismissExternally:v4];
   }
 
-  v5 = [(MacMenuPresentationController *)self observers];
-  [v5 macMenuPresentationControllerDidDismiss:self];
+  observers = [(MacMenuPresentationController *)self observers];
+  [observers macMenuPresentationControllerDidDismiss:self];
 }
 
 - (void)_willDismiss
 {
-  v3 = [(MacMenuPresentationController *)self observers];
-  [v3 macMenuPresentationControllerWillDismiss:self];
+  observers = [(MacMenuPresentationController *)self observers];
+  [observers macMenuPresentationControllerWillDismiss:self];
 
   *&self->_isPresented = 256;
 }
 
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
+  animatedCopy = animated;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_isPresented)
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    v9 = [WeakRetained view];
+    view = [WeakRetained view];
     v10 = objc_loadWeakRetained(&self->_containeeViewController);
-    v11 = [v10 view];
-    v12 = [v11 superview];
+    view2 = [v10 view];
+    superview = [view2 superview];
 
-    if (v9 == v12)
+    if (view == superview)
     {
       v13 = objc_loadWeakRetained(&self->_containeeViewController);
-      v14 = [v13 view];
+      view3 = [v13 view];
 
       v15 = objc_loadWeakRetained(&self->_containeeViewController);
-      v16 = [WeakRetained view];
-      [v16 removeGestureRecognizer:self->_dismissTapGesture];
+      view4 = [WeakRetained view];
+      [view4 removeGestureRecognizer:self->_dismissTapGesture];
 
-      v17 = [WeakRetained view];
-      [v17 removeGestureRecognizer:self->_dismissPanGesture];
+      view5 = [WeakRetained view];
+      [view5 removeGestureRecognizer:self->_dismissPanGesture];
 
       [(MacMenuPresentationController *)self _willDismiss];
       [v15 willMoveToParentViewController:0];
-      if (v4)
+      if (animatedCopy)
       {
         objc_initWeak(&location, self);
         v23[0] = _NSConcreteStackBlock;
         v23[1] = 3221225472;
         v23[2] = sub_1006CAB44;
         v23[3] = &unk_101661B18;
-        v24 = v14;
+        v24 = view3;
         v18[0] = _NSConcreteStackBlock;
         v18[1] = 3221225472;
         v18[2] = sub_1006CAB50;
@@ -235,7 +235,7 @@ LABEL_8:
 
       else
       {
-        [v14 removeFromSuperview];
+        [view3 removeFromSuperview];
         [v15 removeFromParentViewController];
         if (v7)
         {
@@ -250,80 +250,80 @@ LABEL_8:
     }
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)presentFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   if (self->_isPresented || self->_isDismissing || (v10 = objc_loadWeakRetained(&self->_containeeViewController), [v10 view], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "superview"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v10, v12))
   {
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    v13 = [v8 view];
-    if (v13)
+    view = [controllerCopy view];
+    if (view)
     {
-      v14 = [(MacMenuPresentationController *)self anchorLayoutGuide];
-      v15 = [(MacMenuPresentationController *)self widthLayoutGuide];
+      anchorLayoutGuide = [(MacMenuPresentationController *)self anchorLayoutGuide];
+      widthLayoutGuide = [(MacMenuPresentationController *)self widthLayoutGuide];
       self->_isPresented = 1;
       WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
 
-      if (WeakRetained != v8)
+      if (WeakRetained != controllerCopy)
       {
-        objc_storeWeak(&self->_containerViewController, v8);
+        objc_storeWeak(&self->_containerViewController, controllerCopy);
       }
 
       v17 = objc_loadWeakRetained(&self->_containeeViewController);
-      [v8 addChildViewController:v17];
+      [controllerCopy addChildViewController:v17];
 
       v18 = objc_loadWeakRetained(&self->_containeeViewController);
-      v19 = [v18 view];
+      view2 = [v18 view];
 
-      [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v19 setAlpha:0.0];
-      [v13 addSubview:v19];
+      [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [view2 setAlpha:0.0];
+      [view addSubview:view2];
       v20 = objc_loadWeakRetained(&self->_containeeViewController);
-      [v20 didMoveToParentViewController:v8];
+      [v20 didMoveToParentViewController:controllerCopy];
 
-      v21 = [(UIPanGestureRecognizer *)self->_dismissPanGesture view];
+      view3 = [(UIPanGestureRecognizer *)self->_dismissPanGesture view];
 
-      if (v21 != v13)
+      if (view3 != view)
       {
-        v22 = [v8 view];
-        [v22 addGestureRecognizer:self->_dismissPanGesture];
+        view4 = [controllerCopy view];
+        [view4 addGestureRecognizer:self->_dismissPanGesture];
       }
 
-      v23 = [(UITapGestureRecognizer *)self->_dismissTapGesture view];
+      view5 = [(UITapGestureRecognizer *)self->_dismissTapGesture view];
 
-      if (v23 != v13)
+      if (view5 != view)
       {
-        v24 = [v8 view];
-        [v24 addGestureRecognizer:self->_dismissTapGesture];
+        view6 = [controllerCopy view];
+        [view6 addGestureRecognizer:self->_dismissTapGesture];
       }
 
       v25 = objc_alloc_init(NSMutableArray);
       generatedWidthLayoutGuide = self->_generatedWidthLayoutGuide;
       v47 = v25;
-      if (v15)
+      if (widthLayoutGuide)
       {
         if (generatedWidthLayoutGuide)
         {
-          v27 = [(UILayoutGuide *)generatedWidthLayoutGuide owningView];
+          owningView = [(UILayoutGuide *)generatedWidthLayoutGuide owningView];
 
-          if (v27 == v13)
+          if (owningView == view)
           {
-            [v13 removeLayoutGuide:self->_generatedWidthLayoutGuide];
+            [view removeLayoutGuide:self->_generatedWidthLayoutGuide];
           }
         }
       }
@@ -339,42 +339,42 @@ LABEL_8:
           generatedWidthLayoutGuide = self->_generatedWidthLayoutGuide;
         }
 
-        v30 = [(UILayoutGuide *)generatedWidthLayoutGuide owningView];
+        owningView2 = [(UILayoutGuide *)generatedWidthLayoutGuide owningView];
 
-        if (v30 != v13)
+        if (owningView2 != view)
         {
-          [v13 addLayoutGuide:self->_generatedWidthLayoutGuide];
-          v31 = [(UILayoutGuide *)self->_generatedWidthLayoutGuide widthAnchor];
-          v32 = [v31 constraintEqualToConstant:282.0];
+          [view addLayoutGuide:self->_generatedWidthLayoutGuide];
+          widthAnchor = [(UILayoutGuide *)self->_generatedWidthLayoutGuide widthAnchor];
+          v32 = [widthAnchor constraintEqualToConstant:282.0];
           [v25 addObject:v32];
         }
 
-        v15 = self->_generatedWidthLayoutGuide;
+        widthLayoutGuide = self->_generatedWidthLayoutGuide;
       }
 
-      v46 = [v19 widthAnchor];
-      v49 = v15;
-      v45 = [(UILayoutGuide *)v15 widthAnchor];
-      v44 = [v46 constraintEqualToAnchor:v45];
+      widthAnchor2 = [view2 widthAnchor];
+      v49 = widthLayoutGuide;
+      widthAnchor3 = [(UILayoutGuide *)widthLayoutGuide widthAnchor];
+      v44 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
       v57[0] = v44;
-      v43 = [v19 centerXAnchor];
-      v42 = [v14 centerXAnchor];
-      v41 = [v43 constraintEqualToAnchor:v42];
+      centerXAnchor = [view2 centerXAnchor];
+      centerXAnchor2 = [anchorLayoutGuide centerXAnchor];
+      v41 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v57[1] = v41;
-      v40 = [v19 topAnchor];
-      v50 = v14;
-      v33 = [v14 bottomAnchor];
-      v34 = [v40 constraintEqualToAnchor:v33];
+      topAnchor = [view2 topAnchor];
+      v50 = anchorLayoutGuide;
+      bottomAnchor = [anchorLayoutGuide bottomAnchor];
+      v34 = [topAnchor constraintEqualToAnchor:bottomAnchor];
       v57[2] = v34;
-      v35 = [v19 heightAnchor];
-      [v13 heightAnchor];
-      v36 = v48 = v13;
-      v37 = [v35 constraintLessThanOrEqualToAnchor:v36 constant:-150.0];
+      heightAnchor = [view2 heightAnchor];
+      [view heightAnchor];
+      v36 = v48 = view;
+      v37 = [heightAnchor constraintLessThanOrEqualToAnchor:v36 constant:-150.0];
       v57[3] = v37;
       v38 = [NSArray arrayWithObjects:v57 count:4];
       [v47 addObjectsFromArray:v38];
 
-      v13 = v48;
+      view = v48;
       [NSLayoutConstraint activateConstraints:v47];
       v55[0] = _NSConcreteStackBlock;
       v55[1] = 3221225472;
@@ -382,44 +382,44 @@ LABEL_8:
       v55[3] = &unk_101661B18;
       v56 = v48;
       [UIView performWithoutAnimation:v55];
-      if (v6)
+      if (animatedCopy)
       {
         v53[0] = _NSConcreteStackBlock;
         v53[1] = 3221225472;
         v53[2] = sub_1006CB1F8;
         v53[3] = &unk_101661B18;
-        v54 = v19;
+        v54 = view2;
         v51[0] = _NSConcreteStackBlock;
         v51[1] = 3221225472;
         v51[2] = sub_1006CB204;
         v51[3] = &unk_10165F438;
-        v52 = v9;
+        v52 = completionCopy;
         [UIView animateWithDuration:v53 animations:v51 completion:0.1];
 
-        v39 = v19;
+        v39 = view2;
       }
 
       else
       {
-        v39 = v19;
-        [v19 setAlpha:1.0];
-        if (v9)
+        v39 = view2;
+        [view2 setAlpha:1.0];
+        if (completionCopy)
         {
-          v9[2](v9);
+          completionCopy[2](completionCopy);
         }
       }
     }
 
-    else if (v9)
+    else if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)setPassThroughViews:(id)a3
+- (void)setPassThroughViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   v5 = +[NSHashTable weakObjectsHashTable];
   passThroughViews = self->_passThroughViews;
   self->_passThroughViews = v5;
@@ -428,7 +428,7 @@ LABEL_8:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v4;
+  v7 = viewsCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -456,9 +456,9 @@ LABEL_8:
   }
 }
 
-- (MacMenuPresentationController)initWithContaineeViewController:(id)a3
+- (MacMenuPresentationController)initWithContaineeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = MacMenuPresentationController;
   v5 = [(MacMenuPresentationController *)&v13 init];
@@ -468,7 +468,7 @@ LABEL_8:
     observers = v5->_observers;
     v5->_observers = v6;
 
-    objc_storeWeak(&v5->_containeeViewController, v4);
+    objc_storeWeak(&v5->_containeeViewController, controllerCopy);
     v8 = [[UIPanGestureRecognizer alloc] initWithTarget:v5 action:"_dismissGestureFired:"];
     dismissPanGesture = v5->_dismissPanGesture;
     v5->_dismissPanGesture = v8;

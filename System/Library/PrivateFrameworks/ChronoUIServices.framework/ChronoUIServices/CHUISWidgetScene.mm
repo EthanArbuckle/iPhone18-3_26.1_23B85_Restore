@@ -37,80 +37,80 @@
 
 - (CHUISWidgetVisibilitySettings)visibility
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 visibility];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  visibility = [_sceneSettings visibility];
 
-  return v3;
+  return visibility;
 }
 
 - (id)_sceneSettings
 {
-  v2 = [(CHUISWidgetScene *)self _FBSScene];
-  v3 = [v2 settings];
+  _FBSScene = [(CHUISWidgetScene *)self _FBSScene];
+  settings = [_FBSScene settings];
 
-  return v3;
+  return settings;
 }
 
 - (BOOL)areAnimationsPaused
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 areAnimationsPaused];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  areAnimationsPaused = [_sceneSettings areAnimationsPaused];
 
-  return v3;
+  return areAnimationsPaused;
 }
 
 - (CHSWidget)nullableWidget
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 widget];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  widget = [_sceneSettings widget];
 
-  return v3;
+  return widget;
 }
 
 - (NSString)widgetConfigurationIdentifier
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 widgetConfigurationIdentifier];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  widgetConfigurationIdentifier = [_sceneSettings widgetConfigurationIdentifier];
 
-  return v3;
+  return widgetConfigurationIdentifier;
 }
 
 - (NSString)hostIdentifier
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 hostIdentifier];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  hostIdentifier = [_sceneSettings hostIdentifier];
 
-  return v3;
+  return hostIdentifier;
 }
 
 - (unint64_t)widgetPriority
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 widgetPriority];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  widgetPriority = [_sceneSettings widgetPriority];
 
-  return v3;
+  return widgetPriority;
 }
 
 - (CHSWidget)widget
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 widget];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  widget = [_sceneSettings widget];
 
-  return v3;
+  return widget;
 }
 
 - (CHSWidgetMetrics)metrics
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 metrics];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  metrics = [_sceneSettings metrics];
 
-  return v3;
+  return metrics;
 }
 
 - (double)renderingScale
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  [v2 renderingScale];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  [_sceneSettings renderingScale];
   v4 = v3;
 
   return v4;
@@ -118,178 +118,178 @@
 
 - (unint64_t)contentType
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 contentType];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  contentType = [_sceneSettings contentType];
 
-  return v3;
+  return contentType;
 }
 
 - (BOOL)supportsLowLuminance
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 supportsLowLuminance];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  supportsLowLuminance = [_sceneSettings supportsLowLuminance];
 
-  return v3;
+  return supportsLowLuminance;
 }
 
 - (CHSWidgetRenderScheme)renderScheme
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 renderScheme];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  renderScheme = [_sceneSettings renderScheme];
 
-  return v3;
+  return renderScheme;
 }
 
 - (unint64_t)colorScheme
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 colorScheme];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  colorScheme = [_sceneSettings colorScheme];
 
-  return v3;
+  return colorScheme;
 }
 
 - (unint64_t)supportedColorSchemes
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 supportedColorSchemes];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  supportedColorSchemes = [_sceneSettings supportedColorSchemes];
 
-  return v3;
+  return supportedColorSchemes;
 }
 
 - (BOOL)canAppearInSecureEnvironment
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 canAppearInSecureEnvironment];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  canAppearInSecureEnvironment = [_sceneSettings canAppearInSecureEnvironment];
 
-  return v3;
+  return canAppearInSecureEnvironment;
 }
 
 - (NSArray)supportedRenderSchemes
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 supportedRenderSchemes];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  supportedRenderSchemes = [_sceneSettings supportedRenderSchemes];
 
-  return v3;
+  return supportedRenderSchemes;
 }
 
 - (BOOL)showsWidgetLabel
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 showsWidgetLabel];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  showsWidgetLabel = [_sceneSettings showsWidgetLabel];
 
-  return v3;
+  return showsWidgetLabel;
 }
 
 - (unint64_t)supportedProximities
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 supportedProximities];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  supportedProximities = [_sceneSettings supportedProximities];
 
-  return v3;
+  return supportedProximities;
 }
 
 - (int64_t)proximity
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 proximity];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  proximity = [_sceneSettings proximity];
 
-  return v3;
+  return proximity;
 }
 
 - (BOOL)prefersUnredactedContentInLowLuminanceEnvironment
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 prefersUnredactedContentInLowLuminanceEnvironment];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  prefersUnredactedContentInLowLuminanceEnvironment = [_sceneSettings prefersUnredactedContentInLowLuminanceEnvironment];
 
-  return v3;
+  return prefersUnredactedContentInLowLuminanceEnvironment;
 }
 
 - (CHSWidgetTintParameters)tintParameters
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 tintParameters];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  tintParameters = [_sceneSettings tintParameters];
 
-  return v3;
+  return tintParameters;
 }
 
 - (CHSInlineTextParameters)inlineTextParameters
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 inlineTextParameters];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  inlineTextParameters = [_sceneSettings inlineTextParameters];
 
-  return v3;
+  return inlineTextParameters;
 }
 
 - (unint64_t)clipBehavior
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 clipBehavior];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  clipBehavior = [_sceneSettings clipBehavior];
 
-  return v3;
+  return clipBehavior;
 }
 
 - (BOOL)isInteractionDisabled
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 isInteractionDisabled];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  isInteractionDisabled = [_sceneSettings isInteractionDisabled];
 
-  return v3;
+  return isInteractionDisabled;
 }
 
 - (BOOL)isContentPaused
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 isContentPaused];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  isContentPaused = [_sceneSettings isContentPaused];
 
-  return v3;
+  return isContentPaused;
 }
 
 - (NSDateComponents)idealizedDateComponents
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 idealizedDateComponents];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  idealizedDateComponents = [_sceneSettings idealizedDateComponents];
 
-  return v3;
+  return idealizedDateComponents;
 }
 
 - (BOOL)wantsBaseContentTouchEvents
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 wantsBaseContentTouchEvents];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  wantsBaseContentTouchEvents = [_sceneSettings wantsBaseContentTouchEvents];
 
-  return v3;
+  return wantsBaseContentTouchEvents;
 }
 
 - (NSString)remoteViewControllerClassName
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 remoteViewControllerClassName];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  remoteViewControllerClassName = [_sceneSettings remoteViewControllerClassName];
 
-  return v3;
+  return remoteViewControllerClassName;
 }
 
 - (NSString)additionalSnapshotPresentationContext
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 additionalSnapshotPresentationContext];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  additionalSnapshotPresentationContext = [_sceneSettings additionalSnapshotPresentationContext];
 
-  return v3;
+  return additionalSnapshotPresentationContext;
 }
 
 - (BOOL)shouldVisibleEntrySnapshot
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 shouldVisibleEntrySnapshot];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  shouldVisibleEntrySnapshot = [_sceneSettings shouldVisibleEntrySnapshot];
 
-  return v3;
+  return shouldVisibleEntrySnapshot;
 }
 
 - (BOOL)separateLayers
 {
-  v2 = [(CHUISWidgetScene *)self _sceneSettings];
-  v3 = [v2 separateLayers];
+  _sceneSettings = [(CHUISWidgetScene *)self _sceneSettings];
+  separateLayers = [_sceneSettings separateLayers];
 
-  return v3;
+  return separateLayers;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface QLDetailItemViewController
-- (QLDetailItemViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_scalableSystemFontOfSize:(double)a3;
-- (void)_setActionButtonView:(id)a3 animated:(BOOL)a4 actionButtonLabel:(id)a5 informationVisible:(BOOL)a6;
+- (QLDetailItemViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_scalableSystemFontOfSize:(double)size;
+- (void)_setActionButtonView:(id)view animated:(BOOL)animated actionButtonLabel:(id)label informationVisible:(BOOL)visible;
 - (void)_updateInformation;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)setInformation:(id)a3;
-- (void)setState:(id)a3 animated:(BOOL)a4;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)setInformation:(id)information;
+- (void)setState:(id)state animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation QLDetailItemViewController
 
-- (QLDetailItemViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (QLDetailItemViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = QLFrameworkBundle();
   v8.receiver = self;
@@ -26,30 +26,30 @@
   v9.receiver = self;
   v9.super_class = QLDetailItemViewController;
   [(QLDetailItemViewController *)&v9 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(QLDetailItemViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(QLDetailItemViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(UIButton *)self->_actionButton titleLabel];
+  titleLabel = [(UIButton *)self->_actionButton titleLabel];
   v6 = [(QLDetailItemViewController *)self _scalableSystemFontOfSize:15.0];
-  [v5 setFont:v6];
+  [titleLabel setFont:v6];
 
-  v7 = [(UIButton *)self->_actionButton titleLabel];
-  [v7 setAdjustsFontForContentSizeCategory:1];
+  titleLabel2 = [(UIButton *)self->_actionButton titleLabel];
+  [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
   [(UIButton *)self->_actionButton setTitle:&stru_284D5E510 forState:0];
-  v8 = [(QLFileIconImageView *)self->_filePreviewImageView superview];
-  [v8 bringSubviewToFront:self->_filePreviewImageView];
+  superview = [(QLFileIconImageView *)self->_filePreviewImageView superview];
+  [superview bringSubviewToFront:self->_filePreviewImageView];
 }
 
-- (void)setState:(id)a3 animated:(BOOL)a4
+- (void)setState:(id)state animated:(BOOL)animated
 {
-  v6 = a3;
-  if (self->_state != v6)
+  stateCopy = state;
+  if (self->_state != stateCopy)
   {
     [(QLDetailItemViewController *)self loadViewIfNeeded];
-    objc_storeStrong(&self->_state, a3);
-    v7 = v6;
+    objc_storeStrong(&self->_state, state);
+    v7 = stateCopy;
     QLRunInMainThread();
   }
 }
@@ -63,9 +63,9 @@ void __48__QLDetailItemViewController_setState_animated___block_invoke(uint64_t 
   [v2 _setActionButtonView:v5 animated:v3 actionButtonLabel:v4 informationVisible:{objc_msgSend(*(a1 + 40), "isInformationVisible")}];
 }
 
-- (void)setInformation:(id)a3
+- (void)setInformation:(id)information
 {
-  objc_storeStrong(&self->_information, a3);
+  objc_storeStrong(&self->_information, information);
 
   [(QLDetailItemViewController *)self _updateInformation];
 }
@@ -74,12 +74,12 @@ void __48__QLDetailItemViewController_setState_animated___block_invoke(uint64_t 
 {
   v18 = *MEMORY[0x277D85DE8];
   [(QLDetailItemViewController *)self loadViewIfNeeded];
-  v3 = [(UIStackView *)self->_informationStackView arrangedSubviews];
+  arrangedSubviews = [(UIStackView *)self->_informationStackView arrangedSubviews];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -91,14 +91,14 @@ void __48__QLDetailItemViewController_setState_animated___block_invoke(uint64_t 
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         [*(*(&v12 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v5 = [arrangedSubviews countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v5);
@@ -159,36 +159,36 @@ void __48__QLDetailItemViewController__updateInformation__block_invoke(uint64_t 
   [*(*(a1 + 32) + 1136) addArrangedSubview:v9];
 }
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
+  handlerCopy = handler;
+  contextCopy = context;
   [(QLDetailItemViewController *)self setInformation:MEMORY[0x277CBEBF8]];
   QLCGSizeFromQLItemThumbnailSize();
   v10 = v9;
   v12 = v11;
-  v13 = [v8 thumbnailGenerator];
-  v14 = [v13 genericIconWithSize:{v10, v12}];
+  thumbnailGenerator = [contextCopy thumbnailGenerator];
+  v14 = [thumbnailGenerator genericIconWithSize:{v10, v12}];
 
   [(QLFileIconImageView *)self->_filePreviewImageView setImage:v14];
-  v15 = [v8 thumbnailGenerator];
+  thumbnailGenerator2 = [contextCopy thumbnailGenerator];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __90__QLDetailItemViewController_loadPreviewControllerWithContents_context_completionHandler___block_invoke;
   v23[3] = &unk_278B57B68;
   v23[4] = self;
-  [v15 generateThumbnailWithSize:v23 completionBlock:{v10, v12}];
+  [thumbnailGenerator2 generateThumbnailWithSize:v23 completionBlock:{v10, v12}];
 
-  v16 = [v8 previewTitle];
+  previewTitle = [contextCopy previewTitle];
   previewTitle = self->_previewTitle;
-  self->_previewTitle = v16;
+  self->_previewTitle = previewTitle;
 
-  v18 = [v8 itemSize];
+  itemSize = [contextCopy itemSize];
 
-  v19 = [MEMORY[0x277CCA8E8] stringFromByteCount:objc_msgSend(v18 countStyle:{"longLongValue"), 0}];
+  v19 = [MEMORY[0x277CCA8E8] stringFromByteCount:objc_msgSend(itemSize countStyle:{"longLongValue"), 0}];
   v20 = &stru_284D5E510;
-  if (v19 && [v18 integerValue] > 0)
+  if (v19 && [itemSize integerValue] > 0)
   {
     v20 = v19;
   }
@@ -197,9 +197,9 @@ void __48__QLDetailItemViewController__updateInformation__block_invoke(uint64_t 
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
   [(QLDetailItemViewController *)self setInformation:v21];
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -233,16 +233,16 @@ void __90__QLDetailItemViewController_loadPreviewControllerWithContents_context_
   [v6 setBorderColor:v5];
 }
 
-- (void)_setActionButtonView:(id)a3 animated:(BOOL)a4 actionButtonLabel:(id)a5 informationVisible:(BOOL)a6
+- (void)_setActionButtonView:(id)view animated:(BOOL)animated actionButtonLabel:(id)label informationVisible:(BOOL)visible
 {
-  v8 = a4;
-  v11 = a3;
-  v12 = a5;
+  animatedCopy = animated;
+  viewCopy = view;
+  labelCopy = label;
   v13 = self->_currentActionButtonView;
-  objc_storeStrong(&self->_currentActionButtonView, a3);
+  objc_storeStrong(&self->_currentActionButtonView, view);
   [MEMORY[0x277CD9FF0] begin];
-  v14 = [v11 layer];
-  [v14 removeAllAnimations];
+  layer = [viewCopy layer];
+  [layer removeAllAnimations];
 
   [MEMORY[0x277CD9FF0] commit];
   if (self->_isSettingStateAnimated)
@@ -255,12 +255,12 @@ void __90__QLDetailItemViewController_loadPreviewControllerWithContents_context_
       v16 = *v15;
     }
 
-    v8 = 0;
+    animatedCopy = 0;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf.a) = 0;
       _os_log_impl(&dword_23A714000, v16, OS_LOG_TYPE_DEFAULT, "Updating view state in detail item view controller without animation, since state animation already in progress. #DetailItemViewController", &buf, 2u);
-      v8 = 0;
+      animatedCopy = 0;
     }
   }
 
@@ -271,22 +271,22 @@ void __90__QLDetailItemViewController_loadPreviewControllerWithContents_context_
 
   memset(&buf, 0, sizeof(buf));
   CGAffineTransformMakeScale(&buf, 0.1, 0.1);
-  [v11 setAlpha:0.0];
+  [viewCopy setAlpha:0.0];
   v32 = buf;
-  [v11 setTransform:&v32];
+  [viewCopy setTransform:&v32];
   [(UIView *)v13 setAlpha:1.0];
   v17 = *(MEMORY[0x277CBF2C0] + 16);
   *&v32.a = *MEMORY[0x277CBF2C0];
   *&v32.c = v17;
   *&v32.tx = *(MEMORY[0x277CBF2C0] + 32);
   [(UIView *)v13 setTransform:&v32];
-  [v11 removeFromSuperview];
-  [(UIButton *)self->_actionIconButton addSubview:v11];
+  [viewCopy removeFromSuperview];
+  [(UIButton *)self->_actionIconButton addSubview:viewCopy];
   [(UIButton *)self->_actionIconButton bounds];
   MidX = CGRectGetMidX(v34);
   [(UIButton *)self->_actionIconButton bounds];
-  [v11 setCenter:{MidX, CGRectGetMidY(v35)}];
-  [(UIButton *)self->_actionIconButton setEnabled:v11 != 0];
+  [viewCopy setCenter:{MidX, CGRectGetMidY(v35)}];
+  [(UIButton *)self->_actionIconButton setEnabled:viewCopy != 0];
   [(UIButton *)self->_actionButton setUserInteractionEnabled:0];
   [(UIButton *)self->_actionIconButton setUserInteractionEnabled:0];
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -295,11 +295,11 @@ void __90__QLDetailItemViewController_loadPreviewControllerWithContents_context_
   aBlock[3] = &unk_278B58818;
   v26 = v13;
   v30 = buf;
-  v19 = v11;
+  v19 = viewCopy;
   v27 = v19;
-  v28 = self;
-  v31 = a6;
-  v20 = v12;
+  selfCopy = self;
+  visibleCopy = visible;
+  v20 = labelCopy;
   v29 = v20;
   v21 = v13;
   v22 = _Block_copy(aBlock);
@@ -309,7 +309,7 @@ void __90__QLDetailItemViewController_loadPreviewControllerWithContents_context_
   v24[3] = &unk_278B571B8;
   v24[4] = self;
   v23 = _Block_copy(v24);
-  if (v8)
+  if (animatedCopy)
   {
     [MEMORY[0x277D75D18] animateWithDuration:v22 animations:v23 completion:0.35];
   }
@@ -348,11 +348,11 @@ uint64_t __97__QLDetailItemViewController__setActionButtonView_animated_actionBu
   return result;
 }
 
-- (id)_scalableSystemFontOfSize:(double)a3
+- (id)_scalableSystemFontOfSize:(double)size
 {
-  v4 = [MEMORY[0x277D75520] defaultMetrics];
-  v5 = [MEMORY[0x277D74300] systemFontOfSize:a3];
-  v6 = [v4 scaledFontForFont:v5];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  v5 = [MEMORY[0x277D74300] systemFontOfSize:size];
+  v6 = [defaultMetrics scaledFontForFont:v5];
 
   return v6;
 }

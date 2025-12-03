@@ -1,22 +1,22 @@
 @interface STPersistentFamilyMemberGenesisStateStore
-+ (id)_loadFromKeyValueStore:(id)a3;
-- (STPersistentFamilyMemberGenesisStateStore)initWithKeyValueStore:(id)a3;
++ (id)_loadFromKeyValueStore:(id)store;
+- (STPersistentFamilyMemberGenesisStateStore)initWithKeyValueStore:(id)store;
 - (id)readFamilyMemberGenesisStateItems;
 - (void)_saveToKeyValueStore;
-- (void)writeFamilyMemberGenesisStateItems:(id)a3;
+- (void)writeFamilyMemberGenesisStateItems:(id)items;
 @end
 
 @implementation STPersistentFamilyMemberGenesisStateStore
 
-- (STPersistentFamilyMemberGenesisStateStore)initWithKeyValueStore:(id)a3
+- (STPersistentFamilyMemberGenesisStateStore)initWithKeyValueStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = STPersistentFamilyMemberGenesisStateStore;
   v5 = [(STPersistentFamilyMemberGenesisStateStore *)&v11 init];
   keyValueStore = v5->_keyValueStore;
-  v5->_keyValueStore = v4;
-  v7 = v4;
+  v5->_keyValueStore = storeCopy;
+  v7 = storeCopy;
 
   v8 = [STPersistentFamilyMemberGenesisStateStore _loadFromKeyValueStore:v5->_keyValueStore];
   genesisStateItemsByUserDSID = v5->_genesisStateItemsByUserDSID;
@@ -25,15 +25,15 @@
   return v5;
 }
 
-- (void)writeFamilyMemberGenesisStateItems:(id)a3
+- (void)writeFamilyMemberGenesisStateItems:(id)items
 {
-  v4 = a3;
-  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+  itemsCopy = items;
+  v5 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [itemsCopy count]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -49,9 +49,9 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 userID];
-        v13 = [v12 dsid];
-        [v5 setObject:v11 forKeyedSubscript:v13];
+        userID = [v11 userID];
+        dsid = [userID dsid];
+        [v5 setObject:v11 forKeyedSubscript:dsid];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -68,39 +68,39 @@
 
 - (id)readFamilyMemberGenesisStateItems
 {
-  v2 = [(STPersistentFamilyMemberGenesisStateStore *)self genesisStateItemsByUserDSID];
-  v3 = [v2 allValues];
-  v4 = [NSSet setWithArray:v3];
+  genesisStateItemsByUserDSID = [(STPersistentFamilyMemberGenesisStateStore *)self genesisStateItemsByUserDSID];
+  allValues = [genesisStateItemsByUserDSID allValues];
+  v4 = [NSSet setWithArray:allValues];
 
   return v4;
 }
 
 - (void)_saveToKeyValueStore
 {
-  v3 = [(STPersistentFamilyMemberGenesisStateStore *)self genesisStateItemsByUserDSID];
+  genesisStateItemsByUserDSID = [(STPersistentFamilyMemberGenesisStateStore *)self genesisStateItemsByUserDSID];
   v7 = 0;
-  v4 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v7];
+  v4 = [NSKeyedArchiver archivedDataWithRootObject:genesisStateItemsByUserDSID requiringSecureCoding:1 error:&v7];
   v5 = v7;
 
   if (v4)
   {
-    v6 = [(STPersistentFamilyMemberGenesisStateStore *)self keyValueStore];
-    [v6 persistValue:v4 forKey:@"genesisStateItemsByUserDSID"];
+    keyValueStore = [(STPersistentFamilyMemberGenesisStateStore *)self keyValueStore];
+    [keyValueStore persistValue:v4 forKey:@"genesisStateItemsByUserDSID"];
   }
 
   else
   {
-    v6 = +[STLog familyMemberGenesisStateStore];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    keyValueStore = +[STLog familyMemberGenesisStateStore];
+    if (os_log_type_enabled(keyValueStore, OS_LOG_TYPE_ERROR))
     {
-      sub_100118EF0(v5, v6);
+      sub_100118EF0(v5, keyValueStore);
     }
   }
 }
 
-+ (id)_loadFromKeyValueStore:(id)a3
++ (id)_loadFromKeyValueStore:(id)store
 {
-  v3 = [a3 readValueForKey:@"genesisStateItemsByUserDSID"];
+  v3 = [store readValueForKey:@"genesisStateItemsByUserDSID"];
   if (v3)
   {
     v15[0] = objc_opt_class();

@@ -1,16 +1,16 @@
 @interface SiriSharedUIExpandablePlatterPanGestureRecognizer
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (SiriSharedUIExpandablePlatterPanGestureRecognizer)initWithExpansionDelegate:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (SiriSharedUIExpandablePlatterPanGestureRecognizer)initWithExpansionDelegate:(id)delegate;
 - (SiriSharedUIExpandablePlatterPanGestureRecognizerDelegate)expansionDelegate;
-- (void)panGestureRecognizerDidPan:(id)a3;
+- (void)panGestureRecognizerDidPan:(id)pan;
 @end
 
 @implementation SiriSharedUIExpandablePlatterPanGestureRecognizer
 
-- (SiriSharedUIExpandablePlatterPanGestureRecognizer)initWithExpansionDelegate:(id)a3
+- (SiriSharedUIExpandablePlatterPanGestureRecognizer)initWithExpansionDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SiriSharedUIExpandablePlatterPanGestureRecognizer;
   v5 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)&v8 initWithTarget:self action:sel_panGestureRecognizerDidPan_];
@@ -18,29 +18,29 @@
   if (v5)
   {
     [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)v5 setDelegate:v5];
-    objc_storeWeak(&v6->_expansionDelegate, v4);
+    objc_storeWeak(&v6->_expansionDelegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a4;
-  v6 = a3;
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   objc_opt_class();
-  LOBYTE(v5) = objc_opt_isKindOfClass();
+  LOBYTE(gestureRecognizerCopy) = objc_opt_isKindOfClass();
 
-  return v5 & isKindOfClass & 1;
+  return gestureRecognizerCopy & isKindOfClass & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a4;
-  v6 = a3;
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -57,27 +57,27 @@
   return v8;
 }
 
-- (void)panGestureRecognizerDidPan:(id)a3
+- (void)panGestureRecognizerDidPan:(id)pan
 {
-  v39 = a3;
-  v4 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self view];
-  [v39 translationInView:v4];
+  panCopy = pan;
+  view = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self view];
+  [panCopy translationInView:view];
   v6 = v5;
 
-  v7 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self view];
-  [v7 frame];
+  view2 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self view];
+  [view2 frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [v39 state];
-  v17 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self view];
-  [v39 velocityInView:v17];
+  state = [panCopy state];
+  view3 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self view];
+  [panCopy velocityInView:view3];
   v19 = v18;
   v21 = v20;
 
-  if (v16 == 3)
+  if (state == 3)
   {
     [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self projectedTranslationWithVelocity:v21 decelerationRate:SiriSharedUIScrollViewDecelerationRateNormal()];
     v6 = v6 + v22;
@@ -110,7 +110,7 @@
     v25 = 1;
   }
 
-  if ([v39 state] == 1)
+  if ([panCopy state] == 1)
   {
     if (fabs(v19) > fabs(v21))
     {
@@ -118,13 +118,13 @@
       goto LABEL_32;
     }
 
-    v30 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self expansionDelegate];
-    [v30 expandablePlatterGestureDidBeginWithRecognizer:self];
+    expansionDelegate = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self expansionDelegate];
+    [expansionDelegate expandablePlatterGestureDidBeginWithRecognizer:self];
   }
 
   else
   {
-    if ([v39 state] != 2)
+    if ([panCopy state] != 2)
     {
       goto LABEL_21;
     }
@@ -145,15 +145,15 @@
       }
     }
 
-    v29 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self view];
-    [v39 setTranslation:v29 inView:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+    view4 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self view];
+    [panCopy setTranslation:view4 inView:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 
-    v30 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self expansionDelegate];
-    [v30 expandablePlatterGesture:self trackingGestureDidUpdateHeight:collapsedHeight];
+    expansionDelegate = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self expansionDelegate];
+    [expansionDelegate expandablePlatterGesture:self trackingGestureDidUpdateHeight:collapsedHeight];
   }
 
 LABEL_21:
-  if ([v39 state] != 3)
+  if ([panCopy state] != 3)
   {
     goto LABEL_30;
   }
@@ -185,17 +185,17 @@ LABEL_21:
   v25 = 2;
   scrollViewContentHeight = v33;
 LABEL_29:
-  v34 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self expansionDelegate];
-  [v34 expandablePlatterGesture:self didCompleteTransitionToStyle:v25 phaseHeight:scrollViewContentHeight];
+  expansionDelegate2 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self expansionDelegate];
+  [expansionDelegate2 expandablePlatterGesture:self didCompleteTransitionToStyle:v25 phaseHeight:scrollViewContentHeight];
 
-  v35 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self expansionDelegate];
-  [v35 expandablePlatterGestureDidEndWithRecognizer:self];
+  expansionDelegate3 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self expansionDelegate];
+  [expansionDelegate3 expandablePlatterGestureDidEndWithRecognizer:self];
 
 LABEL_30:
-  if ([v39 state] == 4)
+  if ([panCopy state] == 4)
   {
-    v36 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self expansionDelegate];
-    [v36 expandablePlatterGestureDidEndWithRecognizer:self];
+    expansionDelegate4 = [(SiriSharedUIExpandablePlatterPanGestureRecognizer *)self expansionDelegate];
+    [expansionDelegate4 expandablePlatterGestureDidEndWithRecognizer:self];
   }
 
 LABEL_32:

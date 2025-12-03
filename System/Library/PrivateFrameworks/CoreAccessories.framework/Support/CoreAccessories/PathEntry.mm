@@ -1,25 +1,25 @@
 @interface PathEntry
-+ (id)bundlePathsWithinEntries:(id)a3 withExtension:(id)a4 andNames:(id)a5;
-+ (id)entryWithPath:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPathEntry:(id)a3;
-- (PathEntry)initWithPath:(id)a3 recursive:(BOOL)a4;
++ (id)bundlePathsWithinEntries:(id)entries withExtension:(id)extension andNames:(id)names;
++ (id)entryWithPath:(id)path;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPathEntry:(id)entry;
+- (PathEntry)initWithPath:(id)path recursive:(BOOL)recursive;
 - (id)description;
 @end
 
 @implementation PathEntry
 
-- (PathEntry)initWithPath:(id)a3 recursive:(BOOL)a4
+- (PathEntry)initWithPath:(id)path recursive:(BOOL)recursive
 {
-  v7 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = PathEntry;
   v8 = [(PathEntry *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_path, a3);
-    v9->_recursive = a4;
+    objc_storeStrong(&v8->_path, path);
+    v9->_recursive = recursive;
   }
 
   return v9;
@@ -29,29 +29,29 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(PathEntry *)self path];
-  v6 = [(PathEntry *)self recursive];
+  path = [(PathEntry *)self path];
+  recursive = [(PathEntry *)self recursive];
   v7 = @"NO";
-  if (v6)
+  if (recursive)
   {
     v7 = @"YES";
   }
 
-  v8 = [NSString stringWithFormat:@"%@ <path: %@, recursive: %@>", v4, v5, v7];
+  v8 = [NSString stringWithFormat:@"%@ <path: %@, recursive: %@>", v4, path, v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(PathEntry *)self isEqualToPathEntry:v5];
   }
@@ -64,26 +64,26 @@
   return v6;
 }
 
-- (BOOL)isEqualToPathEntry:(id)a3
+- (BOOL)isEqualToPathEntry:(id)entry
 {
-  v4 = a3;
-  if (self == v4)
+  entryCopy = entry;
+  if (self == entryCopy)
   {
     goto LABEL_4;
   }
 
-  v5 = [(PathEntry *)self path];
-  v6 = [(PathEntry *)v4 path];
-  if (![v5 isEqualToString:v6])
+  path = [(PathEntry *)self path];
+  path2 = [(PathEntry *)entryCopy path];
+  if (![path isEqualToString:path2])
   {
 
     goto LABEL_6;
   }
 
-  v7 = [(PathEntry *)self recursive];
-  v8 = [(PathEntry *)v4 recursive];
+  recursive = [(PathEntry *)self recursive];
+  recursive2 = [(PathEntry *)entryCopy recursive];
 
-  if (v7 != v8)
+  if (recursive != recursive2)
   {
 LABEL_6:
     v9 = 0;
@@ -97,37 +97,37 @@ LABEL_7:
   return v9;
 }
 
-+ (id)entryWithPath:(id)a3
++ (id)entryWithPath:(id)path
 {
-  v3 = a3;
-  v4 = [[PathEntry alloc] initWithPath:v3];
+  pathCopy = path;
+  v4 = [[PathEntry alloc] initWithPath:pathCopy];
 
   return v4;
 }
 
-+ (id)bundlePathsWithinEntries:(id)a3 withExtension:(id)a4 andNames:(id)a5
++ (id)bundlePathsWithinEntries:(id)entries withExtension:(id)extension andNames:(id)names
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  entriesCopy = entries;
+  extensionCopy = extension;
+  namesCopy = names;
   v10 = +[NSMutableArray array];
-  if (v7 && [v7 count])
+  if (entriesCopy && [entriesCopy count])
   {
     v85 = 0u;
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v62 = v7;
-    obj = v7;
+    v62 = entriesCopy;
+    obj = entriesCopy;
     v67 = [obj countByEnumeratingWithState:&v83 objects:v90 count:16];
     if (!v67)
     {
       goto LABEL_71;
     }
 
-    if (v8)
+    if (extensionCopy)
     {
-      v11 = v9 == 0;
+      v11 = namesCopy == 0;
     }
 
     else
@@ -137,9 +137,9 @@ LABEL_7:
 
     v12 = !v11;
     v69 = v12;
-    v65 = v9;
+    v65 = namesCopy;
     v66 = *v84;
-    v70 = v8;
+    v70 = extensionCopy;
     v64 = v10;
     while (1)
     {
@@ -153,24 +153,24 @@ LABEL_7:
 
         v68 = v13;
         v14 = *(*(&v83 + 1) + 8 * v13);
-        v15 = [v14 recursive];
+        recursive = [v14 recursive];
         v16 = +[NSFileManager defaultManager];
-        v17 = [v14 path];
-        if (!v15)
+        path = [v14 path];
+        if (!recursive)
         {
-          v18 = [v16 contentsOfDirectoryAtPath:v17 error:0];
+          v18 = [v16 contentsOfDirectoryAtPath:path error:0];
 
           if (v69)
           {
-            if ([v8 length])
+            if ([extensionCopy length])
             {
               v33 = +[NSMutableArray array];
               v79 = 0u;
               v80 = 0u;
               v81 = 0u;
               v82 = 0u;
-              v34 = v9;
-              v35 = [v34 countByEnumeratingWithState:&v79 objects:v89 count:16];
+              extensionCopy2 = namesCopy;
+              v35 = [extensionCopy2 countByEnumeratingWithState:&v79 objects:v89 count:16];
               if (v35)
               {
                 v36 = v35;
@@ -181,18 +181,18 @@ LABEL_7:
                   {
                     if (*v80 != v37)
                     {
-                      objc_enumerationMutation(v34);
+                      objc_enumerationMutation(extensionCopy2);
                     }
 
-                    v39 = [NSString stringWithFormat:@"%@.%@", *(*(&v79 + 1) + 8 * i), v8];
-                    v40 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", v39];
+                    extensionCopy = [NSString stringWithFormat:@"%@.%@", *(*(&v79 + 1) + 8 * i), extensionCopy];
+                    v40 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", extensionCopy];
                     v41 = [v18 filteredArrayUsingPredicate:v40];
                     [v33 addObjectsFromArray:v41];
 
-                    v8 = v70;
+                    extensionCopy = v70;
                   }
 
-                  v36 = [v34 countByEnumeratingWithState:&v79 objects:v89 count:16];
+                  v36 = [extensionCopy2 countByEnumeratingWithState:&v79 objects:v89 count:16];
                 }
 
                 while (v36);
@@ -203,19 +203,19 @@ LABEL_7:
             }
           }
 
-          else if (!v9)
+          else if (!namesCopy)
           {
-            if (v8 && [v8 length])
+            if (extensionCopy && [extensionCopy length])
             {
-              v34 = [NSString stringWithFormat:@".%@", v8];
-              v58 = [NSPredicate predicateWithFormat:@"SELF ENDSWITH %@", v34];
+              extensionCopy2 = [NSString stringWithFormat:@".%@", extensionCopy];
+              v58 = [NSPredicate predicateWithFormat:@"SELF ENDSWITH %@", extensionCopy2];
               v33 = [v18 filteredArrayUsingPredicate:v58];
             }
 
             else
             {
-              v34 = [NSPredicate predicateWithFormat:@"pathExtension.length > 0"];
-              v33 = [v18 filteredArrayUsingPredicate:v34];
+              extensionCopy2 = [NSPredicate predicateWithFormat:@"pathExtension.length > 0"];
+              v33 = [v18 filteredArrayUsingPredicate:extensionCopy2];
             }
 
             goto LABEL_54;
@@ -226,8 +226,8 @@ LABEL_7:
           v76 = 0u;
           v77 = 0u;
           v78 = 0u;
-          v34 = v9;
-          v42 = [v34 countByEnumeratingWithState:&v75 objects:v88 count:16];
+          extensionCopy2 = namesCopy;
+          v42 = [extensionCopy2 countByEnumeratingWithState:&v75 objects:v88 count:16];
           if (v42)
           {
             v43 = v42;
@@ -238,7 +238,7 @@ LABEL_7:
               {
                 if (*v76 != v44)
                 {
-                  objc_enumerationMutation(v34);
+                  objc_enumerationMutation(extensionCopy2);
                 }
 
                 v46 = [NSString stringWithFormat:@"%@.", *(*(&v75 + 1) + 8 * j)];
@@ -247,14 +247,14 @@ LABEL_7:
                 [v33 addObjectsFromArray:v48];
               }
 
-              v43 = [v34 countByEnumeratingWithState:&v75 objects:v88 count:16];
+              v43 = [extensionCopy2 countByEnumeratingWithState:&v75 objects:v88 count:16];
             }
 
             while (v43);
-            v8 = v70;
+            extensionCopy = v70;
 LABEL_53:
             v10 = v64;
-            v9 = v65;
+            namesCopy = v65;
           }
 
 LABEL_54:
@@ -282,8 +282,8 @@ LABEL_54:
                   }
 
                   v55 = *(*(&v71 + 1) + 8 * k);
-                  v56 = [v14 path];
-                  v57 = [v56 stringByAppendingPathComponent:v55];
+                  path2 = [v14 path];
+                  v57 = [path2 stringByAppendingPathComponent:v55];
                   [v49 addObject:v57];
                 }
 
@@ -296,30 +296,30 @@ LABEL_54:
             v10 = v64;
             [v64 addObjectsFromArray:v49];
 
-            v8 = v70;
-            v9 = v65;
+            extensionCopy = v70;
+            namesCopy = v65;
           }
 
           goto LABEL_64;
         }
 
-        v18 = [v16 enumeratorAtPath:v17];
+        v18 = [v16 enumeratorAtPath:path];
 
-        v19 = [v18 nextObject];
-        if (v19)
+        nextObject = [v18 nextObject];
+        if (nextObject)
         {
-          v20 = v19;
+          v20 = nextObject;
           while (!v69)
           {
-            if (v9)
+            if (namesCopy)
             {
               goto LABEL_23;
             }
 
-            if (v8 && [v8 length])
+            if (extensionCopy && [extensionCopy length])
             {
-              v28 = [v20 pathExtension];
-              v29 = [v28 isEqualToString:v8];
+              pathExtension = [v20 pathExtension];
+              v29 = [pathExtension isEqualToString:extensionCopy];
 
               if ((v29 & 1) == 0)
               {
@@ -329,8 +329,8 @@ LABEL_54:
               goto LABEL_30;
             }
 
-            v30 = [v20 pathExtension];
-            v31 = [v30 length];
+            pathExtension2 = [v20 pathExtension];
+            v31 = [pathExtension2 length];
 
             if (v31)
             {
@@ -338,23 +338,23 @@ LABEL_54:
             }
 
 LABEL_32:
-            v32 = [v18 nextObject];
+            nextObject2 = [v18 nextObject];
 
-            v20 = v32;
-            if (!v32)
+            v20 = nextObject2;
+            if (!nextObject2)
             {
               goto LABEL_64;
             }
           }
 
-          if ([v8 length])
+          if ([extensionCopy length])
           {
-            v21 = [v20 lastPathComponent];
-            v22 = [v21 stringByDeletingPathExtension];
-            if ([v9 containsObject:v22])
+            lastPathComponent = [v20 lastPathComponent];
+            stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+            if ([namesCopy containsObject:stringByDeletingPathExtension])
             {
-              v23 = [v20 pathExtension];
-              v24 = [v23 isEqualToString:v8];
+              pathExtension3 = [v20 pathExtension];
+              v24 = [pathExtension3 isEqualToString:extensionCopy];
 
               if ((v24 & 1) == 0)
               {
@@ -362,18 +362,18 @@ LABEL_32:
               }
 
 LABEL_30:
-              v21 = [v14 path];
-              v22 = [v21 stringByAppendingPathComponent:v20];
-              [v10 addObject:v22];
+              lastPathComponent = [v14 path];
+              stringByDeletingPathExtension = [lastPathComponent stringByAppendingPathComponent:v20];
+              [v10 addObject:stringByDeletingPathExtension];
             }
 
             goto LABEL_32;
           }
 
 LABEL_23:
-          v25 = [v20 lastPathComponent];
-          v26 = [v25 stringByDeletingPathExtension];
-          v27 = [v9 containsObject:v26];
+          lastPathComponent2 = [v20 lastPathComponent];
+          stringByDeletingPathExtension2 = [lastPathComponent2 stringByDeletingPathExtension];
+          v27 = [namesCopy containsObject:stringByDeletingPathExtension2];
 
           if ((v27 & 1) == 0)
           {
@@ -395,7 +395,7 @@ LABEL_64:
       {
 LABEL_71:
 
-        v7 = v62;
+        entriesCopy = v62;
         break;
       }
     }

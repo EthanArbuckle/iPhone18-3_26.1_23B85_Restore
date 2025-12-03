@@ -1,6 +1,6 @@
 @interface FIUIChartUniformBarSeriesAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityLabelForBarYPoint:(double)a3 withValue:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityLabelForBarYPoint:(double)point withValue:(id)value;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateAccessibilityElements;
 - (void)layoutSubviews;
@@ -8,19 +8,19 @@
 
 @implementation FIUIChartUniformBarSeriesAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FIUIChartUniformBarSeries" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"FIUIChartUniformBarSeries" isKindOfClass:@"FIUIChartSeries"];
-  [v3 validateClass:@"FIUIChartUniformBarSeries" hasInstanceVariable:@"_plotPoints" withType:"NSArray"];
-  [v3 validateClass:@"FIUIChartUniformBarSeries" hasInstanceVariable:@"_barWidth" withType:"d"];
-  [v3 validateProtocol:@"FIUIChartPoint" hasRequiredInstanceMethod:@"xValue"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FIUIChartUniformBarSeries" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"FIUIChartUniformBarSeries" isKindOfClass:@"FIUIChartSeries"];
+  [validationsCopy validateClass:@"FIUIChartUniformBarSeries" hasInstanceVariable:@"_plotPoints" withType:"NSArray"];
+  [validationsCopy validateClass:@"FIUIChartUniformBarSeries" hasInstanceVariable:@"_barWidth" withType:"d"];
+  [validationsCopy validateProtocol:@"FIUIChartPoint" hasRequiredInstanceMethod:@"xValue"];
 }
 
-- (id)_accessibilityLabelForBarYPoint:(double)a3 withValue:(id)a4
+- (id)_accessibilityLabelForBarYPoint:(double)point withValue:(id)value
 {
-  if (a3 == 0.0)
+  if (point == 0.0)
   {
     v4 = @"chart.inactive.hour";
   }

@@ -1,29 +1,29 @@
 @interface DSSafetyCheckWelcomeTableCell
 - (DSSafetyCheckWelcomeCellDelegate)delegate;
-- (DSSafetyCheckWelcomeTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 title:(id)a5 systemImageNamed:(id)a6;
+- (DSSafetyCheckWelcomeTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier title:(id)title systemImageNamed:(id)named;
 - (void)didTapLearnMoreLink;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setDetailText:(id)a3 linkText:(id)a4;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setDetailText:(id)text linkText:(id)linkText;
 @end
 
 @implementation DSSafetyCheckWelcomeTableCell
 
-- (DSSafetyCheckWelcomeTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 title:(id)a5 systemImageNamed:(id)a6
+- (DSSafetyCheckWelcomeTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier title:(id)title systemImageNamed:(id)named
 {
-  v10 = a5;
-  v11 = a6;
+  titleCopy = title;
+  namedCopy = named;
   v53.receiver = self;
   v53.super_class = DSSafetyCheckWelcomeTableCell;
-  v12 = [(DSSafetyCheckWelcomeTableCell *)&v53 initWithStyle:a3 reuseIdentifier:a4];
+  v12 = [(DSSafetyCheckWelcomeTableCell *)&v53 initWithStyle:style reuseIdentifier:identifier];
   v13 = v12;
   if (v12)
   {
     [(DSSafetyCheckWelcomeTableCell *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [(DSSafetyCheckWelcomeTableCell *)v13 titleLabel];
-    [v14 setHidden:1];
+    titleLabel = [(DSSafetyCheckWelcomeTableCell *)v13 titleLabel];
+    [titleLabel setHidden:1];
 
-    v15 = [(DSSafetyCheckWelcomeTableCell *)v13 detailTextLabel];
-    [v15 setHidden:1];
+    detailTextLabel = [(DSSafetyCheckWelcomeTableCell *)v13 detailTextLabel];
+    [detailTextLabel setHidden:1];
 
     v16 = objc_opt_new();
     stackView = v13->_stackView;
@@ -31,37 +31,37 @@
 
     [(UIStackView *)v13->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v13->_stackView setAxis:1];
-    v18 = [(DSSafetyCheckWelcomeTableCell *)v13 contentView];
-    [v18 addSubview:v13->_stackView];
+    contentView = [(DSSafetyCheckWelcomeTableCell *)v13 contentView];
+    [contentView addSubview:v13->_stackView];
 
-    v19 = [(UIStackView *)v13->_stackView topAnchor];
-    v20 = [(DSSafetyCheckWelcomeTableCell *)v13 contentView];
-    v21 = [v20 topAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21 constant:16.0];
+    topAnchor = [(UIStackView *)v13->_stackView topAnchor];
+    contentView2 = [(DSSafetyCheckWelcomeTableCell *)v13 contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
     [v22 setActive:1];
 
-    v23 = [(UIStackView *)v13->_stackView bottomAnchor];
-    v24 = [(DSSafetyCheckWelcomeTableCell *)v13 contentView];
-    v25 = [v24 bottomAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25 constant:-16.0];
+    bottomAnchor = [(UIStackView *)v13->_stackView bottomAnchor];
+    contentView3 = [(DSSafetyCheckWelcomeTableCell *)v13 contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
     [v26 setActive:1];
 
-    v27 = [(UIStackView *)v13->_stackView leadingAnchor];
-    v28 = [(DSSafetyCheckWelcomeTableCell *)v13 contentView];
-    v29 = [v28 leadingAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29 constant:16.0];
+    leadingAnchor = [(UIStackView *)v13->_stackView leadingAnchor];
+    contentView4 = [(DSSafetyCheckWelcomeTableCell *)v13 contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     [v30 setActive:1];
 
-    v31 = [(UIStackView *)v13->_stackView trailingAnchor];
-    v32 = [(DSSafetyCheckWelcomeTableCell *)v13 contentView];
-    v33 = [v32 trailingAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33 constant:-16.0];
+    trailingAnchor = [(UIStackView *)v13->_stackView trailingAnchor];
+    contentView5 = [(DSSafetyCheckWelcomeTableCell *)v13 contentView];
+    trailingAnchor2 = [contentView5 trailingAnchor];
+    v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     [v34 setActive:1];
 
     v35 = +[UIColor systemBlueColor];
     v52 = [UIImageSymbolConfiguration configurationWithHierarchicalColor:v35];
 
-    v36 = [UIImage systemImageNamed:v11 withConfiguration:v52];
+    v36 = [UIImage systemImageNamed:namedCopy withConfiguration:v52];
     v37 = [v36 imageWithRenderingMode:2];
 
     v38 = objc_opt_new();
@@ -71,22 +71,22 @@
     [(UIImageView *)v13->_symbolImageView setImage:v37];
     [(UIImageView *)v13->_symbolImageView setContentMode:1];
     [(UIImageView *)v13->_symbolImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v40 = [(UIImageView *)v13->_symbolImageView heightAnchor];
-    v41 = [v40 constraintEqualToConstant:48.0];
+    heightAnchor = [(UIImageView *)v13->_symbolImageView heightAnchor];
+    v41 = [heightAnchor constraintEqualToConstant:48.0];
     [v41 setActive:1];
 
-    v42 = [(UIImageView *)v13->_symbolImageView widthAnchor];
-    v43 = [v42 constraintEqualToConstant:48.0];
+    widthAnchor = [(UIImageView *)v13->_symbolImageView widthAnchor];
+    v43 = [widthAnchor constraintEqualToConstant:48.0];
     [v43 setActive:1];
 
     [(UIStackView *)v13->_stackView addArrangedSubview:v13->_symbolImageView];
     [(UIStackView *)v13->_stackView setCustomSpacing:v13->_symbolImageView afterView:12.0];
     v44 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
-    v45 = [v44 fontDescriptor];
-    v46 = [v45 fontDescriptorWithSymbolicTraits:2];
+    fontDescriptor = [v44 fontDescriptor];
+    v46 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
     v47 = objc_opt_new();
-    [v47 setText:v10];
+    [v47 setText:titleCopy];
     [v47 setNumberOfLines:0];
     v48 = +[UIColor labelColor];
     [v47 setTextColor:v48];
@@ -105,19 +105,19 @@
   return v13;
 }
 
-- (void)setDetailText:(id)a3 linkText:(id)a4
+- (void)setDetailText:(id)text linkText:(id)linkText
 {
-  v17 = a4;
-  v6 = a3;
+  linkTextCopy = linkText;
+  textCopy = text;
   v7 = [NSMutableAttributedString alloc];
-  if (v17)
+  if (linkTextCopy)
   {
-    v8 = [NSString stringWithFormat:@"%@ %@", v6, v17];
+    linkTextCopy = [NSString stringWithFormat:@"%@ %@", textCopy, linkTextCopy];
 
-    v6 = v8;
+    textCopy = linkTextCopy;
   }
 
-  v9 = [v7 initWithString:v6];
+  v9 = [v7 initWithString:textCopy];
 
   v10 = objc_alloc_init(UITextView);
   v11 = objc_opt_new();
@@ -137,8 +137,8 @@
   [v10 setAttributedText:v9];
   [v10 setShowsVerticalScrollIndicator:0];
   [v10 setShowsHorizontalScrollIndicator:0];
-  v15 = [v10 textContainer];
-  [v15 setLineFragmentPadding:0.0];
+  textContainer = [v10 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   [v10 _setInteractiveTextSelectionDisabled:1];
   v16 = +[UIColor clearColor];
@@ -148,23 +148,23 @@
   [(UIStackView *)self->_stackView addArrangedSubview:v10];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = DSSafetyCheckWelcomeTableCell;
-  v4 = a3;
-  [(DSSafetyCheckWelcomeTableCell *)&v7 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(DSSafetyCheckWelcomeTableCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
   [(DSSafetyCheckWelcomeTableCell *)self setUserInteractionEnabled:1, v7.receiver, v7.super_class];
-  v5 = [v4 objectForKeyedSubscript:@"DSSafetyCheckWelcomeCellDelegateKey"];
+  v5 = [specifierCopy objectForKeyedSubscript:@"DSSafetyCheckWelcomeCellDelegateKey"];
 
-  v6 = [v5 nonretainedObjectValue];
-  [(DSSafetyCheckWelcomeTableCell *)self setDelegate:v6];
+  nonretainedObjectValue = [v5 nonretainedObjectValue];
+  [(DSSafetyCheckWelcomeTableCell *)self setDelegate:nonretainedObjectValue];
 }
 
 - (void)didTapLearnMoreLink
 {
-  v3 = [(DSSafetyCheckWelcomeTableCell *)self delegate];
-  [v3 didTapLearnMoreLink:self];
+  delegate = [(DSSafetyCheckWelcomeTableCell *)self delegate];
+  [delegate didTapLearnMoreLink:self];
 }
 
 - (DSSafetyCheckWelcomeCellDelegate)delegate

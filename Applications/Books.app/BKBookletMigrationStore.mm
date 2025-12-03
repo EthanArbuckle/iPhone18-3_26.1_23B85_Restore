@@ -1,10 +1,10 @@
 @interface BKBookletMigrationStore
 - (BKBookletMigrationStore)init;
-- (BOOL)removeAllMigrationInfosExcludingStates:(id)a3 error:(id *)a4;
-- (BOOL)setMigrationState:(int64_t)a3 forStoreIDStrings:(id)a4 error:(id *)a5;
-- (id)_convertToStoreIDs:(id)a3;
-- (void)migrationItemsWithState:(int64_t)a3 completion:(id)a4;
-- (void)migrationItemsWithStoreIDStrings:(id)a3 completion:(id)a4;
+- (BOOL)removeAllMigrationInfosExcludingStates:(id)states error:(id *)error;
+- (BOOL)setMigrationState:(int64_t)state forStoreIDStrings:(id)strings error:(id *)error;
+- (id)_convertToStoreIDs:(id)ds;
+- (void)migrationItemsWithState:(int64_t)state completion:(id)completion;
+- (void)migrationItemsWithStoreIDStrings:(id)strings completion:(id)completion;
 @end
 
 @implementation BKBookletMigrationStore
@@ -24,15 +24,15 @@
   return v2;
 }
 
-- (id)_convertToStoreIDs:(id)a3
+- (id)_convertToStoreIDs:(id)ds
 {
-  v3 = a3;
-  v4 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -60,37 +60,37 @@
   return v4;
 }
 
-- (BOOL)setMigrationState:(int64_t)a3 forStoreIDStrings:(id)a4 error:(id *)a5
+- (BOOL)setMigrationState:(int64_t)state forStoreIDStrings:(id)strings error:(id *)error
 {
-  v8 = [(BKBookletMigrationStore *)self _convertToStoreIDs:a4];
-  v9 = [(BKBookletMigrationStore *)self store];
-  LOBYTE(a5) = [v9 setMigrationState:a3 forStoreIDs:v8 error:a5];
+  v8 = [(BKBookletMigrationStore *)self _convertToStoreIDs:strings];
+  store = [(BKBookletMigrationStore *)self store];
+  LOBYTE(error) = [store setMigrationState:state forStoreIDs:v8 error:error];
 
-  return a5;
+  return error;
 }
 
-- (void)migrationItemsWithStoreIDStrings:(id)a3 completion:(id)a4
+- (void)migrationItemsWithStoreIDStrings:(id)strings completion:(id)completion
 {
-  v6 = a4;
-  v8 = [(BKBookletMigrationStore *)self _convertToStoreIDs:a3];
-  v7 = [(BKBookletMigrationStore *)self store];
-  [v7 migrationInfosWithStoreIDs:v8 completion:v6];
+  completionCopy = completion;
+  v8 = [(BKBookletMigrationStore *)self _convertToStoreIDs:strings];
+  store = [(BKBookletMigrationStore *)self store];
+  [store migrationInfosWithStoreIDs:v8 completion:completionCopy];
 }
 
-- (void)migrationItemsWithState:(int64_t)a3 completion:(id)a4
+- (void)migrationItemsWithState:(int64_t)state completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(BKBookletMigrationStore *)self store];
-  [v7 migrationInfosWithState:a3 completion:v6];
+  completionCopy = completion;
+  store = [(BKBookletMigrationStore *)self store];
+  [store migrationInfosWithState:state completion:completionCopy];
 }
 
-- (BOOL)removeAllMigrationInfosExcludingStates:(id)a3 error:(id *)a4
+- (BOOL)removeAllMigrationInfosExcludingStates:(id)states error:(id *)error
 {
-  v6 = a3;
-  v7 = [(BKBookletMigrationStore *)self store];
-  LOBYTE(a4) = [v7 removeAllMigrationInfosExcludingStates:v6 error:a4];
+  statesCopy = states;
+  store = [(BKBookletMigrationStore *)self store];
+  LOBYTE(error) = [store removeAllMigrationInfosExcludingStates:statesCopy error:error];
 
-  return a4;
+  return error;
 }
 
 @end

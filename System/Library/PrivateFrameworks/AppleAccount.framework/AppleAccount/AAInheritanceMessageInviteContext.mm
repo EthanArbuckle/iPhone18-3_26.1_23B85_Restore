@@ -1,16 +1,16 @@
 @interface AAInheritanceMessageInviteContext
-- (AAInheritanceMessageInviteContext)initWithLocalContact:(id)a3 beneficiaryID:(id)a4;
-- (id)_messageURLForBeneficiaryID:(id)a3;
+- (AAInheritanceMessageInviteContext)initWithLocalContact:(id)contact beneficiaryID:(id)d;
+- (id)_messageURLForBeneficiaryID:(id)d;
 @end
 
 @implementation AAInheritanceMessageInviteContext
 
-- (AAInheritanceMessageInviteContext)initWithLocalContact:(id)a3 beneficiaryID:(id)a4
+- (AAInheritanceMessageInviteContext)initWithLocalContact:(id)contact beneficiaryID:(id)d
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  contactCopy = contact;
+  dCopy = d;
+  if (!dCopy)
   {
     [AAInheritanceMessageInviteContext initWithLocalContact:a2 beneficiaryID:self];
   }
@@ -20,10 +20,10 @@
   v11 = [v10 localizedStringForKey:@"INHERITANCE_ADDED_MESSAGES_BUBBLE_BODY" value:0 table:@"Localizable"];
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v7 firstNameOrHandleForDisplay];
-  v14 = [v12 stringWithFormat:v11, v13];
+  firstNameOrHandleForDisplay = [contactCopy firstNameOrHandleForDisplay];
+  v14 = [v12 stringWithFormat:v11, firstNameOrHandleForDisplay];
 
-  v15 = [AAUniversalLinkHelper stringForBenefiaryMessagesURLWithUUID:v8];
+  v15 = [AAUniversalLinkHelper stringForBenefiaryMessagesURLWithUUID:dCopy];
   v16 = [MEMORY[0x1E695DFF8] URLWithString:v15];
   if (!v16)
   {
@@ -39,9 +39,9 @@
   {
     if (v9)
     {
-      v19 = [v7 isFamilyMember];
+      isFamilyMember = [contactCopy isFamilyMember];
       v20 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
-      if (v19)
+      if (isFamilyMember)
       {
         v21 = @"INHERITANCE_ADDED_MESSAGES_BUBBLE_TITLE_REBRAND";
       }
@@ -73,8 +73,8 @@
     v25 = [v24 localizedStringForKey:@"INHERITANCE_MESSAGES_BUBBLE_ACTION_LABEL" value:0 table:@"Localizable"];
     [(AAMessagesInviteContext *)v18 setAction:v25];
 
-    v26 = [v7 handle];
-    v31[0] = v26;
+    handle = [contactCopy handle];
+    v31[0] = handle;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
     [(AAMessagesInviteContext *)v18 setRecipients:v27];
 
@@ -82,7 +82,7 @@
     [(AAMessagesInviteContext *)v18 setInviteURL:v16];
     if (+[AAPreferences isLCMessageExtensionEnabled])
     {
-      v28 = [(AAInheritanceMessageInviteContext *)v18 _messageURLForBeneficiaryID:v8];
+      v28 = [(AAInheritanceMessageInviteContext *)v18 _messageURLForBeneficiaryID:dCopy];
       [(AAInheritanceMessageInviteContext *)v18 setMessageURL:v28];
     }
   }
@@ -91,16 +91,16 @@
   return v18;
 }
 
-- (id)_messageURLForBeneficiaryID:(id)a3
+- (id)_messageURLForBeneficiaryID:(id)d
 {
   v3 = MEMORY[0x1E696AF20];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc(MEMORY[0x1E696AF60]);
-  v8 = [v4 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v9 = [v7 initWithName:@"beneficiaryID" value:v8];
+  v9 = [v7 initWithName:@"beneficiaryID" value:uUIDString];
   [v6 addObject:v9];
 
   v10 = [v6 copy];

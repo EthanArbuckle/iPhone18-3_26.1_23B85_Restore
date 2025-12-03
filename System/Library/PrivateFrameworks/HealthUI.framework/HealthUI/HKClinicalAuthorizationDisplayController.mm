@@ -1,11 +1,11 @@
 @interface HKClinicalAuthorizationDisplayController
 - (HKClinicalAuthorizationDisplayController)init;
-- (HKClinicalAuthorizationDisplayController)initWithAuthorizationController:(id)a3;
+- (HKClinicalAuthorizationDisplayController)initWithAuthorizationController:(id)controller;
 - (HKSource)source;
-- (id)_displayReadAuthorizationDateForMode:(int64_t)a3;
-- (id)committedTitleForReadAuthorizationModeFooterWithSelectedMode:(int64_t)a3 formatBlock:(id)a4;
+- (id)_displayReadAuthorizationDateForMode:(int64_t)mode;
+- (id)committedTitleForReadAuthorizationModeFooterWithSelectedMode:(int64_t)mode formatBlock:(id)block;
 - (id)currentTimeDisplayStringForReadAuthorizationFooter;
-- (id)currentTimeTitleForReadAuthorizationModeFooterWithSelectedMode:(int64_t)a3 formatBlock:(id)a4;
+- (id)currentTimeTitleForReadAuthorizationModeFooterWithSelectedMode:(int64_t)mode formatBlock:(id)block;
 @end
 
 @implementation HKClinicalAuthorizationDisplayController
@@ -20,35 +20,35 @@
   return 0;
 }
 
-- (HKClinicalAuthorizationDisplayController)initWithAuthorizationController:(id)a3
+- (HKClinicalAuthorizationDisplayController)initWithAuthorizationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = HKClinicalAuthorizationDisplayController;
   v6 = [(HKClinicalAuthorizationDisplayController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authorizationController, a3);
+    objc_storeStrong(&v6->_authorizationController, controller);
   }
 
   return v7;
 }
 
-- (id)_displayReadAuthorizationDateForMode:(int64_t)a3
+- (id)_displayReadAuthorizationDateForMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v4 = [(HKClinicalAuthorizationDisplayController *)self authorizationController];
-    v5 = [v4 orderedTypesForReading];
+    authorizationController = [(HKClinicalAuthorizationDisplayController *)self authorizationController];
+    orderedTypesForReading = [authorizationController orderedTypesForReading];
 
-    if (v5)
+    if (orderedTypesForReading)
     {
-      v6 = [v4 displayReadAuthorizationAnchorDate];
-      v7 = v6;
-      if (v6)
+      displayReadAuthorizationAnchorDate = [authorizationController displayReadAuthorizationAnchorDate];
+      v7 = displayReadAuthorizationAnchorDate;
+      if (displayReadAuthorizationAnchorDate)
       {
-        v8 = v6;
+        v8 = displayReadAuthorizationAnchorDate;
       }
 
       else
@@ -65,14 +65,14 @@
       v9 = HKLogWellnessDashboard();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(HKClinicalAuthorizationDisplayController *)v4 _displayReadAuthorizationDateForMode:v9];
+        [(HKClinicalAuthorizationDisplayController *)authorizationController _displayReadAuthorizationDateForMode:v9];
       }
 
       v3 = 0;
     }
   }
 
-  else if (!a3)
+  else if (!mode)
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF00]);
   }
@@ -88,15 +88,15 @@
   return v4;
 }
 
-- (id)committedTitleForReadAuthorizationModeFooterWithSelectedMode:(int64_t)a3 formatBlock:(id)a4
+- (id)committedTitleForReadAuthorizationModeFooterWithSelectedMode:(int64_t)mode formatBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(HKClinicalAuthorizationDisplayController *)self _displayReadAuthorizationDateForMode:a3];
+  blockCopy = block;
+  v7 = [(HKClinicalAuthorizationDisplayController *)self _displayReadAuthorizationDateForMode:mode];
   if (v7)
   {
     v8 = [(HKClinicalAuthorizationDisplayController *)self _displayStringForReadAuthorizationDate:v7];
-    v9 = [(HKClinicalAuthorizationDisplayController *)self source];
-    v10 = v6[2](v6, v8, a3, v9);
+    source = [(HKClinicalAuthorizationDisplayController *)self source];
+    v10 = blockCopy[2](blockCopy, v8, mode, source);
   }
 
   else
@@ -107,22 +107,22 @@
   return v10;
 }
 
-- (id)currentTimeTitleForReadAuthorizationModeFooterWithSelectedMode:(int64_t)a3 formatBlock:(id)a4
+- (id)currentTimeTitleForReadAuthorizationModeFooterWithSelectedMode:(int64_t)mode formatBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(HKClinicalAuthorizationDisplayController *)self currentTimeDisplayStringForReadAuthorizationFooter];
-  v8 = [(HKClinicalAuthorizationDisplayController *)self source];
-  v9 = v6[2](v6, v7, a3, v8);
+  blockCopy = block;
+  currentTimeDisplayStringForReadAuthorizationFooter = [(HKClinicalAuthorizationDisplayController *)self currentTimeDisplayStringForReadAuthorizationFooter];
+  source = [(HKClinicalAuthorizationDisplayController *)self source];
+  v9 = blockCopy[2](blockCopy, currentTimeDisplayStringForReadAuthorizationFooter, mode, source);
 
   return v9;
 }
 
 - (HKSource)source
 {
-  v2 = [(HKClinicalAuthorizationDisplayController *)self authorizationController];
-  v3 = [v2 source];
+  authorizationController = [(HKClinicalAuthorizationDisplayController *)self authorizationController];
+  source = [authorizationController source];
 
-  return v3;
+  return source;
 }
 
 - (void)_displayReadAuthorizationDateForMode:(void *)a1 .cold.1(void *a1, NSObject *a2)

@@ -2,19 +2,19 @@
 + (id)padMetrics;
 + (id)phoneMetrics;
 - (CGRect)rightButtonFrame;
-- (GKSectionHeaderView)initWithFrame:(CGRect)a3;
+- (GKSectionHeaderView)initWithFrame:(CGRect)frame;
 - (NSString)rightText;
 - (SEL)rightAction;
 - (SEL)showAllAction;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)establishConstraints;
 - (void)prepareForReuse;
-- (void)rightButtonTouched:(id)a3;
-- (void)setItemCountFormatter:(void *)a3;
-- (void)setLeftText:(id)a3;
-- (void)setRightAction:(SEL)a3;
-- (void)setRightText:(id)a3;
-- (void)setShowAllAction:(SEL)a3;
+- (void)rightButtonTouched:(id)touched;
+- (void)setItemCountFormatter:(void *)formatter;
+- (void)setLeftText:(id)text;
+- (void)setRightAction:(SEL)action;
+- (void)setRightText:(id)text;
+- (void)setShowAllAction:(SEL)action;
 - (void)updateGutterConstraints;
 - (void)updateLabel;
 @end
@@ -23,7 +23,7 @@
 
 + (id)padMetrics
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___GKSectionHeaderView;
   v2 = objc_msgSendSuper2(&v5, sel_padMetrics);
   v3 = [v2 mutableCopy];
@@ -35,7 +35,7 @@
 
 + (id)phoneMetrics
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___GKSectionHeaderView;
   v2 = objc_msgSendSuper2(&v5, sel_phoneMetrics);
   v3 = [v2 mutableCopy];
@@ -45,11 +45,11 @@
   return v3;
 }
 
-- (GKSectionHeaderView)initWithFrame:(CGRect)a3
+- (GKSectionHeaderView)initWithFrame:(CGRect)frame
 {
   v40.receiver = self;
   v40.super_class = GKSectionHeaderView;
-  v3 = [(GKHeaderWithUnderlineView *)&v40 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKHeaderWithUnderlineView *)&v40 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [GKLabel alloc];
@@ -65,19 +65,19 @@
 
     [(GKLabel *)v3->_leftLabel setBackgroundColor:0];
     [(GKLabel *)v3->_leftLabel setOpaque:0];
-    v10 = [MEMORY[0x277D75418] currentDevice];
-    v11 = [v10 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v11 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v7 = *MEMORY[0x277D0C258] & (*MEMORY[0x277D0C8F0] ^ 1);
     }
 
     [(GKLabel *)v3->_leftLabel setShouldInhibitReplay:v7 & 1];
-    v12 = [MEMORY[0x277D0C8B0] textStyle];
-    v13 = [v12 sectionHeader];
+    textStyle = [MEMORY[0x277D0C8B0] textStyle];
+    sectionHeader = [textStyle sectionHeader];
 
-    [(GKLabel *)v3->_leftLabel applyTextStyle:v13];
+    [(GKLabel *)v3->_leftLabel applyTextStyle:sectionHeader];
     [(GKLabel *)v3->_leftLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v14) = 1148846080;
     [(GKButton *)v3->_rightButton setContentHuggingPriority:1 forAxis:v14];
@@ -87,7 +87,7 @@
     [(GKButton *)v3->_rightButton setOpaque:0];
     [(GKButton *)v3->_rightButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(GKButton *)v3->_rightButton setEnabled:0];
-    [(GKButton *)v3->_rightButton applyTextStyle:v13];
+    [(GKButton *)v3->_rightButton applyTextStyle:sectionHeader];
     [(GKButton *)v3->_rightButton addTarget:v3 action:sel_rightButtonTouched_ forControlEvents:64];
     v16 = objc_alloc_init(MEMORY[0x277D75D18]);
     backgroundView = v3->_backgroundView;
@@ -98,44 +98,44 @@
 
     [(UIView *)v3->_backgroundView setClipsToBounds:1];
     [(UIView *)v3->_backgroundView setHidden:1];
-    v19 = [(UIView *)v3->_backgroundView layer];
-    [v19 setMaskedCorners:3];
+    layer = [(UIView *)v3->_backgroundView layer];
+    [layer setMaskedCorners:3];
 
-    v20 = [(UIView *)v3->_backgroundView layer];
-    [v20 setCornerRadius:10.0];
+    layer2 = [(UIView *)v3->_backgroundView layer];
+    [layer2 setCornerRadius:10.0];
 
     v21 = *MEMORY[0x277CDA138];
-    v22 = [(UIView *)v3->_backgroundView layer];
-    [v22 setCornerCurve:v21];
+    layer3 = [(UIView *)v3->_backgroundView layer];
+    [layer3 setCornerCurve:v21];
 
     [(UIView *)v3->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(GKSectionHeaderView *)v3 addSubview:v3->_backgroundView];
-    v23 = [(UIView *)v3->_backgroundView bottomAnchor];
-    v24 = [(UIView *)v3->_backgroundView superview];
-    v25 = [v24 bottomAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25];
+    bottomAnchor = [(UIView *)v3->_backgroundView bottomAnchor];
+    superview = [(UIView *)v3->_backgroundView superview];
+    bottomAnchor2 = [superview bottomAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v26 setActive:1];
 
-    v27 = [(UIView *)v3->_backgroundView leftAnchor];
-    v28 = [(UIView *)v3->_backgroundView superview];
-    v29 = [v28 leftAnchor];
-    v30 = [v27 constraintEqualToAnchor:v29];
+    leftAnchor = [(UIView *)v3->_backgroundView leftAnchor];
+    superview2 = [(UIView *)v3->_backgroundView superview];
+    leftAnchor2 = [superview2 leftAnchor];
+    v30 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v30 setActive:1];
 
-    v31 = [(UIView *)v3->_backgroundView rightAnchor];
-    v32 = [(UIView *)v3->_backgroundView superview];
-    v33 = [v32 rightAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33];
+    rightAnchor = [(UIView *)v3->_backgroundView rightAnchor];
+    superview3 = [(UIView *)v3->_backgroundView superview];
+    rightAnchor2 = [superview3 rightAnchor];
+    v34 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v34 setActive:1];
 
-    v35 = [(UIView *)v3->_backgroundView heightAnchor];
-    v36 = [MEMORY[0x277D75520] defaultMetrics];
-    [v36 scaledValueForValue:30.0];
-    v37 = [v35 constraintEqualToConstant:?];
+    heightAnchor = [(UIView *)v3->_backgroundView heightAnchor];
+    defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+    [defaultMetrics scaledValueForValue:30.0];
+    v37 = [heightAnchor constraintEqualToConstant:?];
     [(GKSectionHeaderView *)v3 setBackgroundViewHeightConstraint:v37];
 
-    v38 = [(GKSectionHeaderView *)v3 backgroundViewHeightConstraint];
-    [v38 setActive:1];
+    backgroundViewHeightConstraint = [(GKSectionHeaderView *)v3 backgroundViewHeightConstraint];
+    [backgroundViewHeightConstraint setActive:1];
 
     [(GKSectionHeaderView *)v3 addSubview:v3->_leftLabel];
     [(GKSectionHeaderView *)v3 addSubview:v3->_rightButton];
@@ -149,26 +149,26 @@
   v21.receiver = self;
   v21.super_class = GKSectionHeaderView;
   [(GKHeaderWithUnderlineView *)&v21 updateGutterConstraints];
-  v3 = [(GKHeaderWithUnderlineView *)self metrics];
+  metrics = [(GKHeaderWithUnderlineView *)self metrics];
   v4 = MEMORY[0x277CCAAD0];
   v5 = _NSDictionaryOfVariableBindings(&cfstr_LeftlabelRight.isa, self->_leftLabel, self->_rightButton, 0);
-  v6 = [v4 constraintsWithVisualFormat:@"|-(gutter)-[_leftLabel]-(>=labelSpacing)-[_rightButton]-(rightGutter)-|" options:0 metrics:v3 views:v5];
+  v6 = [v4 constraintsWithVisualFormat:@"|-(gutter)-[_leftLabel]-(>=labelSpacing)-[_rightButton]-(rightGutter)-|" options:0 metrics:metrics views:v5];
 
-  v7 = [(GKSectionHeaderView *)self leftLabel];
-  v8 = [v7 leftAnchor];
-  v9 = [(GKSectionHeaderView *)self leftLabel];
-  v10 = [v9 superview];
-  v11 = [v10 leftAnchor];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  leftLabel = [(GKSectionHeaderView *)self leftLabel];
+  leftAnchor = [leftLabel leftAnchor];
+  leftLabel2 = [(GKSectionHeaderView *)self leftLabel];
+  superview = [leftLabel2 superview];
+  leftAnchor2 = [superview leftAnchor];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v14 = 15.0;
-  if (v13 == 1 && *MEMORY[0x277D0C8F0] & 1 | ((*MEMORY[0x277D0C258] & 1) == 0))
+  if (userInterfaceIdiom == 1 && *MEMORY[0x277D0C8F0] & 1 | ((*MEMORY[0x277D0C258] & 1) == 0))
   {
     v14 = 25.0;
   }
 
-  v15 = [v8 constraintEqualToAnchor:v11 constant:v14];
+  v15 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v14];
   [v15 setActive:1];
 
   [(GKHeaderWithUnderlineView *)self leadingMargin];
@@ -180,8 +180,8 @@
   }
 
   [(GKSectionHeaderView *)self addConstraints:v6];
-  v19 = [(GKHeaderWithUnderlineView *)self gutterConstraints];
-  v20 = [v19 arrayByAddingObjectsFromArray:v6];
+  gutterConstraints = [(GKHeaderWithUnderlineView *)self gutterConstraints];
+  v20 = [gutterConstraints arrayByAddingObjectsFromArray:v6];
   [(GKHeaderWithUnderlineView *)self setGutterConstraints:v20];
 }
 
@@ -190,57 +190,57 @@
   v8.receiver = self;
   v8.super_class = GKSectionHeaderView;
   [(GKHeaderWithUnderlineView *)&v8 establishConstraints];
-  v3 = [(GKHeaderWithUnderlineView *)self underlineView];
-  v4 = [(GKSectionHeaderView *)self leftLabel];
-  v5 = [(GKSectionHeaderView *)self rightButton];
-  v6 = [MEMORY[0x277CCAAD0] _gkConstraintWithItem:v3 attribute:3 relatedBy:0 toItem:v4 attribute:11 multiplier:*MEMORY[0x277D769D0] leading:1.0 fontTextStyle:8.0];
-  v7 = [MEMORY[0x277CCAAD0] constraintWithItem:v5 attribute:11 relatedBy:0 toItem:v4 attribute:11 multiplier:1.0 constant:0.0];
+  underlineView = [(GKHeaderWithUnderlineView *)self underlineView];
+  leftLabel = [(GKSectionHeaderView *)self leftLabel];
+  rightButton = [(GKSectionHeaderView *)self rightButton];
+  v6 = [MEMORY[0x277CCAAD0] _gkConstraintWithItem:underlineView attribute:3 relatedBy:0 toItem:leftLabel attribute:11 multiplier:*MEMORY[0x277D769D0] leading:1.0 fontTextStyle:8.0];
+  v7 = [MEMORY[0x277CCAAD0] constraintWithItem:rightButton attribute:11 relatedBy:0 toItem:leftLabel attribute:11 multiplier:1.0 constant:0.0];
   [(GKSectionHeaderView *)self addConstraint:v6];
   [(GKSectionHeaderView *)self addConstraint:v7];
 }
 
-- (void)setLeftText:(id)a3
+- (void)setLeftText:(id)text
 {
-  [(GKLabel *)self->_leftLabel setText:a3];
-  v4 = [(GKSectionHeaderView *)self backgroundViewHeightConstraint];
-  [v4 setActive:0];
+  [(GKLabel *)self->_leftLabel setText:text];
+  backgroundViewHeightConstraint = [(GKSectionHeaderView *)self backgroundViewHeightConstraint];
+  [backgroundViewHeightConstraint setActive:0];
 
-  v5 = [(UIView *)self->_backgroundView heightAnchor];
-  v6 = [MEMORY[0x277D75520] defaultMetrics];
-  [v6 scaledValueForValue:30.0];
-  v7 = [v5 constraintEqualToConstant:?];
+  heightAnchor = [(UIView *)self->_backgroundView heightAnchor];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics scaledValueForValue:30.0];
+  v7 = [heightAnchor constraintEqualToConstant:?];
   [(GKSectionHeaderView *)self setBackgroundViewHeightConstraint:v7];
 
-  v8 = [(GKSectionHeaderView *)self backgroundViewHeightConstraint];
-  [v8 setActive:1];
+  backgroundViewHeightConstraint2 = [(GKSectionHeaderView *)self backgroundViewHeightConstraint];
+  [backgroundViewHeightConstraint2 setActive:1];
 
-  v9 = [(GKSectionHeaderView *)self backgroundView];
-  [v9 setNeedsLayout];
+  backgroundView = [(GKSectionHeaderView *)self backgroundView];
+  [backgroundView setNeedsLayout];
 }
 
-- (void)setRightText:(id)a3
+- (void)setRightText:(id)text
 {
   v4 = MEMORY[0x277D0C8B0];
-  v5 = a3;
-  v6 = [v4 textStyle];
-  v10 = [v6 sectionHeader];
+  textCopy = text;
+  textStyle = [v4 textStyle];
+  sectionHeader = [textStyle sectionHeader];
 
-  [(GKButton *)self->_rightButton applyTextStyle:v10];
+  [(GKButton *)self->_rightButton applyTextStyle:sectionHeader];
   rightButton = self->_rightButton;
-  v8 = [MEMORY[0x277D0C868] sharedPalette];
-  v9 = [v8 emphasizedTextColor];
-  [(GKButton *)rightButton setTitleColor:v9 forState:0];
+  mEMORY[0x277D0C868] = [MEMORY[0x277D0C868] sharedPalette];
+  emphasizedTextColor = [mEMORY[0x277D0C868] emphasizedTextColor];
+  [(GKButton *)rightButton setTitleColor:emphasizedTextColor forState:0];
 
-  [(GKButton *)self->_rightButton setTitle:v5 forState:0];
+  [(GKButton *)self->_rightButton setTitle:textCopy forState:0];
   [(GKSectionHeaderView *)self updateLabel];
 }
 
 - (NSString)rightText
 {
   rightButton = self->_rightButton;
-  v3 = [(GKButton *)rightButton state];
+  state = [(GKButton *)rightButton state];
 
-  return [(GKButton *)rightButton titleForState:v3];
+  return [(GKButton *)rightButton titleForState:state];
 }
 
 - (CGRect)rightButtonFrame
@@ -253,19 +253,19 @@
   return result;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v12.receiver = self;
   v12.super_class = GKSectionHeaderView;
-  [(GKHeaderWithUnderlineView *)&v12 applyLayoutAttributes:v4];
-  v5 = [v4 indexPath];
-  -[GKSectionHeaderView setSectionIndex:](self, "setSectionIndex:", [v5 section]);
+  [(GKHeaderWithUnderlineView *)&v12 applyLayoutAttributes:attributesCopy];
+  indexPath = [attributesCopy indexPath];
+  -[GKSectionHeaderView setSectionIndex:](self, "setSectionIndex:", [indexPath section]);
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = attributesCopy;
     v7 = v6;
     if (self->_manualItemCount)
     {
@@ -276,16 +276,16 @@
 
       else
       {
-        v9 = [v7 currentVisibleItemCount];
-        v10 = [v7 currentTotalItemCount];
-        if (v9 >= v10)
+        currentVisibleItemCount = [v7 currentVisibleItemCount];
+        currentTotalItemCount = [v7 currentTotalItemCount];
+        if (currentVisibleItemCount >= currentTotalItemCount)
         {
-          maxRange = v10;
+          maxRange = currentTotalItemCount;
         }
 
         else
         {
-          maxRange = v9;
+          maxRange = currentVisibleItemCount;
         }
       }
 
@@ -330,17 +330,17 @@
     v7 = GKGetLocalizedStringFromTableInBundle();
     [(GKSectionHeaderView *)self maxItemCount];
     v8 = GKFormattedStringWithGroupingFromInteger();
-    v9 = [v5 stringWithFormat:v7, v8];
+    rightButton3 = [v5 stringWithFormat:v7, v8];
 
-    [(GKSectionHeaderView *)self setRightText:v9];
-    v10 = [(GKSectionHeaderView *)self rightButton];
-    [v10 setTitleColor:0 forState:0];
+    [(GKSectionHeaderView *)self setRightText:rightButton3];
+    rightButton = [(GKSectionHeaderView *)self rightButton];
+    [rightButton setTitleColor:0 forState:0];
 
-    v11 = [(GKSectionHeaderView *)self rightButton];
-    v12 = [MEMORY[0x277D0C8B0] textStyle];
-    v13 = [v12 sectionHeader];
-    v14 = [v13 buttonTitle];
-    [v11 applyTextStyle:v14];
+    rightButton2 = [(GKSectionHeaderView *)self rightButton];
+    textStyle = [MEMORY[0x277D0C8B0] textStyle];
+    sectionHeader = [textStyle sectionHeader];
+    buttonTitle = [sectionHeader buttonTitle];
+    [rightButton2 applyTextStyle:buttonTitle];
 
 LABEL_10:
     goto LABEL_11;
@@ -348,61 +348,61 @@ LABEL_10:
 
   if (self->_rightTarget && self->_rightAction)
   {
-    v9 = [(GKSectionHeaderView *)self rightButton];
-    v11 = [MEMORY[0x277D0C868] sharedPalette];
-    v12 = [v11 systemInteractionColor];
-    [v9 setTitleColor:v12 forState:0];
+    rightButton3 = [(GKSectionHeaderView *)self rightButton];
+    rightButton2 = [MEMORY[0x277D0C868] sharedPalette];
+    textStyle = [rightButton2 systemInteractionColor];
+    [rightButton3 setTitleColor:textStyle forState:0];
     goto LABEL_10;
   }
 
 LABEL_11:
-  v15 = [(GKSectionHeaderView *)self rightText];
-  v16 = [v15 length];
+  rightText = [(GKSectionHeaderView *)self rightText];
+  v16 = [rightText length];
   v17 = v16 == 0;
   v18 = v16 != 0;
 
-  v19 = [(GKSectionHeaderView *)self rightButton];
-  [v19 setEnabled:v18];
+  rightButton4 = [(GKSectionHeaderView *)self rightButton];
+  [rightButton4 setEnabled:v18];
 
-  v20 = [(GKSectionHeaderView *)self rightButton];
-  [v20 setHidden:v17];
+  rightButton5 = [(GKSectionHeaderView *)self rightButton];
+  [rightButton5 setHidden:v17];
 }
 
-- (void)setItemCountFormatter:(void *)a3
+- (void)setItemCountFormatter:(void *)formatter
 {
-  if (self->_itemCountFormatter != a3)
+  if (self->_itemCountFormatter != formatter)
   {
-    self->_itemCountFormatter = a3;
+    self->_itemCountFormatter = formatter;
     [(GKSectionHeaderView *)self updateLabel];
   }
 }
 
-- (void)setShowAllAction:(SEL)a3
+- (void)setShowAllAction:(SEL)action
 {
-  if (self->_showAllAction != a3)
+  if (self->_showAllAction != action)
   {
-    if (a3)
+    if (action)
     {
-      v3 = a3;
+      actionCopy = action;
     }
 
     else
     {
-      v3 = 0;
+      actionCopy = 0;
     }
 
-    self->_showAllAction = v3;
+    self->_showAllAction = actionCopy;
     [(GKSectionHeaderView *)self updateLabel];
   }
 }
 
-- (void)rightButtonTouched:(id)a3
+- (void)rightButtonTouched:(id)touched
 {
-  a3;
+  touched;
   if (self->_showAllAction)
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = v4;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v5 = mEMORY[0x277D75128];
     if (self->_showAllAction)
     {
       showAllAction = self->_showAllAction;
@@ -413,7 +413,7 @@ LABEL_11:
       showAllAction = 0;
     }
 
-    v9 = [v4 _gkTargetForAction:showAllAction viaResponder:self];
+    v9 = [mEMORY[0x277D75128] _gkTargetForAction:showAllAction viaResponder:self];
 
     v10 = self->_showAllAction;
     if (v10)
@@ -469,19 +469,19 @@ LABEL_11:
   }
 }
 
-- (void)setRightAction:(SEL)a3
+- (void)setRightAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_rightAction = v3;
+  self->_rightAction = actionCopy;
 }
 
 @end

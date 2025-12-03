@@ -1,61 +1,61 @@
 @interface HKBloodPressureCategoryFactorContext
-- (HKBloodPressureCategoryFactorContext)initWithMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 classificationManager:(id)a6 baseDisplayType:(id)a7 factorDisplayType:(id)a8 categoryData:(id)a9;
-- (id)highlightedBloodPressureCoordinateWithCoordinate:(id)a3 originalCoordinate:(id)a4;
+- (HKBloodPressureCategoryFactorContext)initWithMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller classificationManager:(id)manager baseDisplayType:(id)type factorDisplayType:(id)displayType categoryData:(id)data;
+- (id)highlightedBloodPressureCoordinateWithCoordinate:(id)coordinate originalCoordinate:(id)originalCoordinate;
 - (id)stackedSampleTypeForDateRangeUpdates;
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7;
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
 @end
 
 @implementation HKBloodPressureCategoryFactorContext
 
-- (HKBloodPressureCategoryFactorContext)initWithMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5 classificationManager:(id)a6 baseDisplayType:(id)a7 factorDisplayType:(id)a8 categoryData:(id)a9
+- (HKBloodPressureCategoryFactorContext)initWithMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller classificationManager:(id)manager baseDisplayType:(id)type factorDisplayType:(id)displayType categoryData:(id)data
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  itemsCopy = items;
+  controllerCopy = controller;
+  displayTypeCopy = displayType;
   v26.receiver = self;
   v26.super_class = HKBloodPressureCategoryFactorContext;
-  v18 = [(HKBloodPressureCategoryContext *)&v26 initWithMode:a3 applicationItems:v15 overlayChartController:v16 classificationManager:a6 baseDisplayType:a7 categoryData:a9];
+  v18 = [(HKBloodPressureCategoryContext *)&v26 initWithMode:mode applicationItems:itemsCopy overlayChartController:controllerCopy classificationManager:manager baseDisplayType:type categoryData:data];
   if (v18)
   {
-    v19 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
-    v20 = [v17 sampleType];
-    v21 = [v15 displayTypeController];
-    v22 = [v21 displayTypeForObjectType:v20];
+    hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+    sampleType = [displayTypeCopy sampleType];
+    displayTypeController = [itemsCopy displayTypeController];
+    v22 = [displayTypeController displayTypeForObjectType:sampleType];
 
-    v23 = [v15 timeScopeController];
-    v24 = +[HKOverlayRoomStackedContext generateDisplayTypeForTemplateDisplayType:sampleType:overlayChartController:applicationItems:currentTimeScope:currentCalendar:](HKOverlayRoomStackedContext, "generateDisplayTypeForTemplateDisplayType:sampleType:overlayChartController:applicationItems:currentTimeScope:currentCalendar:", v22, v20, v16, v15, [v23 selectedTimeScope], v19);
+    timeScopeController = [itemsCopy timeScopeController];
+    v24 = +[HKOverlayRoomStackedContext generateDisplayTypeForTemplateDisplayType:sampleType:overlayChartController:applicationItems:currentTimeScope:currentCalendar:](HKOverlayRoomStackedContext, "generateDisplayTypeForTemplateDisplayType:sampleType:overlayChartController:applicationItems:currentTimeScope:currentCalendar:", v22, sampleType, controllerCopy, itemsCopy, [timeScopeController selectedTimeScope], hk_gregorianCalendar);
     [(HKBloodPressureCategoryFactorContext *)v18 setStackedDisplayType:v24];
   }
 
   return v18;
 }
 
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  intervalCopy = interval;
+  controllerCopy = controller;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v15 = [(HKBloodPressureCategoryFactorContext *)self stackedDisplayType];
-  v16 = [v15 graphSeriesForTimeScope:a5];
+  stackedDisplayType = [(HKBloodPressureCategoryFactorContext *)self stackedDisplayType];
+  v16 = [stackedDisplayType graphSeriesForTimeScope:scope];
 
-  v17 = [v12 startDate];
-  v18 = [v12 endDate];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __123__HKBloodPressureCategoryFactorContext_updateContextItemForDateInterval_overlayController_timeScope_resolution_completion___block_invoke;
   v22[3] = &unk_1E81BA7D0;
   objc_copyWeak(v27, &location);
-  v19 = v12;
+  v19 = intervalCopy;
   v23 = v19;
-  v27[1] = a5;
-  v20 = v13;
+  v27[1] = scope;
+  v20 = controllerCopy;
   v24 = v20;
-  v27[2] = a6;
-  v21 = v14;
-  v25 = self;
+  v27[2] = resolution;
+  v21 = completionCopy;
+  selfCopy = self;
   v26 = v21;
-  [v20 cachedDataForCustomGraphSeries:v16 timeScope:a5 resolution:a6 startDate:v17 endDate:v18 completion:v22];
+  [v20 cachedDataForCustomGraphSeries:v16 timeScope:scope resolution:resolution startDate:startDate endDate:endDate completion:v22];
 
   objc_destroyWeak(v27);
   objc_destroyWeak(&location);
@@ -109,34 +109,34 @@ LABEL_6:
 
 - (id)stackedSampleTypeForDateRangeUpdates
 {
-  v2 = [(HKBloodPressureCategoryFactorContext *)self stackedDisplayType];
-  v3 = [v2 sampleType];
+  stackedDisplayType = [(HKBloodPressureCategoryFactorContext *)self stackedDisplayType];
+  sampleType = [stackedDisplayType sampleType];
 
-  return v3;
+  return sampleType;
 }
 
-- (id)highlightedBloodPressureCoordinateWithCoordinate:(id)a3 originalCoordinate:(id)a4
+- (id)highlightedBloodPressureCoordinateWithCoordinate:(id)coordinate originalCoordinate:(id)originalCoordinate
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
+  coordinateCopy = coordinate;
+  originalCoordinateCopy = originalCoordinate;
+  userInfo = [coordinateCopy userInfo];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(HKBloodPressureCategoryContext *)self dateCoordinateTransform];
-    v11 = [v7 systolicCoordinate];
-    [v11 endXValue];
-    v12 = [v10 valueForCoordinate:?];
+    dateCoordinateTransform = [(HKBloodPressureCategoryContext *)self dateCoordinateTransform];
+    systolicCoordinate = [originalCoordinateCopy systolicCoordinate];
+    [systolicCoordinate endXValue];
+    v12 = [dateCoordinateTransform valueForCoordinate:?];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = [(HKBloodPressureCategoryFactorContext *)self lastFactorDateIntervals];
-    v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    lastFactorDateIntervals = [(HKBloodPressureCategoryFactorContext *)self lastFactorDateIntervals];
+    v14 = [lastFactorDateIntervals countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v14)
     {
       v15 = v14;
@@ -147,7 +147,7 @@ LABEL_6:
         {
           if (*v22 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(lastFactorDateIntervals);
           }
 
           if (![*(*(&v21 + 1) + 8 * i) containsDate:v12])
@@ -158,7 +158,7 @@ LABEL_6:
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v15 = [lastFactorDateIntervals countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v15)
         {
           continue;
@@ -171,7 +171,7 @@ LABEL_6:
 
   v20.receiver = self;
   v20.super_class = HKBloodPressureCategoryFactorContext;
-  v18 = [(HKBloodPressureCategoryContext *)&v20 highlightedBloodPressureCoordinateWithCoordinate:v6 originalCoordinate:v7];
+  v18 = [(HKBloodPressureCategoryContext *)&v20 highlightedBloodPressureCoordinateWithCoordinate:coordinateCopy originalCoordinate:originalCoordinateCopy];
 LABEL_13:
 
   return v18;

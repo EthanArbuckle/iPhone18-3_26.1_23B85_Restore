@@ -1,54 +1,54 @@
 @interface _TVAppNavigationController
 - (BOOL)_hasBeenCleared;
-- (BOOL)_shouldIgnoreModalDismissal:(id)a3;
-- (BOOL)_shouldOverrideModalBehaviorForPlaybackDocument:(id)a3 andExistingPlaybackDocument:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)_shouldIgnoreModalDismissal:(id)dismissal;
+- (BOOL)_shouldOverrideModalBehaviorForPlaybackDocument:(id)document andExistingPlaybackDocument:(id)playbackDocument;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (TVApplicationController)appController;
 - (UIViewController)currentViewController;
-- (_TVAppNavigationController)initWithApplicationController:(id)a3;
-- (_TVAppNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TVAppNavigationController)initWithRootViewController:(id)a3;
+- (_TVAppNavigationController)initWithApplicationController:(id)controller;
+- (_TVAppNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TVAppNavigationController)initWithRootViewController:(id)controller;
 - (_TVAppNavigationControllerDelegate)appNavigationControllerDelegate;
 - (id)activeDocument;
 - (id)documents;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
-- (id)popToRootDocument:(BOOL)a3;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
-- (void)_doWillLoadAppDocumentWithController:(id)a3;
-- (void)_handleMenuAction:(id)a3;
-- (void)_presentModalDocumentController:(id)a3 options:(id)a4;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
+- (id)popToRootDocument:(BOOL)document;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
+- (void)_doWillLoadAppDocumentWithController:(id)controller;
+- (void)_handleMenuAction:(id)action;
+- (void)_presentModalDocumentController:(id)controller options:(id)options;
 - (void)clear;
 - (void)dealloc;
-- (void)dismissAllModals:(id)a3;
-- (void)dismissModal:(BOOL)a3;
+- (void)dismissAllModals:(id)modals;
+- (void)dismissModal:(BOOL)modal;
 - (void)dismissed;
-- (void)insertDocument:(id)a3 beforeDocument:(id)a4 options:(id)a5;
+- (void)insertDocument:(id)document beforeDocument:(id)beforeDocument options:(id)options;
 - (void)loadView;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)popDocument;
-- (void)popToDocument:(id)a3;
-- (void)presentModal:(id)a3 options:(id)a4;
-- (void)pushDocument:(id)a3 options:(id)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)removeDocument:(id)a3;
-- (void)replaceDocument:(id)a3 withDocument:(id)a4 options:(id)a5;
-- (void)setAppNavigationControllerDelegate:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDocuments:(id)a3 options:(id)a4;
-- (void)setMaxNavControllerStackDepth:(unint64_t)a3;
-- (void)setTitle:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)popToDocument:(id)document;
+- (void)presentModal:(id)modal options:(id)options;
+- (void)pushDocument:(id)document options:(id)options;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)removeDocument:(id)document;
+- (void)replaceDocument:(id)document withDocument:(id)withDocument options:(id)options;
+- (void)setAppNavigationControllerDelegate:(id)delegate;
+- (void)setDelegate:(id)delegate;
+- (void)setDocuments:(id)documents options:(id)options;
+- (void)setMaxNavControllerStackDepth:(unint64_t)depth;
+- (void)setTitle:(id)title;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation _TVAppNavigationController
 
-- (_TVAppNavigationController)initWithRootViewController:(id)a3
+- (_TVAppNavigationController)initWithRootViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = _TVAppNavigationController;
-  v3 = [(_TVAppNavigationController *)&v7 initWithRootViewController:a3];
+  v3 = [(_TVAppNavigationController *)&v7 initWithRootViewController:controller];
   v4 = v3;
   if (v3)
   {
@@ -61,21 +61,21 @@
   return v4;
 }
 
-- (_TVAppNavigationController)initWithApplicationController:(id)a3
+- (_TVAppNavigationController)initWithApplicationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(_TVAppNavigationController *)self initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_appController, v4);
+    objc_storeWeak(&v5->_appController, controllerCopy);
     v6->_maxNavControllerStackDepth = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v6;
 }
 
-- (_TVAppNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TVAppNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = _TVAppNavigationController;
@@ -92,9 +92,9 @@
   return v5;
 }
 
-- (void)setMaxNavControllerStackDepth:(unint64_t)a3
+- (void)setMaxNavControllerStackDepth:(unint64_t)depth
 {
-  if (a3 < 3)
+  if (depth < 3)
   {
     v3 = TVMLKitLogObject;
     if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEBUG))
@@ -105,41 +105,41 @@
 
   else
   {
-    self->_maxNavControllerStackDepth = a3;
+    self->_maxNavControllerStackDepth = depth;
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = _TVAppNavigationController;
-  [(_TVAppNavigationController *)&v6 viewWillAppear:a3];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  [(_TVAppNavigationController *)&v6 viewWillAppear:appear];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5 == 2)
+  if (userInterfaceIdiom == 2)
   {
     [(_TVAppNavigationController *)self setNavigationBarHidden:1];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = _TVAppNavigationController;
-  [(_TVAppNavigationController *)&v5 viewWillDisappear:a3];
+  [(_TVAppNavigationController *)&v5 viewWillDisappear:disappear];
   if ((*&self->_ancDelegateFlags & 0x10) != 0)
   {
-    v4 = [(_TVAppNavigationController *)self appNavigationControllerDelegate];
-    [v4 appNavigationControllerWillDisappear:self];
+    appNavigationControllerDelegate = [(_TVAppNavigationController *)self appNavigationControllerDelegate];
+    [appNavigationControllerDelegate appNavigationControllerWillDisappear:self];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v4.receiver = self;
   v4.super_class = _TVAppNavigationController;
-  [(_TVAppNavigationController *)&v4 setDelegate:a3];
+  [(_TVAppNavigationController *)&v4 setDelegate:delegate];
   v3 = TVMLKitLogObject;
   if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_ERROR))
   {
@@ -147,44 +147,44 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(_TVAppNavigationController *)self title];
-  if (v5)
+  titleCopy = title;
+  title = [(_TVAppNavigationController *)self title];
+  if (title)
   {
   }
 
   else
   {
-    v6 = [(_TVAppNavigationController *)self title];
+    title2 = [(_TVAppNavigationController *)self title];
 
-    if (v6 != v4)
+    if (title2 != titleCopy)
     {
       v7.receiver = self;
       v7.super_class = _TVAppNavigationController;
-      [(_TVAppNavigationController *)&v7 setTitle:v4];
+      [(_TVAppNavigationController *)&v7 setTitle:titleCopy];
     }
   }
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [v8 customAnimatorForNavigationControllerOperation:a4 toViewController:v9];
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
+  v10 = [viewControllerCopy customAnimatorForNavigationControllerOperation:operation toViewController:toViewControllerCopy];
   if (!v10)
   {
-    v10 = [v9 customAnimatorForNavigationControllerOperation:a4 fromViewController:v8];
+    v10 = [toViewControllerCopy customAnimatorForNavigationControllerOperation:operation fromViewController:viewControllerCopy];
   }
 
   return v10;
 }
 
-- (void)setAppNavigationControllerDelegate:(id)a3
+- (void)setAppNavigationControllerDelegate:(id)delegate
 {
-  v14 = a3;
-  v4 = objc_storeWeak(&self->_appNavigationControllerDelegate, v14);
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_appNavigationControllerDelegate, delegateCopy);
   v5 = objc_opt_respondsToSelector();
 
   *&self->_ancDelegateFlags = *&self->_ancDelegateFlags & 0xFE | v5 & 1;
@@ -241,11 +241,11 @@
   *&self->_ancDelegateFlags = *&self->_ancDelegateFlags & 0xEF | v13;
 }
 
-- (void)_handleMenuAction:(id)a3
+- (void)_handleMenuAction:(id)action
 {
-  v4 = [(_TVAppNavigationController *)self presentingViewController];
+  presentingViewController = [(_TVAppNavigationController *)self presentingViewController];
 
-  if (!v4)
+  if (!presentingViewController)
   {
 
     [(_TVAppNavigationController *)self popDocument];
@@ -257,27 +257,27 @@
   v7.receiver = self;
   v7.super_class = _TVAppNavigationController;
   [(_TVAppNavigationController *)&v7 loadView];
-  v3 = [(_TVAppNavigationController *)self view];
+  view = [(_TVAppNavigationController *)self view];
   v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleMenuAction_];
   menuRecognizer = self->_menuRecognizer;
   self->_menuRecognizer = v4;
 
   [(UITapGestureRecognizer *)self->_menuRecognizer setAllowedPressTypes:&unk_287E487E0];
   [(UITapGestureRecognizer *)self->_menuRecognizer setDelegate:self];
-  [v3 addGestureRecognizer:self->_menuRecognizer];
-  v6 = [(_TVAppNavigationController *)self navigationBar];
-  [v6 _setHidesShadow:1];
+  [view addGestureRecognizer:self->_menuRecognizer];
+  navigationBar = [(_TVAppNavigationController *)self navigationBar];
+  [navigationBar _setHidesShadow:1];
 }
 
 - (void)dealloc
 {
-  v3 = [(_TVAppNavigationController *)self modalPresenterObserverToken];
+  modalPresenterObserverToken = [(_TVAppNavigationController *)self modalPresenterObserverToken];
 
-  if (v3)
+  if (modalPresenterObserverToken)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    v5 = [(_TVAppNavigationController *)self modalPresenterObserverToken];
-    [v4 removeObserver:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    modalPresenterObserverToken2 = [(_TVAppNavigationController *)self modalPresenterObserverToken];
+    [defaultCenter removeObserver:modalPresenterObserverToken2];
   }
 
   v6.receiver = self;
@@ -285,23 +285,23 @@
   [(_TVAppNavigationController *)&v6 dealloc];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_menuRecognizer != a3)
+  if (self->_menuRecognizer != begin)
   {
     return 1;
   }
 
-  v5 = [(_TVAppNavigationController *)self documents];
-  if ([v5 count] > 1)
+  documents = [(_TVAppNavigationController *)self documents];
+  if ([documents count] > 1)
   {
     v3 = 1;
   }
 
   else
   {
-    v6 = [(_TVAppNavigationController *)self viewControllers];
-    v3 = [v6 count] > 1;
+    viewControllers = [(_TVAppNavigationController *)self viewControllers];
+    v3 = [viewControllers count] > 1;
   }
 
   return v3;
@@ -309,20 +309,20 @@
 
 - (UIViewController)currentViewController
 {
-  v3 = [(_TVAppNavigationController *)self presentedModalViewController];
-  v4 = v3;
-  if (v3)
+  presentedModalViewController = [(_TVAppNavigationController *)self presentedModalViewController];
+  v4 = presentedModalViewController;
+  if (presentedModalViewController)
   {
-    v5 = v3;
+    lastObject = presentedModalViewController;
   }
 
   else
   {
-    v6 = [(_TVAppNavigationController *)self viewControllers];
-    v5 = [v6 lastObject];
+    viewControllers = [(_TVAppNavigationController *)self viewControllers];
+    lastObject = [viewControllers lastObject];
   }
 
-  return v5;
+  return lastObject;
 }
 
 - (void)clear
@@ -334,20 +334,20 @@
   [(_TVAppNavigationController *)self setViewControllers:v4 animated:1];
 }
 
-- (void)setDocuments:(id)a3 options:(id)a4
+- (void)setDocuments:(id)documents options:(id)options
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 objectForKey:@"animated"];
+  documentsCopy = documents;
+  v7 = [options objectForKey:@"animated"];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v9 = 1;
+    bOOLValue = 1;
   }
 
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -355,7 +355,7 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v6;
+  v11 = documentsCopy;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
@@ -383,19 +383,19 @@
     while (v13);
   }
 
-  [(_TVAppNavigationController *)self setViewControllers:v10 animated:v9];
+  [(_TVAppNavigationController *)self setViewControllers:v10 animated:bOOLValue];
 }
 
 - (id)documents
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [(_TVAppNavigationController *)self viewControllers];
-  v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v2, "count")}];
+  viewControllers = [(_TVAppNavigationController *)self viewControllers];
+  v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(viewControllers, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = v2;
+  v4 = viewControllers;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v5)
   {
@@ -414,12 +414,12 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector())
         {
-          v10 = [v9 appDocument];
+          appDocument = [v9 appDocument];
 
-          if (v10)
+          if (appDocument)
           {
-            v11 = [v9 appDocument];
-            [v3 addObject:v11];
+            appDocument2 = [v9 appDocument];
+            [v3 addObject:appDocument2];
           }
         }
       }
@@ -443,122 +443,122 @@
   return v13;
 }
 
-- (void)insertDocument:(id)a3 beforeDocument:(id)a4 options:(id)a5
+- (void)insertDocument:(id)document beforeDocument:(id)beforeDocument options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_TVAppNavigationController *)self viewControllers];
-  v12 = [v11 copy];
+  documentCopy = document;
+  beforeDocumentCopy = beforeDocument;
+  optionsCopy = options;
+  viewControllers = [(_TVAppNavigationController *)self viewControllers];
+  v12 = [viewControllers copy];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __68___TVAppNavigationController_insertDocument_beforeDocument_options___block_invoke;
   v16[3] = &unk_279D6EB30;
-  v17 = v9;
-  v18 = self;
-  v19 = v8;
-  v20 = v10;
-  v13 = v10;
-  v14 = v8;
-  v15 = v9;
+  v17 = beforeDocumentCopy;
+  selfCopy = self;
+  v19 = documentCopy;
+  v20 = optionsCopy;
+  v13 = optionsCopy;
+  v14 = documentCopy;
+  v15 = beforeDocumentCopy;
   [v12 enumerateObjectsUsingBlock:v16];
 }
 
-- (void)pushDocument:(id)a3 options:(id)a4
+- (void)pushDocument:(id)document options:(id)options
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  documentCopy = document;
+  optionsCopy = options;
   v8 = TVMLKitLogObject;
   if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412546;
-    v19 = v6;
+    v19 = documentCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = optionsCopy;
     _os_log_impl(&dword_26CD9A000, v8, OS_LOG_TYPE_DEFAULT, "Nav controller pushing app document: %@, options: %@", &v18, 0x16u);
   }
 
-  v9 = [[_TVAppDocumentRequestController alloc] initWithAppDocument:v6];
+  v9 = [[_TVAppDocumentRequestController alloc] initWithAppDocument:documentCopy];
   [(_TVAppDocumentController *)v9 setPresentedModal:0];
-  v10 = [v7 objectForKey:*MEMORY[0x277D1AF68]];
-  v11 = [v10 BOOLValue];
+  v10 = [optionsCopy objectForKey:*MEMORY[0x277D1AF68]];
+  bOOLValue = [v10 BOOLValue];
 
-  [(_TVAppDocumentController *)v9 setAdoptsContext:v11];
+  [(_TVAppDocumentController *)v9 setAdoptsContext:bOOLValue];
   [(_TVAppNavigationController *)self _doWillLoadAppDocumentWithController:v9];
   v12 = +[TVStorePlaybackLaunchShroud sharedShroud];
-  v13 = [v12 isHidden];
+  isHidden = [v12 isHidden];
 
-  v14 = [(_TVAppNavigationController *)self viewControllers];
-  if ([v14 count])
+  viewControllers = [(_TVAppNavigationController *)self viewControllers];
+  if ([viewControllers count])
   {
-    v15 = [v7 objectForKey:@"hidesBottomBarWhenPushed"];
-    v16 = [v15 BOOLValue];
+    v15 = [optionsCopy objectForKey:@"hidesBottomBarWhenPushed"];
+    bOOLValue2 = [v15 BOOLValue];
   }
 
   else
   {
-    v16 = 0;
+    bOOLValue2 = 0;
   }
 
-  [(_TVAppDocumentRequestController *)v9 setHidesBottomBarWhenPushed:v16];
-  v17 = [(_TVAppNavigationController *)self viewControllers];
-  -[_TVAppNavigationController pushViewController:animated:](self, "pushViewController:animated:", v9, ([v17 count] | v13) != 0);
+  [(_TVAppDocumentRequestController *)v9 setHidesBottomBarWhenPushed:bOOLValue2];
+  viewControllers2 = [(_TVAppNavigationController *)self viewControllers];
+  -[_TVAppNavigationController pushViewController:animated:](self, "pushViewController:animated:", v9, ([viewControllers2 count] | isHidden) != 0);
 }
 
-- (void)presentModal:(id)a3 options:(id)a4
+- (void)presentModal:(id)modal options:(id)options
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(_TVAppNavigationController *)self presentedModalViewController];
+  modalCopy = modal;
+  optionsCopy = options;
+  presentedModalViewController = [(_TVAppNavigationController *)self presentedModalViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 appDocument];
+    appDocument = [presentedModalViewController appDocument];
   }
 
   else
   {
-    v8 = 0;
+    appDocument = 0;
   }
 
-  if (![(_TVAppNavigationController *)self _shouldOverrideModalBehaviorForPlaybackDocument:v12 andExistingPlaybackDocument:v8])
+  if (![(_TVAppNavigationController *)self _shouldOverrideModalBehaviorForPlaybackDocument:modalCopy andExistingPlaybackDocument:appDocument])
   {
-    v9 = [[_TVAppDocumentRequestController alloc] initWithAppDocument:v12];
-    v10 = [v6 objectForKey:*MEMORY[0x277D1AF68]];
-    v11 = [v10 BOOLValue];
+    v9 = [[_TVAppDocumentRequestController alloc] initWithAppDocument:modalCopy];
+    v10 = [optionsCopy objectForKey:*MEMORY[0x277D1AF68]];
+    bOOLValue = [v10 BOOLValue];
 
-    [(_TVAppDocumentController *)v9 setAdoptsContext:v11];
-    [(_TVAppNavigationController *)self _presentModalDocumentController:v9 options:v6];
+    [(_TVAppDocumentController *)v9 setAdoptsContext:bOOLValue];
+    [(_TVAppNavigationController *)self _presentModalDocumentController:v9 options:optionsCopy];
   }
 }
 
-- (void)_presentModalDocumentController:(id)a3 options:(id)a4
+- (void)_presentModalDocumentController:(id)controller options:(id)options
 {
-  v6 = a3;
-  v37 = a4;
+  controllerCopy = controller;
+  optionsCopy = options;
   objc_initWeak(location, self);
-  [v6 setPresentedModal:1];
-  v7 = [(_TVAppNavigationController *)self modalPresenterObserverToken];
+  [controllerCopy setPresentedModal:1];
+  modalPresenterObserverToken = [(_TVAppNavigationController *)self modalPresenterObserverToken];
 
-  if (!v7)
+  if (!modalPresenterObserverToken)
   {
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    v9 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __70___TVAppNavigationController__presentModalDocumentController_options___block_invoke;
     v47[3] = &unk_279D6F3D8;
     objc_copyWeak(&v48, location);
-    v10 = [v8 addObserverForName:@"TVModalPresenterDismissedNotification" object:0 queue:v9 usingBlock:v47];
+    v10 = [defaultCenter addObserverForName:@"TVModalPresenterDismissedNotification" object:0 queue:mainQueue usingBlock:v47];
 
     [(_TVAppNavigationController *)self setModalPresenterObserverToken:v10];
     objc_destroyWeak(&v48);
   }
 
-  v11 = [(_TVAppNavigationController *)self presentedModalViewController];
-  v12 = [[TVModalPresenterConfiguration alloc] initWithDictionary:v37];
-  [(_TVAppNavigationController *)self _doWillLoadAppDocumentWithController:v6];
+  presentedModalViewController = [(_TVAppNavigationController *)self presentedModalViewController];
+  v12 = [[TVModalPresenterConfiguration alloc] initWithDictionary:optionsCopy];
+  [(_TVAppNavigationController *)self _doWillLoadAppDocumentWithController:controllerCopy];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __70___TVAppNavigationController__presentModalDocumentController_options___block_invoke_2;
@@ -567,18 +567,18 @@
   objc_copyWeak(&v46, location);
   v33 = v12;
   v43 = v33;
-  v34 = v11;
+  v34 = presentedModalViewController;
   v44 = v34;
-  v35 = v6;
+  v35 = controllerCopy;
   v45 = v35;
   v36 = MEMORY[0x26D6AFBB0](v42);
-  v13 = [(_TVAppNavigationController *)self presentedViewController];
-  if (v13)
+  presentedViewController = [(_TVAppNavigationController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v14 = [(_TVAppNavigationController *)self presentedViewController];
+    presentedViewController2 = [(_TVAppNavigationController *)self presentedViewController];
     v15 = +[_TVModalPresenter presenter];
-    v16 = [v15 modalRootViewController];
-    v17 = [v14 isEqual:v16];
+    modalRootViewController = [v15 modalRootViewController];
+    v17 = [presentedViewController2 isEqual:modalRootViewController];
 
     if ((v17 & 1) == 0)
     {
@@ -596,14 +596,14 @@ LABEL_19:
   }
 
   v32 = +[_TVModalPresenter presenter];
-  v18 = [v32 modalRootViewController];
-  v19 = [v18 presentingViewController];
-  if (v19)
+  modalRootViewController2 = [v32 modalRootViewController];
+  presentingViewController = [modalRootViewController2 presentingViewController];
+  if (presentingViewController)
   {
-    v31 = [(_TVAppNavigationController *)self presentedViewController];
+    presentedViewController3 = [(_TVAppNavigationController *)self presentedViewController];
     v30 = +[_TVModalPresenter presenter];
-    v13 = [v30 modalRootViewController];
-    if (![v31 isEqual:v13])
+    presentedViewController = [v30 modalRootViewController];
+    if (![presentedViewController3 isEqual:presentedViewController])
     {
 
 LABEL_18:
@@ -621,9 +621,9 @@ LABEL_18:
   }
 
   v21 = +[_TVModalPresenter presenter];
-  v22 = [v21 modalRootViewController];
-  v23 = [v22 viewControllers];
-  if ([v23 count] < 2)
+  modalRootViewController3 = [v21 modalRootViewController];
+  viewControllers = [modalRootViewController3 viewControllers];
+  if ([viewControllers count] < 2)
   {
     v27 = 0;
   }
@@ -631,12 +631,12 @@ LABEL_18:
   else
   {
     v24 = +[_TVModalPresenter presenter];
-    v25 = [v24 modalRootViewController];
-    v26 = [v25 visibleViewController];
-    v27 = v26 != v34 && [(TVModalPresenterConfiguration *)v33 navigationBarHidden];
+    modalRootViewController4 = [v24 modalRootViewController];
+    visibleViewController = [modalRootViewController4 visibleViewController];
+    v27 = visibleViewController != v34 && [(TVModalPresenterConfiguration *)v33 navigationBarHidden];
   }
 
-  if (v19)
+  if (presentingViewController)
   {
   }
 
@@ -645,9 +645,9 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v29 = [v35 parentViewController];
+  parentViewController = [v35 parentViewController];
 
-  if (!v29)
+  if (!parentViewController)
   {
     v36[2]();
   }
@@ -660,8 +660,8 @@ LABEL_20:
 
 - (void)dismissed
 {
-  v3 = [(_TVAppNavigationController *)self presentedModalViewController];
-  v4 = [(_TVAppNavigationController *)self _shouldIgnoreModalDismissal:v3];
+  presentedModalViewController = [(_TVAppNavigationController *)self presentedModalViewController];
+  v4 = [(_TVAppNavigationController *)self _shouldIgnoreModalDismissal:presentedModalViewController];
 
   if (!v4)
   {
@@ -670,48 +670,48 @@ LABEL_20:
   }
 }
 
-- (void)dismissModal:(BOOL)a3
+- (void)dismissModal:(BOOL)modal
 {
-  v3 = a3;
-  v5 = [(_TVAppNavigationController *)self presentedModalViewController];
-  v6 = [(_TVAppNavigationController *)self _shouldIgnoreModalDismissal:v5];
+  modalCopy = modal;
+  presentedModalViewController = [(_TVAppNavigationController *)self presentedModalViewController];
+  v6 = [(_TVAppNavigationController *)self _shouldIgnoreModalDismissal:presentedModalViewController];
 
   if (!v6)
   {
-    v7 = [(_TVAppNavigationController *)self presentedModalViewController];
+    presentedModalViewController2 = [(_TVAppNavigationController *)self presentedModalViewController];
 
-    if (v7)
+    if (presentedModalViewController2)
     {
       v8 = +[_TVModalPresenter presenter];
-      v9 = [(_TVAppNavigationController *)self presentedModalViewController];
-      [v8 hideController:v9 animated:v3 withCompletion:0];
+      presentedModalViewController3 = [(_TVAppNavigationController *)self presentedModalViewController];
+      [v8 hideController:presentedModalViewController3 animated:modalCopy withCompletion:0];
 
       [(_TVAppNavigationController *)self setPresentedModalViewController:0];
     }
   }
 }
 
-- (void)dismissAllModals:(id)a3
+- (void)dismissAllModals:(id)modals
 {
-  v4 = a3;
-  v5 = [(_TVAppNavigationController *)self presentedViewController];
-  if (v5 && (v6 = v5, -[_TVAppNavigationController presentedViewController](self, "presentedViewController"), v7 = objc_claimAutoreleasedReturnValue(), +[_TVModalPresenter presenter](_TVModalPresenter, "presenter"), v8 = objc_claimAutoreleasedReturnValue(), [v8 modalRootViewController], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v7, "isEqual:", v9), v9, v8, v7, v6, (v10 & 1) == 0))
+  modalsCopy = modals;
+  presentedViewController = [(_TVAppNavigationController *)self presentedViewController];
+  if (presentedViewController && (v6 = presentedViewController, -[_TVAppNavigationController presentedViewController](self, "presentedViewController"), v7 = objc_claimAutoreleasedReturnValue(), +[_TVModalPresenter presenter](_TVModalPresenter, "presenter"), v8 = objc_claimAutoreleasedReturnValue(), [v8 modalRootViewController], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v7, "isEqual:", v9), v9, v8, v7, v6, (v10 & 1) == 0))
   {
-    v16 = [(_TVAppNavigationController *)self presentedViewController];
+    presentedViewController2 = [(_TVAppNavigationController *)self presentedViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v18 = [(_TVAppNavigationController *)self presentedViewController];
-      v19 = [v18 popToRootViewControllerAnimated:0];
+      presentedViewController3 = [(_TVAppNavigationController *)self presentedViewController];
+      v19 = [presentedViewController3 popToRootViewControllerAnimated:0];
     }
 
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __47___TVAppNavigationController_dismissAllModals___block_invoke;
     v27[3] = &unk_279D6E6F8;
-    v28 = v4;
+    v28 = modalsCopy;
     [(_TVAppNavigationController *)self dismissViewControllerAnimated:0 completion:v27];
     v15 = v28;
   }
@@ -719,17 +719,17 @@ LABEL_20:
   else
   {
     v11 = +[_TVModalPresenter presenter];
-    v12 = [v11 modalRootViewController];
-    v13 = [v12 presentingViewController];
+    modalRootViewController = [v11 modalRootViewController];
+    presentingViewController = [modalRootViewController presentingViewController];
 
-    if (v13)
+    if (presentingViewController)
     {
       v14 = +[_TVModalPresenter presenter];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __47___TVAppNavigationController_dismissAllModals___block_invoke_2;
       v25[3] = &unk_279D6E6F8;
-      v26 = v4;
+      v26 = modalsCopy;
       [v14 hideAllAnimated:0 withCompletion:v25];
 
       v15 = v26;
@@ -737,22 +737,22 @@ LABEL_20:
 
     else
     {
-      v20 = [(_TVAppNavigationController *)self presentedModalViewController];
+      presentedModalViewController = [(_TVAppNavigationController *)self presentedModalViewController];
 
-      if (!v20)
+      if (!presentedModalViewController)
       {
-        v4[2](v4);
+        modalsCopy[2](modalsCopy);
         goto LABEL_11;
       }
 
       v21 = +[_TVModalPresenter presenter];
-      v22 = [(_TVAppNavigationController *)self presentedModalViewController];
+      presentedModalViewController2 = [(_TVAppNavigationController *)self presentedModalViewController];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __47___TVAppNavigationController_dismissAllModals___block_invoke_3;
       v23[3] = &unk_279D6E6F8;
-      v24 = v4;
-      [v21 hideController:v22 animated:0 withCompletion:v23];
+      v24 = modalsCopy;
+      [v21 hideController:presentedModalViewController2 animated:0 withCompletion:v23];
 
       [(_TVAppNavigationController *)self setPresentedModalViewController:0];
       v15 = v24;
@@ -762,32 +762,32 @@ LABEL_20:
 LABEL_11:
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  controllerCopy = controller;
   if ([(_TVAppNavigationController *)self _hasBeenCleared])
   {
-    v15[0] = v6;
-    v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-    [(_TVAppNavigationController *)self setViewControllers:v7 animated:v4];
+    v15[0] = controllerCopy;
+    viewControllers = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
+    [(_TVAppNavigationController *)self setViewControllers:viewControllers animated:animatedCopy];
   }
 
   else
   {
-    v7 = [(_TVAppNavigationController *)self viewControllers];
-    v8 = [v7 count];
-    if (v7)
+    viewControllers = [(_TVAppNavigationController *)self viewControllers];
+    v8 = [viewControllers count];
+    if (viewControllers)
     {
       v9 = v8;
       if (v8 >= 4 && v8 >= self->_maxNavControllerStackDepth)
       {
         v10 = objc_alloc(MEMORY[0x277CBEB18]);
-        v11 = [v7 firstObject];
-        v12 = [v10 initWithObjects:{v11, 0}];
+        firstObject = [viewControllers firstObject];
+        v12 = [v10 initWithObjects:{firstObject, 0}];
 
-        v13 = [v7 subarrayWithRange:{2, v9 - 2}];
+        v13 = [viewControllers subarrayWithRange:{2, v9 - 2}];
         [v12 addObjectsFromArray:v13];
 
         [(_TVAppNavigationController *)self setViewControllers:v12];
@@ -796,7 +796,7 @@ LABEL_11:
 
     v14.receiver = self;
     v14.super_class = _TVAppNavigationController;
-    [(_TVAppNavigationController *)&v14 pushViewController:v6 animated:v4];
+    [(_TVAppNavigationController *)&v14 pushViewController:controllerCopy animated:animatedCopy];
   }
 }
 
@@ -804,11 +804,11 @@ LABEL_11:
 {
   v23 = *MEMORY[0x277D85DE8];
   memset(v19, 0, sizeof(v19));
-  v3 = [(_TVAppNavigationController *)self viewControllers];
-  v4 = [v3 copy];
-  v5 = [v4 reverseObjectEnumerator];
+  viewControllers = [(_TVAppNavigationController *)self viewControllers];
+  v4 = [viewControllers copy];
+  reverseObjectEnumerator = [v4 reverseObjectEnumerator];
 
-  if ([v5 countByEnumeratingWithState:v19 objects:v22 count:16])
+  if ([reverseObjectEnumerator countByEnumeratingWithState:v19 objects:v22 count:16])
   {
     v6 = **(&v19[0] + 1);
     if (objc_opt_respondsToSelector())
@@ -817,41 +817,41 @@ LABEL_11:
       if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v8 = v7;
-        v9 = [v6 appDocument];
+        appDocument = [v6 appDocument];
         *buf = 138412290;
-        v21 = v9;
+        v21 = appDocument;
         _os_log_impl(&dword_26CD9A000, v8, OS_LOG_TYPE_DEFAULT, "Nav controller popping top app document: %@", buf, 0xCu);
       }
     }
 
-    v10 = [(_TVAppNavigationController *)self viewControllers];
-    if ([v10 count] == 1 && (-[_TVAppNavigationController presentingViewController](self, "presentingViewController"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+    viewControllers2 = [(_TVAppNavigationController *)self viewControllers];
+    if ([viewControllers2 count] == 1 && (-[_TVAppNavigationController presentingViewController](self, "presentingViewController"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
     {
-      v12 = [(_TVAppNavigationController *)self presentingViewController];
-      [v12 dismissViewControllerAnimated:1 completion:0];
+      presentingViewController = [(_TVAppNavigationController *)self presentingViewController];
+      [presentingViewController dismissViewControllerAnimated:1 completion:0];
     }
 
     else
     {
-      v13 = [v10 lastObject];
+      lastObject = [viewControllers2 lastObject];
 
-      if (v13 == v6)
+      if (lastObject == v6)
       {
         v17 = [(_TVAppNavigationController *)self popViewControllerAnimated:1];
       }
 
       else
       {
-        v14 = [v10 firstObject];
+        firstObject = [viewControllers2 firstObject];
 
-        if (v14 == v6)
+        if (firstObject == v6)
         {
           v18 = [(_TVAppNavigationController *)self popToRootViewControllerAnimated:1];
         }
 
         else
         {
-          v15 = [v10 objectAtIndex:{objc_msgSend(v10, "indexOfObjectIdenticalTo:", v6) - 1}];
+          v15 = [viewControllers2 objectAtIndex:{objc_msgSend(viewControllers2, "indexOfObjectIdenticalTo:", v6) - 1}];
           v16 = [(_TVAppNavigationController *)self popToViewController:v15 animated:1];
         }
       }
@@ -859,15 +859,15 @@ LABEL_11:
   }
 }
 
-- (void)popToDocument:(id)a3
+- (void)popToDocument:(id)document
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  documentCopy = document;
   v5 = TVMLKitLogObject;
   if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = documentCopy;
     _os_log_impl(&dword_26CD9A000, v5, OS_LOG_TYPE_DEFAULT, "Nav controller popping to app document: %@", buf, 0xCu);
   }
 
@@ -875,8 +875,8 @@ LABEL_11:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(_TVAppNavigationController *)self viewControllers];
-  v7 = [v6 copy];
+  viewControllers = [(_TVAppNavigationController *)self viewControllers];
+  v7 = [viewControllers copy];
 
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
@@ -896,8 +896,8 @@ LABEL_11:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 appDocument];
-          v14 = [v13 isEqual:v4];
+          appDocument = [v12 appDocument];
+          v14 = [appDocument isEqual:documentCopy];
 
           if (v14)
           {
@@ -920,9 +920,9 @@ LABEL_11:
 LABEL_14:
 }
 
-- (id)popToRootDocument:(BOOL)a3
+- (id)popToRootDocument:(BOOL)document
 {
-  v3 = a3;
+  documentCopy = document;
   v22 = *MEMORY[0x277D85DE8];
   v5 = TVMLKitLogObject;
   if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEFAULT))
@@ -935,8 +935,8 @@ LABEL_14:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(_TVAppNavigationController *)self viewControllers];
-  v7 = [v6 copy];
+  viewControllers = [(_TVAppNavigationController *)self viewControllers];
+  v7 = [viewControllers copy];
 
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v8)
@@ -956,11 +956,11 @@ LABEL_14:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 appDocument];
+          appDocument = [v12 appDocument];
 
-          if (v13)
+          if (appDocument)
           {
-            v14 = [(_TVAppNavigationController *)self popToViewController:v12 animated:v3];
+            v14 = [(_TVAppNavigationController *)self popToViewController:v12 animated:documentCopy];
             goto LABEL_14;
           }
         }
@@ -982,16 +982,16 @@ LABEL_14:
   return v14;
 }
 
-- (void)removeDocument:(id)a3
+- (void)removeDocument:(id)document
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  documentCopy = document;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(_TVAppNavigationController *)self viewControllers];
-  v6 = [v5 copy];
+  viewControllers = [(_TVAppNavigationController *)self viewControllers];
+  v6 = [viewControllers copy];
 
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
@@ -1011,13 +1011,13 @@ LABEL_14:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 appDocument];
-          v13 = [v12 isEqual:v4];
+          appDocument = [v11 appDocument];
+          v13 = [appDocument isEqual:documentCopy];
 
           if (v13)
           {
-            v14 = [(_TVAppNavigationController *)self viewControllers];
-            v15 = [v14 mutableCopy];
+            viewControllers2 = [(_TVAppNavigationController *)self viewControllers];
+            v15 = [viewControllers2 mutableCopy];
 
             [v15 removeObject:v11];
             [(_TVAppNavigationController *)self setViewControllers:v15 animated:1];
@@ -1040,53 +1040,53 @@ LABEL_14:
 LABEL_12:
 }
 
-- (void)replaceDocument:(id)a3 withDocument:(id)a4 options:(id)a5
+- (void)replaceDocument:(id)document withDocument:(id)withDocument options:(id)options
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  documentCopy = document;
+  withDocumentCopy = withDocument;
+  optionsCopy = options;
   v11 = TVMLKitLogObject;
   if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v25 = v8;
+    v25 = documentCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = withDocumentCopy;
     _os_log_impl(&dword_26CD9A000, v11, OS_LOG_TYPE_DEFAULT, "Nav controller replacing document %@ with document %@.", buf, 0x16u);
   }
 
-  v12 = [v8 tv_isPresentedModal];
-  v13 = [(_TVAppNavigationController *)self viewControllers];
-  v14 = [v13 copy];
+  tv_isPresentedModal = [documentCopy tv_isPresentedModal];
+  viewControllers = [(_TVAppNavigationController *)self viewControllers];
+  v14 = [viewControllers copy];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __67___TVAppNavigationController_replaceDocument_withDocument_options___block_invoke;
   v18[3] = &unk_279D710E0;
-  v19 = v8;
-  v20 = v9;
-  v23 = v12;
-  v21 = v10;
-  v22 = self;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
+  v19 = documentCopy;
+  v20 = withDocumentCopy;
+  v23 = tv_isPresentedModal;
+  v21 = optionsCopy;
+  selfCopy = self;
+  v15 = optionsCopy;
+  v16 = withDocumentCopy;
+  v17 = documentCopy;
   [v14 enumerateObjectsUsingBlock:v18];
 }
 
 - (id)activeDocument
 {
-  v2 = [(_TVAppNavigationController *)self currentViewController];
-  if ([v2 conformsToProtocol:&unk_287E96310])
+  currentViewController = [(_TVAppNavigationController *)self currentViewController];
+  if ([currentViewController conformsToProtocol:&unk_287E96310])
   {
-    v3 = [v2 currentViewController];
+    v2CurrentViewController = [currentViewController currentViewController];
 
-    v2 = v3;
+    currentViewController = v2CurrentViewController;
   }
 
-  if ([v2 conformsToProtocol:&unk_287E7C190])
+  if ([currentViewController conformsToProtocol:&unk_287E7C190])
   {
-    v4 = v2;
+    v4 = currentViewController;
   }
 
   else
@@ -1094,28 +1094,28 @@ LABEL_12:
     v4 = 0;
   }
 
-  v5 = [v4 activeDocument];
+  activeDocument = [v4 activeDocument];
 
-  return v5;
+  return activeDocument;
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(_TVAppNavigationController *)self viewControllers];
-  v6 = [v5 firstObject];
+  animatedCopy = animated;
+  viewControllers = [(_TVAppNavigationController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(_TVAppNavigationController *)self popToRootDocument:v3];
+    v7 = [(_TVAppNavigationController *)self popToRootDocument:animatedCopy];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = _TVAppNavigationController;
-    v7 = [(_TVAppNavigationController *)&v10 popToRootViewControllerAnimated:v3];
+    v7 = [(_TVAppNavigationController *)&v10 popToRootViewControllerAnimated:animatedCopy];
   }
 
   v8 = v7;
@@ -1123,70 +1123,70 @@ LABEL_12:
   return v8;
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
   v5 = MEMORY[0x277CCAB98];
-  v6 = a3;
-  v7 = [v5 defaultCenter];
-  [v7 postNotificationName:@"TVAppNavigationDidDisplayViewControllerNotification" object:v6];
+  controllerCopy = controller;
+  defaultCenter = [v5 defaultCenter];
+  [defaultCenter postNotificationName:@"TVAppNavigationDidDisplayViewControllerNotification" object:controllerCopy];
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
   v5 = MEMORY[0x277CCAB98];
-  v6 = a3;
-  v7 = [v5 defaultCenter];
-  [v7 postNotificationName:@"TVAppNavigationWillDisplayViewControllerNotification" object:v6];
+  controllerCopy = controller;
+  defaultCenter = [v5 defaultCenter];
+  [defaultCenter postNotificationName:@"TVAppNavigationWillDisplayViewControllerNotification" object:controllerCopy];
 }
 
 - (BOOL)_hasBeenCleared
 {
-  v2 = [(_TVAppNavigationController *)self topViewController];
+  topViewController = [(_TVAppNavigationController *)self topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_doWillLoadAppDocumentWithController:(id)a3
+- (void)_doWillLoadAppDocumentWithController:(id)controller
 {
   if ((*&self->_ancDelegateFlags & 8) != 0)
   {
-    v5 = a3;
-    v6 = [(_TVAppNavigationController *)self appNavigationControllerDelegate];
-    [v6 appNavigationController:self willLoadAppDocumentWithController:v5];
+    controllerCopy = controller;
+    appNavigationControllerDelegate = [(_TVAppNavigationController *)self appNavigationControllerDelegate];
+    [appNavigationControllerDelegate appNavigationController:self willLoadAppDocumentWithController:controllerCopy];
   }
 }
 
-- (BOOL)_shouldIgnoreModalDismissal:(id)a3
+- (BOOL)_shouldIgnoreModalDismissal:(id)dismissal
 {
   if ((*&self->_ancDelegateFlags & 2) == 0)
   {
     return 0;
   }
 
-  v4 = self;
-  v5 = a3;
-  v6 = [(_TVAppNavigationController *)v4 appNavigationControllerDelegate];
-  LOBYTE(v4) = [v6 appNavigationController:v4 shouldIgnoreDismissalForViewController:v5];
+  selfCopy = self;
+  dismissalCopy = dismissal;
+  appNavigationControllerDelegate = [(_TVAppNavigationController *)selfCopy appNavigationControllerDelegate];
+  LOBYTE(selfCopy) = [appNavigationControllerDelegate appNavigationController:selfCopy shouldIgnoreDismissalForViewController:dismissalCopy];
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)_shouldOverrideModalBehaviorForPlaybackDocument:(id)a3 andExistingPlaybackDocument:(id)a4
+- (BOOL)_shouldOverrideModalBehaviorForPlaybackDocument:(id)document andExistingPlaybackDocument:(id)playbackDocument
 {
   if ((*&self->_ancDelegateFlags & 1) == 0)
   {
     return 0;
   }
 
-  v5 = self;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_TVAppNavigationController *)v5 appNavigationControllerDelegate];
-  LOBYTE(v5) = [v8 appNavigationController:v5 shouldOverrideModalBehaviorForDocument:v7 andExistingDocument:v6];
+  selfCopy = self;
+  playbackDocumentCopy = playbackDocument;
+  documentCopy = document;
+  appNavigationControllerDelegate = [(_TVAppNavigationController *)selfCopy appNavigationControllerDelegate];
+  LOBYTE(selfCopy) = [appNavigationControllerDelegate appNavigationController:selfCopy shouldOverrideModalBehaviorForDocument:documentCopy andExistingDocument:playbackDocumentCopy];
 
-  return v5;
+  return selfCopy;
 }
 
 - (TVApplicationController)appController

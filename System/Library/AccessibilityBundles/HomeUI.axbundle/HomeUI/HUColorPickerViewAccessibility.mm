@@ -1,23 +1,23 @@
 @interface HUColorPickerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setSelectedColor:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setSelectedColor:(id)color;
 @end
 
 @implementation HUColorPickerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUColorPickerView" hasInstanceMethod:@"setSelectedColor:" withFullSignature:{"v", "{?=dddd}", 0}];
-  [v3 validateClass:@"HUColorPickerView" hasInstanceMethod:@"magnifierView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlMagnifierView" hasInstanceMethod:@"selectedColor" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUColorPickerView" hasInstanceMethod:@"setSelectedColor:" withFullSignature:{"v", "{?=dddd}", 0}];
+  [validationsCopy validateClass:@"HUColorPickerView" hasInstanceMethod:@"magnifierView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlMagnifierView" hasInstanceMethod:@"selectedColor" withFullSignature:{"@", 0}];
 }
 
-- (void)setSelectedColor:(id)a3
+- (void)setSelectedColor:(id)color
 {
   v8.receiver = self;
   v8.super_class = HUColorPickerViewAccessibility;
-  [(HUColorPickerViewAccessibility *)&v8 setSelectedColor:a3.var0, a3.var1, a3.var2, a3.var3];
+  [(HUColorPickerViewAccessibility *)&v8 setSelectedColor:color.var0, color.var1, color.var2, color.var3];
   if (CFAbsoluteTimeGetCurrent() - *&setSelectedColor__LastTime > 1.0)
   {
     objc_opt_class();

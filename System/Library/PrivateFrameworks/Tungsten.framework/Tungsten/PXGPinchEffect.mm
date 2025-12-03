@@ -1,6 +1,6 @@
 @interface PXGPinchEffect
 - (CGPoint)normalizedCenter;
-- (PXGPinchEffect)initWithEntityManager:(id)a3;
+- (PXGPinchEffect)initWithEntityManager:(id)manager;
 @end
 
 @implementation PXGPinchEffect
@@ -15,12 +15,12 @@
   return result;
 }
 
-- (PXGPinchEffect)initWithEntityManager:(id)a3
+- (PXGPinchEffect)initWithEntityManager:(id)manager
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = PXGPinchEffect;
-  v3 = [(PXGEffect *)&v14 initWithEntityManager:a3];
+  v3 = [(PXGEffect *)&v14 initWithEntityManager:manager];
   v4 = v3;
   if (v3)
   {

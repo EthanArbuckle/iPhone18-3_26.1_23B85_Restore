@@ -1,79 +1,79 @@
 @interface VCPVideoCNNActionClassifier
-+ (float)thresholdForClass:(id)a3 isHighPrecision:(BOOL)a4;
-+ (id)sharedModel:(id)a3 inputNames:(id)a4 properties:(id)a5;
-+ (id)sharedModelStage1:(id)a3 inputNames:(id)a4 properties:(id)a5;
-- (VCPVideoCNNActionClassifier)initWithPHFaces:(id)a3;
++ (float)thresholdForClass:(id)class isHighPrecision:(BOOL)precision;
++ (id)sharedModel:(id)model inputNames:(id)names properties:(id)properties;
++ (id)sharedModelStage1:(id)stage1 inputNames:(id)names properties:(id)properties;
+- (VCPVideoCNNActionClassifier)initWithPHFaces:(id)faces;
 - (id).cxx_construct;
 - (id)results;
-- (int)run:(id)a3 withPersons:(id)a4 andRegionCrop:(CGRect)a5 atTime:(id *)a6 andDuration:(id *)a7;
+- (int)run:(id)run withPersons:(id)persons andRegionCrop:(CGRect)crop atTime:(id *)time andDuration:(id *)duration;
 @end
 
 @implementation VCPVideoCNNActionClassifier
 
-+ (float)thresholdForClass:(id)a3 isHighPrecision:(BOOL)a4
++ (float)thresholdForClass:(id)class isHighPrecision:(BOOL)precision
 {
-  v4 = a4;
+  precisionCopy = precision;
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  switch([v5 intValue])
+  classCopy = class;
+  switch([classCopy intValue])
   {
     case 0u:
-      v10 = !v4;
+      v10 = !precisionCopy;
       v11 = 0.95;
       goto LABEL_23;
     case 1u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.3;
       v9 = 0.671;
       goto LABEL_34;
     case 2u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.6;
       goto LABEL_28;
     case 3u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.6;
       v9 = 0.92;
       goto LABEL_34;
     case 4u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.35;
       goto LABEL_33;
     case 5u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.376;
       v9 = 0.65;
       goto LABEL_34;
     case 6u:
     case 0x16u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.4;
       goto LABEL_15;
     case 7u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.45;
 LABEL_28:
       v9 = 0.8;
       goto LABEL_34;
     case 8u:
-      v10 = !v4;
+      v10 = !precisionCopy;
       v11 = 0.6;
 LABEL_23:
       v12 = 0.5;
       goto LABEL_24;
     case 9u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.683;
       v9 = 0.87;
       goto LABEL_34;
     case 0xBu:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.2;
 LABEL_15:
       v9 = 0.9;
       goto LABEL_34;
     case 0xDu:
-      v10 = !v4;
+      v10 = !precisionCopy;
       v11 = 0.82;
       v12 = 0.25;
 LABEL_24:
@@ -89,42 +89,42 @@ LABEL_24:
 
       break;
     case 0xEu:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.2;
       goto LABEL_11;
     case 0xFu:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.3;
       v9 = 0.75;
       goto LABEL_34;
     case 0x11u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.638;
       v9 = 0.82;
       goto LABEL_34;
     case 0x12u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.4;
       goto LABEL_31;
     case 0x13u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.364;
 LABEL_31:
       v9 = 0.7;
       goto LABEL_34;
     case 0x14u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.3;
       v9 = 0.55;
       goto LABEL_34;
     case 0x15u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.35;
 LABEL_11:
       v9 = 0.85;
       goto LABEL_34;
     case 0x19u:
-      v6 = !v4;
+      v6 = !precisionCopy;
       v7 = 0.4;
 LABEL_33:
       v9 = 0.5;
@@ -145,7 +145,7 @@ LABEL_34:
       if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412290;
-        v15 = v5;
+        v15 = classCopy;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Invalid class ID for HAR %@", &v14, 0xCu);
       }
 
@@ -155,21 +155,21 @@ LABEL_34:
   return v8;
 }
 
-+ (id)sharedModel:(id)a3 inputNames:(id)a4 properties:(id)a5
++ (id)sharedModel:(id)model inputNames:(id)names properties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  modelCopy = model;
+  namesCopy = names;
+  propertiesCopy = properties;
   v10 = +[VCPSharedInstanceManager sharedManager];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __65__VCPVideoCNNActionClassifier_sharedModel_inputNames_properties___block_invoke;
   v16[3] = &unk_1E834E480;
-  v11 = v7;
+  v11 = modelCopy;
   v17 = v11;
-  v12 = v8;
+  v12 = namesCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = propertiesCopy;
   v19 = v13;
   v14 = [v10 sharedInstanceWithIdentifier:@"VCPVideoCNNActionClassifierEspresso" andCreationBlock:v16];
 
@@ -183,21 +183,21 @@ VCPCNNModelEspresso *__65__VCPVideoCNNActionClassifier_sharedModel_inputNames_pr
   return v1;
 }
 
-+ (id)sharedModelStage1:(id)a3 inputNames:(id)a4 properties:(id)a5
++ (id)sharedModelStage1:(id)stage1 inputNames:(id)names properties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  stage1Copy = stage1;
+  namesCopy = names;
+  propertiesCopy = properties;
   v10 = +[VCPSharedInstanceManager sharedManager];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __71__VCPVideoCNNActionClassifier_sharedModelStage1_inputNames_properties___block_invoke;
   v16[3] = &unk_1E834E480;
-  v11 = v7;
+  v11 = stage1Copy;
   v17 = v11;
-  v12 = v8;
+  v12 = namesCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = propertiesCopy;
   v19 = v13;
   v14 = [v10 sharedInstanceWithIdentifier:@"VCPVideoCNNActionClassifierEspressoStage1" andCreationBlock:v16];
 
@@ -211,10 +211,10 @@ VCPCNNModelEspresso *__71__VCPVideoCNNActionClassifier_sharedModelStage1_inputNa
   return v1;
 }
 
-- (VCPVideoCNNActionClassifier)initWithPHFaces:(id)a3
+- (VCPVideoCNNActionClassifier)initWithPHFaces:(id)faces
 {
   v43[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facesCopy = faces;
   v40.receiver = self;
   v40.super_class = VCPVideoCNNActionClassifier;
   v5 = [(VCPVideoCNNActionClassifier *)&v40 init];
@@ -230,15 +230,15 @@ VCPCNNModelEspresso *__71__VCPVideoCNNActionClassifier_sharedModelStage1_inputNa
     v43[1] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:2];
 
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     phFaces = v5->_phFaces;
-    v5->_phFaces = v11;
+    v5->_phFaces = array;
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v13 = v4;
+    v13 = facesCopy;
     v14 = [v13 countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v14)
     {
@@ -261,20 +261,20 @@ VCPCNNModelEspresso *__71__VCPVideoCNNActionClassifier_sharedModelStage1_inputNa
       while (v14);
     }
 
-    v17 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v18 = [v17 resourceURL];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-    v19 = [MEMORY[0x1E695DFF8] URLWithString:@"action_recognition_head.espresso.net" relativeToURL:v18];
-    v20 = [MEMORY[0x1E695DFF8] URLWithString:@"action_taxonomy.plist" relativeToURL:v18];
+    v19 = [MEMORY[0x1E695DFF8] URLWithString:@"action_recognition_head.espresso.net" relativeToURL:resourceURL];
+    v20 = [MEMORY[0x1E695DFF8] URLWithString:@"action_taxonomy.plist" relativeToURL:resourceURL];
     v21 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithContentsOfURL:v20];
     taxonomy = v5->_taxonomy;
     v5->_taxonomy = v21;
 
     if ([(NSArray *)v5->_taxonomy count]== 35)
     {
-      v23 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       results = v5->_results;
-      v5->_results = v23;
+      v5->_results = array2;
 
       inputNames = v5->_inputNames;
       v5->_inputNames = &unk_1F49BF178;
@@ -298,7 +298,7 @@ VCPCNNModelEspresso *__71__VCPVideoCNNActionClassifier_sharedModelStage1_inputNa
       {
         if (![(VCPCNNModelEspresso *)v28 prepareModelWithConfig:&stru_1F496CB30])
         {
-          v29 = [MEMORY[0x1E695DFF8] URLWithString:@"action_recognition_head_stage1.espresso.net" relativeToURL:v18];
+          v29 = [MEMORY[0x1E695DFF8] URLWithString:@"action_recognition_head_stage1.espresso.net" relativeToURL:resourceURL];
 
           if (DeviceHasANE())
           {
@@ -343,21 +343,21 @@ LABEL_24:
   return v34;
 }
 
-- (int)run:(id)a3 withPersons:(id)a4 andRegionCrop:(CGRect)a5 atTime:(id *)a6 andDuration:(id *)a7
+- (int)run:(id)run withPersons:(id)persons andRegionCrop:(CGRect)crop atTime:(id *)time andDuration:(id *)duration
 {
   v144 = *MEMORY[0x1E69E9840];
-  v107 = a3;
-  v104 = a4;
-  if (!v104 && ![(NSMutableArray *)self->_phFaces count])
+  runCopy = run;
+  personsCopy = persons;
+  if (!personsCopy && ![(NSMutableArray *)self->_phFaces count])
   {
     v65 = 0;
     goto LABEL_83;
   }
 
-  v115 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [MEMORY[0x1E695DF70] array];
-  v116 = [MEMORY[0x1E695DF90] dictionary];
-  v113 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_phFaces count])
   {
     if ([(NSMutableArray *)self->_phFaces count]>= 4)
@@ -396,9 +396,9 @@ LABEL_24:
           {
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
             {
-              v21 = [v17 localIdentifier];
+              localIdentifier = [v17 localIdentifier];
               LODWORD(buf[0].value) = 138412290;
-              *(&buf[0].value + 4) = v21;
+              *(&buf[0].value + 4) = localIdentifier;
               _os_log_impl(&dword_1C9B70000, v15, OS_LOG_TYPE_DEBUG, "Action classifier - empty torso bound in PHFace %@", buf, 0xCu);
             }
           }
@@ -407,9 +407,9 @@ LABEL_24:
           {
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
             {
-              v22 = [v17 localIdentifier];
+              localIdentifier2 = [v17 localIdentifier];
               LODWORD(buf[0].value) = 138412290;
-              *(&buf[0].value + 4) = v22;
+              *(&buf[0].value + 4) = localIdentifier2;
               _os_log_impl(&dword_1C9B70000, v15, OS_LOG_TYPE_DEBUG, "Action classifier - found torso bound in PHFace %@", buf, 0xCu);
             }
 
@@ -425,8 +425,8 @@ LABEL_24:
             v32 = v31;
             [v17 bodyHeight];
             v34 = v33;
-            v35 = [v17 localIdentifier];
-            v36 = v35 == 0;
+            localIdentifier3 = [v17 localIdentifier];
+            v36 = localIdentifier3 == 0;
 
             v37 = v24 + v26 * -0.5;
             v38 = v28 + v30 * -0.5;
@@ -437,16 +437,16 @@ LABEL_24:
               v145.size.width = v32;
               v145.size.height = v34;
               v39 = NSStringFromRect(v145);
-              v40 = [v17 localIdentifier];
-              [v113 setObject:v39 forKeyedSubscript:v40];
+              localIdentifier4 = [v17 localIdentifier];
+              [dictionary3 setObject:v39 forKeyedSubscript:localIdentifier4];
             }
 
-            if (!CGRectIsEmpty(a5))
+            if (!CGRectIsEmpty(crop))
             {
-              v37 = fmax(v37 - a5.origin.x, 0.0) / a5.size.width;
-              v38 = fmax(v38 - a5.origin.y, 0.0) / a5.size.height;
-              v32 = fmin(v32 / a5.size.width, 0.99000001 - v37);
-              v34 = fmin(v34 / a5.size.height, 0.99000001 - v38);
+              v37 = fmax(v37 - crop.origin.x, 0.0) / crop.size.width;
+              v38 = fmax(v38 - crop.origin.y, 0.0) / crop.size.height;
+              v32 = fmin(v32 / crop.size.width, 0.99000001 - v37);
+              v34 = fmin(v34 / crop.size.height, 0.99000001 - v38);
             }
 
             v146.origin.x = v37;
@@ -454,14 +454,14 @@ LABEL_24:
             v146.size.width = v32;
             v146.size.height = v34;
             v41 = NSStringFromRect(v146);
-            [v8 addObject:v41];
-            v42 = [v17 localIdentifier];
-            v43 = v42 == 0;
+            [array addObject:v41];
+            localIdentifier5 = [v17 localIdentifier];
+            v43 = localIdentifier5 == 0;
 
             if (!v43)
             {
-              v44 = [v17 localIdentifier];
-              [v115 setObject:v44 forKeyedSubscript:v41];
+              localIdentifier6 = [v17 localIdentifier];
+              [dictionary setObject:localIdentifier6 forKeyedSubscript:v41];
             }
           }
         }
@@ -479,7 +479,7 @@ LABEL_24:
     v126 = 0u;
     v127 = 0u;
     v125 = 0u;
-    v12 = v104;
+    v12 = personsCopy;
     v45 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v125 objects:v142 count:16];
     if (v45)
     {
@@ -496,14 +496,14 @@ LABEL_24:
           v48 = *(*(&v125 + 1) + 8 * j);
           [v48 bounds];
           v49 = NSStringFromRect(v147);
-          [v8 addObject:v49];
-          v50 = [v48 torsoprint];
-          v51 = v50 == 0;
+          [array addObject:v49];
+          torsoprint = [v48 torsoprint];
+          v51 = torsoprint == 0;
 
           if (!v51)
           {
-            v52 = [v48 torsoprint];
-            [v116 setObject:v52 forKeyedSubscript:v49];
+            torsoprint2 = [v48 torsoprint];
+            [dictionary2 setObject:torsoprint2 forKeyedSubscript:v49];
           }
         }
 
@@ -518,7 +518,7 @@ LABEL_24:
   v124 = 0u;
   v121 = 0u;
   v122 = 0u;
-  obj = v8;
+  obj = array;
   v53 = [obj countByEnumeratingWithState:&v121 objects:v141 count:16];
   if (!v53)
   {
@@ -543,7 +543,7 @@ LABEL_24:
       }
 
       v61 = *(*(&v121 + 1) + 8 * k);
-      v62 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary4 = [MEMORY[0x1E695DF90] dictionary];
       v148 = NSRectFromString(v61);
       if (v148.size.height * v148.size.width >= 0.00499999989)
       {
@@ -565,7 +565,7 @@ LABEL_24:
           v140 = vcvt_f32_f64(vminnmq_f64(v149.origin, v108));
           if ((v54 & 1) == 0)
           {
-            v65 = -[VCPCNNModelEspresso espressoForward:](self->_modelEspressoStage1, "espressoForward:", [v107 outputRes4]);
+            v65 = -[VCPCNNModelEspresso espressoForward:](self->_modelEspressoStage1, "espressoForward:", [runCopy outputRes4]);
             if (v65)
             {
               goto LABEL_81;
@@ -632,13 +632,13 @@ LABEL_24:
             {
               v74 = [MEMORY[0x1E696AD98] numberWithFloat:?];
               v75 = [MEMORY[0x1E696AD98] numberWithInt:m];
-              v76 = [v75 stringValue];
-              [v62 setObject:v74 forKeyedSubscript:v76];
+              stringValue = [v75 stringValue];
+              [dictionary4 setObject:v74 forKeyedSubscript:stringValue];
             }
           }
 
-          v77 = [v62 allKeys];
-          v78 = [v77 count] == 0;
+          allKeys = [dictionary4 allKeys];
+          v78 = [allKeys count] == 0;
 
           if (v78)
           {
@@ -650,22 +650,22 @@ LABEL_24:
           v80 = v150.origin.y;
           width = v150.size.width;
           height = v150.size.height;
-          v83 = [v115 objectForKeyedSubscript:v61];
-          if (!v83 || ([v115 objectForKeyedSubscript:v61], v84 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v113, "objectForKeyedSubscript:", v84), v85 = objc_claimAutoreleasedReturnValue(), v86 = v85 == 0, v85, v84, v83, v86))
+          v83 = [dictionary objectForKeyedSubscript:v61];
+          if (!v83 || ([dictionary objectForKeyedSubscript:v61], v84 = objc_claimAutoreleasedReturnValue(), objc_msgSend(dictionary3, "objectForKeyedSubscript:", v84), v85 = objc_claimAutoreleasedReturnValue(), v86 = v85 == 0, v85, v84, v83, v86))
           {
-            if (!CGRectIsEmpty(a5))
+            if (!CGRectIsEmpty(crop))
             {
-              x = a5.origin.x + x * a5.size.width;
-              v80 = a5.origin.y + v80 * a5.size.height;
-              width = a5.size.width * width;
-              height = a5.size.height * height;
+              x = crop.origin.x + x * crop.size.width;
+              v80 = crop.origin.y + v80 * crop.size.height;
+              width = crop.size.width * width;
+              height = crop.size.height * height;
             }
           }
 
           else
           {
-            v87 = [v115 objectForKeyedSubscript:v61];
-            v88 = [v113 objectForKeyedSubscript:v87];
+            v87 = [dictionary objectForKeyedSubscript:v61];
+            v88 = [dictionary3 objectForKeyedSubscript:v87];
             v151 = NSRectFromString(v88);
             x = v151.origin.x;
             v80 = v151.origin.y;
@@ -676,7 +676,7 @@ LABEL_24:
           v89 = MEMORY[0x1E695DF90];
           v135[0] = @"humanActions";
           v135[1] = @"humanBounds";
-          v136[0] = v62;
+          v136[0] = dictionary4;
           v152.origin.x = x;
           v152.origin.y = v80;
           v152.size.width = width;
@@ -686,16 +686,16 @@ LABEL_24:
           v91 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v136 forKeys:v135 count:2];
           v92 = [v89 dictionaryWithDictionary:v91];
 
-          v93 = [v115 objectForKeyedSubscript:v61];
+          v93 = [dictionary objectForKeyedSubscript:v61];
           LOBYTE(v90) = v93 == 0;
 
           if ((v90 & 1) == 0)
           {
-            v94 = [v115 objectForKeyedSubscript:v61];
+            v94 = [dictionary objectForKeyedSubscript:v61];
             [v92 setObject:v94 forKeyedSubscript:@"faceIdentifier"];
           }
 
-          v95 = [v116 objectForKeyedSubscript:v61];
+          v95 = [dictionary2 objectForKeyedSubscript:v61];
           v96 = v95 == 0;
 
           if (v96)
@@ -703,11 +703,11 @@ LABEL_24:
 LABEL_71:
             results = self->_results;
             v133[0] = @"start";
-            buf[0] = *a6;
+            buf[0] = *time;
             v100 = CMTimeCopyAsDictionary(buf, 0);
             v134[0] = v100;
             v133[1] = @"duration";
-            buf[0] = *a7;
+            buf[0] = *duration;
             v101 = CMTimeCopyAsDictionary(buf, 0);
             v133[2] = @"attributes";
             v134[1] = v101;
@@ -720,7 +720,7 @@ LABEL_72:
             goto LABEL_73;
           }
 
-          v97 = [v116 objectForKeyedSubscript:v61];
+          v97 = [dictionary2 objectForKeyedSubscript:v61];
           v98 = [v97 serializeStateAndReturnError:0];
 
           if (v98)

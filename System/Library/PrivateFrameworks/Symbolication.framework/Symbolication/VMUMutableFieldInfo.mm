@@ -1,52 +1,52 @@
 @interface VMUMutableFieldInfo
-- (BOOL)replaceFieldRecursively:(id)a3 atOffset:(unsigned int)a4 withField:(id)a5;
-- (void)addSubField:(id)a3;
-- (void)setIvarName:(id)a3;
+- (BOOL)replaceFieldRecursively:(id)recursively atOffset:(unsigned int)offset withField:(id)field;
+- (void)addSubField:(id)field;
+- (void)setIvarName:(id)name;
 @end
 
 @implementation VMUMutableFieldInfo
 
-- (void)setIvarName:(id)a3
+- (void)setIvarName:(id)name
 {
   v3.receiver = self;
   v3.super_class = VMUMutableFieldInfo;
-  [(VMUFieldInfo *)&v3 _setIvarName:a3];
+  [(VMUFieldInfo *)&v3 _setIvarName:name];
 }
 
-- (BOOL)replaceFieldRecursively:(id)a3 atOffset:(unsigned int)a4 withField:(id)a5
+- (BOOL)replaceFieldRecursively:(id)recursively atOffset:(unsigned int)offset withField:(id)field
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(VMUFieldInfo *)self subFieldArray];
-  v11 = [v10 count];
+  recursivelyCopy = recursively;
+  fieldCopy = field;
+  subFieldArray = [(VMUFieldInfo *)self subFieldArray];
+  v11 = [subFieldArray count];
   if (v11)
   {
     v12 = v11;
-    v13 = [v10 objectAtIndexedSubscript:0];
-    v14 = [v13 offset];
-    if (a4 - v14 < [v13 size])
+    v13 = [subFieldArray objectAtIndexedSubscript:0];
+    offset = [v13 offset];
+    if (offset - offset < [v13 size])
     {
       v15 = 0;
       v16 = 1;
 LABEL_8:
-      v18 = a4 - v14;
-      if (v18 || ![v13 isEqual:v8])
+      v18 = offset - offset;
+      if (v18 || ![v13 isEqual:recursivelyCopy])
       {
-        v19 = [v13 subFieldArray];
+        subFieldArray2 = [v13 subFieldArray];
 
-        if (!v19 || ([v13 replaceFieldRecursively:v8 atOffset:v18 withField:v9] & 1) == 0)
+        if (!subFieldArray2 || ([v13 replaceFieldRecursively:recursivelyCopy atOffset:v18 withField:fieldCopy] & 1) == 0)
         {
-          LOBYTE(a4) = 0;
+          LOBYTE(offset) = 0;
           goto LABEL_16;
         }
       }
 
       else
       {
-        [v10 setObject:v9 atIndexedSubscript:v15];
+        [subFieldArray setObject:fieldCopy atIndexedSubscript:v15];
       }
 
-      LOBYTE(a4) = 1;
+      LOBYTE(offset) = 1;
 LABEL_16:
 
       goto LABEL_17;
@@ -61,10 +61,10 @@ LABEL_16:
         break;
       }
 
-      v13 = [v10 objectAtIndexedSubscript:v17];
-      v14 = [v13 offset];
+      v13 = [subFieldArray objectAtIndexedSubscript:v17];
+      offset = [v13 offset];
       ++v17;
-      if (a4 - v14 < [v13 size])
+      if (offset - offset < [v13 size])
       {
         v15 = v17 - 1;
         v16 = v15 < v12;
@@ -76,21 +76,21 @@ LABEL_16:
   v16 = 0;
 LABEL_17:
 
-  return v16 & a4;
+  return v16 & offset;
 }
 
-- (void)addSubField:(id)a3
+- (void)addSubField:(id)field
 {
-  v4 = a3;
-  v5 = [(VMUFieldInfo *)self subFieldArray];
+  fieldCopy = field;
+  subFieldArray = [(VMUFieldInfo *)self subFieldArray];
 
-  if (!v5)
+  if (!subFieldArray)
   {
     [(VMUFieldInfo *)self initializeSubFieldArray];
   }
 
-  v6 = [(VMUFieldInfo *)self subFieldArray];
-  [v6 addObject:v4];
+  subFieldArray2 = [(VMUFieldInfo *)self subFieldArray];
+  [subFieldArray2 addObject:fieldCopy];
 }
 
 @end

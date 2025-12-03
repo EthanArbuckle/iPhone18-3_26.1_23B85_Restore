@@ -1,28 +1,28 @@
 @interface HMDMTSAuthorizationServer
 + (id)logCategory;
-- (HMDMTSAuthorizationServer)initWithAccountManager:(id)a3;
-- (HMDMTSAuthorizationServer)initWithUIDialogPresenter:(id)a3 accountManager:(id)a4 systemPreferenceReader:(id)a5;
-- (void)checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)a3;
+- (HMDMTSAuthorizationServer)initWithAccountManager:(id)manager;
+- (HMDMTSAuthorizationServer)initWithUIDialogPresenter:(id)presenter accountManager:(id)manager systemPreferenceReader:(id)reader;
+- (void)checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)handler;
 - (void)showRestrictedCharacteristicsAccessWarningAlert;
 @end
 
 @implementation HMDMTSAuthorizationServer
 
-- (void)checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)a3
+- (void)checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMTSAuthorizationServer *)self systemPreferenceReader];
-  v6 = (v5)[2](v5, @"EnableBluetoothCentralMatterClientSkipDeveloperModeRestrictionProfile");
+  handlerCopy = handler;
+  systemPreferenceReader = [(HMDMTSAuthorizationServer *)self systemPreferenceReader];
+  v6 = (systemPreferenceReader)[2](systemPreferenceReader, @"EnableBluetoothCentralMatterClientSkipDeveloperModeRestrictionProfile");
 
-  v7 = [v6 BOOLValue];
-  if (v7)
+  bOOLValue = [v6 BOOLValue];
+  if (bOOLValue)
   {
     [(HMDMTSAuthorizationServer *)self showRestrictedCharacteristicsAccessWarningAlert];
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -36,7 +36,7 @@
   }
 
   objc_autoreleasePoolPop(v8);
-  v4[2](v4, v7);
+  handlerCopy[2](handlerCopy, bOOLValue);
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -45,7 +45,7 @@
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -56,16 +56,16 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDMTSAuthorizationServer *)v4 uiDialogPresenter];
-  v8 = [(HMDMTSAuthorizationServer *)v4 accountManager];
-  v9 = [v8 device];
-  v10 = [v9 name];
+  uiDialogPresenter = [(HMDMTSAuthorizationServer *)selfCopy uiDialogPresenter];
+  accountManager = [(HMDMTSAuthorizationServer *)selfCopy accountManager];
+  device = [accountManager device];
+  name = [device name];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__HMDMTSAuthorizationServer_showRestrictedCharacteristicsAccessWarningAlert__block_invoke;
   v12[3] = &unk_27868A728;
-  v12[4] = v4;
-  [v7 displayRestrictedBluetoothCharacteristicsWarningWithDeviceName:v10 completionHandler:v12];
+  v12[4] = selfCopy;
+  [uiDialogPresenter displayRestrictedBluetoothCharacteristicsWarningWithDeviceName:name completionHandler:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -88,11 +88,11 @@ void __76__HMDMTSAuthorizationServer_showRestrictedCharacteristicsAccessWarningA
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMTSAuthorizationServer)initWithAccountManager:(id)a3
+- (HMDMTSAuthorizationServer)initWithAccountManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[HMDUIDialogPresenter sharedUIDialogPresenter];
-  v6 = [(HMDMTSAuthorizationServer *)self initWithUIDialogPresenter:v5 accountManager:v4 systemPreferenceReader:&__block_literal_global_238820];
+  v6 = [(HMDMTSAuthorizationServer *)self initWithUIDialogPresenter:v5 accountManager:managerCopy systemPreferenceReader:&__block_literal_global_238820];
 
   return v6;
 }
@@ -107,23 +107,23 @@ id __52__HMDMTSAuthorizationServer_initWithAccountManager___block_invoke(uint64_
   return v5;
 }
 
-- (HMDMTSAuthorizationServer)initWithUIDialogPresenter:(id)a3 accountManager:(id)a4 systemPreferenceReader:(id)a5
+- (HMDMTSAuthorizationServer)initWithUIDialogPresenter:(id)presenter accountManager:(id)manager systemPreferenceReader:(id)reader
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  presenterCopy = presenter;
+  managerCopy = manager;
+  readerCopy = reader;
   v17.receiver = self;
   v17.super_class = HMDMTSAuthorizationServer;
   v12 = [(HMDMTSAuthorizationServer *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_uiDialogPresenter, a3);
-    v14 = _Block_copy(v11);
+    objc_storeStrong(&v12->_uiDialogPresenter, presenter);
+    v14 = _Block_copy(readerCopy);
     systemPreferenceReader = v13->_systemPreferenceReader;
     v13->_systemPreferenceReader = v14;
 
-    objc_storeStrong(&v13->_accountManager, a4);
+    objc_storeStrong(&v13->_accountManager, manager);
   }
 
   return v13;

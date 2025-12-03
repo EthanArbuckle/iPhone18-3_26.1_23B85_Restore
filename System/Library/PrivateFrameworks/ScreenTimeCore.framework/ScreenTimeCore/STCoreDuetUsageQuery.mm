@@ -1,6 +1,6 @@
 @interface STCoreDuetUsageQuery
 + (id)_streamsPredicate;
-+ (id)earliestUsageEventStartDateCreatedSince:(id)a3 whereStartDateIsOnOrAfter:(id)a4 andEndDateOnOrBefore:(id)a5;
++ (id)earliestUsageEventStartDateCreatedSince:(id)since whereStartDateIsOnOrAfter:(id)after andEndDateOnOrBefore:(id)before;
 @end
 
 @implementation STCoreDuetUsageQuery
@@ -40,12 +40,12 @@
         }
 
         v14 = *(*(&v30 + 1) + 8 * i);
-        v15 = [v14 name];
-        v16 = [_DKQuery predicateForObjectsWithMetadataKey:v29 andStringValue:v15];
+        name = [v14 name];
+        v16 = [_DKQuery predicateForObjectsWithMetadataKey:v29 andStringValue:name];
         [v7 addObject:v16];
 
-        v17 = [v14 name];
-        v18 = [_DKQuery predicateForEventsWithStreamName:v17];
+        name2 = [v14 name];
+        v18 = [_DKQuery predicateForEventsWithStreamName:name2];
         [v8 addObject:v18];
       }
 
@@ -56,8 +56,8 @@
   }
 
   v19 = +[_DKSystemEventStreams tombstoneStream];
-  v20 = [v19 name];
-  v21 = [_DKQuery predicateForEventsWithStreamName:v20];
+  name3 = [v19 name];
+  v21 = [_DKQuery predicateForEventsWithStreamName:name3];
   v35[0] = v21;
   v22 = [NSCompoundPredicate orPredicateWithSubpredicates:v7];
   v35[1] = v22;
@@ -73,17 +73,17 @@
   return v27;
 }
 
-+ (id)earliestUsageEventStartDateCreatedSince:(id)a3 whereStartDateIsOnOrAfter:(id)a4 andEndDateOnOrBefore:(id)a5
++ (id)earliestUsageEventStartDateCreatedSince:(id)since whereStartDateIsOnOrAfter:(id)after andEndDateOnOrBefore:(id)before
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 _streamsPredicate];
-  v12 = [_DKQuery predicateForEventsWithLocalCreationInDateRangeFrom:v8 toBefore:v10];
-  [_DKQuery predicateForEventsIntersectingDateRangeFrom:v9 to:v10];
+  sinceCopy = since;
+  afterCopy = after;
+  beforeCopy = before;
+  _streamsPredicate = [self _streamsPredicate];
+  v12 = [_DKQuery predicateForEventsWithLocalCreationInDateRangeFrom:sinceCopy toBefore:beforeCopy];
+  [_DKQuery predicateForEventsIntersectingDateRangeFrom:afterCopy to:beforeCopy];
   v30 = v12;
-  v31 = v11;
-  v42[0] = v11;
+  v31 = _streamsPredicate;
+  v42[0] = _streamsPredicate;
   v29 = v42[1] = v12;
   v42[2] = v29;
   v13 = [NSArray arrayWithObjects:v42 count:3];
@@ -101,15 +101,15 @@
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
-    v34 = v8;
+    v34 = sinceCopy;
     v35 = 2114;
-    v36 = v9;
+    v36 = afterCopy;
     v37 = 2114;
-    v38 = v10;
+    v38 = beforeCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Checking if any new events to Core Duet created after %{public}@ between %{public}@ and %{public}@", buf, 0x20u);
   }
 
-  v20 = v8;
+  v20 = sinceCopy;
 
   v21 = +[_DKKnowledgeStore userKnowledgeStore];
   v32 = 0;
@@ -127,9 +127,9 @@
         *buf = 138544130;
         v34 = v20;
         v35 = 2114;
-        v36 = v9;
+        v36 = afterCopy;
         v37 = 2114;
-        v38 = v10;
+        v38 = beforeCopy;
         v39 = 2114;
         v40 = v23;
         _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "There was an error querying Core Duet for events created after %{public}@ between %{public}@ and %{public}@: %{public}@", buf, 0x2Au);
@@ -143,10 +143,10 @@
     }
   }
 
-  v26 = [v22 firstObject];
-  v27 = [v26 startDate];
+  firstObject = [v22 firstObject];
+  startDate = [firstObject startDate];
 
-  return v27;
+  return startDate;
 }
 
 @end

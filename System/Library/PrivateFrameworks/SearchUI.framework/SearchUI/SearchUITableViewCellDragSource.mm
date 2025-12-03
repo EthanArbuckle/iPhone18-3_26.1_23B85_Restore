@@ -1,21 +1,21 @@
 @interface SearchUITableViewCellDragSource
 - (UIEdgeInsets)customEdgeInsets;
-- (id)dragParametersForPreviewView:(id)a3;
+- (id)dragParametersForPreviewView:(id)view;
 @end
 
 @implementation SearchUITableViewCellDragSource
 
-- (id)dragParametersForPreviewView:(id)a3
+- (id)dragParametersForPreviewView:(id)view
 {
   v20.receiver = self;
   v20.super_class = SearchUITableViewCellDragSource;
-  v4 = a3;
-  v5 = [(SearchUIDragSource *)&v20 dragParametersForPreviewView:v4];
+  viewCopy = view;
+  v5 = [(SearchUIDragSource *)&v20 dragParametersForPreviewView:viewCopy];
   [(SearchUITableViewCellDragSource *)self customEdgeInsets:v20.receiver];
   v7 = v6;
   [(SearchUITableViewCellDragSource *)self customEdgeInsets];
   v9 = v8;
-  [v4 bounds];
+  [viewCopy bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;

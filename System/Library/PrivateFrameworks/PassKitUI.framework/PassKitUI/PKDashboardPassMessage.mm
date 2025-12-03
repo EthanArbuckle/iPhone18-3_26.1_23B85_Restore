@@ -1,45 +1,45 @@
 @interface PKDashboardPassMessage
-+ (id)messageFromDialogRequest:(id)a3 withAction:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMessage:(id)a3;
++ (id)messageFromDialogRequest:(id)request withAction:(id)action;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMessage:(id)message;
 - (PKDashboardPassMessage)init;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation PKDashboardPassMessage
 
-+ (id)messageFromDialogRequest:(id)a3 withAction:(id)a4
++ (id)messageFromDialogRequest:(id)request withAction:(id)action
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 buttonActions];
-  v8 = [v7 pk_firstObjectPassingTest:&__block_literal_global_13];
+  requestCopy = request;
+  actionCopy = action;
+  buttonActions = [requestCopy buttonActions];
+  v8 = [buttonActions pk_firstObjectPassingTest:&__block_literal_global_13];
 
   v9 = objc_alloc_init(PKDashboardPassMessage);
   [(PKDashboardPassMessage *)v9 setType:2];
-  v10 = [v5 identifier];
-  if (v10)
+  identifier = [requestCopy identifier];
+  if (identifier)
   {
-    [(PKDashboardPassMessage *)v9 setIdentifier:v10];
+    [(PKDashboardPassMessage *)v9 setIdentifier:identifier];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AFB0] UUID];
-    v12 = [v11 UUIDString];
-    [(PKDashboardPassMessage *)v9 setIdentifier:v12];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [(PKDashboardPassMessage *)v9 setIdentifier:uUIDString];
   }
 
-  [(PKDashboardPassMessage *)v9 setDialogRequest:v5];
-  v13 = [v8 deepLink];
-  if (v13)
+  [(PKDashboardPassMessage *)v9 setDialogRequest:requestCopy];
+  deepLink = [v8 deepLink];
+  if (deepLink)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __62__PKDashboardPassMessage_messageFromDialogRequest_withAction___block_invoke_2;
     v15[3] = &unk_1E8012268;
-    v17 = v6;
-    v16 = v13;
+    v17 = actionCopy;
+    v16 = deepLink;
     [(PKDashboardPassMessage *)v9 setActionOnButtonPress:v15];
   }
 
@@ -76,33 +76,33 @@ BOOL __62__PKDashboardPassMessage_messageFromDialogRequest_withAction___block_in
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKDashboardPassMessage *)self isEqualToMessage:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKDashboardPassMessage *)self isEqualToMessage:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToMessage:(id)a3
+- (BOOL)isEqualToMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_type != *(v4 + 3))
+  messageCopy = message;
+  v5 = messageCopy;
+  if (self->_type != *(messageCopy + 3))
   {
     goto LABEL_61;
   }
 
-  v6 = *(v4 + 2);
+  v6 = *(messageCopy + 2);
   v7 = self->_identifier;
   v8 = v6;
   v9 = v8;
@@ -279,10 +279,10 @@ LABEL_60:
   }
 
   v11 = *(v5 + 20);
-  v12 = [(AMSDialogRequest *)self->_dialogRequest title];
-  v13 = [v11 title];
-  v14 = v12;
-  v15 = v13;
+  title = [(AMSDialogRequest *)self->_dialogRequest title];
+  title2 = [v11 title];
+  v14 = title;
+  v15 = title2;
   v16 = v15;
   if (v14 == v15)
   {
@@ -306,10 +306,10 @@ LABEL_60:
     }
   }
 
-  v23 = [(AMSDialogRequest *)self->_dialogRequest message];
-  v24 = [v11 message];
-  v19 = v23;
-  v25 = v24;
+  message = [(AMSDialogRequest *)self->_dialogRequest message];
+  message2 = [v11 message];
+  v19 = message;
+  v25 = message2;
   v18 = v25;
   if (v19 == v25)
   {
@@ -318,8 +318,8 @@ LABEL_60:
   else
   {
     LOBYTE(v17) = 0;
-    v26 = v25;
-    v27 = v19;
+    iconURL2 = v25;
+    iconURL = v19;
     if (!v19 || !v25)
     {
       goto LABEL_33;
@@ -333,8 +333,8 @@ LABEL_60:
     }
   }
 
-  v27 = [(AMSDialogRequest *)self->_dialogRequest iconURL];
-  v26 = [v11 iconURL];
+  iconURL = [(AMSDialogRequest *)self->_dialogRequest iconURL];
+  iconURL2 = [v11 iconURL];
   LOBYTE(v17) = PKEqualObjects();
 LABEL_33:
 
@@ -345,17 +345,17 @@ LABEL_62:
   return v17;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  imageCopy = image;
+  v6 = imageCopy;
+  if (imageCopy)
   {
-    v4 = [[PKDashboardPassMessageImageDescriptorImageAsset alloc] initWithImage:v4];
+    imageCopy = [[PKDashboardPassMessageImageDescriptorImageAsset alloc] initWithImage:imageCopy];
   }
 
   imageDescriptor = self->_imageDescriptor;
-  self->_imageDescriptor = &v4->super;
+  self->_imageDescriptor = &imageCopy->super;
 }
 
 @end

@@ -1,36 +1,36 @@
 @interface BCSNotificationService
-- (BCSNotificationService)initWithConnection:(id)a3;
-- (void)_cancelNotificationsForCodeType:(int64_t)a3;
-- (void)_didReceiveNotificationResponse:(id)a3;
-- (void)cancelNotificationsForCodeType:(int64_t)a3;
-- (void)didReceiveNotificationResponse:(id)a3;
-- (void)notifyParsedCodeWithData:(id)a3 codePayload:(id)a4 shouldReplacePreviousNotifications:(BOOL)a5 reply:(id)a6;
-- (void)startNFCReaderWithDelegate:(id)a3;
+- (BCSNotificationService)initWithConnection:(id)connection;
+- (void)_cancelNotificationsForCodeType:(int64_t)type;
+- (void)_didReceiveNotificationResponse:(id)response;
+- (void)cancelNotificationsForCodeType:(int64_t)type;
+- (void)didReceiveNotificationResponse:(id)response;
+- (void)notifyParsedCodeWithData:(id)data codePayload:(id)payload shouldReplacePreviousNotifications:(BOOL)notifications reply:(id)reply;
+- (void)startNFCReaderWithDelegate:(id)delegate;
 @end
 
 @implementation BCSNotificationService
 
-- (BCSNotificationService)initWithConnection:(id)a3
+- (BCSNotificationService)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = BCSNotificationService;
   v6 = [(BCSNotificationService *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)notifyParsedCodeWithData:(id)a3 codePayload:(id)a4 shouldReplacePreviousNotifications:(BOOL)a5 reply:(id)a6
+- (void)notifyParsedCodeWithData:(id)data codePayload:(id)payload shouldReplacePreviousNotifications:(BOOL)notifications reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dataCopy = data;
+  payloadCopy = payload;
+  replyCopy = reply;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [BCSNotificationService notifyParsedCodeWithData:codePayload:shouldReplacePreviousNotifications:reply:];
@@ -40,13 +40,13 @@
   v15[1] = 3221225472;
   v15[2] = __104__BCSNotificationService_notifyParsedCodeWithData_codePayload_shouldReplacePreviousNotifications_reply___block_invoke;
   v15[3] = &unk_278CFF118;
-  v16 = v11;
-  v17 = v12;
+  v16 = payloadCopy;
+  v17 = replyCopy;
   v15[4] = self;
-  v18 = a5;
-  v13 = v11;
-  v14 = v12;
-  [BCSAction getActionWithData:v10 codePayload:v13 completionHandler:v15];
+  notificationsCopy = notifications;
+  v13 = payloadCopy;
+  v14 = replyCopy;
+  [BCSAction getActionWithData:dataCopy codePayload:v13 completionHandler:v15];
 }
 
 void __104__BCSNotificationService_notifyParsedCodeWithData_codePayload_shouldReplacePreviousNotifications_reply___block_invoke(uint64_t a1, void *a2)
@@ -125,51 +125,51 @@ void __104__BCSNotificationService_notifyParsedCodeWithData_codePayload_shouldRe
   }
 }
 
-- (void)cancelNotificationsForCodeType:(int64_t)a3
+- (void)cancelNotificationsForCodeType:(int64_t)type
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __57__BCSNotificationService_cancelNotificationsForCodeType___block_invoke;
   v3[3] = &unk_278CFF140;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = type;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
-- (void)_cancelNotificationsForCodeType:(int64_t)a3
+- (void)_cancelNotificationsForCodeType:(int64_t)type
 {
-  v4 = [(NSXPCConnection *)self->_connection processIdentifier];
+  processIdentifier = [(NSXPCConnection *)self->_connection processIdentifier];
   v5 = +[BCSNotificationManager sharedManager];
-  [v5 withdrawNotificationsWithProcessID:v4 codeType:a3];
+  [v5 withdrawNotificationsWithProcessID:processIdentifier codeType:type];
 }
 
-- (void)didReceiveNotificationResponse:(id)a3
+- (void)didReceiveNotificationResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__BCSNotificationService_didReceiveNotificationResponse___block_invoke;
   v6[3] = &unk_278CFEE40;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = responseCopy;
+  v5 = responseCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)_didReceiveNotificationResponse:(id)a3
+- (void)_didReceiveNotificationResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = +[BCSNotificationManager sharedManager];
-  [v4 didReceiveNotificationResponse:v3];
+  [v4 didReceiveNotificationResponse:responseCopy];
 }
 
-- (void)startNFCReaderWithDelegate:(id)a3
+- (void)startNFCReaderWithDelegate:(id)delegate
 {
   nfcReader = self->_nfcReader;
   if (!nfcReader)
   {
-    v5 = a3;
-    v6 = [[BCSNFCReader alloc] initWithDelegate:v5];
+    delegateCopy = delegate;
+    v6 = [[BCSNFCReader alloc] initWithDelegate:delegateCopy];
 
     v7 = self->_nfcReader;
     self->_nfcReader = v6;

@@ -1,33 +1,33 @@
 @interface NUSchema
-+ (BOOL)serializeMediaType:(int64_t)a3 intoDictionary:(id)a4 error:(id *)a5;
-+ (BOOL)validateIdentifiable:(id)a3 error:(id *)a4;
-+ (BOOL)validateIdentifiable:(id)a3 type:(int64_t)a4 error:(id *)a5;
-+ (BOOL)validateSchemaIdentifier:(id)a3 type:(int64_t)a4 error:(id *)a5;
-+ (BOOL)validateSchemaType:(id)a3 error:(id *)a4;
-+ (id)copyIdentifiableItem:(id)a3;
-+ (id)copyItem:(id)a3 schemaIdentifier:(id)a4;
-+ (id)deserializeContentsFromDictionary:(id)a3 error:(id *)a4;
-+ (id)deserializeFromDictionary:(id)a3 error:(id *)a4;
-+ (id)deserializeIdentifiableItem:(id)a3 error:(id *)a4;
-+ (id)deserializeIdentifierFromDictionary:(id)a3 error:(id *)a4;
-+ (id)deserializeItem:(id)a3 schemaIdentifier:(id)a4 error:(id *)a5;
-+ (id)deserializeSchemaFromArray:(id)a3 error:(id *)a4;
++ (BOOL)serializeMediaType:(int64_t)type intoDictionary:(id)dictionary error:(id *)error;
++ (BOOL)validateIdentifiable:(id)identifiable error:(id *)error;
++ (BOOL)validateIdentifiable:(id)identifiable type:(int64_t)type error:(id *)error;
++ (BOOL)validateSchemaIdentifier:(id)identifier type:(int64_t)type error:(id *)error;
++ (BOOL)validateSchemaType:(id)type error:(id *)error;
++ (id)copyIdentifiableItem:(id)item;
++ (id)copyItem:(id)item schemaIdentifier:(id)identifier;
++ (id)deserializeContentsFromDictionary:(id)dictionary error:(id *)error;
++ (id)deserializeFromDictionary:(id)dictionary error:(id *)error;
++ (id)deserializeIdentifiableItem:(id)item error:(id *)error;
++ (id)deserializeIdentifierFromDictionary:(id)dictionary error:(id *)error;
++ (id)deserializeItem:(id)item schemaIdentifier:(id)identifier error:(id *)error;
++ (id)deserializeSchemaFromArray:(id)array error:(id *)error;
 + (id)reservedPropertyNames;
-+ (id)serializeIdentifiableItem:(id)a3 error:(id *)a4;
-+ (id)serializeItem:(id)a3 schemaIdentifier:(id)a4 error:(id *)a5;
-+ (int64_t)deserializeMediaTypeFromDictionary:(id)a3;
-+ (int64_t)schemaTypeFromString:(id)a3 error:(id *)a4;
-- (BOOL)deserializeIdentifierFromDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSchema:(id)a3;
-- (BOOL)isValid:(id *)a3;
-- (BOOL)itemIsResolved:(id)a3;
-- (BOOL)resolveItem:(id)a3 resolver:(id)a4 error:(id *)a5;
-- (BOOL)serializeIdentifier:(id)a3 intoDictionary:(id)a4 error:(id *)a5;
-- (BOOL)serializeIntoDictionary:(id)a3 error:(id *)a4;
-- (BOOL)validateIdentifier:(id)a3 error:(id *)a4;
-- (NUSchema)initWithAttributes:(id)a3;
-- (NUSchema)initWithIdentifier:(id)a3 attributes:(id)a4;
++ (id)serializeIdentifiableItem:(id)item error:(id *)error;
++ (id)serializeItem:(id)item schemaIdentifier:(id)identifier error:(id *)error;
++ (int64_t)deserializeMediaTypeFromDictionary:(id)dictionary;
++ (int64_t)schemaTypeFromString:(id)string error:(id *)error;
+- (BOOL)deserializeIdentifierFromDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSchema:(id)schema;
+- (BOOL)isValid:(id *)valid;
+- (BOOL)itemIsResolved:(id)resolved;
+- (BOOL)resolveItem:(id)item resolver:(id)resolver error:(id *)error;
+- (BOOL)serializeIdentifier:(id)identifier intoDictionary:(id)dictionary error:(id *)error;
+- (BOOL)serializeIntoDictionary:(id)dictionary error:(id *)error;
+- (BOOL)validateIdentifier:(id)identifier error:(id *)error;
+- (NUSchema)initWithAttributes:(id)attributes;
+- (NUSchema)initWithIdentifier:(id)identifier attributes:(id)attributes;
 - (id)schemaDependencies;
 - (int64_t)type;
 - (unint64_t)hash;
@@ -35,11 +35,11 @@
 
 @implementation NUSchema
 
-- (BOOL)resolveItem:(id)a3 resolver:(id)a4 error:(id *)a5
+- (BOOL)resolveItem:(id)item resolver:(id)resolver error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  resolverCopy = resolver;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_18606);
@@ -82,8 +82,8 @@ LABEL_8:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v16 callStackSymbols];
+      v19 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v19;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -99,8 +99,8 @@ LABEL_8:
     v22 = MEMORY[0x1E696AF00];
     v23 = specific;
     v24 = v20;
-    v25 = [v22 callStackSymbols];
-    v26 = [v25 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v22 callStackSymbols];
+    v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v34 = specific;
     v35 = 2114;
@@ -114,10 +114,10 @@ LABEL_14:
   _NUAssertFailHandler("[NUSchema resolveItem:resolver:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 520, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v29, v30, v31, v32, v28);
 }
 
-- (BOOL)itemIsResolved:(id)a3
+- (BOOL)itemIsResolved:(id)resolved
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resolvedCopy = resolved;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_18606);
@@ -160,8 +160,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -177,8 +177,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -237,8 +237,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -254,8 +254,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -269,49 +269,49 @@ LABEL_14:
   _NUAssertFailHandler("[NUSchema schemaDependencies]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 512, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v23, v24, v25, v26, v22);
 }
 
-- (BOOL)serializeIntoDictionary:(id)a3 error:(id *)a4
+- (BOOL)serializeIntoDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
-  v6 = [(NUSchema *)self identifier];
-  v7 = [v6 stringRepresentation];
-  [v5 setObject:v7 forKeyedSubscript:@"identifier"];
+  dictionaryCopy = dictionary;
+  identifier = [(NUSchema *)self identifier];
+  stringRepresentation = [identifier stringRepresentation];
+  [dictionaryCopy setObject:stringRepresentation forKeyedSubscript:@"identifier"];
 
   return 1;
 }
 
-- (BOOL)isEqualToSchema:(id)a3
+- (BOOL)isEqualToSchema:(id)schema
 {
-  v4 = a3;
-  v5 = [(NUSchema *)self identifier];
-  v6 = [v4 identifier];
+  schemaCopy = schema;
+  identifier = [(NUSchema *)self identifier];
+  identifier2 = [schemaCopy identifier];
 
-  LOBYTE(v4) = [v5 isEqualToIdentifier:v6];
-  return v4;
+  LOBYTE(schemaCopy) = [identifier isEqualToIdentifier:identifier2];
+  return schemaCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUSchema *)self isEqualToSchema:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUSchema *)self isEqualToSchema:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(NUSchema *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(NUSchema *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)deserializeIdentifierFromDictionary:(id)a3 error:(id *)a4
+- (BOOL)deserializeIdentifierFromDictionary:(id)dictionary error:(id *)error
 {
-  v6 = [NUSchema deserializeIdentifierFromDictionary:a3 error:?];
+  v6 = [NUSchema deserializeIdentifierFromDictionary:dictionary error:?];
   if (v6)
   {
-    v7 = [(NUSchema *)self validateIdentifier:v6 error:a4];
+    v7 = [(NUSchema *)self validateIdentifier:v6 error:error];
   }
 
   else
@@ -322,12 +322,12 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)serializeIdentifier:(id)a3 intoDictionary:(id)a4 error:(id *)a5
+- (BOOL)serializeIdentifier:(id)identifier intoDictionary:(id)dictionary error:(id *)error
 {
   v66 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  if (!identifierCopy)
   {
     v14 = NUAssertLogger_18635();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -348,8 +348,8 @@ LABEL_14:
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v36 callStackSymbols];
+        v39 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v63 = v35;
         v64 = 2114;
@@ -360,8 +360,8 @@ LABEL_14:
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v63 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -370,8 +370,8 @@ LABEL_14:
     _NUAssertFailHandler("[NUSchema serializeIdentifier:intoDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 230, @"Invalid parameter not satisfying: %s", v40, v41, v42, v43, "identifier != nil");
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v21 = NUAssertLogger_18635();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -392,8 +392,8 @@ LABEL_14:
         v44 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v45 = MEMORY[0x1E696AF00];
         v46 = v44;
-        v47 = [v45 callStackSymbols];
-        v48 = [v47 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v45 callStackSymbols];
+        v48 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v63 = v44;
         v64 = 2114;
@@ -404,8 +404,8 @@ LABEL_14:
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v63 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -414,7 +414,7 @@ LABEL_14:
     _NUAssertFailHandler("[NUSchema serializeIdentifier:intoDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 231, @"Invalid parameter not satisfying: %s", v49, v50, v51, v52, "dictionary != nil");
   }
 
-  if (!a5)
+  if (!error)
   {
     v28 = NUAssertLogger_18635();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -435,8 +435,8 @@ LABEL_14:
         v53 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v54 = MEMORY[0x1E696AF00];
         v55 = v53;
-        v56 = [v54 callStackSymbols];
-        v57 = [v56 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v54 callStackSymbols];
+        v57 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v63 = v53;
         v64 = 2114;
@@ -447,8 +447,8 @@ LABEL_14:
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v63 = v34;
       _os_log_error_impl(&dword_1C0184000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -457,21 +457,21 @@ LABEL_14:
     _NUAssertFailHandler("[NUSchema serializeIdentifier:intoDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 232, @"Invalid parameter not satisfying: %s", v58, v59, v60, v61, "error != NULL");
   }
 
-  v11 = [(NUSchema *)self validateIdentifier:v8 error:a5];
+  v11 = [(NUSchema *)self validateIdentifier:identifierCopy error:error];
   if (v11)
   {
-    v12 = [v8 stringRepresentation];
-    [v10 setObject:v12 forKeyedSubscript:@"identifier"];
+    stringRepresentation = [identifierCopy stringRepresentation];
+    [v10 setObject:stringRepresentation forKeyedSubscript:@"identifier"];
   }
 
   return v11;
 }
 
-- (BOOL)validateIdentifier:(id)a3 error:(id *)a4
+- (BOOL)validateIdentifier:(id)identifier error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v11 = NUAssertLogger_18635();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -492,8 +492,8 @@ LABEL_14:
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v44 = v25;
         v45 = 2114;
@@ -504,8 +504,8 @@ LABEL_14:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v44 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -514,7 +514,7 @@ LABEL_14:
     _NUAssertFailHandler("[NUSchema validateIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 149, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "identifier != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v18 = NUAssertLogger_18635();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -535,8 +535,8 @@ LABEL_14:
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v35 callStackSymbols];
+        v38 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v44 = v34;
         v45 = 2114;
@@ -547,8 +547,8 @@ LABEL_14:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v44 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -557,19 +557,19 @@ LABEL_14:
     _NUAssertFailHandler("[NUSchema validateIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 150, @"Invalid parameter not satisfying: %s", v39, v40, v41, v42, "error != NULL");
   }
 
-  v7 = v6;
-  v8 = [(NUSchema *)self identifier];
-  v9 = [v7 isEqualToIdentifier:v8];
+  v7 = identifierCopy;
+  identifier = [(NUSchema *)self identifier];
+  v9 = [v7 isEqualToIdentifier:identifier];
 
   if ((v9 & 1) == 0)
   {
-    *a4 = [NUError mismatchError:@"Identifier mismatch" object:v7];
+    *error = [NUError mismatchError:@"Identifier mismatch" object:v7];
   }
 
   return v9;
 }
 
-- (BOOL)isValid:(id *)a3
+- (BOOL)isValid:(id *)valid
 {
   v10 = 0;
   v5 = [(NUModel *)self validateAttributes:&v10];
@@ -579,18 +579,18 @@ LABEL_14:
     v7 = [NUError errorWithCode:2 reason:@"Invalid attributes" object:self underlyingError:v6];
     v8 = v7;
 
-    *a3 = v7;
+    *valid = v7;
   }
 
   return v5;
 }
 
-- (NUSchema)initWithIdentifier:(id)a3 attributes:(id)a4
+- (NUSchema)initWithIdentifier:(id)identifier attributes:(id)attributes
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  attributesCopy = attributes;
+  if (!identifierCopy)
   {
     v12 = NUAssertLogger_18635();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -611,8 +611,8 @@ LABEL_14:
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v19;
         v31 = 2114;
@@ -623,8 +623,8 @@ LABEL_14:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -633,20 +633,20 @@ LABEL_14:
     _NUAssertFailHandler("[NUSchema initWithIdentifier:attributes:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 49, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "identifier != nil");
   }
 
-  v8 = v7;
+  v8 = attributesCopy;
   v28.receiver = self;
   v28.super_class = NUSchema;
-  v9 = [(NUModel *)&v28 initWithAttributes:v7];
+  v9 = [(NUModel *)&v28 initWithAttributes:attributesCopy];
   identifier = v9->_identifier;
-  v9->_identifier = v6;
+  v9->_identifier = identifierCopy;
 
   return v9;
 }
 
-- (NUSchema)initWithAttributes:(id)a3
+- (NUSchema)initWithAttributes:(id)attributes
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_18606);
@@ -690,8 +690,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -707,8 +707,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -769,8 +769,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -786,8 +786,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -801,11 +801,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUSchema type]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 39, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v23, v24, v25, v26, v22);
 }
 
-+ (id)deserializeSchemaFromArray:(id)a3 error:(id *)a4
++ (id)deserializeSchemaFromArray:(id)array error:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
     v19 = NUAssertLogger_18635();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -826,8 +826,8 @@ LABEL_14:
         v33 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v34 = MEMORY[0x1E696AF00];
         v35 = v33;
-        v36 = [v34 callStackSymbols];
-        v37 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v34 callStackSymbols];
+        v37 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v59 = v33;
         v60 = 2114;
@@ -838,8 +838,8 @@ LABEL_14:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v59 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -848,7 +848,7 @@ LABEL_14:
     _NUAssertFailHandler("+[NUSchema deserializeSchemaFromArray:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 483, @"Invalid parameter not satisfying: %s", v38, v39, v40, v41, "array != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v26 = NUAssertLogger_18635();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -869,8 +869,8 @@ LABEL_14:
         v42 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v43 = MEMORY[0x1E696AF00];
         v44 = v42;
-        v45 = [v43 callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v43 callStackSymbols];
+        v46 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v59 = v42;
         v60 = 2114;
@@ -881,8 +881,8 @@ LABEL_14:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v59 = v32;
       _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -891,9 +891,9 @@ LABEL_14:
     _NUAssertFailHandler("+[NUSchema deserializeSchemaFromArray:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 484, @"Invalid parameter not satisfying: %s", v47, v48, v49, v50, "error != NULL");
   }
 
-  v7 = v6;
-  v51 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = arrayCopy;
+  errorCopy = error;
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
@@ -921,11 +921,11 @@ LABEL_5:
       }
 
       v52 = 0;
-      v15 = [a1 deserializeFromDictionary:v14 error:&v52];
+      v15 = [self deserializeFromDictionary:v14 error:&v52];
       v16 = v52;
       if (!v15)
       {
-        *v51 = [NUError errorWithCode:1 reason:@"Failed to deserialize schema" object:v14 underlyingError:v16];
+        *errorCopy = [NUError errorWithCode:1 reason:@"Failed to deserialize schema" object:v14 underlyingError:v16];
 
         goto LABEL_15;
       }
@@ -944,7 +944,7 @@ LABEL_5:
       }
     }
 
-    *v51 = [NUError mismatchError:@"Not a dictionary" object:v14];
+    *errorCopy = [NUError mismatchError:@"Not a dictionary" object:v14];
 LABEL_15:
 
     v17 = 0;
@@ -959,11 +959,11 @@ LABEL_16:
   return v17;
 }
 
-+ (id)deserializeFromDictionary:(id)a3 error:(id *)a4
++ (id)deserializeFromDictionary:(id)dictionary error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v13 = NUAssertLogger_18635();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -984,8 +984,8 @@ LABEL_16:
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v27;
         v47 = 2114;
@@ -996,8 +996,8 @@ LABEL_16:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1006,7 +1006,7 @@ LABEL_16:
     _NUAssertFailHandler("+[NUSchema deserializeFromDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 441, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "dictionary != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v20 = NUAssertLogger_18635();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1027,8 +1027,8 @@ LABEL_16:
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v37 callStackSymbols];
+        v40 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v36;
         v47 = 2114;
@@ -1039,8 +1039,8 @@ LABEL_16:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1049,14 +1049,14 @@ LABEL_16:
     _NUAssertFailHandler("+[NUSchema deserializeFromDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 442, @"Invalid parameter not satisfying: %s", v41, v42, v43, v44, "error != NULL");
   }
 
-  v6 = v5;
-  v7 = [v5 objectForKeyedSubscript:@"isa"];
+  v6 = dictionaryCopy;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"isa"];
   if (!v7)
   {
     v10 = [NUError missingError:@"Missing schema type" object:v6];
 LABEL_9:
     v11 = 0;
-    *a4 = v10;
+    *error = v10;
     goto LABEL_18;
   }
 
@@ -1088,14 +1088,14 @@ LABEL_9:
     if (![v8 isEqualToString:@"Source"])
     {
       [NUError unknownError:@"Unknown schema type" object:v8];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_17;
     }
 
     v9 = NUSourceSchema;
   }
 
-  v11 = [(__objc2_class *)v9 deserializeFromDictionary:v6 error:a4];
+  v11 = [(__objc2_class *)v9 deserializeFromDictionary:v6 error:error];
 LABEL_17:
 
 LABEL_18:
@@ -1103,12 +1103,12 @@ LABEL_18:
   return v11;
 }
 
-+ (id)deserializeItem:(id)a3 schemaIdentifier:(id)a4 error:(id *)a5
++ (id)deserializeItem:(id)item schemaIdentifier:(id)identifier error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  itemCopy = item;
+  identifierCopy = identifier;
+  if (!itemCopy)
   {
     v15 = NUAssertLogger_18635();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1129,8 +1129,8 @@ LABEL_18:
         v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v29;
         v49 = 2114;
@@ -1141,8 +1141,8 @@ LABEL_18:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1151,7 +1151,7 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema deserializeItem:schemaIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 398, @"Invalid parameter not satisfying: %s", v34, v35, v36, v37, "object != nil");
   }
 
-  if (!a5)
+  if (!error)
   {
     v22 = NUAssertLogger_18635();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1172,8 +1172,8 @@ LABEL_18:
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v41 = [v39 callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v39 callStackSymbols];
+        v42 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v38;
         v49 = 2114;
@@ -1184,8 +1184,8 @@ LABEL_18:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1194,30 +1194,30 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema deserializeItem:schemaIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 399, @"Invalid parameter not satisfying: %s", v43, v44, v45, v46, "error != NULL");
   }
 
-  v9 = v8;
+  v9 = identifierCopy;
   v10 = +[NUSchemaRegistry sharedRegistry];
   v11 = [v10 schemaWithIdentifier:v9];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 deserialize:v7 error:a5];
+    v13 = [v11 deserialize:itemCopy error:error];
   }
 
   else
   {
     [NUError unknownError:@"Unknown identifier" object:v9];
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
   return v13;
 }
 
-+ (id)serializeItem:(id)a3 schemaIdentifier:(id)a4 error:(id *)a5
++ (id)serializeItem:(id)item schemaIdentifier:(id)identifier error:(id *)error
 {
   v73 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  itemCopy = item;
+  identifierCopy = identifier;
+  if (!itemCopy)
   {
     v20 = NUAssertLogger_18635();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1238,8 +1238,8 @@ LABEL_18:
         v41 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v42 = MEMORY[0x1E696AF00];
         v43 = v41;
-        v44 = [v42 callStackSymbols];
-        v45 = [v44 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v42 callStackSymbols];
+        v45 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v70 = v41;
         v71 = 2114;
@@ -1250,8 +1250,8 @@ LABEL_18:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v70 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1260,8 +1260,8 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema serializeItem:schemaIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 373, @"Invalid parameter not satisfying: %s", v46, v47, v48, v49, "item != nil");
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = identifierCopy;
+  if (!identifierCopy)
   {
     v27 = NUAssertLogger_18635();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -1282,8 +1282,8 @@ LABEL_18:
         v50 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v51 = MEMORY[0x1E696AF00];
         v52 = v50;
-        v53 = [v51 callStackSymbols];
-        v54 = [v53 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v51 callStackSymbols];
+        v54 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v70 = v50;
         v71 = 2114;
@@ -1294,8 +1294,8 @@ LABEL_18:
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v33 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v70 = v33;
       _os_log_error_impl(&dword_1C0184000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1304,7 +1304,7 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema serializeItem:schemaIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 374, @"Invalid parameter not satisfying: %s", v55, v56, v57, v58, "identifier != nil");
   }
 
-  if (!a5)
+  if (!error)
   {
     v34 = NUAssertLogger_18635();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -1325,8 +1325,8 @@ LABEL_18:
         v59 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v60 = MEMORY[0x1E696AF00];
         v61 = v59;
-        v62 = [v60 callStackSymbols];
-        v63 = [v62 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v60 callStackSymbols];
+        v63 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v70 = v59;
         v71 = 2114;
@@ -1337,8 +1337,8 @@ LABEL_18:
 
     else if (v38)
     {
-      v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v40 = [v39 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v40 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v70 = v40;
       _os_log_error_impl(&dword_1C0184000, v37, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1353,7 +1353,7 @@ LABEL_18:
   if (v11)
   {
     v68 = 0;
-    v13 = [v11 serialize:v7 error:&v68];
+    v13 = [v11 serialize:itemCopy error:&v68];
     v14 = v13;
     if (v13)
     {
@@ -1363,27 +1363,27 @@ LABEL_18:
     else
     {
       v16 = v68;
-      v17 = [NUError errorWithCode:1 reason:@"Failed to serialize item" object:v7 underlyingError:v16];
+      v17 = [NUError errorWithCode:1 reason:@"Failed to serialize item" object:itemCopy underlyingError:v16];
       v18 = v17;
 
-      *a5 = v17;
+      *error = v17;
     }
   }
 
   else
   {
     [NUError unknownError:@"Unknown identifier" object:v9];
-    *a5 = v14 = 0;
+    *error = v14 = 0;
   }
 
   return v14;
 }
 
-+ (id)deserializeIdentifiableItem:(id)a3 error:(id *)a4
++ (id)deserializeIdentifiableItem:(id)item error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  itemCopy = item;
+  if (!itemCopy)
   {
     v12 = NUAssertLogger_18635();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1404,8 +1404,8 @@ LABEL_18:
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v26;
         v47 = 2114;
@@ -1416,8 +1416,8 @@ LABEL_18:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1426,7 +1426,7 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema deserializeIdentifiableItem:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 351, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, "object != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v19 = NUAssertLogger_18635();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1447,8 +1447,8 @@ LABEL_18:
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v36 callStackSymbols];
+        v39 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v35;
         v47 = 2114;
@@ -1459,8 +1459,8 @@ LABEL_18:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1469,48 +1469,48 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema deserializeIdentifiableItem:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 352, @"Invalid parameter not satisfying: %s", v40, v41, v42, v43, "error != NULL");
   }
 
-  v7 = v6;
+  v7 = itemCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v44 = 0;
-    v8 = [a1 deserializeIdentifierFromDictionary:v7 error:&v44];
+    v8 = [self deserializeIdentifierFromDictionary:v7 error:&v44];
     v9 = v44;
     if (v8)
     {
-      v10 = [NUSchema deserializeItem:v7 schemaIdentifier:v8 error:a4];
+      v10 = [NUSchema deserializeItem:v7 schemaIdentifier:v8 error:error];
     }
 
     else
     {
       [NUError errorWithCode:1 reason:@"Failed to deserialize identifier" object:v7 underlyingError:v9];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
   }
 
   else
   {
     [NUError mismatchError:@"Not a dictionary" object:v7];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   return v10;
 }
 
-+ (id)serializeIdentifiableItem:(id)a3 error:(id *)a4
++ (id)serializeIdentifiableItem:(id)item error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 identifier];
-  v7 = [NUSchema serializeItem:v5 schemaIdentifier:v6 error:a4];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  v7 = [NUSchema serializeItem:itemCopy schemaIdentifier:identifier error:error];
 
   return v7;
 }
 
-+ (id)deserializeContentsFromDictionary:(id)a3 error:(id *)a4
++ (id)deserializeContentsFromDictionary:(id)dictionary error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v23 = NUAssertLogger_18635();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -1531,8 +1531,8 @@ LABEL_18:
         v37 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v37;
         v67 = 2114;
@@ -1543,8 +1543,8 @@ LABEL_18:
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1553,7 +1553,7 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema deserializeContentsFromDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 310, @"Invalid parameter not satisfying: %s", v42, v43, v44, v45, "dictionary != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v30 = NUAssertLogger_18635();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1574,8 +1574,8 @@ LABEL_18:
         v46 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v47 = MEMORY[0x1E696AF00];
         v48 = v46;
-        v49 = [v47 callStackSymbols];
-        v50 = [v49 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v47 callStackSymbols];
+        v50 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v46;
         v67 = 2114;
@@ -1586,8 +1586,8 @@ LABEL_18:
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v36;
       _os_log_error_impl(&dword_1C0184000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1596,9 +1596,9 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema deserializeContentsFromDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 311, @"Invalid parameter not satisfying: %s", v51, v52, v53, v54, "error != NULL");
   }
 
-  v7 = v6;
+  v7 = dictionaryCopy;
   v63 = 0;
-  v8 = [a1 deserializeDictionaryFromDictionary:v6 key:@"contents" error:&v63];
+  v8 = [self deserializeDictionaryFromDictionary:dictionaryCopy key:@"contents" error:&v63];
   v9 = v63;
   if (v8)
   {
@@ -1612,7 +1612,7 @@ LABEL_18:
     if (v12)
     {
       v13 = v12;
-      v55 = a4;
+      errorCopy = error;
       v56 = v8;
       v14 = *v60;
       v57 = v7;
@@ -1665,7 +1665,7 @@ LABEL_6:
 
       v21 = [NUError invalidError:@"Not an identifier string" object:v17];
 LABEL_17:
-      *v55 = v21;
+      *errorCopy = v21;
 
       v20 = 0;
       v9 = v16;
@@ -1683,17 +1683,17 @@ LABEL_18:
   else
   {
     [NUError errorWithCode:2 reason:@"Invalid contents dictionary" object:v7 underlyingError:v9];
-    *a4 = v20 = 0;
+    *error = v20 = 0;
   }
 
   return v20;
 }
 
-+ (BOOL)serializeMediaType:(int64_t)a3 intoDictionary:(id)a4 error:(id *)a5
++ (BOOL)serializeMediaType:(int64_t)type intoDictionary:(id)dictionary error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!v7)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v12 = NUAssertLogger_18635();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1714,8 +1714,8 @@ LABEL_18:
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v26;
         v46 = 2114;
@@ -1726,8 +1726,8 @@ LABEL_18:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1736,7 +1736,7 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema serializeMediaType:intoDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 297, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, "dictionary != nil");
   }
 
-  if (!a5)
+  if (!error)
   {
     v19 = NUAssertLogger_18635();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1757,8 +1757,8 @@ LABEL_18:
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v36 callStackSymbols];
+        v39 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v35;
         v46 = 2114;
@@ -1769,8 +1769,8 @@ LABEL_18:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1779,17 +1779,17 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema serializeMediaType:intoDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 298, @"Invalid parameter not satisfying: %s", v40, v41, v42, v43, "error != NULL");
   }
 
-  v8 = v7;
-  if (a3)
+  v8 = dictionaryCopy;
+  if (type)
   {
-    if (a3 > 3)
+    if (type > 3)
     {
       v9 = @"Invalid";
     }
 
     else
     {
-      v9 = off_1E81098D0[a3];
+      v9 = off_1E81098D0[type];
     }
 
     v10 = v9;
@@ -1799,11 +1799,11 @@ LABEL_18:
   return 1;
 }
 
-+ (int64_t)deserializeMediaTypeFromDictionary:(id)a3
++ (int64_t)deserializeMediaTypeFromDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v10 = NUAssertLogger_18635();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1824,8 +1824,8 @@ LABEL_18:
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -1836,8 +1836,8 @@ LABEL_18:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1846,9 +1846,9 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema deserializeMediaTypeFromDictionary:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 281, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "dictionary != nil");
   }
 
-  v5 = v4;
+  v5 = dictionaryCopy;
   v26 = 0;
-  v6 = [a1 deserializeStringFromDictionary:v4 key:@"media-type" error:&v26];
+  v6 = [self deserializeStringFromDictionary:dictionaryCopy key:@"media-type" error:&v26];
   v7 = v6;
   if (v6)
   {
@@ -1863,11 +1863,11 @@ LABEL_18:
   return v8;
 }
 
-+ (id)deserializeIdentifierFromDictionary:(id)a3 error:(id *)a4
++ (id)deserializeIdentifierFromDictionary:(id)dictionary error:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v14 = NUAssertLogger_18635();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1888,8 +1888,8 @@ LABEL_18:
         v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v49 = v28;
         v50 = 2114;
@@ -1900,8 +1900,8 @@ LABEL_18:
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v49 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1910,7 +1910,7 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema deserializeIdentifierFromDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 246, @"Invalid parameter not satisfying: %s", v33, v34, v35, v36, "dictionary != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v21 = NUAssertLogger_18635();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1931,8 +1931,8 @@ LABEL_18:
         v37 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v38 callStackSymbols];
+        v41 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v49 = v37;
         v50 = 2114;
@@ -1943,8 +1943,8 @@ LABEL_18:
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v49 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1953,9 +1953,9 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema deserializeIdentifierFromDictionary:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 247, @"Invalid parameter not satisfying: %s", v42, v43, v44, v45, "error != NULL");
   }
 
-  v7 = v6;
+  v7 = dictionaryCopy;
   v47 = 0;
-  v8 = [a1 deserializeStringFromDictionary:v6 key:@"identifier" error:&v47];
+  v8 = [self deserializeStringFromDictionary:dictionaryCopy key:@"identifier" error:&v47];
   v9 = v47;
   if (v8)
   {
@@ -1970,7 +1970,7 @@ LABEL_18:
 
     else
     {
-      *a4 = [NUError failureError:@"Malformed identifier" object:v8];
+      *error = [NUError failureError:@"Malformed identifier" object:v8];
     }
 
     v9 = v11;
@@ -1979,18 +1979,18 @@ LABEL_18:
   else
   {
     [NUError errorWithCode:2 reason:@"Invalid identifier" object:v7 underlyingError:v9];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   return v10;
 }
 
-+ (id)copyItem:(id)a3 schemaIdentifier:(id)a4
++ (id)copyItem:(id)item schemaIdentifier:(id)identifier
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  itemCopy = item;
+  identifierCopy = identifier;
+  if (!itemCopy)
   {
     v13 = NUAssertLogger_18635();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2011,8 +2011,8 @@ LABEL_18:
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v27;
         v47 = 2114;
@@ -2023,8 +2023,8 @@ LABEL_18:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2033,8 +2033,8 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema copyItem:schemaIdentifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 214, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "item != nil");
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = identifierCopy;
+  if (!identifierCopy)
   {
     v20 = NUAssertLogger_18635();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -2055,8 +2055,8 @@ LABEL_18:
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v37 callStackSymbols];
+        v40 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v36;
         v47 = 2114;
@@ -2067,8 +2067,8 @@ LABEL_18:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2082,7 +2082,7 @@ LABEL_18:
 
   if (v9)
   {
-    v10 = [v9 copy:v5];
+    v10 = [v9 copy:itemCopy];
   }
 
   else
@@ -2106,20 +2106,20 @@ LABEL_18:
   return v10;
 }
 
-+ (id)copyIdentifiableItem:(id)a3
++ (id)copyIdentifiableItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [a1 copyItem:v4 schemaIdentifier:v5];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  v6 = [self copyItem:itemCopy schemaIdentifier:identifier];
 
   return v6;
 }
 
-+ (BOOL)validateIdentifiable:(id)a3 type:(int64_t)a4 error:(id *)a5
++ (BOOL)validateIdentifiable:(id)identifiable type:(int64_t)type error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  identifiableCopy = identifiable;
+  if (!identifiableCopy)
   {
     v18 = NUAssertLogger_18635();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -2140,8 +2140,8 @@ LABEL_18:
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v33 callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v52 = v32;
         v53 = 2114;
@@ -2152,8 +2152,8 @@ LABEL_18:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v52 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2162,7 +2162,7 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema validateIdentifiable:type:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 178, @"Invalid parameter not satisfying: %s", v37, v38, v39, v40, "item != nil");
   }
 
-  if (!a5)
+  if (!error)
   {
     v25 = NUAssertLogger_18635();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -2183,8 +2183,8 @@ LABEL_18:
         v41 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v42 = MEMORY[0x1E696AF00];
         v43 = v41;
-        v44 = [v42 callStackSymbols];
-        v45 = [v44 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v42 callStackSymbols];
+        v45 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v52 = v41;
         v53 = 2114;
@@ -2195,8 +2195,8 @@ LABEL_18:
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v52 = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2205,14 +2205,14 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema validateIdentifiable:type:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 179, @"Invalid parameter not satisfying: %s", v46, v47, v48, v49, "error != NULL");
   }
 
-  v8 = v7;
+  v8 = identifiableCopy;
   v9 = +[NUSchemaRegistry sharedRegistry];
-  v10 = [v8 identifier];
-  v11 = [v9 schemaWithIdentifier:v10];
+  identifier = [v8 identifier];
+  v11 = [v9 schemaWithIdentifier:identifier];
 
   if (v11)
   {
-    if ([v11 type] == a4)
+    if ([v11 type] == type)
     {
       v50 = 0;
       if ([v11 validate:v8 error:&v50])
@@ -2227,21 +2227,21 @@ LABEL_18:
         v16 = v15;
 
         v12 = 0;
-        *a5 = v15;
+        *error = v15;
       }
     }
 
     else
     {
       [NUError mismatchError:@"Wrong schema type" object:v8];
-      *a5 = v12 = 0;
+      *error = v12 = 0;
     }
   }
 
   else
   {
-    v13 = [v8 identifier];
-    *a5 = [NUError unknownError:@"Unknown schema identifier" object:v13];
+    identifier2 = [v8 identifier];
+    *error = [NUError unknownError:@"Unknown schema identifier" object:identifier2];
 
     v12 = 0;
   }
@@ -2249,11 +2249,11 @@ LABEL_18:
   return v12;
 }
 
-+ (BOOL)validateIdentifiable:(id)a3 error:(id *)a4
++ (BOOL)validateIdentifiable:(id)identifiable error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  identifiableCopy = identifiable;
+  if (!identifiableCopy)
   {
     v9 = NUAssertLogger_18635();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2274,8 +2274,8 @@ LABEL_18:
         v23 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v23;
         v43 = 2114;
@@ -2286,8 +2286,8 @@ LABEL_18:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2296,7 +2296,7 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema validateIdentifiable:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 164, @"Invalid parameter not satisfying: %s", v28, v29, v30, v31, "object != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v16 = NUAssertLogger_18635();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2317,8 +2317,8 @@ LABEL_18:
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v33 callStackSymbols];
+        v36 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v32;
         v43 = 2114;
@@ -2329,8 +2329,8 @@ LABEL_18:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2339,21 +2339,21 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema validateIdentifiable:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 165, @"Invalid parameter not satisfying: %s", v37, v38, v39, v40, "error != NULL");
   }
 
-  v6 = v5;
-  v7 = [v5 conformsToProtocol:&unk_1F3F866A8];
+  v6 = identifiableCopy;
+  v7 = [identifiableCopy conformsToProtocol:&unk_1F3F866A8];
   if ((v7 & 1) == 0)
   {
-    *a4 = [NUError mismatchError:@"Object is not identifiable" object:v6];
+    *error = [NUError mismatchError:@"Object is not identifiable" object:v6];
   }
 
   return v7;
 }
 
-+ (int64_t)schemaTypeFromString:(id)a3 error:(id *)a4
++ (int64_t)schemaTypeFromString:(id)string error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  stringCopy = string;
+  if (!stringCopy)
   {
     v9 = NUAssertLogger_18635();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2374,8 +2374,8 @@ LABEL_18:
         v23 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v23;
         v43 = 2114;
@@ -2386,8 +2386,8 @@ LABEL_18:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2396,7 +2396,7 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema schemaTypeFromString:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 121, @"Invalid parameter not satisfying: %s", v28, v29, v30, v31, "string != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v16 = NUAssertLogger_18635();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2417,8 +2417,8 @@ LABEL_18:
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v33 callStackSymbols];
+        v36 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v32;
         v43 = 2114;
@@ -2429,8 +2429,8 @@ LABEL_18:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2439,8 +2439,8 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema schemaTypeFromString:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 122, @"Invalid parameter not satisfying: %s", v37, v38, v39, v40, "error != NULL");
   }
 
-  v6 = v5;
-  if ([v5 isEqualToString:@"Adjustment"])
+  v6 = stringCopy;
+  if ([stringCopy isEqualToString:@"Adjustment"])
   {
     v7 = 1;
   }
@@ -2463,18 +2463,18 @@ LABEL_18:
   else
   {
     [NUError unknownError:@"Unknown schema type" object:v6];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   return v7;
 }
 
-+ (BOOL)validateSchemaType:(id)a3 error:(id *)a4
++ (BOOL)validateSchemaType:(id)type error:(id *)error
 {
-  v6 = a3;
-  if ([NUModel validateString:v6 error:a4])
+  typeCopy = type;
+  if ([NUModel validateString:typeCopy error:error])
   {
-    v7 = [a1 schemaTypeFromString:v6 error:a4] != 0;
+    v7 = [self schemaTypeFromString:typeCopy error:error] != 0;
   }
 
   else
@@ -2485,11 +2485,11 @@ LABEL_18:
   return v7;
 }
 
-+ (BOOL)validateSchemaIdentifier:(id)a3 type:(int64_t)a4 error:(id *)a5
++ (BOOL)validateSchemaIdentifier:(id)identifier type:(int64_t)type error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v15 = NUAssertLogger_18635();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -2510,8 +2510,8 @@ LABEL_18:
         v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v29;
         v49 = 2114;
@@ -2522,8 +2522,8 @@ LABEL_18:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2532,7 +2532,7 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema validateSchemaIdentifier:type:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 84, @"Invalid parameter not satisfying: %s", v34, v35, v36, v37, "identifier != nil");
   }
 
-  if (!a5)
+  if (!error)
   {
     v22 = NUAssertLogger_18635();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -2553,8 +2553,8 @@ LABEL_18:
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v41 = [v39 callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v39 callStackSymbols];
+        v42 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v38;
         v49 = 2114;
@@ -2565,8 +2565,8 @@ LABEL_18:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2575,7 +2575,7 @@ LABEL_18:
     _NUAssertFailHandler("+[NUSchema validateSchemaIdentifier:type:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSchema.m", 85, @"Invalid parameter not satisfying: %s", v43, v44, v45, v46, "error != NULL");
   }
 
-  v8 = v7;
+  v8 = identifierCopy;
   v9 = +[NUSchemaRegistry sharedRegistry];
   v10 = [v9 schemaWithIdentifier:v8];
   v11 = v10;
@@ -2584,11 +2584,11 @@ LABEL_18:
     v13 = [NUError unknownError:@"Unknown schema" object:v8];
 LABEL_9:
     v12 = 0;
-    *a5 = v13;
+    *error = v13;
     goto LABEL_10;
   }
 
-  if (a4 && [v10 type] != a4)
+  if (type && [v10 type] != type)
   {
     v13 = [NUError mismatchError:@"Wrong schema type" object:v8];
     goto LABEL_9;
@@ -2606,7 +2606,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __33__NUSchema_reservedPropertyNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (reservedPropertyNames_onceToken_19559 != -1)
   {
     dispatch_once(&reservedPropertyNames_onceToken_19559, block);

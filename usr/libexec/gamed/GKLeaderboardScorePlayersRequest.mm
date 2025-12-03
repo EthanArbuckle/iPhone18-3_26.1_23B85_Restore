@@ -1,24 +1,24 @@
 @interface GKLeaderboardScorePlayersRequest
-- (id)serverRequestWithService:(id)a3;
-- (void)generateScoresFromServerResponse:(id)a3 service:(id)a4 context:(id)a5 timeToLive:(double)a6 handler:(id)a7;
-- (void)loadScoresWithService:(id)a3 context:(id)a4 handler:(id)a5;
+- (id)serverRequestWithService:(id)service;
+- (void)generateScoresFromServerResponse:(id)response service:(id)service context:(id)context timeToLive:(double)live handler:(id)handler;
+- (void)loadScoresWithService:(id)service context:(id)context handler:(id)handler;
 @end
 
 @implementation GKLeaderboardScorePlayersRequest
 
-- (id)serverRequestWithService:(id)a3
+- (id)serverRequestWithService:(id)service
 {
-  v4 = [a3 localPlayer];
-  v5 = [v4 playerID];
+  localPlayer = [service localPlayer];
+  playerID = [localPlayer playerID];
 
-  v6 = [(GKLeaderboardScorePlayersRequest *)self playerInternals];
-  v7 = [v6 _gkMapWithBlock:&stru_100366760];
+  playerInternals = [(GKLeaderboardScorePlayersRequest *)self playerInternals];
+  v7 = [playerInternals _gkMapWithBlock:&stru_100366760];
 
   if (v7)
   {
-    if (([v7 containsObject:v5] & 1) == 0)
+    if (([v7 containsObject:playerID] & 1) == 0)
     {
-      v8 = [v7 arrayByAddingObject:v5];
+      v8 = [v7 arrayByAddingObject:playerID];
 
       v7 = v8;
     }
@@ -26,123 +26,123 @@
 
   else
   {
-    v24 = v5;
+    v24 = playerID;
     v7 = [NSArray arrayWithObjects:&v24 count:1];
   }
 
   v22[0] = @"game";
-  v9 = [(GKLeaderboardScorePlayersRequest *)self gameBundleID];
-  v21 = v9;
+  gameBundleID = [(GKLeaderboardScorePlayersRequest *)self gameBundleID];
+  v21 = gameBundleID;
   v10 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
   v23[0] = v10;
   v22[1] = @"time-scope";
-  v11 = [(GKLeaderboardScorePlayersRequest *)self serverTimeScope];
-  v23[1] = v11;
+  serverTimeScope = [(GKLeaderboardScorePlayersRequest *)self serverTimeScope];
+  v23[1] = serverTimeScope;
   v22[2] = @"player-scope";
-  v12 = [(GKLeaderboardScorePlayersRequest *)self serverPlayerScope];
+  serverPlayerScope = [(GKLeaderboardScorePlayersRequest *)self serverPlayerScope];
   v22[3] = @"player-ids";
-  v23[2] = v12;
+  v23[2] = serverPlayerScope;
   v23[3] = v7;
   v13 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:4];
 
   v14 = [NSMutableDictionary dictionaryWithDictionary:v13];
-  v15 = [(GKLeaderboardScorePlayersRequest *)self identifier];
+  identifier = [(GKLeaderboardScorePlayersRequest *)self identifier];
 
-  if (v15)
+  if (identifier)
   {
-    v16 = [(GKLeaderboardScorePlayersRequest *)self identifier];
+    identifier2 = [(GKLeaderboardScorePlayersRequest *)self identifier];
   }
 
   else
   {
-    v17 = [(GKLeaderboardScorePlayersRequest *)self groupIdentifier];
+    groupIdentifier = [(GKLeaderboardScorePlayersRequest *)self groupIdentifier];
 
-    if (!v17)
+    if (!groupIdentifier)
     {
       goto LABEL_10;
     }
 
-    v16 = [(GKLeaderboardScorePlayersRequest *)self groupIdentifier];
+    identifier2 = [(GKLeaderboardScorePlayersRequest *)self groupIdentifier];
   }
 
-  v18 = v16;
-  [v14 setObject:v16 forKeyedSubscript:@"category"];
+  v18 = identifier2;
+  [v14 setObject:identifier2 forKeyedSubscript:@"category"];
 
 LABEL_10:
 
   return v14;
 }
 
-- (void)generateScoresFromServerResponse:(id)a3 service:(id)a4 context:(id)a5 timeToLive:(double)a6 handler:(id)a7
+- (void)generateScoresFromServerResponse:(id)response service:(id)service context:(id)context timeToLive:(double)live handler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = a5;
-  v15 = [v12 clientProxy];
+  responseCopy = response;
+  serviceCopy = service;
+  handlerCopy = handler;
+  contextCopy = context;
+  clientProxy = [serviceCopy clientProxy];
   v16 = [NSString stringWithFormat:@"%s:%d %s", "GKLeaderboardScoreRequest+GKGameStatService.m", 311, "[GKLeaderboardScorePlayersRequest(GKGameStatService) generateScoresFromServerResponse:service:context:timeToLive:handler:]"];
-  v17 = [GKCacheTransactionGroup transactionGroupWithName:v16 context:v14 client:v15];
+  v17 = [GKCacheTransactionGroup transactionGroupWithName:v16 context:contextCopy client:clientProxy];
 
-  if (v11)
+  if (responseCopy)
   {
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_1000F5FC8;
     v24[3] = &unk_1003626D8;
     v24[4] = self;
-    v25 = v11;
+    v25 = responseCopy;
     v26 = v17;
-    v27 = v12;
+    v27 = serviceCopy;
     [v26 performOnManagedObjectContext:v24];
   }
 
-  v18 = [v15 replyQueue];
+  replyQueue = [clientProxy replyQueue];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000F63C4;
   v21[3] = &unk_100360EB0;
   v22 = v17;
-  v23 = v13;
+  v23 = handlerCopy;
   v19 = v17;
-  v20 = v13;
-  [v19 notifyOnQueue:v18 block:v21];
+  v20 = handlerCopy;
+  [v19 notifyOnQueue:replyQueue block:v21];
 }
 
-- (void)loadScoresWithService:(id)a3 context:(id)a4 handler:(id)a5
+- (void)loadScoresWithService:(id)service context:(id)context handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 clientProxy];
+  serviceCopy = service;
+  contextCopy = context;
+  handlerCopy = handler;
+  clientProxy = [serviceCopy clientProxy];
   v12 = [NSString stringWithFormat:@"%s:%d %s", "GKLeaderboardScoreRequest+GKGameStatService.m", 358, "[GKLeaderboardScorePlayersRequest(GKGameStatService) loadScoresWithService:context:handler:]"];
-  v13 = [GKCacheTransactionGroup transactionGroupWithName:v12 context:v9 client:v11];
+  v13 = [GKCacheTransactionGroup transactionGroupWithName:v12 context:contextCopy client:clientProxy];
 
-  v14 = [v11 replyQueue];
+  replyQueue = [clientProxy replyQueue];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000F6648;
   v23[3] = &unk_100361BF8;
   v23[4] = self;
-  v15 = v8;
+  v15 = serviceCopy;
   v24 = v15;
-  v16 = v11;
+  v16 = clientProxy;
   v25 = v16;
   v17 = v13;
   v26 = v17;
-  v18 = v9;
+  v18 = contextCopy;
   v27 = v18;
-  [v17 performOnQueue:v14 block:v23];
+  [v17 performOnQueue:replyQueue block:v23];
 
-  if (v10)
+  if (handlerCopy)
   {
-    v19 = [v16 replyQueue];
+    replyQueue2 = [v16 replyQueue];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000F69C8;
     v20[3] = &unk_100360EB0;
-    v22 = v10;
+    v22 = handlerCopy;
     v21 = v17;
-    [v21 notifyOnQueue:v19 block:v20];
+    [v21 notifyOnQueue:replyQueue2 block:v20];
   }
 }
 

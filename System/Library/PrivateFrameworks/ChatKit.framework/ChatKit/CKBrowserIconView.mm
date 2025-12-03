@@ -1,24 +1,24 @@
 @interface CKBrowserIconView
-+ (id)_pieImageForPercentComplete:(double)a3 size:(CGSize)a4 center:(CGPoint)a5 radius:(double)a6;
++ (id)_pieImageForPercentComplete:(double)complete size:(CGSize)size center:(CGPoint)center radius:(double)radius;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKBrowserIconView)initWithFrame:(CGRect)a3;
-- (void)_onDisplayLink:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKBrowserIconView)initWithFrame:(CGRect)frame;
+- (void)_onDisplayLink:(id)link;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setAnimating:(BOOL)a3;
-- (void)setIconImage:(id)a3;
-- (void)setPercentComplete:(double)a3 animated:(BOOL)a4;
+- (void)setAnimating:(BOOL)animating;
+- (void)setIconImage:(id)image;
+- (void)setPercentComplete:(double)complete animated:(BOOL)animated;
 @end
 
 @implementation CKBrowserIconView
 
-- (CKBrowserIconView)initWithFrame:(CGRect)a3
+- (CKBrowserIconView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CKBrowserIconView;
-  v3 = [(CKBrowserIconView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKBrowserIconView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,69 +36,69 @@
   [(CKBrowserIconView *)&v3 dealloc];
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v5 = a3;
-  if (self->_iconImage != v5)
+  imageCopy = image;
+  if (self->_iconImage != imageCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_iconImage, a3);
-    v6 = [MEMORY[0x1E6979398] layer];
-    [v6 setContents:{-[UIImage CGImage](self->_iconImage, "CGImage")}];
-    v7 = [(CKBrowserIconView *)self layer];
-    [v7 setMask:v6];
+    v8 = imageCopy;
+    objc_storeStrong(&self->_iconImage, image);
+    layer = [MEMORY[0x1E6979398] layer];
+    [layer setContents:{-[UIImage CGImage](self->_iconImage, "CGImage")}];
+    layer2 = [(CKBrowserIconView *)self layer];
+    [layer2 setMask:layer];
 
     [(CKBrowserIconView *)self setNeedsDisplay];
     [(CKBrowserIconView *)self invalidateIntrinsicContentSize];
 
-    v5 = v8;
+    imageCopy = v8;
   }
 }
 
-- (void)setPercentComplete:(double)a3 animated:(BOOL)a4
+- (void)setPercentComplete:(double)complete animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     if (![(CKBrowserIconView *)self animating])
     {
       [(CKBrowserIconView *)self percentComplete];
-      if (v6 == a3)
+      if (v6 == complete)
       {
         return;
       }
     }
 
-    v7 = [MEMORY[0x1E695DF00] date];
-    [v7 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     v9 = v8;
 
     [(CKBrowserIconView *)self setAnimationStartTime:v9];
     [(CKBrowserIconView *)self percentComplete];
     [(CKBrowserIconView *)self setAnimationStartPercentComplete:?];
-    [(CKBrowserIconView *)self setAnimationEndPercentComplete:a3];
+    [(CKBrowserIconView *)self setAnimationEndPercentComplete:complete];
     [(CKBrowserIconView *)self setAnimating:1];
   }
 
   else
   {
     [(CKBrowserIconView *)self setAnimating:?];
-    if (self->_percentComplete == a3)
+    if (self->_percentComplete == complete)
     {
       return;
     }
 
-    self->_percentComplete = a3;
+    self->_percentComplete = complete;
   }
 
   [(CKBrowserIconView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CKBrowserIconView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -119,12 +119,12 @@
   v34.size.width = width;
   v34.size.height = height;
   CGContextClearRect(CurrentContext, v34);
-  v19 = [(CKBrowserIconView *)self iconImage];
+  iconImage = [(CKBrowserIconView *)self iconImage];
 
-  if (v19)
+  if (iconImage)
   {
-    v20 = [(CKBrowserIconView *)self iconImage];
-    [v20 drawInRect:17 blendMode:v9 alpha:{v11, v13, v15, 0.7}];
+    iconImage2 = [(CKBrowserIconView *)self iconImage];
+    [iconImage2 drawInRect:17 blendMode:v9 alpha:{v11, v13, v15, 0.7}];
   }
 
   [(CKBrowserIconView *)self percentComplete];
@@ -140,9 +140,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(CKBrowserIconView *)self iconImage:a3.width];
+  v3 = [(CKBrowserIconView *)self iconImage:fits.width];
   [v3 size];
   v5 = v4;
   v7 = v6;
@@ -156,8 +156,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CKBrowserIconView *)self iconImage];
-  [v2 size];
+  iconImage = [(CKBrowserIconView *)self iconImage];
+  [iconImage size];
   v4 = v3;
   v6 = v5;
 
@@ -173,24 +173,24 @@
   v13.receiver = self;
   v13.super_class = CKBrowserIconView;
   [(CKBrowserIconView *)&v13 layoutSubviews];
-  v3 = [(CKBrowserIconView *)self layer];
-  [v3 bounds];
+  layer = [(CKBrowserIconView *)self layer];
+  [layer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 mask];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  mask = [layer mask];
+  [mask setFrame:{v5, v7, v9, v11}];
 }
 
-+ (id)_pieImageForPercentComplete:(double)a3 size:(CGSize)a4 center:(CGPoint)a5 radius:(double)a6
++ (id)_pieImageForPercentComplete:(double)complete size:(CGSize)size center:(CGPoint)center radius:(double)radius
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.height;
-  width = a4.width;
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 scale];
+  y = center.y;
+  x = center.x;
+  height = size.height;
+  width = size.width;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v13 = v12;
 
   v14 = ceil(height * v13);
@@ -219,17 +219,17 @@
   v19 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.2];
   [v19 set];
 
-  v20 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:x startAngle:y endAngle:a6 clockwise:{0.0, 6.28318531}];
+  v20 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:x startAngle:y endAngle:radius clockwise:{0.0, 6.28318531}];
   [v20 setLineWidth:3.0];
   [v20 strokeWithBlendMode:17 alpha:1.0];
-  if (fabs(a3) >= 2.22044605e-16)
+  if (fabs(complete) >= 2.22044605e-16)
   {
-    v21 = [MEMORY[0x1E69DC728] bezierPath];
-    [v21 moveToPoint:{x, y}];
-    [v21 addLineToPoint:{x, y - a6}];
-    [v21 addArcWithCenter:1 radius:x startAngle:y endAngle:a6 clockwise:{-1.57079633, a3 / 100.0 * 6.28318531 + -1.57079633}];
-    [v21 addLineToPoint:{x, y}];
-    [v21 fillWithBlendMode:17 alpha:1.0];
+    bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+    [bezierPath moveToPoint:{x, y}];
+    [bezierPath addLineToPoint:{x, y - radius}];
+    [bezierPath addArcWithCenter:1 radius:x startAngle:y endAngle:radius clockwise:{-1.57079633, complete / 100.0 * 6.28318531 + -1.57079633}];
+    [bezierPath addLineToPoint:{x, y}];
+    [bezierPath fillWithBlendMode:17 alpha:1.0];
   }
 
   UIGraphicsPopContext();
@@ -241,35 +241,35 @@
   return v23;
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (self->_animating != a3)
+  if (self->_animating != animating)
   {
-    self->_animating = a3;
-    if (a3)
+    self->_animating = animating;
+    if (animating)
     {
       v4 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel__onDisplayLink_];
       [(CKBrowserIconView *)self setDisplayLink:v4];
 
-      v7 = [(CKBrowserIconView *)self displayLink];
-      v5 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v7 addToRunLoop:v5 forMode:*MEMORY[0x1E695DA28]];
+      displayLink = [(CKBrowserIconView *)self displayLink];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [displayLink addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
     }
 
     else
     {
-      v6 = [(CKBrowserIconView *)self displayLink];
-      [v6 invalidate];
+      displayLink2 = [(CKBrowserIconView *)self displayLink];
+      [displayLink2 invalidate];
 
       [(CKBrowserIconView *)self setDisplayLink:0];
     }
   }
 }
 
-- (void)_onDisplayLink:(id)a3
+- (void)_onDisplayLink:(id)link
 {
-  v4 = [MEMORY[0x1E695DF00] date];
-  [v4 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceReferenceDate];
   v6 = v5;
 
   [(CKBrowserIconView *)self animationStartTime];

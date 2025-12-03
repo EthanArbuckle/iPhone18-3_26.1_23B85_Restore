@@ -1,5 +1,5 @@
 @interface VKCDataDetectorElementInfo
-+ (id)infoFromDataDetectorElement:(id)a3 analysis:(id)a4;
++ (id)infoFromDataDetectorElement:(id)element analysis:(id)analysis;
 - (_NSRange)range;
 - (id)debugDescription;
 - (id)description;
@@ -7,46 +7,46 @@
 
 @implementation VKCDataDetectorElementInfo
 
-+ (id)infoFromDataDetectorElement:(id)a3 analysis:(id)a4
++ (id)infoFromDataDetectorElement:(id)element analysis:(id)analysis
 {
-  v5 = a3;
-  v6 = [a4 imageAnalysisResult];
+  elementCopy = element;
+  imageAnalysisResult = [analysis imageAnalysisResult];
   v7 = objc_alloc_init(VKCDataDetectorElementInfo);
-  -[VKCDataDetectorElementInfo setTypes:](v7, "setTypes:", [v5 dataDetectorTypes]);
-  v8 = [v5 boundingQuads];
-  [(VKCDataDetectorElementInfo *)v7 setBoundingQuads:v8];
+  -[VKCDataDetectorElementInfo setTypes:](v7, "setTypes:", [elementCopy dataDetectorTypes]);
+  boundingQuads = [elementCopy boundingQuads];
+  [(VKCDataDetectorElementInfo *)v7 setBoundingQuads:boundingQuads];
 
-  v9 = [(VKCDataDetectorElementInfo *)v7 boundingQuads];
-  v10 = [(VKCDataDetectorElementInfo *)v7 boundingQuads];
-  v11 = [v10 firstObject];
-  [v11 averagedAngleFromBottomAndTopEdges];
-  v12 = [VKQuad quadFromUnionOfQuads:v9 baselineAngle:?];
+  boundingQuads2 = [(VKCDataDetectorElementInfo *)v7 boundingQuads];
+  boundingQuads3 = [(VKCDataDetectorElementInfo *)v7 boundingQuads];
+  firstObject = [boundingQuads3 firstObject];
+  [firstObject averagedAngleFromBottomAndTopEdges];
+  v12 = [VKQuad quadFromUnionOfQuads:boundingQuads2 baselineAngle:?];
   [(VKCDataDetectorElementInfo *)v7 setBoundingQuad:v12];
 
-  v13 = [v5 uuid];
-  [(VKCDataDetectorElementInfo *)v7 setCorrelationIdentifier:v13];
+  uuid = [elementCopy uuid];
+  [(VKCDataDetectorElementInfo *)v7 setCorrelationIdentifier:uuid];
 
   v14 = objc_opt_class();
-  v15 = VKDynamicCast(v14, v5);
+  v15 = VKDynamicCast(v14, elementCopy);
 
   if (v15)
   {
-    v16 = [v6 text];
-    v17 = [v15 characterRange];
-    v19 = [v16 vk_substringWithRange:{v17, v18}];
+    text = [imageAnalysisResult text];
+    characterRange = [v15 characterRange];
+    v19 = [text vk_substringWithRange:{characterRange, v18}];
     [(VKCDataDetectorElementInfo *)v7 setText:v19];
 
-    v20 = [v15 characterRange];
+    characterRange2 = [v15 characterRange];
     v22 = v21;
   }
 
   else
   {
     v22 = 0;
-    v20 = 0x7FFFFFFFFFFFFFFFLL;
+    characterRange2 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [(VKCDataDetectorElementInfo *)v7 setRange:v20, v22];
+  [(VKCDataDetectorElementInfo *)v7 setRange:characterRange2, v22];
 
   return v7;
 }
@@ -55,9 +55,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = VKMUIStringForDDTypes([(VKCDataDetectorElementInfo *)self types]);
-  v5 = [(VKCDataDetectorElementInfo *)self boundingQuad];
-  v6 = [(VKCDataDetectorElementInfo *)self boundingQuads];
-  v7 = [v3 stringWithFormat:@"Data Detector Element: type: %@ \n boundingQuad: %@ \n boundingQuads: %@ ", v4, v5, v6];
+  boundingQuad = [(VKCDataDetectorElementInfo *)self boundingQuad];
+  boundingQuads = [(VKCDataDetectorElementInfo *)self boundingQuads];
+  v7 = [v3 stringWithFormat:@"Data Detector Element: type: %@ \n boundingQuad: %@ \n boundingQuads: %@ ", v4, boundingQuad, boundingQuads];
 
   return v7;
 }
@@ -66,10 +66,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = VKMUIStringForDDTypes([(VKCDataDetectorElementInfo *)self types]);
-  v5 = [(VKCDataDetectorElementInfo *)self text];
-  v6 = [(VKCDataDetectorElementInfo *)self boundingQuad];
-  v7 = [(VKCDataDetectorElementInfo *)self boundingQuads];
-  v8 = [v3 stringWithFormat:@"Data Detector Element: type: %@ \n text: %@ \n boundingQuad: %@ \n boundingQuads: %@ ", v4, v5, v6, v7];
+  text = [(VKCDataDetectorElementInfo *)self text];
+  boundingQuad = [(VKCDataDetectorElementInfo *)self boundingQuad];
+  boundingQuads = [(VKCDataDetectorElementInfo *)self boundingQuads];
+  v8 = [v3 stringWithFormat:@"Data Detector Element: type: %@ \n text: %@ \n boundingQuad: %@ \n boundingQuads: %@ ", v4, text, boundingQuad, boundingQuads];
 
   return v8;
 }

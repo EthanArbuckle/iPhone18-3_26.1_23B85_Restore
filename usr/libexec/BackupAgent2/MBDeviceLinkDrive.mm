@@ -1,32 +1,32 @@
 @interface MBDeviceLinkDrive
-+ (id)deviceLinkDriveWithConnection:(void *)a3;
-- (BOOL)copyItemAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)createDirectoryAtPath:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)downloadFileAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)downloadFilesAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6;
-- (BOOL)moveItemAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)moveItemsAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6;
-- (BOOL)removeItemAtPath:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)removeItemsAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6;
-- (BOOL)uploadFileAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)uploadFilesAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6;
-- (MBDeviceLinkDrive)initWithConnection:(void *)a3;
-- (__CFDictionary)mapOptions:(id)a3;
-- (id)contentsOfDirectoryAtPath:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)mapAttributes:(id)a3;
-- (id)mapFileType:(id)a3;
-- (id)mapResults:(id)a3;
-- (int)mapStatus:(int)a3;
++ (id)deviceLinkDriveWithConnection:(void *)connection;
+- (BOOL)copyItemAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error;
+- (BOOL)createDirectoryAtPath:(id)path options:(id)options error:(id *)error;
+- (BOOL)downloadFileAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error;
+- (BOOL)downloadFilesAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error;
+- (BOOL)moveItemAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error;
+- (BOOL)moveItemsAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error;
+- (BOOL)removeItemAtPath:(id)path options:(id)options error:(id *)error;
+- (BOOL)removeItemsAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error;
+- (BOOL)uploadFileAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error;
+- (BOOL)uploadFilesAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error;
+- (MBDeviceLinkDrive)initWithConnection:(void *)connection;
+- (__CFDictionary)mapOptions:(id)options;
+- (id)contentsOfDirectoryAtPath:(id)path options:(id)options error:(id *)error;
+- (id)mapAttributes:(id)attributes;
+- (id)mapFileType:(id)type;
+- (id)mapResults:(id)results;
+- (int)mapStatus:(int)status;
 - (void)dealloc;
-- (void)progressUpdatedWithPercentage:(double)a3 size:(unint64_t)a4;
+- (void)progressUpdatedWithPercentage:(double)percentage size:(unint64_t)size;
 @end
 
 @implementation MBDeviceLinkDrive
 
-- (int)mapStatus:(int)a3
+- (int)mapStatus:(int)status
 {
-  v4 = a3 + 15;
-  if (a3 + 15) < 0x10 && ((0xE3F5u >> v4))
+  v4 = status + 15;
+  if (status + 15) < 0x10 && ((0xE3F5u >> v4))
   {
     return dword_1000B7168[v4];
   }
@@ -35,7 +35,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v8 = a3;
+    statusCopy = status;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "No code for DeviceLink error: %d", buf, 8u);
     _MBLog();
   }
@@ -43,14 +43,14 @@
   return 100;
 }
 
-- (__CFDictionary)mapOptions:(id)a3
+- (__CFDictionary)mapOptions:(id)options
 {
-  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [a3 count]);
+  v4 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [options count]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [options countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -61,11 +61,11 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(options);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [a3 objectForKeyedSubscript:v9];
+        v10 = [options objectForKeyedSubscript:v9];
         if ([v9 isEqualToString:@"FileHandleFactory"])
         {
           v11 = [[MBDeviceLinkDriveContext alloc] initWithFileHandleFactory:v10];
@@ -79,7 +79,7 @@
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [options countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -88,14 +88,14 @@
   return v4;
 }
 
-- (id)mapResults:(id)a3
+- (id)mapResults:(id)results
 {
   v4 = [NSMutableDictionary dictionaryWithCapacity:0];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [results countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -106,11 +106,11 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(results);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [a3 objectForKeyedSubscript:v9];
+        v10 = [results objectForKeyedSubscript:v9];
         v11 = [NSMutableDictionary dictionaryWithCapacity:0];
         v12 = -[MBDeviceLinkDrive mapStatus:](self, "mapStatus:", [objc_msgSend(v10 objectForKeyedSubscript:{@"DLFileErrorCode", "intValue"}]);
         v13 = [v10 objectForKeyedSubscript:@"DLFileErrorString"];
@@ -128,7 +128,7 @@
         [(NSMutableDictionary *)v4 setObject:[NSError forKeyedSubscript:"errorWithDomain:code:userInfo:" errorWithDomain:v12 code:v11 userInfo:?], v9];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [results countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -137,16 +137,16 @@
   return v4;
 }
 
-- (id)mapFileType:(id)a3
+- (id)mapFileType:(id)type
 {
-  if ([a3 isEqualToString:@"DLFileTypeDirectory"])
+  if ([type isEqualToString:@"DLFileTypeDirectory"])
   {
     v4 = &NSFileTypeDirectory;
   }
 
   else
   {
-    v5 = [a3 isEqualToString:@"DLFileTypeRegular"];
+    v5 = [type isEqualToString:@"DLFileTypeRegular"];
     v4 = &NSFileTypeUnknown;
     if (v5)
     {
@@ -157,14 +157,14 @@
   return *v4;
 }
 
-- (id)mapAttributes:(id)a3
+- (id)mapAttributes:(id)attributes
 {
   v5 = [NSMutableDictionary dictionaryWithCapacity:0];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [attributes countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -176,11 +176,11 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(attributes);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [a3 objectForKeyedSubscript:{v10, v16}];
+        v11 = [attributes objectForKeyedSubscript:{v10, v16}];
         if ([v10 isEqualToString:@"DLFileType"])
         {
           v12 = [(MBDeviceLinkDrive *)self mapFileType:v11];
@@ -210,7 +210,7 @@
         [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:v14];
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [attributes countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -219,21 +219,21 @@
   return v5;
 }
 
-+ (id)deviceLinkDriveWithConnection:(void *)a3
++ (id)deviceLinkDriveWithConnection:(void *)connection
 {
-  v3 = [[MBDeviceLinkDrive alloc] initWithConnection:a3];
+  v3 = [[MBDeviceLinkDrive alloc] initWithConnection:connection];
 
   return v3;
 }
 
-- (MBDeviceLinkDrive)initWithConnection:(void *)a3
+- (MBDeviceLinkDrive)initWithConnection:(void *)connection
 {
   v5.receiver = self;
   v5.super_class = MBDeviceLinkDrive;
   result = [(MBDeviceLinkDrive *)&v5 init];
   if (result)
   {
-    result->_connection = a3;
+    result->_connection = connection;
   }
 
   return result;
@@ -246,21 +246,21 @@
   [(MBDeviceLinkDrive *)&v2 dealloc];
 }
 
-- (BOOL)createDirectoryAtPath:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)createDirectoryAtPath:(id)path options:(id)options error:(id *)error
 {
   connection = self->_connection;
-  [(MBDeviceLinkDrive *)self mapOptions:a4];
+  [(MBDeviceLinkDrive *)self mapOptions:options];
   v9 = DLCreateDirectory();
   v10 = 0;
-  return [(MBDeviceLinkDrive *)self mapStatus:v9 errorString:0 path:a3 error:a5];
+  return [(MBDeviceLinkDrive *)self mapStatus:v9 errorString:0 path:path error:error];
 }
 
-- (id)contentsOfDirectoryAtPath:(id)a3 options:(id)a4 error:(id *)a5
+- (id)contentsOfDirectoryAtPath:(id)path options:(id)options error:(id *)error
 {
   v23 = 0;
   v24 = 0;
   connection = self->_connection;
-  [(MBDeviceLinkDrive *)self mapOptions:a4];
+  [(MBDeviceLinkDrive *)self mapOptions:options];
   v9 = DLContentsOfDirectory();
   v10 = 0;
   v11 = 0;
@@ -300,126 +300,126 @@
     }
   }
 
-  [(MBDeviceLinkDrive *)self mapStatus:v9 errorString:v23 path:a3 error:a5];
+  [(MBDeviceLinkDrive *)self mapStatus:v9 errorString:v23 path:path error:error];
   return v12;
 }
 
-- (BOOL)copyItemAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)copyItemAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error
 {
   connection = self->_connection;
-  [(MBDeviceLinkDrive *)self mapOptions:a5];
+  [(MBDeviceLinkDrive *)self mapOptions:options];
   v10 = DLCopyItem();
   v11 = 0;
-  return [(MBDeviceLinkDrive *)self mapStatus:v10 errorString:0 path:a3 error:a6];
+  return [(MBDeviceLinkDrive *)self mapStatus:v10 errorString:0 path:path error:error];
 }
 
-- (BOOL)uploadFileAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)uploadFileAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error
 {
   connection = self->_connection;
-  [(MBDeviceLinkDrive *)self mapOptions:a5];
+  [(MBDeviceLinkDrive *)self mapOptions:options];
   v10 = DLUploadFile();
   v11 = 0;
-  return [(MBDeviceLinkDrive *)self mapStatus:v10 errorString:0 path:a3 error:a6];
+  return [(MBDeviceLinkDrive *)self mapStatus:v10 errorString:0 path:path error:error];
 }
 
-- (BOOL)uploadFilesAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6
+- (BOOL)uploadFilesAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error
 {
   connection = self->_connection;
-  [(MBDeviceLinkDrive *)self mapOptions:a4];
+  [(MBDeviceLinkDrive *)self mapOptions:options];
   v10 = DLUploadFiles();
-  if (a5)
+  if (results)
   {
-    *a5 = [(MBDeviceLinkDrive *)self mapResults:0];
+    *results = [(MBDeviceLinkDrive *)self mapResults:0];
   }
 
   v11 = 0;
-  return [(MBDeviceLinkDrive *)self mapStatus:v10 errorString:0 path:0 error:a6];
+  return [(MBDeviceLinkDrive *)self mapStatus:v10 errorString:0 path:0 error:error];
 }
 
-- (BOOL)downloadFileAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)downloadFileAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error
 {
   connection = self->_connection;
-  [(MBDeviceLinkDrive *)self mapOptions:a5];
+  [(MBDeviceLinkDrive *)self mapOptions:options];
   v10 = DLDownloadFile();
   v11 = 0;
-  return [(MBDeviceLinkDrive *)self mapStatus:v10 errorString:0 path:a3 error:a6];
+  return [(MBDeviceLinkDrive *)self mapStatus:v10 errorString:0 path:path error:error];
 }
 
-- (BOOL)downloadFilesAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6
+- (BOOL)downloadFilesAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error
 {
   connection = self->_connection;
-  [(MBDeviceLinkDrive *)self mapOptions:a4];
+  [(MBDeviceLinkDrive *)self mapOptions:options];
   v10 = DLDownloadFiles();
-  if (a5)
+  if (results)
   {
-    *a5 = [(MBDeviceLinkDrive *)self mapResults:0];
+    *results = [(MBDeviceLinkDrive *)self mapResults:0];
   }
 
   v11 = 0;
-  return [(MBDeviceLinkDrive *)self mapStatus:v10 errorString:0 path:0 error:a6];
+  return [(MBDeviceLinkDrive *)self mapStatus:v10 errorString:0 path:0 error:error];
 }
 
-- (BOOL)moveItemAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)moveItemAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error
 {
   connection = self->_connection;
-  [(MBDeviceLinkDrive *)self mapOptions:a5];
+  [(MBDeviceLinkDrive *)self mapOptions:options];
   v10 = DLMoveItem();
   v11 = 0;
-  return [(MBDeviceLinkDrive *)self mapStatus:v10 errorString:0 path:a3 error:a6];
+  return [(MBDeviceLinkDrive *)self mapStatus:v10 errorString:0 path:path error:error];
 }
 
-- (BOOL)moveItemsAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6
+- (BOOL)moveItemsAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error
 {
-  if (![a3 count])
+  if (![paths count])
   {
     return 1;
   }
 
   connection = self->_connection;
-  [(MBDeviceLinkDrive *)self mapOptions:a4];
+  [(MBDeviceLinkDrive *)self mapOptions:options];
   v11 = DLMoveItems();
-  if (a5)
+  if (results)
   {
-    *a5 = [(MBDeviceLinkDrive *)self mapResults:0];
+    *results = [(MBDeviceLinkDrive *)self mapResults:0];
   }
 
   v12 = 0;
-  return [(MBDeviceLinkDrive *)self mapStatus:v11 errorString:0 path:0 error:a6];
+  return [(MBDeviceLinkDrive *)self mapStatus:v11 errorString:0 path:0 error:error];
 }
 
-- (BOOL)removeItemAtPath:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)removeItemAtPath:(id)path options:(id)options error:(id *)error
 {
   connection = self->_connection;
-  [(MBDeviceLinkDrive *)self mapOptions:a4];
+  [(MBDeviceLinkDrive *)self mapOptions:options];
   v9 = DLRemoveItem();
   v10 = 0;
-  return [(MBDeviceLinkDrive *)self mapStatus:v9 errorString:0 path:a3 error:a5];
+  return [(MBDeviceLinkDrive *)self mapStatus:v9 errorString:0 path:path error:error];
 }
 
-- (BOOL)removeItemsAtPaths:(id)a3 options:(id)a4 results:(id *)a5 error:(id *)a6
+- (BOOL)removeItemsAtPaths:(id)paths options:(id)options results:(id *)results error:(id *)error
 {
-  if (![a3 count])
+  if (![paths count])
   {
     return 1;
   }
 
   connection = self->_connection;
-  [(MBDeviceLinkDrive *)self mapOptions:a4];
+  [(MBDeviceLinkDrive *)self mapOptions:options];
   v11 = DLRemoveItems();
-  if (a5)
+  if (results)
   {
-    *a5 = [(MBDeviceLinkDrive *)self mapResults:0];
+    *results = [(MBDeviceLinkDrive *)self mapResults:0];
   }
 
   v12 = 0;
-  return [(MBDeviceLinkDrive *)self mapStatus:v11 errorString:0 path:0 error:a6];
+  return [(MBDeviceLinkDrive *)self mapStatus:v11 errorString:0 path:0 error:error];
 }
 
-- (void)progressUpdatedWithPercentage:(double)a3 size:(unint64_t)a4
+- (void)progressUpdatedWithPercentage:(double)percentage size:(unint64_t)size
 {
   connection = self->_connection;
-  v6 = [NSNumber numberWithDouble:a3];
-  v7 = [NSNumber numberWithUnsignedLongLong:a4];
+  v6 = [NSNumber numberWithDouble:percentage];
+  v7 = [NSNumber numberWithUnsignedLongLong:size];
 
   _DLSetProgress(connection, v6, v7);
 }

@@ -1,5 +1,5 @@
 @interface NUImageBufferRenderJob
-- (id)renderBufferOfSize:(id)a3 format:(id)a4;
+- (id)renderBufferOfSize:(id)size format:(id)format;
 - (id)result;
 @end
 
@@ -8,26 +8,26 @@
 - (id)result
 {
   v3 = objc_alloc_init(_NUImageBufferRenderResult);
-  v4 = [(NUImageRenderJob *)self renderedRegion];
-  [(_NUImageRenderResult *)v3 setRegion:v4];
+  renderedRegion = [(NUImageRenderJob *)self renderedRegion];
+  [(_NUImageRenderResult *)v3 setRegion:renderedRegion];
 
-  v5 = [(NUImageRenderJob *)self renderBuffer];
-  [(_NUImageBufferRenderResult *)v3 setBuffer:v5];
+  renderBuffer = [(NUImageRenderJob *)self renderBuffer];
+  [(_NUImageBufferRenderResult *)v3 setBuffer:renderBuffer];
 
-  v6 = [(NURenderJob *)self outputGeometry];
-  [(_NUImageRenderResult *)v3 setGeometry:v6];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  [(_NUImageRenderResult *)v3 setGeometry:outputGeometry];
 
   return v3;
 }
 
-- (id)renderBufferOfSize:(id)a3 format:(id)a4
+- (id)renderBufferOfSize:(id)size format:(id)format
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [(NUImageRenderJob *)self storagePool];
-  v9 = [v8 newStorageWithSize:var0 format:{var1, v7}];
+  formatCopy = format;
+  storagePool = [(NUImageRenderJob *)self storagePool];
+  v9 = [storagePool newStorageWithSize:var0 format:{var1, formatCopy}];
   if (!v9)
   {
     v13 = NUAssertLogger_12581();
@@ -49,8 +49,8 @@
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v29 = 138543618;
         *&v29[4] = v20;
         v30 = 2114;
@@ -61,8 +61,8 @@
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v29 = 138543362;
       *&v29[4] = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v29, 0xCu);
@@ -72,7 +72,7 @@
   }
 
   v10 = v9;
-  v11 = [[NUStorageImageBuffer alloc] initWithStorage:v9 fromPool:v8];
+  v11 = [[NUStorageImageBuffer alloc] initWithStorage:v9 fromPool:storagePool];
 
   return v11;
 }

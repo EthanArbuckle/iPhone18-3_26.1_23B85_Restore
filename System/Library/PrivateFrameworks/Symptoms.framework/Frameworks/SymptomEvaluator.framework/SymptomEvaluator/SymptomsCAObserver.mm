@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (SymptomsCAObserver)init;
 - (id)description;
-- (void)addDelegate:(id)a3 forEvents:(id)a4 withQueue:(id)a5 completion:(id)a6;
+- (void)addDelegate:(id)delegate forEvents:(id)events withQueue:(id)queue completion:(id)completion;
 - (void)dealloc;
-- (void)observer:(id)a3 didEmitMessage:(id)a4;
-- (void)removeDelegate:(id)a3 withQueue:(id)a4 completion:(id)a5;
-- (void)updateAnalyticsEventObserverRegistrationOnQueueWithCompletion:(id)a3 completionQueue:(id)a4;
+- (void)observer:(id)observer didEmitMessage:(id)message;
+- (void)removeDelegate:(id)delegate withQueue:(id)queue completion:(id)completion;
+- (void)updateAnalyticsEventObserverRegistrationOnQueueWithCompletion:(id)completion completionQueue:(id)queue;
 @end
 
 @implementation SymptomsCAObserver
@@ -40,8 +40,8 @@
   analyticsEventObserver = self->_analyticsEventObserver;
   self->_analyticsEventObserver = 0;
 
-  v4 = [(SymptomsCAObserver *)self delegates];
-  [v4 removeAllObjects];
+  delegates = [(SymptomsCAObserver *)self delegates];
+  [delegates removeAllObjects];
 
   [(SymptomsCAObserver *)self setDelegates:0];
   v5.receiver = self;
@@ -56,29 +56,29 @@
   return v2;
 }
 
-- (void)addDelegate:(id)a3 forEvents:(id)a4 withQueue:(id)a5 completion:(id)a6
+- (void)addDelegate:(id)delegate forEvents:(id)events withQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  delegateCopy = delegate;
+  eventsCopy = events;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (delegateCopy)
   {
-    if (v11)
+    if (eventsCopy)
     {
-      if (v12)
+      if (queueCopy)
       {
-        v14 = [(SymptomsCAObserver *)self queue];
+        queue = [(SymptomsCAObserver *)self queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __65__SymptomsCAObserver_addDelegate_forEvents_withQueue_completion___block_invoke;
         block[3] = &unk_27898C1A8;
         block[4] = self;
-        v16 = v10;
-        v17 = v12;
-        v18 = v11;
-        v19 = v13;
-        dispatch_async(v14, block);
+        v16 = delegateCopy;
+        v17 = queueCopy;
+        v18 = eventsCopy;
+        v19 = completionCopy;
+        dispatch_async(queue, block);
       }
 
       else
@@ -188,23 +188,23 @@ LABEL_14:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDelegate:(id)a3 withQueue:(id)a4 completion:(id)a5
+- (void)removeDelegate:(id)delegate withQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (delegateCopy)
   {
-    v11 = [(SymptomsCAObserver *)self queue];
+    queue = [(SymptomsCAObserver *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __58__SymptomsCAObserver_removeDelegate_withQueue_completion___block_invoke;
     v12[3] = &unk_27898C1D0;
     v12[4] = self;
-    v13 = v8;
-    v15 = v10;
-    v14 = v9;
-    dispatch_async(v11, v12);
+    v13 = delegateCopy;
+    v15 = completionCopy;
+    v14 = queueCopy;
+    dispatch_async(queue, v12);
   }
 
   else
@@ -281,25 +281,25 @@ LABEL_13:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observer:(id)a3 didEmitMessage:(id)a4
+- (void)observer:(id)observer didEmitMessage:(id)message
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  messageCopy = message;
   v8 = metricsLogHandle;
-  if (v7)
+  if (messageCopy)
   {
     if (os_log_type_enabled(metricsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v24 = v7;
+      v24 = messageCopy;
       _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEBUG, "AnalyticsEventObserver didEmitMessage %@", buf, 0xCu);
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v7 dataUsingEncoding:4];
+      v9 = [messageCopy dataUsingEncoding:4];
       v10 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v9 options:0 error:0];
       v11 = v10;
       if (v10)
@@ -326,7 +326,7 @@ LABEL_13:
 
         if ([v12 length])
         {
-          v16 = [(SymptomsCAObserver *)self queue];
+          queue = [(SymptomsCAObserver *)self queue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __46__SymptomsCAObserver_observer_didEmitMessage___block_invoke;
@@ -334,7 +334,7 @@ LABEL_13:
           block[4] = self;
           v21 = v12;
           v22 = v13;
-          dispatch_async(v16, block);
+          dispatch_async(queue, block);
         }
       }
     }
@@ -346,7 +346,7 @@ LABEL_13:
       {
         v18 = objc_opt_class();
         *buf = 138412546;
-        v24 = v7;
+        v24 = messageCopy;
         v25 = 2112;
         v26 = v18;
         _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_ERROR, "SymptomsCAObserver returned invalid message %@ (%@)", buf, 0x16u);
@@ -357,7 +357,7 @@ LABEL_13:
   else if (os_log_type_enabled(metricsLogHandle, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v24 = v6;
+    v24 = observerCopy;
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_ERROR, "AnalyticsEventObserver %@ called handleEvent with nil message", buf, 0xCu);
   }
 
@@ -457,13 +457,13 @@ void __46__SymptomsCAObserver_observer_didEmitMessage___block_invoke_43(uint64_t
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAnalyticsEventObserverRegistrationOnQueueWithCompletion:(id)a3 completionQueue:(id)a4
+- (void)updateAnalyticsEventObserverRegistrationOnQueueWithCompletion:(id)completion completionQueue:(id)queue
 {
   v52 = *MEMORY[0x277D85DE8];
-  v34 = a3;
-  queue = a4;
-  v6 = [(SymptomsCAObserver *)self queue];
-  dispatch_assert_queue_V2(v6);
+  completionCopy = completion;
+  queue = queue;
+  queue = [(SymptomsCAObserver *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = metricsLogHandle;
   if (os_log_type_enabled(metricsLogHandle, OS_LOG_TYPE_DEBUG))
@@ -477,8 +477,8 @@ void __46__SymptomsCAObserver_observer_didEmitMessage___block_invoke_43(uint64_t
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v9 = [(SymptomsCAObserver *)self delegates];
-  v10 = [v9 countByEnumeratingWithState:&v45 objects:v51 count:16];
+  delegates = [(SymptomsCAObserver *)self delegates];
+  v10 = [delegates countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v10)
   {
     v11 = *v46;
@@ -488,22 +488,22 @@ void __46__SymptomsCAObserver_observer_didEmitMessage___block_invoke_43(uint64_t
       {
         if (*v46 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(delegates);
         }
 
         v13 = *(*(&v45 + 1) + 8 * i);
-        v14 = [v13 events];
-        v15 = v14 == 0;
+        events = [v13 events];
+        v15 = events == 0;
 
         if (!v15)
         {
-          v16 = [v13 events];
-          v17 = [v16 allObjects];
-          [v8 addObjectsFromArray:v17];
+          events2 = [v13 events];
+          allObjects = [events2 allObjects];
+          [v8 addObjectsFromArray:allObjects];
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v45 objects:v51 count:16];
+      v10 = [delegates countByEnumeratingWithState:&v45 objects:v51 count:16];
     }
 
     while (v10);
@@ -514,19 +514,19 @@ void __46__SymptomsCAObserver_observer_didEmitMessage___block_invoke_43(uint64_t
     v20 = metricsLogHandle;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [(SymptomsCAObserver *)self combinedEvents];
+      combinedEvents = [(SymptomsCAObserver *)self combinedEvents];
       *buf = 138412290;
-      v50 = v21;
+      v50 = combinedEvents;
       _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_INFO, "Combined metric list for registration does not differ from current registration, delivering completion immediately: %@", buf, 0xCu);
     }
 
-    if (v34 && queue)
+    if (completionCopy && queue)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __100__SymptomsCAObserver_updateAnalyticsEventObserverRegistrationOnQueueWithCompletion_completionQueue___block_invoke;
       block[3] = &unk_27898C220;
-      v44 = v34;
+      v44 = completionCopy;
       dispatch_async(queue, block);
     }
   }
@@ -576,30 +576,30 @@ void __46__SymptomsCAObserver_observer_didEmitMessage___block_invoke_43(uint64_t
 
     if ([v8 count])
     {
-      v30 = [(SymptomsCAObserver *)self queue];
+      queue2 = [(SymptomsCAObserver *)self queue];
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
       v39[2] = __100__SymptomsCAObserver_updateAnalyticsEventObserverRegistrationOnQueueWithCompletion_completionQueue___block_invoke_45;
       v39[3] = &unk_27898C1D0;
       v39[4] = self;
       v40 = v8;
-      v42 = v34;
-      v41 = queue;
-      dispatch_async(v30, v39);
+      v42 = completionCopy;
+      queueCopy = queue;
+      dispatch_async(queue2, v39);
     }
 
     else
     {
-      v31 = [(SymptomsCAObserver *)self queue];
+      queue3 = [(SymptomsCAObserver *)self queue];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __100__SymptomsCAObserver_updateAnalyticsEventObserverRegistrationOnQueueWithCompletion_completionQueue___block_invoke_51;
       v35[3] = &unk_27898C1D0;
       v35[4] = self;
       v36 = v8;
-      v38 = v34;
-      v37 = queue;
-      dispatch_async(v31, v35);
+      v38 = completionCopy;
+      queueCopy2 = queue;
+      dispatch_async(queue3, v35);
     }
   }
 
@@ -804,7 +804,7 @@ uint64_t __100__SymptomsCAObserver_updateAnalyticsEventObserverRegistrationOnQue
   block[1] = 3221225472;
   block[2] = __36__SymptomsCAObserver_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[SymptomsCAObserver sharedInstance]::onceToken != -1)
   {
     dispatch_once(&+[SymptomsCAObserver sharedInstance]::onceToken, block);

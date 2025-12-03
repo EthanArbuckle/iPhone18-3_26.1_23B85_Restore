@@ -1,7 +1,7 @@
 @interface MBPeerMessageCache
-- (BOOL)shouldHandleNewRequestForTask:(id)a3 transactionID:(id)a4 responseHandler:(id)a5;
+- (BOOL)shouldHandleNewRequestForTask:(id)task transactionID:(id)d responseHandler:(id)handler;
 - (MBPeerMessageCache)init;
-- (void)finishedHandlingTask:(id)a3 response:(id)a4 responseError:(id)a5;
+- (void)finishedHandlingTask:(id)task response:(id)response responseError:(id)error;
 - (void)reset;
 @end
 
@@ -36,35 +36,35 @@
   return v3;
 }
 
-- (BOOL)shouldHandleNewRequestForTask:(id)a3 transactionID:(id)a4 responseHandler:(id)a5
+- (BOOL)shouldHandleNewRequestForTask:(id)task transactionID:(id)d responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  dCopy = d;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_cacheLock);
-  v11 = [(MBPeerMessageCache *)self currentTransactionsByTask];
-  v12 = [v11 objectForKeyedSubscript:v8];
-  v13 = [v12 isEqualToString:v9];
+  currentTransactionsByTask = [(MBPeerMessageCache *)self currentTransactionsByTask];
+  v12 = [currentTransactionsByTask objectForKeyedSubscript:taskCopy];
+  v13 = [v12 isEqualToString:dCopy];
 
-  v14 = [(MBPeerMessageCache *)self successResponses];
-  v15 = v14;
+  successResponses = [(MBPeerMessageCache *)self successResponses];
+  v15 = successResponses;
   if (v13)
   {
-    v16 = [v14 objectForKeyedSubscript:v8];
+    v16 = [successResponses objectForKeyedSubscript:taskCopy];
 
-    v17 = [(MBPeerMessageCache *)self failureResponses];
-    v18 = [v17 objectForKeyedSubscript:v8];
+    failureResponses = [(MBPeerMessageCache *)self failureResponses];
+    v18 = [failureResponses objectForKeyedSubscript:taskCopy];
 
     if (v16 | v18)
     {
-      v10[2](v10, v16, v18);
+      handlerCopy[2](handlerCopy, v16, v18);
       os_unfair_lock_unlock(&self->_cacheLock);
     }
 
     else
     {
-      v23 = [(MBPeerMessageCache *)self mostRecentResponseHandlers];
-      v24 = [v23 objectForKeyedSubscript:v8];
+      mostRecentResponseHandlers = [(MBPeerMessageCache *)self mostRecentResponseHandlers];
+      v24 = [mostRecentResponseHandlers objectForKeyedSubscript:taskCopy];
 
       if (!v24)
       {
@@ -74,9 +74,9 @@
       v25 = [MBError errorWithCode:1 description:@"Burned response handler. Request was resent."];
       (v24)[2](v24, 0, v25);
 
-      v26 = objc_retainBlock(v10);
-      v27 = [(MBPeerMessageCache *)self mostRecentResponseHandlers];
-      [v27 setObject:v26 forKeyedSubscript:v8];
+      v26 = objc_retainBlock(handlerCopy);
+      mostRecentResponseHandlers2 = [(MBPeerMessageCache *)self mostRecentResponseHandlers];
+      [mostRecentResponseHandlers2 setObject:v26 forKeyedSubscript:taskCopy];
 
       os_unfair_lock_unlock(&self->_cacheLock);
     }
@@ -84,17 +84,17 @@
 
   else
   {
-    [v14 setObject:0 forKeyedSubscript:v8];
+    [successResponses setObject:0 forKeyedSubscript:taskCopy];
 
-    v19 = [(MBPeerMessageCache *)self failureResponses];
-    [v19 setObject:0 forKeyedSubscript:v8];
+    failureResponses2 = [(MBPeerMessageCache *)self failureResponses];
+    [failureResponses2 setObject:0 forKeyedSubscript:taskCopy];
 
-    v20 = objc_retainBlock(v10);
-    v21 = [(MBPeerMessageCache *)self mostRecentResponseHandlers];
-    [v21 setObject:v20 forKeyedSubscript:v8];
+    v20 = objc_retainBlock(handlerCopy);
+    mostRecentResponseHandlers3 = [(MBPeerMessageCache *)self mostRecentResponseHandlers];
+    [mostRecentResponseHandlers3 setObject:v20 forKeyedSubscript:taskCopy];
 
-    v22 = [(MBPeerMessageCache *)self currentTransactionsByTask];
-    [v22 setObject:v9 forKeyedSubscript:v8];
+    currentTransactionsByTask2 = [(MBPeerMessageCache *)self currentTransactionsByTask];
+    [currentTransactionsByTask2 setObject:dCopy forKeyedSubscript:taskCopy];
 
     os_unfair_lock_unlock(&self->_cacheLock);
   }
@@ -102,44 +102,44 @@
   return v13 ^ 1;
 }
 
-- (void)finishedHandlingTask:(id)a3 response:(id)a4 responseError:(id)a5
+- (void)finishedHandlingTask:(id)task response:(id)response responseError:(id)error
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  taskCopy = task;
+  responseCopy = response;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_cacheLock);
-  v10 = [(MBPeerMessageCache *)self successResponses];
-  [v10 setObject:v8 forKeyedSubscript:v14];
+  successResponses = [(MBPeerMessageCache *)self successResponses];
+  [successResponses setObject:responseCopy forKeyedSubscript:taskCopy];
 
-  v11 = [(MBPeerMessageCache *)self failureResponses];
-  [v11 setObject:v9 forKeyedSubscript:v14];
+  failureResponses = [(MBPeerMessageCache *)self failureResponses];
+  [failureResponses setObject:errorCopy forKeyedSubscript:taskCopy];
 
-  v12 = [(MBPeerMessageCache *)self mostRecentResponseHandlers];
-  v13 = [v12 objectForKeyedSubscript:v14];
+  mostRecentResponseHandlers = [(MBPeerMessageCache *)self mostRecentResponseHandlers];
+  v13 = [mostRecentResponseHandlers objectForKeyedSubscript:taskCopy];
 
   if (!v13)
   {
     __assert_rtn("[MBPeerMessageCache finishedHandlingTask:response:responseError:]", "MBPeerMessageCache.m", 86, "cachedResponseHandler != nil");
   }
 
-  (v13)[2](v13, v8, v9);
+  (v13)[2](v13, responseCopy, errorCopy);
   os_unfair_lock_unlock(&self->_cacheLock);
 }
 
 - (void)reset
 {
   os_unfair_lock_lock(&self->_cacheLock);
-  v3 = [(MBPeerMessageCache *)self successResponses];
-  [v3 removeAllObjects];
+  successResponses = [(MBPeerMessageCache *)self successResponses];
+  [successResponses removeAllObjects];
 
-  v4 = [(MBPeerMessageCache *)self failureResponses];
-  [v4 removeAllObjects];
+  failureResponses = [(MBPeerMessageCache *)self failureResponses];
+  [failureResponses removeAllObjects];
 
-  v5 = [(MBPeerMessageCache *)self mostRecentResponseHandlers];
-  [v5 removeAllObjects];
+  mostRecentResponseHandlers = [(MBPeerMessageCache *)self mostRecentResponseHandlers];
+  [mostRecentResponseHandlers removeAllObjects];
 
-  v6 = [(MBPeerMessageCache *)self currentTransactionsByTask];
-  [v6 removeAllObjects];
+  currentTransactionsByTask = [(MBPeerMessageCache *)self currentTransactionsByTask];
+  [currentTransactionsByTask removeAllObjects];
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }

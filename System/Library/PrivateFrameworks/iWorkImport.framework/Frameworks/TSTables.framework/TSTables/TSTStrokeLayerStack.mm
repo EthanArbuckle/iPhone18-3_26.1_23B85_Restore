@@ -2,18 +2,18 @@
 + (id)defaultsOnlyStrokeLayerStack;
 + (id)strokeLayerStack;
 - ($BCE0BE3B16443606C8215309ED45E274)stackReferences;
-- (BOOL)hasSpillStrokeInRange:(TSTSimpleRange)a3;
+- (BOOL)hasSpillStrokeInRange:(TSTSimpleRange)range;
 - (BOOL)isEligibleForDefaultsOnlyReplacement;
-- (BOOL)replaceCustomStrokeLayerWith:(id)a3;
-- (BOOL)replaceDefaultStrokeLayerWith:(id)a3;
+- (BOOL)replaceCustomStrokeLayerWith:(id)with;
+- (BOOL)replaceDefaultStrokeLayerWith:(id)with;
 - (id)replacementWithDefaults;
 - (unint64_t)count;
 - (vector<TSTStrokeLayer)p_strokeLayerVector;
-- (void)insertClearedStrokeAtRange:(TSTSimpleRange)a3;
-- (void)insertDynamicStroke:(id)a3 strokeOrder:(int)a4 atRange:(TSTSimpleRange)a5;
-- (void)insertSpillStroke:(id)a3 atRange:(TSTSimpleRange)a4;
-- (void)invalidateClearedStrokesInRange:(TSTSimpleRange)a3;
-- (void)invalidateDynamicStrokesInRange:(TSTSimpleRange)a3;
+- (void)insertClearedStrokeAtRange:(TSTSimpleRange)range;
+- (void)insertDynamicStroke:(id)stroke strokeOrder:(int)order atRange:(TSTSimpleRange)range;
+- (void)insertSpillStroke:(id)stroke atRange:(TSTSimpleRange)range;
+- (void)invalidateClearedStrokesInRange:(TSTSimpleRange)range;
+- (void)invalidateDynamicStrokesInRange:(TSTSimpleRange)range;
 @end
 
 @implementation TSTStrokeLayerStack
@@ -74,12 +74,12 @@
   return isEmpty;
 }
 
-- (void)insertClearedStrokeAtRange:(TSTSimpleRange)a3
+- (void)insertClearedStrokeAtRange:(TSTSimpleRange)range
 {
   if (self->_isDefaultsOnly)
   {
     v4 = MEMORY[0x277D81150];
-    v38 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTStrokeLayerStack insertClearedStrokeAtRange:]", a3.length, v3);
+    v38 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTStrokeLayerStack insertClearedStrokeAtRange:]", range.length, v3);
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTStrokeLayerStack.mm", v6, v7);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v9, v38, v8, 637, 0, "You can't add non-default strokes to a DefaultsOnly TSTStrokeLayerStack.");
 
@@ -90,9 +90,9 @@
 
   else
   {
-    length = a3.length;
-    origin = a3.origin;
-    v18 = objc_msgSend_clearedStrokeLayer(self, a2, a3.origin, a3.length, v3);
+    length = range.length;
+    origin = range.origin;
+    v18 = objc_msgSend_clearedStrokeLayer(self, a2, range.origin, range.length, v3);
 
     if (v18)
     {
@@ -112,13 +112,13 @@
   }
 }
 
-- (void)insertDynamicStroke:(id)a3 strokeOrder:(int)a4 atRange:(TSTSimpleRange)a5
+- (void)insertDynamicStroke:(id)stroke strokeOrder:(int)order atRange:(TSTSimpleRange)range
 {
-  length = a5.length;
-  origin = a5.origin;
-  v7 = *&a4;
-  v9 = a3;
-  v42 = v9;
+  length = range.length;
+  origin = range.origin;
+  v7 = *&order;
+  strokeCopy = stroke;
+  v42 = strokeCopy;
   if (self->_isDefaultsOnly)
   {
     v14 = MEMORY[0x277D81150];
@@ -131,7 +131,7 @@
 
   else
   {
-    if (objc_msgSend_empty(v9, v10, v11, v12, v13))
+    if (objc_msgSend_empty(strokeCopy, v10, v11, v12, v13))
     {
       objc_msgSend_width(v42, v25, v26, v27, v28);
       if (v29 > 0.0)
@@ -155,11 +155,11 @@
   }
 }
 
-- (void)insertSpillStroke:(id)a3 atRange:(TSTSimpleRange)a4
+- (void)insertSpillStroke:(id)stroke atRange:(TSTSimpleRange)range
 {
-  length = a4.length;
-  origin = a4.origin;
-  v33 = a3;
+  length = range.length;
+  origin = range.origin;
+  strokeCopy = stroke;
   if (self->_isDefaultsOnly)
   {
     v11 = MEMORY[0x277D81150];
@@ -181,15 +181,15 @@
     }
 
     v31 = objc_msgSend_spillStrokeLayer(self, v23, v24, v25, v26);
-    objc_msgSend_setStroke_inRange_order_(v31, v32, v33, origin, length, 0);
+    objc_msgSend_setStroke_inRange_order_(v31, v32, strokeCopy, origin, length, 0);
   }
 }
 
-- (BOOL)hasSpillStrokeInRange:(TSTSimpleRange)a3
+- (BOOL)hasSpillStrokeInRange:(TSTSimpleRange)range
 {
-  length = a3.length;
-  origin = a3.origin;
-  v7 = objc_msgSend_spillStrokeLayer(self, a2, a3.origin, a3.length, v3);
+  length = range.length;
+  origin = range.origin;
+  v7 = objc_msgSend_spillStrokeLayer(self, a2, range.origin, range.length, v3);
   if (!v7)
   {
     return 0;
@@ -210,29 +210,29 @@
   return hasStrokeInRange;
 }
 
-- (BOOL)replaceDefaultStrokeLayerWith:(id)a3
+- (BOOL)replaceDefaultStrokeLayerWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v9 = objc_msgSend_defaultStrokeLayer(self, v5, v6, v7, v8);
 
-  if (v9 != v4)
+  if (v9 != withCopy)
   {
-    objc_msgSend_setDefaultStrokeLayer_(self, v10, v4, v11, v12);
+    objc_msgSend_setDefaultStrokeLayer_(self, v10, withCopy, v11, v12);
   }
 
-  return v9 != v4;
+  return v9 != withCopy;
 }
 
-- (BOOL)replaceCustomStrokeLayerWith:(id)a3
+- (BOOL)replaceCustomStrokeLayerWith:(id)with
 {
-  v4 = a3;
-  if (objc_msgSend_isEmpty(v4, v5, v6, v7, v8))
+  withCopy = with;
+  if (objc_msgSend_isEmpty(withCopy, v5, v6, v7, v8))
   {
 
-    v4 = 0;
+    withCopy = 0;
   }
 
-  else if (v4 && self->_isDefaultsOnly)
+  else if (withCopy && self->_isDefaultsOnly)
   {
     TSUSetCrashReporterInfo();
     v18 = MEMORY[0x277D81150];
@@ -246,27 +246,27 @@
 
   v13 = objc_msgSend_customStrokeLayer(self, v9, v10, v11, v12);
 
-  if (v13 != v4)
+  if (v13 != withCopy)
   {
-    objc_msgSend_setCustomStrokeLayer_(self, v14, v4, v15, v16);
+    objc_msgSend_setCustomStrokeLayer_(self, v14, withCopy, v15, v16);
   }
 
-  return v13 != v4;
+  return v13 != withCopy;
 }
 
-- (void)invalidateClearedStrokesInRange:(TSTSimpleRange)a3
+- (void)invalidateClearedStrokesInRange:(TSTSimpleRange)range
 {
-  length = a3.length;
-  origin = a3.origin;
-  v8 = objc_msgSend_clearedStrokeLayer(self, a2, a3.origin, a3.length, v3);
+  length = range.length;
+  origin = range.origin;
+  v8 = objc_msgSend_clearedStrokeLayer(self, a2, range.origin, range.length, v3);
   objc_msgSend_invalidateRange_(v8, v6, origin, length, v7);
 }
 
-- (void)invalidateDynamicStrokesInRange:(TSTSimpleRange)a3
+- (void)invalidateDynamicStrokesInRange:(TSTSimpleRange)range
 {
-  length = a3.length;
-  origin = a3.origin;
-  v8 = objc_msgSend_dynamicStrokeLayer(self, a2, a3.origin, a3.length, v3);
+  length = range.length;
+  origin = range.origin;
+  v8 = objc_msgSend_dynamicStrokeLayer(self, a2, range.origin, range.length, v3);
   objc_msgSend_invalidateRange_(v8, v6, origin, length, v7);
 }
 
@@ -285,7 +285,7 @@
 
 - (vector<TSTStrokeLayer)p_strokeLayerVector
 {
-  v3 = self;
+  selfCopy = self;
   retstr->var0 = 0;
   retstr->var1 = 0;
   retstr->var2 = 0;
@@ -294,26 +294,26 @@
     sub_221281314(retstr, &self[9].var0);
   }
 
-  if (v3[9].var1)
+  if (selfCopy[9].var1)
   {
-    sub_221281314(retstr, &v3[9].var1);
+    sub_221281314(retstr, &selfCopy[9].var1);
   }
 
-  if (v3[9].var2)
+  if (selfCopy[9].var2)
   {
-    var2 = v3[9].var2;
+    var2 = selfCopy[9].var2;
     sub_221281314(retstr, &var2);
   }
 
-  if (v3[10].var0)
+  if (selfCopy[10].var0)
   {
-    var2 = v3[10].var0;
+    var2 = selfCopy[10].var0;
     sub_221281314(retstr, &var2);
   }
 
-  if (v3[10].var1)
+  if (selfCopy[10].var1)
   {
-    var2 = v3[10].var1;
+    var2 = selfCopy[10].var1;
     sub_221281314(retstr, &var2);
   }
 

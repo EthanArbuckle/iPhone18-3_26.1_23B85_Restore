@@ -1,16 +1,16 @@
 @interface EventGraphsPublisher
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
 - (NSArray)bookmarkableUpstreams;
 - (_TtC26AIMLInstrumentationStreams20EventGraphsPublisher)init;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation EventGraphsPublisher
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_23C6064D4();
   swift_unknownObjectRelease();
 }
@@ -29,13 +29,13 @@
   return v5;
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E1F9DF0, &qword_23C87BE00);
   v6 = sub_23C8718A4();
-  v7 = a3;
+  publisherCopy = publisher;
   swift_unknownObjectRetain();
-  v8 = _s26AIMLInstrumentationStreams20EventGraphsPublisherC9publisher4with9upstreams13bookmarkStateSo014BMBookmarkableE0_So12BPSPublisherCyyXlGXcSgSoAH_AKXc_SayAKGSo10BMBookmark_pSgtFZ_0(v7, v6);
+  v8 = _s26AIMLInstrumentationStreams20EventGraphsPublisherC9publisher4with9upstreams13bookmarkStateSo014BMBookmarkableE0_So12BPSPublisherCyyXlGXcSgSoAH_AKXc_SayAKGSo10BMBookmark_pSgtFZ_0(publisherCopy, v6);
 
   swift_unknownObjectRelease();
 

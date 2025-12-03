@@ -8,41 +8,41 @@
 
 - (id)tlks_screen
 {
-  v1 = [a1 _screen];
-  v2 = v1;
-  if (v1)
+  _screen = [self _screen];
+  v2 = _screen;
+  if (_screen)
   {
-    v3 = v1;
+    mainScreen = _screen;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
   }
 
-  v4 = v3;
+  v4 = mainScreen;
 
   return v4;
 }
 
 - (void)tlks_scale
 {
-  [a1 effectiveScreenScale];
+  [self effectiveScreenScale];
   if (v2 == 0.0)
   {
-    v3 = [a1 tlks_screen];
-    [v3 scale];
+    tlks_screen = [self tlks_screen];
+    [tlks_screen scale];
   }
 }
 
 - (void)tlks_setCornerRadius:()TLKSharedPublic withStyle:
 {
   v6 = a4;
-  v7 = [a1 layer];
-  [v7 setCornerCurve:v6];
+  layer = [self layer];
+  [layer setCornerCurve:v6];
 
-  v8 = [a1 layer];
-  [v8 setCornerRadius:a2];
+  layer2 = [self layer];
+  [layer2 setCornerRadius:a2];
 }
 
 @end

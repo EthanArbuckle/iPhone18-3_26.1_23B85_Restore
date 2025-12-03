@@ -1,20 +1,20 @@
 @interface PLUtilities
 + (BOOL)AppDeletionEnabled;
 + (BOOL)OverrideAllowlistEnabled;
-+ (BOOL)PLCopyItemsFromPath:(id)a3 toPath:(id)a4;
++ (BOOL)PLCopyItemsFromPath:(id)path toPath:(id)toPath;
 + (BOOL)PreUnlockTelemetryEnabled;
 + (BOOL)SwitchToIncrementalVacuumEnabled;
-+ (BOOL)allowQueryFromPeer:(id)a3;
-+ (BOOL)compressWithSource:(id)a3 withDestination:(id)a4 withLevel:(int)a5;
-+ (BOOL)createAndChownDirectory:(id)a3;
-+ (BOOL)createAndChownDirectoryIfDirectoryDoesNotExist:(id)a3;
-+ (BOOL)decompressWithSource:(id)a3 withDestination:(id)a4 withRemoveSrc:(BOOL)a5;
++ (BOOL)allowQueryFromPeer:(id)peer;
++ (BOOL)compressWithSource:(id)source withDestination:(id)destination withLevel:(int)level;
++ (BOOL)createAndChownDirectory:(id)directory;
++ (BOOL)createAndChownDirectoryIfDirectoryDoesNotExist:(id)exist;
++ (BOOL)decompressWithSource:(id)source withDestination:(id)destination withRemoveSrc:(BOOL)src;
 + (BOOL)deviceRebooted;
 + (BOOL)gasGaugeEnabled;
 + (BOOL)hasBattery;
 + (BOOL)hasGasGauge;
 + (BOOL)hasInternalKey;
-+ (BOOL)hasInternalKey:(id)a3;
++ (BOOL)hasInternalKey:(id)key;
 + (BOOL)inBUIDemoMode;
 + (BOOL)isALSCurveHigherThanDefault;
 + (BOOL)isAppAnalyticsEnabled;
@@ -29,93 +29,93 @@
 + (BOOL)isPowerlogHelperd;
 + (BOOL)isSafetyDataSubmissionAllowed;
 + (BOOL)isSiriEnabled;
-+ (BOOL)isValidString:(id)a3;
-+ (BOOL)moveItemAtPath:(id)a3 toPath:(id)a4 withName:(id)a5 error:(id *)a6;
++ (BOOL)isValidString:(id)string;
++ (BOOL)moveItemAtPath:(id)path toPath:(id)toPath withName:(id)name error:(id *)error;
 + (BOOL)runningAsMobileUser;
 + (BOOL)shouldCreateQuarantine;
-+ (BOOL)shouldLogForEntryKey:(id)a3;
++ (BOOL)shouldLogForEntryKey:(id)key;
 + (BOOL)shouldLogPreUnlockTelemetry;
 + (double)getDefaultL0bThresholdForDeviceType;
 + (double)getLastSystemTimeOffset;
 + (double)getMachbaseTimeRatio;
-+ (double)roundToSigFigDouble:(double)a3 withSigFig:(int)a4;
-+ (double)scaledPowerBasedOnPoint:(double)a3 withPowerModel:(id)a4;
-+ (id)JSONSanitizeDictionary:(id)a3;
++ (double)roundToSigFigDouble:(double)double withSigFig:(int)fig;
++ (double)scaledPowerBasedOnPoint:(double)point withPowerModel:(id)model;
++ (id)JSONSanitizeDictionary:(id)dictionary;
 + (id)MavRevStringQuery;
-+ (id)allSubClassesForClass:(Class)a3;
-+ (id)binaryPathForPid:(int)a3;
++ (id)allSubClassesForClass:(Class)class;
++ (id)binaryPathForPid:(int)pid;
 + (id)buildVersion;
-+ (id)bundleIDFromProcessName:(id)a3;
-+ (id)bundleIDFromURL:(id)a3;
-+ (id)bundleVersionFromURL:(id)a3;
-+ (id)cleanLaunchdApplicationMacOS:(id)a3;
-+ (id)cleanLaunchdName:(id)a3;
++ (id)bundleIDFromProcessName:(id)name;
++ (id)bundleIDFromURL:(id)l;
++ (id)bundleVersionFromURL:(id)l;
++ (id)cleanLaunchdApplicationMacOS:(id)s;
++ (id)cleanLaunchdName:(id)name;
 + (id)containerPath;
 + (id)crashReporterKey;
-+ (id)dateFromTimeval:(timeval)a3;
-+ (id)dateFromnSecEpoch:(unint64_t)a3;
++ (id)dateFromTimeval:(timeval)timeval;
++ (id)dateFromnSecEpoch:(unint64_t)epoch;
 + (id)deviceBootArgs;
 + (id)deviceBootTime;
 + (id)deviceBootUUID;
 + (id)experimentGroup;
-+ (id)extractDateStringAndUUIDStringFromFilePath:(id)a3;
-+ (id)fullProcessNameForPid:(int)a3;
-+ (id)generateAndUpdateSaltValue:(id)a3;
-+ (id)generateHashValue:(id)a3 withSalt:(id)a4;
++ (id)extractDateStringAndUUIDStringFromFilePath:(id)path;
++ (id)fullProcessNameForPid:(int)pid;
++ (id)generateAndUpdateSaltValue:(id)value;
++ (id)generateHashValue:(id)value withSalt:(id)salt;
 + (id)getFirstBatteryTimestamp;
-+ (id)getIdentifierFromEntry:(id)a3;
-+ (id)getKVPairsForCASubmissionFromEntry:(id)a3;
++ (id)getIdentifierFromEntry:(id)entry;
++ (id)getKVPairsForCASubmissionFromEntry:(id)entry;
 + (id)getLastBatteryTimestamp;
 + (id)getOverridableMonotonicNow;
-+ (id)getPerfStatsForProcess:(id)a3;
-+ (id)hashBundleID:(id)a3;
-+ (id)hashString:(id)a3;
-+ (id)intervalPeakCADictionaryForLaunchdName:(id)a3 intervalMaxKB:(unint64_t)a4;
-+ (id)launchdNameToProcessName:(id)a3;
++ (id)getPerfStatsForProcess:(id)process;
++ (id)hashBundleID:(id)d;
++ (id)hashString:(id)string;
++ (id)intervalPeakCADictionaryForLaunchdName:(id)name intervalMaxKB:(unint64_t)b;
++ (id)launchdNameToProcessName:(id)name;
 + (id)mobileUserADG;
-+ (id)modeForEntryKey:(id)a3 withKeyName:(id)a4;
-+ (id)pUUIDForPid:(int)a3;
-+ (id)powerModelForOperatorName:(id)a3;
-+ (id)processNameForPid:(int)a3;
++ (id)modeForEntryKey:(id)key withKeyName:(id)name;
++ (id)pUUIDForPid:(int)pid;
++ (id)powerModelForOperatorName:(id)name;
++ (id)processNameForPid:(int)pid;
 + (id)runningAsUser;
-+ (id)sanitizeCAPayload:(id)a3;
++ (id)sanitizeCAPayload:(id)payload;
 + (id)shortUUIDString;
 + (id)supplementalBuildVersion;
 + (id)torchTypeString;
-+ (id)workQueueForClass:(Class)a3;
-+ (id)workQueueForKey:(id)a3;
-+ (int)compressWithSourceStream:(__sFILE *)a3 withDestination:(__sFILE *)a4 withLevel:(int)a5;
-+ (int)decompressWithSourceStream:(__sFILE *)a3 withDestinationStream:(__sFILE *)a4;
-+ (int)grabSysctlValue:(id)a3;
-+ (int)numFilesAtPath:(id)a3;
-+ (int)pidForProcessName:(id)a3;
-+ (int)remove:(int)a3 oldestFilesFromDirectory:(id)a4 containingFileNameSubstring:(id)a5;
-+ (int64_t)compareFilesByKey:(id)a3 file1:(id)a4 file2:(id)a5 sortAscending:(BOOL)a6;
-+ (jetsam_priority_info)getJetsamPriority:(int)a3;
++ (id)workQueueForClass:(Class)class;
++ (id)workQueueForKey:(id)key;
++ (int)compressWithSourceStream:(__sFILE *)stream withDestination:(__sFILE *)destination withLevel:(int)level;
++ (int)decompressWithSourceStream:(__sFILE *)stream withDestinationStream:(__sFILE *)destinationStream;
++ (int)grabSysctlValue:(id)value;
++ (int)numFilesAtPath:(id)path;
++ (int)pidForProcessName:(id)name;
++ (int)remove:(int)remove oldestFilesFromDirectory:(id)directory containingFileNameSubstring:(id)substring;
++ (int64_t)compareFilesByKey:(id)key file1:(id)file1 file2:(id)file2 sortAscending:(BOOL)ascending;
++ (jetsam_priority_info)getJetsamPriority:(int)priority;
 + (mach_timebase_info)getMachTimebase;
-+ (process_memory_limit_info)getProcessMemoryLimit:(int)a3;
-+ (signed)canLogMode:(id)a3 fullMode:(BOOL)a4;
-+ (signed)connectionToQuarantine:(id)a3;
-+ (signed)logModeForEntryKey:(id)a3 withKey:(id)a4 andValue:(id)a5;
-+ (unint64_t)coalitionIDForPid:(int)a3;
-+ (unint64_t)convertToBase10:(id)a3 fromBaseN:(int)a4;
-+ (unint64_t)directorySize:(id)a3;
++ (process_memory_limit_info)getProcessMemoryLimit:(int)limit;
++ (signed)canLogMode:(id)mode fullMode:(BOOL)fullMode;
++ (signed)connectionToQuarantine:(id)quarantine;
++ (signed)logModeForEntryKey:(id)key withKey:(id)withKey andValue:(id)value;
++ (unint64_t)coalitionIDForPid:(int)pid;
++ (unint64_t)convertToBase10:(id)base10 fromBaseN:(int)n;
++ (unint64_t)directorySize:(id)size;
 + (unint64_t)getCurrMachAbsTimeInSecs;
-+ (unint64_t)machTimeFromSeconds:(double)a3;
++ (unint64_t)machTimeFromSeconds:(double)seconds;
 + (unint64_t)maxProcessCount;
 + (unsigned)getHardwarePerfLevels;
-+ (void)dispatchSyncIfNotCallerQueue:(id)a3 withBlock:(id)a4;
-+ (void)exitWithReason:(signed __int16)a3 action:(signed __int16)a4;
-+ (void)getCurrentMonotonicAndMachAbsTime:(id *)a3 machAbsTime:(unint64_t *)a4 machContTime:(unint64_t *)a5;
++ (void)dispatchSyncIfNotCallerQueue:(id)queue withBlock:(id)block;
++ (void)exitWithReason:(signed __int16)reason action:(signed __int16)action;
++ (void)getCurrentMonotonicAndMachAbsTime:(id *)time machAbsTime:(unint64_t *)absTime machContTime:(unint64_t *)contTime;
 + (void)getDefaultL0bThresholdForDeviceType;
 + (void)getLastSystemTimeOffset;
 + (void)isImproveFitnessPlusEnabled;
 + (void)maxProcessCount;
-+ (void)postNotificationName:(id)a3 object:(id)a4 userInfo:(id)a5;
-+ (void)quarantineToPath:(id)a3 action:(signed __int16)a4;
++ (void)postNotificationName:(id)name object:(id)object userInfo:(id)info;
++ (void)quarantineToPath:(id)path action:(signed __int16)action;
 + (void)refreshBUI;
-+ (void)reportZlibResultToCA:(int)a3 forEvent:(id)a4;
-+ (void)setMobileOwnerForFile:(id)a3;
++ (void)reportZlibResultToCA:(int)a forEvent:(id)event;
++ (void)setMobileOwnerForFile:(id)file;
 @end
 
 @implementation PLUtilities
@@ -155,17 +155,17 @@ void __28__PLUtilities_containerPath__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (BOOL)moveItemAtPath:(id)a3 toPath:(id)a4 withName:(id)a5 error:(id *)a6
++ (BOOL)moveItemAtPath:(id)path toPath:(id)toPath withName:(id)name error:(id *)error
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  pathCopy = path;
+  toPathCopy = toPath;
+  nameCopy = name;
+  v11 = nameCopy;
+  if (nameCopy)
   {
     v22 = @"override-fileName";
-    v23[0] = v10;
+    v23[0] = nameCopy;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
   }
 
@@ -175,14 +175,14 @@ void __28__PLUtilities_containerPath__block_invoke()
   }
 
   v13 = *MEMORY[0x277D02D08];
-  v14 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8];
+  v14 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
   v15 = OSAMoveFileForSubmissions();
 
   if (v15)
   {
     v16 = MEMORY[0x277CBEBC0];
-    v17 = [v8 lastPathComponent];
-    v18 = [@"/var/mobile/Library/Logs/CrashReporter/" stringByAppendingPathComponent:v17];
+    lastPathComponent = [pathCopy lastPathComponent];
+    v18 = [@"/var/mobile/Library/Logs/CrashReporter/" stringByAppendingPathComponent:lastPathComponent];
     v19 = [v16 fileURLWithPath:v18];
     [PPSFileUtilities markAsPurgeable:v19 urgency:512 startDate:0];
   }
@@ -191,17 +191,17 @@ void __28__PLUtilities_containerPath__block_invoke()
   return v15;
 }
 
-+ (BOOL)PLCopyItemsFromPath:(id)a3 toPath:(id)a4
++ (BOOL)PLCopyItemsFromPath:(id)path toPath:(id)toPath
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  toPathCopy = toPath;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
   v24 = 0;
-  v8 = [v7 contentsOfDirectoryAtPath:v5 error:&v24];
+  v8 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:&v24];
   v9 = v24;
   if (v9)
   {
@@ -216,8 +216,8 @@ void __28__PLUtilities_containerPath__block_invoke()
 
   else
   {
-    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5 isDirectory:1];
-    v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6 isDirectory:1];
+    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy isDirectory:1];
+    v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:toPathCopy isDirectory:1];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __42__PLUtilities_PLCopyItemsFromPath_toPath___block_invoke;
@@ -227,9 +227,9 @@ void __28__PLUtilities_containerPath__block_invoke()
     v15 = v13;
     v19 = v15;
     v23 = &v25;
-    v20 = v7;
-    v21 = v5;
-    v22 = v6;
+    v20 = defaultManager;
+    v21 = pathCopy;
+    v22 = toPathCopy;
     [v8 enumerateObjectsUsingBlock:v17];
     v11 = *(v26 + 24);
   }
@@ -267,17 +267,17 @@ void __42__PLUtilities_PLCopyItemsFromPath_toPath___block_invoke(uint64_t a1, vo
   }
 }
 
-+ (BOOL)createAndChownDirectory:(id)a3
++ (BOOL)createAndChownDirectory:(id)directory
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v14 = 0;
-  v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v14];
+  v5 = [defaultManager createDirectoryAtPath:directoryCopy withIntermediateDirectories:1 attributes:0 error:&v14];
   v6 = v14;
 
   if (v5)
   {
-    [PLUtilities setMobileOwnerForFile:v3];
+    [PLUtilities setMobileOwnerForFile:directoryCopy];
   }
 
   else
@@ -285,9 +285,9 @@ void __42__PLUtilities_PLCopyItemsFromPath_toPath___block_invoke(uint64_t a1, vo
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"error=%@", v6];
     v8 = MEMORY[0x277D3F178];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLUtilities.m"];
-    v10 = [v9 lastPathComponent];
+    lastPathComponent = [v9 lastPathComponent];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLUtilities createAndChownDirectory:]"];
-    [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:217];
+    [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:217];
 
     v12 = PLLogCommon();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -299,50 +299,50 @@ void __42__PLUtilities_PLCopyItemsFromPath_toPath___block_invoke(uint64_t a1, vo
   return v5;
 }
 
-+ (BOOL)createAndChownDirectoryIfDirectoryDoesNotExist:(id)a3
++ (BOOL)createAndChownDirectoryIfDirectoryDoesNotExist:(id)exist
 {
-  v3 = a3;
+  existCopy = exist;
   v8 = 0;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3 isDirectory:&v8];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:existCopy isDirectory:&v8];
 
   v6 = 0;
   if ((v5 & 1) == 0)
   {
-    v6 = [PLUtilities createAndChownDirectory:v3];
+    v6 = [PLUtilities createAndChownDirectory:existCopy];
   }
 
   return v6;
 }
 
-+ (void)setMobileOwnerForFile:(id)a3
++ (void)setMobileOwnerForFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = getpwnam("mobile");
-  v5 = [v3 fileSystemRepresentation];
+  fileSystemRepresentation = [fileCopy fileSystemRepresentation];
 
   pw_uid = v4->pw_uid;
   pw_gid = v4->pw_gid;
 
-  chown(v5, pw_uid, pw_gid);
+  chown(fileSystemRepresentation, pw_uid, pw_gid);
 }
 
-+ (BOOL)compressWithSource:(id)a3 withDestination:(id)a4 withLevel:(int)a5
++ (BOOL)compressWithSource:(id)source withDestination:(id)destination withLevel:(int)level
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  destinationCopy = destination;
   v8 = PLLogZlib();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = v6;
+    v22 = sourceCopy;
     v23 = 2112;
-    v24 = v7;
+    v24 = destinationCopy;
     _os_log_impl(&dword_25EE51000, v8, OS_LOG_TYPE_DEFAULT, "compressWithSource: source file = %@, destination file = %@", &v21, 0x16u);
   }
 
-  v9 = fopen([v6 UTF8String], "r");
+  v9 = fopen([sourceCopy UTF8String], "r");
   if (!v9)
   {
     v16 = PLLogZlib();
@@ -355,7 +355,7 @@ void __42__PLUtilities_PLCopyItemsFromPath_toPath___block_invoke(uint64_t a1, vo
   }
 
   v10 = v9;
-  v11 = fopen([v7 UTF8String], "w");
+  v11 = fopen([destinationCopy UTF8String], "w");
   v12 = PLLogZlib();
   v13 = v12;
   if (!v11)
@@ -397,9 +397,9 @@ LABEL_18:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = v6;
+    v22 = sourceCopy;
     v23 = 2112;
-    v24 = v7;
+    v24 = destinationCopy;
     _os_log_impl(&dword_25EE51000, v20, OS_LOG_TYPE_DEFAULT, "compressWithSource: successfully decompressed %@ to %@", &v21, 0x16u);
   }
 
@@ -410,30 +410,30 @@ LABEL_19:
   return v17;
 }
 
-+ (int)compressWithSourceStream:(__sFILE *)a3 withDestination:(__sFILE *)a4 withLevel:(int)a5
++ (int)compressWithSourceStream:(__sFILE *)stream withDestination:(__sFILE *)destination withLevel:(int)level
 {
   v19[1024] = *MEMORY[0x277D85DE8];
   memset(&v17, 0, sizeof(v17));
-  v8 = deflateInit2_(&v17, a5, 8, 31, 8, 0, "1.2.12", 112);
+  v8 = deflateInit2_(&v17, level, 8, 31, 8, 0, "1.2.12", 112);
   if (v8)
   {
     v9 = v8;
-    [a1 reportZlibResultToCA:v8 forEvent:@"com.apple.powerlog.zlib.compress"];
+    [self reportZlibResultToCA:v8 forEvent:@"com.apple.powerlog.zlib.compress"];
   }
 
   else
   {
 LABEL_3:
-    v10 = fread(v19, 1uLL, 0x2000uLL, a3);
+    v10 = fread(v19, 1uLL, 0x2000uLL, stream);
     if (v10 >= 0xFFFFFFFF)
     {
       +[PLUtilities compressWithSourceStream:withDestination:withLevel:];
     }
 
     v17.avail_in = v10;
-    if (!ferror(a3))
+    if (!ferror(stream))
     {
-      v11 = feof(a3);
+      v11 = feof(stream);
       v17.next_in = v19;
       while (1)
       {
@@ -447,7 +447,7 @@ LABEL_3:
 
         v13 = v12;
         v14 = 0x2000 - v17.avail_out;
-        if (fwrite(__ptr, 1uLL, v14, a4) != v14 || ferror(a4))
+        if (fwrite(__ptr, 1uLL, v14, destination) != v14 || ferror(destination))
         {
           break;
         }
@@ -477,7 +477,7 @@ LABEL_3:
     }
 
     v9 = -1;
-    [a1 reportZlibResultToCA:0xFFFFFFFFLL forEvent:{@"com.apple.powerlog.zlib.compress", v17.next_in}];
+    [self reportZlibResultToCA:0xFFFFFFFFLL forEvent:{@"com.apple.powerlog.zlib.compress", v17.next_in}];
     deflateEnd(&v17);
   }
 
@@ -486,15 +486,15 @@ LABEL_15:
   return v9;
 }
 
-+ (BOOL)decompressWithSource:(id)a3 withDestination:(id)a4 withRemoveSrc:(BOOL)a5
++ (BOOL)decompressWithSource:(id)source withDestination:(id)destination withRemoveSrc:(BOOL)src
 {
-  v5 = a5;
+  srcCopy = src;
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  destinationCopy = destination;
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v7 pathExtension];
-  v11 = [v9 stringWithFormat:@".%@", v10];
+  pathExtension = [sourceCopy pathExtension];
+  v11 = [v9 stringWithFormat:@".%@", pathExtension];
 
   v12 = [v11 isEqualToString:@".gz"];
   v13 = PLLogZlib();
@@ -512,13 +512,13 @@ LABEL_15:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v31 = v7;
+    v31 = sourceCopy;
     v32 = 2112;
-    v33 = v8;
+    v33 = destinationCopy;
     _os_log_impl(&dword_25EE51000, v14, OS_LOG_TYPE_DEFAULT, "decompressWithSource: source file = %@, destination file = %@", buf, 0x16u);
   }
 
-  v15 = fopen([v7 UTF8String], "r");
+  v15 = fopen([sourceCopy UTF8String], "r");
   if (!v15)
   {
     v22 = PLLogZlib();
@@ -531,7 +531,7 @@ LABEL_15:
   }
 
   v16 = v15;
-  v17 = fopen([v8 UTF8String], "w");
+  v17 = fopen([destinationCopy UTF8String], "w");
   v18 = PLLogZlib();
   v19 = v18;
   if (!v17)
@@ -560,9 +560,9 @@ LABEL_15:
 
     fclose(v16);
     fclose(v17);
-    v21 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v29 = 0;
-    [v21 removeItemAtPath:v8 error:&v29];
+    [defaultManager removeItemAtPath:destinationCopy error:&v29];
     v22 = v29;
 
     if (v22)
@@ -587,16 +587,16 @@ LABEL_24:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v31 = v7;
+    v31 = sourceCopy;
     v32 = 2112;
-    v33 = v8;
+    v33 = destinationCopy;
     _os_log_impl(&dword_25EE51000, v27, OS_LOG_TYPE_DEFAULT, "decompressWithSource: successfully decompressed %@ to %@", buf, 0x16u);
   }
 
-  if (v5)
+  if (srcCopy)
   {
-    v28 = [MEMORY[0x277CCAA00] defaultManager];
-    [v28 removeItemAtPath:v7 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 removeItemAtPath:sourceCopy error:0];
   }
 
   v24 = 1;
@@ -606,7 +606,7 @@ LABEL_25:
   return v24;
 }
 
-+ (int)decompressWithSourceStream:(__sFILE *)a3 withDestinationStream:(__sFILE *)a4
++ (int)decompressWithSourceStream:(__sFILE *)stream withDestinationStream:(__sFILE *)destinationStream
 {
   v18[1024] = *MEMORY[0x277D85DE8];
   memset(&strm.avail_in, 0, 104);
@@ -615,23 +615,23 @@ LABEL_25:
   v7 = inflateInit2_(&strm, 31, "1.2.12", 112);
   if (v7)
   {
-    [a1 reportZlibResultToCA:v7 forEvent:@"com.apple.powerlog.zlib.decompress"];
+    [self reportZlibResultToCA:v7 forEvent:@"com.apple.powerlog.zlib.decompress"];
   }
 
   else
   {
     while (2)
     {
-      v8 = fread(v18, 1uLL, 0x2000uLL, a3);
+      v8 = fread(v18, 1uLL, 0x2000uLL, stream);
       strm.avail_in = v8;
-      if (ferror(a3))
+      if (ferror(stream))
       {
 LABEL_18:
         LODWORD(v7) = -1;
-        v12 = a1;
+        selfCopy2 = self;
         v13 = 0xFFFFFFFFLL;
 LABEL_16:
-        [v12 reportZlibResultToCA:v13 forEvent:@"com.apple.powerlog.zlib.decompress"];
+        [selfCopy2 reportZlibResultToCA:v13 forEvent:@"com.apple.powerlog.zlib.decompress"];
         inflateEnd(&strm);
       }
 
@@ -655,7 +655,7 @@ LABEL_16:
             {
               v7 = 4294967293;
 LABEL_15:
-              v12 = a1;
+              selfCopy2 = self;
               v13 = v7;
               goto LABEL_16;
             }
@@ -666,7 +666,7 @@ LABEL_15:
             }
 
             v10 = 0x2000 - strm.avail_out;
-            if (fwrite(__ptr, 1uLL, v10, a4) != v10 || ferror(a4))
+            if (fwrite(__ptr, 1uLL, v10, destinationStream) != v10 || ferror(destinationStream))
             {
               goto LABEL_18;
             }
@@ -686,7 +686,7 @@ LABEL_15:
           v11 = v7 != 1;
           if (v7 >= 2)
           {
-            [a1 reportZlibResultToCA:v7 forEvent:@"com.apple.powerlog.zlib.decompress"];
+            [self reportZlibResultToCA:v7 forEvent:@"com.apple.powerlog.zlib.decompress"];
             v11 = 1;
           }
         }
@@ -703,9 +703,9 @@ LABEL_15:
   return v7;
 }
 
-+ (void)reportZlibResultToCA:(int)a3 forEvent:(id)a4
++ (void)reportZlibResultToCA:(int)a forEvent:(id)event
 {
-  v4 = a4;
+  eventCopy = event;
   v5 = PLLogZlib();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -728,10 +728,10 @@ id __45__PLUtilities_reportZlibResultToCA_forEvent___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)extractDateStringAndUUIDStringFromFilePath:(id)a3
++ (id)extractDateStringAndUUIDStringFromFilePath:(id)path
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"."];
+  pathCopy = path;
+  v4 = [pathCopy rangeOfString:@"."];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -739,7 +739,7 @@ id __45__PLUtilities_reportZlibResultToCA_forEvent___block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [v3 substringToIndex:v4];
+    v6 = [pathCopy substringToIndex:v4];
     v7 = [v6 componentsSeparatedByString:@"_"];
     if ([v7 count] >= 2)
     {
@@ -755,29 +755,29 @@ id __45__PLUtilities_reportZlibResultToCA_forEvent___block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (unint64_t)directorySize:(id)a3
++ (unint64_t)directorySize:(id)size
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 subpathsOfDirectoryAtPath:v3 error:0];
-  v6 = [v5 objectEnumerator];
-  v7 = [v6 nextObject];
-  if (v7)
+  sizeCopy = size;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager subpathsOfDirectoryAtPath:sizeCopy error:0];
+  objectEnumerator = [v5 objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v8 = v7;
+    v8 = nextObject;
     v9 = 0;
     do
     {
-      v10 = [v3 stringByAppendingPathComponent:v8];
-      v11 = [v4 attributesOfItemAtPath:v10 error:0];
+      v10 = [sizeCopy stringByAppendingPathComponent:v8];
+      v11 = [defaultManager attributesOfItemAtPath:v10 error:0];
 
       v9 += [v11 fileSize];
-      v12 = [v6 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v8 = v12;
+      v8 = nextObject2;
     }
 
-    while (v12);
+    while (nextObject2);
   }
 
   else
@@ -788,13 +788,13 @@ id __45__PLUtilities_reportZlibResultToCA_forEvent___block_invoke(uint64_t a1)
   return v9;
 }
 
-+ (int)numFilesAtPath:(id)a3
++ (int)numFilesAtPath:(id)path
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = 0;
-  v5 = [v4 contentsOfDirectoryAtPath:v3 error:&v11];
+  v5 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:&v11];
   v6 = v11;
   if (v6)
   {
@@ -814,7 +814,7 @@ id __45__PLUtilities_reportZlibResultToCA_forEvent___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v13 = v3;
+      v13 = pathCopy;
       v14 = 1024;
       v15 = v8;
       _os_log_impl(&dword_25EE51000, v7, OS_LOG_TYPE_DEFAULT, "Num files at %@ = %d", buf, 0x12u);
@@ -825,19 +825,19 @@ id __45__PLUtilities_reportZlibResultToCA_forEvent___block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (int64_t)compareFilesByKey:(id)a3 file1:(id)a4 file2:(id)a5 sortAscending:(BOOL)a6
++ (int64_t)compareFilesByKey:(id)key file1:(id)file1 file2:(id)file2 sortAscending:(BOOL)ascending
 {
-  v6 = a6;
+  ascendingCopy = ascending;
   v17 = 0;
-  v9 = a5;
-  v10 = a3;
-  [a4 getResourceValue:&v17 forKey:v10 error:0];
+  file2Copy = file2;
+  keyCopy = key;
+  [file1 getResourceValue:&v17 forKey:keyCopy error:0];
   v11 = v17;
   v16 = 0;
-  [v9 getResourceValue:&v16 forKey:v10 error:0];
+  [file2Copy getResourceValue:&v16 forKey:keyCopy error:0];
 
   v12 = v16;
-  if (v6)
+  if (ascendingCopy)
   {
     v13 = v11;
   }
@@ -853,30 +853,30 @@ id __45__PLUtilities_reportZlibResultToCA_forEvent___block_invoke(uint64_t a1)
   return v14;
 }
 
-+ (int)remove:(int)a3 oldestFilesFromDirectory:(id)a4 containingFileNameSubstring:(id)a5
++ (int)remove:(int)remove oldestFilesFromDirectory:(id)directory containingFileNameSubstring:(id)substring
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  directoryCopy = directory;
+  substringCopy = substring;
   v9 = 0;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = 0;
-  if (a3 >= 1 && v7)
+  if (remove >= 1 && directoryCopy)
   {
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v34[0] = 0;
     v34[1] = v34;
     v34[2] = 0x3032000000;
     v34[3] = __Block_byref_object_copy__6;
     v34[4] = __Block_byref_object_dispose__6;
     v35 = 0;
-    v11 = [MEMORY[0x277CBEBC0] URLWithString:v7];
+    v11 = [MEMORY[0x277CBEBC0] URLWithString:directoryCopy];
     v43[0] = *MEMORY[0x277CBE7C0];
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:1];
     v33 = 0;
-    v13 = [v10 contentsOfDirectoryAtURL:v11 includingPropertiesForKeys:v12 options:4 error:&v33];
+    v13 = [defaultManager contentsOfDirectoryAtURL:v11 includingPropertiesForKeys:v12 options:4 error:&v33];
     v14 = v33;
 
     if (v14)
@@ -892,16 +892,16 @@ id __45__PLUtilities_reportZlibResultToCA_forEvent___block_invoke(uint64_t a1)
 
     else
     {
-      v16 = [MEMORY[0x277CBEB18] array];
-      if (v8)
+      array = [MEMORY[0x277CBEB18] array];
+      if (substringCopy)
       {
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __75__PLUtilities_remove_oldestFilesFromDirectory_containingFileNameSubstring___block_invoke;
         v30[3] = &unk_279A5C6D0;
-        v17 = v8;
+        v17 = substringCopy;
         v31 = v17;
-        v18 = v16;
+        v18 = array;
         v32 = v18;
         [v13 enumerateObjectsUsingBlock:v30];
         v19 = PLLogCommon();
@@ -925,7 +925,7 @@ id __45__PLUtilities_reportZlibResultToCA_forEvent___block_invoke(uint64_t a1)
       }
 
       v21 = [v18 sortedArrayUsingComparator:&__block_literal_global_86];
-      v22 = [v21 subarrayWithRange:{0, a3}];
+      v22 = [v21 subarrayWithRange:{0, remove}];
       v23 = PLLogCommon();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
@@ -939,7 +939,7 @@ id __45__PLUtilities_reportZlibResultToCA_forEvent___block_invoke(uint64_t a1)
       v26[2] = __75__PLUtilities_remove_oldestFilesFromDirectory_containingFileNameSubstring___block_invoke_87;
       v26[3] = &unk_279A5C718;
       v28 = v34;
-      v27 = v10;
+      v27 = defaultManager;
       v29 = &v36;
       [v22 enumerateObjectsUsingBlock:v26];
       v9 = *(v37 + 6);
@@ -1046,17 +1046,17 @@ void __75__PLUtilities_remove_oldestFilesFromDirectory_containingFileNameSubstri
   }
 }
 
-+ (id)workQueueForClass:(Class)a3
++ (id)workQueueForClass:(Class)class
 {
-  v3 = NSStringFromClass(a3);
+  v3 = NSStringFromClass(class);
   v4 = [PLUtilities workQueueForKey:v3];
 
   return v4;
 }
 
-+ (id)workQueueForKey:(id)a3
++ (id)workQueueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (workQueueForKey__sOnceTokenWorkQueue != -1)
   {
     +[PLUtilities workQueueForKey:];
@@ -1064,18 +1064,18 @@ void __75__PLUtilities_remove_oldestFilesFromDirectory_containingFileNameSubstri
 
   v4 = workQueueForKey__workQueueDictionary;
   objc_sync_enter(v4);
-  if (v3)
+  if (keyCopy)
   {
-    v5 = [workQueueForKey__workQueueDictionary objectForKeyedSubscript:v3];
+    v5 = [workQueueForKey__workQueueDictionary objectForKeyedSubscript:keyCopy];
     if (!v5)
     {
       v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v7 = dispatch_queue_attr_make_with_qos_class(v6, workQueueForKey__qos, 0);
 
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.powerlog.workqueue.%@", v3];
-      v5 = dispatch_queue_create([v8 UTF8String], v7);
+      keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.powerlog.workqueue.%@", keyCopy];
+      v5 = dispatch_queue_create([keyCopy UTF8String], v7);
 
-      [workQueueForKey__workQueueDictionary setObject:v5 forKeyedSubscript:v3];
+      [workQueueForKey__workQueueDictionary setObject:v5 forKeyedSubscript:keyCopy];
     }
   }
 
@@ -1117,14 +1117,14 @@ void __31__PLUtilities_workQueueForKey___block_invoke()
   [workQueueForKey__workQueueDictionary setObject:v4 forKeyedSubscript:@"__GeneralWorkQueue__"];
 }
 
-+ (void)dispatchSyncIfNotCallerQueue:(id)a3 withBlock:(id)a4
++ (void)dispatchSyncIfNotCallerQueue:(id)queue withBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   label = dispatch_queue_get_label(0);
-  v7 = dispatch_queue_get_label(a3);
+  v7 = dispatch_queue_get_label(queue);
   if (!strcmp(label, v7))
   {
-    v5[2](v5);
+    blockCopy[2](blockCopy);
   }
 
   else
@@ -1133,16 +1133,16 @@ void __31__PLUtilities_workQueueForKey___block_invoke()
     block[1] = 3221225472;
     block[2] = __54__PLUtilities_dispatchSyncIfNotCallerQueue_withBlock___block_invoke;
     block[3] = &unk_279A5C740;
-    v9 = v5;
-    dispatch_sync(a3, block);
+    v9 = blockCopy;
+    dispatch_sync(queue, block);
   }
 }
 
-+ (void)postNotificationName:(id)a3 object:(id)a4 userInfo:(id)a5
++ (void)postNotificationName:(id)name object:(id)object userInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  objectCopy = object;
+  infoCopy = info;
   if (postNotificationName_object_userInfo__onceToken != -1)
   {
     +[PLUtilities postNotificationName:object:userInfo:];
@@ -1153,12 +1153,12 @@ void __31__PLUtilities_workQueueForKey___block_invoke()
   block[1] = 3221225472;
   block[2] = __52__PLUtilities_postNotificationName_object_userInfo___block_invoke_2;
   block[3] = &unk_279A5C768;
-  v15 = v7;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v15 = nameCopy;
+  v16 = objectCopy;
+  v17 = infoCopy;
+  v11 = infoCopy;
+  v12 = objectCopy;
+  v13 = nameCopy;
   dispatch_async(v10, block);
 }
 
@@ -1206,9 +1206,9 @@ uint64_t __35__PLUtilities_getMachbaseTimeRatio__block_invoke()
   return result;
 }
 
-+ (unint64_t)machTimeFromSeconds:(double)a3
++ (unint64_t)machTimeFromSeconds:(double)seconds
 {
-  if (a3 < 0.0)
+  if (seconds < 0.0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -1229,7 +1229,7 @@ uint64_t __35__PLUtilities_getMachbaseTimeRatio__block_invoke()
     return 0;
   }
 
-  v6 = a3 * 1000000000.0 / v4;
+  v6 = seconds * 1000000000.0 / v4;
   if (v6 >= 1.84467441e19)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -1256,20 +1256,20 @@ uint64_t __35__PLUtilities_getMachbaseTimeRatio__block_invoke()
   }
 }
 
-+ (id)dateFromTimeval:(timeval)a3
++ (id)dateFromTimeval:(timeval)timeval
 {
-  v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:a3.tv_usec / 1000000.0 + a3.tv_sec];
-  v4 = [v3 convertFromSystemToMonotonic];
+  v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:timeval.tv_usec / 1000000.0 + timeval.tv_sec];
+  convertFromSystemToMonotonic = [v3 convertFromSystemToMonotonic];
 
-  return v4;
+  return convertFromSystemToMonotonic;
 }
 
-+ (id)dateFromnSecEpoch:(unint64_t)a3
++ (id)dateFromnSecEpoch:(unint64_t)epoch
 {
-  v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:a3 / 1000000000.0];
-  v4 = [v3 convertFromSystemToMonotonic];
+  v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:epoch / 1000000000.0];
+  convertFromSystemToMonotonic = [v3 convertFromSystemToMonotonic];
 
-  return v4;
+  return convertFromSystemToMonotonic;
 }
 
 + (id)deviceBootTime
@@ -1332,9 +1332,9 @@ void __29__PLUtilities_deviceBootTime__block_invoke()
         v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to get system boot session uuid %d", *__error()];
         v5 = MEMORY[0x277D3F178];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLUtilities.m"];
-        v7 = [v6 lastPathComponent];
+        lastPathComponent = [v6 lastPathComponent];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLUtilities deviceBootUUID]"];
-        [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:803];
+        [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:803];
 
         v9 = PLLogCommon();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1377,9 +1377,9 @@ LABEL_17:
         v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"system boot session uuid: %@", v10, v20, v21, v22, v23, v24];
         v14 = MEMORY[0x277D3F178];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLUtilities.m"];
-        v16 = [v15 lastPathComponent];
+        lastPathComponent2 = [v15 lastPathComponent];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLUtilities deviceBootUUID]"];
-        [v14 logMessage:v4 fromFile:v16 fromFunction:v17 fromLineNumber:808];
+        [v14 logMessage:v4 fromFile:lastPathComponent2 fromFunction:v17 fromLineNumber:808];
 
         v9 = PLLogCommon();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1459,9 +1459,9 @@ LABEL_9:
 + (double)getLastSystemTimeOffset
 {
   v2 = [MEMORY[0x277D3F230] entryKeyForType:*MEMORY[0x277D3F5D0] andName:*MEMORY[0x277D3F618]];
-  v3 = [MEMORY[0x277D3F2A0] sharedCore];
-  v4 = [v3 storage];
-  v5 = [v4 lastEntryForKey:v2];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v5 = [storage lastEntryForKey:v2];
 
   v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D3F620]];
   [v6 doubleValue];
@@ -1478,24 +1478,24 @@ LABEL_9:
 
 + (id)getFirstBatteryTimestamp
 {
-  v2 = [MEMORY[0x277D3F2A0] sharedCore];
-  v3 = [v2 storage];
-  v4 = [v3 firstEntryForKey:@"PLBatteryAgent_EventBackward_Battery"];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v4 = [storage firstEntryForKey:@"PLBatteryAgent_EventBackward_Battery"];
 
-  v5 = [v4 entryDate];
+  entryDate = [v4 entryDate];
 
-  return v5;
+  return entryDate;
 }
 
 + (id)getLastBatteryTimestamp
 {
-  v2 = [MEMORY[0x277D3F2A0] sharedCore];
-  v3 = [v2 storage];
-  v4 = [v3 lastEntryForKey:@"PLBatteryAgent_EventBackward_Battery"];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v4 = [storage lastEntryForKey:@"PLBatteryAgent_EventBackward_Battery"];
 
-  v5 = [v4 entryDate];
+  entryDate = [v4 entryDate];
 
-  return v5;
+  return entryDate;
 }
 
 + (id)getOverridableMonotonicNow
@@ -1513,8 +1513,8 @@ LABEL_9:
     else
     {
       v7 = +[PLUtilities getLastBatteryTimestamp];
-      v8 = [v7 convertFromMonotonicToSystem];
-      [v8 timeIntervalSince1970];
+      convertFromMonotonicToSystem = [v7 convertFromMonotonicToSystem];
+      [convertFromMonotonicToSystem timeIntervalSince1970];
       v5 = v9;
     }
 
@@ -1530,24 +1530,24 @@ LABEL_9:
     }
 
     v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v5 + v10];
-    v6 = [v12 convertFromSystemToMonotonic];
+    convertFromSystemToMonotonic = [v12 convertFromSystemToMonotonic];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEAA8] monotonicDate];
+    convertFromSystemToMonotonic = [MEMORY[0x277CBEAA8] monotonicDate];
   }
 
-  return v6;
+  return convertFromSystemToMonotonic;
 }
 
-+ (void)getCurrentMonotonicAndMachAbsTime:(id *)a3 machAbsTime:(unint64_t *)a4 machContTime:(unint64_t *)a5
++ (void)getCurrentMonotonicAndMachAbsTime:(id *)time machAbsTime:(unint64_t *)absTime machContTime:(unint64_t *)contTime
 {
   v31 = 0;
   v32 = 0;
   v29 = 0;
   v30 = 0;
-  v8 = [a1 getMachTimebase];
+  getMachTimebase = [self getMachTimebase];
   if (mach_get_times())
   {
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -1568,9 +1568,9 @@ LABEL_9:
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"mach_get_times() call failed."];
         v11 = MEMORY[0x277D3F178];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLUtilities.m"];
-        v13 = [v12 lastPathComponent];
+        lastPathComponent = [v12 lastPathComponent];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLUtilities getCurrentMonotonicAndMachAbsTime:machAbsTime:machContTime:]"];
-        [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:898];
+        [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:898];
 
         v15 = PLLogCommon();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -1580,15 +1580,15 @@ LABEL_9:
       }
     }
 
-    *a3 = [MEMORY[0x277CBEAA8] monotonicDate];
-    if (a4)
+    *time = [MEMORY[0x277CBEAA8] monotonicDate];
+    if (absTime)
     {
-      *a4 = mach_absolute_time() * *v8 / v8[1];
+      *absTime = mach_absolute_time() * *getMachTimebase / getMachTimebase[1];
     }
 
-    if (a5)
+    if (contTime)
     {
-      *a5 = mach_continuous_time() * *v8 / v8[1];
+      *contTime = mach_continuous_time() * *getMachTimebase / getMachTimebase[1];
     }
   }
 
@@ -1611,14 +1611,14 @@ LABEL_9:
       if (getCurrentMonotonicAndMachAbsTime_machAbsTime_machContTime__classDebugEnabled == 1)
       {
         v18 = MEMORY[0x277CCACA8];
-        v19 = [MEMORY[0x277CBEAA8] monotonicDate];
-        v20 = [v18 stringWithFormat:@"Converted monotonic time: %@, reference monotonic time: %@.", v16, v19];
+        monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+        v20 = [v18 stringWithFormat:@"Converted monotonic time: %@, reference monotonic time: %@.", v16, monotonicDate];
 
         v21 = MEMORY[0x277D3F178];
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLUtilities.m"];
-        v23 = [v22 lastPathComponent];
+        lastPathComponent2 = [v22 lastPathComponent];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLUtilities getCurrentMonotonicAndMachAbsTime:machAbsTime:machContTime:]"];
-        [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:887];
+        [v21 logMessage:v20 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:887];
 
         v25 = PLLogCommon();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1629,15 +1629,15 @@ LABEL_9:
     }
 
     v26 = v16;
-    *a3 = v16;
-    if (a4)
+    *time = v16;
+    if (absTime)
     {
-      *a4 = v30 * *v8 / v8[1];
+      *absTime = v30 * *getMachTimebase / getMachTimebase[1];
     }
 
-    if (a5)
+    if (contTime)
     {
-      *a5 = v29 * *v8 / v8[1];
+      *contTime = v29 * *getMachTimebase / getMachTimebase[1];
     }
   }
 }
@@ -1686,18 +1686,18 @@ double __30__PLUtilities_getMachTimebase__block_invoke()
 + (unint64_t)getCurrMachAbsTimeInSecs
 {
   v3 = mach_absolute_time();
-  v4 = [a1 getMachTimebase];
-  return v3 * *v4 / v4[1] / 0x3B9ACA00;
+  getMachTimebase = [self getMachTimebase];
+  return v3 * *getMachTimebase / getMachTimebase[1] / 0x3B9ACA00;
 }
 
-+ (signed)connectionToQuarantine:(id)a3
++ (signed)connectionToQuarantine:(id)quarantine
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  quarantineCopy = quarantine;
+  v4 = quarantineCopy;
+  if (quarantineCopy)
   {
-    v5 = [v3 filePath];
-    v6 = [v5 hasSuffix:@".PLSQL"];
+    filePath = [quarantineCopy filePath];
+    v6 = [filePath hasSuffix:@".PLSQL"];
 
     if (v6)
     {
@@ -1706,8 +1706,8 @@ double __30__PLUtilities_getMachTimebase__block_invoke()
 
     else
     {
-      v8 = [v4 filePath];
-      v9 = [v8 hasSuffix:@".EPSQL"];
+      filePath2 = [v4 filePath];
+      v9 = [filePath2 hasSuffix:@".EPSQL"];
 
       if (v9)
       {
@@ -1716,8 +1716,8 @@ double __30__PLUtilities_getMachTimebase__block_invoke()
 
       else
       {
-        v10 = [v4 filePath];
-        v11 = [v10 hasSuffix:@".CESQL"];
+        filePath3 = [v4 filePath];
+        v11 = [filePath3 hasSuffix:@".CESQL"];
 
         if (v11)
         {
@@ -1726,8 +1726,8 @@ double __30__PLUtilities_getMachTimebase__block_invoke()
 
         else
         {
-          v12 = [v4 filePath];
-          v13 = [v12 hasSuffix:@".XCSQL"];
+          filePath4 = [v4 filePath];
+          v13 = [filePath4 hasSuffix:@".XCSQL"];
 
           if (v13)
           {
@@ -1736,8 +1736,8 @@ double __30__PLUtilities_getMachTimebase__block_invoke()
 
           else
           {
-            v14 = [v4 filePath];
-            v15 = [v14 hasSuffix:@".BGSQL"];
+            filePath5 = [v4 filePath];
+            v15 = [filePath5 hasSuffix:@".BGSQL"];
 
             if (v15)
             {
@@ -1762,15 +1762,15 @@ double __30__PLUtilities_getMachTimebase__block_invoke()
   return v7;
 }
 
-+ (void)exitWithReason:(signed __int16)a3 action:(signed __int16)a4
++ (void)exitWithReason:(signed __int16)reason action:(signed __int16)action
 {
   v6 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__PLUtilities_exitWithReason_action___block_invoke;
   block[3] = &__block_descriptor_36_e5_v8__0l;
-  v8 = a3;
-  v9 = a4;
+  reasonCopy = reason;
+  actionCopy = action;
   dispatch_async(v6, block);
 }
 
@@ -1972,34 +1972,34 @@ LABEL_45:
   exit(v26 > 99);
 }
 
-+ (void)quarantineToPath:(id)a3 action:(signed __int16)a4
++ (void)quarantineToPath:(id)path action:(signed __int16)action
 {
-  v4 = a4;
+  actionCopy = action;
   v58 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v6 timeIntervalSince1970];
+  pathCopy = path;
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v8 = v7;
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v10 = PLLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v57 = v4;
+    v57 = actionCopy;
     _os_log_impl(&dword_25EE51000, v10, OS_LOG_TYPE_DEFAULT, "quarantine action: %hd", buf, 8u);
   }
 
-  if (v4 == 6 || v4 == 1)
+  if (actionCopy == 6 || actionCopy == 1)
   {
     v11 = MEMORY[0x277CCACA8];
     v12 = +[PLUtilities containerPath];
     v13 = [v12 stringByAppendingString:@"/Library/BatteryLife/Quarantine/"];
-    v14 = [v11 stringWithFormat:v5, v13, v8, @".PLSQL"];
+    v14 = [v11 stringWithFormat:pathCopy, v13, v8, @".PLSQL"];
 
-    v15 = [MEMORY[0x277D3F280] sharedSQLStorage];
-    v16 = [v15 PLSQLConnection];
-    [v9 setObject:v16 forKeyedSubscript:v14];
+    mEMORY[0x277D3F280] = [MEMORY[0x277D3F280] sharedSQLStorage];
+    pLSQLConnection = [mEMORY[0x277D3F280] PLSQLConnection];
+    [dictionary setObject:pLSQLConnection forKeyedSubscript:v14];
   }
 
   else
@@ -2007,58 +2007,58 @@ LABEL_45:
     v14 = 0;
   }
 
-  if ((v4 | 4) == 6)
+  if ((actionCopy | 4) == 6)
   {
     v17 = MEMORY[0x277CCACA8];
     v18 = +[PLUtilities containerPath];
     v19 = [v18 stringByAppendingString:@"/Library/PerfPowerTelemetry/Quarantine/"];
-    v20 = [v17 stringWithFormat:v5, v19, v8, @".EPSQL"];
+    v20 = [v17 stringWithFormat:pathCopy, v19, v8, @".EPSQL"];
 
-    v21 = [MEMORY[0x277D3F280] sharedSQLStorage];
-    v22 = [v21 EPSQLConnection];
-    [v9 setObject:v22 forKeyedSubscript:v20];
+    mEMORY[0x277D3F280]2 = [MEMORY[0x277D3F280] sharedSQLStorage];
+    ePSQLConnection = [mEMORY[0x277D3F280]2 EPSQLConnection];
+    [dictionary setObject:ePSQLConnection forKeyedSubscript:v20];
 
     v14 = v20;
   }
 
-  if (v4 == 6 || v4 == 3)
+  if (actionCopy == 6 || actionCopy == 3)
   {
     v23 = MEMORY[0x277CCACA8];
     v24 = +[PLUtilities containerPath];
     v25 = [v24 stringByAppendingString:@"/Library/PerfPowerTelemetry/Quarantine/"];
-    v26 = [v23 stringWithFormat:v5, v25, v8, @".CESQL"];
+    v26 = [v23 stringWithFormat:pathCopy, v25, v8, @".CESQL"];
 
-    v27 = [MEMORY[0x277D3F280] sharedSQLStorage];
-    v28 = [v27 CESQLConnection];
-    [v9 setObject:v28 forKeyedSubscript:v26];
+    mEMORY[0x277D3F280]3 = [MEMORY[0x277D3F280] sharedSQLStorage];
+    cESQLConnection = [mEMORY[0x277D3F280]3 CESQLConnection];
+    [dictionary setObject:cESQLConnection forKeyedSubscript:v26];
 
     v14 = v26;
   }
 
-  if ((v4 | 2) == 6)
+  if ((actionCopy | 2) == 6)
   {
     v29 = MEMORY[0x277CCACA8];
     v30 = +[PLUtilities containerPath];
     v31 = [v30 stringByAppendingString:@"/Library/PerfPowerTelemetry/Quarantine/"];
-    v32 = [v29 stringWithFormat:v5, v31, v8, @".XCSQL"];
+    v32 = [v29 stringWithFormat:pathCopy, v31, v8, @".XCSQL"];
 
-    v33 = [MEMORY[0x277D3F280] sharedSQLStorage];
-    v34 = [v33 XCSQLConnection];
-    [v9 setObject:v34 forKeyedSubscript:v32];
+    mEMORY[0x277D3F280]4 = [MEMORY[0x277D3F280] sharedSQLStorage];
+    xCSQLConnection = [mEMORY[0x277D3F280]4 XCSQLConnection];
+    [dictionary setObject:xCSQLConnection forKeyedSubscript:v32];
 
     v14 = v32;
   }
 
-  if ((v4 - 5) <= 1u)
+  if ((actionCopy - 5) <= 1u)
   {
     v35 = MEMORY[0x277CCACA8];
     v36 = +[PLUtilities containerPath];
     v37 = [v36 stringByAppendingString:@"/Library/PerfPowerTelemetry/Quarantine/"];
-    v38 = [v35 stringWithFormat:v5, v37, v8, @".BGSQL"];
+    v38 = [v35 stringWithFormat:pathCopy, v37, v8, @".BGSQL"];
 
-    v39 = [MEMORY[0x277D3F280] sharedSQLStorage];
-    v40 = [v39 BGSQLConnection];
-    [v9 setObject:v40 forKeyedSubscript:v38];
+    mEMORY[0x277D3F280]5 = [MEMORY[0x277D3F280] sharedSQLStorage];
+    bGSQLConnection = [mEMORY[0x277D3F280]5 BGSQLConnection];
+    [dictionary setObject:bGSQLConnection forKeyedSubscript:v38];
 
     v14 = v38;
   }
@@ -2076,22 +2076,22 @@ LABEL_45:
   v53[1] = 3221225472;
   v53[2] = __39__PLUtilities_quarantineToPath_action___block_invoke;
   v53[3] = &unk_279A5C7B0;
-  v43 = v9;
+  v43 = dictionary;
   v54 = v43;
   v55 = v41;
   [v43 enumerateKeysAndObjectsUsingBlock:v53];
-  if ([MEMORY[0x277D3F180] fullMode] && (v4 == 6 || v4 == 1))
+  if ([MEMORY[0x277D3F180] fullMode] && (actionCopy == 6 || actionCopy == 1))
   {
     v44 = MEMORY[0x277CCACA8];
     v45 = +[PLUtilities containerPath];
     v46 = [v45 stringByAppendingString:@"/Library/BatteryLife/Quarantine/"];
-    v47 = [v44 stringWithFormat:v5, v46, v8, @".PLSQL"];
+    v47 = [v44 stringWithFormat:pathCopy, v46, v8, @".PLSQL"];
 
-    v48 = [v47 lastPathComponent];
-    v49 = [@"/var/mobile/Library/Logs/CrashReporter/" stringByAppendingString:v48];
+    lastPathComponent = [v47 lastPathComponent];
+    v49 = [@"/var/mobile/Library/Logs/CrashReporter/" stringByAppendingString:lastPathComponent];
 
-    v50 = [v47 lastPathComponent];
-    [PLUtilities moveItemAtPath:v47 toPath:v49 withName:v50 error:0];
+    lastPathComponent2 = [v47 lastPathComponent];
+    [PLUtilities moveItemAtPath:v47 toPath:v49 withName:lastPathComponent2 error:0];
 
     v51 = [MEMORY[0x277CBEBC0] fileURLWithPath:v49];
     [PPSFileUtilities markAsPurgeable:v51 urgency:512 startDate:0];
@@ -2150,10 +2150,10 @@ void __39__PLUtilities_quarantineToPath_action___block_invoke(uint64_t a1, void 
   return v8 < 0xA;
 }
 
-+ (BOOL)allowQueryFromPeer:(id)a3
++ (BOOL)allowQueryFromPeer:(id)peer
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  peerCopy = peer;
   xpc_connection_get_audit_token();
   memset(token, 0, 32);
   v4 = SecTaskCreateWithAuditToken(0, token);
@@ -2177,7 +2177,7 @@ void __39__PLUtilities_quarantineToPath_action___block_invoke(uint64_t a1, void 
 
   if (v9)
   {
-    pid = xpc_connection_get_pid(v3);
+    pid = xpc_connection_get_pid(peerCopy);
     v11 = [PLUtilities processNameForPid:pid];
     v12 = [PLUtilities bundleIDFromPid:pid];
     v13 = PLLogCommon();
@@ -2247,13 +2247,13 @@ LABEL_21:
   return v18;
 }
 
-+ (id)getPerfStatsForProcess:(id)a3
++ (id)getPerfStatsForProcess:(id)process
 {
   v27 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 monotonicDate];
-  v6 = [v5 dateByAddingTimeInterval:-86400.0];
+  processCopy = process;
+  monotonicDate = [v3 monotonicDate];
+  v6 = [monotonicDate dateByAddingTimeInterval:-86400.0];
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -2263,8 +2263,8 @@ LABEL_21:
   v8 = MEMORY[0x277CCACA8];
   [v6 timeIntervalSince1970];
   v10 = v9;
-  [v5 timeIntervalSince1970];
-  v12 = [v8 stringWithFormat:@"SELECT LaunchdName AS BundleID, SUM(cpu_time) AS cpu_seconds, SUM(cpu_instructions) AS cpu_instructions, SUM(cpu_cycles) AS cpu_cycles FROM %@ where LaunchdName = '%@' AND timestamp >= %f and timestamp < %f", @"PLCoalitionAgent_EventInterval_CoalitionInterval", v4, v10, v11];
+  [monotonicDate timeIntervalSince1970];
+  v12 = [v8 stringWithFormat:@"SELECT LaunchdName AS BundleID, SUM(cpu_time) AS cpu_seconds, SUM(cpu_instructions) AS cpu_instructions, SUM(cpu_cycles) AS cpu_cycles FROM %@ where LaunchdName = '%@' AND timestamp >= %f and timestamp < %f", @"PLCoalitionAgent_EventInterval_CoalitionInterval", processCopy, v10, v11];
 
   v13 = PLLogCommon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -2274,21 +2274,21 @@ LABEL_21:
     _os_log_impl(&dword_25EE51000, v13, OS_LOG_TYPE_DEFAULT, "[Perf Stats Query] %@", buf, 0xCu);
   }
 
-  v14 = [MEMORY[0x277D3F210] sharedSQLiteConnection];
-  v15 = [v14 performQuery:v12];
+  mEMORY[0x277D3F210] = [MEMORY[0x277D3F210] sharedSQLiteConnection];
+  v15 = [mEMORY[0x277D3F210] performQuery:v12];
 
   if ([v15 count] && (objc_msgSend(v15, "firstObject"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "objectForKeyedSubscript:", @"BundleID"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isNil"), v17, v16, !v18))
   {
     v21 = PLLogCommon();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v15 firstObject];
+      firstObject = [v15 firstObject];
       *buf = 138412290;
-      v26 = v22;
+      v26 = firstObject;
       _os_log_impl(&dword_25EE51000, v21, OS_LOG_TYPE_DEFAULT, "Report perf stats to CA for %@", buf, 0xCu);
     }
 
-    v20 = [v15 firstObject];
+    firstObject2 = [v15 firstObject];
   }
 
   else
@@ -2299,21 +2299,21 @@ LABEL_21:
       +[PLUtilities getPerfStatsForProcess:];
     }
 
-    v20 = 0;
+    firstObject2 = 0;
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return firstObject2;
 }
 
-+ (id)getIdentifierFromEntry:(id)a3
++ (id)getIdentifierFromEntry:(id)entry
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"BundleId"];
+  entryCopy = entry;
+  v4 = [entryCopy objectForKeyedSubscript:@"BundleId"];
   if ([v4 isEqualToString:&stru_287103958])
   {
-    v5 = [v3 objectForKeyedSubscript:@"LaunchdName"];
+    v5 = [entryCopy objectForKeyedSubscript:@"LaunchdName"];
     v6 = [PLUtilities launchdNameToProcessName:v5];
     v7 = v6;
     if (v6)
@@ -2342,16 +2342,16 @@ LABEL_21:
   return v9;
 }
 
-+ (id)launchdNameToProcessName:(id)a3
++ (id)launchdNameToProcessName:(id)name
 {
   v3 = launchdNameToProcessName__onceToken;
-  v4 = a3;
+  nameCopy = name;
   if (v3 != -1)
   {
     +[PLUtilities launchdNameToProcessName:];
   }
 
-  v5 = [launchdNameToProcessName__launchdNameToProcessNameDict objectForKeyedSubscript:v4];
+  v5 = [launchdNameToProcessName__launchdNameToProcessNameDict objectForKeyedSubscript:nameCopy];
 
   return v5;
 }
@@ -2362,10 +2362,10 @@ void __40__PLUtilities_launchdNameToProcessName___block_invoke()
   launchdNameToProcessName__launchdNameToProcessNameDict = &unk_287148040;
 }
 
-+ (id)binaryPathForPid:(int)a3
++ (id)binaryPathForPid:(int)pid
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:buffer length:proc_pidpath(a3 encoding:{buffer, 0x1000u), 4}];
+  v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:buffer length:proc_pidpath(pid encoding:{buffer, 0x1000u), 4}];
   v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3];
 
   v5 = *MEMORY[0x277D85DE8];
@@ -2373,21 +2373,21 @@ void __40__PLUtilities_launchdNameToProcessName___block_invoke()
   return v4;
 }
 
-+ (id)bundleIDFromProcessName:(id)a3
++ (id)bundleIDFromProcessName:(id)name
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v3 length])
+  nameCopy = name;
+  if (nameCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [nameCopy length])
   {
     if (bundleIDFromProcessName__onceToken != -1)
     {
       +[PLUtilities bundleIDFromProcessName:];
     }
 
-    v4 = [bundleIDFromProcessName__processNameToBundleID objectForKeyedSubscript:v3];
+    v4 = [bundleIDFromProcessName__processNameToBundleID objectForKeyedSubscript:nameCopy];
 
     if (v4)
     {
-      v5 = [bundleIDFromProcessName__processNameToBundleID objectForKeyedSubscript:v3];
+      v5 = [bundleIDFromProcessName__processNameToBundleID objectForKeyedSubscript:nameCopy];
     }
 
     else
@@ -2396,7 +2396,7 @@ void __40__PLUtilities_launchdNameToProcessName___block_invoke()
       v15[1] = 3221225472;
       v15[2] = __39__PLUtilities_bundleIDFromProcessName___block_invoke_2;
       v15[3] = &unk_279A5C7D8;
-      v7 = v3;
+      v7 = nameCopy;
       v16 = v7;
       v8 = MEMORY[0x25F8D2750](v15);
       v9 = (v8)[2](v8, @"PLProcessMonitorAgent_EventForward_ProcessID", *MEMORY[0x277D3F560]);
@@ -2454,9 +2454,9 @@ id __39__PLUtilities_bundleIDFromProcessName___block_invoke_2(uint64_t a1, void 
   return v12;
 }
 
-+ (id)bundleIDFromURL:(id)a3
++ (id)bundleIDFromURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v3 = *MEMORY[0x277CBECE8];
     Unique = _CFBundleCreateUnique();
@@ -2480,9 +2480,9 @@ id __39__PLUtilities_bundleIDFromProcessName___block_invoke_2(uint64_t a1, void 
   return v6;
 }
 
-+ (id)bundleVersionFromURL:(id)a3
++ (id)bundleVersionFromURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v3 = *MEMORY[0x277CBECE8];
     Unique = _CFBundleCreateUnique();
@@ -2506,10 +2506,10 @@ id __39__PLUtilities_bundleIDFromProcessName___block_invoke_2(uint64_t a1, void 
   return v6;
 }
 
-+ (int)pidForProcessName:(id)a3
++ (int)pidForProcessName:(id)name
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v4 = proc_listpids(1u, 0, 0, 0);
   if ((v4 & 0x80000000) != 0)
   {
@@ -2577,7 +2577,7 @@ LABEL_13:
           _os_log_debug_impl(&dword_25EE51000, v19, OS_LOG_TYPE_DEBUG, "checking %@ (%d)", buf, 0x12u);
         }
 
-        v20 = [v18 isEqualToString:v3];
+        v20 = [v18 isEqualToString:nameCopy];
         if (v20)
         {
           break;
@@ -2610,14 +2610,14 @@ LABEL_14:
   return v11;
 }
 
-+ (id)processNameForPid:(int)a3
++ (id)processNameForPid:(int)pid
 {
   v11 = *MEMORY[0x277D85DE8];
   memset(v10, 0, 512);
   v6 = 648;
   *v7 = 0xE00000001;
   v8 = 1;
-  v9 = a3;
+  pidCopy = pid;
   if (sysctl(v7, 4u, v10, &v6, 0, 0) < 0)
   {
     v3 = 0;
@@ -2633,10 +2633,10 @@ LABEL_14:
   return v3;
 }
 
-+ (id)fullProcessNameForPid:(int)a3
++ (id)fullProcessNameForPid:(int)pid
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3 < 1 || (bzero(buffer, 0x1000uLL), proc_pidpath(a3, buffer, 0x1000u) < 1))
+  if (pid < 1 || (bzero(buffer, 0x1000uLL), proc_pidpath(pid, buffer, 0x1000u) < 1))
   {
     v4 = 0;
   }
@@ -2652,12 +2652,12 @@ LABEL_14:
   return v4;
 }
 
-+ (id)pUUIDForPid:(int)a3
++ (id)pUUIDForPid:(int)pid
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = 0;
   memset(v7, 0, sizeof(v7));
-  v3 = proc_pidinfo(a3, 17, 1uLL, v7, 56);
+  v3 = proc_pidinfo(pid, 17, 1uLL, v7, 56);
   v4 = 0;
   if (v3 == 56)
   {
@@ -2687,11 +2687,11 @@ LABEL_14:
   return 0;
 }
 
-+ (unint64_t)coalitionIDForPid:(int)a3
++ (unint64_t)coalitionIDForPid:(int)pid
 {
   v6 = 0;
   memset(v5, 0, sizeof(v5));
-  v3 = proc_pidinfo(a3, 20, 1uLL, v5, 40);
+  v3 = proc_pidinfo(pid, 20, 1uLL, v5, 40);
   if (v3 == 40)
   {
     return *&v5[0];
@@ -2832,11 +2832,11 @@ uint64_t __28__PLUtilities_runningAsUser__block_invoke()
   v2 = +[PLUtilities PreUnlockTelemetryEnabled];
   if (v2)
   {
-    v3 = [MEMORY[0x277D3F2A0] sharedCore];
-    v4 = [v3 storage];
-    v5 = [v4 storageLocked];
+    mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+    storage = [mEMORY[0x277D3F2A0] storage];
+    storageLocked = [storage storageLocked];
 
-    LOBYTE(v2) = v5;
+    LOBYTE(v2) = storageLocked;
   }
 
   return v2;
@@ -3025,18 +3025,18 @@ void __28__PLUtilities_isSiriEnabled__block_invoke()
 
 + (BOOL)isHealthDataSubmissionAllowed
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isHealthDataSubmissionAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isHealthDataSubmissionAllowed = [mEMORY[0x277D262A0] isHealthDataSubmissionAllowed];
 
-  return v3;
+  return isHealthDataSubmissionAllowed;
 }
 
 + (BOOL)isSafetyDataSubmissionAllowed
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isSafetyDataSubmissionAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isSafetyDataSubmissionAllowed = [mEMORY[0x277D262A0] isSafetyDataSubmissionAllowed];
 
-  return v3;
+  return isSafetyDataSubmissionAllowed;
 }
 
 + (BOOL)isImproveFitnessPlusEnabled
@@ -3195,21 +3195,21 @@ uint64_t __36__PLUtilities_isAppAnalyticsEnabled__block_invoke()
   return v9;
 }
 
-+ (id)hashString:(id)a3
++ (id)hashString:(id)string
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __26__PLUtilities_hashString___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v4 = hashString__onceToken;
-  v5 = a3;
+  stringCopy = string;
   if (v4 != -1)
   {
     dispatch_once(&hashString__onceToken, block);
   }
 
-  v6 = [a1 generateHashValue:v5 withSalt:hashString__salt];
+  v6 = [self generateHashValue:stringCopy withSalt:hashString__salt];
 
   return v6;
 }
@@ -3230,9 +3230,9 @@ uint64_t __26__PLUtilities_hashString___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)hashBundleID:(id)a3
++ (id)hashBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (!saltBundleID)
   {
     if ([MEMORY[0x277D3F180] objectExistsForKey:@"PLSaltBundleID"])
@@ -3242,56 +3242,56 @@ uint64_t __26__PLUtilities_hashString___block_invoke(uint64_t a1)
 
     else
     {
-      [a1 generateAndUpdateSaltValue:@"PLSaltBundleID"];
+      [self generateAndUpdateSaltValue:@"PLSaltBundleID"];
     }
     v5 = ;
     v6 = saltBundleID;
     saltBundleID = v5;
   }
 
-  v7 = [a1 generateHashValue:v4 withSalt:saltBundleID];
+  v7 = [self generateHashValue:dCopy withSalt:saltBundleID];
 
   return v7;
 }
 
-+ (id)generateAndUpdateSaltValue:(id)a3
++ (id)generateAndUpdateSaltValue:(id)value
 {
   v3 = MEMORY[0x277CCAD78];
-  v4 = a3;
-  v5 = [v3 UUID];
-  v6 = [v5 UUIDString];
+  valueCopy = value;
+  uUID = [v3 UUID];
+  uUIDString = [uUID UUIDString];
 
-  [MEMORY[0x277D3F180] setObject:v6 forKey:v4 saveToDisk:1];
-  LODWORD(v5) = [v4 isEqualToString:@"PLSaltBundleID"];
+  [MEMORY[0x277D3F180] setObject:uUIDString forKey:valueCopy saveToDisk:1];
+  LODWORD(uUID) = [valueCopy isEqualToString:@"PLSaltBundleID"];
 
-  if (v5)
+  if (uUID)
   {
-    objc_storeStrong(&saltBundleID, v6);
+    objc_storeStrong(&saltBundleID, uUIDString);
   }
 
-  return v6;
+  return uUIDString;
 }
 
-+ (id)generateHashValue:(id)a3 withSalt:(id)a4
++ (id)generateHashValue:(id)value withSalt:(id)salt
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", a3, a4];
-  v5 = [v4 UTF8String];
+  salt = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", value, salt];
+  uTF8String = [salt UTF8String];
 
   *md = 0;
   v11 = 0;
-  v6 = strlen(v5);
-  CC_MD5(v5, v6, md);
+  v6 = strlen(uTF8String);
+  CC_MD5(uTF8String, v6, md);
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", md[0], md[1], md[2], md[3], md[4], md[5], md[6], md[7], v11, BYTE1(v11), BYTE2(v11), BYTE3(v11), BYTE4(v11), BYTE5(v11), BYTE6(v11), HIBYTE(v11)];
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (BOOL)shouldLogForEntryKey:(id)a3
++ (BOOL)shouldLogForEntryKey:(id)key
 {
-  v3 = a3;
-  if ([MEMORY[0x277D3F290] PPSEnabled:v3] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F180], "fullMode"))
+  keyCopy = key;
+  if ([MEMORY[0x277D3F290] PPSEnabled:keyCopy] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F180], "fullMode"))
   {
     v4 = 1;
   }
@@ -3302,7 +3302,7 @@ uint64_t __26__PLUtilities_hashString___block_invoke(uint64_t a1)
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 objectForKeyedSubscript:v3];
+      v7 = [v5 objectForKeyedSubscript:keyCopy];
       v4 = v7 != 0;
     }
 
@@ -3315,21 +3315,21 @@ uint64_t __26__PLUtilities_hashString___block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (signed)canLogMode:(id)a3 fullMode:(BOOL)a4
++ (signed)canLogMode:(id)mode fullMode:(BOOL)fullMode
 {
-  v4 = a4;
-  v5 = a3;
-  if (v4)
+  fullModeCopy = fullMode;
+  modeCopy = mode;
+  if (fullModeCopy)
   {
-    if ([@"NO" isEqualToString:v5])
+    if ([@"NO" isEqualToString:modeCopy])
     {
       v6 = 1;
       goto LABEL_17;
     }
 
-    if (([@"HF" isEqualToString:v5] & 1) == 0)
+    if (([@"HF" isEqualToString:modeCopy] & 1) == 0)
     {
-      if (([@"HB" isEqualToString:v5] & 1) == 0)
+      if (([@"HB" isEqualToString:modeCopy] & 1) == 0)
       {
         v6 = 0;
         goto LABEL_15;
@@ -3345,25 +3345,25 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  if ([@"YES" isEqualToString:v5])
+  if ([@"YES" isEqualToString:modeCopy])
   {
     v6 = 0;
     goto LABEL_17;
   }
 
-  if ([@"HL" isEqualToString:v5] & 1) != 0 || (objc_msgSend(@"HF", "isEqualToString:", v5))
+  if ([@"HL" isEqualToString:modeCopy] & 1) != 0 || (objc_msgSend(@"HF", "isEqualToString:", modeCopy))
   {
     goto LABEL_11;
   }
 
-  if ([@"HB" isEqualToString:v5])
+  if ([@"HB" isEqualToString:modeCopy])
   {
     goto LABEL_13;
   }
 
   v6 = 1;
 LABEL_15:
-  if ([@"TR" isEqualToString:v5])
+  if ([@"TR" isEqualToString:modeCopy])
   {
     v6 = 3;
   }
@@ -3373,21 +3373,21 @@ LABEL_17:
   return v6;
 }
 
-+ (signed)logModeForEntryKey:(id)a3 withKey:(id)a4 andValue:(id)a5
++ (signed)logModeForEntryKey:(id)key withKey:(id)withKey andValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if ([MEMORY[0x277D3F290] PPSEnabled:v6])
+  keyCopy = key;
+  withKeyCopy = withKey;
+  if ([MEMORY[0x277D3F290] PPSEnabled:keyCopy])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [PLUtilities modeForEntryKey:v6 withKeyName:v7];
+    v9 = [PLUtilities modeForEntryKey:keyCopy withKeyName:withKeyCopy];
     if (!v9)
     {
-      v10 = [PLUtilities modeForEntryKey:v6 withKeyName:@"__Allow_Dynamic__"];
+      v10 = [PLUtilities modeForEntryKey:keyCopy withKeyName:@"__Allow_Dynamic__"];
       v11 = v10;
       if (v10)
       {
@@ -3414,20 +3414,20 @@ LABEL_17:
   return v8;
 }
 
-+ (id)modeForEntryKey:(id)a3 withKeyName:(id)a4
++ (id)modeForEntryKey:(id)key withKeyName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  nameCopy = name;
   v7 = +[PLUtilities getAllowblocklist];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 objectForKeyedSubscript:v5];
+    v9 = [v7 objectForKeyedSubscript:keyCopy];
 
     if (v9)
     {
-      v10 = [v8 objectForKeyedSubscript:v5];
-      v9 = [v10 objectForKeyedSubscript:v6];
+      v10 = [v8 objectForKeyedSubscript:keyCopy];
+      v9 = [v10 objectForKeyedSubscript:nameCopy];
     }
   }
 
@@ -3528,13 +3528,13 @@ void __29__PLUtilities_hasInternalKey__block_invoke()
   }
 }
 
-+ (BOOL)hasInternalKey:(id)a3
++ (BOOL)hasInternalKey:(id)key
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
-    v4 = [v3 componentsSeparatedByString:@""];;
+    v4 = [keyCopy componentsSeparatedByString:@""];;
     if ([v4 count] == 2)
     {
       v5 = [v4 objectAtIndexedSubscript:0];
@@ -3546,7 +3546,7 @@ void __29__PLUtilities_hasInternalKey__block_invoke()
       v7 = PLLogCommon();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        +[PLUtilities hasInternalKey:].cold.1(v3, v10, [v4 count], v7);
+        +[PLUtilities hasInternalKey:].cold.1(keyCopy, v10, [v4 count], v7);
       }
 
       v6 = 0;
@@ -3606,16 +3606,16 @@ void __29__PLUtilities_deviceBootArgs__block_invoke()
   deviceBootArgs_bootArgs = v4;
 }
 
-+ (id)allSubClassesForClass:(Class)a3
++ (id)allSubClassesForClass:(Class)class
 {
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"**allSubclassesFire!**"];
     v5 = MEMORY[0x277D3F178];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLUtilities.m"];
-    v7 = [v6 lastPathComponent];
+    lastPathComponent = [v6 lastPathComponent];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLUtilities allSubClassesForClass:]"];
-    [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:2147];
+    [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:2147];
 
     v9 = PLLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -3624,7 +3624,7 @@ void __29__PLUtilities_deviceBootArgs__block_invoke()
     }
   }
 
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   outCount = 0;
   v11 = objc_copyClassList(&outCount);
   if (outCount)
@@ -3637,33 +3637,33 @@ void __29__PLUtilities_deviceBootArgs__block_invoke()
         Superclass = class_getSuperclass(Superclass);
       }
 
-      while (Superclass && Superclass != a3);
+      while (Superclass && Superclass != class);
       if (Superclass)
       {
-        [v10 addObject:v11[i]];
+        [array addObject:v11[i]];
       }
     }
   }
 
   free(v11);
 
-  return v10;
+  return array;
 }
 
-+ (double)roundToSigFigDouble:(double)a3 withSigFig:(int)a4
++ (double)roundToSigFigDouble:(double)double withSigFig:(int)fig
 {
   result = 0.0;
-  if (a3 != 0.0)
+  if (double != 0.0)
   {
-    v7 = -a3;
-    if (a3 >= 0.0)
+    doubleCopy = -double;
+    if (double >= 0.0)
     {
-      v7 = a3;
+      doubleCopy = double;
     }
 
-    v8 = log10(v7);
-    v9 = __exp10((a4 - vcvtpd_s64_f64(v8)));
-    return round(v9 * a3) / v9;
+    v8 = log10(doubleCopy);
+    v9 = __exp10((fig - vcvtpd_s64_f64(v8)));
+    return round(v9 * double) / v9;
   }
 
   return result;
@@ -3671,12 +3671,12 @@ void __29__PLUtilities_deviceBootArgs__block_invoke()
 
 + (id)shortUUIDString
 {
-  v2 = [MEMORY[0x277CCAD78] UUID];
-  v3 = [v2 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  if ([v3 length] >= 8)
+  if ([uUIDString length] >= 8)
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(v3, "length") - 8}];
+    v4 = [uUIDString substringFromIndex:{objc_msgSend(uUIDString, "length") - 8}];
   }
 
   else
@@ -3687,19 +3687,19 @@ void __29__PLUtilities_deviceBootArgs__block_invoke()
   return v4;
 }
 
-+ (id)JSONSanitizeDictionary:(id)a3
++ (id)JSONSanitizeDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (([MEMORY[0x277CCAAA0] isValidJSONObject:v3] & 1) == 0)
+  dictionaryCopy = dictionary;
+  if (([MEMORY[0x277CCAAA0] isValidJSONObject:dictionaryCopy] & 1) == 0)
   {
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
-      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Non JSON-able object:%@", v3];
+      dictionaryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Non JSON-able object:%@", dictionaryCopy];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/PLUtilities.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLUtilities JSONSanitizeDictionary:]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:2198];
+      [v5 logMessage:dictionaryCopy fromFile:lastPathComponent fromFunction:v8 fromLineNumber:2198];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -3715,13 +3715,13 @@ void __29__PLUtilities_deviceBootArgs__block_invoke()
     v14[3] = &unk_279A5C800;
     v11 = v10;
     v15 = v11;
-    [v3 enumerateKeysAndObjectsUsingBlock:v14];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v14];
     v12 = v11;
 
-    v3 = v12;
+    dictionaryCopy = v12;
   }
 
-  return v3;
+  return dictionaryCopy;
 }
 
 void __38__PLUtilities_JSONSanitizeDictionary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3762,12 +3762,12 @@ void __38__PLUtilities_JSONSanitizeDictionary___block_invoke(uint64_t a1, void *
   }
 }
 
-+ (BOOL)isValidString:(id)a3
++ (BOOL)isValidString:(id)string
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  stringCopy = string;
+  if (stringCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 isEqualToString:&stru_287103958] ^ 1;
+    v4 = [stringCopy isEqualToString:&stru_287103958] ^ 1;
   }
 
   else
@@ -3778,20 +3778,20 @@ void __38__PLUtilities_JSONSanitizeDictionary___block_invoke(uint64_t a1, void *
   return v4;
 }
 
-+ (id)getKVPairsForCASubmissionFromEntry:(id)a3
++ (id)getKVPairsForCASubmissionFromEntry:(id)entry
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 dictionary];
+  entryCopy = entry;
+  dictionary = [v3 dictionary];
+  dictionary2 = [entryCopy dictionary];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__PLUtilities_getKVPairsForCASubmissionFromEntry___block_invoke;
   v9[3] = &unk_279A5C800;
-  v7 = v5;
+  v7 = dictionary;
   v10 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:v9];
+  [dictionary2 enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -3811,7 +3811,7 @@ void __50__PLUtilities_getKVPairsForCASubmissionFromEntry___block_invoke(uint64_
   }
 }
 
-+ (jetsam_priority_info)getJetsamPriority:(int)a3
++ (jetsam_priority_info)getJetsamPriority:(int)priority
 {
   v6 = *MEMORY[0x277D85DE8];
   if (memorystatus_control() == 128)
@@ -3838,7 +3838,7 @@ void __50__PLUtilities_getKVPairsForCASubmissionFromEntry___block_invoke(uint64_
   return result;
 }
 
-+ (process_memory_limit_info)getProcessMemoryLimit:(int)a3
++ (process_memory_limit_info)getProcessMemoryLimit:(int)limit
 {
   v21 = *MEMORY[0x277D85DE8];
   v12 = 0;
@@ -3874,7 +3874,7 @@ void __50__PLUtilities_getKVPairsForCASubmissionFromEntry___block_invoke(uint64_
   if (v6 != v14 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109632;
-    v16 = a3;
+    limitCopy = limit;
     v17 = 1024;
     v18 = v6;
     v19 = 1024;
@@ -3886,9 +3886,9 @@ void __50__PLUtilities_getKVPairsForCASubmissionFromEntry___block_invoke(uint64_
   return (v4 | 0x10000000000 | v5 | v6);
 }
 
-+ (id)cleanLaunchdApplicationMacOS:(id)a3
++ (id)cleanLaunchdApplicationMacOS:(id)s
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [s componentsSeparatedByString:@"."];
   if (([v3 count] & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v4 = &stru_287103958;
@@ -3919,18 +3919,18 @@ void __50__PLUtilities_getKVPairsForCASubmissionFromEntry___block_invoke(uint64_
   return v4;
 }
 
-+ (id)cleanLaunchdName:(id)a3
++ (id)cleanLaunchdName:(id)name
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  nameCopy = name;
+  v4 = nameCopy;
+  if (!nameCopy)
   {
     v16 = 0;
     goto LABEL_44;
   }
 
-  v5 = [v3 hasPrefix:@"system/"];
+  v5 = [nameCopy hasPrefix:@"system/"];
   v6 = [v4 hasPrefix:@"user/"];
   v7 = [v4 hasPrefix:@"gui/"];
   v8 = [v4 hasPrefix:@"pid/"];
@@ -4069,26 +4069,26 @@ LABEL_44:
   return v16;
 }
 
-+ (id)intervalPeakCADictionaryForLaunchdName:(id)a3 intervalMaxKB:(unint64_t)a4
++ (id)intervalPeakCADictionaryForLaunchdName:(id)name intervalMaxKB:(unint64_t)b
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEB38];
-  if (a3)
+  if (name)
   {
-    v6 = a3;
+    nameCopy = name;
   }
 
   else
   {
-    v6 = @"UNKNOWN";
+    nameCopy = @"UNKNOWN";
   }
 
   v14[0] = @"launchd_name";
   v14[1] = @"interval_peak_footprint_kb";
-  v15[0] = v6;
+  v15[0] = nameCopy;
   v7 = MEMORY[0x277CCABB0];
-  v8 = a3;
-  v9 = [v7 numberWithUnsignedLongLong:a4];
+  nameCopy2 = name;
+  v9 = [v7 numberWithUnsignedLongLong:b];
   v15[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
   v11 = [v5 dictionaryWithDictionary:v10];
@@ -4108,20 +4108,20 @@ LABEL_44:
   }
 }
 
-+ (unint64_t)convertToBase10:(id)a3 fromBaseN:(int)a4
++ (unint64_t)convertToBase10:(id)base10 fromBaseN:(int)n
 {
-  v5 = a3;
-  v6 = [v5 length];
+  base10Copy = base10;
+  v6 = [base10Copy length];
   if (v6)
   {
     v7 = 0;
     v8 = 0;
-    v9 = a4;
+    nCopy = n;
     v10 = -v6;
     v11 = v6 - 1;
     do
     {
-      v12 = [v5 characterAtIndex:v7];
+      v12 = [base10Copy characterAtIndex:v7];
       if ((v12 - 65) >= 0x1A)
       {
         v13 = v12 - 48;
@@ -4132,7 +4132,7 @@ LABEL_44:
         v13 = (v12 - 55);
       }
 
-      v8 = (v8 + v13 * pow(v9, v11));
+      v8 = (v8 + v13 * pow(nCopy, v11));
       ++v7;
       --v11;
     }
@@ -4148,16 +4148,16 @@ LABEL_44:
   return v8;
 }
 
-+ (id)sanitizeCAPayload:(id)a3
++ (id)sanitizeCAPayload:(id)payload
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  payloadCopy = payload;
+  v4 = [payloadCopy mutableCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = payloadCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -4194,12 +4194,12 @@ LABEL_44:
   return v4;
 }
 
-+ (int)grabSysctlValue:(id)a3
++ (int)grabSysctlValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v10 = 0;
   v9 = 4;
-  v4 = sysctlbyname([v3 UTF8String], &v10, &v9, 0, 0);
+  v4 = sysctlbyname([valueCopy UTF8String], &v10, &v9, 0, 0);
   v5 = PLLogCommon();
   v6 = v5;
   if (v4)
@@ -4216,7 +4216,7 @@ LABEL_44:
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(PLUtilities *)v3 grabSysctlValue:?];
+      [(PLUtilities *)valueCopy grabSysctlValue:?];
     }
 
     v7 = v10;
@@ -4225,15 +4225,15 @@ LABEL_44:
   return v7;
 }
 
-+ (double)scaledPowerBasedOnPoint:(double)a3 withPowerModel:(id)a4
++ (double)scaledPowerBasedOnPoint:(double)point withPowerModel:(id)model
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  modelCopy = model;
   v6 = 0.0;
-  if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0 && a3 > 0.0 && v5 != 0)
+  if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0 && point > 0.0 && modelCopy != 0)
   {
-    v8 = [v5 allKeys];
-    v9 = [v8 sortedArrayUsingSelector:sel_compareFloat_];
+    allKeys = [modelCopy allKeys];
+    v9 = [allKeys sortedArrayUsingSelector:sel_compareFloat_];
 
     v36 = 0u;
     v37 = 0u;
@@ -4260,7 +4260,7 @@ LABEL_8:
         [v17 doubleValue];
         v19 = v18;
         v13 = v17;
-        if (v19 > a3)
+        if (v19 > point)
         {
           break;
         }
@@ -4284,16 +4284,16 @@ LABEL_8:
         goto LABEL_19;
       }
 
-      v20 = [v5 objectForKeyedSubscript:v16];
+      v20 = [modelCopy objectForKeyedSubscript:v16];
       [v20 doubleValue];
       v22 = v21;
 
-      v23 = [v5 objectForKeyedSubscript:v13];
+      v23 = [modelCopy objectForKeyedSubscript:v13];
       [v23 doubleValue];
       v25 = v24;
 
       [v16 doubleValue];
-      v27 = a3 - v26;
+      v27 = point - v26;
       [v13 doubleValue];
       v29 = v28;
       [v16 doubleValue];
@@ -4307,7 +4307,7 @@ LABEL_18:
 
       v16 = v13;
 LABEL_19:
-      v13 = [v5 objectForKeyedSubscript:{v16, v34}];
+      v13 = [modelCopy objectForKeyedSubscript:{v16, v34}];
       [v13 doubleValue];
       v6 = v31;
     }
@@ -4317,9 +4317,9 @@ LABEL_19:
   return v6;
 }
 
-+ (id)powerModelForOperatorName:(id)a3
++ (id)powerModelForOperatorName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if ([MEMORY[0x277D3F208] isHomePod])
   {
     v4 = MEMORY[0x277CBEC10];
@@ -4328,7 +4328,7 @@ LABEL_19:
   else
   {
     v5 = getPowermodels();
-    v4 = [v5 objectForKeyedSubscript:v3];
+    v4 = [v5 objectForKeyedSubscript:nameCopy];
   }
 
   return v4;

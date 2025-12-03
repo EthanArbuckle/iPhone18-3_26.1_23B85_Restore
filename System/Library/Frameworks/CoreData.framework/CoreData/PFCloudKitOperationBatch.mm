@@ -1,7 +1,7 @@
 @interface PFCloudKitOperationBatch
 - (PFCloudKitOperationBatch)init;
 - (uint64_t)addRecord:(uint64_t)result;
-- (void)addDeletedRecordID:(uint64_t)a3 forRecordOfType:;
+- (void)addDeletedRecordID:(uint64_t)d forRecordOfType:;
 - (void)dealloc;
 @end
 
@@ -46,25 +46,25 @@
     *(result + 40) += [a2 size];
     [*(v3 + 24) addObject:a2];
     v4 = *(v3 + 32);
-    v5 = [a2 recordID];
+    recordID = [a2 recordID];
 
-    return [v4 addObject:v5];
+    return [v4 addObject:recordID];
   }
 
   return result;
 }
 
-- (void)addDeletedRecordID:(uint64_t)a3 forRecordOfType:
+- (void)addDeletedRecordID:(uint64_t)d forRecordOfType:
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 8) addObject:a2];
-    *(a1 + 40) += [PFCloudKitSerializer estimateByteSizeOfRecordID:a2];
-    v6 = [*(a1 + 16) objectForKey:a3];
+    [*(self + 8) addObject:a2];
+    *(self + 40) += [PFCloudKitSerializer estimateByteSizeOfRecordID:a2];
+    v6 = [*(self + 16) objectForKey:d];
     if (!v6)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      [*(a1 + 16) setObject:v7 forKey:a3];
+      [*(self + 16) setObject:v7 forKey:d];
       v6 = v7;
     }
 

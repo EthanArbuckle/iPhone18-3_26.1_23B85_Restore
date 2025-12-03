@@ -1,39 +1,39 @@
 @interface NPKIDVRemoteDeviceService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (NPKIDVRemoteDeviceService)initWithServiceName:(id)a3 delegate:(id)a4 callbackQueue:(id)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (NPKIDVRemoteDeviceService)initWithServiceName:(id)name delegate:(id)delegate callbackQueue:(id)queue;
 - (NPKIDVRemoteDeviceServiceDelegate)delegate;
-- (void)_addConnection:(id)a3;
-- (void)_addServer:(id)a3;
-- (void)_removeServer:(id)a3;
+- (void)_addConnection:(id)connection;
+- (void)_addServer:(id)server;
+- (void)_removeServer:(id)server;
 - (void)dealloc;
-- (void)identityRemoteDeviceServiceServer:(id)a3 didReceiveEvent:(unint64_t)a4 fromRemoteDeviceWithID:(id)a5 eventContext:(id)a6;
-- (void)setDelegate:(id)a3;
+- (void)identityRemoteDeviceServiceServer:(id)server didReceiveEvent:(unint64_t)event fromRemoteDeviceWithID:(id)d eventContext:(id)context;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation NPKIDVRemoteDeviceService
 
-- (NPKIDVRemoteDeviceService)initWithServiceName:(id)a3 delegate:(id)a4 callbackQueue:(id)a5
+- (NPKIDVRemoteDeviceService)initWithServiceName:(id)name delegate:(id)delegate callbackQueue:(id)queue
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = NPKIDVRemoteDeviceService;
   v11 = [(NPKIDVRemoteDeviceService *)&v23 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     serviceName = v11->_serviceName;
     v11->_serviceName = v12;
 
-    objc_storeWeak(&v11->_delegate, v9);
-    objc_storeStrong(&v11->_delegateCallBackQueue, a5);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v11->_delegateCallBackQueue, queue);
     v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
     serviceServers = v11->_serviceServers;
     v11->_serviceServers = v14;
 
-    v16 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:v8];
+    v16 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:nameCopy];
     [(NSXPCListener *)v16 setDelegate:v11];
     xpcListener = v11->_xpcListener;
     v11->_xpcListener = v16;
@@ -51,7 +51,7 @@
         *buf = 138412546;
         v25 = v11;
         v26 = 2112;
-        v27 = v8;
+        v27 = nameCopy;
         _os_log_impl(&dword_25B300000, v20, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: New Remote Device service Listener created:%@ with serviceName:%@", buf, 0x16u);
       }
     }
@@ -91,17 +91,17 @@ void __37__NPKIDVRemoteDeviceService_delegate__block_invoke(uint64_t a1)
   *(v3 + 40) = WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   delegateCallBackQueue = self->_delegateCallBackQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__NPKIDVRemoteDeviceService_setDelegate___block_invoke;
   v7[3] = &unk_2799454E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(delegateCallBackQueue, v7);
 }
 
@@ -125,15 +125,15 @@ void __36__NPKIDVRemoteDeviceService_dealloc__block_invoke(uint64_t a1, void *a2
   [v3 clearConnectionReference];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   xpcListener = self->_xpcListener;
   v9 = pk_Payment_log();
   v10 = v9;
-  if (xpcListener == v6)
+  if (xpcListener == listenerCopy)
   {
     v12 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -143,15 +143,15 @@ void __36__NPKIDVRemoteDeviceService_dealloc__block_invoke(uint64_t a1, void *a2
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138412290;
-        v20 = v7;
+        v20 = connectionCopy;
         _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested new connection:%@", &v19, 0xCu);
       }
     }
 
-    v11 = [(NSXPCListener *)v7 valueForEntitlement:@"com.apple.NanoPassbook.IDVRemoteDeviceService.client"];
+    v11 = [(NSXPCListener *)connectionCopy valueForEntitlement:@"com.apple.NanoPassbook.IDVRemoteDeviceService.client"];
     if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v11 BOOLValue]& 1) != 0)
     {
-      [(NPKIDVRemoteDeviceService *)self _addConnection:v7];
+      [(NPKIDVRemoteDeviceService *)self _addConnection:connectionCopy];
       LOBYTE(self) = 1;
       goto LABEL_14;
     }
@@ -184,7 +184,7 @@ LABEL_14:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v19 = 138412290;
-      v20 = v6;
+      v20 = listenerCopy;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_ERROR, "Error: NPKIDVRemoteDeviceService: Unknown requested connection from listener:%@", &v19, 0xCu);
     }
 
@@ -197,16 +197,16 @@ LABEL_15:
   return self;
 }
 
-- (void)_addConnection:(id)a3
+- (void)_addConnection:(id)connection
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[NPKIDVRemoteDeviceServiceServer alloc] initWithConnection:v4 delegate:self];
+  connectionCopy = connection;
+  v5 = [[NPKIDVRemoteDeviceServiceServer alloc] initWithConnection:connectionCopy delegate:self];
   v6 = NPKIDVRemoteDeviceServiceServerProtocolInterface();
-  [v4 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v4 setExportedObject:v5];
-  objc_initWeak(&location, v4);
+  [connectionCopy setExportedObject:v5];
+  objc_initWeak(&location, connectionCopy);
   objc_initWeak(&from, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -216,7 +216,7 @@ LABEL_15:
   objc_copyWeak(&v23, &from);
   v7 = v5;
   v21 = v7;
-  [v4 setInvalidationHandler:v20];
+  [connectionCopy setInvalidationHandler:v20];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __44__NPKIDVRemoteDeviceService__addConnection___block_invoke_20;
@@ -225,9 +225,9 @@ LABEL_15:
   objc_copyWeak(&v19, &from);
   v8 = v7;
   v17 = v8;
-  [v4 setInterruptionHandler:&v13];
+  [connectionCopy setInterruptionHandler:&v13];
   [(NPKIDVRemoteDeviceService *)self _addServer:v8, v13, v14, v15, v16];
-  [v4 resume];
+  [connectionCopy resume];
   v9 = pk_Payment_log();
   LODWORD(v6) = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -236,11 +236,11 @@ LABEL_15:
     v10 = pk_Payment_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       *buf = 138412546;
-      v27 = v4;
+      v27 = connectionCopy;
       v28 = 1024;
-      v29 = v11;
+      v29 = processIdentifier;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Added new connection:{%@, PID:%d}", buf, 0x12u);
     }
   }
@@ -310,39 +310,39 @@ void __44__NPKIDVRemoteDeviceService__addConnection___block_invoke_20(uint64_t a
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addServer:(id)a3
+- (void)_addServer:(id)server
 {
-  if (a3)
+  if (server)
   {
     [(NSMutableSet *)self->_serviceServers addObject:?];
   }
 }
 
-- (void)_removeServer:(id)a3
+- (void)_removeServer:(id)server
 {
-  v5 = a3;
-  v4 = [v5 connection];
-  [v4 invalidate];
+  serverCopy = server;
+  connection = [serverCopy connection];
+  [connection invalidate];
 
-  [v5 clearConnectionReference];
-  [(NSMutableSet *)self->_serviceServers removeObject:v5];
+  [serverCopy clearConnectionReference];
+  [(NSMutableSet *)self->_serviceServers removeObject:serverCopy];
 }
 
-- (void)identityRemoteDeviceServiceServer:(id)a3 didReceiveEvent:(unint64_t)a4 fromRemoteDeviceWithID:(id)a5 eventContext:(id)a6
+- (void)identityRemoteDeviceServiceServer:(id)server didReceiveEvent:(unint64_t)event fromRemoteDeviceWithID:(id)d eventContext:(id)context
 {
-  v9 = a5;
-  v10 = a6;
+  dCopy = d;
+  contextCopy = context;
   delegateCallBackQueue = self->_delegateCallBackQueue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __115__NPKIDVRemoteDeviceService_identityRemoteDeviceServiceServer_didReceiveEvent_fromRemoteDeviceWithID_eventContext___block_invoke;
   v14[3] = &unk_279945958;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = a4;
-  v12 = v10;
-  v13 = v9;
+  v15 = dCopy;
+  v16 = contextCopy;
+  eventCopy = event;
+  v12 = contextCopy;
+  v13 = dCopy;
   dispatch_async(delegateCallBackQueue, v14);
 }
 

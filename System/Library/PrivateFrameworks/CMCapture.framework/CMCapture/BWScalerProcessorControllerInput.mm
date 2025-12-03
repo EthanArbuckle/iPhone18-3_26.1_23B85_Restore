@@ -1,17 +1,17 @@
 @interface BWScalerProcessorControllerInput
-- (BWScalerProcessorControllerInput)initWithSettings:(id)a3 portType:(id)a4;
+- (BWScalerProcessorControllerInput)initWithSettings:(id)settings portType:(id)type;
 - (id)description;
-- (void)addFrame:(opaqueCMSampleBuffer *)a3 bufferType:(unint64_t)a4;
+- (void)addFrame:(opaqueCMSampleBuffer *)frame bufferType:(unint64_t)type;
 - (void)dealloc;
 @end
 
 @implementation BWScalerProcessorControllerInput
 
-- (BWScalerProcessorControllerInput)initWithSettings:(id)a3 portType:(id)a4
+- (BWScalerProcessorControllerInput)initWithSettings:(id)settings portType:(id)type
 {
   v5.receiver = self;
   v5.super_class = BWScalerProcessorControllerInput;
-  result = [(BWStillImageProcessorControllerInput *)&v5 initWithSettings:a3 portType:a4];
+  result = [(BWStillImageProcessorControllerInput *)&v5 initWithSettings:settings portType:type];
   if (result)
   {
     result->_processingModeSet = 0;
@@ -71,13 +71,13 @@
   return [v3 stringWithFormat:@"%@ bufferType:%@, processingMode:%@%@, frame:%@", v4, v5, v8, v9, BWStillImageSampleBufferToDisplayString(self->_frame)];
 }
 
-- (void)addFrame:(opaqueCMSampleBuffer *)a3 bufferType:(unint64_t)a4
+- (void)addFrame:(opaqueCMSampleBuffer *)frame bufferType:(unint64_t)type
 {
   frame = self->_frame;
-  self->_frame = a3;
-  if (a3)
+  self->_frame = frame;
+  if (frame)
   {
-    CFRetain(a3);
+    CFRetain(frame);
   }
 
   if (frame)
@@ -85,10 +85,10 @@
     CFRelease(frame);
   }
 
-  self->_bufferType = a4;
-  v7 = [(BWStillImageProcessorControllerInput *)self delegate];
+  self->_bufferType = type;
+  delegate = [(BWStillImageProcessorControllerInput *)self delegate];
 
-  [(BWStillImageProcessorControllerInputUpdatesDelegate *)v7 inputChanged:self];
+  [(BWStillImageProcessorControllerInputUpdatesDelegate *)delegate inputChanged:self];
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface BMSiriOnDeviceDigestUsageMetricsEventMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriOnDeviceDigestUsageMetricsEventMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriOnDeviceDigestUsageMetricsEventMetadata)initWithOddIdUUID:(id)a3 deviceAggregationId:(id)a4 userAggregationId:(id)a5 eventTimestampInMSSince1970:(id)a6 timeInterval:(id)a7 userAggregationIdRotationTimestampInMs:(id)a8 userAggregationIdExpirationTimestampInMs:(id)a9;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriOnDeviceDigestUsageMetricsEventMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriOnDeviceDigestUsageMetricsEventMetadata)initWithOddIdUUID:(id)d deviceAggregationId:(id)id userAggregationId:(id)aggregationId eventTimestampInMSSince1970:(id)since1970 timeInterval:(id)interval userAggregationIdRotationTimestampInMs:(id)ms userAggregationIdExpirationTimestampInMs:(id)inMs;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriOnDeviceDigestUsageMetricsEventMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self oddIdUUID];
-    v7 = [v5 oddIdUUID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    oddIdUUID = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self oddIdUUID];
+    oddIdUUID2 = [v5 oddIdUUID];
+    v8 = oddIdUUID2;
+    if (oddIdUUID == oddIdUUID2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self oddIdUUID];
-      v10 = [v5 oddIdUUID];
-      v11 = [v9 isEqual:v10];
+      oddIdUUID3 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self oddIdUUID];
+      oddIdUUID4 = [v5 oddIdUUID];
+      v11 = [oddIdUUID3 isEqual:oddIdUUID4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self deviceAggregationId];
-    v14 = [v5 deviceAggregationId];
-    v15 = v14;
-    if (v13 == v14)
+    deviceAggregationId = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self deviceAggregationId];
+    deviceAggregationId2 = [v5 deviceAggregationId];
+    v15 = deviceAggregationId2;
+    if (deviceAggregationId == deviceAggregationId2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self deviceAggregationId];
-      v17 = [v5 deviceAggregationId];
-      v18 = [v16 isEqual:v17];
+      deviceAggregationId3 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self deviceAggregationId];
+      deviceAggregationId4 = [v5 deviceAggregationId];
+      v18 = [deviceAggregationId3 isEqual:deviceAggregationId4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self userAggregationId];
-    v20 = [v5 userAggregationId];
-    v21 = v20;
-    if (v19 == v20)
+    userAggregationId = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self userAggregationId];
+    userAggregationId2 = [v5 userAggregationId];
+    v21 = userAggregationId2;
+    if (userAggregationId == userAggregationId2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self userAggregationId];
-      v23 = [v5 userAggregationId];
-      v24 = [v22 isEqual:v23];
+      userAggregationId3 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self userAggregationId];
+      userAggregationId4 = [v5 userAggregationId];
+      v24 = [userAggregationId3 isEqual:userAggregationId4];
 
       if (!v24)
       {
@@ -90,25 +90,25 @@
         goto LABEL_34;
       }
 
-      v25 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self eventTimestampInMSSince1970];
-      if (v25 != [v5 eventTimestampInMSSince1970])
+      eventTimestampInMSSince1970 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self eventTimestampInMSSince1970];
+      if (eventTimestampInMSSince1970 != [v5 eventTimestampInMSSince1970])
       {
         goto LABEL_34;
       }
     }
 
-    v26 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self timeInterval];
-    v27 = [v5 timeInterval];
-    v28 = v27;
-    if (v26 == v27)
+    timeInterval = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self timeInterval];
+    timeInterval2 = [v5 timeInterval];
+    v28 = timeInterval2;
+    if (timeInterval == timeInterval2)
     {
     }
 
     else
     {
-      v29 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self timeInterval];
-      v30 = [v5 timeInterval];
-      v31 = [v29 isEqual:v30];
+      timeInterval3 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self timeInterval];
+      timeInterval4 = [v5 timeInterval];
+      v31 = [timeInterval3 isEqual:timeInterval4];
 
       if (!v31)
       {
@@ -126,8 +126,8 @@
 
       if (-[BMSiriOnDeviceDigestUsageMetricsEventMetadata hasUserAggregationIdExpirationTimestampInMs](self, "hasUserAggregationIdExpirationTimestampInMs") && [v5 hasUserAggregationIdExpirationTimestampInMs])
       {
-        v33 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self userAggregationIdExpirationTimestampInMs];
-        v12 = v33 == [v5 userAggregationIdExpirationTimestampInMs];
+        userAggregationIdExpirationTimestampInMs = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self userAggregationIdExpirationTimestampInMs];
+        v12 = userAggregationIdExpirationTimestampInMs == [v5 userAggregationIdExpirationTimestampInMs];
 LABEL_35:
 
         goto LABEL_36;
@@ -148,9 +148,9 @@ LABEL_36:
 - (id)jsonDictionary
 {
   v26[7] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self oddIdUUID];
-  v4 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self deviceAggregationId];
-  v5 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self userAggregationId];
+  oddIdUUID = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self oddIdUUID];
+  deviceAggregationId = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self deviceAggregationId];
+  userAggregationId = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self userAggregationId];
   if ([(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self hasEventTimestampInMSSince1970])
   {
     v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMSiriOnDeviceDigestUsageMetricsEventMetadata eventTimestampInMSSince1970](self, "eventTimestampInMSSince1970")}];
@@ -161,8 +161,8 @@ LABEL_36:
     v24 = 0;
   }
 
-  v6 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self timeInterval];
-  v7 = [v6 jsonDictionary];
+  timeInterval = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self timeInterval];
+  jsonDictionary = [timeInterval jsonDictionary];
 
   if ([(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self hasUserAggregationIdRotationTimestampInMs])
   {
@@ -185,65 +185,65 @@ LABEL_36:
   }
 
   v25[0] = @"oddIdUUID";
-  v10 = v3;
-  if (!v3)
+  null = oddIdUUID;
+  if (!oddIdUUID)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v10;
-  v26[0] = v10;
+  v21 = null;
+  v26[0] = null;
   v25[1] = @"deviceAggregationId";
-  v11 = v4;
-  if (!v4)
+  null2 = deviceAggregationId;
+  if (!deviceAggregationId)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v11;
-  v26[1] = v11;
+  v20 = null2;
+  v26[1] = null2;
   v25[2] = @"userAggregationId";
-  v12 = v5;
-  if (!v5)
+  null3 = userAggregationId;
+  if (!userAggregationId)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v3;
-  v26[2] = v12;
+  v23 = oddIdUUID;
+  v26[2] = null3;
   v25[3] = @"eventTimestampInMSSince1970";
-  v13 = v24;
+  null4 = v24;
   if (!v24)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v4;
-  v26[3] = v13;
+  v22 = deviceAggregationId;
+  v26[3] = null4;
   v25[4] = @"timeInterval";
-  v14 = v7;
-  if (!v7)
+  null5 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v14;
+  v26[4] = null5;
   v25[5] = @"userAggregationIdRotationTimestampInMs";
-  v15 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[5] = v15;
+  v26[5] = null6;
   v25[6] = @"userAggregationIdExpirationTimestampInMs";
-  v16 = v9;
+  null7 = v9;
   if (!v9)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[6] = v16;
+  v26[6] = null7;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:7];
   if (v9)
   {
@@ -263,7 +263,7 @@ LABEL_36:
   }
 
 LABEL_26:
-  if (!v7)
+  if (!jsonDictionary)
   {
   }
 
@@ -271,7 +271,7 @@ LABEL_26:
   {
   }
 
-  if (v5)
+  if (userAggregationId)
   {
     if (v22)
     {
@@ -307,23 +307,23 @@ LABEL_33:
   return v17;
 }
 
-- (BMSiriOnDeviceDigestUsageMetricsEventMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriOnDeviceDigestUsageMetricsEventMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v84[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"oddIdUUID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"oddIdUUID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"deviceAggregationId"];
-    v68 = a4;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"deviceAggregationId"];
+    errorCopy = error;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
           v21 = 0;
@@ -336,7 +336,7 @@ LABEL_4:
         v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"deviceAggregationId"];
         v82 = v13;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
-        v12 = v33 = a4;
+        v12 = v33 = error;
         v34 = [v31 initWithDomain:v32 code:2 userInfo:v12];
         v10 = 0;
         v21 = 0;
@@ -352,14 +352,14 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"userAggregationId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"userAggregationId"];
     v66 = v11;
     if (v11 && (v12 = v11, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v68)
+        if (!errorCopy)
         {
           v13 = 0;
           v21 = 0;
@@ -378,7 +378,7 @@ LABEL_4:
         v38 = [v37 initWithDomain:v36 code:2 userInfo:v14];
         v13 = 0;
         v21 = 0;
-        *v68 = v38;
+        *errorCopy = v38;
 LABEL_28:
 
         v12 = v66;
@@ -395,14 +395,14 @@ LABEL_29:
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"eventTimestampInMSSince1970"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"eventTimestampInMSSince1970"];
     v67 = v13;
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v68)
+        if (!errorCopy)
         {
           v69 = 0;
           v21 = 0;
@@ -422,7 +422,7 @@ LABEL_29:
         v43 = [v42 initWithDomain:v40 code:2 userInfo:?];
         v69 = 0;
         v21 = 0;
-        *v68 = v43;
+        *errorCopy = v43;
         goto LABEL_26;
       }
 
@@ -434,14 +434,14 @@ LABEL_29:
       v69 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"timeInterval"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"timeInterval"];
     v64 = v8;
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v68)
+        if (!errorCopy)
         {
           v21 = 0;
           goto LABEL_27;
@@ -452,17 +452,17 @@ LABEL_29:
         v75 = *MEMORY[0x1E696A578];
         v44 = v10;
         v45 = v7;
-        v46 = self;
+        selfCopy = self;
         v47 = objc_alloc(MEMORY[0x1E696AEC0]);
         v55 = objc_opt_class();
         v48 = v47;
-        self = v46;
+        self = selfCopy;
         v7 = v45;
         v10 = v44;
         v65 = [v48 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v55, @"timeInterval"];
         v76 = v65;
         v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-        *v68 = [v58 initWithDomain:v56 code:2 userInfo:v49];
+        *errorCopy = [v58 initWithDomain:v56 code:2 userInfo:v49];
 
         v21 = 0;
         v22 = v15;
@@ -475,10 +475,10 @@ LABEL_29:
       v25 = v70;
       if (v25)
       {
-        if (v68)
+        if (errorCopy)
         {
           v25 = v25;
-          *v68 = v25;
+          *errorCopy = v25;
         }
 
         v21 = 0;
@@ -491,16 +491,16 @@ LABEL_29:
       v65 = 0;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"userAggregationIdRotationTimestampInMs"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"userAggregationIdRotationTimestampInMs"];
     v60 = v7;
     v61 = v10;
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
-      v17 = self;
+      selfCopy3 = self;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v68)
+        if (!errorCopy)
         {
           v18 = 0;
           v21 = 0;
@@ -516,7 +516,7 @@ LABEL_29:
         v52 = [v50 initWithDomain:v51 code:2 userInfo:v19];
         v18 = 0;
         v21 = 0;
-        *v68 = v52;
+        *errorCopy = v52;
         goto LABEL_23;
       }
 
@@ -525,17 +525,17 @@ LABEL_29:
 
     else
     {
-      v17 = self;
+      selfCopy3 = self;
       v18 = 0;
     }
 
-    v19 = [v6 objectForKeyedSubscript:@"userAggregationIdExpirationTimestampInMs"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"userAggregationIdExpirationTimestampInMs"];
     if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v68)
+        if (errorCopy)
         {
           v59 = objc_alloc(MEMORY[0x1E696ABC0]);
           v57 = *MEMORY[0x1E698F240];
@@ -543,7 +543,7 @@ LABEL_29:
           v53 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"userAggregationIdExpirationTimestampInMs"];
           v72 = v53;
           v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-          *v68 = [v59 initWithDomain:v57 code:2 userInfo:v54];
+          *errorCopy = [v59 initWithDomain:v57 code:2 userInfo:v54];
         }
 
         v20 = 0;
@@ -559,15 +559,15 @@ LABEL_29:
       v20 = 0;
     }
 
-    v21 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)v17 initWithOddIdUUID:v64 deviceAggregationId:v61 userAggregationId:v67 eventTimestampInMSSince1970:v69 timeInterval:v65 userAggregationIdRotationTimestampInMs:v18 userAggregationIdExpirationTimestampInMs:v20];
-    v17 = v21;
+    v21 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)selfCopy3 initWithOddIdUUID:v64 deviceAggregationId:v61 userAggregationId:v67 eventTimestampInMSSince1970:v69 timeInterval:v65 userAggregationIdRotationTimestampInMs:v18 userAggregationIdExpirationTimestampInMs:v20];
+    selfCopy3 = v21;
 LABEL_23:
 
     v10 = v61;
 LABEL_24:
 
     v22 = v15;
-    self = v17;
+    self = selfCopy3;
     v7 = v60;
 LABEL_25:
     v8 = v64;
@@ -587,7 +587,7 @@ LABEL_27:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v21 = 0;
@@ -605,7 +605,7 @@ LABEL_27:
   v30 = [v29 initWithDomain:v27 code:2 userInfo:v9];
   v8 = 0;
   v21 = 0;
-  *a4 = v30;
+  *error = v30;
 LABEL_30:
 
 LABEL_31:
@@ -617,14 +617,14 @@ LABEL_31:
 {
   v3 = objc_opt_new();
   [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_oddIdUUID)
   {
     PBDataWriterWriteStringField();
@@ -649,7 +649,7 @@ LABEL_31:
   if (self->_timeInterval)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriOnDeviceDigestUsageMetricsEventMetadataTimeInterval *)self->_timeInterval writeTo:v4];
+    [(BMSiriOnDeviceDigestUsageMetricsEventMetadataTimeInterval *)self->_timeInterval writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -666,9 +666,9 @@ LABEL_31:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v44.receiver = self;
   v44.super_class = BMSiriOnDeviceDigestUsageMetricsEventMetadata;
   v5 = [(BMEventBase *)&v44 init];
@@ -677,12 +677,12 @@ LABEL_31:
     goto LABEL_79;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -693,18 +693,18 @@ LABEL_31:
       while (1)
       {
         LOBYTE(v45[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v45 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v45 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v45[0] & 0x7F) << v7;
@@ -722,9 +722,9 @@ LABEL_31:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -767,18 +767,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v45[0]) = 0;
-              v36 = [v4 position] + 1;
-              if (v36 >= [v4 position] && (v37 = objc_msgSend(v4, "position") + 1, v37 <= objc_msgSend(v4, "length")))
+              v36 = [fromCopy position] + 1;
+              if (v36 >= [fromCopy position] && (v37 = objc_msgSend(fromCopy, "position") + 1, v37 <= objc_msgSend(fromCopy, "length")))
               {
-                v38 = [v4 data];
-                [v38 getBytes:v45 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:v45 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v35 = (((v45[0] & 0x7F) << v33) | v35);
@@ -796,7 +796,7 @@ LABEL_16:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v26 = 0;
             }
@@ -830,18 +830,18 @@ LABEL_41:
             while (1)
             {
               LOBYTE(v45[0]) = 0;
-              v23 = [v4 position] + 1;
-              if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+              v23 = [fromCopy position] + 1;
+              if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
               {
-                v25 = [v4 data];
-                [v25 getBytes:v45 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:v45 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v22 = (((v45[0] & 0x7F) << v20) | v22);
@@ -859,7 +859,7 @@ LABEL_41:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v26 = 0;
             }
@@ -885,18 +885,18 @@ LABEL_74:
           while (1)
           {
             LOBYTE(v45[0]) = 0;
-            v30 = [v4 position] + 1;
-            if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+            v30 = [fromCopy position] + 1;
+            if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 1, v31 <= objc_msgSend(fromCopy, "length")))
             {
-              v32 = [v4 data];
-              [v32 getBytes:v45 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:v45 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v29 = (((v45[0] & 0x7F) << v27) | v29);
@@ -914,7 +914,7 @@ LABEL_74:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v26 = 0;
           }
@@ -943,7 +943,7 @@ LABEL_75:
           goto LABEL_78;
         }
 
-        v16 = [[BMSiriOnDeviceDigestUsageMetricsEventMetadataTimeInterval alloc] initByReadFrom:v4];
+        v16 = [[BMSiriOnDeviceDigestUsageMetricsEventMetadataTimeInterval alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_78;
@@ -956,13 +956,13 @@ LABEL_75:
       }
 
 LABEL_76:
-      v41 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v41 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_78:
     v42 = 0;
@@ -980,76 +980,76 @@ LABEL_79:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self oddIdUUID];
-  v5 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self deviceAggregationId];
-  v6 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self userAggregationId];
+  oddIdUUID = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self oddIdUUID];
+  deviceAggregationId = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self deviceAggregationId];
+  userAggregationId = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self userAggregationId];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMSiriOnDeviceDigestUsageMetricsEventMetadata eventTimestampInMSSince1970](self, "eventTimestampInMSSince1970")}];
-  v8 = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self timeInterval];
+  timeInterval = [(BMSiriOnDeviceDigestUsageMetricsEventMetadata *)self timeInterval];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMSiriOnDeviceDigestUsageMetricsEventMetadata userAggregationIdRotationTimestampInMs](self, "userAggregationIdRotationTimestampInMs")}];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMSiriOnDeviceDigestUsageMetricsEventMetadata userAggregationIdExpirationTimestampInMs](self, "userAggregationIdExpirationTimestampInMs")}];
-  v11 = [v3 initWithFormat:@"BMSiriOnDeviceDigestUsageMetricsEventMetadata with oddIdUUID: %@, deviceAggregationId: %@, userAggregationId: %@, eventTimestampInMSSince1970: %@, timeInterval: %@, userAggregationIdRotationTimestampInMs: %@, userAggregationIdExpirationTimestampInMs: %@", v4, v5, v6, v7, v8, v9, v10];
+  v11 = [v3 initWithFormat:@"BMSiriOnDeviceDigestUsageMetricsEventMetadata with oddIdUUID: %@, deviceAggregationId: %@, userAggregationId: %@, eventTimestampInMSSince1970: %@, timeInterval: %@, userAggregationIdRotationTimestampInMs: %@, userAggregationIdExpirationTimestampInMs: %@", oddIdUUID, deviceAggregationId, userAggregationId, v7, timeInterval, v9, v10];
 
   return v11;
 }
 
-- (BMSiriOnDeviceDigestUsageMetricsEventMetadata)initWithOddIdUUID:(id)a3 deviceAggregationId:(id)a4 userAggregationId:(id)a5 eventTimestampInMSSince1970:(id)a6 timeInterval:(id)a7 userAggregationIdRotationTimestampInMs:(id)a8 userAggregationIdExpirationTimestampInMs:(id)a9
+- (BMSiriOnDeviceDigestUsageMetricsEventMetadata)initWithOddIdUUID:(id)d deviceAggregationId:(id)id userAggregationId:(id)aggregationId eventTimestampInMSSince1970:(id)since1970 timeInterval:(id)interval userAggregationIdRotationTimestampInMs:(id)ms userAggregationIdExpirationTimestampInMs:(id)inMs
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  dCopy = d;
+  idCopy = id;
+  aggregationIdCopy = aggregationId;
+  since1970Copy = since1970;
+  intervalCopy = interval;
+  msCopy = ms;
+  inMsCopy = inMs;
   v28.receiver = self;
   v28.super_class = BMSiriOnDeviceDigestUsageMetricsEventMetadata;
   v20 = [(BMEventBase *)&v28 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v20->_oddIdUUID, a3);
-    objc_storeStrong(&v20->_deviceAggregationId, a4);
-    objc_storeStrong(&v20->_userAggregationId, a5);
-    if (v16)
+    objc_storeStrong(&v20->_oddIdUUID, d);
+    objc_storeStrong(&v20->_deviceAggregationId, id);
+    objc_storeStrong(&v20->_userAggregationId, aggregationId);
+    if (since1970Copy)
     {
       v20->_hasEventTimestampInMSSince1970 = 1;
-      v21 = [v16 unsignedLongLongValue];
+      unsignedLongLongValue = [since1970Copy unsignedLongLongValue];
     }
 
     else
     {
-      v21 = 0;
+      unsignedLongLongValue = 0;
       v20->_hasEventTimestampInMSSince1970 = 0;
     }
 
-    v20->_eventTimestampInMSSince1970 = v21;
-    objc_storeStrong(&v20->_timeInterval, a7);
-    if (v18)
+    v20->_eventTimestampInMSSince1970 = unsignedLongLongValue;
+    objc_storeStrong(&v20->_timeInterval, interval);
+    if (msCopy)
     {
       v20->_hasUserAggregationIdRotationTimestampInMs = 1;
-      v22 = [v18 unsignedLongLongValue];
+      unsignedLongLongValue2 = [msCopy unsignedLongLongValue];
     }
 
     else
     {
-      v22 = 0;
+      unsignedLongLongValue2 = 0;
       v20->_hasUserAggregationIdRotationTimestampInMs = 0;
     }
 
-    v20->_userAggregationIdRotationTimestampInMs = v22;
-    if (v19)
+    v20->_userAggregationIdRotationTimestampInMs = unsignedLongLongValue2;
+    if (inMsCopy)
     {
       v20->_hasUserAggregationIdExpirationTimestampInMs = 1;
-      v23 = [v19 unsignedLongLongValue];
+      unsignedLongLongValue3 = [inMsCopy unsignedLongLongValue];
     }
 
     else
     {
-      v23 = 0;
+      unsignedLongLongValue3 = 0;
       v20->_hasUserAggregationIdExpirationTimestampInMs = 0;
     }
 
-    v20->_userAggregationIdExpirationTimestampInMs = v23;
+    v20->_userAggregationIdExpirationTimestampInMs = unsignedLongLongValue3;
   }
 
   return v20;
@@ -1112,9 +1112,9 @@ id __56__BMSiriOnDeviceDigestUsageMetricsEventMetadata_columns__block_invoke(uin
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1122,8 +1122,8 @@ id __56__BMSiriOnDeviceDigestUsageMetricsEventMetadata_columns__block_invoke(uin
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriOnDeviceDigestUsageMetricsEventMetadata alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,62 +1,62 @@
 @interface PCMatrix44Double
-+ (uint64_t)matrixWithSIMDDouble4x4:(_OWORD *)a3;
-+ (uint64_t)matrixWithSIMDFloat4x4:(double)a3;
++ (uint64_t)matrixWithSIMDDouble4x4:(_OWORD *)double4x4;
++ (uint64_t)matrixWithSIMDFloat4x4:(double)float4x4;
 - ($360FFE100060A5171365411B823D6A0E)transformInfo;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPCMatrix44Double:(id)a3;
-- (CGPoint)transformPoint:(CGPoint)a3;
-- (CGRect)transformRect:(CGRect)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPCMatrix44Double:(id)double;
+- (CGPoint)transformPoint:(CGPoint)point;
+- (CGRect)transformRect:(CGRect)rect;
 - (PCMatrix44Double)init;
-- (PCMatrix44Double)initWithArray:(id)a3;
-- (PCMatrix44Double)initWithCoder:(id)a3;
-- (PCMatrix44Double)initWithDoubles:(double)a3[16] external:(BOOL)a4;
-- (PCMatrix44Double)initWithPCMatrix:(const void *)a3;
+- (PCMatrix44Double)initWithArray:(id)array;
+- (PCMatrix44Double)initWithCoder:(id)coder;
+- (PCMatrix44Double)initWithDoubles:(double)doubles[16] external:(BOOL)external;
+- (PCMatrix44Double)initWithPCMatrix:(const void *)matrix;
 - (__n128)SIMDDouble4x4;
 - (double)SIMDFloat4x4;
-- (double)setSIMDDouble4x4:(uint64_t)a3;
-- (float64x2_t)setSIMDFloat4x4:(int8x16_t)a3;
+- (double)setSIMDDouble4x4:(uint64_t)double4x4;
+- (float64x2_t)setSIMDFloat4x4:(int8x16_t)float4x4;
 - (id)array;
 - (id)compactDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (id)extendedDescription;
-- (id)newPlanarTransformTo:(id)a3;
-- (id)newTransformTo:(id)a3;
+- (id)newPlanarTransformTo:(id)to;
+- (id)newTransformTo:(id)to;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)getDoubles:(double)a3[16];
-- (void)initWithSIMDDouble4x4:(_OWORD *)a3;
-- (void)initWithSIMDFloat4x4:(double)a3;
-- (void)leftFlipAboutY:(double)a3;
-- (void)leftMult:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)getDoubles:(double)doubles[16];
+- (void)initWithSIMDDouble4x4:(_OWORD *)double4x4;
+- (void)initWithSIMDFloat4x4:(double)float4x4;
+- (void)leftFlipAboutY:(double)y;
+- (void)leftMult:(id)mult;
 - (void)makeIdentity;
-- (void)rightMult:(id)a3;
-- (void)scaleSizeX:(double)a3 sizeY:(double)a4 sizeZ:(double)a5 scaledSizeX:(double *)a6 scaledSizeY:(double *)a7 scaledSizeZ:(double *)a8;
-- (void)setDoubles:(double)a3[16];
+- (void)rightMult:(id)mult;
+- (void)scaleSizeX:(double)x sizeY:(double)y sizeZ:(double)z scaledSizeX:(double *)sizeX scaledSizeY:(double *)sizeY scaledSizeZ:(double *)sizeZ;
+- (void)setDoubles:(double)doubles[16];
 @end
 
 @implementation PCMatrix44Double
 
-- (PCMatrix44Double)initWithPCMatrix:(const void *)a3
+- (PCMatrix44Double)initWithPCMatrix:(const void *)matrix
 {
   v11.receiver = self;
   v11.super_class = PCMatrix44Double;
   result = [(PCMatrix44Double *)&v11 init];
   if (result)
   {
-    v5 = *a3;
-    v6 = *(a3 + 1);
-    v7 = *(a3 + 2);
-    *&result->_m[1][2] = *(a3 + 3);
+    v5 = *matrix;
+    v6 = *(matrix + 1);
+    v7 = *(matrix + 2);
+    *&result->_m[1][2] = *(matrix + 3);
     *&result->_m[1][0] = v7;
     *&result->_m[0][2] = v6;
     *&result->_m[0][0] = v5;
-    v8 = *(a3 + 4);
-    v9 = *(a3 + 5);
-    v10 = *(a3 + 6);
-    *&result->_m[3][2] = *(a3 + 7);
+    v8 = *(matrix + 4);
+    v9 = *(matrix + 5);
+    v10 = *(matrix + 6);
+    *&result->_m[3][2] = *(matrix + 7);
     *&result->_m[3][0] = v10;
     *&result->_m[2][2] = v9;
     *&result->_m[2][0] = v8;
@@ -89,11 +89,11 @@
   return result;
 }
 
-- (PCMatrix44Double)initWithDoubles:(double)a3[16] external:(BOOL)a4
+- (PCMatrix44Double)initWithDoubles:(double)doubles[16] external:(BOOL)external
 {
   v12.receiver = self;
   v12.super_class = PCMatrix44Double;
-  result = [(PCMatrix44Double *)&v12 init:a3];
+  result = [(PCMatrix44Double *)&v12 init:doubles];
   if (result)
   {
     result->_m[0][0] = 1.0;
@@ -107,17 +107,17 @@
     *&result->_m[3][1] = 0u;
     result->_m[3][3] = 1.0;
     result->_pcMatrix = result->_m;
-    v6 = *a3;
-    v7 = *(a3 + 1);
-    v8 = *(a3 + 3);
-    *&result->_m[1][0] = *(a3 + 2);
+    v6 = *doubles;
+    v7 = *(doubles + 1);
+    v8 = *(doubles + 3);
+    *&result->_m[1][0] = *(doubles + 2);
     *&result->_m[1][2] = v8;
     *&result->_m[0][0] = v6;
     *&result->_m[0][2] = v7;
-    v9 = *(a3 + 4);
-    v10 = *(a3 + 5);
-    v11 = *(a3 + 7);
-    *&result->_m[3][0] = *(a3 + 6);
+    v9 = *(doubles + 4);
+    v10 = *(doubles + 5);
+    v11 = *(doubles + 7);
+    *&result->_m[3][0] = *(doubles + 6);
     *&result->_m[3][2] = v11;
     *&result->_m[2][0] = v9;
     *&result->_m[2][2] = v10;
@@ -126,7 +126,7 @@
   return result;
 }
 
-- (PCMatrix44Double)initWithArray:(id)a3
+- (PCMatrix44Double)initWithArray:(id)array
 {
   v5 = 0;
   v16 = *MEMORY[0x277D85DE8];
@@ -140,7 +140,7 @@
   v9 = 0u;
   do
   {
-    [objc_msgSend(a3 objectAtIndex:{v5, v8, v9, v10, v11, v12, v13, v14, v15), "doubleValue"}];
+    [objc_msgSend(array objectAtIndex:{v5, v8, v9, v10, v11, v12, v13, v14, v15), "doubleValue"}];
     *(&v8 + v5++) = v6;
   }
 
@@ -148,60 +148,60 @@
   return [(PCMatrix44Double *)self initWithDoubles:&v8];
 }
 
-+ (uint64_t)matrixWithSIMDFloat4x4:(double)a3
++ (uint64_t)matrixWithSIMDFloat4x4:(double)float4x4
 {
-  v5 = [a1 alloc];
+  v5 = [self alloc];
 
-  return [v5 initWithSIMDFloat4x4:{a2, a3, a4, a5}];
+  return [v5 initWithSIMDFloat4x4:{a2, float4x4, a4, a5}];
 }
 
-+ (uint64_t)matrixWithSIMDDouble4x4:(_OWORD *)a3
++ (uint64_t)matrixWithSIMDDouble4x4:(_OWORD *)double4x4
 {
-  v4 = [a1 alloc];
-  v5 = a3[5];
-  v10[4] = a3[4];
+  v4 = [self alloc];
+  v5 = double4x4[5];
+  v10[4] = double4x4[4];
   v10[5] = v5;
-  v6 = a3[7];
-  v10[6] = a3[6];
+  v6 = double4x4[7];
+  v10[6] = double4x4[6];
   v10[7] = v6;
-  v7 = a3[1];
-  v10[0] = *a3;
+  v7 = double4x4[1];
+  v10[0] = *double4x4;
   v10[1] = v7;
-  v8 = a3[3];
-  v10[2] = a3[2];
+  v8 = double4x4[3];
+  v10[2] = double4x4[2];
   v10[3] = v8;
   return [v4 initWithSIMDDouble4x4:v10];
 }
 
-- (void)initWithSIMDFloat4x4:(double)a3
+- (void)initWithSIMDFloat4x4:(double)float4x4
 {
-  v5 = [a1 init];
+  v5 = [self init];
   v6 = v5;
   if (v5)
   {
-    [v5 setSIMDFloat4x4:{a2, a3, a4, a5}];
+    [v5 setSIMDFloat4x4:{a2, float4x4, a4, a5}];
   }
 
   return v6;
 }
 
-- (void)initWithSIMDDouble4x4:(_OWORD *)a3
+- (void)initWithSIMDDouble4x4:(_OWORD *)double4x4
 {
-  v4 = [a1 init];
+  v4 = [self init];
   v5 = v4;
   if (v4)
   {
-    v6 = a3[5];
-    v11[4] = a3[4];
+    v6 = double4x4[5];
+    v11[4] = double4x4[4];
     v11[5] = v6;
-    v7 = a3[7];
-    v11[6] = a3[6];
+    v7 = double4x4[7];
+    v11[6] = double4x4[6];
     v11[7] = v7;
-    v8 = a3[1];
-    v11[0] = *a3;
+    v8 = double4x4[1];
+    v11[0] = *double4x4;
     v11[1] = v8;
-    v9 = a3[3];
-    v11[2] = a3[2];
+    v9 = double4x4[3];
+    v11[2] = double4x4[2];
     v11[3] = v9;
     [v4 setSIMDDouble4x4:v11];
   }
@@ -209,10 +209,10 @@
   return v5;
 }
 
-- (PCMatrix44Double)initWithCoder:(id)a3
+- (PCMatrix44Double)initWithCoder:(id)coder
 {
   v5 = 0;
-  result = [a3 decodeBytesForKey:@"bytes" returnedLength:&v5];
+  result = [coder decodeBytesForKey:@"bytes" returnedLength:&v5];
   if (result)
   {
     return [(PCMatrix44Double *)self initWithDoubles:result external:1];
@@ -221,12 +221,12 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = *MEMORY[0x277D85DE8];
   memset(v4, 0, sizeof(v4));
   [(PCMatrix44Double *)self getDoubles:v4];
-  [a3 encodeBytes:v4 length:128 forKey:@"bytes"];
+  [coder encodeBytes:v4 length:128 forKey:@"bytes"];
 }
 
 - (void)dealloc
@@ -236,7 +236,7 @@
   [(PCMatrix44Double *)&v2 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   pcMatrix = self->_pcMatrix;
@@ -244,7 +244,7 @@
   return [v4 initWithPCMatrix:pcMatrix];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -255,7 +255,7 @@
   v5 = 0;
   v6 = 0;
   pcMatrix = self->_pcMatrix;
-  v8 = *(a3 + 17);
+  v8 = *(equal + 17);
   while (2)
   {
     for (i = 0; i != 32; i += 8)
@@ -281,14 +281,14 @@
   return v10;
 }
 
-- (BOOL)isEqualToPCMatrix44Double:(id)a3
+- (BOOL)isEqualToPCMatrix44Double:(id)double
 {
-  if (a3)
+  if (double)
   {
     v3 = 0;
     v4 = 0;
     pcMatrix = self->_pcMatrix;
-    v6 = *(a3 + 17);
+    v6 = *(double + 17);
 LABEL_3:
     v7 = 0;
     while (vabdd_f64(*&pcMatrix[v7], *(v6 + v7)) < 0.0000001)
@@ -396,39 +396,39 @@ LABEL_3:
   return [v14 stringWithFormat:@"translation:\n\tx: %@\n\ty: %@\n\tz: %@\nscale:\n\tx: %@\n\ty: %@\n\tz: %@\nrotation:\n\tx: %.2f° (%@)\n\ty: %.2f° (%@)\n\tz: %.2f° (%@)\nshear:\n\tx: %@\n\ty: %@\nmatrix:\n\t%@", v13, v12, v3, v4, v5, v6, 0.0 * 180.0 / 3.14159265, v7, 0.0 * 180.0 / 3.14159265, v8, 0.0 * 180.0 / 3.14159265, v9, v10, objc_msgSend(MEMORY[0x277CCABB0], "numberWithDouble:", 0.0), objc_msgSend(-[PCMatrix44Double description](self, "description"), "stringByReplacingOccurrencesOfString:withString:", @"\n", @"\n\t"];
 }
 
-- (void)getDoubles:(double)a3[16]
+- (void)getDoubles:(double)doubles[16]
 {
   pcMatrix = self->_pcMatrix;
   v4 = *pcMatrix;
   v5 = pcMatrix[1];
   v6 = pcMatrix[3];
-  *(a3 + 2) = pcMatrix[2];
-  *(a3 + 3) = v6;
-  *a3 = v4;
-  *(a3 + 1) = v5;
+  *(doubles + 2) = pcMatrix[2];
+  *(doubles + 3) = v6;
+  *doubles = v4;
+  *(doubles + 1) = v5;
   v7 = pcMatrix[4];
   v8 = pcMatrix[5];
   v9 = pcMatrix[7];
-  *(a3 + 6) = pcMatrix[6];
-  *(a3 + 7) = v9;
-  *(a3 + 4) = v7;
-  *(a3 + 5) = v8;
+  *(doubles + 6) = pcMatrix[6];
+  *(doubles + 7) = v9;
+  *(doubles + 4) = v7;
+  *(doubles + 5) = v8;
 }
 
-- (void)setDoubles:(double)a3[16]
+- (void)setDoubles:(double)doubles[16]
 {
   pcMatrix = self->_pcMatrix;
-  v4 = *a3;
-  v5 = *(a3 + 1);
-  v6 = *(a3 + 3);
-  pcMatrix[2] = *(a3 + 2);
+  v4 = *doubles;
+  v5 = *(doubles + 1);
+  v6 = *(doubles + 3);
+  pcMatrix[2] = *(doubles + 2);
   pcMatrix[3] = v6;
   *pcMatrix = v4;
   pcMatrix[1] = v5;
-  v7 = *(a3 + 4);
-  v8 = *(a3 + 5);
-  v9 = *(a3 + 7);
-  pcMatrix[6] = *(a3 + 6);
+  v7 = *(doubles + 4);
+  v8 = *(doubles + 5);
+  v9 = *(doubles + 7);
+  pcMatrix[6] = *(doubles + 6);
   pcMatrix[7] = v9;
   pcMatrix[4] = v7;
   pcMatrix[5] = v8;
@@ -497,7 +497,7 @@ uint64_t __25__PCMatrix44Double_array__block_invoke()
 
 - (double)SIMDFloat4x4
 {
-  v1 = *(a1 + 136);
+  v1 = *(self + 136);
   v2 = *v1;
   *v2.i8 = vcvt_f32_f64(*v1);
   v3 = *(v1 + 32);
@@ -510,14 +510,14 @@ uint64_t __25__PCMatrix44Double_array__block_invoke()
   return result;
 }
 
-- (float64x2_t)setSIMDFloat4x4:(int8x16_t)a3
+- (float64x2_t)setSIMDFloat4x4:(int8x16_t)float4x4
 {
-  v5 = *(a1 + 136);
-  *v5 = vcvtq_f64_f32(vzip1_s32(*a2.i8, *a3.i8));
+  v5 = *(self + 136);
+  *v5 = vcvtq_f64_f32(vzip1_s32(*a2.i8, *float4x4.i8));
   v5[1] = vcvtq_f64_f32(vzip1_s32(*a4.i8, *a5.i8));
-  v5[2] = vcvtq_f64_f32(vzip2_s32(*a2.i8, *a3.i8));
+  v5[2] = vcvtq_f64_f32(vzip2_s32(*a2.i8, *float4x4.i8));
   v5[3] = vcvtq_f64_f32(vzip2_s32(*a4.i8, *a5.i8));
-  v6 = vextq_s8(a3, a3, 8uLL).u64[0];
+  v6 = vextq_s8(float4x4, float4x4, 8uLL).u64[0];
   v7 = vextq_s8(a2, a2, 8uLL).u64[0];
   v8 = vextq_s8(a5, a5, 8uLL).u64[0];
   v9 = vextq_s8(a4, a4, 8uLL).u64[0];
@@ -531,7 +531,7 @@ uint64_t __25__PCMatrix44Double_array__block_invoke()
 
 - (__n128)SIMDDouble4x4
 {
-  v2 = *(a1 + 136);
+  v2 = *(self + 136);
   result.n128_u64[0] = *v2;
   *&v3 = v2[1];
   *&v4 = v2[2];
@@ -559,25 +559,25 @@ uint64_t __25__PCMatrix44Double_array__block_invoke()
   return result;
 }
 
-- (double)setSIMDDouble4x4:(uint64_t)a3
+- (double)setSIMDDouble4x4:(uint64_t)double4x4
 {
-  v3 = *(a1 + 136);
-  *v3 = *a3;
-  *(v3 + 8) = *(a3 + 32);
-  *(v3 + 16) = *(a3 + 64);
-  *(v3 + 24) = *(a3 + 96);
-  *(v3 + 32) = *(a3 + 8);
-  *(v3 + 40) = *(a3 + 40);
-  *(v3 + 48) = *(a3 + 72);
-  *(v3 + 56) = *(a3 + 104);
-  *(v3 + 64) = *(a3 + 16);
-  *(v3 + 72) = *(a3 + 48);
-  *(v3 + 80) = *(a3 + 80);
-  *(v3 + 88) = *(a3 + 112);
-  *(v3 + 96) = *(a3 + 24);
-  *(v3 + 104) = *(a3 + 56);
-  *(v3 + 112) = *(a3 + 88);
-  result = *(a3 + 120);
+  v3 = *(self + 136);
+  *v3 = *double4x4;
+  *(v3 + 8) = *(double4x4 + 32);
+  *(v3 + 16) = *(double4x4 + 64);
+  *(v3 + 24) = *(double4x4 + 96);
+  *(v3 + 32) = *(double4x4 + 8);
+  *(v3 + 40) = *(double4x4 + 40);
+  *(v3 + 48) = *(double4x4 + 72);
+  *(v3 + 56) = *(double4x4 + 104);
+  *(v3 + 64) = *(double4x4 + 16);
+  *(v3 + 72) = *(double4x4 + 48);
+  *(v3 + 80) = *(double4x4 + 80);
+  *(v3 + 88) = *(double4x4 + 112);
+  *(v3 + 96) = *(double4x4 + 24);
+  *(v3 + 104) = *(double4x4 + 56);
+  *(v3 + 112) = *(double4x4 + 88);
+  result = *(double4x4 + 120);
   *(v3 + 120) = result;
   return result;
 }
@@ -597,14 +597,14 @@ uint64_t __25__PCMatrix44Double_array__block_invoke()
   *(pcMatrix + 104) = 0u;
 }
 
-- (CGRect)transformRect:(CGRect)a3
+- (CGRect)transformRect:(CGRect)rect
 {
-  v7 = a3;
-  PCMatrix44Tmpl<double>::transformRect<double>(self->_pcMatrix, &v7.origin.x, &v7);
-  y = v7.origin.y;
-  x = v7.origin.x;
-  height = v7.size.height;
-  width = v7.size.width;
+  rectCopy = rect;
+  PCMatrix44Tmpl<double>::transformRect<double>(self->_pcMatrix, &rectCopy.origin.x, &rectCopy);
+  y = rectCopy.origin.y;
+  x = rectCopy.origin.x;
+  height = rectCopy.size.height;
+  width = rectCopy.size.width;
   result.size.height = height;
   result.size.width = width;
   result.origin.y = y;
@@ -612,12 +612,12 @@ uint64_t __25__PCMatrix44Double_array__block_invoke()
   return result;
 }
 
-- (CGPoint)transformPoint:(CGPoint)a3
+- (CGPoint)transformPoint:(CGPoint)point
 {
   pcMatrix = self->_pcMatrix;
-  v4 = pcMatrix[15] + a3.x * pcMatrix[12] + a3.y * pcMatrix[13];
-  v5 = (pcMatrix[3] + a3.x * *pcMatrix + a3.y * pcMatrix[1]) / v4;
-  v6 = (pcMatrix[7] + a3.x * pcMatrix[4] + a3.y * pcMatrix[5]) / v4;
+  v4 = pcMatrix[15] + point.x * pcMatrix[12] + point.y * pcMatrix[13];
+  v5 = (pcMatrix[3] + point.x * *pcMatrix + point.y * pcMatrix[1]) / v4;
+  v6 = (pcMatrix[7] + point.x * pcMatrix[4] + point.y * pcMatrix[5]) / v4;
   v7 = v5;
   result.y = v6;
   result.x = v7;
@@ -649,7 +649,7 @@ uint64_t __25__PCMatrix44Double_array__block_invoke()
   return result;
 }
 
-- (void)scaleSizeX:(double)a3 sizeY:(double)a4 sizeZ:(double)a5 scaledSizeX:(double *)a6 scaledSizeY:(double *)a7 scaledSizeZ:(double *)a8
+- (void)scaleSizeX:(double)x sizeY:(double)y sizeZ:(double)z scaledSizeX:(double *)sizeX scaledSizeY:(double *)sizeY scaledSizeZ:(double *)sizeZ
 {
   v15 = 0u;
   v16 = 0u;
@@ -659,53 +659,53 @@ uint64_t __25__PCMatrix44Double_array__block_invoke()
   v19 = 0u;
   v20 = 0;
   PCMatrix44Tmpl<double>::getTransformation(self->_pcMatrix, &v14);
-  if (a6)
+  if (sizeX)
   {
-    *a6 = *(&v15 + 1) * a3;
+    *sizeX = *(&v15 + 1) * x;
   }
 
-  if (a7)
+  if (sizeY)
   {
-    *a7 = *&v16 * a4;
+    *sizeY = *&v16 * y;
   }
 
-  if (a8)
+  if (sizeZ)
   {
-    *a8 = *(&v16 + 1) * a5;
+    *sizeZ = *(&v16 + 1) * z;
   }
 }
 
-- (void)leftMult:(id)a3
+- (void)leftMult:(id)mult
 {
   pcMatrix = self->_pcMatrix;
-  v4 = [a3 pcMatrix];
+  pcMatrix = [mult pcMatrix];
 
-  PCMatrix44Tmpl<double>::leftMult(pcMatrix, v4);
+  PCMatrix44Tmpl<double>::leftMult(pcMatrix, pcMatrix);
 }
 
-- (void)rightMult:(id)a3
+- (void)rightMult:(id)mult
 {
   pcMatrix = self->_pcMatrix;
-  v4 = [a3 pcMatrix];
+  pcMatrix = [mult pcMatrix];
 
-  PCMatrix44Tmpl<double>::rightMult(pcMatrix, v4);
+  PCMatrix44Tmpl<double>::rightMult(pcMatrix, pcMatrix);
 }
 
-- (void)leftFlipAboutY:(double)a3
+- (void)leftFlipAboutY:(double)y
 {
-  [(PCMatrix44Double *)self leftTranslateX:0.0 translateY:-a3 translateZ:0.0];
+  [(PCMatrix44Double *)self leftTranslateX:0.0 translateY:-y translateZ:0.0];
   [(PCMatrix44Double *)self leftScaleX:1.0 scaleY:-1.0 scaleZ:1.0];
 
-  [(PCMatrix44Double *)self leftTranslateX:0.0 translateY:a3 translateZ:0.0];
+  [(PCMatrix44Double *)self leftTranslateX:0.0 translateY:y translateZ:0.0];
 }
 
-- (id)newTransformTo:(id)a3
+- (id)newTransformTo:(id)to
 {
-  if (a3 && ![(PCMatrix44Double *)self isEqual:?])
+  if (to && ![(PCMatrix44Double *)self isEqual:?])
   {
     v6 = [(PCMatrix44Double *)self copy];
     [v6 invert];
-    [v6 leftMult:a3];
+    [v6 leftMult:to];
     return v6;
   }
 
@@ -716,13 +716,13 @@ uint64_t __25__PCMatrix44Double_array__block_invoke()
   }
 }
 
-- (id)newPlanarTransformTo:(id)a3
+- (id)newPlanarTransformTo:(id)to
 {
-  if (a3 && ![(PCMatrix44Double *)self isEqual:?])
+  if (to && ![(PCMatrix44Double *)self isEqual:?])
   {
     v6 = [(PCMatrix44Double *)self copy];
     [v6 invert2D];
-    [v6 leftMult:a3];
+    [v6 leftMult:to];
     return v6;
   }
 

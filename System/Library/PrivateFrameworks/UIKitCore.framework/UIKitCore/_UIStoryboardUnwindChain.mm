@@ -1,26 +1,26 @@
 @interface _UIStoryboardUnwindChain
 - (UIViewController)modalAncestorContainingSourceViewController;
 - (id)debugDescription;
-- (id)initFromSourceViewController:(id)a3 toDestinationViewController:(id)a4;
-- (void)enumerateViewControllersFromModalAncestorUpToButNotIncludingDestination:(id)a3;
+- (id)initFromSourceViewController:(id)controller toDestinationViewController:(id)viewController;
+- (void)enumerateViewControllersFromModalAncestorUpToButNotIncludingDestination:(id)destination;
 @end
 
 @implementation _UIStoryboardUnwindChain
 
-- (id)initFromSourceViewController:(id)a3 toDestinationViewController:(id)a4
+- (id)initFromSourceViewController:(id)controller toDestinationViewController:(id)viewController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v30.receiver = self;
   v30.super_class = _UIStoryboardUnwindChain;
   v9 = [(_UIStoryboardUnwindChain *)&v30 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     viewControllers = v9->_viewControllers;
-    v9->_viewControllers = v10;
+    v9->_viewControllers = array;
 
-    v12 = v7;
+    v12 = controllerCopy;
     v13 = v12;
     if (v12)
     {
@@ -28,7 +28,7 @@
       do
       {
         [(NSMutableArray *)v9->_viewControllers addObject:v14];
-        if (v14 == v8)
+        if (v14 == viewControllerCopy)
         {
           break;
         }
@@ -43,13 +43,13 @@
 
     if ([(NSMutableArray *)v9->_viewControllers count]<= 1)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:a2 object:v9 file:@"UIStoryboardUnwindSegueTemplate.m" lineNumber:83 description:{@"Could not unwind from %@ to %@ because the parent view controller of %@ could not be found.", v13, v8, v13}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"UIStoryboardUnwindSegueTemplate.m" lineNumber:83 description:{@"Could not unwind from %@ to %@ because the parent view controller of %@ could not be found.", v13, viewControllerCopy, v13}];
     }
 
     v16 = [(NSMutableArray *)v9->_viewControllers count];
     v9->_commonAncestorIdx = 0x7FFFFFFFFFFFFFFFLL;
-    v17 = v8;
+    v17 = viewControllerCopy;
     v18 = v17;
     if (v17)
     {
@@ -81,8 +81,8 @@ LABEL_15:
     commonAncestorIdx = v9->_commonAncestorIdx;
     if (commonAncestorIdx == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v29 handleFailureInMethod:a2 object:v9 file:@"UIStoryboardUnwindSegueTemplate.m" lineNumber:120 description:{@"Could not unwind from %@ to %@ because a common ancestor could not be found. (Note that it is not supported to unwind from a view controller to one of its descendants.)", v13, v18}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v9 file:@"UIStoryboardUnwindSegueTemplate.m" lineNumber:120 description:{@"Could not unwind from %@ to %@ because a common ancestor could not be found. (Note that it is not supported to unwind from a view controller to one of its descendants.)", v13, v18}];
 
       commonAncestorIdx = v9->_commonAncestorIdx;
     }
@@ -93,9 +93,9 @@ LABEL_15:
       while (1)
       {
         v24 = [(NSMutableArray *)v9->_viewControllers objectAtIndexedSubscript:commonAncestorIdx];
-        v25 = [v24 childModalViewController];
+        childModalViewController = [v24 childModalViewController];
 
-        if (v25)
+        if (childModalViewController)
         {
           break;
         }
@@ -131,9 +131,9 @@ LABEL_22:
   return v4;
 }
 
-- (void)enumerateViewControllersFromModalAncestorUpToButNotIncludingDestination:(id)a3
+- (void)enumerateViewControllersFromModalAncestorUpToButNotIncludingDestination:(id)destination
 {
-  v10 = a3;
+  destinationCopy = destination;
   if (self->_modalAncestorContainingSourceIdx == 0x7FFFFFFFFFFFFFFFLL)
   {
     modalAncestorContainingSourceIdx = 0;
@@ -153,7 +153,7 @@ LABEL_22:
     {
       v8 = [(NSMutableArray *)self->_viewControllers objectAtIndexedSubscript:v7 - 1];
       v9 = [(NSMutableArray *)self->_viewControllers objectAtIndexedSubscript:v7];
-      v10[2](v10, v8, v9);
+      destinationCopy[2](destinationCopy, v8, v9);
 
       ++v7;
     }
@@ -183,36 +183,36 @@ LABEL_22:
       {
         v9 = [(NSMutableArray *)self->_viewControllers objectAtIndexedSubscript:i - 1];
         v10 = [(NSMutableArray *)self->_viewControllers objectAtIndexedSubscript:i];
-        v11 = [v10 parentModalViewController];
+        parentModalViewController = [v10 parentModalViewController];
 
-        if (v9 == v11)
+        if (v9 == parentModalViewController)
         {
           v15 = @" --(presents)--> ";
         }
 
         else
         {
-          v12 = [v10 childModalViewController];
+          childModalViewController = [v10 childModalViewController];
 
-          if (v9 == v12)
+          if (v9 == childModalViewController)
           {
             v15 = @" --(presented by)--> ";
           }
 
           else
           {
-            v13 = [v10 parentViewController];
+            parentViewController = [v10 parentViewController];
 
-            if (v9 == v13)
+            if (v9 == parentViewController)
             {
               v15 = @" --(parent of)--> ";
             }
 
             else
             {
-              v14 = [v9 parentViewController];
+              parentViewController2 = [v9 parentViewController];
 
-              if (v14 == v10)
+              if (parentViewController2 == v10)
               {
                 v15 = @" --(child of)--> ";
               }

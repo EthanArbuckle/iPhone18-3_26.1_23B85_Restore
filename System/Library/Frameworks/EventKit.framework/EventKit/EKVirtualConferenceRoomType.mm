@@ -1,35 +1,35 @@
 @interface EKVirtualConferenceRoomType
-+ (void)virtualConferenceRoomTypesWithCompletion:(id)a3 queue:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (EKVirtualConferenceRoomType)initWithTitle:(id)a3 identifier:(id)a4 extensionBundleIdentifier:(id)a5;
++ (void)virtualConferenceRoomTypesWithCompletion:(id)completion queue:(id)queue;
+- (BOOL)isEqual:(id)equal;
+- (EKVirtualConferenceRoomType)initWithTitle:(id)title identifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier;
 @end
 
 @implementation EKVirtualConferenceRoomType
 
-- (EKVirtualConferenceRoomType)initWithTitle:(id)a3 identifier:(id)a4 extensionBundleIdentifier:(id)a5
+- (EKVirtualConferenceRoomType)initWithTitle:(id)title identifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v15.receiver = self;
   v15.super_class = EKVirtualConferenceRoomType;
   v12 = [(EKVirtualConferenceRoomType *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_title, a3);
-    objc_storeStrong(&v13->_identifier, a4);
-    objc_storeStrong(&v13->_extensionBundleIdentifier, a5);
+    objc_storeStrong(&v12->_title, title);
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v13->_extensionBundleIdentifier, bundleIdentifier);
   }
 
   return v13;
 }
 
-+ (void)virtualConferenceRoomTypesWithCompletion:(id)a3 queue:(id)a4
++ (void)virtualConferenceRoomTypesWithCompletion:(id)completion queue:(id)queue
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
@@ -51,9 +51,9 @@
   v19 = v20;
   v11 = v7;
   v16 = v11;
-  v12 = v6;
+  v12 = queueCopy;
   v17 = v12;
-  v13 = v5;
+  v13 = completionCopy;
   v18 = v13;
   [v10 extensionsWithMatchingAttributes:v9 completion:v15];
 
@@ -348,10 +348,10 @@ uint64_t __78__EKVirtualConferenceRoomType_virtualConferenceRoomTypesWithComplet
   return v3();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -361,17 +361,17 @@ uint64_t __78__EKVirtualConferenceRoomType_virtualConferenceRoomTypesWithComplet
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(EKVirtualConferenceRoomType *)v5 title];
-      v7 = [(EKVirtualConferenceRoomType *)self title];
+      v5 = equalCopy;
+      title = [(EKVirtualConferenceRoomType *)v5 title];
+      title2 = [(EKVirtualConferenceRoomType *)self title];
       if (CalEqualStrings())
       {
-        v8 = [(EKVirtualConferenceRoomType *)v5 identifier];
-        v9 = [(EKVirtualConferenceRoomType *)self identifier];
+        identifier = [(EKVirtualConferenceRoomType *)v5 identifier];
+        identifier2 = [(EKVirtualConferenceRoomType *)self identifier];
         if (CalEqualStrings())
         {
-          v10 = [(EKVirtualConferenceRoomType *)v5 extensionBundleIdentifier];
-          v11 = [(EKVirtualConferenceRoomType *)self extensionBundleIdentifier];
+          extensionBundleIdentifier = [(EKVirtualConferenceRoomType *)v5 extensionBundleIdentifier];
+          extensionBundleIdentifier2 = [(EKVirtualConferenceRoomType *)self extensionBundleIdentifier];
           v12 = CalEqualStrings();
         }
 

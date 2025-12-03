@@ -2,7 +2,7 @@
 + (Class)incomingMessageClass;
 + (unint64_t)command;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandDeletePluginDataContainerContent)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandDeletePluginDataContainerContent)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMContainerIdentity)containerIdentity;
 - (void)execute;
 @end
@@ -22,20 +22,20 @@
   v16 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
   v4 = [MCMCommandDeleteContainerContent alloc];
-  v5 = [(MCMCommandDeletePluginDataContainerContent *)self containerIdentity];
-  v6 = [(MCMCommand *)self context];
-  v7 = [(MCMCommand *)self resultPromise];
-  v8 = [(MCMCommandDeleteContainerContent *)v4 initWithContainerIdentity:v5 context:v6 resultPromise:v7];
+  containerIdentity = [(MCMCommandDeletePluginDataContainerContent *)self containerIdentity];
+  context = [(MCMCommand *)self context];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  v8 = [(MCMCommandDeleteContainerContent *)v4 initWithContainerIdentity:containerIdentity context:context resultPromise:resultPromise];
 
   [(MCMCommandDeleteContainerContent *)v8 execute];
   v9 = container_log_handle_for_category();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(MCMCommand *)self resultPromise];
-    v12 = [v11 result];
-    v13 = [v12 error];
+    resultPromise2 = [(MCMCommand *)self resultPromise];
+    result = [resultPromise2 result];
+    error = [result error];
     v14 = 138412290;
-    v15 = v13;
+    v15 = error;
     _os_log_debug_impl(&dword_1DF2C3000, v9, OS_LOG_TYPE_DEBUG, "Wipe plugin data container; error = %@", &v14, 0xCu);
   }
 
@@ -46,28 +46,28 @@
 - (BOOL)preflightClientAllowed
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMCommand *)self context];
-  v4 = [v3 clientIdentity];
-  v5 = [(MCMCommandDeletePluginDataContainerContent *)self containerIdentity];
-  v6 = [v4 isAllowedToPerformOperationType:3 containerIdentity:v5 part:0 partDomain:0 access:0];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  containerIdentity = [(MCMCommandDeletePluginDataContainerContent *)self containerIdentity];
+  v6 = [clientIdentity isAllowedToPerformOperationType:3 containerIdentity:containerIdentity part:0 partDomain:0 access:0];
 
   result = v6 != 0;
   v8 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (MCMCommandDeletePluginDataContainerContent)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandDeletePluginDataContainerContent)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = MCMCommandDeletePluginDataContainerContent;
-  v9 = [(MCMCommand *)&v14 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v14 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v10 = [v8 containerIdentity];
+    containerIdentity = [messageCopy containerIdentity];
     containerIdentity = v9->_containerIdentity;
-    v9->_containerIdentity = v10;
+    v9->_containerIdentity = containerIdentity;
   }
 
   v12 = *MEMORY[0x1E69E9840];

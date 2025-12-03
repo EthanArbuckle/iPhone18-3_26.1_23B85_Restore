@@ -1,29 +1,29 @@
 @interface DODMLASRSchemaDODMLASRAlignmentInfo
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRAlignmentInfo)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRAlignmentInfo)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRAlignmentInfo)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRAlignmentInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEditDistance:(BOOL)a3;
-- (void)setHasNumInsertions:(BOOL)a3;
-- (void)setHasNumSubstitutions:(BOOL)a3;
-- (void)setHasReferenceSize:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEditDistance:(BOOL)distance;
+- (void)setHasNumInsertions:(BOOL)insertions;
+- (void)setHasNumSubstitutions:(BOOL)substitutions;
+- (void)setHasReferenceSize:(BOOL)size;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRAlignmentInfo
 
-- (DODMLASRSchemaDODMLASRAlignmentInfo)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRAlignmentInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = DODMLASRSchemaDODMLASRAlignmentInfo;
   v5 = [(DODMLASRSchemaDODMLASRAlignmentInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"referenceName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"referenceName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,35 +31,35 @@
       [(DODMLASRSchemaDODMLASRAlignmentInfo *)v5 setReferenceName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numDeletions"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numDeletions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRAlignmentInfo setNumDeletions:](v5, "setNumDeletions:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numInsertions"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numInsertions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRAlignmentInfo setNumInsertions:](v5, "setNumInsertions:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"numSubstitutions"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numSubstitutions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRAlignmentInfo setNumSubstitutions:](v5, "setNumSubstitutions:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"editDistance"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"editDistance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DODMLASRSchemaDODMLASRAlignmentInfo setEditDistance:](v5, "setEditDistance:", [v11 unsignedIntValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"referenceSize"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"referenceSize"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,30 +72,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRAlignmentInfo)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRAlignmentInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRAlignmentInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRAlignmentInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRAlignmentInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,12 +108,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRAlignmentInfo editDistance](self, "editDistance")}];
-    [v3 setObject:v10 forKeyedSubscript:@"editDistance"];
+    [dictionary setObject:v10 forKeyedSubscript:@"editDistance"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -134,7 +134,7 @@ LABEL_3:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRAlignmentInfo numDeletions](self, "numDeletions")}];
-  [v3 setObject:v11 forKeyedSubscript:@"numDeletions"];
+  [dictionary setObject:v11 forKeyedSubscript:@"numDeletions"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -150,32 +150,32 @@ LABEL_4:
 
 LABEL_15:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRAlignmentInfo numInsertions](self, "numInsertions")}];
-  [v3 setObject:v12 forKeyedSubscript:@"numInsertions"];
+  [dictionary setObject:v12 forKeyedSubscript:@"numInsertions"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRAlignmentInfo numSubstitutions](self, "numSubstitutions")}];
-    [v3 setObject:v5 forKeyedSubscript:@"numSubstitutions"];
+    [dictionary setObject:v5 forKeyedSubscript:@"numSubstitutions"];
   }
 
 LABEL_6:
   if (self->_referenceName)
   {
-    v6 = [(DODMLASRSchemaDODMLASRAlignmentInfo *)self referenceName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"referenceName"];
+    referenceName = [(DODMLASRSchemaDODMLASRAlignmentInfo *)self referenceName];
+    v7 = [referenceName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"referenceName"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRAlignmentInfo referenceSize](self, "referenceSize")}];
-    [v3 setObject:v8 forKeyedSubscript:@"referenceSize"];
+    [dictionary setObject:v8 forKeyedSubscript:@"referenceSize"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -247,30 +247,30 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRAlignmentInfo *)self referenceName];
-  v6 = [v4 referenceName];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  referenceName = [(DODMLASRSchemaDODMLASRAlignmentInfo *)self referenceName];
+  referenceName2 = [equalCopy referenceName];
+  v7 = referenceName2;
+  if ((referenceName != 0) == (referenceName2 == 0))
   {
 
     goto LABEL_28;
   }
 
-  v8 = [(DODMLASRSchemaDODMLASRAlignmentInfo *)self referenceName];
-  if (v8)
+  referenceName3 = [(DODMLASRSchemaDODMLASRAlignmentInfo *)self referenceName];
+  if (referenceName3)
   {
-    v9 = v8;
-    v10 = [(DODMLASRSchemaDODMLASRAlignmentInfo *)self referenceName];
-    v11 = [v4 referenceName];
-    v12 = [v10 isEqual:v11];
+    v9 = referenceName3;
+    referenceName4 = [(DODMLASRSchemaDODMLASRAlignmentInfo *)self referenceName];
+    referenceName5 = [equalCopy referenceName];
+    v12 = [referenceName4 isEqual:referenceName5];
 
     if (!v12)
     {
@@ -283,7 +283,7 @@ LABEL_6:
   }
 
   has = self->_has;
-  v14 = v4[36];
+  v14 = equalCopy[36];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_28:
@@ -294,13 +294,13 @@ LABEL_28:
   if (*&has)
   {
     numDeletions = self->_numDeletions;
-    if (numDeletions != [v4 numDeletions])
+    if (numDeletions != [equalCopy numDeletions])
     {
       goto LABEL_28;
     }
 
     has = self->_has;
-    v14 = v4[36];
+    v14 = equalCopy[36];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -312,13 +312,13 @@ LABEL_28:
   if (v16)
   {
     numInsertions = self->_numInsertions;
-    if (numInsertions != [v4 numInsertions])
+    if (numInsertions != [equalCopy numInsertions])
     {
       goto LABEL_28;
     }
 
     has = self->_has;
-    v14 = v4[36];
+    v14 = equalCopy[36];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -330,13 +330,13 @@ LABEL_28:
   if (v18)
   {
     numSubstitutions = self->_numSubstitutions;
-    if (numSubstitutions != [v4 numSubstitutions])
+    if (numSubstitutions != [equalCopy numSubstitutions])
     {
       goto LABEL_28;
     }
 
     has = self->_has;
-    v14 = v4[36];
+    v14 = equalCopy[36];
   }
 
   v20 = (*&has >> 3) & 1;
@@ -348,10 +348,10 @@ LABEL_28:
   if (v20)
   {
     editDistance = self->_editDistance;
-    if (editDistance == [v4 editDistance])
+    if (editDistance == [equalCopy editDistance])
     {
       has = self->_has;
-      v14 = v4[36];
+      v14 = equalCopy[36];
       goto LABEL_24;
     }
 
@@ -368,7 +368,7 @@ LABEL_24:
   if (v22)
   {
     referenceSize = self->_referenceSize;
-    if (referenceSize != [v4 referenceSize])
+    if (referenceSize != [equalCopy referenceSize])
     {
       goto LABEL_28;
     }
@@ -380,12 +380,12 @@ LABEL_29:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(DODMLASRSchemaDODMLASRAlignmentInfo *)self referenceName];
+  toCopy = to;
+  referenceName = [(DODMLASRSchemaDODMLASRAlignmentInfo *)self referenceName];
 
-  if (v4)
+  if (referenceName)
   {
     PBDataWriterWriteStringField();
   }
@@ -397,11 +397,11 @@ LABEL_29:
     has = self->_has;
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v6 = v7;
+    v6 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -421,7 +421,7 @@ LABEL_7:
   }
 
   PBDataWriterWriteUint32Field();
-  v6 = v7;
+  v6 = toCopy;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -436,20 +436,20 @@ LABEL_8:
 
 LABEL_15:
   PBDataWriterWriteUint32Field();
-  v6 = v7;
+  v6 = toCopy;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_9:
     PBDataWriterWriteUint32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 
 LABEL_10:
 }
 
-- (void)setHasReferenceSize:(BOOL)a3
+- (void)setHasReferenceSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 16;
   }
@@ -462,9 +462,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasEditDistance:(BOOL)a3
+- (void)setHasEditDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 8;
   }
@@ -477,9 +477,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumSubstitutions:(BOOL)a3
+- (void)setHasNumSubstitutions:(BOOL)substitutions
 {
-  if (a3)
+  if (substitutions)
   {
     v3 = 4;
   }
@@ -492,9 +492,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumInsertions:(BOOL)a3
+- (void)setHasNumInsertions:(BOOL)insertions
 {
-  if (a3)
+  if (insertions)
   {
     v3 = 2;
   }

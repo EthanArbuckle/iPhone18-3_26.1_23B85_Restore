@@ -1,41 +1,41 @@
 @interface SCRCTargetSelector
-+ (id)targetSelectorWithTarget:(id)a3 selector:(SEL)a4;
-- (SCRCTargetSelector)initWithTarget:(id)a3 selector:(SEL)a4;
++ (id)targetSelectorWithTarget:(id)target selector:(SEL)selector;
+- (SCRCTargetSelector)initWithTarget:(id)target selector:(SEL)selector;
 - (SEL)selector;
 - (id)target;
 @end
 
 @implementation SCRCTargetSelector
 
-+ (id)targetSelectorWithTarget:(id)a3 selector:(SEL)a4
++ (id)targetSelectorWithTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithTarget:v6 selector:a4];
+  targetCopy = target;
+  v7 = [[self alloc] initWithTarget:targetCopy selector:selector];
 
   return v7;
 }
 
-- (SCRCTargetSelector)initWithTarget:(id)a3 selector:(SEL)a4
+- (SCRCTargetSelector)initWithTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
+  targetCopy = target;
   v11.receiver = self;
   v11.super_class = SCRCTargetSelector;
   v7 = [(SCRCTargetSelector *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_target, v6);
-    if (a4)
+    objc_storeWeak(&v7->_target, targetCopy);
+    if (selector)
     {
-      v9 = a4;
+      selectorCopy = selector;
     }
 
     else
     {
-      v9 = 0;
+      selectorCopy = 0;
     }
 
-    v8->_selector = v9;
+    v8->_selector = selectorCopy;
   }
 
   return v8;

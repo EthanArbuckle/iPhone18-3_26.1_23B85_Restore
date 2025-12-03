@@ -1,26 +1,26 @@
 @interface FAActivityViewController
-- (FAActivityViewController)initWithItemSource:(id)a3 eventType:(id)a4;
+- (FAActivityViewController)initWithItemSource:(id)source eventType:(id)type;
 - (FAActivityViewControllerDelegate)delegate;
-- (id)_parseRecipientAddresses:(id)a3;
-- (void)_prepareActivity:(id)a3 completion:(id)a4;
-- (void)activityViewControllerDidFinishAirdropTransfer:(id)a3;
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5;
-- (void)mailComposeController:(id)a3 shouldSendMail:(id)a4 toRecipients:(id)a5 completion:(id)a6;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)messageComposeViewController:(id)a3 shouldSendMessage:(id)a4 toRecipients:(id)a5 completion:(id)a6;
+- (id)_parseRecipientAddresses:(id)addresses;
+- (void)_prepareActivity:(id)activity completion:(id)completion;
+- (void)activityViewControllerDidFinishAirdropTransfer:(id)transfer;
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error;
+- (void)mailComposeController:(id)controller shouldSendMail:(id)mail toRecipients:(id)recipients completion:(id)completion;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)messageComposeViewController:(id)controller shouldSendMessage:(id)message toRecipients:(id)recipients completion:(id)completion;
 @end
 
 @implementation FAActivityViewController
 
-- (FAActivityViewController)initWithItemSource:(id)a3 eventType:(id)a4
+- (FAActivityViewController)initWithItemSource:(id)source eventType:(id)type
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  typeCopy = type;
   v9 = objc_alloc_init(FAInviteInPersonActivity);
-  v10 = [v8 isEqualToString:*MEMORY[0x277D08108]];
+  v10 = [typeCopy isEqualToString:*MEMORY[0x277D08108]];
 
-  v28[0] = v7;
+  v28[0] = sourceCopy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
   v27 = v9;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
@@ -30,7 +30,7 @@
 
   if (v13)
   {
-    objc_storeStrong(&v13->_itemSource, a3);
+    objc_storeStrong(&v13->_itemSource, source);
     v14 = objc_alloc_init(FAInviteRecipientEvaluator);
     inviteRecipientEvaluator = v13->_inviteRecipientEvaluator;
     v13->_inviteRecipientEvaluator = v14;
@@ -69,29 +69,29 @@
   return v13;
 }
 
-- (void)_prepareActivity:(id)a3 completion:(id)a4
+- (void)_prepareActivity:(id)activity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  completionCopy = completion;
   recipientAddresses = self->_recipientAddresses;
   self->_recipientAddresses = 0;
 
-  v9 = [(FAActivityViewController *)self delegate];
-  v10 = [v9 linkMetadataForActivityViewController:self];
+  delegate = [(FAActivityViewController *)self delegate];
+  v10 = [delegate linkMetadataForActivityViewController:self];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __56__FAActivityViewController__prepareActivity_completion___block_invoke;
   v15[3] = &unk_2782F3420;
-  v16 = v6;
-  v17 = self;
+  v16 = activityCopy;
+  selfCopy = self;
   v18 = v10;
-  v19 = v7;
+  v19 = completionCopy;
   v14.receiver = self;
   v14.super_class = FAActivityViewController;
-  v11 = v7;
+  v11 = completionCopy;
   v12 = v10;
-  v13 = v6;
+  v13 = activityCopy;
   [(FAActivityViewController *)&v14 _prepareActivity:v13 completion:v15];
 }
 
@@ -216,10 +216,10 @@ LABEL_12:
   return result;
 }
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  controllerCopy = controller;
   v7 = _FALogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -228,27 +228,27 @@ LABEL_12:
     v14 = 138412546;
     v15 = v9;
     v16 = 2048;
-    v17 = a4;
+    resultCopy = result;
     _os_log_impl(&dword_21BB35000, v7, OS_LOG_TYPE_DEFAULT, "%@ MFMessageComposeVC delegate callback - didFinishWithResult:%ld", &v14, 0x16u);
   }
 
-  v10 = [(FAActivityViewController *)self activity];
+  activity = [(FAActivityViewController *)self activity];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(FAActivityViewController *)self activity];
-    [v12 messageComposeViewController:v6 didFinishWithResult:a4];
+    activity2 = [(FAActivityViewController *)self activity];
+    [activity2 messageComposeViewController:controllerCopy didFinishWithResult:result];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)messageComposeViewController:(id)a3 shouldSendMessage:(id)a4 toRecipients:(id)a5 completion:(id)a6
+- (void)messageComposeViewController:(id)controller shouldSendMessage:(id)message toRecipients:(id)recipients completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a6;
+  recipientsCopy = recipients;
+  completionCopy = completion;
   v10 = _FALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -258,25 +258,25 @@ LABEL_12:
   }
 
   recipientAddresses = self->_recipientAddresses;
-  self->_recipientAddresses = v8;
-  v12 = v8;
+  self->_recipientAddresses = recipientsCopy;
+  v12 = recipientsCopy;
 
   inviteRecipientEvaluator = self->_inviteRecipientEvaluator;
-  v14 = [(FAActivityViewController *)self delegate];
-  v15 = [v14 linkMetadataForActivityViewController:self];
-  v16 = [v15 context];
-  v17 = [(FAActivityViewController *)self activity];
-  v18 = [v17 activityViewController];
-  [(FAInviteRecipientEvaluator *)inviteRecipientEvaluator validateRecipients:v12 inviteContext:v16 presenter:v18 completion:v9];
+  delegate = [(FAActivityViewController *)self delegate];
+  v15 = [delegate linkMetadataForActivityViewController:self];
+  context = [v15 context];
+  activity = [(FAActivityViewController *)self activity];
+  activityViewController = [activity activityViewController];
+  [(FAInviteRecipientEvaluator *)inviteRecipientEvaluator validateRecipients:v12 inviteContext:context presenter:activityViewController completion:completionCopy];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mailComposeController:(id)a3 shouldSendMail:(id)a4 toRecipients:(id)a5 completion:(id)a6
+- (void)mailComposeController:(id)controller shouldSendMail:(id)mail toRecipients:(id)recipients completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a6;
-  v9 = a5;
+  completionCopy = completion;
+  recipientsCopy = recipients;
   v10 = _FALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -285,59 +285,59 @@ LABEL_12:
     _os_log_impl(&dword_21BB35000, v10, OS_LOG_TYPE_DEFAULT, "%@ MFMessageComposeVC delegate callback - shouldSendMail", &v20, 0xCu);
   }
 
-  v11 = [(FAActivityViewController *)self _parseRecipientAddresses:v9];
+  v11 = [(FAActivityViewController *)self _parseRecipientAddresses:recipientsCopy];
   recipientAddresses = self->_recipientAddresses;
   self->_recipientAddresses = v11;
 
   inviteRecipientEvaluator = self->_inviteRecipientEvaluator;
-  v14 = [(FAActivityViewController *)self delegate];
-  v15 = [v14 linkMetadataForActivityViewController:self];
-  v16 = [v15 context];
-  v17 = [(FAActivityViewController *)self activity];
-  v18 = [v17 activityViewController];
-  [(FAInviteRecipientEvaluator *)inviteRecipientEvaluator validateRecipients:v9 inviteContext:v16 presenter:v18 completion:v8];
+  delegate = [(FAActivityViewController *)self delegate];
+  v15 = [delegate linkMetadataForActivityViewController:self];
+  context = [v15 context];
+  activity = [(FAActivityViewController *)self activity];
+  activityViewController = [activity activityViewController];
+  [(FAInviteRecipientEvaluator *)inviteRecipientEvaluator validateRecipients:recipientsCopy inviteContext:context presenter:activityViewController completion:completionCopy];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  errorCopy = error;
   v10 = _FALogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412546;
     v16 = @"FAActivityViewController.m";
     v17 = 2048;
-    v18 = a4;
+    resultCopy = result;
     _os_log_impl(&dword_21BB35000, v10, OS_LOG_TYPE_DEFAULT, "%@ MFMessageComposeVC delegate callback - didFinishWithResult:%ld", &v15, 0x16u);
   }
 
-  v11 = [(FAActivityViewController *)self activity];
+  activity = [(FAActivityViewController *)self activity];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(FAActivityViewController *)self activity];
-    [v13 mailComposeController:v8 didFinishWithResult:a4 error:v9];
+    activity2 = [(FAActivityViewController *)self activity];
+    [activity2 mailComposeController:controllerCopy didFinishWithResult:result error:errorCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_parseRecipientAddresses:(id)a3
+- (id)_parseRecipientAddresses:(id)addresses
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  addressesCopy = addresses;
+  array = [MEMORY[0x277CBEB18] array];
   v5 = objc_alloc_init(MEMORY[0x277CFBE00]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v3;
+  v6 = addressesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -355,7 +355,7 @@ LABEL_12:
         v11 = [v5 firstEmailAddressInString:{*(*(&v14 + 1) + 8 * i), v14}];
         if (v11)
         {
-          [v4 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -367,26 +367,26 @@ LABEL_12:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
-- (void)activityViewControllerDidFinishAirdropTransfer:(id)a3
+- (void)activityViewControllerDidFinishAirdropTransfer:(id)transfer
 {
-  v4 = a3;
+  transferCopy = transfer;
   self->_didCompleteAirdropTransfer = 1;
-  v10 = v4;
-  v5 = [v4 completionWithItemsHandler];
+  v10 = transferCopy;
+  completionWithItemsHandler = [transferCopy completionWithItemsHandler];
 
-  if (v5)
+  if (completionWithItemsHandler)
   {
-    v6 = [v10 completionWithItemsHandler];
-    v7 = [v10 activity];
-    v8 = [v7 activityType];
-    (v6)[2](v6, v8, 1, 0, 0);
+    completionWithItemsHandler2 = [v10 completionWithItemsHandler];
+    activity = [v10 activity];
+    activityType = [activity activityType];
+    (completionWithItemsHandler2)[2](completionWithItemsHandler2, activityType, 1, 0, 0);
   }
 
-  v9 = [v10 presentingViewController];
-  [v9 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [v10 presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (FAActivityViewControllerDelegate)delegate

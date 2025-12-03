@@ -1,11 +1,11 @@
 @interface RUINavigationController
 - (UIViewController)hostViewController;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_menuButtonPressed:(id)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (void)_menuButtonPressed:(id)pressed;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
 - (void)loadView;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -38,14 +38,14 @@
   [(RUINavigationController *)&v5 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__menuButtonPressed_];
   [v3 setAllowedPressTypes:&unk_282D7AD28];
-  v4 = [(RUINavigationController *)self view];
-  [v4 addGestureRecognizer:v3];
+  view = [(RUINavigationController *)self view];
+  [view addGestureRecognizer:v3];
 }
 
-- (void)_menuButtonPressed:(id)a3
+- (void)_menuButtonPressed:(id)pressed
 {
-  v4 = [(RUINavigationController *)self viewControllers];
-  v5 = [v4 count];
+  viewControllers = [(RUINavigationController *)self viewControllers];
+  v5 = [viewControllers count];
 
   if (v5 < 2)
   {
@@ -59,12 +59,12 @@
 
   else
   {
-    v7 = [(RUINavigationController *)self topViewController];
+    topViewController = [(RUINavigationController *)self topViewController];
     [(UINavigationController *)self settingsCompatiblePopViewController];
     menuDismissalHandler = self->_menuDismissalHandler;
     if (menuDismissalHandler)
     {
-      menuDismissalHandler[2](menuDismissalHandler, v7);
+      menuDismissalHandler[2](menuDismissalHandler, topViewController);
     }
   }
 }
@@ -80,49 +80,49 @@ uint64_t __46__RUINavigationController__menuButtonPressed___block_invoke(uint64_
   return result;
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
   v7 = [WeakRetained conformsToProtocol:&unk_282DBDDE8];
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_hostViewController);
-    [v8 dismissModalRUIController:self completion:v5];
+    [v8 dismissModalRUIController:self completion:completionCopy];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = RUINavigationController;
-    [(RUINavigationController *)&v9 dismissViewControllerAnimated:1 completion:v5];
+    [(RUINavigationController *)&v9 dismissViewControllerAnimated:1 completion:completionCopy];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = RUINavigationController;
-  v4 = a3;
-  [(RUINavigationController *)&v9 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(RUINavigationController *)&v9 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(RUINavigationController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(RUINavigationController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(RUINavigationController *)self style];
-    [v8 applyToNavigationController:self];
+    style = [(RUINavigationController *)self style];
+    [style applyToNavigationController:self];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = RUINavigationController;
-  [(RUINavigationController *)&v5 viewDidDisappear:a3];
+  [(RUINavigationController *)&v5 viewDidDisappear:disappear];
   viewDidDisappearHandler = self->_viewDidDisappearHandler;
   if (viewDidDisappearHandler)
   {

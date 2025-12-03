@@ -8,7 +8,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10029E020();
 
   v3 = String._bridgeToObjectiveC()();
@@ -18,7 +18,7 @@
 
 - (TUCallRecordingSession)tuSession
 {
-  v2 = self;
+  selfCopy = self;
   sub_10029E2DC();
   v4 = v3;
 
@@ -27,7 +27,7 @@
 
 - (TUCallRecordingSession)tuSessionWithoutStateFiltering
 {
-  v2 = self;
+  selfCopy = self;
   sub_10029E670();
   v4 = v3;
 

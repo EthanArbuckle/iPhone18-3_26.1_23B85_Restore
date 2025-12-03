@@ -1,10 +1,10 @@
 @interface TUIFeedSuspendLayoutCondition
-- (BOOL)evaluateWithEntry:(id)a3 index:(unint64_t)a4;
+- (BOOL)evaluateWithEntry:(id)entry index:(unint64_t)index;
 @end
 
 @implementation TUIFeedSuspendLayoutCondition
 
-- (BOOL)evaluateWithEntry:(id)a3 index:(unint64_t)a4
+- (BOOL)evaluateWithEntry:(id)entry index:(unint64_t)index
 {
   os_unfair_lock_lock_with_options();
   state = self->super._state;

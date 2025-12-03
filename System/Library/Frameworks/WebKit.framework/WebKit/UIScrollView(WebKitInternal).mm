@@ -21,9 +21,9 @@
 {
   if (byte_1EB01D5FB != 1)
   {
-    v4 = a1;
+    selfCopy = self;
     v3 = [MEMORY[0x1E69DCEF8] instancesRespondToSelector:sel_isZoomAnimating];
-    a1 = v4;
+    self = selfCopy;
     byte_1EB01D5FA = v3;
     byte_1EB01D5FB = 1;
     if (v3)
@@ -41,16 +41,16 @@
 
 LABEL_3:
 
-  return [a1 isZoomAnimating];
+  return [self isZoomAnimating];
 }
 
 - (uint64_t)_wk_isScrollAnimating
 {
   if (byte_1EB01D5F9 != 1)
   {
-    v4 = a1;
+    selfCopy = self;
     v3 = [MEMORY[0x1E69DCEF8] instancesRespondToSelector:sel_isScrollAnimating];
-    a1 = v4;
+    self = selfCopy;
     _MergedGlobals_111 = v3;
     byte_1EB01D5F9 = 1;
     if (v3)
@@ -68,16 +68,16 @@ LABEL_3:
 
 LABEL_3:
 
-  return [a1 isScrollAnimating];
+  return [self isScrollAnimating];
 }
 
 - (uint64_t)_wk_isInterruptingDeceleration
 {
-  result = [a1 isDecelerating];
+  result = [self isDecelerating];
   if (result)
   {
 
-    return [a1 isTracking];
+    return [self isTracking];
   }
 
   return result;
@@ -85,36 +85,36 @@ LABEL_3:
 
 - (double)_wk_contentWidthIncludingInsets
 {
-  [a1 adjustedContentInset];
+  [self adjustedContentInset];
   v3 = v2;
   v5 = v4;
-  [a1 contentSize];
+  [self contentSize];
   return v5 + v3 + v6;
 }
 
 - (double)_wk_contentHeightIncludingInsets
 {
-  [a1 adjustedContentInset];
+  [self adjustedContentInset];
   v3 = v2;
   v5 = v4;
-  [a1 contentSize];
+  [self contentSize];
   return v5 + v3 + v6;
 }
 
 - (BOOL)_wk_isScrolledBeyondTopExtent
 {
-  [a1 contentOffset];
+  [self contentOffset];
   v3 = v2;
-  [a1 adjustedContentInset];
+  [self adjustedContentInset];
   return v3 < -v4;
 }
 
 - (BOOL)_wk_isScrolledBeyondExtents
 {
-  [a1 contentOffset];
+  [self contentOffset];
   v3 = v2;
   v5 = v4;
-  [a1 adjustedContentInset];
+  [self adjustedContentInset];
   v10 = -v9;
   if (v3 < -v8 || v5 < v10)
   {
@@ -123,14 +123,14 @@ LABEL_3:
 
   v13 = v6;
   v14 = v7;
-  [a1 contentSize];
+  [self contentSize];
   v16 = v15;
   v18 = v17;
-  [a1 bounds];
+  [self bounds];
   v20 = v19;
   v22 = v21;
   v23 = v14 + v16;
-  [a1 _wk_contentWidthIncludingInsets];
+  [self _wk_contentWidthIncludingInsets];
   if (v24 >= v20)
   {
     v24 = v20;
@@ -138,7 +138,7 @@ LABEL_3:
 
   v25 = v23 - v24;
   v26 = v13 + v18;
-  [a1 _wk_contentHeightIncludingInsets];
+  [self _wk_contentHeightIncludingInsets];
   if (v27 >= v22)
   {
     v27 = v22;
@@ -175,15 +175,15 @@ LABEL_3:
 
 - (CGFloat)_wk_clampToScrollExtents:()WebKitInternal
 {
-  [a1 bounds];
+  [self bounds];
   v7 = v6;
   v9 = v8;
-  [a1 adjustedContentInset];
+  [self adjustedContentInset];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  if ([a1 isZoomBouncing] & 1) == 0 && (objc_msgSend(a1, "isZooming"))
+  if ([self isZoomBouncing] & 1) == 0 && (objc_msgSend(self, "isZooming"))
   {
     return a2;
   }
@@ -191,7 +191,7 @@ LABEL_3:
   v28 = v17;
   v30 = v15;
   v18 = -v13;
-  [a1 contentSize];
+  [self contentSize];
   v20 = v19;
   v29 = v21;
   v31.origin.x = a2;
@@ -199,7 +199,7 @@ LABEL_3:
   v31.size.width = v7;
   v31.size.height = v9;
   Width = CGRectGetWidth(v31);
-  [a1 _wk_contentWidthIncludingInsets];
+  [self _wk_contentWidthIncludingInsets];
   if (Width < v23)
   {
     v32.origin.x = a2;
@@ -230,7 +230,7 @@ LABEL_3:
   v35.size.width = v7;
   v35.size.height = v9;
   Height = CGRectGetHeight(v35);
-  [a1 _wk_contentHeightIncludingInsets];
+  [self _wk_contentHeightIncludingInsets];
   if (Height < v26)
   {
     v36.origin.x = a2;
@@ -259,17 +259,17 @@ LABEL_3:
 
 - (BOOL)_wk_canScrollHorizontallyWithoutBouncing
 {
-  [a1 _wk_contentWidthIncludingInsets];
+  [self _wk_contentWidthIncludingInsets];
   v3 = v2;
-  [a1 bounds];
+  [self bounds];
   return v3 - CGRectGetWidth(v5) > 0.0001;
 }
 
 - (BOOL)_wk_canScrollVerticallyWithoutBouncing
 {
-  [a1 _wk_contentHeightIncludingInsets];
+  [self _wk_contentHeightIncludingInsets];
   v3 = v2;
-  [a1 bounds];
+  [self bounds];
   return v3 - CGRectGetHeight(v5) > 0.0001;
 }
 
@@ -281,15 +281,15 @@ LABEL_3:
     {
 LABEL_3:
 
-      return [a1 setTransfersHorizontalScrollingToParent:?];
+      return [self setTransfersHorizontalScrollingToParent:?];
     }
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
     v3 = [MEMORY[0x1E69DCEF8] instancesRespondToSelector:sel_setTransfersHorizontalScrollingToParent_];
-    a1 = v4;
+    self = selfCopy;
     byte_1EB01D5FE = v3;
     byte_1EB01D5FF = 1;
     if (v3)
@@ -298,7 +298,7 @@ LABEL_3:
     }
   }
 
-  return [a1 _setAllowsParentToBeginHorizontally:?];
+  return [self _setAllowsParentToBeginHorizontally:?];
 }
 
 - (uint64_t)_wk_setTransfersVerticalScrollingToParent:()WebKitInternal
@@ -309,15 +309,15 @@ LABEL_3:
     {
 LABEL_3:
 
-      return [a1 setTransfersVerticalScrollingToParent:?];
+      return [self setTransfersVerticalScrollingToParent:?];
     }
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
     v3 = [MEMORY[0x1E69DCEF8] instancesRespondToSelector:sel_setTransfersVerticalScrollingToParent_];
-    a1 = v4;
+    self = selfCopy;
     byte_1EB01D600 = v3;
     byte_1EB01D601 = 1;
     if (v3)
@@ -326,7 +326,7 @@ LABEL_3:
     }
   }
 
-  return [a1 _setAllowsParentToBeginVertically:?];
+  return [self _setAllowsParentToBeginVertically:?];
 }
 
 - (uint64_t)_wk_setContentOffsetAndShowScrollIndicators:()WebKitInternal animated:
@@ -347,8 +347,8 @@ LABEL_3:
       v16 = a5;
       *v17 = *v20;
       *&v17[15] = v19.y;
-      v18 = a1;
-      return [a1 showScrollIndicatorsForContentOffsetChanges:v15];
+      selfCopy = self;
+      return [self showScrollIndicatorsForContentOffsetChanges:v15];
     }
   }
 
@@ -365,8 +365,8 @@ LABEL_3:
     }
   }
 
-  [a1 setContentOffset:? animated:?];
-  [a1 contentOffset];
+  [self setContentOffset:? animated:?];
+  [self contentOffset];
   *v20 = v8;
   *&v20[8] = v9;
   WebCore::FloatPoint::FloatPoint(&v14, v20);
@@ -382,7 +382,7 @@ LABEL_3:
     v11 = v10.i8[0] & 1;
   }
 
-  return [a1 _flashScrollIndicatorsForAxes:v11 persistingPreviousFlashes:1];
+  return [self _flashScrollIndicatorsForAxes:v11 persistingPreviousFlashes:1];
 }
 
 @end

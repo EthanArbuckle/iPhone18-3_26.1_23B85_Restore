@@ -1,18 +1,18 @@
 @interface AnimatingPackageView
 - (CGSize)intrinsicContentSize;
-- (_TtC21ControlCenterSettings20AnimatingPackageView)initWithCoder:(id)a3;
-- (_TtC21ControlCenterSettings20AnimatingPackageView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC21ControlCenterSettings20AnimatingPackageView)initWithCoder:(id)coder;
+- (_TtC21ControlCenterSettings20AnimatingPackageView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation AnimatingPackageView
 
-- (_TtC21ControlCenterSettings20AnimatingPackageView)initWithFrame:(CGRect)a3
+- (_TtC21ControlCenterSettings20AnimatingPackageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_BA8C();
   sub_BA7C();
   sub_BA6C();
@@ -26,7 +26,7 @@
   return v7;
 }
 
-- (_TtC21ControlCenterSettings20AnimatingPackageView)initWithCoder:(id)a3
+- (_TtC21ControlCenterSettings20AnimatingPackageView)initWithCoder:(id)coder
 {
   sub_BA8C();
   sub_BA7C();
@@ -44,12 +44,12 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   sub_BA8C();
   sub_BA7C();
   sub_BA6C();
@@ -61,7 +61,7 @@
   v8 = *(&self->super.super.super.isa + OBJC_IVAR____TtC21ControlCenterSettings20AnimatingPackageView_packageLayer);
   if (v8)
   {
-    v9 = self;
+    selfCopy = self;
     v10 = v8;
     v14.origin.x = x;
     v14.origin.y = y;
@@ -95,7 +95,7 @@
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC21ControlCenterSettings20AnimatingPackageView_packageLayer);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = v3;
     [v5 bounds];
     v7 = v6 * 0.333333333;

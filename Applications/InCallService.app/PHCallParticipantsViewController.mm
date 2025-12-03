@@ -4,86 +4,86 @@
 - (BOOL)isDeviceCapableOfTelephonyCalls;
 - (BOOL)isFrontmostCallFaceTimeAudio;
 - (BOOL)shouldShowCallDetailsViewButton;
-- (BOOL)shouldShowInfoButtonForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4;
+- (BOOL)shouldShowInfoButtonForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view;
 - (BOOL)shouldShowLargeAvatar;
-- (BOOL)shouldShowParticipantImageAtIndex:(unint64_t)a3 inParticipantsView:(id)a4;
+- (BOOL)shouldShowParticipantImageAtIndex:(unint64_t)index inParticipantsView:(id)view;
 - (BOOL)shouldShowParticipantLabel;
 - (BOOL)shouldShowSingleDurationLabel;
 - (BOOL)usesCompactMulticallUI;
 - (NSMutableArray)callGroups;
 - (NSNumberFormatter)numberFormatter;
-- (PHCallParticipantsViewController)initWithCallDisplayStyleManager:(id)a3 contactsCache:(id)a4;
-- (PHCallParticipantsViewController)initWithCallDisplayStyleManager:(id)a3 contactsCache:(id)a4 contacts:(id)a5;
+- (PHCallParticipantsViewController)initWithCallDisplayStyleManager:(id)manager contactsCache:(id)cache;
+- (PHCallParticipantsViewController)initWithCallDisplayStyleManager:(id)manager contactsCache:(id)cache contacts:(id)contacts;
 - (PHCallParticipantsViewControllerDelegate)delegate;
 - (TUCall)prioritizedCall;
-- (id)callForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4;
-- (id)colorForParticipantLabelView:(id)a3;
-- (id)colorForStatusLabelForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4;
-- (id)compactLabelTextForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4;
-- (id)contactForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4;
+- (id)callForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view;
+- (id)colorForParticipantLabelView:(id)view;
+- (id)colorForStatusLabelForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view;
+- (id)compactLabelTextForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view;
+- (id)contactForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view;
 - (id)currentCallGroups;
 - (id)customFontForParticipantLabel;
-- (id)fontForParticipantLabelView:(id)a3;
-- (id)fontForParticipantLabelViewStatusLabel:(id)a3;
+- (id)fontForParticipantLabelView:(id)view;
+- (id)fontForParticipantLabelViewStatusLabel:(id)label;
 - (id)frontmostCall;
 - (id)frontmostCallGroup;
-- (id)iconInParticipantsView:(id)a3;
-- (id)labelForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4 allowsDuration:(BOOL)a5;
-- (id)localizedSenderIdentityForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4;
-- (id)nameForCallGroup:(id)a3;
-- (id)nameForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4;
-- (id)supplementalParticipantLabelFormatStringAtIndex:(unint64_t)a3 inParticipantsView:(id)a4;
+- (id)iconInParticipantsView:(id)view;
+- (id)labelForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view allowsDuration:(BOOL)duration;
+- (id)localizedSenderIdentityForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view;
+- (id)nameForCallGroup:(id)group;
+- (id)nameForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view;
+- (id)supplementalParticipantLabelFormatStringAtIndex:(unint64_t)index inParticipantsView:(id)view;
 - (unint64_t)numberOfParticipantLabels;
-- (unsigned)activityStateForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4;
+- (unsigned)activityStateForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view;
 - (void)_updateCallGroups;
-- (void)callContinuityChangedNotification:(id)a3;
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4;
-- (void)callModelChangedNotification:(id)a3;
-- (void)callStatusChangedNotification:(id)a3;
-- (void)conferenceParticipantsChangedNotification:(id)a3;
-- (void)conversationManager:(id)a3 addedActiveConversation:(id)a4;
+- (void)callContinuityChangedNotification:(id)notification;
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle;
+- (void)callModelChangedNotification:(id)notification;
+- (void)callStatusChangedNotification:(id)notification;
+- (void)conferenceParticipantsChangedNotification:(id)notification;
+- (void)conversationManager:(id)manager addedActiveConversation:(id)conversation;
 - (void)dealloc;
-- (void)displayContextChangedNotification:(id)a3;
-- (void)fieldModeSendButtonTappedInParticipantsView:(id)a3;
+- (void)displayContextChangedNotification:(id)notification;
+- (void)fieldModeSendButtonTappedInParticipantsView:(id)view;
 - (void)gameControllerDidChangeContext;
-- (void)handleAlertDisconnectingCallsNotification:(id)a3;
-- (void)isThirdPartyVideoChangedNotification:(id)a3;
-- (void)keypadDataSourceChangedNotification:(id)a3;
+- (void)handleAlertDisconnectingCallsNotification:(id)notification;
+- (void)isThirdPartyVideoChangedNotification:(id)notification;
+- (void)keypadDataSourceChangedNotification:(id)notification;
 - (void)loadView;
-- (void)localSenderIdentityAccountUUIDChangedNotification:(id)a3;
-- (void)participantTappedAtIndex:(unint64_t)a3 inParticipantsView:(id)a4;
+- (void)localSenderIdentityAccountUUIDChangedNotification:(id)notification;
+- (void)participantTappedAtIndex:(unint64_t)index inParticipantsView:(id)view;
 - (void)participantViewCallDetailsGestureRecognizerTapped;
-- (void)participantViewInfoButtonTappedAtIndex:(unint64_t)a3 inParticipantsView:(id)a4;
-- (void)participantsView:(id)a3 didPerformActionType:(int64_t)a4;
+- (void)participantViewInfoButtonTappedAtIndex:(unint64_t)index inParticipantsView:(id)view;
+- (void)participantsView:(id)view didPerformActionType:(int64_t)type;
 - (void)resetNameOverrideString;
-- (void)secondTickNotification:(id)a3;
-- (void)setAllowsFieldModeSendButton:(BOOL)a3;
-- (void)setBannerAudioRouteButtonSelected:(BOOL)a3;
-- (void)setBannerButtonsState:(unint64_t)a3;
-- (void)setPrioritizedCall:(id)a3;
-- (void)tuCallHasBeenRedirectedChangedNotification:(id)a3;
-- (void)updateParticipantViewWithSize:(CGSize)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)secondTickNotification:(id)notification;
+- (void)setAllowsFieldModeSendButton:(BOOL)button;
+- (void)setBannerAudioRouteButtonSelected:(BOOL)selected;
+- (void)setBannerButtonsState:(unint64_t)state;
+- (void)setPrioritizedCall:(id)call;
+- (void)tuCallHasBeenRedirectedChangedNotification:(id)notification;
+- (void)updateParticipantViewWithSize:(CGSize)size;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PHCallParticipantsViewController
 
 - (BOOL)anyLabelDescriptorIsDynamic
 {
-  v3 = [(PHCallParticipantsViewController *)self numberOfParticipantLabels];
-  if (v3)
+  numberOfParticipantLabels = [(PHCallParticipantsViewController *)self numberOfParticipantLabels];
+  if (numberOfParticipantLabels)
   {
-    v4 = v3;
+    v4 = numberOfParticipantLabels;
     v5 = 0;
     v6 = 1;
     do
     {
-      v7 = [(PHCallParticipantsViewController *)self traitCollection];
-      v8 = [v7 _backlightLuminance] != 1;
+      traitCollection = [(PHCallParticipantsViewController *)self traitCollection];
+      v8 = [traitCollection _backlightLuminance] != 1;
 
       v9 = [(PHCallParticipantsViewController *)self labelForParticipantAtIndex:v5 inParticipantsView:0 allowsDuration:v8];
       LODWORD(v8) = [v9 isDynamic];
@@ -112,12 +112,12 @@
   v3 = +[TUCallCenter sharedInstance];
   if ([v3 isAmbiguous])
   {
-    v4 = [(PHCallParticipantsViewController *)self shouldShowSingleDurationLabel];
+    shouldShowSingleDurationLabel = [(PHCallParticipantsViewController *)self shouldShowSingleDurationLabel];
 
-    if ((v4 & 1) == 0)
+    if ((shouldShowSingleDurationLabel & 1) == 0)
     {
-      v5 = [(PHCallParticipantsViewController *)self callGroups];
-      v6 = [v5 count];
+      callGroups = [(PHCallParticipantsViewController *)self callGroups];
+      v6 = [callGroups count];
 
       v7 = v6 != 0;
       goto LABEL_6;
@@ -128,8 +128,8 @@
   {
   }
 
-  v8 = [(PHCallParticipantsViewController *)self callGroups];
-  v7 = [v8 count];
+  callGroups2 = [(PHCallParticipantsViewController *)self callGroups];
+  v7 = [callGroups2 count];
 
 LABEL_6:
   if ([(PHCallParticipantsViewController *)self usesCompactMulticallUI])
@@ -161,11 +161,11 @@ LABEL_6:
 
 - (BOOL)usesCompactMulticallUI
 {
-  v3 = [(PHCallParticipantsViewController *)self features];
-  if ([v3 callManagerEnabled])
+  features = [(PHCallParticipantsViewController *)self features];
+  if ([features callManagerEnabled])
   {
-    v4 = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
-    v5 = [v4 callDisplayStyle] != 3;
+    callDisplayStyleManager = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
+    v5 = [callDisplayStyleManager callDisplayStyle] != 3;
   }
 
   else
@@ -185,16 +185,16 @@ LABEL_6:
 
 - (void)resetNameOverrideString
 {
-  v3 = [(PHCallParticipantsViewController *)self nameOverrideString];
+  nameOverrideString = [(PHCallParticipantsViewController *)self nameOverrideString];
 
-  if (v3)
+  if (nameOverrideString)
   {
     [(PHCallParticipantsViewController *)self setNameOverrideString:0];
-    v4 = [(PHCallParticipantsViewController *)self participantsView];
-    [v4 updateParticipantsAnimated:1];
+    participantsView = [(PHCallParticipantsViewController *)self participantsView];
+    [participantsView updateParticipantsAnimated:1];
 
-    v5 = [(PHCallParticipantsViewController *)self participantsView];
-    [v5 layoutIfNeeded];
+    participantsView2 = [(PHCallParticipantsViewController *)self participantsView];
+    [participantsView2 layoutIfNeeded];
   }
 
   [(PHCallParticipantsViewController *)self setAllowsFieldModeSendButton:0];
@@ -204,15 +204,15 @@ LABEL_6:
 {
   if (![(PHCallParticipantsViewController *)self callIsAboutToEndForStewie])
   {
-    v4 = [(PHCallParticipantsViewController *)self currentCallGroups];
-    v5 = [v4 mutableCopy];
+    currentCallGroups = [(PHCallParticipantsViewController *)self currentCallGroups];
+    v5 = [currentCallGroups mutableCopy];
 
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(PHCallParticipantsViewController *)self callGroups];
+      callGroups = [(PHCallParticipantsViewController *)self callGroups];
       *buf = 138412546;
-      v133 = v7;
+      v133 = callGroups;
       v134 = 2112;
       v135 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "_updateCallGroups: CACHED: %@ -> CURRENT: %@", buf, 0x16u);
@@ -235,16 +235,16 @@ LABEL_6:
 
     if ([(PHCallParticipantsViewController *)self usesCompactMulticallUI])
     {
-      v14 = [(PHCallParticipantsViewController *)self prioritizedCall];
+      prioritizedCall = [(PHCallParticipantsViewController *)self prioritizedCall];
 
-      if (v14)
+      if (prioritizedCall)
       {
         v124 = 0u;
         v125 = 0u;
         v122 = 0u;
         v123 = 0u;
-        v15 = v5;
-        v99 = [v15 countByEnumeratingWithState:&v122 objects:v131 count:16];
+        view2 = v5;
+        v99 = [view2 countByEnumeratingWithState:&v122 objects:v131 count:16];
         if (!v99)
         {
           goto LABEL_26;
@@ -260,7 +260,7 @@ LABEL_13:
           v18 = v16;
           if (*v123 != v16)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(view2);
           }
 
           v19 = *(*(&v122 + 1) + 8 * v17);
@@ -269,8 +269,8 @@ LABEL_13:
           v120 = 0u;
           v121 = 0u;
           v100 = v19;
-          v20 = [v19 calls];
-          v21 = [v20 countByEnumeratingWithState:&v118 objects:v130 count:16];
+          calls = [v19 calls];
+          v21 = [calls countByEnumeratingWithState:&v118 objects:v130 count:16];
           if (v21)
           {
             break;
@@ -285,7 +285,7 @@ LABEL_24:
           if (v17 == v99)
           {
             v8 = &_s16CommunicationsUI29CallTranslationLanguagePickerV05SwiftB04ViewAAMc_ptr;
-            v99 = [v15 countByEnumeratingWithState:&v122 objects:v131 count:16];
+            v99 = [view2 countByEnumeratingWithState:&v122 objects:v131 count:16];
             if (!v99)
             {
 LABEL_26:
@@ -305,12 +305,12 @@ LABEL_18:
         {
           if (*v119 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(calls);
           }
 
           v25 = *(*(&v118 + 1) + 8 * v24);
-          v26 = [(PHCallParticipantsViewController *)self prioritizedCall];
-          LODWORD(v25) = [v25 isEqualToCall:v26];
+          prioritizedCall2 = [(PHCallParticipantsViewController *)self prioritizedCall];
+          LODWORD(v25) = [v25 isEqualToCall:prioritizedCall2];
 
           if (v25)
           {
@@ -319,7 +319,7 @@ LABEL_18:
 
           if (v22 == ++v24)
           {
-            v22 = [v20 countByEnumeratingWithState:&v118 objects:v130 count:16];
+            v22 = [calls countByEnumeratingWithState:&v118 objects:v130 count:16];
             if (!v22)
             {
               goto LABEL_24;
@@ -333,9 +333,9 @@ LABEL_18:
         v12 = v101;
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
-          v38 = [(PHCallParticipantsViewController *)self prioritizedCall];
+          prioritizedCall3 = [(PHCallParticipantsViewController *)self prioritizedCall];
           *buf = 138412290;
-          v133 = v38;
+          v133 = prioritizedCall3;
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Updated call groups using prioritizedCall: %@", buf, 0xCu);
         }
 
@@ -344,14 +344,14 @@ LABEL_18:
         v40 = [v39 mutableCopy];
         [(PHCallParticipantsViewController *)self setCallGroups:v40];
 
-        v41 = [(PHCallParticipantsViewController *)self participantsView];
-        [v41 updateParticipantsAnimated:1];
+        participantsView = [(PHCallParticipantsViewController *)self participantsView];
+        [participantsView updateParticipantsAnimated:1];
 
-        v42 = [(PHCallParticipantsViewController *)self shouldShowSingleDurationLabel];
-        v43 = [(PHCallParticipantsViewController *)self participantsView];
-        [v43 setShouldShowSingleDurationLabel:v42];
+        shouldShowSingleDurationLabel = [(PHCallParticipantsViewController *)self shouldShowSingleDurationLabel];
+        participantsView2 = [(PHCallParticipantsViewController *)self participantsView];
+        [participantsView2 setShouldShowSingleDurationLabel:shouldShowSingleDurationLabel];
 
-        v3 = v15;
+        v3 = view2;
         goto LABEL_106;
       }
     }
@@ -365,8 +365,8 @@ LABEL_27:
       v117 = 0u;
       v114 = 0u;
       v115 = 0u;
-      v28 = [(PHCallParticipantsViewController *)self callGroups];
-      v29 = [v28 countByEnumeratingWithState:&v114 objects:v128 count:16];
+      callGroups2 = [(PHCallParticipantsViewController *)self callGroups];
+      v29 = [callGroups2 countByEnumeratingWithState:&v114 objects:v128 count:16];
       if (v29)
       {
         v30 = v29;
@@ -378,12 +378,12 @@ LABEL_27:
           {
             if (*v115 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(callGroups2);
             }
 
             v34 = *(*(&v114 + 1) + 8 * i);
-            v35 = [v34 calls];
-            v36 = [v35 count];
+            calls2 = [v34 calls];
+            v36 = [calls2 count];
 
             if (v36)
             {
@@ -391,7 +391,7 @@ LABEL_27:
             }
           }
 
-          v30 = [v28 countByEnumeratingWithState:&v114 objects:v128 count:16];
+          v30 = [callGroups2 countByEnumeratingWithState:&v114 objects:v128 count:16];
         }
 
         while (v30);
@@ -411,13 +411,13 @@ LABEL_27:
       LOBYTE(v32) = 1;
     }
 
-    v44 = [v8[391] sharedInstance];
-    v45 = [v44 incomingCall];
-    if (v45 && v12 && [v27 count]>= 2)
+    sharedInstance = [v8[391] sharedInstance];
+    incomingCall = [sharedInstance incomingCall];
+    if (incomingCall && v12 && [v27 count]>= 2)
     {
-      v46 = [(PHCallParticipantsViewController *)self handlesCallWaitingCalls];
+      handlesCallWaitingCalls = [(PHCallParticipantsViewController *)self handlesCallWaitingCalls];
 
-      if ((v46 & 1) == 0)
+      if ((handlesCallWaitingCalls & 1) == 0)
       {
         v3 = +[NSMutableArray array];
         v110 = 0u;
@@ -465,13 +465,13 @@ LABEL_27:
     {
     }
 
-    v53 = [v8[391] sharedInstance];
-    v54 = [v53 incomingCalls];
-    if ([v54 count] <= 1)
+    sharedInstance2 = [v8[391] sharedInstance];
+    incomingCalls = [sharedInstance2 incomingCalls];
+    if ([incomingCalls count] <= 1)
     {
-      v55 = [(PHCallParticipantsViewController *)self handlesCallWaitingCalls];
+      handlesCallWaitingCalls2 = [(PHCallParticipantsViewController *)self handlesCallWaitingCalls];
 
-      if ((v55 & 1) == 0)
+      if ((handlesCallWaitingCalls2 & 1) == 0)
       {
         v3 = v27;
         if ((v32 & 1) == 0)
@@ -480,8 +480,8 @@ LABEL_27:
         }
 
 LABEL_78:
-        v62 = [(PHCallParticipantsViewController *)self callGroups];
-        v63 = [v62 count];
+        callGroups3 = [(PHCallParticipantsViewController *)self callGroups];
+        v63 = [callGroups3 count];
 
         if (!v63)
         {
@@ -491,17 +491,17 @@ LABEL_78:
         v64 = 0;
         while (1)
         {
-          v65 = [(PHCallParticipantsViewController *)self callGroups];
-          v66 = [v65 objectAtIndex:v64];
+          callGroups4 = [(PHCallParticipantsViewController *)self callGroups];
+          v66 = [callGroups4 objectAtIndex:v64];
 
           if (([v3 containsObject:v66]& 1) == 0)
           {
-            v67 = [v66 calls];
-            if ([v67 count] == 1)
+            calls3 = [v66 calls];
+            if ([calls3 count] == 1)
             {
-              v68 = [v66 isConferenced];
+              isConferenced = [v66 isConferenced];
 
-              if ((v68 & 1) != 0 || [v3 count]> 1)
+              if ((isConferenced & 1) != 0 || [v3 count]> 1)
               {
                 goto LABEL_90;
               }
@@ -520,17 +520,17 @@ LABEL_78:
               block[2] = sub_1000CACC4;
               block[3] = &unk_100357110;
               v104 = v66;
-              v105 = self;
+              selfCopy = self;
               dispatch_after(v71, &_dispatch_main_q, block);
-              v67 = v104;
+              calls3 = v104;
             }
           }
 
 LABEL_90:
 
           ++v64;
-          v72 = [(PHCallParticipantsViewController *)self callGroups];
-          v73 = [v72 count];
+          callGroups5 = [(PHCallParticipantsViewController *)self callGroups];
+          v73 = [callGroups5 count];
 
           if (v73 <= v64)
           {
@@ -594,13 +594,13 @@ LABEL_73:
     if ((v32 & 1) == 0)
     {
 LABEL_91:
-      v74 = [(PHCallParticipantsViewController *)self features];
-      if ([v74 callManagerEnabled])
+      features = [(PHCallParticipantsViewController *)self features];
+      if ([features callManagerEnabled])
       {
-        v75 = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
-        v76 = [v75 callDisplayStyle];
+        callDisplayStyleManager = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
+        callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-        if (v76 != 3)
+        if (callDisplayStyle != 3)
         {
           goto LABEL_96;
         }
@@ -618,26 +618,26 @@ LABEL_96:
       if (![v3 count])
       {
         v79 = +[UIApplication sharedApplication];
-        v80 = [v79 delegate];
-        v81 = [v80 mostRecentlyDisconnectedAudioCall];
+        delegate = [v79 delegate];
+        mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
 
-        if (v81)
+        if (mostRecentlyDisconnectedAudioCall)
         {
           v82 = [TUCallGroup alloc];
           v83 = +[UIApplication sharedApplication];
-          v84 = [v83 delegate];
-          v85 = [v84 mostRecentlyDisconnectedAudioCall];
-          v86 = [v82 initWithCall:v85];
+          delegate2 = [v83 delegate];
+          mostRecentlyDisconnectedAudioCall2 = [delegate2 mostRecentlyDisconnectedAudioCall];
+          v86 = [v82 initWithCall:mostRecentlyDisconnectedAudioCall2];
 
           [v3 addObject:v86];
         }
       }
 
-      v87 = [(PHCallParticipantsViewController *)self callGroups];
-      v88 = [v87 count];
+      callGroups6 = [(PHCallParticipantsViewController *)self callGroups];
+      v88 = [callGroups6 count];
       if (v88 != [v3 count])
       {
-        v89 = [(PHCallParticipantsViewController *)self delegate];
+        delegate3 = [(PHCallParticipantsViewController *)self delegate];
         v90 = objc_opt_respondsToSelector();
 
         if ((v90 & 1) == 0)
@@ -652,26 +652,26 @@ LABEL_103:
           }
 
           [(PHCallParticipantsViewController *)self setCallGroups:v3];
-          v92 = [(PHCallParticipantsViewController *)self participantsView];
-          [v92 updateParticipantsAnimated:1];
+          participantsView3 = [(PHCallParticipantsViewController *)self participantsView];
+          [participantsView3 updateParticipantsAnimated:1];
 
-          v93 = [(PHCallParticipantsViewController *)self shouldShowSingleDurationLabel];
-          v94 = [(PHCallParticipantsViewController *)self participantsView];
-          [v94 setShouldShowSingleDurationLabel:v93];
+          shouldShowSingleDurationLabel2 = [(PHCallParticipantsViewController *)self shouldShowSingleDurationLabel];
+          participantsView4 = [(PHCallParticipantsViewController *)self participantsView];
+          [participantsView4 setShouldShowSingleDurationLabel:shouldShowSingleDurationLabel2];
 
-          v95 = [(PHCallParticipantsViewController *)self view];
-          [v95 bounds];
+          view = [(PHCallParticipantsViewController *)self view];
+          [view bounds];
           [(PHCallParticipantsViewController *)self updateParticipantViewWithSize:v96, v97];
 
-          v15 = [(PHCallParticipantsViewController *)self view];
-          [v15 setNeedsLayout];
+          view2 = [(PHCallParticipantsViewController *)self view];
+          [view2 setNeedsLayout];
 LABEL_106:
 
           goto LABEL_107;
         }
 
-        v87 = [(PHCallParticipantsViewController *)self delegate];
-        [v87 callParticipantsViewController:self willShowMultipleLabel:{-[NSObject count](v3, "count") > 1}];
+        callGroups6 = [(PHCallParticipantsViewController *)self delegate];
+        [callGroups6 callParticipantsViewController:self willShowMultipleLabel:{-[NSObject count](v3, "count") > 1}];
       }
 
       goto LABEL_103;
@@ -693,9 +693,9 @@ LABEL_107:
 - (id)currentCallGroups
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 currentCallGroups];
+  currentCallGroups = [v2 currentCallGroups];
 
-  return v3;
+  return currentCallGroups;
 }
 
 - (TUCall)prioritizedCall
@@ -715,11 +715,11 @@ LABEL_107:
 
 - (id)frontmostCall
 {
-  v2 = [(PHCallParticipantsViewController *)self frontmostCallGroup];
-  v3 = [v2 calls];
-  v4 = [v3 firstObject];
+  frontmostCallGroup = [(PHCallParticipantsViewController *)self frontmostCallGroup];
+  calls = [frontmostCallGroup calls];
+  firstObject = [calls firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)frontmostCallGroup
@@ -728,8 +728,8 @@ LABEL_107:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(PHCallParticipantsViewController *)self callGroups];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  callGroups = [(PHCallParticipantsViewController *)self callGroups];
+  v4 = [callGroups countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -740,7 +740,7 @@ LABEL_3:
     {
       if (*v13 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(callGroups);
       }
 
       v8 = *(*(&v12 + 1) + 8 * v7);
@@ -751,7 +751,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [callGroups countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -761,9 +761,9 @@ LABEL_3:
       }
     }
 
-    v9 = v8;
+    firstObject = v8;
 
-    if (v9)
+    if (firstObject)
     {
       goto LABEL_12;
     }
@@ -774,17 +774,17 @@ LABEL_3:
 LABEL_9:
   }
 
-  v10 = [(PHCallParticipantsViewController *)self callGroups];
-  v9 = [v10 firstObject];
+  callGroups2 = [(PHCallParticipantsViewController *)self callGroups];
+  firstObject = [callGroups2 firstObject];
 
 LABEL_12:
 
-  return v9;
+  return firstObject;
 }
 
 - (BOOL)shouldShowLargeAvatar
 {
-  v3 = [(PHCallParticipantsViewController *)self delegate];
+  delegate = [(PHCallParticipantsViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -792,8 +792,8 @@ LABEL_12:
     return 0;
   }
 
-  v5 = [(PHCallParticipantsViewController *)self delegate];
-  v6 = [v5 callParticipantsViewControllerShouldShowLargeAvatar:self];
+  delegate2 = [(PHCallParticipantsViewController *)self delegate];
+  v6 = [delegate2 callParticipantsViewControllerShouldShowLargeAvatar:self];
 
   return v6;
 }
@@ -806,11 +806,11 @@ LABEL_12:
   }
 
   v3 = +[TUCallCenter sharedInstance];
-  v4 = [v3 frontmostCall];
-  if ([v4 isConnected])
+  frontmostCall = [v3 frontmostCall];
+  if ([frontmostCall isConnected])
   {
-    v5 = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
-    v6 = [v5 callDisplayStyle] != 3;
+    callDisplayStyleManager = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
+    v6 = [callDisplayStyleManager callDisplayStyle] != 3;
   }
 
   else
@@ -824,14 +824,14 @@ LABEL_12:
 - (BOOL)isFrontmostCallFaceTimeAudio
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 frontmostCall];
+  frontmostCall = [v2 frontmostCall];
 
-  if ([v3 isConversation])
+  if ([frontmostCall isConversation])
   {
-    v4 = [v3 provider];
-    if ([v4 isFaceTimeProvider])
+    provider = [frontmostCall provider];
+    if ([provider isFaceTimeProvider])
     {
-      v5 = [v3 isVideo] ^ 1;
+      v5 = [frontmostCall isVideo] ^ 1;
     }
 
     else
@@ -853,8 +853,8 @@ LABEL_12:
   v3 = +[TUCallCenter sharedInstance];
   if ([v3 isAmbiguous])
   {
-    v4 = [(PHCallParticipantsViewController *)self callGroups];
-    if ([v4 count] < 2)
+    callGroups = [(PHCallParticipantsViewController *)self callGroups];
+    if ([callGroups count] < 2)
     {
       LOBYTE(v8) = 0;
     }
@@ -863,8 +863,8 @@ LABEL_12:
     {
       v5 = +[TUCallCenter sharedInstance];
       v6 = [v5 callWithStatus:1];
-      v7 = [v6 model];
-      v8 = [v7 supportsHolding] ^ 1;
+      model = [v6 model];
+      v8 = [model supportsHolding] ^ 1;
     }
   }
 
@@ -876,10 +876,10 @@ LABEL_12:
   return v8;
 }
 
-- (PHCallParticipantsViewController)initWithCallDisplayStyleManager:(id)a3 contactsCache:(id)a4
+- (PHCallParticipantsViewController)initWithCallDisplayStyleManager:(id)manager contactsCache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  cacheCopy = cache;
   v17.receiver = self;
   v17.super_class = PHCallParticipantsViewController;
   v9 = [(PHCallParticipantsViewController *)&v17 init];
@@ -889,12 +889,12 @@ LABEL_12:
     features = v9->_features;
     v9->_features = v10;
 
-    objc_storeStrong(&v9->_callDisplayStyleManager, a3);
+    objc_storeStrong(&v9->_callDisplayStyleManager, manager);
     v12 = objc_opt_new();
     labelDescriptorFactory = v9->_labelDescriptorFactory;
     v9->_labelDescriptorFactory = v12;
 
-    objc_storeStrong(&v9->_contactsCache, a4);
+    objc_storeStrong(&v9->_contactsCache, cache);
     v14 = +[NSMutableDictionary dictionary];
     callUUIDToContactStore = v9->_callUUIDToContactStore;
     v9->_callUUIDToContactStore = v14;
@@ -903,11 +903,11 @@ LABEL_12:
   return v9;
 }
 
-- (PHCallParticipantsViewController)initWithCallDisplayStyleManager:(id)a3 contactsCache:(id)a4 contacts:(id)a5
+- (PHCallParticipantsViewController)initWithCallDisplayStyleManager:(id)manager contactsCache:(id)cache contacts:(id)contacts
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  cacheCopy = cache;
+  contactsCopy = contacts;
   v20.receiver = self;
   v20.super_class = PHCallParticipantsViewController;
   v12 = [(PHCallParticipantsViewController *)&v20 init];
@@ -917,13 +917,13 @@ LABEL_12:
     features = v12->_features;
     v12->_features = v13;
 
-    objc_storeStrong(&v12->_callDisplayStyleManager, a3);
+    objc_storeStrong(&v12->_callDisplayStyleManager, manager);
     v15 = objc_opt_new();
     labelDescriptorFactory = v12->_labelDescriptorFactory;
     v12->_labelDescriptorFactory = v15;
 
-    objc_storeStrong(&v12->_contactsCache, a4);
-    objc_storeStrong(&v12->_contacts, a5);
+    objc_storeStrong(&v12->_contactsCache, cache);
+    objc_storeStrong(&v12->_contacts, contacts);
     v17 = +[NSMutableDictionary dictionary];
     callUUIDToContactStore = v12->_callUUIDToContactStore;
     v12->_callUUIDToContactStore = v17;
@@ -932,17 +932,17 @@ LABEL_12:
   return v12;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PHCallParticipantsViewController;
-  [(PHCallParticipantsViewController *)&v8 viewDidAppear:a3];
-  v4 = [(PHCallParticipantsViewController *)self view];
-  [v4 bounds];
+  [(PHCallParticipantsViewController *)&v8 viewDidAppear:appear];
+  view = [(PHCallParticipantsViewController *)self view];
+  [view bounds];
   [(PHCallParticipantsViewController *)self updateParticipantViewWithSize:v5, v6];
 
-  v7 = [(PHCallParticipantsViewController *)self view];
-  [v7 setNeedsLayout];
+  view2 = [(PHCallParticipantsViewController *)self view];
+  [view2 setNeedsLayout];
 }
 
 - (void)dealloc
@@ -959,11 +959,11 @@ LABEL_12:
   [(PHCallParticipantsViewController *)&v5 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = PHCallParticipantsViewController;
-  [(PHCallParticipantsViewController *)&v11 viewWillAppear:a3];
+  [(PHCallParticipantsViewController *)&v11 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
   [v4 addObserver:self selector:"callStatusChangedNotification:" name:TUCallCenterCallStatusChangedNotification object:0];
@@ -975,10 +975,10 @@ LABEL_12:
   v5 = +[PHInCallUtilities sharedInstance];
   if ([v5 isIPadIdiom])
   {
-    v6 = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
-    v7 = [v6 usesLargeFormatUI];
+    callDisplayStyleManager = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
+    usesLargeFormatUI = [callDisplayStyleManager usesLargeFormatUI];
 
-    if (v7)
+    if (usesLargeFormatUI)
     {
       goto LABEL_6;
     }
@@ -994,8 +994,8 @@ LABEL_6:
   [v4 addObserver:self selector:"handleAlertDisconnectingCallsNotification:" name:@"PHAlertDisconnectingCallsNotification" object:0];
   [v4 addObserver:self selector:"tuCallHasBeenRedirectedChangedNotification:" name:TUCallHasBeenRedirectedChangedNotification object:0];
   v8 = +[TUCallCenter sharedInstance];
-  v9 = [v8 conversationManager];
-  [v9 addDelegate:self queue:&_dispatch_main_q];
+  conversationManager = [v8 conversationManager];
+  [conversationManager addDelegate:self queue:&_dispatch_main_q];
 
   v10 = +[PHIntervalTimer oneSecondTimer];
   [v10 addObserver:self selector:"secondTickNotification:"];
@@ -1003,18 +1003,18 @@ LABEL_6:
   [(PHCallParticipantsViewController *)self _updateCallGroups];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = PHCallParticipantsViewController;
-  [(PHCallParticipantsViewController *)&v8 viewDidDisappear:a3];
+  [(PHCallParticipantsViewController *)&v8 viewDidDisappear:disappear];
   v4 = +[TUCallCenter sharedInstance];
-  v5 = [v4 currentAudioAndVideoCallCount];
+  currentAudioAndVideoCallCount = [v4 currentAudioAndVideoCallCount];
 
-  if (!v5)
+  if (!currentAudioAndVideoCallCount)
   {
-    v6 = [(PHCallParticipantsViewController *)self callGroups];
-    [v6 removeAllObjects];
+    callGroups = [(PHCallParticipantsViewController *)self callGroups];
+    [callGroups removeAllObjects];
   }
 
   v7 = +[PHIntervalTimer oneSecondTimer];
@@ -1024,8 +1024,8 @@ LABEL_6:
 - (void)loadView
 {
   v3 = [PHCallParticipantsView alloc];
-  v4 = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
-  v5 = [(PHCallParticipantsView *)v3 initWithCallDisplayStyleManager:v4];
+  callDisplayStyleManager = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
+  v5 = [(PHCallParticipantsView *)v3 initWithCallDisplayStyleManager:callDisplayStyleManager];
 
   [(PHCallParticipantsView *)v5 setDelegate:self];
   [(PHCallParticipantsViewController *)self setParticipantsView:v5];
@@ -1039,9 +1039,9 @@ LABEL_6:
   [(PHCallParticipantsViewController *)&v2 viewDidLoad];
 }
 
-- (void)setPrioritizedCall:(id)a3
+- (void)setPrioritizedCall:(id)call
 {
-  obj = a3;
+  obj = call;
   WeakRetained = objc_loadWeakRetained(&self->_prioritizedCall);
   v5 = [WeakRetained isEqualToCall:obj];
 
@@ -1054,8 +1054,8 @@ LABEL_6:
 
 - (void)gameControllerDidChangeContext
 {
-  v2 = [(PHCallParticipantsViewController *)self view];
-  [v2 gameControllerDidChangeContext];
+  view = [(PHCallParticipantsViewController *)self view];
+  [view gameControllerDidChangeContext];
 }
 
 - (NSNumberFormatter)numberFormatter
@@ -1074,72 +1074,72 @@ LABEL_6:
   return numberFormatter;
 }
 
-- (void)callStatusChangedNotification:(id)a3
+- (void)callStatusChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "callStatusChangedNotification: %@", &v6, 0xCu);
   }
 
   [(PHCallParticipantsViewController *)self _updateCallGroups];
 }
 
-- (void)localSenderIdentityAccountUUIDChangedNotification:(id)a3
+- (void)localSenderIdentityAccountUUIDChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "localSenderIdentityAccountUUIDChangedNotification: %@", &v6, 0xCu);
   }
 
   [(PHCallParticipantsViewController *)self _updateCallGroups];
 }
 
-- (void)conferenceParticipantsChangedNotification:(id)a3
+- (void)conferenceParticipantsChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "conferenceParticipantsChangedNotification: %@", &v6, 0xCu);
   }
 
   [(PHCallParticipantsViewController *)self _updateCallGroups];
 }
 
-- (void)isThirdPartyVideoChangedNotification:(id)a3
+- (void)isThirdPartyVideoChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "isThirdPartyVideoChangedNotification: %@", &v6, 0xCu);
   }
 
   [(PHCallParticipantsViewController *)self _updateCallGroups];
 }
 
-- (void)callModelChangedNotification:(id)a3
+- (void)callModelChangedNotification:(id)notification
 {
   v4 = +[TUCallCenter sharedInstance];
-  v5 = [v4 isAmbiguous];
+  isAmbiguous = [v4 isAmbiguous];
 
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NOT AMBIGUOUS";
-    if (v5)
+    if (isAmbiguous)
     {
       v7 = @"AMBIGUOUS";
     }
@@ -1149,12 +1149,12 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "callModelChanged: %@", &v10, 0xCu);
   }
 
-  v8 = [(PHCallParticipantsViewController *)self shouldShowSingleDurationLabel];
-  v9 = [(PHCallParticipantsViewController *)self participantsView];
-  [v9 setShouldShowSingleDurationLabel:v8];
+  shouldShowSingleDurationLabel = [(PHCallParticipantsViewController *)self shouldShowSingleDurationLabel];
+  participantsView = [(PHCallParticipantsViewController *)self participantsView];
+  [participantsView setShouldShowSingleDurationLabel:shouldShowSingleDurationLabel];
 }
 
-- (void)displayContextChangedNotification:(id)a3
+- (void)displayContextChangedNotification:(id)notification
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1163,67 +1163,67 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "displayNameChanged", v6, 2u);
   }
 
-  v5 = [(PHCallParticipantsViewController *)self participantsView];
-  [v5 updateParticipants];
+  participantsView = [(PHCallParticipantsViewController *)self participantsView];
+  [participantsView updateParticipants];
 }
 
-- (void)secondTickNotification:(id)a3
+- (void)secondTickNotification:(id)notification
 {
   if ([(PHCallParticipantsViewController *)self anyLabelDescriptorIsDynamic])
   {
-    v4 = [(PHCallParticipantsViewController *)self participantsView];
-    [v4 updateParticipants];
+    participantsView = [(PHCallParticipantsViewController *)self participantsView];
+    [participantsView updateParticipants];
   }
 }
 
-- (void)callContinuityChangedNotification:(id)a3
+- (void)callContinuityChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "callContinuityChangedNotification: %@", &v6, 0xCu);
   }
 
   [(PHCallParticipantsViewController *)self _updateCallGroups];
 }
 
-- (void)handleAlertDisconnectingCallsNotification:(id)a3
+- (void)handleAlertDisconnectingCallsNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "handleAlertDisconnectingCallsNotification: %@", &v6, 0xCu);
   }
 
   [(PHCallParticipantsViewController *)self setCallIsAboutToEndForStewie:1];
 }
 
-- (void)tuCallHasBeenRedirectedChangedNotification:(id)a3
+- (void)tuCallHasBeenRedirectedChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "tuCallHasBeenRedirectedChangedNotification: %@", &v6, 0xCu);
   }
 
   [(PHCallParticipantsViewController *)self _updateCallGroups];
 }
 
-- (void)keypadDataSourceChangedNotification:(id)a3
+- (void)keypadDataSourceChangedNotification:(id)notification
 {
-  v19 = a3;
-  v4 = [(PHCallParticipantsViewController *)self numberFormatter];
-  v5 = [v19 object];
-  v6 = [v4 numberFromString:v5];
+  notificationCopy = notification;
+  numberFormatter = [(PHCallParticipantsViewController *)self numberFormatter];
+  object = [notificationCopy object];
+  v6 = [numberFormatter numberFromString:object];
 
   if (v6)
   {
@@ -1232,24 +1232,24 @@ LABEL_6:
 
   else
   {
-    [v19 object];
+    [notificationCopy object];
   }
   v7 = ;
-  v8 = [(PHCallParticipantsViewController *)self nameOverrideString];
+  nameOverrideString = [(PHCallParticipantsViewController *)self nameOverrideString];
 
-  if (v8)
+  if (nameOverrideString)
   {
     if ([(PHCallParticipantsViewController *)self shouldInsertSpaceBeforeNextOverrideStringCharacter])
     {
-      v9 = [(PHCallParticipantsViewController *)self nameOverrideString];
-      v10 = [NSString stringWithFormat:@"%@ %@", v9, v7];
+      nameOverrideString2 = [(PHCallParticipantsViewController *)self nameOverrideString];
+      v10 = [NSString stringWithFormat:@"%@ %@", nameOverrideString2, v7];
       [(PHCallParticipantsViewController *)self setNameOverrideString:v10];
     }
 
     else
     {
-      v11 = [(PHCallParticipantsViewController *)self nameOverrideString];
-      v12 = [v11 stringByAppendingString:v7];
+      nameOverrideString3 = [(PHCallParticipantsViewController *)self nameOverrideString];
+      v12 = [nameOverrideString3 stringByAppendingString:v7];
       [(PHCallParticipantsViewController *)self setNameOverrideString:v12];
     }
   }
@@ -1261,82 +1261,82 @@ LABEL_6:
 
   if ([(PHCallParticipantsViewController *)self allowsFieldModeSendButton])
   {
-    v13 = [(PHCallParticipantsViewController *)self nameOverrideString];
+    nameOverrideString4 = [(PHCallParticipantsViewController *)self nameOverrideString];
     v14 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-    v15 = [v13 stringByTrimmingCharactersInSet:v14];
+    v15 = [nameOverrideString4 stringByTrimmingCharactersInSet:v14];
     [v7 characterAtIndex:0];
     ShouldAutoDialGivenLastCharacter = PHStringShouldAutoDialGivenLastCharacter();
 
     if (ShouldAutoDialGivenLastCharacter)
     {
-      v17 = [(PHCallParticipantsViewController *)self participantsView];
-      [(PHCallParticipantsViewController *)self fieldModeSendButtonTappedInParticipantsView:v17];
+      participantsView = [(PHCallParticipantsViewController *)self participantsView];
+      [(PHCallParticipantsViewController *)self fieldModeSendButtonTappedInParticipantsView:participantsView];
     }
   }
 
   [(PHCallParticipantsViewController *)self setShouldInsertSpaceBeforeNextOverrideStringCharacter:0];
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"setShouldInsertSpaceBeforeNextOverrideStringCharacter" object:0];
   [(PHCallParticipantsViewController *)self performSelector:"setShouldInsertSpaceBeforeNextOverrideStringCharacter" withObject:0 afterDelay:4.0];
-  v18 = [(PHCallParticipantsViewController *)self participantsView];
-  [v18 updateParticipants];
+  participantsView2 = [(PHCallParticipantsViewController *)self participantsView];
+  [participantsView2 updateParticipants];
 }
 
-- (id)contactForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4
+- (id)contactForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view
 {
-  if ([(PHCallParticipantsViewController *)self shouldShowParticipantImageAtIndex:a3 inParticipantsView:a4])
+  if ([(PHCallParticipantsViewController *)self shouldShowParticipantImageAtIndex:index inParticipantsView:view])
   {
     if ([(PHCallParticipantsViewController *)self usesCompactMulticallUI])
     {
-      v6 = [(PHCallParticipantsViewController *)self frontmostCallGroup];
+      frontmostCallGroup = [(PHCallParticipantsViewController *)self frontmostCallGroup];
     }
 
     else
     {
-      v8 = [(PHCallParticipantsViewController *)self callGroups];
-      if ([v8 count] <= a3)
+      callGroups = [(PHCallParticipantsViewController *)self callGroups];
+      if ([callGroups count] <= index)
       {
-        v6 = 0;
+        frontmostCallGroup = 0;
       }
 
       else
       {
-        v9 = [(PHCallParticipantsViewController *)self callGroups];
-        v6 = [v9 objectAtIndexedSubscript:a3];
+        callGroups2 = [(PHCallParticipantsViewController *)self callGroups];
+        frontmostCallGroup = [callGroups2 objectAtIndexedSubscript:index];
       }
     }
 
-    v10 = [v6 calls];
-    v11 = [v10 count];
+    calls = [frontmostCallGroup calls];
+    v11 = [calls count];
 
     if (v11 == 1)
     {
-      v12 = [v6 calls];
-      v13 = [v12 firstObject];
+      calls2 = [frontmostCallGroup calls];
+      firstObject = [calls2 firstObject];
 
-      v14 = [(PHCallParticipantsViewController *)self callUUIDToContactStore];
-      v15 = [v13 uniqueProxyIdentifierUUID];
-      v16 = [v14 objectForKeyedSubscript:v15];
+      callUUIDToContactStore = [(PHCallParticipantsViewController *)self callUUIDToContactStore];
+      uniqueProxyIdentifierUUID = [firstObject uniqueProxyIdentifierUUID];
+      v16 = [callUUIDToContactStore objectForKeyedSubscript:uniqueProxyIdentifierUUID];
 
       if (v16)
       {
-        v17 = [(PHCallParticipantsViewController *)self callUUIDToContactStore];
-        v18 = [v13 uniqueProxyIdentifierUUID];
-        v19 = [v17 objectForKeyedSubscript:v18];
+        callUUIDToContactStore2 = [(PHCallParticipantsViewController *)self callUUIDToContactStore];
+        uniqueProxyIdentifierUUID2 = [firstObject uniqueProxyIdentifierUUID];
+        v19 = [callUUIDToContactStore2 objectForKeyedSubscript:uniqueProxyIdentifierUUID2];
       }
 
       else
       {
-        v17 = [CNContactStoreConfiguration tu_contactStoreConfigurationForCall:v13];
-        v19 = [[CNContactStore alloc] initWithConfiguration:v17];
-        v18 = [(PHCallParticipantsViewController *)self callUUIDToContactStore];
-        v20 = [v13 uniqueProxyIdentifierUUID];
-        [v18 setObject:v19 forKeyedSubscript:v20];
+        callUUIDToContactStore2 = [CNContactStoreConfiguration tu_contactStoreConfigurationForCall:firstObject];
+        v19 = [[CNContactStore alloc] initWithConfiguration:callUUIDToContactStore2];
+        uniqueProxyIdentifierUUID2 = [(PHCallParticipantsViewController *)self callUUIDToContactStore];
+        uniqueProxyIdentifierUUID3 = [firstObject uniqueProxyIdentifierUUID];
+        [uniqueProxyIdentifierUUID2 setObject:v19 forKeyedSubscript:uniqueProxyIdentifierUUID3];
       }
 
-      v21 = [v13 contactIdentifier];
+      contactIdentifier = [firstObject contactIdentifier];
       v22 = +[PHAudioCallViewController contactKeysToFetch];
-      v23 = [(PHCallParticipantsViewController *)self contactsCache];
-      v7 = [v19 contactForIdentifier:v21 keysToFetch:v22 usingCache:v23];
+      contactsCache = [(PHCallParticipantsViewController *)self contactsCache];
+      v7 = [v19 contactForIdentifier:contactIdentifier keysToFetch:v22 usingCache:contactsCache];
     }
 
     else
@@ -1353,52 +1353,52 @@ LABEL_6:
   return v7;
 }
 
-- (id)localizedSenderIdentityForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4
+- (id)localizedSenderIdentityForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view
 {
   if (PHDeviceSupportsDualSim())
   {
-    v6 = [(PHCallParticipantsViewController *)self callGroups];
-    v7 = [v6 objectAtIndexedSubscript:a3];
+    callGroups = [(PHCallParticipantsViewController *)self callGroups];
+    v7 = [callGroups objectAtIndexedSubscript:index];
 
-    v8 = [v7 calls];
-    v9 = [v8 firstObject];
-    v10 = [v9 provider];
-    v11 = [v10 prioritizedSenderIdentities];
-    v12 = [v11 count];
+    calls = [v7 calls];
+    firstObject = [calls firstObject];
+    provider = [firstObject provider];
+    prioritizedSenderIdentities = [provider prioritizedSenderIdentities];
+    v12 = [prioritizedSenderIdentities count];
 
     if (v12 < 2)
     {
-      v16 = 0;
+      localizedShortName = 0;
     }
 
     else
     {
-      v13 = [v7 calls];
-      v14 = [v13 firstObject];
-      v15 = [v14 localSenderIdentity];
+      calls2 = [v7 calls];
+      firstObject2 = [calls2 firstObject];
+      localSenderIdentity = [firstObject2 localSenderIdentity];
 
-      v16 = [v15 localizedShortName];
+      localizedShortName = [localSenderIdentity localizedShortName];
     }
   }
 
   else
   {
-    v16 = 0;
+    localizedShortName = 0;
   }
 
-  return v16;
+  return localizedShortName;
 }
 
-- (BOOL)shouldShowInfoButtonForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4
+- (BOOL)shouldShowInfoButtonForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view
 {
-  v6 = [TUCallCenter sharedInstance:a3];
-  v7 = [(PHCallParticipantsViewController *)self callGroups];
-  v8 = [v7 objectAtIndex:a3];
+  v6 = [TUCallCenter sharedInstance:index];
+  callGroups = [(PHCallParticipantsViewController *)self callGroups];
+  v8 = [callGroups objectAtIndex:index];
 
   if ([v6 currentCallCount])
   {
-    v9 = [v8 calls];
-    if ([v9 count] < 2)
+    calls = [v8 calls];
+    if ([calls count] < 2)
     {
       LOBYTE(v10) = 0;
     }
@@ -1414,76 +1414,76 @@ LABEL_6:
     LOBYTE(v10) = 0;
   }
 
-  v11 = [v6 frontmostCall];
-  if ([v11 isConversation])
+  frontmostCall = [v6 frontmostCall];
+  if ([frontmostCall isConversation])
   {
-    v12 = [v6 frontmostCall];
-    v13 = [v12 remoteParticipantHandles];
-    if ([v13 count] < 2)
+    frontmostCall2 = [v6 frontmostCall];
+    remoteParticipantHandles = [frontmostCall2 remoteParticipantHandles];
+    if ([remoteParticipantHandles count] < 2)
     {
-      v16 = 0;
+      isTelephonyProvider = 0;
     }
 
     else
     {
-      v14 = [v6 frontmostCall];
-      v15 = [v14 provider];
-      v16 = [v15 isTelephonyProvider];
+      frontmostCall3 = [v6 frontmostCall];
+      provider = [frontmostCall3 provider];
+      isTelephonyProvider = [provider isTelephonyProvider];
     }
   }
 
   else
   {
-    v16 = 0;
+    isTelephonyProvider = 0;
   }
 
-  return (v10 | v16) & 1;
+  return (v10 | isTelephonyProvider) & 1;
 }
 
-- (id)nameForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4
+- (id)nameForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view
 {
-  if ([(PHCallParticipantsViewController *)self usesCompactMulticallUI:a3])
+  if ([(PHCallParticipantsViewController *)self usesCompactMulticallUI:index])
   {
-    v6 = [(PHCallParticipantsViewController *)self frontmostCallGroup];
+    frontmostCallGroup = [(PHCallParticipantsViewController *)self frontmostCallGroup];
   }
 
   else
   {
-    v7 = [(PHCallParticipantsViewController *)self callGroups];
-    v6 = [v7 objectAtIndexedSubscript:a3];
+    callGroups = [(PHCallParticipantsViewController *)self callGroups];
+    frontmostCallGroup = [callGroups objectAtIndexedSubscript:index];
   }
 
-  v8 = [(PHCallParticipantsViewController *)self nameForCallGroup:v6];
+  v8 = [(PHCallParticipantsViewController *)self nameForCallGroup:frontmostCallGroup];
 
   return v8;
 }
 
-- (id)nameForCallGroup:(id)a3
+- (id)nameForCallGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(PHCallParticipantsViewController *)self nameOverrideString];
-  if (v5)
+  groupCopy = group;
+  nameOverrideString = [(PHCallParticipantsViewController *)self nameOverrideString];
+  if (nameOverrideString)
   {
     goto LABEL_29;
   }
 
-  v6 = [v4 calls];
-  if ([v6 count] == 1)
+  calls = [groupCopy calls];
+  if ([calls count] == 1)
   {
-    v7 = [v4 calls];
-    v8 = [v7 firstObject];
-    v9 = [v8 isConversation];
+    calls2 = [groupCopy calls];
+    firstObject = [calls2 firstObject];
+    isConversation = [firstObject isConversation];
 
-    if (v9)
+    if (isConversation)
     {
       v10 = +[TUCallCenter sharedInstance];
-      v11 = [v4 calls];
-      v12 = [v11 firstObject];
-      v13 = [v10 activeConversationForCall:v12];
+      calls3 = [groupCopy calls];
+      firstObject2 = [calls3 firstObject];
+      v13 = [v10 activeConversationForCall:firstObject2];
 
-      v14 = [v13 displayName];
+      displayName = [v13 displayName];
 
-      if (v14)
+      if (displayName)
       {
         goto LABEL_30;
       }
@@ -1494,19 +1494,19 @@ LABEL_6:
   {
   }
 
-  if ([v4 status] != 4)
+  if ([groupCopy status] != 4)
   {
     v15 = +[TUCallCenter sharedInstance];
     if ([v15 isAmbiguous])
     {
-      v16 = [(PHCallParticipantsViewController *)self shouldShowSingleDurationLabel];
+      shouldShowSingleDurationLabel = [(PHCallParticipantsViewController *)self shouldShowSingleDurationLabel];
 
-      if ((v16 & 1) == 0)
+      if ((shouldShowSingleDurationLabel & 1) == 0)
       {
         v17 = +[NSBundle mainBundle];
-        v14 = [v17 localizedStringForKey:@"AMBIGUOUS_CALL_LABEL" value:&stru_100361FD0 table:@"InCallService"];
+        displayName = [v17 localizedStringForKey:@"AMBIGUOUS_CALL_LABEL" value:&stru_100361FD0 table:@"InCallService"];
 
-        if (v14)
+        if (displayName)
         {
           goto LABEL_30;
         }
@@ -1518,94 +1518,94 @@ LABEL_6:
     }
   }
 
-  v18 = [(PHCallParticipantsViewController *)self callGroups];
-  if ([v18 count] != 1 || objc_msgSend(v4, "status") != 1)
+  callGroups = [(PHCallParticipantsViewController *)self callGroups];
+  if ([callGroups count] != 1 || objc_msgSend(groupCopy, "status") != 1)
   {
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v19 = [v4 calls];
-  v20 = [v19 firstObject];
-  v21 = [v20 provider];
-  if (![v21 isTelephonyProvider])
+  calls4 = [groupCopy calls];
+  firstObject3 = [calls4 firstObject];
+  provider = [firstObject3 provider];
+  if (![provider isTelephonyProvider])
   {
 
     goto LABEL_19;
   }
 
-  v22 = [v4 calls];
-  v23 = [v22 firstObject];
-  v24 = [v23 callDirectoryName];
-  if (v24)
+  calls5 = [groupCopy calls];
+  firstObject4 = [calls5 firstObject];
+  callDirectoryName = [firstObject4 callDirectoryName];
+  if (callDirectoryName)
   {
   }
 
   else
   {
-    v32 = [v4 calls];
-    v33 = [v32 firstObject];
-    v42 = [v33 isBranded];
+    calls6 = [groupCopy calls];
+    firstObject5 = [calls6 firstObject];
+    isBranded = [firstObject5 isBranded];
 
-    if ((v42 & 1) == 0)
+    if ((isBranded & 1) == 0)
     {
       goto LABEL_20;
     }
   }
 
-  v34 = [v4 calls];
-  v35 = [v34 firstObject];
+  calls7 = [groupCopy calls];
+  firstObject6 = [calls7 firstObject];
 
-  if ([v35 isScreening] && (objc_msgSend(v35, "smartHoldingSession"), v36 = objc_claimAutoreleasedReturnValue(), v36, !v36))
+  if ([firstObject6 isScreening] && (objc_msgSend(firstObject6, "smartHoldingSession"), v36 = objc_claimAutoreleasedReturnValue(), v36, !v36))
   {
-    v14 = [v35 localizedLabel];
+    displayName = [firstObject6 localizedLabel];
   }
 
   else
   {
-    v37 = [v4 calls];
-    v38 = [v37 firstObject];
-    v39 = [v38 callDurationString];
-    if (v39)
+    calls8 = [groupCopy calls];
+    firstObject7 = [calls8 firstObject];
+    callDurationString = [firstObject7 callDurationString];
+    if (callDurationString)
     {
-      v40 = [v4 calls];
-      v41 = [v40 firstObject];
-      v14 = [v41 callDurationString];
+      calls9 = [groupCopy calls];
+      firstObject8 = [calls9 firstObject];
+      displayName = [firstObject8 callDurationString];
     }
 
     else
     {
-      v14 = [NSString localizedStringWithFormat:@"%02d:%02d", 0, 0];
+      displayName = [NSString localizedStringWithFormat:@"%02d:%02d", 0, 0];
     }
   }
 
-  if (!v14)
+  if (!displayName)
   {
 LABEL_20:
-    v25 = [(PHCallParticipantsViewController *)self callGroups];
-    v26 = [v25 count];
+    callGroups2 = [(PHCallParticipantsViewController *)self callGroups];
+    v26 = [callGroups2 count];
 
     if (v26 == 2)
     {
-      v27 = [v4 calls];
-      v28 = [v27 firstObject];
+      calls10 = [groupCopy calls];
+      firstObject9 = [calls10 firstObject];
 
-      if ([v28 isBranded])
+      if ([firstObject9 isBranded])
       {
-        v29 = [v28 localizedLabel];
+        localizedLabel = [firstObject9 localizedLabel];
         goto LABEL_25;
       }
 
-      v30 = [v28 callDirectoryName];
+      callDirectoryName2 = [firstObject9 callDirectoryName];
 
-      if (v30)
+      if (callDirectoryName2)
       {
-        v29 = [v28 callDirectoryName];
+        localizedLabel = [firstObject9 callDirectoryName];
 LABEL_25:
-        v14 = v29;
+        displayName = localizedLabel;
 
-        if (v14)
+        if (displayName)
         {
           goto LABEL_30;
         }
@@ -1615,27 +1615,27 @@ LABEL_25:
     }
 
 LABEL_28:
-    v5 = [v4 displayName];
+    nameOverrideString = [groupCopy displayName];
 LABEL_29:
-    v14 = v5;
+    displayName = nameOverrideString;
   }
 
 LABEL_30:
 
-  return v14;
+  return displayName;
 }
 
-- (id)callForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4
+- (id)callForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view
 {
-  v6 = [TUCallCenter sharedInstance:a3];
+  v6 = [TUCallCenter sharedInstance:index];
   if ([v6 isAmbiguous])
   {
-    v7 = [(PHCallParticipantsViewController *)self shouldShowSingleDurationLabel];
+    shouldShowSingleDurationLabel = [(PHCallParticipantsViewController *)self shouldShowSingleDurationLabel];
 
-    if ((v7 & 1) == 0)
+    if ((shouldShowSingleDurationLabel & 1) == 0)
     {
-      v8 = [(PHCallParticipantsViewController *)self callGroups];
-      v9 = [v8 firstObject];
+      callGroups = [(PHCallParticipantsViewController *)self callGroups];
+      firstObject = [callGroups firstObject];
       goto LABEL_6;
     }
   }
@@ -1644,28 +1644,28 @@ LABEL_30:
   {
   }
 
-  v8 = [(PHCallParticipantsViewController *)self callGroups];
-  v9 = [v8 objectAtIndexedSubscript:a3];
+  callGroups = [(PHCallParticipantsViewController *)self callGroups];
+  firstObject = [callGroups objectAtIndexedSubscript:index];
 LABEL_6:
-  v10 = v9;
+  v10 = firstObject;
 
   if (![(PHCallParticipantsViewController *)self usesCompactMulticallUI])
   {
     goto LABEL_11;
   }
 
-  v11 = [(PHCallParticipantsViewController *)self callGroups];
-  if ([v11 count] >= 2)
+  callGroups2 = [(PHCallParticipantsViewController *)self callGroups];
+  if ([callGroups2 count] >= 2)
   {
-    v12 = [v10 status];
+    status = [v10 status];
 
-    if (v12 != 2)
+    if (status != 2)
     {
       goto LABEL_11;
     }
 
     [(PHCallParticipantsViewController *)self frontmostCallGroup];
-    v10 = v11 = v10;
+    v10 = callGroups2 = v10;
   }
 
 LABEL_11:
@@ -1673,36 +1673,36 @@ LABEL_11:
   return v10;
 }
 
-- (id)labelForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4 allowsDuration:(BOOL)a5
+- (id)labelForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view allowsDuration:(BOOL)duration
 {
-  v5 = a5;
-  v7 = [(PHCallParticipantsViewController *)self callForParticipantAtIndex:a3 inParticipantsView:a4];
-  v8 = [(PHCallParticipantsViewController *)self delegate];
+  durationCopy = duration;
+  v7 = [(PHCallParticipantsViewController *)self callForParticipantAtIndex:index inParticipantsView:view];
+  delegate = [(PHCallParticipantsViewController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(PHCallParticipantsViewController *)self delegate];
-    v11 = [v10 shouldRenderAlertTextColor];
+    delegate2 = [(PHCallParticipantsViewController *)self delegate];
+    shouldRenderAlertTextColor = [delegate2 shouldRenderAlertTextColor];
   }
 
   else
   {
-    v11 = 0;
+    shouldRenderAlertTextColor = 0;
   }
 
   labelDescriptorFactory = self->_labelDescriptorFactory;
-  v13 = [(PHCallParticipantsViewController *)self callGroups];
-  v14 = -[CNKCallParticipantLabelDescriptorFactory labelDescriptorWithStringsForCall:callCount:alertAvailable:allowsDuration:](labelDescriptorFactory, "labelDescriptorWithStringsForCall:callCount:alertAvailable:allowsDuration:", v7, [v13 count], v11, v5);
+  callGroups = [(PHCallParticipantsViewController *)self callGroups];
+  v14 = -[CNKCallParticipantLabelDescriptorFactory labelDescriptorWithStringsForCall:callCount:alertAvailable:allowsDuration:](labelDescriptorFactory, "labelDescriptorWithStringsForCall:callCount:alertAvailable:allowsDuration:", v7, [callGroups count], shouldRenderAlertTextColor, durationCopy);
 
   return v14;
 }
 
-- (id)supplementalParticipantLabelFormatStringAtIndex:(unint64_t)a3 inParticipantsView:(id)a4
+- (id)supplementalParticipantLabelFormatStringAtIndex:(unint64_t)index inParticipantsView:(id)view
 {
-  v6 = a4;
-  v7 = [(PHCallParticipantsViewController *)self callGroups];
-  v8 = [v7 count];
+  viewCopy = view;
+  callGroups = [(PHCallParticipantsViewController *)self callGroups];
+  v8 = [callGroups count];
 
   if (v8 >= 2 && (-[PHCallParticipantsViewController callDisplayStyleManager](self, "callDisplayStyleManager"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 usesLargeFormatUI], v9, (v10 & 1) != 0))
   {
@@ -1711,13 +1711,13 @@ LABEL_11:
 
   else
   {
-    v12 = [(PHCallParticipantsViewController *)self callForParticipantAtIndex:a3 inParticipantsView:v6];
-    v13 = [v12 supplementalInCallString];
-    if (v13 && ([v12 status] | 2) == 3)
+    v12 = [(PHCallParticipantsViewController *)self callForParticipantAtIndex:index inParticipantsView:viewCopy];
+    supplementalInCallString = [v12 supplementalInCallString];
+    if (supplementalInCallString && ([v12 status] | 2) == 3)
     {
       v14 = +[NSBundle conversationKit];
       v15 = [v14 localizedStringForKey:@"%@_FROM_OR_VIA_FORMAT_%@" value:&stru_100361FD0 table:@"CallStatus"];
-      v11 = [NSString stringWithFormat:v15, @"%@", v13];
+      v11 = [NSString stringWithFormat:v15, @"%@", supplementalInCallString];
     }
 
     else
@@ -1729,58 +1729,58 @@ LABEL_11:
   return v11;
 }
 
-- (unsigned)activityStateForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4
+- (unsigned)activityStateForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view
 {
-  if ([(PHCallParticipantsViewController *)self usesCompactMulticallUI:a3])
+  if ([(PHCallParticipantsViewController *)self usesCompactMulticallUI:index])
   {
-    v6 = [(PHCallParticipantsViewController *)self frontmostCallGroup];
+    frontmostCallGroup = [(PHCallParticipantsViewController *)self frontmostCallGroup];
   }
 
   else
   {
-    v7 = [(PHCallParticipantsViewController *)self callGroups];
-    v6 = [v7 objectAtIndexedSubscript:a3];
+    callGroups = [(PHCallParticipantsViewController *)self callGroups];
+    frontmostCallGroup = [callGroups objectAtIndexedSubscript:index];
   }
 
   v8 = +[TUCallCenter sharedInstance];
-  v9 = [v8 isAmbiguous];
+  isAmbiguous = [v8 isAmbiguous];
 
-  if (v9)
+  if (isAmbiguous)
   {
     goto LABEL_5;
   }
 
-  if ([v6 status] == 2)
+  if ([frontmostCallGroup status] == 2)
   {
-    v11 = [v6 calls];
-    v12 = [v11 firstObject];
-    v13 = [v12 statusIsProvisional];
+    calls = [frontmostCallGroup calls];
+    firstObject = [calls firstObject];
+    statusIsProvisional = [firstObject statusIsProvisional];
 
-    if (v13)
+    if (statusIsProvisional)
     {
       v10 = 2;
       goto LABEL_18;
     }
   }
 
-  if ([v6 status] == 5)
+  if ([frontmostCallGroup status] == 5)
   {
     v10 = 0;
     goto LABEL_18;
   }
 
-  if ([v6 status] == 6 && (objc_msgSend(v6, "calls"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "firstObject"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "disconnectedReasonRequiresCallBackUI"), v15, v14, (v16 & 1) != 0))
+  if ([frontmostCallGroup status] == 6 && (objc_msgSend(frontmostCallGroup, "calls"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "firstObject"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "disconnectedReasonRequiresCallBackUI"), v15, v14, (v16 & 1) != 0))
   {
 LABEL_5:
     v10 = 3;
   }
 
-  else if ([v6 status] == 2)
+  else if ([frontmostCallGroup status] == 2)
   {
     v10 = 1;
   }
 
-  else if ([v6 status] == 6)
+  else if ([frontmostCallGroup status] == 6)
   {
     v10 = 1;
   }
@@ -1795,44 +1795,44 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)shouldShowParticipantImageAtIndex:(unint64_t)a3 inParticipantsView:(id)a4
+- (BOOL)shouldShowParticipantImageAtIndex:(unint64_t)index inParticipantsView:(id)view
 {
-  v6 = [(PHCallParticipantsViewController *)self parentViewController:a3];
+  v6 = [(PHCallParticipantsViewController *)self parentViewController:index];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [(PHCallParticipantsViewController *)self parentViewController];
-    v9 = [(PHCallParticipantsViewController *)self features];
-    v10 = [v9 isHeroImageEnabled];
+    parentViewController = [(PHCallParticipantsViewController *)self parentViewController];
+    features = [(PHCallParticipantsViewController *)self features];
+    isHeroImageEnabled = [features isHeroImageEnabled];
 
-    if ((v10 & 1) != 0 || (-[PHCallParticipantsViewController callDisplayStyleManager](self, "callDisplayStyleManager"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 callDisplayStyle], v11, v12 == 3))
+    if ((isHeroImageEnabled & 1) != 0 || (-[PHCallParticipantsViewController callDisplayStyleManager](self, "callDisplayStyleManager"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 callDisplayStyle], v11, v12 == 3))
     {
-      v13 = [v8 shouldShowCircularAvatar];
+      shouldShowCircularAvatar = [parentViewController shouldShowCircularAvatar];
     }
 
     else
     {
-      v13 = [v8 isShowingBackgroundImage] ^ 1;
+      shouldShowCircularAvatar = [parentViewController isShowingBackgroundImage] ^ 1;
     }
   }
 
   else
   {
-    v13 = 1;
+    shouldShowCircularAvatar = 1;
   }
 
-  v14 = [(PHCallParticipantsViewController *)self parentViewController];
+  parentViewController2 = [(PHCallParticipantsViewController *)self parentViewController];
   objc_opt_class();
   v15 = objc_opt_isKindOfClass();
 
   if (v15)
   {
-    v16 = [(PHCallParticipantsViewController *)self parentViewController];
-    v17 = [v16 isShowingBackgroundImage];
+    parentViewController3 = [(PHCallParticipantsViewController *)self parentViewController];
+    isShowingBackgroundImage = [parentViewController3 isShowingBackgroundImage];
 
-    if (v17)
+    if (isShowingBackgroundImage)
     {
 LABEL_10:
       v18 = 0;
@@ -1840,43 +1840,43 @@ LABEL_10:
     }
   }
 
-  else if (!v13)
+  else if (!shouldShowCircularAvatar)
   {
     goto LABEL_10;
   }
 
   if ([(PHCallParticipantsViewController *)self usesCompactMulticallUI])
   {
-    v19 = [(PHCallParticipantsViewController *)self frontmostCallGroup];
+    frontmostCallGroup = [(PHCallParticipantsViewController *)self frontmostCallGroup];
   }
 
   else
   {
-    v20 = [(PHCallParticipantsViewController *)self callGroups];
-    if ([v20 count])
+    callGroups = [(PHCallParticipantsViewController *)self callGroups];
+    if ([callGroups count])
     {
-      v21 = [(PHCallParticipantsViewController *)self callGroups];
-      v19 = [v21 objectAtIndexedSubscript:a3];
+      callGroups2 = [(PHCallParticipantsViewController *)self callGroups];
+      frontmostCallGroup = [callGroups2 objectAtIndexedSubscript:index];
     }
 
     else
     {
-      v19 = 0;
+      frontmostCallGroup = 0;
     }
   }
 
-  v22 = [v19 calls];
-  v23 = [v22 firstObject];
+  calls = [frontmostCallGroup calls];
+  firstObject = [calls firstObject];
 
-  v24 = [v23 handle];
-  v25 = [v24 siriDisplayName];
-  if (v25)
+  handle = [firstObject handle];
+  siriDisplayName = [handle siriDisplayName];
+  if (siriDisplayName)
   {
-    v26 = v25;
-    v27 = [v23 handle];
-    v28 = [v27 shouldHideContact];
+    v26 = siriDisplayName;
+    handle2 = [firstObject handle];
+    shouldHideContact = [handle2 shouldHideContact];
 
-    v18 = v28 ^ 1;
+    v18 = shouldHideContact ^ 1;
   }
 
   else
@@ -1890,15 +1890,15 @@ LABEL_10:
 
 - (BOOL)isCallRinging
 {
-  v2 = [(PHCallParticipantsViewController *)self frontmostCallGroup];
-  v3 = [v2 status] == 4;
+  frontmostCallGroup = [(PHCallParticipantsViewController *)self frontmostCallGroup];
+  v3 = [frontmostCallGroup status] == 4;
 
   return v3;
 }
 
 - (BOOL)shouldShowParticipantLabel
 {
-  v3 = [(PHCallParticipantsViewController *)self delegate];
+  delegate = [(PHCallParticipantsViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -1906,86 +1906,86 @@ LABEL_10:
     return 1;
   }
 
-  v5 = [(PHCallParticipantsViewController *)self delegate];
-  v6 = [v5 participantsViewShouldShowParticipantLabel];
+  delegate2 = [(PHCallParticipantsViewController *)self delegate];
+  participantsViewShouldShowParticipantLabel = [delegate2 participantsViewShouldShowParticipantLabel];
 
-  return v6;
+  return participantsViewShouldShowParticipantLabel;
 }
 
-- (void)participantTappedAtIndex:(unint64_t)a3 inParticipantsView:(id)a4
+- (void)participantTappedAtIndex:(unint64_t)index inParticipantsView:(id)view
 {
-  v6 = [(PHCallParticipantsViewController *)self callGroups:a3];
+  v6 = [(PHCallParticipantsViewController *)self callGroups:index];
   if ([v6 count])
   {
-    v7 = [(PHCallParticipantsViewController *)self callGroups];
-    v8 = [v7 objectAtIndexedSubscript:a3];
-    v9 = [v8 calls];
-    v16 = [v9 firstObject];
+    callGroups = [(PHCallParticipantsViewController *)self callGroups];
+    v8 = [callGroups objectAtIndexedSubscript:index];
+    calls = [v8 calls];
+    firstObject = [calls firstObject];
   }
 
   else
   {
-    v16 = 0;
+    firstObject = 0;
   }
 
   v10 = +[TUCallCenter sharedInstance];
   v11 = [v10 callWithStatus:1];
 
-  if ([v16 isOnHold])
+  if ([firstObject isOnHold])
   {
-    v12 = [v11 model];
-    v13 = [v12 supportsHolding];
+    model = [v11 model];
+    supportsHolding = [model supportsHolding];
 
-    if (v13)
+    if (supportsHolding)
     {
       v14 = +[TUCallCenter sharedInstance];
       [v14 swapCalls];
     }
   }
 
-  v15 = [(PHCallParticipantsViewController *)self participantsView];
-  [v15 updateParticipantsAnimated:1];
+  participantsView = [(PHCallParticipantsViewController *)self participantsView];
+  [participantsView updateParticipantsAnimated:1];
 }
 
-- (void)participantViewInfoButtonTappedAtIndex:(unint64_t)a3 inParticipantsView:(id)a4
+- (void)participantViewInfoButtonTappedAtIndex:(unint64_t)index inParticipantsView:(id)view
 {
   v8 = objc_alloc_init(PHConferenceParticipantsViewController);
-  v5 = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
-  v6 = [v5 usesLargeFormatUI];
+  callDisplayStyleManager = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
+  usesLargeFormatUI = [callDisplayStyleManager usesLargeFormatUI];
 
-  if (v6)
+  if (usesLargeFormatUI)
   {
-    v7 = [[UINavigationController alloc] initWithRootViewController:v8];
-    [v7 setModalPresentationStyle:0];
-    [(PHCallParticipantsViewController *)self presentViewController:v7 animated:1 completion:0];
+    navigationController = [[UINavigationController alloc] initWithRootViewController:v8];
+    [navigationController setModalPresentationStyle:0];
+    [(PHCallParticipantsViewController *)self presentViewController:navigationController animated:1 completion:0];
   }
 
   else
   {
-    v7 = [(PHCallParticipantsViewController *)self navigationController];
-    [v7 pushViewController:v8 animated:1];
+    navigationController = [(PHCallParticipantsViewController *)self navigationController];
+    [navigationController pushViewController:v8 animated:1];
   }
 }
 
 - (void)participantViewCallDetailsGestureRecognizerTapped
 {
-  v3 = [(PHCallParticipantsViewController *)self delegate];
-  [v3 callParticipantsViewControllerDidTapCallDetailsGestureRecognizer:self];
+  delegate = [(PHCallParticipantsViewController *)self delegate];
+  [delegate callParticipantsViewControllerDidTapCallDetailsGestureRecognizer:self];
 }
 
-- (id)compactLabelTextForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4
+- (id)compactLabelTextForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view
 {
-  v5 = [(PHCallParticipantsViewController *)self callGroups:a3];
-  if ([v5 count] <= a3)
+  v5 = [(PHCallParticipantsViewController *)self callGroups:index];
+  if ([v5 count] <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndex:a3];
-    v7 = [v6 calls];
-    v8 = [v7 count];
+    v6 = [v5 objectAtIndex:index];
+    calls = [v6 calls];
+    v8 = [calls count];
 
     if (v8 < 2)
     {
@@ -2002,33 +2002,33 @@ LABEL_10:
   return v10;
 }
 
-- (void)setBannerButtonsState:(unint64_t)a3
+- (void)setBannerButtonsState:(unint64_t)state
 {
-  v4 = [(PHCallParticipantsViewController *)self view];
-  [v4 setBannerButtonsState:a3];
+  view = [(PHCallParticipantsViewController *)self view];
+  [view setBannerButtonsState:state];
 }
 
-- (void)setBannerAudioRouteButtonSelected:(BOOL)a3
+- (void)setBannerAudioRouteButtonSelected:(BOOL)selected
 {
-  v3 = a3;
-  v4 = [(PHCallParticipantsViewController *)self view];
-  [v4 setBannerAudioRouteButtonSelected:v3];
+  selectedCopy = selected;
+  view = [(PHCallParticipantsViewController *)self view];
+  [view setBannerAudioRouteButtonSelected:selectedCopy];
 }
 
-- (id)colorForStatusLabelForParticipantAtIndex:(unint64_t)a3 inParticipantsView:(id)a4
+- (id)colorForStatusLabelForParticipantAtIndex:(unint64_t)index inParticipantsView:(id)view
 {
-  v6 = [(PHCallParticipantsViewController *)self callDisplayStyleManager:a3];
+  v6 = [(PHCallParticipantsViewController *)self callDisplayStyleManager:index];
   v7 = +[PHUIConfiguration statusLabelFontColorForCallDisplayStyle:](PHUIConfiguration, "statusLabelFontColorForCallDisplayStyle:", [v6 callDisplayStyle]);
 
-  v8 = [(PHCallParticipantsViewController *)self callGroups];
-  v9 = [(PHCallParticipantsViewController *)self delegate];
+  callGroups = [(PHCallParticipantsViewController *)self callGroups];
+  delegate = [(PHCallParticipantsViewController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(PHCallParticipantsViewController *)self delegate];
-    v12 = [(PHCallParticipantsViewController *)self frontmostCall];
-    v13 = [v11 customColorForStatusLabelWithCall:v12];
+    delegate2 = [(PHCallParticipantsViewController *)self delegate];
+    frontmostCall = [(PHCallParticipantsViewController *)self frontmostCall];
+    v13 = [delegate2 customColorForStatusLabelWithCall:frontmostCall];
 
     if (v13)
     {
@@ -2038,31 +2038,31 @@ LABEL_10:
     }
   }
 
-  v15 = [(PHCallParticipantsViewController *)self delegate];
+  delegate3 = [(PHCallParticipantsViewController *)self delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [(PHCallParticipantsViewController *)self delegate];
-    v18 = [v17 shouldRenderAlertTextColor];
+    delegate4 = [(PHCallParticipantsViewController *)self delegate];
+    shouldRenderAlertTextColor = [delegate4 shouldRenderAlertTextColor];
   }
 
   else
   {
-    v18 = 0;
+    shouldRenderAlertTextColor = 0;
   }
 
-  if ([v8 count] > a3)
+  if ([callGroups count] > index)
   {
-    v19 = [v8 objectAtIndex:a3];
-    if (([v19 isSOS] | v18))
+    v19 = [callGroups objectAtIndex:index];
+    if (([v19 isSOS] | shouldRenderAlertTextColor))
     {
       v20 = +[UIColor systemRedColor];
 
       v7 = v20;
     }
 
-    if ((v18 & 1) == 0 && [v19 isBranded])
+    if ((shouldRenderAlertTextColor & 1) == 0 && [v19 isBranded])
     {
       v21 = +[UIColor labelColor];
 
@@ -2073,17 +2073,17 @@ LABEL_10:
   return v7;
 }
 
-- (id)colorForParticipantLabelView:(id)a3
+- (id)colorForParticipantLabelView:(id)view
 {
   v4 = +[UIColor labelColor];
-  v5 = [(PHCallParticipantsViewController *)self delegate];
+  delegate = [(PHCallParticipantsViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PHCallParticipantsViewController *)self delegate];
-    v8 = [(PHCallParticipantsViewController *)self frontmostCall];
-    v9 = [v7 customColorForParticipantLabelWithCall:v8];
+    delegate2 = [(PHCallParticipantsViewController *)self delegate];
+    frontmostCall = [(PHCallParticipantsViewController *)self frontmostCall];
+    v9 = [delegate2 customColorForParticipantLabelWithCall:frontmostCall];
 
     if (v9)
     {
@@ -2096,18 +2096,18 @@ LABEL_10:
   return v4;
 }
 
-- (id)fontForParticipantLabelView:(id)a3
+- (id)fontForParticipantLabelView:(id)view
 {
-  v4 = [a3 updatedParticipantMarqueeLabelFont];
-  v5 = [(PHCallParticipantsViewController *)self delegate];
+  updatedParticipantMarqueeLabelFont = [view updatedParticipantMarqueeLabelFont];
+  delegate = [(PHCallParticipantsViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PHCallParticipantsViewController *)self delegate];
-    v8 = [v7 shouldRenderAlertTextFont];
+    delegate2 = [(PHCallParticipantsViewController *)self delegate];
+    shouldRenderAlertTextFont = [delegate2 shouldRenderAlertTextFont];
 
-    v9 = v8 ^ 1;
+    v9 = shouldRenderAlertTextFont ^ 1;
   }
 
   else
@@ -2116,21 +2116,21 @@ LABEL_10:
   }
 
   v10 = +[PHInCallUtilities sharedInstance];
-  v11 = [v10 isIPadIdiom];
+  isIPadIdiom = [v10 isIPadIdiom];
 
-  if ((v11 & 1) == 0 && (v9 & 1) == 0)
+  if ((isIPadIdiom & 1) == 0 && (v9 & 1) == 0)
   {
     v12 = [UIFont preferredFontForTextStyle:UIFontTextStyleLargeTitle];
 
-    v13 = [v12 fontDescriptor];
-    v14 = [v13 fontDescriptorWithDesign:UIFontDescriptorSystemDesignDefault];
+    fontDescriptor = [v12 fontDescriptor];
+    v14 = [fontDescriptor fontDescriptorWithDesign:UIFontDescriptorSystemDesignDefault];
     v15 = [UIFont fontWithDescriptor:v14 size:0.0];
 
-    v16 = [v15 fontDescriptor];
-    v17 = [v16 fontDescriptorWithSymbolicTraits:2];
+    fontDescriptor2 = [v15 fontDescriptor];
+    v17 = [fontDescriptor2 fontDescriptorWithSymbolicTraits:2];
     v18 = [UIFont fontWithDescriptor:v17 size:96.0];
 
-    v4 = v12;
+    updatedParticipantMarqueeLabelFont = v12;
     goto LABEL_21;
   }
 
@@ -2138,8 +2138,8 @@ LABEL_10:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v19 = [(PHCallParticipantsViewController *)self callGroups];
-  v20 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  callGroups = [(PHCallParticipantsViewController *)self callGroups];
+  v20 = [callGroups countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v20)
   {
     goto LABEL_17;
@@ -2153,7 +2153,7 @@ LABEL_10:
     {
       if (*v29 != v22)
       {
-        objc_enumerationMutation(v19);
+        objc_enumerationMutation(callGroups);
       }
 
       v24 = *(*(&v28 + 1) + 8 * i);
@@ -2166,7 +2166,7 @@ LABEL_10:
 
       if ([v24 isSOS])
       {
-        [v4 pointSize];
+        [updatedParticipantMarqueeLabelFont pointSize];
         v26 = UIFontWeightSemibold;
 LABEL_20:
         v18 = [UIFont systemFontOfSize:v25 weight:v26];
@@ -2175,7 +2175,7 @@ LABEL_20:
       }
     }
 
-    v21 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    v21 = [callGroups countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v21)
     {
       continue;
@@ -2186,8 +2186,8 @@ LABEL_20:
 
 LABEL_17:
 
-  v4 = v4;
-  v18 = v4;
+  updatedParticipantMarqueeLabelFont = updatedParticipantMarqueeLabelFont;
+  v18 = updatedParticipantMarqueeLabelFont;
 LABEL_21:
 
   return v18;
@@ -2195,14 +2195,14 @@ LABEL_21:
 
 - (id)customFontForParticipantLabel
 {
-  v3 = [(PHCallParticipantsViewController *)self delegate];
+  delegate = [(PHCallParticipantsViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PHCallParticipantsViewController *)self delegate];
-    v6 = [(PHCallParticipantsViewController *)self frontmostCall];
-    v7 = [v5 customFontForParticipantLabelWithCall:v6];
+    delegate2 = [(PHCallParticipantsViewController *)self delegate];
+    frontmostCall = [(PHCallParticipantsViewController *)self frontmostCall];
+    v7 = [delegate2 customFontForParticipantLabelWithCall:frontmostCall];
   }
 
   else
@@ -2213,12 +2213,12 @@ LABEL_21:
   return v7;
 }
 
-- (id)fontForParticipantLabelViewStatusLabel:(id)a3
+- (id)fontForParticipantLabelViewStatusLabel:(id)label
 {
-  v4 = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
-  v5 = +[PHUIConfiguration singleCallStatusLabelFontForCallDisplayStyle:](PHUIConfiguration, "singleCallStatusLabelFontForCallDisplayStyle:", [v4 callDisplayStyle]);
+  callDisplayStyleManager = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
+  v5 = +[PHUIConfiguration singleCallStatusLabelFontForCallDisplayStyle:](PHUIConfiguration, "singleCallStatusLabelFontForCallDisplayStyle:", [callDisplayStyleManager callDisplayStyle]);
 
-  v6 = [(PHCallParticipantsViewController *)self delegate];
+  delegate = [(PHCallParticipantsViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if ((v7 & 1) != 0 && (-[PHCallParticipantsViewController delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 shouldRenderAlertTextFont], v8, v9))
@@ -2237,18 +2237,18 @@ LABEL_21:
   return v11;
 }
 
-- (id)iconInParticipantsView:(id)a3
+- (id)iconInParticipantsView:(id)view
 {
-  v3 = [(PHCallParticipantsViewController *)self callGroups];
-  v4 = [v3 firstObject];
+  callGroups = [(PHCallParticipantsViewController *)self callGroups];
+  firstObject = [callGroups firstObject];
 
-  if (v4 && ([v4 provider], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isSystemProvider"), v5, (v6 & 1) == 0))
+  if (firstObject && ([firstObject provider], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isSystemProvider"), v5, (v6 & 1) == 0))
   {
-    v8 = [v4 provider];
-    v9 = [v8 bundleIdentifier];
+    provider = [firstObject provider];
+    bundleIdentifier = [provider bundleIdentifier];
     v10 = +[UIScreen mainScreen];
     [v10 scale];
-    v7 = [UIImage _applicationIconImageForBundleIdentifier:v9 format:5 scale:?];
+    v7 = [UIImage _applicationIconImageForBundleIdentifier:bundleIdentifier format:5 scale:?];
   }
 
   else
@@ -2259,39 +2259,39 @@ LABEL_21:
   return v7;
 }
 
-- (void)participantsView:(id)a3 didPerformActionType:(int64_t)a4
+- (void)participantsView:(id)view didPerformActionType:(int64_t)type
 {
-  v6 = [(PHCallParticipantsViewController *)self delegate];
+  delegate = [(PHCallParticipantsViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(PHCallParticipantsViewController *)self delegate];
-    [v8 callParticipantsViewController:self didPerformActionType:a4];
+    delegate2 = [(PHCallParticipantsViewController *)self delegate];
+    [delegate2 callParticipantsViewController:self didPerformActionType:type];
   }
 }
 
-- (void)conversationManager:(id)a3 addedActiveConversation:(id)a4
+- (void)conversationManager:(id)manager addedActiveConversation:(id)conversation
 {
-  v5 = a4;
-  if ([v5 isOneToOneModeEnabled] && (objc_msgSend(v5, "isVideo") & 1) == 0)
+  conversationCopy = conversation;
+  if ([conversationCopy isOneToOneModeEnabled] && (objc_msgSend(conversationCopy, "isVideo") & 1) == 0)
   {
     [(PHCallParticipantsViewController *)self _updateCallGroups];
   }
 }
 
-- (void)setAllowsFieldModeSendButton:(BOOL)a3
+- (void)setAllowsFieldModeSendButton:(BOOL)button
 {
-  v3 = a3;
-  v4 = [(PHCallParticipantsViewController *)self participantsView];
-  [v4 setAllowsFieldModeSendButton:v3];
+  buttonCopy = button;
+  participantsView = [(PHCallParticipantsViewController *)self participantsView];
+  [participantsView setAllowsFieldModeSendButton:buttonCopy];
 }
 
-- (void)fieldModeSendButtonTappedInParticipantsView:(id)a3
+- (void)fieldModeSendButtonTappedInParticipantsView:(id)view
 {
-  v4 = [(PHCallParticipantsViewController *)self nameOverrideString];
+  nameOverrideString = [(PHCallParticipantsViewController *)self nameOverrideString];
   v5 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  v6 = [nameOverrideString stringByTrimmingCharactersInSet:v5];
 
   if ([v6 length] && (PHLaunchFieldTestApplicationIfNecessaryForDestinationID() & 1) == 0)
   {
@@ -2303,48 +2303,48 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Field Mode: Dialing digits %@", &v12, 0xCu);
     }
 
-    v8 = [(PHCallParticipantsViewController *)self callGroups];
-    v9 = [v8 lastObject];
+    callGroups = [(PHCallParticipantsViewController *)self callGroups];
+    lastObject = [callGroups lastObject];
 
     v10 = +[TUCallCenter sharedInstance];
-    v11 = [v9 provider];
-    [v10 sendFieldModeDigits:v6 forProvider:v11];
+    provider = [lastObject provider];
+    [v10 sendFieldModeDigits:v6 forProvider:provider];
   }
 }
 
 - (BOOL)isDeviceCapableOfTelephonyCalls
 {
   v2 = +[FTDeviceSupport sharedInstance];
-  v3 = [v2 isTelephonyDevice];
+  isTelephonyDevice = [v2 isTelephonyDevice];
 
-  return v3;
+  return isTelephonyDevice;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = PHCallParticipantsViewController;
-  v7 = a4;
-  [(PHCallParticipantsViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(PHCallParticipantsViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(PHCallParticipantsViewController *)self updateParticipantViewWithSize:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000CDA7C;
   v8[3] = &unk_100358FC0;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:&stru_100359000];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:&stru_100359000];
 }
 
-- (void)updateParticipantViewWithSize:(CGSize)a3
+- (void)updateParticipantViewWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
-  v7 = [v6 usesLargeFormatUI];
+  height = size.height;
+  width = size.width;
+  callDisplayStyleManager = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
+  usesLargeFormatUI = [callDisplayStyleManager usesLargeFormatUI];
 
-  if (!v7)
+  if (!usesLargeFormatUI)
   {
     return;
   }
@@ -2359,40 +2359,40 @@ LABEL_21:
     return;
   }
 
-  v8 = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
-  v9 = [v8 callDisplayStyle];
+  callDisplayStyleManager2 = [(PHCallParticipantsViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
-  if (!v9)
+  if (!callDisplayStyle)
   {
     return;
   }
 
-  v10 = [(PHCallParticipantsViewController *)self delegate];
-  v11 = [(NSArray *)self->_contacts firstObject];
-  v12 = [v10 callParticipantsViewControllerHasHighResolutionImageOrWallpaperForContact:v11];
+  delegate = [(PHCallParticipantsViewController *)self delegate];
+  firstObject = [(NSArray *)self->_contacts firstObject];
+  v12 = [delegate callParticipantsViewControllerHasHighResolutionImageOrWallpaperForContact:firstObject];
 
   v13 = +[TUCallCenter sharedInstance];
-  v14 = [v13 conferenceCall];
+  conferenceCall = [v13 conferenceCall];
 
   v15 = +[TUCallCenter sharedInstance];
-  v16 = [v15 currentCalls];
-  v17 = [v16 count];
+  currentCalls = [v15 currentCalls];
+  v17 = [currentCalls count];
 
-  v23 = [(NSArray *)self->_contacts firstObject];
-  if (v14 || v17 >= 2 || v12)
+  firstObject2 = [(NSArray *)self->_contacts firstObject];
+  if (conferenceCall || v17 >= 2 || v12)
   {
-    v18 = [(PHCallParticipantsViewController *)self participantsView];
-    v19 = v18;
+    participantsView = [(PHCallParticipantsViewController *)self participantsView];
+    v19 = participantsView;
   }
 
   else
   {
-    v21 = [(NSArray *)self->_contacts firstObject];
-    v22 = [v21 imageData];
+    firstObject3 = [(NSArray *)self->_contacts firstObject];
+    imageData = [firstObject3 imageData];
 
-    v18 = [(PHCallParticipantsViewController *)self participantsView];
-    v19 = v18;
-    if (v22)
+    participantsView = [(PHCallParticipantsViewController *)self participantsView];
+    v19 = participantsView;
+    if (imageData)
     {
       v20 = 1;
       goto LABEL_10;
@@ -2401,17 +2401,17 @@ LABEL_21:
 
   v20 = 0;
 LABEL_10:
-  [v18 updateSubviewWithLayout:v20 forContact:v23];
+  [participantsView updateSubviewWithLayout:v20 forContact:firstObject2];
 }
 
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle
 {
-  v5 = [(PHCallParticipantsViewController *)self view:a3];
+  v5 = [(PHCallParticipantsViewController *)self view:style];
   [v5 bounds];
   [(PHCallParticipantsViewController *)self updateParticipantViewWithSize:v6, v7];
 
-  v8 = [(PHCallParticipantsViewController *)self view];
-  [v8 setNeedsLayout];
+  view = [(PHCallParticipantsViewController *)self view];
+  [view setNeedsLayout];
 }
 
 @end

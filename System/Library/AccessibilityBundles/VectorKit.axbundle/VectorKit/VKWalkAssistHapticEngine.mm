@@ -2,12 +2,12 @@
 - (VKWalkAssistHapticEngine)init;
 - (id)enterPattern;
 - (id)exitPattern;
-- (id)singlePulsePatternWithIntensity:(float)a3 duration:(double)a4;
-- (void)_playHapticFromHapticPattern:(id)a3;
+- (id)singlePulsePatternWithIntensity:(float)intensity duration:(double)duration;
+- (void)_playHapticFromHapticPattern:(id)pattern;
 - (void)playEnterHaptic;
 - (void)playExitHaptic;
-- (void)playSingleHapticPulseWithIntensity:(float)a3 duration:(double)a4;
-- (void)setUsesHapticFeedback:(BOOL)a3;
+- (void)playSingleHapticPulseWithIntensity:(float)intensity duration:(double)duration;
+- (void)setUsesHapticFeedback:(BOOL)feedback;
 @end
 
 @implementation VKWalkAssistHapticEngine
@@ -36,27 +36,27 @@
 
 - (void)playEnterHaptic
 {
-  v3 = [(VKWalkAssistHapticEngine *)self enterPattern];
-  [(VKWalkAssistHapticEngine *)self _playHapticFromHapticPattern:v3];
+  enterPattern = [(VKWalkAssistHapticEngine *)self enterPattern];
+  [(VKWalkAssistHapticEngine *)self _playHapticFromHapticPattern:enterPattern];
 }
 
 - (void)playExitHaptic
 {
-  v3 = [(VKWalkAssistHapticEngine *)self exitPattern];
-  [(VKWalkAssistHapticEngine *)self _playHapticFromHapticPattern:v3];
+  exitPattern = [(VKWalkAssistHapticEngine *)self exitPattern];
+  [(VKWalkAssistHapticEngine *)self _playHapticFromHapticPattern:exitPattern];
 }
 
-- (void)playSingleHapticPulseWithIntensity:(float)a3 duration:(double)a4
+- (void)playSingleHapticPulseWithIntensity:(float)intensity duration:(double)duration
 {
   v5 = [VKWalkAssistHapticEngine singlePulsePatternWithIntensity:"singlePulsePatternWithIntensity:duration:" duration:?];
   [(VKWalkAssistHapticEngine *)self _playHapticFromHapticPattern:v5];
 }
 
-- (void)setUsesHapticFeedback:(BOOL)a3
+- (void)setUsesHapticFeedback:(BOOL)feedback
 {
-  if (self->_usesHapticFeedback != a3)
+  if (self->_usesHapticFeedback != feedback)
   {
-    if (!a3)
+    if (!feedback)
     {
       if (!self->_hapticEngineStarted)
       {
@@ -78,10 +78,10 @@
 
     if (!self->_hapticEngineStarted)
     {
-      v4 = [MEMORY[0x29EDB9130] capabilitiesForHardware];
-      v5 = [v4 supportsHaptics];
+      capabilitiesForHardware = [MEMORY[0x29EDB9130] capabilitiesForHardware];
+      supportsHaptics = [capabilitiesForHardware supportsHaptics];
 
-      if (v5)
+      if (supportsHaptics)
       {
         v24 = 0;
         v6 = [objc_alloc(MEMORY[0x29EDB9130]) initAndReturnError:&v24];
@@ -356,17 +356,17 @@ void __50__VKWalkAssistHapticEngine_setUsesHapticFeedback___block_invoke_286(uin
   return v26;
 }
 
-- (id)singlePulsePatternWithIntensity:(float)a3 duration:(double)a4
+- (id)singlePulsePatternWithIntensity:(float)intensity duration:(double)duration
 {
   v19[1] = *MEMORY[0x29EDCA608];
   v6 = objc_alloc(MEMORY[0x29EDB9140]);
-  *&v7 = a3;
+  *&v7 = intensity;
   v8 = [v6 initWithParameterID:*MEMORY[0x29EDB9110] value:v7];
   v9 = objc_alloc(MEMORY[0x29EDB9138]);
   v10 = *MEMORY[0x29EDB9128];
   v19[0] = v8;
   v11 = [MEMORY[0x29EDB8D80] arrayWithObjects:v19 count:1];
-  v12 = [v9 initWithEventType:v10 parameters:v11 relativeTime:0.0 duration:a4];
+  v12 = [v9 initWithEventType:v10 parameters:v11 relativeTime:0.0 duration:duration];
 
   v13 = objc_alloc(MEMORY[0x29EDB9148]);
   v18 = v12;
@@ -377,11 +377,11 @@ void __50__VKWalkAssistHapticEngine_setUsesHapticFeedback___block_invoke_286(uin
   return v15;
 }
 
-- (void)_playHapticFromHapticPattern:(id)a3
+- (void)_playHapticFromHapticPattern:(id)pattern
 {
   v12[4] = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  if (v4 && self->_usesHapticFeedback)
+  patternCopy = pattern;
+  if (patternCopy && self->_usesHapticFeedback)
   {
     if (!self->_hapticEngineStarted)
     {
@@ -408,7 +408,7 @@ LABEL_13:
 
     v9 = self->_hapticEngine;
     v11 = 0;
-    v8 = [(CHHapticEngine *)v9 createAdvancedPlayerWithPattern:v4 error:&v11];
+    v8 = [(CHHapticEngine *)v9 createAdvancedPlayerWithPattern:patternCopy error:&v11];
     v7 = v11;
     if (v7)
     {

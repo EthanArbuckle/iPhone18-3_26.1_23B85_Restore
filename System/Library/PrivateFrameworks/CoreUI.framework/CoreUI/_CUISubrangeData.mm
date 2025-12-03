@@ -1,5 +1,5 @@
 @interface _CUISubrangeData
-- (_CUISubrangeData)initWithData:(id)a3 range:(_NSRange)a4;
+- (_CUISubrangeData)initWithData:(id)data range:(_NSRange)range;
 - (void)dealloc;
 @end
 
@@ -12,16 +12,16 @@
   [(_CUISubrangeData *)&v3 dealloc];
 }
 
-- (_CUISubrangeData)initWithData:(id)a3 range:(_NSRange)a4
+- (_CUISubrangeData)initWithData:(id)data range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9.receiver = self;
   v9.super_class = _CUISubrangeData;
   v7 = [(_CUISubrangeData *)&v9 init];
   if (v7)
   {
-    v7->_data = a3;
+    v7->_data = data;
     v7->_range.location = location;
     v7->_range.length = length;
   }

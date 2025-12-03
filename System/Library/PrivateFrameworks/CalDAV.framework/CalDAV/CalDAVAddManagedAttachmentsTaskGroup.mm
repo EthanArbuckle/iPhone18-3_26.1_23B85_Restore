@@ -1,30 +1,30 @@
 @interface CalDAVAddManagedAttachmentsTaskGroup
 - (BOOL)_postedLastAttachment;
-- (CalDAVAddManagedAttachmentsTaskGroup)initWithAccountInfoProvider:(id)a3 resourceURL:(id)a4 attachments:(id)a5 contentTypes:(id)a6 taskManager:(id)a7;
+- (CalDAVAddManagedAttachmentsTaskGroup)initWithAccountInfoProvider:(id)provider resourceURL:(id)l attachments:(id)attachments contentTypes:(id)types taskManager:(id)manager;
 - (id)urlWithQuery;
 - (void)_fetchUpdatedContent;
-- (void)_handlePostResponse:(id)a3;
+- (void)_handlePostResponse:(id)response;
 - (void)_sendAttachments;
 - (void)startTaskGroup;
 @end
 
 @implementation CalDAVAddManagedAttachmentsTaskGroup
 
-- (CalDAVAddManagedAttachmentsTaskGroup)initWithAccountInfoProvider:(id)a3 resourceURL:(id)a4 attachments:(id)a5 contentTypes:(id)a6 taskManager:(id)a7
+- (CalDAVAddManagedAttachmentsTaskGroup)initWithAccountInfoProvider:(id)provider resourceURL:(id)l attachments:(id)attachments contentTypes:(id)types taskManager:(id)manager
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  attachmentsCopy = attachments;
+  typesCopy = types;
   v20.receiver = self;
   v20.super_class = CalDAVAddManagedAttachmentsTaskGroup;
-  v15 = [(CoreDAVTaskGroup *)&v20 initWithAccountInfoProvider:a3 taskManager:a7];
+  v15 = [(CoreDAVTaskGroup *)&v20 initWithAccountInfoProvider:provider taskManager:manager];
   v16 = v15;
   if (v15)
   {
     [(CalDAVAddManagedAttachmentsTaskGroup *)v15 setState:0];
-    [(CalDAVAddManagedAttachmentsTaskGroup *)v16 setResourceURL:v12];
-    [(CalDAVAddManagedAttachmentsTaskGroup *)v16 setAttachments:v13];
-    [(CalDAVAddManagedAttachmentsTaskGroup *)v16 setContentTypes:v14];
+    [(CalDAVAddManagedAttachmentsTaskGroup *)v16 setResourceURL:lCopy];
+    [(CalDAVAddManagedAttachmentsTaskGroup *)v16 setAttachments:attachmentsCopy];
+    [(CalDAVAddManagedAttachmentsTaskGroup *)v16 setContentTypes:typesCopy];
     v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
     filenamesToServerLocation = v16->_filenamesToServerLocation;
     v16->_filenamesToServerLocation = v17;
@@ -35,10 +35,10 @@
 
 - (BOOL)_postedLastAttachment
 {
-  v3 = [(CalDAVAddManagedAttachmentsTaskGroup *)self attachments];
-  v4 = [v3 count];
-  v5 = [(CalDAVAddManagedAttachmentsTaskGroup *)self filenamesToServerLocation];
-  LOBYTE(v4) = v4 <= [v5 count];
+  attachments = [(CalDAVAddManagedAttachmentsTaskGroup *)self attachments];
+  v4 = [attachments count];
+  filenamesToServerLocation = [(CalDAVAddManagedAttachmentsTaskGroup *)self filenamesToServerLocation];
+  LOBYTE(v4) = v4 <= [filenamesToServerLocation count];
 
   return v4;
 }
@@ -49,8 +49,8 @@
   if (!postURLWithQuery)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(CalDAVAddManagedAttachmentsTaskGroup *)self resourceURL];
-    v6 = [v4 stringWithFormat:@"%@%@", v5, @"?action=attachment-add"];
+    resourceURL = [(CalDAVAddManagedAttachmentsTaskGroup *)self resourceURL];
+    v6 = [v4 stringWithFormat:@"%@%@", resourceURL, @"?action=attachment-add"];
 
     v7 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v6];
     v8 = self->_postURLWithQuery;
@@ -66,11 +66,11 @@
 {
   [(CalDAVAddManagedAttachmentsTaskGroup *)self setState:2];
   v3 = objc_alloc(MEMORY[0x277CFDBC8]);
-  v4 = [(CalDAVAddManagedAttachmentsTaskGroup *)self resourceURL];
-  v5 = [v3 initWithURL:v4];
+  resourceURL = [(CalDAVAddManagedAttachmentsTaskGroup *)self resourceURL];
+  v5 = [v3 initWithURL:resourceURL];
 
-  v6 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-  [v5 setAccountInfoProvider:v6];
+  accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  [v5 setAccountInfoProvider:accountInfoProvider];
 
   objc_initWeak(&location, v5);
   v8[0] = MEMORY[0x277D85DD0];
@@ -80,8 +80,8 @@
   v8[4] = self;
   objc_copyWeak(&v9, &location);
   [v5 setCompletionBlock:v8];
-  v7 = [(CoreDAVTaskGroup *)self taskManager];
-  [v7 submitQueuedCoreDAVTask:v5];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  [taskManager submitQueuedCoreDAVTask:v5];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -122,41 +122,41 @@ void __60__CalDAVAddManagedAttachmentsTaskGroup__fetchUpdatedContent__block_invo
   [v14 _finishWithError:v15 state:v13];
 }
 
-- (void)_handlePostResponse:(id)a3
+- (void)_handlePostResponse:(id)response
 {
-  v30 = a3;
-  v4 = [v30 error];
+  responseCopy = response;
+  error = [responseCopy error];
 
-  if (!v4)
+  if (!error)
   {
     [(CalDAVAddManagedAttachmentsTaskGroup *)self setPreviousScheduleTag:0];
     [(CalDAVAddManagedAttachmentsTaskGroup *)self setPreviousETag:0];
-    v9 = [v30 responseHeaders];
-    v10 = [v9 CDVObjectForKeyCaseInsensitive:@"Schedule-Tag"];
+    responseHeaders = [responseCopy responseHeaders];
+    v10 = [responseHeaders CDVObjectForKeyCaseInsensitive:@"Schedule-Tag"];
     [(CalDAVAddManagedAttachmentsTaskGroup *)self setUpdatedScheduleTag:v10];
 
-    v11 = [v30 responseHeaders];
-    v12 = [v11 CDVObjectForKeyCaseInsensitive:*MEMORY[0x277CFDB30]];
+    responseHeaders2 = [responseCopy responseHeaders];
+    v12 = [responseHeaders2 CDVObjectForKeyCaseInsensitive:*MEMORY[0x277CFDB30]];
     [(CalDAVAddManagedAttachmentsTaskGroup *)self setUpdatedETag:v12];
 
-    v13 = [v30 responseHeaders];
-    v14 = [v13 CDVObjectForKeyCaseInsensitive:*MEMORY[0x277CFDB48]];
+    responseHeaders3 = [responseCopy responseHeaders];
+    v14 = [responseHeaders3 CDVObjectForKeyCaseInsensitive:*MEMORY[0x277CFDB48]];
     v15 = v14;
     if (v14)
     {
-      v16 = v14;
+      null = v14;
     }
 
     else
     {
-      v16 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v19 = v16;
+    v19 = null;
 
     filenamesToServerLocation = self->_filenamesToServerLocation;
-    v25 = [v30 filename];
-    [(NSMutableDictionary *)filenamesToServerLocation setObject:v19 forKey:v25];
+    filename = [responseCopy filename];
+    [(NSMutableDictionary *)filenamesToServerLocation setObject:v19 forKey:filename];
 
     if (![(CalDAVAddManagedAttachmentsTaskGroup *)self _postedLastAttachment])
     {
@@ -164,14 +164,14 @@ void __60__CalDAVAddManagedAttachmentsTaskGroup__fetchUpdatedContent__block_invo
       goto LABEL_19;
     }
 
-    v26 = [v30 responseData];
-    [(CalDAVAddManagedAttachmentsTaskGroup *)self setUpdatedResourcePayload:v26];
+    responseData = [responseCopy responseData];
+    [(CalDAVAddManagedAttachmentsTaskGroup *)self setUpdatedResourcePayload:responseData];
 
-    v27 = [v30 responseData];
-    if ([v27 length])
+    responseData2 = [responseCopy responseData];
+    if ([responseData2 length])
     {
-      v28 = [(CalDAVAddManagedAttachmentsTaskGroup *)self updatedScheduleTag];
-      if (v28)
+      updatedScheduleTag = [(CalDAVAddManagedAttachmentsTaskGroup *)self updatedScheduleTag];
+      if (updatedScheduleTag)
       {
 
 LABEL_18:
@@ -179,9 +179,9 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v29 = [(CalDAVAddManagedAttachmentsTaskGroup *)self updatedETag];
+      updatedETag = [(CalDAVAddManagedAttachmentsTaskGroup *)self updatedETag];
 
-      if (v29)
+      if (updatedETag)
       {
         goto LABEL_18;
       }
@@ -195,14 +195,14 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v5 = [v30 error];
-  v6 = [v5 domain];
-  if ([v6 isEqualToString:*MEMORY[0x277CFDB80]])
+  error2 = [responseCopy error];
+  domain = [error2 domain];
+  if ([domain isEqualToString:*MEMORY[0x277CFDB80]])
   {
-    v7 = [v30 error];
-    v8 = [v7 code];
+    error3 = [responseCopy error];
+    code = [error3 code];
 
-    if (v8 == 412)
+    if (code == 412)
     {
       [(CalDAVAddManagedAttachmentsTaskGroup *)self setHadPreconditionFailure:1];
       [(CalDAVAddManagedAttachmentsTaskGroup *)self setPreviousScheduleTag:0];
@@ -217,16 +217,16 @@ LABEL_18:
   }
 
   v17 = MEMORY[0x277CCABB0];
-  v18 = [v30 requestDataPayload];
-  v19 = [v17 numberWithUnsignedLongLong:{objc_msgSend(v18, "length")}];
+  requestDataPayload = [responseCopy requestDataPayload];
+  v19 = [v17 numberWithUnsignedLongLong:{objc_msgSend(requestDataPayload, "length")}];
 
   v20 = MEMORY[0x277CBEAC0];
-  v21 = [v30 filename];
-  v22 = [v20 dictionaryWithObject:v19 forKey:v21];
+  filename2 = [responseCopy filename];
+  v22 = [v20 dictionaryWithObject:v19 forKey:filename2];
   [(CalDAVAddManagedAttachmentsTaskGroup *)self setPostFailureSizes:v22];
 
-  v23 = [v30 error];
-  [(CalDAVAddManagedAttachmentsTaskGroup *)self _finishWithError:v23 state:5];
+  error4 = [responseCopy error];
+  [(CalDAVAddManagedAttachmentsTaskGroup *)self _finishWithError:error4 state:5];
 
 LABEL_19:
 LABEL_20:
@@ -240,8 +240,8 @@ LABEL_20:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [(CalDAVAddManagedAttachmentsTaskGroup *)self attachments];
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  attachments = [(CalDAVAddManagedAttachmentsTaskGroup *)self attachments];
+  v4 = [attachments countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v4)
   {
     v5 = *v34;
@@ -251,12 +251,12 @@ LABEL_3:
     {
       if (*v34 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(attachments);
       }
 
       v7 = *(*(&v33 + 1) + 8 * v6);
-      v8 = [(CalDAVAddManagedAttachmentsTaskGroup *)self filenamesToServerLocation];
-      v9 = [v8 objectForKey:v7];
+      filenamesToServerLocation = [(CalDAVAddManagedAttachmentsTaskGroup *)self filenamesToServerLocation];
+      v9 = [filenamesToServerLocation objectForKey:v7];
       v10 = v9 == 0;
 
       if (v10)
@@ -266,7 +266,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v3 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v4 = [attachments countByEnumeratingWithState:&v33 objects:v37 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -276,8 +276,8 @@ LABEL_3:
       }
     }
 
-    v11 = [(CalDAVAddManagedAttachmentsTaskGroup *)self contentTypes];
-    v12 = [v11 objectForKey:v7];
+    contentTypes = [(CalDAVAddManagedAttachmentsTaskGroup *)self contentTypes];
+    v12 = [contentTypes objectForKey:v7];
 
     if (![v12 length])
     {
@@ -287,39 +287,39 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v13 = [(CalDAVAddManagedAttachmentsTaskGroup *)self attachments];
-    v14 = [v13 objectForKey:v7];
+    attachments2 = [(CalDAVAddManagedAttachmentsTaskGroup *)self attachments];
+    v14 = [attachments2 objectForKey:v7];
 
     v15 = [CalDAVPostStreamTask alloc];
-    v16 = [(CalDAVAddManagedAttachmentsTaskGroup *)self urlWithQuery];
-    v17 = [(CoreDAVPostTask *)v15 initWithDataPayload:v14 dataContentType:v12 atURL:v16 previousETag:0];
+    urlWithQuery = [(CalDAVAddManagedAttachmentsTaskGroup *)self urlWithQuery];
+    v17 = [(CoreDAVPostTask *)v15 initWithDataPayload:v14 dataContentType:v12 atURL:urlWithQuery previousETag:0];
 
     if ([(CalDAVAddManagedAttachmentsTaskGroup *)self hadPreconditionFailure])
     {
       goto LABEL_12;
     }
 
-    v18 = [(CalDAVAddManagedAttachmentsTaskGroup *)self updatedScheduleTag];
-    if (v18)
+    updatedScheduleTag = [(CalDAVAddManagedAttachmentsTaskGroup *)self updatedScheduleTag];
+    if (updatedScheduleTag)
     {
     }
 
     else
     {
-      v19 = [(CalDAVAddManagedAttachmentsTaskGroup *)self previousScheduleTag];
-      v20 = v19 == 0;
+      previousScheduleTag = [(CalDAVAddManagedAttachmentsTaskGroup *)self previousScheduleTag];
+      v20 = previousScheduleTag == 0;
 
       if (v20)
       {
-        v26 = [(CalDAVAddManagedAttachmentsTaskGroup *)self updatedETag];
-        if (v26)
+        updatedETag = [(CalDAVAddManagedAttachmentsTaskGroup *)self updatedETag];
+        if (updatedETag)
         {
         }
 
         else
         {
-          v27 = [(CalDAVAddManagedAttachmentsTaskGroup *)self previousETag];
-          v28 = v27 == 0;
+          previousETag = [(CalDAVAddManagedAttachmentsTaskGroup *)self previousETag];
+          v28 = previousETag == 0;
 
           if (v28)
           {
@@ -327,8 +327,8 @@ LABEL_12:
             [(CoreDAVPostOrPutTask *)v17 setForceToServer:1];
 LABEL_21:
             [(CalDAVPostStreamTask *)v17 setFilename:v7];
-            v23 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-            [(CalDAVPostStreamTask *)v17 setAccountInfoProvider:v23];
+            accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+            [(CalDAVPostStreamTask *)v17 setAccountInfoProvider:accountInfoProvider];
 
             objc_initWeak(&location, v17);
             v30[0] = MEMORY[0x277D85DD0];
@@ -338,8 +338,8 @@ LABEL_21:
             v30[4] = self;
             objc_copyWeak(&v31, &location);
             [(CalDAVPostStreamTask *)v17 setCompletionBlock:v30];
-            v24 = [(CoreDAVTaskGroup *)self taskManager];
-            [v24 submitQueuedCoreDAVTask:v17];
+            taskManager = [(CoreDAVTaskGroup *)self taskManager];
+            [taskManager submitQueuedCoreDAVTask:v17];
 
             objc_destroyWeak(&v31);
             objc_destroyWeak(&location);
@@ -348,16 +348,16 @@ LABEL_21:
           }
         }
 
-        v21 = [(CalDAVAddManagedAttachmentsTaskGroup *)self updatedETag];
-        if (v21)
+        updatedETag2 = [(CalDAVAddManagedAttachmentsTaskGroup *)self updatedETag];
+        if (updatedETag2)
         {
-          [(CoreDAVPostOrPutTask *)v17 setPreviousETag:v21];
+          [(CoreDAVPostOrPutTask *)v17 setPreviousETag:updatedETag2];
         }
 
         else
         {
-          v29 = [(CalDAVAddManagedAttachmentsTaskGroup *)self previousETag];
-          [(CoreDAVPostOrPutTask *)v17 setPreviousETag:v29];
+          previousETag2 = [(CalDAVAddManagedAttachmentsTaskGroup *)self previousETag];
+          [(CoreDAVPostOrPutTask *)v17 setPreviousETag:previousETag2];
         }
 
 LABEL_20:
@@ -366,16 +366,16 @@ LABEL_20:
       }
     }
 
-    v21 = [(CalDAVAddManagedAttachmentsTaskGroup *)self updatedScheduleTag];
-    if (v21)
+    updatedETag2 = [(CalDAVAddManagedAttachmentsTaskGroup *)self updatedScheduleTag];
+    if (updatedETag2)
     {
-      [(CalDAVPostStreamTask *)v17 setPreviousScheduleTag:v21];
+      [(CalDAVPostStreamTask *)v17 setPreviousScheduleTag:updatedETag2];
     }
 
     else
     {
-      v22 = [(CalDAVAddManagedAttachmentsTaskGroup *)self previousScheduleTag];
-      [(CalDAVPostStreamTask *)v17 setPreviousScheduleTag:v22];
+      previousScheduleTag2 = [(CalDAVAddManagedAttachmentsTaskGroup *)self previousScheduleTag];
+      [(CalDAVPostStreamTask *)v17 setPreviousScheduleTag:previousScheduleTag2];
     }
 
     goto LABEL_20;

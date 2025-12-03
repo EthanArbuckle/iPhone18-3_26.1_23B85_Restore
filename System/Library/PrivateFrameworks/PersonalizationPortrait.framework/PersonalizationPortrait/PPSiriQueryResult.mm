@@ -1,8 +1,8 @@
 @interface PPSiriQueryResult
-+ (id)siriQueryResultWithQid:(id)a3 domain:(id)a4 confidence:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSiriQueryResult:(id)a3;
-- (PPSiriQueryResult)initWithQid:(id)a3 domain:(id)a4 confidence:(id)a5;
++ (id)siriQueryResultWithQid:(id)qid domain:(id)domain confidence:(id)confidence;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSiriQueryResult:(id)result;
+- (PPSiriQueryResult)initWithQid:(id)qid domain:(id)domain confidence:(id)confidence;
 - (unint64_t)hash;
 @end
 
@@ -15,34 +15,34 @@
   return [(NSNumber *)self->_confidence hash]- v4 + 32 * v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPSiriQueryResult *)self isEqualToSiriQueryResult:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPSiriQueryResult *)self isEqualToSiriQueryResult:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToSiriQueryResult:(id)a3
+- (BOOL)isEqualToSiriQueryResult:(id)result
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  resultCopy = result;
+  v5 = resultCopy;
+  if (!resultCopy)
   {
     goto LABEL_11;
   }
 
   v6 = self->_qid == 0;
-  v7 = [v4 qid];
+  v7 = [resultCopy qid];
   v8 = v7 != 0;
 
   if (v6 == v8)
@@ -63,8 +63,8 @@
   }
 
   v12 = self->_domain == 0;
-  v13 = [v5 domain];
-  v14 = v13 != 0;
+  domain = [v5 domain];
+  v14 = domain != 0;
 
   if (v12 == v14)
   {
@@ -74,8 +74,8 @@
   domain = self->_domain;
   if (domain)
   {
-    v16 = [v5 domain];
-    v17 = [(NSString *)domain isEqual:v16];
+    domain2 = [v5 domain];
+    v17 = [(NSString *)domain isEqual:domain2];
 
     if (!v17)
     {
@@ -84,8 +84,8 @@
   }
 
   v18 = self->_confidence == 0;
-  v19 = [v5 confidence];
-  v20 = v19 != 0;
+  confidence = [v5 confidence];
+  v20 = confidence != 0;
 
   if (v18 == v20)
   {
@@ -98,8 +98,8 @@ LABEL_11:
     confidence = self->_confidence;
     if (confidence)
     {
-      v22 = [v5 confidence];
-      v23 = [(NSNumber *)confidence isEqual:v22];
+      confidence2 = [v5 confidence];
+      v23 = [(NSNumber *)confidence isEqual:confidence2];
     }
 
     else
@@ -111,15 +111,15 @@ LABEL_11:
   return v23 & 1;
 }
 
-- (PPSiriQueryResult)initWithQid:(id)a3 domain:(id)a4 confidence:(id)a5
+- (PPSiriQueryResult)initWithQid:(id)qid domain:(id)domain confidence:(id)confidence
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v11)
+  qidCopy = qid;
+  domainCopy = domain;
+  confidenceCopy = confidence;
+  v13 = confidenceCopy;
+  if (domainCopy)
   {
-    if (v12)
+    if (confidenceCopy)
     {
       goto LABEL_3;
     }
@@ -127,8 +127,8 @@ LABEL_11:
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PPSiriQueryResult.m" lineNumber:11 description:{@"Invalid parameter not satisfying: %@", @"domain"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPSiriQueryResult.m" lineNumber:11 description:{@"Invalid parameter not satisfying: %@", @"domain"}];
 
     if (v13)
     {
@@ -136,8 +136,8 @@ LABEL_11:
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"PPSiriQueryResult.m" lineNumber:12 description:{@"Invalid parameter not satisfying: %@", @"confidence != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPSiriQueryResult.m" lineNumber:12 description:{@"Invalid parameter not satisfying: %@", @"confidence != nil"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -146,20 +146,20 @@ LABEL_3:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_qid, a3);
-    objc_storeStrong(&v15->_domain, a4);
-    objc_storeStrong(&v15->_confidence, a5);
+    objc_storeStrong(&v14->_qid, qid);
+    objc_storeStrong(&v15->_domain, domain);
+    objc_storeStrong(&v15->_confidence, confidence);
   }
 
   return v15;
 }
 
-+ (id)siriQueryResultWithQid:(id)a3 domain:(id)a4 confidence:(id)a5
++ (id)siriQueryResultWithQid:(id)qid domain:(id)domain confidence:(id)confidence
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithQid:v10 domain:v9 confidence:v8];
+  confidenceCopy = confidence;
+  domainCopy = domain;
+  qidCopy = qid;
+  v11 = [[self alloc] initWithQid:qidCopy domain:domainCopy confidence:confidenceCopy];
 
   return v11;
 }

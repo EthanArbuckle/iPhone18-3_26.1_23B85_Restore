@@ -8,36 +8,36 @@
 - (SBStringMetrics)stringMetricsForFirstLineWidth:()SBStringDrawing
 {
   v4 = objc_alloc_init(SBStringMetrics);
-  v5 = [a1 text];
-  [a1 frame];
+  text = [self text];
+  [self frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v5 length];
+  v14 = [text length];
   v61.origin.x = v7;
   v61.origin.y = v9;
   v61.size.width = v11;
   v61.size.height = v13;
   Height = CGRectGetHeight(v61);
-  v16 = [a1 font];
-  [v16 lineHeight];
+  font = [self font];
+  [font lineHeight];
   v18 = Height / v17;
 
-  v19 = [a1 numberOfLines];
-  if (v18 >= v19)
+  numberOfLines = [self numberOfLines];
+  if (v18 >= numberOfLines)
   {
-    v18 = v19;
+    v18 = numberOfLines;
   }
 
-  v20 = [a1 _defaultAttributes];
-  v21 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v22 = v21;
+  _defaultAttributes = [self _defaultAttributes];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v22 = whitespaceAndNewlineCharacterSet;
   if (!stringMetricsForFirstLineWidth____NonWhitespace)
   {
-    v23 = [v21 invertedSet];
+    invertedSet = [whitespaceAndNewlineCharacterSet invertedSet];
     v24 = stringMetricsForFirstLineWidth____NonWhitespace;
-    stringMetricsForFirstLineWidth____NonWhitespace = v23;
+    stringMetricsForFirstLineWidth____NonWhitespace = invertedSet;
   }
 
   if (v14)
@@ -52,7 +52,7 @@
       v57 = v18;
       while (1)
       {
-        v28 = [v5 rangeOfCharacterFromSet:stringMetricsForFirstLineWidth____NonWhitespace options:0 range:{v26, v14 - v26}];
+        v28 = [text rangeOfCharacterFromSet:stringMetricsForFirstLineWidth____NonWhitespace options:0 range:{v26, v14 - v26}];
         if (v28 == 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_53;
@@ -117,7 +117,7 @@ LABEL_51:
 
         else
         {
-          v34 = [v5 rangeOfCharacterFromSet:stringMetricsForFirstLineWidth____NonWhitespace options:0 range:{v32, v14 - v32}];
+          v34 = [text rangeOfCharacterFromSet:stringMetricsForFirstLineWidth____NonWhitespace options:0 range:{v32, v14 - v32}];
           if (v34 == 0x7FFFFFFFFFFFFFFFLL)
           {
             v37 = v14 + 1;
@@ -127,10 +127,10 @@ LABEL_51:
           v35 = v34;
         }
 
-        v36 = [v5 rangeOfCharacterFromSet:v22 options:0 range:{v35, v14 - v35}];
+        v36 = [text rangeOfCharacterFromSet:v22 options:0 range:{v35, v14 - v35}];
         v37 = v36 == 0x7FFFFFFFFFFFFFFFLL ? v14 : v36;
-        v38 = [v5 substringWithRange:{v32, v37 - v32}];
-        [v38 sizeWithAttributes:v20];
+        v38 = [text substringWithRange:{v32, v37 - v32}];
+        [v38 sizeWithAttributes:_defaultAttributes];
         if (v39 > v33)
         {
           break;
@@ -167,9 +167,9 @@ LABEL_51:
         do
         {
           v46 = v38;
-          v38 = [v5 substringWithRange:{v32, v44, v53}];
+          v38 = [text substringWithRange:{v32, v44, v53}];
 
-          [v38 sizeWithAttributes:v20];
+          [v38 sizeWithAttributes:_defaultAttributes];
           --v45;
           --v44;
         }
@@ -188,9 +188,9 @@ LABEL_51:
           v4 = v54;
           do
           {
-            v48 = [v5 substringWithRange:{v32, v49}];
+            v48 = [text substringWithRange:{v32, v49}];
 
-            [v48 sizeWithAttributes:v20];
+            [v48 sizeWithAttributes:_defaultAttributes];
             ++v37;
             ++v49;
             v38 = v48;
@@ -229,14 +229,14 @@ LABEL_53:
 {
   v41 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  [a1 frame];
+  [self frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [a1 text];
-  v14 = [a1 font];
-  [v14 lineHeight];
+  text = [self text];
+  font = [self font];
+  [font lineHeight];
   v16 = v15;
 
   v42.origin.x = v6;
@@ -244,15 +244,15 @@ LABEL_53:
   v42.size.width = v10;
   v42.size.height = v12;
   v17 = CGRectGetHeight(v42) / v16;
-  v18 = [a1 numberOfLines];
-  if (v17 >= v18)
+  numberOfLines = [self numberOfLines];
+  if (v17 >= numberOfLines)
   {
-    v17 = v18;
+    v17 = numberOfLines;
   }
 
-  v35 = [a1 _defaultAttributes];
-  v19 = [a1 textColor];
-  [v19 set];
+  _defaultAttributes = [self _defaultAttributes];
+  textColor = [self textColor];
+  [textColor set];
 
   v38 = 0u;
   v39 = 0u;
@@ -270,32 +270,32 @@ LABEL_5:
     v24 = v21;
     while (1)
     {
-      v25 = v13;
+      v25 = text;
       if (*v37 != v33)
       {
         objc_enumerationMutation(v20);
       }
 
       v26 = *(*(&v36 + 1) + 8 * v23);
-      v27 = [v26 index];
-      v28 = [v26 range];
+      index = [v26 index];
+      range = [v26 range];
       v30 = v29;
       v21 = v24 + 1;
       if (v24 + 1 == [v20 fragmentCount] || v22 == v24)
       {
-        v13 = v25;
-        v30 = [v25 length] - v27;
+        text = v25;
+        v30 = [v25 length] - index;
       }
 
       else
       {
-        v27 = v28;
-        v13 = v25;
+        index = range;
+        text = v25;
       }
 
-      v31 = [v13 substringWithRange:{v27, v30}];
+      v31 = [text substringWithRange:{index, v30}];
       [v26 lineWidth];
-      [v31 drawInRect:v35 withAttributes:{0.0, v16 * v24, v32, 1.79769313e308}];
+      [v31 drawInRect:_defaultAttributes withAttributes:{0.0, v16 * v24, v32, 1.79769313e308}];
 
       if (v22 == v24)
       {

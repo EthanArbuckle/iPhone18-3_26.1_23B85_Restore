@@ -1,16 +1,16 @@
 @interface PlaceNoteSharingSession
 - (_TtC4Maps23PlaceNoteSharingSession)init;
-- (_TtC4Maps23PlaceNoteSharingSession)initWithMapItem:(id)a3;
-- (void)fetchNoteWithCompletion:(id)a3;
+- (_TtC4Maps23PlaceNoteSharingSession)initWithMapItem:(id)item;
+- (void)fetchNoteWithCompletion:(id)completion;
 - (void)preload;
 @end
 
 @implementation PlaceNoteSharingSession
 
-- (_TtC4Maps23PlaceNoteSharingSession)initWithMapItem:(id)a3
+- (_TtC4Maps23PlaceNoteSharingSession)initWithMapItem:(id)item
 {
-  v3 = a3;
-  v4 = sub_1003C3484(v3);
+  itemCopy = item;
+  v4 = sub_1003C3484(itemCopy);
 
   return v4;
 }
@@ -26,16 +26,16 @@
   v7[2] = 0;
   v7[3] = 0;
   v7[4] = self;
-  v8 = self;
+  selfCopy = self;
   sub_10020AAE4(0, 0, v5, &unk_101202230, v7);
 }
 
-- (void)fetchNoteWithCompletion:(id)a3
+- (void)fetchNoteWithCompletion:(id)completion
 {
   v5 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = type metadata accessor for TaskPriority();
@@ -46,7 +46,7 @@
   v11[4] = self;
   v11[5] = sub_1000DE4EC;
   v11[6] = v9;
-  v12 = self;
+  selfCopy = self;
   sub_10020AAE4(0, 0, v7, &unk_101202218, v11);
 }
 

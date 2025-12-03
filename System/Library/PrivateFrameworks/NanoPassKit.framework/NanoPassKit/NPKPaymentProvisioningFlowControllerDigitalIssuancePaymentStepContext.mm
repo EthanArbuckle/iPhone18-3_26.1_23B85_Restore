@@ -1,27 +1,27 @@
 @interface NPKPaymentProvisioningFlowControllerDigitalIssuancePaymentStepContext
-- (NPKPaymentProvisioningFlowControllerDigitalIssuancePaymentStepContext)initWithCoder:(id)a3;
-- (NPKPaymentProvisioningFlowControllerDigitalIssuancePaymentStepContext)initWithRequestContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NPKPaymentProvisioningFlowControllerDigitalIssuancePaymentStepContext)initWithCoder:(id)coder;
+- (NPKPaymentProvisioningFlowControllerDigitalIssuancePaymentStepContext)initWithRequestContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NPKPaymentProvisioningFlowControllerDigitalIssuancePaymentStepContext
 
-- (NPKPaymentProvisioningFlowControllerDigitalIssuancePaymentStepContext)initWithRequestContext:(id)a3
+- (NPKPaymentProvisioningFlowControllerDigitalIssuancePaymentStepContext)initWithRequestContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = NPKPaymentProvisioningFlowControllerDigitalIssuancePaymentStepContext;
-  return [(NPKPaymentProvisioningFlowStepContext *)&v4 initWithRequestContext:a3];
+  return [(NPKPaymentProvisioningFlowStepContext *)&v4 initWithRequestContext:context];
 }
 
-- (NPKPaymentProvisioningFlowControllerDigitalIssuancePaymentStepContext)initWithCoder:(id)a3
+- (NPKPaymentProvisioningFlowControllerDigitalIssuancePaymentStepContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = NPKPaymentProvisioningFlowControllerDigitalIssuancePaymentStepContext;
-  v5 = [(NPKPaymentProvisioningFlowStepContext *)&v9 initWithCoder:v4];
+  v5 = [(NPKPaymentProvisioningFlowStepContext *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"product"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"product"];
     product = v5->_product;
     v5->_product = v6;
   }
@@ -29,13 +29,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NPKPaymentProvisioningFlowControllerDigitalIssuancePaymentStepContext;
-  v4 = a3;
-  [(NPKPaymentProvisioningFlowStepContext *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_product forKey:{@"product", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(NPKPaymentProvisioningFlowStepContext *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_product forKey:{@"product", v5.receiver, v5.super_class}];
 }
 
 @end

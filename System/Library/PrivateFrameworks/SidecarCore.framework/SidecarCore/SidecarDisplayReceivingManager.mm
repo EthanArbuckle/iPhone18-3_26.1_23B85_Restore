@@ -1,24 +1,24 @@
 @interface SidecarDisplayReceivingManager
-- (void)disconnectFromDeviceWithIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchDeviceReadinessStatusWithIDSIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchSendingDeviceSessionStatesWithCompletion:(id)a3;
-- (void)ignoreDetectionForAnchorIdentifier:(id)a3 completion:(id)a4;
-- (void)requestConnectionFromDeviceWithIdentifier:(id)a3 completion:(id)a4;
+- (void)disconnectFromDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchDeviceReadinessStatusWithIDSIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchSendingDeviceSessionStatesWithCompletion:(id)completion;
+- (void)ignoreDetectionForAnchorIdentifier:(id)identifier completion:(id)completion;
+- (void)requestConnectionFromDeviceWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SidecarDisplayReceivingManager
 
-- (void)fetchDeviceReadinessStatusWithIDSIdentifier:(id)a3 completion:(id)a4
+- (void)fetchDeviceReadinessStatusWithIDSIdentifier:(id)identifier completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v7 = SidecarCoreLogSubsystem(OS_LOG_TYPE_DEFAULT);
   v8 = v7;
   if (v7 && os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v5;
+    v17 = identifierCopy;
     _os_log_impl(&dword_26604C000, v8, OS_LOG_TYPE_DEFAULT, "Fetching readiness for identifier: [%{public}@]", buf, 0xCu);
   }
 
@@ -27,10 +27,10 @@
   v13[1] = 3221225472;
   v13[2] = __89__SidecarDisplayReceivingManager_fetchDeviceReadinessStatusWithIDSIdentifier_completion___block_invoke;
   v13[3] = &unk_279BC34C8;
-  v14 = v5;
-  v15 = v6;
-  v10 = v6;
-  v11 = v5;
+  v14 = identifierCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   dispatch_async(v9, v13);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -93,17 +93,17 @@ void __89__SidecarDisplayReceivingManager_fetchDeviceReadinessStatusWithIDSIdent
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ignoreDetectionForAnchorIdentifier:(id)a3 completion:(id)a4
+- (void)ignoreDetectionForAnchorIdentifier:(id)identifier completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v7 = SidecarCoreLogSubsystem(OS_LOG_TYPE_DEFAULT);
   v8 = v7;
   if (v7 && os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v5;
+    v17 = identifierCopy;
     _os_log_impl(&dword_26604C000, v8, OS_LOG_TYPE_DEFAULT, "Requesting to ignore detection for identifier: [%{public}@]", buf, 0xCu);
   }
 
@@ -112,10 +112,10 @@ void __89__SidecarDisplayReceivingManager_fetchDeviceReadinessStatusWithIDSIdent
   v13[1] = 3221225472;
   v13[2] = __80__SidecarDisplayReceivingManager_ignoreDetectionForAnchorIdentifier_completion___block_invoke;
   v13[3] = &unk_279BC34C8;
-  v14 = v5;
-  v15 = v6;
-  v10 = v6;
-  v11 = v5;
+  v14 = identifierCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   dispatch_async(v9, v13);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -178,17 +178,17 @@ void __80__SidecarDisplayReceivingManager_ignoreDetectionForAnchorIdentifier_com
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disconnectFromDeviceWithIdentifier:(id)a3 completion:(id)a4
+- (void)disconnectFromDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v7 = SidecarCoreLogSubsystem(OS_LOG_TYPE_DEFAULT);
   v8 = v7;
   if (v7 && os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v5;
+    v17 = identifierCopy;
     _os_log_impl(&dword_26604C000, v8, OS_LOG_TYPE_DEFAULT, "Disconnecting the virtual display session from device with identifier: [%{public}@].", buf, 0xCu);
   }
 
@@ -197,10 +197,10 @@ void __80__SidecarDisplayReceivingManager_ignoreDetectionForAnchorIdentifier_com
   v13[1] = 3221225472;
   v13[2] = __80__SidecarDisplayReceivingManager_disconnectFromDeviceWithIdentifier_completion___block_invoke;
   v13[3] = &unk_279BC34C8;
-  v14 = v5;
-  v15 = v6;
-  v10 = v6;
-  v11 = v5;
+  v14 = identifierCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   dispatch_async(v9, v13);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -263,17 +263,17 @@ void __80__SidecarDisplayReceivingManager_disconnectFromDeviceWithIdentifier_com
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestConnectionFromDeviceWithIdentifier:(id)a3 completion:(id)a4
+- (void)requestConnectionFromDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v7 = SidecarCoreLogSubsystem(OS_LOG_TYPE_DEFAULT);
   v8 = v7;
   if (v7 && os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v5;
+    v17 = identifierCopy;
     _os_log_impl(&dword_26604C000, v8, OS_LOG_TYPE_DEFAULT, "Requesting that device with identifier [%{public}@] open a virtual display session with this device.", buf, 0xCu);
   }
 
@@ -282,10 +282,10 @@ void __80__SidecarDisplayReceivingManager_disconnectFromDeviceWithIdentifier_com
   v13[1] = 3221225472;
   v13[2] = __87__SidecarDisplayReceivingManager_requestConnectionFromDeviceWithIdentifier_completion___block_invoke;
   v13[3] = &unk_279BC34C8;
-  v14 = v5;
-  v15 = v6;
-  v10 = v6;
-  v11 = v5;
+  v14 = identifierCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   dispatch_async(v9, v13);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -348,9 +348,9 @@ void __87__SidecarDisplayReceivingManager_requestConnectionFromDeviceWithIdentif
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchSendingDeviceSessionStatesWithCompletion:(id)a3
+- (void)fetchSendingDeviceSessionStatesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = SidecarCoreLogSubsystem(OS_LOG_TYPE_INFO);
   v5 = v4;
   if (v4 && os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -364,8 +364,8 @@ void __87__SidecarDisplayReceivingManager_requestConnectionFromDeviceWithIdentif
   block[1] = 3221225472;
   block[2] = __80__SidecarDisplayReceivingManager_fetchSendingDeviceSessionStatesWithCompletion___block_invoke;
   block[3] = &unk_279BC32A0;
-  v9 = v3;
-  v7 = v3;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(v6, block);
 }
 

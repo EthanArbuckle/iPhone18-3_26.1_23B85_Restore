@@ -1,25 +1,25 @@
 @interface NEIKEv2DeleteIKEContext
 - (id)description;
-- (id)initDeleteIKEWithResponse:(void *)a3 callbackQueue:(void *)a4 callback:;
+- (id)initDeleteIKEWithResponse:(void *)response callbackQueue:(void *)queue callback:;
 @end
 
 @implementation NEIKEv2DeleteIKEContext
 
-- (id)initDeleteIKEWithResponse:(void *)a3 callbackQueue:(void *)a4 callback:
+- (id)initDeleteIKEWithResponse:(void *)response callbackQueue:(void *)queue callback:
 {
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  responseCopy = response;
+  queueCopy = queue;
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = NEIKEv2DeleteIKEContext;
     v10 = objc_msgSendSuper2(&v15, sel_init);
     if (v10)
     {
-      a1 = v10;
+      self = v10;
       *(v10 + 24) = a2;
-      objc_storeStrong(v10 + 4, a3);
-      objc_setProperty_nonatomic_copy(a1, v11, v9, 40);
+      objc_storeStrong(v10 + 4, response);
+      objc_setProperty_nonatomic_copy(self, v11, queueCopy, 40);
     }
 
     else
@@ -31,11 +31,11 @@
         _os_log_fault_impl(&dword_1BA83C000, v13, OS_LOG_TYPE_FAULT, "[super init] failed", v14, 2u);
       }
 
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)description

@@ -1,25 +1,25 @@
 @interface _SFPBFlightCheckinCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBFlightCheckinCommand)initWithDictionary:(id)a3;
-- (_SFPBFlightCheckinCommand)initWithFacade:(id)a3;
-- (_SFPBFlightCheckinCommand)initWithJSON:(id)a3;
+- (_SFPBFlightCheckinCommand)initWithDictionary:(id)dictionary;
+- (_SFPBFlightCheckinCommand)initWithFacade:(id)facade;
+- (_SFPBFlightCheckinCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBFlightCheckinCommand
 
-- (_SFPBFlightCheckinCommand)initWithFacade:(id)a3
+- (_SFPBFlightCheckinCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBFlightCheckinCommand *)self init];
   if (v5)
   {
-    if ([v4 hasPlaceHolderProperty])
+    if ([facadeCopy hasPlaceHolderProperty])
     {
-      -[_SFPBFlightCheckinCommand setPlaceHolderProperty:](v5, "setPlaceHolderProperty:", [v4 placeHolderProperty]);
+      -[_SFPBFlightCheckinCommand setPlaceHolderProperty:](v5, "setPlaceHolderProperty:", [facadeCopy placeHolderProperty]);
     }
 
     v6 = v5;
@@ -28,15 +28,15 @@
   return v5;
 }
 
-- (_SFPBFlightCheckinCommand)initWithDictionary:(id)a3
+- (_SFPBFlightCheckinCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = _SFPBFlightCheckinCommand;
   v5 = [(_SFPBFlightCheckinCommand *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"placeHolderProperty"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"placeHolderProperty"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (_SFPBFlightCheckinCommand)initWithJSON:(id)a3
+- (_SFPBFlightCheckinCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBFlightCheckinCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBFlightCheckinCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBFlightCheckinCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,14 +85,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_placeHolderProperty)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBFlightCheckinCommand placeHolderProperty](self, "placeHolderProperty")}];
-    [v3 setObject:v4 forKeyedSubscript:@"placeHolderProperty"];
+    [dictionary setObject:v4 forKeyedSubscript:@"placeHolderProperty"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -108,13 +108,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     placeHolderProperty = self->_placeHolderProperty;
-    v6 = placeHolderProperty == [v4 placeHolderProperty];
+    v6 = placeHolderProperty == [equalCopy placeHolderProperty];
   }
 
   else
@@ -125,9 +125,9 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ([(_SFPBFlightCheckinCommand *)self placeHolderProperty])
   {
     PBDataWriterWriteBOOLField();

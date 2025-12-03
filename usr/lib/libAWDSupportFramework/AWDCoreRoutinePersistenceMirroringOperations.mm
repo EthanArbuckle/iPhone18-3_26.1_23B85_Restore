@@ -1,25 +1,25 @@
 @interface AWDCoreRoutinePersistenceMirroringOperations
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeviceClass:(BOOL)a3;
-- (void)setHasErrorCount:(BOOL)a3;
-- (void)setHasOperationType:(BOOL)a3;
-- (void)setHasQualityOfService:(BOOL)a3;
-- (void)setHasRecordsChanged:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeviceClass:(BOOL)class;
+- (void)setHasErrorCount:(BOOL)count;
+- (void)setHasOperationType:(BOOL)type;
+- (void)setHasQualityOfService:(BOOL)service;
+- (void)setHasRecordsChanged:(BOOL)changed;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutinePersistenceMirroringOperations
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDeviceClass:(BOOL)a3
+- (void)setHasDeviceClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 4;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasOperationType:(BOOL)a3
+- (void)setHasOperationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasRecordsChanged:(BOOL)a3
+- (void)setHasRecordsChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     v3 = 64;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasErrorCount:(BOOL)a3
+- (void)setHasErrorCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasQualityOfService:(BOOL)a3
+- (void)setHasQualityOfService:(BOOL)service
 {
-  if (a3)
+  if (service)
   {
     v3 = 32;
   }
@@ -116,11 +116,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -139,7 +139,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_deviceClass), @"deviceClass"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_deviceClass), @"deviceClass"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -153,7 +153,7 @@ LABEL_4:
   }
 
 LABEL_12:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_operationType), @"operationType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_operationType), @"operationType"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -167,7 +167,7 @@ LABEL_5:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_recordsChanged), @"recordsChanged"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_recordsChanged), @"recordsChanged"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -178,17 +178,17 @@ LABEL_6:
     }
 
 LABEL_15:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_timeIntervalSinceLastOperation), @"timeIntervalSinceLastOperation"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_timeIntervalSinceLastOperation), @"timeIntervalSinceLastOperation"}];
     if ((*&self->_has & 0x20) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_8;
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_errorCount), @"errorCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_errorCount), @"errorCount"}];
   has = self->_has;
   if (has)
   {
@@ -199,13 +199,13 @@ LABEL_7:
   if ((has & 0x20) != 0)
   {
 LABEL_8:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_qualityOfService), @"qualityOfService"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_qualityOfService), @"qualityOfService"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -303,13 +303,13 @@ LABEL_15:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 44) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 44) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -328,8 +328,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 6) = self->_deviceClass;
-  *(a3 + 44) |= 4u;
+  *(to + 6) = self->_deviceClass;
+  *(to + 44) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -343,8 +343,8 @@ LABEL_4:
   }
 
 LABEL_11:
-  *(a3 + 8) = self->_operationType;
-  *(a3 + 44) |= 0x10u;
+  *(to + 8) = self->_operationType;
+  *(to + 44) |= 0x10u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -358,8 +358,8 @@ LABEL_5:
   }
 
 LABEL_12:
-  *(a3 + 10) = self->_recordsChanged;
-  *(a3 + 44) |= 0x40u;
+  *(to + 10) = self->_recordsChanged;
+  *(to + 44) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -373,8 +373,8 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(a3 + 7) = self->_errorCount;
-  *(a3 + 44) |= 8u;
+  *(to + 7) = self->_errorCount;
+  *(to + 44) |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -385,23 +385,23 @@ LABEL_7:
     }
 
 LABEL_15:
-    *(a3 + 9) = self->_qualityOfService;
-    *(a3 + 44) |= 0x20u;
+    *(to + 9) = self->_qualityOfService;
+    *(to + 44) |= 0x20u;
     return;
   }
 
 LABEL_14:
-  *(a3 + 1) = self->_timeIntervalSinceLastOperation;
-  *(a3 + 44) |= 1u;
+  *(to + 1) = self->_timeIntervalSinceLastOperation;
+  *(to + 44) |= 1u;
   if ((*&self->_has & 0x20) != 0)
   {
     goto LABEL_15;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -498,20 +498,20 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 44) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 44) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 44) & 2) != 0)
+    else if ((*(equal + 44) & 2) != 0)
     {
 LABEL_36:
       LOBYTE(v5) = 0;
@@ -520,73 +520,73 @@ LABEL_36:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 44) & 4) == 0 || self->_deviceClass != *(a3 + 6))
+      if ((*(equal + 44) & 4) == 0 || self->_deviceClass != *(equal + 6))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 44) & 4) != 0)
+    else if ((*(equal + 44) & 4) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 44) & 0x10) == 0 || self->_operationType != *(a3 + 8))
+      if ((*(equal + 44) & 0x10) == 0 || self->_operationType != *(equal + 8))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 44) & 0x10) != 0)
+    else if ((*(equal + 44) & 0x10) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 0x40) != 0)
     {
-      if ((*(a3 + 44) & 0x40) == 0 || self->_recordsChanged != *(a3 + 10))
+      if ((*(equal + 44) & 0x40) == 0 || self->_recordsChanged != *(equal + 10))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 44) & 0x40) != 0)
+    else if ((*(equal + 44) & 0x40) != 0)
     {
       goto LABEL_36;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 44) & 8) == 0 || self->_errorCount != *(a3 + 7))
+      if ((*(equal + 44) & 8) == 0 || self->_errorCount != *(equal + 7))
       {
         goto LABEL_36;
       }
     }
 
-    else if ((*(a3 + 44) & 8) != 0)
+    else if ((*(equal + 44) & 8) != 0)
     {
       goto LABEL_36;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 44) & 1) == 0 || self->_timeIntervalSinceLastOperation != *(a3 + 1))
+      if ((*(equal + 44) & 1) == 0 || self->_timeIntervalSinceLastOperation != *(equal + 1))
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(a3 + 44))
+    else if (*(equal + 44))
     {
       goto LABEL_36;
     }
 
-    LOBYTE(v5) = (*(a3 + 44) & 0x20) == 0;
+    LOBYTE(v5) = (*(equal + 44) & 0x20) == 0;
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 44) & 0x20) == 0 || self->_qualityOfService != *(a3 + 9))
+      if ((*(equal + 44) & 0x20) == 0 || self->_qualityOfService != *(equal + 9))
       {
         goto LABEL_36;
       }
@@ -694,14 +694,14 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v3 = *(a3 + 44);
+    v3 = *(from + 44);
     if ((v3 & 4) == 0)
     {
 LABEL_3:
@@ -714,14 +714,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 44) & 4) == 0)
+  else if ((*(from + 44) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_deviceClass = *(a3 + 6);
+  self->_deviceClass = *(from + 6);
   *&self->_has |= 4u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 0x10) == 0)
   {
 LABEL_4:
@@ -734,9 +734,9 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_operationType = *(a3 + 8);
+  self->_operationType = *(from + 8);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 0x40) == 0)
   {
 LABEL_5:
@@ -749,9 +749,9 @@ LABEL_5:
   }
 
 LABEL_12:
-  self->_recordsChanged = *(a3 + 10);
+  self->_recordsChanged = *(from + 10);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 8) == 0)
   {
 LABEL_6:
@@ -764,9 +764,9 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_errorCount = *(a3 + 7);
+  self->_errorCount = *(from + 7);
   *&self->_has |= 8u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 1) == 0)
   {
 LABEL_7:
@@ -776,15 +776,15 @@ LABEL_7:
     }
 
 LABEL_15:
-    self->_qualityOfService = *(a3 + 9);
+    self->_qualityOfService = *(from + 9);
     *&self->_has |= 0x20u;
     return;
   }
 
 LABEL_14:
-  self->_timeIntervalSinceLastOperation = *(a3 + 1);
+  self->_timeIntervalSinceLastOperation = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 44) & 0x20) != 0)
+  if ((*(from + 44) & 0x20) != 0)
   {
     goto LABEL_15;
   }

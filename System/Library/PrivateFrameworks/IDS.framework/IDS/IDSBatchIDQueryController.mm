@@ -1,17 +1,17 @@
 @interface IDSBatchIDQueryController
-- (IDSBatchIDQueryController)initWithService:(id)a3 delegate:(id)a4 queue:(id)a5;
+- (IDSBatchIDQueryController)initWithService:(id)service delegate:(id)delegate queue:(id)queue;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setDestinations:(id)a3;
+- (void)setDestinations:(id)destinations;
 @end
 
 @implementation IDSBatchIDQueryController
 
-- (IDSBatchIDQueryController)initWithService:(id)a3 delegate:(id)a4 queue:(id)a5
+- (IDSBatchIDQueryController)initWithService:(id)service delegate:(id)delegate queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  delegateCopy = delegate;
+  queueCopy = queue;
   if (_IDSRunningInDaemon())
   {
     v11 = +[IDSLogging IDQuery];
@@ -20,7 +20,7 @@
       sub_195B268D8(self, v11);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -41,17 +41,17 @@
       v16[2] = sub_195A4FEE0;
       v16[3] = &unk_1E743EEE8;
       v17 = v13;
-      v18 = v8;
-      v19 = v9;
-      v20 = v10;
+      v18 = serviceCopy;
+      v19 = delegateCopy;
+      v20 = queueCopy;
       dispatch_sync(v14, v16);
     }
 
     self = v13;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -67,17 +67,17 @@
   [(IDSBatchIDQueryController *)&v3 dealloc];
 }
 
-- (void)setDestinations:(id)a3
+- (void)setDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = qword_1EAEDC070;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A5007C;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = destinationsCopy;
+  v6 = destinationsCopy;
   dispatch_sync(v5, v7);
 }
 

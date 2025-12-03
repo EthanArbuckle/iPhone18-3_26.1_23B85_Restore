@@ -3,21 +3,21 @@
 - (void)addDiskPasswordSection;
 - (void)setupInitialTableHeaderConfiguration;
 - (void)setupTable;
-- (void)switchTouchedInCellAtIndexPath:(id)a3 forSwitchIndex:(unint64_t)a4 isOn:(BOOL)a5;
-- (void)touchInCellAtIndexPath:(id)a3;
-- (void)updateSinglePasswordSwitchExplanation:(BOOL)a3;
+- (void)switchTouchedInCellAtIndexPath:(id)path forSwitchIndex:(unint64_t)index isOn:(BOOL)on;
+- (void)touchInCellAtIndexPath:(id)path;
+- (void)updateSinglePasswordSwitchExplanation:(BOOL)explanation;
 - (void)updateTable;
 - (void)updateTableForMultiplePasswords;
 - (void)updateTableForSinglePassword;
 - (void)validateAndUpdateNextButton;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StepByStepUIViewController_Create_Config
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v234 = a3;
+  appearCopy = appear;
   objc_msgSend_setUseSinglePassword_(self, a2, 1);
   objc_msgSend_setDelegate_(self, v4, self);
   v7 = objc_msgSend_inParamDict(self, v5, v6);
@@ -231,7 +231,7 @@
   objc_msgSend_setValue_forKey_(self->super.super._outResultsDict, v229, &stru_285145FE8, @"kSBSKey_DiskSharing_Password");
   v235.receiver = self;
   v235.super_class = StepByStepUIViewController_Create_Config;
-  [(StepByStepUIViewController *)&v235 viewWillAppear:v234];
+  [(StepByStepUIViewController *)&v235 viewWillAppear:appearCopy];
 }
 
 - (BOOL)validateAndSetValues
@@ -519,11 +519,11 @@
   }
 }
 
-- (void)touchInCellAtIndexPath:(id)a3
+- (void)touchInCellAtIndexPath:(id)path
 {
   if (self->actionController)
   {
-    v5 = objc_msgSend_section(a3, a2, a3);
+    v5 = objc_msgSend_section(path, a2, path);
     v8 = objc_msgSend_tableManager(self, v6, v7);
     if (v5 == objc_msgSend_indexOfSectionWithIdentifier_(v8, v9, @"ActionTableSection"))
     {
@@ -532,27 +532,27 @@
       objc_msgSend_validateAndUpdateNextButton(self, v14, v15);
       v18 = objc_msgSend_tableManager(self, v16, v17);
 
-      objc_msgSend_selectMenuCellAtIndexPath_(v18, v19, a3);
+      objc_msgSend_selectMenuCellAtIndexPath_(v18, v19, path);
     }
   }
 }
 
-- (void)switchTouchedInCellAtIndexPath:(id)a3 forSwitchIndex:(unint64_t)a4 isOn:(BOOL)a5
+- (void)switchTouchedInCellAtIndexPath:(id)path forSwitchIndex:(unint64_t)index isOn:(BOOL)on
 {
-  v5 = a5;
+  onCopy = on;
   v19 = 0;
-  v8 = objc_msgSend_tableManager(self, a2, a3, a4);
-  if (objc_msgSend_tagOfCellAtIndexPath_tag_(v8, v9, a3, &v19))
+  v8 = objc_msgSend_tableManager(self, a2, path, index);
+  if (objc_msgSend_tagOfCellAtIndexPath_tag_(v8, v9, path, &v19))
   {
     if (v19 == 1146114935)
     {
-      objc_msgSend_setUseDifferentDiskPassword_(self, v10, v5);
+      objc_msgSend_setUseDifferentDiskPassword_(self, v10, onCopy);
     }
 
     else if (v19 == 1397773175)
     {
-      objc_msgSend_setUseSinglePassword_(self, v10, v5);
-      if (v5)
+      objc_msgSend_setUseSinglePassword_(self, v10, onCopy);
+      if (onCopy)
       {
         v12 = objc_msgSend_wifiPassword(self, v10, v11);
         v15 = objc_msgSend_UTF8String(v12, v13, v14);
@@ -572,12 +572,12 @@
   }
 }
 
-- (void)updateSinglePasswordSwitchExplanation:(BOOL)a3
+- (void)updateSinglePasswordSwitchExplanation:(BOOL)explanation
 {
-  v3 = a3;
-  hasDisk = objc_msgSend_hasDisk(self, a2, a3);
+  explanationCopy = explanation;
+  hasDisk = objc_msgSend_hasDisk(self, a2, explanation);
   v7 = @"off";
-  if (v3)
+  if (explanationCopy)
   {
     v7 = @"on";
   }

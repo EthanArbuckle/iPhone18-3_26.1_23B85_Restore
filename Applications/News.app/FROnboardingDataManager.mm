@@ -1,5 +1,5 @@
 @interface FROnboardingDataManager
-- (FROnboardingDataManager)initWithFeldsparContext:(id)a3;
+- (FROnboardingDataManager)initWithFeldsparContext:(id)context;
 - (void)beginFetchingUserType;
 - (void)beginLoadingFeed;
 - (void)completeOnboarding;
@@ -8,16 +8,16 @@
 
 @implementation FROnboardingDataManager
 
-- (FROnboardingDataManager)initWithFeldsparContext:(id)a3
+- (FROnboardingDataManager)initWithFeldsparContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = FROnboardingDataManager;
   v6 = [(FROnboardingDataManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_feldsparContext, a3);
+    objc_storeStrong(&v6->_feldsparContext, context);
   }
 
   return v7;
@@ -36,17 +36,17 @@
 - (void)beginFetchingUserType
 {
   v3 = objc_alloc_init(FRUserOnboardingOperation);
-  v4 = [(FROnboardingDataManager *)self feldsparContext];
-  v5 = [v4 cloudContext];
-  [(FRUserOnboardingOperation *)v3 setCloudContext:v5];
+  feldsparContext = [(FROnboardingDataManager *)self feldsparContext];
+  cloudContext = [feldsparContext cloudContext];
+  [(FRUserOnboardingOperation *)v3 setCloudContext:cloudContext];
 
-  v6 = [(FROnboardingDataManager *)self feldsparContext];
-  v7 = [v6 analyticsController];
-  [(FRUserOnboardingOperation *)v3 setAnalyticsController:v7];
+  feldsparContext2 = [(FROnboardingDataManager *)self feldsparContext];
+  analyticsController = [feldsparContext2 analyticsController];
+  [(FRUserOnboardingOperation *)v3 setAnalyticsController:analyticsController];
 
-  v8 = [(FROnboardingDataManager *)self feldsparContext];
-  v9 = [v8 presubscribeService];
-  [(FRUserOnboardingOperation *)v3 setPresubscribeService:v9];
+  feldsparContext3 = [(FROnboardingDataManager *)self feldsparContext];
+  presubscribeService = [feldsparContext3 presubscribeService];
+  [(FRUserOnboardingOperation *)v3 setPresubscribeService:presubscribeService];
 
   [(FRUserOnboardingOperation *)v3 setQualityOfService:25];
   [(FRUserOnboardingOperation *)v3 setRelativePriority:1];
@@ -81,10 +81,10 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "FROnboardingDataManager: completedOnboarding", v7, 2u);
   }
 
-  v4 = [(FROnboardingDataManager *)self feldsparContext];
-  v5 = [v4 cloudContext];
-  v6 = [v5 userInfo];
-  [v6 updateOnboardingVersion];
+  feldsparContext = [(FROnboardingDataManager *)self feldsparContext];
+  cloudContext = [feldsparContext cloudContext];
+  userInfo = [cloudContext userInfo];
+  [userInfo updateOnboardingVersion];
 }
 
 @end

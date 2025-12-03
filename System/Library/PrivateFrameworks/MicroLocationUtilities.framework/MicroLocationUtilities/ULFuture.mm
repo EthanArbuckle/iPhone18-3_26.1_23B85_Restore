@@ -1,16 +1,16 @@
 @interface ULFuture
-+ (id)_join:(id)a3 ignoreFailures:(BOOL)a4;
-+ (id)_recover:(id)a3 withBlock:(id)a4 scheduler:(id)a5;
-+ (id)_then:(id)a3 withBlock:(id)a4 scheduler:(id)a5;
-+ (id)chain:(id)a3;
-+ (id)futureWithBlock:(id)a3;
-+ (id)futureWithError:(id)a3;
-+ (id)futureWithResult:(id)a3;
++ (id)_join:(id)_join ignoreFailures:(BOOL)failures;
++ (id)_recover:(id)_recover withBlock:(id)block scheduler:(id)scheduler;
++ (id)_then:(id)_then withBlock:(id)block scheduler:(id)scheduler;
++ (id)chain:(id)chain;
++ (id)futureWithBlock:(id)block;
++ (id)futureWithError:(id)error;
++ (id)futureWithResult:(id)result;
 + (id)nullFuture;
-+ (id)onScheduler:(id)a3 futureWithBlock:(id)a4;
-+ (id)sequence:(id)a3;
-+ (void)_always:(id)a3 withBlock:(id)a4 scheduler:(id)a5;
-- (BOOL)finishWithResult:(id)a3 error:(id)a4;
++ (id)onScheduler:(id)scheduler futureWithBlock:(id)block;
++ (id)sequence:(id)sequence;
++ (void)_always:(id)_always withBlock:(id)block scheduler:(id)scheduler;
+- (BOOL)finishWithResult:(id)result error:(id)error;
 - (BOOL)isCancelled;
 - (BOOL)isFinished;
 - (BOOL)tryCancel;
@@ -18,83 +18,83 @@
 - (id)BOOLErrorCompletionHandlerAdapter;
 - (id)completionHandlerAdapter;
 - (id)errorOnlyCompletionHandlerAdapter;
-- (id)map:(id)a3;
-- (id)onScheduler:(id)a3 map:(id)a4;
-- (id)recover:(id)a3;
-- (id)result:(id *)a3;
-- (id)resultBeforeDate:(id)a3 error:(id *)a4;
-- (id)resultIfAvailable:(id *)a3;
-- (id)resultWithTimeout:(double)a3 error:(id *)a4;
-- (id)then:(id)a3;
-- (void)_addCompletionBlock:(id)a3;
-- (void)_finishWithFuture:(id)a3;
+- (id)map:(id)map;
+- (id)onScheduler:(id)scheduler map:(id)map;
+- (id)recover:(id)recover;
+- (id)result:(id *)result;
+- (id)resultBeforeDate:(id)date error:(id *)error;
+- (id)resultIfAvailable:(id *)available;
+- (id)resultWithTimeout:(double)timeout error:(id *)error;
+- (id)then:(id)then;
+- (void)_addCompletionBlock:(id)block;
+- (void)_finishWithFuture:(id)future;
 - (void)_flushCompletionBlocks;
-- (void)addFailureBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3;
-- (void)always:(id)a3;
-- (void)onScheduler:(id)a3 addFailureBlock:(id)a4;
-- (void)onScheduler:(id)a3 addSuccessBlock:(id)a4;
+- (void)addFailureBlock:(id)block;
+- (void)addSuccessBlock:(id)block;
+- (void)always:(id)always;
+- (void)onScheduler:(id)scheduler addFailureBlock:(id)block;
+- (void)onScheduler:(id)scheduler addSuccessBlock:(id)block;
 @end
 
 @implementation ULFuture
 
 + (id)nullFuture
 {
-  v3 = [MEMORY[0x277CBEB68] null];
-  v4 = [a1 futureWithResult:v3];
+  null = [MEMORY[0x277CBEB68] null];
+  v4 = [self futureWithResult:null];
 
   return v4;
 }
 
-+ (id)futureWithResult:(id)a3
++ (id)futureWithResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = +[ULPromise promise];
-  [v4 finishWithResult:v3];
+  [v4 finishWithResult:resultCopy];
 
-  v5 = [v4 future];
+  future = [v4 future];
 
-  return v5;
+  return future;
 }
 
-+ (id)futureWithError:(id)a3
++ (id)futureWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = +[ULPromise promise];
-  [v4 finishWithError:v3];
+  [v4 finishWithError:errorCopy];
 
-  v5 = [v4 future];
+  future = [v4 future];
 
-  return v5;
+  return future;
 }
 
-+ (id)futureWithBlock:(id)a3
++ (id)futureWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[ULScheduler globalAsyncScheduler];
-  v6 = [a1 onScheduler:v5 futureWithBlock:v4];
+  v6 = [self onScheduler:v5 futureWithBlock:blockCopy];
 
   return v6;
 }
 
-+ (id)onScheduler:(id)a3 futureWithBlock:(id)a4
++ (id)onScheduler:(id)scheduler futureWithBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  schedulerCopy = scheduler;
   v7 = +[ULPromise promise];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __40__ULFuture_onScheduler_futureWithBlock___block_invoke;
   v15 = &unk_2798DA6B8;
   v16 = v7;
-  v17 = v5;
+  v17 = blockCopy;
   v8 = v7;
-  v9 = v5;
-  [v6 performAsyncBlock:&v12];
+  v9 = blockCopy;
+  [schedulerCopy performAsyncBlock:&v12];
 
-  v10 = [v8 future];
+  future = [v8 future];
 
-  return v10;
+  return future;
 }
 
 void __40__ULFuture_onScheduler_futureWithBlock___block_invoke(uint64_t a1)
@@ -106,53 +106,53 @@ void __40__ULFuture_onScheduler_futureWithBlock___block_invoke(uint64_t a1)
   [*(a1 + 32) finishWithResult:v3 error:v4];
 }
 
-+ (void)_always:(id)a3 withBlock:(id)a4 scheduler:(id)a5
++ (void)_always:(id)_always withBlock:(id)block scheduler:(id)scheduler
 {
-  v7 = a4;
+  blockCopy = block;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __40__ULFuture__always_withBlock_scheduler___block_invoke;
   v14[3] = &unk_2798DA6E0;
-  v8 = v7;
+  v8 = blockCopy;
   v15 = v8;
-  v9 = a5;
-  v10 = a3;
-  [v10 onScheduler:v9 addSuccessBlock:v14];
+  schedulerCopy = scheduler;
+  _alwaysCopy = _always;
+  [_alwaysCopy onScheduler:schedulerCopy addSuccessBlock:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __40__ULFuture__always_withBlock_scheduler___block_invoke_2;
   v12[3] = &unk_2798DA708;
   v13 = v8;
   v11 = v8;
-  [v10 onScheduler:v9 addFailureBlock:v12];
+  [_alwaysCopy onScheduler:schedulerCopy addFailureBlock:v12];
 }
 
-+ (id)_then:(id)a3 withBlock:(id)a4 scheduler:(id)a5
++ (id)_then:(id)_then withBlock:(id)block scheduler:(id)scheduler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  blockCopy = block;
+  schedulerCopy = scheduler;
+  _thenCopy = _then;
   v10 = +[ULPromise promise];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __38__ULFuture__then_withBlock_scheduler___block_invoke;
   v18[3] = &unk_2798DA730;
-  v20 = v7;
+  v20 = blockCopy;
   v11 = v10;
   v19 = v11;
-  v12 = v7;
-  [v9 onScheduler:v8 addSuccessBlock:v18];
+  v12 = blockCopy;
+  [_thenCopy onScheduler:schedulerCopy addSuccessBlock:v18];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __38__ULFuture__then_withBlock_scheduler___block_invoke_2;
   v16[3] = &unk_2798DA758;
   v17 = v11;
   v13 = v11;
-  [v9 onScheduler:v8 addFailureBlock:v16];
+  [_thenCopy onScheduler:schedulerCopy addFailureBlock:v16];
 
-  v14 = [v13 future];
+  future = [v13 future];
 
-  return v14;
+  return future;
 }
 
 void __38__ULFuture__then_withBlock_scheduler___block_invoke(uint64_t a1)
@@ -161,11 +161,11 @@ void __38__ULFuture__then_withBlock_scheduler___block_invoke(uint64_t a1)
   [*(a1 + 32) _finishWithFuture:v2];
 }
 
-+ (id)_recover:(id)a3 withBlock:(id)a4 scheduler:(id)a5
++ (id)_recover:(id)_recover withBlock:(id)block scheduler:(id)scheduler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  blockCopy = block;
+  schedulerCopy = scheduler;
+  _recoverCopy = _recover;
   v10 = +[ULPromise promise];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -173,20 +173,20 @@ void __38__ULFuture__then_withBlock_scheduler___block_invoke(uint64_t a1)
   v19[3] = &unk_2798DA780;
   v11 = v10;
   v20 = v11;
-  [v9 onScheduler:v8 addSuccessBlock:v19];
+  [_recoverCopy onScheduler:schedulerCopy addSuccessBlock:v19];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __41__ULFuture__recover_withBlock_scheduler___block_invoke_2;
   v16[3] = &unk_2798DA7A8;
   v17 = v11;
-  v18 = v7;
+  v18 = blockCopy;
   v12 = v11;
-  v13 = v7;
-  [v9 onScheduler:v8 addFailureBlock:v16];
+  v13 = blockCopy;
+  [_recoverCopy onScheduler:schedulerCopy addFailureBlock:v16];
 
-  v14 = [v12 future];
+  future = [v12 future];
 
-  return v14;
+  return future;
 }
 
 void __41__ULFuture__recover_withBlock_scheduler___block_invoke_2(uint64_t a1)
@@ -195,42 +195,42 @@ void __41__ULFuture__recover_withBlock_scheduler___block_invoke_2(uint64_t a1)
   [*(a1 + 32) _finishWithFuture:v2];
 }
 
-+ (id)chain:(id)a3
++ (id)chain:(id)chain
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  if ([v4 count] == 1)
+  chainCopy = chain;
+  firstObject = [chainCopy firstObject];
+  if ([chainCopy count] == 1)
   {
-    v6 = v5;
+    v6 = firstObject;
   }
 
   else
   {
-    if ([v4 count] < 2)
+    if ([chainCopy count] < 2)
     {
       v7 = MEMORY[0x277CBEBF8];
     }
 
     else
     {
-      v7 = [v4 subarrayWithRange:{1, objc_msgSend(v4, "count") - 1}];
+      v7 = [chainCopy subarrayWithRange:{1, objc_msgSend(chainCopy, "count") - 1}];
     }
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __18__ULFuture_chain___block_invoke;
     v16[3] = &unk_2798DA7D0;
-    v18 = a1;
+    selfCopy = self;
     v8 = v7;
     v17 = v8;
-    v9 = [v5 then:v16];
+    v9 = [firstObject then:v16];
 
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __18__ULFuture_chain___block_invoke_2;
     v13[3] = &unk_2798DA7F8;
     v14 = v8;
-    v15 = a1;
+    selfCopy2 = self;
     v10 = v8;
     v11 = [v9 recover:v13];
 
@@ -260,20 +260,20 @@ id __18__ULFuture_chain___block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-+ (id)_join:(id)a3 ignoreFailures:(BOOL)a4
++ (id)_join:(id)_join ignoreFailures:(BOOL)failures
 {
-  v5 = a3;
-  if ([v5 count])
+  _joinCopy = _join;
+  if ([_joinCopy count])
   {
     v6 = +[ULPromise promise];
-    v7 = [v5 count];
+    v7 = [_joinCopy count];
     v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:v7];
     if (v7)
     {
       for (i = 0; i != v7; ++i)
       {
-        v10 = [MEMORY[0x277CBEB68] null];
-        [v8 setObject:v10 atIndexedSubscript:i];
+        null = [MEMORY[0x277CBEB68] null];
+        [v8 setObject:null atIndexedSubscript:i];
       }
     }
 
@@ -288,11 +288,11 @@ id __18__ULFuture_chain___block_invoke(uint64_t a1, void *a2)
     v32 = v13;
     v14 = v8;
     v33 = v14;
-    v35 = a4;
+    failuresCopy = failures;
     v15 = v6;
     v34 = v15;
     v16 = v12;
-    [v5 enumerateObjectsUsingBlock:v30];
+    [_joinCopy enumerateObjectsUsingBlock:v30];
     v17 = dispatch_get_global_queue(21, 0);
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
@@ -306,15 +306,15 @@ id __18__ULFuture_chain___block_invoke(uint64_t a1, void *a2)
     v20 = v13;
     dispatch_group_notify(v16, v17, &v23);
 
-    v21 = [v19 future];
+    future = [v19 future];
   }
 
   else
   {
-    v21 = [ULFuture futureWithResult:MEMORY[0x277CBEBF8]];
+    future = [ULFuture futureWithResult:MEMORY[0x277CBEBF8]];
   }
 
-  return v21;
+  return future;
 }
 
 void __33__ULFuture__join_ignoreFailures___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -375,24 +375,24 @@ uint64_t __33__ULFuture__join_ignoreFailures___block_invoke_4(uint64_t a1)
   return [v2 unlock];
 }
 
-+ (id)sequence:(id)a3
++ (id)sequence:(id)sequence
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  sequenceCopy = sequence;
+  if ([sequenceCopy count])
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    if ([v3 count] < 2)
+    array = [MEMORY[0x277CBEB18] array];
+    if ([sequenceCopy count] < 2)
     {
       v5 = MEMORY[0x277CBEBF8];
     }
 
     else
     {
-      v5 = [v3 subarrayWithRange:{1, objc_msgSend(v3, "count") - 1}];
+      v5 = [sequenceCopy subarrayWithRange:{1, objc_msgSend(sequenceCopy, "count") - 1}];
     }
 
-    v7 = [v3 firstObject];
+    firstObject = [sequenceCopy firstObject];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -406,7 +406,7 @@ uint64_t __33__ULFuture__join_ignoreFailures___block_invoke_4(uint64_t a1)
       do
       {
         v12 = 0;
-        v13 = v7;
+        v13 = firstObject;
         do
         {
           if (*v25 != v11)
@@ -419,12 +419,12 @@ uint64_t __33__ULFuture__join_ignoreFailures___block_invoke_4(uint64_t a1)
           v21[1] = 3221225472;
           v21[2] = __21__ULFuture_sequence___block_invoke;
           v21[3] = &unk_2798DA8C0;
-          v22 = v4;
+          v22 = array;
           v23 = v14;
-          v7 = [v13 then:v21];
+          firstObject = [v13 then:v21];
 
           ++v12;
-          v13 = v7;
+          v13 = firstObject;
         }
 
         while (v10 != v12);
@@ -438,11 +438,11 @@ uint64_t __33__ULFuture__join_ignoreFailures___block_invoke_4(uint64_t a1)
     v19[1] = 3221225472;
     v19[2] = __21__ULFuture_sequence___block_invoke_2;
     v19[3] = &unk_2798DA8E8;
-    v20 = v4;
-    v15 = v4;
-    v6 = [v7 then:v19];
+    v20 = array;
+    v15 = array;
+    v6 = [firstObject then:v19];
 
-    v3 = v18;
+    sequenceCopy = v18;
   }
 
   else
@@ -491,49 +491,49 @@ ULFuture *__21__ULFuture_sequence___block_invoke_2(uint64_t a1, uint64_t a2)
   return v2;
 }
 
-- (id)result:(id *)a3
+- (id)result:(id *)result
 {
-  v5 = [MEMORY[0x277CBEAA8] distantFuture];
-  v6 = [(ULFuture *)self resultBeforeDate:v5 error:a3];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v6 = [(ULFuture *)self resultBeforeDate:distantFuture error:result];
 
   return v6;
 }
 
-- (id)resultWithTimeout:(double)a3 error:(id *)a4
+- (id)resultWithTimeout:(double)timeout error:(id *)error
 {
-  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
-  v7 = [(ULFuture *)self resultBeforeDate:v6 error:a4];
+  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:timeout];
+  v7 = [(ULFuture *)self resultBeforeDate:v6 error:error];
 
   return v7;
 }
 
-- (id)resultIfAvailable:(id *)a3
+- (id)resultIfAvailable:(id *)available
 {
-  v5 = [MEMORY[0x277CBEAA8] distantPast];
-  v6 = [(ULFuture *)self resultBeforeDate:v5 error:a3];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v6 = [(ULFuture *)self resultBeforeDate:distantPast error:available];
 
   return v6;
 }
 
-- (id)resultBeforeDate:(id)a3 error:(id *)a4
+- (id)resultBeforeDate:(id)date error:(id *)error
 {
-  if ([(NSConditionLock *)self->_stateLock lockWhenCondition:1 beforeDate:a3])
+  if ([(NSConditionLock *)self->_stateLock lockWhenCondition:1 beforeDate:date])
   {
     v6 = self->_result;
     stateLock = self->_stateLock;
     v8 = self->_error;
     [(NSConditionLock *)stateLock unlock];
-    if (a4)
+    if (error)
     {
       v9 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"ULErrorDomain" code:-1 userInfo:0];
-    *a4 = v6 = 0;
+    *error = v6 = 0;
   }
 
   else
@@ -547,9 +547,9 @@ ULFuture *__21__ULFuture_sequence___block_invoke_2(uint64_t a1, uint64_t a2)
 - (BOOL)isFinished
 {
   [(NSConditionLock *)self->_stateLock lock];
-  v3 = [(ULFuture *)self _nts_isFinished];
+  _nts_isFinished = [(ULFuture *)self _nts_isFinished];
   [(NSConditionLock *)self->_stateLock unlock];
-  return v3;
+  return _nts_isFinished;
 }
 
 - (BOOL)isCancelled
@@ -557,8 +557,8 @@ ULFuture *__21__ULFuture_sequence___block_invoke_2(uint64_t a1, uint64_t a2)
   [(NSConditionLock *)self->_stateLock lock];
   if ([(ULFuture *)self _nts_isFinished])
   {
-    v3 = [(NSError *)self->_error domain];
-    if ([v3 isEqual:*MEMORY[0x277CCA050]])
+    domain = [(NSError *)self->_error domain];
+    if ([domain isEqual:*MEMORY[0x277CCA050]])
     {
       v4 = [(NSError *)self->_error code]== 3072;
     }
@@ -591,21 +591,21 @@ ULFuture *__21__ULFuture_sequence___block_invoke_2(uint64_t a1, uint64_t a2)
   return v4;
 }
 
-- (BOOL)finishWithResult:(id)a3 error:(id)a4
+- (BOOL)finishWithResult:(id)result error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  errorCopy = error;
   [(NSConditionLock *)self->_stateLock lock];
-  v9 = [(ULFuture *)self _nts_isFinished];
-  if (v9)
+  _nts_isFinished = [(ULFuture *)self _nts_isFinished];
+  if (_nts_isFinished)
   {
     [(NSConditionLock *)self->_stateLock unlock];
   }
 
   else
   {
-    objc_storeStrong(&self->_result, a3);
-    v10 = [v8 copy];
+    objc_storeStrong(&self->_result, result);
+    v10 = [errorCopy copy];
     error = self->_error;
     self->_error = v10;
 
@@ -613,24 +613,24 @@ ULFuture *__21__ULFuture_sequence___block_invoke_2(uint64_t a1, uint64_t a2)
     [(ULFuture *)self _flushCompletionBlocks];
   }
 
-  return !v9;
+  return !_nts_isFinished;
 }
 
-- (void)_finishWithFuture:(id)a3
+- (void)_finishWithFuture:(id)future
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__ULFuture__finishWithFuture___block_invoke;
   v6[3] = &unk_2798DA780;
   v6[4] = self;
-  v4 = a3;
-  [v4 addSuccessBlock:v6];
+  futureCopy = future;
+  [futureCopy addSuccessBlock:v6];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __30__ULFuture__finishWithFuture___block_invoke_2;
   v5[3] = &unk_2798DA758;
   v5[4] = self;
-  [v4 addFailureBlock:v5];
+  [futureCopy addFailureBlock:v5];
 }
 
 - (id)completionHandlerAdapter
@@ -706,15 +706,15 @@ void __45__ULFuture_errorOnlyCompletionHandlerAdapter__block_invoke(uint64_t a1,
   }
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__ULFuture_addSuccessBlock___block_invoke;
   v7[3] = &unk_2798DA960;
-  v8 = v4;
-  v5 = v4;
+  v8 = blockCopy;
+  v5 = blockCopy;
   v6 = MEMORY[0x259CA3550](v7);
   [(ULFuture *)self _addCompletionBlock:v6];
 }
@@ -729,18 +729,18 @@ uint64_t __28__ULFuture_addSuccessBlock___block_invoke(uint64_t result, uint64_t
   return result;
 }
 
-- (void)onScheduler:(id)a3 addSuccessBlock:(id)a4
+- (void)onScheduler:(id)scheduler addSuccessBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  schedulerCopy = scheduler;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__ULFuture_onScheduler_addSuccessBlock___block_invoke;
   v10[3] = &unk_2798DA988;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = schedulerCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = schedulerCopy;
   [(ULFuture *)self addSuccessBlock:v10];
 }
 
@@ -759,15 +759,15 @@ void __40__ULFuture_onScheduler_addSuccessBlock___block_invoke(uint64_t a1, void
   [v4 performAsyncBlock:v7];
 }
 
-- (void)addFailureBlock:(id)a3
+- (void)addFailureBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__ULFuture_addFailureBlock___block_invoke;
   v7[3] = &unk_2798DA960;
-  v8 = v4;
-  v5 = v4;
+  v8 = blockCopy;
+  v5 = blockCopy;
   v6 = MEMORY[0x259CA3550](v7);
   [(ULFuture *)self _addCompletionBlock:v6];
 }
@@ -782,18 +782,18 @@ uint64_t __28__ULFuture_addFailureBlock___block_invoke(uint64_t result, uint64_t
   return result;
 }
 
-- (void)onScheduler:(id)a3 addFailureBlock:(id)a4
+- (void)onScheduler:(id)scheduler addFailureBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  schedulerCopy = scheduler;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__ULFuture_onScheduler_addFailureBlock___block_invoke;
   v10[3] = &unk_2798DA9B0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = schedulerCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = schedulerCopy;
   [(ULFuture *)self addFailureBlock:v10];
 }
 
@@ -812,20 +812,20 @@ void __40__ULFuture_onScheduler_addFailureBlock___block_invoke(uint64_t a1, void
   [v4 performAsyncBlock:v7];
 }
 
-- (void)_addCompletionBlock:(id)a3
+- (void)_addCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(NSConditionLock *)self->_stateLock lock];
   if ([(ULFuture *)self _nts_isFinished])
   {
     [(NSConditionLock *)self->_stateLock unlock];
-    v6[2](v6, self->_result, self->_error);
+    blockCopy[2](blockCopy, self->_result, self->_error);
   }
 
   else
   {
     completionBlocks = self->_completionBlocks;
-    v5 = MEMORY[0x259CA3550](v6);
+    v5 = MEMORY[0x259CA3550](blockCopy);
     [(NSMutableArray *)completionBlocks addObject:v5];
 
     [(NSConditionLock *)self->_stateLock unlock];
@@ -875,50 +875,50 @@ void __40__ULFuture_onScheduler_addFailureBlock___block_invoke(uint64_t a1, void
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)always:(id)a3
+- (void)always:(id)always
 {
-  v4 = a3;
+  alwaysCopy = always;
   v5 = +[ULScheduler immediateScheduler];
-  [(ULFuture *)self onScheduler:v5 always:v4];
+  [(ULFuture *)self onScheduler:v5 always:alwaysCopy];
 }
 
-- (id)then:(id)a3
+- (id)then:(id)then
 {
-  v4 = a3;
+  thenCopy = then;
   v5 = +[ULScheduler immediateScheduler];
-  v6 = [(ULFuture *)self onScheduler:v5 then:v4];
+  v6 = [(ULFuture *)self onScheduler:v5 then:thenCopy];
 
   return v6;
 }
 
-- (id)recover:(id)a3
+- (id)recover:(id)recover
 {
-  v4 = a3;
+  recoverCopy = recover;
   v5 = +[ULScheduler immediateScheduler];
-  v6 = [(ULFuture *)self onScheduler:v5 recover:v4];
+  v6 = [(ULFuture *)self onScheduler:v5 recover:recoverCopy];
 
   return v6;
 }
 
-- (id)map:(id)a3
+- (id)map:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = +[ULScheduler immediateScheduler];
-  v6 = [(ULFuture *)self onScheduler:v5 map:v4];
+  v6 = [(ULFuture *)self onScheduler:v5 map:mapCopy];
 
   return v6;
 }
 
-- (id)onScheduler:(id)a3 map:(id)a4
+- (id)onScheduler:(id)scheduler map:(id)map
 {
-  v6 = a4;
+  mapCopy = map;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __28__ULFuture_onScheduler_map___block_invoke;
   v10[3] = &unk_2798DA9D8;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(ULFuture *)self onScheduler:a3 then:v10];
+  v11 = mapCopy;
+  v7 = mapCopy;
+  v8 = [(ULFuture *)self onScheduler:scheduler then:v10];
 
   return v8;
 }

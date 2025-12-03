@@ -1,21 +1,21 @@
 @interface NUIBoxArrangement
-- (CGRect)layoutFrameForArrangedSubview:(id)a3 withProposedContentFrame:(CGRect)a4;
-- (CGSize)contentLayoutSizeFittingSize:(CGSize)a3 forArrangedSubview:(id)a4;
-- (CGSize)layoutSizeFittingSize:(CGSize)a3;
-- (NUIBoxArrangement)initWithContainer:(id)a3 dataSource:(id)a4;
+- (CGRect)layoutFrameForArrangedSubview:(id)subview withProposedContentFrame:(CGRect)frame;
+- (CGSize)contentLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
+- (CGSize)layoutSizeFittingSize:(CGSize)size;
+- (NUIBoxArrangement)initWithContainer:(id)container dataSource:(id)source;
 - (double)_cacheDisplayScaleIfNeeded;
 - (void)dealloc;
-- (void)populateBoxArrangementCells:(void *)a3;
-- (void)positionItemsInBounds:(CGRect)a3 block:(id)a4;
+- (void)populateBoxArrangementCells:(void *)cells;
+- (void)positionItemsInBounds:(CGRect)bounds block:(id)block;
 @end
 
 @implementation NUIBoxArrangement
 
-- (NUIBoxArrangement)initWithContainer:(id)a3 dataSource:(id)a4
+- (NUIBoxArrangement)initWithContainer:(id)container dataSource:(id)source
 {
   if (_NUIEnableAPIMisuseAssertions)
   {
-    if (a3)
+    if (container)
     {
       goto LABEL_6;
     }
@@ -24,7 +24,7 @@
   }
 
   v8 = _NUIIsDebuggerAttached();
-  if (!a3 && (v8 & 1) != 0)
+  if (!container && (v8 & 1) != 0)
   {
 LABEL_14:
     [NUIBoxArrangement initWithContainer:a2 dataSource:self];
@@ -33,7 +33,7 @@ LABEL_14:
 LABEL_6:
   if (_NUIEnableAPIMisuseAssertions)
   {
-    if (a4)
+    if (source)
     {
       goto LABEL_11;
     }
@@ -42,7 +42,7 @@ LABEL_6:
   }
 
   v9 = _NUIIsDebuggerAttached();
-  if (!a4 && (v9 & 1) != 0)
+  if (!source && (v9 & 1) != 0)
   {
 LABEL_15:
     [NUIBoxArrangement initWithContainer:a2 dataSource:self];
@@ -55,8 +55,8 @@ LABEL_11:
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_container, a3);
-    objc_storeWeak(&v11->_dataSource, a4);
+    objc_storeWeak(&v10->_container, container);
+    objc_storeWeak(&v11->_dataSource, source);
     v11->_arrangement.container = v11;
     *&v11->_flags = *&v11->_flags & 0xFE | objc_opt_respondsToSelector() & 1;
   }
@@ -74,7 +74,7 @@ LABEL_11:
   [(NUIBoxArrangement *)&v3 dealloc];
 }
 
-- (void)populateBoxArrangementCells:(void *)a3
+- (void)populateBoxArrangementCells:(void *)cells
 {
   v5 = self->_dataSource;
   v6 = [(NUIBoxArrangementDataSource *)v5 numberOfItemsInBoxArrangement:self];
@@ -86,17 +86,17 @@ LABEL_11:
       v21 = 3;
       v22 = 3;
       v9 = [(NUIBoxArrangementDataSource *)v5 boxArrangement:self itemAtIndex:i horizontalAlignment:&v22 verticalAlignment:&v21];
-      v11 = *(a3 + 1);
-      v10 = *(a3 + 2);
+      v11 = *(cells + 1);
+      v10 = *(cells + 2);
       if (v11 >= v10)
       {
-        v13 = (v11 - *a3) >> 6;
+        v13 = (v11 - *cells) >> 6;
         if ((v13 + 1) >> 58)
         {
           std::vector<std::pair<CGSize,CGSize>>::__throw_length_error[abi:nn200100]();
         }
 
-        v14 = v10 - *a3;
+        v14 = v10 - *cells;
         v15 = v14 >> 5;
         if (v14 >> 5 <= (v13 + 1))
         {
@@ -115,18 +115,18 @@ LABEL_11:
 
         if (v16)
         {
-          std::__allocate_at_least[abi:nn200100]<std::allocator<_NUIFlowArrangementCell>>(a3, v16);
+          std::__allocate_at_least[abi:nn200100]<std::allocator<_NUIFlowArrangementCell>>(cells, v16);
         }
 
         _NUIFlowArrangementCell::_NUIFlowArrangementCell(v13 << 6, v9, v22, v21);
         v12 = v17 + 64;
-        v18 = *(a3 + 1) - *a3;
+        v18 = *(cells + 1) - *cells;
         v19 = v17 - v18;
-        memcpy((v17 - v18), *a3, v18);
-        v20 = *a3;
-        *a3 = v19;
-        *(a3 + 1) = v12;
-        *(a3 + 2) = 0;
+        memcpy((v17 - v18), *cells, v18);
+        v20 = *cells;
+        *cells = v19;
+        *(cells + 1) = v12;
+        *(cells + 2) = 0;
         if (v20)
         {
           operator delete(v20);
@@ -135,20 +135,20 @@ LABEL_11:
 
       else
       {
-        _NUIFlowArrangementCell::_NUIFlowArrangementCell(*(a3 + 1), v9, v22, v21);
+        _NUIFlowArrangementCell::_NUIFlowArrangementCell(*(cells + 1), v9, v22, v21);
         v12 = v11 + 64;
-        *(a3 + 1) = v12;
+        *(cells + 1) = v12;
       }
 
-      *(a3 + 1) = v12;
+      *(cells + 1) = v12;
     }
   }
 }
 
-- (CGSize)layoutSizeFittingSize:(CGSize)a3
+- (CGSize)layoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   _NUIBoxArrangement::resetForInvalidation(&self->_arrangement, 0);
   v6 = width;
   v7 = height;
@@ -159,21 +159,21 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)contentLayoutSizeFittingSize:(CGSize)a3 forArrangedSubview:(id)a4
+- (CGSize)contentLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [(NUIBoxArrangement *)self container];
+  height = size.height;
+  width = size.width;
+  container = [(NUIBoxArrangement *)self container];
 
-  [(NUIArrangementContainer *)v7 contentLayoutSizeFittingSize:a4 forArrangedSubview:width, height];
+  [(NUIArrangementContainer *)container contentLayoutSizeFittingSize:subview forArrangedSubview:width, height];
   result.height = v9;
   result.width = v8;
   return result;
 }
 
-- (CGRect)layoutFrameForArrangedSubview:(id)a3 withProposedContentFrame:(CGRect)a4
+- (CGRect)layoutFrameForArrangedSubview:(id)subview withProposedContentFrame:(CGRect)frame
 {
-  [(NUIArrangementContainer *)[(NUIBoxArrangement *)self container] layoutFrameForArrangedSubview:a3 withProposedContentFrame:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(NUIArrangementContainer *)[(NUIBoxArrangement *)self container] layoutFrameForArrangedSubview:subview withProposedContentFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   x = v58.origin.x;
   y = v58.origin.y;
   width = v58.size.width;
@@ -371,12 +371,12 @@ LABEL_11:
   return result;
 }
 
-- (void)positionItemsInBounds:(CGRect)a3 block:(id)a4
+- (void)positionItemsInBounds:(CGRect)bounds block:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(NUIBoxArrangement *)self _cacheDisplayScaleIfNeeded];
   _NUIBoxArrangement::resetForInvalidation(&self->_arrangement, 0);
   v11.width = width;
@@ -387,7 +387,7 @@ LABEL_11:
   self->_bounds.size.width = width;
   self->_bounds.size.height = height;
 
-  _NUIBoxArrangement::positionCells(&self->_arrangement, a4, x, y, width, height);
+  _NUIBoxArrangement::positionCells(&self->_arrangement, block, x, y, width, height);
 }
 
 - (uint64_t)initWithContainer:(uint64_t)a1 dataSource:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

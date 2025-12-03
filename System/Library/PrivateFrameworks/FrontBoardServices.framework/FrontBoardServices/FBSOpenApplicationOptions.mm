@@ -1,17 +1,17 @@
 @interface FBSOpenApplicationOptions
-+ (id)optionsWithDictionary:(id)a3;
-- (FBSOpenApplicationOptions)initWithBSXPCCoder:(id)a3;
-- (FBSOpenApplicationOptions)initWithXPCDictionary:(id)a3;
++ (id)optionsWithDictionary:(id)dictionary;
+- (FBSOpenApplicationOptions)initWithBSXPCCoder:(id)coder;
+- (FBSOpenApplicationOptions)initWithXPCDictionary:(id)dictionary;
 - (NSSet)actions;
 - (NSURL)url;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_sanitizeAndValidatePayload;
-- (void)_updateOption:(id)a3 forKey:(id)a4;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)setDictionary:(id)a3;
+- (void)_updateOption:(id)option forKey:(id)key;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)setDictionary:(id)dictionary;
 @end
 
 @implementation FBSOpenApplicationOptions
@@ -40,8 +40,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NSMutableDictionary *)self->_payload allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [(NSMutableDictionary *)self->_payload allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -53,7 +53,7 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
@@ -67,7 +67,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -77,9 +77,9 @@
 - (NSSet)actions
 {
   v2 = [(NSMutableDictionary *)self->_payload bs_safeObjectForKey:@"__Actions" ofType:objc_opt_class()];
-  v3 = [v2 bs_set];
+  bs_set = [v2 bs_set];
 
-  return v3;
+  return bs_set;
 }
 
 - (NSURL)url
@@ -90,20 +90,20 @@
   return [(NSMutableDictionary *)payload bs_safeObjectForKey:@"__PayloadURL" ofType:v3];
 }
 
-+ (id)optionsWithDictionary:(id)a3
++ (id)optionsWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = objc_alloc_init(self);
+  [v5 setDictionary:dictionaryCopy];
 
   return v5;
 }
 
-- (void)setDictionary:(id)a3
+- (void)setDictionary:(id)dictionary
 {
-  if (self->_payload != a3)
+  if (self->_payload != dictionary)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [dictionary mutableCopy];
     payload = self->_payload;
     self->_payload = v5;
 
@@ -111,9 +111,9 @@
   }
 }
 
-- (FBSOpenApplicationOptions)initWithXPCDictionary:(id)a3
+- (FBSOpenApplicationOptions)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if ([(FBSOpenApplicationOptions *)self init])
   {
     [MEMORY[0x1E695DF90] dictionary];
@@ -124,9 +124,9 @@
   return 0;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(NSMutableDictionary *)self->_payload mutableCopy];
   v6 = [v5 objectForKey:@"__Actions"];
   [v5 removeObjectForKey:@"__Actions"];
@@ -183,42 +183,42 @@
   }
 }
 
-- (FBSOpenApplicationOptions)initWithBSXPCCoder:(id)a3
+- (FBSOpenApplicationOptions)initWithBSXPCCoder:(id)coder
 {
-  v4 = [a3 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"bsxpccoded"];
+  v4 = [coder decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"bsxpccoded"];
   v5 = [(FBSOpenApplicationOptions *)self initWithXPCDictionary:v4];
 
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = xpc_dictionary_create(0, 0, 0);
   [(FBSOpenApplicationOptions *)self encodeWithXPCDictionary:v5];
-  [v4 encodeXPCObject:v5 forKey:@"bsxpccoded"];
+  [coderCopy encodeXPCObject:v5 forKey:@"bsxpccoded"];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(FBSOpenApplicationOptions *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSOpenApplicationOptions *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSOpenApplicationOptions *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSOpenApplicationOptions *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSOpenApplicationOptions *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSOpenApplicationOptions *)self succinctDescriptionBuilder];
   if ([(NSMutableDictionary *)self->_payload count])
   {
     v7[0] = MEMORY[0x1E69E9820];
@@ -226,11 +226,11 @@
     v7[2] = __67__FBSOpenApplicationOptions_descriptionBuilderWithMultilinePrefix___block_invoke;
     v7[3] = &unk_1E76BCD60;
     v7[4] = self;
-    v8 = v5;
-    [v8 appendBodySectionWithName:0 multilinePrefix:v4 block:v7];
+    v8 = succinctDescriptionBuilder;
+    [v8 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v7];
   }
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 void __67__FBSOpenApplicationOptions_descriptionBuilderWithMultilinePrefix___block_invoke(uint64_t a1)
@@ -271,17 +271,17 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)_updateOption:(id)a3 forKey:(id)a4
+- (void)_updateOption:(id)option forKey:(id)key
 {
   payload = self->_payload;
-  if (a3)
+  if (option)
   {
-    [(NSMutableDictionary *)payload setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)payload setObject:option forKey:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)payload removeObjectForKey:a4];
+    [(NSMutableDictionary *)payload removeObjectForKey:key];
   }
 }
 

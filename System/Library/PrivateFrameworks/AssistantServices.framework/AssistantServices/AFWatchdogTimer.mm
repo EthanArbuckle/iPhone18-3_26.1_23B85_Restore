@@ -1,9 +1,9 @@
 @interface AFWatchdogTimer
-- (AFWatchdogTimer)initWithTimeoutInterval:(double)a3 onQueue:(id)a4 timeoutHandler:(id)a5;
-- (AFWatchdogTimer)initWithTimeoutInterval:(double)a3 timeoutHandler:(id)a4;
+- (AFWatchdogTimer)initWithTimeoutInterval:(double)interval onQueue:(id)queue timeoutHandler:(id)handler;
+- (AFWatchdogTimer)initWithTimeoutInterval:(double)interval timeoutHandler:(id)handler;
 - (BOOL)cancelIfNotAlreadyCanceled;
 - (double)timeRemaining;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)cancel;
 - (void)dealloc;
 - (void)reset;
@@ -22,8 +22,8 @@
     v4 = dispatch_time(0, (self->_remainingInterval * 1000000000.0));
     dispatch_source_set_timer(timerSource, v4, 0xFFFFFFFFFFFFFFFFLL, 0);
     dispatch_resume(self->_timerSource);
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    [v5 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     self->_startTime = v6;
 
     self->_isStopped = 0;
@@ -84,8 +84,8 @@
     return self->_remainingInterval;
   }
 
-  v4 = [MEMORY[0x1E696AE30] processInfo];
-  [v4 systemUptime];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo systemUptime];
   v6 = v5 - self->_startTime;
 
   result = self->_interval - v6;
@@ -111,9 +111,9 @@
   os_unfair_lock_unlock(&self->_timerLock);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   interval = self->_interval;
   queue = self->_queue;
   timeoutHandler = self->_timeoutHandler;
@@ -121,22 +121,22 @@
   return [v4 initWithTimeoutInterval:queue onQueue:timeoutHandler timeoutHandler:interval];
 }
 
-- (AFWatchdogTimer)initWithTimeoutInterval:(double)a3 onQueue:(id)a4 timeoutHandler:(id)a5
+- (AFWatchdogTimer)initWithTimeoutInterval:(double)interval onQueue:(id)queue timeoutHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  if (a3 >= 0.0)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (interval >= 0.0)
   {
-    if (v10)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"AFWatchdogTimer.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AFWatchdogTimer.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -144,23 +144,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"AFWatchdogTimer.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"timeoutInterval >= 0"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"AFWatchdogTimer.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"timeoutInterval >= 0"}];
 
-  if (!v10)
+  if (!queueCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"AFWatchdogTimer.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"timeoutHandler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"AFWatchdogTimer.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"timeoutHandler"}];
 
 LABEL_4:
   v27.receiver = self;
@@ -169,10 +169,10 @@ LABEL_4:
   v13 = v12;
   if (v12)
   {
-    v12->_interval = a3;
-    v12->_remainingInterval = a3;
-    objc_storeStrong(&v12->_queue, a4);
-    v14 = MEMORY[0x193AFB7B0](v11);
+    v12->_interval = interval;
+    v12->_remainingInterval = interval;
+    objc_storeStrong(&v12->_queue, queue);
+    v14 = MEMORY[0x193AFB7B0](handlerCopy);
     timeoutHandler = v13->_timeoutHandler;
     v13->_timeoutHandler = v14;
 
@@ -188,7 +188,7 @@ LABEL_4:
     handler[2] = __66__AFWatchdogTimer_initWithTimeoutInterval_onQueue_timeoutHandler___block_invoke;
     handler[3] = &unk_1E7344098;
     objc_copyWeak(&v25, &location);
-    v24 = v11;
+    v24 = handlerCopy;
     dispatch_source_set_event_handler(v18, handler);
     v13->_isStopped = 1;
 
@@ -209,10 +209,10 @@ uint64_t __66__AFWatchdogTimer_initWithTimeoutInterval_onQueue_timeoutHandler___
   return v3();
 }
 
-- (AFWatchdogTimer)initWithTimeoutInterval:(double)a3 timeoutHandler:(id)a4
+- (AFWatchdogTimer)initWithTimeoutInterval:(double)interval timeoutHandler:(id)handler
 {
   v7 = dispatch_get_global_queue(17, 0);
-  v8 = [(AFWatchdogTimer *)self initWithTimeoutInterval:v7 onQueue:a4 timeoutHandler:a3];
+  v8 = [(AFWatchdogTimer *)self initWithTimeoutInterval:v7 onQueue:handler timeoutHandler:interval];
 
   return v8;
 }

@@ -1,34 +1,34 @@
 @interface FedStatsDataSampler
-+ (id)pickSamplesFrom:(id)a3 length:(unint64_t)a4;
-+ (id)samplerWithCount:(unint64_t)a3;
-- (void)addItem:(id)a3;
-- (void)addItems:(id)a3;
++ (id)pickSamplesFrom:(id)from length:(unint64_t)length;
++ (id)samplerWithCount:(unint64_t)count;
+- (void)addItem:(id)item;
+- (void)addItems:(id)items;
 @end
 
 @implementation FedStatsDataSampler
 
-+ (id)samplerWithCount:(unint64_t)a3
++ (id)samplerWithCount:(unint64_t)count
 {
   v4 = objc_alloc_init(FedStatsDataSampler);
   [(FedStatsDataSampler *)v4 setTotal:0];
-  [(FedStatsDataSampler *)v4 setCount:a3];
-  v5 = [NSMutableArray arrayWithCapacity:a3];
+  [(FedStatsDataSampler *)v4 setCount:count];
+  v5 = [NSMutableArray arrayWithCapacity:count];
   [(FedStatsDataSampler *)v4 setResults:v5];
 
   return v4;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v7 = a3;
-  if (v7)
+  itemCopy = item;
+  if (itemCopy)
   {
     v4 = [(FedStatsDataSampler *)self total]+ 1;
     [(FedStatsDataSampler *)self setTotal:v4];
     if (v4 <= [(FedStatsDataSampler *)self count])
     {
-      v6 = [(FedStatsDataSampler *)self results];
-      [v6 addObject:v7];
+      results = [(FedStatsDataSampler *)self results];
+      [results addObject:itemCopy];
     }
 
     else
@@ -39,22 +39,22 @@
         goto LABEL_7;
       }
 
-      v6 = [(FedStatsDataSampler *)self results];
-      [v6 replaceObjectAtIndex:v5 withObject:v7];
+      results = [(FedStatsDataSampler *)self results];
+      [results replaceObjectAtIndex:v5 withObject:itemCopy];
     }
   }
 
 LABEL_7:
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -66,7 +66,7 @@ LABEL_7:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         [(FedStatsDataSampler *)self addItem:*(*(&v9 + 1) + 8 * v8)];
@@ -74,22 +74,22 @@ LABEL_7:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-+ (id)pickSamplesFrom:(id)a3 length:(unint64_t)a4
++ (id)pickSamplesFrom:(id)from length:(unint64_t)length
 {
-  v5 = a3;
-  v6 = [FedStatsDataSampler samplerWithCount:a4];
-  [v6 addItems:v5];
+  fromCopy = from;
+  v6 = [FedStatsDataSampler samplerWithCount:length];
+  [v6 addItems:fromCopy];
 
-  v7 = [v6 getResults];
+  getResults = [v6 getResults];
 
-  return v7;
+  return getResults;
 }
 
 @end

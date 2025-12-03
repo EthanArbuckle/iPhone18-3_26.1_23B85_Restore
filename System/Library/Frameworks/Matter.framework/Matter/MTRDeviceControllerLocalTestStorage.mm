@@ -1,39 +1,39 @@
 @interface MTRDeviceControllerLocalTestStorage
 + (BOOL)localTestStorageEnabled;
-- (BOOL)controller:(id)a3 removeValueForKey:(id)a4 securityLevel:(unint64_t)a5 sharingType:(unint64_t)a6;
-- (BOOL)controller:(id)a3 storeValue:(id)a4 forKey:(id)a5 securityLevel:(unint64_t)a6 sharingType:(unint64_t)a7;
-- (BOOL)controller:(id)a3 storeValues:(id)a4 securityLevel:(unint64_t)a5 sharingType:(unint64_t)a6;
-- (MTRDeviceControllerLocalTestStorage)initWithPassThroughStorage:(id)a3;
-- (id)controller:(id)a3 valueForKey:(id)a4 securityLevel:(unint64_t)a5 sharingType:(unint64_t)a6;
-- (id)valuesForController:(id)a3 securityLevel:(unint64_t)a4 sharingType:(unint64_t)a5;
+- (BOOL)controller:(id)controller removeValueForKey:(id)key securityLevel:(unint64_t)level sharingType:(unint64_t)type;
+- (BOOL)controller:(id)controller storeValue:(id)value forKey:(id)key securityLevel:(unint64_t)level sharingType:(unint64_t)type;
+- (BOOL)controller:(id)controller storeValues:(id)values securityLevel:(unint64_t)level sharingType:(unint64_t)type;
+- (MTRDeviceControllerLocalTestStorage)initWithPassThroughStorage:(id)storage;
+- (id)controller:(id)controller valueForKey:(id)key securityLevel:(unint64_t)level sharingType:(unint64_t)type;
+- (id)valuesForController:(id)controller securityLevel:(unint64_t)level sharingType:(unint64_t)type;
 @end
 
 @implementation MTRDeviceControllerLocalTestStorage
 
 + (BOOL)localTestStorageEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"enableTestStorage"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"enableTestStorage"];
 
   return v3;
 }
 
-- (MTRDeviceControllerLocalTestStorage)initWithPassThroughStorage:(id)a3
+- (MTRDeviceControllerLocalTestStorage)initWithPassThroughStorage:(id)storage
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  storageCopy = storage;
   v11.receiver = self;
   v11.super_class = MTRDeviceControllerLocalTestStorage;
   v6 = [(MTRDeviceControllerLocalTestStorage *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_passThroughStorage, a3);
+    objc_storeStrong(&v6->_passThroughStorage, storage);
     v8 = sub_2393D9044(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v5;
+      v13 = storageCopy;
       _os_log_impl(&dword_238DAE000, v8, OS_LOG_TYPE_DEFAULT, "MTRDeviceControllerLocalTestStorage initialized with pass-through storage %@", buf, 0xCu);
     }
 
@@ -47,16 +47,16 @@
   return v7;
 }
 
-- (id)controller:(id)a3 valueForKey:(id)a4 securityLevel:(unint64_t)a5 sharingType:(unint64_t)a6
+- (id)controller:(id)controller valueForKey:(id)key securityLevel:(unint64_t)level sharingType:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  if (a6)
+  controllerCopy = controller;
+  keyCopy = key;
+  if (type)
   {
     passThroughStorage = self->_passThroughStorage;
     if (passThroughStorage)
     {
-      v13 = [(MTRDeviceControllerStorageDelegate *)passThroughStorage controller:v10 valueForKey:v11 securityLevel:a5 sharingType:a6];
+      v13 = [(MTRDeviceControllerStorageDelegate *)passThroughStorage controller:controllerCopy valueForKey:keyCopy securityLevel:level sharingType:type];
     }
 
     else
@@ -79,8 +79,8 @@
 
   else
   {
-    v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v15 = [v14 dataForKey:v11];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v15 = [standardUserDefaults dataForKey:keyCopy];
     v16 = MEMORY[0x277CCAAC8];
     v17 = MTRDeviceControllerStorageClasses();
     v21 = 0;
@@ -90,18 +90,18 @@
   return v13;
 }
 
-- (BOOL)controller:(id)a3 storeValue:(id)a4 forKey:(id)a5 securityLevel:(unint64_t)a6 sharingType:(unint64_t)a7
+- (BOOL)controller:(id)controller storeValue:(id)value forKey:(id)key securityLevel:(unint64_t)level sharingType:(unint64_t)type
 {
   v26 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (a7)
+  controllerCopy = controller;
+  valueCopy = value;
+  keyCopy = key;
+  if (type)
   {
     passThroughStorage = self->_passThroughStorage;
     if (passThroughStorage)
     {
-      LOBYTE(a7) = [(MTRDeviceControllerStorageDelegate *)passThroughStorage controller:v12 storeValue:v13 forKey:v14 securityLevel:a6 sharingType:a7];
+      LOBYTE(type) = [(MTRDeviceControllerStorageDelegate *)passThroughStorage controller:controllerCopy storeValue:valueCopy forKey:keyCopy securityLevel:level sharingType:type];
     }
 
     else
@@ -118,16 +118,16 @@
         sub_2393D5320(0, 1);
       }
 
-      LOBYTE(a7) = 0;
+      LOBYTE(type) = 0;
     }
   }
 
   else
   {
     v23 = 0;
-    v16 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:&v23];
+    v16 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:valueCopy requiringSecureCoding:1 error:&v23];
     v17 = v23;
-    a7 = v17 == 0;
+    type = v17 == 0;
     if (v17)
     {
       v18 = sub_2393D9044(0);
@@ -146,25 +146,25 @@
 
     else
     {
-      v20 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v20 setObject:v16 forKey:v14];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults setObject:v16 forKey:keyCopy];
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
-  return a7;
+  return type;
 }
 
-- (BOOL)controller:(id)a3 removeValueForKey:(id)a4 securityLevel:(unint64_t)a5 sharingType:(unint64_t)a6
+- (BOOL)controller:(id)controller removeValueForKey:(id)key securityLevel:(unint64_t)level sharingType:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  if (a6)
+  controllerCopy = controller;
+  keyCopy = key;
+  if (type)
   {
     passThroughStorage = self->_passThroughStorage;
     if (passThroughStorage)
     {
-      v13 = [(MTRDeviceControllerStorageDelegate *)passThroughStorage controller:v10 removeValueForKey:v11 securityLevel:a5 sharingType:a6];
+      v13 = [(MTRDeviceControllerStorageDelegate *)passThroughStorage controller:controllerCopy removeValueForKey:keyCopy securityLevel:level sharingType:type];
     }
 
     else
@@ -187,8 +187,8 @@
 
   else
   {
-    v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v14 removeObjectForKey:v11];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults removeObjectForKey:keyCopy];
 
     v13 = 1;
   }
@@ -196,14 +196,14 @@
   return v13;
 }
 
-- (id)valuesForController:(id)a3 securityLevel:(unint64_t)a4 sharingType:(unint64_t)a5
+- (id)valuesForController:(id)controller securityLevel:(unint64_t)level sharingType:(unint64_t)type
 {
-  v8 = a3;
-  if (a5)
+  controllerCopy = controller;
+  if (type)
   {
     if (self->_passThroughStorage && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v9 = [(MTRDeviceControllerStorageDelegate *)self->_passThroughStorage valuesForController:v8 securityLevel:a4 sharingType:a5];
+      dictionaryRepresentation = [(MTRDeviceControllerStorageDelegate *)self->_passThroughStorage valuesForController:controllerCopy securityLevel:level sharingType:type];
     }
 
     else
@@ -220,29 +220,29 @@
         sub_2393D5320(0, 1);
       }
 
-      v9 = 0;
+      dictionaryRepresentation = 0;
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v9 = [v11 dictionaryRepresentation];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    dictionaryRepresentation = [standardUserDefaults dictionaryRepresentation];
   }
 
-  return v9;
+  return dictionaryRepresentation;
 }
 
-- (BOOL)controller:(id)a3 storeValues:(id)a4 securityLevel:(unint64_t)a5 sharingType:(unint64_t)a6
+- (BOOL)controller:(id)controller storeValues:(id)values securityLevel:(unint64_t)level sharingType:(unint64_t)type
 {
   v36 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v26 = a4;
-  if (a6)
+  controllerCopy = controller;
+  valuesCopy = values;
+  if (type)
   {
     if (self->_passThroughStorage && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v10 = [(MTRDeviceControllerStorageDelegate *)self->_passThroughStorage controller:v25 storeValues:v26 securityLevel:a5 sharingType:a6];
+      v10 = [(MTRDeviceControllerStorageDelegate *)self->_passThroughStorage controller:controllerCopy storeValues:valuesCopy securityLevel:level sharingType:type];
     }
 
     else
@@ -265,12 +265,12 @@
 
   else
   {
-    v27 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v12 = v26;
+    v12 = valuesCopy;
     v13 = [v12 countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v13)
     {
@@ -313,7 +313,7 @@
 
           else
           {
-            [v27 setObject:v19 forKey:v16];
+            [standardUserDefaults setObject:v19 forKey:v16];
           }
         }
 

@@ -1,9 +1,9 @@
 @interface CHWorkoutTypeKey
-+ (BOOL)historyFilterDisambiguatesLocationForActivityType:(unint64_t)a3;
++ (BOOL)historyFilterDisambiguatesLocationForActivityType:(unint64_t)type;
 + (id)emptyKey;
-+ (id)initForWorkout:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)initForWorkout:(id)workout;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -19,12 +19,12 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[2] = self->_activityType;
   *(v5 + 8) = self->_indoor;
-  v6 = [(NSString *)self->_workoutBrandName copyWithZone:a3];
+  v6 = [(NSString *)self->_workoutBrandName copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -32,28 +32,28 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     workoutBrandName = self->_workoutBrandName;
-    v7 = [v5 workoutBrandName];
-    if (workoutBrandName == v7)
+    workoutBrandName = [v5 workoutBrandName];
+    if (workoutBrandName == workoutBrandName)
     {
       v11 = 1;
     }
 
     else
     {
-      v8 = [v5 workoutBrandName];
-      if (v8)
+      workoutBrandName2 = [v5 workoutBrandName];
+      if (workoutBrandName2)
       {
         v9 = self->_workoutBrandName;
-        v10 = [v5 workoutBrandName];
-        v11 = [(NSString *)v9 isEqualToString:v10];
+        workoutBrandName3 = [v5 workoutBrandName];
+        v11 = [(NSString *)v9 isEqualToString:workoutBrandName3];
       }
 
       else
@@ -62,8 +62,8 @@
       }
     }
 
-    v13 = [(CHWorkoutTypeKey *)self activityType];
-    if (v13 == [v5 activityType] && (v14 = -[CHWorkoutTypeKey isIndoor](self, "isIndoor"), ((v14 ^ objc_msgSend(v5, "isIndoor") ^ 1) & v11) == 1))
+    activityType = [(CHWorkoutTypeKey *)self activityType];
+    if (activityType == [v5 activityType] && (v14 = -[CHWorkoutTypeKey isIndoor](self, "isIndoor"), ((v14 ^ objc_msgSend(v5, "isIndoor") ^ 1) & v11) == 1))
     {
       swimLocationType = self->_swimLocationType;
       v12 = swimLocationType == [v5 swimLocationType];
@@ -125,24 +125,24 @@
   return v9 ^ v10;
 }
 
-+ (id)initForWorkout:(id)a3
++ (id)initForWorkout:(id)workout
 {
-  v3 = a3;
+  workoutCopy = workout;
   v4 = objc_alloc_init(CHWorkoutTypeKey);
-  v5 = [v3 fiui_activityType];
+  fiui_activityType = [workoutCopy fiui_activityType];
 
-  -[CHWorkoutTypeKey setActivityType:](v4, "setActivityType:", [v5 effectiveTypeIdentifier]);
-  if ([objc_opt_class() historyFilterDisambiguatesLocationForActivityType:{objc_msgSend(v5, "effectiveTypeIdentifier")}])
+  -[CHWorkoutTypeKey setActivityType:](v4, "setActivityType:", [fiui_activityType effectiveTypeIdentifier]);
+  if ([objc_opt_class() historyFilterDisambiguatesLocationForActivityType:{objc_msgSend(fiui_activityType, "effectiveTypeIdentifier")}])
   {
-    -[CHWorkoutTypeKey setIndoor:](v4, "setIndoor:", [v5 isIndoor]);
+    -[CHWorkoutTypeKey setIndoor:](v4, "setIndoor:", [fiui_activityType isIndoor]);
   }
 
-  if ([v5 effectiveTypeIdentifier] == 46)
+  if ([fiui_activityType effectiveTypeIdentifier] == 46)
   {
-    -[CHWorkoutTypeKey setSwimLocationType:](v4, "setSwimLocationType:", [v5 swimmingLocationType]);
+    -[CHWorkoutTypeKey setSwimLocationType:](v4, "setSwimLocationType:", [fiui_activityType swimmingLocationType]);
   }
 
-  if ([v5 effectiveTypeIdentifier] == 14)
+  if ([fiui_activityType effectiveTypeIdentifier] == 14)
   {
     [(CHWorkoutTypeKey *)v4 setActivityType:77];
   }
@@ -150,9 +150,9 @@
   return v4;
 }
 
-+ (BOOL)historyFilterDisambiguatesLocationForActivityType:(unint64_t)a3
++ (BOOL)historyFilterDisambiguatesLocationForActivityType:(unint64_t)type
 {
-  if (a3 <= 0x34 && ((1 << a3) & 0x10402000000000) != 0)
+  if (type <= 0x34 && ((1 << type) & 0x10402000000000) != 0)
   {
     return 0;
   }

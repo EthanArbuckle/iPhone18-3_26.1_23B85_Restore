@@ -1,5 +1,5 @@
 @interface _UIScrollViewVFD
-- (_OWORD)initWithScrollView:(void *)a1;
+- (_OWORD)initWithScrollView:(void *)view;
 - (uint64_t)_activateActiveSubreasons:(uint64_t)result;
 - (uint64_t)_deactivateActiveSubreasons:(uint64_t)result;
 - (uint64_t)activateSubreason:(uint64_t)result;
@@ -9,22 +9,22 @@
 - (void)_updateCompleted;
 - (void)dealloc;
 - (void)reset;
-- (void)updateBounds:(CGFloat)a3 scale:(CGFloat)a4;
+- (void)updateBounds:(CGFloat)bounds scale:(CGFloat)scale;
 @end
 
 @implementation _UIScrollViewVFD
 
 - (void)reset
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
-      [(_UIScrollViewVFD *)a1 _deactivateActiveSubreasons:?];
-      *(a1 + 24) = 0;
+      [(_UIScrollViewVFD *)self _deactivateActiveSubreasons:?];
+      *(self + 24) = 0;
     }
 
-    _UIUpdateCompletionObservationRemoveObserver(mainCompletionObservation, a1, 0);
+    _UIUpdateCompletionObservationRemoveObserver(mainCompletionObservation, self, 0);
   }
 }
 
@@ -60,14 +60,14 @@
   }
 }
 
-- (_OWORD)initWithScrollView:(void *)a1
+- (_OWORD)initWithScrollView:(void *)view
 {
-  if (!a1)
+  if (!view)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = view;
   v8.super_class = _UIScrollViewVFD;
   v3 = objc_msgSendSuper2(&v8, sel_init);
   v4 = v3;
@@ -245,18 +245,18 @@
   return result;
 }
 
-- (void)updateBounds:(CGFloat)a3 scale:(CGFloat)a4
+- (void)updateBounds:(CGFloat)bounds scale:(CGFloat)scale
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
-      v7 = (a1 + 32);
-      if (*(a1 + 64) == a1 + 32)
+      v7 = (self + 32);
+      if (*(self + 64) == self + 32)
       {
-        if (*(a1 + 104) != 0x8000000000000000 && _UIUpdateCycleMainScheduler && *(_UIUpdateCycleMainScheduler + 568) == 1 && (UCTimeToSeconds(), v14 = v13, v13 > 0.0) && v13 < 0.064)
+        if (*(self + 104) != 0x8000000000000000 && _UIUpdateCycleMainScheduler && *(_UIUpdateCycleMainScheduler + 568) == 1 && (UCTimeToSeconds(), v14 = v13, v13 > 0.0) && v13 < 0.064)
         {
-          v15 = hypot(*(a1 + 112) - a2, *(a1 + 120) - a3) * a6 / v13;
+          v15 = hypot(*(self + 112) - a2, *(self + 120) - bounds) * a6 / v13;
           v16 = (1.0 / v14 + 0.5);
           if (qword_1ED497420[0] != -1)
           {
@@ -269,27 +269,27 @@
           v18 = _UIScrollViewVFDTableLookup(*qword_1ED497418, *(qword_1ED497418 + 8), v16, v30, &v31, v17);
           v19 = v15;
           v20 = _UIScrollViewVFDTableLookup(*qword_1ED497410, *(qword_1ED497410 + 8), v16, v30, &v31, v19);
-          *(a1 + 88) = v20;
-          if (*(a1 + 80) == v20)
+          *(self + 88) = v20;
+          if (*(self + 80) == v20)
           {
-            v26 = *(a1 + 96);
+            v26 = *(self + 96);
             v22 = _MergedGlobals_32_1;
             if (_MergedGlobals_32_1 <= v26)
             {
-              v21 = *(a1 + 98);
+              v21 = *(self + 98);
             }
 
             else
             {
               v21 = v26 + 1;
-              *(a1 + 98) = v21;
+              *(self + 98) = v21;
             }
           }
 
           else
           {
             v21 = 0;
-            *(a1 + 98) = 0;
+            *(self + 98) = 0;
             v22 = _MergedGlobals_32_1;
           }
 
@@ -307,8 +307,8 @@
           v25 = v27[2];
           v24 = *v27;
           kdebug_trace();
-          v28 = *(a1 + 16);
-          v29 = *(a1 + 48);
+          v28 = *(self + 16);
+          v29 = *(self + 48);
           v30[0] = *v7;
           v30[1] = v29;
           [(_UIScrollViewFPSHUD *)v28 displayUpdateRequest:v30 reportedRateForPreviousFrame:v16];
@@ -322,12 +322,12 @@
           v25 = 120;
         }
 
-        _UIUpdateCompletionObservationAddObserver(mainCompletionObservation, a1, 0);
-        *(a1 + 36) = v24;
-        *(a1 + 40) = v25;
-        *(a1 + 44) = v23;
-        _UIUpdateRequestRegistryMutableRequestChanged(&mainRegistry, (a1 + 32));
-        [(_UIScrollViewFPSHUD *)*(a1 + 16) updateDebugOverlayBounds:a2 withScrollView:a3, a4, a5];
+        _UIUpdateCompletionObservationAddObserver(mainCompletionObservation, self, 0);
+        *(self + 36) = v24;
+        *(self + 40) = v25;
+        *(self + 44) = v23;
+        _UIUpdateRequestRegistryMutableRequestChanged(&mainRegistry, (self + 32));
+        [(_UIScrollViewFPSHUD *)*(self + 16) updateDebugOverlayBounds:a2 withScrollView:bounds, scale, a5];
       }
     }
   }

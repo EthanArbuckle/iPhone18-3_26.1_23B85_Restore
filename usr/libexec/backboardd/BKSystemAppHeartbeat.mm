@@ -1,6 +1,6 @@
 @interface BKSystemAppHeartbeat
-- (BKSystemAppHeartbeat)initWithFireCount:(unint64_t)a3 interval:(double)a4;
-- (void)_handleTimer:(id)a3;
+- (BKSystemAppHeartbeat)initWithFireCount:(unint64_t)count interval:(double)interval;
+- (void)_handleTimer:(id)timer;
 - (void)dealloc;
 - (void)start;
 @end
@@ -20,7 +20,7 @@
   [(BKSystemAppHeartbeat *)self _handleTimer:v5];
 }
 
-- (void)_handleTimer:(id)a3
+- (void)_handleTimer:(id)timer
 {
   ++self->_firedCount;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -41,15 +41,15 @@
   [(BKSystemAppHeartbeat *)&v3 dealloc];
 }
 
-- (BKSystemAppHeartbeat)initWithFireCount:(unint64_t)a3 interval:(double)a4
+- (BKSystemAppHeartbeat)initWithFireCount:(unint64_t)count interval:(double)interval
 {
   v7.receiver = self;
   v7.super_class = BKSystemAppHeartbeat;
   result = [(BKSystemAppHeartbeat *)&v7 init];
   if (result)
   {
-    result->_numberOfTimesToFire = a3;
-    result->_interval = a4;
+    result->_numberOfTimesToFire = count;
+    result->_interval = interval;
   }
 
   return result;

@@ -1,19 +1,19 @@
 @interface TransitDirectionsListImageItem
-- (TransitDirectionsListImageItem)initWithImage:(id)a3 instructions:(id)a4;
-- (TransitDirectionsListImageItem)initWithImages:(id)a3 alternateImages:(id)a4 instructions:(id)a5;
-- (id)alternateImageSourceForStyle:(unint64_t)a3;
-- (id)imageSourceForStyle:(unint64_t)a3;
+- (TransitDirectionsListImageItem)initWithImage:(id)image instructions:(id)instructions;
+- (TransitDirectionsListImageItem)initWithImages:(id)images alternateImages:(id)alternateImages instructions:(id)instructions;
+- (id)alternateImageSourceForStyle:(unint64_t)style;
+- (id)imageSourceForStyle:(unint64_t)style;
 @end
 
 @implementation TransitDirectionsListImageItem
 
-- (id)alternateImageSourceForStyle:(unint64_t)a3
+- (id)alternateImageSourceForStyle:(unint64_t)style
 {
   alternateImages = self->_alternateImages;
   v6 = [NSNumber numberWithUnsignedInteger:?];
   v7 = [(NSDictionary *)alternateImages objectForKeyedSubscript:v6];
 
-  if (a3 && !v7)
+  if (style && !v7)
   {
     v7 = [(NSDictionary *)self->_alternateImages objectForKeyedSubscript:&off_1016E9E00];
   }
@@ -21,13 +21,13 @@
   return v7;
 }
 
-- (id)imageSourceForStyle:(unint64_t)a3
+- (id)imageSourceForStyle:(unint64_t)style
 {
   images = self->_images;
   v6 = [NSNumber numberWithUnsignedInteger:?];
   v7 = [(NSDictionary *)images objectForKeyedSubscript:v6];
 
-  if (a3 && !v7)
+  if (style && !v7)
   {
     v7 = [(NSDictionary *)self->_images objectForKeyedSubscript:&off_1016E9E00];
   }
@@ -35,20 +35,20 @@
   return v7;
 }
 
-- (TransitDirectionsListImageItem)initWithImages:(id)a3 alternateImages:(id)a4 instructions:(id)a5
+- (TransitDirectionsListImageItem)initWithImages:(id)images alternateImages:(id)alternateImages instructions:(id)instructions
 {
-  v8 = a3;
-  v9 = a4;
+  imagesCopy = images;
+  alternateImagesCopy = alternateImages;
   v17.receiver = self;
   v17.super_class = TransitDirectionsListImageItem;
-  v10 = [(TransitDirectionsListItem *)&v17 initWithInstructions:a5];
+  v10 = [(TransitDirectionsListItem *)&v17 initWithInstructions:instructions];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [imagesCopy copy];
     images = v10->_images;
     v10->_images = v11;
 
-    v13 = [v9 copy];
+    v13 = [alternateImagesCopy copy];
     alternateImages = v10->_alternateImages;
     v10->_alternateImages = v13;
 
@@ -58,18 +58,18 @@
   return v10;
 }
 
-- (TransitDirectionsListImageItem)initWithImage:(id)a3 instructions:(id)a4
+- (TransitDirectionsListImageItem)initWithImage:(id)image instructions:(id)instructions
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  instructionsCopy = instructions;
   v8 = +[NSMutableDictionary dictionary];
   v9 = v8;
-  if (v6)
+  if (imageCopy)
   {
-    [v8 setObject:v6 forKeyedSubscript:&off_1016E9DE8];
+    [v8 setObject:imageCopy forKeyedSubscript:&off_1016E9DE8];
   }
 
-  v10 = [(TransitDirectionsListImageItem *)self initWithImages:v9 instructions:v7];
+  v10 = [(TransitDirectionsListImageItem *)self initWithImages:v9 instructions:instructionsCopy];
 
   return v10;
 }

@@ -1,8 +1,8 @@
 @interface SLConversationExtensionHostContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (id)createURLWithMessageGUIDForCurrentURL:(id)a3;
-- (void)openURL:(id)a3 completionHandler:(id)a4;
+- (id)createURLWithMessageGUIDForCurrentURL:(id)l;
+- (void)openURL:(id)l completionHandler:(id)handler;
 - (void)requestDismissal;
 @end
 
@@ -71,15 +71,15 @@ void __54__SLConversationExtensionHostContext_requestDismissal__block_invoke(uin
   }
 }
 
-- (void)openURL:(id)a3 completionHandler:(id)a4
+- (void)openURL:(id)l completionHandler:(id)handler
 {
-  v4 = [(SLConversationExtensionHostContext *)self createURLWithMessageGUIDForCurrentURL:a3, a4];
+  handler = [(SLConversationExtensionHostContext *)self createURLWithMessageGUIDForCurrentURL:l, handler];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__SLConversationExtensionHostContext_openURL_completionHandler___block_invoke;
   block[3] = &unk_278925D90;
-  v7 = v4;
-  v5 = v4;
+  v7 = handler;
+  v5 = handler;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -89,16 +89,16 @@ void __64__SLConversationExtensionHostContext_openURL_completionHandler___block_
   [v2 openURL:*(a1 + 32) options:MEMORY[0x277CBEC10] completionHandler:0];
 }
 
-- (id)createURLWithMessageGUIDForCurrentURL:(id)a3
+- (id)createURLWithMessageGUIDForCurrentURL:(id)l
 {
-  v4 = [MEMORY[0x277CCACE0] componentsWithURL:a3 resolvingAgainstBaseURL:0];
+  v4 = [MEMORY[0x277CCACE0] componentsWithURL:l resolvingAgainstBaseURL:0];
   v5 = MEMORY[0x277CBEB18];
-  v6 = [v4 queryItems];
-  v7 = [v5 arrayWithArray:v6];
+  queryItems = [v4 queryItems];
+  v7 = [v5 arrayWithArray:queryItems];
 
   v8 = MEMORY[0x277CCAD18];
-  v9 = [(SLConversationExtensionHostContext *)self messageGUID];
-  v10 = [v8 queryItemWithName:@"message-guid" value:v9];
+  messageGUID = [(SLConversationExtensionHostContext *)self messageGUID];
+  v10 = [v8 queryItemWithName:@"message-guid" value:messageGUID];
   [v7 addObject:v10];
 
   v11 = [MEMORY[0x277CCAD18] queryItemWithName:@"overlay" value:@"1"];

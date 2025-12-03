@@ -1,15 +1,15 @@
 @interface AMSBiometricsMigrator
-+ (void)migrateBiometricStateWithOptions:(id)a3;
++ (void)migrateBiometricStateWithOptions:(id)options;
 @end
 
 @implementation AMSBiometricsMigrator
 
-+ (void)migrateBiometricStateWithOptions:(id)a3
++ (void)migrateBiometricStateWithOptions:(id)options
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  optionsCopy = options;
   v4 = AMSSetLogKeyIfNeeded();
-  if ([v3 scenario] != 4)
+  if ([optionsCopy scenario] != 4)
   {
     v6 = +[AMSLogConfig sharedDataMigrationConfig];
     if (!v6)
@@ -17,20 +17,20 @@
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v6 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_opt_class();
       v17 = MEMORY[0x1E696AD98];
       v18 = v16;
-      v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(v3, "scenario")}];
+      v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(optionsCopy, "scenario")}];
       v31 = 138543874;
       v32 = v16;
       v33 = 2114;
       v34 = v4;
       v35 = 2114;
       v36 = v19;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping biometric state migration for no upgrade scenario: %{public}@", &v31, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping biometric state migration for no upgrade scenario: %{public}@", &v31, 0x20u);
     }
 
     goto LABEL_25;
@@ -47,15 +47,15 @@
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v31 = 138543618;
       v32 = objc_opt_class();
       v33 = 2114;
       v34 = v4;
       v22 = v32;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping biometric state migration for NULL AMS biometric state", &v31, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping biometric state migration for NULL AMS biometric state", &v31, 0x16u);
     }
 
     v6 = v5;
@@ -66,58 +66,58 @@
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v15 = +[AMSLogConfig sharedDataMigrationConfig];
-    if (!v15)
+    oSLogObject = +[AMSLogConfig sharedDataMigrationConfig];
+    if (!oSLogObject)
     {
-      v15 = +[AMSLogConfig sharedConfig];
+      oSLogObject = +[AMSLogConfig sharedConfig];
     }
 
-    v23 = [v15 OSLogObject];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    v15OSLogObject = [oSLogObject OSLogObject];
+    if (os_log_type_enabled(v15OSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v31 = 138543618;
       v32 = objc_opt_class();
       v33 = 2114;
       v34 = v4;
       v24 = v32;
-      _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping biometric state migration for NULL iTunes biometric state", &v31, 0x16u);
+      _os_log_impl(&dword_192869000, v15OSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping biometric state migration for NULL iTunes biometric state", &v31, 0x16u);
     }
 
 LABEL_25:
     goto LABEL_26;
   }
 
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
   v8 = +[AMSLogConfig sharedDataMigrationConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject3 = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = MEMORY[0x1E696AD98];
     v12 = v10;
-    v13 = [v11 numberWithInteger:v7];
+    v13 = [v11 numberWithInteger:integerValue];
     v31 = 138543874;
     v32 = v10;
     v33 = 2114;
     v34 = v4;
     v35 = 2114;
     v36 = v13;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Migrating legacy StoreServices biometric state %{public}@ to AMS", &v31, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Migrating legacy StoreServices biometric state %{public}@ to AMS", &v31, 0x20u);
   }
 
-  if (v7 == 1)
+  if (integerValue == 1)
   {
     v14 = 2;
   }
 
   else
   {
-    if (v7 != 2)
+    if (integerValue != 2)
     {
       goto LABEL_26;
     }
@@ -131,8 +131,8 @@ LABEL_25:
     v25 = +[AMSLogConfig sharedConfig];
   }
 
-  v26 = [v25 OSLogObject];
-  if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+  oSLogObject4 = [v25 OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
   {
     v27 = objc_opt_class();
     v28 = MEMORY[0x1E696AD98];
@@ -144,7 +144,7 @@ LABEL_25:
     v34 = v4;
     v35 = 2114;
     v36 = v30;
-    _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Writing new AMS biometric state: %{public}@", &v31, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Writing new AMS biometric state: %{public}@", &v31, 0x20u);
   }
 
   CFPreferencesSetAppValue(@"AMSDeviceBiometricsState", [MEMORY[0x1E696AD98] numberWithInteger:v14], @"com.apple.AppleMediaServices");

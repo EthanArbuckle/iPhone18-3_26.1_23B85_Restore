@@ -1,42 +1,42 @@
 @interface SGM2ContactDetailConfirmed
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsExtracted:(id)a3;
-- (int)StringAsType:(id)a3;
-- (int)StringAsUiType:(id)a3;
+- (int)StringAsExtracted:(id)extracted;
+- (int)StringAsType:(id)type;
+- (int)StringAsUiType:(id)type;
 - (int)extracted;
 - (int)type;
 - (int)uiType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasExtractionModelVersion:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasUiType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasExtractionModelVersion:(BOOL)version;
+- (void)setHasType:(BOOL)type;
+- (void)setHasUiType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGM2ContactDetailConfirmed
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SGM2ContactDetailConfirmed *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) != 0)
   {
-    self->_type = *(v4 + 6);
+    self->_type = *(fromCopy + 6);
     *&self->_has |= 4u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 1) == 0)
     {
 LABEL_5:
@@ -49,14 +49,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 32) & 1) == 0)
+  else if ((*(fromCopy + 32) & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_extracted = *(v4 + 2);
+  self->_extracted = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -69,12 +69,12 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_extractionModelVersion = *(v4 + 3);
+  self->_extractionModelVersion = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if ((*(v4 + 32) & 8) != 0)
+  if ((*(fromCopy + 32) & 8) != 0)
   {
 LABEL_7:
-    self->_uiType = *(v4 + 7);
+    self->_uiType = *(fromCopy + 7);
     *&self->_has |= 8u;
   }
 
@@ -136,16 +136,16 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   key = self->_key;
-  if (key | *(v4 + 2))
+  if (key | *(equalCopy + 2))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -155,13 +155,13 @@ LABEL_5:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_type != *(v4 + 6))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_type != *(equalCopy + 6))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
 LABEL_23:
     v6 = 0;
@@ -170,34 +170,34 @@ LABEL_23:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_extracted != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_extracted != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_extractionModelVersion != *(v4 + 3))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_extractionModelVersion != *(equalCopy + 3))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_23;
   }
 
-  v6 = (*(v4 + 32) & 8) == 0;
+  v6 = (*(equalCopy + 32) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 32) & 8) == 0 || self->_uiType != *(v4 + 7))
+    if ((*(equalCopy + 32) & 8) == 0 || self->_uiType != *(equalCopy + 7))
     {
       goto LABEL_23;
     }
@@ -210,10 +210,10 @@ LABEL_24:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -267,21 +267,21 @@ LABEL_5:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_key)
   {
-    v6 = v4;
-    [v4 setKey:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 6) = self->_type;
-    *(v4 + 32) |= 4u;
+    *(toCopy + 6) = self->_type;
+    *(toCopy + 32) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -300,8 +300,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 2) = self->_extracted;
-  *(v4 + 32) |= 1u;
+  *(toCopy + 2) = self->_extracted;
+  *(toCopy + 32) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -315,26 +315,26 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(v4 + 3) = self->_extractionModelVersion;
-  *(v4 + 32) |= 2u;
+  *(toCopy + 3) = self->_extractionModelVersion;
+  *(toCopy + 32) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
-    *(v4 + 7) = self->_uiType;
-    *(v4 + 32) |= 8u;
+    *(toCopy + 7) = self->_uiType;
+    *(toCopy + 32) |= 8u;
   }
 
 LABEL_8:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -342,7 +342,7 @@ LABEL_8:
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -363,7 +363,7 @@ LABEL_5:
 
   extracted = self->_extracted;
   PBDataWriterWriteInt32Field();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -379,13 +379,13 @@ LABEL_6:
 LABEL_13:
   extractionModelVersion = self->_extractionModelVersion;
   PBDataWriterWriteUint32Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     uiType = self->_uiType;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
@@ -393,12 +393,12 @@ LABEL_8:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   has = self->_has;
@@ -494,31 +494,31 @@ LABEL_21:
   v8.receiver = self;
   v8.super_class = SGM2ContactDetailConfirmed;
   v4 = [(SGM2ContactDetailConfirmed *)&v8 description];
-  v5 = [(SGM2ContactDetailConfirmed *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGM2ContactDetailConfirmed *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsUiType:(id)a3
+- (int)StringAsUiType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Banner"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Banner"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DontSuggestButton"])
+  else if ([typeCopy isEqualToString:@"DontSuggestButton"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Other"])
+  else if ([typeCopy isEqualToString:@"Other"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Notification"])
+  else if ([typeCopy isEqualToString:@"Notification"])
   {
     v4 = 3;
   }
@@ -531,9 +531,9 @@ LABEL_21:
   return v4;
 }
 
-- (void)setHasUiType:(BOOL)a3
+- (void)setHasUiType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -559,9 +559,9 @@ LABEL_21:
   }
 }
 
-- (void)setHasExtractionModelVersion:(BOOL)a3
+- (void)setHasExtractionModelVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -574,30 +574,30 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsExtracted:(id)a3
+- (int)StringAsExtracted:(id)extracted
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMDetailExtractionTypeSig"])
+  extractedCopy = extracted;
+  if ([extractedCopy isEqualToString:@"SGMDetailExtractionTypeSig"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMDetailExtractionTypePhrase"])
+  else if ([extractedCopy isEqualToString:@"SGMDetailExtractionTypePhrase"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMDetailExtractionTypeSigPhrase"])
+  else if ([extractedCopy isEqualToString:@"SGMDetailExtractionTypeSigPhrase"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMDetailExtractionTypeInteraction"])
+  else if ([extractedCopy isEqualToString:@"SGMDetailExtractionTypeInteraction"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMDetailExtractionTypeOther"])
+  else if ([extractedCopy isEqualToString:@"SGMDetailExtractionTypeOther"])
   {
     v4 = 4;
   }
@@ -623,30 +623,30 @@ LABEL_21:
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMContactDetailTypeEmail"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"SGMContactDetailTypeEmail"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypePhone"])
+  else if ([typeCopy isEqualToString:@"SGMContactDetailTypePhone"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeAddress"])
+  else if ([typeCopy isEqualToString:@"SGMContactDetailTypeAddress"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeOther"])
+  else if ([typeCopy isEqualToString:@"SGMContactDetailTypeOther"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMContactDetailTypeBirthday"])
+  else if ([typeCopy isEqualToString:@"SGMContactDetailTypeBirthday"])
   {
     v4 = 4;
   }
@@ -659,9 +659,9 @@ LABEL_21:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }

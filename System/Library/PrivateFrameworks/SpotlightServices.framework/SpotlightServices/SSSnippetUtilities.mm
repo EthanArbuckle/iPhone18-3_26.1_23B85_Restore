@@ -1,23 +1,23 @@
 @interface SSSnippetUtilities
-+ (void)createFormattedSnippetForResult:(id)a3 withContext:(id)a4;
++ (void)createFormattedSnippetForResult:(id)result withContext:(id)context;
 @end
 
 @implementation SSSnippetUtilities
 
-+ (void)createFormattedSnippetForResult:(id)a3 withContext:(id)a4
++ (void)createFormattedSnippetForResult:(id)result withContext:(id)context
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  resultCopy = result;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (resultCopy)
   {
-    if (v6)
+    if (contextCopy)
     {
-      if ([v6 isSearchToolClient])
+      if ([contextCopy isSearchToolClient])
       {
-        v8 = [v5 rankingItem];
-        v9 = SSCompactRankingAttrsGetValue([v8 attributes], 6uLL);
+        rankingItem = [resultCopy rankingItem];
+        v9 = SSCompactRankingAttrsGetValue([rankingItem attributes], 6uLL);
 
         if ([v9 length])
         {
@@ -35,15 +35,15 @@
 
           v48 = v9;
           v11 = v7;
-          v12 = [MEMORY[0x1E695DF70] array];
-          v13 = [v11 rawSearchTermsFromLLMQU];
-          v14 = [v13 allObjects];
+          array = [MEMORY[0x1E695DF70] array];
+          rawSearchTermsFromLLMQU = [v11 rawSearchTermsFromLLMQU];
+          allObjects = [rawSearchTermsFromLLMQU allObjects];
 
-          [v12 addObjectsFromArray:v14];
-          v15 = [v11 personTokensFromLLMQU];
-          v16 = [v15 allObjects];
+          [array addObjectsFromArray:allObjects];
+          personTokensFromLLMQU = [v11 personTokensFromLLMQU];
+          allObjects2 = [personTokensFromLLMQU allObjects];
 
-          [v12 addObjectsFromArray:v16];
+          [array addObjectsFromArray:allObjects2];
           v50 = v10;
           v49 = v7;
           if (collectTokens_onceToken != -1)
@@ -74,7 +74,7 @@
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) != 0 && [v22 length])
                 {
-                  [v12 addObject:v22];
+                  [array addObject:v22];
                 }
               }
 
@@ -84,7 +84,7 @@
             while (v19);
           }
 
-          v23 = [v12 copy];
+          v23 = [array copy];
           v10 = v50;
           v24 = [(TPFTextPieceFinder *)v50 createPiecesWithTargets:v23];
           if ([v24 count])
@@ -92,8 +92,8 @@
             if ([v23 count])
             {
               v25 = [[SSSnippetHighlightTool alloc] initWithTerms:v23];
-              v26 = [v24 firstObject];
-              v27 = [(SSSnippetHighlightTool *)v25 makeHighlightedSnippet:v26];
+              firstObject = [v24 firstObject];
+              v27 = [(SSSnippetHighlightTool *)v25 makeHighlightedSnippet:firstObject];
             }
 
             else
@@ -118,9 +118,9 @@
             }
 
             v29 = objc_opt_new();
-            [v5 setFormattedSnippet:v29];
+            [resultCopy setFormattedSnippet:v29];
 
-            v30 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v27, "count")}];
+            firstObject2 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v27, "count")}];
             v51 = 0u;
             v52 = 0u;
             v53 = 0u;
@@ -143,11 +143,11 @@
 
                   v36 = *(*(&v51 + 1) + 8 * j);
                   v37 = objc_opt_new();
-                  v38 = [v36 string];
-                  [v37 setText:v38];
+                  string = [v36 string];
+                  [v37 setText:string];
 
                   [v37 setIsEmphasized:{+[SSSnippetHighlightTool isSegmentHighlighted:](SSSnippetHighlightTool, "isSegmentHighlighted:", v36)}];
-                  [v30 addObject:v37];
+                  [firstObject2 addObject:v37];
                 }
 
                 v33 = [v31 countByEnumeratingWithState:&v51 objects:v59 count:16];
@@ -156,8 +156,8 @@
               while (v33);
             }
 
-            v39 = [v5 formattedSnippet];
-            [v39 setFormattedTextPieces:v30];
+            formattedSnippet = [resultCopy formattedSnippet];
+            [formattedSnippet setFormattedTextPieces:firstObject2];
 
             v9 = v48;
             v7 = v49;
@@ -169,8 +169,8 @@
           }
 
           v40 = [v24 count];
-          v30 = SSGeneralLog();
-          v41 = os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG);
+          firstObject2 = SSGeneralLog();
+          v41 = os_log_type_enabled(firstObject2, OS_LOG_TYPE_DEBUG);
           v7 = v49;
           if (v40)
           {
@@ -180,15 +180,15 @@
             }
 
             v42 = MEMORY[0x1E69CA3A0];
-            v30 = [v24 firstObject];
-            v43 = [v42 textWithString:v30];
-            [v5 setFormattedSnippet:v43];
+            firstObject2 = [v24 firstObject];
+            v43 = [v42 textWithString:firstObject2];
+            [resultCopy setFormattedSnippet:v43];
           }
 
           else if (v41)
           {
             v9 = v48;
-            [(SSSnippetUtilities *)v11 createFormattedSnippetForResult:v48 withContext:v30];
+            [(SSSnippetUtilities *)v11 createFormattedSnippetForResult:v48 withContext:firstObject2];
             goto LABEL_48;
           }
 

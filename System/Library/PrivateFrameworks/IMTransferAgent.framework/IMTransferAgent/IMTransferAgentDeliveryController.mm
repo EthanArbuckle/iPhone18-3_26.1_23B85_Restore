@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (IMTransferAgentDeliveryController)init;
 - (void)dealloc;
-- (void)sendFTMessage:(id)a3 completionBlock:(id)a4;
+- (void)sendFTMessage:(id)message completionBlock:(id)block;
 @end
 
 @implementation IMTransferAgentDeliveryController
@@ -44,18 +44,18 @@
   [(IMTransferAgentDeliveryController *)&v3 dealloc];
 }
 
-- (void)sendFTMessage:(id)a3 completionBlock:(id)a4
+- (void)sendFTMessage:(id)message completionBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  blockCopy = block;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMEventCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v21 = v6;
+      v21 = messageCopy;
       _os_log_impl(&dword_254850000, v8, OS_LOG_TYPE_INFO, "Sending FTMessage: %@", buf, 0xCu);
     }
   }
@@ -66,7 +66,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v21 = v6;
+      v21 = messageCopy;
       _os_log_impl(&dword_254850000, v9, OS_LOG_TYPE_INFO, "send FTMessage: %@", buf, 0xCu);
     }
   }
@@ -75,11 +75,11 @@
   v15 = 3221225472;
   v16 = sub_25485D004;
   v17 = &unk_27978CEF8;
-  v18 = self;
-  v19 = v7;
-  v10 = v7;
-  objc_msgSend_setCompletionBlock_(v6, v11, &v14);
-  objc_msgSend_sendMessage_(self->_messageDelivery, v12, v6, v14, v15, v16, v17, v18);
+  selfCopy = self;
+  v19 = blockCopy;
+  v10 = blockCopy;
+  objc_msgSend_setCompletionBlock_(messageCopy, v11, &v14);
+  objc_msgSend_sendMessage_(self->_messageDelivery, v12, messageCopy, v14, v15, v16, v17, selfCopy);
 
   v13 = *MEMORY[0x277D85DE8];
 }

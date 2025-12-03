@@ -1,45 +1,45 @@
 @interface _SFPBRFLongItemStandardCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFLongItemStandardCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFLongItemStandardCardSection)initWithFacade:(id)a3;
-- (_SFPBRFLongItemStandardCardSection)initWithJSON:(id)a3;
+- (_SFPBRFLongItemStandardCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFLongItemStandardCardSection)initWithFacade:(id)facade;
+- (_SFPBRFLongItemStandardCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFLongItemStandardCardSection
 
-- (_SFPBRFLongItemStandardCardSection)initWithFacade:(id)a3
+- (_SFPBRFLongItemStandardCardSection)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFLongItemStandardCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [facadeCopy text];
 
-    if (v6)
+    if (text)
     {
       v7 = [_SFPBRFTextProperty alloc];
-      v8 = [v4 text];
-      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:v8];
+      text2 = [facadeCopy text];
+      v9 = [(_SFPBRFTextProperty *)v7 initWithFacade:text2];
       [(_SFPBRFLongItemStandardCardSection *)v5 setText_1:v9];
     }
 
-    if ([v4 hasIs_quote])
+    if ([facadeCopy hasIs_quote])
     {
-      -[_SFPBRFLongItemStandardCardSection setIs_quote:](v5, "setIs_quote:", [v4 is_quote]);
+      -[_SFPBRFLongItemStandardCardSection setIs_quote:](v5, "setIs_quote:", [facadeCopy is_quote]);
     }
 
-    if ([v4 hasHas_background_platter])
+    if ([facadeCopy hasHas_background_platter])
     {
-      -[_SFPBRFLongItemStandardCardSection setHas_background_platter:](v5, "setHas_background_platter:", [v4 has_background_platter]);
+      -[_SFPBRFLongItemStandardCardSection setHas_background_platter:](v5, "setHas_background_platter:", [facadeCopy has_background_platter]);
     }
 
-    if ([v4 hasIs_fresh])
+    if ([facadeCopy hasIs_fresh])
     {
-      -[_SFPBRFLongItemStandardCardSection setIs_fresh:](v5, "setIs_fresh:", [v4 is_fresh]);
+      -[_SFPBRFLongItemStandardCardSection setIs_fresh:](v5, "setIs_fresh:", [facadeCopy is_fresh]);
     }
 
     v10 = v5;
@@ -48,15 +48,15 @@
   return v5;
 }
 
-- (_SFPBRFLongItemStandardCardSection)initWithDictionary:(id)a3
+- (_SFPBRFLongItemStandardCardSection)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = _SFPBRFLongItemStandardCardSection;
   v5 = [(_SFPBRFLongItemStandardCardSection *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text1"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"text1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,21 +64,21 @@
       [(_SFPBRFLongItemStandardCardSection *)v5 setText_1:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isQuote"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isQuote"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFLongItemStandardCardSection setIs_quote:](v5, "setIs_quote:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"hasBackgroundPlatter"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"hasBackgroundPlatter"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFLongItemStandardCardSection setHas_background_platter:](v5, "setHas_background_platter:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isFresh"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isFresh"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,30 +91,30 @@
   return v5;
 }
 
-- (_SFPBRFLongItemStandardCardSection)initWithJSON:(id)a3
+- (_SFPBRFLongItemStandardCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFLongItemStandardCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFLongItemStandardCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFLongItemStandardCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -127,42 +127,42 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_has_background_platter)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBRFLongItemStandardCardSection has_background_platter](self, "has_background_platter")}];
-    [v3 setObject:v4 forKeyedSubscript:@"hasBackgroundPlatter"];
+    [dictionary setObject:v4 forKeyedSubscript:@"hasBackgroundPlatter"];
   }
 
   if (self->_is_fresh)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBRFLongItemStandardCardSection is_fresh](self, "is_fresh")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isFresh"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isFresh"];
   }
 
   if (self->_is_quote)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBRFLongItemStandardCardSection is_quote](self, "is_quote")}];
-    [v3 setObject:v6 forKeyedSubscript:@"isQuote"];
+    [dictionary setObject:v6 forKeyedSubscript:@"isQuote"];
   }
 
   if (self->_text_1)
   {
-    v7 = [(_SFPBRFLongItemStandardCardSection *)self text];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    text = [(_SFPBRFLongItemStandardCardSection *)self text];
+    dictionaryRepresentation = [text dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"text1"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"text1"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"text1"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"text1"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -197,18 +197,18 @@
   return v5 ^ v3 ^ v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = [(_SFPBRFLongItemStandardCardSection *)self text];
-  v6 = [v4 text];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFLongItemStandardCardSection *)self text];
+  text2 = [equalCopy text];
+  v7 = text2;
+  if ((text != 0) == (text2 == 0))
   {
 
 LABEL_11:
@@ -216,13 +216,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = [(_SFPBRFLongItemStandardCardSection *)self text];
-  if (v8)
+  text3 = [(_SFPBRFLongItemStandardCardSection *)self text];
+  if (text3)
   {
-    v9 = v8;
-    v10 = [(_SFPBRFLongItemStandardCardSection *)self text];
-    v11 = [v4 text];
-    v12 = [v10 isEqual:v11];
+    v9 = text3;
+    text4 = [(_SFPBRFLongItemStandardCardSection *)self text];
+    text5 = [equalCopy text];
+    v12 = [text4 isEqual:text5];
 
     if (!v12)
     {
@@ -235,29 +235,29 @@ LABEL_11:
   }
 
   is_quote = self->_is_quote;
-  if (is_quote != [v4 is_quote])
+  if (is_quote != [equalCopy is_quote])
   {
     goto LABEL_11;
   }
 
   has_background_platter = self->_has_background_platter;
-  if (has_background_platter != [v4 has_background_platter])
+  if (has_background_platter != [equalCopy has_background_platter])
   {
     goto LABEL_11;
   }
 
   is_fresh = self->_is_fresh;
-  v16 = is_fresh == [v4 is_fresh];
+  v16 = is_fresh == [equalCopy is_fresh];
 LABEL_12:
 
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBRFLongItemStandardCardSection *)self text];
-  if (v4)
+  toCopy = to;
+  text = [(_SFPBRFLongItemStandardCardSection *)self text];
+  if (text)
   {
     PBDataWriterWriteSubmessage();
   }

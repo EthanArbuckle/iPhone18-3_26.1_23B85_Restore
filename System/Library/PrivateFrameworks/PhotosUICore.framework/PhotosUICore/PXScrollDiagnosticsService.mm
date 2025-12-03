@@ -1,20 +1,20 @@
 @interface PXScrollDiagnosticsService
 - (BOOL)canProvideContextualViewController;
 - (id)contextualViewController;
-- (id)scrollViewWithScrollAxis:(int64_t)a3;
+- (id)scrollViewWithScrollAxis:(int64_t)axis;
 @end
 
 @implementation PXScrollDiagnosticsService
 
-- (id)scrollViewWithScrollAxis:(int64_t)a3
+- (id)scrollViewWithScrollAxis:(int64_t)axis
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PXDiagnosticsService *)self itemProviders];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  itemProviders = [(PXDiagnosticsService *)self itemProviders];
+  v5 = [itemProviders countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v5)
   {
     goto LABEL_18;
@@ -28,7 +28,7 @@
     {
       if (*v14 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(itemProviders);
       }
 
       v9 = *(*(&v13 + 1) + 8 * i);
@@ -36,7 +36,7 @@
       {
         v10 = [v9 itemForIdentifier:@"PXDiagnosticsItemIdentifierScrollView"];
         v11 = v10;
-        if (a3 == 1)
+        if (axis == 1)
         {
           if ([v10 px_isScrolledAtEdge:1] && objc_msgSend(v11, "px_isScrolledAtEdge:", 3))
           {
@@ -46,7 +46,7 @@ LABEL_14:
           }
         }
 
-        else if (a3 != 2 || [v10 px_isScrolledAtEdge:0] && (objc_msgSend(v11, "px_isScrolledAtEdge:", 2) & 1) != 0)
+        else if (axis != 2 || [v10 px_isScrolledAtEdge:0] && (objc_msgSend(v11, "px_isScrolledAtEdge:", 2) & 1) != 0)
         {
           goto LABEL_14;
         }
@@ -58,7 +58,7 @@ LABEL_14:
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v6 = [itemProviders countByEnumeratingWithState:&v13 objects:v17 count:16];
   }
 
   while (v6);
@@ -131,9 +131,9 @@ LABEL_19:
 - (BOOL)canProvideContextualViewController
 {
   v3 = +[PXScrollViewStresser sharedInstance];
-  v4 = [v3 isScrolling];
+  isScrolling = [v3 isScrolling];
 
-  if (v4)
+  if (isScrolling)
   {
     return 1;
   }

@@ -1,42 +1,42 @@
 @interface STIntroDowntimeTableViewController
-- (STIntroDowntimeTableViewController)initWithCoder:(id)a3;
-- (STIntroDowntimeTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (STIntroDowntimeTableViewController)initWithStyle:(int64_t)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (STIntroDowntimeTableViewController)initWithCoder:(id)coder;
+- (STIntroDowntimeTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (STIntroDowntimeTableViewController)initWithStyle:(int64_t)style;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)_tableRowForDatePicker;
 - (int64_t)_tableRowForEndLabelRow;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_datePickerChanged:(id)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_datePickerChanged:(id)changed;
 - (void)_stIntroDowntimeTableViewControllerCommonInit;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation STIntroDowntimeTableViewController
 
-- (STIntroDowntimeTableViewController)initWithStyle:(int64_t)a3
+- (STIntroDowntimeTableViewController)initWithStyle:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = STIntroDowntimeTableViewController;
-  v3 = [(STIntroDowntimeTableViewController *)&v5 initWithStyle:a3];
+  v3 = [(STIntroDowntimeTableViewController *)&v5 initWithStyle:style];
   [(STIntroDowntimeTableViewController *)v3 _stIntroDowntimeTableViewControllerCommonInit];
   return v3;
 }
 
-- (STIntroDowntimeTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (STIntroDowntimeTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = STIntroDowntimeTableViewController;
-  v4 = [(STIntroDowntimeTableViewController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(STIntroDowntimeTableViewController *)&v6 initWithNibName:name bundle:bundle];
   [(STIntroDowntimeTableViewController *)v4 _stIntroDowntimeTableViewControllerCommonInit];
   return v4;
 }
 
-- (STIntroDowntimeTableViewController)initWithCoder:(id)a3
+- (STIntroDowntimeTableViewController)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STIntroDowntimeTableViewController;
-  v3 = [(STIntroDowntimeTableViewController *)&v5 initWithCoder:a3];
+  v3 = [(STIntroDowntimeTableViewController *)&v5 initWithCoder:coder];
   [(STIntroDowntimeTableViewController *)v3 _stIntroDowntimeTableViewControllerCommonInit];
   return v3;
 }
@@ -59,9 +59,9 @@
   [(NSDateFormatter *)v7 setFormattingContext:3];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(STIntroDowntimeTableViewController *)self datePickerVisibility:a3])
+  if ([(STIntroDowntimeTableViewController *)self datePickerVisibility:view])
   {
     return 3;
   }
@@ -72,11 +72,11 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 row];
+  viewCopy = view;
+  pathCopy = path;
+  v9 = [pathCopy row];
   if (v9 == [(STIntroDowntimeTableViewController *)self _tableRowForStartLabelRow])
   {
     if ([(STIntroDowntimeTableViewController *)self datePickerVisibility]== 1)
@@ -89,19 +89,19 @@
       v10 = @"Start Not Editing";
     }
 
-    v11 = [v7 dequeueReusableCellWithIdentifier:v10 forIndexPath:v8];
-    v12 = [MEMORY[0x277CBEA80] currentCalendar];
-    v13 = [(STIntroDowntimeTableViewController *)self bedtime];
-    v14 = [v13 simpleSchedule];
-    v15 = [v14 startTime];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:v10 forIndexPath:pathCopy];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    bedtime = [(STIntroDowntimeTableViewController *)self bedtime];
+    simpleSchedule = [bedtime simpleSchedule];
+    startTime = [simpleSchedule startTime];
 LABEL_11:
-    v17 = v15;
-    v18 = [v12 dateFromComponents:v15];
+    v17 = startTime;
+    v18 = [currentCalendar dateFromComponents:startTime];
 
-    v19 = [(STIntroDowntimeTableViewController *)self downtimeFormatter];
-    v20 = [v19 stringFromDate:v18];
-    v21 = [v11 detailTextLabel];
-    [v21 setText:v20];
+    downtimeFormatter = [(STIntroDowntimeTableViewController *)self downtimeFormatter];
+    v20 = [downtimeFormatter stringFromDate:v18];
+    detailTextLabel = [v11 detailTextLabel];
+    [detailTextLabel setText:v20];
 
     goto LABEL_12;
   }
@@ -118,47 +118,47 @@ LABEL_11:
       v16 = @"End Not Editing";
     }
 
-    v11 = [v7 dequeueReusableCellWithIdentifier:v16 forIndexPath:v8];
-    v12 = [MEMORY[0x277CBEA80] currentCalendar];
-    v13 = [(STIntroDowntimeTableViewController *)self bedtime];
-    v14 = [v13 simpleSchedule];
-    v15 = [v14 endTime];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:v16 forIndexPath:pathCopy];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    bedtime = [(STIntroDowntimeTableViewController *)self bedtime];
+    simpleSchedule = [bedtime simpleSchedule];
+    startTime = [simpleSchedule endTime];
     goto LABEL_11;
   }
 
   if (v9 != [(STIntroDowntimeTableViewController *)self _tableRowForDatePicker])
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"STIntroDowntimeTableViewController.m" lineNumber:112 description:{@"Unhandled Downtime row %ld", v9}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"STIntroDowntimeTableViewController.m" lineNumber:112 description:{@"Unhandled Downtime row %ld", v9}];
 
     v11 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:0];
     goto LABEL_12;
   }
 
-  v11 = [v7 dequeueReusableCellWithIdentifier:@"Date Picker" forIndexPath:v8];
-  v23 = [v11 contentView];
-  v24 = [v23 subviews];
-  v25 = [v24 objectAtIndexedSubscript:0];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:@"Date Picker" forIndexPath:pathCopy];
+  contentView = [v11 contentView];
+  subviews = [contentView subviews];
+  v25 = [subviews objectAtIndexedSubscript:0];
 
-  v26 = [(STIntroDowntimeTableViewController *)self datePickerVisibility];
-  if (v26 == 2)
+  datePickerVisibility = [(STIntroDowntimeTableViewController *)self datePickerVisibility];
+  if (datePickerVisibility == 2)
   {
-    v27 = [v25 calendar];
-    v28 = [(STIntroDowntimeTableViewController *)self bedtime];
-    v29 = [v28 simpleSchedule];
-    v30 = [v29 endTime];
+    calendar = [v25 calendar];
+    bedtime2 = [(STIntroDowntimeTableViewController *)self bedtime];
+    simpleSchedule2 = [bedtime2 simpleSchedule];
+    endTime = [simpleSchedule2 endTime];
     goto LABEL_21;
   }
 
-  if (v26 == 1)
+  if (datePickerVisibility == 1)
   {
-    v27 = [v25 calendar];
-    v28 = [(STIntroDowntimeTableViewController *)self bedtime];
-    v29 = [v28 simpleSchedule];
-    v30 = [v29 startTime];
+    calendar = [v25 calendar];
+    bedtime2 = [(STIntroDowntimeTableViewController *)self bedtime];
+    simpleSchedule2 = [bedtime2 simpleSchedule];
+    endTime = [simpleSchedule2 startTime];
 LABEL_21:
-    v32 = v30;
-    v33 = [v27 dateFromComponents:v30];
+    v32 = endTime;
+    v33 = [calendar dateFromComponents:endTime];
     [v25 setDate:v33 animated:0];
   }
 
@@ -167,10 +167,10 @@ LABEL_12:
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [a4 row];
+  viewCopy = view;
+  v7 = [path row];
   if (v7 == [(STIntroDowntimeTableViewController *)self _tableRowForStartLabelRow])
   {
     v8 = 1;
@@ -197,15 +197,15 @@ LABEL_5:
 
 LABEL_9:
   v10 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndex:0];
-  [v6 reloadSections:v10 withRowAnimation:100];
+  [viewCopy reloadSections:v10 withRowAnimation:100];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = [a4 row];
-  v6 = [(STIntroDowntimeTableViewController *)self _tableRowForDatePicker];
+  v5 = [path row];
+  _tableRowForDatePicker = [(STIntroDowntimeTableViewController *)self _tableRowForDatePicker];
   result = *MEMORY[0x277D76F30];
-  if (v5 != v6)
+  if (v5 != _tableRowForDatePicker)
   {
     return 61.0;
   }
@@ -215,8 +215,8 @@ LABEL_9:
 
 - (int64_t)_tableRowForEndLabelRow
 {
-  v3 = [(STIntroDowntimeTableViewController *)self datePickerVisibility];
-  switch(v3)
+  datePickerVisibility = [(STIntroDowntimeTableViewController *)self datePickerVisibility];
+  switch(datePickerVisibility)
   {
     case 2:
       return 1;
@@ -231,20 +231,20 @@ LABEL_9:
 
 - (int64_t)_tableRowForDatePicker
 {
-  v3 = [(STIntroDowntimeTableViewController *)self datePickerVisibility];
-  if (v3 == 2)
+  datePickerVisibility = [(STIntroDowntimeTableViewController *)self datePickerVisibility];
+  if (datePickerVisibility == 2)
   {
-    v5 = [(STIntroDowntimeTableViewController *)self _tableRowForEndLabelRow];
-    return v5 + 1;
+    _tableRowForEndLabelRow = [(STIntroDowntimeTableViewController *)self _tableRowForEndLabelRow];
+    return _tableRowForEndLabelRow + 1;
   }
 
-  if (v3 == 1)
+  if (datePickerVisibility == 1)
   {
-    v5 = [(STIntroDowntimeTableViewController *)self _tableRowForStartLabelRow];
-    return v5 + 1;
+    _tableRowForEndLabelRow = [(STIntroDowntimeTableViewController *)self _tableRowForStartLabelRow];
+    return _tableRowForEndLabelRow + 1;
   }
 
-  if (v3)
+  if (datePickerVisibility)
   {
     return 0;
   }
@@ -255,45 +255,45 @@ LABEL_9:
   }
 }
 
-- (void)_datePickerChanged:(id)a3
+- (void)_datePickerChanged:(id)changed
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(STIntroDowntimeTableViewController *)self datePickerVisibility];
-  if (v5 == 2)
+  changedCopy = changed;
+  datePickerVisibility = [(STIntroDowntimeTableViewController *)self datePickerVisibility];
+  if (datePickerVisibility == 2)
   {
-    v14 = [v4 calendar];
-    v15 = [v4 date];
-    v8 = [v14 components:96 fromDate:v15];
+    calendar = [changedCopy calendar];
+    date = [changedCopy date];
+    v8 = [calendar components:96 fromDate:date];
 
-    v16 = [(STIntroDowntimeTableViewController *)self bedtime];
-    v17 = [v16 simpleSchedule];
-    [v17 setEndTime:v8];
+    bedtime = [(STIntroDowntimeTableViewController *)self bedtime];
+    simpleSchedule = [bedtime simpleSchedule];
+    [simpleSchedule setEndTime:v8];
 
     v11 = [MEMORY[0x277CCAA70] indexPathForRow:-[STIntroDowntimeTableViewController _tableRowForEndLabelRow](self inSection:{"_tableRowForEndLabelRow"), 0}];
-    v12 = [(STIntroDowntimeTableViewController *)self tableView];
+    tableView = [(STIntroDowntimeTableViewController *)self tableView];
     v19 = v11;
     v13 = &v19;
     goto LABEL_5;
   }
 
-  if (v5 == 1)
+  if (datePickerVisibility == 1)
   {
-    v6 = [v4 calendar];
-    v7 = [v4 date];
-    v8 = [v6 components:96 fromDate:v7];
+    calendar2 = [changedCopy calendar];
+    date2 = [changedCopy date];
+    v8 = [calendar2 components:96 fromDate:date2];
 
-    v9 = [(STIntroDowntimeTableViewController *)self bedtime];
-    v10 = [v9 simpleSchedule];
-    [v10 setStartTime:v8];
+    bedtime2 = [(STIntroDowntimeTableViewController *)self bedtime];
+    simpleSchedule2 = [bedtime2 simpleSchedule];
+    [simpleSchedule2 setStartTime:v8];
 
     v11 = [MEMORY[0x277CCAA70] indexPathForRow:-[STIntroDowntimeTableViewController _tableRowForStartLabelRow](self inSection:{"_tableRowForStartLabelRow"), 0}];
-    v12 = [(STIntroDowntimeTableViewController *)self tableView];
+    tableView = [(STIntroDowntimeTableViewController *)self tableView];
     v20[0] = v11;
     v13 = v20;
 LABEL_5:
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    [v12 reloadRowsAtIndexPaths:v18 withRowAnimation:100];
+    [tableView reloadRowsAtIndexPaths:v18 withRowAnimation:100];
   }
 }
 

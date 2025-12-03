@@ -1,5 +1,5 @@
 @interface AVAudioSecureSession
-- (BOOL)setCategory:(id)a3 mode:(id)a4 options:(unint64_t)a5 error:(id *)a6;
+- (BOOL)setCategory:(id)category mode:(id)mode options:(unint64_t)options error:(id *)error;
 - (NSArray)availableCategories;
 - (NSArray)availableModes;
 @end
@@ -16,16 +16,16 @@
   return v2;
 }
 
-- (BOOL)setCategory:(id)a3 mode:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BOOL)setCategory:(id)category mode:(id)mode options:(unint64_t)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if (a5)
+  categoryCopy = category;
+  modeCopy = mode;
+  if (options)
   {
-    if (a6)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:0];
-      *a6 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -36,7 +36,7 @@
 
   else
   {
-    v12 = [(AVAudioSession *)self->_innerSession setCategory:v10 mode:v11 options:-1 error:a6];
+    v12 = [(AVAudioSession *)self->_innerSession setCategory:categoryCopy mode:modeCopy options:-1 error:error];
   }
 
   return v12;

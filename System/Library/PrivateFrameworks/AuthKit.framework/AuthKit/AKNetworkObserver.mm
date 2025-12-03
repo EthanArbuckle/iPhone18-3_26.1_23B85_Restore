@@ -5,9 +5,9 @@
 - (void)_onqueue_networkReachabilityDidChange;
 - (void)_startPathMonitor;
 - (void)_stopPathMonitor;
-- (void)addNetworkReachableObserver:(id)a3 selector:(SEL)a4;
+- (void)addNetworkReachableObserver:(id)observer selector:(SEL)selector;
 - (void)dealloc;
-- (void)removeNetworkReachableObserver:(id)a3;
+- (void)removeNetworkReachableObserver:(id)observer;
 @end
 
 @implementation AKNetworkObserver
@@ -28,9 +28,9 @@
     v11->_observerQueue = v2;
     MEMORY[0x1E69E5920](observerQueue);
     MEMORY[0x1E69E5920](v8);
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     callbacksByObserver = v11->_callbacksByObserver;
-    v11->_callbacksByObserver = v4;
+    v11->_callbacksByObserver = dictionary;
     MEMORY[0x1E69E5920](callbacksByObserver);
     [(AKNetworkObserver *)v11 _startPathMonitor];
   }
@@ -42,11 +42,11 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(AKNetworkObserver *)self _stopPathMonitor];
-  objc_storeStrong(&v4->_callbacksByObserver, 0);
-  v2.receiver = v4;
+  objc_storeStrong(&selfCopy->_callbacksByObserver, 0);
+  v2.receiver = selfCopy;
   v2.super_class = AKNetworkObserver;
   [(AKNetworkObserver *)&v2 dealloc];
 }
@@ -77,19 +77,19 @@ uint64_t __42__AKNetworkObserver_sharedNetworkObserver__block_invoke()
 
 - (void)_startPathMonitor
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_pathMonitor)
   {
     v2 = nw_path_monitor_create();
-    pathMonitor = v12->_pathMonitor;
-    v12->_pathMonitor = v2;
+    pathMonitor = selfCopy->_pathMonitor;
+    selfCopy->_pathMonitor = v2;
     MEMORY[0x1E69E5920](pathMonitor);
   }
 
-  nw_path_monitor_set_queue(v12->_pathMonitor, v12->_observerQueue);
-  objc_initWeak(location, v12);
-  monitor = v12->_pathMonitor;
+  nw_path_monitor_set_queue(selfCopy->_pathMonitor, selfCopy->_observerQueue);
+  objc_initWeak(location, selfCopy);
+  monitor = selfCopy->_pathMonitor;
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
@@ -97,7 +97,7 @@ uint64_t __42__AKNetworkObserver_sharedNetworkObserver__block_invoke()
   v9 = &unk_1E73D8668;
   objc_copyWeak(&v10, location);
   nw_path_monitor_set_update_handler(monitor, &v5);
-  nw_path_monitor_start(v12->_pathMonitor);
+  nw_path_monitor_start(selfCopy->_pathMonitor);
   objc_destroyWeak(&v10);
   objc_destroyWeak(location);
 }
@@ -140,11 +140,11 @@ void __38__AKNetworkObserver__startPathMonitor__block_invoke(id *a1, void *a2)
 
 - (void)_onqueue_networkReachabilityDidChange
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   dispatch_assert_queue_V2(self->_observerQueue);
-  isNetworkReachable = v15->_isNetworkReachable;
-  v12 = [(NSMutableDictionary *)v15->_callbacksByObserver allValues];
+  isNetworkReachable = selfCopy->_isNetworkReachable;
+  allValues = [(NSMutableDictionary *)selfCopy->_callbacksByObserver allValues];
   v3 = MEMORY[0x1E69E96A0];
   v2 = MEMORY[0x1E69E96A0];
   queue = v3;
@@ -153,12 +153,12 @@ void __38__AKNetworkObserver__startPathMonitor__block_invoke(id *a1, void *a2)
   v7 = 0;
   v8 = __58__AKNetworkObserver__onqueue_networkReachabilityDidChange__block_invoke;
   v9 = &unk_1E73D8690;
-  v10 = MEMORY[0x1E69E5928](v12);
+  v10 = MEMORY[0x1E69E5928](allValues);
   v11 = isNetworkReachable;
   dispatch_async(queue, &v5);
   MEMORY[0x1E69E5920](queue);
   objc_storeStrong(&v10, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&allValues, 0);
 }
 
 uint64_t __58__AKNetworkObserver__onqueue_networkReachabilityDidChange__block_invoke(uint64_t a1)
@@ -208,7 +208,7 @@ uint64_t __58__AKNetworkObserver__onqueue_networkReachabilityDidChange__block_in
 
 - (BOOL)isNetworkReachable
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
@@ -230,13 +230,13 @@ uint64_t __58__AKNetworkObserver__onqueue_networkReachabilityDidChange__block_in
   return v4 & 1;
 }
 
-- (void)addNetworkReachableObserver:(id)a3 selector:(SEL)a4
+- (void)addNetworkReachableObserver:(id)observer selector:(SEL)selector
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v23 = a4;
+  objc_storeStrong(location, observer);
+  selectorCopy = selector;
   objc_initWeak(&v22, location[0]);
   v15 = MEMORY[0x1E69E9820];
   v16 = -1073741824;
@@ -244,16 +244,16 @@ uint64_t __58__AKNetworkObserver__onqueue_networkReachabilityDidChange__block_in
   v18 = __58__AKNetworkObserver_addNetworkReachableObserver_selector___block_invoke;
   v19 = &unk_1E73D86B8;
   objc_copyWeak(v20, &v22);
-  v20[1] = v23;
+  v20[1] = selectorCopy;
   v21 = MEMORY[0x193B165F0](&v15);
   v14 = [MEMORY[0x1E696B098] valueWithNonretainedObject:location[0]];
-  queue = v25->_observerQueue;
+  queue = selfCopy->_observerQueue;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
   v9 = __58__AKNetworkObserver_addNetworkReachableObserver_selector___block_invoke_2;
   v10 = &unk_1E73D86E0;
-  v11 = MEMORY[0x1E69E5928](v25);
+  v11 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E5928](v21);
   v12 = MEMORY[0x1E69E5928](v14);
   dispatch_sync(queue, &v6);
@@ -303,20 +303,20 @@ uint64_t __58__AKNetworkObserver_addNetworkReachableObserver_selector___block_in
   return MEMORY[0x1E69E5920](v5);
 }
 
-- (void)removeNetworkReachableObserver:(id)a3
+- (void)removeNetworkReachableObserver:(id)observer
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, observer);
   v11 = [MEMORY[0x1E696B098] valueWithNonretainedObject:location[0]];
-  queue = v13->_observerQueue;
+  queue = selfCopy->_observerQueue;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __52__AKNetworkObserver_removeNetworkReachableObserver___block_invoke;
   v8 = &unk_1E73D4080;
-  v9 = MEMORY[0x1E69E5928](v13);
+  v9 = MEMORY[0x1E69E5928](selfCopy);
   v10 = MEMORY[0x1E69E5928](v11);
   dispatch_sync(queue, &v4);
   objc_storeStrong(&v10, 0);

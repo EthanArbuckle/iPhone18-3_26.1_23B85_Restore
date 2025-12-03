@@ -1,9 +1,9 @@
 @interface VSImageElementHelper
 - (VSImageElementHelper)init;
-- (id)bestMatchingKeyForScale:(double)a3 withSuffix:(id)a4 inKeysSet:(id)a5;
-- (id)bestMatchingKeyForSrcset:(id)a3;
-- (id)keysForScale:(double)a3 withSuffix:(id)a4;
-- (id)matchingKeyForScale:(double)a3 withSuffix:(id)a4 inKeysSet:(id)a5;
+- (id)bestMatchingKeyForScale:(double)scale withSuffix:(id)suffix inKeysSet:(id)set;
+- (id)bestMatchingKeyForSrcset:(id)srcset;
+- (id)keysForScale:(double)scale withSuffix:(id)suffix;
+- (id)matchingKeyForScale:(double)scale withSuffix:(id)suffix inKeysSet:(id)set;
 @end
 
 @implementation VSImageElementHelper
@@ -15,30 +15,30 @@
   v2 = [(VSImageElementHelper *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v2->_deviceScale = v4;
 
-    v5 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v2->_currentUserInterfaceStyle = [v5 userInterfaceStyle];
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    v2->_currentUserInterfaceStyle = [currentTraitCollection userInterfaceStyle];
   }
 
   return v2;
 }
 
-- (id)bestMatchingKeyForSrcset:(id)a3
+- (id)bestMatchingKeyForSrcset:(id)srcset
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  srcsetCopy = srcset;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v18 = v4;
-  v7 = [v4 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v18 = srcsetCopy;
+  allKeys = [srcsetCopy allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -49,7 +49,7 @@
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
@@ -67,7 +67,7 @@
         [v14 addObject:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
@@ -84,9 +84,9 @@
   return v15;
 }
 
-- (id)bestMatchingKeyForScale:(double)a3 withSuffix:(id)a4 inKeysSet:(id)a5
+- (id)bestMatchingKeyForScale:(double)scale withSuffix:(id)suffix inKeysSet:(id)set
 {
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
     v17 = 0;
   }
@@ -100,29 +100,29 @@
     v23 = v6;
     v24 = v5;
     v25 = v9;
-    v15 = a3;
+    scaleCopy = scale;
     do
     {
-      v17 = [(VSImageElementHelper *)self matchingKeyForScale:a4 withSuffix:a5 inKeysSet:v15, v19, v20, v21, v22, v23, v24, v25];
+      v17 = [(VSImageElementHelper *)self matchingKeyForScale:suffix withSuffix:set inKeysSet:scaleCopy, v19, v20, v21, v22, v23, v24, v25];
       if (v17)
       {
         break;
       }
 
-      v15 = v15 + -1.0;
+      scaleCopy = scaleCopy + -1.0;
     }
 
-    while (v15 > 0.0);
+    while (scaleCopy > 0.0);
   }
 
   return v17;
 }
 
-- (id)matchingKeyForScale:(double)a3 withSuffix:(id)a4 inKeysSet:(id)a5
+- (id)matchingKeyForScale:(double)scale withSuffix:(id)suffix inKeysSet:(id)set
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  [(VSImageElementHelper *)self keysForScale:a4 withSuffix:a3];
+  setCopy = set;
+  [(VSImageElementHelper *)self keysForScale:suffix withSuffix:scale];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -141,7 +141,7 @@
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v8 containsObject:{v13, v16}])
+        if ([setCopy containsObject:{v13, v16}])
         {
           v10 = v13;
           goto LABEL_11;
@@ -165,14 +165,14 @@ LABEL_11:
   return v10;
 }
 
-- (id)keysForScale:(double)a3 withSuffix:(id)a4
+- (id)keysForScale:(double)scale withSuffix:(id)suffix
 {
   v5 = MEMORY[0x277CBEB18];
-  v6 = a4;
+  suffixCopy = suffix;
   v7 = objc_alloc_init(v5);
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.0fx%@", *&a3, v6];
+  suffixCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%.0fx%@", *&scale, suffixCopy];
 
-  [v7 addObject:v8];
+  [v7 addObject:suffixCopy];
 
   return v7;
 }

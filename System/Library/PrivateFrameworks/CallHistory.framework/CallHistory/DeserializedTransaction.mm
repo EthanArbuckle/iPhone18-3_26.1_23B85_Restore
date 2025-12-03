@@ -1,20 +1,20 @@
 @interface DeserializedTransaction
-- (DeserializedTransaction)initWithCall:(id)a3 andType:(unint64_t)a4;
+- (DeserializedTransaction)initWithCall:(id)call andType:(unint64_t)type;
 @end
 
 @implementation DeserializedTransaction
 
-- (DeserializedTransaction)initWithCall:(id)a3 andType:(unint64_t)a4
+- (DeserializedTransaction)initWithCall:(id)call andType:(unint64_t)type
 {
-  v7 = a3;
+  callCopy = call;
   v11.receiver = self;
   v11.super_class = DeserializedTransaction;
   v8 = [(DeserializedTransaction *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_call, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_call, call);
+    v9->_type = type;
   }
 
   return v9;

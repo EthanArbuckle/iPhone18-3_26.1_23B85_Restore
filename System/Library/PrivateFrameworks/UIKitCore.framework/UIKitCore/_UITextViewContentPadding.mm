@@ -1,12 +1,12 @@
 @interface _UITextViewContentPadding
-- (_UITextViewContentPadding)initWithDelegate:(id)a3;
+- (_UITextViewContentPadding)initWithDelegate:(id)delegate;
 - (_UITextViewContentPaddingDelegate)delegate;
 - (id)description;
 - (void)_checkNewCurrentValue;
 - (void)increaseToValue:(double)targetValue;
 - (void)resetCurrentValue;
-- (void)setMode:(int64_t)a3;
-- (void)setTargetValue:(double)a3;
+- (void)setMode:(int64_t)mode;
+- (void)setTargetValue:(double)value;
 @end
 
 @implementation _UITextViewContentPadding
@@ -34,8 +34,8 @@
   {
 LABEL_7:
     self->_currentValue = targetValue;
-    v5 = [(_UITextViewContentPadding *)self delegate];
-    [v5 _textViewContentPaddingDidChange:self];
+    delegate = [(_UITextViewContentPadding *)self delegate];
+    [delegate _textViewContentPaddingDidChange:self];
   }
 }
 
@@ -46,40 +46,40 @@ LABEL_7:
   return WeakRetained;
 }
 
-- (_UITextViewContentPadding)initWithDelegate:(id)a3
+- (_UITextViewContentPadding)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = _UITextViewContentPadding;
   v5 = [(_UITextViewContentPadding *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     [(_UITextViewContentPadding *)self _checkNewCurrentValue];
   }
 }
 
-- (void)setTargetValue:(double)a3
+- (void)setTargetValue:(double)value
 {
-  if (a3 < 0.0)
+  if (value < 0.0)
   {
-    a3 = 0.0;
+    value = 0.0;
   }
 
-  if (a3 != self->_targetValue)
+  if (value != self->_targetValue)
   {
-    self->_targetValue = a3;
+    self->_targetValue = value;
     [(_UITextViewContentPadding *)self _checkNewCurrentValue];
   }
 }
@@ -96,8 +96,8 @@ LABEL_7:
     if (targetValue > self->_currentValue)
     {
       self->_currentValue = targetValue;
-      v4 = [(_UITextViewContentPadding *)self delegate];
-      [v4 _textViewContentPaddingDidChange:self];
+      delegate = [(_UITextViewContentPadding *)self delegate];
+      [delegate _textViewContentPaddingDidChange:self];
     }
   }
 }
@@ -107,8 +107,8 @@ LABEL_7:
   if (self->_mode == 1 && self->_currentValue != 0.0)
   {
     self->_currentValue = 0.0;
-    v3 = [(_UITextViewContentPadding *)self delegate];
-    [v3 _textViewContentPaddingDidChange:self];
+    delegate = [(_UITextViewContentPadding *)self delegate];
+    [delegate _textViewContentPaddingDidChange:self];
   }
 }
 
@@ -135,9 +135,9 @@ LABEL_7:
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   v10 = [v4 appendKeys:v9];
 
-  v11 = [v4 string];
+  string = [v4 string];
 
-  return v11;
+  return string;
 }
 
 @end

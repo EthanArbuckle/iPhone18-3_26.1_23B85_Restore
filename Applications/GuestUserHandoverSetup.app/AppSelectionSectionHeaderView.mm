@@ -1,15 +1,15 @@
 @interface AppSelectionSectionHeaderView
-- (_TtC22GuestUserHandoverSetup29AppSelectionSectionHeaderView)initWithCoder:(id)a3;
-- (_TtC22GuestUserHandoverSetup29AppSelectionSectionHeaderView)initWithReuseIdentifier:(id)a3;
+- (_TtC22GuestUserHandoverSetup29AppSelectionSectionHeaderView)initWithCoder:(id)coder;
+- (_TtC22GuestUserHandoverSetup29AppSelectionSectionHeaderView)initWithReuseIdentifier:(id)identifier;
 - (void)performAuxillaryAction;
 - (void)prepareForReuse;
 @end
 
 @implementation AppSelectionSectionHeaderView
 
-- (_TtC22GuestUserHandoverSetup29AppSelectionSectionHeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC22GuestUserHandoverSetup29AppSelectionSectionHeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -23,10 +23,10 @@
   return sub_100002D84(v3, v4);
 }
 
-- (_TtC22GuestUserHandoverSetup29AppSelectionSectionHeaderView)initWithCoder:(id)a3
+- (_TtC22GuestUserHandoverSetup29AppSelectionSectionHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22GuestUserHandoverSetup29AppSelectionSectionHeaderView_headerLabel;
-  v5 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.super.isa + v4) = sub_1000028A0();
   v6 = OBJC_IVAR____TtC22GuestUserHandoverSetup29AppSelectionSectionHeaderView_actionButton;
   *(&self->super.super.super.super.isa + v6) = sub_1000029A8();
@@ -40,7 +40,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_100002F18();
 }
 
@@ -50,7 +50,7 @@
   if (v2)
   {
     v3 = *&self->headerLabel[OBJC_IVAR____TtC22GuestUserHandoverSetup29AppSelectionSectionHeaderView_action];
-    v4 = self;
+    selfCopy = self;
     v5 = sub_100003918(v2);
     v2(v5);
 

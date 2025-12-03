@@ -1,21 +1,21 @@
 @interface VGExpressionIsEyesCenteredFilter
-- (float)filter:(id)a3;
+- (float)filter:(id)filter;
 @end
 
 @implementation VGExpressionIsEyesCenteredFilter
 
-- (float)filter:(id)a3
+- (float)filter:(id)filter
 {
-  v3 = [VGExpressionFilterLegacy getBlendshapes:a3];
+  v3 = [VGExpressionFilterLegacy getBlendshapes:filter];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 bytes];
+    bytes = [v3 bytes];
     v9 = 0;
     v10 = 3.4028e38;
     do
     {
-      LODWORD(v6) = *(v5 + v9);
+      LODWORD(v6) = *(bytes + v9);
       LODWORD(v7) = 0.5;
       LODWORD(v8) = 1058642330;
       [VGExpressionFilterLegacy clip_to_01:v6 min_val:v7 max_val:v8];

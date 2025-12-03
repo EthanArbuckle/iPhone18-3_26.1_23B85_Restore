@@ -1,23 +1,23 @@
 @interface SAVolumesInfo
-+ (id)newWithVolumesPaths:(id)a3;
++ (id)newWithVolumesPaths:(id)paths;
 - (NSArray)volumesPaths;
-- (SAVolumesInfo)initWithVolumesPaths:(id)a3;
-- (id)getBundleIDForTagHash:(id)a3 volumePath:(id)a4;
-- (id)getDirCacheElementForDirKey:(id)a3 volumePath:(id)a4 climbUpDSHierarchy:(BOOL)a5 cacheDiscoveredDirElement:(BOOL)a6;
-- (id)getPurgeableTaggedCloneSize:(unint64_t)a3 volumePath:(id)a4;
-- (id)getSUPurgeableCloneSize:(unint64_t)a3 volumePath:(id)a4;
-- (statfs)getVolStatForVolumePath:(id)a3;
-- (void)addPurgeableTaggedClone:(unint64_t)a3 size:(unint64_t)a4 volumePath:(id)a5;
-- (void)addSUPurgeableClone:(unint64_t)a3 size:(unint64_t)a4 volumePath:(id)a5;
-- (void)insertDirCacheElement:(id)a3 dirKey:(id)a4 volumePath:(id)a5;
-- (void)insertTagHash:(id)a3 bundleID:(id)a4 volumePath:(id)a5;
+- (SAVolumesInfo)initWithVolumesPaths:(id)paths;
+- (id)getBundleIDForTagHash:(id)hash volumePath:(id)path;
+- (id)getDirCacheElementForDirKey:(id)key volumePath:(id)path climbUpDSHierarchy:(BOOL)hierarchy cacheDiscoveredDirElement:(BOOL)element;
+- (id)getPurgeableTaggedCloneSize:(unint64_t)size volumePath:(id)path;
+- (id)getSUPurgeableCloneSize:(unint64_t)size volumePath:(id)path;
+- (statfs)getVolStatForVolumePath:(id)path;
+- (void)addPurgeableTaggedClone:(unint64_t)clone size:(unint64_t)size volumePath:(id)path;
+- (void)addSUPurgeableClone:(unint64_t)clone size:(unint64_t)size volumePath:(id)path;
+- (void)insertDirCacheElement:(id)element dirKey:(id)key volumePath:(id)path;
+- (void)insertTagHash:(id)hash bundleID:(id)d volumePath:(id)path;
 @end
 
 @implementation SAVolumesInfo
 
-- (SAVolumesInfo)initWithVolumesPaths:(id)a3
+- (SAVolumesInfo)initWithVolumesPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v20.receiver = self;
   v20.super_class = SAVolumesInfo;
   v5 = [(SAVolumesInfo *)&v20 init];
@@ -31,7 +31,7 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v4;
+    v8 = pathsCopy;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v9)
     {
@@ -61,10 +61,10 @@
   return v5;
 }
 
-+ (id)newWithVolumesPaths:(id)a3
++ (id)newWithVolumesPaths:(id)paths
 {
-  v3 = a3;
-  v4 = [[SAVolumesInfo alloc] initWithVolumesPaths:v3];
+  pathsCopy = paths;
+  v4 = [[SAVolumesInfo alloc] initWithVolumesPaths:pathsCopy];
 
   return v4;
 }
@@ -74,9 +74,9 @@
   volumesPaths = self->_volumesPaths;
   if (!volumesPaths)
   {
-    v4 = [(NSMutableDictionary *)self->_volumesInfo allKeys];
+    allKeys = [(NSMutableDictionary *)self->_volumesInfo allKeys];
     v5 = self->_volumesPaths;
-    self->_volumesPaths = v4;
+    self->_volumesPaths = allKeys;
 
     volumesPaths = self->_volumesPaths;
   }
@@ -84,13 +84,13 @@
   return volumesPaths;
 }
 
-- (id)getDirCacheElementForDirKey:(id)a3 volumePath:(id)a4 climbUpDSHierarchy:(BOOL)a5 cacheDiscoveredDirElement:(BOOL)a6
+- (id)getDirCacheElementForDirKey:(id)key volumePath:(id)path climbUpDSHierarchy:(BOOL)hierarchy cacheDiscoveredDirElement:(BOOL)element
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:v11];
+  elementCopy = element;
+  hierarchyCopy = hierarchy;
+  keyCopy = key;
+  pathCopy = path;
+  v12 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:pathCopy];
   v13 = v12;
   if (!v12)
   {
@@ -103,10 +103,10 @@
     goto LABEL_12;
   }
 
-  v14 = [v12 getDirCacheElementForDirKey:v10];
+  v14 = [v12 getDirCacheElementForDirKey:keyCopy];
   if (!v14)
   {
-    if (!v7)
+    if (!hierarchyCopy)
     {
       v16 = 0;
 LABEL_14:
@@ -114,8 +114,8 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v31 = v10;
-    v17 = [v10 unsignedLongLongValue];
+    v31 = keyCopy;
+    unsignedLongLongValue = [keyCopy unsignedLongLongValue];
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
@@ -133,25 +133,25 @@ LABEL_14:
     v34 = 0u;
     v32 = 1;
     v33 = 33;
-    v35 = v17;
-    if (fsctl([v11 fileSystemRepresentation], 0xC1104A71uLL, &v32, 1u))
+    v35 = unsignedLongLongValue;
+    if (fsctl([pathCopy fileSystemRepresentation], 0xC1104A71uLL, &v32, 1u))
     {
       v16 = 0;
 LABEL_9:
       v18 = SALog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        sub_100040A48(v17, v18);
+        sub_100040A48(unsignedLongLongValue, v18);
       }
     }
 
     else
     {
-      v30 = v6;
+      v30 = elementCopy;
       v16 = 0;
       v21 = 0;
       v22 = -1024;
-      v23 = v17;
+      v23 = unsignedLongLongValue;
       while ((v33 & 0x10) == 0)
       {
         v21 |= (v33 >> 3) & 1;
@@ -159,19 +159,19 @@ LABEL_9:
         {
           v24 = v21;
           v25 = [NSNumber numberWithUnsignedLongLong:v23];
-          v26 = [(SAVolumesInfo *)self getDirCacheElementForDirKey:v25 volumePath:v11];
+          v26 = [(SAVolumesInfo *)self getDirCacheElementForDirKey:v25 volumePath:pathCopy];
 
-          v27 = [v26 bundleIDs];
+          bundleIDs = [v26 bundleIDs];
 
-          if (v27)
+          if (bundleIDs)
           {
-            v29 = [v26 bundleIDs];
-            v16 = [SADirCacheElement newWithBundleIDs:v29 purgeable:v24 & 1 cacheFolder:0];
+            bundleIDs2 = [v26 bundleIDs];
+            v16 = [SADirCacheElement newWithBundleIDs:bundleIDs2 purgeable:v24 & 1 cacheFolder:0];
 
             if (v30)
             {
-              v10 = v31;
-              [(SAVolumesInfo *)self insertDirCacheElement:v16 dirKey:v31 volumePath:v11];
+              keyCopy = v31;
+              [(SAVolumesInfo *)self insertDirCacheElement:v16 dirKey:v31 volumePath:pathCopy];
               goto LABEL_14;
             }
 
@@ -182,18 +182,18 @@ LABEL_9:
           v21 = v24;
         }
 
-        v17 = *(&v35 + 1);
+        unsignedLongLongValue = *(&v35 + 1);
         if (!*(&v35 + 1))
         {
           if (v30)
           {
-            v10 = v31;
-            [(SAVolumesInfo *)self insertDirKey:v31 bundleIDs:0 purgeable:0 cache:0 volumePath:v11, 0.0];
+            keyCopy = v31;
+            [(SAVolumesInfo *)self insertDirKey:v31 bundleIDs:0 purgeable:0 cache:0 volumePath:pathCopy, 0.0];
             goto LABEL_14;
           }
 
 LABEL_36:
-          v10 = v31;
+          keyCopy = v31;
           goto LABEL_14;
         }
 
@@ -226,8 +226,8 @@ LABEL_36:
         v32 = 1;
         v33 = 33;
         v35 = *(&v35 + 1);
-        v23 = v17;
-        if (fsctl([v11 fileSystemRepresentation], 0xC1104A71uLL, &v32, 1u))
+        v23 = unsignedLongLongValue;
+        if (fsctl([pathCopy fileSystemRepresentation], 0xC1104A71uLL, &v32, 1u))
         {
           goto LABEL_9;
         }
@@ -241,7 +241,7 @@ LABEL_36:
     }
 
 LABEL_11:
-    v10 = v31;
+    keyCopy = v31;
 
 LABEL_12:
     v19 = 0;
@@ -257,10 +257,10 @@ LABEL_16:
   return v19;
 }
 
-- (statfs)getVolStatForVolumePath:(id)a3
+- (statfs)getVolStatForVolumePath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:v4];
+  pathCopy = path;
+  v5 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:pathCopy];
   if (!v5)
   {
     v6 = SALog();
@@ -269,25 +269,25 @@ LABEL_16:
       sub_100040C08();
     }
 
-    v5 = [SAVolumeInfo newForPath:v4];
-    [(NSMutableDictionary *)self->_volumesInfo setObject:v5 forKeyedSubscript:v4];
+    v5 = [SAVolumeInfo newForPath:pathCopy];
+    [(NSMutableDictionary *)self->_volumesInfo setObject:v5 forKeyedSubscript:pathCopy];
   }
 
-  v7 = [v5 volStat];
+  volStat = [v5 volStat];
 
-  return v7;
+  return volStat;
 }
 
-- (void)insertDirCacheElement:(id)a3 dirKey:(id)a4 volumePath:(id)a5
+- (void)insertDirCacheElement:(id)element dirKey:(id)key volumePath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:v10];
+  elementCopy = element;
+  keyCopy = key;
+  pathCopy = path;
+  v11 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:pathCopy];
   v12 = v11;
   if (v11)
   {
-    [v11 addDirCacheElement:v8 dirKey:v9];
+    [v11 addDirCacheElement:elementCopy dirKey:keyCopy];
   }
 
   else
@@ -300,16 +300,16 @@ LABEL_16:
   }
 }
 
-- (void)insertTagHash:(id)a3 bundleID:(id)a4 volumePath:(id)a5
+- (void)insertTagHash:(id)hash bundleID:(id)d volumePath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:v10];
+  hashCopy = hash;
+  dCopy = d;
+  pathCopy = path;
+  v11 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:pathCopy];
   v12 = v11;
   if (v11)
   {
-    [v11 insertTagHash:v8 bundleID:v9];
+    [v11 insertTagHash:hashCopy bundleID:dCopy];
   }
 
   else
@@ -322,15 +322,15 @@ LABEL_16:
   }
 }
 
-- (id)getBundleIDForTagHash:(id)a3 volumePath:(id)a4
+- (id)getBundleIDForTagHash:(id)hash volumePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:v7];
+  hashCopy = hash;
+  pathCopy = path;
+  v8 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:pathCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 getBundleIDForTagHash:v6];
+    v10 = [v8 getBundleIDForTagHash:hashCopy];
   }
 
   else
@@ -347,14 +347,14 @@ LABEL_16:
   return v10;
 }
 
-- (void)addPurgeableTaggedClone:(unint64_t)a3 size:(unint64_t)a4 volumePath:(id)a5
+- (void)addPurgeableTaggedClone:(unint64_t)clone size:(unint64_t)size volumePath:(id)path
 {
-  v8 = a5;
-  v9 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:v8];
+  pathCopy = path;
+  v9 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:pathCopy];
   if (v9)
   {
-    v10 = [NSNumber numberWithUnsignedLongLong:a3];
-    v11 = [NSNumber numberWithUnsignedLongLong:a4];
+    v10 = [NSNumber numberWithUnsignedLongLong:clone];
+    v11 = [NSNumber numberWithUnsignedLongLong:size];
     [v9 addPurgeableTaggedClone:v10 size:v11];
   }
 
@@ -368,13 +368,13 @@ LABEL_16:
   }
 }
 
-- (id)getPurgeableTaggedCloneSize:(unint64_t)a3 volumePath:(id)a4
+- (id)getPurgeableTaggedCloneSize:(unint64_t)size volumePath:(id)path
 {
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:v6];
+  pathCopy = path;
+  v7 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:pathCopy];
   if (v7)
   {
-    v8 = [NSNumber numberWithUnsignedLongLong:a3];
+    v8 = [NSNumber numberWithUnsignedLongLong:size];
     v9 = [v7 getPurgeableTaggedCloneSize:v8];
   }
 
@@ -392,14 +392,14 @@ LABEL_16:
   return v9;
 }
 
-- (void)addSUPurgeableClone:(unint64_t)a3 size:(unint64_t)a4 volumePath:(id)a5
+- (void)addSUPurgeableClone:(unint64_t)clone size:(unint64_t)size volumePath:(id)path
 {
-  v8 = a5;
-  v9 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:v8];
+  pathCopy = path;
+  v9 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:pathCopy];
   if (v9)
   {
-    v10 = [NSNumber numberWithUnsignedLongLong:a3];
-    v11 = [NSNumber numberWithUnsignedLongLong:a4];
+    v10 = [NSNumber numberWithUnsignedLongLong:clone];
+    v11 = [NSNumber numberWithUnsignedLongLong:size];
     [v9 addSUPurgeableClone:v10 size:v11];
   }
 
@@ -413,13 +413,13 @@ LABEL_16:
   }
 }
 
-- (id)getSUPurgeableCloneSize:(unint64_t)a3 volumePath:(id)a4
+- (id)getSUPurgeableCloneSize:(unint64_t)size volumePath:(id)path
 {
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:v6];
+  pathCopy = path;
+  v7 = [(NSMutableDictionary *)self->_volumesInfo objectForKey:pathCopy];
   if (v7)
   {
-    v8 = [NSNumber numberWithUnsignedLongLong:a3];
+    v8 = [NSNumber numberWithUnsignedLongLong:size];
     v9 = [v7 getSUPurgeableCloneSize:v8];
   }
 

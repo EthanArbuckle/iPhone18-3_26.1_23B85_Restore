@@ -1,49 +1,49 @@
 @interface _MFAtomTextView
 - (BOOL)_delegateSupportsKeyboardEvents;
 - (BOOL)becomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)resignFirstResponder;
-- (CGRect)convertGlyphRect:(CGRect)a3;
+- (CGRect)convertGlyphRect:(CGRect)rect;
 - (MFComposeRecipientTextView)hostRecipientView;
 - (NSArray)atoms;
-- (_MFAtomTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)selectionRectsForRange:(id)a3;
-- (id)textStylingAtPosition:(id)a3 inDirection:(int64_t)a4;
+- (_MFAtomTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)selectionRectsForRange:(id)range;
+- (id)textStylingAtPosition:(id)position inDirection:(int64_t)direction;
 - (id)undoManager;
 - (int64_t)baseWritingDirection;
-- (void)_handleKeyUIEvent:(id)a3;
-- (void)batchTextStorageUpdates:(id)a3;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
-- (void)enumerateAtomAttachments:(id)a3;
-- (void)enumerateAtoms:(id)a3;
-- (void)enumerateAtomsInCharacterRange:(_NSRange)a3 withBlock:(id)a4;
-- (void)makeTextWritingDirectionLeftToRight:(id)a3;
-- (void)makeTextWritingDirectionRightToLeft:(id)a3;
-- (void)paste:(id)a3;
-- (void)setContentOffset:(CGPoint)a3;
+- (void)_handleKeyUIEvent:(id)event;
+- (void)batchTextStorageUpdates:(id)updates;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
+- (void)enumerateAtomAttachments:(id)attachments;
+- (void)enumerateAtoms:(id)atoms;
+- (void)enumerateAtomsInCharacterRange:(_NSRange)range withBlock:(id)block;
+- (void)makeTextWritingDirectionLeftToRight:(id)right;
+- (void)makeTextWritingDirectionRightToLeft:(id)left;
+- (void)paste:(id)paste;
+- (void)setContentOffset:(CGPoint)offset;
 @end
 
 @implementation _MFAtomTextView
 
-- (_MFAtomTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_MFAtomTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
   v15.receiver = self;
   v15.super_class = _MFAtomTextView;
-  v10 = [(_MFAtomTextView *)&v15 initWithFrame:v9 textContainer:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(_MFAtomTextView *)&v15 initWithFrame:containerCopy textContainer:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    v14.receiver = v10;
+    v14.receiver = height;
     v14.super_class = _MFAtomTextView;
-    v12 = [(_MFAtomTextView *)&v14 undoManager];
-    [v12 disableUndoRegistration];
+    undoManager = [(_MFAtomTextView *)&v14 undoManager];
+    [undoManager disableUndoRegistration];
 
     v11->_textStorageEditingDepth = 0;
   }
@@ -53,24 +53,24 @@
 
 - (NSArray)atoms
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __24___MFAtomTextView_atoms__block_invoke;
   v6[3] = &unk_1E806D000;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(_MFAtomTextView *)self enumerateAtoms:v6];
 
   return v4;
 }
 
-- (CGRect)convertGlyphRect:(CGRect)a3
+- (CGRect)convertGlyphRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(_MFAtomTextView *)self textContainerInset];
   v9 = y + v8;
   [(_MFAtomTextView *)self textContainerInset];
@@ -85,105 +85,105 @@
   return result;
 }
 
-- (void)enumerateAtoms:(id)a3
+- (void)enumerateAtoms:(id)atoms
 {
-  v5 = a3;
-  v4 = [(_MFAtomTextView *)self textStorage];
-  -[_MFAtomTextView enumerateAtomsInCharacterRange:withBlock:](self, "enumerateAtomsInCharacterRange:withBlock:", 0, [v4 length], v5);
+  atomsCopy = atoms;
+  textStorage = [(_MFAtomTextView *)self textStorage];
+  -[_MFAtomTextView enumerateAtomsInCharacterRange:withBlock:](self, "enumerateAtomsInCharacterRange:withBlock:", 0, [textStorage length], atomsCopy);
 }
 
-- (void)enumerateAtomsInCharacterRange:(_NSRange)a3 withBlock:(id)a4
+- (void)enumerateAtomsInCharacterRange:(_NSRange)range withBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [(_MFAtomTextView *)self textStorage];
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
+  textStorage = [(_MFAtomTextView *)self textStorage];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60___MFAtomTextView_enumerateAtomsInCharacterRange_withBlock___block_invoke;
   v10[3] = &unk_1E806D310;
-  v9 = v7;
+  v9 = blockCopy;
   v11 = v9;
-  [v8 enumerateAttributesInRange:location options:length usingBlock:{0, v10}];
+  [textStorage enumerateAttributesInRange:location options:length usingBlock:{0, v10}];
 }
 
-- (void)enumerateAtomAttachments:(id)a3
+- (void)enumerateAtomAttachments:(id)attachments
 {
-  v4 = a3;
-  v5 = [(_MFAtomTextView *)self textStorage];
-  v6 = [(_MFAtomTextView *)self textStorage];
-  v7 = [v6 length];
+  attachmentsCopy = attachments;
+  textStorage = [(_MFAtomTextView *)self textStorage];
+  textStorage2 = [(_MFAtomTextView *)self textStorage];
+  v7 = [textStorage2 length];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44___MFAtomTextView_enumerateAtomAttachments___block_invoke;
   v9[3] = &unk_1E806D310;
-  v8 = v4;
+  v8 = attachmentsCopy;
   v10 = v8;
-  [v5 enumerateAttributesInRange:0 options:v7 usingBlock:{0, v9}];
+  [textStorage enumerateAttributesInRange:0 options:v7 usingBlock:{0, v9}];
 }
 
-- (void)batchTextStorageUpdates:(id)a3
+- (void)batchTextStorageUpdates:(id)updates
 {
-  v7 = a3;
+  updatesCopy = updates;
   ++self->_textStorageEditingDepth;
-  v4 = [(_MFAtomTextView *)self textStorage];
-  [v4 beginEditing];
+  textStorage = [(_MFAtomTextView *)self textStorage];
+  [textStorage beginEditing];
 
-  v7[2]();
+  updatesCopy[2]();
   --self->_textStorageEditingDepth;
-  v5 = [(_MFAtomTextView *)self textStorage];
-  [v5 endEditing];
+  textStorage2 = [(_MFAtomTextView *)self textStorage];
+  [textStorage2 endEditing];
 
-  v6 = [(_MFAtomTextView *)self hostRecipientView];
-  [v6 _recomputeTextContainerExclusionPaths];
+  hostRecipientView = [(_MFAtomTextView *)self hostRecipientView];
+  [hostRecipientView _recomputeTextContainerExclusionPaths];
 }
 
 - (BOOL)becomeFirstResponder
 {
   v8.receiver = self;
   v8.super_class = _MFAtomTextView;
-  v3 = [(_MFAtomTextView *)&v8 becomeFirstResponder];
-  v4 = [(_MFAtomTextView *)self hostRecipientView];
-  v5 = v4;
-  if (v3 && v4 != 0)
+  becomeFirstResponder = [(_MFAtomTextView *)&v8 becomeFirstResponder];
+  hostRecipientView = [(_MFAtomTextView *)self hostRecipientView];
+  v5 = hostRecipientView;
+  if (becomeFirstResponder && hostRecipientView != 0)
   {
-    [v4 atomTextViewDidBecomeFirstResponder:self];
+    [hostRecipientView atomTextViewDidBecomeFirstResponder:self];
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
   v8.receiver = self;
   v8.super_class = _MFAtomTextView;
-  v3 = [(_MFAtomTextView *)&v8 resignFirstResponder];
-  v4 = [(_MFAtomTextView *)self hostRecipientView];
-  v5 = v4;
-  if (v3 && v4 != 0)
+  resignFirstResponder = [(_MFAtomTextView *)&v8 resignFirstResponder];
+  hostRecipientView = [(_MFAtomTextView *)self hostRecipientView];
+  v5 = hostRecipientView;
+  if (resignFirstResponder && hostRecipientView != 0)
   {
-    [v4 atomTextViewDidResignFirstResponder:self];
+    [hostRecipientView atomTextViewDidResignFirstResponder:self];
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(_MFAtomTextView *)self selectedRange];
+  array = [MEMORY[0x1E695DF70] array];
+  selectedRange = [(_MFAtomTextView *)self selectedRange];
   v7 = v6;
-  v8 = [(_MFAtomTextView *)self textStorage];
+  textStorage = [(_MFAtomTextView *)self textStorage];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __42___MFAtomTextView_selectionRectsForRange___block_invoke;
   v13[3] = &unk_1E806D338;
-  v15 = v5;
+  v15 = selectedRange;
   v16 = v7;
   v13[4] = self;
-  v9 = v4;
+  v9 = array;
   v14 = v9;
-  [v8 enumerateAttributesInRange:v5 options:v7 usingBlock:{0, v13}];
+  [textStorage enumerateAttributesInRange:selectedRange options:v7 usingBlock:{0, v13}];
 
   v10 = v14;
   v11 = v9;
@@ -191,23 +191,23 @@
   return v9;
 }
 
-- (id)textStylingAtPosition:(id)a3 inDirection:(int64_t)a4
+- (id)textStylingAtPosition:(id)position inDirection:(int64_t)direction
 {
   v8.receiver = self;
   v8.super_class = _MFAtomTextView;
-  v4 = [(_MFAtomTextView *)&v8 textStylingAtPosition:a3 inDirection:a4];
+  v4 = [(_MFAtomTextView *)&v8 textStylingAtPosition:position inDirection:direction];
   v5 = [v4 mutableCopy];
 
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [v5 setObject:v6 forKey:*MEMORY[0x1E69DB600]];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v5 setObject:clearColor forKey:*MEMORY[0x1E69DB600]];
 
   return v5;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   if (MFModernUIApplicationPreferredContentSizeIsAccessibility())
   {
     v6.receiver = self;
@@ -216,78 +216,78 @@
   }
 }
 
-- (void)makeTextWritingDirectionLeftToRight:(id)a3
+- (void)makeTextWritingDirectionLeftToRight:(id)right
 {
-  v4 = a3;
+  rightCopy = right;
   v6.receiver = self;
   v6.super_class = _MFAtomTextView;
-  [(_MFAtomTextView *)&v6 makeTextWritingDirectionLeftToRight:v4];
-  v5 = [(_MFAtomTextView *)self hostRecipientView];
-  [v5 atomTextView:self didChangeWritingDirection:0];
+  [(_MFAtomTextView *)&v6 makeTextWritingDirectionLeftToRight:rightCopy];
+  hostRecipientView = [(_MFAtomTextView *)self hostRecipientView];
+  [hostRecipientView atomTextView:self didChangeWritingDirection:0];
 }
 
-- (void)makeTextWritingDirectionRightToLeft:(id)a3
+- (void)makeTextWritingDirectionRightToLeft:(id)left
 {
-  v4 = a3;
+  leftCopy = left;
   v6.receiver = self;
   v6.super_class = _MFAtomTextView;
-  [(_MFAtomTextView *)&v6 makeTextWritingDirectionRightToLeft:v4];
-  v5 = [(_MFAtomTextView *)self hostRecipientView];
-  [v5 atomTextView:self didChangeWritingDirection:1];
+  [(_MFAtomTextView *)&v6 makeTextWritingDirectionRightToLeft:leftCopy];
+  hostRecipientView = [(_MFAtomTextView *)self hostRecipientView];
+  [hostRecipientView atomTextView:self didChangeWritingDirection:1];
 }
 
 - (int64_t)baseWritingDirection
 {
-  v3 = [(_MFAtomTextView *)self textStorage];
-  v4 = [v3 length];
+  textStorage = [(_MFAtomTextView *)self textStorage];
+  v4 = [textStorage length];
 
   v5 = MEMORY[0x1E69DB688];
   if (v4 && -[_MFAtomTextView selectedRange](self, "selectedRange") != 0x7FFFFFFFFFFFFFFFLL && (-[_MFAtomTextView textStorage](self, "textStorage"), v6 = objc_claimAutoreleasedReturnValue(), [v6 attributesAtIndex:0 effectiveRange:0], v7 = objc_claimAutoreleasedReturnValue(), v6, objc_msgSend(v7, "objectForKey:", *v5), v8 = objc_claimAutoreleasedReturnValue(), v7, v8) || (-[_MFAtomTextView typingAttributes](self, "typingAttributes"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKey:", *v5), v8 = objc_claimAutoreleasedReturnValue(), v9, v8))
   {
-    v10 = [v8 baseWritingDirection];
+    baseWritingDirection = [v8 baseWritingDirection];
   }
 
   else
   {
-    v10 = -1;
+    baseWritingDirection = -1;
   }
 
-  return v10;
+  return baseWritingDirection;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   v32[1] = *MEMORY[0x1E69E9840];
   [(_MFAtomTextView *)self selectedRange];
   if (v4)
   {
-    v25 = [MEMORY[0x1E69DCD50] generalPasteboard];
-    v26 = [MEMORY[0x1E695DF70] array];
-    v27 = [MEMORY[0x1E695DF70] array];
-    v5 = [(_MFAtomTextView *)self selectedRange];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    selectedRange = [(_MFAtomTextView *)self selectedRange];
     v7 = v6;
-    v8 = [MEMORY[0x1E696AD60] string];
-    if (v5 < v5 + v7)
+    string = [MEMORY[0x1E696AD60] string];
+    if (selectedRange < selectedRange + v7)
     {
       v9 = *MEMORY[0x1E69DB5F8];
       do
       {
-        v10 = [(_MFAtomTextView *)self textStorage];
-        v11 = [v10 string];
-        v12 = [v11 characterAtIndex:v5];
+        textStorage = [(_MFAtomTextView *)self textStorage];
+        string2 = [textStorage string];
+        v12 = [string2 characterAtIndex:selectedRange];
 
         v28 = v12;
         if (v12 == 65532)
         {
-          if ([v8 length])
+          if ([string length])
           {
-            v13 = [v8 copy];
-            [v27 addObject:v13];
-            [v8 setString:&stru_1F3CF3758];
+            v13 = [string copy];
+            [array2 addObject:v13];
+            [string setString:&stru_1F3CF3758];
           }
 
-          v14 = [(_MFAtomTextView *)self textStorage];
-          v15 = [v14 attributesAtIndex:v5 effectiveRange:0];
+          textStorage2 = [(_MFAtomTextView *)self textStorage];
+          v15 = [textStorage2 attributesAtIndex:selectedRange effectiveRange:0];
 
           v16 = [v15 objectForKey:v9];
           if (v16)
@@ -295,15 +295,15 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v17 = [v16 recipient];
-              v18 = [v17 uncommentedAddress];
-              [v27 addObject:v18];
+              recipient = [v16 recipient];
+              uncommentedAddress = [recipient uncommentedAddress];
+              [array2 addObject:uncommentedAddress];
 
-              v19 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v17 requiringSecureCoding:1 error:0];
+              v19 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:recipient requiringSecureCoding:1 error:0];
               v31 = @"kMFPasteboardTypeComposeRecipient";
               v32[0] = v19;
               v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-              [v26 addObject:v20];
+              [array addObject:v20];
             }
           }
         }
@@ -311,45 +311,45 @@
         else
         {
           v15 = [MEMORY[0x1E696AEC0] stringWithCharacters:&v28 length:1];
-          [v8 appendString:v15];
+          [string appendString:v15];
         }
 
-        ++v5;
+        ++selectedRange;
         --v7;
       }
 
       while (v7);
     }
 
-    if ([v8 length])
+    if ([string length])
     {
-      v21 = [v8 copy];
-      [v27 addObject:v21];
+      v21 = [string copy];
+      [array2 addObject:v21];
     }
 
-    v22 = [v27 componentsJoinedByString:{@", "}];
-    v23 = [*MEMORY[0x1E6983020] identifier];
-    v29 = v23;
+    v22 = [array2 componentsJoinedByString:{@", "}];
+    identifier = [*MEMORY[0x1E6983020] identifier];
+    v29 = identifier;
     v30 = v22;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-    [v26 addObject:v24];
+    [array addObject:v24];
 
-    [v25 setItems:v26];
+    [generalPasteboard setItems:array];
   }
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v4 = [MEMORY[0x1E69DCD50] generalPasteboard];
+  pasteCopy = paste;
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
   v43[0] = @"kMFPasteboardTypeComposeRecipient";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:1];
-  v6 = [v4 containsPasteboardTypes:v5 inItemSet:0];
+  v6 = [generalPasteboard containsPasteboardTypes:v5 inItemSet:0];
 
   if (v6)
   {
-    [v4 valuesForPasteboardType:@"kMFPasteboardTypeComposeRecipient" inItemSet:0];
+    [generalPasteboard valuesForPasteboardType:@"kMFPasteboardTypeComposeRecipient" inItemSet:0];
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
@@ -370,8 +370,8 @@
           v11 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:*(*(&v35 + 1) + 8 * i) error:0];
           if (v11)
           {
-            v12 = [(_MFAtomTextView *)self hostRecipientView];
-            [v12 addRecipient:v11];
+            hostRecipientView = [(_MFAtomTextView *)self hostRecipientView];
+            [hostRecipientView addRecipient:v11];
           }
         }
 
@@ -384,16 +384,16 @@
 
   else
   {
-    v40 = 0xAAAAAAAAAAAAAAAALL;
+    identifier = 0xAAAAAAAAAAAAAAAALL;
     v41 = 0xAAAAAAAAAAAAAAAALL;
-    v40 = [*MEMORY[0x1E6982F40] identifier];
-    v13 = [*MEMORY[0x1E6983020] identifier];
-    v14 = &v40;
-    v41 = v13;
+    identifier = [*MEMORY[0x1E6982F40] identifier];
+    identifier2 = [*MEMORY[0x1E6983020] identifier];
+    v14 = &identifier;
+    v41 = identifier2;
     v15 = 1;
     do
     {
-      v16 = [v4 valueForPasteboardType:*v14];
+      v16 = [generalPasteboard valueForPasteboardType:*v14];
       v17 = (v16 == 0) & v15;
       v14 = &v41;
       v15 = 0;
@@ -416,11 +416,11 @@
       v20 = [MEMORY[0x1E69AD6F8] addressListFromEncodedString:v19];
       if ([v20 count] > 1)
       {
-        v21 = [(_MFAtomTextView *)self hostRecipientView];
-        v22 = [v21 delegate];
+        hostRecipientView2 = [(_MFAtomTextView *)self hostRecipientView];
+        delegate = [hostRecipientView2 delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v22 dismissSearchResultsForComposeRecipientView:v21];
+          [delegate dismissSearchResultsForComposeRecipientView:hostRecipientView2];
         }
 
         if (objc_opt_respondsToSelector())
@@ -443,7 +443,7 @@
                   objc_enumerationMutation(v23);
                 }
 
-                [v22 composeRecipientView:v21 didFinishEnteringAddress:*(*(&v30 + 1) + 8 * j)];
+                [delegate composeRecipientView:hostRecipientView2 didFinishEnteringAddress:*(*(&v30 + 1) + 8 * j)];
               }
 
               v24 = [v23 countByEnumeratingWithState:&v30 objects:v39 count:16];
@@ -458,7 +458,7 @@
       {
         v34.receiver = self;
         v34.super_class = _MFAtomTextView;
-        [(_MFAtomTextView *)&v34 paste:v28];
+        [(_MFAtomTextView *)&v34 paste:pasteCopy];
       }
 
       v16 = v19;
@@ -468,7 +468,7 @@
     {
       v29.receiver = self;
       v29.super_class = _MFAtomTextView;
-      [(_MFAtomTextView *)&v29 paste:v28];
+      [(_MFAtomTextView *)&v29 paste:pasteCopy];
     }
 
     for (k = 8; k != -8; k -= 8)
@@ -477,38 +477,38 @@
   }
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v7 = a3;
+  cutCopy = cut;
   [(_MFAtomTextView *)self copy:?];
-  v4 = [(_MFAtomTextView *)self textStorage];
-  v5 = [(_MFAtomTextView *)self selectedRange];
-  [v4 deleteCharactersInRange:{v5, v6}];
+  textStorage = [(_MFAtomTextView *)self textStorage];
+  selectedRange = [(_MFAtomTextView *)self selectedRange];
+  [textStorage deleteCharactersInRange:{selectedRange, v6}];
 
   [(_MFAtomTextView *)self setSelectedRange:0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (sel_paste_ == a3)
+  senderCopy = sender;
+  if (sel_paste_ == action)
   {
-    v8 = [MEMORY[0x1E69DCD50] generalPasteboard];
-    v9 = [*MEMORY[0x1E6983020] identifier];
-    v14[0] = v9;
-    v10 = [*MEMORY[0x1E6982F40] identifier];
-    v14[1] = v10;
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+    identifier = [*MEMORY[0x1E6983020] identifier];
+    v14[0] = identifier;
+    identifier2 = [*MEMORY[0x1E6982F40] identifier];
+    v14[1] = identifier2;
     v14[2] = @"kMFPasteboardTypeComposeRecipient";
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
-    v7 = [v8 containsPasteboardTypes:v11 inItemSet:0];
+    v7 = [generalPasteboard containsPasteboardTypes:v11 inItemSet:0];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = _MFAtomTextView;
-    v7 = [(_MFAtomTextView *)&v13 canPerformAction:a3 withSender:v6];
+    v7 = [(_MFAtomTextView *)&v13 canPerformAction:action withSender:senderCopy];
   }
 
   return v7;
@@ -516,36 +516,36 @@
 
 - (id)undoManager
 {
-  v2 = [(_MFAtomTextView *)self hostRecipientView];
-  v3 = [v2 undoManager];
+  hostRecipientView = [(_MFAtomTextView *)self hostRecipientView];
+  undoManager = [hostRecipientView undoManager];
 
-  return v3;
+  return undoManager;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  x = a3.x;
-  y = a3.y;
-  v5 = a4;
-  v6 = [(_MFAtomTextView *)self hostRecipientView];
-  v7 = [v6 atomContainerView];
+  x = test.x;
+  y = test.y;
+  eventCopy = event;
+  hostRecipientView = [(_MFAtomTextView *)self hostRecipientView];
+  atomContainerView = [hostRecipientView atomContainerView];
 
   v56.receiver = self;
   v56.super_class = _MFAtomTextView;
-  v8 = [(_MFAtomTextView *)&v56 hitTest:v5 withEvent:x, y];
-  v9 = [v7 hitTest:v5 withEvent:{x, y}];
+  v8 = [(_MFAtomTextView *)&v56 hitTest:eventCopy withEvent:x, y];
+  v9 = [atomContainerView hitTest:eventCopy withEvent:{x, y}];
   v10 = v8;
-  v11 = [(_MFAtomTextView *)self selectedRange];
+  selectedRange = [(_MFAtomTextView *)self selectedRange];
   v13 = v12;
   if (v12)
   {
-    v14 = v11;
-    v52 = v7;
-    v15 = [(_MFAtomTextView *)self textStorage];
-    v16 = [v15 attributesAtIndex:v14 effectiveRange:0];
+    v14 = selectedRange;
+    v52 = atomContainerView;
+    textStorage = [(_MFAtomTextView *)self textStorage];
+    v16 = [textStorage attributesAtIndex:v14 effectiveRange:0];
 
-    v17 = [(_MFAtomTextView *)self textStorage];
-    v18 = [v17 attributesAtIndex:v13 + v14 - 1 effectiveRange:0];
+    textStorage2 = [(_MFAtomTextView *)self textStorage];
+    v18 = [textStorage2 attributesAtIndex:v13 + v14 - 1 effectiveRange:0];
 
     v19 = *MEMORY[0x1E69DB5F8];
     v20 = [v16 objectForKey:*MEMORY[0x1E69DB5F8]];
@@ -566,9 +566,9 @@
           if (objc_opt_isKindOfClass())
           {
             v24 = [v16 objectForKey:v19];
-            v25 = [v24 atomView];
+            atomView = [v24 atomView];
 
-            [v25 frame];
+            [atomView frame];
             v27 = v26;
             v29 = v28;
             CGAffineTransformMakeTranslation(&v55, 0.0, -6.0);
@@ -580,9 +580,9 @@
             tx = v55.tx;
             v33 = [v18 objectForKey:v19];
             v48 = ty;
-            v34 = [v33 atomView];
+            atomView2 = [v33 atomView];
 
-            [v34 frame];
+            [atomView2 frame];
             v35 = v58.origin.x;
             v36 = v58.origin.y;
             width = v58.size.width;
@@ -619,7 +619,7 @@
       }
     }
 
-    v7 = v52;
+    atomContainerView = v52;
   }
 
   else
@@ -643,8 +643,8 @@
 
 - (BOOL)_delegateSupportsKeyboardEvents
 {
-  v2 = [(_MFAtomTextView *)self hostRecipientView];
-  v3 = [v2 delegate];
+  hostRecipientView = [(_MFAtomTextView *)self hostRecipientView];
+  delegate = [hostRecipientView delegate];
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     v4 = objc_opt_respondsToSelector();
@@ -658,39 +658,39 @@
   return v4 & 1;
 }
 
-- (void)_handleKeyUIEvent:(id)a3
+- (void)_handleKeyUIEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(_MFAtomTextView *)self _delegateSupportsKeyboardEvents])
   {
-    v5 = [(_MFAtomTextView *)self hostRecipientView];
-    v6 = [v5 delegate];
-    if ([v4 type] == 4)
+    hostRecipientView = [(_MFAtomTextView *)self hostRecipientView];
+    delegate = [hostRecipientView delegate];
+    if ([eventCopy type] == 4)
     {
-      v7 = [v4 _modifiedInput];
-      v8 = v7;
+      _modifiedInput = [eventCopy _modifiedInput];
+      v8 = _modifiedInput;
       v9 = *MEMORY[0x1E69DDE90];
-      if (v7 == *MEMORY[0x1E69DDE90] || v7 == *MEMORY[0x1E69DDF30])
+      if (_modifiedInput == *MEMORY[0x1E69DDE90] || _modifiedInput == *MEMORY[0x1E69DDF30])
       {
-        if ([v6 composeRecipientViewShowingSearchResults:v5])
+        if ([delegate composeRecipientViewShowingSearchResults:hostRecipientView])
         {
-          if (([v4 _isKeyDown] & 1) == 0)
+          if (([eventCopy _isKeyDown] & 1) == 0)
           {
             if (v8 == v9)
             {
-              [v6 selectNextSearchResultForComposeRecipientView:v5];
+              [delegate selectNextSearchResultForComposeRecipientView:hostRecipientView];
             }
 
             else
             {
-              [v6 selectPreviousSearchResultForComposeRecipientView:v5];
+              [delegate selectPreviousSearchResultForComposeRecipientView:hostRecipientView];
             }
           }
 
           goto LABEL_29;
         }
 
-        if (v8 == v9 && [v4 _isKeyDown] && (objc_msgSend(v6, "presentSearchResultsForComposeRecipientView:", v5) & 1) != 0)
+        if (v8 == v9 && [eventCopy _isKeyDown] && (objc_msgSend(delegate, "presentSearchResultsForComposeRecipientView:", hostRecipientView) & 1) != 0)
         {
 LABEL_29:
 
@@ -698,11 +698,11 @@ LABEL_29:
         }
       }
 
-      else if ([v7 length] == 1 && (objc_msgSend(v8, "characterAtIndex:", 0) == 13 || objc_msgSend(v8, "characterAtIndex:", 0) == 9) && objc_msgSend(v6, "composeRecipientViewShowingSearchResults:", v5) && objc_msgSend(v6, "chooseSelectedSearchResultForComposeRecipientView:", v5))
+      else if ([_modifiedInput length] == 1 && (objc_msgSend(v8, "characterAtIndex:", 0) == 13 || objc_msgSend(v8, "characterAtIndex:", 0) == 9) && objc_msgSend(delegate, "composeRecipientViewShowingSearchResults:", hostRecipientView) && objc_msgSend(delegate, "chooseSelectedSearchResultForComposeRecipientView:", hostRecipientView))
       {
         if ([v8 characterAtIndex:0] == 9 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v6 composeRecipientViewReturnPressed:v5];
+          [delegate composeRecipientViewReturnPressed:hostRecipientView];
         }
 
         goto LABEL_29;
@@ -711,7 +711,7 @@ LABEL_29:
 
     v11.receiver = self;
     v11.super_class = _MFAtomTextView;
-    [(_MFAtomTextView *)&v11 _handleKeyUIEvent:v4];
+    [(_MFAtomTextView *)&v11 _handleKeyUIEvent:eventCopy];
 LABEL_26:
 
     goto LABEL_27;
@@ -719,7 +719,7 @@ LABEL_26:
 
   v12.receiver = self;
   v12.super_class = _MFAtomTextView;
-  [(_MFAtomTextView *)&v12 _handleKeyUIEvent:v4];
+  [(_MFAtomTextView *)&v12 _handleKeyUIEvent:eventCopy];
 LABEL_27:
 }
 

@@ -1,9 +1,9 @@
 @interface TPSDiscoverabilitySignal
 + (id)osBuild;
-- (TPSDiscoverabilitySignal)initWithIdentifier:(id)a3 bundleIdentifier:(id)a4 context:(id)a5;
+- (TPSDiscoverabilitySignal)initWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier context:(id)context;
 - (id)_discoverabilitySignalsStream;
 - (id)_knowledgeStore;
-- (void)donateSignalWithCompletion:(id)a3;
+- (void)donateSignalWithCompletion:(id)completion;
 @end
 
 @implementation TPSDiscoverabilitySignal
@@ -46,8 +46,8 @@
 
   v5 = v4;
   _Block_object_dispose(&v14, 8);
-  v6 = [v4 type];
-  v7 = [v2 eventStreamWithName:@"/discoverability/signals" valueType:v6];
+  type = [v4 type];
+  v7 = [v2 eventStreamWithName:@"/discoverability/signals" valueType:type];
 
   return v7;
 }
@@ -89,26 +89,26 @@ void __43__TPSDiscoverabilitySignal__knowledgeStore__block_invoke()
   _knowledgeStore_store = v2;
 }
 
-- (void)donateSignalWithCompletion:(id)a3
+- (void)donateSignalWithCompletion:(id)completion
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v27 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(TPSDiscoverabilitySignal *)self identifier];
-  v5 = [(TPSDiscoverabilitySignal *)self bundleIdentifier];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  date = [MEMORY[0x277CBEAA8] date];
+  identifier = [(TPSDiscoverabilitySignal *)self identifier];
+  bundleIdentifier = [(TPSDiscoverabilitySignal *)self bundleIdentifier];
+  v6 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v7 = v5;
+    bundleIdentifier2 = bundleIdentifier;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v8 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier2 = [mainBundle bundleIdentifier];
   }
 
-  v9 = [(TPSDiscoverabilitySignal *)self context];
+  context = [(TPSDiscoverabilitySignal *)self context];
   v39 = 0;
   v40 = &v39;
   v41 = 0x2050000000;
@@ -127,12 +127,12 @@ void __43__TPSDiscoverabilitySignal__knowledgeStore__block_invoke()
 
   v11 = v10;
   _Block_object_dispose(&v39, 8);
-  v12 = [[v10 alloc] initWithIdentifier:0 bundleIdentifier:v7 itemIdentifier:0 groupIdentifier:0 deviceIdentifier:0 userIdentifier:0];
+  v12 = [[v10 alloc] initWithIdentifier:0 bundleIdentifier:bundleIdentifier2 itemIdentifier:0 groupIdentifier:0 deviceIdentifier:0 userIdentifier:0];
   v13 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
-  v14 = [objc_opt_class() osBuild];
-  [v13 setObject:v14 forKeyedSubscript:@"_DKDiscoverabilitySignalsMetadataKey-osBuild"];
+  osBuild = [objc_opt_class() osBuild];
+  [v13 setObject:osBuild forKeyedSubscript:@"_DKDiscoverabilitySignalsMetadataKey-osBuild"];
 
-  [v13 setObject:v9 forKeyedSubscript:@"_DKDiscoverabilitySignalsMetadataKey-context"];
+  [v13 setObject:context forKeyedSubscript:@"_DKDiscoverabilitySignalsMetadataKey-context"];
   v39 = 0;
   v40 = &v39;
   v41 = 0x2050000000;
@@ -151,26 +151,26 @@ void __43__TPSDiscoverabilitySignal__knowledgeStore__block_invoke()
 
   v16 = v15;
   _Block_object_dispose(&v39, 8);
-  v17 = [(TPSDiscoverabilitySignal *)self _discoverabilitySignalsStream];
+  _discoverabilitySignalsStream = [(TPSDiscoverabilitySignal *)self _discoverabilitySignalsStream];
   v18 = [v13 copy];
-  v19 = [v15 eventWithStream:v17 source:v12 startDate:v27 endDate:v27 identifierStringValue:v4 metadata:v18];
+  v19 = [v15 eventWithStream:_discoverabilitySignalsStream source:v12 startDate:date endDate:date identifierStringValue:identifier metadata:v18];
 
-  v20 = [(TPSDiscoverabilitySignal *)self _knowledgeStore];
+  _knowledgeStore = [(TPSDiscoverabilitySignal *)self _knowledgeStore];
   v43[0] = v19;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:1];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __55__TPSDiscoverabilitySignal_donateSignalWithCompletion___block_invoke;
   v29[3] = &unk_278730C08;
-  v30 = v4;
-  v31 = v7;
-  v32 = v9;
-  v33 = v28;
-  v22 = v28;
-  v23 = v9;
-  v24 = v7;
-  v25 = v4;
-  [v20 saveObjects:v21 responseQueue:0 withCompletion:v29];
+  v30 = identifier;
+  v31 = bundleIdentifier2;
+  v32 = context;
+  v33 = completionCopy;
+  v22 = completionCopy;
+  v23 = context;
+  v24 = bundleIdentifier2;
+  v25 = identifier;
+  [_knowledgeStore saveObjects:v21 responseQueue:0 withCompletion:v29];
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -242,20 +242,20 @@ void __55__TPSDiscoverabilitySignal_donateSignalWithCompletion___block_invoke(vo
   }
 }
 
-- (TPSDiscoverabilitySignal)initWithIdentifier:(id)a3 bundleIdentifier:(id)a4 context:(id)a5
+- (TPSDiscoverabilitySignal)initWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = TPSDiscoverabilitySignal;
   v12 = [(TPSDiscoverabilitySignal *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_bundleIdentifier, a4);
-    objc_storeStrong(&v13->_context, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_bundleIdentifier, bundleIdentifier);
+    objc_storeStrong(&v13->_context, context);
   }
 
   return v13;

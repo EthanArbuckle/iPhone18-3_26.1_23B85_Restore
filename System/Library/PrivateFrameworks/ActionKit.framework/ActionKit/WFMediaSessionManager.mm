@@ -1,39 +1,39 @@
 @interface WFMediaSessionManager
-- (WFMediaSessionManager)initWithClientIdentifier:(id)a3 clientVersion:(id)a4;
-- (void)lookupMediaType:(int64_t)a3 withIdentifiers:(id)a4 withCompletion:(id)a5;
+- (WFMediaSessionManager)initWithClientIdentifier:(id)identifier clientVersion:(id)version;
+- (void)lookupMediaType:(int64_t)type withIdentifiers:(id)identifiers withCompletion:(id)completion;
 @end
 
 @implementation WFMediaSessionManager
 
-- (void)lookupMediaType:(int64_t)a3 withIdentifiers:(id)a4 withCompletion:(id)a5
+- (void)lookupMediaType:(int64_t)type withIdentifiers:(id)identifiers withCompletion:(id)completion
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v10 = objc_alloc(MEMORY[0x277CEE570]);
-  v11 = [(WFMediaSessionManager *)self clientIdentifier];
-  v12 = [(WFMediaSessionManager *)self clientVersion];
+  clientIdentifier = [(WFMediaSessionManager *)self clientIdentifier];
+  clientVersion = [(WFMediaSessionManager *)self clientVersion];
   v13 = [(WFMediaSessionManager *)self bag];
-  v14 = [v10 initWithType:a3 clientIdentifier:v11 clientVersion:v12 bag:v13];
+  v14 = [v10 initWithType:type clientIdentifier:clientIdentifier clientVersion:clientVersion bag:v13];
   task = self->_task;
   self->_task = v14;
 
-  if (a3 == 300)
+  if (type == 300)
   {
     v22[0] = @"episodes";
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
     [(AMSMediaTask *)self->_task setIncludedResultKeys:v16];
   }
 
-  [(AMSMediaTask *)self->_task setItemIdentifiers:v8];
-  v17 = [(AMSMediaTask *)self->_task perform];
+  [(AMSMediaTask *)self->_task setItemIdentifiers:identifiersCopy];
+  perform = [(AMSMediaTask *)self->_task perform];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __72__WFMediaSessionManager_lookupMediaType_withIdentifiers_withCompletion___block_invoke;
   v20[3] = &unk_278C196D0;
-  v21 = v9;
-  v18 = v9;
-  [v17 addFinishBlock:v20];
+  v21 = completionCopy;
+  v18 = completionCopy;
+  [perform addFinishBlock:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -64,11 +64,11 @@ void __72__WFMediaSessionManager_lookupMediaType_withIdentifiers_withCompletion_
   }
 }
 
-- (WFMediaSessionManager)initWithClientIdentifier:(id)a3 clientVersion:(id)a4
+- (WFMediaSessionManager)initWithClientIdentifier:(id)identifier clientVersion:(id)version
 {
   v19.receiver = self;
   v19.super_class = WFMediaSessionManager;
-  v4 = [(WFMediaSessionManager *)&v19 init:a3];
+  v4 = [(WFMediaSessionManager *)&v19 init:identifier];
   if (v4)
   {
     v5 = [@"com.apple.shortcuts" copy];
@@ -79,10 +79,10 @@ void __72__WFMediaSessionManager_lookupMediaType_withIdentifiers_withCompletion_
     clientVersion = v4->_clientVersion;
     v4->_clientVersion = v7;
 
-    v9 = [MEMORY[0x277CEE570] bagSubProfile];
-    v10 = [MEMORY[0x277CEE570] bagSubProfileVersion];
-    v11 = [MEMORY[0x277CEE570] bagKeySet];
-    v12 = [v11 mutableCopy];
+    bagSubProfile = [MEMORY[0x277CEE570] bagSubProfile];
+    bagSubProfileVersion = [MEMORY[0x277CEE570] bagSubProfileVersion];
+    bagKeySet = [MEMORY[0x277CEE570] bagKeySet];
+    v12 = [bagKeySet mutableCopy];
 
     v13 = [MEMORY[0x277CBEBC0] URLWithString:@"amp-api.podcasts.apple.com"];
     [v12 addBagKey:@"podcasts-media-api-host" valueType:5 defaultValue:v13];
@@ -91,8 +91,8 @@ void __72__WFMediaSessionManager_lookupMediaType_withIdentifiers_withCompletion_
     v14 = [MEMORY[0x277CBEBC0] URLWithString:@"https://sf-api-token-service.itunes.apple.com/apiToken/"];
     [v12 addBagKey:@"sf-api-token-service-url" valueType:5 defaultValue:v14];
 
-    [MEMORY[0x277CEE408] registerBagKeySet:v12 forProfile:v9 profileVersion:v10];
-    v15 = [MEMORY[0x277CEE3F8] bagForProfile:v9 profileVersion:v10];
+    [MEMORY[0x277CEE408] registerBagKeySet:v12 forProfile:bagSubProfile profileVersion:bagSubProfileVersion];
+    v15 = [MEMORY[0x277CEE3F8] bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
     bag = v4->_bag;
     v4->_bag = v15;
 

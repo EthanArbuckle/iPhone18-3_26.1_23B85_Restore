@@ -1,5 +1,5 @@
 @interface PUPXPhotoKitRemoveStacksActionPerformer
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group;
 - (void)performUserInteractionTask;
 @end
 
@@ -8,10 +8,10 @@
 - (void)performUserInteractionTask
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(PXAssetActionPerformer *)self selectionSnapshot];
-  v4 = [v3 allItemsEnumerator];
+  selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+  allItemsEnumerator = [selectionSnapshot allItemsEnumerator];
 
-  if ([v4 count])
+  if ([allItemsEnumerator count])
   {
     v5 = PXMap();
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:45998 userInfo:0];
@@ -35,15 +35,15 @@
   }
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E69C3970] sharedInstance];
-  v11 = [v10 canShowInternalUI];
+  snapshotCopy = snapshot;
+  personCopy = person;
+  groupCopy = group;
+  mEMORY[0x1E69C3970] = [MEMORY[0x1E69C3970] sharedInstance];
+  canShowInternalUI = [mEMORY[0x1E69C3970] canShowInternalUI];
 
-  if (v11 && ([MEMORY[0x1E69A2900] sharedInstance], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "enableStacksReviewUI"), v12, v13) && (objc_msgSend(v7, "selectedIndexPaths"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, v15 >= 1))
+  if (canShowInternalUI && ([MEMORY[0x1E69A2900] sharedInstance], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "enableStacksReviewUI"), v12, v13) && (objc_msgSend(snapshotCopy, "selectedIndexPaths"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, v15 >= 1))
   {
     v19 = 0;
     v20 = &v19;
@@ -54,7 +54,7 @@
     v18[2] = __94__PUPXPhotoKitRemoveStacksActionPerformer_canPerformWithSelectionSnapshot_person_socialGroup___block_invoke;
     v18[3] = &unk_1E7B7A900;
     v18[4] = &v19;
-    [v7 enumerateSelectedObjectsUsingBlock:v18];
+    [snapshotCopy enumerateSelectedObjectsUsingBlock:v18];
     v16 = *(v20 + 24);
     _Block_object_dispose(&v19, 8);
   }

@@ -1,6 +1,6 @@
 @interface CLICommand
-- (BOOL)isEqual:(id)a3;
-- (BOOL)runWithOptions:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)runWithOptions:(id)options;
 - (BOOL)startRunLoop;
 - (NSString)name;
 - (id)description;
@@ -13,21 +13,21 @@
 
 - (id)description
 {
-  v3 = [(CLICommand *)self name];
-  v4 = [(CLICommand *)self aliases];
-  v5 = [(CLICommand *)self options];
-  v6 = [v5 count];
-  v7 = [(CLICommand *)self shortEnglishDescription];
-  v8 = [(CLICommand *)self longEnglishDescription];
-  v9 = [(CLICommand *)self usageLine];
-  v10 = [NSString stringWithFormat:@"<Command '%@'>\nAliases: %@\n# Options: %lu\nDescriptions:\nShort: %@\nLong: %@\nUsage: %@>", v3, v4, v6, v7, v8, v9];
+  name = [(CLICommand *)self name];
+  aliases = [(CLICommand *)self aliases];
+  options = [(CLICommand *)self options];
+  v6 = [options count];
+  shortEnglishDescription = [(CLICommand *)self shortEnglishDescription];
+  longEnglishDescription = [(CLICommand *)self longEnglishDescription];
+  usageLine = [(CLICommand *)self usageLine];
+  v10 = [NSString stringWithFormat:@"<Command '%@'>\nAliases: %@\n# Options: %lu\nDescriptions:\nShort: %@\nLong: %@\nUsage: %@>", name, aliases, v6, shortEnglishDescription, longEnglishDescription, usageLine];
 
   return v10;
 }
 
-- (BOOL)runWithOptions:(id)a3
+- (BOOL)runWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   p_executionBlock = &self->_executionBlock;
   executionBlock = self->_executionBlock;
   if (!executionBlock)
@@ -36,7 +36,7 @@
     executionBlock = v9;
   }
 
-  v7 = executionBlock[2](executionBlock, v4, p_executionBlock);
+  v7 = executionBlock[2](executionBlock, optionsCopy, p_executionBlock);
 
   return v7;
 }
@@ -59,13 +59,13 @@
 
 - (id)nameSummaryString
 {
-  v3 = [(CLICommand *)self name];
-  v4 = [NSMutableArray arrayWithObject:v3];
+  name = [(CLICommand *)self name];
+  v4 = [NSMutableArray arrayWithObject:name];
 
-  v5 = [(CLICommand *)self aliases];
-  if (v5)
+  aliases = [(CLICommand *)self aliases];
+  if (aliases)
   {
-    [v4 addObjectsFromArray:v5];
+    [v4 addObjectsFromArray:aliases];
   }
 
   [v4 sortUsingSelector:"compare:"];
@@ -74,17 +74,17 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CLICommand *)self name];
-    v7 = [v5 name];
+    v5 = equalCopy;
+    name = [(CLICommand *)self name];
+    name2 = [v5 name];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [name isEqualToString:name2];
   }
 
   else
@@ -97,8 +97,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CLICommand *)self name];
-  v3 = [v2 hash];
+  name = [(CLICommand *)self name];
+  v3 = [name hash];
 
   return v3;
 }
@@ -106,9 +106,9 @@
 - (BOOL)startRunLoop
 {
   v2 = +[CLIProgram sharedProgram];
-  v3 = [v2 startRunLoop];
+  startRunLoop = [v2 startRunLoop];
 
-  return v3;
+  return startRunLoop;
 }
 
 - (void)register
@@ -121,36 +121,36 @@
   if ([qword_1000115C8 containsObject:self])
   {
     v3 = objc_opt_class();
-    v14 = [(CLICommand *)self name];
-    NSLog(@"Command %@ (%@) was already registered. Most likely the 'enabled' class property was YES and the command was also manually registered.", v3, v14);
+    name = [(CLICommand *)self name];
+    NSLog(@"Command %@ (%@) was already registered. Most likely the 'enabled' class property was YES and the command was also manually registered.", v3, name);
   }
 
   else
   {
     [qword_1000115C8 addObject:self];
-    v4 = [(CLICommand *)self options];
-    if (v4)
+    options = [(CLICommand *)self options];
+    if (options)
     {
       v5 = qword_1000115D0;
-      v6 = [[CLIOptionSet alloc] initWithOptions:v4];
+      v6 = [[CLIOptionSet alloc] initWithOptions:options];
       [v5 setObject:v6 forKey:self];
     }
 
-    v7 = [(CLICommand *)self name];
-    v8 = [qword_1000115C0 objectForKeyedSubscript:v7];
+    name2 = [(CLICommand *)self name];
+    v8 = [qword_1000115C0 objectForKeyedSubscript:name2];
 
     if (v8)
     {
       sub_10000766C();
     }
 
-    [qword_1000115C0 setObject:self forKeyedSubscript:v7];
+    [qword_1000115C0 setObject:self forKeyedSubscript:name2];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = [(CLICommand *)self aliases];
-    v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    aliases = [(CLICommand *)self aliases];
+    v10 = [aliases countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -161,13 +161,13 @@
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(aliases);
           }
 
           [qword_1000115C0 setObject:self forKeyedSubscript:*(*(&v15 + 1) + 8 * i)];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [aliases countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);

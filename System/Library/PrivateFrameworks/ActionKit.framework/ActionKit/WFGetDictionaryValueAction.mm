@@ -1,16 +1,16 @@
 @interface WFGetDictionaryValueAction
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)setOutputWithValue:(id)a3 preferredDictionaryType:(id)a4 contentAttributionSet:(id)a5;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)setOutputWithValue:(id)value preferredDictionaryType:(id)type contentAttributionSet:(id)set;
 @end
 
 @implementation WFGetDictionaryValueAction
 
-- (void)setOutputWithValue:(id)a3 preferredDictionaryType:(id)a4 contentAttributionSet:(id)a5
+- (void)setOutputWithValue:(id)value preferredDictionaryType:(id)type contentAttributionSet:(id)set
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (value)
   {
-    v6 = [MEMORY[0x277CFC388] itemsWithPropertyListObject:a3 preferredDictionaryType:a4 attributionSet:a5];
+    v6 = [MEMORY[0x277CFC388] itemsWithPropertyListObject:value preferredDictionaryType:type attributionSet:set];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -31,8 +31,8 @@
           }
 
           v11 = *(*(&v14 + 1) + 8 * v10);
-          v12 = [(WFGetDictionaryValueAction *)self output];
-          [v12 addItem:v11];
+          output = [(WFGetDictionaryValueAction *)self output];
+          [output addItem:v11];
 
           ++v10;
         }
@@ -48,16 +48,16 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = objc_opt_class();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__WFGetDictionaryValueAction_runAsynchronouslyWithInput___block_invoke;
   v6[3] = &unk_278C211D0;
   v6[4] = self;
-  [v4 generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
+  [inputCopy generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
 }
 
 void __57__WFGetDictionaryValueAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)

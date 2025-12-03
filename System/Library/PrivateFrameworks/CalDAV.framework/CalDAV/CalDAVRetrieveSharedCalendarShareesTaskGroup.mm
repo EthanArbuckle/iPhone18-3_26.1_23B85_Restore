@@ -1,30 +1,30 @@
 @interface CalDAVRetrieveSharedCalendarShareesTaskGroup
-- (CalDAVRetrieveSharedCalendarShareesTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4;
-- (CalDAVRetrieveSharedCalendarShareesTaskGroup)initWithCalendarURL:(id)a3 accountInfoProvider:(id)a4 taskManager:(id)a5;
+- (CalDAVRetrieveSharedCalendarShareesTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager;
+- (CalDAVRetrieveSharedCalendarShareesTaskGroup)initWithCalendarURL:(id)l accountInfoProvider:(id)provider taskManager:(id)manager;
 - (void)startTaskGroup;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
+- (void)task:(id)task didFinishWithError:(id)error;
 @end
 
 @implementation CalDAVRetrieveSharedCalendarShareesTaskGroup
 
-- (CalDAVRetrieveSharedCalendarShareesTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4
+- (CalDAVRetrieveSharedCalendarShareesTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  managerCopy = manager;
   v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Initializing this class instance with an inherited initializer not allowed." userInfo:0];
   objc_exception_throw(v7);
 }
 
-- (CalDAVRetrieveSharedCalendarShareesTaskGroup)initWithCalendarURL:(id)a3 accountInfoProvider:(id)a4 taskManager:(id)a5
+- (CalDAVRetrieveSharedCalendarShareesTaskGroup)initWithCalendarURL:(id)l accountInfoProvider:(id)provider taskManager:(id)manager
 {
-  v8 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = CalDAVRetrieveSharedCalendarShareesTaskGroup;
-  v9 = [(CoreDAVTaskGroup *)&v12 initWithAccountInfoProvider:a4 taskManager:a5];
+  v9 = [(CoreDAVTaskGroup *)&v12 initWithAccountInfoProvider:provider taskManager:manager];
   v10 = v9;
   if (v9)
   {
-    [(CalDAVRetrieveSharedCalendarShareesTaskGroup *)v9 setUrl:v8];
+    [(CalDAVRetrieveSharedCalendarShareesTaskGroup *)v9 setUrl:lCopy];
     [(CalDAVRetrieveSharedCalendarShareesTaskGroup *)v10 setSharees:0];
   }
 
@@ -40,28 +40,28 @@
   v6 = [(CalDAVRetrieveSharedCalendarShareesTaskGroup *)self url];
   v7 = [v4 initWithPropertiesToFind:v5 atURL:v6 withDepth:2];
 
-  v8 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-  [v7 setAccountInfoProvider:v8];
+  accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  [v7 setAccountInfoProvider:accountInfoProvider];
 
   [v7 setDelegate:self];
-  v9 = [(CoreDAVTaskGroup *)self taskManager];
-  [v9 submitQueuedCoreDAVTask:v7];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  [taskManager submitQueuedCoreDAVTask:v7];
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
-  v6 = a4;
-  v9 = v6;
-  if (!v6)
+  errorCopy = error;
+  v9 = errorCopy;
+  if (!errorCopy)
   {
-    v7 = [a3 successfulValueForNameSpace:*MEMORY[0x277CFDE90] elementName:@"invite"];
-    v8 = [v7 users];
-    [(CalDAVRetrieveSharedCalendarShareesTaskGroup *)self setSharees:v8];
+    v7 = [task successfulValueForNameSpace:*MEMORY[0x277CFDE90] elementName:@"invite"];
+    users = [v7 users];
+    [(CalDAVRetrieveSharedCalendarShareesTaskGroup *)self setSharees:users];
 
-    v6 = 0;
+    errorCopy = 0;
   }
 
-  [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:v6 delegateCallbackBlock:0];
+  [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:errorCopy delegateCallbackBlock:0];
 }
 
 @end

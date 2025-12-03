@@ -1,36 +1,36 @@
 @interface SXTextTangierTextWrapper
-- (BOOL)textShouldFlowAroundWrappable:(id)a3 inTarget:(id)a4 inColumn:(id)a5;
+- (BOOL)textShouldFlowAroundWrappable:(id)wrappable inTarget:(id)target inColumn:(id)column;
 - (CGAffineTransform)canvasSpaceToWrapSpace;
 - (CGAffineTransform)wrapSpaceToCanvasSpace;
-- (double)nextUnobstructedSpanStartingAt:(CGRect)a3 wrappableAttachments:(id)a4 userInfo:(id)a5;
-- (id)beginWrappingToColumn:(id)a3 target:(id)a4 hasWrapables:(BOOL *)a5;
-- (id)collectWrappables:(id)a3 target:(id)a4;
-- (id)groupInfoContainingWrappable:(id)a3;
-- (unint64_t)intersectRects:(CGRect *)a3 rects1Count:(unint64_t)a4 rects2:(const CGRect *)a5 rects2Count:(unint64_t)a6 minSize:(double)a7;
-- (unint64_t)splitLineRect:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] wrappable:(id)a5 wrapContext:(id)a6;
-- (unint64_t)splitLineRect:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] wrappableRect:(CGRect)a5;
-- (unsigned)splitLine:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] wrappableAttachments:(id)a5 ignoreFloatingGraphics:(BOOL)a6 floatingCausedWrap:(BOOL *)a7 skipHint:(double *)a8 userInfo:(id)a9;
-- (void)setCanvasSpaceToWrapSpace:(CGAffineTransform *)a3;
-- (void)setExclusionPaths:(id)a3;
-- (void)setWrapSpaceToCanvasSpace:(CGAffineTransform *)a3;
+- (double)nextUnobstructedSpanStartingAt:(CGRect)at wrappableAttachments:(id)attachments userInfo:(id)info;
+- (id)beginWrappingToColumn:(id)column target:(id)target hasWrapables:(BOOL *)wrapables;
+- (id)collectWrappables:(id)wrappables target:(id)target;
+- (id)groupInfoContainingWrappable:(id)wrappable;
+- (unint64_t)intersectRects:(CGRect *)rects rects1Count:(unint64_t)count rects2:(const CGRect *)rects2 rects2Count:(unint64_t)rects2Count minSize:(double)size;
+- (unint64_t)splitLineRect:(CGRect)rect lineSegmentRects:(CGRect)rects[128] wrappable:(id)wrappable wrapContext:(id)context;
+- (unint64_t)splitLineRect:(CGRect)rect lineSegmentRects:(CGRect)rects[128] wrappableRect:(CGRect)wrappableRect;
+- (unsigned)splitLine:(CGRect)line lineSegmentRects:(CGRect)rects[128] wrappableAttachments:(id)attachments ignoreFloatingGraphics:(BOOL)graphics floatingCausedWrap:(BOOL *)wrap skipHint:(double *)hint userInfo:(id)info;
+- (void)setCanvasSpaceToWrapSpace:(CGAffineTransform *)space;
+- (void)setExclusionPaths:(id)paths;
+- (void)setWrapSpaceToCanvasSpace:(CGAffineTransform *)space;
 @end
 
 @implementation SXTextTangierTextWrapper
 
-- (void)setExclusionPaths:(id)a3
+- (void)setExclusionPaths:(id)paths
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_exclusionPaths, a3);
-  v6 = [(SXTextTangierTextWrapper *)self tangierExclusionPaths];
-  [v6 removeAllObjects];
+  pathsCopy = paths;
+  objc_storeStrong(&self->_exclusionPaths, paths);
+  tangierExclusionPaths = [(SXTextTangierTextWrapper *)self tangierExclusionPaths];
+  [tangierExclusionPaths removeAllObjects];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(SXTextTangierTextWrapper *)self exclusionPaths];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  exclusionPaths = [(SXTextTangierTextWrapper *)self exclusionPaths];
+  v8 = [exclusionPaths countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = *v15;
@@ -41,37 +41,37 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(exclusionPaths);
         }
 
-        v11 = [(SXTextExclusionPath *)*(*(&v14 + 1) + 8 * v10) path];
-        v12 = [v11 TSDBezierPath];
+        path = [(SXTextExclusionPath *)*(*(&v14 + 1) + 8 * v10) path];
+        tSDBezierPath = [path TSDBezierPath];
 
-        v13 = [(SXTextTangierTextWrapper *)self tangierExclusionPaths];
-        [v13 addObject:v12];
+        tangierExclusionPaths2 = [(SXTextTangierTextWrapper *)self tangierExclusionPaths];
+        [tangierExclusionPaths2 addObject:tSDBezierPath];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [exclusionPaths countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)beginWrappingToColumn:(id)a3 target:(id)a4 hasWrapables:(BOOL *)a5
+- (id)beginWrappingToColumn:(id)column target:(id)target hasWrapables:(BOOL *)wrapables
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[SXTextTangierTextWrapContext alloc] initWithColumn:v8 targetLayout:v9];
+  columnCopy = column;
+  targetCopy = target;
+  v10 = [[SXTextTangierTextWrapContext alloc] initWithColumn:columnCopy targetLayout:targetCopy];
   v12 = *(MEMORY[0x1E695EFD0] + 16);
   v11 = *(MEMORY[0x1E695EFD0] + 32);
   *&self->_canvasSpaceToWrapSpace.a = *MEMORY[0x1E695EFD0];
   *&self->_canvasSpaceToWrapSpace.c = v12;
   *&self->_canvasSpaceToWrapSpace.tx = v11;
-  if ([v9 textIsVertical])
+  if ([targetCopy textIsVertical])
   {
     v13 = *&self->_canvasSpaceToWrapSpace.c;
     *&v18.a = *&self->_canvasSpaceToWrapSpace.a;
@@ -88,21 +88,21 @@
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v15 = [v9 info];
+    info = [targetCopy info];
     v16 = TSUDynamicCast();
 
     if (v16 && [v16 attachmentCount])
     {
-      *a5 = 1;
+      *wrapables = 1;
     }
   }
 
   return v10;
 }
 
-- (unsigned)splitLine:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] wrappableAttachments:(id)a5 ignoreFloatingGraphics:(BOOL)a6 floatingCausedWrap:(BOOL *)a7 skipHint:(double *)a8 userInfo:(id)a9
+- (unsigned)splitLine:(CGRect)line lineSegmentRects:(CGRect)rects[128] wrappableAttachments:(id)attachments ignoreFloatingGraphics:(BOOL)graphics floatingCausedWrap:(BOOL *)wrap skipHint:(double *)hint userInfo:(id)info
 {
-  v9 = MEMORY[0x1EEE9AC00](self, a2, a4, a5, a6, a7, a8, a9, a3.origin, *&a3.origin.y, a3.size, *&a3.size.height);
+  v9 = MEMORY[0x1EEE9AC00](self, a2, rects, attachments, graphics, wrap, hint, info, line.origin, *&line.origin.y, line.size, *&line.size.height);
   v11 = v10;
   v90 = v12;
   v92 = v13;
@@ -116,8 +116,8 @@
   v84 = v11;
   objc_opt_class();
   v95 = TSUDynamicCast();
-  v91 = [v95 column];
-  v93 = [v95 target];
+  column = [v95 column];
+  target = [v95 target];
   if (v90)
   {
     *v90 = 1.0;
@@ -127,8 +127,8 @@
   v92[1] = v19;
   v92[2] = v99;
   v92[3] = v15;
-  v22 = [v95 interiorWrapPolygon];
-  v23 = [v22 copy];
+  interiorWrapPolygon = [v95 interiorWrapPolygon];
+  v23 = [interiorWrapPolygon copy];
 
   v85 = v23;
   if (v23)
@@ -146,7 +146,7 @@
     v96 = 1;
   }
 
-  [v20 collectWrappables:v89 target:v93];
+  [v20 collectWrappables:v89 target:target];
   v102 = 0u;
   v103 = 0u;
   v100 = 0u;
@@ -166,9 +166,9 @@
         }
 
         v27 = *(*(&v100 + 1) + 8 * v26);
-        v28 = [v27 wrapDirection];
-        v29 = [v27 wrapFitType];
-        v30 = [v27 wrapType];
+        wrapDirection = [v27 wrapDirection];
+        wrapFitType = [v27 wrapFitType];
+        wrapType = [v27 wrapType];
         objc_opt_class();
         v78 = &unk_1F53A1BF0;
         v31 = TSUClassAndProtocolCast();
@@ -178,29 +178,29 @@
           v33 = v32;
           if (v32)
           {
-            v34 = [v32 exteriorTextWrap];
-            if (([v34 isHTMLWrap] & 1) != 0 || objc_msgSend(v33, "isInlineWithText"))
+            exteriorTextWrap = [v32 exteriorTextWrap];
+            if (([exteriorTextWrap isHTMLWrap] & 1) != 0 || objc_msgSend(v33, "isInlineWithText"))
             {
-              if (v34)
+              if (exteriorTextWrap)
               {
-                v28 = [v34 direction];
-                v29 = [v34 fitType];
-                v30 = [v34 type];
+                wrapDirection = [exteriorTextWrap direction];
+                wrapFitType = [exteriorTextWrap fitType];
+                wrapType = [exteriorTextWrap type];
               }
 
               else
               {
-                v30 = 0;
-                v29 = 0;
-                v28 = 2;
+                wrapType = 0;
+                wrapFitType = 0;
+                wrapDirection = 2;
               }
             }
           }
         }
 
-        if (v30)
+        if (wrapType)
         {
-          v35 = v30 == 5;
+          v35 = wrapType == 5;
         }
 
         else
@@ -213,17 +213,17 @@
           goto LABEL_65;
         }
 
-        if (v30 == 4)
+        if (wrapType == 4)
         {
-          if ([v20 textShouldFlowAroundWrappable:v27 inTarget:v93 inColumn:v91])
+          if ([v20 textShouldFlowAroundWrappable:v27 inTarget:target inColumn:column])
           {
-            v28 = 2;
-            v30 = 1;
+            wrapDirection = 2;
+            wrapType = 1;
           }
 
           else
           {
-            v30 = 2;
+            wrapType = 2;
           }
         }
 
@@ -269,7 +269,7 @@
           goto LABEL_65;
         }
 
-        if (v30 == 2)
+        if (wrapType == 2)
         {
           if (!v90)
           {
@@ -296,9 +296,9 @@
           *v90 = v52;
         }
 
-        else if (v29)
+        else if (wrapFitType)
         {
-          if (v29 != 1)
+          if (wrapFitType != 1)
           {
             goto LABEL_63;
           }
@@ -309,7 +309,7 @@
             goto LABEL_64;
           }
 
-          if (v30 == 3)
+          if (wrapType == 3)
           {
             v113.origin.x = x;
             v113.origin.y = y;
@@ -336,9 +336,9 @@
             }
           }
 
-          else if (v28 != 1)
+          else if (wrapDirection != 1)
           {
-            if (v28)
+            if (wrapDirection)
             {
               goto LABEL_64;
             }
@@ -422,7 +422,7 @@ LABEL_61:
             v138.origin.y = v19;
             v138.size.width = v70;
             v138.size.height = v15;
-            if (CGRectGetWidth(v138) >= 20.0 && (v28 == 2 || v30 == 3 || v69 != (v28 == 0)))
+            if (CGRectGetWidth(v138) >= 20.0 && (wrapDirection == 2 || wrapType == 3 || v69 != (wrapDirection == 0)))
             {
               v106.origin.x = v68;
               v106.origin.y = v19;
@@ -492,7 +492,7 @@ LABEL_63:
           v131.origin.y = MinY;
           v131.size.width = v80 - v79;
           v60 = v57 - v58;
-          if (CGRectGetWidth(v131) >= 20.0 && ((v28 & 0xFFFFFFFD) == 0 || v30 == 3 && (v132.origin.x = v81, v132.size.height = v82, v132.origin.y = MinY, v132.size.width = v80 - v79, v61 = CGRectGetWidth(v132), v133.origin.y = v86, v133.origin.x = v88, v133.size.width = v60, v133.size.height = v59, v61 >= CGRectGetWidth(v133))))
+          if (CGRectGetWidth(v131) >= 20.0 && ((wrapDirection & 0xFFFFFFFD) == 0 || wrapType == 3 && (v132.origin.x = v81, v132.size.height = v82, v132.origin.y = MinY, v132.size.width = v80 - v79, v61 = CGRectGetWidth(v132), v133.origin.y = v86, v133.origin.x = v88, v133.size.width = v60, v133.size.height = v59, v61 >= CGRectGetWidth(v133))))
           {
             v106.origin.x = v88;
             v106.origin.y = v86;
@@ -514,7 +514,7 @@ LABEL_63:
           v141.size.height = v59;
           if (CGRectGetWidth(v141) >= 20.0)
           {
-            if ((v28 - 1) < 2 || v30 == 3 && (v142.origin.x = v81, v142.size.height = v82, v142.origin.y = MinY, v142.size.width = v80 - v79, v75 = CGRectGetWidth(v142), v143.origin.y = v86, v143.origin.x = v88, v143.size.width = v60, v143.size.height = v59, v75 < CGRectGetWidth(v143)))
+            if ((wrapDirection - 1) < 2 || wrapType == 3 && (v142.origin.x = v81, v142.size.height = v82, v142.origin.y = MinY, v142.size.width = v80 - v79, v75 = CGRectGetWidth(v142), v143.origin.y = v86, v143.origin.x = v88, v143.size.width = v60, v143.size.height = v59, v75 < CGRectGetWidth(v143)))
             {
               ++v51;
               v62->origin.x = v88;
@@ -551,21 +551,21 @@ LABEL_78:
   return v96;
 }
 
-- (double)nextUnobstructedSpanStartingAt:(CGRect)a3 wrappableAttachments:(id)a4 userInfo:(id)a5
+- (double)nextUnobstructedSpanStartingAt:(CGRect)at wrappableAttachments:(id)attachments userInfo:(id)info
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = at.size.height;
+  width = at.size.width;
+  y = at.origin.y;
+  x = at.origin.x;
   v80 = *MEMORY[0x1E69E9840];
-  v71 = a4;
-  v69 = a5;
+  attachmentsCopy = attachments;
+  infoCopy = info;
   objc_opt_class();
   v72 = TSUDynamicCast();
-  v73 = [v72 target];
-  v70 = [(SXTextTangierTextWrapper *)self collectWrappables:v71 target:?];
+  target = [v72 target];
+  v70 = [(SXTextTangierTextWrapper *)self collectWrappables:attachmentsCopy target:?];
   v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v70, "count")}];
-  [v73 rectInRoot:{x, y, width, height}];
+  [target rectInRoot:{x, y, width, height}];
   v12 = *&self->_canvasSpaceToWrapSpace.c;
   *&v78.a = *&self->_canvasSpaceToWrapSpace.a;
   *&v78.c = v12;
@@ -575,7 +575,7 @@ LABEL_78:
   v14 = v82.origin.y;
   v15 = v82.size.width;
   v16 = v82.size.height;
-  v17 = [v72 column];
+  column = [v72 column];
   v61 = v16;
   v62 = v15;
   v63 = v14;
@@ -584,8 +584,8 @@ LABEL_78:
   v66 = y;
   v67 = width;
   v68 = height;
-  [v17 frameBounds];
-  [v73 rectInRoot:?];
+  [column frameBounds];
+  [target rectInRoot:?];
   v18 = *&self->_canvasSpaceToWrapSpace.c;
   *&v78.a = *&self->_canvasSpaceToWrapSpace.a;
   *&v78.c = v18;
@@ -631,20 +631,20 @@ LABEL_78:
         v88.size.height = v22;
         if (CGRectIntersectsRect(v86, v88))
         {
-          v33 = [v27 wrapFitType];
+          wrapFitType = [v27 wrapFitType];
           if ([v27 wrapType] == 2)
           {
             v34 = [MEMORY[0x1E69D5628] bezierPathWithRect:{v19, v30, v21, v32}];
             goto LABEL_14;
           }
 
-          if (v33)
+          if (wrapFitType)
           {
-            if (v33 == 1)
+            if (wrapFitType == 1)
             {
-              v35 = [v27 wrapPolygon];
-              v36 = [v35 bezierPath];
-              v37 = [v36 copy];
+              wrapPolygon = [v27 wrapPolygon];
+              bezierPath = [wrapPolygon bezierPath];
+              v37 = [bezierPath copy];
 
               v38 = *&self->_canvasSpaceToWrapSpace.c;
               *&v78.a = *&self->_canvasSpaceToWrapSpace.a;
@@ -731,10 +731,10 @@ LABEL_17:
 
   if (v87.origin.y > 0.0 && v87.origin.y > 3.40282347e38)
   {
-    v54 = [MEMORY[0x1E69D5768] currentHandler];
+    currentHandler = [MEMORY[0x1E69D5768] currentHandler];
     v55 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[SXTextTangierTextWrapper nextUnobstructedSpanStartingAt:wrappableAttachments:userInfo:]"];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/FeldsparServicesUI/Modules/silex/Silex/Text/Tangier/SXTextTangierTextWrapper.mm"];
-    [v54 handleFailureInFunction:v55 file:v56 lineNumber:361 description:@"Out-of-bounds type assignment was clamped to max"];
+    [currentHandler handleFailureInFunction:v55 file:v56 lineNumber:361 description:@"Out-of-bounds type assignment was clamped to max"];
 
     *&v57 = 3.4028e38;
 LABEL_34:
@@ -744,10 +744,10 @@ LABEL_34:
 
   if (v87.origin.y < 0.0 && v87.origin.y < -3.40282347e38)
   {
-    v58 = [MEMORY[0x1E69D5768] currentHandler];
+    currentHandler2 = [MEMORY[0x1E69D5768] currentHandler];
     v59 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[SXTextTangierTextWrapper nextUnobstructedSpanStartingAt:wrappableAttachments:userInfo:]"];
     v60 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/FeldsparServicesUI/Modules/silex/Silex/Text/Tangier/SXTextTangierTextWrapper.mm"];
-    [v58 handleFailureInFunction:v59 file:v60 lineNumber:361 description:@"Out-of-bounds type assignment was clamped to min"];
+    [currentHandler2 handleFailureInFunction:v59 file:v60 lineNumber:361 description:@"Out-of-bounds type assignment was clamped to min"];
 
     *&v57 = -3.4028e38;
     goto LABEL_34;
@@ -760,17 +760,17 @@ LABEL_31:
   return v52;
 }
 
-- (id)collectWrappables:(id)a3 target:(id)a4
+- (id)collectWrappables:(id)wrappables target:(id)target
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v26 = a4;
+  wrappablesCopy = wrappables;
+  targetCopy = target;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v5;
+  obj = wrappablesCopy;
   v7 = [obj countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v7)
   {
@@ -785,7 +785,7 @@ LABEL_31:
           objc_enumerationMutation(obj);
         }
 
-        v10 = [v26 validatedLayoutForAnchoredDrawable:*(*(&v36 + 1) + 8 * i)];
+        v10 = [targetCopy validatedLayoutForAnchoredDrawable:*(*(&v36 + 1) + 8 * i)];
         v11 = TSUProtocolCast();
         v12 = TSUProtocolCast();
         v13 = v12;
@@ -800,8 +800,8 @@ LABEL_31:
           v35 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v14 = [v12 descendentWrappables];
-          v15 = [v14 countByEnumeratingWithState:&v32 objects:v41 count:16];
+          descendentWrappables = [v12 descendentWrappables];
+          v15 = [descendentWrappables countByEnumeratingWithState:&v32 objects:v41 count:16];
           if (v15)
           {
             v16 = *v33;
@@ -811,13 +811,13 @@ LABEL_31:
               {
                 if (*v33 != v16)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(descendentWrappables);
                 }
 
                 [v6 addObject:*(*(&v32 + 1) + 8 * j)];
               }
 
-              v15 = [v14 countByEnumeratingWithState:&v32 objects:v41 count:16];
+              v15 = [descendentWrappables countByEnumeratingWithState:&v32 objects:v41 count:16];
             }
 
             while (v15);
@@ -835,8 +835,8 @@ LABEL_31:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v18 = [(SXTextTangierTextWrapper *)self exclusionPaths];
-  v19 = [v18 countByEnumeratingWithState:&v28 objects:v40 count:16];
+  exclusionPaths = [(SXTextTangierTextWrapper *)self exclusionPaths];
+  v19 = [exclusionPaths countByEnumeratingWithState:&v28 objects:v40 count:16];
   if (v19)
   {
     v20 = *v29;
@@ -846,14 +846,14 @@ LABEL_31:
       {
         if (*v29 != v20)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(exclusionPaths);
         }
 
-        v22 = [(SXTextExclusionPath *)*(*(&v28 + 1) + 8 * k) wrappable];
-        [v6 addObject:v22];
+        wrappable = [(SXTextExclusionPath *)*(*(&v28 + 1) + 8 * k) wrappable];
+        [v6 addObject:wrappable];
       }
 
-      v19 = [v18 countByEnumeratingWithState:&v28 objects:v40 count:16];
+      v19 = [exclusionPaths countByEnumeratingWithState:&v28 objects:v40 count:16];
     }
 
     while (v19);
@@ -862,31 +862,31 @@ LABEL_31:
   return v6;
 }
 
-- (unint64_t)intersectRects:(CGRect *)a3 rects1Count:(unint64_t)a4 rects2:(const CGRect *)a5 rects2Count:(unint64_t)a6 minSize:(double)a7
+- (unint64_t)intersectRects:(CGRect *)rects rects1Count:(unint64_t)count rects2:(const CGRect *)rects2 rects2Count:(unint64_t)rects2Count minSize:(double)size
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!count)
   {
     return 0;
   }
 
   v11 = 0;
   v12 = 0;
-  p_size = &a5->size;
+  p_size = &rects2->size;
   do
   {
-    if (a6 && v11 <= 0x7F)
+    if (rects2Count && v11 <= 0x7F)
     {
       v14 = p_size;
       v15 = 1;
       do
       {
-        v24 = CGRectIntersection(a3[v12], *&v14[-1].width);
+        v24 = CGRectIntersection(rects[v12], *&v14[-1].width);
         x = v24.origin.x;
         y = v24.origin.y;
         width = v24.size.width;
         height = v24.size.height;
-        if (!CGRectIsEmpty(v24) && width >= a7)
+        if (!CGRectIsEmpty(v24) && width >= size)
         {
           v20 = &v22[2 * v11];
           *v20 = x;
@@ -896,7 +896,7 @@ LABEL_31:
           v20[3] = height;
         }
 
-        if (v15 >= a6)
+        if (v15 >= rects2Count)
         {
           break;
         }
@@ -911,49 +911,49 @@ LABEL_31:
     ++v12;
   }
 
-  while (v12 != a4);
+  while (v12 != count);
   if (v11)
   {
-    memcpy(a3, v22, 32 * v11);
+    memcpy(rects, v22, 32 * v11);
   }
 
   return v11;
 }
 
-- (id)groupInfoContainingWrappable:(id)a3
+- (id)groupInfoContainingWrappable:(id)wrappable
 {
-  v3 = [a3 info];
-  v4 = [v3 parentInfo];
+  info = [wrappable info];
+  parentInfo = [info parentInfo];
 
-  if (v4)
+  if (parentInfo)
   {
-    while (![v4 isMemberOfClass:objc_opt_class()])
+    while (![parentInfo isMemberOfClass:objc_opt_class()])
     {
-      v5 = [v4 parentInfo];
+      v4ParentInfo = [parentInfo parentInfo];
 
-      v4 = v5;
-      if (!v5)
+      parentInfo = v4ParentInfo;
+      if (!v4ParentInfo)
       {
         goto LABEL_6;
       }
     }
 
-    v4 = v4;
+    parentInfo = parentInfo;
   }
 
 LABEL_6:
 
-  return v4;
+  return parentInfo;
 }
 
-- (BOOL)textShouldFlowAroundWrappable:(id)a3 inTarget:(id)a4 inColumn:(id)a5
+- (BOOL)textShouldFlowAroundWrappable:(id)wrappable inTarget:(id)target inColumn:(id)column
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v8 hasAlpha] & 1) == 0)
+  wrappableCopy = wrappable;
+  targetCopy = target;
+  columnCopy = column;
+  if (([wrappableCopy hasAlpha] & 1) == 0)
   {
-    [v8 boundsInRoot];
+    [wrappableCopy boundsInRoot];
     v12 = *&self->_canvasSpaceToWrapSpace.c;
     *&recta[1] = *&self->_canvasSpaceToWrapSpace.a;
     *&recta[3] = v12;
@@ -964,8 +964,8 @@ LABEL_6:
     height = v28.size.height;
     recta[0] = *&v28.origin.x;
     v24 = CGRectGetWidth(v28);
-    [v10 frameBounds];
-    [v9 rectInRoot:?];
+    [columnCopy frameBounds];
+    [targetCopy rectInRoot:?];
     v16 = *&self->_canvasSpaceToWrapSpace.c;
     *&recta[1] = *&self->_canvasSpaceToWrapSpace.a;
     *&recta[3] = v16;
@@ -1013,19 +1013,19 @@ LABEL_6:
   return v11;
 }
 
-- (unint64_t)splitLineRect:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] wrappableRect:(CGRect)a5
+- (unint64_t)splitLineRect:(CGRect)rect lineSegmentRects:(CGRect)rects[128] wrappableRect:(CGRect)wrappableRect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  if (!CGRectIntersectsRect(a3, a5))
+  height = wrappableRect.size.height;
+  width = wrappableRect.size.width;
+  y = wrappableRect.origin.y;
+  x = wrappableRect.origin.x;
+  v10 = rect.size.height;
+  v11 = rect.size.width;
+  v12 = rect.origin.y;
+  v13 = rect.origin.x;
+  if (!CGRectIntersectsRect(rect, wrappableRect))
   {
-    a4->origin.x = v13;
+    rects->origin.x = v13;
     goto LABEL_6;
   }
 
@@ -1053,7 +1053,7 @@ LABEL_6:
   v16 = CGRectGetMaxX(v39);
   if (MinX <= v15)
   {
-    v24 = rect;
+    rectCopy = rect;
     if (MaxX > v16)
     {
       return 0;
@@ -1062,7 +1062,7 @@ LABEL_6:
     v25 = x;
     v26 = y;
     v27 = width;
-    v34 = CGRectGetMaxX(*(&v24 - 3));
+    v34 = CGRectGetMaxX(*(&rectCopy - 3));
     v46.origin.x = v13;
     v46.origin.y = v12;
     v46.size.width = v11;
@@ -1073,7 +1073,7 @@ LABEL_6:
     v47.size.width = width;
     v47.size.height = rect;
     v11 = v28 - CGRectGetMaxX(v47);
-    a4->origin.x = v34;
+    rects->origin.x = v34;
 LABEL_6:
     result = 1;
     v21 = 24;
@@ -1098,10 +1098,10 @@ LABEL_6:
   v42.size.width = v11;
   v42.size.height = v10;
   v18 = CGRectGetMinX(v42);
-  a4->origin.x = v29;
-  a4->origin.y = v12;
-  a4->size.width = v17 - v18;
-  a4->size.height = v10;
+  rects->origin.x = v29;
+  rects->origin.y = v12;
+  rects->size.width = v17 - v18;
+  rects->size.height = v10;
   if (MaxX < v31)
   {
     v43.origin.x = x;
@@ -1119,36 +1119,36 @@ LABEL_6:
     v45.size.width = width;
     v45.size.height = rect;
     v11 = v19 - CGRectGetMaxX(v45);
-    a4[1].origin.x = v33;
+    rects[1].origin.x = v33;
     result = 2;
     v21 = 56;
     v22 = 48;
     v23 = 40;
 LABEL_7:
-    *(&a4->origin.x + v23) = v12;
-    *(&a4->origin.x + v22) = v11;
-    *(&a4->origin.x + v21) = v10;
+    *(&rects->origin.x + v23) = v12;
+    *(&rects->origin.x + v22) = v11;
+    *(&rects->origin.x + v21) = v10;
     return result;
   }
 
   return 1;
 }
 
-- (unint64_t)splitLineRect:(CGRect)a3 lineSegmentRects:(CGRect)a4[128] wrappable:(id)a5 wrapContext:(id)a6
+- (unint64_t)splitLineRect:(CGRect)rect lineSegmentRects:(CGRect)rects[128] wrappable:(id)wrappable wrapContext:(id)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  wrappableCopy = wrappable;
   v14 = *&self->_canvasSpaceToWrapSpace.c;
   *&v21.a = *&self->_canvasSpaceToWrapSpace.a;
   *&v21.c = v14;
   *&v21.tx = *&self->_canvasSpaceToWrapSpace.tx;
-  v15 = [a6 transformedWrapPolygonForWrappable:v13 canvasSpaceToWrapSpaceTransform:&v21];
+  v15 = [context transformedWrapPolygonForWrappable:wrappableCopy canvasSpaceToWrapSpaceTransform:&v21];
   if (v15)
   {
-    v16 = [MEMORY[0x1E69D5738] splitLine:a4 lineSegmentRects:v15 polygon:1 type:0 skipHint:{x, y, width, height}];
+    v16 = [MEMORY[0x1E69D5738] splitLine:rects lineSegmentRects:v15 polygon:1 type:0 skipHint:{x, y, width, height}];
   }
 
   else
@@ -1164,7 +1164,7 @@ LABEL_7:
       *&v21.c = v19;
       *&v21.tx = *&self->_canvasSpaceToWrapSpace.tx;
       v23 = CGRectApplyAffineTransform(v22, &v21);
-      v16 = [(SXTextTangierTextWrapper *)self splitLineRect:a4 lineSegmentRects:x wrappableRect:y, width, height, v23.origin.x, v23.origin.y, v23.size.width, v23.size.height];
+      v16 = [(SXTextTangierTextWrapper *)self splitLineRect:rects lineSegmentRects:x wrappableRect:y, width, height, v23.origin.x, v23.origin.y, v23.size.width, v23.size.height];
     }
 
     else
@@ -1185,11 +1185,11 @@ LABEL_7:
   return self;
 }
 
-- (void)setCanvasSpaceToWrapSpace:(CGAffineTransform *)a3
+- (void)setCanvasSpaceToWrapSpace:(CGAffineTransform *)space
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_canvasSpaceToWrapSpace.tx = *&a3->tx;
+  v3 = *&space->a;
+  v4 = *&space->c;
+  *&self->_canvasSpaceToWrapSpace.tx = *&space->tx;
   *&self->_canvasSpaceToWrapSpace.c = v4;
   *&self->_canvasSpaceToWrapSpace.a = v3;
 }
@@ -1203,11 +1203,11 @@ LABEL_7:
   return self;
 }
 
-- (void)setWrapSpaceToCanvasSpace:(CGAffineTransform *)a3
+- (void)setWrapSpaceToCanvasSpace:(CGAffineTransform *)space
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_wrapSpaceToCanvasSpace.tx = *&a3->tx;
+  v3 = *&space->a;
+  v4 = *&space->c;
+  *&self->_wrapSpaceToCanvasSpace.tx = *&space->tx;
   *&self->_wrapSpaceToCanvasSpace.c = v4;
   *&self->_wrapSpaceToCanvasSpace.a = v3;
 }

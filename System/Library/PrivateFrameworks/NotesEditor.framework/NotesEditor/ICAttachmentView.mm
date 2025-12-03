@@ -1,15 +1,15 @@
 @interface ICAttachmentView
-- (BOOL)_accessibilityTextOperationAction:(id)a3;
+- (BOOL)_accessibilityTextOperationAction:(id)action;
 - (BOOL)accessibilityActivate;
 - (BOOL)alertAboutUnsupportedAttachmentIfNecessary;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)icaxIsTextRangeSelected;
 - (BOOL)insideSystemPaper;
 - (BOOL)showRecoverNoteAlertIfNecessary;
 - (BOOL)wantsContextMenuPreview;
-- (ICAttachmentView)initWithAttachment:(id)a3 textContainer:(id)a4 actionWindow:(id)a5;
-- (ICAttachmentView)initWithFrame:(CGRect)a3 textAttachment:(id)a4 textContainer:(id)a5 forManualRendering:(BOOL)a6;
+- (ICAttachmentView)initWithAttachment:(id)attachment textContainer:(id)container actionWindow:(id)window;
+- (ICAttachmentView)initWithFrame:(CGRect)frame textAttachment:(id)attachment textContainer:(id)container forManualRendering:(BOOL)rendering;
 - (ICAttachmentViewDelegate)delegate;
 - (ICBaseTextView)textView;
 - (ICEditingTextView)editingTextView;
@@ -29,46 +29,46 @@
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)makeAudioMenu;
 - (id)makeMainMenu;
 - (id)makePlaybackMenu;
 - (id)makeRecordingMenu;
 - (id)shareFeedbackMenu;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
 - (int64_t)dataOwnerForAttachment;
 - (void)_copy;
-- (void)appendRecording:(id)a3;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)copyWithCompletionBlock:(id)a3;
-- (void)createImage:(id)a3;
-- (void)cut:(id)a3;
+- (void)appendRecording:(id)recording;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)copyWithCompletionBlock:(id)block;
+- (void)createImage:(id)image;
+- (void)cut:(id)cut;
 - (void)dealloc;
-- (void)delete:(id)a3;
+- (void)delete:(id)delete;
 - (void)didMoveToWindow;
-- (void)didTapAttachment:(id)a3;
-- (void)editAttachmentWithBlock:(id)a3;
-- (void)icaxSelectAttachmentTextRange:(BOOL)a3;
+- (void)didTapAttachment:(id)attachment;
+- (void)editAttachmentWithBlock:(id)block;
+- (void)icaxSelectAttachmentTextRange:(BOOL)range;
 - (void)notifyDidMoveToWindow;
 - (void)openAttachment;
-- (void)playFromBeginning:(id)a3;
+- (void)playFromBeginning:(id)beginning;
 - (void)removeFromSuperview;
-- (void)rename:(id)a3;
-- (void)renameAttachmentToUpdatedTitle:(id)a3;
-- (void)reportAConcern:(id)a3 withPositiveFeedback:(BOOL)a4;
+- (void)rename:(id)rename;
+- (void)renameAttachmentToUpdatedTitle:(id)title;
+- (void)reportAConcern:(id)concern withPositiveFeedback:(BOOL)feedback;
 - (void)requestEditorFirstResponder;
-- (void)respondToPanGesture:(id)a3;
-- (void)respondToTapGesture:(id)a3;
-- (void)saveToFiles:(id)a3;
+- (void)respondToPanGesture:(id)gesture;
+- (void)respondToTapGesture:(id)gesture;
+- (void)saveToFiles:(id)files;
 - (void)setupEventHandling;
-- (void)share:(id)a3;
-- (void)shareWebLink:(id)a3;
+- (void)share:(id)share;
+- (void)shareWebLink:(id)link;
 - (void)updateFirstResponder;
-- (void)updatePreferredAttachmentViewSize:(signed __int16)a3;
-- (void)viewSummary:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)updatePreferredAttachmentViewSize:(signed __int16)size;
+- (void)viewSummary:(id)summary;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation ICAttachmentView
@@ -85,15 +85,15 @@
 
   if ([(ICAttachmentView *)self shouldAddMenuLongPressGesture])
   {
-    v4 = [(ICAttachmentView *)self contextInteraction];
+    contextInteraction = [(ICAttachmentView *)self contextInteraction];
 
-    if (!v4)
+    if (!contextInteraction)
     {
       v5 = [objc_alloc(MEMORY[0x277D753B8]) initWithDelegate:self];
       [(ICAttachmentView *)self setContextInteraction:v5];
 
-      v6 = [(ICAttachmentView *)self contextInteraction];
-      [(ICAttachmentView *)self addInteraction:v6];
+      contextInteraction2 = [(ICAttachmentView *)self contextInteraction];
+      [(ICAttachmentView *)self addInteraction:contextInteraction2];
 
       v7 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel_respondToLongPressGesture_];
       [(ICAttachmentView *)self addGestureRecognizer:v7];
@@ -115,18 +115,18 @@
 
 - (NSString)icaxHintString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Double tap to expand" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Double tap to expand" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (BOOL)icaxIsTextRangeSelected
 {
-  v3 = [(ICAttachmentView *)self textRangeInNote];
+  textRangeInNote = [(ICAttachmentView *)self textRangeInNote];
   v5 = v4;
-  v6 = [(ICAttachmentView *)self _icaxParentTextView];
-  v9 = v3 == [v6 selectedRange] && v5 == v7;
+  _icaxParentTextView = [(ICAttachmentView *)self _icaxParentTextView];
+  v9 = textRangeInNote == [_icaxParentTextView selectedRange] && v5 == v7;
 
   return v9;
 }
@@ -142,10 +142,10 @@
 
 - (_NSRange)textRangeInNote
 {
-  v3 = [(ICAttachmentView *)self attachment];
-  v4 = [v3 note];
-  v5 = [(ICAttachmentView *)self attachment];
-  v6 = [v4 rangeForAttachment:v5];
+  attachment = [(ICAttachmentView *)self attachment];
+  note = [attachment note];
+  attachment2 = [(ICAttachmentView *)self attachment];
+  v6 = [note rangeForAttachment:attachment2];
   v8 = v7;
 
   v9 = v6;
@@ -159,17 +159,17 @@
 {
   v7.receiver = self;
   v7.super_class = ICAttachmentView;
-  v2 = [(ICAttachmentView *)&v7 accessibilityContainer];
-  v3 = v2;
-  if (v2)
+  accessibilityContainer = [(ICAttachmentView *)&v7 accessibilityContainer];
+  v3 = accessibilityContainer;
+  if (accessibilityContainer)
   {
-    v4 = v2;
+    v4 = accessibilityContainer;
     while (![v4 conformsToProtocol:&unk_28282EDC0])
     {
-      v5 = [v4 accessibilityContainer];
+      accessibilityContainer2 = [v4 accessibilityContainer];
 
-      v4 = v5;
-      if (!v5)
+      v4 = accessibilityContainer2;
+      if (!accessibilityContainer2)
       {
         goto LABEL_8;
       }
@@ -192,26 +192,26 @@ LABEL_8:
 
 - (id)accessibilityLabel
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"attachment" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"attachment" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(ICAttachmentView *)self attachment];
-  v4 = [v3 note];
-  if (v4)
+  attachment = [(ICAttachmentView *)self attachment];
+  note = [attachment note];
+  if (note)
   {
-    v5 = v4;
-    v6 = [(ICAttachmentView *)self attachment];
-    v7 = [v6 note];
-    v8 = [v7 isEditable];
+    v5 = note;
+    attachment2 = [(ICAttachmentView *)self attachment];
+    note2 = [attachment2 note];
+    isEditable = [note2 isEditable];
 
-    if (v8)
+    if (isEditable)
     {
-      v9 = [(ICAttachmentView *)self icaxHintString];
+      icaxHintString = [(ICAttachmentView *)self icaxHintString];
       goto LABEL_6;
     }
   }
@@ -220,58 +220,58 @@ LABEL_8:
   {
   }
 
-  v9 = 0;
+  icaxHintString = 0;
 LABEL_6:
 
-  return v9;
+  return icaxHintString;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(ICAttachmentView *)self attachment];
-  v3 = [v2 title];
+  attachment = [(ICAttachmentView *)self attachment];
+  title = [attachment title];
 
-  return v3;
+  return title;
 }
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(ICAttachmentView *)self _icaxParentTextView];
-  v4 = [(ICAttachmentView *)self attachment];
-  v5 = [v4 note];
-  if (!v5)
+  _icaxParentTextView = [(ICAttachmentView *)self _icaxParentTextView];
+  attachment = [(ICAttachmentView *)self attachment];
+  note = [attachment note];
+  if (!note)
   {
     goto LABEL_4;
   }
 
-  v6 = v5;
-  v7 = [(ICAttachmentView *)self attachment];
-  v8 = [v7 note];
-  if ([v8 isEditable])
+  v6 = note;
+  attachment2 = [(ICAttachmentView *)self attachment];
+  note2 = [attachment2 note];
+  if ([note2 isEditable])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v9 = [(ICAttachmentView *)self attachment];
-  v10 = [v9 note];
-  v11 = [v10 isDeletedOrInTrash];
+  attachment3 = [(ICAttachmentView *)self attachment];
+  note3 = [attachment3 note];
+  isDeletedOrInTrash = [note3 isDeletedOrInTrash];
 
-  if (v11)
+  if (isDeletedOrInTrash)
   {
-    v12 = [v3 editorController];
-    [v12 showRecoverNoteAlert];
+    editorController = [_icaxParentTextView editorController];
+    [editorController showRecoverNoteAlert];
 LABEL_11:
 
     goto LABEL_12;
   }
 
 LABEL_5:
-  if (([v3 isFirstResponder] & 1) == 0 && !-[ICAttachmentView accessibilityElementIsFocused](self, "accessibilityElementIsFocused"))
+  if (([_icaxParentTextView isFirstResponder] & 1) == 0 && !-[ICAttachmentView accessibilityElementIsFocused](self, "accessibilityElementIsFocused"))
   {
-    v12 = [(ICAttachmentView *)self attachment];
-    [v3 icaxBeginEditingAtAttachment:v12];
+    editorController = [(ICAttachmentView *)self attachment];
+    [_icaxParentTextView icaxBeginEditingAtAttachment:editorController];
     goto LABEL_11;
   }
 
@@ -283,30 +283,30 @@ LABEL_12:
 
 - (id)_accessibilityTextOperations
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9.receiver = self;
   v9.super_class = ICAttachmentView;
-  v4 = [(ICAttachmentView *)&v9 _accessibilityTextOperations];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  _accessibilityTextOperations = [(ICAttachmentView *)&v9 _accessibilityTextOperations];
+  [array axSafelyAddObjectsFromArray:_accessibilityTextOperations];
 
   if ([(ICAttachmentView *)self canPerformAction:sel_share_ withSender:0])
   {
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Share Attachment" value:&stru_282757698 table:0];
-    [v3 addObject:v6];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Share Attachment" value:&stru_282757698 table:0];
+    [array addObject:v6];
   }
 
-  v7 = [v3 copy];
+  v7 = [array copy];
 
   return v7;
 }
 
-- (BOOL)_accessibilityTextOperationAction:(id)a3
+- (BOOL)_accessibilityTextOperationAction:(id)action
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 localizedStringForKey:@"Share Attachment" value:&stru_282757698 table:0];
-  v7 = [v4 isEqualToString:v6];
+  actionCopy = action;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v6 = [mainBundle localizedStringForKey:@"Share Attachment" value:&stru_282757698 table:0];
+  v7 = [actionCopy isEqualToString:v6];
 
   if (v7)
   {
@@ -318,7 +318,7 @@ LABEL_12:
   {
     v10.receiver = self;
     v10.super_class = ICAttachmentView;
-    v8 = [(ICAttachmentView *)&v10 _accessibilityTextOperationAction:v4];
+    v8 = [(ICAttachmentView *)&v10 _accessibilityTextOperationAction:actionCopy];
   }
 
   return v8;
@@ -326,44 +326,44 @@ LABEL_12:
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11.receiver = self;
   v11.super_class = ICAttachmentView;
-  v4 = [(ICAttachmentView *)&v11 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  accessibilityCustomActions = [(ICAttachmentView *)&v11 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
   if (![(ICAttachmentView *)self icaxIsTextRangeSelected])
   {
     v5 = objc_alloc(MEMORY[0x277D75088]);
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 localizedStringForKey:@"Select" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v7 = [mainBundle localizedStringForKey:@"Select" value:&stru_282757698 table:0];
     v8 = [v5 initWithName:v7 target:self selector:sel_icaxSelectAttachmentTextRangeAction];
 
-    [v3 addObject:v8];
+    [array addObject:v8];
   }
 
-  v9 = [v3 copy];
+  v9 = [array copy];
 
   return v9;
 }
 
 - (id)accessibilityCustomRotors
 {
-  v2 = [(ICAttachmentView *)self _icaxParentTextView];
-  v3 = [v2 editorController];
+  _icaxParentTextView = [(ICAttachmentView *)self _icaxParentTextView];
+  editorController = [_icaxParentTextView editorController];
   v4 = +[ICAccessibilityCustomRotorController sharedInstance];
-  [v4 setNoteEditorViewController:v3];
+  [v4 setNoteEditorViewController:editorController];
 
   v5 = +[ICAccessibilityCustomRotorController sharedInstance];
-  v6 = [v5 sharedTextViewRotors];
+  sharedTextViewRotors = [v5 sharedTextViewRotors];
 
-  return v6;
+  return sharedTextViewRotors;
 }
 
 - (id)_icaxParentTextView
 {
-  v2 = [(ICAttachmentView *)self superview];
-  if (v2)
+  superview = [(ICAttachmentView *)self superview];
+  if (superview)
   {
     while (1)
     {
@@ -373,79 +373,79 @@ LABEL_12:
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
-      if (!v3)
+      superview = v2Superview;
+      if (!v2Superview)
       {
         goto LABEL_7;
       }
     }
 
     objc_opt_class();
-    v3 = ICDynamicCast();
+    v2Superview = ICDynamicCast();
   }
 
   else
   {
-    v3 = 0;
+    v2Superview = 0;
   }
 
 LABEL_7:
 
-  return v3;
+  return v2Superview;
 }
 
 - (id)accessibilityDragSourceDescriptors
 {
-  v2 = [(ICAttachmentView *)self _icaxParentTextView];
-  v3 = [v2 accessibilityDragSourceDescriptors];
+  _icaxParentTextView = [(ICAttachmentView *)self _icaxParentTextView];
+  accessibilityDragSourceDescriptors = [_icaxParentTextView accessibilityDragSourceDescriptors];
 
-  return v3;
+  return accessibilityDragSourceDescriptors;
 }
 
 - (id)accessibilityDropPointDescriptors
 {
-  v2 = [(ICAttachmentView *)self _icaxParentTextView];
-  v3 = [v2 accessibilityDropPointDescriptors];
+  _icaxParentTextView = [(ICAttachmentView *)self _icaxParentTextView];
+  accessibilityDropPointDescriptors = [_icaxParentTextView accessibilityDropPointDescriptors];
 
-  return v3;
+  return accessibilityDropPointDescriptors;
 }
 
-- (void)icaxSelectAttachmentTextRange:(BOOL)a3
+- (void)icaxSelectAttachmentTextRange:(BOOL)range
 {
-  v3 = a3;
-  v16 = [(ICAttachmentView *)self _icaxParentTextView];
-  v5 = [v16 editorController];
-  v6 = [(ICAttachmentView *)self textRangeInNote];
+  rangeCopy = range;
+  _icaxParentTextView = [(ICAttachmentView *)self _icaxParentTextView];
+  editorController = [_icaxParentTextView editorController];
+  textRangeInNote = [(ICAttachmentView *)self textRangeInNote];
   v8 = v7;
   _UIAccessibilityBlockPostingOfAllNotifications();
-  if (v5)
+  if (editorController)
   {
-    if (([v5 isEditing] & 1) == 0)
+    if (([editorController isEditing] & 1) == 0)
     {
-      v9 = [v5 note];
-      v10 = [v9 isEditable];
+      note = [editorController note];
+      isEditable = [note isEditable];
 
-      if (v10)
+      if (isEditable)
       {
-        [v5 startEditing];
+        [editorController startEditing];
       }
     }
   }
 
-  [v16 select:v16];
-  [v16 setSelectedRange:{v6, v8}];
-  [v16 scrollRangeToVisible:{v6, v8}];
+  [_icaxParentTextView select:_icaxParentTextView];
+  [_icaxParentTextView setSelectedRange:{textRangeInNote, v8}];
+  [_icaxParentTextView scrollRangeToVisible:{textRangeInNote, v8}];
   _UIAccessibilityUnblockPostingOfAllNotifications();
-  if (v3)
+  if (rangeCopy)
   {
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 localizedStringForKey:@"Selected %@. Use the actions rotor to start dragging." value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v12 = [mainBundle localizedStringForKey:@"Selected %@. Use the actions rotor to start dragging." value:&stru_282757698 table:0];
 
     v13 = MEMORY[0x277CCACA8];
-    v14 = [(ICAttachmentView *)self accessibilityLabel];
-    v15 = [v13 localizedStringWithFormat:v12, v14];
+    accessibilityLabel = [(ICAttachmentView *)self accessibilityLabel];
+    v15 = [v13 localizedStringWithFormat:v12, accessibilityLabel];
 
     UIAccessibilityPostNotification(*MEMORY[0x277D76438], v15);
   }
@@ -453,14 +453,14 @@ LABEL_7:
 
 - (NSString)icaxAttachmentViewTypeDescription
 {
-  v3 = [(ICAttachmentView *)self textAttachment];
-  v4 = [v3 supportsMultiplePresentationSizes];
+  textAttachment = [(ICAttachmentView *)self textAttachment];
+  supportsMultiplePresentationSizes = [textAttachment supportsMultiplePresentationSizes];
 
-  if (v4 && (-[ICAttachmentView attachment](self, "attachment"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 preferredViewSize], v5, v6 <= 2))
+  if (supportsMultiplePresentationSizes && (-[ICAttachmentView attachment](self, "attachment"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 preferredViewSize], v5, v6 <= 2))
   {
     v7 = off_2781AF760[v6];
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v9 = [v8 localizedStringForKey:v7 value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v9 = [mainBundle localizedStringForKey:v7 value:&stru_282757698 table:0];
   }
 
   else
@@ -474,17 +474,17 @@ LABEL_7:
 - (BOOL)insideSystemPaper
 {
   objc_opt_class();
-  v3 = [(ICAttachmentView *)self textContainer];
+  textContainer = [(ICAttachmentView *)self textContainer];
   v4 = ICDynamicCast();
 
-  LOBYTE(v3) = [v4 insideSystemPaper];
-  return v3;
+  LOBYTE(textContainer) = [v4 insideSystemPaper];
+  return textContainer;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICAttachmentView;
@@ -505,51 +505,51 @@ LABEL_7:
 
 - (void)notifyDidMoveToWindow
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"ICAttachmentViewDidMoveToWindowNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ICAttachmentViewDidMoveToWindowNotification" object:self];
 }
 
-- (ICAttachmentView)initWithAttachment:(id)a3 textContainer:(id)a4 actionWindow:(id)a5
+- (ICAttachmentView)initWithAttachment:(id)attachment textContainer:(id)container actionWindow:(id)window
 {
-  v9 = a5;
+  windowCopy = window;
   v10 = MEMORY[0x277D36950];
-  v11 = a4;
-  v12 = [v10 textAttachmentWithAttachment:a3];
-  v13 = [(ICAttachmentView *)self initWithFrame:v12 textAttachment:v11 textContainer:0 forManualRendering:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  containerCopy = container;
+  v12 = [v10 textAttachmentWithAttachment:attachment];
+  v13 = [(ICAttachmentView *)self initWithFrame:v12 textAttachment:containerCopy textContainer:0 forManualRendering:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_actionWindow, a5);
+    objc_storeStrong(&v13->_actionWindow, window);
   }
 
   return v13;
 }
 
-- (ICAttachmentView)initWithFrame:(CGRect)a3 textAttachment:(id)a4 textContainer:(id)a5 forManualRendering:(BOOL)a6
+- (ICAttachmentView)initWithFrame:(CGRect)frame textAttachment:(id)attachment textContainer:(id)container forManualRendering:(BOOL)rendering
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  attachmentCopy = attachment;
+  containerCopy = container;
   v20.receiver = self;
   v20.super_class = ICAttachmentView;
-  v15 = [(ICAttachmentView *)&v20 initWithFrame:x, y, width, height];
-  v16 = v15;
-  if (v15)
+  height = [(ICAttachmentView *)&v20 initWithFrame:x, y, width, height];
+  v16 = height;
+  if (height)
   {
-    objc_storeWeak(&v15->_textContainer, v14);
+    objc_storeWeak(&height->_textContainer, containerCopy);
     v16->_finishedInit = 1;
-    v16->_forManualRendering = a6;
-    v17 = [v13 attachment];
-    -[ICAttachmentView sharedInit:](v16, "sharedInit:", [v17 preferredViewSize] == 1);
+    v16->_forManualRendering = rendering;
+    attachment = [attachmentCopy attachment];
+    -[ICAttachmentView sharedInit:](v16, "sharedInit:", [attachment preferredViewSize] == 1);
 
     [(ICAttachmentView *)v16 setupEventHandling];
     [(ICAttachmentView *)v16 setupConstraints];
-    [(ICAttachmentView *)v16 setTextAttachment:v13];
-    v18 = [v13 attachment];
-    [(ICAttachmentView *)v16 setAttachment:v18];
+    [(ICAttachmentView *)v16 setTextAttachment:attachmentCopy];
+    attachment2 = [attachmentCopy attachment];
+    [(ICAttachmentView *)v16 setAttachment:attachment2];
 
     if (objc_opt_respondsToSelector())
     {
@@ -565,15 +565,15 @@ LABEL_7:
   actionWindow = self->_actionWindow;
   if (actionWindow)
   {
-    v3 = actionWindow;
+    window = actionWindow;
   }
 
   else
   {
-    v3 = [(ICAttachmentView *)self window];
+    window = [(ICAttachmentView *)self window];
   }
 
-  return v3;
+  return window;
 }
 
 - (ICBaseTextView)textView
@@ -581,16 +581,16 @@ LABEL_7:
   if (ICInternalSettingsIsTextKit2Enabled())
   {
     objc_opt_class();
-    v3 = [(ICAttachmentView *)self textContainer];
-    v4 = ICCheckedDynamicCast();
-    [v4 tk2TextView];
+    textContainer = [(ICAttachmentView *)self textContainer];
+    superview = ICCheckedDynamicCast();
+    [superview tk2TextView];
   }
 
   else
   {
     objc_opt_class();
-    v3 = [(ICAttachmentView *)self superview];
-    v4 = [v3 superview];
+    textContainer = [(ICAttachmentView *)self superview];
+    superview = [textContainer superview];
     ICDynamicCast();
   }
   v5 = ;
@@ -601,28 +601,28 @@ LABEL_7:
 - (ICEditingTextView)editingTextView
 {
   objc_opt_class();
-  v3 = [(ICAttachmentView *)self textView];
+  textView = [(ICAttachmentView *)self textView];
   v4 = ICDynamicCast();
 
   return v4;
 }
 
-- (void)didTapAttachment:(id)a3
+- (void)didTapAttachment:(id)attachment
 {
   if ([(ICAttachmentView *)self alertAboutUnsupportedAttachmentIfNecessary])
   {
     return;
   }
 
-  v11 = [(ICAttachmentView *)self attachment];
-  if ([v11 hasVisualFallbackMedia])
+  attachment = [(ICAttachmentView *)self attachment];
+  if ([attachment hasVisualFallbackMedia])
   {
 
 LABEL_4:
-    v4 = [(ICAttachmentView *)self attachment];
-    v5 = [v4 media];
+    attachment2 = [(ICAttachmentView *)self attachment];
+    media = [attachment2 media];
 
-    if ([v5 isPasswordProtected])
+    if ([media isPasswordProtected])
     {
       v6 = dispatch_get_global_queue(2, 0);
       block[0] = MEMORY[0x277D85DD0];
@@ -641,14 +641,14 @@ LABEL_4:
     return;
   }
 
-  v7 = [(ICAttachmentView *)self attachment];
-  v8 = [v7 attachmentModel];
-  if ([v8 isReadyToPresent])
+  attachment3 = [(ICAttachmentView *)self attachment];
+  attachmentModel = [attachment3 attachmentModel];
+  if ([attachmentModel isReadyToPresent])
   {
-    v9 = [(ICAttachmentView *)self attachment];
-    v10 = [v9 isUnsupported];
+    attachment4 = [(ICAttachmentView *)self attachment];
+    isUnsupported = [attachment4 isUnsupported];
 
-    if (v10)
+    if (isUnsupported)
     {
       return;
     }
@@ -669,73 +669,73 @@ void __37__ICAttachmentView_didTapAttachment___block_invoke(uint64_t a1)
 
 - (BOOL)alertAboutUnsupportedAttachmentIfNecessary
 {
-  v3 = [(ICAttachmentView *)self attachment];
-  v4 = [v3 isUnsupported];
-  if (!v4)
+  attachment = [(ICAttachmentView *)self attachment];
+  isUnsupported = [attachment isUnsupported];
+  if (!isUnsupported)
   {
 LABEL_10:
 
-    return v4;
+    return isUnsupported;
   }
 
-  v5 = [(ICAttachmentView *)self attachment];
-  if ([v5 isPasswordProtected])
+  attachment2 = [(ICAttachmentView *)self attachment];
+  if ([attachment2 isPasswordProtected])
   {
 
 LABEL_6:
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v9 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      v10 = [MEMORY[0x277CCA8D8] mainBundle];
-      [v10 localizedStringForKey:@"iPadOS" value:&stru_282757698 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      [mainBundle localizedStringForKey:@"iPadOS" value:&stru_282757698 table:0];
     }
 
     else
     {
-      v10 = [MEMORY[0x277D75418] currentDevice];
-      [v10 systemName];
+      mainBundle = [MEMORY[0x277D75418] currentDevice];
+      [mainBundle systemName];
     }
-    v3 = ;
+    attachment = ;
 
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 localizedStringForKey:@"Unsupported Attachment" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v12 = [mainBundle2 localizedStringForKey:@"Unsupported Attachment" value:&stru_282757698 table:0];
 
     v13 = MEMORY[0x277CCACA8];
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 localizedStringForKey:@"Editing this attachment is not supported on this device. To edit it value:upgrade to the latest version of %@." table:{&stru_282757698, 0}];
-    v16 = [v13 localizedStringWithFormat:v15, v3];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle3 localizedStringForKey:@"Editing this attachment is not supported on this device. To edit it value:upgrade to the latest version of %@." table:{&stru_282757698, 0}];
+    v16 = [v13 localizedStringWithFormat:v15, attachment];
 
     v17 = MEMORY[0x277D75110];
-    v18 = [(ICAttachmentView *)self window];
-    v19 = [v18 rootViewController];
-    [v17 ic_showAlertWithTitle:v12 message:v16 viewController:v19];
+    window = [(ICAttachmentView *)self window];
+    rootViewController = [window rootViewController];
+    [v17 ic_showAlertWithTitle:v12 message:v16 viewController:rootViewController];
 
     goto LABEL_10;
   }
 
-  v6 = [(ICAttachmentView *)self attachment];
-  v7 = [v6 hasVisualFallbackMedia];
+  attachment3 = [(ICAttachmentView *)self attachment];
+  hasVisualFallbackMedia = [attachment3 hasVisualFallbackMedia];
 
-  if ((v7 & 1) == 0)
+  if ((hasVisualFallbackMedia & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  LOBYTE(v4) = 0;
-  return v4;
+  LOBYTE(isUnsupported) = 0;
+  return isUnsupported;
 }
 
 - (void)openAttachment
 {
-  v3 = [(ICAttachmentView *)self delegate];
+  delegate = [(ICAttachmentView *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v6 = [(ICAttachmentView *)self delegate];
-    v4 = [(ICAttachmentView *)self attachment];
-    [v6 attachmentView:self shouldPresentAttachment:v4];
+    delegate2 = [(ICAttachmentView *)self delegate];
+    attachment = [(ICAttachmentView *)self attachment];
+    [delegate2 attachmentView:self shouldPresentAttachment:attachment];
   }
 
   else
@@ -749,27 +749,27 @@ LABEL_6:
   }
 }
 
-- (void)updatePreferredAttachmentViewSize:(signed __int16)a3
+- (void)updatePreferredAttachmentViewSize:(signed __int16)size
 {
-  v3 = a3;
-  v5 = [(ICAttachmentView *)self attachment];
-  [v5 setPreferredViewSize:v3];
+  sizeCopy = size;
+  attachment = [(ICAttachmentView *)self attachment];
+  [attachment setPreferredViewSize:sizeCopy];
 
-  v7 = [(ICAttachmentView *)self attachment];
-  v6 = [v7 managedObjectContext];
-  [v6 ic_save];
+  attachment2 = [(ICAttachmentView *)self attachment];
+  managedObjectContext = [attachment2 managedObjectContext];
+  [managedObjectContext ic_save];
 }
 
 - (BOOL)showRecoverNoteAlertIfNecessary
 {
-  v3 = [(ICAttachmentView *)self attachment];
-  v4 = [v3 note];
+  attachment = [(ICAttachmentView *)self attachment];
+  note = [attachment note];
 
-  if (v4 && ([v4 isEditable] & 1) == 0 && objc_msgSend(v4, "isDeletedOrInTrash"))
+  if (note && ([note isEditable] & 1) == 0 && objc_msgSend(note, "isDeletedOrInTrash"))
   {
-    v5 = [(ICAttachmentView *)self textView];
-    v6 = [v5 editorContainer];
-    [v6 showRecoverNoteAlert];
+    textView = [(ICAttachmentView *)self textView];
+    editorContainer = [textView editorContainer];
+    [editorContainer showRecoverNoteAlert];
 
     v7 = 1;
   }
@@ -793,114 +793,114 @@ LABEL_6:
 
 - (void)updateFirstResponder
 {
-  v3 = [(ICAttachmentView *)self textView];
-  v4 = [v3 editorContainer];
-  v5 = [v4 canBecomeFirstResponder];
+  textView = [(ICAttachmentView *)self textView];
+  editorContainer = [textView editorContainer];
+  canBecomeFirstResponder = [editorContainer canBecomeFirstResponder];
 
-  if (v5)
+  if (canBecomeFirstResponder)
   {
-    v7 = [(ICAttachmentView *)self textView];
-    v6 = [v7 editorContainer];
-    [v6 becomeFirstResponder];
+    textView2 = [(ICAttachmentView *)self textView];
+    editorContainer2 = [textView2 editorContainer];
+    [editorContainer2 becomeFirstResponder];
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v8.receiver = self;
   v8.super_class = ICAttachmentView;
   [(ICAttachmentView *)&v8 willMoveToSuperview:?];
-  if (!a3)
+  if (!superview)
   {
-    v5 = [(ICAttachmentView *)self textView];
-    v6 = [v5 nextResponderOverride];
+    textView = [(ICAttachmentView *)self textView];
+    nextResponderOverride = [textView nextResponderOverride];
 
-    if (v6 == self)
+    if (nextResponderOverride == self)
     {
-      v7 = [(ICAttachmentView *)self textView];
-      [v7 setNextResponderOverride:0];
+      textView2 = [(ICAttachmentView *)self textView];
+      [textView2 setNextResponderOverride:0];
     }
   }
 }
 
-- (void)playFromBeginning:(id)a3
+- (void)playFromBeginning:(id)beginning
 {
-  v4 = [(ICAttachmentView *)self attachment];
-  v5 = [v4 attachmentType];
+  attachment = [(ICAttachmentView *)self attachment];
+  attachmentType = [attachment attachmentType];
 
-  if (v5 == 4)
+  if (attachmentType == 4)
   {
-    v9 = [(ICAttachmentView *)self editingTextView];
-    v6 = [v9 editorController];
-    v7 = [v6 audioAttachmentEditorCoordinator];
-    v8 = [(ICAttachmentView *)self attachment];
-    [v7 playFromBeginning:v8];
+    editingTextView = [(ICAttachmentView *)self editingTextView];
+    editorController = [editingTextView editorController];
+    audioAttachmentEditorCoordinator = [editorController audioAttachmentEditorCoordinator];
+    attachment2 = [(ICAttachmentView *)self attachment];
+    [audioAttachmentEditorCoordinator playFromBeginning:attachment2];
   }
 }
 
-- (void)viewSummary:(id)a3
+- (void)viewSummary:(id)summary
 {
-  v4 = [(ICAttachmentView *)self attachment];
-  v5 = [v4 attachmentType];
+  attachment = [(ICAttachmentView *)self attachment];
+  attachmentType = [attachment attachmentType];
 
-  if (v5 == 4)
+  if (attachmentType == 4)
   {
-    v9 = [(ICAttachmentView *)self editingTextView];
-    v6 = [v9 editorController];
-    v7 = [v6 audioAttachmentEditorCoordinator];
-    v8 = [(ICAttachmentView *)self attachment];
-    [v7 presentSummaryFor:v8];
+    editingTextView = [(ICAttachmentView *)self editingTextView];
+    editorController = [editingTextView editorController];
+    audioAttachmentEditorCoordinator = [editorController audioAttachmentEditorCoordinator];
+    attachment2 = [(ICAttachmentView *)self attachment];
+    [audioAttachmentEditorCoordinator presentSummaryFor:attachment2];
   }
 }
 
-- (void)appendRecording:(id)a3
+- (void)appendRecording:(id)recording
 {
-  v4 = [(ICAttachmentView *)self attachment];
-  v5 = [v4 attachmentType];
+  attachment = [(ICAttachmentView *)self attachment];
+  attachmentType = [attachment attachmentType];
 
-  if (v5 == 4)
+  if (attachmentType == 4)
   {
-    v9 = [(ICAttachmentView *)self editingTextView];
-    v6 = [v9 editorController];
-    v7 = [v6 audioAttachmentEditorCoordinator];
-    v8 = [(ICAttachmentView *)self attachment];
-    [v7 appendTo:v8];
+    editingTextView = [(ICAttachmentView *)self editingTextView];
+    editorController = [editingTextView editorController];
+    audioAttachmentEditorCoordinator = [editorController audioAttachmentEditorCoordinator];
+    attachment2 = [(ICAttachmentView *)self attachment];
+    [audioAttachmentEditorCoordinator appendTo:attachment2];
   }
 }
 
-- (void)reportAConcern:(id)a3 withPositiveFeedback:(BOOL)a4
+- (void)reportAConcern:(id)concern withPositiveFeedback:(BOOL)feedback
 {
-  v4 = a4;
-  v6 = [(ICAttachmentView *)self attachment];
-  v7 = [v6 attachmentType];
+  feedbackCopy = feedback;
+  attachment = [(ICAttachmentView *)self attachment];
+  attachmentType = [attachment attachmentType];
 
-  if (v7 == 4)
+  if (attachmentType == 4)
   {
-    v11 = [(ICAttachmentView *)self editingTextView];
-    v8 = [v11 editorController];
-    v9 = [v8 audioAttachmentEditorCoordinator];
-    v10 = [(ICAttachmentView *)self attachment];
-    [v9 presentReportAConcernFor:v10 withPositiveFeedback:v4];
+    editingTextView = [(ICAttachmentView *)self editingTextView];
+    editorController = [editingTextView editorController];
+    audioAttachmentEditorCoordinator = [editorController audioAttachmentEditorCoordinator];
+    attachment2 = [(ICAttachmentView *)self attachment];
+    [audioAttachmentEditorCoordinator presentReportAConcernFor:attachment2 withPositiveFeedback:feedbackCopy];
   }
 }
 
-- (void)rename:(id)a3
+- (void)rename:(id)rename
 {
-  v4 = a3;
+  renameCopy = rename;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277D05D48]);
-  v6 = [(ICAttachmentView *)self attachment];
-  v7 = [v6 title];
-  v8 = [v5 initWithExistingTitle:v7];
+  attachment = [(ICAttachmentView *)self attachment];
+  title = [attachment title];
+  v8 = [v5 initWithExistingTitle:title];
 
-  v9 = [(ICAttachmentView *)self actionWindow];
-  v10 = [v9 rootViewController];
+  actionWindow = [(ICAttachmentView *)self actionWindow];
+  rootViewController = [actionWindow rootViewController];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __27__ICAttachmentView_rename___block_invoke;
   v11[3] = &unk_2781AF878;
   objc_copyWeak(&v12, &location);
-  [v8 showFromViewController:v10 completion:v11];
+  [v8 showFromViewController:rootViewController completion:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -916,133 +916,133 @@ void __27__ICAttachmentView_rename___block_invoke(uint64_t a1, void *a2)
   [v5 updateFirstResponder];
 }
 
-- (void)renameAttachmentToUpdatedTitle:(id)a3
+- (void)renameAttachmentToUpdatedTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
-    v4 = a3;
-    v5 = [(ICAttachmentView *)self attachment];
-    v16 = [v5 title];
+    titleCopy = title;
+    attachment = [(ICAttachmentView *)self attachment];
+    title = [attachment title];
 
     v6 = [ICDocCamScannedDocumentEditor alloc];
-    v7 = [(ICAttachmentView *)self attachment];
-    v8 = [(ICDocCamScannedDocumentEditor *)v6 initWithGalleryAttachment:v7];
+    attachment2 = [(ICAttachmentView *)self attachment];
+    v8 = [(ICDocCamScannedDocumentEditor *)v6 initWithGalleryAttachment:attachment2];
 
-    [(ICDocCamScannedDocumentEditor *)v8 updateDocumentTitle:v4 isUserDefined:1];
-    v9 = [(ICAttachmentView *)self textView];
-    v10 = [v9 undoManager];
-    v11 = [v10 prepareWithInvocationTarget:self];
-    [v11 renameAttachmentToUpdatedTitle:v16];
+    [(ICDocCamScannedDocumentEditor *)v8 updateDocumentTitle:titleCopy isUserDefined:1];
+    textView = [(ICAttachmentView *)self textView];
+    undoManager = [textView undoManager];
+    v11 = [undoManager prepareWithInvocationTarget:self];
+    [v11 renameAttachmentToUpdatedTitle:title];
 
-    v12 = [(ICAttachmentView *)self textView];
-    v13 = [v12 undoManager];
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 localizedStringForKey:@"Undo Rename" value:&stru_282757698 table:0];
-    [v13 setActionName:v15];
+    textView2 = [(ICAttachmentView *)self textView];
+    undoManager2 = [textView2 undoManager];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle localizedStringForKey:@"Undo Rename" value:&stru_282757698 table:0];
+    [undoManager2 setActionName:v15];
   }
 }
 
-- (void)createImage:(id)a3
+- (void)createImage:(id)image
 {
   if (ICInternalSettingsShouldShowImageGenerationUI())
   {
-    v5 = [(ICAttachmentView *)self editingTextView];
-    v4 = [v5 editorController];
-    [v4 createImage:self];
+    editingTextView = [(ICAttachmentView *)self editingTextView];
+    editorController = [editingTextView editorController];
+    [editorController createImage:self];
   }
 }
 
-- (void)saveToFiles:(id)a3
+- (void)saveToFiles:(id)files
 {
-  v4 = [(ICAttachmentView *)self attachment];
-  v5 = [v4 attachmentType];
+  attachment = [(ICAttachmentView *)self attachment];
+  attachmentType = [attachment attachmentType];
 
-  if (v5 == 4)
+  if (attachmentType == 4)
   {
-    v9 = [(ICAttachmentView *)self editingTextView];
-    v6 = [v9 editorController];
-    v7 = [v6 audioAttachmentEditorCoordinator];
-    v8 = [(ICAttachmentView *)self attachment];
-    [v7 presentExportViewForAttachment:v8];
+    editingTextView = [(ICAttachmentView *)self editingTextView];
+    editorController = [editingTextView editorController];
+    audioAttachmentEditorCoordinator = [editorController audioAttachmentEditorCoordinator];
+    attachment2 = [(ICAttachmentView *)self attachment];
+    [audioAttachmentEditorCoordinator presentExportViewForAttachment:attachment2];
   }
 }
 
-- (void)share:(id)a3
+- (void)share:(id)share
 {
-  v12 = a3;
-  v4 = [(ICAttachmentView *)self attachment];
-  if ([v4 attachmentType] != 8)
+  shareCopy = share;
+  attachment = [(ICAttachmentView *)self attachment];
+  if ([attachment attachmentType] != 8)
   {
     goto LABEL_8;
   }
 
-  v5 = [(ICAttachmentView *)self attachment];
-  if ([v5 isiTunes])
+  attachment2 = [(ICAttachmentView *)self attachment];
+  if ([attachment2 isiTunes])
   {
 LABEL_7:
 
 LABEL_8:
 LABEL_9:
-    v8 = [(ICAttachmentView *)self delegate];
-    v9 = [(ICAttachmentView *)self attachment];
-    [v8 attachmentView:self shouldShareAttachment:v9];
+    delegate = [(ICAttachmentView *)self delegate];
+    attachment3 = [(ICAttachmentView *)self attachment];
+    [delegate attachmentView:self shouldShareAttachment:attachment3];
 
     goto LABEL_10;
   }
 
-  v6 = [(ICAttachmentView *)self attachment];
-  if ([v6 isAppStore])
+  attachment4 = [(ICAttachmentView *)self attachment];
+  if ([attachment4 isAppStore])
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v7 = [(ICAttachmentView *)self attachment];
-  if ([v7 isMap])
+  attachment5 = [(ICAttachmentView *)self attachment];
+  if ([attachment5 isMap])
   {
 
     goto LABEL_6;
   }
 
-  v10 = [(ICAttachmentView *)self attachment];
-  v11 = [v10 isNews];
+  attachment6 = [(ICAttachmentView *)self attachment];
+  isNews = [attachment6 isNews];
 
-  if (v11)
+  if (isNews)
   {
     goto LABEL_9;
   }
 
-  [(ICAttachmentView *)self shareWebLink:v12];
+  [(ICAttachmentView *)self shareWebLink:shareCopy];
 LABEL_10:
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(ICAttachmentView *)self attachment];
-  v8 = [v7 isUnsupported];
+  senderCopy = sender;
+  attachment = [(ICAttachmentView *)self attachment];
+  isUnsupported = [attachment isUnsupported];
 
-  if (v8)
+  if (isUnsupported)
   {
-    if (sel_delete_ != a3)
+    if (sel_delete_ != action)
     {
 LABEL_3:
-      v9 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
 
     goto LABEL_12;
   }
 
-  if (sel_cut_ == a3 || sel_copy_ == a3 || sel_delete_ == a3)
+  if (sel_cut_ == action || sel_copy_ == action || sel_delete_ == action)
   {
     goto LABEL_12;
   }
 
-  if (sel_share_ == a3 || sel_rename_ == a3)
+  if (sel_share_ == action || sel_rename_ == action)
   {
-    if (![(ICAttachmentView *)self canPerformAction:a3 withSender:v6])
+    if (![(ICAttachmentView *)self canPerformAction:action withSender:senderCopy])
     {
       goto LABEL_3;
     }
@@ -1050,69 +1050,69 @@ LABEL_3:
     goto LABEL_12;
   }
 
-  v14 = [(ICAttachmentView *)self textAttachment];
-  v15 = [v14 supportsMultiplePresentationSizes];
+  textAttachment = [(ICAttachmentView *)self textAttachment];
+  supportsMultiplePresentationSizes = [textAttachment supportsMultiplePresentationSizes];
 
-  v9 = 0;
-  if (v15)
+  selfCopy = 0;
+  if (supportsMultiplePresentationSizes)
   {
-    if (sel_updatePreferredAttachmentViewSize_ == a3)
+    if (sel_updatePreferredAttachmentViewSize_ == action)
     {
 LABEL_12:
-      v9 = self;
+      selfCopy = self;
     }
   }
 
 LABEL_13:
 
-  return v9;
+  return selfCopy;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = self;
-  v7 = [(ICAttachmentView *)self attachment:a3];
-  v8 = [v7 isUnsupported];
-  if (v8)
+  selfCopy = self;
+  v7 = [(ICAttachmentView *)self attachment:action];
+  isUnsupported = [v7 isUnsupported];
+  if (isUnsupported)
   {
-    v4 = [(ICAttachmentView *)v6 attachment];
-    if (([v4 hasFallbackPDF] & 1) == 0)
+    attachment = [(ICAttachmentView *)selfCopy attachment];
+    if (([attachment hasFallbackPDF] & 1) == 0)
     {
 
       goto LABEL_23;
     }
   }
 
-  v9 = [(ICAttachmentView *)v6 attachment];
-  v10 = [v9 needsInitialFetchFromCloud];
+  attachment2 = [(ICAttachmentView *)selfCopy attachment];
+  needsInitialFetchFromCloud = [attachment2 needsInitialFetchFromCloud];
 
-  if (!v8)
+  if (!isUnsupported)
   {
 
-    if (!v10)
+    if (!needsInitialFetchFromCloud)
     {
       goto LABEL_7;
     }
 
 LABEL_23:
-    if (sel_delete_ != a3)
+    if (sel_delete_ != action)
     {
       goto LABEL_24;
     }
 
-    v11 = [(ICAttachmentView *)v6 attachment];
-    v12 = [v11 note];
-    LOBYTE(v6) = [v12 isEditable];
+    attachment3 = [(ICAttachmentView *)selfCopy attachment];
+    note = [attachment3 note];
+    LOBYTE(selfCopy) = [note isEditable];
     goto LABEL_66;
   }
 
-  if (v10)
+  if (needsInitialFetchFromCloud)
   {
     goto LABEL_23;
   }
 
 LABEL_7:
-  if (sel_playFromBeginning_ == a3)
+  if (sel_playFromBeginning_ == action)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1120,23 +1120,23 @@ LABEL_7:
       goto LABEL_24;
     }
 
-    v11 = [(ICAttachmentView *)v6 attachment];
-    if ([v11 attachmentType] != 4)
+    attachment3 = [(ICAttachmentView *)selfCopy attachment];
+    if ([attachment3 attachmentType] != 4)
     {
       goto LABEL_78;
     }
 
-    v12 = [(ICAttachmentView *)v6 attachment];
-    v13 = [MEMORY[0x277D366C0] sharedAudioController];
-    v15 = [v13 currentAttachment];
-    LOBYTE(v6) = v12 == v15;
+    note = [(ICAttachmentView *)selfCopy attachment];
+    mEMORY[0x277D366C0] = [MEMORY[0x277D366C0] sharedAudioController];
+    currentAttachment = [mEMORY[0x277D366C0] currentAttachment];
+    LOBYTE(selfCopy) = note == currentAttachment;
 LABEL_29:
 
 LABEL_65:
     goto LABEL_66;
   }
 
-  if (sel_viewSummary_ == a3)
+  if (sel_viewSummary_ == action)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1144,29 +1144,29 @@ LABEL_65:
       goto LABEL_24;
     }
 
-    v11 = [(ICAttachmentView *)v6 attachment];
-    if ([v11 attachmentType] != 4)
+    attachment3 = [(ICAttachmentView *)selfCopy attachment];
+    if ([attachment3 attachmentType] != 4)
     {
       goto LABEL_78;
     }
 
-    v12 = [(ICAttachmentView *)v6 attachment];
-    v13 = [v12 audioModel];
-    v14 = [v13 audioDocument];
-    v10 = [v14 transcriptAsPlainText];
-    if ([v10 length])
+    note = [(ICAttachmentView *)selfCopy attachment];
+    mEMORY[0x277D366C0] = [note audioModel];
+    audioDocument = [mEMORY[0x277D366C0] audioDocument];
+    needsInitialFetchFromCloud = [audioDocument transcriptAsPlainText];
+    if ([needsInitialFetchFromCloud length])
     {
-      v16 = [(ICAttachmentView *)v6 attachment];
-      v17 = [MEMORY[0x277D366C8] currentAttachment];
-      if (v16 == v17 && ![MEMORY[0x277D366C8] isPaused])
+      attachment4 = [(ICAttachmentView *)selfCopy attachment];
+      currentAttachment2 = [MEMORY[0x277D366C8] currentAttachment];
+      if (attachment4 == currentAttachment2 && ![MEMORY[0x277D366C8] isPaused])
       {
-        LOBYTE(v6) = 0;
+        LOBYTE(selfCopy) = 0;
       }
 
       else
       {
-        v18 = [MEMORY[0x277D36218] sharedInstance];
-        LOBYTE(v6) = [v18 supportsPrivateCloudComputeSummary];
+        mEMORY[0x277D36218] = [MEMORY[0x277D36218] sharedInstance];
+        LOBYTE(selfCopy) = [mEMORY[0x277D36218] supportsPrivateCloudComputeSummary];
       }
 
       goto LABEL_63;
@@ -1175,7 +1175,7 @@ LABEL_65:
     goto LABEL_45;
   }
 
-  if (sel_reportAConcern_withPositiveFeedback_ == a3)
+  if (sel_reportAConcern_withPositiveFeedback_ == action)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1183,26 +1183,26 @@ LABEL_65:
       goto LABEL_24;
     }
 
-    v11 = [(ICAttachmentView *)v6 attachment];
-    if ([v11 attachmentType] != 4)
+    attachment3 = [(ICAttachmentView *)selfCopy attachment];
+    if ([attachment3 attachmentType] != 4)
     {
       goto LABEL_78;
     }
 
-    v12 = [MEMORY[0x277D36218] sharedInstance];
-    if ([v12 supportsOnDeviceSummary])
+    note = [MEMORY[0x277D36218] sharedInstance];
+    if ([note supportsOnDeviceSummary])
     {
-      v13 = [(ICAttachmentView *)v6 attachment];
-      v14 = [v13 audioModel];
-      v10 = [v14 audioDocument];
-      LOBYTE(v6) = [v10 hasToplineSummary] != 0;
+      mEMORY[0x277D366C0] = [(ICAttachmentView *)selfCopy attachment];
+      audioDocument = [mEMORY[0x277D366C0] audioModel];
+      needsInitialFetchFromCloud = [audioDocument audioDocument];
+      LOBYTE(selfCopy) = [needsInitialFetchFromCloud hasToplineSummary] != 0;
       goto LABEL_63;
     }
 
     goto LABEL_49;
   }
 
-  if (sel_appendRecording_ == a3)
+  if (sel_appendRecording_ == action)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1210,33 +1210,33 @@ LABEL_65:
       goto LABEL_24;
     }
 
-    v11 = [(ICAttachmentView *)v6 attachment];
-    if ([v11 attachmentType] != 4)
+    attachment3 = [(ICAttachmentView *)selfCopy attachment];
+    if ([attachment3 attachmentType] != 4)
     {
       goto LABEL_78;
     }
 
-    v12 = [(ICAttachmentView *)v6 attachment];
-    v13 = [MEMORY[0x277D366C0] sharedAudioController];
-    v14 = [v13 currentAttachment];
-    if (v12 != v14 || ([MEMORY[0x277D366C0] sharedAudioController], v10 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v10, "isPlaying") & 1) == 0))
+    note = [(ICAttachmentView *)selfCopy attachment];
+    mEMORY[0x277D366C0] = [MEMORY[0x277D366C0] sharedAudioController];
+    audioDocument = [mEMORY[0x277D366C0] currentAttachment];
+    if (note != audioDocument || ([MEMORY[0x277D366C0] sharedAudioController], needsInitialFetchFromCloud = objc_claimAutoreleasedReturnValue(), (objc_msgSend(needsInitialFetchFromCloud, "isPlaying") & 1) == 0))
     {
-      v19 = [(ICAttachmentView *)v6 attachment];
-      v20 = [v19 audioModel];
-      v21 = [v20 audioDocument];
-      if ([v21 isCallRecording])
+      attachment5 = [(ICAttachmentView *)selfCopy attachment];
+      audioModel = [attachment5 audioModel];
+      audioDocument2 = [audioModel audioDocument];
+      if ([audioDocument2 isCallRecording])
       {
 
-        LOBYTE(v6) = 0;
+        LOBYTE(selfCopy) = 0;
       }
 
       else
       {
-        v23 = [MEMORY[0x277D366C8] currentAttachment];
-        LOBYTE(v6) = v23 == 0;
+        currentAttachment3 = [MEMORY[0x277D366C8] currentAttachment];
+        LOBYTE(selfCopy) = currentAttachment3 == 0;
       }
 
-      if (v12 != v14)
+      if (note != audioDocument)
       {
         goto LABEL_64;
       }
@@ -1245,11 +1245,11 @@ LABEL_65:
     }
 
 LABEL_45:
-    LOBYTE(v6) = 0;
+    LOBYTE(selfCopy) = 0;
     goto LABEL_63;
   }
 
-  if (sel_cut_ == a3 || sel_delete_ == a3)
+  if (sel_cut_ == action || sel_delete_ == action)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1257,25 +1257,25 @@ LABEL_45:
       goto LABEL_24;
     }
 
-    v11 = [(ICAttachmentView *)v6 attachment];
-    v12 = [v11 note];
-    if ([v12 isEditable])
+    attachment3 = [(ICAttachmentView *)selfCopy attachment];
+    note = [attachment3 note];
+    if ([note isEditable])
     {
-      v13 = [(ICAttachmentView *)v6 attachment];
-      v15 = [MEMORY[0x277D366C8] currentAttachment];
-      LOBYTE(v6) = v13 != v15;
+      mEMORY[0x277D366C0] = [(ICAttachmentView *)selfCopy attachment];
+      currentAttachment = [MEMORY[0x277D366C8] currentAttachment];
+      LOBYTE(selfCopy) = mEMORY[0x277D366C0] != currentAttachment;
       goto LABEL_29;
     }
 
 LABEL_49:
-    LOBYTE(v6) = 0;
+    LOBYTE(selfCopy) = 0;
 LABEL_66:
 
 LABEL_67:
-    return v6;
+    return selfCopy;
   }
 
-  if (sel_copy_ == a3)
+  if (sel_copy_ == action)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1286,79 +1286,79 @@ LABEL_67:
     goto LABEL_51;
   }
 
-  if (sel_saveToFiles_ == a3)
+  if (sel_saveToFiles_ == action)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ([(ICAttachmentView *)v6 ic_isInSecureWindow]& 1) != 0)
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ([(ICAttachmentView *)selfCopy ic_isInSecureWindow]& 1) != 0)
     {
       goto LABEL_24;
     }
 
-    v11 = [(ICAttachmentView *)v6 attachment];
-    if ([v11 attachmentType] == 4)
+    attachment3 = [(ICAttachmentView *)selfCopy attachment];
+    if ([attachment3 attachmentType] == 4)
     {
-      v12 = [(ICAttachmentView *)v6 attachment];
-      v22 = [MEMORY[0x277D366C8] currentAttachment];
-      LOBYTE(v6) = v12 != v22;
+      note = [(ICAttachmentView *)selfCopy attachment];
+      currentAttachment4 = [MEMORY[0x277D366C8] currentAttachment];
+      LOBYTE(selfCopy) = note != currentAttachment4;
 
       goto LABEL_66;
     }
 
 LABEL_78:
-    LOBYTE(v6) = 0;
+    LOBYTE(selfCopy) = 0;
     goto LABEL_67;
   }
 
-  if (sel_share_ == a3)
+  if (sel_share_ == action)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ([(ICAttachmentView *)v6 ic_isInSecureWindow]& 1) != 0)
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ([(ICAttachmentView *)selfCopy ic_isInSecureWindow]& 1) != 0)
     {
       goto LABEL_24;
     }
 
 LABEL_51:
-    v11 = [(ICAttachmentView *)v6 attachment];
-    v12 = [MEMORY[0x277D366C8] currentAttachment];
-    LOBYTE(v6) = v11 != v12;
+    attachment3 = [(ICAttachmentView *)selfCopy attachment];
+    note = [MEMORY[0x277D366C8] currentAttachment];
+    LOBYTE(selfCopy) = attachment3 != note;
     goto LABEL_66;
   }
 
-  if (sel_rename_ == a3)
+  if (sel_rename_ == action)
   {
-    v11 = [(ICAttachmentView *)v6 attachment];
-    if ([v11 supportsRenaming] && (-[ICAttachmentView ic_isInSecureWindow](v6, "ic_isInSecureWindow") & 1) == 0)
+    attachment3 = [(ICAttachmentView *)selfCopy attachment];
+    if ([attachment3 supportsRenaming] && (-[ICAttachmentView ic_isInSecureWindow](selfCopy, "ic_isInSecureWindow") & 1) == 0)
     {
-      v12 = [(ICAttachmentView *)v6 attachment];
-      if ([v12 attachmentType] == 11)
+      note = [(ICAttachmentView *)selfCopy attachment];
+      if ([note attachmentType] == 11)
       {
-        LOBYTE(v6) = 1;
+        LOBYTE(selfCopy) = 1;
         goto LABEL_66;
       }
 
-      v13 = [(ICAttachmentView *)v6 attachment];
-      LOBYTE(v6) = [v13 attachmentType] == 4;
+      mEMORY[0x277D366C0] = [(ICAttachmentView *)selfCopy attachment];
+      LOBYTE(selfCopy) = [mEMORY[0x277D366C0] attachmentType] == 4;
       goto LABEL_65;
     }
 
     goto LABEL_78;
   }
 
-  if (sel_createImage_ == a3)
+  if (sel_createImage_ == action)
   {
     if (!ICInternalSettingsShouldShowImageGenerationUI())
     {
       goto LABEL_24;
     }
 
-    v11 = [(ICAttachmentView *)v6 attachment];
-    if ([v11 attachmentType] == 3)
+    attachment3 = [(ICAttachmentView *)selfCopy attachment];
+    if ([attachment3 attachmentType] == 3)
     {
-      v12 = [(ICAttachmentView *)v6 attachment];
-      v13 = [v12 note];
-      if ([v13 isEditable])
+      note = [(ICAttachmentView *)selfCopy attachment];
+      mEMORY[0x277D366C0] = [note note];
+      if ([mEMORY[0x277D366C0] isEditable])
       {
-        LODWORD(v6) = [(ICAttachmentView *)v6 ic_isInSecureWindow]^ 1;
+        LODWORD(selfCopy) = [(ICAttachmentView *)selfCopy ic_isInSecureWindow]^ 1;
         goto LABEL_65;
       }
 
@@ -1368,18 +1368,18 @@ LABEL_51:
     goto LABEL_78;
   }
 
-  if (sel_updatePreferredAttachmentViewSize_ == a3)
+  if (sel_updatePreferredAttachmentViewSize_ == action)
   {
-    v11 = [(ICAttachmentView *)v6 attachment];
-    v12 = [v11 note];
-    if ([v12 isEditable])
+    attachment3 = [(ICAttachmentView *)selfCopy attachment];
+    note = [attachment3 note];
+    if ([note isEditable])
     {
-      v13 = [(ICAttachmentView *)v6 textAttachment];
-      if ([v13 supportsMultiplePresentationSizes])
+      mEMORY[0x277D366C0] = [(ICAttachmentView *)selfCopy textAttachment];
+      if ([mEMORY[0x277D366C0] supportsMultiplePresentationSizes])
       {
-        v14 = [(ICAttachmentView *)v6 textView];
-        v10 = [v14 editorContainer];
-        LODWORD(v6) = [v10 isEditingOnSystemPaper] ^ 1;
+        audioDocument = [(ICAttachmentView *)selfCopy textView];
+        needsInitialFetchFromCloud = [audioDocument editorContainer];
+        LODWORD(selfCopy) = [needsInitialFetchFromCloud isEditingOnSystemPaper] ^ 1;
 LABEL_63:
 
 LABEL_64:
@@ -1387,7 +1387,7 @@ LABEL_64:
       }
 
 LABEL_79:
-      LOBYTE(v6) = 0;
+      LOBYTE(selfCopy) = 0;
       goto LABEL_65;
     }
 
@@ -1395,50 +1395,50 @@ LABEL_79:
   }
 
 LABEL_24:
-  LOBYTE(v6) = 0;
-  return v6;
+  LOBYTE(selfCopy) = 0;
+  return selfCopy;
 }
 
-- (void)editAttachmentWithBlock:(id)a3
+- (void)editAttachmentWithBlock:(id)block
 {
-  v18 = a3;
+  blockCopy = block;
   objc_opt_class();
-  v4 = [(ICAttachmentView *)self textView];
+  textView = [(ICAttachmentView *)self textView];
   v5 = ICDynamicCast();
 
   if (v5)
   {
-    v6 = [v5 undoManager];
-    v7 = [(ICAttachmentView *)self attachment];
-    v8 = [v7 note];
-    v9 = [(ICAttachmentView *)self attachment];
-    v10 = [v8 rangeForAttachment:v9];
+    undoManager = [v5 undoManager];
+    attachment = [(ICAttachmentView *)self attachment];
+    note = [attachment note];
+    attachment2 = [(ICAttachmentView *)self attachment];
+    v10 = [note rangeForAttachment:attachment2];
     v12 = v11;
 
-    [v6 beginUndoGrouping];
-    v13 = [v5 editorController];
+    [undoManager beginUndoGrouping];
+    editorController = [v5 editorController];
     v14 = [MEMORY[0x277CCAE60] valueWithRange:{v10, v12}];
-    [v6 registerUndoWithTarget:v13 selector:sel_updateSelectionOnUndo_ object:v14];
+    [undoManager registerUndoWithTarget:editorController selector:sel_updateSelectionOnUndo_ object:v14];
 
-    v15 = [v5 selectedRange];
+    selectedRange = [v5 selectedRange];
     v17 = v16;
     [v5 setSelectedRange:{v10, v12}];
-    v18[2](v18, v5);
-    [v5 setSelectedRange:{v15, v17}];
-    [v6 endUndoGrouping];
+    blockCopy[2](blockCopy, v5);
+    [v5 setSelectedRange:{selectedRange, v17}];
+    [undoManager endUndoGrouping];
   }
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v4 = a3;
+  cutCopy = cut;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __24__ICAttachmentView_cut___block_invoke;
   v6[3] = &unk_2781AF8A0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = cutCopy;
+  v5 = cutCopy;
   [(ICAttachmentView *)self editAttachmentWithBlock:v6];
 }
 
@@ -1464,26 +1464,26 @@ uint64_t __24__ICAttachmentView_cut___block_invoke_2(uint64_t result, int a2)
   return result;
 }
 
-- (void)copyWithCompletionBlock:(id)a3
+- (void)copyWithCompletionBlock:(id)block
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x277D36788];
-  v6 = [(ICAttachmentView *)self attachment];
-  v15[0] = v6;
+  attachment = [(ICAttachmentView *)self attachment];
+  v15[0] = attachment;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v8 = [(ICAttachmentView *)self actionWindow];
-  v9 = [(ICAttachmentView *)self actionWindow];
-  v10 = [v9 rootViewController];
-  v11 = [v10 ic_topViewController];
+  actionWindow = [(ICAttachmentView *)self actionWindow];
+  actionWindow2 = [(ICAttachmentView *)self actionWindow];
+  rootViewController = [actionWindow2 rootViewController];
+  ic_topViewController = [rootViewController ic_topViewController];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __44__ICAttachmentView_copyWithCompletionBlock___block_invoke;
   v13[3] = &unk_2781AF8C8;
   v13[4] = self;
-  v14 = v4;
-  v12 = v4;
-  [v5 generatePDFsIfNecessaryForGalleryAttachments:v7 displayWindow:v8 presentingViewController:v11 completionHandler:v13];
+  v14 = blockCopy;
+  v12 = blockCopy;
+  [v5 generatePDFsIfNecessaryForGalleryAttachments:v7 displayWindow:actionWindow presentingViewController:ic_topViewController completionHandler:v13];
 }
 
 uint64_t __44__ICAttachmentView_copyWithCompletionBlock___block_invoke(uint64_t a1, int a2)
@@ -1506,13 +1506,13 @@ uint64_t __44__ICAttachmentView_copyWithCompletionBlock___block_invoke(uint64_t 
 
 - (int64_t)dataOwnerForAttachment
 {
-  v2 = [(ICAttachmentView *)self attachment];
-  v3 = [v2 note];
-  v4 = [v3 folder];
-  v5 = [v4 account];
-  v6 = [v5 isManaged];
+  attachment = [(ICAttachmentView *)self attachment];
+  note = [attachment note];
+  folder = [note folder];
+  account = [folder account];
+  isManaged = [account isManaged];
 
-  if (v6)
+  if (isManaged)
   {
     return 2;
   }
@@ -1526,13 +1526,13 @@ uint64_t __44__ICAttachmentView_copyWithCompletionBlock___block_invoke(uint64_t 
 - (void)_copy
 {
   v3 = MEMORY[0x277D75810];
-  v4 = [(ICAttachmentView *)self dataOwnerForAttachment];
+  dataOwnerForAttachment = [(ICAttachmentView *)self dataOwnerForAttachment];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __25__ICAttachmentView__copy__block_invoke;
   v5[3] = &unk_2781ABCF8;
   v5[4] = self;
-  [v3 _performAsDataOwner:v4 block:v5];
+  [v3 _performAsDataOwner:dataOwnerForAttachment block:v5];
 }
 
 void __25__ICAttachmentView__copy__block_invoke(uint64_t a1)
@@ -1600,40 +1600,40 @@ LABEL_8:
   }
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
   objc_opt_class();
-  v4 = [(ICAttachmentView *)self textView];
+  textView = [(ICAttachmentView *)self textView];
   v21 = ICDynamicCast();
 
   v5 = v21;
   if (v21)
   {
-    v6 = [(ICAttachmentView *)self isFirstResponder];
-    v7 = [v21 undoManager];
-    v8 = [(ICAttachmentView *)self attachment];
-    v9 = [v8 note];
-    v10 = [(ICAttachmentView *)self attachment];
-    v11 = [v9 rangeForAttachment:v10];
+    isFirstResponder = [(ICAttachmentView *)self isFirstResponder];
+    undoManager = [v21 undoManager];
+    attachment = [(ICAttachmentView *)self attachment];
+    note = [attachment note];
+    attachment2 = [(ICAttachmentView *)self attachment];
+    v11 = [note rangeForAttachment:attachment2];
     v13 = v12;
 
-    [v7 beginUndoGrouping];
-    v14 = [v21 editorController];
+    [undoManager beginUndoGrouping];
+    editorController = [v21 editorController];
     v15 = [MEMORY[0x277CCAE60] valueWithRange:{v11, v13}];
-    [v7 registerUndoWithTarget:v14 selector:sel_updateSelectionOnUndo_ object:v15];
+    [undoManager registerUndoWithTarget:editorController selector:sel_updateSelectionOnUndo_ object:v15];
 
-    v16 = [v21 selectedRange];
+    selectedRange = [v21 selectedRange];
     v18 = v17;
     [v21 setSelectedRange:{v11, v13}];
-    v19 = [v21 textStorage];
-    [v19 deleteCharactersInRange:{v11, v13}];
+    textStorage = [v21 textStorage];
+    [textStorage deleteCharactersInRange:{v11, v13}];
 
-    [v21 setSelectedRange:{v16, v18}];
-    [v7 endUndoGrouping];
-    v20 = [v21 delegate];
-    [v20 textViewDidChange:v21];
+    [v21 setSelectedRange:{selectedRange, v18}];
+    [undoManager endUndoGrouping];
+    delegate = [v21 delegate];
+    [delegate textViewDidChange:v21];
 
-    if (v6)
+    if (isFirstResponder)
     {
       [v21 becomeFirstResponder];
     }
@@ -1642,29 +1642,29 @@ LABEL_8:
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = [(ICAttachmentView *)self textView:a3];
-  v7 = [v6 findInteraction];
-  v8 = [v7 isFindNavigatorVisible];
+  v6 = [(ICAttachmentView *)self textView:interaction];
+  findInteraction = [v6 findInteraction];
+  isFindNavigatorVisible = [findInteraction isFindNavigatorVisible];
 
-  if (v8)
+  if (isFindNavigatorVisible)
   {
-    v10 = [(ICAttachmentView *)self textView];
-    v9 = [v10 findInteraction];
-    [v9 dismissFindNavigator];
+    textView = [(ICAttachmentView *)self textView];
+    findInteraction2 = [textView findInteraction];
+    [findInteraction2 dismissFindNavigator];
   }
 }
 
 - (id)makePlaybackMenu
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(ICAttachmentView *)self canPerformAction:sel_playFromBeginning_ withSender:self])
   {
     v4 = MEMORY[0x277D750C8];
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Play from Beginning" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Play from Beginning" value:&stru_282757698 table:0];
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __36__ICAttachmentView_makePlaybackMenu__block_invoke;
@@ -1672,11 +1672,11 @@ LABEL_8:
     objc_copyWeak(&v14, &location);
     v7 = [v4 ic_actionWithTitle:v6 imageName:@"arrow.trianglehead.counterclockwise" handler:&v10];
 
-    [v3 addObject:{v7, v10, v11, v12, v13}];
+    [array addObject:{v7, v10, v11, v12, v13}];
     objc_destroyWeak(&v14);
   }
 
-  v8 = [MEMORY[0x277D75710] menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:v3];
+  v8 = [MEMORY[0x277D75710] menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:array];
 
   objc_destroyWeak(&location);
 
@@ -1692,17 +1692,17 @@ void __36__ICAttachmentView_makePlaybackMenu__block_invoke(uint64_t a1)
 - (id)makeAudioMenu
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(ICAttachmentView *)self canPerformAction:sel_rename_ withSender:self])
   {
-    v4 = [(ICAttachmentView *)self attachment];
-    v5 = [v4 attachmentType];
+    attachment = [(ICAttachmentView *)self attachment];
+    attachmentType = [attachment attachmentType];
 
-    if (v5 == 4)
+    if (attachmentType == 4)
     {
       v6 = MEMORY[0x277D750C8];
-      v7 = [MEMORY[0x277CCA8D8] mainBundle];
-      v8 = [v7 localizedStringForKey:@"Rename" value:&stru_282757698 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v8 = [mainBundle localizedStringForKey:@"Rename" value:&stru_282757698 table:0];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __33__ICAttachmentView_makeAudioMenu__block_invoke;
@@ -1710,7 +1710,7 @@ void __36__ICAttachmentView_makePlaybackMenu__block_invoke(uint64_t a1)
       objc_copyWeak(&v20, &location);
       v9 = [v6 ic_actionWithTitle:v8 imageName:@"pencil" handler:v19];
 
-      [v3 addObject:v9];
+      [array addObject:v9];
       objc_destroyWeak(&v20);
     }
   }
@@ -1718,8 +1718,8 @@ void __36__ICAttachmentView_makePlaybackMenu__block_invoke(uint64_t a1)
   if ([(ICAttachmentView *)self canPerformAction:sel_viewSummary_ withSender:self])
   {
     v10 = MEMORY[0x277D750C8];
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 localizedStringForKey:@"View Summary" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v12 = [mainBundle2 localizedStringForKey:@"View Summary" value:&stru_282757698 table:0];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __33__ICAttachmentView_makeAudioMenu__block_invoke_2;
@@ -1730,11 +1730,11 @@ void __36__ICAttachmentView_makePlaybackMenu__block_invoke(uint64_t a1)
     v14 = [MEMORY[0x277D755B8] _systemImageNamed:@"text.line.3.summary"];
     [v13 setImage:v14];
 
-    [v3 addObject:v13];
+    [array addObject:v13];
     objc_destroyWeak(&v18);
   }
 
-  v15 = [MEMORY[0x277D75710] menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:v3];
+  v15 = [MEMORY[0x277D75710] menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:array];
 
   objc_destroyWeak(&location);
 
@@ -1756,12 +1756,12 @@ void __33__ICAttachmentView_makeAudioMenu__block_invoke_2(uint64_t a1)
 - (id)makeRecordingMenu
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(ICAttachmentView *)self canPerformAction:sel_appendRecording_ withSender:self])
   {
     v4 = MEMORY[0x277D750C8];
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Add to Recording" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Add to Recording" value:&stru_282757698 table:0];
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __37__ICAttachmentView_makeRecordingMenu__block_invoke;
@@ -1769,11 +1769,11 @@ void __33__ICAttachmentView_makeAudioMenu__block_invoke_2(uint64_t a1)
     objc_copyWeak(&v14, &location);
     v7 = [v4 ic_actionWithTitle:v6 imageName:@"record.circle" handler:&v10];
 
-    [v3 addObject:{v7, v10, v11, v12, v13}];
+    [array addObject:{v7, v10, v11, v12, v13}];
     objc_destroyWeak(&v14);
   }
 
-  v8 = [MEMORY[0x277D75710] menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:v3];
+  v8 = [MEMORY[0x277D75710] menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:array];
 
   objc_destroyWeak(&location);
 
@@ -1789,13 +1789,13 @@ void __37__ICAttachmentView_makeRecordingMenu__block_invoke(uint64_t a1)
 - (id)shareFeedbackMenu
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(ICAttachmentView *)self canPerformAction:sel_reportAConcern_withPositiveFeedback_ withSender:self]&& (ICInternalSettingsIsFCSReportAConcernEnabled() & 1) == 0)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v6 = MEMORY[0x277D750C8];
-    v7 = [MEMORY[0x277CCA8D8] mainBundle];
-    v8 = [v7 localizedStringForKey:@"Looks Good" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v8 = [mainBundle localizedStringForKey:@"Looks Good" value:&stru_282757698 table:0];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __37__ICAttachmentView_shareFeedbackMenu__block_invoke;
@@ -1804,8 +1804,8 @@ void __37__ICAttachmentView_makeRecordingMenu__block_invoke(uint64_t a1)
     v9 = [v6 ic_actionWithTitle:v8 imageName:@"hand.thumbsup" handler:v24];
 
     v10 = MEMORY[0x277D750C8];
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 localizedStringForKey:@"Something Isn’t Right" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v12 = [mainBundle2 localizedStringForKey:@"Something Isn’t Right" value:&stru_282757698 table:0];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __37__ICAttachmentView_shareFeedbackMenu__block_invoke_2;
@@ -1813,18 +1813,18 @@ void __37__ICAttachmentView_makeRecordingMenu__block_invoke(uint64_t a1)
     objc_copyWeak(&v23, &location);
     v13 = [v10 ic_actionWithTitle:v12 imageName:@"hand.thumbsdown" handler:v22];
 
-    [v5 addObject:v9];
-    [v5 addObject:v13];
-    v14 = [MEMORY[0x277D75710] menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:v5];
-    [v3 addObject:v14];
+    [array2 addObject:v9];
+    [array2 addObject:v13];
+    v14 = [MEMORY[0x277D75710] menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:array2];
+    [array addObject:v14];
     v15 = MEMORY[0x277D75710];
-    v16 = [MEMORY[0x277CCA8D8] mainBundle];
-    v17 = [v16 localizedStringForKey:@"Share Feedback" value:&stru_282757698 table:0];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v17 = [mainBundle3 localizedStringForKey:@"Share Feedback" value:&stru_282757698 table:0];
     v18 = [MEMORY[0x277D755B8] imageNamed:@"exclamationmark.bubble"];
-    v4 = [v15 menuWithTitle:v17 image:v18 identifier:0 options:0 children:v3];
+    v4 = [v15 menuWithTitle:v17 image:v18 identifier:0 options:0 children:array];
 
-    v19 = [MEMORY[0x277CCA8D8] mainBundle];
-    v20 = [v19 localizedStringForKey:@"Audio Preview" value:&stru_282757698 table:0];
+    mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+    v20 = [mainBundle4 localizedStringForKey:@"Audio Preview" value:&stru_282757698 table:0];
     [v4 setSubtitle:v20];
 
     objc_destroyWeak(&v23);
@@ -1833,7 +1833,7 @@ void __37__ICAttachmentView_makeRecordingMenu__block_invoke(uint64_t a1)
 
   else
   {
-    v4 = [MEMORY[0x277D75710] menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:v3];
+    v4 = [MEMORY[0x277D75710] menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:array];
   }
 
   objc_destroyWeak(&location);
@@ -1857,12 +1857,12 @@ void __37__ICAttachmentView_shareFeedbackMenu__block_invoke_2(uint64_t a1)
 {
   v78[1] = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
-  v57 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(ICAttachmentView *)self canPerformAction:sel_copy_ withSender:self])
   {
     v3 = MEMORY[0x277D750C8];
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 localizedStringForKey:@"Copy" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v5 = [mainBundle localizedStringForKey:@"Copy" value:&stru_282757698 table:0];
     v75[0] = MEMORY[0x277D85DD0];
     v75[1] = 3221225472;
     v75[2] = __32__ICAttachmentView_makeMainMenu__block_invoke;
@@ -1870,23 +1870,23 @@ void __37__ICAttachmentView_shareFeedbackMenu__block_invoke_2(uint64_t a1)
     objc_copyWeak(&v76, &location);
     v6 = [v3 ic_actionWithTitle:v5 imageName:@"doc.on.doc" handler:v75];
 
-    [v57 addObject:v6];
+    [array addObject:v6];
     objc_destroyWeak(&v76);
   }
 
   if ([(ICAttachmentView *)self canPerformAction:sel_saveToFiles_ withSender:self])
   {
-    v7 = [(ICAttachmentView *)self attachment];
-    if ([v7 isAudio])
+    attachment = [(ICAttachmentView *)self attachment];
+    if ([attachment isAudio])
     {
-      v8 = [MEMORY[0x277CCA8D8] mainBundle];
-      [v8 localizedStringForKey:@"Save Audio to Files" value:&stru_282757698 table:0];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      [mainBundle2 localizedStringForKey:@"Save Audio to Files" value:&stru_282757698 table:0];
     }
 
     else
     {
-      v8 = [MEMORY[0x277CCA8D8] mainBundle];
-      [v8 localizedStringForKey:@"Save to Files" value:&stru_282757698 table:0];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      [mainBundle2 localizedStringForKey:@"Save to Files" value:&stru_282757698 table:0];
     }
     v9 = ;
 
@@ -1897,24 +1897,24 @@ void __37__ICAttachmentView_shareFeedbackMenu__block_invoke_2(uint64_t a1)
     v73[3] = &unk_2781ADD08;
     objc_copyWeak(&v74, &location);
     v11 = [v10 ic_actionWithTitle:v9 imageName:@"folder" handler:v73];
-    [v57 addObject:v11];
+    [array addObject:v11];
 
     objc_destroyWeak(&v74);
   }
 
   if ([(ICAttachmentView *)self canPerformAction:sel_share_ withSender:self])
   {
-    v12 = [(ICAttachmentView *)self attachment];
-    if ([v12 isAudio])
+    attachment2 = [(ICAttachmentView *)self attachment];
+    if ([attachment2 isAudio])
     {
-      v13 = [MEMORY[0x277CCA8D8] mainBundle];
-      [v13 localizedStringForKey:@"Share Audio" value:&stru_282757698 table:0];
+      mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+      [mainBundle3 localizedStringForKey:@"Share Audio" value:&stru_282757698 table:0];
     }
 
     else
     {
-      v13 = [MEMORY[0x277CCA8D8] mainBundle];
-      [v13 localizedStringForKey:@"Share" value:&stru_282757698 table:0];
+      mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+      [mainBundle3 localizedStringForKey:@"Share" value:&stru_282757698 table:0];
     }
     v14 = ;
 
@@ -1925,21 +1925,21 @@ void __37__ICAttachmentView_shareFeedbackMenu__block_invoke_2(uint64_t a1)
     v71[3] = &unk_2781ADD08;
     objc_copyWeak(&v72, &location);
     v16 = [v15 ic_actionWithTitle:v14 imageName:@"square.and.arrow.up" handler:v71];
-    [v57 addObject:v16];
+    [array addObject:v16];
 
     objc_destroyWeak(&v72);
   }
 
   if ([(ICAttachmentView *)self canPerformAction:sel_rename_ withSender:self])
   {
-    v17 = [(ICAttachmentView *)self attachment];
-    v18 = [v17 attachmentType] == 11;
+    attachment3 = [(ICAttachmentView *)self attachment];
+    v18 = [attachment3 attachmentType] == 11;
 
     if (v18)
     {
       v19 = MEMORY[0x277D750C8];
-      v20 = [MEMORY[0x277CCA8D8] mainBundle];
-      v21 = [v20 localizedStringForKey:@"Rename" value:&stru_282757698 table:0];
+      mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+      v21 = [mainBundle4 localizedStringForKey:@"Rename" value:&stru_282757698 table:0];
       v69[0] = MEMORY[0x277D85DD0];
       v69[1] = 3221225472;
       v69[2] = __32__ICAttachmentView_makeMainMenu__block_invoke_4;
@@ -1947,29 +1947,29 @@ void __37__ICAttachmentView_shareFeedbackMenu__block_invoke_2(uint64_t a1)
       objc_copyWeak(&v70, &location);
       v22 = [v19 ic_actionWithTitle:v21 imageName:@"pencil" handler:v69];
 
-      [v57 addObject:v22];
+      [array addObject:v22];
       objc_destroyWeak(&v70);
     }
   }
 
   if ([(ICAttachmentView *)self canPerformAction:sel_updatePreferredAttachmentViewSize_ withSender:self])
   {
-    v23 = [(ICAttachmentView *)self editingTextView];
-    v24 = [v23 editorController];
-    v56 = [v24 attachmentInsertionController];
+    editingTextView = [(ICAttachmentView *)self editingTextView];
+    editorController = [editingTextView editorController];
+    attachmentInsertionController = [editorController attachmentInsertionController];
 
-    v25 = [objc_alloc(MEMORY[0x277D36808]) initWithInsertionController:v56];
-    v26 = [(ICAttachmentView *)self attachment];
-    v55 = [v25 canConvertAttachmentToLink:v26];
+    v25 = [objc_alloc(MEMORY[0x277D36808]) initWithInsertionController:attachmentInsertionController];
+    attachment4 = [(ICAttachmentView *)self attachment];
+    v55 = [v25 canConvertAttachmentToLink:attachment4];
 
     v54 = objc_alloc(MEMORY[0x277D366B8]);
-    v27 = [MEMORY[0x277CCA8D8] mainBundle];
-    v28 = [v27 localizedStringForKey:@"View As" value:&stru_282757698 table:0];
+    mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+    v28 = [mainBundle5 localizedStringForKey:@"View As" value:&stru_282757698 table:0];
     v29 = [MEMORY[0x277D755B8] systemImageNamed:@"rectangle.3.group"];
-    v30 = [(ICAttachmentView *)self attachment];
-    v31 = [v30 preferredViewSize];
-    v32 = [(ICAttachmentView *)self textAttachment];
-    v33 = [v32 supportedPresentationSizes];
+    attachment5 = [(ICAttachmentView *)self attachment];
+    preferredViewSize = [attachment5 preferredViewSize];
+    textAttachment = [(ICAttachmentView *)self textAttachment];
+    supportedPresentationSizes = [textAttachment supportedPresentationSizes];
     v67[0] = MEMORY[0x277D85DD0];
     v67[1] = 3221225472;
     v67[2] = __32__ICAttachmentView_makeMainMenu__block_invoke_5;
@@ -1982,10 +1982,10 @@ void __37__ICAttachmentView_shareFeedbackMenu__block_invoke_2(uint64_t a1)
     objc_copyWeak(&v66, &location);
     v34 = v25;
     v65 = v34;
-    v35 = [v54 initWithTitle:v28 image:v29 preferredViewSize:v31 supportedSizes:v33 supportsPlainLink:v55 isOverrideVariant:0 selectedSizeHandler:v67 plainLinkHandler:v64];
+    v35 = [v54 initWithTitle:v28 image:v29 preferredViewSize:preferredViewSize supportedSizes:supportedPresentationSizes supportsPlainLink:v55 isOverrideVariant:0 selectedSizeHandler:v67 plainLinkHandler:v64];
 
-    v36 = [v35 createMenu];
-    [v57 addObject:v36];
+    createMenu = [v35 createMenu];
+    [array addObject:createMenu];
 
     objc_destroyWeak(&v66);
     objc_destroyWeak(&v68);
@@ -1994,8 +1994,8 @@ void __37__ICAttachmentView_shareFeedbackMenu__block_invoke_2(uint64_t a1)
   if ([(ICAttachmentView *)self canPerformAction:sel_createImage_ withSender:self])
   {
     v37 = MEMORY[0x277D750C8];
-    v38 = [MEMORY[0x277CCA8D8] mainBundle];
-    v39 = [v38 localizedStringForKey:@"Add to Playground" value:&stru_282757698 table:0];
+    mainBundle6 = [MEMORY[0x277CCA8D8] mainBundle];
+    v39 = [mainBundle6 localizedStringForKey:@"Add to Playground" value:&stru_282757698 table:0];
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
     v62[2] = __32__ICAttachmentView_makeMainMenu__block_invoke_7;
@@ -2008,15 +2008,15 @@ void __37__ICAttachmentView_shareFeedbackMenu__block_invoke_2(uint64_t a1)
     v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v78 count:1];
     v43 = [v41 menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:v42];
 
-    [v57 addObject:v43];
+    [array addObject:v43];
     objc_destroyWeak(&v63);
   }
 
   if ([(ICAttachmentView *)self canPerformAction:sel_reportAConcern_withPositiveFeedback_ withSender:self]&& ICInternalSettingsIsFCSReportAConcernEnabled())
   {
     v44 = MEMORY[0x277D750C8];
-    v45 = [MEMORY[0x277CCA8D8] mainBundle];
-    v46 = [v45 localizedStringForKey:@"Report a Concern" value:&stru_282757698 table:0];
+    mainBundle7 = [MEMORY[0x277CCA8D8] mainBundle];
+    v46 = [mainBundle7 localizedStringForKey:@"Report a Concern" value:&stru_282757698 table:0];
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
     v60[2] = __32__ICAttachmentView_makeMainMenu__block_invoke_8;
@@ -2024,15 +2024,15 @@ void __37__ICAttachmentView_shareFeedbackMenu__block_invoke_2(uint64_t a1)
     objc_copyWeak(&v61, &location);
     v47 = [v44 ic_actionWithTitle:v46 imageName:@"exclamationmark.bubble" handler:v60];
 
-    [v57 addObject:v47];
+    [array addObject:v47];
     objc_destroyWeak(&v61);
   }
 
   if ([(ICAttachmentView *)self canPerformAction:sel_delete_ withSender:self])
   {
     v48 = MEMORY[0x277D750C8];
-    v49 = [MEMORY[0x277CCA8D8] mainBundle];
-    v50 = [v49 localizedStringForKey:@"Delete" value:&stru_282757698 table:0];
+    mainBundle8 = [MEMORY[0x277CCA8D8] mainBundle];
+    v50 = [mainBundle8 localizedStringForKey:@"Delete" value:&stru_282757698 table:0];
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
     v58[2] = __32__ICAttachmentView_makeMainMenu__block_invoke_9;
@@ -2040,11 +2040,11 @@ void __37__ICAttachmentView_shareFeedbackMenu__block_invoke_2(uint64_t a1)
     objc_copyWeak(&v59, &location);
     v51 = [v48 ic_actionWithTitle:v50 imageName:@"trash" attributes:2 handler:v58];
 
-    [v57 addObject:v51];
+    [array addObject:v51];
     objc_destroyWeak(&v59);
   }
 
-  v52 = [MEMORY[0x277D75710] menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:v57];
+  v52 = [MEMORY[0x277D75710] menuWithTitle:&stru_282757698 image:0 identifier:0 options:1 children:array];
 
   objc_destroyWeak(&location);
 
@@ -2112,48 +2112,48 @@ void __32__ICAttachmentView_makeMainMenu__block_invoke_9(uint64_t a1)
   [WeakRetained delete:WeakRetained];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  if ([(ICAttachmentView *)self shouldAddMenuLongPressGesture:a3])
+  if ([(ICAttachmentView *)self shouldAddMenuLongPressGesture:interaction])
   {
-    v5 = [(ICAttachmentView *)self attachment];
-    if ([v5 attachmentType] == 11)
+    attachment = [(ICAttachmentView *)self attachment];
+    if ([attachment attachmentType] == 11)
     {
       objc_opt_class();
-      v6 = [v5 attachmentModel];
+      attachmentModel = [attachment attachmentModel];
       v7 = ICDynamicCast();
 
       if (v7)
       {
-        v8 = [v7 firstSubAttachment];
+        firstSubAttachment = [v7 firstSubAttachment];
 
-        v5 = v8;
+        attachment = firstSubAttachment;
       }
     }
 
-    v9 = 0;
+    contextMenuPreviewController = 0;
     if ([(ICAttachmentView *)self wantsContextMenuPreview])
     {
-      if (v5)
+      if (attachment)
       {
-        v9 = [(ICAttachmentView *)self contextMenuPreviewController];
-        if (!v9)
+        contextMenuPreviewController = [(ICAttachmentView *)self contextMenuPreviewController];
+        if (!contextMenuPreviewController)
         {
           IsExtension = _UIApplicationIsExtension();
           if (IsExtension)
           {
-            v11 = 0;
+            ic_viewControllerManager = 0;
           }
 
           else
           {
-            v11 = [(ICAttachmentView *)self ic_viewControllerManager];
+            ic_viewControllerManager = [(ICAttachmentView *)self ic_viewControllerManager];
           }
 
-          v31[0] = v5;
+          v31[0] = attachment;
           v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
-          v9 = [ICAttachmentPresenter previewViewControllerWithViewControllerManager:v11 attachments:v13 startingAtIndex:0 delegate:0 editable:0 isFromAttachmentBrowser:0];
+          contextMenuPreviewController = [ICAttachmentPresenter previewViewControllerWithViewControllerManager:ic_viewControllerManager attachments:v13 startingAtIndex:0 delegate:0 editable:0 isFromAttachmentBrowser:0];
 
           if ((IsExtension & 1) == 0)
           {
@@ -2163,16 +2163,16 @@ void __32__ICAttachmentView_makeMainMenu__block_invoke_9(uint64_t a1)
     }
 
     v14 = MEMORY[0x277D75710];
-    v15 = [(ICAttachmentView *)self makePlaybackMenu];
-    v30[0] = v15;
-    v16 = [(ICAttachmentView *)self makeAudioMenu];
-    v30[1] = v16;
-    v17 = [(ICAttachmentView *)self makeRecordingMenu];
-    v30[2] = v17;
-    v18 = [(ICAttachmentView *)self makeMainMenu];
-    v30[3] = v18;
-    v19 = [(ICAttachmentView *)self shareFeedbackMenu];
-    v30[4] = v19;
+    makePlaybackMenu = [(ICAttachmentView *)self makePlaybackMenu];
+    v30[0] = makePlaybackMenu;
+    makeAudioMenu = [(ICAttachmentView *)self makeAudioMenu];
+    v30[1] = makeAudioMenu;
+    makeRecordingMenu = [(ICAttachmentView *)self makeRecordingMenu];
+    v30[2] = makeRecordingMenu;
+    makeMainMenu = [(ICAttachmentView *)self makeMainMenu];
+    v30[3] = makeMainMenu;
+    shareFeedbackMenu = [(ICAttachmentView *)self shareFeedbackMenu];
+    v30[4] = shareFeedbackMenu;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:5];
     v21 = [v14 menuWithTitle:&stru_282757698 image:0 identifier:0 options:0 children:v20];
 
@@ -2181,14 +2181,14 @@ void __32__ICAttachmentView_makeMainMenu__block_invoke_9(uint64_t a1)
     v28[1] = 3221225472;
     v28[2] = __74__ICAttachmentView_contextMenuInteraction_configurationForMenuAtLocation___block_invoke;
     v28[3] = &unk_2781AD4C8;
-    v29 = v9;
+    v29 = contextMenuPreviewController;
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __74__ICAttachmentView_contextMenuInteraction_configurationForMenuAtLocation___block_invoke_2;
     v26[3] = &unk_2781AD4F0;
     v27 = v21;
     v23 = v21;
-    v24 = v9;
+    v24 = contextMenuPreviewController;
     v12 = [v22 configurationWithIdentifier:0 previewProvider:v28 actionProvider:v26];
   }
 
@@ -2200,14 +2200,14 @@ void __32__ICAttachmentView_makeMainMenu__block_invoke_9(uint64_t a1)
   return v12;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
-  if (-[ICAttachmentView wantsContextMenuPreview](self, "wantsContextMenuPreview", a3, a4, a5) || (-[ICAttachmentView attachment](self, "attachment"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 preferredViewSize], v6, v7))
+  if (-[ICAttachmentView wantsContextMenuPreview](self, "wantsContextMenuPreview", interaction, configuration, identifier) || (-[ICAttachmentView attachment](self, "attachment"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 preferredViewSize], v6, v7))
   {
     v8 = objc_alloc_init(MEMORY[0x277D758D8]);
-    v9 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v10 = [(ICAttachmentView *)self traitCollection];
-    v11 = [v9 resolvedColorWithTraitCollection:v10];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    traitCollection = [(ICAttachmentView *)self traitCollection];
+    v11 = [systemBackgroundColor resolvedColorWithTraitCollection:traitCollection];
     [v8 setBackgroundColor:v11];
 
     v12 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:self parameters:v8];
@@ -2227,28 +2227,28 @@ void __32__ICAttachmentView_makeMainMenu__block_invoke_9(uint64_t a1)
   return v12;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __101__ICAttachmentView_contextMenuInteraction_willPerformPreviewActionForMenuWithConfiguration_animator___block_invoke;
   v5[3] = &unk_2781ABCF8;
   v5[4] = self;
-  [a5 addCompletion:{v5, a4}];
+  [animator addCompletion:{v5, configuration}];
 }
 
 - (BOOL)wantsContextMenuPreview
 {
   if ([MEMORY[0x277D75418] ic_isVision])
   {
-    v4 = [(ICAttachmentView *)self ic_viewControllerManager];
-    v5 = [v4 noteContainerViewMode];
-    if (v5 || (-[ICAttachmentView ic_viewControllerManager](self, "ic_viewControllerManager"), v2 = objc_claimAutoreleasedReturnValue(), [v2 isMainSplitViewDisplayModeSecondaryOnly]))
+    ic_viewControllerManager = [(ICAttachmentView *)self ic_viewControllerManager];
+    noteContainerViewMode = [ic_viewControllerManager noteContainerViewMode];
+    if (noteContainerViewMode || (-[ICAttachmentView ic_viewControllerManager](self, "ic_viewControllerManager"), v2 = objc_claimAutoreleasedReturnValue(), [v2 isMainSplitViewDisplayModeSecondaryOnly]))
     {
-      v6 = [(ICAttachmentView *)self ic_viewControllerManager];
-      v7 = [v6 noteContainerViewMode] == 1;
+      ic_viewControllerManager2 = [(ICAttachmentView *)self ic_viewControllerManager];
+      v7 = [ic_viewControllerManager2 noteContainerViewMode] == 1;
 
-      if (v5)
+      if (noteContainerViewMode)
       {
 LABEL_13:
 
@@ -2266,8 +2266,8 @@ LABEL_13:
 
   if ([MEMORY[0x277D75418] ic_isiPad])
   {
-    v4 = [(ICAttachmentView *)self window];
-    [v4 bounds];
+    ic_viewControllerManager = [(ICAttachmentView *)self window];
+    [ic_viewControllerManager bounds];
     v7 = v9 >= 800.0 && v8 >= 300.0;
     goto LABEL_13;
   }
@@ -2277,47 +2277,47 @@ LABEL_13:
 
 - (void)removeFromSuperview
 {
-  v3 = [(ICAttachmentView *)self textView];
-  v4 = [v3 shouldAvoidBecomingFirstResponder];
-  [v3 setShouldAvoidBecomingFirstResponder:1];
+  textView = [(ICAttachmentView *)self textView];
+  shouldAvoidBecomingFirstResponder = [textView shouldAvoidBecomingFirstResponder];
+  [textView setShouldAvoidBecomingFirstResponder:1];
   v5.receiver = self;
   v5.super_class = ICAttachmentView;
   [(ICAttachmentView *)&v5 removeFromSuperview];
-  [v3 setShouldAvoidBecomingFirstResponder:v4];
+  [textView setShouldAvoidBecomingFirstResponder:shouldAvoidBecomingFirstResponder];
 }
 
-- (void)respondToTapGesture:(id)a3
+- (void)respondToTapGesture:(id)gesture
 {
-  v16 = a3;
-  if (-[ICAttachmentView isUserInteractionEnabled](self, "isUserInteractionEnabled") && [v16 state] == 3)
+  gestureCopy = gesture;
+  if (-[ICAttachmentView isUserInteractionEnabled](self, "isUserInteractionEnabled") && [gestureCopy state] == 3)
   {
-    v4 = [(ICAttachmentView *)self attachment];
-    v5 = [v4 note];
+    attachment = [(ICAttachmentView *)self attachment];
+    note = [attachment note];
 
-    v6 = [(ICAttachmentView *)self attachment];
-    v7 = [v5 rangeForAttachment:v6];
+    attachment2 = [(ICAttachmentView *)self attachment];
+    v7 = [note rangeForAttachment:attachment2];
     v9 = v8;
 
-    v10 = [(ICAttachmentView *)self textView];
-    v18.location = [v10 selectedRange];
+    textView = [(ICAttachmentView *)self textView];
+    v18.location = [textView selectedRange];
     location = v18.location;
     length = v18.length;
     v19.location = v7;
     v19.length = v9;
     if (NSIntersectionRange(v18, v19).length)
     {
-      [v10 setSelectedRange:{location + length, 0}];
+      [textView setSelectedRange:{location + length, 0}];
     }
 
     else
     {
-      v13 = [MEMORY[0x277D75718] sharedMenuController];
-      v14 = [v13 isMenuVisible];
+      mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+      isMenuVisible = [mEMORY[0x277D75718] isMenuVisible];
 
-      if (v14)
+      if (isMenuVisible)
       {
-        v15 = [MEMORY[0x277D75718] sharedMenuController];
-        [v15 setMenuVisible:0 animated:1];
+        mEMORY[0x277D75718]2 = [MEMORY[0x277D75718] sharedMenuController];
+        [mEMORY[0x277D75718]2 setMenuVisible:0 animated:1];
 
         [(ICAttachmentView *)self requestEditorFirstResponder];
       }
@@ -2330,15 +2330,15 @@ LABEL_13:
   }
 }
 
-- (void)respondToPanGesture:(id)a3
+- (void)respondToPanGesture:(id)gesture
 {
-  v4 = [(ICAttachmentView *)self delegate];
+  delegate = [(ICAttachmentView *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v7 = [(ICAttachmentView *)self delegate];
-    v5 = [(ICAttachmentView *)self attachment];
-    [v7 attachmentView:self shouldPresentAttachment:v5];
+    delegate2 = [(ICAttachmentView *)self delegate];
+    attachment = [(ICAttachmentView *)self attachment];
+    [delegate2 attachmentView:self shouldPresentAttachment:attachment];
   }
 
   else
@@ -2352,11 +2352,11 @@ LABEL_13:
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 locationInView:self];
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  [touchCopy locationInView:self];
   v9 = v8;
   v11 = v10;
   [(ICAttachmentView *)self bounds];
@@ -2369,14 +2369,14 @@ LABEL_13:
   v22.y = v11;
   if (CGRectContainsPoint(*&v12, v22))
   {
-    v16 = [(ICAttachmentView *)self panGestureRecognizer];
-    v17 = [v6 isEqual:v16];
+    panGestureRecognizer = [(ICAttachmentView *)self panGestureRecognizer];
+    v17 = [recognizerCopy isEqual:panGestureRecognizer];
 
     if (v17)
     {
-      v18 = [(ICAttachmentView *)self delegate];
-      v19 = [(ICAttachmentView *)self attachment];
-      v20 = [v18 attachmentView:self shouldRespondToPanGestureTouch:v7 forAttachment:v19];
+      delegate = [(ICAttachmentView *)self delegate];
+      attachment = [(ICAttachmentView *)self attachment];
+      v20 = [delegate attachmentView:self shouldRespondToPanGestureTouch:touchCopy forAttachment:attachment];
     }
 
     else
@@ -2393,26 +2393,26 @@ LABEL_13:
   return v20;
 }
 
-- (void)shareWebLink:(id)a3
+- (void)shareWebLink:(id)link
 {
-  v4 = a3;
-  v5 = [(ICAttachmentView *)self attachment];
-  v6 = [v5 URL];
+  linkCopy = link;
+  attachment = [(ICAttachmentView *)self attachment];
+  v6 = [attachment URL];
   if ([v6 ic_isWebURL])
   {
-    v7 = [(ICAttachmentView *)self attachment];
-    v8 = [v7 urlString];
+    attachment2 = [(ICAttachmentView *)self attachment];
+    urlString = [attachment2 urlString];
   }
 
   else
   {
-    v8 = 0;
+    urlString = 0;
   }
 
-  v9 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:v8 preferredStyle:0];
+  v9 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:urlString preferredStyle:0];
   v10 = MEMORY[0x277D750F8];
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 localizedStringForKey:@"Open" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v12 = [mainBundle localizedStringForKey:@"Open" value:&stru_282757698 table:0];
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __33__ICAttachmentView_shareWebLink___block_invoke;
@@ -2421,15 +2421,15 @@ LABEL_13:
   v13 = [v10 actionWithTitle:v12 style:0 handler:v47];
   [v9 addAction:v13];
 
-  v14 = [(ICAttachmentView *)self attachment];
-  v15 = [v14 URL];
+  attachment3 = [(ICAttachmentView *)self attachment];
+  v15 = [attachment3 URL];
   LODWORD(v12) = [v15 ic_isWebURL];
 
   if (v12)
   {
     v16 = MEMORY[0x277D750F8];
-    v17 = [MEMORY[0x277CCA8D8] mainBundle];
-    v18 = [v17 localizedStringForKey:@"Add to Reading List" value:&stru_282757698 table:0];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v18 = [mainBundle2 localizedStringForKey:@"Add to Reading List" value:&stru_282757698 table:0];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __33__ICAttachmentView_shareWebLink___block_invoke_2;
@@ -2440,21 +2440,21 @@ LABEL_13:
   }
 
   v20 = MEMORY[0x277D750F8];
-  v21 = [MEMORY[0x277CCA8D8] mainBundle];
-  v22 = [v21 localizedStringForKey:@"Copy" value:&stru_282757698 table:0];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v22 = [mainBundle3 localizedStringForKey:@"Copy" value:&stru_282757698 table:0];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __33__ICAttachmentView_shareWebLink___block_invoke_226;
   v44[3] = &unk_2781AF918;
   v44[4] = self;
-  v45 = v4;
-  v23 = v4;
+  v45 = linkCopy;
+  v23 = linkCopy;
   v24 = [v20 actionWithTitle:v22 style:0 handler:v44];
   [v9 addAction:v24];
 
   v25 = MEMORY[0x277D750F8];
-  v26 = [MEMORY[0x277CCA8D8] mainBundle];
-  v27 = [v26 localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
+  mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+  v27 = [mainBundle4 localizedStringForKey:@"Cancel" value:&stru_282757698 table:0];
   v28 = [v25 actionWithTitle:v27 style:1 handler:0];
   [v9 addAction:v28];
 
@@ -2469,24 +2469,24 @@ LABEL_13:
   }
 
   [v9 setModalPresentationStyle:v29];
-  v30 = [(ICAttachmentView *)self actionWindow];
-  v31 = [v30 rootViewController];
-  v32 = [v31 ic_topViewController];
-  [v32 presentViewController:v9 animated:1 completion:0];
+  actionWindow = [(ICAttachmentView *)self actionWindow];
+  rootViewController = [actionWindow rootViewController];
+  ic_topViewController = [rootViewController ic_topViewController];
+  [ic_topViewController presentViewController:v9 animated:1 completion:0];
 
-  v33 = [v9 popoverPresentationController];
-  [v33 setSourceView:self];
+  popoverPresentationController = [v9 popoverPresentationController];
+  [popoverPresentationController setSourceView:self];
 
   [(ICAttachmentView *)self bounds];
   v35 = v34;
   v37 = v36;
   v39 = v38;
   v41 = v40;
-  v42 = [v9 popoverPresentationController];
-  [v42 setSourceRect:{v35, v37, v39, v41}];
+  popoverPresentationController2 = [v9 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v35, v37, v39, v41}];
 
-  v43 = [v9 popoverPresentationController];
-  [v43 setPermittedArrowDirections:15];
+  popoverPresentationController3 = [v9 popoverPresentationController];
+  [popoverPresentationController3 setPermittedArrowDirections:15];
 }
 
 void __33__ICAttachmentView_shareWebLink___block_invoke(uint64_t a1)

@@ -1,48 +1,48 @@
 @interface TUCallTranslationStartRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTUCallTranslationStartRequest:(id)a3;
-- (TUCallTranslationStartRequest)initWithCall:(id)a3 configuration:(id)a4;
-- (TUCallTranslationStartRequest)initWithCall:(id)a3 localLocale:(id)a4 remoteLocale:(id)a5 translationLinks:(int)a6 remoteAudioMode:(int)a7 translationMode:(int)a8;
-- (TUCallTranslationStartRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTUCallTranslationStartRequest:(id)request;
+- (TUCallTranslationStartRequest)initWithCall:(id)call configuration:(id)configuration;
+- (TUCallTranslationStartRequest)initWithCall:(id)call localLocale:(id)locale remoteLocale:(id)remoteLocale translationLinks:(int)links remoteAudioMode:(int)mode translationMode:(int)translationMode;
+- (TUCallTranslationStartRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUCallTranslationStartRequest
 
-- (TUCallTranslationStartRequest)initWithCall:(id)a3 localLocale:(id)a4 remoteLocale:(id)a5 translationLinks:(int)a6 remoteAudioMode:(int)a7 translationMode:(int)a8
+- (TUCallTranslationStartRequest)initWithCall:(id)call localLocale:(id)locale remoteLocale:(id)remoteLocale translationLinks:(int)links remoteAudioMode:(int)mode translationMode:(int)translationMode
 {
-  v15 = a4;
-  v16 = a5;
+  localeCopy = locale;
+  remoteLocaleCopy = remoteLocale;
   v20.receiver = self;
   v20.super_class = TUCallTranslationStartRequest;
-  v17 = [(TUCallTranslationRequest *)&v20 initWithCall:a3];
+  v17 = [(TUCallTranslationRequest *)&v20 initWithCall:call];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_localLocale, a4);
-    objc_storeStrong(&v18->_remoteLocale, a5);
-    v18->_translationLinks = a6;
-    v18->_remoteAudioMode = a7;
-    v18->_translationMode = a8;
+    objc_storeStrong(&v17->_localLocale, locale);
+    objc_storeStrong(&v18->_remoteLocale, remoteLocale);
+    v18->_translationLinks = links;
+    v18->_remoteAudioMode = mode;
+    v18->_translationMode = translationMode;
   }
 
   return v18;
 }
 
-- (TUCallTranslationStartRequest)initWithCall:(id)a3 configuration:(id)a4
+- (TUCallTranslationStartRequest)initWithCall:(id)call configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 localLocale];
-  v9 = [v6 remoteLocale];
-  v10 = [v6 translationLinks];
-  v11 = [v6 remoteAudioMode];
-  v12 = [v6 translationMode];
+  configurationCopy = configuration;
+  callCopy = call;
+  localLocale = [configurationCopy localLocale];
+  remoteLocale = [configurationCopy remoteLocale];
+  translationLinks = [configurationCopy translationLinks];
+  remoteAudioMode = [configurationCopy remoteAudioMode];
+  translationMode = [configurationCopy translationMode];
 
-  v13 = [(TUCallTranslationStartRequest *)self initWithCall:v7 localLocale:v8 remoteLocale:v9 translationLinks:v10 remoteAudioMode:v11 translationMode:v12];
+  v13 = [(TUCallTranslationStartRequest *)self initWithCall:callCopy localLocale:localLocale remoteLocale:remoteLocale translationLinks:translationLinks remoteAudioMode:remoteAudioMode translationMode:translationMode];
   return v13;
 }
 
@@ -53,11 +53,11 @@
   v3 = [(TUCallTranslationRequest *)&v8 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(TUCallTranslationStartRequest *)self localLocale];
-  [v4 appendFormat:@" localLocale=%@", v5];
+  localLocale = [(TUCallTranslationStartRequest *)self localLocale];
+  [v4 appendFormat:@" localLocale=%@", localLocale];
 
-  v6 = [(TUCallTranslationStartRequest *)self remoteLocale];
-  [v4 appendFormat:@" remoteLocale=%@", v6];
+  remoteLocale = [(TUCallTranslationStartRequest *)self remoteLocale];
+  [v4 appendFormat:@" remoteLocale=%@", remoteLocale];
 
   [v4 appendFormat:@" translationLinks=%d", -[TUCallTranslationStartRequest translationLinks](self, "translationLinks")];
   [v4 appendFormat:@" remoteAudioMode=%d", -[TUCallTranslationStartRequest remoteAudioMode](self, "remoteAudioMode")];
@@ -67,62 +67,62 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TUCallTranslationStartRequest;
-  v4 = a3;
-  [(TUCallTranslationRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_localLocale forKey:{@"localLocale", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_remoteLocale forKey:@"remoteLocale"];
-  [v4 encodeInt32:self->_translationLinks forKey:@"translationLinks"];
-  [v4 encodeInt32:self->_remoteAudioMode forKey:@"remoteAudioMode"];
-  [v4 encodeInt32:self->_translationMode forKey:@"translationMode"];
+  coderCopy = coder;
+  [(TUCallTranslationRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_localLocale forKey:{@"localLocale", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_remoteLocale forKey:@"remoteLocale"];
+  [coderCopy encodeInt32:self->_translationLinks forKey:@"translationLinks"];
+  [coderCopy encodeInt32:self->_remoteAudioMode forKey:@"remoteAudioMode"];
+  [coderCopy encodeInt32:self->_translationMode forKey:@"translationMode"];
 }
 
-- (TUCallTranslationStartRequest)initWithCoder:(id)a3
+- (TUCallTranslationStartRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = TUCallTranslationStartRequest;
-  v5 = [(TUCallTranslationRequest *)&v18 initWithCoder:v4];
+  v5 = [(TUCallTranslationRequest *)&v18 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_localLocale);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     localLocale = v5->_localLocale;
     v5->_localLocale = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_remoteLocale);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     remoteLocale = v5->_remoteLocale;
     v5->_remoteLocale = v12;
 
     v14 = NSStringFromSelector(sel_translationLinks);
-    v5->_translationLinks = [v4 decodeInt32ForKey:v14];
+    v5->_translationLinks = [coderCopy decodeInt32ForKey:v14];
 
     v15 = NSStringFromSelector(sel_remoteAudioMode);
-    v5->_remoteAudioMode = [v4 decodeInt32ForKey:v15];
+    v5->_remoteAudioMode = [coderCopy decodeInt32ForKey:v15];
 
     v16 = NSStringFromSelector(sel_translationMode);
-    v5->_translationMode = [v4 decodeInt32ForKey:v16];
+    v5->_translationMode = [coderCopy decodeInt32ForKey:v16];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = TUCallTranslationStartRequest;
-  v4 = [(TUCallTranslationRequest *)&v8 copyWithZone:a3];
-  v5 = [(TUCallTranslationStartRequest *)self localLocale];
-  [v4 setLocalLocale:v5];
+  v4 = [(TUCallTranslationRequest *)&v8 copyWithZone:zone];
+  localLocale = [(TUCallTranslationStartRequest *)self localLocale];
+  [v4 setLocalLocale:localLocale];
 
-  v6 = [(TUCallTranslationStartRequest *)self remoteLocale];
-  [v4 setRemoteLocale:v6];
+  remoteLocale = [(TUCallTranslationStartRequest *)self remoteLocale];
+  [v4 setRemoteLocale:remoteLocale];
 
   [v4 setTranslationLinks:{-[TUCallTranslationStartRequest translationLinks](self, "translationLinks")}];
   [v4 setRemoteAudioMode:{-[TUCallTranslationStartRequest remoteAudioMode](self, "remoteAudioMode")}];
@@ -132,25 +132,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TUCallTranslationRequest *)self UUID];
-  v4 = [v3 hash];
-  v5 = [(TUCallTranslationRequest *)self callUUID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(TUCallTranslationStartRequest *)self localLocale];
-  v8 = [v7 hash];
-  v9 = [(TUCallTranslationStartRequest *)self remoteLocale];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(TUCallTranslationStartRequest *)self translationLinks];
-  v12 = v11 ^ [(TUCallTranslationStartRequest *)self remoteAudioMode];
+  uUID = [(TUCallTranslationRequest *)self UUID];
+  v4 = [uUID hash];
+  callUUID = [(TUCallTranslationRequest *)self callUUID];
+  v6 = [callUUID hash] ^ v4;
+  localLocale = [(TUCallTranslationStartRequest *)self localLocale];
+  v8 = [localLocale hash];
+  remoteLocale = [(TUCallTranslationStartRequest *)self remoteLocale];
+  v10 = v6 ^ v8 ^ [remoteLocale hash];
+  translationLinks = [(TUCallTranslationStartRequest *)self translationLinks];
+  v12 = translationLinks ^ [(TUCallTranslationStartRequest *)self remoteAudioMode];
   v13 = v12 ^ [(TUCallTranslationStartRequest *)self translationMode];
 
   return v10 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -158,33 +158,33 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = TUCallTranslationStartRequest, [(TUCallTranslationRequest *)&v7 isEqual:v4]) && [(TUCallTranslationStartRequest *)self isEqualToTUCallTranslationStartRequest:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = TUCallTranslationStartRequest, [(TUCallTranslationRequest *)&v7 isEqual:equalCopy]) && [(TUCallTranslationStartRequest *)self isEqualToTUCallTranslationStartRequest:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToTUCallTranslationStartRequest:(id)a3
+- (BOOL)isEqualToTUCallTranslationStartRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TUCallTranslationRequest *)self UUID];
-  v6 = [v4 UUID];
-  if (v5 == v6)
+  requestCopy = request;
+  uUID = [(TUCallTranslationRequest *)self UUID];
+  uUID2 = [requestCopy UUID];
+  if (uUID == uUID2)
   {
-    v8 = [(TUCallTranslationRequest *)self callUUID];
-    v9 = [v4 callUUID];
-    if (v8 == v9)
+    callUUID = [(TUCallTranslationRequest *)self callUUID];
+    callUUID2 = [requestCopy callUUID];
+    if (callUUID == callUUID2)
     {
-      v10 = [(TUCallTranslationStartRequest *)self localLocale];
-      v11 = [v4 localLocale];
-      if (v10 == v11)
+      localLocale = [(TUCallTranslationStartRequest *)self localLocale];
+      localLocale2 = [requestCopy localLocale];
+      if (localLocale == localLocale2)
       {
-        v12 = [(TUCallTranslationStartRequest *)self remoteLocale];
-        v13 = [v4 remoteLocale];
-        if (v12 == v13 && (v16 = -[TUCallTranslationStartRequest translationLinks](self, "translationLinks"), v16 == [v4 translationLinks]) && (v17 = -[TUCallTranslationStartRequest remoteAudioMode](self, "remoteAudioMode"), v17 == objc_msgSend(v4, "remoteAudioMode")))
+        remoteLocale = [(TUCallTranslationStartRequest *)self remoteLocale];
+        remoteLocale2 = [requestCopy remoteLocale];
+        if (remoteLocale == remoteLocale2 && (v16 = -[TUCallTranslationStartRequest translationLinks](self, "translationLinks"), v16 == [requestCopy translationLinks]) && (v17 = -[TUCallTranslationStartRequest remoteAudioMode](self, "remoteAudioMode"), v17 == objc_msgSend(requestCopy, "remoteAudioMode")))
         {
-          v14 = [(TUCallTranslationStartRequest *)self translationMode];
-          v7 = v14 == [v4 translationMode];
+          translationMode = [(TUCallTranslationStartRequest *)self translationMode];
+          v7 = translationMode == [requestCopy translationMode];
         }
 
         else

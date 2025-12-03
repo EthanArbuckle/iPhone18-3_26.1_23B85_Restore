@@ -1,8 +1,8 @@
 @interface CoreDAVSupportedReportSetItem
 + (id)copyParseRules;
-- (BOOL)supportsReportWithNameSpace:(id)a3 andName:(id)a4;
+- (BOOL)supportsReportWithNameSpace:(id)space andName:(id)name;
 - (id)description;
-- (void)addSupportedReport:(id)a3;
+- (void)addSupportedReport:(id)report;
 @end
 
 @implementation CoreDAVSupportedReportSetItem
@@ -15,8 +15,8 @@
   v4 = [(CoreDAVItem *)&v7 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVSupportedReportSetItem *)self supportedReports];
-  [v3 appendFormat:@"\n  Number of supported reports: [%lu]", objc_msgSend(v5, "count")];
+  supportedReports = [(CoreDAVSupportedReportSetItem *)self supportedReports];
+  [v3 appendFormat:@"\n  Number of supported reports: [%lu]", objc_msgSend(supportedReports, "count")];
 
   return v3;
 }
@@ -24,7 +24,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -35,43 +35,43 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, 0}];
 
     v9 = +[CoreDAVItem parseRuleCache];
-    v10 = NSStringFromClass(a1);
+    v10 = NSStringFromClass(self);
     [v9 setObject:v5 forKey:v10];
   }
 
   return v5;
 }
 
-- (void)addSupportedReport:(id)a3
+- (void)addSupportedReport:(id)report
 {
-  v4 = a3;
-  v5 = [(CoreDAVSupportedReportSetItem *)self supportedReports];
+  reportCopy = report;
+  supportedReports = [(CoreDAVSupportedReportSetItem *)self supportedReports];
 
-  if (!v5)
+  if (!supportedReports)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     [(CoreDAVSupportedReportSetItem *)self setSupportedReports:v6];
   }
 
-  v7 = [(CoreDAVSupportedReportSetItem *)self supportedReports];
-  [v7 addObject:v4];
+  supportedReports2 = [(CoreDAVSupportedReportSetItem *)self supportedReports];
+  [supportedReports2 addObject:reportCopy];
 }
 
-- (BOOL)supportsReportWithNameSpace:(id)a3 andName:(id)a4
+- (BOOL)supportsReportWithNameSpace:(id)space andName:(id)name
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  spaceCopy = space;
+  nameCopy = name;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = [(CoreDAVSupportedReportSetItem *)self supportedReports];
-  v26 = [v8 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  supportedReports = [(CoreDAVSupportedReportSetItem *)self supportedReports];
+  v26 = [supportedReports countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v26)
   {
     v9 = *v33;
-    v27 = v8;
+    v27 = supportedReports;
     v25 = *v33;
     do
     {
@@ -79,7 +79,7 @@
       {
         if (*v33 != v9)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(supportedReports);
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
@@ -87,10 +87,10 @@
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v12 = [v11 report];
-        v13 = [v12 extraChildItems];
+        report = [v11 report];
+        extraChildItems = [report extraChildItems];
 
-        v14 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v14 = [extraChildItems countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v14)
         {
           v15 = v14;
@@ -101,21 +101,21 @@
             {
               if (*v29 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(extraChildItems);
               }
 
               v18 = *(*(&v28 + 1) + 8 * j);
-              v19 = [v18 nameSpace];
-              if ([v19 isEqualToString:v6])
+              nameSpace = [v18 nameSpace];
+              if ([nameSpace isEqualToString:spaceCopy])
               {
-                v20 = [v18 name];
-                v21 = [v20 isEqualToString:v7];
+                name = [v18 name];
+                v21 = [name isEqualToString:nameCopy];
 
                 if (v21)
                 {
 
                   v22 = 1;
-                  v8 = v27;
+                  supportedReports = v27;
                   goto LABEL_21;
                 }
               }
@@ -125,13 +125,13 @@
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+            v15 = [extraChildItems countByEnumeratingWithState:&v28 objects:v36 count:16];
           }
 
           while (v15);
         }
 
-        v8 = v27;
+        supportedReports = v27;
         v9 = v25;
       }
 

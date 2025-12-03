@@ -2,21 +2,21 @@
 + (NSAttributedString)attributedStringFromPostalAddress:(CNPostalAddress *)postalAddress style:(CNPostalAddressFormatterStyle)style withDefaultAttributes:(NSDictionary *)attributes;
 + (NSString)stringFromPostalAddress:(CNPostalAddress *)postalAddress style:(CNPostalAddressFormatterStyle)style;
 + (id)_postalToFormatMap;
-+ (id)addressValueForFormatKey:(void *)a3 postalAddress:;
-+ (id)fieldArrangementWithString:(uint64_t)a1;
-+ (id)fieldLabelMapWithPlist:(uint64_t)a1;
-+ (id)formatPropertyKeyForPostalAddressPropertyKey:(id)a3;
-+ (id)getCountryCodeFromPostalAddress:(uint64_t)a1;
-+ (id)localizedCountryNameForISOCountryCode:(id)a3;
-+ (id)postalAddressPropertyKeyForFormatPropertyKey:(id)a3;
-+ (id)singleLineStringFromPostalAddress:(id)a3 addCountryName:(BOOL)a4;
-+ (id)specificationForCountry:(id)a3;
-+ (id)specificationWithAddressFormatPlist:(id)a3;
++ (id)addressValueForFormatKey:(void *)key postalAddress:;
++ (id)fieldArrangementWithString:(uint64_t)string;
++ (id)fieldLabelMapWithPlist:(uint64_t)plist;
++ (id)formatPropertyKeyForPostalAddressPropertyKey:(id)key;
++ (id)getCountryCodeFromPostalAddress:(uint64_t)address;
++ (id)localizedCountryNameForISOCountryCode:(id)code;
++ (id)postalAddressPropertyKeyForFormatPropertyKey:(id)key;
++ (id)singleLineStringFromPostalAddress:(id)address addCountryName:(BOOL)name;
++ (id)specificationForCountry:(id)country;
++ (id)specificationWithAddressFormatPlist:(id)plist;
 - (NSString)stringFromPostalAddress:(CNPostalAddress *)postalAddress;
-- (id)attributedStringForObjectValue:(id)a3 withDefaultAttributes:(id)a4;
-- (id)attributedStringFromPostalAddress:(uint64_t)a1 name:(void *)a2 organization:(void *)a3 attributes:(void *)a4 order:(void *)a5;
-- (id)postalAddressFromString:(id)a3;
-- (id)stringForObjectValue:(id)a3;
+- (id)attributedStringForObjectValue:(id)value withDefaultAttributes:(id)attributes;
+- (id)attributedStringFromPostalAddress:(uint64_t)address name:(void *)name organization:(void *)organization attributes:(void *)attributes order:(void *)order;
+- (id)postalAddressFromString:(id)string;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation CNPostalAddressFormatter
@@ -71,13 +71,13 @@ void __46__CNPostalAddressFormatter__postalToFormatMap__block_invoke()
   return v10;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CNPostalAddressFormatter *)self stringFromPostalAddress:v4];
+    v5 = [(CNPostalAddressFormatter *)self stringFromPostalAddress:valueCopy];
   }
 
   else
@@ -88,14 +88,14 @@ void __46__CNPostalAddressFormatter__postalToFormatMap__block_invoke()
   return v5;
 }
 
-- (id)attributedStringForObjectValue:(id)a3 withDefaultAttributes:(id)a4
+- (id)attributedStringForObjectValue:(id)value withDefaultAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  attributesCopy = attributes;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [CNPostalAddressFormatter attributedStringFromPostalAddress:v6 name:0 organization:0 attributes:v7 order:?];
+    v8 = [CNPostalAddressFormatter attributedStringFromPostalAddress:valueCopy name:0 organization:0 attributes:attributesCopy order:?];
   }
 
   else
@@ -106,39 +106,39 @@ void __46__CNPostalAddressFormatter__postalToFormatMap__block_invoke()
   return v8;
 }
 
-+ (id)getCountryCodeFromPostalAddress:(uint64_t)a1
++ (id)getCountryCodeFromPostalAddress:(uint64_t)address
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 ISOCountryCode];
+  iSOCountryCode = [v2 ISOCountryCode];
 
-  if (v3 == *MEMORY[0x1E695E738])
+  if (iSOCountryCode == *MEMORY[0x1E695E738])
   {
-    v4 = 0;
+    lowercaseString = 0;
   }
 
   else
   {
-    v4 = [v3 lowercaseString];
+    lowercaseString = [iSOCountryCode lowercaseString];
   }
 
-  if (((*(*MEMORY[0x1E6996568] + 16))() & 1) != 0 || (+[CNAddressFormats addressFormats](CNAddressFormats, "addressFormats"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKey:v4], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
+  if (((*(*MEMORY[0x1E6996568] + 16))() & 1) != 0 || (+[CNAddressFormats addressFormats](CNAddressFormats, "addressFormats"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKey:lowercaseString], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
   {
     v7 = +[CNContactsUserDefaults sharedDefaults];
-    v8 = [v7 countryCode];
+    countryCode = [v7 countryCode];
 
-    v4 = v8;
+    lowercaseString = countryCode;
   }
 
-  return v4;
+  return lowercaseString;
 }
 
-+ (id)fieldArrangementWithString:(uint64_t)a1
++ (id)fieldArrangementWithString:(uint64_t)string
 {
   v2 = a2;
   v3 = objc_opt_self();
-  v4 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v5 = [v2 componentsSeparatedByCharactersInSet:v4];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v5 = [v2 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -193,11 +193,11 @@ id __97__CNPostalAddressFormatter_attributedStringFromPostalAddress_name_organiz
   return v10;
 }
 
-+ (id)postalAddressPropertyKeyForFormatPropertyKey:(id)a3
++ (id)postalAddressPropertyKeyForFormatPropertyKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[CNPostalAddressFormatter _postalToFormatMap];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:keyCopy];
 
   return v5;
 }
@@ -215,21 +215,21 @@ id __97__CNPostalAddressFormatter_attributedStringFromPostalAddress_name_organiz
   return v0;
 }
 
-+ (id)formatPropertyKeyForPostalAddressPropertyKey:(id)a3
++ (id)formatPropertyKeyForPostalAddressPropertyKey:(id)key
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__CNPostalAddressFormatter_formatPropertyKeyForPostalAddressPropertyKey___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = formatPropertyKeyForPostalAddressPropertyKey__cn_once_token_0;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     dispatch_once(&formatPropertyKeyForPostalAddressPropertyKey__cn_once_token_0, block);
   }
 
-  v5 = [formatPropertyKeyForPostalAddressPropertyKey__cn_once_object_0 objectForKeyedSubscript:v4];
+  v5 = [formatPropertyKeyForPostalAddressPropertyKey__cn_once_object_0 objectForKeyedSubscript:keyCopy];
 
   return v5;
 }
@@ -247,64 +247,64 @@ void __73__CNPostalAddressFormatter_formatPropertyKeyForPostalAddressPropertyKey
   formatPropertyKeyForPostalAddressPropertyKey__cn_once_object_0 = v5;
 }
 
-+ (id)addressValueForFormatKey:(void *)a3 postalAddress:
++ (id)addressValueForFormatKey:(void *)key postalAddress:
 {
   v4 = a2;
-  v5 = a3;
+  keyCopy = key;
   objc_opt_self();
   if ([v4 isEqualToString:@"Street"])
   {
-    v6 = [v5 street];
+    street = [keyCopy street];
 LABEL_12:
-    v7 = v6;
+    v7 = street;
     goto LABEL_13;
   }
 
   if ([v4 isEqualToString:@"SubLocality"])
   {
-    v6 = [v5 subLocality];
+    street = [keyCopy subLocality];
     goto LABEL_12;
   }
 
   if ([v4 isEqualToString:@"City"])
   {
-    v6 = [v5 city];
+    street = [keyCopy city];
     goto LABEL_12;
   }
 
   if ([v4 isEqualToString:@"State"])
   {
-    v6 = [v5 state];
+    street = [keyCopy state];
     goto LABEL_12;
   }
 
   if ([v4 isEqualToString:@"SubAdministrativeArea"] || objc_msgSend(v4, "isEqualToString:", @"Region"))
   {
-    v6 = [v5 subAdministrativeArea];
+    street = [keyCopy subAdministrativeArea];
     goto LABEL_12;
   }
 
   if ([v4 isEqualToString:@"ZIP"])
   {
-    v6 = [v5 postalCode];
+    street = [keyCopy postalCode];
     goto LABEL_12;
   }
 
   if ([v4 isEqualToString:@"Country"])
   {
-    v6 = [v5 country];
+    street = [keyCopy country];
     goto LABEL_12;
   }
 
   if ([v4 isEqualToString:@"CountryCode"])
   {
-    v6 = [v5 ISOCountryCode];
+    street = [keyCopy ISOCountryCode];
     goto LABEL_12;
   }
 
   if ([v4 isEqualToString:@"FormattedAddress"])
   {
-    v6 = [v5 formattedAddress];
+    street = [keyCopy formattedAddress];
     goto LABEL_12;
   }
 
@@ -314,9 +314,9 @@ LABEL_13:
   return v7;
 }
 
-- (id)postalAddressFromString:(id)a3
+- (id)postalAddressFromString:(id)string
 {
-  v3 = [MEMORY[0x1E69967C8] postalAddressFromString:a3 error:0];
+  v3 = [MEMORY[0x1E69967C8] postalAddressFromString:string error:0];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -353,13 +353,13 @@ LABEL_13:
   return v4;
 }
 
-+ (id)singleLineStringFromPostalAddress:(id)a3 addCountryName:(BOOL)a4
++ (id)singleLineStringFromPostalAddress:(id)address addCountryName:(BOOL)name
 {
-  v4 = a4;
-  v5 = a3;
+  nameCopy = name;
+  addressCopy = address;
   v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v7 = 0x1E7410000uLL;
-  v8 = [CNPostalAddressFormatter getCountryCodeFromPostalAddress:v5];
+  v8 = [CNPostalAddressFormatter getCountryCodeFromPostalAddress:addressCopy];
   v9 = +[CNAddressFormats addressFormats];
   v30 = v8;
   v10 = [v9 objectForKey:v8];
@@ -379,19 +379,19 @@ LABEL_13:
     do
     {
       v16 = [v11 objectAtIndex:v14];
-      v17 = [(CNPostalAddressFormatter *)*(v7 + 2392) addressValueForFormatKey:v16 postalAddress:v5];
-      if ([v16 isEqualToString:@"Country"] && v4 && (*(v15 + 16))(v15, v17))
+      v17 = [(CNPostalAddressFormatter *)*(v7 + 2392) addressValueForFormatKey:v16 postalAddress:addressCopy];
+      if ([v16 isEqualToString:@"Country"] && nameCopy && (*(v15 + 16))(v15, v17))
       {
-        v18 = [MEMORY[0x1E695DF58] currentLocale];
-        [v18 displayNameForKey:v27 value:v30];
+        currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+        [currentLocale displayNameForKey:v27 value:v30];
         v19 = v11;
         v20 = v7;
-        v21 = v4;
-        v23 = v22 = v5;
+        v21 = nameCopy;
+        v23 = v22 = addressCopy;
 
         v17 = v23;
-        v5 = v22;
-        v4 = v21;
+        addressCopy = v22;
+        nameCopy = v21;
         v7 = v20;
         v11 = v19;
         v13 = v28;
@@ -419,24 +419,24 @@ LABEL_13:
   return v6;
 }
 
-+ (id)specificationForCountry:(id)a3
++ (id)specificationForCountry:(id)country
 {
-  v4 = [CNAddressFormats addressFormatForCountryCode:a3];
-  v5 = [a1 specificationWithAddressFormatPlist:v4];
+  v4 = [CNAddressFormats addressFormatForCountryCode:country];
+  v5 = [self specificationWithAddressFormatPlist:v4];
 
   return v5;
 }
 
-+ (id)localizedCountryNameForISOCountryCode:(id)a3
++ (id)localizedCountryNameForISOCountryCode:(id)code
 {
-  v4 = a3;
-  v5 = [CNAddressFormats addressFormatForCountryCode:v4];
+  codeCopy = code;
+  v5 = [CNAddressFormats addressFormatForCountryCode:codeCopy];
   v6 = [v5 objectForKeyedSubscript:@"COUNTRY"];
-  v7 = [a1 localizedStringForPostalAddressString:v6];
+  v7 = [self localizedStringForPostalAddressString:v6];
 
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
-    v8 = v4;
+    v8 = codeCopy;
   }
 
   else
@@ -449,18 +449,18 @@ LABEL_13:
   return v8;
 }
 
-+ (id)specificationWithAddressFormatPlist:(id)a3
++ (id)specificationWithAddressFormatPlist:(id)plist
 {
-  if (a3)
+  if (plist)
   {
-    v4 = a3;
-    v5 = [v4 objectForKeyedSubscript:@"FORMAT"];
-    v6 = [(CNPostalAddressFormatter *)a1 fieldArrangementWithString:v5];
+    plistCopy = plist;
+    v5 = [plistCopy objectForKeyedSubscript:@"FORMAT"];
+    v6 = [(CNPostalAddressFormatter *)self fieldArrangementWithString:v5];
 
-    v7 = [v4 objectForKeyedSubscript:@"EDIT_FORMAT"];
-    v8 = [(CNPostalAddressFormatter *)a1 fieldArrangementWithString:v7];
+    v7 = [plistCopy objectForKeyedSubscript:@"EDIT_FORMAT"];
+    v8 = [(CNPostalAddressFormatter *)self fieldArrangementWithString:v7];
 
-    v9 = [(CNPostalAddressFormatter *)a1 fieldLabelMapWithPlist:v4];
+    v9 = [(CNPostalAddressFormatter *)self fieldLabelMapWithPlist:plistCopy];
 
     v10 = [[CNPostalAddressFormattingSpecification alloc] initWithDisplayFieldArrangement:v6 editingFieldArrangement:v8 fieldLabelMap:v9];
   }
@@ -473,7 +473,7 @@ LABEL_13:
   return v10;
 }
 
-+ (id)fieldLabelMapWithPlist:(uint64_t)a1
++ (id)fieldLabelMapWithPlist:(uint64_t)plist
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -562,32 +562,32 @@ BOOL __51__CNPostalAddressFormatter_fieldLabelMapWithPlist___block_invoke_3(uint
   return v9;
 }
 
-- (id)attributedStringFromPostalAddress:(uint64_t)a1 name:(void *)a2 organization:(void *)a3 attributes:(void *)a4 order:(void *)a5
+- (id)attributedStringFromPostalAddress:(uint64_t)address name:(void *)name organization:(void *)organization attributes:(void *)attributes order:(void *)order
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  nameCopy = name;
+  organizationCopy = organization;
+  attributesCopy = attributes;
+  orderCopy = order;
+  if (address)
   {
-    v13 = [v9 formattedAddress];
+    formattedAddress = [nameCopy formattedAddress];
 
-    if (v13)
+    if (formattedAddress)
     {
       v14 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v15 = [v9 formattedAddress];
-      v16 = [v14 initWithString:v15 attributes:0];
+      formattedAddress2 = [nameCopy formattedAddress];
+      v16 = [v14 initWithString:formattedAddress2 attributes:0];
     }
 
     else
     {
-      v17 = [CNPostalAddressFormatter getCountryCodeFromPostalAddress:v9];
+      v17 = [CNPostalAddressFormatter getCountryCodeFromPostalAddress:nameCopy];
       v18 = +[CNAddressFormats addressFormats];
       v19 = [v18 objectForKey:v17];
 
       v47 = v19;
-      if (v10 && ([v19 objectForKey:@"LABEL_FORMAT"], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (organizationCopy && ([v19 objectForKey:@"LABEL_FORMAT"], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v21 = v20;
         v43 = 1;
@@ -599,7 +599,7 @@ BOOL __51__CNPostalAddressFormatter_fieldLabelMapWithPlist___block_invoke_3(uint
         v43 = 0;
       }
 
-      v16 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:&stru_1F094DAB0 attributes:v12];
+      v16 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:&stru_1F094DAB0 attributes:orderCopy];
       v48 = v17;
       v22 = [objc_opt_class() specificationForCountry:v17];
       v46 = v21;
@@ -608,8 +608,8 @@ BOOL __51__CNPostalAddressFormatter_fieldLabelMapWithPlist___block_invoke_3(uint
       v53[1] = 3221225472;
       v53[2] = __97__CNPostalAddressFormatter_attributedStringFromPostalAddress_name_organization_attributes_order___block_invoke;
       v53[3] = &unk_1E7415FE0;
-      v54 = v9;
-      v55 = v12;
+      v54 = nameCopy;
+      v55 = orderCopy;
       v44 = v22;
       v45 = v23;
       v56 = v44;
@@ -625,8 +625,8 @@ BOOL __51__CNPostalAddressFormatter_fieldLabelMapWithPlist___block_invoke_3(uint
       v52 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v28 = [v27 _cn_flatten];
-      v29 = [v28 countByEnumeratingWithState:&v49 objects:v57 count:16];
+      _cn_flatten = [v27 _cn_flatten];
+      v29 = [_cn_flatten countByEnumeratingWithState:&v49 objects:v57 count:16];
       if (v29)
       {
         v30 = v29;
@@ -637,19 +637,19 @@ BOOL __51__CNPostalAddressFormatter_fieldLabelMapWithPlist___block_invoke_3(uint
           {
             if (*v50 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(_cn_flatten);
             }
 
             [v16 appendAttributedString:*(*(&v49 + 1) + 8 * i)];
           }
 
-          v30 = [v28 countByEnumeratingWithState:&v49 objects:v57 count:16];
+          v30 = [_cn_flatten countByEnumeratingWithState:&v49 objects:v57 count:16];
         }
 
         while (v30);
       }
 
-      if ([v11 length])
+      if ([attributesCopy length])
       {
         v33 = v43;
       }
@@ -663,12 +663,12 @@ BOOL __51__CNPostalAddressFormatter_fieldLabelMapWithPlist___block_invoke_3(uint
       {
         v34 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n" attributes:0];
         v35 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"organizationName", @"postalAddressProperty", 0}];
-        v36 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v11 attributes:v35];
+        v36 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:attributesCopy attributes:v35];
         [v36 appendAttributedString:v34];
         [v16 insertAttributedString:v36 atIndex:0];
       }
 
-      if ([v10 length])
+      if ([organizationCopy length])
       {
         v37 = v43;
       }
@@ -682,7 +682,7 @@ BOOL __51__CNPostalAddressFormatter_fieldLabelMapWithPlist___block_invoke_3(uint
       {
         v38 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n" attributes:0];
         v39 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"Name", @"postalAddressProperty", 0}];
-        v40 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v10 attributes:v39];
+        v40 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:organizationCopy attributes:v39];
         [v40 appendAttributedString:v38];
         [v16 insertAttributedString:v40 atIndex:0];
       }
@@ -700,9 +700,9 @@ BOOL __51__CNPostalAddressFormatter_fieldLabelMapWithPlist___block_invoke_3(uint
 - (NSString)stringFromPostalAddress:(CNPostalAddress *)postalAddress
 {
   v3 = [CNPostalAddressFormatter attributedStringFromPostalAddress:postalAddress name:0 organization:0 attributes:0 order:?];
-  v4 = [v3 string];
+  string = [v3 string];
 
-  return v4;
+  return string;
 }
 
 @end

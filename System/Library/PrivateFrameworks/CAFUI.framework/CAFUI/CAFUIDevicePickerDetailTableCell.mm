@@ -1,5 +1,5 @@
 @interface CAFUIDevicePickerDetailTableCell
-- (_TtC5CAFUI32CAFUIDevicePickerDetailTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC5CAFUI32CAFUIDevicePickerDetailTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
@@ -14,9 +14,9 @@
   v2[OBJC_IVAR____TtC5CAFUI32CAFUIDevicePickerDetailTableCell_isEnabled] = 1;
 }
 
-- (_TtC5CAFUI32CAFUIDevicePickerDetailTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC5CAFUI32CAFUIDevicePickerDetailTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5CAFUI32CAFUIDevicePickerDetailTableCell_isEnabled) = 1;
@@ -31,7 +31,7 @@
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for CAFUIDevicePickerDetailTableCell();
-  v8 = [(CAFUITableCell *)&v10 initWithStyle:a3 reuseIdentifier:v7];
+  v8 = [(CAFUITableCell *)&v10 initWithStyle:style reuseIdentifier:v7];
 
   return v8;
 }

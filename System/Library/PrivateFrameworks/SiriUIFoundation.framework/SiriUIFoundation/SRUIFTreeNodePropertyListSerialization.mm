@@ -1,26 +1,26 @@
 @interface SRUIFTreeNodePropertyListSerialization
-- (id)_propertyListWithTreeNode:(id)a3 itemPropertyListCreation:(id)a4;
-- (id)_treeNodeWithPropertyList:(id)a3 error:(id *)a4 itemCreation:(id)a5;
-- (id)propertyListWithTreeNode:(id)a3 itemPropertyListCreation:(id)a4;
-- (id)treeNodeWithPropertyList:(id)a3 error:(id *)a4 itemCreation:(id)a5;
+- (id)_propertyListWithTreeNode:(id)node itemPropertyListCreation:(id)creation;
+- (id)_treeNodeWithPropertyList:(id)list error:(id *)error itemCreation:(id)creation;
+- (id)propertyListWithTreeNode:(id)node itemPropertyListCreation:(id)creation;
+- (id)treeNodeWithPropertyList:(id)list error:(id *)error itemCreation:(id)creation;
 @end
 
 @implementation SRUIFTreeNodePropertyListSerialization
 
-- (id)_propertyListWithTreeNode:(id)a3 itemPropertyListCreation:(id)a4
+- (id)_propertyListWithTreeNode:(id)node itemPropertyListCreation:(id)creation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [v6 item];
-  v10 = v9;
-  if (v7 && v9)
+  nodeCopy = node;
+  creationCopy = creation;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  item = [nodeCopy item];
+  v10 = item;
+  if (creationCopy && item)
   {
-    v11 = v7[2](v7, v9);
+    v11 = creationCopy[2](creationCopy, item);
     if (v11)
     {
-      [v8 setObject:v11 forKey:@"Item"];
+      [dictionary setObject:v11 forKey:@"Item"];
     }
 
     else
@@ -37,22 +37,22 @@
     }
   }
 
-  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "numberOfChildNodes")}];
+  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(nodeCopy, "numberOfChildNodes")}];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __93__SRUIFTreeNodePropertyListSerialization__propertyListWithTreeNode_itemPropertyListCreation___block_invoke;
   v18[3] = &unk_279C626E0;
   v19 = v13;
-  v20 = v7;
+  v20 = creationCopy;
   v18[4] = self;
   v14 = v13;
-  v15 = v7;
-  [v6 enumerateChildNodesUsingBlock:v18];
-  [v8 setObject:v14 forKey:@"ChildNodes"];
+  v15 = creationCopy;
+  [nodeCopy enumerateChildNodesUsingBlock:v18];
+  [dictionary setObject:v14 forKey:@"ChildNodes"];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return dictionary;
 }
 
 void __93__SRUIFTreeNodePropertyListSerialization__propertyListWithTreeNode_itemPropertyListCreation___block_invoke(uint64_t a1, uint64_t a2)
@@ -61,39 +61,39 @@ void __93__SRUIFTreeNodePropertyListSerialization__propertyListWithTreeNode_item
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)propertyListWithTreeNode:(id)a3 itemPropertyListCreation:(id)a4
+- (id)propertyListWithTreeNode:(id)node itemPropertyListCreation:(id)creation
 {
-  v4 = [(SRUIFTreeNodePropertyListSerialization *)self _propertyListWithTreeNode:a3 itemPropertyListCreation:a4];
+  v4 = [(SRUIFTreeNodePropertyListSerialization *)self _propertyListWithTreeNode:node itemPropertyListCreation:creation];
   [v4 setObject:&unk_287A18CA8 forKey:@"Version"];
 
   return v4;
 }
 
-- (id)_treeNodeWithPropertyList:(id)a3 error:(id *)a4 itemCreation:(id)a5
+- (id)_treeNodeWithPropertyList:(id)list error:(id *)error itemCreation:(id)creation
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  listCopy = list;
+  creationCopy = creation;
   v10 = objc_alloc_init(SRUIFDictionarySchema);
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __87__SRUIFTreeNodePropertyListSerialization__treeNodeWithPropertyList_error_itemCreation___block_invoke;
   v36[3] = &unk_279C62730;
   v36[4] = self;
-  v11 = v9;
+  v11 = creationCopy;
   v37 = v11;
   v12 = [SRUIFCoercion coercionWithBlock:v36];
   [(SRUIFDictionarySchema *)v10 setObjectCoercion:v12 forKey:@"ChildNodes"];
 
   v13 = objc_alloc_init(SRUIFTreeNode);
-  v14 = [(SRUIFDictionarySchema *)v10 coerceObject:v8 error:a4];
+  v14 = [(SRUIFDictionarySchema *)v10 coerceObject:listCopy error:error];
   v15 = v14;
   if (v14)
   {
     v16 = [v14 objectForKey:@"Item"];
     v17 = 0;
     v30 = v16;
-    v31 = v8;
+    v31 = listCopy;
     if (v11)
     {
       v18 = v16;
@@ -144,16 +144,16 @@ void __93__SRUIFTreeNodePropertyListSerialization__propertyListWithTreeNode_item
       while (v24);
     }
 
-    if (a4)
+    if (error)
     {
       v27 = v17;
-      *a4 = v17;
+      *error = v17;
     }
 
     v13 = v13;
 
     v20 = v13;
-    v8 = v31;
+    listCopy = v31;
   }
 
   else
@@ -239,15 +239,15 @@ void __87__SRUIFTreeNodePropertyListSerialization__treeNodeWithPropertyList_erro
   }
 }
 
-- (id)treeNodeWithPropertyList:(id)a3 error:(id *)a4 itemCreation:(id)a5
+- (id)treeNodeWithPropertyList:(id)list error:(id *)error itemCreation:(id)creation
 {
-  v8 = a5;
-  v9 = a3;
+  creationCopy = creation;
+  listCopy = list;
   v10 = objc_alloc_init(SRUIFDictionarySchema);
   v11 = [SRUIFCoercion typeAssertionWithClass:objc_opt_class()];
   [(SRUIFDictionarySchema *)v10 setObjectCoercion:v11 forKey:@"Version"];
 
-  v12 = [(SRUIFDictionarySchema *)v10 coerceObject:v9 error:a4];
+  v12 = [(SRUIFDictionarySchema *)v10 coerceObject:listCopy error:error];
 
   if (!v12)
   {
@@ -255,26 +255,26 @@ void __87__SRUIFTreeNodePropertyListSerialization__treeNodeWithPropertyList_erro
   }
 
   v13 = [v12 objectForKey:@"Version"];
-  v14 = [v13 integerValue];
+  integerValue = [v13 integerValue];
 
-  if (v14 == 1)
+  if (integerValue == 1)
   {
-    a4 = [(SRUIFTreeNodePropertyListSerialization *)self _treeNodeWithPropertyList:v12 error:a4 itemCreation:v8];
+    error = [(SRUIFTreeNodePropertyListSerialization *)self _treeNodeWithPropertyList:v12 error:error itemCreation:creationCopy];
     goto LABEL_7;
   }
 
-  if (a4)
+  if (error)
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to create tree node from property list with version %ld", v14];
-    *a4 = [SRUIFConversationError errorWithCode:400 localizedFailureReason:v15];
+    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to create tree node from property list with version %ld", integerValue];
+    *error = [SRUIFConversationError errorWithCode:400 localizedFailureReason:v15];
 
 LABEL_6:
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
 @end

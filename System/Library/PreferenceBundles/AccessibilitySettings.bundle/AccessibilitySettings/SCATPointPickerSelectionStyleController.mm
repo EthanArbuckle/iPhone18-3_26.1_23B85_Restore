@@ -1,15 +1,15 @@
 @interface SCATPointPickerSelectionStyleController
-- (double)maximumValueForSpecifier:(id)a3;
-- (double)minimumValueForSpecifier:(id)a3;
-- (double)stepValueForSpecifier:(id)a3;
-- (double)valueForSpecifier:(id)a3;
-- (id)pointPickerEnabled:(id)a3;
+- (double)maximumValueForSpecifier:(id)specifier;
+- (double)minimumValueForSpecifier:(id)specifier;
+- (double)stepValueForSpecifier:(id)specifier;
+- (double)valueForSpecifier:(id)specifier;
+- (id)pointPickerEnabled:(id)enabled;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)setPointPickerEnabled:(id)a3 specifier:(id)a4;
-- (void)specifier:(id)a3 setValue:(double)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)stringValueForSpecifier:(id)specifier;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)setPointPickerEnabled:(id)enabled specifier:(id)specifier;
+- (void)specifier:(id)specifier setValue:(double)value;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -20,10 +20,10 @@
   v6.receiver = self;
   v6.super_class = SCATPointPickerSelectionStyleController;
   [(SCATPointPickerSelectionStyleController *)&v6 viewDidLoad];
-  v3 = [(SCATPointPickerSelectionStyleController *)self table];
+  table = [(SCATPointPickerSelectionStyleController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXUISettingsEditableTableCellWithStepper cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (id)specifiers
@@ -85,7 +85,7 @@
   return v3;
 }
 
-- (id)pointPickerEnabled:(id)a3
+- (id)pointPickerEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchScannerPointPickerModeEnabled]);
@@ -93,57 +93,57 @@
   return v4;
 }
 
-- (void)setPointPickerEnabled:(id)a3 specifier:(id)a4
+- (void)setPointPickerEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchScannerPointPickerModeEnabled:v4];
+  [v5 setAssistiveTouchScannerPointPickerModeEnabled:bOOLValue];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = SCATPointPickerSelectionStyleController;
-  v6 = a4;
-  v7 = [(SCATPointPickerSelectionStyleController *)&v14 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(SCATPointPickerSelectionStyleController *)self specifierForIndexPath:v6, v14.receiver, v14.super_class];
+  pathCopy = path;
+  v7 = [(SCATPointPickerSelectionStyleController *)&v14 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(SCATPointPickerSelectionStyleController *)self specifierForIndexPath:pathCopy, v14.receiver, v14.super_class];
 
   v9 = [v8 propertyForKey:@"PointPickerSelectionStyle"];
   if (v9)
   {
     v10 = [v8 propertyForKey:@"PointPickerSelectionStyle"];
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
 
     v12 = +[AXSettings sharedInstance];
-    [v7 setChecked:{objc_msgSend(v12, "switchControlPointPickerSelectionStyle") == v11}];
+    [v7 setChecked:{objc_msgSend(v12, "switchControlPointPickerSelectionStyle") == integerValue}];
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = SCATPointPickerSelectionStyleController;
-  [(SCATPointPickerSelectionStyleController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(SCATPointPickerSelectionStyleController *)self specifierForIndexPath:v6];
+  [(SCATPointPickerSelectionStyleController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(SCATPointPickerSelectionStyleController *)self specifierForIndexPath:pathCopy];
   v8 = [v7 propertyForKey:@"PointPickerSelectionStyle"];
   if (v8)
   {
     v9 = [v7 propertyForKey:@"PointPickerSelectionStyle"];
-    v10 = [v9 integerValue];
+    integerValue = [v9 integerValue];
 
     v11 = +[AXSettings sharedInstance];
-    [v11 setSwitchControlPointPickerSelectionStyle:v10];
+    [v11 setSwitchControlPointPickerSelectionStyle:integerValue];
 
-    [(SCATPointPickerSelectionStyleController *)self updateTableCheckedSelection:v6];
+    [(SCATPointPickerSelectionStyleController *)self updateTableCheckedSelection:pathCopy];
   }
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSIDKey];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"AxisSweepTimeStepper"];
 
   v5 = 0.0;
@@ -157,9 +157,9 @@
   return v5;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
-  v4 = [a3 propertyForKey:PSIDKey];
+  v4 = [specifier propertyForKey:PSIDKey];
   v5 = [v4 isEqualToString:@"AxisSweepTimeStepper"];
 
   if (v5)
@@ -171,9 +171,9 @@
   }
 }
 
-- (double)stepValueForSpecifier:(id)a3
+- (double)stepValueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSIDKey];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"AxisSweepTimeStepper"];
 
   result = 0.0;
@@ -185,9 +185,9 @@
   return result;
 }
 
-- (double)minimumValueForSpecifier:(id)a3
+- (double)minimumValueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSIDKey];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"AxisSweepTimeStepper"];
 
   result = kAXSAssistiveTouchAxisSweepSpeedMinUserPreference;
@@ -199,9 +199,9 @@
   return result;
 }
 
-- (double)maximumValueForSpecifier:(id)a3
+- (double)maximumValueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSIDKey];
+  v3 = [specifier propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"AxisSweepTimeStepper"];
 
   result = kAXSAssistiveTouchAxisSweepSpeedMaxUserPreference;
@@ -213,9 +213,9 @@
   return result;
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(SCATPointPickerSelectionStyleController *)self valueForSpecifier:a3];
+  [(SCATPointPickerSelectionStyleController *)self valueForSpecifier:specifier];
   v3 = [NSNumber numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 

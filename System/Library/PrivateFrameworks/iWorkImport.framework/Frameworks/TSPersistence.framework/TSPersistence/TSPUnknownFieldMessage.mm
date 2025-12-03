@@ -1,21 +1,21 @@
 @interface TSPUnknownFieldMessage
 - (id)debugDescription;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSPUnknownFieldMessage
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   v42.receiver = self;
   v42.super_class = TSPUnknownFieldMessage;
-  [(TSPUnknownField *)&v42 loadFromUnarchiver:v4];
+  [(TSPUnknownField *)&v42 loadFromUnarchiver:unarchiverCopy];
   current_size = self->super._fieldInfo.object_references_.current_size_;
   if (current_size >= 1)
   {
-    v9 = objc_msgSend_strongReferences(v4, v5, v6);
+    v9 = objc_msgSend_strongReferences(unarchiverCopy, v5, v6);
     v10 = 0;
     v32 = 0;
     v33 = 0;
@@ -104,13 +104,13 @@ LABEL_21:
         v37[2] = sub_276AD47E4;
         v37[3] = &unk_27A6E4220;
         v37[4] = self;
-        objc_msgSend_readRepeatedUnknownLazyReferenceMessage_ownershipMode_completion_(v4, v8, &v32, 0, v37);
+        objc_msgSend_readRepeatedUnknownLazyReferenceMessage_ownershipMode_completion_(unarchiverCopy, v8, &v32, 0, v37);
         v36[0] = MEMORY[0x277D85DD0];
         v36[1] = 3221225472;
         v36[2] = sub_276AD47F8;
         v36[3] = &unk_27A6E4220;
         v36[4] = self;
-        objc_msgSend_readRepeatedUnknownLazyReferenceMessage_ownershipMode_completion_(v4, v20, &v39, 1, v36);
+        objc_msgSend_readRepeatedUnknownLazyReferenceMessage_ownershipMode_completion_(unarchiverCopy, v20, &v39, 1, v36);
         sub_276A07EA8(&v39);
         sub_276A07EA8(&v32);
         break;
@@ -131,7 +131,7 @@ LABEL_21:
       v27 = *(self->super._fieldInfo.data_references_.arena_or_elements_ + v25);
       LODWORD(v34) = v34 | 1;
       v35 = v27;
-      v30 = objc_msgSend_readDataReferenceMessage_(v4, v28, &v32);
+      v30 = objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v28, &v32);
       if (v30)
       {
         objc_msgSend_addObject_(v24, v29, v30);
@@ -147,13 +147,13 @@ LABEL_21:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  archiverCopy = archiver;
   v38.receiver = self;
   v38.super_class = TSPUnknownFieldMessage;
-  [(TSPUnknownField *)&v38 saveToArchiver:v4];
+  [(TSPUnknownField *)&v38 saveToArchiver:archiverCopy];
   if (objc_msgSend_count(self->_strongObjects, v5, v6))
   {
     TSP::Reference::Reference(v37, 0);
@@ -176,7 +176,7 @@ LABEL_21:
             objc_enumerationMutation(v11);
           }
 
-          objc_msgSend_setStrongLazyReference_message_(v4, v13, *(*(&v33 + 1) + 8 * v16++), v37);
+          objc_msgSend_setStrongLazyReference_message_(archiverCopy, v13, *(*(&v33 + 1) + 8 * v16++), v37);
         }
 
         while (v14 != v16);
@@ -211,7 +211,7 @@ LABEL_21:
             objc_enumerationMutation(v21);
           }
 
-          objc_msgSend_setWeakLazyReference_message_(v4, v23, *(*(&v29 + 1) + 8 * v26++), v37);
+          objc_msgSend_setWeakLazyReference_message_(archiverCopy, v23, *(*(&v29 + 1) + 8 * v26++), v37);
         }
 
         while (v24 != v26);
@@ -227,7 +227,7 @@ LABEL_21:
   if (objc_msgSend_count(self->_datas, v17, v18))
   {
     memset(v37, 0, 24);
-    objc_msgSend_setDataReferenceArray_message_(v4, v27, self->_datas, v37);
+    objc_msgSend_setDataReferenceArray_message_(archiverCopy, v27, self->_datas, v37);
     sub_276A08184(v37);
   }
 

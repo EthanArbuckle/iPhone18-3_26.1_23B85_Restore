@@ -1,26 +1,26 @@
 @interface QLMovieItemAggregatedViewController
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
 @end
 
 @implementation QLMovieItemAggregatedViewController
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contentsCopy = contents;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = MEMORY[0x277CE63D8];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __99__QLMovieItemAggregatedViewController_loadPreviewControllerWithContents_context_completionHandler___block_invoke;
   v15[3] = &unk_278B585C0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = contentsCopy;
+  v17 = contextCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = contextCopy;
+  v14 = contentsCopy;
   [v11 assetIsAutoloopMedia:v14 completionHandler:v15];
 }
 

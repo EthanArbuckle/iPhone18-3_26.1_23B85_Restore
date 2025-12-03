@@ -1,11 +1,11 @@
 @interface PXLemonadeViewSwiftFactory
-+ (id)sharedLibraryBannerViewForConfiguration:(id)a3 delegate:(id)a4;
++ (id)sharedLibraryBannerViewForConfiguration:(id)configuration delegate:(id)delegate;
 - (PXLemonadeViewSwiftFactory)init;
 @end
 
 @implementation PXLemonadeViewSwiftFactory
 
-+ (id)sharedLibraryBannerViewForConfiguration:(id)a3 delegate:(id)a4
++ (id)sharedLibraryBannerViewForConfiguration:(id)configuration delegate:(id)delegate
 {
   v6 = type metadata accessor for SharedLibraryBannerView();
   v7 = v6 - 8;
@@ -13,13 +13,13 @@
   v9 = &v19 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v10);
   v12 = (&v19 - v11);
-  v13 = a3;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  sub_1A4281BD8(v13, v12);
+  sub_1A4281BD8(configurationCopy, v12);
   v14 = *(v7 + 40);
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
-  *(v12 + v14) = a4;
+  *(v12 + v14) = delegate;
   sub_1A4840AB4(v12, v9);
   sub_1A4840B18();
   v16 = objc_allocWithZone(v15);

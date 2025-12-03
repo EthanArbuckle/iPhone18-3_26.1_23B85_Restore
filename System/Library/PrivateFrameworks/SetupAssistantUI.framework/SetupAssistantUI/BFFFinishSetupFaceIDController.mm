@@ -1,8 +1,8 @@
 @interface BFFFinishSetupFaceIDController
 + (id)finishSetupFaceIDController;
 - (BFFFinishSetupFaceIDController)init;
-- (id)createViewControllerWithPasscode:(id)a3 completion:(id)a4;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (id)createViewControllerWithPasscode:(id)passcode completion:(id)completion;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation BFFFinishSetupFaceIDController
@@ -22,9 +22,9 @@
   return [(BFFFinishSetupBiometricAndPasscodeController *)&v4 initWithFlowSkipIdentifier:v2];
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(BFFFinishSetupFaceIDViewController);
   viewController = self->_viewController;
   self->_viewController = v5;
@@ -34,8 +34,8 @@
   v9[1] = 3221225472;
   v9[2] = __78__BFFFinishSetupFaceIDController_performExtendedInitializationWithCompletion___block_invoke;
   v9[3] = &unk_279BB4F60;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(BFFFaceIDViewController *)v7 performExtendedInitializationWithCompletion:v9];
 }
 
@@ -59,18 +59,18 @@ void __78__BFFFinishSetupFaceIDController_performExtendedInitializationWithCompl
   }
 }
 
-- (id)createViewControllerWithPasscode:(id)a3 completion:(id)a4
+- (id)createViewControllerWithPasscode:(id)passcode completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [(BFFFinishSetupFaceIDViewController *)self->_viewController setPasscode:v6];
+  passcodeCopy = passcode;
+  completionCopy = completion;
+  [(BFFFinishSetupFaceIDViewController *)self->_viewController setPasscode:passcodeCopy];
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__BFFFinishSetupFaceIDController_createViewControllerWithPasscode_completion___block_invoke;
   v11[3] = &unk_279BB4C58;
   objc_copyWeak(&v13, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v12 = v8;
   [(BFFFinishSetupFaceIDViewController *)self->_viewController setCompletion:v11];
   v9 = self->_viewController;

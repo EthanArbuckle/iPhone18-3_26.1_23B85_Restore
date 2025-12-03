@@ -1,21 +1,21 @@
 @interface CKDPPackageManifestItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLastItem:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLastItem:(BOOL)item;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPPackageManifestItem
 
-- (void)setHasLastItem:(BOOL)a3
+- (void)setHasLastItem:(BOOL)item
 {
-  if (a3)
+  if (item)
   {
     v3 = 2;
   }
@@ -68,14 +68,14 @@
   return v6;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = objc_msgSend_position(a3, a2, a3);
-  if (v5 < objc_msgSend_length(a3, v6, v7))
+  v5 = objc_msgSend_position(from, a2, from);
+  if (v5 < objc_msgSend_length(from, v6, v7))
   {
     do
     {
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
         break;
       }
@@ -86,20 +86,20 @@
       while (1)
       {
         v82 = 0;
-        v13 = objc_msgSend_position(a3, v8, v9) + 1;
-        if (v13 >= objc_msgSend_position(a3, v14, v15) && (v18 = objc_msgSend_position(a3, v16, v17) + 1, v18 <= objc_msgSend_length(a3, v19, v20)))
+        v13 = objc_msgSend_position(from, v8, v9) + 1;
+        if (v13 >= objc_msgSend_position(from, v14, v15) && (v18 = objc_msgSend_position(from, v16, v17) + 1, v18 <= objc_msgSend_length(from, v19, v20)))
         {
-          v21 = objc_msgSend_data(a3, v16, v17);
-          v24 = objc_msgSend_position(a3, v22, v23);
+          v21 = objc_msgSend_data(from, v16, v17);
+          v24 = objc_msgSend_position(from, v22, v23);
           objc_msgSend_getBytes_range_(v21, v25, &v82, v24, 1);
 
-          v28 = objc_msgSend_position(a3, v26, v27);
-          objc_msgSend_setPosition_(a3, v29, v28 + 1);
+          v28 = objc_msgSend_position(from, v26, v27);
+          objc_msgSend_setPosition_(from, v29, v28 + 1);
         }
 
         else
         {
-          objc_msgSend__setError(a3, v16, v17);
+          objc_msgSend__setError(from, v16, v17);
         }
 
         v12 |= (v82 & 0x7F) << v10;
@@ -117,9 +117,9 @@
         }
       }
 
-      v31 = objc_msgSend_hasError(a3, v8, v9) ? 0 : v12;
+      v31 = objc_msgSend_hasError(from, v8, v9) ? 0 : v12;
 LABEL_15:
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
         break;
       }
@@ -140,20 +140,20 @@ LABEL_15:
         while (1)
         {
           v84 = 0;
-          v59 = objc_msgSend_position(a3, v32, v9) + 1;
-          if (v59 >= objc_msgSend_position(a3, v60, v61) && (v64 = objc_msgSend_position(a3, v62, v63) + 1, v64 <= objc_msgSend_length(a3, v65, v66)))
+          v59 = objc_msgSend_position(from, v32, v9) + 1;
+          if (v59 >= objc_msgSend_position(from, v60, v61) && (v64 = objc_msgSend_position(from, v62, v63) + 1, v64 <= objc_msgSend_length(from, v65, v66)))
           {
-            v67 = objc_msgSend_data(a3, v62, v63);
-            v70 = objc_msgSend_position(a3, v68, v69);
+            v67 = objc_msgSend_data(from, v62, v63);
+            v70 = objc_msgSend_position(from, v68, v69);
             objc_msgSend_getBytes_range_(v67, v71, &v84, v70, 1);
 
-            v74 = objc_msgSend_position(a3, v72, v73);
-            objc_msgSend_setPosition_(a3, v75, v74 + 1);
+            v74 = objc_msgSend_position(from, v72, v73);
+            objc_msgSend_setPosition_(from, v75, v74 + 1);
           }
 
           else
           {
-            objc_msgSend__setError(a3, v62, v63);
+            objc_msgSend__setError(from, v62, v63);
           }
 
           v58 |= (v84 & 0x7F) << v56;
@@ -171,7 +171,7 @@ LABEL_15:
           }
         }
 
-        v76 = (v58 != 0) & ~objc_msgSend_hasError(a3, v32, v9);
+        v76 = (v58 != 0) & ~objc_msgSend_hasError(from, v32, v9);
 LABEL_46:
         self->_lastItem = v76;
       }
@@ -185,20 +185,20 @@ LABEL_46:
         while (1)
         {
           v83 = 0;
-          v38 = objc_msgSend_position(a3, v32, v9) + 1;
-          if (v38 >= objc_msgSend_position(a3, v39, v40) && (v43 = objc_msgSend_position(a3, v41, v42) + 1, v43 <= objc_msgSend_length(a3, v44, v45)))
+          v38 = objc_msgSend_position(from, v32, v9) + 1;
+          if (v38 >= objc_msgSend_position(from, v39, v40) && (v43 = objc_msgSend_position(from, v41, v42) + 1, v43 <= objc_msgSend_length(from, v44, v45)))
           {
-            v46 = objc_msgSend_data(a3, v41, v42);
-            v49 = objc_msgSend_position(a3, v47, v48);
+            v46 = objc_msgSend_data(from, v41, v42);
+            v49 = objc_msgSend_position(from, v47, v48);
             objc_msgSend_getBytes_range_(v46, v50, &v83, v49, 1);
 
-            v53 = objc_msgSend_position(a3, v51, v52);
-            objc_msgSend_setPosition_(a3, v54, v53 + 1);
+            v53 = objc_msgSend_position(from, v51, v52);
+            objc_msgSend_setPosition_(from, v54, v53 + 1);
           }
 
           else
           {
-            objc_msgSend__setError(a3, v41, v42);
+            objc_msgSend__setError(from, v41, v42);
           }
 
           v37 |= (v83 & 0x7F) << v35;
@@ -216,7 +216,7 @@ LABEL_46:
           }
         }
 
-        v55 = objc_msgSend_hasError(a3, v32, v9) ? 0 : v37;
+        v55 = objc_msgSend_hasError(from, v32, v9) ? 0 : v37;
 LABEL_44:
         self->_size = v55;
       }
@@ -237,24 +237,24 @@ LABEL_44:
         }
       }
 
-      v78 = objc_msgSend_position(a3, v32, v9);
+      v78 = objc_msgSend_position(from, v32, v9);
     }
 
-    while (v78 < objc_msgSend_length(a3, v79, v80));
+    while (v78 < objc_msgSend_length(from, v79, v80));
   }
 
-  LOBYTE(v77) = objc_msgSend_hasError(a3, v8, v9) ^ 1;
+  LOBYTE(v77) = objc_msgSend_hasError(from, v8, v9) ^ 1;
   return v77;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_signature)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -262,7 +262,7 @@ LABEL_44:
   {
     size = self->_size;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -270,42 +270,42 @@ LABEL_44:
   {
     lastItem = self->_lastItem;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   signature = self->_signature;
   if (signature)
   {
-    v8 = v4;
-    objc_msgSend_setSignature_(v4, v5, signature);
-    v4 = v8;
+    v8 = toCopy;
+    objc_msgSend_setSignature_(toCopy, v5, signature);
+    toCopy = v8;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_size;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 1) = self->_size;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 24) = self->_lastItem;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 24) = self->_lastItem;
+    *(toCopy + 28) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_signature, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_signature, v11, zone);
   v13 = *(v10 + 16);
   *(v10 + 16) = v12;
 
@@ -326,17 +326,17 @@ LABEL_44:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_11;
   }
 
   signature = self->_signature;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (signature | v9)
   {
     if (!objc_msgSend_isEqual_(signature, v7, v9))
@@ -347,21 +347,21 @@ LABEL_44:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_size != v4[1])
+    if ((*(equalCopy + 28) & 1) == 0 || self->_size != equalCopy[1])
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_11;
   }
 
-  v10 = (*(v4 + 28) & 2) == 0;
+  v10 = (*(equalCopy + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0)
+    if ((*(equalCopy + 28) & 2) == 0)
     {
 LABEL_11:
       v10 = 0;
@@ -370,13 +370,13 @@ LABEL_11:
 
     if (self->_lastItem)
     {
-      if ((v4[3] & 1) == 0)
+      if ((equalCopy[3] & 1) == 0)
       {
         goto LABEL_11;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_11;
     }
@@ -416,28 +416,28 @@ LABEL_3:
   return v5 ^ v4 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = *(v4 + 2);
+  fromCopy = from;
+  v6 = *(fromCopy + 2);
   if (v6)
   {
-    v8 = v4;
+    v8 = fromCopy;
     objc_msgSend_setSignature_(self, v5, v6);
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 28);
+  v7 = *(fromCopy + 28);
   if (v7)
   {
-    self->_size = *(v4 + 1);
+    self->_size = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 28);
+    v7 = *(fromCopy + 28);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_lastItem = *(v4 + 24);
+    self->_lastItem = *(fromCopy + 24);
     *&self->_has |= 2u;
   }
 }

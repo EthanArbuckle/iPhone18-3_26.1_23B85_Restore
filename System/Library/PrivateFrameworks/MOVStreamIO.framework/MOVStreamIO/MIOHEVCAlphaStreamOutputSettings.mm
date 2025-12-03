@@ -1,48 +1,48 @@
 @interface MIOHEVCAlphaStreamOutputSettings
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7;
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile;
 @end
 
 @implementation MIOHEVCAlphaStreamOutputSettings
 
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v7 = a7;
-  v8 = a6;
+  profileCopy = profile;
+  encoderConfigCopy = encoderConfig;
   v44[4] = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  configCopy = config;
   v38 = *MEMORY[0x277CE6308];
-  v12 = [v11 objectForKey:@"StreamEncoderType"];
-  v13 = [v12 intValue];
+  v12 = [configCopy objectForKey:@"StreamEncoderType"];
+  intValue = [v12 intValue];
 
-  if (v13 == 10)
+  if (intValue == 10)
   {
     +[MIOMastery masteryLossless];
   }
 
   else
   {
-    [MIOMastery masteryFromConfig:v11 formatDescription:a4 frameRate:a5];
+    [MIOMastery masteryFromConfig:configCopy formatDescription:description frameRate:rate];
   }
   v14 = ;
-  if (v8)
+  if (encoderConfigCopy)
   {
     v15 = *MEMORY[0x277CE25F0];
     v44[0] = MEMORY[0x277CBEC38];
     v16 = *MEMORY[0x277CE2548];
     v43[0] = v15;
     v43[1] = v16;
-    v17 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+    v17 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
     v43[2] = *MEMORY[0x277CE25A8];
     v44[1] = v17;
     v44[2] = &unk_2868E3B38;
-    v18 = [v14 propertyKey];
-    v43[3] = v18;
-    v19 = [v14 propertyValue];
-    v44[3] = v19;
+    propertyKey = [v14 propertyKey];
+    v43[3] = propertyKey;
+    propertyValue = [v14 propertyValue];
+    v44[3] = propertyValue;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:4];
     v21 = [v20 mutableCopy];
 
-    if (v7)
+    if (profileCopy)
     {
       [MIOHEVCStreamOutputSettings applyHighPerfSettings:v21];
     }
@@ -54,27 +54,27 @@
 
   else
   {
-    [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:a5];
+    [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:rate];
     v26 = v25;
     v41[0] = *MEMORY[0x277CE6340];
-    v27 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+    v27 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
     v42[0] = v27;
     v41[1] = *MEMORY[0x277CE6368];
     v28 = [MEMORY[0x277CCABB0] numberWithDouble:v26];
     v42[1] = v28;
-    v29 = [v14 propertyKey];
-    v41[2] = v29;
-    v30 = [v14 propertyValue];
-    v42[2] = v30;
+    propertyKey2 = [v14 propertyKey];
+    v41[2] = propertyKey2;
+    propertyValue2 = [v14 propertyValue];
+    v42[2] = propertyValue2;
     v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:3];
     v21 = [v31 mutableCopy];
 
-    if (v7)
+    if (profileCopy)
     {
       [MIOHEVCStreamOutputSettings applyHighPerfSettings:v21];
     }
 
-    Dimensions = CMVideoFormatDescriptionGetDimensions(a4);
+    Dimensions = CMVideoFormatDescriptionGetDimensions(description);
     v33 = *MEMORY[0x277CE62C8];
     v40[0] = v38;
     v34 = *MEMORY[0x277CE63C0];
@@ -92,7 +92,7 @@
     v24 = [[MOVStreamOutputSettings alloc] initWithSettings:v22];
   }
 
-  [(MOVStreamOutputSettings *)v24 applyAdditionalCompressionPropertiesFromRecordingConfig:v11];
+  [(MOVStreamOutputSettings *)v24 applyAdditionalCompressionPropertiesFromRecordingConfig:configCopy];
 
   return v24;
 }

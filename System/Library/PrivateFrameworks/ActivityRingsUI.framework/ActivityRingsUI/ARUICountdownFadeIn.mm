@@ -1,7 +1,7 @@
 @interface ARUICountdownFadeIn
 - (id)identifier;
 - (id)timingFunction;
-- (void)applyToCountdownView:(id)a3 completion:(id)a4;
+- (void)applyToCountdownView:(id)view completion:(id)completion;
 @end
 
 @implementation ARUICountdownFadeIn
@@ -20,18 +20,18 @@
   return [v2 identifier];
 }
 
-- (void)applyToCountdownView:(id)a3 completion:(id)a4
+- (void)applyToCountdownView:(id)view completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  completionCopy = completion;
   [(ARUICountdownFadeIn *)self duration];
   v9 = v8;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __55__ARUICountdownFadeIn_applyToCountdownView_completion___block_invoke;
   v16[3] = &unk_1E83CDFF0;
-  v17 = v6;
-  v10 = v6;
+  v17 = viewCopy;
+  v10 = viewCopy;
   [ARUIRingGroup animateWithDuration:v16 animations:0 curve:0 completion:v9];
   [(ARUICountdownFadeIn *)self duration];
   v12 = dispatch_time(0, (v11 * 1000000000.0));
@@ -39,8 +39,8 @@
   v14[1] = 3221225472;
   v14[2] = __55__ARUICountdownFadeIn_applyToCountdownView_completion___block_invoke_2;
   v14[3] = &unk_1E83CE018;
-  v15 = v7;
-  v13 = v7;
+  v15 = completionCopy;
+  v13 = completionCopy;
   dispatch_after(v12, MEMORY[0x1E69E96A0], v14);
 }
 

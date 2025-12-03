@@ -1,23 +1,23 @@
 @interface CKEditableSearchResultCell
-- (void)_ck_setEditing:(BOOL)a3;
+- (void)_ck_setEditing:(BOOL)editing;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CKEditableSearchResultCell
 
-- (void)_ck_setEditing:(BOOL)a3
+- (void)_ck_setEditing:(BOOL)editing
 {
-  if (self->__ck_editing != a3)
+  if (self->__ck_editing != editing)
   {
-    self->__ck_editing = a3;
-    if (a3)
+    self->__ck_editing = editing;
+    if (editing)
     {
       v5 = objc_alloc(MEMORY[0x1E69DCAE0]);
       v6 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-      v7 = [(CKEditableSearchResultCell *)self contentView];
-      [v7 addSubview:v6];
+      contentView = [(CKEditableSearchResultCell *)self contentView];
+      [contentView addSubview:v6];
 
       [(CKEditableSearchResultCell *)self setCheckmarkView:v6];
       [(CKEditableSearchResultCell *)self setSelected:0];
@@ -25,8 +25,8 @@
 
     else
     {
-      v8 = [(CKEditableSearchResultCell *)self checkmarkView];
-      [v8 removeFromSuperview];
+      checkmarkView = [(CKEditableSearchResultCell *)self checkmarkView];
+      [checkmarkView removeFromSuperview];
 
       [(CKEditableSearchResultCell *)self setCheckmarkView:0];
     }
@@ -35,23 +35,23 @@
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v17[3] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = CKEditableSearchResultCell;
   [(CKEditableSearchResultCell *)&v16 setSelected:?];
   v5 = MEMORY[0x1E69DCAD8];
-  v6 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  v17[0] = v6;
-  v7 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  v17[1] = v7;
-  v8 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v17[2] = v8;
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  v17[0] = systemWhiteColor;
+  systemWhiteColor2 = [MEMORY[0x1E69DC888] systemWhiteColor];
+  v17[1] = systemWhiteColor2;
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v17[2] = systemBlueColor;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:3];
   v10 = [v5 _configurationWithHierarchicalColors:v9];
 
-  if (a3)
+  if (selected)
   {
     v11 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"checkmark.circle.fill"];
     v12 = [v11 imageWithSymbolConfiguration:v10];
@@ -60,13 +60,13 @@
   else
   {
     v11 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"circle"];
-    v13 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    v14 = [v11 imageWithTintColor:v13];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    v14 = [v11 imageWithTintColor:tertiaryLabelColor];
     v12 = [v14 imageWithRenderingMode:1];
   }
 
-  v15 = [(CKEditableSearchResultCell *)self checkmarkView];
-  [v15 setImage:v12];
+  checkmarkView = [(CKEditableSearchResultCell *)self checkmarkView];
+  [checkmarkView setImage:v12];
 }
 
 - (void)layoutSubviews
@@ -74,8 +74,8 @@
   v4.receiver = self;
   v4.super_class = CKEditableSearchResultCell;
   [(CKEditableSearchResultCell *)&v4 layoutSubviews];
-  v3 = [(CKEditableSearchResultCell *)self checkmarkView];
-  [v3 setHighlighted:{-[CKEditableSearchResultCell isSelected](self, "isSelected")}];
+  checkmarkView = [(CKEditableSearchResultCell *)self checkmarkView];
+  [checkmarkView setHighlighted:{-[CKEditableSearchResultCell isSelected](self, "isSelected")}];
 }
 
 - (void)prepareForReuse

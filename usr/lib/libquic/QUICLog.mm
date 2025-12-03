@@ -1,55 +1,55 @@
 @interface QUICLog
-+ (id)categoryString:(int)a3;
-+ (id)congestionStateString:(unsigned __int8)a3;
-+ (id)congestionTriggerString:(unsigned __int8)a3;
-+ (id)eventTypeString:(int)a3;
-+ (id)flowTypeString:(unsigned __int8)a3;
-+ (id)ownerString:(unsigned __int8)a3;
-+ (id)packetLostTriggerString:(unsigned __int8)a3;
-+ (id)packetSentReceivedTriggerString:(int)a3;
-+ (id)packetTypeString:(int)a3;
-+ (id)streamSideString:(unsigned __int8)a3;
-+ (id)streamTypeString:(unsigned __int8)a3;
-+ (int)packetType:(quic_packet *)a3;
++ (id)categoryString:(int)string;
++ (id)congestionStateString:(unsigned __int8)string;
++ (id)congestionTriggerString:(unsigned __int8)string;
++ (id)eventTypeString:(int)string;
++ (id)flowTypeString:(unsigned __int8)string;
++ (id)ownerString:(unsigned __int8)string;
++ (id)packetLostTriggerString:(unsigned __int8)string;
++ (id)packetSentReceivedTriggerString:(int)string;
++ (id)packetTypeString:(int)string;
++ (id)streamSideString:(unsigned __int8)string;
++ (id)streamTypeString:(unsigned __int8)string;
++ (int)packetType:(quic_packet *)type;
 - (QUICLog)init;
-- (id)addEventValues:(id)a3 event:(quiclog_event *)a4;
-- (id)addFrameList:(id)a3 frame_list:(quic_frame_list *)a4;
-- (id)addMandatoryCharPointerToObject:(id)a3 key:(id)a4 value:(const char *)a5 function_name:(const char *)a6;
-- (id)addMandatorySuperBoolToObject:(id)a3 key:(id)a4 value:(char)a5 function_name:(const char *)a6;
-- (id)addMandatoryUint64ToObject:(id)a3 key:(id)a4 value:(unint64_t)a5 function_name:(const char *)a6;
-- (id)addOptionalCharPointerToObject:(id)a3 key:(id)a4 value:(const char *)a5;
-- (id)addOptionalSuperBoolToObject:(id)a3 key:(id)a4 value:(char)a5;
-- (id)addOptionalUint64ToObject:(id)a3 key:(id)a4 value:(unint64_t)a5;
-- (id)addPacketHeader:(id)a3 header:(packet_header *)a4;
-- (id)dictToJsonString:(id)a3;
-- (id)dumpData:(id)a3;
-- (id)jsonStringToDict:(id)a3;
-- (id)processCongestionStateUpdated:(quiclog_event *)a3;
-- (id)processMetricsUpdated:(quiclog_event *)a3;
-- (id)processPacketLost:(quiclog_event *)a3;
-- (id)processPacketSentAndPacketReceived:(quiclog_event *)a3;
-- (id)processParametersSet:(quiclog_event *)a3;
-- (id)processStreamStateUpdated:(quiclog_event *)a3;
-- (id)processStreamTypeSet:(quiclog_event *)a3;
-- (quiclog_event)createEvent:(int)a3;
-- (quiclog_event)createEvent:(int)a3 timestamp:(unint64_t)a4;
+- (id)addEventValues:(id)values event:(quiclog_event *)event;
+- (id)addFrameList:(id)list frame_list:(quic_frame_list *)frame_list;
+- (id)addMandatoryCharPointerToObject:(id)object key:(id)key value:(const char *)value function_name:(const char *)function_name;
+- (id)addMandatorySuperBoolToObject:(id)object key:(id)key value:(char)value function_name:(const char *)function_name;
+- (id)addMandatoryUint64ToObject:(id)object key:(id)key value:(unint64_t)value function_name:(const char *)function_name;
+- (id)addOptionalCharPointerToObject:(id)object key:(id)key value:(const char *)value;
+- (id)addOptionalSuperBoolToObject:(id)object key:(id)key value:(char)value;
+- (id)addOptionalUint64ToObject:(id)object key:(id)key value:(unint64_t)value;
+- (id)addPacketHeader:(id)header header:(packet_header *)a4;
+- (id)dictToJsonString:(id)string;
+- (id)dumpData:(id)data;
+- (id)jsonStringToDict:(id)dict;
+- (id)processCongestionStateUpdated:(quiclog_event *)updated;
+- (id)processMetricsUpdated:(quiclog_event *)updated;
+- (id)processPacketLost:(quiclog_event *)lost;
+- (id)processPacketSentAndPacketReceived:(quiclog_event *)received;
+- (id)processParametersSet:(quiclog_event *)set;
+- (id)processStreamStateUpdated:(quiclog_event *)updated;
+- (id)processStreamTypeSet:(quiclog_event *)set;
+- (quiclog_event)createEvent:(int)event;
+- (quiclog_event)createEvent:(int)event timestamp:(unint64_t)timestamp;
 - (void)dealloc;
-- (void)deallocEvent:(quiclog_event *)a3;
-- (void)logCongestionStateUpdated:(unsigned __int8)a3 new_state:(unsigned __int8)a4 trigger:(unsigned __int8)a5;
-- (void)logStreamTypeSet:(unint64_t)a3 owner:(unsigned __int8)a4 old_state:(unsigned __int8)a5 new_state:(unsigned __int8)a6;
-- (void)metricsUpdated:(unint64_t)a3 smoothed_rtt:(unint64_t)a4 latest_rtt:(unint64_t)a5 rtt_variance:(unint64_t)a6 pto_count:(unint64_t)a7 congestion_window:(unint64_t)a8 bytes_in_flight:(unint64_t)a9 ssthresh:(unint64_t)a10 packets_in_flight:(unint64_t)a11 in_recovery:(char)a12;
-- (void)packetLost:(quic_packet *)a3 trigger:(unsigned __int8)a4;
-- (void)packetReceived:(quic_packet *)a3 isCoalesced:(BOOL)a4;
-- (void)packetSent:(quic_packet *)a3 timestamp:(unint64_t)a4;
-- (void)parametersSet:(unsigned __int8)a3 resumption_allowed:(char)a4 early_data_enabled:(char)a5 tls_cipher:(const char *)a6 original_dcid:(unsigned __int8 *)(a7 initial_scid:retry_scid:disable_active_migration:max_idle_timeout:max_udp_payload_size:ack_delay_exponent:max_ack_delay:active_cid_limit:initial_max_data:initial_msd_bidi_remote:initial_msd_bidi_local:initial_msd_uni:initial_ms_bidi:initial_ms_uni:preferred_address:;
-- (void)streamStateUpdated:(unint64_t)a3 stream_type:(unsigned __int8)a4 old_state:(unsigned __int8)a5 new_state:(unsigned __int8)a6 stream_side:(unsigned __int8)a7;
+- (void)deallocEvent:(quiclog_event *)event;
+- (void)logCongestionStateUpdated:(unsigned __int8)updated new_state:(unsigned __int8)new_state trigger:(unsigned __int8)trigger;
+- (void)logStreamTypeSet:(unint64_t)set owner:(unsigned __int8)owner old_state:(unsigned __int8)old_state new_state:(unsigned __int8)new_state;
+- (void)metricsUpdated:(unint64_t)updated smoothed_rtt:(unint64_t)smoothed_rtt latest_rtt:(unint64_t)latest_rtt rtt_variance:(unint64_t)rtt_variance pto_count:(unint64_t)pto_count congestion_window:(unint64_t)congestion_window bytes_in_flight:(unint64_t)bytes_in_flight ssthresh:(unint64_t)self0 packets_in_flight:(unint64_t)self1 in_recovery:(char)self2;
+- (void)packetLost:(quic_packet *)lost trigger:(unsigned __int8)trigger;
+- (void)packetReceived:(quic_packet *)received isCoalesced:(BOOL)coalesced;
+- (void)packetSent:(quic_packet *)sent timestamp:(unint64_t)timestamp;
+- (void)parametersSet:(unsigned __int8)set resumption_allowed:(char)resumption_allowed early_data_enabled:(char)early_data_enabled tls_cipher:(const char *)tls_cipher original_dcid:(unsigned __int8 *)(a7 initial_scid:retry_scid:disable_active_migration:max_idle_timeout:max_udp_payload_size:ack_delay_exponent:max_ack_delay:active_cid_limit:initial_max_data:initial_msd_bidi_remote:initial_msd_bidi_local:initial_msd_uni:initial_ms_bidi:initial_ms_uni:preferred_address:;
+- (void)streamStateUpdated:(unint64_t)updated stream_type:(unsigned __int8)stream_type old_state:(unsigned __int8)old_state new_state:(unsigned __int8)new_state stream_side:(unsigned __int8)stream_side;
 @end
 
 @implementation QUICLog
 
-- (id)jsonStringToDict:(id)a3
+- (id)jsonStringToDict:(id)dict
 {
-  v3 = [a3 dataUsingEncoding:1];
+  v3 = [dict dataUsingEncoding:1];
   v9 = 0;
   v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v3 options:0 error:&v9];
   v5 = v9;
@@ -67,10 +67,10 @@
   return v4;
 }
 
-- (id)dictToJsonString:(id)a3
+- (id)dictToJsonString:(id)string
 {
   v8 = 0;
-  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:2 error:&v8];
+  v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:string options:2 error:&v8];
   v4 = v8;
   v5 = v4;
   if (v3)
@@ -87,42 +87,42 @@
   return v6;
 }
 
-- (id)addMandatoryUint64ToObject:(id)a3 key:(id)a4 value:(unint64_t)a5 function_name:(const char *)a6
+- (id)addMandatoryUint64ToObject:(id)object key:(id)key value:(unint64_t)value function_name:(const char *)function_name
 {
-  v8 = a3;
-  if (a5 != -1)
+  objectCopy = object;
+  if (value != -1)
   {
     v9 = MEMORY[0x1E696AD98];
-    v10 = a4;
-    v11 = [v9 numberWithUnsignedLongLong:a5];
-    [v8 setValue:v11 forKey:v10];
+    keyCopy = key;
+    v11 = [v9 numberWithUnsignedLongLong:value];
+    [objectCopy setValue:v11 forKey:keyCopy];
   }
 
-  return v8;
+  return objectCopy;
 }
 
-- (id)addOptionalUint64ToObject:(id)a3 key:(id)a4 value:(unint64_t)a5
+- (id)addOptionalUint64ToObject:(id)object key:(id)key value:(unint64_t)value
 {
-  v7 = a3;
-  if (a5 != -1)
+  objectCopy = object;
+  if (value != -1)
   {
     v8 = MEMORY[0x1E696AD98];
-    v9 = a4;
-    v10 = [v8 numberWithUnsignedLongLong:a5];
-    [v7 setValue:v10 forKey:v9];
+    keyCopy = key;
+    v10 = [v8 numberWithUnsignedLongLong:value];
+    [objectCopy setValue:v10 forKey:keyCopy];
   }
 
-  return v7;
+  return objectCopy;
 }
 
-- (id)addMandatorySuperBoolToObject:(id)a3 key:(id)a4 value:(char)a5 function_name:(const char *)a6
+- (id)addMandatorySuperBoolToObject:(id)object key:(id)key value:(char)value function_name:(const char *)function_name
 {
-  v6 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v6 != -1)
+  valueCopy = value;
+  objectCopy = object;
+  keyCopy = key;
+  if (valueCopy != -1)
   {
-    if (v6 == 1)
+    if (valueCopy == 1)
     {
       v10 = @"true";
     }
@@ -132,20 +132,20 @@
       v10 = @"false";
     }
 
-    [v8 setValue:v10 forKey:v9];
+    [objectCopy setValue:v10 forKey:keyCopy];
   }
 
-  return v8;
+  return objectCopy;
 }
 
-- (id)addOptionalSuperBoolToObject:(id)a3 key:(id)a4 value:(char)a5
+- (id)addOptionalSuperBoolToObject:(id)object key:(id)key value:(char)value
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if (v5 != -1)
+  valueCopy = value;
+  objectCopy = object;
+  keyCopy = key;
+  if (valueCopy != -1)
   {
-    if (v5 == 1)
+    if (valueCopy == 1)
     {
       v9 = @"true";
     }
@@ -155,47 +155,47 @@
       v9 = @"false";
     }
 
-    [v7 setValue:v9 forKey:v8];
+    [objectCopy setValue:v9 forKey:keyCopy];
   }
 
-  return v7;
+  return objectCopy;
 }
 
-- (id)addMandatoryCharPointerToObject:(id)a3 key:(id)a4 value:(const char *)a5 function_name:(const char *)a6
+- (id)addMandatoryCharPointerToObject:(id)object key:(id)key value:(const char *)value function_name:(const char *)function_name
 {
-  v8 = a3;
-  if (a5)
+  objectCopy = object;
+  if (value)
   {
     v9 = MEMORY[0x1E696AEC0];
-    v10 = a4;
-    v11 = [v9 stringWithCString:a5 encoding:1];
-    [v8 setValue:v11 forKey:v10];
+    keyCopy = key;
+    v11 = [v9 stringWithCString:value encoding:1];
+    [objectCopy setValue:v11 forKey:keyCopy];
   }
 
-  return v8;
+  return objectCopy;
 }
 
-- (id)addOptionalCharPointerToObject:(id)a3 key:(id)a4 value:(const char *)a5
+- (id)addOptionalCharPointerToObject:(id)object key:(id)key value:(const char *)value
 {
-  v7 = a3;
-  if (a5)
+  objectCopy = object;
+  if (value)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = a4;
-    v10 = [v8 stringWithCString:a5 encoding:1];
-    [v7 setValue:v10 forKey:v9];
+    keyCopy = key;
+    v10 = [v8 stringWithCString:value encoding:1];
+    [objectCopy setValue:v10 forKey:keyCopy];
   }
 
-  return v7;
+  return objectCopy;
 }
 
-- (id)addFrameList:(id)a3 frame_list:(quic_frame_list *)a4
+- (id)addFrameList:(id)list frame_list:(quic_frame_list *)frame_list
 {
-  v94 = a3;
+  listCopy = list;
   v5 = 0x1E695D000uLL;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = v6;
-  if (a4->var0)
+  if (frame_list->var0)
   {
     v8 = 0;
     v9 = 0x1E696A000;
@@ -204,8 +204,8 @@
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v11 = v10;
-      var0 = a4->var0;
-      v13 = *a4->var0;
+      var0 = frame_list->var0;
+      v13 = *frame_list->var0;
       if (v13 > 12237311)
       {
         if ((v13 - 12237312) < 2)
@@ -631,7 +631,7 @@ LABEL_89:
       p_var1 = (v85 + 104);
       if (!v85)
       {
-        p_var1 = &a4->var1;
+        p_var1 = &frame_list->var1;
       }
 
       *p_var1 = v86;
@@ -682,12 +682,12 @@ LABEL_89:
       v9 = 0x1E696A000uLL;
     }
 
-    while (a4->var0);
+    while (frame_list->var0);
   }
 
-  [v94 setValue:v7 forKey:@"frames"];
+  [listCopy setValue:v7 forKey:@"frames"];
 
-  return v94;
+  return listCopy;
 }
 
 uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -716,9 +716,9 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
   return 1;
 }
 
-- (id)addPacketHeader:(id)a3 header:(packet_header *)a4
+- (id)addPacketHeader:(id)header header:(packet_header *)a4
 {
-  v5 = a3;
+  headerCopy = header;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a4->var0];
   [v6 setValue:v7 forKey:@"packet_number"];
@@ -762,42 +762,42 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
     [v6 setValue:v7 forKey:@"dcid"];
   }
 
-  [v5 setValue:v6 forKey:@"header"];
+  [headerCopy setValue:v6 forKey:@"header"];
 
-  return v5;
+  return headerCopy;
 }
 
-- (id)addEventValues:(id)a3 event:(quiclog_event *)a4
+- (id)addEventValues:(id)values event:(quiclog_event *)event
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4->var2];
-  [v5 addObject:v6];
-  v7 = [QUICLog categoryString:a4->var0];
-  [v5 addObject:v7];
+  valuesCopy = values;
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:event->var2];
+  [valuesCopy addObject:v6];
+  v7 = [QUICLog categoryString:event->var0];
+  [valuesCopy addObject:v7];
 
-  v8 = [QUICLog eventTypeString:a4->var0];
-  [v5 addObject:v8];
+  v8 = [QUICLog eventTypeString:event->var0];
+  [valuesCopy addObject:v8];
 
-  return v5;
+  return valuesCopy;
 }
 
-- (id)processStreamTypeSet:(quiclog_event *)a3
+- (id)processStreamTypeSet:(quiclog_event *)set
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(QUICLog *)self addEventValues:v5 event:a3];
+  v6 = [(QUICLog *)self addEventValues:v5 event:set];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [(QUICLog *)self addMandatoryUint64ToObject:v7 key:@"stream_id" value:a3->var3.var0.var0 function_name:"[QUICLog processStreamTypeSet:]"];
+  v8 = [(QUICLog *)self addMandatoryUint64ToObject:v7 key:@"stream_id" value:set->var3.var0.var0 function_name:"[QUICLog processStreamTypeSet:]"];
 
-  if (a3->var3.var2.var1 != 2)
+  if (set->var3.var2.var1 != 2)
   {
     v9 = [QUICLog ownerString:?];
     [v8 setValue:v9 forKey:@"owner"];
   }
 
-  v10 = [QUICLog streamTypeString:a3->var3.var2.var2];
+  v10 = [QUICLog streamTypeString:set->var3.var2.var2];
   [v8 setValue:v10 forKey:@"old"];
-  v11 = [QUICLog streamTypeString:a3->var3.var2.var3];
+  v11 = [QUICLog streamTypeString:set->var3.var2.var3];
 
   [v8 setValue:v11 forKey:@"new"];
   [v6 addObject:v8];
@@ -805,17 +805,17 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
   return v6;
 }
 
-- (id)processPacketLost:(quiclog_event *)a3
+- (id)processPacketLost:(quiclog_event *)lost
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(QUICLog *)self addEventValues:v5 event:a3];
+  v6 = [(QUICLog *)self addEventValues:v5 event:lost];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [QUICLog packetTypeString:a3->var3.var1.var0];
+  v8 = [QUICLog packetTypeString:lost->var3.var1.var0];
   [v7 setValue:v8 forKey:@"packet_type"];
 
-  if (a3->var3.var0.var1)
+  if (lost->var3.var0.var1)
   {
     v9 = [(QUICLog *)self addPacketHeader:v7 header:?];
 
@@ -833,19 +833,19 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
     qlog_internal(17, v16, 845);
   }
 
-  p_var2 = &a3->var3.var0.var2;
-  if (a3->var3.var0.var2)
+  p_var2 = &lost->var3.var0.var2;
+  if (lost->var3.var0.var2)
   {
     v11 = [(QUICLog *)self addFrameList:v7 frame_list:p_var2];
 
     v7 = v11;
   }
 
-  var1 = a3->var3.var1.var6.var1;
+  var1 = lost->var3.var1.var6.var1;
   if (var1 != 3)
   {
-    v13 = [QUICLog packetLostTriggerString:var1, p_var2];
-    [v7 setValue:v13 forKey:@"trigger"];
+    p_var2 = [QUICLog packetLostTriggerString:var1, p_var2];
+    [v7 setValue:p_var2 forKey:@"trigger"];
   }
 
   [v6 addObject:v7];
@@ -853,25 +853,25 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
   return v6;
 }
 
-- (id)processCongestionStateUpdated:(quiclog_event *)a3
+- (id)processCongestionStateUpdated:(quiclog_event *)updated
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(QUICLog *)self addEventValues:v5 event:a3];
+  v6 = [(QUICLog *)self addEventValues:v5 event:updated];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (a3->var3.var4.var0 != 5)
+  if (updated->var3.var4.var0 != 5)
   {
     v8 = [QUICLog congestionStateString:?];
     [v7 setValue:v8 forKey:@"old"];
   }
 
-  if (a3->var3.var4.var1 != 5)
+  if (updated->var3.var4.var1 != 5)
   {
     v9 = [QUICLog congestionStateString:?];
     [v7 setValue:v9 forKey:@"new"];
   }
 
-  if (a3->var3.var4.var2 != 2)
+  if (updated->var3.var4.var2 != 2)
   {
     v10 = [QUICLog congestionTriggerString:?];
     [v7 setValue:v10 forKey:@"trigger"];
@@ -882,65 +882,65 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
   return v6;
 }
 
-- (id)processMetricsUpdated:(quiclog_event *)a3
+- (id)processMetricsUpdated:(quiclog_event *)updated
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(QUICLog *)self addEventValues:v5 event:a3];
+  v6 = [(QUICLog *)self addEventValues:v5 event:updated];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [(QUICLog *)self addOptionalUint64ToObject:v7 key:@"min_rtt" value:a3->var3.var0.var0];
+  v8 = [(QUICLog *)self addOptionalUint64ToObject:v7 key:@"min_rtt" value:updated->var3.var0.var0];
 
-  v9 = [(QUICLog *)self addOptionalUint64ToObject:v8 key:@"smoothed_rtt" value:a3->var3.var0.var1];
+  v9 = [(QUICLog *)self addOptionalUint64ToObject:v8 key:@"smoothed_rtt" value:updated->var3.var0.var1];
 
-  v10 = [(QUICLog *)self addOptionalUint64ToObject:v9 key:@"latest_rtt" value:a3->var3.var0.var2];
+  v10 = [(QUICLog *)self addOptionalUint64ToObject:v9 key:@"latest_rtt" value:updated->var3.var0.var2];
 
-  v11 = [(QUICLog *)self addOptionalUint64ToObject:v10 key:@"rtt_variance" value:a3->var3.var0.var3];
+  v11 = [(QUICLog *)self addOptionalUint64ToObject:v10 key:@"rtt_variance" value:updated->var3.var0.var3];
 
-  v12 = [(QUICLog *)self addOptionalUint64ToObject:v11 key:@"pto_count" value:a3->var3.var0.var4];
+  v12 = [(QUICLog *)self addOptionalUint64ToObject:v11 key:@"pto_count" value:updated->var3.var0.var4];
 
-  v13 = [(QUICLog *)self addOptionalUint64ToObject:v12 key:@"congestion_window" value:a3->var3.var3.var5];
+  v13 = [(QUICLog *)self addOptionalUint64ToObject:v12 key:@"congestion_window" value:updated->var3.var3.var5];
 
-  v14 = [(QUICLog *)self addOptionalUint64ToObject:v13 key:@"bytes_in_flight" value:a3->var3.var3.var6];
+  v14 = [(QUICLog *)self addOptionalUint64ToObject:v13 key:@"bytes_in_flight" value:updated->var3.var3.var6];
 
-  if (a3->var3.var3.var7 != 0xFFFFFFFF)
+  if (updated->var3.var3.var7 != 0xFFFFFFFF)
   {
     v15 = [(QUICLog *)self addOptionalUint64ToObject:v14 key:@"ssthresh" value:?];
 
     v14 = v15;
   }
 
-  v16 = [(QUICLog *)self addOptionalUint64ToObject:v14 key:@"packets_in_flight" value:a3->var3.var3.var8];
+  v16 = [(QUICLog *)self addOptionalUint64ToObject:v14 key:@"packets_in_flight" value:updated->var3.var3.var8];
 
-  v17 = [(QUICLog *)self addOptionalSuperBoolToObject:v16 key:@"in_recovery" value:a3->var3.var3.var9];
+  v17 = [(QUICLog *)self addOptionalSuperBoolToObject:v16 key:@"in_recovery" value:updated->var3.var3.var9];
 
   [v6 addObject:v17];
 
   return v6;
 }
 
-- (id)processStreamStateUpdated:(quiclog_event *)a3
+- (id)processStreamStateUpdated:(quiclog_event *)updated
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(QUICLog *)self addEventValues:v5 event:a3];
+  v6 = [(QUICLog *)self addEventValues:v5 event:updated];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [(QUICLog *)self addMandatoryUint64ToObject:v7 key:@"stream_id" value:a3->var3.var0.var0 function_name:"[QUICLog processStreamStateUpdated:]"];
+  v8 = [(QUICLog *)self addMandatoryUint64ToObject:v7 key:@"stream_id" value:updated->var3.var0.var0 function_name:"[QUICLog processStreamStateUpdated:]"];
 
-  v9 = [QUICLog streamTypeString:a3->var3.var2.var1];
+  v9 = [QUICLog streamTypeString:updated->var3.var2.var1];
   [v8 setValue:v9 forKey:@"stream_type"];
-  if (a3->var3.var2.var2)
+  if (updated->var3.var2.var2)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithInt:?];
     [v8 setValue:v10 forKey:@"old"];
   }
 
-  if (a3->var3.var2.var3)
+  if (updated->var3.var2.var3)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithInt:?];
     [v8 setValue:v11 forKey:@"new"];
   }
 
-  if (a3->var3.var2.var5 != 2)
+  if (updated->var3.var2.var5 != 2)
   {
     v12 = [QUICLog streamSideString:?];
 
@@ -953,17 +953,17 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
   return v6;
 }
 
-- (id)processPacketSentAndPacketReceived:(quiclog_event *)a3
+- (id)processPacketSentAndPacketReceived:(quiclog_event *)received
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(QUICLog *)self addEventValues:v5 event:a3];
+  v6 = [(QUICLog *)self addEventValues:v5 event:received];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [QUICLog packetTypeString:a3->var3.var1.var0];
+  v8 = [QUICLog packetTypeString:received->var3.var1.var0];
   [v7 setValue:v8 forKey:@"packet_type"];
 
-  if (a3->var3.var0.var1)
+  if (received->var3.var0.var1)
   {
     v9 = [(QUICLog *)self addPacketHeader:v7 header:?];
 
@@ -981,16 +981,16 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
     qlog_internal(17, v15, 694);
   }
 
-  if (a3->var3.var0.var2)
+  if (received->var3.var0.var2)
   {
-    v10 = [(QUICLog *)self addFrameList:v7 frame_list:&a3->var3.var5 + 1];
+    v10 = [(QUICLog *)self addFrameList:v7 frame_list:&received->var3.var5 + 1];
 
     v7 = v10;
   }
 
-  v11 = [(QUICLog *)self addOptionalSuperBoolToObject:v7 key:@"is_coalesced" value:a3->var3.var1.var4];
+  v11 = [(QUICLog *)self addOptionalSuperBoolToObject:v7 key:@"is_coalesced" value:received->var3.var1.var4];
 
-  if (a3->var3.var1.var6.var0 != 5)
+  if (received->var3.var1.var6.var0 != 5)
   {
     v12 = [QUICLog packetSentReceivedTriggerString:?];
     [v11 setValue:v12 forKey:@"trigger"];
@@ -1001,23 +1001,23 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
   return v6;
 }
 
-- (id)processParametersSet:(quiclog_event *)a3
+- (id)processParametersSet:(quiclog_event *)set
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v46 = [(QUICLog *)self addEventValues:v5 event:a3];
+  v46 = [(QUICLog *)self addEventValues:v5 event:set];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (a3->var3.var0.var12 != 2)
+  if (set->var3.var0.var12 != 2)
   {
     v7 = [QUICLog ownerString:?];
     [v6 setValue:v7 forKey:@"owner"];
   }
 
-  v8 = [(QUICLog *)self addOptionalSuperBoolToObject:v6 key:@"resumption_allowed" value:a3->var3.var0.var9];
+  v8 = [(QUICLog *)self addOptionalSuperBoolToObject:v6 key:@"resumption_allowed" value:set->var3.var0.var9];
 
-  v9 = [(QUICLog *)self addOptionalSuperBoolToObject:v8 key:@"early_data_enabled" value:a3->var3.var0.var10];
+  v9 = [(QUICLog *)self addOptionalSuperBoolToObject:v8 key:@"early_data_enabled" value:set->var3.var0.var10];
 
-  v10 = [(QUICLog *)self addOptionalCharPointerToObject:v9 key:@"tls_cipher" value:&a3->var3.var5 + 40];
+  v10 = [(QUICLog *)self addOptionalCharPointerToObject:v9 key:@"tls_cipher" value:&set->var3.var5 + 40];
 
   v11 = &quic_cid_describe_cid_buf3;
   if (quic_cid_describe_state % 3 == 2)
@@ -1036,7 +1036,7 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
   }
 
   ++quic_cid_describe_state;
-  v13 = a3->var3.var0.var8[0];
+  v13 = set->var3.var0.var8[0];
   *v12 = 0u;
   v12[1] = 0u;
   *(v12 + 25) = 0u;
@@ -1052,7 +1052,7 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
       v14 = v13;
     }
 
-    v15 = &a3->var3.var0.var8[1];
+    v15 = &set->var3.var0.var8[1];
     do
     {
       v16 = *v15++;
@@ -1073,7 +1073,7 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
   }
 
   ++quic_cid_describe_state;
-  v20 = a3->var3.var0.var7[0];
+  v20 = set->var3.var0.var7[0];
   if (v18)
   {
     v21 = v19;
@@ -1099,7 +1099,7 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
       v22 = v20;
     }
 
-    v23 = &a3->var3.var0.var7[1];
+    v23 = &set->var3.var0.var7[1];
     do
     {
       v24 = *v23++;
@@ -1129,7 +1129,7 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
   }
 
   ++quic_cid_describe_state;
-  v28 = a3->var3.var0.var6[0];
+  v28 = set->var3.var0.var6[0];
   *v27 = 0u;
   v27[1] = 0u;
   *(v27 + 25) = 0u;
@@ -1145,7 +1145,7 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
       v29 = v28;
     }
 
-    var10 = a3->var3.var3.var10;
+    var10 = set->var3.var3.var10;
     do
     {
       v31 = *var10++;
@@ -1158,42 +1158,42 @@ uint64_t __35__QUICLog_addFrameList_frame_list___block_invoke_2(uint64_t a1, uin
 
   v32 = [(QUICLog *)self addOptionalCharPointerToObject:v25 key:@"initial_source_connection_id" value:v27];
 
-  v33 = [(QUICLog *)self addOptionalSuperBoolToObject:v32 key:@"disable_active_migration" value:a3->var3.var0.var11];
+  v33 = [(QUICLog *)self addOptionalSuperBoolToObject:v32 key:@"disable_active_migration" value:set->var3.var0.var11];
 
-  v34 = [(QUICLog *)self addOptionalUint64ToObject:v33 key:@"max_idle_timeout" value:a3->var3.var0.var0];
+  v34 = [(QUICLog *)self addOptionalUint64ToObject:v33 key:@"max_idle_timeout" value:set->var3.var0.var0];
 
-  v35 = [(QUICLog *)self addOptionalUint64ToObject:v34 key:@"max_udp_payload_size" value:a3->var3.var0.var1];
+  v35 = [(QUICLog *)self addOptionalUint64ToObject:v34 key:@"max_udp_payload_size" value:set->var3.var0.var1];
 
-  v36 = [(QUICLog *)self addOptionalUint64ToObject:v35 key:@"ack_delay_exponent" value:a3->var3.var0.var2];
+  v36 = [(QUICLog *)self addOptionalUint64ToObject:v35 key:@"ack_delay_exponent" value:set->var3.var0.var2];
 
-  v37 = [(QUICLog *)self addOptionalUint64ToObject:v36 key:@"max_ack_delay" value:a3->var3.var0.var3];
+  v37 = [(QUICLog *)self addOptionalUint64ToObject:v36 key:@"max_ack_delay" value:set->var3.var0.var3];
 
-  v38 = [(QUICLog *)self addOptionalUint64ToObject:v37 key:@"active_connection_id_limit" value:a3->var3.var0.var4];
+  v38 = [(QUICLog *)self addOptionalUint64ToObject:v37 key:@"active_connection_id_limit" value:set->var3.var0.var4];
 
-  v39 = [(QUICLog *)self addOptionalUint64ToObject:v38 key:@"initial_max_data" value:*(&a3->var3.var5 + 25)];
+  v39 = [(QUICLog *)self addOptionalUint64ToObject:v38 key:@"initial_max_data" value:*(&set->var3.var5 + 25)];
 
-  v40 = [(QUICLog *)self addOptionalUint64ToObject:v39 key:@"initial_max_stream_data_bidi_local" value:a3->var3.var0.var14];
+  v40 = [(QUICLog *)self addOptionalUint64ToObject:v39 key:@"initial_max_stream_data_bidi_local" value:set->var3.var0.var14];
 
-  v41 = [(QUICLog *)self addOptionalUint64ToObject:v40 key:@"initial_max_stream_data_bidi_remote" value:a3->var3.var0.var15];
+  v41 = [(QUICLog *)self addOptionalUint64ToObject:v40 key:@"initial_max_stream_data_bidi_remote" value:set->var3.var0.var15];
 
-  v42 = [(QUICLog *)self addOptionalUint64ToObject:v41 key:@"initial_max_stream_data_uni" value:a3->var3.var0.var16];
+  v42 = [(QUICLog *)self addOptionalUint64ToObject:v41 key:@"initial_max_stream_data_uni" value:set->var3.var0.var16];
 
-  v43 = [(QUICLog *)self addOptionalUint64ToObject:v42 key:@"initial_max_streams_bidi" value:a3->var3.var0.var17];
+  v43 = [(QUICLog *)self addOptionalUint64ToObject:v42 key:@"initial_max_streams_bidi" value:set->var3.var0.var17];
 
-  v44 = [(QUICLog *)self addOptionalUint64ToObject:v43 key:@"initial_max_streams_uni" value:a3->var3.var0.var18];
+  v44 = [(QUICLog *)self addOptionalUint64ToObject:v43 key:@"initial_max_streams_uni" value:set->var3.var0.var18];
 
   [v46 addObject:v44];
 
   return v46;
 }
 
-- (id)dumpData:(id)a3
+- (id)dumpData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v5 setValue:@"network" forKey:@"type"];
-  v21 = v4;
-  [v5 setValue:v4 forKey:@"flow"];
+  v21 = dataCopy;
+  [v5 setValue:dataCopy forKey:@"flow"];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v7 setValue:v5 forKey:@"vantage_point"];
@@ -1297,63 +1297,63 @@ LABEL_24:
   return v19;
 }
 
-- (void)logStreamTypeSet:(unint64_t)a3 owner:(unsigned __int8)a4 old_state:(unsigned __int8)a5 new_state:(unsigned __int8)a6
+- (void)logStreamTypeSet:(unint64_t)set owner:(unsigned __int8)owner old_state:(unsigned __int8)old_state new_state:(unsigned __int8)new_state
 {
   v11 = [(QUICLog *)self createEvent:7];
-  v11->var3.var0.var0 = a3;
-  v11->var3.var2.var1 = a4;
-  v11->var3.var2.var2 = a5;
-  v11->var3.var2.var3 = a6;
+  v11->var3.var0.var0 = set;
+  v11->var3.var2.var1 = owner;
+  v11->var3.var2.var2 = old_state;
+  v11->var3.var2.var3 = new_state;
   v11->var3.var0.var19 = 0;
   *self->events_list.stqh_last = v11;
   self->events_list.stqh_last = &v11->var3.var0.var19;
 }
 
-- (void)logCongestionStateUpdated:(unsigned __int8)a3 new_state:(unsigned __int8)a4 trigger:(unsigned __int8)a5
+- (void)logCongestionStateUpdated:(unsigned __int8)updated new_state:(unsigned __int8)new_state trigger:(unsigned __int8)trigger
 {
   v9 = [(QUICLog *)self createEvent:5];
-  v9->var3.var4.var0 = a3;
-  v9->var3.var4.var1 = a4;
-  v9->var3.var4.var2 = a5;
+  v9->var3.var4.var0 = updated;
+  v9->var3.var4.var1 = new_state;
+  v9->var3.var4.var2 = trigger;
   v9->var3.var0.var19 = 0;
   *self->events_list.stqh_last = v9;
   self->events_list.stqh_last = &v9->var3.var0.var19;
 }
 
-- (void)streamStateUpdated:(unint64_t)a3 stream_type:(unsigned __int8)a4 old_state:(unsigned __int8)a5 new_state:(unsigned __int8)a6 stream_side:(unsigned __int8)a7
+- (void)streamStateUpdated:(unint64_t)updated stream_type:(unsigned __int8)stream_type old_state:(unsigned __int8)old_state new_state:(unsigned __int8)new_state stream_side:(unsigned __int8)stream_side
 {
   v13 = [(QUICLog *)self createEvent:3];
-  v13->var3.var0.var0 = a3;
-  v13->var3.var2.var1 = a4;
-  v13->var3.var2.var2 = a5;
-  v13->var3.var2.var3 = a6;
-  v13->var3.var2.var5 = a7;
+  v13->var3.var0.var0 = updated;
+  v13->var3.var2.var1 = stream_type;
+  v13->var3.var2.var2 = old_state;
+  v13->var3.var2.var3 = new_state;
+  v13->var3.var2.var5 = stream_side;
   v13->var3.var0.var19 = 0;
   *self->events_list.stqh_last = v13;
   self->events_list.stqh_last = &v13->var3.var0.var19;
 }
 
-- (void)metricsUpdated:(unint64_t)a3 smoothed_rtt:(unint64_t)a4 latest_rtt:(unint64_t)a5 rtt_variance:(unint64_t)a6 pto_count:(unint64_t)a7 congestion_window:(unint64_t)a8 bytes_in_flight:(unint64_t)a9 ssthresh:(unint64_t)a10 packets_in_flight:(unint64_t)a11 in_recovery:(char)a12
+- (void)metricsUpdated:(unint64_t)updated smoothed_rtt:(unint64_t)smoothed_rtt latest_rtt:(unint64_t)latest_rtt rtt_variance:(unint64_t)rtt_variance pto_count:(unint64_t)pto_count congestion_window:(unint64_t)congestion_window bytes_in_flight:(unint64_t)bytes_in_flight ssthresh:(unint64_t)self0 packets_in_flight:(unint64_t)self1 in_recovery:(char)self2
 {
   v19 = [(QUICLog *)self createEvent:4];
-  v19->var3.var0.var0 = a3;
-  v19->var3.var0.var1 = a4;
-  v19->var3.var0.var2 = a5;
-  v19->var3.var0.var3 = a6;
-  v19->var3.var0.var4 = a7;
-  v19->var3.var3.var5 = a8;
-  *(&v19->var3.var5 + 3) = *&a9;
-  v19->var3.var3.var8 = a11;
-  v19->var3.var0.var6[0] = a12;
+  v19->var3.var0.var0 = updated;
+  v19->var3.var0.var1 = smoothed_rtt;
+  v19->var3.var0.var2 = latest_rtt;
+  v19->var3.var0.var3 = rtt_variance;
+  v19->var3.var0.var4 = pto_count;
+  v19->var3.var3.var5 = congestion_window;
+  *(&v19->var3.var5 + 3) = *&bytes_in_flight;
+  v19->var3.var3.var8 = packets_in_flight;
+  v19->var3.var0.var6[0] = in_recovery;
   v19->var3.var0.var19 = 0;
   *self->events_list.stqh_last = v19;
   self->events_list.stqh_last = &v19->var3.var0.var19;
 }
 
-- (void)packetLost:(quic_packet *)a3 trigger:(unsigned __int8)a4
+- (void)packetLost:(quic_packet *)lost trigger:(unsigned __int8)trigger
 {
   v6 = [(QUICLog *)self createEvent:6];
-  v6->var3.var1.var0 = [QUICLog packetType:a3];
+  v6->var3.var1.var0 = [QUICLog packetType:lost];
   v7 = malloc_type_calloc(1uLL, 0x78uLL, 0x96A5337DuLL);
   if (!v7)
   {
@@ -1362,11 +1362,11 @@ LABEL_24:
   }
 
   v6->var3.var0.var1 = v7;
-  *v7 = a3->var20;
-  *(v6->var3.var0.var1 + 8) = a3->var14;
-  *(v6->var3.var0.var1 + 16) = a3->var13;
-  *(v6->var3.var0.var1 + 32) = a3->var6[0];
-  *(v6->var3.var0.var1 + 33) = a3->var5[0];
+  *v7 = lost->var20;
+  *(v6->var3.var0.var1 + 8) = lost->var14;
+  *(v6->var3.var0.var1 + 16) = lost->var13;
+  *(v6->var3.var0.var1 + 32) = lost->var6[0];
+  *(v6->var3.var0.var1 + 33) = lost->var5[0];
   var1 = v6->var3.var0.var1;
   v9 = &quic_cid_describe_cid_buf3;
   if (quic_cid_describe_state % 3 == 2)
@@ -1385,7 +1385,7 @@ LABEL_24:
   }
 
   ++quic_cid_describe_state;
-  v11 = a3->var6[0];
+  v11 = lost->var6[0];
   *v10 = 0u;
   *(v10 + 1) = 0u;
   *(v10 + 25) = 0u;
@@ -1401,7 +1401,7 @@ LABEL_24:
       v12 = v11;
     }
 
-    v13 = &a3->var6[1];
+    v13 = &lost->var6[1];
     do
     {
       v14 = *v13++;
@@ -1632,7 +1632,7 @@ LABEL_24:
   }
 
   ++quic_cid_describe_state;
-  v58 = a3->var5[0];
+  v58 = lost->var5[0];
   *(v57 + 25) = 0u;
   *v57 = 0u;
   *(v57 + 1) = 0u;
@@ -1648,7 +1648,7 @@ LABEL_24:
       v59 = v58;
     }
 
-    v60 = &a3->var5[1];
+    v60 = &lost->var5[1];
     do
     {
       v61 = *v60++;
@@ -1863,7 +1863,7 @@ LABEL_24:
 
   v6->var3.var0.var2 = 0;
   v6->var3.var0.var3 = &v6->var3.var0.var2;
-  var0 = a3->var25.var0;
+  var0 = lost->var25.var0;
   if (var0)
   {
     while (1)
@@ -1895,16 +1895,16 @@ LABEL_111:
 
 LABEL_109:
   v6->var3.var1.var4 = -1;
-  v6->var3.var1.var6.var1 = a4;
+  v6->var3.var1.var6.var1 = trigger;
   v6->var3.var0.var19 = 0;
   *self->events_list.stqh_last = v6;
   self->events_list.stqh_last = &v6->var3.var0.var19;
 }
 
-- (void)packetReceived:(quic_packet *)a3 isCoalesced:(BOOL)a4
+- (void)packetReceived:(quic_packet *)received isCoalesced:(BOOL)coalesced
 {
   v6 = [(QUICLog *)self createEvent:2];
-  v6->var3.var1.var0 = [QUICLog packetType:a3];
+  v6->var3.var1.var0 = [QUICLog packetType:received];
   v7 = malloc_type_calloc(1uLL, 0x78uLL, 0xAE233FF0uLL);
   if (!v7)
   {
@@ -1913,11 +1913,11 @@ LABEL_109:
   }
 
   v6->var3.var0.var1 = v7;
-  *v7 = a3->var20;
-  *(v6->var3.var0.var1 + 8) = a3->var14;
-  *(v6->var3.var0.var1 + 16) = a3->var13;
-  *(v6->var3.var0.var1 + 32) = a3->var6[0];
-  *(v6->var3.var0.var1 + 33) = a3->var5[0];
+  *v7 = received->var20;
+  *(v6->var3.var0.var1 + 8) = received->var14;
+  *(v6->var3.var0.var1 + 16) = received->var13;
+  *(v6->var3.var0.var1 + 32) = received->var6[0];
+  *(v6->var3.var0.var1 + 33) = received->var5[0];
   var1 = v6->var3.var0.var1;
   v9 = &quic_cid_describe_cid_buf3;
   if (quic_cid_describe_state % 3 == 2)
@@ -1936,7 +1936,7 @@ LABEL_109:
   }
 
   ++quic_cid_describe_state;
-  v11 = a3->var6[0];
+  v11 = received->var6[0];
   *v10 = 0u;
   *(v10 + 1) = 0u;
   *(v10 + 25) = 0u;
@@ -1952,7 +1952,7 @@ LABEL_109:
       v12 = v11;
     }
 
-    v13 = &a3->var6[1];
+    v13 = &received->var6[1];
     do
     {
       v14 = *v13++;
@@ -2183,7 +2183,7 @@ LABEL_109:
   }
 
   ++quic_cid_describe_state;
-  v58 = a3->var5[0];
+  v58 = received->var5[0];
   *(v57 + 25) = 0u;
   *v57 = 0u;
   *(v57 + 1) = 0u;
@@ -2199,7 +2199,7 @@ LABEL_109:
       v59 = v58;
     }
 
-    v60 = &a3->var5[1];
+    v60 = &received->var5[1];
     do
     {
       v61 = *v60++;
@@ -2414,7 +2414,7 @@ LABEL_109:
 
   v6->var3.var0.var2 = 0;
   v6->var3.var0.var3 = &v6->var3.var0.var2;
-  var0 = a3->var25.var0;
+  var0 = received->var25.var0;
   if (var0)
   {
     while (1)
@@ -2445,17 +2445,17 @@ LABEL_111:
   }
 
 LABEL_109:
-  v6->var3.var1.var4 = a4;
+  v6->var3.var1.var4 = coalesced;
   v6->var3.var1.var6.var0 = 5;
   v6->var3.var0.var19 = 0;
   *self->events_list.stqh_last = v6;
   self->events_list.stqh_last = &v6->var3.var0.var19;
 }
 
-- (void)packetSent:(quic_packet *)a3 timestamp:(unint64_t)a4
+- (void)packetSent:(quic_packet *)sent timestamp:(unint64_t)timestamp
 {
-  v6 = [(QUICLog *)self createEvent:1 timestamp:a4];
-  v6->var3.var1.var0 = [QUICLog packetType:a3];
+  v6 = [(QUICLog *)self createEvent:1 timestamp:timestamp];
+  v6->var3.var1.var0 = [QUICLog packetType:sent];
   v7 = malloc_type_calloc(1uLL, 0x78uLL, 0x2253468EuLL);
   if (!v7)
   {
@@ -2464,11 +2464,11 @@ LABEL_109:
   }
 
   v6->var3.var0.var1 = v7;
-  *v7 = a3->var20;
-  *(v6->var3.var0.var1 + 8) = a3->var14;
-  *(v6->var3.var0.var1 + 16) = a3->var13;
-  *(v6->var3.var0.var1 + 32) = a3->var6[0];
-  *(v6->var3.var0.var1 + 33) = a3->var5[0];
+  *v7 = sent->var20;
+  *(v6->var3.var0.var1 + 8) = sent->var14;
+  *(v6->var3.var0.var1 + 16) = sent->var13;
+  *(v6->var3.var0.var1 + 32) = sent->var6[0];
+  *(v6->var3.var0.var1 + 33) = sent->var5[0];
   var1 = v6->var3.var0.var1;
   v9 = &quic_cid_describe_cid_buf3;
   if (quic_cid_describe_state % 3 == 2)
@@ -2487,7 +2487,7 @@ LABEL_109:
   }
 
   ++quic_cid_describe_state;
-  v11 = a3->var6[0];
+  v11 = sent->var6[0];
   *v10 = 0u;
   *(v10 + 1) = 0u;
   *(v10 + 25) = 0u;
@@ -2503,7 +2503,7 @@ LABEL_109:
       v12 = v11;
     }
 
-    v13 = &a3->var6[1];
+    v13 = &sent->var6[1];
     do
     {
       v14 = *v13++;
@@ -2734,7 +2734,7 @@ LABEL_109:
   }
 
   ++quic_cid_describe_state;
-  v58 = a3->var5[0];
+  v58 = sent->var5[0];
   *(v57 + 25) = 0u;
   *v57 = 0u;
   *(v57 + 1) = 0u;
@@ -2750,7 +2750,7 @@ LABEL_109:
       v59 = v58;
     }
 
-    v60 = &a3->var5[1];
+    v60 = &sent->var5[1];
     do
     {
       v61 = *v60++;
@@ -2965,7 +2965,7 @@ LABEL_109:
 
   v6->var3.var0.var2 = 0;
   v6->var3.var0.var3 = &v6->var3.var0.var2;
-  var0 = a3->var25.var0;
+  var0 = sent->var25.var0;
   if (var0)
   {
     while (1)
@@ -3003,138 +3003,138 @@ LABEL_109:
   self->events_list.stqh_last = &v6->var3.var0.var19;
 }
 
-- (void)parametersSet:(unsigned __int8)a3 resumption_allowed:(char)a4 early_data_enabled:(char)a5 tls_cipher:(const char *)a6 original_dcid:(unsigned __int8 *)(a7 initial_scid:retry_scid:disable_active_migration:max_idle_timeout:max_udp_payload_size:ack_delay_exponent:max_ack_delay:active_cid_limit:initial_max_data:initial_msd_bidi_remote:initial_msd_bidi_local:initial_msd_uni:initial_ms_bidi:initial_ms_uni:preferred_address:
+- (void)parametersSet:(unsigned __int8)set resumption_allowed:(char)resumption_allowed early_data_enabled:(char)early_data_enabled tls_cipher:(const char *)tls_cipher original_dcid:(unsigned __int8 *)(a7 initial_scid:retry_scid:disable_active_migration:max_idle_timeout:max_udp_payload_size:ack_delay_exponent:max_ack_delay:active_cid_limit:initial_max_data:initial_msd_bidi_remote:initial_msd_bidi_local:initial_msd_uni:initial_ms_bidi:initial_ms_uni:preferred_address:
 {
   v29 = [(QUICLog *)self createEvent:0];
-  v29->var3.var0.var12 = a3;
-  v29->var3.var0.var9 = a4;
-  v29->var3.var0.var10 = a5;
-  if (!a6)
+  v29->var3.var0.var12 = set;
+  v29->var3.var0.var9 = resumption_allowed;
+  v29->var3.var0.var10 = early_data_enabled;
+  if (!tls_cipher)
   {
     qlog_abort_internal("%s strict_strlcpy called with NULL src", "_strict_strlcpy");
   }
 
-  v30 = *a6;
+  v30 = *tls_cipher;
   v29->var3.var0.var5[0] = v30;
   if (v30)
   {
-    v31 = *(a6 + 1);
+    v31 = *(tls_cipher + 1);
     v29->var3.var0.var5[1] = v31;
     if (v31)
     {
-      v32 = *(a6 + 2);
+      v32 = *(tls_cipher + 2);
       v29->var3.var0.var5[2] = v32;
       if (v32)
       {
-        v33 = *(a6 + 3);
+        v33 = *(tls_cipher + 3);
         v29->var3.var0.var5[3] = v33;
         if (v33)
         {
-          v34 = *(a6 + 4);
+          v34 = *(tls_cipher + 4);
           v29->var3.var0.var5[4] = v34;
           if (v34)
           {
-            v35 = *(a6 + 5);
+            v35 = *(tls_cipher + 5);
             v29->var3.var0.var5[5] = v35;
             if (v35)
             {
-              v36 = *(a6 + 6);
+              v36 = *(tls_cipher + 6);
               v29->var3.var0.var5[6] = v36;
               if (v36)
               {
-                v37 = *(a6 + 7);
+                v37 = *(tls_cipher + 7);
                 v29->var3.var0.var5[7] = v37;
                 if (v37)
                 {
-                  v38 = *(a6 + 8);
+                  v38 = *(tls_cipher + 8);
                   v29->var3.var0.var5[8] = v38;
                   if (v38)
                   {
-                    v39 = *(a6 + 9);
+                    v39 = *(tls_cipher + 9);
                     v29->var3.var0.var5[9] = v39;
                     if (v39)
                     {
-                      v40 = *(a6 + 10);
+                      v40 = *(tls_cipher + 10);
                       v29->var3.var0.var5[10] = v40;
                       if (v40)
                       {
-                        v41 = *(a6 + 11);
+                        v41 = *(tls_cipher + 11);
                         v29->var3.var0.var5[11] = v41;
                         if (v41)
                         {
-                          v42 = *(a6 + 12);
+                          v42 = *(tls_cipher + 12);
                           v29->var3.var0.var5[12] = v42;
                           if (v42)
                           {
-                            v43 = *(a6 + 13);
+                            v43 = *(tls_cipher + 13);
                             v29->var3.var0.var5[13] = v43;
                             if (v43)
                             {
-                              v44 = *(a6 + 14);
+                              v44 = *(tls_cipher + 14);
                               v29->var3.var0.var5[14] = v44;
                               if (v44)
                               {
-                                v45 = *(a6 + 15);
+                                v45 = *(tls_cipher + 15);
                                 v29->var3.var0.var5[15] = v45;
                                 if (v45)
                                 {
-                                  v46 = *(a6 + 16);
+                                  v46 = *(tls_cipher + 16);
                                   v29->var3.var0.var5[16] = v46;
                                   if (v46)
                                   {
-                                    v47 = *(a6 + 17);
+                                    v47 = *(tls_cipher + 17);
                                     v29->var3.var0.var5[17] = v47;
                                     if (v47)
                                     {
-                                      v48 = *(a6 + 18);
+                                      v48 = *(tls_cipher + 18);
                                       v29->var3.var0.var5[18] = v48;
                                       if (v48)
                                       {
-                                        v49 = *(a6 + 19);
+                                        v49 = *(tls_cipher + 19);
                                         v29->var3.var0.var5[19] = v49;
                                         if (v49)
                                         {
-                                          v50 = *(a6 + 20);
+                                          v50 = *(tls_cipher + 20);
                                           v29->var3.var0.var5[20] = v50;
                                           if (v50)
                                           {
-                                            v51 = *(a6 + 21);
+                                            v51 = *(tls_cipher + 21);
                                             v29->var3.var0.var5[21] = v51;
                                             if (v51)
                                             {
-                                              v52 = *(a6 + 22);
+                                              v52 = *(tls_cipher + 22);
                                               v29->var3.var0.var5[22] = v52;
                                               if (v52)
                                               {
-                                                v53 = *(a6 + 23);
+                                                v53 = *(tls_cipher + 23);
                                                 v29->var3.var0.var5[23] = v53;
                                                 if (v53)
                                                 {
-                                                  v54 = *(a6 + 24);
+                                                  v54 = *(tls_cipher + 24);
                                                   v29->var3.var0.var5[24] = v54;
                                                   if (v54)
                                                   {
-                                                    v55 = *(a6 + 25);
+                                                    v55 = *(tls_cipher + 25);
                                                     v29->var3.var0.var5[25] = v55;
                                                     if (v55)
                                                     {
-                                                      v56 = *(a6 + 26);
+                                                      v56 = *(tls_cipher + 26);
                                                       v29->var3.var0.var5[26] = v56;
                                                       if (v56)
                                                       {
-                                                        v57 = *(a6 + 27);
+                                                        v57 = *(tls_cipher + 27);
                                                         v29->var3.var0.var5[27] = v57;
                                                         if (v57)
                                                         {
-                                                          v58 = *(a6 + 28);
+                                                          v58 = *(tls_cipher + 28);
                                                           v29->var3.var0.var5[28] = v58;
                                                           if (v58)
                                                           {
-                                                            v59 = *(a6 + 29);
+                                                            v59 = *(tls_cipher + 29);
                                                             v29->var3.var0.var5[29] = v59;
                                                             if (v59)
                                                             {
-                                                              v60 = *(a6 + 30);
+                                                              v60 = *(tls_cipher + 30);
                                                               v29->var3.var0.var5[30] = v60;
                                                               if (v60)
                                                               {
@@ -3223,24 +3223,24 @@ LABEL_109:
   self->events_list.stqh_last = &v29->var3.var0.var19;
 }
 
-- (void)deallocEvent:(quiclog_event *)a3
+- (void)deallocEvent:(quiclog_event *)event
 {
-  if (a3->var0 <= 6u && ((1 << a3->var0) & 0x46) != 0)
+  if (event->var0 <= 6u && ((1 << event->var0) & 0x46) != 0)
   {
-    quic_frame_list_flush(&a3->var3.var1.var3.var0);
-    var2 = a3->var3.var1.var2;
+    quic_frame_list_flush(&event->var3.var1.var3.var0);
+    var2 = event->var3.var1.var2;
     if (var2)
     {
       free(var2);
     }
   }
 
-  free(a3);
+  free(event);
 }
 
-- (quiclog_event)createEvent:(int)a3
+- (quiclog_event)createEvent:(int)event
 {
-  v3 = *&a3;
+  v3 = *&event;
   v5 = mach_continuous_time();
   if (timebase_info_once != -1)
   {
@@ -3254,7 +3254,7 @@ LABEL_109:
   return [(QUICLog *)self createEvent:v3 timestamp:v6];
 }
 
-- (quiclog_event)createEvent:(int)a3 timestamp:(unint64_t)a4
+- (quiclog_event)createEvent:(int)event timestamp:(unint64_t)timestamp
 {
   result = malloc_type_calloc(1uLL, 0x110uLL, 0xC502EC6FuLL);
   if (!result)
@@ -3264,10 +3264,10 @@ LABEL_109:
 
   if (!self->disable_timestamps)
   {
-    result->var2 = a4;
+    result->var2 = timestamp;
   }
 
-  result->var0 = a3;
+  result->var0 = event;
   return result;
 }
 
@@ -3326,9 +3326,9 @@ LABEL_109:
   return v3;
 }
 
-+ (id)flowTypeString:(unsigned __int8)a3
++ (id)flowTypeString:(unsigned __int8)string
 {
-  if (a3)
+  if (string)
   {
     return @"server";
   }
@@ -3339,54 +3339,54 @@ LABEL_109:
   }
 }
 
-+ (id)packetSentReceivedTriggerString:(int)a3
++ (id)packetSentReceivedTriggerString:(int)string
 {
-  if ((a3 - 1) > 4)
+  if ((string - 1) > 4)
   {
     return @"reordering_threshold";
   }
 
   else
   {
-    return off_1E73D0D90[a3 - 1];
+    return off_1E73D0D90[string - 1];
   }
 }
 
-+ (id)packetLostTriggerString:(unsigned __int8)a3
++ (id)packetLostTriggerString:(unsigned __int8)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"reordering_threshold";
   }
 
   else
   {
-    return off_1E73D0D78[(a3 - 1)];
+    return off_1E73D0D78[(string - 1)];
   }
 }
 
-+ (id)congestionStateString:(unsigned __int8)a3
++ (id)congestionStateString:(unsigned __int8)string
 {
-  if ((a3 - 1) > 4)
+  if ((string - 1) > 4)
   {
     return @"slow_start";
   }
 
   else
   {
-    return off_1E73D0D50[(a3 - 1)];
+    return off_1E73D0D50[(string - 1)];
   }
 }
 
-+ (id)congestionTriggerString:(unsigned __int8)a3
++ (id)congestionTriggerString:(unsigned __int8)string
 {
   v3 = @"persistent_congestion";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"ecn";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"unknown";
   }
@@ -3397,15 +3397,15 @@ LABEL_109:
   }
 }
 
-+ (id)streamSideString:(unsigned __int8)a3
++ (id)streamSideString:(unsigned __int8)string
 {
   v3 = @"sending";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"recieving";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"unknown";
   }
@@ -3416,15 +3416,15 @@ LABEL_109:
   }
 }
 
-+ (id)streamTypeString:(unsigned __int8)a3
++ (id)streamTypeString:(unsigned __int8)string
 {
   v3 = @"unidirectional";
-  if (!a3)
+  if (!string)
   {
     v3 = @"bidirectional";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"datagram";
   }
@@ -3435,28 +3435,28 @@ LABEL_109:
   }
 }
 
-+ (id)packetTypeString:(int)a3
++ (id)packetTypeString:(int)string
 {
-  if (a3 > 6)
+  if (string > 6)
   {
     return @"initial";
   }
 
   else
   {
-    return off_1E73D0D18[a3];
+    return off_1E73D0D18[string];
   }
 }
 
-+ (id)ownerString:(unsigned __int8)a3
++ (id)ownerString:(unsigned __int8)string
 {
   v3 = @"local";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"remote";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"unknown";
   }
@@ -3467,45 +3467,45 @@ LABEL_109:
   }
 }
 
-+ (id)eventTypeString:(int)a3
++ (id)eventTypeString:(int)string
 {
-  if ((a3 - 1) > 6)
+  if ((string - 1) > 6)
   {
     return @"PARAMETERS_SET";
   }
 
   else
   {
-    return off_1E73D0CE0[a3 - 1];
+    return off_1E73D0CE0[string - 1];
   }
 }
 
-+ (id)categoryString:(int)a3
++ (id)categoryString:(int)string
 {
-  if ((a3 - 4) > 3)
+  if ((string - 4) > 3)
   {
     return @"TRANSPORT";
   }
 
   else
   {
-    return off_1E73D0CC0[a3 - 4];
+    return off_1E73D0CC0[string - 4];
   }
 }
 
-+ (int)packetType:(quic_packet *)a3
++ (int)packetType:(quic_packet *)type
 {
-  if (*(a3 + 233))
+  if (*(type + 233))
   {
     return 6;
   }
 
-  if (a3->var7 - 1 > 4)
+  if (type->var7 - 1 > 4)
   {
     return 0;
   }
 
-  return dword_193207A50[(a3->var7 - 1)];
+  return dword_193207A50[(type->var7 - 1)];
 }
 
 @end

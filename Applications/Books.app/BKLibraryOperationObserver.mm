@@ -1,7 +1,7 @@
 @interface BKLibraryOperationObserver
 - (BKLibraryOperationObserver)init;
-- (void)invalidateBookIndices:(id)a3;
-- (void)libraryOperationCompleteNotificationReceived:(id)a3;
+- (void)invalidateBookIndices:(id)indices;
+- (void)libraryOperationCompleteNotificationReceived:(id)received;
 - (void)setup;
 @end
 
@@ -27,24 +27,24 @@
   [v3 addObserver:self selector:"libraryOperationCompleteNotificationReceived:" name:BKLibraryOperationCompleteNotification object:0];
 }
 
-- (void)libraryOperationCompleteNotificationReceived:(id)a3
+- (void)libraryOperationCompleteNotificationReceived:(id)received
 {
-  v12 = a3;
-  v4 = [v12 userInfo];
+  receivedCopy = received;
+  userInfo = [receivedCopy userInfo];
 
-  v5 = v12;
-  if (v4)
+  v5 = receivedCopy;
+  if (userInfo)
   {
-    v6 = [v12 userInfo];
-    v7 = [v6 objectForKeyedSubscript:BKLibraryOperationTypeKey];
-    v8 = [v7 unsignedIntegerValue];
+    userInfo2 = [receivedCopy userInfo];
+    v7 = [userInfo2 objectForKeyedSubscript:BKLibraryOperationTypeKey];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    v9 = [v12 userInfo];
-    v10 = [v9 objectForKeyedSubscript:BKLibraryOperationAssetIDsKey];
+    userInfo3 = [receivedCopy userInfo];
+    v10 = [userInfo3 objectForKeyedSubscript:BKLibraryOperationAssetIDsKey];
 
     if ([v10 count])
     {
-      v11 = v8 == 0;
+      v11 = unsignedIntegerValue == 0;
     }
 
     else
@@ -57,18 +57,18 @@
       [(BKLibraryOperationObserver *)self invalidateBookIndices:v10];
     }
 
-    v5 = v12;
+    v5 = receivedCopy;
   }
 }
 
-- (void)invalidateBookIndices:(id)a3
+- (void)invalidateBookIndices:(id)indices
 {
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  indicesCopy = indices;
+  v4 = [indicesCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -78,7 +78,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(indicesCopy);
         }
 
         v7 = *(*(&v8 + 1) + 8 * i);
@@ -87,13 +87,13 @@
         [BEPageSnapshotCache purgeCacheForIdentifier:v7];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [indicesCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
   }
 
-  [BKTextIndex invalidateBookIndicesWithNames:v3];
+  [BKTextIndex invalidateBookIndicesWithNames:indicesCopy];
 }
 
 @end

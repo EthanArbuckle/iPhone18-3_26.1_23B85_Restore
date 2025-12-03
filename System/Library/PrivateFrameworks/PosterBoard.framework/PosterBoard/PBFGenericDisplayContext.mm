@@ -1,25 +1,25 @@
 @interface PBFGenericDisplayContext
-+ (id)displayContextForDisplayConfiguration:(id)a3;
-+ (id)displayContextForDisplayIdentifier:(id)a3;
-+ (id)displayContextForPersistenceIdentifier:(id)a3;
-+ (id)displayContextForScreen:(id)a3;
-+ (id)displayContextForScreen:(id)a3 traitCollection:(id)a4;
-+ (id)genericDisplayContextWithDisplayContext:(id)a3;
++ (id)displayContextForDisplayConfiguration:(id)configuration;
++ (id)displayContextForDisplayIdentifier:(id)identifier;
++ (id)displayContextForPersistenceIdentifier:(id)identifier;
++ (id)displayContextForScreen:(id)screen;
++ (id)displayContextForScreen:(id)screen traitCollection:(id)collection;
++ (id)genericDisplayContextWithDisplayContext:(id)context;
 + (id)mainScreen;
 + (id)mainScreenDisplayContextsForKnownOrientations;
-+ (id)mainScreenDisplayContextsForKnownOrientationsAndUserInterfaceStyles:(id)a3;
-- (BOOL)geometryIsEqualTo:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDisplayContext:(id)a3;
++ (id)mainScreenDisplayContextsForKnownOrientationsAndUserInterfaceStyles:(id)styles;
+- (BOOL)geometryIsEqualTo:(id)to;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDisplayContext:(id)context;
 - (CGRect)pbf_frame;
 - (CGRect)pbf_referenceBounds;
 - (NSString)description;
 - (NSString)pbf_displayContextPersistenceIdentifier;
-- (PBFGenericDisplayContext)displayContextWithUpdatedAccessibilityContrast:(int64_t)a3;
-- (PBFGenericDisplayContext)displayContextWithUpdatedInterfaceOrientation:(int64_t)a3;
-- (PBFGenericDisplayContext)displayContextWithUpdatedSignificantEventsCounter:(unint64_t)a3;
-- (PBFGenericDisplayContext)displayContextWithUpdatedUserInterfaceStyle:(int64_t)a3;
-- (PBFGenericDisplayContext)initWithBounds:(CGRect)a3 scale:(double)a4 interfaceOrientation:(int64_t)a5 sigEventsCounter:(unint64_t)a6 userInterfaceStyle:(int64_t)a7 accessibilityContrast:(int64_t)a8;
+- (PBFGenericDisplayContext)displayContextWithUpdatedAccessibilityContrast:(int64_t)contrast;
+- (PBFGenericDisplayContext)displayContextWithUpdatedInterfaceOrientation:(int64_t)orientation;
+- (PBFGenericDisplayContext)displayContextWithUpdatedSignificantEventsCounter:(unint64_t)counter;
+- (PBFGenericDisplayContext)displayContextWithUpdatedUserInterfaceStyle:(int64_t)style;
+- (PBFGenericDisplayContext)initWithBounds:(CGRect)bounds scale:(double)scale interfaceOrientation:(int64_t)orientation sigEventsCounter:(unint64_t)counter userInterfaceStyle:(int64_t)style accessibilityContrast:(int64_t)contrast;
 - (unint64_t)hash;
 @end
 
@@ -27,40 +27,40 @@
 
 + (id)mainScreen
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [a1 displayContextForScreen:v3];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  v4 = [self displayContextForScreen:mainScreen];
 
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  v6 = [v5 keyWindow];
-  v7 = [v6 _windowInterfaceOrientation];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow = [mEMORY[0x277D75128] keyWindow];
+  _windowInterfaceOrientation = [keyWindow _windowInterfaceOrientation];
 
-  if (v7 <= 1)
+  if (_windowInterfaceOrientation <= 1)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = v7;
+    v8 = _windowInterfaceOrientation;
   }
 
   v9 = [v4 displayContextWithUpdatedInterfaceOrientation:v8];
 
-  v10 = [MEMORY[0x277D75128] sharedApplication];
-  v11 = [v10 keyWindow];
-  v12 = [v11 traitCollection];
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow2 = [mEMORY[0x277D75128]2 keyWindow];
+  traitCollection = [keyWindow2 traitCollection];
 
-  if (v12)
+  if (traitCollection)
   {
-    v13 = [MEMORY[0x277D75128] sharedApplication];
-    v14 = [v13 keyWindow];
-    v15 = [v14 traitCollection];
-    v16 = PBFUserInterfaceStyleFromUIUserInterfaceStyle([v15 userInterfaceStyle]);
+    mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow3 = [mEMORY[0x277D75128]3 keyWindow];
+    traitCollection2 = [keyWindow3 traitCollection];
+    v16 = PBFUserInterfaceStyleFromUIUserInterfaceStyle([traitCollection2 userInterfaceStyle]);
 
-    v17 = [v9 pbf_userInterfaceStyle];
+    pbf_userInterfaceStyle = [v9 pbf_userInterfaceStyle];
     if (v16)
     {
-      if (v16 != v17)
+      if (v16 != pbf_userInterfaceStyle)
       {
         v18 = [v9 displayContextWithUpdatedUserInterfaceStyle:v16];
 
@@ -74,22 +74,22 @@
 
 + (id)mainScreenDisplayContextsForKnownOrientations
 {
-  v2 = [a1 mainScreen];
+  mainScreen = [self mainScreen];
   v3 = objc_opt_new();
   v4 = PBFBSInterfaceOrientationDefaultForCurrentDeviceClass();
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  v6 = [v5 keyWindow];
-  v7 = [v6 _windowInterfaceOrientation];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow = [mEMORY[0x277D75128] keyWindow];
+  _windowInterfaceOrientation = [keyWindow _windowInterfaceOrientation];
 
   if (v4)
   {
-    v8 = [v2 displayContextWithUpdatedInterfaceOrientation:v4];
+    v8 = [mainScreen displayContextWithUpdatedInterfaceOrientation:v4];
     [v3 addObject:v8];
   }
 
-  if (v7)
+  if (_windowInterfaceOrientation)
   {
-    v9 = v7 == v4;
+    v9 = _windowInterfaceOrientation == v4;
   }
 
   else
@@ -99,26 +99,26 @@
 
   if (!v9)
   {
-    v10 = [v2 displayContextWithUpdatedInterfaceOrientation:v4];
+    v10 = [mainScreen displayContextWithUpdatedInterfaceOrientation:v4];
     [v3 addObject:v10];
   }
 
   return v3;
 }
 
-+ (id)mainScreenDisplayContextsForKnownOrientationsAndUserInterfaceStyles:(id)a3
++ (id)mainScreenDisplayContextsForKnownOrientationsAndUserInterfaceStyles:(id)styles
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 mainScreenDisplayContextsForKnownOrientations];
-  if (v4)
+  stylesCopy = styles;
+  mainScreenDisplayContextsForKnownOrientations = [self mainScreenDisplayContextsForKnownOrientations];
+  if (stylesCopy)
   {
-    v6 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(stylesCopy, "count")}];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v5;
+    v7 = mainScreenDisplayContextsForKnownOrientations;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
@@ -140,7 +140,7 @@
           v14[3] = &unk_2782C9378;
           v15 = v6;
           v16 = v12;
-          [v4 enumerateIndexesUsingBlock:v14];
+          [stylesCopy enumerateIndexesUsingBlock:v14];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -149,10 +149,10 @@
       while (v9);
     }
 
-    v5 = [v6 array];
+    mainScreenDisplayContextsForKnownOrientations = [v6 array];
   }
 
-  return v5;
+  return mainScreenDisplayContextsForKnownOrientations;
 }
 
 void __96__PBFGenericDisplayContext_mainScreenDisplayContextsForKnownOrientationsAndUserInterfaceStyles___block_invoke(uint64_t a1, uint64_t a2)
@@ -162,22 +162,22 @@ void __96__PBFGenericDisplayContext_mainScreenDisplayContextsForKnownOrientation
   [v2 addObject:v3];
 }
 
-+ (id)displayContextForScreen:(id)a3
++ (id)displayContextForScreen:(id)screen
 {
-  v4 = [a3 displayConfiguration];
-  v5 = [a1 displayContextForDisplayConfiguration:v4];
+  displayConfiguration = [screen displayConfiguration];
+  v5 = [self displayContextForDisplayConfiguration:displayConfiguration];
 
   return v5;
 }
 
-+ (id)displayContextForScreen:(id)a3 traitCollection:(id)a4
++ (id)displayContextForScreen:(id)screen traitCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  screenCopy = screen;
+  collectionCopy = collection;
+  traitCollection = collectionCopy;
+  if (screenCopy)
   {
-    if (v8)
+    if (collectionCopy)
     {
       goto LABEL_4;
     }
@@ -185,88 +185,88 @@ void __96__PBFGenericDisplayContext_mainScreenDisplayContextsForKnownOrientation
     goto LABEL_3;
   }
 
-  [PBFGenericDisplayContext displayContextForScreen:a2 traitCollection:a1];
-  if (!v9)
+  [PBFGenericDisplayContext displayContextForScreen:a2 traitCollection:self];
+  if (!traitCollection)
   {
 LABEL_3:
-    v9 = [v7 traitCollection];
+    traitCollection = [screenCopy traitCollection];
   }
 
 LABEL_4:
   v10 = PBFBSInterfaceOrientationDefaultForCurrentDeviceClass();
-  v11 = objc_allocWithZone(a1);
-  [v7 _referenceBounds];
+  v11 = objc_allocWithZone(self);
+  [screenCopy _referenceBounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [v7 scale];
+  [screenCopy scale];
   v21 = v20;
-  v22 = PBFUserInterfaceStyleFromUIUserInterfaceStyle([v9 userInterfaceStyle]);
-  v23 = [v11 initWithBounds:v10 scale:0 interfaceOrientation:v22 sigEventsCounter:PBFAccessibilityContrastFromUIAccessibilityContrast(objc_msgSend(v9 userInterfaceStyle:"accessibilityContrast")) accessibilityContrast:{v13, v15, v17, v19, v21}];
+  v22 = PBFUserInterfaceStyleFromUIUserInterfaceStyle([traitCollection userInterfaceStyle]);
+  v23 = [v11 initWithBounds:v10 scale:0 interfaceOrientation:v22 sigEventsCounter:PBFAccessibilityContrastFromUIAccessibilityContrast(objc_msgSend(traitCollection userInterfaceStyle:"accessibilityContrast")) accessibilityContrast:{v13, v15, v17, v19, v21}];
 
   return v23;
 }
 
-+ (id)displayContextForDisplayIdentifier:(id)a3
++ (id)displayContextForDisplayIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    [(PBFGenericDisplayContext *)a2 displayContextForDisplayIdentifier:a1];
+    [(PBFGenericDisplayContext *)a2 displayContextForDisplayIdentifier:self];
   }
 
-  v6 = [MEMORY[0x277D0AD38] pui_sharedDisplayMonitor];
-  v7 = [v6 configurationForIdentity:v5];
-  v8 = [a1 displayContextForDisplayConfiguration:v7];
+  pui_sharedDisplayMonitor = [MEMORY[0x277D0AD38] pui_sharedDisplayMonitor];
+  v7 = [pui_sharedDisplayMonitor configurationForIdentity:identifierCopy];
+  v8 = [self displayContextForDisplayConfiguration:v7];
 
   return v8;
 }
 
-+ (id)displayContextForDisplayConfiguration:(id)a3
++ (id)displayContextForDisplayConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    [(PBFGenericDisplayContext *)a2 displayContextForDisplayConfiguration:a1];
+    [(PBFGenericDisplayContext *)a2 displayContextForDisplayConfiguration:self];
   }
 
   v6 = MEMORY[0x277D759A0];
-  v7 = [v5 identity];
-  v8 = [v6 _screenWithFBSDisplayIdentity:v7];
+  identity = [configurationCopy identity];
+  v8 = [v6 _screenWithFBSDisplayIdentity:identity];
 
   v9 = PBFBSInterfaceOrientationDefaultForCurrentDeviceClass();
-  v10 = [v8 traitCollection];
-  v11 = objc_allocWithZone(a1);
-  [v5 bounds];
+  traitCollection = [v8 traitCollection];
+  v11 = objc_allocWithZone(self);
+  [configurationCopy bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [v5 scale];
+  [configurationCopy scale];
   v21 = v20;
-  v22 = PBFUserInterfaceStyleFromUIUserInterfaceStyle([v10 userInterfaceStyle]);
-  v23 = [v11 initWithBounds:v9 scale:0 interfaceOrientation:v22 sigEventsCounter:PBFAccessibilityContrastFromUIAccessibilityContrast(objc_msgSend(v10 userInterfaceStyle:"accessibilityContrast")) accessibilityContrast:{v13, v15, v17, v19, v21}];
+  v22 = PBFUserInterfaceStyleFromUIUserInterfaceStyle([traitCollection userInterfaceStyle]);
+  v23 = [v11 initWithBounds:v9 scale:0 interfaceOrientation:v22 sigEventsCounter:PBFAccessibilityContrastFromUIAccessibilityContrast(objc_msgSend(traitCollection userInterfaceStyle:"accessibilityContrast")) accessibilityContrast:{v13, v15, v17, v19, v21}];
 
   return v23;
 }
 
-+ (id)displayContextForPersistenceIdentifier:(id)a3
++ (id)displayContextForPersistenceIdentifier:(id)identifier
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   if (displayContextForPersistenceIdentifier__onceToken != -1)
   {
     +[PBFGenericDisplayContext displayContextForPersistenceIdentifier:];
   }
 
-  v29 = v3;
-  v4 = [v3 componentsSeparatedByString:{@"]-", a1}];
+  v29 = identifierCopy;
+  v4 = [identifierCopy componentsSeparatedByString:{@"]-", self}];
   x = *MEMORY[0x277CBF3A0];
   y = *(MEMORY[0x277CBF3A0] + 8);
   width = *(MEMORY[0x277CBF3A0] + 16);
   height = *(MEMORY[0x277CBF3A0] + 24);
-  v9 = PBFBSInterfaceOrientationDefaultForCurrentDeviceClass();
+  unsignedIntegerValue = PBFBSInterfaceOrientationDefaultForCurrentDeviceClass();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -275,18 +275,18 @@ LABEL_4:
   v11 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (!v11)
   {
-    v13 = 0;
+    unsignedIntegerValue2 = 0;
     v15 = 0.0;
-    v30 = 0;
-    v31 = -1;
+    unsignedIntegerValue4 = 0;
+    unsignedIntegerValue3 = -1;
     goto LABEL_26;
   }
 
   v12 = v11;
-  v13 = 0;
+  unsignedIntegerValue2 = 0;
   v14 = *v33;
-  v30 = 0;
-  v31 = -1;
+  unsignedIntegerValue4 = 0;
+  unsignedIntegerValue3 = -1;
   v15 = 0.0;
   do
   {
@@ -324,7 +324,7 @@ LABEL_4:
           v22 = displayContextForPersistenceIdentifier__numberFormatter;
           v18 = [v17 substringFromIndex:1];
           v20 = [v22 numberFromString:v18];
-          v9 = [v20 unsignedIntegerValue];
+          unsignedIntegerValue = [v20 unsignedIntegerValue];
         }
 
         else if ([v17 hasPrefix:@"ui"])
@@ -332,7 +332,7 @@ LABEL_4:
           v23 = displayContextForPersistenceIdentifier__numberFormatter;
           v18 = [v17 substringFromIndex:2];
           v20 = [v23 numberFromString:v18];
-          v13 = [v20 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v20 unsignedIntegerValue];
         }
 
         else if ([v17 hasPrefix:@"ax"])
@@ -340,7 +340,7 @@ LABEL_4:
           v24 = displayContextForPersistenceIdentifier__numberFormatter;
           v18 = [v17 substringFromIndex:2];
           v20 = [v24 numberFromString:v18];
-          v31 = [v20 unsignedIntegerValue];
+          unsignedIntegerValue3 = [v20 unsignedIntegerValue];
         }
 
         else
@@ -353,7 +353,7 @@ LABEL_4:
           v25 = displayContextForPersistenceIdentifier__numberFormatter;
           v18 = [v17 substringFromIndex:1];
           v20 = [v25 numberFromString:v18];
-          v30 = [v20 unsignedIntegerValue];
+          unsignedIntegerValue4 = [v20 unsignedIntegerValue];
         }
       }
     }
@@ -364,7 +364,7 @@ LABEL_4:
   while (v12);
 LABEL_26:
 
-  v26 = [objc_alloc(objc_opt_class()) initWithBounds:v9 scale:v30 interfaceOrientation:v13 sigEventsCounter:v31 userInterfaceStyle:x accessibilityContrast:{y, width, height, v15}];
+  v26 = [objc_alloc(objc_opt_class()) initWithBounds:unsignedIntegerValue scale:unsignedIntegerValue4 interfaceOrientation:unsignedIntegerValue2 sigEventsCounter:unsignedIntegerValue3 userInterfaceStyle:x accessibilityContrast:{y, width, height, v15}];
 
   return v26;
 }
@@ -380,27 +380,27 @@ void __67__PBFGenericDisplayContext_displayContextForPersistenceIdentifier___blo
   [v2 setLocale:v3];
 }
 
-+ (id)genericDisplayContextWithDisplayContext:(id)a3
++ (id)genericDisplayContextWithDisplayContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = v4;
+    v7 = contextCopy;
   }
 
   else
   {
-    v8 = [a1 alloc];
-    [v4 pbf_referenceBounds];
+    v8 = [self alloc];
+    [contextCopy pbf_referenceBounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    [v4 pbf_scale];
-    v7 = [v8 initWithBounds:objc_msgSend(v4 scale:"pbf_interfaceOrientation") interfaceOrientation:objc_msgSend(v4 sigEventsCounter:"pbf_significantEventsCounter") userInterfaceStyle:objc_msgSend(v4 accessibilityContrast:{"pbf_userInterfaceStyle"), objc_msgSend(v4, "pbf_accessibilityContrast"), v10, v12, v14, v16, v17}];
+    [contextCopy pbf_scale];
+    v7 = [v8 initWithBounds:objc_msgSend(contextCopy scale:"pbf_interfaceOrientation") interfaceOrientation:objc_msgSend(contextCopy sigEventsCounter:"pbf_significantEventsCounter") userInterfaceStyle:objc_msgSend(contextCopy accessibilityContrast:{"pbf_userInterfaceStyle"), objc_msgSend(contextCopy, "pbf_accessibilityContrast"), v10, v12, v14, v16, v17}];
   }
 
   v18 = v7;
@@ -408,18 +408,18 @@ void __67__PBFGenericDisplayContext_displayContextForPersistenceIdentifier___blo
   return v18;
 }
 
-- (PBFGenericDisplayContext)initWithBounds:(CGRect)a3 scale:(double)a4 interfaceOrientation:(int64_t)a5 sigEventsCounter:(unint64_t)a6 userInterfaceStyle:(int64_t)a7 accessibilityContrast:(int64_t)a8
+- (PBFGenericDisplayContext)initWithBounds:(CGRect)bounds scale:(double)scale interfaceOrientation:(int64_t)orientation sigEventsCounter:(unint64_t)counter userInterfaceStyle:(int64_t)style accessibilityContrast:(int64_t)contrast
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (CGRectIsEmpty(bounds))
   {
     [PBFGenericDisplayContext initWithBounds:a2 scale:? interfaceOrientation:? sigEventsCounter:? userInterfaceStyle:? accessibilityContrast:?];
   }
 
-  if (a4 <= 0.0)
+  if (scale <= 0.0)
   {
     [PBFGenericDisplayContext initWithBounds:a2 scale:? interfaceOrientation:? sigEventsCounter:? userInterfaceStyle:? accessibilityContrast:?];
   }
@@ -433,12 +433,12 @@ void __67__PBFGenericDisplayContext_displayContextForPersistenceIdentifier___blo
     result->_referenceBounds.origin.y = y;
     result->_referenceBounds.size.width = width;
     result->_referenceBounds.size.height = height;
-    result->_scale = a4;
-    result->_significantEventsCounter = a6;
-    result->_userInterfaceStyle = a7;
-    result->_accessibilityContrast = a8;
+    result->_scale = scale;
+    result->_significantEventsCounter = counter;
+    result->_userInterfaceStyle = style;
+    result->_accessibilityContrast = contrast;
     result->_cachedHash = 0x7FFFFFFFFFFFFFFFLL;
-    result->_interfaceOrientation = a5;
+    result->_interfaceOrientation = orientation;
   }
 
   return result;
@@ -488,13 +488,13 @@ void __67__PBFGenericDisplayContext_displayContextForPersistenceIdentifier___blo
   result = self->_cachedHash;
   if (result == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [MEMORY[0x277CF0C40] builder];
-    v5 = [v4 appendInteger:self->_interfaceOrientation];
-    v6 = [v4 appendInteger:self->_userInterfaceStyle];
-    v7 = [v4 appendInteger:self->_accessibilityContrast];
-    v8 = [v4 appendCGRect:{self->_referenceBounds.origin.x, self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height}];
-    v9 = [v4 appendDouble:self->_scale];
-    self->_cachedHash = [v4 hash];
+    builder = [MEMORY[0x277CF0C40] builder];
+    v5 = [builder appendInteger:self->_interfaceOrientation];
+    v6 = [builder appendInteger:self->_userInterfaceStyle];
+    v7 = [builder appendInteger:self->_accessibilityContrast];
+    v8 = [builder appendCGRect:{self->_referenceBounds.origin.x, self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height}];
+    v9 = [builder appendDouble:self->_scale];
+    self->_cachedHash = [builder hash];
 
     return self->_cachedHash;
   }
@@ -521,70 +521,70 @@ void __67__PBFGenericDisplayContext_displayContextForPersistenceIdentifier___blo
   return v8;
 }
 
-- (PBFGenericDisplayContext)displayContextWithUpdatedSignificantEventsCounter:(unint64_t)a3
+- (PBFGenericDisplayContext)displayContextWithUpdatedSignificantEventsCounter:(unint64_t)counter
 {
-  if (self->_significantEventsCounter == a3)
+  if (self->_significantEventsCounter == counter)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [objc_allocWithZone(objc_opt_class()) initWithBounds:self->_interfaceOrientation scale:a3 interfaceOrientation:self->_userInterfaceStyle sigEventsCounter:self->_accessibilityContrast userInterfaceStyle:self->_referenceBounds.origin.x accessibilityContrast:{self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height, self->_scale}];
+    selfCopy = [objc_allocWithZone(objc_opt_class()) initWithBounds:self->_interfaceOrientation scale:counter interfaceOrientation:self->_userInterfaceStyle sigEventsCounter:self->_accessibilityContrast userInterfaceStyle:self->_referenceBounds.origin.x accessibilityContrast:{self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height, self->_scale}];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (PBFGenericDisplayContext)displayContextWithUpdatedUserInterfaceStyle:(int64_t)a3
+- (PBFGenericDisplayContext)displayContextWithUpdatedUserInterfaceStyle:(int64_t)style
 {
-  if (self->_userInterfaceStyle == a3)
+  if (self->_userInterfaceStyle == style)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [objc_allocWithZone(objc_opt_class()) initWithBounds:self->_interfaceOrientation scale:self->_significantEventsCounter interfaceOrientation:a3 sigEventsCounter:self->_accessibilityContrast userInterfaceStyle:self->_referenceBounds.origin.x accessibilityContrast:{self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height, self->_scale}];
+    selfCopy = [objc_allocWithZone(objc_opt_class()) initWithBounds:self->_interfaceOrientation scale:self->_significantEventsCounter interfaceOrientation:style sigEventsCounter:self->_accessibilityContrast userInterfaceStyle:self->_referenceBounds.origin.x accessibilityContrast:{self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height, self->_scale}];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (PBFGenericDisplayContext)displayContextWithUpdatedAccessibilityContrast:(int64_t)a3
+- (PBFGenericDisplayContext)displayContextWithUpdatedAccessibilityContrast:(int64_t)contrast
 {
-  if (self->_accessibilityContrast == a3)
+  if (self->_accessibilityContrast == contrast)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [objc_allocWithZone(objc_opt_class()) initWithBounds:self->_interfaceOrientation scale:self->_significantEventsCounter interfaceOrientation:self->_userInterfaceStyle sigEventsCounter:a3 userInterfaceStyle:self->_referenceBounds.origin.x accessibilityContrast:{self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height, self->_scale}];
+    selfCopy = [objc_allocWithZone(objc_opt_class()) initWithBounds:self->_interfaceOrientation scale:self->_significantEventsCounter interfaceOrientation:self->_userInterfaceStyle sigEventsCounter:contrast userInterfaceStyle:self->_referenceBounds.origin.x accessibilityContrast:{self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height, self->_scale}];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (PBFGenericDisplayContext)displayContextWithUpdatedInterfaceOrientation:(int64_t)a3
+- (PBFGenericDisplayContext)displayContextWithUpdatedInterfaceOrientation:(int64_t)orientation
 {
-  if (self->_interfaceOrientation == a3)
+  if (self->_interfaceOrientation == orientation)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [objc_allocWithZone(objc_opt_class()) initWithBounds:a3 scale:self->_significantEventsCounter interfaceOrientation:self->_userInterfaceStyle sigEventsCounter:self->_accessibilityContrast userInterfaceStyle:self->_referenceBounds.origin.x accessibilityContrast:{self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height, self->_scale}];
+    selfCopy = [objc_allocWithZone(objc_opt_class()) initWithBounds:orientation scale:self->_significantEventsCounter interfaceOrientation:self->_userInterfaceStyle sigEventsCounter:self->_accessibilityContrast userInterfaceStyle:self->_referenceBounds.origin.x accessibilityContrast:{self->_referenceBounds.origin.y, self->_referenceBounds.size.width, self->_referenceBounds.size.height, self->_scale}];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -607,7 +607,7 @@ void __67__PBFGenericDisplayContext_displayContextForPersistenceIdentifier___blo
       }
     }
 
-    v6 = [(PBFGenericDisplayContext *)self isEqualToDisplayContext:v4];
+    v6 = [(PBFGenericDisplayContext *)self isEqualToDisplayContext:equalCopy];
   }
 
 LABEL_8:
@@ -615,10 +615,10 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isEqualToDisplayContext:(id)a3
+- (BOOL)isEqualToDisplayContext:(id)context
 {
-  v4 = a3;
-  if (v4 == self)
+  contextCopy = context;
+  if (contextCopy == self)
   {
     v8 = 1;
   }
@@ -626,11 +626,11 @@ LABEL_8:
   else
   {
     [(PBFGenericDisplayContext *)self pbf_scale];
-    [(PBFGenericDisplayContext *)v4 pbf_scale];
-    if (BSFloatEqualToFloat() && ([(PBFGenericDisplayContext *)self pbf_referenceBounds], [(PBFGenericDisplayContext *)v4 pbf_referenceBounds], BSRectEqualToRect()) && (v5 = [(PBFGenericDisplayContext *)self pbf_accessibilityContrast], v5 == [(PBFGenericDisplayContext *)v4 pbf_accessibilityContrast]) && (v6 = [(PBFGenericDisplayContext *)self pbf_userInterfaceStyle], v6 == [(PBFGenericDisplayContext *)v4 pbf_userInterfaceStyle]))
+    [(PBFGenericDisplayContext *)contextCopy pbf_scale];
+    if (BSFloatEqualToFloat() && ([(PBFGenericDisplayContext *)self pbf_referenceBounds], [(PBFGenericDisplayContext *)contextCopy pbf_referenceBounds], BSRectEqualToRect()) && (v5 = [(PBFGenericDisplayContext *)self pbf_accessibilityContrast], v5 == [(PBFGenericDisplayContext *)contextCopy pbf_accessibilityContrast]) && (v6 = [(PBFGenericDisplayContext *)self pbf_userInterfaceStyle], v6 == [(PBFGenericDisplayContext *)contextCopy pbf_userInterfaceStyle]))
     {
-      v7 = [(PBFGenericDisplayContext *)self pbf_interfaceOrientation];
-      v8 = v7 == [(PBFGenericDisplayContext *)v4 pbf_interfaceOrientation];
+      pbf_interfaceOrientation = [(PBFGenericDisplayContext *)self pbf_interfaceOrientation];
+      v8 = pbf_interfaceOrientation == [(PBFGenericDisplayContext *)contextCopy pbf_interfaceOrientation];
     }
 
     else
@@ -642,15 +642,15 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)geometryIsEqualTo:(id)a3
+- (BOOL)geometryIsEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   [(PBFGenericDisplayContext *)self pbf_scale];
-  [v4 pbf_scale];
+  [toCopy pbf_scale];
   if (BSFloatEqualToFloat())
   {
     [(PBFGenericDisplayContext *)self pbf_referenceBounds];
-    [v4 pbf_referenceBounds];
+    [toCopy pbf_referenceBounds];
     v5 = BSRectEqualToRect();
   }
 
@@ -677,9 +677,9 @@ LABEL_8:
   v7 = [v3 appendRect:@"frame" withName:?];
   [(PBFGenericDisplayContext *)self pbf_scale];
   v8 = [v3 appendFloat:@"scale" withName:?];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (CGRect)pbf_referenceBounds

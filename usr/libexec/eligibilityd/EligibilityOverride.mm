@@ -1,19 +1,19 @@
 @interface EligibilityOverride
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (EligibilityOverride)init;
-- (EligibilityOverride)initWithCoder:(id)a3;
-- (id)_answerDictionaryForOverrideData:(id)a3;
+- (EligibilityOverride)initWithCoder:(id)coder;
+- (id)_answerDictionaryForOverrideData:(id)data;
 - (id)_overrideMapDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)overriddenDomains;
-- (id)overrideResultDictionaryForDomain:(unint64_t)a3;
+- (id)overrideResultDictionaryForDomain:(unint64_t)domain;
 - (id)resultDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)forceDomain:(unint64_t)a3 answer:(unint64_t)a4 context:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)forceDomain:(unint64_t)domain answer:(unint64_t)answer context:(id)context;
 - (void)resetAllAnswers;
-- (void)resetAnswerForDomain:(unint64_t)a3;
+- (void)resetAnswerForDomain:(unint64_t)domain;
 @end
 
 @implementation EligibilityOverride
@@ -21,8 +21,8 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(EligibilityOverride *)self _overrideMapDescription];
-  v5 = [NSString stringWithFormat:@"<%@: overrides: { \n%@ }>", v3, v4];
+  _overrideMapDescription = [(EligibilityOverride *)self _overrideMapDescription];
+  v5 = [NSString stringWithFormat:@"<%@: overrides: { \n%@ }>", v3, _overrideMapDescription];
 
   return v5;
 }
@@ -30,31 +30,31 @@
 - (id)_overrideMapDescription
 {
   v3 = objc_opt_new();
-  v4 = [(EligibilityOverride *)self overrideMap];
+  overrideMap = [(EligibilityOverride *)self overrideMap];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001A304;
   v8[3] = &unk_100045BC0;
   v9 = v3;
   v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [overrideMap enumerateKeysAndObjectsUsingBlock:v8];
 
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = EligibilityOverride;
-  if (![(EligibilityOverride *)&v11 isEqual:v4])
+  if (![(EligibilityOverride *)&v11 isEqual:equalCopy])
   {
     goto LABEL_9;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v8 = 1;
     goto LABEL_11;
@@ -63,10 +63,10 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(EligibilityOverride *)self overrideMap];
-    v7 = [(EligibilityOverride *)v5 overrideMap];
-    v8 = sub_1000277EC(v6, v7);
+    v5 = equalCopy;
+    overrideMap = [(EligibilityOverride *)self overrideMap];
+    overrideMap2 = [(EligibilityOverride *)v5 overrideMap];
+    v8 = sub_1000277EC(overrideMap, overrideMap2);
 
     if ((v8 & 1) == 0)
     {
@@ -95,29 +95,29 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(EligibilityOverride *)self overrideMap];
-  v3 = [v2 hash];
+  overrideMap = [(EligibilityOverride *)self overrideMap];
+  v3 = [overrideMap hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(EligibilityOverride *)self overrideMap];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  overrideMap = [(EligibilityOverride *)self overrideMap];
+  v7 = [overrideMap copyWithZone:zone];
   [v5 setOverrideMap:v7];
 
   return v5;
 }
 
-- (EligibilityOverride)initWithCoder:(id)a3
+- (EligibilityOverride)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = +[GlobalConfiguration sharedInstance];
-  v6 = [v5 supportsForcedAnswers];
+  supportsForcedAnswers = [v5 supportsForcedAnswers];
 
-  if (v6)
+  if (supportsForcedAnswers)
   {
     v17.receiver = self;
     v17.super_class = EligibilityOverride;
@@ -127,7 +127,7 @@ LABEL_11:
       v8 = objc_opt_class();
       v9 = objc_opt_class();
       v10 = [NSSet setWithObjects:v8, v9, objc_opt_class(), 0];
-      v11 = [v4 decodeObjectOfClasses:v10 forKey:@"overrideMap"];
+      v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"overrideMap"];
 
       if (!v11)
       {
@@ -147,7 +147,7 @@ LABEL_11:
     }
 
     self = v7;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -160,32 +160,32 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s: This device does not support overriding eligibility answers.", buf, 0xCu);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(EligibilityOverride *)self overrideMap];
-  [v4 encodeObject:v5 forKey:@"overrideMap"];
+  coderCopy = coder;
+  overrideMap = [(EligibilityOverride *)self overrideMap];
+  [coderCopy encodeObject:overrideMap forKey:@"overrideMap"];
 }
 
 - (id)overriddenDomains
 {
-  v2 = [(EligibilityOverride *)self overrideMap];
-  v3 = [v2 allKeys];
+  overrideMap = [(EligibilityOverride *)self overrideMap];
+  allKeys = [overrideMap allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-- (id)overrideResultDictionaryForDomain:(unint64_t)a3
+- (id)overrideResultDictionaryForDomain:(unint64_t)domain
 {
-  v5 = [(EligibilityOverride *)self overrideMap];
-  v6 = [NSNumber numberWithUnsignedLongLong:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  overrideMap = [(EligibilityOverride *)self overrideMap];
+  v6 = [NSNumber numberWithUnsignedLongLong:domain];
+  v7 = [overrideMap objectForKeyedSubscript:v6];
 
   if (v7)
   {
@@ -203,43 +203,43 @@ LABEL_11:
 - (id)resultDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(EligibilityOverride *)self overrideMap];
+  overrideMap = [(EligibilityOverride *)self overrideMap];
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_10001AA18;
   v11 = &unk_100045B98;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v8];
+  [overrideMap enumerateKeysAndObjectsUsingBlock:&v8];
 
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (id)_answerDictionaryForOverrideData:(id)a3
+- (id)_answerDictionaryForOverrideData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 context];
+  dataCopy = data;
+  context = [dataCopy context];
 
-  if (v4)
+  if (context)
   {
     v11[0] = @"os_eligibility_answer_t";
-    v5 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v3 answer]);
+    v5 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [dataCopy answer]);
     v12[0] = v5;
     v12[1] = &off_10004ABD8;
     v11[1] = @"os_eligibility_answer_source_t";
     v11[2] = @"context";
-    v6 = [v3 context];
-    v12[2] = v6;
+    context2 = [dataCopy context];
+    v12[2] = context2;
     v7 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:3];
   }
 
   else
   {
     v9[0] = @"os_eligibility_answer_t";
-    v5 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v3 answer]);
+    v5 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [dataCopy answer]);
     v9[1] = @"os_eligibility_answer_source_t";
     v10[0] = v5;
     v10[1] = &off_10004ABD8;
@@ -258,29 +258,29 @@ LABEL_11:
   _objc_release_x1();
 }
 
-- (void)resetAnswerForDomain:(unint64_t)a3
+- (void)resetAnswerForDomain:(unint64_t)domain
 {
-  v5 = [(EligibilityOverride *)self overrideMap];
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
-  [v5 removeObjectForKey:v4];
+  overrideMap = [(EligibilityOverride *)self overrideMap];
+  v4 = [NSNumber numberWithUnsignedLongLong:domain];
+  [overrideMap removeObjectForKey:v4];
 }
 
-- (void)forceDomain:(unint64_t)a3 answer:(unint64_t)a4 context:(id)a5
+- (void)forceDomain:(unint64_t)domain answer:(unint64_t)answer context:(id)context
 {
-  v8 = a5;
-  v11 = [[EligibilityOverrideData alloc] initWithAnswer:a4 context:v8];
+  contextCopy = context;
+  v11 = [[EligibilityOverrideData alloc] initWithAnswer:answer context:contextCopy];
 
-  v9 = [(EligibilityOverride *)self overrideMap];
-  v10 = [NSNumber numberWithUnsignedLongLong:a3];
-  [v9 setObject:v11 forKeyedSubscript:v10];
+  overrideMap = [(EligibilityOverride *)self overrideMap];
+  v10 = [NSNumber numberWithUnsignedLongLong:domain];
+  [overrideMap setObject:v11 forKeyedSubscript:v10];
 }
 
 - (EligibilityOverride)init
 {
   v3 = +[GlobalConfiguration sharedInstance];
-  v4 = [v3 supportsForcedAnswers];
+  supportsForcedAnswers = [v3 supportsForcedAnswers];
 
-  if (v4)
+  if (supportsForcedAnswers)
   {
     v11.receiver = self;
     v11.super_class = EligibilityOverride;
@@ -293,7 +293,7 @@ LABEL_11:
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -306,10 +306,10 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: This device does not support overriding eligibility answers.", buf, 0xCu);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

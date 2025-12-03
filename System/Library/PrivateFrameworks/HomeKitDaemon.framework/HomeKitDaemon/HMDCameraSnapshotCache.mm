@@ -1,20 +1,20 @@
 @interface HMDCameraSnapshotCache
 + (id)logCategory;
-- (BOOL)isEntryPresentForCharacteristicEventUUID:(id)a3;
-- (HMDCameraSnapshotCache)initWithWorkQueue:(id)a3 logIdentifier:(id)a4;
-- (void)addEntryWithCharacteristicEventUUID:(id)a3;
-- (void)removeEntryWithCharacteristicEventUUID:(id)a3 error:(id)a4;
-- (void)requestSnapshot:(id)a3 streamingTierType:(unint64_t)a4 completionHandler:(id)a5;
-- (void)setSnapshotFile:(id)a3 forEntryWithCharacteristicEventUUID:(id)a4;
-- (void)timerDidFire:(id)a3;
+- (BOOL)isEntryPresentForCharacteristicEventUUID:(id)d;
+- (HMDCameraSnapshotCache)initWithWorkQueue:(id)queue logIdentifier:(id)identifier;
+- (void)addEntryWithCharacteristicEventUUID:(id)d;
+- (void)removeEntryWithCharacteristicEventUUID:(id)d error:(id)error;
+- (void)requestSnapshot:(id)snapshot streamingTierType:(unint64_t)type completionHandler:(id)handler;
+- (void)setSnapshotFile:(id)file forEntryWithCharacteristicEventUUID:(id)d;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDCameraSnapshotCache
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   if (self)
   {
     dispatch_assert_queue_V2(self->_workQueue);
@@ -63,12 +63,12 @@
         }
 
         v13 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:*(*(&v22 + 1) + 8 * v10)];
-        v14 = [v13 timer];
+        timer = [v13 timer];
 
-        if (v14 == v4)
+        if (timer == fireCopy)
         {
           v16 = objc_autoreleasePoolPush();
-          v17 = self;
+          selfCopy = self;
           v18 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
@@ -83,7 +83,7 @@
           objc_autoreleasePoolPop(v16);
           if (self)
           {
-            v20 = v17->_snapshotCacheMap;
+            v20 = selfCopy->_snapshotCacheMap;
           }
 
           else
@@ -116,36 +116,36 @@ LABEL_21:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEntryPresentForCharacteristicEventUUID:(id)a3
+- (BOOL)isEntryPresentForCharacteristicEventUUID:(id)d
 {
   if (self)
   {
     workQueue = self->_workQueue;
-    v6 = a3;
+    dCopy = d;
     dispatch_assert_queue_V2(workQueue);
     snapshotCacheMap = self->_snapshotCacheMap;
   }
 
   else
   {
-    v12 = a3;
+    dCopy2 = d;
     dispatch_assert_queue_V2(0);
     snapshotCacheMap = 0;
   }
 
-  v8 = [(NSMutableDictionary *)snapshotCacheMap objectForKeyedSubscript:a3];
+  v8 = [(NSMutableDictionary *)snapshotCacheMap objectForKeyedSubscript:d];
 
-  v9 = [v8 snapshotFile];
-  v10 = v9 != 0;
+  snapshotFile = [v8 snapshotFile];
+  v10 = snapshotFile != 0;
 
   return v10;
 }
 
-- (void)requestSnapshot:(id)a3 streamingTierType:(unint64_t)a4 completionHandler:(id)a5
+- (void)requestSnapshot:(id)snapshot streamingTierType:(unint64_t)type completionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  snapshotCopy = snapshot;
+  handlerCopy = handler;
   if (self)
   {
     dispatch_assert_queue_V2(self->_workQueue);
@@ -159,13 +159,13 @@ LABEL_21:
   }
 
   v10 = snapshotCacheMap;
-  v11 = [v7 snapshotCharacteristicEventUUID];
-  v12 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:v11];
+  snapshotCharacteristicEventUUID = [snapshotCopy snapshotCharacteristicEventUUID];
+  v12 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:snapshotCharacteristicEventUUID];
 
   if (!v12)
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -173,23 +173,23 @@ LABEL_21:
       v26 = 138543618;
       v27 = v23;
       v28 = 2112;
-      v29 = v7;
+      v29 = snapshotCopy;
       _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@Did not find the snapshot cache file for %@", &v26, 0x16u);
     }
 
     objc_autoreleasePoolPop(v20);
-    v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    v8[2](v8, 0, v19);
+    snapshotFile2 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+    handlerCopy[2](handlerCopy, 0, snapshotFile2);
     goto LABEL_11;
   }
 
-  v13 = [v12 snapshotFile];
+  snapshotFile = [v12 snapshotFile];
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy2 = self;
   v16 = HMFGetOSLogHandle();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_INFO);
-  if (v13)
+  if (snapshotFile)
   {
     if (v17)
     {
@@ -197,13 +197,13 @@ LABEL_21:
       v26 = 138543618;
       v27 = v18;
       v28 = 2112;
-      v29 = v7;
+      v29 = snapshotCopy;
       _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Found the snapshot cache file for %@", &v26, 0x16u);
     }
 
     objc_autoreleasePoolPop(v14);
-    v19 = [v12 snapshotFile];
-    (v8)[2](v8, v19, 0);
+    snapshotFile2 = [v12 snapshotFile];
+    (handlerCopy)[2](handlerCopy, snapshotFile2, 0);
 LABEL_11:
 
     goto LABEL_15;
@@ -218,17 +218,17 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v14);
-  [v12 setSnapshotRequestCompletion:v8];
+  [v12 setSnapshotRequestCompletion:handlerCopy];
 LABEL_15:
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSnapshotFile:(id)a3 forEntryWithCharacteristicEventUUID:(id)a4
+- (void)setSnapshotFile:(id)file forEntryWithCharacteristicEventUUID:(id)d
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  dCopy = d;
   if (self)
   {
     dispatch_assert_queue_V2(self->_workQueue);
@@ -241,13 +241,13 @@ LABEL_15:
     snapshotCacheMap = 0;
   }
 
-  v9 = [(NSMutableDictionary *)snapshotCacheMap objectForKeyedSubscript:v7];
-  v10 = [v9 snapshotRequestCompletion];
+  v9 = [(NSMutableDictionary *)snapshotCacheMap objectForKeyedSubscript:dCopy];
+  snapshotRequestCompletion = [v9 snapshotRequestCompletion];
 
-  if (v10)
+  if (snapshotRequestCompletion)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -255,15 +255,15 @@ LABEL_15:
       v26 = 138543874;
       v27 = v14;
       v28 = 2112;
-      v29 = v7;
+      v29 = dCopy;
       v30 = 2112;
-      v31 = v6;
+      v31 = fileCopy;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Snapshot request completion is already set for %@, calling completion with %@", &v26, 0x20u);
     }
 
     objc_autoreleasePoolPop(v11);
-    v15 = [v9 snapshotRequestCompletion];
-    (v15)[2](v15, v6, 0);
+    snapshotRequestCompletion2 = [v9 snapshotRequestCompletion];
+    (snapshotRequestCompletion2)[2](snapshotRequestCompletion2, fileCopy, 0);
   }
 
   v16 = objc_alloc(MEMORY[0x277D0F920]);
@@ -280,10 +280,10 @@ LABEL_15:
   }
 
   [v17 setDelegateQueue:workQueue];
-  v19 = [[HMDCameraSnapshotCacheEntry alloc] initWithSnapshotCharacteristicEventUUID:v7 snapshotFile:v6 timer:v17];
+  v19 = [[HMDCameraSnapshotCacheEntry alloc] initWithSnapshotCharacteristicEventUUID:dCopy snapshotFile:fileCopy timer:v17];
 
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy2 = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
@@ -293,14 +293,14 @@ LABEL_15:
     v28 = 2112;
     v29 = v19;
     v30 = 2112;
-    v31 = v7;
+    v31 = dCopy;
     _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@Setting Cache Entry %@ for snapshotCharacteristicEventUUID: %@", &v26, 0x20u);
   }
 
   objc_autoreleasePoolPop(v20);
   if (self)
   {
-    v24 = v21->_snapshotCacheMap;
+    v24 = selfCopy2->_snapshotCacheMap;
   }
 
   else
@@ -308,17 +308,17 @@ LABEL_15:
     v24 = 0;
   }
 
-  [(NSMutableDictionary *)v24 setObject:v19 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)v24 setObject:v19 forKeyedSubscript:dCopy];
   [v17 resume];
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeEntryWithCharacteristicEventUUID:(id)a3 error:(id)a4
+- (void)removeEntryWithCharacteristicEventUUID:(id)d error:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  errorCopy = error;
   if (self)
   {
     dispatch_assert_queue_V2(self->_workQueue);
@@ -331,13 +331,13 @@ LABEL_15:
     snapshotCacheMap = 0;
   }
 
-  v9 = [(NSMutableDictionary *)snapshotCacheMap objectForKeyedSubscript:v6];
-  v10 = [v9 snapshotRequestCompletion];
+  v9 = [(NSMutableDictionary *)snapshotCacheMap objectForKeyedSubscript:dCopy];
+  snapshotRequestCompletion = [v9 snapshotRequestCompletion];
 
-  if (v10)
+  if (snapshotRequestCompletion)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -345,19 +345,19 @@ LABEL_15:
       v22 = 138543874;
       v23 = v14;
       v24 = 2112;
-      v25 = v6;
+      v25 = dCopy;
       v26 = 2112;
-      v27 = v7;
+      v27 = errorCopy;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Snapshot request completion is already set for %@, calling completion with error %@", &v22, 0x20u);
     }
 
     objc_autoreleasePoolPop(v11);
-    v15 = [v9 snapshotRequestCompletion];
-    (v15)[2](v15, 0, v7);
+    snapshotRequestCompletion2 = [v9 snapshotRequestCompletion];
+    (snapshotRequestCompletion2)[2](snapshotRequestCompletion2, 0, errorCopy);
   }
 
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy2 = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
@@ -365,14 +365,14 @@ LABEL_15:
     v22 = 138543618;
     v23 = v19;
     v24 = 2112;
-    v25 = v6;
+    v25 = dCopy;
     _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@Removing Cache Entry for snapshotCharacteristicEventUUID: %@", &v22, 0x16u);
   }
 
   objc_autoreleasePoolPop(v16);
   if (self)
   {
-    v20 = v17->_snapshotCacheMap;
+    v20 = selfCopy2->_snapshotCacheMap;
   }
 
   else
@@ -380,15 +380,15 @@ LABEL_15:
     v20 = 0;
   }
 
-  [(NSMutableDictionary *)v20 removeObjectForKey:v6];
+  [(NSMutableDictionary *)v20 removeObjectForKey:dCopy];
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addEntryWithCharacteristicEventUUID:(id)a3
+- (void)addEntryWithCharacteristicEventUUID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -400,9 +400,9 @@ LABEL_15:
   }
 
   dispatch_assert_queue_V2(workQueue);
-  v6 = [[HMDCameraSnapshotCacheEntry alloc] initWithSnapshotCharacteristicEventUUID:v4 snapshotFile:0 timer:0];
+  v6 = [[HMDCameraSnapshotCacheEntry alloc] initWithSnapshotCharacteristicEventUUID:dCopy snapshotFile:0 timer:0];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -412,14 +412,14 @@ LABEL_15:
     v15 = 2112;
     v16 = v6;
     v17 = 2112;
-    v18 = v4;
+    v18 = dCopy;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Added Cache Entry %@ for snapshotCharacteristicEventUUID: %@", &v13, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
   if (self)
   {
-    snapshotCacheMap = v8->_snapshotCacheMap;
+    snapshotCacheMap = selfCopy->_snapshotCacheMap;
   }
 
   else
@@ -427,26 +427,26 @@ LABEL_15:
     snapshotCacheMap = 0;
   }
 
-  [(NSMutableDictionary *)snapshotCacheMap setObject:v6 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)snapshotCacheMap setObject:v6 forKeyedSubscript:dCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraSnapshotCache)initWithWorkQueue:(id)a3 logIdentifier:(id)a4
+- (HMDCameraSnapshotCache)initWithWorkQueue:(id)queue logIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = HMDCameraSnapshotCache;
   v9 = [(HMDCameraSnapshotCache *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_workQueue, a3);
-    objc_storeStrong(&v10->_logIdentifier, a4);
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v9->_workQueue, queue);
+    objc_storeStrong(&v10->_logIdentifier, identifier);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     snapshotCacheMap = v10->_snapshotCacheMap;
-    v10->_snapshotCacheMap = v11;
+    v10->_snapshotCacheMap = dictionary;
   }
 
   return v10;

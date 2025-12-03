@@ -2,8 +2,8 @@
 - (BOOL)_ensureDeviceIsRegistered;
 - (BOOL)_updateLibrary;
 - (BOOL)_uploadLibrary;
-- (CloudUpdateLibraryOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 reason:(int64_t)a5 updateTaskHelper:(id)a6;
-- (id)_determineResultsURLWhenReadyWithUpdateID:(id)a3 retryTimeout:(double)a4 responseStatusCode:(int64_t *)a5;
+- (CloudUpdateLibraryOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity reason:(int64_t)reason updateTaskHelper:(id)helper;
+- (id)_determineResultsURLWhenReadyWithUpdateID:(id)d retryTimeout:(double)timeout responseStatusCode:(int64_t *)code;
 - (void)_clearAllCloudIDs;
 - (void)_prepareLibraryForInitialUpdate;
 - (void)cancel;
@@ -17,33 +17,33 @@
 {
   if ([(CloudUpdateLibraryOperation *)self uploadingLibraryIsSupported])
   {
-    v3 = [(CloudLibraryOperation *)self musicLibrary];
+    musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_10011E2CC;
     v4[3] = &unk_1001DEE98;
     v4[4] = self;
-    [v3 performDatabaseTransactionWithBlock:v4];
+    [musicLibrary performDatabaseTransactionWithBlock:v4];
   }
 
   else
   {
-    v3 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    musicLibrary = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
+    if (os_log_type_enabled(musicLibrary, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v6 = self;
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ - Uploading is not supported, no temporary cloud ids to clear.", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&_mh_execute_header, musicLibrary, OS_LOG_TYPE_DEFAULT, "%{public}@ - Uploading is not supported, no temporary cloud ids to clear.", buf, 0xCu);
     }
   }
 }
 
-- (id)_determineResultsURLWhenReadyWithUpdateID:(id)a3 retryTimeout:(double)a4 responseStatusCode:(int64_t *)a5
+- (id)_determineResultsURLWhenReadyWithUpdateID:(id)d retryTimeout:(double)timeout responseStatusCode:(int64_t *)code
 {
-  v8 = a3;
-  v9 = [(CloudUpdateLibraryOperation *)self cuid];
-  v10 = [(CloudUpdateLibraryOperation *)self troveID];
-  v11 = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"auto-update", &__kCFBooleanFalse, @"incremental", &off_1001EDD80, @"min-itunes-match-compatible-version", &off_1001EDD98, @"itunes-match-protocol-version", v9, @"cuid", v10, @"troveid", v8, @"update-id", 0];
+  dCopy = d;
+  cuid = [(CloudUpdateLibraryOperation *)self cuid];
+  troveID = [(CloudUpdateLibraryOperation *)self troveID];
+  v11 = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"auto-update", &__kCFBooleanFalse, @"incremental", &off_1001EDD80, @"min-itunes-match-compatible-version", &off_1001EDD98, @"itunes-match-protocol-version", cuid, @"cuid", troveID, @"troveid", dCopy, @"update-id", 0];
 
   v12 = sub_1000A760C(0, @"cloud-library-update-check", 3, v11, 60.0);
   if (v12)
@@ -75,28 +75,28 @@
     v34 = &v35;
     v13 = dispatch_semaphore_create(0);
     v31 = v13;
-    [v12 startGeniusRequestWithRetryTimeout:@"determineResultsURL" debugName:v30 connectionResponseBlock:a4];
+    [v12 startGeniusRequestWithRetryTimeout:@"determineResultsURL" debugName:v30 connectionResponseBlock:timeout];
     dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
     v14 = v36[5];
     if (v14)
     {
-      v15 = [v14 domain];
-      v16 = [v15 isEqualToString:@"SSURLConnectionRequestGeniusAdditionsErrorDomain"];
+      domain = [v14 domain];
+      v16 = [domain isEqualToString:@"SSURLConnectionRequestGeniusAdditionsErrorDomain"];
 
       if (v16)
       {
-        v17 = [v36[5] userInfo];
-        v18 = [v17 objectForKeyedSubscript:@"server-status-code"];
-        v19 = [v18 integerValue];
+        userInfo = [v36[5] userInfo];
+        v18 = [userInfo objectForKeyedSubscript:@"server-status-code"];
+        integerValue = [v18 integerValue];
 
         v20 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
           v21 = v42[5];
           *buf = 138543874;
-          v48 = self;
+          selfCopy3 = self;
           v49 = 2048;
-          v50 = v19;
+          v50 = integerValue;
           v51 = 2114;
           v52 = v21;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%{public}@ - Failed to determine result URLs with server status code: %ld response: %{public}@", buf, 0x20u);
@@ -105,7 +105,7 @@
         v22 = 0;
 LABEL_18:
 
-        if (!a5)
+        if (!code)
         {
 LABEL_20:
           v23 = v22;
@@ -119,7 +119,7 @@ LABEL_20:
         }
 
 LABEL_19:
-        *a5 = v19;
+        *code = integerValue;
         goto LABEL_20;
       }
 
@@ -128,7 +128,7 @@ LABEL_19:
       {
         v28 = v36[5];
         *buf = 138543618;
-        v48 = self;
+        selfCopy3 = self;
         v49 = 2114;
         v50 = v28;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%{public}@ - Failed to determine result URLs with unknown error: %{public}@", buf, 0x16u);
@@ -142,8 +142,8 @@ LABEL_19:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v22 = 0;
-        v19 = -1;
-        if (!a5)
+        integerValue = -1;
+        if (!code)
         {
           goto LABEL_20;
         }
@@ -156,7 +156,7 @@ LABEL_19:
       {
         v27 = v42[5];
         *buf = 138543618;
-        v48 = self;
+        selfCopy3 = self;
         v49 = 2114;
         v50 = v27;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ - Determine result URLs response: %{public}@", buf, 0x16u);
@@ -167,13 +167,13 @@ LABEL_19:
       if (objc_opt_isKindOfClass())
       {
         v22 = [NSURL URLWithString:v20];
-        v19 = 0;
+        integerValue = 0;
         goto LABEL_18;
       }
     }
 
     v22 = 0;
-    v19 = -1;
+    integerValue = -1;
     goto LABEL_18;
   }
 
@@ -193,10 +193,10 @@ LABEL_21:
 
 - (BOOL)_updateLibrary
 {
-  v113 = [(CloudLibraryOperation *)self connection];
-  v116 = [(CloudLibraryOperation *)self musicLibrary];
+  connection = [(CloudLibraryOperation *)self connection];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
   v2 = +[ICDeviceInfo currentDeviceInfo];
-  v3 = [v2 buildVersion];
+  buildVersion = [v2 buildVersion];
 
   v176 = 0;
   v177 = &v176;
@@ -240,22 +240,22 @@ LABEL_21:
   v145 = sub_10011EA78;
   v146 = sub_10011EA88;
   v147 = 0;
-  v4 = [(CloudLibraryOperation *)self musicLibrary];
-  v5 = [v4 sagaOnDiskDatabaseRevision];
+  musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
+  sagaOnDiskDatabaseRevision = [musicLibrary2 sagaOnDiskDatabaseRevision];
 
-  v6 = [v116 sagaInitiateClientResetSync];
-  v7 = [v116 valueForDatabaseProperty:@"MLCloudNeedsContainerRefetch"];
-  v8 = [v7 BOOLValue];
+  sagaInitiateClientResetSync = [musicLibrary sagaInitiateClientResetSync];
+  v7 = [musicLibrary valueForDatabaseProperty:@"MLCloudNeedsContainerRefetch"];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v116 valueForDatabaseProperty:@"MLCloudLibraryForcePerformDeltaSync"];
-  v10 = [v9 BOOLValue];
+  v9 = [musicLibrary valueForDatabaseProperty:@"MLCloudLibraryForcePerformDeltaSync"];
+  bOOLValue2 = [v9 BOOLValue];
 
-  v11 = [(CloudLibraryOperation *)self musicLibrary];
-  v114 = [v11 sagaClientFeaturesVersion];
+  musicLibrary3 = [(CloudLibraryOperation *)self musicLibrary];
+  sagaClientFeaturesVersion = [musicLibrary3 sagaClientFeaturesVersion];
 
   v117 = [ICUpdateRequest requestWithDatabaseRevision:1];
-  v12 = self;
-  [v117 setSagaClientFeaturesVersion:v114];
+  selfCopy3 = self;
+  [v117 setSagaClientFeaturesVersion:sagaClientFeaturesVersion];
   reason = self->_reason;
   if (reason <= 7 && ((1 << reason) & 0x8A) != 0)
   {
@@ -276,10 +276,10 @@ LABEL_21:
   if (MSVDeviceOSIsInternalInstall())
   {
     v15 = +[ICDefaults standardDefaults];
-    v16 = [v15 shouldForceServerToUseDAAPDebugFeature];
+    shouldForceServerToUseDAAPDebugFeature = [v15 shouldForceServerToUseDAAPDebugFeature];
 
-    v12 = self;
-    if (v16)
+    selfCopy3 = self;
+    if (shouldForceServerToUseDAAPDebugFeature)
     {
       v17 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -290,7 +290,7 @@ LABEL_21:
       }
 
       [v117 setIncludeCloudLibraryDAAPDebugFeature:1];
-      v12 = self;
+      selfCopy3 = self;
     }
   }
 
@@ -298,13 +298,13 @@ LABEL_21:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    *&buf[4] = v12;
+    *&buf[4] = selfCopy3;
     *&buf[12] = 1024;
-    *&buf[14] = v5;
+    *&buf[14] = sagaOnDiskDatabaseRevision;
     *&buf[18] = 2114;
-    *&buf[20] = v114;
+    *&buf[20] = sagaClientFeaturesVersion;
     *&buf[28] = 1024;
-    *&buf[30] = v6;
+    *&buf[30] = sagaInitiateClientResetSync;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ - Starting update with onDiskDatabaseRevision=%u, onDiskClientFeaturesVersionString=%{public}@, sagaClientInitiateResetSync=%{BOOL}u", buf, 0x22u);
   }
 
@@ -324,21 +324,21 @@ LABEL_21:
   v141 = &v148;
   v132 = &v176;
   v129[4] = self;
-  v111 = v3;
+  v111 = buildVersion;
   v130 = v111;
   dsema = v19;
   v131 = dsema;
-  [v113 sendRequest:v117 withResponseHandler:v129];
+  [connection sendRequest:v117 withResponseHandler:v129];
   dispatch_semaphore_wait(dsema, 0xFFFFFFFFFFFFFFFFLL);
   v20 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(CloudLibraryOperation *)self error];
+    error = [(CloudLibraryOperation *)self error];
     v22 = *(v177 + 6);
     *buf = 138543874;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v21;
+    *&buf[14] = error;
     *&buf[22] = 1024;
     *&buf[24] = v22;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ - Update finished with error=%{public}@, Server database revision: %u", buf, 0x1Cu);
@@ -368,8 +368,8 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ - Update response contained add to playlist behavior: %{public}@", buf, 0x16u);
     }
 
-    v27 = [(CloudLibraryOperation *)self musicLibrary];
-    [v27 icd_setSagaCloudAddToPlaylistBehavior:v24];
+    musicLibrary4 = [(CloudLibraryOperation *)self musicLibrary];
+    [musicLibrary4 icd_setSagaCloudAddToPlaylistBehavior:v24];
   }
 
   if (*(v169 + 24) == 1)
@@ -396,15 +396,15 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ - Update response contained add to library behavior: %{public}@", buf, 0x16u);
     }
 
-    v32 = [(CloudLibraryOperation *)self musicLibrary];
-    [v32 icd_setSagaCloudFavoriteSongAddToLibraryBehavior:v29];
+    musicLibrary5 = [(CloudLibraryOperation *)self musicLibrary];
+    [musicLibrary5 icd_setSagaCloudFavoriteSongAddToLibraryBehavior:v29];
   }
 
-  v33 = [(CloudLibraryOperation *)self error];
+  error2 = [(CloudLibraryOperation *)self error];
 
-  if (!v33)
+  if (!error2)
   {
-    v42 = self;
+    selfCopy13 = self;
     if ([(CloudUpdateLibraryOperation *)self isCancelled])
     {
       [(CloudLibraryOperation *)self setStatus:4];
@@ -421,7 +421,7 @@ LABEL_47:
         v47 = sub_100004B8C() | v44 ^ 1;
         if (v47)
         {
-          v48 = v5;
+          v48 = sagaOnDiskDatabaseRevision;
         }
 
         else
@@ -429,41 +429,41 @@ LABEL_47:
           v48 = 0;
         }
 
-        if (((v47 | v6) & 1) == 0)
+        if (((v47 | sagaInitiateClientResetSync) & 1) == 0)
         {
           if (v149[3])
           {
             v48 = 0;
           }
 
-          else if ([v116 sagaNeedsFullUpdate])
+          else if ([musicLibrary sagaNeedsFullUpdate])
           {
             v48 = 1;
           }
 
           else
           {
-            v48 = v5;
+            v48 = sagaOnDiskDatabaseRevision;
           }
         }
 
         v49 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
         {
-          v50 = [v116 sagaNeedsFullUpdate];
+          sagaNeedsFullUpdate = [musicLibrary sagaNeedsFullUpdate];
           v51 = *(v157 + 24);
           *buf = 138544898;
-          *&buf[4] = v42;
+          *&buf[4] = selfCopy13;
           *&buf[12] = 1024;
           *&buf[14] = v48;
           *&buf[18] = 1024;
-          *&buf[20] = v6;
+          *&buf[20] = sagaInitiateClientResetSync;
           *&buf[24] = 1024;
-          *&buf[26] = v8;
+          *&buf[26] = bOOLValue;
           *&buf[30] = 1024;
-          *&buf[32] = v10;
+          *&buf[32] = bOOLValue2;
           v186 = 1024;
-          v187 = v50;
+          v187 = sagaNeedsFullUpdate;
           v188 = 1024;
           v189 = v51;
           _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "%{public}@ - onDiskDatabaseRevision=%d, sagaClientInitiateResetSync=%{BOOL}u, forceUpdate=%{BOOL}u, forcePerformDeltaSync=%{BOOL}u, needs full update (client=%{BOOL}u, server=%{BOOL}u)", buf, 0x30u);
@@ -474,10 +474,10 @@ LABEL_47:
           goto LABEL_120;
         }
 
-        v52 = self;
+        selfCopy6 = self;
         if (*(v177 + 6) == v48)
         {
-          if (((v8 | v10) & 1) == 0)
+          if (((bOOLValue | bOOLValue2) & 1) == 0)
           {
             [(CloudLibraryOperation *)self setStatus:1];
             v97 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
@@ -488,10 +488,10 @@ LABEL_47:
               _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_DEFAULT, "%{public}@ - On-disk database revision is the same as the server database revision, skipping update.", buf, 0xCu);
             }
 
-            v98 = [v116 valueForDatabaseProperty:@"MLCloudLastLibraryUpdate"];
-            v99 = [v98 intValue];
+            v98 = [musicLibrary valueForDatabaseProperty:@"MLCloudLastLibraryUpdate"];
+            intValue = [v98 intValue];
 
-            if (!v99)
+            if (!intValue)
             {
               v100 = +[NSDate date];
               v101 = sub_10010275C();
@@ -506,14 +506,14 @@ LABEL_47:
                 _os_log_impl(&_mh_execute_header, v101, OS_LOG_TYPE_DEFAULT, "%{public}@ - lastSagaUpdateTimeOnDisk=%d. Setting it to %{public}@", buf, 0x1Cu);
               }
 
-              v102 = [(CloudLibraryOperation *)self musicLibrary];
-              [v102 setSagaLastLibraryUpdateTime:v100];
+              musicLibrary6 = [(CloudLibraryOperation *)self musicLibrary];
+              [musicLibrary6 setSagaLastLibraryUpdateTime:v100];
             }
 
-            v103 = [(CloudLibraryOperation *)self musicLibrary];
-            v104 = [v103 sagaLastCloudUpdateClientBuildVersion];
+            musicLibrary7 = [(CloudLibraryOperation *)self musicLibrary];
+            sagaLastCloudUpdateClientBuildVersion = [musicLibrary7 sagaLastCloudUpdateClientBuildVersion];
 
-            if (![v104 length] || objc_msgSend(v111, "length") && (objc_msgSend(v104, "isEqualToString:", v111) & 1) == 0)
+            if (![sagaLastCloudUpdateClientBuildVersion length] || objc_msgSend(v111, "length") && (objc_msgSend(sagaLastCloudUpdateClientBuildVersion, "isEqualToString:", v111) & 1) == 0)
             {
               v105 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
               if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
@@ -521,14 +521,14 @@ LABEL_47:
                 *buf = 138543874;
                 *&buf[4] = self;
                 *&buf[12] = 2114;
-                *&buf[14] = v104;
+                *&buf[14] = sagaLastCloudUpdateClientBuildVersion;
                 *&buf[22] = 2114;
                 *&buf[24] = v111;
                 _os_log_impl(&_mh_execute_header, v105, OS_LOG_TYPE_DEFAULT, "%{public}@ - clientBuildVersionOnDisk=%{public}@. Setting it to %{public}@", buf, 0x20u);
               }
 
-              v106 = [(CloudLibraryOperation *)self musicLibrary];
-              [v106 setSagaLastCloudUpdateClientBuildVersion:v111];
+              musicLibrary8 = [(CloudLibraryOperation *)self musicLibrary];
+              [musicLibrary8 setSagaLastCloudUpdateClientBuildVersion:v111];
             }
 
             goto LABEL_120;
@@ -542,35 +542,35 @@ LABEL_47:
             _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "%{public}@ - On-disk database revision is the same as the server database revision, but force update is TRUE.", buf, 0xCu);
           }
 
-          v52 = self;
+          selfCopy6 = self;
         }
 
-        else if (v10)
+        else if (bOOLValue2)
         {
-          [v116 setSagaForcePerformDeltaSync:0];
-          v10 = 0;
+          [musicLibrary setSagaForcePerformDeltaSync:0];
+          bOOLValue2 = 0;
         }
 
         v54 = [SagaImporter alloc];
         v55 = *(v149 + 24);
-        v56 = v114;
+        v56 = sagaClientFeaturesVersion;
         if ([v143[5] length])
         {
           v56 = v143[5];
         }
 
-        v57 = [(CloudLibraryOperation *)v52 clientIdentity];
+        clientIdentity = [(CloudLibraryOperation *)selfCopy6 clientIdentity];
         LODWORD(v108) = v48;
         HIDWORD(v108) = *(v177 + 6);
-        v58 = [(SagaImporter *)v54 initWithConnection:v113 serverInitiatedReset:v55 clientInitiatedReset:v6 clientInitiatedReloadForPins:v10 clientFeaturesVersion:v56 clientIdentity:v57 fromRevision:v108 toRevision:?];
-        [(CloudUpdateLibraryOperation *)v52 setImporter:v58];
+        v58 = [(SagaImporter *)v54 initWithConnection:connection serverInitiatedReset:v55 clientInitiatedReset:sagaInitiateClientResetSync clientInitiatedReloadForPins:bOOLValue2 clientFeaturesVersion:v56 clientIdentity:clientIdentity fromRevision:v108 toRevision:?];
+        [(CloudUpdateLibraryOperation *)selfCopy6 setImporter:v58];
 
         *buf = 0;
         *&buf[8] = buf;
         *&buf[16] = 0x2020000000;
         buf[24] = 0;
         v59 = dispatch_semaphore_create(0);
-        v60 = [(CloudUpdateLibraryOperation *)self importer];
+        importer = [(CloudUpdateLibraryOperation *)self importer];
         v126[0] = _NSConcreteStackBlock;
         v126[1] = 3221225472;
         v126[2] = sub_100120550;
@@ -579,24 +579,24 @@ LABEL_47:
         v126[4] = self;
         v110 = v59;
         v127 = v110;
-        [v60 performUpdateWithCompletionHandler:v126];
+        [importer performUpdateWithCompletionHandler:v126];
 
         dispatch_semaphore_wait(v110, 0xFFFFFFFFFFFFFFFFLL);
-        v61 = self;
+        selfCopy7 = self;
         [(CloudUpdateLibraryOperation *)self setImporter:0];
-        if (MSVDeviceOSIsInternalInstall() && ((+[ICDefaults standardDefaults](ICDefaults, "standardDefaults"), v62 = objc_claimAutoreleasedReturnValue(), v63 = [v62 shouldTreatInitialSagaImportAsFailed], !v48) ? (v64 = v63) : (v64 = 0), v62, v61 = self, v64))
+        if (MSVDeviceOSIsInternalInstall() && ((+[ICDefaults standardDefaults](ICDefaults, "standardDefaults"), v62 = objc_claimAutoreleasedReturnValue(), v63 = [v62 shouldTreatInitialSagaImportAsFailed], !v48) ? (v64 = v63) : (v64 = 0), v62, selfCopy7 = self, v64))
         {
           *(*&buf[8] + 24) = 0;
           v65 = *(v177 + 6);
-          v66 = [(CloudLibraryOperation *)self musicLibrary];
-          [v66 setSagaOnDiskDatabaseRevision:v65];
+          musicLibrary9 = [(CloudLibraryOperation *)self musicLibrary];
+          [musicLibrary9 setSagaOnDiskDatabaseRevision:v65];
 
           self->_didEncounterFatalErrorImportingPayload = 1;
           v67 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
           if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
           {
             *v181 = 138543362;
-            v182 = self;
+            selfCopy12 = self;
             _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "%{public}@ - shouldTreatInitialSagaImportAsFailed is set. Will force initial import to fail.", v181, 0xCu);
           }
 
@@ -607,44 +607,44 @@ LABEL_47:
 
         else if (*(*&buf[8] + 24) == 1)
         {
-          [(CloudLibraryOperation *)v61 setStatus:1];
+          [(CloudLibraryOperation *)selfCopy7 setStatus:1];
           v69 = *(v177 + 6);
-          v70 = [(CloudLibraryOperation *)v61 musicLibrary];
-          [v70 setSagaOnDiskDatabaseRevision:v69];
+          musicLibrary10 = [(CloudLibraryOperation *)selfCopy7 musicLibrary];
+          [musicLibrary10 setSagaOnDiskDatabaseRevision:v69];
 
           v71 = v143[5];
-          v72 = [(CloudLibraryOperation *)self musicLibrary];
-          [v72 setSagaClientFeaturesVersion:v71];
+          musicLibrary11 = [(CloudLibraryOperation *)self musicLibrary];
+          [musicLibrary11 setSagaClientFeaturesVersion:v71];
 
-          v73 = [(CloudLibraryOperation *)self musicLibrary];
-          [v73 setSagaLastCloudUpdateClientBuildVersion:v111];
+          musicLibrary12 = [(CloudLibraryOperation *)self musicLibrary];
+          [musicLibrary12 setSagaLastCloudUpdateClientBuildVersion:v111];
 
           v74 = +[NSDate date];
-          v75 = [(CloudLibraryOperation *)self musicLibrary];
-          [v75 setSagaLastLibraryUpdateTime:v74];
+          musicLibrary13 = [(CloudLibraryOperation *)self musicLibrary];
+          [musicLibrary13 setSagaLastLibraryUpdateTime:v74];
 
-          v76 = [(CloudLibraryOperation *)self musicLibrary];
-          LODWORD(v75) = [v76 sagaNeedsFullUpdate];
+          musicLibrary14 = [(CloudLibraryOperation *)self musicLibrary];
+          LODWORD(musicLibrary13) = [musicLibrary14 sagaNeedsFullUpdate];
 
-          if (v75)
+          if (musicLibrary13)
           {
-            v77 = [(CloudLibraryOperation *)self musicLibrary];
-            [v77 setSagaNeedsFullUpdate:0];
+            musicLibrary15 = [(CloudLibraryOperation *)self musicLibrary];
+            [musicLibrary15 setSagaNeedsFullUpdate:0];
 
             v78 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
             if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
             {
               *v181 = 138543362;
-              v182 = self;
+              selfCopy12 = self;
               _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_DEFAULT, "%{public}@ - Clearing flag to perform a reset sync.", v181, 0xCu);
             }
           }
 
-          v79 = [(CloudLibraryOperation *)self musicLibrary];
-          [v79 setSagaInitiateClientResetSync:0];
+          musicLibrary16 = [(CloudLibraryOperation *)self musicLibrary];
+          [musicLibrary16 setSagaInitiateClientResetSync:0];
 
-          v80 = [(CloudLibraryOperation *)self musicLibrary];
-          [v80 setSagaForcePerformDeltaSync:0];
+          musicLibrary17 = [(CloudLibraryOperation *)self musicLibrary];
+          [musicLibrary17 setSagaForcePerformDeltaSync:0];
 
           if (!v48)
           {
@@ -652,14 +652,14 @@ LABEL_47:
             if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
             {
               *v181 = 138543618;
-              v182 = self;
+              selfCopy12 = self;
               v183 = 2048;
               v184 = 710000;
               _os_log_impl(&_mh_execute_header, v81, OS_LOG_TYPE_DEFAULT, "%{public}@ - Setting initial user version: %lli", v181, 0x16u);
             }
 
-            v82 = [(CloudLibraryOperation *)self musicLibrary];
-            [v82 icd_setSagaDatabaseUserVersion:710000];
+            musicLibrary18 = [(CloudLibraryOperation *)self musicLibrary];
+            [musicLibrary18 icd_setSagaDatabaseUserVersion:710000];
 
             keyExistsAndHasValidFormat = 0;
             if (!CFPreferencesGetAppBooleanValue(@"MusicShowCloudMediaEnabledSetting", @"com.apple.mobileipod", &keyExistsAndHasValidFormat) && keyExistsAndHasValidFormat)
@@ -673,13 +673,13 @@ LABEL_47:
             if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
             {
               *v181 = 138543362;
-              v182 = self;
+              selfCopy12 = self;
               _os_log_impl(&_mh_execute_header, v83, OS_LOG_TYPE_DEFAULT, "%{public}@ - Posting cloud library availability did change notification (library became available)", v181, 0xCu);
             }
 
-            [v116 notifyCloudLibraryAvailabilityDidChange];
+            [musicLibrary notifyCloudLibraryAvailabilityDidChange];
             v84 = +[NSMutableArray array];
-            v85 = [(CloudLibraryOperation *)self musicLibrary];
+            musicLibrary19 = [(CloudLibraryOperation *)self musicLibrary];
             v123[0] = _NSConcreteStackBlock;
             v123[1] = 3221225472;
             v123[2] = sub_1001205C0;
@@ -687,7 +687,7 @@ LABEL_47:
             v123[4] = self;
             v109 = v84;
             v124 = v109;
-            [v85 databaseConnectionAllowingWrites:0 withBlock:v123];
+            [musicLibrary19 databaseConnectionAllowingWrites:0 withBlock:v123];
 
             if ([v109 count])
             {
@@ -709,21 +709,21 @@ LABEL_47:
                       objc_enumerationMutation(obj);
                     }
 
-                    v89 = [*(*(&v119 + 1) + 8 * i) longLongValue];
+                    longLongValue = [*(*(&v119 + 1) + 8 * i) longLongValue];
                     v90 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
                     if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
                     {
                       *v181 = 138543618;
-                      v182 = self;
+                      selfCopy12 = self;
                       v183 = 2048;
-                      v184 = v89;
+                      v184 = longLongValue;
                       _os_log_impl(&_mh_execute_header, v90, OS_LOG_TYPE_DEFAULT, "%{public}@ - Triggering post-unification playlist artwork upload for playlist persistentID: %lld", v181, 0x16u);
                     }
 
-                    v91 = [(CloudLibraryOperation *)self configuration];
-                    v92 = [(BaseRequestHandler *)ICDCloudMusicLibraryRequestHandler handlerForConfiguration:v91];
-                    v93 = [(CloudLibraryOperation *)self clientIdentity];
-                    [v92 uploadArtworkForPlaylistWithPersistentID:v89 clientIdentity:v93 completionHandler:0];
+                    configuration = [(CloudLibraryOperation *)self configuration];
+                    v92 = [(BaseRequestHandler *)ICDCloudMusicLibraryRequestHandler handlerForConfiguration:configuration];
+                    clientIdentity2 = [(CloudLibraryOperation *)self clientIdentity];
+                    [v92 uploadArtworkForPlaylistWithPersistentID:longLongValue clientIdentity:clientIdentity2 completionHandler:0];
                   }
 
                   v86 = [obj countByEnumeratingWithState:&v119 objects:v180 count:16];
@@ -737,12 +737,12 @@ LABEL_47:
 
         else
         {
-          v61->_didEncounterFatalErrorImportingPayload = 1;
+          selfCopy7->_didEncounterFatalErrorImportingPayload = 1;
           v96 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
           if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
           {
             *v181 = 138543362;
-            v182 = v61;
+            selfCopy12 = selfCopy7;
             _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_DEFAULT, "%{public}@ - Error importing cloud library payload. Will treat as permanent failure", v181, 0xCu);
           }
 
@@ -772,13 +772,13 @@ LABEL_120:
     }
 
     v44 = 0;
-    v42 = self;
+    selfCopy13 = self;
     goto LABEL_47;
   }
 
-  v34 = [(CloudLibraryOperation *)self error];
-  v35 = [v34 domain];
-  if (([v35 isEqualToString:ICCloudClientErrorDomain] & 1) == 0)
+  error3 = [(CloudLibraryOperation *)self error];
+  domain = [error3 domain];
+  if (([domain isEqualToString:ICCloudClientErrorDomain] & 1) == 0)
   {
 
 LABEL_42:
@@ -786,28 +786,28 @@ LABEL_42:
     v40 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
-      v45 = [(CloudLibraryOperation *)self error];
+      error4 = [(CloudLibraryOperation *)self error];
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v45;
+      *&buf[14] = error4;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "%{public}@ - Received error when doing a library update request: %{public}@", buf, 0x16u);
     }
 
     goto LABEL_44;
   }
 
-  v36 = [(CloudLibraryOperation *)self error];
-  v37 = [v36 code] == 2019;
+  error5 = [(CloudLibraryOperation *)self error];
+  v37 = [error5 code] == 2019;
 
   if (!v37)
   {
     goto LABEL_42;
   }
 
-  v38 = [(CloudLibraryOperation *)self error];
-  v39 = [v38 userInfo];
-  v40 = [v39 objectForKey:@"CloudLibraryConnectionRequestForbiddenAdditonalErrorCodeKey"];
+  error6 = [(CloudLibraryOperation *)self error];
+  userInfo = [error6 userInfo];
+  v40 = [userInfo objectForKey:@"CloudLibraryConnectionRequestForbiddenAdditonalErrorCodeKey"];
 
   if ([v40 integerValue]== 950)
   {
@@ -861,10 +861,10 @@ LABEL_121:
 {
   if (!CFPreferencesGetAppBooleanValue(@"DisableLibraryUpload", @"com.apple.itunescloudd", 0))
   {
-    v5 = [(CloudLibraryOperation *)self musicLibrary];
-    v6 = [v5 sagaPrefersToMergeWithCloudLibrary];
+    musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+    sagaPrefersToMergeWithCloudLibrary = [musicLibrary sagaPrefersToMergeWithCloudLibrary];
 
-    if (v6)
+    if (sagaPrefersToMergeWithCloudLibrary)
     {
       v7 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -893,26 +893,26 @@ LABEL_13:
         v13 = [NSArray arrayWithObjects:v266 count:3];
         v3 = [ML3AllCompoundPredicate predicateMatchingPredicates:v13];
 
-        v14 = [(CloudLibraryOperation *)self musicLibrary];
-        v187 = [ML3Track queryWithLibrary:v14 predicate:v3];
+        musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
+        v187 = [ML3Track queryWithLibrary:musicLibrary2 predicate:v3];
 
-        v185 = [v187 countOfEntities];
+        countOfEntities = [v187 countOfEntities];
         v15 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543874;
           *&buf[4] = self;
           *&buf[12] = 2048;
-          *&buf[14] = v185;
+          *&buf[14] = countOfEntities;
           *&buf[22] = 2114;
           v263 = v187;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - Found %lu songs to upload from query: %{public}@", buf, 0x20u);
         }
 
-        v16 = [(CloudUpdateLibraryOperation *)self cuid];
-        v17 = [(CloudUpdateLibraryOperation *)self troveID];
-        v18 = [NSNumber numberWithUnsignedInteger:v185];
-        v188 = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"auto-update", &__kCFBooleanFalse, @"incremental", &off_1001EDD80, @"min-itunes-match-compatible-version", &off_1001EDD98, @"itunes-match-protocol-version", v16, @"cuid", v17, @"troveid", v18, @"num-tracks", 0];
+        cuid = [(CloudUpdateLibraryOperation *)self cuid];
+        troveID = [(CloudUpdateLibraryOperation *)self troveID];
+        v18 = [NSNumber numberWithUnsignedInteger:countOfEntities];
+        v188 = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"auto-update", &__kCFBooleanFalse, @"incremental", &off_1001EDD80, @"min-itunes-match-compatible-version", &off_1001EDD98, @"itunes-match-protocol-version", cuid, @"cuid", troveID, @"troveid", v18, @"num-tracks", 0];
 
         v234 = 0;
         v235 = &v234;
@@ -942,8 +942,8 @@ LABEL_13:
         v23 = sub_1000A760C(0, @"cloud-library-update-request", 0, v188, 60.0);
         [(CloudUpdateLibraryOperation *)self setUpdateRequest:v23];
 
-        v24 = [(CloudUpdateLibraryOperation *)self updateRequest];
-        LODWORD(v23) = v24 == 0;
+        updateRequest = [(CloudUpdateLibraryOperation *)self updateRequest];
+        LODWORD(v23) = updateRequest == 0;
 
         v25 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
         v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
@@ -962,16 +962,16 @@ LABEL_13:
 
         if (v26)
         {
-          v27 = [(CloudUpdateLibraryOperation *)self updateRequest];
+          updateRequest2 = [(CloudUpdateLibraryOperation *)self updateRequest];
           v28 = objc_opt_class();
           v29 = v28;
-          v30 = [(CloudUpdateLibraryOperation *)self updateRequest];
+          updateRequest3 = [(CloudUpdateLibraryOperation *)self updateRequest];
           *buf = 138543874;
           *&buf[4] = self;
           *&buf[12] = 2114;
           *&buf[14] = v28;
           *&buf[22] = 2048;
-          v263 = v30;
+          v263 = updateRequest3;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ - Sending upload library request: <%{public}@ %p>", buf, 0x20u);
         }
 
@@ -994,7 +994,7 @@ LABEL_13:
         v232[4] = sub_10011EA88;
         v233 = 0;
         v31 = dispatch_semaphore_create(0);
-        v32 = [(CloudUpdateLibraryOperation *)self updateRequest];
+        updateRequest4 = [(CloudUpdateLibraryOperation *)self updateRequest];
         v227[0] = _NSConcreteStackBlock;
         v227[1] = 3221225472;
         v227[2] = sub_1001231C4;
@@ -1004,7 +1004,7 @@ LABEL_13:
         v231 = v232;
         dsema = v31;
         v228 = dsema;
-        [v32 startGeniusRequestWithRetryTimeout:@"libraryUpdateRequest" debugName:v227 connectionResponseBlock:300.0];
+        [updateRequest4 startGeniusRequestWithRetryTimeout:@"libraryUpdateRequest" debugName:v227 connectionResponseBlock:300.0];
 
         dispatch_semaphore_wait(dsema, 0xFFFFFFFFFFFFFFFFLL);
         v33 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
@@ -1071,8 +1071,8 @@ LABEL_13:
             v178 = [NSURL fileURLWithPathComponents:v44];
 
             v45 = +[NSFileManager defaultManager];
-            v46 = [v178 path];
-            [v45 createFileAtPath:v46 contents:0 attributes:0];
+            path = [v178 path];
+            [v45 createFileAtPath:path contents:0 attributes:0];
 
             v226 = 0;
             v176 = [NSFileHandle fileHandleForWritingToURL:v178 error:&v226];
@@ -1099,21 +1099,21 @@ LABEL_13:
             {
               if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
               {
-                v51 = [v178 path];
+                path2 = [v178 path];
                 *v249 = 138543618;
                 *&v249[4] = self;
                 *&v249[12] = 2114;
-                *&v249[14] = v51;
+                *&v249[14] = path2;
                 _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "%{public}@ - Writing library upload metadata to plist at: %{public}@", v249, 0x16u);
               }
 
               v52 = [[MSVPropertyListEncoder alloc] initWithOutputFileHandle:v176];
               [v52 startDictionary];
-              v53 = [(CloudUpdateLibraryOperation *)self cuid];
-              [v52 setObject:v53 forKey:@"cuid"];
+              cuid2 = [(CloudUpdateLibraryOperation *)self cuid];
+              [v52 setObject:cuid2 forKey:@"cuid"];
 
-              v54 = [(CloudUpdateLibraryOperation *)self troveID];
-              [v52 setObject:v54 forKey:@"troveid"];
+              troveID2 = [(CloudUpdateLibraryOperation *)self troveID];
+              [v52 setObject:troveID2 forKey:@"troveid"];
 
               [v52 setObject:&off_1001EDD80 forKey:@"min-itunes-match-compatible-version"];
               [v52 setObject:&off_1001EDD98 forKey:@"itunes-match-protocol-version"];
@@ -1135,17 +1135,17 @@ LABEL_13:
               v260[3] = ML3TrackPropertyUserRatingIsDerived;
               v260[4] = ML3TrackPropertyUserAlbumRatingIsDerived;
               v59 = [NSArray arrayWithObjects:v260 count:5];
-              v60 = [(CloudGeniusUtilities *)v58 allML3TrackPropertiesWithGeniusTrackProperties];
-              v61 = [v60 arrayByAddingObjectsFromArray:v59];
+              allML3TrackPropertiesWithGeniusTrackProperties = [(CloudGeniusUtilities *)v58 allML3TrackPropertiesWithGeniusTrackProperties];
+              v61 = [allML3TrackPropertiesWithGeniusTrackProperties arrayByAddingObjectsFromArray:v59];
               v174 = v59;
 
               v62 = [v61 count];
               v63 = [v59 count];
-              v64 = [(CloudGeniusUtilities *)v58 allGeniusTrackPropertiesWithML3TrackProperties];
+              allGeniusTrackPropertiesWithML3TrackProperties = [(CloudGeniusUtilities *)v58 allGeniusTrackPropertiesWithML3TrackProperties];
               v259[0] = @"persistent-id";
               v259[1] = @"kind";
               v65 = [NSArray arrayWithObjects:v259 count:2];
-              v173 = [v64 arrayByAddingObjectsFromArray:v65];
+              v173 = [allGeniusTrackPropertiesWithML3TrackProperties arrayByAddingObjectsFromArray:v65];
 
               [NSDictionary sharedKeySetForKeys:v173];
               v220[0] = _NSConcreteStackBlock;
@@ -1194,20 +1194,20 @@ LABEL_13:
                 v74 = [NSArray arrayWithObjects:v258 count:3];
                 v158 = [ML3AllCompoundPredicate predicateMatchingPredicates:v74];
 
-                v75 = [(CloudLibraryOperation *)self musicLibrary];
-                v76 = [ML3Container queryWithLibrary:v75 predicate:v158];
+                musicLibrary3 = [(CloudLibraryOperation *)self musicLibrary];
+                v76 = [ML3Container queryWithLibrary:musicLibrary3 predicate:v158];
 
-                v77 = [v76 countOfEntities];
+                countOfEntities2 = [v76 countOfEntities];
                 v78 = sub_10010275C();
                 v79 = os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT);
-                if (v77)
+                if (countOfEntities2)
                 {
                   if (v79)
                   {
                     *v249 = 138543874;
                     *&v249[4] = self;
                     *&v249[12] = 2048;
-                    *&v249[14] = v77;
+                    *&v249[14] = countOfEntities2;
                     *&v249[22] = 2114;
                     v250 = v76;
                     _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_DEFAULT, "%{public}@ - Found %lu playlists to upload from query: %{public}@", v249, 0x20u);
@@ -1232,18 +1232,18 @@ LABEL_13:
                   v254[16] = ML3ContainerPropertySmartReverseLimitOrder;
                   v254[17] = v66;
                   v78 = [NSArray arrayWithObjects:v254 count:18];
-                  v80 = [(CloudGeniusUtilities *)v172 allML3ContainerPropertiesWithGeniusPlaylistProperties];
-                  v81 = [v80 arrayByAddingObjectsFromArray:v78];
+                  allML3ContainerPropertiesWithGeniusPlaylistProperties = [(CloudGeniusUtilities *)v172 allML3ContainerPropertiesWithGeniusPlaylistProperties];
+                  v81 = [allML3ContainerPropertiesWithGeniusPlaylistProperties arrayByAddingObjectsFromArray:v78];
 
                   v82 = [v81 count];
                   v83 = [v78 count];
-                  v84 = [(CloudGeniusUtilities *)v172 allGeniusPlaylistPropertiesWithML3ContainerProperties];
+                  allGeniusPlaylistPropertiesWithML3ContainerProperties = [(CloudGeniusUtilities *)v172 allGeniusPlaylistPropertiesWithML3ContainerProperties];
                   v253[0] = @"persistent-id";
                   v253[1] = @"kind";
                   v253[2] = @"items";
                   v253[3] = @"data";
                   v85 = [NSArray arrayWithObjects:v253 count:4];
-                  v86 = [v84 arrayByAddingObjectsFromArray:v85];
+                  v86 = [allGeniusPlaylistPropertiesWithML3ContainerProperties arrayByAddingObjectsFromArray:v85];
 
                   [NSDictionary sharedKeySetForKeys:v86];
                   v87 = v82 - v83;
@@ -1295,12 +1295,12 @@ LABEL_13:
                 v96 = MSVMediaLoggingDirectory();
                 v97 = [NSURL fileURLWithPath:v96 isDirectory:1];
 
-                v98 = [v95 lastPathComponent];
-                v99 = [v97 URLByAppendingPathComponent:v98 isDirectory:0];
+                lastPathComponent = [v95 lastPathComponent];
+                v99 = [v97 URLByAppendingPathComponent:lastPathComponent isDirectory:0];
 
                 v100 = +[NSFileManager defaultManager];
-                v101 = [v99 path];
-                v102 = [v100 fileExistsAtPath:v101];
+                path3 = [v99 path];
+                v102 = [v100 fileExistsAtPath:path3];
 
                 if (v102)
                 {
@@ -1338,7 +1338,7 @@ LABEL_13:
               v213 = 0;
               v108 = dispatch_semaphore_create(0);
               v109 = +[ICURLSessionManager defaultSession];
-              v110 = [(CloudUpdateLibraryOperation *)self uploadLibraryRequest];
+              uploadLibraryRequest = [(CloudUpdateLibraryOperation *)self uploadLibraryRequest];
               v204[0] = _NSConcreteStackBlock;
               v204[1] = 3221225472;
               v204[2] = sub_100123D14;
@@ -1347,15 +1347,15 @@ LABEL_13:
               v207 = v249;
               v111 = v108;
               v205 = v111;
-              [v109 enqueueDataRequest:v110 withCompletionHandler:v204];
+              [v109 enqueueDataRequest:uploadLibraryRequest withCompletionHandler:v204];
 
               dispatch_semaphore_wait(v111, 0xFFFFFFFFFFFFFFFFLL);
-              v112 = [v209[5] urlResponse];
-              LODWORD(v109) = [v112 statusCode] == 200;
+              urlResponse = [v209[5] urlResponse];
+              LODWORD(v109) = [urlResponse statusCode] == 200;
 
               if (v109)
               {
-                v113 = dbl_10016AE50[v185 > 0x2710];
+                v113 = dbl_10016AE50[countOfEntities > 0x2710];
                 v203 = -1;
                 v114 = [(CloudUpdateLibraryOperation *)self _determineResultsURLWhenReadyWithUpdateID:v183 retryTimeout:&v203 responseStatusCode:v113];
                 [(CloudUpdateLibraryOperation *)self setUploadResponseStatus:v203];
@@ -1389,7 +1389,7 @@ LABEL_13:
                   v201 = sub_10011EA88;
                   v202 = 0;
                   v118 = +[ICURLSessionManager defaultSession];
-                  v119 = [(CloudUpdateLibraryOperation *)self getResultsRequest];
+                  getResultsRequest = [(CloudUpdateLibraryOperation *)self getResultsRequest];
                   v193[0] = _NSConcreteStackBlock;
                   v193[1] = 3221225472;
                   v193[2] = sub_100123DB0;
@@ -1398,34 +1398,34 @@ LABEL_13:
                   v196 = v245;
                   v120 = v111;
                   v194 = v120;
-                  [v118 enqueueDataRequest:v119 withCompletionHandler:v193];
+                  [v118 enqueueDataRequest:getResultsRequest withCompletionHandler:v193];
 
                   dispatch_semaphore_wait(v120, 0xFFFFFFFFFFFFFFFFLL);
                   [(CloudUpdateLibraryOperation *)self setGetResultsRequest:0];
-                  v121 = [v198[5] urlResponse];
-                  v122 = [v121 statusCode] == 200;
+                  urlResponse2 = [v198[5] urlResponse];
+                  v122 = [urlResponse2 statusCode] == 200;
 
                   if (v122)
                   {
-                    v166 = [v198[5] bodyData];
-                    if (v166)
+                    bodyData = [v198[5] bodyData];
+                    if (bodyData)
                     {
                       v123 = NSTemporaryDirectory();
                       v244[0] = v123;
                       v244[1] = @"com.apple.MediaServices";
                       v124 = +[NSUUID UUID];
-                      v125 = [v124 UUIDString];
-                      v244[2] = v125;
+                      uUIDString = [v124 UUIDString];
+                      v244[2] = uUIDString;
                       v244[3] = @"CloudLibraryUploadResults.plist";
                       v126 = [NSArray arrayWithObjects:v244 count:4];
                       v186 = [NSURL fileURLWithPathComponents:v126];
 
                       contexta = +[NSFileManager defaultManager];
-                      v127 = [v186 URLByDeletingLastPathComponent];
-                      [contexta createDirectoryAtURL:v127 withIntermediateDirectories:1 attributes:0 error:0];
+                      uRLByDeletingLastPathComponent = [v186 URLByDeletingLastPathComponent];
+                      [contexta createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
-                      v128 = [v186 path];
-                      [contexta createFileAtPath:v128 contents:0 attributes:0];
+                      path4 = [v186 path];
+                      [contexta createFileAtPath:path4 contents:0 attributes:0];
 
                       v129 = *(*&v249[8] + 40);
                       *(*&v249[8] + 40) = 0;
@@ -1436,16 +1436,16 @@ LABEL_13:
                       objc_storeStrong(v130, obj);
                       if (v164)
                       {
-                        [v164 writeData:v166];
+                        [v164 writeData:bodyData];
                         [v164 closeFile];
                         v131 = sub_10010275C();
                         if (os_log_type_enabled(v131, OS_LOG_TYPE_DEFAULT))
                         {
-                          v132 = [v186 path];
+                          path5 = [v186 path];
                           *v242 = 138543618;
                           *&v242[4] = self;
                           *&v242[12] = 2114;
-                          *&v242[14] = v132;
+                          *&v242[14] = path5;
                           _os_log_impl(&_mh_execute_header, v131, OS_LOG_TYPE_DEFAULT, "%{public}@ - Saved results plist to: %{public}@", v242, 0x16u);
                         }
 
@@ -1454,11 +1454,11 @@ LABEL_13:
                           v133 = MSVMediaLoggingDirectory();
                           v134 = [NSURL fileURLWithPath:v133 isDirectory:1];
 
-                          v135 = [v186 lastPathComponent];
-                          v136 = [v134 URLByAppendingPathComponent:v135 isDirectory:0];
+                          lastPathComponent2 = [v186 lastPathComponent];
+                          v136 = [v134 URLByAppendingPathComponent:lastPathComponent2 isDirectory:0];
 
-                          v137 = [v136 path];
-                          v138 = [contexta fileExistsAtPath:v137];
+                          path6 = [v136 path];
+                          v138 = [contexta fileExistsAtPath:path6];
 
                           if (v138)
                           {
@@ -1468,14 +1468,14 @@ LABEL_13:
                           [contexta linkItemAtURL:v186 toURL:v136 error:0];
                         }
 
-                        v139 = [v186 path];
-                        v162 = [v139 dataUsingEncoding:4];
+                        path7 = [v186 path];
+                        v162 = [path7 dataUsingEncoding:4];
 
                         v140 = [ML3DatabaseImport alloc];
-                        v141 = [(CloudLibraryOperation *)self musicLibrary];
-                        v142 = [v141 databasePath];
-                        v143 = [(CloudLibraryOperation *)self clientIdentity];
-                        v144 = [v140 initWithLibraryPath:v142 trackData:v162 playlistData:v162 clientIdentity:v143];
+                        musicLibrary4 = [(CloudLibraryOperation *)self musicLibrary];
+                        databasePath = [musicLibrary4 databasePath];
+                        clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+                        v144 = [v140 initWithLibraryPath:databasePath trackData:v162 playlistData:v162 clientIdentity:clientIdentity];
 
                         *v242 = 0;
                         *&v242[8] = v242;
@@ -1501,7 +1501,7 @@ LABEL_13:
                           if (os_log_type_enabled(v148, OS_LOG_TYPE_DEFAULT))
                           {
                             *v240 = 138543362;
-                            v241 = self;
+                            selfCopy = self;
                             _os_log_impl(&_mh_execute_header, v148, OS_LOG_TYPE_DEFAULT, "%{public}@ - Failed to import cloud-id mapping.", v240, 0xCu);
                           }
                         }
@@ -1545,7 +1545,7 @@ LABEL_13:
                       v4 = 0;
                     }
 
-                    v153 = v166;
+                    v153 = bodyData;
                   }
 
                   else
@@ -1660,18 +1660,18 @@ LABEL_102:
 
 - (BOOL)_ensureDeviceIsRegistered
 {
-  v3 = [(CloudLibraryOperation *)self configuration];
-  v4 = sub_1000E54B0(v3, [(CloudUpdateLibraryOperation *)self allowNoisyAuthPrompt], 0);
+  configuration = [(CloudLibraryOperation *)self configuration];
+  v4 = sub_1000E54B0(configuration, [(CloudUpdateLibraryOperation *)self allowNoisyAuthPrompt], 0);
 
   if (v4)
   {
-    v5 = [(CloudLibraryOperation *)self musicLibrary];
-    v6 = [v5 sagaCloudLibraryCUID];
-    [(CloudUpdateLibraryOperation *)self setCuid:v6];
+    musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+    sagaCloudLibraryCUID = [musicLibrary sagaCloudLibraryCUID];
+    [(CloudUpdateLibraryOperation *)self setCuid:sagaCloudLibraryCUID];
 
-    v7 = [(CloudLibraryOperation *)self musicLibrary];
-    v8 = [v7 sagaCloudLibraryTroveID];
-    [(CloudUpdateLibraryOperation *)self setTroveID:v8];
+    musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
+    sagaCloudLibraryTroveID = [musicLibrary2 sagaCloudLibraryTroveID];
+    [(CloudUpdateLibraryOperation *)self setTroveID:sagaCloudLibraryTroveID];
   }
 
   return v4;
@@ -1679,16 +1679,16 @@ LABEL_102:
 
 - (void)main
 {
-  v3 = [(CloudLibraryOperation *)self musicLibrary];
-  v4 = [v3 sagaOnDiskDatabaseRevision];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  sagaOnDiskDatabaseRevision = [musicLibrary sagaOnDiskDatabaseRevision];
 
-  v5 = [(CloudLibraryOperation *)self musicLibrary];
-  v6 = [v5 sagaInitiateClientResetSync];
+  musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
+  sagaInitiateClientResetSync = [musicLibrary2 sagaInitiateClientResetSync];
 
-  [(ICDCloudMusicLibrarySagaUpdateTaskHelper *)self->_updateTaskHelper startingUpdateOperationForLibraryType:1 isInitialImport:v4 == 0];
-  v7 = [(CloudLibraryOperation *)self musicLibrary];
-  v8 = [(CloudLibraryOperation *)self clientIdentity];
-  [v7 setClientIdentity:v8];
+  [(ICDCloudMusicLibrarySagaUpdateTaskHelper *)self->_updateTaskHelper startingUpdateOperationForLibraryType:1 isInitialImport:sagaOnDiskDatabaseRevision == 0];
+  musicLibrary3 = [(CloudLibraryOperation *)self musicLibrary];
+  clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+  [musicLibrary3 setClientIdentity:clientIdentity];
 
   v9 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1696,21 +1696,21 @@ LABEL_102:
     reason = self->_reason;
     v11 = ICCloudClientGetStringForRequestReason();
     *buf = 138544642;
-    v87 = self;
+    selfCopy11 = self;
     v88 = 2114;
     *v89 = v11;
     *&v89[8] = 1024;
-    *&v89[10] = v4 == 0;
+    *&v89[10] = sagaOnDiskDatabaseRevision == 0;
     v90 = 1024;
-    v91 = [(CloudUpdateLibraryOperation *)self isExplicitUserAction];
+    isExplicitUserAction = [(CloudUpdateLibraryOperation *)self isExplicitUserAction];
     v92 = 1024;
-    v93 = [(CloudUpdateLibraryOperation *)self allowNoisyAuthPrompt];
+    allowNoisyAuthPrompt = [(CloudUpdateLibraryOperation *)self allowNoisyAuthPrompt];
     v94 = 1024;
-    v95 = v6;
+    v95 = sagaInitiateClientResetSync;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ - Updating cloud library operation (reason = %{public}@), isInitialImport=%{BOOL}u, isExplicitUserAction=%{BOOL}u, allowNoisyAuthPrompt=%{BOOL}u, sagaClientInitiatedResetSync=%{BOOL}u", buf, 0x2Eu);
   }
 
-  if (!v4)
+  if (!sagaOnDiskDatabaseRevision)
   {
     v21 = sub_100004B8C();
     v22 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
@@ -1720,7 +1720,7 @@ LABEL_102:
       if (v23)
       {
         *buf = 138543362;
-        v87 = self;
+        selfCopy11 = self;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ - Skipping initial import on non standalone wOS platform", buf, 0xCu);
       }
 
@@ -1748,13 +1748,13 @@ LABEL_42:
     if (v23)
     {
       *buf = 138543362;
-      v87 = self;
+      selfCopy11 = self;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ - Preparing for initial library update...", buf, 0xCu);
     }
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, ICCloudClientStartingInitialCloudLibraryImportNotification, 0, 0, 1u);
-    if (v6 & 1 | ![(CloudUpdateLibraryOperation *)self uploadingLibraryIsSupported])
+    if (sagaInitiateClientResetSync & 1 | ![(CloudUpdateLibraryOperation *)self uploadingLibraryIsSupported])
     {
       goto LABEL_23;
     }
@@ -1767,7 +1767,7 @@ LABEL_42:
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v87 = self;
+          selfCopy11 = self;
           _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "%{public}@ - Cancelled after registering device", buf, 0xCu);
         }
 
@@ -1796,7 +1796,7 @@ LABEL_42:
           if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v87 = self;
+            selfCopy11 = self;
             _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "%{public}@ - Cancelled after uploading library metadata", buf, 0xCu);
           }
 
@@ -1828,7 +1828,7 @@ LABEL_23:
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v87 = self;
+          selfCopy11 = self;
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%{public}@ - Cancelled after preparing library for cloud import", buf, 0xCu);
         }
 
@@ -1859,11 +1859,11 @@ LABEL_27:
         v54 = sub_10010275C();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
         {
-          v55 = [(CloudUpdateLibraryOperation *)self uploadResponseStatus];
+          uploadResponseStatus = [(CloudUpdateLibraryOperation *)self uploadResponseStatus];
           *buf = 138543618;
-          v87 = self;
+          selfCopy11 = self;
           v88 = 1024;
-          *v89 = v55;
+          *v89 = uploadResponseStatus;
           _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, "%{public}@ - self.uploadResponseStatus=%d, treating as a hard failure", buf, 0x12u);
         }
 
@@ -1890,11 +1890,11 @@ LABEL_27:
         v56 = sub_10010275C();
         if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
         {
-          v57 = [(CloudUpdateLibraryOperation *)self uploadResponseStatus];
+          uploadResponseStatus2 = [(CloudUpdateLibraryOperation *)self uploadResponseStatus];
           *buf = 138543618;
-          v87 = self;
+          selfCopy11 = self;
           v88 = 1024;
-          *v89 = v57;
+          *v89 = uploadResponseStatus2;
           _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "%{public}@ - self.uploadResponseStatus=%d, treating as a temporary failure", buf, 0x12u);
         }
 
@@ -1922,7 +1922,7 @@ LABEL_27:
       if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v87 = self;
+        selfCopy11 = self;
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "%{public}@ - Failed to register device, bailing on initial library update", buf, 0xCu);
       }
 
@@ -1951,7 +1951,7 @@ LABEL_27:
 LABEL_4:
   self->_didSubscriptionStatusLapse = 0;
   self->_didEncounterFatalErrorImportingPayload = 0;
-  v12 = [(CloudUpdateLibraryOperation *)self _updateLibrary];
+  _updateLibrary = [(CloudUpdateLibraryOperation *)self _updateLibrary];
   v13 = +[ICDefaults standardDefaults];
   if ([v13 shouldTreatSubscriptionStatusAsExpired])
   {
@@ -1963,7 +1963,7 @@ LABEL_4:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v87 = self;
+        selfCopy11 = self;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - shouldTreatSubscriptionStatusAsExpired is set. Will force subscription status to be expired", buf, 0xCu);
       }
 
@@ -1974,7 +1974,7 @@ LABEL_4:
       v16 = [NSNumber numberWithInteger:self->_reason];
       v71[1] = v16;
       v70[2] = @"ICDCloudMusicLibraryProgressWasInitialImportKey";
-      v17 = [NSNumber numberWithBool:v4 == 0];
+      v17 = [NSNumber numberWithBool:sagaOnDiskDatabaseRevision == 0];
       v71[2] = v17;
       v71[3] = &off_1001EDD20;
       v70[3] = @"ICDCloudMusicLibraryProgressPermanentFailureTypeKey";
@@ -1991,11 +1991,11 @@ LABEL_4:
   {
   }
 
-  if ((v12 & 1) == 0)
+  if ((_updateLibrary & 1) == 0)
   {
     if (!self->_didSubscriptionStatusLapse)
     {
-      if (v4)
+      if (sagaOnDiskDatabaseRevision)
       {
         [(CloudLibraryOperation *)self setStatus:5];
         v61[0] = &off_1001EDD08;
@@ -2092,7 +2092,7 @@ LABEL_4:
     v16 = [NSNumber numberWithInteger:self->_reason];
     v69[1] = v16;
     v68[2] = @"ICDCloudMusicLibraryProgressWasInitialImportKey";
-    v17 = [NSNumber numberWithBool:v4 == 0];
+    v17 = [NSNumber numberWithBool:sagaOnDiskDatabaseRevision == 0];
     v69[2] = v17;
     v69[3] = &off_1001EDD20;
     v68[3] = @"ICDCloudMusicLibraryProgressPermanentFailureTypeKey";
@@ -2117,11 +2117,11 @@ LABEL_52:
   v46 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
   {
-    v47 = [(CloudLibraryOperation *)self status];
+    status = [(CloudLibraryOperation *)self status];
     *buf = 138543874;
-    v87 = self;
+    selfCopy11 = self;
     v88 = 1024;
-    *v89 = v47;
+    *v89 = status;
     *&v89[4] = 2114;
     *&v89[6] = v31;
     _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_ERROR, "%{public}@ - finished with status=%d, failureReason=%{public}@", buf, 0x1Cu);
@@ -2133,14 +2133,14 @@ LABEL_52:
     v48 = [NSNumber numberWithInteger:self->_reason, @"ICDCloudMusicLibraryProgressUpdateOperationStatusKey", @"ICDCloudMusicLibraryProgressRequestReasonKey"];
     v59[1] = v48;
     v58[2] = @"ICDCloudMusicLibraryProgressWasInitialImportKey";
-    v49 = [NSNumber numberWithBool:v4 == 0];
+    v49 = [NSNumber numberWithBool:sagaOnDiskDatabaseRevision == 0];
     v59[2] = v49;
     v58[3] = @"ICDCloudMusicLibraryProgressWasExplicitUserActionKey";
     v50 = [NSNumber numberWithBool:[(CloudUpdateLibraryOperation *)self isExplicitUserAction]];
     v59[3] = v50;
     v40 = [NSDictionary dictionaryWithObjects:v59 forKeys:v58 count:4];
 
-    if (!v4)
+    if (!sagaOnDiskDatabaseRevision)
     {
       v51 = CFNotificationCenterGetDarwinNotifyCenter();
       CFNotificationCenterPostNotification(v51, ICCloudClientInitialCloudLibraryImportCompletedNotification, 0, 0, 1u);
@@ -2149,7 +2149,7 @@ LABEL_52:
 
   else
   {
-    if (!v4 && [(CloudLibraryOperation *)self status]== 3)
+    if (!sagaOnDiskDatabaseRevision && [(CloudLibraryOperation *)self status]== 3)
     {
       [(CloudUpdateLibraryOperation *)self _clearAllCloudIDs];
     }
@@ -2158,9 +2158,9 @@ LABEL_52:
   }
 
 LABEL_61:
-  v52 = [(CloudLibraryOperation *)self musicLibrary];
+  musicLibrary4 = [(CloudLibraryOperation *)self musicLibrary];
   v53 = MSVTCCIdentityForCurrentProcess();
-  [v52 setClientIdentity:v53];
+  [musicLibrary4 setClientIdentity:v53];
 
   [(ICDCloudMusicLibrarySagaUpdateTaskHelper *)self->_updateTaskHelper finishedUpdateOperationForLibraryType:1 withResponse:v40];
 }
@@ -2168,24 +2168,24 @@ LABEL_61:
 - (void)cancel
 {
   v3 = +[ICURLSessionManager defaultSession];
-  v4 = [(CloudUpdateLibraryOperation *)self uploadLibraryRequest];
+  uploadLibraryRequest = [(CloudUpdateLibraryOperation *)self uploadLibraryRequest];
 
-  if (v4)
+  if (uploadLibraryRequest)
   {
-    v5 = [(CloudUpdateLibraryOperation *)self uploadLibraryRequest];
-    [v3 cancelRequest:v5];
+    uploadLibraryRequest2 = [(CloudUpdateLibraryOperation *)self uploadLibraryRequest];
+    [v3 cancelRequest:uploadLibraryRequest2];
   }
 
-  v6 = [(CloudUpdateLibraryOperation *)self getResultsRequest];
+  getResultsRequest = [(CloudUpdateLibraryOperation *)self getResultsRequest];
 
-  if (v6)
+  if (getResultsRequest)
   {
-    v7 = [(CloudUpdateLibraryOperation *)self getResultsRequest];
-    [v3 cancelRequest:v7];
+    getResultsRequest2 = [(CloudUpdateLibraryOperation *)self getResultsRequest];
+    [v3 cancelRequest:getResultsRequest2];
   }
 
-  v8 = [(CloudUpdateLibraryOperation *)self importer];
-  [v8 cancel];
+  importer = [(CloudUpdateLibraryOperation *)self importer];
+  [importer cancel];
 
   v9.receiver = self;
   v9.super_class = CloudUpdateLibraryOperation;
@@ -2200,17 +2200,17 @@ LABEL_61:
   [(CloudUpdateLibraryOperation *)&v3 dealloc];
 }
 
-- (CloudUpdateLibraryOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 reason:(int64_t)a5 updateTaskHelper:(id)a6
+- (CloudUpdateLibraryOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity reason:(int64_t)reason updateTaskHelper:(id)helper
 {
-  v11 = a6;
+  helperCopy = helper;
   v15.receiver = self;
   v15.super_class = CloudUpdateLibraryOperation;
-  v12 = [(CloudLibraryOperation *)&v15 initWithConfiguration:a3 clientIdentity:a4];
+  v12 = [(CloudLibraryOperation *)&v15 initWithConfiguration:configuration clientIdentity:identity];
   v13 = v12;
   if (v12)
   {
-    v12->_reason = a5;
-    objc_storeStrong(&v12->_updateTaskHelper, a6);
+    v12->_reason = reason;
+    objc_storeStrong(&v12->_updateTaskHelper, helper);
   }
 
   return v13;

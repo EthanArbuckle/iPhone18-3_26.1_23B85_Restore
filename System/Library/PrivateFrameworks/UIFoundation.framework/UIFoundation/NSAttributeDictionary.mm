@@ -1,14 +1,14 @@
 @interface NSAttributeDictionary
-+ (id)newWithDictionary:(id)a3;
++ (id)newWithDictionary:(id)dictionary;
 + (void)initialize;
-- (BOOL)isEqualToDictionary:(id)a3;
+- (BOOL)isEqualToDictionary:(id)dictionary;
 - (id)keyEnumerator;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)newWithKey:(id)a3 object:(id)a4;
-- (id)objectForKey:(id)a3;
-- (void)__apply:(void *)a3 context:(void *)a4;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)newWithKey:(id)key object:(id)object;
+- (id)objectForKey:(id)key;
+- (void)__apply:(void *)__apply context:(void *)context;
 - (void)dealloc;
-- (void)getObjects:(id *)a3 andKeys:(id *)a4;
+- (void)getObjects:(id *)objects andKeys:(id *)keys;
 @end
 
 @implementation NSAttributeDictionary
@@ -107,21 +107,21 @@
   [(NSAttributeDictionary *)&v6 dealloc];
 }
 
-+ (id)newWithDictionary:(id)a3
++ (id)newWithDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (dictionary)
   {
-    v3 = a3;
+    dictionaryCopy = dictionary;
   }
 
   else
   {
-    v3 = emptyAttributeDictionary;
+    dictionaryCopy = emptyAttributeDictionary;
   }
 
-  v32 = v3;
-  if (v3 && object_getClass(v3) == attributeDictionaryClass)
+  v32 = dictionaryCopy;
+  if (dictionaryCopy && object_getClass(dictionaryCopy) == attributeDictionaryClass)
   {
 
     return v32;
@@ -289,17 +289,17 @@ LABEL_42:
   return v30;
 }
 
-- (id)newWithKey:(id)a3 object:(id)a4
+- (id)newWithKey:(id)key object:(id)object
 {
-  v5 = a3;
-  v40 = self;
+  keyCopy = key;
+  selfCopy = self;
   if (__NSNumberOfNormalizedKeys == 1)
   {
     v6 = &qword_1ED4DF650;
     v7 = 30;
     do
     {
-      if (*(v6 - 1) == a3)
+      if (*(v6 - 1) == key)
       {
         v8 = *v6;
         goto LABEL_17;
@@ -312,7 +312,7 @@ LABEL_42:
     while (v7);
   }
 
-  v8 = [a3 hash];
+  v8 = [key hash];
   if (__NSNumberOfNormalizedKeys != 1)
   {
     goto LABEL_16;
@@ -320,7 +320,7 @@ LABEL_42:
 
   v9 = 0;
   v10 = normalizedKeyInfo;
-  self = v40;
+  self = selfCopy;
   while (v8 != v10[1])
   {
     v11 = 1;
@@ -338,16 +338,16 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  if (([*v10 isEqual:v5] & 1) == 0)
+  if (([*v10 isEqual:keyCopy] & 1) == 0)
   {
     v11 = __NSNumberOfNormalizedKeys;
-    self = v40;
+    self = selfCopy;
     goto LABEL_11;
   }
 
-  v5 = *v10;
+  keyCopy = *v10;
 LABEL_16:
-  self = v40;
+  self = selfCopy;
 LABEL_17:
   numElements = self->numElements;
   if (numElements)
@@ -356,7 +356,7 @@ LABEL_17:
     p_key = &self->elements[0].key;
     do
     {
-      if (*p_key == v5)
+      if (*p_key == keyCopy)
       {
         goto LABEL_37;
       }
@@ -371,7 +371,7 @@ LABEL_17:
   if (__NSNumberOfNormalizedKeys == 1)
   {
     v15 = 0;
-    while (normalizedKeyInfo[v15] != v5)
+    while (normalizedKeyInfo[v15] != keyCopy)
     {
       v15 += 2;
       if (v15 == 60)
@@ -393,10 +393,10 @@ LABEL_25:
     goto LABEL_35;
   }
 
-  v39 = a4;
-  v16 = [(value *)v5 hash];
-  v17 = v40;
-  v18 = v16 % v40->numElements;
+  objectCopy = object;
+  v16 = [(value *)keyCopy hash];
+  v17 = selfCopy;
+  v18 = v16 % selfCopy->numElements;
   v13 = v18;
   while (2)
   {
@@ -417,7 +417,7 @@ LABEL_30:
       if (v13 == v18)
       {
         numElements = v17->numElements;
-        a4 = v39;
+        object = objectCopy;
         goto LABEL_35;
       }
 
@@ -427,15 +427,15 @@ LABEL_30:
     break;
   }
 
-  if (([*(v19 + 8) isEqual:v5] & 1) == 0)
+  if (([*(v19 + 8) isEqual:keyCopy] & 1) == 0)
   {
-    v17 = v40;
+    v17 = selfCopy;
     goto LABEL_30;
   }
 
-  a4 = v39;
-  self = v40;
-  numElements = v40->numElements;
+  object = objectCopy;
+  self = selfCopy;
+  numElements = selfCopy->numElements;
 LABEL_37:
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -455,7 +455,7 @@ LABEL_37:
   }
 
   var0 = self->elements[v13].var0;
-  if (var0 != a4 && ![var0 isEqual:a4])
+  if (var0 != object && ![var0 isEqual:object])
   {
     v21 = 0;
 LABEL_48:
@@ -550,31 +550,31 @@ LABEL_57:
     }
 
     v25[1] = v20;
-    memmove(v25 + 2, v40->elements, 24 * v40->numElements);
+    memmove(v25 + 2, selfCopy->elements, 24 * selfCopy->numElements);
     v26 = newWithKey_object__tempDict + 16;
     if (v21)
     {
       v13 = v20 - 1;
       v27 = (v26 + 24 * (v20 - 1));
       *v27 = v8;
-      v27[1] = v5;
+      v27[1] = keyCopy;
     }
 
-    *(v26 + 24 * v13 + 16) = a4;
+    *(v26 + 24 * v13 + 16) = object;
     goto LABEL_57;
   }
 
-  return v40;
+  return selfCopy;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   numElements = self->numElements;
   if (numElements)
   {
     v6 = 0;
     p_key = &self->elements[0].key;
-    while (*p_key != a3)
+    while (*p_key != key)
     {
       ++v6;
       p_key += 3;
@@ -591,7 +591,7 @@ LABEL_5:
     if (__NSNumberOfNormalizedKeys == 1)
     {
       v8 = 0;
-      while (normalizedKeyInfo[v8] != a3)
+      while (normalizedKeyInfo[v8] != key)
       {
         v8 += 2;
         if (v8 == 60)
@@ -609,13 +609,13 @@ LABEL_9:
       return 0;
     }
 
-    v9 = [a3 hash];
+    v9 = [key hash];
     v10 = v9 % self->numElements;
     v6 = v10;
     while (1)
     {
       v11 = &self->elements[v6];
-      if (v11->hash == v9 && ([(value *)v11->key isEqual:a3]& 1) != 0)
+      if (v11->hash == v9 && ([(value *)v11->key isEqual:key]& 1) != 0)
       {
         break;
       }
@@ -645,35 +645,35 @@ LABEL_9:
   return self->elements[v6].var0;
 }
 
-- (void)getObjects:(id *)a3 andKeys:(id *)a4
+- (void)getObjects:(id *)objects andKeys:(id *)keys
 {
   if (self->numElements)
   {
     v4 = 0;
-    v5 = self;
+    selfCopy = self;
     do
     {
-      if (a3)
+      if (objects)
       {
-        *a3++ = v5->elements[0].var0;
+        *objects++ = selfCopy->elements[0].var0;
       }
 
-      if (a4)
+      if (keys)
       {
-        *a4++ = v5->elements[0].key;
+        *keys++ = selfCopy->elements[0].key;
       }
 
       ++v4;
-      v5 = (v5 + 24);
+      selfCopy = (selfCopy + 24);
     }
 
     while (v4 < self->numElements);
   }
 }
 
-- (void)__apply:(void *)a3 context:(void *)a4
+- (void)__apply:(void *)__apply context:(void *)context
 {
-  if (a3)
+  if (__apply)
   {
     numElements = self->numElements;
     if (numElements)
@@ -682,7 +682,7 @@ LABEL_9:
       v8 = 24 * numElements;
       do
       {
-        (a3)(*(p_var0 - 1), *p_var0, a4);
+        (__apply)(*(p_var0 - 1), *p_var0, context);
         p_var0 += 3;
         v8 -= 24;
       }
@@ -695,11 +695,11 @@ LABEL_9:
   {
     v9.receiver = self;
     v9.super_class = NSAttributeDictionary;
-    [(NSAttributeDictionary *)&v9 __apply:0 context:a4];
+    [(NSAttributeDictionary *)&v9 __apply:0 context:context];
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v12 = *MEMORY[0x1E69E9840];
   numElements = self->numElements;
@@ -722,40 +722,40 @@ LABEL_9:
       while (numElements);
     }
 
-    return [objc_msgSend(MEMORY[0x1E695DF90] allocWithZone:{a3), "initWithObjects:forKeys:count:", v10, v11, self->numElements}];
+    return [objc_msgSend(MEMORY[0x1E695DF90] allocWithZone:{zone), "initWithObjects:forKeys:count:", v10, v11, self->numElements}];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = NSAttributeDictionary;
-    return [(NSAttributeDictionary *)&v9 mutableCopyWithZone:a3];
+    return [(NSAttributeDictionary *)&v9 mutableCopyWithZone:zone];
   }
 }
 
-- (BOOL)isEqualToDictionary:(id)a3
+- (BOOL)isEqualToDictionary:(id)dictionary
 {
   v58 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!dictionary)
   {
     goto LABEL_60;
   }
 
-  if (object_getClass(a3) == attributeDictionaryClass)
+  if (object_getClass(dictionary) == attributeDictionaryClass)
   {
-    LOBYTE(v37) = self == a3;
+    LOBYTE(v37) = self == dictionary;
     return v37;
   }
 
   numElements = self->numElements;
-  if (numElements != [a3 count])
+  if (numElements != [dictionary count])
   {
 LABEL_60:
     LOBYTE(v37) = 0;
     return v37;
   }
 
-  Class = object_getClass(a3);
+  Class = object_getClass(dictionary);
   v14 = self->numElements;
   if (Class == tempAttributeDictionaryClass)
   {
@@ -769,7 +769,7 @@ LABEL_59:
     v38 = 0;
     elements = self->elements;
     p_key = &self->elements[0].key;
-    v57 = (a3 + 16);
+    v57 = (dictionary + 16);
     while (2)
     {
       v40 = 0;
@@ -863,7 +863,7 @@ LABEL_48:
       MEMORY[0x1EEE9AC00](v16, &v53 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0), v17, v18, v19, v20, v21, v22);
       v57 = v23;
       v55 = &v53 - v24;
-      CFDictionaryGetKeysAndValues(a3, v23, (&v53 - v24));
+      CFDictionaryGetKeysAndValues(dictionary, v23, (&v53 - v24));
       v25 = self->numElements;
       if (v25)
       {
@@ -963,7 +963,7 @@ LABEL_24:
     p_var0 = &self->elements[0].var0;
     do
     {
-      v37 = [a3 objectForKey:*(p_var0 - 1)];
+      v37 = [dictionary objectForKey:*(p_var0 - 1)];
       if (!v37)
       {
         break;

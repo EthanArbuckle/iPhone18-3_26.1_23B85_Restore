@@ -1,11 +1,11 @@
 @interface FMPFSKBTLevelsNode
 - (_TtC11FMFindingUI18FMPFSKBTLevelsNode)init;
-- (_TtC11FMFindingUI18FMPFSKBTLevelsNode)initWithCoder:(id)a3;
+- (_TtC11FMFindingUI18FMPFSKBTLevelsNode)initWithCoder:(id)coder;
 @end
 
 @implementation FMPFSKBTLevelsNode
 
-- (_TtC11FMFindingUI18FMPFSKBTLevelsNode)initWithCoder:(id)a3
+- (_TtC11FMFindingUI18FMPFSKBTLevelsNode)initWithCoder:(id)coder
 {
   result = sub_24A62F444();
   __break(1u);

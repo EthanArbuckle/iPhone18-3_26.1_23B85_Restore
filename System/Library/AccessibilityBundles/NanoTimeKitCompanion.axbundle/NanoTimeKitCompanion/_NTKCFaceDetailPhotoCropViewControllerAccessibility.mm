@@ -1,21 +1,21 @@
 @interface _NTKCFaceDetailPhotoCropViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)viewDidLoad;
 @end
 
 @implementation _NTKCFaceDetailPhotoCropViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_NTKCFaceDetailPhotoCropViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"_NTKCFaceDetailPhotoCropViewController" hasInstanceMethod:@"index" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"_NTKCFaceDetailPhotoCropViewController" hasInstanceVariable:@"_scrollView" withType:"NTKCCenteringScrollView"];
-  [v3 validateClass:@"_NTKCFaceDetailPhotoCropViewController" hasInstanceMethod:@"editor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKCompanionCustomPhotosEditor" hasInstanceVariable:@"_orderList" withType:"NSMutableArray"];
-  [v3 validateClass:@"NTKCompanionCustomPhotosEditor" hasInstanceVariable:@"_pickedPhotos" withType:"NSMutableDictionary"];
-  [v3 validateClass:@"NTKCompanionCustomPhotosEditor" hasInstanceVariable:@"_newPhotos" withType:"NSMutableDictionary"];
-  [v3 validateClass:@"_NTKPickedPhoto" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_NTKCFaceDetailPhotoCropViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"_NTKCFaceDetailPhotoCropViewController" hasInstanceMethod:@"index" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"_NTKCFaceDetailPhotoCropViewController" hasInstanceVariable:@"_scrollView" withType:"NTKCCenteringScrollView"];
+  [validationsCopy validateClass:@"_NTKCFaceDetailPhotoCropViewController" hasInstanceMethod:@"editor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKCompanionCustomPhotosEditor" hasInstanceVariable:@"_orderList" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"NTKCompanionCustomPhotosEditor" hasInstanceVariable:@"_pickedPhotos" withType:"NSMutableDictionary"];
+  [validationsCopy validateClass:@"NTKCompanionCustomPhotosEditor" hasInstanceVariable:@"_newPhotos" withType:"NSMutableDictionary"];
+  [validationsCopy validateClass:@"_NTKPickedPhoto" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
 }
 
 - (void)viewDidLoad
@@ -62,11 +62,11 @@
     if (v15 && v3)
     {
       [v3 setIsAccessibilityElement:1];
-      v16 = [v15 accessibilityLabel];
-      [v3 setAccessibilityLabel:v16];
+      accessibilityLabel = [v15 accessibilityLabel];
+      [v3 setAccessibilityLabel:accessibilityLabel];
 
-      v17 = [v15 accessibilityCustomContent];
-      [v3 setAccessibilityCustomContent:v17];
+      accessibilityCustomContent = [v15 accessibilityCustomContent];
+      [v3 setAccessibilityCustomContent:accessibilityCustomContent];
 
       [v3 setAccessibilityTraits:UIAccessibilityTraitImage];
     }

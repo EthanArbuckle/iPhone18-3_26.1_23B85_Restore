@@ -1,5 +1,5 @@
 @interface SBHRootFolderVisualConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)editModeButtonSize;
 - (CGSize)pageControlCustomPadding;
 - (CGSize)pageControlFrameInset;
@@ -9,12 +9,12 @@
 - (UIEdgeInsets)dockBackgroundViewInsets;
 - (UIEdgeInsets)dockListViewInsets;
 - (UIOffset)editModeButtonLayoutOffset;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)setPageManagementLayoutMetrics:(SBRootFolderViewPageManagementLayoutMetrics *)a3 forLayoutConfiguration:(int64_t)a4;
+- (void)setPageManagementLayoutMetrics:(SBRootFolderViewPageManagementLayoutMetrics *)metrics forLayoutConfiguration:(int64_t)configuration;
 @end
 
 @implementation SBHRootFolderVisualConfiguration
@@ -98,21 +98,21 @@
   return result;
 }
 
-- (void)setPageManagementLayoutMetrics:(SBRootFolderViewPageManagementLayoutMetrics *)a3 forLayoutConfiguration:(int64_t)a4
+- (void)setPageManagementLayoutMetrics:(SBRootFolderViewPageManagementLayoutMetrics *)metrics forLayoutConfiguration:(int64_t)configuration
 {
-  if (a3 <= 5)
+  if (metrics <= 5)
   {
-    v8 = qword_1BEE89E10[a3];
-    v9 = qword_1BEE89E40[a3];
-    v10 = qword_1BEE89E70[a3];
-    *(&self->super.isa + qword_1BEE89DE0[a3]) = v4;
+    v8 = qword_1BEE89E10[metrics];
+    v9 = qword_1BEE89E40[metrics];
+    v10 = qword_1BEE89E70[metrics];
+    *(&self->super.isa + qword_1BEE89DE0[metrics]) = v4;
     *(&self->super.isa + v8) = v5;
     *(&self->super.isa + v9) = v6;
     *(&self->super.isa + v10) = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)
@@ -160,10 +160,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
     goto LABEL_22;
@@ -178,7 +178,7 @@
     goto LABEL_22;
   }
 
-  v7 = v4;
+  v7 = equalCopy;
   if (self->_idleTextVerticalOffset != v7->_idleTextVerticalOffset || self->_pageControlVerticalOffset != v7->_pageControlVerticalOffset)
   {
     goto LABEL_18;
@@ -293,68 +293,68 @@ LABEL_22:
 
 - (id)succinctDescription
 {
-  v2 = [(SBHRootFolderVisualConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHRootFolderVisualConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHRootFolderVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHRootFolderVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHRootFolderVisualConfiguration *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBHRootFolderVisualConfiguration *)self succinctDescriptionBuilder];
   [(SBHRootFolderVisualConfiguration *)self idleTextVerticalOffset];
-  v5 = [v4 appendFloat:@"idleTextVerticalOffset" withName:?];
+  v5 = [succinctDescriptionBuilder appendFloat:@"idleTextVerticalOffset" withName:?];
   [(SBHRootFolderVisualConfiguration *)self pageControlVerticalOffset];
-  v6 = [v4 appendFloat:@"pageControlVerticalOffset" withName:?];
+  v6 = [succinctDescriptionBuilder appendFloat:@"pageControlVerticalOffset" withName:?];
   [(SBHRootFolderVisualConfiguration *)self pageControlFrameInset];
-  v7 = [v4 appendSize:@"pageControlFrameInset" withName:?];
+  v7 = [succinctDescriptionBuilder appendSize:@"pageControlFrameInset" withName:?];
   [(SBHRootFolderVisualConfiguration *)self pageControlCustomPadding];
-  v8 = [v4 appendSize:@"pageControlCustomPadding" withName:?];
+  v8 = [succinctDescriptionBuilder appendSize:@"pageControlCustomPadding" withName:?];
   [(SBHRootFolderVisualConfiguration *)self scrollAccessoryVerticalOffsetAdjustmentForAuxiliaryView];
-  v9 = [v4 appendFloat:@"scrollAccessoryVerticalOffsetAdjustmentForAuxiliaryView" withName:?];
+  v9 = [succinctDescriptionBuilder appendFloat:@"scrollAccessoryVerticalOffsetAdjustmentForAuxiliaryView" withName:?];
   [(SBHRootFolderVisualConfiguration *)self pageManagementPageCheckboxVerticalMargin];
-  v10 = [v4 appendFloat:@"pageManagementPageCheckboxVerticalMargin" withName:?];
+  v10 = [succinctDescriptionBuilder appendFloat:@"pageManagementPageCheckboxVerticalMargin" withName:?];
   [(SBHRootFolderVisualConfiguration *)self pageManagementPageCheckboxDiameter];
-  v11 = [v4 appendFloat:@"pageManagementPageCheckboxDiameter" withName:?];
+  v11 = [succinctDescriptionBuilder appendFloat:@"pageManagementPageCheckboxDiameter" withName:?];
   [(SBHRootFolderVisualConfiguration *)self pageManagementFocusModeOptionsButtonSize];
-  v12 = [v4 appendSize:@"pageManagementFocusModeOptionsButtonSize" withName:?];
+  v12 = [succinctDescriptionBuilder appendSize:@"pageManagementFocusModeOptionsButtonSize" withName:?];
   [(SBHRootFolderVisualConfiguration *)self dockViewHeight];
-  v13 = [v4 appendFloat:@"dockViewHeight" withName:?];
+  v13 = [succinctDescriptionBuilder appendFloat:@"dockViewHeight" withName:?];
   [(SBHRootFolderVisualConfiguration *)self dockBackgroundViewCornerRadius];
-  v14 = [v4 appendFloat:@"dockBackgroundViewCornerRadius" withName:?];
+  v14 = [succinctDescriptionBuilder appendFloat:@"dockBackgroundViewCornerRadius" withName:?];
   [(SBHRootFolderVisualConfiguration *)self dockBackgroundViewInsets];
   v15 = NSStringFromUIEdgeInsets(v26);
-  [v4 appendString:v15 withName:@"dockBackgroundViewInsets"];
+  [succinctDescriptionBuilder appendString:v15 withName:@"dockBackgroundViewInsets"];
 
   [(SBHRootFolderVisualConfiguration *)self dockListViewInsets];
   v16 = NSStringFromUIEdgeInsets(v27);
-  [v4 appendString:v16 withName:@"dockListViewInsets"];
+  [succinctDescriptionBuilder appendString:v16 withName:@"dockListViewInsets"];
 
   [(SBHRootFolderVisualConfiguration *)self editModeButtonContentEdgeInsets];
   v17 = NSStringFromDirectionalEdgeInsets(v28);
-  [v4 appendString:v17 withName:@"editModeButtonContentEdgeInsets"];
+  [succinctDescriptionBuilder appendString:v17 withName:@"editModeButtonContentEdgeInsets"];
 
   [(SBHRootFolderVisualConfiguration *)self editModeButtonLayoutOffset];
   v18 = NSStringFromUIOffset(v24);
-  [v4 appendString:v18 withName:@"editModeButtonLayoutOffset"];
+  [succinctDescriptionBuilder appendString:v18 withName:@"editModeButtonLayoutOffset"];
 
   [(SBHRootFolderVisualConfiguration *)self editModeButtonSize];
   v19 = NSStringFromCGSize(v25);
-  [v4 appendString:v19 withName:@"editModeButtonSize"];
+  [succinctDescriptionBuilder appendString:v19 withName:@"editModeButtonSize"];
 
   [(SBHRootFolderVisualConfiguration *)self editingEntryAreaHorizontalInset];
-  v20 = [v4 appendFloat:@"editingEntryAreaHorizontalInset" withName:?];
-  v21 = [v4 appendInteger:-[SBHRootFolderVisualConfiguration numberOfInitialPagesToPreferVisible](self withName:{"numberOfInitialPagesToPreferVisible"), @"numberOfInitialPagesToPreferVisible"}];
+  v20 = [succinctDescriptionBuilder appendFloat:@"editingEntryAreaHorizontalInset" withName:?];
+  v21 = [succinctDescriptionBuilder appendInteger:-[SBHRootFolderVisualConfiguration numberOfInitialPagesToPreferVisible](self withName:{"numberOfInitialPagesToPreferVisible"), @"numberOfInitialPagesToPreferVisible"}];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (CGSize)pageControlCustomPadding

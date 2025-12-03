@@ -1,26 +1,26 @@
 @interface VCVideoRuleCollectionsCameraMac
-- (BOOL)setUp1080pRules:(int)a3;
+- (BOOL)setUp1080pRules:(int)rules;
 - (BOOL)setupH264Rules;
 - (BOOL)setupH264WifiRules;
 - (BOOL)setupHEVCRules;
 - (BOOL)setupRules;
-- (VCVideoRuleCollectionsCameraMac)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsCameraMac)initWithHardwareSettings:(id)settings;
 - (void)_addWVGAEncodingRules;
 - (void)_removeRulesGreaterThan720p;
 - (void)_removeRulesGreaterThanVGA;
-- (void)_resetJ92EncodingRulesForCameraIsHD:(BOOL)a3 isWVGA:(BOOL)a4 is1080:(BOOL)a5;
+- (void)_resetJ92EncodingRulesForCameraIsHD:(BOOL)d isWVGA:(BOOL)a is1080:(BOOL)is1080;
 - (void)computeDecodingScore;
 - (void)computeEncodingScore;
 - (void)dealloc;
 - (void)initSupportedPayloads;
-- (void)resetEncodingRulesForCameraIsHD:(BOOL)a3 isWVGA:(BOOL)a4 is1080:(BOOL)a5;
+- (void)resetEncodingRulesForCameraIsHD:(BOOL)d isWVGA:(BOOL)a is1080:(BOOL)is1080;
 - (void)setupH264WifiRules;
 - (void)setupHEVCRules;
 @end
 
 @implementation VCVideoRuleCollectionsCameraMac
 
-- (VCVideoRuleCollectionsCameraMac)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsCameraMac)initWithHardwareSettings:(id)settings
 {
   v28 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -29,7 +29,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_hardwareSettings = a3;
+    v4->_hardwareSettings = settings;
     [(VCVideoRuleCollectionsCameraMac *)v4 initSupportedPayloads];
     [(VCVideoRuleCollectionsCameraMac *)v5 computeEncodingScore];
     [(VCVideoRuleCollectionsCameraMac *)v5 computeDecodingScore];
@@ -94,8 +94,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(VCHardwareSettingsMacProtocol *)self->_hardwareSettings supportedVideoPayloads];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+  supportedVideoPayloads = [(VCHardwareSettingsMacProtocol *)self->_hardwareSettings supportedVideoPayloads];
+  v4 = [supportedVideoPayloads countByEnumeratingWithState:&v9 objects:v8 count:16];
   if (v4)
   {
     v5 = v4;
@@ -107,14 +107,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(supportedVideoPayloads);
         }
 
         -[VCVideoRuleCollections addSupportedPayload:](self, "addSupportedPayload:", [*(*(&v9 + 1) + 8 * v7++) unsignedIntValue]);
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+      v5 = [supportedVideoPayloads countByEnumeratingWithState:&v9 objects:v8 count:16];
     }
 
     while (v5);
@@ -124,8 +124,8 @@
 - (void)computeEncodingScore
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [+[VCDefaults sharedInstance](VCDefaults encodingScore];
-  if (v3 - 1 > 0x1D)
+  encodingScore = [+[VCDefaults sharedInstance](VCDefaults encodingScore];
+  if (encodingScore - 1 > 0x1D)
   {
     *(&self->super.super._encodingType + 1) = [(VCHardwareSettingsMacProtocol *)self->_hardwareSettings canDoHiDefEncoding];
     *(&self->super._decodeHighDef + 3) = [(VCHardwareSettingsMacProtocol *)self->_hardwareSettings hardwareScore];
@@ -157,8 +157,8 @@
 
   else
   {
-    *(&self->super._decodeHighDef + 3) = v3;
-    *(&self->super.super._encodingType + 1) = v3 > 0x18;
+    *(&self->super._decodeHighDef + 3) = encodingScore;
+    *(&self->super.super._encodingType + 1) = encodingScore > 0x18;
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       v4 = VRTraceErrorLogLevelToCSTR();
@@ -710,13 +710,13 @@ LABEL_31:
                                     v39 = v3;
                                     v40 = [VCVideoRule alloc];
                                     v64 = v11;
-                                    v41 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeWidth];
-                                    v42 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeHeight];
+                                    forceEncodeWidth = [+[VCDefaults sharedInstance](VCDefaults forceEncodeWidth];
+                                    forceEncodeHeight = [+[VCDefaults sharedInstance](VCDefaults forceEncodeHeight];
                                     *&v43 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeFramerate];
                                     v44 = v40;
                                     v3 = v39;
                                     v4 = v67;
-                                    v45 = [(VCVideoRule *)v44 initWithFrameWidth:v41 frameHeight:v42 frameRate:100 payload:v43];
+                                    v45 = [(VCVideoRule *)v44 initWithFrameWidth:forceEncodeWidth frameHeight:forceEncodeHeight frameRate:100 payload:v43];
                                     [v3 addObject:v45];
                                     v46 = 1;
                                     [(VCVideoRuleCollections *)self addVideoRules:v3 transportType:1 payload:100 encodingType:1];
@@ -749,10 +749,10 @@ LABEL_31:
                                 {
                                   v50 = v11;
                                   v51 = [VCVideoRule alloc];
-                                  v52 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeWidth];
-                                  v53 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeHeight];
+                                  forceEncodeWidth2 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeWidth];
+                                  forceEncodeHeight2 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeHeight];
                                   *&v54 = [+[VCDefaults sharedInstance](VCDefaults forceEncodeFramerate];
-                                  v55 = [(VCVideoRule *)v51 initWithFrameWidth:v52 frameHeight:v53 frameRate:100 payload:v54];
+                                  v55 = [(VCVideoRule *)v51 initWithFrameWidth:forceEncodeWidth2 frameHeight:forceEncodeHeight2 frameRate:100 payload:v54];
                                   [v4 addObject:v55];
 
                                   v11 = v50;
@@ -1052,26 +1052,26 @@ LABEL_49:
 {
   if ([(VCVideoRuleCollections *)self isPayloadSupported:126]|| [(VCVideoRuleCollections *)self isPayloadSupported:123])
   {
-    v3 = [(VCVideoRuleCollectionsCameraMac *)self setupH264WifiRules];
-    if (v3)
+    setupH264WifiRules = [(VCVideoRuleCollectionsCameraMac *)self setupH264WifiRules];
+    if (setupH264WifiRules)
     {
 
-      LOBYTE(v3) = [(VCVideoRuleCollectionsCamera *)self setupH264CellularRules];
+      LOBYTE(setupH264WifiRules) = [(VCVideoRuleCollectionsCamera *)self setupH264CellularRules];
     }
   }
 
   else
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(setupH264WifiRules) = 1;
   }
 
-  return v3;
+  return setupH264WifiRules;
 }
 
-- (BOOL)setUp1080pRules:(int)a3
+- (BOOL)setUp1080pRules:(int)rules
 {
-  v3 = *&a3;
-  if ((a3 != 100 || [(VCHardwareSettingsMacProtocol *)self->_hardwareSettings supportHEVC]&& [(VCHardwareSettingsMacProtocol *)self->_hardwareSettings canDoHEVC]) && [(VCVideoRuleCollections *)self isPayloadSupported:v3])
+  v3 = *&rules;
+  if ((rules != 100 || [(VCHardwareSettingsMacProtocol *)self->_hardwareSettings supportHEVC]&& [(VCHardwareSettingsMacProtocol *)self->_hardwareSettings canDoHEVC]) && [(VCVideoRuleCollections *)self isPayloadSupported:v3])
   {
     v5 = objc_opt_new();
     v6 = objc_opt_new();
@@ -1219,12 +1219,12 @@ LABEL_23:
   v16 = *MEMORY[0x1E69E9840];
   if ([(VCVideoRuleCollectionsCameraMac *)self setupH264Rules])
   {
-    v3 = [(VCVideoRuleCollectionsCameraMac *)self setupHEVCRules];
+    setupHEVCRules = [(VCVideoRuleCollectionsCameraMac *)self setupHEVCRules];
   }
 
   else
   {
-    v3 = 0;
+    setupHEVCRules = 0;
   }
 
   if ([+[VCDefaults forceDisableVideoRuleWiFi1080] sharedInstance]
@@ -1269,7 +1269,7 @@ LABEL_23:
     [(VCVideoRuleCollections *)self limitVideoRulesToMaxWidth:480 maxHeight:272 transportType:2];
   }
 
-  if (v3)
+  if (setupHEVCRules)
   {
     v8 = [(VCVideoRuleCollectionsCameraMac *)self setUp1080pRules:126];
     if (v8)
@@ -1321,12 +1321,12 @@ LABEL_23:
   [(VCVideoRuleCollections *)self removeVideoRulesWithWidth:1664 height:1248 transportType:1 encodingType:1];
 }
 
-- (void)_resetJ92EncodingRulesForCameraIsHD:(BOOL)a3 isWVGA:(BOOL)a4 is1080:(BOOL)a5
+- (void)_resetJ92EncodingRulesForCameraIsHD:(BOOL)d isWVGA:(BOOL)a is1080:(BOOL)is1080
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a4 || a5 || a3)
+  if (!a || is1080 || d)
   {
-    if (a3 && !a5)
+    if (d && !is1080)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -1371,11 +1371,11 @@ LABEL_23:
   }
 }
 
-- (void)resetEncodingRulesForCameraIsHD:(BOOL)a3 isWVGA:(BOOL)a4 is1080:(BOOL)a5
+- (void)resetEncodingRulesForCameraIsHD:(BOOL)d isWVGA:(BOOL)a is1080:(BOOL)is1080
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  is1080Copy = is1080;
+  aCopy = a;
+  dCopy = d;
   v29 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1391,11 +1391,11 @@ LABEL_23:
       v21 = 1024;
       v22 = 472;
       v23 = 1024;
-      v24 = v7;
+      v24 = dCopy;
       v25 = 1024;
-      v26 = v6;
+      v26 = aCopy;
       v27 = 1024;
-      v28 = v5;
+      v28 = is1080Copy;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d isHD = %d, isWVGA = %d, is1080 = %d", &v17, 0x2Eu);
     }
   }
@@ -1427,10 +1427,10 @@ LABEL_23:
       }
     }
 
-    [(VCVideoRuleCollectionsCameraMac *)self _resetJ92EncodingRulesForCameraIsHD:v7 isWVGA:v6 is1080:v5];
+    [(VCVideoRuleCollectionsCameraMac *)self _resetJ92EncodingRulesForCameraIsHD:dCopy isWVGA:aCopy is1080:is1080Copy];
   }
 
-  if (!v7)
+  if (!dCopy)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -1451,7 +1451,7 @@ LABEL_23:
     [(VCVideoRuleCollectionsCameraMac *)self _removeRulesGreaterThanVGA];
   }
 
-  if (!v5)
+  if (!is1080Copy)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {

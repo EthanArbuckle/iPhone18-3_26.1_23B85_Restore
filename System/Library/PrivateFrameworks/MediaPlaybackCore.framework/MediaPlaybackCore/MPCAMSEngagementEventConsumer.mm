@@ -1,33 +1,33 @@
 @interface MPCAMSEngagementEventConsumer
-- (BOOL)_enqueueDataForPlaybackChangingEvent:(id)a3 cursor:(id)a4;
-- (id)_JSONEncodableEvent:(id)a3;
-- (void)subscribeToEventStream:(id)a3;
-- (void)unsubscribeFromEventStream:(id)a3;
+- (BOOL)_enqueueDataForPlaybackChangingEvent:(id)event cursor:(id)cursor;
+- (id)_JSONEncodableEvent:(id)event;
+- (void)subscribeToEventStream:(id)stream;
+- (void)unsubscribeFromEventStream:(id)stream;
 @end
 
 @implementation MPCAMSEngagementEventConsumer
 
-- (id)_JSONEncodableEvent:(id)a3
+- (id)_JSONEncodableEvent:(id)event
 {
-  if (a3)
+  if (event)
   {
     v3 = MEMORY[0x1E695DF90];
-    v4 = a3;
+    eventCopy = event;
     v5 = objc_alloc_init(v3);
-    v6 = [v4 type];
-    [v5 setObject:v6 forKeyedSubscript:@"event-type"];
+    type = [eventCopy type];
+    [v5 setObject:type forKeyedSubscript:@"event-type"];
 
-    v7 = [v4 date];
-    v8 = [v7 description];
+    date = [eventCopy date];
+    v8 = [date description];
     [v5 setObject:v8 forKeyedSubscript:@"time"];
 
-    v9 = [v4 identifier];
-    v10 = [v9 description];
+    identifier = [eventCopy identifier];
+    v10 = [identifier description];
     [v5 setObject:v10 forKeyedSubscript:@"id"];
 
-    v11 = [v4 payload];
+    payload = [eventCopy payload];
 
-    [v5 setObject:v11 forKeyedSubscript:@"payload"];
+    [v5 setObject:payload forKeyedSubscript:@"payload"];
     [v5 setObject:&unk_1F45999E8 forKeyedSubscript:@"meta"];
   }
 
@@ -39,22 +39,22 @@
   return v5;
 }
 
-- (BOOL)_enqueueDataForPlaybackChangingEvent:(id)a3 cursor:(id)a4
+- (BOOL)_enqueueDataForPlaybackChangingEvent:(id)event cursor:(id)cursor
 {
   v70[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v49 = [(MPCAMSEngagementEventConsumer *)self _JSONEncodableEvent:v6];
+  eventCopy = event;
+  cursorCopy = cursor;
+  v49 = [(MPCAMSEngagementEventConsumer *)self _JSONEncodableEvent:eventCopy];
   v41 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [v6 payload];
-  v9 = [v8 objectForKeyedSubscript:@"queue-section-id"];
+  payload = [eventCopy payload];
+  v9 = [payload objectForKeyedSubscript:@"queue-section-id"];
 
-  v10 = [v6 payload];
-  v11 = [v10 objectForKeyedSubscript:@"queue-item-id"];
+  payload2 = [eventCopy payload];
+  v11 = [payload2 objectForKeyedSubscript:@"queue-item-id"];
 
   v70[0] = @"device-changed";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:1];
-  v48 = [v7 findPreviousEventWithTypes:v12 matchingPayload:0];
+  v48 = [cursorCopy findPreviousEventWithTypes:v12 matchingPayload:0];
 
   v43 = v11;
   v44 = v9;
@@ -63,12 +63,12 @@
     v68 = @"queue-section-id";
     v69 = v9;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
-    v14 = [v7 findPreviousEventWithType:@"queue-add" matchingPayload:v13];
+    v14 = [cursorCopy findPreviousEventWithType:@"queue-add" matchingPayload:v13];
 
     v66 = @"queue-section-id";
     v67 = v9;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
-    v47 = [v7 findPreviousEventWithType:@"container-begin" matchingPayload:v15];
+    v47 = [cursorCopy findPreviousEventWithType:@"container-begin" matchingPayload:v15];
 
     if (v11)
     {
@@ -77,7 +77,7 @@
       v65[0] = v9;
       v65[1] = v11;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:2];
-      v46 = [v7 findPreviousEventWithType:@"item-begin" matchingPayload:v16];
+      v46 = [cursorCopy findPreviousEventWithType:@"item-begin" matchingPayload:v16];
     }
 
     else
@@ -85,7 +85,7 @@
       v46 = 0;
     }
 
-    v18 = v7;
+    v18 = cursorCopy;
     v17 = v14;
   }
 
@@ -94,11 +94,11 @@
     v46 = 0;
     v47 = 0;
     v17 = 0;
-    v18 = v7;
+    v18 = cursorCopy;
   }
 
-  v19 = [v17 payload];
-  v20 = [v19 objectForKeyedSubscript:@"account-id"];
+  payload3 = [v17 payload];
+  v20 = [payload3 objectForKeyedSubscript:@"account-id"];
 
   v42 = v20;
   if (v20)
@@ -117,8 +117,8 @@
     v45 = 0;
   }
 
-  v23 = [v17 payload];
-  v24 = [v23 objectForKeyedSubscript:@"queue-delegated-account-id"];
+  payload4 = [v17 payload];
+  v24 = [payload4 objectForKeyedSubscript:@"queue-delegated-account-id"];
 
   if (v24)
   {
@@ -156,8 +156,8 @@
 
   [v49 setObject:v41 forKeyedSubscript:@"related-events"];
   v34 = MPCPlaybackEngineEventPayloadJSONFromPayload(v49);
-  v35 = [v6 identifier];
-  v36 = [v35 description];
+  identifier = [eventCopy identifier];
+  v36 = [identifier description];
 
   v37 = os_log_create("com.apple.amp.mediaplaybackcore", "Engagement_Oversize");
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -219,7 +219,7 @@ void __77__MPCAMSEngagementEventConsumer__enqueueDataForPlaybackChangingEvent_cu
   }
 }
 
-- (void)unsubscribeFromEventStream:(id)a3
+- (void)unsubscribeFromEventStream:(id)stream
 {
   subscription = self->_subscription;
   self->_subscription = 0;
@@ -228,10 +228,10 @@ void __77__MPCAMSEngagementEventConsumer__enqueueDataForPlaybackChangingEvent_cu
   self->_engagement = 0;
 }
 
-- (void)subscribeToEventStream:(id)a3
+- (void)subscribeToEventStream:(id)stream
 {
-  objc_storeStrong(&self->_subscription, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_subscription, stream);
+  streamCopy = stream;
   v6 = objc_alloc(MEMORY[0x1E698C8D8]);
   v7 = [MEMORY[0x1E698C7D8] bagForProfile:@"Music" profileVersion:@"1"];
   v8 = [v6 initWithBag:v7];

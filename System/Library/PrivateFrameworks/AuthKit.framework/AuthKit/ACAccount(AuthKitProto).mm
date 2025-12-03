@@ -14,7 +14,7 @@
 
 + (id)createProtoAccountWithGivenName:()AuthKitProto ageRange:
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -26,14 +26,14 @@
 
 + (id)createProtoAccountWithAgeRange:()AuthKitProto
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   v9 = a3;
   v4 = objc_alloc(MEMORY[0x1E6959A20]);
   v6 = +[AKAccountManager sharedInstance];
-  v5 = [(AKAccountManager *)v6 protoAccountType];
+  protoAccountType = [(AKAccountManager *)v6 protoAccountType];
   v8 = [v4 initWithAccountType:?];
-  MEMORY[0x1E69E5920](v5);
+  MEMORY[0x1E69E5920](protoAccountType);
   MEMORY[0x1E69E5920](v6);
   [v8 proto_setAgeRange:v9];
   v7 = MEMORY[0x1E69E5928](v8);
@@ -45,7 +45,7 @@
 - (id)proto_givenName
 {
   v2 = +[AKAccountManager sharedInstance];
-  v3 = [(AKAccountManager *)v2 givenNameForAccount:a1];
+  v3 = [(AKAccountManager *)v2 givenNameForAccount:self];
   MEMORY[0x1E69E5920](v2);
 
   return v3;
@@ -53,12 +53,12 @@
 
 - (void)proto_setGivenName:()AuthKitProto
 {
-  v5 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v3 = +[AKAccountManager sharedInstance];
-  [(AKAccountManager *)v3 setGivenName:location[0] forAccount:v5];
+  [(AKAccountManager *)v3 setGivenName:location[0] forAccount:selfCopy];
   MEMORY[0x1E69E5920](v3);
   objc_storeStrong(location, 0);
 }
@@ -66,7 +66,7 @@
 - (uint64_t)proto_ageRange
 {
   v2 = +[AKAccountManager sharedInstance];
-  v3 = [(AKAccountManager *)v2 userAgeRangeForAccount:a1];
+  v3 = [(AKAccountManager *)v2 userAgeRangeForAccount:self];
   MEMORY[0x1E69E5920](v2);
   return v3;
 }
@@ -74,41 +74,41 @@
 - (uint64_t)proto_setAgeRange:()AuthKitProto
 {
   v4 = +[AKAccountManager sharedInstance];
-  [(AKAccountManager *)v4 setUserAgeRange:a3 forAccount:a1];
+  [(AKAccountManager *)v4 setUserAgeRange:a3 forAccount:self];
   return MEMORY[0x1E69E5920](v4);
 }
 
 - (uint64_t)initWithGivenName:()AuthKitProto ageRange:
 {
-  v12 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  v7 = v12;
+  v7 = selfCopy;
   v9 = +[AKAccountManager sharedInstance];
-  v8 = [(AKAccountManager *)v9 protoAccountType];
-  v12 = 0;
+  protoAccountType = [(AKAccountManager *)v9 protoAccountType];
+  selfCopy = 0;
   v10 = [v7 initWithAccountType:?];
-  v12 = v10;
-  objc_storeStrong(&v12, v10);
-  MEMORY[0x1E69E5920](v8);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
+  MEMORY[0x1E69E5920](protoAccountType);
   MEMORY[0x1E69E5920](v9);
   if (v10)
   {
-    [v12 dca_setGivenName:location[0]];
-    [v12 dca_setAgeRange:a4];
+    [selfCopy dca_setGivenName:location[0]];
+    [selfCopy dca_setAgeRange:a4];
   }
 
-  v5 = MEMORY[0x1E69E5928](v12);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (id)dca_givenName
 {
   v2 = +[AKAccountManager sharedInstance];
-  v3 = [(AKAccountManager *)v2 givenNameForAccount:a1];
+  v3 = [(AKAccountManager *)v2 givenNameForAccount:self];
   MEMORY[0x1E69E5920](v2);
 
   return v3;
@@ -116,13 +116,13 @@
 
 - (void)dca_setGivenName:()AuthKitProto
 {
-  v5 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v5 proto_setGivenName:location[0]];
+  [selfCopy proto_setGivenName:location[0]];
   v3 = +[AKAccountManager sharedInstance];
-  [(AKAccountManager *)v3 setGivenName:location[0] forAccount:v5];
+  [(AKAccountManager *)v3 setGivenName:location[0] forAccount:selfCopy];
   MEMORY[0x1E69E5920](v3);
   objc_storeStrong(location, 0);
 }

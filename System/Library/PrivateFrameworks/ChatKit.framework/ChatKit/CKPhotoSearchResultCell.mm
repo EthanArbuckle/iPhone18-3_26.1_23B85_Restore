@@ -1,29 +1,29 @@
 @interface CKPhotoSearchResultCell
-- (CKPhotoSearchResultCell)initWithFrame:(CGRect)a3;
+- (CKPhotoSearchResultCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)marginInsets;
-- (void)_configureDurationLabelForResult:(id)a3;
-- (void)_livePhotoUpdated:(id)a3;
-- (void)_spatialStatusUpdated:(id)a3;
-- (void)_thumbnailGenerated:(id)a3;
-- (void)_videoDurationUpdated:(id)a3;
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5;
+- (void)_configureDurationLabelForResult:(id)result;
+- (void)_livePhotoUpdated:(id)updated;
+- (void)_spatialStatusUpdated:(id)updated;
+- (void)_thumbnailGenerated:(id)generated;
+- (void)_videoDurationUpdated:(id)updated;
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setIsLivePhoto:(BOOL)a3;
-- (void)setIsSpatial:(BOOL)a3;
-- (void)setIsVideo:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setIsLivePhoto:(BOOL)photo;
+- (void)setIsSpatial:(BOOL)spatial;
+- (void)setIsVideo:(BOOL)video;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CKPhotoSearchResultCell
 
-- (CKPhotoSearchResultCell)initWithFrame:(CGRect)a3
+- (CKPhotoSearchResultCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v15.receiver = self;
   v15.super_class = CKPhotoSearchResultCell;
   v7 = [(CKPhotoSearchResultCell *)&v15 initWithFrame:?];
@@ -33,20 +33,20 @@
     [v8 setContentMode:2];
     [v8 setClipsToBounds:1];
     [(CKEditableSearchResultCell *)v7 setImageView:v8];
-    v9 = [(CKPhotoSearchResultCell *)v7 contentView];
-    [v9 addSubview:v8];
+    contentView = [(CKPhotoSearchResultCell *)v7 contentView];
+    [contentView addSubview:v8];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__thumbnailGenerated_ name:@"CKSearchThumbnailDidChange" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__thumbnailGenerated_ name:@"CKSearchThumbnailDidChange" object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v7 selector:sel__livePhotoUpdated_ name:@"CKSearchLivePhotoStatusDidChange" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__livePhotoUpdated_ name:@"CKSearchLivePhotoStatusDidChange" object:0];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v7 selector:sel__videoDurationUpdated_ name:@"CKSearchVideoDurationDidChange" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v7 selector:sel__videoDurationUpdated_ name:@"CKSearchVideoDurationDidChange" object:0];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v7 selector:sel__spatialStatusUpdated_ name:@"CKSearchSpatialStatusDidChange" object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v7 selector:sel__spatialStatusUpdated_ name:@"CKSearchSpatialStatusDidChange" object:0];
   }
 
   return v7;
@@ -57,35 +57,35 @@
   v96.receiver = self;
   v96.super_class = CKPhotoSearchResultCell;
   [(CKEditableSearchResultCell *)&v96 layoutSubviews];
-  v3 = [(CKPhotoSearchResultCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKPhotoSearchResultCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKEditableSearchResultCell *)self imageView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  imageView = [(CKEditableSearchResultCell *)self imageView];
+  [imageView setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(CKPhotoSearchResultCell *)self _shouldReverseLayoutDirection];
-  v14 = [(CKEditableSearchResultCell *)self imageView];
-  v15 = [v14 image];
+  _shouldReverseLayoutDirection = [(CKPhotoSearchResultCell *)self _shouldReverseLayoutDirection];
+  imageView2 = [(CKEditableSearchResultCell *)self imageView];
+  image = [imageView2 image];
 
-  v16 = [(CKPhotoSearchResultCell *)self livePhotoImage];
+  livePhotoImage = [(CKPhotoSearchResultCell *)self livePhotoImage];
 
-  if (v16)
+  if (livePhotoImage)
   {
-    v17 = [(CKPhotoSearchResultCell *)self livePhotoImage];
-    [v17 sizeToFit];
+    livePhotoImage2 = [(CKPhotoSearchResultCell *)self livePhotoImage];
+    [livePhotoImage2 sizeToFit];
 
-    v18 = [(CKPhotoSearchResultCell *)self livePhotoImage];
-    [v18 frame];
+    livePhotoImage3 = [(CKPhotoSearchResultCell *)self livePhotoImage];
+    [livePhotoImage3 frame];
     v20 = v19;
     v22 = v21;
     v24 = v23;
 
     v25 = 8.0;
-    if (v13)
+    if (_shouldReverseLayoutDirection)
     {
       v97.origin.x = v5;
       v97.origin.y = v7;
@@ -99,35 +99,35 @@
       v25 = Width - CGRectGetWidth(v98) + -8.0;
     }
 
-    v27 = [(CKPhotoSearchResultCell *)self livePhotoImage];
-    [v27 setFrame:{v25, 8.0, v22, v24}];
+    livePhotoImage4 = [(CKPhotoSearchResultCell *)self livePhotoImage];
+    [livePhotoImage4 setFrame:{v25, 8.0, v22, v24}];
 
-    v28 = [(CKPhotoSearchResultCell *)self livePhotoImage];
-    [v28 setHidden:(v15 == 0) | !self->_isLivePhoto];
+    livePhotoImage5 = [(CKPhotoSearchResultCell *)self livePhotoImage];
+    [livePhotoImage5 setHidden:(image == 0) | !self->_isLivePhoto];
   }
 
-  v29 = [(CKPhotoSearchResultCell *)self durationLabel];
+  durationLabel = [(CKPhotoSearchResultCell *)self durationLabel];
   rect = v11;
-  if (v29)
+  if (durationLabel)
   {
-    v30 = v29;
-    v31 = [(CKPhotoSearchResultCell *)self durationGradientImage];
+    v30 = durationLabel;
+    durationGradientImage = [(CKPhotoSearchResultCell *)self durationGradientImage];
 
-    if (v31)
+    if (durationGradientImage)
     {
       v99.origin.x = v5;
       v99.origin.y = v7;
       v99.size.width = v9;
       v99.size.height = v11;
       v32 = CGRectGetMaxY(v99) + -25.0;
-      v33 = [(CKPhotoSearchResultCell *)self durationGradientImage];
-      [v33 setFrame:{v5, v32, v9, 25.0}];
+      durationGradientImage2 = [(CKPhotoSearchResultCell *)self durationGradientImage];
+      [durationGradientImage2 setFrame:{v5, v32, v9, 25.0}];
 
-      v34 = [(CKPhotoSearchResultCell *)self durationLabel];
-      [v34 sizeToFit];
+      durationLabel2 = [(CKPhotoSearchResultCell *)self durationLabel];
+      [durationLabel2 sizeToFit];
 
-      v35 = [(CKPhotoSearchResultCell *)self durationLabel];
-      [v35 frame];
+      durationLabel3 = [(CKPhotoSearchResultCell *)self durationLabel];
+      [durationLabel3 frame];
       v36 = v11;
       v37 = v7;
       v39 = v38;
@@ -139,7 +139,7 @@
       v47 = v37;
       v48 = v9;
       v49 = v36;
-      if (v13)
+      if (_shouldReverseLayoutDirection)
       {
         v50 = CGRectGetMinX(*&v46) + 5.0;
       }
@@ -162,7 +162,7 @@
         v9 = v94;
       }
 
-      v55 = v15 == 0;
+      v55 = image == 0;
       v101.origin.x = v5;
       v101.origin.y = v37;
       v101.size.width = v9;
@@ -173,50 +173,50 @@
       v102.size.width = v43;
       v102.size.height = v45;
       v57 = v56 - CGRectGetHeight(v102);
-      v58 = [(CKPhotoSearchResultCell *)self durationLabel];
-      [v58 setFrame:{v50, v57, v43, v45}];
+      durationLabel4 = [(CKPhotoSearchResultCell *)self durationLabel];
+      [durationLabel4 setFrame:{v50, v57, v43, v45}];
 
-      v59 = [(CKPhotoSearchResultCell *)self contentView];
-      v60 = [(CKPhotoSearchResultCell *)self durationGradientImage];
-      [v59 bringSubviewToFront:v60];
+      contentView2 = [(CKPhotoSearchResultCell *)self contentView];
+      durationGradientImage3 = [(CKPhotoSearchResultCell *)self durationGradientImage];
+      [contentView2 bringSubviewToFront:durationGradientImage3];
 
-      v61 = [(CKPhotoSearchResultCell *)self contentView];
-      v62 = [(CKPhotoSearchResultCell *)self durationLabel];
-      [v61 bringSubviewToFront:v62];
+      contentView3 = [(CKPhotoSearchResultCell *)self contentView];
+      durationLabel5 = [(CKPhotoSearchResultCell *)self durationLabel];
+      [contentView3 bringSubviewToFront:durationLabel5];
 
-      v63 = [(CKPhotoSearchResultCell *)self durationLabel];
-      [v63 setHidden:v55 | !self->_isVideo];
+      durationLabel6 = [(CKPhotoSearchResultCell *)self durationLabel];
+      [durationLabel6 setHidden:v55 | !self->_isVideo];
 
-      v64 = [(CKPhotoSearchResultCell *)self durationGradientImage];
-      [v64 setHidden:v55 | !self->_isVideo];
+      durationGradientImage4 = [(CKPhotoSearchResultCell *)self durationGradientImage];
+      [durationGradientImage4 setHidden:v55 | !self->_isVideo];
 
       v7 = v37;
     }
   }
 
-  v65 = [(CKEditableSearchResultCell *)self checkmarkView];
+  checkmarkView = [(CKEditableSearchResultCell *)self checkmarkView];
 
-  if (v65)
+  if (checkmarkView)
   {
     v66 = v7;
     [(UILabel *)self->_durationLabel setHidden:1];
     [(UIImageView *)self->_durationGradientImage setHidden:1];
-    v67 = [(CKPhotoSearchResultCell *)self contentView];
-    v68 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v67 bringSubviewToFront:v68];
+    contentView4 = [(CKPhotoSearchResultCell *)self contentView];
+    checkmarkView2 = [(CKEditableSearchResultCell *)self checkmarkView];
+    [contentView4 bringSubviewToFront:checkmarkView2];
 
-    v69 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v69 sizeToFit];
+    checkmarkView3 = [(CKEditableSearchResultCell *)self checkmarkView];
+    [checkmarkView3 sizeToFit];
 
-    v70 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v70 frame];
+    checkmarkView4 = [(CKEditableSearchResultCell *)self checkmarkView];
+    [checkmarkView4 frame];
     v72 = v71;
     v74 = v73;
     v76 = v75;
     v78 = v77;
 
     v79 = 4.0;
-    if ((v13 & 1) == 0)
+    if ((_shouldReverseLayoutDirection & 1) == 0)
     {
       v103.origin.x = v5;
       v103.origin.y = v66;
@@ -240,21 +240,21 @@
     v106.size.width = v76;
     v106.size.height = v78;
     v82 = Height - CGRectGetHeight(v106) + -4.0;
-    v83 = [(CKEditableSearchResultCell *)self checkmarkView];
-    [v83 setFrame:{v79, v82, v76, v78}];
+    checkmarkView5 = [(CKEditableSearchResultCell *)self checkmarkView];
+    [checkmarkView5 setFrame:{v79, v82, v76, v78}];
   }
 
-  v84 = [(CKPhotoSearchResultCell *)self spatialBadgeView];
+  spatialBadgeView = [(CKPhotoSearchResultCell *)self spatialBadgeView];
 
-  if (v84)
+  if (spatialBadgeView)
   {
     [(CKPhotoSearchResultCell *)self bounds];
     v86 = v85;
     v88 = v87;
     v90 = v89;
     v92 = v91;
-    v93 = [(CKPhotoSearchResultCell *)self spatialBadgeView];
-    [v93 setFrame:{v86, v88, v90, v92}];
+    spatialBadgeView2 = [(CKPhotoSearchResultCell *)self spatialBadgeView];
+    [spatialBadgeView2 setFrame:{v86, v88, v90, v92}];
   }
 }
 
@@ -268,30 +268,30 @@
   [(CKPhotoSearchResultCell *)self setIsSpatial:0];
   if (self->_durationLabel)
   {
-    v3 = [(CKPhotoSearchResultCell *)self durationLabel];
-    [v3 setHidden:1];
+    durationLabel = [(CKPhotoSearchResultCell *)self durationLabel];
+    [durationLabel setHidden:1];
   }
 
   if (self->_durationGradientImage)
   {
-    v4 = [(CKPhotoSearchResultCell *)self durationGradientImage];
-    [v4 setHidden:1];
+    durationGradientImage = [(CKPhotoSearchResultCell *)self durationGradientImage];
+    [durationGradientImage setHidden:1];
   }
 
-  v5 = [(CKEditableSearchResultCell *)self imageView];
-  [v5 setImage:0];
+  imageView = [(CKEditableSearchResultCell *)self imageView];
+  [imageView setImage:0];
 
   [(CKPhotoSearchResultCell *)self setResultIdentifier:0];
 }
 
-- (void)setIsLivePhoto:(BOOL)a3
+- (void)setIsLivePhoto:(BOOL)photo
 {
-  if (self->_isLivePhoto != a3)
+  if (self->_isLivePhoto != photo)
   {
-    self->_isLivePhoto = a3;
-    v6 = [(CKPhotoSearchResultCell *)self livePhotoImage];
-    v20 = v6;
-    if (a3)
+    self->_isLivePhoto = photo;
+    livePhotoImage = [(CKPhotoSearchResultCell *)self livePhotoImage];
+    v20 = livePhotoImage;
+    if (photo)
     {
 
       if (!v20)
@@ -301,32 +301,32 @@
         v9 = [v8 imageWithSymbolConfiguration:v7];
 
         v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v9];
-        v11 = [MEMORY[0x1E69DC888] whiteColor];
-        [v10 setTintColor:v11];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [v10 setTintColor:whiteColor];
 
-        v12 = [(CKPhotoSearchResultCell *)self contentView];
-        [v12 addSubview:v10];
+        contentView = [(CKPhotoSearchResultCell *)self contentView];
+        [contentView addSubview:v10];
 
         [(CKPhotoSearchResultCell *)self setLivePhotoImage:v10];
-        v13 = [v10 layer];
-        v14 = [MEMORY[0x1E69DC888] blackColor];
-        [v13 setShadowColor:{objc_msgSend(v14, "CGColor")}];
+        layer = [v10 layer];
+        blackColor = [MEMORY[0x1E69DC888] blackColor];
+        [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-        v15 = [v10 layer];
+        layer2 = [v10 layer];
         LODWORD(v16) = *"333?";
-        [v15 setShadowOpacity:v16];
+        [layer2 setShadowOpacity:v16];
 
-        v17 = [v10 layer];
-        [v17 setShadowOffset:{0.0, 1.0}];
+        layer3 = [v10 layer];
+        [layer3 setShadowOffset:{0.0, 1.0}];
 
-        v18 = [v10 layer];
-        [v18 setShadowRadius:4.0];
+        layer4 = [v10 layer];
+        [layer4 setShadowRadius:4.0];
 
         [(CKPhotoSearchResultCell *)self setNeedsLayout];
       }
 
-      v6 = [(CKPhotoSearchResultCell *)self livePhotoImage];
-      v20 = v6;
+      livePhotoImage = [(CKPhotoSearchResultCell *)self livePhotoImage];
+      v20 = livePhotoImage;
       v19 = 0;
     }
 
@@ -335,19 +335,19 @@
       v19 = 1;
     }
 
-    [v6 setHidden:v19];
+    [livePhotoImage setHidden:v19];
   }
 }
 
-- (void)setIsVideo:(BOOL)a3
+- (void)setIsVideo:(BOOL)video
 {
-  if (self->_isVideo != a3)
+  if (self->_isVideo != video)
   {
-    v4 = a3;
-    self->_isVideo = a3;
-    v6 = [(CKPhotoSearchResultCell *)self durationLabel];
-    v7 = v6;
-    if (v4)
+    videoCopy = video;
+    self->_isVideo = video;
+    durationLabel = [(CKPhotoSearchResultCell *)self durationLabel];
+    v7 = durationLabel;
+    if (videoCopy)
     {
 
       if (!v7)
@@ -357,27 +357,27 @@
         self->_durationLabel = v8;
 
         v10 = self->_durationLabel;
-        v11 = [MEMORY[0x1E69DC888] clearColor];
-        [(UILabel *)v10 setBackgroundColor:v11];
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        [(UILabel *)v10 setBackgroundColor:clearColor];
 
         v12 = self->_durationLabel;
         v13 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:12.0];
         [(UILabel *)v12 setFont:v13];
 
         v14 = self->_durationLabel;
-        v15 = [MEMORY[0x1E69DC888] whiteColor];
-        [(UILabel *)v14 setTextColor:v15];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [(UILabel *)v14 setTextColor:whiteColor];
 
         [(UILabel *)self->_durationLabel setTextAlignment:4];
-        v16 = [(CKPhotoSearchResultCell *)self contentView];
-        [v16 addSubview:self->_durationLabel];
+        contentView = [(CKPhotoSearchResultCell *)self contentView];
+        [contentView addSubview:self->_durationLabel];
 
         [(CKPhotoSearchResultCell *)self setNeedsLayout];
       }
 
-      v17 = [(CKPhotoSearchResultCell *)self durationGradientImage];
+      durationGradientImage = [(CKPhotoSearchResultCell *)self durationGradientImage];
 
-      if (!v17)
+      if (!durationGradientImage)
       {
         v18 = [MEMORY[0x1E69DCAB8] ckImageNamed:@"CKAssetsSceneBadgeBannerGradient"];
         v19 = [v18 resizableImageWithCapInsets:0 resizingMode:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
@@ -387,14 +387,14 @@
         self->_durationGradientImage = v20;
         v22 = v20;
 
-        v23 = [(CKPhotoSearchResultCell *)self contentView];
-        [v23 addSubview:v22];
+        contentView2 = [(CKPhotoSearchResultCell *)self contentView];
+        [contentView2 addSubview:v22];
 
         [(CKPhotoSearchResultCell *)self setNeedsLayout];
       }
 
-      v6 = [(CKPhotoSearchResultCell *)self durationLabel];
-      v7 = v6;
+      durationLabel = [(CKPhotoSearchResultCell *)self durationLabel];
+      v7 = durationLabel;
       v24 = 0;
     }
 
@@ -403,22 +403,22 @@
       v24 = 1;
     }
 
-    [v6 setHidden:v24];
+    [durationLabel setHidden:v24];
 
-    v25 = [(CKPhotoSearchResultCell *)self durationGradientImage];
-    [v25 setHidden:!v4];
+    durationGradientImage2 = [(CKPhotoSearchResultCell *)self durationGradientImage];
+    [durationGradientImage2 setHidden:!videoCopy];
   }
 }
 
-- (void)setIsSpatial:(BOOL)a3
+- (void)setIsSpatial:(BOOL)spatial
 {
-  if (self->_isSpatial != a3)
+  if (self->_isSpatial != spatial)
   {
-    v3 = a3;
-    self->_isSpatial = a3;
-    v5 = [(CKPhotoSearchResultCell *)self spatialBadgeView];
-    v6 = v5;
-    if (v3)
+    spatialCopy = spatial;
+    self->_isSpatial = spatial;
+    spatialBadgeView = [(CKPhotoSearchResultCell *)self spatialBadgeView];
+    v6 = spatialBadgeView;
+    if (spatialCopy)
     {
 
       if (!v6)
@@ -434,8 +434,8 @@
 
       if (v6)
       {
-        v7 = [(CKPhotoSearchResultCell *)self spatialBadgeView];
-        [v7 removeFromSuperview];
+        spatialBadgeView2 = [(CKPhotoSearchResultCell *)self spatialBadgeView];
+        [spatialBadgeView2 removeFromSuperview];
 
         [(CKPhotoSearchResultCell *)self setSpatialBadgeView:0];
       }
@@ -445,52 +445,52 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKPhotoSearchResultCell;
   [(CKPhotoSearchResultCell *)&v4 dealloc];
 }
 
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode
 {
-  v36 = a3;
-  v7 = [v36 identifier];
-  [(CKPhotoSearchResultCell *)self setResultIdentifier:v7];
+  resultCopy = result;
+  identifier = [resultCopy identifier];
+  [(CKPhotoSearchResultCell *)self setResultIdentifier:identifier];
 
   v8 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-  v9 = [v8 hasCachedPreviewForQueryResult:v36];
+  v9 = [v8 hasCachedPreviewForQueryResult:resultCopy];
 
   v10 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-  v11 = v10;
+  imageView3 = v10;
   if ((v9 & 1) == 0)
   {
-    [v10 generatePreviewForQueryResult:v36];
+    [v10 generatePreviewForQueryResult:resultCopy];
     v12 = 0;
     goto LABEL_6;
   }
 
-  v12 = [v10 cachedPreviewForQueryResult:v36];
+  v12 = [v10 cachedPreviewForQueryResult:resultCopy];
 
   if (v12)
   {
-    v13 = [(CKEditableSearchResultCell *)self imageView];
-    [v13 setImage:v12];
+    imageView = [(CKEditableSearchResultCell *)self imageView];
+    [imageView setImage:v12];
 
     if (CKIsRunningInMacCatalyst())
     {
-      v14 = [(CKEditableSearchResultCell *)self imageView];
-      [v14 setContentMode:2];
+      imageView2 = [(CKEditableSearchResultCell *)self imageView];
+      [imageView2 setContentMode:2];
 
-      v11 = [(CKEditableSearchResultCell *)self imageView];
-      [v11 setClipsToBounds:1];
+      imageView3 = [(CKEditableSearchResultCell *)self imageView];
+      [imageView3 setClipsToBounds:1];
 LABEL_6:
     }
   }
 
   v15 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-  v16 = [v15 queryResultHasLivePhoto:v36];
+  v16 = [v15 queryResultHasLivePhoto:resultCopy];
 
   [(CKPhotoSearchResultCell *)self setIsLivePhoto:v16];
   if (v16)
@@ -501,45 +501,45 @@ LABEL_6:
   else
   {
     v17 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-    v18 = [v17 queryResultIsVideo:v36];
+    v18 = [v17 queryResultIsVideo:resultCopy];
 
     [(CKPhotoSearchResultCell *)self setIsVideo:v18];
     if (v18)
     {
-      [(CKPhotoSearchResultCell *)self _configureDurationLabelForResult:v36];
+      [(CKPhotoSearchResultCell *)self _configureDurationLabelForResult:resultCopy];
     }
   }
 
   v19 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-  v20 = [v19 queryResultIsSpatial:v36];
+  v20 = [v19 queryResultIsSpatial:resultCopy];
 
   [(CKPhotoSearchResultCell *)self setIsSpatial:v20];
   v21 = CKIsRunningInMacCatalyst();
-  if (a5 == 1 || v21)
+  if (mode == 1 || v21)
   {
     v25 = +[CKUIBehavior sharedBehaviors];
     [v25 searchPhotosCellZKWAndDetailsCornerRadius];
     v27 = v26;
 
-    v28 = [(CKEditableSearchResultCell *)self imageView];
-    v29 = [v28 layer];
-    [v29 setCornerRadius:v27];
+    imageView4 = [(CKEditableSearchResultCell *)self imageView];
+    layer = [imageView4 layer];
+    [layer setCornerRadius:v27];
 
-    v30 = [(CKPhotoSearchResultCell *)self livePhotoImage];
-    v31 = [v30 layer];
-    [v31 setCornerRadius:v27];
+    livePhotoImage = [(CKPhotoSearchResultCell *)self livePhotoImage];
+    layer2 = [livePhotoImage layer];
+    [layer2 setCornerRadius:v27];
 
-    v32 = [(CKPhotoSearchResultCell *)self durationGradientImage];
-    v33 = [v32 layer];
-    [v33 setMasksToBounds:1];
+    durationGradientImage = [(CKPhotoSearchResultCell *)self durationGradientImage];
+    layer3 = [durationGradientImage layer];
+    [layer3 setMasksToBounds:1];
 
-    v34 = [(CKPhotoSearchResultCell *)self durationGradientImage];
-    v35 = [v34 layer];
-    [v35 setCornerRadius:v27];
+    durationGradientImage2 = [(CKPhotoSearchResultCell *)self durationGradientImage];
+    layer4 = [durationGradientImage2 layer];
+    [layer4 setCornerRadius:v27];
 
-    v22 = [(CKPhotoSearchResultCell *)self durationLabel];
-    v23 = [v22 layer];
-    [v23 setCornerRadius:v27];
+    durationLabel = [(CKPhotoSearchResultCell *)self durationLabel];
+    layer5 = [durationLabel layer];
+    [layer5 setCornerRadius:v27];
   }
 
   else
@@ -549,40 +549,40 @@ LABEL_6:
       goto LABEL_17;
     }
 
-    v22 = [(CKEditableSearchResultCell *)self imageView];
-    v23 = [v22 layer];
+    durationLabel = [(CKEditableSearchResultCell *)self imageView];
+    layer5 = [durationLabel layer];
     v24 = +[CKUIBehavior sharedBehaviors];
     [v24 searchPhotosCellCornerRadius];
-    [v23 setCornerRadius:?];
+    [layer5 setCornerRadius:?];
   }
 
 LABEL_17:
 }
 
-- (void)_thumbnailGenerated:(id)a3
+- (void)_thumbnailGenerated:(id)generated
 {
-  v12 = [a3 object];
-  v4 = [v12 identifier];
-  v5 = [(CKPhotoSearchResultCell *)self resultIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  object = [generated object];
+  identifier = [object identifier];
+  resultIdentifier = [(CKPhotoSearchResultCell *)self resultIdentifier];
+  v6 = [identifier isEqualToString:resultIdentifier];
 
   if (v6)
   {
     v7 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-    v8 = [v7 cachedPreviewForQueryResult:v12];
+    v8 = [v7 cachedPreviewForQueryResult:object];
 
     if (v8)
     {
-      v9 = [(CKEditableSearchResultCell *)self imageView];
-      [v9 setImage:v8];
+      imageView = [(CKEditableSearchResultCell *)self imageView];
+      [imageView setImage:v8];
 
       if (CKIsRunningInMacCatalyst())
       {
-        v10 = [(CKEditableSearchResultCell *)self imageView];
-        [v10 setContentMode:2];
+        imageView2 = [(CKEditableSearchResultCell *)self imageView];
+        [imageView2 setContentMode:2];
 
-        v11 = [(CKEditableSearchResultCell *)self imageView];
-        [v11 setClipsToBounds:1];
+        imageView3 = [(CKEditableSearchResultCell *)self imageView];
+        [imageView3 setClipsToBounds:1];
       }
 
       [(CKPhotoSearchResultCell *)self setNeedsLayout];
@@ -590,41 +590,41 @@ LABEL_17:
   }
 }
 
-- (void)_livePhotoUpdated:(id)a3
+- (void)_livePhotoUpdated:(id)updated
 {
-  v9 = [a3 object];
-  v4 = [v9 identifier];
-  v5 = [(CKPhotoSearchResultCell *)self resultIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  object = [updated object];
+  identifier = [object identifier];
+  resultIdentifier = [(CKPhotoSearchResultCell *)self resultIdentifier];
+  v6 = [identifier isEqualToString:resultIdentifier];
 
   if (v6)
   {
     v7 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-    v8 = [v7 queryResultHasLivePhoto:v9];
+    v8 = [v7 queryResultHasLivePhoto:object];
 
     [(CKPhotoSearchResultCell *)self setIsLivePhoto:v8];
     [(CKPhotoSearchResultCell *)self setIsVideo:0];
   }
 }
 
-- (void)_videoDurationUpdated:(id)a3
+- (void)_videoDurationUpdated:(id)updated
 {
-  v7 = [a3 object];
-  v4 = [v7 identifier];
-  v5 = [(CKPhotoSearchResultCell *)self resultIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  object = [updated object];
+  identifier = [object identifier];
+  resultIdentifier = [(CKPhotoSearchResultCell *)self resultIdentifier];
+  v6 = [identifier isEqualToString:resultIdentifier];
 
   if (v6)
   {
     [(CKPhotoSearchResultCell *)self setIsVideo:1];
     [(CKPhotoSearchResultCell *)self setIsLivePhoto:0];
-    [(CKPhotoSearchResultCell *)self _configureDurationLabelForResult:v7];
+    [(CKPhotoSearchResultCell *)self _configureDurationLabelForResult:object];
   }
 }
 
-- (void)_configureDurationLabelForResult:(id)a3
+- (void)_configureDurationLabelForResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if (_configureDurationLabelForResult___pred_CMTimeGetSecondsCoreMedia != -1)
   {
     [CKPhotoSearchResultCell _configureDurationLabelForResult:];
@@ -636,7 +636,7 @@ LABEL_17:
   v6 = v5;
   if (v5)
   {
-    [v5 durationForVideoResult:v4];
+    [v5 durationForVideoResult:resultCopy];
   }
 
   else
@@ -650,14 +650,14 @@ LABEL_17:
     v11 = v13;
     v12 = v14;
     v7 = [MEMORY[0x1E69DCCA0] timeStringForSeconds:rint(_configureDurationLabelForResult___CMTimeGetSeconds(&v11)) forceFullWidthComponents:0 isElapsed:1];
-    v8 = [(CKPhotoSearchResultCell *)self durationLabel];
-    [v8 setText:v7];
+    durationLabel = [(CKPhotoSearchResultCell *)self durationLabel];
+    [durationLabel setText:v7];
 
-    v9 = [(CKPhotoSearchResultCell *)self durationLabel];
-    [v9 setHidden:0];
+    durationLabel2 = [(CKPhotoSearchResultCell *)self durationLabel];
+    [durationLabel2 setHidden:0];
 
-    v10 = [(CKPhotoSearchResultCell *)self durationGradientImage];
-    [v10 setHidden:0];
+    durationGradientImage = [(CKPhotoSearchResultCell *)self durationGradientImage];
+    [durationGradientImage setHidden:0];
   }
 
   else
@@ -676,27 +676,27 @@ void *__60__CKPhotoSearchResultCell__configureDurationLabelForResult___block_inv
   return result;
 }
 
-- (void)_spatialStatusUpdated:(id)a3
+- (void)_spatialStatusUpdated:(id)updated
 {
-  v9 = [a3 object];
-  v4 = [v9 identifier];
-  v5 = [(CKPhotoSearchResultCell *)self resultIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  object = [updated object];
+  identifier = [object identifier];
+  resultIdentifier = [(CKPhotoSearchResultCell *)self resultIdentifier];
+  v6 = [identifier isEqualToString:resultIdentifier];
 
   if (v6)
   {
     v7 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-    v8 = [v7 queryResultIsSpatial:v9];
+    v8 = [v7 queryResultIsSpatial:object];
 
     [(CKPhotoSearchResultCell *)self setIsSpatial:v8];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v3.receiver = self;
   v3.super_class = CKPhotoSearchResultCell;
-  [(CKEditableSearchResultCell *)&v3 setSelected:a3];
+  [(CKEditableSearchResultCell *)&v3 setSelected:selected];
 }
 
 - (UIEdgeInsets)marginInsets

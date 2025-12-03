@@ -1,12 +1,12 @@
 @interface SKUIITunesStoreUIPageViewController
-- (BOOL)presentDialogForError:(id)a3 pendUntilVisible:(BOOL)a4;
+- (BOOL)presentDialogForError:(id)error pendUntilVisible:(BOOL)visible;
 - (SKProductPageViewController)productPageViewController;
 - (id)_cancelButtonItem;
-- (void)_addCancelButtonToNavigationItem:(id)a3;
-- (void)_storeSheetCancelButtonAction:(id)a3;
+- (void)_addCancelButtonToNavigationItem:(id)item;
+- (void)_storeSheetCancelButtonAction:(id)action;
 - (void)dealloc;
-- (void)handleFailureWithError:(id)a3;
-- (void)resetNavigationItem:(id)a3;
+- (void)handleFailureWithError:(id)error;
+- (void)resetNavigationItem:(id)item;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -14,9 +14,9 @@
 
 - (void)dealloc
 {
-  v3 = [(SUBarButtonItem *)self->_cancelButtonItem target];
+  target = [(SUBarButtonItem *)self->_cancelButtonItem target];
 
-  if (v3 == self)
+  if (target == self)
   {
     [(SUBarButtonItem *)self->_cancelButtonItem setTarget:0];
   }
@@ -26,9 +26,9 @@
   [(SUStorePageViewController *)&v4 dealloc];
 }
 
-- (void)handleFailureWithError:(id)a3
+- (void)handleFailureWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -45,14 +45,14 @@
   {
     v13.receiver = self;
     v13.super_class = SKUIITunesStoreUIPageViewController;
-    [(SUStorePageViewController *)&v13 handleFailureWithError:v4];
+    [(SUStorePageViewController *)&v13 handleFailureWithError:errorCopy];
   }
 }
 
-- (BOOL)presentDialogForError:(id)a3 pendUntilVisible:(BOOL)a4
+- (BOOL)presentDialogForError:(id)error pendUntilVisible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = a3;
+  visibleCopy = visible;
+  errorCopy = error;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -65,10 +65,10 @@
     }
   }
 
-  v15 = [(SKUIITunesStoreUIPageViewController *)self productPageViewController];
-  v16 = [v15 productPageStyle];
+  productPageViewController = [(SKUIITunesStoreUIPageViewController *)self productPageViewController];
+  productPageStyle = [productPageViewController productPageStyle];
 
-  if (v16 == 1)
+  if (productPageStyle == 1)
   {
     v17 = 0;
   }
@@ -77,15 +77,15 @@
   {
     v19.receiver = self;
     v19.super_class = SKUIITunesStoreUIPageViewController;
-    v17 = [(SUViewController *)&v19 presentDialogForError:v6 pendUntilVisible:v4];
+    v17 = [(SUViewController *)&v19 presentDialogForError:errorCopy pendUntilVisible:visibleCopy];
   }
 
   return v17;
 }
 
-- (void)resetNavigationItem:(id)a3
+- (void)resetNavigationItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -100,10 +100,10 @@
 
   v13.receiver = self;
   v13.super_class = SKUIITunesStoreUIPageViewController;
-  [(SUStorePageViewController *)&v13 resetNavigationItem:v4];
+  [(SUStorePageViewController *)&v13 resetNavigationItem:itemCopy];
   if ([(SKUIITunesStoreUIPageViewController *)self showsCancelButton])
   {
-    [(SKUIITunesStoreUIPageViewController *)self _addCancelButtonToNavigationItem:v4];
+    [(SKUIITunesStoreUIPageViewController *)self _addCancelButtonToNavigationItem:itemCopy];
   }
 }
 
@@ -123,8 +123,8 @@
 
   if ([(SKUIITunesStoreUIPageViewController *)self showsCancelButton])
   {
-    v11 = [(SUStorePageViewController *)self navigationItemForScriptInterface];
-    [(SKUIITunesStoreUIPageViewController *)self _addCancelButtonToNavigationItem:v11];
+    navigationItemForScriptInterface = [(SUStorePageViewController *)self navigationItemForScriptInterface];
+    [(SKUIITunesStoreUIPageViewController *)self _addCancelButtonToNavigationItem:navigationItemForScriptInterface];
   }
 
   v12.receiver = self;
@@ -132,15 +132,15 @@
   [(SKUIITunesStoreUIPageViewController *)&v12 viewWillLayoutSubviews];
 }
 
-- (void)_addCancelButtonToNavigationItem:(id)a3
+- (void)_addCancelButtonToNavigationItem:(id)item
 {
-  v4 = a3;
-  v7 = [(SKUIITunesStoreUIPageViewController *)self _cancelButtonItem];
-  v5 = [(SUViewController *)self clientInterface];
-  v6 = [v5 appearance];
-  [v6 styleBarButtonItem:v7];
+  itemCopy = item;
+  _cancelButtonItem = [(SKUIITunesStoreUIPageViewController *)self _cancelButtonItem];
+  clientInterface = [(SUViewController *)self clientInterface];
+  appearance = [clientInterface appearance];
+  [appearance styleBarButtonItem:_cancelButtonItem];
 
-  [v4 setLeftBarButtonItem:v7 animated:0];
+  [itemCopy setLeftBarButtonItem:_cancelButtonItem animated:0];
 }
 
 - (id)_cancelButtonItem
@@ -173,10 +173,10 @@
   return v8;
 }
 
-- (void)_storeSheetCancelButtonAction:(id)a3
+- (void)_storeSheetCancelButtonAction:(id)action
 {
-  v3 = [(SKUIITunesStoreUIPageViewController *)self productPageViewController];
-  [v3 _sendDidFinishWithResult:0];
+  productPageViewController = [(SKUIITunesStoreUIPageViewController *)self productPageViewController];
+  [productPageViewController _sendDidFinishWithResult:0];
 }
 
 - (SKProductPageViewController)productPageViewController

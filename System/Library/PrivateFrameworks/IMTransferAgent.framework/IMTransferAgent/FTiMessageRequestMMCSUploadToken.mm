@@ -1,10 +1,10 @@
 @interface FTiMessageRequestMMCSUploadToken
 - (FTiMessageRequestMMCSUploadToken)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 - (void)dealloc;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation FTiMessageRequestMMCSUploadToken
@@ -48,11 +48,11 @@
   [(FTiMessageRequestMMCSUploadToken *)&v16 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v66.receiver = self;
   v66.super_class = FTiMessageRequestMMCSUploadToken;
-  v4 = [(IDSMessage *)&v66 copyWithZone:a3];
+  v4 = [(IDSMessage *)&v66 copyWithZone:zone];
   v7 = objc_msgSend_responseAuthToken(self, v5, v6);
   objc_msgSend_setResponseAuthToken_(v4, v8, v7);
 
@@ -112,8 +112,8 @@
 {
   v41.receiver = self;
   v41.super_class = FTiMessageRequestMMCSUploadToken;
-  v3 = [(IDSMessage *)&v41 messageBody];
-  v6 = objc_msgSend_mutableCopy(v3, v4, v5);
+  messageBody = [(IDSMessage *)&v41 messageBody];
+  v6 = objc_msgSend_mutableCopy(messageBody, v4, v5);
 
   v9 = objc_msgSend_signature(self, v7, v8);
   if (v9)
@@ -190,35 +190,35 @@
   return v6;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v22 = a3;
-  v6 = objc_msgSend_objectForKey_(v22, v4, @"mA");
+  dictionaryCopy = dictionary;
+  v6 = objc_msgSend_objectForKey_(dictionaryCopy, v4, @"mA");
   if (v6)
   {
     objc_msgSend_setResponseAuthToken_(self, v5, v6);
   }
 
-  v8 = objc_msgSend_objectForKey_(v22, v5, @"mR");
+  v8 = objc_msgSend_objectForKey_(dictionaryCopy, v5, @"mR");
   if (v8)
   {
     objc_msgSend_setResponseRequestURL_(self, v7, v8);
   }
 
-  v10 = objc_msgSend_objectForKey_(v22, v7, @"mU");
+  v10 = objc_msgSend_objectForKey_(dictionaryCopy, v7, @"mU");
   if (v10)
   {
     objc_msgSend_setResponseRequestorID_(self, v9, v10);
   }
 
-  v11 = objc_msgSend_objectForKey_(v22, v9, @"cV");
+  v11 = objc_msgSend_objectForKey_(dictionaryCopy, v9, @"cV");
   v14 = objc_msgSend_intValue(v11, v12, v13);
   objc_msgSend_setResponseContentVersion_(self, v15, v14);
 
-  v17 = objc_msgSend_objectForKey_(v22, v16, @"cH");
+  v17 = objc_msgSend_objectForKey_(dictionaryCopy, v16, @"cH");
   objc_msgSend_setResponseContentHeaders_(self, v18, v17);
 
-  v20 = objc_msgSend_objectForKey_(v22, v19, @"cB");
+  v20 = objc_msgSend_objectForKey_(dictionaryCopy, v19, @"cB");
   objc_msgSend_setResponseContentBody_(self, v21, v20);
 }
 

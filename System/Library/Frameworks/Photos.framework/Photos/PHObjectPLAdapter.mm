@@ -1,31 +1,31 @@
 @interface PHObjectPLAdapter
-- (PHObjectPLAdapter)initWithPLManagedObject:(id)a3 photoLibrary:(id)a4;
+- (PHObjectPLAdapter)initWithPLManagedObject:(id)object photoLibrary:(id)library;
 - (id)mutableAccessingCopy;
-- (id)objectForKey:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (id)objectForKey:(id)key;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation PHObjectPLAdapter
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  if (a3)
+  if (object)
   {
-    [(PHObjectPLAdapter *)self setObject:a3 forKey:a4];
+    [(PHObjectPLAdapter *)self setObject:object forKey:subscript];
   }
 
   else
   {
-    [(PHObjectPLAdapter *)self removeObjectForKey:a4];
+    [(PHObjectPLAdapter *)self removeObjectForKey:subscript];
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   modifiedKeyValues = self->_modifiedKeyValues;
   if (!modifiedKeyValues)
   {
@@ -36,43 +36,43 @@
     modifiedKeyValues = self->_modifiedKeyValues;
   }
 
-  [(NSMutableDictionary *)modifiedKeyValues setObject:v10 forKey:v6];
-  [(NSMutableOrderedSet *)self->_ignoredKeys removeObject:v6];
+  [(NSMutableDictionary *)modifiedKeyValues setObject:objectCopy forKey:keyCopy];
+  [(NSMutableOrderedSet *)self->_ignoredKeys removeObject:keyCopy];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   ignoredKeys = self->_ignoredKeys;
-  v8 = v4;
+  v8 = keyCopy;
   if (!ignoredKeys)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v7 = self->_ignoredKeys;
     self->_ignoredKeys = v6;
 
-    v4 = v8;
+    keyCopy = v8;
     ignoredKeys = self->_ignoredKeys;
   }
 
-  [(NSMutableOrderedSet *)ignoredKeys addObject:v4];
+  [(NSMutableOrderedSet *)ignoredKeys addObject:keyCopy];
   [(NSMutableDictionary *)self->_modifiedKeyValues removeObjectForKey:v8];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  if (([(NSMutableOrderedSet *)self->_ignoredKeys containsObject:v4]& 1) != 0)
+  keyCopy = key;
+  if (([(NSMutableOrderedSet *)self->_ignoredKeys containsObject:keyCopy]& 1) != 0)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableDictionary *)self->_modifiedKeyValues objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_modifiedKeyValues objectForKey:keyCopy];
     if (!v5)
     {
-      v5 = [(PLManagedObject *)self->_backingManagedObject valueForKeyPath:v4];
+      v5 = [(PLManagedObject *)self->_backingManagedObject valueForKeyPath:keyCopy];
     }
   }
 
@@ -93,37 +93,37 @@
   return v3;
 }
 
-- (PHObjectPLAdapter)initWithPLManagedObject:(id)a3 photoLibrary:(id)a4
+- (PHObjectPLAdapter)initWithPLManagedObject:(id)object photoLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  libraryCopy = library;
   v22.receiver = self;
   v22.super_class = PHObjectPLAdapter;
   v10 = [(PHObjectPLAdapter *)&v22 init];
   if (v10)
   {
-    v11 = [v8 photoLibrary];
-    if (v11)
+    photoLibrary = [objectCopy photoLibrary];
+    if (photoLibrary)
     {
-      v12 = v11;
-      [v8 photoLibrary];
+      v12 = photoLibrary;
+      [objectCopy photoLibrary];
       v13 = v21 = a2;
-      v14 = [v13 pathManager];
-      v15 = [v14 libraryURL];
-      [v9 photoLibraryURL];
-      v17 = v16 = v9;
-      v20 = [v15 isEqual:v17];
+      pathManager = [v13 pathManager];
+      libraryURL = [pathManager libraryURL];
+      [libraryCopy photoLibraryURL];
+      v17 = v16 = libraryCopy;
+      v20 = [libraryURL isEqual:v17];
 
-      v9 = v16;
+      libraryCopy = v16;
       if ((v20 & 1) == 0)
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v18 handleFailureInMethod:v21 object:v10 file:@"PHObjectPLAdapter.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"managedObject.photoLibrary == nil || [managedObject.photoLibrary.pathManager.libraryURL isEqual:photoLibrary.photoLibraryURL]"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:v21 object:v10 file:@"PHObjectPLAdapter.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"managedObject.photoLibrary == nil || [managedObject.photoLibrary.pathManager.libraryURL isEqual:photoLibrary.photoLibraryURL]"}];
       }
     }
 
-    objc_storeStrong(&v10->_backingManagedObject, a3);
-    objc_storeStrong(&v10->_photoLibrary, a4);
+    objc_storeStrong(&v10->_backingManagedObject, object);
+    objc_storeStrong(&v10->_photoLibrary, library);
   }
 
   return v10;

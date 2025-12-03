@@ -1,6 +1,6 @@
 @interface FCIssueListRecordSource
 - (id)nonLocalizableKeys;
-- (id)recordFromCKRecord:(id)a3 base:(id)a4;
+- (id)recordFromCKRecord:(id)record base:(id)base;
 @end
 
 @implementation FCIssueListRecordSource
@@ -26,15 +26,15 @@ uint64_t __45__FCIssueListRecordSource_nonLocalizableKeys__block_invoke_2()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)recordFromCKRecord:(id)a3 base:(id)a4
+- (id)recordFromCKRecord:(id)record base:(id)base
 {
   v5 = MEMORY[0x1E69B6E50];
-  v6 = a4;
-  v7 = a3;
+  baseCopy = base;
+  recordCopy = record;
   v8 = objc_alloc_init(v5);
-  [v8 setBase:v6];
+  [v8 setBase:baseCopy];
 
-  v9 = [v7 objectForKeyedSubscript:@"issueIDs"];
+  v9 = [recordCopy objectForKeyedSubscript:@"issueIDs"];
 
   v10 = [v9 mutableCopy];
   [v8 setIssueIDs:v10];

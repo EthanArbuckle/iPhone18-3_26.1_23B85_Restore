@@ -1,14 +1,14 @@
 @interface PLFrequentLocation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSimilarToFrequentLocation:(id)a3;
-- (BOOL)isWithinDistance:(double)a3 toCoordinate:(CLLocationCoordinate2D)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSimilarToFrequentLocation:(id)location;
+- (BOOL)isWithinDistance:(double)distance toCoordinate:(CLLocationCoordinate2D)coordinate;
 - (CLLocationCoordinate2D)coordinate;
 - (NSDateInterval)dateInterval;
 - (NSSet)momentsSet;
 - (NSString)description;
-- (PLFrequentLocation)initWithSortedMoments:(id)a3;
+- (PLFrequentLocation)initWithSortedMoments:(id)moments;
 - (PLMomentProcessingProtocol)centroid;
-- (void)addMomentToSortedMoments:(id)a3;
+- (void)addMomentToSortedMoments:(id)moments;
 @end
 
 @implementation PLFrequentLocation
@@ -169,41 +169,41 @@ void __47__PLFrequentLocation__invalidateLazyProperties__block_invoke(uint64_t a
   *(v6 + 40) = 0;
 }
 
-- (void)addMomentToSortedMoments:(id)a3
+- (void)addMomentToSortedMoments:(id)moments
 {
-  v30 = a3;
-  v4 = [(PLFrequentLocation *)self sortedMoments];
-  v5 = [v4 count];
+  momentsCopy = moments;
+  sortedMoments = [(PLFrequentLocation *)self sortedMoments];
+  v5 = [sortedMoments count];
 
   if (v5)
   {
     [(PLFrequentLocation *)self coordinate];
     v7 = v6;
     v9 = v8;
-    [v30 pl_coordinate];
+    [momentsCopy pl_coordinate];
     PLCentroidForCoordinates(v7, v9, v5, v10, v11, 1.0);
   }
 
   else
   {
-    [v30 pl_coordinate];
+    [momentsCopy pl_coordinate];
   }
 
   [(PLFrequentLocation *)self setCoordinate:?];
-  v12 = [(PLFrequentLocation *)self sortedMoments];
-  v13 = [v12 count];
+  sortedMoments2 = [(PLFrequentLocation *)self sortedMoments];
+  v13 = [sortedMoments2 count];
 
   v14 = 0;
   if (v13)
   {
     while (1)
     {
-      v15 = [(PLFrequentLocation *)self sortedMoments];
-      v16 = [v15 objectAtIndexedSubscript:v14];
+      sortedMoments3 = [(PLFrequentLocation *)self sortedMoments];
+      v16 = [sortedMoments3 objectAtIndexedSubscript:v14];
 
-      v17 = [v30 pl_startDate];
-      v18 = [v16 pl_startDate];
-      v19 = [v17 compare:v18];
+      pl_startDate = [momentsCopy pl_startDate];
+      pl_startDate2 = [v16 pl_startDate];
+      v19 = [pl_startDate compare:pl_startDate2];
 
       if (v19 == -1)
       {
@@ -228,19 +228,19 @@ void __47__PLFrequentLocation__invalidateLazyProperties__block_invoke(uint64_t a
       goto LABEL_15;
     }
 
-    v22 = [(PLFrequentLocation *)self sortedMoments];
-    v23 = [v22 objectAtIndexedSubscript:v20 - 1];
+    sortedMoments4 = [(PLFrequentLocation *)self sortedMoments];
+    v23 = [sortedMoments4 objectAtIndexedSubscript:v20 - 1];
 
-    v24 = [v30 pl_startDate];
-    v25 = [v23 pl_startDate];
-    v26 = [v24 compare:v25];
+    pl_startDate3 = [momentsCopy pl_startDate];
+    pl_startDate4 = [v23 pl_startDate];
+    v26 = [pl_startDate3 compare:pl_startDate4];
 
     if (v26)
     {
       break;
     }
 
-    v27 = [v30 hash];
+    v27 = [momentsCopy hash];
     v28 = [v23 hash];
 
     --v20;
@@ -252,39 +252,39 @@ void __47__PLFrequentLocation__invalidateLazyProperties__block_invoke(uint64_t a
   }
 
 LABEL_15:
-  v29 = [(PLFrequentLocation *)self sortedMoments];
-  [v29 insertObject:v30 atIndex:v20];
+  sortedMoments5 = [(PLFrequentLocation *)self sortedMoments];
+  [sortedMoments5 insertObject:momentsCopy atIndex:v20];
 
   [(PLFrequentLocation *)self _invalidateLazyProperties];
 }
 
-- (BOOL)isWithinDistance:(double)a3 toCoordinate:(CLLocationCoordinate2D)a4
+- (BOOL)isWithinDistance:(double)distance toCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  v5 = CLLocationCoordinate2DIsValid(a4);
+  v5 = CLLocationCoordinate2DIsValid(coordinate);
   if (v5)
   {
     CLLocationCoordinate2DGetDistanceFrom();
-    LOBYTE(v5) = v6 <= a3;
+    LOBYTE(v5) = v6 <= distance;
   }
 
   return v5;
 }
 
-- (BOOL)isSimilarToFrequentLocation:(id)a3
+- (BOOL)isSimilarToFrequentLocation:(id)location
 {
-  v4 = a3;
-  [v4 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
   if ([(PLFrequentLocation *)self isWithinDistance:50.0 toCoordinate:v5, v6])
   {
-    v7 = [(PLFrequentLocation *)self dateInterval];
-    v8 = [v4 dateInterval];
-    v9 = [v7 intersectionWithDateInterval:v8];
+    dateInterval = [(PLFrequentLocation *)self dateInterval];
+    dateInterval2 = [locationCopy dateInterval];
+    v9 = [dateInterval intersectionWithDateInterval:dateInterval2];
     [v9 duration];
     v11 = v10;
 
-    [v7 duration];
+    [dateInterval duration];
     v13 = v12;
-    [v8 duration];
+    [dateInterval2 duration];
     if (v13 >= v14)
     {
       v14 = v13;
@@ -301,10 +301,10 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -314,11 +314,11 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PLFrequentLocation *)self sortedMoments];
-      v7 = [(PLFrequentLocation *)v5 sortedMoments];
+      v5 = equalCopy;
+      sortedMoments = [(PLFrequentLocation *)self sortedMoments];
+      sortedMoments2 = [(PLFrequentLocation *)v5 sortedMoments];
 
-      v8 = [v6 isEqualToArray:v7];
+      v8 = [sortedMoments isEqualToArray:sortedMoments2];
     }
 
     else
@@ -336,43 +336,43 @@ LABEL_15:
   v11.receiver = self;
   v11.super_class = PLFrequentLocation;
   v4 = [(PLFrequentLocation *)&v11 description];
-  v5 = [(PLFrequentLocation *)self dateInterval];
-  v6 = [v5 startDate];
-  v7 = [(PLFrequentLocation *)self dateInterval];
-  v8 = [v7 endDate];
-  v9 = [v3 stringWithFormat:@"%@ [%@ - %@] <%f, %f> %lu moments", v4, v6, v8, *&self->_coordinate.latitude, *&self->_coordinate.longitude, -[NSMutableArray count](self->_sortedMoments, "count")];
+  dateInterval = [(PLFrequentLocation *)self dateInterval];
+  startDate = [dateInterval startDate];
+  dateInterval2 = [(PLFrequentLocation *)self dateInterval];
+  endDate = [dateInterval2 endDate];
+  v9 = [v3 stringWithFormat:@"%@ [%@ - %@] <%f, %f> %lu moments", v4, startDate, endDate, *&self->_coordinate.latitude, *&self->_coordinate.longitude, -[NSMutableArray count](self->_sortedMoments, "count")];
 
   return v9;
 }
 
-- (PLFrequentLocation)initWithSortedMoments:(id)a3
+- (PLFrequentLocation)initWithSortedMoments:(id)moments
 {
-  v4 = a3;
+  momentsCopy = moments;
   v13.receiver = self;
   v13.super_class = PLFrequentLocation;
   v5 = [(PLFrequentLocation *)&v13 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [momentsCopy mutableCopy];
     sortedMoments = v5->_sortedMoments;
     v5->_sortedMoments = v6;
 
-    if ([v4 count] == 1)
+    if ([momentsCopy count] == 1)
     {
-      v8 = [v4 firstObject];
-      [v8 pl_coordinate];
+      firstObject = [momentsCopy firstObject];
+      [firstObject pl_coordinate];
       v5->_coordinate.latitude = v9;
       v5->_coordinate.longitude = v10;
     }
 
-    else if ([v4 count] < 2)
+    else if ([momentsCopy count] < 2)
     {
       v5->_coordinate = *MEMORY[0x1E6985CC0];
     }
 
     else
     {
-      v5->_coordinate.latitude = PLCentroidForMoments(v4);
+      v5->_coordinate.latitude = PLCentroidForMoments(momentsCopy);
       v5->_coordinate.longitude = v11;
     }
 

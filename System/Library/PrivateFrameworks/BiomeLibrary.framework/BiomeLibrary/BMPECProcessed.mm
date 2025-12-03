@@ -1,22 +1,22 @@
 @interface BMPECProcessed
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMPECProcessed)initWithArtAssetProcessedCount:(id)a3 natureAssetProcessedCount:(id)a4 animalsAssetProcessedCount:(id)a5 birdsAssetProcessedCount:(id)a6 insectsAssetProcessedCount:(id)a7 reptilesAssetProcessedCount:(id)a8 mammalsAssetProcessedCount:(id)a9 landmarkAssetProcessedCount:(id)a10 naturalLandmarkProcessedAssetCount:(id)a11 mediaAssetProcessedCount:(id)a12 bookAssetProcessedCount:(id)a13 albumAssetProcessedCount:(id)a14 catsAssetProcessedCount:(id)a15 dogsAssetProcessedCount:(id)a16 apparelAssetProcessedCount:(id)a17 foodAssetProcessedCount:(id)a18 storefrontAssetProcessedCount:(id)a19 signSymbolAssetProcessedCount:(id)a20 laundryCareSymbolAssetProcessedCount:(id)a21 autoSymbolAssetProcessedCount:(id)a22 brandLogoSymbolAssetProcessedCount:(id)a23 object2DAssetProcessedCount:(id)a24 barcodeDetectionAssetProcessedCount:(id)a25 sculptureAssetProcessedCount:(id)a26 skylineAssetProcessedCount:(id)a27 artAssetSuccessesCount:(id)a28 natureAssetSuccessesCount:(id)a29 animalsAssetSuccessesCount:(id)a30 birdsAssetSuccessesCount:(id)a31 insectsAssetSuccessesCount:(id)a32 reptilesAssetSuccessesCount:(id)a33 mammalsAssetSuccessesCount:(id)a34 landmarkAssetSuccessesCount:(id)a35 naturalLandmarkSuccessesAssetCount:(id)a36 mediaAssetSuccessesCount:(id)a37 bookAssetSuccessesCount:(id)a38 albumAssetSuccessesCount:(id)a39 catsAssetSuccessesCount:(id)a40 dogsAssetSuccessesCount:(id)a41 apparelAssetSuccessesCount:(id)a42 foodAssetSuccessesCount:(id)a43 storefrontAssetSuccessesCount:(id)a44 signSymbolAssetSuccessesCount:(id)a45 laundryCareSymbolAssetSuccessesCount:(id)a46 autoSymbolAssetSuccessesCount:(id)a47 brandLogoSymbolAssetSuccessesCount:(id)a48 object2DAssetSuccessesCount:(id)a49 barcodeDetectionAssetSuccessesCount:(id)a50 sculptureAssetSuccessesCount:(id)a51 skylineAssetSuccessesCount:(id)a52;
-- (BMPECProcessed)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMPECProcessed)initWithArtAssetProcessedCount:(id)count natureAssetProcessedCount:(id)processedCount animalsAssetProcessedCount:(id)assetProcessedCount birdsAssetProcessedCount:(id)birdsAssetProcessedCount insectsAssetProcessedCount:(id)insectsAssetProcessedCount reptilesAssetProcessedCount:(id)reptilesAssetProcessedCount mammalsAssetProcessedCount:(id)mammalsAssetProcessedCount landmarkAssetProcessedCount:(id)self0 naturalLandmarkProcessedAssetCount:(id)self1 mediaAssetProcessedCount:(id)self2 bookAssetProcessedCount:(id)self3 albumAssetProcessedCount:(id)self4 catsAssetProcessedCount:(id)self5 dogsAssetProcessedCount:(id)self6 apparelAssetProcessedCount:(id)self7 foodAssetProcessedCount:(id)self8 storefrontAssetProcessedCount:(id)self9 signSymbolAssetProcessedCount:(id)symbolAssetProcessedCount laundryCareSymbolAssetProcessedCount:(id)careSymbolAssetProcessedCount autoSymbolAssetProcessedCount:(id)autoSymbolAssetProcessedCount brandLogoSymbolAssetProcessedCount:(id)logoSymbolAssetProcessedCount object2DAssetProcessedCount:(id)dAssetProcessedCount barcodeDetectionAssetProcessedCount:(id)detectionAssetProcessedCount sculptureAssetProcessedCount:(id)sculptureAssetProcessedCount skylineAssetProcessedCount:(id)skylineAssetProcessedCount artAssetSuccessesCount:(id)successesCount natureAssetSuccessesCount:(id)assetSuccessesCount animalsAssetSuccessesCount:(id)count0 birdsAssetSuccessesCount:(id)count1 insectsAssetSuccessesCount:(id)count2 reptilesAssetSuccessesCount:(id)count3 mammalsAssetSuccessesCount:(id)count4 landmarkAssetSuccessesCount:(id)count5 naturalLandmarkSuccessesAssetCount:(id)count6 mediaAssetSuccessesCount:(id)count7 bookAssetSuccessesCount:(id)count8 albumAssetSuccessesCount:(id)count9 catsAssetSuccessesCount:(id)processedCount0 dogsAssetSuccessesCount:(id)processedCount1 apparelAssetSuccessesCount:(id)processedCount2 foodAssetSuccessesCount:(id)processedCount3 storefrontAssetSuccessesCount:(id)processedCount4 signSymbolAssetSuccessesCount:(id)processedCount5 laundryCareSymbolAssetSuccessesCount:(id)processedCount6 autoSymbolAssetSuccessesCount:(id)processedCount7 brandLogoSymbolAssetSuccessesCount:(id)processedCount8 object2DAssetSuccessesCount:(id)processedCount9 barcodeDetectionAssetSuccessesCount:(id)assetProcessedCount0 sculptureAssetSuccessesCount:(id)assetProcessedCount1 skylineAssetSuccessesCount:(id)assetProcessedCount2;
+- (BMPECProcessed)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPECProcessed
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -24,7 +24,7 @@
     goto LABEL_255;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if (-[BMPECProcessed hasArtAssetProcessedCount](self, "hasArtAssetProcessedCount") || [v5 hasArtAssetProcessedCount])
   {
     if (![(BMPECProcessed *)self hasArtAssetProcessedCount])
@@ -37,8 +37,8 @@
       goto LABEL_252;
     }
 
-    v6 = [(BMPECProcessed *)self artAssetProcessedCount];
-    if (v6 != [v5 artAssetProcessedCount])
+    artAssetProcessedCount = [(BMPECProcessed *)self artAssetProcessedCount];
+    if (artAssetProcessedCount != [v5 artAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -56,8 +56,8 @@
       goto LABEL_252;
     }
 
-    v7 = [(BMPECProcessed *)self natureAssetProcessedCount];
-    if (v7 != [v5 natureAssetProcessedCount])
+    natureAssetProcessedCount = [(BMPECProcessed *)self natureAssetProcessedCount];
+    if (natureAssetProcessedCount != [v5 natureAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -75,8 +75,8 @@
       goto LABEL_252;
     }
 
-    v8 = [(BMPECProcessed *)self animalsAssetProcessedCount];
-    if (v8 != [v5 animalsAssetProcessedCount])
+    animalsAssetProcessedCount = [(BMPECProcessed *)self animalsAssetProcessedCount];
+    if (animalsAssetProcessedCount != [v5 animalsAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -94,8 +94,8 @@
       goto LABEL_252;
     }
 
-    v9 = [(BMPECProcessed *)self birdsAssetProcessedCount];
-    if (v9 != [v5 birdsAssetProcessedCount])
+    birdsAssetProcessedCount = [(BMPECProcessed *)self birdsAssetProcessedCount];
+    if (birdsAssetProcessedCount != [v5 birdsAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -113,8 +113,8 @@
       goto LABEL_252;
     }
 
-    v10 = [(BMPECProcessed *)self insectsAssetProcessedCount];
-    if (v10 != [v5 insectsAssetProcessedCount])
+    insectsAssetProcessedCount = [(BMPECProcessed *)self insectsAssetProcessedCount];
+    if (insectsAssetProcessedCount != [v5 insectsAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -132,8 +132,8 @@
       goto LABEL_252;
     }
 
-    v11 = [(BMPECProcessed *)self reptilesAssetProcessedCount];
-    if (v11 != [v5 reptilesAssetProcessedCount])
+    reptilesAssetProcessedCount = [(BMPECProcessed *)self reptilesAssetProcessedCount];
+    if (reptilesAssetProcessedCount != [v5 reptilesAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -151,8 +151,8 @@
       goto LABEL_252;
     }
 
-    v12 = [(BMPECProcessed *)self mammalsAssetProcessedCount];
-    if (v12 != [v5 mammalsAssetProcessedCount])
+    mammalsAssetProcessedCount = [(BMPECProcessed *)self mammalsAssetProcessedCount];
+    if (mammalsAssetProcessedCount != [v5 mammalsAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -170,8 +170,8 @@
       goto LABEL_252;
     }
 
-    v13 = [(BMPECProcessed *)self landmarkAssetProcessedCount];
-    if (v13 != [v5 landmarkAssetProcessedCount])
+    landmarkAssetProcessedCount = [(BMPECProcessed *)self landmarkAssetProcessedCount];
+    if (landmarkAssetProcessedCount != [v5 landmarkAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -189,8 +189,8 @@
       goto LABEL_252;
     }
 
-    v14 = [(BMPECProcessed *)self naturalLandmarkProcessedAssetCount];
-    if (v14 != [v5 naturalLandmarkProcessedAssetCount])
+    naturalLandmarkProcessedAssetCount = [(BMPECProcessed *)self naturalLandmarkProcessedAssetCount];
+    if (naturalLandmarkProcessedAssetCount != [v5 naturalLandmarkProcessedAssetCount])
     {
       goto LABEL_252;
     }
@@ -208,8 +208,8 @@
       goto LABEL_252;
     }
 
-    v15 = [(BMPECProcessed *)self mediaAssetProcessedCount];
-    if (v15 != [v5 mediaAssetProcessedCount])
+    mediaAssetProcessedCount = [(BMPECProcessed *)self mediaAssetProcessedCount];
+    if (mediaAssetProcessedCount != [v5 mediaAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -227,8 +227,8 @@
       goto LABEL_252;
     }
 
-    v16 = [(BMPECProcessed *)self bookAssetProcessedCount];
-    if (v16 != [v5 bookAssetProcessedCount])
+    bookAssetProcessedCount = [(BMPECProcessed *)self bookAssetProcessedCount];
+    if (bookAssetProcessedCount != [v5 bookAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -246,8 +246,8 @@
       goto LABEL_252;
     }
 
-    v17 = [(BMPECProcessed *)self albumAssetProcessedCount];
-    if (v17 != [v5 albumAssetProcessedCount])
+    albumAssetProcessedCount = [(BMPECProcessed *)self albumAssetProcessedCount];
+    if (albumAssetProcessedCount != [v5 albumAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -265,8 +265,8 @@
       goto LABEL_252;
     }
 
-    v18 = [(BMPECProcessed *)self catsAssetProcessedCount];
-    if (v18 != [v5 catsAssetProcessedCount])
+    catsAssetProcessedCount = [(BMPECProcessed *)self catsAssetProcessedCount];
+    if (catsAssetProcessedCount != [v5 catsAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -284,8 +284,8 @@
       goto LABEL_252;
     }
 
-    v19 = [(BMPECProcessed *)self dogsAssetProcessedCount];
-    if (v19 != [v5 dogsAssetProcessedCount])
+    dogsAssetProcessedCount = [(BMPECProcessed *)self dogsAssetProcessedCount];
+    if (dogsAssetProcessedCount != [v5 dogsAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -303,8 +303,8 @@
       goto LABEL_252;
     }
 
-    v20 = [(BMPECProcessed *)self apparelAssetProcessedCount];
-    if (v20 != [v5 apparelAssetProcessedCount])
+    apparelAssetProcessedCount = [(BMPECProcessed *)self apparelAssetProcessedCount];
+    if (apparelAssetProcessedCount != [v5 apparelAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -322,8 +322,8 @@
       goto LABEL_252;
     }
 
-    v21 = [(BMPECProcessed *)self foodAssetProcessedCount];
-    if (v21 != [v5 foodAssetProcessedCount])
+    foodAssetProcessedCount = [(BMPECProcessed *)self foodAssetProcessedCount];
+    if (foodAssetProcessedCount != [v5 foodAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -341,8 +341,8 @@
       goto LABEL_252;
     }
 
-    v22 = [(BMPECProcessed *)self storefrontAssetProcessedCount];
-    if (v22 != [v5 storefrontAssetProcessedCount])
+    storefrontAssetProcessedCount = [(BMPECProcessed *)self storefrontAssetProcessedCount];
+    if (storefrontAssetProcessedCount != [v5 storefrontAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -360,8 +360,8 @@
       goto LABEL_252;
     }
 
-    v23 = [(BMPECProcessed *)self signSymbolAssetProcessedCount];
-    if (v23 != [v5 signSymbolAssetProcessedCount])
+    signSymbolAssetProcessedCount = [(BMPECProcessed *)self signSymbolAssetProcessedCount];
+    if (signSymbolAssetProcessedCount != [v5 signSymbolAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -379,8 +379,8 @@
       goto LABEL_252;
     }
 
-    v24 = [(BMPECProcessed *)self laundryCareSymbolAssetProcessedCount];
-    if (v24 != [v5 laundryCareSymbolAssetProcessedCount])
+    laundryCareSymbolAssetProcessedCount = [(BMPECProcessed *)self laundryCareSymbolAssetProcessedCount];
+    if (laundryCareSymbolAssetProcessedCount != [v5 laundryCareSymbolAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -398,8 +398,8 @@
       goto LABEL_252;
     }
 
-    v25 = [(BMPECProcessed *)self autoSymbolAssetProcessedCount];
-    if (v25 != [v5 autoSymbolAssetProcessedCount])
+    autoSymbolAssetProcessedCount = [(BMPECProcessed *)self autoSymbolAssetProcessedCount];
+    if (autoSymbolAssetProcessedCount != [v5 autoSymbolAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -417,8 +417,8 @@
       goto LABEL_252;
     }
 
-    v26 = [(BMPECProcessed *)self brandLogoSymbolAssetProcessedCount];
-    if (v26 != [v5 brandLogoSymbolAssetProcessedCount])
+    brandLogoSymbolAssetProcessedCount = [(BMPECProcessed *)self brandLogoSymbolAssetProcessedCount];
+    if (brandLogoSymbolAssetProcessedCount != [v5 brandLogoSymbolAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -436,8 +436,8 @@
       goto LABEL_252;
     }
 
-    v27 = [(BMPECProcessed *)self object2DAssetProcessedCount];
-    if (v27 != [v5 object2DAssetProcessedCount])
+    object2DAssetProcessedCount = [(BMPECProcessed *)self object2DAssetProcessedCount];
+    if (object2DAssetProcessedCount != [v5 object2DAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -455,8 +455,8 @@
       goto LABEL_252;
     }
 
-    v28 = [(BMPECProcessed *)self barcodeDetectionAssetProcessedCount];
-    if (v28 != [v5 barcodeDetectionAssetProcessedCount])
+    barcodeDetectionAssetProcessedCount = [(BMPECProcessed *)self barcodeDetectionAssetProcessedCount];
+    if (barcodeDetectionAssetProcessedCount != [v5 barcodeDetectionAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -474,8 +474,8 @@
       goto LABEL_252;
     }
 
-    v29 = [(BMPECProcessed *)self sculptureAssetProcessedCount];
-    if (v29 != [v5 sculptureAssetProcessedCount])
+    sculptureAssetProcessedCount = [(BMPECProcessed *)self sculptureAssetProcessedCount];
+    if (sculptureAssetProcessedCount != [v5 sculptureAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -493,8 +493,8 @@
       goto LABEL_252;
     }
 
-    v30 = [(BMPECProcessed *)self skylineAssetProcessedCount];
-    if (v30 != [v5 skylineAssetProcessedCount])
+    skylineAssetProcessedCount = [(BMPECProcessed *)self skylineAssetProcessedCount];
+    if (skylineAssetProcessedCount != [v5 skylineAssetProcessedCount])
     {
       goto LABEL_252;
     }
@@ -512,8 +512,8 @@
       goto LABEL_252;
     }
 
-    v31 = [(BMPECProcessed *)self artAssetSuccessesCount];
-    if (v31 != [v5 artAssetSuccessesCount])
+    artAssetSuccessesCount = [(BMPECProcessed *)self artAssetSuccessesCount];
+    if (artAssetSuccessesCount != [v5 artAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -531,8 +531,8 @@
       goto LABEL_252;
     }
 
-    v32 = [(BMPECProcessed *)self natureAssetSuccessesCount];
-    if (v32 != [v5 natureAssetSuccessesCount])
+    natureAssetSuccessesCount = [(BMPECProcessed *)self natureAssetSuccessesCount];
+    if (natureAssetSuccessesCount != [v5 natureAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -550,8 +550,8 @@
       goto LABEL_252;
     }
 
-    v33 = [(BMPECProcessed *)self animalsAssetSuccessesCount];
-    if (v33 != [v5 animalsAssetSuccessesCount])
+    animalsAssetSuccessesCount = [(BMPECProcessed *)self animalsAssetSuccessesCount];
+    if (animalsAssetSuccessesCount != [v5 animalsAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -569,8 +569,8 @@
       goto LABEL_252;
     }
 
-    v34 = [(BMPECProcessed *)self birdsAssetSuccessesCount];
-    if (v34 != [v5 birdsAssetSuccessesCount])
+    birdsAssetSuccessesCount = [(BMPECProcessed *)self birdsAssetSuccessesCount];
+    if (birdsAssetSuccessesCount != [v5 birdsAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -588,8 +588,8 @@
       goto LABEL_252;
     }
 
-    v35 = [(BMPECProcessed *)self insectsAssetSuccessesCount];
-    if (v35 != [v5 insectsAssetSuccessesCount])
+    insectsAssetSuccessesCount = [(BMPECProcessed *)self insectsAssetSuccessesCount];
+    if (insectsAssetSuccessesCount != [v5 insectsAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -607,8 +607,8 @@
       goto LABEL_252;
     }
 
-    v36 = [(BMPECProcessed *)self reptilesAssetSuccessesCount];
-    if (v36 != [v5 reptilesAssetSuccessesCount])
+    reptilesAssetSuccessesCount = [(BMPECProcessed *)self reptilesAssetSuccessesCount];
+    if (reptilesAssetSuccessesCount != [v5 reptilesAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -626,8 +626,8 @@
       goto LABEL_252;
     }
 
-    v37 = [(BMPECProcessed *)self mammalsAssetSuccessesCount];
-    if (v37 != [v5 mammalsAssetSuccessesCount])
+    mammalsAssetSuccessesCount = [(BMPECProcessed *)self mammalsAssetSuccessesCount];
+    if (mammalsAssetSuccessesCount != [v5 mammalsAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -645,8 +645,8 @@
       goto LABEL_252;
     }
 
-    v38 = [(BMPECProcessed *)self landmarkAssetSuccessesCount];
-    if (v38 != [v5 landmarkAssetSuccessesCount])
+    landmarkAssetSuccessesCount = [(BMPECProcessed *)self landmarkAssetSuccessesCount];
+    if (landmarkAssetSuccessesCount != [v5 landmarkAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -664,8 +664,8 @@
       goto LABEL_252;
     }
 
-    v39 = [(BMPECProcessed *)self naturalLandmarkSuccessesAssetCount];
-    if (v39 != [v5 naturalLandmarkSuccessesAssetCount])
+    naturalLandmarkSuccessesAssetCount = [(BMPECProcessed *)self naturalLandmarkSuccessesAssetCount];
+    if (naturalLandmarkSuccessesAssetCount != [v5 naturalLandmarkSuccessesAssetCount])
     {
       goto LABEL_252;
     }
@@ -683,8 +683,8 @@
       goto LABEL_252;
     }
 
-    v40 = [(BMPECProcessed *)self mediaAssetSuccessesCount];
-    if (v40 != [v5 mediaAssetSuccessesCount])
+    mediaAssetSuccessesCount = [(BMPECProcessed *)self mediaAssetSuccessesCount];
+    if (mediaAssetSuccessesCount != [v5 mediaAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -702,8 +702,8 @@
       goto LABEL_252;
     }
 
-    v41 = [(BMPECProcessed *)self bookAssetSuccessesCount];
-    if (v41 != [v5 bookAssetSuccessesCount])
+    bookAssetSuccessesCount = [(BMPECProcessed *)self bookAssetSuccessesCount];
+    if (bookAssetSuccessesCount != [v5 bookAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -721,8 +721,8 @@
       goto LABEL_252;
     }
 
-    v42 = [(BMPECProcessed *)self albumAssetSuccessesCount];
-    if (v42 != [v5 albumAssetSuccessesCount])
+    albumAssetSuccessesCount = [(BMPECProcessed *)self albumAssetSuccessesCount];
+    if (albumAssetSuccessesCount != [v5 albumAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -740,8 +740,8 @@
       goto LABEL_252;
     }
 
-    v43 = [(BMPECProcessed *)self catsAssetSuccessesCount];
-    if (v43 != [v5 catsAssetSuccessesCount])
+    catsAssetSuccessesCount = [(BMPECProcessed *)self catsAssetSuccessesCount];
+    if (catsAssetSuccessesCount != [v5 catsAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -759,8 +759,8 @@
       goto LABEL_252;
     }
 
-    v44 = [(BMPECProcessed *)self dogsAssetSuccessesCount];
-    if (v44 != [v5 dogsAssetSuccessesCount])
+    dogsAssetSuccessesCount = [(BMPECProcessed *)self dogsAssetSuccessesCount];
+    if (dogsAssetSuccessesCount != [v5 dogsAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -778,8 +778,8 @@
       goto LABEL_252;
     }
 
-    v45 = [(BMPECProcessed *)self apparelAssetSuccessesCount];
-    if (v45 != [v5 apparelAssetSuccessesCount])
+    apparelAssetSuccessesCount = [(BMPECProcessed *)self apparelAssetSuccessesCount];
+    if (apparelAssetSuccessesCount != [v5 apparelAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -797,8 +797,8 @@
       goto LABEL_252;
     }
 
-    v46 = [(BMPECProcessed *)self foodAssetSuccessesCount];
-    if (v46 != [v5 foodAssetSuccessesCount])
+    foodAssetSuccessesCount = [(BMPECProcessed *)self foodAssetSuccessesCount];
+    if (foodAssetSuccessesCount != [v5 foodAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -816,8 +816,8 @@
       goto LABEL_252;
     }
 
-    v47 = [(BMPECProcessed *)self storefrontAssetSuccessesCount];
-    if (v47 != [v5 storefrontAssetSuccessesCount])
+    storefrontAssetSuccessesCount = [(BMPECProcessed *)self storefrontAssetSuccessesCount];
+    if (storefrontAssetSuccessesCount != [v5 storefrontAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -835,8 +835,8 @@
       goto LABEL_252;
     }
 
-    v48 = [(BMPECProcessed *)self signSymbolAssetSuccessesCount];
-    if (v48 != [v5 signSymbolAssetSuccessesCount])
+    signSymbolAssetSuccessesCount = [(BMPECProcessed *)self signSymbolAssetSuccessesCount];
+    if (signSymbolAssetSuccessesCount != [v5 signSymbolAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -854,8 +854,8 @@
       goto LABEL_252;
     }
 
-    v49 = [(BMPECProcessed *)self laundryCareSymbolAssetSuccessesCount];
-    if (v49 != [v5 laundryCareSymbolAssetSuccessesCount])
+    laundryCareSymbolAssetSuccessesCount = [(BMPECProcessed *)self laundryCareSymbolAssetSuccessesCount];
+    if (laundryCareSymbolAssetSuccessesCount != [v5 laundryCareSymbolAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -873,8 +873,8 @@
       goto LABEL_252;
     }
 
-    v50 = [(BMPECProcessed *)self autoSymbolAssetSuccessesCount];
-    if (v50 != [v5 autoSymbolAssetSuccessesCount])
+    autoSymbolAssetSuccessesCount = [(BMPECProcessed *)self autoSymbolAssetSuccessesCount];
+    if (autoSymbolAssetSuccessesCount != [v5 autoSymbolAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -892,8 +892,8 @@
       goto LABEL_252;
     }
 
-    v51 = [(BMPECProcessed *)self brandLogoSymbolAssetSuccessesCount];
-    if (v51 != [v5 brandLogoSymbolAssetSuccessesCount])
+    brandLogoSymbolAssetSuccessesCount = [(BMPECProcessed *)self brandLogoSymbolAssetSuccessesCount];
+    if (brandLogoSymbolAssetSuccessesCount != [v5 brandLogoSymbolAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -911,8 +911,8 @@
       goto LABEL_252;
     }
 
-    v52 = [(BMPECProcessed *)self object2DAssetSuccessesCount];
-    if (v52 != [v5 object2DAssetSuccessesCount])
+    object2DAssetSuccessesCount = [(BMPECProcessed *)self object2DAssetSuccessesCount];
+    if (object2DAssetSuccessesCount != [v5 object2DAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -930,8 +930,8 @@
       goto LABEL_252;
     }
 
-    v53 = [(BMPECProcessed *)self barcodeDetectionAssetSuccessesCount];
-    if (v53 != [v5 barcodeDetectionAssetSuccessesCount])
+    barcodeDetectionAssetSuccessesCount = [(BMPECProcessed *)self barcodeDetectionAssetSuccessesCount];
+    if (barcodeDetectionAssetSuccessesCount != [v5 barcodeDetectionAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -949,8 +949,8 @@
       goto LABEL_252;
     }
 
-    v54 = [(BMPECProcessed *)self sculptureAssetSuccessesCount];
-    if (v54 != [v5 sculptureAssetSuccessesCount])
+    sculptureAssetSuccessesCount = [(BMPECProcessed *)self sculptureAssetSuccessesCount];
+    if (sculptureAssetSuccessesCount != [v5 sculptureAssetSuccessesCount])
     {
       goto LABEL_252;
     }
@@ -964,8 +964,8 @@
 
   if (-[BMPECProcessed hasSkylineAssetSuccessesCount](self, "hasSkylineAssetSuccessesCount") && [v5 hasSkylineAssetSuccessesCount])
   {
-    v55 = [(BMPECProcessed *)self skylineAssetSuccessesCount];
-    v56 = v55 == [v5 skylineAssetSuccessesCount];
+    skylineAssetSuccessesCount = [(BMPECProcessed *)self skylineAssetSuccessesCount];
+    v56 = skylineAssetSuccessesCount == [v5 skylineAssetSuccessesCount];
   }
 
   else
@@ -1484,455 +1484,455 @@ LABEL_255:
   }
 
   v157[0] = @"artAssetProcessedCount";
-  v11 = v3;
+  null = v3;
   if (!v3)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v106 = v11;
-  v158[0] = v11;
+  v106 = null;
+  v158[0] = null;
   v157[1] = @"natureAssetProcessedCount";
-  v12 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v105 = v12;
-  v158[1] = v12;
+  v105 = null2;
+  v158[1] = null2;
   v157[2] = @"animalsAssetProcessedCount";
-  v13 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v104 = v13;
-  v158[2] = v13;
+  v104 = null3;
+  v158[2] = null3;
   v157[3] = @"birdsAssetProcessedCount";
-  v14 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v103 = v14;
-  v158[3] = v14;
+  v103 = null4;
+  v158[3] = null4;
   v157[4] = @"insectsAssetProcessedCount";
-  v15 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v102 = v15;
-  v158[4] = v15;
+  v102 = null5;
+  v158[4] = null5;
   v157[5] = @"reptilesAssetProcessedCount";
-  v16 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v101 = v16;
-  v158[5] = v16;
+  v101 = null6;
+  v158[5] = null6;
   v157[6] = @"mammalsAssetProcessedCount";
-  v17 = v9;
+  null7 = v9;
   if (!v9)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v100 = v17;
-  v158[6] = v17;
+  v100 = null7;
+  v158[6] = null7;
   v157[7] = @"landmarkAssetProcessedCount";
-  v18 = v156;
+  null8 = v156;
   if (!v156)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v158[7] = v18;
+  v158[7] = null8;
   v157[8] = @"naturalLandmarkProcessedAssetCount";
-  v19 = v155;
+  null9 = v155;
   if (!v155)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v158[8] = v19;
+  v158[8] = null9;
   v157[9] = @"mediaAssetProcessedCount";
-  v20 = v154;
+  null10 = v154;
   if (!v154)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v111 = v20;
-  v158[9] = v20;
+  v111 = null10;
+  v158[9] = null10;
   v157[10] = @"bookAssetProcessedCount";
-  v21 = v153;
+  null11 = v153;
   if (!v153)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
   v108 = v7;
-  v110 = v21;
-  v158[10] = v21;
+  v110 = null11;
+  v158[10] = null11;
   v157[11] = @"albumAssetProcessedCount";
-  v22 = v152;
+  null12 = v152;
   if (!v152)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
   v23 = v6;
-  v97 = v22;
-  v158[11] = v22;
+  v97 = null12;
+  v158[11] = null12;
   v157[12] = @"catsAssetProcessedCount";
-  v24 = v151;
+  null13 = v151;
   if (!v151)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v24;
-  v158[12] = v24;
+  v25 = null13;
+  v158[12] = null13;
   v157[13] = @"dogsAssetProcessedCount";
-  v26 = v150;
+  null14 = v150;
   if (!v150)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v96 = v26;
-  v158[13] = v26;
+  v96 = null14;
+  v158[13] = null14;
   v157[14] = @"apparelAssetProcessedCount";
-  v27 = v149;
+  null15 = v149;
   if (!v149)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v95 = v27;
-  v158[14] = v27;
+  v95 = null15;
+  v158[14] = null15;
   v157[15] = @"foodAssetProcessedCount";
-  v28 = v148;
+  null16 = v148;
   if (!v148)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v94 = v28;
-  v158[15] = v28;
+  v94 = null16;
+  v158[15] = null16;
   v157[16] = @"storefrontAssetProcessedCount";
-  v29 = v147;
+  null17 = v147;
   if (!v147)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null17 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v93 = v29;
-  v158[16] = v29;
+  v93 = null17;
+  v158[16] = null17;
   v157[17] = @"signSymbolAssetProcessedCount";
-  v30 = v146;
+  null18 = v146;
   if (!v146)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v92 = v30;
-  v158[17] = v30;
+  v92 = null18;
+  v158[17] = null18;
   v157[18] = @"laundryCareSymbolAssetProcessedCount";
-  v31 = v145;
+  null19 = v145;
   if (!v145)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null19 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v91 = v31;
-  v158[18] = v31;
+  v91 = null19;
+  v158[18] = null19;
   v157[19] = @"autoSymbolAssetProcessedCount";
-  v32 = v144;
+  null20 = v144;
   if (!v144)
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null20 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v90 = v32;
-  v158[19] = v32;
+  v90 = null20;
+  v158[19] = null20;
   v157[20] = @"brandLogoSymbolAssetProcessedCount";
-  v33 = v143;
+  null21 = v143;
   if (!v143)
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null21 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v89 = v33;
-  v158[20] = v33;
+  v89 = null21;
+  v158[20] = null21;
   v157[21] = @"object2DAssetProcessedCount";
-  v34 = v142;
+  null22 = v142;
   if (!v142)
   {
-    v34 = [MEMORY[0x1E695DFB0] null];
+    null22 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v88 = v34;
-  v158[21] = v34;
+  v88 = null22;
+  v158[21] = null22;
   v157[22] = @"barcodeDetectionAssetProcessedCount";
-  v35 = v141;
+  null23 = v141;
   if (!v141)
   {
-    v35 = [MEMORY[0x1E695DFB0] null];
+    null23 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v87 = v35;
-  v158[22] = v35;
+  v87 = null23;
+  v158[22] = null23;
   v157[23] = @"sculptureAssetProcessedCount";
-  v36 = v140;
+  null24 = v140;
   if (!v140)
   {
-    v36 = [MEMORY[0x1E695DFB0] null];
+    null24 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v86 = v36;
-  v158[23] = v36;
+  v86 = null24;
+  v158[23] = null24;
   v157[24] = @"skylineAssetProcessedCount";
-  v37 = v139;
+  null25 = v139;
   if (!v139)
   {
-    v37 = [MEMORY[0x1E695DFB0] null];
+    null25 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v85 = v37;
-  v158[24] = v37;
+  v85 = null25;
+  v158[24] = null25;
   v157[25] = @"artAssetSuccessesCount";
-  v38 = v138;
+  null26 = v138;
   if (!v138)
   {
-    v38 = [MEMORY[0x1E695DFB0] null];
+    null26 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v84 = v38;
-  v158[25] = v38;
+  v84 = null26;
+  v158[25] = null26;
   v157[26] = @"natureAssetSuccessesCount";
-  v39 = v137;
+  null27 = v137;
   if (!v137)
   {
-    v39 = [MEMORY[0x1E695DFB0] null];
+    null27 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v83 = v39;
-  v158[26] = v39;
+  v83 = null27;
+  v158[26] = null27;
   v157[27] = @"animalsAssetSuccessesCount";
-  v40 = v136;
+  null28 = v136;
   if (!v136)
   {
-    v40 = [MEMORY[0x1E695DFB0] null];
+    null28 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v82 = v40;
-  v158[27] = v40;
+  v82 = null28;
+  v158[27] = null28;
   v157[28] = @"birdsAssetSuccessesCount";
-  v41 = v135;
+  null29 = v135;
   if (!v135)
   {
-    v41 = [MEMORY[0x1E695DFB0] null];
+    null29 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v81 = v41;
-  v158[28] = v41;
+  v81 = null29;
+  v158[28] = null29;
   v157[29] = @"insectsAssetSuccessesCount";
-  v42 = v134;
+  null30 = v134;
   if (!v134)
   {
-    v42 = [MEMORY[0x1E695DFB0] null];
+    null30 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v80 = v42;
-  v158[29] = v42;
+  v80 = null30;
+  v158[29] = null30;
   v157[30] = @"reptilesAssetSuccessesCount";
-  v43 = v133;
+  null31 = v133;
   if (!v133)
   {
-    v43 = [MEMORY[0x1E695DFB0] null];
+    null31 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v79 = v43;
-  v158[30] = v43;
+  v79 = null31;
+  v158[30] = null31;
   v157[31] = @"mammalsAssetSuccessesCount";
-  v44 = v132;
+  null32 = v132;
   if (!v132)
   {
-    v44 = [MEMORY[0x1E695DFB0] null];
+    null32 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v78 = v44;
-  v158[31] = v44;
+  v78 = null32;
+  v158[31] = null32;
   v157[32] = @"landmarkAssetSuccessesCount";
-  v45 = v131;
+  null33 = v131;
   if (!v131)
   {
-    v45 = [MEMORY[0x1E695DFB0] null];
+    null33 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v77 = v45;
-  v158[32] = v45;
+  v77 = null33;
+  v158[32] = null33;
   v157[33] = @"naturalLandmarkSuccessesAssetCount";
-  v46 = v130;
+  null34 = v130;
   if (!v130)
   {
-    v46 = [MEMORY[0x1E695DFB0] null];
+    null34 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v76 = v46;
-  v158[33] = v46;
+  v76 = null34;
+  v158[33] = null34;
   v157[34] = @"mediaAssetSuccessesCount";
-  v47 = v129;
+  null35 = v129;
   if (!v129)
   {
-    v47 = [MEMORY[0x1E695DFB0] null];
+    null35 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v75 = v47;
-  v158[34] = v47;
+  v75 = null35;
+  v158[34] = null35;
   v157[35] = @"bookAssetSuccessesCount";
-  v48 = v128;
+  null36 = v128;
   if (!v128)
   {
-    v48 = [MEMORY[0x1E695DFB0] null];
+    null36 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v74 = v48;
-  v158[35] = v48;
+  v74 = null36;
+  v158[35] = null36;
   v157[36] = @"albumAssetSuccessesCount";
-  v49 = v127;
+  null37 = v127;
   if (!v127)
   {
-    v49 = [MEMORY[0x1E695DFB0] null];
+    null37 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v73 = v49;
-  v158[36] = v49;
+  v73 = null37;
+  v158[36] = null37;
   v157[37] = @"catsAssetSuccessesCount";
-  v50 = v126;
+  null38 = v126;
   if (!v126)
   {
-    v50 = [MEMORY[0x1E695DFB0] null];
+    null38 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v72 = v50;
-  v158[37] = v50;
+  v72 = null38;
+  v158[37] = null38;
   v157[38] = @"dogsAssetSuccessesCount";
-  v51 = v125;
+  null39 = v125;
   if (!v125)
   {
-    v51 = [MEMORY[0x1E695DFB0] null];
+    null39 = [MEMORY[0x1E695DFB0] null];
   }
 
   v113 = v3;
-  v71 = v51;
-  v158[38] = v51;
+  v71 = null39;
+  v158[38] = null39;
   v157[39] = @"apparelAssetSuccessesCount";
-  v52 = v124;
+  null40 = v124;
   if (!v124)
   {
-    v52 = [MEMORY[0x1E695DFB0] null];
+    null40 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v70 = v52;
-  v158[39] = v52;
+  v70 = null40;
+  v158[39] = null40;
   v157[40] = @"foodAssetSuccessesCount";
-  v53 = v123;
+  null41 = v123;
   if (!v123)
   {
-    v53 = [MEMORY[0x1E695DFB0] null];
+    null41 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v69 = v53;
-  v158[40] = v53;
+  v69 = null41;
+  v158[40] = null41;
   v157[41] = @"storefrontAssetSuccessesCount";
-  v54 = v122;
+  null42 = v122;
   if (!v122)
   {
-    v54 = [MEMORY[0x1E695DFB0] null];
+    null42 = [MEMORY[0x1E695DFB0] null];
   }
 
   v112 = v9;
-  v68 = v54;
-  v158[41] = v54;
+  v68 = null42;
+  v158[41] = null42;
   v157[42] = @"signSymbolAssetSuccessesCount";
-  v55 = v121;
+  null43 = v121;
   if (!v121)
   {
-    v55 = [MEMORY[0x1E695DFB0] null];
+    null43 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v98 = v19;
-  v67 = v55;
-  v158[42] = v55;
+  v98 = null9;
+  v67 = null43;
+  v158[42] = null43;
   v157[43] = @"laundryCareSymbolAssetSuccessesCount";
-  v56 = v120;
+  null44 = v120;
   if (!v120)
   {
-    v56 = [MEMORY[0x1E695DFB0] null];
+    null44 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v99 = v18;
-  v66 = v56;
-  v158[43] = v56;
+  v99 = null8;
+  v66 = null44;
+  v158[43] = null44;
   v157[44] = @"autoSymbolAssetSuccessesCount";
-  v57 = v119;
+  null45 = v119;
   if (!v119)
   {
-    v57 = [MEMORY[0x1E695DFB0] null];
+    null45 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v158[44] = v57;
+  v158[44] = null45;
   v157[45] = @"brandLogoSymbolAssetSuccessesCount";
-  v58 = v118;
+  null46 = v118;
   if (!v118)
   {
-    v58 = [MEMORY[0x1E695DFB0] null];
+    null46 = [MEMORY[0x1E695DFB0] null];
   }
 
   v114 = v10;
   v109 = v8;
-  v158[45] = v58;
+  v158[45] = null46;
   v157[46] = @"object2DAssetSuccessesCount";
-  v59 = v117;
+  null47 = v117;
   if (!v117)
   {
-    v59 = [MEMORY[0x1E695DFB0] null];
+    null47 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v158[46] = v59;
+  v158[46] = null47;
   v157[47] = @"barcodeDetectionAssetSuccessesCount";
-  v60 = v116;
+  null48 = v116;
   if (!v116)
   {
-    v60 = [MEMORY[0x1E695DFB0] null];
+    null48 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v158[47] = v60;
+  v158[47] = null48;
   v157[48] = @"sculptureAssetSuccessesCount";
-  v61 = v115;
+  null49 = v115;
   if (!v115)
   {
-    v61 = [MEMORY[0x1E695DFB0] null];
+    null49 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v158[48] = v61;
+  v158[48] = null49;
   v157[49] = @"skylineAssetSuccessesCount";
-  v62 = v114;
+  null50 = v114;
   if (!v114)
   {
-    v62 = [MEMORY[0x1E695DFB0] null];
+    null50 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v158[49] = v62;
+  v158[49] = null50;
   v107 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v158 forKeys:v157 count:50];
   if (!v114)
   {
@@ -2276,11 +2276,11 @@ LABEL_343:
   return v107;
 }
 
-- (BMPECProcessed)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMPECProcessed)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v649[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"artAssetProcessedCount"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"artAssetProcessedCount"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -2292,7 +2292,7 @@ LABEL_343:
   {
     v8 = v7;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"natureAssetProcessedCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"natureAssetProcessedCount"];
     v548 = v9;
     v549 = v8;
     if (!v9 || (v10 = v9, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -2306,8 +2306,8 @@ LABEL_4:
     {
       v11 = v10;
 LABEL_7:
-      v12 = [v6 objectForKeyedSubscript:@"animalsAssetProcessedCount"];
-      v547 = a4;
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"animalsAssetProcessedCount"];
+      errorCopy = error;
       if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v544 = v11;
@@ -2321,7 +2321,7 @@ LABEL_7:
         v544 = v11;
         v13 = v12;
 LABEL_10:
-        v14 = [v6 objectForKeyedSubscript:@"birdsAssetProcessedCount"];
+        v14 = [dictionaryCopy objectForKeyedSubscript:@"birdsAssetProcessedCount"];
         v539 = v13;
         if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
@@ -2336,7 +2336,7 @@ LABEL_10:
           v538 = v14;
           v545 = v14;
 LABEL_13:
-          v15 = [v6 objectForKeyedSubscript:@"insectsAssetProcessedCount"];
+          v15 = [dictionaryCopy objectForKeyedSubscript:@"insectsAssetProcessedCount"];
           v542 = v15;
           if (!v15 || (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
@@ -2349,8 +2349,8 @@ LABEL_13:
           {
             v540 = v16;
 LABEL_16:
-            v17 = [v6 objectForKeyedSubscript:@"reptilesAssetProcessedCount"];
-            v535 = self;
+            v17 = [dictionaryCopy objectForKeyedSubscript:@"reptilesAssetProcessedCount"];
+            selfCopy = self;
             v536 = v17;
             if (!v17 || (v18 = v17, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
@@ -2363,7 +2363,7 @@ LABEL_16:
             {
               v532 = v18;
 LABEL_19:
-              v19 = [v6 objectForKeyedSubscript:@"mammalsAssetProcessedCount"];
+              v19 = [dictionaryCopy objectForKeyedSubscript:@"mammalsAssetProcessedCount"];
               v534 = v19;
               if (!v19 || (v20 = v19, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
@@ -2376,20 +2376,20 @@ LABEL_19:
               {
                 v533 = v20;
 LABEL_22:
-                v21 = [v6 objectForKeyedSubscript:@"landmarkAssetProcessedCount"];
+                v21 = [dictionaryCopy objectForKeyedSubscript:@"landmarkAssetProcessedCount"];
                 v531 = v21;
                 if (!v21 || (v22 = v21, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
-                  v23 = 0;
+                  errorCopy2 = 0;
                   goto LABEL_25;
                 }
 
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v23 = v22;
+                  errorCopy2 = v22;
 LABEL_25:
-                  v24 = [v6 objectForKeyedSubscript:@"naturalLandmarkProcessedAssetCount"];
+                  v24 = [dictionaryCopy objectForKeyedSubscript:@"naturalLandmarkProcessedAssetCount"];
                   v530 = v24;
                   if (!v24 || (v25 = v24, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                   {
@@ -2402,7 +2402,7 @@ LABEL_25:
                   {
                     v26 = v25;
 LABEL_28:
-                    v27 = [v6 objectForKeyedSubscript:@"mediaAssetProcessedCount"];
+                    v27 = [dictionaryCopy objectForKeyedSubscript:@"mediaAssetProcessedCount"];
                     v525 = v27;
                     if (!v27 || (v28 = v27, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
@@ -2415,13 +2415,13 @@ LABEL_28:
                     {
                       v29 = v28;
 LABEL_31:
-                      v30 = [v6 objectForKeyedSubscript:@"bookAssetProcessedCount"];
+                      v30 = [dictionaryCopy objectForKeyedSubscript:@"bookAssetProcessedCount"];
                       v522 = v30;
                       if (!v30 || (v31 = v30, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                       {
                         v32 = 0;
 LABEL_34:
-                        v33 = [v6 objectForKeyedSubscript:@"albumAssetProcessedCount"];
+                        v33 = [dictionaryCopy objectForKeyedSubscript:@"albumAssetProcessedCount"];
                         v519 = v26;
                         v518 = v29;
                         v520 = v33;
@@ -2442,7 +2442,7 @@ LABEL_34:
                         {
                           v33 = v33;
 LABEL_77:
-                          v63 = [v6 objectForKeyedSubscript:@"catsAssetProcessedCount"];
+                          v63 = [dictionaryCopy objectForKeyedSubscript:@"catsAssetProcessedCount"];
                           v514 = v33;
                           if (!v63 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                           {
@@ -2455,7 +2455,7 @@ LABEL_77:
                           {
                             v64 = v63;
 LABEL_80:
-                            v65 = [v6 objectForKeyedSubscript:@"dogsAssetProcessedCount"];
+                            v65 = [dictionaryCopy objectForKeyedSubscript:@"dogsAssetProcessedCount"];
                             v516 = v32;
                             if (!v65 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                             {
@@ -2468,7 +2468,7 @@ LABEL_80:
                             {
                               v512 = v65;
 LABEL_83:
-                              v66 = [v6 objectForKeyedSubscript:@"apparelAssetProcessedCount"];
+                              v66 = [dictionaryCopy objectForKeyedSubscript:@"apparelAssetProcessedCount"];
                               v502 = v66;
                               if (!v66 || (v67 = v66, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                               {
@@ -2484,20 +2484,20 @@ LABEL_83:
                                 v68 = v64;
                                 v509 = v107;
 LABEL_86:
-                                v69 = [v6 objectForKeyedSubscript:@"foodAssetProcessedCount"];
+                                v69 = [dictionaryCopy objectForKeyedSubscript:@"foodAssetProcessedCount"];
                                 v505 = v69;
                                 if (!v69 || (v70 = v69, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                 {
                                   v503 = 0;
 LABEL_89:
-                                  v71 = [v6 objectForKeyedSubscript:@"storefrontAssetProcessedCount"];
+                                  v71 = [dictionaryCopy objectForKeyedSubscript:@"storefrontAssetProcessedCount"];
                                   v500 = v71;
                                   if (v71 && (v72 = v71, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                   {
                                     objc_opt_class();
                                     if ((objc_opt_isKindOfClass() & 1) == 0)
                                     {
-                                      if (!v547)
+                                      if (!errorCopy)
                                       {
                                         v498 = 0;
                                         v40 = 0;
@@ -2519,7 +2519,7 @@ LABEL_459:
                                       v136 = [v499 initWithDomain:v135 code:2 userInfo:?];
                                       v498 = 0;
                                       v40 = 0;
-                                      *v547 = v136;
+                                      *errorCopy = v136;
                                       goto LABEL_274;
                                     }
 
@@ -2531,7 +2531,7 @@ LABEL_459:
                                     v498 = 0;
                                   }
 
-                                  v73 = [v6 objectForKeyedSubscript:@"signSymbolAssetProcessedCount"];
+                                  v73 = [dictionaryCopy objectForKeyedSubscript:@"signSymbolAssetProcessedCount"];
                                   v493 = v63;
                                   v496 = v73;
                                   if (!v73 || (v74 = v73, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -2545,7 +2545,7 @@ LABEL_459:
                                   {
                                     v75 = v74;
 LABEL_95:
-                                    v76 = [v6 objectForKeyedSubscript:@"laundryCareSymbolAssetProcessedCount"];
+                                    v76 = [dictionaryCopy objectForKeyedSubscript:@"laundryCareSymbolAssetProcessedCount"];
                                     v494 = v76;
                                     if (!v76 || (v77 = v76, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                     {
@@ -2558,7 +2558,7 @@ LABEL_95:
                                     {
                                       v491 = v77;
 LABEL_98:
-                                      v78 = [v6 objectForKeyedSubscript:@"autoSymbolAssetProcessedCount"];
+                                      v78 = [dictionaryCopy objectForKeyedSubscript:@"autoSymbolAssetProcessedCount"];
                                       v489 = v78;
                                       if (!v78 || (v79 = v78, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                       {
@@ -2571,7 +2571,7 @@ LABEL_98:
                                       {
                                         v487 = v79;
 LABEL_101:
-                                        v80 = [v6 objectForKeyedSubscript:@"brandLogoSymbolAssetProcessedCount"];
+                                        v80 = [dictionaryCopy objectForKeyedSubscript:@"brandLogoSymbolAssetProcessedCount"];
                                         v81 = v68;
                                         v483 = v80;
                                         if (!v80 || (v82 = v80, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -2585,7 +2585,7 @@ LABEL_101:
                                         {
                                           v485 = v82;
 LABEL_104:
-                                          v83 = [v6 objectForKeyedSubscript:@"object2DAssetProcessedCount"];
+                                          v83 = [dictionaryCopy objectForKeyedSubscript:@"object2DAssetProcessedCount"];
                                           v481 = v83;
                                           if (!v83 || (v84 = v83, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                           {
@@ -2598,7 +2598,7 @@ LABEL_104:
                                           {
                                             v472 = v84;
 LABEL_107:
-                                            v85 = [v6 objectForKeyedSubscript:@"barcodeDetectionAssetProcessedCount"];
+                                            v85 = [dictionaryCopy objectForKeyedSubscript:@"barcodeDetectionAssetProcessedCount"];
                                             v474 = v65;
                                             v477 = v85;
                                             if (!v85 || (v86 = v85, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -2607,14 +2607,14 @@ LABEL_107:
                                               v88 = v75;
                                               v475 = 0;
 LABEL_110:
-                                              v89 = [v6 objectForKeyedSubscript:@"sculptureAssetProcessedCount"];
+                                              v89 = [dictionaryCopy objectForKeyedSubscript:@"sculptureAssetProcessedCount"];
                                               v470 = v89;
                                               if (v89 && (v90 = v89, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                               {
                                                 objc_opt_class();
                                                 if ((objc_opt_isKindOfClass() & 1) == 0)
                                                 {
-                                                  if (!v547)
+                                                  if (!errorCopy)
                                                   {
                                                     v468 = 0;
                                                     v40 = 0;
@@ -2644,7 +2644,7 @@ LABEL_451:
                                                   v213 = [v469 initWithDomain:v212 code:2 userInfo:?];
                                                   v468 = 0;
                                                   v40 = 0;
-                                                  *v547 = v213;
+                                                  *errorCopy = v213;
                                                   v47 = v538;
                                                   goto LABEL_450;
                                                 }
@@ -2657,13 +2657,13 @@ LABEL_451:
                                                 v468 = 0;
                                               }
 
-                                              v91 = [v6 objectForKeyedSubscript:@"skylineAssetProcessedCount"];
+                                              v91 = [dictionaryCopy objectForKeyedSubscript:@"skylineAssetProcessedCount"];
                                               v466 = v91;
                                               if (!v91 || (v92 = v91, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                               {
                                                 v464 = 0;
 LABEL_116:
-                                                v93 = [v6 objectForKeyedSubscript:@"artAssetSuccessesCount"];
+                                                v93 = [dictionaryCopy objectForKeyedSubscript:@"artAssetSuccessesCount"];
                                                 v75 = v88;
                                                 v462 = v93;
                                                 if (!v93)
@@ -2690,7 +2690,7 @@ LABEL_186:
                                                 {
                                                   v460 = v94;
 LABEL_187:
-                                                  v150 = [v6 objectForKeyedSubscript:@"natureAssetSuccessesCount"];
+                                                  v150 = [dictionaryCopy objectForKeyedSubscript:@"natureAssetSuccessesCount"];
                                                   v458 = v150;
                                                   if (!v150 || (v151 = v150, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                   {
@@ -2703,20 +2703,20 @@ LABEL_187:
                                                   {
                                                     v456 = v151;
 LABEL_190:
-                                                    v152 = [v6 objectForKeyedSubscript:@"animalsAssetSuccessesCount"];
+                                                    v152 = [dictionaryCopy objectForKeyedSubscript:@"animalsAssetSuccessesCount"];
                                                     v454 = v152;
                                                     if (!v152 || (v153 = v152, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                     {
                                                       v448 = 0;
 LABEL_193:
-                                                      v154 = [v6 objectForKeyedSubscript:@"birdsAssetSuccessesCount"];
+                                                      v154 = [dictionaryCopy objectForKeyedSubscript:@"birdsAssetSuccessesCount"];
                                                       v452 = v154;
                                                       if (v154 && (v155 = v154, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                       {
                                                         objc_opt_class();
                                                         if ((objc_opt_isKindOfClass() & 1) == 0)
                                                         {
-                                                          if (!v547)
+                                                          if (!errorCopy)
                                                           {
                                                             v450 = 0;
                                                             v40 = 0;
@@ -2742,7 +2742,7 @@ LABEL_445:
                                                           v243 = [v451 initWithDomain:v242 code:2 userInfo:?];
                                                           v450 = 0;
                                                           v40 = 0;
-                                                          *v547 = v243;
+                                                          *errorCopy = v243;
                                                           goto LABEL_342;
                                                         }
 
@@ -2754,20 +2754,20 @@ LABEL_445:
                                                         v450 = 0;
                                                       }
 
-                                                      v156 = [v6 objectForKeyedSubscript:@"insectsAssetSuccessesCount"];
+                                                      v156 = [dictionaryCopy objectForKeyedSubscript:@"insectsAssetSuccessesCount"];
                                                       v446 = v156;
                                                       if (!v156 || (v157 = v156, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                       {
                                                         v440 = 0;
 LABEL_199:
-                                                        v158 = [v6 objectForKeyedSubscript:@"reptilesAssetSuccessesCount"];
+                                                        v158 = [dictionaryCopy objectForKeyedSubscript:@"reptilesAssetSuccessesCount"];
                                                         v444 = v158;
                                                         if (v158 && (v159 = v158, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                         {
                                                           objc_opt_class();
                                                           if ((objc_opt_isKindOfClass() & 1) == 0)
                                                           {
-                                                            if (!v547)
+                                                            if (!errorCopy)
                                                             {
                                                               v442 = 0;
                                                               v40 = 0;
@@ -2791,7 +2791,7 @@ LABEL_442:
                                                             v253 = [v443 initWithDomain:v437 code:2 userInfo:v252];
                                                             v442 = 0;
                                                             v40 = 0;
-                                                            *v547 = v253;
+                                                            *errorCopy = v253;
                                                             v47 = v538;
                                                             goto LABEL_441;
                                                           }
@@ -2804,7 +2804,7 @@ LABEL_442:
                                                           v442 = 0;
                                                         }
 
-                                                        v160 = [v6 objectForKeyedSubscript:@"mammalsAssetSuccessesCount"];
+                                                        v160 = [dictionaryCopy objectForKeyedSubscript:@"mammalsAssetSuccessesCount"];
                                                         v436 = v160;
                                                         if (!v160 || (v161 = v160, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                         {
@@ -2817,7 +2817,7 @@ LABEL_442:
                                                         {
                                                           v438 = v161;
 LABEL_205:
-                                                          v162 = [v6 objectForKeyedSubscript:@"landmarkAssetSuccessesCount"];
+                                                          v162 = [dictionaryCopy objectForKeyedSubscript:@"landmarkAssetSuccessesCount"];
                                                           v434 = v162;
                                                           if (!v162 || (v163 = v162, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                           {
@@ -2830,20 +2830,20 @@ LABEL_205:
                                                           {
                                                             v432 = v163;
 LABEL_208:
-                                                            v164 = [v6 objectForKeyedSubscript:@"naturalLandmarkSuccessesAssetCount"];
+                                                            v164 = [dictionaryCopy objectForKeyedSubscript:@"naturalLandmarkSuccessesAssetCount"];
                                                             v428 = v164;
                                                             if (!v164 || (v165 = v164, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                             {
                                                               v430 = 0;
 LABEL_211:
-                                                              v166 = [v6 objectForKeyedSubscript:@"mediaAssetSuccessesCount"];
+                                                              v166 = [dictionaryCopy objectForKeyedSubscript:@"mediaAssetSuccessesCount"];
                                                               v424 = v166;
                                                               if (v166 && (v167 = v166, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                               {
                                                                 objc_opt_class();
                                                                 if ((objc_opt_isKindOfClass() & 1) == 0)
                                                                 {
-                                                                  if (!v547)
+                                                                  if (!errorCopy)
                                                                   {
                                                                     v426 = 0;
                                                                     v40 = 0;
@@ -2868,7 +2868,7 @@ LABEL_437:
                                                                   v276 = [v427 initWithDomain:v421 code:2 userInfo:v275];
                                                                   v426 = 0;
                                                                   v40 = 0;
-                                                                  *v547 = v276;
+                                                                  *errorCopy = v276;
                                                                   v277 = v275;
                                                                   v47 = v538;
                                                                   v252 = v436;
@@ -2885,14 +2885,14 @@ LABEL_436:
                                                                 v426 = 0;
                                                               }
 
-                                                              v168 = [v6 objectForKeyedSubscript:@"bookAssetSuccessesCount"];
+                                                              v168 = [dictionaryCopy objectForKeyedSubscript:@"bookAssetSuccessesCount"];
                                                               v420 = v168;
                                                               if (v168 && (v169 = v168, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                               {
                                                                 objc_opt_class();
                                                                 if ((objc_opt_isKindOfClass() & 1) == 0)
                                                                 {
-                                                                  if (!v547)
+                                                                  if (!errorCopy)
                                                                   {
                                                                     v422 = 0;
                                                                     v40 = 0;
@@ -2917,7 +2917,7 @@ LABEL_435:
                                                                   v282 = [v423 initWithDomain:v417 code:2 userInfo:v281];
                                                                   v422 = 0;
                                                                   v40 = 0;
-                                                                  *v547 = v282;
+                                                                  *errorCopy = v282;
                                                                   v283 = v281;
                                                                   v47 = v538;
                                                                   v252 = v436;
@@ -2934,14 +2934,14 @@ LABEL_434:
                                                                 v422 = 0;
                                                               }
 
-                                                              v170 = [v6 objectForKeyedSubscript:@"albumAssetSuccessesCount"];
+                                                              v170 = [dictionaryCopy objectForKeyedSubscript:@"albumAssetSuccessesCount"];
                                                               v416 = v170;
                                                               if (v170 && (v171 = v170, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                               {
                                                                 objc_opt_class();
                                                                 if ((objc_opt_isKindOfClass() & 1) == 0)
                                                                 {
-                                                                  if (!v547)
+                                                                  if (!errorCopy)
                                                                   {
                                                                     v418 = 0;
                                                                     v40 = 0;
@@ -2960,14 +2960,14 @@ LABEL_433:
                                                                   v373 = objc_opt_class();
                                                                   v286 = v285;
                                                                   v81 = v284;
-                                                                  v287 = v23;
+                                                                  v287 = errorCopy2;
                                                                   v414 = [v286 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v373, @"albumAssetSuccessesCount"];
                                                                   v577 = v414;
                                                                   v288 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v577 forKeys:&v576 count:1];
                                                                   v289 = [v419 initWithDomain:v412 code:2 userInfo:v288];
                                                                   v418 = 0;
                                                                   v40 = 0;
-                                                                  *v547 = v289;
+                                                                  *errorCopy = v289;
                                                                   v47 = v538;
                                                                   v252 = v436;
                                                                   goto LABEL_432;
@@ -2981,7 +2981,7 @@ LABEL_433:
                                                                 v418 = 0;
                                                               }
 
-                                                              v172 = [v6 objectForKeyedSubscript:@"catsAssetSuccessesCount"];
+                                                              v172 = [dictionaryCopy objectForKeyedSubscript:@"catsAssetSuccessesCount"];
                                                               v410 = v172;
                                                               if (!v172 || (v173 = v172, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                               {
@@ -2994,7 +2994,7 @@ LABEL_433:
                                                               {
                                                                 v414 = v173;
 LABEL_223:
-                                                                v174 = [v6 objectForKeyedSubscript:@"dogsAssetSuccessesCount"];
+                                                                v174 = [dictionaryCopy objectForKeyedSubscript:@"dogsAssetSuccessesCount"];
                                                                 v408 = v174;
                                                                 if (!v174 || (v175 = v174, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                 {
@@ -3007,7 +3007,7 @@ LABEL_223:
                                                                 {
                                                                   v411 = v175;
 LABEL_226:
-                                                                  v176 = [v6 objectForKeyedSubscript:@"apparelAssetSuccessesCount"];
+                                                                  v176 = [dictionaryCopy objectForKeyedSubscript:@"apparelAssetSuccessesCount"];
                                                                   v404 = v176;
                                                                   if (!v176 || (v177 = v176, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                   {
@@ -3020,7 +3020,7 @@ LABEL_226:
                                                                   {
                                                                     v406 = v177;
 LABEL_229:
-                                                                    v178 = [v6 objectForKeyedSubscript:@"foodAssetSuccessesCount"];
+                                                                    v178 = [dictionaryCopy objectForKeyedSubscript:@"foodAssetSuccessesCount"];
                                                                     v400 = v178;
                                                                     if (!v178 || (v179 = v178, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                     {
@@ -3033,14 +3033,14 @@ LABEL_229:
                                                                     {
                                                                       v402 = v179;
 LABEL_232:
-                                                                      v180 = [v6 objectForKeyedSubscript:@"storefrontAssetSuccessesCount"];
+                                                                      v180 = [dictionaryCopy objectForKeyedSubscript:@"storefrontAssetSuccessesCount"];
                                                                       v396 = v81;
                                                                       v397 = v180;
                                                                       if (!v180 || (v181 = v180, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                       {
                                                                         v399 = 0;
 LABEL_235:
-                                                                        v182 = [v6 objectForKeyedSubscript:@"signSymbolAssetSuccessesCount"];
+                                                                        v182 = [dictionaryCopy objectForKeyedSubscript:@"signSymbolAssetSuccessesCount"];
                                                                         v480 = v12;
                                                                         v395 = v182;
                                                                         if (v182 && (v183 = v182, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -3049,8 +3049,8 @@ LABEL_235:
                                                                           if ((objc_opt_isKindOfClass() & 1) == 0)
                                                                           {
                                                                             v392 = v75;
-                                                                            v287 = v23;
-                                                                            if (!v547)
+                                                                            v287 = errorCopy2;
+                                                                            if (!errorCopy)
                                                                             {
                                                                               v528 = 0;
                                                                               v40 = 0;
@@ -3069,8 +3069,8 @@ LABEL_426:
                                                                             v319 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v565 forKeys:&v564 count:1];
                                                                             v528 = 0;
                                                                             v40 = 0;
-                                                                            *v547 = [v317 initWithDomain:v318 code:2 userInfo:v319];
-                                                                            v320 = v535;
+                                                                            *errorCopy = [v317 initWithDomain:v318 code:2 userInfo:v319];
+                                                                            v320 = selfCopy;
                                                                             v47 = v538;
                                                                             v190 = v392;
                                                                             v288 = v410;
@@ -3085,25 +3085,25 @@ LABEL_426:
                                                                           v528 = 0;
                                                                         }
 
-                                                                        v389 = [v6 objectForKeyedSubscript:@"laundryCareSymbolAssetSuccessesCount"];
+                                                                        v389 = [dictionaryCopy objectForKeyedSubscript:@"laundryCareSymbolAssetSuccessesCount"];
                                                                         if (!v389 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                         {
                                                                           v524 = 0;
 LABEL_241:
-                                                                          v388 = [v6 objectForKeyedSubscript:@"autoSymbolAssetSuccessesCount"];
+                                                                          v388 = [dictionaryCopy objectForKeyedSubscript:@"autoSymbolAssetSuccessesCount"];
                                                                           if (v388 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                           {
                                                                             objc_opt_class();
                                                                             if ((objc_opt_isKindOfClass() & 1) == 0)
                                                                             {
                                                                               v394 = v75;
-                                                                              v287 = v23;
-                                                                              v330 = v535;
-                                                                              if (!v547)
+                                                                              v287 = errorCopy2;
+                                                                              v330 = selfCopy;
+                                                                              if (!errorCopy)
                                                                               {
                                                                                 v390 = 0;
                                                                                 v40 = 0;
-                                                                                v320 = v535;
+                                                                                v320 = selfCopy;
                                                                                 v47 = v538;
                                                                                 v190 = v75;
                                                                                 v288 = v410;
@@ -3119,7 +3119,7 @@ LABEL_241:
                                                                               v386 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v561 forKeys:&v560 count:1];
                                                                               v390 = 0;
                                                                               v40 = 0;
-                                                                              *v547 = [v331 initWithDomain:v332 code:2 userInfo:?];
+                                                                              *errorCopy = [v331 initWithDomain:v332 code:2 userInfo:?];
                                                                               goto LABEL_479;
                                                                             }
 
@@ -3131,7 +3131,7 @@ LABEL_241:
                                                                             v390 = 0;
                                                                           }
 
-                                                                          v184 = [v6 objectForKeyedSubscript:@"brandLogoSymbolAssetSuccessesCount"];
+                                                                          v184 = [dictionaryCopy objectForKeyedSubscript:@"brandLogoSymbolAssetSuccessesCount"];
                                                                           v386 = v184;
                                                                           if (!v184 || (v185 = v184, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                           {
@@ -3144,7 +3144,7 @@ LABEL_241:
                                                                           {
                                                                             v387 = v185;
 LABEL_247:
-                                                                            v384 = [v6 objectForKeyedSubscript:@"object2DAssetSuccessesCount"];
+                                                                            v384 = [dictionaryCopy objectForKeyedSubscript:@"object2DAssetSuccessesCount"];
                                                                             if (!v384 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                             {
                                                                               v385 = 0;
@@ -3156,27 +3156,27 @@ LABEL_247:
                                                                             {
                                                                               v385 = v384;
 LABEL_250:
-                                                                              v382 = [v6 objectForKeyedSubscript:@"barcodeDetectionAssetSuccessesCount"];
+                                                                              v382 = [dictionaryCopy objectForKeyedSubscript:@"barcodeDetectionAssetSuccessesCount"];
                                                                               if (!v382 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                               {
                                                                                 v383 = 0;
                                                                                 goto LABEL_253;
                                                                               }
 
-                                                                              v378 = v23;
+                                                                              v378 = errorCopy2;
                                                                               objc_opt_class();
                                                                               if (objc_opt_isKindOfClass())
                                                                               {
                                                                                 v383 = v382;
 LABEL_253:
-                                                                                v186 = [v6 objectForKeyedSubscript:@"sculptureAssetSuccessesCount"];
+                                                                                v186 = [dictionaryCopy objectForKeyedSubscript:@"sculptureAssetSuccessesCount"];
                                                                                 v379 = v186;
                                                                                 if (!v186 || (v187 = v186, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                                 {
                                                                                   v381 = 0;
 LABEL_256:
                                                                                   v188 = v438;
-                                                                                  v189 = [v6 objectForKeyedSubscript:@"skylineAssetSuccessesCount"];
+                                                                                  v189 = [dictionaryCopy objectForKeyedSubscript:@"skylineAssetSuccessesCount"];
                                                                                   v380 = v189;
                                                                                   if (!v189)
                                                                                   {
@@ -3205,7 +3205,7 @@ LABEL_391:
                                                                                     v460 = v324;
                                                                                     v464 = v323;
                                                                                     v472 = v327;
-                                                                                    v40 = [(BMPECProcessed *)v535 initWithArtAssetProcessedCount:v549 natureAssetProcessedCount:v544 animalsAssetProcessedCount:v539 birdsAssetProcessedCount:v545 insectsAssetProcessedCount:v540 reptilesAssetProcessedCount:v532 mammalsAssetProcessedCount:v533 landmarkAssetProcessedCount:v23 naturalLandmarkProcessedAssetCount:v519 mediaAssetProcessedCount:v518 bookAssetProcessedCount:v516 albumAssetProcessedCount:v514 catsAssetProcessedCount:v396 dogsAssetProcessedCount:v512 apparelAssetProcessedCount:v509 foodAssetProcessedCount:v503 storefrontAssetProcessedCount:v498 signSymbolAssetProcessedCount:v190 laundryCareSymbolAssetProcessedCount:v491 autoSymbolAssetProcessedCount:v487 brandLogoSymbolAssetProcessedCount:v485 object2DAssetProcessedCount:v327 barcodeDetectionAssetProcessedCount:v475 sculptureAssetProcessedCount:v468 skylineAssetProcessedCount:v323 artAssetSuccessesCount:v324 natureAssetSuccessesCount:v325 animalsAssetSuccessesCount:v448 birdsAssetSuccessesCount:v326 insectsAssetSuccessesCount:v440 reptilesAssetSuccessesCount:v328 mammalsAssetSuccessesCount:v188 landmarkAssetSuccessesCount:v432 naturalLandmarkSuccessesAssetCount:v430 mediaAssetSuccessesCount:v426 bookAssetSuccessesCount:v422 albumAssetSuccessesCount:v418 catsAssetSuccessesCount:v414 dogsAssetSuccessesCount:v411 apparelAssetSuccessesCount:v406 foodAssetSuccessesCount:v402 storefrontAssetSuccessesCount:v399 signSymbolAssetSuccessesCount:v528 laundryCareSymbolAssetSuccessesCount:v524 autoSymbolAssetSuccessesCount:v390 brandLogoSymbolAssetSuccessesCount:v387 object2DAssetSuccessesCount:v385 barcodeDetectionAssetSuccessesCount:v383 sculptureAssetSuccessesCount:v381 skylineAssetSuccessesCount:v189];
+                                                                                    v40 = [(BMPECProcessed *)selfCopy initWithArtAssetProcessedCount:v549 natureAssetProcessedCount:v544 animalsAssetProcessedCount:v539 birdsAssetProcessedCount:v545 insectsAssetProcessedCount:v540 reptilesAssetProcessedCount:v532 mammalsAssetProcessedCount:v533 landmarkAssetProcessedCount:errorCopy2 naturalLandmarkProcessedAssetCount:v519 mediaAssetProcessedCount:v518 bookAssetProcessedCount:v516 albumAssetProcessedCount:v514 catsAssetProcessedCount:v396 dogsAssetProcessedCount:v512 apparelAssetProcessedCount:v509 foodAssetProcessedCount:v503 storefrontAssetProcessedCount:v498 signSymbolAssetProcessedCount:v190 laundryCareSymbolAssetProcessedCount:v491 autoSymbolAssetProcessedCount:v487 brandLogoSymbolAssetProcessedCount:v485 object2DAssetProcessedCount:v327 barcodeDetectionAssetProcessedCount:v475 sculptureAssetProcessedCount:v468 skylineAssetProcessedCount:v323 artAssetSuccessesCount:v324 natureAssetSuccessesCount:v325 animalsAssetSuccessesCount:v448 birdsAssetSuccessesCount:v326 insectsAssetSuccessesCount:v440 reptilesAssetSuccessesCount:v328 mammalsAssetSuccessesCount:v188 landmarkAssetSuccessesCount:v432 naturalLandmarkSuccessesAssetCount:v430 mediaAssetSuccessesCount:v426 bookAssetSuccessesCount:v422 albumAssetSuccessesCount:v418 catsAssetSuccessesCount:v414 dogsAssetSuccessesCount:v411 apparelAssetSuccessesCount:v406 foodAssetSuccessesCount:v402 storefrontAssetSuccessesCount:v399 signSymbolAssetSuccessesCount:v528 laundryCareSymbolAssetSuccessesCount:v524 autoSymbolAssetSuccessesCount:v390 brandLogoSymbolAssetSuccessesCount:v387 object2DAssetSuccessesCount:v385 barcodeDetectionAssetSuccessesCount:v383 sculptureAssetSuccessesCount:v381 skylineAssetSuccessesCount:v189];
                                                                                     v320 = v40;
 LABEL_418:
                                                                                     v319 = v389;
@@ -3214,15 +3214,15 @@ LABEL_419:
 LABEL_420:
 
 LABEL_421:
-                                                                                    v287 = v23;
+                                                                                    v287 = errorCopy2;
 
 LABEL_422:
                                                                                     goto LABEL_423;
                                                                                   }
 
                                                                                   v394 = v75;
-                                                                                  v378 = v23;
-                                                                                  v333 = v535;
+                                                                                  v378 = errorCopy2;
+                                                                                  v333 = selfCopy;
                                                                                   objc_opt_class();
                                                                                   if (objc_opt_isKindOfClass())
                                                                                   {
@@ -3239,7 +3239,7 @@ LABEL_422:
                                                                                     goto LABEL_391;
                                                                                   }
 
-                                                                                  if (v547)
+                                                                                  if (errorCopy)
                                                                                   {
                                                                                     v344 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                     v345 = *MEMORY[0x1E698F240];
@@ -3247,7 +3247,7 @@ LABEL_422:
                                                                                     v346 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"skylineAssetSuccessesCount"];
                                                                                     v551 = v346;
                                                                                     v347 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v551 forKeys:&v550 count:1];
-                                                                                    *v547 = [v344 initWithDomain:v345 code:2 userInfo:v347];
+                                                                                    *errorCopy = [v344 initWithDomain:v345 code:2 userInfo:v347];
                                                                                   }
 
                                                                                   v329 = 0;
@@ -3255,12 +3255,12 @@ LABEL_422:
 LABEL_417:
                                                                                   v320 = v333;
                                                                                   v47 = v538;
-                                                                                  v23 = v378;
+                                                                                  errorCopy2 = v378;
                                                                                   v190 = v394;
                                                                                   goto LABEL_418;
                                                                                 }
 
-                                                                                v378 = v23;
+                                                                                v378 = errorCopy2;
                                                                                 objc_opt_class();
                                                                                 if (objc_opt_isKindOfClass())
                                                                                 {
@@ -3269,8 +3269,8 @@ LABEL_417:
                                                                                 }
 
                                                                                 v394 = v75;
-                                                                                v333 = v535;
-                                                                                if (v547)
+                                                                                v333 = selfCopy;
+                                                                                if (errorCopy)
                                                                                 {
                                                                                   v342 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                   v343 = *MEMORY[0x1E698F240];
@@ -3280,7 +3280,7 @@ LABEL_417:
                                                                                   v380 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v553 forKeys:&v552 count:1];
                                                                                   v381 = 0;
                                                                                   v40 = 0;
-                                                                                  *v547 = [v342 initWithDomain:v343 code:2 userInfo:?];
+                                                                                  *errorCopy = [v342 initWithDomain:v343 code:2 userInfo:?];
                                                                                   goto LABEL_417;
                                                                                 }
 
@@ -3289,15 +3289,15 @@ LABEL_417:
 LABEL_485:
                                                                                 v320 = v333;
                                                                                 v47 = v538;
-                                                                                v23 = v378;
+                                                                                errorCopy2 = v378;
                                                                                 v190 = v394;
                                                                                 v319 = v389;
                                                                                 goto LABEL_419;
                                                                               }
 
                                                                               v394 = v75;
-                                                                              v333 = v535;
-                                                                              if (v547)
+                                                                              v333 = selfCopy;
+                                                                              if (errorCopy)
                                                                               {
                                                                                 v339 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                                 v340 = *MEMORY[0x1E698F240];
@@ -3308,13 +3308,13 @@ LABEL_485:
                                                                                 v341 = [v339 initWithDomain:v340 code:2 userInfo:?];
                                                                                 v383 = 0;
                                                                                 v40 = 0;
-                                                                                *v547 = v341;
+                                                                                *errorCopy = v341;
                                                                                 goto LABEL_485;
                                                                               }
 
                                                                               v383 = 0;
                                                                               v40 = 0;
-                                                                              v320 = v535;
+                                                                              v320 = selfCopy;
                                                                               v47 = v538;
 LABEL_483:
                                                                               v190 = v394;
@@ -3323,7 +3323,7 @@ LABEL_483:
                                                                             }
 
                                                                             v394 = v75;
-                                                                            if (v547)
+                                                                            if (errorCopy)
                                                                             {
                                                                               v336 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                               v337 = *MEMORY[0x1E698F240];
@@ -3334,15 +3334,15 @@ LABEL_483:
                                                                               v338 = [v336 initWithDomain:v337 code:2 userInfo:?];
                                                                               v385 = 0;
                                                                               v40 = 0;
-                                                                              *v547 = v338;
-                                                                              v320 = v535;
+                                                                              *errorCopy = v338;
+                                                                              v320 = selfCopy;
                                                                               v47 = v538;
                                                                               goto LABEL_483;
                                                                             }
 
                                                                             v385 = 0;
                                                                             v40 = 0;
-                                                                            v320 = v535;
+                                                                            v320 = selfCopy;
                                                                             v47 = v538;
 LABEL_481:
                                                                             v190 = v394;
@@ -3351,9 +3351,9 @@ LABEL_481:
                                                                           }
 
                                                                           v394 = v75;
-                                                                          v287 = v23;
-                                                                          v330 = v535;
-                                                                          if (v547)
+                                                                          v287 = errorCopy2;
+                                                                          v330 = selfCopy;
+                                                                          if (errorCopy)
                                                                           {
                                                                             v334 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                             v335 = *MEMORY[0x1E698F240];
@@ -3363,10 +3363,10 @@ LABEL_481:
                                                                             v384 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v559 forKeys:&v558 count:1];
                                                                             v387 = 0;
                                                                             v40 = 0;
-                                                                            *v547 = [v334 initWithDomain:v335 code:2 userInfo:?];
-                                                                            v320 = v535;
+                                                                            *errorCopy = [v334 initWithDomain:v335 code:2 userInfo:?];
+                                                                            v320 = selfCopy;
                                                                             v47 = v538;
-                                                                            v23 = v287;
+                                                                            errorCopy2 = v287;
                                                                             goto LABEL_481;
                                                                           }
 
@@ -3388,8 +3388,8 @@ LABEL_479:
                                                                         }
 
                                                                         v393 = v75;
-                                                                        v287 = v23;
-                                                                        if (v547)
+                                                                        v287 = errorCopy2;
+                                                                        if (errorCopy)
                                                                         {
                                                                           v321 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                           v322 = *MEMORY[0x1E698F240];
@@ -3400,8 +3400,8 @@ LABEL_479:
                                                                           v388 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v563 forKeys:&v562 count:1];
                                                                           v524 = 0;
                                                                           v40 = 0;
-                                                                          *v547 = [v321 initWithDomain:v322 code:2 userInfo:?];
-                                                                          v320 = v535;
+                                                                          *errorCopy = [v321 initWithDomain:v322 code:2 userInfo:?];
+                                                                          v320 = selfCopy;
                                                                           v47 = v538;
                                                                           v190 = v393;
 LABEL_423:
@@ -3413,13 +3413,13 @@ LABEL_424:
 
                                                                         v524 = 0;
                                                                         v40 = 0;
-                                                                        v320 = v535;
+                                                                        v320 = selfCopy;
                                                                         v47 = v538;
                                                                         v190 = v75;
                                                                         v288 = v410;
                                                                         v319 = v389;
 LABEL_425:
-                                                                        v535 = v320;
+                                                                        selfCopy = v320;
 
                                                                         v12 = v480;
                                                                         v75 = v190;
@@ -3435,8 +3435,8 @@ LABEL_425:
                                                                       }
 
                                                                       v391 = v75;
-                                                                      v287 = v23;
-                                                                      if (v547)
+                                                                      v287 = errorCopy2;
+                                                                      if (errorCopy)
                                                                       {
                                                                         v314 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                         v315 = *MEMORY[0x1E698F240];
@@ -3446,7 +3446,7 @@ LABEL_425:
                                                                         v316 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v567 forKeys:&v566 count:1];
                                                                         v399 = 0;
                                                                         v40 = 0;
-                                                                        *v547 = [v314 initWithDomain:v315 code:2 userInfo:v316];
+                                                                        *errorCopy = [v314 initWithDomain:v315 code:2 userInfo:v316];
                                                                         v47 = v538;
                                                                         v75 = v391;
                                                                         v288 = v410;
@@ -3467,8 +3467,8 @@ LABEL_428:
                                                                       goto LABEL_429;
                                                                     }
 
-                                                                    v287 = v23;
-                                                                    if (v547)
+                                                                    v287 = errorCopy2;
+                                                                    if (errorCopy)
                                                                     {
                                                                       v403 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                       v398 = *MEMORY[0x1E698F240];
@@ -3486,7 +3486,7 @@ LABEL_428:
                                                                       v313 = [v403 initWithDomain:v312 code:2 userInfo:?];
                                                                       v402 = 0;
                                                                       v40 = 0;
-                                                                      *v547 = v313;
+                                                                      *errorCopy = v313;
                                                                       v47 = v538;
                                                                       goto LABEL_407;
                                                                     }
@@ -3502,8 +3502,8 @@ LABEL_429:
                                                                     goto LABEL_430;
                                                                   }
 
-                                                                  v287 = v23;
-                                                                  if (v547)
+                                                                  v287 = errorCopy2;
+                                                                  if (errorCopy)
                                                                   {
                                                                     v407 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                     v401 = *MEMORY[0x1E698F240];
@@ -3521,7 +3521,7 @@ LABEL_429:
                                                                     v307 = [v407 initWithDomain:v306 code:2 userInfo:?];
                                                                     v406 = 0;
                                                                     v40 = 0;
-                                                                    *v547 = v307;
+                                                                    *errorCopy = v307;
                                                                     goto LABEL_403;
                                                                   }
 
@@ -3536,8 +3536,8 @@ LABEL_430:
                                                                   goto LABEL_431;
                                                                 }
 
-                                                                v287 = v23;
-                                                                if (v547)
+                                                                v287 = errorCopy2;
+                                                                if (errorCopy)
                                                                 {
                                                                   v413 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                   v405 = *MEMORY[0x1E698F240];
@@ -3555,7 +3555,7 @@ LABEL_430:
                                                                   v301 = [v413 initWithDomain:v300 code:2 userInfo:?];
                                                                   v411 = 0;
                                                                   v40 = 0;
-                                                                  *v547 = v301;
+                                                                  *errorCopy = v301;
                                                                   goto LABEL_397;
                                                                 }
 
@@ -3569,8 +3569,8 @@ LABEL_431:
                                                                 goto LABEL_432;
                                                               }
 
-                                                              v287 = v23;
-                                                              if (v547)
+                                                              v287 = errorCopy2;
+                                                              if (errorCopy)
                                                               {
                                                                 v415 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                                 v409 = *MEMORY[0x1E698F240];
@@ -3589,7 +3589,7 @@ LABEL_431:
                                                                 v295 = [v415 initWithDomain:v294 code:2 userInfo:?];
                                                                 v414 = 0;
                                                                 v40 = 0;
-                                                                *v547 = v295;
+                                                                *errorCopy = v295;
                                                                 v47 = v538;
                                                                 v252 = v436;
                                                                 goto LABEL_431;
@@ -3602,7 +3602,7 @@ LABEL_431:
                                                               v288 = v410;
 LABEL_432:
 
-                                                              v23 = v287;
+                                                              errorCopy2 = v287;
                                                               v65 = v474;
                                                               goto LABEL_433;
                                                             }
@@ -3614,7 +3614,7 @@ LABEL_432:
                                                               goto LABEL_211;
                                                             }
 
-                                                            if (v547)
+                                                            if (errorCopy)
                                                             {
                                                               v431 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                               v425 = *MEMORY[0x1E698F240];
@@ -3630,7 +3630,7 @@ LABEL_432:
                                                               v270 = [v431 initWithDomain:v425 code:2 userInfo:v269];
                                                               v430 = 0;
                                                               v40 = 0;
-                                                              *v547 = v270;
+                                                              *errorCopy = v270;
                                                               v271 = v269;
                                                               v47 = v538;
                                                               v252 = v436;
@@ -3649,7 +3649,7 @@ LABEL_439:
                                                             goto LABEL_440;
                                                           }
 
-                                                          if (v547)
+                                                          if (errorCopy)
                                                           {
                                                             v433 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                             v429 = *MEMORY[0x1E698F240];
@@ -3667,7 +3667,7 @@ LABEL_439:
                                                             v265 = [v433 initWithDomain:v264 code:2 userInfo:?];
                                                             v432 = 0;
                                                             v40 = 0;
-                                                            *v547 = v265;
+                                                            *errorCopy = v265;
                                                             goto LABEL_363;
                                                           }
 
@@ -3680,7 +3680,7 @@ LABEL_440:
                                                           goto LABEL_441;
                                                         }
 
-                                                        if (v547)
+                                                        if (errorCopy)
                                                         {
                                                           v439 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                           v435 = *MEMORY[0x1E698F240];
@@ -3699,7 +3699,7 @@ LABEL_440:
                                                           v259 = [v439 initWithDomain:v258 code:2 userInfo:?];
                                                           v438 = 0;
                                                           v40 = 0;
-                                                          *v547 = v259;
+                                                          *errorCopy = v259;
                                                           v47 = v538;
                                                           goto LABEL_440;
                                                         }
@@ -3720,7 +3720,7 @@ LABEL_441:
                                                         goto LABEL_199;
                                                       }
 
-                                                      if (v547)
+                                                      if (errorCopy)
                                                       {
                                                         v445 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                         v441 = *MEMORY[0x1E698F240];
@@ -3737,7 +3737,7 @@ LABEL_441:
                                                         v444 = v247;
                                                         v240 = 0;
                                                         v40 = 0;
-                                                        *v547 = [v248 initWithDomain:v441 code:2 userInfo:?];
+                                                        *errorCopy = [v248 initWithDomain:v441 code:2 userInfo:?];
                                                         v47 = v538;
 LABEL_443:
 
@@ -3760,7 +3760,7 @@ LABEL_444:
                                                       goto LABEL_193;
                                                     }
 
-                                                    if (v547)
+                                                    if (errorCopy)
                                                     {
                                                       v453 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                       v449 = *MEMORY[0x1E698F240];
@@ -3777,7 +3777,7 @@ LABEL_444:
                                                       v452 = v235;
                                                       v228 = 0;
                                                       v40 = 0;
-                                                      *v547 = [v236 initWithDomain:v449 code:2 userInfo:?];
+                                                      *errorCopy = [v236 initWithDomain:v449 code:2 userInfo:?];
                                                       v47 = v538;
 LABEL_446:
 
@@ -3793,7 +3793,7 @@ LABEL_447:
                                                     goto LABEL_448;
                                                   }
 
-                                                  if (v547)
+                                                  if (errorCopy)
                                                   {
                                                     v457 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                     v455 = *MEMORY[0x1E698F240];
@@ -3811,7 +3811,7 @@ LABEL_447:
                                                     v231 = [v457 initWithDomain:v230 code:2 userInfo:?];
                                                     v456 = 0;
                                                     v40 = 0;
-                                                    *v547 = v231;
+                                                    *errorCopy = v231;
                                                     goto LABEL_331;
                                                   }
 
@@ -3824,7 +3824,7 @@ LABEL_448:
                                                   goto LABEL_449;
                                                 }
 
-                                                if (v547)
+                                                if (errorCopy)
                                                 {
                                                   v461 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                   v459 = *MEMORY[0x1E698F240];
@@ -3842,7 +3842,7 @@ LABEL_448:
                                                   v224 = [v461 initWithDomain:v223 code:2 userInfo:?];
                                                   v460 = 0;
                                                   v40 = 0;
-                                                  *v547 = v224;
+                                                  *errorCopy = v224;
                                                   goto LABEL_325;
                                                 }
 
@@ -3862,7 +3862,7 @@ LABEL_449:
                                                 goto LABEL_116;
                                               }
 
-                                              if (v547)
+                                              if (errorCopy)
                                               {
                                                 v465 = objc_alloc(MEMORY[0x1E696ABC0]);
                                                 v463 = *MEMORY[0x1E698F240];
@@ -3881,7 +3881,7 @@ LABEL_449:
                                                 v218 = [v465 initWithDomain:v217 code:2 userInfo:?];
                                                 v464 = 0;
                                                 v40 = 0;
-                                                *v547 = v218;
+                                                *errorCopy = v218;
                                                 goto LABEL_319;
                                               }
 
@@ -3905,7 +3905,7 @@ LABEL_450:
                                               goto LABEL_110;
                                             }
 
-                                            if (v547)
+                                            if (errorCopy)
                                             {
                                               v476 = objc_alloc(MEMORY[0x1E696ABC0]);
                                               v471 = *MEMORY[0x1E698F240];
@@ -3924,7 +3924,7 @@ LABEL_450:
                                               v208 = [v476 initWithDomain:v207 code:2 userInfo:?];
                                               v475 = 0;
                                               v40 = 0;
-                                              *v547 = v208;
+                                              *errorCopy = v208;
                                               v47 = v538;
 LABEL_452:
 
@@ -3940,7 +3940,7 @@ LABEL_453:
                                             goto LABEL_454;
                                           }
 
-                                          if (v547)
+                                          if (errorCopy)
                                           {
                                             v478 = objc_alloc(MEMORY[0x1E696ABC0]);
                                             v473 = *MEMORY[0x1E698F240];
@@ -3957,7 +3957,7 @@ LABEL_453:
                                             v477 = v201;
                                             v194 = 0;
                                             v40 = 0;
-                                            *v547 = [v202 initWithDomain:v473 code:2 userInfo:?];
+                                            *errorCopy = [v202 initWithDomain:v473 code:2 userInfo:?];
                                             v47 = v538;
                                             goto LABEL_453;
                                           }
@@ -3971,18 +3971,18 @@ LABEL_454:
                                           goto LABEL_455;
                                         }
 
-                                        if (v547)
+                                        if (errorCopy)
                                         {
                                           v486 = objc_alloc(MEMORY[0x1E696ABC0]);
                                           v482 = *MEMORY[0x1E698F240];
                                           v608 = *MEMORY[0x1E696A578];
-                                          v529 = v6;
+                                          v529 = dictionaryCopy;
                                           v191 = v81;
                                           v192 = objc_alloc(MEMORY[0x1E696AEC0]);
                                           v357 = objc_opt_class();
                                           v193 = v192;
                                           v81 = v191;
-                                          v6 = v529;
+                                          dictionaryCopy = v529;
                                           v194 = [v193 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v357, @"brandLogoSymbolAssetProcessedCount"];
                                           v609 = v194;
                                           v195 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v609 forKeys:&v608 count:1];
@@ -3991,7 +3991,7 @@ LABEL_454:
                                           v197 = [v486 initWithDomain:v196 code:2 userInfo:?];
                                           v485 = 0;
                                           v40 = 0;
-                                          *v547 = v197;
+                                          *errorCopy = v197;
                                           goto LABEL_298;
                                         }
 
@@ -4005,7 +4005,7 @@ LABEL_455:
                                         goto LABEL_456;
                                       }
 
-                                      if (v547)
+                                      if (errorCopy)
                                       {
                                         v488 = objc_alloc(MEMORY[0x1E696ABC0]);
                                         v484 = *MEMORY[0x1E698F240];
@@ -4022,7 +4022,7 @@ LABEL_455:
                                         v149 = [v488 initWithDomain:v148 code:2 userInfo:?];
                                         v487 = 0;
                                         v40 = 0;
-                                        *v547 = v149;
+                                        *errorCopy = v149;
                                         goto LABEL_292;
                                       }
 
@@ -4036,7 +4036,7 @@ LABEL_456:
                                       goto LABEL_457;
                                     }
 
-                                    if (v547)
+                                    if (errorCopy)
                                     {
                                       v492 = objc_alloc(MEMORY[0x1E696ABC0]);
                                       v490 = *MEMORY[0x1E698F240];
@@ -4054,7 +4054,7 @@ LABEL_456:
                                       v144 = [v492 initWithDomain:v143 code:2 userInfo:?];
                                       v491 = 0;
                                       v40 = 0;
-                                      *v547 = v144;
+                                      *errorCopy = v144;
                                       goto LABEL_286;
                                     }
 
@@ -4069,7 +4069,7 @@ LABEL_457:
                                     goto LABEL_458;
                                   }
 
-                                  if (v547)
+                                  if (errorCopy)
                                   {
                                     v137 = objc_alloc(MEMORY[0x1E696ABC0]);
                                     v495 = *MEMORY[0x1E698F240];
@@ -4081,7 +4081,7 @@ LABEL_457:
                                     v494 = v138;
                                     v133 = 0;
                                     v40 = 0;
-                                    *v547 = [v137 initWithDomain:v139 code:2 userInfo:?];
+                                    *errorCopy = [v137 initWithDomain:v139 code:2 userInfo:?];
                                     goto LABEL_280;
                                   }
 
@@ -4101,7 +4101,7 @@ LABEL_458:
                                   goto LABEL_89;
                                 }
 
-                                if (v547)
+                                if (errorCopy)
                                 {
                                   v504 = objc_alloc(MEMORY[0x1E696ABC0]);
                                   v501 = *MEMORY[0x1E698F240];
@@ -4119,7 +4119,7 @@ LABEL_458:
                                   v132 = [v504 initWithDomain:v131 code:2 userInfo:?];
                                   v503 = 0;
                                   v40 = 0;
-                                  *v547 = v132;
+                                  *errorCopy = v132;
                                   v47 = v538;
 LABEL_460:
 
@@ -4136,7 +4136,7 @@ LABEL_461:
                                 goto LABEL_462;
                               }
 
-                              if (v547)
+                              if (errorCopy)
                               {
                                 v511 = objc_alloc(MEMORY[0x1E696ABC0]);
                                 v508 = *MEMORY[0x1E698F240];
@@ -4156,7 +4156,7 @@ LABEL_461:
                                 v127 = [v511 initWithDomain:v126 code:2 userInfo:?];
                                 v509 = 0;
                                 v40 = 0;
-                                *v547 = v127;
+                                *errorCopy = v127;
                                 v47 = v538;
                                 goto LABEL_461;
                               }
@@ -4171,7 +4171,7 @@ LABEL_462:
                               goto LABEL_463;
                             }
 
-                            if (v547)
+                            if (errorCopy)
                             {
                               v513 = objc_alloc(MEMORY[0x1E696ABC0]);
                               v507 = *MEMORY[0x1E698F240];
@@ -4187,7 +4187,7 @@ LABEL_462:
                               v120 = [v513 initWithDomain:v507 code:2 userInfo:v67];
                               v512 = 0;
                               v40 = 0;
-                              *v547 = v120;
+                              *errorCopy = v120;
                               goto LABEL_184;
                             }
 
@@ -4201,7 +4201,7 @@ LABEL_463:
                             goto LABEL_464;
                           }
 
-                          if (v547)
+                          if (errorCopy)
                           {
                             v510 = objc_alloc(MEMORY[0x1E696ABC0]);
                             v506 = *MEMORY[0x1E698F240];
@@ -4211,7 +4211,7 @@ LABEL_463:
                             v65 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v625 forKeys:&v624 count:1];
                             v64 = 0;
                             v40 = 0;
-                            *v547 = [v510 initWithDomain:v506 code:2 userInfo:v65];
+                            *errorCopy = [v510 initWithDomain:v506 code:2 userInfo:v65];
                             goto LABEL_178;
                           }
 
@@ -4226,19 +4226,19 @@ LABEL_464:
                           goto LABEL_465;
                         }
 
-                        if (v547)
+                        if (errorCopy)
                         {
                           v114 = objc_alloc(MEMORY[0x1E696ABC0]);
                           v515 = *MEMORY[0x1E698F240];
                           v626 = *MEMORY[0x1E696A578];
-                          v115 = v23;
+                          v115 = errorCopy2;
                           v64 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"albumAssetProcessedCount"];
                           v627 = v64;
                           v116 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v627 forKeys:&v626 count:1];
                           v40 = 0;
-                          *v547 = [v114 initWithDomain:v515 code:2 userInfo:v116];
+                          *errorCopy = [v114 initWithDomain:v515 code:2 userInfo:v116];
                           v63 = v116;
-                          v23 = v115;
+                          errorCopy2 = v115;
                           v33 = 0;
                           goto LABEL_172;
                         }
@@ -4258,18 +4258,18 @@ LABEL_465:
                         goto LABEL_34;
                       }
 
-                      if (v547)
+                      if (errorCopy)
                       {
                         v521 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v517 = *MEMORY[0x1E698F240];
                         v628 = *MEMORY[0x1E696A578];
-                        v527 = v6;
+                        v527 = dictionaryCopy;
                         v108 = v26;
                         v109 = objc_alloc(MEMORY[0x1E696AEC0]);
                         v351 = objc_opt_class();
                         v110 = v109;
                         v26 = v108;
-                        v6 = v527;
+                        dictionaryCopy = v527;
                         v111 = [v110 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v351, @"bookAssetProcessedCount"];
                         v629 = v111;
                         v112 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v629 forKeys:&v628 count:1];
@@ -4277,7 +4277,7 @@ LABEL_465:
                         v520 = v112;
                         v32 = 0;
                         v40 = 0;
-                        *v547 = [v113 initWithDomain:v517 code:2 userInfo:?];
+                        *errorCopy = [v113 initWithDomain:v517 code:2 userInfo:?];
                         v33 = v111;
                         v47 = v538;
                         goto LABEL_465;
@@ -4292,18 +4292,18 @@ LABEL_466:
                       goto LABEL_467;
                     }
 
-                    if (a4)
+                    if (error)
                     {
                       v101 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v523 = *MEMORY[0x1E698F240];
                       v630 = *MEMORY[0x1E696A578];
-                      v526 = v6;
+                      v526 = dictionaryCopy;
                       v102 = v26;
                       v103 = objc_alloc(MEMORY[0x1E696AEC0]);
                       v350 = objc_opt_class();
                       v104 = v103;
                       v26 = v102;
-                      v6 = v526;
+                      dictionaryCopy = v526;
                       v32 = [v104 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v350, @"mediaAssetProcessedCount"];
                       v631 = v32;
                       v105 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v631 forKeys:&v630 count:1];
@@ -4311,7 +4311,7 @@ LABEL_466:
                       v522 = v105;
                       v29 = 0;
                       v40 = 0;
-                      *v547 = [v101 initWithDomain:v106 code:2 userInfo:?];
+                      *errorCopy = [v101 initWithDomain:v106 code:2 userInfo:?];
                       v47 = v538;
                       goto LABEL_466;
                     }
@@ -4325,7 +4325,7 @@ LABEL_467:
                     goto LABEL_468;
                   }
 
-                  if (a4)
+                  if (error)
                   {
                     v97 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v98 = *MEMORY[0x1E698F240];
@@ -4338,7 +4338,7 @@ LABEL_467:
                     v525 = v99;
                     v26 = 0;
                     v40 = 0;
-                    *v547 = [v97 initWithDomain:v100 code:2 userInfo:?];
+                    *errorCopy = [v97 initWithDomain:v100 code:2 userInfo:?];
                     v47 = v538;
                     goto LABEL_467;
                   }
@@ -4352,8 +4352,8 @@ LABEL_468:
                   goto LABEL_469;
                 }
 
-                v23 = a4;
-                if (a4)
+                errorCopy2 = error;
+                if (error)
                 {
                   v95 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v96 = *MEMORY[0x1E698F240];
@@ -4363,8 +4363,8 @@ LABEL_468:
                   v635 = v26;
                   v530 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v635 forKeys:&v634 count:1];
                   v40 = 0;
-                  *v547 = [v95 initWithDomain:v96 code:2 userInfo:?];
-                  v23 = 0;
+                  *errorCopy = [v95 initWithDomain:v96 code:2 userInfo:?];
+                  errorCopy2 = 0;
                   v47 = v538;
                   goto LABEL_468;
                 }
@@ -4377,7 +4377,7 @@ LABEL_469:
                 goto LABEL_470;
               }
 
-              if (a4)
+              if (error)
               {
                 v58 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v59 = *MEMORY[0x1E698F240];
@@ -4391,8 +4391,8 @@ LABEL_469:
                 v531 = v61;
                 v533 = 0;
                 v40 = 0;
-                *v547 = [v58 initWithDomain:v62 code:2 userInfo:?];
-                v23 = v60;
+                *errorCopy = [v58 initWithDomain:v62 code:2 userInfo:?];
+                errorCopy2 = v60;
                 v47 = v538;
                 goto LABEL_469;
               }
@@ -4403,11 +4403,11 @@ LABEL_469:
               v51 = v532;
 LABEL_470:
 
-              self = v535;
+              self = selfCopy;
               goto LABEL_471;
             }
 
-            if (a4)
+            if (error)
             {
               v55 = objc_alloc(MEMORY[0x1E696ABC0]);
               v56 = *MEMORY[0x1E698F240];
@@ -4418,7 +4418,7 @@ LABEL_470:
               v57 = [v55 initWithDomain:v56 code:2 userInfo:?];
               v51 = 0;
               v40 = 0;
-              *a4 = v57;
+              *error = v57;
               v47 = v538;
               goto LABEL_470;
             }
@@ -4432,7 +4432,7 @@ LABEL_471:
             goto LABEL_472;
           }
 
-          if (a4)
+          if (error)
           {
             v541 = objc_alloc(MEMORY[0x1E696ABC0]);
             v537 = *MEMORY[0x1E698F240];
@@ -4445,7 +4445,7 @@ LABEL_471:
             v54 = [v541 initWithDomain:v53 code:2 userInfo:?];
             v540 = 0;
             v40 = 0;
-            *a4 = v54;
+            *error = v54;
             v47 = v538;
             goto LABEL_471;
           }
@@ -4460,7 +4460,7 @@ LABEL_472:
         }
 
         v47 = v14;
-        if (a4)
+        if (error)
         {
           v546 = objc_alloc(MEMORY[0x1E696ABC0]);
           v543 = *MEMORY[0x1E698F240];
@@ -4474,7 +4474,7 @@ LABEL_472:
           v50 = [v546 initWithDomain:v49 code:2 userInfo:?];
           v545 = 0;
           v40 = 0;
-          *a4 = v50;
+          *error = v50;
           goto LABEL_472;
         }
 
@@ -4486,7 +4486,7 @@ LABEL_473:
         goto LABEL_474;
       }
 
-      if (a4)
+      if (error)
       {
         v45 = objc_alloc(MEMORY[0x1E696ABC0]);
         v46 = *MEMORY[0x1E698F240];
@@ -4496,7 +4496,7 @@ LABEL_473:
         v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v645 forKeys:&v644 count:1];
         v13 = 0;
         v40 = 0;
-        *v547 = [v45 initWithDomain:v46 code:2 userInfo:v47];
+        *errorCopy = [v45 initWithDomain:v46 code:2 userInfo:v47];
         goto LABEL_473;
       }
 
@@ -4509,11 +4509,11 @@ LABEL_474:
       goto LABEL_475;
     }
 
-    if (a4)
+    if (error)
     {
       v41 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v42 = self;
-      v43 = a4;
+      selfCopy2 = self;
+      errorCopy3 = error;
       v44 = *MEMORY[0x1E698F240];
       v646 = *MEMORY[0x1E696A578];
       v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"natureAssetProcessedCount"];
@@ -4521,8 +4521,8 @@ LABEL_474:
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v647 forKeys:&v646 count:1];
       v11 = 0;
       v40 = 0;
-      *v43 = [v41 initWithDomain:v44 code:2 userInfo:v12];
-      self = v42;
+      *errorCopy3 = [v41 initWithDomain:v44 code:2 userInfo:v12];
+      self = selfCopy2;
       goto LABEL_474;
     }
 
@@ -4533,11 +4533,11 @@ LABEL_475:
     goto LABEL_476;
   }
 
-  if (a4)
+  if (error)
   {
     v34 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v35 = self;
-    v36 = a4;
+    selfCopy3 = self;
+    errorCopy4 = error;
     v37 = *MEMORY[0x1E698F240];
     v648 = *MEMORY[0x1E696A578];
     v38 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"artAssetProcessedCount"];
@@ -4547,8 +4547,8 @@ LABEL_475:
     v11 = v38;
     v8 = 0;
     v40 = 0;
-    *v36 = [v39 initWithDomain:v37 code:2 userInfo:v10];
-    self = v35;
+    *errorCopy4 = [v39 initWithDomain:v37 code:2 userInfo:v10];
+    self = selfCopy3;
     goto LABEL_475;
   }
 
@@ -4564,14 +4564,14 @@ LABEL_476:
 {
   v3 = objc_opt_new();
   [(BMPECProcessed *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v54 = a3;
+  toCopy = to;
   if (self->_hasArtAssetProcessedCount)
   {
     artAssetProcessedCount = self->_artAssetProcessedCount;
@@ -4873,14 +4873,14 @@ LABEL_476:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v9.receiver = self;
   v9.super_class = BMPECProcessed;
   v5 = [(BMEventBase *)&v9 init];
   v6 = v5;
-  if (v5 && !BMPECProcessedReadFrom(v5, v4))
+  if (v5 && !BMPECProcessedReadFrom(v5, fromCopy))
   {
     v7 = 0;
   }
@@ -4951,58 +4951,58 @@ LABEL_476:
   return v19;
 }
 
-- (BMPECProcessed)initWithArtAssetProcessedCount:(id)a3 natureAssetProcessedCount:(id)a4 animalsAssetProcessedCount:(id)a5 birdsAssetProcessedCount:(id)a6 insectsAssetProcessedCount:(id)a7 reptilesAssetProcessedCount:(id)a8 mammalsAssetProcessedCount:(id)a9 landmarkAssetProcessedCount:(id)a10 naturalLandmarkProcessedAssetCount:(id)a11 mediaAssetProcessedCount:(id)a12 bookAssetProcessedCount:(id)a13 albumAssetProcessedCount:(id)a14 catsAssetProcessedCount:(id)a15 dogsAssetProcessedCount:(id)a16 apparelAssetProcessedCount:(id)a17 foodAssetProcessedCount:(id)a18 storefrontAssetProcessedCount:(id)a19 signSymbolAssetProcessedCount:(id)a20 laundryCareSymbolAssetProcessedCount:(id)a21 autoSymbolAssetProcessedCount:(id)a22 brandLogoSymbolAssetProcessedCount:(id)a23 object2DAssetProcessedCount:(id)a24 barcodeDetectionAssetProcessedCount:(id)a25 sculptureAssetProcessedCount:(id)a26 skylineAssetProcessedCount:(id)a27 artAssetSuccessesCount:(id)a28 natureAssetSuccessesCount:(id)a29 animalsAssetSuccessesCount:(id)a30 birdsAssetSuccessesCount:(id)a31 insectsAssetSuccessesCount:(id)a32 reptilesAssetSuccessesCount:(id)a33 mammalsAssetSuccessesCount:(id)a34 landmarkAssetSuccessesCount:(id)a35 naturalLandmarkSuccessesAssetCount:(id)a36 mediaAssetSuccessesCount:(id)a37 bookAssetSuccessesCount:(id)a38 albumAssetSuccessesCount:(id)a39 catsAssetSuccessesCount:(id)a40 dogsAssetSuccessesCount:(id)a41 apparelAssetSuccessesCount:(id)a42 foodAssetSuccessesCount:(id)a43 storefrontAssetSuccessesCount:(id)a44 signSymbolAssetSuccessesCount:(id)a45 laundryCareSymbolAssetSuccessesCount:(id)a46 autoSymbolAssetSuccessesCount:(id)a47 brandLogoSymbolAssetSuccessesCount:(id)a48 object2DAssetSuccessesCount:(id)a49 barcodeDetectionAssetSuccessesCount:(id)a50 sculptureAssetSuccessesCount:(id)a51 skylineAssetSuccessesCount:(id)a52
+- (BMPECProcessed)initWithArtAssetProcessedCount:(id)count natureAssetProcessedCount:(id)processedCount animalsAssetProcessedCount:(id)assetProcessedCount birdsAssetProcessedCount:(id)birdsAssetProcessedCount insectsAssetProcessedCount:(id)insectsAssetProcessedCount reptilesAssetProcessedCount:(id)reptilesAssetProcessedCount mammalsAssetProcessedCount:(id)mammalsAssetProcessedCount landmarkAssetProcessedCount:(id)self0 naturalLandmarkProcessedAssetCount:(id)self1 mediaAssetProcessedCount:(id)self2 bookAssetProcessedCount:(id)self3 albumAssetProcessedCount:(id)self4 catsAssetProcessedCount:(id)self5 dogsAssetProcessedCount:(id)self6 apparelAssetProcessedCount:(id)self7 foodAssetProcessedCount:(id)self8 storefrontAssetProcessedCount:(id)self9 signSymbolAssetProcessedCount:(id)symbolAssetProcessedCount laundryCareSymbolAssetProcessedCount:(id)careSymbolAssetProcessedCount autoSymbolAssetProcessedCount:(id)autoSymbolAssetProcessedCount brandLogoSymbolAssetProcessedCount:(id)logoSymbolAssetProcessedCount object2DAssetProcessedCount:(id)dAssetProcessedCount barcodeDetectionAssetProcessedCount:(id)detectionAssetProcessedCount sculptureAssetProcessedCount:(id)sculptureAssetProcessedCount skylineAssetProcessedCount:(id)skylineAssetProcessedCount artAssetSuccessesCount:(id)successesCount natureAssetSuccessesCount:(id)assetSuccessesCount animalsAssetSuccessesCount:(id)count0 birdsAssetSuccessesCount:(id)count1 insectsAssetSuccessesCount:(id)count2 reptilesAssetSuccessesCount:(id)count3 mammalsAssetSuccessesCount:(id)count4 landmarkAssetSuccessesCount:(id)count5 naturalLandmarkSuccessesAssetCount:(id)count6 mediaAssetSuccessesCount:(id)count7 bookAssetSuccessesCount:(id)count8 albumAssetSuccessesCount:(id)count9 catsAssetSuccessesCount:(id)processedCount0 dogsAssetSuccessesCount:(id)processedCount1 apparelAssetSuccessesCount:(id)processedCount2 foodAssetSuccessesCount:(id)processedCount3 storefrontAssetSuccessesCount:(id)processedCount4 signSymbolAssetSuccessesCount:(id)processedCount5 laundryCareSymbolAssetSuccessesCount:(id)processedCount6 autoSymbolAssetSuccessesCount:(id)processedCount7 brandLogoSymbolAssetSuccessesCount:(id)processedCount8 object2DAssetSuccessesCount:(id)processedCount9 barcodeDetectionAssetSuccessesCount:(id)assetProcessedCount0 sculptureAssetSuccessesCount:(id)assetProcessedCount1 skylineAssetSuccessesCount:(id)assetProcessedCount2
 {
-  v160 = a3;
-  v159 = a4;
-  v158 = a5;
-  v157 = a6;
-  v156 = a7;
-  v155 = a8;
-  v153 = a9;
-  v152 = a10;
-  v151 = a11;
-  v150 = a12;
-  v149 = a13;
-  v148 = a14;
-  v147 = a15;
-  v146 = a16;
-  v145 = a17;
-  v144 = a18;
-  v143 = a19;
-  v142 = a20;
-  v141 = a21;
-  v140 = a22;
-  v139 = a23;
-  v138 = a24;
-  v137 = a25;
-  v136 = a26;
-  v135 = a27;
-  v134 = a28;
-  v133 = a29;
-  v132 = a30;
-  v131 = a31;
-  v130 = a32;
-  v129 = a33;
-  v128 = a34;
-  v127 = a35;
-  v126 = a36;
-  v125 = a37;
-  v124 = a38;
-  v123 = a39;
-  v122 = a40;
-  v121 = a41;
-  v120 = a42;
-  v119 = a43;
-  v56 = a44;
-  v57 = a45;
-  v58 = a46;
-  v59 = a47;
-  v60 = a48;
-  v61 = a49;
-  v62 = a50;
-  v63 = a51;
-  v64 = a52;
+  countCopy = count;
+  processedCountCopy = processedCount;
+  assetProcessedCountCopy = assetProcessedCount;
+  birdsAssetProcessedCountCopy = birdsAssetProcessedCount;
+  insectsAssetProcessedCountCopy = insectsAssetProcessedCount;
+  reptilesAssetProcessedCountCopy = reptilesAssetProcessedCount;
+  mammalsAssetProcessedCountCopy = mammalsAssetProcessedCount;
+  landmarkAssetProcessedCountCopy = landmarkAssetProcessedCount;
+  assetCountCopy = assetCount;
+  mediaAssetProcessedCountCopy = mediaAssetProcessedCount;
+  bookAssetProcessedCountCopy = bookAssetProcessedCount;
+  albumAssetProcessedCountCopy = albumAssetProcessedCount;
+  catsAssetProcessedCountCopy = catsAssetProcessedCount;
+  dogsAssetProcessedCountCopy = dogsAssetProcessedCount;
+  apparelAssetProcessedCountCopy = apparelAssetProcessedCount;
+  foodAssetProcessedCountCopy = foodAssetProcessedCount;
+  storefrontAssetProcessedCountCopy = storefrontAssetProcessedCount;
+  symbolAssetProcessedCountCopy = symbolAssetProcessedCount;
+  careSymbolAssetProcessedCountCopy = careSymbolAssetProcessedCount;
+  autoSymbolAssetProcessedCountCopy = autoSymbolAssetProcessedCount;
+  logoSymbolAssetProcessedCountCopy = logoSymbolAssetProcessedCount;
+  dAssetProcessedCountCopy = dAssetProcessedCount;
+  detectionAssetProcessedCountCopy = detectionAssetProcessedCount;
+  sculptureAssetProcessedCountCopy = sculptureAssetProcessedCount;
+  skylineAssetProcessedCountCopy = skylineAssetProcessedCount;
+  successesCountCopy = successesCount;
+  assetSuccessesCountCopy = assetSuccessesCount;
+  animalsAssetSuccessesCountCopy = animalsAssetSuccessesCount;
+  birdsAssetSuccessesCountCopy = birdsAssetSuccessesCount;
+  insectsAssetSuccessesCountCopy = insectsAssetSuccessesCount;
+  reptilesAssetSuccessesCountCopy = reptilesAssetSuccessesCount;
+  mammalsAssetSuccessesCountCopy = mammalsAssetSuccessesCount;
+  landmarkAssetSuccessesCountCopy = landmarkAssetSuccessesCount;
+  successesAssetCountCopy = successesAssetCount;
+  mediaAssetSuccessesCountCopy = mediaAssetSuccessesCount;
+  bookAssetSuccessesCountCopy = bookAssetSuccessesCount;
+  albumAssetSuccessesCountCopy = albumAssetSuccessesCount;
+  catsAssetSuccessesCountCopy = catsAssetSuccessesCount;
+  dogsAssetSuccessesCountCopy = dogsAssetSuccessesCount;
+  apparelAssetSuccessesCountCopy = apparelAssetSuccessesCount;
+  foodAssetSuccessesCountCopy = foodAssetSuccessesCount;
+  storefrontAssetSuccessesCountCopy = storefrontAssetSuccessesCount;
+  symbolAssetSuccessesCountCopy = symbolAssetSuccessesCount;
+  careSymbolAssetSuccessesCountCopy = careSymbolAssetSuccessesCount;
+  autoSymbolAssetSuccessesCountCopy = autoSymbolAssetSuccessesCount;
+  logoSymbolAssetSuccessesCountCopy = logoSymbolAssetSuccessesCount;
+  dAssetSuccessesCountCopy = dAssetSuccessesCount;
+  detectionAssetSuccessesCountCopy = detectionAssetSuccessesCount;
+  sculptureAssetSuccessesCountCopy = sculptureAssetSuccessesCount;
+  skylineAssetSuccessesCountCopy = skylineAssetSuccessesCount;
   v161.receiver = self;
   v161.super_class = BMPECProcessed;
   v65 = [(BMEventBase *)&v161 init];
@@ -5010,656 +5010,656 @@ LABEL_476:
   if (v65)
   {
     v65->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v160)
+    if (countCopy)
     {
       v65->_hasArtAssetProcessedCount = 1;
-      v66 = [v160 intValue];
+      intValue = [countCopy intValue];
     }
 
     else
     {
       v65->_hasArtAssetProcessedCount = 0;
-      v66 = -1;
+      intValue = -1;
     }
 
-    v65->_artAssetProcessedCount = v66;
-    if (v159)
+    v65->_artAssetProcessedCount = intValue;
+    if (processedCountCopy)
     {
       v65->_hasNatureAssetProcessedCount = 1;
-      v67 = [v159 intValue];
+      intValue2 = [processedCountCopy intValue];
     }
 
     else
     {
       v65->_hasNatureAssetProcessedCount = 0;
-      v67 = -1;
+      intValue2 = -1;
     }
 
-    v65->_natureAssetProcessedCount = v67;
-    if (v158)
+    v65->_natureAssetProcessedCount = intValue2;
+    if (assetProcessedCountCopy)
     {
       v65->_hasAnimalsAssetProcessedCount = 1;
-      v68 = [v158 intValue];
+      intValue3 = [assetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasAnimalsAssetProcessedCount = 0;
-      v68 = -1;
+      intValue3 = -1;
     }
 
-    v65->_animalsAssetProcessedCount = v68;
-    if (v157)
+    v65->_animalsAssetProcessedCount = intValue3;
+    if (birdsAssetProcessedCountCopy)
     {
       v65->_hasBirdsAssetProcessedCount = 1;
-      v69 = [v157 intValue];
+      intValue4 = [birdsAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasBirdsAssetProcessedCount = 0;
-      v69 = -1;
+      intValue4 = -1;
     }
 
-    v65->_birdsAssetProcessedCount = v69;
-    if (v156)
+    v65->_birdsAssetProcessedCount = intValue4;
+    if (insectsAssetProcessedCountCopy)
     {
       v65->_hasInsectsAssetProcessedCount = 1;
-      v70 = [v156 intValue];
+      intValue5 = [insectsAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasInsectsAssetProcessedCount = 0;
-      v70 = -1;
+      intValue5 = -1;
     }
 
-    v65->_insectsAssetProcessedCount = v70;
-    if (v155)
+    v65->_insectsAssetProcessedCount = intValue5;
+    if (reptilesAssetProcessedCountCopy)
     {
       v65->_hasReptilesAssetProcessedCount = 1;
-      v71 = [v155 intValue];
+      intValue6 = [reptilesAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasReptilesAssetProcessedCount = 0;
-      v71 = -1;
+      intValue6 = -1;
     }
 
-    v65->_reptilesAssetProcessedCount = v71;
-    if (v153)
+    v65->_reptilesAssetProcessedCount = intValue6;
+    if (mammalsAssetProcessedCountCopy)
     {
       v65->_hasMammalsAssetProcessedCount = 1;
-      v72 = [v153 intValue];
+      intValue7 = [mammalsAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasMammalsAssetProcessedCount = 0;
-      v72 = -1;
+      intValue7 = -1;
     }
 
-    v65->_mammalsAssetProcessedCount = v72;
-    if (v152)
+    v65->_mammalsAssetProcessedCount = intValue7;
+    if (landmarkAssetProcessedCountCopy)
     {
       v65->_hasLandmarkAssetProcessedCount = 1;
-      v73 = [v152 intValue];
+      intValue8 = [landmarkAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasLandmarkAssetProcessedCount = 0;
-      v73 = -1;
+      intValue8 = -1;
     }
 
-    v65->_landmarkAssetProcessedCount = v73;
-    if (v151)
+    v65->_landmarkAssetProcessedCount = intValue8;
+    if (assetCountCopy)
     {
       v65->_hasNaturalLandmarkProcessedAssetCount = 1;
-      v74 = [v151 intValue];
+      intValue9 = [assetCountCopy intValue];
     }
 
     else
     {
       v65->_hasNaturalLandmarkProcessedAssetCount = 0;
-      v74 = -1;
+      intValue9 = -1;
     }
 
-    v65->_naturalLandmarkProcessedAssetCount = v74;
-    if (v150)
+    v65->_naturalLandmarkProcessedAssetCount = intValue9;
+    if (mediaAssetProcessedCountCopy)
     {
       v65->_hasMediaAssetProcessedCount = 1;
-      v75 = [v150 intValue];
+      intValue10 = [mediaAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasMediaAssetProcessedCount = 0;
-      v75 = -1;
+      intValue10 = -1;
     }
 
-    v65->_mediaAssetProcessedCount = v75;
-    if (v149)
+    v65->_mediaAssetProcessedCount = intValue10;
+    if (bookAssetProcessedCountCopy)
     {
       v65->_hasBookAssetProcessedCount = 1;
-      v76 = [v149 intValue];
+      intValue11 = [bookAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasBookAssetProcessedCount = 0;
-      v76 = -1;
+      intValue11 = -1;
     }
 
-    v65->_bookAssetProcessedCount = v76;
-    if (v148)
+    v65->_bookAssetProcessedCount = intValue11;
+    if (albumAssetProcessedCountCopy)
     {
       v65->_hasAlbumAssetProcessedCount = 1;
-      v77 = [v148 intValue];
+      intValue12 = [albumAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasAlbumAssetProcessedCount = 0;
-      v77 = -1;
+      intValue12 = -1;
     }
 
-    v65->_albumAssetProcessedCount = v77;
-    if (v147)
+    v65->_albumAssetProcessedCount = intValue12;
+    if (catsAssetProcessedCountCopy)
     {
       v65->_hasCatsAssetProcessedCount = 1;
-      v78 = [v147 intValue];
+      intValue13 = [catsAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasCatsAssetProcessedCount = 0;
-      v78 = -1;
+      intValue13 = -1;
     }
 
-    v65->_catsAssetProcessedCount = v78;
-    if (v146)
+    v65->_catsAssetProcessedCount = intValue13;
+    if (dogsAssetProcessedCountCopy)
     {
       v65->_hasDogsAssetProcessedCount = 1;
-      v79 = [v146 intValue];
+      intValue14 = [dogsAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasDogsAssetProcessedCount = 0;
-      v79 = -1;
+      intValue14 = -1;
     }
 
-    v65->_dogsAssetProcessedCount = v79;
-    if (v145)
+    v65->_dogsAssetProcessedCount = intValue14;
+    if (apparelAssetProcessedCountCopy)
     {
       v65->_hasApparelAssetProcessedCount = 1;
-      v80 = [v145 intValue];
+      intValue15 = [apparelAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasApparelAssetProcessedCount = 0;
-      v80 = -1;
+      intValue15 = -1;
     }
 
-    v65->_apparelAssetProcessedCount = v80;
-    if (v144)
+    v65->_apparelAssetProcessedCount = intValue15;
+    if (foodAssetProcessedCountCopy)
     {
       v65->_hasFoodAssetProcessedCount = 1;
-      v81 = [v144 intValue];
+      intValue16 = [foodAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasFoodAssetProcessedCount = 0;
-      v81 = -1;
+      intValue16 = -1;
     }
 
-    v65->_foodAssetProcessedCount = v81;
-    if (v143)
+    v65->_foodAssetProcessedCount = intValue16;
+    if (storefrontAssetProcessedCountCopy)
     {
       v65->_hasStorefrontAssetProcessedCount = 1;
-      v82 = [v143 intValue];
+      intValue17 = [storefrontAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasStorefrontAssetProcessedCount = 0;
-      v82 = -1;
+      intValue17 = -1;
     }
 
-    v65->_storefrontAssetProcessedCount = v82;
-    if (v142)
+    v65->_storefrontAssetProcessedCount = intValue17;
+    if (symbolAssetProcessedCountCopy)
     {
       v65->_hasSignSymbolAssetProcessedCount = 1;
-      v83 = [v142 intValue];
+      intValue18 = [symbolAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasSignSymbolAssetProcessedCount = 0;
-      v83 = -1;
+      intValue18 = -1;
     }
 
-    v65->_signSymbolAssetProcessedCount = v83;
-    if (v141)
+    v65->_signSymbolAssetProcessedCount = intValue18;
+    if (careSymbolAssetProcessedCountCopy)
     {
       v65->_hasLaundryCareSymbolAssetProcessedCount = 1;
-      v84 = [v141 intValue];
+      intValue19 = [careSymbolAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasLaundryCareSymbolAssetProcessedCount = 0;
-      v84 = -1;
+      intValue19 = -1;
     }
 
-    v65->_laundryCareSymbolAssetProcessedCount = v84;
-    if (v140)
+    v65->_laundryCareSymbolAssetProcessedCount = intValue19;
+    if (autoSymbolAssetProcessedCountCopy)
     {
       v65->_hasAutoSymbolAssetProcessedCount = 1;
-      v85 = [v140 intValue];
+      intValue20 = [autoSymbolAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasAutoSymbolAssetProcessedCount = 0;
-      v85 = -1;
+      intValue20 = -1;
     }
 
-    v65->_autoSymbolAssetProcessedCount = v85;
-    if (v139)
+    v65->_autoSymbolAssetProcessedCount = intValue20;
+    if (logoSymbolAssetProcessedCountCopy)
     {
       v65->_hasBrandLogoSymbolAssetProcessedCount = 1;
-      v86 = [v139 intValue];
+      intValue21 = [logoSymbolAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasBrandLogoSymbolAssetProcessedCount = 0;
-      v86 = -1;
+      intValue21 = -1;
     }
 
-    v65->_brandLogoSymbolAssetProcessedCount = v86;
-    if (v138)
+    v65->_brandLogoSymbolAssetProcessedCount = intValue21;
+    if (dAssetProcessedCountCopy)
     {
       v65->_hasObject2DAssetProcessedCount = 1;
-      v87 = [v138 intValue];
+      intValue22 = [dAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasObject2DAssetProcessedCount = 0;
-      v87 = -1;
+      intValue22 = -1;
     }
 
-    v65->_object2DAssetProcessedCount = v87;
-    if (v137)
+    v65->_object2DAssetProcessedCount = intValue22;
+    if (detectionAssetProcessedCountCopy)
     {
       v65->_hasBarcodeDetectionAssetProcessedCount = 1;
-      v88 = [v137 intValue];
+      intValue23 = [detectionAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasBarcodeDetectionAssetProcessedCount = 0;
-      v88 = -1;
+      intValue23 = -1;
     }
 
-    v65->_barcodeDetectionAssetProcessedCount = v88;
-    if (v136)
+    v65->_barcodeDetectionAssetProcessedCount = intValue23;
+    if (sculptureAssetProcessedCountCopy)
     {
       v65->_hasSculptureAssetProcessedCount = 1;
-      v89 = [v136 intValue];
+      intValue24 = [sculptureAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasSculptureAssetProcessedCount = 0;
-      v89 = -1;
+      intValue24 = -1;
     }
 
-    v65->_sculptureAssetProcessedCount = v89;
-    if (v135)
+    v65->_sculptureAssetProcessedCount = intValue24;
+    if (skylineAssetProcessedCountCopy)
     {
       v65->_hasSkylineAssetProcessedCount = 1;
-      v90 = [v135 intValue];
+      intValue25 = [skylineAssetProcessedCountCopy intValue];
     }
 
     else
     {
       v65->_hasSkylineAssetProcessedCount = 0;
-      v90 = -1;
+      intValue25 = -1;
     }
 
-    v65->_skylineAssetProcessedCount = v90;
-    if (v134)
+    v65->_skylineAssetProcessedCount = intValue25;
+    if (successesCountCopy)
     {
       v65->_hasArtAssetSuccessesCount = 1;
-      v91 = [v134 intValue];
+      intValue26 = [successesCountCopy intValue];
     }
 
     else
     {
       v65->_hasArtAssetSuccessesCount = 0;
-      v91 = -1;
+      intValue26 = -1;
     }
 
-    v65->_artAssetSuccessesCount = v91;
-    if (v133)
+    v65->_artAssetSuccessesCount = intValue26;
+    if (assetSuccessesCountCopy)
     {
       v65->_hasNatureAssetSuccessesCount = 1;
-      v92 = [v133 intValue];
+      intValue27 = [assetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasNatureAssetSuccessesCount = 0;
-      v92 = -1;
+      intValue27 = -1;
     }
 
-    v65->_natureAssetSuccessesCount = v92;
-    if (v132)
+    v65->_natureAssetSuccessesCount = intValue27;
+    if (animalsAssetSuccessesCountCopy)
     {
       v65->_hasAnimalsAssetSuccessesCount = 1;
-      v93 = [v132 intValue];
+      intValue28 = [animalsAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasAnimalsAssetSuccessesCount = 0;
-      v93 = -1;
+      intValue28 = -1;
     }
 
-    v65->_animalsAssetSuccessesCount = v93;
-    if (v131)
+    v65->_animalsAssetSuccessesCount = intValue28;
+    if (birdsAssetSuccessesCountCopy)
     {
       v65->_hasBirdsAssetSuccessesCount = 1;
-      v94 = [v131 intValue];
+      intValue29 = [birdsAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasBirdsAssetSuccessesCount = 0;
-      v94 = -1;
+      intValue29 = -1;
     }
 
-    v65->_birdsAssetSuccessesCount = v94;
-    if (v130)
+    v65->_birdsAssetSuccessesCount = intValue29;
+    if (insectsAssetSuccessesCountCopy)
     {
       v65->_hasInsectsAssetSuccessesCount = 1;
-      v95 = [v130 intValue];
+      intValue30 = [insectsAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasInsectsAssetSuccessesCount = 0;
-      v95 = -1;
+      intValue30 = -1;
     }
 
-    v65->_insectsAssetSuccessesCount = v95;
-    if (v129)
+    v65->_insectsAssetSuccessesCount = intValue30;
+    if (reptilesAssetSuccessesCountCopy)
     {
       v65->_hasReptilesAssetSuccessesCount = 1;
-      v96 = [v129 intValue];
+      intValue31 = [reptilesAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasReptilesAssetSuccessesCount = 0;
-      v96 = -1;
+      intValue31 = -1;
     }
 
-    v65->_reptilesAssetSuccessesCount = v96;
-    if (v128)
+    v65->_reptilesAssetSuccessesCount = intValue31;
+    if (mammalsAssetSuccessesCountCopy)
     {
       v65->_hasMammalsAssetSuccessesCount = 1;
-      v97 = [v128 intValue];
+      intValue32 = [mammalsAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasMammalsAssetSuccessesCount = 0;
-      v97 = -1;
+      intValue32 = -1;
     }
 
-    v65->_mammalsAssetSuccessesCount = v97;
-    if (v127)
+    v65->_mammalsAssetSuccessesCount = intValue32;
+    if (landmarkAssetSuccessesCountCopy)
     {
       v65->_hasLandmarkAssetSuccessesCount = 1;
-      v98 = [v127 intValue];
+      intValue33 = [landmarkAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasLandmarkAssetSuccessesCount = 0;
-      v98 = -1;
+      intValue33 = -1;
     }
 
-    v65->_landmarkAssetSuccessesCount = v98;
-    if (v126)
+    v65->_landmarkAssetSuccessesCount = intValue33;
+    if (successesAssetCountCopy)
     {
       v65->_hasNaturalLandmarkSuccessesAssetCount = 1;
-      v99 = [v126 intValue];
+      intValue34 = [successesAssetCountCopy intValue];
     }
 
     else
     {
       v65->_hasNaturalLandmarkSuccessesAssetCount = 0;
-      v99 = -1;
+      intValue34 = -1;
     }
 
-    v65->_naturalLandmarkSuccessesAssetCount = v99;
-    if (v125)
+    v65->_naturalLandmarkSuccessesAssetCount = intValue34;
+    if (mediaAssetSuccessesCountCopy)
     {
       v65->_hasMediaAssetSuccessesCount = 1;
-      v100 = [v125 intValue];
+      intValue35 = [mediaAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasMediaAssetSuccessesCount = 0;
-      v100 = -1;
+      intValue35 = -1;
     }
 
-    v65->_mediaAssetSuccessesCount = v100;
-    if (v124)
+    v65->_mediaAssetSuccessesCount = intValue35;
+    if (bookAssetSuccessesCountCopy)
     {
       v65->_hasBookAssetSuccessesCount = 1;
-      v101 = [v124 intValue];
+      intValue36 = [bookAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasBookAssetSuccessesCount = 0;
-      v101 = -1;
+      intValue36 = -1;
     }
 
-    v65->_bookAssetSuccessesCount = v101;
-    if (v123)
+    v65->_bookAssetSuccessesCount = intValue36;
+    if (albumAssetSuccessesCountCopy)
     {
       v65->_hasAlbumAssetSuccessesCount = 1;
-      v102 = [v123 intValue];
+      intValue37 = [albumAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasAlbumAssetSuccessesCount = 0;
-      v102 = -1;
+      intValue37 = -1;
     }
 
-    v65->_albumAssetSuccessesCount = v102;
-    if (v122)
+    v65->_albumAssetSuccessesCount = intValue37;
+    if (catsAssetSuccessesCountCopy)
     {
       v65->_hasCatsAssetSuccessesCount = 1;
-      v103 = [v122 intValue];
+      intValue38 = [catsAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasCatsAssetSuccessesCount = 0;
-      v103 = -1;
+      intValue38 = -1;
     }
 
-    v65->_catsAssetSuccessesCount = v103;
-    if (v121)
+    v65->_catsAssetSuccessesCount = intValue38;
+    if (dogsAssetSuccessesCountCopy)
     {
       v65->_hasDogsAssetSuccessesCount = 1;
-      v104 = [v121 intValue];
+      intValue39 = [dogsAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasDogsAssetSuccessesCount = 0;
-      v104 = -1;
+      intValue39 = -1;
     }
 
-    v65->_dogsAssetSuccessesCount = v104;
-    if (v120)
+    v65->_dogsAssetSuccessesCount = intValue39;
+    if (apparelAssetSuccessesCountCopy)
     {
       v65->_hasApparelAssetSuccessesCount = 1;
-      v105 = [v120 intValue];
+      intValue40 = [apparelAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasApparelAssetSuccessesCount = 0;
-      v105 = -1;
+      intValue40 = -1;
     }
 
-    v65->_apparelAssetSuccessesCount = v105;
-    if (v119)
+    v65->_apparelAssetSuccessesCount = intValue40;
+    if (foodAssetSuccessesCountCopy)
     {
       v65->_hasFoodAssetSuccessesCount = 1;
-      v106 = [v119 intValue];
+      intValue41 = [foodAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasFoodAssetSuccessesCount = 0;
-      v106 = -1;
+      intValue41 = -1;
     }
 
-    v65->_foodAssetSuccessesCount = v106;
-    if (v56)
+    v65->_foodAssetSuccessesCount = intValue41;
+    if (storefrontAssetSuccessesCountCopy)
     {
       v65->_hasStorefrontAssetSuccessesCount = 1;
-      v107 = [v56 intValue];
+      intValue42 = [storefrontAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasStorefrontAssetSuccessesCount = 0;
-      v107 = -1;
+      intValue42 = -1;
     }
 
-    v65->_storefrontAssetSuccessesCount = v107;
-    if (v57)
+    v65->_storefrontAssetSuccessesCount = intValue42;
+    if (symbolAssetSuccessesCountCopy)
     {
       v65->_hasSignSymbolAssetSuccessesCount = 1;
-      v108 = [v57 intValue];
+      intValue43 = [symbolAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasSignSymbolAssetSuccessesCount = 0;
-      v108 = -1;
+      intValue43 = -1;
     }
 
-    v65->_signSymbolAssetSuccessesCount = v108;
-    if (v58)
+    v65->_signSymbolAssetSuccessesCount = intValue43;
+    if (careSymbolAssetSuccessesCountCopy)
     {
       v65->_hasLaundryCareSymbolAssetSuccessesCount = 1;
-      v109 = [v58 intValue];
+      intValue44 = [careSymbolAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasLaundryCareSymbolAssetSuccessesCount = 0;
-      v109 = -1;
+      intValue44 = -1;
     }
 
-    v65->_laundryCareSymbolAssetSuccessesCount = v109;
-    if (v59)
+    v65->_laundryCareSymbolAssetSuccessesCount = intValue44;
+    if (autoSymbolAssetSuccessesCountCopy)
     {
       v65->_hasAutoSymbolAssetSuccessesCount = 1;
-      v110 = [v59 intValue];
+      intValue45 = [autoSymbolAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasAutoSymbolAssetSuccessesCount = 0;
-      v110 = -1;
+      intValue45 = -1;
     }
 
-    v65->_autoSymbolAssetSuccessesCount = v110;
-    if (v60)
+    v65->_autoSymbolAssetSuccessesCount = intValue45;
+    if (logoSymbolAssetSuccessesCountCopy)
     {
       v65->_hasBrandLogoSymbolAssetSuccessesCount = 1;
-      v111 = [v60 intValue];
+      intValue46 = [logoSymbolAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasBrandLogoSymbolAssetSuccessesCount = 0;
-      v111 = -1;
+      intValue46 = -1;
     }
 
-    v65->_brandLogoSymbolAssetSuccessesCount = v111;
-    if (v61)
+    v65->_brandLogoSymbolAssetSuccessesCount = intValue46;
+    if (dAssetSuccessesCountCopy)
     {
       v65->_hasObject2DAssetSuccessesCount = 1;
-      v112 = [v61 intValue];
+      intValue47 = [dAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasObject2DAssetSuccessesCount = 0;
-      v112 = -1;
+      intValue47 = -1;
     }
 
-    v65->_object2DAssetSuccessesCount = v112;
-    if (v62)
+    v65->_object2DAssetSuccessesCount = intValue47;
+    if (detectionAssetSuccessesCountCopy)
     {
       v65->_hasBarcodeDetectionAssetSuccessesCount = 1;
-      v113 = [v62 intValue];
+      intValue48 = [detectionAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasBarcodeDetectionAssetSuccessesCount = 0;
-      v113 = -1;
+      intValue48 = -1;
     }
 
-    v65->_barcodeDetectionAssetSuccessesCount = v113;
-    if (v63)
+    v65->_barcodeDetectionAssetSuccessesCount = intValue48;
+    if (sculptureAssetSuccessesCountCopy)
     {
       v65->_hasSculptureAssetSuccessesCount = 1;
-      v114 = [v63 intValue];
+      intValue49 = [sculptureAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasSculptureAssetSuccessesCount = 0;
-      v114 = -1;
+      intValue49 = -1;
     }
 
-    v65->_sculptureAssetSuccessesCount = v114;
-    if (v64)
+    v65->_sculptureAssetSuccessesCount = intValue49;
+    if (skylineAssetSuccessesCountCopy)
     {
       v65->_hasSkylineAssetSuccessesCount = 1;
-      v115 = [v64 intValue];
+      intValue50 = [skylineAssetSuccessesCountCopy intValue];
     }
 
     else
     {
       v65->_hasSkylineAssetSuccessesCount = 0;
-      v115 = -1;
+      intValue50 = -1;
     }
 
-    v65->_skylineAssetSuccessesCount = v115;
+    v65->_skylineAssetSuccessesCount = intValue50;
   }
 
   v116 = v65;
@@ -5887,9 +5887,9 @@ LABEL_476:
   return v13;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -5897,8 +5897,8 @@ LABEL_476:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMPECProcessed alloc] initByReadFrom:v7];
     v4 = v8;

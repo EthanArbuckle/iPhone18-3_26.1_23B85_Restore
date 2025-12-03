@@ -1,17 +1,17 @@
 @interface CNContactStyle
 + (id)currentStyle;
-+ (id)darkStyleWithOverrideUserInterfaceStyle:(int64_t)a3;
++ (id)darkStyleWithOverrideUserInterfaceStyle:(int64_t)style;
 + (id)defaultStyle;
 + (id)faceTimeStyle;
 + (id)siriStyle;
 + (id)spotlightStyle;
 + (id)testStyle;
 + (id)watchStyle;
-+ (void)setCurrentStyle:(id)a3;
++ (void)setCurrentStyle:(id)style;
 - (CNContactStyle)init;
-- (CNContactStyle)initWithCoder:(id)a3;
+- (CNContactStyle)initWithCoder:(id)coder;
 - (UIEdgeInsets)separatorInset;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNContactStyle
@@ -23,25 +23,25 @@
   {
     if (CNUIIsFaceTime())
     {
-      v4 = [a1 faceTimeStyle];
+      faceTimeStyle = [self faceTimeStyle];
     }
 
     else
     {
       if (CNUIIsWatchCompanion())
       {
-        [a1 watchStyle];
+        [self watchStyle];
       }
 
       else
       {
-        [a1 defaultStyle];
+        [self defaultStyle];
       }
-      v4 = ;
+      faceTimeStyle = ;
     }
 
     v5 = sCurrentStyle;
-    sCurrentStyle = v4;
+    sCurrentStyle = faceTimeStyle;
 
     v3 = sCurrentStyle;
   }
@@ -94,7 +94,7 @@
     [(CNContactStyle *)v2 setSuggestedValueTextColor:v12];
 
     [(CNContactStyle *)v2 setContactViewPlatterStyle:1];
-    v13 = [(CNContactStyle *)v2 contactViewPlatterStyle];
+    contactViewPlatterStyle = [(CNContactStyle *)v2 contactViewPlatterStyle];
     [(CNContactStyle *)v2 setUsesOpaqueBackground:1];
     v14 = +[CNUIColorRepository contactStyleDefaultTransportBackgroundColor];
     [(CNContactStyle *)v2 setTransportBackgroundColor:v14];
@@ -102,7 +102,7 @@
     v15 = +[CNUIColorRepository contactStyleDefaultTransportBorderColor];
     [(CNContactStyle *)v2 setTransportBorderColor:v15];
 
-    if (v13 == 1)
+    if (contactViewPlatterStyle == 1)
     {
       v16 = +[CNUIColorRepository contactStyleWithInsetPlattersDefaultContactHeaderBackgroundColor];
       [(CNContactStyle *)v2 setContactHeaderBackgroundColor:v16];
@@ -163,26 +163,26 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   textColor = self->_textColor;
-  v5 = a3;
-  [v5 encodeObject:textColor forKey:@"textColor"];
-  [v5 encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
+  coderCopy = coder;
+  [coderCopy encodeObject:textColor forKey:@"textColor"];
+  [coderCopy encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
 }
 
-- (CNContactStyle)initWithCoder:(id)a3
+- (CNContactStyle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CNContactStyle;
   v5 = [(CNContactStyle *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textColor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textColor"];
     [(CNContactStyle *)v5 setTextColor:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
     [(CNContactStyle *)v5 setBackgroundColor:v7];
 
     v8 = v5;
@@ -191,61 +191,61 @@
   return v5;
 }
 
-+ (void)setCurrentStyle:(id)a3
++ (void)setCurrentStyle:(id)style
 {
-  objc_storeStrong(&sCurrentStyle, a3);
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"CNContactStyleCurrentStyleDidChangeNotification" object:0];
+  objc_storeStrong(&sCurrentStyle, style);
+  styleCopy = style;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CNContactStyleCurrentStyleDidChangeNotification" object:0];
 }
 
 + (id)testStyle
 {
   v2 = +[CNContactStyle defaultStyle];
-  v3 = [MEMORY[0x1E69DC888] blueColor];
-  [v2 setTextColor:v3];
+  blueColor = [MEMORY[0x1E69DC888] blueColor];
+  [v2 setTextColor:blueColor];
 
-  v4 = [MEMORY[0x1E69DC888] blackColor];
-  [v2 setSectionHeaderTextColor:v4];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [v2 setSectionHeaderTextColor:blackColor];
 
-  v5 = [v2 textColor];
-  [v2 setTaglineTextColor:v5];
+  textColor = [v2 textColor];
+  [v2 setTaglineTextColor:textColor];
 
-  v6 = [MEMORY[0x1E69DC888] cyanColor];
-  [v2 setDisabledTextColor:v6];
+  cyanColor = [MEMORY[0x1E69DC888] cyanColor];
+  [v2 setDisabledTextColor:cyanColor];
 
-  v7 = [MEMORY[0x1E69DC888] brownColor];
-  [v2 setPlaceholderTextColor:v7];
+  brownColor = [MEMORY[0x1E69DC888] brownColor];
+  [v2 setPlaceholderTextColor:brownColor];
 
-  v8 = [MEMORY[0x1E69DC888] orangeColor];
-  [v2 setHighlightedTextColor:v8];
+  orangeColor = [MEMORY[0x1E69DC888] orangeColor];
+  [v2 setHighlightedTextColor:orangeColor];
 
-  v9 = [MEMORY[0x1E69DC888] purpleColor];
-  [v2 setHeaderBackgroundColor:v9];
+  purpleColor = [MEMORY[0x1E69DC888] purpleColor];
+  [v2 setHeaderBackgroundColor:purpleColor];
 
-  v10 = [v2 textColor];
-  [v2 setListTextColor:v10];
+  textColor2 = [v2 textColor];
+  [v2 setListTextColor:textColor2];
 
-  v11 = [MEMORY[0x1E69DC888] greenColor];
-  [v2 setBackgroundColor:v11];
+  greenColor = [MEMORY[0x1E69DC888] greenColor];
+  [v2 setBackgroundColor:greenColor];
 
-  v12 = [MEMORY[0x1E69DC888] greenColor];
-  [v2 setSearchBarBackgroundColor:v12];
+  greenColor2 = [MEMORY[0x1E69DC888] greenColor];
+  [v2 setSearchBarBackgroundColor:greenColor2];
 
-  v13 = [MEMORY[0x1E69DC888] magentaColor];
-  [v2 setTransportBackgroundColor:v13];
+  magentaColor = [MEMORY[0x1E69DC888] magentaColor];
+  [v2 setTransportBackgroundColor:magentaColor];
 
-  v14 = [MEMORY[0x1E69DC888] brownColor];
-  [v2 setTransportBorderColor:v14];
+  brownColor2 = [MEMORY[0x1E69DC888] brownColor];
+  [v2 setTransportBorderColor:brownColor2];
 
-  v15 = [MEMORY[0x1E69DC888] yellowColor];
-  [v2 setSeparatorColor:v15];
+  yellowColor = [MEMORY[0x1E69DC888] yellowColor];
+  [v2 setSeparatorColor:yellowColor];
 
-  v16 = [MEMORY[0x1E69DC888] redColor];
-  [v2 setSectionBackgroundColor:v16];
+  redColor = [MEMORY[0x1E69DC888] redColor];
+  [v2 setSectionBackgroundColor:redColor];
 
-  v17 = [MEMORY[0x1E69DC888] brownColor];
-  [v2 setSelectedCellBackgroundColor:v17];
+  brownColor3 = [MEMORY[0x1E69DC888] brownColor];
+  [v2 setSelectedCellBackgroundColor:brownColor3];
 
   [v2 setBarStyle:1];
   [v2 setKeyboardAppearance:1];
@@ -256,39 +256,39 @@
 + (id)siriStyle
 {
   v2 = +[CNContactStyle defaultStyle];
-  v3 = [MEMORY[0x1E69DC888] siriui_textColor];
-  [v2 setTextColor:v3];
+  siriui_textColor = [MEMORY[0x1E69DC888] siriui_textColor];
+  [v2 setTextColor:siriui_textColor];
 
-  v4 = [MEMORY[0x1E69DC888] siriui_textColor];
-  [v2 setSectionHeaderTextColor:v4];
+  siriui_textColor2 = [MEMORY[0x1E69DC888] siriui_textColor];
+  [v2 setSectionHeaderTextColor:siriui_textColor2];
 
-  v5 = [v2 textColor];
-  [v2 setTaglineTextColor:v5];
+  textColor = [v2 textColor];
+  [v2 setTaglineTextColor:textColor];
 
-  v6 = [MEMORY[0x1E69DC888] siriui_textColor];
-  [v2 setNotesTextColor:v6];
+  siriui_textColor3 = [MEMORY[0x1E69DC888] siriui_textColor];
+  [v2 setNotesTextColor:siriui_textColor3];
 
-  v7 = [v2 textColor];
-  [v2 setListTextColor:v7];
+  textColor2 = [v2 textColor];
+  [v2 setListTextColor:textColor2];
 
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [v2 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v2 setBackgroundColor:clearColor];
 
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  [v2 setContactHeaderBackgroundColor:v9];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [v2 setContactHeaderBackgroundColor:clearColor2];
 
-  v10 = [MEMORY[0x1E69DC888] siriui_keylineColor];
-  [v2 setContactHeaderDropShadowColor:v10];
+  siriui_keylineColor = [MEMORY[0x1E69DC888] siriui_keylineColor];
+  [v2 setContactHeaderDropShadowColor:siriui_keylineColor];
 
-  v11 = [MEMORY[0x1E69DC888] siriui_keylineColor];
-  [v2 setSeparatorColor:v11];
+  siriui_keylineColor2 = [MEMORY[0x1E69DC888] siriui_keylineColor];
+  [v2 setSeparatorColor:siriui_keylineColor2];
 
   [v2 setSeparatorInset:{0.0, 16.0, 0.0, 16.0}];
-  v12 = [MEMORY[0x1E69DC888] siriui_highlightColor];
-  [v2 setSelectedCellBackgroundColor:v12];
+  siriui_highlightColor = [MEMORY[0x1E69DC888] siriui_highlightColor];
+  [v2 setSelectedCellBackgroundColor:siriui_highlightColor];
 
-  v13 = [MEMORY[0x1E69DC888] clearColor];
-  [v2 setSectionBackgroundColor:v13];
+  clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+  [v2 setSectionBackgroundColor:clearColor3];
 
   [v2 setModalTransitionStyle:14];
   if (UIAccessibilityDarkerSystemColorsEnabled())
@@ -308,74 +308,74 @@
 
 + (id)watchStyle
 {
-  v2 = [a1 defaultStyle];
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setTextColor:v3];
+  defaultStyle = [self defaultStyle];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [defaultStyle setTextColor:whiteColor];
 
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setSectionHeaderTextColor:v4];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  [defaultStyle setSectionHeaderTextColor:whiteColor2];
 
-  v5 = [v2 textColor];
-  [v2 setTaglineTextColor:v5];
+  textColor = [defaultStyle textColor];
+  [defaultStyle setTaglineTextColor:textColor];
 
-  v6 = [v2 textColor];
-  [v2 setNotesTextColor:v6];
+  textColor2 = [defaultStyle textColor];
+  [defaultStyle setNotesTextColor:textColor2];
 
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setHighlightedTextColor:v7];
+  whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+  [defaultStyle setHighlightedTextColor:whiteColor3];
 
-  v8 = [v2 textColor];
-  [v2 setListTextColor:v8];
+  textColor3 = [defaultStyle textColor];
+  [defaultStyle setListTextColor:textColor3];
 
-  [v2 setUsesOpaqueBackground:1];
+  [defaultStyle setUsesOpaqueBackground:1];
   v9 = [MEMORY[0x1E69DC888] colorWithRed:0.09 green:0.09 blue:0.09 alpha:1.0];
-  [v2 setBackgroundColor:v9];
+  [defaultStyle setBackgroundColor:v9];
 
   v10 = [MEMORY[0x1E69DC888] colorWithRed:0.11 green:0.11 blue:0.11 alpha:1.0];
-  [v2 setSearchBarBackgroundColor:v10];
+  [defaultStyle setSearchBarBackgroundColor:v10];
 
-  v11 = [v2 backgroundColor];
-  [v2 setContactHeaderBackgroundColor:v11];
+  backgroundColor = [defaultStyle backgroundColor];
+  [defaultStyle setContactHeaderBackgroundColor:backgroundColor];
 
   v12 = [MEMORY[0x1E69DC888] colorWithRed:0.95 green:0.95 blue:0.97 alpha:0.5];
-  [v2 setContactHeaderDropShadowColor:v12];
+  [defaultStyle setContactHeaderDropShadowColor:v12];
 
   v13 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.58 blue:0.0 alpha:1.0];
-  [v2 setTransportBoldBackgroundColor:v13];
+  [defaultStyle setTransportBoldBackgroundColor:v13];
 
   v14 = [MEMORY[0x1E69DC888] colorWithRed:0.176470588 green:0.176470588 blue:0.176470588 alpha:1.0];
-  [v2 setTransportBackgroundColor:v14];
+  [defaultStyle setTransportBackgroundColor:v14];
 
   v15 = [MEMORY[0x1E69DC888] colorWithRed:0.09 green:0.09 blue:0.09 alpha:1.0];
-  [v2 setSectionBackgroundColor:v15];
+  [defaultStyle setSectionBackgroundColor:v15];
 
   v16 = [MEMORY[0x1E69DC888] colorWithRed:0.16 green:0.16 blue:0.16 alpha:1.0];
-  [v2 setSeparatorColor:v16];
+  [defaultStyle setSeparatorColor:v16];
 
   v17 = [MEMORY[0x1E69DC888] colorWithRed:0.09 green:0.09 blue:0.09 alpha:1.0];
-  [v2 setHeaderBackgroundColor:v17];
+  [defaultStyle setHeaderBackgroundColor:v17];
 
   v18 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.12];
-  [v2 setSelectedCellBackgroundColor:v18];
+  [defaultStyle setSelectedCellBackgroundColor:v18];
 
-  [v2 setBarStyle:1];
-  [v2 setUsesTranslucentBarStyle:0];
-  [v2 setKeyboardAppearance:1];
+  [defaultStyle setBarStyle:1];
+  [defaultStyle setUsesTranslucentBarStyle:0];
+  [defaultStyle setKeyboardAppearance:1];
 
-  return v2;
+  return defaultStyle;
 }
 
-+ (id)darkStyleWithOverrideUserInterfaceStyle:(int64_t)a3
++ (id)darkStyleWithOverrideUserInterfaceStyle:(int64_t)style
 {
-  v4 = [a1 defaultStyle];
+  defaultStyle = [self defaultStyle];
   if (darkStyleWithOverrideUserInterfaceStyle__onceToken != -1)
   {
     dispatch_once(&darkStyleWithOverrideUserInterfaceStyle__onceToken, &__block_literal_global_26275);
   }
 
   v5 = darkStyleWithOverrideUserInterfaceStyle__blurSupported == 1 && !UIAccessibilityIsReduceMotionEnabled() && !UIAccessibilityIsReduceTransparencyEnabled();
-  [v4 setBlurSupported:v5];
-  if (a3 == 2)
+  [defaultStyle setBlurSupported:v5];
+  if (style == 2)
   {
     [MEMORY[0x1E69DC888] whiteColor];
   }
@@ -385,39 +385,39 @@
     [MEMORY[0x1E69DC888] labelColor];
   }
   v6 = ;
-  [v4 setTextColor:v6];
-  [v4 setSectionHeaderTextColor:v6];
-  [v4 setHighlightedTextColor:v6];
-  v7 = [v4 textColor];
-  [v4 setTaglineTextColor:v7];
+  [defaultStyle setTextColor:v6];
+  [defaultStyle setSectionHeaderTextColor:v6];
+  [defaultStyle setHighlightedTextColor:v6];
+  textColor = [defaultStyle textColor];
+  [defaultStyle setTaglineTextColor:textColor];
 
-  [v4 setNotesTextColor:v6];
-  [v4 setSuggestedLabelTextColor:v6];
-  [v4 setSuggestedValueTextColor:v6];
-  v8 = [v4 textColor];
-  [v4 setListTextColor:v8];
+  [defaultStyle setNotesTextColor:v6];
+  [defaultStyle setSuggestedLabelTextColor:v6];
+  [defaultStyle setSuggestedValueTextColor:v6];
+  textColor2 = [defaultStyle textColor];
+  [defaultStyle setListTextColor:textColor2];
 
-  [v4 setUsesOpaqueBackground:0];
-  [v4 setBackgroundColor:0];
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setSearchBarBackgroundColor:v9];
+  [defaultStyle setUsesOpaqueBackground:0];
+  [defaultStyle setBackgroundColor:0];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [defaultStyle setSearchBarBackgroundColor:clearColor];
 
-  [v4 setContactHeaderBackgroundColor:0];
+  [defaultStyle setContactHeaderBackgroundColor:0];
   v10 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.14];
-  [v4 setTransportBackgroundColor:v10];
+  [defaultStyle setTransportBackgroundColor:v10];
 
   v11 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.14];
-  [v4 setTransportBorderColor:v11];
+  [defaultStyle setTransportBorderColor:v11];
 
   v12 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.14];
-  [v4 setTransportBoldBackgroundColor:v12];
+  [defaultStyle setTransportBoldBackgroundColor:v12];
 
   v13 = [MEMORY[0x1E69DC888] colorWithRed:0.95 green:0.95 blue:0.97 alpha:0.5];
-  [v4 setContactHeaderDropShadowColor:v13];
+  [defaultStyle setContactHeaderDropShadowColor:v13];
 
-  [v4 setTintColorOverride:v6];
-  [v4 setSectionBackgroundColor:0];
-  if ([v4 blurSupported])
+  [defaultStyle setTintColorOverride:v6];
+  [defaultStyle setSectionBackgroundColor:0];
+  if ([defaultStyle blurSupported])
   {
     v14 = 3;
   }
@@ -427,9 +427,9 @@
     v14 = 0;
   }
 
-  [v4 setSeparatorBackdropOverlayBlendMode:v14];
-  [v4 setSeparatorStyle:1];
-  if ([v4 blurSupported])
+  [defaultStyle setSeparatorBackdropOverlayBlendMode:v14];
+  [defaultStyle setSeparatorStyle:1];
+  if ([defaultStyle blurSupported])
   {
     +[CNUIColorRepository faceTimeLightSeparatorColor];
   }
@@ -439,7 +439,7 @@
     +[CNUIColorRepository faceTimeSeparatorColorWithBlurUnsupported];
   }
   v15 = ;
-  [v4 setSeparatorColor:v15];
+  [defaultStyle setSeparatorColor:v15];
 
   if (darkStyleWithOverrideUserInterfaceStyle__blurSupported)
   {
@@ -451,21 +451,21 @@
     [MEMORY[0x1E69DC888] colorWithRed:0.25 green:0.25 blue:0.25 alpha:1.0];
   }
   v16 = ;
-  [v4 setHeaderBackgroundColor:v16];
+  [defaultStyle setHeaderBackgroundColor:v16];
 
-  [v4 setSelectedCellBackgroundColor:0];
-  v17 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setGroupedBackgroundColor:v17];
+  [defaultStyle setSelectedCellBackgroundColor:0];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [defaultStyle setGroupedBackgroundColor:clearColor2];
 
-  [v4 setBarStyle:1];
-  [v4 setUsesTranslucentBarStyle:1];
-  [v4 setKeyboardAppearance:1];
-  [v4 setShouldPresentInCurrentContext:1];
-  [v4 setModalTransitionStyle:14];
-  [v4 setTopActionsViewStyle:6];
-  [v4 setInlineActionsViewStyle:3];
+  [defaultStyle setBarStyle:1];
+  [defaultStyle setUsesTranslucentBarStyle:1];
+  [defaultStyle setKeyboardAppearance:1];
+  [defaultStyle setShouldPresentInCurrentContext:1];
+  [defaultStyle setModalTransitionStyle:14];
+  [defaultStyle setTopActionsViewStyle:6];
+  [defaultStyle setInlineActionsViewStyle:3];
 
-  return v4;
+  return defaultStyle;
 }
 
 void __58__CNContactStyle_darkStyleWithOverrideUserInterfaceStyle___block_invoke()

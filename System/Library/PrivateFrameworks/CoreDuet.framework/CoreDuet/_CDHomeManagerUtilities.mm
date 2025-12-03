@@ -49,7 +49,7 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v30 = self;
+  selfCopy = self;
   obj = [(HMHomeManager *)self->_homeManager homes];
   v4 = [obj countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v4)
@@ -70,8 +70,8 @@
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v9 = [v8 users];
-        v10 = [v9 countByEnumeratingWithState:&v36 objects:v45 count:16];
+        users = [v8 users];
+        v10 = [users countByEnumeratingWithState:&v36 objects:v45 count:16];
         if (v10)
         {
           v11 = v10;
@@ -82,20 +82,20 @@
             {
               if (*v37 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(users);
               }
 
               v14 = *(*(&v36 + 1) + 8 * j);
-              v15 = [v14 userID];
+              userID = [v14 userID];
 
-              if (v15)
+              if (userID)
               {
-                v16 = [v14 userID];
-                [v3 addObject:v16];
+                userID2 = [v14 userID];
+                [v3 addObject:userID2];
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v36 objects:v45 count:16];
+            v11 = [users countByEnumeratingWithState:&v36 objects:v45 count:16];
           }
 
           while (v11);
@@ -128,14 +128,14 @@
         }
 
         v22 = [getCNContactClass() predicateForContactsMatchingEmailAddress:*(*(&v32 + 1) + 8 * k)];
-        contactStore = v30->_contactStore;
-        v24 = [(_CDHomeManagerUtilities *)v30 contactKeysToFetch];
-        v25 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v22 keysToFetch:v24 error:0];
-        v26 = [v25 firstObject];
+        contactStore = selfCopy->_contactStore;
+        contactKeysToFetch = [(_CDHomeManagerUtilities *)selfCopy contactKeysToFetch];
+        v25 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v22 keysToFetch:contactKeysToFetch error:0];
+        firstObject = [v25 firstObject];
 
-        if (v26)
+        if (firstObject)
         {
-          [v29 addObject:v26];
+          [v29 addObject:firstObject];
         }
       }
 

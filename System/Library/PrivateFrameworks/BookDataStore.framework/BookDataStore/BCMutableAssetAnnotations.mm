@@ -1,17 +1,17 @@
 @interface BCMutableAssetAnnotations
-- (BCMutableAssetAnnotations)initWithAssetID:(id)a3;
-- (BCMutableAssetAnnotations)initWithCloudData:(id)a3;
-- (BCMutableAssetAnnotations)initWithRecord:(id)a3;
+- (BCMutableAssetAnnotations)initWithAssetID:(id)d;
+- (BCMutableAssetAnnotations)initWithCloudData:(id)data;
+- (BCMutableAssetAnnotations)initWithRecord:(id)record;
 - (NSString)debugDescription;
 - (id)configuredRecordFromAttributes;
 @end
 
 @implementation BCMutableAssetAnnotations
 
-- (BCMutableAssetAnnotations)initWithAssetID:(id)a3
+- (BCMutableAssetAnnotations)initWithAssetID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v7 = BDSCloudKitLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@
   v5 = [(BCMutableCloudData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     self = *(v5 + 8);
     *(v5 + 8) = v6;
 LABEL_7:
@@ -37,32 +37,32 @@ LABEL_7:
   return v5;
 }
 
-- (BCMutableAssetAnnotations)initWithCloudData:(id)a3
+- (BCMutableAssetAnnotations)initWithCloudData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = BCMutableAssetAnnotations;
-  v5 = [(BCMutableCloudData *)&v17 initWithCloudData:v4];
+  v5 = [(BCMutableCloudData *)&v17 initWithCloudData:dataCopy];
   if (v5)
   {
     v6 = BUProtocolCast();
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 assetID];
-      v9 = [v8 copy];
+      assetID = [v6 assetID];
+      v9 = [assetID copy];
 
       if ([(BCMutableAssetAnnotations *)v9 length])
       {
         objc_storeStrong(&v5->_assetID, v9);
-        v10 = [v7 assetVersion];
-        v11 = [v10 copy];
+        assetVersion = [v7 assetVersion];
+        v11 = [assetVersion copy];
         assetVersion = v5->_assetVersion;
         v5->_assetVersion = v11;
 
-        v13 = [v7 bookAnnotations];
+        bookAnnotations = [v7 bookAnnotations];
         p_super = &v5->_bookAnnotations->super;
-        v5->_bookAnnotations = v13;
+        v5->_bookAnnotations = bookAnnotations;
 LABEL_12:
 
         goto LABEL_13;
@@ -97,10 +97,10 @@ LABEL_13:
   return v5;
 }
 
-- (BCMutableAssetAnnotations)initWithRecord:(id)a3
+- (BCMutableAssetAnnotations)initWithRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     v9 = BDSCloudKitLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -113,25 +113,25 @@ LABEL_13:
 
   v15.receiver = self;
   v15.super_class = BCMutableAssetAnnotations;
-  v5 = [(BCMutableCloudData *)&v15 initWithRecord:v4];
+  v5 = [(BCMutableCloudData *)&v15 initWithRecord:recordCopy];
   if (v5)
   {
-    self = [BCCloudData localIdentifierFromRecord:v4];
+    self = [BCCloudData localIdentifierFromRecord:recordCopy];
     if ([(BCMutableAssetAnnotations *)self length])
     {
       objc_storeStrong(&v5->_assetID, self);
-      v6 = [v4 objectForKey:@"assetVersion"];
+      v6 = [recordCopy objectForKey:@"assetVersion"];
       assetVersion = v5->_assetVersion;
       v5->_assetVersion = v6;
 
       objc_opt_class();
-      v8 = [v4 objectForKey:@"assetAnnotations"];
+      v8 = [recordCopy objectForKey:@"assetAnnotations"];
       v9 = BUDynamicCast();
 
-      v10 = [v9 fileURL];
-      if (v10)
+      fileURL = [v9 fileURL];
+      if (fileURL)
       {
-        v11 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v10];
+        v11 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:fileURL];
         p_super = &v5->_bookAnnotations->super;
         v5->_bookAnnotations = v11;
       }
@@ -166,10 +166,10 @@ LABEL_15:
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(BCMutableAssetAnnotations *)self assetID];
-  v5 = [(BCMutableAssetAnnotations *)self assetVersion];
-  v6 = [(BCMutableAssetAnnotations *)self bookAnnotations];
-  v7 = [v3 stringWithFormat:@"assetID: %@, assetVersion: %@, annotations: %@", v4, v5, v6];
+  assetID = [(BCMutableAssetAnnotations *)self assetID];
+  assetVersion = [(BCMutableAssetAnnotations *)self assetVersion];
+  bookAnnotations = [(BCMutableAssetAnnotations *)self bookAnnotations];
+  v7 = [v3 stringWithFormat:@"assetID: %@, assetVersion: %@, annotations: %@", assetID, assetVersion, bookAnnotations];
 
   return v7;
 }
@@ -178,19 +178,19 @@ LABEL_15:
 {
   v14.receiver = self;
   v14.super_class = BCMutableAssetAnnotations;
-  v3 = [(BCMutableCloudData *)&v14 configuredRecordFromAttributes];
-  v4 = [(BCMutableAssetAnnotations *)self assetVersion];
-  [v3 setObject:v4 forKey:@"assetVersion"];
+  configuredRecordFromAttributes = [(BCMutableCloudData *)&v14 configuredRecordFromAttributes];
+  assetVersion = [(BCMutableAssetAnnotations *)self assetVersion];
+  [configuredRecordFromAttributes setObject:assetVersion forKey:@"assetVersion"];
 
   v5 = +[BCCloudAssetManager sharedManager];
-  v6 = [v5 assetAnnotationManager];
-  v7 = [(BCMutableAssetAnnotations *)self assetID];
-  v8 = [v6 fileURLForCachingCKAssetWithAssetID:v7];
+  assetAnnotationManager = [v5 assetAnnotationManager];
+  assetID = [(BCMutableAssetAnnotations *)self assetID];
+  v8 = [assetAnnotationManager fileURLForCachingCKAssetWithAssetID:assetID];
 
   if (v8 && (-[BCMutableAssetAnnotations bookAnnotations](self, "bookAnnotations"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 writeToURL:v8 atomically:1], v9, v10))
   {
     v11 = [objc_alloc(MEMORY[0x1E695B878]) initWithFileURL:v8];
-    [v3 setObject:v11 forKey:@"assetAnnotations"];
+    [configuredRecordFromAttributes setObject:v11 forKey:@"assetAnnotations"];
   }
 
   else
@@ -201,10 +201,10 @@ LABEL_15:
       sub_1E4705EAC();
     }
 
-    [v3 setObject:0 forKey:@"assetAnnotations"];
+    [configuredRecordFromAttributes setObject:0 forKey:@"assetAnnotations"];
   }
 
-  return v3;
+  return configuredRecordFromAttributes;
 }
 
 @end

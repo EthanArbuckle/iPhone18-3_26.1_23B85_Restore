@@ -1,34 +1,34 @@
 @interface FHModel
-+ (id)predictionLabelForModelName:(id)a3 modelVersion:(id)a4;
-+ (id)predictionsByModelName:(id)a3 modelVersion:(id)a4;
-+ (id)retrievePersistedModelVersion:(id)a3;
-+ (void)recordModelScore:(id)a3;
-- (BOOL)_loadModel:(id)a3;
-- (FHModel)initWithCoder:(id)a3;
-- (FHModel)initWithModelURL:(id)a3;
-- (FHModel)initWithModelURL:(id)a3 modelName:(id)a4;
-- (id)_predict:(id)a3;
++ (id)predictionLabelForModelName:(id)name modelVersion:(id)version;
++ (id)predictionsByModelName:(id)name modelVersion:(id)version;
++ (id)retrievePersistedModelVersion:(id)version;
++ (void)recordModelScore:(id)score;
+- (BOOL)_loadModel:(id)model;
+- (FHModel)initWithCoder:(id)coder;
+- (FHModel)initWithModelURL:(id)l;
+- (FHModel)initWithModelURL:(id)l modelName:(id)name;
+- (id)_predict:(id)_predict;
 - (id)featureSet;
-- (id)predictClassProbabilitiesWithDict:(id)a3;
-- (id)predictClassProbabilitiesWithMultiArray:(id)a3;
-- (void)_deleteModelFile:(id)a3;
+- (id)predictClassProbabilitiesWithDict:(id)dict;
+- (id)predictClassProbabilitiesWithMultiArray:(id)array;
+- (void)_deleteModelFile:(id)file;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHModel
 
 - (id)featureSet
 {
-  v2 = [(MLModel *)self->_mlModel modelDescription];
-  v3 = [v2 inputFeatureNames];
+  modelDescription = [(MLModel *)self->_mlModel modelDescription];
+  inputFeatureNames = [modelDescription inputFeatureNames];
 
-  return v3;
+  return inputFeatureNames;
 }
 
-- (FHModel)initWithModelURL:(id)a3
+- (FHModel)initWithModelURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = FHModel;
   v5 = [(FHModel *)&v8 init];
@@ -36,16 +36,16 @@
   if (v5)
   {
     objc_storeStrong(&v5->_modelVersion, @"0");
-    [(FHModel *)v6 _loadModel:v4];
+    [(FHModel *)v6 _loadModel:lCopy];
   }
 
   return v6;
 }
 
-- (FHModel)initWithModelURL:(id)a3 modelName:(id)a4
+- (FHModel)initWithModelURL:(id)l modelName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = FHModel;
   v8 = [(FHModel *)&v11 init];
@@ -53,37 +53,37 @@
   if (v8)
   {
     objc_storeStrong(&v8->_modelVersion, @"0");
-    objc_storeStrong(&v9->_modelName, a4);
-    [(FHModel *)v9 _loadModel:v6];
+    objc_storeStrong(&v9->_modelName, name);
+    [(FHModel *)v9 _loadModel:lCopy];
   }
 
   return v9;
 }
 
-- (BOOL)_loadModel:(id)a3
+- (BOOL)_loadModel:(id)model
 {
   v71 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  modelCopy = model;
+  if (modelCopy)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [(NSURL *)v5 lastPathComponent];
-    v8 = [v7 stringByDeletingPathExtension];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    lastPathComponent = [(NSURL *)modelCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v9 = [(NSURL *)v5 pathExtension];
-    v10 = [v9 isEqualToString:@"mlmodelc"];
+    pathExtension = [(NSURL *)modelCopy pathExtension];
+    v10 = [pathExtension isEqualToString:@"mlmodelc"];
 
     if (v10)
     {
-      objc_storeStrong(&self->_compiledModelURL, a3);
+      objc_storeStrong(&self->_compiledModelURL, model);
       v11 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [(NSURL *)self->_compiledModelURL absoluteString];
+        absoluteString = [(NSURL *)self->_compiledModelURL absoluteString];
         *buf = 136315394;
         v64 = "[FHModel _loadModel:]";
         v65 = 2112;
-        v66 = v12;
+        v66 = absoluteString;
         _os_log_impl(&dword_226DD4000, v11, OS_LOG_TYPE_INFO, "%s Using pre-compiled model at path: %@", buf, 0x16u);
       }
 
@@ -97,21 +97,21 @@
       v11 = [v15 fileURLWithPath:v16];
 
       v62 = 0;
-      v17 = [v6 createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:&v62];
+      v17 = [defaultManager createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:&v62];
       v18 = v62;
       if ((v17 & 1) == 0)
       {
         v31 = FinHealthLogObject(@"FinHealthCore");
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
-          v32 = [v11 absoluteString];
-          v33 = [v18 localizedDescription];
+          absoluteString2 = [v11 absoluteString];
+          localizedDescription = [v18 localizedDescription];
           *buf = 136315650;
           v64 = "[FHModel _loadModel:]";
           v65 = 2112;
-          v66 = v32;
+          v66 = absoluteString2;
           v67 = 2112;
-          v68 = v33;
+          v68 = localizedDescription;
           v34 = "%s failed to create directory at path: %@ with error: %@";
 LABEL_24:
           _os_log_impl(&dword_226DD4000, v31, OS_LOG_TYPE_ERROR, v34, buf, 0x20u);
@@ -124,8 +124,8 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v58 = v6;
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.mlmodelc", v8];
+      v58 = defaultManager;
+      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.mlmodelc", stringByDeletingPathExtension];
       v20 = [v11 URLByAppendingPathComponent:v19];
       compiledModelURL = self->_compiledModelURL;
       self->_compiledModelURL = v20;
@@ -133,35 +133,35 @@ LABEL_35:
       v22 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
-        v23 = [(NSURL *)self->_compiledModelURL absoluteString];
+        absoluteString3 = [(NSURL *)self->_compiledModelURL absoluteString];
         *buf = 136315650;
         v64 = "[FHModel _loadModel:]";
         v65 = 2112;
-        v66 = v5;
+        v66 = modelCopy;
         v67 = 2112;
-        v68 = v23;
+        v68 = absoluteString3;
         _os_log_impl(&dword_226DD4000, v22, OS_LOG_TYPE_INFO, "%s Compiling model from path: %@ to %@", buf, 0x20u);
       }
 
-      v24 = v8;
+      v24 = stringByDeletingPathExtension;
 
-      v25 = [(NSURL *)v5 pathExtension];
-      v26 = [v25 isEqualToString:@"mlpackage"];
+      pathExtension2 = [(NSURL *)modelCopy pathExtension];
+      v26 = [pathExtension2 isEqualToString:@"mlpackage"];
 
       v27 = MEMORY[0x277CBFEC0];
-      v28 = [MEMORY[0x277CBFEC8] defaultOptions];
+      defaultOptions = [MEMORY[0x277CBFEC8] defaultOptions];
       if (v26)
       {
         v61 = v18;
         v29 = &v61;
-        v30 = [v27 compileModelAtURL:v5 toURL:v11 options:v28 error:&v61];
+        v30 = [v27 compileModelAtURL:modelCopy toURL:v11 options:defaultOptions error:&v61];
       }
 
       else
       {
         v60 = v18;
         v29 = &v60;
-        v30 = [v27 compileSpecificationAtURL:v5 toURL:v11 options:v28 error:&v60];
+        v30 = [v27 compileSpecificationAtURL:modelCopy toURL:v11 options:defaultOptions error:&v60];
       }
 
       v35 = v30;
@@ -171,48 +171,48 @@ LABEL_35:
       v31 = v36;
       if (!v35)
       {
-        v8 = v24;
+        stringByDeletingPathExtension = v24;
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
-          v54 = [v11 absoluteString];
-          v55 = [v13 localizedDescription];
+          absoluteString4 = [v11 absoluteString];
+          localizedDescription2 = [v13 localizedDescription];
           *buf = 136315906;
           v64 = "[FHModel _loadModel:]";
           v65 = 2112;
-          v66 = v5;
+          v66 = modelCopy;
           v67 = 2112;
-          v68 = v54;
+          v68 = absoluteString4;
           v69 = 2112;
-          v70 = v55;
+          v70 = localizedDescription2;
           _os_log_impl(&dword_226DD4000, v31, OS_LOG_TYPE_ERROR, "%s failed to compile modelURL spec at path: %@ to tempDir path: %@ with error: %@", buf, 0x2Au);
         }
 
         v14 = 0;
         v18 = v13;
-        v6 = v58;
+        defaultManager = v58;
         goto LABEL_35;
       }
 
-      v8 = v24;
+      stringByDeletingPathExtension = v24;
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
-        v37 = [v11 path];
+        path = [v11 path];
         *buf = 136315650;
         v64 = "[FHModel _loadModel:]";
         v65 = 2112;
-        v66 = v5;
+        v66 = modelCopy;
         v67 = 2112;
-        v68 = v37;
+        v68 = path;
         _os_log_impl(&dword_226DD4000, v31, OS_LOG_TYPE_INFO, "%s Successfully compiled modelURL spec at path: %@ to tempDir path: %@!", buf, 0x20u);
       }
 
-      v6 = v58;
+      defaultManager = v58;
     }
 
     v11 = objc_alloc_init(MEMORY[0x277CBFF38]);
     [v11 setComputeUnits:0];
-    v38 = [(FHModel *)self modelName];
-    [v11 setModelDisplayName:v38];
+    modelName = [(FHModel *)self modelName];
+    [v11 setModelDisplayName:modelName];
 
     v39 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
@@ -247,9 +247,9 @@ LABEL_35:
         _os_log_impl(&dword_226DD4000, v31, OS_LOG_TYPE_INFO, "%s Successfully loaded model from path: %@", buf, 0x16u);
       }
 
-      v46 = [(MLModel *)self->_mlModel modelDescription];
-      v47 = [v46 metadata];
-      v48 = [v47 objectForKey:*MEMORY[0x277CBFEA8]];
+      modelDescription = [(MLModel *)self->_mlModel modelDescription];
+      metadata = [modelDescription metadata];
+      v48 = [metadata objectForKey:*MEMORY[0x277CBFEA8]];
       modelVersion = self->_modelVersion;
       p_modelVersion = &self->_modelVersion;
       *p_modelVersion = v48;
@@ -268,14 +268,14 @@ LABEL_35:
 
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
-      v32 = [(NSURL *)self->_compiledModelURL path];
-      v33 = [v18 localizedDescription];
+      absoluteString2 = [(NSURL *)self->_compiledModelURL path];
+      localizedDescription = [v18 localizedDescription];
       *buf = 136315650;
       v64 = "[FHModel _loadModel:]";
       v65 = 2112;
-      v66 = v32;
+      v66 = absoluteString2;
       v67 = 2112;
-      v68 = v33;
+      v68 = localizedDescription;
       v34 = "%s failed to load model %@ with error: %@";
       goto LABEL_24;
     }
@@ -290,16 +290,16 @@ LABEL_36:
   return v14;
 }
 
-- (id)_predict:(id)a3
+- (id)_predict:(id)_predict
 {
   v25 = *MEMORY[0x277D85DE8];
   mlModel = self->_mlModel;
   if (mlModel)
   {
     v5 = MEMORY[0x277CBFED0];
-    v6 = a3;
+    _predictCopy = _predict;
     v18 = 0;
-    v7 = [[v5 alloc] initWithDictionary:v6 error:&v18];
+    v7 = [[v5 alloc] initWithDictionary:_predictCopy error:&v18];
 
     v8 = v18;
     v17 = v8;
@@ -312,13 +312,13 @@ LABEL_36:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         modelName = self->_modelName;
-        v13 = [v10 localizedDescription];
+        localizedDescription = [v10 localizedDescription];
         *buf = 136315650;
         v20 = "[FHModel _predict:]";
         v21 = 2112;
         v22 = modelName;
         v23 = 2112;
-        v24 = v13;
+        v24 = localizedDescription;
         _os_log_impl(&dword_226DD4000, v11, OS_LOG_TYPE_ERROR, "%s Error in getting predictions for model %@ Error %@", buf, 0x20u);
       }
 
@@ -341,31 +341,31 @@ LABEL_36:
   return v14;
 }
 
-- (id)predictClassProbabilitiesWithMultiArray:(id)a3
+- (id)predictClassProbabilitiesWithMultiArray:(id)array
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_alloc(MEMORY[0x277CBFF48]);
   v28[0] = &unk_283A88338;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(arrayCopy, "count")}];
   v28[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
   v21 = 0;
   v8 = [v5 initWithShape:v7 dataType:65568 error:&v21];
   v9 = v21;
 
-  if ([v4 count])
+  if ([arrayCopy count])
   {
     v10 = 0;
     do
     {
-      v11 = [v4 objectAtIndexedSubscript:v10];
+      v11 = [arrayCopy objectAtIndexedSubscript:v10];
       [v8 setObject:v11 atIndexedSubscript:v10];
 
       ++v10;
     }
 
-    while (v10 < [v4 count]);
+    while (v10 < [arrayCopy count]);
   }
 
   if (v9)
@@ -373,11 +373,11 @@ LABEL_36:
     v12 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v9 localizedDescription];
+      localizedDescription = [v9 localizedDescription];
       *buf = 136315394;
       v25 = "[FHModel predictClassProbabilitiesWithMultiArray:]";
       v26 = 2112;
-      v27 = v13;
+      v27 = localizedDescription;
       _os_log_impl(&dword_226DD4000, v12, OS_LOG_TYPE_ERROR, "%s Error converting features into MLMultiArray %@", buf, 0x16u);
     }
 
@@ -393,8 +393,8 @@ LABEL_36:
 
     v16 = [(FHModel *)self _predict:v12];
     v17 = [v16 featureValueForName:@"classProbability"];
-    v18 = [v17 multiArrayValue];
-    v14 = [v18 objectAtIndexedSubscript:0];
+    multiArrayValue = [v17 multiArrayValue];
+    v14 = [multiArrayValue objectAtIndexedSubscript:0];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -402,33 +402,33 @@ LABEL_36:
   return v14;
 }
 
-- (id)predictClassProbabilitiesWithDict:(id)a3
+- (id)predictClassProbabilitiesWithDict:(id)dict
 {
-  v3 = [(FHModel *)self _predict:a3];
+  v3 = [(FHModel *)self _predict:dict];
   v4 = [v3 featureValueForName:@"classProbability"];
-  v5 = [v4 dictionaryValue];
+  dictionaryValue = [v4 dictionaryValue];
 
-  return v5;
+  return dictionaryValue;
 }
 
-- (void)_deleteModelFile:(id)a3
+- (void)_deleteModelFile:(id)file
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  fileCopy = file;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v5 = FinHealthLogObject(@"FinHealthCore");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v3 path];
+    path = [fileCopy path];
     *buf = 136315394;
     v16 = "[FHModel _deleteModelFile:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = path;
     _os_log_impl(&dword_226DD4000, v5, OS_LOG_TYPE_DEBUG, "%s Deleting file %@", buf, 0x16u);
   }
 
   v14 = 0;
-  v7 = [v4 removeItemAtURL:v3 error:&v14];
+  v7 = [defaultManager removeItemAtURL:fileCopy error:&v14];
   v8 = v14;
   v9 = v8;
   if (v7)
@@ -446,11 +446,11 @@ LABEL_36:
     v11 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v9 localizedDescription];
+      localizedDescription = [v9 localizedDescription];
       *buf = 136315394;
       v16 = "[FHModel _deleteModelFile:]";
       v17 = 2112;
-      v18 = v12;
+      v18 = localizedDescription;
       _os_log_impl(&dword_226DD4000, v11, OS_LOG_TYPE_ERROR, "%s Error deleting file %@", buf, 0x16u);
     }
   }
@@ -458,10 +458,10 @@ LABEL_36:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)recordModelScore:(id)a3
++ (void)recordModelScore:(id)score
 {
-  v4 = a3;
-  v3 = v4;
+  scoreCopy = score;
+  v3 = scoreCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -482,27 +482,27 @@ id __28__FHModel_recordModelScore___block_invoke(uint64_t a1)
   return v1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modelName = self->_modelName;
-  v5 = a3;
-  [v5 encodeObject:modelName forKey:@"modelName"];
-  [v5 encodeObject:self->_modelVersion forKey:@"modelVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:modelName forKey:@"modelName"];
+  [coderCopy encodeObject:self->_modelVersion forKey:@"modelVersion"];
 }
 
-- (FHModel)initWithCoder:(id)a3
+- (FHModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = FHModel;
   v5 = [(FHModel *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelName"];
     modelName = v5->_modelName;
     v5->_modelName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelVersion"];
     modelVersion = v5->_modelVersion;
     v5->_modelVersion = v8;
   }
@@ -510,21 +510,21 @@ id __28__FHModel_recordModelScore___block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (id)predictionsByModelName:(id)a3 modelVersion:(id)a4
++ (id)predictionsByModelName:(id)name modelVersion:(id)version
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 || ([a1 retrievePersistedModelVersion:v6], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  nameCopy = name;
+  versionCopy = version;
+  if (versionCopy || ([self retrievePersistedModelVersion:nameCopy], (versionCopy = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v8 = v7;
+    v8 = versionCopy;
     v9 = [[FHDatabaseEntity alloc] initWithEntity:@"features_predicted_realtime"];
-    v10 = [(FHDatabaseEntity *)v9 fieldsInOrder];
-    v11 = [v10 subarrayWithRange:{1, objc_msgSend(v10, "count") - 1}];
+    fieldsInOrder = [(FHDatabaseEntity *)v9 fieldsInOrder];
+    v11 = [fieldsInOrder subarrayWithRange:{1, objc_msgSend(fieldsInOrder, "count") - 1}];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __47__FHModel_predictionsByModelName_modelVersion___block_invoke;
     v23[3] = &unk_2785CB9C8;
-    v24 = v6;
+    v24 = nameCopy;
     v12 = v8;
     v25 = v12;
     v13 = [FHDatabaseClauseFromBuilder initWithBuilder:v23];
@@ -599,16 +599,16 @@ void __47__FHModel_predictionsByModelName_modelVersion___block_invoke_217(uint64
   [*(*(*(a1 + 32) + 8) + 40) addObject:v15];
 }
 
-+ (id)retrievePersistedModelVersion:(id)a3
++ (id)retrievePersistedModelVersion:(id)version
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  versionCopy = version;
   v4 = [[FHDatabaseEntity alloc] initWithEntity:@"fh_processing_history"];
-  v5 = [(FHDatabaseEntity *)v4 fieldsInOrder];
-  if ([v5 count] > 2)
+  fieldsInOrder = [(FHDatabaseEntity *)v4 fieldsInOrder];
+  if ([fieldsInOrder count] > 2)
   {
-    v8 = [v5 objectAtIndex:1];
-    v9 = [v5 objectAtIndex:2];
+    v8 = [fieldsInOrder objectAtIndex:1];
+    v9 = [fieldsInOrder objectAtIndex:2];
     v25[0] = v8;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
     v11 = [[FHSmartCompoundFeatureRankedValue alloc] initWithLabelAndIntegerRank:v9 featureRank:1];
@@ -627,7 +627,7 @@ void __47__FHModel_predictionsByModelName_modelVersion___block_invoke_217(uint64
     v17[3] = &unk_2785CB9C8;
     v6 = v8;
     v18 = v6;
-    v19 = v3;
+    v19 = versionCopy;
     v13 = [FHDatabaseClauseFromBuilder initWithBuilder:v17];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -650,7 +650,7 @@ void __47__FHModel_predictionsByModelName_modelVersion___block_invoke_217(uint64
       *&buf[12] = 2048;
       *&buf[14] = 3;
       *&buf[22] = 2048;
-      v21 = [v5 count];
+      v21 = [fieldsInOrder count];
       _os_log_impl(&dword_226DD4000, v6, OS_LOG_TYPE_ERROR, "%s: Required fields in processing history table not found. Expected %lu got %lu", buf, 0x20u);
     }
 
@@ -703,19 +703,19 @@ void __41__FHModel_retrievePersistedModelVersion___block_invoke_2(uint64_t a1, v
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)predictionLabelForModelName:(id)a3 modelVersion:(id)a4
++ (id)predictionLabelForModelName:(id)name modelVersion:(id)version
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  nameCopy = name;
+  versionCopy = version;
+  if (versionCopy)
   {
     v7 = [[FHDatabaseEntity alloc] initWithEntity:@"features_prediction_labels"];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v5, v6];
+    versionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", nameCopy, versionCopy];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __52__FHModel_predictionLabelForModelName_modelVersion___block_invoke;
     v20[3] = &unk_2785CB058;
-    v9 = v8;
+    v9 = versionCopy;
     v21 = v9;
     v10 = [FHDatabaseClauseFromBuilder initWithBuilder:v20];
     v14 = 0;

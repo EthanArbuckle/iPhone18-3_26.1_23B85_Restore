@@ -1,13 +1,13 @@
 @interface BSMachServiceAliases
 + (id)environmentAliases;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BSMachServiceAliases)init;
 - (NSDictionary)environmentRepresentation;
-- (id)_initWithAliases:(void *)a3 encoded:(char)a4 mutable:;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithAliases:(void *)aliases encoded:(char)encoded mutable:;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)resolveMachService:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)resolveMachService:(id)service;
 - (unint64_t)hash;
 @end
 
@@ -42,13 +42,13 @@ LABEL_3:
   {
     objc_opt_self();
     v5 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"+-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~"];
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     lock_aliases = self->_lock_aliases;
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
     v16 = __49__BSMachServiceAliases_environmentRepresentation__block_invoke;
     v17 = &unk_1E72CB650;
-    v8 = v6;
+    v8 = array;
     v18 = v8;
     v9 = v5;
     v19 = v9;
@@ -196,32 +196,32 @@ void __42__BSMachServiceAliases_environmentAliases__block_invoke()
 
 - (BSMachServiceAliases)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BSMachServiceAliases.m" lineNumber:26 description:@"-init is not allowed on BSMachServiceAliases"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BSMachServiceAliases.m" lineNumber:26 description:@"-init is not allowed on BSMachServiceAliases"];
 
   return 0;
 }
 
-- (id)_initWithAliases:(void *)a3 encoded:(char)a4 mutable:
+- (id)_initWithAliases:(void *)aliases encoded:(char)encoded mutable:
 {
   v8 = a2;
-  v9 = a3;
-  if (a1)
+  aliasesCopy = aliases;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = BSMachServiceAliases;
     v10 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       *(v10 + 6) = 0;
       objc_storeStrong(v10 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      *(a1 + 28) = a4;
+      objc_storeStrong(self + 2, aliases);
+      *(self + 28) = encoded;
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __49__BSMachServiceAliases_environmentRepresentation__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -235,12 +235,12 @@ void __49__BSMachServiceAliases_environmentRepresentation__block_invoke(uint64_t
   [v6 addObject:v9];
 }
 
-- (id)resolveMachService:(id)a3
+- (id)resolveMachService:(id)service
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  serviceCopy = service;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!serviceCopy)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -253,7 +253,7 @@ void __49__BSMachServiceAliases_environmentRepresentation__block_invoke(uint64_t
       v22 = 2114;
       v23 = v13;
       v24 = 2048;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2114;
       v27 = @"BSMachServiceAliases.m";
       v28 = 1024;
@@ -282,7 +282,7 @@ void __49__BSMachServiceAliases_environmentRepresentation__block_invoke(uint64_t
       v22 = 2114;
       v23 = v18;
       v24 = 2048;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2114;
       v27 = @"BSMachServiceAliases.m";
       v28 = 1024;
@@ -303,7 +303,7 @@ void __49__BSMachServiceAliases_environmentRepresentation__block_invoke(uint64_t
     os_unfair_lock_lock(&self->_lock);
   }
 
-  v6 = [(NSMutableDictionary *)self->_lock_aliases objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_lock_aliases objectForKey:serviceCopy];
   if (self->_mutable)
   {
     os_unfair_lock_unlock(&self->_lock);
@@ -316,7 +316,7 @@ void __49__BSMachServiceAliases_environmentRepresentation__block_invoke(uint64_t
 
   else
   {
-    v7 = v5;
+    v7 = serviceCopy;
   }
 
   v8 = v7;
@@ -324,7 +324,7 @@ void __49__BSMachServiceAliases_environmentRepresentation__block_invoke(uint64_t
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_mutable)
   {
@@ -344,7 +344,7 @@ void __49__BSMachServiceAliases_environmentRepresentation__block_invoke(uint64_t
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   if (self->_mutable)
   {
@@ -379,10 +379,10 @@ void __49__BSMachServiceAliases_environmentRepresentation__block_invoke(uint64_t
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_22;
@@ -395,11 +395,11 @@ void __49__BSMachServiceAliases_environmentRepresentation__block_invoke(uint64_t
     goto LABEL_22;
   }
 
-  if (self >= v4)
+  if (self >= equalCopy)
   {
-    if (v4->_mutable)
+    if (equalCopy->_mutable)
     {
-      os_unfair_lock_lock(&v4->_lock);
+      os_unfair_lock_lock(&equalCopy->_lock);
     }
 
     if (self->_mutable)
@@ -407,10 +407,10 @@ void __49__BSMachServiceAliases_environmentRepresentation__block_invoke(uint64_t
       os_unfair_lock_lock(&self->_lock);
     }
 
-    v6 = BSEqualDictionaries(self->_lock_aliases, v4->_lock_aliases);
-    if (v4->_mutable)
+    v6 = BSEqualDictionaries(self->_lock_aliases, equalCopy->_lock_aliases);
+    if (equalCopy->_mutable)
     {
-      os_unfair_lock_unlock(&v4->_lock);
+      os_unfair_lock_unlock(&equalCopy->_lock);
     }
 
     if (self->_mutable)
@@ -426,19 +426,19 @@ void __49__BSMachServiceAliases_environmentRepresentation__block_invoke(uint64_t
       os_unfair_lock_lock(&self->_lock);
     }
 
-    if (v4->_mutable)
+    if (equalCopy->_mutable)
     {
-      os_unfair_lock_lock(&v4->_lock);
+      os_unfair_lock_lock(&equalCopy->_lock);
     }
 
-    v6 = BSEqualDictionaries(self->_lock_aliases, v4->_lock_aliases);
+    v6 = BSEqualDictionaries(self->_lock_aliases, equalCopy->_lock_aliases);
     if (self->_mutable)
     {
       os_unfair_lock_unlock(&self->_lock);
     }
 
-    self = v4;
-    if (v4->_mutable)
+    self = equalCopy;
+    if (equalCopy->_mutable)
     {
 LABEL_23:
       os_unfair_lock_unlock(&self->_lock);

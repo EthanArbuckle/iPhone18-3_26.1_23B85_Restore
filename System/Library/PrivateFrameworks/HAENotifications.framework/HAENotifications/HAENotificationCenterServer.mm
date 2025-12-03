@@ -1,8 +1,8 @@
 @interface HAENotificationCenterServer
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (HAENotificationCenterServer)init;
-- (void)addHAENotificationEvent:(id)a3;
+- (void)addHAENotificationEvent:(id)event;
 @end
 
 @implementation HAENotificationCenterServer
@@ -44,25 +44,25 @@ uint64_t __45__HAENotificationCenterServer_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)addHAENotificationEvent:(id)a3
+- (void)addHAENotificationEvent:(id)event
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventCopy = event;
   v4 = HAENotificationsLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v3;
+    v11 = eventCopy;
     _os_log_impl(&dword_25081E000, v4, OS_LOG_TYPE_DEFAULT, "Received HAE notificaton event: %@", &v10, 0xCu);
   }
 
   v5 = +[HAENDefaults sharedInstance];
-  v6 = [v5 isHAENFeatureEnabled];
+  isHAENFeatureEnabled = [v5 isHAENFeatureEnabled];
 
-  if (v6)
+  if (isHAENFeatureEnabled)
   {
     v7 = +[HAENotificationCenterManager sharedInstance];
-    v8 = [v7 addHAENotificationEvent:v3];
+    v8 = [v7 addHAENotificationEvent:eventCopy];
   }
 
   else
@@ -78,14 +78,14 @@ uint64_t __45__HAENotificationCenterServer_sharedInstance__block_invoke()
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2862CB150];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v7 = HAENotificationsLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -94,13 +94,13 @@ uint64_t __45__HAENotificationCenterServer_sharedInstance__block_invoke()
     v12 = 138412802;
     v13 = v8;
     v14 = 1024;
-    v15 = [v5 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v16 = 2080;
     v17 = "Success";
     _os_log_impl(&dword_25081E000, v7, OS_LOG_TYPE_DEFAULT, "New XPC Connection to %@ from pid: %d [%s]", &v12, 0x1Cu);
   }
 
-  [v5 resume];
+  [connectionCopy resume];
   v10 = *MEMORY[0x277D85DE8];
   return 1;
 }

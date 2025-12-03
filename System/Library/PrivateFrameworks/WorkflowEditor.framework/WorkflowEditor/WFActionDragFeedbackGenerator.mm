@@ -1,11 +1,11 @@
 @interface WFActionDragFeedbackGenerator
 - (unsigned)reorderSound;
 - (void)dealloc;
-- (void)draggingActionsEnteredDeletionZone:(id)a3;
-- (void)draggingInsertedActions:(id)a3 intoWorkflow:(id)a4 atIndex:(unint64_t)a5;
+- (void)draggingActionsEnteredDeletionZone:(id)zone;
+- (void)draggingInsertedActions:(id)actions intoWorkflow:(id)workflow atIndex:(unint64_t)index;
 - (void)draggingItemSnapped;
-- (void)draggingMovedActions:(id)a3 fromIndexes:(id)a4 toIndexes:(id)a5 inWorkflow:(id)a6;
-- (void)draggingRemovedActions:(id)a3;
+- (void)draggingMovedActions:(id)actions fromIndexes:(id)indexes toIndexes:(id)toIndexes inWorkflow:(id)workflow;
+- (void)draggingRemovedActions:(id)actions;
 - (void)draggingStarted;
 - (void)playReorderSound;
 @end
@@ -26,9 +26,9 @@
 
 - (void)playReorderSound
 {
-  v2 = [(WFActionDragFeedbackGenerator *)self reorderSound];
+  reorderSound = [(WFActionDragFeedbackGenerator *)self reorderSound];
 
-  AudioServicesPlaySystemSoundWithCompletion(v2, 0);
+  AudioServicesPlaySystemSoundWithCompletion(reorderSound, 0);
 }
 
 - (unsigned)reorderSound
@@ -44,107 +44,107 @@
   return self->_reorderSound;
 }
 
-- (void)draggingActionsEnteredDeletionZone:(id)a3
+- (void)draggingActionsEnteredDeletionZone:(id)zone
 {
-  v10 = a3;
+  zoneCopy = zone;
   [(WFActionDragFeedbackGenerator *)self draggingItemSnapped];
   if (UIAccessibilityIsVoiceOverRunning())
   {
     v4 = *MEMORY[0x277D76438];
     v5 = MEMORY[0x277CCACA8];
     v6 = WFLocalizedString(@"Release to remove %@");
-    v7 = [v10 firstObject];
-    v8 = [v7 localizedName];
-    v9 = [v5 stringWithFormat:v6, v8];
+    firstObject = [zoneCopy firstObject];
+    localizedName = [firstObject localizedName];
+    v9 = [v5 stringWithFormat:v6, localizedName];
     UIAccessibilityPostNotification(v4, v9);
   }
 }
 
-- (void)draggingMovedActions:(id)a3 fromIndexes:(id)a4 toIndexes:(id)a5 inWorkflow:(id)a6
+- (void)draggingMovedActions:(id)actions fromIndexes:(id)indexes toIndexes:(id)toIndexes inWorkflow:(id)workflow
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  actionsCopy = actions;
+  indexesCopy = indexes;
+  toIndexesCopy = toIndexes;
+  workflowCopy = workflow;
   [(WFActionDragFeedbackGenerator *)self draggingItemSnapped];
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v14 = [v13 actions];
+    actions = [workflowCopy actions];
     v25 = MEMORY[0x277D85DD0];
     v26 = 3221225472;
     v27 = __87__WFActionDragFeedbackGenerator_draggingMovedActions_fromIndexes_toIndexes_inWorkflow___block_invoke;
     v28 = &unk_279EDBC00;
-    v29 = v10;
-    v15 = [v14 if_objectsPassingTest:&v25];
+    v29 = actionsCopy;
+    v15 = [actions if_objectsPassingTest:&v25];
 
-    v16 = [v11 lastIndex];
-    if (v16 <= [v12 lastIndex])
+    lastIndex = [indexesCopy lastIndex];
+    if (lastIndex <= [toIndexesCopy lastIndex])
     {
-      v18 = [v12 firstIndex] - 1;
+      v18 = [toIndexesCopy firstIndex] - 1;
       v19 = @"moved below %@";
     }
 
     else
     {
-      v17 = [v12 lastIndex];
-      v18 = v17 - [v12 count] + 1;
+      lastIndex2 = [toIndexesCopy lastIndex];
+      v18 = lastIndex2 - [toIndexesCopy count] + 1;
       v19 = @"moved above %@";
     }
 
     v20 = [v15 objectAtIndex:v18];
     v21 = MEMORY[0x277CCACA8];
     v22 = WFLocalizedString(v19);
-    v23 = [v20 accessibilityName];
-    v24 = [v21 localizedStringWithFormat:v22, v23, v25, v26, v27, v28];
+    accessibilityName = [v20 accessibilityName];
+    v24 = [v21 localizedStringWithFormat:v22, accessibilityName, v25, v26, v27, v28];
 
     UIAccessibilityPostNotification(*MEMORY[0x277D76438], v24);
     [(WFActionDragFeedbackGenerator *)self playReorderSound];
   }
 }
 
-- (void)draggingRemovedActions:(id)a3
+- (void)draggingRemovedActions:(id)actions
 {
-  v9 = a3;
+  actionsCopy = actions;
   [(WFActionDragFeedbackGenerator *)self draggingItemSnapped];
   if (UIAccessibilityIsVoiceOverRunning())
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = WFLocalizedString(@"removed %@");
-    v6 = [v9 firstObject];
-    v7 = [v6 accessibilityName];
-    v8 = [v4 localizedStringWithFormat:v5, v7];
+    firstObject = [actionsCopy firstObject];
+    accessibilityName = [firstObject accessibilityName];
+    v8 = [v4 localizedStringWithFormat:v5, accessibilityName];
 
     UIAccessibilityPostNotification(*MEMORY[0x277D76438], v8);
   }
 }
 
-- (void)draggingInsertedActions:(id)a3 intoWorkflow:(id)a4 atIndex:(unint64_t)a5
+- (void)draggingInsertedActions:(id)actions intoWorkflow:(id)workflow atIndex:(unint64_t)index
 {
-  v21 = a3;
-  v8 = a4;
+  actionsCopy = actions;
+  workflowCopy = workflow;
   [(WFActionDragFeedbackGenerator *)self draggingItemSnapped];
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v9 = [v8 actions];
-    v10 = v9;
-    if (a5)
+    actions = [workflowCopy actions];
+    v10 = actions;
+    if (index)
     {
-      v11 = [v9 objectAtIndex:a5 - 1];
+      v11 = [actions objectAtIndex:index - 1];
 
       v12 = MEMORY[0x277CCACA8];
-      v13 = WFLocalizedString(@"added %1$@ to shortcut below %2$@");
-      v14 = [v21 firstObject];
-      v15 = [v14 accessibilityName];
-      v16 = [v11 localizedName];
-      v17 = [v12 localizedStringWithFormat:v13, v15, v16];
+      accessibilityName2 = WFLocalizedString(@"added %1$@ to shortcut below %2$@");
+      firstObject = [actionsCopy firstObject];
+      accessibilityName = [firstObject accessibilityName];
+      localizedName = [v11 localizedName];
+      v17 = [v12 localizedStringWithFormat:accessibilityName2, accessibilityName, localizedName];
     }
 
     else
     {
-      if ([v9 count])
+      if ([actions count])
       {
-        v18 = [v8 actions];
-        v11 = [v18 objectAtIndex:0];
+        actions2 = [workflowCopy actions];
+        v11 = [actions2 objectAtIndex:0];
       }
 
       else
@@ -152,20 +152,20 @@
         v11 = 0;
       }
 
-      v19 = [v21 firstObject];
-      v13 = [v19 accessibilityName];
+      firstObject2 = [actionsCopy firstObject];
+      accessibilityName2 = [firstObject2 accessibilityName];
 
       v20 = MEMORY[0x277CCACA8];
       if (!v11)
       {
-        v14 = WFLocalizedString(@"added %@ to shortcut");
-        v17 = [v20 localizedStringWithFormat:v14, v13];
+        firstObject = WFLocalizedString(@"added %@ to shortcut");
+        v17 = [v20 localizedStringWithFormat:firstObject, accessibilityName2];
         goto LABEL_10;
       }
 
-      v14 = WFLocalizedString(@"added %1$@ to shortcut above %2$@");
-      v15 = [v11 accessibilityName];
-      v17 = [v20 localizedStringWithFormat:v14, v13, v15];
+      firstObject = WFLocalizedString(@"added %1$@ to shortcut above %2$@");
+      accessibilityName = [v11 accessibilityName];
+      v17 = [v20 localizedStringWithFormat:firstObject, accessibilityName2, accessibilityName];
     }
 
 LABEL_10:
@@ -197,9 +197,9 @@ LABEL_10:
     UIAccessibilityPostNotification(v3, v4);
   }
 
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastDragStartDate = self->_lastDragStartDate;
-  self->_lastDragStartDate = v5;
+  self->_lastDragStartDate = date;
 }
 
 @end

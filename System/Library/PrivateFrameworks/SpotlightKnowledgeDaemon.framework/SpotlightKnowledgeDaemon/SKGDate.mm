@@ -1,21 +1,21 @@
 @interface SKGDate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SKGDate
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SKGDate *)self date];
-    v7 = [v5 date];
-    if ([v6 isEqualToDate:v7])
+    v5 = equalCopy;
+    date = [(SKGDate *)self date];
+    date2 = [v5 date];
+    if ([date isEqualToDate:date2])
     {
       v10.receiver = self;
       v10.super_class = SKGDate;
@@ -38,8 +38,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SKGDate *)self date];
-  v3 = [v2 hash];
+  date = [(SKGDate *)self date];
+  v3 = [date hash];
 
   return v3;
 }
@@ -48,8 +48,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SKGDate *)self date];
-  v6 = [v5 description];
+  date = [(SKGDate *)self date];
+  v6 = [date description];
   [(SKGEntity *)self score];
   v8 = [v3 stringWithFormat:@"<%@: %@ %f", v4, v6, v7];
 

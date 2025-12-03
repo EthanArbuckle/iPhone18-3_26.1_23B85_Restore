@@ -1,54 +1,54 @@
 @interface HKBloodPressureChartFactoryViewControllerProvider
-+ (BOOL)featureAvailableForUsage:(id)a3;
-+ (BOOL)healthFactorsIncludePregnancy:(id)a3;
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11;
++ (BOOL)featureAvailableForUsage:(id)usage;
++ (BOOL)healthFactorsIncludePregnancy:(id)pregnancy;
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1;
 @end
 
 @implementation HKBloodPressureChartFactoryViewControllerProvider
 
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1
 {
-  v34 = a3;
-  v33 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = [v16 healthStore];
-  v22 = [a1 featureAvailableForUsage:v21];
+  identifierCopy = identifier;
+  factoryCopy = factory;
+  itemsCopy = items;
+  dateCopy = date;
+  activityCopy = activity;
+  modelCopy = model;
+  typesCopy = types;
+  healthStore = [itemsCopy healthStore];
+  v22 = [self featureAvailableForUsage:healthStore];
 
   v23 = objc_alloc(MEMORY[0x1E696BF60]);
-  v24 = [v16 healthStore];
-  v25 = [v23 initWithHealthStore:v24];
+  healthStore2 = [itemsCopy healthStore];
+  v25 = [v23 initWithHealthStore:healthStore2];
 
-  v26 = [v25 isClassificationAgeGated];
-  v27 = [a1 healthFactorsIncludePregnancy:v20];
-  if (v22 && ((v27 | v26 ^ 1) & 1) != 0)
+  isClassificationAgeGated = [v25 isClassificationAgeGated];
+  v27 = [self healthFactorsIncludePregnancy:typesCopy];
+  if (v22 && ((v27 | isClassificationAgeGated ^ 1) & 1) != 0)
   {
-    v28 = [[HKOverlayRoomBloodPressureViewController alloc] initWithDisplayDate:v17 applicationItems:v16 factorDisplayTypes:v20 mode:1 classificationAgeGated:v26 & 1];
-    [(HKOverlayRoomViewController *)v28 setRestorationUserActivity:v18];
-    [(HKOverlayRoomViewController *)v28 setAdditionalChartOptions:a11];
-    v30 = v33;
-    v29 = v34;
+    v28 = [[HKOverlayRoomBloodPressureViewController alloc] initWithDisplayDate:dateCopy applicationItems:itemsCopy factorDisplayTypes:typesCopy mode:1 classificationAgeGated:isClassificationAgeGated & 1];
+    [(HKOverlayRoomViewController *)v28 setRestorationUserActivity:activityCopy];
+    [(HKOverlayRoomViewController *)v28 setAdditionalChartOptions:options];
+    v30 = factoryCopy;
+    v29 = identifierCopy;
   }
 
   else
   {
-    v30 = v33;
-    v29 = v34;
-    v28 = [v33 createInteractiveChartViewControllerForTypeIdentifier:v34 chartFactory:v33 applicationItems:v16 displayDate:v17 preferredOverlay:a7 restorationUserActivity:v18 trendModel:v19 factorDisplayTypes:v20 additionalChartOptions:a11];
+    v30 = factoryCopy;
+    v29 = identifierCopy;
+    v28 = [factoryCopy createInteractiveChartViewControllerForTypeIdentifier:identifierCopy chartFactory:factoryCopy applicationItems:itemsCopy displayDate:dateCopy preferredOverlay:overlay restorationUserActivity:activityCopy trendModel:modelCopy factorDisplayTypes:typesCopy additionalChartOptions:options];
   }
 
   return v28;
 }
 
-+ (BOOL)featureAvailableForUsage:(id)a3
++ (BOOL)featureAvailableForUsage:(id)usage
 {
   v4 = MEMORY[0x1E696C178];
-  v5 = a3;
+  usageCopy = usage;
   v6 = [v4 alloc];
-  v7 = [v6 initWithFeatureIdentifier:*MEMORY[0x1E696B880] healthStore:v5];
+  v7 = [v6 initWithFeatureIdentifier:*MEMORY[0x1E696B880] healthStore:usageCopy];
 
   v13 = 0;
   v8 = [v7 featureStatusWithError:&v13];
@@ -56,7 +56,7 @@
   if (v8)
   {
     v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696B800]];
-    v11 = [v10 areAllRequirementsSatisfied];
+    areAllRequirementsSatisfied = [v10 areAllRequirementsSatisfied];
   }
 
   else
@@ -65,24 +65,24 @@
     v10 = HKLogBloodPressureJournal();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(HKBloodPressureChartFactoryViewControllerProvider *)a1 featureAvailableForUsage:v9, v10];
+      [(HKBloodPressureChartFactoryViewControllerProvider *)self featureAvailableForUsage:v9, v10];
     }
 
-    v11 = 0;
+    areAllRequirementsSatisfied = 0;
   }
 
-  return v11;
+  return areAllRequirementsSatisfied;
 }
 
-+ (BOOL)healthFactorsIncludePregnancy:(id)a3
++ (BOOL)healthFactorsIncludePregnancy:(id)pregnancy
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  pregnancyCopy = pregnancy;
+  v4 = [pregnancyCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -92,7 +92,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pregnancyCopy);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) displayTypeIdentifier] == 191)
@@ -102,7 +102,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [pregnancyCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;

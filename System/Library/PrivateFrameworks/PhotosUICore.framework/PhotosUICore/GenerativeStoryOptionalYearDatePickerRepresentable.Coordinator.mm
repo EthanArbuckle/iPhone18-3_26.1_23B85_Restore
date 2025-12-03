@@ -1,17 +1,17 @@
 @interface GenerativeStoryOptionalYearDatePickerRepresentable.Coordinator
 - (_TtCV12PhotosUICore50GenerativeStoryOptionalYearDatePickerRepresentable11Coordinator)init;
-- (void)dateChanged:(id)a3;
+- (void)dateChanged:(id)changed;
 @end
 
 @implementation GenerativeStoryOptionalYearDatePickerRepresentable.Coordinator
 
-- (void)dateChanged:(id)a3
+- (void)dateChanged:(id)changed
 {
   v5 = sub_1A5241144();
   MEMORY[0x1EEE9AC00](v5 - 8);
-  v6 = a3;
-  v7 = self;
-  v8 = [v6 date];
+  changedCopy = changed;
+  selfCopy = self;
+  date = [changedCopy date];
   sub_1A52410F4();
 
   sub_1A46115F8(0);

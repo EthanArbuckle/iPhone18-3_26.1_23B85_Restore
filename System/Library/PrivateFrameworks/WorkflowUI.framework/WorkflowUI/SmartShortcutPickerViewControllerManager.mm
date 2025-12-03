@@ -1,7 +1,7 @@
 @interface SmartShortcutPickerViewControllerManager
 - (_TtP10WorkflowUI48SmartShortcutPickerViewControllerManagerDelegate_)delegate;
-- (id)makeViewControllerWith:(id)a3;
-- (void)setDelegate:(id)a3;
+- (id)makeViewControllerWith:(id)with;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SmartShortcutPickerViewControllerManager
@@ -13,18 +13,18 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_2747EA338();
 }
 
-- (id)makeViewControllerWith:(id)a3
+- (id)makeViewControllerWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  sub_2747EA380(v4);
+  withCopy = with;
+  selfCopy = self;
+  sub_2747EA380(withCopy);
   v7 = v6;
 
   return v7;

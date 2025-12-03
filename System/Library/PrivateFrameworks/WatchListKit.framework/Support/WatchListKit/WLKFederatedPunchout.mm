@@ -2,8 +2,8 @@
 - (id)expiry;
 - (int64_t)failureReason;
 - (unint64_t)ttl;
-- (void)setFailureReason:(int64_t)a3;
-- (void)setTtl:(unint64_t)a3;
+- (void)setFailureReason:(int64_t)reason;
+- (void)setTtl:(unint64_t)ttl;
 @end
 
 @implementation WLKFederatedPunchout
@@ -11,30 +11,30 @@
 - (unint64_t)ttl
 {
   v2 = objc_getAssociatedObject(self, WLKFederatedPunchoutReporterAdditionsKeyTTL);
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setTtl:(unint64_t)a3
+- (void)setTtl:(unint64_t)ttl
 {
   v4 = WLKFederatedPunchoutReporterAdditionsKeyTTL;
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:ttl];
   objc_setAssociatedObject(self, v4, v5, 1);
 }
 
 - (int64_t)failureReason
 {
   v2 = objc_getAssociatedObject(self, WLKFederatedPunchoutReporterAdditionsKeyFailureReason);
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setFailureReason:(int64_t)a3
+- (void)setFailureReason:(int64_t)reason
 {
   v4 = WLKFederatedPunchoutReporterAdditionsKeyFailureReason;
-  v5 = [NSNumber numberWithInteger:a3];
+  v5 = [NSNumber numberWithInteger:reason];
   objc_setAssociatedObject(self, v4, v5, 1);
 }
 
@@ -42,8 +42,8 @@
 {
   v3 = [NSDate alloc];
   v4 = [(WLKFederatedPunchout *)self ttl];
-  v5 = [(WLKFederatedPunchout *)self punchoutTime];
-  v6 = [v3 initWithTimeInterval:v5 sinceDate:v4];
+  punchoutTime = [(WLKFederatedPunchout *)self punchoutTime];
+  v6 = [v3 initWithTimeInterval:punchoutTime sinceDate:v4];
 
   return v6;
 }

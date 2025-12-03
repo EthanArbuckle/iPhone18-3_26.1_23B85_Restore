@@ -1,9 +1,9 @@
 @interface RESessionRelevanceProvider
 + (id)_simulationDateFormatter;
-- (BOOL)isEqual:(id)a3;
-- (RESessionRelevanceProvider)initWithDictionary:(id)a3;
-- (RESessionRelevanceProvider)initWithStartDate:(id)a3 endDate:(id)a4 historic:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RESessionRelevanceProvider)initWithDictionary:(id)dictionary;
+- (RESessionRelevanceProvider)initWithStartDate:(id)date endDate:(id)endDate historic:(BOOL)historic;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryEncoding;
 - (unint64_t)_hash;
@@ -11,24 +11,24 @@
 
 @implementation RESessionRelevanceProvider
 
-- (RESessionRelevanceProvider)initWithStartDate:(id)a3 endDate:(id)a4 historic:(BOOL)a5
+- (RESessionRelevanceProvider)initWithStartDate:(id)date endDate:(id)endDate historic:(BOOL)historic
 {
-  v8 = a3;
-  v9 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v18.receiver = self;
   v18.super_class = RESessionRelevanceProvider;
   v10 = [(RERelevanceProvider *)&v18 init];
   if (v10)
   {
-    v11 = REDateByRemovingSubseconds(v8);
+    v11 = REDateByRemovingSubseconds(dateCopy);
     startDate = v10->_startDate;
     v10->_startDate = v11;
 
-    v13 = REDateByRemovingSubseconds(v9);
+    v13 = REDateByRemovingSubseconds(endDateCopy);
     endDate = v10->_endDate;
     v10->_endDate = v13;
 
-    v10->_historic = a5;
+    v10->_historic = historic;
     v15 = v10->_startDate;
     if (v15)
     {
@@ -66,22 +66,22 @@ uint64_t __54__RESessionRelevanceProvider__simulationDateFormatter__block_invoke
   return [v2 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
 }
 
-- (RESessionRelevanceProvider)initWithDictionary:(id)a3
+- (RESessionRelevanceProvider)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"start_date"];
-  v6 = [v4 objectForKeyedSubscript:@"end_date"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"start_date"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"end_date"];
   v7 = v6;
   if (v5)
   {
-    v8 = [objc_opt_class() _simulationDateFormatter];
-    v9 = [v8 dateFromString:v5];
+    _simulationDateFormatter = [objc_opt_class() _simulationDateFormatter];
+    v9 = [_simulationDateFormatter dateFromString:v5];
 
     if (v7)
     {
 LABEL_3:
-      v10 = [objc_opt_class() _simulationDateFormatter];
-      v11 = [v10 dateFromString:v7];
+      _simulationDateFormatter2 = [objc_opt_class() _simulationDateFormatter];
+      v11 = [_simulationDateFormatter2 dateFromString:v7];
 
       goto LABEL_6;
     }
@@ -98,7 +98,7 @@ LABEL_3:
 
   v11 = 0;
 LABEL_6:
-  v12 = [v4 objectForKeyedSubscript:@"historic"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"historic"];
   v13 = v12;
   v14 = MEMORY[0x277CBEC28];
   if (v12)
@@ -108,52 +108,52 @@ LABEL_6:
 
   v15 = v14;
 
-  v16 = [v15 BOOLValue];
-  v17 = [(RESessionRelevanceProvider *)self initWithStartDate:v9 endDate:v11 historic:v16];
+  bOOLValue = [v15 BOOLValue];
+  v17 = [(RESessionRelevanceProvider *)self initWithStartDate:v9 endDate:v11 historic:bOOLValue];
 
   return v17;
 }
 
 - (id)dictionaryEncoding
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_historic];
-  [v3 setObject:v4 forKeyedSubscript:@"historic"];
+  [dictionary setObject:v4 forKeyedSubscript:@"historic"];
 
   if (self->_startDate)
   {
-    v5 = [objc_opt_class() _simulationDateFormatter];
-    v6 = [v5 stringFromDate:self->_startDate];
-    [v3 setObject:v6 forKeyedSubscript:@"start_date"];
+    _simulationDateFormatter = [objc_opt_class() _simulationDateFormatter];
+    v6 = [_simulationDateFormatter stringFromDate:self->_startDate];
+    [dictionary setObject:v6 forKeyedSubscript:@"start_date"];
   }
 
   if (self->_endDate)
   {
-    v7 = [objc_opt_class() _simulationDateFormatter];
-    v8 = [v7 stringFromDate:self->_endDate];
-    [v3 setObject:v8 forKeyedSubscript:@"end_date"];
+    _simulationDateFormatter2 = [objc_opt_class() _simulationDateFormatter];
+    v8 = [_simulationDateFormatter2 stringFromDate:self->_endDate];
+    [dictionary setObject:v8 forKeyedSubscript:@"end_date"];
   }
 
-  v9 = [v3 copy];
+  v9 = [dictionary copy];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = RESessionRelevanceProvider;
-  v4 = [(RERelevanceProvider *)&v6 copyWithZone:a3];
+  v4 = [(RERelevanceProvider *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 5, self->_startDate);
   objc_storeStrong(v4 + 6, self->_endDate);
   *(v4 + 32) = self->_historic;
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -162,12 +162,12 @@ LABEL_6:
   {
     v16.receiver = self;
     v16.super_class = RESessionRelevanceProvider;
-    if ([(RERelevanceProvider *)&v16 isEqual:v4])
+    if ([(RERelevanceProvider *)&v16 isEqual:equalCopy])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
+        v5 = equalCopy;
         startDate = v5->_startDate;
         v7 = self->_startDate;
         v8 = v7;

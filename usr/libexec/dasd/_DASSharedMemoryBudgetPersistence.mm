@@ -4,11 +4,11 @@
 + (void)initialize;
 - (_DASSharedMemoryBudgetPersistence)init;
 - (id)lastModulationDate;
-- (id)loadBudgetsWithExpectedNames:(id)a3;
-- (id)validatedStringFromStoredValue:(char *)a3 withAllowedNames:(id)a4;
-- (void)saveBudgets:(id)a3;
-- (void)saveModulationDate:(id)a3;
-- (void)updateBudget:(id)a3;
+- (id)loadBudgetsWithExpectedNames:(id)names;
+- (id)validatedStringFromStoredValue:(char *)value withAllowedNames:(id)names;
+- (void)saveBudgets:(id)budgets;
+- (void)saveModulationDate:(id)date;
+- (void)updateBudget:(id)budget;
 @end
 
 @implementation _DASSharedMemoryBudgetPersistence
@@ -97,7 +97,7 @@ LABEL_8:
   v4[2] = sub_1000234C0;
   v4[3] = &unk_1001B5A90;
   v4[4] = &v5;
-  v4[5] = a1;
+  v4[5] = self;
   if (qword_10020AEB0 != -1)
   {
     dispatch_once(&qword_10020AEB0, v4);
@@ -109,14 +109,14 @@ LABEL_8:
   return v2;
 }
 
-- (void)updateBudget:(id)a3
+- (void)updateBudget:(id)budget
 {
-  v4 = a3;
+  budgetCopy = budget;
   v5 = +[_DASSharedMemoryBudgetPersistence log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = budgetCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating budget: %@", buf, 0xCu);
   }
 
@@ -126,33 +126,33 @@ LABEL_8:
   v8[2] = sub_100023634;
   v8[3] = &unk_1001B56E0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = budgetCopy;
+  v7 = budgetCopy;
   dispatch_sync(v6, v8);
 }
 
-- (void)saveBudgets:(id)a3
+- (void)saveBudgets:(id)budgets
 {
-  v4 = a3;
+  budgetsCopy = budgets;
   v5 = qword_10020AE90;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000237F4;
   v7[3] = &unk_1001B56E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = budgetsCopy;
+  selfCopy = self;
+  v6 = budgetsCopy;
   dispatch_sync(v5, v7);
 }
 
-- (id)validatedStringFromStoredValue:(char *)a3 withAllowedNames:(id)a4
+- (id)validatedStringFromStoredValue:(char *)value withAllowedNames:(id)names
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  namesCopy = names;
+  v6 = [namesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -163,19 +163,19 @@ LABEL_8:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(namesCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = v10;
-        if (!strncmp(a3, [v11 UTF8String], objc_msgSend(v10, "length") + 1))
+        if (!strncmp(value, [v11 UTF8String], objc_msgSend(v10, "length") + 1))
         {
           v12 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [namesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -191,9 +191,9 @@ LABEL_11:
   return v12;
 }
 
-- (id)loadBudgetsWithExpectedNames:(id)a3
+- (id)loadBudgetsWithExpectedNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -206,9 +206,9 @@ LABEL_11:
   block[2] = sub_100023D98;
   block[3] = &unk_1001B5AB8;
   block[4] = self;
-  v10 = v4;
+  v10 = namesCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = namesCopy;
   dispatch_sync(v5, block);
   v7 = v13[5];
 
@@ -217,16 +217,16 @@ LABEL_11:
   return v7;
 }
 
-- (void)saveModulationDate:(id)a3
+- (void)saveModulationDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = qword_10020AE90;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100024174;
   block[3] = &unk_1001B5668;
-  v7 = v3;
-  v5 = v3;
+  v7 = dateCopy;
+  v5 = dateCopy;
   dispatch_sync(v4, block);
 }
 

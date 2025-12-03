@@ -1,82 +1,82 @@
 @interface ATXEngagementRecordEntry
-- (ATXEngagementRecordEntry)initWithCoder:(id)a3;
-- (ATXEngagementRecordEntry)initWithExecutable:(id)a3 dateEngaged:(id)a4 engagementRecordType:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
+- (ATXEngagementRecordEntry)initWithCoder:(id)coder;
+- (ATXEngagementRecordEntry)initWithExecutable:(id)executable dateEngaged:(id)engaged engagementRecordType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (id)jsonDict;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXEngagementRecordEntry
 
-- (ATXEngagementRecordEntry)initWithExecutable:(id)a3 dateEngaged:(id)a4 engagementRecordType:(unint64_t)a5
+- (ATXEngagementRecordEntry)initWithExecutable:(id)executable dateEngaged:(id)engaged engagementRecordType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  executableCopy = executable;
+  engagedCopy = engaged;
   v15.receiver = self;
   v15.super_class = ATXEngagementRecordEntry;
   v11 = [(ATXEngagementRecordEntry *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_executable, a3);
-    objc_storeStrong(&v12->_dateEngaged, a4);
-    v12->_engagementRecordType = a5;
+    objc_storeStrong(&v11->_executable, executable);
+    objc_storeStrong(&v12->_dateEngaged, engaged);
+    v12->_engagementRecordType = type;
     v13 = v12;
   }
 
   return v12;
 }
 
-- (ATXEngagementRecordEntry)initWithCoder:(id)a3
+- (ATXEngagementRecordEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E69C5D78];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_default();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"executable" withCoder:v4 expectNonNull:1 errorDomain:@"kATXEngagementRecord" errorCode:1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"executable" withCoder:coderCopy expectNonNull:1 errorDomain:@"kATXEngagementRecord" errorCode:1 logHandle:v7];
 
   if (v8)
   {
     v9 = MEMORY[0x1E69C5D78];
     v10 = objc_opt_class();
     v11 = __atxlog_handle_home_screen();
-    v12 = [v9 robustDecodeObjectOfClass:v10 forKey:@"dateEngaged" withCoder:v4 expectNonNull:1 errorDomain:@"kATXEngagementRecord" errorCode:2 logHandle:v11];
+    v12 = [v9 robustDecodeObjectOfClass:v10 forKey:@"dateEngaged" withCoder:coderCopy expectNonNull:1 errorDomain:@"kATXEngagementRecord" errorCode:2 logHandle:v11];
 
     if (v12)
     {
-      self = -[ATXEngagementRecordEntry initWithExecutable:dateEngaged:engagementRecordType:](self, "initWithExecutable:dateEngaged:engagementRecordType:", v8, v12, [v4 decodeIntegerForKey:@"engagementRecordType"]);
-      v13 = self;
+      self = -[ATXEngagementRecordEntry initWithExecutable:dateEngaged:engagementRecordType:](self, "initWithExecutable:dateEngaged:engagementRecordType:", v8, v12, [coderCopy decodeIntegerForKey:@"engagementRecordType"]);
+      selfCopy = self;
     }
 
     else
     {
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   executable = self->_executable;
-  v5 = a3;
-  [v5 encodeObject:executable forKey:@"executable"];
-  [v5 encodeObject:self->_dateEngaged forKey:@"dateEngaged"];
-  [v5 encodeInteger:self->_engagementRecordType forKey:@"engagementRecordType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:executable forKey:@"executable"];
+  [coderCopy encodeObject:self->_dateEngaged forKey:@"dateEngaged"];
+  [coderCopy encodeInteger:self->_engagementRecordType forKey:@"engagementRecordType"];
 }
 
 - (id)jsonDict
 {
   v9[3] = *MEMORY[0x1E69E9840];
   v8[0] = @"executable";
-  v3 = [(ATXExecutableIdentifier *)self->_executable debugTitle];
-  v9[0] = v3;
+  debugTitle = [(ATXExecutableIdentifier *)self->_executable debugTitle];
+  v9[0] = debugTitle;
   v8[1] = @"dateEngaged";
   v4 = [(NSDate *)self->_dateEngaged description];
   v9[1] = v4;
@@ -88,10 +88,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -101,7 +101,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_executable;
       v7 = v6;
       if (v6 == v5->_executable)

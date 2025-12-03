@@ -1,19 +1,19 @@
 @interface AccountDailyCash
 - (_TtC9PassKitUI16AccountDailyCash)init;
-- (void)transactionsChanged:(id)a3;
+- (void)transactionsChanged:(id)changed;
 @end
 
 @implementation AccountDailyCash
 
-- (void)transactionsChanged:(id)a3
+- (void)transactionsChanged:(id)changed
 {
-  if (a3)
+  if (changed)
   {
     sub_1BD0E5E8C(0, &qword_1EBD4AB10);
     sub_1BE052744();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_1BD599F00();
 }
 

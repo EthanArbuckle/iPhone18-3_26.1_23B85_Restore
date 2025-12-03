@@ -1,16 +1,16 @@
 @interface DYPlaybackEngine
-- (BOOL)_executeDFS:(void *)a3;
-- (BOOL)_executeFSE:(void *)a3;
-- (BOOL)_executeFunctionStream:(void *)a3;
-- (BOOL)_executeFunctions:(CoreFunction *)a3 count:(unint64_t)a4;
+- (BOOL)_executeDFS:(void *)s;
+- (BOOL)_executeFSE:(void *)e;
+- (BOOL)_executeFunctionStream:(void *)stream;
+- (BOOL)_executeFunctions:(CoreFunction *)functions count:(unint64_t)count;
 - (DYFunctionPlayer)player;
 - (DYPlaybackEngine)init;
-- (DYPlaybackEngine)initWithCaptureStore:(id)a3;
-- (id)playbackToFunction:(unsigned int)a3;
+- (DYPlaybackEngine)initWithCaptureStore:(id)store;
+- (id)playbackToFunction:(unsigned int)function;
 - (void)_addPointerDataSizeMapToPlayer;
 - (void)_allocateAndFillDataCache;
 - (void)_executeDeltaFSEs;
-- (void)_performPlaybackRequest:(unsigned int)a3;
+- (void)_performPlaybackRequest:(unsigned int)request;
 - (void)dealloc;
 @end
 
@@ -23,9 +23,9 @@
   return 0;
 }
 
-- (DYPlaybackEngine)initWithCaptureStore:(id)a3
+- (DYPlaybackEngine)initWithCaptureStore:(id)store
 {
-  if (!a3)
+  if (!store)
   {
     [DYPlaybackEngine initWithCaptureStore:];
   }
@@ -38,9 +38,9 @@
     v5 = result;
     v6 = [objc_msgSend(MEMORY[0x277CCACA8] stringWithFormat:@"gputools.%@.%p", objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", object_getClassName(result)), result), "UTF8String"];
     v5->_playbackQueue = dispatch_queue_create(v6, 0);
-    v7 = a3;
+    storeCopy = store;
     result = v5;
-    v5->_captureStore = v7;
+    v5->_captureStore = storeCopy;
   }
 
   return result;
@@ -72,9 +72,9 @@
   os_unfair_lock_lock(&self->_playerLock);
   if (!self->_player)
   {
-    v4 = [(DYPlaybackEngine *)self newFunctionPlayer];
-    self->_player = v4;
-    [(DYFunctionPlayer *)v4 setEngine:self];
+    newFunctionPlayer = [(DYPlaybackEngine *)self newFunctionPlayer];
+    self->_player = newFunctionPlayer;
+    [(DYFunctionPlayer *)newFunctionPlayer setEngine:self];
   }
 
   os_unfair_lock_unlock(&self->_playerLock);
@@ -154,9 +154,9 @@ LABEL_9:
   }
 }
 
-- (BOOL)_executeFunctions:(CoreFunction *)a3 count:(unint64_t)a4
+- (BOOL)_executeFunctions:(CoreFunction *)functions count:(unint64_t)count
 {
-  if (!a4)
+  if (!count)
   {
     return 0;
   }
@@ -166,7 +166,7 @@ LABEL_9:
   if (i < cache[3] || i >= cache[4])
   {
     v8 = 1;
-    v13 = a4;
+    countCopy = count;
   }
 
   else
@@ -175,30 +175,30 @@ LABEL_9:
     functionBatchOffset = self->_functionBatchOffset;
     currentFunctionIndex = self->_currentFunctionIndex;
     targetFunctionIndex = self->_targetFunctionIndex;
-    if (a4 - functionBatchOffset + currentFunctionIndex > targetFunctionIndex && targetFunctionIndex > currentFunctionIndex)
+    if (count - functionBatchOffset + currentFunctionIndex > targetFunctionIndex && targetFunctionIndex > currentFunctionIndex)
     {
-      v13 = targetFunctionIndex - currentFunctionIndex;
+      countCopy = targetFunctionIndex - currentFunctionIndex;
     }
 
     else
     {
-      v13 = a4 - functionBatchOffset;
+      countCopy = count - functionBatchOffset;
     }
 
-    self->_currentFunctionIndex = currentFunctionIndex + v13;
-    if (!v13)
+    self->_currentFunctionIndex = currentFunctionIndex + countCopy;
+    if (!countCopy)
     {
       goto LABEL_14;
     }
 
-    a3 += functionBatchOffset;
+    functions += functionBatchOffset;
   }
 
-  [(DYFunctionPlayer *)self->_player executeFunctions:a3 count:v13 subCommandIndex:self->_targetSubCommandIndex];
+  [(DYFunctionPlayer *)self->_player executeFunctions:functions count:countCopy subCommandIndex:self->_targetSubCommandIndex];
   functionBatchOffset = self->_functionBatchOffset;
 LABEL_14:
-  v14 = v13 + functionBatchOffset;
-  if (v14 == a4)
+  v14 = countCopy + functionBatchOffset;
+  if (v14 == count)
   {
     self->_functionBatchOffset = 0;
     return (self->_currentFunctionIndex == self->_targetFunctionIndex) & ~v8;
@@ -211,11 +211,11 @@ LABEL_14:
   }
 }
 
-- (BOOL)_executeDFS:(void *)a3
+- (BOOL)_executeDFS:(void *)s
 {
-  v3 = *a3;
-  v4 = *(*a3 + 504);
-  v5 = *(*a3 + 520);
+  v3 = *s;
+  v4 = *(*s + 504);
+  v5 = *(*s + 520);
   if (v5 == v4)
   {
 LABEL_4:
@@ -233,9 +233,9 @@ LABEL_4:
         break;
       }
 
-      v3 = *a3;
-      v5 = (*(*a3 + 520) + 8);
-      *(*a3 + 520) = v5;
+      v3 = *s;
+      v5 = (*(*s + 520) + 8);
+      *(*s + 520) = v5;
       if (v5 == v4)
       {
         goto LABEL_4;
@@ -244,7 +244,7 @@ LABEL_4:
 
     if (!self->_functionBatchOffset)
     {
-      *(*a3 + 520) += 8;
+      *(*s + 520) += 8;
     }
 
     return 1;
@@ -253,7 +253,7 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)_executeFunctionStream:(void *)a3
+- (BOOL)_executeFunctionStream:(void *)stream
 {
   if (!*(self->_cache + 5))
   {
@@ -274,7 +274,7 @@ LABEL_4:
 
   else
   {
-    v7 = *(a3 + 63);
+    v7 = *(stream + 63);
     v8 = *(v7 + 24);
     GPUTools::FD::CoreFunction::CoreFunction(v40);
     v41 = v8;
@@ -283,10 +283,10 @@ LABEL_4:
     v43 = *(v7 + 24);
     v44 = v9;
     v45 = (*(*v9 + 16))(v9);
-    v10 = a3 + 472;
+    v10 = stream + 472;
     while (1)
     {
-      v11 = *(a3 + 58);
+      v11 = *(stream + 58);
       if (v11 != v41)
       {
         break;
@@ -309,8 +309,8 @@ LABEL_29:
 
       if (!v12)
       {
-        v25 = *a3;
-        if (*a3)
+        v25 = *stream;
+        if (*stream)
         {
           GPUTools::FD::CoreFunction::CoreFunction(v35);
           v26 = *(v25 + 456);
@@ -325,7 +325,7 @@ LABEL_29:
 
         else
         {
-          v30 = *(a3 + 63);
+          v30 = *(stream + 63);
           v31 = v30[2];
           GPUTools::FD::CoreFunction::CoreFunction(v35);
           v36 = v31;
@@ -340,10 +340,10 @@ LABEL_29:
           v28 = v38;
         }
 
-        *(a3 + 58) = v26;
+        *(stream + 58) = v26;
         *v10 = v27;
-        *(a3 + 61) = v28;
-        *(a3 + 496) = v29;
+        *(stream + 61) = v28;
+        *(stream + 496) = v29;
         GPUTools::FD::CoreFunction::~CoreFunction(v35);
 LABEL_37:
         *(self->_cache + 6) = 0;
@@ -357,16 +357,16 @@ LABEL_38:
     v13 = *v10;
     while (1)
     {
-      if (*(a3 + 2) == -1 || v13 == v11)
+      if (*(stream + 2) == -1 || v13 == v11)
       {
-        if (((*(**(a3 + 61) + 64))(*(a3 + 61), v11, *(a3 + 60) - v11, a3 + 8) & 1) == 0)
+        if (((*(**(stream + 61) + 64))(*(stream + 61), v11, *(stream + 60) - v11, stream + 8) & 1) == 0)
         {
           goto LABEL_41;
         }
 
-        v15 = *(a3 + 110) + *(a3 + 58);
-        *(a3 + 59) = v15;
-        v16 = *(a3 + 3);
+        v15 = *(stream + 110) + *(stream + 58);
+        *(stream + 59) = v15;
+        v16 = *(stream + 3);
         if ((v16 & 0x1000) != 0 && (v16 & 0x2000) == 0)
         {
           break;
@@ -376,26 +376,26 @@ LABEL_38:
 LABEL_17:
       v17 = *(self->_cache + 5);
       GPUTools::FD::CoreFunction::operator=();
-      v18 = *(a3 + 59);
-      if (v18 == *(a3 + 58))
+      v18 = *(stream + 59);
+      if (v18 == *(stream + 58))
       {
-        if (*(a3 + 496) == 1)
+        if (*(stream + 496) == 1)
         {
-          v19 = *(a3 + 60) - v18;
-          v20 = (*(**(a3 + 61) + 56))(*(a3 + 61));
-          v21 = *(a3 + 58);
-          *v10 = (*(**(a3 + 61) + 48))(*(a3 + 61), v21, *(a3 + 60) - v21) + v21;
-          GPUTools::FD::TFunctionStream<GPUTools::FD::CoreFunction,void>::_Iterator<GPUTools::FD::CoreFunction>::_decode_associated(a3 + 2, v20);
+          v19 = *(stream + 60) - v18;
+          v20 = (*(**(stream + 61) + 56))(*(stream + 61));
+          v21 = *(stream + 58);
+          *v10 = (*(**(stream + 61) + 48))(*(stream + 61), v21, *(stream + 60) - v21) + v21;
+          GPUTools::FD::TFunctionStream<GPUTools::FD::CoreFunction,void>::_Iterator<GPUTools::FD::CoreFunction>::_decode_associated(stream + 2, v20);
         }
 
         else
         {
-          GPUTools::FD::TFunctionStream<GPUTools::FD::CoreFunction,void>::_Iterator<GPUTools::FD::CoreFunction>::_decode(a3 + 2);
+          GPUTools::FD::TFunctionStream<GPUTools::FD::CoreFunction,void>::_Iterator<GPUTools::FD::CoreFunction>::_decode(stream + 2);
         }
       }
 
-      v13 = *(a3 + 59);
-      *(a3 + 58) = v13;
+      v13 = *(stream + 59);
+      *(stream + 58) = v13;
       ++v12;
       if (v13 != v41)
       {
@@ -411,14 +411,14 @@ LABEL_17:
 
     while (1)
     {
-      v22 = *(a3 + 60);
+      v22 = *(stream + 60);
       if (v15 >= v22)
       {
         break;
       }
 
-      v23 = (*(**(a3 + 61) + 56))(*(a3 + 61), v15, v22 - v15);
-      v15 = (*(**(a3 + 61) + 48))(*(a3 + 61), *(a3 + 59), *(a3 + 60) - *(a3 + 59)) + *v10;
+      v23 = (*(**(stream + 61) + 56))(*(stream + 61), v15, v22 - v15);
+      v15 = (*(**(stream + 61) + 48))(*(stream + 61), *(stream + 59), *(stream + 60) - *(stream + 59)) + *v10;
       *v10 = v15;
       if ((v23 & 0x2000) != 0)
       {
@@ -427,7 +427,7 @@ LABEL_17:
     }
 
 LABEL_41:
-    v34 = *(a3 + 2);
+    v34 = *(stream + 2);
     result = dy_abort();
     __break(1u);
   }
@@ -435,22 +435,22 @@ LABEL_41:
   return result;
 }
 
-- (BOOL)_executeFSE:(void *)a3
+- (BOOL)_executeFSE:(void *)e
 {
-  self->_currentFile = *(a3 + 65);
+  self->_currentFile = *(e + 65);
   [(DYFunctionPlayer *)self->_player performNewExecutionFileActions];
-  if (!*a3)
+  if (!*e)
   {
     goto LABEL_6;
   }
 
-  if ([(DYPlaybackEngine *)self _executeDFS:a3])
+  if ([(DYPlaybackEngine *)self _executeDFS:e])
   {
     return 1;
   }
 
-  v6 = *a3;
-  if (*a3)
+  v6 = *e;
+  if (*e)
   {
     GPUTools::FD::CoreFunction::CoreFunction(v21);
     v22 = *(v6 + 456);
@@ -462,7 +462,7 @@ LABEL_41:
   else
   {
 LABEL_6:
-    v7 = *(a3 + 63);
+    v7 = *(e + 63);
     v8 = v7[2];
     GPUTools::FD::CoreFunction::CoreFunction(v21);
     v22 = v8;
@@ -473,7 +473,7 @@ LABEL_6:
     v25 = (*(*v9 + 16))(v9);
   }
 
-  v10 = *(a3 + 63);
+  v10 = *(e + 63);
   v11 = *(v10 + 24);
   GPUTools::FD::CoreFunction::CoreFunction(v15);
   v16 = v11;
@@ -486,7 +486,7 @@ LABEL_6:
   v14 = v16;
   GPUTools::FD::CoreFunction::~CoreFunction(v15);
   GPUTools::FD::CoreFunction::~CoreFunction(v21);
-  return v13 != v14 && [(DYPlaybackEngine *)self _executeFunctionStream:a3];
+  return v13 != v14 && [(DYPlaybackEngine *)self _executeFunctionStream:e];
 }
 
 - (void)_executeDeltaFSEs
@@ -512,7 +512,7 @@ LABEL_6:
   self->_fseIterator.__i_ = *(cache + 3);
 }
 
-- (void)_performPlaybackRequest:(unsigned int)a3
+- (void)_performPlaybackRequest:(unsigned int)request
 {
   [(DYPlaybackEngine *)self onPlaybackRequestStart];
   if (!self->_player)
@@ -525,7 +525,7 @@ LABEL_6:
     [DYPlaybackEngine _performPlaybackRequest:];
   }
 
-  if (a3 && self->_targetFunctionIndex == self->_currentFunctionIndex)
+  if (request && self->_targetFunctionIndex == self->_currentFunctionIndex)
   {
     goto LABEL_7;
   }
@@ -536,7 +536,7 @@ LABEL_6:
     [DYPlaybackEngine _performPlaybackRequest:];
   }
 
-  if (a3)
+  if (request)
   {
 LABEL_7:
     v5 = 0;
@@ -561,13 +561,13 @@ LABEL_7:
       v5 = (v5 + 1);
     }
 
-    while (a3 != v5);
+    while (request != v5);
   }
 
   [(DYPlaybackEngine *)self onPlaybackRequestCompleted];
 }
 
-- (id)playbackToFunction:(unsigned int)a3
+- (id)playbackToFunction:(unsigned int)function
 {
   v5 = objc_opt_new();
   loopCount = self->_loopCount;
@@ -576,7 +576,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __39__DYPlaybackEngine_playbackToFunction___block_invoke;
   block[3] = &unk_279309B30;
-  v10 = a3;
+  functionCopy = function;
   v11 = loopCount;
   block[4] = self;
   block[5] = v5;

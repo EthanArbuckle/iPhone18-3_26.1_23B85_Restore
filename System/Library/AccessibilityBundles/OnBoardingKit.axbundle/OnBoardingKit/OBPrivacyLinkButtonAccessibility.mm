@@ -1,5 +1,5 @@
 @interface OBPrivacyLinkButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
@@ -10,12 +10,12 @@
 
 @implementation OBPrivacyLinkButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"OBPrivacyLinkButton" isKindOfClass:@"UIButton"];
-  [v3 validateClass:@"OBPrivacyLinkButton" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"OBPrivacyLinkButton" hasInstanceVariable:@"_iconView" withType:"UIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"OBPrivacyLinkButton" isKindOfClass:@"UIButton"];
+  [validationsCopy validateClass:@"OBPrivacyLinkButton" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"OBPrivacyLinkButton" hasInstanceVariable:@"_iconView" withType:"UIImageView"];
 }
 
 - (BOOL)accessibilityActivate
@@ -27,17 +27,17 @@
   if (v3)
   {
     [v3 sendActionsForControlEvents:0x2000];
-    v5 = 1;
+    accessibilityActivate = 1;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = OBPrivacyLinkButtonAccessibility;
-    v5 = [(OBPrivacyLinkButtonAccessibility *)&v7 accessibilityActivate];
+    accessibilityActivate = [(OBPrivacyLinkButtonAccessibility *)&v7 accessibilityActivate];
   }
 
-  return v5;
+  return accessibilityActivate;
 }
 
 - (void)layoutSubviews
@@ -56,9 +56,9 @@
   v3 = [(OBPrivacyLinkButtonAccessibility *)self safeUIViewForKey:@"_iconView"];
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
-  v5 = [v4 image];
+  image = [v4 image];
 
-  if (v5)
+  if (image)
   {
     v6 = accessibilityLocalizedString(@"privacy.icon");
     [v4 setAccessibilityLabel:v6];
@@ -80,21 +80,21 @@
 - (id)accessibilityLabel
 {
   v3 = [(OBPrivacyLinkButtonAccessibility *)self safeUIViewForKey:@"textView"];
-  v4 = [v3 accessibilityValue];
+  accessibilityValue = [v3 accessibilityValue];
 
-  if ([v4 length])
+  if ([accessibilityValue length])
   {
-    v5 = v4;
+    accessibilityLabel = accessibilityValue;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = OBPrivacyLinkButtonAccessibility;
-    v5 = [(OBPrivacyLinkButtonAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(OBPrivacyLinkButtonAccessibility *)&v8 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }
@@ -104,8 +104,8 @@
   v3 = MEMORY[0x29EDB8DE8];
   v8.receiver = self;
   v8.super_class = OBPrivacyLinkButtonAccessibility;
-  v4 = [(OBPrivacyLinkButtonAccessibility *)&v8 _accessibilitySupplementaryFooterViews];
-  v5 = [v3 arrayWithArray:v4];
+  _accessibilitySupplementaryFooterViews = [(OBPrivacyLinkButtonAccessibility *)&v8 _accessibilitySupplementaryFooterViews];
+  v5 = [v3 arrayWithArray:_accessibilitySupplementaryFooterViews];
 
   v6 = [(OBPrivacyLinkButtonAccessibility *)self safeUIViewForKey:@"iconView"];
   if (v6)

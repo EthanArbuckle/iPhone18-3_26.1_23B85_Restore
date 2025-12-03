@@ -1,8 +1,8 @@
 @interface RTTokenBucket
-- (BOOL)_consumeTokens:(unint64_t)a3;
-- (BOOL)operationAllowedWithCost:(double)a3;
-- (RTTokenBucket)initWithFillRate:(double)a3 capacity:(double)a4 initialAllocation:(double)a5;
-- (double)timeIntervalUntilOperationAllowedWithCost:(double)a3;
+- (BOOL)_consumeTokens:(unint64_t)tokens;
+- (BOOL)operationAllowedWithCost:(double)cost;
+- (RTTokenBucket)initWithFillRate:(double)rate capacity:(double)capacity initialAllocation:(double)allocation;
+- (double)timeIntervalUntilOperationAllowedWithCost:(double)cost;
 - (void)_replenishTokens;
 - (void)reset;
 @end
@@ -31,10 +31,10 @@
   self->_lastBucketFill = Current;
 }
 
-- (RTTokenBucket)initWithFillRate:(double)a3 capacity:(double)a4 initialAllocation:(double)a5
+- (RTTokenBucket)initWithFillRate:(double)rate capacity:(double)capacity initialAllocation:(double)allocation
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0.0)
+  if (rate <= 0.0)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -47,7 +47,7 @@
     }
   }
 
-  if (a4 <= 0.0)
+  if (capacity <= 0.0)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -60,7 +60,7 @@
     }
   }
 
-  if (a5 < 0.0)
+  if (allocation < 0.0)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -73,7 +73,7 @@
     }
   }
 
-  if (a5 > a4)
+  if (allocation > capacity)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -86,8 +86,8 @@
     }
   }
 
-  v13 = 0;
-  if (a5 <= a4 && a3 > 0.0 && a4 > 0.0 && a5 >= 0.0)
+  selfCopy = 0;
+  if (allocation <= capacity && rate > 0.0 && capacity > 0.0 && allocation >= 0.0)
   {
     v18.receiver = self;
     v18.super_class = RTTokenBucket;
@@ -95,26 +95,26 @@
     v15 = v14;
     if (v14)
     {
-      v14->_tokenBucket = a5;
-      v14->_fillRate = a3;
-      v14->_capacity = a4;
+      v14->_tokenBucket = allocation;
+      v14->_fillRate = rate;
+      v14->_capacity = capacity;
       v14->_operationCost = 1.0;
       v14->_lastBucketFill = CFAbsoluteTimeGetCurrent();
       v15->_lastArrivalTime = -INFINITY;
     }
 
     self = v15;
-    v13 = self;
+    selfCopy = self;
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
-- (BOOL)_consumeTokens:(unint64_t)a3
+- (BOOL)_consumeTokens:(unint64_t)tokens
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!tokens)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -141,34 +141,34 @@
   self->_lastArrivalTime = Current;
   self->_totalInterArrivalTime = v10;
   ++self->_totalOperations;
-  v11 = a3;
-  if (tokenBucket >= a3)
+  tokensCopy = tokens;
+  if (tokenBucket >= tokens)
   {
-    self->_tokenBucket = tokenBucket - v11;
-    self->_totalTokensConsumed = self->_totalTokensConsumed + v11;
+    self->_tokenBucket = tokenBucket - tokensCopy;
+    self->_totalTokensConsumed = self->_totalTokensConsumed + tokensCopy;
     ++self->_operationsAllowed;
   }
 
-  result = tokenBucket >= v11;
+  result = tokenBucket >= tokensCopy;
   v13 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)operationAllowedWithCost:(double)a3
+- (BOOL)operationAllowedWithCost:(double)cost
 {
   [(RTTokenBucket *)self _replenishTokens];
 
-  return [(RTTokenBucket *)self _consumeTokens:a3];
+  return [(RTTokenBucket *)self _consumeTokens:cost];
 }
 
-- (double)timeIntervalUntilOperationAllowedWithCost:(double)a3
+- (double)timeIntervalUntilOperationAllowedWithCost:(double)cost
 {
   [(RTTokenBucket *)self _replenishTokens];
   tokenBucket = self->_tokenBucket;
   result = 0.0;
-  if (tokenBucket < a3)
+  if (tokenBucket < cost)
   {
-    return (a3 - tokenBucket) / self->_fillRate;
+    return (cost - tokenBucket) / self->_fillRate;
   }
 
   return result;

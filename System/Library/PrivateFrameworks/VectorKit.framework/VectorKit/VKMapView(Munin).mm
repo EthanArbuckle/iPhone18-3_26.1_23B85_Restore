@@ -14,10 +14,10 @@
 - (__n128)muninMarkerAtCoordinate:()Munin completeMarkerHandler:
 {
   a2->n128_u64[0] = &unk_1F2A55FB0;
-  a2->n128_u64[1] = MEMORY[0x1B8C62DA0](a1->n128_u64[1]);
-  result = a1[1];
+  a2->n128_u64[1] = MEMORY[0x1B8C62DA0](self->n128_u64[1]);
+  result = self[1];
   a2[1] = result;
-  a2[2].n128_u64[0] = a1[2].n128_u64[0];
+  a2[2].n128_u64[0] = self[2].n128_u64[0];
   return result;
 }
 

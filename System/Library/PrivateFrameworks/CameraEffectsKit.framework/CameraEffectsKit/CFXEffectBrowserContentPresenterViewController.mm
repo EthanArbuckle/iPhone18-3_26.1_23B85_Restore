@@ -1,11 +1,11 @@
 @interface CFXEffectBrowserContentPresenterViewController
 - (CFXEffectBrowserContentPresenterViewControllerDelegate)delegate;
-- (CGSize)expandedAppViewControllerSizeForEffectBrowserViewController:(id)a3;
+- (CGSize)expandedAppViewControllerSizeForEffectBrowserViewController:(id)controller;
 - (double)CFX_alwaysExpandedAppHeight;
-- (id)CFX_constraintsForAlwaysExpandedAppView:(id)a3 containerView:(id)a4;
-- (void)configureEffectBrowserContentPresentationForOrientation:(int64_t)a3;
-- (void)effectBrowserViewController:(id)a3 dismissExpandedAppViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)effectBrowserViewController:(id)a3 presentExpandedAppViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (id)CFX_constraintsForAlwaysExpandedAppView:(id)view containerView:(id)containerView;
+- (void)configureEffectBrowserContentPresentationForOrientation:(int64_t)orientation;
+- (void)effectBrowserViewController:(id)controller dismissExpandedAppViewController:(id)viewController animated:(BOOL)animated completion:(id)completion;
+- (void)effectBrowserViewController:(id)controller presentExpandedAppViewController:(id)viewController animated:(BOOL)animated completion:(id)completion;
 - (void)loadView;
 @end
 
@@ -17,23 +17,23 @@
   [(CFXEffectBrowserContentPresenterViewController *)self setView:v3];
 }
 
-- (void)configureEffectBrowserContentPresentationForOrientation:(int64_t)a3
+- (void)configureEffectBrowserContentPresentationForOrientation:(int64_t)orientation
 {
-  v5 = [(CFXEffectBrowserContentPresenterViewController *)self parentViewController];
-  v6 = [v5 view];
-  [v6 bounds];
+  parentViewController = [(CFXEffectBrowserContentPresenterViewController *)self parentViewController];
+  view = [parentViewController view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v16)
+  if (userInterfaceIdiom)
   {
-    v17 = [(CFXEffectBrowserContentPresenterViewController *)self view];
-    [v17 setFrame:{v8, v10, v12, v14}];
+    view2 = [(CFXEffectBrowserContentPresenterViewController *)self view];
+    [view2 setFrame:{v8, v10, v12, v14}];
   }
 
   else
@@ -48,7 +48,7 @@
     v37.size.width = v12;
     v37.size.height = v14;
     Height = CGRectGetHeight(v37);
-    switch(a3)
+    switch(orientation)
     {
       case 1:
         v20 = 0.0;
@@ -61,7 +61,7 @@
         break;
       default:
         v20 = 3.14159265;
-        if (a3 != 2)
+        if (orientation != 2)
         {
           v20 = 0.0;
         }
@@ -70,9 +70,9 @@
     }
 
     CGAffineTransformMakeRotation(&v35, -v20);
-    v21 = [(CFXEffectBrowserContentPresenterViewController *)self view];
+    view3 = [(CFXEffectBrowserContentPresenterViewController *)self view];
     v34 = v35;
-    [v21 setTransform:&v34];
+    [view3 setTransform:&v34];
 
     if (Width >= Height)
     {
@@ -89,20 +89,20 @@
       Width = Height;
     }
 
-    v23 = [(CFXEffectBrowserContentPresenterViewController *)self view];
-    [v23 setBounds:{0.0, 0.0, v22, Width}];
+    view4 = [(CFXEffectBrowserContentPresenterViewController *)self view];
+    [view4 setBounds:{0.0, 0.0, v22, Width}];
 
-    v24 = [v5 view];
-    [v24 frame];
-    [v5 jfxCenterAdjustedForOrientationForPortraitFrame:a3 relativeToParentFrame:0.0 withOrientation:{0.0, v22, Width, v25, v26, v27, v28}];
+    view5 = [parentViewController view];
+    [view5 frame];
+    [parentViewController jfxCenterAdjustedForOrientationForPortraitFrame:orientation relativeToParentFrame:0.0 withOrientation:{0.0, v22, Width, v25, v26, v27, v28}];
     v30 = v29;
     v32 = v31;
-    v33 = [(CFXEffectBrowserContentPresenterViewController *)self view];
-    [v33 setCenter:{v30, v32}];
+    view6 = [(CFXEffectBrowserContentPresenterViewController *)self view];
+    [view6 setCenter:{v30, v32}];
   }
 }
 
-- (CGSize)expandedAppViewControllerSizeForEffectBrowserViewController:(id)a3
+- (CGSize)expandedAppViewControllerSizeForEffectBrowserViewController:(id)controller
 {
   [(CFXEffectBrowserContentPresenterViewController *)self CFX_alwaysExpandedAppHeight];
   v4 = v3;
@@ -156,8 +156,8 @@
     v16 = v14;
   }
 
-  v17 = [(CFXEffectBrowserContentPresenterViewController *)self delegate];
-  [v17 effectBrowserViewController:self screenTopBarHeightForWindowBounds:4 orientation:{0.0, 0.0, Width, v16}];
+  delegate = [(CFXEffectBrowserContentPresenterViewController *)self delegate];
+  [delegate effectBrowserViewController:self screenTopBarHeightForWindowBounds:4 orientation:{0.0, 0.0, Width, v16}];
   v19 = v18;
 
   v27.origin.x = 0.0;
@@ -174,28 +174,28 @@
   return v20 - v21;
 }
 
-- (id)CFX_constraintsForAlwaysExpandedAppView:(id)a3 containerView:(id)a4
+- (id)CFX_constraintsForAlwaysExpandedAppView:(id)view containerView:(id)containerView
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 leftAnchor];
-  v9 = [v6 leftAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9 constant:36.0];
+  containerViewCopy = containerView;
+  viewCopy = view;
+  leftAnchor = [viewCopy leftAnchor];
+  leftAnchor2 = [containerViewCopy leftAnchor];
+  v10 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:36.0];
 
-  v11 = [v7 bottomAnchor];
-  v12 = [v6 bottomAnchor];
+  bottomAnchor = [viewCopy bottomAnchor];
+  bottomAnchor2 = [containerViewCopy bottomAnchor];
 
-  v13 = [v11 constraintEqualToAnchor:v12 constant:-36.0];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-36.0];
 
-  v14 = [v7 widthAnchor];
-  v15 = [v14 constraintEqualToConstant:375.0];
+  widthAnchor = [viewCopy widthAnchor];
+  v15 = [widthAnchor constraintEqualToConstant:375.0];
 
   [(CFXEffectBrowserContentPresenterViewController *)self CFX_alwaysExpandedAppHeight];
   v17 = v16;
-  v18 = [v7 heightAnchor];
+  heightAnchor = [viewCopy heightAnchor];
 
-  v19 = [v18 constraintEqualToConstant:v17];
+  v19 = [heightAnchor constraintEqualToConstant:v17];
 
   v22[0] = v10;
   v22[1] = v13;
@@ -206,30 +206,30 @@
   return v20;
 }
 
-- (void)effectBrowserViewController:(id)a3 presentExpandedAppViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)effectBrowserViewController:(id)controller presentExpandedAppViewController:(id)viewController animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v9 = a4;
-  v10 = a6;
-  [(CFXEffectBrowserContentPresenterViewController *)self addChildViewController:v9];
-  v11 = [(CFXEffectBrowserContentPresenterViewController *)self view];
-  v12 = [v9 view];
-  [v11 addSubview:v12];
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  completionCopy = completion;
+  [(CFXEffectBrowserContentPresenterViewController *)self addChildViewController:viewControllerCopy];
+  view = [(CFXEffectBrowserContentPresenterViewController *)self view];
+  view2 = [viewControllerCopy view];
+  [view addSubview:view2];
 
-  v13 = [v9 view];
+  view3 = [viewControllerCopy view];
   v14 = 0.0;
-  [v13 setAlpha:0.0];
+  [view3 setAlpha:0.0];
 
-  v15 = [v9 view];
-  v16 = [(CFXEffectBrowserContentPresenterViewController *)self view];
-  v17 = [(CFXEffectBrowserContentPresenterViewController *)self CFX_constraintsForAlwaysExpandedAppView:v15 containerView:v16];
+  view4 = [viewControllerCopy view];
+  view5 = [(CFXEffectBrowserContentPresenterViewController *)self view];
+  v17 = [(CFXEffectBrowserContentPresenterViewController *)self CFX_constraintsForAlwaysExpandedAppView:view4 containerView:view5];
 
-  v18 = [v9 view];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view6 = [viewControllerCopy view];
+  [view6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v17];
-  [v9 didMoveToParentViewController:self];
-  if (v7)
+  [viewControllerCopy didMoveToParentViewController:self];
+  if (animatedCopy)
   {
     v14 = 0.4;
   }
@@ -239,14 +239,14 @@
   v25[1] = 3221225472;
   v25[2] = __131__CFXEffectBrowserContentPresenterViewController_effectBrowserViewController_presentExpandedAppViewController_animated_completion___block_invoke;
   v25[3] = &unk_278D79D20;
-  v26 = v9;
+  v26 = viewControllerCopy;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __131__CFXEffectBrowserContentPresenterViewController_effectBrowserViewController_presentExpandedAppViewController_animated_completion___block_invoke_2;
   v23[3] = &unk_278D7A7C0;
-  v24 = v10;
-  v20 = v10;
-  v21 = v9;
+  v24 = completionCopy;
+  v20 = completionCopy;
+  v21 = viewControllerCopy;
   v22 = [v19 runningPropertyAnimatorWithDuration:0 delay:v25 options:v23 animations:v14 completion:0.0];
 }
 
@@ -267,12 +267,12 @@ uint64_t __131__CFXEffectBrowserContentPresenterViewController_effectBrowserView
   return result;
 }
 
-- (void)effectBrowserViewController:(id)a3 dismissExpandedAppViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)effectBrowserViewController:(id)controller dismissExpandedAppViewController:(id)viewController animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a6;
-  if (v7)
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  completionCopy = completion;
+  if (animatedCopy)
   {
     v10 = 0.4;
   }
@@ -287,14 +287,14 @@ uint64_t __131__CFXEffectBrowserContentPresenterViewController_effectBrowserView
   v18[1] = 3221225472;
   v18[2] = __131__CFXEffectBrowserContentPresenterViewController_effectBrowserViewController_dismissExpandedAppViewController_animated_completion___block_invoke;
   v18[3] = &unk_278D79D20;
-  v19 = v8;
+  v19 = viewControllerCopy;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __131__CFXEffectBrowserContentPresenterViewController_effectBrowserViewController_dismissExpandedAppViewController_animated_completion___block_invoke_2;
   v15[3] = &unk_278D7A7E8;
   v16 = v19;
-  v17 = v9;
-  v12 = v9;
+  v17 = completionCopy;
+  v12 = completionCopy;
   v13 = v19;
   v14 = [v11 runningPropertyAnimatorWithDuration:0 delay:v18 options:v15 animations:v10 completion:0.0];
 }

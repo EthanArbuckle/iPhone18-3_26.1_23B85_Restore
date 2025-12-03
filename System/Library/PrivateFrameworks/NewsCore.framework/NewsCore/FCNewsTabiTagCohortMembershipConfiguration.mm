@@ -1,22 +1,22 @@
 @interface FCNewsTabiTagCohortMembershipConfiguration
-- (FCNewsTabiTagCohortMembershipConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiTagCohortMembershipConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsTabiTagCohortMembershipConfiguration
 
-- (FCNewsTabiTagCohortMembershipConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiTagCohortMembershipConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [FCNewsTabiTagCohortMembershipOutputConfiguration alloc];
-  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"bundleOutputConfiguration", 0);
+  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"bundleOutputConfiguration", 0);
   v7 = [(FCNewsTabiTagCohortMembershipOutputConfiguration *)v5 initWithDictionary:v6];
 
   if (v7)
   {
     v8 = v7;
     v9 = [FCNewsTabiTagCohortMembershipOutputConfiguration alloc];
-    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"nonBundleOutputConfiguration", 0);
+    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"nonBundleOutputConfiguration", 0);
     v11 = [(FCNewsTabiTagCohortMembershipOutputConfiguration *)v9 initWithDictionary:v10];
 
     if (v11)
@@ -33,7 +33,7 @@
       }
 
       self = p_isa;
-      v15 = self;
+      selfCopy = self;
     }
 
     else
@@ -42,8 +42,8 @@
       v18[1] = 3221225472;
       v18[2] = __65__FCNewsTabiTagCohortMembershipConfiguration_initWithDictionary___block_invoke_55;
       v18[3] = &unk_1E7C36F98;
-      v19 = v4;
-      v15 = __65__FCNewsTabiTagCohortMembershipConfiguration_initWithDictionary___block_invoke_55(v18);
+      v19 = dictionaryCopy;
+      selfCopy = __65__FCNewsTabiTagCohortMembershipConfiguration_initWithDictionary___block_invoke_55(v18);
       v12 = v19;
     }
   }
@@ -54,12 +54,12 @@
     v20[1] = 3221225472;
     v20[2] = __65__FCNewsTabiTagCohortMembershipConfiguration_initWithDictionary___block_invoke;
     v20[3] = &unk_1E7C36F98;
-    v21 = v4;
-    v15 = __65__FCNewsTabiTagCohortMembershipConfiguration_initWithDictionary___block_invoke(v20);
+    v21 = dictionaryCopy;
+    selfCopy = __65__FCNewsTabiTagCohortMembershipConfiguration_initWithDictionary___block_invoke(v20);
     v8 = v21;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 uint64_t __65__FCNewsTabiTagCohortMembershipConfiguration_initWithDictionary___block_invoke(uint64_t a1)
@@ -101,13 +101,13 @@ uint64_t __65__FCNewsTabiTagCohortMembershipConfiguration_initWithDictionary___b
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiTagCohortMembershipConfiguration *)self bundleOutputConfiguration];
-  v5 = [v4 indentedDescription];
-  [v3 appendFormat:@"\n\tbundleOutputConfiguration: %@;", v5];
+  bundleOutputConfiguration = [(FCNewsTabiTagCohortMembershipConfiguration *)self bundleOutputConfiguration];
+  indentedDescription = [bundleOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tbundleOutputConfiguration: %@;", indentedDescription];
 
-  v6 = [(FCNewsTabiTagCohortMembershipConfiguration *)self nonBundleOutputConfiguration];
-  v7 = [v6 indentedDescription];
-  [v3 appendFormat:@"\n\tnonBundleOutputConfiguration: %@;", v7];
+  nonBundleOutputConfiguration = [(FCNewsTabiTagCohortMembershipConfiguration *)self nonBundleOutputConfiguration];
+  indentedDescription2 = [nonBundleOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tnonBundleOutputConfiguration: %@;", indentedDescription2];
 
   [v3 appendString:@"\n>"];
 

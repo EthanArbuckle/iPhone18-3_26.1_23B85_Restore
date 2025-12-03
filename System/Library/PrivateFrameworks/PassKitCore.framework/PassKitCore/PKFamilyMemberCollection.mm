@@ -1,16 +1,16 @@
 @interface PKFamilyMemberCollection
-- (BOOL)isEqual:(id)a3;
-- (PKFamilyMemberCollection)initWithFamilyMembers:(id)a3;
-- (id)familyMemberForAltDSID:(id)a3;
-- (id)familyMemberForTransactionSource:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKFamilyMemberCollection)initWithFamilyMembers:(id)members;
+- (id)familyMemberForAltDSID:(id)d;
+- (id)familyMemberForTransactionSource:(id)source;
 @end
 
 @implementation PKFamilyMemberCollection
 
-- (PKFamilyMemberCollection)initWithFamilyMembers:(id)a3
+- (PKFamilyMemberCollection)initWithFamilyMembers:(id)members
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  membersCopy = members;
   v25.receiver = self;
   v25.super_class = PKFamilyMemberCollection;
   v5 = [(PKFamilyMemberCollection *)&v25 init];
@@ -21,7 +21,7 @@
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = v4;
+    v7 = membersCopy;
     v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v8)
     {
@@ -37,8 +37,8 @@
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
-          v13 = [v12 altDSID];
-          [v6 setObject:v12 forKey:v13];
+          altDSID = [v12 altDSID];
+          [v6 setObject:v12 forKey:altDSID];
 
           if ([v12 isMe])
           {
@@ -68,16 +68,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     familyMembers = self->_familyMembers;
     v7 = v5->_familyMembers;
@@ -100,50 +100,50 @@
   return v8;
 }
 
-- (id)familyMemberForTransactionSource:(id)a3
+- (id)familyMemberForTransactionSource:(id)source
 {
-  v4 = a3;
-  v5 = [v4 type];
+  sourceCopy = source;
+  type = [sourceCopy type];
   v6 = 0;
-  if (v5 > 1)
+  if (type > 1)
   {
-    if (v5 == 2)
+    if (type == 2)
     {
-      v7 = [v4 accountUser];
+      accountUser = [sourceCopy accountUser];
       goto LABEL_10;
     }
 
-    if (v5 != 3)
+    if (type != 3)
     {
       goto LABEL_12;
     }
   }
 
-  else if (v5)
+  else if (type)
   {
-    if (v5 != 1)
+    if (type != 1)
     {
       goto LABEL_12;
     }
 
-    v7 = [v4 peerPaymentAccount];
+    accountUser = [sourceCopy peerPaymentAccount];
 LABEL_10:
-    v9 = v7;
-    v8 = [v7 altDSID];
+    v9 = accountUser;
+    altDSID = [accountUser altDSID];
 
-    if (!v8)
+    if (!altDSID)
     {
       goto LABEL_11;
     }
 
 LABEL_8:
-    v6 = [(NSDictionary *)self->_familyMembersByAltDSID objectForKey:v8];
+    v6 = [(NSDictionary *)self->_familyMembersByAltDSID objectForKey:altDSID];
 
     goto LABEL_12;
   }
 
-  v8 = self->_currentUserAltDSID;
-  if (v8)
+  altDSID = self->_currentUserAltDSID;
+  if (altDSID)
   {
     goto LABEL_8;
   }
@@ -155,9 +155,9 @@ LABEL_12:
   return v6;
 }
 
-- (id)familyMemberForAltDSID:(id)a3
+- (id)familyMemberForAltDSID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = [(NSDictionary *)self->_familyMembersByAltDSID objectForKey:?];
   }

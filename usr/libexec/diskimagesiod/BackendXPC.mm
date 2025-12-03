@@ -1,28 +1,28 @@
 @interface BackendXPC
 - (BOOL)tryCreatingCryptoHeader;
-- (BackendXPC)initWithCoder:(id)a3;
+- (BackendXPC)initWithCoder:(id)coder;
 - (NSUUID)instanceID;
 - (expected<std::shared_ptr<Backend>,)getCryptoHeaderBackend;
 - (id).cxx_construct;
 - (id)description;
 - (int)lock;
 - (shared_ptr<Backend>)backend;
-- (void)encodeWithCoder:(id)a3;
-- (void)replaceWithBackendXPC:(id)a3;
-- (void)setBackend:(shared_ptr<Backend>)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)replaceWithBackendXPC:(id)c;
+- (void)setBackend:(shared_ptr<Backend>)backend;
 @end
 
 @implementation BackendXPC
 
-- (BackendXPC)initWithCoder:(id)a3
+- (BackendXPC)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = BackendXPC;
   v5 = [(BackendXPC *)&v9 init];
   if (v5)
   {
-    sub_1000E19C0(v4, &v8);
+    sub_1000E19C0(coderCopy, &v8);
     sub_1000AB8B4(&v5->_cryptoHeader.__ptr_, &v8);
     v6 = v8;
     v8 = 0;
@@ -35,13 +35,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   ptr = self->_cryptoHeader.__ptr_;
   if (ptr)
   {
-    [v5 encodeBytes:ptr length:76 forKey:@"crypto_header"];
+    [coderCopy encodeBytes:ptr length:76 forKey:@"crypto_header"];
   }
 }
 
@@ -153,9 +153,9 @@
   return NSStringFromClass(v2);
 }
 
-- (void)replaceWithBackendXPC:(id)a3
+- (void)replaceWithBackendXPC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   {
     exception = __cxa_allocate_exception(0x40uLL);
     *exception = &off_1002260F0;
@@ -167,9 +167,9 @@
     exception[7] = "Unexpected backend replace request";
   }
 
-  if (v4)
+  if (cCopy)
   {
-    [v4 backend];
+    [cCopy backend];
     v5 = v9;
   }
 
@@ -201,10 +201,10 @@
   return result;
 }
 
-- (void)setBackend:(shared_ptr<Backend>)a3
+- (void)setBackend:(shared_ptr<Backend>)backend
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *backend.__ptr_;
+  v3 = *(backend.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

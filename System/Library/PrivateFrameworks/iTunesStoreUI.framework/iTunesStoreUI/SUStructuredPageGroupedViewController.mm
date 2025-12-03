@@ -1,13 +1,13 @@
 @interface SUStructuredPageGroupedViewController
-- (BOOL)_addPurchaseBatch:(id)a3 forIndexPath:(id)a4;
-- (BOOL)openDocumentForItemAtIndexPath:(id)a3 withApplication:(id)a4;
-- (BOOL)purchaseItemAtIndexPath:(id)a3;
+- (BOOL)_addPurchaseBatch:(id)batch forIndexPath:(id)path;
+- (BOOL)openDocumentForItemAtIndexPath:(id)path withApplication:(id)application;
+- (BOOL)purchaseItemAtIndexPath:(id)path;
 - (SUStructuredPageGroupedViewController)init;
-- (id)itemAtIndexPath:(id)a3;
+- (id)itemAtIndexPath:(id)path;
 - (id)newNoItemsOverlayLabel;
-- (void)_performPurchaseAnimationForIndexPath:(id)a3;
+- (void)_performPurchaseAnimationForIndexPath:(id)path;
 - (void)dealloc;
-- (void)setSkLoading:(BOOL)a3;
+- (void)setSkLoading:(BOOL)loading;
 @end
 
 @implementation SUStructuredPageGroupedViewController
@@ -33,38 +33,38 @@
   [(SUStructuredPageViewController *)&v3 dealloc];
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
   v4 = [-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")];
 
-  return [v4 itemAtIndexPath:a3];
+  return [v4 itemAtIndexPath:path];
 }
 
 - (id)newNoItemsOverlayLabel
 {
   v4.receiver = self;
   v4.super_class = SUStructuredPageGroupedViewController;
-  v2 = [(SUStructuredPageViewController *)&v4 newNoItemsOverlayLabel];
-  [v2 setTextColor:{objc_msgSend(MEMORY[0x1E69DC888], "colorWithRed:green:blue:alpha:", 0.298039216, 0.337254902, 0.423529412, 1.0)}];
-  return v2;
+  newNoItemsOverlayLabel = [(SUStructuredPageViewController *)&v4 newNoItemsOverlayLabel];
+  [newNoItemsOverlayLabel setTextColor:{objc_msgSend(MEMORY[0x1E69DC888], "colorWithRed:green:blue:alpha:", 0.298039216, 0.337254902, 0.423529412, 1.0)}];
+  return newNoItemsOverlayLabel;
 }
 
-- (BOOL)openDocumentForItemAtIndexPath:(id)a3 withApplication:(id)a4
+- (BOOL)openDocumentForItemAtIndexPath:(id)path withApplication:(id)application
 {
   v7 = [objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")];
   if (v7)
   {
     v8 = v7;
-    v9 = [(SUClientInterface *)[(SUViewController *)self clientInterface] purchaseManager];
-    v10 = -[SUPurchaseManager newPurchaseBatchForItems:offers:](v9, "newPurchaseBatchForItems:offers:", [MEMORY[0x1E695DEC8] arrayWithObject:v8], 0);
-    [v10 setDocumentTargetIdentifier:a4];
-    LODWORD(v9) = [(SUStructuredPageGroupedViewController *)self _addPurchaseBatch:v10 forIndexPath:a3];
+    purchaseManager = [(SUClientInterface *)[(SUViewController *)self clientInterface] purchaseManager];
+    v10 = -[SUPurchaseManager newPurchaseBatchForItems:offers:](purchaseManager, "newPurchaseBatchForItems:offers:", [MEMORY[0x1E695DEC8] arrayWithObject:v8], 0);
+    [v10 setDocumentTargetIdentifier:application];
+    LODWORD(purchaseManager) = [(SUStructuredPageGroupedViewController *)self _addPurchaseBatch:v10 forIndexPath:path];
 
-    if (v9)
+    if (purchaseManager)
     {
       v12.receiver = self;
       v12.super_class = SUStructuredPageGroupedViewController;
-      LOBYTE(v7) = [(SUItemTableViewController *)&v12 openDocumentForItemAtIndexPath:a3 withApplication:a4];
+      LOBYTE(v7) = [(SUItemTableViewController *)&v12 openDocumentForItemAtIndexPath:path withApplication:application];
     }
 
     else
@@ -76,21 +76,21 @@
   return v7;
 }
 
-- (BOOL)purchaseItemAtIndexPath:(id)a3
+- (BOOL)purchaseItemAtIndexPath:(id)path
 {
   v5 = [objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")];
   if (v5)
   {
     v6 = v5;
-    v7 = [(SUClientInterface *)[(SUViewController *)self clientInterface] purchaseManager];
-    v8 = -[SUPurchaseManager newPurchaseBatchForItems:offers:](v7, "newPurchaseBatchForItems:offers:", [MEMORY[0x1E695DEC8] arrayWithObject:v6], 0);
-    LODWORD(v7) = [(SUStructuredPageGroupedViewController *)self _addPurchaseBatch:v8 forIndexPath:a3];
+    purchaseManager = [(SUClientInterface *)[(SUViewController *)self clientInterface] purchaseManager];
+    v8 = -[SUPurchaseManager newPurchaseBatchForItems:offers:](purchaseManager, "newPurchaseBatchForItems:offers:", [MEMORY[0x1E695DEC8] arrayWithObject:v6], 0);
+    LODWORD(purchaseManager) = [(SUStructuredPageGroupedViewController *)self _addPurchaseBatch:v8 forIndexPath:path];
 
-    if (v7)
+    if (purchaseManager)
     {
       v10.receiver = self;
       v10.super_class = SUStructuredPageGroupedViewController;
-      LOBYTE(v5) = [(SUItemTableViewController *)&v10 purchaseItemAtIndexPath:a3];
+      LOBYTE(v5) = [(SUItemTableViewController *)&v10 purchaseItemAtIndexPath:path];
     }
 
     else
@@ -102,22 +102,22 @@
   return v5;
 }
 
-- (void)setSkLoading:(BOOL)a3
+- (void)setSkLoading:(BOOL)loading
 {
   v8.receiver = self;
   v8.super_class = SUStructuredPageGroupedViewController;
   [(SUStructuredPageViewController *)&v8 setSkLoading:?];
   loadingView = self->_loadingView;
-  if (a3)
+  if (loading)
   {
     if (!loadingView)
     {
-      v6 = [(SUStructuredPageGroupedViewController *)self view];
+      view = [(SUStructuredPageGroupedViewController *)self view];
       v7 = objc_alloc_init(SULoadingView);
       self->_loadingView = v7;
       [(SULoadingView *)v7 sizeToFit];
-      [v6 addSubview:self->_loadingView];
-      [v6 centerSubviewInBounds:self->_loadingView];
+      [view addSubview:self->_loadingView];
+      [view centerSubviewInBounds:self->_loadingView];
     }
   }
 
@@ -129,13 +129,13 @@
   }
 }
 
-- (BOOL)_addPurchaseBatch:(id)a3 forIndexPath:(id)a4
+- (BOOL)_addPurchaseBatch:(id)batch forIndexPath:(id)path
 {
-  v7 = [(SUClientInterface *)[(SUViewController *)self clientInterface] purchaseManager];
-  [(SUPurchaseManager *)v7 beginUpdates];
-  if (a3 && [(SUPurchaseManager *)v7 addPurchaseBatch:a3])
+  purchaseManager = [(SUClientInterface *)[(SUViewController *)self clientInterface] purchaseManager];
+  [(SUPurchaseManager *)purchaseManager beginUpdates];
+  if (batch && [(SUPurchaseManager *)purchaseManager addPurchaseBatch:batch])
   {
-    [(SUStructuredPageGroupedViewController *)self _performPurchaseAnimationForIndexPath:a4];
+    [(SUStructuredPageGroupedViewController *)self _performPurchaseAnimationForIndexPath:path];
     v8 = 1;
   }
 
@@ -144,30 +144,30 @@
     v8 = 0;
   }
 
-  [(SUPurchaseManager *)v7 endUpdates];
+  [(SUPurchaseManager *)purchaseManager endUpdates];
   return v8;
 }
 
-- (void)_performPurchaseAnimationForIndexPath:(id)a3
+- (void)_performPurchaseAnimationForIndexPath:(id)path
 {
-  v4 = [(UITableView *)[(SUTableViewController *)self tableView] cellForRowAtIndexPath:a3];
+  v4 = [(UITableView *)[(SUTableViewController *)self tableView] cellForRowAtIndexPath:path];
   if (v4)
   {
     v5 = v4;
-    v6 = [(UITableViewCell *)v4 copyPurchaseAnimationView];
-    if (v6)
+    copyPurchaseAnimationView = [(UITableViewCell *)v4 copyPurchaseAnimationView];
+    if (copyPurchaseAnimationView)
     {
-      v12 = v6;
-      v7 = [(SUStructuredPageGroupedViewController *)self view];
+      v12 = copyPurchaseAnimationView;
+      view = [(SUStructuredPageGroupedViewController *)self view];
       [v12 frame];
-      [v7 convertRect:v5 fromView:?];
+      [view convertRect:v5 fromView:?];
       [v12 setFrame:?];
-      [v7 addSubview:v12];
-      v8 = [(SUStructuredPageGroupedViewController *)self view];
-      v9 = [(SUStructuredPageGroupedViewController *)self tabBarController];
+      [view addSubview:v12];
+      view2 = [(SUStructuredPageGroupedViewController *)self view];
+      tabBarController = [(SUStructuredPageGroupedViewController *)self tabBarController];
       LODWORD(v10) = 1.0;
       LODWORD(v11) = -1.0;
-      [SUPurchaseAnimator performHopAnimationForView:v12 relativeToView:v8 tabBarController:v9 finalAlpha:v10 scale:v11];
+      [SUPurchaseAnimator performHopAnimationForView:v12 relativeToView:view2 tabBarController:tabBarController finalAlpha:v10 scale:v11];
     }
   }
 }

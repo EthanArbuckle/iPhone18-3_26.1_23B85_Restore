@@ -1,25 +1,25 @@
 @interface NEFilterSettings
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (NEFilterSettings)initWithCoder:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (NEFilterSettings)initWithCoder:(id)coder;
 - (NEFilterSettings)initWithRules:(NSArray *)rules defaultAction:(NEFilterAction)defaultAction;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEFilterSettings
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NEFilterSettings allocWithZone:a3];
+  v4 = [NEFilterSettings allocWithZone:zone];
   rules = self->_rules;
   defaultAction = self->_defaultAction;
 
   return [(NEFilterSettings *)v4 initWithRules:rules defaultAction:defaultAction];
 }
 
-- (NEFilterSettings)initWithCoder:(id)a3
+- (NEFilterSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = NEFilterSettings;
   v5 = [(NEFilterSettings *)&v12 init];
@@ -28,28 +28,28 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"rules"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"rules"];
     rules = v5->_rules;
     v5->_rules = v9;
 
-    v5->_defaultAction = [v4 decodeIntegerForKey:@"defaultAction"];
+    v5->_defaultAction = [coderCopy decodeIntegerForKey:@"defaultAction"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rules = self->_rules;
-  v5 = a3;
-  [v5 encodeObject:rules forKey:@"rules"];
-  [v5 encodeInteger:self->_defaultAction forKey:@"defaultAction"];
+  coderCopy = coder;
+  [coderCopy encodeObject:rules forKey:@"rules"];
+  [coderCopy encodeInteger:self->_defaultAction forKey:@"defaultAction"];
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorsCopy = errors;
   defaultAction = self->_defaultAction;
   if ((defaultAction - 1) > 1)
   {
@@ -63,7 +63,7 @@
     if (!v6)
     {
       v8 = NEResourcesCopyLocalizedNSString(@"FILTER_SETTINGS_ERROR_INVALID", @"FILTER_SETTINGS_ERROR_INVALID");
-      [v4 addObject:v8];
+      [errorsCopy addObject:v8];
     }
 
     defaultAction = self->_defaultAction;
@@ -72,7 +72,7 @@
   if (defaultAction == 3 || defaultAction == 0)
   {
     v10 = NEResourcesCopyLocalizedNSString(@"FILTER_SETTINGS_ERROR_INVALID_ACTION", @"FILTER_SETTINGS_ERROR_INVALID_ACTION");
-    [v4 addObject:v10];
+    [errorsCopy addObject:v10];
 
     v7 = 0;
   }
@@ -81,8 +81,8 @@
   {
     v11 = objc_alloc(MEMORY[0x1E696AEC0]);
     v12 = NEResourcesCopyLocalizedNSString(@"FILTER_SETTINGS_ERROR_TOO_MANY_RULES", @"FILTER_SETTINGS_ERROR_TOO_MANY_RULES");
-    v13 = [v11 initWithFormat:v12, 1000];
-    [v4 addObject:v13];
+    1000 = [v11 initWithFormat:v12, 1000];
+    [errorsCopy addObject:1000];
 
     v7 = 0;
   }
@@ -106,7 +106,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v7 &= [*(*(&v21 + 1) + 8 * i) checkValidityAndCollectErrors:v4];
+        v7 &= [*(*(&v21 + 1) + 8 * i) checkValidityAndCollectErrors:errorsCopy];
       }
 
       v16 = [(NSArray *)v14 countByEnumeratingWithState:&v21 objects:v25 count:16];

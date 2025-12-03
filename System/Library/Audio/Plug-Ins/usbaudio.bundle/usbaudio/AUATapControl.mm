@@ -1,10 +1,10 @@
 @interface AUATapControl
-- (_TtC9AUASDCore13AUATapControl)initWithValue:(BOOL)a3 isSettable:(BOOL)a4 forElement:(unsigned int)a5 inScope:(unsigned int)a6 withPlugin:(id)a7 andObjectClassID:(unsigned int)a8;
+- (_TtC9AUASDCore13AUATapControl)initWithValue:(BOOL)value isSettable:(BOOL)settable forElement:(unsigned int)element inScope:(unsigned int)scope withPlugin:(id)plugin andObjectClassID:(unsigned int)d;
 @end
 
 @implementation AUATapControl
 
-- (_TtC9AUASDCore13AUATapControl)initWithValue:(BOOL)a3 isSettable:(BOOL)a4 forElement:(unsigned int)a5 inScope:(unsigned int)a6 withPlugin:(id)a7 andObjectClassID:(unsigned int)a8
+- (_TtC9AUASDCore13AUATapControl)initWithValue:(BOOL)value isSettable:(BOOL)settable forElement:(unsigned int)element inScope:(unsigned int)scope withPlugin:(id)plugin andObjectClassID:(unsigned int)d
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

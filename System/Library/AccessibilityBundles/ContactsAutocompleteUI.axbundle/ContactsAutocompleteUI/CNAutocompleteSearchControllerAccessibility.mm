@@ -1,22 +1,22 @@
 @interface CNAutocompleteSearchControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index;
 @end
 
 @implementation CNAutocompleteSearchControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNAutocompleteSearchController" hasInstanceMethod:@"autocompleteResultsController:didSelectRecipient:atIndex:" withFullSignature:{"v", "@", "@", "Q", 0}];
-  [v3 validateClass:@"CNAutocompleteSearchController" hasInstanceMethod:@"composeField" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNAutocompleteSearchController" hasInstanceMethod:@"autocompleteResultsController:didSelectRecipient:atIndex:" withFullSignature:{"v", "@", "@", "Q", 0}];
+  [validationsCopy validateClass:@"CNAutocompleteSearchController" hasInstanceMethod:@"composeField" withFullSignature:{"@", 0}];
 }
 
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index
 {
   v8.receiver = self;
   v8.super_class = CNAutocompleteSearchControllerAccessibility;
-  [(CNAutocompleteSearchControllerAccessibility *)&v8 autocompleteResultsController:a3 didSelectRecipient:a4 atIndex:a5];
+  [(CNAutocompleteSearchControllerAccessibility *)&v8 autocompleteResultsController:controller didSelectRecipient:recipient atIndex:index];
   v6 = *MEMORY[0x29EDC7ED8];
   v7 = [(CNAutocompleteSearchControllerAccessibility *)self safeValueForKey:@"composeField"];
   UIAccessibilityPostNotification(v6, v7);

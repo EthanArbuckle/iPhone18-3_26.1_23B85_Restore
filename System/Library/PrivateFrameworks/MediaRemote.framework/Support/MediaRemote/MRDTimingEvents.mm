@@ -17,7 +17,7 @@
 
 - (NSNumber)totalDuration
 {
-  v2 = self;
+  selfCopy = self;
   sub_100230CF4();
   v3.super.super.isa = Double._bridgeToObjectiveC()().super.super.isa;
 
@@ -26,7 +26,7 @@
 
 - (NSError)firstError
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100231954();
 
   if (v3)
@@ -44,7 +44,7 @@
 
 - (MRDTimingEvent)condensedEvent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100231C4C();
 
   return v3;

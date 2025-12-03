@@ -1,39 +1,39 @@
 @interface UploadThroughputDelegate
 - (BOOL)checkLimits;
-- (id)amendRequest:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5;
+- (id)amendRequest:(id)request;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream;
 - (void)updateResultsWithByteCount;
 - (void)updateResultsWithFlowCount;
-- (void)updateResultsWithThroughput:(int64_t)a3 confidence:(int64_t)a4;
+- (void)updateResultsWithThroughput:(int64_t)throughput confidence:(int64_t)confidence;
 @end
 
 @implementation UploadThroughputDelegate
 
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream
 {
-  v6 = a5;
+  streamCopy = stream;
   v7 = [[UploadDataStream alloc] initWithLength:0x400000000 andThroughputDelegate:self];
   [(NSMutableArray *)self->super._uploadStream addObject:v7];
-  v6[2](v6, v7);
+  streamCopy[2](streamCopy, v7);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
   v28[3] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a6;
-  v10 = v8;
+  responseCopy = response;
+  handlerCopy = handler;
+  v10 = responseCopy;
   if ([v10 statusCode] == 200)
   {
     if (self->super._currentBytesTransferred)
     {
-      v9[2](v9, 1);
+      handlerCopy[2](handlerCopy, 1);
       goto LABEL_13;
     }
 
-    v24 = v9;
+    v24 = handlerCopy;
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Request got 200, but transferred no bytes on throughput measurement connection. Is the server configured correctly?"];
     netqual_log_init();
     if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_ERROR))
@@ -45,8 +45,8 @@
     v13 = 1012;
     v25[0] = @"statusCode";
     v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "statusCode")}];
-    v15 = [v14 stringValue];
-    v26[0] = v15;
+    stringValue = [v14 stringValue];
+    v26[0] = stringValue;
     v25[1] = @"URL";
     v16 = [(NSURLRequest *)self->super._request URL];
     v25[2] = *MEMORY[0x277CCA450];
@@ -59,7 +59,7 @@
 
   else
   {
-    v24 = v9;
+    v24 = handlerCopy;
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected HTTP status code 200, got %lu", objc_msgSend(v10, "statusCode")];
     netqual_log_init();
     if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_ERROR))
@@ -71,8 +71,8 @@
     v13 = 1003;
     v27[0] = @"statusCode";
     v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "statusCode")}];
-    v15 = [v14 stringValue];
-    v28[0] = v15;
+    stringValue = [v14 stringValue];
+    v28[0] = stringValue;
     v27[1] = @"URL";
     v16 = [(NSURLRequest *)self->super._request URL];
     v27[2] = *MEMORY[0x277CCA450];
@@ -93,29 +93,29 @@
     (*(self->super._completionHandler + 2))();
   }
 
-  v9 = v24;
+  handlerCopy = v24;
   v24[2](v24, 0);
 
 LABEL_13:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  sessionCopy = session;
   if (!self->super._canceled && !self->super._exitCriteriaMet)
   {
-    if ([(NSMutableArray *)self->super._probeSessions indexOfObject:v9]== 0x7FFFFFFFFFFFFFFFLL)
+    if ([(NSMutableArray *)self->super._probeSessions indexOfObject:sessionCopy]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(NSMutableArray *)self->super._probeSessions addObject:v9];
+      [(NSMutableArray *)self->super._probeSessions addObject:sessionCopy];
     }
 
     v10 = [MEMORY[0x277CBEAA8] now];
     lastUpdate = self->super._lastUpdate;
     self->super._lastUpdate = v10;
 
-    [(ThroughputDelegate *)self addNewThroughputMeasurement:a5];
+    [(ThroughputDelegate *)self addNewThroughputMeasurement:data];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
@@ -148,14 +148,14 @@ LABEL_13:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)amendRequest:(id)a3
+- (id)amendRequest:(id)request
 {
-  v3 = a3;
-  [v3 setHTTPMethod:@"POST"];
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", 0x400000000];
-  [v3 setValue:v4 forHTTPHeaderField:@"Content-Length"];
+  requestCopy = request;
+  [requestCopy setHTTPMethod:@"POST"];
+  0x400000000 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", 0x400000000];
+  [requestCopy setValue:0x400000000 forHTTPHeaderField:@"Content-Length"];
 
-  return v3;
+  return requestCopy;
 }
 
 - (void)updateResultsWithFlowCount
@@ -176,16 +176,16 @@ LABEL_13:
   }
 }
 
-- (void)updateResultsWithThroughput:(int64_t)a3 confidence:(int64_t)a4
+- (void)updateResultsWithThroughput:(int64_t)throughput confidence:(int64_t)confidence
 {
   if (!self->super._canceled)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    v8 = [(NetworkQualityResult *)self->super._results uplinkCapacity];
-    [v8 setValue:v7];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:throughput];
+    uplinkCapacity = [(NetworkQualityResult *)self->super._results uplinkCapacity];
+    [uplinkCapacity setValue:v7];
 
-    v9 = [(NetworkQualityResult *)self->super._results uplinkCapacity];
-    [v9 updateConfidence:a4];
+    uplinkCapacity2 = [(NetworkQualityResult *)self->super._results uplinkCapacity];
+    [uplinkCapacity2 updateConfidence:confidence];
   }
 }
 
@@ -211,7 +211,7 @@ LABEL_13:
         v29 = 2048;
         v30 = *&v5;
         v31 = 2048;
-        v32 = [(NetworkQualityConfiguration *)nqConfig maxUplinkData];
+        maxUplinkData = [(NetworkQualityConfiguration *)nqConfig maxUplinkData];
         _os_log_impl(&dword_25B962000, v7, OS_LOG_TYPE_DEFAULT, "%s:%u - Uploaded too many bytes: %ld max: %ld", buf, 0x26u);
       }
 
@@ -255,7 +255,7 @@ LABEL_13:
     v29 = 2048;
     v30 = vcvtd_n_f64_s64(v10, 0x14uLL);
     v31 = 2048;
-    v32 = vcvtd_n_f64_s64([(NetworkQualityConfiguration *)v12 maxUplinkThroughput], 0x14uLL);
+    maxUplinkData = vcvtd_n_f64_s64([(NetworkQualityConfiguration *)v12 maxUplinkThroughput], 0x14uLL);
     _os_log_impl(&dword_25B962000, v13, OS_LOG_TYPE_DEFAULT, "%s:%u - Uplink throughput exceeded: %.3f Mbps max: %.3f Mbps", buf, 0x26u);
   }
 

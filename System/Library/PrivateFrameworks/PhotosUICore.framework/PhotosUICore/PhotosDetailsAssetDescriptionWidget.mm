@@ -16,7 +16,7 @@
 - (BOOL)hasLoadedContentData
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self->PXPhotosDetailsWidget_opaque) + 0xD8);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   if (v4)
   {
@@ -38,7 +38,7 @@
       v10 = 0;
     }
 
-    v3 = v5;
+    selfCopy = v5;
   }
 
   else

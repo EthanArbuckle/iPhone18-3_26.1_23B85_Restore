@@ -1,63 +1,63 @@
 @interface AnalyticsReader
-+ (id)networksFromResults:(id)a3;
-- (AnalyticsReader)initWithPersistentContainer:(id)a3;
-- (BOOL)isNetworkWithinRangeOfLocation:(id)a3 range:(double)a4 location:(id)a5 count:(unint64_t *)a6;
-- (BOOL)parsedBeaconInfoIsStored:(id)a3 ssid:(id)a4;
-- (id)adaptiveRoamingParamsForBSS:(id)a3;
-- (id)apProfileForBssid:(id)a3;
-- (id)bandsInNetwork:(id)a3 withError:(id *)a4;
-- (id)bssForBSSID:(id)a3 withError:(id *)a4;
-- (id)bssidCountByBandInLAN:(id)a3 withError:(id *)a4;
-- (id)bssidCountByBandInUniqueMO:(id)a3 withError:(id *)a4;
++ (id)networksFromResults:(id)results;
+- (AnalyticsReader)initWithPersistentContainer:(id)container;
+- (BOOL)isNetworkWithinRangeOfLocation:(id)location range:(double)range location:(id)a5 count:(unint64_t *)count;
+- (BOOL)parsedBeaconInfoIsStored:(id)stored ssid:(id)ssid;
+- (id)adaptiveRoamingParamsForBSS:(id)s;
+- (id)apProfileForBssid:(id)bssid;
+- (id)bandsInNetwork:(id)network withError:(id *)error;
+- (id)bssForBSSID:(id)d withError:(id *)error;
+- (id)bssidCountByBandInLAN:(id)n withError:(id *)error;
+- (id)bssidCountByBandInUniqueMO:(id)o withError:(id *)error;
 - (id)copyAllStoredNetworkSsids;
-- (id)copyGeoTagsForNetwork:(id)a3 location:(id)a4;
-- (id)copyLocationsForNetwork:(id)a3;
-- (id)edgeParametersForBSS:(id)a3;
-- (id)lanFor:(id)a3 withError:(id *)a4;
-- (id)lanForBssid:(id)a3 withError:(id *)a4;
-- (id)lansForSsid:(id)a3 withError:(id *)a4;
+- (id)copyGeoTagsForNetwork:(id)network location:(id)location;
+- (id)copyLocationsForNetwork:(id)network;
+- (id)edgeParametersForBSS:(id)s;
+- (id)lanFor:(id)for withError:(id *)error;
+- (id)lanForBssid:(id)bssid withError:(id *)error;
+- (id)lansForSsid:(id)ssid withError:(id *)error;
 - (id)moc;
-- (id)networkForSSID:(id)a3 withError:(id *)a4;
-- (id)networkSsidsByTraits:(id)a3 withError:(id *)a4;
-- (id)networksAvailableAtLocation:(id)a3 withinDistance:(double)a4 inBand:(unsigned int)a5;
-- (id)networksInLan:(id)a3 withError:(id *)a4;
-- (id)networksInSameLanAsBssid:(id)a3 withError:(id *)a4;
-- (id)networksInSameLansAsSsid:(id)a3 withError:(id *)a4;
-- (id)networksWithPredicate:(id)a3 withError:(id *)a4;
-- (id)usageForLAN:(id)a3 withError:(id *)a4;
-- (id)usageForNetwork:(id)a3 withError:(id *)a4;
-- (id)usageOf:(id)a3 during:(unint64_t)a4 timeSpan:(unint64_t)a5 withError:(id *)a6;
-- (id)usageOf:(id)a3 timeSpan:(unint64_t)a4 around:(id)a5 withError:(id *)a6;
-- (signed)deploymentCongestionForSSID:(id)a3 withError:(id *)a4;
-- (signed)deploymentCoverageForSSID:(id)a3 withError:(id *)a4;
-- (unint64_t)countNetworksHavingBand:(signed __int16)a3 inLan:(id)a4 withError:(id *)a5;
-- (unint64_t)countNetworksInSameLanAsBssid:(id)a3 withError:(id *)a4;
-- (unint64_t)networkCountForLAN:(id)a3 withError:(id *)a4;
+- (id)networkForSSID:(id)d withError:(id *)error;
+- (id)networkSsidsByTraits:(id)traits withError:(id *)error;
+- (id)networksAvailableAtLocation:(id)location withinDistance:(double)distance inBand:(unsigned int)band;
+- (id)networksInLan:(id)lan withError:(id *)error;
+- (id)networksInSameLanAsBssid:(id)bssid withError:(id *)error;
+- (id)networksInSameLansAsSsid:(id)ssid withError:(id *)error;
+- (id)networksWithPredicate:(id)predicate withError:(id *)error;
+- (id)usageForLAN:(id)n withError:(id *)error;
+- (id)usageForNetwork:(id)network withError:(id *)error;
+- (id)usageOf:(id)of during:(unint64_t)during timeSpan:(unint64_t)span withError:(id *)error;
+- (id)usageOf:(id)of timeSpan:(unint64_t)span around:(id)around withError:(id *)error;
+- (signed)deploymentCongestionForSSID:(id)d withError:(id *)error;
+- (signed)deploymentCoverageForSSID:(id)d withError:(id *)error;
+- (unint64_t)countNetworksHavingBand:(signed __int16)band inLan:(id)lan withError:(id *)error;
+- (unint64_t)countNetworksInSameLanAsBssid:(id)bssid withError:(id *)error;
+- (unint64_t)networkCountForLAN:(id)n withError:(id *)error;
 @end
 
 @implementation AnalyticsReader
 
 - (id)moc
 {
-  v2 = [(AnalyticsReader *)self persistentContainer];
-  v3 = [v2 viewContext];
+  persistentContainer = [(AnalyticsReader *)self persistentContainer];
+  viewContext = [persistentContainer viewContext];
 
-  return v3;
+  return viewContext;
 }
 
-- (AnalyticsReader)initWithPersistentContainer:(id)a3
+- (AnalyticsReader)initWithPersistentContainer:(id)container
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  containerCopy = container;
   v11.receiver = self;
   v11.super_class = AnalyticsReader;
   v6 = [(AnalyticsReader *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (containerCopy)
     {
-      objc_storeStrong(&v6->_persistentContainer, a3);
+      objc_storeStrong(&v6->_persistentContainer, container);
     }
 
     else
@@ -80,16 +80,16 @@
   return v7;
 }
 
-- (id)bssForBSSID:(id)a3 withError:(id *)a4
+- (id)bssForBSSID:(id)d withError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = [(AnalyticsReader *)self persistentContainer];
+    persistentContainer = [(AnalyticsReader *)self persistentContainer];
     v8 = +[BSSMO defaultPropertiesToFetch];
-    v9 = [v8 allObjects];
-    a4 = [v7 bssForBssid:v6 prefetchProperties:v9 withError:a4];
+    allObjects = [v8 allObjects];
+    error = [persistentContainer bssForBssid:dCopy prefetchProperties:allObjects withError:error];
   }
 
   else
@@ -104,26 +104,26 @@
       _os_log_impl(&dword_1C8460000, v12, OS_LOG_TYPE_ERROR, "%{public}s::%d:bssid nil", buf, 0x12u);
     }
 
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v15 = *MEMORY[0x1E696A588];
       v16 = @"WAErrorCodeInvalidInput";
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-      *a4 = [v13 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v14];
+      *error = [v13 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v14];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
-- (id)adaptiveRoamingParamsForBSS:(id)a3
+- (id)adaptiveRoamingParamsForBSS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -136,7 +136,7 @@
   v9[2] = __47__AnalyticsReader_adaptiveRoamingParamsForBSS___block_invoke;
   v9[3] = &unk_1E830DAF8;
   v9[4] = self;
-  v6 = v4;
+  v6 = sCopy;
   v10 = v6;
   v11 = &v12;
   [v5 performBlockAndWait:v9];
@@ -228,10 +228,10 @@ LABEL_6:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)edgeParametersForBSS:(id)a3
+- (id)edgeParametersForBSS:(id)s
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sCopy = s;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -244,7 +244,7 @@ LABEL_6:
   v14[2] = __40__AnalyticsReader_edgeParametersForBSS___block_invoke;
   v14[3] = &unk_1E830DAF8;
   v14[4] = self;
-  v6 = v4;
+  v6 = sCopy;
   v15 = v6;
   v16 = &v17;
   [v5 performBlockAndWait:v14];
@@ -252,15 +252,15 @@ LABEL_6:
   v7 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [v18[5] isEdge];
-    v9 = [v18[5] autoLeaveRssi];
+    isEdge = [v18[5] isEdge];
+    autoLeaveRssi = [v18[5] autoLeaveRssi];
     v24 = "[AnalyticsReader edgeParametersForBSS:]";
     v26 = 108;
     v10 = "is NOT";
     v27 = 2112;
     *buf = 136447234;
     v25 = 1024;
-    if (v8)
+    if (isEdge)
     {
       v10 = "is";
     }
@@ -269,7 +269,7 @@ LABEL_6:
     v29 = 2080;
     v30 = v10;
     v31 = 1024;
-    v32 = v9;
+    v32 = autoLeaveRssi;
     _os_log_impl(&dword_1C8460000, v7, OS_LOG_TYPE_DEBUG, "%{public}s::%d:bssid[%@] : %s an edgeBSS autoLeaveRssi:%hd", buf, 0x2Cu);
   }
 
@@ -317,11 +317,11 @@ void __40__AnalyticsReader_edgeParametersForBSS___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)parsedBeaconInfoIsStored:(id)a3 ssid:(id)a4
+- (BOOL)parsedBeaconInfoIsStored:(id)stored ssid:(id)ssid
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  storedCopy = stored;
+  ssidCopy = ssid;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -331,11 +331,11 @@ void __40__AnalyticsReader_edgeParametersForBSS___block_invoke(uint64_t a1)
   v16[1] = 3221225472;
   v16[2] = __49__AnalyticsReader_parsedBeaconInfoIsStored_ssid___block_invoke;
   v16[3] = &unk_1E830F050;
-  v9 = v6;
+  v9 = storedCopy;
   v17 = v9;
-  v10 = v7;
+  v10 = ssidCopy;
   v18 = v10;
-  v19 = self;
+  selfCopy = self;
   v20 = &v21;
   [v8 performBlockAndWait:v16];
 
@@ -484,10 +484,10 @@ LABEL_7:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)apProfileForBssid:(id)a3
+- (id)apProfileForBssid:(id)bssid
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bssidCopy = bssid;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -499,9 +499,9 @@ LABEL_7:
   v12[1] = 3221225472;
   v12[2] = __37__AnalyticsReader_apProfileForBssid___block_invoke;
   v12[3] = &unk_1E830DAF8;
-  v6 = v4;
+  v6 = bssidCopy;
   v13 = v6;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
   [v5 performBlockAndWait:v12];
 
@@ -609,16 +609,16 @@ LABEL_5:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)networkForSSID:(id)a3 withError:(id *)a4
+- (id)networkForSSID:(id)d withError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = [(AnalyticsReader *)self persistentContainer];
+    persistentContainer = [(AnalyticsReader *)self persistentContainer];
     v8 = +[NetworkMO defaultPropertiesToFetch];
-    v9 = [v8 allObjects];
-    a4 = [v7 networkForSSID:v6 prefetchProperties:v9 withError:a4];
+    allObjects = [v8 allObjects];
+    error = [persistentContainer networkForSSID:dCopy prefetchProperties:allObjects withError:error];
   }
 
   else
@@ -633,27 +633,27 @@ LABEL_5:
       _os_log_impl(&dword_1C8460000, v12, OS_LOG_TYPE_ERROR, "%{public}s::%d:ssid nil", buf, 0x12u);
     }
 
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v15 = *MEMORY[0x1E696A588];
       v16 = @"WAErrorCodeInvalidInput";
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-      *a4 = [v13 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v14];
+      *error = [v13 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v14];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
-- (id)usageForNetwork:(id)a3 withError:(id *)a4
+- (id)usageForNetwork:(id)network withError:(id *)error
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  networkCopy = network;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -666,7 +666,7 @@ LABEL_5:
   v23 = __Block_byref_object_copy__10;
   v24 = __Block_byref_object_dispose__10;
   v25 = 0;
-  if (v6)
+  if (networkCopy)
   {
     v7 = [(AnalyticsReader *)self moc];
     v16[0] = MEMORY[0x1E69E9820];
@@ -675,13 +675,13 @@ LABEL_5:
     v16[3] = &unk_1E830DB20;
     v18 = &v26;
     v16[4] = self;
-    v17 = v6;
+    v17 = networkCopy;
     v19 = &v20;
     [v7 performBlockAndWait:v16];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v21[5];
+      *error = v21[5];
     }
   }
 
@@ -697,13 +697,13 @@ LABEL_5:
       _os_log_impl(&dword_1C8460000, v13, OS_LOG_TYPE_ERROR, "%{public}s::%d:ssid nil", buf, 0x12u);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x1E696ABC0];
       v38 = *MEMORY[0x1E696A588];
       v39[0] = @"WAErrorCodeInvalidInput";
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
-      *a4 = [v14 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v15];
+      *error = [v14 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v15];
     }
   }
 
@@ -750,10 +750,10 @@ void __45__AnalyticsReader_usageForNetwork_withError___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)bandsInNetwork:(id)a3 withError:(id *)a4
+- (id)bandsInNetwork:(id)network withError:(id *)error
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  networkCopy = network;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -766,7 +766,7 @@ void __45__AnalyticsReader_usageForNetwork_withError___block_invoke(uint64_t a1)
   v23 = __Block_byref_object_copy__10;
   v24 = __Block_byref_object_dispose__10;
   v25 = 0;
-  if (v6)
+  if (networkCopy)
   {
     v7 = [(AnalyticsReader *)self moc];
     v16[0] = MEMORY[0x1E69E9820];
@@ -775,13 +775,13 @@ void __45__AnalyticsReader_usageForNetwork_withError___block_invoke(uint64_t a1)
     v16[3] = &unk_1E830DB20;
     v18 = &v26;
     v16[4] = self;
-    v17 = v6;
+    v17 = networkCopy;
     v19 = &v20;
     [v7 performBlockAndWait:v16];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v21[5];
+      *error = v21[5];
     }
   }
 
@@ -797,13 +797,13 @@ void __45__AnalyticsReader_usageForNetwork_withError___block_invoke(uint64_t a1)
       _os_log_impl(&dword_1C8460000, v13, OS_LOG_TYPE_ERROR, "%{public}s::%d:ssid nil", buf, 0x12u);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x1E696ABC0];
       v38 = *MEMORY[0x1E696A588];
       v39[0] = @"WAErrorCodeInvalidInput";
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
-      *a4 = [v14 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v15];
+      *error = [v14 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v15];
     }
   }
 
@@ -919,10 +919,10 @@ void __44__AnalyticsReader_copyAllStoredNetworkSsids__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)networkSsidsByTraits:(id)a3 withError:(id *)a4
+- (id)networkSsidsByTraits:(id)traits withError:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  traitsCopy = traits;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -940,16 +940,16 @@ void __44__AnalyticsReader_copyAllStoredNetworkSsids__block_invoke(uint64_t a1)
   v15 = 3221225472;
   v16 = __50__AnalyticsReader_networkSsidsByTraits_withError___block_invoke;
   v17 = &unk_1E830F078;
-  v8 = v6;
+  v8 = traitsCopy;
   v18 = v8;
-  v19 = self;
+  selfCopy = self;
   v20 = &v28;
   v21 = &v22;
   [v7 performBlockAndWait:&v14];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v29[5];
+    *error = v29[5];
   }
 
   v9 = WALogCategoryDeviceStoreHandle();
@@ -1069,16 +1069,16 @@ void __50__AnalyticsReader_networkSsidsByTraits_withError___block_invoke(uint64_
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)networksFromResults:(id)a3
++ (id)networksFromResults:(id)results
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultsCopy = results;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = resultsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -1111,10 +1111,10 @@ void __50__AnalyticsReader_networkSsidsByTraits_withError___block_invoke(uint64_
   return v4;
 }
 
-- (id)networksWithPredicate:(id)a3 withError:(id *)a4
+- (id)networksWithPredicate:(id)predicate withError:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  predicateCopy = predicate;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -1132,16 +1132,16 @@ void __50__AnalyticsReader_networkSsidsByTraits_withError___block_invoke(uint64_
   v15 = 3221225472;
   v16 = __51__AnalyticsReader_networksWithPredicate_withError___block_invoke;
   v17 = &unk_1E830F078;
-  v18 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = predicateCopy;
   v19 = v8;
   v20 = &v22;
   v21 = &v28;
   [v7 performBlockAndWait:&v14];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v23[5];
+    *error = v23[5];
   }
 
   v9 = WALogCategoryDeviceStoreHandle();
@@ -1193,10 +1193,10 @@ void __51__AnalyticsReader_networksWithPredicate_withError___block_invoke(uint64
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)networksInSameLansAsSsid:(id)a3 withError:(id *)a4
+- (id)networksInSameLansAsSsid:(id)ssid withError:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  ssidCopy = ssid;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1215,15 +1215,15 @@ void __51__AnalyticsReader_networksWithPredicate_withError___block_invoke(uint64
   v16[2] = __54__AnalyticsReader_networksInSameLansAsSsid_withError___block_invoke;
   v16[3] = &unk_1E830F078;
   v16[4] = self;
-  v8 = v6;
+  v8 = ssidCopy;
   v17 = v8;
   v18 = &v20;
   v19 = &v26;
   [v7 performBlockAndWait:v16];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v9 = WALogCategoryDeviceStoreHandle();
@@ -1287,10 +1287,10 @@ void __54__AnalyticsReader_networksInSameLansAsSsid_withError___block_invoke(uin
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)networksInSameLanAsBssid:(id)a3 withError:(id *)a4
+- (id)networksInSameLanAsBssid:(id)bssid withError:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bssidCopy = bssid;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1309,15 +1309,15 @@ void __54__AnalyticsReader_networksInSameLansAsSsid_withError___block_invoke(uin
   v16[2] = __54__AnalyticsReader_networksInSameLanAsBssid_withError___block_invoke;
   v16[3] = &unk_1E830F078;
   v16[4] = self;
-  v8 = v6;
+  v8 = bssidCopy;
   v17 = v8;
   v18 = &v20;
   v19 = &v26;
   [v7 performBlockAndWait:v16];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v9 = WALogCategoryDeviceStoreHandle();
@@ -1405,10 +1405,10 @@ void __54__AnalyticsReader_networksInSameLanAsBssid_withError___block_invoke(uin
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)lansForSsid:(id)a3 withError:(id *)a4
+- (id)lansForSsid:(id)ssid withError:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  ssidCopy = ssid;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1426,16 +1426,16 @@ void __54__AnalyticsReader_networksInSameLanAsBssid_withError___block_invoke(uin
   v14[1] = 3221225472;
   v14[2] = __41__AnalyticsReader_lansForSsid_withError___block_invoke;
   v14[3] = &unk_1E830F5A8;
-  v8 = v6;
+  v8 = ssidCopy;
   v17 = &v19;
   v18 = &v25;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   [v7 performBlockAndWait:v14];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v9 = WALogCategoryDeviceStoreHandle();
@@ -1507,10 +1507,10 @@ void __41__AnalyticsReader_lansForSsid_withError___block_invoke(void *a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (signed)deploymentCoverageForSSID:(id)a3 withError:(id *)a4
+- (signed)deploymentCoverageForSSID:(id)d withError:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -1527,15 +1527,15 @@ void __41__AnalyticsReader_lansForSsid_withError___block_invoke(void *a1)
   v15[2] = __55__AnalyticsReader_deploymentCoverageForSSID_withError___block_invoke;
   v15[3] = &unk_1E830F078;
   v15[4] = self;
-  v8 = v6;
+  v8 = dCopy;
   v16 = v8;
   v17 = &v19;
   v18 = &v25;
   [v7 performBlockAndWait:v15];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v9 = WALogCategoryDeviceStoreHandle();
@@ -1585,10 +1585,10 @@ void __55__AnalyticsReader_deploymentCoverageForSSID_withError___block_invoke(ui
   objc_autoreleasePoolPop(v2);
 }
 
-- (signed)deploymentCongestionForSSID:(id)a3 withError:(id *)a4
+- (signed)deploymentCongestionForSSID:(id)d withError:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -1605,15 +1605,15 @@ void __55__AnalyticsReader_deploymentCoverageForSSID_withError___block_invoke(ui
   v15[2] = __57__AnalyticsReader_deploymentCongestionForSSID_withError___block_invoke;
   v15[3] = &unk_1E830F078;
   v15[4] = self;
-  v8 = v6;
+  v8 = dCopy;
   v16 = v8;
   v17 = &v19;
   v18 = &v25;
   [v7 performBlockAndWait:v15];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v9 = WALogCategoryDeviceStoreHandle();
@@ -1663,10 +1663,10 @@ void __57__AnalyticsReader_deploymentCongestionForSSID_withError___block_invoke(
   objc_autoreleasePoolPop(v2);
 }
 
-- (unint64_t)countNetworksInSameLanAsBssid:(id)a3 withError:(id *)a4
+- (unint64_t)countNetworksInSameLanAsBssid:(id)bssid withError:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bssidCopy = bssid;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -1683,15 +1683,15 @@ void __57__AnalyticsReader_deploymentCongestionForSSID_withError___block_invoke(
   v16[2] = __59__AnalyticsReader_countNetworksInSameLanAsBssid_withError___block_invoke;
   v16[3] = &unk_1E830F078;
   v16[4] = self;
-  v8 = v6;
+  v8 = bssidCopy;
   v17 = v8;
   v18 = &v20;
   v19 = &v26;
   [v7 performBlockAndWait:v16];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v9 = WALogCategoryDeviceStoreHandle();
@@ -1749,10 +1749,10 @@ void __59__AnalyticsReader_countNetworksInSameLanAsBssid_withError___block_invok
   objc_autoreleasePoolPop(v2);
 }
 
-- (unint64_t)networkCountForLAN:(id)a3 withError:(id *)a4
+- (unint64_t)networkCountForLAN:(id)n withError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nCopy = n;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1769,15 +1769,15 @@ void __59__AnalyticsReader_countNetworksInSameLanAsBssid_withError___block_invok
   v16[2] = __48__AnalyticsReader_networkCountForLAN_withError___block_invoke;
   v16[3] = &unk_1E830F078;
   v16[4] = self;
-  v8 = v6;
+  v8 = nCopy;
   v17 = v8;
   v18 = &v24;
   v19 = &v20;
   [v7 performBlockAndWait:v16];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v25[5];
+    *error = v25[5];
   }
 
   v9 = WALogCategoryDeviceStoreHandle();
@@ -1838,10 +1838,10 @@ void __48__AnalyticsReader_networkCountForLAN_withError___block_invoke(uint64_t 
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)networksInLan:(id)a3 withError:(id *)a4
+- (id)networksInLan:(id)lan withError:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lanCopy = lan;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -1860,15 +1860,15 @@ void __48__AnalyticsReader_networkCountForLAN_withError___block_invoke(uint64_t 
   v17[2] = __43__AnalyticsReader_networksInLan_withError___block_invoke;
   v17[3] = &unk_1E830F078;
   v17[4] = self;
-  v8 = v6;
+  v8 = lanCopy;
   v18 = v8;
   v19 = &v21;
   v20 = &v27;
   [v7 performBlockAndWait:v17];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v22[5];
+    *error = v22[5];
   }
 
   v9 = WALogCategoryDeviceStoreHandle();
@@ -1936,10 +1936,10 @@ void __43__AnalyticsReader_networksInLan_withError___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)lanForBssid:(id)a3 withError:(id *)a4
+- (id)lanForBssid:(id)bssid withError:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bssidCopy = bssid;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1958,15 +1958,15 @@ void __43__AnalyticsReader_networksInLan_withError___block_invoke(uint64_t a1)
   v16[2] = __41__AnalyticsReader_lanForBssid_withError___block_invoke;
   v16[3] = &unk_1E830F078;
   v16[4] = self;
-  v8 = v6;
+  v8 = bssidCopy;
   v17 = v8;
   v18 = &v20;
   v19 = &v26;
   [v7 performBlockAndWait:v16];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v9 = WALogCategoryDeviceStoreHandle();
@@ -2032,10 +2032,10 @@ void __41__AnalyticsReader_lanForBssid_withError___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)bssidCountByBandInUniqueMO:(id)a3 withError:(id *)a4
+- (id)bssidCountByBandInUniqueMO:(id)o withError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  oCopy = o;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2055,14 +2055,14 @@ void __41__AnalyticsReader_lanForBssid_withError___block_invoke(uint64_t a1)
   v14[3] = &unk_1E830DB20;
   v16 = &v24;
   v14[4] = self;
-  v8 = v6;
+  v8 = oCopy;
   v15 = v8;
   v17 = &v18;
   [v7 performBlockAndWait:v14];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v9 = WALogCategoryDeviceStoreHandle();
@@ -2108,12 +2108,12 @@ void __56__AnalyticsReader_bssidCountByBandInUniqueMO_withError___block_invoke(u
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)bssidCountByBandInLAN:(id)a3 withError:(id *)a4
+- (id)bssidCountByBandInLAN:(id)n withError:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (n)
   {
-    v5 = [(AnalyticsReader *)self bssidCountByBandInUniqueMO:a3 withError:a4];
+    v5 = [(AnalyticsReader *)self bssidCountByBandInUniqueMO:n withError:error];
   }
 
   else
@@ -2128,13 +2128,13 @@ void __56__AnalyticsReader_bssidCountByBandInUniqueMO_withError___block_invoke(u
       _os_log_impl(&dword_1C8460000, v8, OS_LOG_TYPE_ERROR, "%{public}s::%d:dhcpServerInfo nil", buf, 0x12u);
     }
 
-    if (a4)
+    if (error)
     {
       v9 = MEMORY[0x1E696ABC0];
       v11 = *MEMORY[0x1E696A588];
       v12 = @"WAErrorCodeInvalidInput";
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-      *a4 = [v9 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v10];
+      *error = [v9 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v10];
     }
 
     v5 = 0;
@@ -2145,10 +2145,10 @@ void __56__AnalyticsReader_bssidCountByBandInUniqueMO_withError___block_invoke(u
   return v5;
 }
 
-- (unint64_t)countNetworksHavingBand:(signed __int16)a3 inLan:(id)a4 withError:(id *)a5
+- (unint64_t)countNetworksHavingBand:(signed __int16)band inLan:(id)lan withError:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  lanCopy = lan;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -2166,15 +2166,15 @@ void __56__AnalyticsReader_bssidCountByBandInUniqueMO_withError___block_invoke(u
   v16[3] = &unk_1E830F0C8;
   v18 = &v27;
   v16[4] = self;
-  v20 = a3;
-  v10 = v8;
+  bandCopy = band;
+  v10 = lanCopy;
   v17 = v10;
   v19 = &v21;
   [v9 performBlockAndWait:v16];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v22[5];
+    *error = v22[5];
   }
 
   v11 = WALogCategoryDeviceStoreHandle();
@@ -2215,16 +2215,16 @@ void __59__AnalyticsReader_countNetworksHavingBand_inLan_withError___block_invok
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)lanFor:(id)a3 withError:(id *)a4
+- (id)lanFor:(id)for withError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  forCopy = for;
+  if (forCopy)
   {
-    v7 = [(AnalyticsReader *)self persistentContainer];
+    persistentContainer = [(AnalyticsReader *)self persistentContainer];
     v8 = +[(UniqueMO *)LANMO];
-    v9 = [v8 allObjects];
-    a4 = [v7 lanFor:v6 prefetchProperties:v9 withError:a4];
+    allObjects = [v8 allObjects];
+    error = [persistentContainer lanFor:forCopy prefetchProperties:allObjects withError:error];
   }
 
   else
@@ -2239,27 +2239,27 @@ void __59__AnalyticsReader_countNetworksHavingBand_inLan_withError___block_invok
       _os_log_impl(&dword_1C8460000, v12, OS_LOG_TYPE_ERROR, "%{public}s::%d:dhcpServerInfo nil", buf, 0x12u);
     }
 
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v15 = *MEMORY[0x1E696A588];
       v16 = @"WAErrorCodeInvalidInput";
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-      *a4 = [v13 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v14];
+      *error = [v13 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v14];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
-- (id)usageForLAN:(id)a3 withError:(id *)a4
+- (id)usageForLAN:(id)n withError:(id *)error
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nCopy = n;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -2272,7 +2272,7 @@ void __59__AnalyticsReader_countNetworksHavingBand_inLan_withError___block_invok
   v23 = __Block_byref_object_copy__10;
   v24 = __Block_byref_object_dispose__10;
   v25 = 0;
-  if (v6)
+  if (nCopy)
   {
     v7 = [(AnalyticsReader *)self moc];
     v16[0] = MEMORY[0x1E69E9820];
@@ -2281,13 +2281,13 @@ void __59__AnalyticsReader_countNetworksHavingBand_inLan_withError___block_invok
     v16[3] = &unk_1E830DB20;
     v18 = &v26;
     v16[4] = self;
-    v17 = v6;
+    v17 = nCopy;
     v19 = &v20;
     [v7 performBlockAndWait:v16];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v21[5];
+      *error = v21[5];
     }
   }
 
@@ -2303,13 +2303,13 @@ void __59__AnalyticsReader_countNetworksHavingBand_inLan_withError___block_invok
       _os_log_impl(&dword_1C8460000, v13, OS_LOG_TYPE_ERROR, "%{public}s::%d:dhcpServerInfo nil", buf, 0x12u);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x1E696ABC0];
       v40 = *MEMORY[0x1E696A588];
       v41[0] = @"WAErrorCodeInvalidInput";
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
-      *a4 = [v14 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v15];
+      *error = [v14 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v15];
     }
   }
 
@@ -2322,7 +2322,7 @@ void __59__AnalyticsReader_countNetworksHavingBand_inLan_withError___block_invok
     v34 = 1024;
     v35 = 630;
     v36 = 2112;
-    v37 = v6;
+    v37 = nCopy;
     v38 = 2112;
     v39 = v9;
     _os_log_impl(&dword_1C8460000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:usageForLAN:%@ : %@", buf, 0x26u);
@@ -2358,10 +2358,10 @@ void __41__AnalyticsReader_usageForLAN_withError___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)isNetworkWithinRangeOfLocation:(id)a3 range:(double)a4 location:(id)a5 count:(unint64_t *)a6
+- (BOOL)isNetworkWithinRangeOfLocation:(id)location range:(double)range location:(id)a5 count:(unint64_t *)count
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  locationCopy = location;
   v11 = a5;
   v32 = 0;
   v33 = &v32;
@@ -2376,19 +2376,19 @@ void __41__AnalyticsReader_usageForLAN_withError___block_invoke(uint64_t a1)
   v21[1] = 3221225472;
   v21[2] = __71__AnalyticsReader_isNetworkWithinRangeOfLocation_range_location_count___block_invoke;
   v21[3] = &unk_1E830F5D0;
-  v13 = v10;
+  v13 = locationCopy;
   v22 = v13;
   v14 = v11;
-  v27 = a4;
+  rangeCopy = range;
   v23 = v14;
-  v24 = self;
+  selfCopy = self;
   v25 = &v32;
   v26 = &v28;
   [v12 performBlockAndWait:v21];
 
-  if (a6)
+  if (count)
   {
-    *a6 = v29[3];
+    *count = v29[3];
   }
 
   v15 = WALogCategoryDeviceStoreHandle();
@@ -2499,27 +2499,27 @@ LABEL_4:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyGeoTagsForNetwork:(id)a3 location:(id)a4
+- (id)copyGeoTagsForNetwork:(id)network location:(id)location
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  networkCopy = network;
+  locationCopy = location;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__10;
   v28 = __Block_byref_object_dispose__10;
-  v29 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v8 = [(AnalyticsReader *)self moc];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __50__AnalyticsReader_copyGeoTagsForNetwork_location___block_invoke;
   v19 = &unk_1E830F050;
-  v9 = v6;
+  v9 = networkCopy;
   v20 = v9;
-  v10 = v7;
+  v10 = locationCopy;
   v21 = v10;
-  v22 = self;
+  selfCopy = self;
   v23 = &v24;
   [v8 performBlockAndWait:&v16];
 
@@ -2755,9 +2755,9 @@ LABEL_28:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (id)networksAvailableAtLocation:(id)a3 withinDistance:(double)a4 inBand:(unsigned int)a5
+- (id)networksAvailableAtLocation:(id)location withinDistance:(double)distance inBand:(unsigned int)band
 {
-  v8 = a3;
+  locationCopy = location;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -2769,11 +2769,11 @@ LABEL_28:
   v13[1] = 3221225472;
   v13[2] = __69__AnalyticsReader_networksAvailableAtLocation_withinDistance_inBand___block_invoke;
   v13[3] = &unk_1E830F5F8;
-  v10 = v8;
-  v17 = a4;
-  v18 = a5;
+  v10 = locationCopy;
+  distanceCopy = distance;
+  bandCopy = band;
   v14 = v10;
-  v15 = self;
+  selfCopy = self;
   v16 = &v19;
   [v9 performBlockAndWait:v13];
 
@@ -2950,24 +2950,24 @@ LABEL_24:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyLocationsForNetwork:(id)a3
+- (id)copyLocationsForNetwork:(id)network
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  networkCopy = network;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__10;
   v20 = __Block_byref_object_dispose__10;
-  v21 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = [(AnalyticsReader *)self moc];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __43__AnalyticsReader_copyLocationsForNetwork___block_invoke;
   v12[3] = &unk_1E830DAF8;
-  v6 = v4;
+  v6 = networkCopy;
   v13 = v6;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
   [v5 performBlockAndWait:v12];
 
@@ -3102,11 +3102,11 @@ void __43__AnalyticsReader_copyLocationsForNetwork___block_invoke(uint64_t a1)
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)usageOf:(id)a3 timeSpan:(unint64_t)a4 around:(id)a5 withError:(id *)a6
+- (id)usageOf:(id)of timeSpan:(unint64_t)span around:(id)around withError:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  ofCopy = of;
+  aroundCopy = around;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -3125,18 +3125,18 @@ void __43__AnalyticsReader_copyLocationsForNetwork___block_invoke(uint64_t a1)
   v20[2] = __53__AnalyticsReader_usageOf_timeSpan_around_withError___block_invoke;
   v20[3] = &unk_1E830F118;
   v24 = &v33;
-  v13 = v10;
+  v13 = ofCopy;
   v21 = v13;
-  v26 = a4;
-  v14 = v11;
+  spanCopy = span;
+  v14 = aroundCopy;
   v22 = v14;
-  v23 = self;
+  selfCopy = self;
   v25 = &v27;
   [v12 performBlockAndWait:v20];
 
-  if (a6)
+  if (error)
   {
-    *a6 = v28[5];
+    *error = v28[5];
   }
 
   v15 = WALogCategoryDeviceStoreHandle();
@@ -3197,11 +3197,11 @@ void __53__AnalyticsReader_usageOf_timeSpan_around_withError___block_invoke(uint
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)usageOf:(id)a3 during:(unint64_t)a4 timeSpan:(unint64_t)a5 withError:(id *)a6
+- (id)usageOf:(id)of during:(unint64_t)during timeSpan:(unint64_t)span withError:(id *)error
 {
-  v10 = a3;
-  v11 = [UsageMO referenceDateFor:a4 timeSpan:a5 withError:a6];
-  v12 = [(AnalyticsReader *)self usageOf:v10 timeSpan:a5 around:v11 withError:a6];
+  ofCopy = of;
+  v11 = [UsageMO referenceDateFor:during timeSpan:span withError:error];
+  v12 = [(AnalyticsReader *)self usageOf:ofCopy timeSpan:span around:v11 withError:error];
 
   return v12;
 }

@@ -9,17 +9,17 @@
 {
   if ([(SPUISSectionBuilder *)self isContactEntitySearch])
   {
-    v3 = 0;
+    buildTitle = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SPUISFindMySectionBuilder;
-    v3 = [(SPUISSectionBuilder *)&v5 buildTitle];
+    buildTitle = [(SPUISSectionBuilder *)&v5 buildTitle];
   }
 
-  return v3;
+  return buildTitle;
 }
 
 - (id)buildCollectionStyle

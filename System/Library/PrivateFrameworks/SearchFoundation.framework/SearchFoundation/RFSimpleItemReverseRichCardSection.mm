@@ -1,47 +1,47 @@
 @interface RFSimpleItemReverseRichCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFSimpleItemReverseRichCardSection)initWithCoder:(id)a3;
-- (RFSimpleItemReverseRichCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFSimpleItemReverseRichCardSection)initWithCoder:(id)coder;
+- (RFSimpleItemReverseRichCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFSimpleItemReverseRichCardSection
 
-- (RFSimpleItemReverseRichCardSection)initWithProtobuf:(id)a3
+- (RFSimpleItemReverseRichCardSection)initWithProtobuf:(id)protobuf
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v37.receiver = self;
   v37.super_class = RFSimpleItemReverseRichCardSection;
   v5 = [(SFCardSection *)&v37 init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [protobufCopy text];
 
-    if (v6)
+    if (text)
     {
       v7 = [RFTextProperty alloc];
-      v8 = [v4 text];
-      v9 = [(RFTextProperty *)v7 initWithProtobuf:v8];
+      text2 = [protobufCopy text];
+      v9 = [(RFTextProperty *)v7 initWithProtobuf:text2];
       [(RFSimpleItemReverseRichCardSection *)v5 setText_1:v9];
     }
 
-    v10 = [v4 text];
+    text3 = [protobufCopy text];
 
-    if (v10)
+    if (text3)
     {
       v11 = [RFTextProperty alloc];
-      v12 = [v4 text];
-      v13 = [(RFTextProperty *)v11 initWithProtobuf:v12];
+      text4 = [protobufCopy text];
+      v13 = [(RFTextProperty *)v11 initWithProtobuf:text4];
       [(RFSimpleItemReverseRichCardSection *)v5 setText_2:v13];
     }
 
-    v14 = [v4 text_3s];
-    if (v14)
+    text_3s = [protobufCopy text_3s];
+    if (text_3s)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -55,8 +55,8 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v16 = [v4 text_3s];
-    v17 = [v16 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    text_3s2 = [protobufCopy text_3s];
+    v17 = [text_3s2 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v17)
     {
       v18 = v17;
@@ -67,7 +67,7 @@
         {
           if (*v34 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(text_3s2);
           }
 
           v21 = [[RFTextProperty alloc] initWithProtobuf:*(*(&v33 + 1) + 8 * i)];
@@ -77,30 +77,30 @@
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v18 = [text_3s2 countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v18);
     }
 
     [(RFSimpleItemReverseRichCardSection *)v5 setText_3:v15];
-    v22 = [v4 text];
+    text5 = [protobufCopy text];
 
-    if (v22)
+    if (text5)
     {
       v23 = [RFTextProperty alloc];
-      v24 = [v4 text];
-      v25 = [(RFTextProperty *)v23 initWithProtobuf:v24];
+      text6 = [protobufCopy text];
+      v25 = [(RFTextProperty *)v23 initWithProtobuf:text6];
       [(RFSimpleItemReverseRichCardSection *)v5 setText_4:v25];
     }
 
-    v26 = [v4 thumbnail];
+    thumbnail = [protobufCopy thumbnail];
 
-    if (v26)
+    if (thumbnail)
     {
       v27 = [RFVisualProperty alloc];
-      v28 = [v4 thumbnail];
-      v29 = [(RFVisualProperty *)v27 initWithProtobuf:v28];
+      thumbnail2 = [protobufCopy thumbnail];
+      v29 = [(RFVisualProperty *)v27 initWithProtobuf:thumbnail2];
       [(RFSimpleItemReverseRichCardSection *)v5 setThumbnail:v29];
     }
 
@@ -116,40 +116,40 @@
   v15.receiver = self;
   v15.super_class = RFSimpleItemReverseRichCardSection;
   v3 = [(SFCardSection *)&v15 hash];
-  v4 = [(RFSimpleItemReverseRichCardSection *)self text];
-  v5 = [v4 hash];
-  v6 = [(RFSimpleItemReverseRichCardSection *)self text];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(RFSimpleItemReverseRichCardSection *)self text];
-  v9 = v7 ^ [v8 hash];
-  v10 = [(RFSimpleItemReverseRichCardSection *)self text];
-  v11 = v9 ^ [v10 hash];
-  v12 = [(RFSimpleItemReverseRichCardSection *)self thumbnail];
-  v13 = v11 ^ [v12 hash];
+  text = [(RFSimpleItemReverseRichCardSection *)self text];
+  v5 = [text hash];
+  text2 = [(RFSimpleItemReverseRichCardSection *)self text];
+  v7 = v5 ^ [text2 hash];
+  text3 = [(RFSimpleItemReverseRichCardSection *)self text];
+  v9 = v7 ^ [text3 hash];
+  text4 = [(RFSimpleItemReverseRichCardSection *)self text];
+  v11 = v9 ^ [text4 hash];
+  thumbnail = [(RFSimpleItemReverseRichCardSection *)self thumbnail];
+  v13 = v11 ^ [thumbnail hash];
 
   return v13 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(RFSimpleItemReverseRichCardSection *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(RFSimpleItemReverseRichCardSection *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v50.receiver = self;
       v50.super_class = RFSimpleItemReverseRichCardSection;
-      if ([(SFCardSection *)&v50 isEqual:v4])
+      if ([(SFCardSection *)&v50 isEqual:equalCopy])
       {
-        v5 = v4;
-        v6 = [(RFSimpleItemReverseRichCardSection *)self text];
-        v7 = [(RFSimpleItemReverseRichCardSection *)v5 text];
-        if ((v6 != 0) == (v7 == 0))
+        v5 = equalCopy;
+        text = [(RFSimpleItemReverseRichCardSection *)self text];
+        text2 = [(RFSimpleItemReverseRichCardSection *)v5 text];
+        if ((text != 0) == (text2 == 0))
         {
           v10 = 0;
 LABEL_51:
@@ -157,32 +157,32 @@ LABEL_51:
           goto LABEL_52;
         }
 
-        v8 = [(RFSimpleItemReverseRichCardSection *)self text];
-        if (v8)
+        text3 = [(RFSimpleItemReverseRichCardSection *)self text];
+        if (text3)
         {
-          v9 = [(RFSimpleItemReverseRichCardSection *)self text];
-          v48 = [(RFSimpleItemReverseRichCardSection *)v5 text];
-          if (![v9 isEqual:?])
+          text4 = [(RFSimpleItemReverseRichCardSection *)self text];
+          text5 = [(RFSimpleItemReverseRichCardSection *)v5 text];
+          if (![text4 isEqual:?])
           {
             v10 = 0;
             goto LABEL_49;
           }
 
-          v47 = v9;
+          v47 = text4;
         }
 
-        v49 = [(RFSimpleItemReverseRichCardSection *)self text];
-        v11 = [(RFSimpleItemReverseRichCardSection *)v5 text];
-        if ((v49 != 0) != (v11 == 0))
+        text6 = [(RFSimpleItemReverseRichCardSection *)self text];
+        text7 = [(RFSimpleItemReverseRichCardSection *)v5 text];
+        if ((text6 != 0) != (text7 == 0))
         {
-          v12 = [(RFSimpleItemReverseRichCardSection *)self text];
-          if (v12)
+          text8 = [(RFSimpleItemReverseRichCardSection *)self text];
+          if (text8)
           {
-            v13 = v12;
-            v14 = [(RFSimpleItemReverseRichCardSection *)self text];
+            v13 = text8;
+            text9 = [(RFSimpleItemReverseRichCardSection *)self text];
             [(RFSimpleItemReverseRichCardSection *)v5 text];
-            v45 = v44 = v14;
-            if (![v14 isEqual:?])
+            v45 = v44 = text9;
+            if (![text9 isEqual:?])
             {
               v10 = 0;
               v19 = v13;
@@ -198,19 +198,19 @@ LABEL_51:
             v46 = 0;
           }
 
-          v15 = [(RFSimpleItemReverseRichCardSection *)self text];
-          v16 = [(RFSimpleItemReverseRichCardSection *)v5 text];
-          if ((v15 != 0) != (v16 == 0))
+          text10 = [(RFSimpleItemReverseRichCardSection *)self text];
+          text11 = [(RFSimpleItemReverseRichCardSection *)v5 text];
+          if ((text10 != 0) != (text11 == 0))
           {
-            v42 = v15;
-            v43 = v16;
-            v17 = [(RFSimpleItemReverseRichCardSection *)self text];
-            if (v17)
+            v42 = text10;
+            v43 = text11;
+            text12 = [(RFSimpleItemReverseRichCardSection *)self text];
+            if (text12)
             {
-              v18 = [(RFSimpleItemReverseRichCardSection *)self text];
-              v39 = [(RFSimpleItemReverseRichCardSection *)v5 text];
-              v40 = v18;
-              if (![v18 isEqual:?])
+              text13 = [(RFSimpleItemReverseRichCardSection *)self text];
+              text14 = [(RFSimpleItemReverseRichCardSection *)v5 text];
+              v40 = text13;
+              if (![text13 isEqual:?])
               {
                 v10 = 0;
                 v20 = v45;
@@ -218,7 +218,7 @@ LABEL_51:
                 goto LABEL_44;
               }
 
-              v41 = v17;
+              v41 = text12;
             }
 
             else
@@ -226,33 +226,33 @@ LABEL_51:
               v41 = 0;
             }
 
-            v21 = [(RFSimpleItemReverseRichCardSection *)self text];
-            v22 = [(RFSimpleItemReverseRichCardSection *)v5 text];
-            if ((v21 != 0) != (v22 == 0))
+            text15 = [(RFSimpleItemReverseRichCardSection *)self text];
+            text16 = [(RFSimpleItemReverseRichCardSection *)v5 text];
+            if ((text15 != 0) != (text16 == 0))
             {
-              v38 = v22;
+              v38 = text16;
               [(RFSimpleItemReverseRichCardSection *)self text];
               v37 = v20 = v45;
               if (v37)
               {
-                v33 = v21;
-                v23 = [(RFSimpleItemReverseRichCardSection *)self text];
-                v35 = [(RFSimpleItemReverseRichCardSection *)v5 text];
-                v36 = v23;
-                if (![v23 isEqual:?])
+                v33 = text15;
+                text17 = [(RFSimpleItemReverseRichCardSection *)self text];
+                text18 = [(RFSimpleItemReverseRichCardSection *)v5 text];
+                v36 = text17;
+                if (![text17 isEqual:?])
                 {
                   v10 = 0;
                   v27 = v37;
-                  v21 = v33;
+                  text15 = v33;
                   goto LABEL_42;
                 }
 
-                v21 = v33;
+                text15 = v33;
               }
 
-              v24 = [(RFSimpleItemReverseRichCardSection *)self thumbnail];
-              v25 = [(RFSimpleItemReverseRichCardSection *)v5 thumbnail];
-              if ((v24 != 0) == (v25 == 0))
+              thumbnail = [(RFSimpleItemReverseRichCardSection *)self thumbnail];
+              thumbnail2 = [(RFSimpleItemReverseRichCardSection *)v5 thumbnail];
+              if ((thumbnail != 0) == (thumbnail2 == 0))
               {
 
                 v10 = 0;
@@ -262,7 +262,7 @@ LABEL_51:
                 {
 LABEL_43:
 
-                  v17 = v41;
+                  text12 = v41;
                   v19 = v46;
                   if (!v41)
                   {
@@ -275,17 +275,17 @@ LABEL_43:
 
               else
               {
-                v32 = v25;
-                v34 = v24;
-                v26 = [(RFSimpleItemReverseRichCardSection *)self thumbnail];
+                v32 = thumbnail2;
+                v34 = thumbnail;
+                thumbnail3 = [(RFSimpleItemReverseRichCardSection *)self thumbnail];
                 v20 = v45;
                 v27 = v37;
-                if (v26)
+                if (thumbnail3)
                 {
-                  v31 = v26;
-                  v30 = [(RFSimpleItemReverseRichCardSection *)self thumbnail];
-                  v29 = [(RFSimpleItemReverseRichCardSection *)v5 thumbnail];
-                  v10 = [v30 isEqual:v29];
+                  v31 = thumbnail3;
+                  thumbnail4 = [(RFSimpleItemReverseRichCardSection *)self thumbnail];
+                  thumbnail5 = [(RFSimpleItemReverseRichCardSection *)v5 thumbnail];
+                  v10 = [thumbnail4 isEqual:thumbnail5];
 
                   if (!v37)
                   {
@@ -312,7 +312,7 @@ LABEL_42:
             v10 = 0;
             v20 = v45;
             v19 = v46;
-            v17 = v41;
+            text12 = v41;
             if (!v41)
             {
 LABEL_45:
@@ -322,8 +322,8 @@ LABEL_45:
 LABEL_47:
 
 LABEL_48:
-                v9 = v47;
-                if (!v8)
+                text4 = v47;
+                if (!text3)
                 {
 LABEL_50:
 
@@ -363,29 +363,29 @@ LABEL_52:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16.receiver = self;
   v16.super_class = RFSimpleItemReverseRichCardSection;
-  v4 = [(SFCardSection *)&v16 copyWithZone:a3];
-  v5 = [(RFSimpleItemReverseRichCardSection *)self text];
-  v6 = [v5 copy];
+  v4 = [(SFCardSection *)&v16 copyWithZone:zone];
+  text = [(RFSimpleItemReverseRichCardSection *)self text];
+  v6 = [text copy];
   [v4 setText_1:v6];
 
-  v7 = [(RFSimpleItemReverseRichCardSection *)self text];
-  v8 = [v7 copy];
+  text2 = [(RFSimpleItemReverseRichCardSection *)self text];
+  v8 = [text2 copy];
   [v4 setText_2:v8];
 
-  v9 = [(RFSimpleItemReverseRichCardSection *)self text];
-  v10 = [v9 copy];
+  text3 = [(RFSimpleItemReverseRichCardSection *)self text];
+  v10 = [text3 copy];
   [v4 setText_3:v10];
 
-  v11 = [(RFSimpleItemReverseRichCardSection *)self text];
-  v12 = [v11 copy];
+  text4 = [(RFSimpleItemReverseRichCardSection *)self text];
+  v12 = [text4 copy];
   [v4 setText_4:v12];
 
-  v13 = [(RFSimpleItemReverseRichCardSection *)self thumbnail];
-  v14 = [v13 copy];
+  thumbnail = [(RFSimpleItemReverseRichCardSection *)self thumbnail];
+  v14 = [thumbnail copy];
   [v4 setThumbnail:v14];
 
   return v4;
@@ -394,135 +394,135 @@ LABEL_52:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFSimpleItemReverseRichCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBRFSimpleItemReverseRichCardSection *)v2 jsonData];
+  jsonData = [(_SFPBRFSimpleItemReverseRichCardSection *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFSimpleItemReverseRichCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBRFSimpleItemReverseRichCardSection *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFSimpleItemReverseRichCardSection *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = RFSimpleItemReverseRichCardSection;
-  [(SFCardSection *)&v3 encodeWithCoder:a3];
+  [(SFCardSection *)&v3 encodeWithCoder:coder];
 }
 
-- (RFSimpleItemReverseRichCardSection)initWithCoder:(id)a3
+- (RFSimpleItemReverseRichCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCardSection *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCardSection alloc] initWithData:v6];
   v8 = [[SFCardSection alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCardSection *)v8 text];
-    [(RFSimpleItemReverseRichCardSection *)v5 setText_1:v9];
+    text = [(SFCardSection *)v8 text];
+    [(RFSimpleItemReverseRichCardSection *)v5 setText_1:text];
 
-    v10 = [(SFCardSection *)v8 text];
-    [(RFSimpleItemReverseRichCardSection *)v5 setText_2:v10];
+    text2 = [(SFCardSection *)v8 text];
+    [(RFSimpleItemReverseRichCardSection *)v5 setText_2:text2];
 
-    v11 = [(SFCardSection *)v8 text];
-    [(RFSimpleItemReverseRichCardSection *)v5 setText_3:v11];
+    text3 = [(SFCardSection *)v8 text];
+    [(RFSimpleItemReverseRichCardSection *)v5 setText_3:text3];
 
-    v12 = [(SFCardSection *)v8 text];
-    [(RFSimpleItemReverseRichCardSection *)v5 setText_4:v12];
+    text4 = [(SFCardSection *)v8 text];
+    [(RFSimpleItemReverseRichCardSection *)v5 setText_4:text4];
 
-    v13 = [(SFCardSection *)v8 thumbnail];
-    [(RFSimpleItemReverseRichCardSection *)v5 setThumbnail:v13];
+    thumbnail = [(SFCardSection *)v8 thumbnail];
+    [(RFSimpleItemReverseRichCardSection *)v5 setThumbnail:thumbnail];
 
-    v14 = [(SFCardSection *)v8 nextCard];
-    [(SFCardSection *)v5 setNextCard:v14];
+    nextCard = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:nextCard];
 
-    v15 = [(SFCardSection *)v8 commands];
-    [(SFCardSection *)v5 setCommands:v15];
+    commands = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:commands];
 
-    v16 = [(SFCardSection *)v8 parameterKeyPaths];
-    [(SFCardSection *)v5 setParameterKeyPaths:v16];
+    parameterKeyPaths = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:parameterKeyPaths];
 
-    v17 = [(SFCardSection *)v8 cardSectionId];
-    [(SFCardSection *)v5 setCardSectionId:v17];
+    cardSectionId = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:cardSectionId];
 
-    v18 = [(SFCardSection *)v8 resultIdentifier];
-    [(SFCardSection *)v5 setResultIdentifier:v18];
+    resultIdentifier = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:resultIdentifier];
 
-    v19 = [(SFCardSection *)v8 userReportRequest];
-    [(SFCardSection *)v5 setUserReportRequest:v19];
+    userReportRequest = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:userReportRequest];
 
-    v20 = [(SFCardSection *)v8 command];
-    [(SFCardSection *)v5 setCommand:v20];
+    command = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:command];
 
-    v21 = [(SFCardSection *)v8 previewCommand];
-    [(SFCardSection *)v5 setPreviewCommand:v21];
+    previewCommand = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:previewCommand];
 
-    v22 = [(SFCardSection *)v8 previewButtonItems];
-    [(SFCardSection *)v5 setPreviewButtonItems:v22];
+    previewButtonItems = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:previewButtonItems];
 
-    v23 = [(SFCardSection *)v8 cardSectionDetail];
-    [(SFCardSection *)v5 setCardSectionDetail:v23];
+    cardSectionDetail = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:cardSectionDetail];
 
-    v24 = [(SFCardSection *)v8 previewButtonItemsTitle];
-    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v24];
+    previewButtonItemsTitle = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:previewButtonItemsTitle];
 
-    v25 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v25];
+    backgroundColor = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor];
 
     [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
-    v26 = [(SFCardSection *)v8 leadingSwipeButtonItems];
-    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v26];
+    leadingSwipeButtonItems = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:leadingSwipeButtonItems];
 
-    v27 = [(SFCardSection *)v8 trailingSwipeButtonItems];
-    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v27];
+    trailingSwipeButtonItems = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:trailingSwipeButtonItems];
 
-    v28 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v28];
+    punchoutOptions = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions];
 
-    v29 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v29];
+    punchoutPickerTitle = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle];
 
-    v30 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v30];
+    punchoutPickerDismissText = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v31 = [(SFCardSection *)v8 referencedCommands];
-    [(SFCardSection *)v5 setReferencedCommands:v31];
+    referencedCommands = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:referencedCommands];
 
     [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
     [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
-    v32 = [(SFCardSection *)v8 appEntityAnnotation];
-    [(SFCardSection *)v5 setAppEntityAnnotation:v32];
+    appEntityAnnotation = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:appEntityAnnotation];
 
-    v33 = [(SFCardSection *)v8 emphasisSubjectId];
-    [(SFCardSection *)v5 setEmphasisSubjectId:v33];
+    emphasisSubjectId = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:emphasisSubjectId];
 
     [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
-    v34 = [(SFCardSection *)v8 secondaryCommand];
-    [(SFCardSection *)v5 setSecondaryCommand:v34];
+    secondaryCommand = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:secondaryCommand];
 
     [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
-    v35 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
-    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v35];
+    racFeedbackSubfeatureId = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId];
 
-    v36 = [(SFCardSection *)v8 racFeedbackLoggingContent];
-    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v36];
+    racFeedbackLoggingContent = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:racFeedbackLoggingContent];
 
-    v37 = [(SFCardSection *)v8 copyableItems];
-    [(SFCardSection *)v5 setCopyableItems:v37];
+    copyableItems = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:copyableItems];
 
-    v38 = [(SFCardSection *)v8 applicationBundleIdentifier];
-    [(SFCardSection *)v5 setApplicationBundleIdentifier:v38];
+    applicationBundleIdentifier = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   return v5;

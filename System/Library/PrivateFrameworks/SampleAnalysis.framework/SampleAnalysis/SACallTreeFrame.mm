@@ -1,31 +1,31 @@
 @interface SACallTreeFrame
-+ (void)enumerateTree:(uint64_t)a3 block:;
-- (SACallTreeFrame)initWithFrame:(id)a3 startSampleIndex:(unint64_t)a4 sampleCount:(unint64_t)a5 isLeafFrame:(BOOL)a6;
-- (void)writeJSONDictionaryEntriesToStream:(id)a3;
++ (void)enumerateTree:(uint64_t)tree block:;
+- (SACallTreeFrame)initWithFrame:(id)frame startSampleIndex:(unint64_t)index sampleCount:(unint64_t)count isLeafFrame:(BOOL)leafFrame;
+- (void)writeJSONDictionaryEntriesToStream:(id)stream;
 @end
 
 @implementation SACallTreeFrame
 
-- (SACallTreeFrame)initWithFrame:(id)a3 startSampleIndex:(unint64_t)a4 sampleCount:(unint64_t)a5 isLeafFrame:(BOOL)a6
+- (SACallTreeFrame)initWithFrame:(id)frame startSampleIndex:(unint64_t)index sampleCount:(unint64_t)count isLeafFrame:(BOOL)leafFrame
 {
   v13.receiver = self;
   v13.super_class = SACallTreeFrame;
-  v8 = [(SACallTreeNode *)&v13 initWithStartSampleIndex:a4 sampleCount:a5];
+  v8 = [(SACallTreeNode *)&v13 initWithStartSampleIndex:index sampleCount:count];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_frame, a3);
+    objc_storeStrong(&v8->_frame, frame);
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     children = v9->_children;
     v9->_children = v10;
 
-    v9->_isLeafFrame = a6;
+    v9->_isLeafFrame = leafFrame;
   }
 
   return v9;
 }
 
-+ (void)enumerateTree:(uint64_t)a3 block:
++ (void)enumerateTree:(uint64_t)tree block:
 {
   objc_opt_self();
   v5 = objc_autoreleasePoolPush();
@@ -55,7 +55,7 @@ LABEL_8:
     v13 = [v10 objectAtIndexedSubscript:v8];
     ++v7[v12];
     LOBYTE(v31.receiver) = 0;
-    (*(a3 + 16))(a3, v13, v9, &v31);
+    (*(tree + 16))(tree, v13, v9, &v31);
     if (v31.receiver)
     {
       goto LABEL_23;
@@ -93,8 +93,8 @@ LABEL_8:
     v29 = v5;
     v16 = v13;
     v17 = [SACallTreeStateChildren alloc];
-    v28 = [v16 startSampleIndex];
-    v19 = [v16 sampleCount];
+    startSampleIndex = [v16 startSampleIndex];
+    sampleCount = [v16 sampleCount];
     if (v16)
     {
       v20 = objc_getProperty(v16, v18, 88, 1);
@@ -123,7 +123,7 @@ LABEL_22:
 
     v31.receiver = v17;
     v31.super_class = SACallTreeStateChildren;
-    v24 = objc_msgSendSuper2(&v31, sel_initWithStartSampleIndex_sampleCount_, v28, v19);
+    v24 = objc_msgSendSuper2(&v31, sel_initWithStartSampleIndex_sampleCount_, startSampleIndex, sampleCount);
     v25 = v24;
     if (v24)
     {
@@ -137,7 +137,7 @@ LABEL_19:
     v5 = v29;
 
     LOBYTE(v31.receiver) = 0;
-    (*(a3 + 16))(a3, v25, (v9 + 1), &v31);
+    (*(tree + 16))(tree, v25, (v9 + 1), &v31);
     receiver = v31.receiver;
 
     if (receiver)
@@ -172,11 +172,11 @@ LABEL_23:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)writeJSONDictionaryEntriesToStream:(id)a3
+- (void)writeJSONDictionaryEntriesToStream:(id)stream
 {
   [(SAFrame *)self->_frame writeJSONDictionaryEntriesToStream:?];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SACallTreeNode sampleCount](self, "sampleCount")}];
-  SAJSONWriteDictionaryEntry(a3, @"count", v5);
+  SAJSONWriteDictionaryEntry(stream, @"count", v5);
 }
 
 @end

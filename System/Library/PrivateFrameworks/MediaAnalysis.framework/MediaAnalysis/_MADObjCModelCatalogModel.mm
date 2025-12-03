@@ -15,7 +15,7 @@
 
 - (int64_t)getBridgeEmbeddingVersion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _MADObjCModelCatalogModel.getBridgeEmbeddingVersion()();
 
   return v3;

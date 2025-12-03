@@ -1,43 +1,43 @@
 @interface UNCAttachmentsRepository
-+ (id)_sha1HashOfFileAtURL:(id)a3;
-- (BOOL)isRepositoryURL:(id)a3;
-- (BOOL)isValidRepositoryURL:(id)a3 forBundleIdentifier:(id)a4;
-- (UNCAttachmentsRepository)initWithDirectory:(id)a3 librarian:(id)a4;
-- (id)_attachmentDirectoryForBundleIdentifier:(id)a3;
-- (id)_claimedRepositoryURLsForBundleIdentifier:(id)a3;
-- (id)_fileURLForDigestString:(id)a3 extension:(id)a4 bundleIdentifier:(id)a5;
++ (id)_sha1HashOfFileAtURL:(id)l;
+- (BOOL)isRepositoryURL:(id)l;
+- (BOOL)isValidRepositoryURL:(id)l forBundleIdentifier:(id)identifier;
+- (UNCAttachmentsRepository)initWithDirectory:(id)directory librarian:(id)librarian;
+- (id)_attachmentDirectoryForBundleIdentifier:(id)identifier;
+- (id)_claimedRepositoryURLsForBundleIdentifier:(id)identifier;
+- (id)_fileURLForDigestString:(id)string extension:(id)extension bundleIdentifier:(id)identifier;
 - (id)bundleIdentifiersClaimingAttachments;
-- (id)moveFileIntoRepositoryFromFileURL:(id)a3 forNotificationIdentifier:(id)a4 bundleIdentifier:(id)a5;
-- (unint64_t)_addReferencesToRepositoryURL:(id)a3 forNotificationIdentifier:(id)a4 bundleIdentifier:(id)a5;
-- (unint64_t)_removeReferencesToRepositoryURL:(id)a3 forNotificationIdentifier:(id)a4 bundleIdentifier:(id)a5;
-- (unint64_t)_transformNotificationIdentifiersForRepositoryURL:(id)a3 bundleIdentifier:(id)a4 usingTransformBlock:(id)a5;
+- (id)moveFileIntoRepositoryFromFileURL:(id)l forNotificationIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (unint64_t)_addReferencesToRepositoryURL:(id)l forNotificationIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (unint64_t)_removeReferencesToRepositoryURL:(id)l forNotificationIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (unint64_t)_transformNotificationIdentifiersForRepositoryURL:(id)l bundleIdentifier:(id)identifier usingTransformBlock:(id)block;
 - (void)_performAttachmentFilesMigration;
 - (void)_performAttachmentRepositoryKeyMigration;
-- (void)_removeRepositoryURL:(id)a3;
-- (void)_transformAttachmentsForBundleIdentifier:(id)a3 usingTransformBlock:(id)a4;
-- (void)deleteAllFilesForBundleIdentifier:(id)a3;
-- (void)ensureIntegrityUsingNotificationIdentifiersForBundleIdentifiers:(id)a3;
+- (void)_removeRepositoryURL:(id)l;
+- (void)_transformAttachmentsForBundleIdentifier:(id)identifier usingTransformBlock:(id)block;
+- (void)deleteAllFilesForBundleIdentifier:(id)identifier;
+- (void)ensureIntegrityUsingNotificationIdentifiersForBundleIdentifiers:(id)identifiers;
 - (void)performMigration;
-- (void)removeReferenceToRepositoryURL:(id)a3 forNotificationIdentifier:(id)a4 bundleIdentifier:(id)a5;
+- (void)removeReferenceToRepositoryURL:(id)l forNotificationIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
 @end
 
 @implementation UNCAttachmentsRepository
 
-- (UNCAttachmentsRepository)initWithDirectory:(id)a3 librarian:(id)a4
+- (UNCAttachmentsRepository)initWithDirectory:(id)directory librarian:(id)librarian
 {
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  librarianCopy = librarian;
   v14.receiver = self;
   v14.super_class = UNCAttachmentsRepository;
   v8 = [(UNCAttachmentsRepository *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6];
+    v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:directoryCopy];
     directoryURL = v8->_directoryURL;
     v8->_directoryURL = v9;
 
-    objc_storeStrong(&v8->_librarian, a4);
-    v11 = [[UNCKeyedDictionaryRepository alloc] initWithDirectory:v6 fileName:@"AttachmentsList" pathExtension:@"plist" librarian:v7];
+    objc_storeStrong(&v8->_librarian, librarian);
+    v11 = [[UNCKeyedDictionaryRepository alloc] initWithDirectory:directoryCopy fileName:@"AttachmentsList" pathExtension:@"plist" librarian:librarianCopy];
     referencesRepository = v8->_referencesRepository;
     v8->_referencesRepository = v11;
   }
@@ -47,17 +47,17 @@
 
 - (id)bundleIdentifiersClaimingAttachments
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 contentsOfDirectoryAtURL:self->_directoryURL includingPropertiesForKeys:0 options:0 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager contentsOfDirectoryAtURL:self->_directoryURL includingPropertiesForKeys:0 options:0 error:0];
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__UNCAttachmentsRepository_bundleIdentifiersClaimingAttachments__block_invoke;
   v9[3] = &unk_1E85D7978;
-  v10 = v5;
-  v11 = self;
-  v6 = v5;
+  v10 = defaultManager2;
+  selfCopy = self;
+  v6 = defaultManager2;
   v7 = [v4 bs_mapNoNulls:v9];
 
   return v7;
@@ -86,41 +86,41 @@ id __64__UNCAttachmentsRepository_bundleIdentifiersClaimingAttachments__block_in
   return v9;
 }
 
-- (id)_claimedRepositoryURLsForBundleIdentifier:(id)a3
+- (id)_claimedRepositoryURLsForBundleIdentifier:(id)identifier
 {
-  v3 = [(UNCAttachmentsRepository *)self _attachmentDirectoryForBundleIdentifier:a3];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:0 options:0 error:0];
+  v3 = [(UNCAttachmentsRepository *)self _attachmentDirectoryForBundleIdentifier:identifier];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:0 options:0 error:0];
 
   v6 = [v5 bs_mapNoNulls:&__block_literal_global_15];
 
   return v6;
 }
 
-- (BOOL)isRepositoryURL:(id)a3
+- (BOOL)isRepositoryURL:(id)l
 {
   v8 = 2;
   v4 = MEMORY[0x1E696AC08];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  [v6 getRelationship:&v8 ofDirectoryAtURL:self->_directoryURL toItemAtURL:v5 error:0];
+  lCopy = l;
+  defaultManager = [v4 defaultManager];
+  [defaultManager getRelationship:&v8 ofDirectoryAtURL:self->_directoryURL toItemAtURL:lCopy error:0];
 
   return v8 == 0;
 }
 
-- (BOOL)isValidRepositoryURL:(id)a3 forBundleIdentifier:(id)a4
+- (BOOL)isValidRepositoryURL:(id)l forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v6 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  lCopy = l;
+  identifierCopy = identifier;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v10 = [defaultManager fileExistsAtPath:path];
 
   if (v10)
   {
-    v11 = [(UNCAttachmentsRepository *)self _attachmentDirectoryForBundleIdentifier:v7];
+    v11 = [(UNCAttachmentsRepository *)self _attachmentDirectoryForBundleIdentifier:identifierCopy];
     v14 = 2;
-    [v8 getRelationship:&v14 ofDirectoryAtURL:v11 toItemAtURL:v6 error:0];
+    [defaultManager getRelationship:&v14 ofDirectoryAtURL:v11 toItemAtURL:lCopy error:0];
     v12 = v14 == 0;
   }
 
@@ -132,61 +132,61 @@ id __64__UNCAttachmentsRepository_bundleIdentifiersClaimingAttachments__block_in
   return v12;
 }
 
-- (id)moveFileIntoRepositoryFromFileURL:(id)a3 forNotificationIdentifier:(id)a4 bundleIdentifier:(id)a5
+- (id)moveFileIntoRepositoryFromFileURL:(id)l forNotificationIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_opt_class() _sha1HashOfFileAtURL:v8];
+  lCopy = l;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  v11 = [objc_opt_class() _sha1HashOfFileAtURL:lCopy];
   if (v11)
   {
-    v35 = v9;
+    v35 = identifierCopy;
     v12 = [MEMORY[0x1E696AEC0] unc_stringWithDigestOfSHA1Hash:v11];
-    v13 = [v8 pathExtension];
+    pathExtension = [lCopy pathExtension];
     v34 = v12;
-    v14 = [(UNCAttachmentsRepository *)self _fileURLForDigestString:v12 extension:v13 bundleIdentifier:v10];
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
-    v16 = [v14 path];
-    v17 = [v15 fileExistsAtPath:v16];
+    v14 = [(UNCAttachmentsRepository *)self _fileURLForDigestString:v12 extension:pathExtension bundleIdentifier:bundleIdentifierCopy];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v14 path];
+    v17 = [defaultManager fileExistsAtPath:path];
 
     if (v17)
     {
       v18 = *MEMORY[0x1E6983340];
       if (os_log_type_enabled(*MEMORY[0x1E6983340], OS_LOG_TYPE_ERROR))
       {
-        [UNCAttachmentsRepository moveFileIntoRepositoryFromFileURL:v8 forNotificationIdentifier:v18 bundleIdentifier:?];
+        [UNCAttachmentsRepository moveFileIntoRepositoryFromFileURL:lCopy forNotificationIdentifier:v18 bundleIdentifier:?];
       }
 
-      v19 = [MEMORY[0x1E696AC08] defaultManager];
-      [v19 removeItemAtURL:v8 error:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager2 removeItemAtURL:lCopy error:0];
 
       v20 = v14;
       goto LABEL_20;
     }
 
-    v22 = [(UNCAttachmentsRepository *)self _attachmentDirectoryForBundleIdentifier:v10];
-    v23 = [MEMORY[0x1E696AC08] defaultManager];
-    [v23 createDirectoryAtURL:v22 withIntermediateDirectories:1 attributes:0 error:0];
+    v22 = [(UNCAttachmentsRepository *)self _attachmentDirectoryForBundleIdentifier:bundleIdentifierCopy];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager3 createDirectoryAtURL:v22 withIntermediateDirectories:1 attributes:0 error:0];
 
     v24 = *MEMORY[0x1E695DB80];
     v37 = 0;
-    LOBYTE(v23) = [v22 setResourceValue:MEMORY[0x1E695E118] forKey:v24 error:&v37];
+    LOBYTE(defaultManager3) = [v22 setResourceValue:MEMORY[0x1E695E118] forKey:v24 error:&v37];
     v25 = v37;
-    if ((v23 & 1) == 0 && os_log_type_enabled(*MEMORY[0x1E6983340], OS_LOG_TYPE_ERROR))
+    if ((defaultManager3 & 1) == 0 && os_log_type_enabled(*MEMORY[0x1E6983340], OS_LOG_TYPE_ERROR))
     {
       [UNCFileHandleContentProtectionStrategy _excludeItemFromBackupAtPath:];
     }
 
-    v26 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
     v36 = v25;
-    v27 = [v26 moveItemAtURL:v8 toURL:v14 error:&v36];
+    v27 = [defaultManager4 moveItemAtURL:lCopy toURL:v14 error:&v36];
     v33 = v36;
 
     if (v27)
     {
-      v9 = v35;
-      v28 = [(UNCAttachmentsRepository *)self _addReferencesToRepositoryURL:v14 forNotificationIdentifier:v35 bundleIdentifier:v10];
+      identifierCopy = v35;
+      v28 = [(UNCAttachmentsRepository *)self _addReferencesToRepositoryURL:v14 forNotificationIdentifier:v35 bundleIdentifier:bundleIdentifierCopy];
       v29 = *MEMORY[0x1E6983340];
       if (os_log_type_enabled(*MEMORY[0x1E6983340], OS_LOG_TYPE_DEFAULT))
       {
@@ -209,12 +209,12 @@ id __64__UNCAttachmentsRepository_bundleIdentifiersClaimingAttachments__block_in
         v30 = v33;
         [UNCAttachmentsRepository moveFileIntoRepositoryFromFileURL:forNotificationIdentifier:bundleIdentifier:];
         v20 = 0;
-        v9 = v35;
+        identifierCopy = v35;
         goto LABEL_19;
       }
 
       v20 = 0;
-      v9 = v35;
+      identifierCopy = v35;
     }
 
     v30 = v33;
@@ -227,7 +227,7 @@ LABEL_20:
   v21 = *MEMORY[0x1E6983340];
   if (os_log_type_enabled(*MEMORY[0x1E6983340], OS_LOG_TYPE_ERROR))
   {
-    [UNCAttachmentsRepository moveFileIntoRepositoryFromFileURL:v8 forNotificationIdentifier:v21 bundleIdentifier:?];
+    [UNCAttachmentsRepository moveFileIntoRepositoryFromFileURL:lCopy forNotificationIdentifier:v21 bundleIdentifier:?];
   }
 
   v20 = 0;
@@ -238,27 +238,27 @@ LABEL_21:
   return v20;
 }
 
-- (void)removeReferenceToRepositoryURL:(id)a3 forNotificationIdentifier:(id)a4 bundleIdentifier:(id)a5
+- (void)removeReferenceToRepositoryURL:(id)l forNotificationIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(UNCAttachmentsRepository *)self isValidRepositoryURL:v8 forBundleIdentifier:v10])
+  lCopy = l;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  if ([(UNCAttachmentsRepository *)self isValidRepositoryURL:lCopy forBundleIdentifier:bundleIdentifierCopy])
   {
-    v11 = [(UNCAttachmentsRepository *)self _removeReferencesToRepositoryURL:v8 forNotificationIdentifier:v9 bundleIdentifier:v10];
+    v11 = [(UNCAttachmentsRepository *)self _removeReferencesToRepositoryURL:lCopy forNotificationIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy];
     if (!v11)
     {
-      [(UNCAttachmentsRepository *)self _removeRepositoryURL:v8];
+      [(UNCAttachmentsRepository *)self _removeRepositoryURL:lCopy];
     }
 
     v12 = *MEMORY[0x1E6983340];
     if (os_log_type_enabled(*MEMORY[0x1E6983340], OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412802;
-      v16 = v8;
+      v16 = lCopy;
       v17 = 2112;
-      v18 = v9;
+      v18 = identifierCopy;
       v19 = 2048;
       v20 = v11;
       _os_log_impl(&dword_1DA7A9000, v12, OS_LOG_TYPE_DEFAULT, "Removed reference to repository URL '%@' for notification identifier '%@' (refcount %lu)", &v15, 0x20u);
@@ -270,75 +270,75 @@ LABEL_21:
     v13 = *MEMORY[0x1E6983340];
     if (os_log_type_enabled(*MEMORY[0x1E6983340], OS_LOG_TYPE_ERROR))
     {
-      [UNCAttachmentsRepository removeReferenceToRepositoryURL:v8 forNotificationIdentifier:v9 bundleIdentifier:v13];
+      [UNCAttachmentsRepository removeReferenceToRepositoryURL:lCopy forNotificationIdentifier:identifierCopy bundleIdentifier:v13];
     }
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeRepositoryURL:(id)a3
+- (void)_removeRepositoryURL:(id)l
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v4 = *MEMORY[0x1E6983340];
   if (os_log_type_enabled(*MEMORY[0x1E6983340], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = lCopy;
     _os_log_impl(&dword_1DA7A9000, v4, OS_LOG_TYPE_DEFAULT, "Removing repository URL '%@' as no notifications reference it", &v7, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  [v5 removeItemAtURL:v3 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager removeItemAtURL:lCopy error:0];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteAllFilesForBundleIdentifier:(id)a3
+- (void)deleteAllFilesForBundleIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = *MEMORY[0x1E6983340];
   if (os_log_type_enabled(*MEMORY[0x1E6983340], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1DA7A9000, v5, OS_LOG_TYPE_DEFAULT, "Removing all attachments for bundle '%@'", &v9, 0xCu);
   }
 
-  [(UNCAttachmentsRepository *)self _removeAllReferencesForBundleIdentifier:v4];
-  v6 = [(UNCAttachmentsRepository *)self _attachmentDirectoryForBundleIdentifier:v4];
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  [v7 removeItemAtURL:v6 error:0];
+  [(UNCAttachmentsRepository *)self _removeAllReferencesForBundleIdentifier:identifierCopy];
+  v6 = [(UNCAttachmentsRepository *)self _attachmentDirectoryForBundleIdentifier:identifierCopy];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager removeItemAtURL:v6 error:0];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)_addReferencesToRepositoryURL:(id)a3 forNotificationIdentifier:(id)a4 bundleIdentifier:(id)a5
+- (unint64_t)_addReferencesToRepositoryURL:(id)l forNotificationIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __101__UNCAttachmentsRepository__addReferencesToRepositoryURL_forNotificationIdentifier_bundleIdentifier___block_invoke;
   v12[3] = &unk_1E85D79C0;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(UNCAttachmentsRepository *)self _transformNotificationIdentifiersForRepositoryURL:a3 bundleIdentifier:a5 usingTransformBlock:v12];
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = [(UNCAttachmentsRepository *)self _transformNotificationIdentifiersForRepositoryURL:l bundleIdentifier:bundleIdentifier usingTransformBlock:v12];
 
   return v10;
 }
 
-- (unint64_t)_removeReferencesToRepositoryURL:(id)a3 forNotificationIdentifier:(id)a4 bundleIdentifier:(id)a5
+- (unint64_t)_removeReferencesToRepositoryURL:(id)l forNotificationIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __104__UNCAttachmentsRepository__removeReferencesToRepositoryURL_forNotificationIdentifier_bundleIdentifier___block_invoke;
   v12[3] = &unk_1E85D79C0;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(UNCAttachmentsRepository *)self _transformNotificationIdentifiersForRepositoryURL:a3 bundleIdentifier:a5 usingTransformBlock:v12];
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = [(UNCAttachmentsRepository *)self _transformNotificationIdentifiersForRepositoryURL:l bundleIdentifier:bundleIdentifier usingTransformBlock:v12];
 
   return v10;
 }
@@ -351,38 +351,38 @@ id __104__UNCAttachmentsRepository__removeReferencesToRepositoryURL_forNotificat
   return v3;
 }
 
-- (void)_transformAttachmentsForBundleIdentifier:(id)a3 usingTransformBlock:(id)a4
+- (void)_transformAttachmentsForBundleIdentifier:(id)identifier usingTransformBlock:(id)block
 {
-  v13 = a3;
+  identifierCopy = identifier;
   referencesRepository = self->_referencesRepository;
-  v7 = a4;
-  v8 = [(UNCKeyedDictionaryRepository *)referencesRepository dictionaryForKey:v13];
-  if (!v8)
+  blockCopy = block;
+  dictionary = [(UNCKeyedDictionaryRepository *)referencesRepository dictionaryForKey:identifierCopy];
+  if (!dictionary)
   {
-    v8 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  v9 = v7[2](v7, v8);
+  v9 = blockCopy[2](blockCopy, dictionary);
 
   v10 = [v9 copy];
   v11 = [v10 count];
   v12 = self->_referencesRepository;
   if (v11)
   {
-    [(UNCKeyedDictionaryRepository *)v12 setDictionary:v10 forKey:v13];
+    [(UNCKeyedDictionaryRepository *)v12 setDictionary:v10 forKey:identifierCopy];
   }
 
   else
   {
-    [(UNCKeyedDictionaryRepository *)v12 removeDictionaryForKey:v13];
+    [(UNCKeyedDictionaryRepository *)v12 removeDictionaryForKey:identifierCopy];
   }
 }
 
-- (unint64_t)_transformNotificationIdentifiersForRepositoryURL:(id)a3 bundleIdentifier:(id)a4 usingTransformBlock:(id)a5
+- (unint64_t)_transformNotificationIdentifiersForRepositoryURL:(id)l bundleIdentifier:(id)identifier usingTransformBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
+  blockCopy = block;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -391,12 +391,12 @@ id __104__UNCAttachmentsRepository__removeReferencesToRepositoryURL_forNotificat
   v15[1] = 3221225472;
   v15[2] = __115__UNCAttachmentsRepository__transformNotificationIdentifiersForRepositoryURL_bundleIdentifier_usingTransformBlock___block_invoke;
   v15[3] = &unk_1E85D7A08;
-  v11 = v8;
+  v11 = lCopy;
   v16 = v11;
-  v12 = v10;
+  v12 = blockCopy;
   v17 = v12;
   v18 = &v19;
-  [(UNCAttachmentsRepository *)self _transformAttachmentsForBundleIdentifier:v9 usingTransformBlock:v15];
+  [(UNCAttachmentsRepository *)self _transformAttachmentsForBundleIdentifier:identifierCopy usingTransformBlock:v15];
   v13 = v20[3];
 
   _Block_object_dispose(&v19, 8);
@@ -456,12 +456,12 @@ id __115__UNCAttachmentsRepository__transformNotificationIdentifiersForRepositor
   v46[3] = @"Attachments";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:4];
   v5 = [MEMORY[0x1E695DFF8] fileURLWithPathComponents:v4];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:0 options:0 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:0 options:0 error:0];
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v5 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v5 path];
+  v10 = [defaultManager2 fileExistsAtPath:path];
 
   if (v10)
   {
@@ -491,8 +491,8 @@ id __115__UNCAttachmentsRepository__transformNotificationIdentifiersForRepositor
 
           v16 = *(*(&v37 + 1) + 8 * i);
           v17 = objc_autoreleasePoolPush();
-          v18 = [v16 lastPathComponent];
-          v19 = [(NSURL *)self->_directoryURL URLByAppendingPathComponent:v18];
+          lastPathComponent = [v16 lastPathComponent];
+          v19 = [(NSURL *)self->_directoryURL URLByAppendingPathComponent:lastPathComponent];
           v20 = [v19 URLByAppendingPathComponent:@"Attachments"];
 
           v21 = *v12;
@@ -506,7 +506,7 @@ id __115__UNCAttachmentsRepository__transformNotificationIdentifiersForRepositor
           }
 
           v36 = 0;
-          v22 = [v8 moveItemAtURL:v16 toURL:v20 error:&v36];
+          v22 = [defaultManager2 moveItemAtURL:v16 toURL:v20 error:&v36];
           v23 = v36;
           if ((v22 & 1) == 0)
           {
@@ -532,7 +532,7 @@ id __115__UNCAttachmentsRepository__transformNotificationIdentifiersForRepositor
 
     v35 = 0;
     v5 = v30;
-    v25 = [v8 removeItemAtURL:v30 error:&v35];
+    v25 = [defaultManager2 removeItemAtURL:v30 error:&v35];
     v26 = v35;
     if ((v25 & 1) == 0)
     {
@@ -558,15 +558,15 @@ id __115__UNCAttachmentsRepository__transformNotificationIdentifiersForRepositor
 - (void)_performAttachmentRepositoryKeyMigration
 {
   v46 = *MEMORY[0x1E69E9840];
-  v28 = [MEMORY[0x1E695DF70] array];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  array = [MEMORY[0x1E695DF70] array];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   [(NSURL *)self->_directoryURL path];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v31 = v43 = 0u;
-  v32 = v3;
-  obj = [v3 enumeratorAtPath:?];
+  v32 = defaultManager;
+  obj = [defaultManager enumeratorAtPath:?];
   v4 = [obj countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v4)
   {
@@ -590,7 +590,7 @@ id __115__UNCAttachmentsRepository__transformNotificationIdentifiersForRepositor
 
         if ([v32 fileExistsAtPath:v12])
         {
-          [v28 addObject:v8];
+          [array addObject:v8];
         }
 
         objc_autoreleasePoolPop(v9);
@@ -608,7 +608,7 @@ id __115__UNCAttachmentsRepository__transformNotificationIdentifiersForRepositor
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v27 = v28;
+  v27 = array;
   v13 = [v27 countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v13)
   {
@@ -631,14 +631,14 @@ id __115__UNCAttachmentsRepository__transformNotificationIdentifiersForRepositor
         {
           v19 = [(UNCAttachmentsRepository *)self _attachmentDirectoryForBundleIdentifier:v18];
           v20 = [(UNCKeyedDictionaryRepository *)self->_referencesRepository dictionaryForKey:v18];
-          v21 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           v33[0] = MEMORY[0x1E69E9820];
           v33[1] = 3221225472;
           v33[2] = __68__UNCAttachmentsRepository__performAttachmentRepositoryKeyMigration__block_invoke;
           v33[3] = &unk_1E85D7A30;
           v34 = v19;
-          v35 = v21;
-          v22 = v21;
+          v35 = dictionary;
+          v22 = dictionary;
           v23 = v19;
           [v20 enumerateKeysAndObjectsUsingBlock:v33];
           referencesRepository = self->_referencesRepository;
@@ -668,16 +668,16 @@ void __68__UNCAttachmentsRepository__performAttachmentRepositoryKeyMigration__bl
   [*(a1 + 40) setObject:v5 forKey:v6];
 }
 
-- (void)ensureIntegrityUsingNotificationIdentifiersForBundleIdentifiers:(id)a3
+- (void)ensureIntegrityUsingNotificationIdentifiersForBundleIdentifiers:(id)identifiers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UNCAttachmentsRepository *)self bundleIdentifiersClaimingAttachments];
+  identifiersCopy = identifiers;
+  bundleIdentifiersClaimingAttachments = [(UNCAttachmentsRepository *)self bundleIdentifiersClaimingAttachments];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [bundleIdentifiersClaimingAttachments countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -688,11 +688,11 @@ void __68__UNCAttachmentsRepository__performAttachmentRepositoryKeyMigration__bl
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(bundleIdentifiersClaimingAttachments);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v4 objectForKey:v10];
+        v11 = [identifiersCopy objectForKey:v10];
         v12 = v11;
         if (v11)
         {
@@ -712,7 +712,7 @@ void __68__UNCAttachmentsRepository__performAttachmentRepositoryKeyMigration__bl
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [bundleIdentifiersClaimingAttachments countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -807,31 +807,31 @@ id __92__UNCAttachmentsRepository_ensureIntegrityUsingNotificationIdentifiersFor
   return v22;
 }
 
-- (id)_fileURLForDigestString:(id)a3 extension:(id)a4 bundleIdentifier:(id)a5
+- (id)_fileURLForDigestString:(id)string extension:(id)extension bundleIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(UNCAttachmentsRepository *)self _attachmentDirectoryForBundleIdentifier:a5];
-  v11 = [v10 URLByAppendingPathComponent:v9];
+  extensionCopy = extension;
+  stringCopy = string;
+  v10 = [(UNCAttachmentsRepository *)self _attachmentDirectoryForBundleIdentifier:identifier];
+  v11 = [v10 URLByAppendingPathComponent:stringCopy];
 
-  v12 = [v11 URLByAppendingPathExtension:v8];
+  v12 = [v11 URLByAppendingPathExtension:extensionCopy];
 
   return v12;
 }
 
-- (id)_attachmentDirectoryForBundleIdentifier:(id)a3
+- (id)_attachmentDirectoryForBundleIdentifier:(id)identifier
 {
-  v4 = [(UNCBundleLibrarian *)self->_librarian uniqueIdentifierForBundleIdentifier:a3];
+  v4 = [(UNCBundleLibrarian *)self->_librarian uniqueIdentifierForBundleIdentifier:identifier];
   v5 = [(NSURL *)self->_directoryURL URLByAppendingPathComponent:v4 isDirectory:1];
   v6 = [v5 URLByAppendingPathComponent:@"Attachments"];
 
   return v6;
 }
 
-+ (id)_sha1HashOfFileAtURL:(id)a3
++ (id)_sha1HashOfFileAtURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:v3 error:0];
+  lCopy = l;
+  v4 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:lCopy error:0];
   if (v4)
   {
     memset(&c, 0, sizeof(c));

@@ -1,16 +1,16 @@
 @interface HighlightCell
-- (_TtC23ShelfKitCollectionViews13HighlightCell)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews13HighlightCell)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews13HighlightCell)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews13HighlightCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation HighlightCell
 
-- (_TtC23ShelfKitCollectionViews13HighlightCell)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews13HighlightCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = OBJC_IVAR____TtC23ShelfKitCollectionViews13HighlightCell_highlightView;
   *(&self->super.super.super.super.super.isa + v9) = [objc_allocWithZone(SLAttributionView) init];
@@ -20,11 +20,11 @@
   return [(HighlightCell *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC23ShelfKitCollectionViews13HighlightCell)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews13HighlightCell)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC23ShelfKitCollectionViews13HighlightCell_highlightView;
   v6 = objc_allocWithZone(SLAttributionView);
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.super.super.isa + v5) = [v6 init];
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews13HighlightCell_objectGraph) = 0;
   result = sub_30D648();

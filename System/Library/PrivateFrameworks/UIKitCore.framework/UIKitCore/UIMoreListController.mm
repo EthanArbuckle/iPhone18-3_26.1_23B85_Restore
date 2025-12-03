@@ -2,17 +2,17 @@
 - (UIMoreListController)init;
 - (id)_targetNavigationController;
 - (id)tabBarItem;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_layoutCells;
 - (void)_updateEditButton;
-- (void)_willChangeToIdiom:(int64_t)a3 onScreen:(id)a4;
-- (void)decodeRestorableStateWithCoder:(id)a3;
-- (void)encodeRestorableStateWithCoder:(id)a3;
+- (void)_willChangeToIdiom:(int64_t)idiom onScreen:(id)screen;
+- (void)decodeRestorableStateWithCoder:(id)coder;
+- (void)encodeRestorableStateWithCoder:(id)coder;
 - (void)loadView;
-- (void)setAllowsCustomizing:(BOOL)a3;
-- (void)setMoreViewControllers:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setAllowsCustomizing:(BOOL)customizing;
+- (void)setMoreViewControllers:(id)controllers;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation UIMoreListController
@@ -66,8 +66,8 @@ LABEL_4:
   {
     v15 = [UIBarButtonItem alloc];
     moreEditButtonItem = _UINSLocalizedStringWithDefaultValue(@"Edit", @"Edit");
-    v16 = [(UIViewController *)self tabBarController];
-    v17 = [(UIBarButtonItem *)v15 initWithTitle:moreEditButtonItem style:1 target:v16 action:sel_beginCustomizingTabBar_];
+    tabBarController = [(UIViewController *)self tabBarController];
+    v17 = [(UIBarButtonItem *)v15 initWithTitle:moreEditButtonItem style:1 target:tabBarController action:sel_beginCustomizingTabBar_];
     v18 = self->_moreEditButtonItem;
     self->_moreEditButtonItem = v17;
 
@@ -75,39 +75,39 @@ LABEL_4:
   }
 
 LABEL_5:
-  v4 = [(UIViewController *)self tabBarController];
-  v5 = [v4 showsEditButtonOnLeft];
+  tabBarController2 = [(UIViewController *)self tabBarController];
+  showsEditButtonOnLeft = [tabBarController2 showsEditButtonOnLeft];
 
-  v6 = [(UIViewController *)self navigationItem];
-  v7 = v6;
-  if (v5)
+  navigationItem = [(UIViewController *)self navigationItem];
+  v7 = navigationItem;
+  if (showsEditButtonOnLeft)
   {
-    v8 = [v6 rightBarButtonItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-    if (v8 == v19)
+    if (rightBarButtonItem == v19)
     {
-      v9 = [(UIViewController *)self navigationItem];
-      [v9 setRightBarButtonItem:0];
+      navigationItem2 = [(UIViewController *)self navigationItem];
+      [navigationItem2 setRightBarButtonItem:0];
     }
 
     v10 = self->_moreEditButtonItem;
-    v11 = [(UIViewController *)self navigationItem];
-    [v11 setLeftBarButtonItem:v10];
+    navigationItem3 = [(UIViewController *)self navigationItem];
+    [navigationItem3 setLeftBarButtonItem:v10];
   }
 
   else
   {
-    v12 = [v6 leftBarButtonItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
 
-    if (v12 == v19)
+    if (leftBarButtonItem == v19)
     {
-      v13 = [(UIViewController *)self navigationItem];
-      [v13 setLeftBarButtonItem:0];
+      navigationItem4 = [(UIViewController *)self navigationItem];
+      [navigationItem4 setLeftBarButtonItem:0];
     }
 
     v14 = self->_moreEditButtonItem;
-    v11 = [(UIViewController *)self navigationItem];
-    [v11 setRightBarButtonItem:v14];
+    navigationItem3 = [(UIViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:v14];
   }
 }
 
@@ -120,15 +120,15 @@ LABEL_5:
     self->_layoutManager = v3;
   }
 
-  v5 = [(UIView *)self->_table window];
+  window = [(UIView *)self->_table window];
 
-  if (v5)
+  if (window)
   {
     [(UIMoreListCellLayoutManager *)self->_layoutManager setWidestImageWidthFromViewControllers:self->_moreViewControllers];
     v7 = v6;
-    v8 = [(UIViewController *)self traitCollection];
-    v9 = [v8 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v9);
+    traitCollection = [(UIViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     v11 = -1.0;
     if (!IsAccessibilityCategory)
@@ -139,8 +139,8 @@ LABEL_5:
     [(UITableView *)self->_table setSeparatorInset:-1.0, v11, -1.0, -1.0];
   }
 
-  v12 = [(UIMoreListController *)self table];
-  [v12 reloadData];
+  table = [(UIMoreListController *)self table];
+  [table reloadData];
 
   self->_moreViewControllersChanged = 0;
 }
@@ -160,22 +160,22 @@ LABEL_5:
   return tabBarItem;
 }
 
-- (void)_willChangeToIdiom:(int64_t)a3 onScreen:(id)a4
+- (void)_willChangeToIdiom:(int64_t)idiom onScreen:(id)screen
 {
   v6.receiver = self;
   v6.super_class = UIMoreListController;
-  [(UIViewController *)&v6 _willChangeToIdiom:a3 onScreen:a4];
-  self->_disableCustomizing = a3 == 3;
-  self->_hideNavigationBar = a3 == 3;
+  [(UIViewController *)&v6 _willChangeToIdiom:idiom onScreen:screen];
+  self->_disableCustomizing = idiom == 3;
+  self->_hideNavigationBar = idiom == 3;
   [(UIMoreListController *)self _updateEditButton];
 }
 
-- (void)setMoreViewControllers:(id)a3
+- (void)setMoreViewControllers:(id)controllers
 {
-  v5 = a3;
-  if (self->_moreViewControllers != v5)
+  controllersCopy = controllers;
+  if (self->_moreViewControllers != controllersCopy)
   {
-    objc_storeStrong(&self->_moreViewControllers, a3);
+    objc_storeStrong(&self->_moreViewControllers, controllers);
     if ([(UIViewController *)self isViewLoaded])
     {
       [(UIMoreListController *)self _layoutCells];
@@ -188,67 +188,67 @@ LABEL_5:
   }
 }
 
-- (void)setAllowsCustomizing:(BOOL)a3
+- (void)setAllowsCustomizing:(BOOL)customizing
 {
-  if (self->_allowsCustomizing != a3)
+  if (self->_allowsCustomizing != customizing)
   {
-    self->_allowsCustomizing = a3;
+    self->_allowsCustomizing = customizing;
     [(UIMoreListController *)self _updateEditButton];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = UIMoreListController;
   [(UIViewController *)&v8 viewWillAppear:?];
   if (self->_hideNavigationBar)
   {
-    v5 = [(UIMoreListController *)self _targetNavigationController];
-    [v5 setNavigationBarHidden:1 animated:v3];
+    _targetNavigationController = [(UIMoreListController *)self _targetNavigationController];
+    [_targetNavigationController setNavigationBarHidden:1 animated:appearCopy];
   }
 
   table = self->_table;
   v7 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:0];
-  [(UITableView *)table selectRowAtIndexPath:v7 animated:v3 scrollPosition:0];
+  [(UITableView *)table selectRowAtIndexPath:v7 animated:appearCopy scrollPosition:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = -[NSArray objectAtIndex:](self->_moreViewControllers, "objectAtIndex:", [a4 row]);
-  v8 = [v7 moreListTableCell];
-  if (!v8)
+  viewCopy = view;
+  v7 = -[NSArray objectAtIndex:](self->_moreViewControllers, "objectAtIndex:", [path row]);
+  moreListTableCell = [v7 moreListTableCell];
+  if (!moreListTableCell)
   {
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [(UIViewController *)self _screen];
-    v11 = [v9 stringWithFormat:@"%@%d", @"MORE_CELL_IDENTIFIER", objc_msgSend(v10, "_userInterfaceIdiom")];
+    _screen = [(UIViewController *)self _screen];
+    v11 = [v9 stringWithFormat:@"%@%d", @"MORE_CELL_IDENTIFIER", objc_msgSend(_screen, "_userInterfaceIdiom")];
 
-    v8 = [v6 dequeueReusableCellWithIdentifier:v11];
-    if (!v8)
+    moreListTableCell = [viewCopy dequeueReusableCellWithIdentifier:v11];
+    if (!moreListTableCell)
     {
-      v8 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:v11];
-      [(UIView *)v8 setAutoresizingMask:2];
-      [(UITableViewCell *)v8 setLayoutManager:self->_layoutManager];
+      moreListTableCell = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:v11];
+      [(UIView *)moreListTableCell setAutoresizingMask:2];
+      [(UITableViewCell *)moreListTableCell setLayoutManager:self->_layoutManager];
     }
 
-    v12 = [v7 tabBarItem];
-    v13 = [v7 _moreListTitle];
-    if (!v13)
+    tabBarItem = [v7 tabBarItem];
+    _moreListTitle = [v7 _moreListTitle];
+    if (!_moreListTitle)
     {
-      v13 = [v12 _internalTitle];
-      if (!v13)
+      _moreListTitle = [tabBarItem _internalTitle];
+      if (!_moreListTitle)
       {
-        v13 = [v7 title];
+        _moreListTitle = [v7 title];
       }
     }
 
-    v14 = v13;
-    v15 = [(UITableViewCell *)v8 textLabel];
-    [v15 setText:v14];
+    v14 = _moreListTitle;
+    textLabel = [(UITableViewCell *)moreListTableCell textLabel];
+    [textLabel setText:v14];
 
-    if ([(UIView *)v8 _shouldReverseLayoutDirection])
+    if ([(UIView *)moreListTableCell _shouldReverseLayoutDirection])
     {
       v16 = 2;
     }
@@ -258,102 +258,102 @@ LABEL_5:
       v16 = 0;
     }
 
-    v17 = [(UITableViewCell *)v8 textLabel];
-    [v17 setTextAlignment:v16];
+    textLabel2 = [(UITableViewCell *)moreListTableCell textLabel];
+    [textLabel2 setTextAlignment:v16];
 
     v18 = __UIMoreListImageForViewController(self, v7, 0);
-    v19 = [(UITableViewCell *)v8 imageView];
-    [v19 setImage:v18];
+    imageView = [(UITableViewCell *)moreListTableCell imageView];
+    [imageView setImage:v18];
 
-    v20 = [(UITableViewCell *)v8 imageView];
-    [v20 setAlpha:0.8];
+    imageView2 = [(UITableViewCell *)moreListTableCell imageView];
+    [imageView2 setAlpha:0.8];
 
-    v21 = [(UITableViewCell *)v8 imageView];
-    [v21 _setDefaultRenderingMode:2];
+    imageView3 = [(UITableViewCell *)moreListTableCell imageView];
+    [imageView3 _setDefaultRenderingMode:2];
 
-    [(UITableViewCell *)v8 setAccessoryType:1];
-    v22 = [v12 badgeValue];
-    [(UITableViewCell *)v8 _setBadgeText:v22];
+    [(UITableViewCell *)moreListTableCell setAccessoryType:1];
+    badgeValue = [tabBarItem badgeValue];
+    [(UITableViewCell *)moreListTableCell _setBadgeText:badgeValue];
 
-    v23 = [(UIViewController *)self _screen];
-    v24 = [v23 _userInterfaceIdiom];
+    _screen2 = [(UIViewController *)self _screen];
+    _userInterfaceIdiom = [_screen2 _userInterfaceIdiom];
 
-    v25 = [(UITableViewCell *)v8 imageView];
-    if (v24 == 3)
+    imageView4 = [(UITableViewCell *)moreListTableCell imageView];
+    if (_userInterfaceIdiom == 3)
     {
       +[UIColor whiteColor];
     }
 
     else
     {
-      [UITabBar _unselectedTabTintColorForView:v6];
+      [UITabBar _unselectedTabTintColorForView:viewCopy];
     }
     v26 = ;
-    [v25 setTintColor:v26];
+    [imageView4 setTintColor:v26];
   }
 
-  return v8;
+  return moreListTableCell;
 }
 
 - (id)_targetNavigationController
 {
-  v3 = [(UIViewController *)self navigationController];
-  v4 = v3;
+  navigationController = [(UIViewController *)self navigationController];
+  v4 = navigationController;
   if (self->_hideNavigationBar)
   {
-    v5 = [v3 navigationController];
+    v3NavigationController = [navigationController navigationController];
 
-    if (v5)
+    if (v3NavigationController)
     {
-      v6 = [v4 navigationController];
+      navigationController2 = [v4 navigationController];
 
-      v4 = v6;
+      v4 = navigationController2;
     }
   }
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = [a4 row];
+  v5 = [path row];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v5;
-    v8 = [(UIMoreListController *)self _targetNavigationController];
+    _targetNavigationController = [(UIMoreListController *)self _targetNavigationController];
     v7 = [(NSArray *)self->_moreViewControllers objectAtIndex:v6];
-    [v8 pushViewController:v7 animated:1];
+    [_targetNavigationController pushViewController:v7 animated:1];
 
     if (self->_hideNavigationBar)
     {
-      [v8 setNavigationBarHidden:0 animated:1];
+      [_targetNavigationController setNavigationBarHidden:0 animated:1];
     }
   }
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = UIMoreListController;
-  [(UIViewController *)&v7 encodeRestorableStateWithCoder:v4];
-  v5 = [(UITableView *)self->_table indexPathForSelectedRow];
-  v6 = v5;
-  if (v5)
+  [(UIViewController *)&v7 encodeRestorableStateWithCoder:coderCopy];
+  indexPathForSelectedRow = [(UITableView *)self->_table indexPathForSelectedRow];
+  v6 = indexPathForSelectedRow;
+  if (indexPathForSelectedRow)
   {
-    [v4 encodeInteger:objc_msgSend(v5 forKey:{"row"), @"kSelectedTableViewCellIndexKey"}];
+    [coderCopy encodeInteger:objc_msgSend(indexPathForSelectedRow forKey:{"row"), @"kSelectedTableViewCellIndexKey"}];
   }
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3
+- (void)decodeRestorableStateWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = UIMoreListController;
-  [(UIResponder *)&v7 decodeRestorableStateWithCoder:v4];
-  if ([v4 containsValueForKey:@"kSelectedTableViewCellIndexKey"])
+  [(UIResponder *)&v7 decodeRestorableStateWithCoder:coderCopy];
+  if ([coderCopy containsValueForKey:@"kSelectedTableViewCellIndexKey"])
   {
-    v5 = [v4 decodeIntegerForKey:@"kSelectedTableViewCellIndexKey"];
+    v5 = [coderCopy decodeIntegerForKey:@"kSelectedTableViewCellIndexKey"];
     v6 = [MEMORY[0x1E696AC88] indexPathForRow:v5 inSection:0];
     [(UITableView *)self->_table selectRowAtIndexPath:v6 animated:0 scrollPosition:0];
   }

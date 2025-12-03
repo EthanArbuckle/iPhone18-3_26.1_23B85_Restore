@@ -1,7 +1,7 @@
 @interface _ClientRenderer
 - (_ClientRenderer)init;
-- (void)_handleRenderStatsTime:(double)a3 cost:(double)a4;
-- (void)renderWithViewData:(id)a3 scale:(double)a4 handler:(id)a5;
+- (void)_handleRenderStatsTime:(double)time cost:(double)cost;
+- (void)renderWithViewData:(id)data scale:(double)scale handler:(id)handler;
 @end
 
 @implementation _ClientRenderer
@@ -40,19 +40,19 @@
   return v2;
 }
 
-- (void)renderWithViewData:(id)a3 scale:(double)a4 handler:(id)a5
+- (void)renderWithViewData:(id)data scale:(double)scale handler:(id)handler
 {
-  v16 = a3;
-  v8 = a5;
-  [(CDComplicationHostingView *)self->_host setViewData:v16];
+  dataCopy = data;
+  handlerCopy = handler;
+  [(CDComplicationHostingView *)self->_host setViewData:dataCopy];
   v9 = objc_autoreleasePoolPush();
   v10 = objc_alloc_init(_ClientRendererWindow);
   [(_ClientRendererWindow *)v10 setHidden:0];
-  [(_ClientRendererWindow *)v10 setContentScaleFactor:a4];
+  [(_ClientRendererWindow *)v10 setContentScaleFactor:scale];
   v11 = objc_alloc_init(MEMORY[0x277D75D28]);
   [(_ClientRendererWindow *)v10 setRootViewController:v11];
-  v12 = [v11 view];
-  [v12 addSubview:self->_host];
+  view = [v11 view];
+  [view addSubview:self->_host];
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -61,9 +61,9 @@
   [(CDComplicationHostingView *)self->_host layoutIfNeeded];
   [(CDComplicationHostingView *)self->_host frame];
   [(_ClientRendererWindow *)v10 setFrame:?];
-  v13 = [v11 view];
+  view2 = [v11 view];
   [(CDComplicationHostingView *)self->_host frame];
-  [v13 setFrame:?];
+  [view2 setFrame:?];
 
   [(_ClientRendererWindow *)v10 setNeedsLayout];
   [(_ClientRendererWindow *)v10 layoutIfNeeded];
@@ -81,14 +81,14 @@
   renderTime = self->_renderTime;
   renderCost = self->_renderCost;
   os_unfair_lock_unlock(&self->_lock);
-  v8[2](v8, renderTime, renderCost);
+  handlerCopy[2](handlerCopy, renderTime, renderCost);
 }
 
-- (void)_handleRenderStatsTime:(double)a3 cost:(double)a4
+- (void)_handleRenderStatsTime:(double)time cost:(double)cost
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_renderTime = a3;
-  self->_renderCost = a4;
+  self->_renderTime = time;
+  self->_renderCost = cost;
 
   os_unfair_lock_unlock(&self->_lock);
 }

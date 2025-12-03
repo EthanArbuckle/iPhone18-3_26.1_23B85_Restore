@@ -1,20 +1,20 @@
 @interface FCTagSettings
-+ (id)commandsToMergeLocalDataToCloud:(id)a3;
-- (FCTagSettings)initWithStore:(id)a3 tagSettingsDelegate:(id)a4;
-- (id)accessTokenForTagID:(id)a3;
++ (id)commandsToMergeLocalDataToCloud:(id)cloud;
+- (FCTagSettings)initWithStore:(id)store tagSettingsDelegate:(id)delegate;
+- (id)accessTokenForTagID:(id)d;
 - (id)allTagSettingsRecordNames;
 - (id)allTagSettingsRecords;
 - (id)authenticatedAccessTokensByTagID;
-- (id)contentScaleForTagID:(id)a3;
-- (id)fontSizeForTagID:(id)a3;
+- (id)contentScaleForTagID:(id)d;
+- (id)fontSizeForTagID:(id)d;
 - (id)webAccessOptedInTagIDs;
-- (void)handleSyncWithDeletedTagSettingsRecordName:(id)a3;
-- (void)handleSyncWithTagSettingsRecord:(id)a3;
+- (void)handleSyncWithDeletedTagSettingsRecordName:(id)name;
+- (void)handleSyncWithTagSettingsRecord:(id)record;
 - (void)loadLocalCachesFromStore;
-- (void)setContentScaleForTagID:(id)a3 contentScale:(id)a4;
-- (void)setFontSizeForTagID:(id)a3 fontSize:(id)a4;
-- (void)setWebAccessOptInForTagID:(id)a3 webAccessOptIn:(BOOL)a4;
-- (void)syncForTagID:(id)a3;
+- (void)setContentScaleForTagID:(id)d contentScale:(id)scale;
+- (void)setFontSizeForTagID:(id)d fontSize:(id)size;
+- (void)setWebAccessOptInForTagID:(id)d webAccessOptIn:(BOOL)in;
+- (void)syncForTagID:(id)d;
 @end
 
 @implementation FCTagSettings
@@ -22,11 +22,11 @@
 - (void)loadLocalCachesFromStore
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   if (self)
   {
-    objc_storeStrong(&self->_tagSettingsEntriesByTagID, v3);
+    objc_storeStrong(&self->_tagSettingsEntriesByTagID, dictionary);
 
     localStore = self->_localStore;
   }
@@ -42,8 +42,8 @@
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v7 = [(FCKeyValueStore *)v6 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  allKeys = [(FCKeyValueStore *)v6 allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v8)
   {
     v9 = v8;
@@ -58,7 +58,7 @@
       {
         if (*v37 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v36 + 1) + 8 * v13);
@@ -131,27 +131,27 @@ LABEL_27:
           {
             v24 = v10;
             v25 = v11;
-            v26 = v7;
+            v26 = allKeys;
             v27 = v6;
             if (self)
             {
-              v28 = self;
+              selfCopy = self;
               tagSettingsEntriesByTagID = self->_tagSettingsEntriesByTagID;
             }
 
             else
             {
-              v28 = 0;
+              selfCopy = 0;
               tagSettingsEntriesByTagID = 0;
             }
 
             v30 = tagSettingsEntriesByTagID;
-            v31 = [v23 tagID];
-            [(NSMutableDictionary *)v30 setObject:v23 forKey:v31];
+            tagID = [v23 tagID];
+            [(NSMutableDictionary *)v30 setObject:v23 forKey:tagID];
 
-            self = v28;
+            self = selfCopy;
             v6 = v27;
-            v7 = v26;
+            allKeys = v26;
             v11 = v25;
             v10 = v24;
             v9 = v35;
@@ -165,7 +165,7 @@ LABEL_28:
       }
 
       while (v9 != v13);
-      v33 = [v7 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v33 = [allKeys countByEnumeratingWithState:&v36 objects:v40 count:16];
       v9 = v33;
     }
 
@@ -194,17 +194,17 @@ LABEL_28:
   return v4;
 }
 
-- (FCTagSettings)initWithStore:(id)a3 tagSettingsDelegate:(id)a4
+- (FCTagSettings)initWithStore:(id)store tagSettingsDelegate:(id)delegate
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = FCTagSettings;
   v9 = [(FCTagSettings *)&v13 init];
   if (v9)
   {
-    if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (!storeCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "store"];
       *buf = 136315906;
@@ -218,26 +218,26 @@ LABEL_28:
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    objc_storeStrong(&v9->_localStore, a3);
-    objc_storeWeak(&v9->_delegate, v8);
+    objc_storeStrong(&v9->_localStore, store);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
   }
 
   v10 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-+ (id)commandsToMergeLocalDataToCloud:(id)a3
++ (id)commandsToMergeLocalDataToCloud:(id)cloud
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v23 = [MEMORY[0x1E695DF70] array];
-  v24 = [MEMORY[0x1E695DF70] array];
+  cloudCopy = cloud;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  allKeys = [cloudCopy allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -249,14 +249,14 @@ LABEL_28:
       {
         if (*v26 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v25 + 1) + 8 * v8);
         if (([objc_opt_class() isLocalStoreKeyInternal:v9] & 1) == 0)
         {
           objc_opt_class();
-          v10 = [v3 objectForKey:v9];
+          v10 = [cloudCopy objectForKey:v9];
           if (v10)
           {
             if (objc_opt_isKindOfClass())
@@ -318,7 +318,7 @@ LABEL_23:
           v17 = [FCTagSettingsEntry initWithEntryID:v12 dictionaryRepresentation:?];
           if (v17)
           {
-            [v24 addObject:v17];
+            [array2 addObject:v17];
           }
 
           goto LABEL_23;
@@ -329,25 +329,25 @@ LABEL_24:
       }
 
       while (v6 != v8);
-      v19 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v19 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
       v6 = v19;
     }
 
     while (v19);
   }
 
-  v20 = [[FCModifyTagSettingsCommand alloc] initWithTagSettingsEntries:v24 merge:1];
-  [v23 addObject:v20];
+  v20 = [[FCModifyTagSettingsCommand alloc] initWithTagSettingsEntries:array2 merge:1];
+  [array addObject:v20];
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v23;
+  return array;
 }
 
-- (void)syncForTagID:(id)a3
+- (void)syncForTagID:(id)d
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
     p_isa = &self->super.isa;
     if (self)
@@ -361,7 +361,7 @@ LABEL_24:
     }
 
     v6 = tagSettingsEntriesByTagID;
-    v7 = [(NSMutableDictionary *)v6 objectForKey:a3];
+    v7 = [(NSMutableDictionary *)v6 objectForKey:d];
 
     if (v7)
     {
@@ -382,15 +382,15 @@ LABEL_24:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setFontSizeForTagID:(id)a3 fontSize:(id)a4
+- (void)setFontSizeForTagID:(id)d fontSize:(id)size
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  sizeCopy = size;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v6)
+  if (dCopy)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ts-%@", v6];
+    dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"ts-%@", dCopy];
     if (self)
     {
       localStore = self->_localStore;
@@ -401,15 +401,15 @@ LABEL_24:
       localStore = 0;
     }
 
-    v10 = [(FCKeyValueStore *)localStore objectForKey:v8];
+    v10 = [(FCKeyValueStore *)localStore objectForKey:dCopy];
     v11 = v10;
     if (v10)
     {
       v12 = [v10 mutableCopy];
-      v13 = v12;
-      if (v7)
+      dCopy2 = v12;
+      if (sizeCopy)
       {
-        [v12 setObject:v7 forKeyedSubscript:@"fontMultiplier"];
+        [v12 setObject:sizeCopy forKeyedSubscript:@"fontMultiplier"];
       }
 
       else
@@ -417,35 +417,35 @@ LABEL_24:
         [v12 removeObjectForKey:@"fontMultiplier"];
       }
 
-      v15 = [FCTagSettingsEntry initWithEntryID:v13 dictionaryRepresentation:?];
+      v15 = [FCTagSettingsEntry initWithEntryID:dCopy2 dictionaryRepresentation:?];
     }
 
     else
     {
       v14 = [FCTagSettingsEntry alloc];
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ts-%@", v6];
+      dCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ts-%@", dCopy];
       LOBYTE(v21) = 0;
-      v15 = [(FCTagSettingsEntry *)v14 initWithEntryID:v13 tagID:v6 fontMultiplier:v7 fontMultiplierMacOS:0 contentScale:0 contentScaleMacOS:0 accessToken:0 webAccessOptIn:v21];
+      v15 = [(FCTagSettingsEntry *)v14 initWithEntryID:dCopy2 tagID:dCopy fontMultiplier:sizeCopy fontMultiplierMacOS:0 contentScale:0 contentScaleMacOS:0 accessToken:0 webAccessOptIn:v21];
     }
 
     v16 = v15;
 
     if (v16)
     {
-      v17 = [(FCTagSettingsEntry *)v16 dictionaryRepresentation];
+      dictionaryRepresentation = [(FCTagSettingsEntry *)v16 dictionaryRepresentation];
       if (self)
       {
-        [(FCKeyValueStore *)self->_localStore setObject:v17 forKey:v8];
+        [(FCKeyValueStore *)self->_localStore setObject:dictionaryRepresentation forKey:dCopy];
         tagSettingsEntriesByTagID = self->_tagSettingsEntriesByTagID;
       }
 
       else
       {
-        [0 setObject:v17 forKey:v8];
+        [0 setObject:dictionaryRepresentation forKey:dCopy];
         tagSettingsEntriesByTagID = 0;
       }
 
-      [(NSMutableDictionary *)tagSettingsEntriesByTagID setObject:v16 forKey:v6];
+      [(NSMutableDictionary *)tagSettingsEntriesByTagID setObject:v16 forKey:dCopy];
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -467,7 +467,7 @@ LABEL_24:
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagID != nil"];
+    dCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagID != nil"];
     *buf = 136315906;
     v23 = "[FCTagSettings setFontSizeForTagID:fontSize:]";
     v24 = 2080;
@@ -475,7 +475,7 @@ LABEL_24:
     v26 = 1024;
     v27 = 135;
     v28 = 2114;
-    v29 = v8;
+    v29 = dCopy;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 LABEL_19:
   }
@@ -483,28 +483,28 @@ LABEL_19:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fontSizeForTagID:(id)a3
+- (id)fontSizeForTagID:(id)d
 {
   if (self)
   {
     self = self->_tagSettingsEntriesByTagID;
   }
 
-  v3 = [(FCTagSettings *)self objectForKey:a3];
-  v4 = [v3 fontMultiplier];
+  v3 = [(FCTagSettings *)self objectForKey:d];
+  fontMultiplier = [v3 fontMultiplier];
 
-  return v4;
+  return fontMultiplier;
 }
 
-- (void)setContentScaleForTagID:(id)a3 contentScale:(id)a4
+- (void)setContentScaleForTagID:(id)d contentScale:(id)scale
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  scaleCopy = scale;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v6)
+  if (dCopy)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ts-%@", v6];
+    dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"ts-%@", dCopy];
     if (self)
     {
       localStore = self->_localStore;
@@ -515,15 +515,15 @@ LABEL_19:
       localStore = 0;
     }
 
-    v10 = [(FCKeyValueStore *)localStore objectForKey:v8];
+    v10 = [(FCKeyValueStore *)localStore objectForKey:dCopy];
     v11 = v10;
     if (v10)
     {
       v12 = [v10 mutableCopy];
-      v13 = v12;
-      if (v7)
+      dCopy2 = v12;
+      if (scaleCopy)
       {
-        [v12 setObject:v7 forKeyedSubscript:@"contentScale"];
+        [v12 setObject:scaleCopy forKeyedSubscript:@"contentScale"];
       }
 
       else
@@ -531,35 +531,35 @@ LABEL_19:
         [v12 removeObjectForKey:@"contentScale"];
       }
 
-      v15 = [FCTagSettingsEntry initWithEntryID:v13 dictionaryRepresentation:?];
+      v15 = [FCTagSettingsEntry initWithEntryID:dCopy2 dictionaryRepresentation:?];
     }
 
     else
     {
       v14 = [FCTagSettingsEntry alloc];
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ts-%@", v6];
+      dCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ts-%@", dCopy];
       LOBYTE(v21) = 0;
-      v15 = [(FCTagSettingsEntry *)v14 initWithEntryID:v13 tagID:v6 fontMultiplier:0 fontMultiplierMacOS:0 contentScale:v7 contentScaleMacOS:0 accessToken:0 webAccessOptIn:v21];
+      v15 = [(FCTagSettingsEntry *)v14 initWithEntryID:dCopy2 tagID:dCopy fontMultiplier:0 fontMultiplierMacOS:0 contentScale:scaleCopy contentScaleMacOS:0 accessToken:0 webAccessOptIn:v21];
     }
 
     v16 = v15;
 
     if (v16)
     {
-      v17 = [(FCTagSettingsEntry *)v16 dictionaryRepresentation];
+      dictionaryRepresentation = [(FCTagSettingsEntry *)v16 dictionaryRepresentation];
       if (self)
       {
-        [(FCKeyValueStore *)self->_localStore setObject:v17 forKey:v8];
+        [(FCKeyValueStore *)self->_localStore setObject:dictionaryRepresentation forKey:dCopy];
         tagSettingsEntriesByTagID = self->_tagSettingsEntriesByTagID;
       }
 
       else
       {
-        [0 setObject:v17 forKey:v8];
+        [0 setObject:dictionaryRepresentation forKey:dCopy];
         tagSettingsEntriesByTagID = 0;
       }
 
-      [(NSMutableDictionary *)tagSettingsEntriesByTagID setObject:v16 forKey:v6];
+      [(NSMutableDictionary *)tagSettingsEntriesByTagID setObject:v16 forKey:dCopy];
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -581,7 +581,7 @@ LABEL_19:
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagID != nil"];
+    dCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagID != nil"];
     *buf = 136315906;
     v23 = "[FCTagSettings setContentScaleForTagID:contentScale:]";
     v24 = 2080;
@@ -589,7 +589,7 @@ LABEL_19:
     v26 = 1024;
     v27 = 213;
     v28 = 2114;
-    v29 = v8;
+    v29 = dCopy;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 LABEL_19:
   }
@@ -597,35 +597,35 @@ LABEL_19:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)contentScaleForTagID:(id)a3
+- (id)contentScaleForTagID:(id)d
 {
   if (self)
   {
     self = self->_tagSettingsEntriesByTagID;
   }
 
-  v3 = [(FCTagSettings *)self objectForKey:a3];
-  v4 = [v3 contentScale];
+  v3 = [(FCTagSettings *)self objectForKey:d];
+  contentScale = [v3 contentScale];
 
-  return v4;
+  return contentScale;
 }
 
-- (id)accessTokenForTagID:(id)a3
+- (id)accessTokenForTagID:(id)d
 {
   if (self)
   {
     self = self->_tagSettingsEntriesByTagID;
   }
 
-  v3 = [(FCTagSettings *)self objectForKey:a3];
-  v4 = [v3 accessToken];
+  v3 = [(FCTagSettings *)self objectForKey:d];
+  accessToken = [v3 accessToken];
 
-  return v4;
+  return accessToken;
 }
 
 - (id)authenticatedAccessTokensByTagID
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self)
   {
     self = self->_tagSettingsEntriesByTagID;
@@ -635,8 +635,8 @@ LABEL_19:
   v7[1] = 3221225472;
   v7[2] = __49__FCTagSettings_authenticatedAccessTokensByTagID__block_invoke;
   v7[3] = &unk_1E7C408B8;
-  v8 = v3;
-  v4 = v3;
+  v8 = dictionary;
+  v4 = dictionary;
   [(FCTagSettings *)self enumerateKeysAndObjectsUsingBlock:v7];
   v5 = [v4 copy];
 
@@ -657,15 +657,15 @@ void __49__FCTagSettings_authenticatedAccessTokensByTagID__block_invoke(uint64_t
   }
 }
 
-- (void)setWebAccessOptInForTagID:(id)a3 webAccessOptIn:(BOOL)a4
+- (void)setWebAccessOptInForTagID:(id)d webAccessOptIn:(BOOL)in
 {
-  v4 = a4;
+  inCopy = in;
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v6)
+  if (dCopy)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ts-%@", v6];
+    dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"ts-%@", dCopy];
     if (self)
     {
       localStore = self->_localStore;
@@ -676,16 +676,16 @@ void __49__FCTagSettings_authenticatedAccessTokensByTagID__block_invoke(uint64_t
       localStore = 0;
     }
 
-    v9 = [(FCKeyValueStore *)localStore objectForKey:v7];
+    v9 = [(FCKeyValueStore *)localStore objectForKey:dCopy];
     v10 = v9;
     if (v9)
     {
       v11 = [v9 mutableCopy];
-      v12 = v11;
-      if (v4)
+      dCopy2 = v11;
+      if (inCopy)
       {
         v13 = [MEMORY[0x1E696AD98] numberWithBool:1];
-        [v12 setObject:v13 forKeyedSubscript:@"webAccessOptIn"];
+        [dCopy2 setObject:v13 forKeyedSubscript:@"webAccessOptIn"];
       }
 
       else
@@ -693,35 +693,35 @@ void __49__FCTagSettings_authenticatedAccessTokensByTagID__block_invoke(uint64_t
         [v11 removeObjectForKey:@"webAccessOptIn"];
       }
 
-      v15 = [FCTagSettingsEntry initWithEntryID:v12 dictionaryRepresentation:?];
+      v15 = [FCTagSettingsEntry initWithEntryID:dCopy2 dictionaryRepresentation:?];
     }
 
     else
     {
       v14 = [FCTagSettingsEntry alloc];
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ts-%@", v6];
-      LOBYTE(v24) = v4;
-      v15 = [(FCTagSettingsEntry *)v14 initWithEntryID:v12 tagID:v6 fontMultiplier:0 fontMultiplierMacOS:0 contentScale:0 contentScaleMacOS:0 accessToken:0 webAccessOptIn:v24];
+      dCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ts-%@", dCopy];
+      LOBYTE(v24) = inCopy;
+      v15 = [(FCTagSettingsEntry *)v14 initWithEntryID:dCopy2 tagID:dCopy fontMultiplier:0 fontMultiplierMacOS:0 contentScale:0 contentScaleMacOS:0 accessToken:0 webAccessOptIn:v24];
     }
 
     v16 = v15;
 
     if (v16)
     {
-      v17 = [(FCTagSettingsEntry *)v16 dictionaryRepresentation];
+      dictionaryRepresentation = [(FCTagSettingsEntry *)v16 dictionaryRepresentation];
       if (self)
       {
-        [(FCKeyValueStore *)self->_localStore setObject:v17 forKey:v7];
+        [(FCKeyValueStore *)self->_localStore setObject:dictionaryRepresentation forKey:dCopy];
         tagSettingsEntriesByTagID = self->_tagSettingsEntriesByTagID;
       }
 
       else
       {
-        [0 setObject:v17 forKey:v7];
+        [0 setObject:dictionaryRepresentation forKey:dCopy];
         tagSettingsEntriesByTagID = 0;
       }
 
-      [(NSMutableDictionary *)tagSettingsEntriesByTagID setObject:v16 forKey:v6];
+      [(NSMutableDictionary *)tagSettingsEntriesByTagID setObject:v16 forKey:dCopy];
       v19 = [FCModifyTagSettingsCommand alloc];
       v25 = v16;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
@@ -754,7 +754,7 @@ void __49__FCTagSettings_authenticatedAccessTokensByTagID__block_invoke(uint64_t
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagID != nil"];
+    dCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagID != nil"];
     *buf = 136315906;
     v27 = "[FCTagSettings setWebAccessOptInForTagID:webAccessOptIn:]";
     v28 = 2080;
@@ -762,7 +762,7 @@ void __49__FCTagSettings_authenticatedAccessTokensByTagID__block_invoke(uint64_t
     v30 = 1024;
     v31 = 369;
     v32 = 2114;
-    v33 = v7;
+    v33 = dCopy;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 LABEL_21:
   }
@@ -781,14 +781,14 @@ void __39__FCTagSettings_webAccessOptedInTagIDs__block_invoke(uint64_t a1, uint6
   }
 }
 
-- (void)handleSyncWithTagSettingsRecord:(id)a3
+- (void)handleSyncWithTagSettingsRecord:(id)record
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 recordID];
-  v39 = [v5 recordName];
+  recordCopy = record;
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
 
-  v38 = self;
+  selfCopy = self;
   if (self)
   {
     localStore = self->_localStore;
@@ -800,16 +800,16 @@ void __39__FCTagSettings_webAccessOptedInTagIDs__block_invoke(uint64_t a1, uint6
   }
 
   v7 = localStore;
-  v8 = [v4 objectForKeyedSubscript:@"tagID"];
-  v9 = [v4 objectForKeyedSubscript:@"fontMultiplier"];
-  v10 = [v4 objectForKeyedSubscript:@"fontMultiplierMacOS"];
-  v35 = [v4 objectForKeyedSubscript:@"contentScale"];
-  v34 = [v4 objectForKeyedSubscript:@"contentScaleMacOS"];
-  v33 = [v4 objectForKeyedSubscript:?];
-  v37 = [v4 objectForKeyedSubscript:?];
+  v8 = [recordCopy objectForKeyedSubscript:@"tagID"];
+  v9 = [recordCopy objectForKeyedSubscript:@"fontMultiplier"];
+  v10 = [recordCopy objectForKeyedSubscript:@"fontMultiplierMacOS"];
+  v35 = [recordCopy objectForKeyedSubscript:@"contentScale"];
+  v34 = [recordCopy objectForKeyedSubscript:@"contentScaleMacOS"];
+  v33 = [recordCopy objectForKeyedSubscript:?];
+  v37 = [recordCopy objectForKeyedSubscript:?];
 
   v36 = v7;
-  v11 = [(FCKeyValueStore *)v7 objectForKey:v39];
+  v11 = [(FCKeyValueStore *)v7 objectForKey:recordName];
   v12 = v11;
   if (v11)
   {
@@ -883,13 +883,13 @@ void __39__FCTagSettings_webAccessOptedInTagIDs__block_invoke(uint64_t a1, uint6
     }
 
     v25 = v36;
-    [(FCKeyValueStore *)v36 setObject:v14 forKey:v39];
+    [(FCKeyValueStore *)v36 setObject:v14 forKey:recordName];
     if (v15)
     {
       v27 = [FCTagSettingsEntry initWithEntryID:v14 dictionaryRepresentation:?];
-      if (v38)
+      if (selfCopy)
       {
-        tagSettingsEntriesByTagID = v38->_tagSettingsEntriesByTagID;
+        tagSettingsEntriesByTagID = selfCopy->_tagSettingsEntriesByTagID;
       }
 
       else
@@ -900,9 +900,9 @@ void __39__FCTagSettings_webAccessOptedInTagIDs__block_invoke(uint64_t a1, uint6
       [(NSMutableDictionary *)tagSettingsEntriesByTagID setObject:v27 forKey:v15];
     }
 
-    if (v38)
+    if (selfCopy)
     {
-      WeakRetained = objc_loadWeakRetained(&v38->_delegate);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
     }
 
     else
@@ -921,50 +921,50 @@ LABEL_45:
   if (v8)
   {
     v32 = 0;
-    v16 = [MEMORY[0x1E695DF90] dictionary];
-    [v16 setObject:v8 forKey:@"tagID"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:v8 forKey:@"tagID"];
     if (v9)
     {
-      [v16 setObject:v9 forKey:@"fontMultiplier"];
+      [dictionary setObject:v9 forKey:@"fontMultiplier"];
     }
 
     v17 = v10;
     if (v10)
     {
-      [v16 setObject:v10 forKey:@"fontMultiplierMacOS"];
+      [dictionary setObject:v10 forKey:@"fontMultiplierMacOS"];
     }
 
     v18 = v35;
     if (v35)
     {
-      [v16 setObject:v35 forKey:@"contentScale"];
+      [dictionary setObject:v35 forKey:@"contentScale"];
     }
 
     v20 = v33;
     v19 = v34;
     if (v34)
     {
-      [v16 setObject:v34 forKey:@"contentScaleMacOS"];
+      [dictionary setObject:v34 forKey:@"contentScaleMacOS"];
     }
 
     if (v37)
     {
-      [v16 setObject:v37 forKey:@"accessToken"];
+      [dictionary setObject:v37 forKey:@"accessToken"];
     }
 
     if (v33)
     {
-      [v16 setObject:v33 forKey:@"webAccessOptIn"];
+      [dictionary setObject:v33 forKey:@"webAccessOptIn"];
     }
 
     v21 = [FCTagSettingsEntry alloc];
-    v22 = [v16 copy];
+    v22 = [dictionary copy];
     v23 = [FCTagSettingsEntry initWithEntryID:v21 dictionaryRepresentation:v22];
 
-    if (v38)
+    if (selfCopy)
     {
-      [(NSMutableDictionary *)v38->_tagSettingsEntriesByTagID setObject:v23 forKey:v15];
-      v24 = objc_loadWeakRetained(&v38->_delegate);
+      [(NSMutableDictionary *)selfCopy->_tagSettingsEntriesByTagID setObject:v23 forKey:v15];
+      v24 = objc_loadWeakRetained(&selfCopy->_delegate);
     }
 
     else
@@ -976,7 +976,7 @@ LABEL_45:
     v25 = v36;
     [v24 accessTokenDidChangeForTagID:v15];
 
-    [(FCKeyValueStore *)v36 setObject:v16 forKey:v39];
+    [(FCKeyValueStore *)v36 setObject:dictionary forKey:recordName];
     v26 = v37;
     goto LABEL_45;
   }
@@ -1008,9 +1008,9 @@ LABEL_46:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleSyncWithDeletedTagSettingsRecordName:(id)a3
+- (void)handleSyncWithDeletedTagSettingsRecordName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (self)
   {
     localStore = self->_localStore;
@@ -1021,8 +1021,8 @@ LABEL_46:
     localStore = 0;
   }
 
-  v9 = v4;
-  v6 = [(FCKeyValueStore *)localStore objectForKey:v4];
+  v9 = nameCopy;
+  v6 = [(FCKeyValueStore *)localStore objectForKey:nameCopy];
   if (v6)
   {
     if (self)
@@ -1062,8 +1062,8 @@ LABEL_46:
     self = self->_tagSettingsEntriesByTagID;
   }
 
-  v2 = [(FCTagSettings *)self allValues];
-  v3 = [v2 fc_arrayByTransformingWithBlock:&__block_literal_global_71];
+  allValues = [(FCTagSettings *)self allValues];
+  v3 = [allValues fc_arrayByTransformingWithBlock:&__block_literal_global_71];
 
   return v3;
 }
@@ -1075,8 +1075,8 @@ LABEL_46:
     self = self->_tagSettingsEntriesByTagID;
   }
 
-  v2 = [(FCTagSettings *)self allValues];
-  v3 = [v2 fc_arrayByTransformingWithBlock:&__block_literal_global_25_0];
+  allValues = [(FCTagSettings *)self allValues];
+  v3 = [allValues fc_arrayByTransformingWithBlock:&__block_literal_global_25_0];
 
   return v3;
 }

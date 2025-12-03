@@ -1,32 +1,32 @@
 @interface SBAppContainerViewController
 - (CGSize)contentReferenceSize;
-- (SBAppContainerViewController)initWithDisplayIdentity:(id)a3;
+- (SBAppContainerViewController)initWithDisplayIdentity:(id)identity;
 - (SBDeviceApplicationSceneStatusBarStateObserver)statusBarDelegate;
-- (id)_applicationSceneViewControllerForSceneHandle:(id)a3;
+- (id)_applicationSceneViewControllerForSceneHandle:(id)handle;
 - (id)_deviceApplicationSceneHandle;
-- (id)_newDisplayLayoutElementForEntity:(id)a3;
+- (id)_newDisplayLayoutElementForEntity:(id)entity;
 - (void)_clearState;
-- (void)_updateDisplayLayoutElementForSceneExistence:(id)a3;
-- (void)applicationSceneViewController:(id)a3 didUpdateStatusBarSettings:(id)a4;
-- (void)configureWithWorkspaceEntity:(id)a3 forLayoutElement:(id)a4 layoutState:(id)a5 referenceFrame:(CGRect)a6;
-- (void)didEndTransitionToVisible:(BOOL)a3;
+- (void)_updateDisplayLayoutElementForSceneExistence:(id)existence;
+- (void)applicationSceneViewController:(id)controller didUpdateStatusBarSettings:(id)settings;
+- (void)configureWithWorkspaceEntity:(id)entity forLayoutElement:(id)element layoutState:(id)state referenceFrame:(CGRect)frame;
+- (void)didEndTransitionToVisible:(BOOL)visible;
 - (void)invalidate;
 - (void)prepareForReuse;
-- (void)sceneHandle:(id)a3 didUpdateContentState:(int64_t)a4;
-- (void)sceneHandle:(id)a3 didUpdateSettingsWithDiff:(id)a4 previousSettings:(id)a5;
-- (void)sceneWithIdentifier:(id)a3 didChangeSceneInterfaceOrientationTo:(int64_t)a4;
-- (void)setContentWrapperInterfaceOrientation:(int64_t)a3;
-- (void)setDisplayMode:(int64_t)a3 animationFactory:(id)a4 completion:(id)a5;
-- (void)setStatusBarDelegate:(id)a3;
+- (void)sceneHandle:(id)handle didUpdateContentState:(int64_t)state;
+- (void)sceneHandle:(id)handle didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings;
+- (void)sceneWithIdentifier:(id)identifier didChangeSceneInterfaceOrientationTo:(int64_t)to;
+- (void)setContentWrapperInterfaceOrientation:(int64_t)orientation;
+- (void)setDisplayMode:(int64_t)mode animationFactory:(id)factory completion:(id)completion;
+- (void)setStatusBarDelegate:(id)delegate;
 @end
 
 @implementation SBAppContainerViewController
 
-- (SBAppContainerViewController)initWithDisplayIdentity:(id)a3
+- (SBAppContainerViewController)initWithDisplayIdentity:(id)identity
 {
   v4.receiver = self;
   v4.super_class = SBAppContainerViewController;
-  result = [(SBLayoutElementViewController *)&v4 initWithDisplayIdentity:a3];
+  result = [(SBLayoutElementViewController *)&v4 initWithDisplayIdentity:identity];
   if (result)
   {
     result->_requestedDisplayMode = 4;
@@ -51,22 +51,22 @@
   [(SBAppContainerViewController *)self _clearState];
 }
 
-- (void)configureWithWorkspaceEntity:(id)a3 forLayoutElement:(id)a4 layoutState:(id)a5 referenceFrame:(CGRect)a6
+- (void)configureWithWorkspaceEntity:(id)entity forLayoutElement:(id)element layoutState:(id)state referenceFrame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v14 = a3;
-  v50 = a4;
-  v15 = a5;
-  if (([v14 isApplicationSceneEntity] & 1) == 0)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  entityCopy = entity;
+  elementCopy = element;
+  stateCopy = state;
+  if (([entityCopy isApplicationSceneEntity] & 1) == 0)
   {
     [SBAppContainerViewController configureWithWorkspaceEntity:a2 forLayoutElement:self layoutState:? referenceFrame:?];
   }
 
-  v16 = [v14 applicationSceneEntity];
-  v17 = [v16 sceneHandle];
+  applicationSceneEntity = [entityCopy applicationSceneEntity];
+  sceneHandle = [applicationSceneEntity sceneHandle];
   applicationSceneHandle = self->_applicationSceneHandle;
   if (applicationSceneHandle)
   {
@@ -77,13 +77,13 @@
 
   v51.receiver = self;
   v51.super_class = SBAppContainerViewController;
-  [(SBLayoutElementViewController *)&v51 configureWithWorkspaceEntity:v16 forLayoutElement:v50 layoutState:v15 referenceFrame:x, y, width, height, v16];
-  objc_storeStrong(&self->_applicationSceneHandle, v17);
+  [(SBLayoutElementViewController *)&v51 configureWithWorkspaceEntity:applicationSceneEntity forLayoutElement:elementCopy layoutState:stateCopy referenceFrame:x, y, width, height, applicationSceneEntity];
+  objc_storeStrong(&self->_applicationSceneHandle, sceneHandle);
   [(SBApplicationSceneHandle *)self->_applicationSceneHandle addObserver:self];
   [(SBDeviceApplicationSceneStatusBarStateProxy *)self->_statusBarObserverProxy invalidate];
   v20 = [_SBAppContainerStatusBarStateProxy alloc];
-  v21 = [(SBAppContainerViewController *)self _deviceApplicationSceneHandle];
-  v22 = [(SBDeviceApplicationSceneStatusBarStateProxy *)v20 initWithDeviceApplicationSceneHandle:v21];
+  _deviceApplicationSceneHandle = [(SBAppContainerViewController *)self _deviceApplicationSceneHandle];
+  v22 = [(SBDeviceApplicationSceneStatusBarStateProxy *)v20 initWithDeviceApplicationSceneHandle:_deviceApplicationSceneHandle];
   statusBarObserverProxy = self->_statusBarObserverProxy;
   self->_statusBarObserverProxy = v22;
 
@@ -106,52 +106,52 @@
   }
 
   v30 = self->_applicationSceneViewController;
-  v31 = [(SBApplicationSceneHandle *)self->_applicationSceneHandle newScenePlaceholderContentContextWithActivationSettings:v14];
+  v31 = [(SBApplicationSceneHandle *)self->_applicationSceneHandle newScenePlaceholderContentContextWithActivationSettings:entityCopy];
   [(SBApplicationSceneViewControlling *)v30 setPlaceholderContentContext:v31];
 
-  -[SBApplicationSceneViewControlling setContentReferenceSize:withContentOrientation:andContainerOrientation:](self->_applicationSceneViewController, "setContentReferenceSize:withContentOrientation:andContainerOrientation:", [v15 interfaceOrientationForLayoutElement:v50], objc_msgSend(v15, "interfaceOrientation"), width, height);
+  -[SBApplicationSceneViewControlling setContentReferenceSize:withContentOrientation:andContainerOrientation:](self->_applicationSceneViewController, "setContentReferenceSize:withContentOrientation:andContainerOrientation:", [stateCopy interfaceOrientationForLayoutElement:elementCopy], objc_msgSend(stateCopy, "interfaceOrientation"), width, height);
   [(SBApplicationSceneViewControlling *)self->_applicationSceneViewController setApplicationSceneStatusBarDelegate:self];
   [(SBAppContainerViewController *)self _configureViewController:self->_applicationSceneViewController];
   if (v26 != v29)
   {
     v32 = self->_applicationSceneViewController;
-    v33 = [(SBLayoutElementViewController *)self _contentContainerView];
-    [(SBAppContainerViewController *)self bs_addChildViewController:v32 withSuperview:v33];
+    _contentContainerView = [(SBLayoutElementViewController *)self _contentContainerView];
+    [(SBAppContainerViewController *)self bs_addChildViewController:v32 withSuperview:_contentContainerView];
 
-    v34 = [(SBApplicationSceneViewControlling *)self->_applicationSceneViewController view];
-    v35 = [(SBLayoutElementViewController *)self _contentContainerView];
-    [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v36 = [v34 leftAnchor];
-    v37 = [v35 leftAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    view = [(SBApplicationSceneViewControlling *)self->_applicationSceneViewController view];
+    _contentContainerView2 = [(SBLayoutElementViewController *)self _contentContainerView];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    leftAnchor = [view leftAnchor];
+    leftAnchor2 = [_contentContainerView2 leftAnchor];
+    v38 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v38 setActive:1];
 
-    v39 = [v34 rightAnchor];
-    v40 = [v35 rightAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    rightAnchor = [view rightAnchor];
+    rightAnchor2 = [_contentContainerView2 rightAnchor];
+    v41 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v41 setActive:1];
 
-    v42 = [v34 topAnchor];
-    v43 = [v35 topAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    topAnchor = [view topAnchor];
+    topAnchor2 = [_contentContainerView2 topAnchor];
+    v44 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v44 setActive:1];
 
-    v45 = [v34 bottomAnchor];
-    v46 = [v35 bottomAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46];
+    bottomAnchor = [view bottomAnchor];
+    bottomAnchor2 = [_contentContainerView2 bottomAnchor];
+    v47 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v47 setActive:1];
 
     [(SBAppContainerViewController *)self setDisplayMode:[(SBAppContainerViewController *)self displayMode] animationFactory:0 completion:0];
   }
 
-  v48 = [v17 sceneIfExists];
-  if (v48)
+  sceneIfExists = [sceneHandle sceneIfExists];
+  if (sceneIfExists)
   {
-    [(SBAppContainerViewController *)self _updateDisplayLayoutElementForSceneExistence:v48];
+    [(SBAppContainerViewController *)self _updateDisplayLayoutElementForSceneExistence:sceneIfExists];
   }
 }
 
-- (void)didEndTransitionToVisible:(BOOL)a3
+- (void)didEndTransitionToVisible:(BOOL)visible
 {
   v7.receiver = self;
   v7.super_class = SBAppContainerViewController;
@@ -159,7 +159,7 @@
   applicationSceneViewController = self->_applicationSceneViewController;
   if (applicationSceneViewController)
   {
-    if (!a3)
+    if (!visible)
     {
       v6 = [(SBApplicationSceneHandle *)self->_applicationSceneHandle newScenePlaceholderContentContextWithActivationSettings:0];
       [(SBApplicationSceneViewControlling *)applicationSceneViewController setPlaceholderContentContext:v6];
@@ -167,28 +167,28 @@
   }
 }
 
-- (id)_newDisplayLayoutElementForEntity:(id)a3
+- (id)_newDisplayLayoutElementForEntity:(id)entity
 {
-  v3 = a3;
-  v4 = [v3 applicationSceneEntity];
-  v5 = [v4 uniqueIdentifier];
+  entityCopy = entity;
+  applicationSceneEntity = [entityCopy applicationSceneEntity];
+  uniqueIdentifier = [applicationSceneEntity uniqueIdentifier];
 
-  v6 = [objc_alloc(MEMORY[0x277D66A50]) initWithIdentifier:v5];
-  v7 = [v3 applicationSceneEntity];
+  v6 = [objc_alloc(MEMORY[0x277D66A50]) initWithIdentifier:uniqueIdentifier];
+  applicationSceneEntity2 = [entityCopy applicationSceneEntity];
 
-  v8 = [v7 application];
-  v9 = [v8 bundleIdentifier];
-  [v6 setBundleIdentifier:v9];
+  application = [applicationSceneEntity2 application];
+  bundleIdentifier = [application bundleIdentifier];
+  [v6 setBundleIdentifier:bundleIdentifier];
 
   [v6 setUIApplicationElement:1];
   return v6;
 }
 
-- (id)_applicationSceneViewControllerForSceneHandle:(id)a3
+- (id)_applicationSceneViewControllerForSceneHandle:(id)handle
 {
-  v3 = [a3 newSceneViewController];
+  newSceneViewController = [handle newSceneViewController];
 
-  return v3;
+  return newSceneViewController;
 }
 
 - (CGSize)contentReferenceSize
@@ -199,37 +199,37 @@
   return result;
 }
 
-- (void)setContentWrapperInterfaceOrientation:(int64_t)a3
+- (void)setContentWrapperInterfaceOrientation:(int64_t)orientation
 {
   v5.receiver = self;
   v5.super_class = SBAppContainerViewController;
   [(SBLayoutElementViewController *)&v5 setContentWrapperInterfaceOrientation:?];
-  [(SBAppContainerViewController *)self containerContentWrapperInterfaceOrientationChangedTo:a3];
+  [(SBAppContainerViewController *)self containerContentWrapperInterfaceOrientationChangedTo:orientation];
 }
 
-- (void)setDisplayMode:(int64_t)a3 animationFactory:(id)a4 completion:(id)a5
+- (void)setDisplayMode:(int64_t)mode animationFactory:(id)factory completion:(id)completion
 {
-  v11 = a4;
-  v8 = a5;
-  v9 = v8;
-  self->_requestedDisplayMode = a3;
+  factoryCopy = factory;
+  completionCopy = completion;
+  v9 = completionCopy;
+  self->_requestedDisplayMode = mode;
   applicationSceneViewController = self->_applicationSceneViewController;
   if (applicationSceneViewController)
   {
-    [(SBApplicationSceneViewControlling *)applicationSceneViewController setDisplayMode:[(SBAppContainerViewController *)self displayMode] animationFactory:v11 completion:v8];
+    [(SBApplicationSceneViewControlling *)applicationSceneViewController setDisplayMode:[(SBAppContainerViewController *)self displayMode] animationFactory:factoryCopy completion:completionCopy];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
-- (void)sceneHandle:(id)a3 didUpdateSettingsWithDiff:(id)a4 previousSettings:(id)a5
+- (void)sceneHandle:(id)handle didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  diffCopy = diff;
+  settingsCopy = settings;
   sceneSettingsDiffInspector = self->_sceneSettingsDiffInspector;
   if (!sceneSettingsDiffInspector)
   {
@@ -258,7 +258,7 @@
     sceneSettingsDiffInspector = self->_sceneSettingsDiffInspector;
   }
 
-  [v9 evaluateWithInspector:sceneSettingsDiffInspector context:0];
+  [diffCopy evaluateWithInspector:sceneSettingsDiffInspector context:0];
 }
 
 void __87__SBAppContainerViewController_sceneHandle_didUpdateSettingsWithDiff_previousSettings___block_invoke(uint64_t a1)
@@ -283,14 +283,14 @@ void __87__SBAppContainerViewController_sceneHandle_didUpdateSettingsWithDiff_pr
   }
 }
 
-- (void)sceneHandle:(id)a3 didUpdateContentState:(int64_t)a4
+- (void)sceneHandle:(id)handle didUpdateContentState:(int64_t)state
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __66__SBAppContainerViewController_sceneHandle_didUpdateContentState___block_invoke;
   v4[3] = &unk_2783A8BC8;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = state;
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 
@@ -305,9 +305,9 @@ void __66__SBAppContainerViewController_sceneHandle_didUpdateContentState___bloc
   }
 }
 
-- (void)setStatusBarDelegate:(id)a3
+- (void)setStatusBarDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_statusBarDelegate);
   if (WeakRetained != obj)
   {
@@ -325,21 +325,21 @@ void __66__SBAppContainerViewController_sceneHandle_didUpdateContentState___bloc
   return SBSafeCast(v3, applicationSceneHandle);
 }
 
-- (void)sceneWithIdentifier:(id)a3 didChangeSceneInterfaceOrientationTo:(int64_t)a4
+- (void)sceneWithIdentifier:(id)identifier didChangeSceneInterfaceOrientationTo:(int64_t)to
 {
-  v11 = a3;
+  identifierCopy = identifier;
   v5 = self->_statusBarObserverProxy;
   v6 = v5;
   if (v5)
   {
-    v7 = [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)v5 statusBarOrientation];
-    if (v7)
+    statusBarOrientation = [(SBDeviceApplicationSceneStatusBarStateProvider_Base *)v5 statusBarOrientation];
+    if (statusBarOrientation)
     {
-      v8 = v7;
-      v9 = [(SBAppContainerViewController *)self _deviceApplicationSceneHandle];
-      v10 = [v9 wantsDeviceOrientationEventsEnabled];
+      v8 = statusBarOrientation;
+      _deviceApplicationSceneHandle = [(SBAppContainerViewController *)self _deviceApplicationSceneHandle];
+      wantsDeviceOrientationEventsEnabled = [_deviceApplicationSceneHandle wantsDeviceOrientationEventsEnabled];
 
-      if (v10)
+      if (wantsDeviceOrientationEventsEnabled)
       {
         [(SBAppContainerViewController *)self setContentWrapperInterfaceOrientation:v8];
       }
@@ -347,13 +347,13 @@ void __66__SBAppContainerViewController_sceneHandle_didUpdateContentState___bloc
   }
 }
 
-- (void)applicationSceneViewController:(id)a3 didUpdateStatusBarSettings:(id)a4
+- (void)applicationSceneViewController:(id)controller didUpdateStatusBarSettings:(id)settings
 {
-  v5 = a4;
+  settingsCopy = settings;
   v6 = SBLogAppStatusBars();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(SBAppContainerViewController *)self applicationSceneViewController:v5 didUpdateStatusBarSettings:v6];
+    [(SBAppContainerViewController *)self applicationSceneViewController:settingsCopy didUpdateStatusBarSettings:v6];
   }
 
   [(SBDeviceApplicationSceneStatusBarStateProxy *)self->_statusBarObserverProxy invalidateStatusBarSettings];
@@ -395,9 +395,9 @@ void __66__SBAppContainerViewController_sceneHandle_didUpdateContentState___bloc
   }
 }
 
-- (void)_updateDisplayLayoutElementForSceneExistence:(id)a3
+- (void)_updateDisplayLayoutElementForSceneExistence:(id)existence
 {
-  if ([a3 isValid])
+  if ([existence isValid])
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;

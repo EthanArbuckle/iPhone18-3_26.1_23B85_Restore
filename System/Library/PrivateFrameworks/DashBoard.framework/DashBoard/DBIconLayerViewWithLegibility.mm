@@ -1,14 +1,14 @@
 @interface DBIconLayerViewWithLegibility
-- (_TtC9DashBoard29DBIconLayerViewWithLegibility)initWithCoder:(id)a3;
-- (_TtC9DashBoard29DBIconLayerViewWithLegibility)initWithFrame:(CGRect)a3;
+- (_TtC9DashBoard29DBIconLayerViewWithLegibility)initWithCoder:(id)coder;
+- (_TtC9DashBoard29DBIconLayerViewWithLegibility)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setIconLayer:(id)a3;
-- (void)setIconLayer:(id)a3 animated:(BOOL)a4;
+- (void)setIconLayer:(id)layer;
+- (void)setIconLayer:(id)layer animated:(BOOL)animated;
 @end
 
 @implementation DBIconLayerViewWithLegibility
 
-- (_TtC9DashBoard29DBIconLayerViewWithLegibility)initWithCoder:(id)a3
+- (_TtC9DashBoard29DBIconLayerViewWithLegibility)initWithCoder:(id)coder
 {
   result = sub_248384580();
   __break(1u);
@@ -17,28 +17,28 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DBIconLayerViewWithLegibility.layoutSubviews()();
 }
 
-- (void)setIconLayer:(id)a3
+- (void)setIconLayer:(id)layer
 {
-  v6 = a3;
-  v5 = self;
-  v8.value.super.isa = a3;
+  layerCopy = layer;
+  selfCopy = self;
+  v8.value.super.isa = layer;
   DBIconLayerView.set(_:)(v8);
 }
 
-- (void)setIconLayer:(id)a3 animated:(BOOL)a4
+- (void)setIconLayer:(id)layer animated:(BOOL)animated
 {
-  v9 = a3;
-  v7 = self;
-  v11.value.super.isa = a3;
-  v11.is_nil = a4;
+  layerCopy = layer;
+  selfCopy = self;
+  v11.value.super.isa = layer;
+  v11.is_nil = animated;
   DBIconLayerView.set(_:animated:)(v11, v8);
 }
 
-- (_TtC9DashBoard29DBIconLayerViewWithLegibility)initWithFrame:(CGRect)a3
+- (_TtC9DashBoard29DBIconLayerViewWithLegibility)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,6 +1,6 @@
 @interface WLDDeviceOfferManager
-+ (BOOL)_hasProcessedDeviceOfferForCurrentUser:(id)a3;
-+ (id)amsDeviceOffertoDictionary:(id)a3;
++ (BOOL)_hasProcessedDeviceOfferForCurrentUser:(id)user;
++ (id)amsDeviceOffertoDictionary:(id)dictionary;
 - (WLDDeviceOfferManager)init;
 - (void)_reportAMSDeviceOfferMetrics;
 - (void)processDeviceOffers;
@@ -74,22 +74,22 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 offerIdentifier];
-          if (v13)
+          offerIdentifier = [v12 offerIdentifier];
+          if (offerIdentifier)
           {
-            v14 = v13;
-            v15 = [v12 offerIdentifier];
-            v16 = [v15 isEqualToString:@"com.apple.TV"];
+            v14 = offerIdentifier;
+            offerIdentifier2 = [v12 offerIdentifier];
+            v16 = [offerIdentifier2 isEqualToString:@"com.apple.TV"];
 
             if (v16)
             {
-              v17 = [v12 adamId];
-              v18 = [NSString stringWithFormat:@"%@", v17];
+              adamId = [v12 adamId];
+              v18 = [NSString stringWithFormat:@"%@", adamId];
               if (([objc_opt_class() _hasProcessedDeviceOfferForCurrentUser:v18] & 1) == 0)
               {
                 v19 = objc_alloc_init(NSMutableDictionary);
                 [v19 setObject:@"AMSDeviceOfferTypeTV" forKey:@"offerSource"];
-                v20 = self;
+                selfCopy = self;
                 v21 = [objc_opt_class() amsDeviceOffertoDictionary:v12];
                 if (v21)
                 {
@@ -100,7 +100,7 @@
                 v22 = +[WLKOfferManager defaultOfferManager];
                 [v22 saveOffer:v19 completionHandler:0];
 
-                self = v20;
+                self = selfCopy;
                 v7 = v31;
               }
             }
@@ -161,32 +161,32 @@
   [AMSDevice removeDeviceOfferWithIdentifier:v29 account:v27 bag:v30 logKey:@"WLDDeviceOfferManager"];
 }
 
-+ (id)amsDeviceOffertoDictionary:(id)a3
++ (id)amsDeviceOffertoDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 adamId];
-  v5 = [v3 description];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isDowngrading]);
-  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isSubscribed]);
-  v8 = [v3 serialNumbers];
-  v9 = [v8 allObjects];
-  v10 = [NSArray arrayWithArray:v9];
+  dictionaryCopy = dictionary;
+  adamId = [dictionaryCopy adamId];
+  v5 = [dictionaryCopy description];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [dictionaryCopy isDowngrading]);
+  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [dictionaryCopy isSubscribed]);
+  serialNumbers = [dictionaryCopy serialNumbers];
+  allObjects = [serialNumbers allObjects];
+  v10 = [NSArray arrayWithArray:allObjects];
 
-  v11 = [v3 offerIdentifier];
-  v12 = [v3 offerType];
+  offerIdentifier = [dictionaryCopy offerIdentifier];
+  offerType = [dictionaryCopy offerType];
 
-  if ((v12 - 1) > 3)
+  if ((offerType - 1) > 3)
   {
     v13 = @"AMSDeviceOfferTypeUnknown";
   }
 
   else
   {
-    v13 = *(&off_100045A40 + (v12 - 1));
+    v13 = *(&off_100045A40 + (offerType - 1));
   }
 
   v14 = objc_alloc_init(NSMutableDictionary);
-  [v14 setObject:v4 forKey:@"adamId"];
+  [v14 setObject:adamId forKey:@"adamId"];
   if (v5)
   {
     v15 = v5;
@@ -211,9 +211,9 @@
   }
 
   [v14 setObject:v16 forKey:@"serialNumbers"];
-  if (v11)
+  if (offerIdentifier)
   {
-    v17 = v11;
+    v17 = offerIdentifier;
   }
 
   else
@@ -242,22 +242,22 @@
   v6 = [[AMSMetricsEvent alloc] initWithTopic:@"xp_amp_notifications"];
   [v6 addPropertiesWithDictionary:v3];
   [v4 addObject:v6];
-  v7 = [(WLDDeviceOfferManager *)self metricsController];
-  [WLDMetricsUtilities sendMetricsEvents:v4 metricsController:v7];
+  metricsController = [(WLDDeviceOfferManager *)self metricsController];
+  [WLDMetricsUtilities sendMetricsEvents:v4 metricsController:metricsController];
 }
 
-+ (BOOL)_hasProcessedDeviceOfferForCurrentUser:(id)a3
++ (BOOL)_hasProcessedDeviceOfferForCurrentUser:(id)user
 {
-  v3 = a3;
+  userCopy = user;
   v4 = WLKSystemLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v3;
+    v17 = userCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "WLDDeviceOfferManager - Received device offer [%@] to check", &v16, 0xCu);
   }
 
-  if ([v3 length])
+  if ([userCopy length])
   {
     v5 = [NSUserDefaults alloc];
     v6 = [v5 initWithSuiteName:WLKDefaultsDomain];
@@ -265,7 +265,7 @@
     v8 = objc_opt_new();
     if (v7)
     {
-      v9 = [v7 containsObject:v3];
+      v9 = [v7 containsObject:userCopy];
       v10 = WLKSystemLogObject();
       v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
       if (v9)
@@ -273,7 +273,7 @@
         if (v11)
         {
           v16 = 138412290;
-          v17 = v3;
+          v17 = userCopy;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "WLDDeviceOfferManager - Device TV offer [%@] has already been processed for current user", &v16, 0xCu);
         }
 
@@ -286,7 +286,7 @@ LABEL_24:
       if (v11)
       {
         v16 = 138412290;
-        v17 = v3;
+        v17 = userCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "WLDDeviceOfferManager - New device TV offer [%@] for current user", &v16, 0xCu);
       }
 
@@ -303,7 +303,7 @@ LABEL_24:
       }
     }
 
-    [v8 addObject:v3];
+    [v8 addObject:userCopy];
     if ([v8 count] >= 0x33)
     {
       [v8 removeObjectAtIndex:0];
@@ -319,7 +319,7 @@ LABEL_24:
       v14 = WLKSystemLogObject();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [(WLDDeviceOfferManager *)v3 _hasProcessedDeviceOfferForCurrentUser:v14];
+        [(WLDDeviceOfferManager *)userCopy _hasProcessedDeviceOfferForCurrentUser:v14];
       }
     }
 

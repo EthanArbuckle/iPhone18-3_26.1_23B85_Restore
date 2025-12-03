@@ -1,8 +1,8 @@
 @interface REForcedRelevanceProvider
-- (BOOL)isEqual:(id)a3;
-- (REForcedRelevanceProvider)initWithDictionary:(id)a3;
-- (REForcedRelevanceProvider)initWithForcedRelevance:(float)a3 isHistoric:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REForcedRelevanceProvider)initWithDictionary:(id)dictionary;
+- (REForcedRelevanceProvider)initWithForcedRelevance:(float)relevance isHistoric:(BOOL)historic;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryEncoding;
 - (unint64_t)_hash;
@@ -10,31 +10,31 @@
 
 @implementation REForcedRelevanceProvider
 
-- (REForcedRelevanceProvider)initWithForcedRelevance:(float)a3 isHistoric:(BOOL)a4
+- (REForcedRelevanceProvider)initWithForcedRelevance:(float)relevance isHistoric:(BOOL)historic
 {
   v7.receiver = self;
   v7.super_class = REForcedRelevanceProvider;
   result = [(RERelevanceProvider *)&v7 init];
   if (result)
   {
-    result->_relevance = a3;
-    result->_isHistoric = a4;
+    result->_relevance = relevance;
+    result->_isHistoric = historic;
   }
 
   return result;
 }
 
-- (REForcedRelevanceProvider)initWithDictionary:(id)a3
+- (REForcedRelevanceProvider)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"relevance"];
-  v6 = [v4 objectForKeyedSubscript:@"historic"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"relevance"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"historic"];
 
   [v5 floatValue];
   v8 = v7;
-  v9 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
   LODWORD(v10) = v8;
-  v11 = [(REForcedRelevanceProvider *)self initWithForcedRelevance:v9 isHistoric:v10];
+  v11 = [(REForcedRelevanceProvider *)self initWithForcedRelevance:bOOLValue isHistoric:v10];
 
   return v11;
 }
@@ -56,20 +56,20 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = REForcedRelevanceProvider;
-  result = [(RERelevanceProvider *)&v5 copyWithZone:a3];
+  result = [(RERelevanceProvider *)&v5 copyWithZone:zone];
   *(result + 9) = LODWORD(self->_relevance);
   *(result + 32) = self->_isHistoric;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -78,7 +78,7 @@
   {
     v7.receiver = self;
     v7.super_class = REForcedRelevanceProvider;
-    v5 = [(RERelevanceProvider *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_relevance == v4->_relevance && self->_isHistoric == v4->_isHistoric;
+    v5 = [(RERelevanceProvider *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_relevance == equalCopy->_relevance && self->_isHistoric == equalCopy->_isHistoric;
   }
 
   return v5;

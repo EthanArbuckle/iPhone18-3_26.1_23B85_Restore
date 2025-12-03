@@ -1,14 +1,14 @@
 @interface SIVideoToolboxScaler
-- (__CVBuffer)createScaledImage:(__CVBuffer *)a3;
+- (__CVBuffer)createScaledImage:(__CVBuffer *)image;
 - (void)dealloc;
 @end
 
 @implementation SIVideoToolboxScaler
 
-- (__CVBuffer)createScaledImage:(__CVBuffer *)a3
+- (__CVBuffer)createScaledImage:(__CVBuffer *)image
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!image)
   {
     v7 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -30,11 +30,11 @@ LABEL_16:
     return result;
   }
 
-  CVPixelBufferGetWidth(a3);
-  CVPixelBufferGetHeight(a3);
+  CVPixelBufferGetWidth(image);
+  CVPixelBufferGetHeight(image);
   [(SIBaseScaler *)self algorithmKey];
   kdebug_trace();
-  if (![(SIBaseScaler *)self _imageConformsToOutput:a3])
+  if (![(SIBaseScaler *)self _imageConformsToOutput:image])
   {
     pixelBufferOut = 0;
     if (CVPixelBufferPoolCreatePixelBuffer(0, self->_pool, &pixelBufferOut))
@@ -53,7 +53,7 @@ LABEL_16:
 
     else
     {
-      if (!VTPixelTransferSessionTransferImage(self->_session, a3, pixelBufferOut))
+      if (!VTPixelTransferSessionTransferImage(self->_session, image, pixelBufferOut))
       {
         [(SIBaseScaler *)self outputResolution];
         [(SIBaseScaler *)self outputResolution];
@@ -84,7 +84,7 @@ LABEL_16:
   kdebug_trace();
   v5 = *MEMORY[0x277D85DE8];
 
-  return CVPixelBufferRetain(a3);
+  return CVPixelBufferRetain(image);
 }
 
 - (void)dealloc

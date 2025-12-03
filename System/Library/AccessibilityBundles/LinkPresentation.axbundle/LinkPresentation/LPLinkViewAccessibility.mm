@@ -1,6 +1,6 @@
 @interface LPLinkViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axPlayPause:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axPlayPause:(id)pause;
 - (BOOL)accessibilityActivate;
 - (BOOL)isAccessibilityElement;
 - (id)_axCaptionText;
@@ -18,62 +18,62 @@
 
 @implementation LPLinkViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LPCaptionBarView" hasInstanceVariable:@"_playButton" withType:"LPPlayButtonView"];
-  [v3 validateClass:@"LPStreamingAudioPlayButtonControl" hasInstanceVariable:@"_player" withType:"<LPAudioPlayer>"];
-  [v3 validateClass:@"LPStreamingAudioPlayer" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"LPStreamingAudioPlayer" hasInstanceMethod:@"progress" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"LPPlayButtonControl" hasInstanceMethod:@"buttonPressed:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"LPPlayButtonView" hasInstanceVariable:@"_button" withType:"LPPlayButtonControl"];
-  [v3 validateClass:@"LPVisualMediaView"];
-  [v3 validateClass:@"LPVisualMediaView" hasInstanceMethod:@"isMuted" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"LPVisualMediaView" hasInstanceMethod:@"_muteButtonTapRecognized:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"LPLinkView" hasInstanceMethod:@"metadata" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPLinkView" hasInstanceMethod:@"URL" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPLinkView" hasInstanceMethod:@"_mediaTapRecognized:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"LPLinkMetadata" hasInstanceMethod:@"URL" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPLinkMetadata" hasInstanceMethod:@"video" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPImageView" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
-  [v3 validateClass:@"LPLinkView" hasInstanceVariable:@"_properties" withType:"LPConcretePresentationProperties"];
-  [v3 validateClass:@"LPWebLinkPresentationProperties" hasInstanceMethod:@"quotedText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPWebLinkPresentationProperties" hasInstanceMethod:@"captionBar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPLinkView" hasInstanceVariable:@"_components" withType:"LPLinkViewComponents"];
-  [v3 validateClass:@"LPLinkView" hasInstanceVariable:@"_captionButton" withType:"LPCaptionButtonPresentationProperties"];
-  [v3 validateClass:@"LPLinkViewComponents"];
-  [v3 validateClass:@"LPLinkViewComponents" hasInstanceMethod:@"captionBar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPLinkViewComponents" hasInstanceMethod:@"media" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPCaptionBarView" hasInstanceMethod:@"collaborationFooterView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPCollaborationFooterView" hasInstanceVariable:@"_optionsView" withType:"LPTextView"];
-  [v3 validateClass:@"LPCollaborationFooterView" hasInstanceVariable:@"_subtitleView" withType:"LPTextView"];
-  [v3 validateClass:@"LPTextView" hasInstanceMethod:@"attributedString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPCaptionBarPresentationProperties" hasInstanceMethod:@"top" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPCaptionBarPresentationProperties" hasInstanceMethod:@"bottom" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPCaptionRowPresentationProperties" hasInstanceMethod:@"leading" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPCaptionRowPresentationProperties" hasInstanceMethod:@"trailing" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPCaptionPresentationProperties" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPCaptionButtonPresentationProperties" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPCaptionButtonPresentationProperties" hasInstanceMethod:@"attributedText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPCaptionBarView" hasInstanceVariable:@"_bottomCaptionView" withType:"LPComponentView<LPTextStyleable><LPSubtitleButtonContainer>"];
-  [v3 validateClass:@"LPCaptionBarView" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPHorizontalCaptionPairView" isKindOfClass:@"LPComponentView<LPTextStyleable><LPSubtitleButtonContainer>"];
-  [v3 validateClass:@"LPHorizontalCaptionPairView" hasInstanceVariable:@"_button" withType:"LPSubtitleButtonView"];
-  [v3 validateClass:@"LPCaptionBarButtonView"];
-  [v3 validateClass:@"LPCaptionBarButtonView" hasInstanceVariable:@"_button" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LPCaptionBarView" hasInstanceVariable:@"_playButton" withType:"LPPlayButtonView"];
+  [validationsCopy validateClass:@"LPStreamingAudioPlayButtonControl" hasInstanceVariable:@"_player" withType:"<LPAudioPlayer>"];
+  [validationsCopy validateClass:@"LPStreamingAudioPlayer" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"LPStreamingAudioPlayer" hasInstanceMethod:@"progress" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"LPPlayButtonControl" hasInstanceMethod:@"buttonPressed:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"LPPlayButtonView" hasInstanceVariable:@"_button" withType:"LPPlayButtonControl"];
+  [validationsCopy validateClass:@"LPVisualMediaView"];
+  [validationsCopy validateClass:@"LPVisualMediaView" hasInstanceMethod:@"isMuted" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"LPVisualMediaView" hasInstanceMethod:@"_muteButtonTapRecognized:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"LPLinkView" hasInstanceMethod:@"metadata" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPLinkView" hasInstanceMethod:@"URL" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPLinkView" hasInstanceMethod:@"_mediaTapRecognized:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"LPLinkMetadata" hasInstanceMethod:@"URL" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPLinkMetadata" hasInstanceMethod:@"video" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPImageView" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"LPLinkView" hasInstanceVariable:@"_properties" withType:"LPConcretePresentationProperties"];
+  [validationsCopy validateClass:@"LPWebLinkPresentationProperties" hasInstanceMethod:@"quotedText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPWebLinkPresentationProperties" hasInstanceMethod:@"captionBar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPLinkView" hasInstanceVariable:@"_components" withType:"LPLinkViewComponents"];
+  [validationsCopy validateClass:@"LPLinkView" hasInstanceVariable:@"_captionButton" withType:"LPCaptionButtonPresentationProperties"];
+  [validationsCopy validateClass:@"LPLinkViewComponents"];
+  [validationsCopy validateClass:@"LPLinkViewComponents" hasInstanceMethod:@"captionBar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPLinkViewComponents" hasInstanceMethod:@"media" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPCaptionBarView" hasInstanceMethod:@"collaborationFooterView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPCollaborationFooterView" hasInstanceVariable:@"_optionsView" withType:"LPTextView"];
+  [validationsCopy validateClass:@"LPCollaborationFooterView" hasInstanceVariable:@"_subtitleView" withType:"LPTextView"];
+  [validationsCopy validateClass:@"LPTextView" hasInstanceMethod:@"attributedString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPCaptionBarPresentationProperties" hasInstanceMethod:@"top" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPCaptionBarPresentationProperties" hasInstanceMethod:@"bottom" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPCaptionRowPresentationProperties" hasInstanceMethod:@"leading" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPCaptionRowPresentationProperties" hasInstanceMethod:@"trailing" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPCaptionPresentationProperties" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPCaptionButtonPresentationProperties" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPCaptionButtonPresentationProperties" hasInstanceMethod:@"attributedText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPCaptionBarView" hasInstanceVariable:@"_bottomCaptionView" withType:"LPComponentView<LPTextStyleable><LPSubtitleButtonContainer>"];
+  [validationsCopy validateClass:@"LPCaptionBarView" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPHorizontalCaptionPairView" isKindOfClass:@"LPComponentView<LPTextStyleable><LPSubtitleButtonContainer>"];
+  [validationsCopy validateClass:@"LPHorizontalCaptionPairView" hasInstanceVariable:@"_button" withType:"LPSubtitleButtonView"];
+  [validationsCopy validateClass:@"LPCaptionBarButtonView"];
+  [validationsCopy validateClass:@"LPCaptionBarButtonView" hasInstanceVariable:@"_button" withType:"UIButton"];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(LPLinkViewAccessibility *)self _axCaptionText];
-  v3 = [v2 length] != 0;
+  _axCaptionText = [(LPLinkViewAccessibility *)self _axCaptionText];
+  v3 = [_axCaptionText length] != 0;
 
   return v3;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(LPLinkViewAccessibility *)self safeValueForKey:@"metadata"];
   v5 = [v4 safeValueForKey:@"video"];
 
@@ -83,16 +83,16 @@
     v7 = accessibilityLocalizedString(@"OpenURLStr");
     v8 = [v6 initWithName:v7 target:self selector:sel__axFollowLink];
 
-    [v3 addObject:v8];
+    [array addObject:v8];
   }
 
-  v9 = [(LPLinkViewAccessibility *)self _axITunesPlayButton];
-  if ([v9 _accessibilityViewIsVisible])
+  _axITunesPlayButton = [(LPLinkViewAccessibility *)self _axITunesPlayButton];
+  if ([_axITunesPlayButton _accessibilityViewIsVisible])
   {
     NSClassFromString(&cfstr_Lpstreamingaud.isa);
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 safeValueForKey:@"_player"];
+      v10 = [_axITunesPlayButton safeValueForKey:@"_player"];
       v11 = [v10 safeIntegerForKey:@"state"];
 
       if (v11 == 2)
@@ -105,9 +105,9 @@
         v12 = @"play.button";
       }
 
-      v13 = accessibilityLocalizedString(v12);
-      v14 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v13 target:self selector:sel__axPlayPause_];
-      [v3 addObject:v14];
+      accessibilityCustomActions = accessibilityLocalizedString(v12);
+      v14 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:accessibilityCustomActions target:self selector:sel__axPlayPause_];
+      [array addObject:v14];
     }
 
     else
@@ -118,23 +118,23 @@
         goto LABEL_12;
       }
 
-      v13 = [v9 accessibilityCustomActions];
-      [v3 axSafelyAddObjectsFromArray:v13];
+      accessibilityCustomActions = [_axITunesPlayButton accessibilityCustomActions];
+      [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
     }
   }
 
 LABEL_12:
-  v15 = [(LPLinkViewAccessibility *)self _axMuteAction];
-  if (v15)
+  _axMuteAction = [(LPLinkViewAccessibility *)self _axMuteAction];
+  if (_axMuteAction)
   {
-    [v3 addObject:v15];
+    [array addObject:_axMuteAction];
   }
 
   v16 = [(LPLinkViewAccessibility *)self safeValueForKey:@"_captionButton"];
   if (v16)
   {
-    v17 = [(LPLinkViewAccessibility *)self _axCaptionText];
-    if ([v17 length])
+    _axCaptionText = [(LPLinkViewAccessibility *)self _axCaptionText];
+    if ([_axCaptionText length])
     {
       v18 = [(LPLinkViewAccessibility *)self safeValueForKeyPath:@"_components.captionBar"];
       v19 = [v18 safeValueForKey:@"_bottomCaptionView"];
@@ -154,8 +154,8 @@ LABEL_12:
         v39[2] = __53__LPLinkViewAccessibility_accessibilityCustomActions__block_invoke;
         v39[3] = &unk_29F2C9B00;
         objc_copyWeak(&v40, &location);
-        v23 = [v22 initWithName:v17 actionHandler:v39];
-        [v3 addObject:v23];
+        v23 = [v22 initWithName:_axCaptionText actionHandler:v39];
+        [array addObject:v23];
 
         objc_destroyWeak(&v40);
         objc_destroyWeak(&location);
@@ -186,8 +186,8 @@ LABEL_12:
           v37[2] = __53__LPLinkViewAccessibility_accessibilityCustomActions__block_invoke_2;
           v37[3] = &unk_29F2C9B00;
           objc_copyWeak(&v38, &location);
-          v28 = [v27 initWithName:v17 actionHandler:v37];
-          [v3 addObject:v28];
+          v28 = [v27 initWithName:_axCaptionText actionHandler:v37];
+          [array addObject:v28];
 
           objc_destroyWeak(&v38);
           objc_destroyWeak(&location);
@@ -200,19 +200,19 @@ LABEL_12:
     }
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v29 = v3;
+    accessibilityCustomActions2 = array;
   }
 
   else
   {
     v36.receiver = self;
     v36.super_class = LPLinkViewAccessibility;
-    v29 = [(LPLinkViewAccessibility *)&v36 accessibilityCustomActions];
+    accessibilityCustomActions2 = [(LPLinkViewAccessibility *)&v36 accessibilityCustomActions];
   }
 
-  v30 = v29;
+  v30 = accessibilityCustomActions2;
 
   return v30;
 }
@@ -237,35 +237,35 @@ uint64_t __53__LPLinkViewAccessibility_accessibilityCustomActions__block_invoke_
 {
   v20.receiver = self;
   v20.super_class = LPLinkViewAccessibility;
-  v3 = [(LPLinkViewAccessibility *)&v20 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(LPLinkViewAccessibility *)&v20 automationElements];
+  v4 = [automationElements mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
-  v8 = [(LPLinkViewAccessibility *)self _axITunesPlayButton];
-  if ([v8 _accessibilityViewIsVisible])
+  _axITunesPlayButton = [(LPLinkViewAccessibility *)self _axITunesPlayButton];
+  if ([_axITunesPlayButton _accessibilityViewIsVisible])
   {
     NSClassFromString(&cfstr_Lpstreamingaud.isa);
     if (objc_opt_isKindOfClass())
     {
-      [v7 axSafelyAddObject:v8];
+      [v7 axSafelyAddObject:_axITunesPlayButton];
     }
   }
 
   v9 = [(LPLinkViewAccessibility *)self safeValueForKey:@"_captionButton"];
-  v10 = [(LPLinkViewAccessibility *)self _axCaptionText];
-  v11 = v10;
-  if (v9 && [v10 length])
+  _axCaptionText = [(LPLinkViewAccessibility *)self _axCaptionText];
+  v11 = _axCaptionText;
+  if (v9 && [_axCaptionText length])
   {
     v12 = [(LPLinkViewAccessibility *)self safeValueForKeyPath:@"_components.captionBar"];
     v13 = [v12 safeValueForKey:@"_bottomCaptionView"];
@@ -309,7 +309,7 @@ uint64_t __53__LPLinkViewAccessibility_accessibilityCustomActions__block_invoke_
     goto LABEL_35;
   }
 
-  v78 = self;
+  selfCopy = self;
   v74 = v3;
   v80 = [v5 safeValueForKey:@"top"];
   v76 = [v80 safeValueForKey:@"leading"];
@@ -342,12 +342,12 @@ uint64_t __53__LPLinkViewAccessibility_accessibilityCustomActions__block_invoke_
 
   v21 = __AXStringForVariables();
 
-  v22 = v78;
+  v22 = selfCopy;
   if (v79)
   {
   }
 
-  v23 = [(LPLinkViewAccessibility *)v78 safeValueForKey:@"_properties", v17, @"__AXStringForVariablesSentinel", v72, @"__AXStringForVariablesSentinel"];
+  v23 = [(LPLinkViewAccessibility *)selfCopy safeValueForKey:@"_properties", v17, @"__AXStringForVariablesSentinel", v72, @"__AXStringForVariablesSentinel"];
   v24 = [v23 safeStringForKey:@"quotedText"];
 
   if ([v24 length])
@@ -361,7 +361,7 @@ uint64_t __53__LPLinkViewAccessibility_accessibilityCustomActions__block_invoke_
     v21 = v27;
   }
 
-  [(LPLinkViewAccessibility *)v78 _axMediaViews:v68];
+  [(LPLinkViewAccessibility *)selfCopy _axMediaViews:v68];
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
@@ -394,14 +394,14 @@ LABEL_32:
       NSClassFromString(&cfstr_Lpimageview.isa);
       if (objc_opt_isKindOfClass())
       {
-        v36 = [v35 safeValueForKey:@"_imageView"];
-        v37 = [v36 accessibilityLabel];
-        if ([v37 length] && (AXStringIsSymbolName(v37) & 1) == 0)
+        accessibilityLabel2 = [v35 safeValueForKey:@"_imageView"];
+        accessibilityLabel = [accessibilityLabel2 accessibilityLabel];
+        if ([accessibilityLabel length] && (AXStringIsSymbolName(accessibilityLabel) & 1) == 0)
         {
           v38 = v31;
           v39 = MEMORY[0x29EDBA0F8];
           v40 = accessibilityLocalizedString(@"caption.image");
-          v69 = [v39 stringWithFormat:v40, v37];
+          v69 = [v39 stringWithFormat:v40, accessibilityLabel];
           v71 = @"__AXStringForVariablesSentinel";
           v41 = __UIAXStringForVariables();
           v42 = v21;
@@ -422,13 +422,13 @@ LABEL_32:
           continue;
         }
 
-        v36 = [v35 accessibilityLabel];
-        if ([v36 length] && (AXStringIsSymbolName(v36) & 1) == 0)
+        accessibilityLabel2 = [v35 accessibilityLabel];
+        if ([accessibilityLabel2 length] && (AXStringIsSymbolName(accessibilityLabel2) & 1) == 0)
         {
           v43 = MEMORY[0x29EDBA0F8];
           accessibilityLocalizedString(@"caption.video");
           v45 = v44 = v31;
-          v69 = [v43 stringWithFormat:v45, v36];
+          v69 = [v43 stringWithFormat:v45, accessibilityLabel2];
           v71 = @"__AXStringForVariablesSentinel";
           v46 = __UIAXStringForVariables();
 
@@ -461,7 +461,7 @@ LABEL_32:
 
   v4 = v79;
   v24 = v77;
-  v22 = v78;
+  v22 = selfCopy;
   if (v31 >= 1)
   {
     v51 = v31;
@@ -487,13 +487,13 @@ LABEL_34:
   v60 = [v58 safeValueForKey:@"attributedString"];
   v61 = __UIAccessibilityCastAsClass();
 
-  v62 = [v61 string];
+  string = [v61 string];
 
   objc_opt_class();
   v63 = [v59 safeValueForKey:@"attributedString"];
   v64 = __UIAccessibilityCastAsClass();
 
-  v65 = [v64 string];
+  string2 = [v64 string];
 
   v20 = __UIAXStringForVariables();
 
@@ -531,24 +531,24 @@ uint64_t __45__LPLinkViewAccessibility_accessibilityLabel__block_invoke(uint64_t
   {
     v6 = @"link.video.hint";
 LABEL_5:
-    v7 = accessibilityLocalizedString(v6);
+    accessibilityHint = accessibilityLocalizedString(v6);
     goto LABEL_7;
   }
 
   v10.receiver = self;
   v10.super_class = LPLinkViewAccessibility;
-  v7 = [(LPLinkViewAccessibility *)&v10 accessibilityHint];
+  accessibilityHint = [(LPLinkViewAccessibility *)&v10 accessibilityHint];
 LABEL_7:
-  v8 = v7;
+  v8 = accessibilityHint;
 
   return v8;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(LPLinkViewAccessibility *)self accessibilityUserDefinedTraits];
+  accessibilityUserDefinedTraits = [(LPLinkViewAccessibility *)self accessibilityUserDefinedTraits];
 
-  if (v3)
+  if (accessibilityUserDefinedTraits)
   {
     v8.receiver = self;
     v8.super_class = LPLinkViewAccessibility;
@@ -576,33 +576,33 @@ LABEL_7:
 
 - (id)accessibilityValue
 {
-  v3 = [(LPLinkViewAccessibility *)self _axITunesPlayButton];
+  _axITunesPlayButton = [(LPLinkViewAccessibility *)self _axITunesPlayButton];
   NSClassFromString(&cfstr_Lpstreamingaud.isa);
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 safeValueForKey:@"_player"];
+    v4 = [_axITunesPlayButton safeValueForKey:@"_player"];
     v5 = [v4 safeIntegerForKey:@"state"];
 
-    if ([v3 _accessibilityViewIsVisible] && v5 == 2)
+    if ([_axITunesPlayButton _accessibilityViewIsVisible] && v5 == 2)
     {
-      v6 = [v3 safeValueForKey:@"_player"];
+      v6 = [_axITunesPlayButton safeValueForKey:@"_player"];
       [v6 safeDoubleForKey:@"progress"];
 
-      v7 = AXFormatFloatWithPercentage();
+      accessibilityValue = AXFormatFloatWithPercentage();
       goto LABEL_7;
     }
   }
 
   else
   {
-    [v3 _accessibilityViewIsVisible];
+    [_axITunesPlayButton _accessibilityViewIsVisible];
   }
 
   v10.receiver = self;
   v10.super_class = LPLinkViewAccessibility;
-  v7 = [(LPLinkViewAccessibility *)&v10 accessibilityValue];
+  accessibilityValue = [(LPLinkViewAccessibility *)&v10 accessibilityValue];
 LABEL_7:
-  v8 = v7;
+  v8 = accessibilityValue;
 
   return v8;
 }
@@ -611,7 +611,7 @@ LABEL_7:
 {
   v14.receiver = self;
   v14.super_class = LPLinkViewAccessibility;
-  v3 = [(LPLinkViewAccessibility *)&v14 accessibilityActivate];
+  accessibilityActivate = [(LPLinkViewAccessibility *)&v14 accessibilityActivate];
   if ([(LPLinkViewAccessibility *)self safeBoolForKey:@"_hasVideo"])
   {
     v4 = [(LPLinkViewAccessibility *)self safeValueForKey:@"_player"];
@@ -643,13 +643,13 @@ LABEL_7:
     AXPerformSafeBlock();
   }
 
-  return v3;
+  return accessibilityActivate;
 }
 
 - (unsigned)_accessibilityMediaAnalysisOptions
 {
-  v3 = [(LPLinkViewAccessibility *)self _axMediaViews];
-  v4 = [v3 count];
+  _axMediaViews = [(LPLinkViewAccessibility *)self _axMediaViews];
+  v4 = [_axMediaViews count];
 
   if (!v4)
   {
@@ -737,10 +737,10 @@ void __40__LPLinkViewAccessibility__axMuteAction__block_invoke_2(uint64_t a1)
   [WeakRetained _muteButtonTapRecognized:0];
 }
 
-- (BOOL)_axPlayPause:(id)a3
+- (BOOL)_axPlayPause:(id)pause
 {
-  v5 = [(LPLinkViewAccessibility *)self _axITunesPlayButton];
-  v3 = v5;
+  _axITunesPlayButton = [(LPLinkViewAccessibility *)self _axITunesPlayButton];
+  v3 = _axITunesPlayButton;
   AXPerformSafeBlock();
 
   return 1;
@@ -817,9 +817,9 @@ uint64_t __40__LPLinkViewAccessibility__axMediaViews__block_invoke(uint64_t a1, 
       v5 = [v3 safeValueForKey:@"attributedText"];
       v6 = __UIAccessibilityCastAsClass();
 
-      v7 = [v6 string];
+      string = [v6 string];
 
-      v4 = v7;
+      v4 = string;
     }
   }
 

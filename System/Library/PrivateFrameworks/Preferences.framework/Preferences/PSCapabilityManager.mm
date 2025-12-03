@@ -1,11 +1,11 @@
 @interface PSCapabilityManager
 + (id)sharedManager;
-- (BOOL)capabilityBoolAnswer:(id)a3;
-- (BOOL)hasCapabilities:(id)a3;
+- (BOOL)capabilityBoolAnswer:(id)answer;
+- (BOOL)hasCapabilities:(id)capabilities;
 - (PSCapabilityManager)init;
 - (id)applicationDisplayIdentifiers;
-- (id)capabilityAnswer:(id)a3;
-- (id)preferencesCapabilityAnswer:(id)a3;
+- (id)capabilityAnswer:(id)answer;
+- (id)preferencesCapabilityAnswer:(id)answer;
 - (id)supportPSPhoneNoiseCancellationCapability;
 - (id)supportPSPhotoFormatEnhancedProRAWCapability;
 - (id)supportPSPhotoFormatProRAWCapability;
@@ -32,7 +32,7 @@
 - (id)supportsRetailKioskModeCapability;
 - (id)supportsWalletApplePayCapability;
 - (void)resetOverrides;
-- (void)setOverrideValue:(id)a3 forKey:(id)a4;
+- (void)setOverrideValue:(id)value forKey:(id)key;
 @end
 
 @implementation PSCapabilityManager
@@ -91,78 +91,78 @@ void __36__PSCapabilityManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (id)capabilityAnswer:(id)a3
+- (id)capabilityAnswer:(id)answer
 {
-  v4 = a3;
-  v5 = [(PSCapabilityManager *)self overrides];
-  if (!v5 || (v6 = v5, -[PSCapabilityManager overrides](self, "overrides"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:v4], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, !v8) || (-[PSCapabilityManager overrides](self, "overrides"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKeyedSubscript:", v4), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
+  answerCopy = answer;
+  overrides = [(PSCapabilityManager *)self overrides];
+  if (!overrides || (v6 = overrides, -[PSCapabilityManager overrides](self, "overrides"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:answerCopy], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, !v8) || (-[PSCapabilityManager overrides](self, "overrides"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKeyedSubscript:", answerCopy), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
   {
     if (!MGIsQuestionValid() || (v11 = MGCopyAnswer()) == 0)
     {
-      v11 = [(PSCapabilityManager *)self preferencesCapabilityAnswer:v4];
+      v11 = [(PSCapabilityManager *)self preferencesCapabilityAnswer:answerCopy];
     }
 
     v10 = v11;
   }
 
-  v12 = [(PSCapabilityManager *)self overrideForAllBoolValues];
-  if (v12 && (v13 = v12, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v13, (isKindOfClass & 1) != 0))
+  overrideForAllBoolValues = [(PSCapabilityManager *)self overrideForAllBoolValues];
+  if (overrideForAllBoolValues && (v13 = overrideForAllBoolValues, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v13, (isKindOfClass & 1) != 0))
   {
-    v15 = [(PSCapabilityManager *)self overrideForAllBoolValues];
+    overrideForAllBoolValues2 = [(PSCapabilityManager *)self overrideForAllBoolValues];
   }
 
   else
   {
-    v15 = v10;
+    overrideForAllBoolValues2 = v10;
   }
 
-  v16 = v15;
+  v16 = overrideForAllBoolValues2;
 
   return v16;
 }
 
-- (BOOL)capabilityBoolAnswer:(id)a3
+- (BOOL)capabilityBoolAnswer:(id)answer
 {
-  v3 = [(PSCapabilityManager *)self capabilityAnswer:a3];
+  v3 = [(PSCapabilityManager *)self capabilityAnswer:answer];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setOverrideValue:(id)a3 forKey:(id)a4
+- (void)setOverrideValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PSCapabilityManager *)self overrides];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  keyCopy = key;
+  valueCopy = value;
+  overrides = [(PSCapabilityManager *)self overrides];
+  [overrides setObject:valueCopy forKeyedSubscript:keyCopy];
 }
 
 - (void)resetOverrides
 {
-  v3 = [(PSCapabilityManager *)self overrides];
-  [v3 removeAllObjects];
+  overrides = [(PSCapabilityManager *)self overrides];
+  [overrides removeAllObjects];
 
   overrideForAllBoolValues = self->_overrideForAllBoolValues;
   self->_overrideForAllBoolValues = 0;
 }
 
-- (BOOL)hasCapabilities:(id)a3
+- (BOOL)hasCapabilities:(id)capabilities
 {
   v46 = *MEMORY[0x1E69E9840];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = a3;
+  obj = capabilities;
   v4 = [obj countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v4)
   {
@@ -216,13 +216,13 @@ LABEL_28:
       }
     }
 
-    v11 = [v10 allKeys];
+    allKeys = [v10 allKeys];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v34 = v11;
-    v12 = [v11 countByEnumeratingWithState:&v36 objects:v44 count:16];
+    v34 = allKeys;
+    v12 = [allKeys countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v12)
     {
       v13 = v12;
@@ -254,14 +254,14 @@ LABEL_28:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v22 = self;
+              selfCopy = self;
               v23 = v8;
               v24 = v7;
-              v25 = [v20 intValue];
-              v26 = v25 == [v19 intValue];
+              intValue = [v20 intValue];
+              v26 = intValue == [v19 intValue];
               v7 = v24;
               v8 = v23;
-              self = v22;
+              self = selfCopy;
               v16 = v34;
               v21 = v26;
             }
@@ -301,176 +301,176 @@ LABEL_33:
   return v28;
 }
 
-- (id)preferencesCapabilityAnswer:(id)a3
+- (id)preferencesCapabilityAnswer:(id)answer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isEqualToString:@"PSDisplayZoomCapability"])
+  answerCopy = answer;
+  if ([answerCopy isEqualToString:@"PSDisplayZoomCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsDisplayZoomCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsDisplayZoomCapability];
 LABEL_53:
-    v6 = v5;
+    v6 = supportsDisplayZoomCapability;
     goto LABEL_54;
   }
 
-  if ([v4 isEqualToString:@"PSApplicationDisplayIdentifiersCapability"])
+  if ([answerCopy isEqualToString:@"PSApplicationDisplayIdentifiersCapability"])
   {
-    v5 = [(PSCapabilityManager *)self applicationDisplayIdentifiers];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self applicationDisplayIdentifiers];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSRaiseToWakeCapability"])
+  if ([answerCopy isEqualToString:@"PSRaiseToWakeCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsRaiseToWakeCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsRaiseToWakeCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSAutoWhiteBalanceCapability"])
+  if ([answerCopy isEqualToString:@"PSAutoWhiteBalanceCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsAutoWhiteBalanceCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsAutoWhiteBalanceCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSNightShiftCapability"])
+  if ([answerCopy isEqualToString:@"PSNightShiftCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsNightShiftCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsNightShiftCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSInStoreDemoModeCapability"])
+  if ([answerCopy isEqualToString:@"PSInStoreDemoModeCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsInStoreDemoModeCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsInStoreDemoModeCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSInEDUModeCapability"])
+  if ([answerCopy isEqualToString:@"PSInEDUModeCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsInEDUModeCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsInEDUModeCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSTTYCapability"])
+  if ([answerCopy isEqualToString:@"PSTTYCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsPSTTYCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsPSTTYCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSDeveloperSettingsCapability"])
+  if ([answerCopy isEqualToString:@"PSDeveloperSettingsCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsPSDeveloperSettingsCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsPSDeveloperSettingsCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSWalletApplePayCapability"])
+  if ([answerCopy isEqualToString:@"PSWalletApplePayCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsWalletApplePayCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsWalletApplePayCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSCellularDataPlanCapability"])
+  if ([answerCopy isEqualToString:@"PSCellularDataPlanCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsPSCellularDataPlanCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsPSCellularDataPlanCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSPencilCapability"])
+  if ([answerCopy isEqualToString:@"PSPencilCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsPSPencilCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsPSPencilCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSExposureNotificationsCapability"])
+  if ([answerCopy isEqualToString:@"PSExposureNotificationsCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsPSExposureNotificationsCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsPSExposureNotificationsCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSHomeScreenPhoneCapability"])
+  if ([answerCopy isEqualToString:@"PSHomeScreenPhoneCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsPSHomeScreenPhoneCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsPSHomeScreenPhoneCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"DeviceHasTrackpadOnly"])
+  if ([answerCopy isEqualToString:@"DeviceHasTrackpadOnly"])
   {
-    v5 = [(PSCapabilityManager *)self supportsPSTrackpadOnlyCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsPSTrackpadOnlyCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"DeviceHasTrackpadAndMouse"])
+  if ([answerCopy isEqualToString:@"DeviceHasTrackpadAndMouse"])
   {
-    v5 = [(PSCapabilityManager *)self supportsPSTrackpadAndMouseCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsPSTrackpadAndMouseCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"ListeningExperienceCapability"])
+  if ([answerCopy isEqualToString:@"ListeningExperienceCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsListeningExperienceCapbility];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsListeningExperienceCapbility];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"LightningAdapterCapability"])
+  if ([answerCopy isEqualToString:@"LightningAdapterCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsLightningAdapterCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsLightningAdapterCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSPictureInPictureCapability"])
+  if ([answerCopy isEqualToString:@"PSPictureInPictureCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsPictureInPictureCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsPictureInPictureCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSStageManagerCapability"])
+  if ([answerCopy isEqualToString:@"PSStageManagerCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportsChamoisExternalDisplay];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsChamoisExternalDisplay];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSRecordHDRVideoCapability"])
+  if ([answerCopy isEqualToString:@"PSRecordHDRVideoCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportPSRecordHDRVideoCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportPSRecordHDRVideoCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSPhotoFormatProRAWCapabilities"])
+  if ([answerCopy isEqualToString:@"PSPhotoFormatProRAWCapabilities"])
   {
-    v5 = [(PSCapabilityManager *)self supportPSPhotoFormatProRAWCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportPSPhotoFormatProRAWCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSPhotoFormatEnhancedProRAWCapabilities"])
+  if ([answerCopy isEqualToString:@"PSPhotoFormatEnhancedProRAWCapabilities"])
   {
-    v5 = [(PSCapabilityManager *)self supportPSPhotoFormatEnhancedProRAWCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportPSPhotoFormatEnhancedProRAWCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSPhoneNoiseCancellationCapability"])
+  if ([answerCopy isEqualToString:@"PSPhoneNoiseCancellationCapability"])
   {
-    v5 = [(PSCapabilityManager *)self supportPSPhoneNoiseCancellationCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportPSPhoneNoiseCancellationCapability];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"PSContunityCamera"])
+  if ([answerCopy isEqualToString:@"PSContunityCamera"])
   {
-    v5 = [(PSCapabilityManager *)self supportsContinuityCamera];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsContinuityCamera];
     goto LABEL_53;
   }
 
-  if ([v4 isEqualToString:@"retail-kiosk-mode"])
+  if ([answerCopy isEqualToString:@"retail-kiosk-mode"])
   {
-    v5 = [(PSCapabilityManager *)self supportsRetailKioskModeCapability];
+    supportsDisplayZoomCapability = [(PSCapabilityManager *)self supportsRetailKioskModeCapability];
     goto LABEL_53;
   }
 
-  v8 = [(PSCapabilityManager *)self axCapabilityManager];
-  v9 = [v8 isAccessibilityCapability:v4];
+  axCapabilityManager = [(PSCapabilityManager *)self axCapabilityManager];
+  v9 = [axCapabilityManager isAccessibilityCapability:answerCopy];
 
   if (v9)
   {
     v10 = MEMORY[0x1E696AD98];
-    v11 = [(PSCapabilityManager *)self axCapabilityManager];
-    v6 = [v10 numberWithBool:{objc_msgSend(v11, "isCapabilityAvailable:", v4)}];
+    axCapabilityManager2 = [(PSCapabilityManager *)self axCapabilityManager];
+    v6 = [v10 numberWithBool:{objc_msgSend(axCapabilityManager2, "isCapabilityAvailable:", answerCopy)}];
   }
 
   else
@@ -479,7 +479,7 @@ LABEL_53:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = answerCopy;
       _os_log_impl(&dword_18B008000, v12, OS_LOG_TYPE_DEFAULT, "No capability found for key %@", &v13, 0xCu);
     }
 
@@ -514,15 +514,15 @@ LABEL_54:
 
     v4 = v3;
     _Block_object_dispose(&v9, 8);
-    v5 = [v3 isPictureInPictureSupported];
+    isPictureInPictureSupported = [v3 isPictureInPictureSupported];
   }
 
   else
   {
-    v5 = 0;
+    isPictureInPictureSupported = 0;
   }
 
-  v6 = [v2 numberWithInt:v5];
+  v6 = [v2 numberWithInt:isPictureInPictureSupported];
 
   return v6;
 }
@@ -647,11 +647,11 @@ LABEL_12:
 
 - (id)supportsPSTrackpadOnlyCapability
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"HasPointerDevice"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"HasPointerDevice"];
 
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"HasMouse"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults2 BOOLForKey:@"HasMouse"];
 
   v6 = MEMORY[0x1E696AD98];
 
@@ -660,11 +660,11 @@ LABEL_12:
 
 - (id)supportsPSTrackpadAndMouseCapability
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"HasPointerDevice"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"HasPointerDevice"];
 
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"HasMouse"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults2 BOOLForKey:@"HasMouse"];
 
   v6 = MEMORY[0x1E696AD98];
 
@@ -689,29 +689,29 @@ LABEL_12:
 
 - (id)supportsPSCellularDataPlanCapability
 {
-  v2 = [getPSUICellularPlanManagerCacheClass() sharedInstance];
-  v3 = [v2 embeddedPlanItems];
-  if ([v3 count])
+  sharedInstance = [getPSUICellularPlanManagerCacheClass() sharedInstance];
+  embeddedPlanItems = [sharedInstance embeddedPlanItems];
+  if ([embeddedPlanItems count])
   {
-    v4 = [getPSUICellularPlanManagerCacheClass() sharedInstance];
-    v5 = [v4 isAnyLocalFlowTypeSupported];
+    sharedInstance2 = [getPSUICellularPlanManagerCacheClass() sharedInstance];
+    isAnyLocalFlowTypeSupported = [sharedInstance2 isAnyLocalFlowTypeSupported];
   }
 
   else
   {
-    v5 = 0;
+    isAnyLocalFlowTypeSupported = 0;
   }
 
   v6 = MEMORY[0x1E696AD98];
 
-  return [v6 numberWithInt:v5];
+  return [v6 numberWithInt:isAnyLocalFlowTypeSupported];
 }
 
 - (id)supportsWalletApplePayCapability
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "BOOLForKey:", @"showPassbookRow"}];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [v2 numberWithBool:{objc_msgSend(standardUserDefaults, "BOOLForKey:", @"showPassbookRow"}];
 
   return v4;
 }
@@ -727,8 +727,8 @@ LABEL_12:
 - (id)supportsDisplayZoomCapability
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "sf_deviceSupportsDisplayZoom")}];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v4 = [v2 numberWithBool:{objc_msgSend(currentDevice, "sf_deviceSupportsDisplayZoom")}];
 
   return v4;
 }
@@ -736,9 +736,9 @@ LABEL_12:
 - (id)supportsRaiseToWakeCapability
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [MEMORY[0x1E6963518] isWakeGestureAvailable];
+  isWakeGestureAvailable = [MEMORY[0x1E6963518] isWakeGestureAvailable];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:isWakeGestureAvailable];
 }
 
 - (id)supportsAutoWhiteBalanceCapability
@@ -749,8 +749,8 @@ LABEL_12:
     v3 = v2;
     if (v2)
     {
-      v4 = [v2 adaptationClient];
-      supportsAutoWhiteBalanceCapability_supported = [v4 supported];
+      adaptationClient = [v2 adaptationClient];
+      supportsAutoWhiteBalanceCapability_supported = [adaptationClient supported];
 
       supportsAutoWhiteBalanceCapability_cached = 1;
     }
@@ -770,8 +770,8 @@ LABEL_12:
     v3 = v2;
     if (v2)
     {
-      v4 = [v2 blueLightClient];
-      supportsNightShiftCapability_supported = [v4 supported];
+      blueLightClient = [v2 blueLightClient];
+      supportsNightShiftCapability_supported = [blueLightClient supported];
 
       supportsNightShiftCapability_cached = 1;
     }
@@ -786,9 +786,9 @@ LABEL_12:
 - (id)supportsInStoreDemoModeCapability
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [MEMORY[0x1E69DC668] isRunningInStoreDemoMode];
+  isRunningInStoreDemoMode = [MEMORY[0x1E69DC668] isRunningInStoreDemoMode];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:isRunningInStoreDemoMode];
 }
 
 - (id)supportsInEDUModeCapability
@@ -802,9 +802,9 @@ LABEL_12:
 - (id)applicationDisplayIdentifiers
 {
   v2 = SBSCopyDisplayIdentifiers();
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (id)supportsPSTTYCapability
@@ -812,22 +812,22 @@ LABEL_12:
   v2 = MEMORY[0x1E696AD98];
   if ([getRTTTelephonyUtilitiesClass() softwareTTYIsSupported])
   {
-    v3 = 1;
+    hardwareTTYIsSupported = 1;
   }
 
   else
   {
-    v3 = [getRTTTelephonyUtilitiesClass() hardwareTTYIsSupported];
+    hardwareTTYIsSupported = [getRTTTelephonyUtilitiesClass() hardwareTTYIsSupported];
   }
 
-  return [v2 numberWithInt:v3];
+  return [v2 numberWithInt:hardwareTTYIsSupported];
 }
 
 - (id)supportsPSDeveloperSettingsCapability
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "sf_isDeveloperModeEnabled")}];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v4 = [v2 numberWithBool:{objc_msgSend(currentDevice, "sf_isDeveloperModeEnabled")}];
 
   return v4;
 }
@@ -859,8 +859,8 @@ LABEL_12:
 - (id)supportPSPhoneNoiseCancellationCapability
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [MEMORY[0x1E698D710] sharedInstance];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "isEarpieceActiveNoiseCancelationEnabled")}];
+  mEMORY[0x1E698D710] = [MEMORY[0x1E698D710] sharedInstance];
+  v4 = [v2 numberWithBool:{objc_msgSend(mEMORY[0x1E698D710], "isEarpieceActiveNoiseCancelationEnabled")}];
 
   return v4;
 }
@@ -868,8 +868,8 @@ LABEL_12:
 - (id)supportsRetailKioskModeCapability
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "sf_inRetailKioskMode")}];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v4 = [v2 numberWithBool:{objc_msgSend(currentDevice, "sf_inRetailKioskMode")}];
 
   return v4;
 }

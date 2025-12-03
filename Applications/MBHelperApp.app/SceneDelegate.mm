@@ -1,54 +1,54 @@
 @interface SceneDelegate
-- (void)_continueUserActivity:(id)a3;
-- (void)openURLWrapper:(id)a3 willOpenURL:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)_continueUserActivity:(id)activity;
+- (void)openURLWrapper:(id)wrapper willOpenURL:(id)l;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation SceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v6 = [a5 userActivities];
-  v7 = [v6 allObjects];
-  v9 = [v7 firstObject];
+  userActivities = [options userActivities];
+  allObjects = [userActivities allObjects];
+  firstObject = [allObjects firstObject];
 
-  v8 = v9;
-  if (v9)
+  v8 = firstObject;
+  if (firstObject)
   {
-    [(SceneDelegate *)self _continueUserActivity:v9];
-    v8 = v9;
+    [(SceneDelegate *)self _continueUserActivity:firstObject];
+    v8 = firstObject;
   }
 }
 
-- (void)_continueUserActivity:(id)a3
+- (void)_continueUserActivity:(id)activity
 {
-  v9 = a3;
-  v4 = [v9 activityType];
-  v5 = [v4 isEqualToString:NSUserActivityTypeBrowsingWeb];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v5 = [activityType isEqualToString:NSUserActivityTypeBrowsingWeb];
 
   if (v5)
   {
-    v6 = [v9 webpageURL];
-    v7 = [NSURLComponents componentsWithURL:v6 resolvingAgainstBaseURL:1];
+    webpageURL = [activityCopy webpageURL];
+    v7 = [NSURLComponents componentsWithURL:webpageURL resolvingAgainstBaseURL:1];
     if (v7)
     {
-      v8 = [[MBOpenURLWrapper alloc] initWithURL:v6];
+      v8 = [[MBOpenURLWrapper alloc] initWithURL:webpageURL];
       [(MBOpenURLWrapper *)v8 setDelegate:self];
       [(MBOpenURLWrapper *)v8 open];
     }
 
     else
     {
-      [v9 invalidate];
+      [activityCopy invalidate];
     }
   }
 }
 
-- (void)openURLWrapper:(id)a3 willOpenURL:(id)a4
+- (void)openURLWrapper:(id)wrapper willOpenURL:(id)l
 {
   v4 = kMBManagerPrebuddyDeepLinkURLKey;
-  v5 = [a4 absoluteString];
-  CFPreferencesSetValue(v4, v5, @"com.apple.MBHelperApp", @"mobile", kCFPreferencesAnyHost);
+  absoluteString = [l absoluteString];
+  CFPreferencesSetValue(v4, absoluteString, @"com.apple.MBHelperApp", @"mobile", kCFPreferencesAnyHost);
 }
 
 @end

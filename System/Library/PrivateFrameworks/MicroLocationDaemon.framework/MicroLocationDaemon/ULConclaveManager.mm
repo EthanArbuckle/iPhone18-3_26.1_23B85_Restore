@@ -8,13 +8,13 @@
 
 - (void)load
 {
-  v2 = self;
+  selfCopy = self;
   ULConclaveManager.load()();
 }
 
 - (id)getPoseEstimation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ULConclaveManager.getPoseEstimation()();
 
   return v3;

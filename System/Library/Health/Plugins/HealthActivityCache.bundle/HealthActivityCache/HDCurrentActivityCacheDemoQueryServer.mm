@@ -30,8 +30,8 @@
   v25 = v4;
   v15 = sub_20708(self, HKQuantityTypeIdentifierAppleExerciseTime, v4);
   v16 = sub_20980(self);
-  v17 = [(HDCurrentActivityCacheDemoQueryServer *)self clientProxy];
-  v18 = [v17 remoteObjectProxy];
+  clientProxy = [(HDCurrentActivityCacheDemoQueryServer *)self clientProxy];
+  remoteObjectProxy = [clientProxy remoteObjectProxy];
 
   _HKInitializeLogging();
   v19 = HKLogActivity;
@@ -47,8 +47,8 @@
   [v20 setAppleMoveTimeResults:v14];
   [v20 setAppleExerciseTimeResults:v15];
   [v20 setAppleStandHourResults:v16];
-  v21 = [(HDCurrentActivityCacheDemoQueryServer *)self queryUUID];
-  [v18 client_deliverQueryResult:v20 queryUUID:v21];
+  queryUUID = [(HDCurrentActivityCacheDemoQueryServer *)self queryUUID];
+  [remoteObjectProxy client_deliverQueryResult:v20 queryUUID:queryUUID];
 }
 
 @end

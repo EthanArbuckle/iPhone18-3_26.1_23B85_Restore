@@ -5,7 +5,7 @@
 - (CGRect)trackedBounds;
 - (QLPinchRotationTracker)init;
 - (_QLDismissGestureTrackingVelocity)trackedVelocity;
-- (void)trackScale:(double)a3;
+- (void)trackScale:(double)scale;
 - (void)update;
 @end
 
@@ -25,10 +25,10 @@
   return result;
 }
 
-- (void)trackScale:(double)a3
+- (void)trackScale:(double)scale
 {
   self->_previousScale = self->_trackedScale;
-  self->_trackedScale = a3;
+  self->_trackedScale = scale;
   [(QLPinchRotationTracker *)self update];
 }
 

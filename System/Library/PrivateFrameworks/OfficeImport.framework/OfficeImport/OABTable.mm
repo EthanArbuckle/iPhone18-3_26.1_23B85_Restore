@@ -1,16 +1,16 @@
 @interface OABTable
-+ (id)readTable:(id)a3 state:(id)a4;
++ (id)readTable:(id)table state:(id)state;
 @end
 
 @implementation OABTable
 
-+ (id)readTable:(id)a3 state:(id)a4
++ (id)readTable:(id)table state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
+  tableCopy = table;
+  stateCopy = state;
   v7 = objc_alloc_init(OADTable);
   v8 = [OABRTable alloc];
-  v9 = [(OABRTable *)v8 initWithSourceTable:v5 targetTable:v7 state:v6];
+  v9 = [(OABRTable *)v8 initWithSourceTable:tableCopy targetTable:v7 state:stateCopy];
 
   [(OABRTable *)v9 map];
 

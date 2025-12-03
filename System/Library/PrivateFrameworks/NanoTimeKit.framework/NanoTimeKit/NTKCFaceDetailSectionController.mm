@@ -1,44 +1,44 @@
 @interface NTKCFaceDetailSectionController
-+ (void)registerForTableView:(id)a3;
-- (BOOL)canSelectRow:(int64_t)a3;
-- (NTKCFaceDetailSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5;
++ (void)registerForTableView:(id)view;
+- (BOOL)canSelectRow:(int64_t)row;
+- (NTKCFaceDetailSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery;
 - (NTKCFaceDetailSectionHeaderView)headerView;
 - (NTKCTableViewProviding)tableViewController;
 - (NTKFace)face;
 - (UITableView)tableView;
 - (double)heightForHeaderView;
-- (double)heightForRow:(int64_t)a3;
+- (double)heightForRow:(int64_t)row;
 - (id)_groupName;
 - (id)_newSectionHeader;
 - (id)_spacerRow;
-- (id)cellForRow:(int64_t)a3;
+- (id)cellForRow:(int64_t)row;
 - (int64_t)numberOfRows;
 @end
 
 @implementation NTKCFaceDetailSectionController
 
-+ (void)registerForTableView:(id)a3
++ (void)registerForTableView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_opt_class();
   v5 = +[NTKCFaceDetailSpacerCell reuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [viewCopy registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (NTKCFaceDetailSectionController)initWithTableViewController:(id)a3 face:(id)a4 inGallery:(BOOL)a5
+- (NTKCFaceDetailSectionController)initWithTableViewController:(id)controller face:(id)face inGallery:(BOOL)gallery
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  galleryCopy = gallery;
+  controllerCopy = controller;
+  faceCopy = face;
   v13.receiver = self;
   v13.super_class = NTKCFaceDetailSectionController;
   v10 = [(NTKCFaceDetailSectionController *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(NTKCFaceDetailSectionController *)v10 setTableViewController:v8];
-    [(NTKCFaceDetailSectionController *)v11 setFace:v9];
-    [(NTKCFaceDetailSectionController *)v11 setInGallery:v5];
+    [(NTKCFaceDetailSectionController *)v10 setTableViewController:controllerCopy];
+    [(NTKCFaceDetailSectionController *)v11 setFace:faceCopy];
+    [(NTKCFaceDetailSectionController *)v11 setInGallery:galleryCopy];
     [(NTKCFaceDetailSectionController *)v11 _commonInit];
   }
 
@@ -61,21 +61,21 @@
   return v4 + self->_hasSpacerRow;
 }
 
-- (double)heightForRow:(int64_t)a3
+- (double)heightForRow:(int64_t)row
 {
   rows = self->_rows;
-  if (rows && [(NSMutableArray *)rows count]> a3)
+  if (rows && [(NSMutableArray *)rows count]> row)
   {
-    v6 = [(NSMutableArray *)self->_rows objectAtIndexedSubscript:a3];
+    v6 = [(NSMutableArray *)self->_rows objectAtIndexedSubscript:row];
     [v6 rowHeight];
     v8 = v7;
 
     return v8;
   }
 
-  else if (a3 || (cell = self->_cell) == 0)
+  else if (row || (cell = self->_cell) == 0)
   {
-    if (self->_hasSpacerRow && [(NTKCFaceDetailSectionController *)self numberOfRows]- 1 == a3)
+    if (self->_hasSpacerRow && [(NTKCFaceDetailSectionController *)self numberOfRows]- 1 == row)
     {
 
       [(NTKCFaceDetailSectionController *)self _heightForSpacerRow];
@@ -96,40 +96,40 @@
   return result;
 }
 
-- (id)cellForRow:(int64_t)a3
+- (id)cellForRow:(int64_t)row
 {
   rows = self->_rows;
-  if (rows && [(NSMutableArray *)rows count]> a3)
+  if (rows && [(NSMutableArray *)rows count]> row)
   {
-    v6 = [(NSMutableArray *)self->_rows objectAtIndexedSubscript:a3];
+    _spacerRow = [(NSMutableArray *)self->_rows objectAtIndexedSubscript:row];
   }
 
-  else if (a3 || (cell = self->_cell) == 0)
+  else if (row || (cell = self->_cell) == 0)
   {
-    if (self->_hasSpacerRow && [(NTKCFaceDetailSectionController *)self numberOfRows]- 1 == a3)
+    if (self->_hasSpacerRow && [(NTKCFaceDetailSectionController *)self numberOfRows]- 1 == row)
     {
-      v6 = [(NTKCFaceDetailSectionController *)self _spacerRow];
+      _spacerRow = [(NTKCFaceDetailSectionController *)self _spacerRow];
     }
 
     else
     {
-      v6 = 0;
+      _spacerRow = 0;
     }
   }
 
   else
   {
-    v6 = cell;
+    _spacerRow = cell;
   }
 
-  return v6;
+  return _spacerRow;
 }
 
 - (id)_spacerRow
 {
-  v2 = [(NTKCFaceDetailSectionController *)self tableView];
+  tableView = [(NTKCFaceDetailSectionController *)self tableView];
   v3 = +[NTKCFaceDetailSpacerCell reuseIdentifier];
-  v4 = [v2 dequeueReusableCellWithIdentifier:v3];
+  v4 = [tableView dequeueReusableCellWithIdentifier:v3];
 
   return v4;
 }
@@ -160,25 +160,25 @@
     goto LABEL_2;
   }
 
-  v5 = [(NTKCFaceDetailSectionController *)self titleForHeader];
-  if (![v5 length])
+  titleForHeader = [(NTKCFaceDetailSectionController *)self titleForHeader];
+  if (![titleForHeader length])
   {
 
     headerView = self->_headerView;
 LABEL_2:
-    v3 = headerView;
+    _newSectionHeader = headerView;
     goto LABEL_5;
   }
 
-  v3 = [(NTKCFaceDetailSectionController *)self _newSectionHeader];
-  [(NTKCFaceDetailSectionHeaderView *)v3 setTitle:v5];
+  _newSectionHeader = [(NTKCFaceDetailSectionController *)self _newSectionHeader];
+  [(NTKCFaceDetailSectionHeaderView *)_newSectionHeader setTitle:titleForHeader];
 
 LABEL_5:
 
-  return v3;
+  return _newSectionHeader;
 }
 
-- (BOOL)canSelectRow:(int64_t)a3
+- (BOOL)canSelectRow:(int64_t)row
 {
   rows = self->_rows;
   if (!rows)
@@ -186,7 +186,7 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  if ([(NSMutableArray *)rows count]<= a3)
+  if ([(NSMutableArray *)rows count]<= row)
   {
     return 0;
   }
@@ -194,13 +194,13 @@ LABEL_5:
   if (!self->_rows)
   {
 LABEL_12:
-    if (a3 && self->_cell)
+    if (row && self->_cell)
     {
       return 0;
     }
   }
 
-  return [(NTKCFaceDetailSectionController *)self _canSelectRow:a3];
+  return [(NTKCFaceDetailSectionController *)self _canSelectRow:row];
 }
 
 - (id)_newSectionHeader
@@ -208,8 +208,8 @@ LABEL_12:
   v3 = [[NTKCFaceDetailSectionHeaderView alloc] initWithReuseIdentifier:0];
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v4 = [(NTKCFaceDetailSectionController *)self _groupName];
-    [(NTKCFaceDetailSectionHeaderView *)v3 setGroupName:v4];
+    _groupName = [(NTKCFaceDetailSectionController *)self _groupName];
+    [(NTKCFaceDetailSectionHeaderView *)v3 setGroupName:_groupName];
   }
 
   return v3;
@@ -217,28 +217,28 @@ LABEL_12:
 
 - (UITableView)tableView
 {
-  v2 = [(NTKCFaceDetailSectionController *)self tableViewController];
-  v3 = [v2 ntk_tableView];
+  tableViewController = [(NTKCFaceDetailSectionController *)self tableViewController];
+  ntk_tableView = [tableViewController ntk_tableView];
 
-  return v3;
+  return ntk_tableView;
 }
 
 - (id)_groupName
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = 0;
+    _backdropViewLayerGroupName = 0;
   }
 
   else
   {
-    v4 = [(NTKCFaceDetailSectionController *)self tableViewController];
-    v5 = [v4 navigationController];
-    v6 = [v5 navigationBar];
-    v3 = [v6 _backdropViewLayerGroupName];
+    tableViewController = [(NTKCFaceDetailSectionController *)self tableViewController];
+    navigationController = [tableViewController navigationController];
+    navigationBar = [navigationController navigationBar];
+    _backdropViewLayerGroupName = [navigationBar _backdropViewLayerGroupName];
   }
 
-  return v3;
+  return _backdropViewLayerGroupName;
 }
 
 - (NTKFace)face

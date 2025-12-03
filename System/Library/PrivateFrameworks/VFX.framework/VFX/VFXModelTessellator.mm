@@ -1,24 +1,24 @@
 @interface VFXModelTessellator
 + (id)modelTessellator;
-- ($5966F384EA6F1F480C83547CCF3CA5D4)_tessellatorValueForModel:(SEL)a3;
+- ($5966F384EA6F1F480C83547CCF3CA5D4)_tessellatorValueForModel:(SEL)model;
 - (VFXModelTessellator)init;
-- (VFXModelTessellator)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VFXModelTessellator)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addClient:(id)a3;
+- (void)addClient:(id)client;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeClient:(id)a3;
-- (void)setAdaptive:(BOOL)a3;
-- (void)setEdgeTessellationFactor:(float)a3;
-- (void)setInsideTessellationFactor:(float)a3;
-- (void)setMaximumEdgeLength:(float)a3;
-- (void)setScreenSpace:(BOOL)a3;
-- (void)setSmoothingMode:(int64_t)a3;
-- (void)setTessellationFactorScale:(float)a3;
-- (void)setTessellationPartitionMode:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeClient:(id)client;
+- (void)setAdaptive:(BOOL)adaptive;
+- (void)setEdgeTessellationFactor:(float)factor;
+- (void)setInsideTessellationFactor:(float)factor;
+- (void)setMaximumEdgeLength:(float)length;
+- (void)setScreenSpace:(BOOL)space;
+- (void)setSmoothingMode:(int64_t)mode;
+- (void)setTessellationFactorScale:(float)scale;
+- (void)setTessellationPartitionMode:(unint64_t)mode;
 - (void)tessellatorValueDidChange;
-- (void)tessellatorValueDidChangeForClient:(id)a3;
+- (void)tessellatorValueDidChangeForClient:(id)client;
 @end
 
 @implementation VFXModelTessellator
@@ -40,7 +40,7 @@
   return v2;
 }
 
-- (VFXModelTessellator)initWithCoder:(id)a3
+- (VFXModelTessellator)initWithCoder:(id)coder
 {
   v26.receiver = self;
   v26.super_class = VFXModelTessellator;
@@ -48,18 +48,18 @@
   if (v4)
   {
     v4->_clients = CFSetCreateMutable(*MEMORY[0x1E695E480], 0, 0);
-    objc_msgSend_decodeFloatForKey_(a3, v5, @"tessellationFactorScale", v6);
+    objc_msgSend_decodeFloatForKey_(coder, v5, @"tessellationFactorScale", v6);
     v4->_tessellationFactorScale = v7;
-    objc_msgSend_decodeFloatForKey_(a3, v8, @"maximumEdgeLength", v9);
+    objc_msgSend_decodeFloatForKey_(coder, v8, @"maximumEdgeLength", v9);
     v4->_maximumEdgeLength = v10;
-    objc_msgSend_decodeFloatForKey_(a3, v11, @"edgeTessellationFactor", v12);
+    objc_msgSend_decodeFloatForKey_(coder, v11, @"edgeTessellationFactor", v12);
     v4->_edgeTessellationFactor = v13;
-    objc_msgSend_decodeFloatForKey_(a3, v14, @"insideTessellationFactor", v15);
+    objc_msgSend_decodeFloatForKey_(coder, v14, @"insideTessellationFactor", v15);
     v4->_insideTessellationFactor = v16;
-    v4->_adaptive = objc_msgSend_decodeBoolForKey_(a3, v17, @"adaptive", v18);
-    v4->_screenSpace = objc_msgSend_decodeBoolForKey_(a3, v19, @"screenSpace", v20);
-    v4->_partitionMode = objc_msgSend_decodeIntegerForKey_(a3, v21, @"tessellationPartitionMode", v22);
-    v4->_smoothingMode = objc_msgSend_decodeIntegerForKey_(a3, v23, @"smoothingMode", v24);
+    v4->_adaptive = objc_msgSend_decodeBoolForKey_(coder, v17, @"adaptive", v18);
+    v4->_screenSpace = objc_msgSend_decodeBoolForKey_(coder, v19, @"screenSpace", v20);
+    v4->_partitionMode = objc_msgSend_decodeIntegerForKey_(coder, v21, @"tessellationPartitionMode", v22);
+    v4->_smoothingMode = objc_msgSend_decodeIntegerForKey_(coder, v23, @"smoothingMode", v24);
   }
 
   return v4;
@@ -72,22 +72,22 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *&v4 = self->_tessellationFactorScale;
-  objc_msgSend_encodeFloat_forKey_(a3, a2, @"tessellationFactorScale", v3, v4);
+  objc_msgSend_encodeFloat_forKey_(coder, a2, @"tessellationFactorScale", v3, v4);
   *&v7 = self->_maximumEdgeLength;
-  objc_msgSend_encodeFloat_forKey_(a3, v8, @"maximumEdgeLength", v9, v7);
+  objc_msgSend_encodeFloat_forKey_(coder, v8, @"maximumEdgeLength", v9, v7);
   *&v10 = self->_edgeTessellationFactor;
-  objc_msgSend_encodeFloat_forKey_(a3, v11, @"edgeTessellationFactor", v12, v10);
+  objc_msgSend_encodeFloat_forKey_(coder, v11, @"edgeTessellationFactor", v12, v10);
   *&v13 = self->_insideTessellationFactor;
-  objc_msgSend_encodeFloat_forKey_(a3, v14, @"insideTessellationFactor", v15, v13);
-  objc_msgSend_encodeBool_forKey_(a3, v16, self->_adaptive, @"adaptive");
-  objc_msgSend_encodeBool_forKey_(a3, v17, self->_screenSpace, @"screenSpace");
-  objc_msgSend_encodeInteger_forKey_(a3, v18, self->_partitionMode, @"tessellationPartitionMode");
+  objc_msgSend_encodeFloat_forKey_(coder, v14, @"insideTessellationFactor", v15, v13);
+  objc_msgSend_encodeBool_forKey_(coder, v16, self->_adaptive, @"adaptive");
+  objc_msgSend_encodeBool_forKey_(coder, v17, self->_screenSpace, @"screenSpace");
+  objc_msgSend_encodeInteger_forKey_(coder, v18, self->_partitionMode, @"tessellationPartitionMode");
   smoothingMode = self->_smoothingMode;
 
-  objc_msgSend_encodeInteger_forKey_(a3, v19, smoothingMode, @"smoothingMode");
+  objc_msgSend_encodeInteger_forKey_(coder, v19, smoothingMode, @"smoothingMode");
 }
 
 - (void)dealloc
@@ -126,23 +126,23 @@
   }
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  objc_msgSend_addObject_(self->_clients, a2, a3, v3);
+  objc_msgSend_addObject_(self->_clients, a2, client, v3);
 
-  objc_msgSend_tessellatorValueDidChangeForClient_(self, v6, a3, v7);
+  objc_msgSend_tessellatorValueDidChangeForClient_(self, v6, client, v7);
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v6 = objc_msgSend_modelRef(a3, a2, a3, v3);
+  v6 = objc_msgSend_modelRef(client, a2, client, v3);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1AF2F96EC;
   v10[3] = &unk_1E7A7E6C0;
   v10[4] = v6;
-  objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, a3, v10);
-  objc_msgSend_removeObject_(self->_clients, v8, a3, v9);
+  objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, client, v10);
+  objc_msgSend_removeObject_(self->_clients, v8, client, v9);
 }
 
 - (void)tessellatorValueDidChange
@@ -177,9 +177,9 @@
   }
 }
 
-- ($5966F384EA6F1F480C83547CCF3CA5D4)_tessellatorValueForModel:(SEL)a3
+- ($5966F384EA6F1F480C83547CCF3CA5D4)_tessellatorValueForModel:(SEL)model
 {
-  v7 = objc_msgSend_tessellator(a4, a3, a4, v4);
+  v7 = objc_msgSend_tessellator(a4, model, a4, v4);
   *&retstr->var2 = 0;
   retstr->var4 = 0;
   *&retstr->var0 = 0;
@@ -255,26 +255,26 @@ LABEL_14:
   return result;
 }
 
-- (void)tessellatorValueDidChangeForClient:(id)a3
+- (void)tessellatorValueDidChangeForClient:(id)client
 {
   v8 = 0uLL;
   v9 = 0;
   if (self)
   {
-    objc_msgSend__tessellatorValueForModel_(self, a2, a3, v3);
+    objc_msgSend__tessellatorValueForModel_(self, a2, client, v3);
   }
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_1AF2F99E0;
   v5[3] = &unk_1E7A7EB60;
-  v5[4] = a3;
+  v5[4] = client;
   v6 = v8;
   v7 = v9;
-  objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, a3, v5);
+  objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, client, v5);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_msgSend_tessellationFactorScale(self, v5, v6, v7);
@@ -291,75 +291,75 @@ LABEL_14:
   return v4;
 }
 
-- (void)setSmoothingMode:(int64_t)a3
+- (void)setSmoothingMode:(int64_t)mode
 {
-  if (self->_smoothingMode != a3)
+  if (self->_smoothingMode != mode)
   {
-    self->_smoothingMode = a3;
-    (MEMORY[0x1EEE66B58])(self, sel_tessellatorValueDidChange, a3);
+    self->_smoothingMode = mode;
+    (MEMORY[0x1EEE66B58])(self, sel_tessellatorValueDidChange, mode);
   }
 }
 
-- (void)setAdaptive:(BOOL)a3
+- (void)setAdaptive:(BOOL)adaptive
 {
-  if (self->_adaptive != a3)
+  if (self->_adaptive != adaptive)
   {
-    self->_adaptive = a3;
-    (MEMORY[0x1EEE66B58])(self, sel_tessellatorValueDidChange, a3);
+    self->_adaptive = adaptive;
+    (MEMORY[0x1EEE66B58])(self, sel_tessellatorValueDidChange, adaptive);
   }
 }
 
-- (void)setScreenSpace:(BOOL)a3
+- (void)setScreenSpace:(BOOL)space
 {
-  if (self->_screenSpace != a3)
+  if (self->_screenSpace != space)
   {
-    self->_screenSpace = a3;
-    (MEMORY[0x1EEE66B58])(self, sel_tessellatorValueDidChange, a3);
+    self->_screenSpace = space;
+    (MEMORY[0x1EEE66B58])(self, sel_tessellatorValueDidChange, space);
   }
 }
 
-- (void)setTessellationFactorScale:(float)a3
+- (void)setTessellationFactorScale:(float)scale
 {
-  if (self->_tessellationFactorScale != a3)
+  if (self->_tessellationFactorScale != scale)
   {
-    self->_tessellationFactorScale = a3;
+    self->_tessellationFactorScale = scale;
     (MEMORY[0x1EEE66B58])(self, sel_tessellatorValueDidChange);
   }
 }
 
-- (void)setEdgeTessellationFactor:(float)a3
+- (void)setEdgeTessellationFactor:(float)factor
 {
-  if (self->_edgeTessellationFactor != a3)
+  if (self->_edgeTessellationFactor != factor)
   {
-    self->_edgeTessellationFactor = a3;
+    self->_edgeTessellationFactor = factor;
     (MEMORY[0x1EEE66B58])(self, sel_tessellatorValueDidChange);
   }
 }
 
-- (void)setInsideTessellationFactor:(float)a3
+- (void)setInsideTessellationFactor:(float)factor
 {
-  if (self->_insideTessellationFactor != a3)
+  if (self->_insideTessellationFactor != factor)
   {
-    self->_insideTessellationFactor = a3;
+    self->_insideTessellationFactor = factor;
     (MEMORY[0x1EEE66B58])(self, sel_tessellatorValueDidChange);
   }
 }
 
-- (void)setMaximumEdgeLength:(float)a3
+- (void)setMaximumEdgeLength:(float)length
 {
-  if (self->_maximumEdgeLength != a3)
+  if (self->_maximumEdgeLength != length)
   {
-    self->_maximumEdgeLength = a3;
+    self->_maximumEdgeLength = length;
     (MEMORY[0x1EEE66B58])(self, sel_tessellatorValueDidChange);
   }
 }
 
-- (void)setTessellationPartitionMode:(unint64_t)a3
+- (void)setTessellationPartitionMode:(unint64_t)mode
 {
-  if (self->_partitionMode != a3)
+  if (self->_partitionMode != mode)
   {
-    self->_partitionMode = a3;
-    (MEMORY[0x1EEE66B58])(self, sel_tessellatorValueDidChange, a3);
+    self->_partitionMode = mode;
+    (MEMORY[0x1EEE66B58])(self, sel_tessellatorValueDidChange, mode);
   }
 }
 

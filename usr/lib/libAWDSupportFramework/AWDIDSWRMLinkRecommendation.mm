@@ -1,23 +1,23 @@
 @interface AWDIDSWRMLinkRecommendation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInfraWiFiState:(BOOL)a3;
-- (void)setHasMagnetState:(BOOL)a3;
-- (void)setHasPrimaryLinkType:(BOOL)a3;
-- (void)setHasRecommendedLinkType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasInfraWiFiState:(BOOL)state;
+- (void)setHasMagnetState:(BOOL)state;
+- (void)setHasPrimaryLinkType:(BOOL)type;
+- (void)setHasRecommendedLinkType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSWRMLinkRecommendation
 
-- (void)setHasRecommendedLinkType:(BOOL)a3
+- (void)setHasRecommendedLinkType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasPrimaryLinkType:(BOOL)a3
+- (void)setHasPrimaryLinkType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMagnetState:(BOOL)a3
+- (void)setHasMagnetState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasInfraWiFiState:(BOOL)a3
+- (void)setHasInfraWiFiState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -84,11 +84,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -107,7 +107,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_recommendedLinkType), @"recommendedLinkType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_recommendedLinkType), @"recommendedLinkType"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -118,17 +118,17 @@ LABEL_4:
     }
 
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_magnetState), @"magnetState"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_magnetState), @"magnetState"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_6;
   }
 
 LABEL_10:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_primaryLinkType), @"primaryLinkType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_primaryLinkType), @"primaryLinkType"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -139,13 +139,13 @@ LABEL_5:
   if ((has & 2) != 0)
   {
 LABEL_6:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_infraWiFiState), @"infraWiFiState"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_infraWiFiState), @"infraWiFiState"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -213,13 +213,13 @@ LABEL_11:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -238,8 +238,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 7) = self->_recommendedLinkType;
-  *(a3 + 32) |= 0x10u;
+  *(to + 7) = self->_recommendedLinkType;
+  *(to + 32) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -253,8 +253,8 @@ LABEL_4:
   }
 
 LABEL_9:
-  *(a3 + 6) = self->_primaryLinkType;
-  *(a3 + 32) |= 8u;
+  *(to + 6) = self->_primaryLinkType;
+  *(to + 32) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -265,23 +265,23 @@ LABEL_5:
     }
 
 LABEL_11:
-    *(a3 + 4) = self->_infraWiFiState;
-    *(a3 + 32) |= 2u;
+    *(to + 4) = self->_infraWiFiState;
+    *(to + 32) |= 2u;
     return;
   }
 
 LABEL_10:
-  *(a3 + 5) = self->_magnetState;
-  *(a3 + 32) |= 4u;
+  *(to + 5) = self->_magnetState;
+  *(to + 32) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -348,20 +348,20 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_26;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
 LABEL_26:
       LOBYTE(v5) = 0;
@@ -370,47 +370,47 @@ LABEL_26:
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 32) & 0x10) == 0 || self->_recommendedLinkType != *(a3 + 7))
+      if ((*(equal + 32) & 0x10) == 0 || self->_recommendedLinkType != *(equal + 7))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 32) & 0x10) != 0)
+    else if ((*(equal + 32) & 0x10) != 0)
     {
       goto LABEL_26;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 32) & 8) == 0 || self->_primaryLinkType != *(a3 + 6))
+      if ((*(equal + 32) & 8) == 0 || self->_primaryLinkType != *(equal + 6))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 32) & 8) != 0)
+    else if ((*(equal + 32) & 8) != 0)
     {
       goto LABEL_26;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 32) & 4) == 0 || self->_magnetState != *(a3 + 5))
+      if ((*(equal + 32) & 4) == 0 || self->_magnetState != *(equal + 5))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 32) & 4) != 0)
+    else if ((*(equal + 32) & 4) != 0)
     {
       goto LABEL_26;
     }
 
-    LOBYTE(v5) = (*(a3 + 32) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 32) & 2) == 0;
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 32) & 2) == 0 || self->_infraWiFiState != *(a3 + 4))
+      if ((*(equal + 32) & 2) == 0 || self->_infraWiFiState != *(equal + 4))
       {
         goto LABEL_26;
       }
@@ -490,14 +490,14 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 32);
+    v3 = *(from + 32);
     if ((v3 & 0x10) == 0)
     {
 LABEL_3:
@@ -510,14 +510,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 32) & 0x10) == 0)
+  else if ((*(from + 32) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_recommendedLinkType = *(a3 + 7);
+  self->_recommendedLinkType = *(from + 7);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 8) == 0)
   {
 LABEL_4:
@@ -530,9 +530,9 @@ LABEL_4:
   }
 
 LABEL_9:
-  self->_primaryLinkType = *(a3 + 6);
+  self->_primaryLinkType = *(from + 6);
   *&self->_has |= 8u;
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 4) == 0)
   {
 LABEL_5:
@@ -542,15 +542,15 @@ LABEL_5:
     }
 
 LABEL_11:
-    self->_infraWiFiState = *(a3 + 4);
+    self->_infraWiFiState = *(from + 4);
     *&self->_has |= 2u;
     return;
   }
 
 LABEL_10:
-  self->_magnetState = *(a3 + 5);
+  self->_magnetState = *(from + 5);
   *&self->_has |= 4u;
-  if ((*(a3 + 32) & 2) != 0)
+  if ((*(from + 32) & 2) != 0)
   {
     goto LABEL_11;
   }

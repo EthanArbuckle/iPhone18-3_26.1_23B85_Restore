@@ -1,16 +1,16 @@
 @interface FCURLResponsePayload
 - (FCURLResponsePayload)init;
-- (FCURLResponsePayload)initWithData:(id)a3;
-- (FCURLResponsePayload)initWithFileURL:(id)a3;
+- (FCURLResponsePayload)initWithData:(id)data;
+- (FCURLResponsePayload)initWithFileURL:(id)l;
 - (unint64_t)size;
 @end
 
 @implementation FCURLResponsePayload
 
-- (FCURLResponsePayload)initWithData:(id)a3
+- (FCURLResponsePayload)initWithData:(id)data
 {
   ObjectType = swift_getObjectType();
-  v6 = a3;
+  dataCopy = data;
   v7 = sub_1B67D866C();
   v9 = v8;
 
@@ -31,7 +31,7 @@
   return [(FCURLResponsePayload *)&v14 init];
 }
 
-- (FCURLResponsePayload)initWithFileURL:(id)a3
+- (FCURLResponsePayload)initWithFileURL:(id)l
 {
   v3 = sub_1B67D85FC();
   v4 = *(*(v3 - 8) + 64);
@@ -44,7 +44,7 @@
 - (unint64_t)size
 {
   v2 = *(&self->super.isa + OBJC_IVAR___FCURLResponsePayload__size);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 7);
   sub_1B650ED90(&v2[4], &v6);
   os_unfair_lock_unlock(v2 + 7);

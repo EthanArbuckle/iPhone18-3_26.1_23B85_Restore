@@ -1,14 +1,14 @@
 @interface BWInferenceSimpleStorage
-- (BWInferenceSimpleStorage)initWithRequirementsNeedingPools:(id)a3;
+- (BWInferenceSimpleStorage)initWithRequirementsNeedingPools:(id)pools;
 - (void)clear;
 - (void)dealloc;
-- (void)setPixelBuffer:(__CVBuffer *)a3 forRequirement:(id)a4;
-- (void)setPixelBufferPool:(id)a3 forRequirement:(id)a4;
+- (void)setPixelBuffer:(__CVBuffer *)buffer forRequirement:(id)requirement;
+- (void)setPixelBufferPool:(id)pool forRequirement:(id)requirement;
 @end
 
 @implementation BWInferenceSimpleStorage
 
-- (BWInferenceSimpleStorage)initWithRequirementsNeedingPools:(id)a3
+- (BWInferenceSimpleStorage)initWithRequirementsNeedingPools:(id)pools
 {
   v6.receiver = self;
   v6.super_class = BWInferenceSimpleStorage;
@@ -17,7 +17,7 @@
   {
     v4->_pixelBufferByRequirement = objc_alloc_init(MEMORY[0x1E695DF90]);
     v4->_pixelBufferPoolByRequirement = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v4->_requirementsNeedingPixelBufferPools = a3;
+    v4->_requirementsNeedingPixelBufferPools = pools;
   }
 
   return v4;
@@ -38,29 +38,29 @@
   self->_mutableInferenceMetadata = 0;
 }
 
-- (void)setPixelBuffer:(__CVBuffer *)a3 forRequirement:(id)a4
+- (void)setPixelBuffer:(__CVBuffer *)buffer forRequirement:(id)requirement
 {
-  if (a3)
+  if (buffer)
   {
     TypeID = CVPixelBufferGetTypeID();
-    v8 = CFGetTypeID(a3);
-    if (a4)
+    v8 = CFGetTypeID(buffer);
+    if (requirement)
     {
       if (TypeID == v8)
       {
         pixelBufferByRequirement = self->_pixelBufferByRequirement;
 
-        [(NSMutableDictionary *)pixelBufferByRequirement setObject:a3 forKeyedSubscript:a4];
+        [(NSMutableDictionary *)pixelBufferByRequirement setObject:buffer forKeyedSubscript:requirement];
       }
     }
   }
 }
 
-- (void)setPixelBufferPool:(id)a3 forRequirement:(id)a4
+- (void)setPixelBufferPool:(id)pool forRequirement:(id)requirement
 {
-  if (a3)
+  if (pool)
   {
-    if (a4)
+    if (requirement)
     {
       [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
     }

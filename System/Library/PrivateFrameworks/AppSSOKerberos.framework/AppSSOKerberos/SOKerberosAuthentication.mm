@@ -1,31 +1,31 @@
 @interface SOKerberosAuthentication
-+ (void)savePacValues:(id)a3 atLogin:(BOOL)a4;
-+ (void)saveValuesForPlugins:(id)a3;
-- (BOOL)changePasswordWithContext:(id)a3 withError:(id *)a4;
-- (SOKerberosAuthentication)initWithRealm:(id)a3;
-- (id)retrieveCachedSiteCodeFromCacheForBundleIdentifier:(id)a3 networkFingerprint:(id)a4;
-- (unint64_t)attemptKerberosWithContext:(id)a3 returningToken:(id *)a4 orError:(id *)a5;
-- (unint64_t)createNewCredentialUsingContext:(id)a3 returningCredential:(gss_cred_id_t_desc_struct *)a4 orError:(id *)a5;
-- (unint64_t)findExistingCredentialUsingContext:(id)a3 returningCredential:(gss_cred_id_t_desc_struct *)a4 orError:(id *)a5;
-- (unint64_t)mapErrorToKnownError:(id)a3;
-- (void)_determineSiteCodeUsingDispatchGroup:(id)a3 bundleIdentifier:(id)a4 auditTokenData:(id)a5 networkFingerprint:(id)a6 requireTLSForLDAP:(BOOL)a7;
-- (void)determineSiteCodeUsingContext:(id)a3;
-- (void)setSiteCodeUsingContext:(id)a3;
-- (void)triggerVPNIfNeededUsingRealm:(id)a3 bundleIdentifier:(id)a4 auditToken:(id)a5;
++ (void)savePacValues:(id)values atLogin:(BOOL)login;
++ (void)saveValuesForPlugins:(id)plugins;
+- (BOOL)changePasswordWithContext:(id)context withError:(id *)error;
+- (SOKerberosAuthentication)initWithRealm:(id)realm;
+- (id)retrieveCachedSiteCodeFromCacheForBundleIdentifier:(id)identifier networkFingerprint:(id)fingerprint;
+- (unint64_t)attemptKerberosWithContext:(id)context returningToken:(id *)token orError:(id *)error;
+- (unint64_t)createNewCredentialUsingContext:(id)context returningCredential:(gss_cred_id_t_desc_struct *)credential orError:(id *)error;
+- (unint64_t)findExistingCredentialUsingContext:(id)context returningCredential:(gss_cred_id_t_desc_struct *)credential orError:(id *)error;
+- (unint64_t)mapErrorToKnownError:(id)error;
+- (void)_determineSiteCodeUsingDispatchGroup:(id)group bundleIdentifier:(id)identifier auditTokenData:(id)data networkFingerprint:(id)fingerprint requireTLSForLDAP:(BOOL)p;
+- (void)determineSiteCodeUsingContext:(id)context;
+- (void)setSiteCodeUsingContext:(id)context;
+- (void)triggerVPNIfNeededUsingRealm:(id)realm bundleIdentifier:(id)identifier auditToken:(id)token;
 @end
 
 @implementation SOKerberosAuthentication
 
-- (SOKerberosAuthentication)initWithRealm:(id)a3
+- (SOKerberosAuthentication)initWithRealm:(id)realm
 {
-  v5 = a3;
+  realmCopy = realm;
   v15.receiver = self;
   v15.super_class = SOKerberosAuthentication;
   v6 = [(SOKerberosAuthentication *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_realm, a3);
+    objc_storeStrong(&v6->_realm, realm);
     if (initWithRealm__onceToken != -1)
     {
       [SOKerberosAuthentication initWithRealm:];
@@ -55,9 +55,9 @@ uint64_t __42__SOKerberosAuthentication_initWithRealm___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (unint64_t)attemptKerberosWithContext:(id)a3 returningToken:(id *)a4 orError:(id *)a5
+- (unint64_t)attemptKerberosWithContext:(id)context returningToken:(id *)token orError:(id *)error
 {
-  v8 = a3;
+  contextCopy = context;
   v9 = SO_LOG_SOKerberosAuthentication();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -66,38 +66,38 @@ uint64_t __42__SOKerberosAuthentication_initWithRealm___block_invoke()
 
   cred_handle = 0;
   minor_status = 0;
-  v10 = [v8 realm];
-  v11 = [v8 callerBundleIdentifier];
-  v12 = [v8 auditToken];
-  [(SOKerberosAuthentication *)self triggerVPNIfNeededUsingRealm:v10 bundleIdentifier:v11 auditToken:v12];
+  realm = [contextCopy realm];
+  callerBundleIdentifier = [contextCopy callerBundleIdentifier];
+  auditToken = [contextCopy auditToken];
+  [(SOKerberosAuthentication *)self triggerVPNIfNeededUsingRealm:realm bundleIdentifier:callerBundleIdentifier auditToken:auditToken];
 
-  v13 = [v8 credentialUUID];
-  if (v13)
+  credentialUUID = [contextCopy credentialUUID];
+  if (credentialUUID)
   {
-    v14 = v13;
-    v15 = [v8 refreshCredential];
+    v14 = credentialUUID;
+    refreshCredential = [contextCopy refreshCredential];
 
-    if ((v15 & 1) == 0)
+    if ((refreshCredential & 1) == 0)
     {
       v16 = _lock;
       objc_sync_enter(v16);
-      v17 = [v8 impersonationBundleIdentifier];
+      impersonationBundleIdentifier = [contextCopy impersonationBundleIdentifier];
 
-      if (v17)
+      if (impersonationBundleIdentifier)
       {
-        [v8 impersonationBundleIdentifier];
+        [contextCopy impersonationBundleIdentifier];
       }
 
       else
       {
-        [v8 callerBundleIdentifier];
+        [contextCopy callerBundleIdentifier];
       }
       v18 = ;
       HeimCredSetImpersonateBundle();
 
-      v19 = [(SOKerberosAuthentication *)self kerberosHelper];
-      v20 = [v8 credentialUUID];
-      cred_handle = [v19 acquireCredentialForUUID:v20];
+      kerberosHelper = [(SOKerberosAuthentication *)self kerberosHelper];
+      credentialUUID2 = [contextCopy credentialUUID];
+      cred_handle = [kerberosHelper acquireCredentialForUUID:credentialUUID2];
 
       HeimCredSetImpersonateBundle();
       objc_sync_exit(v16);
@@ -107,24 +107,24 @@ uint64_t __42__SOKerberosAuthentication_initWithRealm___block_invoke()
         v21 = SO_LOG_SOKerberosAuthentication();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          [SOKerberosAuthentication attemptKerberosWithContext:v8 returningToken:? orError:?];
+          [SOKerberosAuthentication attemptKerberosWithContext:contextCopy returningToken:? orError:?];
         }
       }
     }
   }
 
-  v22 = [v8 extensionData];
-  v23 = [v22 useSiteAutoDiscovery];
+  extensionData = [contextCopy extensionData];
+  useSiteAutoDiscovery = [extensionData useSiteAutoDiscovery];
 
-  if (v23)
+  if (useSiteAutoDiscovery)
   {
-    v24 = [v8 networkIdentity];
-    [v24 determineNetworkFingerprint];
+    networkIdentity = [contextCopy networkIdentity];
+    [networkIdentity determineNetworkFingerprint];
 
-    v25 = [v8 callerBundleIdentifier];
-    v26 = [v8 networkIdentity];
-    v27 = [v26 networkFingerprint];
-    v28 = [(SOKerberosAuthentication *)self retrieveCachedSiteCodeFromCacheForBundleIdentifier:v25 networkFingerprint:v27];
+    callerBundleIdentifier2 = [contextCopy callerBundleIdentifier];
+    networkIdentity2 = [contextCopy networkIdentity];
+    networkFingerprint = [networkIdentity2 networkFingerprint];
+    v28 = [(SOKerberosAuthentication *)self retrieveCachedSiteCodeFromCacheForBundleIdentifier:callerBundleIdentifier2 networkFingerprint:networkFingerprint];
 
     if (!v28)
     {
@@ -137,7 +137,7 @@ uint64_t __42__SOKerberosAuthentication_initWithRealm___block_invoke()
       [SOKerberosAuthentication attemptKerberosWithContext:returningToken:orError:];
     }
 
-    [v8 setSiteCode:v28];
+    [contextCopy setSiteCode:v28];
     if (!cred_handle || ([v28 age], v30 > 86400.0))
     {
 LABEL_18:
@@ -147,12 +147,12 @@ LABEL_18:
         [SOKerberosAuthentication attemptKerberosWithContext:returningToken:orError:];
       }
 
-      [(SOKerberosAuthentication *)self determineSiteCodeUsingContext:v8];
+      [(SOKerberosAuthentication *)self determineSiteCodeUsingContext:contextCopy];
     }
   }
 
-  v32 = [v8 userPrincipalName];
-  if (!v32 || (v33 = v32, [v8 userPrincipalName], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v34, "isEqualToString:", &stru_285206D08), v34, v33, (v35 & 1) != 0))
+  userPrincipalName = [contextCopy userPrincipalName];
+  if (!userPrincipalName || (v33 = userPrincipalName, [contextCopy userPrincipalName], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v34, "isEqualToString:", &stru_285206D08), v34, v33, (v35 & 1) != 0))
   {
     v36 = 2;
     goto LABEL_25;
@@ -160,14 +160,14 @@ LABEL_18:
 
   if (!cred_handle)
   {
-    if ([v8 refreshCredential])
+    if ([contextCopy refreshCredential])
     {
       v38 = 0;
       v36 = 0;
       goto LABEL_46;
     }
 
-    v39 = [(SOKerberosAuthentication *)self findExistingCredentialUsingContext:v8 returningCredential:&cred_handle orError:a5];
+    v39 = [(SOKerberosAuthentication *)self findExistingCredentialUsingContext:contextCopy returningCredential:&cred_handle orError:error];
     v36 = v39;
     if (v39 == 2)
     {
@@ -201,7 +201,7 @@ LABEL_18:
         v43 = CFUUIDCreateString(0, v41);
         CFRelease(v42);
         v44 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v43];
-        [v8 setCredentialUUID:v44];
+        [contextCopy setCredentialUUID:v44];
       }
 
       else
@@ -209,7 +209,7 @@ LABEL_18:
         v43 = SO_LOG_SOKerberosAuthentication();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
         {
-          [SOKerberosAuthentication attemptKerberosWithContext:v8 returningToken:? orError:?];
+          [SOKerberosAuthentication attemptKerberosWithContext:contextCopy returningToken:? orError:?];
         }
       }
 
@@ -228,40 +228,40 @@ LABEL_46:
   v36 = 0;
   v38 = 0;
 LABEL_47:
-  if (![v8 refreshCredential])
+  if (![contextCopy refreshCredential])
   {
     goto LABEL_79;
   }
 
 LABEL_48:
-  v45 = [v8 extensionData];
-  v46 = [v45 usePlatformSSOTGT];
+  extensionData2 = [contextCopy extensionData];
+  usePlatformSSOTGT = [extensionData2 usePlatformSSOTGT];
 
-  if (v46)
+  if (usePlatformSSOTGT)
   {
-    if (([v8 returnCredentialOnly] & 1) == 0)
+    if (([contextCopy returnCredentialOnly] & 1) == 0)
     {
-      if (!a5)
+      if (!error)
       {
 LABEL_86:
         v36 = 7;
         goto LABEL_25;
       }
 
-      v52 = [MEMORY[0x277CCA9B8] invalidKerberosOperation];
+      invalidKerberosOperation = [MEMORY[0x277CCA9B8] invalidKerberosOperation];
 LABEL_85:
-      *a5 = v52;
+      *error = invalidKerberosOperation;
       goto LABEL_86;
     }
 
-    if ([v8 returnCredentialOnly])
+    if ([contextCopy returnCredentialOnly])
     {
-      v47 = [v8 extensionData];
-      v46 = [v47 allowPlatformSSOAuthFallback];
+      extensionData3 = [contextCopy extensionData];
+      usePlatformSSOTGT = [extensionData3 allowPlatformSSOAuthFallback];
 
-      if ((v46 & 1) == 0)
+      if ((usePlatformSSOTGT & 1) == 0)
       {
-        if (!a5)
+        if (!error)
         {
           goto LABEL_86;
         }
@@ -271,27 +271,27 @@ LABEL_85:
     }
   }
 
-  v48 = [v8 password];
-  if (v48)
+  password = [contextCopy password];
+  if (password)
   {
-    v46 = [v8 password];
-    if (([v46 isEqualToString:&stru_285206D08] & 1) == 0)
+    usePlatformSSOTGT = [contextCopy password];
+    if (([usePlatformSSOTGT isEqualToString:&stru_285206D08] & 1) == 0)
     {
 
       goto LABEL_66;
     }
   }
 
-  v109 = a5;
-  v111 = a4;
-  v49 = [v8 extensionData];
-  v50 = [v49 certificateUUID];
-  if (!v50 || ([v8 extensionData], a4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a4, "certificateUUID"), a5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a5, "isEqualToString:", &stru_285206D08)))
+  errorCopy = error;
+  tokenCopy = token;
+  extensionData4 = [contextCopy extensionData];
+  certificateUUID = [extensionData4 certificateUUID];
+  if (!certificateUUID || ([contextCopy extensionData], token = objc_claimAutoreleasedReturnValue(), objc_msgSend(token, "certificateUUID"), error = objc_claimAutoreleasedReturnValue(), objc_msgSend(error, "isEqualToString:", &stru_285206D08)))
   {
-    v53 = [v8 pkinitPersistentRef];
-    v51 = [v53 length] == 0;
+    pkinitPersistentRef = [contextCopy pkinitPersistentRef];
+    v51 = [pkinitPersistentRef length] == 0;
 
-    if (!v50)
+    if (!certificateUUID)
     {
       goto LABEL_62;
     }
@@ -303,12 +303,12 @@ LABEL_85:
   }
 
 LABEL_62:
-  if (v48)
+  if (password)
   {
   }
 
-  a5 = v109;
-  a4 = v111;
+  error = errorCopy;
+  token = tokenCopy;
   if (v51)
   {
     v36 = 1;
@@ -316,17 +316,17 @@ LABEL_62:
   }
 
 LABEL_66:
-  v54 = [v8 extensionData];
-  if ([v54 requireUserPresence])
+  extensionData5 = [contextCopy extensionData];
+  if ([extensionData5 requireUserPresence])
   {
-    v55 = [v8 extensionData];
-    v56 = [v55 certificateUUID];
-    if (v56)
+    extensionData6 = [contextCopy extensionData];
+    certificateUUID2 = [extensionData6 certificateUUID];
+    if (certificateUUID2)
     {
-      v57 = v56;
-      v58 = [v8 keychainLAContext];
+      v57 = certificateUUID2;
+      keychainLAContext = [contextCopy keychainLAContext];
 
-      if (!v58)
+      if (!keychainLAContext)
       {
         v59 = SO_LOG_SOKerberosAuthentication();
         if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
@@ -343,8 +343,8 @@ LABEL_66:
   }
 
 LABEL_74:
-  [(SOKerberosAuthentication *)self setSiteCodeUsingContext:v8];
-  v36 = [(SOKerberosAuthentication *)self createNewCredentialUsingContext:v8 returningCredential:&cred_handle orError:a5];
+  [(SOKerberosAuthentication *)self setSiteCodeUsingContext:contextCopy];
+  v36 = [(SOKerberosAuthentication *)self createNewCredentialUsingContext:contextCopy returningCredential:&cred_handle orError:error];
   v60 = SO_LOG_SOKerberosAuthentication();
   v61 = os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG);
   if (v36 != 4)
@@ -354,12 +354,12 @@ LABEL_74:
       [SOKerberosAuthentication attemptKerberosWithContext:returningToken:orError:];
     }
 
-    if (*a5)
+    if (*error)
     {
       v70 = SO_LOG_SOKerberosAuthentication();
       if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
       {
-        [SOKerberosAuthentication attemptKerberosWithContext:a5 returningToken:? orError:?];
+        [SOKerberosAuthentication attemptKerberosWithContext:error returningToken:? orError:?];
       }
     }
 
@@ -377,15 +377,15 @@ LABEL_74:
     v103 = SO_LOG_SOKerberosAuthentication();
     if (os_log_type_enabled(v103, OS_LOG_TYPE_ERROR))
     {
-      [SOKerberosAuthentication attemptKerberosWithContext:v8 returningToken:? orError:?];
+      [SOKerberosAuthentication attemptKerberosWithContext:contextCopy returningToken:? orError:?];
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_86;
     }
 
-    v52 = [MEMORY[0x277CCA9B8] sourceAppNotAllowed];
+    invalidKerberosOperation = [MEMORY[0x277CCA9B8] sourceAppNotAllowed];
     goto LABEL_85;
   }
 
@@ -393,39 +393,39 @@ LABEL_74:
   v64 = CFUUIDCreateString(0, v62);
   CFRelease(v63);
   v65 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v64];
-  [v8 setCredentialUUID:v65];
+  [contextCopy setCredentialUUID:v65];
 
   v38 = 1;
   v36 = 4;
 LABEL_79:
   if (!cred_handle)
   {
-    if (!a5)
+    if (!error)
     {
       v36 = 7;
       goto LABEL_27;
     }
 
 LABEL_84:
-    v52 = [MEMORY[0x277CCA9B8] credentialMissing];
+    invalidKerberosOperation = [MEMORY[0x277CCA9B8] credentialMissing];
     goto LABEL_85;
   }
 
-  v66 = [v8 extensionData];
-  v112 = a4;
-  if ([v66 usePlatformSSOTGT])
+  extensionData7 = [contextCopy extensionData];
+  tokenCopy2 = token;
+  if ([extensionData7 usePlatformSSOTGT])
   {
-    v67 = [v8 currentSettings];
-    v68 = [v67 dateExpirationChecked];
-    if (v68)
+    currentSettings = [contextCopy currentSettings];
+    dateExpirationChecked = [currentSettings dateExpirationChecked];
+    if (dateExpirationChecked)
     {
       v69 = 0;
     }
 
     else
     {
-      v71 = [v8 extensionData];
-      v69 = [v71 performKerberosOnly] ^ 1;
+      extensionData8 = [contextCopy extensionData];
+      v69 = [extensionData8 performKerberosOnly] ^ 1;
     }
   }
 
@@ -437,7 +437,7 @@ LABEL_84:
   v72 = SO_LOG_SOKerberosAuthentication();
   if (os_log_type_enabled(v72, OS_LOG_TYPE_DEBUG))
   {
-    [SOKerberosAuthentication attemptKerberosWithContext:v8 returningToken:? orError:?];
+    [SOKerberosAuthentication attemptKerberosWithContext:contextCopy returningToken:? orError:?];
   }
 
   if ((v38 | v69))
@@ -445,14 +445,14 @@ LABEL_84:
     goto LABEL_102;
   }
 
-  if ([v8 refreshCredential])
+  if ([contextCopy refreshCredential])
   {
     goto LABEL_102;
   }
 
-  v73 = [v8 currentSettings];
-  v74 = [v73 dateNextPacRefresh];
-  [v74 timeIntervalSinceNow];
+  currentSettings2 = [contextCopy currentSettings];
+  dateNextPacRefresh = [currentSettings2 dateNextPacRefresh];
+  [dateNextPacRefresh timeIntervalSinceNow];
   v76 = v75;
 
   if (v76 < 0.0)
@@ -460,88 +460,88 @@ LABEL_84:
 LABEL_102:
     v77 = _lock;
     objc_sync_enter(v77);
-    v78 = [v8 impersonationBundleIdentifier];
+    impersonationBundleIdentifier2 = [contextCopy impersonationBundleIdentifier];
 
-    if (v78)
+    if (impersonationBundleIdentifier2)
     {
-      [v8 impersonationBundleIdentifier];
+      [contextCopy impersonationBundleIdentifier];
     }
 
     else
     {
-      [v8 callerBundleIdentifier];
+      [contextCopy callerBundleIdentifier];
     }
     v79 = ;
     HeimCredSetImpersonateBundle();
 
-    [(SOKerberosAuthentication *)self refreshPacValuesWithContext:v8 credential:cred_handle atLogin:v38 | v69];
+    [(SOKerberosAuthentication *)self refreshPacValuesWithContext:contextCopy credential:cred_handle atLogin:v38 | v69];
     HeimCredSetImpersonateBundle();
     objc_sync_exit(v77);
   }
 
-  [SOKerberosAuthentication saveValuesForPlugins:v8];
-  v80 = [v8 credentialUUID];
-  v81 = [v8 currentSettings];
-  [v81 setCredentialUUID:v80];
+  [SOKerberosAuthentication saveValuesForPlugins:contextCopy];
+  credentialUUID3 = [contextCopy credentialUUID];
+  currentSettings3 = [contextCopy currentSettings];
+  [currentSettings3 setCredentialUUID:credentialUUID3];
 
-  v82 = [v8 userPrincipalName];
-  v83 = [v8 currentSettings];
-  [v83 setUserPrincipalName:v82];
+  userPrincipalName2 = [contextCopy userPrincipalName];
+  currentSettings4 = [contextCopy currentSettings];
+  [currentSettings4 setUserPrincipalName:userPrincipalName2];
 
-  v84 = [v8 currentSettings];
-  [v84 setUserCancelledLogin:0];
+  currentSettings5 = [contextCopy currentSettings];
+  [currentSettings5 setUserCancelledLogin:0];
 
-  v85 = [v8 currentSettings];
-  [v85 setDateLoginCancelled:0];
+  currentSettings6 = [contextCopy currentSettings];
+  [currentSettings6 setDateLoginCancelled:0];
 
-  v86 = [v8 loginTimeStamp];
+  loginTimeStamp = [contextCopy loginTimeStamp];
 
-  if (v86)
+  if (loginTimeStamp)
   {
-    v87 = [v8 loginTimeStamp];
-    v88 = [v8 currentSettings];
-    [v88 setDateLastLogin:v87];
+    loginTimeStamp2 = [contextCopy loginTimeStamp];
+    currentSettings7 = [contextCopy currentSettings];
+    [currentSettings7 setDateLastLogin:loginTimeStamp2];
   }
 
   v89 = SO_LOG_SOKerberosAuthentication();
   if (os_log_type_enabled(v89, OS_LOG_TYPE_DEBUG))
   {
-    [SOKerberosAuthentication attemptKerberosWithContext:v8 returningToken:v89 orError:?];
+    [SOKerberosAuthentication attemptKerberosWithContext:contextCopy returningToken:v89 orError:?];
   }
 
-  v90 = [v8 extensionData];
-  if ([v90 performKerberosOnly])
+  extensionData9 = [contextCopy extensionData];
+  if ([extensionData9 performKerberosOnly])
   {
     goto LABEL_115;
   }
 
-  v91 = [v8 currentSettings];
-  v92 = [v91 dateExpirationChecked];
-  if (!v92)
+  currentSettings8 = [contextCopy currentSettings];
+  dateExpirationChecked2 = [currentSettings8 dateExpirationChecked];
+  if (!dateExpirationChecked2)
   {
 
 LABEL_115:
     goto LABEL_116;
   }
 
-  v93 = v92;
-  v94 = [v8 currentSettings];
-  v95 = [v94 datePasswordLastChangedAtLogin];
-  [v8 currentSettings];
-  v96 = v110 = a5;
-  v97 = [v96 datePasswordLastChanged];
-  v108 = [v95 isEqualToDate:v97];
+  v93 = dateExpirationChecked2;
+  currentSettings9 = [contextCopy currentSettings];
+  datePasswordLastChangedAtLogin = [currentSettings9 datePasswordLastChangedAtLogin];
+  [contextCopy currentSettings];
+  v96 = v110 = error;
+  datePasswordLastChanged = [v96 datePasswordLastChanged];
+  v108 = [datePasswordLastChangedAtLogin isEqualToDate:datePasswordLastChanged];
 
-  a5 = v110;
+  error = v110;
   if ((v108 & 1) == 0)
   {
-    [v8 setRefreshCredential:1];
+    [contextCopy setRefreshCredential:1];
     v36 = 16;
     goto LABEL_25;
   }
 
 LABEL_116:
-  if (([v8 returnCredentialOnly] & 1) == 0)
+  if (([contextCopy returnCredentialOnly] & 1) == 0)
   {
     v98 = SO_LOG_SOKerberosAuthentication();
     if (os_log_type_enabled(v98, OS_LOG_TYPE_DEBUG))
@@ -549,47 +549,47 @@ LABEL_116:
       [SOKerberosAuthentication attemptKerberosWithContext:? returningToken:? orError:?];
     }
 
-    v99 = [v8 servicePrincipalName];
+    servicePrincipalName = [contextCopy servicePrincipalName];
 
-    if (v99)
+    if (servicePrincipalName)
     {
       v100 = _lock;
       objc_sync_enter(v100);
-      v101 = [v8 impersonationBundleIdentifier];
+      impersonationBundleIdentifier3 = [contextCopy impersonationBundleIdentifier];
 
-      if (v101)
+      if (impersonationBundleIdentifier3)
       {
-        [v8 impersonationBundleIdentifier];
+        [contextCopy impersonationBundleIdentifier];
       }
 
       else
       {
-        [v8 callerBundleIdentifier];
+        [contextCopy callerBundleIdentifier];
       }
       v102 = ;
       HeimCredSetImpersonateBundle();
 
-      v104 = [(SOKerberosAuthentication *)self kerberosHelper];
+      kerberosHelper2 = [(SOKerberosAuthentication *)self kerberosHelper];
       v105 = cred_handle;
-      v106 = [v8 servicePrincipalName];
-      LODWORD(v105) = [v104 authenticate:v105 toServer:v106 returningToken:v112 andError:a5];
+      servicePrincipalName2 = [contextCopy servicePrincipalName];
+      LODWORD(v105) = [kerberosHelper2 authenticate:v105 toServer:servicePrincipalName2 returningToken:tokenCopy2 andError:error];
 
       HeimCredSetImpersonateBundle();
       HeimCredSetImpersonateAuditToken();
       objc_sync_exit(v100);
 
-      if (v105 && *v112)
+      if (v105 && *tokenCopy2)
       {
         v107 = SO_LOG_SOKerberosAuthentication();
         if (os_log_type_enabled(v107, OS_LOG_TYPE_DEBUG))
         {
-          [SOKerberosAuthentication attemptKerberosWithContext:v112 returningToken:? orError:?];
+          [SOKerberosAuthentication attemptKerberosWithContext:tokenCopy2 returningToken:? orError:?];
         }
 
         v36 = 0;
       }
 
-      else if (*a5)
+      else if (*error)
       {
         v36 = [(SOKerberosAuthentication *)self mapErrorToKnownError:?];
       }
@@ -597,12 +597,12 @@ LABEL_116:
       goto LABEL_25;
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_86;
     }
 
-    v52 = [MEMORY[0x277CCA9B8] servicePrincipalNameMissing];
+    invalidKerberosOperation = [MEMORY[0x277CCA9B8] servicePrincipalNameMissing];
     goto LABEL_85;
   }
 
@@ -618,9 +618,9 @@ LABEL_27:
   return v36;
 }
 
-+ (void)saveValuesForPlugins:(id)a3
++ (void)saveValuesForPlugins:(id)plugins
 {
-  v3 = a3;
+  pluginsCopy = plugins;
   v4 = SO_LOG_SOKerberosAuthentication();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -628,27 +628,27 @@ LABEL_27:
   }
 
   v5 = [SOKerberosHeimdalPluginSettings alloc];
-  v6 = [v3 realm];
-  v7 = [(SOKerberosHeimdalPluginSettings *)v5 initWithRealm:v6];
+  realm = [pluginsCopy realm];
+  v7 = [(SOKerberosHeimdalPluginSettings *)v5 initWithRealm:realm];
 
-  v8 = [v3 siteCode];
-  v9 = [v8 code];
-  [(SOKerberosHeimdalPluginSettings *)v7 setSiteCode:v9];
+  siteCode = [pluginsCopy siteCode];
+  code = [siteCode code];
+  [(SOKerberosHeimdalPluginSettings *)v7 setSiteCode:code];
 
-  v10 = [v3 credentialUUID];
+  credentialUUID = [pluginsCopy credentialUUID];
 
-  [(SOKerberosHeimdalPluginSettings *)v7 setCurrentCredential:v10];
+  [(SOKerberosHeimdalPluginSettings *)v7 setCurrentCredential:credentialUUID];
 }
 
-+ (void)savePacValues:(id)a3 atLogin:(BOOL)a4
++ (void)savePacValues:(id)values atLogin:(BOOL)login
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 currentSettings];
-  v7 = v6;
-  if (v4)
+  loginCopy = login;
+  valuesCopy = values;
+  currentSettings = [valuesCopy currentSettings];
+  v7 = currentSettings;
+  if (loginCopy)
   {
-    [v6 setDateExpirationChecked:0];
+    [currentSettings setDateExpirationChecked:0];
     [v7 setPasswordNeverExpires:0];
     [v7 setDatePasswordExpires:0];
     [v7 setDatePasswordLastChanged:0];
@@ -656,33 +656,33 @@ LABEL_27:
     [v7 setDatePasswordLastChangedAtLogin:0];
   }
 
-  v8 = [v5 pacData];
-  if (v8)
+  pacData = [valuesCopy pacData];
+  if (pacData)
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [v7 setDateExpirationChecked:v9];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v7 setDateExpirationChecked:date];
 
-    [v7 setPasswordNeverExpires:{objc_msgSend(v8, "passwordNeverExpires")}];
-    v10 = [v8 passwordMustChange];
-    [v7 setDatePasswordExpires:v10];
+    [v7 setPasswordNeverExpires:{objc_msgSend(pacData, "passwordNeverExpires")}];
+    passwordMustChange = [pacData passwordMustChange];
+    [v7 setDatePasswordExpires:passwordMustChange];
 
-    v11 = [v8 passwordLastSet];
-    [v7 setDatePasswordLastChanged:v11];
+    passwordLastSet = [pacData passwordLastSet];
+    [v7 setDatePasswordLastChanged:passwordLastSet];
 
-    v12 = [v8 passwordCanChange];
-    [v7 setDateADPasswordCanChange:v12];
+    passwordCanChange = [pacData passwordCanChange];
+    [v7 setDateADPasswordCanChange:passwordCanChange];
 
-    v13 = [v8 homeDirectory];
-    [v7 setNetworkHomeDirectory:v13];
+    homeDirectory = [pacData homeDirectory];
+    [v7 setNetworkHomeDirectory:homeDirectory];
 
-    if (v4)
+    if (loginCopy)
     {
-      v14 = [v7 datePasswordLastChanged];
-      [v7 setDatePasswordLastChangedAtLogin:v14];
+      datePasswordLastChanged = [v7 datePasswordLastChanged];
+      [v7 setDatePasswordLastChangedAtLogin:datePasswordLastChanged];
     }
 
-    v15 = [v7 datePasswordExpires];
-    [v15 timeIntervalSinceNow];
+    datePasswordExpires = [v7 datePasswordExpires];
+    [datePasswordExpires timeIntervalSinceNow];
     if (v16 >= 0.0 && v16 >= 86400.0)
     {
       if (v16 >= 259200.0)
@@ -705,16 +705,16 @@ LABEL_27:
         v19 = 900.0;
       }
 
-      v17 = [v18 dateWithTimeIntervalSinceNow:v19];
+      date2 = [v18 dateWithTimeIntervalSinceNow:v19];
     }
 
     else
     {
-      v17 = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
     }
 
-    v20 = v17;
-    [v7 setDateNextPacRefresh:v17];
+    v20 = date2;
+    [v7 setDateNextPacRefresh:date2];
 
     v21 = SO_LOG_SOKerberosAuthentication();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -724,23 +724,23 @@ LABEL_27:
   }
 }
 
-- (void)setSiteCodeUsingContext:(id)a3
+- (void)setSiteCodeUsingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = SO_LOG_SOKerberosAuthentication();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SOKerberosAuthentication setSiteCodeUsingContext:];
   }
 
-  v6 = [v4 extensionData];
-  v7 = [v6 useSiteAutoDiscovery];
+  extensionData = [contextCopy extensionData];
+  useSiteAutoDiscovery = [extensionData useSiteAutoDiscovery];
 
-  if (v7)
+  if (useSiteAutoDiscovery)
   {
-    v8 = [v4 siteCodeGroup];
+    siteCodeGroup = [contextCopy siteCodeGroup];
     v9 = dispatch_time(0, 15000000000);
-    v10 = dispatch_group_wait(v8, v9);
+    v10 = dispatch_group_wait(siteCodeGroup, v9);
 
     if (v10 >= 1)
     {
@@ -751,10 +751,10 @@ LABEL_27:
       }
     }
 
-    v12 = [v4 callerBundleIdentifier];
-    v13 = [v4 networkIdentity];
-    v14 = [v13 networkFingerprint];
-    v15 = [(SOKerberosAuthentication *)self retrieveCachedSiteCodeFromCacheForBundleIdentifier:v12 networkFingerprint:v14];
+    callerBundleIdentifier = [contextCopy callerBundleIdentifier];
+    networkIdentity = [contextCopy networkIdentity];
+    networkFingerprint = [networkIdentity networkFingerprint];
+    v15 = [(SOKerberosAuthentication *)self retrieveCachedSiteCodeFromCacheForBundleIdentifier:callerBundleIdentifier networkFingerprint:networkFingerprint];
 
     v16 = SO_LOG_SOKerberosAuthentication();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -762,16 +762,16 @@ LABEL_27:
       [SOKerberosAuthentication attemptKerberosWithContext:returningToken:orError:];
     }
 
-    [v4 setSiteCode:v15];
+    [contextCopy setSiteCode:v15];
   }
 }
 
-- (id)retrieveCachedSiteCodeFromCacheForBundleIdentifier:(id)a3 networkFingerprint:(id)a4
+- (id)retrieveCachedSiteCodeFromCacheForBundleIdentifier:(id)identifier networkFingerprint:(id)fingerprint
 {
-  v5 = a4;
+  fingerprintCopy = fingerprint;
   v6 = [SOKerberosRealmSettings alloc];
-  v7 = [(SOKerberosAuthentication *)self realm];
-  v8 = [(SOKerberosRealmSettings *)v6 initWithRealm:v7];
+  realm = [(SOKerberosAuthentication *)self realm];
+  v8 = [(SOKerberosRealmSettings *)v6 initWithRealm:realm];
 
   v9 = SO_LOG_SOKerberosAuthentication();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -779,7 +779,7 @@ LABEL_27:
     [SOKerberosAuthentication retrieveCachedSiteCodeFromCacheForBundleIdentifier:networkFingerprint:];
   }
 
-  v10 = [(SOKerberosRealmSettings *)v8 siteCodeForNetworkFingerprint:v5];
+  v10 = [(SOKerberosRealmSettings *)v8 siteCodeForNetworkFingerprint:fingerprintCopy];
 
   v11 = SO_LOG_SOKerberosAuthentication();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
@@ -804,28 +804,28 @@ LABEL_27:
   return v10;
 }
 
-- (void)determineSiteCodeUsingContext:(id)a3
+- (void)determineSiteCodeUsingContext:(id)context
 {
-  v4 = a3;
-  v10 = [v4 siteCodeGroup];
-  v5 = [v4 callerBundleIdentifier];
-  v6 = [v4 auditToken];
-  v7 = [v4 networkIdentity];
-  v8 = [v7 networkFingerprint];
-  v9 = [v4 extensionData];
+  contextCopy = context;
+  siteCodeGroup = [contextCopy siteCodeGroup];
+  callerBundleIdentifier = [contextCopy callerBundleIdentifier];
+  auditToken = [contextCopy auditToken];
+  networkIdentity = [contextCopy networkIdentity];
+  networkFingerprint = [networkIdentity networkFingerprint];
+  extensionData = [contextCopy extensionData];
 
-  -[SOKerberosAuthentication _determineSiteCodeUsingDispatchGroup:bundleIdentifier:auditTokenData:networkFingerprint:requireTLSForLDAP:](self, "_determineSiteCodeUsingDispatchGroup:bundleIdentifier:auditTokenData:networkFingerprint:requireTLSForLDAP:", v10, v5, v6, v8, [v9 requireTLSForLDAP]);
+  -[SOKerberosAuthentication _determineSiteCodeUsingDispatchGroup:bundleIdentifier:auditTokenData:networkFingerprint:requireTLSForLDAP:](self, "_determineSiteCodeUsingDispatchGroup:bundleIdentifier:auditTokenData:networkFingerprint:requireTLSForLDAP:", siteCodeGroup, callerBundleIdentifier, auditToken, networkFingerprint, [extensionData requireTLSForLDAP]);
 }
 
-- (void)_determineSiteCodeUsingDispatchGroup:(id)a3 bundleIdentifier:(id)a4 auditTokenData:(id)a5 networkFingerprint:(id)a6 requireTLSForLDAP:(BOOL)a7
+- (void)_determineSiteCodeUsingDispatchGroup:(id)group bundleIdentifier:(id)identifier auditTokenData:(id)data networkFingerprint:(id)fingerprint requireTLSForLDAP:(BOOL)p
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  groupCopy = group;
+  identifierCopy = identifier;
+  dataCopy = data;
+  fingerprintCopy = fingerprint;
   v16 = [SOKerberosRealmSettings alloc];
-  v17 = [(SOKerberosAuthentication *)self realm];
-  v18 = [(SOKerberosRealmSettings *)v16 initWithRealm:v17];
+  realm = [(SOKerberosAuthentication *)self realm];
+  v18 = [(SOKerberosRealmSettings *)v16 initWithRealm:realm];
 
   if (![(SOKerberosAuthentication *)self siteDiscoveryInProgress])
   {
@@ -835,7 +835,7 @@ LABEL_27:
     v30 = 0x3032000000;
     v31 = __Block_byref_object_copy__0;
     v32 = __Block_byref_object_dispose__0;
-    v33 = v12;
+    v33 = groupCopy;
     dispatch_group_enter(v29[5]);
     v19 = v29[5];
     v20 = dispatch_get_global_queue(0, 0);
@@ -844,10 +844,10 @@ LABEL_27:
     block[2] = __134__SOKerberosAuthentication__determineSiteCodeUsingDispatchGroup_bundleIdentifier_auditTokenData_networkFingerprint_requireTLSForLDAP___block_invoke;
     block[3] = &unk_278C93268;
     block[4] = self;
-    v22 = v13;
-    v23 = v14;
-    v27 = a7;
-    v24 = v15;
+    v22 = identifierCopy;
+    v23 = dataCopy;
+    pCopy = p;
+    v24 = fingerprintCopy;
     v25 = v18;
     v26 = &v28;
     dispatch_group_async(v19, v20, block);
@@ -923,10 +923,10 @@ void __134__SOKerberosAuthentication__determineSiteCodeUsingDispatchGroup_bundle
   dispatch_group_leave(*(*(*(a1 + 56) + 8) + 40));
 }
 
-- (unint64_t)createNewCredentialUsingContext:(id)a3 returningCredential:(gss_cred_id_t_desc_struct *)a4 orError:(id *)a5
+- (unint64_t)createNewCredentialUsingContext:(id)context returningCredential:(gss_cred_id_t_desc_struct *)credential orError:(id *)error
 {
   v92[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  contextCopy = context;
   v9 = SO_LOG_SOKerberosAuthentication();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -936,18 +936,18 @@ void __134__SOKerberosAuthentication__determineSiteCodeUsingDispatchGroup_bundle
   v10 = SO_LOG_SOKerberosAuthentication();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [SOKerberosAuthentication createNewCredentialUsingContext:v8 returningCredential:? orError:?];
+    [SOKerberosAuthentication createNewCredentialUsingContext:contextCopy returningCredential:? orError:?];
   }
 
   v11 = [MEMORY[0x277CBEC10] mutableCopy];
-  v12 = [v8 extensionData];
-  v13 = [v12 certificateUUID];
-  if (v13)
+  extensionData = [contextCopy extensionData];
+  certificateUUID = [extensionData certificateUUID];
+  if (certificateUUID)
   {
-    v14 = v13;
-    v15 = [v8 useKerberosPasswordInsteadOfMDMIdentity];
+    v14 = certificateUUID;
+    useKerberosPasswordInsteadOfMDMIdentity = [contextCopy useKerberosPasswordInsteadOfMDMIdentity];
 
-    if ((v15 & 1) == 0)
+    if ((useKerberosPasswordInsteadOfMDMIdentity & 1) == 0)
     {
       v16 = SO_LOG_SOKerberosAuthentication();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -955,18 +955,18 @@ void __134__SOKerberosAuthentication__determineSiteCodeUsingDispatchGroup_bundle
         [SOKerberosAuthentication createNewCredentialUsingContext:returningCredential:orError:];
       }
 
-      v17 = [(SOKerberosAuthentication *)self keychainHelper];
-      v18 = [v8 extensionData];
-      v19 = [v18 certificateUUID];
-      v20 = [v17 identityForUUIDString:v19];
+      keychainHelper = [(SOKerberosAuthentication *)self keychainHelper];
+      extensionData2 = [contextCopy extensionData];
+      certificateUUID2 = [extensionData2 certificateUUID];
+      v20 = [keychainHelper identityForUUIDString:certificateUUID2];
 
-      v21 = SO_LOG_SOKerberosAuthentication();
-      v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG);
+      array = SO_LOG_SOKerberosAuthentication();
+      v22 = os_log_type_enabled(array, OS_LOG_TYPE_DEBUG);
       if (!v20)
       {
         if (v22)
         {
-          [SOKerberosAuthentication createNewCredentialUsingContext:v8 returningCredential:? orError:?];
+          [SOKerberosAuthentication createNewCredentialUsingContext:contextCopy returningCredential:? orError:?];
         }
 
         v35 = 15;
@@ -975,7 +975,7 @@ void __134__SOKerberosAuthentication__determineSiteCodeUsingDispatchGroup_bundle
 
       if (v22)
       {
-        [SOKerberosAuthentication createNewCredentialUsingContext:v20 returningCredential:v8 orError:?];
+        [SOKerberosAuthentication createNewCredentialUsingContext:v20 returningCredential:contextCopy orError:?];
       }
 
       [v11 setObject:v20 forKeyedSubscript:@"kGSSICCertificate"];
@@ -987,34 +987,34 @@ void __134__SOKerberosAuthentication__determineSiteCodeUsingDispatchGroup_bundle
   {
   }
 
-  v23 = [v8 pkinitPersistentRef];
-  v24 = [v23 length];
+  pkinitPersistentRef = [contextCopy pkinitPersistentRef];
+  v24 = [pkinitPersistentRef length];
 
   if (v24)
   {
-    v25 = [v8 pkinitPersistentRef];
-    v26 = [v8 certificateTokenID];
-    v21 = [SOSmartcard searchForCachedIdentityPersistentRef:v25 tokenID:v26];
+    pkinitPersistentRef2 = [contextCopy pkinitPersistentRef];
+    certificateTokenID = [contextCopy certificateTokenID];
+    array = [SOSmartcard searchForCachedIdentityPersistentRef:pkinitPersistentRef2 tokenID:certificateTokenID];
 
-    if ([v21 count])
+    if ([array count])
     {
-      v27 = [v21 objectForKeyedSubscript:*MEMORY[0x277CDBEC0]];
+      v27 = [array objectForKeyedSubscript:*MEMORY[0x277CDBEC0]];
 
       if (v27)
       {
-        v28 = [v8 smartCardLAContext];
+        smartCardLAContext = [contextCopy smartCardLAContext];
 
-        if (!v28)
+        if (!smartCardLAContext)
         {
           v29 = objc_alloc_init(MEMORY[0x277CD4790]);
-          [v8 setSmartCardLAContext:v29];
+          [contextCopy setSmartCardLAContext:v29];
 
-          v30 = [v8 smartCardLAContext];
-          [v30 setOptionCallerName:@"Kerberos"];
+          smartCardLAContext2 = [contextCopy smartCardLAContext];
+          [smartCardLAContext2 setOptionCallerName:@"Kerberos"];
         }
 
-        v31 = [v8 smartCardLAContext];
-        v20 = [SOSmartcard getLocalAuthIdentityForCert:v21 withLAContext:v31];
+        smartCardLAContext3 = [contextCopy smartCardLAContext];
+        v20 = [SOSmartcard getLocalAuthIdentityForCert:array withLAContext:smartCardLAContext3];
 
         if (!v20)
         {
@@ -1025,7 +1025,7 @@ void __134__SOKerberosAuthentication__determineSiteCodeUsingDispatchGroup_bundle
       }
 
       v36 = *MEMORY[0x277CDC5F0];
-      v37 = [v21 objectForKeyedSubscript:*MEMORY[0x277CDC5F0]];
+      v37 = [array objectForKeyedSubscript:*MEMORY[0x277CDC5F0]];
 
       if (!v37)
       {
@@ -1033,16 +1033,16 @@ LABEL_69:
         v34 = SO_LOG_SOKerberosAuthentication();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
         {
-          [SOKerberosAuthentication createNewCredentialUsingContext:v8 returningCredential:? orError:?];
+          [SOKerberosAuthentication createNewCredentialUsingContext:contextCopy returningCredential:? orError:?];
         }
 
         v35 = 6;
         goto LABEL_72;
       }
 
-      v38 = [(SOKerberosAuthentication *)self keychainHelper];
-      v39 = [v21 objectForKeyedSubscript:v36];
-      v20 = [v38 identityForPersistentRef:v39];
+      keychainHelper2 = [(SOKerberosAuthentication *)self keychainHelper];
+      v39 = [array objectForKeyedSubscript:v36];
+      v20 = [keychainHelper2 identityForPersistentRef:v39];
 
       if (v20)
       {
@@ -1050,22 +1050,22 @@ LABEL_31:
         v40 = SO_LOG_SOKerberosAuthentication();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
         {
-          [SOKerberosAuthentication createNewCredentialUsingContext:v20 returningCredential:v8 orError:?];
+          [SOKerberosAuthentication createNewCredentialUsingContext:v20 returningCredential:contextCopy orError:?];
         }
 
         [v11 setObject:v20 forKeyedSubscript:@"kGSSICCertificate"];
-        v41 = [v8 smartCardLAContext];
+        smartCardLAContext4 = [contextCopy smartCardLAContext];
 
-        if (v41)
+        if (smartCardLAContext4)
         {
           v42 = SO_LOG_SOKerberosAuthentication();
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
           {
-            [SOKerberosAuthentication createNewCredentialUsingContext:v8 returningCredential:? orError:?];
+            [SOKerberosAuthentication createNewCredentialUsingContext:contextCopy returningCredential:? orError:?];
           }
 
-          v43 = [v8 smartCardLAContext];
-          [v11 setObject:v43 forKeyedSubscript:@"kGSSICAuthenticationContext"];
+          smartCardLAContext5 = [contextCopy smartCardLAContext];
+          [v11 setObject:smartCardLAContext5 forKeyedSubscript:@"kGSSICAuthenticationContext"];
         }
 
         goto LABEL_38;
@@ -1083,7 +1083,7 @@ LABEL_31:
       v34 = SO_LOG_SOKerberosAuthentication();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
       {
-        [SOKerberosAuthentication createNewCredentialUsingContext:v8 returningCredential:? orError:?];
+        [SOKerberosAuthentication createNewCredentialUsingContext:contextCopy returningCredential:? orError:?];
       }
     }
 
@@ -1093,12 +1093,12 @@ LABEL_72:
     goto LABEL_80;
   }
 
-  v32 = [v8 password];
+  password = [contextCopy password];
 
-  if (!v32)
+  if (!password)
   {
-    v21 = SO_LOG_SOKerberosAuthentication();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+    array = SO_LOG_SOKerberosAuthentication();
+    if (os_log_type_enabled(array, OS_LOG_TYPE_DEBUG))
     {
       [SOKerberosAuthentication createNewCredentialUsingContext:returningCredential:orError:];
     }
@@ -1107,18 +1107,18 @@ LABEL_72:
     goto LABEL_80;
   }
 
-  v33 = [v8 password];
-  [v11 setObject:v33 forKeyedSubscript:@"kGSSICPassword"];
+  password2 = [contextCopy password];
+  [v11 setObject:password2 forKeyedSubscript:@"kGSSICPassword"];
 
   v20 = 0;
 LABEL_38:
-  v44 = [v8 cacheName];
+  cacheName = [contextCopy cacheName];
 
-  if (v44)
+  if (cacheName)
   {
     v45 = MEMORY[0x277CCACA8];
-    v46 = [v8 cacheName];
-    v47 = [v45 stringWithFormat:@"API:%@", v46];
+    cacheName2 = [contextCopy cacheName];
+    v47 = [v45 stringWithFormat:@"API:%@", cacheName2];
     [v11 setObject:v47 forKeyedSubscript:@"kGSSICKerberosCacheName"];
 
     v48 = SO_LOG_SOKerberosAuthentication();
@@ -1129,30 +1129,30 @@ LABEL_38:
   }
 
   cf = v20;
-  v49 = a4;
-  v50 = self;
-  v51 = [v8 siteCode];
-  v52 = [v51 code];
-  if (!v52)
+  credentialCopy = credential;
+  selfCopy = self;
+  siteCode = [contextCopy siteCode];
+  code = [siteCode code];
+  if (!code)
   {
     goto LABEL_46;
   }
 
-  v53 = v52;
-  v54 = [v8 siteCode];
-  [v54 code];
-  v56 = v55 = a5;
+  v53 = code;
+  siteCode2 = [contextCopy siteCode];
+  [siteCode2 code];
+  v56 = v55 = error;
   v57 = [v56 isEqualToString:@"no site code"];
 
-  a5 = v55;
+  error = v55;
   if ((v57 & 1) == 0)
   {
-    v58 = [v8 siteCode];
-    v59 = [v58 code];
-    [v11 setObject:v59 forKeyedSubscript:@"kGSSICSiteName"];
+    siteCode3 = [contextCopy siteCode];
+    code2 = [siteCode3 code];
+    [v11 setObject:code2 forKeyedSubscript:@"kGSSICSiteName"];
 
-    v51 = SO_LOG_SOKerberosAuthentication();
-    if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
+    siteCode = SO_LOG_SOKerberosAuthentication();
+    if (os_log_type_enabled(siteCode, OS_LOG_TYPE_DEBUG))
     {
       [SOKerberosAuthentication createNewCredentialUsingContext:v11 returningCredential:? orError:?];
     }
@@ -1160,59 +1160,59 @@ LABEL_38:
 LABEL_46:
   }
 
-  v60 = [v8 extensionData];
-  v61 = [v60 credentialBundleIdACL];
-  if (v61 || ([v8 extensionData], v61 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v61, "includeManagedAppsInBundleIdACL") & 1) != 0))
+  extensionData3 = [contextCopy extensionData];
+  credentialBundleIdACL = [extensionData3 credentialBundleIdACL];
+  if (credentialBundleIdACL || ([contextCopy extensionData], credentialBundleIdACL = objc_claimAutoreleasedReturnValue(), (objc_msgSend(credentialBundleIdACL, "includeManagedAppsInBundleIdACL") & 1) != 0))
   {
   }
 
   else
   {
-    v82 = [v8 extensionData];
-    v83 = [v82 includeKerberosAppsInBundleIdACL];
+    extensionData4 = [contextCopy extensionData];
+    includeKerberosAppsInBundleIdACL = [extensionData4 includeKerberosAppsInBundleIdACL];
 
-    if ((v83 & 1) == 0)
+    if ((includeKerberosAppsInBundleIdACL & 1) == 0)
     {
-      v21 = &unk_28520B988;
+      array = &unk_28520B988;
       goto LABEL_54;
     }
   }
 
-  v21 = [MEMORY[0x277CBEB18] array];
-  v62 = [v8 extensionData];
-  v63 = [v62 credentialBundleIdACL];
-  v64 = [v63 count];
+  array = [MEMORY[0x277CBEB18] array];
+  extensionData5 = [contextCopy extensionData];
+  credentialBundleIdACL2 = [extensionData5 credentialBundleIdACL];
+  v64 = [credentialBundleIdACL2 count];
 
   if (v64)
   {
-    v65 = [v8 extensionData];
-    v66 = [v65 credentialBundleIdACL];
-    [v21 addObjectsFromArray:v66];
+    extensionData6 = [contextCopy extensionData];
+    credentialBundleIdACL3 = [extensionData6 credentialBundleIdACL];
+    [array addObjectsFromArray:credentialBundleIdACL3];
   }
 
-  v67 = [v8 extensionData];
-  v68 = [v67 includeManagedAppsInBundleIdACL];
+  extensionData7 = [contextCopy extensionData];
+  includeManagedAppsInBundleIdACL = [extensionData7 includeManagedAppsInBundleIdACL];
 
-  if (v68)
+  if (includeManagedAppsInBundleIdACL)
   {
-    [v21 addObject:@"com.apple.private.gssapi.allowmanagedapps"];
+    [array addObject:@"com.apple.private.gssapi.allowmanagedapps"];
   }
 
 LABEL_54:
-  [v11 setObject:v21 forKeyedSubscript:@"kGSSICAppIdentifierACL"];
+  [v11 setObject:array forKeyedSubscript:@"kGSSICAppIdentifierACL"];
   v69 = SO_LOG_SOKerberosAuthentication();
   if (os_log_type_enabled(v69, OS_LOG_TYPE_DEBUG))
   {
     [SOKerberosAuthentication createNewCredentialUsingContext:returningCredential:orError:];
   }
 
-  v70 = [v8 impersonationBundleIdentifier];
+  impersonationBundleIdentifier = [contextCopy impersonationBundleIdentifier];
 
-  if (v70)
+  if (impersonationBundleIdentifier)
   {
     v91 = @"kGSSICAppleSourceAppSigningIdentity";
-    v71 = [v8 impersonationBundleIdentifier];
-    v92[0] = v71;
+    impersonationBundleIdentifier2 = [contextCopy impersonationBundleIdentifier];
+    v92[0] = impersonationBundleIdentifier2;
     v72 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v92 forKeys:&v91 count:1];
     [v11 setObject:v72 forKeyedSubscript:@"kGSSICAppleSourceApp"];
 
@@ -1227,13 +1227,13 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  v74 = [v8 callerBundleIdentifier];
+  callerBundleIdentifier = [contextCopy callerBundleIdentifier];
 
-  if (v74)
+  if (callerBundleIdentifier)
   {
     v89 = @"kGSSICAppleSourceAppSigningIdentity";
-    v75 = [v8 callerBundleIdentifier];
-    v90 = v75;
+    callerBundleIdentifier2 = [contextCopy callerBundleIdentifier];
+    v90 = callerBundleIdentifier2;
     v76 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v90 forKeys:&v89 count:1];
     [v11 setObject:v76 forKeyedSubscript:@"kGSSICAppleSourceApp"];
 
@@ -1247,20 +1247,20 @@ LABEL_62:
   }
 
 LABEL_63:
-  v77 = [(SOKerberosAuthentication *)v50 kerberosHelper];
-  v78 = [v8 userPrincipalName];
-  *v49 = [v77 createCredential:v78 withOptions:v11 andError:a5];
+  kerberosHelper = [(SOKerberosAuthentication *)selfCopy kerberosHelper];
+  userPrincipalName = [contextCopy userPrincipalName];
+  *credentialCopy = [kerberosHelper createCredential:userPrincipalName withOptions:v11 andError:error];
 
-  if (*v49)
+  if (*credentialCopy)
   {
-    v79 = [MEMORY[0x277CBEAA8] date];
-    [v8 setLoginTimeStamp:v79];
+    date = [MEMORY[0x277CBEAA8] date];
+    [contextCopy setLoginTimeStamp:date];
 
     minor_status = 0;
-    input_name = GSSCredentialCopyName(*v49);
+    input_name = GSSCredentialCopyName(*credentialCopy);
     DisplayString = GSSNameCreateDisplayString(input_name);
     gss_release_name(&minor_status, &input_name);
-    [v8 setUserPrincipalNameAfterAuth:DisplayString];
+    [contextCopy setUserPrincipalNameAfterAuth:DisplayString];
 
     v35 = 4;
     v81 = cf;
@@ -1273,9 +1273,9 @@ LABEL_63:
   }
 
   v81 = cf;
-  if (*a5)
+  if (*error)
   {
-    v35 = [(SOKerberosAuthentication *)v50 mapErrorToKnownError:?];
+    v35 = [(SOKerberosAuthentication *)selfCopy mapErrorToKnownError:?];
     if (!cf)
     {
       goto LABEL_80;
@@ -1297,9 +1297,9 @@ LABEL_80:
   return v35;
 }
 
-- (unint64_t)findExistingCredentialUsingContext:(id)a3 returningCredential:(gss_cred_id_t_desc_struct *)a4 orError:(id *)a5
+- (unint64_t)findExistingCredentialUsingContext:(id)context returningCredential:(gss_cred_id_t_desc_struct *)credential orError:(id *)error
 {
-  v7 = a3;
+  contextCopy = context;
   v8 = SO_LOG_SOKerberosAuthentication();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1309,33 +1309,33 @@ LABEL_80:
   v9 = SO_LOG_SOKerberosAuthentication();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [SOKerberosAuthentication findExistingCredentialUsingContext:v7 returningCredential:? orError:?];
+    [SOKerberosAuthentication findExistingCredentialUsingContext:contextCopy returningCredential:? orError:?];
   }
 
   v10 = _lock;
   objc_sync_enter(v10);
-  v11 = [v7 impersonationBundleIdentifier];
+  impersonationBundleIdentifier = [contextCopy impersonationBundleIdentifier];
 
-  if (v11)
+  if (impersonationBundleIdentifier)
   {
-    [v7 impersonationBundleIdentifier];
+    [contextCopy impersonationBundleIdentifier];
   }
 
   else
   {
-    [v7 callerBundleIdentifier];
+    [contextCopy callerBundleIdentifier];
   }
   v12 = ;
   HeimCredSetImpersonateBundle();
 
-  v13 = [(SOKerberosAuthentication *)self kerberosHelper];
-  v14 = [v7 userPrincipalName];
-  *a4 = [v13 acquireCredentialForUPN:v14];
+  kerberosHelper = [(SOKerberosAuthentication *)self kerberosHelper];
+  userPrincipalName = [contextCopy userPrincipalName];
+  *credential = [kerberosHelper acquireCredentialForUPN:userPrincipalName];
 
   HeimCredSetImpersonateBundle();
   objc_sync_exit(v10);
 
-  if (*a4)
+  if (*credential)
   {
     v15 = 4;
   }
@@ -1348,42 +1348,42 @@ LABEL_80:
   return v15;
 }
 
-- (BOOL)changePasswordWithContext:(id)a3 withError:(id *)a4
+- (BOOL)changePasswordWithContext:(id)context withError:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = SO_LOG_SOKerberosAuthentication();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [SOKerberosAuthentication changePasswordWithContext:v6 withError:?];
+    [SOKerberosAuthentication changePasswordWithContext:contextCopy withError:?];
   }
 
-  v8 = [v6 realm];
-  v9 = [v6 callerBundleIdentifier];
-  v10 = [v6 auditToken];
-  [(SOKerberosAuthentication *)self triggerVPNIfNeededUsingRealm:v8 bundleIdentifier:v9 auditToken:v10];
+  realm = [contextCopy realm];
+  callerBundleIdentifier = [contextCopy callerBundleIdentifier];
+  auditToken = [contextCopy auditToken];
+  [(SOKerberosAuthentication *)self triggerVPNIfNeededUsingRealm:realm bundleIdentifier:callerBundleIdentifier auditToken:auditToken];
 
   v11 = _lock;
   objc_sync_enter(v11);
-  v12 = [v6 impersonationBundleIdentifier];
+  impersonationBundleIdentifier = [contextCopy impersonationBundleIdentifier];
 
-  if (v12)
+  if (impersonationBundleIdentifier)
   {
-    [v6 impersonationBundleIdentifier];
+    [contextCopy impersonationBundleIdentifier];
   }
 
   else
   {
-    [v6 callerBundleIdentifier];
+    [contextCopy callerBundleIdentifier];
   }
   v13 = ;
   HeimCredSetImpersonateBundle();
 
-  v14 = [(SOKerberosAuthentication *)self kerberosHelper];
-  v15 = [v6 userPrincipalName];
-  v16 = [v6 realm];
-  v17 = [v6 password];
-  v18 = [v6 changedPassword];
-  v19 = [v14 changePasswordForUPN:v15 realm:v16 withOldPassword:v17 withNewPassword:v18 withError:a4];
+  kerberosHelper = [(SOKerberosAuthentication *)self kerberosHelper];
+  userPrincipalName = [contextCopy userPrincipalName];
+  realm2 = [contextCopy realm];
+  password = [contextCopy password];
+  changedPassword = [contextCopy changedPassword];
+  v19 = [kerberosHelper changePasswordForUPN:userPrincipalName realm:realm2 withOldPassword:password withNewPassword:changedPassword withError:error];
 
   HeimCredSetImpersonateBundle();
   HeimCredSetImpersonateAuditToken();
@@ -1395,23 +1395,23 @@ LABEL_80:
     [SOKerberosAuthentication changePasswordWithContext:withError:];
   }
 
-  if (*a4)
+  if (*error)
   {
     v21 = SO_LOG_SOKerberosAuthentication();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      [SOKerberosAuthentication changePasswordWithContext:a4 withError:?];
+      [SOKerberosAuthentication changePasswordWithContext:error withError:?];
     }
   }
 
   return v19;
 }
 
-- (unint64_t)mapErrorToKnownError:(id)a3
+- (unint64_t)mapErrorToKnownError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"kGSSMinorErrorCode"];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"kGSSMinorErrorCode"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithLong:-1765328361];
   v7 = [v5 isEqualToNumber:v6];
@@ -1493,10 +1493,10 @@ LABEL_80:
 
                 else
                 {
-                  v23 = [v3 userInfo];
-                  v24 = [v23 objectForKeyedSubscript:@"kGSSMechanism"];
+                  userInfo2 = [errorCopy userInfo];
+                  v24 = [userInfo2 objectForKeyedSubscript:@"kGSSMechanism"];
 
-                  if ([v5 isEqualToNumber:&unk_28520B9D0] && objc_msgSend(v3, "code") == 0x10000 && (objc_msgSend(v24, "isEqualToString:", @"SPNEGO") & 1) != 0)
+                  if ([v5 isEqualToNumber:&unk_28520B9D0] && objc_msgSend(errorCopy, "code") == 0x10000 && (objc_msgSend(v24, "isEqualToString:", @"SPNEGO") & 1) != 0)
                   {
                     v8 = 17;
                   }
@@ -1517,20 +1517,20 @@ LABEL_80:
   return v8;
 }
 
-- (void)triggerVPNIfNeededUsingRealm:(id)a3 bundleIdentifier:(id)a4 auditToken:(id)a5
+- (void)triggerVPNIfNeededUsingRealm:(id)realm bundleIdentifier:(id)identifier auditToken:(id)token
 {
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v31 = a5;
+  realmCopy = realm;
+  identifierCopy = identifier;
+  tokenCopy = token;
   v9 = SO_LOG_SOKerberosAuthentication();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [SOKerberosAuthentication triggerVPNIfNeededUsingRealm:bundleIdentifier:auditToken:];
   }
 
-  v10 = v7;
-  [v7 UTF8String];
+  v10 = realmCopy;
+  [realmCopy UTF8String];
   srv = nw_endpoint_create_srv();
   v12 = MEMORY[0x245CB78B0]();
   xarray = xpc_array_create(0, 0);
@@ -1538,7 +1538,7 @@ LABEL_80:
   v13 = xpc_array_create(0, 0);
   xpc_array_set_string(v13, 0xFFFFFFFFFFFFFFFFLL, "VPN");
   nw_parameters_set_required_netagent_classes();
-  if (v8)
+  if (identifierCopy)
   {
     v14 = SO_LOG_SOKerberosAuthentication();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1546,12 +1546,12 @@ LABEL_80:
       [SOKerberosAuthentication triggerVPNIfNeededUsingRealm:bundleIdentifier:auditToken:];
     }
 
-    v15 = v8;
-    [v8 UTF8String];
+    v15 = identifierCopy;
+    [identifierCopy UTF8String];
     nw_parameters_set_source_application_by_bundle_id();
     v37 = 0u;
     v38 = 0u;
-    if (v31 && [MEMORY[0x277CEBF10] auditTokenFromData:v31 auditToken:&v37])
+    if (tokenCopy && [MEMORY[0x277CEBF10] auditTokenFromData:tokenCopy auditToken:&v37])
     {
       v16 = SO_LOG_SOKerberosAuthentication();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))

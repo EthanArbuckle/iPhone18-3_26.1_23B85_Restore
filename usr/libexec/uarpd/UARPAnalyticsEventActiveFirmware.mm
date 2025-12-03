@@ -9,8 +9,8 @@
   if (objc_opt_class())
   {
     v3 = +[GEOCountryConfiguration sharedConfiguration];
-    v4 = [v3 countryCode];
-    v5 = [v4 copy];
+    countryCode = [v3 countryCode];
+    v5 = [countryCode copy];
     countryCode = self->_countryCode;
     self->_countryCode = v5;
   }

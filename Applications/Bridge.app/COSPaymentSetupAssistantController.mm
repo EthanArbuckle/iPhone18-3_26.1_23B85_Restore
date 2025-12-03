@@ -1,18 +1,18 @@
 @interface COSPaymentSetupAssistantController
-+ (BOOL)passkitFlowNeedsToRun:(unint64_t *)a3;
++ (BOOL)passkitFlowNeedsToRun:(unint64_t *)run;
 + (id)passLibraryDataProvider;
 + (id)paymentSetupControllerContext;
-- (COSPaymentSetupAssistantController)initWithDelegate:(id)a3;
+- (COSPaymentSetupAssistantController)initWithDelegate:(id)delegate;
 @end
 
 @implementation COSPaymentSetupAssistantController
 
-- (COSPaymentSetupAssistantController)initWithDelegate:(id)a3
+- (COSPaymentSetupAssistantController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[COSPaymentSetupAssistantController paymentSetupControllerContext];
-  [v5 setPeerPaymentDelegate:v4];
-  [v5 setDelegate:v4];
+  [v5 setPeerPaymentDelegate:delegateCopy];
+  [v5 setDelegate:delegateCopy];
 
   v6 = [[COSPaymentSetupAssistantController alloc] initWithSetupAssistantContext:v5];
   return v6;
@@ -21,15 +21,15 @@
 + (id)paymentSetupControllerContext
 {
   v2 = [[PKBridgeSetupAssistantContext alloc] initWithSetupAssistant:2];
-  v3 = [UIApp bridgeController];
-  v4 = [v3 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
-  if (v4)
+  if (isTinkerPairing)
   {
-    v5 = [UIApp setupController];
-    v6 = [v5 tinkerFamilyMember];
-    v7 = [v5 pairingParentFamilyMember];
-    if (!v7)
+    setupController = [UIApp setupController];
+    tinkerFamilyMember = [setupController tinkerFamilyMember];
+    pairingParentFamilyMember = [setupController pairingParentFamilyMember];
+    if (!pairingParentFamilyMember)
     {
       v8 = pbb_bridge_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -38,11 +38,11 @@
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "PK Setup Assistant found no pairing member. Falling back to organizer family member.", v11, 2u);
       }
 
-      v7 = [v5 organizerFamilyMember];
+      pairingParentFamilyMember = [setupController organizerFamilyMember];
     }
 
-    [v2 setPairingFamilyMember:v6];
-    [v2 setParentFamilyMember:v7];
+    [v2 setPairingFamilyMember:tinkerFamilyMember];
+    [v2 setParentFamilyMember:pairingParentFamilyMember];
   }
 
   v9 = +[COSPaymentSetupAssistantController passLibraryDataProvider];
@@ -51,13 +51,13 @@
   return v2;
 }
 
-+ (BOOL)passkitFlowNeedsToRun:(unint64_t *)a3
++ (BOOL)passkitFlowNeedsToRun:(unint64_t *)run
 {
   v4 = +[COSPaymentSetupAssistantController paymentSetupControllerContext];
   v5 = [[COSPaymentSetupAssistantController alloc] initWithSetupAssistantContext:v4];
   v9 = 0;
   v6 = [(COSPaymentSetupAssistantController *)v5 setupAssistantNeedsToRunReturningRequirements:&v9];
-  *a3 = v9;
+  *run = v9;
   v7 = pbb_bridge_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {

@@ -22,19 +22,19 @@
 
 + (id)interface
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&qword_100121E90);
   if (!WeakRetained)
   {
-    v4 = [v2 interfaceProtocol];
-    WeakRetained = [NSXPCInterface interfaceWithProtocol:v4];
+    interfaceProtocol = [selfCopy interfaceProtocol];
+    WeakRetained = [NSXPCInterface interfaceWithProtocol:interfaceProtocol];
 
-    [v2 configureInterface:WeakRetained];
+    [selfCopy configureInterface:WeakRetained];
     objc_storeWeak(&qword_100121E90, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }

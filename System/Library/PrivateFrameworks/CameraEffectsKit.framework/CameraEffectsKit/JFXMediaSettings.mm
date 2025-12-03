@@ -6,7 +6,7 @@
 + (JFXMediaSettingsProvider)providerDelegate;
 + (int)frameRate;
 + (int)timeScale;
-+ (void)setProviderDelegate:(id)a3;
++ (void)setProviderDelegate:(id)delegate;
 - (CGSize)compositionSize;
 - (CGSize)frameSize;
 - (CGSize)renderSize;
@@ -45,37 +45,37 @@ uint64_t __34__JFXMediaSettings_sharedInstance__block_invoke()
   return v3;
 }
 
-+ (void)setProviderDelegate:(id)a3
++ (void)setProviderDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   obj = objc_opt_class();
   objc_sync_enter(obj);
   v4 = jfx_providerDelegate;
-  jfx_providerDelegate = v3;
+  jfx_providerDelegate = delegateCopy;
 
   objc_sync_exit(obj);
 }
 
 - (int)frameRate
 {
-  v2 = [objc_opt_class() providerDelegate];
-  v3 = [v2 frameRate];
+  providerDelegate = [objc_opt_class() providerDelegate];
+  frameRate = [providerDelegate frameRate];
 
-  return v3;
+  return frameRate;
 }
 
 - (int)timeScale
 {
-  v2 = [objc_opt_class() providerDelegate];
-  v3 = [v2 timeScale];
+  providerDelegate = [objc_opt_class() providerDelegate];
+  timeScale = [providerDelegate timeScale];
 
-  return v3;
+  return timeScale;
 }
 
 - (CGSize)renderSize
 {
-  v2 = [objc_opt_class() providerDelegate];
-  [v2 renderSize];
+  providerDelegate = [objc_opt_class() providerDelegate];
+  [providerDelegate renderSize];
   v4 = v3;
   v6 = v5;
 
@@ -88,8 +88,8 @@ uint64_t __34__JFXMediaSettings_sharedInstance__block_invoke()
 
 - (CGSize)compositionSize
 {
-  v2 = [objc_opt_class() providerDelegate];
-  [v2 compositionSize];
+  providerDelegate = [objc_opt_class() providerDelegate];
+  [providerDelegate compositionSize];
   v4 = v3;
   v6 = v5;
 
@@ -102,8 +102,8 @@ uint64_t __34__JFXMediaSettings_sharedInstance__block_invoke()
 
 - (CGSize)frameSize
 {
-  v2 = [objc_opt_class() providerDelegate];
-  [v2 frameSize];
+  providerDelegate = [objc_opt_class() providerDelegate];
+  [providerDelegate frameSize];
   v4 = v3;
   v6 = v5;
 
@@ -116,24 +116,24 @@ uint64_t __34__JFXMediaSettings_sharedInstance__block_invoke()
 
 + (int)frameRate
 {
-  v2 = [a1 sharedInstance];
-  v3 = [v2 frameRate];
+  sharedInstance = [self sharedInstance];
+  frameRate = [sharedInstance frameRate];
 
-  return v3;
+  return frameRate;
 }
 
 + (int)timeScale
 {
-  v2 = [a1 sharedInstance];
-  v3 = [v2 timeScale];
+  sharedInstance = [self sharedInstance];
+  timeScale = [sharedInstance timeScale];
 
-  return v3;
+  return timeScale;
 }
 
 + (CGSize)frameSize
 {
-  v2 = [a1 sharedInstance];
-  [v2 frameSize];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance frameSize];
   v4 = v3;
   v6 = v5;
 
@@ -146,8 +146,8 @@ uint64_t __34__JFXMediaSettings_sharedInstance__block_invoke()
 
 + (CGSize)renderSize
 {
-  v2 = [a1 sharedInstance];
-  [v2 renderSize];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance renderSize];
   v4 = v3;
   v6 = v5;
 
@@ -160,8 +160,8 @@ uint64_t __34__JFXMediaSettings_sharedInstance__block_invoke()
 
 + (CGSize)compositionSize
 {
-  v2 = [a1 sharedInstance];
-  [v2 compositionSize];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance compositionSize];
   v4 = v3;
   v6 = v5;
 

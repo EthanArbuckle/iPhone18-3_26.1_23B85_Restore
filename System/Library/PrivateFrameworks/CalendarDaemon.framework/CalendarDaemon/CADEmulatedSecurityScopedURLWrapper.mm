@@ -1,13 +1,13 @@
 @interface CADEmulatedSecurityScopedURLWrapper
-- (CADEmulatedSecurityScopedURLWrapper)initWithOriginalURL:(id)a3;
+- (CADEmulatedSecurityScopedURLWrapper)initWithOriginalURL:(id)l;
 @end
 
 @implementation CADEmulatedSecurityScopedURLWrapper
 
-- (CADEmulatedSecurityScopedURLWrapper)initWithOriginalURL:(id)a3
+- (CADEmulatedSecurityScopedURLWrapper)initWithOriginalURL:(id)l
 {
-  v4 = a3;
-  v5 = [[CADEmulatedURL alloc] initWithOriginalURL:v4];
+  lCopy = l;
+  v5 = [[CADEmulatedURL alloc] initWithOriginalURL:lCopy];
 
   v8.receiver = self;
   v8.super_class = CADEmulatedSecurityScopedURLWrapper;

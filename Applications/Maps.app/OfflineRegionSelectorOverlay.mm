@@ -3,12 +3,12 @@
 - (GEOMapRegion)currentMapRegion;
 - (MapViewProviding)mapViewProvider;
 - (OfflineRegionSelectorActionCoordination)regionSelectorDelegate;
-- (OfflineRegionSelectorOverlay)initWithRegion:(id)a3;
+- (OfflineRegionSelectorOverlay)initWithRegion:(id)region;
 - (void)_setInitialMapRegion;
-- (void)setHost:(id)a3;
-- (void)setMapRegion:(id)a3;
-- (void)setMapViewProvider:(id)a3;
-- (void)setRegionSelectorDelegate:(id)a3;
+- (void)setHost:(id)host;
+- (void)setMapRegion:(id)region;
+- (void)setMapViewProvider:(id)provider;
+- (void)setRegionSelectorDelegate:(id)delegate;
 @end
 
 @implementation OfflineRegionSelectorOverlay
@@ -34,9 +34,9 @@
   return WeakRetained;
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  obj = a3;
+  obj = host;
   WeakRetained = objc_loadWeakRetained(&self->_host);
 
   v5 = obj;
@@ -58,28 +58,28 @@
         v8 = self->_overlayView;
         self->_overlayView = v7;
 
-        v9 = [(OfflineRegionSelectorOverlay *)self regionSelectorDelegate];
-        [(OfflineRegionSelectorOverlayView *)self->_overlayView setRegionSelectorDelegate:v9];
+        regionSelectorDelegate = [(OfflineRegionSelectorOverlay *)self regionSelectorDelegate];
+        [(OfflineRegionSelectorOverlayView *)self->_overlayView setRegionSelectorDelegate:regionSelectorDelegate];
 
         [(OfflineRegionSelectorOverlayView *)self->_overlayView setTranslatesAutoresizingMaskIntoConstraints:0];
         [(OfflineRegionSelectorOverlayView *)self->_overlayView setAccessibilityIdentifier:@"OfflineRegionSelector"];
       }
 
-      v10 = [obj viewportLayoutGuide];
-      [(OfflineRegionSelectorOverlayView *)self->_overlayView setViewportLayoutGuide:v10];
+      viewportLayoutGuide = [obj viewportLayoutGuide];
+      [(OfflineRegionSelectorOverlayView *)self->_overlayView setViewportLayoutGuide:viewportLayoutGuide];
 
-      v11 = [obj overlayContentView];
-      [v11 addSubview:self->_overlayView];
+      overlayContentView = [obj overlayContentView];
+      [overlayContentView addSubview:self->_overlayView];
 
       v12 = self->_overlayView;
-      v13 = [obj overlayContentView];
+      overlayContentView2 = [obj overlayContentView];
       LODWORD(v14) = 1148846080;
-      v15 = [(OfflineRegionSelectorOverlayView *)v12 _maps_constraintsEqualToEdgesOfView:v13 insets:UIEdgeInsetsZero.top priority:UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v14];
-      v16 = [v15 allConstraints];
-      [NSLayoutConstraint activateConstraints:v16];
+      v15 = [(OfflineRegionSelectorOverlayView *)v12 _maps_constraintsEqualToEdgesOfView:overlayContentView2 insets:UIEdgeInsetsZero.top priority:UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v14];
+      allConstraints = [v15 allConstraints];
+      [NSLayoutConstraint activateConstraints:allConstraints];
 
-      v17 = [obj overlayContentView];
-      [v17 layoutIfNeeded];
+      overlayContentView3 = [obj overlayContentView];
+      [overlayContentView3 layoutIfNeeded];
 
       [(OfflineRegionSelectorOverlay *)self _setInitialMapRegion];
       v5 = obj;
@@ -89,10 +89,10 @@
 
 - (GEOMapRegion)currentMapRegion
 {
-  v3 = [(OfflineRegionSelectorOverlay *)self mapViewProvider];
-  v4 = [v3 mapView];
+  mapViewProvider = [(OfflineRegionSelectorOverlay *)self mapViewProvider];
+  mapView = [mapViewProvider mapView];
   [(OfflineRegionSelectorOverlayView *)self->_overlayView selectedRectFrame];
-  [v4 convertRect:self->_overlayView toMapRectFromView:?];
+  [mapView convertRect:self->_overlayView toMapRectFromView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -103,13 +103,13 @@
   return v13;
 }
 
-- (void)setMapRegion:(id)a3
+- (void)setMapRegion:(id)region
 {
-  v14 = a3;
-  v4 = [(OfflineRegionSelectorOverlay *)self mapViewProvider];
-  v5 = [v4 mapView];
+  regionCopy = region;
+  mapViewProvider = [(OfflineRegionSelectorOverlay *)self mapViewProvider];
+  mapView = [mapViewProvider mapView];
   GEOMapRectForMapRegion();
-  [v5 convertMapRect:self->_overlayView toRectToView:?];
+  [mapView convertMapRect:self->_overlayView toRectToView:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -122,26 +122,26 @@
 {
   GEOMapRectForMapRegion();
   v4 = v3;
-  v5 = [(OfflineRegionSelectorOverlayView *)self->_overlayView viewportLayoutGuide];
-  [v5 layoutFrame];
+  viewportLayoutGuide = [(OfflineRegionSelectorOverlayView *)self->_overlayView viewportLayoutGuide];
+  [viewportLayoutGuide layoutFrame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(OfflineRegionSelectorOverlay *)self mapViewProvider];
-  v15 = [v14 mapView];
-  [v15 centerCoordinate];
+  mapViewProvider = [(OfflineRegionSelectorOverlay *)self mapViewProvider];
+  mapView = [mapViewProvider mapView];
+  [mapView centerCoordinate];
   MKMapPointForCoordinate(v33);
   MKMapRectMakeWithZoomLevel();
   v17 = v16;
 
   if (v4 >= v17)
   {
-    v22 = [(OfflineRegionSelectorOverlay *)self mapViewProvider];
-    v23 = [v22 mapView];
+    mapViewProvider2 = [(OfflineRegionSelectorOverlay *)self mapViewProvider];
+    mapView2 = [mapViewProvider2 mapView];
     GEOMapRectForMapRegion();
-    [v23 convertMapRect:self->_overlayView toRectToView:?];
+    [mapView2 convertMapRect:self->_overlayView toRectToView:?];
     v7 = v24;
     v9 = v25;
     v11 = v26;
@@ -180,11 +180,11 @@ LABEL_6:
   [(OfflineRegionSelectorOverlayView *)self->_overlayView setInitialSelectedRect:1 animated:v7, v9, v11, v13];
 }
 
-- (void)setMapViewProvider:(id)a3
+- (void)setMapViewProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_loadWeakRetained(&self->_mapViewProvider);
-  v6 = v4;
+  v6 = providerCopy;
   if (v6 | v5)
   {
     obj = v6;
@@ -199,11 +199,11 @@ LABEL_6:
   }
 }
 
-- (void)setRegionSelectorDelegate:(id)a3
+- (void)setRegionSelectorDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = objc_loadWeakRetained(&self->_regionSelectorDelegate);
-  v6 = v4;
+  v6 = delegateCopy;
   if (v6 | v5)
   {
     obj = v6;
@@ -220,16 +220,16 @@ LABEL_6:
   }
 }
 
-- (OfflineRegionSelectorOverlay)initWithRegion:(id)a3
+- (OfflineRegionSelectorOverlay)initWithRegion:(id)region
 {
-  v5 = a3;
+  regionCopy = region;
   v9.receiver = self;
   v9.super_class = OfflineRegionSelectorOverlay;
   v6 = [(OfflineRegionSelectorOverlay *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapRegion, a3);
+    objc_storeStrong(&v6->_mapRegion, region);
   }
 
   return v7;

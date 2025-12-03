@@ -109,11 +109,11 @@ LABEL_25:
 
 - (BOOL)tvun_isExpired
 {
-  v2 = [(MPMediaItem *)self tvun_expirationDate];
-  if (v2)
+  tvun_expirationDate = [(MPMediaItem *)self tvun_expirationDate];
+  if (tvun_expirationDate)
   {
     v3 = +[NSDate date];
-    v4 = [v2 compare:v3] != 1;
+    v4 = [tvun_expirationDate compare:v3] != 1;
   }
 
   else
@@ -126,14 +126,14 @@ LABEL_25:
 
 - (id)tvun_expirationString
 {
-  v2 = [(MPMediaItem *)self tvun_expirationDate];
+  tvun_expirationDate = [(MPMediaItem *)self tvun_expirationDate];
   v3 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   v4 = +[NSDate date];
-  v5 = [v3 components:112 fromDate:v4 toDate:v2 options:0];
+  v5 = [v3 components:112 fromDate:v4 toDate:tvun_expirationDate options:0];
 
   v6 = [v5 day];
-  v7 = [v5 hour];
-  v8 = [v5 minute];
+  hour = [v5 hour];
+  minute = [v5 minute];
   if (v6 > 1)
   {
     v9 = @"COUNT_DAYS";
@@ -145,23 +145,23 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v6 == 1 || v7 >= 1)
+  if (v6 == 1 || hour >= 1)
   {
-    v6 = v7 + 24 * v6;
+    v6 = hour + 24 * v6;
     v9 = @"COUNT_HOURS";
     goto LABEL_13;
   }
 
-  if ((v8 & 0x8000000000000000) == 0)
+  if ((minute & 0x8000000000000000) == 0)
   {
-    if (v8 <= 1)
+    if (minute <= 1)
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = v8;
+      v6 = minute;
     }
 
     v9 = @"COUNT_MINUTES";

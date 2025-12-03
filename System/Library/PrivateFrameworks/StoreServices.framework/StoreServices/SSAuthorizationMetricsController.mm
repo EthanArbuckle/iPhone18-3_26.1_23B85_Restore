@@ -1,47 +1,47 @@
 @interface SSAuthorizationMetricsController
-+ (id)_clientIDForAccount:(id)a3 orUserID:(id)a4;
++ (id)_clientIDForAccount:(id)account orUserID:(id)d;
 + (id)_clientIdForMetrics;
-+ (id)_dialogEventForBiometricAuthorizationWithDialogId:(id)a3 buyParams:(id)a4 matchState:(int64_t)a5 topicName:(id)a6 userAgent:(id)a7;
-+ (id)_dialogEventForBiometricOptInWithResult:(BOOL)a3 message:(id)a4 topicName:(id)a5 userAgent:(id)a6 error:(id)a7;
-+ (id)_dialogEventForPasswordAuthorizationWithDialogId:(id)a3 buyParams:(id)a4 topicName:(id)a5 userAgent:(id)a6;
-+ (id)_dialogEventForPaymentSheetPresentationErrorWithBuyParams:(id)a3 error:(id)a4;
-+ (id)_mtTopicForBuyParams:(id)a3;
-+ (id)authorizationDialogEventForParameters:(id)a3;
-+ (id)dialogIdForMetricsDictionary:(id)a3;
-+ (id)userActionDictionaryForBiometricMatchState:(unint64_t)a3 didBiometricsLockout:(BOOL)a4;
-+ (id)userActionDictionaryForUserAction:(int64_t)a3 didBiometricsLockout:(BOOL)a4;
++ (id)_dialogEventForBiometricAuthorizationWithDialogId:(id)id buyParams:(id)params matchState:(int64_t)state topicName:(id)name userAgent:(id)agent;
++ (id)_dialogEventForBiometricOptInWithResult:(BOOL)result message:(id)message topicName:(id)name userAgent:(id)agent error:(id)error;
++ (id)_dialogEventForPasswordAuthorizationWithDialogId:(id)id buyParams:(id)params topicName:(id)name userAgent:(id)agent;
++ (id)_dialogEventForPaymentSheetPresentationErrorWithBuyParams:(id)params error:(id)error;
++ (id)_mtTopicForBuyParams:(id)params;
++ (id)authorizationDialogEventForParameters:(id)parameters;
++ (id)dialogIdForMetricsDictionary:(id)dictionary;
++ (id)userActionDictionaryForBiometricMatchState:(unint64_t)state didBiometricsLockout:(BOOL)lockout;
++ (id)userActionDictionaryForUserAction:(int64_t)action didBiometricsLockout:(BOOL)lockout;
 @end
 
 @implementation SSAuthorizationMetricsController
 
-+ (id)authorizationDialogEventForParameters:(id)a3
++ (id)authorizationDialogEventForParameters:(id)parameters
 {
-  v3 = a3;
-  v22 = [v3 objectForKeyedSubscript:@"buyParams"];
-  v4 = [v3 objectForKeyedSubscript:@"dialogID"];
-  v5 = [v3 objectForKeyedSubscript:@"dualAction"];
-  v6 = [v3 objectForKeyedSubscript:@"error"];
-  v7 = [v3 objectForKeyedSubscript:@"eventType"];
-  v8 = [v7 integerValue];
+  parametersCopy = parameters;
+  v22 = [parametersCopy objectForKeyedSubscript:@"buyParams"];
+  v4 = [parametersCopy objectForKeyedSubscript:@"dialogID"];
+  v5 = [parametersCopy objectForKeyedSubscript:@"dualAction"];
+  v6 = [parametersCopy objectForKeyedSubscript:@"error"];
+  v7 = [parametersCopy objectForKeyedSubscript:@"eventType"];
+  integerValue = [v7 integerValue];
 
-  v9 = [v3 objectForKeyedSubscript:@"biometricMatchState"];
-  v10 = [v9 integerValue];
+  v9 = [parametersCopy objectForKeyedSubscript:@"biometricMatchState"];
+  integerValue2 = [v9 integerValue];
 
-  v11 = [v3 objectForKeyedSubscript:@"message"];
-  v12 = [v3 objectForKeyedSubscript:@"result"];
-  v13 = [v12 BOOLValue];
+  v11 = [parametersCopy objectForKeyedSubscript:@"message"];
+  v12 = [parametersCopy objectForKeyedSubscript:@"result"];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = [v3 objectForKeyedSubscript:@"topicName"];
-  v15 = [v3 objectForKeyedSubscript:@"userAgent"];
+  v14 = [parametersCopy objectForKeyedSubscript:@"topicName"];
+  v15 = [parametersCopy objectForKeyedSubscript:@"userAgent"];
 
   v16 = 0;
-  if (v8 <= 2)
+  if (integerValue <= 2)
   {
-    if (v8 != 1)
+    if (integerValue != 1)
     {
-      v19 = v10;
+      v19 = integerValue2;
       v17 = v22;
-      if (v8 != 2)
+      if (integerValue != 2)
       {
         goto LABEL_11;
       }
@@ -64,12 +64,12 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v8 != 3)
+  if (integerValue != 3)
   {
-    if (v8 != 4)
+    if (integerValue != 4)
     {
       v17 = v22;
-      if (v8 != 5)
+      if (integerValue != 5)
       {
         goto LABEL_11;
       }
@@ -81,12 +81,12 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v16 = [objc_opt_class() _dialogEventForBiometricOptInWithResult:v13 message:v11 topicName:v14 userAgent:v15 error:v6];
+  v16 = [objc_opt_class() _dialogEventForBiometricOptInWithResult:bOOLValue message:v11 topicName:v14 userAgent:v15 error:v6];
   v17 = v22;
   if (v5)
   {
 LABEL_12:
-    [v16 setDualAction:{v5, a1}];
+    [v16 setDualAction:{v5, self}];
   }
 
 LABEL_13:
@@ -94,11 +94,11 @@ LABEL_13:
   return v16;
 }
 
-+ (id)dialogIdForMetricsDictionary:(id)a3
++ (id)dialogIdForMetricsDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v3 = [a3 objectForKey:@"dialogId"];
+    v3 = [dictionary objectForKey:@"dialogId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,16 +119,16 @@ LABEL_13:
   return v4;
 }
 
-+ (id)userActionDictionaryForBiometricMatchState:(unint64_t)a3 didBiometricsLockout:(BOOL)a4
++ (id)userActionDictionaryForBiometricMatchState:(unint64_t)state didBiometricsLockout:(BOOL)lockout
 {
-  v4 = a4;
+  lockoutCopy = lockout;
   v62 = *MEMORY[0x1E69E9840];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = v6;
   v8 = 0x1E696A000uLL;
-  if (a3 > 7)
+  if (state > 7)
   {
-    switch(a3)
+    switch(state)
     {
       case 8uLL:
         v10 = SSMetricsDialogEventActionTypeCancel;
@@ -150,11 +150,11 @@ LABEL_13:
     goto LABEL_28;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
-      if (a3 == 4)
+      if (state == 4)
       {
         [v6 setObject:@"enterPassword" forKeyedSubscript:@"actionType"];
         v9 = SSMetricsDialogEventTargetIdEnterPassword;
@@ -171,19 +171,19 @@ LABEL_13:
         v13 = +[SSLogConfig sharedConfig];
       }
 
-      v14 = [v13 shouldLog];
+      shouldLog = [v13 shouldLog];
       if ([v13 shouldLogToDisk])
       {
-        v15 = v14 | 2;
+        v15 = shouldLog | 2;
       }
 
       else
       {
-        v15 = v14;
+        v15 = shouldLog;
       }
 
-      v16 = [v13 OSLogObject];
-      if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v13 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v15 &= 2u;
       }
@@ -193,7 +193,7 @@ LABEL_13:
         v17 = objc_opt_class();
         v18 = MEMORY[0x1E696AD98];
         v19 = v17;
-        v20 = [v18 numberWithUnsignedInteger:a3];
+        v20 = [v18 numberWithUnsignedInteger:state];
         v58 = 138543618;
         v59 = v17;
         v60 = 2114;
@@ -210,9 +210,9 @@ LABEL_24:
           goto LABEL_30;
         }
 
-        v16 = [MEMORY[0x1E696AEC0] stringWithCString:v21 encoding:{4, &v58, v57}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v21 encoding:{4, &v58, v57}];
         free(v21);
-        SSFileLog(v13, @"%@", v22, v23, v24, v25, v26, v27, v16);
+        SSFileLog(v13, @"%@", v22, v23, v24, v25, v26, v27, oSLogObject);
       }
 
       goto LABEL_24;
@@ -233,16 +233,16 @@ LABEL_29:
   [v7 setObject:v11 forKeyedSubscript:v12];
 LABEL_30:
   v29 = +[SSDevice currentDevice];
-  v30 = [v29 deviceBiometricStyle];
+  deviceBiometricStyle = [v29 deviceBiometricStyle];
 
-  if (v30)
+  if (deviceBiometricStyle)
   {
-    if (v30 == 3)
+    if (deviceBiometricStyle == 3)
     {
       v31 = @"faceId";
 LABEL_35:
       [v7 setObject:v31 forKey:@"biometricType"];
-      if (!v4)
+      if (!lockoutCopy)
       {
         goto LABEL_37;
       }
@@ -250,7 +250,7 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    if (v30 == 2)
+    if (deviceBiometricStyle == 2)
     {
       v31 = @"touchId";
       goto LABEL_35;
@@ -262,19 +262,19 @@ LABEL_35:
       v40 = +[SSLogConfig sharedConfig];
     }
 
-    v44 = [v40 shouldLog];
+    shouldLog2 = [v40 shouldLog];
     if ([v40 shouldLogToDisk])
     {
-      v45 = v44 | 2;
+      v45 = shouldLog2 | 2;
     }
 
     else
     {
-      v45 = v44;
+      v45 = shouldLog2;
     }
 
-    v43 = [v40 OSLogObject];
-    if (!os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v40 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v45 &= 2u;
     }
@@ -293,19 +293,19 @@ LABEL_35:
       v40 = +[SSLogConfig sharedConfig];
     }
 
-    v41 = [v40 shouldLog];
+    shouldLog3 = [v40 shouldLog];
     if ([v40 shouldLogToDisk])
     {
-      v42 = v41 | 2;
+      v42 = shouldLog3 | 2;
     }
 
     else
     {
-      v42 = v41;
+      v42 = shouldLog3;
     }
 
-    v43 = [v40 OSLogObject];
-    if (!os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v40 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v42 &= 2u;
     }
@@ -329,21 +329,21 @@ LABEL_35:
     goto LABEL_60;
   }
 
-  v43 = [MEMORY[0x1E696AEC0] stringWithCString:v48 encoding:{4, &v58, v57}];
+  oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v48 encoding:{4, &v58, v57}];
   free(v48);
-  SSFileLog(v40, @"%@", v49, v50, v51, v52, v53, v54, v43);
+  SSFileLog(v40, @"%@", v49, v50, v51, v52, v53, v54, oSLogObject2);
 LABEL_59:
 
 LABEL_60:
-  if (v4)
+  if (lockoutCopy)
   {
 LABEL_36:
     [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:{@"bioLockout", v56}];
   }
 
 LABEL_37:
-  v32 = [MEMORY[0x1E695DF00] date];
-  [v32 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v34 = v33;
 
   v35 = MEMORY[0x1E696AEC0];
@@ -356,17 +356,17 @@ LABEL_37:
   return v38;
 }
 
-+ (id)userActionDictionaryForUserAction:(int64_t)a3 didBiometricsLockout:(BOOL)a4
++ (id)userActionDictionaryForUserAction:(int64_t)action didBiometricsLockout:(BOOL)lockout
 {
-  v4 = a4;
+  lockoutCopy = lockout;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = v6;
   v8 = SSMetricsDialogEventResultSuccess;
-  if (a3 > 4)
+  if (action > 4)
   {
-    if (a3 <= 6)
+    if (action <= 6)
     {
-      if (a3 == 5)
+      if (action == 5)
       {
         [v6 setObject:@"invalidCredentials" forKeyedSubscript:@"reason"];
         v9 = SSMetricsDialogEventActionTypeAuthenticate;
@@ -383,7 +383,7 @@ LABEL_37:
 
     else
     {
-      switch(a3)
+      switch(action)
       {
         case 7:
           v9 = SSMetricsDialogEventActionTypeAuthenticate;
@@ -408,9 +408,9 @@ LABEL_37:
     goto LABEL_21;
   }
 
-  if (a3 > 2)
+  if (action > 2)
   {
-    if (a3 == 3)
+    if (action == 3)
     {
       v9 = SSMetricsDialogEventTargetIdIForgot;
       v10 = @"actionType";
@@ -423,7 +423,7 @@ LABEL_37:
 
   else
   {
-    if (a3 == 1)
+    if (action == 1)
     {
       [v6 setObject:@"success" forKeyedSubscript:@"result"];
       v9 = SSMetricsDialogEventTargetIdOK;
@@ -432,7 +432,7 @@ LABEL_37:
       goto LABEL_21;
     }
 
-    if (a3 != 2)
+    if (action != 2)
     {
       goto LABEL_22;
     }
@@ -446,13 +446,13 @@ LABEL_21:
   [v7 setObject:*v8 forKeyedSubscript:v10];
   [v7 setObject:*v9 forKeyedSubscript:@"targetId"];
 LABEL_22:
-  if (v4)
+  if (lockoutCopy)
   {
     [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"bioLockout"];
   }
 
-  v11 = [MEMORY[0x1E695DF00] date];
-  [v11 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v13 = v12;
 
   v14 = MEMORY[0x1E696AEC0];
@@ -465,41 +465,41 @@ LABEL_22:
   return v17;
 }
 
-+ (id)_dialogEventForBiometricAuthorizationWithDialogId:(id)a3 buyParams:(id)a4 matchState:(int64_t)a5 topicName:(id)a6 userAgent:(id)a7
++ (id)_dialogEventForBiometricAuthorizationWithDialogId:(id)id buyParams:(id)params matchState:(int64_t)state topicName:(id)name userAgent:(id)agent
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = a3;
+  paramsCopy = params;
+  nameCopy = name;
+  agentCopy = agent;
+  idCopy = id;
   v16 = objc_alloc_init(SSMetricsDialogEvent);
-  [(SSMetricsDialogEvent *)v16 setDialogId:v15];
+  [(SSMetricsDialogEvent *)v16 setDialogId:idCopy];
 
   [(SSMetricsDialogEvent *)v16 setDialogType:@"SignIn"];
-  v17 = [objc_opt_class() _clientIdForMetrics];
-  if (v17)
+  _clientIdForMetrics = [objc_opt_class() _clientIdForMetrics];
+  if (_clientIdForMetrics)
   {
-    [(SSMetricsMutableEvent *)v16 setProperty:v17 forBodyKey:@"clientId"];
+    [(SSMetricsMutableEvent *)v16 setProperty:_clientIdForMetrics forBodyKey:@"clientId"];
   }
 
-  if (v12)
+  if (paramsCopy)
   {
     v44 = @"buyParams";
-    v45[0] = v12;
+    v45[0] = paramsCopy;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
     [(SSMetricsDialogEvent *)v16 setDetails:v18];
   }
 
-  if (v14)
+  if (agentCopy)
   {
-    [(SSMetricsMutableEvent *)v16 setUserAgent:v14];
+    [(SSMetricsMutableEvent *)v16 setUserAgent:agentCopy];
   }
 
-  v19 = v13;
+  v19 = nameCopy;
   v20 = v19;
   if (!v19)
   {
-    v21 = [a1 _mtTopicForBuyParams:v12];
+    v21 = [self _mtTopicForBuyParams:paramsCopy];
     if (v21)
     {
       v20 = v21;
@@ -512,15 +512,15 @@ LABEL_22:
   }
 
   [(SSMetricsMutableEvent *)v16 setTopic:v20];
-  if (a5 <= 3)
+  if (state <= 3)
   {
-    if (a5 == 1)
+    if (state == 1)
     {
       [(SSMetricsDialogEvent *)v16 setResult:@"failure"];
       goto LABEL_23;
     }
 
-    if (a5 == 2)
+    if (state == 2)
     {
       [(SSMetricsDialogEvent *)v16 setActionType:@"biometricsAnalyze"];
       v22 = SSMetricsDialogEventResultSuccess;
@@ -530,7 +530,7 @@ LABEL_22:
 
   else
   {
-    switch(a5)
+    switch(state)
     {
       case 4:
         [(SSMetricsDialogEvent *)v16 setActionType:@"enterPassword"];
@@ -560,29 +560,29 @@ LABEL_22:
     v25 = +[SSLogConfig sharedConfig];
   }
 
-  v26 = [v25 shouldLog];
+  shouldLog = [v25 shouldLog];
   if ([v25 shouldLogToDisk])
   {
-    v26 |= 2u;
+    shouldLog |= 2u;
   }
 
-  v39 = [v25 OSLogObject];
-  if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v25 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
-    v26 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (!v26)
+  if (!shouldLog)
   {
-    v30 = v39;
+    v30 = oSLogObject;
     goto LABEL_37;
   }
 
-  HIDWORD(v37) = v26;
+  HIDWORD(v37) = shouldLog;
   v27 = objc_opt_class();
   v28 = MEMORY[0x1E696AD98];
   v38 = v27;
-  [v28 numberWithInteger:a5];
+  [v28 numberWithInteger:state];
   v40 = 138543618;
   v41 = v27;
   v43 = v42 = 2114;
@@ -602,25 +602,25 @@ LABEL_23:
   return v16;
 }
 
-+ (id)_dialogEventForBiometricOptInWithResult:(BOOL)a3 message:(id)a4 topicName:(id)a5 userAgent:(id)a6 error:(id)a7
++ (id)_dialogEventForBiometricOptInWithResult:(BOOL)result message:(id)message topicName:(id)name userAgent:(id)agent error:(id)error
 {
-  v10 = a3;
+  resultCopy = result;
   v31[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  messageCopy = message;
+  agentCopy = agent;
+  nameCopy = name;
   v14 = objc_alloc_init(SSMetricsDialogEvent);
-  v15 = [objc_opt_class() _clientIdForMetrics];
-  if (v15)
+  _clientIdForMetrics = [objc_opt_class() _clientIdForMetrics];
+  if (_clientIdForMetrics)
   {
-    [(SSMetricsMutableEvent *)v14 setProperty:v15 forBodyKey:@"clientId"];
+    [(SSMetricsMutableEvent *)v14 setProperty:_clientIdForMetrics forBodyKey:@"clientId"];
   }
 
   [(SSMetricsDialogEvent *)v14 setDialogId:@"EnableTouchIdPurchases"];
   [(SSMetricsDialogEvent *)v14 setDialogType:@"OkCancel"];
-  if (v13)
+  if (nameCopy)
   {
-    v16 = v13;
+    v16 = nameCopy;
   }
 
   else
@@ -630,18 +630,18 @@ LABEL_23:
 
   [(SSMetricsMutableEvent *)v14 setTopic:v16];
 
-  if (v11)
+  if (messageCopy)
   {
-    [(SSMetricsDialogEvent *)v14 setMessage:v11];
+    [(SSMetricsDialogEvent *)v14 setMessage:messageCopy];
   }
 
-  if (v12)
+  if (agentCopy)
   {
-    [(SSMetricsMutableEvent *)v14 setUserAgent:v12];
+    [(SSMetricsMutableEvent *)v14 setUserAgent:agentCopy];
   }
 
   v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (a7)
+  if (error)
   {
     v18 = SSMetricsDialogEventResultFailure;
   }
@@ -649,7 +649,7 @@ LABEL_23:
   else
   {
     v19 = SSMetricsDialogEventActionTypeOK;
-    if (v10)
+    if (resultCopy)
     {
       v20 = SSMetricsDialogEventTargetIdOK;
     }
@@ -670,8 +670,8 @@ LABEL_23:
   v22 = *v18;
   [(SSMetricsDialogEvent *)v14 setResult:*v18];
   [v17 setObject:v22 forKey:@"result"];
-  v23 = [MEMORY[0x1E695DF00] date];
-  [v23 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v25 = v24;
 
   v26 = MEMORY[0x1E696AEC0];
@@ -686,41 +686,41 @@ LABEL_23:
   return v14;
 }
 
-+ (id)_dialogEventForPasswordAuthorizationWithDialogId:(id)a3 buyParams:(id)a4 topicName:(id)a5 userAgent:(id)a6
++ (id)_dialogEventForPasswordAuthorizationWithDialogId:(id)id buyParams:(id)params topicName:(id)name userAgent:(id)agent
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  paramsCopy = params;
+  nameCopy = name;
+  agentCopy = agent;
+  idCopy = id;
   v14 = objc_alloc_init(SSMetricsDialogEvent);
-  [(SSMetricsDialogEvent *)v14 setDialogId:v13];
+  [(SSMetricsDialogEvent *)v14 setDialogId:idCopy];
 
   [(SSMetricsDialogEvent *)v14 setDialogType:@"SignIn"];
-  v15 = [objc_opt_class() _clientIdForMetrics];
-  if (v15)
+  _clientIdForMetrics = [objc_opt_class() _clientIdForMetrics];
+  if (_clientIdForMetrics)
   {
-    [(SSMetricsMutableEvent *)v14 setProperty:v15 forBodyKey:@"clientId"];
+    [(SSMetricsMutableEvent *)v14 setProperty:_clientIdForMetrics forBodyKey:@"clientId"];
   }
 
-  if (v10)
+  if (paramsCopy)
   {
     v21 = @"buyParams";
-    v22[0] = v10;
+    v22[0] = paramsCopy;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     [(SSMetricsDialogEvent *)v14 setDetails:v16];
   }
 
-  if (v12)
+  if (agentCopy)
   {
-    [(SSMetricsMutableEvent *)v14 setUserAgent:v12];
+    [(SSMetricsMutableEvent *)v14 setUserAgent:agentCopy];
   }
 
-  v17 = v11;
+  v17 = nameCopy;
   v18 = v17;
   if (!v17)
   {
-    v19 = [a1 _mtTopicForBuyParams:v10];
+    v19 = [self _mtTopicForBuyParams:paramsCopy];
     if (v19)
     {
       v18 = v19;
@@ -737,22 +737,22 @@ LABEL_23:
   return v14;
 }
 
-+ (id)_dialogEventForPaymentSheetPresentationErrorWithBuyParams:(id)a3 error:(id)a4
++ (id)_dialogEventForPaymentSheetPresentationErrorWithBuyParams:(id)params error:(id)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  paramsCopy = params;
   v8 = objc_alloc_init(SSMetricsDialogEvent);
-  v9 = [objc_opt_class() _clientIdForMetrics];
-  if (v9)
+  _clientIdForMetrics = [objc_opt_class() _clientIdForMetrics];
+  if (_clientIdForMetrics)
   {
-    [(SSMetricsMutableEvent *)v8 setProperty:v9 forBodyKey:@"clientId"];
+    [(SSMetricsMutableEvent *)v8 setProperty:_clientIdForMetrics forBodyKey:@"clientId"];
   }
 
   [(SSMetricsDialogEvent *)v8 setDialogId:@"PaymentSheet"];
   [(SSMetricsDialogEvent *)v8 setDialogType:@"SignIn"];
   [(SSMetricsDialogEvent *)v8 setResult:@"failure"];
-  v10 = [a1 _mtTopicForBuyParams:v7];
+  v10 = [self _mtTopicForBuyParams:paramsCopy];
 
   if (v10)
   {
@@ -762,16 +762,16 @@ LABEL_23:
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v11 setObject:@"authenticate" forKey:@"actionType"];
   [v11 setObject:@"failure" forKey:@"result"];
-  v12 = [v6 code];
+  code = [errorCopy code];
 
-  if (v12 == 151)
+  if (code == 151)
   {
     v13 = SSMetricsDialogEventReasonPaymentSheetPresentationFailure;
   }
 
   else
   {
-    if (v12 != 152)
+    if (code != 152)
     {
       goto LABEL_10;
     }
@@ -781,8 +781,8 @@ LABEL_23:
 
   [v11 setObject:*v13 forKey:@"reason"];
 LABEL_10:
-  v14 = [MEMORY[0x1E695DF00] date];
-  [v14 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v16 = v15;
 
   v17 = MEMORY[0x1E696AEC0];
@@ -800,14 +800,14 @@ LABEL_10:
 + (id)_clientIdForMetrics
 {
   v3 = +[SSAccountStore defaultStore];
-  v4 = [v3 activeAccount];
+  activeAccount = [v3 activeAccount];
 
-  if (!v4 || ([a1 _clientIDForAccount:v4 orUserID:0], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!activeAccount || ([self _clientIDForAccount:activeAccount orUserID:0], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [a1 _clientIDForAccount:0 orUserID:&unk_1F507A2A0];
+    v5 = [self _clientIDForAccount:0 orUserID:&unk_1F507A2A0];
     if (!v5)
     {
-      v5 = [a1 _clientIDForAccount:0 orUserID:&unk_1F507A2B8];
+      v5 = [self _clientIDForAccount:0 orUserID:&unk_1F507A2B8];
     }
   }
 
@@ -816,33 +816,33 @@ LABEL_10:
   return v6;
 }
 
-+ (id)_clientIDForAccount:(id)a3 orUserID:(id)a4
++ (id)_clientIDForAccount:(id)account orUserID:(id)d
 {
   v72 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  dCopy = d;
   v7 = +[SSLogConfig sharediTunesStoreConfig];
   v8 = v7;
-  if (!v6)
+  if (!dCopy)
   {
     if (!v7)
     {
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v23 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v24 = v23 | 2;
+      v24 = shouldLog | 2;
     }
 
     else
     {
-      v24 = v23;
+      v24 = shouldLog;
     }
 
-    v25 = [v8 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v26 = v24;
     }
@@ -863,13 +863,13 @@ LABEL_10:
       if (!v28)
       {
 LABEL_28:
-        v35 = 0;
+        value = 0;
         goto LABEL_53;
       }
 
-      v25 = [MEMORY[0x1E696AEC0] stringWithCString:v28 encoding:{4, &v65, v60}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v28 encoding:{4, &v65, v60}];
       free(v28);
-      SSFileLog(v8, @"%@", v29, v30, v31, v32, v33, v34, v25);
+      SSFileLog(v8, @"%@", v29, v30, v31, v32, v33, v34, oSLogObject);
     }
 
     goto LABEL_28;
@@ -880,19 +880,19 @@ LABEL_28:
     v8 = +[SSLogConfig sharedConfig];
   }
 
-  v9 = [v8 shouldLog];
+  shouldLog2 = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog2 | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog2;
   }
 
-  v11 = [v8 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v12 = v10;
   }
@@ -910,7 +910,7 @@ LABEL_28:
   v65 = 138543618;
   v66 = objc_opt_class();
   v67 = 2112;
-  v68 = v6;
+  v68 = dCopy;
   v13 = v66;
   LODWORD(v60) = 22;
   v59 = &v65;
@@ -918,22 +918,22 @@ LABEL_28:
 
   if (v14)
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v65, v60}];
+    oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v65, v60}];
     free(v14);
-    SSFileLog(v8, @"%@", v15, v16, v17, v18, v19, v20, v11);
+    SSFileLog(v8, @"%@", v15, v16, v17, v18, v19, v20, oSLogObject2);
 LABEL_13:
   }
 
   v21 = +[SSVCookieStorage sharedStorage];
   v22 = v21;
-  if (v5)
+  if (accountCopy)
   {
-    [v21 allCookiesForAccount:v5];
+    [v21 allCookiesForAccount:accountCopy];
   }
 
   else
   {
-    [v21 allCookiesForUserIdentifier:v6];
+    [v21 allCookiesForUserIdentifier:dCopy];
   }
   v36 = ;
 
@@ -957,8 +957,8 @@ LABEL_32:
       }
 
       v41 = *(*(&v61 + 1) + 8 * v40);
-      v42 = [v41 name];
-      v43 = [v42 isEqualToString:@"xp_ci"];
+      name = [v41 name];
+      v43 = [name isEqualToString:@"xp_ci"];
 
       if (v43)
       {
@@ -977,9 +977,9 @@ LABEL_32:
       }
     }
 
-    v35 = [v41 value];
+    value = [v41 value];
 
-    if (!v35)
+    if (!value)
     {
       goto LABEL_53;
     }
@@ -990,19 +990,19 @@ LABEL_32:
       v44 = +[SSLogConfig sharedConfig];
     }
 
-    v45 = [v44 shouldLog];
+    shouldLog3 = [v44 shouldLog];
     if ([v44 shouldLogToDisk])
     {
-      v46 = v45 | 2;
+      v46 = shouldLog3 | 2;
     }
 
     else
     {
-      v46 = v45;
+      v46 = shouldLog3;
     }
 
-    v47 = [v44 OSLogObject];
-    if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
+    oSLogObject3 = [v44 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
       v48 = v46;
     }
@@ -1018,9 +1018,9 @@ LABEL_32:
       v65 = 138543874;
       v66 = v49;
       v67 = 2114;
-      v68 = v35;
+      v68 = value;
       v69 = 2112;
-      v70 = v6;
+      v70 = dCopy;
       v50 = v49;
       LODWORD(v60) = 32;
       v51 = _os_log_send_and_compose_impl();
@@ -1030,16 +1030,16 @@ LABEL_32:
         goto LABEL_52;
       }
 
-      v47 = [MEMORY[0x1E696AEC0] stringWithCString:v51 encoding:{4, &v65, v60}];
+      oSLogObject3 = [MEMORY[0x1E696AEC0] stringWithCString:v51 encoding:{4, &v65, v60}];
       free(v51);
-      SSFileLog(v44, @"%@", v52, v53, v54, v55, v56, v57, v47);
+      SSFileLog(v44, @"%@", v52, v53, v54, v55, v56, v57, oSLogObject3);
     }
   }
 
   else
   {
 LABEL_38:
-    v35 = 0;
+    value = 0;
     v44 = v8;
   }
 
@@ -1047,19 +1047,19 @@ LABEL_52:
 
 LABEL_53:
 
-  return v35;
+  return value;
 }
 
-+ (id)_mtTopicForBuyParams:(id)a3
++ (id)_mtTopicForBuyParams:(id)params
 {
-  v3 = a3;
+  paramsCopy = params;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__86;
   v12 = __Block_byref_object_dispose__86;
   v13 = 0;
-  v4 = [v3 componentsSeparatedByString:@"&"];
+  v4 = [paramsCopy componentsSeparatedByString:@"&"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__SSAuthorizationMetricsController__mtTopicForBuyParams___block_invoke;

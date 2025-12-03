@@ -1,15 +1,15 @@
 @interface PULoadingIndicatorTileViewController
-+ (CGSize)loadingIndicatorTileSizeForStyle:(int64_t)a3;
-+ (id)_createIndicatorViewForStyle:(int64_t)a3;
++ (CGSize)loadingIndicatorTileSizeForStyle:(int64_t)style;
++ (id)_createIndicatorViewForStyle:(int64_t)style;
 - (void)becomeReusable;
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4;
+- (void)setStyle:(int64_t)style animated:(BOOL)animated;
 @end
 
 @implementation PULoadingIndicatorTileViewController
 
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setStyle:(int64_t)style animated:(BOOL)animated
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
     v36 = v11;
     v37 = v10;
@@ -19,17 +19,17 @@
     v41 = v6;
     v42 = v4;
     v43 = v5;
-    v12 = a4;
-    v13 = a3;
-    self->_style = a3;
-    v15 = [(PULoadingIndicatorTileViewController *)self indicatorView];
-    if (v13)
+    animatedCopy = animated;
+    styleCopy = style;
+    self->_style = style;
+    indicatorView = [(PULoadingIndicatorTileViewController *)self indicatorView];
+    if (styleCopy)
     {
-      v13 = [objc_opt_class() _createIndicatorViewForStyle:v13];
-      [v13 setAlpha:0.0];
-      [v13 setAutoresizingMask:45];
-      v16 = [(PUTileViewController *)self view];
-      [v16 bounds];
+      styleCopy = [objc_opt_class() _createIndicatorViewForStyle:styleCopy];
+      [styleCopy setAlpha:0.0];
+      [styleCopy setAutoresizingMask:45];
+      view = [(PUTileViewController *)self view];
+      [view bounds];
       x = v44.origin.x;
       y = v44.origin.y;
       width = v44.size.width;
@@ -39,18 +39,18 @@
       v45.origin.y = y;
       v45.size.width = width;
       v45.size.height = height;
-      [v13 setCenter:{MidX, CGRectGetMidY(v45)}];
-      [v16 addSubview:v13];
+      [styleCopy setCenter:{MidX, CGRectGetMidY(v45)}];
+      [view addSubview:styleCopy];
     }
 
-    [(PULoadingIndicatorTileViewController *)self setIndicatorView:v13];
+    [(PULoadingIndicatorTileViewController *)self setIndicatorView:styleCopy];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __58__PULoadingIndicatorTileViewController_setStyle_animated___block_invoke;
     aBlock[3] = &unk_1E7B80C38;
-    v22 = v15;
+    v22 = indicatorView;
     v34 = v22;
-    v23 = v13;
+    v23 = styleCopy;
     v35 = v23;
     v24 = _Block_copy(aBlock);
     v31[0] = MEMORY[0x1E69E9820];
@@ -61,7 +61,7 @@
     v25 = v22;
     v32 = v25;
     v26 = _Block_copy(v31);
-    if (v12)
+    if (animatedCopy)
     {
       v27 = dbl_1B3D0CEF0[v23 == 0];
       v28 = MEMORY[0x1E69DD250];
@@ -105,9 +105,9 @@ uint64_t __58__PULoadingIndicatorTileViewController_setStyle_animated___block_in
   [(PULoadingIndicatorTileViewController *)self setStyle:0 animated:0];
 }
 
-+ (id)_createIndicatorViewForStyle:(int64_t)a3
++ (id)_createIndicatorViewForStyle:(int64_t)style
 {
-  switch(a3)
+  switch(style)
   {
     case 3:
       v4 = 0;
@@ -143,22 +143,22 @@ LABEL_10:
   return v7;
 }
 
-+ (CGSize)loadingIndicatorTileSizeForStyle:(int64_t)a3
++ (CGSize)loadingIndicatorTileSizeForStyle:(int64_t)style
 {
   if (loadingIndicatorTileSizeForStyle__onceToken != -1)
   {
     dispatch_once(&loadingIndicatorTileSizeForStyle__onceToken, &__block_literal_global_40032);
   }
 
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:style];
   v6 = [loadingIndicatorTileSizeForStyle__cache objectForKey:v5];
   if (!v6)
   {
-    v7 = [a1 _createIndicatorViewForStyle:a3];
+    v7 = [self _createIndicatorViewForStyle:style];
     v8 = MEMORY[0x1E696B098];
     [v7 intrinsicContentSize];
     v6 = [v8 valueWithCGSize:?];
-    [a1 _destroyIndicatorView:v7];
+    [self _destroyIndicatorView:v7];
     [loadingIndicatorTileSizeForStyle__cache setObject:v6 forKey:v5];
   }
 

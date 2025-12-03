@@ -1,8 +1,8 @@
 @interface CSCameraSystemQuickAction
 - (BOOL)_allowsCamera;
 - (BOOL)allowsInteraction;
-- (CSCameraSystemQuickAction)initWithQuickActionControlIdentity:(id)a3 instance:(id)a4 delegate:(id)a5 prewarmer:(id)a6;
-- (CSCameraSystemQuickAction)initWithQuickActionControlIdentity:(id)a3 instance:(id)a4 delegate:(id)a5 prewarmer:(id)a6 prototypeSettings:(id)a7 defaults:(id)a8;
+- (CSCameraSystemQuickAction)initWithQuickActionControlIdentity:(id)identity instance:(id)instance delegate:(id)delegate prewarmer:(id)prewarmer;
+- (CSCameraSystemQuickAction)initWithQuickActionControlIdentity:(id)identity instance:(id)instance delegate:(id)delegate prewarmer:(id)prewarmer prototypeSettings:(id)settings defaults:(id)defaults;
 - (id)_prewarmingIdentifier;
 - (int64_t)_prewarmingType;
 - (void)_stopTrackingPrewarm;
@@ -13,35 +13,35 @@
 
 @implementation CSCameraSystemQuickAction
 
-- (CSCameraSystemQuickAction)initWithQuickActionControlIdentity:(id)a3 instance:(id)a4 delegate:(id)a5 prewarmer:(id)a6
+- (CSCameraSystemQuickAction)initWithQuickActionControlIdentity:(id)identity instance:(id)instance delegate:(id)delegate prewarmer:(id)prewarmer
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  prewarmerCopy = prewarmer;
+  delegateCopy = delegate;
+  instanceCopy = instance;
+  identityCopy = identity;
   v14 = +[CSLockScreenDomain rootSettings];
   v15 = objc_alloc_init(MEMORY[0x277D65FF0]);
-  v16 = [(CSCameraSystemQuickAction *)self initWithQuickActionControlIdentity:v13 instance:v12 delegate:v11 prewarmer:v10 prototypeSettings:v14 defaults:v15];
+  v16 = [(CSCameraSystemQuickAction *)self initWithQuickActionControlIdentity:identityCopy instance:instanceCopy delegate:delegateCopy prewarmer:prewarmerCopy prototypeSettings:v14 defaults:v15];
 
   return v16;
 }
 
-- (CSCameraSystemQuickAction)initWithQuickActionControlIdentity:(id)a3 instance:(id)a4 delegate:(id)a5 prewarmer:(id)a6 prototypeSettings:(id)a7 defaults:(id)a8
+- (CSCameraSystemQuickAction)initWithQuickActionControlIdentity:(id)identity instance:(id)instance delegate:(id)delegate prewarmer:(id)prewarmer prototypeSettings:(id)settings defaults:(id)defaults
 {
-  v15 = a5;
-  v21 = a6;
-  v16 = a7;
-  v17 = a8;
+  delegateCopy = delegate;
+  prewarmerCopy = prewarmer;
+  settingsCopy = settings;
+  defaultsCopy = defaults;
   v22.receiver = self;
   v22.super_class = CSCameraSystemQuickAction;
-  v18 = [(CSSystemQuickAction *)&v22 initWithQuickActionControlIdentity:a3 instance:a4 delegate:v15];
+  v18 = [(CSSystemQuickAction *)&v22 initWithQuickActionControlIdentity:identity instance:instance delegate:delegateCopy];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_prewarmer, a6);
-    objc_storeStrong(&v19->_prototypeSettings, a7);
-    objc_storeStrong(&v19->_lockScreenDefaults, a8);
-    objc_storeStrong(&v19->_cameraDelegate, a5);
+    objc_storeStrong(&v18->_prewarmer, prewarmer);
+    objc_storeStrong(&v19->_prototypeSettings, settings);
+    objc_storeStrong(&v19->_lockScreenDefaults, defaults);
+    objc_storeStrong(&v19->_cameraDelegate, delegate);
   }
 
   return v19;
@@ -51,13 +51,13 @@
 {
   v5.receiver = self;
   v5.super_class = CSCameraSystemQuickAction;
-  v3 = [(CSSystemQuickAction *)&v5 allowsInteraction];
-  if (v3)
+  allowsInteraction = [(CSSystemQuickAction *)&v5 allowsInteraction];
+  if (allowsInteraction)
   {
-    LOBYTE(v3) = [(CSCameraSystemQuickAction *)self _allowsCamera];
+    LOBYTE(allowsInteraction) = [(CSCameraSystemQuickAction *)self _allowsCamera];
   }
 
-  return v3;
+  return allowsInteraction;
 }
 
 - (BOOL)_allowsCamera
@@ -81,9 +81,9 @@
   [(CSSystemQuickAction *)&v15 touchBegan];
   self->_hasFiredForTouch = 0;
   prewarmer = self->_prewarmer;
-  v4 = [(CSCameraSystemQuickAction *)self _prewarmingIdentifier];
-  v5 = [(CSCameraSystemQuickAction *)self _prewarmReason];
-  [(CSCameraPrewarming *)prewarmer prewarmCameraForIdentifier:v4 prewarmReason:v5];
+  _prewarmingIdentifier = [(CSCameraSystemQuickAction *)self _prewarmingIdentifier];
+  _prewarmReason = [(CSCameraSystemQuickAction *)self _prewarmReason];
+  [(CSCameraPrewarming *)prewarmer prewarmCameraForIdentifier:_prewarmingIdentifier prewarmReason:_prewarmReason];
 
   activePrewarmTimer = self->_activePrewarmTimer;
   if (activePrewarmTimer)
@@ -93,8 +93,8 @@
     self->_activePrewarmTimer = 0;
   }
 
-  v8 = [(CSLockScreenSettings *)self->_prototypeSettings dashBoardQuickActionButtonSettings];
-  [v8 maximumTouchDuration];
+  dashBoardQuickActionButtonSettings = [(CSLockScreenSettings *)self->_prototypeSettings dashBoardQuickActionButtonSettings];
+  [dashBoardQuickActionButtonSettings maximumTouchDuration];
   v10 = v9;
 
   IsZero = BSFloatIsZero();
@@ -116,8 +116,8 @@
   self->_activePrewarmTimer = 0;
 
   prewarmer = self->_prewarmer;
-  v5 = [(CSCameraSystemQuickAction *)self _prewarmingIdentifier];
-  [(CSCameraPrewarming *)prewarmer notePrewarmRequestEndedForIdentifier:v5];
+  _prewarmingIdentifier = [(CSCameraSystemQuickAction *)self _prewarmingIdentifier];
+  [(CSCameraPrewarming *)prewarmer notePrewarmRequestEndedForIdentifier:_prewarmingIdentifier];
 }
 
 - (void)fireAction
@@ -127,17 +127,17 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21EB05000, v3, OS_LOG_TYPE_DEFAULT, "[Camera Quick Action] Will fire action %@", buf, 0xCu);
   }
 
-  v4 = [(CSSystemQuickAction *)self controlInstance];
+  controlInstance = [(CSSystemQuickAction *)self controlInstance];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__CSCameraSystemQuickAction_fireAction__block_invoke;
   v5[3] = &unk_27838D4D8;
   v5[4] = self;
-  [v4 performControlActionWithCompletion:v5];
+  [controlInstance performControlActionWithCompletion:v5];
 
   self->_hasFiredForTouch = 1;
 }
@@ -192,8 +192,8 @@ void __39__CSCameraSystemQuickAction_fireAction__block_invoke(uint64_t a1, void 
   if (!self->_hasFiredForTouch)
   {
     prewarmer = self->_prewarmer;
-    v5 = [(CSCameraSystemQuickAction *)self _prewarmingIdentifier];
-    [(CSCameraPrewarming *)prewarmer notePrewarmRequestEndedForIdentifier:v5];
+    _prewarmingIdentifier = [(CSCameraSystemQuickAction *)self _prewarmingIdentifier];
+    [(CSCameraPrewarming *)prewarmer notePrewarmRequestEndedForIdentifier:_prewarmingIdentifier];
   }
 }
 
@@ -212,11 +212,11 @@ void __39__CSCameraSystemQuickAction_fireAction__block_invoke(uint64_t a1, void 
 
 - (id)_prewarmingIdentifier
 {
-  v3 = [(CSSystemQuickAction *)self controlIdentity];
-  v4 = [v3 extensionIdentity];
-  v5 = [v4 containerBundleIdentifier];
+  controlIdentity = [(CSSystemQuickAction *)self controlIdentity];
+  extensionIdentity = [controlIdentity extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
 
-  v6 = [[CSCameraPrewarmingIdentifier alloc] initWithCameraPrewarmType:[(CSCameraSystemQuickAction *)self _prewarmingType] applicationBundleIdentifier:v5];
+  v6 = [[CSCameraPrewarmingIdentifier alloc] initWithCameraPrewarmType:[(CSCameraSystemQuickAction *)self _prewarmingType] applicationBundleIdentifier:containerBundleIdentifier];
 
   return v6;
 }

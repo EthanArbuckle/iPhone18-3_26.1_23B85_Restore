@@ -1,32 +1,32 @@
 @interface HMDSetupEndPointWrite
 - (BOOL)_parseFromTLVDataImpl;
 - (BOOL)_parseFromTLVDataOnFailure;
-- (HMDSetupEndPointWrite)initWithCoder:(id)a3;
-- (HMDSetupEndPointWrite)initWithSessionIdentifier:(id)a3 address:(id)a4 videoSrtpParameters:(id)a5 audioSrtpParameters:(id)a6;
+- (HMDSetupEndPointWrite)initWithCoder:(id)coder;
+- (HMDSetupEndPointWrite)initWithSessionIdentifier:(id)identifier address:(id)address videoSrtpParameters:(id)parameters audioSrtpParameters:(id)srtpParameters;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDSetupEndPointWrite
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDSetupEndPointWrite *)self sessionID];
-  [v4 encodeObject:v5 forKey:@"kSetupEndPoint__SessionIdentifier"];
+  coderCopy = coder;
+  sessionID = [(HMDSetupEndPointWrite *)self sessionID];
+  [coderCopy encodeObject:sessionID forKey:@"kSetupEndPoint__SessionIdentifier"];
 
-  v6 = [(HMDSetupEndPointWrite *)self videoSrtpParameters];
-  [v4 encodeObject:v6 forKey:@"kSetupEndPoint__SRTPVideoParameters"];
+  videoSrtpParameters = [(HMDSetupEndPointWrite *)self videoSrtpParameters];
+  [coderCopy encodeObject:videoSrtpParameters forKey:@"kSetupEndPoint__SRTPVideoParameters"];
 
-  v7 = [(HMDSetupEndPointWrite *)self audioSrtpParameters];
-  [v4 encodeObject:v7 forKey:@"kSetupEndPoint__SRTPAudioParameters"];
+  audioSrtpParameters = [(HMDSetupEndPointWrite *)self audioSrtpParameters];
+  [coderCopy encodeObject:audioSrtpParameters forKey:@"kSetupEndPoint__SRTPAudioParameters"];
 }
 
-- (HMDSetupEndPointWrite)initWithCoder:(id)a3
+- (HMDSetupEndPointWrite)initWithCoder:(id)coder
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = HMDSetupEndPointWrite;
   v5 = [(HMDSetupEndPointWrite *)&v25 init];
@@ -36,7 +36,7 @@
     v28[0] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kSetupEndPoint__SessionIdentifier"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kSetupEndPoint__SessionIdentifier"];
     sessionID = v5->_sessionID;
     v5->_sessionID = v9;
 
@@ -44,7 +44,7 @@
     v27 = objc_opt_class();
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"kSetupEndPoint__SRTPVideoParameters"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"kSetupEndPoint__SRTPVideoParameters"];
     videoSrtpParameters = v5->_videoSrtpParameters;
     v5->_videoSrtpParameters = v14;
 
@@ -52,7 +52,7 @@
     v26 = objc_opt_class();
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
     v18 = [v16 setWithArray:v17];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"kSetupEndPoint__SRTPAudioParameters"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"kSetupEndPoint__SRTPAudioParameters"];
     audioSrtpParameters = v5->_audioSrtpParameters;
     v5->_audioSrtpParameters = v19;
 
@@ -65,24 +65,24 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDSetupEndPointWrite *)self sessionID];
-  [v7 appendFormat:@"\n %@ sessionID = %@ ", v6, v8];
+  indentCopy = indent;
+  descriptionCopy = description;
+  sessionID = [(HMDSetupEndPointWrite *)self sessionID];
+  [descriptionCopy appendFormat:@"\n %@ sessionID = %@ ", indentCopy, sessionID];
 
-  v9 = [(HMDSetupEndPointWrite *)self address];
-  v10 = [v9 descriptionWithIndent:v6];
-  [v7 appendFormat:@"\n %@ deviceAddress = %@ ", v6, v10];
+  address = [(HMDSetupEndPointWrite *)self address];
+  v10 = [address descriptionWithIndent:indentCopy];
+  [descriptionCopy appendFormat:@"\n %@ deviceAddress = %@ ", indentCopy, v10];
 
-  v11 = [(HMDSetupEndPointWrite *)self videoSrtpParameters];
-  v12 = [v11 descriptionWithIndent:v6];
-  [v7 appendFormat:@"\n %@ videoSRTPParameters = %@ ", v6, v12];
+  videoSrtpParameters = [(HMDSetupEndPointWrite *)self videoSrtpParameters];
+  v12 = [videoSrtpParameters descriptionWithIndent:indentCopy];
+  [descriptionCopy appendFormat:@"\n %@ videoSRTPParameters = %@ ", indentCopy, v12];
 
-  v14 = [(HMDSetupEndPointWrite *)self audioSrtpParameters];
-  v13 = [v14 descriptionWithIndent:v6];
-  [v7 appendFormat:@"\n %@ audioSRTPParameters = %@ ", v6, v13];
+  audioSrtpParameters = [(HMDSetupEndPointWrite *)self audioSrtpParameters];
+  v13 = [audioSrtpParameters descriptionWithIndent:indentCopy];
+  [descriptionCopy appendFormat:@"\n %@ audioSRTPParameters = %@ ", indentCopy, v13];
 }
 
 - (BOOL)_parseFromTLVDataOnFailure
@@ -95,9 +95,9 @@
 
   if (v5)
   {
-    v6 = [v3 field];
+    field = [v3 field];
     sessionID = self->_sessionID;
-    self->_sessionID = v6;
+    self->_sessionID = field;
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -120,25 +120,25 @@
 
   if (v8)
   {
-    v9 = [v3 field];
+    field = [v3 field];
     sessionID = self->_sessionID;
-    self->_sessionID = v9;
+    self->_sessionID = field;
 
     v11 = [HMDEndPointAddress alloc];
-    v12 = [v4 field];
-    v13 = [(HAPTLVBase *)v11 initWithTLVData:v12];
+    field2 = [v4 field];
+    v13 = [(HAPTLVBase *)v11 initWithTLVData:field2];
     address = self->_address;
     self->_address = v13;
 
     v15 = [HMDSRTPParameters alloc];
-    v16 = [v5 field];
-    v17 = [(HAPTLVBase *)v15 initWithTLVData:v16];
+    field3 = [v5 field];
+    v17 = [(HAPTLVBase *)v15 initWithTLVData:field3];
     videoSrtpParameters = self->_videoSrtpParameters;
     self->_videoSrtpParameters = v17;
 
     v19 = [HMDSRTPParameters alloc];
-    v20 = [v6 field];
-    v21 = [(HAPTLVBase *)v19 initWithTLVData:v20];
+    field4 = [v6 field];
+    v21 = [(HAPTLVBase *)v19 initWithTLVData:field4];
     audioSrtpParameters = self->_audioSrtpParameters;
     self->_audioSrtpParameters = v21;
 
@@ -157,43 +157,43 @@
 
 - (NSData)tlvData
 {
-  v3 = [MEMORY[0x277CFEC80] creator];
-  v4 = [(HMDSetupEndPointWrite *)self sessionID];
-  [v3 addTLV:1 uuid:v4];
+  creator = [MEMORY[0x277CFEC80] creator];
+  sessionID = [(HMDSetupEndPointWrite *)self sessionID];
+  [creator addTLV:1 uuid:sessionID];
 
-  v5 = [(HMDSetupEndPointWrite *)self address];
-  v6 = [v5 tlvData];
+  address = [(HMDSetupEndPointWrite *)self address];
+  tlvData = [address tlvData];
 
-  [v3 addTLV:3 data:v6];
-  v7 = [(HMDSetupEndPointWrite *)self videoSrtpParameters];
-  v8 = [v7 tlvData];
+  [creator addTLV:3 data:tlvData];
+  videoSrtpParameters = [(HMDSetupEndPointWrite *)self videoSrtpParameters];
+  tlvData2 = [videoSrtpParameters tlvData];
 
-  [v3 addTLV:4 data:v8];
-  v9 = [(HMDSetupEndPointWrite *)self audioSrtpParameters];
-  v10 = [v9 tlvData];
+  [creator addTLV:4 data:tlvData2];
+  audioSrtpParameters = [(HMDSetupEndPointWrite *)self audioSrtpParameters];
+  tlvData3 = [audioSrtpParameters tlvData];
 
-  [v3 addTLV:5 data:v10];
-  v11 = [v3 serialize];
+  [creator addTLV:5 data:tlvData3];
+  serialize = [creator serialize];
 
-  return v11;
+  return serialize;
 }
 
-- (HMDSetupEndPointWrite)initWithSessionIdentifier:(id)a3 address:(id)a4 videoSrtpParameters:(id)a5 audioSrtpParameters:(id)a6
+- (HMDSetupEndPointWrite)initWithSessionIdentifier:(id)identifier address:(id)address videoSrtpParameters:(id)parameters audioSrtpParameters:(id)srtpParameters
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  addressCopy = address;
+  parametersCopy = parameters;
+  srtpParametersCopy = srtpParameters;
   v18.receiver = self;
   v18.super_class = HMDSetupEndPointWrite;
   v15 = [(HMDSetupEndPointWrite *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_sessionID, a3);
-    objc_storeStrong(&v16->_address, a4);
-    objc_storeStrong(&v16->_videoSrtpParameters, a5);
-    objc_storeStrong(&v16->_audioSrtpParameters, a6);
+    objc_storeStrong(&v15->_sessionID, identifier);
+    objc_storeStrong(&v16->_address, address);
+    objc_storeStrong(&v16->_videoSrtpParameters, parameters);
+    objc_storeStrong(&v16->_audioSrtpParameters, srtpParameters);
   }
 
   return v16;

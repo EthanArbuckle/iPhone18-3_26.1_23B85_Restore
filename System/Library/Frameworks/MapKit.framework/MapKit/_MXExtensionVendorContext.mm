@@ -1,18 +1,18 @@
 @interface _MXExtensionVendorContext
-- (id)_errorForVendor:(id)a3 requestDispatcher:(id)a4;
-- (void)handleRequest:(id)a3 requestDispatcher:(id)a4 completion:(id)a5;
-- (void)startSendingUpdatesForRequest:(id)a3 requestDispatcher:(id)a4 toObserver:(id)a5;
-- (void)stopSendingUpdatesForRequest:(id)a3 requestDispatcher:(id)a4;
+- (id)_errorForVendor:(id)vendor requestDispatcher:(id)dispatcher;
+- (void)handleRequest:(id)request requestDispatcher:(id)dispatcher completion:(id)completion;
+- (void)startSendingUpdatesForRequest:(id)request requestDispatcher:(id)dispatcher toObserver:(id)observer;
+- (void)stopSendingUpdatesForRequest:(id)request requestDispatcher:(id)dispatcher;
 @end
 
 @implementation _MXExtensionVendorContext
 
-- (id)_errorForVendor:(id)a3 requestDispatcher:(id)a4
+- (id)_errorForVendor:(id)vendor requestDispatcher:(id)dispatcher
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  vendorCopy = vendor;
+  dispatcherCopy = dispatcher;
+  v7 = dispatcherCopy;
+  if (!vendorCopy)
   {
     v10 = MEMORY[0x1E696ABC0];
     v11 = 11;
@@ -21,7 +21,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v6)
+  if (!dispatcherCopy)
   {
     v10 = MEMORY[0x1E696ABC0];
     v11 = 12;
@@ -43,10 +43,10 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v8 = [v7 serviceProtocol];
-  if (v8)
+  serviceProtocol = [v7 serviceProtocol];
+  if (serviceProtocol)
   {
-    if ([v5 conformsToProtocol:v8])
+    if ([vendorCopy conformsToProtocol:serviceProtocol])
     {
 
       goto LABEL_8;
@@ -67,14 +67,14 @@ LABEL_13:
   return v9;
 }
 
-- (void)stopSendingUpdatesForRequest:(id)a3 requestDispatcher:(id)a4
+- (void)stopSendingUpdatesForRequest:(id)request requestDispatcher:(id)dispatcher
 {
-  v10 = a3;
-  v6 = a4;
+  requestCopy = request;
+  dispatcherCopy = dispatcher;
   if (self->_observer)
   {
-    v7 = [(_MXExtensionVendorContext *)self _principalObject];
-    v8 = [(_MXExtensionVendorContext *)self _errorForVendor:v7 requestDispatcher:v6];
+    _principalObject = [(_MXExtensionVendorContext *)self _principalObject];
+    v8 = [(_MXExtensionVendorContext *)self _errorForVendor:_principalObject requestDispatcher:dispatcherCopy];
     observer = self->_observer;
     if (v8)
     {
@@ -85,45 +85,45 @@ LABEL_13:
     {
       self->_observer = 0;
 
-      [v6 stopSendingUpdatesForRequest:v10 vendor:v7];
+      [dispatcherCopy stopSendingUpdatesForRequest:requestCopy vendor:_principalObject];
     }
   }
 }
 
-- (void)startSendingUpdatesForRequest:(id)a3 requestDispatcher:(id)a4 toObserver:(id)a5
+- (void)startSendingUpdatesForRequest:(id)request requestDispatcher:(id)dispatcher toObserver:(id)observer
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(_MXExtensionVendorContext *)self _principalObject];
-  v11 = [(_MXExtensionVendorContext *)self _errorForVendor:v10 requestDispatcher:v8];
+  requestCopy = request;
+  dispatcherCopy = dispatcher;
+  observerCopy = observer;
+  _principalObject = [(_MXExtensionVendorContext *)self _principalObject];
+  v11 = [(_MXExtensionVendorContext *)self _errorForVendor:_principalObject requestDispatcher:dispatcherCopy];
   if (v11)
   {
-    [v9 receiveUpdatedResponse:0 error:v11];
+    [observerCopy receiveUpdatedResponse:0 error:v11];
   }
 
   else
   {
-    objc_storeStrong(&self->_observer, a5);
-    [v8 startSendingUpdatesForRequest:v12 vendor:v10 toObserver:v9];
+    objc_storeStrong(&self->_observer, observer);
+    [dispatcherCopy startSendingUpdatesForRequest:requestCopy vendor:_principalObject toObserver:observerCopy];
   }
 }
 
-- (void)handleRequest:(id)a3 requestDispatcher:(id)a4 completion:(id)a5
+- (void)handleRequest:(id)request requestDispatcher:(id)dispatcher completion:(id)completion
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(_MXExtensionVendorContext *)self _principalObject];
-  v11 = [(_MXExtensionVendorContext *)self _errorForVendor:v10 requestDispatcher:v8];
+  requestCopy = request;
+  dispatcherCopy = dispatcher;
+  completionCopy = completion;
+  _principalObject = [(_MXExtensionVendorContext *)self _principalObject];
+  v11 = [(_MXExtensionVendorContext *)self _errorForVendor:_principalObject requestDispatcher:dispatcherCopy];
   if (v11)
   {
-    v9[2](v9, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 
   else
   {
-    [v8 dispatchRequest:v12 vendor:v10 completion:v9];
+    [dispatcherCopy dispatchRequest:requestCopy vendor:_principalObject completion:completionCopy];
   }
 }
 

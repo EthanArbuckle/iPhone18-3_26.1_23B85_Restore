@@ -1,46 +1,46 @@
 @interface CarResumeRouteWaypointsController
-- (CarResumeRouteWaypointsController)initWithEntry:(id)a3;
+- (CarResumeRouteWaypointsController)initWithEntry:(id)entry;
 - (id)destinationSearchResultIfAvailable;
 - (id)searchFieldItems;
-- (void)configureDirectionItemForLoad:(id)a3;
-- (void)configureUserInfoForLoad:(id)a3;
+- (void)configureDirectionItemForLoad:(id)load;
+- (void)configureUserInfoForLoad:(id)load;
 @end
 
 @implementation CarResumeRouteWaypointsController
 
-- (void)configureUserInfoForLoad:(id)a3
+- (void)configureUserInfoForLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   v7.receiver = self;
   v7.super_class = CarResumeRouteWaypointsController;
-  [(CarWaypointsController *)&v7 configureUserInfoForLoad:v4];
-  [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:@"DirectionsIsResumedNavigationSession"];
-  v5 = [(MapsSuggestionsEntry *)self->_entry sharingContacts];
-  [v4 setObject:v5 forKeyedSubscript:@"DirectionsPreviousContactsForTripSharing"];
+  [(CarWaypointsController *)&v7 configureUserInfoForLoad:loadCopy];
+  [loadCopy setObject:&__kCFBooleanTrue forKeyedSubscript:@"DirectionsIsResumedNavigationSession"];
+  sharingContacts = [(MapsSuggestionsEntry *)self->_entry sharingContacts];
+  [loadCopy setObject:sharingContacts forKeyedSubscript:@"DirectionsPreviousContactsForTripSharing"];
 
   v6 = sub_10079A4D8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v9 = v4;
+    v9 = loadCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Using userInfo %{private}@", buf, 0xCu);
   }
 }
 
-- (void)configureDirectionItemForLoad:(id)a3
+- (void)configureDirectionItemForLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   v10.receiver = self;
   v10.super_class = CarResumeRouteWaypointsController;
-  [(CarWaypointsController *)&v10 configureDirectionItemForLoad:v4];
+  [(CarWaypointsController *)&v10 configureDirectionItemForLoad:loadCopy];
   if ([(MapsSuggestionsEntry *)self->_entry containsKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"])
   {
     v5 = [(MapsSuggestionsEntry *)self->_entry routeRequestStorageForKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
     v6 = [DrivePreferences alloc];
-    v7 = [v5 automobileOptions];
+    automobileOptions = [v5 automobileOptions];
     v8 = +[NSUserDefaults standardUserDefaults];
-    v9 = [(DrivePreferences *)v6 initWithAutomobileOptions:v7 defaults:v8];
-    [v4 setDrivePreferences:v9];
+    v9 = [(DrivePreferences *)v6 initWithAutomobileOptions:automobileOptions defaults:v8];
+    [loadCopy setDrivePreferences:v9];
   }
 }
 
@@ -77,18 +77,18 @@
 
 - (id)destinationSearchResultIfAvailable
 {
-  v2 = [(CarResumeRouteWaypointsController *)self searchFieldItems];
-  v3 = [v2 lastObject];
-  v4 = [v3 waypoint];
-  v5 = [v4 pin];
+  searchFieldItems = [(CarResumeRouteWaypointsController *)self searchFieldItems];
+  lastObject = [searchFieldItems lastObject];
+  waypoint = [lastObject waypoint];
+  v5 = [waypoint pin];
 
   return v5;
 }
 
-- (CarResumeRouteWaypointsController)initWithEntry:(id)a3
+- (CarResumeRouteWaypointsController)initWithEntry:(id)entry
 {
-  v5 = a3;
-  if ([v5 type] == 11)
+  entryCopy = entry;
+  if ([entryCopy type] == 11)
   {
     v10.receiver = self;
     v10.super_class = CarResumeRouteWaypointsController;
@@ -96,19 +96,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_entry, a3);
+      objc_storeStrong(&v6->_entry, entry);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

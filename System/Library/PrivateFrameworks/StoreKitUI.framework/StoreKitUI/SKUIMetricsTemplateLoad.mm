@@ -1,12 +1,12 @@
 @interface SKUIMetricsTemplateLoad
 - (NSDictionary)dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dictionaryRepresentation;
 @end
 
 @implementation SKUIMetricsTemplateLoad
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {

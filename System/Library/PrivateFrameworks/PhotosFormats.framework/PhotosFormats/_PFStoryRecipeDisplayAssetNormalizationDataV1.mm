@@ -1,11 +1,11 @@
 @interface _PFStoryRecipeDisplayAssetNormalizationDataV1
 + (NSDictionary)limits;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)highKeyProperties;
 - (NSDictionary)smartColorProperties;
 - (NSDictionary)smartToneProperties;
 - (NSDictionary)tempTintProperties;
-- (_PFStoryRecipeDisplayAssetNormalizationDataV1)initWithSliderNetPackedDataV1:(id *)a3;
+- (_PFStoryRecipeDisplayAssetNormalizationDataV1)initWithSliderNetPackedDataV1:(id *)v1;
 - (unint64_t)hash;
 @end
 
@@ -14,14 +14,14 @@
 - (NSDictionary)smartColorProperties
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() limits];
+  limits = [objc_opt_class() limits];
   smartColorInputVibrancy = self->_data.smartColorInputVibrancy;
-  v5 = [v3 objectForKeyedSubscript:@"VIBRANCY_MIN"];
+  v5 = [limits objectForKeyedSubscript:@"VIBRANCY_MIN"];
   [v5 doubleValue];
   v7 = v6;
-  v8 = [v3 objectForKeyedSubscript:@"VIBRANCY_MAX"];
+  v8 = [limits objectForKeyedSubscript:@"VIBRANCY_MAX"];
   [v8 doubleValue];
-  if (v9 <= v7 || (v10 = v9, v8, v5, smartColorInputCast = self->_data.smartColorInputCast, [v3 objectForKeyedSubscript:@"CAST_MIN"], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "doubleValue"), v14 = v13, objc_msgSend(v3, "objectForKeyedSubscript:", @"CAST_MAX"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "doubleValue"), v16 <= v14))
+  if (v9 <= v7 || (v10 = v9, v8, v5, smartColorInputCast = self->_data.smartColorInputCast, [limits objectForKeyedSubscript:@"CAST_MIN"], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "doubleValue"), v14 = v13, objc_msgSend(limits, "objectForKeyedSubscript:", @"CAST_MAX"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "doubleValue"), v16 <= v14))
   {
     __assert_rtn("_byteToDoubleInRange", "PFStoryRecipeDisplayAssetNormalization.m", 19, "maxValue > minValue");
   }
@@ -43,12 +43,12 @@
 - (NSDictionary)highKeyProperties
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() limits];
+  limits = [objc_opt_class() limits];
   highKeyInputStrength = self->_data.highKeyInputStrength;
-  v5 = [v3 objectForKeyedSubscript:@"HIGHKEY_MIN"];
+  v5 = [limits objectForKeyedSubscript:@"HIGHKEY_MIN"];
   [v5 doubleValue];
   v7 = v6;
-  v8 = [v3 objectForKeyedSubscript:@"HIGHKEY_MAX"];
+  v8 = [limits objectForKeyedSubscript:@"HIGHKEY_MAX"];
   [v8 doubleValue];
   if (v9 <= v7)
   {
@@ -68,14 +68,14 @@
 - (NSDictionary)smartToneProperties
 {
   v40[4] = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() limits];
+  limits = [objc_opt_class() limits];
   smartToneInputContrast = self->_data.smartToneInputContrast;
-  v5 = [v3 objectForKeyedSubscript:@"CONTRAST_MIN"];
+  v5 = [limits objectForKeyedSubscript:@"CONTRAST_MIN"];
   [v5 doubleValue];
   v7 = v6;
-  v8 = [v3 objectForKeyedSubscript:@"CONTRAST_MAX"];
+  v8 = [limits objectForKeyedSubscript:@"CONTRAST_MAX"];
   [v8 doubleValue];
-  if (v9 <= v7 || (v10 = v9, v8, v5, smartToneInputBlack = self->_data.smartToneInputBlack, [v3 objectForKeyedSubscript:@"BLACK_MIN"], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "doubleValue"), v14 = v13, objc_msgSend(v3, "objectForKeyedSubscript:", @"BLACK_MAX"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "doubleValue"), v16 <= v14) || (v17 = v16, v15, v12, smartToneInputExposure = self->_data.smartToneInputExposure, objc_msgSend(v3, "objectForKeyedSubscript:", @"EXPOSURE_MIN"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "doubleValue"), v21 = v20, objc_msgSend(v3, "objectForKeyedSubscript:", @"EXPOSURE_MAX"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "doubleValue"), v23 <= v21) || (v24 = v23, v22, v19, smartToneInputHighlights = self->_data.smartToneInputHighlights, objc_msgSend(v3, "objectForKeyedSubscript:", @"HIGHLIGHTS_MIN"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "doubleValue"), v28 = v27, objc_msgSend(v3, "objectForKeyedSubscript:", @"HIGHLIGHTS_MAX"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "doubleValue"), v30 <= v28))
+  if (v9 <= v7 || (v10 = v9, v8, v5, smartToneInputBlack = self->_data.smartToneInputBlack, [limits objectForKeyedSubscript:@"BLACK_MIN"], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "doubleValue"), v14 = v13, objc_msgSend(limits, "objectForKeyedSubscript:", @"BLACK_MAX"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "doubleValue"), v16 <= v14) || (v17 = v16, v15, v12, smartToneInputExposure = self->_data.smartToneInputExposure, objc_msgSend(limits, "objectForKeyedSubscript:", @"EXPOSURE_MIN"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "doubleValue"), v21 = v20, objc_msgSend(limits, "objectForKeyedSubscript:", @"EXPOSURE_MAX"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "doubleValue"), v23 <= v21) || (v24 = v23, v22, v19, smartToneInputHighlights = self->_data.smartToneInputHighlights, objc_msgSend(limits, "objectForKeyedSubscript:", @"HIGHLIGHTS_MIN"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "doubleValue"), v28 = v27, objc_msgSend(limits, "objectForKeyedSubscript:", @"HIGHLIGHTS_MAX"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "doubleValue"), v30 <= v28))
   {
     __assert_rtn("_byteToDoubleInRange", "PFStoryRecipeDisplayAssetNormalization.m", 19, "maxValue > minValue");
   }
@@ -103,14 +103,14 @@
 - (NSDictionary)tempTintProperties
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() limits];
+  limits = [objc_opt_class() limits];
   tempTintInputTemperature = self->_data.tempTintInputTemperature;
-  v5 = [v3 objectForKeyedSubscript:@"TEMPERATURE_MIN"];
+  v5 = [limits objectForKeyedSubscript:@"TEMPERATURE_MIN"];
   [v5 doubleValue];
   v7 = v6;
-  v8 = [v3 objectForKeyedSubscript:@"TEMPERATURE_MAX"];
+  v8 = [limits objectForKeyedSubscript:@"TEMPERATURE_MAX"];
   [v8 doubleValue];
-  if (v9 <= v7 || (v10 = v9, v8, v5, tempTintInputTint = self->_data.tempTintInputTint, [v3 objectForKeyedSubscript:@"TINT_MIN"], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "doubleValue"), v14 = v13, objc_msgSend(v3, "objectForKeyedSubscript:", @"TINT_MAX"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "doubleValue"), v16 <= v14))
+  if (v9 <= v7 || (v10 = v9, v8, v5, tempTintInputTint = self->_data.tempTintInputTint, [limits objectForKeyedSubscript:@"TINT_MIN"], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "doubleValue"), v14 = v13, objc_msgSend(limits, "objectForKeyedSubscript:", @"TINT_MAX"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "doubleValue"), v16 <= v14))
   {
     __assert_rtn("_byteToDoubleInRange", "PFStoryRecipeDisplayAssetNormalization.m", 19, "maxValue > minValue");
   }
@@ -129,11 +129,11 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v6 = (objc_opt_isKindOfClass() & 1) != 0 && *&self->_data.version == v4[1] && *&self->_data.highKeyInputStrength == *(v4 + 4);
+  v6 = (objc_opt_isKindOfClass() & 1) != 0 && *&self->_data.version == equalCopy[1] && *&self->_data.highKeyInputStrength == *(equalCopy + 4);
 
   return v6;
 }
@@ -152,15 +152,15 @@
   return result;
 }
 
-- (_PFStoryRecipeDisplayAssetNormalizationDataV1)initWithSliderNetPackedDataV1:(id *)a3
+- (_PFStoryRecipeDisplayAssetNormalizationDataV1)initWithSliderNetPackedDataV1:(id *)v1
 {
   v6.receiver = self;
   v6.super_class = _PFStoryRecipeDisplayAssetNormalizationDataV1;
   result = [(_PFStoryRecipeDisplayAssetNormalizationDataV1 *)&v6 init];
   if (result)
   {
-    v5 = *&a3->var0;
-    *&result->_data.highKeyInputStrength = *&a3->var8;
+    v5 = *&v1->var0;
+    *&result->_data.highKeyInputStrength = *&v1->var8;
     *&result->_data.version = v5;
   }
 

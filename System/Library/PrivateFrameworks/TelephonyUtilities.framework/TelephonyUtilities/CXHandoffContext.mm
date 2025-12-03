@@ -1,26 +1,26 @@
 @interface CXHandoffContext
-+ (id)providerIdentifierForHandoffActivityUserInfo:(id)a3;
++ (id)providerIdentifierForHandoffActivityUserInfo:(id)info;
 - (NSDictionary)handoffActivityUserInfo;
-- (id)initWithHandoffActivityUserInfo:(id)a3;
+- (id)initWithHandoffActivityUserInfo:(id)info;
 @end
 
 @implementation CXHandoffContext
 
-- (id)initWithHandoffActivityUserInfo:(id)a3
+- (id)initWithHandoffActivityUserInfo:(id)info
 {
   v4 = TUCallUserActivityProviderIdentifierKey;
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
+  infoCopy = info;
+  v6 = [infoCopy objectForKeyedSubscript:v4];
 
   if (v6)
   {
-    self = [(CXHandoffContext *)self initWithDictionaryRepresentation:v5];
-    v7 = v5;
+    self = [(CXHandoffContext *)self initWithDictionaryRepresentation:infoCopy];
+    v7 = infoCopy;
   }
 
   else
   {
-    v7 = [v5 objectForKeyedSubscript:@"TUCallUserActivityCTInfoKey"];
+    v7 = [infoCopy objectForKeyedSubscript:@"TUCallUserActivityCTInfoKey"];
 
     v8 = [v7 objectForKeyedSubscript:@"kCTCallDirection"];
     v9 = [v7 objectForKeyedSubscript:@"kCTCallPhoneNumber"];
@@ -46,11 +46,11 @@
 
 - (NSDictionary)handoffActivityUserInfo
 {
-  v3 = [(CXHandoffContext *)self dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(CXHandoffContext *)self dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
-  v5 = [(CXHandoffContext *)self context];
-  v6 = [v5 mutableCopy];
+  context = [(CXHandoffContext *)self context];
+  v6 = [context mutableCopy];
 
   if ([(CXHandoffContext *)self isOutgoing])
   {
@@ -63,9 +63,9 @@
   }
 
   [v6 setObject:v7 forKeyedSubscript:@"kCTCallDirection"];
-  v8 = [(CXHandoffContext *)self remoteHandle];
-  v9 = [v8 value];
-  [v6 setObject:v9 forKeyedSubscript:@"kCTCallPhoneNumber"];
+  remoteHandle = [(CXHandoffContext *)self remoteHandle];
+  value = [remoteHandle value];
+  [v6 setObject:value forKeyedSubscript:@"kCTCallPhoneNumber"];
 
   v10 = [v6 copy];
   [v4 setObject:v10 forKeyedSubscript:@"TUCallUserActivityCTInfoKey"];
@@ -76,9 +76,9 @@
   return v11;
 }
 
-+ (id)providerIdentifierForHandoffActivityUserInfo:(id)a3
++ (id)providerIdentifierForHandoffActivityUserInfo:(id)info
 {
-  v3 = [a3 objectForKeyedSubscript:TUCallUserActivityProviderIdentifierKey];
+  v3 = [info objectForKeyedSubscript:TUCallUserActivityProviderIdentifierKey];
   v4 = v3;
   if (v3)
   {

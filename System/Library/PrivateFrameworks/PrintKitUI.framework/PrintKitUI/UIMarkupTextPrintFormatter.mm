@@ -1,11 +1,11 @@
 @interface UIMarkupTextPrintFormatter
-- (CGRect)rectForPageAtIndex:(int64_t)a3;
+- (CGRect)rectForPageAtIndex:(int64_t)index;
 - (UIMarkupTextPrintFormatter)initWithMarkupText:(NSString *)markupText;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)_recalcPageCount;
 - (void)_resetPaginationInfo;
 - (void)dealloc;
-- (void)drawInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4;
+- (void)drawInRect:(CGRect)rect forPageAtIndex:(int64_t)index;
 - (void)removeFromPrintPageRenderer;
 - (void)setMarkupText:(NSString *)markupText;
 @end
@@ -30,11 +30,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = UIMarkupTextPrintFormatter;
-  v4 = [(UIPrintFormatter *)&v9 copyWithZone:a3];
+  v4 = [(UIPrintFormatter *)&v9 copyWithZone:zone];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277D75D78]) initWithFrame:{0.0, 0.0, 612.0, 798.0}];
@@ -173,9 +173,9 @@ void __50__UIMarkupTextPrintFormatter__resetPaginationInfo__block_invoke(uint64_
   return [(UIWebPaginationInfo *)self->_paginationInfo pageCount];
 }
 
-- (CGRect)rectForPageAtIndex:(int64_t)a3
+- (CGRect)rectForPageAtIndex:(int64_t)index
 {
-  [(UIPrintFormatter *)self _pageContentRect:[(UIPrintFormatter *)self startPage]== a3];
+  [(UIPrintFormatter *)self _pageContentRect:[(UIPrintFormatter *)self startPage]== index];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -184,7 +184,7 @@ void __50__UIMarkupTextPrintFormatter__resetPaginationInfo__block_invoke(uint64_
   paginationInfo = self->_paginationInfo;
   if (paginationInfo)
   {
-    [(UIWebPaginationInfo *)paginationInfo sizeForPageAtIndex:a3 - [(UIPrintFormatter *)self startPage]];
+    [(UIWebPaginationInfo *)paginationInfo sizeForPageAtIndex:index - [(UIPrintFormatter *)self startPage]];
     v10 = v14;
     v12 = v15;
   }
@@ -200,12 +200,12 @@ void __50__UIMarkupTextPrintFormatter__resetPaginationInfo__block_invoke(uint64_
   return result;
 }
 
-- (void)drawInRect:(CGRect)a3 forPageAtIndex:(int64_t)a4
+- (void)drawInRect:(CGRect)rect forPageAtIndex:(int64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   v12.origin.x = x;
@@ -214,7 +214,7 @@ void __50__UIMarkupTextPrintFormatter__resetPaginationInfo__block_invoke(uint64_
   v12.size.height = height;
   CGContextClipToRect(CurrentContext, v12);
   CGContextTranslateCTM(CurrentContext, x, y);
-  [(UIWebDocumentView *)self->_webDocumentView drawPage:a4 - [(UIPrintFormatter *)self startPage] withPaginationInfo:self->_paginationInfo];
+  [(UIWebDocumentView *)self->_webDocumentView drawPage:index - [(UIPrintFormatter *)self startPage] withPaginationInfo:self->_paginationInfo];
 
   CGContextRestoreGState(CurrentContext);
 }

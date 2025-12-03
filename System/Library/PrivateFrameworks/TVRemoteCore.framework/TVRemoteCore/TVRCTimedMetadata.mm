@@ -1,69 +1,69 @@
 @interface TVRCTimedMetadata
-+ (id)_timedMetadataWithIdentifier:(id)a3 rawData:(id)a4 expectsTimedMetadata:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTimedMetadata:(id)a3;
-- (TVRCTimedMetadata)initWithCoder:(id)a3;
-- (TVRCTimedMetadata)initWithIdentifier:(id)a3 rawData:(id)a4 expectsTimedMetadata:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)_timedMetadataWithIdentifier:(id)identifier rawData:(id)data expectsTimedMetadata:(id)metadata;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTimedMetadata:(id)metadata;
+- (TVRCTimedMetadata)initWithCoder:(id)coder;
+- (TVRCTimedMetadata)initWithIdentifier:(id)identifier rawData:(id)data expectsTimedMetadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TVRCTimedMetadata
 
-+ (id)_timedMetadataWithIdentifier:(id)a3 rawData:(id)a4 expectsTimedMetadata:(id)a5
++ (id)_timedMetadataWithIdentifier:(id)identifier rawData:(id)data expectsTimedMetadata:(id)metadata
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithIdentifier:v10 rawData:v9 expectsTimedMetadata:v8];
+  metadataCopy = metadata;
+  dataCopy = data;
+  identifierCopy = identifier;
+  v11 = [[self alloc] initWithIdentifier:identifierCopy rawData:dataCopy expectsTimedMetadata:metadataCopy];
 
   return v11;
 }
 
-- (TVRCTimedMetadata)initWithIdentifier:(id)a3 rawData:(id)a4 expectsTimedMetadata:(id)a5
+- (TVRCTimedMetadata)initWithIdentifier:(id)identifier rawData:(id)data expectsTimedMetadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dataCopy = data;
+  metadataCopy = metadata;
   v16.receiver = self;
   v16.super_class = TVRCTimedMetadata;
   v11 = [(TVRCTimedMetadata *)&v16 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    objc_storeStrong(&v11->_rawData, a4);
-    v11->_hasExpectsTimedMetadata = v10 != 0;
-    if (v10)
+    objc_storeStrong(&v11->_rawData, data);
+    v11->_hasExpectsTimedMetadata = metadataCopy != 0;
+    if (metadataCopy)
     {
-      v14 = [v10 BOOLValue];
+      bOOLValue = [metadataCopy BOOLValue];
     }
 
     else
     {
-      v14 = 0;
+      bOOLValue = 0;
     }
 
-    v11->_expectsTimedMetadata = v14;
+    v11->_expectsTimedMetadata = bOOLValue;
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TVRCTimedMetadata *)self isEqualToTimedMetadata:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TVRCTimedMetadata *)self isEqualToTimedMetadata:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToTimedMetadata:(id)a3
+- (BOOL)isEqualToTimedMetadata:(id)metadata
 {
-  v4 = a3;
-  if (!v4)
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
     goto LABEL_7;
   }
@@ -74,27 +74,27 @@
     goto LABEL_7;
   }
 
-  v5 = [(TVRCTimedMetadata *)self hasExpectsTimedMetadata];
-  if (v5 != [v4 hasExpectsTimedMetadata])
+  hasExpectsTimedMetadata = [(TVRCTimedMetadata *)self hasExpectsTimedMetadata];
+  if (hasExpectsTimedMetadata != [metadataCopy hasExpectsTimedMetadata])
   {
     goto LABEL_7;
   }
 
-  v6 = [(TVRCTimedMetadata *)self expectsTimedMetadata];
-  if (v6 != [v4 expectsTimedMetadata])
+  expectsTimedMetadata = [(TVRCTimedMetadata *)self expectsTimedMetadata];
+  if (expectsTimedMetadata != [metadataCopy expectsTimedMetadata])
   {
     goto LABEL_7;
   }
 
-  v7 = [(TVRCTimedMetadata *)self identifier];
-  v8 = [v4 identifier];
-  v9 = [v7 isEqualToString:v8];
+  identifier = [(TVRCTimedMetadata *)self identifier];
+  identifier2 = [metadataCopy identifier];
+  v9 = [identifier isEqualToString:identifier2];
 
   if (v9)
   {
-    v10 = [(TVRCTimedMetadata *)self rawData];
-    v11 = [v4 rawData];
-    v12 = [v10 isEqualToData:v11];
+    rawData = [(TVRCTimedMetadata *)self rawData];
+    rawData2 = [metadataCopy rawData];
+    v12 = [rawData isEqualToData:rawData2];
   }
 
   else
@@ -106,51 +106,51 @@ LABEL_7:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(TVRCTimedMetadata *)self identifier];
-  [v4 setIdentifier:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  identifier = [(TVRCTimedMetadata *)self identifier];
+  [v4 setIdentifier:identifier];
 
-  v6 = [(TVRCTimedMetadata *)self rawData];
-  [v4 setRawData:v6];
+  rawData = [(TVRCTimedMetadata *)self rawData];
+  [v4 setRawData:rawData];
 
   [v4 setHasExpectsTimedMetadata:{-[TVRCTimedMetadata hasExpectsTimedMetadata](self, "hasExpectsTimedMetadata")}];
   [v4 setExpectsTimedMetadata:{-[TVRCTimedMetadata expectsTimedMetadata](self, "expectsTimedMetadata")}];
   return v4;
 }
 
-- (TVRCTimedMetadata)initWithCoder:(id)a3
+- (TVRCTimedMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TVRCTimedMetadata;
   v5 = [(TVRCTimedMetadata *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawData"];
     rawData = v5->_rawData;
     v5->_rawData = v8;
 
-    v5->_hasExpectsTimedMetadata = [v4 decodeBoolForKey:@"hasExpectsTimedMetadata"];
-    v5->_expectsTimedMetadata = [v4 decodeBoolForKey:@"expectsTimedMetadata"];
+    v5->_hasExpectsTimedMetadata = [coderCopy decodeBoolForKey:@"hasExpectsTimedMetadata"];
+    v5->_expectsTimedMetadata = [coderCopy decodeBoolForKey:@"expectsTimedMetadata"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_rawData forKey:@"rawData"];
-  [v5 encodeBool:self->_hasExpectsTimedMetadata forKey:@"hasExpectsTimedMetadata"];
-  [v5 encodeBool:self->_expectsTimedMetadata forKey:@"expectsTimedMetadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_rawData forKey:@"rawData"];
+  [coderCopy encodeBool:self->_hasExpectsTimedMetadata forKey:@"hasExpectsTimedMetadata"];
+  [coderCopy encodeBool:self->_expectsTimedMetadata forKey:@"expectsTimedMetadata"];
 }
 
 @end

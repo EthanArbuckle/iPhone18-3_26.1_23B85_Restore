@@ -1,25 +1,25 @@
 @interface PowerModesManager
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PowerModesManager)init;
-- (id)getModeFromName:(id)a3;
-- (id)getSavedExitDate:(id)a3;
+- (id)getModeFromName:(id)name;
+- (id)getSavedExitDate:(id)date;
 - (void)clearState;
-- (void)disablePowerMode:(id)a3 withReply:(id)a4;
-- (void)enablePowerMode:(id)a3 withReply:(id)a4;
-- (void)enterMode:(id)a3;
+- (void)disablePowerMode:(id)mode withReply:(id)reply;
+- (void)enablePowerMode:(id)mode withReply:(id)reply;
+- (void)enterMode:(id)mode;
 - (void)evaluatePowerModes;
-- (void)evaluatePowerModes:(id)a3 withContext:(id)a4;
-- (void)exitMode:(id)a3;
+- (void)evaluatePowerModes:(id)modes withContext:(id)context;
+- (void)exitMode:(id)mode;
 - (void)initializeAllModes;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)restoreState;
 - (void)saveState;
 - (void)start;
-- (void)updateAllowOnCharger:(id)a3 withState:(BOOL)a4 andReply:(id)a5;
-- (void)updateEntryDelay:(id)a3 withDelay:(double)a4 andReply:(id)a5;
-- (void)updateMaxEngagementDuration:(id)a3 withDuration:(double)a4 andReply:(id)a5;
-- (void)updatePowerMode:(id)a3 withState:(BOOL)a4 andReply:(id)a5;
+- (void)updateAllowOnCharger:(id)charger withState:(BOOL)state andReply:(id)reply;
+- (void)updateEntryDelay:(id)delay withDelay:(double)withDelay andReply:(id)reply;
+- (void)updateMaxEngagementDuration:(id)duration withDuration:(double)withDuration andReply:(id)reply;
+- (void)updatePowerMode:(id)mode withState:(BOOL)state andReply:(id)reply;
 @end
 
 @implementation PowerModesManager
@@ -41,13 +41,13 @@
   v3 = sub_100001600();
   dispatch_assert_queue_V2(v3);
 
-  v4 = [(PowerModesManager *)self deviceContext];
-  v7 = [v4 currentContext];
+  deviceContext = [(PowerModesManager *)self deviceContext];
+  currentContext = [deviceContext currentContext];
 
-  v5 = [(PowerModesManager *)self resourceManager];
-  v6 = [v5 resourceHints];
+  resourceManager = [(PowerModesManager *)self resourceManager];
+  resourceHints = [resourceManager resourceHints];
 
-  [(PowerModesManager *)self evaluatePowerModes:v6 withContext:v7];
+  [(PowerModesManager *)self evaluatePowerModes:resourceHints withContext:currentContext];
 }
 
 - (void)initializeAllModes
@@ -114,24 +114,24 @@
 - (void)start
 {
   [(PowerModesManager *)self activate];
-  v3 = [(PowerModesManager *)self deviceContext];
-  [v3 addObserver:self forKeyPath:@"currentContext" options:3 context:0];
+  deviceContext = [(PowerModesManager *)self deviceContext];
+  [deviceContext addObserver:self forKeyPath:@"currentContext" options:3 context:0];
 
   v4 = +[ChargeDurationPredictor sharedInstance];
   chargingPredictor = self->_chargingPredictor;
   self->_chargingPredictor = v4;
 
-  v6 = [(PowerModesManager *)self chargingPredictor];
-  [v6 addObserver:self forKeyPath:@"predictorOutput" options:3 context:0];
+  chargingPredictor = [(PowerModesManager *)self chargingPredictor];
+  [chargingPredictor addObserver:self forKeyPath:@"predictorOutput" options:3 context:0];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____PowerModesManagerProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  v7 = [v5 valueForEntitlement:@"com.apple.powerexperience.powermode.update"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.powerexperience.powermode.update"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v7 BOOLValue])
   {
     v8 = qword_100036C70;
@@ -139,12 +139,12 @@
     {
       v9 = v8;
       v13[0] = 67109120;
-      v13[1] = [v5 processIdentifier];
+      v13[1] = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "PowerModesManager: listener: accepted new connection from pid %d", v13, 8u);
     }
 
-    [v5 setExportedObject:self];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
     v10 = 1;
   }
 
@@ -153,7 +153,7 @@
     v11 = qword_100036C70;
     if (os_log_type_enabled(qword_100036C70, OS_LOG_TYPE_ERROR))
     {
-      sub_1000198C0(v11, v5);
+      sub_1000198C0(v11, connectionCopy);
     }
 
     v10 = 0;
@@ -162,7 +162,7 @@
   return v10;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v7 = sub_100001600();
   block[0] = _NSConcreteStackBlock;
@@ -173,23 +173,23 @@
   dispatch_async(v7, block);
 }
 
-- (void)evaluatePowerModes:(id)a3 withContext:(id)a4
+- (void)evaluatePowerModes:(id)modes withContext:(id)context
 {
-  v6 = a3;
-  v37 = a4;
+  modesCopy = modes;
+  contextCopy = context;
   v7 = sub_100001600();
   dispatch_assert_queue_V2(v7);
 
-  v8 = [(PowerModesManager *)self overridePresent];
+  overridePresent = [(PowerModesManager *)self overridePresent];
 
-  if (!v8)
+  if (!overridePresent)
   {
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v10 = [(PowerModesManager *)self powerModes];
-    v12 = [v10 countByEnumeratingWithState:&v44 objects:v48 count:16];
+    powerModes = [(PowerModesManager *)self powerModes];
+    v12 = [powerModes countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (!v12)
     {
       goto LABEL_26;
@@ -198,7 +198,7 @@
     v13 = v12;
     v14 = *v45;
     v34 = v39;
-    v35 = v6;
+    v35 = modesCopy;
     while (1)
     {
       v15 = 0;
@@ -206,12 +206,12 @@
       {
         if (*v45 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(powerModes);
         }
 
         v16 = *(*(&v44 + 1) + 8 * v15);
-        v17 = [(PowerModesManager *)self powerModes];
-        v18 = [v17 objectForKeyedSubscript:v16];
+        powerModes2 = [(PowerModesManager *)self powerModes];
+        v18 = [powerModes2 objectForKeyedSubscript:v16];
 
         if (([v18 isEnabled] & 1) == 0)
         {
@@ -233,7 +233,7 @@
 
         if ([v18 isSupportedPlatform])
         {
-          if ([v18 evaluatePowerModeWithResourceHints:v6 andContext:v37])
+          if ([v18 evaluatePowerModeWithResourceHints:modesCopy andContext:contextCopy])
           {
             if ([v18 getState])
             {
@@ -258,14 +258,14 @@
               v39[0] = sub_100012758;
               v39[1] = &unk_10002CB08;
               v40 = v22;
-              v41 = self;
+              selfCopy = self;
               v24 = v40;
               v42 = v24;
               v43 = v20;
               dispatch_after(when, v23, block);
 
               v25 = v24;
-              v6 = v35;
+              modesCopy = v35;
               [v25 setPendingDelayedEntryTimer:1];
             }
 
@@ -297,7 +297,7 @@ LABEL_22:
       }
 
       while (v13 != v15);
-      v33 = [v10 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      v33 = [powerModes countByEnumeratingWithState:&v44 objects:v48 count:16];
       v13 = v33;
       if (!v33)
       {
@@ -311,11 +311,11 @@ LABEL_26:
   v9 = qword_100036C70;
   if (os_log_type_enabled(qword_100036C70, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = v9;
-    v11 = [(PowerModesManager *)self overridePresent];
+    powerModes = v9;
+    overridePresent2 = [(PowerModesManager *)self overridePresent];
     *buf = 138412290;
-    v50 = v11;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Override present. Skipping evaluation. Please exit %@ mode using powerexperienceutil", buf, 0xCu);
+    v50 = overridePresent2;
+    _os_log_impl(&_mh_execute_header, powerModes, OS_LOG_TYPE_DEFAULT, "Override present. Skipping evaluation. Please exit %@ mode using powerexperienceutil", buf, 0xCu);
 
     goto LABEL_26;
   }
@@ -323,30 +323,30 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)enterMode:(id)a3
+- (void)enterMode:(id)mode
 {
-  v4 = a3;
-  if (([v4 getState] & 1) == 0)
+  modeCopy = mode;
+  if (([modeCopy getState] & 1) == 0)
   {
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v5 = [(PowerModesManager *)self powerModes];
-    v6 = [v5 countByEnumeratingWithState:&v48 objects:v56 count:16];
+    powerModes = [(PowerModesManager *)self powerModes];
+    v6 = [powerModes countByEnumeratingWithState:&v48 objects:v56 count:16];
     if (v6)
     {
       v7 = v6;
       v8 = *v49;
       p_superclass = &OBJC_METACLASS___CPMTrialManager.superclass;
-      v43 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v7; i = i + 1)
         {
           if (*v49 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(powerModes);
           }
 
           v11 = *(*(&v48 + 1) + 8 * i);
@@ -356,8 +356,8 @@ LABEL_27:
 
           if ((v14 & 1) == 0)
           {
-            v15 = [(PowerModesManager *)self powerModes];
-            v16 = [v15 objectForKeyedSubscript:v11];
+            powerModes2 = [(PowerModesManager *)self powerModes];
+            v16 = [powerModes2 objectForKeyedSubscript:v11];
 
             if ([v16 getState] && objc_msgSend(v16, "isEnabled") && objc_msgSend(v16, "isSupportedPlatform"))
             {
@@ -377,7 +377,7 @@ LABEL_27:
                 _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "exiting mode %@ before entering %@", buf, 0x16u);
 
                 p_superclass = v22;
-                self = v43;
+                self = selfCopy;
               }
 
               [(PowerModesManager *)self exitMode:v16];
@@ -385,24 +385,24 @@ LABEL_27:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v48 objects:v56 count:16];
+        v7 = [powerModes countByEnumeratingWithState:&v48 objects:v56 count:16];
       }
 
       while (v7);
     }
 
-    [v4 enterPowerMode];
-    if ([v4 getState])
+    [modeCopy enterPowerMode];
+    if ([modeCopy getState])
     {
-      v24 = [(PowerModesManager *)self activeModes];
-      [v24 addObject:v4];
+      activeModes = [(PowerModesManager *)self activeModes];
+      [activeModes addObject:modeCopy];
 
-      v25 = [(PowerModesManager *)self powerModesService];
+      powerModesService = [(PowerModesManager *)self powerModesService];
       v26 = objc_opt_class();
       v27 = NSStringFromClass(v26);
-      [v25 updateClientsforMode:v27 withState:1];
+      [powerModesService updateClientsforMode:v27 withState:1];
 
-      [v4 getMaxEngagementDuration];
+      [modeCopy getMaxEngagementDuration];
       if (v28 != 0.0)
       {
         v29 = v28;
@@ -450,8 +450,8 @@ LABEL_27:
         block[2] = sub_100012D78;
         block[3] = &unk_10002C530;
         v47 = v29;
-        v45 = v4;
-        v46 = self;
+        v45 = modeCopy;
+        selfCopy2 = self;
         dispatch_after(v41, v42, block);
       }
     }
@@ -460,21 +460,21 @@ LABEL_27:
   }
 }
 
-- (void)exitMode:(id)a3
+- (void)exitMode:(id)mode
 {
-  v8 = a3;
-  if ([v8 getState])
+  modeCopy = mode;
+  if ([modeCopy getState])
   {
-    [v8 exitPowerMode];
-    if (([v8 getState] & 1) == 0)
+    [modeCopy exitPowerMode];
+    if (([modeCopy getState] & 1) == 0)
     {
-      v4 = [(PowerModesManager *)self activeModes];
-      [v4 removeObject:v8];
+      activeModes = [(PowerModesManager *)self activeModes];
+      [activeModes removeObject:modeCopy];
 
-      v5 = [(PowerModesManager *)self powerModesService];
+      powerModesService = [(PowerModesManager *)self powerModesService];
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      [v5 updateClientsforMode:v7 withState:0];
+      [powerModesService updateClientsforMode:v7 withState:0];
     }
 
     [(PowerModesManager *)self saveState];
@@ -510,8 +510,8 @@ LABEL_27:
         }
 
         v8 = *(*(&v22 + 1) + 8 * v7);
-        v9 = [(PowerModesManager *)self powerModes];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        powerModes = [(PowerModesManager *)self powerModes];
+        v10 = [powerModes objectForKeyedSubscript:v8];
 
         if (v10)
         {
@@ -553,8 +553,8 @@ LABEL_27:
     while (v5);
   }
 
-  v19 = [(PowerModesManager *)self defaults];
-  [v19 setValue:v21 forKey:@"modes"];
+  defaults = [(PowerModesManager *)self defaults];
+  [defaults setValue:v21 forKey:@"modes"];
 }
 
 - (void)restoreState
@@ -562,15 +562,15 @@ LABEL_27:
   v3 = sub_100001600();
   dispatch_assert_queue_V2(v3);
 
-  v4 = [(PowerModesManager *)self defaults];
-  v5 = [v4 valueForKey:@"modes"];
+  defaults = [(PowerModesManager *)self defaults];
+  v5 = [defaults valueForKey:@"modes"];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [v5 allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -582,7 +582,7 @@ LABEL_27:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
@@ -611,7 +611,7 @@ LABEL_27:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -630,135 +630,135 @@ LABEL_27:
   v4 = sub_100001600();
   dispatch_assert_queue_V2(v4);
 
-  v5 = [(PowerModesManager *)self defaults];
-  [v5 removeObjectForKey:@"modes"];
+  defaults = [(PowerModesManager *)self defaults];
+  [defaults removeObjectForKey:@"modes"];
 }
 
-- (id)getSavedExitDate:(id)a3
+- (id)getSavedExitDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PowerModesManager *)self defaults];
-  v6 = [v5 valueForKey:@"modes"];
+  dateCopy = date;
+  defaults = [(PowerModesManager *)self defaults];
+  v6 = [defaults valueForKey:@"modes"];
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:dateCopy];
 
   v8 = [v7 objectForKeyedSubscript:@"exitDate"];
 
   return v8;
 }
 
-- (id)getModeFromName:(id)a3
+- (id)getModeFromName:(id)name
 {
-  v4 = a3;
-  v5 = [(PowerModesManager *)self powerModes];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  powerModes = [(PowerModesManager *)self powerModes];
+  v6 = [powerModes objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-- (void)disablePowerMode:(id)a3 withReply:(id)a4
+- (void)disablePowerMode:(id)mode withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  modeCopy = mode;
+  replyCopy = reply;
   v8 = sub_100001600();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001362C;
   block[3] = &unk_10002CB30;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = modeCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = modeCopy;
   dispatch_async(v8, block);
 }
 
-- (void)enablePowerMode:(id)a3 withReply:(id)a4
+- (void)enablePowerMode:(id)mode withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  modeCopy = mode;
+  replyCopy = reply;
   v8 = sub_100001600();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000137AC;
   block[3] = &unk_10002CB30;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = modeCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = modeCopy;
   dispatch_async(v8, block);
 }
 
-- (void)updatePowerMode:(id)a3 withState:(BOOL)a4 andReply:(id)a5
+- (void)updatePowerMode:(id)mode withState:(BOOL)state andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  modeCopy = mode;
+  replyCopy = reply;
   v10 = sub_100001600();
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100013930;
   v13[3] = &unk_10002CB58;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = modeCopy;
+  stateCopy = state;
+  v15 = replyCopy;
+  v11 = replyCopy;
+  v12 = modeCopy;
   dispatch_async(v10, v13);
 }
 
-- (void)updateAllowOnCharger:(id)a3 withState:(BOOL)a4 andReply:(id)a5
+- (void)updateAllowOnCharger:(id)charger withState:(BOOL)state andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  chargerCopy = charger;
+  replyCopy = reply;
   v10 = sub_100001600();
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100013B9C;
   v13[3] = &unk_10002CB58;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = chargerCopy;
+  stateCopy = state;
+  v15 = replyCopy;
+  v11 = replyCopy;
+  v12 = chargerCopy;
   dispatch_async(v10, v13);
 }
 
-- (void)updateEntryDelay:(id)a3 withDelay:(double)a4 andReply:(id)a5
+- (void)updateEntryDelay:(id)delay withDelay:(double)withDelay andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  delayCopy = delay;
+  replyCopy = reply;
   v10 = sub_100001600();
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100013D04;
   v13[3] = &unk_10002CB80;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = delayCopy;
+  withDelayCopy = withDelay;
+  v15 = replyCopy;
+  v11 = replyCopy;
+  v12 = delayCopy;
   dispatch_async(v10, v13);
 }
 
-- (void)updateMaxEngagementDuration:(id)a3 withDuration:(double)a4 andReply:(id)a5
+- (void)updateMaxEngagementDuration:(id)duration withDuration:(double)withDuration andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  durationCopy = duration;
+  replyCopy = reply;
   v10 = sub_100001600();
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100013E64;
   v13[3] = &unk_10002CB80;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = durationCopy;
+  withDurationCopy = withDuration;
+  v15 = replyCopy;
+  v11 = replyCopy;
+  v12 = durationCopy;
   dispatch_async(v10, v13);
 }
 

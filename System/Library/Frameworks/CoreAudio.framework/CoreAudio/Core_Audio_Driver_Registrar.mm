@@ -1,13 +1,13 @@
 @interface Core_Audio_Driver_Registrar
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (Core_Audio_Driver_Registrar)init;
 - (id).cxx_construct;
 - (id)register_driver:bundle_url:bundle_id:cpu_type:is_using_driver_service:reply:;
 - (shared_ptr<std::vector<Registrar_Connection_Info>>)connection_infos;
 - (uint64_t)register_driver:bundle_url:bundle_id:cpu_type:is_using_driver_service:reply:;
-- (void)register_driver:(id)a3 bundle_url:(id)a4 bundle_id:(id)a5 cpu_type:(int)a6 is_using_driver_service:(BOOL)a7 reply:(id)a8;
+- (void)register_driver:(id)register_driver bundle_url:(id)bundle_url bundle_id:(id)bundle_id cpu_type:(int)cpu_type is_using_driver_service:(BOOL)is_using_driver_service reply:(id)reply;
 - (void)register_driver:bundle_url:bundle_id:cpu_type:is_using_driver_service:reply:;
-- (void)setConnection_infos:(shared_ptr<std::vector<Registrar_Connection_Info>>)a3;
+- (void)setConnection_infos:(shared_ptr<std::vector<Registrar_Connection_Info>>)connection_infos;
 @end
 
 @implementation Core_Audio_Driver_Registrar
@@ -19,10 +19,10 @@
   return self;
 }
 
-- (void)setConnection_infos:(shared_ptr<std::vector<Registrar_Connection_Info>>)a3
+- (void)setConnection_infos:(shared_ptr<std::vector<Registrar_Connection_Info>>)connection_infos
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *connection_infos.__ptr_;
+  v3 = *(connection_infos.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -52,22 +52,22 @@
   return result;
 }
 
-- (void)register_driver:(id)a3 bundle_url:(id)a4 bundle_id:(id)a5 cpu_type:(int)a6 is_using_driver_service:(BOOL)a7 reply:(id)a8
+- (void)register_driver:(id)register_driver bundle_url:(id)bundle_url bundle_id:(id)bundle_id cpu_type:(int)cpu_type is_using_driver_service:(BOOL)is_using_driver_service reply:(id)reply
 {
   v35 = *MEMORY[0x1E69E9840];
-  a3;
-  a4;
-  v12 = a5;
-  v13 = a8;
-  v14 = [MEMORY[0x1E696B0B8] currentConnection];
-  v15 = self;
-  objc_sync_enter(v15);
-  [(Core_Audio_Driver_Registrar *)v15 connection_infos];
+  register_driver;
+  bundle_url;
+  bundle_idCopy = bundle_id;
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(Core_Audio_Driver_Registrar *)selfCopy connection_infos];
   for (i = **buf; i != *(*buf + 8); i += 2)
   {
-    if (v14 == i[1])
+    if (currentConnection == i[1])
     {
-      objc_storeStrong(i, a5);
+      objc_storeStrong(i, bundle_id);
       v18 = *i;
       v17 = i[1];
 LABEL_7:
@@ -76,7 +76,7 @@ LABEL_7:
         std::__shared_weak_count::__release_shared[abi:ne200100](*&buf[8]);
       }
 
-      objc_sync_exit(v15);
+      objc_sync_exit(selfCopy);
 
       v20 = atomic_load(StaticContainer<AMCP::Log::AMCP_Scope_Registry_Statics>::s_statics_initialized);
       if ((v20 & 1) == 0)
@@ -133,15 +133,15 @@ LABEL_7:
           v29 = "/Library/Caches/com.apple.xbs/Sources/AudioHAL/MCP/AMCP/ASP/Portal/Server/Core_Audio_Driver_Registrar.mm";
         }
 
-        if (v12)
+        if (bundle_idCopy)
         {
-          v30 = v12;
-          v31 = [v12 UTF8String];
+          v30 = bundle_idCopy;
+          uTF8String = [bundle_idCopy UTF8String];
         }
 
         else
         {
-          v31 = "null";
+          uTF8String = "null";
         }
 
         *buf = 136315650;
@@ -149,15 +149,15 @@ LABEL_7:
         *&buf[12] = 1024;
         *&buf[14] = 97;
         v33 = 2080;
-        v34 = v31;
+        v34 = uTF8String;
         _os_log_impl(&dword_1DE1F9000, v23, OS_LOG_TYPE_DEFAULT, "%32s:%-5d Registering remote driver with bundle id %s", buf, 0x1Cu);
       }
 
-      [(Core_Audio_Driver_Registrar *)v15 registrar];
+      [(Core_Audio_Driver_Registrar *)selfCopy registrar];
       v18;
       v17;
-      v12;
-      v15;
+      bundle_idCopy;
+      selfCopy;
       operator new();
     }
   }
@@ -171,7 +171,7 @@ LABEL_7:
 {
   if (std::type_info::operator==[abi:ne200100](*(a2 + 8), "Z107-[Core_Audio_Driver_Registrar register_driver:bundle_url:bundle_id:cpu_type:is_using_driver_service:reply:]E3$_1"))
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -189,23 +189,23 @@ LABEL_7:
 - (id)register_driver:bundle_url:bundle_id:cpu_type:is_using_driver_service:reply:
 {
   *a2 = &unk_1F5960F08;
-  a2[1] = a1[1];
-  a2[2] = a1[2];
-  a2[3] = a1[3];
-  result = a1[4];
+  a2[1] = self[1];
+  a2[2] = self[2];
+  a2[3] = self[3];
+  result = self[4];
   a2[4] = result;
   return result;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
   v31[3] = __Block_byref_object_copy__221;
   v31[4] = __Block_byref_object_dispose__222;
-  v32 = a4;
-  v5 = v32;
+  connectionCopy = connection;
+  v5 = connectionCopy;
   v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F5999938];
   [v5 setExportedInterface:v6];
 
@@ -224,9 +224,9 @@ LABEL_7:
   v7 = v5;
   v29 = v7;
   [v7 setInvalidationHandler:v28];
-  v8 = self;
-  objc_sync_enter(v8);
-  [(Core_Audio_Driver_Registrar *)v8 connection_infos];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(Core_Audio_Driver_Registrar *)selfCopy connection_infos];
   v10 = v26[1];
   v9 = v26[2];
   if (v10 >= v9)
@@ -315,7 +315,7 @@ LABEL_7:
     std::__shared_weak_count::__release_shared[abi:ne200100](v27);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   [v7 resume];
   _Block_object_dispose(v31, 8);

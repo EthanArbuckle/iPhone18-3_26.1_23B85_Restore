@@ -1,16 +1,16 @@
 @interface PPLocationQuery
-+ (id)_algorithmsDescription:(id)a3;
-+ (id)_matchingCategoriesDescription:(id)a3;
-+ (id)queryForMapsWithLimit:(unint64_t)a3 fromDate:(id)a4 consumerType:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLocationQuery:(id)a3;
++ (id)_algorithmsDescription:(id)description;
++ (id)_matchingCategoriesDescription:(id)description;
++ (id)queryForMapsWithLimit:(unint64_t)limit fromDate:(id)date consumerType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLocationQuery:(id)query;
 - (PPLocationQuery)init;
-- (PPLocationQuery)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PPLocationQuery)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)customizedDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPLocationQuery
@@ -254,28 +254,28 @@
   return self->_filterByRelevanceDate - v19 + 32 * v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPLocationQuery *)self isEqualToLocationQuery:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPLocationQuery *)self isEqualToLocationQuery:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToLocationQuery:(id)a3
+- (BOOL)isEqualToLocationQuery:(id)query
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_limit != v4[2])
+  queryCopy = query;
+  v5 = queryCopy;
+  if (!queryCopy || self->_limit != queryCopy[2])
   {
     goto LABEL_60;
   }
@@ -394,16 +394,16 @@
   }
 
   v6 = self->_matchingContactHandle;
-  v13 = [v5 matchingContactHandle];
-  if (v6 | v13)
+  matchingContactHandle = [v5 matchingContactHandle];
+  if (v6 | matchingContactHandle)
   {
-    v19 = v13;
-    if (!v6 || !v13)
+    v19 = matchingContactHandle;
+    if (!v6 || !matchingContactHandle)
     {
       goto LABEL_59;
     }
 
-    v26 = [(NSSet *)v6 isEqualToString:v13];
+    v26 = [(NSSet *)v6 isEqualToString:matchingContactHandle];
 
     if (!v26)
     {
@@ -484,52 +484,52 @@ LABEL_61:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PPLocationQuery allocWithZone:](PPLocationQuery init];
   v5->_limit = self->_limit;
-  v6 = [(NSDate *)self->_fromDate copyWithZone:a3];
+  v6 = [(NSDate *)self->_fromDate copyWithZone:zone];
   fromDate = v5->_fromDate;
   v5->_fromDate = v6;
 
-  v8 = [(NSDate *)self->_toDate copyWithZone:a3];
+  v8 = [(NSDate *)self->_toDate copyWithZone:zone];
   toDate = v5->_toDate;
   v5->_toDate = v8;
 
-  v10 = [(NSDate *)self->_scoringDate copyWithZone:a3];
+  v10 = [(NSDate *)self->_scoringDate copyWithZone:zone];
   scoringDate = v5->_scoringDate;
   v5->_scoringDate = v10;
 
-  v12 = [(NSSet *)self->_matchingSourceBundleIds copyWithZone:a3];
+  v12 = [(NSSet *)self->_matchingSourceBundleIds copyWithZone:zone];
   matchingSourceBundleIds = v5->_matchingSourceBundleIds;
   v5->_matchingSourceBundleIds = v12;
 
-  v14 = [(NSSet *)self->_excludingSourceBundleIds copyWithZone:a3];
+  v14 = [(NSSet *)self->_excludingSourceBundleIds copyWithZone:zone];
   excludingSourceBundleIds = v5->_excludingSourceBundleIds;
   v5->_excludingSourceBundleIds = v14;
 
   v5->_deviceFilter = self->_deviceFilter;
   v5->_perRecordDecayRate = self->_perRecordDecayRate;
   v5->_decayRate = self->_decayRate;
-  v16 = [(NSString *)self->_fuzzyMatchingString copyWithZone:a3];
+  v16 = [(NSString *)self->_fuzzyMatchingString copyWithZone:zone];
   fuzzyMatchingString = v5->_fuzzyMatchingString;
   v5->_fuzzyMatchingString = v16;
 
-  v18 = [(NSSet *)self->_matchingCategories copyWithZone:a3];
+  v18 = [(NSSet *)self->_matchingCategories copyWithZone:zone];
   matchingCategories = v5->_matchingCategories;
   v5->_matchingCategories = v18;
 
-  v20 = [(NSSet *)self->_matchingAlgorithms copyWithZone:a3];
+  v20 = [(NSSet *)self->_matchingAlgorithms copyWithZone:zone];
   matchingAlgorithms = v5->_matchingAlgorithms;
   v5->_matchingAlgorithms = v20;
 
-  v22 = [(NSSet *)self->_excludingAlgorithms copyWithZone:a3];
+  v22 = [(NSSet *)self->_excludingAlgorithms copyWithZone:zone];
   excludingAlgorithms = v5->_excludingAlgorithms;
   v5->_excludingAlgorithms = v22;
 
   v5->_excludingWithoutSentiment = self->_excludingWithoutSentiment;
   v5->_consumer = self->_consumer;
-  v24 = [(NSString *)self->_matchingContactHandle copyWithZone:a3];
+  v24 = [(NSString *)self->_matchingContactHandle copyWithZone:zone];
   matchingContactHandle = v5->_matchingContactHandle;
   v5->_matchingContactHandle = v24;
 
@@ -537,32 +537,32 @@ LABEL_61:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   limit = self->_limit;
-  v5 = a3;
-  [v5 encodeInteger:limit forKey:@"lim"];
-  [v5 encodeObject:self->_fromDate forKey:@"fd"];
-  [v5 encodeObject:self->_toDate forKey:@"td"];
-  [v5 encodeObject:self->_scoringDate forKey:@"sd"];
-  [v5 encodeObject:self->_matchingSourceBundleIds forKey:@"mbi"];
-  [v5 encodeObject:self->_excludingSourceBundleIds forKey:@"ebi"];
-  [v5 encodeInt32:LODWORD(self->_deviceFilter) forKey:@"devf"];
-  [v5 encodeDouble:@"prd" forKey:self->_perRecordDecayRate];
-  [v5 encodeDouble:@"dr" forKey:self->_decayRate];
-  [v5 encodeObject:self->_fuzzyMatchingString forKey:@"ms"];
-  [v5 encodeObject:self->_matchingCategories forKey:@"mc"];
-  [v5 encodeObject:self->_matchingAlgorithms forKey:@"ma"];
-  [v5 encodeObject:self->_excludingAlgorithms forKey:@"ea"];
-  [v5 encodeBool:self->_excludingWithoutSentiment forKey:@"ews"];
-  [v5 encodeInteger:self->_consumer forKey:@"cons"];
-  [v5 encodeObject:self->_matchingContactHandle forKey:@"mch"];
-  [v5 encodeBool:self->_filterByRelevanceDate forKey:@"fbrd"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:limit forKey:@"lim"];
+  [coderCopy encodeObject:self->_fromDate forKey:@"fd"];
+  [coderCopy encodeObject:self->_toDate forKey:@"td"];
+  [coderCopy encodeObject:self->_scoringDate forKey:@"sd"];
+  [coderCopy encodeObject:self->_matchingSourceBundleIds forKey:@"mbi"];
+  [coderCopy encodeObject:self->_excludingSourceBundleIds forKey:@"ebi"];
+  [coderCopy encodeInt32:LODWORD(self->_deviceFilter) forKey:@"devf"];
+  [coderCopy encodeDouble:@"prd" forKey:self->_perRecordDecayRate];
+  [coderCopy encodeDouble:@"dr" forKey:self->_decayRate];
+  [coderCopy encodeObject:self->_fuzzyMatchingString forKey:@"ms"];
+  [coderCopy encodeObject:self->_matchingCategories forKey:@"mc"];
+  [coderCopy encodeObject:self->_matchingAlgorithms forKey:@"ma"];
+  [coderCopy encodeObject:self->_excludingAlgorithms forKey:@"ea"];
+  [coderCopy encodeBool:self->_excludingWithoutSentiment forKey:@"ews"];
+  [coderCopy encodeInteger:self->_consumer forKey:@"cons"];
+  [coderCopy encodeObject:self->_matchingContactHandle forKey:@"mch"];
+  [coderCopy encodeBool:self->_filterByRelevanceDate forKey:@"fbrd"];
 }
 
-- (PPLocationQuery)initWithCoder:(id)a3
+- (PPLocationQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PPLocationQuery *)self init];
   if (v5)
   {
@@ -577,55 +577,55 @@ LABEL_61:
     v13 = objc_opt_class();
     v14 = [v12 initWithObjects:{v13, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v11);
-    v5->_limit = [v4 decodeIntegerForKey:@"lim"];
-    v15 = [v4 decodeObjectOfClass:v6 forKey:@"fd"];
+    v5->_limit = [coderCopy decodeIntegerForKey:@"lim"];
+    v15 = [coderCopy decodeObjectOfClass:v6 forKey:@"fd"];
     fromDate = v5->_fromDate;
     v5->_fromDate = v15;
 
-    v17 = [v4 decodeObjectOfClass:v6 forKey:@"td"];
+    v17 = [coderCopy decodeObjectOfClass:v6 forKey:@"td"];
     toDate = v5->_toDate;
     v5->_toDate = v17;
 
-    v19 = [v4 decodeObjectOfClass:v6 forKey:@"sd"];
+    v19 = [coderCopy decodeObjectOfClass:v6 forKey:@"sd"];
     scoringDate = v5->_scoringDate;
     v5->_scoringDate = v19;
 
-    v21 = [v4 decodeObjectOfClasses:v10 forKey:@"mbi"];
+    v21 = [coderCopy decodeObjectOfClasses:v10 forKey:@"mbi"];
     matchingSourceBundleIds = v5->_matchingSourceBundleIds;
     v5->_matchingSourceBundleIds = v21;
 
-    v23 = [v4 decodeObjectOfClasses:v10 forKey:@"ebi"];
+    v23 = [coderCopy decodeObjectOfClasses:v10 forKey:@"ebi"];
     excludingSourceBundleIds = v5->_excludingSourceBundleIds;
     v5->_excludingSourceBundleIds = v23;
 
-    v5->_deviceFilter = [v4 decodeInt32ForKey:@"devf"];
-    [v4 decodeDoubleForKey:@"prd"];
+    v5->_deviceFilter = [coderCopy decodeInt32ForKey:@"devf"];
+    [coderCopy decodeDoubleForKey:@"prd"];
     v5->_perRecordDecayRate = v25;
-    [v4 decodeDoubleForKey:@"dr"];
+    [coderCopy decodeDoubleForKey:@"dr"];
     v5->_decayRate = v26;
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ms"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ms"];
     fuzzyMatchingString = v5->_fuzzyMatchingString;
     v5->_fuzzyMatchingString = v27;
 
-    v29 = [v4 decodeObjectOfClasses:v14 forKey:@"mc"];
+    v29 = [coderCopy decodeObjectOfClasses:v14 forKey:@"mc"];
     matchingCategories = v5->_matchingCategories;
     v5->_matchingCategories = v29;
 
-    v31 = [v4 decodeObjectOfClasses:v14 forKey:@"ma"];
+    v31 = [coderCopy decodeObjectOfClasses:v14 forKey:@"ma"];
     matchingAlgorithms = v5->_matchingAlgorithms;
     v5->_matchingAlgorithms = v31;
 
-    v33 = [v4 decodeObjectOfClasses:v14 forKey:@"ea"];
+    v33 = [coderCopy decodeObjectOfClasses:v14 forKey:@"ea"];
     excludingAlgorithms = v5->_excludingAlgorithms;
     v5->_excludingAlgorithms = v33;
 
-    v5->_excludingWithoutSentiment = [v4 decodeBoolForKey:@"ews"];
-    v5->_consumer = [v4 decodeIntegerForKey:@"cons"];
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mch"];
+    v5->_excludingWithoutSentiment = [coderCopy decodeBoolForKey:@"ews"];
+    v5->_consumer = [coderCopy decodeIntegerForKey:@"cons"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mch"];
     matchingContactHandle = v5->_matchingContactHandle;
     v5->_matchingContactHandle = v35;
 
-    v5->_filterByRelevanceDate = [v4 decodeBoolForKey:@"fbrd"];
+    v5->_filterByRelevanceDate = [coderCopy decodeBoolForKey:@"fbrd"];
     v37 = v5;
   }
 
@@ -649,13 +649,13 @@ LABEL_61:
   return result;
 }
 
-+ (id)queryForMapsWithLimit:(unint64_t)a3 fromDate:(id)a4 consumerType:(unint64_t)a5
++ (id)queryForMapsWithLimit:(unint64_t)limit fromDate:(id)date consumerType:(unint64_t)type
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  dateCopy = date;
   v8 = objc_opt_new();
   v9 = v8;
-  if (a5 == 3)
+  if (type == 3)
   {
     [v8 setExcludingAlgorithms:0];
   }
@@ -668,13 +668,13 @@ LABEL_61:
     [v9 setExcludingAlgorithms:v11];
   }
 
-  [v9 setFromDate:v7];
+  [v9 setFromDate:dateCopy];
   [v9 setPerRecordDecayRate:0.000385];
-  [v9 setConsumer:a5];
+  [v9 setConsumer:type];
   v12 = objc_autoreleasePoolPush();
   v13 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"com.apple.Maps", @"com.apple.CoreRoutine", @"com.apple.mobilecal", @"com.apple.iCal", @"com.apple.Passbook", 0}];
   objc_autoreleasePoolPop(v12);
-  if (a5 == 3)
+  if (type == 3)
   {
     [v9 setExcludingSourceBundleIds:v13];
   }
@@ -689,23 +689,23 @@ LABEL_61:
     [v9 setExcludingSourceBundleIds:v15];
   }
 
-  [v9 setLimit:a3];
+  [v9 setLimit:limit];
 
   v16 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-+ (id)_algorithmsDescription:(id)a3
++ (id)_algorithmsDescription:(id)description
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  descriptionCopy = description;
   v4 = [MEMORY[0x1E696AD60] stringWithString:@"["];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = descriptionCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -749,16 +749,16 @@ LABEL_61:
   return v4;
 }
 
-+ (id)_matchingCategoriesDescription:(id)a3
++ (id)_matchingCategoriesDescription:(id)description
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  descriptionCopy = description;
   v4 = [MEMORY[0x1E696AD60] stringWithString:@"["];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = descriptionCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {

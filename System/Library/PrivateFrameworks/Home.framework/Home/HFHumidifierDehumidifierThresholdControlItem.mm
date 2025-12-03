@@ -1,23 +1,23 @@
 @interface HFHumidifierDehumidifierThresholdControlItem
 + (id)readOnlyCharacteristicTypes;
-- (HFHumidifierDehumidifierThresholdControlItem)initWithValueSource:(id)a3 displayResults:(id)a4;
+- (HFHumidifierDehumidifierThresholdControlItem)initWithValueSource:(id)source displayResults:(id)results;
 - (id)numberValueFormatter;
-- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)a3;
-- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)a3;
+- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)type;
+- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)type;
 @end
 
 @implementation HFHumidifierDehumidifierThresholdControlItem
 
-- (HFHumidifierDehumidifierThresholdControlItem)initWithValueSource:(id)a3 displayResults:(id)a4
+- (HFHumidifierDehumidifierThresholdControlItem)initWithValueSource:(id)source displayResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  resultsCopy = results;
   v8 = objc_opt_class();
   v9 = *MEMORY[0x277CCF8E0];
-  v10 = [v8 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCF8E0] valueSource:v6];
+  v10 = [v8 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCF8E0] valueSource:sourceCopy];
   v11 = objc_opt_class();
   v12 = *MEMORY[0x277CCF888];
-  v13 = [v11 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCF888] valueSource:v6];
+  v13 = [v11 _hasWritableCharacteristicsOfType:*MEMORY[0x277CCF888] valueSource:sourceCopy];
   if (v10)
   {
     v14 = v13 == 0;
@@ -67,7 +67,7 @@ LABEL_10:
 LABEL_14:
   v23.receiver = self;
   v23.super_class = HFHumidifierDehumidifierThresholdControlItem;
-  v21 = [(HFRangeControlItem *)&v23 initWithValueSource:v6 targetCharacteristicTypes:v19 minimumCharacteristicType:v17 maximumCharacteristicType:v18 displayResults:v7];
+  v21 = [(HFRangeControlItem *)&v23 initWithValueSource:sourceCopy targetCharacteristicTypes:v19 minimumCharacteristicType:v17 maximumCharacteristicType:v18 displayResults:resultsCopy];
 
   return v21;
 }
@@ -99,11 +99,11 @@ void __75__HFHumidifierDehumidifierThresholdControlItem_readOnlyCharacteristicTy
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)a3
+- (unint64_t)rangeModeWithCharacteristicValuesKeyedByType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCFB30]];
+  v5 = [typeCopy objectForKeyedSubscript:*MEMORY[0x277CCFB30]];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -126,9 +126,9 @@ void __75__HFHumidifierDehumidifierThresholdControlItem_readOnlyCharacteristicTy
     else
     {
       v10 = v9;
-      v11 = [(HFRangeControlItem *)self maximumCharacteristicType];
+      maximumCharacteristicType = [(HFRangeControlItem *)self maximumCharacteristicType];
 
-      if (v11)
+      if (maximumCharacteristicType)
       {
         v8 = 2;
       }
@@ -148,11 +148,11 @@ void __75__HFHumidifierDehumidifierThresholdControlItem_readOnlyCharacteristicTy
   return v8;
 }
 
-- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)a3
+- (id)targetCharacteristicTypeWithCharacteristicValuesKeyedByType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCFB30]];
+  v5 = [typeCopy objectForKeyedSubscript:*MEMORY[0x277CCFB30]];
 
   if (objc_opt_isKindOfClass())
   {
@@ -173,16 +173,16 @@ void __75__HFHumidifierDehumidifierThresholdControlItem_readOnlyCharacteristicTy
 
   v8 = objc_opt_class();
   v9 = *MEMORY[0x277CCF8E0];
-  v10 = [(HFControlItem *)self valueSource];
-  v11 = [v8 _hasWritableCharacteristicsOfType:v9 valueSource:v10];
+  valueSource = [(HFControlItem *)self valueSource];
+  v11 = [v8 _hasWritableCharacteristicsOfType:v9 valueSource:valueSource];
 
   v12 = objc_opt_class();
   v13 = *MEMORY[0x277CCF888];
-  v14 = [(HFControlItem *)self valueSource];
-  v15 = [v12 _hasWritableCharacteristicsOfType:v13 valueSource:v14];
+  valueSource2 = [(HFControlItem *)self valueSource];
+  v15 = [v12 _hasWritableCharacteristicsOfType:v13 valueSource:valueSource2];
 
-  v16 = [v7 integerValue];
-  if (v16 == 1)
+  integerValue = [v7 integerValue];
+  if (integerValue == 1)
   {
     if (v11)
     {
@@ -201,7 +201,7 @@ void __75__HFHumidifierDehumidifierThresholdControlItem_readOnlyCharacteristicTy
     v22 = buf;
   }
 
-  else if (v16 == 2)
+  else if (integerValue == 2)
   {
     if (v15)
     {
@@ -263,9 +263,9 @@ LABEL_24:
 - (id)numberValueFormatter
 {
   v2 = +[HFFormatterManager sharedInstance];
-  v3 = [v2 percentFormatter];
+  percentFormatter = [v2 percentFormatter];
 
-  return v3;
+  return percentFormatter;
 }
 
 @end

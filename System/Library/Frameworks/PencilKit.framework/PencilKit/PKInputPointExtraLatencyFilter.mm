@@ -1,11 +1,11 @@
 @interface PKInputPointExtraLatencyFilter
 - (id).cxx_construct;
-- (void)addInputPoint:(id *)a3;
+- (void)addInputPoint:(id *)point;
 @end
 
 @implementation PKInputPointExtraLatencyFilter
 
-- (void)addInputPoint:(id *)a3
+- (void)addInputPoint:(id *)point
 {
   if (self)
   {
@@ -69,18 +69,18 @@
         }
 
         v22 = 136 * v9;
-        *v22 = a3->var0;
-        v23 = *&a3->var1;
-        v24 = *&a3->var3;
-        v25 = *&a3->var7;
-        *(v22 + 48) = *&a3->var5;
+        *v22 = point->var0;
+        v23 = *&point->var1;
+        v24 = *&point->var3;
+        v25 = *&point->var7;
+        *(v22 + 48) = *&point->var5;
         *(v22 + 64) = v25;
         *(v22 + 16) = v23;
         *(v22 + 32) = v24;
-        v26 = *&a3->var9;
-        v27 = *&a3->var11;
-        v28 = *&a3->var13;
-        *(v22 + 128) = a3->var15;
+        v26 = *&point->var9;
+        v27 = *&point->var11;
+        v28 = *&point->var13;
+        *(v22 + 128) = point->var15;
         *(v22 + 96) = v27;
         *(v22 + 112) = v28;
         *(v22 + 80) = v26;
@@ -100,18 +100,18 @@
 
       else
       {
-        *end = a3->var0;
-        v12 = *&a3->var1;
-        v13 = *&a3->var3;
-        v14 = *&a3->var7;
-        *(end + 3) = *&a3->var5;
+        *end = point->var0;
+        v12 = *&point->var1;
+        v13 = *&point->var3;
+        v14 = *&point->var7;
+        *(end + 3) = *&point->var5;
         *(end + 4) = v14;
         *(end + 1) = v12;
         *(end + 2) = v13;
-        v15 = *&a3->var9;
-        v16 = *&a3->var11;
-        v17 = *&a3->var13;
-        *(end + 16) = a3->var15;
+        v15 = *&point->var9;
+        v16 = *&point->var11;
+        v17 = *&point->var13;
+        *(end + 16) = point->var15;
         *(end + 6) = v16;
         *(end + 7) = v17;
         *(end + 5) = v15;
@@ -119,10 +119,10 @@
       }
 
       self->_inputPoints.__end_ = v18;
-      a3 = p_inputPoints->__begin_;
+      point = p_inputPoints->__begin_;
     }
 
-    memmove(&self->super._filteredPoint, a3, 0x88uLL);
+    memmove(&self->super._filteredPoint, point, 0x88uLL);
   }
 }
 

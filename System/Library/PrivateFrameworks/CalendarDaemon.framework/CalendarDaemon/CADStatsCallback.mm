@@ -1,24 +1,24 @@
 @interface CADStatsCallback
-- (CADStatsCallback)initWithEventName:(id)a3 callback:(id)a4;
+- (CADStatsCallback)initWithEventName:(id)name callback:(id)callback;
 - (id)eventDictionaries;
 @end
 
 @implementation CADStatsCallback
 
-- (CADStatsCallback)initWithEventName:(id)a3 callback:(id)a4
+- (CADStatsCallback)initWithEventName:(id)name callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  callbackCopy = callback;
   v14.receiver = self;
   v14.super_class = CADStatsCallback;
   v8 = [(CADStatsCallback *)&v14 init];
   if (v8)
   {
-    v9 = [@"cadstats." stringByAppendingString:v6];
+    v9 = [@"cadstats." stringByAppendingString:nameCopy];
     eventName = v8->_eventName;
     v8->_eventName = v9;
 
-    v11 = MEMORY[0x22AA4DCD0](v7);
+    v11 = MEMORY[0x22AA4DCD0](callbackCopy);
     callback = v8->_callback;
     v8->_callback = v11;
   }

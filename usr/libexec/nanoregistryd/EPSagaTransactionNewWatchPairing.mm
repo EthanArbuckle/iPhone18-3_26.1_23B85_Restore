@@ -3,11 +3,11 @@
 - (id)pairingID;
 - (id)pairingReport;
 - (id)registry;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)buildRoutingSlipEntries:(id)a3 serviceRegistry:(id)a4 completion:(id)a5;
-- (void)notifyPasscode:(id)a3;
-- (void)routingSlipDidComplete:(id)a3 serviceRegistry:(id)a4;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)buildRoutingSlipEntries:(id)entries serviceRegistry:(id)registry completion:(id)completion;
+- (void)notifyPasscode:(id)passcode;
+- (void)routingSlipDidComplete:(id)complete serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionNewWatchPairing
@@ -38,19 +38,19 @@
   return [(EPServiceRegistry *)serviceRegistry serviceFromClass:v3];
 }
 
-- (void)buildRoutingSlipEntries:(id)a3 serviceRegistry:(id)a4 completion:(id)a5
+- (void)buildRoutingSlipEntries:(id)entries serviceRegistry:(id)registry completion:(id)completion
 {
-  v9 = a3;
-  v122 = a4;
-  v119 = a5;
-  objc_storeStrong(&self->_parentRoutingSlipEntry, a3);
-  objc_storeStrong(&self->_serviceRegistry, a4);
-  v121 = [v9 objectForKeyedSubscript:@"updatedDuringPairing"];
-  v10 = [v121 BOOLValue];
-  v120 = [v9 objectForKeyedSubscript:?];
+  entriesCopy = entries;
+  registryCopy = registry;
+  completionCopy = completion;
+  objc_storeStrong(&self->_parentRoutingSlipEntry, entries);
+  objc_storeStrong(&self->_serviceRegistry, registry);
+  v121 = [entriesCopy objectForKeyedSubscript:@"updatedDuringPairing"];
+  bOOLValue = [v121 BOOLValue];
+  v120 = [entriesCopy objectForKeyedSubscript:?];
   if ([@"extensiblePairingTypeDiscoverAndPairWithDeviceID" isEqual:?])
   {
-    [v9 objectForKeyedSubscript:@"nrDeviceIdentifier"];
+    [entriesCopy objectForKeyedSubscript:@"nrDeviceIdentifier"];
   }
 
   else
@@ -66,10 +66,10 @@
 
   else
   {
-    v13 = [v9 objectForKeyedSubscript:@"isAltAccountGizmo"];
+    v13 = [entriesCopy objectForKeyedSubscript:@"isAltAccountGizmo"];
   }
 
-  v124 = v9;
+  v124 = entriesCopy;
   if (([v13 BOOLValue] & 1) == 0)
   {
 
@@ -80,7 +80,7 @@
   p_info = (&OBJC_METACLASS___NRPBRTCMigrationMetricSessionID + 32);
   v125 = v11;
   v126 = v12;
-  if ((v10 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v15 = [EPRoutingSlipEntry alloc];
     v16 = objc_opt_class();
@@ -305,70 +305,70 @@
   v105 = [(EPRoutingSlipEntry *)v101 initWithName:@"tellIDSLocalPairingSetupCompleted" transactionClass:v102 operands:v104];
 
   [v126 addObject:v105];
-  v106 = [v124 queue];
+  queue = [v124 queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009E9C8;
   block[3] = &unk_100175688;
   v128 = v126;
-  v129 = v119;
+  v129 = completionCopy;
   v107 = v126;
-  v108 = v119;
-  dispatch_async(v106, block);
+  v108 = completionCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 addService:self];
+  registryCopy = registry;
+  entryCopy = entry;
+  [registryCopy addService:self];
   v8.receiver = self;
   v8.super_class = EPSagaTransactionNewWatchPairing;
-  [(EPSagaTransactionRoutingSlip *)&v8 beginTransactionWithRoutingSlipEntry:v7 serviceRegistry:v6];
+  [(EPSagaTransactionRoutingSlip *)&v8 beginTransactionWithRoutingSlipEntry:entryCopy serviceRegistry:registryCopy];
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 addService:self];
+  registryCopy = registry;
+  entryCopy = entry;
+  [registryCopy addService:self];
   v8.receiver = self;
   v8.super_class = EPSagaTransactionNewWatchPairing;
-  [(EPSagaTransactionRoutingSlip *)&v8 beginRollbackWithRoutingSlipEntry:v7 serviceRegistry:v6];
+  [(EPSagaTransactionRoutingSlip *)&v8 beginRollbackWithRoutingSlipEntry:entryCopy serviceRegistry:registryCopy];
 }
 
-- (void)routingSlipDidComplete:(id)a3 serviceRegistry:(id)a4
+- (void)routingSlipDidComplete:(id)complete serviceRegistry:(id)registry
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 removeService:self];
+  registryCopy = registry;
+  completeCopy = complete;
+  [registryCopy removeService:self];
   v8.receiver = self;
   v8.super_class = EPSagaTransactionNewWatchPairing;
-  [(EPSagaTransactionRoutingSlip *)&v8 routingSlipDidComplete:v7 serviceRegistry:v6];
+  [(EPSagaTransactionRoutingSlip *)&v8 routingSlipDidComplete:completeCopy serviceRegistry:registryCopy];
 }
 
-- (void)notifyPasscode:(id)a3
+- (void)notifyPasscode:(id)passcode
 {
   serviceRegistry = self->_serviceRegistry;
-  v4 = a3;
+  passcodeCopy = passcode;
   v5 = [(EPServiceRegistry *)serviceRegistry optionalServiceFromClass:objc_opt_class()];
-  [v5 notifyPasscode:v4];
+  [v5 notifyPasscode:passcodeCopy];
 }
 
 - (id)pairingReport
 {
   v2 = [(EPServiceRegistry *)self->_serviceRegistry optionalServiceFromClass:objc_opt_class()];
-  v3 = [v2 pairingReport];
+  pairingReport = [v2 pairingReport];
 
-  return v3;
+  return pairingReport;
 }
 
 - (id)pairingID
 {
   v2 = [(EPServiceRegistry *)self->_serviceRegistry optionalServiceFromClass:objc_opt_class()];
-  v3 = [v2 pairingID];
+  pairingID = [v2 pairingID];
 
-  return v3;
+  return pairingID;
 }
 
 @end

@@ -32,10 +32,10 @@
   {
     if (a6)
     {
-      [a1 downloadArtworkForPodcastIfNeeded:v10 successCallback:0];
+      [self downloadArtworkForPodcastIfNeeded:v10 successCallback:0];
     }
 
-    v12 = [a1 _defaultPlaceholderArtworkWithSize:{a2, a3}];
+    v12 = [self _defaultPlaceholderArtworkWithSize:{a2, a3}];
   }
 
   return v12;
@@ -47,8 +47,8 @@
   v11 = a6;
   if (v11)
   {
-    objc_initWeak(&location, a1);
-    v12 = [a1 _imageFetchQueue];
+    objc_initWeak(&location, self);
+    _imageFetchQueue = [self _imageFetchQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __65__MTPodcast_Artwork__fetchArtworkForPodcastUuid_size_completion___block_invoke;
@@ -56,10 +56,10 @@
     v14 = v10;
     v16[1] = *&a2;
     v16[2] = *&a3;
-    v16[3] = a1;
+    v16[3] = self;
     objc_copyWeak(v16, &location);
     v15 = v11;
-    dispatch_async(v12, block);
+    dispatch_async(_imageFetchQueue, block);
 
     objc_destroyWeak(v16);
     objc_destroyWeak(&location);
@@ -90,7 +90,7 @@
 
   else
   {
-    v14 = [a1 _defaultPlaceholderArtworkWithSize:{a2, a3}];
+    v14 = [self _defaultPlaceholderArtworkWithSize:{a2, a3}];
     (*(v11 + 2))(v11, v14);
   }
 }
@@ -109,7 +109,7 @@
     v8 = &__block_literal_global_5;
   }
 
-  if ([a1 isImageCachedForPodcastUuid:v6])
+  if ([self isImageCachedForPodcastUuid:v6])
   {
     v8[2](v8, 1);
   }
@@ -129,8 +129,8 @@
 - (id)artworkWithSize:()Artwork
 {
   v6 = objc_opt_class();
-  v7 = [a1 uuid];
-  v8 = [v6 artworkForPodcastUuid:v7 size:1 triggerDownload:{a2, a3}];
+  uuid = [self uuid];
+  v8 = [v6 artworkForPodcastUuid:uuid size:1 triggerDownload:{a2, a3}];
 
   return v8;
 }
@@ -139,14 +139,14 @@
 {
   v8 = a5;
   v9 = objc_opt_class();
-  v10 = [a1 uuid];
-  [v9 fetchArtworkForPodcastUuid:v10 size:v8 completion:{a2, a3}];
+  uuid = [self uuid];
+  [v9 fetchArtworkForPodcastUuid:uuid size:v8 completion:{a2, a3}];
 }
 
 + (id)_defaultPlaceholderArtworkWithSize:()Artwork
 {
   v4 = +[MTImageStore defaultStore];
-  v5 = [v4 imageForKey:*MEMORY[0x277D3DD30] size:{a1, a2}];
+  v5 = [v4 imageForKey:*MEMORY[0x277D3DD30] size:{self, a2}];
 
   return v5;
 }

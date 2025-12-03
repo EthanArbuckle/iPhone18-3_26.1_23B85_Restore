@@ -1,44 +1,44 @@
 @interface CHUISWatchComplicationsWidgetSnapshotMetadata
-- (BOOL)isEqual:(id)a3;
-- (CHUISWatchComplicationsWidgetSnapshotMetadata)initWithBSXPCCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CHUISWatchComplicationsWidgetSnapshotMetadata)initWithBSXPCCoder:(id)coder;
 - (NSString)description;
-- (id)_encodedLabelData:(id)a3 atDirectory:(id)a4;
-- (id)_initWithSnapshotMetadata:(id)a3;
-- (id)copyForEncodingAtUrlDirectory:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_encodedLabelData:(id)data atDirectory:(id)directory;
+- (id)_initWithSnapshotMetadata:(id)metadata;
+- (id)copyForEncodingAtUrlDirectory:(id)directory;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation CHUISWatchComplicationsWidgetSnapshotMetadata
 
-- (id)_initWithSnapshotMetadata:(id)a3
+- (id)_initWithSnapshotMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v8.receiver = self;
   v8.super_class = CHUISWatchComplicationsWidgetSnapshotMetadata;
   v5 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)&v8 init];
   p_isa = &v5->super.isa;
   if (v5)
   {
-    objc_storeStrong(&v5->_labelData, v4[1]);
-    objc_storeStrong(p_isa + 2, v4[2]);
-    objc_storeStrong(p_isa + 3, v4[3]);
-    objc_storeStrong(p_isa + 4, v4[4]);
-    objc_storeStrong(p_isa + 5, v4[5]);
-    objc_storeStrong(p_isa + 6, v4[6]);
+    objc_storeStrong(&v5->_labelData, metadataCopy[1]);
+    objc_storeStrong(p_isa + 2, metadataCopy[2]);
+    objc_storeStrong(p_isa + 3, metadataCopy[3]);
+    objc_storeStrong(p_isa + 4, metadataCopy[4]);
+    objc_storeStrong(p_isa + 5, metadataCopy[5]);
+    objc_storeStrong(p_isa + 6, metadataCopy[6]);
   }
 
   return p_isa;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v6 = objc_opt_class();
-  v7 = v4;
+  v7 = equalCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -114,14 +114,14 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_labelData];
-  v5 = [v3 appendObject:self->_gauge];
-  v6 = [v3 appendObject:self->_gaugeProviderData];
-  v7 = [v3 appendObject:self->_gaugeMinimumLabelData];
-  v8 = [v3 appendObject:self->_gaugeMaximumLabelData];
-  v9 = [v3 appendObject:self->_outerLabelData];
-  v10 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_labelData];
+  v5 = [builder appendObject:self->_gauge];
+  v6 = [builder appendObject:self->_gaugeProviderData];
+  v7 = [builder appendObject:self->_gaugeMinimumLabelData];
+  v8 = [builder appendObject:self->_gaugeMaximumLabelData];
+  v9 = [builder appendObject:self->_outerLabelData];
+  v10 = [builder hash];
 
   return v10;
 }
@@ -135,55 +135,55 @@
   v7 = [v3 appendObject:self->_gaugeMinimumLabelData withName:@"gaugeMinimumLabelData" skipIfNil:1];
   v8 = [v3 appendObject:self->_gaugeMaximumLabelData withName:@"gaugeMaximumLabelData" skipIfNil:1];
   v9 = [v3 appendObject:self->_outerLabelData withName:@"outerLabelData" skipIfNil:1];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeCollection:self->_labelData forKey:@"labelData"];
-  [v4 encodeObject:self->_gauge forKey:@"gauge"];
-  [v4 encodeObject:self->_gaugeProviderData forKey:@"gaugeProviderData"];
-  [v4 encodeObject:self->_gaugeMinimumLabelData forKey:@"gaugeMinimumLabelData"];
-  [v4 encodeObject:self->_gaugeMaximumLabelData forKey:@"gaugeMaximumLabelData"];
-  [v4 encodeObject:self->_outerLabelData forKey:@"outerLabelData"];
+  coderCopy = coder;
+  [coderCopy encodeCollection:self->_labelData forKey:@"labelData"];
+  [coderCopy encodeObject:self->_gauge forKey:@"gauge"];
+  [coderCopy encodeObject:self->_gaugeProviderData forKey:@"gaugeProviderData"];
+  [coderCopy encodeObject:self->_gaugeMinimumLabelData forKey:@"gaugeMinimumLabelData"];
+  [coderCopy encodeObject:self->_gaugeMaximumLabelData forKey:@"gaugeMaximumLabelData"];
+  [coderCopy encodeObject:self->_outerLabelData forKey:@"outerLabelData"];
 }
 
-- (CHUISWatchComplicationsWidgetSnapshotMetadata)initWithBSXPCCoder:(id)a3
+- (CHUISWatchComplicationsWidgetSnapshotMetadata)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = CHUISWatchComplicationsWidgetSnapshotMetadata;
   v5 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)&v23 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"labelData"];
+    v7 = [coderCopy decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"labelData"];
     labelData = v5->_labelData;
     v5->_labelData = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gauge"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gauge"];
     gauge = v5->_gauge;
     v5->_gauge = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gaugeProviderData"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gaugeProviderData"];
     gaugeProviderData = v5->_gaugeProviderData;
     v5->_gaugeProviderData = v11;
 
     v13 = objc_opt_class();
-    v14 = [v4 decodeCollectionOfClass:v13 containingClass:objc_opt_class() forKey:@"gaugeMinimumLabelData"];
+    v14 = [coderCopy decodeCollectionOfClass:v13 containingClass:objc_opt_class() forKey:@"gaugeMinimumLabelData"];
     gaugeMinimumLabelData = v5->_gaugeMinimumLabelData;
     v5->_gaugeMinimumLabelData = v14;
 
     v16 = objc_opt_class();
-    v17 = [v4 decodeCollectionOfClass:v16 containingClass:objc_opt_class() forKey:@"gaugeMaximumLabelData"];
+    v17 = [coderCopy decodeCollectionOfClass:v16 containingClass:objc_opt_class() forKey:@"gaugeMaximumLabelData"];
     gaugeMaximumLabelData = v5->_gaugeMaximumLabelData;
     v5->_gaugeMaximumLabelData = v17;
 
     v19 = objc_opt_class();
-    v20 = [v4 decodeCollectionOfClass:v19 containingClass:objc_opt_class() forKey:@"outerLabelData"];
+    v20 = [coderCopy decodeCollectionOfClass:v19 containingClass:objc_opt_class() forKey:@"outerLabelData"];
     outerLabelData = v5->_outerLabelData;
     v5->_outerLabelData = v20;
   }
@@ -191,34 +191,34 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CHUISWatchComplicationsWidgetSnapshotMetadata allocWithZone:a3];
+  v4 = [CHUISWatchComplicationsWidgetSnapshotMetadata allocWithZone:zone];
 
   return [(CHUISWatchComplicationsWidgetSnapshotMetadata *)v4 _initWithSnapshotMetadata:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CHUISMutableWatchComplicationsWidgetSnapshotMetadata allocWithZone:a3];
+  v4 = [CHUISMutableWatchComplicationsWidgetSnapshotMetadata allocWithZone:zone];
 
   return [(CHUISWatchComplicationsWidgetSnapshotMetadata *)v4 _initWithSnapshotMetadata:self];
 }
 
-- (id)copyForEncodingAtUrlDirectory:(id)a3
+- (id)copyForEncodingAtUrlDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self labelData];
-  v6 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self _encodedLabelData:v5 atDirectory:v4];
+  directoryCopy = directory;
+  labelData = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self labelData];
+  v6 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self _encodedLabelData:labelData atDirectory:directoryCopy];
 
-  v7 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self gaugeMinimumLabelData];
-  v8 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self _encodedLabelData:v7 atDirectory:v4];
+  gaugeMinimumLabelData = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self gaugeMinimumLabelData];
+  v8 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self _encodedLabelData:gaugeMinimumLabelData atDirectory:directoryCopy];
 
-  v9 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self gaugeMaximumLabelData];
-  v10 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self _encodedLabelData:v9 atDirectory:v4];
+  gaugeMaximumLabelData = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self gaugeMaximumLabelData];
+  v10 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self _encodedLabelData:gaugeMaximumLabelData atDirectory:directoryCopy];
 
-  v11 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self outerLabelData];
-  v12 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self _encodedLabelData:v11 atDirectory:v4];
+  outerLabelData = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self outerLabelData];
+  v12 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self _encodedLabelData:outerLabelData atDirectory:directoryCopy];
 
   v13 = [(CHUISWatchComplicationsWidgetSnapshotMetadata *)self copy];
   v14 = v13[1];
@@ -239,19 +239,19 @@
   return v13;
 }
 
-- (id)_encodedLabelData:(id)a3 atDirectory:(id)a4
+- (id)_encodedLabelData:(id)data atDirectory:(id)directory
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  dataCopy = data;
+  directoryCopy = directory;
+  if ([dataCopy count])
   {
     v7 = objc_opt_new();
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = v5;
+    v8 = dataCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
@@ -265,7 +265,7 @@
             objc_enumerationMutation(v8);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) copyForEncodingAtUrlDirectory:{v6, v15}];
+          v12 = [*(*(&v15 + 1) + 8 * i) copyForEncodingAtUrlDirectory:{directoryCopy, v15}];
           [v7 addObject:v12];
         }
 

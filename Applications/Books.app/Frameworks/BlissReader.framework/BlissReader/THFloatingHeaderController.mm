@@ -2,7 +2,7 @@
 - (void)dealloc;
 - (void)layoutHeaders;
 - (void)reloadData;
-- (void)setHeaderHidden:(BOOL)a3;
+- (void)setHeaderHidden:(BOOL)hidden;
 @end
 
 @implementation THFloatingHeaderController
@@ -25,8 +25,8 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v3 = [(THFloatingHeaderController *)self headersData];
-    v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v27 objects:v33 count:16];
+    headersData = [(THFloatingHeaderController *)self headersData];
+    v4 = [(NSMutableArray *)headersData countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v4)
     {
       v5 = v4;
@@ -38,7 +38,7 @@
         {
           if (*v28 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(headersData);
           }
 
           [objc_msgSend(*(*(&v27 + 1) + 8 * v7) valueForKey:{@"layer", "removeFromSuperlayer"}];
@@ -46,7 +46,7 @@
         }
 
         while (v5 != v7);
-        v5 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v27 objects:v33 count:16];
+        v5 = [(NSMutableArray *)headersData countByEnumeratingWithState:&v27 objects:v33 count:16];
       }
 
       while (v5);
@@ -58,8 +58,8 @@
   else
   {
     [(THFloatingHeaderController *)self setHeadersData:+[NSMutableArray array]];
-    v8 = [(UITableView *)[(THFloatingHeaderController *)self tableView] superview];
-    v9 = [v8 safeAreaLayoutGuide];
+    superview = [(UITableView *)[(THFloatingHeaderController *)self tableView] superview];
+    safeAreaLayoutGuide = [superview safeAreaLayoutGuide];
     v10 = [UIView alloc];
     [(UITableView *)[(THFloatingHeaderController *)self tableView] frame];
     -[THFloatingHeaderController setHeadersView:](self, "setHeadersView:", [v10 initWithFrame:?]);
@@ -67,11 +67,11 @@
     [(UIView *)[(THFloatingHeaderController *)self headersView] setBackgroundColor:+[UIColor clearColor]];
     [(UIView *)[(THFloatingHeaderController *)self headersView] setClipsToBounds:1];
     [(UIView *)[(THFloatingHeaderController *)self headersView] setUserInteractionEnabled:0];
-    [v8 addSubview:{-[THFloatingHeaderController headersView](self, "headersView")}];
+    [superview addSubview:{-[THFloatingHeaderController headersView](self, "headersView")}];
     v34[0] = [(NSLayoutYAxisAnchor *)[(UIView *)[(THFloatingHeaderController *)self headersView] topAnchor] constraintEqualToAnchor:[(UITableView *)[(THFloatingHeaderController *)self tableView] topAnchor]];
-    v34[1] = -[NSLayoutYAxisAnchor constraintEqualToAnchor:](-[UIView bottomAnchor](-[THFloatingHeaderController headersView](self, "headersView"), "bottomAnchor"), "constraintEqualToAnchor:", [v8 bottomAnchor]);
-    v34[2] = -[NSLayoutXAxisAnchor constraintEqualToAnchor:](-[UIView leadingAnchor](-[THFloatingHeaderController headersView](self, "headersView"), "leadingAnchor"), "constraintEqualToAnchor:", [v9 leadingAnchor]);
-    v34[3] = -[NSLayoutXAxisAnchor constraintEqualToAnchor:](-[UIView trailingAnchor](-[THFloatingHeaderController headersView](self, "headersView"), "trailingAnchor"), "constraintEqualToAnchor:", [v9 trailingAnchor]);
+    v34[1] = -[NSLayoutYAxisAnchor constraintEqualToAnchor:](-[UIView bottomAnchor](-[THFloatingHeaderController headersView](self, "headersView"), "bottomAnchor"), "constraintEqualToAnchor:", [superview bottomAnchor]);
+    v34[2] = -[NSLayoutXAxisAnchor constraintEqualToAnchor:](-[UIView leadingAnchor](-[THFloatingHeaderController headersView](self, "headersView"), "leadingAnchor"), "constraintEqualToAnchor:", [safeAreaLayoutGuide leadingAnchor]);
+    v34[3] = -[NSLayoutXAxisAnchor constraintEqualToAnchor:](-[UIView trailingAnchor](-[THFloatingHeaderController headersView](self, "headersView"), "trailingAnchor"), "constraintEqualToAnchor:", [safeAreaLayoutGuide trailingAnchor]);
     [NSLayoutConstraint activateConstraints:[NSArray arrayWithObjects:v34 count:4]];
     if ([(UITableView *)[(THFloatingHeaderController *)self tableView] _shouldReverseLayoutDirection])
     {
@@ -88,9 +88,9 @@
       *&v31.m21 = *&CATransform3DIdentity.m21;
       *&v31.m23 = v14;
       CATransform3DScale(&v32, &v31, -1.0, 1.0, 1.0);
-      v15 = [(UIView *)[(THFloatingHeaderController *)self headersView] layer];
+      layer = [(UIView *)[(THFloatingHeaderController *)self headersView] layer];
       v31 = v32;
-      [(CALayer *)v15 setSublayerTransform:&v31];
+      [(CALayer *)layer setSublayerTransform:&v31];
     }
   }
 
@@ -132,8 +132,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(THFloatingHeaderController *)self headersData];
-  v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  headersData = [(THFloatingHeaderController *)self headersData];
+  v6 = [(NSMutableArray *)headersData countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -144,7 +144,7 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(headersData);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
@@ -179,7 +179,7 @@
         [v18 removeAllAnimations];
       }
 
-      v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [(NSMutableArray *)headersData countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
@@ -188,12 +188,12 @@
   +[CATransaction commit];
 }
 
-- (void)setHeaderHidden:(BOOL)a3
+- (void)setHeaderHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(THFloatingHeaderController *)self headersView];
+  hiddenCopy = hidden;
+  headersView = [(THFloatingHeaderController *)self headersView];
 
-  [(UIView *)v4 setHidden:v3];
+  [(UIView *)headersView setHidden:hiddenCopy];
 }
 
 @end

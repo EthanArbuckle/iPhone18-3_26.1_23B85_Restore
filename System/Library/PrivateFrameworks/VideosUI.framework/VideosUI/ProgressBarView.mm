@@ -1,10 +1,10 @@
 @interface ProgressBarView
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation ProgressBarView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   OUTLINED_FUNCTION_0_8();
   v4 = v3;

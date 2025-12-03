@@ -6,10 +6,10 @@
 
 - (CGPoint)center
 {
-  v2 = self;
-  [(ARUIRingGroup *)v2 translation];
+  selfCopy = self;
+  [(ARUIRingGroup *)selfCopy translation];
   v4 = v3;
-  [(ARUIRingGroup *)v2 translation];
+  [(ARUIRingGroup *)selfCopy translation];
   v8 = v5;
 
   v6 = v8;

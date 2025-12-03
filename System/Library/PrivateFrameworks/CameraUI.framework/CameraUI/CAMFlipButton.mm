@@ -1,47 +1,47 @@
 @interface CAMFlipButton
-+ (CAMFlipButton)flipButtonWithLayoutStyle:(int64_t)a3;
++ (CAMFlipButton)flipButtonWithLayoutStyle:(int64_t)style;
 + (id)flipButtonOverContent;
 - (BOOL)isHighlighted;
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)tappableEdgeInsets;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setTappableEdgeInsets:(UIEdgeInsets)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setTappableEdgeInsets:(UIEdgeInsets)insets;
 - (void)tintColorDidChange;
 @end
 
 @implementation CAMFlipButton
 
-+ (CAMFlipButton)flipButtonWithLayoutStyle:(int64_t)a3
++ (CAMFlipButton)flipButtonWithLayoutStyle:(int64_t)style
 {
-  v4 = [objc_opt_self() buttonWithType_];
-  sub_1A3924EA4(a3);
+  buttonWithType_ = [objc_opt_self() buttonWithType_];
+  sub_1A3924EA4(style);
 
-  return v4;
+  return buttonWithType_;
 }
 
 + (id)flipButtonOverContent
 {
-  v2 = [objc_opt_self() buttonWithType_];
-  v3 = CAMLayoutStyleForView(v2);
+  buttonWithType_ = [objc_opt_self() buttonWithType_];
+  v3 = CAMLayoutStyleForView(buttonWithType_);
   sub_1A3924EA4(v3);
 
-  return v2;
+  return buttonWithType_;
 }
 
 - (void)layoutSubviews
 {
   v6.receiver = self;
   v6.super_class = CAMFlipButton;
-  v2 = self;
+  selfCopy = self;
   [(CAMFlipButton *)&v6 layoutSubviews];
-  v3 = [(CAMFlipButton *)v2 imageView];
-  if (v3)
+  imageView = [(CAMFlipButton *)selfCopy imageView];
+  if (imageView)
   {
-    v4 = v3;
-    CAMOrientationTransform([(CAMFlipButton *)v2 orientation], &v5);
+    v4 = imageView;
+    CAMOrientationTransform([(CAMFlipButton *)selfCopy orientation], &v5);
     [v4 setTransform_];
   }
 }
@@ -49,7 +49,7 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = qword_1ED996470;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
@@ -57,7 +57,7 @@
 
   if (byte_1EB0FE550 == 1)
   {
-    v11.receiver = v3;
+    v11.receiver = selfCopy;
     v11.super_class = CAMFlipButton;
     [(CAMFlipButton *)&v11 intrinsicContentSize];
     v5 = v4;
@@ -69,10 +69,10 @@
 
   else
   {
-    v10 = [(CAMFlipButton *)v3 layoutStyle];
+    layoutStyle = [(CAMFlipButton *)selfCopy layoutStyle];
 
     v9 = 48.0;
-    if (v10 == 1)
+    if (layoutStyle == 1)
     {
       v9 = 44.0;
     }
@@ -87,7 +87,7 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   CAMFlipButton.tintColorDidChange()();
 }
 
@@ -98,17 +98,17 @@
   return [(CAMFlipButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = CAMFlipButton;
-  v4 = self;
-  v5 = [(CAMFlipButton *)&v7 isHighlighted];
-  v6.receiver = v4;
+  selfCopy = self;
+  isHighlighted = [(CAMFlipButton *)&v7 isHighlighted];
+  v6.receiver = selfCopy;
   v6.super_class = CAMFlipButton;
-  [(CAMFlipButton *)&v6 setHighlighted:v3];
-  sub_1A3925DB0(v5);
+  [(CAMFlipButton *)&v6 setHighlighted:highlightedCopy];
+  sub_1A3925DB0(isHighlighted);
 }
 
 - (UIEdgeInsets)tappableEdgeInsets
@@ -124,26 +124,26 @@
   return result;
 }
 
-- (void)setTappableEdgeInsets:(UIEdgeInsets)a3
+- (void)setTappableEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = self;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  selfCopy = self;
   sub_1A3926088(top, left, bottom, right);
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  v3 = self;
-  [(CAMFlipButton *)v3 setOrientation:[(CAMFlipButton *)v3 orientation] animated:0];
+  selfCopy = self;
+  [(CAMFlipButton *)selfCopy setOrientation:[(CAMFlipButton *)selfCopy orientation] animated:0];
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  v6 = self;
-  sub_1A3926194(a3, a4);
+  selfCopy = self;
+  sub_1A3926194(orientation, animated);
 }
 
 @end

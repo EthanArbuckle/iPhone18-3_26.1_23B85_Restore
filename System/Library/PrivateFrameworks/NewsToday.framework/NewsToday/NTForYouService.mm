@@ -1,61 +1,61 @@
 @interface NTForYouService
-- (NTForYouService)initWithContentContext:(id)a3;
-- (void)fetchForYouWithRequest:(id)a3 configuration:(id)a4 fetchDate:(id)a5 completionHandler:(id)a6;
+- (NTForYouService)initWithContentContext:(id)context;
+- (void)fetchForYouWithRequest:(id)request configuration:(id)configuration fetchDate:(id)date completionHandler:(id)handler;
 @end
 
 @implementation NTForYouService
 
-- (NTForYouService)initWithContentContext:(id)a3
+- (NTForYouService)initWithContentContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = NTForYouService;
   v6 = [(NTForYouService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentContext, a3);
+    objc_storeStrong(&v6->_contentContext, context);
   }
 
   return v7;
 }
 
-- (void)fetchForYouWithRequest:(id)a3 configuration:(id)a4 fetchDate:(id)a5 completionHandler:(id)a6
+- (void)fetchForYouWithRequest:(id)request configuration:(id)configuration fetchDate:(id)date completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 rankedSubscribedTagIDs];
-  v15 = [v14 count];
-  v16 = [v10 subscriptionsMinCount];
+  requestCopy = request;
+  configurationCopy = configuration;
+  dateCopy = date;
+  handlerCopy = handler;
+  rankedSubscribedTagIDs = [requestCopy rankedSubscribedTagIDs];
+  v15 = [rankedSubscribedTagIDs count];
+  subscriptionsMinCount = [requestCopy subscriptionsMinCount];
 
-  if (v15 >= v16)
+  if (v15 >= subscriptionsMinCount)
   {
-    v59 = [(NTForYouService *)self contentContext];
+    contentContext = [(NTForYouService *)self contentContext];
     v20 = [MEMORY[0x277D30FE8] feedRequestContentEnvironmentTokenWithContext:?];
-    v21 = [(NTForYouService *)self contentContext];
-    v22 = [v21 feedDatabase];
-    v23 = [v22 version];
+    contentContext2 = [(NTForYouService *)self contentContext];
+    feedDatabase = [contentContext2 feedDatabase];
+    version = [feedDatabase version];
 
     v24 = MEMORY[0x277CCACA8];
-    v25 = [v10 throttlingIdentifier];
+    throttlingIdentifier = [requestCopy throttlingIdentifier];
     v63 = v20;
-    v26 = [v24 stringWithFormat:@"%@%@%@-%hu.plist", @"fy-fetchdate-", v20, v25, v23];
+    v26 = [v24 stringWithFormat:@"%@%@%@-%hu.plist", @"fy-fetchdate-", v20, throttlingIdentifier, version];
 
-    v27 = [(NTForYouService *)self contentContext];
-    v28 = [v27 feedDatabase];
-    v29 = [v28 parentDirectoryURL];
-    v30 = [v29 URLByAppendingPathComponent:v26];
+    contentContext3 = [(NTForYouService *)self contentContext];
+    feedDatabase2 = [contentContext3 feedDatabase];
+    parentDirectoryURL = [feedDatabase2 parentDirectoryURL];
+    v30 = [parentDirectoryURL URLByAppendingPathComponent:v26];
 
     v61 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v30];
     v31 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v61 error:0];
     v60 = v31;
     if (v31)
     {
-      [v12 timeIntervalSinceDate:v31];
+      [dateCopy timeIntervalSinceDate:v31];
       v33 = v32;
-      [v10 minimumUpdateInterval];
+      [requestCopy minimumUpdateInterval];
       v55 = v34 >= v33;
     }
 
@@ -64,34 +64,34 @@
       v55 = 0;
     }
 
-    v35 = v13;
+    v35 = handlerCopy;
     v36 = objc_alloc(MEMORY[0x277CBEB40]);
-    v37 = [v10 rankedSubscribedTagIDs];
-    v38 = [v36 initWithArray:v37];
+    rankedSubscribedTagIDs2 = [requestCopy rankedSubscribedTagIDs];
+    v38 = [v36 initWithArray:rankedSubscribedTagIDs2];
 
-    v39 = [v10 topStoriesChannelID];
-    if (v39)
+    topStoriesChannelID = [requestCopy topStoriesChannelID];
+    if (topStoriesChannelID)
     {
-      [v38 removeObject:v39];
+      [v38 removeObject:topStoriesChannelID];
     }
 
-    v58 = v39;
+    v58 = topStoriesChannelID;
     v62 = v26;
-    v40 = v12;
-    v41 = [v10 localNewsTagID];
-    if (v41)
+    v40 = dateCopy;
+    localNewsTagID = [requestCopy localNewsTagID];
+    if (localNewsTagID)
     {
-      [v38 insertObject:v41 atIndex:0];
+      [v38 insertObject:localNewsTagID atIndex:0];
     }
 
-    v57 = v41;
-    v42 = v11;
+    v57 = localNewsTagID;
+    v42 = configurationCopy;
     v54 = MEMORY[0x277D31080];
     v53 = [v38 set];
-    v43 = [v10 mutedTagIDs];
-    v44 = [v10 purchasedTagIDs];
-    [v10 bundleSubscriptionProvider];
-    v45 = v64 = v11;
+    mutedTagIDs = [requestCopy mutedTagIDs];
+    purchasedTagIDs = [requestCopy purchasedTagIDs];
+    [requestCopy bundleSubscriptionProvider];
+    v45 = v64 = configurationCopy;
     v52 = FCCurrentQoS();
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = 3221225472;
@@ -99,23 +99,23 @@
     v65[3] = &unk_279983D00;
     v72 = v35;
     v66 = v40;
-    v67 = v10;
+    v67 = requestCopy;
     v68 = v38;
     v69 = v42;
     v73 = v55;
-    v70 = v59;
+    v70 = contentContext;
     v71 = v30;
     v56 = v30;
-    v46 = v59;
+    v46 = contentContext;
     v47 = v42;
     v48 = v38;
-    v49 = v10;
+    v49 = requestCopy;
     v50 = v35;
     LOBYTE(v51) = 0;
-    [v54 fetchTagsForQueryingWithSubscribedTagIDs:v53 mutedTagIDs:v43 purchasedTagIDs:v44 bundleSubscriptionProvider:v45 configuration:v47 contentContext:v46 fallbackToPresubscribedTagIDs:v51 qualityOfService:v52 completionHandler:v65];
+    [v54 fetchTagsForQueryingWithSubscribedTagIDs:v53 mutedTagIDs:mutedTagIDs purchasedTagIDs:purchasedTagIDs bundleSubscriptionProvider:v45 configuration:v47 contentContext:v46 fallbackToPresubscribedTagIDs:v51 qualityOfService:v52 completionHandler:v65];
 
-    v11 = v64;
-    v12 = v40;
+    configurationCopy = v64;
+    dateCopy = v40;
 
     v17 = v62;
     v18 = v63;
@@ -128,10 +128,10 @@
     v74[1] = 3221225472;
     v74[2] = __84__NTForYouService_fetchForYouWithRequest_configuration_fetchDate_completionHandler___block_invoke;
     v74[3] = &unk_279983698;
-    v75 = v10;
-    v76 = v13;
-    v17 = v10;
-    v18 = v13;
+    v75 = requestCopy;
+    v76 = handlerCopy;
+    v17 = requestCopy;
+    v18 = handlerCopy;
     __84__NTForYouService_fetchForYouWithRequest_configuration_fetchDate_completionHandler___block_invoke(v74);
 
     v19 = v75;

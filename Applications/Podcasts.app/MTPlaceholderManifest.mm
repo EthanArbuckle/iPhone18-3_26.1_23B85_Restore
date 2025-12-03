@@ -1,11 +1,11 @@
 @interface MTPlaceholderManifest
 - (MTPlaceholderManifest)init;
-- (MTPlaceholderManifest)initWithItems:(id)a3;
+- (MTPlaceholderManifest)initWithItems:(id)items;
 @end
 
 @implementation MTPlaceholderManifest
 
-- (MTPlaceholderManifest)initWithItems:(id)a3
+- (MTPlaceholderManifest)initWithItems:(id)items
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

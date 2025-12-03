@@ -1,36 +1,36 @@
 @interface HMMediaSystemRole
-+ (BOOL)roleFromDictionary:(id)a3 roleOutput:(unint64_t *)a4;
++ (BOOL)roleFromDictionary:(id)dictionary roleOutput:(unint64_t *)output;
 + (id)leftRole;
 + (id)rightRole;
-- (BOOL)isEqual:(id)a3;
-- (HMMediaSystemRole)initWithCoder:(id)a3;
-- (HMMediaSystemRole)initWithDictionary:(id)a3;
-- (HMMediaSystemRole)initWithRole:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMMediaSystemRole)initWithCoder:(id)coder;
+- (HMMediaSystemRole)initWithDictionary:(id)dictionary;
+- (HMMediaSystemRole)initWithRole:(unint64_t)role;
 - (id)description;
 - (id)serialize;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMMediaSystemRole
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[HMMediaSystemRole type](self, "type")}];
-  [v5 encodeObject:v6 forKey:kMediaSystemRoleTypeCodingKey];
+  [coderCopy encodeObject:v6 forKey:kMediaSystemRoleTypeCodingKey];
 }
 
-- (HMMediaSystemRole)initWithCoder:(id)a3
+- (HMMediaSystemRole)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = HMMediaSystemRole;
   v5 = [(HMMediaSystemRole *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kMediaSystemRoleTypeCodingKey];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kMediaSystemRoleTypeCodingKey];
     v5->_type = [v6 unsignedIntegerValue];
   }
 
@@ -39,11 +39,11 @@
 
 - (id)serialize
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HMMediaSystemRole type](self, "type")}];
-  [v3 setObject:v4 forKeyedSubscript:kMediaSystemRoleTypeCodingKey];
+  [dictionary setObject:v4 forKeyedSubscript:kMediaSystemRoleTypeCodingKey];
 
-  v5 = [v3 copy];
+  v5 = [dictionary copy];
 
   return v5;
 }
@@ -65,49 +65,49 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = 0;
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (equalCopy && (isKindOfClass & 1) != 0)
   {
-    v7 = [v4 type];
-    v6 = v7 == [(HMMediaSystemRole *)self type];
+    type = [equalCopy type];
+    v6 = type == [(HMMediaSystemRole *)self type];
   }
 
   return v6;
 }
 
-- (HMMediaSystemRole)initWithRole:(unint64_t)a3
+- (HMMediaSystemRole)initWithRole:(unint64_t)role
 {
   v5.receiver = self;
   v5.super_class = HMMediaSystemRole;
   result = [(HMMediaSystemRole *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = role;
   }
 
   return result;
 }
 
-- (HMMediaSystemRole)initWithDictionary:(id)a3
+- (HMMediaSystemRole)initWithDictionary:(id)dictionary
 {
-  v4 = [a3 hmf_numberForKey:kMediaSystemRoleTypeCodingKey];
+  v4 = [dictionary hmf_numberForKey:kMediaSystemRoleTypeCodingKey];
   v5 = -[HMMediaSystemRole initWithRole:](self, "initWithRole:", [v4 unsignedIntegerValue]);
 
   return v5;
 }
 
-+ (BOOL)roleFromDictionary:(id)a3 roleOutput:(unint64_t *)a4
++ (BOOL)roleFromDictionary:(id)dictionary roleOutput:(unint64_t *)output
 {
-  v5 = [a3 hmf_numberForKey:kMediaSystemRoleTypeCodingKey];
+  v5 = [dictionary hmf_numberForKey:kMediaSystemRoleTypeCodingKey];
   v6 = v5;
   if (v5)
   {
-    *a4 = [v5 integerValue];
+    *output = [v5 integerValue];
   }
 
   return v6 != 0;

@@ -1,6 +1,6 @@
 @interface CSOnboardingCardViewController
-- (CSOnboardingCardViewController)initWithCompletion:(id)a3;
-- (void)_callCompletionBlockWithAction:(unint64_t)a3;
+- (CSOnboardingCardViewController)initWithCompletion:(id)completion;
+- (void)_callCompletionBlockWithAction:(unint64_t)action;
 - (void)_dismissAndAudioCheck;
 - (void)_dismissAndSing;
 - (void)_setupViews;
@@ -10,16 +10,16 @@
 
 @implementation CSOnboardingCardViewController
 
-- (CSOnboardingCardViewController)initWithCompletion:(id)a3
+- (CSOnboardingCardViewController)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x277D43348]) initWithCardStyle:1];
   v10.receiver = self;
   v10.super_class = CSOnboardingCardViewController;
   v6 = [(PRXIconContentViewController *)&v10 initWithContentView:v5];
   if (v6)
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(completionCopy);
     completion = v6->_completion;
     v6->_completion = v7;
   }
@@ -54,7 +54,7 @@
 
 - (void)_setupViews
 {
-  v2 = [(CSOnboardingCardViewController *)self contentView];
+  contentView = [(CSOnboardingCardViewController *)self contentView];
   v3 = [MEMORY[0x277D43358] labelWithStyle:0];
   v4 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
   v5 = [v4 localizedStringForKey:@"ONBOARDING_TITLE" value:&stru_285797E10 table:0];
@@ -65,22 +65,22 @@
   v6 = [MEMORY[0x277D74300] systemFontOfSize:30.0 weight:*MEMORY[0x277D743F8] width:*MEMORY[0x277D74458]];
   [v3 setFont:v6];
 
-  [v2 setTitleView:v3];
+  [contentView setTitleView:v3];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   v49 = MEMORY[0x277CCAAD0];
-  v51 = [v3 topAnchor];
-  v7 = [v2 topAnchor];
-  v8 = [v51 constraintEqualToAnchor:v7 constant:60.0];
+  topAnchor = [v3 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:60.0];
   v61[0] = v8;
-  v9 = [v3 leadingAnchor];
-  v10 = v2;
-  v53 = v2;
-  v11 = [v2 leadingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:30.0];
+  leadingAnchor = [v3 leadingAnchor];
+  v10 = contentView;
+  v53 = contentView;
+  leadingAnchor2 = [contentView leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:30.0];
   v61[1] = v12;
-  v13 = [v3 trailingAnchor];
-  v14 = [v10 trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:-30.0];
+  trailingAnchor = [v3 trailingAnchor];
+  trailingAnchor2 = [v10 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-30.0];
   v61[2] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:3];
   [v49 activateConstraints:v16];
@@ -92,8 +92,8 @@
   v19 = [v17 imageWithRenderingMode:2];
   v20 = [v18 initWithImage:v19];
 
-  v21 = [MEMORY[0x277D75340] labelColor];
-  [v20 setTintColor:v21];
+  labelColor = [MEMORY[0x277D75340] labelColor];
+  [v20 setTintColor:labelColor];
 
   v60 = v20;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v60 count:1];
@@ -101,21 +101,21 @@
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   v23 = MEMORY[0x277CCAAD0];
-  v24 = [v20 widthAnchor];
-  v25 = [v24 constraintEqualToConstant:55.0];
+  widthAnchor = [v20 widthAnchor];
+  v25 = [widthAnchor constraintEqualToConstant:55.0];
   v59[0] = v25;
   v47 = v20;
-  v26 = [v20 heightAnchor];
-  v27 = [v26 constraintEqualToConstant:55.0];
+  heightAnchor = [v20 heightAnchor];
+  v27 = [heightAnchor constraintEqualToConstant:55.0];
   v59[1] = v27;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:2];
   [v23 activateConstraints:v28];
 
   objc_initWeak(&location, self);
   v29 = MEMORY[0x277D43300];
-  v30 = [MEMORY[0x277D75340] systemRedColor];
-  v31 = [MEMORY[0x277D75340] systemWhiteColor];
-  v32 = [v29 initWithBackgroundColor:v30 textColor:v31];
+  systemRedColor = [MEMORY[0x277D75340] systemRedColor];
+  systemWhiteColor = [MEMORY[0x277D75340] systemWhiteColor];
+  v32 = [v29 initWithBackgroundColor:systemRedColor textColor:systemWhiteColor];
 
   v33 = MEMORY[0x277D432F8];
   v34 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
@@ -128,9 +128,9 @@
   v36 = [v33 actionWithTitle:v35 customColors:v32 handler:v56];
 
   v37 = MEMORY[0x277D43300];
-  v38 = [MEMORY[0x277D75340] clearColor];
-  v39 = [MEMORY[0x277D75340] labelColor];
-  v40 = [v37 initWithBackgroundColor:v38 textColor:v39];
+  clearColor = [MEMORY[0x277D75340] clearColor];
+  labelColor2 = [MEMORY[0x277D75340] labelColor];
+  v40 = [v37 initWithBackgroundColor:clearColor textColor:labelColor2];
 
   v41 = MEMORY[0x277D432F8];
   v42 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
@@ -176,13 +176,13 @@ void __45__CSOnboardingCardViewController__setupViews__block_invoke_2(uint64_t a
   }
 
   objc_initWeak(buf, self);
-  v4 = [(CSOnboardingCardViewController *)self presentingViewController];
+  presentingViewController = [(CSOnboardingCardViewController *)self presentingViewController];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __49__CSOnboardingCardViewController__dismissAndSing__block_invoke;
   v5[3] = &unk_278E0ABD0;
   objc_copyWeak(&v6, buf);
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [presentingViewController dismissViewControllerAnimated:1 completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(buf);
@@ -204,20 +204,20 @@ void __49__CSOnboardingCardViewController__dismissAndSing__block_invoke(uint64_t
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: User opted to view audio check", &v5, 0xCu);
   }
 
-  v4 = [(CSOnboardingCardViewController *)self presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(CSOnboardingCardViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
   [(CSOnboardingCardViewController *)self _callCompletionBlockWithAction:1];
 }
 
-- (void)_callCompletionBlockWithAction:(unint64_t)a3
+- (void)_callCompletionBlockWithAction:(unint64_t)action
 {
-  v5 = [(CSOnboardingCardViewController *)self completion];
+  completion = [(CSOnboardingCardViewController *)self completion];
 
-  if (v5)
+  if (completion)
   {
-    v6 = [(CSOnboardingCardViewController *)self completion];
-    v6[2](v6, a3);
+    completion2 = [(CSOnboardingCardViewController *)self completion];
+    completion2[2](completion2, action);
 
     [(CSOnboardingCardViewController *)self setCompletion:0];
   }

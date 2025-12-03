@@ -7,28 +7,28 @@
 - (id)siriVocabularySpatialNames
 {
   v2 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [a1 thoroughfare];
-  if (v3)
+  thoroughfare = [self thoroughfare];
+  if (thoroughfare)
   {
-    [v2 addObject:v3];
+    [v2 addObject:thoroughfare];
   }
 
-  v4 = [a1 subLocality];
-  if (v4)
+  subLocality = [self subLocality];
+  if (subLocality)
   {
-    [v2 addObject:v4];
+    [v2 addObject:subLocality];
   }
 
-  v5 = [a1 locality];
-  if (v5)
+  locality = [self locality];
+  if (locality)
   {
-    [v2 addObject:v5];
+    [v2 addObject:locality];
   }
 
-  v6 = [a1 country];
-  if (v6)
+  country = [self country];
+  if (country)
   {
-    [v2 addObject:v6];
+    [v2 addObject:country];
   }
 
   return v2;

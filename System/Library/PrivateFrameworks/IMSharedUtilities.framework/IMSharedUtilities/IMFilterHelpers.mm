@@ -1,6 +1,6 @@
 @interface IMFilterHelpers
-+ (id)filterModeStringValue:(unint64_t)a3;
-+ (int64_t)filterModeCombinedValue:(unint64_t)a3;
++ (id)filterModeStringValue:(unint64_t)value;
++ (int64_t)filterModeCombinedValue:(unint64_t)value;
 + (unint64_t)defaultPrimaryFilterMode;
 + (void)invalidateDefaultPrimaryFilterModeCache;
 + (void)registerForFiltrationSettingChangeNotifications;
@@ -9,18 +9,18 @@
 
 @implementation IMFilterHelpers
 
-+ (id)filterModeStringValue:(unint64_t)a3
++ (id)filterModeStringValue:(unint64_t)value
 {
-  IMConversationListFilterMode.stringValue.getter(a3);
+  IMConversationListFilterMode.stringValue.getter(value);
   v3 = sub_1A88C82A8();
 
   return v3;
 }
 
-+ (int64_t)filterModeCombinedValue:(unint64_t)a3
++ (int64_t)filterModeCombinedValue:(unint64_t)value
 {
-  v4 = IMConversationListFilterMode.action.getter(a3);
-  v5 = IMConversationListFilterMode.subAction.getter(a3);
+  v4 = IMConversationListFilterMode.action.getter(value);
+  v5 = IMConversationListFilterMode.subAction.getter(value);
   result = IMAppendedFilterMode(v4, v5);
   if (result < 0)
   {
@@ -57,8 +57,8 @@
   *(v2 + 32) = 1;
   sub_1A88BB750();
   os_unfair_lock_unlock((v2 + 36));
-  v3 = [objc_opt_self() defaultCenter];
-  [v3 postNotificationName:@"IMDefaultPrimaryConversationListFilterModeChangedNotification" object:0];
+  defaultCenter = [objc_opt_self() defaultCenter];
+  [defaultCenter postNotificationName:@"IMDefaultPrimaryConversationListFilterModeChangedNotification" object:0];
 }
 
 + (unint64_t)defaultPrimaryFilterMode

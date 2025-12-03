@@ -1,44 +1,44 @@
 @interface CNContactFlagsDescription
-- (BOOL)isEqualIgnoringIdentifiersForContact:(id)a3 other:(id)a4;
-- (id)CNValueForContact:(id)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
-- (void)setCNValue:(id)a3 onContact:(id)a4;
+- (BOOL)isEqualIgnoringIdentifiersForContact:(id)contact other:(id)other;
+- (id)CNValueForContact:(id)contact;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
+- (void)setCNValue:(id)value onContact:(id)contact;
 @end
 
 @implementation CNContactFlagsDescription
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v6 = a4;
-  v5 = [a3 decodeIntegerForKey:@"_flags"];
-  v6[3] = v5;
+  contactCopy = contact;
+  v5 = [coder decodeIntegerForKey:@"_flags"];
+  contactCopy[3] = v5;
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](v5, contactCopy);
 }
 
-- (BOOL)isEqualIgnoringIdentifiersForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualIgnoringIdentifiersForContact:(id)contact other:(id)other
 {
-  v5 = a4;
-  v6 = [a3 flags];
-  v7 = [v5 flags];
+  otherCopy = other;
+  flags = [contact flags];
+  flags2 = [otherCopy flags];
 
-  return v6 == v7;
+  return flags == flags2;
 }
 
-- (id)CNValueForContact:(id)a3
+- (id)CNValueForContact:(id)contact
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [a3 flags];
+  flags = [contact flags];
 
-  return [v3 numberWithUnsignedInteger:v4];
+  return [v3 numberWithUnsignedInteger:flags];
 }
 
-- (void)setCNValue:(id)a3 onContact:(id)a4
+- (void)setCNValue:(id)value onContact:(id)contact
 {
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  contactCopy = contact;
   objc_opt_class();
-  v9 = v5;
+  v9 = valueCopy;
   if (v9)
   {
     if (objc_opt_isKindOfClass())
@@ -59,7 +59,7 @@
     v8 = 0;
   }
 
-  [v6 setFlags:{objc_msgSend(v8, "CNContactFlagsValue")}];
+  [contactCopy setFlags:{objc_msgSend(v8, "CNContactFlagsValue")}];
 }
 
 @end

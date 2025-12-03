@@ -1,15 +1,15 @@
 @interface CACSpeechRecognizer
 - (BOOL)isSpeechRecognizerOpen;
 - (id)languageModel;
-- (void)SRDRecognizer:(id)a3 didRecognize:(id)a4;
+- (void)SRDRecognizer:(id)recognizer didRecognize:(id)recognize;
 - (void)closeSpeechRecognizer;
 - (void)dealloc;
 - (void)openSpeechRecognizer;
-- (void)setCommandInfo:(id)a3;
-- (void)setLanguageModel:(id)a3;
-- (void)setNumberMode:(BOOL)a3;
-- (void)setRequestCloseMatchResults:(BOOL)a3;
-- (void)setSpellingMode:(BOOL)a3;
+- (void)setCommandInfo:(id)info;
+- (void)setLanguageModel:(id)model;
+- (void)setNumberMode:(BOOL)mode;
+- (void)setRequestCloseMatchResults:(BOOL)results;
+- (void)setSpellingMode:(BOOL)mode;
 - (void)startListening;
 - (void)stopListening;
 @end
@@ -25,10 +25,10 @@
 
 - (id)languageModel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_languageModel;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_languageModel;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -49,21 +49,21 @@
 
 - (BOOL)isSpeechRecognizerOpen
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_recognizer != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_recognizer != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setLanguageModel:(id)a3
+- (void)setLanguageModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   obj = self;
   objc_sync_enter(obj);
   languageModel = obj->_languageModel;
-  obj->_languageModel = v4;
+  obj->_languageModel = modelCopy;
 
   objc_sync_exit(obj);
 }
@@ -71,16 +71,16 @@
 - (void)openSpeechRecognizer
 {
   v3 = +[CACSpeechSystem speechSystem];
-  v4 = [v3 recognitionSystemRef];
+  recognitionSystemRef = [v3 recognitionSystemRef];
 
-  if (v4)
+  if (recognitionSystemRef)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __43__CACSpeechRecognizer_openSpeechRecognizer__block_invoke;
     block[3] = &unk_279CEBB88;
     block[4] = self;
-    block[5] = v4;
+    block[5] = recognitionSystemRef;
     dispatch_sync(sRXAPIDispatchQueue, block);
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -123,26 +123,26 @@ void *__43__CACSpeechRecognizer_openSpeechRecognizer__block_invoke_2(uint64_t a1
 
 - (void)startListening
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (![(CACSpeechRecognizer *)v2 isSpeechRecognizerOpen])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(CACSpeechRecognizer *)selfCopy isSpeechRecognizerOpen])
   {
-    [(CACSpeechRecognizer *)v2 openSpeechRecognizer];
+    [(CACSpeechRecognizer *)selfCopy openSpeechRecognizer];
   }
 
-  if (v2->_recognizer && !v2->_isListening)
+  if (selfCopy->_recognizer && !selfCopy->_isListening)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37__CACSpeechRecognizer_startListening__block_invoke;
     block[3] = &unk_279CEB2D0;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(sRXAPIDispatchQueue, block);
-    v2->_isListening = 1;
-    v2->_waitingForResponse = 0;
+    selfCopy->_isListening = 1;
+    selfCopy->_waitingForResponse = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void *__37__CACSpeechRecognizer_startListening__block_invoke(uint64_t a1)
@@ -160,21 +160,21 @@ void *__37__CACSpeechRecognizer_startListening__block_invoke(uint64_t a1)
 
 - (void)stopListening
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_recognizer && v2->_isListening)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_recognizer && selfCopy->_isListening)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __36__CACSpeechRecognizer_stopListening__block_invoke;
     block[3] = &unk_279CEB2D0;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(sRXAPIDispatchQueue, block);
-    v2->_waitingForResponse = 1;
-    v2->_isListening = 0;
+    selfCopy->_waitingForResponse = 1;
+    selfCopy->_isListening = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void *__36__CACSpeechRecognizer_stopListening__block_invoke(uint64_t a1)
@@ -190,24 +190,24 @@ void *__36__CACSpeechRecognizer_stopListening__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCommandInfo:(id)a3
+- (void)setCommandInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_recognizer)
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_recognizer)
   {
     v6 = sRXAPIDispatchQueue;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __38__CACSpeechRecognizer_setCommandInfo___block_invoke;
     v7[3] = &unk_279CEB4C0;
-    v7[4] = v5;
-    v8 = v4;
+    v7[4] = selfCopy;
+    v8 = infoCopy;
     dispatch_async(v6, v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void *__38__CACSpeechRecognizer_setCommandInfo___block_invoke(uint64_t a1)
@@ -223,13 +223,13 @@ void *__38__CACSpeechRecognizer_setCommandInfo___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setRequestCloseMatchResults:(BOOL)a3
+- (void)setRequestCloseMatchResults:(BOOL)results
 {
-  if (self->_requestCloseMatchResults != a3)
+  if (self->_requestCloseMatchResults != results)
   {
     block[5] = v3;
     block[6] = v4;
-    self->_requestCloseMatchResults = a3;
+    self->_requestCloseMatchResults = results;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__CACSpeechRecognizer_setRequestCloseMatchResults___block_invoke;
@@ -252,13 +252,13 @@ void *__51__CACSpeechRecognizer_setRequestCloseMatchResults___block_invoke(uint6
   return result;
 }
 
-- (void)setSpellingMode:(BOOL)a3
+- (void)setSpellingMode:(BOOL)mode
 {
-  if (self->_spellingMode != a3)
+  if (self->_spellingMode != mode)
   {
     block[5] = v3;
     block[6] = v4;
-    self->_spellingMode = a3;
+    self->_spellingMode = mode;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __39__CACSpeechRecognizer_setSpellingMode___block_invoke;
@@ -281,13 +281,13 @@ void *__39__CACSpeechRecognizer_setSpellingMode___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setNumberMode:(BOOL)a3
+- (void)setNumberMode:(BOOL)mode
 {
-  if (self->_numberMode != a3)
+  if (self->_numberMode != mode)
   {
     block[5] = v3;
     block[6] = v4;
-    self->_numberMode = a3;
+    self->_numberMode = mode;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37__CACSpeechRecognizer_setNumberMode___block_invoke;
@@ -310,17 +310,17 @@ void *__37__CACSpeechRecognizer_setNumberMode___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)SRDRecognizer:(id)a3 didRecognize:(id)a4
+- (void)SRDRecognizer:(id)recognizer didRecognize:(id)recognize
 {
-  v5 = a4;
-  v6 = [v5 languageObject];
-  if (v6)
+  recognizeCopy = recognize;
+  languageObject = [recognizeCopy languageObject];
+  if (languageObject)
   {
     v7 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    v8 = [(CACSpeechRecognizer *)self name];
-    [v7 registerSignPostBeginProcessingForSpeechRecognizer:self message:v8];
+    name = [(CACSpeechRecognizer *)self name];
+    [v7 registerSignPostBeginProcessingForSpeechRecognizer:self message:name];
 
-    CFRetain(v6);
+    CFRetain(languageObject);
   }
 
   v9 = sRXAPIDispatchQueue;
@@ -329,9 +329,9 @@ void *__37__CACSpeechRecognizer_setNumberMode___block_invoke(uint64_t a1)
   block[2] = __50__CACSpeechRecognizer_SRDRecognizer_didRecognize___block_invoke;
   block[3] = &unk_279CEB958;
   block[4] = self;
-  v12 = v5;
-  v13 = v6;
-  v10 = v5;
+  v12 = recognizeCopy;
+  v13 = languageObject;
+  v10 = recognizeCopy;
   dispatch_async(v9, block);
   +[CACSpeechSystem stopPreventingDisplayDimming];
 }

@@ -1,13 +1,13 @@
 @interface UIMailActivity
 + (unint64_t)_xpcAttributes;
 - ($7D24B5AD5894795FD85A0EE1D817D743)_checkCanSendMail;
-- (BOOL)_dismissActivityFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)_isHTML:(id)a3;
+- (BOOL)_dismissActivityFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)_isHTML:(id)l;
 - (BOOL)_managesOwnPresentation;
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (BOOL)_restoreDraft;
-- (BOOL)canPerformWithActivityItems:(id)a3;
-- (BOOL)canShareURLThroughMail:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
+- (BOOL)canShareURLThroughMail:(id)mail;
 - (UIMailActivity)init;
 - (id)_backgroundPreheatBlock;
 - (id)_bundleIdentifierForActivityImageCreation;
@@ -15,14 +15,14 @@
 - (id)_stateRestorationDraftIsAvailable;
 - (id)activityTitle;
 - (void)_cleanup;
-- (void)_deleteMailDraftIdentifierRestorationArchive:(id)a3;
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4;
-- (void)_saveDraft:(id)a3;
-- (void)autosaveWithHandler:(id)a3;
+- (void)_deleteMailDraftIdentifierRestorationArchive:(id)archive;
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion;
+- (void)_saveDraft:(id)draft;
+- (void)autosaveWithHandler:(id)handler;
 - (void)dealloc;
-- (void)encodeRestorableStateWithCoder:(id)a3;
-- (void)prepareWithActivityItems:(id)a3;
-- (void)setSubject:(id)a3;
+- (void)encodeRestorableStateWithCoder:(id)coder;
+- (void)prepareWithActivityItems:(id)items;
+- (void)setSubject:(id)subject;
 @end
 
 @implementation UIMailActivity
@@ -73,11 +73,11 @@ void __22__UIMailActivity_init__block_invoke(uint64_t a1)
   os_unfair_lock_lock(&self->_canSendMailLock);
   if (!self->_canSendMailChecked)
   {
-    v6 = [(objc_class *)getMCProfileConnectionClass_0() sharedConnection];
-    v7 = [MEMORY[0x1E696AAE8] mainBundle];
-    v8 = [v7 bundleIdentifier];
+    sharedConnection = [(objc_class *)getMCProfileConnectionClass_0() sharedConnection];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if ([v6 canSendMail:v8 sourceAccountManagement:1])
+    if ([sharedConnection canSendMail:bundleIdentifier sourceAccountManagement:1])
     {
       v9 = 2;
     }
@@ -88,7 +88,7 @@ void __22__UIMailActivity_init__block_invoke(uint64_t a1)
     }
 
     *(&self->_managesOwnPresentationChecked + 1) = *(&self->_managesOwnPresentationChecked + 1) & 0xFD | v9;
-    *(&self->_managesOwnPresentationChecked + 1) = *(&self->_managesOwnPresentationChecked + 1) & 0xFE | [v6 canSendMail:v8 sourceAccountManagement:2];
+    *(&self->_managesOwnPresentationChecked + 1) = *(&self->_managesOwnPresentationChecked + 1) & 0xFE | [sharedConnection canSendMail:bundleIdentifier sourceAccountManagement:2];
     self->_canSendMailChecked = 1;
   }
 
@@ -149,24 +149,24 @@ void __22__UIMailActivity_init__block_invoke(uint64_t a1)
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
   v5 = [v4 objectAtIndex:0];
-  v6 = [(UIMailActivity *)self activityType];
-  v7 = [v3 stringWithFormat:@"%@/%@.savedMailDraftIdentifier.data", v5, v6];
+  activityType = [(UIMailActivity *)self activityType];
+  v7 = [v3 stringWithFormat:@"%@/%@.savedMailDraftIdentifier.data", v5, activityType];
 
   v8 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v7 isDirectory:0];
 
   return v8;
 }
 
-- (void)_saveDraft:(id)a3
+- (void)_saveDraft:(id)draft
 {
   v10[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIMailActivity *)self _mailDraftRestorationURL];
+  draftCopy = draft;
+  _mailDraftRestorationURL = [(UIMailActivity *)self _mailDraftRestorationURL];
   v6 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-  [v6 encodeObject:v4 forKey:@"kSavedMailDraftIdentifierKey"];
-  v7 = [v6 encodedData];
+  [v6 encodeObject:draftCopy forKey:@"kSavedMailDraftIdentifierKey"];
+  encodedData = [v6 encodedData];
   v10[0] = 0;
-  [v7 writeToURL:v5 options:805306369 error:v10];
+  [encodedData writeToURL:_mailDraftRestorationURL options:805306369 error:v10];
   v8 = v10[0];
 
   if (v8)
@@ -174,30 +174,30 @@ void __22__UIMailActivity_init__block_invoke(uint64_t a1)
     v9 = share_sheet_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(UIMailActivity *)v4 _saveDraft:v8, v9];
+      [(UIMailActivity *)draftCopy _saveDraft:v8, v9];
     }
   }
 
   [v6 finishEncoding];
 }
 
-- (void)_deleteMailDraftIdentifierRestorationArchive:(id)a3
+- (void)_deleteMailDraftIdentifierRestorationArchive:(id)archive
 {
   v5[8] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  archiveCopy = archive;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v5[0] = 0;
-  [v4 removeItemAtURL:v3 error:v5];
+  [defaultManager removeItemAtURL:archiveCopy error:v5];
 }
 
 - (id)_stateRestorationDraftIsAvailable
 {
   v15[8] = *MEMORY[0x1E69E9840];
-  v3 = [(UIMailActivity *)self _mailDraftRestorationURL];
-  if (v3 && [(UIMailActivity *)self canShareURLThroughMail:v3])
+  _mailDraftRestorationURL = [(UIMailActivity *)self _mailDraftRestorationURL];
+  if (_mailDraftRestorationURL && [(UIMailActivity *)self canShareURLThroughMail:_mailDraftRestorationURL])
   {
     v15[0] = 0;
-    v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v3 options:0 error:v15];
+    v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:_mailDraftRestorationURL options:0 error:v15];
     v5 = v15[0];
     v6 = v5;
     v7 = 0;
@@ -225,7 +225,7 @@ void __22__UIMailActivity_init__block_invoke(uint64_t a1)
     v11 = v9;
     if ((v7 & 1) == 0)
     {
-      [(UIMailActivity *)self _deleteMailDraftIdentifierRestorationArchive:v3];
+      [(UIMailActivity *)self _deleteMailDraftIdentifierRestorationArchive:_mailDraftRestorationURL];
       v11 = 0;
     }
   }
@@ -243,27 +243,27 @@ void __22__UIMailActivity_init__block_invoke(uint64_t a1)
 
 - (BOOL)_restoreDraft
 {
-  v3 = [(UIMailActivity *)self _stateRestorationDraftIsAvailable];
-  if (v3)
+  _stateRestorationDraftIsAvailable = [(UIMailActivity *)self _stateRestorationDraftIsAvailable];
+  if (_stateRestorationDraftIsAvailable)
   {
-    v4 = [(UIMailActivity *)self mailComposeViewController];
-    [v4 recoverAutosavedMessageWithIdentifier:v3];
+    mailComposeViewController = [(UIMailActivity *)self mailComposeViewController];
+    [mailComposeViewController recoverAutosavedMessageWithIdentifier:_stateRestorationDraftIsAvailable];
   }
 
-  return v3 != 0;
+  return _stateRestorationDraftIsAvailable != 0;
 }
 
-- (void)autosaveWithHandler:(id)a3
+- (void)autosaveWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(UIMailActivity *)self mailComposeViewController];
-  [v5 autosaveWithHandler:v4];
+  handlerCopy = handler;
+  mailComposeViewController = [(UIMailActivity *)self mailComposeViewController];
+  [mailComposeViewController autosaveWithHandler:handlerCopy];
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v5 = [objc_opt_class() applicationBundleID];
-  CanDisplayActivityForApplicationWithBundleID = _UIActivityCanDisplayActivityForApplicationWithBundleID(v5);
+  applicationBundleID = [objc_opt_class() applicationBundleID];
+  CanDisplayActivityForApplicationWithBundleID = _UIActivityCanDisplayActivityForApplicationWithBundleID(applicationBundleID);
 
   if ((CanDisplayActivityForApplicationWithBundleID & 1) == 0)
   {
@@ -283,12 +283,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [(UIMailActivity *)self _checkCanSendMail];
-  v8 = [(objc_class *)getMCProfileConnectionClass_0() sharedConnection];
-  v9 = [v8 hasAnyMailAccountIgnoringFiltering];
+  _checkCanSendMail = [(UIMailActivity *)self _checkCanSendMail];
+  sharedConnection = [(objc_class *)getMCProfileConnectionClass_0() sharedConnection];
+  hasAnyMailAccountIgnoringFiltering = [sharedConnection hasAnyMailAccountIgnoringFiltering];
 
-  [(UIMailActivity *)self setHasAnyAccount:v9];
-  [(UIMailActivity *)self setHasValidAccountForSending:(v7 >> ![(UIMailActivity *)self isContentManaged]) & 1];
+  [(UIMailActivity *)self setHasAnyAccount:hasAnyMailAccountIgnoringFiltering];
+  [(UIMailActivity *)self setHasValidAccountForSending:(_checkCanSendMail >> ![(UIMailActivity *)self isContentManaged]) & 1];
   if ([(UIMailActivity *)self hasAnyAccount]&& ![(UIMailActivity *)self hasValidAccountForSending])
   {
     v11 = share_sheet_log();
@@ -303,30 +303,30 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (a3)
+  if (items)
   {
     return (_UIActivityItemTypes() & 0x98F) != 0;
   }
 
-  v15 = [(UIMailActivity *)self _stateRestorationDraftIsAvailable];
-  v10 = v15 != 0;
+  _stateRestorationDraftIsAvailable = [(UIMailActivity *)self _stateRestorationDraftIsAvailable];
+  v10 = _stateRestorationDraftIsAvailable != 0;
 
   return v10;
 }
 
-- (BOOL)canShareURLThroughMail:(id)a3
+- (BOOL)canShareURLThroughMail:(id)mail
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  mailCopy = mail;
+  v4 = mailCopy;
+  if (mailCopy)
   {
-    v5 = [v3 scheme];
-    if (v5)
+    scheme = [mailCopy scheme];
+    if (scheme)
     {
-      v6 = v5;
-      v7 = [v4 host];
+      v6 = scheme;
+      host = [v4 host];
 
-      if (v7)
+      if (host)
       {
         goto LABEL_6;
       }
@@ -368,14 +368,14 @@ LABEL_12:
 
 - (id)_backgroundPreheatBlock
 {
-  v3 = [objc_opt_class() applicationBundleID];
+  applicationBundleID = [objc_opt_class() applicationBundleID];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__UIMailActivity__backgroundPreheatBlock__block_invoke;
   v7[3] = &unk_1E71F96C8;
-  v8 = v3;
-  v4 = v3;
+  v8 = applicationBundleID;
+  v4 = applicationBundleID;
   objc_copyWeak(&v9, &location);
   v5 = MEMORY[0x18CFF58E0](v7);
   objc_destroyWeak(&v9);
@@ -392,11 +392,11 @@ void __41__UIMailActivity__backgroundPreheatBlock__block_invoke(uint64_t a1)
   [WeakRetained _checkCanSendMail];
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v175 = *MEMORY[0x1E69E9840];
-  v120 = a3;
-  v137 = self;
+  itemsCopy = items;
+  selfCopy = self;
   if ([(UIMailActivity *)self hasValidAccountForSending])
   {
     v4 = objc_alloc(getMFMailComposeViewControllerClass());
@@ -416,41 +416,41 @@ void __41__UIMailActivity__backgroundPreheatBlock__block_invoke(uint64_t a1)
 
     [(NSString *)self->_autosaveIdentifier setMailComposeDelegate:self];
     [(NSString *)self->_autosaveIdentifier setKeyboardVisible:[(UIMailActivity *)self keyboardVisible]];
-    v8 = [(UIActivity *)self sessionIdentifier];
+    sessionIdentifier = [(UIActivity *)self sessionIdentifier];
 
-    if (v8)
+    if (sessionIdentifier)
     {
       v9 = self->_autosaveIdentifier;
-      v10 = [(UIActivity *)self sessionIdentifier];
-      [(NSString *)v9 setShareSheetSessionID:v10];
+      sessionIdentifier2 = [(UIActivity *)self sessionIdentifier];
+      [(NSString *)v9 setShareSheetSessionID:sessionIdentifier2];
     }
 
-    v11 = [(UIMailActivity *)v137 collaborationItem];
-    v129 = [v11 cloudSharingResult];
+    collaborationItem = [(UIMailActivity *)selfCopy collaborationItem];
+    cloudSharingResult = [collaborationItem cloudSharingResult];
 
-    if (!v129 || (-[UIMailActivity collaborationItem](v137, "collaborationItem"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 type], v12, v13 == 2))
+    if (!cloudSharingResult || (-[UIMailActivity collaborationItem](selfCopy, "collaborationItem"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 type], v12, v13 == 2))
     {
 LABEL_47:
-      v43 = [(UIMailActivity *)v137 autosaveIdentifier];
-      if (v43)
+      autosaveIdentifier = [(UIMailActivity *)selfCopy autosaveIdentifier];
+      if (autosaveIdentifier)
       {
         MFMailComposeViewControllerClass = getMFMailComposeViewControllerClass();
-        v45 = [(UIMailActivity *)v137 autosaveIdentifier];
-        LODWORD(MFMailComposeViewControllerClass) = [(objc_class *)MFMailComposeViewControllerClass hasAutosavedMessageWithIdentifier:v45];
+        autosaveIdentifier2 = [(UIMailActivity *)selfCopy autosaveIdentifier];
+        LODWORD(MFMailComposeViewControllerClass) = [(objc_class *)MFMailComposeViewControllerClass hasAutosavedMessageWithIdentifier:autosaveIdentifier2];
 
         if (MFMailComposeViewControllerClass)
         {
-          v46 = v137->_autosaveIdentifier;
-          v47 = [(UIMailActivity *)v137 autosaveIdentifier];
-          [(NSString *)v46 recoverAutosavedMessageWithIdentifier:v47];
+          v46 = selfCopy->_autosaveIdentifier;
+          autosaveIdentifier3 = [(UIMailActivity *)selfCopy autosaveIdentifier];
+          [(NSString *)v46 recoverAutosavedMessageWithIdentifier:autosaveIdentifier3];
         }
       }
 
-      if ([v120 count] || !-[UIMailActivity _restoreDraft](v137, "_restoreDraft"))
+      if ([itemsCopy count] || !-[UIMailActivity _restoreDraft](selfCopy, "_restoreDraft"))
       {
-        v135 = [MEMORY[0x1E695DF70] array];
-        v131 = [MEMORY[0x1E695DF70] array];
-        _UIActivityItemsGetStringsAndURLs(v120, 1);
+        array = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
+        _UIActivityItemsGetStringsAndURLs(itemsCopy, 1);
         v165 = 0u;
         v166 = 0u;
         v163 = 0u;
@@ -503,7 +503,7 @@ LABEL_72:
 
               if (!obj)
               {
-                obj = [(UIActivity *)v137 _subjectForActivityItem:v61];
+                obj = [(UIActivity *)selfCopy _subjectForActivityItem:v61];
               }
 
               if ([v50 length])
@@ -516,8 +516,8 @@ LABEL_91:
                   continue;
                 }
 
-                v63 = [v50 mutableString];
-                [v63 appendString:@"\n"];
+                mutableString = [v50 mutableString];
+                [mutableString appendString:@"\n"];
               }
 
               else if ((v49 & 1) == 0)
@@ -566,17 +566,17 @@ LABEL_95:
             v53 = *(*(&v163 + 1) + 8 * j);
             if (!obj)
             {
-              obj = [(UIActivity *)v137 _subjectForActivityItem:v53];
+              obj = [(UIActivity *)selfCopy _subjectForActivityItem:v53];
             }
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v54 = [v53 string];
-              v132 = [(UIMailActivity *)v137 _isHTML:v54];
+              string = [v53 string];
+              v132 = [(UIMailActivity *)selfCopy _isHTML:string];
               if (v132)
               {
-                v55 = v54;
+                v55 = string;
 
                 v50 = v55;
               }
@@ -586,7 +586,7 @@ LABEL_95:
 
             else
             {
-              if ([(UIMailActivity *)v137 _isHTML:v53])
+              if ([(UIMailActivity *)selfCopy _isHTML:v53])
               {
                 v56 = v53;
 
@@ -616,37 +616,37 @@ LABEL_96:
         {
           v67 = [objc_alloc(MEMORY[0x1E69DB7B8]) initWithAttributedString:v50];
           v68 = objc_alloc(MEMORY[0x1E696AEC0]);
-          v69 = [v67 HTMLData];
-          v70 = [v68 initWithData:v69 encoding:4];
+          hTMLData = [v67 HTMLData];
+          v70 = [v68 initWithData:hTMLData encoding:4];
 
           v71 = [v70 length];
           v132 = v71 != 0;
           if (v71)
           {
-            v72 = v70;
+            string2 = v70;
           }
 
           else
           {
-            v72 = [v50 string];
+            string2 = [v50 string];
 
-            v50 = v72;
+            v50 = string2;
           }
 
-          v50 = v72;
+          v50 = string2;
         }
 
         v128 = v50;
         if (v50)
         {
-          [(NSString *)v137->_autosaveIdentifier setMessageBody:v50 isHTML:v132];
+          [(NSString *)selfCopy->_autosaveIdentifier setMessageBody:v50 isHTML:v132];
         }
 
         v157 = 0u;
         v158 = 0u;
         v155 = 0u;
         v156 = 0u;
-        v133 = _UIActivityItemsGetImages(v120, 0, 0);
+        v133 = _UIActivityItemsGetImages(itemsCopy, 0, 0);
         v73 = [v133 countByEnumeratingWithState:&v155 objects:v172 count:16];
         if (v73)
         {
@@ -666,7 +666,7 @@ LABEL_96:
               v78 = *(*(&v155 + 1) + 8 * k);
               [(UIImage *)v78 size];
               v81 = v80 < 512.0 && v79 <= 512.0;
-              v82 = [(UIActivity *)v137 _attachmentNameForActivityItem:v78];
+              v82 = [(UIActivity *)selfCopy _attachmentNameForActivityItem:v78];
               if ([v82 length])
               {
                 if (v81)
@@ -691,15 +691,15 @@ LABEL_96:
                 {
 LABEL_114:
                   v83 = UIImagePNGRepresentation(v78);
-                  [v135 addObject:v75];
-                  [(NSString *)v137->_autosaveIdentifier addAttachmentData:v83 mimeType:@"image/png" fileName:v82];
+                  [array addObject:v75];
+                  [(NSString *)selfCopy->_autosaveIdentifier addAttachmentData:v83 mimeType:@"image/png" fileName:v82];
                   goto LABEL_119;
                 }
               }
 
               v83 = UIImageJPEGRepresentation(v78, 0.8);
-              [v135 addObject:v130];
-              [(NSString *)v137->_autosaveIdentifier addAttachmentData:v83 mimeType:@"image/jpeg" fileName:v82];
+              [array addObject:v130];
+              [(NSString *)selfCopy->_autosaveIdentifier addAttachmentData:v83 mimeType:@"image/jpeg" fileName:v82];
 LABEL_119:
             }
 
@@ -717,9 +717,9 @@ LABEL_119:
         v148 = 0u;
         v149 = 0u;
         v150 = 0u;
-        v86 = v120;
+        v86 = itemsCopy;
         v87 = [v86 countByEnumeratingWithState:&v147 objects:v171 count:16];
-        p_isa = &v137->super.super.isa;
+        p_isa = &selfCopy->super.super.isa;
         if (!v87)
         {
           goto LABEL_175;
@@ -755,8 +755,8 @@ LABEL_123:
             v142[2] = __43__UIMailActivity_prepareWithActivityItems___block_invoke;
             v142[3] = &unk_1E71F96F0;
             v146 = &v151;
-            v143 = v131;
-            v144 = v135;
+            v143 = array2;
+            v144 = array;
             v145 = p_isa;
             [v90 enumerateKeysAndObjectsUsingBlock:v142];
 
@@ -777,7 +777,7 @@ LABEL_123:
                   v93 = v121;
 
                   v92 = v93;
-                  p_isa = &v137->super.super.isa;
+                  p_isa = &selfCopy->super.super.isa;
                 }
 
                 if (v92)
@@ -787,7 +787,7 @@ LABEL_123:
                     v95 = v94;
 
                     v96 = @"application/octet-stream";
-                    p_isa = &v137->super.super.isa;
+                    p_isa = &selfCopy->super.super.isa;
                   }
 
                   else
@@ -813,20 +813,20 @@ LABEL_123:
                   if ([(__CFString *)v95 isEqualToString:v126])
                   {
                     v110 = MEMORY[0x1E696AEC0];
-                    v111 = [(__CFString *)v91 path];
-                    v112 = [v110 stringWithContentsOfFile:v111 encoding:4 error:0];
+                    path = [(__CFString *)v91 path];
+                    v112 = [v110 stringWithContentsOfFile:path encoding:4 error:0];
 
                     if (v112)
                     {
-                      [v131 addObject:v112];
+                      [array2 addObject:v112];
                     }
 
-                    p_isa = &v137->super.super.isa;
+                    p_isa = &selfCopy->super.super.isa;
                   }
 
                   else
                   {
-                    [v135 addObject:v95];
+                    [array addObject:v95];
                   }
 
                   v113 = [p_isa[23] _addAttachmentWithFileURL:v91 mimeType:v96];
@@ -847,12 +847,12 @@ LABEL_123:
               {
 LABEL_144:
                 v97 = UTTypeCopyPreferredTagWithClass(v91, inTagClass);
-                if (v97 || (v102 = UTTypeCopyPreferredTagWithClass(v91, v125)) != 0 && ([@"aep" stringByAppendingPathExtension:v102], v103 = objc_claimAutoreleasedReturnValue(), v97 = softLinkQLTypeCopyBestMimeTypeForFileNameAndMimeType(v103, 0), v97, CFRelease(v102), v103, p_isa = &v137->super.super.isa, v97))
+                if (v97 || (v102 = UTTypeCopyPreferredTagWithClass(v91, v125)) != 0 && ([@"aep" stringByAppendingPathExtension:v102], v103 = objc_claimAutoreleasedReturnValue(), v97 = softLinkQLTypeCopyBestMimeTypeForFileNameAndMimeType(v103, 0), v97, CFRelease(v102), v103, p_isa = &selfCopy->super.super.isa, v97))
                 {
                   v98 = [p_isa _attachmentNameForActivityItem:v90];
                   if ([v98 length])
                   {
-                    v99 = v98;
+                    v105 = v98;
                   }
 
                   else
@@ -860,17 +860,17 @@ LABEL_144:
                     v104 = MEMORY[0x1E696AEC0];
                     v105 = v152[3];
                     v152[3] = v105 + 1;
-                    v99 = [v104 stringWithFormat:@"Attachment-%ld", v105];
+                    v105 = [v104 stringWithFormat:@"Attachment-%ld", v105];
 
                     v106 = UTTypeCopyPreferredTagWithClass(v91, v125);
                     if (v106)
                     {
-                      v107 = [v99 stringByAppendingPathExtension:v106];
+                      v107 = [v105 stringByAppendingPathExtension:v106];
 
-                      v99 = v107;
+                      v105 = v107;
                     }
 
-                    p_isa = &v137->super.super.isa;
+                    p_isa = &selfCopy->super.super.isa;
                   }
 
                   if ([(__CFString *)v91 isEqualToString:v126])
@@ -878,18 +878,18 @@ LABEL_144:
                     v108 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v90 encoding:4];
                     if (v108)
                     {
-                      [v131 addObject:v108];
+                      [array2 addObject:v108];
                     }
 
-                    p_isa = &v137->super.super.isa;
+                    p_isa = &selfCopy->super.super.isa;
                   }
 
                   else
                   {
-                    [v135 addObject:v91];
+                    [array addObject:v91];
                   }
 
-                  [p_isa[23] addAttachmentData:v90 mimeType:v97 fileName:v99];
+                  [p_isa[23] addAttachmentData:v90 mimeType:v97 fileName:v105];
                   CFRelease(v97);
                 }
 
@@ -917,7 +917,7 @@ LABEL_144:
 
 LABEL_130:
 
-          p_isa = &v137->super.super.isa;
+          p_isa = &selfCopy->super.super.isa;
 LABEL_131:
           if (v87 == ++v89)
           {
@@ -929,29 +929,29 @@ LABEL_175:
 
               if (obj)
               {
-                [(UIMailActivity *)v137 setSubject:obj];
+                [(UIMailActivity *)selfCopy setSubject:obj];
               }
 
-              if ([v135 count])
+              if ([array count])
               {
-                [(NSString *)v137->_autosaveIdentifier setUTITypes:v135];
+                [(NSString *)selfCopy->_autosaveIdentifier setUTITypes:array];
               }
 
               v115 = _UIActivityItemsGetWebURLs(v86, 1);
               if ([v115 count])
               {
-                [(NSString *)v137->_autosaveIdentifier setContentURLs:v115];
+                [(NSString *)selfCopy->_autosaveIdentifier setContentURLs:v115];
               }
 
               v116 = _UIActivityItemsGetStrings(v86, 0);
               if (v116)
               {
-                [v131 addObjectsFromArray:v116];
+                [array2 addObjectsFromArray:v116];
               }
 
-              if ([v131 count])
+              if ([array2 count])
               {
-                [(NSString *)v137->_autosaveIdentifier setContentText:v131];
+                [(NSString *)selfCopy->_autosaveIdentifier setContentText:array2];
               }
 
               _Block_object_dispose(&v151, 8);
@@ -966,68 +966,68 @@ LABEL_175:
       goto LABEL_188;
     }
 
-    v14 = [v129 error];
+    error = [cloudSharingResult error];
 
-    if (v14)
+    if (error)
     {
       v15 = share_sheet_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [UIMailActivity prepareWithActivityItems:v129];
+        [UIMailActivity prepareWithActivityItems:cloudSharingResult];
       }
 
       goto LABEL_46;
     }
 
     v20 = MEMORY[0x1E69CDE78];
-    v21 = [(UIMailActivity *)v137 collaborationItem];
-    v22 = [v21 options];
+    collaborationItem2 = [(UIMailActivity *)selfCopy collaborationItem];
+    options = [collaborationItem2 options];
     v169 = 0;
     v168 = 0;
     v167 = 0;
-    [v20 getCKSharingOptionsFromOptions:v22 accessType:&v169 permissionType:&v168 allowOthersToInvite:&v167];
+    [v20 getCKSharingOptionsFromOptions:options accessType:&v169 permissionType:&v168 allowOthersToInvite:&v167];
     v15 = v169;
     v23 = v168;
     v24 = v167;
 
-    v25 = [(UIMailActivity *)v137 collaborationItem];
-    v26 = [v25 type] == 1;
+    collaborationItem3 = [(UIMailActivity *)selfCopy collaborationItem];
+    v26 = [collaborationItem3 type] == 1;
 
     if (v26)
     {
-      v27 = [(UIMailActivity *)v137 collaborationItem];
-      v28 = [v27 containerSetupInfo];
+      collaborationItem4 = [(UIMailActivity *)selfCopy collaborationItem];
+      containerSetupInfo = [collaborationItem4 containerSetupInfo];
     }
 
     else
     {
-      v28 = 0;
+      containerSetupInfo = 0;
     }
 
-    v38 = [(UIMailActivity *)v137 collaborationItem];
-    v39 = [v38 type] == 0;
+    collaborationItem5 = [(UIMailActivity *)selfCopy collaborationItem];
+    v39 = [collaborationItem5 type] == 0;
 
     if (v39)
     {
-      v117 = [(UIMailActivity *)v137 collaborationItem];
-      v40 = [v117 fileURL];
+      collaborationItem6 = [(UIMailActivity *)selfCopy collaborationItem];
+      fileURL = [collaborationItem6 fileURL];
 
-      if (v40 && (objc_opt_respondsToSelector() & 1) != 0)
+      if (fileURL && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v42 = [UISUISecurityScopedResource sandboxingURLWrapperWithFileURL:v40 allowedAccess:2];
-        if (v42)
+        share2 = [UISUISecurityScopedResource sandboxingURLWrapperWithFileURL:fileURL allowedAccess:2];
+        if (share2)
         {
-          v118 = v137->_autosaveIdentifier;
-          v119 = [v129 share];
-          -[NSString _setCKShareURLWrapper:share:permissionType:allowOthersToInvite:](v118, "_setCKShareURLWrapper:share:permissionType:allowOthersToInvite:", v42, v119, [v23 intValue], objc_msgSend(v24, "BOOLValue"));
+          v118 = selfCopy->_autosaveIdentifier;
+          share = [cloudSharingResult share];
+          -[NSString _setCKShareURLWrapper:share:permissionType:allowOthersToInvite:](v118, "_setCKShareURLWrapper:share:permissionType:allowOthersToInvite:", share2, share, [v23 intValue], objc_msgSend(v24, "BOOLValue"));
         }
 
         else
         {
-          v119 = share_sheet_log();
-          if (os_log_type_enabled(v119, OS_LOG_TYPE_ERROR))
+          share = share_sheet_log();
+          if (os_log_type_enabled(share, OS_LOG_TYPE_ERROR))
           {
-            [(UIMailActivity *)v40 prepareWithActivityItems:v119];
+            [(UIMailActivity *)fileURL prepareWithActivityItems:share];
           }
         }
 
@@ -1037,12 +1037,12 @@ LABEL_175:
 
     else
     {
-      v40 = 0;
+      fileURL = 0;
     }
 
-    v41 = v137->_autosaveIdentifier;
-    v42 = [v129 share];
-    -[NSString _setCKShare:setupContainerInfo:permissionType:allowOthersToInvite:](v41, "_setCKShare:setupContainerInfo:permissionType:allowOthersToInvite:", v42, v28, [v23 intValue], objc_msgSend(v24, "BOOLValue"));
+    v41 = selfCopy->_autosaveIdentifier;
+    share2 = [cloudSharingResult share];
+    -[NSString _setCKShare:setupContainerInfo:permissionType:allowOthersToInvite:](v41, "_setCKShare:setupContainerInfo:permissionType:allowOthersToInvite:", share2, containerSetupInfo, [v23 intValue], objc_msgSend(v24, "BOOLValue"));
 LABEL_45:
 
 LABEL_46:
@@ -1051,7 +1051,7 @@ LABEL_46:
 
   if (![(UIMailActivity *)self hasAnyAccount]&& ![(UIMailActivity *)self isContentManaged])
   {
-    obj = _UIActivityItemsGetStringsAndURLs(v120, 0);
+    obj = _UIActivityItemsGetStringsAndURLs(itemsCopy, 0);
     v140 = 0u;
     v141 = 0u;
     v138 = 0u;
@@ -1060,7 +1060,7 @@ LABEL_46:
     if (v16)
     {
       v128 = 0;
-      v129 = 0;
+      cloudSharingResult = 0;
       v17 = *v139;
       do
       {
@@ -1072,14 +1072,14 @@ LABEL_46:
           }
 
           v19 = *(*(&v138 + 1) + 8 * m);
-          if (v129)
+          if (cloudSharingResult)
           {
-            [v129 appendFormat:@"\n%@", *(*(&v138 + 1) + 8 * m)];
+            [cloudSharingResult appendFormat:@"\n%@", *(*(&v138 + 1) + 8 * m)];
           }
 
           else
           {
-            v129 = [v19 mutableCopy];
+            cloudSharingResult = [v19 mutableCopy];
           }
 
           if (!v128)
@@ -1097,7 +1097,7 @@ LABEL_46:
     else
     {
       v128 = 0;
-      v129 = 0;
+      cloudSharingResult = 0;
     }
 
     if (MessageLibrary_sOnce != -1)
@@ -1105,29 +1105,29 @@ LABEL_46:
       [UIMailActivity prepareWithActivityItems:];
     }
 
-    if ([v129 length] || (-[objc_class sharedConnection](getMCProfileConnectionClass_0(), "sharedConnection"), v29 = objc_claimAutoreleasedReturnValue(), getMCFeatureAccountModificationAllowed(), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v29, "effectiveBoolValueForSetting:", v30) == 2, v30, v29, v31) || (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", @"prefs:root=ACCOUNTS_AND_PASSWORDS&path=ADD_ACCOUNT"), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E6963608], "defaultWorkspace"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "openSensitiveURL:withOptions:", v32, 0), v33, v32, (v34 & 1) == 0))
+    if ([cloudSharingResult length] || (-[objc_class sharedConnection](getMCProfileConnectionClass_0(), "sharedConnection"), v29 = objc_claimAutoreleasedReturnValue(), getMCFeatureAccountModificationAllowed(), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v29, "effectiveBoolValueForSetting:", v30) == 2, v30, v29, v31) || (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", @"prefs:root=ACCOUNTS_AND_PASSWORDS&path=ADD_ACCOUNT"), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E6963608], "defaultWorkspace"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "openSensitiveURL:withOptions:", v32, 0), v33, v32, (v34 & 1) == 0))
     {
-      v135 = objc_alloc_init(MEMORY[0x1E696AF20]);
-      [v135 setScheme:@"mailto"];
-      v131 = [MEMORY[0x1E695DF70] array];
+      array = objc_alloc_init(MEMORY[0x1E696AF20]);
+      [array setScheme:@"mailto"];
+      array2 = [MEMORY[0x1E695DF70] array];
       if (v128)
       {
         v35 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"subject" value:v128];
-        [v131 addObject:v35];
+        [array2 addObject:v35];
       }
 
-      if (v129)
+      if (cloudSharingResult)
       {
-        v36 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"body" value:v129];
-        [v131 addObject:v36];
+        v36 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"body" value:cloudSharingResult];
+        [array2 addObject:v36];
       }
 
-      [v135 setQueryItems:v131];
-      v122 = [v135 URL];
+      [array setQueryItems:array2];
+      v122 = [array URL];
       if (v122)
       {
-        v37 = [MEMORY[0x1E69DC668] sharedApplication];
-        [v37 openURL:v122 options:MEMORY[0x1E695E0F8] completionHandler:0];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        [mEMORY[0x1E69DC668] openURL:v122 options:MEMORY[0x1E695E0F8] completionHandler:0];
       }
 
 LABEL_186:
@@ -1177,17 +1177,17 @@ void __43__UIMailActivity_prepareWithActivityItems___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__UIMailActivity__prepareWithActivityItems_completion___block_invoke;
   v8[3] = &unk_1E71F9718;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(UIActivity *)self _loadItemProvidersFromActivityItems:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(UIActivity *)self _loadItemProvidersFromActivityItems:items completion:v8];
 }
 
 uint64_t __55__UIMailActivity__prepareWithActivityItems_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1198,10 +1198,10 @@ uint64_t __55__UIMailActivity__prepareWithActivityItems_completion___block_invok
   return v3();
 }
 
-- (BOOL)_isHTML:(id)a3
+- (BOOL)_isHTML:(id)l
 {
-  v3 = a3;
-  v4 = [v3 length];
+  lCopy = l;
+  v4 = [lCopy length];
   if (v4 >= 0x400)
   {
     v5 = 1024;
@@ -1212,7 +1212,7 @@ uint64_t __55__UIMailActivity__prepareWithActivityItems_completion___block_invok
     v5 = v4;
   }
 
-  [v3 rangeOfString:@"<html" options:1 range:{0, v5}];
+  [lCopy rangeOfString:@"<html" options:1 range:{0, v5}];
   v7 = v6;
 
   return v7 != 0;
@@ -1222,39 +1222,39 @@ uint64_t __55__UIMailActivity__prepareWithActivityItems_completion___block_invok
 {
   if (self->_managesOwnPresentationChecked)
   {
-    v2 = _managesOwnPresentation_managesOwnPresentation;
+    _canSendMailInNewScene = _managesOwnPresentation_managesOwnPresentation;
   }
 
   else
   {
-    v2 = [(objc_class *)getMFMailComposeViewControllerClass() _canSendMailInNewScene];
-    _managesOwnPresentation_managesOwnPresentation = v2;
+    _canSendMailInNewScene = [(objc_class *)getMFMailComposeViewControllerClass() _canSendMailInNewScene];
+    _managesOwnPresentation_managesOwnPresentation = _canSendMailInNewScene;
     self->_managesOwnPresentationChecked = 1;
   }
 
-  return v2 & 1;
+  return _canSendMailInNewScene & 1;
 }
 
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(UIMailActivity *)self _managesOwnPresentation];
-  if (v10)
+  controllerCopy = controller;
+  completionCopy = completion;
+  _managesOwnPresentation = [(UIMailActivity *)self _managesOwnPresentation];
+  if (_managesOwnPresentation)
   {
-    v11 = [(UIMailActivity *)self mailComposeViewController];
+    mailComposeViewController = [(UIMailActivity *)self mailComposeViewController];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __71__UIMailActivity__presentActivityOnViewController_animated_completion___block_invoke;
     v13[3] = &unk_1E71F9740;
-    v14 = v8;
-    v15 = self;
-    v17 = a4;
-    v16 = v9;
-    [v11 _presentComposeInNewWindowWithCompletion:v13];
+    v14 = controllerCopy;
+    selfCopy = self;
+    animatedCopy = animated;
+    v16 = completionCopy;
+    [mailComposeViewController _presentComposeInNewWindowWithCompletion:v13];
   }
 
-  return v10;
+  return _managesOwnPresentation;
 }
 
 void __71__UIMailActivity__presentActivityOnViewController_animated_completion___block_invoke(uint64_t a1, char a2)
@@ -1282,41 +1282,41 @@ void __71__UIMailActivity__presentActivityOnViewController_animated_completion__
   }
 }
 
-- (BOOL)_dismissActivityFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_dismissActivityFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(UIMailActivity *)self _managesOwnPresentation];
-  if (v10)
+  controllerCopy = controller;
+  completionCopy = completion;
+  _managesOwnPresentation = [(UIMailActivity *)self _managesOwnPresentation];
+  if (_managesOwnPresentation)
   {
-    if (!v8)
+    if (!controllerCopy)
     {
       if (!*(&self->_managesOwnPresentationChecked + 2))
       {
-        v9[2](v9);
-        v8 = 0;
+        completionCopy[2](completionCopy);
+        controllerCopy = 0;
         goto LABEL_6;
       }
 
-      v8 = [(UIMailActivity *)self mailComposeViewController];
+      controllerCopy = [(UIMailActivity *)self mailComposeViewController];
     }
 
-    [v8 dismissViewControllerAnimated:*(&self->_managesOwnPresentationChecked + 2) && a4 completion:v9];
+    [controllerCopy dismissViewControllerAnimated:*(&self->_managesOwnPresentationChecked + 2) && animated completion:completionCopy];
   }
 
 LABEL_6:
 
-  return v10;
+  return _managesOwnPresentation;
 }
 
-- (void)setSubject:(id)a3
+- (void)setSubject:(id)subject
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  subjectCopy = subject;
+  v4 = [subjectCopy copy];
   sourceApplicationBundleID = self->_sourceApplicationBundleID;
   self->_sourceApplicationBundleID = v4;
 
-  [(NSString *)self->_autosaveIdentifier setSubject:v6];
+  [(NSString *)self->_autosaveIdentifier setSubject:subjectCopy];
 }
 
 - (void)_cleanup
@@ -1326,15 +1326,15 @@ LABEL_6:
   *(&self->_managesOwnPresentationChecked + 2) = 0;
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
-  v4 = [(UIMailActivity *)self mailComposeViewController];
+  mailComposeViewController = [(UIMailActivity *)self mailComposeViewController];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __49__UIMailActivity_encodeRestorableStateWithCoder___block_invoke;
   v5[3] = &unk_1E71F9768;
   v5[4] = self;
-  [v4 autosaveWithHandler:v5];
+  [mailComposeViewController autosaveWithHandler:v5];
 }
 
 void __49__UIMailActivity_encodeRestorableStateWithCoder___block_invoke(uint64_t a1, void *a2)

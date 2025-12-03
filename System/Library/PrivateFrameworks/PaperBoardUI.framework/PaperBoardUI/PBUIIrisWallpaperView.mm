@@ -1,17 +1,17 @@
 @interface PBUIIrisWallpaperView
-- (BOOL)_setupContentViewForMode:(int64_t)a3;
+- (BOOL)_setupContentViewForMode:(int64_t)mode;
 - (PBUIIrisWallpaperPlayerDelegate)irisDelegate;
-- (PBUIIrisWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 variant:(int64_t)a5 cacheGroup:(id)a6 delegate:(id)a7 options:(unint64_t)a8;
-- (id)videoPlayerForPlayerView:(id)a3;
+- (PBUIIrisWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration variant:(int64_t)variant cacheGroup:(id)group delegate:(id)delegate options:(unint64_t)options;
+- (id)videoPlayerForPlayerView:(id)view;
 - (void)_populateContentView;
 - (void)_resetPrewiredAVPlayer;
-- (void)_setPlayerGestureRecognizer:(id)a3;
-- (void)beginSimulatedTouchWithReason:(id)a3;
+- (void)_setPlayerGestureRecognizer:(id)recognizer;
+- (void)beginSimulatedTouchWithReason:(id)reason;
 - (void)dealloc;
-- (void)endSimulatedTouchWithReason:(id)a3;
-- (void)playerViewIsInteractingDidChange:(id)a3;
-- (void)playerViewPlaybackStateDidChange:(id)a3;
-- (void)switchToIrisMode:(int64_t)a3;
+- (void)endSimulatedTouchWithReason:(id)reason;
+- (void)playerViewIsInteractingDidChange:(id)change;
+- (void)playerViewPlaybackStateDidChange:(id)change;
+- (void)switchToIrisMode:(int64_t)mode;
 @end
 
 @implementation PBUIIrisWallpaperView
@@ -26,64 +26,64 @@
   [(PBUIWallpaperView *)&v4 dealloc];
 }
 
-- (void)switchToIrisMode:(int64_t)a3
+- (void)switchToIrisMode:(int64_t)mode
 {
   [(PBUIIrisWallpaperView *)self _setupContentViewForMode:?];
-  self->_currentMode = a3;
+  self->_currentMode = mode;
 
   [(PBUIIrisWallpaperView *)self _populateContentView];
 }
 
-- (void)beginSimulatedTouchWithReason:(id)a3
+- (void)beginSimulatedTouchWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   simulatedTouchReasons = self->_simulatedTouchReasons;
-  v10 = v4;
+  v10 = reasonCopy;
   if (!simulatedTouchReasons)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->_simulatedTouchReasons;
     self->_simulatedTouchReasons = v6;
 
-    v4 = v10;
+    reasonCopy = v10;
     simulatedTouchReasons = self->_simulatedTouchReasons;
   }
 
-  [(NSMutableSet *)simulatedTouchReasons addObject:v4];
+  [(NSMutableSet *)simulatedTouchReasons addObject:reasonCopy];
   WeakRetained = objc_loadWeakRetained(&self->_playerView);
   v9 = [(PBUIIrisWallpaperView *)self _playbackReasonForSimulatedTouchReason:v10];
   [WeakRetained startPlaybackWithReason:v9];
 }
 
-- (void)endSimulatedTouchWithReason:(id)a3
+- (void)endSimulatedTouchWithReason:(id)reason
 {
   simulatedTouchReasons = self->_simulatedTouchReasons;
-  v5 = a3;
-  [(NSMutableSet *)simulatedTouchReasons removeObject:v5];
+  reasonCopy = reason;
+  [(NSMutableSet *)simulatedTouchReasons removeObject:reasonCopy];
   WeakRetained = objc_loadWeakRetained(&self->_playerView);
-  v6 = [(PBUIIrisWallpaperView *)self _playbackReasonForSimulatedTouchReason:v5];
+  v6 = [(PBUIIrisWallpaperView *)self _playbackReasonForSimulatedTouchReason:reasonCopy];
 
   [WeakRetained stopPlaybackWithReason:v6];
 }
 
-- (void)_setPlayerGestureRecognizer:(id)a3
+- (void)_setPlayerGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
+  recognizerCopy = recognizer;
   if (self->_playerState == 2)
   {
-    v8 = v5;
+    v8 = recognizerCopy;
     v6 = self->_playerGestureRecognizer;
-    objc_storeStrong(&self->_playerGestureRecognizer, a3);
+    objc_storeStrong(&self->_playerGestureRecognizer, recognizer);
     if (v6 != self->_playerGestureRecognizer)
     {
-      v7 = [(PBUIIrisWallpaperView *)self irisDelegate];
+      irisDelegate = [(PBUIIrisWallpaperView *)self irisDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [v7 irisWallpaperPlayer:self didReplaceGestureRecognizer:v6 withGestureRecognizer:self->_playerGestureRecognizer];
+        [irisDelegate irisWallpaperPlayer:self didReplaceGestureRecognizer:v6 withGestureRecognizer:self->_playerGestureRecognizer];
       }
     }
 
-    v5 = v8;
+    recognizerCopy = v8;
   }
 }
 
@@ -92,8 +92,8 @@
   prewiredAVPlayer = self->_prewiredAVPlayer;
   self->_prewiredAVPlayer = 0;
 
-  v4 = [MEMORY[0x277CF0C18] serial];
-  v5 = [v4 serviceClass:25];
+  serial = [MEMORY[0x277CF0C18] serial];
+  v5 = [serial serviceClass:25];
   v9 = BSDispatchQueueCreate();
 
   v6 = [objc_alloc(getISAVPlayerClass()) initWithDispatchQueue:v9];
@@ -106,14 +106,14 @@
   }
 }
 
-- (BOOL)_setupContentViewForMode:(int64_t)a3
+- (BOOL)_setupContentViewForMode:(int64_t)mode
 {
   v37 = *MEMORY[0x277D85DE8];
-  if (self->_currentMode == a3)
+  if (self->_currentMode == mode)
   {
-    v6 = [(PBUIWallpaperView *)self contentView];
+    contentView = [(PBUIWallpaperView *)self contentView];
 
-    if (v6)
+    if (contentView)
     {
       return 0;
     }
@@ -125,11 +125,11 @@
   [WeakRetained removeFromSuperview];
   objc_storeWeak(&self->_playerView, 0);
   self->_playerState = 0;
-  if (a3)
+  if (mode)
   {
-    v9 = [(ISAVPlayer *)self->_prewiredAVPlayer dispatchQueue];
-    v10 = v9;
-    if (!v9)
+    dispatchQueue = [(ISAVPlayer *)self->_prewiredAVPlayer dispatchQueue];
+    v10 = dispatchQueue;
+    if (!dispatchQueue)
     {
       v10 = MEMORY[0x277D85CD0];
       v11 = MEMORY[0x277D85CD0];
@@ -141,7 +141,7 @@
     block[3] = &unk_278361E18;
     block[4] = self;
     dispatch_sync(v10, block);
-    if (!v9)
+    if (!dispatchQueue)
     {
     }
 
@@ -169,13 +169,13 @@
     {
       if ([(ISAVPlayer *)prewiredAVPlayer status]== 2)
       {
-        v21 = [(ISAVPlayer *)self->_prewiredAVPlayer error];
-        v22 = [v21 domain];
-        if ([v22 isEqualToString:*MEMORY[0x277CE5DC0]])
+        error = [(ISAVPlayer *)self->_prewiredAVPlayer error];
+        domain = [error domain];
+        if ([domain isEqualToString:*MEMORY[0x277CE5DC0]])
         {
-          v23 = [v21 code];
+          code = [error code];
 
-          if (v23 == -11819)
+          if (code == -11819)
           {
             [(PBUIIrisWallpaperView *)self _resetPrewiredAVPlayer];
           }
@@ -252,9 +252,9 @@
       [PBUIIrisWallpaperView _populateContentView];
     }
 
-    v5 = v9;
-    v8 = [(PBUIStaticWallpaperView *)self _displayedImage];
-    [v5 setImage:v8];
+    pbui_CGImageBackedImage = v9;
+    _displayedImage = [(PBUIStaticWallpaperView *)self _displayedImage];
+    [pbui_CGImageBackedImage setImage:_displayedImage];
     goto LABEL_8;
   }
 
@@ -269,16 +269,16 @@
     if (!self->_playerState)
     {
       self->_playerState = 1;
-      v4 = [(PBUIStaticWallpaperView *)self _displayedImage];
-      v5 = [v4 pbui_CGImageBackedImage];
+      _displayedImage2 = [(PBUIStaticWallpaperView *)self _displayedImage];
+      pbui_CGImageBackedImage = [_displayedImage2 pbui_CGImageBackedImage];
 
-      v6 = [v5 CGImage];
+      cGImage = [pbui_CGImageBackedImage CGImage];
       v7 = [MEMORY[0x277CE63D8] assetWithURL:self->_videoFileURL];
-      [WeakRetained prepareWithPhoto:v6 videoAsset:v7 photoTime:objc_msgSend(v5 photoEXIFOrientation:{"pbui_EXIFOrientation"), self->_stillTimeInVideo}];
+      [WeakRetained prepareWithPhoto:cGImage videoAsset:v7 photoTime:objc_msgSend(pbui_CGImageBackedImage photoEXIFOrientation:{"pbui_EXIFOrientation"), self->_stillTimeInVideo}];
 
       self->_playerState = 2;
-      v8 = [WeakRetained gestureRecognizer];
-      [(PBUIIrisWallpaperView *)self _setPlayerGestureRecognizer:v8];
+      _displayedImage = [WeakRetained gestureRecognizer];
+      [(PBUIIrisWallpaperView *)self _setPlayerGestureRecognizer:_displayedImage];
 LABEL_8:
     }
   }
@@ -287,15 +287,15 @@ LABEL_8:
   [(PBUIIrisWallpaperView *)self setNeedsLayout];
 }
 
-- (void)playerViewPlaybackStateDidChange:(id)a3
+- (void)playerViewPlaybackStateDidChange:(id)change
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_playerView);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == changeCopy)
   {
-    v6 = PBUIIrisWallpaperPlaybackStateForISPlaybackState([v4 playbackState]);
+    v6 = PBUIIrisWallpaperPlaybackStateForISPlaybackState([changeCopy playbackState]);
     v7 = PBUILogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -311,42 +311,42 @@ LABEL_8:
     if (v6 != -1 && v6 != self->_playbackState)
     {
       self->_playbackState = v6;
-      v10 = [(PBUIIrisWallpaperView *)self irisDelegate];
+      irisDelegate = [(PBUIIrisWallpaperView *)self irisDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [v10 irisWallpaperPlayerPlaybackStateDidChange:self];
+        [irisDelegate irisWallpaperPlayerPlaybackStateDidChange:self];
       }
     }
   }
 }
 
-- (void)playerViewIsInteractingDidChange:(id)a3
+- (void)playerViewIsInteractingDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_playerView);
 
   v6 = WeakRetained;
-  if (WeakRetained == v4)
+  if (WeakRetained == changeCopy)
   {
-    v5 = [WeakRetained isInteracting];
+    isInteracting = [WeakRetained isInteracting];
     v6 = WeakRetained;
-    if (self->_isInteracting != v5)
+    if (self->_isInteracting != isInteracting)
     {
-      self->_isInteracting = v5;
-      v7 = [(PBUIIrisWallpaperView *)self irisDelegate];
+      self->_isInteracting = isInteracting;
+      irisDelegate = [(PBUIIrisWallpaperView *)self irisDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [v7 irisWallpaperPlayerIsInteractingDidChange:self];
+        [irisDelegate irisWallpaperPlayerIsInteractingDidChange:self];
       }
 
       v6 = WeakRetained;
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](isInteracting, v6);
 }
 
-- (id)videoPlayerForPlayerView:(id)a3
+- (id)videoPlayerForPlayerView:(id)view
 {
   [(PBUIIrisWallpaperView *)self _resetPrewiredAVPlayer];
   prewiredAVPlayer = self->_prewiredAVPlayer;
@@ -354,52 +354,52 @@ LABEL_8:
   return prewiredAVPlayer;
 }
 
-- (PBUIIrisWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 variant:(int64_t)a5 cacheGroup:(id)a6 delegate:(id)a7 options:(unint64_t)a8
+- (PBUIIrisWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration variant:(int64_t)variant cacheGroup:(id)group delegate:(id)delegate options:(unint64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = [v17 videoURL];
-  if ((a8 & 8) != 0)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
+  groupCopy = group;
+  delegateCopy = delegate;
+  videoURL = [configurationCopy videoURL];
+  if ((options & 8) != 0)
   {
-    v21 = [MEMORY[0x277CE63D8] assetWithURL:v20];
+    v21 = [MEMORY[0x277CE63D8] assetWithURL:videoURL];
     v22 = [v21 tracksWithMediaType:*MEMORY[0x277CE5EA8]];
     [v22 firstObject];
-    v23 = v18;
-    v25 = v24 = v20;
+    v23 = groupCopy;
+    v25 = v24 = videoURL;
     [v25 naturalSize];
     self->_prewiredSize.width = v26;
     self->_prewiredSize.height = v27;
 
-    v20 = v24;
-    v18 = v23;
+    videoURL = v24;
+    groupCopy = v23;
   }
 
-  self->_useRewindPlaybackStyle = (a8 & 0x10) != 0;
+  self->_useRewindPlaybackStyle = (options & 0x10) != 0;
   v36.receiver = self;
   v36.super_class = PBUIIrisWallpaperView;
-  v28 = [(PBUIStaticWallpaperView *)&v36 initWithFrame:v17 configuration:a5 variant:v18 cacheGroup:v19 delegate:a8 | ((a8 & 0x10) >> 2) options:x, y, width, height];
-  if (v28)
+  height = [(PBUIStaticWallpaperView *)&v36 initWithFrame:configurationCopy configuration:variant variant:groupCopy cacheGroup:delegateCopy delegate:options | ((options & 0x10) >> 2) options:x, y, width, height];
+  if (height)
   {
-    v29 = (a8 & 0x10) >> 4;
-    v30 = [v17 videoURL];
-    v31 = [v30 copy];
-    videoFileURL = v28->_videoFileURL;
-    v28->_videoFileURL = v31;
+    v29 = (options & 0x10) >> 4;
+    videoURL2 = [configurationCopy videoURL];
+    v31 = [videoURL2 copy];
+    videoFileURL = height->_videoFileURL;
+    height->_videoFileURL = v31;
 
-    v33 = [v17 wallpaperOptions];
-    [v33 stillTimeInVideo];
-    v28->_stillTimeInVideo = v34;
+    wallpaperOptions = [configurationCopy wallpaperOptions];
+    [wallpaperOptions stillTimeInVideo];
+    height->_stillTimeInVideo = v34;
 
-    v28->_useRewindPlaybackStyle = v29;
-    [(PBUIIrisWallpaperView *)v28 _populateContentView];
+    height->_useRewindPlaybackStyle = v29;
+    [(PBUIIrisWallpaperView *)height _populateContentView];
   }
 
-  return v28;
+  return height;
 }
 
 - (PBUIIrisWallpaperPlayerDelegate)irisDelegate

@@ -1,28 +1,28 @@
 @interface VCControlChannelDialogV2
-- (VCControlChannelDialogV2)initWithSessionID:(unsigned int)a3 participantID:(id)a4 participantUUID:(id)a5 participantConfig:(id *)a6 transactionDelegate:(id)a7;
-- (id)allocEncryptedPayloadFromPayloadData:(id)a3;
-- (id)copyDecryptedDataFromEncryptedPayload:(id)a3;
-- (id)newDataFromMessage:(id)a3 topic:(id)a4 transactionID:(unint64_t)a5 isReliable:(BOOL)a6 transactionDelegate:(id)a7;
-- (id)processMessageData:(id)a3 participantID:(id)a4 topic:(id *)a5 transactionID:(id *)a6 messageStatus:(unsigned int *)a7 isInternalMessage:(BOOL *)a8;
+- (VCControlChannelDialogV2)initWithSessionID:(unsigned int)d participantID:(id)iD participantUUID:(id)uID participantConfig:(id *)config transactionDelegate:(id)delegate;
+- (id)allocEncryptedPayloadFromPayloadData:(id)data;
+- (id)copyDecryptedDataFromEncryptedPayload:(id)payload;
+- (id)newDataFromMessage:(id)message topic:(id)topic transactionID:(unint64_t)d isReliable:(BOOL)reliable transactionDelegate:(id)delegate;
+- (id)processMessageData:(id)data participantID:(id)d topic:(id *)topic transactionID:(id *)iD messageStatus:(unsigned int *)status isInternalMessage:(BOOL *)message;
 - (void)dealloc;
-- (void)sendConfirmationToParticipantID:(id)a3 transactionID:(id)a4 sessionID:(unsigned int)a5 transactionDelegate:(id)a6;
+- (void)sendConfirmationToParticipantID:(id)d transactionID:(id)iD sessionID:(unsigned int)sessionID transactionDelegate:(id)delegate;
 @end
 
 @implementation VCControlChannelDialogV2
 
-- (VCControlChannelDialogV2)initWithSessionID:(unsigned int)a3 participantID:(id)a4 participantUUID:(id)a5 participantConfig:(id *)a6 transactionDelegate:(id)a7
+- (VCControlChannelDialogV2)initWithSessionID:(unsigned int)d participantID:(id)iD participantUUID:(id)uID participantConfig:(id *)config transactionDelegate:(id)delegate
 {
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = VCControlChannelDialogV2;
-  v8 = [(VCControlChannelDialog *)&v13 initWithSessionID:*&a3 participantID:a4 participantUUID:a5 participantConfig:a6 transactionDelegate:a7];
+  v8 = [(VCControlChannelDialog *)&v13 initWithSessionID:*&d participantID:iD participantUUID:uID participantConfig:config transactionDelegate:delegate];
   v9 = v8;
   if (!v8)
   {
     goto LABEL_12;
   }
 
-  if (!a6)
+  if (!config)
   {
     [VCControlChannelDialogV2 initWithSessionID:v8 participantID:? participantUUID:? participantConfig:? transactionDelegate:?];
 LABEL_12:
@@ -32,13 +32,13 @@ LABEL_12:
 
   v10 = *MEMORY[0x1E695E480];
   v11 = CFDictionaryCreate(*MEMORY[0x1E695E480], &kVCCryptorCreationOption_DisableReplayProtection, MEMORY[0x1E695E4D0], 1, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-  if (VCCryptor_Create(v10, 1, a6->var3, a6->var1, v11, &v9->_uplinkCryptor))
+  if (VCCryptor_Create(v10, 1, config->var3, config->var1, v11, &v9->_uplinkCryptor))
   {
     [VCControlChannelDialogV2 initWithSessionID:v9 participantID:? participantUUID:? participantConfig:? transactionDelegate:?];
     goto LABEL_10;
   }
 
-  if (VCCryptor_Create(v10, 1, a6->var4, a6->var2, v11, &v9->_downlinkCryptor))
+  if (VCCryptor_Create(v10, 1, config->var4, config->var2, v11, &v9->_downlinkCryptor))
   {
     [VCControlChannelDialogV2 initWithSessionID:v9 participantID:? participantUUID:? participantConfig:? transactionDelegate:?];
 LABEL_10:
@@ -79,15 +79,15 @@ LABEL_10:
   [(VCControlChannelDialog *)&v5 dealloc];
 }
 
-- (id)allocEncryptedPayloadFromPayloadData:(id)a3
+- (id)allocEncryptedPayloadFromPayloadData:(id)data
 {
   blockBufferOut[2] = *MEMORY[0x1E69E9840];
   theBuffer = 0;
   blockBufferOut[0] = 0;
   v5 = *MEMORY[0x1E695E480];
-  v6 = [a3 bytes];
-  v7 = [a3 length];
-  if (CMBlockBufferCreateWithMemoryBlock(v5, v6, v7, *MEMORY[0x1E695E498], 0, 0, [a3 length], 0, blockBufferOut))
+  bytes = [data bytes];
+  v7 = [data length];
+  if (CMBlockBufferCreateWithMemoryBlock(v5, bytes, v7, *MEMORY[0x1E695E498], 0, 0, [data length], 0, blockBufferOut))
   {
     [VCControlChannelDialogV2 allocEncryptedPayloadFromPayloadData:];
   }
@@ -140,15 +140,15 @@ LABEL_6:
   return v11;
 }
 
-- (id)copyDecryptedDataFromEncryptedPayload:(id)a3
+- (id)copyDecryptedDataFromEncryptedPayload:(id)payload
 {
   blockBufferOut[2] = *MEMORY[0x1E69E9840];
   theBuffer = 0;
   blockBufferOut[0] = 0;
   v5 = *MEMORY[0x1E695E480];
-  v6 = [a3 bytes];
-  v7 = [a3 length];
-  if (CMBlockBufferCreateWithMemoryBlock(v5, v6, v7, *MEMORY[0x1E695E498], 0, 0, [a3 length], 0, blockBufferOut))
+  bytes = [payload bytes];
+  v7 = [payload length];
+  if (CMBlockBufferCreateWithMemoryBlock(v5, bytes, v7, *MEMORY[0x1E695E498], 0, 0, [payload length], 0, blockBufferOut))
   {
     [VCControlChannelDialogV2 copyDecryptedDataFromEncryptedPayload:];
   }
@@ -195,10 +195,10 @@ LABEL_6:
   return v10;
 }
 
-- (id)newDataFromMessage:(id)a3 topic:(id)a4 transactionID:(unint64_t)a5 isReliable:(BOOL)a6 transactionDelegate:(id)a7
+- (id)newDataFromMessage:(id)message topic:(id)topic transactionID:(unint64_t)d isReliable:(BOOL)reliable transactionDelegate:(id)delegate
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!topic)
   {
     if (objc_opt_class() == self)
     {
@@ -256,9 +256,9 @@ LABEL_6:
       v37 = 1024;
       v38 = 131;
       v39 = 2112;
-      v40 = v19;
+      topicCopy3 = v19;
       v41 = 2048;
-      v42 = self;
+      messageCopy3 = self;
       v28 = " [%s] %s:%d %@(%p) topic must not be nil";
       v29 = v32;
       v30 = 48;
@@ -270,7 +270,7 @@ LABEL_29:
     v12 = 0;
 LABEL_30:
     v17 = 0;
-    v15 = 0;
+    data = 0;
     goto LABEL_6;
   }
 
@@ -290,9 +290,9 @@ LABEL_30:
         v37 = 1024;
         v38 = 134;
         v39 = 2112;
-        v40 = a4;
+        topicCopy3 = topic;
         v41 = 2112;
-        v42 = a3;
+        messageCopy3 = message;
         _os_log_error_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to allocate outgoing message for '%@:%@'", &v33, 0x30u);
       }
     }
@@ -301,9 +301,9 @@ LABEL_30:
   }
 
   v12 = v11;
-  [(VCCCMessage *)v11 setTransactionID:a5];
-  [(VCCCMessage *)v12 setTopic:a4];
-  -[VCCCMessage setPayload:](v12, "setPayload:", [a3 VCCCData]);
+  [(VCCCMessage *)v11 setTransactionID:d];
+  [(VCCCMessage *)v12 setTopic:topic];
+  -[VCCCMessage setPayload:](v12, "setPayload:", [message VCCCData]);
   v13 = objc_alloc_init(VCCCMessageWrapper);
   if (!v13)
   {
@@ -320,9 +320,9 @@ LABEL_30:
         v37 = 1024;
         v38 = 141;
         v39 = 2112;
-        v40 = a4;
+        topicCopy3 = topic;
         v41 = 2112;
-        v42 = a3;
+        messageCopy3 = message;
         _os_log_error_impl(&dword_1DB56E000, v23, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to allocate message wrapper for '%@:%@'", &v33, 0x30u);
       }
     }
@@ -333,8 +333,8 @@ LABEL_30:
 
   v14 = v13;
   [(VCCCMessageWrapper *)v13 setMessage:v12];
-  v15 = [(VCCCMessageWrapper *)v14 data];
-  v16 = [(VCControlChannelDialogV2 *)self allocEncryptedPayloadFromPayloadData:v15];
+  data = [(VCCCMessageWrapper *)v14 data];
+  v16 = [(VCControlChannelDialogV2 *)self allocEncryptedPayloadFromPayloadData:data];
   if (v16)
   {
     v17 = v16;
@@ -355,9 +355,9 @@ LABEL_30:
         v37 = 1024;
         v38 = 147;
         v39 = 2112;
-        v40 = a4;
+        topicCopy3 = topic;
         v41 = 2112;
-        v42 = a3;
+        messageCopy3 = message;
         _os_log_error_impl(&dword_1DB56E000, v25, OS_LOG_TYPE_ERROR, " [%s] %s:%d Could not encrypt outgoing message '%@:%@'", &v33, 0x30u);
       }
     }
@@ -370,10 +370,10 @@ LABEL_6:
   return v17;
 }
 
-- (id)processMessageData:(id)a3 participantID:(id)a4 topic:(id *)a5 transactionID:(id *)a6 messageStatus:(unsigned int *)a7 isInternalMessage:(BOOL *)a8
+- (id)processMessageData:(id)data participantID:(id)d topic:(id *)topic transactionID:(id *)iD messageStatus:(unsigned int *)status isInternalMessage:(BOOL *)message
 {
   v100 = *MEMORY[0x1E69E9840];
-  if (![a3 length])
+  if (![data length])
   {
     if (objc_opt_class() == self)
     {
@@ -438,7 +438,7 @@ LABEL_120:
     goto LABEL_121;
   }
 
-  if (!a5)
+  if (!topic)
   {
     if (objc_opt_class() == self)
     {
@@ -500,7 +500,7 @@ LABEL_120:
     goto LABEL_120;
   }
 
-  if (!a6)
+  if (!iD)
   {
     if (objc_opt_class() == self)
     {
@@ -562,7 +562,7 @@ LABEL_120:
     goto LABEL_120;
   }
 
-  if (!a7)
+  if (!status)
   {
     if (objc_opt_class() == self)
     {
@@ -624,7 +624,7 @@ LABEL_120:
     goto LABEL_120;
   }
 
-  if (!a8)
+  if (!message)
   {
     if (objc_opt_class() == self)
     {
@@ -686,7 +686,7 @@ LABEL_120:
     goto LABEL_120;
   }
 
-  v14 = [(VCControlChannelDialogV2 *)self copyDecryptedDataFromEncryptedPayload:a3];
+  v14 = [(VCControlChannelDialogV2 *)self copyDecryptedDataFromEncryptedPayload:data];
   if (!v14)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -705,7 +705,7 @@ LABEL_120:
         v92 = 1024;
         *v93 = sessionID;
         *&v93[4] = 2112;
-        *&v93[6] = a4;
+        *&v93[6] = d;
         *&v93[14] = 2112;
         *&v93[16] = 0;
         _os_log_error_impl(&dword_1DB56E000, v53, OS_LOG_TYPE_ERROR, " [%s] %s:%d Could not decrypt incoming payload for _sessionID='%d', participantID='%@', transactionID='%@'", buf, 0x36u);
@@ -859,18 +859,18 @@ LABEL_123:
     goto LABEL_52;
   }
 
-  v17 = [(VCCCMessageWrapper *)v16 hasMessage];
-  v84 = a5;
-  v85 = a7;
-  if (v17)
+  hasMessage = [(VCCCMessageWrapper *)v16 hasMessage];
+  topicCopy = topic;
+  statusCopy = status;
+  if (hasMessage)
   {
-    v82 = a6;
-    v18 = [(VCCCMessageWrapper *)v16 message];
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[VCCCMessage transactionID](v18, "transactionID")}];
-    v20 = [(VCCCMessage *)v18 topic];
-    if ([(NSString *)v20 length])
+    iDCopy2 = iD;
+    message = [(VCCCMessageWrapper *)v16 message];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[VCCCMessage transactionID](message, "transactionID")}];
+    topic = [(VCCCMessage *)message topic];
+    if ([(NSString *)topic length])
     {
-      v21 = v20;
+      v21 = topic;
     }
 
     else
@@ -878,15 +878,15 @@ LABEL_123:
       v21 = 0;
     }
 
-    v22 = 0;
-    if ([(VCCCMessage *)v18 hasPayload])
+    payload = 0;
+    if ([(VCCCMessage *)message hasPayload])
     {
-      v22 = [(VCCCMessage *)v18 payload];
+      payload = [(VCCCMessage *)message payload];
     }
 
-    if ([(NSData *)v22 length])
+    if ([(NSData *)payload length])
     {
-      v23 = v22;
+      v23 = payload;
     }
 
     else
@@ -895,7 +895,7 @@ LABEL_123:
     }
 
     v24 = MEMORY[0x1E1289F20](&self->super._weakTransactionDelegate);
-    [(VCControlChannelDialogV2 *)self sendConfirmationToParticipantID:a4 transactionID:v19 sessionID:self->super._sessionID transactionDelegate:v24];
+    [(VCControlChannelDialogV2 *)self sendConfirmationToParticipantID:d transactionID:v19 sessionID:self->super._sessionID transactionDelegate:v24];
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() < 6 || (v27 = VRTraceErrorLogLevelToCSTR(), v28 = *MEMORY[0x1E6986650], !os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT)))
@@ -920,7 +920,7 @@ LABEL_34:
       v92 = 1024;
       *v93 = v29;
       *&v93[4] = 2112;
-      *&v93[6] = a4;
+      *&v93[6] = d;
       *&v93[14] = 2112;
       *&v93[16] = v19;
       v30 = " [%s] %s:%d Sent confirmation for _sessionID='%d', participantID='%@', transactionID='%@'";
@@ -966,7 +966,7 @@ LABEL_34:
       *&v93[18] = 1024;
       *&v93[20] = v35;
       v94 = 2112;
-      v95 = a4;
+      dCopy2 = d;
       v96 = 2112;
       v97 = v19;
       v30 = " [%s] %s:%d %@(%p) Sent confirmation for _sessionID='%d', participantID='%@', transactionID='%@'";
@@ -980,13 +980,13 @@ LABEL_34:
 
   if ([(VCCCMessageWrapper *)v16 hasAcknowledgement])
   {
-    v82 = a6;
-    v25 = [(VCCCMessageWrapper *)v16 acknowledgement];
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[VCCCMessageAcknowledgment transactionID](v25, "transactionID")}];
-    v26 = a8;
-    if ([(VCCCMessageAcknowledgment *)v25 hasStatus])
+    iDCopy2 = iD;
+    acknowledgement = [(VCCCMessageWrapper *)v16 acknowledgement];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[VCCCMessageAcknowledgment transactionID](acknowledgement, "transactionID")}];
+    messageCopy = message;
+    if ([(VCCCMessageAcknowledgment *)acknowledgement hasStatus])
     {
-      LODWORD(v24) = [(VCCCMessageAcknowledgment *)v25 status];
+      LODWORD(v24) = [(VCCCMessageAcknowledgment *)acknowledgement status];
     }
 
     else
@@ -1018,11 +1018,11 @@ LABEL_34:
       v92 = 1024;
       *v93 = v39;
       *&v93[4] = 2112;
-      *&v93[6] = a4;
+      *&v93[6] = d;
       *&v93[14] = 2112;
       *&v93[16] = v19;
       v94 = 1024;
-      LODWORD(v95) = v24;
+      LODWORD(dCopy2) = v24;
       v40 = " [%s] %s:%d Reliable message has been ACKed for _sessionID='%d', participantID='%@', transactionID='%@', messageStatus='%d'";
       v41 = v38;
       v42 = 60;
@@ -1066,7 +1066,7 @@ LABEL_34:
       *&v93[18] = 1024;
       *&v93[20] = v45;
       v94 = 2112;
-      v95 = a4;
+      dCopy2 = d;
       v96 = 2112;
       v97 = v19;
       v98 = 1024;
@@ -1081,9 +1081,9 @@ LABEL_49:
     [(VCControlChannelDialog *)self confirmTransaction:v19];
     v21 = 0;
     v23 = 0;
-    a8 = v26;
+    message = messageCopy;
 LABEL_50:
-    a6 = v82;
+    iD = iDCopy2;
     goto LABEL_51;
   }
 
@@ -1092,18 +1092,18 @@ LABEL_50:
   v21 = 0;
   v23 = 0;
 LABEL_51:
-  *v84 = v21;
-  *v85 = v24;
-  *a6 = v19;
-  *a8 = !v17;
+  *topicCopy = v21;
+  *statusCopy = v24;
+  *iD = v19;
+  *message = !hasMessage;
 LABEL_52:
 
   return v23;
 }
 
-- (void)sendConfirmationToParticipantID:(id)a3 transactionID:(id)a4 sessionID:(unsigned int)a5 transactionDelegate:(id)a6
+- (void)sendConfirmationToParticipantID:(id)d transactionID:(id)iD sessionID:(unsigned int)sessionID transactionDelegate:(id)delegate
 {
-  v7 = *&a5;
+  v7 = *&sessionID;
   v49 = *MEMORY[0x1E69E9840];
   v11 = objc_alloc_init(VCCCMessageAcknowledgment);
   if (!v11)
@@ -1129,12 +1129,12 @@ LABEL_52:
     v43 = 1024;
     *v44 = v7;
     *&v44[4] = 2112;
-    *&v44[6] = a4;
+    *&v44[6] = iD;
     v28 = " [%s] %s:%d Failed to allocate outgoing acknowledgment message for sessionID='%d', transactionID='%@'";
     goto LABEL_39;
   }
 
-  -[VCCCMessageAcknowledgment setTransactionID:](v11, "setTransactionID:", [a4 unsignedLongValue]);
+  -[VCCCMessageAcknowledgment setTransactionID:](v11, "setTransactionID:", [iD unsignedLongValue]);
   v12 = objc_alloc_init(VCCCMessageWrapper);
   if (!v12)
   {
@@ -1159,7 +1159,7 @@ LABEL_52:
     v43 = 1024;
     *v44 = v7;
     *&v44[4] = 2112;
-    *&v44[6] = a4;
+    *&v44[6] = iD;
     v28 = " [%s] %s:%d Failed to allocate message wrapper for sessionID='%d', transactionID='%@'";
 LABEL_39:
     _os_log_error_impl(&dword_1DB56E000, v27, OS_LOG_TYPE_ERROR, v28, buf, 0x2Cu);
@@ -1173,8 +1173,8 @@ LABEL_23:
 
   v13 = v12;
   [(VCCCMessageWrapper *)v12 setAcknowledgement:v11];
-  v14 = [(VCCCMessageWrapper *)v13 data];
-  if (!v14)
+  data = [(VCCCMessageWrapper *)v13 data];
+  if (!data)
   {
     if (objc_opt_class() == self)
     {
@@ -1224,12 +1224,12 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v15 = v14;
-  v16 = [(VCControlChannelDialogV2 *)self allocEncryptedPayloadFromPayloadData:v14];
+  v15 = data;
+  v16 = [(VCControlChannelDialogV2 *)self allocEncryptedPayloadFromPayloadData:data];
   if (v16)
   {
     v17 = v16;
-    [VCControlChannelTransaction sendUnreliableMessage:v16 sessionID:v7 participantID:a3 transactionID:0 transactionDelegate:a6 withOptions:0];
+    [VCControlChannelTransaction sendUnreliableMessage:v16 sessionID:v7 participantID:d transactionID:0 transactionDelegate:delegate withOptions:0];
     if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1247,9 +1247,9 @@ LABEL_23:
           v43 = 1024;
           *v44 = v7;
           *&v44[4] = 2112;
-          *&v44[6] = a3;
+          *&v44[6] = d;
           *&v44[14] = 2112;
-          *&v44[16] = a4;
+          *&v44[16] = iD;
           v21 = " [%s] %s:%d Dialog send confirmation for sessionID='%d', participantID='%@', transactionID='%@'";
           v22 = v20;
           v23 = 54;
@@ -1273,7 +1273,7 @@ LABEL_15:
 
       if (VRTraceGetErrorLogLevelForModule() >= 6)
       {
-        v36 = a4;
+        iDCopy = iD;
         v24 = VRTraceErrorLogLevelToCSTR();
         v25 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
@@ -1291,9 +1291,9 @@ LABEL_15:
           *&v44[18] = 1024;
           *&v44[20] = v7;
           v45 = 2112;
-          v46 = a3;
+          dCopy = d;
           v47 = 2112;
-          v48 = v36;
+          v48 = iDCopy;
           v21 = " [%s] %s:%d %@(%p) Dialog send confirmation for sessionID='%d', participantID='%@', transactionID='%@'";
           v22 = v25;
           v23 = 74;
@@ -1320,9 +1320,9 @@ LABEL_15:
         v43 = 1024;
         *v44 = v7;
         *&v44[4] = 2112;
-        *&v44[6] = a3;
+        *&v44[6] = d;
         *&v44[14] = 2112;
-        *&v44[16] = a4;
+        *&v44[16] = iD;
         _os_log_error_impl(&dword_1DB56E000, v32, OS_LOG_TYPE_ERROR, " [%s] %s:%d Could not encrypt confirmation for sessionID='%d', participantID='%@', transactionID='%@'", buf, 0x36u);
       }
     }

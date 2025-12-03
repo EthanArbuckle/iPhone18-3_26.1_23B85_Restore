@@ -1,40 +1,40 @@
 @interface WDAppleWalkingSteadinessListDataProvider
-- (id)textForObject:(id)a3;
-- (id)titleForSection:(unint64_t)a3;
+- (id)textForObject:(id)object;
+- (id)titleForSection:(unint64_t)section;
 @end
 
 @implementation WDAppleWalkingSteadinessListDataProvider
 
-- (id)textForObject:(id)a3
+- (id)textForObject:(id)object
 {
   v3 = MEMORY[0x277D12968];
-  v4 = [a3 quantity];
-  v5 = [v3 classificationForAppleWalkingSteadinessQuantity:v4];
+  quantity = [object quantity];
+  v5 = [v3 classificationForAppleWalkingSteadinessQuantity:quantity];
 
   v6 = MEMORY[0x277D12968];
 
   return [v6 localizedTitleForClassification:v5];
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
-  v4 = [(WDSampleListDataProvider *)self samples];
-  v5 = [v4 count];
+  samples = [(WDSampleListDataProvider *)self samples];
+  v5 = [samples count];
 
   if (v5 < 1)
   {
-    v9 = 0;
+    localizedUppercaseString = 0;
   }
 
   else
   {
-    v6 = [(WDSampleListDataProvider *)self displayType];
-    v7 = [v6 localization];
-    v8 = [v7 displayName];
-    v9 = [v8 localizedUppercaseString];
+    displayType = [(WDSampleListDataProvider *)self displayType];
+    localization = [displayType localization];
+    displayName = [localization displayName];
+    localizedUppercaseString = [displayName localizedUppercaseString];
   }
 
-  return v9;
+  return localizedUppercaseString;
 }
 
 @end

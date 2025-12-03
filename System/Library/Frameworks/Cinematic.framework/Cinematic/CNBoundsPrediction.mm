@@ -1,20 +1,20 @@
 @interface CNBoundsPrediction
-+ (id)_predictionFromInternal:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_predictionFromInternal:(id)internal;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)normalizedBounds;
-- (id)_initWithNormalizedBounds:(CGRect)a3 confidence:(float)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithNormalizedBounds:(CGRect)bounds confidence:(float)confidence;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation CNBoundsPrediction
 
-- (id)_initWithNormalizedBounds:(CGRect)a3 confidence:(float)a4
+- (id)_initWithNormalizedBounds:(CGRect)bounds confidence:(float)confidence
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v13.receiver = self;
   v13.super_class = CNBoundsPrediction;
   v9 = [(CNBoundsPrediction *)&v13 init];
@@ -22,25 +22,25 @@
   if (v9)
   {
     [(CNBoundsPrediction *)v9 setNormalizedBounds:x, y, width, height];
-    *&v11 = a4;
+    *&v11 = confidence;
     [(CNBoundsPrediction *)v10 setConfidence:v11];
   }
 
   return v10;
 }
 
-+ (id)_predictionFromInternal:(id)a3
++ (id)_predictionFromInternal:(id)internal
 {
-  if (a3)
+  if (internal)
   {
-    v4 = a3;
-    v5 = objc_alloc_init(a1);
-    [v4 rect];
+    internalCopy = internal;
+    v5 = objc_alloc_init(self);
+    [internalCopy rect];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [v4 confidence];
+    [internalCopy confidence];
     v15 = v14;
 
     LODWORD(v16) = v15;
@@ -55,7 +55,7 @@
   return v17;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(CNBoundsPrediction *)self normalizedBounds];
@@ -102,13 +102,13 @@
   return (v16 * 32767.0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(CNBoundsPrediction *)self normalizedBounds];
     v7 = v6;
     v9 = v8;

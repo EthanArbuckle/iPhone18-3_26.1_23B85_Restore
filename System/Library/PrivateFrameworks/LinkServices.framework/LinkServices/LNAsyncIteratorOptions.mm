@@ -1,21 +1,21 @@
 @interface LNAsyncIteratorOptions
-- (BOOL)isEqual:(id)a3;
-- (LNAsyncIteratorOptions)initWithCoder:(id)a3;
-- (LNAsyncIteratorOptions)initWithPageSize:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNAsyncIteratorOptions)initWithCoder:(id)coder;
+- (LNAsyncIteratorOptions)initWithPageSize:(id)size;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAsyncIteratorOptions
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -24,10 +24,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNAsyncIteratorOptions *)self exportConfiguration];
-    v8 = [(LNAsyncIteratorOptions *)v6 exportConfiguration];
-    v9 = v7;
-    v10 = v8;
+    exportConfiguration = [(LNAsyncIteratorOptions *)self exportConfiguration];
+    exportConfiguration2 = [(LNAsyncIteratorOptions *)v6 exportConfiguration];
+    v9 = exportConfiguration;
+    v10 = exportConfiguration2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -54,10 +54,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNAsyncIteratorOptions *)self pageSize];
-    v16 = [(LNAsyncIteratorOptions *)v6 pageSize];
-    v14 = v15;
-    v17 = v16;
+    pageSize = [(LNAsyncIteratorOptions *)self pageSize];
+    pageSize2 = [(LNAsyncIteratorOptions *)v6 pageSize];
+    v14 = pageSize;
+    v17 = pageSize2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -84,43 +84,43 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(LNAsyncIteratorOptions *)self exportConfiguration];
-  v4 = [v3 hash];
-  v5 = [(LNAsyncIteratorOptions *)self pageSize];
-  v6 = [v5 hash];
+  exportConfiguration = [(LNAsyncIteratorOptions *)self exportConfiguration];
+  v4 = [exportConfiguration hash];
+  pageSize = [(LNAsyncIteratorOptions *)self pageSize];
+  v6 = [pageSize hash];
 
   return v6 ^ v4;
 }
 
-- (LNAsyncIteratorOptions)initWithCoder:(id)a3
+- (LNAsyncIteratorOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pageSize"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pageSize"];
   if (v5)
   {
     self = [(LNAsyncIteratorOptions *)self initWithPageSize:v5];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"exportConfiguration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"exportConfiguration"];
     [(LNAsyncIteratorOptions *)self setExportConfiguration:v6];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAsyncIteratorOptions *)self exportConfiguration];
-  [v4 encodeObject:v5 forKey:@"exportConfiguration"];
+  coderCopy = coder;
+  exportConfiguration = [(LNAsyncIteratorOptions *)self exportConfiguration];
+  [coderCopy encodeObject:exportConfiguration forKey:@"exportConfiguration"];
 
-  v6 = [(LNAsyncIteratorOptions *)self pageSize];
-  [v4 encodeObject:v6 forKey:@"pageSize"];
+  pageSize = [(LNAsyncIteratorOptions *)self pageSize];
+  [coderCopy encodeObject:pageSize forKey:@"pageSize"];
 }
 
 - (id)description
@@ -128,20 +128,20 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNAsyncIteratorOptions *)self exportConfiguration];
-  v7 = [(LNAsyncIteratorOptions *)self pageSize];
-  v8 = [v3 stringWithFormat:@"<%@: %p, exportConfiguration: %@, pageSize: %@>", v5, self, v6, v7];
+  exportConfiguration = [(LNAsyncIteratorOptions *)self exportConfiguration];
+  pageSize = [(LNAsyncIteratorOptions *)self pageSize];
+  v8 = [v3 stringWithFormat:@"<%@: %p, exportConfiguration: %@, pageSize: %@>", v5, self, exportConfiguration, pageSize];
 
   return v8;
 }
 
-- (LNAsyncIteratorOptions)initWithPageSize:(id)a3
+- (LNAsyncIteratorOptions)initWithPageSize:(id)size
 {
-  v6 = a3;
-  if (!v6)
+  sizeCopy = size;
+  if (!sizeCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNAsyncIteratorOptions.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"pageSize"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAsyncIteratorOptions.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"pageSize"}];
   }
 
   v12.receiver = self;
@@ -150,7 +150,7 @@ LABEL_21:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_pageSize, a3);
+    objc_storeStrong(&v7->_pageSize, size);
     v9 = v8;
   }
 

@@ -1,18 +1,18 @@
 @interface WFShortcutRunnerSandboxExtensionManager
 + (WFShortcutRunnerSandboxExtensionManager)sharedManager;
-- (BOOL)requestSandboxExtensionForRunningActionWithAccessResources:(id)a3 error:(id *)a4;
-- (BOOL)retakeResignedExtensionsWithReason:(id)a3 error:(id *)a4;
+- (BOOL)requestSandboxExtensionForRunningActionWithAccessResources:(id)resources error:(id *)error;
+- (BOOL)retakeResignedExtensionsWithReason:(id)reason error:(id *)error;
 - (WFShortcutRunnerSandboxExtensionManager)init;
-- (id)asynchronousRemoteDataStoreWithErrorHandler:(id)a3;
-- (id)requestExtensionTokensForAccessResources:(id)a3 rejectedAccessResources:(id *)a4 error:(id *)a5;
-- (id)synchronousRemoteDataStoreWithErrorHandler:(id)a3;
-- (void)performWithSandboxExtensions:(id)a3 asynchronousBlock:(id)a4;
-- (void)performWithSandboxExtensions:(id)a3 synchronousBlock:(id)a4;
-- (void)requestExtensionTokensForAccessResources:(id)a3 completion:(id)a4;
-- (void)requestSandboxExtensionForRunningActionWithAccessResources:(id)a3 completion:(id)a4;
-- (void)requestSandboxExtensionForToolKitIndexingWithCompletionHandler:(id)a3;
-- (void)resignIssuedExtensionsWithReason:(id)a3;
-- (void)temporaryRequestSandboxExtensionWithBlock:(id)a3;
+- (id)asynchronousRemoteDataStoreWithErrorHandler:(id)handler;
+- (id)requestExtensionTokensForAccessResources:(id)resources rejectedAccessResources:(id *)accessResources error:(id *)error;
+- (id)synchronousRemoteDataStoreWithErrorHandler:(id)handler;
+- (void)performWithSandboxExtensions:(id)extensions asynchronousBlock:(id)block;
+- (void)performWithSandboxExtensions:(id)extensions synchronousBlock:(id)block;
+- (void)requestExtensionTokensForAccessResources:(id)resources completion:(id)completion;
+- (void)requestSandboxExtensionForRunningActionWithAccessResources:(id)resources completion:(id)completion;
+- (void)requestSandboxExtensionForToolKitIndexingWithCompletionHandler:(id)handler;
+- (void)resignIssuedExtensionsWithReason:(id)reason;
+- (void)temporaryRequestSandboxExtensionWithBlock:(id)block;
 @end
 
 @implementation WFShortcutRunnerSandboxExtensionManager
@@ -63,14 +63,14 @@ uint64_t __56__WFShortcutRunnerSandboxExtensionManager_sharedManager__block_invo
   return v3;
 }
 
-- (void)requestSandboxExtensionForToolKitIndexingWithCompletionHandler:(id)a3
+- (void)requestSandboxExtensionForToolKitIndexingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __106__WFShortcutRunnerSandboxExtensionManager_requestSandboxExtensionForToolKitIndexingWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E7B02940;
-  v5 = v4;
+  v5 = handlerCopy;
   v11 = v5;
   v6 = [(WFShortcutRunnerSandboxExtensionManager *)self synchronousRemoteDataStoreWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -98,22 +98,22 @@ void __106__WFShortcutRunnerSandboxExtensionManager_requestSandboxExtensionForTo
   v9(v8, v6, v5, v11, 0);
 }
 
-- (void)temporaryRequestSandboxExtensionWithBlock:(id)a3
+- (void)temporaryRequestSandboxExtensionWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[WFShortcutRunnerSandboxExtensionRequest all];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__WFShortcutRunnerSandboxExtensionManager_temporaryRequestSandboxExtensionWithBlock___block_invoke;
   v7[3] = &unk_1E7B014B0;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(WFShortcutRunnerSandboxExtensionManager *)self performWithSandboxExtensions:v5 asynchronousBlock:v7];
 }
 
-- (BOOL)requestSandboxExtensionForRunningActionWithAccessResources:(id)a3 error:(id *)a4
+- (BOOL)requestSandboxExtensionForRunningActionWithAccessResources:(id)resources error:(id *)error
 {
-  v6 = a3;
+  resourcesCopy = resources;
   os_unfair_lock_lock(&self->_lock);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -121,27 +121,27 @@ void __106__WFShortcutRunnerSandboxExtensionManager_requestSandboxExtensionForTo
   aBlock[3] = &unk_1E7B02158;
   aBlock[4] = self;
   v7 = _Block_copy(aBlock);
-  v8 = [MEMORY[0x1E695DFA8] setWithSet:v6];
-  v9 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
-  [v8 minusSet:v9];
+  v8 = [MEMORY[0x1E695DFA8] setWithSet:resourcesCopy];
+  issuedExtensionsAccessResources = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
+  [v8 minusSet:issuedExtensionsAccessResources];
 
   if ([v8 count])
   {
     v18 = 0;
-    v10 = [(WFShortcutRunnerSandboxExtensionManager *)self requestExtensionTokensForAccessResources:v8 rejectedAccessResources:&v18 error:a4];
+    v10 = [(WFShortcutRunnerSandboxExtensionManager *)self requestExtensionTokensForAccessResources:v8 rejectedAccessResources:&v18 error:error];
     v11 = v18;
     v12 = v10 != 0;
     if (v10)
     {
       v13 = [v10 if_compactMap:&__block_literal_global_200_10569];
-      v14 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
-      [v14 unionSet:v6];
+      issuedExtensionsAccessResources2 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
+      [issuedExtensionsAccessResources2 unionSet:resourcesCopy];
 
-      v15 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
-      [v15 minusSet:v11];
+      issuedExtensionsAccessResources3 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
+      [issuedExtensionsAccessResources3 minusSet:v11];
 
-      v16 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionHandlers];
-      [v16 unionSet:v13];
+      issuedExtensionHandlers = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionHandlers];
+      [issuedExtensionHandlers unionSet:v13];
     }
   }
 
@@ -154,13 +154,13 @@ void __106__WFShortcutRunnerSandboxExtensionManager_requestSandboxExtensionForTo
   return v12;
 }
 
-- (void)requestSandboxExtensionForRunningActionWithAccessResources:(id)a3 completion:(id)a4
+- (void)requestSandboxExtensionForRunningActionWithAccessResources:(id)resources completion:(id)completion
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DFA8] setWithSet:a3];
+  completionCopy = completion;
+  v7 = [MEMORY[0x1E695DFA8] setWithSet:resources];
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
-  [v7 minusSet:v8];
+  issuedExtensionsAccessResources = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
+  [v7 minusSet:issuedExtensionsAccessResources];
 
   os_unfair_lock_unlock(&self->_lock);
   if ([v7 count])
@@ -169,7 +169,7 @@ void __106__WFShortcutRunnerSandboxExtensionManager_requestSandboxExtensionForTo
     v10[1] = 3221225472;
     v10[2] = __113__WFShortcutRunnerSandboxExtensionManager_requestSandboxExtensionForRunningActionWithAccessResources_completion___block_invoke;
     v10[3] = &unk_1E7B01488;
-    v12 = v6;
+    v12 = completionCopy;
     v10[4] = self;
     v11 = v7;
     [(WFShortcutRunnerSandboxExtensionManager *)self requestExtensionTokensForAccessResources:v11 completion:v10];
@@ -178,7 +178,7 @@ void __106__WFShortcutRunnerSandboxExtensionManager_requestSandboxExtensionForTo
   else
   {
     v9 = objc_opt_new();
-    (*(v6 + 2))(v6, v9, 0);
+    (*(completionCopy + 2))(completionCopy, v9, 0);
   }
 }
 
@@ -209,12 +209,12 @@ void __113__WFShortcutRunnerSandboxExtensionManager_requestSandboxExtensionForRu
   }
 }
 
-- (void)requestExtensionTokensForAccessResources:(id)a3 completion:(id)a4
+- (void)requestExtensionTokensForAccessResources:(id)resources completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  resourcesCopy = resources;
+  completionCopy = completion;
+  if ([resourcesCopy count])
   {
     v8 = getWFVoiceShortcutClientLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -222,7 +222,7 @@ void __113__WFShortcutRunnerSandboxExtensionManager_requestSandboxExtensionForRu
       *buf = 136315394;
       v23 = "[WFShortcutRunnerSandboxExtensionManager requestExtensionTokensForAccessResources:completion:]";
       v24 = 2114;
-      v25 = v6;
+      v25 = resourcesCopy;
       _os_log_impl(&dword_1B1DE3000, v8, OS_LOG_TYPE_DEFAULT, "%s Sandbox Extensions for shortcut execution needed. Requesting sandbox extensions for resources: %{public}@", buf, 0x16u);
     }
 
@@ -234,7 +234,7 @@ void __113__WFShortcutRunnerSandboxExtensionManager_requestSandboxExtensionForRu
     if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       *buf = 138412290;
-      v23 = v6;
+      v23 = resourcesCopy;
       _os_signpost_emit_with_name_impl(&dword_1B1DE3000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "RequestSandboxExtension", "classNames=%{signpost.description:attribute}@", buf, 0xCu);
     }
 
@@ -242,14 +242,14 @@ void __113__WFShortcutRunnerSandboxExtensionManager_requestSandboxExtensionForRu
     v20[1] = 3221225472;
     v20[2] = __95__WFShortcutRunnerSandboxExtensionManager_requestExtensionTokensForAccessResources_completion___block_invoke;
     v20[3] = &unk_1E7B02940;
-    v13 = v7;
+    v13 = completionCopy;
     v21 = v13;
     v14 = [(WFShortcutRunnerSandboxExtensionManager *)self asynchronousRemoteDataStoreWithErrorHandler:v20];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __95__WFShortcutRunnerSandboxExtensionManager_requestExtensionTokensForAccessResources_completion___block_invoke_2;
     v16[3] = &unk_1E7B01460;
-    v17 = v6;
+    v17 = resourcesCopy;
     v19 = v10;
     v18 = v13;
     [v14 requestSandboxExtensionForAccessResources:v17 completion:v16];
@@ -257,7 +257,7 @@ void __113__WFShortcutRunnerSandboxExtensionManager_requestSandboxExtensionForRu
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -327,11 +327,11 @@ LABEL_8:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)requestExtensionTokensForAccessResources:(id)a3 rejectedAccessResources:(id *)a4 error:(id *)a5
+- (id)requestExtensionTokensForAccessResources:(id)resources rejectedAccessResources:(id *)accessResources error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if ([v8 count])
+  resourcesCopy = resources;
+  if ([resourcesCopy count])
   {
     v38 = 0;
     v39 = &v38;
@@ -357,7 +357,7 @@ LABEL_8:
       *buf = 136315394;
       v45 = "[WFShortcutRunnerSandboxExtensionManager requestExtensionTokensForAccessResources:rejectedAccessResources:error:]";
       v46 = 2114;
-      v47 = v8;
+      v47 = resourcesCopy;
       _os_log_impl(&dword_1B1DE3000, v9, OS_LOG_TYPE_DEFAULT, "%s Sandbox Extensions for shortcut execution needed. Requesting sandbox extensions for resources: %{public}@", buf, 0x16u);
     }
 
@@ -369,7 +369,7 @@ LABEL_8:
     if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
     {
       *buf = 138412290;
-      v45 = v8;
+      v45 = resourcesCopy;
       _os_signpost_emit_with_name_impl(&dword_1B1DE3000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "RequestSandboxExtension", "classNames=%{signpost.description:attribute}@", buf, 0xCu);
     }
 
@@ -383,20 +383,20 @@ LABEL_8:
     v20[1] = 3221225472;
     v20[2] = __114__WFShortcutRunnerSandboxExtensionManager_requestExtensionTokensForAccessResources_rejectedAccessResources_error___block_invoke_2;
     v20[3] = &unk_1E7B01438;
-    v21 = v8;
+    v21 = resourcesCopy;
     v22 = &v38;
     v23 = &v32;
     v24 = &v26;
     [v14 requestSandboxExtensionForAccessResources:v21 completion:v20];
 
-    if (a4)
+    if (accessResources)
     {
-      *a4 = v33[5];
+      *accessResources = v33[5];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v27[5];
+      *error = v27[5];
     }
 
     v15 = getWFVoiceShortcutClientLogObject();
@@ -492,28 +492,28 @@ LABEL_8:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (id)synchronousRemoteDataStoreWithErrorHandler:(id)a3
+- (id)synchronousRemoteDataStoreWithErrorHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[VCVoiceShortcutClient standardClient];
-  v5 = [v4 synchronousRemoteDataStoreWithErrorHandler:v3];
+  v5 = [v4 synchronousRemoteDataStoreWithErrorHandler:handlerCopy];
 
   return v5;
 }
 
-- (id)asynchronousRemoteDataStoreWithErrorHandler:(id)a3
+- (id)asynchronousRemoteDataStoreWithErrorHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[VCVoiceShortcutClient standardClient];
-  v5 = [v4 asynchronousRemoteDataStoreWithErrorHandler:v3];
+  v5 = [v4 asynchronousRemoteDataStoreWithErrorHandler:handlerCopy];
 
   return v5;
 }
 
-- (BOOL)retakeResignedExtensionsWithReason:(id)a3 error:(id *)a4
+- (BOOL)retakeResignedExtensionsWithReason:(id)reason error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_lock);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -524,30 +524,30 @@ LABEL_8:
   v8 = getWFVoiceShortcutClientLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(WFShortcutRunnerSandboxExtensionManager *)self resignedExtensionsAccessResources];
+    resignedExtensionsAccessResources = [(WFShortcutRunnerSandboxExtensionManager *)self resignedExtensionsAccessResources];
     *buf = 136315650;
     v27 = "[WFShortcutRunnerSandboxExtensionManager retakeResignedExtensionsWithReason:error:]";
     v28 = 2114;
-    v29 = v6;
+    v29 = reasonCopy;
     v30 = 2112;
-    v31 = v9;
+    v31 = resignedExtensionsAccessResources;
     _os_log_impl(&dword_1B1DE3000, v8, OS_LOG_TYPE_DEFAULT, "%s Retaking resigned extensions with reason: %{public}@, taking extensions for: %@", buf, 0x20u);
   }
 
-  v10 = [(WFShortcutRunnerSandboxExtensionManager *)self resignedExtensionsAccessResources];
+  resignedExtensionsAccessResources2 = [(WFShortcutRunnerSandboxExtensionManager *)self resignedExtensionsAccessResources];
   v23 = 0;
   v24 = 0;
-  v11 = [(WFShortcutRunnerSandboxExtensionManager *)self requestExtensionTokensForAccessResources:v10 rejectedAccessResources:&v24 error:&v23];
+  v11 = [(WFShortcutRunnerSandboxExtensionManager *)self requestExtensionTokensForAccessResources:resignedExtensionsAccessResources2 rejectedAccessResources:&v24 error:&v23];
   v12 = v24;
   v13 = v23;
 
   v14 = [v12 count];
   if (v14)
   {
-    if (a4 && v13)
+    if (error && v13)
     {
       v15 = v13;
-      *a4 = v13;
+      *error = v13;
     }
 
     v16 = getWFVoiceShortcutClientLogObject();
@@ -566,15 +566,15 @@ LABEL_8:
   else
   {
     v16 = [v11 if_compactMap:&__block_literal_global_200_10569];
-    v17 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionHandlers];
-    [v17 unionSet:v16];
+    issuedExtensionHandlers = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionHandlers];
+    [issuedExtensionHandlers unionSet:v16];
 
-    v18 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
-    v19 = [(WFShortcutRunnerSandboxExtensionManager *)self resignedExtensionsAccessResources];
-    [v18 unionSet:v19];
+    issuedExtensionsAccessResources = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
+    resignedExtensionsAccessResources3 = [(WFShortcutRunnerSandboxExtensionManager *)self resignedExtensionsAccessResources];
+    [issuedExtensionsAccessResources unionSet:resignedExtensionsAccessResources3];
 
-    v20 = [(WFShortcutRunnerSandboxExtensionManager *)self resignedExtensionsAccessResources];
-    [v20 removeAllObjects];
+    resignedExtensionsAccessResources4 = [(WFShortcutRunnerSandboxExtensionManager *)self resignedExtensionsAccessResources];
+    [resignedExtensionsAccessResources4 removeAllObjects];
   }
 
   v7[2](v7);
@@ -582,36 +582,36 @@ LABEL_8:
   return v14 == 0;
 }
 
-- (void)resignIssuedExtensionsWithReason:(id)a3
+- (void)resignIssuedExtensionsWithReason:(id)reason
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_lock);
   v5 = getWFVoiceShortcutClientLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
+    issuedExtensionsAccessResources = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
     v13 = 136315650;
     v14 = "[WFShortcutRunnerSandboxExtensionManager resignIssuedExtensionsWithReason:]";
     v15 = 2114;
-    v16 = v4;
+    v16 = reasonCopy;
     v17 = 2112;
-    v18 = v6;
+    v18 = issuedExtensionsAccessResources;
     _os_log_impl(&dword_1B1DE3000, v5, OS_LOG_TYPE_DEFAULT, "%s Resigning issued extensions with reason: %{public}@, issued extensions: %@", &v13, 0x20u);
   }
 
-  v7 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionHandlers];
-  [v7 enumerateObjectsUsingBlock:&__block_literal_global_147];
+  issuedExtensionHandlers = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionHandlers];
+  [issuedExtensionHandlers enumerateObjectsUsingBlock:&__block_literal_global_147];
 
-  v8 = [(WFShortcutRunnerSandboxExtensionManager *)self resignedExtensionsAccessResources];
-  v9 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
-  [v8 unionSet:v9];
+  resignedExtensionsAccessResources = [(WFShortcutRunnerSandboxExtensionManager *)self resignedExtensionsAccessResources];
+  issuedExtensionsAccessResources2 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
+  [resignedExtensionsAccessResources unionSet:issuedExtensionsAccessResources2];
 
-  v10 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionHandlers];
-  [v10 removeAllObjects];
+  issuedExtensionHandlers2 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionHandlers];
+  [issuedExtensionHandlers2 removeAllObjects];
 
-  v11 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
-  [v11 removeAllObjects];
+  issuedExtensionsAccessResources3 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
+  [issuedExtensionsAccessResources3 removeAllObjects];
 
   os_unfair_lock_unlock(&self->_lock);
   v12 = *MEMORY[0x1E69E9840];
@@ -624,11 +624,11 @@ uint64_t __76__WFShortcutRunnerSandboxExtensionManager_resignIssuedExtensionsWit
   return MEMORY[0x1EEE74458](v2);
 }
 
-- (void)performWithSandboxExtensions:(id)a3 synchronousBlock:(id)a4
+- (void)performWithSandboxExtensions:(id)extensions synchronousBlock:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  extensionsCopy = extensions;
+  blockCopy = block;
   v8 = getWFVoiceShortcutClientLogObject();
   v9 = os_signpost_id_generate(v8);
 
@@ -636,32 +636,32 @@ uint64_t __76__WFShortcutRunnerSandboxExtensionManager_resignIssuedExtensionsWit
   v11 = v10;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
-    v12 = [v6 accessResourceClassNames];
-    v13 = [v12 mutableCopy];
+    accessResourceClassNames = [extensionsCopy accessResourceClassNames];
+    v13 = [accessResourceClassNames mutableCopy];
     *buf = 138412290;
     v28 = v13;
     _os_signpost_emit_with_name_impl(&dword_1B1DE3000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "PerformWithSandboxExtension", "classNames=%{signpost.description:attribute}@", buf, 0xCu);
   }
 
-  v14 = [v6 accessResourceClassNames];
-  v15 = [v14 mutableCopy];
+  accessResourceClassNames2 = [extensionsCopy accessResourceClassNames];
+  v15 = [accessResourceClassNames2 mutableCopy];
 
   os_unfair_lock_lock(&self->_lock);
-  v16 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
-  [v15 minusSet:v16];
+  issuedExtensionsAccessResources = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
+  [v15 minusSet:issuedExtensionsAccessResources];
 
   os_unfair_lock_unlock(&self->_lock);
   if ([v15 count])
   {
-    v17 = [v6 accessResourceClassNames];
+    accessResourceClassNames3 = [extensionsCopy accessResourceClassNames];
     v25 = 0;
     v26 = 0;
-    v18 = [(WFShortcutRunnerSandboxExtensionManager *)self requestExtensionTokensForAccessResources:v17 rejectedAccessResources:&v26 error:&v25];
+    v18 = [(WFShortcutRunnerSandboxExtensionManager *)self requestExtensionTokensForAccessResources:accessResourceClassNames3 rejectedAccessResources:&v26 error:&v25];
     v19 = v26;
     v20 = v25;
 
     v21 = [v18 if_compactMap:&__block_literal_global_200_10569];
-    v7[2](v7, v19, v20);
+    blockCopy[2](blockCopy, v19, v20);
 
     [v21 enumerateObjectsUsingBlock:&__block_literal_global_203_10570];
     v22 = getWFVoiceShortcutClientLogObject();
@@ -675,17 +675,17 @@ uint64_t __76__WFShortcutRunnerSandboxExtensionManager_resignIssuedExtensionsWit
 
   else
   {
-    v7[2](v7, 0, 0);
+    blockCopy[2](blockCopy, 0, 0);
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performWithSandboxExtensions:(id)a3 asynchronousBlock:(id)a4
+- (void)performWithSandboxExtensions:(id)extensions asynchronousBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  extensionsCopy = extensions;
+  blockCopy = block;
   v8 = getWFVoiceShortcutClientLogObject();
   v9 = os_signpost_id_generate(v8);
 
@@ -693,19 +693,19 @@ uint64_t __76__WFShortcutRunnerSandboxExtensionManager_resignIssuedExtensionsWit
   v11 = v10;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
-    v12 = [v6 accessResourceClassNames];
-    v13 = [v12 mutableCopy];
+    accessResourceClassNames = [extensionsCopy accessResourceClassNames];
+    v13 = [accessResourceClassNames mutableCopy];
     *buf = 138412290;
     v22 = v13;
     _os_signpost_emit_with_name_impl(&dword_1B1DE3000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "PerformWithSandboxExtension", "classNames=%{signpost.description:attribute}@", buf, 0xCu);
   }
 
-  v14 = [v6 accessResourceClassNames];
-  v15 = [v14 mutableCopy];
+  accessResourceClassNames2 = [extensionsCopy accessResourceClassNames];
+  v15 = [accessResourceClassNames2 mutableCopy];
 
   os_unfair_lock_lock(&self->_lock);
-  v16 = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
-  [v15 minusSet:v16];
+  issuedExtensionsAccessResources = [(WFShortcutRunnerSandboxExtensionManager *)self issuedExtensionsAccessResources];
+  [v15 minusSet:issuedExtensionsAccessResources];
 
   os_unfair_lock_unlock(&self->_lock);
   if ([v15 count])
@@ -715,13 +715,13 @@ uint64_t __76__WFShortcutRunnerSandboxExtensionManager_resignIssuedExtensionsWit
     v18[2] = __90__WFShortcutRunnerSandboxExtensionManager_performWithSandboxExtensions_asynchronousBlock___block_invoke_2;
     v18[3] = &unk_1E7B013F0;
     v20 = v9;
-    v19 = v7;
+    v19 = blockCopy;
     [(WFShortcutRunnerSandboxExtensionManager *)self requestExtensionTokensForAccessResources:v15 completion:v18];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0, &__block_literal_global_142);
+    (*(blockCopy + 2))(blockCopy, 0, 0, &__block_literal_global_142);
   }
 
   v17 = *MEMORY[0x1E69E9840];

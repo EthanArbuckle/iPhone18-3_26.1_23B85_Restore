@@ -1,6 +1,6 @@
 @interface PencilActionConfigurationViewController
 - (CGSize)preferredContentSize;
-- (_TtC34SystemActionConfigurationExtension39PencilActionConfigurationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC34SystemActionConfigurationExtension39PencilActionConfigurationViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -10,25 +10,25 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000020FC();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100002E74();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000329C();
 }
 
 - (CGSize)preferredContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000033E8();
   v5 = v4;
 
@@ -39,14 +39,14 @@
   return result;
 }
 
-- (_TtC34SystemActionConfigurationExtension39PencilActionConfigurationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC34SystemActionConfigurationExtension39PencilActionConfigurationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1000135EC();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_100003824();
 }
 

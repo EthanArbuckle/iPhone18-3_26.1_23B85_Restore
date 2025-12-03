@@ -4,15 +4,15 @@
 - (TKDisplayLinkManager)init;
 - (id)_displayLink;
 - (id)_prepareUpdatedObserversForModification;
-- (id)addObserverForFrameInterval:(unint64_t)a3 handler:(id)a4;
+- (id)addObserverForFrameInterval:(unint64_t)interval handler:(id)handler;
 - (void)_didAddFirstObserver;
 - (void)_didRemoveLastObserver;
-- (void)_displayDidRefresh:(id)a3;
-- (void)_setDisplayLink:(id)a3;
+- (void)_displayDidRefresh:(id)refresh;
+- (void)_setDisplayLink:(id)link;
 - (void)beginRequiringWarmUpMode;
 - (void)dealloc;
 - (void)endRequiringWarmUpMode;
-- (void)removeObserverWithToken:(id)a3;
+- (void)removeObserverWithToken:(id)token;
 @end
 
 @implementation TKDisplayLinkManager
@@ -23,16 +23,16 @@
   v3 = NSStringFromClass(v2);
   if (v3)
   {
-    v4 = [MEMORY[0x277CCACC8] currentThread];
-    v5 = [v4 threadDictionary];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    v6 = [v5 objectForKey:v3];
+    v6 = [threadDictionary objectForKey:v3];
     if (!v6)
     {
       v6 = objc_alloc_init(TKDisplayLinkManager);
       if (v6)
       {
-        [v5 setObject:v6 forKey:v3];
+        [threadDictionary setObject:v6 forKey:v3];
       }
     }
   }
@@ -52,10 +52,10 @@
   if (v3)
   {
     v6 = v3;
-    v4 = [MEMORY[0x277CCACC8] currentThread];
-    v5 = [v4 threadDictionary];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    [v5 removeObjectForKey:v6];
+    [threadDictionary removeObjectForKey:v6];
     v3 = v6;
   }
 }
@@ -97,8 +97,8 @@
     self->_displayLink = v4;
 
     v6 = self->_displayLink;
-    v7 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [(CADisplayLink *)v6 addToRunLoop:v7 forMode:*MEMORY[0x277CBE640]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [(CADisplayLink *)v6 addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
 
     [(CADisplayLink *)self->_displayLink setPaused:1];
     displayLink = self->_displayLink;
@@ -107,62 +107,62 @@
   return displayLink;
 }
 
-- (void)_setDisplayLink:(id)a3
+- (void)_setDisplayLink:(id)link
 {
-  v5 = a3;
+  linkCopy = link;
   displayLink = self->_displayLink;
   p_displayLink = &self->_displayLink;
   v6 = displayLink;
-  if (displayLink != v5)
+  if (displayLink != linkCopy)
   {
-    v9 = v5;
+    v9 = linkCopy;
     [(CADisplayLink *)v6 invalidate];
-    objc_storeStrong(p_displayLink, a3);
-    v5 = v9;
+    objc_storeStrong(p_displayLink, link);
+    linkCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](v6, v5);
+  MEMORY[0x2821F96F8](v6, linkCopy);
 }
 
-- (id)addObserverForFrameInterval:(unint64_t)a3 handler:(id)a4
+- (id)addObserverForFrameInterval:(unint64_t)interval handler:(id)handler
 {
   v6 = MEMORY[0x277CCAD78];
-  v7 = a4;
-  v8 = [v6 UUID];
-  v9 = [[TKDisplayLinkManagerObserver alloc] initWithBlock:v7 frameInterval:a3];
+  handlerCopy = handler;
+  uUID = [v6 UUID];
+  v9 = [[TKDisplayLinkManagerObserver alloc] initWithBlock:handlerCopy frameInterval:interval];
 
   if (self->_isHandlingDisplayRefresh)
   {
-    v10 = [(TKDisplayLinkManager *)self _prepareUpdatedObserversForModification];
-    [v10 setObject:v9 forKey:v8];
+    _prepareUpdatedObserversForModification = [(TKDisplayLinkManager *)self _prepareUpdatedObserversForModification];
+    [_prepareUpdatedObserversForModification setObject:v9 forKey:uUID];
   }
 
   else
   {
     v11 = [(NSMutableDictionary *)self->_activeObservers count];
-    [(NSMutableDictionary *)self->_activeObservers setObject:v9 forKey:v8];
+    [(NSMutableDictionary *)self->_activeObservers setObject:v9 forKey:uUID];
     if (!v11)
     {
       [(TKDisplayLinkManager *)self _didAddFirstObserver];
     }
   }
 
-  return v8;
+  return uUID;
 }
 
-- (void)removeObserverWithToken:(id)a3
+- (void)removeObserverWithToken:(id)token
 {
-  v6 = a3;
+  tokenCopy = token;
   if (self->_isHandlingDisplayRefresh)
   {
-    v4 = [(TKDisplayLinkManager *)self _prepareUpdatedObserversForModification];
-    [v4 removeObjectForKey:v6];
+    _prepareUpdatedObserversForModification = [(TKDisplayLinkManager *)self _prepareUpdatedObserversForModification];
+    [_prepareUpdatedObserversForModification removeObjectForKey:tokenCopy];
   }
 
   else
   {
     v5 = [(NSMutableDictionary *)self->_activeObservers count];
-    [(NSMutableDictionary *)self->_activeObservers removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_activeObservers removeObjectForKey:tokenCopy];
     if (v5 && ![(NSMutableDictionary *)self->_activeObservers count])
     {
       [(TKDisplayLinkManager *)self _didRemoveLastObserver];
@@ -185,8 +185,8 @@
 
 - (void)_didAddFirstObserver
 {
-  v2 = [(TKDisplayLinkManager *)self _displayLink];
-  [v2 setPaused:0];
+  _displayLink = [(TKDisplayLinkManager *)self _displayLink];
+  [_displayLink setPaused:0];
 }
 
 - (void)_didRemoveLastObserver
@@ -219,16 +219,16 @@
         v7 = TLLogGeneral();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [v6 lastPathComponent];
-          v9 = [MEMORY[0x277CCACC8] callStackSymbols];
+          lastPathComponent = [v6 lastPathComponent];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
           v13 = 136381443;
           v14 = "[TKDisplayLinkManager beginRequiringWarmUpMode]";
           v15 = 2113;
-          v16 = v8;
+          v16 = lastPathComponent;
           v17 = 2049;
           v18 = 177;
           v19 = 2113;
-          v20 = v9;
+          v20 = callStackSymbols;
           _os_log_impl(&dword_21C599000, v7, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v13, 0x2Au);
         }
       }
@@ -251,7 +251,7 @@
 
     if (![(NSMutableDictionary *)self->_activeObservers count])
     {
-      v11 = [(TKDisplayLinkManager *)self _displayLink];
+      _displayLink = [(TKDisplayLinkManager *)self _displayLink];
     }
   }
 
@@ -276,16 +276,16 @@
         v7 = TLLogGeneral();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [v6 lastPathComponent];
-          v9 = [MEMORY[0x277CCACC8] callStackSymbols];
+          lastPathComponent = [v6 lastPathComponent];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
           v12 = 136381443;
           v13 = "[TKDisplayLinkManager endRequiringWarmUpMode]";
           v14 = 2113;
-          v15 = v8;
+          v15 = lastPathComponent;
           v16 = 2049;
           v17 = 187;
           v18 = 2113;
-          v19 = v9;
+          v19 = callStackSymbols;
           _os_log_impl(&dword_21C599000, v7, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v12, 0x2Au);
         }
       }
@@ -315,7 +315,7 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_displayDidRefresh:(id)a3
+- (void)_displayDidRefresh:(id)refresh
 {
   isHandlingDisplayRefresh = self->_isHandlingDisplayRefresh;
   self->_isHandlingDisplayRefresh = 1;

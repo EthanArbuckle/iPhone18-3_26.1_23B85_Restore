@@ -1,12 +1,12 @@
 @interface UARPTLVRequiredPersonalizationOption
 + (id)metaDataTableEntry;
-+ (id)tlvFromPropertyListValue:(id)a3;
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
++ (id)tlvFromPropertyListValue:(id)value;
++ (id)tlvWithLength:(unint64_t)length value:(void *)value;
 - (UARPTLVRequiredPersonalizationOption)init;
 - (id)description;
 - (id)generateTLV;
 - (id)tlvValue;
-- (void)setTssOption:(unsigned int)a3;
+- (void)setTssOption:(unsigned int)option;
 @end
 
 @implementation UARPTLVRequiredPersonalizationOption
@@ -18,11 +18,11 @@
   return [(UARPMetaDataTLV32 *)&v3 init];
 }
 
-- (void)setTssOption:(unsigned int)a3
+- (void)setTssOption:(unsigned int)option
 {
   obj = self;
   objc_sync_enter(obj);
-  *(&obj->super.super._tlvLength + 1) = a3;
+  *(&obj->super.super._tlvLength + 1) = option;
   objc_sync_exit(obj);
 }
 
@@ -73,17 +73,17 @@
   return v3;
 }
 
-+ (id)tlvFromPropertyListValue:(id)a3
++ (id)tlvFromPropertyListValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
     v5 = objc_opt_new();
-    v6 = [v4 unsignedLongValue];
+    unsignedLongValue = [v4 unsignedLongValue];
 
-    [v5 setTssOption:v6];
+    [v5 setTssOption:unsignedLongValue];
   }
 
   else
@@ -94,12 +94,12 @@
   return v5;
 }
 
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
++ (id)tlvWithLength:(unint64_t)length value:(void *)value
 {
-  if (a3 == 4)
+  if (length == 4)
   {
     v5 = objc_opt_new();
-    [v5 setTssOption:uarpHtonl(*a4)];
+    [v5 setTssOption:uarpHtonl(*value)];
   }
 
   else

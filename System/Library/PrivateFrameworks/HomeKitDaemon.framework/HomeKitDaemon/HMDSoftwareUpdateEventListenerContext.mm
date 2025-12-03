@@ -1,13 +1,13 @@
 @interface HMDSoftwareUpdateEventListenerContext
 + (id)logCategory;
 - (HMDAccessory)accessory;
-- (HMDSoftwareUpdateEventListenerContext)initWithAccessory:(id)a3 subscriptionProvider:(id)a4 eventStoreReadHandle:(id)a5;
+- (HMDSoftwareUpdateEventListenerContext)initWithAccessory:(id)accessory subscriptionProvider:(id)provider eventStoreReadHandle:(id)handle;
 - (HMSoftwareUpdateDescriptor)softwareUpdateDescriptorForLastEvent;
 - (NSString)topicForSoftwareUpdateDescriptor;
 - (id)logIdentifier;
 - (int64_t)softwareUpdateStatusForLastEvent;
-- (void)handleSoftwareUpdateDidBecomeAvailableWithDescriptor:(id)a3;
-- (void)registerConsumer:(id)a3 topicFilters:(id)a4 completion:(id)a5;
+- (void)handleSoftwareUpdateDidBecomeAvailableWithDescriptor:(id)descriptor;
+- (void)registerConsumer:(id)consumer topicFilters:(id)filters completion:(id)completion;
 - (void)updateAppBadgeAndBulletinNotification;
 @end
 
@@ -22,21 +22,21 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDSoftwareUpdateEventListenerContext *)self accessory];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  accessory = [(HMDSoftwareUpdateEventListenerContext *)self accessory];
+  uuid = [accessory uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)handleSoftwareUpdateDidBecomeAvailableWithDescriptor:(id)a3
+- (void)handleSoftwareUpdateDidBecomeAvailableWithDescriptor:(id)descriptor
 {
-  v7 = a3;
-  v4 = [(HMDSoftwareUpdateEventListenerContext *)self accessory];
+  descriptorCopy = descriptor;
+  accessory = [(HMDSoftwareUpdateEventListenerContext *)self accessory];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = accessory;
   }
 
   else
@@ -46,17 +46,17 @@
 
   v6 = v5;
 
-  [v6 handleSoftwareUpdateDidBecomeAvailableWithDescriptor:v7];
+  [v6 handleSoftwareUpdateDidBecomeAvailableWithDescriptor:descriptorCopy];
 }
 
 - (HMSoftwareUpdateDescriptor)softwareUpdateDescriptorForLastEvent
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSoftwareUpdateEventListenerContext *)self topicForSoftwareUpdateDescriptor];
-  if (v3)
+  topicForSoftwareUpdateDescriptor = [(HMDSoftwareUpdateEventListenerContext *)self topicForSoftwareUpdateDescriptor];
+  if (topicForSoftwareUpdateDescriptor)
   {
-    v4 = [(HMDSoftwareUpdateEventListenerContext *)self eventStoreReadHandle];
-    v5 = [v4 lastEventForTopic:v3];
+    eventStoreReadHandle = [(HMDSoftwareUpdateEventListenerContext *)self eventStoreReadHandle];
+    v5 = [eventStoreReadHandle lastEventForTopic:topicForSoftwareUpdateDescriptor];
 
     if (v5)
     {
@@ -70,7 +70,7 @@
       else
       {
         v13 = objc_autoreleasePoolPush();
-        v14 = self;
+        selfCopy = self;
         v15 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
@@ -89,7 +89,7 @@
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy2 = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -97,7 +97,7 @@
         v19 = 138543618;
         v20 = v12;
         v21 = 2112;
-        v22 = v3;
+        v22 = topicForSoftwareUpdateDescriptor;
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@Failed to retrieve last event for topic: %@", &v19, 0x16u);
       }
 
@@ -119,11 +119,11 @@
 - (int64_t)softwareUpdateStatusForLastEvent
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSoftwareUpdateEventListenerContext *)self topicForSoftwareUpdateDescriptor];
-  if (v3)
+  topicForSoftwareUpdateDescriptor = [(HMDSoftwareUpdateEventListenerContext *)self topicForSoftwareUpdateDescriptor];
+  if (topicForSoftwareUpdateDescriptor)
   {
-    v4 = [(HMDSoftwareUpdateEventListenerContext *)self eventStoreReadHandle];
-    v5 = [v4 lastEventForTopic:v3];
+    eventStoreReadHandle = [(HMDSoftwareUpdateEventListenerContext *)self eventStoreReadHandle];
+    v5 = [eventStoreReadHandle lastEventForTopic:topicForSoftwareUpdateDescriptor];
 
     if (v5)
     {
@@ -131,13 +131,13 @@
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 status];
+        status = [v6 status];
       }
 
       else
       {
         v13 = objc_autoreleasePoolPush();
-        v14 = self;
+        selfCopy = self;
         v15 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
@@ -150,14 +150,14 @@
         }
 
         objc_autoreleasePoolPop(v13);
-        v8 = 0;
+        status = 0;
       }
     }
 
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy2 = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -165,36 +165,36 @@
         v19 = 138543618;
         v20 = v12;
         v21 = 2112;
-        v22 = v3;
+        v22 = topicForSoftwareUpdateDescriptor;
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@Failed to retrieve last event for topic: %@", &v19, 0x16u);
       }
 
       objc_autoreleasePoolPop(v9);
-      v8 = 0;
+      status = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    status = 0;
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return v8;
+  return status;
 }
 
 - (NSString)topicForSoftwareUpdateDescriptor
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSoftwareUpdateEventListenerContext *)self accessory];
-  v4 = [v3 uuid];
-  v5 = [v3 home];
-  v6 = [v5 uuid];
+  accessory = [(HMDSoftwareUpdateEventListenerContext *)self accessory];
+  uuid = [accessory uuid];
+  home = [accessory home];
+  uuid2 = [home uuid];
 
-  if (v4 && v6)
+  if (uuid && uuid2)
   {
     v7 = *MEMORY[0x277CCEA98];
-    v8 = [MEMORY[0x277CD16F0] topicFromSuffixID:*MEMORY[0x277CCEA98] homeUUID:v6 accessoryUUID:v4];
+    v8 = [MEMORY[0x277CD16F0] topicFromSuffixID:*MEMORY[0x277CCEA98] homeUUID:uuid2 accessoryUUID:uuid];
     v9 = v8;
     if (v8)
     {
@@ -204,7 +204,7 @@
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -214,9 +214,9 @@
         v23 = 2048;
         v24 = v7;
         v25 = 2112;
-        v26 = v6;
+        v26 = uuid2;
         v27 = 2112;
-        v28 = v4;
+        v28 = uuid;
         _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@Failed to get topic with suffix: %ld, homeUUID: %@, accessoryUUID: %@", &v21, 0x2Au);
       }
 
@@ -227,7 +227,7 @@
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -235,9 +235,9 @@
       v21 = 138543874;
       v22 = v14;
       v23 = 2112;
-      v24 = v6;
+      v24 = uuid2;
       v25 = 2112;
-      v26 = v4;
+      v26 = uuid;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@Failed to get topic with homeUUID: %@, accessoryUUID: %@", &v21, 0x20u);
     }
 
@@ -254,7 +254,7 @@
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -265,18 +265,18 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDSoftwareUpdateEventListenerContext *)v4 accessory];
-  v8 = [v7 home];
+  accessory = [(HMDSoftwareUpdateEventListenerContext *)selfCopy accessory];
+  home = [accessory home];
 
-  if (v8)
+  if (home)
   {
-    [v8 reevaluateAccessoryInfo];
+    [home reevaluateAccessoryInfo];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = v4;
+    v10 = selfCopy;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -292,29 +292,29 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerConsumer:(id)a3 topicFilters:(id)a4 completion:(id)a5
+- (void)registerConsumer:(id)consumer topicFilters:(id)filters completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HMDSoftwareUpdateEventListenerContext *)self subscriptionProvider];
-  [v11 registerConsumer:v10 topicFilters:v9 completion:v8];
+  completionCopy = completion;
+  filtersCopy = filters;
+  consumerCopy = consumer;
+  subscriptionProvider = [(HMDSoftwareUpdateEventListenerContext *)self subscriptionProvider];
+  [subscriptionProvider registerConsumer:consumerCopy topicFilters:filtersCopy completion:completionCopy];
 }
 
-- (HMDSoftwareUpdateEventListenerContext)initWithAccessory:(id)a3 subscriptionProvider:(id)a4 eventStoreReadHandle:(id)a5
+- (HMDSoftwareUpdateEventListenerContext)initWithAccessory:(id)accessory subscriptionProvider:(id)provider eventStoreReadHandle:(id)handle
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  providerCopy = provider;
+  handleCopy = handle;
   v14.receiver = self;
   v14.super_class = HMDSoftwareUpdateEventListenerContext;
   v11 = [(HMDSoftwareUpdateEventListenerContext *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_accessory, v8);
-    objc_storeStrong(&v12->_subscriptionProvider, a4);
-    objc_storeStrong(&v12->_eventStoreReadHandle, a5);
+    objc_storeWeak(&v11->_accessory, accessoryCopy);
+    objc_storeStrong(&v12->_subscriptionProvider, provider);
+    objc_storeStrong(&v12->_eventStoreReadHandle, handle);
   }
 
   return v12;

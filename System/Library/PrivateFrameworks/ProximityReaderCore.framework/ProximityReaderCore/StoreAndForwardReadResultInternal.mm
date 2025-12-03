@@ -1,14 +1,14 @@
 @interface StoreAndForwardReadResultInternal
 - (NSString)description;
 - (_TtC19ProximityReaderCore33StoreAndForwardReadResultInternal)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation StoreAndForwardReadResultInternal
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2611EE040();
 
   v3 = sub_26121CC50();
@@ -23,11 +23,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  StoreAndForwardReadResultInternal.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  StoreAndForwardReadResultInternal.encode(with:)(coderCopy);
 }
 
 @end

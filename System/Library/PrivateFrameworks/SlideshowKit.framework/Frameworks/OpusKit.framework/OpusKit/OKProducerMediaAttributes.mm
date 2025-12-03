@@ -2,13 +2,13 @@
 - (CGPoint)offset;
 - (CGPoint)offset2;
 - (OKProducerMediaAttributes)init;
-- (OKProducerMediaAttributes)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OKProducerMediaAttributes)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)clearText;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithText:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithText:(id)text;
 @end
 
 @implementation OKProducerMediaAttributes
@@ -52,11 +52,11 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = v3;
+  string = [MEMORY[0x277CCAB68] string];
+  v4 = string;
   if (self->_duration > -1.0)
   {
-    [v3 appendFormat:@"duration: %f, ", *&self->_duration];
+    [string appendFormat:@"duration: %f, ", *&self->_duration];
   }
 
   y = self->_offset.y;
@@ -94,7 +94,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -112,40 +112,40 @@
   return v5;
 }
 
-- (OKProducerMediaAttributes)initWithCoder:(id)a3
+- (OKProducerMediaAttributes)initWithCoder:(id)coder
 {
   v18.receiver = self;
   v18.super_class = OKProducerMediaAttributes;
   v4 = [(OKProducerMediaAttributes *)&v18 init];
   if (v4)
   {
-    v5 = [a3 containsValueForKey:@"d"];
+    v5 = [coder containsValueForKey:@"d"];
     v6 = -1.0;
     v7 = -1.0;
     if (v5)
     {
-      [a3 decodeDoubleForKey:{@"d", -1.0}];
+      [coder decodeDoubleForKey:{@"d", -1.0}];
     }
 
     v4->_duration = v7;
-    if ([a3 containsValueForKey:@"s"])
+    if ([coder containsValueForKey:@"s"])
     {
-      [a3 decodeDoubleForKey:@"s"];
+      [coder decodeDoubleForKey:@"s"];
       v6 = v8;
     }
 
     v4->_scale = v6;
-    v9 = [a3 containsValueForKey:@"s2"];
+    v9 = [coder containsValueForKey:@"s2"];
     v10 = -1.0;
     if (v9)
     {
-      [a3 decodeDoubleForKey:{@"s2", -1.0}];
+      [coder decodeDoubleForKey:{@"s2", -1.0}];
     }
 
     v4->_scale2 = v10;
-    if ([a3 containsValueForKey:@"o"])
+    if ([coder containsValueForKey:@"o"])
     {
-      v11 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"o"];
+      v11 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"o"];
       if (v11)
       {
         [v11 CGPointValue];
@@ -159,9 +159,9 @@
       }
     }
 
-    if ([a3 containsValueForKey:@"o2"])
+    if ([coder containsValueForKey:@"o2"])
     {
-      v14 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"o2"];
+      v14 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"o2"];
       if (v14)
       {
         [v14 CGPointValue];
@@ -175,70 +175,70 @@
       }
     }
 
-    if ([a3 containsValueForKey:@"t"])
+    if ([coder containsValueForKey:@"t"])
     {
-      v4->_text = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"t"];
+      v4->_text = [coder decodeObjectOfClass:objc_opt_class() forKey:@"t"];
     }
 
-    if ([a3 containsValueForKey:@"at"])
+    if ([coder containsValueForKey:@"at"])
     {
-      v4->_attributedText = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"at"];
+      v4->_attributedText = [coder decodeObjectOfClass:objc_opt_class() forKey:@"at"];
     }
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self->_duration >= 0.0)
   {
-    [a3 encodeDouble:@"d" forKey:?];
+    [coder encodeDouble:@"d" forKey:?];
   }
 
   if (self->_offset.x != 0.0 || self->_offset.y != 0.0)
   {
-    [a3 encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGPoint:"), @"o"}];
+    [coder encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGPoint:"), @"o"}];
   }
 
   scale = self->_scale;
   if (scale >= 0.0)
   {
     *&scale = scale;
-    [a3 encodeFloat:@"s" forKey:scale];
+    [coder encodeFloat:@"s" forKey:scale];
   }
 
   if (self->_offset2.x != 0.0 || self->_offset2.y != 0.0)
   {
-    [a3 encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGPoint:"), @"o2"}];
+    [coder encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGPoint:"), @"o2"}];
   }
 
   scale2 = self->_scale2;
   if (scale2 >= 0.0)
   {
     *&scale2 = scale2;
-    [a3 encodeFloat:@"s2" forKey:scale2];
+    [coder encodeFloat:@"s2" forKey:scale2];
   }
 
   text = self->_text;
   if (text)
   {
-    [a3 encodeObject:text forKey:@"t"];
+    [coder encodeObject:text forKey:@"t"];
   }
 
   if (self->_attributedText)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
-- (void)updateWithText:(id)a3
+- (void)updateWithText:(id)text
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(OKProducerMediaAttributes *)self setAttributedText:a3];
+    [(OKProducerMediaAttributes *)self setAttributedText:text];
 
     [(OKProducerMediaAttributes *)self setText:0];
   }
@@ -248,7 +248,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(OKProducerMediaAttributes *)self setText:a3];
+      [(OKProducerMediaAttributes *)self setText:text];
 
       [(OKProducerMediaAttributes *)self setAttributedText:0];
     }

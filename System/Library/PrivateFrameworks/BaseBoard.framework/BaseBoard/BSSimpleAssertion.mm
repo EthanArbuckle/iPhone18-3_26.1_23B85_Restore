@@ -1,16 +1,16 @@
 @interface BSSimpleAssertion
 - (BOOL)isValid;
-- (BSSimpleAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 queue:(id)a5 invalidationBlock:(id)a6;
-- (BSSimpleAssertion)initWithReason:(id)a3 invalidatedBlock:(id)a4;
-- (BSSimpleAssertion)initWithReason:(id)a3 invalidatedWithContextBlock:(id)a4;
-- (id)_initWithReason:(void *)a3 identifier:(void *)a4 queue:(char)a5 type:(void *)a6 block:;
-- (id)_initWithReason:(void *)a3 identifier:(void *)a4 requiredInvalidationQueue:(uint64_t)a5 deallocPolicy:(void *)a6 invalidatedWithContextBlock:;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BSSimpleAssertion)initWithIdentifier:(id)identifier forReason:(id)reason queue:(id)queue invalidationBlock:(id)block;
+- (BSSimpleAssertion)initWithReason:(id)reason invalidatedBlock:(id)block;
+- (BSSimpleAssertion)initWithReason:(id)reason invalidatedWithContextBlock:(id)block;
+- (id)_initWithReason:(void *)reason identifier:(void *)identifier queue:(char)queue type:(void *)type block:;
+- (id)_initWithReason:(void *)reason identifier:(void *)identifier requiredInvalidationQueue:(uint64_t)queue deallocPolicy:(void *)policy invalidatedWithContextBlock:;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_appendDescriptionToFormatter:(uint64_t)a1;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)_appendDescriptionToFormatter:(uint64_t)formatter;
+- (void)appendDescriptionToStream:(id)stream;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -52,17 +52,17 @@
       identifier = self->_identifier;
       if (identifier == reason)
       {
-        v22 = self->_identifier;
+        reason = self->_identifier;
       }
 
       else
       {
         v23 = v19;
-        v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@", self->_identifier, reason];
+        reason = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %@", self->_identifier, reason];
         v19 = v23;
       }
 
-      v24 = [v18 stringWithFormat:@"no invalidation block found for <%@:%p> (%@) in implicit invalidation in dealloc", v19, self, v22];
+      v24 = [v18 stringWithFormat:@"no invalidation block found for <%@:%p> (%@) in implicit invalidation in dealloc", v19, self, reason];
       if (identifier != reason)
       {
       }
@@ -77,7 +77,7 @@
         v27 = v32 = 2114;
         v33 = v27;
         v34 = 2048;
-        v35 = self;
+        selfCopy2 = self;
         v36 = 2114;
         v37 = @"BSSimpleAssertion.m";
         v38 = 1024;
@@ -132,7 +132,7 @@
       v32 = 2114;
       v33 = v16;
       v34 = 2048;
-      v35 = self;
+      selfCopy2 = self;
       v36 = 2114;
       v37 = @"BSSimpleAssertion.m";
       v38 = 1024;
@@ -173,14 +173,14 @@
   return v3;
 }
 
-- (id)_initWithReason:(void *)a3 identifier:(void *)a4 queue:(char)a5 type:(void *)a6 block:
+- (id)_initWithReason:(void *)reason identifier:(void *)identifier queue:(char)queue type:(void *)type block:
 {
   v79 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v12 = a3;
-  v65 = a4;
-  v13 = a6;
-  if (a1)
+  reasonCopy = reason;
+  identifierCopy = identifier;
+  typeCopy = type;
+  if (self)
   {
     v14 = v11;
     v15 = MEMORY[0x1E696AEC0];
@@ -201,7 +201,7 @@
         v69 = 2114;
         v70 = v31;
         v71 = 2048;
-        v72 = a1;
+        selfCopy5 = self;
         v73 = 2114;
         v74 = @"BSSimpleAssertion.m";
         v75 = 1024;
@@ -222,13 +222,13 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v33 = MEMORY[0x1E696AEC0];
-      v34 = [v14 classForCoder];
-      if (!v34)
+      classForCoder = [v14 classForCoder];
+      if (!classForCoder)
       {
-        v34 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v35 = NSStringFromClass(v34);
+      v35 = NSStringFromClass(classForCoder);
       objc_opt_class();
       v36 = objc_opt_class();
       v37 = NSStringFromClass(v36);
@@ -244,7 +244,7 @@
         v69 = 2114;
         v70 = v41;
         v71 = 2048;
-        v72 = a1;
+        selfCopy5 = self;
         v73 = 2114;
         v74 = @"BSSimpleAssertion.m";
         v75 = 1024;
@@ -260,9 +260,9 @@
       JUMPOUT(0x18FF26B74);
     }
 
-    if (v14 != v12)
+    if (v14 != reasonCopy)
     {
-      v16 = v12;
+      v16 = reasonCopy;
       v17 = MEMORY[0x1E696AEC0];
       if (!v16)
       {
@@ -281,7 +281,7 @@
           v69 = 2114;
           v70 = v53;
           v71 = 2048;
-          v72 = a1;
+          selfCopy5 = self;
           v73 = 2114;
           v74 = @"BSSimpleAssertion.m";
           v75 = 1024;
@@ -302,13 +302,13 @@
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v55 = MEMORY[0x1E696AEC0];
-        v56 = [v16 classForCoder];
-        if (!v56)
+        classForCoder2 = [v16 classForCoder];
+        if (!classForCoder2)
         {
-          v56 = objc_opt_class();
+          classForCoder2 = objc_opt_class();
         }
 
-        v57 = NSStringFromClass(v56);
+        v57 = NSStringFromClass(classForCoder2);
         objc_opt_class();
         v58 = objc_opt_class();
         v59 = NSStringFromClass(v58);
@@ -324,7 +324,7 @@
           v69 = 2114;
           v70 = v63;
           v71 = 2048;
-          v72 = a1;
+          selfCopy5 = self;
           v73 = 2114;
           v74 = @"BSSimpleAssertion.m";
           v75 = 1024;
@@ -341,7 +341,7 @@
       }
     }
 
-    if (!v13)
+    if (!typeCopy)
     {
       v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"block"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -354,7 +354,7 @@
         v69 = 2114;
         v70 = v46;
         v71 = 2048;
-        v72 = a1;
+        selfCopy5 = self;
         v73 = 2114;
         v74 = @"BSSimpleAssertion.m";
         v75 = 1024;
@@ -370,7 +370,7 @@
       JUMPOUT(0x18FF26C78);
     }
 
-    v66.receiver = a1;
+    v66.receiver = self;
     v66.super_class = BSSimpleAssertion;
     v18 = objc_msgSendSuper2(&v66, sel_init);
     if (v18)
@@ -379,22 +379,22 @@
       v20 = *(v18 + 4);
       *(v18 + 4) = v19;
 
-      if (v14 == v12)
+      if (v14 == reasonCopy)
       {
         v21 = *(v18 + 4);
       }
 
       else
       {
-        v21 = [v12 copy];
+        v21 = [reasonCopy copy];
       }
 
       v22 = *(v18 + 5);
       *(v18 + 5) = v21;
 
-      objc_storeStrong(v18 + 2, a4);
-      *(v18 + 25) = a5;
-      v23 = [v13 copy];
+      objc_storeStrong(v18 + 2, identifier);
+      *(v18 + 25) = queue;
+      v23 = [typeCopy copy];
       v24 = *(v18 + 1);
       *(v18 + 1) = v23;
     }
@@ -408,44 +408,44 @@
   return v18;
 }
 
-- (BSSimpleAssertion)initWithReason:(id)a3 invalidatedBlock:(id)a4
+- (BSSimpleAssertion)initWithReason:(id)reason invalidatedBlock:(id)block
 {
-  v6 = a3;
-  v7 = MEMORY[0x193AE5AC0](a4);
-  v8 = [(BSSimpleAssertion *)self _initWithReason:v6 identifier:v6 queue:0 type:1 block:v7];
+  reasonCopy = reason;
+  v7 = MEMORY[0x193AE5AC0](block);
+  v8 = [(BSSimpleAssertion *)self _initWithReason:reasonCopy identifier:reasonCopy queue:0 type:1 block:v7];
 
   return v8;
 }
 
-- (BSSimpleAssertion)initWithReason:(id)a3 invalidatedWithContextBlock:(id)a4
+- (BSSimpleAssertion)initWithReason:(id)reason invalidatedWithContextBlock:(id)block
 {
-  v6 = a3;
-  v7 = MEMORY[0x193AE5AC0](a4);
-  v8 = [(BSSimpleAssertion *)self _initWithReason:v6 identifier:v6 queue:0 type:0 block:v7];
+  reasonCopy = reason;
+  v7 = MEMORY[0x193AE5AC0](block);
+  v8 = [(BSSimpleAssertion *)self _initWithReason:reasonCopy identifier:reasonCopy queue:0 type:0 block:v7];
 
   return v8;
 }
 
-- (id)_initWithReason:(void *)a3 identifier:(void *)a4 requiredInvalidationQueue:(uint64_t)a5 deallocPolicy:(void *)a6 invalidatedWithContextBlock:
+- (id)_initWithReason:(void *)reason identifier:(void *)identifier requiredInvalidationQueue:(uint64_t)queue deallocPolicy:(void *)policy invalidatedWithContextBlock:
 {
   v36 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = v14;
-  if (a1)
+  reasonCopy = reason;
+  identifierCopy = identifier;
+  policyCopy = policy;
+  v15 = policyCopy;
+  if (self)
   {
-    if (a5 == 1)
+    if (queue == 1)
     {
       v16 = 2;
     }
 
     else
     {
-      if (a5)
+      if (queue)
       {
-        v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown deallocPolicy %li", a5];
+        queue = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown deallocPolicy %li", queue];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           v20 = NSStringFromSelector(sel__initWithReason_identifier_requiredInvalidationQueue_deallocPolicy_invalidatedWithContextBlock_);
@@ -456,18 +456,18 @@
           v26 = 2114;
           v27 = v22;
           v28 = 2048;
-          v29 = a1;
+          selfCopy = self;
           v30 = 2114;
           v31 = @"BSSimpleAssertion.m";
           v32 = 1024;
           v33 = 96;
           v34 = 2114;
-          v35 = v19;
+          v35 = queue;
           _os_log_error_impl(&dword_18FEF6000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
         }
 
-        v23 = v19;
-        qword_1EAD33B00 = [v19 UTF8String];
+        v23 = queue;
+        qword_1EAD33B00 = [queue UTF8String];
         __break(0);
         JUMPOUT(0x18FF2732CLL);
       }
@@ -475,21 +475,21 @@
       v16 = 0;
     }
 
-    v17 = MEMORY[0x193AE5AC0](v14);
-    a1 = [(BSSimpleAssertion *)a1 _initWithReason:v11 identifier:v12 queue:v13 type:v16 block:v17];
+    v17 = MEMORY[0x193AE5AC0](policyCopy);
+    self = [(BSSimpleAssertion *)self _initWithReason:v11 identifier:reasonCopy queue:identifierCopy type:v16 block:v17];
   }
 
-  return a1;
+  return self;
 }
 
-- (BSSimpleAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 queue:(id)a5 invalidationBlock:(id)a6
+- (BSSimpleAssertion)initWithIdentifier:(id)identifier forReason:(id)reason queue:(id)queue invalidationBlock:(id)block
 {
   v34 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v13)
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  queueCopy = queue;
+  blockCopy = block;
+  if (!queueCopy)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"queue"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -502,7 +502,7 @@
       v24 = 2114;
       v25 = v20;
       v26 = 2048;
-      v27 = self;
+      selfCopy = self;
       v28 = 2114;
       v29 = @"BSSimpleAssertion.m";
       v30 = 1024;
@@ -518,32 +518,32 @@
     JUMPOUT(0x18FF27574);
   }
 
-  v15 = [(BSSimpleAssertion *)self _initWithReason:v12 identifier:v11 requiredInvalidationQueue:v13 deallocPolicy:0 invalidatedWithContextBlock:v14];
+  v15 = [(BSSimpleAssertion *)self _initWithReason:reasonCopy identifier:identifierCopy requiredInvalidationQueue:queueCopy deallocPolicy:0 invalidatedWithContextBlock:blockCopy];
 
   return v15;
 }
 
-- (void)_appendDescriptionToFormatter:(uint64_t)a1
+- (void)_appendDescriptionToFormatter:(uint64_t)formatter
 {
   v3 = a2;
-  if (a1)
+  if (formatter)
   {
     v9 = v3;
-    v4 = [v3 appendObject:*(a1 + 32) withName:0];
-    v5 = *(a1 + 40);
-    if (v5 != *(a1 + 32))
+    v4 = [v3 appendObject:*(formatter + 32) withName:0];
+    v5 = *(formatter + 40);
+    if (v5 != *(formatter + 32))
     {
       v6 = [v9 appendObject:v5 withName:@"identifier"];
     }
 
     v7 = 1;
-    atomic_compare_exchange_strong_explicit((a1 + 24), &v7, v7, memory_order_relaxed, memory_order_relaxed);
+    atomic_compare_exchange_strong_explicit((formatter + 24), &v7, v7, memory_order_relaxed, memory_order_relaxed);
     if (v7 == 1)
     {
       v8 = @"invalidated";
     }
 
-    else if (*(a1 + 25) == 2)
+    else if (*(formatter + 25) == 2)
     {
       v8 = @"implicit";
     }
@@ -558,40 +558,40 @@
   }
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__BSSimpleAssertion_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_1E72CACC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = streamCopy;
+  v5 = streamCopy;
   [v5 appendProem:self block:v6];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BSSimpleAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSSimpleAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSSimpleAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSSimpleAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSSimpleAssertion *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(BSSimpleAssertion *)self succinctDescriptionBuilder];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 @end

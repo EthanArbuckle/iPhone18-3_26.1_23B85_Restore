@@ -7,9 +7,9 @@
 - (BOOL)nn_active
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"nn_active"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

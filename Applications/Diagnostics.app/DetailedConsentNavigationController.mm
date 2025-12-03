@@ -1,6 +1,6 @@
 @interface DetailedConsentNavigationController
-- (_TtC11Diagnostics35DetailedConsentNavigationController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC11Diagnostics35DetailedConsentNavigationController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC11Diagnostics35DetailedConsentNavigationController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC11Diagnostics35DetailedConsentNavigationController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)agreeButtonClicked;
 - (void)disagreeButtonClicked;
 - (void)viewDidLoad;
@@ -14,12 +14,12 @@
   v6.super_class = type metadata accessor for DetailedConsentNavigationController();
   v2 = v6.receiver;
   [(DetailedConsentNavigationController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() clearColor];
-    [v4 setBackgroundColor:v5];
+    v4 = view;
+    clearColor = [objc_opt_self() clearColor];
+    [v4 setBackgroundColor:clearColor];
 
     sub_100045444();
   }
@@ -32,14 +32,14 @@
 
 - (void)agreeButtonClicked
 {
-  v2 = self;
+  selfCopy = self;
   sub_100045624();
 }
 
 - (void)disagreeButtonClicked
 {
   v2 = qword_1001FC7E8;
-  v6 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
@@ -50,10 +50,10 @@
     Session.cancel()();
   }
 
-  v3 = [(DetailedConsentNavigationController *)v6 parentViewController];
-  if (v3)
+  parentViewController = [(DetailedConsentNavigationController *)selfCopy parentViewController];
+  if (parentViewController)
   {
-    v4 = v3;
+    v4 = parentViewController;
     objc_opt_self();
     if (swift_dynamicCastObjCClass())
     {
@@ -63,20 +63,20 @@
 
     else
     {
-      v5 = v6;
-      v6 = v4;
+      v5 = selfCopy;
+      selfCopy = v4;
     }
   }
 }
 
-- (_TtC11Diagnostics35DetailedConsentNavigationController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics35DetailedConsentNavigationController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC11Diagnostics35DetailedConsentNavigationController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics35DetailedConsentNavigationController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

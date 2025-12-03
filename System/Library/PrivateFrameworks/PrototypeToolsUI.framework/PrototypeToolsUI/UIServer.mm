@@ -1,15 +1,15 @@
 @interface UIServer
 - (_TtC10prototypedP33_7D6121B4D28911B7760A4E8ABB7760C28UIServer)init;
-- (void)handlePrototypingEvent:(int64_t)a3;
+- (void)handlePrototypingEvent:(int64_t)event;
 - (void)launchForRemoteEditing;
 @end
 
 @implementation UIServer
 
-- (void)handlePrototypingEvent:(int64_t)a3
+- (void)handlePrototypingEvent:(int64_t)event
 {
 
-  sub_100008EC0(a3);
+  sub_100008EC0(event);
 }
 
 - (_TtC10prototypedP33_7D6121B4D28911B7760A4E8ABB7760C28UIServer)init

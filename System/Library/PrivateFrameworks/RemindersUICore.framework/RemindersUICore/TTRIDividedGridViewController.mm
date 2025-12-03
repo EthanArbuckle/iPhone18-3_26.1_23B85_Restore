@@ -1,13 +1,13 @@
 @interface TTRIDividedGridViewController
 + (id)dividerColor;
 - (CGSize)intrinsicContentSize;
-- (TTRIDividedGridViewController)initWithType:(int64_t)a3 buttonTitles:(id)a4 buttonAccessibilityLabels:(id)a5 cellBackgroundColor:(id)a6;
+- (TTRIDividedGridViewController)initWithType:(int64_t)type buttonTitles:(id)titles buttonAccessibilityLabels:(id)labels cellBackgroundColor:(id)color;
 - (TTRIDividedGridViewControllerDelegate)delegate;
 - (double)_neededHeight;
 - (id)_newDividerView;
-- (void)cellTapped:(id)a3;
+- (void)cellTapped:(id)tapped;
 - (void)loadView;
-- (void)setPreferredWidth:(double)a3;
+- (void)setPreferredWidth:(double)width;
 - (void)viewDidLayoutSubviews;
 - (void)viewWillLayoutSubviews;
 @end
@@ -33,21 +33,21 @@ void __45__TTRIDividedGridViewController_dividerColor__block_invoke()
   dividerColor___dividerColor = v0;
 }
 
-- (TTRIDividedGridViewController)initWithType:(int64_t)a3 buttonTitles:(id)a4 buttonAccessibilityLabels:(id)a5 cellBackgroundColor:(id)a6
+- (TTRIDividedGridViewController)initWithType:(int64_t)type buttonTitles:(id)titles buttonAccessibilityLabels:(id)labels cellBackgroundColor:(id)color
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  titlesCopy = titles;
+  labelsCopy = labels;
+  colorCopy = color;
   v17.receiver = self;
   v17.super_class = TTRIDividedGridViewController;
   v14 = [(TTRIDividedGridViewController *)&v17 initWithNibName:0 bundle:0];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    objc_storeStrong(&v14->_buttonTitles, a4);
-    objc_storeStrong(&v15->_cellBackgroundColor, a6);
-    objc_storeStrong(&v15->_buttonAccessibilityLabels, a5);
+    v14->_type = type;
+    objc_storeStrong(&v14->_buttonTitles, titles);
+    objc_storeStrong(&v15->_cellBackgroundColor, color);
+    objc_storeStrong(&v15->_buttonAccessibilityLabels, labels);
   }
 
   return v15;
@@ -55,7 +55,7 @@ void __45__TTRIDividedGridViewController_dividerColor__block_invoke()
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   v97[1] = *MEMORY[0x277D85DE8];
   type = self->_type;
   v4 = 7;
@@ -76,16 +76,16 @@ void __45__TTRIDividedGridViewController_dividerColor__block_invoke()
   v80 = objc_opt_new();
   v96 = @"dividerWidth";
   v7 = MEMORY[0x277CCABB0];
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v10 = [v7 numberWithDouble:1.0 / v9];
   v97[0] = v10;
   v88 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v97 forKeys:&v96 count:1];
 
-  v11 = [(TTRIDividedGridViewController *)v2 buttonTitles];
-  v12 = [v11 count];
+  buttonTitles = [(TTRIDividedGridViewController *)selfCopy buttonTitles];
+  v12 = [buttonTitles count];
 
-  v89 = v2;
+  v89 = selfCopy;
   if (v12)
   {
     v13 = 0;
@@ -96,8 +96,8 @@ void __45__TTRIDividedGridViewController_dividerColor__block_invoke()
     {
       v82 = v13;
       v84 = v14;
-      v17 = [(TTRIDividedGridViewController *)v2 buttonTitles];
-      v18 = [v17 count];
+      buttonTitles2 = [(TTRIDividedGridViewController *)selfCopy buttonTitles];
+      v18 = [buttonTitles2 count];
 
       if (!(v16 % obj))
       {
@@ -111,33 +111,33 @@ void __45__TTRIDividedGridViewController_dividerColor__block_invoke()
 
       v21 = [TTRIUIDividedGridViewCell alloc];
       v22 = v21;
-      if (v2->_cellBackgroundColor)
+      if (selfCopy->_cellBackgroundColor)
       {
         v23 = [(TTRIUIDividedGridViewCell *)v21 initWithBackgroundColor:?];
       }
 
       else
       {
-        v24 = [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
-        v23 = [(TTRIUIDividedGridViewCell *)v22 initWithBackgroundColor:v24];
+        tableCellGroupedBackgroundColor = [MEMORY[0x277D75348] tableCellGroupedBackgroundColor];
+        v23 = [(TTRIUIDividedGridViewCell *)v22 initWithBackgroundColor:tableCellGroupedBackgroundColor];
       }
 
-      [(TTRIUIDividedGridViewCell *)v23 setViewController:v2];
+      [(TTRIUIDividedGridViewCell *)v23 setViewController:selfCopy];
       [(TTRIUIDividedGridViewCell *)v23 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v25 = [(TTRIDividedGridViewController *)v2 buttonTitles];
-      v26 = [v25 objectAtIndexedSubscript:v16];
-      v27 = [(TTRIUIDividedGridViewCell *)v23 label];
-      [v27 setText:v26];
+      buttonTitles3 = [(TTRIDividedGridViewController *)selfCopy buttonTitles];
+      v26 = [buttonTitles3 objectAtIndexedSubscript:v16];
+      label = [(TTRIUIDividedGridViewCell *)v23 label];
+      [label setText:v26];
 
-      v28 = [(TTRIDividedGridViewController *)v2 buttonAccessibilityLabels];
-      if ([v28 count] > v16)
+      buttonAccessibilityLabels = [(TTRIDividedGridViewController *)selfCopy buttonAccessibilityLabels];
+      if ([buttonAccessibilityLabels count] > v16)
       {
-        [(TTRIDividedGridViewController *)v2 buttonAccessibilityLabels];
+        [(TTRIDividedGridViewController *)selfCopy buttonAccessibilityLabels];
       }
 
       else
       {
-        [(TTRIDividedGridViewController *)v2 buttonTitles];
+        [(TTRIDividedGridViewController *)selfCopy buttonTitles];
       }
       v29 = ;
       v30 = v16 + 1;
@@ -156,12 +156,12 @@ void __45__TTRIDividedGridViewController_dividerColor__block_invoke()
       v34 = [MEMORY[0x277CCAAD0] constraintWithItem:v23 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
       [(TTRIUIDividedGridViewCell *)v23 setWidthConstraint:v34];
 
-      v35 = [(TTRIUIDividedGridViewCell *)v23 widthConstraint];
+      widthConstraint = [(TTRIUIDividedGridViewCell *)v23 widthConstraint];
       LODWORD(v36) = 1148846080;
-      [v35 setPriority:v36];
+      [widthConstraint setPriority:v36];
 
-      v37 = [(TTRIUIDividedGridViewCell *)v23 widthConstraint];
-      [v82 addConstraint:v37];
+      widthConstraint2 = [(TTRIUIDividedGridViewCell *)v23 widthConstraint];
+      [v82 addConstraint:widthConstraint2];
 
       if (!(v16 % obj))
       {
@@ -169,27 +169,27 @@ void __45__TTRIDividedGridViewController_dividerColor__block_invoke()
       }
 
       v38 = v30 % obj;
-      v39 = [(TTRIDividedGridViewController *)v89 _newDividerView];
-      [v82 addSubview:v39];
-      v40 = [MEMORY[0x277CCAAD0] constraintWithItem:v39 attribute:8 relatedBy:0 toItem:v82 attribute:8 multiplier:1.0 constant:0.0];
+      _newDividerView = [(TTRIDividedGridViewController *)v89 _newDividerView];
+      [v82 addSubview:_newDividerView];
+      v40 = [MEMORY[0x277CCAAD0] constraintWithItem:_newDividerView attribute:8 relatedBy:0 toItem:v82 attribute:8 multiplier:1.0 constant:0.0];
       [v84 addObject:v40];
 
       v41 = MEMORY[0x277CCAAD0];
-      v42 = _NSDictionaryOfVariableBindings(&cfstr_Previousbutton.isa, v15, v39, v23, 0);
+      v42 = _NSDictionaryOfVariableBindings(&cfstr_Previousbutton.isa, v15, _newDividerView, v23, 0);
       v43 = [v41 constraintsWithVisualFormat:@"H:[previousButton][dividerView(==dividerWidth)][buttonView]" options:1024 metrics:v88 views:v42];
       [v84 addObjectsFromArray:v43];
 
       if (v16 == v18 - 1 && v38)
       {
-        v44 = [(TTRIDividedGridViewController *)v89 _newDividerView];
+        _newDividerView2 = [(TTRIDividedGridViewController *)v89 _newDividerView];
         v13 = v82;
-        [v82 addSubview:v44];
-        v45 = [MEMORY[0x277CCAAD0] constraintWithItem:v44 attribute:8 relatedBy:0 toItem:v82 attribute:8 multiplier:1.0 constant:0.0];
+        [v82 addSubview:_newDividerView2];
+        v45 = [MEMORY[0x277CCAAD0] constraintWithItem:_newDividerView2 attribute:8 relatedBy:0 toItem:v82 attribute:8 multiplier:1.0 constant:0.0];
         v14 = v84;
         [v84 addObject:v45];
 
         v46 = MEMORY[0x277CCAAD0];
-        v47 = _NSDictionaryOfVariableBindings(&cfstr_ButtonviewEndo.isa, v23, v44, 0);
+        v47 = _NSDictionaryOfVariableBindings(&cfstr_ButtonviewEndo.isa, v23, _newDividerView2, 0);
         v48 = [v46 constraintsWithVisualFormat:@"H:[buttonView][endOfWeekDivider(==dividerWidth)]|" options:1024 metrics:v88 views:v47];
         [v84 addObjectsFromArray:v48];
 
@@ -199,8 +199,8 @@ void __45__TTRIDividedGridViewController_dividerColor__block_invoke()
       if (!v38)
       {
         v50 = MEMORY[0x277CCAAD0];
-        v44 = _NSDictionaryOfVariableBindings(&cfstr_Previousbutton.isa, v15, v39, v23, 0);
-        v47 = [v50 constraintsWithVisualFormat:@"H:[buttonView]|" options:1024 metrics:v88 views:v44];
+        _newDividerView2 = _NSDictionaryOfVariableBindings(&cfstr_Previousbutton.isa, v15, _newDividerView, v23, 0);
+        v47 = [v50 constraintsWithVisualFormat:@"H:[buttonView]|" options:1024 metrics:v88 views:_newDividerView2];
         v14 = v84;
         [v84 addObjectsFromArray:v47];
         v13 = v82;
@@ -214,17 +214,17 @@ LABEL_24:
       v14 = v84;
 LABEL_25:
 
-      v51 = [v13 buttonViews];
-      [v51 addObject:v23];
+      buttonViews = [v13 buttonViews];
+      [buttonViews addObject:v23];
 
       [v13 addConstraints:v14];
-      v52 = [(TTRIDividedGridViewController *)v89 buttonTitles];
-      v53 = [v52 count];
+      buttonTitles4 = [(TTRIDividedGridViewController *)v89 buttonTitles];
+      v53 = [buttonTitles4 count];
 
       v15 = v23;
       ++v16;
       v54 = v30 >= v53;
-      v2 = v89;
+      selfCopy = v89;
       if (v54)
       {
 
@@ -233,9 +233,9 @@ LABEL_25:
     }
 
     v49 = MEMORY[0x277CCAAD0];
-    v39 = _NSDictionaryOfVariableBindings(&cfstr_Buttonview.isa, v23, 0);
-    v44 = [v49 constraintsWithVisualFormat:@"H:|[buttonView]" options:1024 metrics:v88 views:v39];
-    [v84 addObjectsFromArray:v44];
+    _newDividerView = _NSDictionaryOfVariableBindings(&cfstr_Buttonview.isa, v23, 0);
+    _newDividerView2 = [v49 constraintsWithVisualFormat:@"H:|[buttonView]" options:1024 metrics:v88 views:_newDividerView];
+    [v84 addObjectsFromArray:_newDividerView2];
     v13 = v82;
     goto LABEL_24;
   }
@@ -246,7 +246,7 @@ LABEL_29:
   v83 = v13;
   v85 = v14;
   v55 = objc_opt_new();
-  [v55 setViewController:v2];
+  [v55 setViewController:selfCopy];
   v56 = objc_opt_new();
   v91 = 0u;
   v92 = 0u;
@@ -275,8 +275,8 @@ LABEL_29:
         v63 = [MEMORY[0x277CCAAD0] constraintWithItem:v62 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:43.5];
         [v62 setHeightConstraint:v63];
 
-        v64 = [v62 heightConstraint];
-        [v62 addConstraint:v64];
+        heightConstraint = [v62 heightConstraint];
+        [v62 addConstraint:heightConstraint];
 
         [v55 addSubview:v62];
         v65 = MEMORY[0x277CCAAD0];
@@ -289,19 +289,19 @@ LABEL_29:
 
         if (v61)
         {
-          v69 = [(TTRIDividedGridViewController *)v2 _newDividerView];
-          [v55 addSubview:v69];
+          _newDividerView3 = [(TTRIDividedGridViewController *)selfCopy _newDividerView];
+          [v55 addSubview:_newDividerView3];
           v70 = MEMORY[0x277CCAAD0];
-          v71 = _NSDictionaryOfVariableBindings(&cfstr_Dividerview.isa, v69, 0);
+          v71 = _NSDictionaryOfVariableBindings(&cfstr_Dividerview.isa, _newDividerView3, 0);
           v72 = [v70 constraintsWithVisualFormat:@"H:|[dividerView]|" options:0 metrics:0 views:v71];
           [v56 addObjectsFromArray:v72];
 
           v73 = MEMORY[0x277CCAAD0];
-          v74 = _NSDictionaryOfVariableBindings(&cfstr_PreviousviewWe.isa, v61, v62, v69, 0);
+          v74 = _NSDictionaryOfVariableBindings(&cfstr_PreviousviewWe.isa, v61, v62, _newDividerView3, 0);
           v75 = [v73 constraintsWithVisualFormat:@"V:[previousView][dividerView(==dividerWidth)][weekView]" options:0 metrics:v88 views:v74];
           [v56 addObjectsFromArray:v75];
 
-          v2 = v89;
+          selfCopy = v89;
         }
 
         v59 = v62;
@@ -331,9 +331,9 @@ LABEL_29:
   [v56 addObject:v79];
 
   [v55 addConstraints:v56];
-  [(TTRIDividedGridViewController *)v2 setView:v55];
-  [(TTRIDividedGridViewController *)v2 setAllCells:v81];
-  [(TTRIDividedGridViewController *)v2 setWeekViews:obja];
+  [(TTRIDividedGridViewController *)selfCopy setView:v55];
+  [(TTRIDividedGridViewController *)selfCopy setAllCells:v81];
+  [(TTRIDividedGridViewController *)selfCopy setWeekViews:obja];
 }
 
 - (id)_newDividerView
@@ -346,12 +346,12 @@ LABEL_29:
   return v2;
 }
 
-- (void)cellTapped:(id)a3
+- (void)cellTapped:(id)tapped
 {
-  v4 = a3;
-  v6 = [(TTRIDividedGridViewController *)self delegate];
-  v5 = [(TTRIDividedGridViewController *)self allCells];
-  [v6 dividedGridViewController:self didSelectCell:v4 atIndex:{objc_msgSend(v5, "indexOfObject:", v4)}];
+  tappedCopy = tapped;
+  delegate = [(TTRIDividedGridViewController *)self delegate];
+  allCells = [(TTRIDividedGridViewController *)self allCells];
+  [delegate dividedGridViewController:self didSelectCell:tappedCopy atIndex:{objc_msgSend(allCells, "indexOfObject:", tappedCopy)}];
 }
 
 - (void)viewWillLayoutSubviews
@@ -359,8 +359,8 @@ LABEL_29:
   v56 = *MEMORY[0x277D85DE8];
   [(TTRIDividedGridViewController *)self preferredWidth];
   v4 = v3;
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v7 = 1.0 / v6;
 
   type = self->_type;
@@ -448,8 +448,8 @@ LABEL_29:
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v33 = [(TTRIDividedGridViewController *)self weekViews];
-  v34 = [v33 countByEnumeratingWithState:&v51 objects:v55 count:16];
+  weekViews = [(TTRIDividedGridViewController *)self weekViews];
+  v34 = [weekViews countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (v34)
   {
     v35 = v34;
@@ -460,40 +460,40 @@ LABEL_29:
       {
         if (*v52 != v36)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(weekViews);
         }
 
         v38 = *(*(&v51 + 1) + 8 * i);
-        v39 = [v38 buttonViews];
-        v40 = [v39 count];
+        buttonViews = [v38 buttonViews];
+        v40 = [buttonViews count];
 
         if (v40)
         {
           v41 = 0;
           do
           {
-            v42 = [v38 buttonViews];
-            v43 = [v42 objectAtIndexedSubscript:v41];
+            buttonViews2 = [v38 buttonViews];
+            v43 = [buttonViews2 objectAtIndexedSubscript:v41];
 
             v44 = [v15 objectAtIndexedSubscript:v41];
             [v44 doubleValue];
             v46 = v45;
-            v47 = [v43 widthConstraint];
-            [v47 setConstant:v46];
+            widthConstraint = [v43 widthConstraint];
+            [widthConstraint setConstant:v46];
 
             ++v41;
-            v48 = [v38 buttonViews];
-            v49 = [v48 count];
+            buttonViews3 = [v38 buttonViews];
+            v49 = [buttonViews3 count];
           }
 
           while (v49 > v41);
         }
 
-        v50 = [v38 heightConstraint];
-        [v50 setConstant:v32];
+        heightConstraint = [v38 heightConstraint];
+        [heightConstraint setConstant:v32];
       }
 
-      v35 = [v33 countByEnumeratingWithState:&v51 objects:v55 count:16];
+      v35 = [weekViews countByEnumeratingWithState:&v51 objects:v55 count:16];
     }
 
     while (v35);
@@ -502,26 +502,26 @@ LABEL_29:
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(TTRIDividedGridViewController *)self delegate];
-  [v3 dividedGridViewControllerDidLayout:self];
+  delegate = [(TTRIDividedGridViewController *)self delegate];
+  [delegate dividedGridViewControllerDidLayout:self];
 }
 
 - (double)_neededHeight
 {
-  v3 = [(TTRIDividedGridViewController *)self weekViews];
-  v4 = [v3 count];
+  weekViews = [(TTRIDividedGridViewController *)self weekViews];
+  v4 = [weekViews count];
 
   if (v4)
   {
     v5 = v4;
-    v6 = [(TTRIDividedGridViewController *)self weekViews];
-    v7 = [v6 objectAtIndexedSubscript:0];
-    v8 = [v7 heightConstraint];
-    [v8 constant];
+    weekViews2 = [(TTRIDividedGridViewController *)self weekViews];
+    v7 = [weekViews2 objectAtIndexedSubscript:0];
+    heightConstraint = [v7 heightConstraint];
+    [heightConstraint constant];
     v10 = v9;
     v11 = (v4 + 1);
-    v12 = [MEMORY[0x277D759A0] mainScreen];
-    [v12 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v14 = 1.0 / v13 * v11 + v5 * v10;
   }
 
@@ -529,8 +529,8 @@ LABEL_29:
   {
     [(TTRIDividedGridViewController *)self preferredWidth];
     v16 = v15;
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 scale];
+    weekViews2 = [MEMORY[0x277D759A0] mainScreen];
+    [weekViews2 scale];
     v14 = v16 + 1.0 / v17 * 2.0;
   }
 
@@ -549,16 +549,16 @@ LABEL_29:
   return result;
 }
 
-- (void)setPreferredWidth:(double)a3
+- (void)setPreferredWidth:(double)width
 {
-  if (self->_preferredWidth != a3)
+  if (self->_preferredWidth != width)
   {
-    self->_preferredWidth = a3;
-    v5 = [(TTRIDividedGridViewController *)self view];
-    [v5 setNeedsLayout];
+    self->_preferredWidth = width;
+    view = [(TTRIDividedGridViewController *)self view];
+    [view setNeedsLayout];
 
-    v6 = [(TTRIDividedGridViewController *)self view];
-    [v6 invalidateIntrinsicContentSize];
+    view2 = [(TTRIDividedGridViewController *)self view];
+    [view2 invalidateIntrinsicContentSize];
   }
 }
 

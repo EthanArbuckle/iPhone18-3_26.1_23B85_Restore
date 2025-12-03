@@ -1,43 +1,43 @@
 @interface PLBackgroundJobDuplicateDetectorWorker
-- (BOOL)_checkItems:(id)a3 forType:(signed __int16)a4 library:(id)a5;
-- (BOOL)_hasCompletedPerceptualProcessingWithLibrary:(id)a3;
-- (BOOL)_isEntireLibraryWorkItem:(id)a3;
-- (BOOL)_isInProgressEntireLibraryWorkItem:(id)a3;
-- (BOOL)_isInitialEntireLibraryWorkItem:(id)a3;
+- (BOOL)_checkItems:(id)items forType:(signed __int16)type library:(id)library;
+- (BOOL)_hasCompletedPerceptualProcessingWithLibrary:(id)library;
+- (BOOL)_isEntireLibraryWorkItem:(id)item;
+- (BOOL)_isInProgressEntireLibraryWorkItem:(id)item;
+- (BOOL)_isInitialEntireLibraryWorkItem:(id)item;
 - (BOOL)_isJobCancelled;
-- (BOOL)_processDuplicatesWithLimitedSelection:(id)a3 processingType:(unint64_t)a4 library:(id)a5 error:(id *)a6 continuationHandler:(id)a7;
-- (PLBackgroundJobDuplicateDetectorWorker)initWithLibraryBundle:(id)a3;
-- (char)_processingStatusForLibrary:(id)a3;
-- (id)_backgroundJobWorkItemsFromObjectIDs:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5;
-- (id)_convertToObjectIDsFromUUIDs:(id)a3 library:(id)a4 error:(id *)a5;
-- (id)_convertToUUIDsFromObjectIDs:(id)a3 library:(id)a4 error:(id *)a5;
-- (id)_fetchedUUIDsFromUUIDs:(id)a3 library:(id)a4 error:(id *)a5;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
-- (unint64_t)_processingTypeFromWorkItems:(id)a3 library:(id)a4;
-- (void)_cleanUpWorkItems:(id)a3 shouldDeleteAllJobs:(BOOL)a4 oidsToRemove:(id)a5 uuidsToRemove:(id)a6 library:(id)a7;
-- (void)_processWorkItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)_resetMarkerIfRequiredFromLibrary:(id)a3;
-- (void)_setMarkerWithPrivateData:(id)a3 value:(BOOL)a4 wellKnownIdentifier:(int64_t)a5;
-- (void)_setProcessingStatus:(char)a3 library:(id)a4;
-- (void)_updateLastInitialProcessingDateIfCompleted:(BOOL)a3 library:(id)a4;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)stopWorkingOnItem:(id)a3;
+- (BOOL)_processDuplicatesWithLimitedSelection:(id)selection processingType:(unint64_t)type library:(id)library error:(id *)error continuationHandler:(id)handler;
+- (PLBackgroundJobDuplicateDetectorWorker)initWithLibraryBundle:(id)bundle;
+- (char)_processingStatusForLibrary:(id)library;
+- (id)_backgroundJobWorkItemsFromObjectIDs:(id)ds inManagedObjectContext:(id)context error:(id *)error;
+- (id)_convertToObjectIDsFromUUIDs:(id)ds library:(id)library error:(id *)error;
+- (id)_convertToUUIDsFromObjectIDs:(id)ds library:(id)library error:(id *)error;
+- (id)_fetchedUUIDsFromUUIDs:(id)ds library:(id)library error:(id *)error;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
+- (unint64_t)_processingTypeFromWorkItems:(id)items library:(id)library;
+- (void)_cleanUpWorkItems:(id)items shouldDeleteAllJobs:(BOOL)jobs oidsToRemove:(id)remove uuidsToRemove:(id)toRemove library:(id)library;
+- (void)_processWorkItem:(id)item inLibrary:(id)library completion:(id)completion;
+- (void)_resetMarkerIfRequiredFromLibrary:(id)library;
+- (void)_setMarkerWithPrivateData:(id)data value:(BOOL)value wellKnownIdentifier:(int64_t)identifier;
+- (void)_setProcessingStatus:(char)status library:(id)library;
+- (void)_updateLastInitialProcessingDateIfCompleted:(BOOL)completed library:(id)library;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
+- (void)stopWorkingOnItem:(id)item;
 @end
 
 @implementation PLBackgroundJobDuplicateDetectorWorker
 
-- (void)_updateLastInitialProcessingDateIfCompleted:(BOOL)a3 library:(id)a4
+- (void)_updateLastInitialProcessingDateIfCompleted:(BOOL)completed library:(id)library
 {
-  v4 = a3;
+  completedCopy = completed;
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (v4)
+  libraryCopy = library;
+  v6 = libraryCopy;
+  if (completedCopy)
   {
-    v7 = [v5 globalValues];
-    v8 = [v7 isInitialDuplicateDetectorProcessingCompleted];
+    globalValues = [libraryCopy globalValues];
+    isInitialDuplicateDetectorProcessingCompleted = [globalValues isInitialDuplicateDetectorProcessingCompleted];
 
-    if ((v8 & 1) == 0)
+    if ((isInitialDuplicateDetectorProcessingCompleted & 1) == 0)
     {
       v9 = [MEMORY[0x1E695DF00] now];
       v10 = PLDuplicateDetectionGetLog();
@@ -50,42 +50,42 @@
         _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_INFO, "Duplicate Detector Worker: saving completed initial processing date %{public}@ to library %@", &v12, 0x16u);
       }
 
-      v11 = [v6 globalValues];
-      [v11 setLastInitialDuplicateDetectorProcessingCompletedDate:v9];
+      globalValues2 = [v6 globalValues];
+      [globalValues2 setLastInitialDuplicateDetectorProcessingCompletedDate:v9];
     }
   }
 }
 
-- (BOOL)_hasCompletedPerceptualProcessingWithLibrary:(id)a3
+- (BOOL)_hasCompletedPerceptualProcessingWithLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [v3 globalValues];
-  v5 = [v4 isInitialDuplicateDetectorProcessingCompleted];
+  libraryCopy = library;
+  globalValues = [libraryCopy globalValues];
+  isInitialDuplicateDetectorProcessingCompleted = [globalValues isInitialDuplicateDetectorProcessingCompleted];
 
-  if (v5)
+  if (isInitialDuplicateDetectorProcessingCompleted)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v3 managedObjectContext];
-    v8 = [v3 pathManager];
-    v6 = [PLDuplicateDetector duplicateDetectorCompletedPerceptualHashProcessingWithManagedObjectContext:v7 pathManager:v8];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    pathManager = [libraryCopy pathManager];
+    v6 = [PLDuplicateDetector duplicateDetectorCompletedPerceptualHashProcessingWithManagedObjectContext:managedObjectContext pathManager:pathManager];
   }
 
   return v6;
 }
 
-- (void)_setMarkerWithPrivateData:(id)a3 value:(BOOL)a4 wellKnownIdentifier:(int64_t)a5
+- (void)_setMarkerWithPrivateData:(id)data value:(BOOL)value wellKnownIdentifier:(int64_t)identifier
 {
-  v6 = a4;
+  valueCopy = value;
   v28 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AD98];
-  v8 = a3;
-  v9 = [v7 numberWithBool:v6];
+  dataCopy = data;
+  v9 = [v7 numberWithBool:valueCopy];
   v21 = 0;
-  v10 = [v8 setValue:v9 forKey:@"DuplicateSharedLibraryEnabledMarker" error:&v21];
+  v10 = [dataCopy setValue:v9 forKey:@"DuplicateSharedLibraryEnabledMarker" error:&v21];
 
   v11 = v21;
   v12 = PLDuplicateDetectionGetLog();
@@ -95,7 +95,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = @"NO";
-      if (v6)
+      if (valueCopy)
       {
         v14 = @"YES";
       }
@@ -104,7 +104,7 @@
       *buf = 138543618;
       v23 = v15;
       v24 = 2048;
-      v25 = a5;
+      identifierCopy2 = identifier;
       v16 = "Duplicate Detector Worker: Setting the initial enable marker %{public}@ for library identifier: %td";
       v17 = v13;
       v18 = OS_LOG_TYPE_DEFAULT;
@@ -117,7 +117,7 @@ LABEL_10:
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     v20 = @"NO";
-    if (v6)
+    if (valueCopy)
     {
       v20 = @"YES";
     }
@@ -126,7 +126,7 @@ LABEL_10:
     *buf = 138543874;
     v23 = v15;
     v24 = 2048;
-    v25 = a5;
+    identifierCopy2 = identifier;
     v26 = 2112;
     v27 = v11;
     v16 = "Duplicate Detector Worker: Failed to set the initial enable marker %{public}@ for library identifier: %td. Error: %@";
@@ -137,17 +137,17 @@ LABEL_10:
   }
 }
 
-- (void)_resetMarkerIfRequiredFromLibrary:(id)a3
+- (void)_resetMarkerIfRequiredFromLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__PLBackgroundJobDuplicateDetectorWorker__resetMarkerIfRequiredFromLibrary___block_invoke;
   v7[3] = &unk_1E7578848;
-  v8 = v4;
-  v9 = self;
+  v8 = libraryCopy;
+  selfCopy = self;
   v5 = _resetMarkerIfRequiredFromLibrary__onceToken;
-  v6 = v4;
+  v6 = libraryCopy;
   if (v5 != -1)
   {
     dispatch_once(&_resetMarkerIfRequiredFromLibrary__onceToken, v7);
@@ -238,59 +238,59 @@ void __76__PLBackgroundJobDuplicateDetectorWorker__resetMarkerIfRequiredFromLibr
   [(PLGlobalValues *)v4 setLastInitialDuplicateDetectorProcessingCompletedDate:0];
 }
 
-- (void)_setProcessingStatus:(char)a3 library:(id)a4
+- (void)_setProcessingStatus:(char)status library:(id)library
 {
-  v4 = a3;
+  statusCopy = status;
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  libraryCopy = library;
   v6 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8[0] = 67109378;
-    v8[1] = v4;
+    v8[1] = statusCopy;
     v9 = 2112;
-    v10 = v5;
+    v10 = libraryCopy;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_INFO, "Duplicate Detector Worker: updating status %d to library %@", v8, 0x12u);
   }
 
-  v7 = [v5 globalValues];
-  [v7 setDuplicateProcessingStatus:v4];
+  globalValues = [libraryCopy globalValues];
+  [globalValues setDuplicateProcessingStatus:statusCopy];
 }
 
-- (char)_processingStatusForLibrary:(id)a3
+- (char)_processingStatusForLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [v4 globalValues];
-  v6 = [v5 duplicateProcessingStatus];
+  libraryCopy = library;
+  globalValues = [libraryCopy globalValues];
+  duplicateProcessingStatus = [globalValues duplicateProcessingStatus];
 
-  if (!v6)
+  if (!duplicateProcessingStatus)
   {
     v7 = objc_opt_class();
-    v8 = [v4 pathManager];
-    v9 = [PLBackgroundModelMigration hasCompletedBackgroundActionClass:v7 pathManager:v8];
+    pathManager = [libraryCopy pathManager];
+    v9 = [PLBackgroundModelMigration hasCompletedBackgroundActionClass:v7 pathManager:pathManager];
 
     if (v9)
     {
-      LOBYTE(v6) = 0;
+      LOBYTE(duplicateProcessingStatus) = 0;
     }
 
     else
     {
-      [(PLBackgroundJobDuplicateDetectorWorker *)self _setProcessingStatus:0xFFFFFFFFLL library:v4];
-      LOBYTE(v6) = -1;
+      [(PLBackgroundJobDuplicateDetectorWorker *)self _setProcessingStatus:0xFFFFFFFFLL library:libraryCopy];
+      LOBYTE(duplicateProcessingStatus) = -1;
     }
   }
 
-  return v6;
+  return duplicateProcessingStatus;
 }
 
-- (BOOL)_isInProgressEntireLibraryWorkItem:(id)a3
+- (BOOL)_isInProgressEntireLibraryWorkItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 isEqualToString:@"BackgroundJobDuplicateProcessEntireLibraryInProgress"];
+    v4 = [itemCopy isEqualToString:@"BackgroundJobDuplicateProcessEntireLibraryInProgress"];
   }
 
   else
@@ -301,13 +301,13 @@ void __76__PLBackgroundJobDuplicateDetectorWorker__resetMarkerIfRequiredFromLibr
   return v4;
 }
 
-- (BOOL)_isInitialEntireLibraryWorkItem:(id)a3
+- (BOOL)_isInitialEntireLibraryWorkItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 isEqualToString:@"BackgroundJobDuplicateProcessEntireLibrary"];
+    v4 = [itemCopy isEqualToString:@"BackgroundJobDuplicateProcessEntireLibrary"];
   }
 
   else
@@ -318,18 +318,18 @@ void __76__PLBackgroundJobDuplicateDetectorWorker__resetMarkerIfRequiredFromLibr
   return v4;
 }
 
-- (BOOL)_isEntireLibraryWorkItem:(id)a3
+- (BOOL)_isEntireLibraryWorkItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PLBackgroundJobDuplicateDetectorWorker *)self _isInitialEntireLibraryWorkItem:v4]|| [(PLBackgroundJobDuplicateDetectorWorker *)self _isInProgressEntireLibraryWorkItem:v4];
+  itemCopy = item;
+  v5 = [(PLBackgroundJobDuplicateDetectorWorker *)self _isInitialEntireLibraryWorkItem:itemCopy]|| [(PLBackgroundJobDuplicateDetectorWorker *)self _isInProgressEntireLibraryWorkItem:itemCopy];
 
   return v5;
 }
 
-- (BOOL)_checkItems:(id)a3 forType:(signed __int16)a4 library:(id)a5
+- (BOOL)_checkItems:(id)items forType:(signed __int16)type library:(id)library
 {
-  v7 = a3;
-  v8 = a5;
+  itemsCopy = items;
+  libraryCopy = library;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -338,11 +338,11 @@ void __76__PLBackgroundJobDuplicateDetectorWorker__resetMarkerIfRequiredFromLibr
   v14[1] = 3221225472;
   v14[2] = __70__PLBackgroundJobDuplicateDetectorWorker__checkItems_forType_library___block_invoke;
   v14[3] = &unk_1E75726C0;
-  v9 = v7;
+  v9 = itemsCopy;
   v15 = v9;
   v16 = &v18;
-  v17 = a4;
-  [v8 performBlockAndWait:v14];
+  typeCopy = type;
+  [libraryCopy performBlockAndWait:v14];
   if (v19[3])
   {
     v10 = 1;
@@ -376,27 +376,27 @@ void __70__PLBackgroundJobDuplicateDetectorWorker__checkItems_forType_library___
   }
 }
 
-- (id)_backgroundJobWorkItemsFromObjectIDs:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5
+- (id)_backgroundJobWorkItemsFromObjectIDs:(id)ds inManagedObjectContext:(id)context error:(id *)error
 {
   v7 = MEMORY[0x1E695D5E0];
-  v8 = a4;
-  v9 = a3;
+  contextCopy = context;
+  dsCopy = ds;
   v10 = +[PLBackgroundJobWorkItem entityName];
   v11 = [v7 fetchRequestWithEntityName:v10];
 
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF IN %@", v9];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF IN %@", dsCopy];
 
-  [v11 setPredicate:v12];
-  v13 = [v8 executeFetchRequest:v11 error:a5];
+  [v11 setPredicate:dsCopy];
+  v13 = [contextCopy executeFetchRequest:v11 error:error];
 
   return v13;
 }
 
-- (unint64_t)_processingTypeFromWorkItems:(id)a3 library:(id)a4
+- (unint64_t)_processingTypeFromWorkItems:(id)items library:(id)library
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  libraryCopy = library;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -408,9 +408,9 @@ void __70__PLBackgroundJobDuplicateDetectorWorker__checkItems_forType_library___
   v18[2] = __79__PLBackgroundJobDuplicateDetectorWorker__processingTypeFromWorkItems_library___block_invoke;
   v18[3] = &unk_1E7578910;
   v20 = &v21;
-  v7 = v5;
+  v7 = itemsCopy;
   v19 = v7;
-  [v6 performBlockAndWait:v18];
+  [libraryCopy performBlockAndWait:v18];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -461,11 +461,11 @@ void __79__PLBackgroundJobDuplicateDetectorWorker__processingTypeFromWorkItems_l
   *(v3 + 40) = v2;
 }
 
-- (id)_convertToUUIDsFromObjectIDs:(id)a3 library:(id)a4 error:(id *)a5
+- (id)_convertToUUIDsFromObjectIDs:(id)ds library:(id)library error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  dsCopy = ds;
+  libraryCopy = library;
+  if ([dsCopy count])
   {
     v31 = 0;
     v32 = &v31;
@@ -487,18 +487,18 @@ void __79__PLBackgroundJobDuplicateDetectorWorker__processingTypeFromWorkItems_l
     v13[1] = 3221225472;
     v13[2] = __85__PLBackgroundJobDuplicateDetectorWorker__convertToUUIDsFromObjectIDs_library_error___block_invoke;
     v13[3] = &unk_1E756F910;
-    v14 = v7;
-    v15 = v8;
+    v14 = dsCopy;
+    v15 = libraryCopy;
     v16 = &v25;
     v17 = &v19;
     v18 = &v31;
     [v15 performBlockAndWait:v13];
     v9 = *(v32 + 24);
     v10 = v26[5];
-    if (a5 && (v9 & 1) == 0)
+    if (error && (v9 & 1) == 0)
     {
       v10 = v10;
-      *a5 = v10;
+      *error = v10;
     }
 
     v11 = v20[5];
@@ -562,11 +562,11 @@ void __85__PLBackgroundJobDuplicateDetectorWorker__convertToUUIDsFromObjectIDs_l
   }
 }
 
-- (id)_convertToObjectIDsFromUUIDs:(id)a3 library:(id)a4 error:(id *)a5
+- (id)_convertToObjectIDsFromUUIDs:(id)ds library:(id)library error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  dsCopy = ds;
+  libraryCopy = library;
+  if ([dsCopy count])
   {
     v31 = 0;
     v32 = &v31;
@@ -588,18 +588,18 @@ void __85__PLBackgroundJobDuplicateDetectorWorker__convertToUUIDsFromObjectIDs_l
     v13[1] = 3221225472;
     v13[2] = __85__PLBackgroundJobDuplicateDetectorWorker__convertToObjectIDsFromUUIDs_library_error___block_invoke;
     v13[3] = &unk_1E756F910;
-    v14 = v7;
-    v15 = v8;
+    v14 = dsCopy;
+    v15 = libraryCopy;
     v16 = &v25;
     v17 = &v19;
     v18 = &v31;
     [v15 performBlockAndWait:v13];
     v9 = *(v32 + 24);
     v10 = v26[5];
-    if (a5 && (v9 & 1) == 0)
+    if (error && (v9 & 1) == 0)
     {
       v10 = v10;
-      *a5 = v10;
+      *error = v10;
     }
 
     v11 = v20[5];
@@ -647,10 +647,10 @@ void __85__PLBackgroundJobDuplicateDetectorWorker__convertToObjectIDsFromUUIDs_l
   }
 }
 
-- (id)_fetchedUUIDsFromUUIDs:(id)a3 library:(id)a4 error:(id *)a5
+- (id)_fetchedUUIDsFromUUIDs:(id)ds library:(id)library error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  libraryCopy = library;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -671,9 +671,9 @@ void __85__PLBackgroundJobDuplicateDetectorWorker__convertToObjectIDsFromUUIDs_l
   v15[1] = 3221225472;
   v15[2] = __79__PLBackgroundJobDuplicateDetectorWorker__fetchedUUIDsFromUUIDs_library_error___block_invoke;
   v15[3] = &unk_1E756F910;
-  v9 = v7;
+  v9 = dsCopy;
   v16 = v9;
-  v10 = v8;
+  v10 = libraryCopy;
   v17 = v10;
   v18 = &v27;
   v19 = &v21;
@@ -681,10 +681,10 @@ void __85__PLBackgroundJobDuplicateDetectorWorker__convertToObjectIDsFromUUIDs_l
   [v10 performBlockAndWait:v15];
   v11 = *(v34 + 24);
   v12 = v28[5];
-  if (a5 && (v11 & 1) == 0)
+  if (error && (v11 & 1) == 0)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   v13 = v22[5];
@@ -742,20 +742,20 @@ void __79__PLBackgroundJobDuplicateDetectorWorker__fetchedUUIDsFromUUIDs_library
   }
 }
 
-- (BOOL)_processDuplicatesWithLimitedSelection:(id)a3 processingType:(unint64_t)a4 library:(id)a5 error:(id *)a6 continuationHandler:(id)a7
+- (BOOL)_processDuplicatesWithLimitedSelection:(id)selection processingType:(unint64_t)type library:(id)library error:(id *)error continuationHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  if (v12)
+  selectionCopy = selection;
+  libraryCopy = library;
+  handlerCopy = handler;
+  if (selectionCopy)
   {
-    v15 = [v12 count];
+    v15 = [selectionCopy count];
     v16 = 1;
-    if (a4 && v15)
+    if (type && v15)
     {
       v30 = 0;
-      v17 = [(PLBackgroundJobDuplicateDetectorWorker *)self _convertToObjectIDsFromUUIDs:v12 library:v13 error:&v30];
+      v17 = [(PLBackgroundJobDuplicateDetectorWorker *)self _convertToObjectIDsFromUUIDs:selectionCopy library:libraryCopy error:&v30];
       v18 = v30;
       if (!v17)
       {
@@ -769,7 +769,7 @@ void __79__PLBackgroundJobDuplicateDetectorWorker__fetchedUUIDsFromUUIDs_library
 
         v24 = v18;
         v17 = 0;
-        if (a6)
+        if (error)
         {
           goto LABEL_11;
         }
@@ -777,13 +777,13 @@ void __79__PLBackgroundJobDuplicateDetectorWorker__fetchedUUIDsFromUUIDs_library
         goto LABEL_16;
       }
 
-      v28 = a6;
+      errorCopy2 = error;
 LABEL_8:
-      v19 = [(PLBackgroundJobWorker *)self libraryBundle];
-      v20 = [v19 libraryServicesManager];
-      v21 = [v20 duplicateProcessor];
+      libraryBundle = [(PLBackgroundJobWorker *)self libraryBundle];
+      libraryServicesManager = [libraryBundle libraryServicesManager];
+      duplicateProcessor = [libraryServicesManager duplicateProcessor];
       v29 = v18;
-      v22 = [v21 processDuplicatesOfAssetObjectIds:v17 processingType:a4 error:&v29 continuationHandler:v14];
+      v22 = [duplicateProcessor processDuplicatesOfAssetObjectIds:v17 processingType:type error:&v29 continuationHandler:handlerCopy];
       v23 = v29;
 
       v24 = v23;
@@ -795,13 +795,13 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      a6 = v28;
-      if (v28)
+      error = errorCopy2;
+      if (errorCopy2)
       {
 LABEL_11:
         v25 = v24;
         v16 = 0;
-        *a6 = v24;
+        *error = v24;
         goto LABEL_17;
       }
 
@@ -813,9 +813,9 @@ LABEL_16:
 
   else
   {
-    if (a4)
+    if (type)
     {
-      v28 = a6;
+      errorCopy2 = error;
       v18 = 0;
       v17 = 0;
       goto LABEL_8;
@@ -829,28 +829,28 @@ LABEL_18:
   return v16;
 }
 
-- (void)_cleanUpWorkItems:(id)a3 shouldDeleteAllJobs:(BOOL)a4 oidsToRemove:(id)a5 uuidsToRemove:(id)a6 library:(id)a7
+- (void)_cleanUpWorkItems:(id)items shouldDeleteAllJobs:(BOOL)jobs oidsToRemove:(id)remove uuidsToRemove:(id)toRemove library:(id)library
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (a4 || [v13 count] || objc_msgSend(v14, "count"))
+  itemsCopy = items;
+  removeCopy = remove;
+  toRemoveCopy = toRemove;
+  libraryCopy = library;
+  if (jobs || [removeCopy count] || objc_msgSend(toRemoveCopy, "count"))
   {
     v23[0] = 0;
     v23[1] = v23;
     v23[2] = 0x2020000000;
-    v24 = a4;
+    jobsCopy = jobs;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __115__PLBackgroundJobDuplicateDetectorWorker__cleanUpWorkItems_shouldDeleteAllJobs_oidsToRemove_uuidsToRemove_library___block_invoke;
     v16[3] = &unk_1E756DE60;
-    v17 = v15;
-    v18 = v12;
-    v19 = self;
-    v20 = v13;
+    v17 = libraryCopy;
+    v18 = itemsCopy;
+    selfCopy = self;
+    v20 = removeCopy;
     v22 = v23;
-    v21 = v14;
+    v21 = toRemoveCopy;
     [v17 performTransactionAndWait:v16];
 
     _Block_object_dispose(v23, 8);
@@ -934,23 +934,23 @@ void __115__PLBackgroundJobDuplicateDetectorWorker__cleanUpWorkItems_shouldDelet
   [*(a1 + 48) _updateLastInitialProcessingDateIfCompleted:objc_msgSend(*(a1 + 48) library:{"_hasCompletedPerceptualProcessingWithLibrary:", *(a1 + 32)), *(a1 + 32)}];
 }
 
-- (void)_processWorkItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)_processWorkItem:(id)item inLibrary:(id)library completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
   v11 = +[PLConcurrencyLimiter sharedLimiter];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__PLBackgroundJobDuplicateDetectorWorker__processWorkItem_inLibrary_completion___block_invoke;
   v15[3] = &unk_1E7573C00;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = libraryCopy;
+  v17 = itemCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = itemCopy;
+  v14 = libraryCopy;
   [v11 async:v15 identifyingBlock:0 library:v14];
 }
 
@@ -1206,10 +1206,10 @@ void __80__PLBackgroundJobDuplicateDetectorWorker__processWorkItem_inLibrary_com
   }
 }
 
-- (void)stopWorkingOnItem:(id)a3
+- (void)stopWorkingOnItem:(id)item
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemCopy = item;
   v4 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -1218,12 +1218,12 @@ void __80__PLBackgroundJobDuplicateDetectorWorker__processWorkItem_inLibrary_com
     *buf = 138543618;
     v10 = v6;
     v11 = 2048;
-    v12 = v3;
+    v12 = itemCopy;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_INFO, "Duplicate Detector Worker: %{public}@ stopWorkingOnItem: %p", buf, 0x16u);
   }
 
-  v8 = v3;
-  v7 = v3;
+  v8 = itemCopy;
+  v7 = itemCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -1239,15 +1239,15 @@ void __80__PLBackgroundJobDuplicateDetectorWorker__processWorkItem_inLibrary_com
   return v2;
 }
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
+  if (itemCopy)
   {
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -1255,41 +1255,41 @@ void __80__PLBackgroundJobDuplicateDetectorWorker__processWorkItem_inLibrary_com
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobDuplicateDetectorWorker.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"item"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobDuplicateDetectorWorker.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"item"}];
 
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobDuplicateDetectorWorker.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobDuplicateDetectorWorker.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"library"}];
 
 LABEL_3:
   if (![(PLBackgroundJobDuplicateDetectorWorker *)self _isJobCancelled])
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 || [(PLBackgroundJobDuplicateDetectorWorker *)self _isEntireLibraryWorkItem:v9])
+    if ((objc_opt_isKindOfClass() & 1) != 0 || [(PLBackgroundJobDuplicateDetectorWorker *)self _isEntireLibraryWorkItem:itemCopy])
     {
-      if ([(PLBackgroundJobDuplicateDetectorWorker *)self _isInitialEntireLibraryWorkItem:v9])
+      if ([(PLBackgroundJobDuplicateDetectorWorker *)self _isInitialEntireLibraryWorkItem:itemCopy])
       {
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __81__PLBackgroundJobDuplicateDetectorWorker_performWorkOnItem_inLibrary_completion___block_invoke;
         v18[3] = &unk_1E7578848;
         v18[4] = self;
-        v19 = v10;
+        v19 = libraryCopy;
         [v19 performTransactionAndWait:v18];
-        v11[2](v11, 0);
+        completionCopy[2](completionCopy, 0);
 
         goto LABEL_15;
       }
 
       if (![(PLBackgroundJobDuplicateDetectorWorker *)self _isJobCancelled])
       {
-        [(PLBackgroundJobDuplicateDetectorWorker *)self _processWorkItem:v9 inLibrary:v10 completion:v11];
+        [(PLBackgroundJobDuplicateDetectorWorker *)self _processWorkItem:itemCopy inLibrary:libraryCopy completion:completionCopy];
         goto LABEL_15;
       }
     }
@@ -1307,29 +1307,29 @@ LABEL_3:
       }
     }
 
-    v11[2](v11, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_15;
   }
 
   v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:50005 userInfo:0];
-  (v11)[2](v11, v12);
+  (completionCopy)[2](completionCopy, v12);
 
 LABEL_15:
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  libraryCopy = library;
+  criteriasCopy = criterias;
+  if (!libraryCopy)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobDuplicateDetectorWorker.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobDuplicateDetectorWorker.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"library"}];
   }
 
   v9 = +[PLBackgroundJobCriteria criteriaForDuplicateDetectorWorker];
-  v10 = [v8 containsObject:v9];
+  v10 = [criteriasCopy containsObject:v9];
 
   if ((v10 & 1) == 0)
   {
@@ -1337,19 +1337,19 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  v11 = [(PLBackgroundJobWorker *)self libraryBundle];
-  v12 = [v11 libraryServicesManager];
+  libraryBundle = [(PLBackgroundJobWorker *)self libraryBundle];
+  libraryServicesManager = [libraryBundle libraryServicesManager];
 
-  v13 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
-  v14 = [v7 libraryServicesManager];
-  v15 = [PLDuplicateProcessor isDuplicateProcessorEnabledForLibraryServicesManager:v14];
+  initWithZeroWorkItems = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
+  libraryServicesManager2 = [libraryCopy libraryServicesManager];
+  v15 = [PLDuplicateProcessor isDuplicateProcessorEnabledForLibraryServicesManager:libraryServicesManager2];
 
   if (v15)
   {
-    v16 = [v12 duplicateProcessor];
-    v17 = [v16 isMerging];
+    duplicateProcessor = [libraryServicesManager duplicateProcessor];
+    isMerging = [duplicateProcessor isMerging];
 
-    if (v17)
+    if (isMerging)
     {
       v18 = PLDuplicateDetectionGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -1361,8 +1361,8 @@ LABEL_15:
 
     else
     {
-      v19 = [v12 libraryBundle];
-      v20 = PLIsCloudPhotoLibraryDisableInProgressForPhotoLibraryBundle(v19);
+      libraryBundle2 = [libraryServicesManager libraryBundle];
+      v20 = PLIsCloudPhotoLibraryDisableInProgressForPhotoLibraryBundle(libraryBundle2);
 
       if (v20)
       {
@@ -1376,9 +1376,9 @@ LABEL_15:
 
       else
       {
-        if (![PLDuplicateProcessor isExitingSharedLibraryForLibrary:v7])
+        if (![PLDuplicateProcessor isExitingSharedLibraryForLibrary:libraryCopy])
         {
-          [(PLBackgroundJobDuplicateDetectorWorker *)self _resetMarkerIfRequiredFromLibrary:v7];
+          [(PLBackgroundJobDuplicateDetectorWorker *)self _resetMarkerIfRequiredFromLibrary:libraryCopy];
           v46 = 0;
           v47 = &v46;
           v48 = 0x2020000000;
@@ -1394,7 +1394,7 @@ LABEL_15:
           v36[2] = __93__PLBackgroundJobDuplicateDetectorWorker_workItemsNeedingProcessingInLibrary_validCriterias___block_invoke;
           v36[3] = &unk_1E7578898;
           v36[4] = self;
-          v37 = v7;
+          v37 = libraryCopy;
           v38 = buf;
           v39 = &v46;
           [v37 performBlockAndWait:v36];
@@ -1443,7 +1443,7 @@ LABEL_15:
 
                 break;
               case 0:
-                self = v13;
+                self = initWithZeroWorkItems;
                 break;
             }
           }
@@ -1463,7 +1463,7 @@ LABEL_15:
     }
   }
 
-  self = v13;
+  self = initWithZeroWorkItems;
 LABEL_19:
 
 LABEL_20:
@@ -1571,11 +1571,11 @@ void __93__PLBackgroundJobDuplicateDetectorWorker_workItemsNeedingProcessingInLi
   }
 }
 
-- (PLBackgroundJobDuplicateDetectorWorker)initWithLibraryBundle:(id)a3
+- (PLBackgroundJobDuplicateDetectorWorker)initWithLibraryBundle:(id)bundle
 {
   v4.receiver = self;
   v4.super_class = PLBackgroundJobDuplicateDetectorWorker;
-  result = [(PLBackgroundJobWorker *)&v4 initWithLibraryBundle:a3];
+  result = [(PLBackgroundJobWorker *)&v4 initWithLibraryBundle:bundle];
   if (result)
   {
     result->_canceled_lock._os_unfair_lock_opaque = 0;

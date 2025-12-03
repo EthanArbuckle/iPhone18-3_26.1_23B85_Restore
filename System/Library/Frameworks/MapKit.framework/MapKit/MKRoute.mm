@@ -1,7 +1,7 @@
 @interface MKRoute
 - (MKDirectionsTransportType)transportType;
 - (NSArray)advisoryNotices;
-- (id)_initWithGEOComposedRoute:(id)a3;
+- (id)_initWithGEOComposedRoute:(id)route;
 @end
 
 @implementation MKRoute
@@ -14,8 +14,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(GEOComposedRoute *)self->_geoComposedRoute advisories];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  advisories = [(GEOComposedRoute *)self->_geoComposedRoute advisories];
+  v5 = [advisories countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -26,12 +26,12 @@
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(advisories);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
-        v10 = [v9 advisoryItems];
-        v11 = [v10 count];
+        advisoryItems = [v9 advisoryItems];
+        v11 = [advisoryItems count];
 
         if (v11)
         {
@@ -39,8 +39,8 @@
           v22 = 0u;
           v19 = 0u;
           v20 = 0u;
-          v12 = [v9 advisoryItems];
-          v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          advisoryItems2 = [v9 advisoryItems];
+          v13 = [advisoryItems2 countByEnumeratingWithState:&v19 objects:v27 count:16];
           if (v13)
           {
             v14 = v13;
@@ -51,14 +51,14 @@
               {
                 if (*v20 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(advisoryItems2);
                 }
 
-                v17 = [*(*(&v19 + 1) + 8 * j) subtitleString];
-                __26__MKRoute_advisoryNotices__block_invoke(v17, v3);
+                subtitleString = [*(*(&v19 + 1) + 8 * j) subtitleString];
+                __26__MKRoute_advisoryNotices__block_invoke(subtitleString, v3);
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+              v14 = [advisoryItems2 countByEnumeratingWithState:&v19 objects:v27 count:16];
             }
 
             while (v14);
@@ -67,12 +67,12 @@
 
         else
         {
-          v12 = [v9 titleString];
-          __26__MKRoute_advisoryNotices__block_invoke(v12, v3);
+          advisoryItems2 = [v9 titleString];
+          __26__MKRoute_advisoryNotices__block_invoke(advisoryItems2, v3);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v6 = [advisories countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v6);
@@ -110,35 +110,35 @@ void __26__MKRoute_advisoryNotices__block_invoke(void *a1, void *a2)
   }
 }
 
-- (id)_initWithGEOComposedRoute:(id)a3
+- (id)_initWithGEOComposedRoute:(id)route
 {
   v67 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  routeCopy = route;
   v65.receiver = self;
   v65.super_class = MKRoute;
   v6 = [(MKRoute *)&v65 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_geoComposedRoute, a3);
-    if ([v5 elevationModel] || !GEOConfigGetBOOL())
+    objc_storeStrong(&v6->_geoComposedRoute, route);
+    if ([routeCopy elevationModel] || !GEOConfigGetBOOL())
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E69A2478] modernManager];
-      v9 = [v8 activeTileGroup];
-      v10 = [v9 activeTileSetForTileType:92 scale:1];
+      modernManager = [MEMORY[0x1E69A2478] modernManager];
+      activeTileGroup = [modernManager activeTileGroup];
+      v10 = [activeTileGroup activeTileSetForTileType:92 scale:1];
       v11 = v10 != 0;
     }
 
-    v12 = [(GEOComposedRoute *)v7->_geoComposedRoute pointCount];
-    if (v12)
+    pointCount = [(GEOComposedRoute *)v7->_geoComposedRoute pointCount];
+    if (pointCount)
     {
-      v13 = v12;
-      v14 = malloc_type_malloc(16 * v12, 0x1000040451B5BE8uLL);
+      v13 = pointCount;
+      v14 = malloc_type_malloc(16 * pointCount, 0x1000040451B5BE8uLL);
       if (v14)
       {
         v15 = v14;
@@ -169,13 +169,13 @@ void __26__MKRoute_advisoryNotices__block_invoke(void *a1, void *a2)
           polyline = v7->_polyline;
           v7->_polyline = v23;
 
-          v25 = [(MKRoute *)v7 name];
-          [(MKShape *)v7->_polyline setTitle:v25];
+          name = [(MKRoute *)v7 name];
+          [(MKShape *)v7->_polyline setTitle:name];
 
-          v54 = v5;
-          -[MKRoutePolyline _setRequiresModernMap:](v7->_polyline, "_setRequiresModernMap:", [v5 transportType] != 0);
+          v54 = routeCopy;
+          -[MKRoutePolyline _setRequiresModernMap:](v7->_polyline, "_setRequiresModernMap:", [routeCopy transportType] != 0);
           v59 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[GEOComposedRoute stepsCount](v7->_geoComposedRoute, "stepsCount")}];
-          v26 = [(GEOComposedRoute *)v7->_geoComposedRoute stepsCount];
+          stepsCount = [(GEOComposedRoute *)v7->_geoComposedRoute stepsCount];
           v60 = 0u;
           v61 = 0u;
           v62 = 0u;
@@ -187,7 +187,7 @@ void __26__MKRoute_advisoryNotices__block_invoke(void *a1, void *a2)
             v27 = 0;
             v58 = *v61;
             v28 = 1;
-            v56 = v26;
+            v56 = stepsCount;
             while (2)
             {
               v29 = 0;
@@ -209,7 +209,7 @@ void __26__MKRoute_advisoryNotices__block_invoke(void *a1, void *a2)
 LABEL_36:
 
                   v50 = 0;
-                  v5 = v54;
+                  routeCopy = v54;
                   goto LABEL_33;
                 }
 
@@ -219,12 +219,12 @@ LABEL_36:
                 v37 = [v35 stringWithFormat:v36, v28, v56];
                 [v34 setTitle:v37];
 
-                v38 = [v31 geoStep];
-                v39 = [v38 instructionSet];
-                v40 = [v39 genericInstruction];
-                v41 = [v40 maneuver];
+                geoStep = [v31 geoStep];
+                instructionSet = [geoStep instructionSet];
+                genericInstruction = [instructionSet genericInstruction];
+                maneuver = [genericInstruction maneuver];
 
-                [v34 setSubtitle:v41];
+                [v34 setSubtitle:maneuver];
                 if ([(GEOComposedRoute *)v7->_geoComposedRoute transportType]== 2)
                 {
                   v42 = 2;
@@ -235,13 +235,13 @@ LABEL_36:
                   v42 = 1;
                 }
 
-                v43 = [v31 geoStep];
-                v44 = [v43 hasOverrideTransportType];
+                geoStep2 = [v31 geoStep];
+                hasOverrideTransportType = [geoStep2 hasOverrideTransportType];
 
-                if (v44)
+                if (hasOverrideTransportType)
                 {
-                  v45 = [v31 geoStep];
-                  if ([v45 overrideTransportType] == 2)
+                  geoStep3 = [v31 geoStep];
+                  if ([geoStep3 overrideTransportType] == 2)
                   {
                     v42 = 2;
                   }
@@ -252,7 +252,7 @@ LABEL_36:
                   }
                 }
 
-                v46 = [[MKRouteStep alloc] _initWithGEOComposedRouteStep:v31 instructions:v41 transportType:v42 polyline:v34];
+                v46 = [[MKRouteStep alloc] _initWithGEOComposedRouteStep:v31 instructions:maneuver transportType:v42 polyline:v34];
                 if (!v46)
                 {
                   v52 = v53;
@@ -287,7 +287,7 @@ LABEL_36:
           [(GEOComposedRoute *)v7->_geoComposedRoute clearPoints];
           v53[2](v53);
 
-          v5 = v54;
+          routeCopy = v54;
           goto LABEL_30;
         }
 

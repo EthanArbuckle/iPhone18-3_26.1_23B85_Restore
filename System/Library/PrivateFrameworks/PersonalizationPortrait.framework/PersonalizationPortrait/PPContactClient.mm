@@ -1,16 +1,16 @@
 @interface PPContactClient
 + (id)sharedInstance;
-- (BOOL)contactHandlesForSource:(id)a3 error:(id *)a4 handleBatch:(id)a5;
-- (BOOL)contactHandlesForTopics:(id)a3 error:(id *)a4 handleBatch:(id)a5;
-- (BOOL)contactNameRecordChangesForClient:(id)a3 error:(id *)a4 handleBatch:(id)a5;
-- (BOOL)contactNameRecordsForClient:(id)a3 error:(id *)a4 handleBatch:(id)a5;
-- (BOOL)rankedContactsWithQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5;
-- (BOOL)upcomingRelevantContactsForQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5;
+- (BOOL)contactHandlesForSource:(id)source error:(id *)error handleBatch:(id)batch;
+- (BOOL)contactHandlesForTopics:(id)topics error:(id *)error handleBatch:(id)batch;
+- (BOOL)contactNameRecordChangesForClient:(id)client error:(id *)error handleBatch:(id)batch;
+- (BOOL)contactNameRecordsForClient:(id)client error:(id *)error handleBatch:(id)batch;
+- (BOOL)rankedContactsWithQuery:(id)query error:(id *)error handleBatch:(id)batch;
+- (BOOL)upcomingRelevantContactsForQuery:(id)query error:(id *)error handleBatch:(id)batch;
 - (PPContactClient)init;
 - (void)_unblockPendingQueries;
-- (void)contactNameRecordChangesForClient:(id)a3 completion:(id)a4;
-- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)a3 chosenContactIdentifier:(id)a4 completion:(id)a5;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (void)contactNameRecordChangesForClient:(id)client completion:(id)completion;
+- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)identifiers chosenContactIdentifier:(id)identifier completion:(id)completion;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPContactClient
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __33__PPContactClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken12_5123 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken12_5123, block);
@@ -32,16 +32,16 @@
   return v2;
 }
 
-- (BOOL)contactNameRecordChangesForClient:(id)a3 error:(id *)a4 handleBatch:(id)a5
+- (BOOL)contactNameRecordChangesForClient:(id)client error:(id *)error handleBatch:(id)batch
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  clientCopy = client;
+  batchCopy = batch;
   v10 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v25 = v8;
+    v25 = clientCopy;
     _os_log_debug_impl(&dword_1A7FD3000, v10, OS_LOG_TYPE_DEBUG, "contactNameRecordChangesForClient:%@ called", buf, 0xCu);
   }
 
@@ -52,17 +52,17 @@
   v22[2] = __71__PPContactClient_contactNameRecordChangesForClient_error_handleBatch___block_invoke;
   v22[3] = &unk_1E77F7998;
   v22[4] = self;
-  v23 = v8;
+  v23 = clientCopy;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __71__PPContactClient_contactNameRecordChangesForClient_error_handleBatch___block_invoke_2;
   v18[3] = &unk_1E77F79C0;
-  v20 = v9;
+  v20 = batchCopy;
   v21 = v11;
   v19 = @"contactNameRecordChangesForClient";
-  v13 = v9;
-  v14 = v8;
-  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"contactNameRecordChangesForClient" error:a4 queryInitializer:v22 handleBatch:v18];
+  v13 = batchCopy;
+  v14 = clientCopy;
+  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"contactNameRecordChangesForClient" error:error queryInitializer:v22 handleBatch:v18];
 
   v16 = *MEMORY[0x1E69E9840];
   return v15;
@@ -83,35 +83,35 @@ void __71__PPContactClient_contactNameRecordChangesForClient_error_handleBatch__
   (*(a1[5] + 16))();
 }
 
-- (void)contactNameRecordChangesForClient:(id)a3 completion:(id)a4
+- (void)contactNameRecordChangesForClient:(id)client completion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  completionCopy = completion;
   v8 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = clientCopy;
     _os_log_debug_impl(&dword_1A7FD3000, v8, OS_LOG_TYPE_DEBUG, "contactNameRecordChangesForClient:%@ called", &v11, 0xCu);
   }
 
-  v9 = [(PPContactClient *)self _remoteObjectProxy];
-  [v9 contactNameRecordChangesForClient:v6 completion:v7];
+  _remoteObjectProxy = [(PPContactClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy contactNameRecordChangesForClient:clientCopy completion:completionCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)contactNameRecordsForClient:(id)a3 error:(id *)a4 handleBatch:(id)a5
+- (BOOL)contactNameRecordsForClient:(id)client error:(id *)error handleBatch:(id)batch
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  clientCopy = client;
+  batchCopy = batch;
   v10 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v25 = v8;
+    v25 = clientCopy;
     _os_log_debug_impl(&dword_1A7FD3000, v10, OS_LOG_TYPE_DEBUG, "contactNameRecordsForClient:%@ called", buf, 0xCu);
   }
 
@@ -122,17 +122,17 @@ void __71__PPContactClient_contactNameRecordChangesForClient_error_handleBatch__
   v22[2] = __65__PPContactClient_contactNameRecordsForClient_error_handleBatch___block_invoke;
   v22[3] = &unk_1E77F7998;
   v22[4] = self;
-  v23 = v8;
+  v23 = clientCopy;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __65__PPContactClient_contactNameRecordsForClient_error_handleBatch___block_invoke_2;
   v18[3] = &unk_1E77F79C0;
-  v20 = v9;
+  v20 = batchCopy;
   v21 = v11;
   v19 = @"contactNameRecordsWithError";
-  v13 = v9;
-  v14 = v8;
-  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"contactNameRecordsWithError" error:a4 queryInitializer:v22 handleBatch:v18];
+  v13 = batchCopy;
+  v14 = clientCopy;
+  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"contactNameRecordsWithError" error:error queryInitializer:v22 handleBatch:v18];
 
   v16 = *MEMORY[0x1E69E9840];
   return v15;
@@ -153,10 +153,10 @@ void __65__PPContactClient_contactNameRecordsForClient_error_handleBatch___block
   (*(a1[5] + 16))();
 }
 
-- (BOOL)upcomingRelevantContactsForQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5
+- (BOOL)upcomingRelevantContactsForQuery:(id)query error:(id *)error handleBatch:(id)batch
 {
-  v8 = a3;
-  v9 = a5;
+  queryCopy = query;
+  batchCopy = batch;
   v10 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -171,17 +171,17 @@ void __65__PPContactClient_contactNameRecordsForClient_error_handleBatch___block
   v21[2] = __70__PPContactClient_upcomingRelevantContactsForQuery_error_handleBatch___block_invoke;
   v21[3] = &unk_1E77F7998;
   v21[4] = self;
-  v22 = v8;
+  v22 = queryCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __70__PPContactClient_upcomingRelevantContactsForQuery_error_handleBatch___block_invoke_2;
   v17[3] = &unk_1E77F79C0;
-  v19 = v9;
+  v19 = batchCopy;
   v20 = v11;
   v18 = @"upcomingRelevantContactsForQuery";
-  v13 = v9;
-  v14 = v8;
-  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"upcomingRelevantContactsForQuery" error:a4 queryInitializer:v21 handleBatch:v17];
+  v13 = batchCopy;
+  v14 = queryCopy;
+  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"upcomingRelevantContactsForQuery" error:error queryInitializer:v21 handleBatch:v17];
 
   return v15;
 }
@@ -201,11 +201,11 @@ void __70__PPContactClient_upcomingRelevantContactsForQuery_error_handleBatch___
   (*(a1[5] + 16))();
 }
 
-- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)a3 chosenContactIdentifier:(id)a4 completion:(id)a5
+- (void)feedbackDisambiguationResultWithChoicesIdentifiers:(id)identifiers chosenContactIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   v11 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -213,15 +213,15 @@ void __70__PPContactClient_upcomingRelevantContactsForQuery_error_handleBatch___
     _os_log_debug_impl(&dword_1A7FD3000, v11, OS_LOG_TYPE_DEBUG, "feedbackDisambiguationResultWithContactChoices called", v13, 2u);
   }
 
-  v12 = [(PPContactClient *)self _remoteObjectProxy];
-  [v12 feedbackDisambiguationResultWithChoicesIdentifiers:v10 chosenContactIdentifier:v9 completion:v8];
+  _remoteObjectProxy = [(PPContactClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy feedbackDisambiguationResultWithChoicesIdentifiers:identifiersCopy chosenContactIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  feedbackCopy = feedback;
   v9 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -231,16 +231,16 @@ void __70__PPContactClient_upcomingRelevantContactsForQuery_error_handleBatch___
     _os_log_debug_impl(&dword_1A7FD3000, v9, OS_LOG_TYPE_DEBUG, "%@ called", &v13, 0xCu);
   }
 
-  v10 = [(PPContactClient *)self _remoteObjectProxy];
-  [v10 registerFeedback:v8 completion:v7];
+  _remoteObjectProxy = [(PPContactClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy registerFeedback:feedbackCopy completion:completionCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)contactHandlesForSource:(id)a3 error:(id *)a4 handleBatch:(id)a5
+- (BOOL)contactHandlesForSource:(id)source error:(id *)error handleBatch:(id)batch
 {
-  v8 = a3;
-  v9 = a5;
+  sourceCopy = source;
+  batchCopy = batch;
   v10 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -255,17 +255,17 @@ void __70__PPContactClient_upcomingRelevantContactsForQuery_error_handleBatch___
   v21[2] = __61__PPContactClient_contactHandlesForSource_error_handleBatch___block_invoke;
   v21[3] = &unk_1E77F7998;
   v21[4] = self;
-  v22 = v8;
+  v22 = sourceCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __61__PPContactClient_contactHandlesForSource_error_handleBatch___block_invoke_2;
   v17[3] = &unk_1E77F79C0;
-  v19 = v9;
+  v19 = batchCopy;
   v20 = v11;
   v18 = @"contactHandlesForSource";
-  v13 = v9;
-  v14 = v8;
-  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"contactHandlesForSource" error:a4 queryInitializer:v21 handleBatch:v17];
+  v13 = batchCopy;
+  v14 = sourceCopy;
+  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"contactHandlesForSource" error:error queryInitializer:v21 handleBatch:v17];
 
   return v15;
 }
@@ -285,10 +285,10 @@ void __61__PPContactClient_contactHandlesForSource_error_handleBatch___block_inv
   (*(a1[5] + 16))();
 }
 
-- (BOOL)contactHandlesForTopics:(id)a3 error:(id *)a4 handleBatch:(id)a5
+- (BOOL)contactHandlesForTopics:(id)topics error:(id *)error handleBatch:(id)batch
 {
-  v8 = a3;
-  v9 = a5;
+  topicsCopy = topics;
+  batchCopy = batch;
   v10 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -303,17 +303,17 @@ void __61__PPContactClient_contactHandlesForSource_error_handleBatch___block_inv
   v21[2] = __61__PPContactClient_contactHandlesForTopics_error_handleBatch___block_invoke;
   v21[3] = &unk_1E77F7998;
   v21[4] = self;
-  v22 = v8;
+  v22 = topicsCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __61__PPContactClient_contactHandlesForTopics_error_handleBatch___block_invoke_2;
   v17[3] = &unk_1E77F79C0;
-  v19 = v9;
+  v19 = batchCopy;
   v20 = v11;
   v18 = @"contactHandlesForTopics";
-  v13 = v9;
-  v14 = v8;
-  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"contactHandlesForTopics" error:a4 queryInitializer:v21 handleBatch:v17];
+  v13 = batchCopy;
+  v14 = topicsCopy;
+  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"contactHandlesForTopics" error:error queryInitializer:v21 handleBatch:v17];
 
   return v15;
 }
@@ -333,10 +333,10 @@ void __61__PPContactClient_contactHandlesForTopics_error_handleBatch___block_inv
   (*(a1[5] + 16))();
 }
 
-- (BOOL)rankedContactsWithQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5
+- (BOOL)rankedContactsWithQuery:(id)query error:(id *)error handleBatch:(id)batch
 {
-  v8 = a3;
-  v9 = a5;
+  queryCopy = query;
+  batchCopy = batch;
   v10 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -351,17 +351,17 @@ void __61__PPContactClient_contactHandlesForTopics_error_handleBatch___block_inv
   v21[2] = __61__PPContactClient_rankedContactsWithQuery_error_handleBatch___block_invoke;
   v21[3] = &unk_1E77F7998;
   v21[4] = self;
-  v22 = v8;
+  v22 = queryCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __61__PPContactClient_rankedContactsWithQuery_error_handleBatch___block_invoke_2;
   v17[3] = &unk_1E77F79C0;
-  v19 = v9;
+  v19 = batchCopy;
   v20 = v11;
   v18 = @"rankedContactsWithQuery";
-  v13 = v9;
-  v14 = v8;
-  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedContactsWithQuery" error:a4 queryInitializer:v21 handleBatch:v17];
+  v13 = batchCopy;
+  v14 = queryCopy;
+  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedContactsWithQuery" error:error queryInitializer:v21 handleBatch:v17];
 
   return v15;
 }

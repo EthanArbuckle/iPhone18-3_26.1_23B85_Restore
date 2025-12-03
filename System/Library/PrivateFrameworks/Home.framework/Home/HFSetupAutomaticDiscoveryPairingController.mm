@@ -1,36 +1,36 @@
 @interface HFSetupAutomaticDiscoveryPairingController
-- (HFSetupAutomaticDiscoveryPairingController)initWithContext:(id)a3;
+- (HFSetupAutomaticDiscoveryPairingController)initWithContext:(id)context;
 - (NSString)description;
 - (id)_sendCancellationRequestToHomeKit;
 - (id)cancel;
-- (void)_assertValidTransitionFromPhase:(unint64_t)a3 toPhase:(unint64_t)a4;
-- (void)_failPairingWithError:(id)a3;
-- (void)_finishPairingWithAccessories:(id)a3 completedInfo:(id)a4;
-- (void)_updateStatusTextAndNotifyDelegate:(BOOL)a3;
-- (void)addPairingObserver:(id)a3;
+- (void)_assertValidTransitionFromPhase:(unint64_t)phase toPhase:(unint64_t)toPhase;
+- (void)_failPairingWithError:(id)error;
+- (void)_finishPairingWithAccessories:(id)accessories completedInfo:(id)info;
+- (void)_updateStatusTextAndNotifyDelegate:(BOOL)delegate;
+- (void)addPairingObserver:(id)observer;
 - (void)dealloc;
-- (void)removePairingObserver:(id)a3;
-- (void)setPhase:(unint64_t)a3;
-- (void)setSetupResult:(id)a3;
-- (void)startWithHome:(id)a3;
+- (void)removePairingObserver:(id)observer;
+- (void)setPhase:(unint64_t)phase;
+- (void)setSetupResult:(id)result;
+- (void)startWithHome:(id)home;
 @end
 
 @implementation HFSetupAutomaticDiscoveryPairingController
 
-- (HFSetupAutomaticDiscoveryPairingController)initWithContext:(id)a3
+- (HFSetupAutomaticDiscoveryPairingController)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = HFSetupAutomaticDiscoveryPairingController;
   v6 = [(HFSetupAutomaticDiscoveryPairingController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v7->_phase = 0;
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     phaseStartDate = v7->_phaseStartDate;
-    v7->_phaseStartDate = v8;
+    v7->_phaseStartDate = date;
 
     v10 = objc_alloc_init(MEMORY[0x277D2C900]);
     pairingFuture = v7->_pairingFuture;
@@ -49,20 +49,20 @@
   [(HFSetupAutomaticDiscoveryPairingController *)&v3 dealloc];
 }
 
-- (void)setPhase:(unint64_t)a3
+- (void)setPhase:(unint64_t)phase
 {
   v53 = *MEMORY[0x277D85DE8];
   phase = self->_phase;
-  if (phase != a3)
+  if (phase != phase)
   {
-    [(HFSetupAutomaticDiscoveryPairingController *)self _assertValidTransitionFromPhase:self->_phase toPhase:a3];
+    [(HFSetupAutomaticDiscoveryPairingController *)self _assertValidTransitionFromPhase:self->_phase toPhase:phase];
     v6 = HFLogForCategory(0x3FuLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = [HFSetupPairingControllerUtilities descriptionForPairingPhase:phase];
-      v8 = [HFSetupPairingControllerUtilities descriptionForPairingPhase:a3];
+      v8 = [HFSetupPairingControllerUtilities descriptionForPairingPhase:phase];
       *buf = 138412802;
-      v48 = self;
+      selfCopy = self;
       v49 = 2112;
       v50 = v7;
       v51 = 2112;
@@ -70,19 +70,19 @@
       _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "%@ Transitioning phase: %@ -> %@", buf, 0x20u);
     }
 
-    self->_phase = a3;
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [(HFSetupAutomaticDiscoveryPairingController *)self setPhaseStartDate:v9];
+    self->_phase = phase;
+    date = [MEMORY[0x277CBEAA8] date];
+    [(HFSetupAutomaticDiscoveryPairingController *)self setPhaseStartDate:date];
 
-    v10 = [(HFSetupAutomaticDiscoveryPairingController *)self accessoryNotFoundSoftTimeoutTimer];
-    [v10 invalidate];
+    accessoryNotFoundSoftTimeoutTimer = [(HFSetupAutomaticDiscoveryPairingController *)self accessoryNotFoundSoftTimeoutTimer];
+    [accessoryNotFoundSoftTimeoutTimer invalidate];
 
     [(HFSetupAutomaticDiscoveryPairingController *)self setAccessoryNotFoundSoftTimeoutTimer:0];
-    v11 = [(HFSetupAutomaticDiscoveryPairingController *)self accessoryNotFoundFatalTimeoutTimer];
-    [v11 invalidate];
+    accessoryNotFoundFatalTimeoutTimer = [(HFSetupAutomaticDiscoveryPairingController *)self accessoryNotFoundFatalTimeoutTimer];
+    [accessoryNotFoundFatalTimeoutTimer invalidate];
 
     [(HFSetupAutomaticDiscoveryPairingController *)self setAccessoryNotFoundFatalTimeoutTimer:0];
-    if (a3 == 2)
+    if (phase == 2)
     {
       objc_initWeak(buf, self);
       v12 = MEMORY[0x277CBEBB8];
@@ -113,21 +113,21 @@
     }
   }
 
-  v20 = [(HFSetupAutomaticDiscoveryPairingController *)self statusTitle];
-  v37 = [(HFSetupAutomaticDiscoveryPairingController *)self statusDescription];
+  statusTitle = [(HFSetupAutomaticDiscoveryPairingController *)self statusTitle];
+  statusDescription = [(HFSetupAutomaticDiscoveryPairingController *)self statusDescription];
   [(HFSetupAutomaticDiscoveryPairingController *)self _updateStatusTextAndNotifyDelegate:0];
-  v21 = [(HFSetupAutomaticDiscoveryPairingController *)self statusTitle];
-  v22 = v20;
+  statusTitle2 = [(HFSetupAutomaticDiscoveryPairingController *)self statusTitle];
+  v22 = statusTitle;
   v36 = v22;
-  if (v21 == v22)
+  if (statusTitle2 == v22)
   {
 
     goto LABEL_11;
   }
 
-  if (v21)
+  if (statusTitle2)
   {
-    v23 = [v21 isEqual:v22];
+    v23 = [statusTitle2 isEqual:v22];
 
     if (!v23)
     {
@@ -135,16 +135,16 @@
     }
 
 LABEL_11:
-    v24 = [(HFSetupAutomaticDiscoveryPairingController *)self statusDescription];
-    v25 = v37;
-    if (v24 == v25)
+    statusDescription2 = [(HFSetupAutomaticDiscoveryPairingController *)self statusDescription];
+    v25 = statusDescription;
+    if (statusDescription2 == v25)
     {
       v26 = 0;
     }
 
-    else if (v24)
+    else if (statusDescription2)
     {
-      v26 = [v24 isEqual:v25] ^ 1;
+      v26 = [statusDescription2 isEqual:v25] ^ 1;
     }
 
     else
@@ -152,7 +152,7 @@ LABEL_11:
       v26 = 1;
     }
 
-    if (((phase != a3) | v26) != 1)
+    if (((phase != phase) | v26) != 1)
     {
       goto LABEL_29;
     }
@@ -166,8 +166,8 @@ LABEL_19:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v27 = [(HFSetupAutomaticDiscoveryPairingController *)self pairingObservers];
-  v28 = [v27 countByEnumeratingWithState:&v38 objects:v46 count:16];
+  pairingObservers = [(HFSetupAutomaticDiscoveryPairingController *)self pairingObservers];
+  v28 = [pairingObservers countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v28)
   {
     v29 = *v39;
@@ -177,20 +177,20 @@ LABEL_19:
       {
         if (*v39 != v29)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(pairingObservers);
         }
 
         v31 = *(*(&v38 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
           v32 = self->_phase;
-          v33 = [(HFSetupAutomaticDiscoveryPairingController *)self statusTitle];
-          v34 = [(HFSetupAutomaticDiscoveryPairingController *)self statusDescription];
-          [v31 pairingController:self didTransitionToPhase:v32 statusTitle:v33 statusDescription:v34];
+          statusTitle3 = [(HFSetupAutomaticDiscoveryPairingController *)self statusTitle];
+          statusDescription3 = [(HFSetupAutomaticDiscoveryPairingController *)self statusDescription];
+          [v31 pairingController:self didTransitionToPhase:v32 statusTitle:statusTitle3 statusDescription:statusDescription3];
         }
       }
 
-      v28 = [v27 countByEnumeratingWithState:&v38 objects:v46 count:16];
+      v28 = [pairingObservers countByEnumeratingWithState:&v38 objects:v46 count:16];
     }
 
     while (v28);
@@ -261,68 +261,68 @@ void __55__HFSetupAutomaticDiscoveryPairingController_setPhase___block_invoke_7(
   }
 }
 
-- (void)setSetupResult:(id)a3
+- (void)setSetupResult:(id)result
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  resultCopy = result;
   v6 = HFLogForCategory(0x3FuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v5;
+    v21 = resultCopy;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Received setup result: %@", buf, 0xCu);
   }
 
   if ([(HFSetupAutomaticDiscoveryPairingController *)self phase])
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v18 = [HFSetupPairingControllerUtilities descriptionForPairingPhase:[(HFSetupAutomaticDiscoveryPairingController *)self phase]];
-    [v17 handleFailureInMethod:a2 object:self file:@"HFSetupAutomaticDiscoveryPairingController.m" lineNumber:128 description:{@"HFSetupAutomaticDiscoveryPairingController can't handle changing the setup result (payload) after pairing has already started. Set the setup result before calling -startWithHome:, and create a new pairing controller if you need to change it later. Current phase = %@", v18}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFSetupAutomaticDiscoveryPairingController.m" lineNumber:128 description:{@"HFSetupAutomaticDiscoveryPairingController can't handle changing the setup result (payload) after pairing has already started. Set the setup result before calling -startWithHome:, and create a new pairing controller if you need to change it later. Current phase = %@", v18}];
   }
 
-  if (![(HFSetupAccessoryResult *)v5 isValidForPairing])
+  if (![(HFSetupAccessoryResult *)resultCopy isValidForPairing])
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"HFSetupAutomaticDiscoveryPairingController.m" lineNumber:130 description:{@"HFSetupAutomaticDiscoveryPairingController only works with setup results (payloads) containing a setup ID or an error, not old ones that only have a setup code."}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFSetupAutomaticDiscoveryPairingController.m" lineNumber:130 description:{@"HFSetupAutomaticDiscoveryPairingController only works with setup results (payloads) containing a setup ID or an error, not old ones that only have a setup code."}];
   }
 
   setupResult = self->_setupResult;
-  self->_setupResult = v5;
-  v8 = v5;
+  self->_setupResult = resultCopy;
+  v8 = resultCopy;
 
   v9 = [HFDiscoveredAccessory alloc];
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [(HFSetupAccessoryResult *)v8 setupPayload];
-  v12 = [v11 accessoryName];
-  v13 = [(HFSetupAccessoryResult *)v8 setupPayload];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  setupPayload = [(HFSetupAccessoryResult *)v8 setupPayload];
+  accessoryName = [setupPayload accessoryName];
+  setupPayload2 = [(HFSetupAccessoryResult *)v8 setupPayload];
 
-  v14 = [v13 category];
-  v15 = [(HFDiscoveredAccessory *)v9 initWithAccessoryUUID:v10 accessoryName:v12 accessoryCategory:v14];
+  category = [setupPayload2 category];
+  v15 = [(HFDiscoveredAccessory *)v9 initWithAccessoryUUID:uUID accessoryName:accessoryName accessoryCategory:category];
   [(HFSetupAutomaticDiscoveryPairingController *)self setDiscoveredAccessoryToPair:v15];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPairingObserver:(id)a3
+- (void)addPairingObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFSetupAutomaticDiscoveryPairingController *)self pairingObservers];
+  observerCopy = observer;
+  pairingObservers = [(HFSetupAutomaticDiscoveryPairingController *)self pairingObservers];
 
-  if (!v5)
+  if (!pairingObservers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(HFSetupAutomaticDiscoveryPairingController *)self setPairingObservers:v6];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(HFSetupAutomaticDiscoveryPairingController *)self setPairingObservers:weakObjectsHashTable];
   }
 
-  v7 = [(HFSetupAutomaticDiscoveryPairingController *)self pairingObservers];
-  [v7 addObject:v4];
+  pairingObservers2 = [(HFSetupAutomaticDiscoveryPairingController *)self pairingObservers];
+  [pairingObservers2 addObject:observerCopy];
 }
 
-- (void)removePairingObserver:(id)a3
+- (void)removePairingObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFSetupAutomaticDiscoveryPairingController *)self pairingObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  pairingObservers = [(HFSetupAutomaticDiscoveryPairingController *)self pairingObservers];
+  [pairingObservers removeObject:observerCopy];
 }
 
 - (NSString)description
@@ -331,74 +331,74 @@ void __55__HFSetupAutomaticDiscoveryPairingController_setPhase___block_invoke_7(
   v4 = [HFSetupPairingControllerUtilities descriptionForPairingPhase:[(HFSetupAutomaticDiscoveryPairingController *)self phase]];
   v5 = [v3 appendObject:v4 withName:@"phase"];
 
-  v6 = [(HFSetupAutomaticDiscoveryPairingController *)self setupResult];
-  v7 = [v3 appendObject:v6 withName:@"setupResult"];
+  setupResult = [(HFSetupAutomaticDiscoveryPairingController *)self setupResult];
+  v7 = [v3 appendObject:setupResult withName:@"setupResult"];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (void)startWithHome:(id)a3
+- (void)startWithHome:(id)home
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  homeCopy = home;
   v6 = HFLogForCategory(0x3FuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
-    v29 = v5;
+    v29 = homeCopy;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Request to start pairing controller: %@ with home: %@", buf, 0x16u);
   }
 
-  if (!v5)
+  if (!homeCopy)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"HFSetupAutomaticDiscoveryPairingController.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFSetupAutomaticDiscoveryPairingController.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"home"}];
   }
 
-  v7 = [(HFSetupAutomaticDiscoveryPairingController *)self context];
-  v8 = [v7 setupAccessoryDescription];
+  context = [(HFSetupAutomaticDiscoveryPairingController *)self context];
+  setupAccessoryDescription = [context setupAccessoryDescription];
 
-  if (!v8)
+  if (!setupAccessoryDescription)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"HFSetupAutomaticDiscoveryPairingController.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"self.context.setupAccessoryDescription"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFSetupAutomaticDiscoveryPairingController.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"self.context.setupAccessoryDescription"}];
   }
 
-  [(HFSetupAutomaticDiscoveryPairingController *)self setHome:v5];
-  v9 = [(HFSetupAutomaticDiscoveryPairingController *)self setupResult];
-  v10 = [v9 error];
+  [(HFSetupAutomaticDiscoveryPairingController *)self setHome:homeCopy];
+  setupResult = [(HFSetupAutomaticDiscoveryPairingController *)self setupResult];
+  error = [setupResult error];
 
-  if (v10)
+  if (error)
   {
     [(HFSetupAutomaticDiscoveryPairingController *)self setPhase:9];
   }
 
   else
   {
-    v11 = [(HFSetupAutomaticDiscoveryPairingController *)self context];
-    v12 = [v11 setupAccessoryDescription];
-    v13 = [(HFSetupAutomaticDiscoveryPairingController *)self setupResult];
-    v14 = [v13 setupPayload];
-    [v12 updateWithSetupAccessoryPayload:v14];
+    context2 = [(HFSetupAutomaticDiscoveryPairingController *)self context];
+    setupAccessoryDescription2 = [context2 setupAccessoryDescription];
+    setupResult2 = [(HFSetupAutomaticDiscoveryPairingController *)self setupResult];
+    setupPayload = [setupResult2 setupPayload];
+    [setupAccessoryDescription2 updateWithSetupAccessoryPayload:setupPayload];
 
     [(HFSetupAutomaticDiscoveryPairingController *)self setPhase:2];
     v15 = HFLogForCategory(0x3FuLL);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(HFSetupAutomaticDiscoveryPairingController *)self context];
-      v17 = [v16 setupAccessoryDescription];
+      context3 = [(HFSetupAutomaticDiscoveryPairingController *)self context];
+      setupAccessoryDescription3 = [context3 setupAccessoryDescription];
       *buf = 138412290;
-      v27 = v17;
+      selfCopy = setupAccessoryDescription3;
       _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "HFSetupAutomaticDiscoveryPairingController startPairing with description: %@", buf, 0xCu);
     }
 
-    v18 = [(HFSetupAutomaticDiscoveryPairingController *)self home];
-    v19 = [(HFSetupAutomaticDiscoveryPairingController *)self context];
-    v20 = [v19 setupAccessoryDescription];
+    home = [(HFSetupAutomaticDiscoveryPairingController *)self home];
+    context4 = [(HFSetupAutomaticDiscoveryPairingController *)self context];
+    setupAccessoryDescription4 = [context4 setupAccessoryDescription];
     v24[4] = self;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -409,7 +409,7 @@ void __55__HFSetupAutomaticDiscoveryPairingController_setPhase___block_invoke_7(
     v24[1] = 3221225472;
     v24[2] = __60__HFSetupAutomaticDiscoveryPairingController_startWithHome___block_invoke_45;
     v24[3] = &unk_277DF9C18;
-    [v18 startPairingWithAccessoryDescription:v20 progress:v25 completion:v24];
+    [home startPairingWithAccessoryDescription:setupAccessoryDescription4 progress:v25 completion:v24];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -573,31 +573,31 @@ LABEL_13:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Cancel requested for pairing controller: %@, but we're already in an idle state, so ignoring", &v12, 0xCu);
     }
 
-    v4 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCA9B8] na_cancelledError];
-    v6 = [(HFSetupAutomaticDiscoveryPairingController *)self discoveredAccessoryToPair];
-    [v6 updateStatus:3 error:v5];
+    na_cancelledError = [MEMORY[0x277CCA9B8] na_cancelledError];
+    discoveredAccessoryToPair = [(HFSetupAutomaticDiscoveryPairingController *)self discoveredAccessoryToPair];
+    [discoveredAccessoryToPair updateStatus:3 error:na_cancelledError];
 
-    v7 = [MEMORY[0x277CCA9B8] hf_mappedHMError:v5];
-    v8 = [(HFSetupAutomaticDiscoveryPairingController *)self context];
-    v9 = [v8 setupAccessoryDescription];
-    [v9 setCancellationReason:v7];
+    v7 = [MEMORY[0x277CCA9B8] hf_mappedHMError:na_cancelledError];
+    context = [(HFSetupAutomaticDiscoveryPairingController *)self context];
+    setupAccessoryDescription = [context setupAccessoryDescription];
+    [setupAccessoryDescription setCancellationReason:v7];
 
-    v4 = [(HFSetupAutomaticDiscoveryPairingController *)self _sendCancellationRequestToHomeKit];
+    futureWithNoResult = [(HFSetupAutomaticDiscoveryPairingController *)self _sendCancellationRequestToHomeKit];
     [(HFSetupAutomaticDiscoveryPairingController *)self setPhase:9];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return futureWithNoResult;
 }
 
 - (id)_sendCancellationRequestToHomeKit
@@ -607,7 +607,7 @@ LABEL_13:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Cancel requested for pairing controller: %@", buf, 0xCu);
   }
 
@@ -630,12 +630,12 @@ LABEL_13:
   v14[4] = self;
   v6 = [v4 addSuccessBlock:v14];
   v7 = MEMORY[0x277D2C900];
-  v8 = [(HFSetupAutomaticDiscoveryPairingController *)self pairingFuture];
-  v17[0] = v8;
+  pairingFuture = [(HFSetupAutomaticDiscoveryPairingController *)self pairingFuture];
+  v17[0] = pairingFuture;
   v17[1] = v4;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-  v10 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v11 = [v7 combineAllFutures:v9 ignoringErrors:1 scheduler:v10];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v11 = [v7 combineAllFutures:v9 ignoringErrors:1 scheduler:mainThreadScheduler];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -691,73 +691,73 @@ void __79__HFSetupAutomaticDiscoveryPairingController__sendCancellationRequestTo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_failPairingWithError:(id)a3
+- (void)_failPairingWithError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if ([(HFSetupAutomaticDiscoveryPairingController *)self phase]!= 9)
   {
     v5 = HFLogForCategory(0x3FuLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412546;
-      v10 = v4;
+      v10 = errorCopy;
       v11 = 2112;
-      v12 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_ERROR, "Failed pairing with error: %@ (%@)", &v9, 0x16u);
     }
 
-    v6 = [(HFSetupAutomaticDiscoveryPairingController *)self discoveredAccessoryToPair];
-    [v6 updateStatus:3 error:v4];
+    discoveredAccessoryToPair = [(HFSetupAutomaticDiscoveryPairingController *)self discoveredAccessoryToPair];
+    [discoveredAccessoryToPair updateStatus:3 error:errorCopy];
 
     [(HFSetupAutomaticDiscoveryPairingController *)self setPhase:9];
-    v7 = [(HFSetupAutomaticDiscoveryPairingController *)self pairingFuture];
-    [v7 finishWithError:v4];
+    pairingFuture = [(HFSetupAutomaticDiscoveryPairingController *)self pairingFuture];
+    [pairingFuture finishWithError:errorCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishPairingWithAccessories:(id)a3 completedInfo:(id)a4
+- (void)_finishPairingWithAccessories:(id)accessories completedInfo:(id)info
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accessoriesCopy = accessories;
+  infoCopy = info;
   v8 = HFLogForCategory(0x3FuLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 hf_prettyDescription];
+    hf_prettyDescription = [accessoriesCopy hf_prettyDescription];
     v12 = 138412802;
-    v13 = v9;
+    v13 = hf_prettyDescription;
     v14 = 2112;
-    v15 = v7;
+    v15 = infoCopy;
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Finished pairing with accessories: %@ & info: %@ (%@)", &v12, 0x20u);
   }
 
-  v10 = [(HFSetupAutomaticDiscoveryPairingController *)self discoveredAccessoryToPair];
-  [v10 updateStatus:2 error:0];
+  discoveredAccessoryToPair = [(HFSetupAutomaticDiscoveryPairingController *)self discoveredAccessoryToPair];
+  [discoveredAccessoryToPair updateStatus:2 error:0];
 
-  [(HFSetupAutomaticDiscoveryPairingController *)self setPairedAccessories:v6];
-  [(HFSetupAutomaticDiscoveryPairingController *)self setCompletedInfo:v7];
+  [(HFSetupAutomaticDiscoveryPairingController *)self setPairedAccessories:accessoriesCopy];
+  [(HFSetupAutomaticDiscoveryPairingController *)self setCompletedInfo:infoCopy];
   [(HFSetupAutomaticDiscoveryPairingController *)self setPhase:10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateStatusTextAndNotifyDelegate:(BOOL)a3
+- (void)_updateStatusTextAndNotifyDelegate:(BOOL)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v36 = *MEMORY[0x277D85DE8];
   v29 = 0;
   v30 = 0;
-  v5 = [(HFSetupAutomaticDiscoveryPairingController *)self phase];
-  v6 = [(HFSetupAutomaticDiscoveryPairingController *)self phaseStartDate];
-  v7 = [(HFSetupAutomaticDiscoveryPairingController *)self discoveredAccessoryToPair];
-  v8 = [(HFSetupAutomaticDiscoveryPairingController *)self setupResult];
-  v9 = [(HFSetupAutomaticDiscoveryPairingController *)self context];
-  [HFSetupPairingControllerUtilities getStatusTitle:&v30 statusDescription:&v29 forPairingPhase:v5 phaseStartDate:v6 discoveredAccessory:v7 setupResult:v8 context:v9 setupError:0];
+  phase = [(HFSetupAutomaticDiscoveryPairingController *)self phase];
+  phaseStartDate = [(HFSetupAutomaticDiscoveryPairingController *)self phaseStartDate];
+  discoveredAccessoryToPair = [(HFSetupAutomaticDiscoveryPairingController *)self discoveredAccessoryToPair];
+  setupResult = [(HFSetupAutomaticDiscoveryPairingController *)self setupResult];
+  context = [(HFSetupAutomaticDiscoveryPairingController *)self context];
+  [HFSetupPairingControllerUtilities getStatusTitle:&v30 statusDescription:&v29 forPairingPhase:phase phaseStartDate:phaseStartDate discoveredAccessory:discoveredAccessoryToPair setupResult:setupResult context:context setupError:0];
   v10 = v30;
   v11 = v29;
 
@@ -773,7 +773,7 @@ void __79__HFSetupAutomaticDiscoveryPairingController__sendCancellationRequestTo
     _os_log_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_DEFAULT, "Updating status title: %@ description: %@", buf, 0x16u);
   }
 
-  if (v3)
+  if (delegateCopy)
   {
     v23 = v11;
     v24 = v10;
@@ -781,8 +781,8 @@ void __79__HFSetupAutomaticDiscoveryPairingController__sendCancellationRequestTo
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v13 = [(HFSetupAutomaticDiscoveryPairingController *)self pairingObservers];
-    v14 = [v13 countByEnumeratingWithState:&v25 objects:v31 count:16];
+    pairingObservers = [(HFSetupAutomaticDiscoveryPairingController *)self pairingObservers];
+    v14 = [pairingObservers countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v14)
     {
       v15 = v14;
@@ -794,23 +794,23 @@ void __79__HFSetupAutomaticDiscoveryPairingController__sendCancellationRequestTo
         {
           if (*v26 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(pairingObservers);
           }
 
           v18 = *(*(&v25 + 1) + 8 * v17);
           if (objc_opt_respondsToSelector())
           {
-            v19 = [(HFSetupAutomaticDiscoveryPairingController *)self phase];
-            v20 = [(HFSetupAutomaticDiscoveryPairingController *)self statusTitle];
-            v21 = [(HFSetupAutomaticDiscoveryPairingController *)self statusDescription];
-            [v18 pairingController:self didTransitionToPhase:v19 statusTitle:v20 statusDescription:v21];
+            phase2 = [(HFSetupAutomaticDiscoveryPairingController *)self phase];
+            statusTitle = [(HFSetupAutomaticDiscoveryPairingController *)self statusTitle];
+            statusDescription = [(HFSetupAutomaticDiscoveryPairingController *)self statusDescription];
+            [v18 pairingController:self didTransitionToPhase:phase2 statusTitle:statusTitle statusDescription:statusDescription];
           }
 
           ++v17;
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v25 objects:v31 count:16];
+        v15 = [pairingObservers countByEnumeratingWithState:&v25 objects:v31 count:16];
       }
 
       while (v15);
@@ -823,22 +823,22 @@ void __79__HFSetupAutomaticDiscoveryPairingController__sendCancellationRequestTo
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_assertValidTransitionFromPhase:(unint64_t)a3 toPhase:(unint64_t)a4
+- (void)_assertValidTransitionFromPhase:(unint64_t)phase toPhase:(unint64_t)toPhase
 {
-  if (a4 - 6 < 4)
+  if (toPhase - 6 < 4)
   {
     return;
   }
 
-  if (a3 <= 3)
+  if (phase <= 3)
   {
-    if (a3)
+    if (phase)
     {
-      if (a3 == 2)
+      if (phase == 2)
       {
-        if (a4 <= 0xA)
+        if (toPhase <= 0xA)
         {
-          v8 = 1 << a4;
+          v8 = 1 << toPhase;
           v9 = 1048;
 LABEL_15:
           if ((v8 & v9) != 0)
@@ -848,13 +848,13 @@ LABEL_15:
         }
       }
 
-      else if (a3 == 3)
+      else if (phase == 3)
       {
         return;
       }
     }
 
-    else if (a4 == 2)
+    else if (toPhase == 2)
     {
       return;
     }
@@ -862,23 +862,23 @@ LABEL_15:
 
   else
   {
-    if (a3 - 5 < 3)
+    if (phase - 5 < 3)
     {
       return;
     }
 
-    if (a3 == 4 && a4 <= 0xA)
+    if (phase == 4 && toPhase <= 0xA)
     {
-      v8 = 1 << a4;
+      v8 = 1 << toPhase;
       v9 = 1060;
       goto LABEL_15;
     }
   }
 
-  v12 = [MEMORY[0x277CCA890] currentHandler];
-  v10 = [HFSetupPairingControllerUtilities descriptionForPairingPhase:a3];
-  v11 = [HFSetupPairingControllerUtilities descriptionForPairingPhase:a4];
-  [v12 handleFailureInMethod:a2 object:self file:@"HFSetupAutomaticDiscoveryPairingController.m" lineNumber:344 description:{@"Invalid phase transition: %@ -> %@", v10, v11}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v10 = [HFSetupPairingControllerUtilities descriptionForPairingPhase:phase];
+  v11 = [HFSetupPairingControllerUtilities descriptionForPairingPhase:toPhase];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFSetupAutomaticDiscoveryPairingController.m" lineNumber:344 description:{@"Invalid phase transition: %@ -> %@", v10, v11}];
 }
 
 @end

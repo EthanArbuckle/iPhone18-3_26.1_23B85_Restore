@@ -4,7 +4,7 @@
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentHeight;
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentWidth;
 - (BOOL)_isExpanded;
-- (BOOL)shouldUseDefaultGuideForLayout:(id)a3 edge:(unint64_t)a4;
+- (BOOL)shouldUseDefaultGuideForLayout:(id)layout edge:(unint64_t)edge;
 - (TUIExpandableContentLayout)expandableChild;
 - (TUILayout)expandedContentChild;
 - (TUILayout)moreChild;
@@ -13,8 +13,8 @@
 - (id)effectiveGuideLeading;
 - (id)effectiveGuideTop;
 - (id)effectiveGuideTrailing;
-- (id)guideProviderForLayout:(id)a3;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (id)guideProviderForLayout:(id)layout;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 - (void)_examineChildrenIfNeeded;
 - (void)computeLayout;
 - (void)onChildrenUpdated;
@@ -22,46 +22,46 @@
 
 @implementation TUIExpandableLayout
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = [(TUILayout *)self box];
-  v8 = [v7 viewState];
+  viewState = [v7 viewState];
 
   v9 = 0;
-  if (a3 >= 4 && v8)
+  if (kind >= 4 && viewState)
   {
     v10 = objc_opt_new();
     v11 = [(TUILayout *)self box];
-    v12 = [v11 pointerRefId];
-    v13 = v12;
-    if (v12)
+    pointerRefId = [v11 pointerRefId];
+    v13 = pointerRefId;
+    if (pointerRefId)
     {
-      v14 = v12;
+      refId = pointerRefId;
     }
 
     else
     {
-      v15 = v8;
+      v15 = viewState;
       WeakRetained = objc_loadWeakRetained(&self->_moreChild);
       v17 = [WeakRetained box];
-      v14 = [v17 refId];
+      refId = [v17 refId];
 
-      v8 = v15;
+      viewState = v15;
     }
 
-    v36 = v14;
+    v36 = refId;
 
     v18 = [(TUILayout *)self box];
-    v19 = [v18 pointerStyle];
-    v20 = [TUIPointer pointerWithRefId:v14 style:v19];
+    pointerStyle = [v18 pointerStyle];
+    v20 = [TUIPointer pointerWithRefId:refId style:pointerStyle];
 
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_294F4;
     v40[3] = &unk_25E7C0;
     v40[4] = self;
-    v21 = v6;
+    v21 = contextCopy;
     v41 = v21;
     v42 = v10;
     v35 = v10;
@@ -70,7 +70,7 @@
     v22 = objc_alloc_init(TUIElementBehaviorArgumentsMap);
     v44 = v22;
     [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-    v34 = v37 = v6;
+    v34 = v37 = contextCopy;
 
     v23 = [[TUIElementTriggerBehaviorMap alloc] initWithMap:v34];
     v24 = [TUIElementActionTriggerHandler alloc];
@@ -78,22 +78,22 @@
     v38[1] = 3221225472;
     v38[2] = sub_295D4;
     v38[3] = &unk_25E7E8;
-    v25 = v8;
+    v25 = viewState;
     v39 = v25;
     v26 = [(TUIElementActionTriggerHandler *)v24 initWithActionsData:v23 block:v38];
     v27 = [(TUILayout *)self box];
     [v27 identifier];
-    v29 = v28 = v8;
+    v29 = v28 = viewState;
     LOWORD(v33) = 0;
     LOBYTE(v32) = 0;
     LOBYTE(v31) = 1;
     v9 = [TUIControlView renderModelWithStateToButtonAttributes:0 stateToRenderModel:v35 imageModelIDToResource:0 actionHandler:v26 viewState:v25 linkEntities:0 type:1.0 role:UIEdgeInsetsZero.top userInterfaceStyle:UIEdgeInsetsZero.left enabled:UIEdgeInsetsZero.bottom pressScale:UIEdgeInsetsZero.right touchInsets:0 identifier:0 style:0 pointer:v31 focusStyle:v29 menu:0 contextMenuIsPrimaryAction:v20 name:0 axAttributes:0 enableBackgroundForHighlightPreview:v32 enableShadowForHighlightPreview:0, 0, v33];
 
-    v8 = v28;
+    viewState = v28;
     [(TUILayout *)self renderModelSizeWithContext:v21];
     [v9 setSize:?];
 
-    v6 = v37;
+    contextCopy = v37;
   }
 
   return v9;
@@ -101,24 +101,24 @@
 
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth
 {
-  v3 = [(TUIExpandableLayout *)self expandableChild];
-  v4 = [v3 validatedIntrinsicWidthConsideringSpecified];
+  expandableChild = [(TUIExpandableLayout *)self expandableChild];
+  validatedIntrinsicWidthConsideringSpecified = [expandableChild validatedIntrinsicWidthConsideringSpecified];
 
-  return v4;
+  return validatedIntrinsicWidthConsideringSpecified;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicHeight
 {
-  v3 = [(TUIExpandableLayout *)self expandableChild];
-  v4 = [v3 validatedIntrinsicHeightConsideringSpecified];
+  expandableChild = [(TUIExpandableLayout *)self expandableChild];
+  validatedIntrinsicHeightConsideringSpecified = [expandableChild validatedIntrinsicHeightConsideringSpecified];
 
-  return v4;
+  return validatedIntrinsicHeightConsideringSpecified;
 }
 
 - (double)computedHeightAbovePivot
 {
-  v2 = [(TUIExpandableLayout *)self expandableChild];
-  [v2 computedHeightAbovePivot];
+  expandableChild = [(TUIExpandableLayout *)self expandableChild];
+  [expandableChild computedHeightAbovePivot];
   v4 = v3;
 
   return v4;
@@ -137,107 +137,107 @@
 
 - (void)computeLayout
 {
-  v3 = [(TUIExpandableLayout *)self _isExpanded];
-  v4 = [(TUIExpandableLayout *)self expandableChild];
-  v5 = v3 ^ 1;
-  v6 = (v4 != 0) & (v3 ^ 1);
+  _isExpanded = [(TUIExpandableLayout *)self _isExpanded];
+  expandableChild = [(TUIExpandableLayout *)self expandableChild];
+  v5 = _isExpanded ^ 1;
+  v6 = (expandableChild != 0) & (_isExpanded ^ 1);
 
   if (v6 == 1)
   {
-    v7 = [(TUIExpandableLayout *)self moreChild];
-    [v7 validateLayout];
+    moreChild = [(TUIExpandableLayout *)self moreChild];
+    [moreChild validateLayout];
 
-    v8 = [(TUIExpandableLayout *)self moreChild];
-    [v8 computedTransformedSize];
+    moreChild2 = [(TUIExpandableLayout *)self moreChild];
+    [moreChild2 computedTransformedSize];
     v10 = v9;
-    v11 = [(TUIExpandableLayout *)self expandableChild];
-    [v11 setExpandableMoreWidth:v10];
+    expandableChild2 = [(TUIExpandableLayout *)self expandableChild];
+    [expandableChild2 setExpandableMoreWidth:v10];
   }
 
   [(TUILayout *)self flexedWidth];
   v13 = v12;
-  v14 = [(TUIExpandableLayout *)self expandableChild];
-  [v14 setFlexedWidth:v13];
+  expandableChild3 = [(TUIExpandableLayout *)self expandableChild];
+  [expandableChild3 setFlexedWidth:v13];
 
   [(TUILayout *)self flexedHeight];
   v16 = v15;
-  v17 = [(TUIExpandableLayout *)self expandableChild];
-  [v17 setFlexedHeight:v16];
+  expandableChild4 = [(TUIExpandableLayout *)self expandableChild];
+  [expandableChild4 setFlexedHeight:v16];
 
   [(TUILayout *)self computeWidth];
   v19 = v18;
-  v20 = [(TUIExpandableLayout *)self expandableChild];
-  [v20 setContainingWidth:v19];
+  expandableChild5 = [(TUIExpandableLayout *)self expandableChild];
+  [expandableChild5 setContainingWidth:v19];
 
   [(TUILayout *)self containingHeight];
   [(TUILayout *)self containingHeight];
   v22 = v21;
-  v23 = [(TUIExpandableLayout *)self expandableChild];
-  [v23 setContainingHeight:v22];
+  expandableChild6 = [(TUIExpandableLayout *)self expandableChild];
+  [expandableChild6 setContainingHeight:v22];
 
-  v24 = [(TUIExpandableLayout *)self expandableChild];
-  [v24 validateLayout];
+  expandableChild7 = [(TUIExpandableLayout *)self expandableChild];
+  [expandableChild7 validateLayout];
 
-  v25 = [(TUIExpandableLayout *)self expandableChild];
-  [v25 computedTransformedSize];
+  expandableChild8 = [(TUIExpandableLayout *)self expandableChild];
+  [expandableChild8 computedTransformedSize];
   v27 = v26;
   v29 = v28;
 
-  v30 = [(TUIExpandableLayout *)self expandableChild];
-  v31 = [v30 expandableContentIsTruncated];
+  expandableChild9 = [(TUIExpandableLayout *)self expandableChild];
+  expandableContentIsTruncated = [expandableChild9 expandableContentIsTruncated];
 
-  v32 = v5 & v31;
-  v33 = [(TUIExpandableLayout *)self moreChild];
-  [v33 setHidden:v6 & v32 ^ 1];
+  v32 = v5 & expandableContentIsTruncated;
+  moreChild3 = [(TUIExpandableLayout *)self moreChild];
+  [moreChild3 setHidden:v6 & v32 ^ 1];
 
-  v34 = [(TUIExpandableLayout *)self expandedContentChild];
-  [v34 setHidden:v32];
+  expandedContentChild = [(TUIExpandableLayout *)self expandedContentChild];
+  [expandedContentChild setHidden:v32];
 
   if ((((v6 & v32) ^ 1) & 1) == 0)
   {
-    v35 = [(TUIExpandableLayout *)self expandableChild];
-    [v35 expandableMoreXOffset];
+    expandableChild10 = [(TUIExpandableLayout *)self expandableChild];
+    [expandableChild10 expandableMoreXOffset];
     v37 = v36;
 
-    v38 = [(TUIExpandableLayout *)self expandableChild];
-    [v38 computedOrigin];
+    expandableChild11 = [(TUIExpandableLayout *)self expandableChild];
+    [expandableChild11 computedOrigin];
     v40 = v39;
-    v41 = [(TUIExpandableLayout *)self expandableChild];
-    [v41 computedHeightAbovePivot];
+    expandableChild12 = [(TUIExpandableLayout *)self expandableChild];
+    [expandableChild12 computedHeightAbovePivot];
     v43 = v40 + v42;
-    v44 = [(TUIExpandableLayout *)self moreChild];
-    [v44 computedHeightAbovePivot];
+    moreChild4 = [(TUIExpandableLayout *)self moreChild];
+    [moreChild4 computedHeightAbovePivot];
     v46 = v43 - v45;
 
-    v47 = [(TUIExpandableLayout *)self moreChild];
-    [(TUIVStack *)v47 setComputedOrigin:v37, v46];
+    moreChild5 = [(TUIExpandableLayout *)self moreChild];
+    [(TUIVStack *)moreChild5 setComputedOrigin:v37, v46];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v48 = [(TUIExpandableLayout *)self expandedContentChild];
-  if (v48)
+  expandedContentChild2 = [(TUIExpandableLayout *)self expandedContentChild];
+  if (expandedContentChild2)
   {
-    v49 = v48;
-    v50 = [(TUIExpandableLayout *)self expandedContentChild];
-    v51 = [v50 hidden];
+    v49 = expandedContentChild2;
+    expandedContentChild3 = [(TUIExpandableLayout *)self expandedContentChild];
+    hidden = [expandedContentChild3 hidden];
 
-    if ((v51 & 1) == 0)
+    if ((hidden & 1) == 0)
     {
       v52 = [TUIVStack alloc];
-      v53 = [(TUIExpandableLayout *)self expandableChild];
-      v58[0] = v53;
-      v54 = [(TUIExpandableLayout *)self expandedContentChild];
-      v58[1] = v54;
+      expandableChild13 = [(TUIExpandableLayout *)self expandableChild];
+      v58[0] = expandableChild13;
+      expandedContentChild4 = [(TUIExpandableLayout *)self expandedContentChild];
+      v58[1] = expandedContentChild4;
       v55 = [NSArray arrayWithObjects:v58 count:2];
-      v47 = [(TUIVStack *)v52 initWithLayout:self children:v55];
+      moreChild5 = [(TUIVStack *)v52 initWithLayout:self children:v55];
 
       [(TUILayout *)self flexedHeight];
-      [(TUIVStack *)v47 setFlexedHeight:?];
-      [(TUIVStack *)v47 setWidth:v19];
-      [(TUIVStack *)v47 computeLayoutWithOffset:CGPointZero.x, CGPointZero.y];
-      [(TUIVStack *)v47 computedSize];
+      [(TUIVStack *)moreChild5 setFlexedHeight:?];
+      [(TUIVStack *)moreChild5 setWidth:v19];
+      [(TUIVStack *)moreChild5 computeLayoutWithOffset:CGPointZero.x, CGPointZero.y];
+      [(TUIVStack *)moreChild5 computedSize];
       v27 = v56;
       v29 = v57;
       goto LABEL_8;
@@ -250,36 +250,36 @@ LABEL_9:
 
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentWidth
 {
-  v3 = [(TUIExpandableLayout *)self expandableChild];
-  v4 = [v3 computedContentWidth];
+  expandableChild = [(TUIExpandableLayout *)self expandableChild];
+  computedContentWidth = [expandableChild computedContentWidth];
 
-  return v4;
+  return computedContentWidth;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentHeight
 {
-  v3 = [(TUIExpandableLayout *)self expandableChild];
-  v4 = [v3 computedContentHeight];
+  expandableChild = [(TUIExpandableLayout *)self expandableChild];
+  computedContentHeight = [expandableChild computedContentHeight];
 
-  return v4;
+  return computedContentHeight;
 }
 
-- (id)guideProviderForLayout:(id)a3
+- (id)guideProviderForLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(TUILayout *)self layoutAncestor];
-  v6 = [v5 guideProviderForLayout:v4];
+  layoutCopy = layout;
+  layoutAncestor = [(TUILayout *)self layoutAncestor];
+  v6 = [layoutAncestor guideProviderForLayout:layoutCopy];
 
   return v6;
 }
 
-- (BOOL)shouldUseDefaultGuideForLayout:(id)a3 edge:(unint64_t)a4
+- (BOOL)shouldUseDefaultGuideForLayout:(id)layout edge:(unint64_t)edge
 {
-  v6 = a3;
-  v7 = [v6 layoutAncestor];
-  if (v7 == self)
+  layoutCopy = layout;
+  layoutAncestor = [layoutCopy layoutAncestor];
+  if (layoutAncestor == self)
   {
-    v9 = [v6 box];
+    v9 = [layoutCopy box];
     if ([v9 role])
     {
       v8 = 0;
@@ -287,8 +287,8 @@ LABEL_9:
 
     else
     {
-      v10 = [(TUILayout *)self layoutAncestor];
-      v8 = [v10 shouldUseDefaultGuideForLayout:self edge:a4];
+      layoutAncestor2 = [(TUILayout *)self layoutAncestor];
+      v8 = [layoutAncestor2 shouldUseDefaultGuideForLayout:self edge:edge];
     }
   }
 
@@ -302,34 +302,34 @@ LABEL_9:
 
 - (id)effectiveGuideTop
 {
-  v2 = [(TUIExpandableLayout *)self expandableChild];
-  v3 = [v2 effectiveGuideTop];
+  expandableChild = [(TUIExpandableLayout *)self expandableChild];
+  effectiveGuideTop = [expandableChild effectiveGuideTop];
 
-  return v3;
+  return effectiveGuideTop;
 }
 
 - (id)effectiveGuideBottom
 {
-  v2 = [(TUIExpandableLayout *)self expandableChild];
-  v3 = [v2 effectiveGuideBottom];
+  expandableChild = [(TUIExpandableLayout *)self expandableChild];
+  effectiveGuideBottom = [expandableChild effectiveGuideBottom];
 
-  return v3;
+  return effectiveGuideBottom;
 }
 
 - (id)effectiveGuideLeading
 {
-  v2 = [(TUIExpandableLayout *)self expandableChild];
-  v3 = [v2 effectiveGuideLeading];
+  expandableChild = [(TUIExpandableLayout *)self expandableChild];
+  effectiveGuideLeading = [expandableChild effectiveGuideLeading];
 
-  return v3;
+  return effectiveGuideLeading;
 }
 
 - (id)effectiveGuideTrailing
 {
-  v2 = [(TUIExpandableLayout *)self expandableChild];
-  v3 = [v2 effectiveGuideTrailing];
+  expandableChild = [(TUIExpandableLayout *)self expandableChild];
+  effectiveGuideTrailing = [expandableChild effectiveGuideTrailing];
 
-  return v3;
+  return effectiveGuideTrailing;
 }
 
 - (TUIExpandableContentLayout)expandableChild
@@ -356,8 +356,8 @@ LABEL_9:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v3 = [(TUILayout *)self children];
-    v4 = [v3 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    children = [(TUILayout *)self children];
+    v4 = [children countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (!v4)
     {
       goto LABEL_28;
@@ -371,19 +371,19 @@ LABEL_9:
       {
         if (*v31 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(children);
         }
 
         v8 = *(*(&v30 + 1) + 8 * i);
         v9 = [v8 box];
-        v10 = [v9 role];
+        role = [v9 role];
 
-        if (v10)
+        if (role)
         {
           v11 = [v8 box];
-          v12 = [v11 role];
+          role2 = [v11 role];
 
-          if (v12 == &dword_0 + 2)
+          if (role2 == &dword_0 + 2)
           {
             v13 = 120;
             WeakRetained = objc_loadWeakRetained(&self->_expandedContentChild);
@@ -403,9 +403,9 @@ LABEL_9:
           else
           {
             v27 = [v8 box];
-            v28 = [v27 role];
+            role3 = [v27 role];
 
-            if (v28 != &dword_4 + 1)
+            if (role3 != &dword_4 + 1)
             {
               continue;
             }
@@ -455,7 +455,7 @@ LABEL_24:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v5 = [children countByEnumeratingWithState:&v30 objects:v38 count:16];
       if (!v5)
       {
 LABEL_28:
@@ -470,11 +470,11 @@ LABEL_28:
 - (BOOL)_isExpanded
 {
   v2 = [(TUILayout *)self box];
-  v3 = [v2 viewState];
-  v4 = [v3 value];
-  v5 = [v4 BOOLValue];
+  viewState = [v2 viewState];
+  value = [viewState value];
+  bOOLValue = [value BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (TUILayout)expandedContentChild

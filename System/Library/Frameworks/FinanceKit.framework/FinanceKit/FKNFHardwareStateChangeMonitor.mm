@@ -8,7 +8,7 @@
 - (void)hardwareStateDidChange
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC10FinanceKit30FKNFHardwareStateChangeMonitor_implementation);
-  v4 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 28));
   if (*(v2 + 24) < 0)
   {

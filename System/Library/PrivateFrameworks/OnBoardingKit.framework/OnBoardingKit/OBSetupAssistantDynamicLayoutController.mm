@@ -1,5 +1,5 @@
 @interface OBSetupAssistantDynamicLayoutController
-- (OBSetupAssistantDynamicLayoutController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
+- (OBSetupAssistantDynamicLayoutController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
 - (id)_invokeConstraintForLayoutFactoryBlock;
 - (id)buttonTray;
 - (id)contentView;
@@ -7,32 +7,32 @@
 - (int64_t)contentViewLayout;
 - (void)_relayoutContentSubviewIfNeeded;
 - (void)_updateScrollUnderLayout;
-- (void)addChildViewController:(id)a3;
-- (void)addContentSubView:(id)a3 heightConstraintForLayout:(id)a4;
-- (void)resetLayoutTo:(int64_t)a3;
-- (void)setBackingController:(id)a3;
+- (void)addChildViewController:(id)controller;
+- (void)addContentSubView:(id)view heightConstraintForLayout:(id)layout;
+- (void)resetLayoutTo:(int64_t)to;
+- (void)setBackingController:(id)controller;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation OBSetupAssistantDynamicLayoutController
 
-- (OBSetupAssistantDynamicLayoutController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (OBSetupAssistantDynamicLayoutController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  titleCopy = title;
+  textCopy = text;
+  iconCopy = icon;
   v20.receiver = self;
   v20.super_class = OBSetupAssistantDynamicLayoutController;
   v14 = [(OBSetupAssistantDynamicLayoutController *)&v20 initWithNibName:0 bundle:0];
   if (v14)
   {
-    v15 = [[OBWelcomeController alloc] initWithTitle:v11 detailText:v12 icon:v13 contentLayout:a6];
+    v15 = [[OBWelcomeController alloc] initWithTitle:titleCopy detailText:textCopy icon:iconCopy contentLayout:layout];
     [(OBSetupAssistantDynamicLayoutController *)v14 setBackingController:v15];
 
-    objc_storeStrong(&v14->_localImage, a5);
-    objc_storeStrong(&v14->_localTitle, a3);
-    objc_storeStrong(&v14->_localDetailText, a4);
+    objc_storeStrong(&v14->_localImage, icon);
+    objc_storeStrong(&v14->_localTitle, title);
+    objc_storeStrong(&v14->_localDetailText, text);
     v16 = objc_alloc(MEMORY[0x1E69DD250]);
     v17 = [v16 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     outerContentView = v14->_outerContentView;
@@ -51,43 +51,43 @@
   [(OBSetupAssistantDynamicLayoutController *)&v18 viewDidLoad];
   [(OBSetupAssistantDynamicLayoutController *)self setEdgesForExtendedLayout:0];
   [(OBSetupAssistantDynamicLayoutController *)self setExtendedLayoutIncludesOpaqueBars:1];
-  v3 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  v4 = [v3 view];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  backingController = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  view = [backingController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(OBSetupAssistantDynamicLayoutController *)self view];
-  v6 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  v7 = [v6 view];
-  [v5 addSubview:v7];
+  view2 = [(OBSetupAssistantDynamicLayoutController *)self view];
+  backingController2 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  view3 = [backingController2 view];
+  [view2 addSubview:view3];
 
-  v8 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  v9 = [v8 view];
-  v10 = [(OBSetupAssistantDynamicLayoutController *)self view];
-  [v9 ob_pinToEdges:v10];
+  backingController3 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  view4 = [backingController3 view];
+  view5 = [(OBSetupAssistantDynamicLayoutController *)self view];
+  [view4 ob_pinToEdges:view5];
 
-  v11 = [(OBSetupAssistantDynamicLayoutController *)self view];
-  v12 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
-  [v11 addSubview:v12];
+  view6 = [(OBSetupAssistantDynamicLayoutController *)self view];
+  outerContentView = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
+  [view6 addSubview:outerContentView];
 
-  v13 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  v14 = [v13 bleedView];
-  [v14 setHidden:1];
+  backingController4 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  bleedView = [backingController4 bleedView];
+  [bleedView setHidden:1];
 
-  v15 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  v16 = [v15 bleedView];
-  [v16 removeFromSuperview];
+  backingController5 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  bleedView2 = [backingController5 bleedView];
+  [bleedView2 removeFromSuperview];
 
-  v17 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  [v17 setTemplateType:2];
+  backingController6 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  [backingController6 setTemplateType:2];
 }
 
 - (void)viewDidLayoutSubviews
 {
   [(OBSetupAssistantDynamicLayoutController *)self _updateScrollUnderLayout];
   [(OBSetupAssistantDynamicLayoutController *)self _relayoutContentSubviewIfNeeded];
-  v3 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  v4 = [v3 view];
-  [v4 layoutIfNeeded];
+  backingController = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  view = [backingController view];
+  [view layoutIfNeeded];
 
   v5.receiver = self;
   v5.super_class = OBSetupAssistantDynamicLayoutController;
@@ -96,92 +96,92 @@
 
 - (id)headerView
 {
-  v2 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  v3 = [v2 headerView];
+  backingController = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  headerView = [backingController headerView];
 
-  return v3;
+  return headerView;
 }
 
 - (id)contentView
 {
-  v2 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  v3 = [v2 contentView];
+  backingController = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  contentView = [backingController contentView];
 
-  return v3;
+  return contentView;
 }
 
 - (int64_t)contentViewLayout
 {
-  v2 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  v3 = [v2 contentViewLayout];
+  backingController = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  contentViewLayout = [backingController contentViewLayout];
 
-  return v3;
+  return contentViewLayout;
 }
 
 - (id)buttonTray
 {
-  v2 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  v3 = [v2 buttonTray];
+  backingController = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  buttonTray = [backingController buttonTray];
 
-  return v3;
+  return buttonTray;
 }
 
-- (void)addContentSubView:(id)a3 heightConstraintForLayout:(id)a4
+- (void)addContentSubView:(id)view heightConstraintForLayout:(id)layout
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(OBSetupAssistantDynamicLayoutController *)self setMainContentSubview:v7];
-  v8 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
-  [v8 addSubview:v7];
+  layoutCopy = layout;
+  viewCopy = view;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(OBSetupAssistantDynamicLayoutController *)self setMainContentSubview:viewCopy];
+  contentView = [(OBSetupAssistantDynamicLayoutController *)self contentView];
+  [contentView addSubview:viewCopy];
 
-  [(OBSetupAssistantDynamicLayoutController *)self setConstraintForLayoutFactory:v6];
-  v9 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
-  [v7 ob_pinToEdges:v9];
+  [(OBSetupAssistantDynamicLayoutController *)self setConstraintForLayoutFactory:layoutCopy];
+  contentView2 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
+  [viewCopy ob_pinToEdges:contentView2];
 
-  v11 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  v10 = [v11 view];
-  [v10 setNeedsLayout];
+  backingController = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  view = [backingController view];
+  [view setNeedsLayout];
 }
 
-- (void)addChildViewController:(id)a3
+- (void)addChildViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  controllerCopy = controller;
+  backingController = [(OBSetupAssistantDynamicLayoutController *)self backingController];
 
-  if (v5 == v4)
+  if (backingController == controllerCopy)
   {
-    [(OBSetupAssistantDynamicLayoutController *)&v12 addChildViewController:v4, v11.receiver, v11.super_class, self, OBSetupAssistantDynamicLayoutController];
+    [(OBSetupAssistantDynamicLayoutController *)&v12 addChildViewController:controllerCopy, v11.receiver, v11.super_class, self, OBSetupAssistantDynamicLayoutController];
 LABEL_6:
-    [v4 didMoveToParentViewController:self];
+    [controllerCopy didMoveToParentViewController:self];
     goto LABEL_7;
   }
 
-  v6 = [v4 view];
-  v7 = [v6 superview];
-  v8 = [(OBSetupAssistantDynamicLayoutController *)self view];
+  view = [controllerCopy view];
+  superview = [view superview];
+  view2 = [(OBSetupAssistantDynamicLayoutController *)self view];
 
-  if (v7 == v8)
+  if (superview == view2)
   {
-    [(OBSetupAssistantDynamicLayoutController *)&v11 addChildViewController:v4, self, OBSetupAssistantDynamicLayoutController, v12.receiver, v12.super_class];
+    [(OBSetupAssistantDynamicLayoutController *)&v11 addChildViewController:controllerCopy, self, OBSetupAssistantDynamicLayoutController, v12.receiver, v12.super_class];
     goto LABEL_6;
   }
 
-  v9 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  [v9 addChildViewController:v4];
+  backingController2 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  [backingController2 addChildViewController:controllerCopy];
 
-  v10 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-  [v4 didMoveToParentViewController:v10];
+  backingController3 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+  [controllerCopy didMoveToParentViewController:backingController3];
 
 LABEL_7:
 }
 
-- (void)setBackingController:(id)a3
+- (void)setBackingController:(id)controller
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  controllerCopy = controller;
   backingController = self->_backingController;
-  if (backingController != v5)
+  if (backingController != controllerCopy)
   {
     if (backingController)
     {
@@ -189,8 +189,8 @@ LABEL_7:
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v7 = [(OBWelcomeController *)backingController childViewControllers];
-      v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      childViewControllers = [(OBWelcomeController *)backingController childViewControllers];
+      v8 = [childViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         v9 = v8;
@@ -201,15 +201,15 @@ LABEL_7:
           {
             if (*v15 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(childViewControllers);
             }
 
             v12 = *(*(&v14 + 1) + 8 * i);
-            [(OBWelcomeController *)v5 addChildViewController:v12];
-            [v12 didMoveToParentViewController:v5];
+            [(OBWelcomeController *)controllerCopy addChildViewController:v12];
+            [v12 didMoveToParentViewController:controllerCopy];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v9 = [childViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
         }
 
         while (v9);
@@ -218,172 +218,172 @@ LABEL_7:
       [(OBWelcomeController *)self->_backingController removeFromParentViewController];
     }
 
-    objc_storeStrong(&self->_backingController, a3);
-    [(OBSetupAssistantDynamicLayoutController *)self addChildViewController:v5];
+    objc_storeStrong(&self->_backingController, controller);
+    [(OBSetupAssistantDynamicLayoutController *)self addChildViewController:controllerCopy];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetLayoutTo:(int64_t)a3
+- (void)resetLayoutTo:(int64_t)to
 {
-  if ([(OBSetupAssistantDynamicLayoutController *)self contentViewLayout]!= a3)
+  if ([(OBSetupAssistantDynamicLayoutController *)self contentViewLayout]!= to)
   {
     v5 = [OBWelcomeController alloc];
-    v6 = [(OBSetupAssistantDynamicLayoutController *)self localTitle];
-    v7 = [(OBSetupAssistantDynamicLayoutController *)self localDetailText];
-    v8 = [(OBSetupAssistantDynamicLayoutController *)self localImage];
-    v27 = [(OBWelcomeController *)v5 initWithTitle:v6 detailText:v7 icon:v8 contentLayout:a3];
+    localTitle = [(OBSetupAssistantDynamicLayoutController *)self localTitle];
+    localDetailText = [(OBSetupAssistantDynamicLayoutController *)self localDetailText];
+    localImage = [(OBSetupAssistantDynamicLayoutController *)self localImage];
+    v27 = [(OBWelcomeController *)v5 initWithTitle:localTitle detailText:localDetailText icon:localImage contentLayout:to];
 
-    v9 = [(OBWelcomeController *)v27 view];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(OBWelcomeController *)v27 view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    v11 = [(OBWelcomeController *)v27 contentView];
-    [v11 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    contentView = [(OBWelcomeController *)v27 contentView];
+    [contentView setBackgroundColor:clearColor];
 
-    v12 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-    [v12 setTemplateType:2];
+    backingController = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+    [backingController setTemplateType:2];
 
-    v13 = [(OBSetupAssistantDynamicLayoutController *)self view];
-    v14 = [(OBWelcomeController *)v27 view];
-    v15 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-    v16 = [v15 view];
-    [v13 insertSubview:v14 belowSubview:v16];
+    view2 = [(OBSetupAssistantDynamicLayoutController *)self view];
+    view3 = [(OBWelcomeController *)v27 view];
+    backingController2 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+    view4 = [backingController2 view];
+    [view2 insertSubview:view3 belowSubview:view4];
 
-    v17 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-    v18 = [v17 view];
-    [v18 removeFromSuperview];
+    backingController3 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+    view5 = [backingController3 view];
+    [view5 removeFromSuperview];
 
-    v19 = [(OBWelcomeController *)v27 view];
-    v20 = [(OBSetupAssistantDynamicLayoutController *)self view];
-    [v19 ob_pinToEdges:v20];
+    view6 = [(OBWelcomeController *)v27 view];
+    view7 = [(OBSetupAssistantDynamicLayoutController *)self view];
+    [view6 ob_pinToEdges:view7];
 
-    v21 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-    [v21 removeFromSuperview];
+    mainContentSubview = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+    [mainContentSubview removeFromSuperview];
 
     [(OBSetupAssistantDynamicLayoutController *)self setBackingController:v27];
-    v22 = [(OBWelcomeController *)v27 contentView];
-    v23 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-    [v22 addSubview:v23];
+    contentView2 = [(OBWelcomeController *)v27 contentView];
+    mainContentSubview2 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+    [contentView2 addSubview:mainContentSubview2];
 
-    v24 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-    v25 = [(OBWelcomeController *)v27 contentView];
-    [v24 ob_pinToEdges:v25];
+    mainContentSubview3 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+    contentView3 = [(OBWelcomeController *)v27 contentView];
+    [mainContentSubview3 ob_pinToEdges:contentView3];
 
     [(OBSetupAssistantDynamicLayoutController *)self _updateScrollUnderLayout];
     [(OBSetupAssistantDynamicLayoutController *)self _relayoutContentSubviewIfNeeded];
-    v26 = [(OBSetupAssistantDynamicLayoutController *)self view];
-    [v26 setNeedsLayout];
+    view8 = [(OBSetupAssistantDynamicLayoutController *)self view];
+    [view8 setNeedsLayout];
   }
 }
 
 - (void)_updateScrollUnderLayout
 {
   v53[4] = *MEMORY[0x1E69E9840];
-  v51 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
-  [v51 bounds];
+  contentView = [(OBSetupAssistantDynamicLayoutController *)self contentView];
+  [contentView bounds];
   if (v3 >= 1.0)
   {
-    v5 = [(OBSetupAssistantDynamicLayoutController *)self contentViewLayout];
+    contentViewLayout = [(OBSetupAssistantDynamicLayoutController *)self contentViewLayout];
 
-    if (v5 != 1)
+    if (contentViewLayout != 1)
     {
 LABEL_15:
       v38 = *MEMORY[0x1E69E9840];
       return;
     }
 
-    v6 = [(OBSetupAssistantDynamicLayoutController *)self enableStickyHeader];
-    v7 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-    v8 = [v7 superview];
-    v9 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
+    enableStickyHeader = [(OBSetupAssistantDynamicLayoutController *)self enableStickyHeader];
+    mainContentSubview = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+    superview = [mainContentSubview superview];
+    outerContentView = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
 
-    if (v6)
+    if (enableStickyHeader)
     {
-      if (v8 != v9)
+      if (superview != outerContentView)
       {
         v42 = MEMORY[0x1E696ACD8];
-        v52 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
-        v49 = [v52 topAnchor];
-        v50 = [(OBSetupAssistantDynamicLayoutController *)self view];
-        v48 = [v50 topAnchor];
-        v47 = [v49 constraintEqualToAnchor:v48];
+        outerContentView2 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
+        topAnchor = [outerContentView2 topAnchor];
+        view = [(OBSetupAssistantDynamicLayoutController *)self view];
+        topAnchor2 = [view topAnchor];
+        v47 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v53[0] = v47;
-        v46 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
-        v44 = [v46 leadingAnchor];
-        v45 = [(OBSetupAssistantDynamicLayoutController *)self view];
-        v43 = [v45 leadingAnchor];
-        v41 = [v44 constraintEqualToAnchor:v43];
+        outerContentView3 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
+        leadingAnchor = [outerContentView3 leadingAnchor];
+        view2 = [(OBSetupAssistantDynamicLayoutController *)self view];
+        leadingAnchor2 = [view2 leadingAnchor];
+        v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v53[1] = v41;
-        v40 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
-        v39 = [v40 trailingAnchor];
-        v10 = [(OBSetupAssistantDynamicLayoutController *)self view];
-        v11 = [v10 trailingAnchor];
-        v12 = [v39 constraintEqualToAnchor:v11];
+        outerContentView4 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
+        trailingAnchor = [outerContentView4 trailingAnchor];
+        view3 = [(OBSetupAssistantDynamicLayoutController *)self view];
+        trailingAnchor2 = [view3 trailingAnchor];
+        v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v53[2] = v12;
-        v13 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
-        v14 = [v13 heightAnchor];
-        v15 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
-        v16 = [v15 heightAnchor];
-        v17 = [v14 constraintEqualToAnchor:v16];
+        outerContentView5 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
+        heightAnchor = [outerContentView5 heightAnchor];
+        contentView2 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
+        heightAnchor2 = [contentView2 heightAnchor];
+        v17 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
         v53[3] = v17;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:4];
         [v42 activateConstraints:v18];
 
-        v19 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+        mainContentSubview2 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
 
-        if (!v19)
+        if (!mainContentSubview2)
         {
-          v20 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
-          v21 = [v20 subviews];
-          v22 = [v21 firstObject];
-          [(OBSetupAssistantDynamicLayoutController *)self setMainContentSubview:v22];
+          contentView3 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
+          subviews = [contentView3 subviews];
+          firstObject = [subviews firstObject];
+          [(OBSetupAssistantDynamicLayoutController *)self setMainContentSubview:firstObject];
 
-          v23 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-          [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+          mainContentSubview3 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+          [mainContentSubview3 setTranslatesAutoresizingMaskIntoConstraints:0];
         }
 
-        v24 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-        [v24 removeFromSuperview];
+        mainContentSubview4 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+        [mainContentSubview4 removeFromSuperview];
 
-        v25 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
-        v26 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-        [v25 addSubview:v26];
+        outerContentView6 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
+        mainContentSubview5 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+        [outerContentView6 addSubview:mainContentSubview5];
 
-        v27 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-        v28 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
+        mainContentSubview6 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+        outerContentView7 = [(OBSetupAssistantDynamicLayoutController *)self outerContentView];
         goto LABEL_13;
       }
     }
 
-    else if (v8 == v9)
+    else if (superview == outerContentView)
     {
-      v29 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-      [v29 removeFromSuperview];
+      mainContentSubview7 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+      [mainContentSubview7 removeFromSuperview];
 
-      v30 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
-      v31 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-      [v30 addSubview:v31];
+      contentView4 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
+      mainContentSubview8 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+      [contentView4 addSubview:mainContentSubview8];
 
-      v32 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
-      [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+      contentView5 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
+      [contentView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v33 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-      [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
+      mainContentSubview9 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+      [mainContentSubview9 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v34 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-      v35 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
-      [v34 ob_pinToEdges:v35];
+      mainContentSubview10 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+      contentView6 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
+      [mainContentSubview10 ob_pinToEdges:contentView6];
 
-      v27 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
-      v28 = [(OBSetupAssistantDynamicLayoutController *)self view];
+      mainContentSubview6 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
+      outerContentView7 = [(OBSetupAssistantDynamicLayoutController *)self view];
 LABEL_13:
-      v36 = v28;
-      [v27 ob_pinToEdges:v28];
+      v36 = outerContentView7;
+      [mainContentSubview6 ob_pinToEdges:outerContentView7];
     }
 
-    v37 = [(OBSetupAssistantDynamicLayoutController *)self _invokeConstraintForLayoutFactoryBlock];
+    _invokeConstraintForLayoutFactoryBlock = [(OBSetupAssistantDynamicLayoutController *)self _invokeConstraintForLayoutFactoryBlock];
     goto LABEL_15;
   }
 
@@ -394,38 +394,38 @@ LABEL_13:
 {
   if ([(OBSetupAssistantDynamicLayoutController *)self contentViewLayout]!= 1 && [(OBSetupAssistantDynamicLayoutController *)self contentViewLayout]!= 5)
   {
-    v3 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-    [v3 removeFromSuperview];
+    mainContentSubview = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+    [mainContentSubview removeFromSuperview];
 
-    v4 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
-    v5 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-    [v4 addSubview:v5];
+    contentView = [(OBSetupAssistantDynamicLayoutController *)self contentView];
+    mainContentSubview2 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+    [contentView addSubview:mainContentSubview2];
 
-    v6 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    mainContentSubview3 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+    [mainContentSubview3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
-    v8 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
-    [v7 ob_pinToEdges:v8];
+    mainContentSubview4 = [(OBSetupAssistantDynamicLayoutController *)self mainContentSubview];
+    contentView2 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
+    [mainContentSubview4 ob_pinToEdges:contentView2];
 
-    v9 = [(OBSetupAssistantDynamicLayoutController *)self _invokeConstraintForLayoutFactoryBlock];
+    _invokeConstraintForLayoutFactoryBlock = [(OBSetupAssistantDynamicLayoutController *)self _invokeConstraintForLayoutFactoryBlock];
   }
 }
 
 - (id)_invokeConstraintForLayoutFactoryBlock
 {
-  v3 = [(OBSetupAssistantDynamicLayoutController *)self constraintForLayoutFactory];
+  constraintForLayoutFactory = [(OBSetupAssistantDynamicLayoutController *)self constraintForLayoutFactory];
 
-  if (v3)
+  if (constraintForLayoutFactory)
   {
-    v4 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-    v5 = [v4 contentViewHeightConstraintsBlock];
+    backingController = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+    contentViewHeightConstraintsBlock = [backingController contentViewHeightConstraintsBlock];
 
-    if (v5)
+    if (contentViewHeightConstraintsBlock)
     {
-      v6 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-      v7 = [v6 contentViewHeightConstraintsBlock];
-      v8 = v7[2]();
+      backingController2 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+      contentViewHeightConstraintsBlock2 = [backingController2 contentViewHeightConstraintsBlock];
+      v8 = contentViewHeightConstraintsBlock2[2]();
 
       if (v8)
       {
@@ -433,24 +433,24 @@ LABEL_13:
       }
     }
 
-    v9 = [(OBSetupAssistantDynamicLayoutController *)self constraintForLayoutFactory];
-    v10 = [(OBSetupAssistantDynamicLayoutController *)self contentViewLayout];
-    v11 = [(OBSetupAssistantDynamicLayoutController *)self contentView];
-    v12 = (v9)[2](v9, v10, v11);
+    constraintForLayoutFactory2 = [(OBSetupAssistantDynamicLayoutController *)self constraintForLayoutFactory];
+    contentViewLayout = [(OBSetupAssistantDynamicLayoutController *)self contentViewLayout];
+    contentView = [(OBSetupAssistantDynamicLayoutController *)self contentView];
+    v12 = (constraintForLayoutFactory2)[2](constraintForLayoutFactory2, contentViewLayout, contentView);
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __81__OBSetupAssistantDynamicLayoutController__invokeConstraintForLayoutFactoryBlock__block_invoke;
     v15[3] = &unk_1E7C156A8;
-    v3 = v12;
-    v16 = v3;
-    v13 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
-    [v13 setContentViewHeightConstraintsBlock:v15];
+    constraintForLayoutFactory = v12;
+    v16 = constraintForLayoutFactory;
+    backingController3 = [(OBSetupAssistantDynamicLayoutController *)self backingController];
+    [backingController3 setContentViewHeightConstraintsBlock:v15];
 
-    [v3 setActive:1];
+    [constraintForLayoutFactory setActive:1];
   }
 
-  return v3;
+  return constraintForLayoutFactory;
 }
 
 @end

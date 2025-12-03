@@ -1,119 +1,119 @@
 @interface ICConvertToSmartFolderDecisionController
-- (ICConvertToSmartFolderDecisionController)initWithSourceFolder:(id)a3 presentingViewController:(id)a4;
+- (ICConvertToSmartFolderDecisionController)initWithSourceFolder:(id)folder presentingViewController:(id)controller;
 - (NSString)tagDisplayText;
-- (void)convertToSmartFolderWithCompletion:(id)a3;
-- (void)performDecisionWithCompletion:(id)a3;
-- (void)showConfirmationAlertWithCompletion:(id)a3;
-- (void)showPreventionAlertWithCompletion:(id)a3;
+- (void)convertToSmartFolderWithCompletion:(id)completion;
+- (void)performDecisionWithCompletion:(id)completion;
+- (void)showConfirmationAlertWithCompletion:(id)completion;
+- (void)showPreventionAlertWithCompletion:(id)completion;
 @end
 
 @implementation ICConvertToSmartFolderDecisionController
 
-- (ICConvertToSmartFolderDecisionController)initWithSourceFolder:(id)a3 presentingViewController:(id)a4
+- (ICConvertToSmartFolderDecisionController)initWithSourceFolder:(id)folder presentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  folderCopy = folder;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = ICConvertToSmartFolderDecisionController;
   v9 = [(ICConvertToSmartFolderDecisionController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceFolder, a3);
-    v11 = [[ICConvertToSmartFolderDecision alloc] initWithSourceFolder:v7];
+    objc_storeStrong(&v9->_sourceFolder, folder);
+    v11 = [[ICConvertToSmartFolderDecision alloc] initWithSourceFolder:folderCopy];
     decision = v10->_decision;
     v10->_decision = v11;
 
-    objc_storeStrong(&v10->_presentingViewController, a4);
+    objc_storeStrong(&v10->_presentingViewController, controller);
   }
 
   return v10;
 }
 
-- (void)performDecisionWithCompletion:(id)a3
+- (void)performDecisionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICConvertToSmartFolderDecisionController *)self decision];
-  v6 = [v5 type];
+  completionCopy = completion;
+  decision = [(ICConvertToSmartFolderDecisionController *)self decision];
+  type = [decision type];
 
-  if (v6 == 2)
+  if (type == 2)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100103D58;
     v10[3] = &unk_100645CC8;
-    v11 = v4;
+    v11 = completionCopy;
     [(ICConvertToSmartFolderDecisionController *)self showPreventionAlertWithCompletion:v10];
     v7 = v11;
     goto LABEL_10;
   }
 
-  if (v6 == 1)
+  if (type == 1)
   {
     v8 = os_log_create("com.apple.notes", "CoreData");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(ICConvertToSmartFolderDecisionController *)self decision];
+      decision2 = [(ICConvertToSmartFolderDecisionController *)self decision];
       *buf = 138412290;
-      v15 = v9;
+      v15 = decision2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Unable to convert to smart folder with decision: %@", buf, 0xCu);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
-  else if (!v6)
+  else if (!type)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100103D28;
     v12[3] = &unk_100649A80;
     v12[4] = self;
-    v13 = v4;
+    v13 = completionCopy;
     [(ICConvertToSmartFolderDecisionController *)self showConfirmationAlertWithCompletion:v12];
     v7 = v13;
 LABEL_10:
   }
 }
 
-- (void)convertToSmartFolderWithCompletion:(id)a3
+- (void)convertToSmartFolderWithCompletion:(id)completion
 {
-  v51 = a3;
-  v4 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
-  v5 = [v4 account];
+  completionCopy = completion;
+  sourceFolder = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
+  account = [sourceFolder account];
 
-  v6 = [(ICConvertToSmartFolderDecisionController *)self tagDisplayText];
-  v7 = [ICHashtag hashtagWithDisplayText:v6 account:v5 createIfNecessary:1];
+  tagDisplayText = [(ICConvertToSmartFolderDecisionController *)self tagDisplayText];
+  v7 = [ICHashtag hashtagWithDisplayText:tagDisplayText account:account createIfNecessary:1];
 
   v8 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
-    v10 = [v9 ic_loggingIdentifier];
-    v11 = [v7 ic_loggingDescription];
+    sourceFolder2 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
+    ic_loggingIdentifier = [sourceFolder2 ic_loggingIdentifier];
+    ic_loggingDescription = [v7 ic_loggingDescription];
     *buf = 138412546;
-    v60 = v10;
+    v60 = ic_loggingIdentifier;
     v61 = 2112;
-    v62 = v11;
+    v62 = ic_loggingDescription;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Hashtag for conversion of manual folder (%@) to smart folder: %@", buf, 0x16u);
   }
 
   v12 = [ICTagSelection alloc];
-  v13 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
-  v14 = [v13 managedObjectContext];
-  v15 = [v7 objectID];
-  v16 = [NSSet ic_setFromNonNilObject:v15];
-  v17 = [v12 initWithManagedObjectContext:v14 includedObjectIDs:v16];
+  sourceFolder3 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
+  managedObjectContext = [sourceFolder3 managedObjectContext];
+  objectID = [v7 objectID];
+  v16 = [NSSet ic_setFromNonNilObject:objectID];
+  v17 = [v12 initWithManagedObjectContext:managedObjectContext includedObjectIDs:v16];
 
   v49 = v17;
   v48 = [ICQuery queryForNotesMatchingTagSelection:v17];
-  v50 = v5;
+  v50 = account;
   v18 = [ICFolder smartFolderWithQuery:"smartFolderWithQuery:account:" account:?];
-  v19 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
-  v46 = [v19 title];
+  sourceFolder4 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
+  title = [sourceFolder4 title];
 
   v47 = v18;
   [v18 setParent:0];
@@ -121,11 +121,11 @@ LABEL_10:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v20 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
-  v21 = [v20 visibleNotesIncludingChildFolders];
+  sourceFolder5 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
+  visibleNotesIncludingChildFolders = [sourceFolder5 visibleNotesIncludingChildFolders];
 
-  obj = v21;
-  v53 = [v21 countByEnumeratingWithState:&v54 objects:v58 count:16];
+  obj = visibleNotesIncludingChildFolders;
+  v53 = [visibleNotesIncludingChildFolders countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v53)
   {
     v22 = *v55;
@@ -143,30 +143,30 @@ LABEL_10:
         v26 = os_log_create(v23, "CoreData");
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
-          v27 = [v25 ic_loggingIdentifier];
-          v28 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
-          [v28 ic_loggingIdentifier];
+          ic_loggingIdentifier2 = [v25 ic_loggingIdentifier];
+          sourceFolder6 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
+          [sourceFolder6 ic_loggingIdentifier];
           v29 = v22;
-          v30 = self;
+          selfCopy = self;
           v31 = v23;
           v33 = v32 = v7;
           *buf = 138412546;
-          v60 = v27;
+          v60 = ic_loggingIdentifier2;
           v61 = 2112;
           v62 = v33;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Re-parenting note (%@) to default folder because its parent (%@) is being converted to a smart folder", buf, 0x16u);
 
           v7 = v32;
           v23 = v31;
-          self = v30;
+          self = selfCopy;
           v22 = v29;
         }
 
         v34 = [v25 addHashtagToNoteBodyIfMissing:v7];
-        v35 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
-        v36 = [v35 account];
-        v37 = [v36 defaultFolder];
-        [v25 setFolder:v37];
+        sourceFolder7 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
+        account2 = [sourceFolder7 account];
+        defaultFolder = [account2 defaultFolder];
+        [v25 setFolder:defaultFolder];
 
         [v25 updateChangeCountWithReason:@"Moved to default folder"];
       }
@@ -177,39 +177,39 @@ LABEL_10:
     while (v53);
   }
 
-  v38 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
-  [v38 markForDeletion];
+  sourceFolder8 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
+  [sourceFolder8 markForDeletion];
 
-  v39 = [ICFolder deduplicatingTitle:v46 account:v50];
+  v39 = [ICFolder deduplicatingTitle:title account:v50];
   [v47 setTitle:v39];
   [v7 updateChangeCountWithReason:@"Created smart folder"];
   [v47 updateChangeCountWithReason:@"Created smart folder"];
-  v40 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
-  v41 = [v40 managedObjectContext];
-  [v41 ic_save];
+  sourceFolder9 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
+  managedObjectContext2 = [sourceFolder9 managedObjectContext];
+  [managedObjectContext2 ic_save];
 
   v42 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
   {
-    v43 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
-    v44 = [v43 ic_loggingIdentifier];
-    v45 = [v47 ic_loggingDescription];
+    sourceFolder10 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
+    ic_loggingIdentifier3 = [sourceFolder10 ic_loggingIdentifier];
+    ic_loggingDescription2 = [v47 ic_loggingDescription];
     *buf = 138412546;
-    v60 = v44;
+    v60 = ic_loggingIdentifier3;
     v61 = 2112;
-    v62 = v45;
+    v62 = ic_loggingDescription2;
     _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "Successfully converted (%@) to smart folder: %@", buf, 0x16u);
   }
 
-  if (v51)
+  if (completionCopy)
   {
-    v51[2](v51, v47, v7);
+    completionCopy[2](completionCopy, v47, v7);
   }
 }
 
-- (void)showConfirmationAlertWithCompletion:(id)a3
+- (void)showConfirmationAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (![(ICConvertToSmartFolderDecisionController *)self skipAlerts])
   {
     v5 = +[NSBundle mainBundle];
@@ -217,9 +217,9 @@ LABEL_10:
 
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"“%@” will be added to each note and this folder will be turned into a Smart Folder. This can’t be undone." value:&stru_100661CF0 table:0];
-    v9 = [(ICConvertToSmartFolderDecisionController *)self tagDisplayText];
-    v10 = [v9 ic_withHashtagPrefix];
-    v11 = [NSString localizedStringWithFormat:v8, v10];
+    tagDisplayText = [(ICConvertToSmartFolderDecisionController *)self tagDisplayText];
+    ic_withHashtagPrefix = [tagDisplayText ic_withHashtagPrefix];
+    v11 = [NSString localizedStringWithFormat:v8, ic_withHashtagPrefix];
 
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"Cancel" value:&stru_100661CF0 table:0];
@@ -228,27 +228,27 @@ LABEL_10:
     v15 = [v14 localizedStringForKey:@"Convert" value:&stru_100661CF0 table:0];
 
     v16 = [UIAlertController alertControllerWithTitle:v6 message:v11 preferredStyle:0];
-    v17 = [(ICConvertToSmartFolderDecisionController *)self folderSourceView];
+    folderSourceView = [(ICConvertToSmartFolderDecisionController *)self folderSourceView];
 
-    if (v17)
+    if (folderSourceView)
     {
-      v18 = [(ICConvertToSmartFolderDecisionController *)self folderSourceView];
-      v19 = [v16 popoverPresentationController];
-      [v19 setSourceView:v18];
+      folderSourceView2 = [(ICConvertToSmartFolderDecisionController *)self folderSourceView];
+      popoverPresentationController = [v16 popoverPresentationController];
+      [popoverPresentationController setSourceView:folderSourceView2];
     }
 
     else
     {
-      v20 = [(ICConvertToSmartFolderDecisionController *)self presentingBarButtonItem];
+      presentingBarButtonItem = [(ICConvertToSmartFolderDecisionController *)self presentingBarButtonItem];
 
-      if (!v20)
+      if (!presentingBarButtonItem)
       {
 LABEL_9:
         v27[0] = _NSConcreteStackBlock;
         v27[1] = 3221225472;
         v27[2] = sub_10010471C;
         v27[3] = &unk_100646938;
-        v21 = v4;
+        v21 = completionCopy;
         v28 = v21;
         v22 = [UIAlertAction actionWithTitle:v13 style:1 handler:v27];
         [v16 addAction:v22];
@@ -265,37 +265,37 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v18 = [(ICConvertToSmartFolderDecisionController *)self presentingBarButtonItem];
-      v19 = [v16 popoverPresentationController];
-      [v19 setBarButtonItem:v18];
+      folderSourceView2 = [(ICConvertToSmartFolderDecisionController *)self presentingBarButtonItem];
+      popoverPresentationController = [v16 popoverPresentationController];
+      [popoverPresentationController setBarButtonItem:folderSourceView2];
     }
 
     goto LABEL_9;
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
 LABEL_10:
 }
 
-- (void)showPreventionAlertWithCompletion:(id)a3
+- (void)showPreventionAlertWithCompletion:(id)completion
 {
-  v14 = a3;
+  completionCopy = completion;
   if (![(ICConvertToSmartFolderDecisionController *)self skipAlerts])
   {
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"Can’t Convert Folder" value:&stru_100661CF0 table:0];
 
-    v7 = [(ICConvertToSmartFolderDecisionController *)self decision];
-    v8 = [v7 additionalStep];
+    decision = [(ICConvertToSmartFolderDecisionController *)self decision];
+    additionalStep = [decision additionalStep];
 
     v9 = 0;
-    if (v8 > 3)
+    if (additionalStep > 3)
     {
-      if ((v8 - 5) < 2)
+      if ((additionalStep - 5) < 2)
       {
         v10 = +[NSBundle mainBundle];
         v11 = v10;
@@ -306,7 +306,7 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      if (v8 == 4)
+      if (additionalStep == 4)
       {
         v10 = +[NSBundle mainBundle];
         v11 = v10;
@@ -317,18 +317,18 @@ LABEL_15:
 
     else
     {
-      if (v8 < 3)
+      if (additionalStep < 3)
       {
-        if (v14)
+        if (completionCopy)
         {
-          v14[2]();
+          completionCopy[2]();
         }
 
         v9 = 0;
         goto LABEL_16;
       }
 
-      if (v8 == 3)
+      if (additionalStep == 3)
       {
         v10 = +[NSBundle mainBundle];
         v11 = v10;
@@ -338,33 +338,33 @@ LABEL_15:
     }
 
 LABEL_16:
-    v13 = [(ICConvertToSmartFolderDecisionController *)self presentingViewController];
-    [UIAlertController ic_showAlertWithTitle:v6 message:v9 viewController:v13];
+    presentingViewController = [(ICConvertToSmartFolderDecisionController *)self presentingViewController];
+    [UIAlertController ic_showAlertWithTitle:v6 message:v9 viewController:presentingViewController];
 
     goto LABEL_17;
   }
 
-  v4 = v14;
-  if (!v14)
+  v4 = completionCopy;
+  if (!completionCopy)
   {
     goto LABEL_18;
   }
 
-  (v14[2])(v14);
+  (completionCopy[2])(completionCopy);
 LABEL_17:
-  v4 = v14;
+  v4 = completionCopy;
 LABEL_18:
 }
 
 - (NSString)tagDisplayText
 {
-  v2 = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
-  v3 = [v2 title];
-  v4 = [v3 ic_trimmedString];
-  v5 = [v4 ic_whitespaceAndNewlineCoalescedString];
+  sourceFolder = [(ICConvertToSmartFolderDecisionController *)self sourceFolder];
+  title = [sourceFolder title];
+  ic_trimmedString = [title ic_trimmedString];
+  ic_whitespaceAndNewlineCoalescedString = [ic_trimmedString ic_whitespaceAndNewlineCoalescedString];
 
   v6 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v7 = [v5 ic_stringByReplacingCharactersInSet:v6 withString:@"-"];
+  v7 = [ic_whitespaceAndNewlineCoalescedString ic_stringByReplacingCharactersInSet:v6 withString:@"-"];
 
   return v7;
 }

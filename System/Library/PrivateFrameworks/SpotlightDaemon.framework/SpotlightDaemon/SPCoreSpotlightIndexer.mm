@@ -1,24 +1,24 @@
 @interface SPCoreSpotlightIndexer
-+ (BOOL)writeDiagnostic:(id)a3 bundleID:(id)a4 identifier:(id)a5 logQuery:(BOOL)a6;
++ (BOOL)writeDiagnostic:(id)diagnostic bundleID:(id)d identifier:(id)identifier logQuery:(BOOL)query;
 + (SPCoreSpotlightIndexer)sharedInstance;
-+ (id)_filterReindexAllExtensions:(id)a3;
-+ (id)_mergedTokenRewrites:(id)a3;
++ (id)_filterReindexAllExtensions:(id)extensions;
++ (id)_mergedTokenRewrites:(id)rewrites;
 + (id)allProtectionClasses;
 + (id)fileProviderProtectionClasses;
 + (unint64_t)freeIndexDiskSpace;
-+ (unint64_t)storageSizeForFolder:(id)a3;
++ (unint64_t)storageSizeForFolder:(id)folder;
 + (unint64_t)totalIndexDiskSpace;
 + (void)deactivate;
-+ (void)deviceStateWillChange:(BOOL)a3;
++ (void)deviceStateWillChange:(BOOL)change;
 + (void)initialize;
 + (void)preheat;
-+ (void)setIndexerDelegate:(id)a3;
-+ (void)setMemoryPressureStatus:(unint64_t)a3;
++ (void)setIndexerDelegate:(id)delegate;
++ (void)setMemoryPressureStatus:(unint64_t)status;
 + (void)shutdown;
 - (BOOL)checkMailMigrationToClassCComplete;
-- (BOOL)isForegroundFileProviderBundleID:(id)a3;
-- (BOOL)touchfileExistsForMigrationStep:(id)a3;
-- (BOOL)writeData:(id)a3 toFile:(id)a4;
+- (BOOL)isForegroundFileProviderBundleID:(id)d;
+- (BOOL)touchfileExistsForMigrationStep:(id)step;
+- (BOOL)writeData:(id)data toFile:(id)file;
 - (CSFileProviderDomainMonitor)fileProviderMonitor;
 - (CSIndexExtensionDelegate)extensionDelegate;
 - (NSDictionary)fileProviderAppToExtensionBundleMap;
@@ -26,162 +26,162 @@
 - (NSURL)personaListURL;
 - (SPCoreSpotlightIndexer)init;
 - (SPCoreSpotlightIndexerDelegate)indexerDelegate;
-- (id)_startQueryWithQueryString:(id)a3 queryContext:(id)a4 eventHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7;
-- (id)_taskForQueryWithQueryString:(id)a3 queryContext:(id)a4 eventHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7;
-- (id)concreteIndexerForProtectionClass:(id)a3 andBundleID:(id)a4;
+- (id)_startQueryWithQueryString:(id)string queryContext:(id)context eventHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler;
+- (id)_taskForQueryWithQueryString:(id)string queryContext:(id)context eventHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler;
+- (id)concreteIndexerForProtectionClass:(id)class andBundleID:(id)d;
 - (id)contactsIndexer;
-- (id)dateRewritesFromContext:(id)a3;
+- (id)dateRewritesFromContext:(id)context;
 - (id)defaultIndexer;
 - (id)dumpIndexAges;
-- (id)dumpIndexAgesAtPath:(id)a3;
+- (id)dumpIndexAgesAtPath:(id)path;
 - (id)dumpIndexAnalytics;
-- (id)dumpIndexAnalyticsAtPath:(id)a3;
+- (id)dumpIndexAnalyticsAtPath:(id)path;
 - (id)fileProviderDomainFilterQueries;
 - (id)issueHeartbeat;
-- (id)leakDebugDump:(id)a3;
+- (id)leakDebugDump:(id)dump;
 - (id)mailClassCFileTransferCompleteTouchFile;
 - (id)mailClassCIndexPath;
 - (id)mailClassCMigrationCompleteTouchFile;
 - (id)priorityIndexAvailableTouchFilePath;
 - (id)priorityIndexPath;
 - (id)priorityIndexer;
-- (id)queryForWord:(id)a3 matchingAttributes:(id)a4 prefixMatch:(BOOL)a5;
-- (id)sendAnalytics:(id)a3;
+- (id)queryForWord:(id)word matchingAttributes:(id)attributes prefixMatch:(BOOL)match;
+- (id)sendAnalytics:(id)analytics;
 - (id)spotlightCacheFilePrefix;
-- (id)startQuery:(id)a3 withContext:(id)a4 eventHandler:(id)a5 handler:(id)a6;
-- (id)startQuery:(id)a3 withContext:(id)a4 handler:(id)a5;
-- (id)startQueryWithQueryString:(id)a3 queryContext:(id)a4 eventHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7;
+- (id)startQuery:(id)query withContext:(id)context eventHandler:(id)handler handler:(id)a6;
+- (id)startQuery:(id)query withContext:(id)context handler:(id)handler;
+- (id)startQueryWithQueryString:(id)string queryContext:(id)context eventHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler;
 - (id)systemSettingsIndexer;
-- (id)taskForQueryWithQueryString:(id)a3 queryContext:(id)a4 eventHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7;
-- (id)taskForTopHitQueryWithQueryString:(id)a3 queryContext:(id)a4 eventHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7;
-- (id)touchfilePathForMigrationStep:(id)a3;
-- (id)writeUISearchEnabled:(BOOL)a3;
-- (int)_changeFilesToClassC:(id)a3;
-- (int)_openIndex:(BOOL)a3 forInit:(BOOL)a4 readOnly:(BOOL)a5;
-- (int)cloneIndexFrom:(id)a3 to:(id)a4;
-- (int)openIndex:(BOOL)a3 forInit:(BOOL)a4 readOnly:(BOOL)a5;
-- (int)performMigrationStepWithTouchfileGuard:(id)a3 step:(id)a4;
-- (unint64_t)purgeIndexForSize:(unint64_t)a3;
-- (unint64_t)purgeVectorIndex:(BOOL)a3;
-- (unint64_t)purgeableIndexSize:(id)a3;
-- (unint64_t)purgeableVectorIndexSize:(BOOL)a3;
-- (void)_closeIndexWithIndexers:(id)a3;
-- (void)_deleteNonMailBundlesFromClassAIndex:(id)a3;
-- (void)_enumerateIndexersWithProtectionClasses:(id)a3 forQueryWithContext:(id)a4 forBundleIds:(id)a5 inferSpecialIndexes:(BOOL)a6 block:(id)a7;
-- (void)_fetchAccumulatedStorageSizeForBundleId:(id)a3 completionHandler:(id)a4;
+- (id)taskForQueryWithQueryString:(id)string queryContext:(id)context eventHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler;
+- (id)taskForTopHitQueryWithQueryString:(id)string queryContext:(id)context eventHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler;
+- (id)touchfilePathForMigrationStep:(id)step;
+- (id)writeUISearchEnabled:(BOOL)enabled;
+- (int)_changeFilesToClassC:(id)c;
+- (int)_openIndex:(BOOL)index forInit:(BOOL)init readOnly:(BOOL)only;
+- (int)cloneIndexFrom:(id)from to:(id)to;
+- (int)openIndex:(BOOL)index forInit:(BOOL)init readOnly:(BOOL)only;
+- (int)performMigrationStepWithTouchfileGuard:(id)guard step:(id)step;
+- (unint64_t)purgeIndexForSize:(unint64_t)size;
+- (unint64_t)purgeVectorIndex:(BOOL)index;
+- (unint64_t)purgeableIndexSize:(id)size;
+- (unint64_t)purgeableVectorIndexSize:(BOOL)size;
+- (void)_closeIndexWithIndexers:(id)indexers;
+- (void)_deleteNonMailBundlesFromClassAIndex:(id)index;
+- (void)_enumerateIndexersWithProtectionClasses:(id)classes forQueryWithContext:(id)context forBundleIds:(id)ids inferSpecialIndexes:(BOOL)indexes block:(id)block;
+- (void)_fetchAccumulatedStorageSizeForBundleId:(id)id completionHandler:(id)handler;
 - (void)_finishFileTransferToClassCMailIndex;
 - (void)_fixProtClassForClassCMailIndex;
-- (void)_issueCacheCommand:(id)a3 xpc:(id)a4 searchContext:(id)a5 completionHandler:(id)a6;
+- (void)_issueCacheCommand:(id)command xpc:(id)xpc searchContext:(id)context completionHandler:(id)handler;
 - (void)_mailClassCMarkFileTransferComplete;
 - (void)_mailClassCMarkMigrationComplete;
 - (void)_mailClassCResetIndexAndComplete;
-- (void)_migrateIndexExtensionsWithEnumerator:(id)a3 forced:(BOOL)a4 migratedBundleIds:(id)a5 completionHandler:(id)a6;
+- (void)_migrateIndexExtensionsWithEnumerator:(id)enumerator forced:(BOOL)forced migratedBundleIds:(id)ids completionHandler:(id)handler;
 - (void)_moveClassAIndexToClassCMailIndex;
 - (void)_registerForPrefsChanges;
-- (void)_reindexAllIdentifiersWithExtension:(id)a3 completionBlock:(id)a4;
-- (void)_reindexAllItemsForBundleIDs:(id)a3 reason:(id)a4 completionHandler:(id)a5;
+- (void)_reindexAllIdentifiersWithExtension:(id)extension completionBlock:(id)block;
+- (void)_reindexAllItemsForBundleIDs:(id)ds reason:(id)reason completionHandler:(id)handler;
 - (void)_reindexAllItemsOnPrefsChanges;
-- (void)_reindexAllItemsWithExtensionsAndCompletionBlock:(id)a3;
-- (void)_reindexAllItemsWithExtensionsAndIdentifiersAndCompletionBlock:(id)a3;
+- (void)_reindexAllItemsWithExtensionsAndCompletionBlock:(id)block;
+- (void)_reindexAllItemsWithExtensionsAndIdentifiersAndCompletionBlock:(id)block;
 - (void)_upgradeToPriorityIndex;
-- (void)addCompletedBundleIDs:(id)a3 forIndexerTask:(id)a4;
-- (void)addInteraction:(id)a3 bundleID:(id)a4 protectionClass:(id)a5;
-- (void)asyncOpenIndex:(BOOL)a3 forInit:(BOOL)a4 readOnly:(BOOL)a5;
-- (void)changeStateOfSearchableItemsWithUIDs:(id)a3 toState:(int64_t)a4 protectionClass:(id)a5 forBundleID:(id)a6 forUTIType:(id)a7 options:(int64_t)a8;
+- (void)addCompletedBundleIDs:(id)ds forIndexerTask:(id)task;
+- (void)addInteraction:(id)interaction bundleID:(id)d protectionClass:(id)class;
+- (void)asyncOpenIndex:(BOOL)index forInit:(BOOL)init readOnly:(BOOL)only;
+- (void)changeStateOfSearchableItemsWithUIDs:(id)ds toState:(int64_t)state protectionClass:(id)class forBundleID:(id)d forUTIType:(id)type options:(int64_t)options;
 - (void)checkIfExtensionsNeedToBeLoaded;
-- (void)cleanupStringsWithProtectionClasses:(id)a3 completionHandler:(id)a4;
-- (void)clientDidCheckin:(id)a3 protectionClass:(id)a4 service:(id)a5 completionHandler:(id)a6;
+- (void)cleanupStringsWithProtectionClasses:(id)classes completionHandler:(id)handler;
+- (void)clientDidCheckin:(id)checkin protectionClass:(id)class service:(id)service completionHandler:(id)handler;
 - (void)closeIndex;
 - (void)commitUpdates;
-- (void)commitUpdatesWithCompletionHandler:(id)a3;
+- (void)commitUpdatesWithCompletionHandler:(id)handler;
 - (void)coolDown;
 - (void)dealloc;
-- (void)deleteActionsBeforeTime:(double)a3 completionHandler:(id)a4;
-- (void)deleteActionsWithIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)deleteAllInteractionsWithBundleID:(id)a3 completionHandler:(id)a4;
-- (void)deleteAllUserActivities:(id)a3 fromClient:(id)a4 completionHandler:(id)a5;
-- (void)deleteSearchableItemsSinceDate:(id)a3 protectionClass:(id)a4 forBundleID:(id)a5 options:(int64_t)a6 completionHandler:(id)a7;
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 protectionClass:(id)a4 forBundleID:(id)a5 fromClient:(id)a6 options:(int64_t)a7 completionHandler:(id)a8;
-- (void)deleteSearchableItemsWithFileProviderDomains:(id)a3 completionHandler:(id)a4;
-- (void)deleteSearchableItemsWithPersonaIds:(id)a3 completionHandler:(id)a4;
-- (void)deleteTouchfileForMigrationStep:(id)a3;
-- (void)fetchAttributes:(id)a3 protectionClass:(id)a4 bundleID:(id)a5 identifiers:(id)a6 userCtx:(id)a7 flags:(unsigned int)a8 qos:(unsigned int)a9 completionHandler:(id)a10;
-- (void)fetchAttributesForProtectionClass:(id)a3 attributes:(id)a4 bundleID:(id)a5 identifiers:(id)a6 userCtx:(id)a7 flags:(int)a8 completion:(id)a9;
-- (void)fetchBundleIdsForProtectionClass:(id)a3 completionHandler:(id)a4;
-- (void)fetchCacheFileDescriptorsForProtectionClass:(id)a3 bundleID:(id)a4 identifiers:(id)a5 userCtx:(id)a6 flags:(unsigned int)a7 qos:(unsigned int)a8 completionHandler:(id)a9;
-- (void)fetchLastClientStateWithProtectionClass:(id)a3 forBundleID:(id)a4 clientStateName:(id)a5 options:(int64_t)a6 completionHandler:(id)a7;
-- (void)fileProviderActiveProvidersChanged:(id)a3;
+- (void)deleteActionsBeforeTime:(double)time completionHandler:(id)handler;
+- (void)deleteActionsWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)deleteAllInteractionsWithBundleID:(id)d completionHandler:(id)handler;
+- (void)deleteAllUserActivities:(id)activities fromClient:(id)client completionHandler:(id)handler;
+- (void)deleteSearchableItemsSinceDate:(id)date protectionClass:(id)class forBundleID:(id)d options:(int64_t)options completionHandler:(id)handler;
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers protectionClass:(id)class forBundleID:(id)d fromClient:(id)client options:(int64_t)options completionHandler:(id)handler;
+- (void)deleteSearchableItemsWithFileProviderDomains:(id)domains completionHandler:(id)handler;
+- (void)deleteSearchableItemsWithPersonaIds:(id)ids completionHandler:(id)handler;
+- (void)deleteTouchfileForMigrationStep:(id)step;
+- (void)fetchAttributes:(id)attributes protectionClass:(id)class bundleID:(id)d identifiers:(id)identifiers userCtx:(id)ctx flags:(unsigned int)flags qos:(unsigned int)qos completionHandler:(id)self0;
+- (void)fetchAttributesForProtectionClass:(id)class attributes:(id)attributes bundleID:(id)d identifiers:(id)identifiers userCtx:(id)ctx flags:(int)flags completion:(id)completion;
+- (void)fetchBundleIdsForProtectionClass:(id)class completionHandler:(id)handler;
+- (void)fetchCacheFileDescriptorsForProtectionClass:(id)class bundleID:(id)d identifiers:(id)identifiers userCtx:(id)ctx flags:(unsigned int)flags qos:(unsigned int)qos completionHandler:(id)handler;
+- (void)fetchLastClientStateWithProtectionClass:(id)class forBundleID:(id)d clientStateName:(id)name options:(int64_t)options completionHandler:(id)handler;
+- (void)fileProviderActiveProvidersChanged:(id)changed;
 - (void)fileProviderInfoSetup;
-- (void)finishIndexingWhileLocked:(id)a3 protectionClass:(id)a4 completionHandler:(id)a5;
+- (void)finishIndexingWhileLocked:(id)locked protectionClass:(id)class completionHandler:(id)handler;
 - (void)flush;
-- (void)getDBLogsWithCompletionHandler:(id)a3;
-- (void)handleAssetsCommand:(id)a3;
-- (void)handleRankingCommand:(id)a3 completion:(id)a4;
-- (void)indexFromBundle:(id)a3 protectionClass:(id)a4 personaID:(id)a5 options:(int64_t)a6 items:(id)a7 itemsText:(id)a8 itemsHTML:(id)a9 clientState:(id)a10 expectedClientState:(id)a11 clientStateName:(id)a12 deletes:(id)a13 canCreateNewIndex:(BOOL)a14 completionHandler:(id)a15;
-- (void)indexSearchableItems:(id)a3 deleteSearchableItemsWithIdentifiers:(id)a4 clientState:(id)a5 expectedClientState:(id)a6 clientStateName:(id)a7 protectionClass:(id)a8 forBundleID:(id)a9 options:(int64_t)a10 completionHandler:(id)a11;
-- (void)indexSearchableItems:(id)a3 deleteSearchableItemsWithIdentifiers:(id)a4 clientState:(id)a5 protectionClass:(id)a6 forBundleID:(id)a7 options:(int64_t)a8 completionHandler:(id)a9;
+- (void)getDBLogsWithCompletionHandler:(id)handler;
+- (void)handleAssetsCommand:(id)command;
+- (void)handleRankingCommand:(id)command completion:(id)completion;
+- (void)indexFromBundle:(id)bundle protectionClass:(id)class personaID:(id)d options:(int64_t)options items:(id)items itemsText:(id)text itemsHTML:(id)l clientState:(id)self0 expectedClientState:(id)self1 clientStateName:(id)self2 deletes:(id)self3 canCreateNewIndex:(BOOL)self4 completionHandler:(id)self5;
+- (void)indexSearchableItems:(id)items deleteSearchableItemsWithIdentifiers:(id)identifiers clientState:(id)state expectedClientState:(id)clientState clientStateName:(id)name protectionClass:(id)class forBundleID:(id)d options:(int64_t)self0 completionHandler:(id)self1;
+- (void)indexSearchableItems:(id)items deleteSearchableItemsWithIdentifiers:(id)identifiers clientState:(id)state protectionClass:(id)class forBundleID:(id)d options:(int64_t)options completionHandler:(id)handler;
 - (void)init;
-- (void)issueBundleFixup:(id)a3 completionHandler:(id)a4;
-- (void)issueCleanup:(id)a3 flags:(int)a4;
-- (void)issueConsistencyCheck:(id)a3;
-- (void)issueDefrag:(id)a3 group:(id)a4;
-- (void)issueDumpForward:(unint64_t)a3 completionHandler:(id)a4;
-- (void)issueDumpReverse:(unint64_t)a3 completionHandler:(id)a4;
-- (void)issueDuplicateOidCheck:(id)a3;
-- (void)issueDuplicateOidCheckWithGroup:(id)a3 protected:(BOOL)a4;
+- (void)issueBundleFixup:(id)fixup completionHandler:(id)handler;
+- (void)issueCleanup:(id)cleanup flags:(int)flags;
+- (void)issueConsistencyCheck:(id)check;
+- (void)issueDefrag:(id)defrag group:(id)group;
+- (void)issueDumpForward:(unint64_t)forward completionHandler:(id)handler;
+- (void)issueDumpReverse:(unint64_t)reverse completionHandler:(id)handler;
+- (void)issueDuplicateOidCheck:(id)check;
+- (void)issueDuplicateOidCheckWithGroup:(id)group protected:(BOOL)protected;
 - (void)issueHeartbeat;
-- (void)issueMessagesFixup:(id)a3;
-- (void)issuePathFixup:(id)a3;
-- (void)issueRepair:(id)a3;
-- (void)issueResolveFPItem:(id)a3 completionHandler:(id)a4;
-- (void)issueResolveFPItemForBundle:(id)a3 domain:(id)a4 identifier:(id)a5 completionHandler:(id)a6;
-- (void)issueResolveFPItemForURL:(id)a3 completionHandler:(id)a4;
+- (void)issueMessagesFixup:(id)fixup;
+- (void)issuePathFixup:(id)fixup;
+- (void)issueRepair:(id)repair;
+- (void)issueResolveFPItem:(id)item completionHandler:(id)handler;
+- (void)issueResolveFPItemForBundle:(id)bundle domain:(id)domain identifier:(id)identifier completionHandler:(id)handler;
+- (void)issueResolveFPItemForURL:(id)l completionHandler:(id)handler;
 - (void)issueSharedDocumentAttributeFixup;
-- (void)issueSplit:(id)a3;
+- (void)issueSplit:(id)split;
 - (void)locked;
 - (void)lockedCx;
 - (void)locking;
 - (void)lockingCx;
-- (void)markIndexPurgeable:(BOOL)a3;
-- (void)mergeWithProtectionClasses:(id)a3 power:(BOOL)a4 inferSpecialIndexes:(BOOL)a5 completionHandler:(id)a6;
-- (void)migrateForced:(BOOL)a3;
+- (void)markIndexPurgeable:(BOOL)purgeable;
+- (void)mergeWithProtectionClasses:(id)classes power:(BOOL)power inferSpecialIndexes:(BOOL)indexes completionHandler:(id)handler;
+- (void)migrateForced:(BOOL)forced;
 - (void)moveBackMailToClassA;
 - (void)moveMailToClassC;
 - (void)moveMailToClassCWithClone;
 - (void)moveMailToClassCWithoutClone;
-- (void)performIndexerTask:(id)a3 completionHandler:(id)a4;
-- (void)performIndexerTask:(id)a3 withIndexExtensionsAndCompletionHandler:(id)a4;
+- (void)performIndexerTask:(id)task completionHandler:(id)handler;
+- (void)performIndexerTask:(id)task withIndexExtensionsAndCompletionHandler:(id)handler;
 - (void)personaListDidUpdate;
 - (void)powerStateChanged;
 - (void)preheat;
-- (void)prepareIndexingWhileLocked:(id)a3 protectionClass:(id)a4 holdAssertionFor:(double)a5 completionHandler:(id)a6;
-- (void)processSearchString:(id)a3 intoTrimmedString:(id *)a4 andTokens:(id *)a5;
-- (void)queryPreheat:(id)a3;
+- (void)prepareIndexingWhileLocked:(id)locked protectionClass:(id)class holdAssertionFor:(double)for completionHandler:(id)handler;
+- (void)processSearchString:(id)string intoTrimmedString:(id *)trimmedString andTokens:(id *)tokens;
+- (void)queryPreheat:(id)preheat;
 - (void)recycleAndPurgeIndex;
-- (void)recycleIndex:(BOOL)a3;
-- (void)registerCacheDeleteCallbackForVolumePath:(id)a3;
-- (void)reindexAllItemsWithIndexers:(id)a3 reason:(id)a4 completionHandler:(id)a5;
+- (void)recycleIndex:(BOOL)index;
+- (void)registerCacheDeleteCallbackForVolumePath:(id)path;
+- (void)reindexAllItemsWithIndexers:(id)indexers reason:(id)reason completionHandler:(id)handler;
 - (void)restoreIndexAndClearPurgeable;
 - (void)resume;
-- (void)revokeExpiredItems:(id)a3 activity:(id)a4 protected:(BOOL)a5;
-- (void)rewriteFirstPassQueryWithQueryString:(id)a3 context:(id)a4 trimmedSearchStringTokens:(id)a5 populateDateSynonyms:(BOOL)a6;
-- (void)rewriteQueryWithQueryString:(id)a3 context:(id)a4 matchInfo:(id)a5 rewriteHandler:(id)a6;
-- (void)setServiceName:(id)a3;
-- (void)setTouchfileExistsForMigrationStep:(id)a3;
-- (void)shrink:(unint64_t)a3;
+- (void)revokeExpiredItems:(id)items activity:(id)activity protected:(BOOL)protected;
+- (void)rewriteFirstPassQueryWithQueryString:(id)string context:(id)context trimmedSearchStringTokens:(id)tokens populateDateSynonyms:(BOOL)synonyms;
+- (void)rewriteQueryWithQueryString:(id)string context:(id)context matchInfo:(id)info rewriteHandler:(id)handler;
+- (void)setServiceName:(id)name;
+- (void)setTouchfileExistsForMigrationStep:(id)step;
+- (void)shrink:(unint64_t)shrink;
 - (void)shutdown;
 - (void)start;
-- (void)startQueryTask:(id)a3;
-- (void)topKTerms:(id)a3 completionHandler:(id)a4;
-- (void)transferDeleteJournalsForProtectionClass:(id)a3 toDirectory:(int)a4 completionHandler:(id)a5;
+- (void)startQueryTask:(id)task;
+- (void)topKTerms:(id)terms completionHandler:(id)handler;
+- (void)transferDeleteJournalsForProtectionClass:(id)class toDirectory:(int)directory completionHandler:(id)handler;
 - (void)unlock;
 - (void)upgradeCheck;
-- (void)userPerformedAction:(id)a3 withItem:(id)a4 protectionClass:(id)a5 forBundleID:(id)a6 personaID:(id)a7;
-- (void)validateIndexers:(id)a3 outFileDescriptor:(int)a4;
-- (void)validateVectors:(id)a3 outFileDescriptor:(int)a4;
-- (void)willModifySearchableItemsWithIdentifiers:(id)a3 protectionClass:(id)a4 forBundleID:(id)a5 options:(int64_t)a6 completionHandler:(id)a7;
+- (void)userPerformedAction:(id)action withItem:(id)item protectionClass:(id)class forBundleID:(id)d personaID:(id)iD;
+- (void)validateIndexers:(id)indexers outFileDescriptor:(int)descriptor;
+- (void)validateVectors:(id)vectors outFileDescriptor:(int)descriptor;
+- (void)willModifySearchableItemsWithIdentifiers:(id)identifiers protectionClass:(id)class forBundleID:(id)d options:(int64_t)options completionHandler:(id)handler;
 - (void)wipeCoreSpotlightIndexForTrial;
-- (void)writeFileProviderBundleMap:(id)a3 fileProviderBundleIDs:(id)a4;
+- (void)writeFileProviderBundleMap:(id)map fileProviderBundleIDs:(id)ds;
 @end
 
 @implementation SPCoreSpotlightIndexer
@@ -221,15 +221,15 @@
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_fileProviderMonitor);
-    v5 = [v4 removedDomainFilterQueries];
+    removedDomainFilterQueries = [v4 removedDomainFilterQueries];
   }
 
   else
   {
-    v5 = 0;
+    removedDomainFilterQueries = 0;
   }
 
-  return v5;
+  return removedDomainFilterQueries;
 }
 
 - (CSIndexExtensionDelegate)extensionDelegate
@@ -262,14 +262,14 @@
 
   if ([sDelegate deviceFirstUnlockedInSB])
   {
-    v4 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCA190]];
+    concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+    v5 = [concreteIndexers objectForKeyedSubscript:*MEMORY[0x277CCA190]];
     [v5 resumeIndex];
 
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCA198]];
+    v6 = [concreteIndexers objectForKeyedSubscript:*MEMORY[0x277CCA198]];
     [v6 resumeIndex];
 
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCA1A8]];
+    v7 = [concreteIndexers objectForKeyedSubscript:*MEMORY[0x277CCA1A8]];
     [v7 resumeIndex];
   }
 
@@ -290,7 +290,7 @@
 + (void)initialize
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     memset(v15, 0, sizeof(v15));
     v14 = uuidBytesToString;
@@ -347,15 +347,15 @@
   [v3 preheat];
 }
 
-+ (void)deviceStateWillChange:(BOOL)a3
++ (void)deviceStateWillChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v9 = *MEMORY[0x277D85DE8];
   v4 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "locked";
-    if (v3)
+    if (changeCopy)
     {
       v5 = "unlocked";
     }
@@ -365,7 +365,7 @@
     _os_log_impl(&dword_231A35000, v4, OS_LOG_TYPE_DEFAULT, "### device state %s", &v7, 0xCu);
   }
 
-  if (v3)
+  if (changeCopy)
   {
     SIResumeForUnlock();
   }
@@ -373,12 +373,12 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setMemoryPressureStatus:(unint64_t)a3
++ (void)setMemoryPressureStatus:(unint64_t)status
 {
   Current = CFAbsoluteTimeGetCurrent();
-  s_last_memory_pressure_status = a3;
+  s_last_memory_pressure_status = status;
   v5 = isAppleInternalInstall();
-  if (a3 == 32)
+  if (status == 32)
   {
     if (v5)
     {
@@ -386,13 +386,13 @@
       if (Current - *&setMemoryPressureStatus__lastABCReport > 10800.0)
       {
         setMemoryPressureStatus__lastABCReport = *&Current;
-        v7 = [MEMORY[0x277CCAC38] processInfo];
-        v8 = [v7 processName];
-        v9 = v8;
+        processInfo = [MEMORY[0x277CCAC38] processInfo];
+        processName = [processInfo processName];
+        v9 = processName;
         v10 = @"unknown";
-        if (v8)
+        if (processName)
         {
-          v10 = v8;
+          v10 = processName;
         }
 
         v11 = v10;
@@ -408,17 +408,17 @@
   _SISetMemoryPressureStatus();
   v14 = MEMORY[0x277CC3538];
 
-  [v14 setMemoryPressureStatus:a3];
+  [v14 setMemoryPressureStatus:status];
 }
 
 + (void)deactivate
 {
-  v2 = [sIndexer extensionDelegate];
+  extensionDelegate = [sIndexer extensionDelegate];
 
-  if (v2)
+  if (extensionDelegate)
   {
-    v3 = [MEMORY[0x277CC3538] sharedManager];
-    [v3 loadExtensions];
+    mEMORY[0x277CC3538] = [MEMORY[0x277CC3538] sharedManager];
+    [mEMORY[0x277CC3538] loadExtensions];
   }
 }
 
@@ -472,25 +472,25 @@ void __46__SPCoreSpotlightIndexer_allProtectionClasses__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setIndexerDelegate:(id)a3
++ (void)setIndexerDelegate:(id)delegate
 {
-  v3 = a3;
-  if (v3 && sIndexer)
+  delegateCopy = delegate;
+  if (delegateCopy && sIndexer)
   {
     +[SPCoreSpotlightIndexer setIndexerDelegate:];
   }
 
   v4 = sDelegate;
-  sDelegate = v3;
-  v7 = v3;
+  sDelegate = delegateCopy;
+  v7 = delegateCopy;
 
   sPrivate = [v7 privateIndex];
-  v5 = [v7 indexQueue];
+  indexQueue = [v7 indexQueue];
   v6 = sIndexQueue;
-  sIndexQueue = v5;
+  sIndexQueue = indexQueue;
 }
 
-- (unint64_t)purgeableVectorIndexSize:(BOOL)a3
+- (unint64_t)purgeableVectorIndexSize:(BOOL)size
 {
   v8 = 0;
   v9 = &v8;
@@ -503,7 +503,7 @@ void __46__SPCoreSpotlightIndexer_allProtectionClasses__block_invoke()
   block[3] = &unk_2789361D8;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  sizeCopy = size;
   dispatch_sync(indexQueue, block);
   v4 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -531,7 +531,7 @@ uint64_t __51__SPCoreSpotlightIndexer_purgeableVectorIndexSize___block_invoke_2(
   return result;
 }
 
-- (unint64_t)purgeVectorIndex:(BOOL)a3
+- (unint64_t)purgeVectorIndex:(BOOL)index
 {
   v8 = 0;
   v9 = &v8;
@@ -542,7 +542,7 @@ uint64_t __51__SPCoreSpotlightIndexer_purgeableVectorIndexSize___block_invoke_2(
   block[1] = 3221225472;
   block[2] = __43__SPCoreSpotlightIndexer_purgeVectorIndex___block_invoke;
   block[3] = &unk_2789361D8;
-  v7 = a3;
+  indexCopy = index;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(indexQueue, block);
@@ -590,10 +590,10 @@ void __43__SPCoreSpotlightIndexer_purgeVectorIndex___block_invoke_2(uint64_t a1,
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)storageSizeForFolder:(id)a3
++ (unint64_t)storageSizeForFolder:(id)folder
 {
   v44[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  folderCopy = folder;
   v4 = *MEMORY[0x277CBE868];
   v5 = *MEMORY[0x277CBE8A8];
   v44[0] = *MEMORY[0x277CBE868];
@@ -604,10 +604,10 @@ void __43__SPCoreSpotlightIndexer_purgeVectorIndex___block_invoke_2(uint64_t a1,
   v44[2] = *MEMORY[0x277CBE7D0];
   v44[3] = v31;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:4];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v28 = v6;
-  v29 = v3;
-  v8 = [v7 enumeratorAtURL:v3 includingPropertiesForKeys:v6 options:0 errorHandler:&__block_literal_global_2104];
+  v29 = folderCopy;
+  v8 = [defaultManager enumeratorAtURL:folderCopy includingPropertiesForKeys:v6 options:0 errorHandler:&__block_literal_global_2104];
 
   v41 = 0u;
   v42 = 0u;
@@ -637,7 +637,7 @@ void __43__SPCoreSpotlightIndexer_purgeVectorIndex___block_invoke_2(uint64_t a1,
         v18 = v17;
         if (v16 && [v17 BOOLValue])
         {
-          v11 += [a1 storageSizeForFolder:v15];
+          v11 += [self storageSizeForFolder:v15];
         }
 
         else
@@ -683,10 +683,10 @@ void __43__SPCoreSpotlightIndexer_purgeVectorIndex___block_invoke_2(uint64_t a1,
   return v11;
 }
 
-- (unint64_t)purgeableIndexSize:(id)a3
+- (unint64_t)purgeableIndexSize:(id)size
 {
   v33 = *MEMORY[0x277D85DE8];
-  v23 = a3;
+  sizeCopy = size;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -710,16 +710,16 @@ void __43__SPCoreSpotlightIndexer_purgeVectorIndex___block_invoke_2(uint64_t a1,
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+        v11 = [concreteIndexers objectForKeyedSubscript:v9];
 
         v12 = MEMORY[0x277CBEBC0];
-        v13 = [v11 _indexPath];
-        v14 = [v12 fileURLWithPath:v13];
+        _indexPath = [v11 _indexPath];
+        v14 = [v12 fileURLWithPath:_indexPath];
         v15 = [SPCoreSpotlightIndexer storageSizeForFolder:v14];
 
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v15];
-        [v23 setValue:v16 forKey:v9];
+        [sizeCopy setValue:v16 forKey:v9];
 
         v17 = logForCSLogCategoryIndex();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -749,20 +749,20 @@ void __43__SPCoreSpotlightIndexer_purgeVectorIndex___block_invoke_2(uint64_t a1,
   return v6;
 }
 
-- (unint64_t)purgeIndexForSize:(unint64_t)a3
+- (unint64_t)purgeIndexForSize:(unint64_t)size
 {
   v66 = *MEMORY[0x277D85DE8];
   v5 = [(SPCoreSpotlightIndexer *)self purgeableVectorIndexSize:1];
-  v45 = self;
+  selfCopy = self;
   v6 = [(SPCoreSpotlightIndexer *)self purgeableVectorIndexSize:0];
-  if (v6 >= a3)
+  if (v6 >= size)
   {
     v39 = v6;
     v40 = logForCSLogCategoryIndex();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       v41 = "purgeable";
-      if (v5 < a3)
+      if (v5 < size)
       {
         v41 = "all";
       }
@@ -774,17 +774,17 @@ void __43__SPCoreSpotlightIndexer_purgeVectorIndex___block_invoke_2(uint64_t a1,
       _os_log_impl(&dword_231A35000, v40, OS_LOG_TYPE_DEFAULT, "CacheDelete: purge %s vectors size: %zu.", v64, 0x16u);
     }
 
-    v38 = [(SPCoreSpotlightIndexer *)v45 purgeVectorIndex:v5 < a3];
+    v38 = [(SPCoreSpotlightIndexer *)selfCopy purgeVectorIndex:v5 < size];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     *v64 = 0;
     *&v64[8] = v64;
     *&v64[16] = 0x2020000000;
     v65 = 0;
-    if ([(SPCoreSpotlightIndexer *)self purgeableIndexSize:v7]> a3 && v5 != 0)
+    if ([(SPCoreSpotlightIndexer *)self purgeableIndexSize:dictionary]> size && v5 != 0)
     {
       v9 = logForCSLogCategoryIndex();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -794,39 +794,39 @@ void __43__SPCoreSpotlightIndexer_purgeVectorIndex___block_invoke_2(uint64_t a1,
         _os_log_impl(&dword_231A35000, v9, OS_LOG_TYPE_DEFAULT, "CacheDelete: purge purgeable vectors size: %zu.", buf, 0xCu);
       }
 
-      v10 = [(SPCoreSpotlightIndexer *)v45 purgeVectorIndex:0];
+      v10 = [(SPCoreSpotlightIndexer *)selfCopy purgeVectorIndex:0];
       v11 = *(*&v64[8] + 24) + v10;
       *(*&v64[8] + 24) = v11;
-      a3 -= v11;
+      size -= v11;
     }
 
-    [v7 removeAllObjects];
-    v12 = [(SPCoreSpotlightIndexer *)v45 purgeableIndexSize:v7];
-    v13 = v12 - a3;
-    if (v12 > a3)
+    [dictionary removeAllObjects];
+    v12 = [(SPCoreSpotlightIndexer *)selfCopy purgeableIndexSize:dictionary];
+    v13 = v12 - size;
+    if (v12 > size)
     {
-      v14 = [v7 objectForKeyedSubscript:@"Priority"];
-      v15 = [v14 unsignedLongLongValue];
+      v14 = [dictionary objectForKeyedSubscript:@"Priority"];
+      unsignedLongLongValue = [v14 unsignedLongLongValue];
 
-      if (v15 - 1 < v13)
+      if (unsignedLongLongValue - 1 < v13)
       {
-        [v7 removeObjectForKey:@"Priority"];
-        v13 -= v15;
+        [dictionary removeObjectForKey:@"Priority"];
+        v13 -= unsignedLongLongValue;
       }
 
       v16 = *MEMORY[0x277CCA1A0];
-      v17 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCA1A0]];
-      v18 = [v17 unsignedLongLongValue];
+      v17 = [dictionary objectForKeyedSubscript:*MEMORY[0x277CCA1A0]];
+      unsignedLongLongValue2 = [v17 unsignedLongLongValue];
 
-      if (v18 - 1 < v13)
+      if (unsignedLongLongValue2 - 1 < v13)
       {
-        [v7 removeObjectForKey:v16];
-        v13 -= v18;
+        [dictionary removeObjectForKey:v16];
+        v13 -= unsignedLongLongValue2;
       }
 
       if (v13)
       {
-        [v7 keysSortedByValueUsingComparator:&__block_literal_global_2108];
+        [dictionary keysSortedByValueUsingComparator:&__block_literal_global_2108];
         v56 = 0u;
         v57 = 0u;
         v54 = 0u;
@@ -845,13 +845,13 @@ LABEL_17:
             }
 
             v23 = *(*(&v54 + 1) + 8 * v22);
-            v24 = [v7 objectForKeyedSubscript:v23];
-            v25 = [v24 unsignedLongLongValue];
+            v24 = [dictionary objectForKeyedSubscript:v23];
+            unsignedLongLongValue3 = [v24 unsignedLongLongValue];
 
-            if (v25 - 1 < v13)
+            if (unsignedLongLongValue3 - 1 < v13)
             {
-              [v7 removeObjectForKey:v23];
-              v13 -= v25;
+              [dictionary removeObjectForKey:v23];
+              v13 -= unsignedLongLongValue3;
               if (!v13)
               {
                 break;
@@ -878,7 +878,7 @@ LABEL_17:
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v27 = v7;
+    v27 = dictionary;
     v28 = [v27 countByEnumeratingWithState:&v50 objects:v62 count:16];
     if (v28)
     {
@@ -896,18 +896,18 @@ LABEL_17:
 
           v32 = *(*(&v50 + 1) + 8 * i);
           v33 = [v27 objectForKeyedSubscript:{v32, v44}];
-          v34 = [v33 unsignedLongLongValue];
+          unsignedLongLongValue4 = [v33 unsignedLongLongValue];
 
           dispatch_group_enter(v26);
           v35 = logForCSLogCategoryIndex();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
           {
             v36 = v32;
-            v37 = [v32 UTF8String];
+            uTF8String = [v32 UTF8String];
             *buf = v44;
-            v59 = v37;
+            v59 = uTF8String;
             v60 = 2048;
-            v61 = v34;
+            v61 = unsignedLongLongValue4;
             _os_log_impl(&dword_231A35000, v35, OS_LOG_TYPE_DEFAULT, "CacheDelete: purge indexer %s size: %zu.", buf, 0x16u);
           }
 
@@ -917,9 +917,9 @@ LABEL_17:
           v46[3] = &unk_278936240;
           v46[4] = v32;
           v48 = v64;
-          v49 = v34;
+          v49 = unsignedLongLongValue4;
           v47 = v26;
-          [(SPCoreSpotlightIndexer *)v45 deleteAllSearchableItemsWithBundleID:&stru_2846BD100 fromClient:@"com.apple.CacheDelete" protectionClass:v32 shouldGC:1 deleteAllReason:0 completionHandler:v46];
+          [(SPCoreSpotlightIndexer *)selfCopy deleteAllSearchableItemsWithBundleID:&stru_2846BD100 fromClient:@"com.apple.CacheDelete" protectionClass:v32 shouldGC:1 deleteAllReason:0 completionHandler:v46];
         }
 
         v28 = [v27 countByEnumeratingWithState:&v50 objects:v62 count:16];
@@ -975,23 +975,23 @@ void __44__SPCoreSpotlightIndexer_purgeIndexForSize___block_invoke_2112(uint64_t
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)registerCacheDeleteCallbackForVolumePath:(id)a3
+- (void)registerCacheDeleteCallbackForVolumePath:(id)path
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [sDelegate cacheDeleteId];
-    if (v5)
+    cacheDeleteId = [sDelegate cacheDeleteId];
+    if (cacheDeleteId)
     {
-      v6 = v5;
+      v6 = cacheDeleteId;
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __67__SPCoreSpotlightIndexer_registerCacheDeleteCallbackForVolumePath___block_invoke;
       v20[3] = &unk_278936268;
-      v7 = v4;
+      v7 = pathCopy;
       v21 = v7;
-      v22 = self;
+      selfCopy = self;
       v8 = MEMORY[0x2383760E0](v20);
       v14 = MEMORY[0x277D85DD0];
       v15 = 3221225472;
@@ -999,7 +999,7 @@ void __44__SPCoreSpotlightIndexer_purgeIndexForSize___block_invoke_2112(uint64_t
       v17 = &unk_278936268;
       v9 = v7;
       v18 = v9;
-      v19 = self;
+      selfCopy2 = self;
       v10 = MEMORY[0x2383760E0](&v14);
       v11 = logForCSLogCategoryIndex();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1545,12 +1545,12 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
 {
   v14 = *MEMORY[0x277D85DE8];
   bzero(&v13, 0x878uLL);
-  v2 = [sDelegate indexDirectory];
-  v3 = [v2 cStringUsingEncoding:4];
+  indexDirectory = [sDelegate indexDirectory];
+  v3 = [indexDirectory cStringUsingEncoding:4];
 
-  LODWORD(v2) = statfs(v3, &v13);
+  LODWORD(indexDirectory) = statfs(v3, &v13);
   v4 = *__error();
-  if (v2)
+  if (indexDirectory)
   {
     v5 = logForCSLogCategoryIndex();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1575,29 +1575,29 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
   return v6;
 }
 
-- (id)concreteIndexerForProtectionClass:(id)a3 andBundleID:(id)a4
+- (id)concreteIndexerForProtectionClass:(id)class andBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  classCopy = class;
+  dCopy = d;
   v8 = *MEMORY[0x277CCA1B8];
-  if ([(__CFString *)v6 isEqualToString:*MEMORY[0x277CCA1B8]])
+  if ([(__CFString *)classCopy isEqualToString:*MEMORY[0x277CCA1B8]])
   {
     v9 = *MEMORY[0x277CCA1A0];
 
-    v6 = v9;
+    classCopy = v9;
   }
 
-  if (sUsePriorityIndex == 1 && [v7 length] && ((-[__CFString isEqual:](v6, "isEqual:", *MEMORY[0x277CCA1A0]) & 1) != 0 || -[__CFString isEqual:](v6, "isEqual:", v8)) && objc_msgSend(sPriorityBundleIds, "containsObject:", v7))
+  if (sUsePriorityIndex == 1 && [dCopy length] && ((-[__CFString isEqual:](classCopy, "isEqual:", *MEMORY[0x277CCA1A0]) & 1) != 0 || -[__CFString isEqual:](classCopy, "isEqual:", v8)) && objc_msgSend(sPriorityBundleIds, "containsObject:", dCopy))
   {
 
-    v6 = @"Priority";
+    classCopy = @"Priority";
   }
 
-  if (sUseMailIndex == 1 && [v7 isEqualToString:@"com.apple.mobilemail"])
+  if (sUseMailIndex == 1 && [dCopy isEqualToString:@"com.apple.mobilemail"])
   {
     if (sMailClassCMigrationComplete)
     {
-      if (([(__CFString *)v6 isEqualToString:*MEMORY[0x277CCA1A0]]& 1) == 0 && ![(__CFString *)v6 isEqualToString:@"MobileMailIndex"])
+      if (([(__CFString *)classCopy isEqualToString:*MEMORY[0x277CCA1A0]]& 1) == 0 && ![(__CFString *)classCopy isEqualToString:@"MobileMailIndex"])
       {
         v10 = logForCSLogCategoryDefault();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1606,7 +1606,7 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
         }
       }
 
-      v6 = @"MobileMailIndex";
+      classCopy = @"MobileMailIndex";
     }
 
     else
@@ -1617,76 +1617,76 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
         [SPCoreSpotlightIndexer concreteIndexerForProtectionClass:andBundleID:];
       }
 
-      v6 = &stru_2846BD100;
+      classCopy = &stru_2846BD100;
     }
   }
 
-  v12 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-  v13 = [v12 objectForKeyedSubscript:v6];
+  concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+  v13 = [concreteIndexers objectForKeyedSubscript:classCopy];
 
   return v13;
 }
 
 - (id)defaultIndexer
 {
-  v2 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-  v3 = [v2 objectForKey:*MEMORY[0x277CCA1A0]];
+  concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+  v3 = [concreteIndexers objectForKey:*MEMORY[0x277CCA1A0]];
 
   return v3;
 }
 
 - (id)priorityIndexer
 {
-  v2 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-  v3 = [v2 objectForKey:@"Priority"];
+  concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+  v3 = [concreteIndexers objectForKey:@"Priority"];
 
   return v3;
 }
 
 - (id)priorityIndexPath
 {
-  v2 = [sDelegate indexDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"Priority"];
+  indexDirectory = [sDelegate indexDirectory];
+  v3 = [indexDirectory stringByAppendingPathComponent:@"Priority"];
 
   return v3;
 }
 
 - (id)priorityIndexAvailableTouchFilePath
 {
-  v2 = [sDelegate indexDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"priorityIndexAvailable"];
+  indexDirectory = [sDelegate indexDirectory];
+  v3 = [indexDirectory stringByAppendingPathComponent:@"priorityIndexAvailable"];
 
   return v3;
 }
 
 - (id)mailClassCFileTransferCompleteTouchFile
 {
-  v2 = [sDelegate indexDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"CrystalEMailFileTransferComplete.touch"];
+  indexDirectory = [sDelegate indexDirectory];
+  v3 = [indexDirectory stringByAppendingPathComponent:@"CrystalEMailFileTransferComplete.touch"];
 
   return v3;
 }
 
 - (id)mailClassCMigrationCompleteTouchFile
 {
-  v2 = [sDelegate indexDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"CrystalEMailMigrationComplete.touch"];
+  indexDirectory = [sDelegate indexDirectory];
+  v3 = [indexDirectory stringByAppendingPathComponent:@"CrystalEMailMigrationComplete.touch"];
 
   return v3;
 }
 
 - (id)mailClassCIndexPath
 {
-  v2 = [sDelegate indexDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"MobileMailIndex"];
+  indexDirectory = [sDelegate indexDirectory];
+  v3 = [indexDirectory stringByAppendingPathComponent:@"MobileMailIndex"];
 
   return v3;
 }
 
 - (id)spotlightCacheFilePrefix
 {
-  v2 = [sDelegate indexDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"spotlightcache"];
+  indexDirectory = [sDelegate indexDirectory];
+  v3 = [indexDirectory stringByAppendingPathComponent:@"spotlightcache"];
 
   return v3;
 }
@@ -1701,8 +1701,8 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
   else
   {
     v3 = sUsePriorityIndex;
-    v4 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-    v5 = v4;
+    concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+    v5 = concreteIndexers;
     if (v3 == 1)
     {
       v6 = @"Priority";
@@ -1713,7 +1713,7 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
       v6 = *MEMORY[0x277CCA1A0];
     }
 
-    v2 = [v4 objectForKeyedSubscript:v6];
+    v2 = [concreteIndexers objectForKeyedSubscript:v6];
   }
 
   return v2;
@@ -1729,8 +1729,8 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
   else
   {
     v3 = sUsePriorityIndex;
-    v4 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-    v5 = v4;
+    concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+    v5 = concreteIndexers;
     if (v3 == 1)
     {
       v6 = @"Priority";
@@ -1741,7 +1741,7 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
       v6 = *MEMORY[0x277CCA1A0];
     }
 
-    v2 = [v4 objectForKeyedSubscript:v6];
+    v2 = [concreteIndexers objectForKeyedSubscript:v6];
   }
 
   return v2;
@@ -1770,9 +1770,9 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
       [SPCoreSpotlightIndexer init];
     }
 
-    v5 = [sDelegate indexQueue];
+    indexQueue = [sDelegate indexQueue];
     v6 = *(v2 + 29);
-    *(v2 + 29) = v5;
+    *(v2 + 29) = indexQueue;
 
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_attr_make_with_qos_class(v7, QOS_CLASS_UTILITY, 0);
@@ -1780,29 +1780,29 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
     v10 = *(v2 + 28);
     *(v2 + 28) = v9;
 
-    v11 = [sDelegate firstUnlockQueue];
+    firstUnlockQueue = [sDelegate firstUnlockQueue];
     v12 = *(v2 + 30);
-    *(v2 + 30) = v11;
+    *(v2 + 30) = firstUnlockQueue;
 
     if ([sDelegate indexingEnabled])
     {
       v13 = objc_alloc(MEMORY[0x277CBEB58]);
       v14 = MEMORY[0x277CBEA60];
-      v15 = [v2 personaListURL];
-      v16 = [v14 arrayWithContentsOfURL:v15];
+      personaListURL = [v2 personaListURL];
+      v16 = [v14 arrayWithContentsOfURL:personaListURL];
       v17 = [v13 initWithArray:v16];
       v18 = *(v2 + 26);
       *(v2 + 26) = v17;
 
       if ((sPrivate & 1) == 0)
       {
-        v19 = [MEMORY[0x277D77BF8] sharedManager];
+        mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
         v123[0] = MEMORY[0x277D85DD0];
         v123[1] = 3221225472;
         v123[2] = __30__SPCoreSpotlightIndexer_init__block_invoke_2_2174;
         v123[3] = &unk_2789348E8;
         v124 = v2;
-        [v19 registerPersonaListUpdateObserver:v124 withMachService:@"com.apple.searchd.personaobserver" completionHandler:v123];
+        [mEMORY[0x277D77BF8] registerPersonaListUpdateObserver:v124 withMachService:@"com.apple.searchd.personaobserver" completionHandler:v123];
       }
 
       v20 = objc_opt_new();
@@ -1842,13 +1842,13 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
         objc_destroyWeak(&v121);
       }
 
-      v30 = [objc_opt_class() allProtectionClasses];
-      v81 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v30, "count") + 1}];
+      allProtectionClasses = [objc_opt_class() allProtectionClasses];
+      v81 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(allProtectionClasses, "count") + 1}];
       v118 = 0u;
       v119 = 0u;
       v116 = 0u;
       v117 = 0u;
-      obj = v30;
+      obj = allProtectionClasses;
       v31 = [obj countByEnumeratingWithState:&v116 objects:v126 count:16];
       if (v31)
       {
@@ -1905,14 +1905,14 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
         v40 = objc_alloc_init(MEMORY[0x277CCABD8]);
         [v40 setMaxConcurrentOperationCount:1];
         [v40 setUnderlyingQueue:*(v2 + 29)];
-        v41 = [MEMORY[0x277CCAB98] defaultCenter];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
         v113[1] = MEMORY[0x277D85DD0];
         v113[2] = 3221225472;
         v113[3] = __30__SPCoreSpotlightIndexer_init__block_invoke_2_2183;
         v113[4] = &unk_278934B88;
         objc_copyWeak(&v115, &location);
         v114 = @"com.apple.searchd.indexExtensionMigration.start";
-        v42 = [v41 addObserverForName:? object:? queue:? usingBlock:?];
+        v42 = [defaultCenter addObserverForName:? object:? queue:? usingBlock:?];
         v43 = *(v2 + 19);
         *(v2 + 19) = v42;
 
@@ -1925,7 +1925,7 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
         v44 = v2;
         v111 = v44;
         v112 = obj;
-        v45 = [v41 addObserverForName:@"com.apple.searchd.indexExtensionMigration.finish" object:0 queue:v40 usingBlock:v109];
+        v45 = [defaultCenter addObserverForName:@"com.apple.searchd.indexExtensionMigration.finish" object:0 queue:v40 usingBlock:v109];
         v46 = v44[20];
         v44[20] = v45;
 
@@ -1958,14 +1958,14 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
         [SPCoreSpotlightIndexer init];
       }
 
-      v50 = [MEMORY[0x277CF0810] sharedScheduler];
+      mEMORY[0x277CF0810] = [MEMORY[0x277CF0810] sharedScheduler];
       v51 = *(v2 + 29);
       v103[0] = MEMORY[0x277D85DD0];
       v103[1] = 3221225472;
       v103[2] = __30__SPCoreSpotlightIndexer_init__block_invoke_2214;
       v103[3] = &unk_278936340;
       objc_copyWeak(&v104, &location);
-      [v50 registerForTaskWithIdentifier:@"com.apple.searchd.duplicateOidCheck" usingQueue:v51 launchHandler:v103];
+      [mEMORY[0x277CF0810] registerForTaskWithIdentifier:@"com.apple.searchd.duplicateOidCheck" usingQueue:v51 launchHandler:v103];
 
       v52 = logForCSLogCategoryIndex();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
@@ -1973,14 +1973,14 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
         [SPCoreSpotlightIndexer init];
       }
 
-      v53 = [MEMORY[0x277CF0810] sharedScheduler];
+      mEMORY[0x277CF0810]2 = [MEMORY[0x277CF0810] sharedScheduler];
       v54 = *(v2 + 29);
       v101[0] = MEMORY[0x277D85DD0];
       v101[1] = 3221225472;
       v101[2] = __30__SPCoreSpotlightIndexer_init__block_invoke_2222;
       v101[3] = &unk_278936340;
       objc_copyWeak(&v102, &location);
-      [v53 registerForTaskWithIdentifier:@"com.apple.searchd.duplicateOidCheck.AB" usingQueue:v54 launchHandler:v101];
+      [mEMORY[0x277CF0810]2 registerForTaskWithIdentifier:@"com.apple.searchd.duplicateOidCheck.AB" usingQueue:v54 launchHandler:v101];
 
       v55 = logForCSLogCategoryIndex();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
@@ -2020,7 +2020,7 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
       v94[3] = &unk_278936318;
       objc_copyWeak(&v95, &location);
       xpc_activity_register("com.apple.searchd.heartbeat", v48, v94);
-      v59 = [MEMORY[0x277CF0810] sharedScheduler];
+      mEMORY[0x277CF0810]3 = [MEMORY[0x277CF0810] sharedScheduler];
       v60 = *(v2 + 29);
       v92[0] = MEMORY[0x277D85DD0];
       v92[1] = 3221225472;
@@ -2028,9 +2028,9 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
       v92[3] = &unk_2789363B8;
       v61 = v57;
       v93 = v61;
-      [v59 registerForTaskWithIdentifier:@"com.apple.searchd.reportStorageUsage" usingQueue:v60 launchHandler:v92];
+      [mEMORY[0x277CF0810]3 registerForTaskWithIdentifier:@"com.apple.searchd.reportStorageUsage" usingQueue:v60 launchHandler:v92];
 
-      v62 = [MEMORY[0x277CF0810] sharedScheduler];
+      mEMORY[0x277CF0810]4 = [MEMORY[0x277CF0810] sharedScheduler];
       v63 = *(v2 + 29);
       v90[0] = MEMORY[0x277D85DD0];
       v90[1] = 3221225472;
@@ -2038,7 +2038,7 @@ int *__45__SPCoreSpotlightIndexer_totalIndexDiskSpace__block_invoke()
       v90[3] = &unk_2789363B8;
       v64 = v61;
       v91 = v64;
-      [v62 registerForTaskWithIdentifier:@"com.apple.searchd.reportAppUsage" usingQueue:v63 launchHandler:v90];
+      [mEMORY[0x277CF0810]4 registerForTaskWithIdentifier:@"com.apple.searchd.reportAppUsage" usingQueue:v63 launchHandler:v90];
 
       _SISetVectorIndexDropCallback();
       if ((sPrivate & 1) == 0)
@@ -3734,23 +3734,23 @@ void __30__SPCoreSpotlightIndexer_init__block_invoke_7(uint64_t a1, uint64_t a2,
     _os_log_impl(&dword_231A35000, v3, OS_LOG_TYPE_DEFAULT, "locking from delegate enter", buf, 2u);
   }
 
-  v4 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+  concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
   v5 = SDTransactionCreate(&unk_2846C9368);
   v6 = dispatch_group_create();
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCA190]];
+  v7 = [concreteIndexers objectForKeyedSubscript:*MEMORY[0x277CCA190]];
   [v7 suspendIndexForDeviceLock:v6];
 
-  v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCA198]];
+  v8 = [concreteIndexers objectForKeyedSubscript:*MEMORY[0x277CCA198]];
   [v8 suspendIndexForDeviceLock:v6];
 
-  v9 = [(SPCoreSpotlightIndexer *)self firstUnlockQueue];
+  firstUnlockQueue = [(SPCoreSpotlightIndexer *)self firstUnlockQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__SPCoreSpotlightIndexer_locking__block_invoke;
   block[3] = &unk_278934050;
   v12 = v5;
   v10 = v5;
-  dispatch_group_notify(v6, v9, block);
+  dispatch_group_notify(v6, firstUnlockQueue, block);
 }
 
 void __33__SPCoreSpotlightIndexer_locking__block_invoke(uint64_t a1)
@@ -3784,20 +3784,20 @@ void __33__SPCoreSpotlightIndexer_locking__block_invoke(uint64_t a1)
     _os_log_impl(&dword_231A35000, v3, OS_LOG_TYPE_DEFAULT, "locking Cx from delegate", buf, 2u);
   }
 
-  v4 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+  concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
   v5 = SDTransactionCreate(&unk_2846C9380);
   v6 = dispatch_group_create();
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCA1A8]];
+  v7 = [concreteIndexers objectForKeyedSubscript:*MEMORY[0x277CCA1A8]];
   [v7 suspendIndexForDeviceLock:v6];
 
-  v8 = [(SPCoreSpotlightIndexer *)self firstUnlockQueue];
+  firstUnlockQueue = [(SPCoreSpotlightIndexer *)self firstUnlockQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__SPCoreSpotlightIndexer_lockingCx__block_invoke;
   block[3] = &unk_278934050;
   v11 = v5;
   v9 = v5;
-  dispatch_group_notify(v6, v8, block);
+  dispatch_group_notify(v6, firstUnlockQueue, block);
 }
 
 - (void)lockedCx
@@ -3810,9 +3810,9 @@ void __33__SPCoreSpotlightIndexer_locking__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setServiceName:(id)a3
+- (void)setServiceName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   serviceName = self->_serviceName;
   self->_serviceName = v4;
 
@@ -3881,8 +3881,8 @@ uint64_t __38__SPCoreSpotlightIndexer_upgradeCheck__block_invoke(uint64_t result
     _os_log_impl(&dword_231A35000, v3, OS_LOG_TYPE_DEFAULT, "### _mailClassCMarkFileTransferComplete: Creating touch file", buf, 2u);
   }
 
-  v4 = [(SPCoreSpotlightIndexer *)self mailClassCFileTransferCompleteTouchFile];
-  v5 = open([v4 fileSystemRepresentation], 512, 438);
+  mailClassCFileTransferCompleteTouchFile = [(SPCoreSpotlightIndexer *)self mailClassCFileTransferCompleteTouchFile];
+  v5 = open([mailClassCFileTransferCompleteTouchFile fileSystemRepresentation], 512, 438);
 
   sMailClassCFileTransferComplete = 1;
   if (v5 != -1)
@@ -3900,8 +3900,8 @@ uint64_t __38__SPCoreSpotlightIndexer_upgradeCheck__block_invoke(uint64_t result
     _os_log_impl(&dword_231A35000, v3, OS_LOG_TYPE_DEFAULT, "### _mailClassCMarkMigrationComplete: Creating touch file", buf, 2u);
   }
 
-  v4 = [(SPCoreSpotlightIndexer *)self mailClassCMigrationCompleteTouchFile];
-  v5 = open([v4 fileSystemRepresentation], 512, 438);
+  mailClassCMigrationCompleteTouchFile = [(SPCoreSpotlightIndexer *)self mailClassCMigrationCompleteTouchFile];
+  v5 = open([mailClassCMigrationCompleteTouchFile fileSystemRepresentation], 512, 438);
 
   sMailClassCMigrationComplete = 1;
   if (v5 != -1)
@@ -3917,11 +3917,11 @@ uint64_t __38__SPCoreSpotlightIndexer_upgradeCheck__block_invoke(uint64_t result
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (int)_changeFilesToClassC:(id)a3
+- (int)_changeFilesToClassC:(id)c
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = open([v3 fileSystemRepresentation], 0x8000);
+  cCopy = c;
+  v4 = open([cCopy fileSystemRepresentation], 0x8000);
   if (v4 < 0)
   {
     v11 = logForCSLogCategoryDefault();
@@ -3949,7 +3949,7 @@ LABEL_21:
   }
 
   close(v5);
-  v6 = [v3 stringByAppendingPathComponent:@"index.spotlightV2"];
+  v6 = [cCopy stringByAppendingPathComponent:@"index.spotlightV2"];
   v7 = open([v6 fileSystemRepresentation], 0x8000);
   v8 = logForCSLogCategoryDefault();
   v9 = v8;
@@ -4009,13 +4009,13 @@ LABEL_22:
   v4 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:*MEMORY[0x277CCA190] andBundleID:0];
   [v4 closeIndex];
 
-  v5 = [sDelegate indexDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v3];
+  indexDirectory = [sDelegate indexDirectory];
+  v6 = [indexDirectory stringByAppendingPathComponent:v3];
 
-  v7 = [(SPCoreSpotlightIndexer *)self mailClassCIndexPath];
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  mailClassCIndexPath = [(SPCoreSpotlightIndexer *)self mailClassCIndexPath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v14 = 0;
-  v9 = [v8 moveItemAtPath:v6 toPath:v7 error:&v14];
+  v9 = [defaultManager moveItemAtPath:v6 toPath:mailClassCIndexPath error:&v14];
   v10 = v14;
 
   if (v9)
@@ -4047,7 +4047,7 @@ LABEL_22:
       *buf = 138412802;
       v16 = v6;
       v17 = 2112;
-      v18 = v7;
+      v18 = mailClassCIndexPath;
       v19 = 2112;
       v20 = v10;
       _os_log_error_impl(&dword_231A35000, v11, OS_LOG_TYPE_ERROR, "### _finishFileTransferToClassCMailIndex: Failed to move class A mail index path:%@ to class C path:%@, error:%@", buf, 0x20u);
@@ -4059,15 +4059,15 @@ LABEL_22:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteNonMailBundlesFromClassAIndex:(id)a3
+- (void)_deleteNonMailBundlesFromClassAIndex:(id)index
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  indexCopy = index;
   v5 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v4;
+    v26 = indexCopy;
     _os_log_impl(&dword_231A35000, v5, OS_LOG_TYPE_DEFAULT, "### _deleteNonMailBundlesFromClassAIndex: Bundles other than mail to be deleted: %@", buf, 0xCu);
   }
 
@@ -4076,7 +4076,7 @@ LABEL_22:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v4;
+  obj = indexCopy;
   v7 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -4279,29 +4279,29 @@ void __59__SPCoreSpotlightIndexer__moveClassAIndexToClassCMailIndex__block_invok
   }
 }
 
-- (id)touchfilePathForMigrationStep:(id)a3
+- (id)touchfilePathForMigrationStep:(id)step
 {
   v3 = sDelegate;
-  v4 = a3;
-  v5 = [v3 indexDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  stepCopy = step;
+  indexDirectory = [v3 indexDirectory];
+  v6 = [indexDirectory stringByAppendingPathComponent:stepCopy];
 
   return v6;
 }
 
-- (BOOL)touchfileExistsForMigrationStep:(id)a3
+- (BOOL)touchfileExistsForMigrationStep:(id)step
 {
-  v3 = [(SPCoreSpotlightIndexer *)self touchfilePathForMigrationStep:a3];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v3 = [(SPCoreSpotlightIndexer *)self touchfilePathForMigrationStep:step];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
 
   return v5;
 }
 
-- (void)setTouchfileExistsForMigrationStep:(id)a3
+- (void)setTouchfileExistsForMigrationStep:(id)step
 {
-  v4 = a3;
-  v5 = [(SPCoreSpotlightIndexer *)self touchfilePathForMigrationStep:v4];
+  stepCopy = step;
+  v5 = [(SPCoreSpotlightIndexer *)self touchfilePathForMigrationStep:stepCopy];
   v6 = open([v5 fileSystemRepresentation], 512, 438);
   if (v6 == -1)
   {
@@ -4318,27 +4318,27 @@ void __59__SPCoreSpotlightIndexer__moveClassAIndexToClassCMailIndex__block_invok
   }
 }
 
-- (void)deleteTouchfileForMigrationStep:(id)a3
+- (void)deleteTouchfileForMigrationStep:(id)step
 {
   v4 = MEMORY[0x277CCAA00];
-  v5 = a3;
-  v7 = [v4 defaultManager];
-  v6 = [(SPCoreSpotlightIndexer *)self touchfilePathForMigrationStep:v5];
+  stepCopy = step;
+  defaultManager = [v4 defaultManager];
+  v6 = [(SPCoreSpotlightIndexer *)self touchfilePathForMigrationStep:stepCopy];
 
-  [v7 removeItemAtPath:v6 error:0];
+  [defaultManager removeItemAtPath:v6 error:0];
 }
 
-- (int)cloneIndexFrom:(id)a3 to:(id)a4
+- (int)cloneIndexFrom:(id)from to:(id)to
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [sDelegate indexDirectory];
-  v8 = [v7 stringByAppendingPathComponent:v5];
-  v9 = [v7 stringByAppendingPathComponent:v6];
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
+  fromCopy = from;
+  toCopy = to;
+  indexDirectory = [sDelegate indexDirectory];
+  v8 = [indexDirectory stringByAppendingPathComponent:fromCopy];
+  v9 = [indexDirectory stringByAppendingPathComponent:toCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v19 = 0;
-  v11 = [v10 copyItemAtPath:v8 toPath:v9 error:&v19];
+  v11 = [defaultManager copyItemAtPath:v8 toPath:v9 error:&v19];
   v12 = v19;
   v13 = v12;
   if (v11)
@@ -4362,9 +4362,9 @@ void __59__SPCoreSpotlightIndexer__moveClassAIndexToClassCMailIndex__block_invok
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v21 = v5;
+      v21 = fromCopy;
       v22 = 2112;
-      v23 = v6;
+      v23 = toCopy;
       v24 = 2112;
       v25 = v13;
       _os_log_error_impl(&dword_231A35000, v15, OS_LOG_TYPE_ERROR, "Failed to clone index from:%@ to:%@ error:%@", buf, 0x20u);
@@ -4377,18 +4377,18 @@ void __59__SPCoreSpotlightIndexer__moveClassAIndexToClassCMailIndex__block_invok
   return v16;
 }
 
-- (int)performMigrationStepWithTouchfileGuard:(id)a3 step:(id)a4
+- (int)performMigrationStepWithTouchfileGuard:(id)guard step:(id)step
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(SPCoreSpotlightIndexer *)self touchfileExistsForMigrationStep:v6])
+  guardCopy = guard;
+  stepCopy = step;
+  if ([(SPCoreSpotlightIndexer *)self touchfileExistsForMigrationStep:guardCopy])
   {
     v8 = logForCSLogCategoryIndex();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = guardCopy;
       v9 = "*warn* Migration step %@ already completed";
 LABEL_9:
       _os_log_impl(&dword_231A35000, v8, OS_LOG_TYPE_DEFAULT, v9, &v14, 0xCu);
@@ -4398,15 +4398,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v10 = v7[2](v7);
+  v10 = stepCopy[2](stepCopy);
   if (!v10)
   {
-    [(SPCoreSpotlightIndexer *)self setTouchfileExistsForMigrationStep:v6];
+    [(SPCoreSpotlightIndexer *)self setTouchfileExistsForMigrationStep:guardCopy];
     v8 = logForCSLogCategoryIndex();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = guardCopy;
       v9 = "Migration step succeeded: %@";
       goto LABEL_9;
     }
@@ -4432,7 +4432,7 @@ LABEL_11:
 - (void)moveMailToClassCWithClone
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = *(*a1 + 24);
+  v1 = *(*self + 24);
   OUTLINED_FUNCTION_27();
   OUTLINED_FUNCTION_0_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 8u);
@@ -5143,54 +5143,54 @@ void __31__SPCoreSpotlightIndexer_start__block_invoke_4(uint64_t a1)
 - (void)dealloc
 {
   dispatch_source_cancel(self->_prefsChangeSource);
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_dataMigrationFinishObserver];
-  [v3 removeObserver:self->_dataMigrationStartObserver];
-  [v3 removeObserver:self name:*MEMORY[0x277CC3540] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CBD148] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_dataMigrationFinishObserver];
+  [defaultCenter removeObserver:self->_dataMigrationStartObserver];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CC3540] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBD148] object:0];
 
   v4.receiver = self;
   v4.super_class = SPCoreSpotlightIndexer;
   [(SPCoreSpotlightIndexer *)&v4 dealloc];
 }
 
-- (void)_enumerateIndexersWithProtectionClasses:(id)a3 forQueryWithContext:(id)a4 forBundleIds:(id)a5 inferSpecialIndexes:(BOOL)a6 block:(id)a7
+- (void)_enumerateIndexersWithProtectionClasses:(id)classes forQueryWithContext:(id)context forBundleIds:(id)ids inferSpecialIndexes:(BOOL)indexes block:(id)block
 {
-  v8 = a6;
+  indexesCopy = indexes;
   v53 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v39 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (!v12)
+  classesCopy = classes;
+  contextCopy = context;
+  idsCopy = ids;
+  blockCopy = block;
+  if (!classesCopy)
   {
-    v12 = [objc_opt_class() allProtectionClasses];
+    classesCopy = [objc_opt_class() allProtectionClasses];
   }
 
-  v40 = v13;
-  if (v8)
+  v40 = idsCopy;
+  if (indexesCopy)
   {
-    if (sUsePriorityIndex == 1 && needsSpecialIndexAdded(v12, v13, sPriorityBundleIds, @"Priority"))
+    if (sUsePriorityIndex == 1 && needsSpecialIndexAdded(classesCopy, idsCopy, sPriorityBundleIds, @"Priority"))
     {
-      v15 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-      v16 = [v15 objectForKeyedSubscript:@"Priority"];
+      concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+      v16 = [concreteIndexers objectForKeyedSubscript:@"Priority"];
 
       if (v16)
       {
-        v14[2](v14, v16);
+        blockCopy[2](blockCopy, v16);
       }
     }
 
     if (sUseMailIndex == 1)
     {
-      if ([v13 containsObject:@"com.apple.mobilemail"])
+      if ([idsCopy containsObject:@"com.apple.mobilemail"])
       {
         v49 = 0u;
         v50 = 0u;
         v47 = 0u;
         v48 = 0u;
-        v12 = v12;
-        v17 = [v12 countByEnumeratingWithState:&v47 objects:v52 count:16];
+        classesCopy = classesCopy;
+        v17 = [classesCopy countByEnumeratingWithState:&v47 objects:v52 count:16];
         if (v17)
         {
           v18 = v17;
@@ -5201,7 +5201,7 @@ void __31__SPCoreSpotlightIndexer_start__block_invoke_4(uint64_t a1)
           v22 = *MEMORY[0x277CCA1A0];
           do
           {
-            v23 = v12;
+            v23 = classesCopy;
             for (i = 0; i != v18; ++i)
             {
               if (*v48 != v20)
@@ -5221,7 +5221,7 @@ void __31__SPCoreSpotlightIndexer_start__block_invoke_4(uint64_t a1)
               }
             }
 
-            v12 = v23;
+            classesCopy = v23;
             v18 = [v23 countByEnumeratingWithState:&v47 objects:v52 count:16];
           }
 
@@ -5229,26 +5229,26 @@ void __31__SPCoreSpotlightIndexer_start__block_invoke_4(uint64_t a1)
 
           if (v19 & 1 | ((v41 & 1) == 0))
           {
-            v13 = v40;
+            idsCopy = v40;
             goto LABEL_27;
           }
 
           v26 = [v23 arrayByAddingObject:v22];
 
-          v12 = logForCSLogCategoryQuery();
-          v13 = v40;
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+          classesCopy = logForCSLogCategoryQuery();
+          idsCopy = v40;
+          if (os_log_type_enabled(classesCopy, OS_LOG_TYPE_FAULT))
           {
-            [SPCoreSpotlightIndexer _enumerateIndexersWithProtectionClasses:v39 forQueryWithContext:v12 forBundleIds:? inferSpecialIndexes:? block:?];
+            [SPCoreSpotlightIndexer _enumerateIndexersWithProtectionClasses:contextCopy forQueryWithContext:classesCopy forBundleIds:? inferSpecialIndexes:? block:?];
           }
         }
 
         else
         {
-          v26 = v12;
+          v26 = classesCopy;
         }
 
-        v12 = v26;
+        classesCopy = v26;
       }
 
 LABEL_27:
@@ -5257,14 +5257,14 @@ LABEL_27:
         [SPCoreSpotlightIndexer _enumerateIndexersWithProtectionClasses:forQueryWithContext:forBundleIds:inferSpecialIndexes:block:];
       }
 
-      if (needsSpecialIndexAdded(v12, v13, _enumerateIndexersWithProtectionClasses_forQueryWithContext_forBundleIds_inferSpecialIndexes_block__mailBundleIDSet, @"MobileMailIndex"))
+      if (needsSpecialIndexAdded(classesCopy, idsCopy, _enumerateIndexersWithProtectionClasses_forQueryWithContext_forBundleIds_inferSpecialIndexes_block__mailBundleIDSet, @"MobileMailIndex"))
       {
-        v27 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-        v28 = [v27 objectForKeyedSubscript:@"MobileMailIndex"];
+        concreteIndexers2 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+        v28 = [concreteIndexers2 objectForKeyedSubscript:@"MobileMailIndex"];
 
         if (v28)
         {
-          v14[2](v14, v28);
+          blockCopy[2](blockCopy, v28);
         }
       }
     }
@@ -5274,7 +5274,7 @@ LABEL_27:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v29 = v12;
+  v29 = classesCopy;
   v30 = [v29 countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v30)
   {
@@ -5291,8 +5291,8 @@ LABEL_27:
         }
 
         v34 = *(*(&v43 + 1) + 8 * j);
-        v35 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-        v36 = [v35 objectForKeyedSubscript:v34];
+        concreteIndexers3 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+        v36 = [concreteIndexers3 objectForKeyedSubscript:v34];
 
         if (!v36)
         {
@@ -5301,8 +5301,8 @@ LABEL_27:
             continue;
           }
 
-          v37 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-          v36 = [v37 objectForKeyedSubscript:v42];
+          concreteIndexers4 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+          v36 = [concreteIndexers4 objectForKeyedSubscript:v42];
 
           if (!v36)
           {
@@ -5310,7 +5310,7 @@ LABEL_27:
           }
         }
 
-        v14[2](v14, v36);
+        blockCopy[2](blockCopy, v36);
       }
 
       v31 = [v29 countByEnumeratingWithState:&v43 objects:v51 count:16];
@@ -5366,33 +5366,33 @@ void __50__SPCoreSpotlightIndexer__registerForPrefsChanges__block_invoke(uint64_
 {
   p_prefsDisabledBundleIDs = &self->_prefsDisabledBundleIDs;
   v4 = self->_prefsDisabledBundleIDs;
-  v5 = [sDelegate disabledBundleSet];
-  objc_storeStrong(p_prefsDisabledBundleIDs, v5);
+  disabledBundleSet = [sDelegate disabledBundleSet];
+  objc_storeStrong(p_prefsDisabledBundleIDs, disabledBundleSet);
   if ([(NSSet *)v4 count])
   {
     v6 = [(NSSet *)v4 mutableCopy];
-    [v6 minusSet:v5];
+    [v6 minusSet:disabledBundleSet];
     if ([v6 count])
     {
       dispatch_suspend(self->_reindexAllQueue);
-      v7 = [v6 allObjects];
+      allObjects = [v6 allObjects];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __56__SPCoreSpotlightIndexer__reindexAllItemsOnPrefsChanges__block_invoke;
       v8[3] = &unk_278934050;
       v8[4] = self;
-      [(SPCoreSpotlightIndexer *)self _reindexAllItemsForBundleIDs:v7 reason:@"prefs-changes" completionHandler:v8];
+      [(SPCoreSpotlightIndexer *)self _reindexAllItemsForBundleIDs:allObjects reason:@"prefs-changes" completionHandler:v8];
     }
   }
 }
 
-- (void)_reindexAllItemsForBundleIDs:(id)a3 reason:(id)a4 completionHandler:(id)a5
+- (void)_reindexAllItemsForBundleIDs:(id)ds reason:(id)reason completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-  if ([v8 count] && v11)
+  dsCopy = ds;
+  reasonCopy = reason;
+  handlerCopy = handler;
+  concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+  if ([dsCopy count] && concreteIndexers)
   {
     v12 = logForCSLogCategoryIndex();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -5401,23 +5401,23 @@ void __50__SPCoreSpotlightIndexer__registerForPrefsChanges__block_invoke(uint64_
     }
 
     v13 = [objc_alloc(MEMORY[0x277CC3420]) initWithJobType:2];
-    [v13 setReason:v9];
+    [v13 setReason:reasonCopy];
     v14 = [SPCoreSpotlightIndexerTask alloc];
-    v15 = [v11 allValues];
-    v16 = [(SPCoreSpotlightIndexerTask *)v14 initWithIndexJob:v13 indexers:v15];
+    allValues = [concreteIndexers allValues];
+    v16 = [(SPCoreSpotlightIndexerTask *)v14 initWithIndexJob:v13 indexers:allValues];
 
-    [(SPCoreSpotlightIndexerTask *)v16 setBundleIDs:v8];
-    if ([v8 containsObject:@"com.apple.mobileslideshow"])
+    [(SPCoreSpotlightIndexerTask *)v16 setBundleIDs:dsCopy];
+    if ([dsCopy containsObject:@"com.apple.mobileslideshow"])
     {
       _sendPhotosReindexABCReport(@"Reindex bundleIDs call -- all PCs");
     }
 
-    [(SPCoreSpotlightIndexer *)self performIndexerTask:v16 completionHandler:v10];
+    [(SPCoreSpotlightIndexer *)self performIndexerTask:v16 completionHandler:handlerCopy];
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -5466,15 +5466,15 @@ void __31__SPCoreSpotlightIndexer_flush__block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (void)commitUpdatesWithCompletionHandler:(id)a3
+- (void)commitUpdatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [SPCoreSpotlightIndexer commitUpdatesWithCompletionHandler:];
   }
 
-  v5 = v4;
+  v5 = handlerCopy;
   v6 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -5531,14 +5531,14 @@ void __39__SPCoreSpotlightIndexer_commitUpdates__block_invoke(uint64_t a1)
   [v1 commitUpdatesWithCompletionHandler:v2];
 }
 
-- (void)issueSplit:(id)a3
+- (void)issueSplit:(id)split
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  splitCopy = split;
+  v5 = splitCopy;
+  if (splitCopy)
   {
-    v14[0] = v4;
+    v14[0] = splitCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   }
 
@@ -5563,21 +5563,21 @@ void __39__SPCoreSpotlightIndexer_commitUpdates__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mergeWithProtectionClasses:(id)a3 power:(BOOL)a4 inferSpecialIndexes:(BOOL)a5 completionHandler:(id)a6
+- (void)mergeWithProtectionClasses:(id)classes power:(BOOL)power inferSpecialIndexes:(BOOL)indexes completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  classesCopy = classes;
+  handlerCopy = handler;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __97__SPCoreSpotlightIndexer_mergeWithProtectionClasses_power_inferSpecialIndexes_completionHandler___block_invoke;
   v17[3] = &unk_278936740;
-  v18 = v10;
-  v19 = self;
-  v21 = a5;
-  v22 = a4;
-  v20 = v11;
-  v12 = v11;
-  v13 = v10;
+  v18 = classesCopy;
+  selfCopy = self;
+  indexesCopy = indexes;
+  powerCopy = power;
+  v20 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = classesCopy;
   v14 = MEMORY[0x2383760E0](v17);
   v15 = sIndexQueue;
   v16 = _setup_block(v14, 0, 16858);
@@ -5756,19 +5756,19 @@ void __97__SPCoreSpotlightIndexer_mergeWithProtectionClasses_power_inferSpecialI
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)cleanupStringsWithProtectionClasses:(id)a3 completionHandler:(id)a4
+- (void)cleanupStringsWithProtectionClasses:(id)classes completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  classesCopy = classes;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__SPCoreSpotlightIndexer_cleanupStringsWithProtectionClasses_completionHandler___block_invoke;
   v13[3] = &unk_278934F08;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v8 = v7;
-  v9 = v6;
+  v14 = classesCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = classesCopy;
   v10 = MEMORY[0x2383760E0](v13);
   v11 = sIndexQueue;
   v12 = _setup_block(v10, 0, 16894);
@@ -5857,14 +5857,14 @@ void __80__SPCoreSpotlightIndexer_cleanupStringsWithProtectionClasses_completion
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)issueRepair:(id)a3
+- (void)issueRepair:(id)repair
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  repairCopy = repair;
+  v5 = repairCopy;
+  if (repairCopy)
   {
-    v14[0] = v4;
+    v14[0] = repairCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   }
 
@@ -5889,14 +5889,14 @@ void __80__SPCoreSpotlightIndexer_cleanupStringsWithProtectionClasses_completion
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)issueCleanup:(id)a3 flags:(int)a4
+- (void)issueCleanup:(id)cleanup flags:(int)flags
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  cleanupCopy = cleanup;
   dispatch_assert_queue_not_V2(self->_indexQueue);
-  if (v6)
+  if (cleanupCopy)
   {
-    v16[0] = v6;
+    v16[0] = cleanupCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   }
 
@@ -5913,7 +5913,7 @@ void __80__SPCoreSpotlightIndexer_cleanupStringsWithProtectionClasses_completion
   v13[3] = &unk_278934428;
   v13[4] = self;
   v14 = v7;
-  v15 = a4;
+  flagsCopy = flags;
   v10 = v7;
   v11 = _setup_block(v13, 0, 16922);
   dispatch_group_async(v8, v9, v11);
@@ -5934,14 +5934,14 @@ uint64_t __45__SPCoreSpotlightIndexer_issueCleanup_flags___block_invoke(uint64_t
   return [v2 _enumerateIndexersWithProtectionClasses:v1 inferSpecialIndexes:0 block:v4];
 }
 
-- (void)issueDefrag:(id)a3 group:(id)a4
+- (void)issueDefrag:(id)defrag group:(id)group
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  defragCopy = defrag;
+  groupCopy = group;
+  if (defragCopy)
   {
-    v18[0] = v6;
+    v18[0] = defragCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
   }
 
@@ -5950,8 +5950,8 @@ uint64_t __45__SPCoreSpotlightIndexer_issueCleanup_flags___block_invoke(uint64_t
     v8 = 0;
   }
 
-  v9 = v7;
-  if (!v7)
+  v9 = groupCopy;
+  if (!groupCopy)
   {
     v9 = dispatch_group_create();
   }
@@ -5969,7 +5969,7 @@ uint64_t __45__SPCoreSpotlightIndexer_issueCleanup_flags___block_invoke(uint64_t
   v13 = _setup_block(v15, 0, 16940);
   dispatch_group_async(v12, v10, v13);
 
-  if (!v7)
+  if (!groupCopy)
   {
     dispatch_group_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -5996,18 +5996,18 @@ void __44__SPCoreSpotlightIndexer_issueDefrag_group___block_invoke(uint64_t a1)
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)issueDumpReverse:(unint64_t)a3 completionHandler:(id)a4
+- (void)issueDumpReverse:(unint64_t)reverse completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = sIndexQueue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__SPCoreSpotlightIndexer_issueDumpReverse_completionHandler___block_invoke;
   v10[3] = &unk_2789367D8;
-  v11 = v6;
-  v12 = a3;
+  v11 = handlerCopy;
+  reverseCopy = reverse;
   v10[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   v9 = _setup_block(v10, 0, 17062);
   dispatch_async(v7, v9);
 }
@@ -6030,18 +6030,18 @@ void __61__SPCoreSpotlightIndexer_issueDumpReverse_completionHandler___block_inv
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)issueDumpForward:(unint64_t)a3 completionHandler:(id)a4
+- (void)issueDumpForward:(unint64_t)forward completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = sIndexQueue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__SPCoreSpotlightIndexer_issueDumpForward_completionHandler___block_invoke;
   v10[3] = &unk_2789367D8;
-  v11 = v6;
-  v12 = a3;
+  v11 = handlerCopy;
+  forwardCopy = forward;
   v10[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   v9 = _setup_block(v10, 0, 17071);
   dispatch_async(v7, v9);
 }
@@ -6067,13 +6067,13 @@ void __61__SPCoreSpotlightIndexer_issueDumpForward_completionHandler___block_inv
 - (id)issueHeartbeat
 {
   v37 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D657E8] lastLoadedBundleVersion];
+  lastLoadedBundleVersion = [MEMORY[0x277D657E8] lastLoadedBundleVersion];
   pthread_rwlock_wrlock(&sIndexHeartbeatLock);
   v3 = indexHeartbeatPath();
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = time(0);
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:v3];
 
   v8 = 0;
   if (v7)
@@ -6082,7 +6082,7 @@ void __61__SPCoreSpotlightIndexer_issueDumpForward_completionHandler___block_inv
     v8 = v9;
     if (v9)
     {
-      v10 = [v9 objectForKeyedSubscript:@"v2"];
+      v10 = [v9 objectForKeyedSubscript:@"lastLoadedBundleVersion"];
 
       if (v10)
       {
@@ -6093,9 +6093,9 @@ void __61__SPCoreSpotlightIndexer_issueDumpForward_completionHandler___block_inv
     }
 
     v26 = v3;
-    if (v2)
+    if (lastLoadedBundleVersion)
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v2];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:lastLoadedBundleVersion];
       [v8 setObject:v12 forKeyedSubscript:@"otaversion"];
     }
 
@@ -6103,15 +6103,15 @@ void __61__SPCoreSpotlightIndexer_issueDumpForward_completionHandler___block_inv
     v33[1] = 3221225472;
     v33[2] = __40__SPCoreSpotlightIndexer_issueHeartbeat__block_invoke;
     v33[3] = &unk_278936800;
-    v34 = v4;
+    v34 = dictionary;
     v35 = v5;
     [v8 enumerateKeysAndObjectsUsingBlock:v33];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v13 = [&unk_2846C96E0 allValues];
-    v14 = [v13 countByEnumeratingWithState:&v29 objects:v36 count:16];
+    allValues = [&unk_2846C96E0 allValues];
+    v14 = [allValues countByEnumeratingWithState:&v29 objects:v36 count:16];
     if (v14)
     {
       v15 = v14;
@@ -6122,14 +6122,14 @@ void __61__SPCoreSpotlightIndexer_issueDumpForward_completionHandler___block_inv
         {
           if (*v30 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allValues);
           }
 
           v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"pc%@_%@", *(*(&v29 + 1) + 8 * i), @"wipes"];
           [v8 setObject:&unk_2846C9680 forKeyedSubscript:v18];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v29 objects:v36 count:16];
+        v15 = [allValues countByEnumeratingWithState:&v29 objects:v36 count:16];
       }
 
       while (v15);
@@ -6156,7 +6156,7 @@ void __61__SPCoreSpotlightIndexer_issueDumpForward_completionHandler___block_inv
   }
 
   pthread_rwlock_unlock(&sIndexHeartbeatLock);
-  v27 = v4;
+  v27 = dictionary;
   AnalyticsSendEventLazy();
   v23 = v27;
 
@@ -6215,17 +6215,17 @@ LABEL_8:
 LABEL_12:
 }
 
-- (id)dumpIndexAgesAtPath:(id)a3
+- (id)dumpIndexAgesAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  pathCopy = path;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = time(0);
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:v3];
+    v8 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:pathCopy];
     v9 = v8;
     if (v8)
     {
@@ -6243,12 +6243,12 @@ LABEL_12:
     v13[1] = 3221225472;
     v13[2] = __46__SPCoreSpotlightIndexer_dumpIndexAgesAtPath___block_invoke;
     v13[3] = &unk_278936800;
-    v14 = v4;
+    v14 = dictionary;
     v15 = v5;
     [v9 enumerateKeysAndObjectsUsingBlock:v13];
   }
 
-  return v4;
+  return dictionary;
 }
 
 void __46__SPCoreSpotlightIndexer_dumpIndexAgesAtPath___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -6295,27 +6295,27 @@ void __46__SPCoreSpotlightIndexer_dumpIndexAgesAtPath___block_invoke(uint64_t a1
   return v4;
 }
 
-- (id)dumpIndexAnalyticsAtPath:(id)a3
+- (id)dumpIndexAnalyticsAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  pathCopy = path;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = time(0);
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:v3];
+    v8 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:pathCopy];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __51__SPCoreSpotlightIndexer_dumpIndexAnalyticsAtPath___block_invoke;
     v10[3] = &unk_278936800;
-    v11 = v4;
+    v11 = dictionary;
     v12 = v5;
     [v8 enumerateKeysAndObjectsUsingBlock:v10];
   }
 
-  return v4;
+  return dictionary;
 }
 
 void __51__SPCoreSpotlightIndexer_dumpIndexAnalyticsAtPath___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -6359,38 +6359,38 @@ void __51__SPCoreSpotlightIndexer_dumpIndexAnalyticsAtPath___block_invoke(uint64
   return v4;
 }
 
-- (id)sendAnalytics:(id)a3
+- (id)sendAnalytics:(id)analytics
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"heartbeat"])
+  analyticsCopy = analytics;
+  if ([analyticsCopy isEqualToString:@"heartbeat"])
   {
-    v5 = [(SPCoreSpotlightIndexer *)self issueHeartbeat];
+    issueHeartbeat = [(SPCoreSpotlightIndexer *)self issueHeartbeat];
   }
 
-  else if ([v4 hasPrefix:@"indexloss"])
+  else if ([analyticsCopy hasPrefix:@"indexloss"])
   {
-    v6 = [v4 componentsSeparatedByString:@"-"];
+    v6 = [analyticsCopy componentsSeparatedByString:@"-"];
     v7 = [v6 objectAtIndexedSubscript:1];
-    v8 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+    v9 = [concreteIndexers objectForKeyedSubscript:v7];
 
     LOBYTE(v11) = 0;
-    v5 = [v9 indexLossAnalyticsDictWithPreviousIndexCreationDate:0 size:0 openingInReadOnly:0 fullyCreated:1 markedPurgeable:0 vectorIndexDrop:0 forAnalytics:v11];
+    issueHeartbeat = [v9 indexLossAnalyticsDictWithPreviousIndexCreationDate:0 size:0 openingInReadOnly:0 fullyCreated:1 markedPurgeable:0 vectorIndexDrop:0 forAnalytics:v11];
     AnalyticsSendEventLazy();
   }
 
   else
   {
-    v5 = &unk_2846C9730;
+    issueHeartbeat = &unk_2846C9730;
   }
 
-  return v5;
+  return issueHeartbeat;
 }
 
-- (void)issueBundleFixup:(id)a3 completionHandler:(id)a4
+- (void)issueBundleFixup:(id)fixup completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  fixupCopy = fixup;
+  handlerCopy = handler;
   v8 = dispatch_group_create();
   v9 = sIndexQueue;
   v18[0] = MEMORY[0x277D85DD0];
@@ -6398,10 +6398,10 @@ void __51__SPCoreSpotlightIndexer_dumpIndexAnalyticsAtPath___block_invoke(uint64
   v18[2] = __61__SPCoreSpotlightIndexer_issueBundleFixup_completionHandler___block_invoke;
   v18[3] = &unk_278934130;
   v18[4] = self;
-  v19 = v6;
+  v19 = fixupCopy;
   v20 = v8;
   v10 = v8;
-  v11 = v6;
+  v11 = fixupCopy;
   v12 = _setup_block(v18, 0, 17232);
   dispatch_group_async(v10, v9, v12);
 
@@ -6411,8 +6411,8 @@ void __51__SPCoreSpotlightIndexer_dumpIndexAnalyticsAtPath___block_invoke(uint64
   v16[1] = 3221225472;
   v16[2] = __61__SPCoreSpotlightIndexer_issueBundleFixup_completionHandler___block_invoke_3;
   v16[3] = &unk_2789341A8;
-  v17 = v7;
-  v15 = v7;
+  v17 = handlerCopy;
+  v15 = handlerCopy;
   dispatch_group_notify(v10, v14, v16);
 }
 
@@ -6455,11 +6455,11 @@ void __61__SPCoreSpotlightIndexer_issueBundleFixup_completionHandler___block_inv
   return v2;
 }
 
-- (void)deleteSearchableItemsWithFileProviderDomains:(id)a3 completionHandler:(id)a4
+- (void)deleteSearchableItemsWithFileProviderDomains:(id)domains completionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v16 = a4;
+  domainsCopy = domains;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_fileProviderMonitor);
 
   if (WeakRetained)
@@ -6476,8 +6476,8 @@ void __61__SPCoreSpotlightIndexer_issueBundleFixup_completionHandler___block_inv
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = [objc_opt_class() fileProviderProtectionClasses];
-    v9 = [v8 countByEnumeratingWithState:&v24 objects:v30 count:16];
+    fileProviderProtectionClasses = [objc_opt_class() fileProviderProtectionClasses];
+    v9 = [fileProviderProtectionClasses countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v9)
     {
       v10 = *v25;
@@ -6488,7 +6488,7 @@ void __61__SPCoreSpotlightIndexer_issueBundleFixup_completionHandler___block_inv
         {
           if (*v25 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(fileProviderProtectionClasses);
           }
 
           v12 = [(NSDictionary *)self->_concreteIndexers objectForKeyedSubscript:*(*(&v24 + 1) + 8 * v11)];
@@ -6501,14 +6501,14 @@ void __61__SPCoreSpotlightIndexer_issueBundleFixup_completionHandler___block_inv
             v21[3] = &unk_278934F58;
             v23 = v28;
             v22 = v7;
-            [v12 deleteSearchableItemsWithFileProviderDomains:v17 completionHandler:v21];
+            [v12 deleteSearchableItemsWithFileProviderDomains:domainsCopy completionHandler:v21];
           }
 
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [v8 countByEnumeratingWithState:&v24 objects:v30 count:16];
+        v9 = [fileProviderProtectionClasses countByEnumeratingWithState:&v24 objects:v30 count:16];
       }
 
       while (v9);
@@ -6521,7 +6521,7 @@ void __61__SPCoreSpotlightIndexer_issueBundleFixup_completionHandler___block_inv
     v18[2] = __89__SPCoreSpotlightIndexer_deleteSearchableItemsWithFileProviderDomains_completionHandler___block_invoke_2;
     v18[3] = &unk_278936850;
     v18[4] = self;
-    v19 = v16;
+    v19 = handlerCopy;
     v20 = v28;
     v14 = _setup_block(v18, 0, 17285);
     dispatch_group_notify(v7, v13, v14);
@@ -6552,9 +6552,9 @@ uint64_t __89__SPCoreSpotlightIndexer_deleteSearchableItemsWithFileProviderDomai
   return v3();
 }
 
-- (void)issuePathFixup:(id)a3
+- (void)issuePathFixup:(id)fixup
 {
-  v4 = a3;
+  fixupCopy = fixup;
   v5 = dispatch_group_create();
   v6 = sIndexQueue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -6562,8 +6562,8 @@ uint64_t __89__SPCoreSpotlightIndexer_deleteSearchableItemsWithFileProviderDomai
   v9[2] = __41__SPCoreSpotlightIndexer_issuePathFixup___block_invoke;
   v9[3] = &unk_2789342C0;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = fixupCopy;
+  v7 = fixupCopy;
   v8 = _setup_block(v9, 0, 17296);
   dispatch_group_async(v5, v6, v8);
 
@@ -6581,17 +6581,17 @@ void __41__SPCoreSpotlightIndexer_issuePathFixup___block_invoke(uint64_t a1)
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)issueResolveFPItem:(id)a3 completionHandler:(id)a4
+- (void)issueResolveFPItem:(id)item completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (!itemCopy)
   {
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1001 userInfo:0];
     v10 = 0;
     v12 = 0;
-    if (!v6)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
@@ -6599,10 +6599,10 @@ void __41__SPCoreSpotlightIndexer_issuePathFixup___block_invoke(uint64_t a1)
     goto LABEL_5;
   }
 
-  v7 = [SPConcreteCoreSpotlightIndexer fetchParentsForItemID:v5 recursively:1 timeout:-1];
+  v7 = [SPConcreteCoreSpotlightIndexer fetchParentsForItemID:itemCopy recursively:1 timeout:-1];
   v8 = MEMORY[0x277CCACA8];
   v9 = [v7 componentsJoinedByString:{@", "}];
-  v10 = [v8 stringWithFormat:@"itemID: %@ parents[%@]", v5, v9];
+  v10 = [v8 stringWithFormat:@"itemID: %@ parents[%@]", itemCopy, v9];
 
   v11 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -6615,10 +6615,10 @@ void __41__SPCoreSpotlightIndexer_issuePathFixup___block_invoke(uint64_t a1)
   v12 = [v10 dataUsingEncoding:4];
 
   v13 = 0;
-  if (v6)
+  if (handlerCopy)
   {
 LABEL_5:
-    v6[2](v6, v12, v13);
+    handlerCopy[2](handlerCopy, v12, v13);
   }
 
 LABEL_6:
@@ -6626,22 +6626,22 @@ LABEL_6:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)issueResolveFPItemForBundle:(id)a3 domain:(id)a4 identifier:(id)a5 completionHandler:(id)a6
+- (void)issueResolveFPItemForBundle:(id)bundle domain:(id)domain identifier:(id)identifier completionHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 length];
+  bundleCopy = bundle;
+  domainCopy = domain;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v14 = [domainCopy length];
   v15 = *MEMORY[0x277CC62F8];
   if (v14)
   {
-    v15 = v11;
+    v15 = domainCopy;
   }
 
   v16 = v15;
-  v17 = [objc_alloc(MEMORY[0x277CC6400]) initWithProviderID:v10 domainIdentifier:v16 coreSpotlightIdentifier:v12];
+  v17 = [objc_alloc(MEMORY[0x277CC6400]) initWithProviderID:bundleCopy domainIdentifier:v16 coreSpotlightIdentifier:identifierCopy];
   v18 = logForCSLogCategoryIndex();
   v19 = v18;
   if (v17)
@@ -6649,11 +6649,11 @@ LABEL_6:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138413058;
-      v22 = v10;
+      v22 = bundleCopy;
       v23 = 2112;
       v24 = v16;
       v25 = 2112;
-      v26 = v12;
+      v26 = identifierCopy;
       v27 = 2112;
       v28 = v17;
       _os_log_impl(&dword_231A35000, v19, OS_LOG_TYPE_DEFAULT, "bundle: %@ domain: %@ identifier: %@ ->  %@", &v21, 0x2Au);
@@ -6663,35 +6663,35 @@ LABEL_6:
   else if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     v21 = 138412802;
-    v22 = v10;
+    v22 = bundleCopy;
     v23 = 2112;
     v24 = v16;
     v25 = 2112;
-    v26 = v12;
+    v26 = identifierCopy;
     _os_log_error_impl(&dword_231A35000, v19, OS_LOG_TYPE_ERROR, "Failed to resolve FPItemID for bundle: %@ domain: %@ identifier: %@", &v21, 0x20u);
   }
 
-  [(SPCoreSpotlightIndexer *)self issueResolveFPItem:v17 completionHandler:v13];
+  [(SPCoreSpotlightIndexer *)self issueResolveFPItem:v17 completionHandler:handlerCopy];
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)issueResolveFPItemForURL:(id)a3 completionHandler:(id)a4
+- (void)issueResolveFPItemForURL:(id)l completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [SPConcreteCoreSpotlightIndexer fetchItemForURL:v6];
-  v9 = [v8 itemID];
+  lCopy = l;
+  handlerCopy = handler;
+  v8 = [SPConcreteCoreSpotlightIndexer fetchItemForURL:lCopy];
+  itemID = [v8 itemID];
   v10 = logForCSLogCategoryIndex();
   v11 = v10;
-  if (v9)
+  if (itemID)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = v6;
+      v14 = lCopy;
       v15 = 2112;
-      v16 = v9;
+      v16 = itemID;
       _os_log_impl(&dword_231A35000, v11, OS_LOG_TYPE_DEFAULT, "Resolved %@ ->  %@", &v13, 0x16u);
     }
   }
@@ -6701,18 +6701,18 @@ LABEL_6:
     [SPCoreSpotlightIndexer issueResolveFPItemForURL:completionHandler:];
   }
 
-  [(SPCoreSpotlightIndexer *)self issueResolveFPItem:v9 completionHandler:v7];
+  [(SPCoreSpotlightIndexer *)self issueResolveFPItem:itemID completionHandler:handlerCopy];
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)issueConsistencyCheck:(id)a3
+- (void)issueConsistencyCheck:(id)check
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  checkCopy = check;
+  v5 = checkCopy;
+  if (checkCopy)
   {
-    v14[0] = v4;
+    v14[0] = checkCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   }
 
@@ -6737,19 +6737,19 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)issueDuplicateOidCheckWithGroup:(id)a3 protected:(BOOL)a4
+- (void)issueDuplicateOidCheckWithGroup:(id)group protected:(BOOL)protected
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__SPCoreSpotlightIndexer_issueDuplicateOidCheckWithGroup_protected___block_invoke;
   v8[3] = &unk_278934400;
-  v9 = a4;
+  protectedCopy = protected;
   v8[4] = self;
-  v4 = a3;
+  groupCopy = group;
   v5 = MEMORY[0x2383760E0](v8);
   v6 = sIndexQueue;
   v7 = _setup_block(v5, 0, 17390);
-  dispatch_group_async(v4, v6, v7);
+  dispatch_group_async(groupCopy, v6, v7);
 }
 
 void __68__SPCoreSpotlightIndexer_issueDuplicateOidCheckWithGroup_protected___block_invoke(uint64_t a1)
@@ -6781,14 +6781,14 @@ void __68__SPCoreSpotlightIndexer_issueDuplicateOidCheckWithGroup_protected___bl
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)issueDuplicateOidCheck:(id)a3
+- (void)issueDuplicateOidCheck:(id)check
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  checkCopy = check;
+  v5 = checkCopy;
+  if (checkCopy)
   {
-    v14[0] = v4;
+    v14[0] = checkCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   }
 
@@ -6813,17 +6813,17 @@ void __68__SPCoreSpotlightIndexer_issueDuplicateOidCheckWithGroup_protected___bl
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)issueMessagesFixup:(id)a3
+- (void)issueMessagesFixup:(id)fixup
 {
-  v4 = a3;
+  fixupCopy = fixup;
   v5 = sIndexQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__SPCoreSpotlightIndexer_issueMessagesFixup___block_invoke;
   v8[3] = &unk_278934F30;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = fixupCopy;
+  v6 = fixupCopy;
   v7 = _setup_block(v8, 0, 17416);
   dispatch_async(v5, v7);
 }
@@ -6885,7 +6885,7 @@ void __34__SPCoreSpotlightIndexer_coolDown__block_invoke(uint64_t a1, void *a2)
   dispatch_group_async(v5, v4, v7);
 }
 
-- (void)shrink:(unint64_t)a3
+- (void)shrink:(unint64_t)shrink
 {
   v3 = sIndexQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -6893,7 +6893,7 @@ void __34__SPCoreSpotlightIndexer_coolDown__block_invoke(uint64_t a1, void *a2)
   v5[2] = __33__SPCoreSpotlightIndexer_shrink___block_invoke;
   v5[3] = &unk_2789343B0;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = shrink;
   v4 = _setup_block(v5, 0, 17439);
   dispatch_async(v3, v4);
 }
@@ -6909,10 +6909,10 @@ uint64_t __33__SPCoreSpotlightIndexer_shrink___block_invoke(uint64_t a1)
   return [v1 _enumerateIndexersWithProtectionClasses:0 block:v3];
 }
 
-- (void)_closeIndexWithIndexers:(id)a3
+- (void)_closeIndexWithIndexers:(id)indexers
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  indexersCopy = indexers;
   dispatch_assert_queue_not_V2(self->_indexQueue);
   if ((deviceUnlocked & 1) == 0)
   {
@@ -6942,7 +6942,7 @@ uint64_t __33__SPCoreSpotlightIndexer_shrink___block_invoke(uint64_t a1)
   v13[1] = 3221225472;
   v13[2] = __50__SPCoreSpotlightIndexer__closeIndexWithIndexers___block_invoke;
   v13[3] = &unk_278934050;
-  v9 = v4;
+  v9 = indexersCopy;
   v14 = v9;
   v10 = _setup_block(v13, 0, 17460);
   dispatch_group_async(v7, v8, v10);
@@ -7001,14 +7001,14 @@ void __50__SPCoreSpotlightIndexer__closeIndexWithIndexers___block_invoke(uint64_
 
 - (void)closeIndex
 {
-  v4 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-  v3 = [v4 allValues];
-  [(SPCoreSpotlightIndexer *)self _closeIndexWithIndexers:v3];
+  concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+  allValues = [concreteIndexers allValues];
+  [(SPCoreSpotlightIndexer *)self _closeIndexWithIndexers:allValues];
 }
 
 - (void)shutdown
 {
-  v3 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+  concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
   [(SPCoreSpotlightIndexer *)self setConcreteIndexers:0];
   suspendAllAgents();
   SIWaitForAllIndexShutdown();
@@ -7020,7 +7020,7 @@ void __50__SPCoreSpotlightIndexer__closeIndexWithIndexers___block_invoke(uint64_
   }
 }
 
-- (void)recycleIndex:(BOOL)a3
+- (void)recycleIndex:(BOOL)index
 {
   v5 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -7036,12 +7036,12 @@ void __50__SPCoreSpotlightIndexer__closeIndexWithIndexers___block_invoke(uint64_
   v8[2] = __39__SPCoreSpotlightIndexer_recycleIndex___block_invoke;
   v8[3] = &unk_278934400;
   v8[4] = self;
-  v9 = a3;
+  indexCopy = index;
   v7 = _setup_block(v8, 0, 17486);
   dispatch_async(v6, v7);
 }
 
-- (void)markIndexPurgeable:(BOOL)a3
+- (void)markIndexPurgeable:(BOOL)purgeable
 {
   v3 = sIndexQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -7049,7 +7049,7 @@ void __50__SPCoreSpotlightIndexer__closeIndexWithIndexers___block_invoke(uint64_
   v5[2] = __45__SPCoreSpotlightIndexer_markIndexPurgeable___block_invoke;
   v5[3] = &unk_278934400;
   v5[4] = self;
-  v6 = a3;
+  purgeableCopy = purgeable;
   v4 = _setup_block(v5, 0, 17503);
   dispatch_async(v3, v4);
 }
@@ -7128,9 +7128,9 @@ void __45__SPCoreSpotlightIndexer_markIndexPurgeable___block_invoke(uint64_t a1)
     v8 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [sDelegate indexDirectory];
+      indexDirectory = [sDelegate indexDirectory];
       v12 = 138412802;
-      v13 = v9;
+      v13 = indexDirectory;
       v14 = 2048;
       v15 = v4;
       v16 = 2048;
@@ -7166,9 +7166,9 @@ void __45__SPCoreSpotlightIndexer_markIndexPurgeable___block_invoke(uint64_t a1)
     v8 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [sDelegate indexDirectory];
+      indexDirectory = [sDelegate indexDirectory];
       v12 = 138412802;
-      v13 = v9;
+      v13 = indexDirectory;
       v14 = 2048;
       v15 = v4;
       v16 = 2048;
@@ -7183,17 +7183,17 @@ void __45__SPCoreSpotlightIndexer_markIndexPurgeable___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queryPreheat:(id)a3
+- (void)queryPreheat:(id)preheat
 {
-  v4 = a3;
+  preheatCopy = preheat;
   v5 = sIndexQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__SPCoreSpotlightIndexer_queryPreheat___block_invoke;
   v8[3] = &unk_2789342C0;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = preheatCopy;
+  v6 = preheatCopy;
   v7 = _setup_block(v8, 0, 17736);
   dispatch_async(v5, v7);
 }
@@ -7227,16 +7227,16 @@ void __39__SPCoreSpotlightIndexer_queryPreheat___block_invoke(uint64_t a1)
   [*(a1 + 32) _enumerateIndexersWithProtectionClasses:*(a1 + 40) block:&__block_literal_global_2440];
 }
 
-- (id)_taskForQueryWithQueryString:(id)a3 queryContext:(id)a4 eventHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7
+- (id)_taskForQueryWithQueryString:(id)string queryContext:(id)context eventHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler
 {
   v131 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v65 = a5;
-  v14 = a6;
-  v64 = a7;
-  v66 = v14;
-  if (!v14)
+  stringCopy = string;
+  contextCopy = context;
+  handlerCopy = handler;
+  resultsHandlerCopy = resultsHandler;
+  completionHandlerCopy = completionHandler;
+  v66 = resultsHandlerCopy;
+  if (!resultsHandlerCopy)
   {
     [SPCoreSpotlightIndexer _taskForQueryWithQueryString:queryContext:eventHandler:resultsHandler:completionHandler:];
   }
@@ -7252,52 +7252,52 @@ void __39__SPCoreSpotlightIndexer_queryPreheat___block_invoke(uint64_t a1)
     SIResumeForUnlock();
   }
 
-  v16 = [v13 protectionClasses];
-  v17 = [v16 count];
+  protectionClasses = [contextCopy protectionClasses];
+  v17 = [protectionClasses count];
   v61 = v17 == 0;
   if (v17)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      v58 = [v13 clientBundleID];
-      v59 = [objc_opt_class() allProtectionClasses];
+      clientBundleID = [contextCopy clientBundleID];
+      allProtectionClasses = [objc_opt_class() allProtectionClasses];
       *buf = 138413058;
-      *&buf[4] = v16;
+      *&buf[4] = protectionClasses;
       *&buf[12] = 2112;
-      *&buf[14] = v12;
+      *&buf[14] = stringCopy;
       *&buf[22] = 2112;
-      v128 = v58;
+      v128 = clientBundleID;
       v129 = 2112;
-      v130 = v59;
+      v130 = allProtectionClasses;
       _os_log_debug_impl(&dword_231A35000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "PCS %@ for query %@ from client %@ (available: %@)", buf, 0x2Au);
     }
 
-    v69 = v16;
+    v69 = protectionClasses;
   }
 
   else
   {
-    v18 = [objc_opt_class() allProtectionClasses];
-    v69 = [v18 copy];
+    allProtectionClasses2 = [objc_opt_class() allProtectionClasses];
+    v69 = [allProtectionClasses2 copy];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      [SPCoreSpotlightIndexer _taskForQueryWithQueryString:v69 queryContext:v12 eventHandler:v13 resultsHandler:? completionHandler:?];
+      [SPCoreSpotlightIndexer _taskForQueryWithQueryString:v69 queryContext:stringCopy eventHandler:contextCopy resultsHandler:? completionHandler:?];
     }
   }
 
-  if ([v13 internal])
+  if ([contextCopy internal])
   {
-    v19 = [v13 clientBundleID];
-    if ([v19 isEqualToString:@"com.apple.searchutil"])
+    clientBundleID2 = [contextCopy clientBundleID];
+    if ([clientBundleID2 isEqualToString:@"com.apple.searchutil"])
     {
       v20 = 0;
     }
 
     else
     {
-      v21 = [v13 clientBundleID];
-      v22 = [v21 isEqualToString:@"com.apple.search"];
+      clientBundleID3 = [contextCopy clientBundleID];
+      v22 = [clientBundleID3 isEqualToString:@"com.apple.search"];
 
       v20 = v22 ^ 1u;
     }
@@ -7309,27 +7309,27 @@ void __39__SPCoreSpotlightIndexer_queryPreheat___block_invoke(uint64_t a1)
   }
 
   v23 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
-  v68 = [v13 bundleIDs];
-  if ([v68 count])
+  bundleIDs = [contextCopy bundleIDs];
+  if ([bundleIDs count])
   {
     v24 = MEMORY[0x277CBEB98];
-    v25 = [v13 bundleIDs];
-    v67 = [v24 setWithArray:v25];
+    bundleIDs2 = [contextCopy bundleIDs];
+    v67 = [v24 setWithArray:bundleIDs2];
 LABEL_20:
 
     goto LABEL_25;
   }
 
-  if (([v13 internal] & 1) == 0)
+  if (([contextCopy internal] & 1) == 0)
   {
-    v26 = [v13 clientBundleID];
-    v27 = v26 == 0;
+    clientBundleID4 = [contextCopy clientBundleID];
+    v27 = clientBundleID4 == 0;
 
     if (!v27)
     {
       v28 = MEMORY[0x277CBEB98];
-      v25 = [v13 clientBundleID];
-      v67 = [v28 setWithObject:v25];
+      bundleIDs2 = [contextCopy clientBundleID];
+      v67 = [v28 setWithObject:bundleIDs2];
       goto LABEL_20;
     }
   }
@@ -7342,17 +7342,17 @@ LABEL_25:
   v124[3] = &unk_2789366A0;
   v70 = v23;
   v125 = v70;
-  [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:v69 forQueryWithContext:v13 forBundleIds:v67 inferSpecialIndexes:v20 block:v124];
+  [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:v69 forQueryWithContext:contextCopy forBundleIds:v67 inferSpecialIndexes:v20 block:v124];
   if ([v70 count])
   {
-    v29 = [v13 live];
+    live = [contextCopy live];
     v30 = off_2789335D0;
-    if (!v29)
+    if (!live)
     {
       v30 = off_2789335D8;
     }
 
-    v31 = [objc_alloc(*v30) initWithQueryString:v12 queryContext:v13];
+    v31 = [objc_alloc(*v30) initWithQueryString:stringCopy queryContext:contextCopy];
     v32 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v122 = 0u;
     v123 = 0u;
@@ -7372,8 +7372,8 @@ LABEL_25:
             objc_enumerationMutation(v33);
           }
 
-          v37 = [*(*(&v120 + 1) + 8 * i) knownClients];
-          [v32 unionSet:v37];
+          knownClients = [*(*(&v120 + 1) + 8 * i) knownClients];
+          [v32 unionSet:knownClients];
         }
 
         v34 = [v33 countByEnumeratingWithState:&v120 objects:v126 count:16];
@@ -7383,9 +7383,9 @@ LABEL_25:
     }
 
     [v31 setKnownBundleIds:v32];
-    v38 = [v13 clientBundleID];
+    clientBundleID5 = [contextCopy clientBundleID];
     v39 = self->_indexQueue;
-    v62 = [v33 objectEnumerator];
+    objectEnumerator = [v33 objectEnumerator];
     v60 = [v33 count];
     *buf = 0;
     *&buf[8] = buf;
@@ -7411,7 +7411,7 @@ LABEL_25:
     v111 = v40;
     v41 = v31;
     v112 = v41;
-    v42 = v38;
+    v42 = clientBundleID5;
     v113 = v42;
     v114 = v119;
     v115 = v118;
@@ -7420,18 +7420,18 @@ LABEL_25:
     if (s_last_memory_pressure_status == 1)
     {
       v43 = 0;
-      v44 = 0;
+      live2 = 0;
     }
 
-    else if ([v13 maxCount] || objc_msgSend(v13, "maxRankedResultCount"))
+    else if ([contextCopy maxCount] || objc_msgSend(contextCopy, "maxRankedResultCount"))
     {
       v43 = 0;
-      v44 = 0;
+      live2 = 0;
     }
 
     else
     {
-      v44 = [v13 live];
+      live2 = [contextCopy live];
       v43 = 1;
     }
 
@@ -7441,13 +7441,13 @@ LABEL_25:
     v100[3] = &unk_2789368C0;
     v46 = v40;
     v101 = v46;
-    v102 = v13;
+    v102 = contextCopy;
     v47 = v66;
     v105 = v47;
     v106 = v117;
     v108 = v60;
     v48 = v41;
-    v109 = v44;
+    v109 = live2;
     v103 = v48;
     v107 = v119;
     v49 = v42;
@@ -7464,9 +7464,9 @@ LABEL_25:
       v88 = v46;
       v94 = v119;
       v95 = buf;
-      v89 = v62;
+      v89 = objectEnumerator;
       v91 = v63;
-      v92 = v65;
+      v92 = handlerCopy;
       v51 = v50;
       v98 = v61;
       v93 = v51;
@@ -7488,9 +7488,9 @@ LABEL_25:
       v76 = v46;
       v82 = v119;
       v83 = buf;
-      v77 = v62;
+      v77 = objectEnumerator;
       v79 = v63;
-      v80 = v65;
+      v80 = handlerCopy;
       v53 = v50;
       v86 = v61;
       v81 = v53;
@@ -7511,7 +7511,7 @@ LABEL_25:
     v54 = v46;
     v72 = v54;
     v73 = v47;
-    v74 = v64;
+    v74 = completionHandlerCopy;
     [v48 setCompletionBlock:v71];
     v55 = v74;
     v45 = v48;
@@ -7896,13 +7896,13 @@ void __114__SPCoreSpotlightIndexer__taskForQueryWithQueryString_queryContext_eve
   }
 }
 
-- (id)taskForQueryWithQueryString:(id)a3 queryContext:(id)a4 eventHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7
+- (id)taskForQueryWithQueryString:(id)string queryContext:(id)context eventHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  stringCopy = string;
+  contextCopy = context;
+  handlerCopy = handler;
+  resultsHandlerCopy = resultsHandler;
+  completionHandlerCopy = completionHandler;
   v17 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
@@ -7915,15 +7915,15 @@ void __114__SPCoreSpotlightIndexer__taskForQueryWithQueryString_queryContext_eve
     [SPCoreSpotlightIndexer taskForQueryWithQueryString:queryContext:eventHandler:resultsHandler:completionHandler:];
   }
 
-  v19 = [v13 rankingType];
-  if ((_os_feature_enabled_impl() & 1) != 0 || v19 != 1)
+  rankingType = [contextCopy rankingType];
+  if ((_os_feature_enabled_impl() & 1) != 0 || rankingType != 1)
   {
-    v20 = [(SPCoreSpotlightIndexer *)self _taskForQueryWithQueryString:v12 queryContext:v13 eventHandler:v14 resultsHandler:v15 completionHandler:v16];
+    v20 = [(SPCoreSpotlightIndexer *)self _taskForQueryWithQueryString:stringCopy queryContext:contextCopy eventHandler:handlerCopy resultsHandler:resultsHandlerCopy completionHandler:completionHandlerCopy];
   }
 
   else
   {
-    v20 = [sDelegate taskForTopHitQueryWithQueryString:v12 queryContext:v13 eventHandler:v14 resultsHandler:v15 completionHandler:v16];
+    v20 = [sDelegate taskForTopHitQueryWithQueryString:stringCopy queryContext:contextCopy eventHandler:handlerCopy resultsHandler:resultsHandlerCopy completionHandler:completionHandlerCopy];
   }
 
   v21 = v20;
@@ -7931,23 +7931,23 @@ void __114__SPCoreSpotlightIndexer__taskForQueryWithQueryString_queryContext_eve
   return v21;
 }
 
-- (void)startQueryTask:(id)a3
+- (void)startQueryTask:(id)task
 {
-  v3 = a3;
+  taskCopy = task;
   v4 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [SPCoreSpotlightIndexer startQueryTask:];
   }
 
-  if (v3)
+  if (taskCopy)
   {
     v5 = sIndexQueue;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __41__SPCoreSpotlightIndexer_startQueryTask___block_invoke;
     v7[3] = &unk_278934050;
-    v8 = v3;
+    v8 = taskCopy;
     v6 = _setup_block(v7, [v8 critical], 17971);
     dispatch_async(v5, v6);
   }
@@ -7964,108 +7964,108 @@ uint64_t __41__SPCoreSpotlightIndexer_startQueryTask___block_invoke(uint64_t a1)
   return [*(a1 + 32) start];
 }
 
-- (id)_startQueryWithQueryString:(id)a3 queryContext:(id)a4 eventHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7
+- (id)_startQueryWithQueryString:(id)string queryContext:(id)context eventHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionHandlerCopy = completionHandler;
+  resultsHandlerCopy = resultsHandler;
+  handlerCopy = handler;
+  contextCopy = context;
+  stringCopy = string;
   v17 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     [SPCoreSpotlightIndexer _startQueryWithQueryString:queryContext:eventHandler:resultsHandler:completionHandler:];
   }
 
-  v18 = [(SPCoreSpotlightIndexer *)self _taskForQueryWithQueryString:v16 queryContext:v15 eventHandler:v14 resultsHandler:v13 completionHandler:v12];
+  v18 = [(SPCoreSpotlightIndexer *)self _taskForQueryWithQueryString:stringCopy queryContext:contextCopy eventHandler:handlerCopy resultsHandler:resultsHandlerCopy completionHandler:completionHandlerCopy];
 
   [(SPCoreSpotlightIndexer *)self startQueryTask:v18];
 
   return v18;
 }
 
-- (id)startQueryWithQueryString:(id)a3 queryContext:(id)a4 eventHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7
+- (id)startQueryWithQueryString:(id)string queryContext:(id)context eventHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionHandlerCopy = completionHandler;
+  resultsHandlerCopy = resultsHandler;
+  handlerCopy = handler;
+  contextCopy = context;
+  stringCopy = string;
   v17 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     [SPCoreSpotlightIndexer startQueryWithQueryString:queryContext:eventHandler:resultsHandler:completionHandler:];
   }
 
-  v18 = [(SPCoreSpotlightIndexer *)self taskForQueryWithQueryString:v16 queryContext:v15 eventHandler:v14 resultsHandler:v13 completionHandler:v12];
+  v18 = [(SPCoreSpotlightIndexer *)self taskForQueryWithQueryString:stringCopy queryContext:contextCopy eventHandler:handlerCopy resultsHandler:resultsHandlerCopy completionHandler:completionHandlerCopy];
 
   [(SPCoreSpotlightIndexer *)self startQueryTask:v18];
 
   return v18;
 }
 
-- (id)taskForTopHitQueryWithQueryString:(id)a3 queryContext:(id)a4 eventHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7
+- (id)taskForTopHitQueryWithQueryString:(id)string queryContext:(id)context eventHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionHandlerCopy = completionHandler;
+  resultsHandlerCopy = resultsHandler;
+  handlerCopy = handler;
+  contextCopy = context;
+  stringCopy = string;
   v17 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     [SPCoreSpotlightIndexer taskForTopHitQueryWithQueryString:queryContext:eventHandler:resultsHandler:completionHandler:];
   }
 
-  v18 = [(SPCoreSpotlightIndexer *)self _taskForQueryWithQueryString:v16 queryContext:v15 eventHandler:v14 resultsHandler:v13 completionHandler:v12];
+  v18 = [(SPCoreSpotlightIndexer *)self _taskForQueryWithQueryString:stringCopy queryContext:contextCopy eventHandler:handlerCopy resultsHandler:resultsHandlerCopy completionHandler:completionHandlerCopy];
 
   return v18;
 }
 
-- (id)startQuery:(id)a3 withContext:(id)a4 eventHandler:(id)a5 handler:(id)a6
+- (id)startQuery:(id)query withContext:(id)context eventHandler:(id)handler handler:(id)a6
 {
   v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  contextCopy = context;
+  queryCopy = query;
   v14 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     [SPCoreSpotlightIndexer startQuery:withContext:eventHandler:handler:];
   }
 
-  v15 = [(SPCoreSpotlightIndexer *)self _startQueryWithQueryString:v13 queryContext:v12 eventHandler:v11 resultsHandler:v10 completionHandler:0];
+  v15 = [(SPCoreSpotlightIndexer *)self _startQueryWithQueryString:queryCopy queryContext:contextCopy eventHandler:handlerCopy resultsHandler:v10 completionHandler:0];
 
   return v15;
 }
 
-- (id)startQuery:(id)a3 withContext:(id)a4 handler:(id)a5
+- (id)startQuery:(id)query withContext:(id)context handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  contextCopy = context;
+  queryCopy = query;
   v11 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [SPCoreSpotlightIndexer startQuery:withContext:eventHandler:handler:];
   }
 
-  v12 = [(SPCoreSpotlightIndexer *)self _startQueryWithQueryString:v10 queryContext:v9 eventHandler:0 resultsHandler:v8 completionHandler:0];
+  v12 = [(SPCoreSpotlightIndexer *)self _startQueryWithQueryString:queryCopy queryContext:contextCopy eventHandler:0 resultsHandler:handlerCopy completionHandler:0];
 
   return v12;
 }
 
-+ (id)_mergedTokenRewrites:(id)a3
++ (id)_mergedTokenRewrites:(id)rewrites
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v28 = [MEMORY[0x277CBEB38] dictionary];
+  rewritesCopy = rewrites;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CBEB58] set];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v3;
+  obj = rewritesCopy;
   v27 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v27)
   {
@@ -8082,24 +8082,24 @@ uint64_t __41__SPCoreSpotlightIndexer_startQueryTask___block_invoke(uint64_t a1)
 
         v29 = v5;
         v6 = *(*(&v37 + 1) + 8 * v5);
-        v7 = [v6 originalToken];
-        v8 = [v28 objectForKeyedSubscript:v7];
+        originalToken = [v6 originalToken];
+        v8 = [dictionary objectForKeyedSubscript:originalToken];
 
         v30 = v8;
         if (!v8)
         {
-          v9 = [MEMORY[0x277CBEB18] array];
-          v10 = [v6 originalToken];
-          v30 = v9;
-          [v28 setObject:v9 forKeyedSubscript:v10];
+          array = [MEMORY[0x277CBEB18] array];
+          originalToken2 = [v6 originalToken];
+          v30 = array;
+          [dictionary setObject:array forKeyedSubscript:originalToken2];
         }
 
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v11 = [v6 variations];
-        v12 = [v11 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        variations = [v6 variations];
+        v12 = [variations countByEnumeratingWithState:&v33 objects:v41 count:16];
         if (v12)
         {
           v13 = v12;
@@ -8110,14 +8110,14 @@ uint64_t __41__SPCoreSpotlightIndexer_startQueryTask___block_invoke(uint64_t a1)
             {
               if (*v34 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(variations);
               }
 
               v16 = *(*(&v33 + 1) + 8 * i);
               v17 = MEMORY[0x277CCACA8];
-              v18 = [v6 originalToken];
-              v19 = [v16 variation];
-              v20 = [v17 stringWithFormat:@"%@/%@/%ld", v18, v19, objc_msgSend(v16, "type")];
+              originalToken3 = [v6 originalToken];
+              variation = [v16 variation];
+              v20 = [v17 stringWithFormat:@"%@/%@/%ld", originalToken3, variation, objc_msgSend(v16, "type")];
 
               if (([v4 containsObject:v20] & 1) == 0)
               {
@@ -8126,7 +8126,7 @@ uint64_t __41__SPCoreSpotlightIndexer_startQueryTask___block_invoke(uint64_t a1)
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v33 objects:v41 count:16];
+            v13 = [variations countByEnumeratingWithState:&v33 objects:v41 count:16];
           }
 
           while (v13);
@@ -8142,14 +8142,14 @@ uint64_t __41__SPCoreSpotlightIndexer_startQueryTask___block_invoke(uint64_t a1)
     while (v27);
   }
 
-  v21 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __47__SPCoreSpotlightIndexer__mergedTokenRewrites___block_invoke;
   v31[3] = &unk_278936938;
-  v22 = v21;
+  v22 = array2;
   v32 = v22;
-  [v28 enumerateKeysAndObjectsUsingBlock:v31];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v31];
 
   v23 = *MEMORY[0x277D85DE8];
 
@@ -8176,25 +8176,25 @@ void __47__SPCoreSpotlightIndexer__mergedTokenRewrites___block_invoke(uint64_t a
   }
 }
 
-- (void)rewriteQueryWithQueryString:(id)a3 context:(id)a4 matchInfo:(id)a5 rewriteHandler:(id)a6
+- (void)rewriteQueryWithQueryString:(id)string context:(id)context matchInfo:(id)info rewriteHandler:(id)handler
 {
   v66 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v43 = a6;
-  v12 = a5;
-  v13 = [v11 queryID];
-  v14 = [v11 rankingType];
+  stringCopy = string;
+  contextCopy = context;
+  handlerCopy = handler;
+  infoCopy = info;
+  queryID = [contextCopy queryID];
+  rankingType = [contextCopy rankingType];
   v15 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v38 = CSRedactString(v10, 0);
+    v38 = CSRedactString(stringCopy, 0);
     v39 = v38;
     v40 = @"NO";
     *buf = 134218498;
-    v61 = v13;
+    v61 = queryID;
     v62 = 2112;
-    if (v14 == 1)
+    if (rankingType == 1)
     {
       v40 = @"YES";
     }
@@ -8205,51 +8205,51 @@ void __47__SPCoreSpotlightIndexer__mergedTokenRewrites___block_invoke(uint64_t a
     _os_log_debug_impl(&dword_231A35000, v15, OS_LOG_TYPE_DEBUG, "[qid=%ld][rewrite] rewriteQueryWithQueryString=%@ top_hit=%@", buf, 0x20u);
   }
 
-  v16 = [SPConcreteCoreSpotlightIndexer _tokensMaxCountFromMatchInfo:v12];
+  v16 = [SPConcreteCoreSpotlightIndexer _tokensMaxCountFromMatchInfo:infoCopy];
 
-  v17 = [v11 userQuery];
-  v18 = [SPConcreteCoreSpotlightIndexer _setOfTokensToCorrect:v17 tokenMatchInfo:v16];
+  userQuery = [contextCopy userQuery];
+  v18 = [SPConcreteCoreSpotlightIndexer _setOfTokensToCorrect:userQuery tokenMatchInfo:v16];
 
   v19 = v18;
-  v42 = v13;
-  v20 = [SPConcreteCoreSpotlightIndexer _indexIndependentTokenRewritesWithMatchInfo:v16 queryID:v13 setOfTokensToCorrect:v18];
-  v21 = [v11 protectionClasses];
-  if (![v21 count])
+  v42 = queryID;
+  v20 = [SPConcreteCoreSpotlightIndexer _indexIndependentTokenRewritesWithMatchInfo:v16 queryID:queryID setOfTokensToCorrect:v18];
+  protectionClasses = [contextCopy protectionClasses];
+  if (![protectionClasses count])
   {
-    v22 = [objc_opt_class() allProtectionClasses];
+    allProtectionClasses = [objc_opt_class() allProtectionClasses];
 
-    v21 = v22;
+    protectionClasses = allProtectionClasses;
   }
 
-  v44 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   group = dispatch_group_create();
-  v23 = [v11 bundleIDs];
-  if (![v23 count])
+  bundleIDs = [contextCopy bundleIDs];
+  if (![bundleIDs count])
   {
 
     v33 = group;
     goto LABEL_8;
   }
 
-  [v11 bundleIDs];
-  v24 = v41 = v10;
+  [contextCopy bundleIDs];
+  v24 = v41 = stringCopy;
   [v24 objectAtIndexedSubscript:0];
-  v25 = v11;
-  v26 = v21;
+  v25 = contextCopy;
+  v26 = protectionClasses;
   v27 = v16;
-  v28 = self;
+  selfCopy = self;
   v29 = v20;
   v31 = v30 = v19;
   v32 = [v31 isEqualToString:@"com.apple.mobileslideshow"];
 
   v19 = v30;
   v20 = v29;
-  self = v28;
+  self = selfCopy;
   v16 = v27;
-  v21 = v26;
-  v11 = v25;
+  protectionClasses = v26;
+  contextCopy = v25;
 
-  v10 = v41;
+  stringCopy = v41;
   v33 = group;
   if ((v32 & 1) == 0)
   {
@@ -8259,15 +8259,15 @@ LABEL_8:
     v53[2] = __87__SPCoreSpotlightIndexer_rewriteQueryWithQueryString_context_matchInfo_rewriteHandler___block_invoke;
     v53[3] = &unk_278936988;
     v54 = v33;
-    v55 = v10;
-    v56 = v11;
+    v55 = stringCopy;
+    v56 = contextCopy;
     v57 = v16;
     v58 = v19;
-    v59 = v44;
-    [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:v21 block:v53];
+    v59 = array;
+    [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:protectionClasses block:v53];
   }
 
-  if (v43)
+  if (handlerCopy)
   {
     v34 = qos_class_self();
     v35 = dispatch_get_global_queue(v34, 2uLL);
@@ -8275,12 +8275,12 @@ LABEL_8:
     v46[1] = 3221225472;
     v46[2] = __87__SPCoreSpotlightIndexer_rewriteQueryWithQueryString_context_matchInfo_rewriteHandler___block_invoke_4;
     v46[3] = &unk_2789369B0;
-    v47 = v44;
+    v47 = array;
     v48 = v20;
-    v49 = v11;
+    v49 = contextCopy;
     v52 = v42;
-    v51 = v43;
-    v50 = v10;
+    v51 = handlerCopy;
+    v50 = stringCopy;
     v36 = _setup_block(v46, 0, 18128);
     dispatch_group_notify(group, v35, v36);
 
@@ -8414,13 +8414,13 @@ void __87__SPCoreSpotlightIndexer_rewriteQueryWithQueryString_context_matchInfo_
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dateRewritesFromContext:(id)a3
+- (id)dateRewritesFromContext:(id)context
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v43 = [MEMORY[0x277CBEB18] array];
-  v4 = [v3 queryUnderstandingOutput];
-  v5 = [v4 objectForKeyedSubscript:@"kQPQUOutputTokenInfo"];
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
+  queryUnderstandingOutput = [contextCopy queryUnderstandingOutput];
+  v5 = [queryUnderstandingOutput objectForKeyedSubscript:@"kQPQUOutputTokenInfo"];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -8429,8 +8429,8 @@ void __87__SPCoreSpotlightIndexer_rewriteQueryWithQueryString_context_matchInfo_
   if (v6)
   {
     v7 = v6;
-    v36 = v4;
-    v37 = v3;
+    v36 = queryUnderstandingOutput;
+    v37 = contextCopy;
     v8 = 0;
     v9 = *v50;
     v38 = *v50;
@@ -8513,7 +8513,7 @@ void __87__SPCoreSpotlightIndexer_rewriteQueryWithQueryString_context_matchInfo_
                   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v53 count:1];
                   v33 = [v31 initWithOriginalToken:v30 variations:v32];
 
-                  [v43 addObject:v33];
+                  [array addObject:v33];
                 }
 
                 v19 = [v17 countByEnumeratingWithState:&v44 objects:v58 count:16];
@@ -8544,43 +8544,43 @@ void __87__SPCoreSpotlightIndexer_rewriteQueryWithQueryString_context_matchInfo_
 
     while (v7);
 
-    v4 = v36;
-    v3 = v37;
+    queryUnderstandingOutput = v36;
+    contextCopy = v37;
   }
 
   v34 = *MEMORY[0x277D85DE8];
 
-  return v43;
+  return array;
 }
 
-- (void)processSearchString:(id)a3 intoTrimmedString:(id *)a4 andTokens:(id *)a5
+- (void)processSearchString:(id)string intoTrimmedString:(id *)trimmedString andTokens:(id *)tokens
 {
   v7 = MEMORY[0x277CCA900];
-  v8 = a3;
-  v9 = [v7 whitespaceCharacterSet];
-  v10 = [v8 stringByTrimmingCharactersInSet:v9];
+  stringCopy = string;
+  whitespaceCharacterSet = [v7 whitespaceCharacterSet];
+  v10 = [stringCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v16 = [v10 lowercaseString];
+  lowercaseString = [v10 lowercaseString];
 
   if (processSearchString_intoTrimmedString_andTokens__onceToken != -1)
   {
     [SPCoreSpotlightIndexer processSearchString:intoTrimmedString:andTokens:];
   }
 
-  v11 = [processSearchString_intoTrimmedString_andTokens__regex stringByReplacingMatchesInString:v16 options:0 range:0 withTemplate:{objc_msgSend(v16, "length"), &stru_2846BD100}];
-  v12 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v13 = [v11 componentsSeparatedByCharactersInSet:v12];
+  v11 = [processSearchString_intoTrimmedString_andTokens__regex stringByReplacingMatchesInString:lowercaseString options:0 range:0 withTemplate:{objc_msgSend(lowercaseString, "length"), &stru_2846BD100}];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v13 = [v11 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  if (a4)
+  if (trimmedString)
   {
     v14 = v11;
-    *a4 = v11;
+    *trimmedString = v11;
   }
 
-  if (a5)
+  if (tokens)
   {
     v15 = v13;
-    *a5 = v13;
+    *tokens = v13;
   }
 }
 
@@ -8593,20 +8593,20 @@ uint64_t __74__SPCoreSpotlightIndexer_processSearchString_intoTrimmedString_andT
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)rewriteFirstPassQueryWithQueryString:(id)a3 context:(id)a4 trimmedSearchStringTokens:(id)a5 populateDateSynonyms:(BOOL)a6
+- (void)rewriteFirstPassQueryWithQueryString:(id)string context:(id)context trimmedSearchStringTokens:(id)tokens populateDateSynonyms:(BOOL)synonyms
 {
-  v6 = a6;
+  synonymsCopy = synonyms;
   v62 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v12 && [v12 count])
+  stringCopy = string;
+  contextCopy = context;
+  tokensCopy = tokens;
+  v13 = tokensCopy;
+  if (tokensCopy && [tokensCopy count])
   {
-    v37 = v6;
-    v36 = self;
-    v39 = v11;
-    v40 = v10;
+    v37 = synonymsCopy;
+    selfCopy = self;
+    v39 = contextCopy;
+    v40 = stringCopy;
     v41 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v52 = 0u;
     v53 = 0u;
@@ -8698,18 +8698,18 @@ uint64_t __74__SPCoreSpotlightIndexer_processSearchString_intoTrimmedString_andT
       while (v44);
     }
 
-    v11 = v39;
+    contextCopy = v39;
     v32 = v41;
     if (v37)
     {
-      v33 = [(SPCoreSpotlightIndexer *)v36 dateRewritesFromContext:v39];
+      v33 = [(SPCoreSpotlightIndexer *)selfCopy dateRewritesFromContext:v39];
       [v41 addObjectsFromArray:v33];
     }
 
     v34 = [objc_alloc(MEMORY[0x277D286B0]) initWithRewrittenTokens:v41];
     [v39 setRewriteContext:v34];
 
-    v10 = v40;
+    stringCopy = v40;
     v13 = v38;
   }
 
@@ -8726,35 +8726,35 @@ uint64_t __74__SPCoreSpotlightIndexer_processSearchString_intoTrimmedString_andT
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reindexAllItemsWithIndexers:(id)a3 reason:(id)a4 completionHandler:(id)a5
+- (void)reindexAllItemsWithIndexers:(id)indexers reason:(id)reason completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  indexersCopy = indexers;
+  reasonCopy = reason;
+  handlerCopy = handler;
+  v11 = handlerCopy;
   if (sPrivate == 1)
   {
-    if (v10)
+    if (handlerCopy)
     {
-      (*(v10 + 2))(v10);
+      (*(handlerCopy + 2))(handlerCopy);
     }
   }
 
   else
   {
-    v12 = [(SPCoreSpotlightIndexer *)self dataMigrationStage];
-    v13 = [(SPCoreSpotlightIndexer *)self reindexAllQueue];
+    dataMigrationStage = [(SPCoreSpotlightIndexer *)self dataMigrationStage];
+    reindexAllQueue = [(SPCoreSpotlightIndexer *)self reindexAllQueue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __79__SPCoreSpotlightIndexer_reindexAllItemsWithIndexers_reason_completionHandler___block_invoke;
     v15[3] = &unk_278936A28;
     v15[4] = self;
-    v16 = v8;
-    v17 = v9;
-    v19 = v12;
+    v16 = indexersCopy;
+    v17 = reasonCopy;
+    v19 = dataMigrationStage;
     v18 = v11;
     v14 = _setup_block(v15, 0, 18299);
-    dispatch_async(v13, v14);
+    dispatch_async(reindexAllQueue, v14);
   }
 }
 
@@ -9045,7 +9045,7 @@ void __79__SPCoreSpotlightIndexer_reindexAllItemsWithIndexers_reason_completionH
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_openIndex:(BOOL)a3 forInit:(BOOL)a4 readOnly:(BOOL)a5
+- (int)_openIndex:(BOOL)index forInit:(BOOL)init readOnly:(BOOL)only
 {
   v25 = 0;
   v26 = &v25;
@@ -9056,23 +9056,23 @@ void __79__SPCoreSpotlightIndexer_reindexAllItemsWithIndexers_reason_completionH
   v23[2] = 0x2020000000;
   v24 = 0;
   v9 = objc_alloc(MEMORY[0x277CBEB18]);
-  v10 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-  v11 = [v9 initWithCapacity:{objc_msgSend(v10, "count")}];
+  concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+  v11 = [v9 initWithCapacity:{objc_msgSend(concreteIndexers, "count")}];
 
-  v12 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+  concreteIndexers2 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __54__SPCoreSpotlightIndexer__openIndex_forInit_readOnly___block_invoke;
   v16[3] = &unk_278936A50;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
+  indexCopy = index;
+  initCopy = init;
+  onlyCopy = only;
   v16[4] = self;
   v18 = &v25;
   v19 = v23;
   v13 = v11;
   v17 = v13;
-  [v12 enumerateKeysAndObjectsWithOptions:1 usingBlock:v16];
+  [concreteIndexers2 enumerateKeysAndObjectsWithOptions:1 usingBlock:v16];
 
   if ([v13 count])
   {
@@ -9216,28 +9216,28 @@ LABEL_11:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeFileProviderBundleMap:(id)a3 fileProviderBundleIDs:(id)a4
+- (void)writeFileProviderBundleMap:(id)map fileProviderBundleIDs:(id)ds
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  mapCopy = map;
+  dsCopy = ds;
   if ((sPrivate & 1) == 0)
   {
     v7 = NSHomeDirectory();
     v8 = [v7 stringByAppendingPathComponent:@"/Library/Spotlight/ExtensionsCache"];
 
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    if (([v9 fileExistsAtPath:v8] & 1) == 0)
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if (([defaultManager fileExistsAtPath:v8] & 1) == 0)
     {
-      [v9 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:0];
+      [defaultManager createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:0];
     }
 
     v22[0] = @"v_n";
     v22[1] = @"bm_d";
     v10 = MEMORY[0x277CBEC10];
-    if (v5)
+    if (mapCopy)
     {
-      v11 = v5;
+      v11 = mapCopy;
     }
 
     else
@@ -9248,11 +9248,11 @@ LABEL_11:
     v23[0] = &unk_2846C95D8;
     v23[1] = v11;
     v22[2] = @"bid_d";
-    v12 = [v6 allObjects];
-    v13 = v12;
-    if (v12)
+    allObjects = [dsCopy allObjects];
+    v13 = allObjects;
+    if (allObjects)
     {
-      v14 = v12;
+      v14 = allObjects;
     }
 
     else
@@ -9413,8 +9413,8 @@ LABEL_5:
 {
   if (self->_reindexIndexers)
   {
-    v4 = [MEMORY[0x277CC3538] sharedManager];
-    [v4 loadExtensions];
+    mEMORY[0x277CC3538] = [MEMORY[0x277CC3538] sharedManager];
+    [mEMORY[0x277CC3538] loadExtensions];
 
     [(SPCoreSpotlightIndexer *)self reindexAllItemsWithIndexers:self->_reindexIndexers reason:@"loading extensions" completionHandler:&__block_literal_global_2514];
     reindexIndexers = self->_reindexIndexers;
@@ -9429,23 +9429,23 @@ LABEL_5:
   }
 }
 
-- (void)fileProviderActiveProvidersChanged:(id)a3
+- (void)fileProviderActiveProvidersChanged:(id)changed
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = MEMORY[0x277CBEB98];
-  v36 = v4;
-  v6 = [v4 allKeys];
-  v35 = [v5 setWithArray:v6];
+  v36 = changedCopy;
+  allKeys = [changedCopy allKeys];
+  v35 = [v5 setWithArray:allKeys];
 
   if ([v36 count])
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    obj = v7;
-    [(SPCoreSpotlightIndexer *)v7 fileProviderInfoSetup];
-    location = &v7->_fileProviderAppToExtensionBundleMap;
-    v8 = v7->_fileProviderAppToExtensionBundleMap;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    obj = selfCopy;
+    [(SPCoreSpotlightIndexer *)selfCopy fileProviderInfoSetup];
+    location = &selfCopy->_fileProviderAppToExtensionBundleMap;
+    v8 = selfCopy->_fileProviderAppToExtensionBundleMap;
     if ([(NSDictionary *)v8 count])
     {
       v9 = objc_opt_new();
@@ -9531,7 +9531,7 @@ LABEL_5:
 
     else
     {
-      objc_storeStrong(location, a3);
+      objc_storeStrong(location, changed);
       v27 = *location;
     }
 
@@ -9569,11 +9569,11 @@ LABEL_5:
 
 - (NSDictionary)fileProviderAppToExtensionBundleMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SPCoreSpotlightIndexer *)v2 fileProviderInfoSetup];
-  v3 = v2->_fileProviderAppToExtensionBundleMap;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SPCoreSpotlightIndexer *)selfCopy fileProviderInfoSetup];
+  v3 = selfCopy->_fileProviderAppToExtensionBundleMap;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -9581,13 +9581,13 @@ LABEL_5:
 - (NSDictionary)fileProviderExtensionToAppBundleMap
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SPCoreSpotlightIndexer *)v2 fileProviderInfoSetup];
-  fileProviderExtensionToAppBundleMap = v2->_fileProviderExtensionToAppBundleMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SPCoreSpotlightIndexer *)selfCopy fileProviderInfoSetup];
+  fileProviderExtensionToAppBundleMap = selfCopy->_fileProviderExtensionToAppBundleMap;
   if (!fileProviderExtensionToAppBundleMap)
   {
-    fileProviderAppToExtensionBundleMap = v2->_fileProviderAppToExtensionBundleMap;
+    fileProviderAppToExtensionBundleMap = selfCopy->_fileProviderAppToExtensionBundleMap;
     if (fileProviderAppToExtensionBundleMap)
     {
       v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSDictionary count](fileProviderAppToExtensionBundleMap, "count")}];
@@ -9595,7 +9595,7 @@ LABEL_5:
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v6 = v2->_fileProviderAppToExtensionBundleMap;
+      v6 = selfCopy->_fileProviderAppToExtensionBundleMap;
       v7 = [(NSDictionary *)v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
@@ -9610,7 +9610,7 @@ LABEL_5:
             }
 
             v10 = *(*(&v16 + 1) + 8 * i);
-            v11 = [(NSDictionary *)v2->_fileProviderAppToExtensionBundleMap objectForKeyedSubscript:v10, v16];
+            v11 = [(NSDictionary *)selfCopy->_fileProviderAppToExtensionBundleMap objectForKeyedSubscript:v10, v16];
             [(NSDictionary *)v5 setObject:v10 forKeyedSubscript:v11];
           }
 
@@ -9620,10 +9620,10 @@ LABEL_5:
         while (v7);
       }
 
-      v12 = v2->_fileProviderExtensionToAppBundleMap;
-      v2->_fileProviderExtensionToAppBundleMap = v5;
+      v12 = selfCopy->_fileProviderExtensionToAppBundleMap;
+      selfCopy->_fileProviderExtensionToAppBundleMap = v5;
 
-      fileProviderExtensionToAppBundleMap = v2->_fileProviderExtensionToAppBundleMap;
+      fileProviderExtensionToAppBundleMap = selfCopy->_fileProviderExtensionToAppBundleMap;
     }
 
     else
@@ -9633,19 +9633,19 @@ LABEL_5:
   }
 
   v13 = fileProviderExtensionToAppBundleMap;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (BOOL)isForegroundFileProviderBundleID:(id)a3
+- (BOOL)isForegroundFileProviderBundleID:(id)d
 {
-  v4 = a3;
-  if (v4 && (v5 = self, objc_sync_enter(v5), [(SPCoreSpotlightIndexer *)v5 fileProviderInfoSetup], v6 = [(NSSet *)v5->_fileProviderBundleIDs containsObject:v4], objc_sync_exit(v5), v5, v6))
+  dCopy = d;
+  if (dCopy && (v5 = self, objc_sync_enter(v5), [(SPCoreSpotlightIndexer *)v5 fileProviderInfoSetup], v6 = [(NSSet *)v5->_fileProviderBundleIDs containsObject:dCopy], objc_sync_exit(v5), v5, v6))
   {
-    v7 = [MEMORY[0x277CC6428] isProviderIDForeground:v4];
+    v7 = [MEMORY[0x277CC6428] isProviderIDForeground:dCopy];
   }
 
   else
@@ -9656,7 +9656,7 @@ LABEL_5:
   return v7;
 }
 
-- (void)asyncOpenIndex:(BOOL)a3 forInit:(BOOL)a4 readOnly:(BOOL)a5
+- (void)asyncOpenIndex:(BOOL)index forInit:(BOOL)init readOnly:(BOOL)only
 {
   indexQueue = self->_indexQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -9664,14 +9664,14 @@ LABEL_5:
   v7[2] = __58__SPCoreSpotlightIndexer_asyncOpenIndex_forInit_readOnly___block_invoke;
   v7[3] = &unk_278936A78;
   v7[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  indexCopy = index;
+  initCopy = init;
+  onlyCopy = only;
   v6 = _setup_block(v7, 0, 18823);
   dispatch_async(indexQueue, v6);
 }
 
-- (int)openIndex:(BOOL)a3 forInit:(BOOL)a4 readOnly:(BOOL)a5
+- (int)openIndex:(BOOL)index forInit:(BOOL)init readOnly:(BOOL)only
 {
   v12 = 0;
   v13 = &v12;
@@ -9684,9 +9684,9 @@ LABEL_5:
   block[3] = &unk_278936AA0;
   block[4] = self;
   block[5] = &v12;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  indexCopy = index;
+  initCopy = init;
+  onlyCopy = only;
   dispatch_sync(indexQueue, block);
   v6 = *(v13 + 6);
   _Block_object_dispose(&v12, 8);
@@ -9700,109 +9700,109 @@ uint64_t __53__SPCoreSpotlightIndexer_openIndex_forInit_readOnly___block_invoke(
   return result;
 }
 
-- (BOOL)writeData:(id)a3 toFile:(id)a4
+- (BOOL)writeData:(id)data toFile:(id)file
 {
   v9 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  [v6 writeData:v5];
+  dataCopy = data;
+  fileCopy = file;
+  [fileCopy writeData:dataCopy];
 
   v7 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)indexFromBundle:(id)a3 protectionClass:(id)a4 personaID:(id)a5 options:(int64_t)a6 items:(id)a7 itemsText:(id)a8 itemsHTML:(id)a9 clientState:(id)a10 expectedClientState:(id)a11 clientStateName:(id)a12 deletes:(id)a13 canCreateNewIndex:(BOOL)a14 completionHandler:(id)a15
+- (void)indexFromBundle:(id)bundle protectionClass:(id)class personaID:(id)d options:(int64_t)options items:(id)items itemsText:(id)text itemsHTML:(id)l clientState:(id)self0 expectedClientState:(id)self1 clientStateName:(id)self2 deletes:(id)self3 canCreateNewIndex:(BOOL)self4 completionHandler:(id)self5
 {
   v57 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v46 = a4;
-  v20 = a5;
-  v21 = a7;
-  v44 = a8;
-  v22 = a9;
-  v45 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = a15;
+  bundleCopy = bundle;
+  classCopy = class;
+  dCopy = d;
+  itemsCopy = items;
+  textCopy = text;
+  lCopy = l;
+  stateCopy = state;
+  clientStateCopy = clientState;
+  nameCopy = name;
+  deletesCopy = deletes;
+  handlerCopy = handler;
   _checkUnlock();
   v27 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413314;
-    v48 = v19;
+    v48 = bundleCopy;
     v49 = 2112;
-    v50 = v24;
+    v50 = nameCopy;
     v51 = 2048;
-    v52 = [v45 length];
+    v52 = [stateCopy length];
     v53 = 2112;
-    v54 = v46;
+    v54 = classCopy;
     v55 = 2048;
-    v56 = a6;
+    optionsCopy = options;
     _os_log_debug_impl(&dword_231A35000, v27, OS_LOG_TYPE_DEBUG, "indexFromBundle, bundleID:%@, clientState:%@/%lu, protectionClass:%@, options:0x%lx", buf, 0x34u);
   }
 
-  v28 = v21;
-  if (v19)
+  v28 = itemsCopy;
+  if (bundleCopy)
   {
-    if (![sDelegate blocklistCheck:v19 withOptions:a6])
+    if (![sDelegate blocklistCheck:bundleCopy withOptions:options])
     {
-      v41 = v25;
-      v43 = v24;
-      v29 = v22;
-      v30 = v20;
-      if (!v46 || (v35 = v46, [v46 isEqualToString:@"Default"]))
+      v41 = deletesCopy;
+      v43 = nameCopy;
+      v29 = lCopy;
+      v30 = dCopy;
+      if (!classCopy || (v35 = classCopy, [classCopy isEqualToString:@"Default"]))
       {
         v35 = *MEMORY[0x277CCA1A0];
       }
 
       v34 = v35;
-      v36 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v34 andBundleID:v19];
+      v36 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v34 andBundleID:bundleCopy];
       if (v36)
       {
         self->_lastUpdateTime = CFAbsoluteTimeGetCurrent();
         LOBYTE(v39) = 1;
-        [v36 indexFromBundle:v19 personaID:v30 options:a6 items:v21 itemsText:v44 itemsHTML:v29 clientState:v45 expectedClientState:v23 clientStateName:v24 deletes:v41 canCreateNewIndex:v39 completionHandler:v26];
+        [v36 indexFromBundle:bundleCopy personaID:v30 options:options items:itemsCopy itemsText:textCopy itemsHTML:v29 clientState:stateCopy expectedClientState:clientStateCopy clientStateName:nameCopy deletes:v41 canCreateNewIndex:v39 completionHandler:handlerCopy];
       }
 
-      else if (v26)
+      else if (handlerCopy)
       {
         v37 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
-        v26[2](v26, v37, 0);
+        handlerCopy[2](handlerCopy, v37, 0);
 
-        v28 = v21;
+        v28 = itemsCopy;
       }
 
       goto LABEL_18;
     }
 
-    if (v26)
+    if (handlerCopy)
     {
-      v41 = v25;
-      v43 = v24;
-      v29 = v22;
-      v30 = v20;
+      v41 = deletesCopy;
+      v43 = nameCopy;
+      v29 = lCopy;
+      v30 = dCopy;
       v31 = MEMORY[0x277CCA9B8];
       v32 = *MEMORY[0x277CC22E8];
       v33 = -1000;
 LABEL_9:
       v34 = [v31 errorWithDomain:v32 code:v33 userInfo:0];
-      v26[2](v26, v34, 0);
+      handlerCopy[2](handlerCopy, v34, 0);
 LABEL_18:
 
-      v20 = v30;
-      v22 = v29;
-      v24 = v43;
-      v25 = v41;
+      dCopy = v30;
+      lCopy = v29;
+      nameCopy = v43;
+      deletesCopy = v41;
     }
   }
 
-  else if (v26)
+  else if (handlerCopy)
   {
-    v41 = v25;
-    v43 = v24;
-    v29 = v22;
-    v30 = v20;
+    v41 = deletesCopy;
+    v43 = nameCopy;
+    v29 = lCopy;
+    v30 = dCopy;
     v31 = MEMORY[0x277CCA9B8];
     v32 = *MEMORY[0x277CC22E8];
     v33 = -1;
@@ -9812,70 +9812,70 @@ LABEL_18:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)indexSearchableItems:(id)a3 deleteSearchableItemsWithIdentifiers:(id)a4 clientState:(id)a5 protectionClass:(id)a6 forBundleID:(id)a7 options:(int64_t)a8 completionHandler:(id)a9
+- (void)indexSearchableItems:(id)items deleteSearchableItemsWithIdentifiers:(id)identifiers clientState:(id)state protectionClass:(id)class forBundleID:(id)d options:(int64_t)options completionHandler:(id)handler
 {
-  v15 = a9;
-  v16 = a7;
-  v17 = a6;
-  v18 = a4;
-  v19 = a3;
+  handlerCopy = handler;
+  dCopy = d;
+  classCopy = class;
+  identifiersCopy = identifiers;
+  itemsCopy = items;
   _checkUnlock();
-  [(SPCoreSpotlightIndexer *)self indexSearchableItems:v19 deleteSearchableItemsWithIdentifiers:v18 clientState:0 clientStateName:0 protectionClass:v17 forBundleID:v16 options:a8 completionHandler:v15];
+  [(SPCoreSpotlightIndexer *)self indexSearchableItems:itemsCopy deleteSearchableItemsWithIdentifiers:identifiersCopy clientState:0 clientStateName:0 protectionClass:classCopy forBundleID:dCopy options:options completionHandler:handlerCopy];
 }
 
-- (void)indexSearchableItems:(id)a3 deleteSearchableItemsWithIdentifiers:(id)a4 clientState:(id)a5 expectedClientState:(id)a6 clientStateName:(id)a7 protectionClass:(id)a8 forBundleID:(id)a9 options:(int64_t)a10 completionHandler:(id)a11
+- (void)indexSearchableItems:(id)items deleteSearchableItemsWithIdentifiers:(id)identifiers clientState:(id)state expectedClientState:(id)clientState clientStateName:(id)name protectionClass:(id)class forBundleID:(id)d options:(int64_t)self0 completionHandler:(id)self1
 {
   v48 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v33 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a11;
+  itemsCopy = items;
+  identifiersCopy = identifiers;
+  stateCopy = state;
+  clientStateCopy = clientState;
+  nameCopy = name;
+  classCopy = class;
+  dCopy = d;
+  handlerCopy = handler;
   v23 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413826;
-    v35 = v21;
+    v35 = dCopy;
     v36 = 2112;
-    v37 = v19;
+    v37 = nameCopy;
     v38 = 2048;
-    v39 = [v17 length];
+    v39 = [stateCopy length];
     v40 = 2112;
-    v41 = v20;
+    v41 = classCopy;
     v42 = 2048;
-    v43 = [v16 count];
+    v43 = [itemsCopy count];
     v44 = 2048;
-    v45 = [v33 count];
+    v45 = [identifiersCopy count];
     v46 = 2048;
-    v47 = a10;
+    optionsCopy = options;
     _os_log_debug_impl(&dword_231A35000, v23, OS_LOG_TYPE_DEBUG, "indexSearchableItems, bundleID:%@, clientState:%@/%ld, protectionClass:%@, itemCount:%ld, deleteIdentifiersCount:%ld, options:0x%lx", buf, 0x48u);
   }
 
   _checkUnlock();
-  if (v21)
+  if (dCopy)
   {
-    if (![sDelegate blocklistCheck:v21 withOptions:a10])
+    if (![sDelegate blocklistCheck:dCopy withOptions:options])
     {
-      if (!v20 || (v27 = [v20 isEqualToString:@"Default"], v28 = v20, v27))
+      if (!classCopy || (v27 = [classCopy isEqualToString:@"Default"], v28 = classCopy, v27))
       {
         v28 = *MEMORY[0x277CCA1A0];
       }
 
       v26 = v28;
-      v29 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v26 andBundleID:v21];
+      v29 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v26 andBundleID:dCopy];
       if (v29)
       {
         self->_lastUpdateTime = CFAbsoluteTimeGetCurrent();
-        [v29 indexSearchableItems:v16 deleteSearchableItemsWithIdentifiers:v33 clientState:v17 expectedClientState:v18 clientStateName:v19 forBundleID:v21 options:a10 completionHandler:v22];
+        [v29 indexSearchableItems:itemsCopy deleteSearchableItemsWithIdentifiers:identifiersCopy clientState:stateCopy expectedClientState:clientStateCopy clientStateName:nameCopy forBundleID:dCopy options:options completionHandler:handlerCopy];
       }
 
-      else if (v22)
+      else if (handlerCopy)
       {
         v30 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
-        v22[2](v22, v30);
+        handlerCopy[2](handlerCopy, v30);
       }
 
       goto LABEL_17;
@@ -9884,13 +9884,13 @@ LABEL_18:
     v24 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
 LABEL_8:
     v26 = v24;
-    v22[2](v22, v24);
+    handlerCopy[2](handlerCopy, v24);
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  if (v22)
+  if (handlerCopy)
   {
     v25 = objc_alloc(MEMORY[0x277CCA9B8]);
     v24 = [v25 initWithDomain:*MEMORY[0x277CC22E8] code:-1 userInfo:0];
@@ -9902,27 +9902,27 @@ LABEL_18:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepareIndexingWhileLocked:(id)a3 protectionClass:(id)a4 holdAssertionFor:(double)a5 completionHandler:(id)a6
+- (void)prepareIndexingWhileLocked:(id)locked protectionClass:(id)class holdAssertionFor:(double)for completionHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a6;
+  lockedCopy = locked;
+  classCopy = class;
+  handlerCopy = handler;
   _checkUnlock();
-  if (v13)
+  if (lockedCopy)
   {
-    if ([sDelegate blocklistCheck:v13 withOptions:0])
+    if ([sDelegate blocklistCheck:lockedCopy withOptions:0])
     {
       v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
       goto LABEL_8;
     }
 
-    if (v8)
+    if (classCopy)
     {
-      [v8 isEqualToString:@"Default"];
+      [classCopy isEqualToString:@"Default"];
     }
   }
 
-  if (!v9)
+  if (!handlerCopy)
   {
     goto LABEL_9;
   }
@@ -9931,32 +9931,32 @@ LABEL_18:
   v10 = [v11 initWithDomain:*MEMORY[0x277CC22E8] code:-1 userInfo:0];
 LABEL_8:
   v12 = v10;
-  v9[2](v9, v10);
+  handlerCopy[2](handlerCopy, v10);
 
 LABEL_9:
 }
 
-- (void)finishIndexingWhileLocked:(id)a3 protectionClass:(id)a4 completionHandler:(id)a5
+- (void)finishIndexingWhileLocked:(id)locked protectionClass:(id)class completionHandler:(id)handler
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
+  lockedCopy = locked;
+  classCopy = class;
+  handlerCopy = handler;
   _checkUnlock();
-  if (v12)
+  if (lockedCopy)
   {
-    if ([sDelegate blocklistCheck:v12 withOptions:0])
+    if ([sDelegate blocklistCheck:lockedCopy withOptions:0])
     {
       v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
       goto LABEL_8;
     }
 
-    if (v7)
+    if (classCopy)
     {
-      [v7 isEqualToString:@"Default"];
+      [classCopy isEqualToString:@"Default"];
     }
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_9;
   }
@@ -9965,19 +9965,19 @@ LABEL_9:
   v9 = [v10 initWithDomain:*MEMORY[0x277CC22E8] code:-1 userInfo:0];
 LABEL_8:
   v11 = v9;
-  v8[2](v8, v9);
+  handlerCopy[2](handlerCopy, v9);
 
 LABEL_9:
 }
 
-- (void)validateIndexers:(id)a3 outFileDescriptor:(int)a4
+- (void)validateIndexers:(id)indexers outFileDescriptor:(int)descriptor
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __61__SPCoreSpotlightIndexer_validateIndexers_outFileDescriptor___block_invoke;
   v4[3] = &__block_descriptor_36_e40_v16__0__SPConcreteCoreSpotlightIndexer_8l;
-  v5 = a4;
-  [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:a3 block:v4];
+  descriptorCopy = descriptor;
+  [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:indexers block:v4];
 }
 
 void __61__SPCoreSpotlightIndexer_validateIndexers_outFileDescriptor___block_invoke(uint64_t a1, void *a2)
@@ -9988,48 +9988,48 @@ void __61__SPCoreSpotlightIndexer_validateIndexers_outFileDescriptor___block_inv
   [v4 validateConcreteIndexer:1 outFileDescriptor:*(a1 + 32)];
 }
 
-- (void)validateVectors:(id)a3 outFileDescriptor:(int)a4
+- (void)validateVectors:(id)vectors outFileDescriptor:(int)descriptor
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __60__SPCoreSpotlightIndexer_validateVectors_outFileDescriptor___block_invoke;
   v4[3] = &__block_descriptor_36_e40_v16__0__SPConcreteCoreSpotlightIndexer_8l;
-  v5 = a4;
-  [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:a3 block:v4];
+  descriptorCopy = descriptor;
+  [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:vectors block:v4];
 }
 
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 protectionClass:(id)a4 forBundleID:(id)a5 fromClient:(id)a6 options:(int64_t)a7 completionHandler:(id)a8
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers protectionClass:(id)class forBundleID:(id)d fromClient:(id)client options:(int64_t)options completionHandler:(id)handler
 {
-  v21 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
+  identifiersCopy = identifiers;
+  classCopy = class;
+  dCopy = d;
+  clientCopy = client;
+  handlerCopy = handler;
   _checkUnlock();
-  if (!v13 || (v17 = [v13 isEqualToString:@"Default"], v18 = v13, v17))
+  if (!classCopy || (v17 = [classCopy isEqualToString:@"Default"], v18 = classCopy, v17))
   {
     v18 = *MEMORY[0x277CCA1A0];
   }
 
-  v19 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v18 andBundleID:v14];
+  v19 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v18 andBundleID:dCopy];
   if (v19)
   {
     self->_lastUpdateTime = CFAbsoluteTimeGetCurrent();
-    [v19 deleteSearchableItemsWithDomainIdentifiers:v21 forBundleID:v14 fromClient:v15 reason:0 completionHandler:v16];
+    [v19 deleteSearchableItemsWithDomainIdentifiers:identifiersCopy forBundleID:dCopy fromClient:clientCopy reason:0 completionHandler:handlerCopy];
   }
 
-  else if (v16)
+  else if (handlerCopy)
   {
     v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
-    v16[2](v16, v20);
+    handlerCopy[2](handlerCopy, v20);
   }
 }
 
-- (void)deleteSearchableItemsWithPersonaIds:(id)a3 completionHandler:(id)a4
+- (void)deleteSearchableItemsWithPersonaIds:(id)ids completionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v17 = a4;
+  idsCopy = ids;
+  handlerCopy = handler;
   _checkUnlock();
   v29[0] = 0;
   v29[1] = v29;
@@ -10042,10 +10042,10 @@ void __61__SPCoreSpotlightIndexer_validateIndexers_outFileDescriptor___block_inv
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-  v8 = [v7 allValues];
+  concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+  allValues = [concreteIndexers allValues];
 
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  v9 = [allValues countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v9)
   {
     v10 = *v26;
@@ -10055,7 +10055,7 @@ void __61__SPCoreSpotlightIndexer_validateIndexers_outFileDescriptor___block_inv
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
@@ -10066,10 +10066,10 @@ void __61__SPCoreSpotlightIndexer_validateIndexers_outFileDescriptor___block_inv
         v22[3] = &unk_278934F58;
         v24 = v29;
         v23 = v6;
-        [v12 deleteSearchableItemsWithPersonaIds:v18 completionHandler:{v22, v17}];
+        [v12 deleteSearchableItemsWithPersonaIds:idsCopy completionHandler:{v22, handlerCopy}];
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v25 objects:v31 count:16];
     }
 
     while (v9);
@@ -10082,7 +10082,7 @@ void __61__SPCoreSpotlightIndexer_validateIndexers_outFileDescriptor___block_inv
   v19[2] = __80__SPCoreSpotlightIndexer_deleteSearchableItemsWithPersonaIds_completionHandler___block_invoke_2;
   v19[3] = &unk_278936850;
   v19[4] = self;
-  v14 = v17;
+  v14 = handlerCopy;
   v20 = v14;
   v21 = v29;
   v15 = _setup_block(v19, 0, 19077);
@@ -10151,121 +10151,121 @@ uint64_t __133__SPCoreSpotlightIndexer_deleteAllSearchableItemsWithBundleID_from
   return result;
 }
 
-- (void)deleteSearchableItemsSinceDate:(id)a3 protectionClass:(id)a4 forBundleID:(id)a5 options:(int64_t)a6 completionHandler:(id)a7
+- (void)deleteSearchableItemsSinceDate:(id)date protectionClass:(id)class forBundleID:(id)d options:(int64_t)options completionHandler:(id)handler
 {
-  v18 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
+  dateCopy = date;
+  classCopy = class;
+  dCopy = d;
+  handlerCopy = handler;
   _checkUnlock();
-  if (!v11 || (v14 = [v11 isEqualToString:@"Default"], v15 = v11, v14))
+  if (!classCopy || (v14 = [classCopy isEqualToString:@"Default"], v15 = classCopy, v14))
   {
     v15 = *MEMORY[0x277CCA1A0];
   }
 
-  v16 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v15 andBundleID:v12];
+  v16 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v15 andBundleID:dCopy];
   if (v16)
   {
     self->_lastUpdateTime = CFAbsoluteTimeGetCurrent();
-    [v16 deleteSearchableItemsSinceDate:v18 forBundleID:v12 completionHandler:v13];
+    [v16 deleteSearchableItemsSinceDate:dateCopy forBundleID:dCopy completionHandler:handlerCopy];
   }
 
-  else if (v13)
+  else if (handlerCopy)
   {
     v17 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
-    v13[2](v13, v17);
+    handlerCopy[2](handlerCopy, v17);
   }
 }
 
-- (void)fetchLastClientStateWithProtectionClass:(id)a3 forBundleID:(id)a4 clientStateName:(id)a5 options:(int64_t)a6 completionHandler:(id)a7
+- (void)fetchLastClientStateWithProtectionClass:(id)class forBundleID:(id)d clientStateName:(id)name options:(int64_t)options completionHandler:(id)handler
 {
-  v20 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  classCopy = class;
+  dCopy = d;
+  nameCopy = name;
+  handlerCopy = handler;
   _checkUnlock();
-  if (!v20 || (v15 = [v20 isEqualToString:@"Default"], v16 = v20, v15))
+  if (!classCopy || (v15 = [classCopy isEqualToString:@"Default"], v16 = classCopy, v15))
   {
     v16 = *MEMORY[0x277CCA1A0];
   }
 
-  v17 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v16 andBundleID:v12];
+  v17 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v16 andBundleID:dCopy];
   v18 = v17;
   if (v17)
   {
-    [v17 fetchLastClientStateForBundleID:v12 clientStateName:v13 options:a6 completionHandler:v14];
+    [v17 fetchLastClientStateForBundleID:dCopy clientStateName:nameCopy options:options completionHandler:handlerCopy];
   }
 
-  else if (v14)
+  else if (handlerCopy)
   {
     v19 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
-    v14[2](v14, 0, v19);
+    handlerCopy[2](handlerCopy, 0, v19);
   }
 }
 
-- (void)changeStateOfSearchableItemsWithUIDs:(id)a3 toState:(int64_t)a4 protectionClass:(id)a5 forBundleID:(id)a6 forUTIType:(id)a7 options:(int64_t)a8
+- (void)changeStateOfSearchableItemsWithUIDs:(id)ds toState:(int64_t)state protectionClass:(id)class forBundleID:(id)d forUTIType:(id)type options:(int64_t)options
 {
-  v17 = a3;
-  v12 = a5;
-  v13 = a6;
+  dsCopy = ds;
+  classCopy = class;
+  dCopy = d;
   _checkUnlock();
-  if (!v12 || (v14 = [v12 isEqualToString:@"Default"], v15 = v12, v14))
+  if (!classCopy || (v14 = [classCopy isEqualToString:@"Default"], v15 = classCopy, v14))
   {
     v15 = *MEMORY[0x277CCA1A0];
   }
 
-  v16 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v15 andBundleID:v13];
+  v16 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v15 andBundleID:dCopy];
   if (v16)
   {
     self->_lastUpdateTime = CFAbsoluteTimeGetCurrent();
-    [v16 changeStateOfSearchableItemsWithUIDs:v17 toState:a4 forBundleID:v13];
+    [v16 changeStateOfSearchableItemsWithUIDs:dsCopy toState:state forBundleID:dCopy];
   }
 }
 
-- (void)userPerformedAction:(id)a3 withItem:(id)a4 protectionClass:(id)a5 forBundleID:(id)a6 personaID:(id)a7
+- (void)userPerformedAction:(id)action withItem:(id)item protectionClass:(id)class forBundleID:(id)d personaID:(id)iD
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  actionCopy = action;
+  itemCopy = item;
+  classCopy = class;
+  dCopy = d;
+  iDCopy = iD;
   if ((deviceUnlocked & 1) == 0)
   {
     SIResumeForUnlock();
   }
 
-  if (v13 && ([sDelegate blocklistCheck:v15 withOptions:0] & 1) == 0)
+  if (itemCopy && ([sDelegate blocklistCheck:dCopy withOptions:0] & 1) == 0)
   {
-    v17 = [v13 attributeSet];
-    v36 = [v17 relatedUniqueIdentifier];
+    attributeSet = [itemCopy attributeSet];
+    relatedUniqueIdentifier = [attributeSet relatedUniqueIdentifier];
 
-    v32 = [v13 uniqueIdentifier];
-    if (!v14 || (v18 = [v14 isEqualToString:@"Default"], v19 = v14, v18))
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
+    if (!classCopy || (v18 = [classCopy isEqualToString:@"Default"], v19 = classCopy, v18))
     {
       v19 = *MEMORY[0x277CCA1A0];
     }
 
     v20 = v19;
     v35 = v20;
-    if (v36)
+    if (relatedUniqueIdentifier)
     {
-      v34 = [objc_opt_class() allProtectionClasses];
+      allProtectionClasses = [objc_opt_class() allProtectionClasses];
       v33 = 0;
     }
 
     else
     {
       v52[0] = v20;
-      v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:1];
+      allProtectionClasses = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:1];
       v51 = v35;
       v33 = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
     }
 
-    v21 = [v13 noIndex];
+    noIndex = [itemCopy noIndex];
     v22 = logForCSLogCategoryIndex();
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG);
-    if (v21)
+    if (noIndex)
     {
       if (v23)
       {
@@ -10283,14 +10283,14 @@ uint64_t __133__SPCoreSpotlightIndexer_deleteAllSearchableItemsWithBundleID_from
       self->_lastUpdateTime = CFAbsoluteTimeGetCurrent();
       v22 = objc_alloc_init(MEMORY[0x277CC33A0]);
       [v22 beginArray];
-      v24 = [v13 attributeSet];
-      [v22 encodeObject:v24];
+      attributeSet2 = [itemCopy attributeSet];
+      [v22 encodeObject:attributeSet2];
 
       [v22 endArray];
-      v25 = [v22 data];
-      v26 = [v25 copy];
+      data = [v22 data];
+      v26 = [data copy];
 
-      if (v36)
+      if (relatedUniqueIdentifier)
       {
         v47 = 0;
         v48 = &v47;
@@ -10301,8 +10301,8 @@ uint64_t __133__SPCoreSpotlightIndexer_deleteAllSearchableItemsWithBundleID_from
         v46[2] = __93__SPCoreSpotlightIndexer_userPerformedAction_withItem_protectionClass_forBundleID_personaID___block_invoke;
         v46[3] = &unk_278936AF0;
         v46[4] = &v47;
-        [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:v34 block:v46];
-        v27 = [[SPUAProgressItem alloc] initWithBundleID:v15 uaID:v32 relatedID:v36];
+        [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:allProtectionClasses block:v46];
+        v27 = [[SPUAProgressItem alloc] initWithBundleID:dCopy uaID:uniqueIdentifier relatedID:relatedUniqueIdentifier];
         [(SPUAProgressItem *)v27 setExpectedCount:*(v48 + 6)];
         [(SPUAProgressItem *)v27 add];
         _Block_object_dispose(&v47, 8);
@@ -10317,22 +10317,22 @@ uint64_t __133__SPCoreSpotlightIndexer_deleteAllSearchableItemsWithBundleID_from
       v40[1] = 3221225472;
       v40[2] = __93__SPCoreSpotlightIndexer_userPerformedAction_withItem_protectionClass_forBundleID_personaID___block_invoke_2;
       v40[3] = &unk_278936B40;
-      v28 = v15;
+      v28 = dCopy;
       v41 = v28;
-      v42 = v16;
+      v42 = iDCopy;
       v31 = v26;
       v43 = v31;
-      v45 = v36 != 0;
+      v45 = relatedUniqueIdentifier != 0;
       v29 = v27;
       v44 = v29;
-      [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:v34 block:v40];
+      [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:allProtectionClasses block:v40];
       if ([v33 count])
       {
         v37[0] = MEMORY[0x277D85DD0];
         v37[1] = 3221225472;
         v37[2] = __93__SPCoreSpotlightIndexer_userPerformedAction_withItem_protectionClass_forBundleID_personaID___block_invoke_2518;
         v37[3] = &unk_278936768;
-        v38 = v32;
+        v38 = uniqueIdentifier;
         v39 = v28;
         [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:v33 block:v37];
       }
@@ -10402,66 +10402,66 @@ void __93__SPCoreSpotlightIndexer_userPerformedAction_withItem_protectionClass_f
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)willModifySearchableItemsWithIdentifiers:(id)a3 protectionClass:(id)a4 forBundleID:(id)a5 options:(int64_t)a6 completionHandler:(id)a7
+- (void)willModifySearchableItemsWithIdentifiers:(id)identifiers protectionClass:(id)class forBundleID:(id)d options:(int64_t)options completionHandler:(id)handler
 {
-  v19 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  identifiersCopy = identifiers;
+  classCopy = class;
+  dCopy = d;
+  handlerCopy = handler;
   _checkUnlock();
-  if ([sDelegate blocklistCheck:v13 withOptions:a6])
+  if ([sDelegate blocklistCheck:dCopy withOptions:options])
   {
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
-    v14[2](v14, v15);
+    handlerCopy[2](handlerCopy, v15);
   }
 
   else
   {
-    if (!v12 || (v16 = [v12 isEqualToString:@"Default"], v17 = v12, v16))
+    if (!classCopy || (v16 = [classCopy isEqualToString:@"Default"], v17 = classCopy, v16))
     {
       v17 = *MEMORY[0x277CCA1A0];
     }
 
-    v15 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v17 andBundleID:v13];
+    v15 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v17 andBundleID:dCopy];
     if (v15)
     {
       self->_lastUpdateTime = CFAbsoluteTimeGetCurrent();
-      [v15 willModifySearchableItemsWithIdentifiers:v19 forBundleID:v13 completionHandler:v14];
+      [v15 willModifySearchableItemsWithIdentifiers:identifiersCopy forBundleID:dCopy completionHandler:handlerCopy];
     }
 
-    else if (v14)
+    else if (handlerCopy)
     {
       v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
-      v14[2](v14, v18);
+      handlerCopy[2](handlerCopy, v18);
     }
   }
 }
 
-- (void)clientDidCheckin:(id)a3 protectionClass:(id)a4 service:(id)a5 completionHandler:(id)a6
+- (void)clientDidCheckin:(id)checkin protectionClass:(id)class service:(id)service completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  checkinCopy = checkin;
+  classCopy = class;
+  serviceCopy = service;
+  handlerCopy = handler;
   if (sShuttingDown != 1)
   {
     _checkUnlock();
-    if (!v11 || (v16 = [v11 isEqualToString:@"Default"], v17 = v11, v16))
+    if (!classCopy || (v16 = [classCopy isEqualToString:@"Default"], v17 = classCopy, v16))
     {
       v17 = *MEMORY[0x277CCA1A0];
     }
 
     v15 = v17;
-    v18 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v15 andBundleID:v10];
+    v18 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v15 andBundleID:checkinCopy];
     if (v18)
     {
       self->_lastUpdateTime = CFAbsoluteTimeGetCurrent();
-      v19 = [(SPCoreSpotlightIndexer *)self extensionDelegate];
+      extensionDelegate = [(SPCoreSpotlightIndexer *)self extensionDelegate];
 
-      if (v19)
+      if (extensionDelegate)
       {
-        v20 = [MEMORY[0x277CC3538] sharedManager];
-        [v20 loadExtensions];
+        mEMORY[0x277CC3538] = [MEMORY[0x277CC3538] sharedManager];
+        [mEMORY[0x277CC3538] loadExtensions];
       }
 
       v21 = sIndexQueue;
@@ -10470,17 +10470,17 @@ void __93__SPCoreSpotlightIndexer_userPerformedAction_withItem_protectionClass_f
       v24[2] = __85__SPCoreSpotlightIndexer_clientDidCheckin_protectionClass_service_completionHandler___block_invoke;
       v24[3] = &unk_278934EB8;
       v25 = v18;
-      v26 = v10;
-      v27 = v12;
-      v28 = v13;
+      v26 = checkinCopy;
+      v27 = serviceCopy;
+      v28 = handlerCopy;
       v22 = _setup_block(v24, 0, 19332);
       dispatch_async(v21, v22);
     }
 
-    else if (v13)
+    else if (handlerCopy)
     {
       v23 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
-      (*(v13 + 2))(v13, 0, v23);
+      (*(handlerCopy + 2))(handlerCopy, 0, v23);
     }
 
     goto LABEL_16;
@@ -10492,19 +10492,19 @@ void __93__SPCoreSpotlightIndexer_userPerformedAction_withItem_protectionClass_f
     [SPCoreSpotlightIndexer clientDidCheckin:protectionClass:service:completionHandler:];
   }
 
-  if (v13)
+  if (handlerCopy)
   {
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-1000 userInfo:0];
-    (*(v13 + 2))(v13, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
 LABEL_16:
   }
 }
 
-- (void)deleteAllUserActivities:(id)a3 fromClient:(id)a4 completionHandler:(id)a5
+- (void)deleteAllUserActivities:(id)activities fromClient:(id)client completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  activitiesCopy = activities;
+  clientCopy = client;
+  handlerCopy = handler;
   _checkUnlock();
   v11 = dispatch_group_create();
   v27[0] = 0;
@@ -10519,14 +10519,14 @@ LABEL_16:
   v21[3] = &unk_278936B90;
   v12 = v11;
   v22 = v12;
-  v23 = self;
-  v13 = v8;
+  selfCopy = self;
+  v13 = activitiesCopy;
   v24 = v13;
-  v14 = v9;
+  v14 = clientCopy;
   v25 = v14;
   v26 = v27;
   [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:0 block:v21];
-  if (v10)
+  if (handlerCopy)
   {
     v15 = qos_class_self();
     v16 = dispatch_get_global_queue(v15, 2uLL);
@@ -10534,7 +10534,7 @@ LABEL_16:
     v18[1] = 3221225472;
     v18[2] = __79__SPCoreSpotlightIndexer_deleteAllUserActivities_fromClient_completionHandler___block_invoke_4;
     v18[3] = &unk_278936AC8;
-    v19 = v10;
+    v19 = handlerCopy;
     v20 = v27;
     v17 = _setup_block(v18, 0, 19360);
     dispatch_group_notify(v12, v16, v17);
@@ -10599,10 +10599,10 @@ void __79__SPCoreSpotlightIndexer_deleteAllUserActivities_fromClient_completionH
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)deleteActionsBeforeTime:(double)a3 completionHandler:(id)a4
+- (void)deleteActionsBeforeTime:(double)time completionHandler:(id)handler
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   _checkUnlock();
   v7 = dispatch_group_create();
   v22[0] = 0;
@@ -10619,11 +10619,11 @@ void __79__SPCoreSpotlightIndexer_deleteAllUserActivities_fromClient_completionH
   v17[3] = &unk_278936BE0;
   v9 = v7;
   v18 = v9;
-  v19 = self;
-  v21 = a3;
+  selfCopy = self;
+  timeCopy = time;
   v20 = v22;
   [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:v8 block:v17];
-  if (v6)
+  if (handlerCopy)
   {
     v10 = qos_class_self();
     v11 = dispatch_get_global_queue(v10, 2uLL);
@@ -10631,7 +10631,7 @@ void __79__SPCoreSpotlightIndexer_deleteAllUserActivities_fromClient_completionH
     v14[1] = 3221225472;
     v14[2] = __68__SPCoreSpotlightIndexer_deleteActionsBeforeTime_completionHandler___block_invoke_4;
     v14[3] = &unk_278936AC8;
-    v15 = v6;
+    v15 = handlerCopy;
     v16 = v22;
     v12 = _setup_block(v14, 0, 19392);
     dispatch_group_notify(v9, v11, v12);
@@ -10693,11 +10693,11 @@ void __68__SPCoreSpotlightIndexer_deleteActionsBeforeTime_completionHandler___bl
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)deleteActionsWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)deleteActionsWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   _checkUnlock();
   v8 = dispatch_group_create();
   v24[0] = 0;
@@ -10714,12 +10714,12 @@ void __68__SPCoreSpotlightIndexer_deleteActionsBeforeTime_completionHandler___bl
   v19[3] = &unk_278936C30;
   v10 = v8;
   v20 = v10;
-  v21 = self;
-  v11 = v6;
+  selfCopy = self;
+  v11 = identifiersCopy;
   v22 = v11;
   v23 = v24;
   [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:v9 block:v19];
-  if (v7)
+  if (handlerCopy)
   {
     v12 = qos_class_self();
     v13 = dispatch_get_global_queue(v12, 2uLL);
@@ -10727,7 +10727,7 @@ void __68__SPCoreSpotlightIndexer_deleteActionsBeforeTime_completionHandler___bl
     v16[1] = 3221225472;
     v16[2] = __73__SPCoreSpotlightIndexer_deleteActionsWithIdentifiers_completionHandler___block_invoke_4;
     v16[3] = &unk_278936AC8;
-    v17 = v7;
+    v17 = handlerCopy;
     v18 = v24;
     v14 = _setup_block(v16, 0, 19422);
     dispatch_group_notify(v10, v13, v14);
@@ -10791,11 +10791,11 @@ void __73__SPCoreSpotlightIndexer_deleteActionsWithIdentifiers_completionHandler
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)deleteAllInteractionsWithBundleID:(id)a3 completionHandler:(id)a4
+- (void)deleteAllInteractionsWithBundleID:(id)d completionHandler:(id)handler
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   _checkUnlock();
   v8 = dispatch_group_create();
   v23[0] = 0;
@@ -10812,12 +10812,12 @@ void __73__SPCoreSpotlightIndexer_deleteActionsWithIdentifiers_completionHandler
   v18[3] = &unk_278936C30;
   v10 = v8;
   v19 = v10;
-  v20 = self;
-  v11 = v6;
+  selfCopy = self;
+  v11 = dCopy;
   v21 = v11;
   v22 = v23;
   [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:v9 block:v18];
-  if (v7)
+  if (handlerCopy)
   {
     v12 = qos_class_self();
     v13 = dispatch_get_global_queue(v12, 2uLL);
@@ -10825,7 +10825,7 @@ void __73__SPCoreSpotlightIndexer_deleteActionsWithIdentifiers_completionHandler
     v15[1] = 3221225472;
     v15[2] = __78__SPCoreSpotlightIndexer_deleteAllInteractionsWithBundleID_completionHandler___block_invoke_4;
     v15[3] = &unk_278936AC8;
-    v16 = v7;
+    v16 = handlerCopy;
     v17 = v23;
     dispatch_group_notify(v10, v13, v15);
   }
@@ -10888,61 +10888,61 @@ void __78__SPCoreSpotlightIndexer_deleteAllInteractionsWithBundleID_completionHa
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)addInteraction:(id)a3 bundleID:(id)a4 protectionClass:(id)a5
+- (void)addInteraction:(id)interaction bundleID:(id)d protectionClass:(id)class
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9 && v10)
+  interactionCopy = interaction;
+  dCopy = d;
+  classCopy = class;
+  v11 = classCopy;
+  if (dCopy && classCopy)
   {
-    v12 = [(SPCoreSpotlightIndexer *)self interactionHandler];
-    [v12 handleInteraction:v8 bundleID:v9 protectionClass:v11];
+    interactionHandler = [(SPCoreSpotlightIndexer *)self interactionHandler];
+    [interactionHandler handleInteraction:interactionCopy bundleID:dCopy protectionClass:v11];
   }
 
   else
   {
-    v12 = logForCSLogCategoryDefault();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    interactionHandler = logForCSLogCategoryDefault();
+    if (os_log_type_enabled(interactionHandler, OS_LOG_TYPE_DEBUG))
     {
       v14 = 138412802;
-      v15 = v8;
+      v15 = interactionCopy;
       v16 = 2112;
-      v17 = v9;
+      v17 = dCopy;
       v18 = 2112;
       v19 = v11;
-      _os_log_debug_impl(&dword_231A35000, v12, OS_LOG_TYPE_DEBUG, "skipping interaction %@ bundle %@ pc %@", &v14, 0x20u);
+      _os_log_debug_impl(&dword_231A35000, interactionHandler, OS_LOG_TYPE_DEBUG, "skipping interaction %@ bundle %@ pc %@", &v14, 0x20u);
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)writeDiagnostic:(id)a3 bundleID:(id)a4 identifier:(id)a5 logQuery:(BOOL)a6
++ (BOOL)writeDiagnostic:(id)diagnostic bundleID:(id)d identifier:(id)identifier logQuery:(BOOL)query
 {
-  v6 = a6;
-  v9 = a3;
-  v66 = a4;
-  v65 = a5;
+  queryCopy = query;
+  diagnosticCopy = diagnostic;
+  dCopy = d;
+  identifierCopy = identifier;
   v64 = _CFCopySystemVersionDictionary();
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"System Version - %@\n\n", v64];
   v11 = 0x278933000uLL;
   v12 = +[SPCoreSpotlightIndexer sharedInstance];
   v13 = [v10 dataUsingEncoding:4];
-  v14 = [v12 writeData:v13 toFile:v9];
+  v14 = [v12 writeData:v13 toFile:diagnosticCopy];
 
   if (v14)
   {
     v15 = MEMORY[0x277CCACA8];
-    v16 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v17 = [v15 stringWithFormat:@"Preferred Languages - %@\n\n", v16];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    v17 = [v15 stringWithFormat:@"Preferred Languages - %@\n\n", preferredLanguages];
 
     v18 = +[SPCoreSpotlightIndexer sharedInstance];
     v19 = [v17 dataUsingEncoding:4];
-    LODWORD(v16) = [v18 writeData:v19 toFile:v9];
+    LODWORD(preferredLanguages) = [v18 writeData:v19 toFile:diagnosticCopy];
 
-    if (v16)
+    if (preferredLanguages)
     {
       v20 = *MEMORY[0x277CBF040];
       v21 = *MEMORY[0x277CBF010];
@@ -10956,7 +10956,7 @@ void __78__SPCoreSpotlightIndexer_deleteAllInteractionsWithBundleID_completionHa
 
           v24 = +[SPCoreSpotlightIndexer sharedInstance];
           v25 = [v10 dataUsingEncoding:4];
-          v26 = [v24 writeData:v25 toFile:v9];
+          v26 = [v24 writeData:v25 toFile:diagnosticCopy];
 
           if (!v26)
           {
@@ -10987,7 +10987,7 @@ LABEL_38:
 
         v31 = +[SPCoreSpotlightIndexer sharedInstance];
         v32 = [v10 dataUsingEncoding:4];
-        v33 = [v31 writeData:v32 toFile:v9];
+        v33 = [v31 writeData:v32 toFile:diagnosticCopy];
 
         if (!v33)
         {
@@ -11006,7 +11006,7 @@ LABEL_37:
       v62 = v22;
       for (i = 0; i != 4; ++i)
       {
-        if (i != 2 || v6)
+        if (i != 2 || queryCopy)
         {
           v35 = objc_autoreleasePoolPush();
           v36 = SDTraceDescription(i);
@@ -11015,16 +11015,16 @@ LABEL_37:
             [*(v11 + 1464) sharedInstance];
             v38 = v37 = v11;
             v39 = [v36 dataUsingEncoding:4];
-            v40 = [v38 writeData:v39 toFile:v9];
+            v40 = [v38 writeData:v39 toFile:diagnosticCopy];
 
             if (!v40)
             {
               goto LABEL_31;
             }
 
-            v41 = [*(v37 + 1464) sharedInstance];
+            sharedInstance = [*(v37 + 1464) sharedInstance];
             v42 = [@"\n" dataUsingEncoding:4];
-            v43 = [v41 writeData:v42 toFile:v9];
+            v43 = [sharedInstance writeData:v42 toFile:diagnosticCopy];
 
             v11 = v37;
             if (!v43)
@@ -11046,49 +11046,49 @@ LABEL_31:
       v73 = &v72;
       v74 = 0x2020000000;
       v75 = 1;
-      v44 = [*(v11 + 1464) sharedInstance];
-      v45 = [v44 concreteIndexers];
+      sharedInstance2 = [*(v11 + 1464) sharedInstance];
+      concreteIndexers = [sharedInstance2 concreteIndexers];
       v67[0] = MEMORY[0x277D85DD0];
       v67[1] = 3221225472;
       v67[2] = __71__SPCoreSpotlightIndexer_writeDiagnostic_bundleID_identifier_logQuery___block_invoke;
       v67[3] = &unk_278936C58;
       v71 = &v72;
-      v46 = v9;
+      v46 = diagnosticCopy;
       v68 = v46;
-      v69 = v66;
-      v70 = v65;
-      [v45 enumerateKeysAndObjectsUsingBlock:v67];
+      v69 = dCopy;
+      v70 = identifierCopy;
+      [concreteIndexers enumerateKeysAndObjectsUsingBlock:v67];
 
       v47 = MEMORY[0x277CCACA8];
       [*(v11 + 1464) sharedInstance];
       v48 = v22 = v62;
-      v49 = [v48 dumpIndexAges];
-      v50 = [v47 stringWithFormat:@"\nCoreSpotlight Indexes Age Info:\n%@\n", v49];
+      dumpIndexAges = [v48 dumpIndexAges];
+      v50 = [v47 stringWithFormat:@"\nCoreSpotlight Indexes Age Info:\n%@\n", dumpIndexAges];
 
-      v51 = [*(v11 + 1464) sharedInstance];
+      sharedInstance3 = [*(v11 + 1464) sharedInstance];
       v52 = [v50 dataUsingEncoding:4];
-      LOBYTE(v49) = [v51 writeData:v52 toFile:v46];
+      LOBYTE(dumpIndexAges) = [sharedInstance3 writeData:v52 toFile:v46];
 
-      if (v49)
+      if (dumpIndexAges)
       {
         v53 = MEMORY[0x277CCACA8];
-        v54 = [*(v11 + 1464) sharedInstance];
-        v55 = [v54 dumpIndexAnalytics];
-        v56 = [v53 stringWithFormat:@"\nCoreSpotlight Indexes Analytics Info:\n%@\n", v55];
+        sharedInstance4 = [*(v11 + 1464) sharedInstance];
+        dumpIndexAnalytics = [sharedInstance4 dumpIndexAnalytics];
+        v56 = [v53 stringWithFormat:@"\nCoreSpotlight Indexes Analytics Info:\n%@\n", dumpIndexAnalytics];
 
-        v57 = [*(v11 + 1464) sharedInstance];
+        sharedInstance5 = [*(v11 + 1464) sharedInstance];
         v58 = [v56 dataUsingEncoding:4];
-        LOBYTE(v53) = [v57 writeData:v58 toFile:v46];
+        LOBYTE(v53) = [sharedInstance5 writeData:v58 toFile:v46];
 
         if (v53)
         {
           if (sDelegate)
           {
-            v59 = [sDelegate extraTTRInfo];
-            if (v59)
+            extraTTRInfo = [sDelegate extraTTRInfo];
+            if (extraTTRInfo)
             {
-              v60 = [*(v11 + 1464) sharedInstance];
-              [v60 writeData:v59 toFile:v46];
+              sharedInstance6 = [*(v11 + 1464) sharedInstance];
+              [sharedInstance6 writeData:extraTTRInfo toFile:v46];
             }
           }
 
@@ -11137,22 +11137,22 @@ uint64_t __71__SPCoreSpotlightIndexer_writeDiagnostic_bundleID_identifier_logQue
   return result;
 }
 
-- (void)getDBLogsWithCompletionHandler:(id)a3
+- (void)getDBLogsWithCompletionHandler:(id)handler
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [[v3 alloc] initWithSuiteName:@"com.apple.searchd"];
   v6 = +[SPCoreSpotlightIndexer sharedInstance];
-  v7 = [v6 concreteIndexers];
+  concreteIndexers = [v6 concreteIndexers];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__SPCoreSpotlightIndexer_getDBLogsWithCompletionHandler___block_invoke;
   v9[3] = &unk_278936C80;
   v10 = v5;
   v8 = v5;
-  [v7 enumerateKeysAndObjectsUsingBlock:v9];
+  [concreteIndexers enumerateKeysAndObjectsUsingBlock:v9];
 
-  v4[2](v4, 1);
+  handlerCopy[2](handlerCopy, 1);
 }
 
 void __57__SPCoreSpotlightIndexer_getDBLogsWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -11182,11 +11182,11 @@ void __57__SPCoreSpotlightIndexer_getDBLogsWithCompletionHandler___block_invoke_
   }
 }
 
-- (void)_issueCacheCommand:(id)a3 xpc:(id)a4 searchContext:(id)a5 completionHandler:(id)a6
+- (void)_issueCacheCommand:(id)command xpc:(id)xpc searchContext:(id)context completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  commandCopy = command;
+  xpcCopy = xpc;
+  handlerCopy = handler;
   dispatch_assert_queue_not_V2(self->_indexQueue);
   v12 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -11194,7 +11194,7 @@ void __57__SPCoreSpotlightIndexer_getDBLogsWithCompletionHandler___block_invoke_
     [SPCoreSpotlightIndexer _issueCacheCommand:xpc:searchContext:completionHandler:];
   }
 
-  v13 = [v9 componentsSeparatedByString:@":"];
+  v13 = [commandCopy componentsSeparatedByString:@":"];
   v14 = [v13 count];
   if (!v14)
   {
@@ -11224,7 +11224,7 @@ void __57__SPCoreSpotlightIndexer_getDBLogsWithCompletionHandler___block_invoke_
       {
 LABEL_48:
 
-        if (!v11)
+        if (!handlerCopy)
         {
           goto LABEL_53;
         }
@@ -11238,10 +11238,10 @@ LABEL_48:
       v84[3] = &unk_278936CA8;
       v24 = v23;
       v85 = v24;
-      v86 = v11;
+      v86 = handlerCopy;
       [v24 closeCache:v84];
 
-      v11 = 0;
+      handlerCopy = 0;
       v25 = 1;
       v26 = v85;
 LABEL_47:
@@ -11283,10 +11283,10 @@ LABEL_47:
         v81 = v58;
         v34 = v31;
         v82 = v31;
-        v83 = v11;
+        v83 = handlerCopy;
         dispatch_sync(queue, block);
 
-        v11 = 0;
+        handlerCopy = 0;
       }
 
       else
@@ -11337,13 +11337,13 @@ LABEL_47:
       v74 = v59;
       v75 = v22;
       v76 = v57;
-      v77 = v11;
+      v77 = handlerCopy;
       dispatch_sync(indexQueue, v71);
 
       v42 = v72;
 LABEL_32:
 
-      v11 = 0;
+      handlerCopy = 0;
 LABEL_33:
 
       v26 = v59;
@@ -11385,11 +11385,11 @@ LABEL_33:
           v60[3] = &unk_278934F08;
           v26 = v53;
           v61 = v26;
-          v62 = v10;
-          v63 = v11;
+          v62 = xpcCopy;
+          v63 = handlerCopy;
           dispatch_sync(v54, v60);
 
-          v11 = 0;
+          handlerCopy = 0;
           v25 = 1;
         }
 
@@ -11401,7 +11401,7 @@ LABEL_33:
 
 LABEL_41:
     v25 = 1;
-    if (!v11)
+    if (!handlerCopy)
     {
       goto LABEL_53;
     }
@@ -11439,7 +11439,7 @@ LABEL_41:
     v67 = v59;
     v68 = v22;
     v69 = v57;
-    v70 = v11;
+    v70 = handlerCopy;
     dispatch_sync(v48, v64);
 
     v42 = v65;
@@ -11448,7 +11448,7 @@ LABEL_41:
 
 LABEL_43:
   v25 = 0;
-  if (!v11)
+  if (!handlerCopy)
   {
     goto LABEL_53;
   }
@@ -11464,7 +11464,7 @@ LABEL_49:
     v55 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC22E8] code:-2005 userInfo:0];
   }
 
-  (*(v11 + 2))(v11, 0, v55);
+  (*(handlerCopy + 2))(handlerCopy, 0, v55);
 
 LABEL_53:
 }
@@ -11561,11 +11561,11 @@ void __81__SPCoreSpotlightIndexer__issueCacheCommand_xpc_searchContext_completio
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)writeUISearchEnabled:(BOOL)a3
+- (id)writeUISearchEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v27[4] = *MEMORY[0x277D85DE8];
-  v4 = [sDelegate indexDirectory];
+  indexDirectory = [sDelegate indexDirectory];
   v5 = MEMORY[0x277CBEBC0];
   v6 = NSHomeDirectory();
   v27[0] = v6;
@@ -11597,25 +11597,25 @@ void __81__SPCoreSpotlightIndexer__issueCacheCommand_xpc_searchContext_completio
     v13 = objc_opt_new();
   }
 
-  v14 = [v13 containsObject:v4];
-  if ((v14 & 1) == 0 && v3)
+  v14 = [v13 containsObject:indexDirectory];
+  if ((v14 & 1) == 0 && enabledCopy)
   {
-    v15 = [v13 arrayByAddingObject:v4];
+    v15 = [v13 arrayByAddingObject:indexDirectory];
     goto LABEL_11;
   }
 
   v16 = 0;
-  if (v14 && !v3)
+  if (v14 && !enabledCopy)
   {
-    v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF != %@", v4];
+    v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF != %@", indexDirectory];
     v15 = [v13 filteredArrayUsingPredicate:v17];
 
     v13 = v17;
 LABEL_11:
 
-    v18 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v25 = 0;
-    v19 = [v18 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v25];
+    v19 = [defaultManager createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v25];
     v20 = v25;
 
     if (!v19 || v20)
@@ -11655,20 +11655,20 @@ LABEL_24:
   return v16;
 }
 
-- (void)fetchBundleIdsForProtectionClass:(id)a3 completionHandler:(id)a4
+- (void)fetchBundleIdsForProtectionClass:(id)class completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  classCopy = class;
+  handlerCopy = handler;
   indexQueue = self->_indexQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__SPCoreSpotlightIndexer_fetchBundleIdsForProtectionClass_completionHandler___block_invoke;
   block[3] = &unk_278934F08;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = classCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = classCopy;
   dispatch_async(indexQueue, block);
 }
 
@@ -12443,24 +12443,24 @@ void __90__SPCoreSpotlightIndexer__issueCommand_outFileDescriptor_searchContext_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)topKTerms:(id)a3 completionHandler:(id)a4
+- (void)topKTerms:(id)terms completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  termsCopy = terms;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__0;
   v20 = __Block_byref_object_dispose__0;
   v21 = 0;
-  v22[0] = v6;
+  v22[0] = termsCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __54__SPCoreSpotlightIndexer_topKTerms_completionHandler___block_invoke;
   v13[3] = &unk_278936ED8;
-  v9 = v6;
+  v9 = termsCopy;
   v14 = v9;
   v15 = &v16;
   [(SPCoreSpotlightIndexer *)self _enumerateIndexersWithProtectionClasses:v8 inferSpecialIndexes:0 block:v13];
@@ -12469,7 +12469,7 @@ void __90__SPCoreSpotlightIndexer__issueCommand_outFileDescriptor_searchContext_
   if (v10)
   {
     [v10 index];
-    v12 = v7;
+    v12 = handlerCopy;
     SIFetchTopKTerms();
   }
 
@@ -12564,32 +12564,32 @@ void __54__SPCoreSpotlightIndexer_topKTerms_completionHandler___block_invoke_4(u
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performIndexerTask:(id)a3 completionHandler:(id)a4
+- (void)performIndexerTask:(id)task completionHandler:(id)handler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  taskCopy = task;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (taskCopy)
   {
-    v9 = [v6 job];
-    v10 = [v9 jobType];
+    v9 = [taskCopy job];
+    jobType = [v9 jobType];
 
-    if ((v10 - 2) >= 2)
+    if ((jobType - 2) >= 2)
     {
-      if (v10 != 1)
+      if (jobType != 1)
       {
 LABEL_26:
-        v27 = [(SPCoreSpotlightIndexer *)self firstUnlockQueue];
+        firstUnlockQueue = [(SPCoreSpotlightIndexer *)self firstUnlockQueue];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __63__SPCoreSpotlightIndexer_performIndexerTask_completionHandler___block_invoke;
         v32[3] = &unk_278934F08;
-        v33 = v6;
-        v34 = self;
+        v33 = taskCopy;
+        selfCopy = self;
         v35 = v8;
         v28 = _setup_block(v32, 0, 21197);
-        dispatch_async(v27, v28);
+        dispatch_async(firstUnlockQueue, v28);
 
         goto LABEL_27;
       }
@@ -12598,12 +12598,12 @@ LABEL_26:
       v43 = 0u;
       v41 = 0u;
       v40 = 0u;
-      v11 = [v6 bundleIDs];
-      v18 = [v11 countByEnumeratingWithState:&v40 objects:v45 count:16];
+      bundleIDs = [taskCopy bundleIDs];
+      v18 = [bundleIDs countByEnumeratingWithState:&v40 objects:v45 count:16];
       if (v18)
       {
         v19 = v18;
-        v30 = self;
+        selfCopy2 = self;
         v31 = v8;
         v20 = *v41;
         do
@@ -12612,15 +12612,15 @@ LABEL_26:
           {
             if (*v41 != v20)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(bundleIDs);
             }
 
             v22 = *(*(&v40 + 1) + 8 * i);
             if (isAppleInternalInstall())
             {
-              v23 = [v6 job];
-              v24 = [v23 identifiersToReindex];
-              v25 = [v24 count];
+              v23 = [taskCopy job];
+              identifiersToReindex = [v23 identifiersToReindex];
+              v25 = [identifiersToReindex count];
             }
 
             else
@@ -12628,15 +12628,15 @@ LABEL_26:
               v25 = 1;
             }
 
-            v26 = [MEMORY[0x277CC3468] sharedInstance];
-            [v26 logWithBundleID:v22 indexOperation:8 itemCount:v25 code:7];
+            mEMORY[0x277CC3468] = [MEMORY[0x277CC3468] sharedInstance];
+            [mEMORY[0x277CC3468] logWithBundleID:v22 indexOperation:8 itemCount:v25 code:7];
           }
 
-          v19 = [v11 countByEnumeratingWithState:&v40 objects:v45 count:16];
+          v19 = [bundleIDs countByEnumeratingWithState:&v40 objects:v45 count:16];
         }
 
         while (v19);
-        self = v30;
+        self = selfCopy2;
         v8 = v31;
       }
     }
@@ -12647,8 +12647,8 @@ LABEL_26:
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v11 = [v6 bundleIDs];
-      v12 = [v11 countByEnumeratingWithState:&v36 objects:v44 count:16];
+      bundleIDs = [taskCopy bundleIDs];
+      v12 = [bundleIDs countByEnumeratingWithState:&v36 objects:v44 count:16];
       if (v12)
       {
         v13 = v12;
@@ -12659,15 +12659,15 @@ LABEL_26:
           {
             if (*v37 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(bundleIDs);
             }
 
             v16 = *(*(&v36 + 1) + 8 * j);
-            v17 = [MEMORY[0x277CC3468] sharedInstance];
-            [v17 logWithBundleID:v16 indexOperation:9 itemCount:1 code:6];
+            mEMORY[0x277CC3468]2 = [MEMORY[0x277CC3468] sharedInstance];
+            [mEMORY[0x277CC3468]2 logWithBundleID:v16 indexOperation:9 itemCount:1 code:6];
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v36 objects:v44 count:16];
+          v13 = [bundleIDs countByEnumeratingWithState:&v36 objects:v44 count:16];
         }
 
         while (v13);
@@ -12677,9 +12677,9 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 
 LABEL_27:
@@ -12791,17 +12791,17 @@ void __63__SPCoreSpotlightIndexer_performIndexerTask_completionHandler___block_i
   [*(a1 + 48) performIndexerTask:v7 withIndexExtensionsAndCompletionHandler:*(a1 + 56)];
 }
 
-- (void)addCompletedBundleIDs:(id)a3 forIndexerTask:(id)a4
+- (void)addCompletedBundleIDs:(id)ds forIndexerTask:(id)task
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  taskCopy = task;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 indexers];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  indexers = [taskCopy indexers];
+  v8 = [indexers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -12813,14 +12813,14 @@ void __63__SPCoreSpotlightIndexer_performIndexerTask_completionHandler___block_i
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(indexers);
         }
 
-        [*(*(&v13 + 1) + 8 * v11++) addCompletedBundleIDs:v5 forIndexerTask:v6];
+        [*(*(&v13 + 1) + 8 * v11++) addCompletedBundleIDs:dsCopy forIndexerTask:taskCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [indexers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -12829,93 +12829,93 @@ void __63__SPCoreSpotlightIndexer_performIndexerTask_completionHandler___block_i
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performIndexerTask:(id)a3 withIndexExtensionsAndCompletionHandler:(id)a4
+- (void)performIndexerTask:(id)task withIndexExtensionsAndCompletionHandler:(id)handler
 {
   v160 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SPCoreSpotlightIndexer *)self firstUnlockQueue];
-  dispatch_assert_queue_V2(v8);
+  taskCopy = task;
+  handlerCopy = handler;
+  firstUnlockQueue = [(SPCoreSpotlightIndexer *)self firstUnlockQueue];
+  dispatch_assert_queue_V2(firstUnlockQueue);
 
-  v9 = [(SPCoreSpotlightIndexer *)self extensionDelegate];
-  if (v9)
+  extensionDelegate = [(SPCoreSpotlightIndexer *)self extensionDelegate];
+  if (extensionDelegate)
   {
-    v10 = [v6 job];
-    v11 = [v6 bundleIDs];
-    v12 = [v6 completedBundleIDs];
+    v10 = [taskCopy job];
+    bundleIDs = [taskCopy bundleIDs];
+    completedBundleIDs = [taskCopy completedBundleIDs];
     v13 = logForCSLogCategoryIndex();
-    v112 = self;
+    selfCopy = self;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v6 dataMigrationStage];
-      v15 = [(SPCoreSpotlightIndexer *)self dataMigrationStage];
-      v16 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
+      dataMigrationStage = [taskCopy dataMigrationStage];
+      dataMigrationStage2 = [(SPCoreSpotlightIndexer *)self dataMigrationStage];
+      dataMigrationBundleIDs = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
       *buf = 138413314;
-      v151 = v11;
+      v151 = bundleIDs;
       v152 = 2112;
-      v153 = v12;
+      v153 = completedBundleIDs;
       v154 = 2048;
-      v155 = v14;
+      v155 = dataMigrationStage;
       v156 = 2048;
-      v157 = v15;
+      v157 = dataMigrationStage2;
       v158 = 2112;
-      v159 = v16;
+      v159 = dataMigrationBundleIDs;
       _os_log_impl(&dword_231A35000, v13, OS_LOG_TYPE_INFO, "bundleIDs:%@, completedBundleIDs:%@, dataMigrationStage:%ld/%ld, dataMigrationBundleIDs:%@", buf, 0x34u);
 
-      self = v112;
+      self = selfCopy;
     }
 
-    if ([v11 count] == 1)
+    if ([bundleIDs count] == 1)
     {
-      v17 = [v11 firstObject];
-      if (![v12 containsObject:v17])
+      firstObject = [bundleIDs firstObject];
+      if (![completedBundleIDs containsObject:firstObject])
       {
-        v18 = [v6 dataMigrationStage];
-        if (v18 < [(SPCoreSpotlightIndexer *)self dataMigrationStage])
+        dataMigrationStage3 = [taskCopy dataMigrationStage];
+        if (dataMigrationStage3 < [(SPCoreSpotlightIndexer *)self dataMigrationStage])
         {
-          v19 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
-          if (!v19)
+          dataMigrationBundleIDs2 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
+          if (!dataMigrationBundleIDs2)
           {
             goto LABEL_9;
           }
 
-          v20 = v19;
+          v20 = dataMigrationBundleIDs2;
           [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
-          v22 = v21 = v17;
+          v22 = v21 = firstObject;
           v23 = [v22 containsObject:v21];
 
-          v17 = v21;
-          self = v112;
+          firstObject = v21;
+          self = selfCopy;
 
           if (v23)
           {
 LABEL_9:
-            v24 = v17;
+            v24 = firstObject;
             v25 = logForCSLogCategoryIndex();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
             {
-              v109 = [v6 dataMigrationStage];
-              v94 = [(SPCoreSpotlightIndexer *)self dataMigrationStage];
-              v95 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
+              dataMigrationStage4 = [taskCopy dataMigrationStage];
+              dataMigrationStage5 = [(SPCoreSpotlightIndexer *)self dataMigrationStage];
+              dataMigrationBundleIDs3 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
               *buf = 138413314;
               v151 = v10;
               v152 = 2112;
               v153 = v24;
               v154 = 2048;
-              v155 = v109;
+              v155 = dataMigrationStage4;
               v156 = 2048;
-              v157 = v94;
+              v157 = dataMigrationStage5;
               v158 = 2112;
-              v159 = v95;
+              v159 = dataMigrationBundleIDs3;
               _os_log_debug_impl(&dword_231A35000, v25, OS_LOG_TYPE_DEBUG, "Dropping job:%@ for indexing extension with bundleID:%@ since it ran during data migration, dataMigrationStange:%lu/%lu, dataMigrationBundleIDs:%@", buf, 0x34u);
 
-              self = v112;
+              self = selfCopy;
             }
 
-            v17 = v24;
+            firstObject = v24;
             v149 = v24;
             v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v149 count:1];
-            [(SPCoreSpotlightIndexer *)self addCompletedBundleIDs:v26 forIndexerTask:v6];
+            [(SPCoreSpotlightIndexer *)self addCompletedBundleIDs:v26 forIndexerTask:taskCopy];
 
             goto LABEL_61;
           }
@@ -12929,8 +12929,8 @@ LABEL_9:
         v143[3] = &unk_278936D20;
         v63 = v10;
         v144 = v63;
-        v145 = v17;
-        v107 = v7;
+        v145 = firstObject;
+        v107 = handlerCopy;
         v146 = v107;
         v105 = v145;
         LODWORD(v62) = [v61 handleJob:v63 bundleID:v145 protectionClass:v62 completionHandler:v143];
@@ -12939,7 +12939,7 @@ LABEL_9:
         v65 = os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG);
         if (v62)
         {
-          v17 = v105;
+          firstObject = v105;
           if (v65)
           {
             [SPCoreSpotlightIndexer performIndexerTask:withIndexExtensionsAndCompletionHandler:];
@@ -12958,12 +12958,12 @@ LABEL_9:
           v137[2] = __85__SPCoreSpotlightIndexer_performIndexerTask_withIndexExtensionsAndCompletionHandler___block_invoke_3124;
           v137[3] = &unk_278936A00;
           v138 = v63;
-          v17 = v105;
+          firstObject = v105;
           v139 = v105;
-          v140 = v112;
-          v141 = v6;
+          v140 = selfCopy;
+          v141 = taskCopy;
           v142 = v107;
-          [v9 indexRequestsPerformJob:v138 forBundle:v139 completionHandler:v137];
+          [extensionDelegate indexRequestsPerformJob:v138 forBundle:v139 completionHandler:v137];
 
           v64 = v138;
         }
@@ -12978,57 +12978,57 @@ LABEL_82:
       goto LABEL_61;
     }
 
-    if ([v11 count])
+    if ([bundleIDs count])
     {
-      v27 = [v6 bundleIDs];
-      v17 = [v27 mutableCopy];
+      bundleIDs2 = [taskCopy bundleIDs];
+      firstObject = [bundleIDs2 mutableCopy];
 
-      [v17 removeObjectsInArray:v12];
-      if ([v17 count])
+      [firstObject removeObjectsInArray:completedBundleIDs];
+      if ([firstObject count])
       {
-        v100 = v12;
-        v102 = v11;
+        v100 = completedBundleIDs;
+        v102 = bundleIDs;
         v110 = v10;
-        v28 = [v6 dataMigrationStage];
-        if (v28 < [(SPCoreSpotlightIndexer *)self dataMigrationStage])
+        dataMigrationStage6 = [taskCopy dataMigrationStage];
+        if (dataMigrationStage6 < [(SPCoreSpotlightIndexer *)self dataMigrationStage])
         {
-          v29 = [v17 count];
+          v29 = [firstObject count];
           if (v29)
           {
             v30 = v29;
-            v96 = v7;
-            v98 = v9;
+            v96 = handlerCopy;
+            v98 = extensionDelegate;
             v31 = 0;
             for (i = 0; i != v30; ++i)
             {
-              v33 = v17;
-              v34 = [v17 objectAtIndexedSubscript:i];
-              v35 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
-              if (!v35 || (v36 = v35, -[SPCoreSpotlightIndexer dataMigrationBundleIDs](self, "dataMigrationBundleIDs"), v37 = objc_claimAutoreleasedReturnValue(), v38 = [v37 containsObject:v34], v37, v36, v38))
+              v33 = firstObject;
+              v34 = [firstObject objectAtIndexedSubscript:i];
+              dataMigrationBundleIDs4 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
+              if (!dataMigrationBundleIDs4 || (v36 = dataMigrationBundleIDs4, -[SPCoreSpotlightIndexer dataMigrationBundleIDs](self, "dataMigrationBundleIDs"), v37 = objc_claimAutoreleasedReturnValue(), v38 = [v37 containsObject:v34], v37, v36, v38))
               {
                 v39 = logForCSLogCategoryIndex();
                 if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
                 {
-                  v41 = [v6 dataMigrationStage];
-                  v42 = [(SPCoreSpotlightIndexer *)v112 dataMigrationStage];
-                  v43 = [(SPCoreSpotlightIndexer *)v112 dataMigrationBundleIDs];
+                  dataMigrationStage7 = [taskCopy dataMigrationStage];
+                  dataMigrationStage8 = [(SPCoreSpotlightIndexer *)selfCopy dataMigrationStage];
+                  dataMigrationBundleIDs5 = [(SPCoreSpotlightIndexer *)selfCopy dataMigrationBundleIDs];
                   *buf = 138413314;
                   v151 = v110;
                   v152 = 2112;
                   v153 = v34;
                   v154 = 2048;
-                  v155 = v41;
+                  v155 = dataMigrationStage7;
                   v156 = 2048;
-                  v157 = v42;
+                  v157 = dataMigrationStage8;
                   v158 = 2112;
-                  v159 = v43;
+                  v159 = dataMigrationBundleIDs5;
                   _os_log_debug_impl(&dword_231A35000, v39, OS_LOG_TYPE_DEBUG, "Dropping job:%@ for indexing extension with bundleID:%@ since it ran during data migration, dataMigrationStange:%lu/%lu, dataMigrationBundleIDs:%@", buf, 0x34u);
                 }
 
                 v148 = v34;
                 v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v148 count:1];
-                self = v112;
-                [(SPCoreSpotlightIndexer *)v112 addCompletedBundleIDs:v40 forIndexerTask:v6];
+                self = selfCopy;
+                [(SPCoreSpotlightIndexer *)selfCopy addCompletedBundleIDs:v40 forIndexerTask:taskCopy];
 
                 if (!v31)
                 {
@@ -13038,24 +13038,24 @@ LABEL_82:
                 [v31 addIndex:i];
               }
 
-              v17 = v33;
+              firstObject = v33;
             }
 
-            v7 = v96;
-            v9 = v98;
+            handlerCopy = v96;
+            extensionDelegate = v98;
             if (v31)
             {
-              [v17 removeObjectsAtIndexes:v31];
+              [firstObject removeObjectsAtIndexes:v31];
             }
           }
         }
 
-        if ([v17 count])
+        if ([firstObject count])
         {
           v67 = logForCSLogCategoryIndex();
           v10 = v110;
-          v12 = v100;
-          v11 = v102;
+          completedBundleIDs = v100;
+          bundleIDs = v102;
           if (os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
           {
             [SPCoreSpotlightIndexer performIndexerTask:withIndexExtensionsAndCompletionHandler:];
@@ -13066,53 +13066,53 @@ LABEL_82:
           v133[2] = __85__SPCoreSpotlightIndexer_performIndexerTask_withIndexExtensionsAndCompletionHandler___block_invoke_3126;
           v133[3] = &unk_278936F50;
           v134 = v110;
-          v135 = self;
-          v136 = v6;
+          selfCopy2 = self;
+          v136 = taskCopy;
           v130[0] = MEMORY[0x277D85DD0];
           v130[1] = 3221225472;
           v130[2] = __85__SPCoreSpotlightIndexer_performIndexerTask_withIndexExtensionsAndCompletionHandler___block_invoke_3128;
           v130[3] = &unk_278934F30;
           v131 = v134;
-          v132 = v7;
-          [v9 indexRequestsPerformJob:v131 forBundles:v17 perExtensionCompletionHandler:v133 completionHandler:v130];
+          v132 = handlerCopy;
+          [extensionDelegate indexRequestsPerformJob:v131 forBundles:firstObject perExtensionCompletionHandler:v133 completionHandler:v130];
 
           v66 = v134;
           goto LABEL_59;
         }
 
         v10 = v110;
-        v12 = v100;
-        v11 = v102;
+        completedBundleIDs = v100;
+        bundleIDs = v102;
       }
 
 LABEL_61:
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7);
+        handlerCopy[2](handlerCopy);
       }
 
       goto LABEL_82;
     }
 
-    v99 = v9;
+    v99 = extensionDelegate;
     v44 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    if ([v12 count])
+    if ([completedBundleIDs count])
     {
-      [v44 addObjectsFromArray:v12];
+      [v44 addObjectsFromArray:completedBundleIDs];
     }
 
-    v101 = v12;
-    v45 = [v6 dataMigrationStage];
+    v101 = completedBundleIDs;
+    dataMigrationStage9 = [taskCopy dataMigrationStage];
     v111 = v10;
-    v103 = v11;
+    v103 = bundleIDs;
     v104 = v44;
-    if (v45 >= [(SPCoreSpotlightIndexer *)self dataMigrationStage])
+    if (dataMigrationStage9 >= [(SPCoreSpotlightIndexer *)self dataMigrationStage])
     {
 LABEL_67:
-      v71 = [v10 excludedBundleIDs];
-      v72 = [v44 setByAddingObjectsFromArray:v71];
-      v73 = [v72 allObjects];
-      [v10 setExcludedBundleIDs:v73];
+      excludedBundleIDs = [v10 excludedBundleIDs];
+      v72 = [v44 setByAddingObjectsFromArray:excludedBundleIDs];
+      allObjects = [v72 allObjects];
+      [v10 setExcludedBundleIDs:allObjects];
 
       v74 = dispatch_group_create();
       dispatch_group_enter(v74);
@@ -13128,8 +13128,8 @@ LABEL_67:
       v122[2] = __85__SPCoreSpotlightIndexer_performIndexerTask_withIndexExtensionsAndCompletionHandler___block_invoke_3129;
       v122[3] = &unk_278936F50;
       v123 = v10;
-      v124 = self;
-      v76 = v6;
+      selfCopy3 = self;
+      v76 = taskCopy;
       v125 = v76;
       v119[0] = MEMORY[0x277D85DD0];
       v119[1] = 3221225472;
@@ -13139,40 +13139,40 @@ LABEL_67:
       v120 = v77;
       v78 = v74;
       v121 = v78;
-      v9 = v99;
+      extensionDelegate = v99;
       [v99 indexRequestsPerformJob:v77 perExtensionCompletionHandler:v122 completionHandler:v119];
-      v79 = [v77 protectionClasses];
+      protectionClasses = [v77 protectionClasses];
       v80 = *MEMORY[0x277CCA1A0];
-      v81 = [v79 containsObject:*MEMORY[0x277CCA1A0]];
+      v81 = [protectionClasses containsObject:*MEMORY[0x277CCA1A0]];
 
-      v82 = [v77 protectionClasses];
+      protectionClasses2 = [v77 protectionClasses];
       v108 = v80;
-      if ([v82 containsObject:@"Priority"])
+      if ([protectionClasses2 containsObject:@"Priority"])
       {
         v81 = 1;
       }
 
       else if (sUseMailIndex == 1)
       {
-        v83 = [v77 protectionClasses];
-        v84 = [v83 containsObject:@"MobileMailIndex"];
+        protectionClasses3 = [v77 protectionClasses];
+        v84 = [protectionClasses3 containsObject:@"MobileMailIndex"];
 
         v81 |= v84;
-        self = v112;
+        self = selfCopy;
       }
 
-      v85 = [v77 jobType];
+      jobType = [v77 jobType];
       v86 = logForCSLogCategoryIndex();
       v87 = os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT);
-      if (v85 != 2 || (v81 & 1) != 0)
+      if (jobType != 2 || (v81 & 1) != 0)
       {
         if (v87)
         {
-          v89 = [v77 excludedBundleIDs];
+          excludedBundleIDs2 = [v77 excludedBundleIDs];
           *buf = 138412546;
           v151 = v77;
           v152 = 2112;
-          v153 = v89;
+          v153 = excludedBundleIDs2;
           _os_log_impl(&dword_231A35000, v86, OS_LOG_TYPE_DEFAULT, "Performing job:%@ with spotlight daemon clients, excludedBundleIDs:%@", buf, 0x16u);
         }
 
@@ -13195,47 +13195,47 @@ LABEL_67:
       {
         if (v87)
         {
-          v88 = [v77 excludedBundleIDs];
+          excludedBundleIDs3 = [v77 excludedBundleIDs];
           *buf = 138412546;
           v151 = v77;
           v152 = 2112;
-          v153 = v88;
+          v153 = excludedBundleIDs3;
           _os_log_impl(&dword_231A35000, v86, OS_LOG_TYPE_DEFAULT, "Ignoring job:%@ with spotlight daemon clients, excludedBundleIDs:%@", buf, 0x16u);
         }
 
         dispatch_group_leave(v78);
       }
 
-      v17 = v104;
+      firstObject = v104;
       v91 = qos_class_self();
       v92 = dispatch_get_global_queue(v91, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __85__SPCoreSpotlightIndexer_performIndexerTask_withIndexExtensionsAndCompletionHandler___block_invoke_3;
       block[3] = &unk_2789341A8;
-      v114 = v7;
+      v114 = handlerCopy;
       dispatch_group_notify(v78, v92, block);
 
       v10 = v111;
-      v12 = v101;
-      v11 = v103;
+      completedBundleIDs = v101;
+      bundleIDs = v103;
       goto LABEL_82;
     }
 
     v46 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    if ([v11 count])
+    if ([bundleIDs count])
     {
-      v97 = v7;
+      v97 = handlerCopy;
       v128 = 0u;
       v129 = 0u;
       v126 = 0u;
       v127 = 0u;
-      v47 = v11;
-      v48 = [v47 countByEnumeratingWithState:&v126 objects:v147 count:16];
+      dataMigrationBundleIDs10 = bundleIDs;
+      v48 = [dataMigrationBundleIDs10 countByEnumeratingWithState:&v126 objects:v147 count:16];
       if (v48)
       {
         v49 = v48;
-        v106 = v6;
+        v106 = taskCopy;
         v50 = *v127;
         do
         {
@@ -13243,16 +13243,16 @@ LABEL_67:
           {
             if (*v127 != v50)
             {
-              objc_enumerationMutation(v47);
+              objc_enumerationMutation(dataMigrationBundleIDs10);
             }
 
             v52 = *(*(&v126 + 1) + 8 * j);
-            v53 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
-            if (v53)
+            dataMigrationBundleIDs6 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
+            if (dataMigrationBundleIDs6)
             {
-              v54 = v53;
-              v55 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
-              v56 = [v55 containsObject:v52];
+              v54 = dataMigrationBundleIDs6;
+              dataMigrationBundleIDs7 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
+              v56 = [dataMigrationBundleIDs7 containsObject:v52];
 
               if (!v56)
               {
@@ -13263,64 +13263,64 @@ LABEL_67:
             v57 = logForCSLogCategoryIndex();
             if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
             {
-              v58 = [v106 dataMigrationStage];
-              v59 = [(SPCoreSpotlightIndexer *)self dataMigrationStage];
-              v60 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
+              dataMigrationStage10 = [v106 dataMigrationStage];
+              dataMigrationStage11 = [(SPCoreSpotlightIndexer *)self dataMigrationStage];
+              dataMigrationBundleIDs8 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
               *buf = 138413314;
               v151 = v111;
               v152 = 2112;
               v153 = v52;
               v154 = 2048;
-              v155 = v58;
+              v155 = dataMigrationStage10;
               v156 = 2048;
-              v157 = v59;
+              v157 = dataMigrationStage11;
               v158 = 2112;
-              v159 = v60;
+              v159 = dataMigrationBundleIDs8;
               _os_log_debug_impl(&dword_231A35000, v57, OS_LOG_TYPE_DEBUG, "Dropping job:%@ for indexing extension with bundleID:%@ since it ran during data migration, dataMigrationStange:%lu/%lu, dataMigrationBundleIDs:%@", buf, 0x34u);
 
-              self = v112;
+              self = selfCopy;
             }
 
             [v46 addObject:v52];
           }
 
-          v49 = [v47 countByEnumeratingWithState:&v126 objects:v147 count:16];
+          v49 = [dataMigrationBundleIDs10 countByEnumeratingWithState:&v126 objects:v147 count:16];
         }
 
         while (v49);
-        v6 = v106;
+        taskCopy = v106;
       }
 
-      v7 = v97;
+      handlerCopy = v97;
     }
 
     else
     {
-      v68 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
-      v69 = [v68 count];
+      dataMigrationBundleIDs9 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
+      v69 = [dataMigrationBundleIDs9 count];
 
       if (!v69)
       {
 LABEL_66:
         v44 = v104;
         [v104 unionSet:v46];
-        v70 = [v46 allObjects];
-        [(SPCoreSpotlightIndexer *)self addCompletedBundleIDs:v70 forIndexerTask:v6];
+        allObjects2 = [v46 allObjects];
+        [(SPCoreSpotlightIndexer *)self addCompletedBundleIDs:allObjects2 forIndexerTask:taskCopy];
 
         goto LABEL_67;
       }
 
-      v47 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
-      [v46 unionSet:v47];
+      dataMigrationBundleIDs10 = [(SPCoreSpotlightIndexer *)self dataMigrationBundleIDs];
+      [v46 unionSet:dataMigrationBundleIDs10];
     }
 
     v10 = v111;
     goto LABEL_66;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_83:
@@ -13473,26 +13473,26 @@ uint64_t __85__SPCoreSpotlightIndexer_performIndexerTask_withIndexExtensionsAndC
   return result;
 }
 
-- (void)fetchAttributes:(id)a3 protectionClass:(id)a4 bundleID:(id)a5 identifiers:(id)a6 userCtx:(id)a7 flags:(unsigned int)a8 qos:(unsigned int)a9 completionHandler:(id)a10
+- (void)fetchAttributes:(id)attributes protectionClass:(id)class bundleID:(id)d identifiers:(id)identifiers userCtx:(id)ctx flags:(unsigned int)flags qos:(unsigned int)qos completionHandler:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
+  attributesCopy = attributes;
+  classCopy = class;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  ctxCopy = ctx;
+  handlerCopy = handler;
   if ((deviceUnlocked & 1) == 0)
   {
     SIResumeForUnlock();
   }
 
-  if (!v17 || (v22 = [v17 isEqualToString:@"Default"], v23 = v17, v22))
+  if (!classCopy || (v22 = [classCopy isEqualToString:@"Default"], v23 = classCopy, v22))
   {
     v23 = *MEMORY[0x277CCA1A0];
   }
 
   v24 = v23;
-  v25 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v24 andBundleID:v18];
+  v25 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v24 andBundleID:dCopy];
   v26 = v25;
   if (v25)
   {
@@ -13502,42 +13502,42 @@ uint64_t __85__SPCoreSpotlightIndexer_performIndexerTask_withIndexExtensionsAndC
     block[2] = __115__SPCoreSpotlightIndexer_fetchAttributes_protectionClass_bundleID_identifiers_userCtx_flags_qos_completionHandler___block_invoke;
     block[3] = &unk_278936FA0;
     v30 = v25;
-    v31 = v16;
-    v32 = v18;
-    v33 = v19;
-    v34 = v20;
-    v36 = a8;
-    v35 = v21;
-    v27 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a9, 0, block);
+    v31 = attributesCopy;
+    v32 = dCopy;
+    v33 = identifiersCopy;
+    v34 = ctxCopy;
+    flagsCopy = flags;
+    v35 = handlerCopy;
+    v27 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, qos, 0, block);
     dispatch_async(queue, v27);
   }
 
-  else if (v21)
+  else if (handlerCopy)
   {
-    (*(v21 + 2))(v21, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)fetchAttributesForProtectionClass:(id)a3 attributes:(id)a4 bundleID:(id)a5 identifiers:(id)a6 userCtx:(id)a7 flags:(int)a8 completion:(id)a9
+- (void)fetchAttributesForProtectionClass:(id)class attributes:(id)attributes bundleID:(id)d identifiers:(id)identifiers userCtx:(id)ctx flags:(int)flags completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  classCopy = class;
+  attributesCopy = attributes;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  ctxCopy = ctx;
+  completionCopy = completion;
   if ((deviceUnlocked & 1) == 0)
   {
     SIResumeForUnlock();
   }
 
-  if (!v15 || (v21 = [v15 isEqualToString:@"Default"], v22 = v15, v21))
+  if (!classCopy || (v21 = [classCopy isEqualToString:@"Default"], v22 = classCopy, v21))
   {
     v22 = *MEMORY[0x277CCA1A0];
   }
 
   v23 = v22;
-  v24 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v23 andBundleID:v17];
+  v24 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v23 andBundleID:dCopy];
   v25 = v24;
   if (v24)
   {
@@ -13547,41 +13547,41 @@ uint64_t __85__SPCoreSpotlightIndexer_performIndexerTask_withIndexExtensionsAndC
     v28[2] = __117__SPCoreSpotlightIndexer_fetchAttributesForProtectionClass_attributes_bundleID_identifiers_userCtx_flags_completion___block_invoke;
     v28[3] = &unk_278936FA0;
     v29 = v24;
-    v30 = v16;
-    v31 = v17;
-    v32 = v18;
-    v33 = v19;
-    v35 = a8;
-    v34 = v20;
+    v30 = attributesCopy;
+    v31 = dCopy;
+    v32 = identifiersCopy;
+    v33 = ctxCopy;
+    flagsCopy = flags;
+    v34 = completionCopy;
     v27 = _setup_block(v28, 0, 21417);
     dispatch_async(v26, v27);
   }
 
-  else if (v20)
+  else if (completionCopy)
   {
-    (*(v20 + 2))(v20, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)fetchCacheFileDescriptorsForProtectionClass:(id)a3 bundleID:(id)a4 identifiers:(id)a5 userCtx:(id)a6 flags:(unsigned int)a7 qos:(unsigned int)a8 completionHandler:(id)a9
+- (void)fetchCacheFileDescriptorsForProtectionClass:(id)class bundleID:(id)d identifiers:(id)identifiers userCtx:(id)ctx flags:(unsigned int)flags qos:(unsigned int)qos completionHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a9;
+  classCopy = class;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  ctxCopy = ctx;
+  handlerCopy = handler;
   if ((deviceUnlocked & 1) == 0)
   {
     SIResumeForUnlock();
   }
 
-  if (!v15 || (v20 = [v15 isEqualToString:@"Default"], v21 = v15, v20))
+  if (!classCopy || (v20 = [classCopy isEqualToString:@"Default"], v21 = classCopy, v20))
   {
     v21 = *MEMORY[0x277CCA1A0];
   }
 
   v22 = v21;
-  v23 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v22 andBundleID:v16];
+  v23 = [(SPCoreSpotlightIndexer *)self concreteIndexerForProtectionClass:v22 andBundleID:dCopy];
   v24 = v23;
   if (v23)
   {
@@ -13591,35 +13591,35 @@ uint64_t __85__SPCoreSpotlightIndexer_performIndexerTask_withIndexExtensionsAndC
     v27[2] = __127__SPCoreSpotlightIndexer_fetchCacheFileDescriptorsForProtectionClass_bundleID_identifiers_userCtx_flags_qos_completionHandler___block_invoke;
     v27[3] = &unk_278936FC8;
     v28 = v23;
-    v29 = v16;
-    v30 = v17;
-    v31 = v18;
-    v33 = a7;
-    v32 = v19;
-    v26 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a8, 0, v27);
+    v29 = dCopy;
+    v30 = identifiersCopy;
+    v31 = ctxCopy;
+    flagsCopy = flags;
+    v32 = handlerCopy;
+    v26 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, qos, 0, v27);
     dispatch_async(v25, v26);
   }
 
-  else if (v19)
+  else if (handlerCopy)
   {
-    (*(v19 + 2))(v19, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)revokeExpiredItems:(id)a3 activity:(id)a4 protected:(BOOL)a5
+- (void)revokeExpiredItems:(id)items activity:(id)activity protected:(BOOL)protected
 {
-  v8 = a3;
-  v9 = a4;
+  itemsCopy = items;
+  activityCopy = activity;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__SPCoreSpotlightIndexer_revokeExpiredItems_activity_protected___block_invoke;
   v15[3] = &unk_2789356F0;
-  v18 = a5;
+  protectedCopy = protected;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v10 = v9;
-  v11 = v8;
+  v16 = itemsCopy;
+  v17 = activityCopy;
+  v10 = activityCopy;
+  v11 = itemsCopy;
   v12 = MEMORY[0x2383760E0](v15);
   v13 = sIndexQueue;
   v14 = _setup_block(v12, 0, 21481);
@@ -13679,18 +13679,18 @@ void __64__SPCoreSpotlightIndexer_revokeExpiredItems_activity_protected___block_
   dispatch_async(v3, v4);
 }
 
-- (id)queryForWord:(id)a3 matchingAttributes:(id)a4 prefixMatch:(BOOL)a5
+- (id)queryForWord:(id)word matchingAttributes:(id)attributes prefixMatch:(BOOL)match
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  matchCopy = match;
+  wordCopy = word;
+  attributesCopy = attributes;
   v9 = objc_opt_new();
-  v10 = [v8 count];
+  v10 = [attributesCopy count];
   if (v10)
   {
     v11 = v10;
     v12 = 0;
-    if (v5)
+    if (matchCopy)
     {
       v13 = @"|| (%@=%@*cwdt)";
     }
@@ -13700,7 +13700,7 @@ void __64__SPCoreSpotlightIndexer_revokeExpiredItems_activity_protected___block_
       v13 = @"|| (%@=%@cwdt)";
     }
 
-    if (v5)
+    if (matchCopy)
     {
       v14 = @"(%@=%@*cwdt)";
     }
@@ -13712,7 +13712,7 @@ void __64__SPCoreSpotlightIndexer_revokeExpiredItems_activity_protected___block_
 
     do
     {
-      v15 = [v8 objectAtIndex:v12];
+      v15 = [attributesCopy objectAtIndex:v12];
       if (v12)
       {
         v16 = v13;
@@ -13724,7 +13724,7 @@ void __64__SPCoreSpotlightIndexer_revokeExpiredItems_activity_protected___block_
       }
 
       v17 = v16;
-      [v9 appendFormat:v17, v15, v7];
+      [v9 appendFormat:v17, v15, wordCopy];
 
       ++v12;
     }
@@ -13758,13 +13758,13 @@ void __64__SPCoreSpotlightIndexer_revokeExpiredItems_activity_protected___block_
 {
   if ((sPrivate & 1) == 0)
   {
-    v3 = [MEMORY[0x277D77BF8] sharedManager];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __46__SPCoreSpotlightIndexer_personaListDidUpdate__block_invoke;
     v4[3] = &unk_278936FF0;
     v4[4] = self;
-    [v3 fetchAllPersonasWithCompletionHandler:v4];
+    [mEMORY[0x277D77BF8] fetchAllPersonasWithCompletionHandler:v4];
   }
 }
 
@@ -13880,21 +13880,21 @@ void __46__SPCoreSpotlightIndexer_personaListDidUpdate__block_invoke_2(uint64_t 
   dispatch_group_leave(v9);
 }
 
-- (void)handleRankingCommand:(id)a3 completion:(id)a4
+- (void)handleRankingCommand:(id)command completion:(id)completion
 {
   v32[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"update"])
+  commandCopy = command;
+  completionCopy = completion;
+  if ([commandCopy isEqualToString:@"update"])
   {
-    [sDelegate updateApplicationsWithCompletion:v7 clean:0];
+    [sDelegate updateApplicationsWithCompletion:completionCopy clean:0];
   }
 
-  else if ([v6 isEqualToString:@"reset"])
+  else if ([commandCopy isEqualToString:@"reset"])
   {
     v8 = objc_opt_new();
-    v9 = [objc_opt_class() allProtectionClasses];
-    [v8 setProtectionClasses:v9];
+    allProtectionClasses = [objc_opt_class() allProtectionClasses];
+    [v8 setProtectionClasses:allProtectionClasses];
 
     v10 = *MEMORY[0x277CC2500];
     v32[0] = *MEMORY[0x277CC3208];
@@ -13919,7 +13919,7 @@ void __46__SPCoreSpotlightIndexer_personaListDidUpdate__block_invoke_2(uint64_t 
     v25[2] = __58__SPCoreSpotlightIndexer_handleRankingCommand_completion___block_invoke_3;
     v25[3] = &unk_2789358D0;
     v26 = v31;
-    v27 = self;
+    selfCopy = self;
     v15 = v13;
     v28 = v15;
     v16 = v31;
@@ -13937,7 +13937,7 @@ void __46__SPCoreSpotlightIndexer_personaListDidUpdate__block_invoke_2(uint64_t 
     v23[1] = 3221225472;
     v23[2] = __58__SPCoreSpotlightIndexer_handleRankingCommand_completion___block_invoke_5;
     v23[3] = &unk_2789341A8;
-    v24 = v7;
+    v24 = completionCopy;
     v21 = _setup_block(v23, 0, 21618);
     dispatch_group_notify(v15, v20, v21);
   }
@@ -14007,11 +14007,11 @@ void __58__SPCoreSpotlightIndexer_handleRankingCommand_completion___block_invoke
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)_fetchAccumulatedStorageSizeForBundleId:(id)a3 completionHandler:(id)a4
+- (void)_fetchAccumulatedStorageSizeForBundleId:(id)id completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  idCopy = id;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [SPCoreSpotlightIndexer _fetchAccumulatedStorageSizeForBundleId:completionHandler:];
   }
@@ -14022,10 +14022,10 @@ void __58__SPCoreSpotlightIndexer_handleRankingCommand_completion___block_invoke
   v12[2] = __84__SPCoreSpotlightIndexer__fetchAccumulatedStorageSizeForBundleId_completionHandler___block_invoke;
   v12[3] = &unk_278934F08;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = idCopy;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = idCopy;
   v11 = _setup_block(v12, 0, 21657);
   dispatch_async(v8, v11);
 }
@@ -14164,31 +14164,31 @@ void __84__SPCoreSpotlightIndexer__fetchAccumulatedStorageSizeForBundleId_comple
   }
 }
 
-- (void)_migrateIndexExtensionsWithEnumerator:(id)a3 forced:(BOOL)a4 migratedBundleIds:(id)a5 completionHandler:(id)a6
+- (void)_migrateIndexExtensionsWithEnumerator:(id)enumerator forced:(BOOL)forced migratedBundleIds:(id)ids completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (!v12)
+  enumeratorCopy = enumerator;
+  idsCopy = ids;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [SPCoreSpotlightIndexer _migrateIndexExtensionsWithEnumerator:forced:migratedBundleIds:completionHandler:];
   }
 
-  v13 = v12;
-  v14 = [v10 nextObject];
-  v15 = [v14 containerID];
-  v16 = v15;
-  if (v14 && v15)
+  v13 = handlerCopy;
+  nextObject = [enumeratorCopy nextObject];
+  containerID = [nextObject containerID];
+  v16 = containerID;
+  if (nextObject && containerID)
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __107__SPCoreSpotlightIndexer__migrateIndexExtensionsWithEnumerator_forced_migratedBundleIds_completionHandler___block_invoke;
     v17[3] = &unk_278937090;
-    v23 = a4;
-    v18 = v15;
-    v19 = self;
-    v20 = v10;
-    v21 = v11;
+    forcedCopy = forced;
+    v18 = containerID;
+    selfCopy = self;
+    v20 = enumeratorCopy;
+    v21 = idsCopy;
     v22 = v13;
     [(SPCoreSpotlightIndexer *)self _fetchAccumulatedStorageSizeForBundleId:v18 completionHandler:v17];
   }
@@ -14299,7 +14299,7 @@ uint64_t __107__SPCoreSpotlightIndexer__migrateIndexExtensionsWithEnumerator_for
   return result;
 }
 
-- (void)migrateForced:(BOOL)a3
+- (void)migrateForced:(BOOL)forced
 {
   v5 = SDTransactionCreate(&unk_2846C93C8);
   reindexAllQueue = self->_reindexAllQueue;
@@ -14307,7 +14307,7 @@ uint64_t __107__SPCoreSpotlightIndexer__migrateIndexExtensionsWithEnumerator_for
   v9[1] = 3221225472;
   v9[2] = __40__SPCoreSpotlightIndexer_migrateForced___block_invoke;
   v9[3] = &unk_278934870;
-  v11 = a3;
+  forcedCopy = forced;
   v9[4] = self;
   v10 = v5;
   v7 = v5;
@@ -14423,16 +14423,16 @@ void __40__SPCoreSpotlightIndexer_migrateForced___block_invoke_2_3188(uint64_t a
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reindexAllIdentifiersWithExtension:(id)a3 completionBlock:(id)a4
+- (void)_reindexAllIdentifiersWithExtension:(id)extension completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  extensionCopy = extension;
+  blockCopy = block;
+  if (!extensionCopy)
   {
     [SPCoreSpotlightIndexer _reindexAllIdentifiersWithExtension:completionBlock:];
   }
 
-  if (!v7)
+  if (!blockCopy)
   {
     [SPCoreSpotlightIndexer _reindexAllIdentifiersWithExtension:completionBlock:];
   }
@@ -14442,10 +14442,10 @@ void __40__SPCoreSpotlightIndexer_migrateForced___block_invoke_2_3188(uint64_t a
   v13[2] = __78__SPCoreSpotlightIndexer__reindexAllIdentifiersWithExtension_completionBlock___block_invoke;
   v13[3] = &unk_278934F08;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v8 = v7;
-  v9 = v6;
+  v14 = extensionCopy;
+  v15 = blockCopy;
+  v8 = blockCopy;
+  v9 = extensionCopy;
   v10 = MEMORY[0x2383760E0](v13);
   v11 = sIndexQueue;
   v12 = _setup_block(v10, 0, 21798);
@@ -14560,16 +14560,16 @@ uint64_t __78__SPCoreSpotlightIndexer__reindexAllIdentifiersWithExtension_comple
   return v2();
 }
 
-+ (id)_filterReindexAllExtensions:(id)a3
++ (id)_filterReindexAllExtensions:(id)extensions
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  extensionsCopy = extensions;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = extensionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -14587,8 +14587,8 @@ uint64_t __78__SPCoreSpotlightIndexer__reindexAllIdentifiersWithExtension_comple
         v10 = *(*(&v15 + 1) + 8 * i);
         if (([v10 isInternal] & 1) == 0)
         {
-          v11 = [v10 containerID];
-          v12 = [v11 hasPrefix:@"com.apple."];
+          containerID = [v10 containerID];
+          v12 = [containerID hasPrefix:@"com.apple."];
 
           if ((v12 & 1) == 0)
           {
@@ -14608,15 +14608,15 @@ uint64_t __78__SPCoreSpotlightIndexer__reindexAllIdentifiersWithExtension_comple
   return v4;
 }
 
-- (void)_reindexAllItemsWithExtensionsAndCompletionBlock:(id)a3
+- (void)_reindexAllItemsWithExtensionsAndCompletionBlock:(id)block
 {
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [SPCoreSpotlightIndexer _reindexAllItemsWithExtensionsAndCompletionBlock:];
   }
 
-  v5 = v4;
+  v5 = blockCopy;
   v6 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -14683,15 +14683,15 @@ uint64_t __75__SPCoreSpotlightIndexer__reindexAllItemsWithExtensionsAndCompletio
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_reindexAllItemsWithExtensionsAndIdentifiersAndCompletionBlock:(id)a3
+- (void)_reindexAllItemsWithExtensionsAndIdentifiersAndCompletionBlock:(id)block
 {
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [SPCoreSpotlightIndexer _reindexAllItemsWithExtensionsAndIdentifiersAndCompletionBlock:];
   }
 
-  v5 = v4;
+  v5 = blockCopy;
   v6 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -14717,7 +14717,7 @@ uint64_t __75__SPCoreSpotlightIndexer__reindexAllItemsWithExtensionsAndCompletio
   v10 = 3221225472;
   v11 = __89__SPCoreSpotlightIndexer__reindexAllItemsWithExtensionsAndIdentifiersAndCompletionBlock___block_invoke_4;
   v12 = &unk_278937100;
-  v13 = self;
+  selfCopy = self;
   v14 = v5;
   v8 = v5;
   [v7 setCompletionBlock:&v9];
@@ -14761,15 +14761,15 @@ uint64_t __89__SPCoreSpotlightIndexer__reindexAllItemsWithExtensionsAndIdentifie
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)transferDeleteJournalsForProtectionClass:(id)a3 toDirectory:(int)a4 completionHandler:(id)a5
+- (void)transferDeleteJournalsForProtectionClass:(id)class toDirectory:(int)directory completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SPCoreSpotlightIndexer *)self concreteIndexers];
-  v11 = v10;
-  if (v9)
+  handlerCopy = handler;
+  classCopy = class;
+  concreteIndexers = [(SPCoreSpotlightIndexer *)self concreteIndexers];
+  v11 = concreteIndexers;
+  if (classCopy)
   {
-    v12 = v9;
+    v12 = classCopy;
   }
 
   else
@@ -14777,7 +14777,7 @@ uint64_t __89__SPCoreSpotlightIndexer__reindexAllItemsWithExtensionsAndIdentifie
     v12 = @"Unknown";
   }
 
-  v13 = [v10 objectForKey:v12];
+  v13 = [concreteIndexers objectForKey:v12];
 
   if (v13)
   {
@@ -14787,15 +14787,15 @@ uint64_t __89__SPCoreSpotlightIndexer__reindexAllItemsWithExtensionsAndIdentifie
     v16[2] = __97__SPCoreSpotlightIndexer_transferDeleteJournalsForProtectionClass_toDirectory_completionHandler___block_invoke;
     v16[3] = &unk_278937198;
     v17 = v13;
-    v19 = a4;
-    v18 = v8;
+    directoryCopy = directory;
+    v18 = handlerCopy;
     v15 = _setup_block(v16, 0, 21879);
     dispatch_async(v14, v15);
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
-    (*(v8 + 2))(v8, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -14808,19 +14808,19 @@ uint64_t __89__SPCoreSpotlightIndexer__reindexAllItemsWithExtensionsAndIdentifie
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAssetsCommand:(id)a3
+- (void)handleAssetsCommand:(id)command
 {
   v3 = MEMORY[0x277D657E8];
-  v4 = a3;
-  v5 = [v3 sharedResourcesManager];
-  [v5 handleAssetsCommand:v4];
+  commandCopy = command;
+  sharedResourcesManager = [v3 sharedResourcesManager];
+  [sharedResourcesManager handleAssetsCommand:commandCopy];
 }
 
-- (id)leakDebugDump:(id)a3
+- (id)leakDebugDump:(id)dump
 {
-  v3 = a3;
+  dumpCopy = dump;
   Current = CFAbsoluteTimeGetCurrent();
-  if ([v3 isEqualToString:@"sijob"])
+  if ([dumpCopy isEqualToString:@"sijob"])
   {
     v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
     v40[0] = MEMORY[0x277D85DD0];
@@ -14860,7 +14860,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"ciindexset"])
+  if ([dumpCopy isEqualToString:@"ciindexset"])
   {
     v15 = objc_alloc_init(MEMORY[0x277CCAB68]);
     v31[0] = MEMORY[0x277D85DD0];
@@ -14898,7 +14898,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  [v3 isEqualToString:@"sdtransaction"];
+  [dumpCopy isEqualToString:@"sdtransaction"];
   v12 = 0;
 LABEL_7:
 

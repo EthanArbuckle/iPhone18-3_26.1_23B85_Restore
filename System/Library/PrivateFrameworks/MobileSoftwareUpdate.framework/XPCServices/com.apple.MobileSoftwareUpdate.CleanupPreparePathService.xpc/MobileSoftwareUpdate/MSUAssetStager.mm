@@ -1,20 +1,20 @@
 @interface MSUAssetStager
-+ (BOOL)_checkAndLogLocalError:(id)a3 outError:(id *)a4;
-+ (BOOL)_stageAssetsUsingUpdateAttributes:(id)a3 withError:(id *)a4;
++ (BOOL)_checkAndLogLocalError:(id)error outError:(id *)outError;
++ (BOOL)_stageAssetsUsingUpdateAttributes:(id)attributes withError:(id *)error;
 + (BOOL)isPurgingEnabled;
-+ (id)buildVersionFromAttributes:(id)a3;
-+ (id)buildVersionFromInfoPlist:(id)a3;
-+ (id)osVersionFromAttributes:(id)a3;
-+ (id)osVersionFromInfoPlist:(id)a3;
-+ (id)restoreVersionFromAttributes:(id)a3;
-+ (id)trainNameFromAttributes:(id)a3;
-+ (void)_purgeStagedAssetsSynchronously:(BOOL)a3;
-+ (void)disableStagingForReason:(id)a3 buildVersion:(id)a4 osVersion:(id)a5;
++ (id)buildVersionFromAttributes:(id)attributes;
++ (id)buildVersionFromInfoPlist:(id)plist;
++ (id)osVersionFromAttributes:(id)attributes;
++ (id)osVersionFromInfoPlist:(id)plist;
++ (id)restoreVersionFromAttributes:(id)attributes;
++ (id)trainNameFromAttributes:(id)attributes;
++ (void)_purgeStagedAssetsSynchronously:(BOOL)synchronously;
++ (void)disableStagingForReason:(id)reason buildVersion:(id)version osVersion:(id)osVersion;
 @end
 
 @implementation MSUAssetStager
 
-+ (BOOL)_stageAssetsUsingUpdateAttributes:(id)a3 withError:(id *)a4
++ (BOOL)_stageAssetsUsingUpdateAttributes:(id)attributes withError:(id *)error
 {
   v103 = 0;
   v104 = &v103;
@@ -22,9 +22,9 @@
   v106 = __Block_byref_object_copy_;
   v107 = __Block_byref_object_dispose_;
   v108 = 0;
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   if (objc_opt_class() && objc_opt_class() && objc_opt_class())
@@ -40,10 +40,10 @@
       v97 = 0;
       v98 = &v97;
       v99 = 0x2020000000;
-      v9 = [MSUAssetStager buildVersionFromAttributes:a3];
-      v10 = [MSUAssetStager osVersionFromAttributes:a3];
-      v11 = [MSUAssetStager trainNameFromAttributes:a3];
-      v12 = [MSUAssetStager restoreVersionFromAttributes:a3];
+      v9 = [MSUAssetStager buildVersionFromAttributes:attributes];
+      v10 = [MSUAssetStager osVersionFromAttributes:attributes];
+      v11 = [MSUAssetStager trainNameFromAttributes:attributes];
+      v12 = [MSUAssetStager restoreVersionFromAttributes:attributes];
       if (objc_opt_respondsToSelector())
       {
         v18 = objc_alloc_init(NSMutableDictionary);
@@ -101,10 +101,10 @@
           logfunction(", 1, @"MSUAssetStager: Determined %lu assets to stage requiring %llu bytes\n"", v47, v48, v49, v50, v51, v46);
           v95 = 0;
           v96 = 0;
-          if (get_snapshot_preparation_size(a3, &v95, &v96))
+          if (get_snapshot_preparation_size(attributes, &v95, &v96))
           {
             v94 = 0;
-            if (get_snapshot_apply_size(a3, &v94))
+            if (get_snapshot_apply_size(attributes, &v94))
             {
               bzero(&v109, 0x878uLL);
               statfs("/private/var", &v109);
@@ -114,7 +114,7 @@
               {
                 v87 = _create_error_internal_cf(@"MobileSoftwareUpdateErrorDomain", 63, 0, 0, @"Free space (%llu) is less than the prepareSize (%llu) + applySize (%llu) total", v64, v65, v66, LOBYTE(v109.f_bavail) * LOBYTE(v109.f_bsize));
                 v104[5] = v87;
-                [MSUAssetStager _checkAndLogLocalError:v87 outError:a4];
+                [MSUAssetStager _checkAndLogLocalError:v87 outError:error];
               }
 
               else
@@ -125,7 +125,7 @@
                 {
                   v88 = _create_error_internal_cf(@"MobileSoftwareUpdateErrorDomain", 63, 0, 0, @"Not enough space available for staging assets; remainingSpace:%llu, estimatedBytesWithPadding:%llu", v72, v73, v74, v68);
                   v104[5] = v88;
-                  [MSUAssetStager _checkAndLogLocalError:v88 outError:a4];
+                  [MSUAssetStager _checkAndLogLocalError:v88 outError:error];
                 }
 
                 else
@@ -160,7 +160,7 @@
                       }
 
                       logfunction(", 1, @"MSUAssetStager: Failed to download assets for staging\n"", v82, v83, v84, v85, v86, v92);
-                      [MSUAssetStager _checkAndLogLocalError:v104[5] outError:a4];
+                      [MSUAssetStager _checkAndLogLocalError:v104[5] outError:error];
                     }
                   }
 
@@ -175,14 +175,14 @@
             else
             {
               logfunction(", 1, @"MSUAssetStager: Failed to get snapshot apply size with error: %@\n"", v57, v58, v59, v60, v61, v96);
-              [MSUAssetStager _checkAndLogLocalError:v96 outError:a4];
+              [MSUAssetStager _checkAndLogLocalError:v96 outError:error];
             }
           }
 
           else
           {
             logfunction(", 1, @"MSUAssetStager: Failed to get snapshot preparation size with error: %@\n"", v52, v53, v54, v55, v56, v96);
-            [MSUAssetStager _checkAndLogLocalError:v96 outError:a4];
+            [MSUAssetStager _checkAndLogLocalError:v96 outError:error];
           }
 
           goto LABEL_26;
@@ -192,7 +192,7 @@
         v104[5] = v45;
       }
 
-      [MSUAssetStager _checkAndLogLocalError:v45 outError:a4];
+      [MSUAssetStager _checkAndLogLocalError:v45 outError:error];
 LABEL_26:
       v31 = 0;
 LABEL_38:
@@ -211,7 +211,7 @@ LABEL_38:
 
   v30 = _create_error_internal_cf(@"MobileSoftwareUpdateErrorDomain", 63, 0, 0, v29, v6, v7, v8, v89);
   v104[5] = v30;
-  [MSUAssetStager _checkAndLogLocalError:v30 outError:a4];
+  [MSUAssetStager _checkAndLogLocalError:v30 outError:error];
   v31 = 0;
 LABEL_16:
   _Block_object_dispose(&v103, 8);
@@ -241,44 +241,44 @@ intptr_t __62__MSUAssetStager__stageAssetsUsingUpdateAttributes_withError___bloc
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)disableStagingForReason:(id)a3 buildVersion:(id)a4 osVersion:(id)a5
++ (void)disableStagingForReason:(id)reason buildVersion:(id)version osVersion:(id)osVersion
 {
   if (!+[MSUAssetStager _preSUStagingSupportedInSUCore])
   {
     v22[0] = @"DisablePreSoftwareUpdateAssetStaging";
     v22[1] = @"Reason";
-    v8 = @"NotSpecified";
-    if (a3)
+    osVersionCopy = @"NotSpecified";
+    if (reason)
     {
-      v9 = a3;
+      reasonCopy = reason;
     }
 
     else
     {
-      v9 = @"NotSpecified";
+      reasonCopy = @"NotSpecified";
     }
 
     v23[0] = &__kCFBooleanTrue;
-    v23[1] = v9;
-    if (a4)
+    v23[1] = reasonCopy;
+    if (version)
     {
-      v10 = a4;
+      versionCopy = version;
     }
 
     else
     {
-      v10 = @"NotSpecified";
+      versionCopy = @"NotSpecified";
     }
 
     v22[2] = @"BuildVersion";
     v22[3] = @"OSVersion";
-    if (a5)
+    if (osVersion)
     {
-      v8 = a5;
+      osVersionCopy = osVersion;
     }
 
-    v23[2] = v10;
-    v23[3] = v8;
+    v23[2] = versionCopy;
+    v23[3] = osVersionCopy;
     v11 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:4];
     logfunction(", 1, @"MSUAssetStager: Writing preSoftwareUpdateStagingDictionary: %@ to path: %s\n"", v12, v13, v14, v15, v16, v11);
     if (![(NSDictionary *)v11 writeToFile:@"/private/var/MobileSoftwareUpdate/PreSoftwareUpdateAssetStaging.plist" atomically:1])
@@ -288,16 +288,16 @@ intptr_t __62__MSUAssetStager__stageAssetsUsingUpdateAttributes_withError___bloc
   }
 }
 
-+ (void)_purgeStagedAssetsSynchronously:(BOOL)a3
++ (void)_purgeStagedAssetsSynchronously:(BOOL)synchronously
 {
-  v3 = a3;
+  synchronouslyCopy = synchronously;
   if (!objc_opt_class())
   {
     v10 = @"MSUAssetStager: Pre-SoftwareUpdate Asset Staging cannot proceed as MAAutoAsset class does not exist\n";
     goto LABEL_16;
   }
 
-  if (v3)
+  if (synchronouslyCopy)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -371,9 +371,9 @@ void __50__MSUAssetStager__purgeStagedAssetsSynchronously___block_invoke(id a1, 
   return v7;
 }
 
-+ (id)buildVersionFromAttributes:(id)a3
++ (id)buildVersionFromAttributes:(id)attributes
 {
-  v3 = [a3 objectForKey:@"Build"];
+  v3 = [attributes objectForKey:@"Build"];
   if (!v3)
   {
     return 0;
@@ -389,9 +389,9 @@ void __50__MSUAssetStager__purgeStagedAssetsSynchronously___block_invoke(id a1, 
   return v4;
 }
 
-+ (id)osVersionFromAttributes:(id)a3
++ (id)osVersionFromAttributes:(id)attributes
 {
-  v3 = [a3 objectForKey:@"OSVersion"];
+  v3 = [attributes objectForKey:@"OSVersion"];
   if (!v3)
   {
     return v3;
@@ -411,9 +411,9 @@ void __50__MSUAssetStager__purgeStagedAssetsSynchronously___block_invoke(id a1, 
   return [v3 stringByReplacingCharactersInRange:0 withString:{4, &stru_100050240}];
 }
 
-+ (id)trainNameFromAttributes:(id)a3
++ (id)trainNameFromAttributes:(id)attributes
 {
-  v3 = [a3 objectForKey:@"TrainName"];
+  v3 = [attributes objectForKey:@"TrainName"];
   if (!v3)
   {
     return 0;
@@ -429,9 +429,9 @@ void __50__MSUAssetStager__purgeStagedAssetsSynchronously___block_invoke(id a1, 
   return v4;
 }
 
-+ (id)restoreVersionFromAttributes:(id)a3
++ (id)restoreVersionFromAttributes:(id)attributes
 {
-  v3 = [a3 objectForKey:@"RestoreVersion"];
+  v3 = [attributes objectForKey:@"RestoreVersion"];
   if (!v3)
   {
     return 0;
@@ -447,9 +447,9 @@ void __50__MSUAssetStager__purgeStagedAssetsSynchronously___block_invoke(id a1, 
   return v4;
 }
 
-+ (id)buildVersionFromInfoPlist:(id)a3
++ (id)buildVersionFromInfoPlist:(id)plist
 {
-  v3 = [a3 objectForKey:@"TargetUpdate"];
+  v3 = [plist objectForKey:@"TargetUpdate"];
   if (!v3)
   {
     return 0;
@@ -465,9 +465,9 @@ void __50__MSUAssetStager__purgeStagedAssetsSynchronously___block_invoke(id a1, 
   return v4;
 }
 
-+ (id)osVersionFromInfoPlist:(id)a3
++ (id)osVersionFromInfoPlist:(id)plist
 {
-  v3 = [a3 objectForKey:@"ProductVersion"];
+  v3 = [plist objectForKey:@"ProductVersion"];
   if (!v3)
   {
     return v3;
@@ -487,28 +487,28 @@ void __50__MSUAssetStager__purgeStagedAssetsSynchronously___block_invoke(id a1, 
   return [v3 stringByReplacingCharactersInRange:0 withString:{4, &stru_100050240}];
 }
 
-+ (BOOL)_checkAndLogLocalError:(id)a3 outError:(id *)a4
++ (BOOL)_checkAndLogLocalError:(id)error outError:(id *)outError
 {
-  if (a3)
+  if (error)
   {
-    logfunction(", 1, @"MSUAssetStager: Failed with error %@\n"", a4, v4, v5, v6, v7, a3);
-    v10 = a3;
-    if (!a4)
+    logfunction(", 1, @"MSUAssetStager: Failed with error %@\n"", outError, v4, v5, v6, v7, error);
+    errorCopy = error;
+    if (!outError)
     {
-      return a3 == 0;
+      return error == 0;
     }
 
     goto LABEL_6;
   }
 
-  if (a4)
+  if (outError)
   {
-    v10 = 0;
+    errorCopy = 0;
 LABEL_6:
-    *a4 = v10;
+    *outError = errorCopy;
   }
 
-  return a3 == 0;
+  return error == 0;
 }
 
 @end

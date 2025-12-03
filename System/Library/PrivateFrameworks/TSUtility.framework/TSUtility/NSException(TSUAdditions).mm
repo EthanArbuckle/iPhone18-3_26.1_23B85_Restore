@@ -22,7 +22,7 @@
 
 - (uint64_t)tsu_error
 {
-  v1 = [objc_msgSend(a1 "userInfo")];
+  v1 = [objc_msgSend(self "userInfo")];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 && v1)
   {

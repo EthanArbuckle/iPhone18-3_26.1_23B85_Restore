@@ -4,12 +4,12 @@
 - (BOOL)areAllUpdatesRequired;
 - (id)copyNotificationOptions;
 - (void)dealloc;
-- (void)deviceClassAttached:(id)a3;
-- (void)deviceClassDetached:(id)a3 error:(id)a4;
-- (void)shouldInstallUpdateForAccessory:(id)a3 deviceClass:(id)a4 nextStep:(id)a5 withOptions:(id)a6 handler:(id)a7;
-- (void)stepComplete:(id)a3 deviceClass:(id)a4 successful:(BOOL)a5 info:(id)a6 error:(id)a7;
-- (void)stepRunning:(id)a3 deviceClass:(id)a4 progress:(double)a5 overallProgress:(double)a6 info:(id)a7;
-- (void)storeDeclinedAccessoryatURL:(id)a3 serialNumber:(id)a4;
+- (void)deviceClassAttached:(id)attached;
+- (void)deviceClassDetached:(id)detached error:(id)error;
+- (void)shouldInstallUpdateForAccessory:(id)accessory deviceClass:(id)class nextStep:(id)step withOptions:(id)options handler:(id)handler;
+- (void)stepComplete:(id)complete deviceClass:(id)class successful:(BOOL)successful info:(id)info error:(id)error;
+- (void)stepRunning:(id)running deviceClass:(id)class progress:(double)progress overallProgress:(double)overallProgress info:(id)info;
+- (void)storeDeclinedAccessoryatURL:(id)l serialNumber:(id)number;
 @end
 
 @implementation AUDStateMachineClient
@@ -55,86 +55,86 @@
   return v2;
 }
 
-- (void)deviceClassAttached:(id)a3
+- (void)deviceClassAttached:(id)attached
 {
-  v4 = a3;
+  attachedCopy = attached;
   processingQueue = self->_processingQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100038A40;
   v7[3] = &unk_100081438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = attachedCopy;
+  v6 = attachedCopy;
   dispatch_async(processingQueue, v7);
 }
 
-- (void)deviceClassDetached:(id)a3 error:(id)a4
+- (void)deviceClassDetached:(id)detached error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  detachedCopy = detached;
+  errorCopy = error;
   processingQueue = self->_processingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100038CB4;
   block[3] = &unk_1000814D8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = detachedCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = detachedCopy;
   dispatch_async(processingQueue, block);
 }
 
-- (void)stepRunning:(id)a3 deviceClass:(id)a4 progress:(double)a5 overallProgress:(double)a6 info:(id)a7
+- (void)stepRunning:(id)running deviceClass:(id)class progress:(double)progress overallProgress:(double)overallProgress info:(id)info
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  runningCopy = running;
+  classCopy = class;
+  infoCopy = info;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138544386;
-    v18 = v12;
+    v18 = runningCopy;
     v19 = 2114;
-    v20 = v13;
+    v20 = classCopy;
     v21 = 2050;
-    v22 = a5;
+    progressCopy = progress;
     v23 = 2050;
-    v24 = a6;
+    overallProgressCopy = overallProgress;
     v25 = 2114;
-    v26 = v14;
+    v26 = infoCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "StepRunning - step:%{public}@  device:%{public}@ progress:%{public}f overall-progress:%{public}f stepInfo=%{public}@", &v17, 0x34u);
   }
 
-  v16 = [v14 objectForKey:@"SilentUpdateNoUI"];
+  v16 = [infoCopy objectForKey:@"SilentUpdateNoUI"];
   [v16 BOOLValue];
 }
 
-- (void)shouldInstallUpdateForAccessory:(id)a3 deviceClass:(id)a4 nextStep:(id)a5 withOptions:(id)a6 handler:(id)a7
+- (void)shouldInstallUpdateForAccessory:(id)accessory deviceClass:(id)class nextStep:(id)step withOptions:(id)options handler:(id)handler
 {
-  v53 = a3;
-  v52 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  accessoryCopy = accessory;
+  classCopy = class;
+  stepCopy = step;
+  optionsCopy = options;
+  handlerCopy = handler;
   v61 = 0;
   v62 = &v61;
   v63 = 0x2020000000;
   v64 = 1;
-  v15 = [v13 objectForKey:@"UpdateRequired"];
-  v16 = [v13 objectForKey:@"OptionsDict"];
-  v49 = v12;
-  v17 = [v13 objectForKey:@"SeedConsentRequired"];
+  v15 = [optionsCopy objectForKey:@"UpdateRequired"];
+  v16 = [optionsCopy objectForKey:@"OptionsDict"];
+  v49 = stepCopy;
+  v17 = [optionsCopy objectForKey:@"SeedConsentRequired"];
   v48 = v17 != 0;
 
-  v18 = [v13 objectForKey:@"AccessoryName"];
+  v18 = [optionsCopy objectForKey:@"AccessoryName"];
   if (!v18)
   {
-    v18 = v53;
+    v18 = accessoryCopy;
   }
 
-  v19 = [v13 objectForKey:@"SeedUpdateDeclinedPath"];
+  v19 = [optionsCopy objectForKey:@"SeedUpdateDeclinedPath"];
   if (v19)
   {
     v51 = [NSURL fileURLWithPath:v19];
@@ -145,7 +145,7 @@
     v51 = 0;
   }
 
-  v50 = [v13 objectForKey:@"SerialNumber"];
+  v50 = [optionsCopy objectForKey:@"SerialNumber"];
   if (v16)
   {
     v20 = [v16 objectForKey:@"CurrentFirmwareVersionOnAccessory"];
@@ -188,11 +188,11 @@ LABEL_12:
   if (self->_notification)
   {
 LABEL_15:
-    [(AUDStateMachineClient *)self cleanupInstallUpdateForAccessory:*(v62 + 24) handler:v14];
+    [(AUDStateMachineClient *)self cleanupInstallUpdateForAccessory:*(v62 + 24) handler:handlerCopy];
     goto LABEL_16;
   }
 
-  v46 = v14;
+  v46 = handlerCopy;
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_100053C1C();
@@ -206,7 +206,7 @@ LABEL_15:
     {
       p_info = AULegacyCommand.info;
       v45 = v23;
-      v44 = [FudUtilities getLocalizedString:v53 withBundle:v23 defaultValue:v53];
+      v44 = [FudUtilities getLocalizedString:accessoryCopy withBundle:v23 defaultValue:accessoryCopy];
       if (v44)
       {
         if (v17)
@@ -267,7 +267,7 @@ LABEL_15:
             sub_100053C50();
           }
 
-          v35 = [v52 copy];
+          v35 = [classCopy copy];
           modalDeviceClass = self->_modalDeviceClass;
           self->_modalDeviceClass = v35;
 
@@ -320,7 +320,7 @@ LABEL_15:
         v28 = self->_log;
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
-          sub_100053CEC(v53, v28);
+          sub_100053CEC(accessoryCopy, v28);
         }
 
         [(AUDStateMachineClient *)self cleanupInstallUpdateForAccessory:*(v62 + 24) handler:v46];
@@ -328,7 +328,7 @@ LABEL_15:
       }
 
       v27 = v45;
-      v14 = v46;
+      handlerCopy = v46;
     }
 
     else
@@ -339,7 +339,7 @@ LABEL_15:
         sub_100053D64();
       }
 
-      [(AUDStateMachineClient *)self cleanupInstallUpdateForAccessory:*(v62 + 24) handler:v14];
+      [(AUDStateMachineClient *)self cleanupInstallUpdateForAccessory:*(v62 + 24) handler:handlerCopy];
     }
 
     v26 = dictionary;
@@ -352,7 +352,7 @@ LABEL_15:
       sub_100053D98();
     }
 
-    [(AUDStateMachineClient *)self cleanupInstallUpdateForAccessory:*(v62 + 24) handler:v14];
+    [(AUDStateMachineClient *)self cleanupInstallUpdateForAccessory:*(v62 + 24) handler:handlerCopy];
     v26 = 0;
   }
 
@@ -360,20 +360,20 @@ LABEL_16:
   _Block_object_dispose(&v61, 8);
 }
 
-- (void)storeDeclinedAccessoryatURL:(id)a3 serialNumber:(id)a4
+- (void)storeDeclinedAccessoryatURL:(id)l serialNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  lCopy = l;
+  numberCopy = number;
+  v8 = numberCopy;
+  if (lCopy && numberCopy)
   {
-    if (([v6 checkResourceIsReachableAndReturnError:0] & 1) == 0)
+    if (([lCopy checkResourceIsReachableAndReturnError:0] & 1) == 0)
     {
       v9 = +[NSFileManager defaultManager];
-      [v9 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:0];
+      [v9 createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:0];
     }
 
-    v10 = [v6 URLByAppendingPathComponent:v8];
+    v10 = [lCopy URLByAppendingPathComponent:v8];
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
@@ -381,9 +381,9 @@ LABEL_16:
     }
 
     v12 = +[NSFileManager defaultManager];
-    v13 = [v10 path];
+    path = [v10 path];
     v14 = [v8 dataUsingEncoding:4];
-    v15 = [v12 createFileAtPath:v13 contents:v14 attributes:0];
+    v15 = [v12 createFileAtPath:path contents:v14 attributes:0];
 
     if ((v15 & 1) == 0)
     {
@@ -396,27 +396,27 @@ LABEL_16:
   }
 }
 
-- (void)stepComplete:(id)a3 deviceClass:(id)a4 successful:(BOOL)a5 info:(id)a6 error:(id)a7
+- (void)stepComplete:(id)complete deviceClass:(id)class successful:(BOOL)successful info:(id)info error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  completeCopy = complete;
+  classCopy = class;
+  infoCopy = info;
+  errorCopy = error;
   processingQueue = self->_processingQueue;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100039EE0;
   v21[3] = &unk_100081FB8;
   v21[4] = self;
-  v22 = v13;
-  v23 = v14;
-  v24 = v12;
-  v26 = a5;
-  v25 = v15;
-  v17 = v15;
-  v18 = v12;
-  v19 = v14;
-  v20 = v13;
+  v22 = classCopy;
+  v23 = infoCopy;
+  v24 = completeCopy;
+  successfulCopy = successful;
+  v25 = errorCopy;
+  v17 = errorCopy;
+  v18 = completeCopy;
+  v19 = infoCopy;
+  v20 = classCopy;
   dispatch_async(processingQueue, v21);
 }
 
@@ -431,21 +431,21 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
     }
 
     else
     {
-      v6 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (id)copyNotificationOptions

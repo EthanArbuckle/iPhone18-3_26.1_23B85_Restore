@@ -1,16 +1,16 @@
 @interface PLHighFidelityVideoOverlayButton
-- (PLHighFidelityVideoOverlayButton)initWithStyle:(int64_t)a3;
-- (void)_playButtonTapped:(id)a3;
+- (PLHighFidelityVideoOverlayButton)initWithStyle:(int64_t)style;
+- (void)_playButtonTapped:(id)tapped;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setTarget:(id)a3 action:(SEL)a4;
+- (void)setTarget:(id)target action:(SEL)action;
 @end
 
 @implementation PLHighFidelityVideoOverlayButton
 
-- (void)_playButtonTapped:(id)a3
+- (void)_playButtonTapped:(id)tapped
 {
-  [(PLHighFidelityVideoOverlayButton *)self _playButtonDeactivate:a3];
+  [(PLHighFidelityVideoOverlayButton *)self _playButtonDeactivate:tapped];
   if (objc_opt_respondsToSelector())
   {
     target = self->_target;
@@ -28,20 +28,20 @@
   }
 }
 
-- (void)setTarget:(id)a3 action:(SEL)a4
+- (void)setTarget:(id)target action:(SEL)action
 {
-  self->_target = a3;
-  if (a4)
+  self->_target = target;
+  if (action)
   {
-    v4 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v4 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v4;
+  self->_action = actionCopy;
 }
 
 - (void)dealloc
@@ -65,7 +65,7 @@
   [(UIImageView *)self->_overlayPlayBackground setFrame:v4, v6, v8, v10];
 }
 
-- (PLHighFidelityVideoOverlayButton)initWithStyle:(int64_t)a3
+- (PLHighFidelityVideoOverlayButton)initWithStyle:(int64_t)style
 {
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [MEMORY[0x277D755B8] imageNamed:@"PLVideoOverlayGlyphMask" inBundle:v5];
@@ -80,7 +80,7 @@
   v10 = v9;
   if (v9)
   {
-    v9->_style = a3;
+    v9->_style = style;
     v9->_button = v8;
     [(UIButton *)v8 addTarget:v9 action:sel__playButtonTapped_ forControlEvents:64];
     [(UIButton *)v8 addTarget:v10 action:sel__playButtonActivate_ forControlEvents:1];
@@ -89,7 +89,7 @@
     [(UIButton *)v8 setDeliversTouchesForGesturesToSuperview:0];
     [(PLHighFidelityVideoOverlayButton *)v10 addSubview:v10->_button];
     [(PLHighFidelityVideoOverlayButton *)v10 setAutoresizingMask:45];
-    if (!a3)
+    if (!style)
     {
       v11 = [MEMORY[0x277D755B8] imageNamed:@"PLVideoOverlayBackgroundMask" inBundle:v5];
       v10->_overlayPlayBackground = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v11];

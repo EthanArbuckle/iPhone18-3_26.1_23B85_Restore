@@ -39,20 +39,20 @@ void __42__CKUIThemePad_readSelectedIndicatorColor__block_invoke(uint64_t a1)
 
 - (id)_readSelectedIndicatorColor
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v3)
+  if (isModernSplitViewControllerEnabled)
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
   {
-    v4 = 0;
+    whiteColor = 0;
   }
 
-  return v4;
+  return whiteColor;
 }
 
 - (id)conversationListCellSelectedTextColor
@@ -79,20 +79,20 @@ void __53__CKUIThemePad_conversationListCellSelectedTextColor__block_invoke(uint
 
 - (id)_conversationListCellSelectedTextColor
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v3)
+  if (isModernSplitViewControllerEnabled)
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
   {
-    v4 = 0;
+    whiteColor = 0;
   }
 
-  return v4;
+  return whiteColor;
 }
 
 - (id)conversationListCellSelectedSummaryColor
@@ -119,13 +119,13 @@ void __56__CKUIThemePad_conversationListCellSelectedSummaryColor__block_invoke(u
 
 - (id)_conversationListCellSelectedSummaryColor
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v3)
+  if (isModernSplitViewControllerEnabled)
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
-    v5 = [v4 colorWithAlphaComponent:0.7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v5 = [whiteColor colorWithAlphaComponent:0.7];
   }
 
   else
@@ -160,13 +160,13 @@ void __53__CKUIThemePad_conversationListCellSelectedDateColor__block_invoke(uint
 
 - (id)_conversationListCellSelectedDateColor
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v3)
+  if (isModernSplitViewControllerEnabled)
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
-    v5 = [v4 colorWithAlphaComponent:0.7];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v5 = [whiteColor colorWithAlphaComponent:0.7];
   }
 
   else
@@ -201,10 +201,10 @@ void __49__CKUIThemePad_conversationListSelectedCellColor__block_invoke(uint64_t
 
 - (id)_conversationListSelectedCellColor
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v3)
+  if (isModernSplitViewControllerEnabled)
   {
     [MEMORY[0x1E69DC888] systemBlueColor];
   }
@@ -242,10 +242,10 @@ void __67__CKUIThemePad_conversationListPinnedConversationNameSelectedColor__blo
 
 - (id)_conversationListPinnedConversationNameSelectedColor
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v4)
+  if (isModernSplitViewControllerEnabled)
   {
     [MEMORY[0x1E69DC888] whiteColor];
   }

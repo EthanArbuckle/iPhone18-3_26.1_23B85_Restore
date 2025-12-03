@@ -1,11 +1,11 @@
 @interface PFTFutureCompletionBlocks
 - (BOOL)shouldCallImmediately;
 - (PFTFutureCompletionBlocks)init;
-- (void)addCompletionBlock:(id)a3 orCallWithFutureResult:(id)a4;
-- (void)addFailureBlock:(id)a3 orCallWithFutureResult:(id)a4;
-- (void)addSuccessBlock:(id)a3 orCallWithFutureResult:(id)a4;
-- (void)flushCompletionBlocksWithFutureResult:(id)a3;
-- (void)setShouldCallImmediately:(BOOL)a3;
+- (void)addCompletionBlock:(id)block orCallWithFutureResult:(id)result;
+- (void)addFailureBlock:(id)block orCallWithFutureResult:(id)result;
+- (void)addSuccessBlock:(id)block orCallWithFutureResult:(id)result;
+- (void)flushCompletionBlocksWithFutureResult:(id)result;
+- (void)setShouldCallImmediately:(BOOL)immediately;
 @end
 
 @implementation PFTFutureCompletionBlocks
@@ -29,34 +29,34 @@
 
 - (BOOL)shouldCallImmediately
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  shouldCallImmediately = v2->_shouldCallImmediately;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  shouldCallImmediately = selfCopy->_shouldCallImmediately;
+  objc_sync_exit(selfCopy);
 
   return shouldCallImmediately;
 }
 
-- (void)setShouldCallImmediately:(BOOL)a3
+- (void)setShouldCallImmediately:(BOOL)immediately
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_shouldCallImmediately = a3;
+  obj->_shouldCallImmediately = immediately;
   objc_sync_exit(obj);
 }
 
-- (void)addSuccessBlock:(id)a3 orCallWithFutureResult:(id)a4
+- (void)addSuccessBlock:(id)block orCallWithFutureResult:(id)result
 {
-  v6 = a3;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__PFTFutureCompletionBlocks_addSuccessBlock_orCallWithFutureResult___block_invoke;
   v10[3] = &unk_279A53378;
-  v11 = v6;
-  v7 = v6;
-  v8 = a4;
+  v11 = blockCopy;
+  v7 = blockCopy;
+  resultCopy = result;
   v9 = MEMORY[0x25F8CF560](v10);
-  [(PFTFutureCompletionBlocks *)self addCompletionBlock:v9 orCallWithFutureResult:v8];
+  [(PFTFutureCompletionBlocks *)self addCompletionBlock:v9 orCallWithFutureResult:resultCopy];
 }
 
 uint64_t __68__PFTFutureCompletionBlocks_addSuccessBlock_orCallWithFutureResult___block_invoke(uint64_t result, uint64_t a2)
@@ -69,18 +69,18 @@ uint64_t __68__PFTFutureCompletionBlocks_addSuccessBlock_orCallWithFutureResult_
   return result;
 }
 
-- (void)addFailureBlock:(id)a3 orCallWithFutureResult:(id)a4
+- (void)addFailureBlock:(id)block orCallWithFutureResult:(id)result
 {
-  v6 = a3;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__PFTFutureCompletionBlocks_addFailureBlock_orCallWithFutureResult___block_invoke;
   v10[3] = &unk_279A53378;
-  v11 = v6;
-  v7 = v6;
-  v8 = a4;
+  v11 = blockCopy;
+  v7 = blockCopy;
+  resultCopy = result;
   v9 = MEMORY[0x25F8CF560](v10);
-  [(PFTFutureCompletionBlocks *)self addCompletionBlock:v9 orCallWithFutureResult:v8];
+  [(PFTFutureCompletionBlocks *)self addCompletionBlock:v9 orCallWithFutureResult:resultCopy];
 }
 
 uint64_t __68__PFTFutureCompletionBlocks_addFailureBlock_orCallWithFutureResult___block_invoke(uint64_t result, uint64_t a2)
@@ -93,40 +93,40 @@ uint64_t __68__PFTFutureCompletionBlocks_addFailureBlock_orCallWithFutureResult_
   return result;
 }
 
-- (void)addCompletionBlock:(id)a3 orCallWithFutureResult:(id)a4
+- (void)addCompletionBlock:(id)block orCallWithFutureResult:(id)result
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v7->_shouldCallImmediately)
+  blockCopy = block;
+  resultCopy = result;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_shouldCallImmediately)
   {
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
 
-    v7 = [v6 result];
-    v8 = [v6 error];
-    v11[2](v11, v7, v8);
+    selfCopy = [resultCopy result];
+    error = [resultCopy error];
+    blockCopy[2](blockCopy, selfCopy, error);
   }
 
   else
   {
-    completionBlocks = v7->_completionBlocks;
-    v10 = [v11 copy];
+    completionBlocks = selfCopy->_completionBlocks;
+    v10 = [blockCopy copy];
     [(NSMutableArray *)completionBlocks addObject:v10];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)flushCompletionBlocksWithFutureResult:(id)a3
+- (void)flushCompletionBlocksWithFutureResult:(id)result
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableArray *)v5->_completionBlocks copy];
-  [(NSMutableArray *)v5->_completionBlocks removeAllObjects];
-  objc_sync_exit(v5);
+  resultCopy = result;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableArray *)selfCopy->_completionBlocks copy];
+  [(NSMutableArray *)selfCopy->_completionBlocks removeAllObjects];
+  objc_sync_exit(selfCopy);
 
   v17 = 0u;
   v18 = 0u;
@@ -148,9 +148,9 @@ uint64_t __68__PFTFutureCompletionBlocks_addFailureBlock_orCallWithFutureResult_
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [v4 result];
-        v13 = [v4 error];
-        (*(v11 + 16))(v11, v12, v13);
+        result = [resultCopy result];
+        error = [resultCopy error];
+        (*(v11 + 16))(v11, result, error);
 
         ++v10;
       }

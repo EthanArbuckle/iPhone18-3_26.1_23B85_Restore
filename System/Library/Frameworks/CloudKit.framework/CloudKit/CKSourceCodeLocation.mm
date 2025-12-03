@@ -1,27 +1,27 @@
 @interface CKSourceCodeLocation
-- (BOOL)isEqual:(id)a3;
-- (CKSourceCodeLocation)initWithCoder:(id)a3;
-- (CKSourceCodeLocation)initWithFilePath:(id)a3 lineNumber:(unint64_t)a4;
-- (CKSourceCodeLocation)initWithFileURL:(id)a3 lineNumber:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (CKSourceCodeLocation)initWithCoder:(id)coder;
+- (CKSourceCodeLocation)initWithFilePath:(id)path lineNumber:(unint64_t)number;
+- (CKSourceCodeLocation)initWithFileURL:(id)l lineNumber:(unint64_t)number;
 - (unint64_t)hash;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKSourceCodeLocation
 
-- (CKSourceCodeLocation)initWithFilePath:(id)a3 lineNumber:(unint64_t)a4
+- (CKSourceCodeLocation)initWithFilePath:(id)path lineNumber:(unint64_t)number
 {
-  v6 = objc_msgSend_fileURLWithPath_(MEMORY[0x1E695DFF8], a2, a3);
-  v8 = objc_msgSend_initWithFileURL_lineNumber_(self, v7, v6, a4);
+  v6 = objc_msgSend_fileURLWithPath_(MEMORY[0x1E695DFF8], a2, path);
+  v8 = objc_msgSend_initWithFileURL_lineNumber_(self, v7, v6, number);
 
   return v8;
 }
 
-- (CKSourceCodeLocation)initWithFileURL:(id)a3 lineNumber:(unint64_t)a4
+- (CKSourceCodeLocation)initWithFileURL:(id)l lineNumber:(unint64_t)number
 {
-  v9 = a3;
-  if (!v9)
+  lCopy = l;
+  if (!lCopy)
   {
     v16 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v16, v17, a2, self, @"CKSignificantIssue.m", 28, @"Invalid parameter not satisfying: %@", @"fileURL");
@@ -32,11 +32,11 @@
   v12 = [(CKSourceCodeLocation *)&v18 init];
   if (v12)
   {
-    v13 = objc_msgSend_copy(v9, v10, v11);
+    v13 = objc_msgSend_copy(lCopy, v10, v11);
     fileURL = v12->_fileURL;
     v12->_fileURL = v13;
 
-    v12->_lineNumber = a4;
+    v12->_lineNumber = number;
   }
 
   return v12;
@@ -51,10 +51,10 @@
   return v10 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -64,7 +64,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_fileURL(self, v6, v7);
       v11 = objc_msgSend_fileURL(v5, v9, v10);
       if (objc_msgSend_isEqual_(v8, v12, v11))
@@ -88,42 +88,42 @@
   return v18;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v7 = objc_msgSend_fileURL(self, v5, v6);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v8, @"fileURL", v7, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v8, @"fileURL", v7, 0);
 
   v9 = MEMORY[0x1E696AD98];
   v12 = objc_msgSend_lineNumber(self, v10, v11);
   v15 = objc_msgSend_numberWithUnsignedInteger_(v9, v13, v12);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v14, @"lineNumber", v15, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v14, @"lineNumber", v15, 0);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7 = objc_msgSend_fileURL(self, v5, v6);
   v8 = NSStringFromSelector(sel_fileURL);
-  objc_msgSend_encodeObject_forKey_(v4, v9, v7, v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v7, v8);
 
   v10 = MEMORY[0x1E696AD98];
   v13 = objc_msgSend_lineNumber(self, v11, v12);
   v17 = objc_msgSend_numberWithUnsignedInteger_(v10, v14, v13);
   v15 = NSStringFromSelector(sel_lineNumber);
-  objc_msgSend_encodeObject_forKey_(v4, v16, v17, v15);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v17, v15);
 }
 
-- (CKSourceCodeLocation)initWithCoder:(id)a3
+- (CKSourceCodeLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_fileURL);
-  v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v5, v6);
+  v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v5, v6);
 
   v9 = objc_opt_class();
   v10 = NSStringFromSelector(sel_lineNumber);
-  v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v9, v10);
+  v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v9, v10);
 
   v15 = objc_msgSend_unsignedIntegerValue(v12, v13, v14);
   v17 = objc_msgSend_initWithFileURL_lineNumber_(self, v16, v8, v15);

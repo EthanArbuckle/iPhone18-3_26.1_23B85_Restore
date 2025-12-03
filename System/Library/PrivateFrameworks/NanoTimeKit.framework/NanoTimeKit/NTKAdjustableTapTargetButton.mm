@@ -1,16 +1,16 @@
 @interface NTKAdjustableTapTargetButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (NTKAdjustableTapTargetButton)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (NTKAdjustableTapTargetButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)touchEdgeInsets;
 @end
 
 @implementation NTKAdjustableTapTargetButton
 
-- (NTKAdjustableTapTargetButton)initWithFrame:(CGRect)a3
+- (NTKAdjustableTapTargetButton)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = NTKAdjustableTapTargetButton;
-  result = [(NTKAdjustableTapTargetButton *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(NTKAdjustableTapTargetButton *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     v4 = *(MEMORY[0x277D768C8] + 16);
@@ -21,10 +21,10 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(NTKAdjustableTapTargetButton *)self bounds];
   top = self->_touchEdgeInsets.top;
   left = self->_touchEdgeInsets.left;

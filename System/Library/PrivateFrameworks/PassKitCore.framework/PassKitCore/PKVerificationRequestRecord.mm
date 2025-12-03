@@ -1,22 +1,22 @@
 @interface PKVerificationRequestRecord
-+ (id)verificationRequestRecordForPass:(id)a3;
-- (BOOL)hasCompletedMethod:(id)a3;
-- (BOOL)isMethodInProgress:(id)a3;
++ (id)verificationRequestRecordForPass:(id)pass;
+- (BOOL)hasCompletedMethod:(id)method;
+- (BOOL)isMethodInProgress:(id)progress;
 - (BOOL)isMethodInProgressMethodExpired;
 - (BOOL)isVerificationInProgressWithCompletedMethods;
 - (PKVerificationChannel)channel;
 - (PKVerificationRequestRecord)init;
-- (PKVerificationRequestRecord)initWithCoder:(id)a3;
+- (PKVerificationRequestRecord)initWithCoder:(id)coder;
 - (id)description;
 - (id)requiredVerificationFields;
-- (void)encodeWithCoder:(id)a3;
-- (void)recordCompletedMethodForMethodIdentifier:(id)a3;
-- (void)recordCompletedMethods:(id)a3;
-- (void)recordStartedMethods:(id)a3;
-- (void)setActiveMethodGroup:(id)a3;
-- (void)setAllChannels:(id)a3;
-- (void)setChannel:(id)a3;
-- (void)setRequiredFieldData:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)recordCompletedMethodForMethodIdentifier:(id)identifier;
+- (void)recordCompletedMethods:(id)methods;
+- (void)recordStartedMethods:(id)methods;
+- (void)setActiveMethodGroup:(id)group;
+- (void)setAllChannels:(id)channels;
+- (void)setChannel:(id)channel;
+- (void)setRequiredFieldData:(id)data;
 @end
 
 @implementation PKVerificationRequestRecord
@@ -40,21 +40,21 @@
   return v2;
 }
 
-+ (id)verificationRequestRecordForPass:(id)a3
++ (id)verificationRequestRecordForPass:(id)pass
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 uniqueID];
-  v5 = [v4 length];
+  passCopy = pass;
+  uniqueID = [passCopy uniqueID];
+  v5 = [uniqueID length];
 
   if (v5)
   {
     v6 = objc_alloc_init(objc_opt_class());
-    v7 = [v3 uniqueID];
-    [v6 setPassUniqueID:v7];
+    uniqueID2 = [passCopy uniqueID];
+    [v6 setPassUniqueID:uniqueID2];
 
-    v8 = [MEMORY[0x1E695DF00] date];
-    [v6 setDate:v8];
+    date = [MEMORY[0x1E695DF00] date];
+    [v6 setDate:date];
   }
 
   else
@@ -62,7 +62,7 @@
     v9 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v3 description];
+      v11 = [passCopy description];
       v12 = 138543362;
       v13 = v11;
       _os_log_error_impl(&dword_1AD337000, v9, OS_LOG_TYPE_ERROR, "Cannot create verification record without pass unique ID :%{public}@", &v12, 0xCu);
@@ -76,28 +76,28 @@
 
 - (PKVerificationChannel)channel
 {
-  v2 = [(PKPassVerificationMethodGroup *)self->_activeMethodGroup methods];
-  v3 = [v2 firstObject];
-  v4 = [v3 legacyChannelRepresentation];
+  methods = [(PKPassVerificationMethodGroup *)self->_activeMethodGroup methods];
+  firstObject = [methods firstObject];
+  legacyChannelRepresentation = [firstObject legacyChannelRepresentation];
 
-  return v4;
+  return legacyChannelRepresentation;
 }
 
-- (void)setChannel:(id)a3
+- (void)setChannel:(id)channel
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  channelCopy = channel;
+  v5 = channelCopy;
+  if (channelCopy)
   {
-    v6 = [v4 identifier];
+    identifier = [channelCopy identifier];
     methodGroups = self->_methodGroups;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __42__PKVerificationRequestRecord_setChannel___block_invoke;
     v13[3] = &unk_1E79DFD38;
-    v14 = v6;
-    v8 = v6;
+    v14 = identifier;
+    v8 = identifier;
     v9 = [(NSArray *)methodGroups pk_firstObjectPassingTest:v13];
     if (!v9)
     {
@@ -155,30 +155,30 @@ uint64_t __42__PKVerificationRequestRecord_setChannel___block_invoke(uint64_t a1
   return v10;
 }
 
-- (void)setAllChannels:(id)a3
+- (void)setAllChannels:(id)channels
 {
-  v4 = [a3 pk_arrayBySafelyApplyingBlock:&__block_literal_global_57];
+  v4 = [channels pk_arrayBySafelyApplyingBlock:&__block_literal_global_57];
   methodGroups = self->_methodGroups;
   self->_methodGroups = v4;
 }
 
-- (void)setActiveMethodGroup:(id)a3
+- (void)setActiveMethodGroup:(id)group
 {
-  objc_storeStrong(&self->_activeMethodGroup, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_activeMethodGroup, group);
+  groupCopy = group;
   [(NSMutableSet *)self->_startedMethodIdentifiers removeAllObjects];
   [(NSMutableSet *)self->_completedMethodIdentifiers removeAllObjects];
 }
 
-- (void)recordStartedMethods:(id)a3
+- (void)recordStartedMethods:(id)methods
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  methodsCopy = methods;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [methodsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -190,18 +190,18 @@ uint64_t __42__PKVerificationRequestRecord_setChannel___block_invoke(uint64_t a1
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(methodsCopy);
         }
 
         startedMethodIdentifiers = self->_startedMethodIdentifiers;
-        v10 = [*(*(&v13 + 1) + 8 * v8) identifier];
-        [(NSMutableSet *)startedMethodIdentifiers addObject:v10];
+        identifier = [*(*(&v13 + 1) + 8 * v8) identifier];
+        [(NSMutableSet *)startedMethodIdentifiers addObject:identifier];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [methodsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -212,15 +212,15 @@ uint64_t __42__PKVerificationRequestRecord_setChannel___block_invoke(uint64_t a1
   self->_inProgressMethodStart = v11;
 }
 
-- (void)recordCompletedMethods:(id)a3
+- (void)recordCompletedMethods:(id)methods
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  methodsCopy = methods;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [methodsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -232,39 +232,39 @@ uint64_t __42__PKVerificationRequestRecord_setChannel___block_invoke(uint64_t a1
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(methodsCopy);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) identifier];
-        [(PKVerificationRequestRecord *)self recordCompletedMethodForMethodIdentifier:v9];
+        identifier = [*(*(&v10 + 1) + 8 * v8) identifier];
+        [(PKVerificationRequestRecord *)self recordCompletedMethodForMethodIdentifier:identifier];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [methodsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)recordCompletedMethodForMethodIdentifier:(id)a3
+- (void)recordCompletedMethodForMethodIdentifier:(id)identifier
 {
   completedMethodIdentifiers = self->_completedMethodIdentifiers;
-  v5 = a3;
-  [(NSMutableSet *)completedMethodIdentifiers addObject:v5];
-  [(NSMutableSet *)self->_startedMethodIdentifiers removeObject:v5];
+  identifierCopy = identifier;
+  [(NSMutableSet *)completedMethodIdentifiers addObject:identifierCopy];
+  [(NSMutableSet *)self->_startedMethodIdentifiers removeObject:identifierCopy];
 
   inProgressMethodStart = self->_inProgressMethodStart;
   self->_inProgressMethodStart = 0;
 }
 
-- (BOOL)isMethodInProgress:(id)a3
+- (BOOL)isMethodInProgress:(id)progress
 {
   startedMethodIdentifiers = self->_startedMethodIdentifiers;
-  v4 = [a3 identifier];
-  LOBYTE(startedMethodIdentifiers) = [(NSMutableSet *)startedMethodIdentifiers containsObject:v4];
+  identifier = [progress identifier];
+  LOBYTE(startedMethodIdentifiers) = [(NSMutableSet *)startedMethodIdentifiers containsObject:identifier];
 
   return startedMethodIdentifiers;
 }
@@ -282,8 +282,8 @@ uint64_t __42__PKVerificationRequestRecord_setChannel___block_invoke(uint64_t a1
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(PKPassVerificationMethodGroup *)activeMethodGroup methods];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  methods = [(PKPassVerificationMethodGroup *)activeMethodGroup methods];
+  v5 = [methods countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -294,23 +294,23 @@ uint64_t __42__PKVerificationRequestRecord_setChannel___block_invoke(uint64_t a1
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(methods);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
         startedMethodIdentifiers = self->_startedMethodIdentifiers;
-        v11 = [v9 identifier];
-        LODWORD(startedMethodIdentifiers) = [(NSMutableSet *)startedMethodIdentifiers containsObject:v11];
+        identifier = [v9 identifier];
+        LODWORD(startedMethodIdentifiers) = [(NSMutableSet *)startedMethodIdentifiers containsObject:identifier];
 
         if (startedMethodIdentifiers)
         {
-          v12 = [v9 type];
-          if ((v12 - 2) < 6 || v12 == 0)
+          type = [v9 type];
+          if ((type - 2) < 6 || type == 0)
           {
             goto LABEL_16;
           }
 
-          if (v12 == 1)
+          if (type == 1)
           {
             v16 = v9;
             if ([v16 channel] == 1 && (inProgressMethodStart = self->_inProgressMethodStart) != 0)
@@ -329,7 +329,7 @@ uint64_t __42__PKVerificationRequestRecord_setChannel___block_invoke(uint64_t a1
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [methods countByEnumeratingWithState:&v19 objects:v23 count:16];
       v14 = 0;
       if (v6)
       {
@@ -362,39 +362,39 @@ LABEL_17:
   return v3;
 }
 
-- (BOOL)hasCompletedMethod:(id)a3
+- (BOOL)hasCompletedMethod:(id)method
 {
   completedMethodIdentifiers = self->_completedMethodIdentifiers;
-  v4 = [a3 identifier];
-  LOBYTE(completedMethodIdentifiers) = [(NSMutableSet *)completedMethodIdentifiers containsObject:v4];
+  identifier = [method identifier];
+  LOBYTE(completedMethodIdentifiers) = [(NSMutableSet *)completedMethodIdentifiers containsObject:identifier];
 
   return completedMethodIdentifiers;
 }
 
-- (PKVerificationRequestRecord)initWithCoder:(id)a3
+- (PKVerificationRequestRecord)initWithCoder:(id)coder
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v53.receiver = self;
   v53.super_class = PKVerificationRequestRecord;
   v5 = [(PKVerificationRequestRecord *)&v53 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueID"];
     [(PKVerificationRequestRecord *)v5 setPassUniqueID:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     [(PKVerificationRequestRecord *)v5 setDate:v7];
 
-    -[PKVerificationRequestRecord setVerificationStatus:](v5, "setVerificationStatus:", [v4 decodeIntegerForKey:@"verificationStatus"]);
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activeMethodGroup"];
+    -[PKVerificationRequestRecord setVerificationStatus:](v5, "setVerificationStatus:", [coderCopy decodeIntegerForKey:@"verificationStatus"]);
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activeMethodGroup"];
     activeMethodGroup = v5->_activeMethodGroup;
     v5->_activeMethodGroup = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"allMethodGroups"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"allMethodGroups"];
     methodGroups = v5->_methodGroups;
     v5->_methodGroups = v13;
 
@@ -404,14 +404,14 @@ LABEL_17:
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v20 = [v15 setWithObjects:{v16, v17, v18, v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"PKVerificationRequestRecordRequiredFieldData"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"PKVerificationRequestRecordRequiredFieldData"];
     requiredFieldData = v5->_requiredFieldData;
     v5->_requiredFieldData = v21;
 
     v23 = MEMORY[0x1E695DFD8];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"startedMethodIdentifiers"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"startedMethodIdentifiers"];
     v27 = [v26 mutableCopy];
     startedMethodIdentifiers = v5->_startedMethodIdentifiers;
     v5->_startedMethodIdentifiers = v27;
@@ -419,41 +419,41 @@ LABEL_17:
     v29 = MEMORY[0x1E695DFD8];
     v30 = objc_opt_class();
     v31 = [v29 setWithObjects:{v30, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"completedMethodIdentifiers"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"completedMethodIdentifiers"];
     v33 = [v32 mutableCopy];
     completedMethodIdentifiers = v5->_completedMethodIdentifiers;
     v5->_completedMethodIdentifiers = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inProgressDate"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inProgressDate"];
     inProgressMethodStart = v5->_inProgressMethodStart;
     v5->_inProgressMethodStart = v35;
 
     if (!v5->_methodGroups)
     {
-      v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"channel"];
+      v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"channel"];
       [(PKVerificationRequestRecord *)v5 setChannel:v37];
 
       v38 = MEMORY[0x1E695DFD8];
       v39 = objc_opt_class();
       v40 = [v38 setWithObjects:{v39, objc_opt_class(), 0}];
-      v41 = [v4 decodeObjectOfClasses:v40 forKey:@"allChannels"];
+      v41 = [coderCopy decodeObjectOfClasses:v40 forKey:@"allChannels"];
       [(PKVerificationRequestRecord *)v5 setAllChannels:v41];
 
       [(PKVerificationRequestRecord *)v5 setRequiredFieldData:v5->_requiredFieldData];
-      v42 = [(PKVerificationRequestRecord *)v5 channel];
-      v43 = v42;
-      if (v42)
+      channel = [(PKVerificationRequestRecord *)v5 channel];
+      v43 = channel;
+      if (channel)
       {
         v44 = v5->_startedMethodIdentifiers;
-        v45 = [v42 identifier];
-        [(NSMutableSet *)v44 addObject:v45];
+        identifier = [channel identifier];
+        [(NSMutableSet *)v44 addObject:identifier];
       }
     }
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentStepIdentifier"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentStepIdentifier"];
     [(PKVerificationRequestRecord *)v5 setCurrentStepIdentifier:v46];
 
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousStepIdentifier"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousStepIdentifier"];
     [(PKVerificationRequestRecord *)v5 setPreviousStepIdentifier:v47];
 
     if (!v5->_startedMethodIdentifiers)
@@ -474,34 +474,34 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(PKVerificationRequestRecord *)self passUniqueID];
-  [v10 encodeObject:v4 forKey:@"passUniqueID"];
+  coderCopy = coder;
+  passUniqueID = [(PKVerificationRequestRecord *)self passUniqueID];
+  [coderCopy encodeObject:passUniqueID forKey:@"passUniqueID"];
 
-  v5 = [(PKVerificationRequestRecord *)self date];
-  [v10 encodeObject:v5 forKey:@"date"];
+  date = [(PKVerificationRequestRecord *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 
-  [v10 encodeInteger:-[PKVerificationRequestRecord verificationStatus](self forKey:{"verificationStatus"), @"verificationStatus"}];
-  v6 = [(PKVerificationRequestRecord *)self channel];
-  [v10 encodeObject:v6 forKey:@"channel"];
+  [coderCopy encodeInteger:-[PKVerificationRequestRecord verificationStatus](self forKey:{"verificationStatus"), @"verificationStatus"}];
+  channel = [(PKVerificationRequestRecord *)self channel];
+  [coderCopy encodeObject:channel forKey:@"channel"];
 
-  v7 = [(PKVerificationRequestRecord *)self allChannels];
-  [v10 encodeObject:v7 forKey:@"allChannels"];
+  allChannels = [(PKVerificationRequestRecord *)self allChannels];
+  [coderCopy encodeObject:allChannels forKey:@"allChannels"];
 
-  [v10 encodeObject:self->_activeMethodGroup forKey:@"activeMethodGroup"];
-  [v10 encodeObject:self->_methodGroups forKey:@"allMethodGroups"];
-  [v10 encodeObject:self->_requiredFieldData forKey:@"PKVerificationRequestRecordRequiredFieldData"];
-  v8 = [(PKVerificationRequestRecord *)self currentStepIdentifier];
-  [v10 encodeObject:v8 forKey:@"currentStepIdentifier"];
+  [coderCopy encodeObject:self->_activeMethodGroup forKey:@"activeMethodGroup"];
+  [coderCopy encodeObject:self->_methodGroups forKey:@"allMethodGroups"];
+  [coderCopy encodeObject:self->_requiredFieldData forKey:@"PKVerificationRequestRecordRequiredFieldData"];
+  currentStepIdentifier = [(PKVerificationRequestRecord *)self currentStepIdentifier];
+  [coderCopy encodeObject:currentStepIdentifier forKey:@"currentStepIdentifier"];
 
-  v9 = [(PKVerificationRequestRecord *)self previousStepIdentifier];
-  [v10 encodeObject:v9 forKey:@"previousStepIdentifier"];
+  previousStepIdentifier = [(PKVerificationRequestRecord *)self previousStepIdentifier];
+  [coderCopy encodeObject:previousStepIdentifier forKey:@"previousStepIdentifier"];
 
-  [v10 encodeObject:self->_startedMethodIdentifiers forKey:@"startedMethodIdentifiers"];
-  [v10 encodeObject:self->_completedMethodIdentifiers forKey:@"completedMethodIdentifiers"];
-  [v10 encodeObject:self->_inProgressMethodStart forKey:@"inProgressDate"];
+  [coderCopy encodeObject:self->_startedMethodIdentifiers forKey:@"startedMethodIdentifiers"];
+  [coderCopy encodeObject:self->_completedMethodIdentifiers forKey:@"completedMethodIdentifiers"];
+  [coderCopy encodeObject:self->_inProgressMethodStart forKey:@"inProgressDate"];
 }
 
 - (id)description
@@ -524,15 +524,15 @@ LABEL_17:
   return v7;
 }
 
-- (void)setRequiredFieldData:(id)a3
+- (void)setRequiredFieldData:(id)data
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_requiredFieldData, a3);
-  v6 = [v5 PKArrayContaining:objc_opt_class() forKey:@"requiredFields"];
+  dataCopy = data;
+  objc_storeStrong(&self->_requiredFieldData, data);
+  v6 = [dataCopy PKArrayContaining:objc_opt_class() forKey:@"requiredFields"];
   if (v6)
   {
-    v7 = [v5 PKDictionaryForKey:@"requiredFieldOptions"];
+    v7 = [dataCopy PKDictionaryForKey:@"requiredFieldOptions"];
     v8 = [[PKPassVerificationFieldsMethod alloc] initWithFieldIdentifiers:v6 fieldConfiguration:v7];
     if (v8)
     {
@@ -552,7 +552,7 @@ LABEL_17:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412290;
-        v15 = v5;
+        v15 = dataCopy;
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Failed to convert field dict to verification method. Field Dict: %@", &v14, 0xCu);
       }
     }
@@ -567,13 +567,13 @@ LABEL_17:
   v14 = 0u;
   v15 = 0u;
   v2 = self->_methodGroups;
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
-  if (v3)
+  fields = [(NSArray *)v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  if (fields)
   {
     v4 = *v13;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != fields; i = i + 1)
       {
         if (*v13 != v4)
         {
@@ -581,25 +581,25 @@ LABEL_17:
         }
 
         v6 = *(*(&v12 + 1) + 8 * i);
-        v7 = [v6 methods];
-        v8 = [v7 count];
+        methods = [v6 methods];
+        v8 = [methods count];
 
         if (v8 == 1)
         {
-          v9 = [v6 methods];
-          v10 = [v9 objectAtIndexedSubscript:0];
+          methods2 = [v6 methods];
+          v10 = [methods2 objectAtIndexedSubscript:0];
 
           if ([v10 type] == 7)
           {
-            v3 = [v10 fields];
+            fields = [v10 fields];
 
             goto LABEL_13;
           }
         }
       }
 
-      v3 = [(NSArray *)v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
-      if (v3)
+      fields = [(NSArray *)v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      if (fields)
       {
         continue;
       }
@@ -610,7 +610,7 @@ LABEL_17:
 
 LABEL_13:
 
-  return v3;
+  return fields;
 }
 
 @end

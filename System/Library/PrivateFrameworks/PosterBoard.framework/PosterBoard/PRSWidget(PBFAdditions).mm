@@ -15,12 +15,12 @@
     v10 = a4;
     v11 = a3;
     v12 = [v8 alloc];
-    v13 = [v11 complicationWidgetKind];
-    v14 = [v11 complicationExtensionBundleIdentifier];
-    v15 = [v11 complicationContainingBundleIdentifier];
-    v16 = [v11 complicationWidgetFamily];
+    complicationWidgetKind = [v11 complicationWidgetKind];
+    complicationExtensionBundleIdentifier = [v11 complicationExtensionBundleIdentifier];
+    complicationContainingBundleIdentifier = [v11 complicationContainingBundleIdentifier];
+    complicationWidgetFamily = [v11 complicationWidgetFamily];
 
-    v5 = [v12 initWithUniqueIdentifier:v10 kind:v13 extensionBundleIdentifier:v14 containerBundleIdentifier:v15 family:objc_msgSend(v16 intent:{"integerValue"), v9}];
+    v5 = [v12 initWithUniqueIdentifier:v10 kind:complicationWidgetKind extensionBundleIdentifier:complicationExtensionBundleIdentifier containerBundleIdentifier:complicationContainingBundleIdentifier family:objc_msgSend(complicationWidgetFamily intent:{"integerValue"), v9}];
   }
 
   return v5;
@@ -28,12 +28,12 @@
 
 - (id)pbf_complicationLookupInfo
 {
-  v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "family")}];
-  v3 = [a1 extensionBundleIdentifier];
-  v4 = [a1 containerBundleIdentifier];
-  v5 = [a1 kind];
-  v6 = [a1 intent];
-  v7 = [PBFGenericComplicationLookupInfo complicationLookupForWidgetFamily:v2 extensionBundleIdentifier:v3 containingBundleIdentifier:v4 kind:v5 intent:v6 suggestedComplication:0];
+  v2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "family")}];
+  extensionBundleIdentifier = [self extensionBundleIdentifier];
+  containerBundleIdentifier = [self containerBundleIdentifier];
+  kind = [self kind];
+  intent = [self intent];
+  v7 = [PBFGenericComplicationLookupInfo complicationLookupForWidgetFamily:v2 extensionBundleIdentifier:extensionBundleIdentifier containingBundleIdentifier:containerBundleIdentifier kind:kind intent:intent suggestedComplication:0];
 
   return v7;
 }

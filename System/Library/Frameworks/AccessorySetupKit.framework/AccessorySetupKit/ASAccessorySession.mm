@@ -1,40 +1,40 @@
 @interface ASAccessorySession
-+ (BOOL)validateAccessorySetupBundleInfo:(id)a3 error:(id *)a4;
++ (BOOL)validateAccessorySetupBundleInfo:(id)info error:(id *)error;
 - (ASAccessorySession)init;
 - (BOOL)_hasBluetoothASK;
-- (BOOL)_verifyCoreBluetoothStateToActivatePicker:(id)a3;
+- (BOOL)_verifyCoreBluetoothStateToActivatePicker:(id)picker;
 - (NSArray)accessories;
 - (OS_dispatch_queue)queue;
-- (void)_activateWithQueue:(id)a3 eventHandler:(id)a4;
+- (void)_activateWithQueue:(id)queue eventHandler:(id)handler;
 - (void)_applicationWillEnterForegroundNotification;
 - (void)_fetchAuthorizedAccesoriesIfNeeded;
 - (void)_fetchBluetoothGlobalTCC;
-- (void)_finishDiscovery:(id)a3;
-- (void)_handleDASessionEventHandler:(id)a3 session:(id)a4;
+- (void)_finishDiscovery:(id)discovery;
+- (void)_handleDASessionEventHandler:(id)handler session:(id)session;
 - (void)_invalidated;
-- (void)_notifyAccesoriesChangedIfNeeded:(id)a3 bundleID:(id)a4 eventType:(int64_t)a5;
-- (void)_removeAccessory:(id)a3 completionHandler:(id)a4;
+- (void)_notifyAccesoriesChangedIfNeeded:(id)needed bundleID:(id)d eventType:(int64_t)type;
+- (void)_removeAccessory:(id)accessory completionHandler:(id)handler;
 - (void)_setupDeviceAccessSession;
-- (void)_showPickerForDisplayItems:(id)a3 completionHandler:(id)a4;
-- (void)_updateAccessory:(id)a3 settings:(id)a4 completionHandler:(id)a5;
-- (void)_updatePickerWithDiscoveredDisplayItems:(id)a3 completionHandler:(id)a4;
-- (void)_validateDiscoveryDescriptor:(id)a3;
-- (void)_validateDisplayItem:(id)a3;
-- (void)_validateMigrationDisplayItem:(id)a3;
-- (void)activateWithQueue:(id)a3 eventHandler:(id)a4;
+- (void)_showPickerForDisplayItems:(id)items completionHandler:(id)handler;
+- (void)_updateAccessory:(id)accessory settings:(id)settings completionHandler:(id)handler;
+- (void)_updatePickerWithDiscoveredDisplayItems:(id)items completionHandler:(id)handler;
+- (void)_validateDiscoveryDescriptor:(id)descriptor;
+- (void)_validateDisplayItem:(id)item;
+- (void)_validateMigrationDisplayItem:(id)item;
+- (void)activateWithQueue:(id)queue eventHandler:(id)handler;
 - (void)dealloc;
-- (void)failAuthorization:(id)a3 completionHandler:(id)a4;
-- (void)finishPickerDiscovery:(id)a3;
+- (void)failAuthorization:(id)authorization completionHandler:(id)handler;
+- (void)finishPickerDiscovery:(id)discovery;
 - (void)invalidate;
-- (void)pickerDidReport:(id)a3;
-- (void)relayPickerEvent:(id)a3;
-- (void)removeAccessory:(id)a3 completionHandler:(id)a4;
-- (void)renameAccessory:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)showPickerForDisplayItems:(id)a3 completionHandler:(id)a4;
-- (void)showPickerWithCompletionHandler:(id)a3;
-- (void)updateAccessory:(id)a3 settings:(id)a4 completionHandler:(id)a5;
-- (void)updateAuthorization:(id)a3 descriptor:(id)a4 completionHandler:(id)a5;
-- (void)updatePickerShowingDiscoveredDisplayItems:(id)a3 completionHandler:(id)a4;
+- (void)pickerDidReport:(id)report;
+- (void)relayPickerEvent:(id)event;
+- (void)removeAccessory:(id)accessory completionHandler:(id)handler;
+- (void)renameAccessory:(id)accessory options:(unint64_t)options completionHandler:(id)handler;
+- (void)showPickerForDisplayItems:(id)items completionHandler:(id)handler;
+- (void)showPickerWithCompletionHandler:(id)handler;
+- (void)updateAccessory:(id)accessory settings:(id)settings completionHandler:(id)handler;
+- (void)updateAuthorization:(id)authorization descriptor:(id)descriptor completionHandler:(id)handler;
+- (void)updatePickerShowingDiscoveredDisplayItems:(id)items completionHandler:(id)handler;
 @end
 
 @implementation ASAccessorySession
@@ -49,30 +49,30 @@
     goto LABEL_6;
   }
 
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  v4 = [v3 environment];
-  v5 = [v4 objectForKeyedSubscript:@"XCTestConfigurationFilePath"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  environment = [processInfo environment];
+  v5 = [environment objectForKeyedSubscript:@"XCTestConfigurationFilePath"];
 
   if (v5)
   {
 LABEL_5:
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     accessories = v2->_accessories;
-    v2->_accessories = v10;
+    v2->_accessories = dictionary;
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     discoveredAccessories = v2->_discoveredAccessories;
-    v2->_discoveredAccessories = v12;
+    v2->_discoveredAccessories = dictionary2;
 
     v2->_bluetoothTCCStateUnknown = 0;
-    v14 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v14 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     bundleID = v2->_bundleID;
-    v2->_bundleID = v15;
+    v2->_bundleID = bundleIdentifier;
 
     objc_storeStrong(&v2->_dispatchQueue, MEMORY[0x277D85CD0]);
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v2 selector:sel__applicationWillEnterForegroundNotification name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillEnterForegroundNotification name:@"UIApplicationWillEnterForegroundNotification" object:0];
 
     v18 = v2;
 LABEL_6:
@@ -80,11 +80,11 @@ LABEL_6:
     return v2;
   }
 
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 infoDictionary];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle2 infoDictionary];
 
   v22 = 0;
-  v8 = [ASAccessorySession validateAccessorySetupBundleInfo:v7 error:&v22];
+  v8 = [ASAccessorySession validateAccessorySetupBundleInfo:infoDictionary error:&v22];
   v9 = v22;
   if (v8)
   {
@@ -107,8 +107,8 @@ LABEL_6:
 
   else
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     v7.receiver = self;
     v7.super_class = ASAccessorySession;
@@ -116,11 +116,11 @@ LABEL_6:
   }
 }
 
-- (void)activateWithQueue:(id)a3 eventHandler:(id)a4
+- (void)activateWithQueue:(id)queue eventHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -128,10 +128,10 @@ LABEL_6:
     block[2] = __53__ASAccessorySession_activateWithQueue_eventHandler___block_invoke;
     block[3] = &unk_278A01AA0;
     block[4] = self;
-    v13 = v6;
-    v14 = v7;
-    v9 = v7;
-    v10 = v6;
+    v13 = queueCopy;
+    v14 = handlerCopy;
+    v9 = handlerCopy;
+    v10 = queueCopy;
     dispatch_async(dispatchQueue, block);
   }
 
@@ -142,10 +142,10 @@ LABEL_6:
   }
 }
 
-- (void)_activateWithQueue:(id)a3 eventHandler:(id)a4
+- (void)_activateWithQueue:(id)queue eventHandler:(id)handler
 {
-  v12 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (!self->_activateCalled)
   {
     self->_activateCalled = 1;
@@ -156,12 +156,12 @@ LABEL_6:
       objc_storeStrong(&self->_bundleID, overrideAppBundleID);
     }
 
-    if (self->_dispatchQueue != v12)
+    if (self->_dispatchQueue != queueCopy)
     {
-      objc_storeStrong(&self->_dispatchQueue, a3);
+      objc_storeStrong(&self->_dispatchQueue, queue);
     }
 
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(handlerCopy);
     eventHandler = self->_eventHandler;
     self->_eventHandler = v10;
 
@@ -231,10 +231,10 @@ uint64_t __32__ASAccessorySession_invalidate__block_invoke(uint64_t result)
   dispatch_async(dispatchQueue, block);
 }
 
-+ (BOOL)validateAccessorySetupBundleInfo:(id)a3 error:(id *)a4
++ (BOOL)validateAccessorySetupBundleInfo:(id)info error:(id *)error
 {
   v167 = *MEMORY[0x277D85DE8];
-  v126 = a3;
+  infoCopy = info;
   v157 = 0;
   v158 = &v157;
   v159 = 0x3032000000;
@@ -246,11 +246,11 @@ uint64_t __32__ASAccessorySession_invalidate__block_invoke(uint64_t result)
   aBlock[2] = __61__ASAccessorySession_validateAccessorySetupBundleInfo_error___block_invoke;
   aBlock[3] = &unk_278A01AF0;
   aBlock[4] = &v157;
-  aBlock[5] = a4;
+  aBlock[5] = error;
   v124 = _Block_copy(aBlock);
-  v5 = [MEMORY[0x277CCAC38] processInfo];
-  v6 = [v5 environment];
-  v7 = [v6 objectForKeyedSubscript:@"XCTestConfigurationFilePath"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  environment = [processInfo environment];
+  v7 = [environment objectForKeyedSubscript:@"XCTestConfigurationFilePath"];
   v8 = v7 == 0;
 
   if (v8)
@@ -267,7 +267,7 @@ uint64_t __32__ASAccessorySession_invalidate__block_invoke(uint64_t result)
     }
   }
 
-  v10 = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
+  bundleRecordForCurrentProcess = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -292,7 +292,7 @@ uint64_t __32__ASAccessorySession_invalidate__block_invoke(uint64_t result)
     goto LABEL_92;
   }
 
-  [v126 objectForKeyedSubscript:@"NSAccessorySetupKitSupports"];
+  [infoCopy objectForKeyedSubscript:@"NSAccessorySetupKitSupports"];
   v154 = 0u;
   v155 = 0u;
   v152 = 0u;
@@ -346,7 +346,7 @@ LABEL_56:
   v151 = 0u;
   v148 = 0u;
   v149 = 0u;
-  obj = v126;
+  obj = infoCopy;
   v30 = [obj countByEnumeratingWithState:&v148 objects:v165 count:16];
   if (!v30)
   {
@@ -473,13 +473,13 @@ LABEL_91:
     goto LABEL_92;
   }
 
-  [v126 objectForKeyedSubscript:@"WiFiAwareServices"];
+  [infoCopy objectForKeyedSubscript:@"WiFiAwareServices"];
   v142 = 0u;
   v143 = 0u;
   v140 = 0u;
   obj = v141 = 0u;
-  v58 = [obj allValues];
-  v59 = [v58 countByEnumeratingWithState:&v140 objects:v163 count:16];
+  allValues = [obj allValues];
+  v59 = [allValues countByEnumeratingWithState:&v140 objects:v163 count:16];
   if (!v59)
   {
     v61 = 0;
@@ -490,7 +490,7 @@ LABEL_91:
   LOBYTE(v60) = 0;
   LOBYTE(v61) = 0;
   v62 = *v141;
-  v63 = v58;
+  v63 = allValues;
   while (2)
   {
     v64 = 0;
@@ -498,7 +498,7 @@ LABEL_91:
     {
       if (*v141 != v62)
       {
-        objc_enumerationMutation(v58);
+        objc_enumerationMutation(allValues);
       }
 
       v65 = *(*(&v140 + 1) + 8 * v64);
@@ -515,8 +515,8 @@ LABEL_71:
       }
 
       v72 = v65;
-      v73 = [v72 allKeys];
-      v74 = [v73 count] == 0;
+      allKeys = [v72 allKeys];
+      v74 = [allKeys count] == 0;
 
       if (v74)
       {
@@ -535,8 +535,8 @@ LABEL_71:
 
       else
       {
-        v81 = [v72 allKeys];
-        v61 = [v81 containsObject:@"Subscribable"];
+        allKeys2 = [v72 allKeys];
+        v61 = [allKeys2 containsObject:@"Subscribable"];
       }
 
       if (v60)
@@ -546,12 +546,12 @@ LABEL_71:
 
       else
       {
-        v82 = [v72 allKeys];
-        v60 = [v82 containsObject:@"Publishable"];
+        allKeys3 = [v72 allKeys];
+        v60 = [allKeys3 containsObject:@"Publishable"];
       }
 
       ++v64;
-      v58 = v63;
+      allValues = v63;
       if (v59 != v64)
       {
         continue;
@@ -721,12 +721,12 @@ uint64_t __61__ASAccessorySession_validateAccessorySetupBundleInfo_error___block
   v9[4] = self;
   v9[5] = v4;
   [v4 setEventHandler:v9];
-  v7 = [(ASAccessorySession *)self xpcListenerEndpoint];
+  xpcListenerEndpoint = [(ASAccessorySession *)self xpcListenerEndpoint];
 
-  if (v7)
+  if (xpcListenerEndpoint)
   {
-    v8 = [(ASAccessorySession *)self xpcListenerEndpoint];
-    [v4 setXpcListenerEndpoint:v8];
+    xpcListenerEndpoint2 = [(ASAccessorySession *)self xpcListenerEndpoint];
+    [v4 setXpcListenerEndpoint:xpcListenerEndpoint2];
   }
 
   [v4 activate];
@@ -749,15 +749,15 @@ void __47__ASAccessorySession__setupDeviceAccessSession__block_invoke(uint64_t a
   dispatch_async(v6, block);
 }
 
-- (void)pickerDidReport:(id)a3
+- (void)pickerDidReport:(id)report
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reportCopy = report;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [reportCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -769,18 +769,18 @@ void __47__ASAccessorySession__setupDeviceAccessSession__block_invoke(uint64_t a
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reportCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
-        v10 = [(DASession *)self->_daSession eventHandler];
-        v10[2](v10, v9);
+        eventHandler = [(DASession *)self->_daSession eventHandler];
+        eventHandler[2](eventHandler, v9);
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [reportCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -789,56 +789,56 @@ void __47__ASAccessorySession__setupDeviceAccessSession__block_invoke(uint64_t a
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDASessionEventHandler:(id)a3 session:(id)a4
+- (void)_handleDASessionEventHandler:(id)handler session:(id)session
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  sessionCopy = session;
   v8 = self->_bundleID;
-  v9 = v6;
-  v69 = v7;
+  v9 = handlerCopy;
+  v69 = sessionCopy;
   if (gLogCategory_ASAccessorySession <= 30 && (gLogCategory_ASAccessorySession != -1 || _LogCategory_Initialize()))
   {
     [ASAccessorySession _handleDASessionEventHandler:session:];
   }
 
-  v10 = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
+  bundleRecordForCurrentProcess = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v12 = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
-    v13 = [v12 containingBundleRecord];
-    v14 = [v13 bundleIdentifier];
+    bundleRecordForCurrentProcess2 = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
+    containingBundleRecord = [bundleRecordForCurrentProcess2 containingBundleRecord];
+    bundleIdentifier = [containingBundleRecord bundleIdentifier];
 
-    v8 = v14;
+    v8 = bundleIdentifier;
   }
 
-  v15 = [v9 eventType];
-  if (v15 <= 40)
+  eventType = [v9 eventType];
+  if (eventType <= 40)
   {
-    switch(v15)
+    switch(eventType)
     {
       case 10:
-        v27 = [v9 error];
+        error = [v9 error];
 
-        if (v27)
+        if (error)
         {
           if (gLogCategory_ASAccessorySession <= 90 && (gLogCategory_ASAccessorySession != -1 || _LogCategory_Initialize()))
           {
             [ASAccessorySession _handleDASessionEventHandler:v9 session:?];
           }
 
-          v42 = [[ASAccessoryEvent alloc] initWithEventType:11];
+          availableDevices = [[ASAccessoryEvent alloc] initWithEventType:11];
           v53 = ASErrorF(100, "Unable to activate session.", v47, v48, v49, v50, v51, v52, v66);
-          [(ASAccessoryEvent *)v42 setError:v53];
+          [(ASAccessoryEvent *)availableDevices setError:v53];
         }
 
         else
         {
-          v42 = [v69 availableDevices];
-          [(ASAccessorySession *)self _notifyAccesoriesChangedIfNeeded:v42 bundleID:v8 eventType:10];
+          availableDevices = [v69 availableDevices];
+          [(ASAccessorySession *)self _notifyAccesoriesChangedIfNeeded:availableDevices bundleID:v8 eventType:10];
         }
 
         break;
@@ -849,15 +849,15 @@ void __47__ASAccessorySession__setupDeviceAccessSession__block_invoke(uint64_t a
           v31 = v9;
           if ([v31 devicesMigrated])
           {
-            v32 = self;
-            objc_sync_enter(v32);
+            selfCopy = self;
+            objc_sync_enter(selfCopy);
             v70 = 0u;
             v71 = 0u;
             v72 = 0u;
             v73 = 0u;
             v68 = v31;
-            v33 = [v31 devices];
-            v34 = [v33 countByEnumeratingWithState:&v70 objects:v78 count:16];
+            devices = [v31 devices];
+            v34 = [devices countByEnumeratingWithState:&v70 objects:v78 count:16];
             if (v34)
             {
               v35 = *v71;
@@ -867,29 +867,29 @@ void __47__ASAccessorySession__setupDeviceAccessSession__block_invoke(uint64_t a
                 {
                   if (*v71 != v35)
                   {
-                    objc_enumerationMutation(v33);
+                    objc_enumerationMutation(devices);
                   }
 
                   v37 = *(*(&v70 + 1) + 8 * i);
-                  v38 = [v37 identifier];
+                  identifier = [v37 identifier];
                   v39 = [[ASAccessory alloc] initWithDADevice:v37 bundleID:v8];
                   if (v39)
                   {
-                    [(NSMutableDictionary *)v32->_accessories setObject:v39 forKeyedSubscript:v38];
+                    [(NSMutableDictionary *)selfCopy->_accessories setObject:v39 forKeyedSubscript:identifier];
                   }
                 }
 
-                v34 = [v33 countByEnumeratingWithState:&v70 objects:v78 count:16];
+                v34 = [devices countByEnumeratingWithState:&v70 objects:v78 count:16];
               }
 
               while (v34);
             }
 
             v40 = [[ASAccessoryEvent alloc] initWithEventType:20];
-            v41 = [(ASAccessorySession *)v32 eventHandler];
-            (v41)[2](v41, v40);
+            eventHandler = [(ASAccessorySession *)selfCopy eventHandler];
+            (eventHandler)[2](eventHandler, v40);
 
-            objc_sync_exit(v32);
+            objc_sync_exit(selfCopy);
             v31 = v68;
           }
         }
@@ -904,26 +904,26 @@ void __47__ASAccessorySession__setupDeviceAccessSession__block_invoke(uint64_t a
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v28 = [v9 device];
-      v29 = [v28 identifier];
-      v54 = [v28 appAccessInfoMap];
-      v55 = [v54 objectForKeyedSubscript:v8];
+      device = [v9 device];
+      identifier2 = [device identifier];
+      appAccessInfoMap = [device appAccessInfoMap];
+      v55 = [appAccessInfoMap objectForKeyedSubscript:v8];
       if ([v55 state])
       {
       }
 
       else
       {
-        v56 = [v28 bluetoothAdvertisementData];
+        bluetoothAdvertisementData = [device bluetoothAdvertisementData];
 
-        if (v56 && ([(ASPickerDisplaySettings *)self->_pickerDisplaySettings options]& 1) != 0)
+        if (bluetoothAdvertisementData && ([(ASPickerDisplaySettings *)self->_pickerDisplaySettings options]& 1) != 0)
         {
-          v30 = [[ASDiscoveredAccessory alloc] initWithDADevice:v28 bundleID:v8];
-          [(NSMutableDictionary *)self->_discoveredAccessories setObject:v30 forKeyedSubscript:v29];
+          v29Identifier = [[ASDiscoveredAccessory alloc] initWithDADevice:device bundleID:v8];
+          [(NSMutableDictionary *)self->_discoveredAccessories setObject:v29Identifier forKeyedSubscript:identifier2];
           v43 = [[ASAccessoryEvent alloc] initWithEventType:33];
-          [(ASAccessoryEvent *)v43 setAccessory:v30];
-          v57 = [(ASAccessorySession *)self eventHandler];
-          (v57)[2](v57, v43);
+          [(ASAccessoryEvent *)v43 setAccessory:v29Identifier];
+          eventHandler2 = [(ASAccessorySession *)self eventHandler];
+          (eventHandler2)[2](eventHandler2, v43);
 
 LABEL_86:
 LABEL_87:
@@ -937,10 +937,10 @@ LABEL_66:
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v28 = v9;
-      v29 = [v28 device];
-      v30 = [v29 identifier];
-      v43 = [[ASAccessory alloc] initWithDADevice:v29 bundleID:v8];
+      device = v9;
+      identifier2 = [device device];
+      v29Identifier = [identifier2 identifier];
+      v43 = [[ASAccessory alloc] initWithDADevice:identifier2 bundleID:v8];
       if (gLogCategory_ASAccessorySession <= 30 && (gLogCategory_ASAccessorySession != -1 || _LogCategory_Initialize()))
       {
         [ASAccessorySession _handleDASessionEventHandler:session:];
@@ -951,11 +951,11 @@ LABEL_66:
         goto LABEL_86;
       }
 
-      v58 = [v29 appAccessInfoMap];
-      v59 = [v58 objectForKeyedSubscript:v8];
-      v60 = [v59 state];
+      appAccessInfoMap2 = [identifier2 appAccessInfoMap];
+      v59 = [appAccessInfoMap2 objectForKeyedSubscript:v8];
+      state = [v59 state];
 
-      if (v60 < 11)
+      if (state < 11)
       {
         goto LABEL_86;
       }
@@ -965,11 +965,11 @@ LABEL_66:
         [ASAccessorySession _handleDASessionEventHandler:session:];
       }
 
-      v61 = self;
-      objc_sync_enter(v61);
-      v62 = [(NSMutableDictionary *)v61->_accessories objectForKeyedSubscript:v30];
+      selfCopy2 = self;
+      objc_sync_enter(selfCopy2);
+      v62 = [(NSMutableDictionary *)selfCopy2->_accessories objectForKeyedSubscript:v29Identifier];
 
-      [(NSMutableDictionary *)v61->_accessories setObject:v43 forKeyedSubscript:v30];
+      [(NSMutableDictionary *)selfCopy2->_accessories setObject:v43 forKeyedSubscript:v29Identifier];
       if (v62)
       {
         v63 = 32;
@@ -980,22 +980,22 @@ LABEL_66:
         v63 = 30;
       }
 
-      objc_sync_exit(v61);
+      objc_sync_exit(selfCopy2);
 
       v45 = [[ASAccessoryEvent alloc] initWithEventType:v63];
       [(ASAccessoryEvent *)v45 setAccessory:v43];
-      v46 = [(ASAccessorySession *)v61 eventHandler];
+      eventHandler3 = [(ASAccessorySession *)selfCopy2 eventHandler];
       goto LABEL_85;
     }
 
     goto LABEL_88;
   }
 
-  if (v15 != 41)
+  if (eventType != 41)
   {
-    if (v15 != 42)
+    if (eventType != 42)
     {
-      if (v15 == 50)
+      if (eventType == 50)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -1003,15 +1003,15 @@ LABEL_66:
           v16 = v9;
           if ([v16 devicesMigrated])
           {
-            v17 = self;
-            objc_sync_enter(v17);
+            selfCopy3 = self;
+            objc_sync_enter(selfCopy3);
             v74 = 0u;
             v75 = 0u;
             v76 = 0u;
             v77 = 0u;
             v67 = v16;
-            v18 = [v16 devices];
-            v19 = [v18 countByEnumeratingWithState:&v74 objects:v79 count:16];
+            devices2 = [v16 devices];
+            v19 = [devices2 countByEnumeratingWithState:&v74 objects:v79 count:16];
             if (v19)
             {
               v20 = *v75;
@@ -1021,29 +1021,29 @@ LABEL_66:
                 {
                   if (*v75 != v20)
                   {
-                    objc_enumerationMutation(v18);
+                    objc_enumerationMutation(devices2);
                   }
 
                   v22 = *(*(&v74 + 1) + 8 * j);
-                  v23 = [v22 identifier];
+                  identifier3 = [v22 identifier];
                   v24 = [[ASAccessory alloc] initWithDADevice:v22 bundleID:v8];
                   if (v24)
                   {
-                    [(NSMutableDictionary *)v17->_accessories setObject:v24 forKeyedSubscript:v23];
+                    [(NSMutableDictionary *)selfCopy3->_accessories setObject:v24 forKeyedSubscript:identifier3];
                   }
                 }
 
-                v19 = [v18 countByEnumeratingWithState:&v74 objects:v79 count:16];
+                v19 = [devices2 countByEnumeratingWithState:&v74 objects:v79 count:16];
               }
 
               while (v19);
             }
 
             v25 = [[ASAccessoryEvent alloc] initWithEventType:20];
-            v26 = [(ASAccessorySession *)v17 eventHandler];
-            (v26)[2](v26, v25);
+            eventHandler4 = [(ASAccessorySession *)selfCopy3 eventHandler];
+            (eventHandler4)[2](eventHandler4, v25);
 
-            objc_sync_exit(v17);
+            objc_sync_exit(selfCopy3);
             v16 = v67;
           }
         }
@@ -1058,15 +1058,15 @@ LABEL_66:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v28 = v9;
-    v29 = [v28 device];
-    v30 = [v29 identifier];
+    device = v9;
+    identifier2 = [device device];
+    v29Identifier = [identifier2 identifier];
     if (gLogCategory_ASAccessorySession <= 30 && (gLogCategory_ASAccessorySession != -1 || _LogCategory_Initialize()))
     {
       [ASAccessorySession _handleDASessionEventHandler:session:];
     }
 
-    v43 = [[ASAccessory alloc] initWithDADevice:v29 bundleID:v8];
+    v43 = [[ASAccessory alloc] initWithDADevice:identifier2 bundleID:v8];
     if (gLogCategory_ASAccessorySession <= 30 && (gLogCategory_ASAccessorySession != -1 || _LogCategory_Initialize()))
     {
       [ASAccessorySession _handleDASessionEventHandler:session:];
@@ -1077,17 +1077,17 @@ LABEL_66:
       goto LABEL_87;
     }
 
-    v44 = self;
-    objc_sync_enter(v44);
-    [(NSMutableDictionary *)v44->_accessories setObject:0 forKeyedSubscript:v30];
-    objc_sync_exit(v44);
+    selfCopy4 = self;
+    objc_sync_enter(selfCopy4);
+    [(NSMutableDictionary *)selfCopy4->_accessories setObject:0 forKeyedSubscript:v29Identifier];
+    objc_sync_exit(selfCopy4);
 
     v45 = [[ASAccessoryEvent alloc] initWithEventType:31];
     [(ASAccessoryEvent *)v45 setAccessory:v43];
-    v46 = [(ASAccessorySession *)v44 eventHandler];
+    eventHandler3 = [(ASAccessorySession *)selfCopy4 eventHandler];
 LABEL_85:
-    v64 = v46;
-    (*(v46 + 16))(v46, v45);
+    v64 = eventHandler3;
+    (*(eventHandler3 + 16))(eventHandler3, v45);
 
     goto LABEL_86;
   }
@@ -1099,25 +1099,25 @@ LABEL_88:
 
 - (OS_dispatch_queue)queue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_dispatchQueue;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_dispatchQueue;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)relayPickerEvent:(id)a3
+- (void)relayPickerEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__ASAccessorySession_relayPickerEvent___block_invoke;
   v7[3] = &unk_278A01B90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1201,24 +1201,24 @@ void __56__ASAccessorySession__fetchAuthorizedAccesoriesIfNeeded__block_invoke_2
   }
 }
 
-- (void)_notifyAccesoriesChangedIfNeeded:(id)a3 bundleID:(id)a4 eventType:(int64_t)a5
+- (void)_notifyAccesoriesChangedIfNeeded:(id)needed bundleID:(id)d eventType:(int64_t)type
 {
   v88 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v57 = self;
+  neededCopy = needed;
+  dCopy = d;
+  selfCopy = self;
   accessories = self->_accessories;
   p_accessories = &self->_accessories;
   v61 = accessories;
-  v55 = [MEMORY[0x277CBEB18] array];
-  v54 = [MEMORY[0x277CBEB18] array];
-  v53 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(neededCopy, "count")}];
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v12 = v7;
+  v12 = neededCopy;
   v13 = [v12 countByEnumeratingWithState:&v80 objects:v87 count:16];
   if (v13)
   {
@@ -1236,12 +1236,12 @@ void __56__ASAccessorySession__fetchAuthorizedAccesoriesIfNeeded__block_invoke_2
         v17 = *(*(&v80 + 1) + 8 * i);
         if ([v17 state] != 1)
         {
-          v18 = [[ASAccessory alloc] initWithDADevice:v17 bundleID:v8];
+          v18 = [[ASAccessory alloc] initWithDADevice:v17 bundleID:dCopy];
           v19 = v18;
           if (v18)
           {
-            v20 = [(ASAccessory *)v18 identifier];
-            [v11 setObject:v19 forKeyedSubscript:v20];
+            identifier = [(ASAccessory *)v18 identifier];
+            [v11 setObject:v19 forKeyedSubscript:identifier];
           }
         }
       }
@@ -1258,7 +1258,7 @@ void __56__ASAccessorySession__fetchAuthorizedAccesoriesIfNeeded__block_invoke_2
   v77[3] = &unk_278A01C08;
   v21 = v11;
   v78 = v21;
-  v22 = v53;
+  v22 = array3;
   v79 = v22;
   v23 = v61;
   [(NSMutableDictionary *)v61 enumerateKeysAndObjectsUsingBlock:v77];
@@ -1267,21 +1267,21 @@ void __56__ASAccessorySession__fetchAuthorizedAccesoriesIfNeeded__block_invoke_2
   v74[2] = __74__ASAccessorySession__notifyAccesoriesChangedIfNeeded_bundleID_eventType___block_invoke_2;
   v74[3] = &unk_278A01C30;
   v74[4] = v61;
-  v24 = v55;
+  v24 = array;
   v75 = v24;
-  v25 = v54;
+  v25 = array2;
   v76 = v25;
   [v21 enumerateKeysAndObjectsUsingBlock:v74];
-  v26 = v57;
+  v26 = selfCopy;
   objc_sync_enter(v26);
   objc_storeStrong(p_accessories, v11);
   objc_sync_exit(v26);
 
-  if (a5 == 10)
+  if (type == 10)
   {
     v27 = [[ASAccessoryEvent alloc] initWithEventType:10];
-    v28 = [(ASAccessorySession *)v26 eventHandler];
-    (v28)[2](v28, v27);
+    eventHandler = [(ASAccessorySession *)v26 eventHandler];
+    (eventHandler)[2](eventHandler, v27);
   }
 
   else
@@ -1311,8 +1311,8 @@ void __56__ASAccessorySession__fetchAuthorizedAccesoriesIfNeeded__block_invoke_2
           v34 = *(*(&v70 + 1) + 8 * j);
           v35 = [[ASAccessoryEvent alloc] initWithEventType:31];
           [(ASAccessoryEvent *)v35 setAccessory:v34];
-          v36 = [(ASAccessorySession *)v26 eventHandler];
-          (v36)[2](v36, v35);
+          eventHandler2 = [(ASAccessorySession *)v26 eventHandler];
+          (eventHandler2)[2](eventHandler2, v35);
         }
 
         v31 = [v29 countByEnumeratingWithState:&v70 objects:v86 count:16];
@@ -1343,8 +1343,8 @@ void __56__ASAccessorySession__fetchAuthorizedAccesoriesIfNeeded__block_invoke_2
           v42 = *(*(&v66 + 1) + 8 * k);
           v43 = [[ASAccessoryEvent alloc] initWithEventType:30];
           [(ASAccessoryEvent *)v43 setAccessory:v42];
-          v44 = [(ASAccessorySession *)v26 eventHandler];
-          (v44)[2](v44, v43);
+          eventHandler3 = [(ASAccessorySession *)v26 eventHandler];
+          (eventHandler3)[2](eventHandler3, v43);
         }
 
         v39 = [v37 countByEnumeratingWithState:&v66 objects:v85 count:16];
@@ -1375,8 +1375,8 @@ void __56__ASAccessorySession__fetchAuthorizedAccesoriesIfNeeded__block_invoke_2
           v49 = *(*(&v62 + 1) + 8 * m);
           v50 = [[ASAccessoryEvent alloc] initWithEventType:32];
           [(ASAccessoryEvent *)v50 setAccessory:v49];
-          v51 = [(ASAccessorySession *)v26 eventHandler];
-          (v51)[2](v51, v50);
+          eventHandler4 = [(ASAccessorySession *)v26 eventHandler];
+          (eventHandler4)[2](eventHandler4, v50);
         }
 
         v46 = [(ASAccessoryEvent *)v27 countByEnumeratingWithState:&v62 objects:v84 count:16];
@@ -1438,18 +1438,18 @@ LABEL_8:
 
 - (NSArray)accessories
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_accessories allValues];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allValues = [(NSMutableDictionary *)selfCopy->_accessories allValues];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allValues;
 }
 
-- (void)failAuthorization:(id)a3 completionHandler:(id)a4
+- (void)failAuthorization:(id)authorization completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  authorizationCopy = authorization;
+  handlerCopy = handler;
   if (gLogCategory_ASAccessorySession <= 40 && (gLogCategory_ASAccessorySession != -1 || _LogCategory_Initialize()))
   {
     [ASAccessorySession failAuthorization:completionHandler:];
@@ -1460,11 +1460,11 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __58__ASAccessorySession_failAuthorization_completionHandler___block_invoke;
   block[3] = &unk_278A01C80;
-  v12 = v6;
-  v13 = v7;
+  v12 = authorizationCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = authorizationCopy;
+  v10 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1506,10 +1506,10 @@ LABEL_8:
   [v12 failWithAccessory:v13 completionHandler:v14];
 }
 
-- (void)removeAccessory:(id)a3 completionHandler:(id)a4
+- (void)removeAccessory:(id)accessory completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  handlerCopy = handler;
   if (gLogCategory_ASAccessorySession <= 40 && (gLogCategory_ASAccessorySession != -1 || _LogCategory_Initialize()))
   {
     [ASAccessorySession removeAccessory:completionHandler:];
@@ -1521,10 +1521,10 @@ LABEL_8:
   block[2] = __56__ASAccessorySession_removeAccessory_completionHandler___block_invoke;
   block[3] = &unk_278A01AA0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = accessoryCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = accessoryCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1551,36 +1551,36 @@ LABEL_7:
   [v2 _removeAccessory:v3 completionHandler:v4];
 }
 
-- (void)_removeAccessory:(id)a3 completionHandler:(id)a4
+- (void)_removeAccessory:(id)accessory completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASAccessorySession *)self overrideAppBundleID];
-  v9 = v8;
-  if (v8)
+  handlerCopy = handler;
+  accessoryCopy = accessory;
+  overrideAppBundleID = [(ASAccessorySession *)self overrideAppBundleID];
+  v9 = overrideAppBundleID;
+  if (overrideAppBundleID)
   {
-    v10 = v8;
+    bundleIdentifier = overrideAppBundleID;
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v10 = [v11 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
   v12 = objc_alloc(MEMORY[0x277D04730]);
-  v13 = [v7 identifier];
+  identifier = [accessoryCopy identifier];
 
-  v14 = [v12 initWithBundleIdentifier:v10 deviceIdentifier:v13 state:0];
-  v15 = [(ASAccessorySession *)self daSession];
+  v14 = [v12 initWithBundleIdentifier:bundleIdentifier deviceIdentifier:identifier state:0];
+  daSession = [(ASAccessorySession *)self daSession];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __57__ASAccessorySession__removeAccessory_completionHandler___block_invoke;
   v17[3] = &unk_278A01CD0;
   v17[4] = self;
-  v18 = v6;
-  v16 = v6;
-  [v15 removeDeviceAccess:v14 completionHandler:v17];
+  v18 = handlerCopy;
+  v16 = handlerCopy;
+  [daSession removeDeviceAccess:v14 completionHandler:v17];
 }
 
 void __57__ASAccessorySession__removeAccessory_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1628,21 +1628,21 @@ void __57__ASAccessorySession__removeAccessory_completionHandler___block_invoke_
   }
 }
 
-- (void)renameAccessory:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)renameAccessory:(id)accessory options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ASAccessorySession *)self overrideAppBundleID];
-  v11 = v10;
-  if (v10)
+  accessoryCopy = accessory;
+  handlerCopy = handler;
+  overrideAppBundleID = [(ASAccessorySession *)self overrideAppBundleID];
+  v11 = overrideAppBundleID;
+  if (overrideAppBundleID)
   {
-    v12 = v10;
+    bundleIdentifier = overrideAppBundleID;
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v13 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
   dispatchQueue = self->_dispatchQueue;
@@ -1651,12 +1651,12 @@ void __57__ASAccessorySession__removeAccessory_completionHandler___block_invoke_
   block[2] = __64__ASAccessorySession_renameAccessory_options_completionHandler___block_invoke;
   block[3] = &unk_278A01CF8;
   block[4] = self;
-  v18 = v8;
-  v20 = v9;
-  v21 = a4;
-  v19 = v12;
-  v15 = v8;
-  v16 = v9;
+  v18 = accessoryCopy;
+  v20 = handlerCopy;
+  optionsCopy = options;
+  v19 = bundleIdentifier;
+  v15 = accessoryCopy;
+  v16 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1700,11 +1700,11 @@ LABEL_10:
 LABEL_5:
 }
 
-- (void)showPickerForDisplayItems:(id)a3 completionHandler:(id)a4
+- (void)showPickerForDisplayItems:(id)items completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(ASAccessorySession *)self _verifyCoreBluetoothStateToActivatePicker:v6])
+  itemsCopy = items;
+  handlerCopy = handler;
+  if ([(ASAccessorySession *)self _verifyCoreBluetoothStateToActivatePicker:itemsCopy])
   {
     if (gLogCategory_ASAccessorySession <= 40 && (gLogCategory_ASAccessorySession != -1 || _LogCategory_Initialize()))
     {
@@ -1717,22 +1717,22 @@ LABEL_5:
     block[2] = __66__ASAccessorySession_showPickerForDisplayItems_completionHandler___block_invoke;
     block[3] = &unk_278A01AA0;
     block[4] = self;
-    v18 = v6;
-    v19 = v7;
+    v18 = itemsCopy;
+    v19 = handlerCopy;
     dispatch_async(dispatchQueue, block);
   }
 
   else
   {
     v15 = ASErrorF(550, "CBManagers active with global permissions", v8, v9, v10, v11, v12, v13, v16);
-    (*(v7 + 2))(v7, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
   }
 }
 
-- (void)_showPickerForDisplayItems:(id)a3 completionHandler:(id)a4
+- (void)_showPickerForDisplayItems:(id)items completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   if (!self->_activateCalled)
   {
     [ASAccessorySession _showPickerForDisplayItems:completionHandler:];
@@ -1744,11 +1744,11 @@ LABEL_5:
 LABEL_33:
     [ASAccessorySession _showPickerForDisplayItems:completionHandler:];
 LABEL_34:
-    [(ASAccessorySession *)a4 _showPickerForDisplayItems:v11 completionHandler:v12, v13, v14, v15, v16, v17];
+    [(ASAccessorySession *)handler _showPickerForDisplayItems:v11 completionHandler:v12, v13, v14, v15, v16, v17];
     goto LABEL_31;
   }
 
-  a4 = v7;
+  handler = handlerCopy;
   if (([(ASPickerDisplaySettings *)self->_pickerDisplaySettings options]& 1) != 0)
   {
     v8 = 15;
@@ -1759,14 +1759,14 @@ LABEL_34:
     v8 = 500;
   }
 
-  if ([v6 count] > v8 && !self->_disablePickerItemMaxLimit)
+  if ([itemsCopy count] > v8 && !self->_disablePickerItemMaxLimit)
   {
     v40 = [ASAccessorySession _showPickerForDisplayItems:completionHandler:];
     _Block_object_dispose(&v55, 8);
     _Unwind_Resume(v40);
   }
 
-  v9 = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
+  bundleRecordForCurrentProcess = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1804,7 +1804,7 @@ LABEL_10:
     v45[6] = v52;
     v45[7] = v50;
     v45[8] = &v46;
-    [v6 enumerateObjectsUsingBlock:v45];
+    [itemsCopy enumerateObjectsUsingBlock:v45];
     if (IsAppleInternalBuild() && self->_disableWiFiAwareEnforcement)
     {
       if (gLogCategory_ASAccessorySession <= 50 && (gLogCategory_ASAccessorySession != -1 || _LogCategory_Initialize()))
@@ -1816,7 +1816,7 @@ LABEL_10:
     else if (*(v47 + 24) == 1 && ([(DASession *)self->_daSession currentDeviceCapabilities]& 0x400) == 0)
     {
       v25 = ASErrorF(450, "Current device is not Wi-Fi Aware capable.", v19, v20, v21, v22, v23, v24, v41[0]);
-      (*(a4 + 2))(a4, v25);
+      (*(handler + 2))(handler, v25);
 LABEL_29:
 
       _Block_object_dispose(&v46, 8);
@@ -1825,11 +1825,11 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v35 = [(ASAccessorySession *)self pickerDisplaySettings];
-    v36 = v35;
-    if (v35)
+    pickerDisplaySettings = [(ASAccessorySession *)self pickerDisplaySettings];
+    v36 = pickerDisplaySettings;
+    if (pickerDisplaySettings)
     {
-      v37 = v35;
+      v37 = pickerDisplaySettings;
     }
 
     else
@@ -1845,9 +1845,9 @@ LABEL_29:
     v41[2] = __67__ASAccessorySession__showPickerForDisplayItems_completionHandler___block_invoke_3;
     v41[3] = &unk_278A01D70;
     v41[4] = self;
-    v42 = v6;
+    v42 = itemsCopy;
     v43 = v38;
-    v44 = a4;
+    handlerCopy2 = handler;
     v25 = v38;
     dispatch_async(sessionQueue, v41);
 
@@ -1860,9 +1860,9 @@ LABEL_29:
   v58 = 0;
   if (self->_dispatchQueue == MEMORY[0x277D85CD0])
   {
-    v26 = [MEMORY[0x277D75128] sharedApplication];
-    v27 = [v26 applicationState];
-    v56[3] = v27;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    applicationState = [mEMORY[0x277D75128] applicationState];
+    v56[3] = applicationState;
   }
 
   else
@@ -1872,7 +1872,7 @@ LABEL_29:
     block[2] = __67__ASAccessorySession__showPickerForDisplayItems_completionHandler___block_invoke;
     block[3] = &unk_278A01D20;
     block[4] = &v55;
-    v26 = MEMORY[0x277D85CD0];
+    mEMORY[0x277D75128] = MEMORY[0x277D85CD0];
     dispatch_sync(MEMORY[0x277D85CD0], block);
   }
 
@@ -1883,7 +1883,7 @@ LABEL_29:
   }
 
   v34 = ASErrorF(550, "Application is not in foreground.", v28, v29, v30, v31, v32, v33, v41[0]);
-  (*(a4 + 2))(a4, v34);
+  (*(handler + 2))(handler, v34);
 
 LABEL_30:
   _Block_object_dispose(&v55, 8);
@@ -1969,31 +1969,31 @@ void __67__ASAccessorySession__showPickerForDisplayItems_completionHandler___blo
   [v2 activateConnectionWithSession:a1[4] with:a1[5] pickerSettings:a1[6] for:*(a1[4] + 112) completionHandler:a1[7]];
 }
 
-- (void)showPickerWithCompletionHandler:(id)a3
+- (void)showPickerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (gLogCategory_ASAccessorySession <= 40 && (gLogCategory_ASAccessorySession != -1 || _LogCategory_Initialize()))
   {
     [ASAccessorySession showPickerWithCompletionHandler:];
   }
 
-  [(ASAccessorySession *)self showPickerForDisplayItems:MEMORY[0x277CBEBF8] completionHandler:v4];
+  [(ASAccessorySession *)self showPickerForDisplayItems:MEMORY[0x277CBEBF8] completionHandler:handlerCopy];
 }
 
-- (void)updatePickerShowingDiscoveredDisplayItems:(id)a3 completionHandler:(id)a4
+- (void)updatePickerShowingDiscoveredDisplayItems:(id)items completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__ASAccessorySession_updatePickerShowingDiscoveredDisplayItems_completionHandler___block_invoke;
   block[3] = &unk_278A01AA0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = itemsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = itemsCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2028,25 +2028,25 @@ LABEL_9:
   [v3 _updatePickerWithDiscoveredDisplayItems:v4 completionHandler:v5];
 }
 
-- (void)_updatePickerWithDiscoveredDisplayItems:(id)a3 completionHandler:(id)a4
+- (void)_updatePickerWithDiscoveredDisplayItems:(id)items completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  itemsCopy = items;
   v7 = +[_TtC17AccessorySetupKit17ASUIClientManager shared];
-  [v7 updatePickerWith:v6 completionHandler:v5];
+  [v7 updatePickerWith:itemsCopy completionHandler:handlerCopy];
 }
 
-- (void)finishPickerDiscovery:(id)a3
+- (void)finishPickerDiscovery:(id)discovery
 {
-  v4 = a3;
+  discoveryCopy = discovery;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__ASAccessorySession_finishPickerDiscovery___block_invoke;
   v7[3] = &unk_278A01CA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = discoveryCopy;
+  v6 = discoveryCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -2074,30 +2074,30 @@ void __44__ASAccessorySession_finishPickerDiscovery___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_finishDiscovery:(id)a3
+- (void)_finishDiscovery:(id)discovery
 {
-  v3 = a3;
+  discoveryCopy = discovery;
   v4 = +[_TtC17AccessorySetupKit17ASUIClientManager shared];
-  [v4 finishDiscoveryWith:v3];
+  [v4 finishDiscoveryWith:discoveryCopy];
 }
 
-- (void)updateAccessory:(id)a3 settings:(id)a4 completionHandler:(id)a5
+- (void)updateAccessory:(id)accessory settings:(id)settings completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  settingsCopy = settings;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__ASAccessorySession_updateAccessory_settings_completionHandler___block_invoke;
   v15[3] = &unk_278A01D70;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = accessoryCopy;
+  v17 = settingsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = settingsCopy;
+  v14 = accessoryCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -2125,42 +2125,42 @@ LABEL_7:
   [v2 _updateAccessory:v3 settings:v4 completionHandler:v5];
 }
 
-- (void)_updateAccessory:(id)a3 settings:(id)a4 completionHandler:(id)a5
+- (void)_updateAccessory:(id)accessory settings:(id)settings completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  accessoryCopy = accessory;
+  handlerCopy = handler;
   v10 = self->_daSession;
   v11 = MEMORY[0x277D04740];
-  v12 = a4;
+  settingsCopy = settings;
   v13 = objc_alloc_init(v11);
-  v14 = [v12 SSID];
-  [v13 setSSID:v14];
+  sSID = [settingsCopy SSID];
+  [v13 setSSID:sSID];
 
-  v15 = [v12 bluetoothTransportBridgingIdentifier];
-  [v13 setBridgingIdentifier:v15];
+  bluetoothTransportBridgingIdentifier = [settingsCopy bluetoothTransportBridgingIdentifier];
+  [v13 setBridgingIdentifier:bluetoothTransportBridgingIdentifier];
 
-  v16 = [v12 bluetoothTransportBridgingIdentifier];
+  bluetoothTransportBridgingIdentifier2 = [settingsCopy bluetoothTransportBridgingIdentifier];
 
-  if (v16)
+  if (bluetoothTransportBridgingIdentifier2)
   {
-    v17 = [(DASession *)v10 availableDevices];
+    availableDevices = [(DASession *)v10 availableDevices];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __66__ASAccessorySession__updateAccessory_settings_completionHandler___block_invoke;
     v22[3] = &unk_278A01D98;
-    v23 = v8;
-    [v17 enumerateObjectsUsingBlock:v22];
+    v23 = accessoryCopy;
+    [availableDevices enumerateObjectsUsingBlock:v22];
   }
 
-  v18 = [v8 identifier];
+  identifier = [accessoryCopy identifier];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __66__ASAccessorySession__updateAccessory_settings_completionHandler___block_invoke_2;
   v20[3] = &unk_278A01CD0;
   v20[4] = self;
-  v21 = v9;
-  v19 = v9;
-  [(DASession *)v10 modifyDeviceWithIdentifier:v18 settings:v13 completionHandler:v20];
+  v21 = handlerCopy;
+  v19 = handlerCopy;
+  [(DASession *)v10 modifyDeviceWithIdentifier:identifier settings:v13 completionHandler:v20];
 }
 
 void __66__ASAccessorySession__updateAccessory_settings_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -2216,11 +2216,11 @@ void __66__ASAccessorySession__updateAccessory_settings_completionHandler___bloc
   }
 }
 
-- (void)updateAuthorization:(id)a3 descriptor:(id)a4 completionHandler:(id)a5
+- (void)updateAuthorization:(id)authorization descriptor:(id)descriptor completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  authorizationCopy = authorization;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
   if (!self->_activateCalled)
   {
     [ASAccessorySession updateAuthorization:descriptor:completionHandler:];
@@ -2234,63 +2234,63 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  a5 = v10;
-  v11 = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
+  handler = handlerCopy;
+  bundleRecordForCurrentProcess = [MEMORY[0x277CC1E90] bundleRecordForCurrentProcess];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
 LABEL_30:
-    [(ASAccessorySession *)a5 updateAuthorization:v13 descriptor:v14 completionHandler:v15, v16, v17, v18, v19];
+    [(ASAccessorySession *)handler updateAuthorization:v13 descriptor:v14 completionHandler:v15, v16, v17, v18, v19];
     goto LABEL_26;
   }
 
-  v20 = [v8 descriptor];
-  v21 = [v20 isEqual:v9];
+  descriptor = [authorizationCopy descriptor];
+  v21 = [descriptor isEqual:descriptorCopy];
 
   if (v21)
   {
-    [(ASAccessorySession *)a5 updateAuthorization:v22 descriptor:v23 completionHandler:v24, v25, v26, v27, v28];
+    [(ASAccessorySession *)handler updateAuthorization:v22 descriptor:v23 completionHandler:v24, v25, v26, v27, v28];
   }
 
   else
   {
-    [(ASAccessorySession *)self _validateDiscoveryDescriptor:v9];
-    v29 = [v8 bluetoothIdentifier];
+    [(ASAccessorySession *)self _validateDiscoveryDescriptor:descriptorCopy];
+    bluetoothIdentifier = [authorizationCopy bluetoothIdentifier];
 
-    v30 = [v8 SSID];
+    sSID = [authorizationCopy SSID];
 
-    v31 = [v8 wifiAwarePairedDeviceID];
-    v32 = [v9 bluetoothServiceUUID];
-    if (v32)
+    wifiAwarePairedDeviceID = [authorizationCopy wifiAwarePairedDeviceID];
+    bluetoothServiceUUID = [descriptorCopy bluetoothServiceUUID];
+    if (bluetoothServiceUUID)
     {
       v33 = 1;
     }
 
     else
     {
-      v33 = [v9 bluetoothCompanyIdentifier] != 0;
+      v33 = [descriptorCopy bluetoothCompanyIdentifier] != 0;
     }
 
-    v34 = [v9 SSID];
-    v51 = a5;
-    if (v34)
+    sSID2 = [descriptorCopy SSID];
+    handlerCopy2 = handler;
+    if (sSID2)
     {
       v35 = 0;
     }
 
     else
     {
-      v36 = [v9 SSIDPrefix];
-      v35 = v36 == 0;
+      sSIDPrefix = [descriptorCopy SSIDPrefix];
+      v35 = sSIDPrefix == 0;
     }
 
-    v37 = v29 == 0;
+    v37 = bluetoothIdentifier == 0;
 
-    v38 = [v9 wifiAwareServiceName];
+    wifiAwareServiceName = [descriptorCopy wifiAwareServiceName];
 
-    if (v31)
+    if (wifiAwarePairedDeviceID)
     {
       v46 = v37 && v35;
     }
@@ -2300,7 +2300,7 @@ LABEL_30:
       v46 = 1;
     }
 
-    if (v38)
+    if (wifiAwareServiceName)
     {
       v47 = 1;
     }
@@ -2315,11 +2315,11 @@ LABEL_30:
       goto LABEL_27;
     }
 
-    v48 = v38 == 0;
-    v49 = !v30 || v31 != 0 && !v33;
+    v48 = wifiAwareServiceName == 0;
+    v49 = !sSID || wifiAwarePairedDeviceID != 0 && !v33;
     if (v49 || v33)
     {
-      v48 = v31 != 0 && !v33;
+      v48 = wifiAwarePairedDeviceID != 0 && !v33;
     }
 
     if (v48 != 1)
@@ -2330,18 +2330,18 @@ LABEL_30:
       block[2] = __71__ASAccessorySession_updateAuthorization_descriptor_completionHandler___block_invoke;
       block[3] = &unk_278A01D70;
       block[4] = self;
-      v53 = v8;
-      v54 = v9;
-      a5 = v51;
-      v55 = v51;
+      v53 = authorizationCopy;
+      v54 = descriptorCopy;
+      handler = handlerCopy2;
+      v55 = handlerCopy2;
       dispatch_async(sessionQueue, block);
     }
 
     else
     {
 LABEL_27:
-      a5 = v51;
-      [(ASAccessorySession *)v51 updateAuthorization:v39 descriptor:v40 completionHandler:v41, v42, v43, v44, v45];
+      handler = handlerCopy2;
+      [(ASAccessorySession *)handlerCopy2 updateAuthorization:v39 descriptor:v40 completionHandler:v41, v42, v43, v44, v45];
     }
   }
 
@@ -2390,29 +2390,29 @@ void __71__ASAccessorySession_updateAuthorization_descriptor_completionHandler__
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_validateDisplayItem:(id)a3
+- (void)_validateDisplayItem:(id)item
 {
-  v8 = a3;
-  v4 = [v8 productImage];
+  itemCopy = item;
+  productImage = [itemCopy productImage];
 
-  if (!v4)
+  if (!productImage)
   {
     [ASAccessorySession _validateDisplayItem:];
     goto LABEL_10;
   }
 
-  v5 = [v8 descriptor];
+  descriptor = [itemCopy descriptor];
 
-  if (!v5)
+  if (!descriptor)
   {
 LABEL_10:
     [ASAccessorySession _validateDisplayItem:];
     goto LABEL_11;
   }
 
-  v6 = [v8 name];
+  name = [itemCopy name];
 
-  if (!v6)
+  if (!name)
   {
 LABEL_11:
     [ASAccessorySession _validateDisplayItem:];
@@ -2422,27 +2422,27 @@ LABEL_11:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [v8 descriptor];
-    [(ASAccessorySession *)self _validateDiscoveryDescriptor:v7];
+    descriptor2 = [itemCopy descriptor];
+    [(ASAccessorySession *)self _validateDiscoveryDescriptor:descriptor2];
 
     goto LABEL_6;
   }
 
 LABEL_12:
-  [(ASAccessorySession *)self _validateMigrationDisplayItem:v8];
+  [(ASAccessorySession *)self _validateMigrationDisplayItem:itemCopy];
 LABEL_6:
 }
 
-- (void)_validateDiscoveryDescriptor:(id)a3
+- (void)_validateDiscoveryDescriptor:(id)descriptor
 {
   v92 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v78 = [(ASPickerDisplaySettings *)self->_pickerDisplaySettings options];
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 infoDictionary];
+  descriptorCopy = descriptor;
+  options = [(ASPickerDisplaySettings *)self->_pickerDisplaySettings options];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
-  v79 = v6;
-  [v6 objectForKeyedSubscript:@"NSAccessorySetupKitSupports"];
+  v79 = infoDictionary;
+  [infoDictionary objectForKeyedSubscript:@"NSAccessorySetupKitSupports"];
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
@@ -2480,9 +2480,9 @@ LABEL_6:
     LOBYTE(v11) = 0;
   }
 
-  v15 = [v4 bluetoothCompanyIdentifier];
-  v16 = v15 != 0;
-  if (v15)
+  bluetoothCompanyIdentifier = [descriptorCopy bluetoothCompanyIdentifier];
+  v16 = bluetoothCompanyIdentifier != 0;
+  if (bluetoothCompanyIdentifier)
   {
     if ((v11 & 1) == 0)
     {
@@ -2493,16 +2493,16 @@ LABEL_100:
       goto LABEL_101;
     }
 
-    v17 = [v4 bluetoothCompanyIdentifier];
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x", objc_msgSend(v4, "bluetoothCompanyIdentifier")];
+    bluetoothCompanyIdentifier2 = [descriptorCopy bluetoothCompanyIdentifier];
+    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%x", objc_msgSend(descriptorCopy, "bluetoothCompanyIdentifier")];
     v19 = [v79 objectForKeyedSubscript:@"NSAccessorySetupBluetoothCompanyIdentifiers"];
     v20 = v19;
-    if ((v78 & 1) == 0 && !v19)
+    if ((options & 1) == 0 && !v19)
     {
       goto LABEL_100;
     }
 
-    if ((v78 & 1) == 0 && ![v19 count])
+    if ((options & 1) == 0 && ![v19 count])
     {
       goto LABEL_112;
     }
@@ -2511,18 +2511,18 @@ LABEL_100:
     v84[1] = 3221225472;
     v84[2] = __51__ASAccessorySession__validateDiscoveryDescriptor___block_invoke;
     v84[3] = &__block_descriptor_34_e18__16__0__NSString_8l;
-    v85 = __rev16(v17);
+    v85 = __rev16(bluetoothCompanyIdentifier2);
     v21 = [v20 cuFilteredArrayUsingBlock:v84];
     v22 = v21;
-    if ((v78 & 1) == 0 && [v21 count] != 1)
+    if ((options & 1) == 0 && [v21 count] != 1)
     {
       goto LABEL_113;
     }
   }
 
-  v23 = [v4 bluetoothServiceUUID];
+  bluetoothServiceUUID = [descriptorCopy bluetoothServiceUUID];
 
-  if (v23)
+  if (bluetoothServiceUUID)
   {
     if ((v11 & 1) == 0)
     {
@@ -2535,17 +2535,17 @@ LABEL_103:
       goto LABEL_104;
     }
 
-    v24 = [v4 bluetoothServiceUUID];
-    v23 = [v24 UUIDString];
+    bluetoothServiceUUID2 = [descriptorCopy bluetoothServiceUUID];
+    bluetoothServiceUUID = [bluetoothServiceUUID2 UUIDString];
 
     v25 = [v79 objectForKeyedSubscript:@"NSAccessorySetupBluetoothServices"];
     v26 = v25;
-    if ((v78 & 1) == 0 && !v25)
+    if ((options & 1) == 0 && !v25)
     {
       goto LABEL_102;
     }
 
-    if ((v78 & 1) == 0)
+    if ((options & 1) == 0)
     {
       if (![v25 count])
       {
@@ -2554,7 +2554,7 @@ LABEL_114:
         goto LABEL_115;
       }
 
-      if (([v26 containsObject:v23] & 1) == 0)
+      if (([v26 containsObject:bluetoothServiceUUID] & 1) == 0)
       {
 LABEL_115:
         FatalErrorF();
@@ -2565,16 +2565,16 @@ LABEL_115:
     v16 = 1;
   }
 
-  v27 = [v4 bluetoothManufacturerDataBlob];
-  if (v27)
+  bluetoothManufacturerDataBlob = [descriptorCopy bluetoothManufacturerDataBlob];
+  if (bluetoothManufacturerDataBlob)
   {
   }
 
   else
   {
-    v23 = [v4 bluetoothManufacturerDataMask];
+    bluetoothServiceUUID = [descriptorCopy bluetoothManufacturerDataMask];
 
-    if (!v23)
+    if (!bluetoothServiceUUID)
     {
       goto LABEL_37;
     }
@@ -2585,7 +2585,7 @@ LABEL_115:
     goto LABEL_88;
   }
 
-  if (![v4 bluetoothCompanyIdentifier])
+  if (![descriptorCopy bluetoothCompanyIdentifier])
   {
 LABEL_89:
     [ASAccessorySession _validateDiscoveryDescriptor:];
@@ -2594,8 +2594,8 @@ LABEL_90:
     goto LABEL_91;
   }
 
-  v28 = [v4 bluetoothManufacturerDataBlob];
-  if (!v28 || (v23 = v28, [v4 bluetoothManufacturerDataMask], v29 = objc_claimAutoreleasedReturnValue(), v29, v23, !v29))
+  bluetoothManufacturerDataBlob2 = [descriptorCopy bluetoothManufacturerDataBlob];
+  if (!bluetoothManufacturerDataBlob2 || (bluetoothServiceUUID = bluetoothManufacturerDataBlob2, [descriptorCopy bluetoothManufacturerDataMask], v29 = objc_claimAutoreleasedReturnValue(), v29, bluetoothServiceUUID, !v29))
   {
     [ASAccessorySession _validateDiscoveryDescriptor:];
 LABEL_88:
@@ -2603,16 +2603,16 @@ LABEL_88:
     goto LABEL_89;
   }
 
-  v23 = [v4 bluetoothManufacturerDataBlob];
-  if (![v23 length])
+  bluetoothServiceUUID = [descriptorCopy bluetoothManufacturerDataBlob];
+  if (![bluetoothServiceUUID length])
   {
 LABEL_91:
 
     goto LABEL_92;
   }
 
-  v30 = [v4 bluetoothManufacturerDataMask];
-  v31 = [v30 length];
+  bluetoothManufacturerDataMask = [descriptorCopy bluetoothManufacturerDataMask];
+  v31 = [bluetoothManufacturerDataMask length];
 
   if (!v31)
   {
@@ -2621,10 +2621,10 @@ LABEL_92:
     goto LABEL_93;
   }
 
-  v23 = [v4 bluetoothManufacturerDataBlob];
-  v32 = [v23 length];
-  v33 = [v4 bluetoothManufacturerDataMask];
-  v34 = [v33 length];
+  bluetoothServiceUUID = [descriptorCopy bluetoothManufacturerDataBlob];
+  v32 = [bluetoothServiceUUID length];
+  bluetoothManufacturerDataMask2 = [descriptorCopy bluetoothManufacturerDataMask];
+  v34 = [bluetoothManufacturerDataMask2 length];
 
   if (v32 != v34)
   {
@@ -2636,16 +2636,16 @@ LABEL_94:
   }
 
 LABEL_37:
-  v35 = [v4 bluetoothServiceDataBlob];
-  if (v35)
+  bluetoothServiceDataBlob = [descriptorCopy bluetoothServiceDataBlob];
+  if (bluetoothServiceDataBlob)
   {
   }
 
   else
   {
-    v23 = [v4 bluetoothServiceDataMask];
+    bluetoothServiceUUID = [descriptorCopy bluetoothServiceDataMask];
 
-    if (!v23)
+    if (!bluetoothServiceUUID)
     {
       goto LABEL_47;
     }
@@ -2656,39 +2656,39 @@ LABEL_37:
     goto LABEL_94;
   }
 
-  v23 = [v4 bluetoothServiceUUID];
+  bluetoothServiceUUID = [descriptorCopy bluetoothServiceUUID];
 
-  if (!v23)
+  if (!bluetoothServiceUUID)
   {
 LABEL_95:
     [ASAccessorySession _validateDiscoveryDescriptor:];
     goto LABEL_96;
   }
 
-  v36 = [v4 bluetoothServiceDataBlob];
-  if (!v36)
+  bluetoothServiceDataBlob2 = [descriptorCopy bluetoothServiceDataBlob];
+  if (!bluetoothServiceDataBlob2)
   {
     goto LABEL_90;
   }
 
-  v23 = v36;
-  v37 = [v4 bluetoothServiceDataMask];
+  bluetoothServiceUUID = bluetoothServiceDataBlob2;
+  bluetoothServiceDataMask = [descriptorCopy bluetoothServiceDataMask];
 
-  if (!v37)
+  if (!bluetoothServiceDataMask)
   {
     goto LABEL_90;
   }
 
-  v23 = [v4 bluetoothServiceDataBlob];
-  if (![v23 length])
+  bluetoothServiceUUID = [descriptorCopy bluetoothServiceDataBlob];
+  if (![bluetoothServiceUUID length])
   {
 LABEL_96:
 
     goto LABEL_97;
   }
 
-  v38 = [v4 bluetoothServiceDataMask];
-  v39 = [v38 length];
+  bluetoothServiceDataMask2 = [descriptorCopy bluetoothServiceDataMask];
+  v39 = [bluetoothServiceDataMask2 length];
 
   if (!v39)
   {
@@ -2697,10 +2697,10 @@ LABEL_97:
     goto LABEL_98;
   }
 
-  v40 = [v4 bluetoothServiceDataBlob];
-  v41 = [v40 length];
-  v42 = [v4 bluetoothServiceDataMask];
-  v43 = [v42 length];
+  bluetoothServiceDataBlob3 = [descriptorCopy bluetoothServiceDataBlob];
+  v41 = [bluetoothServiceDataBlob3 length];
+  bluetoothServiceDataMask3 = [descriptorCopy bluetoothServiceDataMask];
+  v43 = [bluetoothServiceDataMask3 length];
 
   if (v41 != v43)
   {
@@ -2710,9 +2710,9 @@ LABEL_98:
   }
 
 LABEL_47:
-  v44 = [v4 bluetoothNameSubstring];
+  bluetoothNameSubstring = [descriptorCopy bluetoothNameSubstring];
 
-  if (!v44)
+  if (!bluetoothNameSubstring)
   {
     goto LABEL_62;
   }
@@ -2732,7 +2732,7 @@ LABEL_105:
   }
 
   v45 = [v79 objectForKeyedSubscript:@"NSAccessorySetupBluetoothNames"];
-  v46 = [v4 bluetoothNameSubstring];
+  bluetoothNameSubstring2 = [descriptorCopy bluetoothNameSubstring];
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
@@ -2752,7 +2752,7 @@ LABEL_52:
         objc_enumerationMutation(v47);
       }
 
-      if ([v46 containsString:*(*(&v80 + 1) + 8 * v51)])
+      if ([bluetoothNameSubstring2 containsString:*(*(&v80 + 1) + 8 * v51)])
       {
         goto LABEL_60;
       }
@@ -2770,17 +2770,17 @@ LABEL_52:
     }
   }
 
-  if ((v78 & 1) == 0)
+  if ((options & 1) == 0)
   {
-    v77 = v46;
+    v77 = bluetoothNameSubstring2;
     FatalErrorF();
 LABEL_60:
   }
 
 LABEL_62:
-  v52 = [v4 SSID];
+  sSID = [descriptorCopy SSID];
 
-  if (!v52)
+  if (!sSID)
   {
     goto LABEL_67;
   }
@@ -2790,8 +2790,8 @@ LABEL_62:
     goto LABEL_105;
   }
 
-  v53 = [v4 SSID];
-  v54 = [v53 length];
+  sSID2 = [descriptorCopy SSID];
+  v54 = [sSID2 length];
 
   if (!v54)
   {
@@ -2802,9 +2802,9 @@ LABEL_107:
     goto LABEL_108;
   }
 
-  v55 = [v4 wifiAwareServiceName];
+  wifiAwareServiceName = [descriptorCopy wifiAwareServiceName];
 
-  if (v55)
+  if (wifiAwareServiceName)
   {
 LABEL_108:
     [ASAccessorySession _validateDiscoveryDescriptor:];
@@ -2813,9 +2813,9 @@ LABEL_108:
 
   v16 = 1;
 LABEL_67:
-  v56 = [v4 SSIDPrefix];
+  sSIDPrefix = [descriptorCopy SSIDPrefix];
 
-  if (!v56)
+  if (!sSIDPrefix)
   {
     goto LABEL_72;
   }
@@ -2825,8 +2825,8 @@ LABEL_67:
     goto LABEL_107;
   }
 
-  v57 = [v4 SSIDPrefix];
-  v58 = [v57 length];
+  sSIDPrefix2 = [descriptorCopy SSIDPrefix];
+  v58 = [sSIDPrefix2 length];
 
   if (!v58)
   {
@@ -2837,9 +2837,9 @@ LABEL_110:
     goto LABEL_111;
   }
 
-  v59 = [v4 wifiAwareServiceName];
+  wifiAwareServiceName2 = [descriptorCopy wifiAwareServiceName];
 
-  if (v59)
+  if (wifiAwareServiceName2)
   {
 LABEL_111:
     [ASAccessorySession _validateDiscoveryDescriptor:];
@@ -2852,36 +2852,36 @@ LABEL_113:
 
   v16 = 1;
 LABEL_72:
-  v60 = [v4 wifiAwareServiceName];
+  wifiAwareServiceName3 = [descriptorCopy wifiAwareServiceName];
 
-  if (v60)
+  if (wifiAwareServiceName3)
   {
-    v61 = [v4 wifiAwareServiceName];
+    wifiAwareServiceName4 = [descriptorCopy wifiAwareServiceName];
     v62 = [v79 objectForKeyedSubscript:@"WiFiAwareServices"];
-    v63 = [v62 allKeys];
-    v64 = [v63 containsObject:v61];
+    allKeys = [v62 allKeys];
+    v64 = [allKeys containsObject:wifiAwareServiceName4];
 
     if (v64)
     {
-      if (![v4 wifiAwareServiceRole])
+      if (![descriptorCopy wifiAwareServiceRole])
       {
-        [v4 setWifiAwareServiceRole:10];
+        [descriptorCopy setWifiAwareServiceRole:10];
       }
 
-      if ([v4 wifiAwareServiceRole] != 20)
+      if ([descriptorCopy wifiAwareServiceRole] != 20)
       {
         goto LABEL_79;
       }
 
-      v65 = [v62 objectForKeyedSubscript:v61];
-      v66 = [v65 allKeys];
-      v67 = [v66 containsObject:@"Publishable"];
+      v65 = [v62 objectForKeyedSubscript:wifiAwareServiceName4];
+      allKeys2 = [v65 allKeys];
+      v67 = [allKeys2 containsObject:@"Publishable"];
 
       if (v67)
       {
 
 LABEL_79:
-        if ([v4 wifiAwareServiceRole] != 10)
+        if ([descriptorCopy wifiAwareServiceRole] != 10)
         {
 LABEL_82:
 
@@ -2889,9 +2889,9 @@ LABEL_82:
           goto LABEL_83;
         }
 
-        v68 = [v62 objectForKeyedSubscript:v61];
-        v69 = [v68 allKeys];
-        v70 = [v69 containsObject:@"Subscribable"];
+        v68 = [v62 objectForKeyedSubscript:wifiAwareServiceName4];
+        allKeys3 = [v68 allKeys];
+        v70 = [allKeys3 containsObject:@"Subscribable"];
 
         if (v70)
         {
@@ -2913,8 +2913,8 @@ LABEL_116:
   }
 
 LABEL_83:
-  v71 = [v4 SSID];
-  if (!v71 || (v72 = v71, [v4 SSIDPrefix], v73 = objc_claimAutoreleasedReturnValue(), v73, v72, !v73))
+  sSID3 = [descriptorCopy SSID];
+  if (!sSID3 || (v72 = sSID3, [descriptorCopy SSIDPrefix], v73 = objc_claimAutoreleasedReturnValue(), v73, v72, !v73))
   {
     if (v16)
     {
@@ -2950,15 +2950,15 @@ void *__51__ASAccessorySession__validateDiscoveryDescriptor___block_invoke(uint6
   return v4;
 }
 
-- (void)_validateMigrationDisplayItem:(id)a3
+- (void)_validateMigrationDisplayItem:(id)item
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 infoDictionary];
+  itemCopy = item;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
-  v31 = v5;
-  [v5 objectForKeyedSubscript:@"NSAccessorySetupKitSupports"];
+  v31 = infoDictionary;
+  [infoDictionary objectForKeyedSubscript:@"NSAccessorySetupKitSupports"];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -2996,11 +2996,11 @@ void *__51__ASAccessorySession__validateDiscoveryDescriptor___block_invoke(uint6
     LOBYTE(v10) = 0;
   }
 
-  v14 = [v3 peripheralIdentifier];
-  if (!v14)
+  peripheralIdentifier = [itemCopy peripheralIdentifier];
+  if (!peripheralIdentifier)
   {
-    v14 = [v3 hotspotSSID];
-    if (!v14)
+    peripheralIdentifier = [itemCopy hotspotSSID];
+    if (!peripheralIdentifier)
     {
       goto LABEL_29;
     }
@@ -3008,13 +3008,13 @@ void *__51__ASAccessorySession__validateDiscoveryDescriptor___block_invoke(uint6
 
   while (1)
   {
-    v15 = [v3 hotspotSSID];
-    v16 = v15;
-    if (((v15 != 0) & v9) == 1)
+    hotspotSSID = [itemCopy hotspotSSID];
+    descriptor = hotspotSSID;
+    if (((hotspotSSID != 0) & v9) == 1)
     {
-      v17 = [v3 hotspotSSID];
+      hotspotSSID2 = [itemCopy hotspotSSID];
 
-      if (!v17)
+      if (!hotspotSSID2)
       {
         goto LABEL_22;
       }
@@ -3023,7 +3023,7 @@ void *__51__ASAccessorySession__validateDiscoveryDescriptor___block_invoke(uint6
     else
     {
 
-      if (v16)
+      if (descriptor)
       {
 LABEL_22:
         FatalErrorF();
@@ -3033,40 +3033,40 @@ LABEL_23:
       }
     }
 
-    if (![v3 wifiAwarePairedDeviceID])
+    if (![itemCopy wifiAwarePairedDeviceID])
     {
       goto LABEL_24;
     }
 
-    v16 = [v3 descriptor];
-    v18 = [v16 wifiAwareServiceName];
-    if (!v18)
+    descriptor = [itemCopy descriptor];
+    wifiAwareServiceName = [descriptor wifiAwareServiceName];
+    if (!wifiAwareServiceName)
     {
       goto LABEL_23;
     }
 
-    v19 = v18;
-    if ((v9 & 1) == 0 || ![v3 wifiAwarePairedDeviceID])
+    v19 = wifiAwareServiceName;
+    if ((v9 & 1) == 0 || ![itemCopy wifiAwarePairedDeviceID])
     {
       break;
     }
 
-    v20 = [v3 descriptor];
-    v21 = [v20 wifiAwareServiceName];
+    descriptor2 = [itemCopy descriptor];
+    wifiAwareServiceName2 = [descriptor2 wifiAwareServiceName];
 
-    if (!v21)
+    if (!wifiAwareServiceName2)
     {
       goto LABEL_33;
     }
 
 LABEL_24:
-    v22 = [v3 peripheralIdentifier];
-    v23 = v22;
-    if (((v22 != 0) & v10) == 1)
+    peripheralIdentifier2 = [itemCopy peripheralIdentifier];
+    v23 = peripheralIdentifier2;
+    if (((peripheralIdentifier2 != 0) & v10) == 1)
     {
-      v24 = [v3 peripheralIdentifier];
+      peripheralIdentifier3 = [itemCopy peripheralIdentifier];
 
-      if (v24)
+      if (peripheralIdentifier3)
       {
         goto LABEL_26;
       }
@@ -3086,12 +3086,12 @@ LABEL_26:
 
     FatalErrorF();
 LABEL_29:
-    if ([v3 wifiAwarePairedDeviceID])
+    if ([itemCopy wifiAwarePairedDeviceID])
     {
-      v26 = [v3 descriptor];
-      v27 = [v26 wifiAwareServiceName];
+      descriptor3 = [itemCopy descriptor];
+      wifiAwareServiceName3 = [descriptor3 wifiAwareServiceName];
 
-      if (v27)
+      if (wifiAwareServiceName3)
       {
         continue;
       }
@@ -3105,9 +3105,9 @@ LABEL_33:
   [(ASAccessorySession *)v28 _verifyCoreBluetoothStateToActivatePicker:v29, v30];
 }
 
-- (BOOL)_verifyCoreBluetoothStateToActivatePicker:(id)a3
+- (BOOL)_verifyCoreBluetoothStateToActivatePicker:(id)picker
 {
-  v4 = a3;
+  pickerCopy = picker;
   if ([(ASAccessorySession *)self _hasBluetoothASK])
   {
     v8 = 0;
@@ -3119,7 +3119,7 @@ LABEL_33:
     v7[2] = __64__ASAccessorySession__verifyCoreBluetoothStateToActivatePicker___block_invoke;
     v7[3] = &unk_278A01DE0;
     v7[4] = &v8;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [pickerCopy enumerateObjectsUsingBlock:v7];
     if ((v9[3] & 1) == 0)
     {
       goto LABEL_12;
@@ -3192,10 +3192,10 @@ void __64__ASAccessorySession__verifyCoreBluetoothStateToActivatePicker___block_
 - (BOOL)_hasBluetoothASK
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 infoDictionary];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
-  v4 = [v3 objectForKey:@"NSAccessorySetupKitSupports"];
+  v4 = [infoDictionary objectForKey:@"NSAccessorySetupKitSupports"];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;

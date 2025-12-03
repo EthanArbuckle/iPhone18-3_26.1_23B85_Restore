@@ -1,5 +1,5 @@
 @interface CFXEffectEditorViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (void)CFX_beginTextEditing;
 - (void)CFX_removeEffect;
@@ -9,20 +9,20 @@
 
 @implementation CFXEffectEditorViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"removeButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"isTextEditing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"CFX_endTextEditing:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"CFX_beginTextEditing" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"CFX_removeEffect" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"endEditingAnimated:withCompletionBlock:" withFullSignature:{"v", "B", "@?", 0}];
-  [v3 validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"tapRemoveButton:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CFXFullScreenTextEditViewController"];
-  [v3 validateClass:@"CFXCameraViewController"];
-  [v3 validateClass:@"CFXCameraViewController" hasInstanceMethod:@"captureViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CFXCameraViewController" hasInstanceMethod:@"effectBrowserViewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"removeButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"isTextEditing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"CFX_endTextEditing:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"CFX_beginTextEditing" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"CFX_removeEffect" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"endEditingAnimated:withCompletionBlock:" withFullSignature:{"v", "B", "@?", 0}];
+  [validationsCopy validateClass:@"CFXEffectEditorView" hasInstanceMethod:@"tapRemoveButton:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CFXFullScreenTextEditViewController"];
+  [validationsCopy validateClass:@"CFXCameraViewController"];
+  [validationsCopy validateClass:@"CFXCameraViewController" hasInstanceMethod:@"captureViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CFXCameraViewController" hasInstanceMethod:@"effectBrowserViewController" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -50,7 +50,7 @@
     v8 = 3221225472;
     v9 = __62__CFXEffectEditorViewAccessibility_accessibilityPerformEscape__block_invoke;
     v10 = &unk_29F2ABE88;
-    v11 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
     return 1;
   }
@@ -107,15 +107,15 @@
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 _accessibilityAdditionalElements];
-      [(CFXEffectEditorViewAccessibility *)self _axSetParentElements:v14];
+      _accessibilityAdditionalElements = [v12 _accessibilityAdditionalElements];
+      [(CFXEffectEditorViewAccessibility *)self _axSetParentElements:_accessibilityAdditionalElements];
 
       [(CFXEffectEditorViewAccessibility *)self _axSetParentView:v13];
     }
 
     [v13 _accessibilitySetAdditionalElements:0];
-    v18 = self;
-    v15 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v18 count:1];
+    selfCopy = self;
+    v15 = [MEMORY[0x29EDB8D80] arrayWithObjects:&selfCopy count:1];
     [v13 setAccessibilityElements:v15];
 
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
@@ -148,16 +148,16 @@ uint64_t __56__CFXEffectEditorViewAccessibility_CFX_beginTextEditing__block_invo
 {
   if ([(CFXEffectEditorViewAccessibility *)self safeBoolForKey:@"isTextEditing"])
   {
-    v3 = [(CFXEffectEditorViewAccessibility *)self _axParentView];
+    _axParentView = [(CFXEffectEditorViewAccessibility *)self _axParentView];
 
-    if (v3)
+    if (_axParentView)
     {
-      v4 = [(CFXEffectEditorViewAccessibility *)self _axParentView];
-      [v4 setAccessibilityElements:0];
+      _axParentView2 = [(CFXEffectEditorViewAccessibility *)self _axParentView];
+      [_axParentView2 setAccessibilityElements:0];
 
-      v5 = [(CFXEffectEditorViewAccessibility *)self _axParentView];
-      v6 = [(CFXEffectEditorViewAccessibility *)self _axParentElements];
-      [v5 _accessibilitySetAdditionalElements:v6];
+      _axParentView3 = [(CFXEffectEditorViewAccessibility *)self _axParentView];
+      _axParentElements = [(CFXEffectEditorViewAccessibility *)self _axParentElements];
+      [_axParentView3 _accessibilitySetAdditionalElements:_axParentElements];
 
       [(CFXEffectEditorViewAccessibility *)self _axSetParentView:0];
     }

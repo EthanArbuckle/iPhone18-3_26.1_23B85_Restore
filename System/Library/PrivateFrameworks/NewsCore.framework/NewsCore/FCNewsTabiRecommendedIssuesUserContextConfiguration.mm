@@ -1,6 +1,6 @@
 @interface FCNewsTabiRecommendedIssuesUserContextConfiguration
-- (FCNewsTabiRecommendedIssuesUserContextConfiguration)initWithDictionary:(id)a3;
-- (FCNewsTabiRecommendedIssuesUserContextConfiguration)initWithMaximumTagCount:(int64_t)a3 maximumTopicTagsPerHeadline:(int64_t)a4;
+- (FCNewsTabiRecommendedIssuesUserContextConfiguration)initWithDictionary:(id)dictionary;
+- (FCNewsTabiRecommendedIssuesUserContextConfiguration)initWithMaximumTagCount:(int64_t)count maximumTopicTagsPerHeadline:(int64_t)headline;
 - (id)description;
 @end
 
@@ -16,32 +16,32 @@
   return v3;
 }
 
-- (FCNewsTabiRecommendedIssuesUserContextConfiguration)initWithMaximumTagCount:(int64_t)a3 maximumTopicTagsPerHeadline:(int64_t)a4
+- (FCNewsTabiRecommendedIssuesUserContextConfiguration)initWithMaximumTagCount:(int64_t)count maximumTopicTagsPerHeadline:(int64_t)headline
 {
   v7.receiver = self;
   v7.super_class = FCNewsTabiRecommendedIssuesUserContextConfiguration;
   result = [(FCNewsTabiRecommendedIssuesUserContextConfiguration *)&v7 init];
   if (result)
   {
-    result->_maximumTagCount = a3;
-    result->_maximumTopicTagsPerHeadline = a4;
+    result->_maximumTagCount = count;
+    result->_maximumTopicTagsPerHeadline = headline;
   }
 
   return result;
 }
 
-- (FCNewsTabiRecommendedIssuesUserContextConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiRecommendedIssuesUserContextConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = FCNewsTabiRecommendedIssuesUserContextConfiguration;
   v5 = [(FCNewsTabiRecommendedIssuesUserContextConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = FCAppConfigurationNumberValue(v4, @"maximumTagCount", &unk_1F2E70F08);
+    v6 = FCAppConfigurationNumberValue(dictionaryCopy, @"maximumTagCount", &unk_1F2E70F08);
     v5->_maximumTagCount = [v6 integerValue];
 
-    v7 = FCAppConfigurationNumberValue(v4, @"maximumTopicTagsPerHeadline", &unk_1F2E70F20);
+    v7 = FCAppConfigurationNumberValue(dictionaryCopy, @"maximumTopicTagsPerHeadline", &unk_1F2E70F20);
     v5->_maximumTopicTagsPerHeadline = [v7 integerValue];
   }
 

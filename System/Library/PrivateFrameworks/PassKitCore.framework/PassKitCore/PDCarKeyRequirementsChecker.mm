@@ -1,27 +1,27 @@
 @interface PDCarKeyRequirementsChecker
 - (BOOL)carAccessFeatureAvailable;
 - (BOOL)deviceSupportsCredentials;
-- (PDCarKeyRequirementsChecker)initWithWebServiceCoordinator:(id)a3 databaseManager:(id)a4;
+- (PDCarKeyRequirementsChecker)initWithWebServiceCoordinator:(id)coordinator databaseManager:(id)manager;
 - (id)_carAccessFeature;
-- (id)supportedTerminalForConfiguration:(id)a3;
-- (id)supportedTerminalForTCIs:(id)a3 brandCode:(int64_t)a4;
-- (void)canAddCarKeyPassWithConfiguration:(id)a3 completion:(id)a4;
+- (id)supportedTerminalForConfiguration:(id)configuration;
+- (id)supportedTerminalForTCIs:(id)is brandCode:(int64_t)code;
+- (void)canAddCarKeyPassWithConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation PDCarKeyRequirementsChecker
 
-- (PDCarKeyRequirementsChecker)initWithWebServiceCoordinator:(id)a3 databaseManager:(id)a4
+- (PDCarKeyRequirementsChecker)initWithWebServiceCoordinator:(id)coordinator databaseManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = PDCarKeyRequirementsChecker;
   v9 = [(PDCarKeyRequirementsChecker *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_webServiceCoordinator, a3);
-    objc_storeStrong(&v10->_databaseManager, a4);
+    objc_storeStrong(&v9->_webServiceCoordinator, coordinator);
+    objc_storeStrong(&v10->_databaseManager, manager);
   }
 
   return v10;
@@ -47,42 +47,42 @@
 
 - (BOOL)carAccessFeatureAvailable
 {
-  v2 = [(PDCarKeyRequirementsChecker *)self _carAccessFeature];
-  v3 = [v2 supportedTerminals];
-  v4 = [v3 count] != 0;
+  _carAccessFeature = [(PDCarKeyRequirementsChecker *)self _carAccessFeature];
+  supportedTerminals = [_carAccessFeature supportedTerminals];
+  v4 = [supportedTerminals count] != 0;
 
   return v4;
 }
 
-- (void)canAddCarKeyPassWithConfiguration:(id)a3 completion:(id)a4
+- (void)canAddCarKeyPassWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [v6 supportedRadioTechnologies];
-    if (!v8)
+    supportedRadioTechnologies = [configurationCopy supportedRadioTechnologies];
+    if (!supportedRadioTechnologies)
     {
       v9 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v63 = v6;
+        v63 = configurationCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Defaulting to NFC due to missing or invalid radioTechnologies for configuration: %@", buf, 0xCu);
       }
 
-      v8 = 1;
+      supportedRadioTechnologies = 1;
     }
 
     if (PKRadioTechnologyForConfigurationTechnology())
     {
       if ([(PDCarKeyRequirementsChecker *)self deviceSupportsCredentials])
       {
-        v10 = [v6 manufacturerIdentifier];
-        if (v10)
+        manufacturerIdentifier = [configurationCopy manufacturerIdentifier];
+        if (manufacturerIdentifier)
         {
-          v11 = [v6 issuerIdentifier];
-          v12 = [PKDAManager isCarKeySupportedForManufacturerIdentifier:v10 issuerIdentifier:v11 productPlanIdentifier:0];
+          issuerIdentifier = [configurationCopy issuerIdentifier];
+          v12 = [PKDAManager isCarKeySupportedForManufacturerIdentifier:manufacturerIdentifier issuerIdentifier:issuerIdentifier productPlanIdentifier:0];
 
           if ((v12 & 1) == 0)
           {
@@ -90,12 +90,12 @@
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v63 = v6;
+              v63 = configurationCopy;
               _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Vehicle onboarding check failed for configuration: %@", buf, 0xCu);
             }
 
-            v14 = v7[2];
-            v15 = v7;
+            v14 = completionCopy[2];
+            v15 = completionCopy;
             v16 = 0;
             goto LABEL_24;
           }
@@ -110,28 +110,28 @@
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Skipping feature enabled check because Wallet is deleted. User will be prompted to redownload Wallet before the configuration can be used.", buf, 2u);
           }
 
-          v14 = v7[2];
-          v15 = v7;
+          v14 = completionCopy[2];
+          v15 = completionCopy;
           v16 = 1;
 LABEL_24:
           v14(v15, v16, 0, 0);
           goto LABEL_25;
         }
 
-        v24 = [v6 pairedReaderIdentifier];
-        if ([v24 length])
+        pairedReaderIdentifier = [configurationCopy pairedReaderIdentifier];
+        if ([pairedReaderIdentifier length])
         {
-          v25 = objc_alloc_init(PDSecureElementPassDatabaseRequest);
+          _carAccessFeature = objc_alloc_init(PDSecureElementPassDatabaseRequest);
           v26 = [NSSet setWithObjects:&off_1008A2A08, &off_1008A2A20, &off_1008A2A38, &off_1008A2A50, &off_1008A2A68, &off_1008A2A80, &off_1008A2A98, &off_1008A2AB0, &off_1008A2AC8, 0];
-          [(PDSecureElementPassDatabaseRequest *)v25 setPrimaryPaymentApplicationStates:v26];
-          [(PDSecureElementPassDatabaseRequest *)v25 setReaderIdentifier:v24];
-          if ([(PDDatabaseManager *)self->_databaseManager countOfPassesForRequest:v25])
+          [(PDSecureElementPassDatabaseRequest *)_carAccessFeature setPrimaryPaymentApplicationStates:v26];
+          [(PDSecureElementPassDatabaseRequest *)_carAccessFeature setReaderIdentifier:pairedReaderIdentifier];
+          if ([(PDDatabaseManager *)self->_databaseManager countOfPassesForRequest:_carAccessFeature])
           {
             v27 = PKLogFacilityTypeGetObject();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v63 = v24;
+              v63 = pairedReaderIdentifier;
               _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Active credentialed pass already provisioned for '%@'", buf, 0xCu);
             }
 
@@ -141,28 +141,28 @@ LABEL_24:
             v29 = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
             v30 = [NSError errorWithDomain:v28 code:11 userInfo:v29];
 
-            (v7[2])(v7, 0, 0, v30);
+            (completionCopy[2])(completionCopy, 0, 0, v30);
 LABEL_55:
 
             goto LABEL_25;
           }
         }
 
-        v25 = [(PDCarKeyRequirementsChecker *)self _carAccessFeature];
-        if (v25)
+        _carAccessFeature = [(PDCarKeyRequirementsChecker *)self _carAccessFeature];
+        if (_carAccessFeature)
         {
-          v31 = [v6 issuerIdentifier];
-          v26 = v31;
-          if (v31)
+          issuerIdentifier2 = [configurationCopy issuerIdentifier];
+          v26 = issuerIdentifier2;
+          if (issuerIdentifier2)
           {
-            v32 = v31;
-            v46 = v25;
-            v47 = v24;
+            v32 = issuerIdentifier2;
+            v46 = _carAccessFeature;
+            v47 = pairedReaderIdentifier;
             v51 = 0u;
             v52 = 0u;
             v49 = 0u;
             v50 = 0u;
-            obj = [(PDSecureElementPassDatabaseRequest *)v25 supportedTerminals];
+            obj = [(PDSecureElementPassDatabaseRequest *)_carAccessFeature supportedTerminals];
             v33 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
             if (v33)
             {
@@ -178,21 +178,21 @@ LABEL_55:
                   }
 
                   v37 = *(*(&v49 + 1) + 8 * i);
-                  v38 = [v37 partnerIdentifier];
-                  v39 = [v38 isEqualToString:v32];
+                  partnerIdentifier = [v37 partnerIdentifier];
+                  v39 = [partnerIdentifier isEqualToString:v32];
 
                   if (v39)
                   {
-                    if (!v10)
+                    if (!manufacturerIdentifier)
                     {
-                      v44 = [v37 manufacturerIdentifier];
-                      [v6 setManufacturerIdentifier:v44];
+                      manufacturerIdentifier2 = [v37 manufacturerIdentifier];
+                      [configurationCopy setManufacturerIdentifier:manufacturerIdentifier2];
                     }
 
-                    (v7[2])(v7, 1, v37, 0);
+                    (completionCopy[2])(completionCopy, 1, v37, 0);
 
-                    v25 = v46;
-                    v24 = v47;
+                    _carAccessFeature = v46;
+                    pairedReaderIdentifier = v47;
                     v26 = v32;
                     goto LABEL_55;
                   }
@@ -217,9 +217,9 @@ LABEL_55:
               _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Credentialed pass feature is supported on device but not with issuer: %@", buf, 0xCu);
             }
 
-            (v7[2])(v7, 0, 0, 0);
-            v25 = v46;
-            v24 = v47;
+            (completionCopy[2])(completionCopy, 0, 0, 0);
+            _carAccessFeature = v46;
+            pairedReaderIdentifier = v47;
           }
 
           else
@@ -231,7 +231,7 @@ LABEL_55:
               _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "Credentialed pass feature is supported and no issuer provided. Allowing flow to proceed because it will be blocked with SLG if issuer unsupported.", buf, 2u);
             }
 
-            (v7[2])(v7, 1, 0, 0);
+            (completionCopy[2])(completionCopy, 1, 0, 0);
           }
         }
 
@@ -250,7 +250,7 @@ LABEL_55:
           v43 = [NSDictionary dictionaryWithObjects:&v55 forKeys:&v54 count:1];
           v26 = [NSError errorWithDomain:v42 code:21 userInfo:v43];
 
-          (v7[2])(v7, 0, 0, v26);
+          (completionCopy[2])(completionCopy, 0, 0, v26);
         }
 
         goto LABEL_55;
@@ -276,7 +276,7 @@ LABEL_55:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v63 = v8;
+        v63 = supportedRadioTechnologies;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Device does not support the radio technologies %lu", buf, 0xCu);
       }
 
@@ -288,37 +288,37 @@ LABEL_55:
     }
 
     v22 = [NSDictionary dictionaryWithObjects:v19 forKeys:v20 count:1];
-    v10 = [NSError errorWithDomain:v18 code:20 userInfo:v22];
+    manufacturerIdentifier = [NSError errorWithDomain:v18 code:20 userInfo:v22];
 
-    (v7[2])(v7, 0, 0, v10);
+    (completionCopy[2])(completionCopy, 0, 0, manufacturerIdentifier);
 LABEL_25:
   }
 }
 
-- (id)supportedTerminalForTCIs:(id)a3 brandCode:(int64_t)a4
+- (id)supportedTerminalForTCIs:(id)is brandCode:(int64_t)code
 {
-  v6 = a3;
-  v7 = [(PDCarKeyRequirementsChecker *)self _carAccessFeature];
-  v31 = v7;
-  if (!v7)
+  isCopy = is;
+  _carAccessFeature = [(PDCarKeyRequirementsChecker *)self _carAccessFeature];
+  v31 = _carAccessFeature;
+  if (!_carAccessFeature)
   {
-    a4 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(a4, OS_LOG_TYPE_DEFAULT))
+    code = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(code, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, a4, OS_LOG_TYPE_DEFAULT, "Native pairing feature is not supported on device", buf, 2u);
+      _os_log_impl(&_mh_execute_header, code, OS_LOG_TYPE_DEFAULT, "Native pairing feature is not supported on device", buf, 2u);
     }
 
     v12 = 0;
     goto LABEL_36;
   }
 
-  v8 = v7;
-  if (a4)
+  v8 = _carAccessFeature;
+  if (code)
   {
-    v9 = [v7 brandIdentifierForBrandCode];
-    v10 = [NSNumber numberWithInteger:a4];
-    a4 = [v9 objectForKey:v10];
+    brandIdentifierForBrandCode = [_carAccessFeature brandIdentifierForBrandCode];
+    v10 = [NSNumber numberWithInteger:code];
+    code = [brandIdentifierForBrandCode objectForKey:v10];
   }
 
   v42 = 0u;
@@ -349,8 +349,8 @@ LABEL_25:
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v13 = [v12 terminalCriteria];
-      v14 = [v13 countByEnumeratingWithState:&v36 objects:v48 count:16];
+      terminalCriteria = [v12 terminalCriteria];
+      v14 = [terminalCriteria countByEnumeratingWithState:&v36 objects:v48 count:16];
       if (!v14)
       {
 LABEL_22:
@@ -366,7 +366,7 @@ LABEL_11:
       {
         if (*v37 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(terminalCriteria);
         }
 
         v18 = *(*(&v36 + 1) + 8 * v17);
@@ -375,15 +375,15 @@ LABEL_11:
           goto LABEL_20;
         }
 
-        v19 = [v18 primaryTCIs];
-        if ([v6 intersectsSet:v19])
+        primaryTCIs = [v18 primaryTCIs];
+        if ([isCopy intersectsSet:primaryTCIs])
         {
         }
 
         else
         {
-          v20 = [v18 TCIs];
-          v21 = [v6 intersectsSet:v20];
+          tCIs = [v18 TCIs];
+          v21 = [isCopy intersectsSet:tCIs];
 
           if (!v21)
           {
@@ -391,7 +391,7 @@ LABEL_11:
           }
         }
 
-        if (!a4)
+        if (!code)
         {
           v24 = v12;
           v25 = PKLogFacilityTypeGetObject();
@@ -408,8 +408,8 @@ LABEL_11:
           goto LABEL_27;
         }
 
-        v22 = [v12 partnerIdentifier];
-        v23 = [a4 isEqualToString:v22];
+        partnerIdentifier = [v12 partnerIdentifier];
+        v23 = [code isEqualToString:partnerIdentifier];
 
         if (v23)
         {
@@ -419,7 +419,7 @@ LABEL_11:
 LABEL_20:
         if (v15 == ++v17)
         {
-          v15 = [v13 countByEnumeratingWithState:&v36 objects:v48 count:16];
+          v15 = [terminalCriteria countByEnumeratingWithState:&v36 objects:v48 count:16];
           if (v15)
           {
             goto LABEL_11;
@@ -439,7 +439,7 @@ LABEL_20:
       *buf = 138412546;
       v45 = v29;
       v46 = 2112;
-      v47 = a4;
+      codeCopy = code;
       v26 = v25;
       v27 = "Found associated terminal for field: %@ brandIdentifier: %@";
       v28 = 22;
@@ -470,19 +470,19 @@ LABEL_36:
   return v12;
 }
 
-- (id)supportedTerminalForConfiguration:(id)a3
+- (id)supportedTerminalForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(PDCarKeyRequirementsChecker *)self _carAccessFeature];
-  if (v5)
+  configurationCopy = configuration;
+  _carAccessFeature = [(PDCarKeyRequirementsChecker *)self _carAccessFeature];
+  if (_carAccessFeature)
   {
-    v6 = [v4 issuerIdentifier];
+    issuerIdentifier = [configurationCopy issuerIdentifier];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [v5 supportedTerminals];
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    supportedTerminals = [_carAccessFeature supportedTerminals];
+    v8 = [supportedTerminals countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -493,12 +493,12 @@ LABEL_36:
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(supportedTerminals);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 partnerIdentifier];
-          v14 = [v13 isEqualToString:v6];
+          partnerIdentifier = [v12 partnerIdentifier];
+          v14 = [partnerIdentifier isEqualToString:issuerIdentifier];
 
           if (v14)
           {
@@ -507,7 +507,7 @@ LABEL_36:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v23 count:16];
+        v9 = [supportedTerminals countByEnumeratingWithState:&v17 objects:v23 count:16];
         if (v9)
         {
           continue;
@@ -517,12 +517,12 @@ LABEL_36:
       }
     }
 
-    v7 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    supportedTerminals = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(supportedTerminals, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v6;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Credentialed pass feature is supported on device but not with issuer: %@", buf, 0xCu);
+      v22 = issuerIdentifier;
+      _os_log_impl(&_mh_execute_header, supportedTerminals, OS_LOG_TYPE_DEFAULT, "Credentialed pass feature is supported on device but not with issuer: %@", buf, 0xCu);
     }
 
     v15 = 0;
@@ -539,10 +539,10 @@ LABEL_14:
 
 - (id)_carAccessFeature
 {
-  v2 = [(PDPaymentWebServiceCoordinator *)self->_webServiceCoordinator sharedWebServiceContext];
-  v3 = [v2 configuration];
+  sharedWebServiceContext = [(PDPaymentWebServiceCoordinator *)self->_webServiceCoordinator sharedWebServiceContext];
+  configuration = [sharedWebServiceContext configuration];
   v4 = PKCurrentRegion();
-  v5 = [v3 featureWithType:2 inRegion:v4];
+  v5 = [configuration featureWithType:2 inRegion:v4];
 
   return v5;
 }

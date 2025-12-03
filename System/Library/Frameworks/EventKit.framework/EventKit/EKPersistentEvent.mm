@@ -2,7 +2,7 @@
 + (id)defaultPropertiesToLoad;
 + (id)eventWithRandomUUID;
 + (id)relations;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,7 +33,7 @@ uint64_t __44__EKPersistentEvent_defaultPropertiesToLoad__block_invoke()
   block[1] = 3221225472;
   block[2] = __30__EKPersistentEvent_relations__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (relations_onceToken_13 != -1)
   {
     dispatch_once(&relations_onceToken_13, block);
@@ -78,65 +78,65 @@ void __30__EKPersistentEvent_relations__block_invoke(uint64_t a1)
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKPersistentCalendarItem *)self title];
-  v6 = [(EKPersistentCalendarItem *)self calendar];
-  v7 = [(EKPersistentCalendarItem *)self allAlarmsSet];
-  v8 = [(EKPersistentCalendarItem *)self URLString];
-  v9 = [(EKPersistentCalendarItem *)self lastModifiedDate];
-  v24 = [v3 stringWithFormat:@"%@ <%p> \n\t {title = %@ \n\t calendar = %@; \n\t alarms = %@; \n\t URLString = %@; \n\t lastModified = %@}", v4, self, v5, v6, v7, v8, v9];;
+  title = [(EKPersistentCalendarItem *)self title];
+  calendar = [(EKPersistentCalendarItem *)self calendar];
+  allAlarmsSet = [(EKPersistentCalendarItem *)self allAlarmsSet];
+  uRLString = [(EKPersistentCalendarItem *)self URLString];
+  lastModifiedDate = [(EKPersistentCalendarItem *)self lastModifiedDate];
+  v24 = [v3 stringWithFormat:@"%@ <%p> \n\t {title = %@ \n\t calendar = %@; \n\t alarms = %@; \n\t URLString = %@; \n\t lastModified = %@}", v4, self, title, calendar, allAlarmsSet, uRLString, lastModifiedDate];;
 
   v23 = MEMORY[0x1E696AEC0];
   v22 = objc_opt_class();
-  v10 = [(EKPersistentCalendarItem *)self structuredLocationWithoutPrediction];
-  v11 = [(EKPersistentCalendarItem *)self travelStartLocation];
-  v12 = [(EKPersistentCalendarItem *)self startDate];
-  v13 = [(EKPersistentEvent *)self endDate];
-  v21 = [(EKPersistentCalendarItem *)self isAllDay];
-  v14 = [(EKPersistentCalendarItem *)self startTimeZoneName];
-  v15 = [(EKPersistentEvent *)self travelTime];
-  v16 = [v15 integerValue];
-  v17 = [(EKPersistentCalendarItem *)self recurrenceRulesSet];
-  v18 = [(EKPersistentCalendarItem *)self attendeesRaw];
-  v19 = [v23 stringWithFormat:@"%@ <%p> {%@ \n\t location = %@; \n\t startLocation = %@; \n\t startDate = %@; \n\t endDate = %@; \n\t allDay = %u; \n\t timeZone = %@; \n\t travelTime: %ld; \n\t recurrences = %@; \n\t attendees = %@}", v22, self, v24, v10, v11, v12, v13, v21, v14, v16, v17, v18];;
+  structuredLocationWithoutPrediction = [(EKPersistentCalendarItem *)self structuredLocationWithoutPrediction];
+  travelStartLocation = [(EKPersistentCalendarItem *)self travelStartLocation];
+  startDate = [(EKPersistentCalendarItem *)self startDate];
+  endDate = [(EKPersistentEvent *)self endDate];
+  isAllDay = [(EKPersistentCalendarItem *)self isAllDay];
+  startTimeZoneName = [(EKPersistentCalendarItem *)self startTimeZoneName];
+  travelTime = [(EKPersistentEvent *)self travelTime];
+  integerValue = [travelTime integerValue];
+  recurrenceRulesSet = [(EKPersistentCalendarItem *)self recurrenceRulesSet];
+  attendeesRaw = [(EKPersistentCalendarItem *)self attendeesRaw];
+  v19 = [v23 stringWithFormat:@"%@ <%p> {%@ \n\t location = %@; \n\t startLocation = %@; \n\t startDate = %@; \n\t endDate = %@; \n\t allDay = %u; \n\t timeZone = %@; \n\t travelTime: %ld; \n\t recurrences = %@; \n\t attendees = %@}", v22, self, v24, structuredLocationWithoutPrediction, travelStartLocation, startDate, endDate, isAllDay, startTimeZoneName, integerValue, recurrenceRulesSet, attendeesRaw];;
 
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = EKPersistentEvent;
-  v4 = [(EKPersistentCalendarItem *)&v14 copyWithZone:a3];
-  v5 = [(EKPersistentEvent *)self endDate];
-  [v4 setEndDate:v5];
+  v4 = [(EKPersistentCalendarItem *)&v14 copyWithZone:zone];
+  endDate = [(EKPersistentEvent *)self endDate];
+  [v4 setEndDate:endDate];
 
   [v4 setStatus:{-[EKPersistentEvent status](self, "status")}];
   [v4 setAvailability:{-[EKPersistentEvent availability](self, "availability")}];
   [v4 setPrivacyLevel:{-[EKPersistentEvent privacyLevel](self, "privacyLevel")}];
-  v6 = [(EKPersistentEvent *)self travelTime];
-  [v4 setTravelTime:v6];
+  travelTime = [(EKPersistentEvent *)self travelTime];
+  [v4 setTravelTime:travelTime];
 
-  v7 = [(EKPersistentEvent *)self originalStartDate];
-  [v4 setOriginalStartDate:v7];
+  originalStartDate = [(EKPersistentEvent *)self originalStartDate];
+  [v4 setOriginalStartDate:originalStartDate];
 
   [v4 setTravelAdvisoryBehavior:{-[EKPersistentEvent travelAdvisoryBehavior](self, "travelAdvisoryBehavior")}];
-  v8 = [(EKPersistentEvent *)self responseComment];
-  [v4 setResponseComment:v8];
+  responseComment = [(EKPersistentEvent *)self responseComment];
+  [v4 setResponseComment:responseComment];
 
-  v9 = [(EKPersistentEvent *)self proposedStartDate];
-  [v4 setProposedStartDate:v9];
+  proposedStartDate = [(EKPersistentEvent *)self proposedStartDate];
+  [v4 setProposedStartDate:proposedStartDate];
 
   [v4 setLocationPredictionState:{-[EKPersistentEvent locationPredictionState](self, "locationPredictionState")}];
-  v10 = [(EKPersistentEvent *)self birthdayContactIdentifier];
-  [v4 setBirthdayContactIdentifier:v10];
+  birthdayContactIdentifier = [(EKPersistentEvent *)self birthdayContactIdentifier];
+  [v4 setBirthdayContactIdentifier:birthdayContactIdentifier];
 
-  v11 = [(EKPersistentEvent *)self birthdayContactName];
-  [v4 setBirthdayContactName:v11];
+  birthdayContactName = [(EKPersistentEvent *)self birthdayContactName];
+  [v4 setBirthdayContactName:birthdayContactName];
 
-  v12 = [(EKPersistentEvent *)self birthdayID];
-  if (v12)
+  birthdayID = [(EKPersistentEvent *)self birthdayID];
+  if (birthdayID)
   {
-    [v4 setBirthdayID:v12];
+    [v4 setBirthdayID:birthdayID];
   }
 
   [v4 setCanForward:{-[EKPersistentEvent canForward](self, "canForward")}];

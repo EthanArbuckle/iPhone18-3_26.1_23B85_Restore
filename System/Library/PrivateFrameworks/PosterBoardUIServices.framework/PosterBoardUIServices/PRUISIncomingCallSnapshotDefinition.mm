@@ -1,29 +1,29 @@
 @interface PRUISIncomingCallSnapshotDefinition
-- (PRUISIncomingCallSnapshotDefinition)initWithBaseIdentifier:(id)a3 context:(id)a4 attachmentUniqueIdentifiers:(id)a5;
-- (void)applySceneSettings:(id)a3;
+- (PRUISIncomingCallSnapshotDefinition)initWithBaseIdentifier:(id)identifier context:(id)context attachmentUniqueIdentifiers:(id)identifiers;
+- (void)applySceneSettings:(id)settings;
 @end
 
 @implementation PRUISIncomingCallSnapshotDefinition
 
-- (PRUISIncomingCallSnapshotDefinition)initWithBaseIdentifier:(id)a3 context:(id)a4 attachmentUniqueIdentifiers:(id)a5
+- (PRUISIncomingCallSnapshotDefinition)initWithBaseIdentifier:(id)identifier context:(id)context attachmentUniqueIdentifiers:(id)identifiers
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  obj = a4;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 copy];
-  v12 = _PRUISIncomingCallPosterSnapshotDefinitionLevelSetsForIdentifier(v8);
-  v13 = [v12 firstObject];
-  v41 = [v13 containsLevel:{+[PRUISPosterAppearanceObservingAttachmentProvider obscurableContentAttachmentLevel](PRUISPosterAppearanceObservingAttachmentProvider, "obscurableContentAttachmentLevel")}];
-  v39 = v13;
-  v14 = [v13 containsLevel:{+[PRUISPosterAppearanceObservingAttachmentProvider overlayContentAttachmentLevel](PRUISPosterAppearanceObservingAttachmentProvider, "overlayContentAttachmentLevel")}];
-  v42 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
-  v40 = v9;
-  if (!v10 || ![v10 count])
+  identifierCopy = identifier;
+  obj = context;
+  contextCopy = context;
+  identifiersCopy = identifiers;
+  v11 = [identifierCopy copy];
+  v12 = _PRUISIncomingCallPosterSnapshotDefinitionLevelSetsForIdentifier(identifierCopy);
+  firstObject = [v12 firstObject];
+  v41 = [firstObject containsLevel:{+[PRUISPosterAppearanceObservingAttachmentProvider obscurableContentAttachmentLevel](PRUISPosterAppearanceObservingAttachmentProvider, "obscurableContentAttachmentLevel")}];
+  v39 = firstObject;
+  v14 = [firstObject containsLevel:{+[PRUISPosterAppearanceObservingAttachmentProvider overlayContentAttachmentLevel](PRUISPosterAppearanceObservingAttachmentProvider, "overlayContentAttachmentLevel")}];
+  v42 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
+  v40 = contextCopy;
+  if (!identifiersCopy || ![identifiersCopy count])
   {
     LOBYTE(v16) = 0;
-    if (!v9)
+    if (!contextCopy)
     {
       goto LABEL_21;
     }
@@ -35,17 +35,17 @@
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v15 = v10;
+  v15 = identifiersCopy;
   v16 = [v15 countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (!v16)
   {
     goto LABEL_16;
   }
 
-  v34 = v10;
-  v35 = self;
+  v34 = identifiersCopy;
+  selfCopy = self;
   v36 = v12;
-  v37 = v8;
+  v37 = identifierCopy;
   v17 = 0;
   v18 = *v49;
   do
@@ -80,20 +80,20 @@ LABEL_12:
   while (v16);
   LOBYTE(v16) = v22 | v17;
   v12 = v36;
-  v8 = v37;
-  v9 = v40;
-  v10 = v34;
-  self = v35;
+  identifierCopy = v37;
+  contextCopy = v40;
+  identifiersCopy = v34;
+  self = selfCopy;
 LABEL_16:
 
-  if (v9)
+  if (contextCopy)
   {
 LABEL_19:
     objc_storeStrong(&self->_context, obj);
     if (v16)
     {
-      v23 = [v9 identifierForSnapshotting];
-      v24 = [v11 stringByAppendingFormat:@"-%@", v23];
+      identifierForSnapshotting = [contextCopy identifierForSnapshotting];
+      v24 = [v11 stringByAppendingFormat:@"-%@", identifierForSnapshotting];
 
       v11 = v24;
     }
@@ -104,7 +104,7 @@ LABEL_21:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v25 = v10;
+  v25 = identifiersCopy;
   v26 = [v25 countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v26)
   {
@@ -143,17 +143,17 @@ LABEL_21:
   return v32;
 }
 
-- (void)applySceneSettings:(id)a3
+- (void)applySceneSettings:(id)settings
 {
   context = self->_context;
-  v5 = a3;
+  settingsCopy = settings;
   [(PRUISIncomingCallPosterContext *)context horizontalTitleBoundingRect];
-  [v5 pr_setHorizontalTitleBoundingRect:?];
+  [settingsCopy pr_setHorizontalTitleBoundingRect:?];
   [(PRUISIncomingCallPosterContext *)self->_context verticalTitleBoundingRect];
-  [v5 pr_setVerticalTitleBoundingRect:?];
+  [settingsCopy pr_setVerticalTitleBoundingRect:?];
   v6.receiver = self;
   v6.super_class = PRUISIncomingCallSnapshotDefinition;
-  [(PRPosterSnapshotDefinition *)&v6 applySceneSettings:v5];
+  [(PRPosterSnapshotDefinition *)&v6 applySceneSettings:settingsCopy];
 }
 
 @end

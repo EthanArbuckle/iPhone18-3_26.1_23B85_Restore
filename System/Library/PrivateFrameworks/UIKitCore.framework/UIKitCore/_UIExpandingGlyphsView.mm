@@ -1,20 +1,20 @@
 @interface _UIExpandingGlyphsView
 - (CGSize)intrinsicContentSize;
 - (CGSize)intrinsicSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UIExpandingGlyphsView)initWithFrame:(CGRect)a3;
-- (void)animateCompletionBlock:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)setAttributedString:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UIExpandingGlyphsView)initWithFrame:(CGRect)frame;
+- (void)animateCompletionBlock:(id)block;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)setAttributedString:(id)string;
 @end
 
 @implementation _UIExpandingGlyphsView
 
-- (_UIExpandingGlyphsView)initWithFrame:(CGRect)a3
+- (_UIExpandingGlyphsView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _UIExpandingGlyphsView;
-  result = [(UIView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(UIView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_fadesOut = 1;
@@ -23,31 +23,31 @@
   return result;
 }
 
-- (void)setAttributedString:(id)a3
+- (void)setAttributedString:(id)string
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_attributedString, a3);
-  v6 = [(UIView *)self window];
-  if (v6)
+  stringCopy = string;
+  objc_storeStrong(&self->_attributedString, string);
+  window = [(UIView *)self window];
+  if (window)
   {
-    v7 = [(UIView *)self window];
-    v8 = [v7 screen];
-    [v8 scale];
+    window2 = [(UIView *)self window];
+    screen = [window2 screen];
+    [screen scale];
     v10 = v9;
   }
 
   else
   {
-    v7 = [objc_opt_self() mainScreen];
-    [v7 scale];
+    window2 = [objc_opt_self() mainScreen];
+    [window2 scale];
     v10 = v11;
   }
 
   memset(v33, 0, sizeof(v33));
   memset(&v32, 0, sizeof(v32));
 
-  v12 = [v5 _ui_glyphImageViewsScale:v33 outImageRect:&v32 outLineRect:&self->_baselineOffset outBaselineOffset:v10];
+  v12 = [stringCopy _ui_glyphImageViewsScale:v33 outImageRect:&v32 outLineRect:&self->_baselineOffset outBaselineOffset:v10];
   [(_UIExpandingGlyphsView *)self setImageViews:v12];
 
   self->_intrinsicSize.width = CGRectGetWidth(v32);
@@ -56,8 +56,8 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = [(UIView *)self subviews];
-  v14 = [v13 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  subviews = [(UIView *)self subviews];
+  v14 = [subviews countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v14)
   {
     v15 = v14;
@@ -68,13 +68,13 @@
       {
         if (*v29 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v28 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      v15 = [subviews countByEnumeratingWithState:&v28 objects:v35 count:16];
     }
 
     while (v15);
@@ -84,8 +84,8 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = [(_UIExpandingGlyphsView *)self imageViews];
-  v19 = [v18 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  imageViews = [(_UIExpandingGlyphsView *)self imageViews];
+  v19 = [imageViews countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v19)
   {
     v20 = v19;
@@ -96,7 +96,7 @@
       {
         if (*v25 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(imageViews);
         }
 
         v23 = *(*(&v24 + 1) + 8 * j);
@@ -104,7 +104,7 @@
         [v23 setAlpha:0.0];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v24 objects:v34 count:16];
+      v20 = [imageViews countByEnumeratingWithState:&v24 objects:v34 count:16];
     }
 
     while (v20);
@@ -113,34 +113,34 @@
   [(UIView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)animateCompletionBlock:(id)a3
+- (void)animateCompletionBlock:(id)block
 {
   v51 = *MEMORY[0x1E69E9840];
-  [(_UIExpandingGlyphsView *)self setCompletionBlock:a3];
+  [(_UIExpandingGlyphsView *)self setCompletionBlock:block];
   v4 = objc_alloc(MEMORY[0x1E69793D0]);
   LODWORD(v5) = 1046809695;
   LODWORD(v6) = 990250344;
   LODWORD(v7) = 1057860847;
   LODWORD(v8) = 1064564184;
   v9 = [v4 initWithControlPoints:v5 :v6 :v7 :v8];
-  v10 = [(UIView *)self subviews];
-  v11 = [v10 count];
+  subviews = [(UIView *)self subviews];
+  v11 = [subviews count];
 
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
   expandsFromLeftToRight = self->_expandsFromLeftToRight;
-  v13 = [(UIView *)self subviews];
-  v14 = v13;
+  subviews2 = [(UIView *)self subviews];
+  v14 = subviews2;
   if (expandsFromLeftToRight)
   {
-    [v13 objectEnumerator];
+    [subviews2 objectEnumerator];
   }
 
   else
   {
-    [v13 reverseObjectEnumerator];
+    [subviews2 reverseObjectEnumerator];
   }
   v15 = ;
 
@@ -172,8 +172,8 @@
         }
 
         v21 = *(*(&v46 + 1) + 8 * i);
-        v22 = [v21 layer];
-        [v22 removeAllAnimations];
+        layer = [v21 layer];
+        [layer removeAllAnimations];
 
         v23 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
         v24 = objc_alloc_init(MEMORY[0x1E69794A8]);
@@ -264,7 +264,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   width = self->_intrinsicSize.width;
   height = self->_intrinsicSize.height;
@@ -273,18 +273,18 @@
   return result;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  [(_UIExpandingGlyphsView *)self setRemainingAnimationCount:[(_UIExpandingGlyphsView *)self remainingAnimationCount:a3]- 1];
+  [(_UIExpandingGlyphsView *)self setRemainingAnimationCount:[(_UIExpandingGlyphsView *)self remainingAnimationCount:stop]- 1];
   if (![(_UIExpandingGlyphsView *)self remainingAnimationCount])
   {
-    v6 = [(_UIExpandingGlyphsView *)self completionBlock];
+    completionBlock = [(_UIExpandingGlyphsView *)self completionBlock];
     [(_UIExpandingGlyphsView *)self setCompletionBlock:0];
-    v5 = v6;
-    if (v6)
+    v5 = completionBlock;
+    if (completionBlock)
     {
-      (*(v6 + 16))(v6);
-      v5 = v6;
+      (*(completionBlock + 16))(completionBlock);
+      v5 = completionBlock;
     }
   }
 }

@@ -27,9 +27,9 @@
 
 - (void)reloadActions
 {
-  v3 = [(IMActionController *)self actionObject];
-  v4 = [(MTEpisodeActionController *)self dependentKeys];
-  v5 = [v3 dictionaryWithValuesForKeys:v4];
+  actionObject = [(IMActionController *)self actionObject];
+  dependentKeys = [(MTEpisodeActionController *)self dependentKeys];
+  v5 = [actionObject dictionaryWithValuesForKeys:dependentKeys];
 
   if (!-[NSDictionary isEqualToDictionary:](self->_episodeDict, "isEqualToDictionary:", v5) && [v5 count])
   {

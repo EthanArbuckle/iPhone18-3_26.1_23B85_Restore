@@ -1,19 +1,19 @@
 @interface COSUsageTotalUsedHeader
-- (COSUsageTotalUsedHeader)initWithFrame:(CGRect)a3;
+- (COSUsageTotalUsedHeader)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)recalcHeight;
-- (void)setAvailable:(id)a3;
-- (void)setName:(id)a3;
-- (void)setUsed:(id)a3;
+- (void)setAvailable:(id)available;
+- (void)setName:(id)name;
+- (void)setUsed:(id)used;
 @end
 
 @implementation COSUsageTotalUsedHeader
 
-- (COSUsageTotalUsedHeader)initWithFrame:(CGRect)a3
+- (COSUsageTotalUsedHeader)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = COSUsageTotalUsedHeader;
-  v3 = [(COSUsageTotalUsedHeader *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSUsageTotalUsedHeader *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UILabel alloc];
@@ -96,25 +96,25 @@
   self->_height = v11 + v9;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  [(UILabel *)self->_titleLabel setText:a3];
+  [(UILabel *)self->_titleLabel setText:name];
   [(UILabel *)self->_titleLabel sizeToFit];
 
   [(COSUsageTotalUsedHeader *)self recalcHeight];
 }
 
-- (void)setAvailable:(id)a3
+- (void)setAvailable:(id)available
 {
-  [(UILabel *)self->_availableLabel setText:a3];
+  [(UILabel *)self->_availableLabel setText:available];
   [(UILabel *)self->_availableLabel sizeToFit];
 
   [(COSUsageTotalUsedHeader *)self recalcHeight];
 }
 
-- (void)setUsed:(id)a3
+- (void)setUsed:(id)used
 {
-  [(UILabel *)self->_usedLabel setText:a3];
+  [(UILabel *)self->_usedLabel setText:used];
   [(UILabel *)self->_usedLabel sizeToFit];
 
   [(COSUsageTotalUsedHeader *)self recalcHeight];
@@ -124,8 +124,8 @@
 {
   [(COSUsageTotalUsedHeader *)self bounds];
   v4 = v3;
-  v5 = [(COSUsageTotalUsedHeader *)self superview];
-  [v5 _backgroundInset];
+  superview = [(COSUsageTotalUsedHeader *)self superview];
+  [superview _backgroundInset];
   v7 = v6;
 
   v8 = 15.0;

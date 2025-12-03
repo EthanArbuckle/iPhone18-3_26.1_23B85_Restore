@@ -18,12 +18,12 @@
   v16 = MEMORY[0x277CCABB0];
   v17 = [MEMORY[0x277CBEAA8] now];
   v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(v17, "hash")}];
-  v19 = [v18 stringValue];
-  v20 = [v15 stringWithFormat:@"OnDemand-%@", v19];
+  stringValue = [v18 stringValue];
+  v20 = [v15 stringWithFormat:@"OnDemand-%@", stringValue];
 
   v62 = v20;
   v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Request: %@ %@ with assets %@", v20, v60, v14];
-  v61 = a1;
+  selfCopy = self;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
@@ -34,7 +34,7 @@
   }
 
   v56 = v21;
-  v22 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v79 = 0u;
   v80 = 0u;
   v77 = 0u;
@@ -55,8 +55,8 @@
         }
 
         v28 = *(*(&v77 + 1) + 8 * i);
-        v29 = [v28 localIdentifier];
-        v30 = v29 == 0;
+        localIdentifier = [v28 localIdentifier];
+        v30 = localIdentifier == 0;
 
         if (v30)
         {
@@ -72,8 +72,8 @@
 
         else
         {
-          v31 = [v28 localIdentifier];
-          [v22 setObject:v28 forKeyedSubscript:v31];
+          localIdentifier2 = [v28 localIdentifier];
+          [dictionary setObject:v28 forKeyedSubscript:localIdentifier2];
         }
       }
 
@@ -85,7 +85,7 @@
 
   v75 = 0;
   v76 = 0;
-  v32 = [a1 extensionDataForResultDirectoryURL:&v76 error:&v75];
+  v32 = [self extensionDataForResultDirectoryURL:&v76 error:&v75];
   v33 = v76;
   v34 = v75;
   if (!v33)
@@ -100,7 +100,7 @@
     goto LABEL_26;
   }
 
-  v35 = [a1 registerProgressHandler:v58 requestID:v62];
+  v35 = [self registerProgressHandler:v58 requestID:v62];
   if (v35)
   {
     v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ Failed to register progressHandler (%d)", @"[MADComputeService+Photos]", v35];
@@ -109,8 +109,8 @@
       [MADComputeService(Photos) performRequests:assets:photoLibrary:options:progressHandler:resultsHandler:completionHandler:];
     }
 
-    [a1 deregisterProgressHandlerForRequestID:v62];
-    [a1 deregisterResultsHandlerForRequestID:v62];
+    [self deregisterProgressHandlerForRequestID:v62];
+    [self deregisterResultsHandlerForRequestID:v62];
     v85 = *MEMORY[0x277CCA450];
     v86 = v36;
     v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
@@ -122,7 +122,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v39 = [a1 registerResultsHandler:v57 requestID:v62];
+  v39 = [self registerResultsHandler:v57 requestID:v62];
   if (v39)
   {
     v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ Failed to register resultsHandler (%d)", @"[MADComputeService+Photos]", v39];
@@ -131,8 +131,8 @@ LABEL_26:
       [MADComputeService(Photos) performRequests:assets:photoLibrary:options:progressHandler:resultsHandler:completionHandler:];
     }
 
-    [a1 deregisterProgressHandlerForRequestID:v62];
-    [a1 deregisterResultsHandlerForRequestID:v62];
+    [self deregisterProgressHandlerForRequestID:v62];
+    [self deregisterResultsHandlerForRequestID:v62];
     v83 = *MEMORY[0x277CCA450];
     v84 = v36;
     v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v84 forKeys:&v83 count:1];
@@ -142,34 +142,34 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v45 = [a1 connection];
+  connection = [self connection];
   v70[0] = MEMORY[0x277D85DD0];
   v70[1] = 3221225472;
   v70[2] = __122__MADComputeService_Photos__performRequests_assets_photoLibrary_options_progressHandler_resultsHandler_completionHandler___block_invoke;
   v70[3] = &unk_279899108;
   v71 = @"[MADComputeService+Photos]";
-  v72 = a1;
+  selfCopy2 = self;
   v42 = v62;
   v73 = v42;
   v46 = v59;
   v74 = v46;
-  v63 = [v45 remoteObjectProxyWithErrorHandler:v70];
+  v63 = [connection remoteObjectProxyWithErrorHandler:v70];
 
   if (v63)
   {
-    v54 = [v22 allKeys];
-    v47 = [v55 photoLibraryURL];
+    allKeys = [dictionary allKeys];
+    photoLibraryURL = [v55 photoLibraryURL];
     v64[0] = MEMORY[0x277D85DD0];
     v64[1] = 3221225472;
     v64[2] = __122__MADComputeService_Photos__performRequests_assets_photoLibrary_options_progressHandler_resultsHandler_completionHandler___block_invoke_208;
     v64[3] = &unk_279899130;
     v65 = @"[MADComputeService+Photos]";
     v66 = v56;
-    v67 = v61;
+    v67 = selfCopy;
     v48 = v42;
     v68 = v48;
     v69 = v46;
-    [v63 requestProcessing:v60 localIdentifiers:v54 photoLibraryURL:v47 resultDirectoryURL:v33 resultExtensionData:v32 requestID:v48 reply:v64];
+    [v63 requestProcessing:v60 localIdentifiers:allKeys photoLibraryURL:photoLibraryURL resultDirectoryURL:v33 resultExtensionData:v32 requestID:v48 reply:v64];
 
     v49 = v48;
   }
@@ -185,8 +185,8 @@ LABEL_26:
     v81 = *MEMORY[0x277CCA450];
     v82 = v50;
     v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
-    [v61 deregisterProgressHandlerForRequestID:v42];
-    [v61 deregisterResultsHandlerForRequestID:v42];
+    [selfCopy deregisterProgressHandlerForRequestID:v42];
+    [selfCopy deregisterResultsHandlerForRequestID:v42];
     v52 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-18 userInfo:v51];
     v46[2](v46, v42, v52);
 
@@ -216,8 +216,8 @@ LABEL_27:
   v10 = MEMORY[0x277CCABB0];
   v11 = [MEMORY[0x277CBEAA8] now];
   v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(v11, "hash")}];
-  v13 = [v12 stringValue];
-  v65 = [v9 stringWithFormat:@"Offline-%@", v13];
+  stringValue = [v12 stringValue];
+  v65 = [v9 stringWithFormat:@"Offline-%@", stringValue];
 
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Schedule: %@ %@ on assets %@", v61[5], v44, v42];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -230,7 +230,7 @@ LABEL_27:
   }
 
   v40 = v14;
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
@@ -251,8 +251,8 @@ LABEL_27:
         }
 
         v21 = *(*(&v56 + 1) + 8 * i);
-        v22 = [v21 localIdentifier];
-        v23 = v22 == 0;
+        localIdentifier = [v21 localIdentifier];
+        v23 = localIdentifier == 0;
 
         if (v23)
         {
@@ -268,8 +268,8 @@ LABEL_27:
 
         else
         {
-          v24 = [v21 localIdentifier];
-          [v15 setObject:v21 forKeyedSubscript:v24];
+          localIdentifier2 = [v21 localIdentifier];
+          [dictionary setObject:v21 forKeyedSubscript:localIdentifier2];
         }
       }
 
@@ -281,12 +281,12 @@ LABEL_27:
 
   v54 = 0;
   v55 = 0;
-  v25 = [a1 extensionDataForResultDirectoryURL:&v55 error:&v54];
+  v25 = [self extensionDataForResultDirectoryURL:&v55 error:&v54];
   v26 = v55;
   v27 = v54;
   if (v26)
   {
-    v28 = [a1 connection];
+    connection = [self connection];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __80__MADComputeService_Photos__scheduleRequests_assets_photoLibrary_options_error___block_invoke;
@@ -294,12 +294,12 @@ LABEL_27:
     v51 = @"[MADComputeService+Photos]";
     v52 = &v60;
     v53 = a7;
-    v29 = [v28 synchronousRemoteObjectProxyWithErrorHandler:v50];
+    v29 = [connection synchronousRemoteObjectProxyWithErrorHandler:v50];
 
     if (v29)
     {
-      v30 = [v15 allKeys];
-      v31 = [v39 photoLibraryURL];
+      allKeys = [dictionary allKeys];
+      photoLibraryURL = [v39 photoLibraryURL];
       v32 = v61[5];
       v45[0] = MEMORY[0x277D85DD0];
       v45[1] = 3221225472;
@@ -309,7 +309,7 @@ LABEL_27:
       v47 = v40;
       v48 = &v60;
       v49 = a7;
-      [v29 scheduleProcessing:v44 localIdentifiers:v30 photoLibraryURL:v31 resultDirectoryURL:v26 resultExtensionData:v25 requestID:v32 reply:v45];
+      [v29 scheduleProcessing:v44 localIdentifiers:allKeys photoLibraryURL:photoLibraryURL resultDirectoryURL:v26 resultExtensionData:v25 requestID:v32 reply:v45];
 
       v33 = v46;
     }

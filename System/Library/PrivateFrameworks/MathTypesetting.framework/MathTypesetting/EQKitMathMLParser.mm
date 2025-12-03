@@ -1,29 +1,29 @@
 @interface EQKitMathMLParser
-- (BOOL)isElement:(int)a3 allowedInState:(int)a4;
-- (EQKitMathMLParser)initWithDocument:(_xmlDoc *)a3 node:(_xmlNode *)RootElement source:(id)a5 attribution:(id)a6 environment:(id)a7;
+- (BOOL)isElement:(int)element allowedInState:(int)state;
+- (EQKitMathMLParser)initWithDocument:(_xmlDoc *)document node:(_xmlNode *)RootElement source:(id)source attribution:(id)attribution environment:(id)environment;
 - (id).cxx_construct;
 - (id)parse;
-- (id)parseChildrenAsArrayFromXMLNode:(_xmlNode *)a3;
-- (id)parseChildrenAsNodeFromXMLNode:(_xmlNode *)a3;
-- (id)parseChildrenAsTokenContentFromXMLNode:(_xmlNode *)a3;
-- (id)parseNode:(_xmlNode *)a3;
-- (id)sourceAttributionForOffset:(unint64_t)a3 length:(unint64_t)a4;
+- (id)parseChildrenAsArrayFromXMLNode:(_xmlNode *)node;
+- (id)parseChildrenAsNodeFromXMLNode:(_xmlNode *)node;
+- (id)parseChildrenAsTokenContentFromXMLNode:(_xmlNode *)node;
+- (id)parseNode:(_xmlNode *)node;
+- (id)sourceAttributionForOffset:(unint64_t)offset length:(unint64_t)length;
 - (int)state;
 - (void)dealloc;
-- (void)parseAttributesForNode:(id)a3 withXMLNode:(_xmlNode *)a4;
+- (void)parseAttributesForNode:(id)node withXMLNode:(_xmlNode *)lNode;
 - (void)popState;
-- (void)reportError:(int64_t)a3 withNode:(_xmlNode *)a4;
+- (void)reportError:(int64_t)error withNode:(_xmlNode *)node;
 @end
 
 @implementation EQKitMathMLParser
 
-- (EQKitMathMLParser)initWithDocument:(_xmlDoc *)a3 node:(_xmlNode *)RootElement source:(id)a5 attribution:(id)a6 environment:(id)a7
+- (EQKitMathMLParser)initWithDocument:(_xmlDoc *)document node:(_xmlNode *)RootElement source:(id)source attribution:(id)attribution environment:(id)environment
 {
-  v13 = [a7 sourceAttribution];
-  if (a6 && v13)
+  sourceAttribution = [environment sourceAttribution];
+  if (attribution && sourceAttribution)
   {
-    v14 = [objc_msgSend(objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:objc_msgSend(a6 length:"bytes") encoding:{objc_msgSend(a6, "length"), 4), "dataUsingEncoding:", 2617245952}];
-    v15 = [v14 bytes];
+    v14 = [objc_msgSend(objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:objc_msgSend(attribution length:"bytes") encoding:{objc_msgSend(attribution, "length"), 4), "dataUsingEncoding:", 2617245952}];
+    bytes = [v14 bytes];
     v16 = [v14 length];
     if (v16 >= 0xFFFFFFFFFFFFFFE0)
     {
@@ -49,7 +49,7 @@
     HIBYTE(v24) = v16 >> 2;
     if (v16 >= 4)
     {
-      memmove(&__dst, v15, v16 & 0xFFFFFFFFFFFFFFFCLL);
+      memmove(&__dst, bytes, v16 & 0xFFFFFFFFFFFFFFFCLL);
     }
 
     *(&__dst + v17) = 0;
@@ -62,9 +62,9 @@
     *(&self->mAttribution.__rep_.__l + 2) = v24;
   }
 
-  if (a3 && !RootElement)
+  if (document && !RootElement)
   {
-    RootElement = xmlDocGetRootElement(a3);
+    RootElement = xmlDocGetRootElement(document);
   }
 
   v22.receiver = self;
@@ -74,9 +74,9 @@
   if (v19)
   {
     v19->mRootNode = RootElement;
-    v19->mNS = xmlSearchNsByHref(a3, RootElement, "http://www.w3.org/1998/Math/MathML");
-    v20->mEnvironment = a7;
-    v20->mSource = a5;
+    v19->mNS = xmlSearchNsByHref(document, RootElement, "http://www.w3.org/1998/Math/MathML");
+    v20->mEnvironment = environment;
+    v20->mSource = source;
   }
 
   return v20;
@@ -89,24 +89,24 @@
   [(EQKitMathMLParser *)&v3 dealloc];
 }
 
-- (id)sourceAttributionForOffset:(unint64_t)a3 length:(unint64_t)a4
+- (id)sourceAttributionForOffset:(unint64_t)offset length:(unint64_t)length
 {
   size = *(&self->mAttribution.__rep_.__l + 23);
   if ((size & 0x8000000000000000) != 0)
   {
     size = self->mAttribution.__rep_.__l.__size_;
-    if (!a4)
+    if (!length)
     {
       return 0;
     }
   }
 
-  else if (!a4)
+  else if (!length)
   {
     return 0;
   }
 
-  v8 = a4 + a3;
+  v8 = length + offset;
   if (size)
   {
     v9 = size >= v8;
@@ -124,13 +124,13 @@
 
   v11 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:size];
   v12 = v11;
-  if (a3)
+  if (offset)
   {
-    _appendFromWideString(v11, &self->mAttribution.__rep_.__l, 0, a3);
+    _appendFromWideString(v11, &self->mAttribution.__rep_.__l, 0, offset);
   }
 
   v13 = [v12 length];
-  _appendFromWideString(v12, &self->mAttribution.__rep_.__l, a3, a4);
+  _appendFromWideString(v12, &self->mAttribution.__rep_.__l, offset, length);
   v14 = [v12 length];
   if (size > v8)
   {
@@ -142,20 +142,20 @@
   return [(EQKitSourceAttribution *)v15 initWithSource:v12 range:v13, v14 - v13];
 }
 
-- (void)reportError:(int64_t)a3 withNode:(_xmlNode *)a4
+- (void)reportError:(int64_t)error withNode:(_xmlNode *)node
 {
   if (!self->mError)
   {
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
     name = "";
-    if (a4 && a4->name)
+    if (node && node->name)
     {
-      name = a4->name;
+      name = node->name;
     }
 
     v9 = [v7 initWithUTF8String:name];
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    if (a3 <= 6 && (v11 = [v10 localizedStringForKey:*(&off_27987BB80 + a3) value:&stru_28696C228 table:0]) != 0)
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    if (error <= 6 && (v11 = [mainBundle localizedStringForKey:*(&off_27987BB80 + error) value:&stru_28696C228 table:0]) != 0)
     {
       v12 = MEMORY[0x277CBEAC0];
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:v11, v9];
@@ -167,7 +167,7 @@
       v14 = 0;
     }
 
-    self->mError = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"EQKitErrorDomain" code:a3 userInfo:v14];
+    self->mError = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"EQKitErrorDomain" code:error userInfo:v14];
   }
 }
 
@@ -197,12 +197,12 @@
   return v4;
 }
 
-- (id)parseChildrenAsArrayFromXMLNode:(_xmlNode *)a3
+- (id)parseChildrenAsArrayFromXMLNode:(_xmlNode *)node
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  if (a3)
+  array = [MEMORY[0x277CBEB18] array];
+  if (node)
   {
-    for (i = a3->children; i; i = i->next)
+    for (i = node->children; i; i = i->next)
     {
       if (EQKitXMLIsElement(i))
       {
@@ -212,17 +212,17 @@
           return 0;
         }
 
-        [v5 addObject:v7];
+        [array addObject:v7];
       }
     }
   }
 
-  return v5;
+  return array;
 }
 
-- (id)parseChildrenAsNodeFromXMLNode:(_xmlNode *)a3
+- (id)parseChildrenAsNodeFromXMLNode:(_xmlNode *)node
 {
-  result = [(EQKitMathMLParser *)self parseChildrenAsArrayFromXMLNode:a3];
+  result = [(EQKitMathMLParser *)self parseChildrenAsArrayFromXMLNode:node];
   if (result)
   {
     v4 = result;
@@ -242,14 +242,14 @@
   return result;
 }
 
-- (void)parseAttributesForNode:(id)a3 withXMLNode:(_xmlNode *)a4
+- (void)parseAttributesForNode:(id)node withXMLNode:(_xmlNode *)lNode
 {
-  v7 = [a3 mathMLAttributes];
-  properties = a4->properties;
+  mathMLAttributes = [node mathMLAttributes];
+  properties = lNode->properties;
   if (properties)
   {
-    v9 = v7;
-    v10 = (v7 + 8);
+    v9 = mathMLAttributes;
+    v10 = (mathMLAttributes + 8);
     v98 = *(MEMORY[0x277D82820] + 24);
     v99 = *MEMORY[0x277D82820];
     while (1)
@@ -257,7 +257,7 @@
       ns = properties->ns;
       if (ns)
       {
-        v12 = ns == a4->ns;
+        v12 = ns == lNode->ns;
       }
 
       else
@@ -434,7 +434,7 @@ LABEL_52:
 LABEL_217:
                 if (v13 == 48)
                 {
-                  EQKitXMLAttributeValueAsString(a4, properties, &__p);
+                  EQKitXMLAttributeValueAsString(lNode, properties, &__p);
                   v24 = HIBYTE(__p.__r_.__value_.__r.__words[2]);
                   if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
                   {
@@ -475,7 +475,7 @@ LABEL_217:
                           v30 = v29 - p_p;
                           if (v29 - p_p != -1)
                           {
-                            v31 = std::string::basic_string(&__str, &__p, 0, v30, &v107);
+                            v31 = std::string::basic_string(&__str, &__p, 0, v30, &nodeCopy11);
                             if (SHIBYTE(__str.__r_.__value_.__r.__words[2]) < 0)
                             {
                               v33 = __str.__r_.__value_.__r.__words[0];
@@ -494,7 +494,7 @@ LABEL_217:
                               v34 = __p.__r_.__value_.__l.__size_;
                             }
 
-                            v35 = std::string::basic_string(&__str, &__p, v30 + 1, v34 - (v30 + 1), &v107);
+                            v35 = std::string::basic_string(&__str, &__p, v30 + 1, v34 - (v30 + 1), &nodeCopy11);
                             if (SHIBYTE(__str.__r_.__value_.__r.__words[2]) < 0)
                             {
                               v37 = __str.__r_.__value_.__r.__words[0];
@@ -507,7 +507,7 @@ LABEL_217:
                               v36 = atoi(v35);
                             }
 
-                            [a3 setSourceAttribution:{-[EQKitMathMLParser sourceAttributionForOffset:length:](self, "sourceAttributionForOffset:length:", v32, v36)}];
+                            [node setSourceAttribution:{-[EQKitMathMLParser sourceAttributionForOffset:length:](self, "sourceAttributionForOffset:length:", v32, v36)}];
                             v24 = HIBYTE(__p.__r_.__value_.__r.__words[2]);
                           }
                         }
@@ -561,7 +561,7 @@ LABEL_217:
 
       if (v13 == 44)
       {
-        EQKitXMLAttributeValueAsString(a4, properties, &__str);
+        EQKitXMLAttributeValueAsString(lNode, properties, &__str);
 LABEL_98:
         v40 = HIBYTE(__str.__r_.__value_.__r.__words[2]);
         if ((__str.__r_.__value_.__r.__words[2] & 0x8000000000000000) != 0)
@@ -577,9 +577,9 @@ LABEL_98:
           {
             v109[0] = CFRetain(CGColorFromString);
             mAttributeCollection = self->mAttributeCollection;
-            __p.__r_.__value_.__r.__words[0] = a3;
+            __p.__r_.__value_.__r.__words[0] = node;
             LODWORD(__p.__r_.__value_.__r.__words[1]) = 44;
-            v107 = &__p;
+            nodeCopy11 = &__p;
             v44 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,objc_object  {objcproto15EQKitLayoutNode}*::CFRetainRelease>,std::__map_value_compare<EQKitTypes::Attributes::Enum,objc_object  {objcproto15EQKitLayoutNode}*::CFRetainRelease,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<objc_object  {objcproto15EQKitLayoutNode}*::CFRetainRelease>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(mAttributeCollection + 536, &__p);
             EQKitTypes::CFRetainRelease::operator=((v44 + 48), v109);
             CGColorRelease(v42);
@@ -598,7 +598,7 @@ LABEL_105:
       }
     }
 
-    EQKitXMLAttributeValueAsString(a4, properties, &__str);
+    EQKitXMLAttributeValueAsString(lNode, properties, &__str);
     switch(v13)
     {
       case 1:
@@ -611,9 +611,9 @@ LABEL_105:
         }
 
         v50 = self->mAttributeCollection;
-        __p.__r_.__value_.__r.__words[0] = a3;
+        __p.__r_.__value_.__r.__words[0] = node;
         LODWORD(__p.__r_.__value_.__r.__words[1]) = v13;
-        v107 = &__p;
+        nodeCopy11 = &__p;
         v49 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>,std::__map_value_compare<EQKitTypes::Attributes::Enum,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v50 + 128, &__p);
         goto LABEL_115;
       case 2:
@@ -624,9 +624,9 @@ LABEL_105:
         }
 
         v74 = self->mAttributeCollection;
-        __p.__r_.__value_.__r.__words[0] = a3;
+        __p.__r_.__value_.__r.__words[0] = node;
         LODWORD(__p.__r_.__value_.__r.__words[1]) = 2;
-        v107 = &__p;
+        nodeCopy11 = &__p;
         v67 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>,std::__map_value_compare<EQKitTypes::Attributes::Enum,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v74 + 152, &__p);
         goto LABEL_183;
       case 3:
@@ -638,9 +638,9 @@ LABEL_105:
         }
 
         v75 = self->mAttributeCollection;
-        v107 = a3;
+        nodeCopy11 = node;
         LODWORD(v108) = 3;
-        EQKit::AttributeCollection::setValueForKey<std::vector<EQKitTypes::VAlign::Enum>>(v75, v75 + 248, &__p.__r_.__value_.__l.__data_, &v107);
+        EQKit::AttributeCollection::setValueForKey<std::vector<EQKitTypes::VAlign::Enum>>(v75, v75 + 248, &__p.__r_.__value_.__l.__data_, &nodeCopy11);
         goto LABEL_173;
       case 4:
         EQKitTypes::Align::alignVectorFromMathMLString(&__str, &__p.__r_.__value_.__l.__data_);
@@ -651,9 +651,9 @@ LABEL_105:
         }
 
         v76 = self->mAttributeCollection;
-        v107 = a3;
+        nodeCopy11 = node;
         LODWORD(v108) = 4;
-        EQKit::AttributeCollection::setValueForKey<std::vector<EQKitTypes::VAlign::Enum>>(v76, v76 + 272, &__p.__r_.__value_.__l.__data_, &v107);
+        EQKit::AttributeCollection::setValueForKey<std::vector<EQKitTypes::VAlign::Enum>>(v76, v76 + 272, &__p.__r_.__value_.__l.__data_, &nodeCopy11);
         goto LABEL_173;
       case 5:
       case 6:
@@ -669,9 +669,9 @@ LABEL_105:
         }
 
         v48 = self->mAttributeCollection;
-        __p.__r_.__value_.__r.__words[0] = a3;
+        __p.__r_.__value_.__r.__words[0] = node;
         LODWORD(__p.__r_.__value_.__r.__words[1]) = v13;
-        v107 = &__p;
+        nodeCopy11 = &__p;
         v49 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>,std::__map_value_compare<EQKitTypes::Attributes::Enum,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v48 + 8, &__p);
 LABEL_115:
         *(v49 + 48) = v47;
@@ -684,13 +684,13 @@ LABEL_115:
         }
 
         v73 = self->mAttributeCollection;
-        __p.__r_.__value_.__r.__words[0] = a3;
+        __p.__r_.__value_.__r.__words[0] = node;
         LODWORD(__p.__r_.__value_.__r.__words[1]) = 7;
-        v107 = &__p;
+        nodeCopy11 = &__p;
         v67 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>,std::__map_value_compare<EQKitTypes::Attributes::Enum,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v73 + 320, &__p);
         goto LABEL_183;
       case 9:
-        v107 = 0;
+        nodeCopy11 = 0;
         LOBYTE(v108) = 1;
         if (SHIBYTE(__str.__r_.__value_.__r.__words[2]) < 0)
         {
@@ -702,7 +702,7 @@ LABEL_115:
           v105 = __str;
         }
 
-        v88 = EQKit::ScriptLevel::fromString(&v105, &v107);
+        v88 = EQKit::ScriptLevel::fromString(&v105, &nodeCopy11);
         if (SHIBYTE(v105.__r_.__value_.__r.__words[2]) < 0)
         {
           operator delete(v105.__r_.__value_.__l.__data_);
@@ -711,11 +711,11 @@ LABEL_115:
         if (v88)
         {
           v89 = self->mAttributeCollection;
-          __p.__r_.__value_.__r.__words[0] = a3;
+          __p.__r_.__value_.__r.__words[0] = node;
           LODWORD(__p.__r_.__value_.__r.__words[1]) = 9;
           v109[0] = &__p;
           v90 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,EQKit::ScriptLevel>,std::__map_value_compare<EQKitTypes::Attributes::Enum,EQKit::ScriptLevel,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<EQKit::ScriptLevel>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v89 + 296, &__p);
-          *(v90 + 48) = v107;
+          *(v90 + 48) = nodeCopy11;
           *(v90 + 56) = v108;
         }
 
@@ -728,15 +728,15 @@ LABEL_115:
       case 40:
       case 41:
       case 43:
-        EQKitLength::EQKitLength(&v107, &__str, 0);
-        if (v107)
+        EQKitLength::EQKitLength(&nodeCopy11, &__str, 0);
+        if (nodeCopy11)
         {
           v45 = self->mAttributeCollection;
-          __p.__r_.__value_.__r.__words[0] = a3;
+          __p.__r_.__value_.__r.__words[0] = node;
           LODWORD(__p.__r_.__value_.__r.__words[1]) = v13;
           v109[0] = &__p;
           v46 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,EQKitLength>,std::__map_value_compare<EQKitTypes::Attributes::Enum,EQKitLength,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<EQKitLength>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v45 + 32, &__p);
-          *(v46 + 48) = v107;
+          *(v46 + 48) = nodeCopy11;
           *(v46 + 56) = v108;
           goto LABEL_103;
         }
@@ -769,7 +769,7 @@ LABEL_115:
         if (p_str->__r_.__value_.__r.__words[0] == 0x7974696E69666E69)
         {
           v84 = self->mAttributeCollection;
-          __p.__r_.__value_.__r.__words[0] = a3;
+          __p.__r_.__value_.__r.__words[0] = node;
           LODWORD(__p.__r_.__value_.__r.__words[1]) = 41;
           v109[0] = &__p;
           v85 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,EQKitLength>,std::__map_value_compare<EQKitTypes::Attributes::Enum,EQKitLength,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<EQKitLength>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v84 + 32, &__p);
@@ -782,7 +782,7 @@ LABEL_115:
       case 13:
       case 18:
       case 19:
-        EQKit::AttributeCollection::setValueForKey(self->mAttributeCollection, &__str, v13, a3);
+        EQKit::AttributeCollection::setValueForKey(self->mAttributeCollection, &__str, v13, node);
         goto LABEL_103;
       case 15:
         v65 = EQKit::Config::Operator::formFromMathMLString(&__str, 0);
@@ -792,9 +792,9 @@ LABEL_115:
         }
 
         v66 = self->mAttributeCollection;
-        __p.__r_.__value_.__r.__words[0] = a3;
+        __p.__r_.__value_.__r.__words[0] = node;
         LODWORD(__p.__r_.__value_.__r.__words[1]) = 15;
-        v107 = &__p;
+        nodeCopy11 = &__p;
         v67 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>,std::__map_value_compare<EQKitTypes::Attributes::Enum,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v66 + 344, &__p);
         goto LABEL_183;
       case 17:
@@ -805,19 +805,19 @@ LABEL_115:
         }
 
         v68 = self->mAttributeCollection;
-        __p.__r_.__value_.__r.__words[0] = a3;
+        __p.__r_.__value_.__r.__words[0] = node;
         LODWORD(__p.__r_.__value_.__r.__words[1]) = 17;
-        v107 = &__p;
+        nodeCopy11 = &__p;
         v67 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>,std::__map_value_compare<EQKitTypes::Attributes::Enum,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v68 + 368, &__p);
         goto LABEL_183;
       case 20:
         EQKitTypes::Strings::separatorsFromString(&__str, &__p);
         v63 = self->mAttributeCollection;
-        v107 = a3;
+        nodeCopy11 = node;
         LODWORD(v108) = 20;
-        EQKit::AttributeCollection::setValueForKey<std::vector<std::string>>(v63, v63 + 104, &__p, &v107);
-        v107 = &__p;
-        std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&v107);
+        EQKit::AttributeCollection::setValueForKey<std::vector<std::string>>(v63, v63 + 104, &__p, &nodeCopy11);
+        nodeCopy11 = &__p;
+        std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&nodeCopy11);
         goto LABEL_103;
       case 21:
       case 22:
@@ -826,9 +826,9 @@ LABEL_115:
         if (LOBYTE(v100) == 1)
         {
           v53 = self->mAttributeCollection;
-          __p.__r_.__value_.__r.__words[0] = a3;
+          __p.__r_.__value_.__r.__words[0] = node;
           LODWORD(__p.__r_.__value_.__r.__words[1]) = v13;
-          v107 = &__p;
+          nodeCopy11 = &__p;
           *(std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,double>,std::__map_value_compare<EQKitTypes::Attributes::Enum,std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v53 + 392, &__p) + 48) = v52;
         }
 
@@ -839,9 +839,9 @@ LABEL_115:
         if (LOBYTE(v100) == 1)
         {
           v82 = self->mAttributeCollection;
-          __p.__r_.__value_.__r.__words[0] = a3;
+          __p.__r_.__value_.__r.__words[0] = node;
           LODWORD(__p.__r_.__value_.__r.__words[1]) = 23;
-          v107 = &__p;
+          nodeCopy11 = &__p;
           *(std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,double>,std::__map_value_compare<EQKitTypes::Attributes::Enum,std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v82 + 416, &__p) + 48) = v81;
         }
 
@@ -854,10 +854,10 @@ LABEL_115:
         }
 
         v78 = self->mAttributeCollection;
-        v107 = a3;
+        nodeCopy11 = node;
         LODWORD(v108) = 29;
-        v109[0] = &v107;
-        v55 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,EQKitPseudoUnitLength>,std::__map_value_compare<EQKitTypes::Attributes::Enum,EQKitPseudoUnitLength,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<EQKitPseudoUnitLength>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v78 + 464, &v107);
+        v109[0] = &nodeCopy11;
+        v55 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,EQKitPseudoUnitLength>,std::__map_value_compare<EQKitTypes::Attributes::Enum,EQKitPseudoUnitLength,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<EQKitPseudoUnitLength>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v78 + 464, &nodeCopy11);
         goto LABEL_178;
       case 30:
         EQKitPseudoUnitLength::EQKitPseudoUnitLength(&__p, &__str, 2);
@@ -867,10 +867,10 @@ LABEL_115:
         }
 
         v77 = self->mAttributeCollection;
-        v107 = a3;
+        nodeCopy11 = node;
         LODWORD(v108) = 30;
-        v109[0] = &v107;
-        v55 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,EQKitPseudoUnitLength>,std::__map_value_compare<EQKitTypes::Attributes::Enum,EQKitPseudoUnitLength,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<EQKitPseudoUnitLength>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v77 + 464, &v107);
+        v109[0] = &nodeCopy11;
+        v55 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,EQKitPseudoUnitLength>,std::__map_value_compare<EQKitTypes::Attributes::Enum,EQKitPseudoUnitLength,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<EQKitPseudoUnitLength>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v77 + 464, &nodeCopy11);
         goto LABEL_178;
       case 31:
         EQKitPseudoUnitLength::EQKitPseudoUnitLength(&__p, &__str, 3);
@@ -880,10 +880,10 @@ LABEL_115:
         }
 
         v80 = self->mAttributeCollection;
-        v107 = a3;
+        nodeCopy11 = node;
         LODWORD(v108) = 31;
-        v109[0] = &v107;
-        v55 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,EQKitPseudoUnitLength>,std::__map_value_compare<EQKitTypes::Attributes::Enum,EQKitPseudoUnitLength,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<EQKitPseudoUnitLength>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v80 + 464, &v107);
+        v109[0] = &nodeCopy11;
+        v55 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,EQKitPseudoUnitLength>,std::__map_value_compare<EQKitTypes::Attributes::Enum,EQKitPseudoUnitLength,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<EQKitPseudoUnitLength>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v80 + 464, &nodeCopy11);
         goto LABEL_178;
       case 32:
       case 33:
@@ -894,10 +894,10 @@ LABEL_115:
         }
 
         v54 = self->mAttributeCollection;
-        v107 = a3;
+        nodeCopy11 = node;
         LODWORD(v108) = v13;
-        v109[0] = &v107;
-        v55 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,EQKitPseudoUnitLength>,std::__map_value_compare<EQKitTypes::Attributes::Enum,EQKitPseudoUnitLength,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<EQKitPseudoUnitLength>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v54 + 464, &v107);
+        v109[0] = &nodeCopy11;
+        v55 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,EQKitPseudoUnitLength>,std::__map_value_compare<EQKitTypes::Attributes::Enum,EQKitPseudoUnitLength,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<EQKitPseudoUnitLength>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v54 + 464, &nodeCopy11);
 LABEL_178:
         *(v55 + 48) = __p.__r_.__value_.__l.__data_;
         *(v55 + 56) = *&__p.__r_.__value_.__r.__words[1];
@@ -911,9 +911,9 @@ LABEL_178:
         }
 
         v71 = self->mAttributeCollection;
-        v107 = a3;
+        nodeCopy11 = node;
         LODWORD(v108) = 34;
-        EQKit::AttributeCollection::setValueForKey<std::vector<EQKitTypes::VAlign::Enum>>(v71, v71 + 200, &__p.__r_.__value_.__l.__data_, &v107);
+        EQKit::AttributeCollection::setValueForKey<std::vector<EQKitTypes::VAlign::Enum>>(v71, v71 + 200, &__p.__r_.__value_.__l.__data_, &nodeCopy11);
         goto LABEL_173;
       case 35:
         v58 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -934,9 +934,9 @@ LABEL_178:
           if (([objc_msgSend(MEMORY[0x277CCA900] "whitespaceAndNewlineCharacterSet")] & 1) == 0)
           {
             v62 = self->mAttributeCollection;
-            __p.__r_.__value_.__r.__words[0] = a3;
+            __p.__r_.__value_.__r.__words[0] = node;
             LODWORD(__p.__r_.__value_.__r.__words[1]) = 35;
-            v107 = &__p;
+            nodeCopy11 = &__p;
             *(std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,unsigned short>,std::__map_value_compare<EQKitTypes::Attributes::Enum,std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v62 + 488, &__p) + 48) = v61;
           }
         }
@@ -1004,9 +1004,9 @@ LABEL_213:
             v95 = 1.0;
 LABEL_214:
             v96 = self->mAttributeCollection;
-            __p.__r_.__value_.__r.__words[0] = a3;
+            __p.__r_.__value_.__r.__words[0] = node;
             LODWORD(__p.__r_.__value_.__r.__words[1]) = 36;
-            v107 = &__p;
+            nodeCopy11 = &__p;
             v97 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,EQKitLength>,std::__map_value_compare<EQKitTypes::Attributes::Enum,EQKitLength,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<EQKitLength>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v96 + 32, &__p);
             *(v97 + 48) = data;
             *(v97 + 56) = v95;
@@ -1040,9 +1040,9 @@ LABEL_103:
         }
 
         v72 = self->mAttributeCollection;
-        __p.__r_.__value_.__r.__words[0] = a3;
+        __p.__r_.__value_.__r.__words[0] = node;
         LODWORD(__p.__r_.__value_.__r.__words[1]) = 37;
-        v107 = &__p;
+        nodeCopy11 = &__p;
         v67 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>,std::__map_value_compare<EQKitTypes::Attributes::Enum,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v72 + 176, &__p);
         goto LABEL_183;
       case 38:
@@ -1053,9 +1053,9 @@ LABEL_103:
         }
 
         v83 = self->mAttributeCollection;
-        __p.__r_.__value_.__r.__words[0] = a3;
+        __p.__r_.__value_.__r.__words[0] = node;
         LODWORD(__p.__r_.__value_.__r.__words[1]) = 38;
-        v107 = &__p;
+        nodeCopy11 = &__p;
         v67 = std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>,std::__map_value_compare<EQKitTypes::Attributes::Enum,objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<objc_object  {objcproto15EQKitLayoutNode}*::Align::Enum>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v83 + 512, &__p);
 LABEL_183:
         *(v67 + 48) = v65;
@@ -1068,10 +1068,10 @@ LABEL_183:
         {
           v56 = self->mAttributeCollection;
           v57 = v100;
-          v107 = a3;
+          nodeCopy11 = node;
           LODWORD(v108) = 42;
-          v109[0] = &v107;
-          *(std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,double>,std::__map_value_compare<EQKitTypes::Attributes::Enum,std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v56 + 440, &v107) + 48) = v57;
+          v109[0] = &nodeCopy11;
+          *(std::__tree<std::__value_type<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,double>,std::__map_value_compare<EQKitTypes::Attributes::Enum,std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>,std::less<EQKitTypes::Attributes::Enum>,true>,std::allocator<std::pair<objc_object  {objcproto15EQKitLayoutNode}*,EQKitTypes::Attributes::Enum>>>::__emplace_unique_key_args<EQKitTypes::Attributes::Enum,std::piecewise_construct_t const&,std::tuple<EQKitTypes::Attributes::Enum const&>,std::piecewise_construct_t const&<>>(v56 + 440, &nodeCopy11) + 48) = v57;
         }
 
         __p.__r_.__value_.__r.__words[0] = v99;
@@ -1094,9 +1094,9 @@ LABEL_183:
         if (EQKitLength::lengthVectorFromString(&__str, &__p))
         {
           v69 = self->mAttributeCollection;
-          v107 = a3;
+          nodeCopy11 = node;
           LODWORD(v108) = 46;
-          EQKit::AttributeCollection::setValueForKey<std::vector<EQKitLength>>(v69, v69 + 56, &__p, &v107);
+          EQKit::AttributeCollection::setValueForKey<std::vector<EQKitLength>>(v69, v69 + 56, &__p, &nodeCopy11);
         }
 
         goto LABEL_173;
@@ -1109,9 +1109,9 @@ LABEL_183:
         }
 
         v79 = self->mAttributeCollection;
-        v107 = a3;
+        nodeCopy11 = node;
         LODWORD(v108) = 47;
-        EQKit::AttributeCollection::setValueForKey<std::vector<EQKitTypes::VAlign::Enum>>(v79, v79 + 224, &__p.__r_.__value_.__l.__data_, &v107);
+        EQKit::AttributeCollection::setValueForKey<std::vector<EQKitTypes::VAlign::Enum>>(v79, v79 + 224, &__p.__r_.__value_.__l.__data_, &nodeCopy11);
 LABEL_173:
         v70 = __p.__r_.__value_.__r.__words[0];
 LABEL_174:
@@ -1128,23 +1128,23 @@ LABEL_174:
   }
 }
 
-- (id)parseChildrenAsTokenContentFromXMLNode:(_xmlNode *)a3
+- (id)parseChildrenAsTokenContentFromXMLNode:(_xmlNode *)node
 {
-  v3 = a3;
+  nodeCopy = node;
   v18 = 0;
   memset(&__str, 0, sizeof(__str));
   v16 = 0;
   v15 = 1;
-  if (!a3)
+  if (!node)
   {
     goto LABEL_20;
   }
 
-  children = a3->children;
+  children = node->children;
   if (!children)
   {
 LABEL_18:
-    LODWORD(v3) = 0;
+    LODWORD(nodeCopy) = 0;
     goto LABEL_20;
   }
 
@@ -1170,7 +1170,7 @@ LABEL_18:
 
     _contentAppendStringIfNeeded(&v18, &__str, &v16, &v15, 0);
     [(EQKitMathMLParser *)self pushState:1];
-    v6 = [(EQKitMathMLParser *)self parseNode:v3];
+    v6 = [(EQKitMathMLParser *)self parseNode:nodeCopy];
     [(EQKitMathMLParser *)self popState];
     if (!v6)
     {
@@ -1194,10 +1194,10 @@ LABEL_17:
     }
   }
 
-  LODWORD(v3) = 1;
+  LODWORD(nodeCopy) = 1;
 LABEL_20:
   _contentAppendStringIfNeeded(&v18, &__str, &v16, &v15, 1);
-  if (v3)
+  if (nodeCopy)
   {
     v10 = 0;
     v11 = v18;
@@ -1218,14 +1218,14 @@ LABEL_20:
   return v10;
 }
 
-- (id)parseNode:(_xmlNode *)a3
+- (id)parseNode:(_xmlNode *)node
 {
-  if (!EQKitXMLIsNsElement(a3, self->mNS))
+  if (!EQKitXMLIsNsElement(node, self->mNS))
   {
     goto LABEL_10;
   }
 
-  name = a3->name;
+  name = node->name;
   if (!name)
   {
     goto LABEL_10;
@@ -1248,7 +1248,7 @@ LABEL_20:
   {
     v7 = 6;
 LABEL_9:
-    [(EQKitMathMLParser *)self reportError:v7 withNode:a3];
+    [(EQKitMathMLParser *)self reportError:v7 withNode:node];
     goto LABEL_10;
   }
 
@@ -1373,16 +1373,16 @@ LABEL_9:
       goto LABEL_9;
   }
 
-  v11 = [objc_alloc(*v10) initFromXMLNode:a3 parser:self];
+  v11 = [objc_alloc(*v10) initFromXMLNode:node parser:self];
   if (v11)
   {
     v8 = v11;
-    [(EQKitMathMLParser *)self parseAttributesForNode:v11 withXMLNode:a3];
+    [(EQKitMathMLParser *)self parseAttributesForNode:v11 withXMLNode:node];
     return v8;
   }
 
 LABEL_10:
-  [(EQKitMathMLParser *)self reportError:4 withNode:a3];
+  [(EQKitMathMLParser *)self reportError:4 withNode:node];
   return 0;
 }
 
@@ -1410,28 +1410,28 @@ LABEL_10:
   }
 }
 
-- (BOOL)isElement:(int)a3 allowedInState:(int)a4
+- (BOOL)isElement:(int)element allowedInState:(int)state
 {
-  v4 = (a3 - 25) < 2;
-  v5 = a3 == 27;
-  if (a4 != 3)
+  v4 = (element - 25) < 2;
+  v5 = element == 27;
+  if (state != 3)
   {
     v5 = 1;
   }
 
-  if (a4 != 2)
+  if (state != 2)
   {
     v4 = v5;
   }
 
-  v7 = a3 == 31 || a3 == 39;
-  v8 = a4 != 1 || v7;
-  if (!a4)
+  v7 = element == 31 || element == 39;
+  v8 = state != 1 || v7;
+  if (!state)
   {
-    v8 = (a3 - 28) < 0xFFFFFFFD;
+    v8 = (element - 28) < 0xFFFFFFFD;
   }
 
-  if (a4 <= 1)
+  if (state <= 1)
   {
     return v8;
   }

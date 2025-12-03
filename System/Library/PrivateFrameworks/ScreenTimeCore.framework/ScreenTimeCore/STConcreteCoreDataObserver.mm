@@ -1,33 +1,33 @@
 @interface STConcreteCoreDataObserver
 + (id)_updatedOrInsertedChangePredicate;
-- (STConcreteCoreDataObserver)initWithPersistentContainer:(id)a3;
-- (id)_coreDataChangesFromInterestingDeleteChanges:(id)a3 withObservationFilters:(id)a4 inContext:(id)a5;
-- (id)_coreDataChangesFromInterestingUpsertChanges:(id)a3 withObservationFilters:(id)a4 inContext:(id)a5;
-- (id)_filteredObjectIDsFromObjects:(id)a3 predicate:(id)a4;
-- (id)_filteredPersistentHistoryChangesFromChanges:(id)a3 predicate:(id)a4;
-- (id)_filteredTombstonesFromChanges:(id)a3 predicate:(id)a4;
-- (void)addObservationFiltersByTriggerPredicate:(id)a3 forDelegate:(id)a4;
+- (STConcreteCoreDataObserver)initWithPersistentContainer:(id)container;
+- (id)_coreDataChangesFromInterestingDeleteChanges:(id)changes withObservationFilters:(id)filters inContext:(id)context;
+- (id)_coreDataChangesFromInterestingUpsertChanges:(id)changes withObservationFilters:(id)filters inContext:(id)context;
+- (id)_filteredObjectIDsFromObjects:(id)objects predicate:(id)predicate;
+- (id)_filteredPersistentHistoryChangesFromChanges:(id)changes predicate:(id)predicate;
+- (id)_filteredTombstonesFromChanges:(id)changes predicate:(id)predicate;
+- (void)addObservationFiltersByTriggerPredicate:(id)predicate forDelegate:(id)delegate;
 - (void)dealloc;
-- (void)debouncer:(id)a3 didDebounce:(id)a4;
-- (void)handleManagedObjectContextDidMergeChangesNotification:(id)a3;
+- (void)debouncer:(id)debouncer didDebounce:(id)debounce;
+- (void)handleManagedObjectContextDidMergeChangesNotification:(id)notification;
 - (void)start;
 @end
 
 @implementation STConcreteCoreDataObserver
 
-- (STConcreteCoreDataObserver)initWithPersistentContainer:(id)a3
+- (STConcreteCoreDataObserver)initWithPersistentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v15.receiver = self;
   v15.super_class = STConcreteCoreDataObserver;
   v5 = [(STConcreteCoreDataObserver *)&v15 init];
   persistentContainer = v5->_persistentContainer;
-  v5->_persistentContainer = v4;
-  v7 = v4;
+  v5->_persistentContainer = containerCopy;
+  v7 = containerCopy;
 
-  v8 = [(NSPersistentContainer *)v7 viewContext];
+  viewContext = [(NSPersistentContainer *)v7 viewContext];
   managedObjectContext = v5->_managedObjectContext;
-  v5->_managedObjectContext = v8;
+  v5->_managedObjectContext = viewContext;
 
   v10 = +[NSMapTable weakToStrongObjectsMapTable];
   triggerableObservationFiltersByDelegate = v5->_triggerableObservationFiltersByDelegate;
@@ -70,29 +70,29 @@
   objc_destroyWeak(&location);
 }
 
-- (void)addObservationFiltersByTriggerPredicate:(id)a3 forDelegate:(id)a4
+- (void)addObservationFiltersByTriggerPredicate:(id)predicate forDelegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcreteCoreDataObserver *)self triggerableObservationFiltersByDelegate];
-  [v8 setObject:v7 forKey:v6];
+  delegateCopy = delegate;
+  predicateCopy = predicate;
+  triggerableObservationFiltersByDelegate = [(STConcreteCoreDataObserver *)self triggerableObservationFiltersByDelegate];
+  [triggerableObservationFiltersByDelegate setObject:predicateCopy forKey:delegateCopy];
 }
 
-- (void)debouncer:(id)a3 didDebounce:(id)a4
+- (void)debouncer:(id)debouncer didDebounce:(id)debounce
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(STConcreteCoreDataObserver *)self changeNotificationDebouncer];
+  debounceCopy = debounce;
+  debouncerCopy = debouncer;
+  changeNotificationDebouncer = [(STConcreteCoreDataObserver *)self changeNotificationDebouncer];
 
-  v8 = v9;
-  if (v7 == v6 && v9)
+  v8 = debounceCopy;
+  if (changeNotificationDebouncer == debouncerCopy && debounceCopy)
   {
-    [(STConcreteCoreDataObserver *)self handleManagedObjectContextDidMergeChangesNotification:v9];
-    v8 = v9;
+    [(STConcreteCoreDataObserver *)self handleManagedObjectContextDidMergeChangesNotification:debounceCopy];
+    v8 = debounceCopy;
   }
 }
 
-- (void)handleManagedObjectContextDidMergeChangesNotification:(id)a3
+- (void)handleManagedObjectContextDidMergeChangesNotification:(id)notification
 {
   [(STConcreteCoreDataObserver *)self managedObjectContext];
   v5[0] = _NSConcreteStackBlock;
@@ -116,27 +116,27 @@
   return v3;
 }
 
-- (id)_filteredPersistentHistoryChangesFromChanges:(id)a3 predicate:(id)a4
+- (id)_filteredPersistentHistoryChangesFromChanges:(id)changes predicate:(id)predicate
 {
-  v5 = a4;
-  v6 = a3;
+  predicateCopy = predicate;
+  changesCopy = changes;
   v7 = +[STConcreteCoreDataObserver _updatedOrInsertedChangePredicate];
   v12[0] = v7;
-  v12[1] = v5;
+  v12[1] = predicateCopy;
   v8 = [NSArray arrayWithObjects:v12 count:2];
   v9 = [NSCompoundPredicate andPredicateWithSubpredicates:v8];
 
-  v10 = [v6 filteredArrayUsingPredicate:v9];
+  v10 = [changesCopy filteredArrayUsingPredicate:v9];
 
   return v10;
 }
 
-- (id)_coreDataChangesFromInterestingUpsertChanges:(id)a3 withObservationFilters:(id)a4 inContext:(id)a5
+- (id)_coreDataChangesFromInterestingUpsertChanges:(id)changes withObservationFilters:(id)filters inContext:(id)context
 {
-  v7 = a3;
-  v41 = a4;
-  v8 = a5;
-  v9 = [v7 valueForKeyPath:@"changedObjectID"];
+  changesCopy = changes;
+  filtersCopy = filters;
+  contextCopy = context;
+  v9 = [changesCopy valueForKeyPath:@"changedObjectID"];
   v10 = +[STLog coreDataObserver];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -164,7 +164,7 @@
         }
 
         v15 = *(*(&v58 + 1) + 8 * i);
-        v16 = [v8 objectWithID:v15];
+        v16 = [contextCopy objectWithID:v15];
         if (v16)
         {
           [v49 addObject:v16];
@@ -194,13 +194,13 @@
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v42 = v41;
+    v42 = filtersCopy;
     v47 = [v42 countByEnumeratingWithState:&v54 objects:v63 count:16];
     v18 = 0;
     if (v47)
     {
       v45 = *v55;
-      v43 = v8;
+      v43 = contextCopy;
       do
       {
         for (j = 0; j != v47; j = j + 1)
@@ -211,13 +211,13 @@
           }
 
           v20 = *(*(&v54 + 1) + 8 * j);
-          v21 = [v20 predicate];
-          v22 = [(STConcreteCoreDataObserver *)self _filteredObjectIDsFromObjects:v49 predicate:v21];
+          predicate = [v20 predicate];
+          v22 = [(STConcreteCoreDataObserver *)self _filteredObjectIDsFromObjects:v49 predicate:predicate];
 
           if ([v22 count])
           {
-            v23 = [v20 primaryType];
-            v24 = [v20 secondaryType];
+            primaryType = [v20 primaryType];
+            secondaryType = [v20 secondaryType];
             v25 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v22 count]);
 
             v52 = 0u;
@@ -240,7 +240,7 @@
                     objc_enumerationMutation(v26);
                   }
 
-                  v31 = [[STCoreDataChange alloc] initWithChangeIdentifier:*(*(&v50 + 1) + 8 * k) primaryType:v23 secondaryType:v24];
+                  v31 = [[STCoreDataChange alloc] initWithChangeIdentifier:*(*(&v50 + 1) + 8 * k) primaryType:primaryType secondaryType:secondaryType];
                   [v25 addObject:v31];
                 }
 
@@ -251,7 +251,7 @@
             }
 
             v18 = v25;
-            v8 = v43;
+            contextCopy = v43;
             v22 = v48;
           }
         }
@@ -279,22 +279,22 @@
   return v32;
 }
 
-- (id)_coreDataChangesFromInterestingDeleteChanges:(id)a3 withObservationFilters:(id)a4 inContext:(id)a5
+- (id)_coreDataChangesFromInterestingDeleteChanges:(id)changes withObservationFilters:(id)filters inContext:(id)context
 {
-  v29 = a3;
-  v7 = a4;
-  v25 = a5;
+  changesCopy = changes;
+  filtersCopy = filters;
+  contextCopy = context;
   v8 = +[STLog coreDataObserver];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100112644(v29);
+    sub_100112644(changesCopy);
   }
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v7;
+  obj = filtersCopy;
   v30 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   v9 = 0;
   if (v30)
@@ -310,13 +310,13 @@
         }
 
         v11 = *(*(&v36 + 1) + 8 * i);
-        v12 = [v11 predicate];
-        v13 = [(STConcreteCoreDataObserver *)self _filteredTombstonesFromChanges:v29 predicate:v12];
+        predicate = [v11 predicate];
+        v13 = [(STConcreteCoreDataObserver *)self _filteredTombstonesFromChanges:changesCopy predicate:predicate];
 
         if ([v13 count])
         {
-          v14 = [v11 primaryType];
-          v15 = [v11 secondaryType];
+          primaryType = [v11 primaryType];
+          secondaryType = [v11 secondaryType];
           v16 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v13 count]);
 
           v34 = 0u;
@@ -339,7 +339,7 @@
                   objc_enumerationMutation(v17);
                 }
 
-                v22 = [[STCoreDataChange alloc] initWithChangeIdentifier:*(*(&v32 + 1) + 8 * j) primaryType:v14 secondaryType:v15];
+                v22 = [[STCoreDataChange alloc] initWithChangeIdentifier:*(*(&v32 + 1) + 8 * j) primaryType:primaryType secondaryType:secondaryType];
                 [v16 addObject:v22];
               }
 
@@ -365,22 +365,22 @@
   return v23;
 }
 
-- (id)_filteredObjectIDsFromObjects:(id)a3 predicate:(id)a4
+- (id)_filteredObjectIDsFromObjects:(id)objects predicate:(id)predicate
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
-  [v6 filterUsingPredicate:v5];
+  predicateCopy = predicate;
+  v6 = [objects mutableCopy];
+  [v6 filterUsingPredicate:predicateCopy];
 
   v7 = [v6 valueForKeyPath:@"objectID"];
 
   return v7;
 }
 
-- (id)_filteredTombstonesFromChanges:(id)a3 predicate:(id)a4
+- (id)_filteredTombstonesFromChanges:(id)changes predicate:(id)predicate
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
-  [v6 filterUsingPredicate:v5];
+  predicateCopy = predicate;
+  v6 = [changes mutableCopy];
+  [v6 filterUsingPredicate:predicateCopy];
 
   v7 = [v6 valueForKeyPath:@"tombstone"];
 

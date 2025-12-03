@@ -11,7 +11,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [a1 copyCarrierBundleLocation:v6 error:a4];
+    v7 = [self copyCarrierBundleLocation:v6 error:a4];
     if (v7)
     {
       v8 = [MEMORY[0x277CCA8D8] bundleWithPath:v7];
@@ -34,7 +34,7 @@
 - (id)localizedCarrierBundleStringForKey:()TelephonyPreferences subscription:error:
 {
   v8 = a3;
-  v9 = [a1 carrierBundleForSubscription:a4 error:a5];
+  v9 = [self carrierBundleForSubscription:a4 error:a5];
   v10 = v9;
   if (v9)
   {

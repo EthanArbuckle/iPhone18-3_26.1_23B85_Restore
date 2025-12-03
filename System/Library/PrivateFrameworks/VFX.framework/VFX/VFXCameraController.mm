@@ -1,47 +1,47 @@
 @interface VFXCameraController
-- (BOOL)_isLocationValid:(CGPoint)a3 inViewport:(CGSize)a4;
+- (BOOL)_isLocationValid:(CGPoint)valid inViewport:(CGSize)viewport;
 - (BOOL)useOrbitInteractionMode;
 - (VFXCameraController)init;
 - (__n128)_targetRelativeToPointOfViewParent;
-- (double)_convertRotationFromWorldToPointOfView:(uint64_t)a3;
-- (double)_mapToSphere:(float64_t)a3 inViewport:(double)a4;
+- (double)_convertRotationFromWorldToPointOfView:(uint64_t)view;
+- (double)_mapToSphere:(float64_t)sphere inViewport:(double)viewport;
 - (double)_orientationForMode;
-- (double)_orthographicViewSpaceTranslationForZoomAtScreenPoint:(uint64_t)a3 scaleDelta:(uint64_t)a4 viewport:(double)a5;
-- (double)lookAtWith:(uint64_t)a3 target:(uint64_t)a4;
-- (double)unrolledWorldOrientation:(float *)a3;
+- (double)_orthographicViewSpaceTranslationForZoomAtScreenPoint:(uint64_t)point scaleDelta:(uint64_t)delta viewport:(double)viewport;
+- (double)lookAtWith:(uint64_t)with target:(uint64_t)target;
+- (double)unrolledWorldOrientation:(float *)orientation;
 - (float)maximumHorizontalAngle;
 - (float)minimumHorizontalAngle;
 - (void)_capOrientationAnglesToMaximum;
-- (void)_directionForScreenPoint:(uint64_t)a3 viewport:(uint64_t)a4;
-- (void)_endDraggingWithVelocity:(CGPoint)a3;
+- (void)_directionForScreenPoint:(uint64_t)point viewport:(uint64_t)viewport;
+- (void)_endDraggingWithVelocity:(CGPoint)velocity;
 - (void)_resetOrientationState;
-- (void)_rotateByX:(float)a3 Y:(float)a4;
-- (void)_setInertiaRunning:(BOOL)a3;
-- (void)_translateInCameraSpaceByX:(float)a3 Y:(float)a4 Z:(float)a5;
+- (void)_rotateByX:(float)x Y:(float)y;
+- (void)_setInertiaRunning:(BOOL)running;
+- (void)_translateInCameraSpaceByX:(float)x Y:(float)y Z:(float)z;
 - (void)_updateArcballOrientation;
-- (void)_updateInertiaAtTime:(double)a3;
+- (void)_updateInertiaAtTime:(double)time;
 - (void)_updateRotation;
-- (void)beginInteraction:(CGPoint)a3 withViewport:(CGSize)a4;
+- (void)beginInteraction:(CGPoint)interaction withViewport:(CGSize)viewport;
 - (void)clearRoll;
-- (void)continueInteraction:(CGPoint)a3 withViewport:(CGSize)a4 sensitivity:(float)a5;
+- (void)continueInteraction:(CGPoint)interaction withViewport:(CGSize)viewport sensitivity:(float)sensitivity;
 - (void)dealloc;
-- (void)dollyBy:(float)a3 onScreenPoint:(CGPoint)a4 viewport:(CGSize)a5;
-- (void)dollyToTarget:(float)a3;
-- (void)frameNodes:(id)a3;
-- (void)rollAroundTarget:(float)a3;
-- (void)rollBy:(float)a3 aroundScreenPoint:(CGPoint)a4 viewport:(CGSize)a5;
-- (void)rollCameraSpaceBy:(float)a3 withPoint:(CGPoint)a4 viewport:(CGSize)a5;
-- (void)rotateByX:(float)a3 Y:(float)a4;
-- (void)setInertiaEnabled:(BOOL)a3;
-- (void)setInteractionMode:(int64_t)a3;
-- (void)setMaximumHorizontalAngle:(float)a3;
-- (void)setMaximumVerticalAngle:(float)a3;
-- (void)setMinimumHorizontalAngle:(float)a3;
-- (void)setMinimumVerticalAngle:(float)a3;
-- (void)setPointOfView:(id)a3 updateUpTransform:(BOOL)a4;
+- (void)dollyBy:(float)by onScreenPoint:(CGPoint)point viewport:(CGSize)viewport;
+- (void)dollyToTarget:(float)target;
+- (void)frameNodes:(id)nodes;
+- (void)rollAroundTarget:(float)target;
+- (void)rollBy:(float)by aroundScreenPoint:(CGPoint)point viewport:(CGSize)viewport;
+- (void)rollCameraSpaceBy:(float)by withPoint:(CGPoint)point viewport:(CGSize)viewport;
+- (void)rotateByX:(float)x Y:(float)y;
+- (void)setInertiaEnabled:(BOOL)enabled;
+- (void)setInteractionMode:(int64_t)mode;
+- (void)setMaximumHorizontalAngle:(float)angle;
+- (void)setMaximumVerticalAngle:(float)angle;
+- (void)setMinimumHorizontalAngle:(float)angle;
+- (void)setMinimumVerticalAngle:(float)angle;
+- (void)setPointOfView:(id)view updateUpTransform:(BOOL)transform;
 - (void)setSimdUp:(VFXCameraController *)self;
-- (void)translateInCameraSpaceByX:(float)a3 Y:(float)a4 Z:(float)a5;
-- (void)translateInScreenSpaceTo:(CGPoint)a3 viewport:(CGSize)a4;
+- (void)translateInCameraSpaceByX:(float)x Y:(float)y Z:(float)z;
+- (void)translateInScreenSpaceTo:(CGPoint)to viewport:(CGSize)viewport;
 @end
 
 @implementation VFXCameraController
@@ -71,29 +71,29 @@
   [(VFXCameraController *)&v5 dealloc];
 }
 
-- (void)setPointOfView:(id)a3 updateUpTransform:(BOOL)a4
+- (void)setPointOfView:(id)view updateUpTransform:(BOOL)transform
 {
-  if (self->_interactionMode != a3)
+  if (self->_interactionMode != view)
   {
-    objc_msgSend__setInertiaRunning_(self, a2, 0, a4);
+    objc_msgSend__setInertiaRunning_(self, a2, 0, transform);
 
-    self->_interactionMode = a3;
+    self->_interactionMode = view;
   }
 }
 
-- (void)setInteractionMode:(int64_t)a3
+- (void)setInteractionMode:(int64_t)mode
 {
-  if (self[1].super.isa != a3)
+  if (self[1].super.isa != mode)
   {
     objc_msgSend__setInertiaRunning_(self, a2, 0, v3);
-    self[1].super.isa = a3;
+    self[1].super.isa = mode;
   }
 }
 
-- (void)setInertiaEnabled:(BOOL)a3
+- (void)setInertiaEnabled:(BOOL)enabled
 {
-  self->_inertia.inertiaEnabled = a3;
-  if (objc_msgSend_isInertiaRunning(self, a2, a3, v3) && !a3)
+  self->_inertia.inertiaEnabled = enabled;
+  if (objc_msgSend_isInertiaRunning(self, a2, enabled, v3) && !enabled)
   {
 
     objc_msgSend__setInertiaRunning_(self, v6, 0, v7);
@@ -125,9 +125,9 @@
   return result;
 }
 
-- (void)setMinimumVerticalAngle:(float)a3
+- (void)setMinimumVerticalAngle:(float)angle
 {
-  v3 = a3 / 180.0 * 3.14159265;
+  v3 = angle / 180.0 * 3.14159265;
   if (v3 > 1.57079633)
   {
     v3 = 1.57079633;
@@ -137,9 +137,9 @@
   *&self->_maximumAngles[3] = v4;
 }
 
-- (void)setMinimumHorizontalAngle:(float)a3
+- (void)setMinimumHorizontalAngle:(float)angle
 {
-  v3 = a3 / 180.0 * 3.14159265;
+  v3 = angle / 180.0 * 3.14159265;
   if (v3 > 3.14159265)
   {
     v3 = 3.14159265;
@@ -149,9 +149,9 @@
   *&self->_minimumAngles[7] = v4;
 }
 
-- (void)setMaximumVerticalAngle:(float)a3
+- (void)setMaximumVerticalAngle:(float)angle
 {
-  v3 = a3 / 180.0 * 3.14159265;
+  v3 = angle / 180.0 * 3.14159265;
   if (v3 > 1.57079633)
   {
     v3 = 1.57079633;
@@ -161,9 +161,9 @@
   *(&self->_automaticTarget + 1) = v4;
 }
 
-- (void)setMaximumHorizontalAngle:(float)a3
+- (void)setMaximumHorizontalAngle:(float)angle
 {
-  v3 = a3 / 180.0 * 3.14159265;
+  v3 = angle / 180.0 * 3.14159265;
   if (v3 > 3.14159265)
   {
     v3 = 3.14159265;
@@ -173,17 +173,17 @@
   *&self->_maximumAngles[7] = v4;
 }
 
-- (void)translateInCameraSpaceByX:(float)a3 Y:(float)a4 Z:(float)a5
+- (void)translateInCameraSpaceByX:(float)x Y:(float)y Z:(float)z
 {
   objc_msgSend__setInertiaRunning_(self, a2, 0, v5);
-  *&v13 = a3;
-  *&v14 = a4;
-  *&v15 = a5;
+  *&v13 = x;
+  *&v14 = y;
+  *&v15 = z;
 
   objc_msgSend__translateInCameraSpaceByX_Y_Z_(self, v10, v11, v12, v13, v14, v15);
 }
 
-- (void)translateInScreenSpaceTo:(CGPoint)a3 viewport:(CGSize)a4
+- (void)translateInScreenSpaceTo:(CGPoint)to viewport:(CGSize)viewport
 {
   objc_msgSend__setInertiaRunning_(self, a2, 0, v4);
   __asm { FMOV            V1.2D, #-0.5 }
@@ -193,7 +193,7 @@
   MEMORY[0x1EEE66B58](v14, sel_localTranslateBy_, v15, v16);
 }
 
-- (void)rotateByX:(float)a3 Y:(float)a4
+- (void)rotateByX:(float)x Y:(float)y
 {
   if (objc_opt_respondsToSelector())
   {
@@ -206,9 +206,9 @@
     objc_msgSend__resetOrientationState(self, v9, v10, v11);
   }
 
-  v12 = a3 / 180.0 * 3.14159265;
+  v12 = x / 180.0 * 3.14159265;
   *&v12 = v12;
-  v13 = a4 / 180.0 * 3.14159265;
+  v13 = y / 180.0 * 3.14159265;
   *&v13 = v13;
   objc_msgSend__rotateByX_Y_(self, v9, v10, v11, v12, v13);
   if (objc_opt_respondsToSelector())
@@ -219,36 +219,36 @@
   }
 }
 
-- (void)rollCameraSpaceBy:(float)a3 withPoint:(CGPoint)a4 viewport:(CGSize)a5
+- (void)rollCameraSpaceBy:(float)by withPoint:(CGPoint)point viewport:(CGSize)viewport
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
+  height = viewport.height;
+  width = viewport.width;
+  y = point.y;
+  x = point.x;
   objc_msgSend__setInertiaRunning_(self, a2, 0, v5);
   objc_msgSend__directionForScreenPoint_viewport_(self, v12, v13, v14, x, y, width, height);
-  v15 = a3 / 180.0 * 3.14159265;
+  v15 = by / 180.0 * 3.14159265;
   __sincosf_stret(v15 * 0.5);
   v19 = objc_msgSend_pointOfView(self, v16, v17, v18);
 
   MEMORY[0x1EEE66B58](v19, sel_localRotateBy_, v20, v21);
 }
 
-- (void)rollAroundTarget:(float)a3
+- (void)rollAroundTarget:(float)target
 {
   objc_msgSend__setInertiaRunning_(self, a2, 0, v3);
   objc_msgSend_simdTarget(self, v6, v7, v8);
   v12 = objc_msgSend_pointOfView(self, v9, v10, v11);
   objc_msgSend_worldTransform(v12, v13, v14, v15);
   __invert_f4(v24);
-  v16 = a3 / 180.0 * 3.14159265;
+  v16 = target / 180.0 * 3.14159265;
   __sincosf_stret(v16 * 0.5);
   v20 = objc_msgSend_pointOfView(self, v17, v18, v19);
 
   MEMORY[0x1EEE66B58](v20, sel_localRotateBy_, v21, v22);
 }
 
-- (void)dollyToTarget:(float)a3
+- (void)dollyToTarget:(float)target
 {
   objc_msgSend__setInertiaRunning_(self, a2, 0, v3);
   v8 = objc_msgSend_pointOfView(self, v5, v6, v7);
@@ -283,24 +283,24 @@
   return v11;
 }
 
-- (double)unrolledWorldOrientation:(float *)a3
+- (double)unrolledWorldOrientation:(float *)orientation
 {
-  v6 = objc_msgSend_pointOfView(a1, a2, a3, a4);
+  v6 = objc_msgSend_pointOfView(self, a2, orientation, a4);
   objc_msgSend_worldOrientation(v6, v7, v8, v9);
   v137 = v10;
-  v14 = objc_msgSend_pointOfView(a1, v11, v12, v13);
+  v14 = objc_msgSend_pointOfView(self, v11, v12, v13);
   objc_msgSend_worldFront(v14, v15, v16, v17);
   v139 = v18;
-  objc_msgSend_simdUp(a1, v19, v20, v21);
+  objc_msgSend_simdUp(self, v19, v20, v21);
   v26 = vmulq_f32(v139, v25);
   if (fabsf(fabsf(fminf(fmaxf(v26.f32[2] + vaddv_f32(*v26.f32), -1.0), 1.0)) + -1.0) >= 0.01)
   {
-    objc_msgSend_simdTarget(a1, v22, v23, v24);
+    objc_msgSend_simdTarget(self, v22, v23, v24);
     v140 = v32;
-    v36 = objc_msgSend_pointOfView(a1, v33, v34, v35);
+    v36 = objc_msgSend_pointOfView(self, v33, v34, v35);
     objc_msgSend_worldPosition(v36, v37, v38, v39);
     v127 = vsubq_f32(v140, v40);
-    if (objc_msgSend_useOrbitInteractionMode(a1, v41, v42, v43))
+    if (objc_msgSend_useOrbitInteractionMode(self, v41, v42, v43))
     {
       v47 = v127;
       v48 = vcgeq_f32(vdupq_n_s32(0x3C23D70Au), vabdq_f32(0, v127));
@@ -338,7 +338,7 @@
     {
       v138 = v49;
       v141 = vmulq_f32(v49, xmmword_1AFE21390);
-      objc_msgSend_simdUp(a1, v44, v45, v46, *&v125, *&v126);
+      objc_msgSend_simdUp(self, v44, v45, v46, *&v125, *&v126);
       v58 = v141;
       v60 = v59;
       v61 = vmulq_f32(v141, xmmword_1AFE21390);
@@ -455,9 +455,9 @@
     }
 
     while (v53++ < 0x63);
-    if (a3)
+    if (orientation)
     {
-      *a3 = v54;
+      *orientation = v54;
     }
 
     v121 = vmulq_f32(v49, v49);
@@ -470,12 +470,12 @@
 
   else
   {
-    if (a3)
+    if (orientation)
     {
-      *a3 = 0.0;
+      *orientation = 0.0;
     }
 
-    v27 = objc_msgSend_pointOfView(a1, v22, v23, v24);
+    v27 = objc_msgSend_pointOfView(self, v22, v23, v24);
 
     objc_msgSend_worldOrientation(v27, v28, v29, v30);
   }
@@ -493,7 +493,7 @@
   objc_msgSend_setWorldOrientation_(v10, v11, v12, v13, v14);
 }
 
-- (void)frameNodes:(id)a3
+- (void)frameNodes:(id)nodes
 {
   v124[1] = *MEMORY[0x1E69E9840];
   objc_msgSend__setInertiaRunning_(self, a2, 0, v3);
@@ -505,7 +505,7 @@
     if (v20)
     {
       v23 = v20;
-      VFXNodeGetBoundingSphere(a3, 0x1010101, v21, v22);
+      VFXNodeGetBoundingSphere(nodes, 0x1010101, v21, v22);
       v28 = v27.f32[3];
       if (v27.f32[3] != 0.0)
       {
@@ -563,9 +563,9 @@
   }
 }
 
-- (double)lookAtWith:(uint64_t)a3 target:(uint64_t)a4
+- (double)lookAtWith:(uint64_t)with target:(uint64_t)target
 {
-  objc_msgSend_simdUp(a1, a2, a3, a4);
+  objc_msgSend_simdUp(self, a2, with, target);
   v6 = vsubq_f32(a6, a5);
   v7 = vmulq_f32(v6, v6);
   *&v8 = v7.f32[2] + vaddv_f32(*v7.f32);
@@ -582,12 +582,12 @@
   return result;
 }
 
-- (void)beginInteraction:(CGPoint)a3 withViewport:(CGSize)a4
+- (void)beginInteraction:(CGPoint)interaction withViewport:(CGSize)viewport
 {
-  height = a4.height;
-  y = a3.y;
-  width = a4.width;
-  x = a3.x;
+  height = viewport.height;
+  y = interaction.y;
+  width = viewport.width;
+  x = interaction.x;
   objc_msgSend__setInertiaRunning_(self, a2, 0, v4);
   v6.f64[0] = width;
   v6.f64[1] = height;
@@ -643,26 +643,26 @@
   }
 }
 
-- (void)continueInteraction:(CGPoint)a3 withViewport:(CGSize)a4 sensitivity:(float)a5
+- (void)continueInteraction:(CGPoint)interaction withViewport:(CGSize)viewport sensitivity:(float)sensitivity
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  *&self->_anon_70[8] = vcvt_f32_f64(a3);
-  if (a4.width >= a4.height)
+  height = viewport.height;
+  width = viewport.width;
+  y = interaction.y;
+  *&self->_anon_70[8] = vcvt_f32_f64(interaction);
+  if (viewport.width >= viewport.height)
   {
-    v11 = a4.width;
+    v11 = viewport.width;
   }
 
   else
   {
-    v11 = a4.height;
+    v11 = viewport.height;
   }
 
-  v12 = 360.0 / v11 * a5;
+  v12 = 360.0 / v11 * sensitivity;
   self->_inertia.rotationSensitivity = v12;
-  self->_inertia.translationSensitivity = a5;
-  if (!objc_msgSend_interactionMode(self, a2, v5, v6, a3, *&a3.y) || objc_msgSend_interactionMode(self, v13, v14, v15) == 1 || objc_msgSend_interactionMode(self, v13, v14, v15) == 2)
+  self->_inertia.translationSensitivity = sensitivity;
+  if (!objc_msgSend_interactionMode(self, a2, v5, v6, interaction, *&interaction.y) || objc_msgSend_interactionMode(self, v13, v14, v15) == 1 || objc_msgSend_interactionMode(self, v13, v14, v15) == 2)
   {
     v16 = *&self->_anon_70[8];
     v17 = COERCE_DOUBLE(vmul_n_f32(vsub_f32(*self->_anon_70, *&v16), self->_inertia.rotationSensitivity));
@@ -697,18 +697,18 @@
   *&self->_anon_70[16] = *&self->_anon_70[8];
 }
 
-- (void)rollBy:(float)a3 aroundScreenPoint:(CGPoint)a4 viewport:(CGSize)a5
+- (void)rollBy:(float)by aroundScreenPoint:(CGPoint)point viewport:(CGSize)viewport
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
+  height = viewport.height;
+  width = viewport.width;
+  y = point.y;
+  x = point.x;
   objc_msgSend__setInertiaRunning_(self, a2, 0, v5);
   objc_msgSend__directionForScreenPoint_viewport_(self, v12, v13, v14, x, y, width, height);
   v16 = vmulq_f32(v15, v15);
   v16.f32[0] = v16.f32[2] + vaddv_f32(*v16.f32);
   v17 = vdupq_lane_s32(*v16.f32, 0);
-  v18 = a3 / 180.0 * 3.14159265;
+  v18 = by / 180.0 * 3.14159265;
   v17.i32[3] = 0;
   v19 = vrsqrteq_f32(v17);
   v20 = vmulq_f32(v19, vrsqrtsq_f32(v17, vmulq_f32(v19, v19)));
@@ -729,12 +729,12 @@
   objc_msgSend_setOrientation_(v41, v42, v43, v44, v47);
 }
 
-- (void)dollyBy:(float)a3 onScreenPoint:(CGPoint)a4 viewport:(CGSize)a5
+- (void)dollyBy:(float)by onScreenPoint:(CGPoint)point viewport:(CGSize)viewport
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
+  height = viewport.height;
+  width = viewport.width;
+  y = point.y;
+  x = point.x;
   objc_msgSend__setInertiaRunning_(self, a2, 0, v5);
   objc_msgSend__directionForScreenPoint_viewport_(self, v11, v12, v13, x, y, width, height);
   v17 = objc_msgSend_pointOfView(self, v14, v15, v16);
@@ -918,9 +918,9 @@ LABEL_18:
   *&self->_anon_10[8] = v52.i64[0];
 }
 
-- (void)_directionForScreenPoint:(uint64_t)a3 viewport:(uint64_t)a4
+- (void)_directionForScreenPoint:(uint64_t)point viewport:(uint64_t)viewport
 {
-  v8 = objc_msgSend_pointOfView(a1, a2, a3, a4);
+  v8 = objc_msgSend_pointOfView(self, a2, point, viewport);
   result = objc_msgSend_nodeRef(v8, v9, v10, v11);
   if (result)
   {
@@ -961,13 +961,13 @@ LABEL_18:
   return result;
 }
 
-- (void)_updateInertiaAtTime:(double)a3
+- (void)_updateInertiaAtTime:(double)time
 {
   if (self->_inertia.inertiaRunning)
   {
-    v6 = (a3 - self->_inertia.lastSimulationTime) * 60.0;
+    v6 = (time - self->_inertia.lastSimulationTime) * 60.0;
     v7 = fmaxf(v6, 1.0);
-    self->_inertia.lastSimulationTime = a3;
+    self->_inertia.lastSimulationTime = time;
     if (v7 >= 1)
     {
       friction = self->_inertia.friction;
@@ -1061,37 +1061,37 @@ LABEL_18:
 
 - (__n128)_targetRelativeToPointOfViewParent
 {
-  v5 = objc_msgSend_pointOfView(a1, a2, a3, a4);
+  v5 = objc_msgSend_pointOfView(self, a2, a3, a4);
   if (objc_msgSend_parentNode(v5, v6, v7, v8))
   {
-    v12 = objc_msgSend_pointOfView(a1, v9, v10, v11);
+    v12 = objc_msgSend_pointOfView(self, v9, v10, v11);
     v16 = objc_msgSend_parentNode(v12, v13, v14, v15);
-    v19 = a1[16];
+    v19 = self[16];
 
     objc_msgSend_convertPosition_fromNode_(v16, v17, 0, v18, v19.n128_f64[0]);
   }
 
   else
   {
-    return a1[16];
+    return self[16];
   }
 
   return result;
 }
 
-- (void)_translateInCameraSpaceByX:(float)a3 Y:(float)a4 Z:(float)a5
+- (void)_translateInCameraSpaceByX:(float)x Y:(float)y Z:(float)z
 {
   v7 = objc_msgSend_pointOfView(self, a2, v5, v6);
 
   MEMORY[0x1EEE66B58](v7, sel_localTranslateBy_, v8, v9);
 }
 
-- (void)_rotateByX:(float)a3 Y:(float)a4
+- (void)_rotateByX:(float)x Y:(float)y
 {
-  v5 = vceqz_f32(*&a3);
+  v5 = vceqz_f32(*&x);
   if ((vpmin_u32(v5, v5).u32[0] & 0x80000000) == 0)
   {
-    v6 = vadd_f32(*&a3, *self->_anon_10);
+    v6 = vadd_f32(*&x, *self->_anon_10);
     *&v7 = *v6.i32 + -6.28318531;
     v8 = vbsl_s8(vcgtd_f64(*v6.i32, 6.28318531), __PAIR64__(v6.u32[1], v7), v6);
     *&v9 = *v8.i32 + 6.28318531;
@@ -1106,22 +1106,22 @@ LABEL_18:
 
 - (double)_orientationForMode
 {
-  if (objc_msgSend_interactionMode(a1, a2, a3, a4))
+  if (objc_msgSend_interactionMode(self, a2, a3, a4))
   {
-    if (objc_msgSend_interactionMode(a1, v5, v6, v7) == 1)
+    if (objc_msgSend_interactionMode(self, v5, v6, v7) == 1)
     {
-      objc_msgSend_simdUp(a1, v8, v9, v10);
+      objc_msgSend_simdUp(self, v8, v9, v10);
     }
 
     else
     {
-      if (objc_msgSend_interactionMode(a1, v8, v9, v10) != 2)
+      if (objc_msgSend_interactionMode(self, v8, v9, v10) != 2)
       {
         v58 = xmmword_1AFE201A0;
         goto LABEL_9;
       }
 
-      v32 = objc_msgSend_pointOfView(a1, v29, v30, v31);
+      v32 = objc_msgSend_pointOfView(self, v29, v30, v31);
       objc_msgSend_worldUp(v32, v33, v34, v35);
     }
 
@@ -1134,17 +1134,17 @@ LABEL_18:
     v40 = vcltzq_s32(vshlq_n_s32(vmovl_u16(vdup_n_s16(v36.f32[0] != 0.0)), 0x1FuLL));
     v40.i32[3] = 0;
     v67 = vbslq_s8(vcltzq_s32(v40), vmulq_f32(v11, vmulq_f32(v39, vrsqrtsq_f32(v37, vmulq_f32(v39, v39)))), v11);
-    v41 = __sincosf_stret(a1[4] * 0.5);
+    v41 = __sincosf_stret(self[4] * 0.5);
     cosval = v41.__cosval;
     v66 = vmulq_n_f32(v67, v41.__sinval);
-    v45 = objc_msgSend_pointOfView(a1, v42, v43, v44);
+    v45 = objc_msgSend_pointOfView(self, v42, v43, v44);
     objc_msgSend_worldRight(v45, v46, v47, v48);
   }
 
   else
   {
-    v12 = objc_msgSend_pointOfView(a1, v5, v6, v7);
-    objc_msgSend_simdUp(a1, v13, v14, v15);
+    v12 = objc_msgSend_pointOfView(self, v5, v6, v7);
+    objc_msgSend_simdUp(self, v13, v14, v15);
     objc_msgSend_convertVector_fromNode_(v12, v16, 0, v17);
     v19 = vmulq_f32(v18, v18);
     v19.f32[0] = v19.f32[2] + vaddv_f32(*v19.f32);
@@ -1155,7 +1155,7 @@ LABEL_18:
     v23 = vcltzq_s32(vshlq_n_s32(vmovl_u16(vdup_n_s16(v19.f32[0] != 0.0)), 0x1FuLL));
     v23.i32[3] = 0;
     v65 = vbslq_s8(vcltzq_s32(v23), vmulq_f32(v18, vmulq_f32(v22, vrsqrtsq_f32(v20, vmulq_f32(v22, v22)))), v18);
-    v24 = __sincosf_stret(a1[4] * 0.5);
+    v24 = __sincosf_stret(self[4] * 0.5);
     cosval = v24.__cosval;
     v66 = vmulq_n_f32(v65, v24.__sinval);
     objc_msgSend_localRight(VFXNode, v25, v26, v27);
@@ -1170,7 +1170,7 @@ LABEL_18:
   v53 = vcltzq_s32(vshlq_n_s32(vmovl_u16(vdup_n_s16(v49.f32[0] != 0.0)), 0x1FuLL));
   v53.i32[3] = 0;
   v64 = vbslq_s8(vcltzq_s32(v53), vmulq_f32(v28, vmulq_f32(v52, vrsqrtsq_f32(v50, vmulq_f32(v52, v52)))), v28);
-  v54 = __sincosf_stret(a1[5] * 0.5);
+  v54 = __sincosf_stret(self[5] * 0.5);
   v55 = vmulq_n_f32(v64, v54.__sinval);
   v56 = vmlaq_f32(vmulq_f32(vextq_s8(vuzp1q_s32(v55, v55), v55, 0xCuLL), vnegq_f32(v66)), v55, vextq_s8(vuzp1q_s32(v66, v66), v66, 0xCuLL));
   v58 = vaddq_f32(vmlaq_n_f32(vmulq_n_f32(v66, v54.__cosval), v55, cosval), vextq_s8(vuzp1q_s32(v56, v56), v56, 0xCuLL));
@@ -1322,12 +1322,12 @@ LABEL_28:
   }
 }
 
-- (double)_convertRotationFromWorldToPointOfView:(uint64_t)a3
+- (double)_convertRotationFromWorldToPointOfView:(uint64_t)view
 {
-  v6 = objc_msgSend_pointOfView(a1, a2, a3, a4);
+  v6 = objc_msgSend_pointOfView(self, a2, view, a4);
   objc_msgSend_worldOrientation(v6, v7, v8, v9);
   v34 = v10;
-  v14 = objc_msgSend_pointOfView(a1, v11, v12, v13);
+  v14 = objc_msgSend_pointOfView(self, v11, v12, v13);
   objc_msgSend_worldOrientation(v14, v15, v16, v17);
   v19 = vmulq_f32(v18, xmmword_1AFE21390);
   _S1 = v19.i32[3];
@@ -1390,43 +1390,43 @@ LABEL_28:
   }
 }
 
-- (BOOL)_isLocationValid:(CGPoint)a3 inViewport:(CGSize)a4
+- (BOOL)_isLocationValid:(CGPoint)valid inViewport:(CGSize)viewport
 {
-  v4 = a3.x <= a4.width;
-  if (a3.y > a4.height)
+  v4 = valid.x <= viewport.width;
+  if (valid.y > viewport.height)
   {
     v4 = 0;
   }
 
-  if (a3.y < 0.0)
+  if (valid.y < 0.0)
   {
     v4 = 0;
   }
 
-  return a3.x >= 0.0 && v4;
+  return valid.x >= 0.0 && v4;
 }
 
-- (double)_mapToSphere:(float64_t)a3 inViewport:(double)a4
+- (double)_mapToSphere:(float64_t)sphere inViewport:(double)viewport
 {
-  a2.f64[1] = a3;
-  if (*&a1[40] == 3)
+  a2.f64[1] = sphere;
+  if (*&self[40] == 3)
   {
-    a2 = vaddq_f64(a2, vcvtq_f64_f32(a1[18]));
+    a2 = vaddq_f64(a2, vcvtq_f64_f32(self[18]));
   }
 
-  if (a4 >= a5)
+  if (viewport >= a5)
   {
-    v5 = a4;
+    viewportCopy = viewport;
   }
 
   else
   {
-    v5 = a5;
+    viewportCopy = a5;
   }
 
-  *&v5 = v5;
-  v6 = vsubq_f64(a2, vdupq_lane_s64(COERCE__INT64((*&v5 * 0.5)), 0));
-  *v6.f32 = vdiv_f32(vcvt_f32_f64(v6), vdup_lane_s32(*&v5, 0));
+  *&viewportCopy = viewportCopy;
+  v6 = vsubq_f64(a2, vdupq_lane_s64(COERCE__INT64((*&viewportCopy * 0.5)), 0));
+  *v6.f32 = vdiv_f32(vcvt_f32_f64(v6), vdup_lane_s32(*&viewportCopy, 0));
   v7 = COERCE_FLOAT(vmul_f32(*&v6, *&v6).i32[1]) + (v6.f32[0] * v6.f32[0]);
   v8 = v7 < 0.125;
   v9 = 0.125 / sqrtf(v7);
@@ -1445,12 +1445,12 @@ LABEL_28:
   return *v6.i64;
 }
 
-- (void)_endDraggingWithVelocity:(CGPoint)a3
+- (void)_endDraggingWithVelocity:(CGPoint)velocity
 {
   if (self->_inertia.inertiaEnabled)
   {
-    y = a3.y;
-    v7 = vcvt_f32_f64(a3);
+    y = velocity.y;
+    v7 = vcvt_f32_f64(velocity);
     v8 = vcge_f32(vabs_f32(v7), vdup_n_s32(0x3DCCCCCDu));
     if ((vpmax_u32(v8, v8).u32[0] & 0x80000000) != 0)
     {
@@ -1505,15 +1505,15 @@ LABEL_28:
   }
 }
 
-- (void)_setInertiaRunning:(BOOL)a3
+- (void)_setInertiaRunning:(BOOL)running
 {
-  if (self->_inertia.inertiaRunning != a3)
+  if (self->_inertia.inertiaRunning != running)
   {
     v18[7] = v4;
     v18[8] = v5;
-    if (a3)
+    if (running)
     {
-      objc_msgSend_delegate(self, a2, a3, v3);
+      objc_msgSend_delegate(self, a2, running, v3);
       if (objc_opt_respondsToSelector())
       {
         v18[0] = MEMORY[0x1E69E9820];
@@ -1534,12 +1534,12 @@ LABEL_28:
         *&self->_anon_e0[8] = objc_msgSend_scheduledTimerWithTimeInterval_repeats_block_(MEMORY[0x1E695DFF0], v11, 1, v17, 0.0166666667);
       }
 
-      self->_inertia.inertiaRunning = a3;
+      self->_inertia.inertiaRunning = running;
     }
 
     else
     {
-      if ((objc_msgSend_drivenByDefaultNavigationCameraController(self, a2, a3, v3) & 1) == 0)
+      if ((objc_msgSend_drivenByDefaultNavigationCameraController(self, a2, running, v3) & 1) == 0)
       {
         v15 = *&self->_anon_e0[8];
         if (v15)
@@ -1550,7 +1550,7 @@ LABEL_28:
         *&self->_anon_e0[8] = 0;
       }
 
-      self->_inertia.inertiaRunning = a3;
+      self->_inertia.inertiaRunning = running;
       objc_msgSend_delegate(self, v12, v13, v14);
       if (objc_opt_respondsToSelector())
       {
@@ -1565,9 +1565,9 @@ LABEL_28:
   }
 }
 
-- (double)_orthographicViewSpaceTranslationForZoomAtScreenPoint:(uint64_t)a3 scaleDelta:(uint64_t)a4 viewport:(double)a5
+- (double)_orthographicViewSpaceTranslationForZoomAtScreenPoint:(uint64_t)point scaleDelta:(uint64_t)delta viewport:(double)viewport
 {
-  v9 = objc_msgSend_pointOfView(a1, a2, a3, a4);
+  v9 = objc_msgSend_pointOfView(self, a2, point, delta);
   v13 = objc_msgSend_nodeRef(v9, v10, v11, v12);
   v14 = 0.0;
   if (v13)
@@ -1623,8 +1623,8 @@ LABEL_28:
           *(&v41 + 2) = *(&v41 + 2) + a6;
           v52 = *sub_1AF15E62C(v40, &v39);
           v53 = __invert_f4(v52);
-          v21 = (*&a5 + *&a5) / a7 + -1.0;
-          v22 = (*(&a5 + 1) + *(&a5 + 1)) / a8 + -1.0;
+          v21 = (*&viewport + *&viewport) / a7 + -1.0;
+          v22 = (*(&viewport + 1) + *(&viewport + 1)) / a8 + -1.0;
           __asm { FMOV            V7.4S, #-1.0 }
 
           return COERCE_DOUBLE(vsub_f32(vadd_f32(v35, *&vmlaq_f32(vmlaq_n_f32(vmulq_n_f32(v32, v21), v33, v22), _Q7, v34)), vadd_f32(*v53.columns[3].f32, *&vmlaq_f32(vmlaq_n_f32(vmulq_n_f32(v53.columns[0], v21), v53.columns[1], v22), _Q7, v53.columns[2]))));

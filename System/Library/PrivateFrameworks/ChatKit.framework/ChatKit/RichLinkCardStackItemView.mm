@@ -1,16 +1,16 @@
 @interface RichLinkCardStackItemView
 - (CGRect)clippingRect;
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
 - (NSCopying)userData;
 - (void)becomeReusable;
-- (void)chatBotActionButton:(id)a3 didSelectChipAction:(id)a4;
-- (void)configureForMessagePart:(id)a3;
-- (void)didTapLinkView:(id)a3;
-- (void)didTapTruncatedCaptionForRichCard:(id)a3;
+- (void)chatBotActionButton:(id)button didSelectChipAction:(id)action;
+- (void)configureForMessagePart:(id)part;
+- (void)didTapLinkView:(id)view;
+- (void)didTapTruncatedCaptionForRichCard:(id)card;
 - (void)layoutSubviews;
-- (void)openAppFromNotificationExtensionWith:(id)a3;
+- (void)openAppFromNotificationExtensionWith:(id)with;
 - (void)prepareForReuse;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation RichLinkCardStackItemView
@@ -35,41 +35,41 @@
   return v2;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit25RichLinkCardStackItemView_userData) = a3;
+  *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit25RichLinkCardStackItemView_userData) = data;
   swift_unknownObjectRetain_n();
-  v4 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
   sub_1908DD9C4();
   swift_unknownObjectRelease();
 }
 
-- (void)didTapLinkView:(id)a3
+- (void)didTapLinkView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_1908DDB8C(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1908DDB8C(viewCopy);
 }
 
 - (void)becomeReusable
 {
-  v2 = self;
+  selfCopy = self;
   sub_1908DE3EC();
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
-  v5 = a3;
-  v6 = self;
-  sub_1908DE4E0(a3);
+  partCopy = part;
+  selfCopy = self;
+  sub_1908DE4E0(part);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1908DF3D4(width, height);
   v9 = v8;
   v11 = v10;
@@ -83,36 +83,36 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1908DE89C();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1908DEDA4();
 }
 
-- (void)openAppFromNotificationExtensionWith:(id)a3
+- (void)openAppFromNotificationExtensionWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  sub_1908DEF84(v4);
+  withCopy = with;
+  selfCopy = self;
+  sub_1908DEF84(withCopy);
 }
 
-- (void)chatBotActionButton:(id)a3 didSelectChipAction:(id)a4
+- (void)chatBotActionButton:(id)button didSelectChipAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1908DF0A8(v6, v7);
+  buttonCopy = button;
+  actionCopy = action;
+  selfCopy = self;
+  sub_1908DF0A8(buttonCopy, actionCopy);
 }
 
-- (void)didTapTruncatedCaptionForRichCard:(id)a3
+- (void)didTapTruncatedCaptionForRichCard:(id)card
 {
-  v4 = a3;
-  v5 = self;
-  sub_1908DF1E8(v4);
+  cardCopy = card;
+  selfCopy = self;
+  sub_1908DF1E8(cardCopy);
 }
 
 @end

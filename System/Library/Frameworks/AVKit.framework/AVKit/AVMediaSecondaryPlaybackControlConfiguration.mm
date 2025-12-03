@@ -1,19 +1,19 @@
 @interface AVMediaSecondaryPlaybackControlConfiguration
-- (AVMediaSecondaryPlaybackControlConfiguration)initWithType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setSkipInterval:(id *)a3;
+- (AVMediaSecondaryPlaybackControlConfiguration)initWithType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setSkipInterval:(id *)interval;
 @end
 
 @implementation AVMediaSecondaryPlaybackControlConfiguration
 
-- (void)setSkipInterval:(id *)a3
+- (void)setSkipInterval:(id *)interval
 {
-  v3 = *&a3->var0;
-  self->_skipInterval.epoch = a3->var3;
+  v3 = *&interval->var0;
+  self->_skipInterval.epoch = interval->var3;
   *&self->_skipInterval.value = v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AVMediaSecondaryPlaybackControlConfiguration);
   [(AVMediaSecondaryPlaybackControlConfiguration *)v4 setType:[(AVMediaSecondaryPlaybackControlConfiguration *)self type]];
@@ -23,7 +23,7 @@
   return v4;
 }
 
-- (AVMediaSecondaryPlaybackControlConfiguration)initWithType:(unint64_t)a3
+- (AVMediaSecondaryPlaybackControlConfiguration)initWithType:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = AVMediaSecondaryPlaybackControlConfiguration;
@@ -31,7 +31,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     v4->_enabled = 1;
     CMTimeMakeWithSeconds(&v7, 10.0, 600);
     v5->_skipInterval = v7;

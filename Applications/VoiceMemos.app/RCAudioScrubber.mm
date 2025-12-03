@@ -1,49 +1,49 @@
 @interface RCAudioScrubber
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (CGRect)thumbHitRect;
-- (RCAudioScrubber)initWithFrame:(CGRect)a3;
+- (RCAudioScrubber)initWithFrame:(CGRect)frame;
 - (RCMPDetailSliderDelegate)delegate;
 - (UIEdgeInsets)_thumbHitEdgeInsets;
 - (double)currentPosition;
-- (id)_stringForCurrentTime:(double)a3;
-- (id)_stringForInverseCurrentTime:(double)a3;
-- (id)_stringForTime:(double)a3 elapsed:(BOOL)a4;
+- (id)_stringForCurrentTime:(double)time;
+- (id)_stringForInverseCurrentTime:(double)time;
+- (id)_stringForTime:(double)time elapsed:(BOOL)elapsed;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (void)_autoscrubTick:(id)a3;
+- (void)_autoscrubTick:(id)tick;
 - (void)_beginTracking;
-- (void)_commitTimeValue:(float)a3;
-- (void)_setCurrentTimeWhileTracking:(float)a3 animated:(BOOL)a4;
+- (void)_commitTimeValue:(float)value;
+- (void)_setCurrentTimeWhileTracking:(float)tracking animated:(BOOL)animated;
 - (void)_updateForAvailableDuration;
-- (void)_updateTimeDisplayForTime:(double)a3 force:(BOOL)a4;
+- (void)_updateTimeDisplayForTime:(double)time force:(BOOL)force;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 - (void)cancelTracking;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)dealloc;
-- (void)detailScrubController:(id)a3 didChangeScrubSpeed:(int64_t)a4;
-- (void)detailScrubController:(id)a3 didChangeValue:(float)a4;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)detailScrubController:(id)controller didChangeScrubSpeed:(int64_t)speed;
+- (void)detailScrubController:(id)controller didChangeValue:(float)value;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setDuration:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSliderPositionForTime:(float)a3 animated:(BOOL)a4;
+- (void)setBounds:(CGRect)bounds;
+- (void)setDuration:(double)duration;
+- (void)setFrame:(CGRect)frame;
+- (void)setSliderPositionForTime:(float)time animated:(BOOL)animated;
 @end
 
 @implementation RCAudioScrubber
 
-- (RCAudioScrubber)initWithFrame:(CGRect)a3
+- (RCAudioScrubber)initWithFrame:(CGRect)frame
 {
-  if (a3.size.height == 0.0)
+  if (frame.size.height == 0.0)
   {
-    a3.size.height = 34.0;
+    frame.size.height = 34.0;
   }
 
   v11.receiver = self;
   v11.super_class = RCAudioScrubber;
-  v3 = [(RCAudioScrubber *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RCAudioScrubber *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor labelColor];
@@ -85,19 +85,19 @@
   return v5 * v4;
 }
 
-- (void)setSliderPositionForTime:(float)a3 animated:(BOOL)a4
+- (void)setSliderPositionForTime:(float)time animated:(BOOL)animated
 {
   if (!self->_isTracking)
   {
-    [(RCAudioScrubber *)self _setCurrentTimeWhileTracking:a4 animated:?];
+    [(RCAudioScrubber *)self _setCurrentTimeWhileTracking:animated animated:?];
   }
 }
 
 - (void)layoutSubviews
 {
   [(RCAudioScrubber *)self bounds];
-  v3 = [(RCAudioScrubber *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(RCAudioScrubber *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
   if (v5 < 0.00000011920929)
@@ -111,8 +111,8 @@
   v9 = v8;
   v11 = v10;
   rect = v12;
-  v13 = [(RCAudioScrubber *)self timeLabelFont];
-  v14 = [(RCAudioScrubber *)self timeLabelTextColor];
+  timeLabelFont = [(RCAudioScrubber *)self timeLabelFont];
+  timeLabelTextColor = [(RCAudioScrubber *)self timeLabelTextColor];
   currentTimeLabel = self->_currentTimeLabel;
   if (!currentTimeLabel)
   {
@@ -121,7 +121,7 @@
     self->_currentTimeLabel = v16;
 
     [(UILabel *)self->_currentTimeLabel setBackgroundColor:0];
-    [(UILabel *)self->_currentTimeLabel setFont:v13];
+    [(UILabel *)self->_currentTimeLabel setFont:timeLabelFont];
     [(UILabel *)self->_currentTimeLabel setLineBreakMode:2];
     [(UILabel *)self->_currentTimeLabel setOpaque:0];
     v18 = [(RCAudioScrubber *)self _stringForCurrentTime:NAN];
@@ -129,7 +129,7 @@
     [(UILabel *)self->_currentTimeLabel setText:v19];
 
     [(UILabel *)self->_currentTimeLabel setTextAlignment:2];
-    [(UILabel *)self->_currentTimeLabel setTextColor:v14];
+    [(UILabel *)self->_currentTimeLabel setTextColor:timeLabelTextColor];
     [(RCAudioScrubber *)self addSubview:self->_currentTimeLabel];
     currentTimeLabel = self->_currentTimeLabel;
   }
@@ -158,7 +158,7 @@
     self->_currentTimeInverseLabel = v21;
 
     [(UILabel *)self->_currentTimeInverseLabel setBackgroundColor:0];
-    [(UILabel *)self->_currentTimeInverseLabel setFont:v13];
+    [(UILabel *)self->_currentTimeInverseLabel setFont:timeLabelFont];
     [(UILabel *)self->_currentTimeInverseLabel setLineBreakMode:2];
     [(UILabel *)self->_currentTimeInverseLabel setOpaque:0];
     v23 = [(RCAudioScrubber *)self _stringForInverseCurrentTime:NAN];
@@ -166,7 +166,7 @@
     [(UILabel *)self->_currentTimeInverseLabel setText:v24];
 
     [(UILabel *)self->_currentTimeInverseLabel setTextAlignment:0];
-    [(UILabel *)self->_currentTimeInverseLabel setTextColor:v14];
+    [(UILabel *)self->_currentTimeInverseLabel setTextColor:timeLabelTextColor];
     [(RCAudioScrubber *)self addSubview:self->_currentTimeInverseLabel];
     currentTimeInverseLabel = self->_currentTimeInverseLabel;
   }
@@ -197,12 +197,12 @@
   [(RCAudioScrubber *)&v34 layoutSubviews];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(RCAudioScrubber *)self bounds];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -219,12 +219,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(RCAudioScrubber *)self frame];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -241,7 +241,7 @@
   }
 }
 
-- (void)_setCurrentTimeWhileTracking:(float)a3 animated:(BOOL)a4
+- (void)_setCurrentTimeWhileTracking:(float)tracking animated:(BOOL)animated
 {
   duration = self->_duration;
   if (duration > 0.0)
@@ -254,8 +254,8 @@
     v27 = v6;
     v28 = v4;
     v29 = v5;
-    v13 = a4;
-    v15 = fmax(a3, 0.0);
+    animatedCopy = animated;
+    v15 = fmax(tracking, 0.0);
     if (duration < v15)
     {
       v15 = duration;
@@ -273,7 +273,7 @@
 
     v21.receiver = self;
     v21.super_class = RCAudioScrubber;
-    [(RCAudioScrubber *)&v21 setValue:v13 animated:v19];
+    [(RCAudioScrubber *)&v21 setValue:animatedCopy animated:v19];
     [(RCAudioScrubber *)self _updateForAvailableDuration];
     [(RCAudioScrubber *)self _updateTimeDisplayForTime:v16];
     if (self->_isTracking && self->_canCommit)
@@ -333,7 +333,7 @@
   return CGRectInset(*&v20, -19.0, -19.0);
 }
 
-- (void)detailScrubController:(id)a3 didChangeScrubSpeed:(int64_t)a4
+- (void)detailScrubController:(id)controller didChangeScrubSpeed:(int64_t)speed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
@@ -341,26 +341,26 @@
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 detailSlider:self didChangeScrubSpeed:a4];
+    [v8 detailSlider:self didChangeScrubSpeed:speed];
   }
 }
 
-- (void)detailScrubController:(id)a3 didChangeValue:(float)a4
+- (void)detailScrubController:(id)controller didChangeValue:(float)value
 {
   [(RCAudioScrubber *)self _setCurrentTimeWhileTracking:1 animated:?];
-  *&v6 = a4;
+  *&v6 = value;
 
   [(RCAudioScrubber *)self _commitTimeValue:v6];
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = [(RCMPDetailScrubController *)self->_scrubController beginTrackingWithTouch:a3 withEvent:a4];
+  v5 = [(RCMPDetailScrubController *)self->_scrubController beginTrackingWithTouch:touch withEvent:event];
   [(RCAudioScrubber *)self _beginTracking];
   return v5;
 }
 
-- (void)_autoscrubTick:(id)a3
+- (void)_autoscrubTick:(id)tick
 {
   [(RCAudioScrubber *)self maximumValue];
   v5 = v4;
@@ -372,11 +372,11 @@
   [(RCMPDetailScrubController *)self->_scrubController scaleForVerticalPosition:self->_previousLocationInView.y];
   v10 = v9;
   v11 = v8 * v9;
-  v12 = [(RCAudioScrubber *)self window];
-  [(RCAudioScrubber *)self convertPoint:v12 toView:self->_previousLocationInView.x, self->_previousLocationInView.y];
+  window = [(RCAudioScrubber *)self window];
+  [(RCAudioScrubber *)self convertPoint:window toView:self->_previousLocationInView.x, self->_previousLocationInView.y];
   v14 = v13;
-  v15 = [(RCAudioScrubber *)self window];
-  [v15 bounds];
+  window2 = [(RCAudioScrubber *)self window];
+  [window2 bounds];
   if (v14 >= CGRectGetMidX(v25))
   {
     v16 = v11;
@@ -415,35 +415,35 @@
   }
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 locationInView:self];
+  touchCopy = touch;
+  eventCopy = event;
+  [touchCopy locationInView:self];
   v9 = v8;
   v11 = v10;
   if ([(RCMPDetailScrubController *)self->_scrubController detailedScrubbingEnabled]&& [(RCMPDetailScrubController *)self->_scrubController durationAllowsForDetailedScrubbing])
   {
-    v12 = [(RCAudioScrubber *)self window];
-    [(RCAudioScrubber *)self convertPoint:v12 toView:v9, v11];
+    window = [(RCAudioScrubber *)self window];
+    [(RCAudioScrubber *)self convertPoint:window toView:v9, v11];
     v14 = v13;
     v16 = v15;
     v17 = +[UIApplication sharedApplication];
-    v18 = [v17 delegate];
-    v19 = [v18 window];
-    v20 = [v19 windowScene];
-    v21 = [v20 interfaceOrientation] - 3;
+    delegate = [v17 delegate];
+    window2 = [delegate window];
+    windowScene = [window2 windowScene];
+    v21 = [windowScene interfaceOrientation] - 3;
 
     if (v21 < 2)
     {
       v14 = v16;
     }
 
-    [v12 bounds];
+    [window bounds];
     if (v21 > 1)
     {
       Width = CGRectGetWidth(*&v22);
-      if (v12)
+      if (window)
       {
 LABEL_7:
         Width = Width + -20.0;
@@ -480,7 +480,7 @@ LABEL_7:
     else
     {
       Width = CGRectGetHeight(*&v22);
-      if (v12)
+      if (window)
       {
         goto LABEL_7;
       }
@@ -502,7 +502,7 @@ LABEL_18:
     [(RCAudioScrubber *)self sendActionsForControlEvents:4096];
   }
 
-  v30 = [(RCMPDetailScrubController *)self->_scrubController continueTrackingWithTouch:v6 withEvent:v7];
+  v30 = [(RCMPDetailScrubController *)self->_scrubController continueTrackingWithTouch:touchCopy withEvent:eventCopy];
   if (UIAccessibilityIsVoiceOverRunning())
   {
     [(RCAudioScrubber *)self value];
@@ -510,8 +510,8 @@ LABEL_18:
     if (vabds_f32(v33, *&dword_1002D70F0) > 0.02 || CFAbsoluteTimeGetCurrent() - *&qword_1002D70F8 > 5.0)
     {
       v35 = UIAccessibilityAnnouncementNotification;
-      v36 = [(RCAudioScrubber *)self accessibilityValue];
-      UIAccessibilityPostNotification(v35, v36);
+      accessibilityValue = [(RCAudioScrubber *)self accessibilityValue];
+      UIAccessibilityPostNotification(v35, accessibilityValue);
 
       dword_1002D70F0 = v34;
       qword_1002D70F8 = CFAbsoluteTimeGetCurrent();
@@ -523,9 +523,9 @@ LABEL_27:
   return v30;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [(NSTimer *)self->_autoscrubTimer invalidate:a3];
+  [(NSTimer *)self->_autoscrubTimer invalidate:touch];
   autoscrubTimer = self->_autoscrubTimer;
   self->_autoscrubTimer = 0;
 
@@ -545,9 +545,9 @@ LABEL_27:
   }
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
-  [(RCMPDetailScrubController *)self->_scrubController cancelTrackingWithEvent:a3];
+  [(RCMPDetailScrubController *)self->_scrubController cancelTrackingWithEvent:event];
 
   [(RCAudioScrubber *)self cancelTracking];
 }
@@ -574,11 +574,11 @@ LABEL_27:
   }
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (vabdd_f64(self->_duration, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_duration, duration) > 2.22044605e-16)
   {
-    self->_duration = a3;
+    self->_duration = duration;
     [(RCMPDetailScrubController *)self->_scrubController setDuration:?];
     currentTime = self->_currentTime;
     if (currentTime >= self->_duration)
@@ -603,10 +603,10 @@ LABEL_27:
   }
 }
 
-- (void)_updateTimeDisplayForTime:(double)a3 force:(BOOL)a4
+- (void)_updateTimeDisplayForTime:(double)time force:(BOOL)force
 {
-  v5 = floor(a3);
-  if (a4 || vabdd_f64(self->_currentTime, v5) > 2.22044605e-16)
+  v5 = floor(time);
+  if (force || vabdd_f64(self->_currentTime, v5) > 2.22044605e-16)
   {
     currentTimeLabel = self->_currentTimeLabel;
     v7 = [(RCAudioScrubber *)self _stringForCurrentTime:v5];
@@ -623,10 +623,10 @@ LABEL_27:
   }
 }
 
-- (id)_stringForTime:(double)a3 elapsed:(BOOL)a4
+- (id)_stringForTime:(double)time elapsed:(BOOL)elapsed
 {
   formatter = self->_formatter;
-  if (a4)
+  if (elapsed)
   {
     v7 = 1;
   }
@@ -639,24 +639,24 @@ LABEL_27:
   [(AVTimeFormatter *)formatter setStyle:v7];
   v8 = self->_formatter;
 
-  return [(AVTimeFormatter *)v8 stringFromSeconds:a3];
+  return [(AVTimeFormatter *)v8 stringFromSeconds:time];
 }
 
-- (id)_stringForCurrentTime:(double)a3
+- (id)_stringForCurrentTime:(double)time
 {
-  v5 = [(RCAudioScrubber *)self _stringForTime:1 elapsed:a3, v3];
+  v5 = [(RCAudioScrubber *)self _stringForTime:1 elapsed:time, v3];
 
   return v5;
 }
 
-- (id)_stringForInverseCurrentTime:(double)a3
+- (id)_stringForInverseCurrentTime:(double)time
 {
-  v5 = [(RCAudioScrubber *)self _stringForTime:0 elapsed:a3, v3];
+  v5 = [(RCAudioScrubber *)self _stringForTime:0 elapsed:time, v3];
 
   return v5;
 }
 
-- (void)_commitTimeValue:(float)a3
+- (void)_commitTimeValue:(float)value
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
@@ -664,7 +664,7 @@ LABEL_27:
   if (v6)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    *&v7 = a3;
+    *&v7 = value;
     [v8 detailSlider:self didChangeTimeValue:v7];
   }
 }

@@ -1,5 +1,5 @@
 @interface _UIStatusBarDisplayItemPlacementState
-+ (id)stateForDisplayItemPlacement:(id)a3 region:(id)a4;
++ (id)stateForDisplayItemPlacement:(id)placement region:(id)region;
 - (BOOL)areRelationsFulfilled;
 - (BOOL)canBeEnabled;
 - (BOOL)isEnabled;
@@ -9,19 +9,19 @@
 
 @implementation _UIStatusBarDisplayItemPlacementState
 
-+ (id)stateForDisplayItemPlacement:(id)a3 region:(id)a4
++ (id)stateForDisplayItemPlacement:(id)placement region:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
-  v9 = [MEMORY[0x1E695DF70] array];
+  placementCopy = placement;
+  regionCopy = region;
+  v8 = objc_alloc_init(self);
+  array = [MEMORY[0x1E695DF70] array];
   v10 = *(v8 + 3);
-  *(v8 + 3) = v9;
+  *(v8 + 3) = array;
 
   v11 = *(v8 + 1);
-  *(v8 + 1) = v6;
+  *(v8 + 1) = placementCopy;
 
-  objc_storeWeak(v8 + 2, v7);
+  objc_storeWeak(v8 + 2, regionCopy);
 
   return v8;
 }
@@ -74,9 +74,9 @@ LABEL_11:
 - (BOOL)canBeEnabled
 {
   WeakRetained = objc_loadWeakRetained(&self->_region);
-  v4 = [WeakRetained isEnabled];
+  isEnabled = [WeakRetained isEnabled];
 
-  if (!v4)
+  if (!isEnabled)
   {
     return 0;
   }
@@ -88,14 +88,14 @@ LABEL_11:
 
 - (BOOL)isEnabled
 {
-  v3 = [(_UIStatusBarDisplayItemPlacementState *)self canBeEnabled];
-  if (v3)
+  canBeEnabled = [(_UIStatusBarDisplayItemPlacementState *)self canBeEnabled];
+  if (canBeEnabled)
   {
 
-    LOBYTE(v3) = [(_UIStatusBarDisplayItemPlacementState *)self areRelationsFulfilled];
+    LOBYTE(canBeEnabled) = [(_UIStatusBarDisplayItemPlacementState *)self areRelationsFulfilled];
   }
 
-  return v3;
+  return canBeEnabled;
 }
 
 - (id)description
@@ -103,8 +103,8 @@ LABEL_11:
   v14[4] = *MEMORY[0x1E69E9840];
   v13[0] = @"region";
   WeakRetained = objc_loadWeakRetained(&self->_region);
-  v4 = [WeakRetained identifier];
-  v14[0] = v4;
+  identifier = [WeakRetained identifier];
+  v14[0] = identifier;
   v13[1] = @"enabled";
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[_UIStatusBarDisplayItemPlacementState isEnabled](self, "isEnabled")}];
   v14[1] = v5;
@@ -113,8 +113,8 @@ LABEL_11:
   v14[2] = v6;
   v13[3] = @"relations";
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(_UIStatusBarDisplayItemPlacementState *)self relations];
-  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
+  relations = [(_UIStatusBarDisplayItemPlacementState *)self relations];
+  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(relations, "count")}];
   v14[3] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:4];
   v11 = [UIDescriptionBuilder descriptionForObject:self namesAndObjects:v10];

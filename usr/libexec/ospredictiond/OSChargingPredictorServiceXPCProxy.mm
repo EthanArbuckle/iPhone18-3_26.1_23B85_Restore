@@ -1,23 +1,23 @@
 @interface OSChargingPredictorServiceXPCProxy
 - (NSObject)target;
-- (OSChargingPredictorServiceXPCProxy)initWithObserver:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (OSChargingPredictorServiceXPCProxy)initWithObserver:(id)observer;
+- (id)forwardingTargetForSelector:(SEL)selector;
 @end
 
 @implementation OSChargingPredictorServiceXPCProxy
 
-- (OSChargingPredictorServiceXPCProxy)initWithObserver:(id)a3
+- (OSChargingPredictorServiceXPCProxy)initWithObserver:(id)observer
 {
   v6.receiver = self;
   v6.super_class = OSChargingPredictorServiceXPCProxy;
-  v3 = a3;
+  observerCopy = observer;
   v4 = [(OSChargingPredictorServiceXPCProxy *)&v6 init];
-  objc_storeWeak(&v4->_target, v3);
+  objc_storeWeak(&v4->_target, observerCopy);
 
   return v4;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_target);
 

@@ -1,56 +1,56 @@
 @interface _UIDismissInteractionUpdate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)transform;
 - (CGAffineTransform)translation;
 - (CGPoint)originalTrackingViewPosition;
-- (_UIDismissInteractionUpdate)initWithBSXPCCoder:(id)a3;
-- (_UIDismissInteractionUpdate)initWithCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
-- (void)setTranslation:(CGAffineTransform *)a3;
+- (_UIDismissInteractionUpdate)initWithBSXPCCoder:(id)coder;
+- (_UIDismissInteractionUpdate)initWithCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTransform:(CGAffineTransform *)transform;
+- (void)setTranslation:(CGAffineTransform *)translation;
 @end
 
 @implementation _UIDismissInteractionUpdate
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(_UIDismissInteractionUpdate *)self originalTrackingViewPosition];
-  [v4 encodeCGPoint:@"originalTrackingViewPosition" forKey:?];
+  [coderCopy encodeCGPoint:@"originalTrackingViewPosition" forKey:?];
   v5 = MEMORY[0x1E696B098];
   [(_UIDismissInteractionUpdate *)self translation];
   v6 = [v5 bs_valueWithCGAffineTransform:v9];
-  [v4 encodeObject:v6 forKey:@"translation"];
+  [coderCopy encodeObject:v6 forKey:@"translation"];
 
   v7 = MEMORY[0x1E696B098];
   [(_UIDismissInteractionUpdate *)self transform];
   v8 = [v7 bs_valueWithCGAffineTransform:v9];
-  [v4 encodeObject:v8 forKey:@"transform"];
+  [coderCopy encodeObject:v8 forKey:@"transform"];
 
   [(_UIDismissInteractionUpdate *)self scale];
-  [v4 encodeDouble:@"scale" forKey:?];
+  [coderCopy encodeDouble:@"scale" forKey:?];
   [(_UIDismissInteractionUpdate *)self progressToMinScale];
-  [v4 encodeDouble:@"progressToMinScale" forKey:?];
+  [coderCopy encodeDouble:@"progressToMinScale" forKey:?];
   [(_UIDismissInteractionUpdate *)self dampingRatio];
-  [v4 encodeDouble:@"dampingRatio" forKey:?];
+  [coderCopy encodeDouble:@"dampingRatio" forKey:?];
   [(_UIDismissInteractionUpdate *)self response];
-  [v4 encodeDouble:@"response" forKey:?];
-  [v4 encodeBool:-[_UIDismissInteractionUpdate isTracking](self forKey:{"isTracking"), @"isTracking"}];
-  [v4 encodeBool:-[_UIDismissInteractionUpdate wantsHeightClamping](self forKey:{"wantsHeightClamping"), @"wantsHeightClamping"}];
+  [coderCopy encodeDouble:@"response" forKey:?];
+  [coderCopy encodeBool:-[_UIDismissInteractionUpdate isTracking](self forKey:{"isTracking"), @"isTracking"}];
+  [coderCopy encodeBool:-[_UIDismissInteractionUpdate wantsHeightClamping](self forKey:{"wantsHeightClamping"), @"wantsHeightClamping"}];
 }
 
-- (_UIDismissInteractionUpdate)initWithBSXPCCoder:(id)a3
+- (_UIDismissInteractionUpdate)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = _UIDismissInteractionUpdate;
   v5 = [(_UIDismissInteractionUpdate *)&v20 init];
   if (v5)
   {
-    [v4 decodeCGPointForKey:@"originalTrackingViewPosition"];
+    [coderCopy decodeCGPointForKey:@"originalTrackingViewPosition"];
     [(_UIDismissInteractionUpdate *)v5 setOriginalTrackingViewPosition:?];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"translation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"translation"];
     v7 = v6;
     if (v6)
     {
@@ -69,7 +69,7 @@
     v16 = v19;
     [(_UIDismissInteractionUpdate *)v5 setTranslation:&v14];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transform"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transform"];
     v9 = v8;
     if (v8)
     {
@@ -88,60 +88,60 @@
     v16 = v13;
     [(_UIDismissInteractionUpdate *)v5 setTransform:&v14, v11, v12, v13];
 
-    [v4 decodeDoubleForKey:@"scale"];
+    [coderCopy decodeDoubleForKey:@"scale"];
     [(_UIDismissInteractionUpdate *)v5 setScale:?];
-    [v4 decodeDoubleForKey:@"progressToMinScale"];
+    [coderCopy decodeDoubleForKey:@"progressToMinScale"];
     [(_UIDismissInteractionUpdate *)v5 setProgressToMinScale:?];
-    [v4 decodeDoubleForKey:@"dampingRatio"];
+    [coderCopy decodeDoubleForKey:@"dampingRatio"];
     [(_UIDismissInteractionUpdate *)v5 setDampingRatio:?];
-    [v4 decodeDoubleForKey:@"response"];
+    [coderCopy decodeDoubleForKey:@"response"];
     [(_UIDismissInteractionUpdate *)v5 setResponse:?];
-    -[_UIDismissInteractionUpdate setIsTracking:](v5, "setIsTracking:", [v4 decodeBoolForKey:@"isTracking"]);
-    -[_UIDismissInteractionUpdate setWantsHeightClamping:](v5, "setWantsHeightClamping:", [v4 decodeBoolForKey:@"wantsHeightClamping"]);
+    -[_UIDismissInteractionUpdate setIsTracking:](v5, "setIsTracking:", [coderCopy decodeBoolForKey:@"isTracking"]);
+    -[_UIDismissInteractionUpdate setWantsHeightClamping:](v5, "setWantsHeightClamping:", [coderCopy decodeBoolForKey:@"wantsHeightClamping"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(_UIDismissInteractionUpdate *)self originalTrackingViewPosition];
-  [v4 encodeCGPoint:@"originalTrackingViewPosition" forKey:?];
+  [coderCopy encodeCGPoint:@"originalTrackingViewPosition" forKey:?];
   [(_UIDismissInteractionUpdate *)self translation];
-  [v4 encodeCGAffineTransform:v5 forKey:@"translation"];
+  [coderCopy encodeCGAffineTransform:v5 forKey:@"translation"];
   [(_UIDismissInteractionUpdate *)self transform];
-  [v4 encodeCGAffineTransform:v5 forKey:@"transform"];
+  [coderCopy encodeCGAffineTransform:v5 forKey:@"transform"];
   [(_UIDismissInteractionUpdate *)self scale];
-  [v4 encodeDouble:@"scale" forKey:?];
+  [coderCopy encodeDouble:@"scale" forKey:?];
   [(_UIDismissInteractionUpdate *)self progressToMinScale];
-  [v4 encodeDouble:@"progressToMinScale" forKey:?];
+  [coderCopy encodeDouble:@"progressToMinScale" forKey:?];
   [(_UIDismissInteractionUpdate *)self dampingRatio];
-  [v4 encodeDouble:@"dampingRatio" forKey:?];
+  [coderCopy encodeDouble:@"dampingRatio" forKey:?];
   [(_UIDismissInteractionUpdate *)self response];
-  [v4 encodeDouble:@"response" forKey:?];
-  [v4 encodeBool:-[_UIDismissInteractionUpdate isTracking](self forKey:{"isTracking"), @"isTracking"}];
-  [v4 encodeBool:-[_UIDismissInteractionUpdate wantsHeightClamping](self forKey:{"wantsHeightClamping"), @"wantsHeightClamping"}];
+  [coderCopy encodeDouble:@"response" forKey:?];
+  [coderCopy encodeBool:-[_UIDismissInteractionUpdate isTracking](self forKey:{"isTracking"), @"isTracking"}];
+  [coderCopy encodeBool:-[_UIDismissInteractionUpdate wantsHeightClamping](self forKey:{"wantsHeightClamping"), @"wantsHeightClamping"}];
 }
 
-- (_UIDismissInteractionUpdate)initWithCoder:(id)a3
+- (_UIDismissInteractionUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = _UIDismissInteractionUpdate;
   v5 = [(_UIDismissInteractionUpdate *)&v16 init];
   if (v5)
   {
-    [v4 decodeCGPointForKey:@"originalTrackingViewPosition"];
+    [coderCopy decodeCGPointForKey:@"originalTrackingViewPosition"];
     [(_UIDismissInteractionUpdate *)v5 setOriginalTrackingViewPosition:?];
-    if (v4)
+    if (coderCopy)
     {
-      [v4 decodeCGAffineTransformForKey:@"translation"];
+      [coderCopy decodeCGAffineTransformForKey:@"translation"];
       v10 = v13;
       v11 = v14;
       v12 = v15;
       [(_UIDismissInteractionUpdate *)v5 setTranslation:&v10];
-      [v4 decodeCGAffineTransformForKey:@"transform"];
+      [coderCopy decodeCGAffineTransformForKey:@"transform"];
     }
 
     else
@@ -162,25 +162,25 @@
     v11 = v8;
     v12 = v9;
     [(_UIDismissInteractionUpdate *)v5 setTransform:&v10, v7, v8, v9];
-    [v4 decodeDoubleForKey:@"scale"];
+    [coderCopy decodeDoubleForKey:@"scale"];
     [(_UIDismissInteractionUpdate *)v5 setScale:?];
-    [v4 decodeDoubleForKey:@"progressToMinScale"];
+    [coderCopy decodeDoubleForKey:@"progressToMinScale"];
     [(_UIDismissInteractionUpdate *)v5 setProgressToMinScale:?];
-    [v4 decodeDoubleForKey:@"dampingRatio"];
+    [coderCopy decodeDoubleForKey:@"dampingRatio"];
     [(_UIDismissInteractionUpdate *)v5 setDampingRatio:?];
-    [v4 decodeDoubleForKey:@"response"];
+    [coderCopy decodeDoubleForKey:@"response"];
     [(_UIDismissInteractionUpdate *)v5 setResponse:?];
-    -[_UIDismissInteractionUpdate setIsTracking:](v5, "setIsTracking:", [v4 decodeBoolForKey:@"isTracking"]);
-    -[_UIDismissInteractionUpdate setWantsHeightClamping:](v5, "setWantsHeightClamping:", [v4 decodeBoolForKey:@"wantsHeightClamping"]);
+    -[_UIDismissInteractionUpdate setIsTracking:](v5, "setIsTracking:", [coderCopy decodeBoolForKey:@"isTracking"]);
+    -[_UIDismissInteractionUpdate setWantsHeightClamping:](v5, "setWantsHeightClamping:", [coderCopy decodeBoolForKey:@"wantsHeightClamping"]);
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   [(_UIDismissInteractionUpdate *)self originalTrackingViewPosition];
   v7 = v6;
   v9 = v8;
@@ -188,7 +188,7 @@
   v56[1] = 3221225472;
   v56[2] = __39___UIDismissInteractionUpdate_isEqual___block_invoke;
   v56[3] = &unk_1E710E768;
-  v10 = v4;
+  v10 = equalCopy;
   v57 = v10;
   v11 = [v5 appendCGPoint:v56 counterpart:{v7, v9}];
   [(_UIDismissInteractionUpdate *)self translation];
@@ -243,22 +243,22 @@
   v30 = v26;
   v44 = v30;
   v31 = [v5 appendDouble:v43 counterpart:v29];
-  v32 = [(_UIDismissInteractionUpdate *)self isTracking];
+  isTracking = [(_UIDismissInteractionUpdate *)self isTracking];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __39___UIDismissInteractionUpdate_isEqual___block_invoke_8;
   v41[3] = &unk_1E70F3CB0;
   v33 = v30;
   v42 = v33;
-  v34 = [v5 appendBool:v32 counterpart:v41];
-  v35 = [(_UIDismissInteractionUpdate *)self wantsHeightClamping];
+  v34 = [v5 appendBool:isTracking counterpart:v41];
+  wantsHeightClamping = [(_UIDismissInteractionUpdate *)self wantsHeightClamping];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __39___UIDismissInteractionUpdate_isEqual___block_invoke_9;
   v39[3] = &unk_1E70F3CB0;
   v40 = v33;
   v36 = v33;
-  v37 = [v5 appendBool:v35 counterpart:v39];
+  v37 = [v5 appendBool:wantsHeightClamping counterpart:v39];
   LOBYTE(v33) = [v5 isEqual];
 
   return v33;
@@ -282,11 +282,11 @@
   return self;
 }
 
-- (void)setTranslation:(CGAffineTransform *)a3
+- (void)setTranslation:(CGAffineTransform *)translation
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_translation.c = *&a3->c;
+  v3 = *&translation->a;
+  v4 = *&translation->tx;
+  *&self->_translation.c = *&translation->c;
   *&self->_translation.tx = v4;
   *&self->_translation.a = v3;
 }
@@ -300,11 +300,11 @@
   return self;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_transform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_transform.c = *&transform->c;
   *&self->_transform.tx = v4;
   *&self->_transform.a = v3;
 }

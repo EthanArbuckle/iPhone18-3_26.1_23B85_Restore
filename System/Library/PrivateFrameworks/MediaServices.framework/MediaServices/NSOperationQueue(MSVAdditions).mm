@@ -7,7 +7,7 @@
 
 - (uint64_t)decreaseQualityOfService
 {
-  result = [a1 qualityOfService];
+  result = [self qualityOfService];
   if (result > 24)
   {
     if (result == 25)
@@ -41,12 +41,12 @@
     v3 = 9;
   }
 
-  return [a1 setQualityOfService:v3];
+  return [self setQualityOfService:v3];
 }
 
 - (uint64_t)increaseQualityOfService
 {
-  result = [a1 qualityOfService];
+  result = [self qualityOfService];
   if (result > 16)
   {
     if (result == 25)
@@ -80,7 +80,7 @@
     v3 = 17;
   }
 
-  return [a1 setQualityOfService:v3];
+  return [self setQualityOfService:v3];
 }
 
 @end

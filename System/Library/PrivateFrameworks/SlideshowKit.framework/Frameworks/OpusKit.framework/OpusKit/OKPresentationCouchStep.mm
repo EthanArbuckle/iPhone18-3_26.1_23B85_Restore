@@ -1,8 +1,8 @@
 @interface OKPresentationCouchStep
-+ (OKPresentationCouchStep)couchStepWithAnchorPageName:(id)a3 script:(id)a4 duration:(double)a5 settings:(id)a6;
++ (OKPresentationCouchStep)couchStepWithAnchorPageName:(id)name script:(id)script duration:(double)duration settings:(id)settings;
 - (OKPresentationCouchStep)init;
-- (OKPresentationCouchStep)initWithDictionary:(id)a3 forPresentation:(id)a4 andCouch:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OKPresentationCouchStep)initWithDictionary:(id)dictionary forPresentation:(id)presentation andCouch:(id)couch;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionary;
 - (id)parentCouch;
 - (void)dealloc;
@@ -27,25 +27,25 @@
   return result;
 }
 
-- (OKPresentationCouchStep)initWithDictionary:(id)a3 forPresentation:(id)a4 andCouch:(id)a5
+- (OKPresentationCouchStep)initWithDictionary:(id)dictionary forPresentation:(id)presentation andCouch:(id)couch
 {
   v8 = [(OKPresentationCouchStep *)self init];
   v9 = v8;
   if (v8)
   {
-    [(OKPresentationCanvas *)v8 setPresentation:a4];
-    [(OKPresentationCanvas *)v9 setParent:a5];
-    v9->_anchorPage = [objc_msgSend(a3 objectForKey:{@"anchorPage", "copy"}];
-    v9->_script = [objc_msgSend(a3 objectForKey:{@"script", "copy"}];
-    if ([a3 objectForKey:@"duration"])
+    [(OKPresentationCanvas *)v8 setPresentation:presentation];
+    [(OKPresentationCanvas *)v9 setParent:couch];
+    v9->_anchorPage = [objc_msgSend(dictionary objectForKey:{@"anchorPage", "copy"}];
+    v9->_script = [objc_msgSend(dictionary objectForKey:{@"script", "copy"}];
+    if ([dictionary objectForKey:@"duration"])
     {
-      [objc_msgSend(a3 objectForKey:{@"duration", "doubleValue"}];
+      [objc_msgSend(dictionary objectForKey:{@"duration", "doubleValue"}];
       v9->_duration = v10;
     }
 
-    v9->_dependencies = [objc_msgSend(a3 objectForKeyedSubscript:{@"dependencies", "copy"}];
-    v9->_ignoresBusiness = [objc_msgSend(a3 objectForKeyedSubscript:{@"ignoresBusiness", "BOOLValue"}];
-    v9->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(a3 copyItems:{"objectForKey:", @"settings", 1}];
+    v9->_dependencies = [objc_msgSend(dictionary objectForKeyedSubscript:{@"dependencies", "copy"}];
+    v9->_ignoresBusiness = [objc_msgSend(dictionary objectForKeyedSubscript:{@"ignoresBusiness", "BOOLValue"}];
+    v9->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:objc_msgSend(dictionary copyItems:{"objectForKey:", @"settings", 1}];
   }
 
   return v9;
@@ -86,22 +86,22 @@
   [(OKPresentationCanvas *)&v7 dealloc];
 }
 
-+ (OKPresentationCouchStep)couchStepWithAnchorPageName:(id)a3 script:(id)a4 duration:(double)a5 settings:(id)a6
++ (OKPresentationCouchStep)couchStepWithAnchorPageName:(id)name script:(id)script duration:(double)duration settings:(id)settings
 {
   v10 = objc_alloc_init(OKPresentationCouchStep);
-  v10->_anchorPage = [a3 copy];
-  v10->_script = [a4 copy];
-  v10->_duration = a5;
-  v10->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:a6 copyItems:1];
+  v10->_anchorPage = [name copy];
+  v10->_script = [script copy];
+  v10->_duration = duration;
+  v10->_internalSettings = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:settings copyItems:1];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = OKPresentationCouchStep;
-  v4 = [(OKPresentationCanvas *)&v6 copyWithZone:a3];
+  v4 = [(OKPresentationCanvas *)&v6 copyWithZone:zone];
   if (v4)
   {
     v4[12] = [(NSString *)self->_anchorPage copy];
@@ -120,12 +120,12 @@
 
 - (id)dictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   anchorPage = self->_anchorPage;
   if (anchorPage)
   {
-    [v3 setObject:anchorPage forKey:@"anchorPage"];
+    [dictionary setObject:anchorPage forKey:@"anchorPage"];
   }
 
   script = self->_script;
@@ -182,8 +182,8 @@
       v11 = 0u;
       v8 = 0u;
       v9 = 0u;
-      v3 = [(NSMutableDictionary *)self->_internalSettings allKeys];
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      allKeys = [(NSMutableDictionary *)self->_internalSettings allKeys];
+      v4 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         v5 = v4;
@@ -194,13 +194,13 @@
           {
             if (*v9 != v6)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(allKeys);
             }
 
             [(OKPresentationCanvas *)self setSettingsObject:[(NSMutableDictionary *)self->_internalSettings objectForKey:*(*(&v8 + 1) + 8 * i)] forKeyPath:*(*(&v8 + 1) + 8 * i)];
           }
 
-          v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+          v5 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
         }
 
         while (v5);

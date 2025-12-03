@@ -1,50 +1,50 @@
 @interface PRXCardContainerView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGSize)preferredContentSize;
 - (PRXCardContainerView)init;
-- (PRXCardContainerView)initWithFrame:(CGRect)a3;
-- (PRXCardContainerView)initWithFrame:(CGRect)a3 containerLayoutMargins:(NSDirectionalEdgeInsets)a4;
+- (PRXCardContainerView)initWithFrame:(CGRect)frame;
+- (PRXCardContainerView)initWithFrame:(CGRect)frame containerLayoutMargins:(NSDirectionalEdgeInsets)margins;
 - (PRXCardContainerViewDelegate)delegate;
-- (void)_updateKeyboardDeferred:(BOOL)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)setDefersKeyboardUpdates:(BOOL)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)setUsePortraitTopInset:(BOOL)a3;
-- (void)tappedView:(id)a3;
+- (void)_updateKeyboardDeferred:(BOOL)deferred;
+- (void)keyboardWillShow:(id)show;
+- (void)setDefersKeyboardUpdates:(BOOL)updates;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)setUsePortraitTopInset:(BOOL)inset;
+- (void)tappedView:(id)view;
 @end
 
 @implementation PRXCardContainerView
 
 - (PRXCardContainerView)init
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = [(PRXCardContainerView *)self initWithFrame:?];
 
   return v4;
 }
 
-- (PRXCardContainerView)initWithFrame:(CGRect)a3
+- (PRXCardContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11 = PRXCardContainerDefaultLayoutMargins();
 
   return [(PRXCardContainerView *)self initWithFrame:x containerLayoutMargins:y, width, height, v11, v8, v9, v10];
 }
 
-- (PRXCardContainerView)initWithFrame:(CGRect)a3 containerLayoutMargins:(NSDirectionalEdgeInsets)a4
+- (PRXCardContainerView)initWithFrame:(CGRect)frame containerLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  trailing = a4.trailing;
-  bottom = a4.bottom;
-  leading = a4.leading;
-  top = a4.top;
+  trailing = margins.trailing;
+  bottom = margins.bottom;
+  leading = margins.leading;
+  top = margins.top;
   v109[5] = *MEMORY[0x277D85DE8];
   v106.receiver = self;
   v106.super_class = PRXCardContainerView;
-  v8 = [(PRXCardContainerView *)&v106 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v8 = [(PRXCardContainerView *)&v106 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v9 = v8;
   if (v8)
   {
@@ -64,9 +64,9 @@
     v9->_pullDismissalScrollView = v13;
 
     [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView dismissableContentContainerView];
-    [v15 setDirectionalLayoutMargins:{*p_top, v9->_containerLayoutMargins.leading, v9->_containerLayoutMargins.bottom, v9->_containerLayoutMargins.trailing}];
-    [v15 setInsetsLayoutMarginsFromSafeArea:0];
+    dismissableContentContainerView = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView dismissableContentContainerView];
+    [dismissableContentContainerView setDirectionalLayoutMargins:{*p_top, v9->_containerLayoutMargins.leading, v9->_containerLayoutMargins.bottom, v9->_containerLayoutMargins.trailing}];
+    [dismissableContentContainerView setInsetsLayoutMarginsFromSafeArea:0];
     [(PRXCardContainerView *)v9 addSubview:v9->_pullDismissalScrollView];
     v16 = [PRXCardBackgroundView alloc];
     v17 = [(PRXCardBackgroundView *)v16 initWithFrame:*MEMORY[0x277CBF3A0] containerLayoutMargins:*(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), *p_top, v9->_containerLayoutMargins.leading, v9->_containerLayoutMargins.bottom, v9->_containerLayoutMargins.trailing];
@@ -75,7 +75,7 @@
 
     [(PRXCardBackgroundView *)v9->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PRXCardBackgroundView *)v9->_backgroundView setClipsToBounds:1];
-    [v15 addSubview:v9->_backgroundView];
+    [dismissableContentContainerView addSubview:v9->_backgroundView];
     PRXCardDefaultSize();
     v9->_preferredContentSize.width = v19;
     v9->_preferredContentSize.height = v20;
@@ -85,133 +85,133 @@
 
     [(UIView *)v9->_contentContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
     v23 = v9->_contentContainerView;
-    v24 = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView panGestureRecognizer];
-    [(UIView *)v23 addGestureRecognizer:v24];
+    panGestureRecognizer = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView panGestureRecognizer];
+    [(UIView *)v23 addGestureRecognizer:panGestureRecognizer];
 
     [(PRXCardBackgroundView *)v9->_backgroundView addSubview:v9->_contentContainerView];
-    v25 = [(UIView *)v9->_contentContainerView widthAnchor];
-    v26 = [v25 constraintEqualToConstant:v9->_preferredContentSize.width];
+    widthAnchor = [(UIView *)v9->_contentContainerView widthAnchor];
+    v26 = [widthAnchor constraintEqualToConstant:v9->_preferredContentSize.width];
     contentWidthConstraint = v9->_contentWidthConstraint;
     v9->_contentWidthConstraint = v26;
 
     LODWORD(v28) = 1146388480;
     [(NSLayoutConstraint *)v9->_contentWidthConstraint setPriority:v28];
-    v29 = [(UIView *)v9->_contentContainerView heightAnchor];
-    v30 = [v29 constraintEqualToConstant:v9->_preferredContentSize.height];
+    heightAnchor = [(UIView *)v9->_contentContainerView heightAnchor];
+    v30 = [heightAnchor constraintEqualToConstant:v9->_preferredContentSize.height];
     contentHeightConstraint = v9->_contentHeightConstraint;
     v9->_contentHeightConstraint = v30;
 
     LODWORD(v32) = 1146388480;
     [(NSLayoutConstraint *)v9->_contentHeightConstraint setPriority:v32];
-    v33 = [v15 layoutMarginsGuide];
+    layoutMarginsGuide = [dismissableContentContainerView layoutMarginsGuide];
     v34 = 0x277CCA000uLL;
-    v105 = v33;
-    v104 = v15;
+    v105 = layoutMarginsGuide;
+    v104 = dismissableContentContainerView;
     if (PRXIsPad())
     {
-      v35 = objc_alloc_init(MEMORY[0x277D756D0]);
-      [(PRXCardContainerView *)v9 addLayoutGuide:v35];
-      v36 = [v35 heightAnchor];
-      v37 = [(PRXCardContainerView *)v9 heightAnchor];
-      v38 = [v36 constraintEqualToAnchor:v37];
+      bottomAnchor3 = objc_alloc_init(MEMORY[0x277D756D0]);
+      [(PRXCardContainerView *)v9 addLayoutGuide:bottomAnchor3];
+      heightAnchor2 = [bottomAnchor3 heightAnchor];
+      heightAnchor3 = [(PRXCardContainerView *)v9 heightAnchor];
+      v38 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
       visibleHeightConstraint = v9->_visibleHeightConstraint;
       v9->_visibleHeightConstraint = v38;
 
       v98 = MEMORY[0x277CCAAD0];
-      v96 = [v35 widthAnchor];
-      v40 = [v96 constraintEqualToConstant:0.0];
+      widthAnchor2 = [bottomAnchor3 widthAnchor];
+      v40 = [widthAnchor2 constraintEqualToConstant:0.0];
       v109[0] = v40;
-      v41 = [v35 leadingAnchor];
-      v101 = [v15 leadingAnchor];
-      v100 = [v41 constraintEqualToAnchor:v101];
+      leadingAnchor = [bottomAnchor3 leadingAnchor];
+      leadingAnchor2 = [dismissableContentContainerView leadingAnchor];
+      v100 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v109[1] = v100;
       v109[2] = v9->_visibleHeightConstraint;
-      v94 = [v35 bottomAnchor];
-      v93 = [v15 bottomAnchor];
-      v42 = [v94 constraintEqualToAnchor:v93];
+      bottomAnchor = [bottomAnchor3 bottomAnchor];
+      bottomAnchor2 = [dismissableContentContainerView bottomAnchor];
+      v42 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v109[3] = v42;
-      v43 = [(UIView *)v9->_contentContainerView centerYAnchor];
-      v44 = [v35 centerYAnchor];
-      v45 = [v43 constraintEqualToAnchor:v44];
+      centerYAnchor = [(UIView *)v9->_contentContainerView centerYAnchor];
+      centerYAnchor2 = [bottomAnchor3 centerYAnchor];
+      v45 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v109[4] = v45;
       v46 = [MEMORY[0x277CBEA60] arrayWithObjects:v109 count:5];
       [v98 activateConstraints:v46];
 
-      v47 = v96;
+      bottomAnchor4 = widthAnchor2;
       v34 = 0x277CCA000;
     }
 
     else
     {
       v48 = MEMORY[0x277CCAAD0];
-      v35 = [(UIView *)v9->_contentContainerView bottomAnchor];
-      v47 = [v33 bottomAnchor];
-      v40 = [v35 constraintEqualToAnchor:v47];
+      bottomAnchor3 = [(UIView *)v9->_contentContainerView bottomAnchor];
+      bottomAnchor4 = [layoutMarginsGuide bottomAnchor];
+      v40 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       v108 = v40;
-      v41 = [MEMORY[0x277CBEA60] arrayWithObjects:&v108 count:1];
-      [v48 activateConstraints:v41];
+      leadingAnchor = [MEMORY[0x277CBEA60] arrayWithObjects:&v108 count:1];
+      [v48 activateConstraints:leadingAnchor];
     }
 
-    v49 = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView heightAnchor];
-    v50 = [(PRXCardContainerView *)v9 heightAnchor];
-    v51 = [v49 constraintLessThanOrEqualToAnchor:v50];
+    heightAnchor4 = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView heightAnchor];
+    heightAnchor5 = [(PRXCardContainerView *)v9 heightAnchor];
+    v51 = [heightAnchor4 constraintLessThanOrEqualToAnchor:heightAnchor5];
     scrollViewHeightConstraint = v9->_scrollViewHeightConstraint;
     v9->_scrollViewHeightConstraint = v51;
 
-    v53 = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView topAnchor];
-    v54 = [(PRXCardContainerView *)v9 topAnchor];
-    v55 = [v53 constraintGreaterThanOrEqualToAnchor:v54];
+    topAnchor = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView topAnchor];
+    topAnchor2 = [(PRXCardContainerView *)v9 topAnchor];
+    v55 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     scrollViewTopConstraint = v9->_scrollViewTopConstraint;
     v9->_scrollViewTopConstraint = v55;
 
-    v57 = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView bottomAnchor];
-    v58 = [(PRXCardContainerView *)v9 bottomAnchor];
-    v59 = [v57 constraintEqualToAnchor:v58];
+    bottomAnchor5 = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView bottomAnchor];
+    bottomAnchor6 = [(PRXCardContainerView *)v9 bottomAnchor];
+    v59 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     scrollViewBottomConstraint = v9->_scrollViewBottomConstraint;
     v9->_scrollViewBottomConstraint = v59;
 
-    v61 = [(UIView *)v9->_contentContainerView topAnchor];
-    v62 = [v105 topAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62];
+    topAnchor3 = [(UIView *)v9->_contentContainerView topAnchor];
+    topAnchor4 = [v105 topAnchor];
+    v63 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     contentTopConstraint = v9->_contentTopConstraint;
     v9->_contentTopConstraint = v63;
 
     v86 = *(v34 + 2768);
-    v103 = [(PRXCardBackgroundView *)v9->_backgroundView leadingAnchor];
-    v102 = [(UIView *)v9->_contentContainerView leadingAnchor];
-    v99 = [v103 constraintEqualToAnchor:v102];
+    leadingAnchor3 = [(PRXCardBackgroundView *)v9->_backgroundView leadingAnchor];
+    leadingAnchor4 = [(UIView *)v9->_contentContainerView leadingAnchor];
+    v99 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v107[0] = v99;
-    v97 = [(PRXCardBackgroundView *)v9->_backgroundView trailingAnchor];
-    v95 = [(UIView *)v9->_contentContainerView trailingAnchor];
-    v92 = [v97 constraintEqualToAnchor:v95];
+    trailingAnchor = [(PRXCardBackgroundView *)v9->_backgroundView trailingAnchor];
+    trailingAnchor2 = [(UIView *)v9->_contentContainerView trailingAnchor];
+    v92 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v107[1] = v92;
-    v91 = [(PRXCardBackgroundView *)v9->_backgroundView topAnchor];
-    v90 = [(UIView *)v9->_contentContainerView topAnchor];
-    v89 = [v91 constraintEqualToAnchor:v90];
+    topAnchor5 = [(PRXCardBackgroundView *)v9->_backgroundView topAnchor];
+    topAnchor6 = [(UIView *)v9->_contentContainerView topAnchor];
+    v89 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v107[2] = v89;
-    v88 = [(PRXCardBackgroundView *)v9->_backgroundView bottomAnchor];
-    v87 = [(UIView *)v9->_contentContainerView bottomAnchor];
-    v85 = [v88 constraintEqualToAnchor:v87];
+    bottomAnchor7 = [(PRXCardBackgroundView *)v9->_backgroundView bottomAnchor];
+    bottomAnchor8 = [(UIView *)v9->_contentContainerView bottomAnchor];
+    v85 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
     v107[3] = v85;
-    v84 = [(UIView *)v9->_contentContainerView leadingAnchor];
-    v83 = [v105 leadingAnchor];
-    v82 = [v84 constraintEqualToAnchor:v83];
+    leadingAnchor5 = [(UIView *)v9->_contentContainerView leadingAnchor];
+    leadingAnchor6 = [v105 leadingAnchor];
+    v82 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v107[4] = v82;
-    v81 = [(UIView *)v9->_contentContainerView trailingAnchor];
-    v80 = [v105 trailingAnchor];
-    v79 = [v81 constraintEqualToAnchor:v80];
+    trailingAnchor3 = [(UIView *)v9->_contentContainerView trailingAnchor];
+    trailingAnchor4 = [v105 trailingAnchor];
+    v79 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v107[5] = v79;
-    v78 = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView leadingAnchor];
-    v65 = [(PRXCardContainerView *)v9 leadingAnchor];
-    v66 = [v78 constraintGreaterThanOrEqualToAnchor:v65];
+    leadingAnchor7 = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView leadingAnchor];
+    leadingAnchor8 = [(PRXCardContainerView *)v9 leadingAnchor];
+    v66 = [leadingAnchor7 constraintGreaterThanOrEqualToAnchor:leadingAnchor8];
     v107[6] = v66;
-    v67 = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView trailingAnchor];
-    v68 = [(PRXCardContainerView *)v9 trailingAnchor];
-    v69 = [v67 constraintLessThanOrEqualToAnchor:v68];
+    trailingAnchor5 = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView trailingAnchor];
+    trailingAnchor6 = [(PRXCardContainerView *)v9 trailingAnchor];
+    v69 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6];
     v107[7] = v69;
-    v70 = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView centerXAnchor];
-    v71 = [(PRXCardContainerView *)v9 centerXAnchor];
-    v72 = [v70 constraintEqualToAnchor:v71];
+    centerXAnchor = [(PRXPullDismissalScrollView *)v9->_pullDismissalScrollView centerXAnchor];
+    centerXAnchor2 = [(PRXCardContainerView *)v9 centerXAnchor];
+    v72 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v107[8] = v72;
     v107[9] = v9->_scrollViewHeightConstraint;
     v107[10] = v9->_scrollViewTopConstraint;
@@ -222,11 +222,11 @@
     v73 = [MEMORY[0x277CBEA60] arrayWithObjects:v107 count:15];
     [v86 activateConstraints:v73];
 
-    v74 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v74 addObserver:v9 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
 
-    v75 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v75 addObserver:v9 selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
 
     v76 = v9;
   }
@@ -234,12 +234,12 @@
   return v9;
 }
 
-- (void)setUsePortraitTopInset:(BOOL)a3
+- (void)setUsePortraitTopInset:(BOOL)inset
 {
-  if (self->_usePortraitTopInset != a3)
+  if (self->_usePortraitTopInset != inset)
   {
-    self->_usePortraitTopInset = a3;
-    if (a3)
+    self->_usePortraitTopInset = inset;
+    if (inset)
     {
       top = 88.0 - self->_containerLayoutMargins.top;
     }
@@ -253,12 +253,12 @@
   }
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   p_preferredContentSize = &self->_preferredContentSize;
-  if (self->_preferredContentSize.width != a3.width || self->_preferredContentSize.height != a3.height)
+  if (self->_preferredContentSize.width != size.width || self->_preferredContentSize.height != size.height)
   {
     v8 = PRXDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -273,29 +273,29 @@
   }
 }
 
-- (void)setDefersKeyboardUpdates:(BOOL)a3
+- (void)setDefersKeyboardUpdates:(BOOL)updates
 {
-  if (self->_defersKeyboardUpdates != a3)
+  if (self->_defersKeyboardUpdates != updates)
   {
-    self->_defersKeyboardUpdates = a3;
-    if (!a3)
+    self->_defersKeyboardUpdates = updates;
+    if (!updates)
     {
       [(PRXCardContainerView *)self _updateKeyboardDeferred:1];
     }
   }
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
   [v5 CGRectValue];
   self->_keyboardHeight = CGRectGetHeight(v7);
 
   [(PRXCardContainerView *)self _updateKeyboardDeferred:0];
 }
 
-- (void)_updateKeyboardDeferred:(BOOL)a3
+- (void)_updateKeyboardDeferred:(BOOL)deferred
 {
   if (!self->_defersKeyboardUpdates)
   {
@@ -303,7 +303,7 @@
     keyboardHeight = self->_keyboardHeight;
     if (v6 != -keyboardHeight)
     {
-      if (!a3)
+      if (!deferred)
       {
         v10[0] = MEMORY[0x277D85DD0];
         v10[1] = 3221225472;
@@ -343,7 +343,7 @@
       [(NSLayoutConstraint *)self->_visibleHeightConstraint setConstant:-self->_keyboardHeight];
       [(PRXPullDismissalScrollView *)self->_pullDismissalScrollView setScrollEnabled:self->_keyboardHeight == 0.0];
       self->_shouldDismissKeyboardOnTap = self->_keyboardHeight != 0.0;
-      if (!a3)
+      if (!deferred)
       {
         [(PRXCardContainerView *)self layoutIfNeeded];
       }
@@ -351,7 +351,7 @@
   }
 }
 
-- (void)tappedView:(id)a3
+- (void)tappedView:(id)view
 {
   if (self->_shouldDismissKeyboardOnTap)
   {
@@ -366,9 +366,9 @@
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   if (self->_shouldDismissKeyboardOnTap)
   {
     v5 = 1;
@@ -384,7 +384,7 @@
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [v4 locationInView:self];
+      [beginCopy locationInView:self];
       v8 = [(PRXCardContainerView *)self hitTest:0 withEvent:?];
       v5 = v8 == self;
     }

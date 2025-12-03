@@ -6,8 +6,8 @@
 
 - (id)_intents_stringRepresentation
 {
-  v2 = [MEMORY[0x1E696B060] kilograms];
-  v3 = [a1 isEqual:v2];
+  kilograms = [MEMORY[0x1E696B060] kilograms];
+  v3 = [self isEqual:kilograms];
 
   if (v3)
   {
@@ -16,8 +16,8 @@
 
   else
   {
-    v5 = [MEMORY[0x1E696B060] grams];
-    v6 = [a1 isEqual:v5];
+    grams = [MEMORY[0x1E696B060] grams];
+    v6 = [self isEqual:grams];
 
     if (v6)
     {
@@ -26,8 +26,8 @@
 
     else
     {
-      v7 = [MEMORY[0x1E696B060] decigrams];
-      v8 = [a1 isEqual:v7];
+      decigrams = [MEMORY[0x1E696B060] decigrams];
+      v8 = [self isEqual:decigrams];
 
       if (v8)
       {
@@ -36,8 +36,8 @@
 
       else
       {
-        v9 = [MEMORY[0x1E696B060] centigrams];
-        v10 = [a1 isEqual:v9];
+        centigrams = [MEMORY[0x1E696B060] centigrams];
+        v10 = [self isEqual:centigrams];
 
         if (v10)
         {
@@ -46,8 +46,8 @@
 
         else
         {
-          v11 = [MEMORY[0x1E696B060] milligrams];
-          v12 = [a1 isEqual:v11];
+          milligrams = [MEMORY[0x1E696B060] milligrams];
+          v12 = [self isEqual:milligrams];
 
           if (v12)
           {
@@ -56,8 +56,8 @@
 
           else
           {
-            v13 = [MEMORY[0x1E696B060] micrograms];
-            v14 = [a1 isEqual:v13];
+            micrograms = [MEMORY[0x1E696B060] micrograms];
+            v14 = [self isEqual:micrograms];
 
             if (v14)
             {
@@ -66,8 +66,8 @@
 
             else
             {
-              v15 = [MEMORY[0x1E696B060] nanograms];
-              v16 = [a1 isEqual:v15];
+              nanograms = [MEMORY[0x1E696B060] nanograms];
+              v16 = [self isEqual:nanograms];
 
               if (v16)
               {
@@ -76,8 +76,8 @@
 
               else
               {
-                v17 = [MEMORY[0x1E696B060] picograms];
-                v18 = [a1 isEqual:v17];
+                picograms = [MEMORY[0x1E696B060] picograms];
+                v18 = [self isEqual:picograms];
 
                 if (v18)
                 {
@@ -86,8 +86,8 @@
 
                 else
                 {
-                  v19 = [MEMORY[0x1E696B060] ounces];
-                  v20 = [a1 isEqual:v19];
+                  ounces = [MEMORY[0x1E696B060] ounces];
+                  v20 = [self isEqual:ounces];
 
                   if (v20)
                   {
@@ -96,8 +96,8 @@
 
                   else
                   {
-                    v21 = [MEMORY[0x1E696B060] poundsMass];
-                    v22 = [a1 isEqual:v21];
+                    poundsMass = [MEMORY[0x1E696B060] poundsMass];
+                    v22 = [self isEqual:poundsMass];
 
                     if (v22)
                     {
@@ -106,8 +106,8 @@
 
                     else
                     {
-                      v23 = [MEMORY[0x1E696B060] stones];
-                      v24 = [a1 isEqual:v23];
+                      stones = [MEMORY[0x1E696B060] stones];
+                      v24 = [self isEqual:stones];
 
                       if (v24)
                       {
@@ -116,8 +116,8 @@
 
                       else
                       {
-                        v25 = [MEMORY[0x1E696B060] metricTons];
-                        v26 = [a1 isEqual:v25];
+                        metricTons = [MEMORY[0x1E696B060] metricTons];
+                        v26 = [self isEqual:metricTons];
 
                         if (v26)
                         {
@@ -126,8 +126,8 @@
 
                         else
                         {
-                          v27 = [MEMORY[0x1E696B060] shortTons];
-                          v28 = [a1 isEqual:v27];
+                          shortTons = [MEMORY[0x1E696B060] shortTons];
+                          v28 = [self isEqual:shortTons];
 
                           if (v28)
                           {
@@ -136,8 +136,8 @@
 
                           else
                           {
-                            v29 = [MEMORY[0x1E696B060] carats];
-                            v30 = [a1 isEqual:v29];
+                            carats = [MEMORY[0x1E696B060] carats];
+                            v30 = [self isEqual:carats];
 
                             if (v30)
                             {
@@ -146,8 +146,8 @@
 
                             else
                             {
-                              v31 = [MEMORY[0x1E696B060] ouncesTroy];
-                              v32 = [a1 isEqual:v31];
+                              ouncesTroy = [MEMORY[0x1E696B060] ouncesTroy];
+                              v32 = [self isEqual:ouncesTroy];
 
                               if (v32)
                               {
@@ -156,14 +156,14 @@
 
                               else
                               {
-                                v33 = [MEMORY[0x1E696B060] slugs];
-                                v34 = [a1 isEqual:v33];
+                                slugs = [MEMORY[0x1E696B060] slugs];
+                                v34 = [self isEqual:slugs];
 
                                 if ((v34 & 1) == 0)
                                 {
                                   v37 = MEMORY[0x1E695DF30];
                                   v38 = *MEMORY[0x1E695D930];
-                                  v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown unit %@", a1];
+                                  v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown unit %@", self];
                                   v40 = [v37 exceptionWithName:v38 reason:v39 userInfo:0];
                                   v41 = v40;
 
@@ -187,9 +187,9 @@
     }
   }
 
-  v35 = [(__CFString *)v4 if_ASCIIStringByUppercasingFirstCharacter];
+  if_ASCIIStringByUppercasingFirstCharacter = [(__CFString *)v4 if_ASCIIStringByUppercasingFirstCharacter];
 
-  return v35;
+  return if_ASCIIStringByUppercasingFirstCharacter;
 }
 
 @end

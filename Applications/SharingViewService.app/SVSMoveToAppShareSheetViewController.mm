@@ -1,15 +1,15 @@
 @interface SVSMoveToAppShareSheetViewController
-- (SVSMoveToAppShareSheetViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (SVSMoveToAppShareSheetViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation SVSMoveToAppShareSheetViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -22,27 +22,27 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_10006DA04(a3, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_10006DA04(context, v6, v7);
   sub_100025EF4(v6, v7);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10006F0A0(a3);
+  selfCopy = self;
+  sub_10006F0A0(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10006F344(a3);
+  selfCopy = self;
+  sub_10006F344(disappear);
 }
 
-- (SVSMoveToAppShareSheetViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SVSMoveToAppShareSheetViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -54,8 +54,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10006FE5C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10006FE5C(v5, v7, bundle);
 }
 
 @end

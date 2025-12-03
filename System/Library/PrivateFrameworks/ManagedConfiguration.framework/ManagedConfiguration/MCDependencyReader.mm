@@ -2,22 +2,22 @@
 + (id)sharedReader;
 + (id)systemStoragePath;
 + (id)userStoragePath;
-+ (void)setSystemStoragePath:(id)a3 userStoragePath:(id)a4;
++ (void)setSystemStoragePath:(id)path userStoragePath:(id)storagePath;
 - (NSMutableDictionary)memberQueueSystemDomainsDict;
 - (NSMutableDictionary)memberQueueUserDomainsDict;
 - (id)_init;
-- (id)dependentsOfParent:(id)a3 inDomain:(id)a4;
-- (id)dependentsOfParent:(id)a3 inSystemDomain:(id)a4;
-- (id)dependentsOfParent:(id)a3 inUserDomain:(id)a4;
-- (id)memberQueueDependentsOfParent:(id)a3 inDomain:(id)a4;
-- (id)memberQueueDependentsOfParent:(id)a3 inSystemDomain:(id)a4;
-- (id)memberQueueDependentsOfParent:(id)a3 inUserDomain:(id)a4;
-- (id)memberQueueParentsInDomain:(id)a3;
-- (id)memberQueueParentsInSystemDomain:(id)a3;
-- (id)memberQueueParentsInUserDomain:(id)a3;
-- (id)parentsInDomain:(id)a3;
-- (id)parentsInSystemDomain:(id)a3;
-- (id)parentsInUserDomain:(id)a3;
+- (id)dependentsOfParent:(id)parent inDomain:(id)domain;
+- (id)dependentsOfParent:(id)parent inSystemDomain:(id)domain;
+- (id)dependentsOfParent:(id)parent inUserDomain:(id)domain;
+- (id)memberQueueDependentsOfParent:(id)parent inDomain:(id)domain;
+- (id)memberQueueDependentsOfParent:(id)parent inSystemDomain:(id)domain;
+- (id)memberQueueDependentsOfParent:(id)parent inUserDomain:(id)domain;
+- (id)memberQueueParentsInDomain:(id)domain;
+- (id)memberQueueParentsInSystemDomain:(id)domain;
+- (id)memberQueueParentsInUserDomain:(id)domain;
+- (id)parentsInDomain:(id)domain;
+- (id)parentsInSystemDomain:(id)domain;
+- (id)parentsInUserDomain:(id)domain;
 - (id)systemDomainsDict;
 - (id)userDomainsDict;
 - (void)invalidateCache;
@@ -94,14 +94,14 @@
   return v2;
 }
 
-+ (void)setSystemStoragePath:(id)a3 userStoragePath:(id)a4
++ (void)setSystemStoragePath:(id)path userStoragePath:(id)storagePath
 {
-  v5 = a4;
-  v6 = [a3 copy];
+  storagePathCopy = storagePath;
+  v6 = [path copy];
   v7 = systemStoragePathOverride;
   systemStoragePathOverride = v6;
 
-  v8 = [v5 copy];
+  v8 = [storagePathCopy copy];
   v9 = userStoragePathOverride;
   userStoragePathOverride = v8;
 }
@@ -168,14 +168,14 @@ void __34__MCDependencyReader_sharedReader__block_invoke_2()
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(MCDependencyReader *)self memberQueue];
+  memberQueue = [(MCDependencyReader *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__MCDependencyReader_systemDomainsDict__block_invoke;
   v6[3] = &unk_1E77D0260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -200,14 +200,14 @@ void __39__MCDependencyReader_systemDomainsDict__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(MCDependencyReader *)self memberQueue];
+  memberQueue = [(MCDependencyReader *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__MCDependencyReader_userDomainsDict__block_invoke;
   v6[3] = &unk_1E77D0260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -224,30 +224,30 @@ void __37__MCDependencyReader_userDomainsDict__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)memberQueueParentsInDomain:(id)a3
+- (id)memberQueueParentsInDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(MCDependencyReader *)self memberQueueSystemDomainsDict];
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v6 allKeys];
+  domainCopy = domain;
+  memberQueueSystemDomainsDict = [(MCDependencyReader *)self memberQueueSystemDomainsDict];
+  v6 = [memberQueueSystemDomainsDict objectForKeyedSubscript:domainCopy];
+  allKeys = [v6 allKeys];
 
-  v8 = [(MCDependencyReader *)self memberQueueUserDomainsDict];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  memberQueueUserDomainsDict = [(MCDependencyReader *)self memberQueueUserDomainsDict];
+  v9 = [memberQueueUserDomainsDict objectForKeyedSubscript:domainCopy];
 
-  v10 = [v9 allKeys];
+  allKeys2 = [v9 allKeys];
 
-  if (v7 | v10)
+  if (allKeys | allKeys2)
   {
-    v11 = [MEMORY[0x1E695DF70] array];
-    v12 = v11;
-    if (v7)
+    array = [MEMORY[0x1E695DF70] array];
+    v12 = array;
+    if (allKeys)
     {
-      [v11 addObjectsFromArray:v7];
+      [array addObjectsFromArray:allKeys];
     }
 
-    if (v10)
+    if (allKeys2)
     {
-      [v12 addObjectsFromArray:v10];
+      [v12 addObjectsFromArray:allKeys2];
     }
   }
 
@@ -261,42 +261,42 @@ void __37__MCDependencyReader_userDomainsDict__block_invoke(uint64_t a1)
   return v13;
 }
 
-- (id)memberQueueParentsInSystemDomain:(id)a3
+- (id)memberQueueParentsInSystemDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(MCDependencyReader *)self memberQueueSystemDomainsDict];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  domainCopy = domain;
+  memberQueueSystemDomainsDict = [(MCDependencyReader *)self memberQueueSystemDomainsDict];
+  v6 = [memberQueueSystemDomainsDict objectForKeyedSubscript:domainCopy];
 
-  v7 = [v6 allKeys];
+  allKeys = [v6 allKeys];
 
-  return v7;
+  return allKeys;
 }
 
-- (id)memberQueueParentsInUserDomain:(id)a3
+- (id)memberQueueParentsInUserDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(MCDependencyReader *)self memberQueueUserDomainsDict];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  domainCopy = domain;
+  memberQueueUserDomainsDict = [(MCDependencyReader *)self memberQueueUserDomainsDict];
+  v6 = [memberQueueUserDomainsDict objectForKeyedSubscript:domainCopy];
 
-  v7 = [v6 allKeys];
+  allKeys = [v6 allKeys];
 
-  return v7;
+  return allKeys;
 }
 
-- (id)memberQueueDependentsOfParent:(id)a3 inDomain:(id)a4
+- (id)memberQueueDependentsOfParent:(id)parent inDomain:(id)domain
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MCDependencyReader *)self memberQueueDependentsOfParent:v7 inSystemDomain:v6];
-  v9 = [(MCDependencyReader *)self memberQueueDependentsOfParent:v7 inUserDomain:v6];
+  domainCopy = domain;
+  parentCopy = parent;
+  v8 = [(MCDependencyReader *)self memberQueueDependentsOfParent:parentCopy inSystemDomain:domainCopy];
+  v9 = [(MCDependencyReader *)self memberQueueDependentsOfParent:parentCopy inUserDomain:domainCopy];
 
   if (v8 | v9)
   {
-    v10 = [MEMORY[0x1E695DF70] array];
-    v11 = v10;
+    array = [MEMORY[0x1E695DF70] array];
+    v11 = array;
     if (v8)
     {
-      [v10 addObjectsFromArray:v8];
+      [array addObjectsFromArray:v8];
     }
 
     if (v9)
@@ -315,53 +315,53 @@ void __37__MCDependencyReader_userDomainsDict__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (id)memberQueueDependentsOfParent:(id)a3 inSystemDomain:(id)a4
+- (id)memberQueueDependentsOfParent:(id)parent inSystemDomain:(id)domain
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MCDependencyReader *)self memberQueueSystemDomainsDict];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  domainCopy = domain;
+  parentCopy = parent;
+  memberQueueSystemDomainsDict = [(MCDependencyReader *)self memberQueueSystemDomainsDict];
+  v9 = [memberQueueSystemDomainsDict objectForKeyedSubscript:domainCopy];
 
-  v10 = [v9 objectForKeyedSubscript:v7];
+  v10 = [v9 objectForKeyedSubscript:parentCopy];
 
   v11 = [v10 copy];
 
   return v11;
 }
 
-- (id)memberQueueDependentsOfParent:(id)a3 inUserDomain:(id)a4
+- (id)memberQueueDependentsOfParent:(id)parent inUserDomain:(id)domain
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MCDependencyReader *)self memberQueueUserDomainsDict];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  domainCopy = domain;
+  parentCopy = parent;
+  memberQueueUserDomainsDict = [(MCDependencyReader *)self memberQueueUserDomainsDict];
+  v9 = [memberQueueUserDomainsDict objectForKeyedSubscript:domainCopy];
 
-  v10 = [v9 objectForKeyedSubscript:v7];
+  v10 = [v9 objectForKeyedSubscript:parentCopy];
 
   v11 = [v10 copy];
 
   return v11;
 }
 
-- (id)parentsInDomain:(id)a3
+- (id)parentsInDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
   v17 = 0;
-  v5 = [(MCDependencyReader *)self memberQueue];
+  memberQueue = [(MCDependencyReader *)self memberQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__MCDependencyReader_parentsInDomain___block_invoke;
   block[3] = &unk_1E77D1EF0;
-  v10 = v4;
+  v10 = domainCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = domainCopy;
+  dispatch_sync(memberQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -379,28 +379,28 @@ uint64_t __38__MCDependencyReader_parentsInDomain___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)dependentsOfParent:(id)a3 inDomain:(id)a4
+- (id)dependentsOfParent:(id)parent inDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  parentCopy = parent;
+  domainCopy = domain;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__3;
   v21 = __Block_byref_object_dispose__3;
   v22 = 0;
-  v8 = [(MCDependencyReader *)self memberQueue];
+  memberQueue = [(MCDependencyReader *)self memberQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__MCDependencyReader_dependentsOfParent_inDomain___block_invoke;
   v13[3] = &unk_1E77D1F18;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = parentCopy;
+  v15 = domainCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v13);
+  v9 = domainCopy;
+  v10 = parentCopy;
+  dispatch_sync(memberQueue, v13);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -418,25 +418,25 @@ uint64_t __50__MCDependencyReader_dependentsOfParent_inDomain___block_invoke(uin
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)parentsInSystemDomain:(id)a3
+- (id)parentsInSystemDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
   v17 = 0;
-  v5 = [(MCDependencyReader *)self memberQueue];
+  memberQueue = [(MCDependencyReader *)self memberQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__MCDependencyReader_parentsInSystemDomain___block_invoke;
   block[3] = &unk_1E77D1EF0;
-  v10 = v4;
+  v10 = domainCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = domainCopy;
+  dispatch_sync(memberQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -454,25 +454,25 @@ uint64_t __44__MCDependencyReader_parentsInSystemDomain___block_invoke(uint64_t 
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)parentsInUserDomain:(id)a3
+- (id)parentsInUserDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
   v17 = 0;
-  v5 = [(MCDependencyReader *)self memberQueue];
+  memberQueue = [(MCDependencyReader *)self memberQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__MCDependencyReader_parentsInUserDomain___block_invoke;
   block[3] = &unk_1E77D1EF0;
-  v10 = v4;
+  v10 = domainCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = domainCopy;
+  dispatch_sync(memberQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -490,28 +490,28 @@ uint64_t __42__MCDependencyReader_parentsInUserDomain___block_invoke(uint64_t a1
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)dependentsOfParent:(id)a3 inSystemDomain:(id)a4
+- (id)dependentsOfParent:(id)parent inSystemDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  parentCopy = parent;
+  domainCopy = domain;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__3;
   v21 = __Block_byref_object_dispose__3;
   v22 = 0;
-  v8 = [(MCDependencyReader *)self memberQueue];
+  memberQueue = [(MCDependencyReader *)self memberQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __56__MCDependencyReader_dependentsOfParent_inSystemDomain___block_invoke;
   v13[3] = &unk_1E77D1F18;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = parentCopy;
+  v15 = domainCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v13);
+  v9 = domainCopy;
+  v10 = parentCopy;
+  dispatch_sync(memberQueue, v13);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -529,28 +529,28 @@ uint64_t __56__MCDependencyReader_dependentsOfParent_inSystemDomain___block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)dependentsOfParent:(id)a3 inUserDomain:(id)a4
+- (id)dependentsOfParent:(id)parent inUserDomain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  parentCopy = parent;
+  domainCopy = domain;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__3;
   v21 = __Block_byref_object_dispose__3;
   v22 = 0;
-  v8 = [(MCDependencyReader *)self memberQueue];
+  memberQueue = [(MCDependencyReader *)self memberQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__MCDependencyReader_dependentsOfParent_inUserDomain___block_invoke;
   v13[3] = &unk_1E77D1F18;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = parentCopy;
+  v15 = domainCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v13);
+  v9 = domainCopy;
+  v10 = parentCopy;
+  dispatch_sync(memberQueue, v13);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -577,14 +577,14 @@ uint64_t __54__MCDependencyReader_dependentsOfParent_inUserDomain___block_invoke
 
 - (void)memberQueueRereadSystemDomainsDict
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = +[MCDependencyReader systemStoragePath];
-  v5 = [v3 fileExistsAtPath:v4];
+  v5 = [defaultManager fileExistsAtPath:v4];
 
   getpid();
   v6 = *MEMORY[0x1E69E9BD0];
   v7 = +[MCDependencyReader systemStoragePath];
-  v19 = [v7 fileSystemRepresentation];
+  fileSystemRepresentation = [v7 fileSystemRepresentation];
   v8 = sandbox_check();
 
   if (v5 && v8)
@@ -617,7 +617,7 @@ uint64_t __54__MCDependencyReader_dependentsOfParent_inUserDomain___block_invoke
         _os_log_impl(&dword_1A795B000, v15, OS_LOG_TYPE_DEBUG, "Reading system dependency information from file.", v21, 2u);
       }
 
-      v16 = [memberQueueSystemDomainsDict MCMutableDeepCopy];
+      mCMutableDeepCopy = [memberQueueSystemDomainsDict MCMutableDeepCopy];
     }
 
     else
@@ -629,24 +629,24 @@ uint64_t __54__MCDependencyReader_dependentsOfParent_inUserDomain___block_invoke
         _os_log_impl(&dword_1A795B000, v17, OS_LOG_TYPE_INFO, "No system dependency information found. Creating an empty dictionary.", v22, 2u);
       }
 
-      v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
+      mCMutableDeepCopy = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
     v18 = self->_memberQueueSystemDomainsDict;
-    self->_memberQueueSystemDomainsDict = v16;
+    self->_memberQueueSystemDomainsDict = mCMutableDeepCopy;
   }
 }
 
 - (void)memberQueueRereadUserDomainsDict
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = +[MCDependencyReader userStoragePath];
-  v5 = [v3 fileExistsAtPath:v4];
+  v5 = [defaultManager fileExistsAtPath:v4];
 
   getpid();
   v6 = *MEMORY[0x1E69E9BD0];
   v7 = +[MCDependencyReader userStoragePath];
-  v19 = [v7 fileSystemRepresentation];
+  fileSystemRepresentation = [v7 fileSystemRepresentation];
   v8 = sandbox_check();
 
   if (v5 && v8)
@@ -679,7 +679,7 @@ uint64_t __54__MCDependencyReader_dependentsOfParent_inUserDomain___block_invoke
         _os_log_impl(&dword_1A795B000, v15, OS_LOG_TYPE_DEBUG, "Reading user dependency information from file.", v21, 2u);
       }
 
-      v16 = [memberQueueUserDomainsDict MCMutableDeepCopy];
+      mCMutableDeepCopy = [memberQueueUserDomainsDict MCMutableDeepCopy];
     }
 
     else
@@ -691,23 +691,23 @@ uint64_t __54__MCDependencyReader_dependentsOfParent_inUserDomain___block_invoke
         _os_log_impl(&dword_1A795B000, v17, OS_LOG_TYPE_INFO, "No user dependency information found. Creating an empty dictionary.", v22, 2u);
       }
 
-      v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
+      mCMutableDeepCopy = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
     v18 = self->_memberQueueUserDomainsDict;
-    self->_memberQueueUserDomainsDict = v16;
+    self->_memberQueueUserDomainsDict = mCMutableDeepCopy;
   }
 }
 
 - (void)invalidateCache
 {
-  v3 = [(MCDependencyReader *)self memberQueue];
+  memberQueue = [(MCDependencyReader *)self memberQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __37__MCDependencyReader_invalidateCache__block_invoke;
   block[3] = &unk_1E77D0180;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(memberQueue, block);
 }
 
 uint64_t __37__MCDependencyReader_invalidateCache__block_invoke(uint64_t a1)

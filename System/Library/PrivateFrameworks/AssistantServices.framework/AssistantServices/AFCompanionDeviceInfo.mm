@@ -1,15 +1,15 @@
 @interface AFCompanionDeviceInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFCompanionDeviceInfo)initWithAssistantID:(id)a3 speechID:(id)a4 idsIdentifier:(id)a5 productPrefix:(id)a6 aceHost:(id)a7 syncMetadata:(id)a8 syncMetadataCapability:(BOOL)a9 peerToPeerHandoffCapability:(BOOL)a10 muxSupportCapability:(BOOL)a11 meDevice:(BOOL)a12 siriLanguage:(id)a13 companionName:(id)a14;
-- (AFCompanionDeviceInfo)initWithBuilder:(id)a3;
-- (AFCompanionDeviceInfo)initWithCoder:(id)a3;
-- (AFCompanionDeviceInfo)initWithDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFCompanionDeviceInfo)initWithAssistantID:(id)d speechID:(id)iD idsIdentifier:(id)identifier productPrefix:(id)prefix aceHost:(id)host syncMetadata:(id)metadata syncMetadataCapability:(BOOL)capability peerToPeerHandoffCapability:(BOOL)self0 muxSupportCapability:(BOOL)self1 meDevice:(BOOL)self2 siriLanguage:(id)self3 companionName:(id)self4;
+- (AFCompanionDeviceInfo)initWithBuilder:(id)builder;
+- (AFCompanionDeviceInfo)initWithCoder:(id)coder;
+- (AFCompanionDeviceInfo)initWithDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFCompanionDeviceInfo
@@ -117,14 +117,14 @@
   return v25;
 }
 
-- (AFCompanionDeviceInfo)initWithDictionaryRepresentation:(id)a3
+- (AFCompanionDeviceInfo)initWithDictionaryRepresentation:(id)representation
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"assistantID"];
+    v6 = [representationCopy objectForKey:@"assistantID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -262,7 +262,7 @@
       v24 = 0;
     }
 
-    v25 = [v24 BOOLValue];
+    bOOLValue = [v24 BOOLValue];
     v26 = [v5 objectForKey:@"peerToPeerHandoffCapability"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -275,7 +275,7 @@
       v27 = 0;
     }
 
-    v28 = [v27 BOOLValue];
+    bOOLValue2 = [v27 BOOLValue];
     v29 = [v5 objectForKey:@"muxSupportCapability"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -288,7 +288,7 @@
       v30 = 0;
     }
 
-    v31 = [v30 BOOLValue];
+    bOOLValue3 = [v30 BOOLValue];
     v32 = [v5 objectForKey:@"meDevice"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -301,7 +301,7 @@
       v33 = 0;
     }
 
-    v34 = [v33 BOOLValue];
+    bOOLValue4 = [v33 BOOLValue];
     v35 = [v5 objectForKey:@"siriLanguage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -326,58 +326,58 @@
       v38 = 0;
     }
 
-    BYTE3(v41) = v34;
-    BYTE2(v41) = v31;
-    BYTE1(v41) = v28;
-    LOBYTE(v41) = v25;
+    BYTE3(v41) = bOOLValue4;
+    BYTE2(v41) = bOOLValue3;
+    BYTE1(v41) = bOOLValue2;
+    LOBYTE(v41) = bOOLValue;
     self = [AFCompanionDeviceInfo initWithAssistantID:"initWithAssistantID:speechID:idsIdentifier:productPrefix:aceHost:syncMetadata:syncMetadataCapability:peerToPeerHandoffCapability:muxSupportCapability:meDevice:siriLanguage:companionName:" speechID:v48 idsIdentifier:v47 productPrefix:v46 aceHost:v45 syncMetadata:v44 syncMetadataCapability:v22 peerToPeerHandoffCapability:v41 muxSupportCapability:v36 meDevice:v38 siriLanguage:? companionName:?];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   v39 = *MEMORY[0x1E69E9840];
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   assistantID = self->_assistantID;
-  v9 = a3;
-  [v9 encodeObject:assistantID forKey:@"AFCompanionDeviceInfo::assistantID"];
-  [v9 encodeObject:self->_speechID forKey:@"AFCompanionDeviceInfo::speechID"];
-  [v9 encodeObject:self->_idsIdentifier forKey:@"AFCompanionDeviceInfo::idsIdentifier"];
-  [v9 encodeObject:self->_productPrefix forKey:@"AFCompanionDeviceInfo::productPrefix"];
-  [v9 encodeObject:self->_aceHost forKey:@"AFCompanionDeviceInfo::aceHost"];
-  [v9 encodeObject:self->_syncMetadata forKey:@"AFCompanionDeviceInfo::syncMetadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:assistantID forKey:@"AFCompanionDeviceInfo::assistantID"];
+  [coderCopy encodeObject:self->_speechID forKey:@"AFCompanionDeviceInfo::speechID"];
+  [coderCopy encodeObject:self->_idsIdentifier forKey:@"AFCompanionDeviceInfo::idsIdentifier"];
+  [coderCopy encodeObject:self->_productPrefix forKey:@"AFCompanionDeviceInfo::productPrefix"];
+  [coderCopy encodeObject:self->_aceHost forKey:@"AFCompanionDeviceInfo::aceHost"];
+  [coderCopy encodeObject:self->_syncMetadata forKey:@"AFCompanionDeviceInfo::syncMetadata"];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_syncMetadataCapability];
-  [v9 encodeObject:v5 forKey:@"AFCompanionDeviceInfo::syncMetadataCapability"];
+  [coderCopy encodeObject:v5 forKey:@"AFCompanionDeviceInfo::syncMetadataCapability"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_peerToPeerHandoffCapability];
-  [v9 encodeObject:v6 forKey:@"AFCompanionDeviceInfo::peerToPeerHandoffCapability"];
+  [coderCopy encodeObject:v6 forKey:@"AFCompanionDeviceInfo::peerToPeerHandoffCapability"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_muxSupportCapability];
-  [v9 encodeObject:v7 forKey:@"AFCompanionDeviceInfo::muxSupportCapability"];
+  [coderCopy encodeObject:v7 forKey:@"AFCompanionDeviceInfo::muxSupportCapability"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_meDevice];
-  [v9 encodeObject:v8 forKey:@"AFCompanionDeviceInfo::meDevice"];
+  [coderCopy encodeObject:v8 forKey:@"AFCompanionDeviceInfo::meDevice"];
 
-  [v9 encodeObject:self->_siriLanguage forKey:@"AFCompanionDeviceInfo::siriLanguage"];
-  [v9 encodeObject:self->_companionName forKey:@"AFCompanionDeviceInfo::companionName"];
+  [coderCopy encodeObject:self->_siriLanguage forKey:@"AFCompanionDeviceInfo::siriLanguage"];
+  [coderCopy encodeObject:self->_companionName forKey:@"AFCompanionDeviceInfo::companionName"];
 }
 
-- (AFCompanionDeviceInfo)initWithCoder:(id)a3
+- (AFCompanionDeviceInfo)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v26 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::assistantID"];
-  v25 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::speechID"];
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::idsIdentifier"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::productPrefix"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::aceHost"];
+  coderCopy = coder;
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::assistantID"];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::speechID"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::idsIdentifier"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::productPrefix"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::aceHost"];
   v4 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
   v6 = objc_opt_class();
@@ -386,22 +386,22 @@
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = [v4 setWithObjects:{v5, v6, v7, v8, v9, v10, objc_opt_class(), 0}];
-  v12 = [v3 decodeObjectOfClasses:v11 forKey:@"AFCompanionDeviceInfo::syncMetadata"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"AFCompanionDeviceInfo::syncMetadata"];
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::syncMetadataCapability"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::syncMetadataCapability"];
   LOBYTE(v6) = [v13 BOOLValue];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::peerToPeerHandoffCapability"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::peerToPeerHandoffCapability"];
   LOBYTE(v7) = [v14 BOOLValue];
 
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::muxSupportCapability"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::muxSupportCapability"];
   LOBYTE(v4) = [v15 BOOLValue];
 
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::meDevice"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::meDevice"];
   LOBYTE(v9) = [v16 BOOLValue];
 
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::siriLanguage"];
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::companionName"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::siriLanguage"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFCompanionDeviceInfo::companionName"];
 
   BYTE3(v21) = v9;
   BYTE2(v21) = v4;
@@ -412,10 +412,10 @@
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v26 = 1;
   }
@@ -425,44 +425,44 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       syncMetadataCapability = self->_syncMetadataCapability;
       if (syncMetadataCapability == [(AFCompanionDeviceInfo *)v5 syncMetadataCapability]&& (peerToPeerHandoffCapability = self->_peerToPeerHandoffCapability, peerToPeerHandoffCapability == [(AFCompanionDeviceInfo *)v5 peerToPeerHandoffCapability]) && (muxSupportCapability = self->_muxSupportCapability, muxSupportCapability == [(AFCompanionDeviceInfo *)v5 muxSupportCapability]) && (meDevice = self->_meDevice, meDevice == [(AFCompanionDeviceInfo *)v5 meDevice]))
       {
-        v10 = [(AFCompanionDeviceInfo *)v5 assistantID];
+        assistantID = [(AFCompanionDeviceInfo *)v5 assistantID];
         assistantID = self->_assistantID;
-        if (assistantID == v10 || [(NSString *)assistantID isEqual:v10])
+        if (assistantID == assistantID || [(NSString *)assistantID isEqual:assistantID])
         {
-          v12 = [(AFCompanionDeviceInfo *)v5 speechID];
+          speechID = [(AFCompanionDeviceInfo *)v5 speechID];
           speechID = self->_speechID;
-          if (speechID == v12 || [(NSString *)speechID isEqual:v12])
+          if (speechID == speechID || [(NSString *)speechID isEqual:speechID])
           {
-            v14 = [(AFCompanionDeviceInfo *)v5 idsIdentifier];
+            idsIdentifier = [(AFCompanionDeviceInfo *)v5 idsIdentifier];
             idsIdentifier = self->_idsIdentifier;
-            if (idsIdentifier == v14 || [(NSString *)idsIdentifier isEqual:v14])
+            if (idsIdentifier == idsIdentifier || [(NSString *)idsIdentifier isEqual:idsIdentifier])
             {
-              v16 = [(AFCompanionDeviceInfo *)v5 productPrefix];
+              productPrefix = [(AFCompanionDeviceInfo *)v5 productPrefix];
               productPrefix = self->_productPrefix;
-              if (productPrefix == v16 || [(NSString *)productPrefix isEqual:v16])
+              if (productPrefix == productPrefix || [(NSString *)productPrefix isEqual:productPrefix])
               {
-                v18 = [(AFCompanionDeviceInfo *)v5 aceHost];
+                aceHost = [(AFCompanionDeviceInfo *)v5 aceHost];
                 aceHost = self->_aceHost;
-                if (aceHost == v18 || [(NSString *)aceHost isEqual:v18])
+                if (aceHost == aceHost || [(NSString *)aceHost isEqual:aceHost])
                 {
-                  v20 = [(AFCompanionDeviceInfo *)v5 syncMetadata];
+                  syncMetadata = [(AFCompanionDeviceInfo *)v5 syncMetadata];
                   syncMetadata = self->_syncMetadata;
-                  if (syncMetadata == v20 || [(NSDictionary *)syncMetadata isEqual:v20])
+                  if (syncMetadata == syncMetadata || [(NSDictionary *)syncMetadata isEqual:syncMetadata])
                   {
-                    v22 = [(AFCompanionDeviceInfo *)v5 siriLanguage];
+                    siriLanguage = [(AFCompanionDeviceInfo *)v5 siriLanguage];
                     siriLanguage = self->_siriLanguage;
-                    if (siriLanguage == v22 || [(NSString *)siriLanguage isEqual:v22])
+                    if (siriLanguage == siriLanguage || [(NSString *)siriLanguage isEqual:siriLanguage])
                     {
-                      v28 = v22;
-                      v24 = [(AFCompanionDeviceInfo *)v5 companionName];
+                      v28 = siriLanguage;
+                      companionName = [(AFCompanionDeviceInfo *)v5 companionName];
                       companionName = self->_companionName;
-                      v26 = companionName == v24 || [(NSString *)companionName isEqual:v24];
+                      v26 = companionName == companionName || [(NSString *)companionName isEqual:companionName];
 
-                      v22 = v28;
+                      siriLanguage = v28;
                     }
 
                     else
@@ -544,7 +544,7 @@
   return v17 ^ v18;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v13.receiver = self;
@@ -592,40 +592,40 @@
   return v11;
 }
 
-- (AFCompanionDeviceInfo)initWithAssistantID:(id)a3 speechID:(id)a4 idsIdentifier:(id)a5 productPrefix:(id)a6 aceHost:(id)a7 syncMetadata:(id)a8 syncMetadataCapability:(BOOL)a9 peerToPeerHandoffCapability:(BOOL)a10 muxSupportCapability:(BOOL)a11 meDevice:(BOOL)a12 siriLanguage:(id)a13 companionName:(id)a14
+- (AFCompanionDeviceInfo)initWithAssistantID:(id)d speechID:(id)iD idsIdentifier:(id)identifier productPrefix:(id)prefix aceHost:(id)host syncMetadata:(id)metadata syncMetadataCapability:(BOOL)capability peerToPeerHandoffCapability:(BOOL)self0 muxSupportCapability:(BOOL)self1 meDevice:(BOOL)self2 siriLanguage:(id)self3 companionName:(id)self4
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a13;
-  v26 = a14;
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  prefixCopy = prefix;
+  hostCopy = host;
+  metadataCopy = metadata;
+  languageCopy = language;
+  nameCopy = name;
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __211__AFCompanionDeviceInfo_initWithAssistantID_speechID_idsIdentifier_productPrefix_aceHost_syncMetadata_syncMetadataCapability_peerToPeerHandoffCapability_muxSupportCapability_meDevice_siriLanguage_companionName___block_invoke;
   v38[3] = &unk_1E7348448;
-  v39 = v19;
-  v40 = v20;
-  v41 = v21;
-  v42 = v22;
-  v43 = v23;
-  v44 = v24;
-  v47 = a9;
-  v48 = a10;
-  v49 = a11;
-  v50 = a12;
-  v45 = v25;
-  v46 = v26;
-  v27 = v26;
-  v28 = v25;
-  v29 = v24;
-  v30 = v23;
-  v31 = v22;
-  v32 = v21;
-  v33 = v20;
-  v34 = v19;
+  v39 = dCopy;
+  v40 = iDCopy;
+  v41 = identifierCopy;
+  v42 = prefixCopy;
+  v43 = hostCopy;
+  v44 = metadataCopy;
+  capabilityCopy = capability;
+  handoffCapabilityCopy = handoffCapability;
+  supportCapabilityCopy = supportCapability;
+  deviceCopy = device;
+  v45 = languageCopy;
+  v46 = nameCopy;
+  v27 = nameCopy;
+  v28 = languageCopy;
+  v29 = metadataCopy;
+  v30 = hostCopy;
+  v31 = prefixCopy;
+  v32 = identifierCopy;
+  v33 = iDCopy;
+  v34 = dCopy;
   v35 = [(AFCompanionDeviceInfo *)self initWithBuilder:v38];
 
   return v35;
@@ -649,46 +649,46 @@ void __211__AFCompanionDeviceInfo_initWithAssistantID_speechID_idsIdentifier_pro
   [v4 setCompanionName:*(a1 + 88)];
 }
 
-- (AFCompanionDeviceInfo)initWithBuilder:(id)a3
+- (AFCompanionDeviceInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v33.receiver = self;
   v33.super_class = AFCompanionDeviceInfo;
   v5 = [(AFCompanionDeviceInfo *)&v33 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFCompanionDeviceInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFCompanionDeviceInfoMutation *)v7 isDirty])
     {
-      v8 = [(_AFCompanionDeviceInfoMutation *)v7 getAssistantID];
-      v9 = [v8 copy];
+      getAssistantID = [(_AFCompanionDeviceInfoMutation *)v7 getAssistantID];
+      v9 = [getAssistantID copy];
       assistantID = v6->_assistantID;
       v6->_assistantID = v9;
 
-      v11 = [(_AFCompanionDeviceInfoMutation *)v7 getSpeechID];
-      v12 = [v11 copy];
+      getSpeechID = [(_AFCompanionDeviceInfoMutation *)v7 getSpeechID];
+      v12 = [getSpeechID copy];
       speechID = v6->_speechID;
       v6->_speechID = v12;
 
-      v14 = [(_AFCompanionDeviceInfoMutation *)v7 getIdsIdentifier];
-      v15 = [v14 copy];
+      getIdsIdentifier = [(_AFCompanionDeviceInfoMutation *)v7 getIdsIdentifier];
+      v15 = [getIdsIdentifier copy];
       idsIdentifier = v6->_idsIdentifier;
       v6->_idsIdentifier = v15;
 
-      v17 = [(_AFCompanionDeviceInfoMutation *)v7 getProductPrefix];
-      v18 = [v17 copy];
+      getProductPrefix = [(_AFCompanionDeviceInfoMutation *)v7 getProductPrefix];
+      v18 = [getProductPrefix copy];
       productPrefix = v6->_productPrefix;
       v6->_productPrefix = v18;
 
-      v20 = [(_AFCompanionDeviceInfoMutation *)v7 getAceHost];
-      v21 = [v20 copy];
+      getAceHost = [(_AFCompanionDeviceInfoMutation *)v7 getAceHost];
+      v21 = [getAceHost copy];
       aceHost = v6->_aceHost;
       v6->_aceHost = v21;
 
-      v23 = [(_AFCompanionDeviceInfoMutation *)v7 getSyncMetadata];
-      v24 = [v23 copy];
+      getSyncMetadata = [(_AFCompanionDeviceInfoMutation *)v7 getSyncMetadata];
+      v24 = [getSyncMetadata copy];
       syncMetadata = v6->_syncMetadata;
       v6->_syncMetadata = v24;
 
@@ -696,13 +696,13 @@ void __211__AFCompanionDeviceInfo_initWithAssistantID_speechID_idsIdentifier_pro
       v6->_peerToPeerHandoffCapability = [(_AFCompanionDeviceInfoMutation *)v7 getPeerToPeerHandoffCapability];
       v6->_muxSupportCapability = [(_AFCompanionDeviceInfoMutation *)v7 getMuxSupportCapability];
       v6->_meDevice = [(_AFCompanionDeviceInfoMutation *)v7 getMeDevice];
-      v26 = [(_AFCompanionDeviceInfoMutation *)v7 getSiriLanguage];
-      v27 = [v26 copy];
+      getSiriLanguage = [(_AFCompanionDeviceInfoMutation *)v7 getSiriLanguage];
+      v27 = [getSiriLanguage copy];
       siriLanguage = v6->_siriLanguage;
       v6->_siriLanguage = v27;
 
-      v29 = [(_AFCompanionDeviceInfoMutation *)v7 getCompanionName];
-      v30 = [v29 copy];
+      getCompanionName = [(_AFCompanionDeviceInfoMutation *)v7 getCompanionName];
+      v30 = [getCompanionName copy];
       companionName = v6->_companionName;
       v6->_companionName = v30;
     }
@@ -711,51 +711,51 @@ void __211__AFCompanionDeviceInfo_initWithAssistantID_speechID_idsIdentifier_pro
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFCompanionDeviceInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFCompanionDeviceInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFCompanionDeviceInfo);
-      v7 = [(_AFCompanionDeviceInfoMutation *)v5 getAssistantID];
-      v8 = [v7 copy];
+      getAssistantID = [(_AFCompanionDeviceInfoMutation *)v5 getAssistantID];
+      v8 = [getAssistantID copy];
       assistantID = v6->_assistantID;
       v6->_assistantID = v8;
 
-      v10 = [(_AFCompanionDeviceInfoMutation *)v5 getSpeechID];
-      v11 = [v10 copy];
+      getSpeechID = [(_AFCompanionDeviceInfoMutation *)v5 getSpeechID];
+      v11 = [getSpeechID copy];
       speechID = v6->_speechID;
       v6->_speechID = v11;
 
-      v13 = [(_AFCompanionDeviceInfoMutation *)v5 getIdsIdentifier];
-      v14 = [v13 copy];
+      getIdsIdentifier = [(_AFCompanionDeviceInfoMutation *)v5 getIdsIdentifier];
+      v14 = [getIdsIdentifier copy];
       idsIdentifier = v6->_idsIdentifier;
       v6->_idsIdentifier = v14;
 
-      v16 = [(_AFCompanionDeviceInfoMutation *)v5 getProductPrefix];
-      v17 = [v16 copy];
+      getProductPrefix = [(_AFCompanionDeviceInfoMutation *)v5 getProductPrefix];
+      v17 = [getProductPrefix copy];
       productPrefix = v6->_productPrefix;
       v6->_productPrefix = v17;
 
-      v19 = [(_AFCompanionDeviceInfoMutation *)v5 getAceHost];
-      v20 = [v19 copy];
+      getAceHost = [(_AFCompanionDeviceInfoMutation *)v5 getAceHost];
+      v20 = [getAceHost copy];
       aceHost = v6->_aceHost;
       v6->_aceHost = v20;
 
-      v22 = [(_AFCompanionDeviceInfoMutation *)v5 getSyncMetadata];
-      v23 = [v22 copy];
+      getSyncMetadata = [(_AFCompanionDeviceInfoMutation *)v5 getSyncMetadata];
+      v23 = [getSyncMetadata copy];
       syncMetadata = v6->_syncMetadata;
       v6->_syncMetadata = v23;
 
@@ -763,13 +763,13 @@ void __211__AFCompanionDeviceInfo_initWithAssistantID_speechID_idsIdentifier_pro
       v6->_peerToPeerHandoffCapability = [(_AFCompanionDeviceInfoMutation *)v5 getPeerToPeerHandoffCapability];
       v6->_muxSupportCapability = [(_AFCompanionDeviceInfoMutation *)v5 getMuxSupportCapability];
       v6->_meDevice = [(_AFCompanionDeviceInfoMutation *)v5 getMeDevice];
-      v25 = [(_AFCompanionDeviceInfoMutation *)v5 getSiriLanguage];
-      v26 = [v25 copy];
+      getSiriLanguage = [(_AFCompanionDeviceInfoMutation *)v5 getSiriLanguage];
+      v26 = [getSiriLanguage copy];
       siriLanguage = v6->_siriLanguage;
       v6->_siriLanguage = v26;
 
-      v28 = [(_AFCompanionDeviceInfoMutation *)v5 getCompanionName];
-      v29 = [v28 copy];
+      getCompanionName = [(_AFCompanionDeviceInfoMutation *)v5 getCompanionName];
+      v29 = [getCompanionName copy];
       companionName = v6->_companionName;
       v6->_companionName = v29;
     }

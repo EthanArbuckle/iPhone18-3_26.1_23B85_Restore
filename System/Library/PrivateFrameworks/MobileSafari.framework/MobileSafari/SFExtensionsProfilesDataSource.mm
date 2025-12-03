@@ -1,21 +1,21 @@
 @interface SFExtensionsProfilesDataSource
 - (NSDictionary)profileServerIDToContentBlockerManagers;
 - (NSDictionary)profileServerIDToWebExtensionsControllers;
-- (SFExtensionsProfilesDataSource)initWithTabGroupManager:(id)a3;
+- (SFExtensionsProfilesDataSource)initWithTabGroupManager:(id)manager;
 @end
 
 @implementation SFExtensionsProfilesDataSource
 
-- (SFExtensionsProfilesDataSource)initWithTabGroupManager:(id)a3
+- (SFExtensionsProfilesDataSource)initWithTabGroupManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = SFExtensionsProfilesDataSource;
   v6 = [(SFExtensionsProfilesDataSource *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tabGroupManager, a3);
+    objc_storeStrong(&v6->_tabGroupManager, manager);
     v8 = v7;
   }
 
@@ -28,9 +28,9 @@
   v37 = [SFExtensionsProfilesDataSource profileServerIDToWebExtensionsControllers]::extensionControllers;
   if (![SFExtensionsProfilesDataSource profileServerIDToWebExtensionsControllers]::extensionControllers)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v4 = [SFExtensionsProfilesDataSource profileServerIDToWebExtensionsControllers]::extensionControllers;
-    [SFExtensionsProfilesDataSource profileServerIDToWebExtensionsControllers]::extensionControllers = v3;
+    [SFExtensionsProfilesDataSource profileServerIDToWebExtensionsControllers]::extensionControllers = dictionary;
 
     v5 = [SFWebExtensionsController alloc];
     v6 = *MEMORY[0x1E69C8B58];
@@ -48,12 +48,12 @@
     [(SFWebExtensionsController *)v7 setProfileDelegate:sharedProfileDelegate];
     [-[SFExtensionsProfilesDataSource profileServerIDToWebExtensionsControllers]::extensionControllers setObject:v7 forKeyedSubscript:v6];
     [(WBSExtensionsController *)v7 findExtensions];
-    v11 = [MEMORY[0x1E69C9778] sharedManager];
-    [v11 addProvider:v7];
+    mEMORY[0x1E69C9778] = [MEMORY[0x1E69C9778] sharedManager];
+    [mEMORY[0x1E69C9778] addProvider:v7];
   }
 
-  v12 = [(WBTabGroupManager *)self->_tabGroupManager profiles];
-  v13 = [v12 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_11];
+  profiles = [(WBTabGroupManager *)self->_tabGroupManager profiles];
+  v13 = [profiles safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_11];
 
   v45 = 0u;
   v46 = 0u;
@@ -89,8 +89,8 @@
             }
 
             [v19 unloadAndDeleteStateForAllExtensions];
-            v21 = [MEMORY[0x1E69C9778] sharedManager];
-            [v21 removeProvider:v19];
+            mEMORY[0x1E69C9778]2 = [MEMORY[0x1E69C9778] sharedManager];
+            [mEMORY[0x1E69C9778]2 removeProvider:v19];
 
             [-[SFExtensionsProfilesDataSource profileServerIDToWebExtensionsControllers]::extensionControllers removeObjectForKey:v18];
             v14 = 1;
@@ -142,8 +142,8 @@
           [(SFWebExtensionsController *)v29 setProfileDelegate:v30];
           [-[SFExtensionsProfilesDataSource profileServerIDToWebExtensionsControllers]::extensionControllers setObject:v29 forKeyedSubscript:v26];
           [(WBSExtensionsController *)v29 findExtensions];
-          v33 = [MEMORY[0x1E69C9778] sharedManager];
-          [v33 addProvider:v29];
+          mEMORY[0x1E69C9778]3 = [MEMORY[0x1E69C9778] sharedManager];
+          [mEMORY[0x1E69C9778]3 addProvider:v29];
 
           v14 = 1;
         }
@@ -157,8 +157,8 @@
 
   if (((v37 != 0) & v14) == 1)
   {
-    v34 = [MEMORY[0x1E69C9778] sharedManager];
-    [v34 localExtensionStateDidChange];
+    mEMORY[0x1E69C9778]4 = [MEMORY[0x1E69C9778] sharedManager];
+    [mEMORY[0x1E69C9778]4 localExtensionStateDidChange];
   }
 
   v35 = [-[SFExtensionsProfilesDataSource profileServerIDToWebExtensionsControllers]::extensionControllers copy];
@@ -179,14 +179,14 @@ id __75__SFExtensionsProfilesDataSource_profileServerIDToWebExtensionsController
   v41 = [SFExtensionsProfilesDataSource profileServerIDToContentBlockerManagers]::contentBlockerManagers;
   if (![SFExtensionsProfilesDataSource profileServerIDToContentBlockerManagers]::contentBlockerManagers)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v4 = [SFExtensionsProfilesDataSource profileServerIDToContentBlockerManagers]::contentBlockerManagers;
-    [SFExtensionsProfilesDataSource profileServerIDToContentBlockerManagers]::contentBlockerManagers = v3;
+    [SFExtensionsProfilesDataSource profileServerIDToContentBlockerManagers]::contentBlockerManagers = dictionary;
 
     v5 = objc_alloc(getSFContentBlockerManagerClass());
-    v6 = [(SFExtensionsProfilesDataSource *)self profileServerIDToWebExtensionsControllers];
+    profileServerIDToWebExtensionsControllers = [(SFExtensionsProfilesDataSource *)self profileServerIDToWebExtensionsControllers];
     v7 = *MEMORY[0x1E69C8B58];
-    v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C8B58]];
+    v8 = [profileServerIDToWebExtensionsControllers objectForKeyedSubscript:*MEMORY[0x1E69C8B58]];
     v9 = [v5 initWithUserContentController:0 webExtensionsController:v8];
 
     sharedProfileDelegate = self->_sharedProfileDelegate;
@@ -201,12 +201,12 @@ id __75__SFExtensionsProfilesDataSource_profileServerIDToWebExtensionsController
 
     [v9 setDelegate:sharedProfileDelegate];
     [-[SFExtensionsProfilesDataSource profileServerIDToContentBlockerManagers]::contentBlockerManagers setObject:v9 forKeyedSubscript:v7];
-    v13 = [MEMORY[0x1E69C9778] sharedManager];
-    [v13 addProvider:v9];
+    mEMORY[0x1E69C9778] = [MEMORY[0x1E69C9778] sharedManager];
+    [mEMORY[0x1E69C9778] addProvider:v9];
   }
 
-  v14 = [(WBTabGroupManager *)self->_tabGroupManager profiles];
-  v15 = [v14 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_5_0];
+  profiles = [(WBTabGroupManager *)self->_tabGroupManager profiles];
+  v15 = [profiles safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_5_0];
 
   v50 = 0u;
   v51 = 0u;
@@ -242,8 +242,8 @@ id __75__SFExtensionsProfilesDataSource_profileServerIDToWebExtensionsController
             }
 
             [v21 unloadAndDeleteStateForAllExtensions];
-            v23 = [MEMORY[0x1E69C9778] sharedManager];
-            [v23 removeProvider:v21];
+            mEMORY[0x1E69C9778]2 = [MEMORY[0x1E69C9778] sharedManager];
+            [mEMORY[0x1E69C9778]2 removeProvider:v21];
 
             [-[SFExtensionsProfilesDataSource profileServerIDToContentBlockerManagers]::contentBlockerManagers removeObjectForKey:v20];
             v16 = 1;
@@ -282,8 +282,8 @@ id __75__SFExtensionsProfilesDataSource_profileServerIDToWebExtensionsController
         if (v29)
         {
           v30 = objc_alloc(getSFContentBlockerManagerClass());
-          v31 = [(SFExtensionsProfilesDataSource *)self profileServerIDToWebExtensionsControllers];
-          v32 = [v31 objectForKeyedSubscript:v27];
+          profileServerIDToWebExtensionsControllers2 = [(SFExtensionsProfilesDataSource *)self profileServerIDToWebExtensionsControllers];
+          v32 = [profileServerIDToWebExtensionsControllers2 objectForKeyedSubscript:v27];
           v33 = [v30 initWithUserContentController:0 webExtensionsController:v32];
 
           v34 = self->_sharedProfileDelegate;
@@ -298,8 +298,8 @@ id __75__SFExtensionsProfilesDataSource_profileServerIDToWebExtensionsController
 
           [v33 setDelegate:v34];
           [-[SFExtensionsProfilesDataSource profileServerIDToContentBlockerManagers]::contentBlockerManagers setObject:v33 forKeyedSubscript:v27];
-          v37 = [MEMORY[0x1E69C9778] sharedManager];
-          [v37 addProvider:v33];
+          mEMORY[0x1E69C9778]3 = [MEMORY[0x1E69C9778] sharedManager];
+          [mEMORY[0x1E69C9778]3 addProvider:v33];
 
           v16 = 1;
         }
@@ -313,8 +313,8 @@ id __75__SFExtensionsProfilesDataSource_profileServerIDToWebExtensionsController
 
   if (((v41 != 0) & v16) == 1)
   {
-    v38 = [MEMORY[0x1E69C9778] sharedManager];
-    [v38 localExtensionStateDidChange];
+    mEMORY[0x1E69C9778]4 = [MEMORY[0x1E69C9778] sharedManager];
+    [mEMORY[0x1E69C9778]4 localExtensionStateDidChange];
   }
 
   v39 = [-[SFExtensionsProfilesDataSource profileServerIDToContentBlockerManagers]::contentBlockerManagers copy];

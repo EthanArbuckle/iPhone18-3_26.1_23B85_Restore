@@ -2,7 +2,7 @@
 + (MIDINetworkHost)hostWithName:(NSString *)name address:(NSString *)address port:(NSUInteger)port;
 + (MIDINetworkHost)hostWithName:(NSString *)name netService:(NSNetService *)netService;
 + (MIDINetworkHost)hostWithName:(NSString *)name netServiceName:(NSString *)netServiceName netServiceDomain:(NSString *)netServiceDomain;
-+ (id)fromAddressAsText:(id)a3 withName:(id)a4;
++ (id)fromAddressAsText:(id)text withName:(id)name;
 - (BOOL)hasSameAddressAs:(MIDINetworkHost *)other;
 - (MIDINetworkHost)init;
 - (id)addressAsText;
@@ -68,33 +68,33 @@
 - (BOOL)hasSameAddressAs:(MIDINetworkHost *)other
 {
   v4 = other;
-  v5 = [(MIDINetworkHost *)self address];
+  address = [(MIDINetworkHost *)self address];
 
-  if (!v5)
+  if (!address)
   {
-    v11 = [(MIDINetworkHost *)self netServiceName];
+    netServiceName = [(MIDINetworkHost *)self netServiceName];
 
-    if (v11)
+    if (netServiceName)
     {
-      v7 = [(MIDINetworkHost *)v4 netServiceName];
-      if (!v7)
+      netServiceName2 = [(MIDINetworkHost *)v4 netServiceName];
+      if (!netServiceName2)
       {
         goto LABEL_13;
       }
 
-      v8 = [(MIDINetworkHost *)self netServiceDomain];
-      if (v8)
+      netServiceDomain = [(MIDINetworkHost *)self netServiceDomain];
+      if (netServiceDomain)
       {
-        v9 = [(MIDINetworkHost *)v4 netServiceDomain];
-        if (v9)
+        netServiceDomain2 = [(MIDINetworkHost *)v4 netServiceDomain];
+        if (netServiceDomain2)
         {
-          v12 = [(MIDINetworkHost *)self netServiceName];
-          v13 = [(MIDINetworkHost *)v4 netServiceName];
-          if ([v12 isEqualToString:v13])
+          netServiceName3 = [(MIDINetworkHost *)self netServiceName];
+          netServiceName4 = [(MIDINetworkHost *)v4 netServiceName];
+          if ([netServiceName3 isEqualToString:netServiceName4])
           {
-            v14 = [(MIDINetworkHost *)self netServiceDomain];
-            v15 = [(MIDINetworkHost *)v4 netServiceDomain];
-            v10 = [v14 isEqualToString:v15];
+            netServiceDomain3 = [(MIDINetworkHost *)self netServiceDomain];
+            netServiceDomain4 = [(MIDINetworkHost *)v4 netServiceDomain];
+            v10 = [netServiceDomain3 isEqualToString:netServiceDomain4];
           }
 
           else
@@ -116,15 +116,15 @@
 
     else
     {
-      v7 = [(MIDINetworkHost *)v4 address];
-      if (v7)
+      netServiceName2 = [(MIDINetworkHost *)v4 address];
+      if (netServiceName2)
       {
         goto LABEL_13;
       }
 
-      v8 = [(MIDINetworkHost *)v4 netServiceName];
-      v7 = 0;
-      v10 = v8 == 0;
+      netServiceDomain = [(MIDINetworkHost *)v4 netServiceName];
+      netServiceName2 = 0;
+      v10 = netServiceDomain == 0;
     }
 
 LABEL_20:
@@ -132,15 +132,15 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v6 = [(MIDINetworkHost *)v4 port];
-  if (v6 == [(MIDINetworkHost *)self port])
+  port = [(MIDINetworkHost *)v4 port];
+  if (port == [(MIDINetworkHost *)self port])
   {
-    v7 = [(MIDINetworkHost *)v4 address];
-    if (v7)
+    netServiceName2 = [(MIDINetworkHost *)v4 address];
+    if (netServiceName2)
     {
-      v8 = [(MIDINetworkHost *)self address];
-      v9 = [(MIDINetworkHost *)v4 address];
-      v10 = [v8 isEqualToString:v9];
+      netServiceDomain = [(MIDINetworkHost *)self address];
+      netServiceDomain2 = [(MIDINetworkHost *)v4 address];
+      v10 = [netServiceDomain isEqualToString:netServiceDomain2];
 LABEL_19:
 
       goto LABEL_20;
@@ -215,31 +215,31 @@ LABEL_22:
   return 0;
 }
 
-+ (id)fromAddressAsText:(id)a3 withName:(id)a4
++ (id)fromAddressAsText:(id)text withName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 UTF8String];
-  v8 = v7;
-  if (!v7)
+  textCopy = text;
+  nameCopy = name;
+  uTF8String = [textCopy UTF8String];
+  v8 = uTF8String;
+  if (!uTF8String)
   {
     v13 = 0;
     goto LABEL_8;
   }
 
-  if (*v7 == 9)
+  if (*uTF8String == 9)
   {
-    v9 = v7 + 1;
-    v10 = strchr(v7 + 1, 9);
+    v9 = uTF8String + 1;
+    v10 = strchr(uTF8String + 1, 9);
     v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v9 length:v10 - v9 encoding:4];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:v10 + 1];
-    v13 = [MIDINetworkHost hostWithName:v6 netServiceName:v11 netServiceDomain:v12];
+    v13 = [MIDINetworkHost hostWithName:nameCopy netServiceName:v11 netServiceDomain:v12];
   }
 
   else
   {
     v16 = 0;
-    v14 = strrchr(v7, 58);
+    v14 = strrchr(uTF8String, 58);
     v13 = v14;
     if (!v14)
     {
@@ -248,7 +248,7 @@ LABEL_22:
 
     sscanf(v14 + 1, "%u", &v16);
     v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v8 length:v13 - v8 encoding:4];
-    v13 = [MIDINetworkHost hostWithName:v6 address:v11 port:v16];
+    v13 = [MIDINetworkHost hostWithName:nameCopy address:v11 port:v16];
   }
 
 LABEL_8:
@@ -260,9 +260,9 @@ LABEL_8:
 {
   v5 = name;
   v6 = netService;
-  v7 = [(NSNetService *)v6 name];
-  v8 = [(NSNetService *)v6 domain];
-  v9 = [MIDINetworkHost hostWithName:v5 netServiceName:v7 netServiceDomain:v8];
+  name = [(NSNetService *)v6 name];
+  domain = [(NSNetService *)v6 domain];
+  v9 = [MIDINetworkHost hostWithName:v5 netServiceName:name netServiceDomain:domain];
 
   return v9;
 }

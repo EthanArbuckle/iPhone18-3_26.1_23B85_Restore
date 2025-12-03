@@ -2,7 +2,7 @@
 - (APGreenTeaLogger)init;
 - (void)dealloc;
 - (void)willAccessLocation;
-- (void)willTransmitLocationFor:(unint64_t)a3;
+- (void)willTransmitLocationFor:(unint64_t)for;
 @end
 
 @implementation APGreenTeaLogger
@@ -48,13 +48,13 @@
   }
 }
 
-- (void)willTransmitLocationFor:(unint64_t)a3
+- (void)willTransmitLocationFor:(unint64_t)for
 {
-  if (a3 <= 1)
+  if (for <= 1)
   {
-    if (a3)
+    if (for)
     {
-      if (a3 != 1)
+      if (for != 1)
       {
         return;
       }
@@ -105,7 +105,7 @@
     goto LABEL_26;
   }
 
-  if (a3 == 2)
+  if (for == 2)
   {
     [(APGreenTeaLogger *)self logger];
     v11 = getCTGreenTeaOsLogHandle();
@@ -127,7 +127,7 @@
     goto LABEL_26;
   }
 
-  if (a3 != 3)
+  if (for != 3)
   {
     return;
   }

@@ -1,14 +1,14 @@
 @interface AWDWiFiMetricsManagerOneStatsAssociationInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addChipCountersPerSlice:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addChipCountersPerSlice:(id)slice;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerOneStatsAssociationInfo
@@ -24,7 +24,7 @@
   [(AWDWiFiMetricsManagerOneStatsAssociationInfo *)&v3 dealloc];
 }
 
-- (void)addChipCountersPerSlice:(id)a3
+- (void)addChipCountersPerSlice:(id)slice
 {
   chipCountersPerSlices = self->_chipCountersPerSlices;
   if (!chipCountersPerSlices)
@@ -33,7 +33,7 @@
     self->_chipCountersPerSlices = chipCountersPerSlices;
   }
 
-  [(NSMutableArray *)chipCountersPerSlices addObject:a3];
+  [(NSMutableArray *)chipCountersPerSlices addObject:slice];
 }
 
 - (id)description
@@ -46,28 +46,28 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   chipCounters = self->_chipCounters;
   if (chipCounters)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerChipCounters dictionaryRepresentation](chipCounters forKey:{"dictionaryRepresentation"), @"chipCounters"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerChipCounters dictionaryRepresentation](chipCounters forKey:{"dictionaryRepresentation"), @"chipCounters"}];
   }
 
   btCoexStats = self->_btCoexStats;
   if (btCoexStats)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerBTCoexStats dictionaryRepresentation](btCoexStats forKey:{"dictionaryRepresentation"), @"btCoexStats"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerBTCoexStats dictionaryRepresentation](btCoexStats forKey:{"dictionaryRepresentation"), @"btCoexStats"}];
   }
 
   btCoexModeChange = self->_btCoexModeChange;
   if (btCoexModeChange)
   {
-    [v3 setObject:-[AWDWiFiMetricsManagerBTCoexModeChange dictionaryRepresentation](btCoexModeChange forKey:{"dictionaryRepresentation"), @"btCoexModeChange"}];
+    [dictionary setObject:-[AWDWiFiMetricsManagerBTCoexModeChange dictionaryRepresentation](btCoexModeChange forKey:{"dictionaryRepresentation"), @"btCoexModeChange"}];
   }
 
   if ([(NSMutableArray *)self->_chipCountersPerSlices count])
@@ -101,14 +101,14 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"chipCountersPerSlice"];
+    [dictionary setObject:v7 forKey:@"chipCountersPerSlice"];
   }
 
   v13 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -167,48 +167,48 @@
   v11 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 48) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 48) |= 1u;
   }
 
   if (self->_chipCounters)
   {
-    [a3 setChipCounters:?];
+    [to setChipCounters:?];
   }
 
   if (self->_btCoexStats)
   {
-    [a3 setBtCoexStats:?];
+    [to setBtCoexStats:?];
   }
 
   if (self->_btCoexModeChange)
   {
-    [a3 setBtCoexModeChange:?];
+    [to setBtCoexModeChange:?];
   }
 
   if ([(AWDWiFiMetricsManagerOneStatsAssociationInfo *)self chipCountersPerSlicesCount])
   {
-    [a3 clearChipCountersPerSlices];
-    v5 = [(AWDWiFiMetricsManagerOneStatsAssociationInfo *)self chipCountersPerSlicesCount];
-    if (v5)
+    [to clearChipCountersPerSlices];
+    chipCountersPerSlicesCount = [(AWDWiFiMetricsManagerOneStatsAssociationInfo *)self chipCountersPerSlicesCount];
+    if (chipCountersPerSlicesCount)
     {
-      v6 = v5;
+      v6 = chipCountersPerSlicesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addChipCountersPerSlice:{-[AWDWiFiMetricsManagerOneStatsAssociationInfo chipCountersPerSliceAtIndex:](self, "chipCountersPerSliceAtIndex:", i)}];
+        [to addChipCountersPerSlice:{-[AWDWiFiMetricsManagerOneStatsAssociationInfo chipCountersPerSliceAtIndex:](self, "chipCountersPerSliceAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -216,10 +216,10 @@
     *(v5 + 48) |= 1u;
   }
 
-  *(v6 + 32) = [(AWDWiFiMetricsManagerChipCounters *)self->_chipCounters copyWithZone:a3];
-  *(v6 + 24) = [(AWDWiFiMetricsManagerBTCoexStats *)self->_btCoexStats copyWithZone:a3];
+  *(v6 + 32) = [(AWDWiFiMetricsManagerChipCounters *)self->_chipCounters copyWithZone:zone];
+  *(v6 + 24) = [(AWDWiFiMetricsManagerBTCoexStats *)self->_btCoexStats copyWithZone:zone];
 
-  *(v6 + 16) = [(AWDWiFiMetricsManagerBTCoexModeChange *)self->_btCoexModeChange copyWithZone:a3];
+  *(v6 + 16) = [(AWDWiFiMetricsManagerBTCoexModeChange *)self->_btCoexModeChange copyWithZone:zone];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -240,7 +240,7 @@
           objc_enumerationMutation(chipCountersPerSlices);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addChipCountersPerSlice:v12];
 
         ++v11;
@@ -257,21 +257,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 48);
+    v6 = *(equal + 48);
     if (*&self->_has)
     {
-      if ((*(a3 + 48) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 48) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_15;
       }
     }
 
-    else if (*(a3 + 48))
+    else if (*(equal + 48))
     {
 LABEL_15:
       LOBYTE(v5) = 0;
@@ -279,16 +279,16 @@ LABEL_15:
     }
 
     chipCounters = self->_chipCounters;
-    if (!(chipCounters | *(a3 + 4)) || (v5 = [(AWDWiFiMetricsManagerChipCounters *)chipCounters isEqual:?]) != 0)
+    if (!(chipCounters | *(equal + 4)) || (v5 = [(AWDWiFiMetricsManagerChipCounters *)chipCounters isEqual:?]) != 0)
     {
       btCoexStats = self->_btCoexStats;
-      if (!(btCoexStats | *(a3 + 3)) || (v5 = [(AWDWiFiMetricsManagerBTCoexStats *)btCoexStats isEqual:?]) != 0)
+      if (!(btCoexStats | *(equal + 3)) || (v5 = [(AWDWiFiMetricsManagerBTCoexStats *)btCoexStats isEqual:?]) != 0)
       {
         btCoexModeChange = self->_btCoexModeChange;
-        if (!(btCoexModeChange | *(a3 + 2)) || (v5 = [(AWDWiFiMetricsManagerBTCoexModeChange *)btCoexModeChange isEqual:?]) != 0)
+        if (!(btCoexModeChange | *(equal + 2)) || (v5 = [(AWDWiFiMetricsManagerBTCoexModeChange *)btCoexModeChange isEqual:?]) != 0)
         {
           chipCountersPerSlices = self->_chipCountersPerSlices;
-          if (chipCountersPerSlices | *(a3 + 5))
+          if (chipCountersPerSlices | *(equal + 5))
           {
 
             LOBYTE(v5) = [(NSMutableArray *)chipCountersPerSlices isEqual:?];
@@ -324,17 +324,17 @@ LABEL_15:
   return v6 ^ [(NSMutableArray *)self->_chipCountersPerSlices hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v22 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 48))
+  if (*(from + 48))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
   chipCounters = self->_chipCounters;
-  v6 = *(a3 + 4);
+  v6 = *(from + 4);
   if (chipCounters)
   {
     if (v6)
@@ -349,7 +349,7 @@ LABEL_15:
   }
 
   btCoexStats = self->_btCoexStats;
-  v8 = *(a3 + 3);
+  v8 = *(from + 3);
   if (btCoexStats)
   {
     if (v8)
@@ -364,7 +364,7 @@ LABEL_15:
   }
 
   btCoexModeChange = self->_btCoexModeChange;
-  v10 = *(a3 + 2);
+  v10 = *(from + 2);
   if (btCoexModeChange)
   {
     if (v10)
@@ -382,7 +382,7 @@ LABEL_15:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = *(a3 + 5);
+  v11 = *(from + 5);
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {

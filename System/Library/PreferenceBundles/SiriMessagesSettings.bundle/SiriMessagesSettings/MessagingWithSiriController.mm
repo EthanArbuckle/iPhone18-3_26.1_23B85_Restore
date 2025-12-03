@@ -1,28 +1,28 @@
 @interface MessagingWithSiriController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (_TtC20SiriMessagesSettings27MessagingWithSiriController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)getMessageWithoutConfCarPlayEnabledWithSpecifier:(id)a3;
-- (id)getMessageWithoutConfEnabledWithSpecifier:(id)a3;
-- (id)getMessageWithoutConfHeadphonesEnabledWithSpecifier:(id)a3;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (_TtC20SiriMessagesSettings27MessagingWithSiriController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)getMessageWithoutConfCarPlayEnabledWithSpecifier:(id)specifier;
+- (id)getMessageWithoutConfEnabledWithSpecifier:(id)specifier;
+- (id)getMessageWithoutConfHeadphonesEnabledWithSpecifier:(id)specifier;
 - (id)specifiers;
 - (void)applicationWillSuspend;
-- (void)handleURL:(NSDictionary *)a3 withCompletion:(id)a4;
-- (void)logLongPressWithSpecifier:(id)a3;
-- (void)setMessageWithoutConfCarPlayEnabled:(id)a3 specifier:(id)a4;
-- (void)setMessageWithoutConfEnabled:(id)a3 specifier:(id)a4;
-- (void)setMessageWithoutConfHeadphonesEnabled:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)handleURL:(NSDictionary *)l withCompletion:(id)completion;
+- (void)logLongPressWithSpecifier:(id)specifier;
+- (void)setMessageWithoutConfCarPlayEnabled:(id)enabled specifier:(id)specifier;
+- (void)setMessageWithoutConfEnabled:(id)enabled specifier:(id)specifier;
+- (void)setMessageWithoutConfHeadphonesEnabled:(id)enabled specifier:(id)specifier;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MessagingWithSiriController
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1680();
   v4 = v3;
 
@@ -39,76 +39,76 @@
   return v5.super.isa;
 }
 
-- (void)setMessageWithoutConfEnabled:(id)a3 specifier:(id)a4
+- (void)setMessageWithoutConfEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  selfCopy = self;
   sub_1A5C();
 }
 
-- (id)getMessageWithoutConfEnabledWithSpecifier:(id)a3
+- (id)getMessageWithoutConfEnabledWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = self;
+  specifierCopy = specifier;
+  selfCopy = self;
   v6.super.super.isa = sub_1EA0().super.super.isa;
 
   return v6.super.super.isa;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1FD4(a3);
+  selfCopy = self;
+  sub_1FD4(disappear);
 }
 
 - (void)applicationWillSuspend
 {
-  v2 = self;
+  selfCopy = self;
   sub_2080();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2110(a3);
+  selfCopy = self;
+  sub_2110(appear);
 }
 
-- (void)setMessageWithoutConfHeadphonesEnabled:(id)a3 specifier:(id)a4
+- (void)setMessageWithoutConfHeadphonesEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = self;
-  sub_27DC(v6, v8);
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_27DC(enabledCopy, v8);
 }
 
-- (id)getMessageWithoutConfHeadphonesEnabledWithSpecifier:(id)a3
+- (id)getMessageWithoutConfHeadphonesEnabledWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = self;
-  v6.super.super.isa = sub_2868(v5).super.super.isa;
+  specifierCopy = specifier;
+  selfCopy = self;
+  v6.super.super.isa = sub_2868(selfCopy).super.super.isa;
 
   return v6.super.super.isa;
 }
 
-- (void)setMessageWithoutConfCarPlayEnabled:(id)a3 specifier:(id)a4
+- (void)setMessageWithoutConfCarPlayEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = self;
-  sub_28D8(v6, v8);
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_28D8(enabledCopy, v8);
 }
 
-- (id)getMessageWithoutConfCarPlayEnabledWithSpecifier:(id)a3
+- (id)getMessageWithoutConfCarPlayEnabledWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = self;
-  v6.super.super.isa = sub_2B0C(v5).super.super.isa;
+  specifierCopy = specifier;
+  selfCopy = self;
+  v6.super.super.isa = sub_2B0C(selfCopy).super.super.isa;
 
   return v6.super.super.isa;
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8 = sub_21CC4();
   v9 = *(v8 - 8);
@@ -116,28 +116,28 @@
   __chkstk_darwin();
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21CB4();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
-  sub_46C4(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_46C4(viewCopy);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)handleURL:(NSDictionary *)a3 withCompletion:(id)a4
+- (void)handleURL:(NSDictionary *)l withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = l;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  lCopy = l;
+  selfCopy = self;
 
   sub_597C(&unk_22CA0, v7);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_21CC4();
   v7 = *(v6 - 8);
@@ -145,14 +145,14 @@
   __chkstk_darwin(v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21CB4();
-  v11 = a3;
-  v12 = self;
-  sub_5A8C(v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_5A8C(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v8 = sub_21CC4();
   v9 = *(v8 - 8);
@@ -160,14 +160,14 @@
   __chkstk_darwin(v8);
   v12 = &v15 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21CB4();
-  v13 = a3;
-  v14 = self;
-  sub_6190(v13, a4, v12);
+  viewCopy = view;
+  selfCopy = self;
+  sub_6190(viewCopy, style, v12);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
   v6 = sub_21CC4();
   v7 = *(v6 - 8);
@@ -175,24 +175,24 @@
   __chkstk_darwin(v6);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21CB4();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = sub_6F6C();
 
   (*(v7 + 8))(v10, v6);
   return self & 1;
 }
 
-- (void)logLongPressWithSpecifier:(id)a3
+- (void)logLongPressWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = self;
+  specifierCopy = specifier;
+  selfCopy = self;
   sub_7374();
 }
 
-- (_TtC20SiriMessagesSettings27MessagingWithSiriController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20SiriMessagesSettings27MessagingWithSiriController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_21EF4();
     v7 = v6;
@@ -204,8 +204,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_7A60(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_7A60(v5, v7, bundle);
 }
 
 @end

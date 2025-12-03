@@ -4,25 +4,25 @@
 - (int)_maximumNumberOfLoadingAttempts;
 - (uint64_t)fetch;
 - (void)_invalidateWorkspaceObservation;
-- (void)activeConfigurationDidUpdate:(id)a3;
+- (void)activeConfigurationDidUpdate:(id)update;
 - (void)dealloc;
 - (void)fetch;
 - (void)invalidate;
-- (void)posterWorkspace:(id)a3 didAddInstance:(id)a4;
-- (void)posterWorkspace:(id)a3 didUpdateInstance:(id)a4;
-- (void)snapshotFromWorkSpace:(id)a3;
-- (void)textureFromSceneSnapshot:(id)a3 orientation:(int64_t)a4;
+- (void)posterWorkspace:(id)workspace didAddInstance:(id)instance;
+- (void)posterWorkspace:(id)workspace didUpdateInstance:(id)instance;
+- (void)snapshotFromWorkSpace:(id)space;
+- (void)textureFromSceneSnapshot:(id)snapshot orientation:(int64_t)orientation;
 @end
 
 @implementation SASWallpaperWorkspaceSnapshotFetcher
 
 - (void)dealloc
 {
-  v3 = [(SASWallpaperWorkspaceSnapshotFetcher *)self observer];
-  [v3 invalidate];
+  observer = [(SASWallpaperWorkspaceSnapshotFetcher *)self observer];
+  [observer invalidate];
 
-  v4 = [(SASWallpaperWorkspaceSnapshotFetcher *)self workspace];
-  [v4 removeWorkspaceObserver:self];
+  workspace = [(SASWallpaperWorkspaceSnapshotFetcher *)self workspace];
+  [workspace removeWorkspaceObserver:self];
 
   v5.receiver = self;
   v5.super_class = SASWallpaperWorkspaceSnapshotFetcher;
@@ -31,9 +31,9 @@
 
 - (void)fetch
 {
-  v3 = [(SASWallpaperWorkspaceSnapshotFetcher *)self stateObserver];
+  stateObserver = [(SASWallpaperWorkspaceSnapshotFetcher *)self stateObserver];
 
-  if (v3)
+  if (stateObserver)
   {
     [(SASWallpaperWorkspaceSnapshotFetcher *)self _invalidateWorkspaceObservation];
   }
@@ -59,8 +59,8 @@
   v6 = objc_alloc_init(v4);
   [(SASWallpaperWorkspaceSnapshotFetcher *)self setStateObserver:v6];
 
-  v7 = [(SASWallpaperWorkspaceSnapshotFetcher *)self variant];
-  switch(v7)
+  variant = [(SASWallpaperWorkspaceSnapshotFetcher *)self variant];
+  switch(variant)
   {
     case 0:
       v9 = 4;
@@ -68,8 +68,8 @@
     case 1:
       v9 = 12;
 LABEL_11:
-      v10 = [(SASWallpaperWorkspaceSnapshotFetcher *)self stateObserver];
-      [v10 setLocations:v9];
+      stateObserver2 = [(SASWallpaperWorkspaceSnapshotFetcher *)self stateObserver];
+      [stateObserver2 setLocations:v9];
 
       break;
     case -1:
@@ -117,18 +117,18 @@ LABEL_11:
   _Block_object_dispose(&v41, 8);
   if (!v13)
   {
-    v29 = [SASWallpaperWorkspaceSnapshotFetcher fetch];
+    fetch = [SASWallpaperWorkspaceSnapshotFetcher fetch];
     _Block_object_dispose(&v41, 8);
     objc_destroyWeak(&v45);
     objc_destroyWeak(&location);
-    _Unwind_Resume(v29);
+    _Unwind_Resume(fetch);
   }
 
   v16 = [v11 workspaceForRole:*v13];
   [(SASWallpaperWorkspaceSnapshotFetcher *)self setWorkspace:v16];
 
-  v17 = [(SASWallpaperWorkspaceSnapshotFetcher *)self workspace];
-  [v17 addWorkspaceObserver:self];
+  workspace = [(SASWallpaperWorkspaceSnapshotFetcher *)self workspace];
+  [workspace addWorkspaceObserver:self];
 
   objc_initWeak(&location, self);
   v18 = +[SASUILogging bookendFacility];
@@ -138,13 +138,13 @@ LABEL_11:
     _os_log_impl(&dword_265A4C000, v18, OS_LOG_TYPE_DEFAULT, "WorkspaceSnapshotFetcher: Fetching wallpaper", buf, 2u);
   }
 
-  v19 = [(SASWallpaperWorkspaceSnapshotFetcher *)self stateObserver];
+  stateObserver3 = [(SASWallpaperWorkspaceSnapshotFetcher *)self stateObserver];
   v30 = MEMORY[0x277D85DD0];
   v31 = 3221225472;
   v32 = __45__SASWallpaperWorkspaceSnapshotFetcher_fetch__block_invoke;
   v33 = &unk_279BB29F0;
   objc_copyWeak(&v34, &location);
-  [v19 setHandler:&v30];
+  [stateObserver3 setHandler:&v30];
 
   v41 = 0;
   v42 = &v41;
@@ -168,8 +168,8 @@ LABEL_11:
   v23 = [(SASWallpaperWorkspaceSnapshotFetcher *)self stateObserver:v30];
   [v22 setLocationStateObserver:v23];
 
-  v24 = [(SASWallpaperWorkspaceSnapshotFetcher *)self queue];
-  [v22 setQueue:v24];
+  queue = [(SASWallpaperWorkspaceSnapshotFetcher *)self queue];
+  [v22 setQueue:queue];
 
   v41 = 0;
   v42 = &v41;
@@ -192,8 +192,8 @@ LABEL_11:
   v27 = [[v25 alloc] initWithExplanation:@"Loading bookends"];
   [(SASWallpaperWorkspaceSnapshotFetcher *)self setObserver:v27];
 
-  v28 = [(SASWallpaperWorkspaceSnapshotFetcher *)self observer];
-  [v28 activateWithConfiguration:v22];
+  observer = [(SASWallpaperWorkspaceSnapshotFetcher *)self observer];
+  [observer activateWithConfiguration:v22];
 
   objc_destroyWeak(&v34);
   objc_destroyWeak(&location);
@@ -259,16 +259,16 @@ LABEL_6:
   [(SASWallpaperWorkspaceSnapshotFetcher *)self _invalidateWorkspaceObservation];
 }
 
-- (void)activeConfigurationDidUpdate:(id)a3
+- (void)activeConfigurationDidUpdate:(id)update
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SASWallpaperWorkspaceSnapshotFetcher *)self currentPosterConfiguration];
+  updateCopy = update;
+  currentPosterConfiguration = [(SASWallpaperWorkspaceSnapshotFetcher *)self currentPosterConfiguration];
 
-  if (v5 == v4)
+  if (currentPosterConfiguration == updateCopy)
   {
-    v6 = [(SASWallpaperWorkspaceSnapshotFetcher *)self workspace];
-    v7 = [v6 workspaceForPoster:v4];
+    workspace = [(SASWallpaperWorkspaceSnapshotFetcher *)self workspace];
+    v7 = [workspace workspaceForPoster:updateCopy];
 
     v8 = +[SASUILogging bookendFacility];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -285,9 +285,9 @@ LABEL_6:
   }
 }
 
-- (void)posterWorkspace:(id)a3 didAddInstance:(id)a4
+- (void)posterWorkspace:(id)workspace didAddInstance:(id)instance
 {
-  v5 = a4;
+  instanceCopy = instance;
   v6 = +[SASUILogging bookendFacility];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -295,9 +295,9 @@ LABEL_6:
     _os_log_impl(&dword_265A4C000, v6, OS_LOG_TYPE_DEFAULT, "WorkspaceSnapshotFetcher: didAddInstance called", buf, 2u);
   }
 
-  v7 = [v5 poster];
-  v8 = [(SASWallpaperWorkspaceSnapshotFetcher *)self currentPosterConfiguration];
-  v9 = [v7 isEqual:v8];
+  poster = [instanceCopy poster];
+  currentPosterConfiguration = [(SASWallpaperWorkspaceSnapshotFetcher *)self currentPosterConfiguration];
+  v9 = [poster isEqual:currentPosterConfiguration];
 
   if (v9)
   {
@@ -308,13 +308,13 @@ LABEL_6:
       _os_log_impl(&dword_265A4C000, v10, OS_LOG_TYPE_DEFAULT, "WorkspaceSnapshotFetcher: didAddInstance current configuration", v11, 2u);
     }
 
-    [(SASWallpaperWorkspaceSnapshotFetcher *)self snapshotFromWorkSpace:v5];
+    [(SASWallpaperWorkspaceSnapshotFetcher *)self snapshotFromWorkSpace:instanceCopy];
   }
 }
 
-- (void)posterWorkspace:(id)a3 didUpdateInstance:(id)a4
+- (void)posterWorkspace:(id)workspace didUpdateInstance:(id)instance
 {
-  v5 = a4;
+  instanceCopy = instance;
   v6 = +[SASUILogging bookendFacility];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -322,9 +322,9 @@ LABEL_6:
     _os_log_impl(&dword_265A4C000, v6, OS_LOG_TYPE_DEFAULT, "WorkspaceSnapshotFetcher: didUpdateInstance called", buf, 2u);
   }
 
-  v7 = [v5 poster];
-  v8 = [(SASWallpaperWorkspaceSnapshotFetcher *)self currentPosterConfiguration];
-  v9 = [v7 isEqual:v8];
+  poster = [instanceCopy poster];
+  currentPosterConfiguration = [(SASWallpaperWorkspaceSnapshotFetcher *)self currentPosterConfiguration];
+  v9 = [poster isEqual:currentPosterConfiguration];
 
   if (v9)
   {
@@ -335,15 +335,15 @@ LABEL_6:
       _os_log_impl(&dword_265A4C000, v10, OS_LOG_TYPE_DEFAULT, "WorkspaceSnapshotFetcher: didUpdateInstance current configuration", v11, 2u);
     }
 
-    [(SASWallpaperWorkspaceSnapshotFetcher *)self snapshotFromWorkSpace:v5];
+    [(SASWallpaperWorkspaceSnapshotFetcher *)self snapshotFromWorkSpace:instanceCopy];
   }
 }
 
-- (void)snapshotFromWorkSpace:(id)a3
+- (void)snapshotFromWorkSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(SASWallpaperWorkspaceSnapshotFetcher *)self currentPosterConfiguration];
-  objc_initWeak(&location, v5);
+  spaceCopy = space;
+  currentPosterConfiguration = [(SASWallpaperWorkspaceSnapshotFetcher *)self currentPosterConfiguration];
+  objc_initWeak(&location, currentPosterConfiguration);
 
   v6 = +[SASUILogging bookendFacility];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -358,10 +358,10 @@ LABEL_6:
   v8[2] = __62__SASWallpaperWorkspaceSnapshotFetcher_snapshotFromWorkSpace___block_invoke;
   v8[3] = &unk_279BB2A68;
   objc_copyWeak(&v11, &buf);
-  v9 = v4;
-  v7 = v4;
+  v9 = spaceCopy;
+  v7 = spaceCopy;
   objc_copyWeak(&v12, &location);
-  v10 = self;
+  selfCopy = self;
   dispatch_async(MEMORY[0x277D85CD0], v8);
   objc_destroyWeak(&v12);
 
@@ -489,23 +489,23 @@ LABEL_7:
   }
 }
 
-- (void)textureFromSceneSnapshot:(id)a3 orientation:(int64_t)a4
+- (void)textureFromSceneSnapshot:(id)snapshot orientation:(int64_t)orientation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  snapshotCopy = snapshot;
   v7 = +[SASUILogging bookendFacility];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v17 = a4;
+    orientationCopy = orientation;
     _os_log_impl(&dword_265A4C000, v7, OS_LOG_TYPE_DEFAULT, "WorkspaceSnapshotFetcher: textureFromSnapshot called with orientation: %ld", buf, 0xCu);
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = [v6 IOSurface];
-  v10 = [objc_alloc(MEMORY[0x277D755B8]) _initWithIOSurface:v9 scale:__UIImageOrientationForImageCapturedInInterfaceOrientationToBeDisplayedInInterfaceOrientation() orientation:1.0];
+  iOSurface = [snapshotCopy IOSurface];
+  v10 = [objc_alloc(MEMORY[0x277D755B8]) _initWithIOSurface:iOSurface scale:__UIImageOrientationForImageCapturedInInterfaceOrientationToBeDisplayedInInterfaceOrientation() orientation:1.0];
   objc_initWeak(buf, self);
-  v11 = [(SASWallpaperWorkspaceSnapshotFetcher *)self queue];
+  queue = [(SASWallpaperWorkspaceSnapshotFetcher *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__SASWallpaperWorkspaceSnapshotFetcher_textureFromSceneSnapshot_orientation___block_invoke;
@@ -513,7 +513,7 @@ LABEL_7:
   objc_copyWeak(&v15, buf);
   v14 = v10;
   v12 = v10;
-  dispatch_async(v11, v13);
+  dispatch_async(queue, v13);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
@@ -536,12 +536,12 @@ void __77__SASWallpaperWorkspaceSnapshotFetcher_textureFromSceneSnapshot_orienta
 
 - (void)_invalidateWorkspaceObservation
 {
-  v3 = [(SASWallpaperWorkspaceSnapshotFetcher *)self observer];
-  [v3 invalidate];
+  observer = [(SASWallpaperWorkspaceSnapshotFetcher *)self observer];
+  [observer invalidate];
 
   [(SASWallpaperWorkspaceSnapshotFetcher *)self setObserver:0];
-  v4 = [(SASWallpaperWorkspaceSnapshotFetcher *)self workspace];
-  [v4 removeWorkspaceObserver:self];
+  workspace = [(SASWallpaperWorkspaceSnapshotFetcher *)self workspace];
+  [workspace removeWorkspaceObserver:self];
 
   [(SASWallpaperWorkspaceSnapshotFetcher *)self setWorkspace:0];
   [(SASWallpaperWorkspaceSnapshotFetcher *)self setStateObserver:0];
@@ -575,15 +575,15 @@ void __77__SASWallpaperWorkspaceSnapshotFetcher_textureFromSceneSnapshot_orienta
 
   if (v3)
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 5;
+    intValue = 5;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (SASFetchesWallpaperDelegate)delegate

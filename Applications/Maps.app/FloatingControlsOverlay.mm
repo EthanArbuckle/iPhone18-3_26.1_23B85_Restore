@@ -9,49 +9,49 @@
 - (VenuesManager)venuesManager;
 - (double)alpha;
 - (id)view;
-- (void)_installInContentView:(id)a3 layoutGuide:(id)a4;
-- (void)_setupViewportConstraintsInHost:(id)a3;
+- (void)_installInContentView:(id)view layoutGuide:(id)guide;
+- (void)_setupViewportConstraintsInHost:(id)host;
 - (void)createRadar;
 - (void)didUpdateMapInsets;
-- (void)enterPedestrianAR:(id)a3;
+- (void)enterPedestrianAR:(id)r;
 - (void)exit3dMode;
-- (void)hideControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4;
+- (void)hideControlsIfNeeded:(int64_t)needed animated:(BOOL)animated;
 - (void)openUserProfile;
 - (void)refreshControls;
 - (void)refreshCurrentSearch;
 - (void)select3dMode;
-- (void)setAlpha:(double)a3;
-- (void)setAutomaticallyUpdateCompassInsets:(BOOL)a3;
-- (void)setBlurGroupName:(id)a3;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHost:(id)a3;
-- (void)setMapViewProvider:(id)a3;
-- (void)setMargin:(double)a3;
-- (void)setSearchHereFloatingControlBottomPadding:(double)a3;
-- (void)setSearchSession:(id)a3;
-- (void)showControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4;
-- (void)showRedoSearchOverlay:(BOOL)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setAutomaticallyUpdateCompassInsets:(BOOL)insets;
+- (void)setBlurGroupName:(id)name;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setHost:(id)host;
+- (void)setMapViewProvider:(id)provider;
+- (void)setMargin:(double)margin;
+- (void)setSearchHereFloatingControlBottomPadding:(double)padding;
+- (void)setSearchSession:(id)session;
+- (void)showControlsIfNeeded:(int64_t)needed animated:(BOOL)animated;
+- (void)showRedoSearchOverlay:(BOOL)overlay;
 - (void)toggleRoutePlanning;
 - (void)toggleSSAO;
-- (void)viewControllerOpenSettings:(id)a3;
+- (void)viewControllerOpenSettings:(id)settings;
 @end
 
 @implementation FloatingControlsOverlay
 
 - (id)view
 {
-  v2 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  v3 = [v2 view];
+  floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  view = [floatingControlsViewController view];
 
-  return v3;
+  return view;
 }
 
 - (VenuesManager)venuesManager
 {
-  v3 = [(FloatingControlsOverlay *)self delegate];
+  delegate = [(FloatingControlsOverlay *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 venuesManagerForFloatingControlsOverlay:self];
+    v4 = [delegate venuesManagerForFloatingControlsOverlay:self];
   }
 
   else
@@ -78,8 +78,8 @@
 
 - (void)didUpdateMapInsets
 {
-  v2 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  [v2 updateCompassInsets];
+  floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  [floatingControlsViewController updateCompassInsets];
 }
 
 - (ChromeOverlayHosting)host
@@ -98,179 +98,179 @@
 
 - (void)toggleRoutePlanning
 {
-  v3 = [(FloatingControlsOverlay *)self delegate];
+  delegate = [(FloatingControlsOverlay *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 floatingControlsOverlayDidTapDirections:self];
+    [delegate floatingControlsOverlayDidTapDirections:self];
   }
 }
 
 - (void)createRadar
 {
-  v3 = [(FloatingControlsOverlay *)self delegate];
+  delegate = [(FloatingControlsOverlay *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 floatingControlsOverlayDidTapTTRButton:self];
+    [delegate floatingControlsOverlayDidTapTTRButton:self];
   }
 }
 
-- (void)enterPedestrianAR:(id)a3
+- (void)enterPedestrianAR:(id)r
 {
-  v5 = a3;
-  v4 = [(FloatingControlsOverlay *)self delegate];
+  rCopy = r;
+  delegate = [(FloatingControlsOverlay *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 floatingControlsOverlay:self didTapEnterPedestrianARFromButton:v5];
+    [delegate floatingControlsOverlay:self didTapEnterPedestrianARFromButton:rCopy];
     [GEOAPPortal captureUserAction:126 target:302 value:0];
   }
 }
 
-- (void)setSearchHereFloatingControlBottomPadding:(double)a3
+- (void)setSearchHereFloatingControlBottomPadding:(double)padding
 {
-  v4 = [(FloatingControlsOverlay *)self delegate];
+  delegate = [(FloatingControlsOverlay *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setSearchHereFloatingControlBottomPadding:a3];
+    [delegate setSearchHereFloatingControlBottomPadding:padding];
   }
 }
 
-- (void)showRedoSearchOverlay:(BOOL)a3
+- (void)showRedoSearchOverlay:(BOOL)overlay
 {
-  v3 = a3;
-  v4 = [(FloatingControlsOverlay *)self delegate];
+  overlayCopy = overlay;
+  delegate = [(FloatingControlsOverlay *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 showRedoSearchOverlay:v3];
+    [delegate showRedoSearchOverlay:overlayCopy];
   }
 }
 
 - (BOOL)shouldShowSearchOverlay
 {
-  v2 = [(FloatingControlsOverlay *)self delegate];
+  delegate = [(FloatingControlsOverlay *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 shouldShowSearchOverlay];
+    shouldShowSearchOverlay = [delegate shouldShowSearchOverlay];
   }
 
   else
   {
-    v3 = 0;
+    shouldShowSearchOverlay = 0;
   }
 
-  return v3;
+  return shouldShowSearchOverlay;
 }
 
 - (void)refreshCurrentSearch
 {
-  v3 = [(FloatingControlsOverlay *)self delegate];
+  delegate = [(FloatingControlsOverlay *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 floatingControlsOverlayDidTapRefreshCurrentSearch:self];
+    [delegate floatingControlsOverlayDidTapRefreshCurrentSearch:self];
   }
 }
 
-- (void)viewControllerOpenSettings:(id)a3
+- (void)viewControllerOpenSettings:(id)settings
 {
-  v4 = [(FloatingControlsOverlay *)self delegate];
+  delegate = [(FloatingControlsOverlay *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 floatingControlsOverlayDidTapOpenSettings:self];
+    [delegate floatingControlsOverlayDidTapOpenSettings:self];
   }
 }
 
 - (void)exit3dMode
 {
-  v3 = [(FloatingControlsOverlay *)self delegate];
+  delegate = [(FloatingControlsOverlay *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 floatingControlsOverlayDidTapExit3DMode:self];
+    [delegate floatingControlsOverlayDidTapExit3DMode:self];
   }
 }
 
 - (void)select3dMode
 {
-  v3 = [(FloatingControlsOverlay *)self delegate];
+  delegate = [(FloatingControlsOverlay *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 floatingControlsOverlayDidTapEnter3DMode:self];
+    [delegate floatingControlsOverlayDidTapEnter3DMode:self];
   }
 }
 
 - (void)openUserProfile
 {
-  v3 = [(FloatingControlsOverlay *)self delegate];
+  delegate = [(FloatingControlsOverlay *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 floatingControlsOverlayDidTapOpenUserProfile:self];
+    [delegate floatingControlsOverlayDidTapOpenUserProfile:self];
   }
 }
 
-- (void)setAutomaticallyUpdateCompassInsets:(BOOL)a3
+- (void)setAutomaticallyUpdateCompassInsets:(BOOL)insets
 {
-  v3 = a3;
-  v4 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  [v4 setAutomaticallyUpdateCompassInsets:v3];
+  insetsCopy = insets;
+  floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  [floatingControlsViewController setAutomaticallyUpdateCompassInsets:insetsCopy];
 }
 
 - (BOOL)automaticallyUpdateCompassInsets
 {
-  v2 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  v3 = [v2 automaticallyUpdateCompassInsets];
+  floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  automaticallyUpdateCompassInsets = [floatingControlsViewController automaticallyUpdateCompassInsets];
 
-  return v3;
+  return automaticallyUpdateCompassInsets;
 }
 
-- (void)setSearchSession:(id)a3
+- (void)setSearchSession:(id)session
 {
-  v4 = a3;
-  v5 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  [v5 setSearchSession:v4];
+  sessionCopy = session;
+  floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  [floatingControlsViewController setSearchSession:sessionCopy];
 }
 
 - (void)refreshControls
 {
-  v2 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  [v2 refreshControls];
+  floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  [floatingControlsViewController refreshControls];
 }
 
-- (void)hideControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4
+- (void)hideControlsIfNeeded:(int64_t)needed animated:(BOOL)animated
 {
-  v4 = a4;
-  if ((a3 & 0x40) != 0)
+  animatedCopy = animated;
+  if ((needed & 0x40) != 0)
   {
-    v7 = [(FloatingControlsOverlay *)self venuesManager];
-    v8 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-    [v7 removeChangeObserver:v8];
+    venuesManager = [(FloatingControlsOverlay *)self venuesManager];
+    floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+    [venuesManager removeChangeObserver:floatingControlsViewController];
   }
 
-  v9 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  [v9 hideControlsIfNeeded:a3 animated:v4];
+  floatingControlsViewController2 = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  [floatingControlsViewController2 hideControlsIfNeeded:needed animated:animatedCopy];
 }
 
-- (void)showControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4
+- (void)showControlsIfNeeded:(int64_t)needed animated:(BOOL)animated
 {
-  v4 = a4;
-  if ((a3 & 0x40) != 0)
+  animatedCopy = animated;
+  if ((needed & 0x40) != 0)
   {
-    v7 = [(FloatingControlsOverlay *)self venuesManager];
-    v8 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-    [v7 addChangeObserver:v8];
+    venuesManager = [(FloatingControlsOverlay *)self venuesManager];
+    floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+    [venuesManager addChangeObserver:floatingControlsViewController];
 
-    v9 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-    v10 = [(FloatingControlsOverlay *)self venuesManager];
-    v11 = [v10 venueWithFocus];
-    [v9 didChangeFocusedVenue:v11];
+    floatingControlsViewController2 = [(FloatingControlsOverlay *)self floatingControlsViewController];
+    venuesManager2 = [(FloatingControlsOverlay *)self venuesManager];
+    venueWithFocus = [venuesManager2 venueWithFocus];
+    [floatingControlsViewController2 didChangeFocusedVenue:venueWithFocus];
   }
 
-  v12 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  [v12 showControlsIfNeeded:a3 animated:v4];
+  floatingControlsViewController3 = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  [floatingControlsViewController3 showControlsIfNeeded:needed animated:animatedCopy];
 }
 
-- (void)setMapViewProvider:(id)a3
+- (void)setMapViewProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_loadWeakRetained(&self->_mapViewProvider);
-  v6 = v4;
+  v6 = providerCopy;
   if (v6 | v5)
   {
     obj = v6;
@@ -280,150 +280,150 @@
     if ((v7 & 1) == 0)
     {
       objc_storeWeak(&self->_mapViewProvider, obj);
-      v8 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-      [v8 setMapViewProviding:obj];
+      floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+      [floatingControlsViewController setMapViewProviding:obj];
 
       v6 = obj;
     }
   }
 }
 
-- (void)setMargin:(double)a3
+- (void)setMargin:(double)margin
 {
-  self->_margin = a3;
-  v4 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  [v4 setMargin:a3];
+  self->_margin = margin;
+  floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  [floatingControlsViewController setMargin:margin];
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  [v6 setVisible:!v5 animated:v4];
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  [floatingControlsViewController setVisible:!hiddenCopy animated:animatedCopy];
 }
 
 - (BOOL)isHidden
 {
-  v2 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  v3 = [v2 visible];
+  floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  visible = [floatingControlsViewController visible];
 
-  return v3 ^ 1;
+  return visible ^ 1;
 }
 
-- (void)_setupViewportConstraintsInHost:(id)a3
+- (void)_setupViewportConstraintsInHost:(id)host
 {
-  v4 = a3;
-  v5 = [v4 viewportLayoutGuide];
-  if (v5)
+  hostCopy = host;
+  viewportLayoutGuide = [hostCopy viewportLayoutGuide];
+  if (viewportLayoutGuide)
   {
-    v6 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-    v7 = [v6 isViewLoaded];
+    floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+    isViewLoaded = [floatingControlsViewController isViewLoaded];
 
-    if (v7)
+    if (isViewLoaded)
     {
-      v8 = [(FloatingControlsOverlay *)self floatingControlsViewController];
+      floatingControlsViewController2 = [(FloatingControlsOverlay *)self floatingControlsViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v10 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-        v11 = [v5 trailingAnchor];
-        v12 = [v10 buttonsContainerViewController];
-        v13 = [v12 view];
-        v14 = [v13 leadingAnchor];
-        v15 = [v11 constraintLessThanOrEqualToAnchor:v14];
+        floatingControlsViewController3 = [(FloatingControlsOverlay *)self floatingControlsViewController];
+        trailingAnchor = [viewportLayoutGuide trailingAnchor];
+        buttonsContainerViewController = [floatingControlsViewController3 buttonsContainerViewController];
+        view = [buttonsContainerViewController view];
+        leadingAnchor = [view leadingAnchor];
+        v15 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor];
         v17 = v15;
         v16 = [NSArray arrayWithObjects:&v17 count:1];
-        [v4 setViewportConstraints:v16 forOverlay:self];
+        [hostCopy setViewportConstraints:v16 forOverlay:self];
 
-        [v4 setViewportConstraintsEnabled:1 forOverlay:self];
+        [hostCopy setViewportConstraintsEnabled:1 forOverlay:self];
       }
     }
   }
 }
 
-- (void)_installInContentView:(id)a3 layoutGuide:(id)a4
+- (void)_installInContentView:(id)view layoutGuide:(id)guide
 {
-  v28 = a3;
-  v6 = a4;
-  v7 = [(FloatingControlsOverlay *)self view];
-  v8 = [v7 superview];
+  viewCopy = view;
+  guideCopy = guide;
+  view = [(FloatingControlsOverlay *)self view];
+  superview = [view superview];
 
-  if (v8 != v28)
+  if (superview != viewCopy)
   {
-    v9 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-    v10 = [v9 isViewLoaded];
+    floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+    isViewLoaded = [floatingControlsViewController isViewLoaded];
 
-    if (v10)
+    if (isViewLoaded)
     {
-      v11 = [(FloatingControlsOverlay *)self view];
-      [v11 removeFromSuperview];
+      view2 = [(FloatingControlsOverlay *)self view];
+      [view2 removeFromSuperview];
     }
 
-    if (v28)
+    if (viewCopy)
     {
-      v12 = [(FloatingControlsOverlay *)self view];
-      [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view3 = [(FloatingControlsOverlay *)self view];
+      [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      [v28 bounds];
+      [viewCopy bounds];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [(FloatingControlsOverlay *)self view];
-      [v21 setFrame:{v14, v16, v18, v20}];
+      view4 = [(FloatingControlsOverlay *)self view];
+      [view4 setFrame:{v14, v16, v18, v20}];
 
-      v22 = [(FloatingControlsOverlay *)self view];
-      [v28 addSubview:v22];
+      view5 = [(FloatingControlsOverlay *)self view];
+      [viewCopy addSubview:view5];
 
-      v23 = [(FloatingControlsOverlay *)self view];
+      view6 = [(FloatingControlsOverlay *)self view];
       LODWORD(v24) = 1148846080;
-      v25 = [v23 _maps_constraintsEqualToEdgesOfLayoutGuide:v6 priority:v24];
+      v25 = [view6 _maps_constraintsEqualToEdgesOfLayoutGuide:guideCopy priority:v24];
       edgeConstraints = self->_edgeConstraints;
       self->_edgeConstraints = v25;
 
-      v27 = [(MapsEdgeConstraints *)self->_edgeConstraints allConstraints];
-      [NSLayoutConstraint activateConstraints:v27];
+      allConstraints = [(MapsEdgeConstraints *)self->_edgeConstraints allConstraints];
+      [NSLayoutConstraint activateConstraints:allConstraints];
     }
   }
 }
 
 - (NSString)blurGroupName
 {
-  v2 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  v3 = [v2 blurGroupName];
+  floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  blurGroupName = [floatingControlsViewController blurGroupName];
 
-  return v3;
+  return blurGroupName;
 }
 
-- (void)setBlurGroupName:(id)a3
+- (void)setBlurGroupName:(id)name
 {
-  v4 = a3;
-  v5 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  [v5 setBlurGroupName:v4];
+  nameCopy = name;
+  floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  [floatingControlsViewController setBlurGroupName:nameCopy];
 }
 
 - (double)alpha
 {
-  v2 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  v3 = [v2 view];
-  [v3 alpha];
+  floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  view = [floatingControlsViewController view];
+  [view alpha];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  v4 = [(FloatingControlsOverlay *)self floatingControlsViewController];
-  [v4 setAlpha:a3];
+  floatingControlsViewController = [(FloatingControlsOverlay *)self floatingControlsViewController];
+  [floatingControlsViewController setAlpha:alpha];
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  obj = a3;
+  obj = host;
   WeakRetained = objc_loadWeakRetained(&self->_host);
 
   v5 = obj;
@@ -432,15 +432,15 @@
     floatingControlsViewController = self->_floatingControlsViewController;
     if (floatingControlsViewController)
     {
-      v7 = [(FloatingControlsViewController *)floatingControlsViewController parentViewController];
+      parentViewController = [(FloatingControlsViewController *)floatingControlsViewController parentViewController];
 
-      if (v7)
+      if (parentViewController)
       {
         [(FloatingControlsViewController *)self->_floatingControlsViewController willMoveToParentViewController:0];
         if ([(FloatingControlsViewController *)self->_floatingControlsViewController isViewLoaded])
         {
-          v8 = [(FloatingControlsViewController *)self->_floatingControlsViewController view];
-          [v8 removeFromSuperview];
+          view = [(FloatingControlsViewController *)self->_floatingControlsViewController view];
+          [view removeFromSuperview];
         }
 
         [(FloatingControlsViewController *)self->_floatingControlsViewController removeFromParentViewController];
@@ -454,8 +454,8 @@
       if (!self->_floatingControlsViewController)
       {
         v9 = objc_opt_class();
-        v10 = [obj overlayContentView];
-        v11 = sub_10000FA08(v10);
+        overlayContentView = [obj overlayContentView];
+        v11 = sub_10000FA08(overlayContentView);
 
         if (v11 == 5 && (_UISolariumEnabled() & 1) == 0)
         {
@@ -469,8 +469,8 @@
         [(FloatingControlsViewController *)self->_floatingControlsViewController setActionCoordinator:self];
         [(FloatingControlsOverlay *)self margin];
         [(FloatingControlsViewController *)self->_floatingControlsViewController setMargin:?];
-        v14 = [(FloatingControlsOverlay *)self mapViewProvider];
-        [(FloatingControlsViewController *)self->_floatingControlsViewController setMapViewProviding:v14];
+        mapViewProvider = [(FloatingControlsOverlay *)self mapViewProvider];
+        [(FloatingControlsViewController *)self->_floatingControlsViewController setMapViewProviding:mapViewProvider];
 
         if (v9 == objc_opt_class())
         {
@@ -478,14 +478,14 @@
         }
       }
 
-      v15 = [obj containingViewController];
-      [(FloatingControlsViewController *)self->_floatingControlsViewController willMoveToParentViewController:v15];
-      v16 = [obj overlayContentView];
+      containingViewController = [obj containingViewController];
+      [(FloatingControlsViewController *)self->_floatingControlsViewController willMoveToParentViewController:containingViewController];
+      overlayContentView2 = [obj overlayContentView];
       v17 = [obj layoutGuideForOverlay:self];
-      [(FloatingControlsOverlay *)self _installInContentView:v16 layoutGuide:v17];
+      [(FloatingControlsOverlay *)self _installInContentView:overlayContentView2 layoutGuide:v17];
 
       [(FloatingControlsOverlay *)self _setupViewportConstraintsInHost:obj];
-      [(PassThroughViewController *)self->_floatingControlsViewController didMoveToParentViewController:v15];
+      [(PassThroughViewController *)self->_floatingControlsViewController didMoveToParentViewController:containingViewController];
 
       v5 = obj;
     }

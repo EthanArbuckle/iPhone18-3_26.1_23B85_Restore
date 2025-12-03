@@ -1,31 +1,31 @@
 @interface CKDUploadMergeableDeltasOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDUploadMergeableDeltasOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDUploadMergeableDeltasOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (void)_encryptMergeableDeltas;
 - (void)_uploadAndReplaceDeltas;
-- (void)_uploadAndReplaceDeltas:(id)a3;
-- (void)handleDeltaUploaded:(id)a3 result:(id)a4;
-- (void)handleReplaceDeltasRequest:(id)a3 result:(id)a4;
+- (void)_uploadAndReplaceDeltas:(id)deltas;
+- (void)handleDeltaUploaded:(id)uploaded result:(id)result;
+- (void)handleReplaceDeltasRequest:(id)request result:(id)result;
 - (void)main;
 @end
 
 @implementation CKDUploadMergeableDeltasOperation
 
-- (CKDUploadMergeableDeltasOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDUploadMergeableDeltasOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v23.receiver = self;
   v23.super_class = CKDUploadMergeableDeltasOperation;
-  v9 = [(CKDDatabaseOperation *)&v23 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v23 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_deltas(v6, v7, v8);
+    v10 = objc_msgSend_deltas(infoCopy, v7, v8);
     v11 = *(v9 + 62);
     *(v9 + 62) = v10;
 
-    v14 = objc_msgSend_replacementRequests(v6, v12, v13);
+    v14 = objc_msgSend_replacementRequests(infoCopy, v12, v13);
     v15 = *(v9 + 63);
     *(v9 + 63) = v14;
 
@@ -72,14 +72,14 @@
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v5 = @"Encrypt Deltas";
   }
 
-  else if (a3 == 3)
+  else if (state == 3)
   {
     v5 = @"Upload Deltas";
   }
@@ -88,7 +88,7 @@
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDUploadMergeableDeltasOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
@@ -186,18 +186,18 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_uploadAndReplaceDeltas:(id)a3
+- (void)_uploadAndReplaceDeltas:(id)deltas
 {
   v151 = *MEMORY[0x277D85DE8];
-  v113 = a3;
+  deltasCopy = deltas;
   val = self;
   v6 = objc_msgSend_error(self, v4, v5);
   if (v6)
   {
 
 LABEL_3:
-    v9 = v113;
-    v113[2](v113);
+    v9 = deltasCopy;
+    deltasCopy[2](deltasCopy);
     goto LABEL_57;
   }
 
@@ -449,7 +449,7 @@ LABEL_51:
   v117[3] = &unk_278549448;
   objc_copyWeak(&v119, buf);
   objc_copyWeak(&v120, &location);
-  v118 = v113;
+  v118 = deltasCopy;
   objc_msgSend_setCompletionBlock_(v98, v101, v117);
   objc_msgSend_setRequest_(val, v102, v98);
   v105 = objc_msgSend_container(val, v103, v104);
@@ -462,18 +462,18 @@ LABEL_51:
   objc_destroyWeak(&v124);
   objc_destroyWeak(buf);
 
-  v9 = v113;
+  v9 = deltasCopy;
 LABEL_57:
 
   v107 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDeltaUploaded:(id)a3 result:(id)a4
+- (void)handleDeltaUploaded:(id)uploaded result:(id)result
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_code(v7, v8, v9) == 1)
+  uploadedCopy = uploaded;
+  resultCopy = result;
+  if (objc_msgSend_code(resultCopy, v8, v9) == 1)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -484,7 +484,7 @@ LABEL_57:
     if (os_log_type_enabled(*MEMORY[0x277CBC840], OS_LOG_TYPE_DEBUG))
     {
       v31 = v10;
-      v34 = objc_msgSend_metadata(v6, v32, v33);
+      v34 = objc_msgSend_metadata(uploadedCopy, v32, v33);
       v37 = objc_msgSend_identifier(v34, v35, v36);
       *buf = 138412290;
       v46 = v37;
@@ -496,15 +496,15 @@ LABEL_57:
 
   else
   {
-    v14 = sub_2253962A4(v7);
+    v14 = sub_2253962A4(resultCopy);
     v17 = objc_msgSend_request(self, v15, v16);
-    v18 = sub_225395734(v17, v7);
+    v18 = sub_225395734(v17, resultCopy);
 
     v19 = MEMORY[0x277CBC560];
     v20 = *MEMORY[0x277CBC120];
-    v23 = objc_msgSend_error(v7, v21, v22);
+    v23 = objc_msgSend_error(resultCopy, v21, v22);
     v26 = objc_msgSend_errorDescription(v23, v24, v25);
-    v13 = objc_msgSend_errorWithDomain_code_userInfo_format_(v19, v27, v20, v14, v18, @"Error uploading mergeable delta, %@, from server: %@", v6, v26);
+    v13 = objc_msgSend_errorWithDomain_code_userInfo_format_(v19, v27, v20, v14, v18, @"Error uploading mergeable delta, %@, from server: %@", uploadedCopy, v26);
 
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -515,7 +515,7 @@ LABEL_57:
     if (os_log_type_enabled(*MEMORY[0x277CBC840], OS_LOG_TYPE_ERROR))
     {
       v38 = v28;
-      v41 = objc_msgSend_metadata(v6, v39, v40);
+      v41 = objc_msgSend_metadata(uploadedCopy, v39, v40);
       v44 = objc_msgSend_identifier(v41, v42, v43);
       *buf = 138412546;
       v46 = v44;
@@ -526,17 +526,17 @@ LABEL_57:
   }
 
   v29 = objc_msgSend_uploadDeltaCompletionBlock(self, v11, v12);
-  (v29)[2](v29, v6, v13);
+  (v29)[2](v29, uploadedCopy, v13);
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleReplaceDeltasRequest:(id)a3 result:(id)a4
+- (void)handleReplaceDeltasRequest:(id)request result:(id)result
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_code(v7, v8, v9) == 1)
+  requestCopy = request;
+  resultCopy = result;
+  if (objc_msgSend_code(resultCopy, v8, v9) == 1)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -547,7 +547,7 @@ LABEL_57:
     if (os_log_type_enabled(*MEMORY[0x277CBC840], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v35 = v6;
+      v35 = requestCopy;
       _os_log_debug_impl(&dword_22506F000, v10, OS_LOG_TYPE_DEBUG, "Successfully replaced deltas for request: %@", buf, 0xCu);
     }
 
@@ -556,15 +556,15 @@ LABEL_57:
 
   else
   {
-    v14 = sub_2253962A4(v7);
+    v14 = sub_2253962A4(resultCopy);
     v17 = objc_msgSend_request(self, v15, v16);
-    v18 = sub_225395734(v17, v7);
+    v18 = sub_225395734(v17, resultCopy);
 
     v19 = MEMORY[0x277CBC560];
     v20 = *MEMORY[0x277CBC120];
-    v23 = objc_msgSend_error(v7, v21, v22);
+    v23 = objc_msgSend_error(resultCopy, v21, v22);
     v26 = objc_msgSend_errorDescription(v23, v24, v25);
-    v13 = objc_msgSend_errorWithDomain_code_userInfo_format_(v19, v27, v20, v14, v18, @"Error replacing mergeable deltas %@: %@", v6, v26);
+    v13 = objc_msgSend_errorWithDomain_code_userInfo_format_(v19, v27, v20, v14, v18, @"Error replacing mergeable deltas %@: %@", requestCopy, v26);
 
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -585,7 +585,7 @@ LABEL_57:
   if (v29)
   {
     v32 = objc_msgSend_replaceDeltasRequestCompletionBlock(self, v30, v31);
-    (v32)[2](v32, v6, v13);
+    (v32)[2](v32, requestCopy, v13);
   }
 
   v33 = *MEMORY[0x277D85DE8];

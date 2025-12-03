@@ -1,6 +1,6 @@
 @interface MapsAppTestPlacecardPresentation
 - (BOOL)runTest;
-- (void)cleanup:(BOOL)a3;
+- (void)cleanup:(BOOL)cleanup;
 - (void)startPlaceViewControllerPresentationTest;
 @end
 
@@ -8,23 +8,23 @@
 
 - (void)startPlaceViewControllerPresentationTest
 {
-  v3 = [(MapsAppTest *)self options];
-  v7 = [v3 _mapstest_location];
+  options = [(MapsAppTest *)self options];
+  _mapstest_location = [options _mapstest_location];
 
-  v4 = [[MKMapItem alloc] initWithCLLocation:v7];
+  v4 = [[MKMapItem alloc] initWithCLLocation:_mapstest_location];
   v5 = [[SearchResult alloc] initWithMapItem:v4];
   [(MapsAppTest *)self startedTest];
-  v6 = [(MapsAppTest *)self testCoordinator];
-  [v6 pptTestPresentPlaceCardForSearchResult:v5 animated:1];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestPresentPlaceCardForSearchResult:v5 animated:1];
 }
 
-- (void)cleanup:(BOOL)a3
+- (void)cleanup:(BOOL)cleanup
 {
-  v3 = a3;
+  cleanupCopy = cleanup;
   [(MapsAppTest *)self dismissTrayWithAssertTrayType:1 completion:0];
   v5.receiver = self;
   v5.super_class = MapsAppTestPlacecardPresentation;
-  [(MapsAppTest *)&v5 cleanup:v3];
+  [(MapsAppTest *)&v5 cleanup:cleanupCopy];
 }
 
 - (BOOL)runTest

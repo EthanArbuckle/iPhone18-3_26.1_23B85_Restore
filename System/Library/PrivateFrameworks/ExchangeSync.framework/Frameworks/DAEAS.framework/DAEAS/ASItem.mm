@@ -9,62 +9,62 @@
 - (ASItem)init;
 - (ASItem)parent;
 - (ASItem)root;
-- (BOOL)_haveEnoughDataToKeepParsingWithContext:(id)a3 curToken:(unsigned __int8)a4;
-- (BOOL)_itemPathMatches:(id)a3;
-- (BOOL)_itemPathWithDCCPTMatches:(id)a3 dccpt:(int)a4;
-- (BOOL)_parseNextValueWithDataclass:(int64_t)a3 context:(id)a4 root:(id)a5 parent:(id)a6 callbackDict:(id)a7 streamCallbackDict:(id)a8 parseRules:(id)a9 account:(id)a10;
-- (BOOL)_setupFirstParseWithContext:(id)a3 root:(id)a4 parent:(id)a5;
-- (BOOL)_streamIfNecessaryFromContext:(id)a3;
-- (BOOL)nextParsedObjectWithContext:(id)a3 root:(id)a4 callbackDict:(id)a5 streamCallbackDict:(id)a6 dataclass:(int64_t)a7 outParsedObject:(id *)a8 outCPTNumber:(int *)a9 account:(id)a10;
-- (id)_replacementObjectWithCallbackDict:(id)a3;
+- (BOOL)_haveEnoughDataToKeepParsingWithContext:(id)context curToken:(unsigned __int8)token;
+- (BOOL)_itemPathMatches:(id)matches;
+- (BOOL)_itemPathWithDCCPTMatches:(id)matches dccpt:(int)dccpt;
+- (BOOL)_parseNextValueWithDataclass:(int64_t)dataclass context:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict parseRules:(id)rules account:(id)self0;
+- (BOOL)_setupFirstParseWithContext:(id)context root:(id)root parent:(id)parent;
+- (BOOL)_streamIfNecessaryFromContext:(id)context;
+- (BOOL)nextParsedObjectWithContext:(id)context root:(id)root callbackDict:(id)dict streamCallbackDict:(id)callbackDict dataclass:(int64_t)dataclass outParsedObject:(id *)object outCPTNumber:(int *)number account:(id)self0;
+- (id)_replacementObjectWithCallbackDict:(id)dict;
 - (id)asParseRules;
 - (id)currentStreamBlock;
-- (int)_streamYourLittleHeartOutWithContext:(id)a3;
+- (int)_streamYourLittleHeartOutWithContext:(id)context;
 - (int64_t)_dataclass;
-- (void)_setCurrentlyParsingSubItem:(id)a3;
-- (void)ignoreThisContent:(id)a3;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
-- (void)setCurrentStreamBlock:(id)a3;
+- (void)_setCurrentlyParsingSubItem:(id)item;
+- (void)ignoreThisContent:(id)content;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
+- (void)setCurrentStreamBlock:(id)block;
 @end
 
 @implementation ASItem
 
 + (BOOL)acceptsTopLevelLeaves
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ASItem.m" lineNumber:24 description:{@"Must be called on subclass: %s", sel_getName(a2)}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ASItem.m" lineNumber:24 description:{@"Must be called on subclass: %s", sel_getName(a2)}];
 
   return 0;
 }
 
 + (BOOL)parsingLeafNode
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ASItem.m" lineNumber:29 description:{@"Must be called on subclass: %s", sel_getName(a2)}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ASItem.m" lineNumber:29 description:{@"Must be called on subclass: %s", sel_getName(a2)}];
 
   return 0;
 }
 
 + (BOOL)parsingWithSubItems
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ASItem.m" lineNumber:34 description:{@"Must be called on subclass: %s", sel_getName(a2)}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ASItem.m" lineNumber:34 description:{@"Must be called on subclass: %s", sel_getName(a2)}];
 
   return 0;
 }
 
 + (BOOL)frontingBasicTypes
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ASItem.m" lineNumber:39 description:{@"Must be called on subclass: %s", sel_getName(a2)}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ASItem.m" lineNumber:39 description:{@"Must be called on subclass: %s", sel_getName(a2)}];
 
   return 0;
 }
 
 + (BOOL)notifyOfUnknownTokens
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ASItem.m" lineNumber:44 description:{@"Must be called on subclass: %s", sel_getName(a2)}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ASItem.m" lineNumber:44 description:{@"Must be called on subclass: %s", sel_getName(a2)}];
 
   return 0;
 }
@@ -86,16 +86,16 @@
   return v3;
 }
 
-- (int)_streamYourLittleHeartOutWithContext:(id)a3
+- (int)_streamYourLittleHeartOutWithContext:(id)context
 {
-  v5 = a3;
-  if (![v5 hasNumberOfTokensRemaining:1])
+  contextCopy = context;
+  if (![contextCopy hasNumberOfTokensRemaining:1])
   {
     goto LABEL_25;
   }
 
-  v6 = [v5 currentByte];
-  if (![v5 streamingState])
+  currentByte = [contextCopy currentByte];
+  if (![contextCopy streamingState])
   {
     if (((*(self->_currentStreamBlock + 2))() & 1) == 0)
     {
@@ -104,36 +104,36 @@
       goto LABEL_26;
     }
 
-    if (v6 == 195 || (v6 & 0x40) == 0)
+    if (currentByte == 195 || (currentByte & 0x40) == 0)
     {
       (*(self->_currentStreamBlock + 2))();
       [(ASItem *)self setCurrentStreamBlock:0];
       v7 = 1;
-      [v5 advanceOffsetByAmount:1];
+      [contextCopy advanceOffsetByAmount:1];
       goto LABEL_26;
     }
 
-    [v5 setStreamingState:1];
+    [contextCopy setStreamingState:1];
   }
 
-  if ([v5 streamingState] != 1)
+  if ([contextCopy streamingState] != 1)
   {
 LABEL_8:
-    if ([v5 streamingState] == 2)
+    if ([contextCopy streamingState] == 2)
     {
-      if ([v5 currentByte] != 1)
+      if ([contextCopy currentByte] != 1)
       {
-        if ([v5 hasNumberOfTokensRemaining:1])
+        if ([contextCopy hasNumberOfTokensRemaining:1])
         {
           v16 = 0;
-          v8 = [v5 numTokensStreamableForNextStringSizeOfTerminator:&v16];
+          v8 = [contextCopy numTokensStreamableForNextStringSizeOfTerminator:&v16];
           v9 = v8 - v16;
           if (v8 - v16 >= 1)
           {
             v10 = v8;
             if (v8 >= 1)
             {
-              while (([v5 hasNumberOfTokensRemaining:v10] & 1) == 0)
+              while (([contextCopy hasNumberOfTokensRemaining:v10] & 1) == 0)
               {
                 v11 = __OFSUB__(v10, 1);
                 v10 = (v10 - 1);
@@ -156,9 +156,9 @@ LABEL_8:
             }
 
             v15 = 0;
-            v13 = [v5 bufferForLength:v12 shouldFree:&v15];
+            v13 = [contextCopy bufferForLength:v12 shouldFree:&v15];
             (*(self->_currentStreamBlock + 2))();
-            [v5 advanceOffsetByAmount:v10];
+            [contextCopy advanceOffsetByAmount:v10];
             if (v15 == 1)
             {
               free(v13);
@@ -167,13 +167,13 @@ LABEL_8:
         }
       }
 
-      if ([v5 hasNumberOfTokensRemaining:1] && objc_msgSend(v5, "currentByte") == 1)
+      if ([contextCopy hasNumberOfTokensRemaining:1] && objc_msgSend(contextCopy, "currentByte") == 1)
       {
         (*(self->_currentStreamBlock + 2))();
         [(ASItem *)self setCurrentStreamBlock:0];
         v7 = 1;
-        [v5 advanceOffsetByAmount:1];
-        [v5 setStreamingState:0];
+        [contextCopy advanceOffsetByAmount:1];
+        [contextCopy setStreamingState:0];
         goto LABEL_26;
       }
     }
@@ -184,15 +184,15 @@ LABEL_25:
   }
 
   v7 = 2;
-  if ([v5 hasNumberOfTokensRemaining:2])
+  if ([contextCopy hasNumberOfTokensRemaining:2])
   {
-    if ([v5 nextByte] != 3)
+    if ([contextCopy nextByte] != 3)
     {
       [(ASItem *)a2 _streamYourLittleHeartOutWithContext:?];
     }
 
-    [v5 advanceOffsetByAmount:2];
-    [v5 setStreamingState:2];
+    [contextCopy advanceOffsetByAmount:2];
+    [contextCopy setStreamingState:2];
     goto LABEL_8;
   }
 
@@ -201,18 +201,18 @@ LABEL_26:
   return v7;
 }
 
-- (BOOL)nextParsedObjectWithContext:(id)a3 root:(id)a4 callbackDict:(id)a5 streamCallbackDict:(id)a6 dataclass:(int64_t)a7 outParsedObject:(id *)a8 outCPTNumber:(int *)a9 account:(id)a10
+- (BOOL)nextParsedObjectWithContext:(id)context root:(id)root callbackDict:(id)dict streamCallbackDict:(id)callbackDict dataclass:(int64_t)dataclass outParsedObject:(id *)object outCPTNumber:(int *)number account:(id)self0
 {
-  v67 = a7;
+  dataclassCopy = dataclass;
   v80 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v69 = a4;
-  v74 = a5;
-  v15 = a6;
-  v71 = a10;
-  v16 = [(ASItem *)self asParseRules];
-  v17 = [objc_opt_class() acceptsTopLevelLeaves];
-  v18 = [v14 currentByte];
+  contextCopy = context;
+  rootCopy = root;
+  dictCopy = dict;
+  callbackDictCopy = callbackDict;
+  accountCopy = account;
+  asParseRules = [(ASItem *)self asParseRules];
+  acceptsTopLevelLeaves = [objc_opt_class() acceptsTopLevelLeaves];
+  currentByte = [contextCopy currentByte];
   if ([MEMORY[0x277D03910] isEASParsingLogEnabled])
   {
     v19 = DALoggingwithCategory();
@@ -221,35 +221,35 @@ LABEL_26:
     {
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
-      v72 = self;
-      v23 = v17;
-      v24 = v16;
-      v25 = v15;
-      v26 = [v14 curOffset];
-      v27 = [v14 expectedTotalBytesCount];
+      selfCopy = self;
+      v23 = acceptsTopLevelLeaves;
+      v24 = asParseRules;
+      v25 = callbackDictCopy;
+      curOffset = [contextCopy curOffset];
+      expectedTotalBytesCount = [contextCopy expectedTotalBytesCount];
       *buf = 138413058;
-      v76 = v22;
+      selfCopy4 = v22;
       v77 = 2048;
-      *v78 = v26;
-      v15 = v25;
-      v16 = v24;
-      v17 = v23;
-      self = v72;
+      *v78 = curOffset;
+      callbackDictCopy = v25;
+      asParseRules = v24;
+      acceptsTopLevelLeaves = v23;
+      self = selfCopy;
       *&v78[8] = 1024;
-      LODWORD(v79) = v18;
+      LODWORD(v79) = currentByte;
       WORD2(v79) = 2048;
-      *(&v79 + 6) = v27 - [v14 curOffset];
+      *(&v79 + 6) = expectedTotalBytesCount - [contextCopy curOffset];
       _os_log_impl(&dword_24A0AC000, v19, v20, "%@ - nextParsedObjectWithContext: context pointing at index %lld (token %x).  Have %lld more tokens remaining", buf, 0x26u);
     }
   }
 
-  v28 = [v14 codePage];
-  v29 = v18 & 0x3F;
-  v30 = v29 | (v28 << 8);
-  v31 = [v16 objectForInt:v30];
-  v73 = v15;
-  v32 = [(ASItem *)self _copyStreamingBlockForStreamingCallbackDict:v15 dccpt:v30];
-  v70 = v16;
+  codePage = [contextCopy codePage];
+  v29 = currentByte & 0x3F;
+  v30 = v29 | (codePage << 8);
+  v31 = [asParseRules objectForInt:v30];
+  v73 = callbackDictCopy;
+  v32 = [(ASItem *)self _copyStreamingBlockForStreamingCallbackDict:callbackDictCopy dccpt:v30];
+  v70 = asParseRules;
   if (v32)
   {
     [(ASItem *)self setCurrentStreamBlock:v32];
@@ -261,38 +261,38 @@ LABEL_7:
 
   if (!v31)
   {
-    v35 = v29 | (v67 << 16) | (v28 << 8);
+    v35 = v29 | (dataclassCopy << 16) | (codePage << 8);
     v36 = [v70 objectForInt:v35];
     if (v36)
     {
       v31 = v36;
-      v30 = v29 | (v67 << 16) | (v28 << 8);
+      v30 = v29 | (dataclassCopy << 16) | (codePage << 8);
       goto LABEL_11;
     }
 
-    if (v17)
+    if (acceptsTopLevelLeaves)
     {
-      if ((v18 & 0x40) == 0 || v18 == 195)
+      if ((currentByte & 0x40) == 0 || currentByte == 195)
       {
         v33 = objc_opt_new();
-        [v33 parseASParseContext:v14 root:v69 parent:self callbackDict:v74 streamCallbackDict:v73 account:v71];
+        [v33 parseASParseContext:contextCopy root:rootCopy parent:self callbackDict:dictCopy streamCallbackDict:v73 account:accountCopy];
         v31 = 0;
         goto LABEL_23;
       }
 
-      v43 = a8;
-      if (![v14 hasNumberOfTokensRemaining:2])
+      objectCopy2 = object;
+      if (![contextCopy hasNumberOfTokensRemaining:2])
       {
         goto LABEL_56;
       }
 
-      v51 = [v14 nextByte];
-      if (v51 == 195)
+      nextByte = [contextCopy nextByte];
+      if (nextByte == 195)
       {
-        v63 = [v14 numTokensForNextOpaqueData];
-        if (v63 != -1)
+        numTokensForNextOpaqueData = [contextCopy numTokensForNextOpaqueData];
+        if (numTokensForNextOpaqueData != -1)
         {
-          v53 = v63;
+          v53 = numTokensForNextOpaqueData;
           v54 = MEMORY[0x277CBEA90];
           goto LABEL_55;
         }
@@ -302,15 +302,15 @@ LABEL_56:
         goto LABEL_7;
       }
 
-      if (v51 == 3)
+      if (nextByte == 3)
       {
-        v52 = [v14 numTokensForNextString];
-        if (v52 != -1)
+        numTokensForNextString = [contextCopy numTokensForNextString];
+        if (numTokensForNextString != -1)
         {
-          v53 = v52;
+          v53 = numTokensForNextString;
           v54 = MEMORY[0x277CCACA8];
 LABEL_55:
-          v33 = [[v54 alloc] initWithASParseContext:v14 root:v69 parent:self callbackDict:v74 streamCallbackDict:v73 lengthUntilEndOfTerminator:v53];
+          v33 = [[v54 alloc] initWithASParseContext:contextCopy root:rootCopy parent:self callbackDict:dictCopy streamCallbackDict:v73 lengthUntilEndOfTerminator:v53];
           v31 = 0;
           goto LABEL_24;
         }
@@ -322,16 +322,16 @@ LABEL_55:
       v64 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v59, v64))
       {
-        v65 = [v14 codePage];
-        v66 = [v70 allKeys];
+        codePage2 = [contextCopy codePage];
+        allKeys = [v70 allKeys];
         *buf = 138413058;
-        v76 = self;
+        selfCopy4 = self;
         v77 = 1024;
-        *v78 = v65;
+        *v78 = codePage2;
         *&v78[4] = 1024;
-        *&v78[6] = v18 & 0x3F;
+        *&v78[6] = currentByte & 0x3F;
         LOWORD(v79) = 2112;
-        *(&v79 + 2) = v66;
+        *(&v79 + 2) = allKeys;
         _os_log_impl(&dword_24A0AC000, v59, v64, "We have an int in our WBXML, but Exchange never gives us this.  Parse error.\nObject is %@, codePage 0x%x token 0x%x, parseRules have keys %@", buf, 0x22u);
       }
     }
@@ -340,7 +340,7 @@ LABEL_55:
     {
       if ([objc_opt_class() notifyOfUnknownTokens])
       {
-        -[ASItem unknownToken:receivedForCodePage:](self, "unknownToken:receivedForCodePage:", v18 & 0x3F, [v14 codePage]);
+        -[ASItem unknownToken:receivedForCodePage:](self, "unknownToken:receivedForCodePage:", currentByte & 0x3F, [contextCopy codePage]);
 LABEL_51:
         v31 = 0;
         goto LABEL_52;
@@ -350,18 +350,18 @@ LABEL_51:
       v60 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v59, v60))
       {
-        v61 = [v14 codePage];
-        v62 = [v70 allKeys];
+        codePage3 = [contextCopy codePage];
+        allKeys2 = [v70 allKeys];
         *buf = 138413314;
-        v76 = self;
+        selfCopy4 = self;
         v77 = 1024;
-        *v78 = v61;
+        *v78 = codePage3;
         *&v78[4] = 1024;
         *&v78[6] = v29;
         LOWORD(v79) = 1024;
         *(&v79 + 2) = v35;
         WORD3(v79) = 2112;
-        *(&v79 + 1) = v62;
+        *(&v79 + 1) = allKeys2;
         _os_log_impl(&dword_24A0AC000, v59, v60, "No parse rule from object %@ for codePage 0x%x token 0x%x (CPT = %d), parseRules have keys %@", buf, 0x28u);
       }
     }
@@ -370,33 +370,33 @@ LABEL_51:
   }
 
 LABEL_11:
-  v37 = [v31 objectClass];
-  if ([(objc_class *)v37 parsingLeafNode])
+  objectClass = [v31 objectClass];
+  if ([(objc_class *)objectClass parsingLeafNode])
   {
-    if ((v18 & 0x40) != 0 && v18 != 195)
+    if ((currentByte & 0x40) != 0 && currentByte != 195)
     {
-      if (![v14 hasNumberOfTokensRemaining:2])
+      if (![contextCopy hasNumberOfTokensRemaining:2])
       {
         goto LABEL_7;
       }
 
-      v38 = [v14 nextByte];
-      if (v38 == 195)
+      nextByte2 = [contextCopy nextByte];
+      if (nextByte2 == 195)
       {
-        v39 = [v14 numTokensForNextOpaqueData];
+        numTokensForNextOpaqueData2 = [contextCopy numTokensForNextOpaqueData];
         goto LABEL_42;
       }
 
-      if (v38 == 3)
+      if (nextByte2 == 3)
       {
-        v39 = [v14 numTokensForNextString];
+        numTokensForNextOpaqueData2 = [contextCopy numTokensForNextString];
 LABEL_42:
-        if (v39 == -1)
+        if (numTokensForNextOpaqueData2 == -1)
         {
           goto LABEL_7;
         }
 
-        v33 = [[v37 alloc] initWithASParseContext:v14 root:v69 parent:self callbackDict:v74 streamCallbackDict:v73 lengthUntilEndOfTerminator:v39];
+        v33 = [[objectClass alloc] initWithASParseContext:contextCopy root:rootCopy parent:self callbackDict:dictCopy streamCallbackDict:v73 lengthUntilEndOfTerminator:numTokensForNextOpaqueData2];
         goto LABEL_23;
       }
 
@@ -404,16 +404,16 @@ LABEL_42:
       v56 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v55, v56))
       {
-        v57 = [v14 codePage];
-        v58 = [v70 allKeys];
+        codePage4 = [contextCopy codePage];
+        allKeys3 = [v70 allKeys];
         *buf = 138413058;
-        v76 = self;
+        selfCopy4 = self;
         v77 = 1024;
-        *v78 = v57;
+        *v78 = codePage4;
         *&v78[4] = 1024;
-        *&v78[6] = v18 & 0x3F;
+        *&v78[6] = currentByte & 0x3F;
         LOWORD(v79) = 2112;
-        *(&v79 + 2) = v58;
+        *(&v79 + 2) = allKeys3;
         _os_log_impl(&dword_24A0AC000, v55, v56, "We have an int in our WBXML, but Exchange never gives us this.  Parse error.\nObject is %@, codePage 0x%x token 0x%x, parseRules have keys %@", buf, 0x22u);
       }
 
@@ -423,18 +423,18 @@ LABEL_52:
       goto LABEL_30;
     }
 
-    [(objc_class *)v37 expectsContent];
+    [(objc_class *)objectClass expectsContent];
     v33 = objc_opt_new();
-    [v33 parseASParseContext:v14 root:v69 parent:self callbackDict:v74 streamCallbackDict:v73 account:v71];
+    [v33 parseASParseContext:contextCopy root:rootCopy parent:self callbackDict:dictCopy streamCallbackDict:v73 account:accountCopy];
   }
 
   else
   {
-    if ([(objc_class *)v37 parsingWithSubItems])
+    if ([(objc_class *)objectClass parsingWithSubItems])
     {
-      v40 = [v37 alloc];
-      v41 = [v31 subclassRuleSet];
-      v33 = [v40 initWithSubclassRuleSet:v41];
+      v40 = [objectClass alloc];
+      subclassRuleSet = [v31 subclassRuleSet];
+      v33 = [v40 initWithSubclassRuleSet:subclassRuleSet];
     }
 
     else
@@ -443,32 +443,32 @@ LABEL_52:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_root);
-    [v33 parseASParseContext:v14 root:WeakRetained parent:self callbackDict:v74 streamCallbackDict:v73 account:v71];
+    [v33 parseASParseContext:contextCopy root:WeakRetained parent:self callbackDict:dictCopy streamCallbackDict:v73 account:accountCopy];
   }
 
 LABEL_23:
-  v43 = a8;
+  objectCopy2 = object;
 LABEL_24:
-  if (v43)
+  if (objectCopy2)
   {
     v44 = v33;
-    *v43 = v33;
+    *objectCopy2 = v33;
   }
 
   v34 = v33 != 0;
   if (v33)
   {
     v45 = [(NSMutableDictionary *)self->_parseRuleUsageNumbers objectForInt:v30];
-    v46 = [v45 intValue];
+    intValue = [v45 intValue];
 
     parseRuleUsageNumbers = self->_parseRuleUsageNumbers;
-    v48 = [MEMORY[0x277CCABB0] numberWithInt:(v46 + 1)];
+    v48 = [MEMORY[0x277CCABB0] numberWithInt:(intValue + 1)];
     [(NSMutableDictionary *)parseRuleUsageNumbers setObject:v48 forInt:v30];
   }
 
-  if (a9)
+  if (number)
   {
-    *a9 = v30;
+    *number = v30;
   }
 
 LABEL_30:
@@ -477,37 +477,37 @@ LABEL_30:
   return v34;
 }
 
-- (void)_setCurrentlyParsingSubItem:(id)a3
+- (void)_setCurrentlyParsingSubItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   currentlyParsingSubItem = self->_currentlyParsingSubItem;
   p_currentlyParsingSubItem = &self->_currentlyParsingSubItem;
-  if (currentlyParsingSubItem != v5)
+  if (currentlyParsingSubItem != itemCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_currentlyParsingSubItem, a3);
-    v5 = v8;
+    v8 = itemCopy;
+    objc_storeStrong(p_currentlyParsingSubItem, item);
+    itemCopy = v8;
   }
 }
 
-- (BOOL)_setupFirstParseWithContext:(id)a3 root:(id)a4 parent:(id)a5
+- (BOOL)_setupFirstParseWithContext:(id)context root:(id)root parent:(id)parent
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 hasNumberOfTokensRemaining:1];
+  contextCopy = context;
+  rootCopy = root;
+  parentCopy = parent;
+  v11 = [contextCopy hasNumberOfTokensRemaining:1];
   if (v11)
   {
-    v12 = [v8 currentByte];
-    self->_token = v12 & 0x3F;
-    [v8 advanceOffsetByAmount:1];
-    self->_codePage = [v8 codePage];
-    v13 = v9 ? v9 : self;
+    currentByte = [contextCopy currentByte];
+    self->_token = currentByte & 0x3F;
+    [contextCopy advanceOffsetByAmount:1];
+    self->_codePage = [contextCopy codePage];
+    v13 = rootCopy ? rootCopy : self;
     objc_storeWeak(&self->_root, v13);
-    objc_storeWeak(&self->_parent, v10);
+    objc_storeWeak(&self->_parent, parentCopy);
     self->_parsingState = 1;
-    if ((v12 & 0x40) == 0 || v12 == 195)
+    if ((currentByte & 0x40) == 0 || currentByte == 195)
     {
       if (([objc_opt_class() parsingWithSubItems] & 1) == 0)
       {
@@ -516,7 +516,7 @@ LABEL_30:
         if (os_log_type_enabled(v14, v15))
         {
           v18 = 138412290;
-          v19 = self;
+          selfCopy = self;
           _os_log_impl(&dword_24A0AC000, v14, v15, "Item %@ expected content, but has content-less opening byte.  Returning bare-initted object.  Good luck", &v18, 0xCu);
         }
       }
@@ -531,13 +531,13 @@ LABEL_30:
 
 - (int64_t)_dataclass
 {
-  v2 = self;
+  selfCopy = self;
   while (1)
   {
-    v3 = v2;
-    v2 = [(ASItem *)v2 parent];
+    v3 = selfCopy;
+    selfCopy = [(ASItem *)selfCopy parent];
 
-    if (!v2)
+    if (!selfCopy)
     {
       break;
     }
@@ -545,24 +545,24 @@ LABEL_30:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [(ASItem *)v2 dataclass];
+      dataclass = [(ASItem *)selfCopy dataclass];
       goto LABEL_6;
     }
   }
 
-  v4 = 0;
+  dataclass = 0;
 LABEL_6:
 
-  return v4;
+  return dataclass;
 }
 
-- (BOOL)_streamIfNecessaryFromContext:(id)a3
+- (BOOL)_streamIfNecessaryFromContext:(id)context
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (self->_currentStreamBlock)
   {
-    v5 = [(ASItem *)self _streamYourLittleHeartOutWithContext:v4];
+    v5 = [(ASItem *)self _streamYourLittleHeartOutWithContext:contextCopy];
     if (v5 == 2)
     {
       v10 = 0;
@@ -593,12 +593,12 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)_haveEnoughDataToKeepParsingWithContext:(id)a3 curToken:(unsigned __int8)a4
+- (BOOL)_haveEnoughDataToKeepParsingWithContext:(id)context curToken:(unsigned __int8)token
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4 == 1)
+  tokenCopy = token;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (tokenCopy == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_parent);
     if (WeakRetained && (v9 = WeakRetained, v10 = [v7 hasNumberOfTokensRemaining:1], v9, !v10))
@@ -616,22 +616,22 @@ LABEL_9:
 
   else
   {
-    v11 = [v6 hasNumberOfTokensRemaining:1];
+    v11 = [contextCopy hasNumberOfTokensRemaining:1];
   }
 
   return v11;
 }
 
-- (BOOL)_parseNextValueWithDataclass:(int64_t)a3 context:(id)a4 root:(id)a5 parent:(id)a6 callbackDict:(id)a7 streamCallbackDict:(id)a8 parseRules:(id)a9 account:(id)a10
+- (BOOL)_parseNextValueWithDataclass:(int64_t)dataclass context:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict parseRules:(id)rules account:(id)self0
 {
   v55 = *MEMORY[0x277D85DE8];
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  if (![(ASItem *)self _streamIfNecessaryFromContext:v15])
+  contextCopy = context;
+  rootCopy = root;
+  dictCopy = dict;
+  callbackDictCopy = callbackDict;
+  rulesCopy = rules;
+  accountCopy = account;
+  if (![(ASItem *)self _streamIfNecessaryFromContext:contextCopy])
   {
     goto LABEL_50;
   }
@@ -641,13 +641,13 @@ LABEL_9:
     goto LABEL_46;
   }
 
-  v21 = [v15 currentByte];
-  v50 = v21;
+  currentByte = [contextCopy currentByte];
+  v50 = currentByte;
   currentlyParsingCPTNumber = self->_currentlyParsingCPTNumber;
   currentlyParsingSubItem = self->_currentlyParsingSubItem;
   if (!currentlyParsingSubItem)
   {
-    if (!handleCodePageSwitch(v15, v21, &v50))
+    if (!handleCodePageSwitch(contextCopy, currentByte, &v50))
     {
       goto LABEL_50;
     }
@@ -670,7 +670,7 @@ LABEL_9:
         }
       }
 
-      if (![(ASItem *)self _haveEnoughDataToKeepParsingWithContext:v15 curToken:v50])
+      if (![(ASItem *)self _haveEnoughDataToKeepParsingWithContext:contextCopy curToken:v50])
       {
         goto LABEL_50;
       }
@@ -679,7 +679,7 @@ LABEL_9:
       {
         *buf = 0;
         v49 = 0;
-        v29 = [(ASItem *)self nextParsedObjectWithContext:v15 root:v16 callbackDict:v17 streamCallbackDict:v18 dataclass:a3 outParsedObject:&v49 outCPTNumber:buf account:v20];
+        v29 = [(ASItem *)self nextParsedObjectWithContext:contextCopy root:rootCopy callbackDict:dictCopy streamCallbackDict:callbackDictCopy dataclass:dataclass outParsedObject:&v49 outCPTNumber:buf account:accountCopy];
         v30 = v49;
         v31 = v30;
         if (!v29)
@@ -694,7 +694,7 @@ LABEL_9:
         }
 
         v32 = v30;
-        v33 = [(ASItem *)self _streamYourLittleHeartOutWithContext:v15];
+        v33 = [(ASItem *)self _streamYourLittleHeartOutWithContext:contextCopy];
         if (v33 == 1)
         {
           [(ASItem *)self _setCurrentlyParsingSubItem:0];
@@ -711,7 +711,7 @@ LABEL_9:
 
           typea = v32;
           v48 = v32;
-          v34 = [(ASItem *)self nextParsedObjectWithContext:v15 root:v16 callbackDict:v17 streamCallbackDict:0 dataclass:a3 outParsedObject:&v48 outCPTNumber:buf account:v20];
+          v34 = [(ASItem *)self nextParsedObjectWithContext:contextCopy root:rootCopy callbackDict:dictCopy streamCallbackDict:0 dataclass:dataclass outParsedObject:&v48 outCPTNumber:buf account:accountCopy];
           v35 = v48;
 
           if (v34)
@@ -747,7 +747,7 @@ LABEL_46:
     goto LABEL_51;
   }
 
-  [(ASParsing *)currentlyParsingSubItem parseASParseContext:v15 root:v16 parent:self callbackDict:v17 streamCallbackDict:v18 account:v20];
+  [(ASParsing *)currentlyParsingSubItem parseASParseContext:contextCopy root:rootCopy parent:self callbackDict:dictCopy streamCallbackDict:callbackDictCopy account:accountCopy];
 LABEL_5:
   if (self->_parsingState != 1)
   {
@@ -760,15 +760,15 @@ LABEL_5:
     goto LABEL_46;
   }
 
-  v25 = [(ASParsing *)v24 parsingState];
-  if (v25 > 2)
+  parsingState = [(ASParsing *)v24 parsingState];
+  if (parsingState > 2)
   {
-    if (v25 == 3)
+    if (parsingState == 3)
     {
       [(ASItem *)self _setCurrentlyParsingSubItem:0];
     }
 
-    else if (v25 == 4)
+    else if (parsingState == 4)
     {
       [(ASItem *)self _setCurrentlyParsingSubItem:0];
       self->_parsingState = 4;
@@ -780,7 +780,7 @@ LABEL_32:
     {
       if (objc_opt_respondsToSelector())
       {
-        v37 = [(ASParsing *)self->_currentlyParsingSubItem _replacementObjectWithCallbackDict:v17];
+        v37 = [(ASParsing *)self->_currentlyParsingSubItem _replacementObjectWithCallbackDict:dictCopy];
         [(ASItem *)self _setCurrentlyParsingSubItem:v37];
       }
 
@@ -793,12 +793,12 @@ LABEL_32:
           v40 = self->_currentlyParsingSubItem;
           if ([objc_opt_class() frontingBasicTypes])
           {
-            v41 = [(ASParsing *)self->_currentlyParsingSubItem commonValue];
+            commonValue = [(ASParsing *)self->_currentlyParsingSubItem commonValue];
 
-            v39 = v41;
+            v39 = commonValue;
           }
 
-          v42 = [v19 objectForInt:currentlyParsingCPTNumber];
+          v42 = [rulesCopy objectForInt:currentlyParsingCPTNumber];
           if ([objc_opt_class() acceptsTopLevelLeaves])
           {
             [(ASItem *)self setObject:v39 forDCCPT:currentlyParsingCPTNumber];
@@ -817,9 +817,9 @@ LABEL_32:
     goto LABEL_46;
   }
 
-  if (v25 >= 2)
+  if (parsingState >= 2)
   {
-    if (v25 == 2)
+    if (parsingState == 2)
     {
       self->_currentlyParsingCPTNumber = 0;
     }
@@ -835,17 +835,17 @@ LABEL_51:
   return v26;
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v78 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  contextCopy = context;
+  rootCopy = root;
+  parentCopy = parent;
+  dictCopy = dict;
+  callbackDictCopy = callbackDict;
+  accountCopy = account;
   v20 = 0x277D03000uLL;
-  v66 = v19;
+  v66 = accountCopy;
   if ([MEMORY[0x277D03910] isEASParsingLogEnabled])
   {
     v21 = DALoggingwithCategory();
@@ -855,11 +855,11 @@ LABEL_51:
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
       *buf = 138412290;
-      v69 = v24;
+      selfCopy = v24;
       _os_log_impl(&dword_24A0AC000, v21, v22, "%@ - begin parsing", buf, 0xCu);
     }
 
-    v19 = v66;
+    accountCopy = v66;
     v20 = 0x277D03000uLL;
   }
 
@@ -873,50 +873,50 @@ LABEL_51:
       v28 = NSStringFromClass(v27);
       currentlyParsingSubItem = self->_currentlyParsingSubItem;
       *buf = 138412546;
-      v69 = v28;
+      selfCopy = v28;
       v70 = 2112;
       *v71 = currentlyParsingSubItem;
       _os_log_impl(&dword_24A0AC000, v25, v26, "%@ - currently parsing sub item is %@", buf, 0x16u);
     }
 
-    v19 = v66;
+    accountCopy = v66;
     v20 = 0x277D03000uLL;
   }
 
-  v65 = [objc_opt_class() acceptsTopLevelLeaves];
+  acceptsTopLevelLeaves = [objc_opt_class() acceptsTopLevelLeaves];
   parsingState = self->_parsingState;
   if (!parsingState)
   {
-    [(ASItem *)self _setupFirstParseWithContext:v14 root:v15 parent:v16];
+    [(ASItem *)self _setupFirstParseWithContext:contextCopy root:rootCopy parent:parentCopy];
     parsingState = self->_parsingState;
   }
 
   if (parsingState == 1)
   {
-    v31 = [(ASItem *)self asParseRules];
-    if (!((v31 != 0) | v65 & 1))
+    asParseRules = [(ASItem *)self asParseRules];
+    if (!((asParseRules != 0) | acceptsTopLevelLeaves & 1))
     {
       v50 = DALoggingwithCategory();
       v51 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v50, v51))
       {
         *buf = 138412290;
-        v69 = self;
+        selfCopy = self;
         _os_log_impl(&dword_24A0AC000, v50, v51, "object %@ must have parse rules", buf, 0xCu);
       }
 
       v32 = 0;
       self->_parsingState = 4;
-      v19 = v66;
+      accountCopy = v66;
       v20 = 0x277D03000uLL;
       goto LABEL_38;
     }
 
-    v32 = v31;
+    v32 = asParseRules;
     parsingState = self->_parsingState;
     if (parsingState == 1)
     {
-      v33 = [(ASItem *)self _dataclass];
+      _dataclass = [(ASItem *)self _dataclass];
       while (1)
       {
         parsingState = self->_parsingState;
@@ -925,7 +925,7 @@ LABEL_51:
           break;
         }
 
-        if (![(ASItem *)self _parseNextValueWithDataclass:v33 context:v14 root:v15 parent:v16 callbackDict:v17 streamCallbackDict:v18 parseRules:v32 account:v19])
+        if (![(ASItem *)self _parseNextValueWithDataclass:_dataclass context:contextCopy root:rootCopy parent:parentCopy callbackDict:dictCopy streamCallbackDict:callbackDictCopy parseRules:v32 account:accountCopy])
         {
           parsingState = self->_parsingState;
           break;
@@ -945,76 +945,76 @@ LABEL_51:
   {
     if (parsingState == 2)
     {
-      v63 = v18;
-      v64 = [v32 keyEnumerator];
-      v34 = [v64 nextObject];
-      if (v34)
+      v63 = callbackDictCopy;
+      keyEnumerator = [v32 keyEnumerator];
+      nextObject = [keyEnumerator nextObject];
+      if (nextObject)
       {
-        v35 = v34;
-        v59 = v17;
-        v60 = v16;
-        v61 = v15;
-        v62 = v14;
+        v35 = nextObject;
+        v59 = dictCopy;
+        v60 = parentCopy;
+        v61 = rootCopy;
+        v62 = contextCopy;
         v36 = 0;
         type = *(MEMORY[0x277D03988] + 3);
-        v37 = v64;
+        v37 = keyEnumerator;
         do
         {
           v38 = v36;
           v36 = [v32 objectForKeyedSubscript:v35];
 
           v39 = [(NSMutableDictionary *)self->_parseRuleUsageNumbers objectForKeyedSubscript:v35];
-          v40 = [v39 intValue];
+          intValue = [v39 intValue];
 
-          v41 = [v36 minimumNumber];
-          v42 = [v36 maximumNumber];
-          v43 = v42;
-          if (v40 < v41 || v42 != 1209 && v40 > v42)
+          minimumNumber = [v36 minimumNumber];
+          maximumNumber = [v36 maximumNumber];
+          v43 = maximumNumber;
+          if (intValue < minimumNumber || maximumNumber != 1209 && intValue > maximumNumber)
           {
             v44 = v32;
-            v45 = [v35 intValue];
+            intValue2 = [v35 intValue];
             v46 = DALoggingwithCategory();
             if (os_log_type_enabled(v46, type))
             {
               v47 = objc_opt_class();
               v48 = NSStringFromClass(v47);
               *buf = 138413570;
-              v69 = v48;
+              selfCopy = v48;
               v70 = 1024;
-              *v71 = v40;
+              *v71 = intValue;
               *&v71[4] = 1024;
-              *&v71[6] = HIBYTE(v45);
+              *&v71[6] = HIBYTE(intValue2);
               v72 = 1024;
-              v73 = v45;
+              v73 = intValue2;
               v74 = 1024;
-              v75 = v41;
+              v75 = minimumNumber;
               v76 = 1024;
               v77 = v43;
               _os_log_impl(&dword_24A0AC000, v46, type, "%@: Parse Rule Constraint Violation.  Received %d counts of code page %d / token 0x%x, but the parse rule says we have a range of %d - %d", buf, 0x2Au);
 
-              v37 = v64;
+              v37 = keyEnumerator;
             }
 
             v32 = v44;
           }
 
-          v49 = [v37 nextObject];
+          nextObject2 = [v37 nextObject];
 
-          v35 = v49;
+          v35 = nextObject2;
         }
 
-        while (v49);
+        while (nextObject2);
 
-        v15 = v61;
-        v14 = v62;
-        v17 = v59;
-        v16 = v60;
-        v19 = v66;
+        rootCopy = v61;
+        contextCopy = v62;
+        dictCopy = v59;
+        parentCopy = v60;
+        accountCopy = v66;
         v20 = 0x277D03000;
       }
 
-      v18 = v63;
-      if (v65)
+      callbackDictCopy = v63;
+      if (acceptsTopLevelLeaves)
       {
         [(ASItem *)self applyPlaceHolder];
         [(ASItem *)self clearPlaceHolder];
@@ -1025,7 +1025,7 @@ LABEL_51:
   }
 
 LABEL_38:
-  if (v65)
+  if (acceptsTopLevelLeaves)
   {
     [(ASItem *)self clearPlaceHolder];
   }
@@ -1047,13 +1047,13 @@ LABEL_40:
       v56 = NSStringFromClass(v55);
       v57 = self->_parsingState;
       *buf = 138412546;
-      v69 = v56;
+      selfCopy = v56;
       v70 = 1024;
       *v71 = v57;
       _os_log_impl(&dword_24A0AC000, v53, v54, "%@ - done parsing with state %d", buf, 0x12u);
     }
 
-    v19 = v66;
+    accountCopy = v66;
   }
 
   v58 = *MEMORY[0x277D85DE8];
@@ -1066,17 +1066,17 @@ LABEL_40:
   return WeakRetained;
 }
 
-- (BOOL)_itemPathMatches:(id)a3
+- (BOOL)_itemPathMatches:(id)matches
 {
-  v4 = [a3 componentsSeparatedByString:@"."];
-  v5 = [v4 reverseObjectEnumerator];
+  v4 = [matches componentsSeparatedByString:@"."];
+  reverseObjectEnumerator = [v4 reverseObjectEnumerator];
 
-  v6 = self;
-  v7 = [v5 nextObject];
-  if (v7)
+  selfCopy = self;
+  nextObject = [reverseObjectEnumerator nextObject];
+  if (nextObject)
   {
-    v8 = v7;
-    while (v6)
+    v8 = nextObject;
+    while (selfCopy)
     {
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
@@ -1087,73 +1087,73 @@ LABEL_40:
         break;
       }
 
-      v12 = [(ASItem *)v6 parent];
+      parent = [(ASItem *)selfCopy parent];
 
-      v13 = [v5 nextObject];
+      nextObject2 = [reverseObjectEnumerator nextObject];
 
-      v8 = v13;
-      v6 = v12;
-      if (!v13)
+      v8 = nextObject2;
+      selfCopy = parent;
+      if (!nextObject2)
       {
         goto LABEL_9;
       }
     }
 
     v14 = 0;
-    v12 = v6;
+    parent = selfCopy;
   }
 
   else
   {
-    v12 = v6;
+    parent = selfCopy;
 LABEL_9:
-    v14 = v12 == 0;
+    v14 = parent == 0;
   }
 
   return v14;
 }
 
-- (id)_replacementObjectWithCallbackDict:(id)a3
+- (id)_replacementObjectWithCallbackDict:(id)dict
 {
-  v4 = a3;
-  v5 = [v4 keyEnumerator];
-  v6 = 0;
+  dictCopy = dict;
+  keyEnumerator = [dictCopy keyEnumerator];
+  nextObject = 0;
   while (1)
   {
-    v7 = v6;
-    v6 = [v5 nextObject];
+    v7 = nextObject;
+    nextObject = [keyEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
-    if ([(ASItem *)self _itemPathMatches:v6])
+    if ([(ASItem *)self _itemPathMatches:nextObject])
     {
-      v8 = [v4 objectForKeyedSubscript:v6];
-      v9 = (v8)[2](v8, self);
+      v8 = [dictCopy objectForKeyedSubscript:nextObject];
+      selfCopy = (v8)[2](v8, self);
 
       goto LABEL_6;
     }
   }
 
-  v9 = self;
+  selfCopy = self;
 LABEL_6:
 
-  return v9;
+  return selfCopy;
 }
 
-- (BOOL)_itemPathWithDCCPTMatches:(id)a3 dccpt:(int)a4
+- (BOOL)_itemPathWithDCCPTMatches:(id)matches dccpt:(int)dccpt
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  v8 = [v6 length];
+  dccptCopy = dccpt;
+  matchesCopy = matches;
+  selfCopy = self;
+  v8 = [matchesCopy length];
   v9 = (v8 - 1);
   v10 = v8 - 1;
   if (v8 >= 2)
   {
-    while ([v6 characterAtIndex:v9] != 46)
+    while ([matchesCopy characterAtIndex:v9] != 46)
     {
       if (v9-- <= 1)
       {
@@ -1166,7 +1166,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  if ([v6 characterAtIndex:v10] == 46)
+  if ([matchesCopy characterAtIndex:v10] == 46)
   {
     v12 = v10 + 1;
   }
@@ -1176,10 +1176,10 @@ LABEL_7:
     v12 = v10;
   }
 
-  v13 = [v6 substringWithRange:{v12, v8 - v12}];
-  v14 = [v13 intValue];
+  v13 = [matchesCopy substringWithRange:{v12, v8 - v12}];
+  intValue = [v13 intValue];
 
-  if (v14 != v4)
+  if (intValue != dccptCopy)
   {
     goto LABEL_11;
   }
@@ -1194,7 +1194,7 @@ LABEL_7:
       {
         do
         {
-          if ([v6 characterAtIndex:v17] == 46)
+          if ([matchesCopy characterAtIndex:v17] == 46)
           {
             break;
           }
@@ -1205,10 +1205,10 @@ LABEL_7:
         while (v17);
       }
 
-      [v6 characterAtIndex:v17];
-      v18 = [v6 substringWithRange:?];
+      [matchesCopy characterAtIndex:v17];
+      v18 = [matchesCopy substringWithRange:?];
 
-      if (!v7)
+      if (!selfCopy)
       {
         break;
       }
@@ -1222,15 +1222,15 @@ LABEL_7:
         break;
       }
 
-      v22 = [(ASItem *)v7 parent];
+      parent = [(ASItem *)selfCopy parent];
 
       v16 = v18;
-      v7 = v22;
+      selfCopy = parent;
       v10 = v17;
       if (v17 <= 0)
       {
 
-        v7 = v22;
+        selfCopy = parent;
         goto LABEL_22;
       }
     }
@@ -1240,18 +1240,18 @@ LABEL_11:
     goto LABEL_23;
   }
 
-  v22 = v7;
+  parent = selfCopy;
 LABEL_22:
-  v15 = v22 == 0;
+  v15 = parent == 0;
 LABEL_23:
 
   return v15;
 }
 
-- (void)ignoreThisContent:(id)a3
+- (void)ignoreThisContent:(id)content
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contentCopy = content;
   if ([MEMORY[0x277D03910] isEASParsingLogEnabled])
   {
     v4 = DALoggingwithCategory();
@@ -1259,7 +1259,7 @@ LABEL_23:
     if (os_log_type_enabled(v4, v5))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = contentCopy;
       _os_log_impl(&dword_24A0AC000, v4, v5, "ignoring content %@", &v7, 0xCu);
     }
   }
@@ -1316,11 +1316,11 @@ uint64_t __24__ASItem_parseRuleCache__block_invoke()
   return v2;
 }
 
-- (void)setCurrentStreamBlock:(id)a3
+- (void)setCurrentStreamBlock:(id)block
 {
-  if (self->_currentStreamBlock != a3)
+  if (self->_currentStreamBlock != block)
   {
-    v5 = MEMORY[0x24C2119B0](a3, a2);
+    v5 = MEMORY[0x24C2119B0](block, a2);
     currentStreamBlock = self->_currentStreamBlock;
     self->_currentStreamBlock = v5;
 

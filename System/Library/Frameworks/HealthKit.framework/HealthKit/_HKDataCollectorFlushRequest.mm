@@ -1,23 +1,23 @@
 @interface _HKDataCollectorFlushRequest
-- (_HKDataCollectorFlushRequest)initWithDate:(id)a3 completion:(id)a4;
+- (_HKDataCollectorFlushRequest)initWithDate:(id)date completion:(id)completion;
 @end
 
 @implementation _HKDataCollectorFlushRequest
 
-- (_HKDataCollectorFlushRequest)initWithDate:(id)a3 completion:(id)a4
+- (_HKDataCollectorFlushRequest)initWithDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = _HKDataCollectorFlushRequest;
   v8 = [(_HKDataCollectorFlushRequest *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dateCopy copy];
     date = v8->_date;
     v8->_date = v9;
 
-    v11 = [v7 copy];
+    v11 = [completionCopy copy];
     completion = v8->_completion;
     v8->_completion = v11;
   }

@@ -1,21 +1,21 @@
 @interface ICQStoragePlanRecommendation
 + (id)_requestQueue;
-- (ICQStoragePlanRecommendation)initWithAccount:(id)a3;
-- (void)calculateExtraQuotaNeededToSyncIsAccountFull:(BOOL)a3 completion:(id)a4;
+- (ICQStoragePlanRecommendation)initWithAccount:(id)account;
+- (void)calculateExtraQuotaNeededToSyncIsAccountFull:(BOOL)full completion:(id)completion;
 @end
 
 @implementation ICQStoragePlanRecommendation
 
-- (ICQStoragePlanRecommendation)initWithAccount:(id)a3
+- (ICQStoragePlanRecommendation)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = ICQStoragePlanRecommendation;
   v6 = [(ICQStoragePlanRecommendation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -41,19 +41,19 @@ void __45__ICQStoragePlanRecommendation__requestQueue__block_invoke()
   _requestQueue_requestQueue = v0;
 }
 
-- (void)calculateExtraQuotaNeededToSyncIsAccountFull:(BOOL)a3 completion:(id)a4
+- (void)calculateExtraQuotaNeededToSyncIsAccountFull:(BOOL)full completion:(id)completion
 {
-  v6 = a4;
-  v7 = [objc_opt_class() _requestQueue];
+  completionCopy = completion;
+  _requestQueue = [objc_opt_class() _requestQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__ICQStoragePlanRecommendation_calculateExtraQuotaNeededToSyncIsAccountFull_completion___block_invoke;
   block[3] = &unk_27A6519E8;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  fullCopy = full;
+  v8 = completionCopy;
+  dispatch_async(_requestQueue, block);
 }
 
 void __88__ICQStoragePlanRecommendation_calculateExtraQuotaNeededToSyncIsAccountFull_completion___block_invoke(uint64_t a1)

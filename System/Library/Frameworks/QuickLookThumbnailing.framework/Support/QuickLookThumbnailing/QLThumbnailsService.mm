@@ -1,28 +1,28 @@
 @interface QLThumbnailsService
-- (id)makeQueueWithBackgroundPriority:(BOOL)a3;
-- (void)askThumbnailAdditionIndex:(id)a3;
-- (void)canGenerateThumbnailsForContentType:(id)a3 atSize:(CGSize)a4 completionHandler:(id)a5;
-- (void)cancelThumbnailRequests:(id)a3;
-- (void)fetchAllDataSeparatedVolumesWithCompletionHandler:(id)a3;
-- (void)generateSuccessiveThumbnailRepresentationsForRequests:(id)a3 generationHandler:(id)a4 completionHandler:(id)a5;
-- (void)getAllThumbnailsForFPItemID:(id)a3 completionHandler:(id)a4;
-- (void)getAllThumbnailsForIno:(id)a3 fsid:(id)a4 completionHandler:(id)a5;
-- (void)getAllThumbnailsInfoForCacheAtURL:(id)a3 completionHandler:(id)a4;
-- (void)getInfoForCacheAtURL:(id)a3 completionHandler:(id)a4;
-- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)removeThumbnailAdditionsOnURL:(id)a3 completionBlock:(id)a4;
+- (id)makeQueueWithBackgroundPriority:(BOOL)priority;
+- (void)askThumbnailAdditionIndex:(id)index;
+- (void)canGenerateThumbnailsForContentType:(id)type atSize:(CGSize)size completionHandler:(id)handler;
+- (void)cancelThumbnailRequests:(id)requests;
+- (void)fetchAllDataSeparatedVolumesWithCompletionHandler:(id)handler;
+- (void)generateSuccessiveThumbnailRepresentationsForRequests:(id)requests generationHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)getAllThumbnailsForFPItemID:(id)d completionHandler:(id)handler;
+- (void)getAllThumbnailsForIno:(id)ino fsid:(id)fsid completionHandler:(id)handler;
+- (void)getAllThumbnailsInfoForCacheAtURL:(id)l completionHandler:(id)handler;
+- (void)getInfoForCacheAtURL:(id)l completionHandler:(id)handler;
+- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)removeThumbnailAdditionsOnURL:(id)l completionBlock:(id)block;
 - (void)reset;
-- (void)setLastHitDateOfAllCachedThumbnailsToDate:(id)a3 withCompletionHandler:(id)a4;
-- (void)thumbnailsStoreURLForURL:(id)a3 completionBlock:(id)a4;
+- (void)setLastHitDateOfAllCachedThumbnailsToDate:(id)date withCompletionHandler:(id)handler;
+- (void)thumbnailsStoreURLForURL:(id)l completionBlock:(id)block;
 @end
 
 @implementation QLThumbnailsService
 
-- (void)thumbnailsStoreURLForURL:(id)a3 completionBlock:(id)a4
+- (void)thumbnailsStoreURLForURL:(id)l completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  blockCopy = block;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -36,54 +36,54 @@
   v17[3] = &unk_100008290;
   v17[4] = self;
   v17[5] = &v18;
-  [v8 coordinateReadingItemAtURL:v6 options:4 error:0 byAccessor:v17];
+  [v8 coordinateReadingItemAtURL:lCopy options:4 error:0 byAccessor:v17];
   if (v19[5])
   {
-    (*(v7 + 2))(v7, 0, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0, 0);
   }
 
   v9 = [QLThumbnailAddition alloc];
   v10 = (v19 + 5);
   obj = v19[5];
-  v11 = [v9 initWithAdditionsPresentOnURL:v6 error:&obj];
+  v11 = [v9 initWithAdditionsPresentOnURL:lCopy error:&obj];
   objc_storeStrong(v10, obj);
   if (v11)
   {
-    v12 = [v11 additionURL];
-    v13 = [v11 metadata];
-    v14 = [v11 additionURL];
-    v15 = sub_100001170(v14);
-    (*(v7 + 2))(v7, v12, v13, v15, 0);
+    additionURL = [v11 additionURL];
+    metadata = [v11 metadata];
+    additionURL2 = [v11 additionURL];
+    v15 = sub_100001170(additionURL2);
+    (*(blockCopy + 2))(blockCopy, additionURL, metadata, v15, 0);
   }
 
   else
   {
-    v12 = [NSError errorWithDomain:QLThumbnailsServiceErrorDomain code:0 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, 0, v12);
+    additionURL = [NSError errorWithDomain:QLThumbnailsServiceErrorDomain code:0 userInfo:0];
+    (*(blockCopy + 2))(blockCopy, 0, 0, 0, additionURL);
   }
 
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)removeThumbnailAdditionsOnURL:(id)a3 completionBlock:(id)a4
+- (void)removeThumbnailAdditionsOnURL:(id)l completionBlock:(id)block
 {
   v7 = 0;
-  v5 = a4;
-  [QLThumbnailAddition removeAdditionsOnURL:a3 error:&v7];
+  blockCopy = block;
+  [QLThumbnailAddition removeAdditionsOnURL:l error:&v7];
   v6 = v7;
-  v5[2](v5, v6);
+  blockCopy[2](blockCopy, v6);
 }
 
-- (void)askThumbnailAdditionIndex:(id)a3
+- (void)askThumbnailAdditionIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   v5 = +[QLThumbnailAdditionIndex sharedInstance];
-  (*(a3 + 2))(v4, v5);
+  (*(index + 2))(indexCopy, v5);
 }
 
-- (id)makeQueueWithBackgroundPriority:(BOOL)a3
+- (id)makeQueueWithBackgroundPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v4 = QOS_CLASS_BACKGROUND;
   }
@@ -93,7 +93,7 @@
     v4 = QOS_CLASS_UTILITY;
   }
 
-  if (a3)
+  if (priority)
   {
     v5 = "com.apple.quicklook.thumbnailGeneration.background";
   }
@@ -103,7 +103,7 @@
     v5 = "com.apple.quicklook.thumbnailGeneration.utility";
   }
 
-  if (a3)
+  if (priority)
   {
     v6 = 16;
   }
@@ -124,33 +124,33 @@
   return v10;
 }
 
-- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
   v7 = +[QLServerThread sharedInstance];
-  [v7 removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:v6 completionHandler:v5];
+  [v7 removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:identifiersCopy completionHandler:handlerCopy];
 }
 
-- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
   v7 = +[QLServerThread sharedInstance];
-  [v7 removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:v6 completionHandler:v5];
+  [v7 removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:identifiersCopy completionHandler:handlerCopy];
 }
 
-- (void)generateSuccessiveThumbnailRepresentationsForRequests:(id)a3 generationHandler:(id)a4 completionHandler:(id)a5
+- (void)generateSuccessiveThumbnailRepresentationsForRequests:(id)requests generationHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v20 = a5;
-  v10 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+  requestsCopy = requests;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v10 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(requestsCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v8;
+  v11 = requestsCopy;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
@@ -166,9 +166,9 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [[QLTGeneratorThumbnailRequest alloc] initWithRequest:*(*(&v23 + 1) + 8 * v15) generationHandler:v9];
-        v17 = [(QLThumbnailsService *)self clientApplicationIdentifier];
-        [v16 setClientApplicationIdentifier:v17];
+        v16 = [[QLTGeneratorThumbnailRequest alloc] initWithRequest:*(*(&v23 + 1) + 8 * v15) generationHandler:handlerCopy];
+        clientApplicationIdentifier = [(QLThumbnailsService *)self clientApplicationIdentifier];
+        [v16 setClientApplicationIdentifier:clientApplicationIdentifier];
 
         [v10 addObject:v16];
         v15 = v15 + 1;
@@ -186,30 +186,30 @@
   v21[1] = 3221225472;
   v21[2] = sub_100001D40;
   v21[3] = &unk_1000082B8;
-  v22 = v20;
-  v19 = v20;
+  v22 = completionHandlerCopy;
+  v19 = completionHandlerCopy;
   [v18 generateSuccessiveThumbnailRepresentationsForGeneratorRequests:v10 completionHandler:v21];
 }
 
-- (void)cancelThumbnailRequests:(id)a3
+- (void)cancelThumbnailRequests:(id)requests
 {
-  v3 = a3;
+  requestsCopy = requests;
   v4 = +[QLServerThread sharedInstance];
-  [v4 cancelThumbnailRequests:v3];
+  [v4 cancelThumbnailRequests:requestsCopy];
 }
 
-- (void)setLastHitDateOfAllCachedThumbnailsToDate:(id)a3 withCompletionHandler:(id)a4
+- (void)setLastHitDateOfAllCachedThumbnailsToDate:(id)date withCompletionHandler:(id)handler
 {
-  v8 = a4;
-  v5 = a3;
+  handlerCopy = handler;
+  dateCopy = date;
   v6 = +[QLServerThread sharedInstance];
-  [v6 setLastHitDateOfAllCachedThumbnailsToDate:v5];
+  [v6 setLastHitDateOfAllCachedThumbnailsToDate:dateCopy];
 
-  v7 = v8;
-  if (v8)
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v8 + 2))(v8);
-    v7 = v8;
+    (*(handlerCopy + 2))(handlerCopy);
+    v7 = handlerCopy;
   }
 }
 
@@ -219,69 +219,69 @@
   [v2 reset];
 }
 
-- (void)canGenerateThumbnailsForContentType:(id)a3 atSize:(CGSize)a4 completionHandler:(id)a5
+- (void)canGenerateThumbnailsForContentType:(id)type atSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a5;
-  v12 = v8;
-  if (a3)
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (type)
   {
-    v9 = [UTType _typeWithIdentifier:a3 allowUndeclared:1];
+    v9 = [UTType _typeWithIdentifier:type allowUndeclared:1];
     v10 = v12;
     if (v9)
     {
-      v11 = [QLPreviewThumbnailGenerator canGenerateThumbnailForContentType:v9 atSize:width, height];
+      height = [QLPreviewThumbnailGenerator canGenerateThumbnailForContentType:v9 atSize:width, height];
       v10 = v12;
     }
 
     else
     {
-      v11 = 0;
+      height = 0;
     }
 
-    v10[2](v10, v11);
+    v10[2](v10, height);
   }
 
   else
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)getAllThumbnailsInfoForCacheAtURL:(id)a3 completionHandler:(id)a4
+- (void)getAllThumbnailsInfoForCacheAtURL:(id)l completionHandler:(id)handler
 {
   v6 = QLServerThreadInstance;
-  v7 = a4;
-  v9 = [v6 cacheThreadForVolume:a3];
-  v8 = [v9 allThumbnailsInfo];
-  (*(a4 + 2))(v7, v8);
+  handlerCopy = handler;
+  v9 = [v6 cacheThreadForVolume:l];
+  allThumbnailsInfo = [v9 allThumbnailsInfo];
+  (*(handler + 2))(handlerCopy, allThumbnailsInfo);
 }
 
-- (void)getInfoForCacheAtURL:(id)a3 completionHandler:(id)a4
+- (void)getInfoForCacheAtURL:(id)l completionHandler:(id)handler
 {
   v6 = QLServerThreadInstance;
-  v7 = a4;
-  v9 = [v6 cacheThreadForVolume:a3];
-  v8 = [v9 cacheInfo];
-  (*(a4 + 2))(v7, v8);
+  handlerCopy = handler;
+  v9 = [v6 cacheThreadForVolume:l];
+  cacheInfo = [v9 cacheInfo];
+  (*(handler + 2))(handlerCopy, cacheInfo);
 }
 
-- (void)getAllThumbnailsForIno:(id)a3 fsid:(id)a4 completionHandler:(id)a5
+- (void)getAllThumbnailsForIno:(id)ino fsid:(id)fsid completionHandler:(id)handler
 {
-  v19 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v7 && [v7 count] == 2)
+  inoCopy = ino;
+  fsidCopy = fsid;
+  handlerCopy = handler;
+  if (fsidCopy && [fsidCopy count] == 2)
   {
-    v9 = [v7 objectAtIndexedSubscript:0];
-    v10 = [v9 intValue];
+    v9 = [fsidCopy objectAtIndexedSubscript:0];
+    intValue = [v9 intValue];
 
-    v11 = [v7 objectAtIndexedSubscript:1];
-    v12 = [v11 intValue];
+    v11 = [fsidCopy objectAtIndexedSubscript:1];
+    intValue2 = [v11 intValue];
 
-    v13 = v12 << 32;
-    v14 = v10;
+    v13 = intValue2 << 32;
+    v14 = intValue;
   }
 
   else
@@ -293,29 +293,29 @@
   v15 = QLServerThreadInstance;
   v16 = [NSURL fileURLWithPath:@"/"];
   v17 = [v15 cacheThreadForVolume:v16];
-  v18 = [v17 allThumbnailsForIno:objc_msgSend(v19 fsid:{"unsignedLongLongValue"), v13 | v14}];
-  v8[2](v8, v18);
+  v18 = [v17 allThumbnailsForIno:objc_msgSend(inoCopy fsid:{"unsignedLongLongValue"), v13 | v14}];
+  handlerCopy[2](handlerCopy, v18);
 }
 
-- (void)getAllThumbnailsForFPItemID:(id)a3 completionHandler:(id)a4
+- (void)getAllThumbnailsForFPItemID:(id)d completionHandler:(id)handler
 {
   v5 = QLServerThreadInstance;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 providerDomainID];
-  v10 = [v5 cacheThreadForProviderDomainID:v8];
+  handlerCopy = handler;
+  dCopy = d;
+  providerDomainID = [dCopy providerDomainID];
+  v10 = [v5 cacheThreadForProviderDomainID:providerDomainID];
 
-  v9 = [v10 allThumbnailsForFPItemID:v7];
+  v9 = [v10 allThumbnailsForFPItemID:dCopy];
 
-  v6[2](v6, v9);
+  handlerCopy[2](handlerCopy, v9);
 }
 
-- (void)fetchAllDataSeparatedVolumesWithCompletionHandler:(id)a3
+- (void)fetchAllDataSeparatedVolumesWithCompletionHandler:(id)handler
 {
   v4 = QLServerThreadInstance;
-  v5 = a3;
-  v6 = [v4 allKnownDataSeparatedVolumes];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  allKnownDataSeparatedVolumes = [v4 allKnownDataSeparatedVolumes];
+  (*(handler + 2))(handlerCopy, allKnownDataSeparatedVolumes);
 }
 
 @end

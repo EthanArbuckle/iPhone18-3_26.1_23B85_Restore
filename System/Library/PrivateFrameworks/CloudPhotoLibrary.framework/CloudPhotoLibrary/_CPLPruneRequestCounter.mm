@@ -1,8 +1,8 @@
 @interface _CPLPruneRequestCounter
 - (NSDictionary)statusDictionary;
 - (NSString)status;
-- (_CPLPruneRequestCounter)initWithTitle:(id)a3 statusKey:(id)a4;
-- (void)noteRequestForResource:(id)a3 successful:(BOOL)a4 prunedSize:(unint64_t)a5;
+- (_CPLPruneRequestCounter)initWithTitle:(id)title statusKey:(id)key;
+- (void)noteRequestForResource:(id)resource successful:(BOOL)successful prunedSize:(unint64_t)size;
 @end
 
 @implementation _CPLPruneRequestCounter
@@ -17,13 +17,13 @@
     v9 = 3221225472;
     v10 = __43___CPLPruneRequestCounter_statusDictionary__block_invoke;
     v11 = &unk_1E861B890;
-    v12 = self;
+    selfCopy = self;
     v5 = v4;
     v13 = v5;
     [CPLResource enumerateResourceTypesWithBlock:&v8];
     if (self->_successSize)
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{v8, v9, v10, v11, v12}];
+      v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{v8, v9, v10, v11, selfCopy}];
       [v3 setObject:v6 forKeyedSubscript:@"size"];
     }
 
@@ -48,7 +48,7 @@
     goto LABEL_5;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{+[CPLResource countOfResourceTypes](CPLResource, "countOfResourceTypes") / 3 + 1}];
   v16[0] = 0;
   v16[1] = v16;
@@ -64,7 +64,7 @@
   v11[1] = 3221225472;
   v11[2] = __33___CPLPruneRequestCounter_status__block_invoke;
   v11[3] = &unk_1E861B868;
-  v11[4] = v2;
+  v11[4] = selfCopy;
   v13 = v16;
   v14 = v15;
   v4 = v3;
@@ -74,10 +74,10 @@
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v7 = [MEMORY[0x1E696AAF0] stringFromByteCount:v2->_successSize countStyle:1];
-    v8 = [CPLDateFormatter stringFromDateAgo:v2->_lastRequestDate now:0];
+    v7 = [MEMORY[0x1E696AAF0] stringFromByteCount:selfCopy->_successSize countStyle:1];
+    v8 = [CPLDateFormatter stringFromDateAgo:selfCopy->_lastRequestDate now:0];
     v9 = [v4 componentsJoinedByString:@"\n\t"];
-    v2 = [v6 initWithFormat:@"%@, %@\n\t%@", v7, v8, v9];
+    selfCopy = [v6 initWithFormat:@"%@, %@\n\t%@", v7, v8, v9];
   }
 
   _Block_object_dispose(v15, 8);
@@ -86,16 +86,16 @@
   if (!v5)
   {
 LABEL_5:
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)noteRequestForResource:(id)a3 successful:(BOOL)a4 prunedSize:(unint64_t)a5
+- (void)noteRequestForResource:(id)resource successful:(BOOL)successful prunedSize:(unint64_t)size
 {
-  v6 = a4;
-  v16 = a3;
+  successfulCopy = successful;
+  resourceCopy = resource;
   [(NSDate *)self->_lastRequestDate timeIntervalSinceNow];
   if (self->_lastRequestDate)
   {
@@ -107,31 +107,31 @@ LABEL_5:
     }
   }
 
-  if (v6)
+  if (successfulCopy)
   {
     successStatsPerResourceType = self->_successStatsPerResourceType;
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v16, "resourceType")}];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(resourceCopy, "resourceType")}];
     [(NSCountedSet *)successStatsPerResourceType addObject:v11];
 
-    self->_successSize += a5;
+    self->_successSize += size;
   }
 
   else
   {
     failedStatsPerResourceType = self->_failedStatsPerResourceType;
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v16, "resourceType")}];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(resourceCopy, "resourceType")}];
     [(NSCountedSet *)failedStatsPerResourceType addObject:v13];
   }
 
-  v14 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   lastRequestDate = self->_lastRequestDate;
-  self->_lastRequestDate = v14;
+  self->_lastRequestDate = date;
 }
 
-- (_CPLPruneRequestCounter)initWithTitle:(id)a3 statusKey:(id)a4
+- (_CPLPruneRequestCounter)initWithTitle:(id)title statusKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  keyCopy = key;
   v18.receiver = self;
   v18.super_class = _CPLPruneRequestCounter;
   v8 = [(_CPLPruneRequestCounter *)&v18 init];
@@ -145,11 +145,11 @@ LABEL_5:
     failedStatsPerResourceType = v8->_failedStatsPerResourceType;
     v8->_failedStatsPerResourceType = v11;
 
-    v13 = [v6 copy];
+    v13 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v13;
 
-    v15 = [v7 copy];
+    v15 = [keyCopy copy];
     statusKey = v8->_statusKey;
     v8->_statusKey = v15;
   }

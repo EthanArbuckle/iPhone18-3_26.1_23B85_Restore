@@ -1,30 +1,30 @@
 @interface HMImmutableSettingsProtoValueEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSettingValueEvent:(id)a3;
+- (int)StringAsSettingValueEvent:(id)event;
 - (int)settingValueEvent;
 - (unint64_t)hash;
 - (void)clearOneofValuesForSettingValueEvent;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setBoolValueEvent:(id)a3;
-- (void)setIntegerValueEvent:(id)a3;
-- (void)setLanguageValueEvent:(id)a3;
-- (void)setStringValueEvent:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setBoolValueEvent:(id)event;
+- (void)setIntegerValueEvent:(id)event;
+- (void)setLanguageValueEvent:(id)event;
+- (void)setStringValueEvent:(id)event;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMImmutableSettingsProtoValueEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 48))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 48))
   {
-    self->_settingValueEvent = *(v4 + 8);
+    self->_settingValueEvent = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
@@ -147,24 +147,24 @@ LABEL_27:
   return v6 ^ [(HMImmutableSettingsProtoLanguageValueEvent *)self->_languageValueEvent hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_settingValueEvent != *(v4 + 8))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_settingValueEvent != *(equalCopy + 8))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -172,13 +172,13 @@ LABEL_15:
   }
 
   stringValueEvent = self->_stringValueEvent;
-  if (stringValueEvent | *(v4 + 5) && ![(HMImmutableSettingsProtoStringValueEvent *)stringValueEvent isEqual:?])
+  if (stringValueEvent | *(equalCopy + 5) && ![(HMImmutableSettingsProtoStringValueEvent *)stringValueEvent isEqual:?])
   {
     goto LABEL_15;
   }
 
   integerValueEvent = self->_integerValueEvent;
-  if (integerValueEvent | *(v4 + 2))
+  if (integerValueEvent | *(equalCopy + 2))
   {
     if (![(HMImmutableSettingsProtoIntegerValueEvent *)integerValueEvent isEqual:?])
     {
@@ -187,7 +187,7 @@ LABEL_15:
   }
 
   BOOLValueEvent = self->_BOOLValueEvent;
-  if (BOOLValueEvent | *(v4 + 1))
+  if (BOOLValueEvent | *(equalCopy + 1))
   {
     if (![(HMImmutableSettingsProtoBoolValueEvent *)BOOLValueEvent isEqual:?])
     {
@@ -196,7 +196,7 @@ LABEL_15:
   }
 
   languageValueEvent = self->_languageValueEvent;
-  if (languageValueEvent | *(v4 + 3))
+  if (languageValueEvent | *(equalCopy + 3))
   {
     v10 = [(HMImmutableSettingsProtoLanguageValueEvent *)languageValueEvent isEqual:?];
   }
@@ -211,9 +211,9 @@ LABEL_16:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -221,118 +221,118 @@ LABEL_16:
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(HMImmutableSettingsProtoStringValueEvent *)self->_stringValueEvent copyWithZone:a3];
+  v7 = [(HMImmutableSettingsProtoStringValueEvent *)self->_stringValueEvent copyWithZone:zone];
   v8 = v6[5];
   v6[5] = v7;
 
-  v9 = [(HMImmutableSettingsProtoIntegerValueEvent *)self->_integerValueEvent copyWithZone:a3];
+  v9 = [(HMImmutableSettingsProtoIntegerValueEvent *)self->_integerValueEvent copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(HMImmutableSettingsProtoBoolValueEvent *)self->_BOOLValueEvent copyWithZone:a3];
+  v11 = [(HMImmutableSettingsProtoBoolValueEvent *)self->_BOOLValueEvent copyWithZone:zone];
   v12 = v6[1];
   v6[1] = v11;
 
-  v13 = [(HMImmutableSettingsProtoLanguageValueEvent *)self->_languageValueEvent copyWithZone:a3];
+  v13 = [(HMImmutableSettingsProtoLanguageValueEvent *)self->_languageValueEvent copyWithZone:zone];
   v14 = v6[3];
   v6[3] = v13;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_settingValueEvent;
-    *(v4 + 48) |= 1u;
+    toCopy[8] = self->_settingValueEvent;
+    *(toCopy + 48) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_stringValueEvent)
   {
-    [v4 setStringValueEvent:?];
-    v4 = v5;
+    [toCopy setStringValueEvent:?];
+    toCopy = v5;
   }
 
   if (self->_integerValueEvent)
   {
     [v5 setIntegerValueEvent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_BOOLValueEvent)
   {
     [v5 setBoolValueEvent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_languageValueEvent)
   {
     [v5 setLanguageValueEvent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_stringValueEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_integerValueEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_BOOLValueEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_languageValueEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   stringValueEvent = self->_stringValueEvent;
   if (stringValueEvent)
   {
-    v5 = [(HMImmutableSettingsProtoStringValueEvent *)stringValueEvent dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"stringValueEvent"];
+    dictionaryRepresentation = [(HMImmutableSettingsProtoStringValueEvent *)stringValueEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"stringValueEvent"];
   }
 
   integerValueEvent = self->_integerValueEvent;
   if (integerValueEvent)
   {
-    v7 = [(HMImmutableSettingsProtoIntegerValueEvent *)integerValueEvent dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"integerValueEvent"];
+    dictionaryRepresentation2 = [(HMImmutableSettingsProtoIntegerValueEvent *)integerValueEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"integerValueEvent"];
   }
 
   BOOLValueEvent = self->_BOOLValueEvent;
   if (BOOLValueEvent)
   {
-    v9 = [(HMImmutableSettingsProtoBoolValueEvent *)BOOLValueEvent dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"BOOLValueEvent"];
+    dictionaryRepresentation3 = [(HMImmutableSettingsProtoBoolValueEvent *)BOOLValueEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"BOOLValueEvent"];
   }
 
   languageValueEvent = self->_languageValueEvent;
   if (languageValueEvent)
   {
-    v11 = [(HMImmutableSettingsProtoLanguageValueEvent *)languageValueEvent dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"languageValueEvent"];
+    dictionaryRepresentation4 = [(HMImmutableSettingsProtoLanguageValueEvent *)languageValueEvent dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"languageValueEvent"];
   }
 
   if (*&self->_has)
@@ -348,10 +348,10 @@ LABEL_16:
       v13 = off_1E754C840[settingValueEvent];
     }
 
-    [v3 setObject:v13 forKey:@"SettingValueEvent"];
+    [dictionary setObject:v13 forKey:@"SettingValueEvent"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -360,8 +360,8 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = HMImmutableSettingsProtoValueEvent;
   v4 = [(HMImmutableSettingsProtoValueEvent *)&v8 description];
-  v5 = [(HMImmutableSettingsProtoValueEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMImmutableSettingsProtoValueEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -383,30 +383,30 @@ LABEL_16:
   self->_languageValueEvent = 0;
 }
 
-- (int)StringAsSettingValueEvent:(id)a3
+- (int)StringAsSettingValueEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"stringValueEvent"])
+  else if ([eventCopy isEqualToString:@"stringValueEvent"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"integerValueEvent"])
+  else if ([eventCopy isEqualToString:@"integerValueEvent"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BOOLValueEvent"])
+  else if ([eventCopy isEqualToString:@"BOOLValueEvent"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"languageValueEvent"])
+  else if ([eventCopy isEqualToString:@"languageValueEvent"])
   {
     v4 = 4;
   }
@@ -432,44 +432,44 @@ LABEL_16:
   }
 }
 
-- (void)setLanguageValueEvent:(id)a3
+- (void)setLanguageValueEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(HMImmutableSettingsProtoValueEvent *)self clearOneofValuesForSettingValueEvent];
   *&self->_has |= 1u;
   self->_settingValueEvent = 4;
   languageValueEvent = self->_languageValueEvent;
-  self->_languageValueEvent = v4;
+  self->_languageValueEvent = eventCopy;
 }
 
-- (void)setBoolValueEvent:(id)a3
+- (void)setBoolValueEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(HMImmutableSettingsProtoValueEvent *)self clearOneofValuesForSettingValueEvent];
   *&self->_has |= 1u;
   self->_settingValueEvent = 3;
   BOOLValueEvent = self->_BOOLValueEvent;
-  self->_BOOLValueEvent = v4;
+  self->_BOOLValueEvent = eventCopy;
 }
 
-- (void)setIntegerValueEvent:(id)a3
+- (void)setIntegerValueEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(HMImmutableSettingsProtoValueEvent *)self clearOneofValuesForSettingValueEvent];
   *&self->_has |= 1u;
   self->_settingValueEvent = 2;
   integerValueEvent = self->_integerValueEvent;
-  self->_integerValueEvent = v4;
+  self->_integerValueEvent = eventCopy;
 }
 
-- (void)setStringValueEvent:(id)a3
+- (void)setStringValueEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(HMImmutableSettingsProtoValueEvent *)self clearOneofValuesForSettingValueEvent];
   *&self->_has |= 1u;
   self->_settingValueEvent = 1;
   stringValueEvent = self->_stringValueEvent;
-  self->_stringValueEvent = v4;
+  self->_stringValueEvent = eventCopy;
 }
 
 @end

@@ -2,100 +2,100 @@
 - (BOOL)_canUseDataTransfer;
 - (BOOL)_clearToDeltaSync;
 - (BOOL)_shouldFakeFailure;
-- (BOOL)service:(id)a3 startSession:(id)a4 error:(id *)a5;
-- (NEKSyncController)initWithEnvironment:(id)a3;
+- (BOOL)service:(id)service startSession:(id)session error:(id *)error;
+- (NEKSyncController)initWithEnvironment:(id)environment;
 - (NEKSyncControllerDelegate)delegate;
 - (double)_fullSessionTimeout;
-- (double)_nextDelay:(int64_t)a3;
+- (double)_nextDelay:(int64_t)delay;
 - (double)getFailureProbablity;
 - (double)getFixedRetryInternal;
 - (double)getMaximumSessionTimeout;
 - (double)getMinimumSessionTimeout;
 - (id)environment;
-- (id)service:(id)a3 willPreferSession:(id)a4 overSession:(id)a5;
+- (id)service:(id)service willPreferSession:(id)session overSession:(id)overSession;
 - (int64_t)_faultCount;
 - (int64_t)maxDeltaRetries;
-- (void)_recvSessionEnded:(id)a3 error:(id)a4;
-- (void)_retrySession:(id)a3;
+- (void)_recvSessionEnded:(id)ended error:(id)error;
+- (void)_retrySession:(id)session;
 - (void)_retrySync;
-- (void)_sendSessionEnded:(id)a3 error:(id)a4;
-- (void)_setClipping:(id)a3;
-- (void)_setFaultCount:(int64_t)a3;
-- (void)_startRecvSession:(id)a3 results:(StartSessionResults *)a4;
-- (void)_startSendSession:(id)a3 results:(StartSessionResults *)a4;
-- (void)activityDefer:(id)a3;
+- (void)_sendSessionEnded:(id)ended error:(id)error;
+- (void)_setClipping:(id)clipping;
+- (void)_setFaultCount:(int64_t)count;
+- (void)_startRecvSession:(id)session results:(StartSessionResults *)results;
+- (void)_startSendSession:(id)session results:(StartSessionResults *)results;
+- (void)activityDefer:(id)defer;
 - (void)bumpFaultsAndScheduleRetry;
-- (void)changeObserverDidObserveChanges:(id)a3;
-- (void)changeObserverDidObserveTruncation:(id)a3;
+- (void)changeObserverDidObserveChanges:(id)changes;
+- (void)changeObserverDidObserveTruncation:(id)truncation;
 - (void)clearRemoteBuildVersion;
 - (void)clearRetryState;
-- (void)createOrUpdateSYObject:(id)a3 eventStore:(id)a4 reminderStore:(id)a5 session:(id)a6;
-- (void)deleteSYObject:(id)a3 eventStore:(id)a4 reminderStore:(id)a5 session:(id)a6;
+- (void)createOrUpdateSYObject:(id)object eventStore:(id)store reminderStore:(id)reminderStore session:(id)session;
+- (void)deleteSYObject:(id)object eventStore:(id)store reminderStore:(id)reminderStore session:(id)session;
 - (void)prepDatabasesForResetSync;
-- (void)recordSuccessForSession:(id)a3 receiving:(BOOL)a4;
+- (void)recordSuccessForSession:(id)session receiving:(BOOL)receiving;
 - (void)scheduleRetry;
-- (void)service:(id)a3 sessionEnded:(id)a4 error:(id)a5;
+- (void)service:(id)service sessionEnded:(id)ended error:(id)error;
 - (void)setNeedsFullSync;
 - (void)setNeedsMigrationSync;
 - (void)setNeedsNightlySync;
 - (void)setNeedsReunionSync;
 - (void)start;
 - (void)tc_advanceChangeNumber;
-- (void)tc_setAutomaticSync:(BOOL)a3;
-- (void)tc_setFailureProbablity:(double)a3;
-- (void)tc_setFixedRetryInternal:(double)a3;
-- (void)tc_setMaximumSessionTimeout:(double)a3;
-- (void)tc_setMinimumSessionTimeout:(double)a3;
+- (void)tc_setAutomaticSync:(BOOL)sync;
+- (void)tc_setFailureProbablity:(double)probablity;
+- (void)tc_setFixedRetryInternal:(double)internal;
+- (void)tc_setMaximumSessionTimeout:(double)timeout;
+- (void)tc_setMinimumSessionTimeout:(double)timeout;
 - (void)tc_setNominal;
-- (void)tc_setObjectDelay:(double)a3;
-- (void)tc_status:(id)a3;
+- (void)tc_setObjectDelay:(double)delay;
+- (void)tc_status:(id)tc_status;
 @end
 
 @implementation NEKSyncController
 
-- (NEKSyncController)initWithEnvironment:(id)a3
+- (NEKSyncController)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v41.receiver = self;
   v41.super_class = NEKSyncController;
   v5 = [(NEKSyncController *)&v41 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v6->_syServiceLock._os_unfair_lock_opaque = 0;
     v7 = sub_100004B98("NEK.sessionIdle");
     sessionIdleQueue = v6->_sessionIdleQueue;
     v6->_sessionIdleQueue = v7;
 
-    v9 = [(NEKSyncController *)v6 environment];
-    v10 = [NEKStore storeForEventWithEnvironment:v9];
+    environment = [(NEKSyncController *)v6 environment];
+    v10 = [NEKStore storeForEventWithEnvironment:environment];
     eventStore = v6->_eventStore;
     v6->_eventStore = v10;
 
-    if ([v4 isReminderKitEnabled])
+    if ([environmentCopy isReminderKitEnabled])
     {
-      v12 = [(NEKSyncController *)v6 environment];
-      v13 = [NEKStore storeForReminderWithEnvironment:v12];
+      environment2 = [(NEKSyncController *)v6 environment];
+      v13 = [NEKStore storeForReminderWithEnvironment:environment2];
       reminderStore = v6->_reminderStore;
       v6->_reminderStore = v13;
     }
 
     else
     {
-      v12 = v6->_reminderStore;
+      environment2 = v6->_reminderStore;
       v6->_reminderStore = 0;
     }
 
-    v15 = [[NEKStatTracker alloc] initWithEnvironment:v4 name:@"resetSync" defaultMean:600.0 defaultStddev:20.0];
+    v15 = [[NEKStatTracker alloc] initWithEnvironment:environmentCopy name:@"resetSync" defaultMean:600.0 defaultStddev:20.0];
     resetTimeoutTracker = v6->_resetTimeoutTracker;
     v6->_resetTimeoutTracker = v15;
 
-    v17 = [[NEKStatTracker alloc] initWithEnvironment:v4 name:@"deltaSync" defaultMean:300.0 defaultStddev:20.0];
+    v17 = [[NEKStatTracker alloc] initWithEnvironment:environmentCopy name:@"deltaSync" defaultMean:300.0 defaultStddev:20.0];
     deltaTimeoutTracker = v6->_deltaTimeoutTracker;
     v6->_deltaTimeoutTracker = v17;
 
-    v19 = [[NEKStatTracker alloc] initWithEnvironment:v4 name:@"nightlySync" defaultMean:300.0 defaultStddev:20.0];
+    v19 = [[NEKStatTracker alloc] initWithEnvironment:environmentCopy name:@"nightlySync" defaultMean:300.0 defaultStddev:20.0];
     nightlyTimeoutTracker = v6->_nightlyTimeoutTracker;
     v6->_nightlyTimeoutTracker = v19;
 
@@ -106,27 +106,27 @@
     [(NEKSyncController *)v6 _setClipping:v6->_deltaTimeoutTracker];
     [(NEKSyncController *)v6 _setClipping:v6->_nightlyTimeoutTracker];
     v6->_isNightlySync = 0;
-    v21 = [(NEKStore *)v6->_eventStore changeObserver];
-    [v21 setDelegate:v6];
+    changeObserver = [(NEKStore *)v6->_eventStore changeObserver];
+    [changeObserver setDelegate:v6];
 
-    v22 = [(NEKStore *)v6->_reminderStore changeObserver];
-    [v22 setDelegate:v6];
+    changeObserver2 = [(NEKStore *)v6->_reminderStore changeObserver];
+    [changeObserver2 setDelegate:v6];
 
     v23 = [NEKRPCEndpoint alloc];
-    v24 = [v4 isReminderKitEnabled];
-    v25 = [v4 clientName];
-    v26 = [(NEKRPCEndpoint *)v23 initWithReminderKitEnabled:v24 clientName:v25];
+    isReminderKitEnabled = [environmentCopy isReminderKitEnabled];
+    clientName = [environmentCopy clientName];
+    v26 = [(NEKRPCEndpoint *)v23 initWithReminderKitEnabled:isReminderKitEnabled clientName:clientName];
     rpcEndpoint = v6->_rpcEndpoint;
     v6->_rpcEndpoint = v26;
 
-    v28 = [[NEKTestControl alloc] initWithEnvironment:v4];
+    v28 = [[NEKTestControl alloc] initWithEnvironment:environmentCopy];
     testingControl = v6->_testingControl;
     v6->_testingControl = v28;
 
-    LODWORD(v24) = [v4 isReminderKitEnabled];
+    LODWORD(isReminderKitEnabled) = [environmentCopy isReminderKitEnabled];
     v30 = *(qword_1000D18A8 + 8);
     v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
-    if (v24)
+    if (isReminderKitEnabled)
     {
       if (v31)
       {
@@ -152,7 +152,7 @@ LABEL_10:
     activity = v6->_activity;
     v6->_activity = v35;
 
-    v37 = [[NEKServicesServer alloc] initWithEnvironment:v4];
+    v37 = [[NEKServicesServer alloc] initWithEnvironment:environmentCopy];
     servicesServer = v6->_servicesServer;
     v6->_servicesServer = v37;
   }
@@ -160,34 +160,34 @@ LABEL_10:
   return v6;
 }
 
-- (void)_setClipping:(id)a3
+- (void)_setClipping:(id)clipping
 {
-  v8 = a3;
+  clippingCopy = clipping;
   [(NEKSyncController *)self getMinimumSessionTimeout];
   v5 = v4;
   [(NEKSyncController *)self getMaximumSessionTimeout];
   v7 = v6;
-  [v8 setMinTimeout:v5];
-  [v8 setMaxTimeout:v7];
+  [clippingCopy setMinTimeout:v5];
+  [clippingCopy setMaxTimeout:v7];
 }
 
 - (BOOL)_canUseDataTransfer
 {
   v2 = +[SYDevice targetableDevice];
-  v3 = [v2 systemBuildVersion];
+  systemBuildVersion = [v2 systemBuildVersion];
 
   v4 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v3;
+    v9 = systemBuildVersion;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Remote system build version: %{public}@", &v8, 0xCu);
   }
 
   v5 = +[NEKCapabilities instance];
-  v6 = [v5 canUseDataTransfer];
+  canUseDataTransfer = [v5 canUseDataTransfer];
 
-  return v6;
+  return canUseDataTransfer;
 }
 
 - (void)start
@@ -288,8 +288,8 @@ LABEL_10:
   }
 
   os_unfair_lock_unlock(&self->_syServiceLock);
-  v25 = [(NEKSyncController *)self environment];
-  [v25 syncCoordinator];
+  environment = [(NEKSyncController *)self environment];
+  [environment syncCoordinator];
 
   [(NEKSyncController *)self setNeedsMigrationSync];
 }
@@ -310,20 +310,20 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Enqueueing a full sync", v6, 2u);
   }
 
-  v4 = [(NEKSyncController *)self environment];
-  v5 = [v4 tinyStore];
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
 
-  [v5 setIntegerValue:1 forKey:@"RetryMustBeReset"];
+  [tinyStore setIntegerValue:1 forKey:@"RetryMustBeReset"];
   [(SYService *)self->_syncService setNeedsResetSync];
 }
 
 - (void)setNeedsReunionSync
 {
-  v3 = [(NEKSyncController *)self _faultCount];
-  v4 = [(NEKSyncController *)self maxDeltaRetries];
+  _faultCount = [(NEKSyncController *)self _faultCount];
+  maxDeltaRetries = [(NEKSyncController *)self maxDeltaRetries];
   v5 = *(qword_1000D18A8 + 8);
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v3 >= v4)
+  if (_faultCount >= maxDeltaRetries)
   {
     if (v6)
     {
@@ -375,14 +375,14 @@ LABEL_10:
 
 - (void)setNeedsMigrationSync
 {
-  v3 = [(NEKSyncController *)self environment];
-  v4 = [v3 tinyStore];
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
 
-  v5 = [(NEKSyncController *)self environment];
-  v6 = [v5 syncCoordinator];
-  v7 = [v6 okToPerformDeltaSync];
+  environment2 = [(NEKSyncController *)self environment];
+  syncCoordinator = [environment2 syncCoordinator];
+  okToPerformDeltaSync = [syncCoordinator okToPerformDeltaSync];
 
-  if (!v7)
+  if (!okToPerformDeltaSync)
   {
     v12 = *(qword_1000D18A8 + 8);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -399,7 +399,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v8 = [v4 getIntegerValueForKey:@"MigrationSyncCount" default:0];
+  v8 = [tinyStore getIntegerValueForKey:@"MigrationSyncCount" default:0];
   v9 = _os_feature_enabled_impl();
   v10 = *(qword_1000D18A8 + 8);
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -429,15 +429,15 @@ LABEL_11:
 
 - (void)_retrySync
 {
-  v3 = [(NEKSyncController *)self environment];
-  v4 = [v3 tinyStore];
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
 
-  v5 = [(NEKSyncController *)self _faultCount];
-  v6 = [v4 getIntegerValueForKey:@"RetryMustBeReset" default:0];
-  [v4 getDoubleValueForKey:@"deferUntil" default:-1.0];
+  _faultCount = [(NEKSyncController *)self _faultCount];
+  v6 = [tinyStore getIntegerValueForKey:@"RetryMustBeReset" default:0];
+  [tinyStore getDoubleValueForKey:@"deferUntil" default:-1.0];
   v8 = v7;
   Current = CFAbsoluteTimeGetCurrent();
-  v10 = [(NEKSyncController *)self maxDeltaRetries];
+  maxDeltaRetries = [(NEKSyncController *)self maxDeltaRetries];
   if (v6)
   {
     v11 = 0;
@@ -445,14 +445,14 @@ LABEL_11:
 
   else
   {
-    v11 = v5 < v10;
+    v11 = _faultCount < maxDeltaRetries;
   }
 
   if (v11)
   {
     v17 = *(qword_1000D18A8 + 8);
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-    if (v5 < 1)
+    if (_faultCount < 1)
     {
       if (Current >= v8)
       {
@@ -482,7 +482,7 @@ LABEL_11:
       if (v18)
       {
         v21 = 67109120;
-        v22 = v5;
+        v22 = _faultCount;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Retrying a failed sync (%d) (delta)", &v21, 8u);
       }
 
@@ -493,8 +493,8 @@ LABEL_11:
 
   else
   {
-    v12 = [(SYService *)self->_syncService currentSession];
-    if (v12 && (v13 = v12, -[SYService currentSession](self->_syncService, "currentSession"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 isResetSync], v14, v13, v15))
+    currentSession = [(SYService *)self->_syncService currentSession];
+    if (currentSession && (v13 = currentSession, -[SYService currentSession](self->_syncService, "currentSession"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 isResetSync], v14, v13, v15))
     {
       v16 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -510,7 +510,7 @@ LABEL_11:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 67109120;
-        v22 = v5;
+        v22 = _faultCount;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Retrying a failed sync (%d) (reset)", &v21, 8u);
       }
 
@@ -519,15 +519,15 @@ LABEL_11:
   }
 }
 
-- (void)createOrUpdateSYObject:(id)a3 eventStore:(id)a4 reminderStore:(id)a5 session:(id)a6
+- (void)createOrUpdateSYObject:(id)object eventStore:(id)store reminderStore:(id)reminderStore session:(id)session
 {
-  v9 = a3;
-  v51 = a4;
-  v50 = a5;
-  v54 = a6;
-  v49 = v9;
-  v52 = [v9 objectAtIndexedSubscript:0];
-  v53 = [v54 delegate];
+  objectCopy = object;
+  storeCopy = store;
+  reminderStoreCopy = reminderStore;
+  sessionCopy = session;
+  v49 = objectCopy;
+  v52 = [objectCopy objectAtIndexedSubscript:0];
+  delegate = [sessionCopy delegate];
   v10 = +[NDTPerf wallTime];
   objc_opt_class();
   v11 = v52;
@@ -541,10 +541,10 @@ LABEL_11:
 
     reminderStore = self->_reminderStore;
     v13 = v11;
-    [(NEKStore *)reminderStore updateSource:v13 store:v50];
-    [(NEKStore *)self->_eventStore updateSource:v13 store:v51];
+    [(NEKStore *)reminderStore updateSource:v13 store:reminderStoreCopy];
+    [(NEKStore *)self->_eventStore updateSource:v13 store:storeCopy];
 
-    [v53 setStoreUpdateTimeNs:{+[NDTPerf wallTime](NDTPerf, "wallTime") + objc_msgSend(v53, "storeUpdateTimeNs") - v10}];
+    [delegate setStoreUpdateTimeNs:{+[NDTPerf wallTime](NDTPerf, "wallTime") + objc_msgSend(delegate, "storeUpdateTimeNs") - v10}];
     goto LABEL_57;
   }
 
@@ -558,8 +558,8 @@ LABEL_11:
     }
 
     v14 = v11;
-    v15 = [v14 attributes];
-    v16 = v15 == 0;
+    attributes = [v14 attributes];
+    v16 = attributes == 0;
 
     if (v16)
     {
@@ -568,7 +568,7 @@ LABEL_11:
         v48 = *(qword_1000D18A8 + 8);
         if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
         {
-          sub_1000729F4(v48, v54, v14);
+          sub_1000729F4(v48, sessionCopy, v14);
         }
 
         goto LABEL_56;
@@ -577,40 +577,40 @@ LABEL_11:
       v38 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
       {
-        sub_100072B00(v38, v54);
+        sub_100072B00(v38, sessionCopy);
       }
     }
 
     else
     {
-      v17 = [v14 attributes];
-      v18 = [v17 supportedEntityTypes];
+      attributes2 = [v14 attributes];
+      supportedEntityTypes = [attributes2 supportedEntityTypes];
 
-      v19 = [(NEKSyncController *)self environment];
-      v20 = [v19 isReminderKitEnabled];
+      environment = [(NEKSyncController *)self environment];
+      isReminderKitEnabled = [environment isReminderKitEnabled];
 
-      if (*&v20 & (v18 >> 1))
+      if (*&isReminderKitEnabled & (supportedEntityTypes >> 1))
       {
         v21 = *(qword_1000D18A8 + 8);
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          sub_100072954(v21, v54);
+          sub_100072954(v21, sessionCopy);
         }
 
-        [(NEKStore *)self->_reminderStore updateCalendar:v14 store:v50];
+        [(NEKStore *)self->_reminderStore updateCalendar:v14 store:reminderStoreCopy];
         goto LABEL_56;
       }
 
-      v39 = [(NEKSyncController *)self environment];
-      v40 = [v39 isReminderKitEnabled];
-      if (v18)
+      environment2 = [(NEKSyncController *)self environment];
+      isReminderKitEnabled2 = [environment2 isReminderKitEnabled];
+      if (supportedEntityTypes)
       {
         v41 = 0;
       }
 
       else
       {
-        v41 = v40;
+        v41 = isReminderKitEnabled2;
       }
 
       v42 = *(qword_1000D18A8 + 8);
@@ -619,18 +619,18 @@ LABEL_11:
         if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
         {
           v43 = v42;
-          v44 = [v54 identifier];
-          v45 = [v14 attributes];
-          v46 = sub_10002CDF8([v45 title]);
-          v47 = [v14 calendarIdentifier];
+          identifier = [sessionCopy identifier];
+          attributes3 = [v14 attributes];
+          v46 = sub_10002CDF8([attributes3 title]);
+          calendarIdentifier = [v14 calendarIdentifier];
           *buf = 138544130;
-          *&buf[4] = v44;
+          *&buf[4] = identifier;
           *&buf[12] = 2114;
           *&buf[14] = v46;
           *&buf[22] = 2114;
-          v67 = v47;
+          v67 = calendarIdentifier;
           v68 = 1024;
-          v69 = v18;
+          v69 = supportedEntityTypes;
           _os_log_error_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "[Session: %{public}@] createOrUpdateSYObject: calendar or list %{public}@/%{public}@ has entitySupportType %d", buf, 0x26u);
         }
 
@@ -639,13 +639,13 @@ LABEL_11:
 
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
       {
-        sub_1000728B4(v42, v54);
+        sub_1000728B4(v42, sessionCopy);
       }
     }
 
-    [(NEKStore *)self->_eventStore updateCalendar:v14 store:v51];
+    [(NEKStore *)self->_eventStore updateCalendar:v14 store:storeCopy];
 LABEL_56:
-    [v53 setCalendarUpdateTimeNs:{+[NDTPerf wallTime](NDTPerf, "wallTime") + objc_msgSend(v53, "calendarUpdateTimeNs") - v10}];
+    [delegate setCalendarUpdateTimeNs:{+[NDTPerf wallTime](NDTPerf, "wallTime") + objc_msgSend(delegate, "calendarUpdateTimeNs") - v10}];
 
     goto LABEL_57;
   }
@@ -660,13 +660,13 @@ LABEL_56:
       sub_1000726E8();
     }
 
-    v24 = [(NEKSyncController *)self environment];
-    v25 = [v24 isReminderKitEnabled];
+    environment3 = [(NEKSyncController *)self environment];
+    isReminderKitEnabled3 = [environment3 isReminderKitEnabled];
 
-    if ((v25 & 1) == 0)
+    if ((isReminderKitEnabled3 & 1) == 0)
     {
-      [(NEKStore *)self->_eventStore updateICS:v9 store:v51 session:v54];
-      [v53 setEventUpdateTimeNs:{+[NDTPerf wallTime](NDTPerf, "wallTime") + objc_msgSend(v53, "eventUpdateTimeNs") - v10}];
+      [(NEKStore *)self->_eventStore updateICS:objectCopy store:storeCopy session:sessionCopy];
+      [delegate setEventUpdateTimeNs:{+[NDTPerf wallTime](NDTPerf, "wallTime") + objc_msgSend(delegate, "eventUpdateTimeNs") - v10}];
       goto LABEL_57;
     }
 
@@ -676,7 +676,7 @@ LABEL_56:
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    obj = v9;
+    obj = objectCopy;
     v27 = [obj countByEnumeratingWithState:&v59 objects:v65 count:16];
     if (!v27)
     {
@@ -705,8 +705,8 @@ LABEL_56:
         v58[4] = v30;
         v58[5] = buf;
         [v30 enumerateCalendarItemIdentifiersUsingBlock:v58];
-        v31 = [(NEKSyncController *)self environment];
-        if ([v31 isReminderKitEnabled])
+        environment4 = [(NEKSyncController *)self environment];
+        if ([environment4 isReminderKitEnabled])
         {
           v32 = *(*&buf[8] + 24) == 2;
 
@@ -727,8 +727,8 @@ LABEL_56:
           v34 = *(qword_1000D18A8 + 8);
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
           {
-            v35 = [v54 identifier];
-            sub_1000727A0(v35, v63, &v64, v34);
+            identifier2 = [sessionCopy identifier];
+            sub_1000727A0(identifier2, v63, &v64, v34);
           }
 
           v33 = v26;
@@ -747,15 +747,15 @@ LABEL_32:
         if ([v26 count])
         {
           v36 = +[NDTPerf wallTime];
-          [(NEKStore *)self->_eventStore updateICS:v26 store:v51 session:v54];
-          [v53 setEventUpdateTimeNs:{+[NDTPerf wallTime](NDTPerf, "wallTime") + objc_msgSend(v53, "eventUpdateTimeNs") - v36}];
+          [(NEKStore *)self->_eventStore updateICS:v26 store:storeCopy session:sessionCopy];
+          [delegate setEventUpdateTimeNs:{+[NDTPerf wallTime](NDTPerf, "wallTime") + objc_msgSend(delegate, "eventUpdateTimeNs") - v36}];
         }
 
         if ([v55 count])
         {
           v37 = +[NDTPerf wallTime];
-          [(NEKStore *)self->_reminderStore updateICS:v55 store:v50 session:v54];
-          [v53 setReminderUpdateTimeNs:{+[NDTPerf wallTime](NDTPerf, "wallTime") + objc_msgSend(v53, "reminderUpdateTimeNs") - v37}];
+          [(NEKStore *)self->_reminderStore updateICS:v55 store:reminderStoreCopy session:sessionCopy];
+          [delegate setReminderUpdateTimeNs:{+[NDTPerf wallTime](NDTPerf, "wallTime") + objc_msgSend(delegate, "reminderUpdateTimeNs") - v37}];
         }
 
         goto LABEL_57;
@@ -771,12 +771,12 @@ LABEL_32:
 LABEL_57:
 }
 
-- (void)deleteSYObject:(id)a3 eventStore:(id)a4 reminderStore:(id)a5 session:(id)a6
+- (void)deleteSYObject:(id)object eventStore:(id)store reminderStore:(id)reminderStore session:(id)session
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  objectCopy = object;
+  storeCopy = store;
+  reminderStoreCopy = reminderStore;
+  sessionCopy = session;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v15 = *(qword_1000D18A8 + 8);
@@ -784,16 +784,16 @@ LABEL_57:
   {
     if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_DEBUG))
     {
-      sub_100072D10(v15, v13);
+      sub_100072D10(v15, sessionCopy);
     }
 
-    v16 = v10;
-    v17 = [(NEKSyncController *)self environment];
-    if ([v17 isReminderKitEnabled])
+    v16 = objectCopy;
+    environment = [(NEKSyncController *)self environment];
+    if ([environment isReminderKitEnabled])
     {
-      v18 = [v16 type];
+      type = [v16 type];
 
-      if (v18 == 3)
+      if (type == 3)
       {
         goto LABEL_12;
       }
@@ -803,20 +803,20 @@ LABEL_57:
     {
     }
 
-    v19 = [(NEKSyncController *)self eventStore];
-    [v19 deleteItem:v16 store:v11];
+    eventStore = [(NEKSyncController *)self eventStore];
+    [eventStore deleteItem:v16 store:storeCopy];
 
-    v20 = [(NEKSyncController *)self environment];
-    if (![v20 isReminderKitEnabled])
+    environment2 = [(NEKSyncController *)self environment];
+    if (![environment2 isReminderKitEnabled])
     {
 LABEL_13:
 
       goto LABEL_14;
     }
 
-    v21 = [v16 type];
+    type2 = [v16 type];
 
-    if (v21 == 3)
+    if (type2 == 3)
     {
 LABEL_14:
 
@@ -824,14 +824,14 @@ LABEL_14:
     }
 
 LABEL_12:
-    v20 = [(NEKSyncController *)self reminderStore];
-    [v20 deleteItem:v16 store:v12];
+    environment2 = [(NEKSyncController *)self reminderStore];
+    [environment2 deleteItem:v16 store:reminderStoreCopy];
     goto LABEL_13;
   }
 
   if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
   {
-    sub_100072C58(v15, v13);
+    sub_100072C58(v15, sessionCopy);
   }
 
 LABEL_15:
@@ -851,25 +851,25 @@ LABEL_15:
 
 - (int64_t)_faultCount
 {
-  v2 = [(NEKSyncController *)self environment];
-  v3 = [v2 tinyStore];
-  v4 = [v3 getIntegerValueForKey:@"FaultCount" default:0];
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
+  v4 = [tinyStore getIntegerValueForKey:@"FaultCount" default:0];
 
   return v4;
 }
 
-- (void)_setFaultCount:(int64_t)a3
+- (void)_setFaultCount:(int64_t)count
 {
-  v5 = [(NEKSyncController *)self environment];
-  v4 = [v5 tinyStore];
-  [v4 setIntegerValue:a3 forKey:@"FaultCount"];
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
+  [tinyStore setIntegerValue:count forKey:@"FaultCount"];
 }
 
-- (void)_retrySession:(id)a3
+- (void)_retrySession:(id)session
 {
-  v4 = [a3 isResetSync];
+  isResetSync = [session isResetSync];
   syncService = self->_syncService;
-  if (v4)
+  if (isResetSync)
   {
 
     [(SYService *)syncService setNeedsResetSync];
@@ -882,18 +882,18 @@ LABEL_15:
   }
 }
 
-- (id)service:(id)a3 willPreferSession:(id)a4 overSession:(id)a5
+- (id)service:(id)service willPreferSession:(id)session overSession:(id)overSession
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  sessionCopy = session;
+  overSessionCopy = overSession;
   v11 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     sub_100072DD0(v11);
   }
 
-  if ([v10 isResetSync])
+  if ([overSessionCopy isResetSync])
   {
     v12 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -902,22 +902,22 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Decided to prefer reset session over delta.", &v22, 2u);
     }
 
-    v13 = v9;
+    v13 = sessionCopy;
   }
 
   else
   {
-    v13 = v10;
-    v10 = v9;
+    v13 = overSessionCopy;
+    overSessionCopy = sessionCopy;
   }
 
   if ([v13 isSending])
   {
     [(NEKSyncController *)self _retrySession:v13];
-    v14 = [v13 delegate];
-    v15 = [v14 progressLiar];
+    delegate = [v13 delegate];
+    progressLiar = [delegate progressLiar];
     preemptedSessionProgressLiar = self->_preemptedSessionProgressLiar;
-    self->_preemptedSessionProgressLiar = v15;
+    self->_preemptedSessionProgressLiar = progressLiar;
 
     [(NEKProgressLiar *)self->_preemptedSessionProgressLiar pause];
   }
@@ -926,37 +926,37 @@ LABEL_15:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = v17;
-    v19 = [v10 identifier];
-    v20 = [v13 identifier];
+    identifier = [overSessionCopy identifier];
+    identifier2 = [v13 identifier];
     v22 = 138543618;
-    v23 = v19;
+    v23 = identifier;
     v24 = 2114;
-    v25 = v20;
+    v25 = identifier2;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Winning session: %{public}@, losing session: %{public}@", &v22, 0x16u);
   }
 
-  return v10;
+  return overSessionCopy;
 }
 
 - (BOOL)_clearToDeltaSync
 {
-  v3 = [(NEKSyncController *)self environment];
-  v4 = [v3 tinyStore];
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
 
-  v5 = [(NEKSyncController *)self _faultCount];
-  v6 = ![v4 getIntegerValueForKey:@"RetryMustBeReset" default:0] && v5 < -[NEKSyncController maxDeltaRetries](self, "maxDeltaRetries");
+  _faultCount = [(NEKSyncController *)self _faultCount];
+  v6 = ![tinyStore getIntegerValueForKey:@"RetryMustBeReset" default:0] && _faultCount < -[NEKSyncController maxDeltaRetries](self, "maxDeltaRetries");
 
   return v6;
 }
 
-- (void)tc_status:(id)a3
+- (void)tc_status:(id)tc_status
 {
-  v4 = a3;
-  v5 = [(NEKSyncController *)self environment];
-  v22 = [v5 tinyStore];
+  tc_statusCopy = tc_status;
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
 
-  v6 = [v22 getIntegerValueForKey:@"tc_automaticSync" default:1];
-  [v22 getDoubleValueForKey:@"lastSuccessfulStamp" default:0.0];
+  v6 = [tinyStore getIntegerValueForKey:@"tc_automaticSync" default:1];
+  [tinyStore getDoubleValueForKey:@"lastSuccessfulStamp" default:0.0];
   v8 = v7;
   if (v7 != 0.0)
   {
@@ -965,15 +965,15 @@ LABEL_15:
     v8 = v8 - v10;
   }
 
-  v11 = [v22 getIntegerValueForKey:@"FaultCount" default:0];
-  [v22 getDoubleValueForKey:@"tc_objectDelay" default:0.0];
+  v11 = [tinyStore getIntegerValueForKey:@"FaultCount" default:0];
+  [tinyStore getDoubleValueForKey:@"tc_objectDelay" default:0.0];
   v13 = v12;
   v14 = objc_opt_new();
   [v14 appendFormat:@"Object delay: %.3f\n", v13];
   [v14 appendFormat:@"Fault count: %d\n", v11];
-  v15 = [(NEKSyncController *)self isCurrentlySyncing];
+  isCurrentlySyncing = [(NEKSyncController *)self isCurrentlySyncing];
   v16 = "No";
-  if (v15)
+  if (isCurrentlySyncing)
   {
     v16 = "Yes";
   }
@@ -1005,7 +1005,7 @@ LABEL_15:
   [v14 appendFormat:@"Probability of failure: %.3f\n", v20];
   [(NEKSyncController *)self getFixedRetryInternal];
   [v14 appendFormat:@"Fixed retry interval: %.3f\n", v21];
-  v4[2](v4, v14);
+  tc_statusCopy[2](tc_statusCopy, v14);
 }
 
 - (void)tc_setNominal
@@ -1019,13 +1019,13 @@ LABEL_15:
   [(NEKSyncController *)self tc_setFixedRetryInternal:-1.0];
 }
 
-- (void)tc_setAutomaticSync:(BOOL)a3
+- (void)tc_setAutomaticSync:(BOOL)sync
 {
-  v3 = a3;
-  v4 = [(NEKSyncController *)self environment];
-  v5 = [v4 tinyStore];
+  syncCopy = sync;
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
 
-  [v5 setIntegerValue:v3 forKey:@"tc_automaticSync"];
+  [tinyStore setIntegerValue:syncCopy forKey:@"tc_automaticSync"];
 }
 
 - (void)tc_advanceChangeNumber
@@ -1034,17 +1034,17 @@ LABEL_15:
   [v2 postNotificationName:@"NEKBlindChangeNumberAdvance" object:0];
 }
 
-- (void)tc_setObjectDelay:(double)a3
+- (void)tc_setObjectDelay:(double)delay
 {
-  v5 = [(NEKSyncController *)self environment];
-  v4 = [v5 tinyStore];
-  [v4 setDoubleValue:@"tc_objectDelay" forKey:a3];
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
+  [tinyStore setDoubleValue:@"tc_objectDelay" forKey:delay];
 }
 
-- (void)tc_setMinimumSessionTimeout:(double)a3
+- (void)tc_setMinimumSessionTimeout:(double)timeout
 {
   v4 = [NSNumber numberWithDouble:?];
-  if (a3 <= 0.0)
+  if (timeout <= 0.0)
   {
     v5 = 0;
   }
@@ -1057,10 +1057,10 @@ LABEL_15:
   CFPreferencesSetAppValue(@"minSessionTimeout", v5, @"com.apple.EventKitSync");
 }
 
-- (void)tc_setMaximumSessionTimeout:(double)a3
+- (void)tc_setMaximumSessionTimeout:(double)timeout
 {
   v4 = [NSNumber numberWithDouble:?];
-  if (a3 <= 0.0)
+  if (timeout <= 0.0)
   {
     v5 = 0;
   }
@@ -1073,10 +1073,10 @@ LABEL_15:
   CFPreferencesSetAppValue(@"maxSessionTimeout", v5, @"com.apple.EventKitSync");
 }
 
-- (void)tc_setFailureProbablity:(double)a3
+- (void)tc_setFailureProbablity:(double)probablity
 {
   v4 = [NSNumber numberWithDouble:?];
-  if (a3 <= 0.0)
+  if (probablity <= 0.0)
   {
     v5 = &off_1000BB8E8;
   }
@@ -1089,10 +1089,10 @@ LABEL_15:
   CFPreferencesSetAppValue(@"internal_probabilityOfSyncFailure", v5, @"com.apple.EventKitSync");
 }
 
-- (void)tc_setFixedRetryInternal:(double)a3
+- (void)tc_setFixedRetryInternal:(double)internal
 {
   v4 = [NSNumber numberWithDouble:?];
-  if (a3 <= 0.0)
+  if (internal <= 0.0)
   {
     v5 = 0;
   }
@@ -1181,17 +1181,17 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)service:(id)a3 startSession:(id)a4 error:(id *)a5
+- (BOOL)service:(id)service startSession:(id)session error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  serviceCopy = service;
+  sessionCopy = session;
   v10 = self->_sessionIdleQueue;
   v11 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v9 identifier];
-    if ([v9 isSending])
+    identifier = [sessionCopy identifier];
+    if ([sessionCopy isSending])
     {
       v14 = @"sending";
     }
@@ -1201,12 +1201,12 @@ LABEL_15:
       v14 = @"receiving";
     }
 
-    v15 = [v9 isResetSync];
+    isResetSync = [sessionCopy isResetSync];
     v16 = @"delta";
     *buf = 138543874;
-    v49 = v13;
+    v49 = identifier;
     v50 = 2114;
-    if (v15)
+    if (isResetSync)
     {
       v16 = @"reset";
     }
@@ -1222,7 +1222,7 @@ LABEL_15:
     v41 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
-      sub_100072E78(v41, v9);
+      sub_100072E78(v41, sessionCopy);
     }
 
     abort();
@@ -1232,7 +1232,7 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = sub_10004075C;
   block[3] = &unk_1000B4BB8;
-  v17 = v9;
+  v17 = sessionCopy;
   v44 = v17;
   v18 = v10;
   v45 = v18;
@@ -1241,15 +1241,15 @@ LABEL_15:
   syncSession = self->_syncSession;
   self->_syncSession = v19;
 
-  v21 = [(NEKSyncController *)self environment];
-  [(NEKSyncSession *)self->_syncSession setEnvironment:v21];
+  environment = [(NEKSyncController *)self environment];
+  [(NEKSyncSession *)self->_syncSession setEnvironment:environment];
 
   v22 = objc_alloc_init(NDTPerf);
   [(NEKSyncSession *)self->_syncSession setPerfomanceTracker:v22];
 
-  v23 = [(NEKSyncController *)self environment];
-  v24 = [v23 tinyStore];
-  [v24 getDoubleValueForKey:@"tc_objectDelay" default:0.0];
+  environment2 = [(NEKSyncController *)self environment];
+  tinyStore = [environment2 tinyStore];
+  [tinyStore getDoubleValueForKey:@"tc_objectDelay" default:0.0];
   [(NEKSyncSession *)self->_syncSession setObjectDelayUs:(v25 * 1000000.0)];
 
   *v42 = xmmword_1000A2810;
@@ -1263,16 +1263,16 @@ LABEL_15:
     [(NEKSyncController *)self _startRecvSession:v17 results:v42];
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v42[1];
+    *error = v42[1];
   }
 
   v26 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    v27 = [v17 identifier];
-    sub_100072F14(v27, v42, buf, v26);
+    identifier2 = [v17 identifier];
+    sub_100072F14(identifier2, v42, buf, v26);
   }
 
   v28 = self->_syncSession;
@@ -1284,9 +1284,9 @@ LABEL_15:
 
     [v17 setCanRestart:0];
     [v17 setCanRollback:0];
-    v30 = [(NEKSyncController *)self environment];
-    v31 = [v30 recordMap];
-    [v31 begin];
+    environment3 = [(NEKSyncController *)self environment];
+    recordMap = [environment3 recordMap];
+    [recordMap begin];
 
     kdebug_trace();
   }
@@ -1300,25 +1300,25 @@ LABEL_15:
       v32 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [v17 identifier];
+        identifier3 = [v17 identifier];
         *v46 = 138543362;
-        v47 = v33;
+        v47 = identifier3;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[Session: %{public}@] startSession: no session created, declaring completion to PSYSync", v46, 0xCu);
       }
 
-      v34 = [(NEKSyncController *)self environment];
-      v35 = [v34 syncCoordinator];
-      v36 = [v35 session];
-      [v36 syncDidComplete];
+      environment4 = [(NEKSyncController *)self environment];
+      syncCoordinator = [environment4 syncCoordinator];
+      session = [syncCoordinator session];
+      [session syncDidComplete];
     }
 
     atomic_fetch_add(&self->_sessionDepth, 0xFFFFFFFF);
     v37 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = [v17 identifier];
+      identifier4 = [v17 identifier];
       *v46 = 138543362;
-      v47 = v38;
+      v47 = identifier4;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "[Session: %{public}@] startSession: resuming sessionIdleQueue", v46, 0xCu);
     }
 
@@ -1330,31 +1330,31 @@ LABEL_15:
   return v39 & 1;
 }
 
-- (void)_startSendSession:(id)a3 results:(StartSessionResults *)a4
+- (void)_startSendSession:(id)session results:(StartSessionResults *)results
 {
-  v6 = a3;
+  sessionCopy = session;
   v7 = objc_alloc_init(NEKResultsFetcher);
-  v8 = [(NEKSyncController *)self eventStore];
-  [(NEKResultsFetcher *)v7 setNekEventStore:v8];
+  eventStore = [(NEKSyncController *)self eventStore];
+  [(NEKResultsFetcher *)v7 setNekEventStore:eventStore];
 
-  v9 = [(NEKSyncController *)self reminderStore];
-  [(NEKResultsFetcher *)v7 setNekReminderStore:v9];
+  reminderStore = [(NEKSyncController *)self reminderStore];
+  [(NEKResultsFetcher *)v7 setNekReminderStore:reminderStore];
 
-  v10 = [(NEKSyncController *)self environment];
-  v11 = [v10 tinyStore];
-  [v11 getDoubleValueForKey:@"RetryDueDate" default:-1.0];
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
+  [tinyStore getDoubleValueForKey:@"RetryDueDate" default:-1.0];
   v13 = v12;
 
   v14 = v13 != -1.0 && v13 < CFAbsoluteTimeGetCurrent();
-  v15 = [(NEKSyncController *)self _clearToDeltaSync];
+  _clearToDeltaSync = [(NEKSyncController *)self _clearToDeltaSync];
   v78[0] = _NSConcreteStackBlock;
   v78[1] = 3221225472;
   v78[2] = sub_100041294;
   v78[3] = &unk_1000B5998;
   v78[4] = self;
-  v78[5] = a4;
+  v78[5] = results;
   v16 = objc_retainBlock(v78);
-  if ([v6 isResetSync])
+  if ([sessionCopy isResetSync])
   {
     v17 = [[NEKResultsPipe alloc] initWithFIFOLength:8 name:@"ResetSyncPipe"];
     [(NEKResultsFetcher *)v7 fetchEverythingIntoPipe:v17];
@@ -1364,22 +1364,22 @@ LABEL_8:
     [(NEKSyncSession *)self->_syncSession setStatsTracker:resetTimeoutTracker];
 LABEL_9:
 
-    v19 = [(NEKSyncSession *)self->_syncSession changeSupplier];
-    v20 = [v19 completion];
+    changeSupplier = [(NEKSyncSession *)self->_syncSession changeSupplier];
+    completion = [changeSupplier completion];
     completion = self->_completion;
-    self->_completion = v20;
+    self->_completion = completion;
 
-    v22 = [(NEKSyncSession *)self->_syncSession changeSupplier];
-    [v22 sealCompletions];
+    changeSupplier2 = [(NEKSyncSession *)self->_syncSession changeSupplier];
+    [changeSupplier2 sealCompletions];
 
     [(NEKSyncSession *)self->_syncSession setStart:CFAbsoluteTimeGetCurrent()];
     [(NEKSyncController *)self _fullSessionTimeout];
-    [v6 setFullSessionTimeout:?];
+    [sessionCopy setFullSessionTimeout:?];
     if (self->_preemptedSessionProgressLiar)
     {
       [(NEKSyncSession *)self->_syncSession setProgressLiar:?];
-      v23 = [(NEKSyncSession *)self->_syncSession progressLiar];
-      [v23 resume];
+      progressLiar = [(NEKSyncSession *)self->_syncSession progressLiar];
+      [progressLiar resume];
 
       preemptedSessionProgressLiar = self->_preemptedSessionProgressLiar;
       self->_preemptedSessionProgressLiar = 0;
@@ -1388,24 +1388,24 @@ LABEL_9:
     else
     {
       v25 = [NEKProgressLiar alloc];
-      [v6 fullSessionTimeout];
+      [sessionCopy fullSessionTimeout];
       v27 = v26;
-      v28 = [(NEKSyncController *)self environment];
-      v29 = [v28 syncCoordinator];
-      v30 = [v29 session];
-      v31 = [(NEKProgressLiar *)v25 initWithSpan:v30 session:v27];
+      environment2 = [(NEKSyncController *)self environment];
+      syncCoordinator = [environment2 syncCoordinator];
+      session = [syncCoordinator session];
+      v31 = [(NEKProgressLiar *)v25 initWithSpan:session session:v27];
       [(NEKSyncSession *)self->_syncSession setProgressLiar:v31];
 
       preemptedSessionProgressLiar = [(NEKSyncSession *)self->_syncSession progressLiar];
       [preemptedSessionProgressLiar start];
     }
 
-    [v6 setMaxConcurrentMessages:2];
-    [v6 setPerMessageTimeout:300.0];
+    [sessionCopy setMaxConcurrentMessages:2];
+    [sessionCopy setPerMessageTimeout:300.0];
     v32 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000730D0(v32, v6);
+      sub_1000730D0(v32, sessionCopy);
     }
 
     v80 = off_1000D1570;
@@ -1413,7 +1413,7 @@ LABEL_9:
     v33 = [NSArray arrayWithObjects:&v79 count:1];
     v81 = v33;
     v34 = [NSDictionary dictionaryWithObjects:&v81 forKeys:&v80 count:1];
-    [v6 setSessionMetadata:v34];
+    [sessionCopy setSessionMetadata:v34];
 
     v35 = objc_autoreleasePoolPush();
     +[NEKCalendarID resetLocalCalendarCache];
@@ -1430,11 +1430,11 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (v15)
+  if (_clearToDeltaSync)
   {
-    v36 = [(NEKSyncController *)self environment];
-    v37 = [v36 tinyStore];
-    [v37 getDoubleValueForKey:@"deferUntil" default:1.79769313e308];
+    environment3 = [(NEKSyncController *)self environment];
+    tinyStore2 = [environment3 tinyStore];
+    [tinyStore2 getDoubleValueForKey:@"deferUntil" default:1.79769313e308];
     v39 = v38;
 
     v40 = v39 > CFAbsoluteTimeGetCurrent() && [(NEKSyncController *)self _faultCount]== 0;
@@ -1442,7 +1442,7 @@ LABEL_9:
     v44 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
     {
-      sub_100072F80(v44, v6);
+      sub_100072F80(v44, sessionCopy);
     }
 
     [(NEKResultsFetcher *)v7 fetchChangesIntoPipe:v17 deferrable:v40, @"deferUntil"];
@@ -1467,19 +1467,19 @@ LABEL_9:
         if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
         {
           v51 = v50;
-          v52 = [v6 identifier];
+          identifier = [sessionCopy identifier];
           *buf = 138543362;
-          v83 = v52;
+          v83 = identifier;
           _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "[Session: %{public}@] startSendSession: empty change set, not starting a sync session", buf, 0xCu);
         }
 
         [(NDTResultsFIFO *)v17 terminateIfNotFinished];
-        v53 = [(NEKResultsPipe *)v17 completion];
+        completion2 = [(NEKResultsPipe *)v17 completion];
 
-        if (v53)
+        if (completion2)
         {
-          v54 = [(NEKResultsPipe *)v17 completion];
-          v54[2]();
+          completion3 = [(NEKResultsPipe *)v17 completion];
+          completion3[2]();
         }
       }
 
@@ -1493,14 +1493,14 @@ LABEL_9:
             if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
             {
               v69 = v68;
-              v70 = [v6 identifier];
+              identifier2 = [sessionCopy identifier];
               *buf = 138543362;
-              v83 = v70;
+              v83 = identifier2;
               _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "[Session: %{public}@] startSendSession: no changes affect next 24hrs, adding nonwaking push priority for IDS session", buf, 0xCu);
             }
 
-            v71 = [v6 options];
-            v72 = [v71 mutableCopy];
+            options = [sessionCopy options];
+            v72 = [options mutableCopy];
             v73 = v72;
             if (v72)
             {
@@ -1517,7 +1517,7 @@ LABEL_9:
             [v75 setObject:&__kCFBooleanTrue forKey:IDSSendMessageOptionNonWakingKey];
             [v75 setObject:&off_1000BB7D8 forKey:IDSSendMessageOptionPushPriorityKey];
             v76 = [v75 copy];
-            [v6 setOptions:v76];
+            [sessionCopy setOptions:v76];
           }
 
           [(NEKSyncSession *)self->_syncSession setChangeSupplier:v17];
@@ -1529,22 +1529,22 @@ LABEL_9:
         if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
         {
           v56 = v55;
-          v57 = [v6 identifier];
+          identifier3 = [sessionCopy identifier];
           *buf = 138543362;
-          v83 = v57;
+          v83 = identifier3;
           _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "[Session: %{public}@] startSendSession: change set deferrable, not starting session", buf, 0xCu);
         }
 
-        v58 = [(NEKSyncController *)self environment];
-        v59 = [v58 tinyStore];
-        [v59 getDoubleValueForKey:v77 default:-1.0];
+        environment4 = [(NEKSyncController *)self environment];
+        tinyStore3 = [environment4 tinyStore];
+        [tinyStore3 getDoubleValueForKey:v77 default:-1.0];
         v61 = v60;
 
         if (v61 == -1.0)
         {
-          v62 = [(NEKSyncController *)self environment];
-          v63 = [v62 tinyStore];
-          [v63 setDoubleValue:v77 forKey:CFAbsoluteTimeGetCurrent() + 300.0];
+          environment5 = [(NEKSyncController *)self environment];
+          tinyStore4 = [environment5 tinyStore];
+          [tinyStore4 setDoubleValue:v77 forKey:CFAbsoluteTimeGetCurrent() + 300.0];
 
           [(NEKSyncController *)self scheduleDeferredRetry];
         }
@@ -1552,7 +1552,7 @@ LABEL_9:
         [(NDTResultsFIFO *)v17 terminateIfNotFinished];
       }
 
-      a4->var0 = 0;
+      results->var0 = 0;
     }
 
     goto LABEL_15;
@@ -1564,9 +1564,9 @@ LABEL_9:
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       v42 = v41;
-      v43 = [v6 identifier];
+      identifier4 = [sessionCopy identifier];
       *buf = 138543362;
-      v83 = v43;
+      v83 = identifier4;
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "[Session: %{public}@] startSendSession: retry is overdue, setting needsFullSync", buf, 0xCu);
     }
 
@@ -1582,9 +1582,9 @@ LABEL_9:
       if (v47)
       {
         v48 = v46;
-        v49 = [v6 identifier];
+        identifier5 = [sessionCopy identifier];
         *buf = 138543362;
-        v83 = v49;
+        v83 = identifier5;
         _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "[Session: %{public}@] startSendSession: denied a delta sync with no backup due date, scheduling retry", buf, 0xCu);
       }
 
@@ -1597,13 +1597,13 @@ LABEL_9:
       if (v47)
       {
         v64 = v46;
-        v65 = [v6 identifier];
-        v66 = [v6 isResetSync];
+        identifier6 = [sessionCopy identifier];
+        isResetSync = [sessionCopy isResetSync];
         isNightlySync = self->_isNightlySync;
         *buf = 138544130;
-        v83 = v65;
+        v83 = identifier6;
         v84 = 1024;
-        v85 = v66;
+        v85 = isResetSync;
         v86 = 1024;
         v87 = isNightlySync;
         v88 = 1024;
@@ -1612,36 +1612,36 @@ LABEL_9:
       }
 
       [(NEKSyncController *)self scheduleRetry];
-      a4->var0 = 0;
+      results->var0 = 0;
     }
   }
 
 LABEL_15:
 }
 
-- (void)_startRecvSession:(id)a3 results:(StartSessionResults *)a4
+- (void)_startRecvSession:(id)session results:(StartSessionResults *)results
 {
   v6 = off_1000D1570;
   v7 = off_1000D1578;
-  v4 = a3;
+  sessionCopy = session;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
-  [v4 setSessionMetadata:v5];
+  [sessionCopy setSessionMetadata:v5];
 }
 
 - (double)_fullSessionTimeout
 {
-  v3 = [(NEKSyncSession *)self->_syncSession statsTracker];
-  [v3 nextTimeout];
+  statsTracker = [(NEKSyncSession *)self->_syncSession statsTracker];
+  [statsTracker nextTimeout];
   v5 = v4;
 
   v6 = sub_10004157C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(NEKSyncSession *)self->_syncSession statsTracker];
-    [v7 mean];
+    statsTracker2 = [(NEKSyncSession *)self->_syncSession statsTracker];
+    [statsTracker2 mean];
     v9 = v8;
-    v10 = [(NEKSyncSession *)self->_syncSession statsTracker];
-    [v10 stddev];
+    statsTracker3 = [(NEKSyncSession *)self->_syncSession statsTracker];
+    [statsTracker3 stddev];
     *buf = 134218240;
     v20 = v9;
     v21 = 2048;
@@ -1698,12 +1698,12 @@ LABEL_15:
   return result;
 }
 
-- (double)_nextDelay:(int64_t)a3
+- (double)_nextDelay:(int64_t)delay
 {
   [(NEKSyncController *)self getFixedRetryInternal];
   if (result <= 0.0)
   {
-    return fmin(pow(1.5, (a3 - 1)) * 60.0, 5400.0);
+    return fmin(pow(1.5, (delay - 1)) * 60.0, 5400.0);
   }
 
   return result;
@@ -1711,34 +1711,34 @@ LABEL_15:
 
 - (void)scheduleRetry
 {
-  v3 = [(NEKSyncController *)self environment];
-  v8 = [v3 tinyStore];
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
 
-  v4 = [(NEKSyncController *)self _faultCount];
-  if (v4 >= 1)
+  _faultCount = [(NEKSyncController *)self _faultCount];
+  if (_faultCount >= 1)
   {
-    v5 = v4;
+    v5 = _faultCount;
     if ([(SYService *)self->_syncService targetIsConnected])
     {
       [(NEKSyncController *)self _nextDelay:v5];
       v7 = v6;
-      [v8 setDoubleValue:@"RetryDueDate" forKey:v6 + CFAbsoluteTimeGetCurrent()];
+      [tinyStore setDoubleValue:@"RetryDueDate" forKey:v6 + CFAbsoluteTimeGetCurrent()];
       [(NDTActivity *)self->_activity completeAndFireIn:v7];
     }
 
     else
     {
-      [v8 setDoubleValue:@"RetryDueDate" forKey:-1.0];
+      [tinyStore setDoubleValue:@"RetryDueDate" forKey:-1.0];
       [(NDTActivity *)self->_activity completeAndFireOnConnection];
     }
   }
 }
 
-- (void)activityDefer:(id)a3
+- (void)activityDefer:(id)defer
 {
-  v4 = [(SYService *)self->_syncService currentSession];
+  currentSession = [(SYService *)self->_syncService currentSession];
 
-  if (v4)
+  if (currentSession)
   {
     v5 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1747,8 +1747,8 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "XPC activity deferral requested.", v7, 2u);
     }
 
-    v6 = [(SYService *)self->_syncService currentSession];
-    [v6 cancel];
+    currentSession2 = [(SYService *)self->_syncService currentSession];
+    [currentSession2 cancel];
 
     [(NEKSyncController *)self bumpFaultsAndScheduleRetry];
   }
@@ -1769,12 +1769,12 @@ LABEL_15:
 
 - (void)clearRetryState
 {
-  v3 = [(NEKSyncController *)self environment];
-  v4 = [v3 tinyStore];
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
 
   [(NEKSyncController *)self _setFaultCount:0];
-  [v4 setIntegerValue:0 forKey:@"RetryMustBeReset"];
-  [v4 setDoubleValue:@"RetryDueDate" forKey:-1.0];
+  [tinyStore setIntegerValue:0 forKey:@"RetryMustBeReset"];
+  [tinyStore setDoubleValue:@"RetryDueDate" forKey:-1.0];
 }
 
 - (void)bumpFaultsAndScheduleRetry
@@ -1784,27 +1784,27 @@ LABEL_15:
   [(NEKSyncController *)self scheduleRetry];
 }
 
-- (void)service:(id)a3 sessionEnded:(id)a4 error:(id)a5
+- (void)service:(id)service sessionEnded:(id)ended error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  endedCopy = ended;
+  errorCopy = error;
   kdebug_trace();
   v42 = os_transaction_create();
   v11 = self->_syncSession;
-  v12 = [(NEKSyncSession *)v11 changeSupplier];
-  [v12 terminateIfNotFinished];
+  changeSupplier = [(NEKSyncSession *)v11 changeSupplier];
+  [changeSupplier terminateIfNotFinished];
 
-  v13 = [(NEKSyncSession *)v11 perfomanceTracker];
-  v14 = [NDTPerf nowMinusPrevious:v13];
+  perfomanceTracker = [(NEKSyncSession *)v11 perfomanceTracker];
+  v14 = [NDTPerf nowMinusPrevious:perfomanceTracker];
 
   v15 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v9 identifier];
-    v18 = v8;
-    if ([v9 isSending])
+    identifier = [endedCopy identifier];
+    v18 = serviceCopy;
+    if ([endedCopy isSending])
     {
       v19 = @"sending";
     }
@@ -1814,8 +1814,8 @@ LABEL_15:
       v19 = @"receiving";
     }
 
-    v20 = v10;
-    if ([v9 isResetSync])
+    v20 = errorCopy;
+    if ([endedCopy isResetSync])
     {
       v21 = @"reset";
     }
@@ -1830,13 +1830,13 @@ LABEL_15:
     v23 = v22 = v11;
     [v14 cpuTimeMs];
     *buf = 138544642;
-    v44 = v17;
+    v44 = identifier;
     v45 = 2114;
     v46 = v19;
-    v8 = v18;
+    serviceCopy = v18;
     v47 = 2114;
     v48 = v21;
-    v10 = v20;
+    errorCopy = v20;
     v49 = 2114;
     v50 = v23;
     v51 = 2048;
@@ -1849,47 +1849,47 @@ LABEL_15:
     self = log;
   }
 
-  if (v9)
+  if (endedCopy)
   {
-    v25 = [v8 currentSession];
+    currentSession = [serviceCopy currentSession];
 
-    if (v25 == v9)
+    if (currentSession == endedCopy)
     {
-      if ([v9 isSending])
+      if ([endedCopy isSending])
       {
-        [(NEKSyncController *)self _sendSessionEnded:v9 error:v10];
+        [(NEKSyncController *)self _sendSessionEnded:endedCopy error:errorCopy];
       }
 
       else
       {
-        [(NEKSyncController *)self _recvSessionEnded:v9 error:v10];
+        [(NEKSyncController *)self _recvSessionEnded:endedCopy error:errorCopy];
       }
     }
 
     else
     {
-      v26 = [v8 currentSession];
+      currentSession2 = [serviceCopy currentSession];
 
       v27 = *(qword_1000D18A8 + 8);
       v28 = os_log_type_enabled(v27, OS_LOG_TYPE_ERROR);
-      if (v26)
+      if (currentSession2)
       {
         if (v28)
         {
           loga = v27;
-          v38 = [v9 identifier];
-          [v8 currentSession];
+          identifier2 = [endedCopy identifier];
+          [serviceCopy currentSession];
           v29 = v39 = v11;
-          v30 = [v29 identifier];
-          v31 = [v9 identifier];
+          identifier3 = [v29 identifier];
+          identifier4 = [endedCopy identifier];
           *buf = 138544130;
-          v44 = v38;
+          v44 = identifier2;
           v45 = 2114;
-          v46 = v30;
+          v46 = identifier3;
           v47 = 2114;
-          v48 = v31;
+          v48 = identifier4;
           v49 = 2114;
-          v50 = v10;
+          v50 = errorCopy;
           _os_log_error_impl(&_mh_execute_header, loga, OS_LOG_TYPE_ERROR, "[Session: %{public}@] sessionEnded: currentSession [%{public}@] != ending session [%{public}@], error [%{public}@]", buf, 0x2Au);
 
           v11 = v39;
@@ -1912,7 +1912,7 @@ LABEL_15:
     }
   }
 
-  [v9 setDelegate:0];
+  [endedCopy setDelegate:0];
   [(NEKSyncSession *)v11 setChangeSupplier:0];
   syncSession = self->_syncSession;
   self->_syncSession = 0;
@@ -1932,41 +1932,41 @@ LABEL_15:
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
     v36 = v35;
-    v37 = [v9 identifier];
+    identifier5 = [endedCopy identifier];
     *buf = 138543362;
-    v44 = v37;
+    v44 = identifier5;
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "[Session: %{public}@] sessionEnded: resuming sessionIdleQueue", buf, 0xCu);
   }
 
   dispatch_resume(self->_sessionIdleQueue);
 }
 
-- (void)_sendSessionEnded:(id)a3 error:(id)a4
+- (void)_sendSessionEnded:(id)ended error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 delegate];
-  v9 = [(NEKSyncController *)self environment];
-  v10 = [v9 tinyStore];
+  endedCopy = ended;
+  errorCopy = error;
+  delegate = [endedCopy delegate];
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
 
-  v11 = [v8 progressLiar];
-  [v11 doneForRealNotifyingPairedSync:1];
+  progressLiar = [delegate progressLiar];
+  [progressLiar doneForRealNotifyingPairedSync:1];
 
   [(NDTActivity *)self->_activity completeAndFireNever];
-  if (v7 || [(NEKSyncController *)self _shouldFakeFailure])
+  if (errorCopy || [(NEKSyncController *)self _shouldFakeFailure])
   {
     v12 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_1000733CC(v12, v6);
+      sub_1000733CC(v12, endedCopy);
     }
 
     completion = self->_completion;
     self->_completion = 0;
 
-    v14 = [(NEKSyncController *)self environment];
-    v15 = [v14 recordMap];
-    [v15 rollback];
+    environment2 = [(NEKSyncController *)self environment];
+    recordMap = [environment2 recordMap];
+    [recordMap rollback];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -1983,18 +1983,18 @@ LABEL_15:
     v17 = *(*&buf[8] + 40);
     *(*&buf[8] + 40) = v16;
 
-    if (([v6 isResetSync] & 1) != 0 || self->_isNightlySync)
+    if (([endedCopy isResetSync] & 1) != 0 || self->_isNightlySync)
     {
       v18 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v6 identifier];
-        sub_100073498(v19, self, v89, v18);
+        identifier = [endedCopy identifier];
+        sub_100073498(identifier, self, v89, v18);
       }
 
       self->_isNightlySync = 0;
-      [v10 setIntegerValue:1 forKey:@"RetryMustBeReset"];
-      if ([v7 code] != -128)
+      [tinyStore setIntegerValue:1 forKey:@"RetryMustBeReset"];
+      if ([errorCopy code] != -128)
       {
         v20 = *(*&buf[8] + 40);
         location[1] = _NSConcreteStackBlock;
@@ -2006,31 +2006,31 @@ LABEL_15:
       }
     }
 
-    if (v7)
+    if (errorCopy)
     {
-      v21 = [v8 changeSupplier];
-      [v21 setError:v7];
+      changeSupplier = [delegate changeSupplier];
+      [changeSupplier setError:errorCopy];
     }
 
-    if ([v7 code] == -128)
+    if ([errorCopy code] == -128)
     {
       v22 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v6 identifier];
-        sub_100073564(v23, v83, v22);
+        identifier2 = [endedCopy identifier];
+        sub_100073564(identifier2, v83, v22);
       }
 
       (*(*(*&buf[8] + 40) + 16))();
     }
 
-    else if ([v7 code] == 2023)
+    else if ([errorCopy code] == 2023)
     {
       v24 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v25 = [v6 identifier];
-        sub_100073514(v25, v83, v24);
+        identifier3 = [endedCopy identifier];
+        sub_100073514(identifier3, v83, v24);
       }
 
       objc_initWeak(location, self);
@@ -2040,7 +2040,7 @@ LABEL_15:
       v78[2] = sub_100042914;
       v78[3] = &unk_1000B5138;
       objc_copyWeak(&v80, location);
-      v79 = v6;
+      v79 = endedCopy;
       (*(v26 + 16))(v26, v78);
 
       objc_destroyWeak(&v80);
@@ -2049,25 +2049,25 @@ LABEL_15:
 
     else
     {
-      if ([v7 code] == 2007 || objc_msgSend(v7, "code") == 23)
+      if ([errorCopy code] == 2007 || objc_msgSend(errorCopy, "code") == 23)
       {
-        v27 = [v8 statsTracker];
-        [v27 updateFailure];
+        statsTracker = [delegate statsTracker];
+        [statsTracker updateFailure];
 
-        v28 = [v8 statsTracker];
-        [v28 save];
+        statsTracker2 = [delegate statsTracker];
+        [statsTracker2 save];
 
         v29 = *(qword_1000D18A8 + 8);
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
-          v69 = [v6 identifier];
-          v70 = [v8 statsTracker];
-          [v70 mean];
+          identifier4 = [endedCopy identifier];
+          statsTracker3 = [delegate statsTracker];
+          [statsTracker3 mean];
           v66 = v65;
-          v67 = [v8 statsTracker];
-          [v67 stddev];
+          statsTracker4 = [delegate statsTracker];
+          [statsTracker4 stddev];
           *v83 = 138543874;
-          v84 = v69;
+          v84 = identifier4;
           v85 = 2048;
           v86 = v66;
           v87 = 2048;
@@ -2081,7 +2081,7 @@ LABEL_15:
       v74 = 3221225472;
       v75 = sub_100042964;
       v76 = &unk_1000B4B90;
-      v77 = self;
+      selfCopy = self;
       (*(v30 + 16))();
     }
 
@@ -2090,18 +2090,18 @@ LABEL_15:
     v71[1] = 3221225472;
     v71[2] = sub_10004296C;
     v71[3] = &unk_1000B4B90;
-    v72 = v6;
+    v72 = endedCopy;
     (*(v31 + 16))(v31, v71);
-    v32 = [(NEKSyncController *)self environment];
-    v33 = [v32 analytics];
-    [v33 recordSessionType:3];
+    environment3 = [(NEKSyncController *)self environment];
+    analytics = [environment3 analytics];
+    [analytics recordSessionType:3];
 
     _Block_object_dispose(buf, 8);
   }
 
   else
   {
-    [(NEKSyncController *)self recordSuccessForSession:v6 receiving:0];
+    [(NEKSyncController *)self recordSuccessForSession:endedCopy receiving:0];
     v38 = self->_completion;
     if (v38)
     {
@@ -2110,33 +2110,33 @@ LABEL_15:
       self->_completion = 0;
     }
 
-    v40 = [(NEKSyncController *)self environment];
-    v41 = [v40 recordMap];
-    [v41 commit];
+    environment4 = [(NEKSyncController *)self environment];
+    recordMap2 = [environment4 recordMap];
+    [recordMap2 commit];
 
-    v42 = [(NEKSyncController *)self environment];
-    v43 = [v42 tinyStore];
-    [v43 deleteValueForKey:@"deferUntil"];
+    environment5 = [(NEKSyncController *)self environment];
+    tinyStore2 = [environment5 tinyStore];
+    [tinyStore2 deleteValueForKey:@"deferUntil"];
 
-    v44 = [(NEKSyncController *)self environment];
-    v45 = [v44 tinyStore];
+    environment6 = [(NEKSyncController *)self environment];
+    tinyStore3 = [environment6 tinyStore];
     v46 = +[NSDate date];
     [v46 timeIntervalSinceReferenceDate];
-    [v45 setDoubleValue:@"lastSuccessfulStamp" forKey:?];
+    [tinyStore3 setDoubleValue:@"lastSuccessfulStamp" forKey:?];
 
-    if ([v6 isResetSync])
+    if ([endedCopy isResetSync])
     {
-      v47 = [(NEKSyncController *)self environment];
-      v48 = [v47 tinyStore];
-      [v48 setIntegerValue:_os_feature_enabled_impl() forKey:@"MigrationSyncCount"];
+      environment7 = [(NEKSyncController *)self environment];
+      tinyStore4 = [environment7 tinyStore];
+      [tinyStore4 setIntegerValue:_os_feature_enabled_impl() forKey:@"MigrationSyncCount"];
     }
 
-    if (self->_isNightlySync && ([v6 isResetSync] & 1) == 0)
+    if (self->_isNightlySync && ([endedCopy isResetSync] & 1) == 0)
     {
       v49 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
       {
-        sub_10007332C(v49, v6);
+        sub_10007332C(v49, endedCopy);
       }
 
       [(SYService *)self->_syncService setHasChangesAvailable];
@@ -2144,24 +2144,24 @@ LABEL_15:
 
     self->_isNightlySync = 0;
     [(NEKSyncController *)self clearRetryState];
-    [v8 start];
+    [delegate start];
     v51 = v50;
     Current = CFAbsoluteTimeGetCurrent();
-    v53 = [v8 statsTracker];
+    statsTracker5 = [delegate statsTracker];
     v54 = Current - v51;
-    [v53 updateSuccess:v54];
+    [statsTracker5 updateSuccess:v54];
 
-    v55 = [v8 statsTracker];
-    [v55 save];
+    statsTracker6 = [delegate statsTracker];
+    [statsTracker6 save];
 
     v56 = sub_10004157C();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
     {
-      v57 = [v8 statsTracker];
-      [v57 mean];
+      statsTracker7 = [delegate statsTracker];
+      [statsTracker7 mean];
       v59 = v58;
-      v60 = [v8 statsTracker];
-      [v60 stddev];
+      statsTracker8 = [delegate statsTracker];
+      [statsTracker8 stddev];
       *buf = 134218496;
       *&buf[4] = v54;
       *&buf[12] = 2048;
@@ -2171,9 +2171,9 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "Post success update sync timings: elapsed=%.02f x=%.02f sigma=%f", buf, 0x20u);
     }
 
-    v62 = [(NEKSyncController *)self environment];
-    v63 = [v62 analytics];
-    if ([v6 isResetSync])
+    environment8 = [(NEKSyncController *)self environment];
+    analytics2 = [environment8 analytics];
+    if ([endedCopy isResetSync])
     {
       v64 = 1;
     }
@@ -2183,76 +2183,76 @@ LABEL_15:
       v64 = 2;
     }
 
-    [v63 recordSessionType:v64];
+    [analytics2 recordSessionType:v64];
   }
 
-  v34 = [v8 fetcher];
+  fetcher = [delegate fetcher];
 
-  if (v34)
+  if (fetcher)
   {
     v35 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000735B4(v35, v6);
+      sub_1000735B4(v35, endedCopy);
     }
 
-    v36 = [v8 fetcher];
-    [v36 join];
+    fetcher2 = [delegate fetcher];
+    [fetcher2 join];
 
     v37 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
     {
-      sub_100073654(v37, v6);
+      sub_100073654(v37, endedCopy);
     }
 
-    [v8 setFetcher:0];
+    [delegate setFetcher:0];
   }
 }
 
-- (void)_recvSessionEnded:(id)a3 error:(id)a4
+- (void)_recvSessionEnded:(id)ended error:(id)error
 {
-  v6 = a3;
-  v7 = [v6 delegate];
+  endedCopy = ended;
+  delegate = [endedCopy delegate];
   if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_DEBUG))
   {
     sub_100073784();
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
 LABEL_3:
-    v8 = [(NEKSyncController *)self environment];
-    v9 = [v8 recordMap];
-    [v9 rollback];
+    environment = [(NEKSyncController *)self environment];
+    recordMap = [environment recordMap];
+    [recordMap rollback];
     goto LABEL_9;
   }
 
-  [(NEKSyncController *)self recordSuccessForSession:v6 receiving:1];
+  [(NEKSyncController *)self recordSuccessForSession:endedCopy receiving:1];
   if (CFPreferencesGetAppBooleanValue(@"internal_dumpRecordMap", @"com.apple.EventKitSync", 0) == 1 && os_variant_has_internal_diagnostics())
   {
-    v10 = [(NEKSyncController *)self environment];
-    v11 = [v10 recordMap];
-    [v11 dumpToLog];
+    environment2 = [(NEKSyncController *)self environment];
+    recordMap2 = [environment2 recordMap];
+    [recordMap2 dumpToLog];
   }
 
-  [v6 isResetSync];
-  v8 = [(NEKSyncController *)self environment];
-  v9 = [v8 recordMap];
-  [v9 commit];
+  [endedCopy isResetSync];
+  environment = [(NEKSyncController *)self environment];
+  recordMap = [environment recordMap];
+  [recordMap commit];
 LABEL_9:
 }
 
-- (void)recordSuccessForSession:(id)a3 receiving:(BOOL)a4
+- (void)recordSuccessForSession:(id)session receiving:(BOOL)receiving
 {
-  v4 = a4;
-  if ([a3 isResetSync])
+  receivingCopy = receiving;
+  if ([session isResetSync])
   {
-    v11 = [(NEKSyncController *)self environment];
-    v6 = [v11 tinyStore];
+    environment = [(NEKSyncController *)self environment];
+    tinyStore = [environment tinyStore];
     v7 = +[NSDate date];
     [v7 timeIntervalSinceReferenceDate];
     v8 = off_1000B4D00;
@@ -2262,8 +2262,8 @@ LABEL_9:
   else
   {
     isNightlySync = self->_isNightlySync;
-    v11 = [(NEKSyncController *)self environment];
-    v6 = [v11 tinyStore];
+    environment = [(NEKSyncController *)self environment];
+    tinyStore = [environment tinyStore];
     v7 = +[NSDate date];
     [v7 timeIntervalSinceReferenceDate];
     if (isNightlySync)
@@ -2279,12 +2279,12 @@ LABEL_9:
     }
   }
 
-  if (!v4)
+  if (!receivingCopy)
   {
     v8 = v9;
   }
 
-  [v6 setDoubleValue:*v8 forKey:?];
+  [tinyStore setDoubleValue:*v8 forKey:?];
 }
 
 - (void)prepDatabasesForResetSync
@@ -2296,21 +2296,21 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Remove all items", v7, 2u);
   }
 
-  v4 = [(NEKSyncController *)self environment];
-  v5 = [v4 recordMap];
-  [v5 removeAllRecords];
+  environment = [(NEKSyncController *)self environment];
+  recordMap = [environment recordMap];
+  [recordMap removeAllRecords];
 
   [(NEKStore *)self->_reminderStore removeAllItems];
-  v6 = [(NEKStore *)self->_eventStore changeObserver];
-  [v6 restartTrackingChanges];
+  changeObserver = [(NEKStore *)self->_eventStore changeObserver];
+  [changeObserver restartTrackingChanges];
 }
 
-- (void)changeObserverDidObserveChanges:(id)a3
+- (void)changeObserverDidObserveChanges:(id)changes
 {
-  v4 = [(NEKSyncController *)self environment];
-  v5 = [v4 tinyStore];
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
 
-  v6 = [v5 getIntegerValueForKey:@"tc_automaticSync" default:1];
+  v6 = [tinyStore getIntegerValueForKey:@"tc_automaticSync" default:1];
   v7 = *(qword_1000D18A8 + 8);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
   if (v6)
@@ -2331,12 +2331,12 @@ LABEL_9:
   }
 }
 
-- (void)changeObserverDidObserveTruncation:(id)a3
+- (void)changeObserverDidObserveTruncation:(id)truncation
 {
-  v4 = [(NEKSyncController *)self environment];
-  v5 = [v4 tinyStore];
+  environment = [(NEKSyncController *)self environment];
+  tinyStore = [environment tinyStore];
 
-  v6 = [v5 getIntegerValueForKey:@"tc_automaticSync" default:1];
+  v6 = [tinyStore getIntegerValueForKey:@"tc_automaticSync" default:1];
   v7 = *(qword_1000D18A8 + 8);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
   if (v6)

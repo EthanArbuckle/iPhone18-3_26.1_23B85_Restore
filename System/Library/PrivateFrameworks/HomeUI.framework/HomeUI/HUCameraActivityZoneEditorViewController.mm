@@ -1,7 +1,7 @@
 @interface HUCameraActivityZoneEditorViewController
 - (BOOL)hasActivityZoneChanges;
 - (HUCameraActivityZoneCanvasView)activityZoneCanvas;
-- (HUCameraActivityZoneEditorViewController)initWithCameraProfile:(id)a3;
+- (HUCameraActivityZoneEditorViewController)initWithCameraProfile:(id)profile;
 - (UILabel)tutorialLabel;
 - (id)_addZoneButton;
 - (void)_displayProgressIndicatorWhileLoading;
@@ -13,48 +13,48 @@
 - (void)cancelEditing;
 - (void)commitChangesAndDismissEditor;
 - (void)dealloc;
-- (void)didUpdateActivityZone:(id)a3;
+- (void)didUpdateActivityZone:(id)zone;
 - (void)displayActivityZoneState;
-- (void)displayAlertWithTitle:(id)a3 message:(id)a4;
+- (void)displayAlertWithTitle:(id)title message:(id)message;
 - (void)displayErrorAlert;
 - (void)displayLineOverlapAlert;
 - (void)displayMoveOverlapAlert;
 - (void)displayUnCommittedChangesAlert;
 - (void)displayZoneOverlapAlert;
 - (void)invertZones;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation HUCameraActivityZoneEditorViewController
 
-- (HUCameraActivityZoneEditorViewController)initWithCameraProfile:(id)a3
+- (HUCameraActivityZoneEditorViewController)initWithCameraProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v16.receiver = self;
   v16.super_class = HUCameraActivityZoneEditorViewController;
   v6 = [(HUCameraActivityZoneEditorViewController *)&v16 init];
   if (v6)
   {
-    v7 = [[HUCameraLiveStreamViewController alloc] initWithCameraProfile:v5];
+    v7 = [[HUCameraLiveStreamViewController alloc] initWithCameraProfile:profileCopy];
     liveStreamViewController = v6->_liveStreamViewController;
     v6->_liveStreamViewController = v7;
 
     [(HUCameraLiveStreamViewController *)v6->_liveStreamViewController setLiveStreamControllerDelegate:v6];
     [(HUCameraLiveStreamViewController *)v6->_liveStreamViewController setShouldRespectAspectRatio:1];
-    objc_storeStrong(&v6->_cameraProfile, a3);
-    v9 = [v5 userSettings];
-    v10 = [v9 activityZones];
-    v11 = [v10 allObjects];
+    objc_storeStrong(&v6->_cameraProfile, profile);
+    userSettings = [profileCopy userSettings];
+    activityZones = [userSettings activityZones];
+    allObjects = [activityZones allObjects];
     initialActivityZones = v6->_initialActivityZones;
-    v6->_initialActivityZones = v11;
+    v6->_initialActivityZones = allObjects;
 
     if ([(NSArray *)v6->_initialActivityZones count])
     {
-      v13 = [(HUCameraActivityZoneEditorViewController *)v6 cameraProfile];
-      v14 = [v13 userSettings];
-      v6->_initialSettingDetectsInclusionZones = [v14 areActivityZonesIncludedForSignificantEventDetection];
+      cameraProfile = [(HUCameraActivityZoneEditorViewController *)v6 cameraProfile];
+      userSettings2 = [cameraProfile userSettings];
+      v6->_initialSettingDetectsInclusionZones = [userSettings2 areActivityZonesIncludedForSignificantEventDetection];
     }
 
     else
@@ -66,32 +66,32 @@
   return v6;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v22.receiver = self;
   v22.super_class = HUCameraActivityZoneEditorViewController;
-  [(HUCameraActivityZoneEditorViewController *)&v22 viewDidAppear:a3];
+  [(HUCameraActivityZoneEditorViewController *)&v22 viewDidAppear:appear];
   if ([MEMORY[0x277D14CE8] isAMac])
   {
-    v4 = [(HUCameraActivityZoneEditorViewController *)self view];
-    [v4 bounds];
+    view = [(HUCameraActivityZoneEditorViewController *)self view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
-    v9 = [(HUCameraActivityZoneEditorViewController *)self view];
-    v10 = [v9 window];
-    v11 = [v10 windowScene];
-    v12 = [v11 sizeRestrictions];
-    [v12 setMinimumSize:{v6, v8}];
+    view2 = [(HUCameraActivityZoneEditorViewController *)self view];
+    window = [view2 window];
+    windowScene = [window windowScene];
+    sizeRestrictions = [windowScene sizeRestrictions];
+    [sizeRestrictions setMinimumSize:{v6, v8}];
 
-    v13 = [(HUCameraActivityZoneEditorViewController *)self view];
-    [v13 bounds];
+    view3 = [(HUCameraActivityZoneEditorViewController *)self view];
+    [view3 bounds];
     v15 = v14;
     v17 = v16;
-    v18 = [(HUCameraActivityZoneEditorViewController *)self view];
-    v19 = [v18 window];
-    v20 = [v19 windowScene];
-    v21 = [v20 sizeRestrictions];
-    [v21 setMaximumSize:{v15, v17}];
+    view4 = [(HUCameraActivityZoneEditorViewController *)self view];
+    window2 = [view4 window];
+    windowScene2 = [window2 windowScene];
+    sizeRestrictions2 = [windowScene2 sizeRestrictions];
+    [sizeRestrictions2 setMaximumSize:{v15, v17}];
   }
 }
 
@@ -100,20 +100,20 @@
   v34.receiver = self;
   v34.super_class = HUCameraActivityZoneEditorViewController;
   [(HUCameraActivityZoneEditorViewController *)&v34 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(HUCameraActivityZoneEditorViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(HUCameraActivityZoneEditorViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(HUCameraActivityZoneEditorViewController *)self view];
-  v6 = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
-  v7 = [v6 view];
-  [v5 addSubview:v7];
+  view2 = [(HUCameraActivityZoneEditorViewController *)self view];
+  liveStreamViewController = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
+  view3 = [liveStreamViewController view];
+  [view2 addSubview:view3];
 
-  v8 = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
-  [(HUCameraActivityZoneEditorViewController *)self addChildViewController:v8];
+  liveStreamViewController2 = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
+  [(HUCameraActivityZoneEditorViewController *)self addChildViewController:liveStreamViewController2];
 
-  v9 = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
-  [v9 didMoveToParentViewController:self];
+  liveStreamViewController3 = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
+  [liveStreamViewController3 didMoveToParentViewController:self];
 
   v10 = objc_alloc_init(MEMORY[0x277D756B8]);
   v11 = 1;
@@ -123,30 +123,30 @@
   v13 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
   [v10 setFont:v13];
 
-  v14 = [(HUCameraActivityZoneEditorViewController *)self navigationItem];
-  [v14 setTitleView:v10];
+  navigationItem = [(HUCameraActivityZoneEditorViewController *)self navigationItem];
+  [navigationItem setTitleView:v10];
 
-  v15 = [(HUCameraActivityZoneEditorViewController *)self view];
-  v16 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-  [v15 addSubview:v16];
+  view4 = [(HUCameraActivityZoneEditorViewController *)self view];
+  activityZoneCanvas = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+  [view4 addSubview:activityZoneCanvas];
 
-  v17 = [(HUCameraActivityZoneEditorViewController *)self view];
-  [v17 center];
+  view5 = [(HUCameraActivityZoneEditorViewController *)self view];
+  [view5 center];
   v19 = v18;
   v21 = v20;
-  v22 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-  [v22 setCenter:{v19, v21}];
+  activityZoneCanvas2 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+  [activityZoneCanvas2 setCenter:{v19, v21}];
 
-  v23 = [(HUCameraActivityZoneEditorViewController *)self view];
-  v24 = [(HUCameraActivityZoneEditorViewController *)self tutorialLabel];
-  [v23 addSubview:v24];
+  view6 = [(HUCameraActivityZoneEditorViewController *)self view];
+  tutorialLabel = [(HUCameraActivityZoneEditorViewController *)self tutorialLabel];
+  [view6 addSubview:tutorialLabel];
 
-  v25 = [(HUCameraActivityZoneEditorViewController *)self cameraProfile];
-  v26 = [v25 accessory];
-  v27 = [v26 home];
-  v28 = [v27 hf_currentUserIsAdministrator];
+  cameraProfile = [(HUCameraActivityZoneEditorViewController *)self cameraProfile];
+  accessory = [cameraProfile accessory];
+  home = [accessory home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if ((v28 & 1) == 0)
+  if ((hf_currentUserIsAdministrator & 1) == 0)
   {
     v29 = HFLogForCategory();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -155,29 +155,29 @@
       _os_log_impl(&dword_20CEB6000, v29, OS_LOG_TYPE_INFO, "Bypassing admin controls for shared users", v33, 2u);
     }
 
-    v30 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-    [v30 setUserInteractionEnabled:0];
+    activityZoneCanvas3 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+    [activityZoneCanvas3 setUserInteractionEnabled:0];
 
     [(HUCameraActivityZoneEditorViewController *)self displayActivityZoneState];
     v11 = 0;
   }
 
   v31 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:v11 target:self action:sel_cancelEditing];
-  v32 = [(HUCameraActivityZoneEditorViewController *)self navigationItem];
-  [v32 setLeftBarButtonItem:v31];
+  navigationItem2 = [(HUCameraActivityZoneEditorViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v31];
 
   [(HUCameraActivityZoneEditorViewController *)self _refreshUI];
 }
 
-- (void)didUpdateActivityZone:(id)a3
+- (void)didUpdateActivityZone:(id)zone
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  zoneCopy = zone;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = zoneCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "Did receive update for activity zone:%@", &v6, 0xCu);
   }
 
@@ -186,12 +186,12 @@
 
 - (void)_refreshUI
 {
-  v3 = [(HUCameraActivityZoneEditorViewController *)self cameraProfile];
-  v4 = [v3 accessory];
-  v5 = [v4 home];
-  v6 = [v5 hf_currentUserIsAdministrator];
+  cameraProfile = [(HUCameraActivityZoneEditorViewController *)self cameraProfile];
+  accessory = [cameraProfile accessory];
+  home = [accessory home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if (v6)
+  if (hf_currentUserIsAdministrator)
   {
     [(HUCameraActivityZoneEditorViewController *)self _updateToolbar];
     [(HUCameraActivityZoneEditorViewController *)self _updateNavigationBar];
@@ -203,9 +203,9 @@
 - (void)_updateToolbar
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-  v4 = [v3 activityZones];
-  v5 = [v4 count];
+  activityZoneCanvas = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+  activityZones = [activityZoneCanvas activityZones];
+  v5 = [activityZones count];
 
   if (v5)
   {
@@ -225,13 +225,13 @@
 
     v9 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:5 target:0 action:0];
     v10 = [MEMORY[0x277CBEB18] arrayWithObjects:{v9, v18, 0}];
-    v11 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-    v12 = [v11 isCreatingActivityZone];
+    activityZoneCanvas2 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+    isCreatingActivityZone = [activityZoneCanvas2 isCreatingActivityZone];
 
-    if (v12)
+    if (isCreatingActivityZone)
     {
-      v13 = [(HUCameraActivityZoneEditorViewController *)self _addZoneButton];
-      [v10 insertObject:v13 atIndex:0];
+      _addZoneButton = [(HUCameraActivityZoneEditorViewController *)self _addZoneButton];
+      [v10 insertObject:_addZoneButton atIndex:0];
     }
 
     [(HUCameraActivityZoneEditorViewController *)self setToolbarItems:v10];
@@ -239,13 +239,13 @@
 
   else
   {
-    v14 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-    v15 = [v14 isCreatingActivityZone];
+    activityZoneCanvas3 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+    isCreatingActivityZone2 = [activityZoneCanvas3 isCreatingActivityZone];
 
-    if (v15)
+    if (isCreatingActivityZone2)
     {
-      v16 = [(HUCameraActivityZoneEditorViewController *)self _addZoneButton];
-      v19[0] = v16;
+      _addZoneButton2 = [(HUCameraActivityZoneEditorViewController *)self _addZoneButton];
+      v19[0] = _addZoneButton2;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
       [(HUCameraActivityZoneEditorViewController *)self setToolbarItems:v17];
     }
@@ -263,24 +263,24 @@
   if ([(HUCameraActivityZoneEditorViewController *)self hasActivityZoneChanges])
   {
     [(HUCameraActivityZoneEditorViewController *)self setModalInPresentation:1];
-    v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_commitChangesAndDismissEditor];
-    v3 = [(HUCameraActivityZoneEditorViewController *)self navigationItem];
-    [v3 setRightBarButtonItem:v4];
+    navigationItem2 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_commitChangesAndDismissEditor];
+    navigationItem = [(HUCameraActivityZoneEditorViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:navigationItem2];
   }
 
   else
   {
     [(HUCameraActivityZoneEditorViewController *)self setModalInPresentation:0];
-    v4 = [(HUCameraActivityZoneEditorViewController *)self navigationItem];
-    [v4 setRightBarButtonItem:0];
+    navigationItem2 = [(HUCameraActivityZoneEditorViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
   }
 }
 
 - (void)_updateTutorialText
 {
-  v3 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-  v4 = [v3 activityZones];
-  v5 = [v4 count];
+  activityZoneCanvas = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+  activityZones = [activityZoneCanvas activityZones];
+  v5 = [activityZones count];
 
   if (v5)
   {
@@ -291,21 +291,21 @@
   else
   {
     v7 = _HULocalizedStringWithDefaultValue(@"HUCameraActivityZoneTutorialLabelText", @"HUCameraActivityZoneTutorialLabelText", 1);
-    v6 = [(HUCameraActivityZoneEditorViewController *)self tutorialLabel];
-    [v6 setText:v7];
+    tutorialLabel = [(HUCameraActivityZoneEditorViewController *)self tutorialLabel];
+    [tutorialLabel setText:v7];
   }
 }
 
 - (void)displayActivityZoneState
 {
-  v3 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-  v4 = [v3 activityZones];
-  v5 = [v4 count];
+  activityZoneCanvas = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+  activityZones = [activityZoneCanvas activityZones];
+  v5 = [activityZones count];
 
-  v6 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-  LODWORD(v4) = [v6 displaysInclusionZones];
+  activityZoneCanvas2 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+  LODWORD(activityZones) = [activityZoneCanvas2 displaysInclusionZones];
 
-  if (v4)
+  if (activityZones)
   {
     if (v5 == 1)
     {
@@ -329,16 +329,16 @@
   }
 
   v9 = _HULocalizedStringWithDefaultValue(v7, v7, 1);
-  v8 = [(HUCameraActivityZoneEditorViewController *)self tutorialLabel];
-  [v8 setText:v9];
+  tutorialLabel = [(HUCameraActivityZoneEditorViewController *)self tutorialLabel];
+  [tutorialLabel setText:v9];
 }
 
 - (id)_addZoneButton
 {
   v3 = objc_alloc(MEMORY[0x277D751E0]);
   v4 = _HULocalizedStringWithDefaultValue(@"HUCameraActivityZoneAddZoneText", @"HUCameraActivityZoneAddZoneText", 1);
-  v5 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-  v6 = [v3 initWithTitle:v4 style:2 target:v5 action:sel_createActivityZone];
+  activityZoneCanvas = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+  v6 = [v3 initWithTitle:v4 style:2 target:activityZoneCanvas action:sel_createActivityZone];
 
   return v6;
 }
@@ -350,19 +350,19 @@
   v5 = _HULocalizedStringWithDefaultValue(@"HUCameraActivityZonesCancelWithoutSavingAlertMessage", @"HUCameraActivityZonesCancelWithoutSavingAlertMessage", 1);
   v6 = [v3 alertControllerWithTitle:v4 message:v5 preferredStyle:1];
 
-  v7 = [(HUCameraActivityZoneEditorViewController *)self view];
-  v8 = [v6 popoverPresentationController];
-  [v8 setSourceView:v7];
+  view = [(HUCameraActivityZoneEditorViewController *)self view];
+  popoverPresentationController = [v6 popoverPresentationController];
+  [popoverPresentationController setSourceView:view];
 
-  v9 = [(HUCameraActivityZoneEditorViewController *)self navigationController];
-  v10 = [v9 toolbar];
-  [v10 frame];
+  navigationController = [(HUCameraActivityZoneEditorViewController *)self navigationController];
+  toolbar = [navigationController toolbar];
+  [toolbar frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v6 popoverPresentationController];
-  [v19 setSourceRect:{v12, v14, v16, v18}];
+  popoverPresentationController2 = [v6 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v12, v14, v16, v18}];
 
   v20 = MEMORY[0x277D750F8];
   v21 = _HULocalizedStringWithDefaultValue(@"HUCameraActivityZonesProceedWithoutSavingText", @"HUCameraActivityZonesProceedWithoutSavingText", 1);
@@ -387,9 +387,9 @@
   [(HUCameraActivityZoneEditorViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)displayAlertWithTitle:(id)a3 message:(id)a4
+- (void)displayAlertWithTitle:(id)title message:(id)message
 {
-  v8 = [MEMORY[0x277D75110] alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  v8 = [MEMORY[0x277D75110] alertControllerWithTitle:title message:message preferredStyle:1];
   v5 = MEMORY[0x277D750F8];
   v6 = _HULocalizedStringWithDefaultValue(@"HUOkTitle", @"HUOkTitle", 1);
   v7 = [v5 actionWithTitle:v6 style:0 handler:0];
@@ -428,14 +428,14 @@
 
 - (void)_updateViewsForTraitCollection
 {
-  v3 = [(HUCameraActivityZoneEditorViewController *)self tutorialLabel];
-  [v3 frame];
+  tutorialLabel = [(HUCameraActivityZoneEditorViewController *)self tutorialLabel];
+  [tutorialLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
-  v10 = [(HUCameraActivityZoneEditorViewController *)self traitCollection];
-  if ([v10 hu_hasExtendedWidth])
+  traitCollection = [(HUCameraActivityZoneEditorViewController *)self traitCollection];
+  if ([traitCollection hu_hasExtendedWidth])
   {
     v11 = 40.0;
   }
@@ -445,11 +445,11 @@
     v11 = 60.0;
   }
 
-  v12 = [(HUCameraActivityZoneEditorViewController *)self tutorialLabel];
-  [v12 setFrame:{v5, v11, v7, v9}];
+  tutorialLabel2 = [(HUCameraActivityZoneEditorViewController *)self tutorialLabel];
+  [tutorialLabel2 setFrame:{v5, v11, v7, v9}];
 
-  v13 = [(HUCameraActivityZoneEditorViewController *)self view];
-  [v13 bounds];
+  view = [(HUCameraActivityZoneEditorViewController *)self view];
+  [view bounds];
   v15 = v14;
   v61.origin.x = v5;
   v61.origin.y = v11;
@@ -457,8 +457,8 @@
   v61.size.height = v9;
   v16 = v15 - CGRectGetMaxY(v61);
 
-  v17 = [(HUCameraActivityZoneEditorViewController *)self view];
-  [v17 bounds];
+  view2 = [(HUCameraActivityZoneEditorViewController *)self view];
+  [view2 bounds];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -484,10 +484,10 @@
     v27 = v26;
   }
 
-  v28 = [(HUCameraActivityZoneEditorViewController *)self cameraProfile];
-  v29 = [v28 snapshotControl];
-  v30 = [v29 mostRecentSnapshot];
-  [v30 aspectRatio];
+  cameraProfile = [(HUCameraActivityZoneEditorViewController *)self cameraProfile];
+  snapshotControl = [cameraProfile snapshotControl];
+  mostRecentSnapshot = [snapshotControl mostRecentSnapshot];
+  [mostRecentSnapshot aspectRatio];
   if (v31 == 0.0)
   {
     v32 = 1.0;
@@ -518,46 +518,46 @@
     v34 = v27 * v32;
   }
 
-  v35 = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
-  v36 = [v35 view];
-  [v36 setFrame:{v19, v21, v27, v34}];
+  liveStreamViewController = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
+  view3 = [liveStreamViewController view];
+  [view3 setFrame:{v19, v21, v27, v34}];
 
-  v37 = [(HUCameraActivityZoneEditorViewController *)self view];
-  [v37 center];
+  view4 = [(HUCameraActivityZoneEditorViewController *)self view];
+  [view4 center];
   v39 = v38;
   v41 = v40;
-  v42 = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
-  v43 = [v42 view];
-  [v43 setCenter:{v39, v41}];
+  liveStreamViewController2 = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
+  view5 = [liveStreamViewController2 view];
+  [view5 setCenter:{v39, v41}];
 
-  v44 = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
-  [v44 setShouldRespectAspectRatio:1];
+  liveStreamViewController3 = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
+  [liveStreamViewController3 setShouldRespectAspectRatio:1];
 
   if (v32 < 1.0)
   {
     v27 = v32 * v34;
   }
 
-  v45 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-  [v45 setFrame:{v19, v21, v27, v34}];
+  activityZoneCanvas = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+  [activityZoneCanvas setFrame:{v19, v21, v27, v34}];
 
-  v46 = [(HUCameraActivityZoneEditorViewController *)self view];
-  [v46 center];
+  view6 = [(HUCameraActivityZoneEditorViewController *)self view];
+  [view6 center];
   v48 = v47;
   v50 = v49;
-  v51 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-  [v51 setCenter:{v48, v50}];
+  activityZoneCanvas2 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+  [activityZoneCanvas2 setCenter:{v48, v50}];
 
-  v52 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-  [v52 updateAfterVideoBoundsChange];
+  activityZoneCanvas3 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+  [activityZoneCanvas3 updateAfterVideoBoundsChange];
 
-  v53 = [(HUCameraActivityZoneEditorViewController *)self view];
-  [v53 center];
+  view7 = [(HUCameraActivityZoneEditorViewController *)self view];
+  [view7 center];
   v55 = v54;
   v57 = v56;
-  v58 = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
-  v59 = [v58 view];
-  [v59 setCenter:{v55, v57}];
+  liveStreamViewController4 = [(HUCameraActivityZoneEditorViewController *)self liveStreamViewController];
+  view8 = [liveStreamViewController4 view];
+  [view8 setCenter:{v55, v57}];
 }
 
 - (void)viewDidLayoutSubviews
@@ -570,10 +570,10 @@
 
 - (void)invertZones
 {
-  v3 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-  v4 = [v3 displaysInclusionZones];
-  v5 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-  [v5 setDisplaysInclusionZones:v4 ^ 1u];
+  activityZoneCanvas = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+  displaysInclusionZones = [activityZoneCanvas displaysInclusionZones];
+  activityZoneCanvas2 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+  [activityZoneCanvas2 setDisplaysInclusionZones:displaysInclusionZones ^ 1u];
 
   [(HUCameraActivityZoneEditorViewController *)self _updateTutorialText];
 
@@ -598,36 +598,36 @@
 - (BOOL)hasActivityZoneChanges
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(HUCameraActivityZoneEditorViewController *)self initialSettingDetectsInclusionZones];
-  v4 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-  v5 = [v4 displaysInclusionZones];
+  initialSettingDetectsInclusionZones = [(HUCameraActivityZoneEditorViewController *)self initialSettingDetectsInclusionZones];
+  activityZoneCanvas = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+  displaysInclusionZones = [activityZoneCanvas displaysInclusionZones];
 
-  if (v3 == v5)
+  if (initialSettingDetectsInclusionZones == displaysInclusionZones)
   {
-    v7 = [(HUCameraActivityZoneEditorViewController *)self initialActivityZones];
-    v8 = [v7 count];
-    v9 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-    v10 = [v9 activityZones];
-    v11 = [v10 count];
+    initialActivityZones = [(HUCameraActivityZoneEditorViewController *)self initialActivityZones];
+    v8 = [initialActivityZones count];
+    activityZoneCanvas2 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+    activityZones = [activityZoneCanvas2 activityZones];
+    v11 = [activityZones count];
 
     if (v8 == v11)
     {
-      v12 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-      v13 = [v12 activityZones];
+      activityZoneCanvas3 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+      activityZones2 = [activityZoneCanvas3 activityZones];
 
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
       v25 = 0;
-      v14 = [(HUCameraActivityZoneEditorViewController *)self initialActivityZones];
+      initialActivityZones2 = [(HUCameraActivityZoneEditorViewController *)self initialActivityZones];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __66__HUCameraActivityZoneEditorViewController_hasActivityZoneChanges__block_invoke;
       v21[3] = &unk_277DB9318;
-      v15 = v13;
+      v15 = activityZones2;
       v22 = v15;
       v23 = buf;
-      [v14 enumerateObjectsUsingBlock:v21];
+      [initialActivityZones2 enumerateObjectsUsingBlock:v21];
 
       v6 = *(*&buf[8] + 24);
       _Block_object_dispose(buf, 8);
@@ -638,14 +638,14 @@
       v15 = HFLogForCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(HUCameraActivityZoneEditorViewController *)self initialActivityZones];
-        v17 = [v16 count];
-        v18 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-        v19 = [v18 activityZones];
+        initialActivityZones3 = [(HUCameraActivityZoneEditorViewController *)self initialActivityZones];
+        v17 = [initialActivityZones3 count];
+        activityZoneCanvas4 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+        activityZones3 = [activityZoneCanvas4 activityZones];
         *buf = 134218240;
         *&buf[4] = v17;
         *&buf[12] = 2048;
-        *&buf[14] = [v19 count];
+        *&buf[14] = [activityZones3 count];
         _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "Activity zones have changed. Total count changed from:%lu to:%lu", buf, 0x16u);
       }
 
@@ -741,8 +741,8 @@ void __66__HUCameraActivityZoneEditorViewController_hasActivityZoneChanges__bloc
   if ([(HUCameraActivityZoneEditorViewController *)self hasActivityZoneChanges])
   {
     v3 = [MEMORY[0x277CBEB58] set];
-    v4 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-    v5 = [v4 activityZones];
+    activityZoneCanvas = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+    activityZones = [activityZoneCanvas activityZones];
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -750,27 +750,27 @@ void __66__HUCameraActivityZoneEditorViewController_hasActivityZoneChanges__bloc
     v18[3] = &unk_277DB9340;
     v6 = v3;
     v19 = v6;
-    [v5 enumerateObjectsUsingBlock:v18];
+    [activityZones enumerateObjectsUsingBlock:v18];
     [(HUCameraActivityZoneEditorViewController *)self _displayProgressIndicatorWhileLoading];
     v7 = HFLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-      v9 = [v8 displaysInclusionZones];
+      activityZoneCanvas2 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+      displaysInclusionZones = [activityZoneCanvas2 displaysInclusionZones];
       *buf = 138412802;
-      v21 = self;
+      selfCopy = self;
       v22 = 1024;
-      v23 = v9;
+      v23 = displaysInclusionZones;
       v24 = 2112;
       v25 = v6;
       _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@ Editor: Submitting zoneType inclusion:%{BOOL}d zones:%@", buf, 0x1Cu);
     }
 
     objc_initWeak(buf, self);
-    v10 = [(HUCameraActivityZoneEditorViewController *)self cameraProfile];
-    v11 = [v10 userSettings];
-    v12 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
-    v13 = [v12 displaysInclusionZones];
+    cameraProfile = [(HUCameraActivityZoneEditorViewController *)self cameraProfile];
+    userSettings = [cameraProfile userSettings];
+    activityZoneCanvas3 = [(HUCameraActivityZoneEditorViewController *)self activityZoneCanvas];
+    displaysInclusionZones2 = [activityZoneCanvas3 displaysInclusionZones];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __73__HUCameraActivityZoneEditorViewController_commitChangesAndDismissEditor__block_invoke_94;
@@ -778,7 +778,7 @@ void __66__HUCameraActivityZoneEditorViewController_hasActivityZoneChanges__bloc
     objc_copyWeak(&v17, buf);
     v14 = v6;
     v16 = v14;
-    [v11 updateActivityZones:v14 areActivityZonesIncludedForSignificantEventDetection:v13 completionHandler:v15];
+    [userSettings updateActivityZones:v14 areActivityZonesIncludedForSignificantEventDetection:displaysInclusionZones2 completionHandler:v15];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
@@ -858,8 +858,8 @@ void __73__HUCameraActivityZoneEditorViewController_commitChangesAndDismissEdito
 {
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v5];
-  v4 = [(HUCameraActivityZoneEditorViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(HUCameraActivityZoneEditorViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   [v5 startAnimating];
 }
@@ -870,14 +870,14 @@ void __73__HUCameraActivityZoneEditorViewController_commitChangesAndDismissEdito
   if (!activityZoneCanvas)
   {
     v4 = [HUCameraActivityZoneCanvasView alloc];
-    v5 = [(HUCameraActivityZoneEditorViewController *)self view];
-    [v5 bounds];
+    view = [(HUCameraActivityZoneEditorViewController *)self view];
+    [view bounds];
     v6 = [(HUCameraActivityZoneCanvasView *)v4 initWithFrame:?];
 
     [(HUCameraActivityZoneCanvasView *)v6 setDelegate:self];
     [(HUCameraActivityZoneCanvasView *)v6 setDisplaysInclusionZones:[(HUCameraActivityZoneEditorViewController *)self initialSettingDetectsInclusionZones]];
-    v7 = [(HUCameraActivityZoneEditorViewController *)self initialActivityZones];
-    [(HUCameraActivityZoneCanvasView *)v6 loadActivityZones:v7];
+    initialActivityZones = [(HUCameraActivityZoneEditorViewController *)self initialActivityZones];
+    [(HUCameraActivityZoneCanvasView *)v6 loadActivityZones:initialActivityZones];
 
     v8 = self->_activityZoneCanvas;
     self->_activityZoneCanvas = v6;
@@ -893,8 +893,8 @@ void __73__HUCameraActivityZoneEditorViewController_commitChangesAndDismissEdito
   tutorialLabel = self->_tutorialLabel;
   if (!tutorialLabel)
   {
-    v4 = [(HUCameraActivityZoneEditorViewController *)self view];
-    [v4 bounds];
+    view = [(HUCameraActivityZoneEditorViewController *)self view];
+    [view bounds];
     v6 = v5 + -20.0;
 
     v7 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{10.0, 60.0, v6, 50.0}];
@@ -924,7 +924,7 @@ void __73__HUCameraActivityZoneEditorViewController_commitChangesAndDismissEdito
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "%@ Editing complete. Dealloc.", buf, 0xCu);
   }
 

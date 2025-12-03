@@ -1,12 +1,12 @@
 @interface _UIPreviewInteractionClassicImpl
-- (BOOL)_shouldCancelTransitionToState:(int64_t)a3;
-- (CGPoint)locationInCoordinateSpace:(id)a3;
+- (BOOL)_shouldCancelTransitionToState:(int64_t)state;
+- (CGPoint)locationInCoordinateSpace:(id)space;
 - (UIPreviewInteraction)previewInteraction;
 - (UIPreviewInteractionDelegate)delegate;
 - (UIView)view;
 - (_UIPreviewInteractionClassicImpl)init;
-- (_UIPreviewInteractionClassicImpl)initWithView:(id)a3 previewInteraction:(id)a4;
-- (void)_actuateFeedbackForStateIfNeeded:(int64_t)a3;
+- (_UIPreviewInteractionClassicImpl)initWithView:(id)view previewInteraction:(id)interaction;
+- (void)_actuateFeedbackForStateIfNeeded:(int64_t)needed;
 - (void)_dismissPreviewViewControllerIfNeeded;
 - (void)_endContinuousEvaluation;
 - (void)_endHighlightingIfNeeded;
@@ -21,31 +21,31 @@
 - (void)_prepareUsingFeedbackIfNeeded;
 - (void)_presentPreviewViewControllerIfNeeded;
 - (void)_resetAfterInteraction;
-- (void)_startPreviewAtLocation:(CGPoint)a3 inCoordinateSpace:(id)a4;
+- (void)_startPreviewAtLocation:(CGPoint)location inCoordinateSpace:(id)space;
 - (void)_turnOffFeedbackGenerator;
 - (void)_turnOnFeedbackGenerator;
-- (void)_updateFeedbackTowardNextState:(int64_t)a3 progress:(double)a4;
-- (void)_updateForContinuousEvaluation:(id)a3;
+- (void)_updateFeedbackTowardNextState:(int64_t)state progress:(double)progress;
+- (void)_updateForContinuousEvaluation:(id)evaluation;
 - (void)_updateForCurrentTouchForceProvider;
-- (void)_updateHighlighter:(double)a3;
-- (void)_updateInteractionStateRecognizerForTouchForce:(double)a3 atTimestamp:(double)a4 withCentroidAtLocation:(CGPoint)a5;
+- (void)_updateHighlighter:(double)highlighter;
+- (void)_updateInteractionStateRecognizerForTouchForce:(double)force atTimestamp:(double)timestamp withCentroidAtLocation:(CGPoint)location;
 - (void)cancelInteraction;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setDelegate:(id)a3;
-- (void)setTouchForceProvider:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setDelegate:(id)delegate;
+- (void)setTouchForceProvider:(id)provider;
 @end
 
 @implementation _UIPreviewInteractionClassicImpl
 
-- (_UIPreviewInteractionClassicImpl)initWithView:(id)a3 previewInteraction:(id)a4
+- (_UIPreviewInteractionClassicImpl)initWithView:(id)view previewInteraction:(id)interaction
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  viewCopy = view;
+  interactionCopy = interaction;
+  if (!viewCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionClassicImpl.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"view"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionClassicImpl.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"view"}];
   }
 
   v14.receiver = self;
@@ -54,8 +54,8 @@
   v10 = v9;
   if (v9)
   {
-    [(_UIPreviewInteractionClassicImpl *)v9 setPreviewInteraction:v8];
-    objc_storeWeak(&v10->_view, v7);
+    [(_UIPreviewInteractionClassicImpl *)v9 setPreviewInteraction:interactionCopy];
+    objc_storeWeak(&v10->_view, viewCopy);
     v11 = v10;
   }
 
@@ -64,11 +64,11 @@
 
 - (_UIPreviewInteractionClassicImpl)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = NSStringFromSelector(sel_initWithView_);
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionClassicImpl.m" lineNumber:148 description:{@"Use %@ to instantiate an instance of %@.", v5, v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionClassicImpl.m" lineNumber:148 description:{@"Use %@ to instantiate an instance of %@.", v5, v7}];
 
   return 0;
 }
@@ -81,14 +81,14 @@
   [(_UIPreviewInteractionClassicImpl *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_delegate, v4);
+    objc_storeWeak(&self->_delegate, delegateCopy);
     *&self->_previewInteractionFlags = *&self->_previewInteractionFlags & 0xFFFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -182,12 +182,12 @@
   }
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
   touchForceProvider = self->_touchForceProvider;
   if (touchForceProvider)
   {
-    [(_UIPreviewInteractionTouchForceProviding *)touchForceProvider locationInCoordinateSpace:a3];
+    [(_UIPreviewInteractionTouchForceProviding *)touchForceProvider locationInCoordinateSpace:space];
   }
 
   else
@@ -211,40 +211,40 @@
   [(_UIPreviewInteractionClassicImpl *)self _endInteractionIfNeeded];
 }
 
-- (void)_startPreviewAtLocation:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (void)_startPreviewAtLocation:(CGPoint)location inCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   *&self->_previewInteractionFlags |= 0xC000u;
-  v7 = a4;
-  v8 = [[_UIPreviewInteractionSimulatingTouchForceProvider alloc] initWithTouchForce:v7 location:3.5 coordinateSpace:x, y];
+  spaceCopy = space;
+  v8 = [[_UIPreviewInteractionSimulatingTouchForceProvider alloc] initWithTouchForce:spaceCopy location:3.5 coordinateSpace:x, y];
 
   [(_UIPreviewInteractionClassicImpl *)self setTouchForceProvider:v8];
 }
 
-- (void)setTouchForceProvider:(id)a3
+- (void)setTouchForceProvider:(id)provider
 {
-  v4 = a3;
-  if (!v4)
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v4 = self->_systemTouchForceProvider;
+    providerCopy = self->_systemTouchForceProvider;
   }
 
   touchForceProvider = self->_touchForceProvider;
-  if (touchForceProvider != v4)
+  if (touchForceProvider != providerCopy)
   {
-    obj = v4;
+    obj = providerCopy;
     [(_UIPreviewInteractionTouchForceProviding *)touchForceProvider removeObserver:self forKeyPath:@"active"];
     objc_storeStrong(&self->_touchForceProvider, obj);
     [(_UIPreviewInteractionTouchForceProviding *)obj addObserver:self forKeyPath:@"active" options:1 context:0];
     [(_UIPreviewInteractionClassicImpl *)self _updateForCurrentTouchForceProvider];
-    v4 = obj;
+    providerCopy = obj;
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (self->_touchForceProvider == a4 && [a3 isEqualToString:@"active"])
+  if (self->_touchForceProvider == object && [path isEqualToString:@"active"])
   {
 
     [(_UIPreviewInteractionClassicImpl *)self _updateForCurrentTouchForceProvider];
@@ -282,11 +282,11 @@
   if (!self->_continuousEvaluationDisplayLink)
   {
     v5 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel__updateForContinuousEvaluation_];
-    v6 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v5 addToRunLoop:v6 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v5 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
-    v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v5 addToRunLoop:v7 forMode:@"UITrackingRunLoopMode"];
+    mainRunLoop2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v5 addToRunLoop:mainRunLoop2 forMode:@"UITrackingRunLoopMode"];
 
     [(CADisplayLink *)v5 setPreferredFramesPerSecond:60];
     continuousEvaluationDisplayLink = self->_continuousEvaluationDisplayLink;
@@ -324,9 +324,9 @@
   [(_UIPreviewInteractionClassicImpl *)self setTouchForceProvider:0];
 }
 
-- (void)_updateForContinuousEvaluation:(id)a3
+- (void)_updateForContinuousEvaluation:(id)evaluation
 {
-  v10 = a3;
+  evaluationCopy = evaluation;
   touchForceProvider = self->_touchForceProvider;
   if (touchForceProvider && ([(_UIPreviewInteractionTouchForceProviding *)touchForceProvider isActive]& 1) == 0 && (*&self->_previewInteractionFlags & 0xC0) != 0)
   {
@@ -341,17 +341,17 @@
   [(_UIPreviewInteractionClassicImpl *)self _updateInteractionStateRecognizerForTouchForce:v6 atTimestamp:v7 withCentroidAtLocation:v8, v9];
 }
 
-- (void)_updateInteractionStateRecognizerForTouchForce:(double)a3 atTimestamp:(double)a4 withCentroidAtLocation:(CGPoint)a5
+- (void)_updateInteractionStateRecognizerForTouchForce:(double)force atTimestamp:(double)timestamp withCentroidAtLocation:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
+  y = location.y;
+  x = location.x;
   v10 = self->_currentInteractionStateRecognizer;
   if (v10)
   {
     previewInteractionFlags = self->_previewInteractionFlags;
     if ((previewInteractionFlags & 0x100) != 0)
     {
-      if (a3 >= 1.0)
+      if (force >= 1.0)
       {
         goto LABEL_50;
       }
@@ -366,14 +366,14 @@
     if ((previewInteractionFlags & 0x80) == 0)
     {
       v40 = v10;
-      [(_UIPreviewInteractionStateRecognizer *)v10 evaluateWithTouchForce:a3 atTimestamp:a4 withCentroidAtLocation:x, y];
+      [(_UIPreviewInteractionStateRecognizer *)v10 evaluateWithTouchForce:force atTimestamp:timestamp withCentroidAtLocation:x, y];
       v12 = *&self->_previewInteractionFlags << 18 >> 29;
-      v13 = [(_UIPreviewInteractionStateRecognizer *)v40 currentState];
+      currentState = [(_UIPreviewInteractionStateRecognizer *)v40 currentState];
       v14 = self->_previewInteractionFlags;
       v15 = 2;
       if ((v14 & 0x4000) == 0)
       {
-        v15 = v13;
+        v15 = currentState;
       }
 
       if (v15 >= v12)
@@ -387,7 +387,7 @@
       }
 
       *&self->_previewInteractionFlags = ((v16 & 7) << 11) | v14 & 0xC7FF;
-      v17 = [(_UIPreviewInteractionClassicImpl *)self delegate];
+      delegate = [(_UIPreviewInteractionClassicImpl *)self delegate];
       if (v16 <= v12)
       {
         goto LABEL_33;
@@ -402,8 +402,8 @@
       {
         if (objc_opt_respondsToSelector())
         {
-          v18 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
-          v19 = [v17 previewInteractionShouldBegin:v18];
+          previewInteraction = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
+          v19 = [delegate previewInteractionShouldBegin:previewInteraction];
 
           if ((v19 & 1) == 0)
           {
@@ -444,15 +444,15 @@ LABEL_33:
               v37 = fmax(v35, 0.0);
               [(_UIPreviewInteractionClassicImpl *)self _updateFeedbackTowardNextState:v32 progress:v37];
               [(_UIPreviewInteractionClassicImpl *)self _updateHighlighter:v37];
-              v38 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
+              previewInteraction2 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
               if (v32 == 3)
               {
-                [v17 previewInteraction:v38 didUpdateCommitTransition:0 ended:v37];
+                [delegate previewInteraction:previewInteraction2 didUpdateCommitTransition:0 ended:v37];
               }
 
               else
               {
-                [v17 previewInteraction:v38 didUpdatePreviewTransition:0 ended:v37];
+                [delegate previewInteraction:previewInteraction2 didUpdatePreviewTransition:0 ended:v37];
               }
 
               *&self->_previewInteractionFlags = *&self->_previewInteractionFlags & 0xFBFF | ((v36 <= 0.0) << 10);
@@ -487,8 +487,8 @@ LABEL_21:
 
               _UIPowerLogPopOccured();
               *&self->_previewInteractionFlags &= ~0x40u;
-              v30 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
-              [v17 previewInteraction:v30 didUpdateCommitTransition:1 ended:1.0];
+              previewInteraction3 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
+              [delegate previewInteraction:previewInteraction3 didUpdateCommitTransition:1 ended:1.0];
 
               [(_UIPreviewInteractionClassicImpl *)self _resetAfterInteraction];
             }
@@ -512,8 +512,8 @@ LABEL_21:
 
             _UIPowerLogPeekBegan();
             [(_UIPreviewInteractionClassicImpl *)self _updateHighlighter:1.0];
-            v24 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
-            [v17 previewInteraction:v24 didUpdatePreviewTransition:1 ended:1.0];
+            previewInteraction4 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
+            [delegate previewInteraction:previewInteraction4 didUpdatePreviewTransition:1 ended:1.0];
 
             [(_UIPreviewInteractionClassicImpl *)self _presentPreviewViewControllerIfNeeded];
             v16 = 2;
@@ -528,10 +528,10 @@ LABEL_21:
       if (self->_highlighter)
       {
         v25 = UIApp;
-        v26 = [(_UIPreviewInteractionClassicImpl *)self view];
-        v27 = [v26 _window];
-        v28 = [v27 _eventRoutingScene];
-        [v25 _cancelAllEventsOfType:0 onEventRoutingScene:v28];
+        view = [(_UIPreviewInteractionClassicImpl *)self view];
+        _window = [view _window];
+        _eventRoutingScene = [_window _eventRoutingScene];
+        [v25 _cancelAllEventsOfType:0 onEventRoutingScene:_eventRoutingScene];
       }
 
       [(_UIPreviewInteractionClassicImpl *)self _resetAfterInteraction];
@@ -554,9 +554,9 @@ LABEL_50:
   [(_UIPreviewInteractionClassicImpl *)self _endUsingFeedbackIfNeeded];
   if ((previewInteractionFlags & 0x240) == 0x40)
   {
-    v5 = [(_UIPreviewInteractionClassicImpl *)self delegate];
-    v6 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
-    [v5 previewInteractionDidCancel:v6];
+    delegate = [(_UIPreviewInteractionClassicImpl *)self delegate];
+    previewInteraction = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
+    [delegate previewInteractionDidCancel:previewInteraction];
   }
 
   v7 = +[_UIStatistics previewInteractionPeekDuration];
@@ -657,7 +657,7 @@ LABEL_50:
   }
 }
 
-- (void)_actuateFeedbackForStateIfNeeded:(int64_t)a3
+- (void)_actuateFeedbackForStateIfNeeded:(int64_t)needed
 {
   feedbackGenerator = self->_feedbackGenerator;
   if (feedbackGenerator)
@@ -665,16 +665,16 @@ LABEL_50:
     previewInteractionFlags = self->_previewInteractionFlags;
     if ((*&previewInteractionFlags & 0x80000000) == 0)
     {
-      if (a3 > 1)
+      if (needed > 1)
       {
-        if (a3 == 2)
+        if (needed == 2)
         {
           v6 = _UIStatesFeedbackGeneratorForcePresentationStatePreview;
         }
 
         else
         {
-          if (a3 != 3)
+          if (needed != 3)
           {
             return;
           }
@@ -685,9 +685,9 @@ LABEL_50:
 
       else
       {
-        if (a3)
+        if (needed)
         {
-          if (a3 == 1)
+          if (needed == 1)
           {
             [(_UIPreviewInteractionClassicImpl *)self _turnOnFeedbackGenerator];
           }
@@ -708,22 +708,22 @@ LABEL_50:
   }
 }
 
-- (void)_updateFeedbackTowardNextState:(int64_t)a3 progress:(double)a4
+- (void)_updateFeedbackTowardNextState:(int64_t)state progress:(double)progress
 {
   feedbackGenerator = self->_feedbackGenerator;
-  if (feedbackGenerator && (a3 & 0xFFFFFFFFFFFFFFFELL) == 2 && (*&self->_previewInteractionFlags & 0x80000000) == 0)
+  if (feedbackGenerator && (state & 0xFFFFFFFFFFFFFFFELL) == 2 && (*&self->_previewInteractionFlags & 0x80000000) == 0)
   {
-    [(_UIStatesFeedbackGenerator *)feedbackGenerator transitionToState:@"preview" updated:a4];
+    [(_UIStatesFeedbackGenerator *)feedbackGenerator transitionToState:@"preview" updated:progress];
   }
 }
 
-- (BOOL)_shouldCancelTransitionToState:(int64_t)a3
+- (BOOL)_shouldCancelTransitionToState:(int64_t)state
 {
   if ((*&self->_previewInteractionFlags & 4) != 0)
   {
-    v5 = [(_UIPreviewInteractionClassicImpl *)self delegate];
-    v6 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
-    v3 = [v5 _previewInteractionShouldFinishTransitionToPreview:v6] ^ 1;
+    delegate = [(_UIPreviewInteractionClassicImpl *)self delegate];
+    previewInteraction = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
+    v3 = [delegate _previewInteractionShouldFinishTransitionToPreview:previewInteraction] ^ 1;
   }
 
   else
@@ -742,41 +742,41 @@ LABEL_50:
     return;
   }
 
-  v5 = [(_UIPreviewInteractionClassicImpl *)self delegate];
+  delegate = [(_UIPreviewInteractionClassicImpl *)self delegate];
   if ((*&self->_previewInteractionFlags & 0x10) == 0)
   {
     goto LABEL_4;
   }
 
-  v7 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
-  v6 = [v5 _previewInteractionHighlighterForPreviewTransition:v7];
+  previewInteraction = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
+  v6 = [delegate _previewInteractionHighlighterForPreviewTransition:previewInteraction];
 
   if (!v6)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionClassicImpl.m" lineNumber:656 description:@"_previewInteractionHighlighterForPreviewTransition needs to return a valid highlighter."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionClassicImpl.m" lineNumber:656 description:@"_previewInteractionHighlighterForPreviewTransition needs to return a valid highlighter."];
 
 LABEL_4:
     v6 = 0;
   }
 
-  v8 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
-  [v6 _prepareForInteraction:v8];
+  previewInteraction2 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
+  [v6 _prepareForInteraction:previewInteraction2];
 
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [(_UIPreviewInteractionTouchForceProviding *)self->_systemTouchForceProvider gestureRecognizer];
-      v10 = [v6 cancelsInteractionWhenScrolling];
+      gestureRecognizer = [(_UIPreviewInteractionTouchForceProviding *)self->_systemTouchForceProvider gestureRecognizer];
+      cancelsInteractionWhenScrolling = [v6 cancelsInteractionWhenScrolling];
       v11 = 0.0;
-      if (v10)
+      if (cancelsInteractionWhenScrolling)
       {
         v11 = 10.0;
       }
 
-      [v9 setAllowableMovement:v11];
+      [gestureRecognizer setAllowableMovement:v11];
     }
   }
 
@@ -793,13 +793,13 @@ LABEL_4:
   objc_destroyWeak(&location);
 }
 
-- (void)_updateHighlighter:(double)a3
+- (void)_updateHighlighter:(double)highlighter
 {
   if (!self->_viewControllerHelper)
   {
     highlighter = self->_highlighter;
-    v6 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
-    [(_UIPreviewInteractionHighlighter *)highlighter _updateFromInteraction:v6 fractionComplete:0 ended:a3];
+    previewInteraction = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
+    [(_UIPreviewInteractionHighlighter *)highlighter _updateFromInteraction:previewInteraction fractionComplete:0 ended:highlighter];
   }
 }
 
@@ -808,8 +808,8 @@ LABEL_4:
   if (!self->_viewControllerHelper)
   {
     highlighter = self->_highlighter;
-    v5 = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
-    [(_UIPreviewInteractionHighlighter *)highlighter _updateFromInteraction:v5 fractionComplete:1 ended:0.0];
+    previewInteraction = [(_UIPreviewInteractionClassicImpl *)self previewInteraction];
+    [(_UIPreviewInteractionHighlighter *)highlighter _updateFromInteraction:previewInteraction fractionComplete:1 ended:0.0];
 
     v6 = self->_highlighter;
 
@@ -821,32 +821,32 @@ LABEL_4:
 {
   if (self->_highlighter && !self->_viewControllerHelper && (*&self->_previewInteractionFlags & 0x20) != 0)
   {
-    v4 = [(_UIPreviewInteractionClassicImpl *)self delegate];
+    delegate = [(_UIPreviewInteractionClassicImpl *)self delegate];
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v6 = [WeakRetained _viewControllerForAncestor];
+    _viewControllerForAncestor = [WeakRetained _viewControllerForAncestor];
 
-    if (!v6)
+    if (!_viewControllerForAncestor)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionClassicImpl.m" lineNumber:718 description:@"UIPreviewInteraction cannot determine presenting view controller."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionClassicImpl.m" lineNumber:718 description:@"UIPreviewInteraction cannot determine presenting view controller."];
     }
 
-    if ((*&self->_previewInteractionFlags & 0x20) != 0 && (-[_UIPreviewInteractionClassicImpl previewInteraction](self, "previewInteraction"), v7 = objc_claimAutoreleasedReturnValue(), [v4 _previewInteraction:v7 viewControllerPresentationForPresentingViewController:v6], v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
+    if ((*&self->_previewInteractionFlags & 0x20) != 0 && (-[_UIPreviewInteractionClassicImpl previewInteraction](self, "previewInteraction"), v7 = objc_claimAutoreleasedReturnValue(), [delegate _previewInteraction:v7 viewControllerPresentationForPresentingViewController:_viewControllerForAncestor], v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
     {
-      v9 = [v8 viewController];
+      viewController = [v8 viewController];
 
-      if (v9 == v6)
+      if (viewController == _viewControllerForAncestor)
       {
-        v10 = [v8 viewController];
-        v11 = [v10 parentViewController];
+        viewController2 = [v8 viewController];
+        parentViewController = [viewController2 parentViewController];
 
-        v6 = v11;
-        if (!v11)
+        _viewControllerForAncestor = parentViewController;
+        if (!parentViewController)
         {
-          v19 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v19 handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionClassicImpl.m" lineNumber:733 description:@"UIPreviewInteraction cannot determine presenting view controller."];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionClassicImpl.m" lineNumber:733 description:@"UIPreviewInteraction cannot determine presenting view controller."];
 
-          v6 = 0;
+          _viewControllerForAncestor = 0;
         }
       }
 
@@ -869,7 +869,7 @@ LABEL_4:
       v20[2] = __73___UIPreviewInteractionClassicImpl__presentPreviewViewControllerIfNeeded__block_invoke_2;
       v20[3] = &unk_1E70F5A28;
       objc_copyWeak(&v21, &location);
-      [(_UIPreviewInteractionHighlighter *)v15 presentViewControllerFromViewController:v6 highlighter:highlighter presentationCompletion:v22 dismissalCompletion:v20];
+      [(_UIPreviewInteractionHighlighter *)v15 presentViewControllerFromViewController:_viewControllerForAncestor highlighter:highlighter presentationCompletion:v22 dismissalCompletion:v20];
       objc_destroyWeak(&v21);
       objc_destroyWeak(&v23);
       objc_destroyWeak(&location);
@@ -877,8 +877,8 @@ LABEL_4:
 
     else
     {
-      v17 = [(_UIPreviewInteractionClassicImpl *)self touchForceProvider];
-      [v17 cancelInteraction];
+      touchForceProvider = [(_UIPreviewInteractionClassicImpl *)self touchForceProvider];
+      [touchForceProvider cancelInteraction];
     }
   }
 }
@@ -897,14 +897,14 @@ LABEL_4:
   if (!self->_viewControllerPresentationObserver)
   {
     objc_initWeak(&location, self);
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __82___UIPreviewInteractionClassicImpl__prepareForViewControllerPresentationObserving__block_invoke;
     v6[3] = &unk_1E710C240;
     objc_copyWeak(&v7, &location);
     v6[4] = self;
-    v4 = [v3 addObserverForName:@"_UIInternalViewControllerPresentationWillBeginNotification" object:0 queue:0 usingBlock:v6];
+    v4 = [defaultCenter addObserverForName:@"_UIInternalViewControllerPresentationWillBeginNotification" object:0 queue:0 usingBlock:v6];
     viewControllerPresentationObserver = self->_viewControllerPresentationObserver;
     self->_viewControllerPresentationObserver = v4;
 
@@ -917,8 +917,8 @@ LABEL_4:
 {
   if (self->_viewControllerPresentationObserver)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_viewControllerPresentationObserver];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_viewControllerPresentationObserver];
 
     viewControllerPresentationObserver = self->_viewControllerPresentationObserver;
     self->_viewControllerPresentationObserver = 0;

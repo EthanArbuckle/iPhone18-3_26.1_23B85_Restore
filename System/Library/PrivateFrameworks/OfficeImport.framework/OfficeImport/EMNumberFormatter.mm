@@ -1,28 +1,28 @@
 @interface EMNumberFormatter
-+ (id)formatterForFormat:(id)a3;
-- (BOOL)useBigNumberFormatterForValue:(double)a3;
-- (EMNumberFormatter)initWithExcelFormatString:(id)a3;
++ (id)formatterForFormat:(id)format;
+- (BOOL)useBigNumberFormatterForValue:(double)value;
+- (EMNumberFormatter)initWithExcelFormatString:(id)string;
 - (__CFDateFormatter)_dateFormatter;
 - (__CFNumberFormatter)_bigNumberFormatter;
 - (__CFNumberFormatter)_currencyFormatter;
 - (__CFNumberFormatter)_doubleFormatter;
-- (__CFNumberFormatter)_genericFormatterForNumberOfSignificantDigits:(unint64_t)a3;
+- (__CFNumberFormatter)_genericFormatterForNumberOfSignificantDigits:(unint64_t)digits;
 - (__CFNumberFormatter)_percentFormatter;
 - (id)_icuFormatStringForCurrencyFormat;
 - (id)_icuFormatStringForDateFormat;
-- (id)convertedGenericNumberFormatWithFormat:(id)a3;
-- (id)formatCurrency:(double)a3;
-- (id)formatDate:(id)a3;
-- (id)formatDefault:(double)a3;
-- (id)formatDefault:(double)a3 showingNumberOfDigits:(unint64_t)a4;
-- (id)formatDoubleValue:(double)a3;
-- (id)formatPercent:(double)a3;
-- (id)formatPhoneNumber:(double)a3;
-- (id)formatValue:(double)a3 inWorkbook:(id)a4;
+- (id)convertedGenericNumberFormatWithFormat:(id)format;
+- (id)formatCurrency:(double)currency;
+- (id)formatDate:(id)date;
+- (id)formatDefault:(double)default;
+- (id)formatDefault:(double)default showingNumberOfDigits:(unint64_t)digits;
+- (id)formatDoubleValue:(double)value;
+- (id)formatPercent:(double)percent;
+- (id)formatPhoneNumber:(double)number;
+- (id)formatValue:(double)value inWorkbook:(id)workbook;
 - (id)initForGeneralFormatting;
-- (unint64_t)optimalNumberOfDigitsForValue:(double)a3;
-- (void)_parseExcelFormatString:(id)a3;
-- (void)convertGenericNumberFormat:(id)a3;
+- (unint64_t)optimalNumberOfDigitsForValue:(double)value;
+- (void)_parseExcelFormatString:(id)string;
+- (void)convertGenericNumberFormat:(id)format;
 - (void)dealloc;
 @end
 
@@ -33,8 +33,8 @@
   result = self->_currencyFormatter;
   if (!result)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v5 = *MEMORY[0x277CBECE8];
     if (qword_27FC69A00 != -1)
     {
@@ -44,13 +44,13 @@
     v6 = CFNumberFormatterCreate(v5, qword_27FC699F8, kCFNumberFormatterCurrencyStyle);
     self->_currencyFormatter = v6;
     CFNumberFormatterSetProperty(v6, *MEMORY[0x277CBEFD8], &unk_286F6DDA0);
-    v7 = [(EMNumberFormatter *)v4 _icuFormatStringForCurrencyFormat];
-    if (v7)
+    _icuFormatStringForCurrencyFormat = [(EMNumberFormatter *)selfCopy _icuFormatStringForCurrencyFormat];
+    if (_icuFormatStringForCurrencyFormat)
     {
-      CFNumberFormatterSetFormat(self->_currencyFormatter, v7);
+      CFNumberFormatterSetFormat(self->_currencyFormatter, _icuFormatStringForCurrencyFormat);
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
     return self->_currencyFormatter;
   }
 
@@ -105,8 +105,8 @@
   result = self->_dateFormatter;
   if (!result)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v5 = *MEMORY[0x277CBECE8];
     if (qword_27FC69A00 != -1)
     {
@@ -117,13 +117,13 @@
     v6 = CFTimeZoneCreateWithTimeIntervalFromGMT(v5, 0.0);
     CFDateFormatterSetProperty(self->_dateFormatter, *MEMORY[0x277CBEDF8], v6);
     CFRelease(v6);
-    v7 = [(EMNumberFormatter *)v4 _icuFormatStringForDateFormat];
-    if (v7)
+    _icuFormatStringForDateFormat = [(EMNumberFormatter *)selfCopy _icuFormatStringForDateFormat];
+    if (_icuFormatStringForDateFormat)
     {
-      CFDateFormatterSetFormat(self->_dateFormatter, v7);
+      CFDateFormatterSetFormat(self->_dateFormatter, _icuFormatStringForDateFormat);
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
     return self->_dateFormatter;
   }
 
@@ -135,8 +135,8 @@
   result = self->_bigNumberFormatter;
   if (!result)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v5 = *MEMORY[0x277CBECE8];
     if (qword_27FC69A00 != -1)
     {
@@ -146,7 +146,7 @@
     v6 = CFNumberFormatterCreate(v5, qword_27FC699F8, kCFNumberFormatterScientificStyle);
     self->_bigNumberFormatter = v6;
     CFNumberFormatterSetFormat(v6, @"0.0####E+00");
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     return self->_bigNumberFormatter;
   }
@@ -154,14 +154,14 @@
   return result;
 }
 
-+ (id)formatterForFormat:(id)a3
++ (id)formatterForFormat:(id)format
 {
-  v3 = a3;
-  v4 = v3;
+  formatCopy = format;
+  v4 = formatCopy;
   v5 = @"General";
-  if (v3)
+  if (formatCopy)
   {
-    v5 = v3;
+    v5 = formatCopy;
   }
 
   v6 = v5;
@@ -177,16 +177,16 @@
   {
     if (v4 && ([(__CFString *)v4 isEqualToString:@"@"]& 1) == 0)
     {
-      v9 = [[EMNumberFormatter alloc] initWithExcelFormatString:v4];
+      initForGeneralFormatting = [[EMNumberFormatter alloc] initWithExcelFormatString:v4];
     }
 
     else
     {
-      v9 = [[EMNumberFormatter alloc] initForGeneralFormatting];
+      initForGeneralFormatting = [[EMNumberFormatter alloc] initForGeneralFormatting];
     }
 
-    v8 = v9;
-    [_MergedGlobals_62 setObject:v9 forKey:v6];
+    v8 = initForGeneralFormatting;
+    [_MergedGlobals_62 setObject:initForGeneralFormatting forKey:v6];
   }
 
   objc_sync_exit(v7);
@@ -205,9 +205,9 @@ uint64_t __40__EMNumberFormatter_formatterForFormat___block_invoke()
   return [v2 setName:@"Excel Formatters cache"];
 }
 
-- (EMNumberFormatter)initWithExcelFormatString:(id)a3
+- (EMNumberFormatter)initWithExcelFormatString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = EMNumberFormatter;
   v5 = [(EMNumberFormatter *)&v10 init];
@@ -216,11 +216,11 @@ uint64_t __40__EMNumberFormatter_formatterForFormat___block_invoke()
   {
     v5->_formatType = 0;
     v5->_isNegativeRed = 0;
-    v7 = [v4 copy];
+    v7 = [stringCopy copy];
     excelFormatString = v6->_excelFormatString;
     v6->_excelFormatString = v7;
 
-    [(EMNumberFormatter *)v6 _parseExcelFormatString:v4];
+    [(EMNumberFormatter *)v6 _parseExcelFormatString:stringCopy];
   }
 
   return v6;
@@ -243,7 +243,7 @@ uint64_t __40__EMNumberFormatter_formatterForFormat___block_invoke()
   return v3;
 }
 
-- (__CFNumberFormatter)_genericFormatterForNumberOfSignificantDigits:(unint64_t)a3
+- (__CFNumberFormatter)_genericFormatterForNumberOfSignificantDigits:(unint64_t)digits
 {
   if (qword_27FC69A18 != -1)
   {
@@ -255,8 +255,8 @@ uint64_t __40__EMNumberFormatter_formatterForFormat___block_invoke()
     result = self->_genericFormatter;
     if (!result)
     {
-      v6 = self;
-      objc_sync_enter(v6);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v7 = *MEMORY[0x277CBECE8];
       if (qword_27FC69A00 != -1)
       {
@@ -264,11 +264,11 @@ uint64_t __40__EMNumberFormatter_formatterForFormat___block_invoke()
       }
 
       self->_genericFormatter = CFNumberFormatterCreate(v7, qword_27FC699F8, kCFNumberFormatterDecimalStyle);
-      v8 = [(EMNumberFormatter *)v6 convertedGenericNumberFormatWithFormat:self->_baseICUFormatString];
+      v8 = [(EMNumberFormatter *)selfCopy convertedGenericNumberFormatWithFormat:self->_baseICUFormatString];
       CFNumberFormatterSetFormat(self->_genericFormatter, v8);
       CFNumberFormatterSetProperty(self->_genericFormatter, *MEMORY[0x277CBEFD8], &unk_286F6DDA0);
 
-      objc_sync_exit(v6);
+      objc_sync_exit(selfCopy);
       return self->_genericFormatter;
     }
   }
@@ -278,7 +278,7 @@ uint64_t __40__EMNumberFormatter_formatterForFormat___block_invoke()
     v9 = qword_27FC69A10;
     objc_sync_enter(v9);
     v10 = qword_27FC69A10;
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:digits];
     v12 = [v10 objectForKey:v11];
 
     if (!v12)
@@ -290,10 +290,10 @@ uint64_t __40__EMNumberFormatter_formatterForFormat___block_invoke()
       }
 
       v12 = CFNumberFormatterCreate(v13, qword_27FC699F8, kCFNumberFormatterDecimalStyle);
-      v14 = [MEMORY[0x277CCAB68] stringWithCapacity:a3];
+      v14 = [MEMORY[0x277CCAB68] stringWithCapacity:digits];
       [(__CFString *)v14 appendString:@"@"];
-      v15 = a3 - 1;
-      if (a3 != 1)
+      v15 = digits - 1;
+      if (digits != 1)
       {
         do
         {
@@ -306,7 +306,7 @@ uint64_t __40__EMNumberFormatter_formatterForFormat___block_invoke()
 
       CFNumberFormatterSetFormat(v12, v14);
       v16 = qword_27FC69A10;
-      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:digits];
       [v16 setObject:v12 forKey:v17];
     }
 
@@ -334,8 +334,8 @@ uint64_t __67__EMNumberFormatter__genericFormatterForNumberOfSignificantDigits__
   result = self->_doubleFormatter;
   if (!result)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v5 = *MEMORY[0x277CBECE8];
     if (qword_27FC69A00 != -1)
     {
@@ -343,13 +343,13 @@ uint64_t __67__EMNumberFormatter__genericFormatterForNumberOfSignificantDigits__
     }
 
     self->_doubleFormatter = CFNumberFormatterCreate(v5, qword_27FC699F8, kCFNumberFormatterDecimalStyle);
-    if (v4->_baseICUFormatString)
+    if (selfCopy->_baseICUFormatString)
     {
-      v6 = [(EMNumberFormatter *)v4 convertedGenericNumberFormatWithFormat:?];
+      v6 = [(EMNumberFormatter *)selfCopy convertedGenericNumberFormatWithFormat:?];
       CFNumberFormatterSetFormat(self->_doubleFormatter, v6);
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     return self->_doubleFormatter;
   }
@@ -362,8 +362,8 @@ uint64_t __67__EMNumberFormatter__genericFormatterForNumberOfSignificantDigits__
   result = self->_percentFormatter;
   if (!result)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v5 = *MEMORY[0x277CBECE8];
     if (qword_27FC69A00 != -1)
     {
@@ -371,13 +371,13 @@ uint64_t __67__EMNumberFormatter__genericFormatterForNumberOfSignificantDigits__
     }
 
     self->_percentFormatter = CFNumberFormatterCreate(v5, qword_27FC699F8, kCFNumberFormatterPercentStyle);
-    if (v4->_baseICUFormatString)
+    if (selfCopy->_baseICUFormatString)
     {
-      v6 = [(EMNumberFormatter *)v4 convertedGenericNumberFormatWithFormat:?];
+      v6 = [(EMNumberFormatter *)selfCopy convertedGenericNumberFormatWithFormat:?];
       CFNumberFormatterSetFormat(self->_percentFormatter, v6);
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     return self->_percentFormatter;
   }
@@ -455,8 +455,8 @@ uint64_t __67__EMNumberFormatter__genericFormatterForNumberOfSignificantDigits__
               objc_enumerationMutation(v15);
             }
 
-            v19 = [*(*(&v30 + 1) + 8 * i) range];
-            [v4 replaceOccurrencesOfString:@"M" withString:@"m" options:2 range:{v19, v20}];
+            range = [*(*(&v30 + 1) + 8 * i) range];
+            [v4 replaceOccurrencesOfString:@"M" withString:@"m" options:2 range:{range, v20}];
           }
 
           v16 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -536,16 +536,16 @@ void __50__EMNumberFormatter__icuFormatStringForDateFormat__block_invoke()
   }
 }
 
-- (id)formatPhoneNumber:(double)a3
+- (id)formatPhoneNumber:(double)number
 {
-  if (a3 >= 9999999.0)
+  if (number >= 9999999.0)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"(%.3d) %.3d-%.4d", (a3 / 10000000.0), ((a3 - (a3 / 10000000.0) * 10000000.0) / 10000), ((a3 - (a3 / 10000000.0) * 10000000.0) % 10000)];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"(%.3d) %.3d-%.4d", (number / 10000000.0), ((number - (number / 10000000.0) * 10000000.0) / 10000), ((number - (number / 10000000.0) * 10000000.0) % 10000)];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%.3d-%.4d", (a3 / 10000), (a3 % 10000), v5];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%.3d-%.4d", (number / 10000), (number % 10000), v5];
   }
   v3 = ;
 
@@ -572,33 +572,33 @@ void __50__EMNumberFormatter__icuFormatStringForDateFormat__block_invoke()
   return v3;
 }
 
-- (id)formatDoubleValue:(double)a3
+- (id)formatDoubleValue:(double)value
 {
-  valuePtr = a3;
-  v4 = [(EMNumberFormatter *)self _doubleFormatter];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = CFNumberFormatterCreateStringWithValue(*MEMORY[0x277CBECE8], v4, kCFNumberDoubleType, &valuePtr);
-  objc_sync_exit(v5);
+  valuePtr = value;
+  _doubleFormatter = [(EMNumberFormatter *)self _doubleFormatter];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = CFNumberFormatterCreateStringWithValue(*MEMORY[0x277CBECE8], _doubleFormatter, kCFNumberDoubleType, &valuePtr);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)formatPercent:(double)a3
+- (id)formatPercent:(double)percent
 {
-  valuePtr = a3;
-  v4 = [(EMNumberFormatter *)self _percentFormatter];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = CFNumberFormatterCreateStringWithValue(*MEMORY[0x277CBECE8], v4, kCFNumberDoubleType, &valuePtr);
-  objc_sync_exit(v5);
+  valuePtr = percent;
+  _percentFormatter = [(EMNumberFormatter *)self _percentFormatter];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = CFNumberFormatterCreateStringWithValue(*MEMORY[0x277CBECE8], _percentFormatter, kCFNumberDoubleType, &valuePtr);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (unint64_t)optimalNumberOfDigitsForValue:(double)a3
+- (unint64_t)optimalNumberOfDigitsForValue:(double)value
 {
-  if (round(a3) == a3)
+  if (round(value) == value)
   {
     return 11;
   }
@@ -609,10 +609,10 @@ void __50__EMNumberFormatter__icuFormatStringForDateFormat__block_invoke()
   }
 }
 
-- (BOOL)useBigNumberFormatterForValue:(double)a3
+- (BOOL)useBigNumberFormatterForValue:(double)value
 {
-  v3 = fabs(a3);
-  if (round(a3) == a3)
+  v3 = fabs(value);
+  if (round(value) == value)
   {
     return v3 >= 1.0e11;
   }
@@ -622,80 +622,80 @@ void __50__EMNumberFormatter__icuFormatStringForDateFormat__block_invoke()
     return 1;
   }
 
-  v5 = a3 != 0.0;
-  if (a3 >= 0.000000001)
+  v5 = value != 0.0;
+  if (value >= 0.000000001)
   {
     v5 = 0;
   }
 
-  return a3 > -0.000000001 && v5;
+  return value > -0.000000001 && v5;
 }
 
-- (id)formatDefault:(double)a3 showingNumberOfDigits:(unint64_t)a4
+- (id)formatDefault:(double)default showingNumberOfDigits:(unint64_t)digits
 {
-  valuePtr = a3;
+  valuePtr = default;
   if ([(EMNumberFormatter *)self useBigNumberFormatterForValue:?])
   {
-    v7 = [(EMNumberFormatter *)self _bigNumberFormatter];
+    _bigNumberFormatter = [(EMNumberFormatter *)self _bigNumberFormatter];
   }
 
   else
   {
-    v9 = fabs(a3) < 1.0 && a4 > 1;
-    v7 = [(EMNumberFormatter *)self _genericFormatterForNumberOfSignificantDigits:a4 - v9];
+    v9 = fabs(default) < 1.0 && digits > 1;
+    _bigNumberFormatter = [(EMNumberFormatter *)self _genericFormatterForNumberOfSignificantDigits:digits - v9];
   }
 
-  v10 = v7;
-  v11 = self;
-  objc_sync_enter(v11);
+  v10 = _bigNumberFormatter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = CFNumberFormatterCreateStringWithValue(*MEMORY[0x277CBECE8], v10, kCFNumberDoubleType, &valuePtr);
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (id)formatDefault:(double)a3
+- (id)formatDefault:(double)default
 {
   v5 = [(EMNumberFormatter *)self optimalNumberOfDigitsForValue:?];
 
-  return [(EMNumberFormatter *)self formatDefault:v5 showingNumberOfDigits:a3];
+  return [(EMNumberFormatter *)self formatDefault:v5 showingNumberOfDigits:default];
 }
 
-- (id)formatCurrency:(double)a3
+- (id)formatCurrency:(double)currency
 {
-  valuePtr = a3;
-  v4 = [(EMNumberFormatter *)self _currencyFormatter];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = CFNumberFormatterCreateStringWithValue(*MEMORY[0x277CBECE8], v4, kCFNumberDoubleType, &valuePtr);
-  objc_sync_exit(v5);
+  valuePtr = currency;
+  _currencyFormatter = [(EMNumberFormatter *)self _currencyFormatter];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = CFNumberFormatterCreateStringWithValue(*MEMORY[0x277CBECE8], _currencyFormatter, kCFNumberDoubleType, &valuePtr);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)formatDate:(id)a3
+- (id)formatDate:(id)date
 {
-  v4 = a3;
-  v5 = [(EMNumberFormatter *)self _dateFormatter];
-  v6 = self;
-  objc_sync_enter(v6);
-  StringWithDate = CFDateFormatterCreateStringWithDate(*MEMORY[0x277CBECE8], v5, v4);
-  objc_sync_exit(v6);
+  dateCopy = date;
+  _dateFormatter = [(EMNumberFormatter *)self _dateFormatter];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  StringWithDate = CFDateFormatterCreateStringWithDate(*MEMORY[0x277CBECE8], _dateFormatter, dateCopy);
+  objc_sync_exit(selfCopy);
 
   return StringWithDate;
 }
 
-- (void)convertGenericNumberFormat:(id)a3
+- (void)convertGenericNumberFormat:(id)format
 {
-  v4 = a3;
-  v7 = v4;
+  formatCopy = format;
+  v7 = formatCopy;
   if (qword_27FC69A50 != -1)
   {
     dispatch_once(&qword_27FC69A50, &__block_literal_global_159);
-    v4 = v7;
+    formatCopy = v7;
   }
 
-  [qword_27FC69A38 replaceMatchesInString:v7 options:0 range:0 withTemplate:{objc_msgSend(v4, "length"), @" "}];
+  [qword_27FC69A38 replaceMatchesInString:v7 options:0 range:0 withTemplate:{objc_msgSend(formatCopy, "length"), @" "}];
   [v7 replaceOccurrencesOfString:@"\\%" withString:@"'%'" options:2 range:{0, objc_msgSend(v7, "length")}];
   [v7 replaceOccurrencesOfString:@"\\" withString:&stru_286EE1130 options:2 range:{0, objc_msgSend(v7, "length"")}];
   [v7 replaceOccurrencesOfString:@" withString:&stru_286EE1130 options:2 range:{0, objc_msgSend(v7, "length"")}];
@@ -731,13 +731,13 @@ void __48__EMNumberFormatter_convertGenericNumberFormat___block_invoke()
   qword_27FC69A48 = v4;
 }
 
-- (id)convertedGenericNumberFormatWithFormat:(id)a3
+- (id)convertedGenericNumberFormatWithFormat:(id)format
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  formatCopy = format;
+  v5 = formatCopy;
+  if (formatCopy)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [formatCopy mutableCopy];
     [(EMNumberFormatter *)self convertGenericNumberFormat:v6];
   }
 
@@ -749,9 +749,9 @@ void __48__EMNumberFormatter_convertGenericNumberFormat___block_invoke()
   return v6;
 }
 
-- (void)_parseExcelFormatString:(id)a3
+- (void)_parseExcelFormatString:(id)string
 {
-  obj = a3;
+  obj = string;
   if ([(NSString *)obj isEqualToString:@"GenericDate"])
   {
     self->_formatType = 8;
@@ -781,9 +781,9 @@ void __48__EMNumberFormatter_convertGenericNumberFormat___block_invoke()
   }
 }
 
-- (id)formatValue:(double)a3 inWorkbook:(id)a4
+- (id)formatValue:(double)value inWorkbook:(id)workbook
 {
-  v6 = a4;
+  workbookCopy = workbook;
   formatType = self->_formatType;
   if (formatType > 4)
   {
@@ -791,7 +791,7 @@ void __48__EMNumberFormatter_convertGenericNumberFormat___block_invoke()
     {
       if (formatType == 9)
       {
-        v10 = [(EMNumberFormatter *)self formatFraction:a3];
+        v10 = [(EMNumberFormatter *)self formatFraction:value];
         goto LABEL_21;
       }
 
@@ -805,13 +805,13 @@ void __48__EMNumberFormatter_convertGenericNumberFormat___block_invoke()
     {
       if (formatType == 5)
       {
-        v10 = [(EMNumberFormatter *)self formatPercent:a3];
+        v10 = [(EMNumberFormatter *)self formatPercent:value];
         goto LABEL_21;
       }
 
       if (formatType == 8)
       {
-        v8 = [ECUtils dateFromXlDateTimeNumber:v6 edWorkbook:a3];
+        v8 = [ECUtils dateFromXlDateTimeNumber:workbookCopy edWorkbook:value];
         v9 = [(EMNumberFormatter *)self formatDate:v8];
 
         goto LABEL_22;
@@ -819,7 +819,7 @@ void __48__EMNumberFormatter_convertGenericNumberFormat___block_invoke()
     }
 
 LABEL_20:
-    v10 = [(EMNumberFormatter *)self formatDoubleValue:a3];
+    v10 = [(EMNumberFormatter *)self formatDoubleValue:value];
     goto LABEL_21;
   }
 
@@ -827,12 +827,12 @@ LABEL_20:
   {
     if (formatType == 3)
     {
-      [(EMNumberFormatter *)self formatPhoneNumber:a3];
+      [(EMNumberFormatter *)self formatPhoneNumber:value];
     }
 
     else
     {
-      [(EMNumberFormatter *)self formatCurrency:a3];
+      [(EMNumberFormatter *)self formatCurrency:value];
     }
     v10 = ;
     goto LABEL_21;
@@ -850,7 +850,7 @@ LABEL_20:
   }
 
 LABEL_15:
-  v10 = [(EMNumberFormatter *)self formatDefault:a3];
+  v10 = [(EMNumberFormatter *)self formatDefault:value];
 LABEL_21:
   v9 = v10;
 LABEL_22:

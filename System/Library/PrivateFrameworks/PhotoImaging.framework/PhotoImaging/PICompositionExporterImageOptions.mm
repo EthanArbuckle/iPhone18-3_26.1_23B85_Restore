@@ -1,20 +1,20 @@
 @interface PICompositionExporterImageOptions
 - (PICompositionExporterImageOptions)init;
-- (id)imageExportFormatForURL:(id)a3 isHDR:(BOOL)a4;
+- (id)imageExportFormatForURL:(id)l isHDR:(BOOL)r;
 @end
 
 @implementation PICompositionExporterImageOptions
 
-- (id)imageExportFormatForURL:(id)a3 isHDR:(BOOL)a4
+- (id)imageExportFormatForURL:(id)l isHDR:(BOOL)r
 {
-  v4 = a4;
+  rCopy = r;
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  lCopy = l;
+  v7 = lCopy;
   imageExportFormat = self->_imageExportFormat;
   if (imageExportFormat)
   {
-    if (!v6)
+    if (!lCopy)
     {
 LABEL_25:
       v24 = imageExportFormat;
@@ -22,12 +22,12 @@ LABEL_25:
     }
 
     v9 = MEMORY[0x1E6982C40];
-    v10 = [v6 pathExtension];
-    v11 = [v9 typeWithFilenameExtension:v10];
-    v12 = [v11 identifier];
+    pathExtension = [lCopy pathExtension];
+    v11 = [v9 typeWithFilenameExtension:pathExtension];
+    identifier = [v11 identifier];
 
-    v13 = [(NUImageExportFormat *)self->_imageExportFormat fileType];
-    if ([v12 isEqualToString:v13])
+    fileType = [(NUImageExportFormat *)self->_imageExportFormat fileType];
+    if ([identifier isEqualToString:fileType])
     {
 LABEL_24:
 
@@ -48,7 +48,7 @@ LABEL_24:
       v17 = MEMORY[0x1E696AEC0];
       v18 = self->_imageExportFormat;
       v19 = v16;
-      v20 = [v17 stringWithFormat:@"Export URL UTI (%@) does not match expected export format (%@)", v12, v18];
+      v20 = [v17 stringWithFormat:@"Export URL UTI (%@) does not match expected export format (%@)", identifier, v18];
       *buf = 138543362;
       v42 = v20;
       _os_log_impl(&dword_1C7694000, v19, OS_LOG_TYPE_DEFAULT, "Continue: %{public}@", buf, 0xCu);
@@ -82,8 +82,8 @@ LABEL_17:
         v28 = MEMORY[0x1E696AF00];
         v40 = v27;
         v29 = v26;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v27;
         v43 = 2114;
@@ -92,7 +92,7 @@ LABEL_17:
       }
 
 LABEL_23:
-      v38 = v12;
+      v38 = identifier;
       v39 = self->_imageExportFormat;
       _NUAssertContinueHandler();
       goto LABEL_24;
@@ -103,8 +103,8 @@ LABEL_23:
     {
       v34 = MEMORY[0x1E696AF00];
       v35 = v32;
-      v36 = [v34 callStackSymbols];
-      v37 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v34 callStackSymbols];
+      v37 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v37;
       _os_log_error_impl(&dword_1C7694000, v35, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -113,9 +113,9 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (v6)
+  if (lCopy)
   {
-    v23 = [MEMORY[0x1E69B3AF0] defaultFormatForURL:v6];
+    v23 = [MEMORY[0x1E69B3AF0] defaultFormatForURL:lCopy];
   }
 
   else
@@ -138,7 +138,7 @@ LABEL_23:
 LABEL_26:
   if ([(PICompositionExporterImageOptions *)self enableHDR:v38])
   {
-    if (v4)
+    if (rCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -157,9 +157,9 @@ LABEL_26:
   v6.super_class = PICompositionExporterImageOptions;
   v2 = [(PICompositionExporterOptions *)&v6 init];
   v2->_JPEGCompressionQuality = 0.0;
-  v3 = [MEMORY[0x1E69B3B08] defaultAuxiliaryImageTypes];
+  defaultAuxiliaryImageTypes = [MEMORY[0x1E69B3B08] defaultAuxiliaryImageTypes];
   auxiliaryImageTypes = v2->_auxiliaryImageTypes;
-  v2->_auxiliaryImageTypes = v3;
+  v2->_auxiliaryImageTypes = defaultAuxiliaryImageTypes;
 
   return v2;
 }

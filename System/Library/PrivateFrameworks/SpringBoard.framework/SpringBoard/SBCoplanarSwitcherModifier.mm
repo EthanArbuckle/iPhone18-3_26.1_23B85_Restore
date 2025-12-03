@@ -1,10 +1,10 @@
 @interface SBCoplanarSwitcherModifier
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBCoplanarSwitcherModifier)initWithActiveAppLayout:(id)a3;
-- (double)scaleForIndex:(unint64_t)a3;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBCoplanarSwitcherModifier)initWithActiveAppLayout:(id)layout;
+- (double)scaleForIndex:(unint64_t)index;
 - (int64_t)_indexOfActiveAppLayout;
 - (uint64_t)activeAppLayout;
-- (void)setActiveAppLayout:(uint64_t)a1;
+- (void)setActiveAppLayout:(uint64_t)layout;
 @end
 
 @implementation SBCoplanarSwitcherModifier
@@ -16,25 +16,25 @@
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v3 = [(SBCoplanarSwitcherModifier *)self appLayouts];
-  v4 = [v3 indexOfObject:self->_activeAppLayout];
+  appLayouts = [(SBCoplanarSwitcherModifier *)self appLayouts];
+  v4 = [appLayouts indexOfObject:self->_activeAppLayout];
 
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(SBCoplanarSwitcherModifier *)self desktopSpaceDisplayItems];
-    if ([v5 count] && -[SBAppLayout containsAllItemsFromSet:](self->_activeAppLayout, "containsAllItemsFromSet:", v5))
+    desktopSpaceDisplayItems = [(SBCoplanarSwitcherModifier *)self desktopSpaceDisplayItems];
+    if ([desktopSpaceDisplayItems count] && -[SBAppLayout containsAllItemsFromSet:](self->_activeAppLayout, "containsAllItemsFromSet:", desktopSpaceDisplayItems))
     {
       activeAppLayout = self->_activeAppLayout;
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __53__SBCoplanarSwitcherModifier__indexOfActiveAppLayout__block_invoke;
       v10[3] = &unk_2783A8C90;
-      v11 = v5;
+      v11 = desktopSpaceDisplayItems;
       v7 = [(SBAppLayout *)activeAppLayout appLayoutWithItemsPassingTest:v10];
       if (v7)
       {
-        v8 = [(SBCoplanarSwitcherModifier *)self appLayouts];
-        v4 = [v8 indexOfObject:v7];
+        appLayouts2 = [(SBCoplanarSwitcherModifier *)self appLayouts];
+        v4 = [appLayouts2 indexOfObject:v7];
       }
 
       else
@@ -52,16 +52,16 @@
   return v4;
 }
 
-- (SBCoplanarSwitcherModifier)initWithActiveAppLayout:(id)a3
+- (SBCoplanarSwitcherModifier)initWithActiveAppLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = SBCoplanarSwitcherModifier;
   v6 = [(SBSwitcherModifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activeAppLayout, a3);
+    objc_storeStrong(&v6->_activeAppLayout, layout);
     v7->_scale = 1.0;
     v7->_spacingType = 0;
     v7->_usesContainerViewBoundsAsActiveFrame = 0;
@@ -70,16 +70,16 @@
   return v7;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBCoplanarSwitcherModifier *)self windowManagementContext];
-  if (([v5 isFlexibleWindowingEnabled] & 1) != 0 || objc_msgSend(v5, "isAutomaticStageCreationEnabled"))
+  windowManagementContext = [(SBCoplanarSwitcherModifier *)self windowManagementContext];
+  if (([windowManagementContext isFlexibleWindowingEnabled] & 1) != 0 || objc_msgSend(windowManagementContext, "isAutomaticStageCreationEnabled"))
   {
     if (([(SBCoplanarSwitcherModifier *)self prefersStripHiddenAndDisabled]& 1) == 0)
     {
       v55.receiver = self;
       v55.super_class = SBCoplanarSwitcherModifier;
-      [(SBCoplanarSwitcherModifier *)&v55 frameForIndex:a3];
+      [(SBCoplanarSwitcherModifier *)&v55 frameForIndex:index];
       x = v7;
       y = v9;
       width = v11;
@@ -95,14 +95,14 @@
     v6 = 1;
   }
 
-  v15 = [(SBCoplanarSwitcherModifier *)self appLayouts];
-  v16 = [v15 objectAtIndex:a3];
+  appLayouts = [(SBCoplanarSwitcherModifier *)self appLayouts];
+  v16 = [appLayouts objectAtIndex:index];
 
   if ([(SBAppLayout *)self->_ignoredAppLayout isEqual:v16])
   {
     v54.receiver = self;
     v54.super_class = SBCoplanarSwitcherModifier;
-    [(SBCoplanarSwitcherModifier *)&v54 frameForIndex:a3];
+    [(SBCoplanarSwitcherModifier *)&v54 frameForIndex:index];
     x = v17;
     y = v18;
     width = v19;
@@ -126,7 +126,7 @@
     {
       v53.receiver = self;
       v53.super_class = SBCoplanarSwitcherModifier;
-      [(SBCoplanarSwitcherModifier *)&v53 frameForIndex:a3];
+      [(SBCoplanarSwitcherModifier *)&v53 frameForIndex:index];
       x = v26;
       y = v27;
       width = v28;
@@ -140,24 +140,24 @@
 
       if ((v31 & 1) == 0)
       {
-        v32 = [(SBCoplanarSwitcherModifier *)self _indexOfActiveAppLayout];
-        if (v32 == 0x7FFFFFFFFFFFFFFFLL)
+        _indexOfActiveAppLayout = [(SBCoplanarSwitcherModifier *)self _indexOfActiveAppLayout];
+        if (_indexOfActiveAppLayout == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v33 = [(SBCoplanarSwitcherModifier *)self desktopSpaceDisplayItems];
-          if ([v33 count] && (objc_msgSend(v16, "containsAllItemsFromSet:", v33) & 1) != 0)
+          desktopSpaceDisplayItems = [(SBCoplanarSwitcherModifier *)self desktopSpaceDisplayItems];
+          if ([desktopSpaceDisplayItems count] && (objc_msgSend(v16, "containsAllItemsFromSet:", desktopSpaceDisplayItems) & 1) != 0)
           {
             v34 = 1;
           }
 
           else
           {
-            v34 = ~a3;
+            v34 = ~index;
           }
         }
 
         else
         {
-          v34 = v32 - a3;
+          v34 = _indexOfActiveAppLayout - index;
         }
 
         if ([(SBCoplanarSwitcherModifier *)self isRTLEnabled])
@@ -170,15 +170,15 @@
           v35 = v34;
         }
 
-        v36 = [(SBCoplanarSwitcherModifier *)self switcherSettings];
+        switcherSettings = [(SBCoplanarSwitcherModifier *)self switcherSettings];
         if ([(SBCoplanarSwitcherModifier *)self isDevicePad])
         {
-          [v36 coplanarSpacingPad];
+          [switcherSettings coplanarSpacingPad];
         }
 
         else
         {
-          [v36 coplanarSpacingPhone];
+          [switcherSettings coplanarSpacingPhone];
         }
 
         v38 = v37;
@@ -247,17 +247,17 @@ LABEL_39:
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBCoplanarSwitcherModifier *)self windowManagementContext];
-  if ([v5 isAutomaticStageCreationEnabled] & 1) == 0 && !objc_msgSend(v5, "isFlexibleWindowingEnabled") || (-[SBCoplanarSwitcherModifier prefersStripHiddenAndDisabled](self, "prefersStripHiddenAndDisabled"))
+  windowManagementContext = [(SBCoplanarSwitcherModifier *)self windowManagementContext];
+  if ([windowManagementContext isAutomaticStageCreationEnabled] & 1) == 0 && !objc_msgSend(windowManagementContext, "isFlexibleWindowingEnabled") || (-[SBCoplanarSwitcherModifier prefersStripHiddenAndDisabled](self, "prefersStripHiddenAndDisabled"))
   {
-    v6 = [(SBCoplanarSwitcherModifier *)self appLayouts];
-    v7 = [v6 objectAtIndex:a3];
+    appLayouts = [(SBCoplanarSwitcherModifier *)self appLayouts];
+    v7 = [appLayouts objectAtIndex:index];
 
     if ([(SBAppLayout *)self->_ignoredAppLayout isEqual:v7])
     {
-      [(SBCoplanarSwitcherModifier *)&v13 scaleForIndex:a3, v12.receiver, v12.super_class, self, SBCoplanarSwitcherModifier];
+      [(SBCoplanarSwitcherModifier *)&v13 scaleForIndex:index, v12.receiver, v12.super_class, self, SBCoplanarSwitcherModifier];
     }
 
     else
@@ -268,7 +268,7 @@ LABEL_39:
         goto LABEL_12;
       }
 
-      [(SBCoplanarSwitcherModifier *)&v12 scaleForIndex:a3, self, SBCoplanarSwitcherModifier, v13.receiver, v13.super_class];
+      [(SBCoplanarSwitcherModifier *)&v12 scaleForIndex:index, self, SBCoplanarSwitcherModifier, v13.receiver, v13.super_class];
     }
 
     scale = v8;
@@ -279,7 +279,7 @@ LABEL_12:
 
   v14.receiver = self;
   v14.super_class = SBCoplanarSwitcherModifier;
-  [(SBCoplanarSwitcherModifier *)&v14 scaleForIndex:a3];
+  [(SBCoplanarSwitcherModifier *)&v14 scaleForIndex:index];
   scale = v9;
 LABEL_13:
 
@@ -296,11 +296,11 @@ LABEL_13:
   return result;
 }
 
-- (void)setActiveAppLayout:(uint64_t)a1
+- (void)setActiveAppLayout:(uint64_t)layout
 {
-  if (a1)
+  if (layout)
   {
-    objc_storeStrong((a1 + 160), a2);
+    objc_storeStrong((layout + 160), a2);
   }
 }
 

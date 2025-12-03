@@ -1,14 +1,14 @@
 @interface NUImageExportJob
-- (BOOL)render:(id *)a3;
-- (CGImage)copyCGImageWithIOSurface:(id)a3 fromRect:(CGRect)a4 colorSpace:(id)a5 error:(id *)a6;
-- (NUImageExportJob)initWithExportRequest:(id)a3;
-- (NUImageExportJob)initWithImageExportRequest:(id)a3;
-- (id)_filterProperties:(id)a3;
+- (BOOL)render:(id *)render;
+- (CGImage)copyCGImageWithIOSurface:(id)surface fromRect:(CGRect)rect colorSpace:(id)space error:(id *)error;
+- (NUImageExportJob)initWithExportRequest:(id)request;
+- (NUImageExportJob)initWithImageExportRequest:(id)request;
+- (id)_filterProperties:(id)properties;
 - (id)auxiliaryImageTypes;
 - (id)auxiliaryImages;
-- (id)evaluateRenderDependencies:(id *)a3;
+- (id)evaluateRenderDependencies:(id *)dependencies;
 - (id)imageDestinationOptions;
-- (id)prepareNodeWithPipelineState:(id)a3 error:(id *)a4;
+- (id)prepareNodeWithPipelineState:(id)state error:(id *)error;
 - (id)result;
 - (void)cleanUp;
 @end
@@ -24,10 +24,10 @@
   self->_destinationData = 0;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v131 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v91 = NUAssertLogger_14640();
     if (os_log_type_enabled(v91, OS_LOG_TYPE_ERROR))
@@ -48,8 +48,8 @@
         v98 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v99 = MEMORY[0x1E696AF00];
         v100 = v98;
-        v101 = [v99 callStackSymbols];
-        v102 = [v101 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v99 callStackSymbols];
+        v102 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v98;
         *&buf[12] = 2114;
@@ -60,8 +60,8 @@
 
     else if (v95)
     {
-      v96 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v97 = [v96 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v97 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v97;
       _os_log_error_impl(&dword_1C0184000, v94, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -73,32 +73,32 @@
   v115 = [(NURenderJob *)self renderer:?];
   if (v115)
   {
-    v3 = [(NURenderJob *)self prepareNode];
-    v116 = [v3 imageProperties:a3];
+    prepareNode = [(NURenderJob *)self prepareNode];
+    v116 = [prepareNode imageProperties:render];
 
     if (!v116)
     {
-      [NUError errorWithCode:1 reason:@"Failed to get image properties" object:0 underlyingError:*a3];
-      *a3 = v7 = 0;
+      [NUError errorWithCode:1 reason:@"Failed to get image properties" object:0 underlyingError:*render];
+      *render = v7 = 0;
 LABEL_81:
 
       goto LABEL_82;
     }
 
-    v112 = [(NUImageExportJob *)self imageExportRequest];
-    v4 = [v112 colorSpace];
-    v5 = v4;
-    if (v4)
+    imageExportRequest = [(NUImageExportJob *)self imageExportRequest];
+    colorSpace = [imageExportRequest colorSpace];
+    v5 = colorSpace;
+    if (colorSpace)
     {
-      v6 = v4;
+      colorSpace2 = colorSpace;
     }
 
     else
     {
-      v6 = [v116 colorSpace];
+      colorSpace2 = [v116 colorSpace];
     }
 
-    v8 = v6;
+    v8 = colorSpace2;
 
     if ([v8 isRGB])
     {
@@ -125,17 +125,17 @@ LABEL_81:
       v113 = v10;
     }
 
-    v11 = [(NURenderJob *)self imageSize];
+    imageSize = [(NURenderJob *)self imageSize];
     v13 = v12;
-    v111 = [v112 format];
-    v110 = [v111 pixelFormat];
-    v108 = [v115 context];
+    format = [imageExportRequest format];
+    pixelFormat = [format pixelFormat];
+    context = [v115 context];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (![v113 isExtended] || (objc_msgSend(v110, "supportsExtendedRange") & 1) != 0)
+    if (![v113 isExtended] || (objc_msgSend(pixelFormat, "supportsExtendedRange") & 1) != 0)
     {
 LABEL_32:
-      if (![v113 isHDR] || objc_msgSend(v110, "bitsPerComponent") > 9)
+      if (![v113 isHDR] || objc_msgSend(pixelFormat, "bitsPerComponent") > 9)
       {
 LABEL_48:
         *buf = 0;
@@ -144,69 +144,69 @@ LABEL_48:
         v128 = __Block_byref_object_copy__14664;
         v129 = __Block_byref_object_dispose__14665;
         v130 = 0;
-        v49 = [(NUImageExportJob *)self imageExportRequest];
-        v50 = [v49 renderWithIOSurface];
+        imageExportRequest2 = [(NUImageExportJob *)self imageExportRequest];
+        renderWithIOSurface = [imageExportRequest2 renderWithIOSurface];
 
-        if ((v50 & isKindOfClass) != 0)
+        if ((renderWithIOSurface & isKindOfClass) != 0)
         {
-          v51 = [(NURenderJob *)self outputImage];
+          outputImage = [(NURenderJob *)self outputImage];
           v52 = *&buf[8];
           obj = 0;
-          image = [(NUImageExportJob *)self copyCGImageWithIOSurface:v51 fromRect:v113 colorSpace:&obj error:0.0, 0.0, v11, v13];
+          image = [(NUImageExportJob *)self copyCGImageWithIOSurface:outputImage fromRect:v113 colorSpace:&obj error:0.0, 0.0, imageSize, v13];
           objc_storeStrong((v52 + 40), obj);
         }
 
         else if (objc_opt_respondsToSelector())
         {
-          v51 = [(NURenderJob *)self outputImage];
-          v53 = [v110 CIFormat];
-          v54 = [v113 CGColorSpace];
+          outputImage = [(NURenderJob *)self outputImage];
+          cIFormat = [pixelFormat CIFormat];
+          cGColorSpace = [v113 CGColorSpace];
           v124[0] = MEMORY[0x1E69E9820];
           v124[1] = 3221225472;
           v124[2] = __27__NUImageExportJob_render___block_invoke;
           v124[3] = &unk_1E810A498;
           v124[4] = buf;
-          image = [v108 createCGImage:v51 fromRect:v53 format:1 premultiplied:v54 colorSpace:1 deferred:v124 renderCallback:{0.0, 0.0, v11, v13}];
+          image = [context createCGImage:outputImage fromRect:cIFormat format:1 premultiplied:cGColorSpace colorSpace:1 deferred:v124 renderCallback:{0.0, 0.0, imageSize, v13}];
         }
 
         else
         {
-          v51 = [(NURenderJob *)self outputImage];
-          image = [v108 createCGImage:v51 fromRect:objc_msgSend(v110 format:"CIFormat") colorSpace:objc_msgSend(v113 deferred:{"CGColorSpace"), 1, 0.0, 0.0, v11, v13}];
+          outputImage = [(NURenderJob *)self outputImage];
+          image = [context createCGImage:outputImage fromRect:objc_msgSend(pixelFormat format:"CIFormat") colorSpace:objc_msgSend(v113 deferred:{"CGColorSpace"), 1, 0.0, 0.0, imageSize, v13}];
         }
 
         if (image)
         {
-          if ([v112 renderToData])
+          if ([imageExportRequest renderToData])
           {
             v55 = objc_alloc_init(MEMORY[0x1E695DF88]);
             destinationData = self->_destinationData;
             self->_destinationData = v55;
 
             v57 = self->_destinationData;
-            v58 = [v111 fileType];
-            v59 = CGImageDestinationCreateWithData(v57, v58, 1uLL, 0);
+            fileType = [format fileType];
+            v59 = CGImageDestinationCreateWithData(v57, fileType, 1uLL, 0);
           }
 
           else
           {
-            v58 = [v112 destinationURL];
-            v62 = [v111 fileType];
-            v59 = CGImageDestinationCreateWithURL(v58, v62, 1uLL, 0);
+            fileType = [imageExportRequest destinationURL];
+            fileType2 = [format fileType];
+            v59 = CGImageDestinationCreateWithURL(fileType, fileType2, 1uLL, 0);
           }
 
           if (v59)
           {
-            v63 = [(NUImageExportJob *)self imageDestinationOptions];
-            CGImageDestinationAddImage(v59, image, v63);
-            v107 = v63;
-            v64 = [(NUImageExportJob *)self auxiliaryImages];
+            imageDestinationOptions = [(NUImageExportJob *)self imageDestinationOptions];
+            CGImageDestinationAddImage(v59, image, imageDestinationOptions);
+            request3 = imageDestinationOptions;
+            auxiliaryImages = [(NUImageExportJob *)self auxiliaryImages];
             v122 = 0u;
             v123 = 0u;
             v120 = 0u;
             v121 = 0u;
-            v65 = [(NUImageExportJob *)self auxiliaryImageTypes];
-            v66 = [v65 countByEnumeratingWithState:&v120 objects:v126 count:16];
+            auxiliaryImageTypes = [(NUImageExportJob *)self auxiliaryImageTypes];
+            v66 = [auxiliaryImageTypes countByEnumeratingWithState:&v120 objects:v126 count:16];
             if (v66)
             {
               v67 = *v121;
@@ -216,11 +216,11 @@ LABEL_61:
               {
                 if (*v121 != v67)
                 {
-                  objc_enumerationMutation(v65);
+                  objc_enumerationMutation(auxiliaryImageTypes);
                 }
 
                 v69 = *(*(&v120 + 1) + 8 * v68);
-                v70 = [v64 objectForKeyedSubscript:v69];
+                v70 = [auxiliaryImages objectForKeyedSubscript:v69];
                 if (v70)
                 {
                   goto LABEL_68;
@@ -238,7 +238,7 @@ LABEL_61:
 LABEL_69:
                 if (v66 == ++v68)
                 {
-                  v66 = [v65 countByEnumeratingWithState:&v120 objects:v126 count:16];
+                  v66 = [auxiliaryImageTypes countByEnumeratingWithState:&v120 objects:v126 count:16];
                   if (v66)
                   {
                     goto LABEL_61;
@@ -248,14 +248,14 @@ LABEL_69:
                 }
               }
 
-              v74 = [(NURenderJob *)self renderNode];
+              renderNode = [(NURenderJob *)self renderNode];
               v119 = 0;
-              v70 = [v74 originalAuxiliaryImageForType:v71 error:&v119];
+              v70 = [renderNode originalAuxiliaryImageForType:v71 error:&v119];
               v75 = v119;
 
               if (!v70)
               {
-                *a3 = [NUError errorWithCode:1 reason:@"Failed to get original aux image" object:v69 underlyingError:v75];
+                *render = [NUError errorWithCode:1 reason:@"Failed to get original aux image" object:v69 underlyingError:v75];
 
                 v7 = 0;
                 goto LABEL_74;
@@ -276,18 +276,18 @@ LABEL_74:
 
             if (!CGImageDestinationFinalize(v59))
             {
-              v78 = [(NURenderJob *)self request];
-              v79 = [v78 copy];
-              *a3 = [NUError failureError:@"Failed to finalize CGImageDestination" object:v79];
+              request = [(NURenderJob *)self request];
+              v79 = [request copy];
+              *render = [NUError failureError:@"Failed to finalize CGImageDestination" object:v79];
 
               v7 = 0;
             }
 
             if (*(*&buf[8] + 40))
             {
-              v80 = [(NURenderJob *)self request];
-              v81 = [v80 copy];
-              *a3 = [NUError errorWithCode:1 reason:@"Error during CGImageDestination finalize" object:v81 underlyingError:*(*&buf[8] + 40)];
+              request2 = [(NURenderJob *)self request];
+              v81 = [request2 copy];
+              *render = [NUError errorWithCode:1 reason:@"Error during CGImageDestination finalize" object:v81 underlyingError:*(*&buf[8] + 40)];
 
               v7 = 0;
             }
@@ -297,10 +297,10 @@ LABEL_74:
 
           else
           {
-            v107 = [(NURenderJob *)self request];
-            v64 = [v107 copy];
-            [NUError failureError:@"Failed to create CGImageDestinationRef" object:v64];
-            *a3 = v7 = 0;
+            request3 = [(NURenderJob *)self request];
+            auxiliaryImages = [request3 copy];
+            [NUError failureError:@"Failed to create CGImageDestinationRef" object:auxiliaryImages];
+            *render = v7 = 0;
           }
 
           CGImageRelease(image);
@@ -308,9 +308,9 @@ LABEL_74:
 
         else
         {
-          v60 = [(NURenderJob *)self request];
-          v61 = [v60 copy];
-          *a3 = [NUError errorWithCode:1 reason:@"Failed to create CGImageRef" object:v61 underlyingError:*(*&buf[8] + 40)];
+          request4 = [(NURenderJob *)self request];
+          v61 = [request4 copy];
+          *render = [NUError errorWithCode:1 reason:@"Failed to create CGImageRef" object:v61 underlyingError:*(*&buf[8] + 40)];
 
           v7 = 0;
         }
@@ -330,9 +330,9 @@ LABEL_74:
       {
         v33 = MEMORY[0x1E696AEC0];
         v34 = v32;
-        v35 = [v33 stringWithFormat:@"HDR colorspace (%@) is incompatible with format (%@)", v113, v110];
+        v110 = [v33 stringWithFormat:@"HDR colorspace (%@) is incompatible with format (%@)", v113, pixelFormat];
         *buf = 138543362;
-        *&buf[4] = v35;
+        *&buf[4] = v110;
         _os_log_impl(&dword_1C0184000, v34, OS_LOG_TYPE_DEFAULT, "Continue: %{public}@", buf, 0xCu);
 
         v36 = _NULogOnceToken;
@@ -362,8 +362,8 @@ LABEL_41:
           v43 = MEMORY[0x1E696AF00];
           v44 = v42;
           v45 = v37;
-          v46 = [v43 callStackSymbols];
-          v47 = [v46 componentsJoinedByString:@"\n"];
+          callStackSymbols3 = [v43 callStackSymbols];
+          v47 = [callStackSymbols3 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           *&buf[4] = v42;
           *&buf[12] = 2114;
@@ -381,8 +381,8 @@ LABEL_47:
       {
         v87 = MEMORY[0x1E696AF00];
         v88 = v48;
-        v89 = [v87 callStackSymbols];
-        v90 = [v89 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [v87 callStackSymbols];
+        v90 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         *&buf[4] = v90;
         _os_log_error_impl(&dword_1C0184000, v88, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -401,9 +401,9 @@ LABEL_47:
     {
       v16 = MEMORY[0x1E696AEC0];
       v17 = v15;
-      v18 = [v16 stringWithFormat:@"XDR colorspace (%@) is incompatible with format (%@)", v113, v110];
+      v1102 = [v16 stringWithFormat:@"XDR colorspace (%@) is incompatible with format (%@)", v113, pixelFormat];
       *buf = 138543362;
-      *&buf[4] = v18;
+      *&buf[4] = v1102;
       _os_log_impl(&dword_1C0184000, v17, OS_LOG_TYPE_DEFAULT, "Continue: %{public}@", buf, 0xCu);
 
       v19 = _NULogOnceToken;
@@ -433,8 +433,8 @@ LABEL_25:
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
         v28 = v20;
-        v29 = [v26 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v26 callStackSymbols];
+        v30 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v25;
         *&buf[12] = 2114;
@@ -452,8 +452,8 @@ LABEL_31:
     {
       v83 = MEMORY[0x1E696AF00];
       v84 = v31;
-      v85 = [v83 callStackSymbols];
-      v86 = [v85 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [v83 callStackSymbols];
+      v86 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v86;
       _os_log_error_impl(&dword_1C0184000, v84, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -506,16 +506,16 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
   }
 }
 
-- (CGImage)copyCGImageWithIOSurface:(id)a3 fromRect:(CGRect)a4 colorSpace:(id)a5 error:(id *)a6
+- (CGImage)copyCGImageWithIOSurface:(id)surface fromRect:(CGRect)rect colorSpace:(id)space error:(id *)error
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v83 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  if (!a6)
+  surfaceCopy = surface;
+  spaceCopy = space;
+  if (!error)
   {
     v41 = NUAssertLogger_14640();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -536,8 +536,8 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
         v55 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v56 = MEMORY[0x1E696AF00];
         v57 = v55;
-        v58 = [v56 callStackSymbols];
-        v59 = [v58 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v56 callStackSymbols];
+        v59 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v80 = v55;
         v81 = 2114;
@@ -548,8 +548,8 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
 
     else if (v45)
     {
-      v46 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v47 = [v46 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v47 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v80 = v47;
       _os_log_error_impl(&dword_1C0184000, v44, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -558,8 +558,8 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
     _NUAssertFailHandler("[NUImageExportJob copyCGImageWithIOSurface:fromRect:colorSpace:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageExportJob.m", 281, @"Invalid parameter not satisfying: %s", v60, v61, v62, v63, "error != nil");
   }
 
-  v15 = v14;
-  if (!v14)
+  v15 = spaceCopy;
+  if (!spaceCopy)
   {
     v48 = NUAssertLogger_14640();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -580,8 +580,8 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
         v64 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v65 = MEMORY[0x1E696AF00];
         v66 = v64;
-        v67 = [v65 callStackSymbols];
-        v68 = [v67 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v65 callStackSymbols];
+        v68 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v80 = v64;
         v81 = 2114;
@@ -592,8 +592,8 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
 
     else if (v52)
     {
-      v53 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v54 = [v53 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v54 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v80 = v54;
       _os_log_error_impl(&dword_1C0184000, v51, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -614,16 +614,16 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
     _os_log_impl(&dword_1C0184000, v16, OS_LOG_TYPE_DEFAULT, "NUImageExportJob exporting with IOSurface", buf, 2u);
   }
 
-  v17 = [(NURenderJob *)self renderer:a6];
+  v17 = [(NURenderJob *)self renderer:error];
   if (v17)
   {
-    [v13 extent];
+    [surfaceCopy extent];
     v19 = v18;
     v21 = v20;
-    v22 = [v15 isHDR];
+    isHDR = [v15 isHDR];
     v23 = vcvtpd_s64_f64(v19);
     v24 = vcvtpd_s64_f64(v21);
-    if (v22)
+    if (isHDR)
     {
       v25 = 2019963440;
     }
@@ -636,9 +636,9 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
     v26 = [NUVideoUtilities newPixelBufferOfSize:v23 format:v24, v25];
     if (v26)
     {
-      v27 = [v15 isHDR];
+      isHDR2 = [v15 isHDR];
       v28 = MEMORY[0x1E6965FB0];
-      if (!v27)
+      if (!isHDR2)
       {
         v28 = MEMORY[0x1E6965FC8];
       }
@@ -651,16 +651,16 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
       buffer = CVPixelBufferGetIOSurface([v26 CVPixelBuffer]);
       v30 = [objc_alloc(MEMORY[0x1E695F678]) initWithIOSurface:buffer];
       [v30 setColorSpace:{objc_msgSend(v15, "CGColorSpace")}];
-      v31 = [(NURenderJob *)self request];
-      v32 = [v31 name];
-      [v30 setLabel:v32];
+      request = [(NURenderJob *)self request];
+      name = [request name];
+      [v30 setLabel:name];
 
-      v33 = [v17 context];
-      v34 = [v33 startTaskToRender:v13 fromRect:v30 toDestination:a6 atPoint:x error:{y, width, height, 0.0, 0.0}];
+      context = [v17 context];
+      v34 = [context startTaskToRender:surfaceCopy fromRect:v30 toDestination:error atPoint:x error:{y, width, height, 0.0, 0.0}];
       v35 = v34;
       if (v34)
       {
-        v36 = [v34 waitUntilCompletedAndReturnError:a6];
+        v36 = [v34 waitUntilCompletedAndReturnError:error];
         if (v36)
         {
           v75 = *MEMORY[0x1E696DFC0];
@@ -678,22 +678,22 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
 
         else
         {
-          [NUError errorWithCode:1 reason:@"failed to waitUntilCompletedAndReturnError for image export" object:0 underlyingError:*a6];
-          *a6 = v39 = 0;
+          [NUError errorWithCode:1 reason:@"failed to waitUntilCompletedAndReturnError for image export" object:0 underlyingError:*error];
+          *error = v39 = 0;
         }
       }
 
       else
       {
-        [NUError errorWithCode:1 reason:@"failed to startTaskToRender for image export" object:0 underlyingError:*a6];
-        *a6 = v39 = 0;
+        [NUError errorWithCode:1 reason:@"failed to startTaskToRender for image export" object:0 underlyingError:*error];
+        *error = v39 = 0;
       }
     }
 
     else
     {
       [NUError errorWithCode:1 reason:@"IOSurface path failed in image export" object:0];
-      *a6 = v39 = 0;
+      *error = v39 = 0;
     }
   }
 
@@ -705,7 +705,7 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
   return v39;
 }
 
-- (id)evaluateRenderDependencies:(id *)a3
+- (id)evaluateRenderDependencies:(id *)dependencies
 {
   v64 = *MEMORY[0x1E69E9840];
   v61.receiver = self;
@@ -713,18 +713,18 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
   v5 = [(NURenderJob *)&v61 evaluateRenderDependencies:?];
   if (v5)
   {
-    v6 = [(NURenderJob *)self prepareNode];
+    prepareNode = [(NURenderJob *)self prepareNode];
     v60 = 0;
-    v7 = [v6 imageProperties:&v60];
+    v7 = [prepareNode imageProperties:&v60];
     v8 = v60;
 
     v45 = v7;
     if (v7)
     {
       v43 = v8;
-      v9 = [(NUImageExportJob *)self imageExportRequest];
-      v10 = [v9 auxImages];
-      v11 = [v10 mutableCopy];
+      imageExportRequest = [(NUImageExportJob *)self imageExportRequest];
+      auxImages = [imageExportRequest auxImages];
+      v11 = [auxImages mutableCopy];
       v12 = v11;
       if (v11)
       {
@@ -736,7 +736,7 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
         v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
       }
 
-      v14 = v13;
+      prepareNode4 = v13;
       v44 = v5;
 
       obj = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -744,8 +744,8 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
       v57 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v15 = [(NUImageExportJob *)self auxiliaryImageTypes];
-      v16 = [v15 countByEnumeratingWithState:&v56 objects:v63 count:16];
+      auxiliaryImageTypes = [(NUImageExportJob *)self auxiliaryImageTypes];
+      v16 = [auxiliaryImageTypes countByEnumeratingWithState:&v56 objects:v63 count:16];
       if (v16)
       {
         v17 = v16;
@@ -757,11 +757,11 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
           {
             if (*v57 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(auxiliaryImageTypes);
             }
 
             v20 = *(*(&v56 + 1) + 8 * v19);
-            v21 = [v14 objectForKeyedSubscript:v20];
+            v21 = [prepareNode4 objectForKeyedSubscript:v20];
             v22 = NUAuxiliaryImageTypeFromString(v20);
             if (!v21)
             {
@@ -770,8 +770,8 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
 
               if (v24)
               {
-                v25 = [(NURenderJob *)self prepareNode];
-                v26 = [v25 canPropagateOriginalAuxiliaryData:v23];
+                prepareNode2 = [(NURenderJob *)self prepareNode];
+                v26 = [prepareNode2 canPropagateOriginalAuxiliaryData:v23];
 
                 if ((v26 & 1) == 0)
                 {
@@ -784,14 +784,14 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
           }
 
           while (v17 != v19);
-          v27 = [v15 countByEnumeratingWithState:&v56 objects:v63 count:16];
+          v27 = [auxiliaryImageTypes countByEnumeratingWithState:&v56 objects:v63 count:16];
           v17 = v27;
         }
 
         while (v27);
       }
 
-      objc_storeStrong(&self->_auxImages, v14);
+      objc_storeStrong(&self->_auxImages, prepareNode4);
       v28 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v29 = dispatch_queue_create("NUExportImageJob.auxiliaryImages", v28);
       auxImageQueue = self->_auxImageQueue;
@@ -819,8 +819,8 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
 
             v35 = *(*(&v52 + 1) + 8 * i);
             v36 = [NUAuxiliaryImageRenderRequest alloc];
-            v37 = [(NURenderJob *)self request];
-            v38 = [(NURenderRequest *)v36 initWithRequest:v37];
+            request = [(NURenderJob *)self request];
+            v38 = [(NURenderRequest *)v36 initWithRequest:request];
 
             [(NUAuxiliaryImageRenderRequest *)v38 setAuxiliaryImageType:NUAuxiliaryImageTypeFromString(v35)];
             [(NUAuxiliaryImageRenderRequest *)v38 setSkipRenderIfNotRequired:1];
@@ -829,17 +829,17 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
             v49[1] = 3221225472;
             v49[2] = __47__NUImageExportJob_evaluateRenderDependencies___block_invoke;
             v49[3] = &unk_1E810A470;
-            v50 = v14;
+            v50 = prepareNode4;
             v51 = v35;
             [(NURenderRequest *)v38 setCompletionBlock:v49];
-            v39 = [(NUAuxiliaryImageRenderRequest *)v38 newRenderJob];
-            v40 = [(NURenderJob *)self prepareNode];
-            [v39 setPrepareNode:v40];
+            newRenderJob = [(NUAuxiliaryImageRenderRequest *)v38 newRenderJob];
+            prepareNode3 = [(NURenderJob *)self prepareNode];
+            [newRenderJob setPrepareNode:prepareNode3];
 
-            v41 = [(NURenderJob *)self resolvedSpaceMap];
-            [v39 setResolvedSpaceMap:v41];
+            resolvedSpaceMap = [(NURenderJob *)self resolvedSpaceMap];
+            [newRenderJob setResolvedSpaceMap:resolvedSpaceMap];
 
-            [v48 addObject:v39];
+            [v48 addObject:newRenderJob];
           }
 
           v32 = [obja countByEnumeratingWithState:&v52 objects:v62 count:16];
@@ -854,9 +854,9 @@ void __27__NUImageExportJob_render___block_invoke(uint64_t a1, void *a2, double 
 
     else
     {
-      v14 = [(NURenderJob *)self prepareNode];
-      [NUError errorWithCode:1 reason:@"Failed to get image properties" object:v14 underlyingError:v8];
-      *a3 = v48 = 0;
+      prepareNode4 = [(NURenderJob *)self prepareNode];
+      [NUError errorWithCode:1 reason:@"Failed to get image properties" object:prepareNode4 underlyingError:v8];
+      *dependencies = v48 = 0;
     }
   }
 
@@ -880,20 +880,20 @@ void __47__NUImageExportJob_evaluateRenderDependencies___block_invoke(uint64_t a
   }
 }
 
-- (id)prepareNodeWithPipelineState:(id)a3 error:(id *)a4
+- (id)prepareNodeWithPipelineState:(id)state error:(id *)error
 {
-  v6 = a3;
+  stateCopy = state;
   v35.receiver = self;
   v35.super_class = NUImageExportJob;
-  v7 = [(NURenderJob *)&v35 prepareNodeWithPipelineState:v6 error:a4];
+  v7 = [(NURenderJob *)&v35 prepareNodeWithPipelineState:stateCopy error:error];
   if (v7)
   {
-    v8 = [(NUImageExportJob *)self imageExportRequest];
-    v9 = [v8 applyOrientationAsMetadata];
+    imageExportRequest = [(NUImageExportJob *)self imageExportRequest];
+    applyOrientationAsMetadata = [imageExportRequest applyOrientationAsMetadata];
 
-    if (v9)
+    if (applyOrientationAsMetadata)
     {
-      v10 = [v7 outputImageGeometry:a4];
+      v10 = [v7 outputImageGeometry:error];
       if (!v10)
       {
         v16 = 0;
@@ -901,14 +901,14 @@ void __47__NUImageExportJob_evaluateRenderDependencies___block_invoke(uint64_t a
       }
 
       v11 = v10;
-      v12 = [v10 orientation];
+      orientation = [v10 orientation];
       v13 = 6;
-      if (v12 != 8)
+      if (orientation != 8)
       {
-        v13 = v12;
+        v13 = orientation;
       }
 
-      if (v12 == 6)
+      if (orientation == 6)
       {
         v14 = 8;
       }
@@ -924,45 +924,45 @@ void __47__NUImageExportJob_evaluateRenderDependencies___block_invoke(uint64_t a
     }
   }
 
-  if ([v6 auxiliaryImageType] == 1)
+  if ([stateCopy auxiliaryImageType] == 1)
   {
-    v16 = [v7 imageProperties:a4];
+    v16 = [v7 imageProperties:error];
     if (!v16)
     {
       goto LABEL_32;
     }
 
-    v17 = [(NUImageExportJob *)self imageExportRequest];
-    v18 = [v17 colorSpace];
-    v19 = v18;
-    if (v18)
+    imageExportRequest2 = [(NUImageExportJob *)self imageExportRequest];
+    colorSpace = [imageExportRequest2 colorSpace];
+    v19 = colorSpace;
+    if (colorSpace)
     {
-      v20 = v18;
+      colorSpace2 = colorSpace;
     }
 
     else
     {
-      v20 = [v16 colorSpace];
+      colorSpace2 = [v16 colorSpace];
     }
 
-    v21 = v20;
+    v21 = colorSpace2;
 
     if (+[NUGlobalSettings enableHDRSupport])
     {
       if ([v21 isHDR])
       {
-        v22 = 1;
+        isExtended = 1;
       }
 
       else
       {
-        v22 = [v21 isExtended];
+        isExtended = [v21 isExtended];
       }
     }
 
     else
     {
-      v22 = 0;
+      isExtended = 0;
     }
 
     if ([v16 isHDR])
@@ -971,7 +971,7 @@ void __47__NUImageExportJob_evaluateRenderDependencies___block_invoke(uint64_t a
       [v16 contentHeadroom];
       v25 = v24;
       v26 = 1.0;
-      if (v22)
+      if (isExtended)
       {
         [v21 headroom];
         v26 = v27;
@@ -988,7 +988,7 @@ void __47__NUImageExportJob_evaluateRenderDependencies___block_invoke(uint64_t a
       }
 
       [v16 gainMapHeadroom];
-      if (((v30 > 1.0) & v22) != 1 || !+[NUGlobalSettings renderMeteorPlusAsHDR])
+      if (((v30 > 1.0) & isExtended) != 1 || !+[NUGlobalSettings renderMeteorPlusAsHDR])
       {
         goto LABEL_30;
       }
@@ -1016,21 +1016,21 @@ LABEL_32:
 
 - (id)result
 {
-  v3 = [(NUImageExportJob *)self imageExportRequest];
+  imageExportRequest = [(NUImageExportJob *)self imageExportRequest];
   v4 = objc_alloc_init(_NUImageExportResult);
-  if ([v3 renderToData])
+  if ([imageExportRequest renderToData])
   {
     [(_NUImageExportResult *)v4 setDestinationData:self->_destinationData];
   }
 
   else
   {
-    v5 = [v3 destinationURL];
-    [(_NUExportResult *)v4 setDestinationURL:v5];
+    destinationURL = [imageExportRequest destinationURL];
+    [(_NUExportResult *)v4 setDestinationURL:destinationURL];
   }
 
-  v6 = [(NURenderJob *)self outputGeometry];
-  [(_NUExportResult *)v4 setGeometry:v6];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  [(_NUExportResult *)v4 setGeometry:outputGeometry];
 
   return v4;
 }
@@ -1066,12 +1066,12 @@ uint64_t __35__NUImageExportJob_auxiliaryImages__block_invoke(uint64_t a1)
 
 - (id)auxiliaryImageTypes
 {
-  v2 = [(NUImageExportJob *)self imageExportRequest];
-  v3 = [v2 auxiliaryImageTypes];
-  v4 = v3;
-  if (v3)
+  imageExportRequest = [(NUImageExportJob *)self imageExportRequest];
+  auxiliaryImageTypes = [imageExportRequest auxiliaryImageTypes];
+  v4 = auxiliaryImageTypes;
+  if (auxiliaryImageTypes)
   {
-    v5 = v3;
+    v5 = auxiliaryImageTypes;
   }
 
   else
@@ -1087,13 +1087,13 @@ uint64_t __35__NUImageExportJob_auxiliaryImages__block_invoke(uint64_t a1)
 - (id)imageDestinationOptions
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(NUImageExportJob *)self imageExportRequest];
-  v4 = [v3 imageProperties];
-  if (!v4)
+  imageExportRequest = [(NUImageExportJob *)self imageExportRequest];
+  imageProperties = [imageExportRequest imageProperties];
+  if (!imageProperties)
   {
-    v5 = [(NURenderJob *)self prepareNode];
+    prepareNode = [(NURenderJob *)self prepareNode];
 
-    if (!v5)
+    if (!prepareNode)
     {
       v10 = NUAssertLogger_14640();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1114,8 +1114,8 @@ uint64_t __35__NUImageExportJob_auxiliaryImages__block_invoke(uint64_t a1)
           v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v18 = MEMORY[0x1E696AF00];
           v19 = v17;
-          v20 = [v18 callStackSymbols];
-          v21 = [v20 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v21 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = v17;
           v30 = 2114;
@@ -1126,8 +1126,8 @@ uint64_t __35__NUImageExportJob_auxiliaryImages__block_invoke(uint64_t a1)
 
       else if (v14)
       {
-        v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v29 = v16;
         _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1136,44 +1136,44 @@ uint64_t __35__NUImageExportJob_auxiliaryImages__block_invoke(uint64_t a1)
       _NUAssertFailHandler("[NUImageExportJob imageDestinationOptions]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageExportJob.m", 122, @"Missing prepare node", v22, v23, v24, v25, v26);
     }
 
-    v6 = [(NURenderJob *)self prepareNode];
+    prepareNode2 = [(NURenderJob *)self prepareNode];
     v27 = 0;
-    v7 = [v6 imageProperties:&v27];
+    v7 = [prepareNode2 imageProperties:&v27];
 
     if (v7)
     {
-      v4 = [v7 metadata];
+      imageProperties = [v7 metadata];
     }
 
     else
     {
-      v4 = MEMORY[0x1E695E0F8];
+      imageProperties = MEMORY[0x1E695E0F8];
     }
   }
 
-  v8 = [(NUImageExportJob *)self _filterProperties:v4];
+  v8 = [(NUImageExportJob *)self _filterProperties:imageProperties];
 
   return v8;
 }
 
-- (id)_filterProperties:(id)a3
+- (id)_filterProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(NUImageExportJob *)self imageExportRequest];
-  v6 = [v4 mutableCopy];
+  propertiesCopy = properties;
+  imageExportRequest = [(NUImageExportJob *)self imageExportRequest];
+  v6 = [propertiesCopy mutableCopy];
 
-  if ([v5 applyOrientationAsMetadata])
+  if ([imageExportRequest applyOrientationAsMetadata])
   {
-    v7 = [(NURenderJob *)self outputGeometry];
-    v8 = [v7 orientation];
+    outputGeometry = [(NURenderJob *)self outputGeometry];
+    orientation = [outputGeometry orientation];
   }
 
   else
   {
-    v8 = 1;
+    orientation = 1;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
   [v6 setObject:v9 forKey:*MEMORY[0x1E696DE78]];
 
   v10 = *MEMORY[0x1E696DF28];
@@ -1182,7 +1182,7 @@ uint64_t __35__NUImageExportJob_auxiliaryImages__block_invoke(uint64_t a1)
 
   if (v12)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
     [v12 setObject:v13 forKey:*MEMORY[0x1E696DF58]];
 
     [v6 setObject:v12 forKey:v10];
@@ -1217,17 +1217,17 @@ uint64_t __35__NUImageExportJob_auxiliaryImages__block_invoke(uint64_t a1)
     v6 = v23;
   }
 
-  v24 = [v5 format];
-  [v24 addImageDestinationOptionsToImageProperties:v6];
+  format = [imageExportRequest format];
+  [format addImageDestinationOptionsToImageProperties:v6];
 
   v25 = v6;
   return v6;
 }
 
-- (NUImageExportJob)initWithExportRequest:(id)a3
+- (NUImageExportJob)initWithExportRequest:(id)request
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_14655);
@@ -1271,8 +1271,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1288,8 +1288,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -1305,11 +1305,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUImageExportJob initWithExportRequest:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageExportJob.m", 59, @"Initializer not available: [%@ %@], use designated initializer instead.", v27, v28, v29, v30, v26);
 }
 
-- (NUImageExportJob)initWithImageExportRequest:(id)a3
+- (NUImageExportJob)initWithImageExportRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = NUImageExportJob;
-  return [(NUExportJob *)&v4 initWithExportRequest:a3];
+  return [(NUExportJob *)&v4 initWithExportRequest:request];
 }
 
 @end

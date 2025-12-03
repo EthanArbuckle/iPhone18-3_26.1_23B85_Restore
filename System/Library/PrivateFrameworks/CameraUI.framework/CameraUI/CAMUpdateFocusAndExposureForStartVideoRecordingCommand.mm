@@ -1,16 +1,16 @@
 @interface CAMUpdateFocusAndExposureForStartVideoRecordingCommand
-- (void)executeWithContext:(id)a3;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMUpdateFocusAndExposureForStartVideoRecordingCommand
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = [a3 currentVideoDevice];
-  v5 = [v4 activeFormat];
-  if ([v5 autoFocusSystem] == 2)
+  currentVideoDevice = [context currentVideoDevice];
+  activeFormat = [currentVideoDevice activeFormat];
+  if ([activeFormat autoFocusSystem] == 2)
   {
-    if ([v4 focusMode] != 2)
+    if ([currentVideoDevice focusMode] != 2)
     {
       goto LABEL_12;
     }

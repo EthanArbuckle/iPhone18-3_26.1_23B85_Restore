@@ -1,29 +1,29 @@
 @interface HDAnalyticsWriter
-- (BOOL)_cleanAnalyticsDirectory:(uint64_t)a1 error:(void *)a2;
-- (BOOL)_createAndCleanAnalyticsDirectoryWithError:(uint64_t)a1;
+- (BOOL)_cleanAnalyticsDirectory:(uint64_t)directory error:(void *)error;
+- (BOOL)_createAndCleanAnalyticsDirectoryWithError:(uint64_t)error;
 - (HDAnalyticsWriter)init;
-- (HDAnalyticsWriter)initWithURL:(id)a3;
-- (id)URLForAnalyticsFileWithName:(id)a3;
-- (id)_encryptAnalyticsData:(void *)a3 withConfig:(uint64_t)a4 error:;
-- (id)_serializeAnalyticsData:(uint64_t)a3 errorOut:;
-- (id)analyticsFilePathsWithError:(id *)a3;
-- (uint64_t)_createAnalyticsDirectory:(void *)a3 error:;
-- (uint64_t)_loadCertificateWithError:(uint64_t)a1;
-- (uint64_t)_submitJSONAnalyticsData:(void *)a3 bugType:(void *)a4 customDirectory:(void *)a5 configuration:(void *)a6 error:;
+- (HDAnalyticsWriter)initWithURL:(id)l;
+- (id)URLForAnalyticsFileWithName:(id)name;
+- (id)_encryptAnalyticsData:(void *)data withConfig:(uint64_t)config error:;
+- (id)_serializeAnalyticsData:(uint64_t)data errorOut:;
+- (id)analyticsFilePathsWithError:(id *)error;
+- (uint64_t)_createAnalyticsDirectory:(void *)directory error:;
+- (uint64_t)_loadCertificateWithError:(uint64_t)error;
+- (uint64_t)_submitJSONAnalyticsData:(void *)data bugType:(void *)type customDirectory:(void *)directory configuration:(void *)configuration error:;
 @end
 
 @implementation HDAnalyticsWriter
 
-- (HDAnalyticsWriter)initWithURL:(id)a3
+- (HDAnalyticsWriter)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = HDAnalyticsWriter;
   v5 = [(HDAnalyticsWriter *)&v10 init];
   if (v5)
   {
-    v6 = [v4 path];
-    v7 = [v6 copy];
+    path = [lCopy path];
+    v7 = [path copy];
     analyticsDirectory = v5->_analyticsDirectory;
     v5->_analyticsDirectory = v7;
   }
@@ -41,28 +41,28 @@
   return 0;
 }
 
-- (uint64_t)_submitJSONAnalyticsData:(void *)a3 bugType:(void *)a4 customDirectory:(void *)a5 configuration:(void *)a6 error:
+- (uint64_t)_submitJSONAnalyticsData:(void *)data bugType:(void *)type customDirectory:(void *)directory configuration:(void *)configuration error:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (a1)
+  dataCopy = data;
+  typeCopy = type;
+  directoryCopy = directory;
+  if (self)
   {
-    if (v13)
+    if (typeCopy)
     {
-      v15 = [MEMORY[0x277CCAA00] defaultManager];
-      v16 = [v15 fileExistsAtPath:v13 isDirectory:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v16 = [defaultManager fileExistsAtPath:typeCopy isDirectory:0];
 
       if ((v16 & 1) == 0)
       {
         v17 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Client should ensure submission directory is created before using analytics writer"];
         if (v17)
         {
-          if (a6)
+          if (configuration)
           {
             v18 = v17;
-            *a6 = v17;
+            *configuration = v17;
           }
 
           else
@@ -75,9 +75,9 @@
       }
     }
 
-    if ([(HDAnalyticsWriter *)a1 _createAndCleanAnalyticsDirectoryWithError:a6])
+    if ([(HDAnalyticsWriter *)self _createAndCleanAnalyticsDirectoryWithError:configuration])
     {
-      v20 = [(HDAnalyticsWriter *)a1 _serializeAnalyticsData:v11 errorOut:a6];
+      v20 = [(HDAnalyticsWriter *)self _serializeAnalyticsData:v11 errorOut:configuration];
       if (!v20)
       {
 LABEL_13:
@@ -87,22 +87,22 @@ LABEL_14:
         goto LABEL_10;
       }
 
-      if (!v14)
+      if (!directoryCopy)
       {
-        if (!*(a1 + 8) && ([(HDAnalyticsWriter *)a1 _loadCertificateWithError:a6]& 1) == 0)
+        if (!*(self + 8) && ([(HDAnalyticsWriter *)self _loadCertificateWithError:configuration]& 1) == 0)
         {
-          v14 = 0;
+          directoryCopy = 0;
           goto LABEL_13;
         }
 
-        v21 = [MEMORY[0x277CBEAA8] date];
-        v14 = [objc_alloc(MEMORY[0x277CCD500]) initWithChannel:@"DataAnalytics" payloadType:@"JSON" certificate:*(a1 + 8)];
-        [v14 setStartDate:v21];
-        [v14 setEndDate:v21];
-        [v14 setPayloadIdentifier:@"FOO-Payload"];
+        date = [MEMORY[0x277CBEAA8] date];
+        directoryCopy = [objc_alloc(MEMORY[0x277CCD500]) initWithChannel:@"DataAnalytics" payloadType:@"JSON" certificate:*(self + 8)];
+        [directoryCopy setStartDate:date];
+        [directoryCopy setEndDate:date];
+        [directoryCopy setPayloadIdentifier:@"FOO-Payload"];
       }
 
-      v22 = [(HDAnalyticsWriter *)a1 _encryptAnalyticsData:v20 withConfig:v14 error:a6];
+      v22 = [(HDAnalyticsWriter *)self _encryptAnalyticsData:v20 withConfig:directoryCopy error:configuration];
       v23 = v22;
       if (!v22)
       {
@@ -112,16 +112,16 @@ LABEL_37:
         goto LABEL_14;
       }
 
-      v24 = [v22 lastPathComponent];
+      lastPathComponent = [v22 lastPathComponent];
       v36 = v23;
       v25 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v23];
       v35 = v25;
-      if (v13)
+      if (typeCopy)
       {
         v26 = v25;
         v27 = MEMORY[0x277CBEBC0];
-        v34 = v24;
-        v28 = [v13 stringByAppendingPathComponent:v24];
+        v34 = lastPathComponent;
+        v28 = [typeCopy stringByAppendingPathComponent:lastPathComponent];
         v29 = [v27 fileURLWithPath:v28];
 
         v38 = 0;
@@ -131,12 +131,12 @@ LABEL_37:
         {
 LABEL_23:
 
-          v24 = v34;
+          lastPathComponent = v34;
 LABEL_27:
-          v31 = [MEMORY[0x277CBEBC0] fileURLWithPath:*(a1 + 16)];
-          v29 = [v31 URLByAppendingPathComponent:v24];
+          v31 = [MEMORY[0x277CBEBC0] fileURLWithPath:*(self + 16)];
+          v29 = [v31 URLByAppendingPathComponent:lastPathComponent];
 
-          v39 = [v20 writeToURL:v29 options:805306369 error:a6];
+          v39 = [v20 writeToURL:v29 options:805306369 error:configuration];
 LABEL_36:
           v23 = v36;
 
@@ -146,10 +146,10 @@ LABEL_36:
         v32 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Unable to write serialized unencrypted analytics data." underlyingError:v30];
         if (v32)
         {
-          if (a6)
+          if (configuration)
           {
             v33 = v32;
-            *a6 = v32;
+            *configuration = v32;
           }
 
           else
@@ -163,13 +163,13 @@ LABEL_36:
 
       else
       {
-        if (!v12 || (HDIsUnitTesting() & 1) != 0)
+        if (!dataCopy || (HDIsUnitTesting() & 1) != 0)
         {
           goto LABEL_27;
         }
 
-        v34 = v24;
-        v29 = [v24 stringByAppendingString:@"X-"];
+        v34 = lastPathComponent;
+        v29 = [lastPathComponent stringByAppendingString:@"X-"];
         v37 = v23;
         if (HKSubmitAnalyticsFile())
         {
@@ -177,11 +177,11 @@ LABEL_36:
           goto LABEL_23;
         }
 
-        [MEMORY[0x277CCA9B8] hk_assignError:a6 code:100 format:@"Analytics submission failed for an unknown reason."];
+        [MEMORY[0x277CCA9B8] hk_assignError:configuration code:100 format:@"Analytics submission failed for an unknown reason."];
         v39 = 0;
       }
 
-      v24 = v34;
+      lastPathComponent = v34;
       goto LABEL_36;
     }
   }
@@ -193,19 +193,19 @@ LABEL_10:
   return v39;
 }
 
-- (id)URLForAnalyticsFileWithName:(id)a3
+- (id)URLForAnalyticsFileWithName:(id)name
 {
-  v4 = [a3 lastPathComponent];
-  v5 = [v4 componentsSeparatedByString:@"X-"];
-  v6 = [v5 firstObject];
+  lastPathComponent = [name lastPathComponent];
+  v5 = [lastPathComponent componentsSeparatedByString:@"X-"];
+  firstObject = [v5 firstObject];
 
   v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:self->_analyticsDirectory];
-  v8 = [v7 URLByAppendingPathComponent:v6];
+  v8 = [v7 URLByAppendingPathComponent:firstObject];
 
   return v8;
 }
 
-- (id)analyticsFilePathsWithError:(id *)a3
+- (id)analyticsFilePathsWithError:(id *)error
 {
   if (![HDAnalyticsWriter _cleanAnalyticsDirectory:self->_analyticsDirectory error:?])
   {
@@ -229,10 +229,10 @@ LABEL_10:
     v11 = v9;
     if (v11)
     {
-      if (a3)
+      if (error)
       {
         v12 = v11;
-        *a3 = v11;
+        *error = v11;
       }
 
       else
@@ -296,17 +296,17 @@ void __90__HDAnalyticsWriter__submitJSONAnalyticsData_bugType_customDirectory_co
   [v4 writeData:v5];
 }
 
-- (BOOL)_cleanAnalyticsDirectory:(uint64_t)a1 error:(void *)a2
+- (BOOL)_cleanAnalyticsDirectory:(uint64_t)directory error:(void *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = a2;
-  v42 = a1;
-  if (a1)
+  errorCopy = error;
+  directoryCopy = directory;
+  if (directory)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCAA00]);
     [MEMORY[0x277CBEAA8] date];
     v46 = v45 = v4;
-    v5 = [v4 enumeratorAtPath:v3];
+    v5 = [v4 enumeratorAtPath:errorCopy];
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
@@ -332,11 +332,11 @@ void __90__HDAnalyticsWriter__submitJSONAnalyticsData_bugType_customDirectory_co
           }
 
           v12 = *(*(&v48 + 1) + 8 * v11);
-          v13 = [v5 fileAttributes];
-          v14 = [v13 objectForKeyedSubscript:v10];
+          fileAttributes = [v5 fileAttributes];
+          v14 = [fileAttributes objectForKeyedSubscript:v10];
 
-          v15 = v3;
-          v16 = [v3 stringByAppendingPathComponent:v12];
+          v15 = errorCopy;
+          v16 = [errorCopy stringByAppendingPathComponent:v12];
           [v46 timeIntervalSinceDate:v14];
           v18 = v17;
           _HKInitializeLogging();
@@ -361,7 +361,7 @@ void __90__HDAnalyticsWriter__submitJSONAnalyticsData_bugType_customDirectory_co
               v31 = os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_ERROR);
               if (v31)
               {
-                OUTLINED_FUNCTION_0_6(v31, v32, v33, v34, v35, v36, v37, v38, v41, v42, v43, *(&v43 + 1), v44);
+                OUTLINED_FUNCTION_0_6(v31, v32, v33, v34, v35, v36, v37, v38, v41, directoryCopy, v43, *(&v43 + 1), v44);
                 v54 = v29;
                 _os_log_error_impl(&dword_25156C000, v30, OS_LOG_TYPE_ERROR, "Error removing analytics file at '%{public}@': %{public}@", buf, 0x16u);
               }
@@ -370,13 +370,13 @@ void __90__HDAnalyticsWriter__submitJSONAnalyticsData_bugType_customDirectory_co
 
           else if (v20)
           {
-            OUTLINED_FUNCTION_0_6(v20, v21, v22, v23, v24, v25, v26, v27, v41, v42, v43, *(&v43 + 1), v44);
+            OUTLINED_FUNCTION_0_6(v20, v21, v22, v23, v24, v25, v26, v27, v41, directoryCopy, v43, *(&v43 + 1), v44);
             v54 = v14;
             _os_log_debug_impl(&dword_25156C000, v19, OS_LOG_TYPE_DEBUG, "Do not remove analytics file '%{public}@' with modification date %{public}@", buf, 0x16u);
           }
 
           ++v11;
-          v3 = v15;
+          errorCopy = v15;
         }
 
         while (v8 != v11);
@@ -388,31 +388,31 @@ void __90__HDAnalyticsWriter__submitJSONAnalyticsData_bugType_customDirectory_co
   }
 
   v39 = *MEMORY[0x277D85DE8];
-  return v42 != 0;
+  return directoryCopy != 0;
 }
 
-- (BOOL)_createAndCleanAnalyticsDirectoryWithError:(uint64_t)a1
+- (BOOL)_createAndCleanAnalyticsDirectoryWithError:(uint64_t)error
 {
-  if (!a1 || ![(HDAnalyticsWriter *)a1 _createAnalyticsDirectory:a2 error:?])
+  if (!error || ![(HDAnalyticsWriter *)error _createAnalyticsDirectory:a2 error:?])
   {
     return 0;
   }
 
-  v4 = *(a1 + 16);
+  v4 = *(error + 16);
 
-  return [HDAnalyticsWriter _cleanAnalyticsDirectory:a1 error:v4];
+  return [HDAnalyticsWriter _cleanAnalyticsDirectory:error error:v4];
 }
 
-- (id)_serializeAnalyticsData:(uint64_t)a3 errorOut:
+- (id)_serializeAnalyticsData:(uint64_t)data errorOut:
 {
-  if (a1)
+  if (self)
   {
     v4 = a2;
     v5 = objc_opt_new();
     [v5 setObject:&unk_286385C68 forKeyedSubscript:@"schemaVersion"];
     [v5 setObject:v4 forKeyedSubscript:@"data"];
 
-    v6 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v5 options:1 error:a3];
+    v6 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v5 options:1 error:data];
   }
 
   else
@@ -423,9 +423,9 @@ void __90__HDAnalyticsWriter__submitJSONAnalyticsData_bugType_customDirectory_co
   return v6;
 }
 
-- (uint64_t)_loadCertificateWithError:(uint64_t)a1
+- (uint64_t)_loadCertificateWithError:(uint64_t)error
 {
-  if (!a1)
+  if (!error)
   {
     return 0;
   }
@@ -441,7 +441,7 @@ LABEL_7:
   }
 
   v5 = SecCertificateCreateWithData(0, v4);
-  *(a1 + 8) = v5;
+  *(error + 8) = v5;
   if (!v5)
   {
     v7 = @"Failed to create certificate.";
@@ -454,19 +454,19 @@ LABEL_8:
   return v6;
 }
 
-- (id)_encryptAnalyticsData:(void *)a3 withConfig:(uint64_t)a4 error:
+- (id)_encryptAnalyticsData:(void *)data withConfig:(uint64_t)config error:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
     v8 = MEMORY[0x277CCD4F8];
-    v9 = a3;
-    v10 = [v8 newOutputFileURL];
-    v11 = [objc_alloc(MEMORY[0x277CCD4F8]) initWithConfiguration:v9];
+    dataCopy = data;
+    newOutputFileURL = [v8 newOutputFileURL];
+    v11 = [objc_alloc(MEMORY[0x277CCD4F8]) initWithConfiguration:dataCopy];
 
-    if ([v11 startWithOutputFileURL:v10 error:a4] && objc_msgSend(v11, "appendData:error:", v7, a4))
+    if ([v11 startWithOutputFileURL:newOutputFileURL error:config] && objc_msgSend(v11, "appendData:error:", v7, config))
     {
-      v12 = [v11 finalizeWithError:a4];
+      v12 = [v11 finalizeWithError:config];
     }
 
     else
@@ -483,10 +483,10 @@ LABEL_8:
   return v12;
 }
 
-- (uint64_t)_createAnalyticsDirectory:(void *)a3 error:
+- (uint64_t)_createAnalyticsDirectory:(void *)directory error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = objc_alloc_init(MEMORY[0x277CCAA00]);
     if ([v6 fileExistsAtPath:v5 isDirectory:0])
@@ -505,10 +505,10 @@ LABEL_8:
         v10 = [MEMORY[0x277CCA9B8] hk_error:100 description:v9 underlyingError:v8];
         if (v10)
         {
-          if (a3)
+          if (directory)
           {
             v11 = v10;
-            *a3 = v10;
+            *directory = v10;
           }
 
           else

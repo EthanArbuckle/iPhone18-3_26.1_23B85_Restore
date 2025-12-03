@@ -1,14 +1,14 @@
 @interface PassKitCoreXPCService
-- (void)faceBoundingBoxForImageData:(id)a3 withReply:(id)a4;
+- (void)faceBoundingBoxForImageData:(id)data withReply:(id)reply;
 @end
 
 @implementation PassKitCoreXPCService
 
-- (void)faceBoundingBoxForImageData:(id)a3 withReply:(id)a4
+- (void)faceBoundingBoxForImageData:(id)data withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dataCopy = data;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v16 = 0;
     v17 = &v16;
@@ -18,9 +18,9 @@
     origin = CGRectNull.origin;
     v21 = size;
     v8 = objc_autoreleasePoolPush();
-    if ([(__CFData *)v5 length])
+    if ([(__CFData *)dataCopy length])
     {
-      v9 = CGImageSourceCreateWithData(v5, 0);
+      v9 = CGImageSourceCreateWithData(dataCopy, 0);
       v10 = v9;
       if (v9)
       {
@@ -53,7 +53,7 @@
     }
 
     objc_autoreleasePoolPop(v8);
-    v6[2](v6, v17[4], v17[5], v17[6], v17[7]);
+    replyCopy[2](replyCopy, v17[4], v17[5], v17[6], v17[7]);
     _Block_object_dispose(&v16, 8);
   }
 }

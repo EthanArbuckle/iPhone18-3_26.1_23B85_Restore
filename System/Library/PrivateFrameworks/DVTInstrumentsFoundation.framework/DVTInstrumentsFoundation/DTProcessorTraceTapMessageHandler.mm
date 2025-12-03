@@ -1,21 +1,21 @@
 @interface DTProcessorTraceTapMessageHandler
 - (DTProcessorTraceTapMessageHandler)init;
-- (DTProcessorTraceTapMessageHandler)initWithConfig:(id)a3;
-- (id)messageReceived:(id)a3;
+- (DTProcessorTraceTapMessageHandler)initWithConfig:(id)config;
+- (id)messageReceived:(id)received;
 @end
 
 @implementation DTProcessorTraceTapMessageHandler
 
-- (id)messageReceived:(id)a3
+- (id)messageReceived:(id)received
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_24800718C(v4);
+  receivedCopy = received;
+  selfCopy = self;
+  v6 = sub_24800718C(receivedCopy);
 
   return v6;
 }
 
-- (DTProcessorTraceTapMessageHandler)initWithConfig:(id)a3
+- (DTProcessorTraceTapMessageHandler)initWithConfig:(id)config
 {
   *(&self->super.super.isa + OBJC_IVAR___DTProcessorTraceTapMessageHandler_transferringFile) = 0;
   v5 = OBJC_IVAR___DTProcessorTraceTapMessageHandler_transferringFileURL;
@@ -23,7 +23,7 @@
   (*(*(v6 - 8) + 56))(self + v5, 1, 1, v6);
   v8.receiver = self;
   v8.super_class = type metadata accessor for ProcessorTraceTapMessageHandler();
-  return [(DTTapMessageHandler *)&v8 initWithConfig:a3];
+  return [(DTTapMessageHandler *)&v8 initWithConfig:config];
 }
 
 - (DTProcessorTraceTapMessageHandler)init

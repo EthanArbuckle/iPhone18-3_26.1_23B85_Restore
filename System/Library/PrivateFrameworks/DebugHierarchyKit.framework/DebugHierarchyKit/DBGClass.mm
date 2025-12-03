@@ -1,31 +1,31 @@
 @interface DBGClass
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withName:(id)a3;
-- (DBGClass)initWithClassName:(id)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withName:(id)name;
+- (DBGClass)initWithClassName:(id)name;
 - (NSString)debugDescription;
 - (NSString)description;
 @end
 
 @implementation DBGClass
 
-+ (id)withName:(id)a3
++ (id)withName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithClassName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initWithClassName:nameCopy];
 
   return v5;
 }
 
-- (DBGClass)initWithClassName:(id)a3
+- (DBGClass)initWithClassName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = DBGClass;
   v6 = [(DBGClass *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_className, a3);
+    objc_storeStrong(&v6->_className, name);
   }
 
   return v7;
@@ -33,8 +33,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGClass *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGClass *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -49,21 +49,21 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if ([a4 isEqualToString:@"public.plain-text"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if ([format isEqualToString:@"public.plain-text"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [a1 withName:v8];
+    v9 = [self withName:valueCopy];
   }
 
   else
   {
     v9 = 0;
-    if (!v8 && a5)
+    if (!valueCopy && error)
     {
       v9 = 0;
-      *a5 = 0;
+      *error = 0;
     }
   }
 

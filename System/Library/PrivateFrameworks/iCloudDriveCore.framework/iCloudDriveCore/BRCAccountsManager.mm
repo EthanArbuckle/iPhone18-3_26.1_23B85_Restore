@@ -1,35 +1,35 @@
 @interface BRCAccountsManager
 + (id)sharedManager;
-- (BOOL)_cleanupAccountSupportDataWithPersona:(id)a3;
+- (BOOL)_cleanupAccountSupportDataWithPersona:(id)persona;
 - (BOOL)_isDeviceUnlocked;
-- (BOOL)_maintainExistingFileProviderDomainsWithAccounts:(id)a3 withError:(id *)a4;
+- (BOOL)_maintainExistingFileProviderDomainsWithAccounts:(id)accounts withError:(id *)error;
 - (BOOL)_readkeepDataLocalOnSignOutForCurrentPersona;
-- (BOOL)_waitUntilFileProviderIsReady:(id *)a3;
-- (BOOL)cleanupAccountDataForLoggedOutAccountWithPersona:(id)a3;
-- (BOOL)destroySessionWithACAccountID:(id)a3;
-- (BOOL)retrySyncBubbleLaterIfNeededWithError:(id)a3;
-- (BOOL)waitForAccountLoadingSynchronouslyIfPossible:(id)a3;
+- (BOOL)_waitUntilFileProviderIsReady:(id *)ready;
+- (BOOL)cleanupAccountDataForLoggedOutAccountWithPersona:(id)persona;
+- (BOOL)destroySessionWithACAccountID:(id)d;
+- (BOOL)retrySyncBubbleLaterIfNeededWithError:(id)error;
+- (BOOL)waitForAccountLoadingSynchronouslyIfPossible:(id)possible;
 - (BOOL)waitForInitialAccountLoadingSynchronouslyIfPossible;
 - (BRCAccountsManager)init;
-- (id)_createAccountHandlerForAccountID:(id)a3;
+- (id)_createAccountHandlerForAccountID:(id)d;
 - (id)_keepDataLocalOnSignOutDefaultsKeyForCurrentPersona;
 - (id)accountForCurrentPersona;
-- (id)accountForPersona:(id)a3;
-- (id)accountHandlerForACAccountID:(id)a3;
+- (id)accountForPersona:(id)persona;
+- (id)accountHandlerForACAccountID:(id)d;
 - (id)accountHandlerForCurrentPersona;
-- (id)getOrCreateAccountHandlerForACAccount:(id)a3;
-- (id)personaIdentifierForACAccountID:(id)a3;
+- (id)getOrCreateAccountHandlerForACAccount:(id)account;
+- (id)personaIdentifierForACAccountID:(id)d;
 - (void)_createSyncBubbleTasksIfNecessary;
 - (void)_isDeviceUnlocked;
-- (void)_maintainExistingFileProviderDomainsIfNeededWithAccounts:(id)a3;
-- (void)_scheduleExistingFileProviderDomainsMaintenanceWithAccounts:(id)a3;
-- (void)createAndLoadSessionWithACAccountID:(id)a3 createBlock:(id)a4;
-- (void)createSessionWithACAccountID:(id)a3 dsid:(id)a4 completionHandler:(id)a5;
-- (void)enumerateAccountHandlerIfFinishedLoading:(id)a3;
-- (void)enumerateAccountHandlers:(id)a3;
-- (void)keepDataLocalOnSignOutForCurrentPersona:(BOOL)a3;
+- (void)_maintainExistingFileProviderDomainsIfNeededWithAccounts:(id)accounts;
+- (void)_scheduleExistingFileProviderDomainsMaintenanceWithAccounts:(id)accounts;
+- (void)createAndLoadSessionWithACAccountID:(id)d createBlock:(id)block;
+- (void)createSessionWithACAccountID:(id)d dsid:(id)dsid completionHandler:(id)handler;
+- (void)enumerateAccountHandlerIfFinishedLoading:(id)loading;
+- (void)enumerateAccountHandlers:(id)handlers;
+- (void)keepDataLocalOnSignOutForCurrentPersona:(BOOL)persona;
 - (void)loadAccounts;
-- (void)updateAccountDisplayName:(id)a3 completionHandler:(id)a4;
+- (void)updateAccountDisplayName:(id)name completionHandler:(id)handler;
 - (void)uploadContent;
 - (void)waitUntilDeviceIsUnlocked;
 - (void)willSwitchUser;
@@ -80,15 +80,15 @@
 - (id)accountHandlerForCurrentPersona
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D77BF8] sharedManager];
-  v4 = [v3 currentPersona];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  currentPersona = [mEMORY[0x277D77BF8] currentPersona];
 
-  v5 = [(BRCAccountsManager *)self accountForPersona:v4];
+  v5 = [(BRCAccountsManager *)self accountForPersona:currentPersona];
   v23 = v5;
   if (v5)
   {
-    v6 = [v5 identifier];
-    v7 = [(BRCAccountsManager *)self accountHandlerForACAccountID:v6];
+    identifier = [v5 identifier];
+    v7 = [(BRCAccountsManager *)self accountHandlerForACAccountID:identifier];
   }
 
   else
@@ -99,9 +99,9 @@
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v8 = [(NSMutableDictionary *)self->_accountHandlersByACAccountID objectEnumerator];
-    v9 = [v8 countByEnumeratingWithState:&v25 objects:v33 count:16];
-    obj = v8;
+    objectEnumerator = [(NSMutableDictionary *)self->_accountHandlersByACAccountID objectEnumerator];
+    v9 = [objectEnumerator countByEnumeratingWithState:&v25 objects:v33 count:16];
+    obj = objectEnumerator;
     if (v9)
     {
       v10 = *v26;
@@ -115,8 +115,8 @@
           }
 
           v12 = *(*(&v25 + 1) + 8 * i);
-          v13 = [v12 session];
-          if (([v13 isDataSeparated] & 1) == 0 && (objc_msgSend(v4, "isDataSeparatedPersona") & 1) == 0)
+          session = [v12 session];
+          if (([session isDataSeparated] & 1) == 0 && (objc_msgSend(currentPersona, "isDataSeparatedPersona") & 1) == 0)
           {
 
 LABEL_15:
@@ -135,10 +135,10 @@ LABEL_15:
             goto LABEL_18;
           }
 
-          v14 = [v12 session];
-          v15 = [v14 personaIdentifier];
-          v16 = [v4 br_personaID];
-          v17 = [v15 isEqualToString:v16];
+          session2 = [v12 session];
+          personaIdentifier = [session2 personaIdentifier];
+          br_personaID = [currentPersona br_personaID];
+          v17 = [personaIdentifier isEqualToString:br_personaID];
 
           if (v17)
           {
@@ -169,10 +169,10 @@ LABEL_18:
 
 - (id)accountForCurrentPersona
 {
-  v2 = [MEMORY[0x277CB8F48] defaultStore];
-  v3 = [v2 br_accountForCurrentPersona];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  br_accountForCurrentPersona = [defaultStore br_accountForCurrentPersona];
 
-  return v3;
+  return br_accountForCurrentPersona;
 }
 
 - (BOOL)waitForInitialAccountLoadingSynchronouslyIfPossible
@@ -254,11 +254,11 @@ uint64_t __35__BRCAccountsManager_sharedManager__block_invoke()
 
 - (id)_keepDataLocalOnSignOutDefaultsKeyForCurrentPersona
 {
-  v2 = [MEMORY[0x277CB8F48] defaultStore];
-  v3 = [v2 br_accountForCurrentPersona];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  br_accountForCurrentPersona = [defaultStore br_accountForCurrentPersona];
 
-  v4 = [v3 br_dsid];
-  v5 = [@"com.apple.bird.keepDataLocalOnSignOutSetAtTime." stringByAppendingString:v4];
+  br_dsid = [br_accountForCurrentPersona br_dsid];
+  v5 = [@"com.apple.bird.keepDataLocalOnSignOutSetAtTime." stringByAppendingString:br_dsid];
 
   return v5;
 }
@@ -266,15 +266,15 @@ uint64_t __35__BRCAccountsManager_sharedManager__block_invoke()
 - (BOOL)_readkeepDataLocalOnSignOutForCurrentPersona
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [(BRCAccountsManager *)self _keepDataLocalOnSignOutDefaultsKeyForCurrentPersona];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:v2];
+  _keepDataLocalOnSignOutDefaultsKeyForCurrentPersona = [(BRCAccountsManager *)self _keepDataLocalOnSignOutDefaultsKeyForCurrentPersona];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:_keepDataLocalOnSignOutDefaultsKeyForCurrentPersona];
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138412802;
-    v11 = v2;
+    v11 = _keepDataLocalOnSignOutDefaultsKeyForCurrentPersona;
     v12 = 2112;
     v13 = v4;
     v14 = 2112;
@@ -289,27 +289,27 @@ uint64_t __35__BRCAccountsManager_sharedManager__block_invoke()
   return v7;
 }
 
-- (void)keepDataLocalOnSignOutForCurrentPersona:(BOOL)a3
+- (void)keepDataLocalOnSignOutForCurrentPersona:(BOOL)persona
 {
-  v3 = a3;
-  v7 = [(BRCAccountsManager *)self _keepDataLocalOnSignOutDefaultsKeyForCurrentPersona];
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = v4;
-  if (v3)
+  personaCopy = persona;
+  _keepDataLocalOnSignOutDefaultsKeyForCurrentPersona = [(BRCAccountsManager *)self _keepDataLocalOnSignOutDefaultsKeyForCurrentPersona];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = standardUserDefaults;
+  if (personaCopy)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithLong:time(0)];
-    [v5 setObject:v6 forKey:v7];
+    [v5 setObject:v6 forKey:_keepDataLocalOnSignOutDefaultsKeyForCurrentPersona];
   }
 
   else
   {
-    [v4 removeObjectForKey:v7];
+    [standardUserDefaults removeObjectForKey:_keepDataLocalOnSignOutDefaultsKeyForCurrentPersona];
   }
 }
 
-- (BOOL)_cleanupAccountSupportDataWithPersona:(id)a3
+- (BOOL)_cleanupAccountSupportDataWithPersona:(id)persona
 {
-  v3 = a3;
+  personaCopy = persona;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -319,7 +319,7 @@ uint64_t __35__BRCAccountsManager_sharedManager__block_invoke()
   v7[1] = 3221225472;
   v7[2] = __60__BRCAccountsManager__cleanupAccountSupportDataWithPersona___block_invoke;
   v7[3] = &unk_278500DA0;
-  v5 = v3;
+  v5 = personaCopy;
   v8 = v5;
   v9 = &v10;
   [v4 performWithPersonaID:v5 block:v7];
@@ -379,13 +379,13 @@ void __60__BRCAccountsManager__cleanupAccountSupportDataWithPersona___block_invo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)cleanupAccountDataForLoggedOutAccountWithPersona:(id)a3
+- (BOOL)cleanupAccountDataForLoggedOutAccountWithPersona:(id)persona
 {
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v5 = a3;
+  personaCopy = persona;
   BRPerformWithPersonaAndError();
   v3 = *(v7 + 24);
 
@@ -878,11 +878,11 @@ void __34__BRCAccountsManager_loadAccounts__block_invoke_2(uint64_t a1, void *a2
   [v2 userDefaultsChanged];
 }
 
-- (BOOL)_maintainExistingFileProviderDomainsWithAccounts:(id)a3 withError:(id *)a4
+- (BOOL)_maintainExistingFileProviderDomainsWithAccounts:(id)accounts withError:(id *)error
 {
   v133 = *MEMORY[0x277D85DE8];
-  v100 = a3;
-  v95 = self;
+  accountsCopy = accounts;
+  selfCopy = self;
   if ([(BRCAccountsManager *)self isInSyncBubble])
   {
     v5 = 1;
@@ -896,7 +896,7 @@ void __34__BRCAccountsManager_loadAccounts__block_invoke_2(uint64_t a1, void *a2
     [BRCAccountsManager _maintainExistingFileProviderDomainsWithAccounts:withError:];
   }
 
-  v97 = [(BRCAccountsManager *)v95 _getEnterpriseProviderManager];
+  _getEnterpriseProviderManager = [(BRCAccountsManager *)selfCopy _getEnterpriseProviderManager];
   v119 = 0;
   v120[0] = &v119;
   v120[1] = 0x3032000000;
@@ -904,7 +904,7 @@ void __34__BRCAccountsManager_loadAccounts__block_invoke_2(uint64_t a1, void *a2
   v120[3] = __Block_byref_object_dispose__42;
   v121 = 0;
   obj = 0;
-  v8 = [v97 br_getFPDomainsWithError:&obj];
+  v8 = [_getEnterpriseProviderManager br_getFPDomainsWithError:&obj];
   objc_storeStrong(&v121, obj);
   if (*(v120[0] + 40))
   {
@@ -928,7 +928,7 @@ void __34__BRCAccountsManager_loadAccounts__block_invoke_2(uint64_t a1, void *a2
         *buf = 136315906;
         v126 = "[BRCAccountsManager _maintainExistingFileProviderDomainsWithAccounts:withError:]";
         v127 = 2080;
-        if (!a4)
+        if (!error)
         {
           v89 = "(ignored by caller)";
         }
@@ -942,10 +942,10 @@ void __34__BRCAccountsManager_loadAccounts__block_invoke_2(uint64_t a1, void *a2
       }
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
     goto LABEL_114;
@@ -965,7 +965,7 @@ void __34__BRCAccountsManager_loadAccounts__block_invoke_2(uint64_t a1, void *a2
 
   v19 = *v115;
   v20 = "(ignored by caller)";
-  if (a4)
+  if (error)
   {
     v20 = "(passed to caller)";
   }
@@ -991,7 +991,7 @@ void __34__BRCAccountsManager_loadAccounts__block_invoke_2(uint64_t a1, void *a2
       }
 
       v113 = 0;
-      v23 = [MEMORY[0x277CFAE00] matchDomainWithAccountAndStampDomainIfNeeded:v22 withAccounts:v100 persistDomain:&v113];
+      v23 = [MEMORY[0x277CFAE00] matchDomainWithAccountAndStampDomainIfNeeded:v22 withAccounts:accountsCopy persistDomain:&v113];
       v24 = v23 == 0;
 
       if (!v24)
@@ -999,13 +999,13 @@ void __34__BRCAccountsManager_loadAccounts__block_invoke_2(uint64_t a1, void *a2
         v16 = v99;
         if (v113 == 1)
         {
-          v25 = [v22 personaIdentifier];
+          personaIdentifier = [v22 personaIdentifier];
           v108[1] = MEMORY[0x277D85DD0];
           v108[2] = 3221225472;
           v108[3] = __81__BRCAccountsManager__maintainExistingFileProviderDomainsWithAccounts_withError___block_invoke_60;
           v108[4] = &unk_2784FFFA8;
           v108[5] = v22;
-          v109 = v97;
+          v109 = _getEnterpriseProviderManager;
           BRPerformWithPersonaAndError();
 
           v16 = v99;
@@ -1014,16 +1014,16 @@ void __34__BRCAccountsManager_loadAccounts__block_invoke_2(uint64_t a1, void *a2
         goto LABEL_69;
       }
 
-      v26 = [v22 personaIdentifier];
-      if ([v26 isEqualToString:@"__defaultPersonaID__"])
+      personaIdentifier2 = [v22 personaIdentifier];
+      if ([personaIdentifier2 isEqualToString:@"__defaultPersonaID__"])
       {
       }
 
       else
       {
-        v101 = [v22 personaIdentifier];
+        personaIdentifier3 = [v22 personaIdentifier];
 
-        if (v101)
+        if (personaIdentifier3)
         {
           v27 = 0;
           goto LABEL_31;
@@ -1035,16 +1035,16 @@ void __34__BRCAccountsManager_loadAccounts__block_invoke_2(uint64_t a1, void *a2
         [BRCAccountsManager _maintainExistingFileProviderDomainsWithAccounts:withError:];
       }
 
-      v101 = _maintainExistingFileProviderDomainsWithAccounts_withError____personalPersona;
+      personaIdentifier3 = _maintainExistingFileProviderDomainsWithAccounts_withError____personalPersona;
       v27 = 1;
 LABEL_31:
-      v28 = [MEMORY[0x277D77BF8] sharedManager];
-      v98 = [v28 currentPersona];
+      mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+      currentPersona = [mEMORY[0x277D77BF8] currentPersona];
 
       v112 = 0;
-      v29 = [v98 userPersonaUniqueString];
-      v30 = v29;
-      if (v29 == v101 || ([v29 isEqualToString:?] & 1) != 0)
+      userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+      v30 = userPersonaUniqueString;
+      if (userPersonaUniqueString == personaIdentifier3 || ([userPersonaUniqueString isEqualToString:?] & 1) != 0)
       {
         v31 = 0;
         goto LABEL_34;
@@ -1053,7 +1053,7 @@ LABEL_31:
       if (voucher_process_can_use_arbitrary_personas())
       {
         v111 = 0;
-        v47 = [v98 copyCurrentPersonaContextWithError:&v111];
+        v47 = [currentPersona copyCurrentPersonaContextWithError:&v111];
         v48 = v111;
         v49 = v112;
         v112 = v47;
@@ -1072,7 +1072,7 @@ LABEL_31:
           }
         }
 
-        v31 = [v98 br_generateAndRestorePersonaContextWithPersonaUniqueString:v101];
+        v31 = [currentPersona br_generateAndRestorePersonaContextWithPersonaUniqueString:personaIdentifier3];
 
         if (v31)
         {
@@ -1080,9 +1080,9 @@ LABEL_31:
           v53 = brc_default_log();
           if (os_log_type_enabled(v53, 0x90u))
           {
-            v54 = [v22 personaIdentifier];
+            personaIdentifier4 = [v22 personaIdentifier];
             *buf = v92;
-            v126 = v54;
+            v126 = personaIdentifier4;
             v127 = 2112;
             v128 = v31;
             v129 = 2112;
@@ -1096,7 +1096,7 @@ LABEL_79:
 
       else
       {
-        if (v27 && ([v98 isDataSeparatedPersona] & 1) == 0)
+        if (v27 && ([currentPersona isDataSeparatedPersona] & 1) == 0)
         {
           v52 = brc_bread_crumbs();
           v53 = brc_default_log();
@@ -1137,37 +1137,37 @@ LABEL_34:
 
       v123[1] = 0;
       v123[0] = 0;
-      v34 = [v22 identifier];
+      identifier = [v22 identifier];
       v35 = _br_parseUUIDString();
 
       if ((v35 & 1) == 0)
       {
         if ([v22 br_isCiconiaDomain])
         {
-          v42 = brc_bread_crumbs();
+          br_currentSupportDir = brc_bread_crumbs();
           v45 = brc_default_log();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
           {
-            v46 = [v22 identifier];
+            identifier2 = [v22 identifier];
             *buf = 138412546;
-            v126 = v46;
+            v126 = identifier2;
             v127 = 2112;
-            v128 = v42;
+            v128 = br_currentSupportDir;
             _os_log_impl(&dword_223E7A000, v45, OS_LOG_TYPE_DEFAULT, "[WARNING] We are removing the ciconia domain %@, not removing account data%@", buf, 0x16u);
           }
         }
 
         else
         {
-          v42 = brc_bread_crumbs();
+          br_currentSupportDir = brc_bread_crumbs();
           v45 = brc_default_log();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_FAULT))
           {
-            v63 = [v22 identifier];
+            identifier3 = [v22 identifier];
             *buf = 138412546;
-            v126 = v63;
+            v126 = identifier3;
             v127 = 2112;
-            v128 = v42;
+            v128 = br_currentSupportDir;
             _os_log_fault_impl(&dword_223E7A000, v45, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: domain identifier %@ isn't a UUID so not removing account data%@", buf, 0x16u);
           }
         }
@@ -1175,10 +1175,10 @@ LABEL_34:
         goto LABEL_57;
       }
 
-      v36 = [MEMORY[0x277D77BF8] sharedManager];
-      v37 = [v36 br_currentPersonaID];
-      v38 = [v22 personaIdentifier];
-      v39 = [v37 isEqualToString:v38];
+      mEMORY[0x277D77BF8]2 = [MEMORY[0x277D77BF8] sharedManager];
+      br_currentPersonaID = [mEMORY[0x277D77BF8]2 br_currentPersonaID];
+      personaIdentifier5 = [v22 personaIdentifier];
+      v39 = [br_currentPersonaID isEqualToString:personaIdentifier5];
 
       if (v39)
       {
@@ -1191,15 +1191,15 @@ LABEL_34:
           _os_log_debug_impl(&dword_223E7A000, v41, OS_LOG_TYPE_DEBUG, "[DEBUG] domain's persona still exists, removing account path%@", buf, 0xCu);
         }
 
-        v42 = [MEMORY[0x277CCACA8] br_currentSupportDir];
-        if (v42)
+        br_currentSupportDir = [MEMORY[0x277CCACA8] br_currentSupportDir];
+        if (br_currentSupportDir)
         {
-          v43 = [MEMORY[0x277CCAA00] defaultManager];
-          v44 = [v43 fileExistsAtPath:v42];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          v44 = [defaultManager fileExistsAtPath:br_currentSupportDir];
 
           if (v44)
           {
-            BRCRecursiveRemove(v42);
+            BRCRecursiveRemove(br_currentSupportDir);
           }
         }
 
@@ -1208,12 +1208,12 @@ LABEL_57:
 
       if ([v22 isDataSeparatedDomain] & 1) != 0 || (objc_msgSend(v22, "isEnterpriseDomain"))
       {
-        v55 = 1;
+        br_isCiconiaDomain = 1;
       }
 
       else
       {
-        v55 = [v22 br_isCiconiaDomain];
+        br_isCiconiaDomain = [v22 br_isCiconiaDomain];
       }
 
       v110[0] = MEMORY[0x277D85DD0];
@@ -1222,7 +1222,7 @@ LABEL_57:
       v110[3] = &unk_278500DA0;
       v110[4] = v22;
       v110[5] = &v119;
-      [v97 br_removeDomain:v22 sync:v55 ^ 1u completionHandler:v110];
+      [_getEnterpriseProviderManager br_removeDomain:v22 sync:br_isCiconiaDomain ^ 1u completionHandler:v110];
       v56 = *(v120[0] + 40);
       if (v56)
       {
@@ -1242,10 +1242,10 @@ LABEL_57:
           _os_log_error_impl(&dword_223E7A000, v59, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
         }
 
-        if (a4)
+        if (error)
         {
           v60 = v57;
-          *a4 = v57;
+          *error = v57;
         }
       }
 
@@ -1271,11 +1271,11 @@ LABEL_69:
   while (v64);
 LABEL_81:
 
-  v65 = [(BRCAccountsManager *)v95 _getPrimaryProviderManager];
+  _getPrimaryProviderManager = [(BRCAccountsManager *)selfCopy _getPrimaryProviderManager];
 
   v66 = (v120[0] + 40);
   v108[0] = *(v120[0] + 40);
-  v8 = [v65 br_getFPDomainsWithError:v108];
+  v8 = [_getPrimaryProviderManager br_getFPDomainsWithError:v108];
   objc_storeStrong(v66, v108[0]);
 
   if (*(v120[0] + 40))
@@ -1300,7 +1300,7 @@ LABEL_81:
         *buf = 136315906;
         v126 = "[BRCAccountsManager _maintainExistingFileProviderDomainsWithAccounts:withError:]";
         v127 = 2080;
-        if (!a4)
+        if (!error)
         {
           v90 = "(ignored by caller)";
         }
@@ -1314,10 +1314,10 @@ LABEL_81:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v72 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -1345,19 +1345,19 @@ LABEL_81:
           if ([v77 isReplicated])
           {
             LOBYTE(v123[0]) = 0;
-            v78 = [MEMORY[0x277CFAE00] matchDomainWithAccountAndStampDomainIfNeeded:v77 withAccounts:v100 persistDomain:v123];
+            v78 = [MEMORY[0x277CFAE00] matchDomainWithAccountAndStampDomainIfNeeded:v77 withAccounts:accountsCopy persistDomain:v123];
             v79 = v78 == 0;
 
             if (v79)
             {
               if ([v77 isDataSeparatedDomain] & 1) != 0 || (objc_msgSend(v77, "isEnterpriseDomain"))
               {
-                v81 = 1;
+                br_isCiconiaDomain2 = 1;
               }
 
               else
               {
-                v81 = [v77 br_isCiconiaDomain];
+                br_isCiconiaDomain2 = [v77 br_isCiconiaDomain];
               }
 
               v103[0] = MEMORY[0x277D85DD0];
@@ -1366,7 +1366,7 @@ LABEL_81:
               v103[3] = &unk_278500DA0;
               v103[4] = v77;
               v103[5] = &v119;
-              [v65 br_removeDomain:v77 sync:v81 ^ 1u completionHandler:v103];
+              [_getPrimaryProviderManager br_removeDomain:v77 sync:br_isCiconiaDomain2 ^ 1u completionHandler:v103];
               v82 = *(v120[0] + 40);
               if (v82)
               {
@@ -1379,7 +1379,7 @@ LABEL_81:
                   *buf = 136315906;
                   v126 = "[BRCAccountsManager _maintainExistingFileProviderDomainsWithAccounts:withError:]";
                   v127 = 2080;
-                  if (!a4)
+                  if (!error)
                   {
                     v91 = "(ignored by caller)";
                   }
@@ -1392,10 +1392,10 @@ LABEL_81:
                   _os_log_error_impl(&dword_223E7A000, v85, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
                 }
 
-                if (a4)
+                if (error)
                 {
                   v86 = v83;
-                  *a4 = v83;
+                  *error = v83;
                 }
 
                 v5 = 0;
@@ -1405,8 +1405,8 @@ LABEL_81:
 
             else if (LOBYTE(v123[0]) == 1)
             {
-              v80 = [v77 personaIdentifier];
-              v102 = v65;
+              personaIdentifier6 = [v77 personaIdentifier];
+              v102 = _getPrimaryProviderManager;
               BRPerformWithPersonaAndError();
             }
           }
@@ -1433,7 +1433,7 @@ LABEL_112:
     v8 = v73;
   }
 
-  v97 = v65;
+  _getEnterpriseProviderManager = _getPrimaryProviderManager;
 LABEL_114:
 
   _Block_object_dispose(&v119, 8);
@@ -1623,19 +1623,19 @@ void __81__BRCAccountsManager__maintainExistingFileProviderDomainsWithAccounts_w
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_maintainExistingFileProviderDomainsIfNeededWithAccounts:(id)a3
+- (void)_maintainExistingFileProviderDomainsIfNeededWithAccounts:(id)accounts
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  maintainedExistingFPDomains = v5->_maintainedExistingFPDomains;
-  v5->_maintainedExistingFPDomains = 1;
-  objc_sync_exit(v5);
+  accountsCopy = accounts;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  maintainedExistingFPDomains = selfCopy->_maintainedExistingFPDomains;
+  selfCopy->_maintainedExistingFPDomains = 1;
+  objc_sync_exit(selfCopy);
 
   if (!maintainedExistingFPDomains)
   {
     v11 = 0;
-    v7 = [(BRCAccountsManager *)v5 _maintainExistingFileProviderDomainsWithAccounts:v4 withError:&v11];
+    v7 = [(BRCAccountsManager *)selfCopy _maintainExistingFileProviderDomainsWithAccounts:accountsCopy withError:&v11];
     v8 = v11;
     if (!v7)
     {
@@ -1649,23 +1649,23 @@ void __81__BRCAccountsManager__maintainExistingFileProviderDomainsWithAccounts_w
   }
 }
 
-- (void)_scheduleExistingFileProviderDomainsMaintenanceWithAccounts:(id)a3
+- (void)_scheduleExistingFileProviderDomainsMaintenanceWithAccounts:(id)accounts
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  maintainedExistingFPDomains = v5->_maintainedExistingFPDomains;
-  objc_sync_exit(v5);
+  accountsCopy = accounts;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  maintainedExistingFPDomains = selfCopy->_maintainedExistingFPDomains;
+  objc_sync_exit(selfCopy);
 
   if (!maintainedExistingFPDomains)
   {
-    maintainFPDomainsQueue = v5->_maintainFPDomainsQueue;
+    maintainFPDomainsQueue = selfCopy->_maintainFPDomainsQueue;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __82__BRCAccountsManager__scheduleExistingFileProviderDomainsMaintenanceWithAccounts___block_invoke;
     v8[3] = &unk_2784FF478;
-    v8[4] = v5;
-    v9 = v4;
+    v8[4] = selfCopy;
+    v9 = accountsCopy;
     dispatch_async(maintainFPDomainsQueue, v8);
   }
 }
@@ -1701,10 +1701,10 @@ void __82__BRCAccountsManager__scheduleExistingFileProviderDomainsMaintenanceWit
   }
 }
 
-- (void)enumerateAccountHandlers:(id)a3
+- (void)enumerateAccountHandlers:(id)handlers
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlersCopy = handlers;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1719,7 +1719,7 @@ void __82__BRCAccountsManager__scheduleExistingFileProviderDomainsMaintenanceWit
   block[4] = self;
   block[5] = &v21;
   dispatch_sync(queue, block);
-  v6 = [MEMORY[0x277CB8F48] defaultStore];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -1738,11 +1738,11 @@ void __82__BRCAccountsManager__scheduleExistingFileProviderDomainsMaintenanceWit
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) acAccountID];
-        v11 = [v6 accountWithIdentifier:v10];
+        acAccountID = [*(*(&v16 + 1) + 8 * i) acAccountID];
+        v11 = [defaultStore accountWithIdentifier:acAccountID];
 
-        v12 = [v11 br_personaIdentifier];
-        v15 = v4;
+        br_personaIdentifier = [v11 br_personaIdentifier];
+        v15 = handlersCopy;
         BRPerformWithPersonaAndError();
       }
 
@@ -1790,15 +1790,15 @@ void __47__BRCAccountsManager_enumerateAccountHandlers___block_invoke_2(uint64_t
   }
 }
 
-- (void)enumerateAccountHandlerIfFinishedLoading:(id)a3
+- (void)enumerateAccountHandlerIfFinishedLoading:(id)loading
 {
   if (self->_finishedLoadingAccounts)
   {
-    [(BRCAccountsManager *)self enumerateAccountHandlers:a3];
+    [(BRCAccountsManager *)self enumerateAccountHandlers:loading];
   }
 }
 
-- (BOOL)_waitUntilFileProviderIsReady:(id *)a3
+- (BOOL)_waitUntilFileProviderIsReady:(id *)ready
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = +[BRCFileProviderDaemonUtils sharedInstance];
@@ -1817,7 +1817,7 @@ void __47__BRCAccountsManager_enumerateAccountHandlers___block_invoke_2(uint64_t
     {
       v7 = 0;
       v6 = 1;
-      if (!a3)
+      if (!ready)
       {
         goto LABEL_9;
       }
@@ -1846,7 +1846,7 @@ void __47__BRCAccountsManager_enumerateAccountHandlers___block_invoke_2(uint64_t
       *buf = 136315906;
       v17 = "[BRCAccountsManager _waitUntilFileProviderIsReady:]";
       v18 = 2080;
-      if (!a3)
+      if (!ready)
       {
         v12 = "(ignored by caller)";
       }
@@ -1860,11 +1860,11 @@ void __47__BRCAccountsManager_enumerateAccountHandlers___block_invoke_2(uint64_t
     }
   }
 
-  if (a3)
+  if (ready)
   {
 LABEL_8:
     v9 = v7;
-    *a3 = v7;
+    *ready = v7;
   }
 
 LABEL_9:
@@ -1873,12 +1873,12 @@ LABEL_9:
   return v6;
 }
 
-- (void)createAndLoadSessionWithACAccountID:(id)a3 createBlock:(id)a4
+- (void)createAndLoadSessionWithACAccountID:(id)d createBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_queue);
-  if (!v6)
+  if (!dCopy)
   {
     [BRCAccountsManager createAndLoadSessionWithACAccountID:createBlock:];
   }
@@ -1897,22 +1897,22 @@ LABEL_9:
     v24 = __Block_byref_object_copy__42;
     v25 = __Block_byref_object_dispose__42;
     v26 = 0;
-    v11 = [MEMORY[0x277CB8F48] defaultStore];
-    v12 = [v11 accountWithIdentifier:v6];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    v12 = [defaultStore accountWithIdentifier:dCopy];
 
     v13 = MEMORY[0x277CFAE80];
-    v14 = [v12 br_personaIdentifier];
+    br_personaIdentifier = [v12 br_personaIdentifier];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __70__BRCAccountsManager_createAndLoadSessionWithACAccountID_createBlock___block_invoke;
     v18[3] = &unk_278505B10;
     v20 = &v21;
-    v19 = v7;
-    [v13 performWithPersonaID:v14 block:v18];
+    v19 = blockCopy;
+    [v13 performWithPersonaID:br_personaIdentifier block:v18];
 
     v15 = self->_accountHandlersByACAccountID;
     objc_sync_enter(v15);
-    [(NSMutableDictionary *)self->_accountHandlersByACAccountID setObject:v22[5] forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_accountHandlersByACAccountID setObject:v22[5] forKeyedSubscript:dCopy];
     objc_sync_exit(v15);
 
     _Block_object_dispose(&v21, 8);
@@ -1960,10 +1960,10 @@ void __73__BRCAccountsManager_waitForInitialAccountLoadingSynchronouslyIfPossibl
   }
 }
 
-- (BOOL)waitForAccountLoadingSynchronouslyIfPossible:(id)a3
+- (BOOL)waitForAccountLoadingSynchronouslyIfPossible:(id)possible
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  possibleCopy = possible;
   dispatch_assert_queue_not_V2(self->_queue);
   if (self->_finishedLoadingAccounts || self->_loadAccountsRequested)
   {
@@ -1971,9 +1971,9 @@ void __73__BRCAccountsManager_waitForInitialAccountLoadingSynchronouslyIfPossibl
   }
 
   v9 = +[BRCFileProviderDaemonUtils sharedInstance];
-  v10 = [v9 boostFileProvider];
+  boostFileProvider = [v9 boostFileProvider];
 
-  if ((v10 & 1) == 0)
+  if ((boostFileProvider & 1) == 0)
   {
     v11 = brc_bread_crumbs();
     v12 = brc_default_log();
@@ -2009,10 +2009,10 @@ LABEL_13:
   }
 
 LABEL_3:
-  v5 = [(BRCAccountsManager *)self accountHandlerForACAccountID:v4];
-  v6 = [v5 finishedLoading];
+  v5 = [(BRCAccountsManager *)self accountHandlerForACAccountID:possibleCopy];
+  finishedLoading = [v5 finishedLoading];
 
-  if (v6)
+  if (finishedLoading)
   {
     v7 = 1;
   }
@@ -2030,7 +2030,7 @@ LABEL_3:
     block[3] = &unk_278500D08;
     p_buf = &buf;
     block[4] = self;
-    v17 = v4;
+    v17 = possibleCopy;
     dispatch_sync(queue, block);
     v7 = *(*(&buf + 1) + 24);
 
@@ -2060,72 +2060,72 @@ void __67__BRCAccountsManager_waitForAccountLoadingSynchronouslyIfPossible___blo
   }
 }
 
-- (id)accountHandlerForACAccountID:(id)a3
+- (id)accountHandlerForACAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_accountHandlersByACAccountID;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_accountHandlersByACAccountID objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_accountHandlersByACAccountID objectForKeyedSubscript:dCopy];
   objc_sync_exit(v5);
 
   return v6;
 }
 
-- (id)accountForPersona:(id)a3
+- (id)accountForPersona:(id)persona
 {
   v3 = MEMORY[0x277CB8F48];
-  v4 = a3;
-  v5 = [v3 defaultStore];
-  v6 = [v5 br_accountForPersona:v4];
+  personaCopy = persona;
+  defaultStore = [v3 defaultStore];
+  v6 = [defaultStore br_accountForPersona:personaCopy];
 
   return v6;
 }
 
-- (id)personaIdentifierForACAccountID:(id)a3
+- (id)personaIdentifierForACAccountID:(id)d
 {
   v3 = MEMORY[0x277CB8F48];
-  v4 = a3;
-  v5 = [v3 defaultStore];
-  v6 = [v5 accountWithIdentifier:v4];
+  dCopy = d;
+  defaultStore = [v3 defaultStore];
+  v6 = [defaultStore accountWithIdentifier:dCopy];
 
-  v7 = [v6 br_personaIdentifier];
+  br_personaIdentifier = [v6 br_personaIdentifier];
 
-  return v7;
+  return br_personaIdentifier;
 }
 
-- (id)_createAccountHandlerForAccountID:(id)a3
+- (id)_createAccountHandlerForAccountID:(id)d
 {
-  v3 = a3;
-  v4 = [[BRCAccountHandler alloc] initWithACAccountID:v3];
+  dCopy = d;
+  v4 = [[BRCAccountHandler alloc] initWithACAccountID:dCopy];
 
   return v4;
 }
 
-- (id)getOrCreateAccountHandlerForACAccount:(id)a3
+- (id)getOrCreateAccountHandlerForACAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5)
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  if (identifier)
   {
     v6 = MEMORY[0x277CFAE80];
-    v7 = [v4 br_personaIdentifier];
-    LOBYTE(v6) = [v6 currentPersonaMatchesID:v7];
+    br_personaIdentifier = [accountCopy br_personaIdentifier];
+    LOBYTE(v6) = [v6 currentPersonaMatchesID:br_personaIdentifier];
 
     if (v6)
     {
       v8 = self->_accountHandlersByACAccountID;
       objc_sync_enter(v8);
-      v9 = [(NSMutableDictionary *)self->_accountHandlersByACAccountID objectForKeyedSubscript:v5];
+      v9 = [(NSMutableDictionary *)self->_accountHandlersByACAccountID objectForKeyedSubscript:identifier];
 
       if (v9)
       {
-        v10 = [(NSMutableDictionary *)self->_accountHandlersByACAccountID objectForKeyedSubscript:v5];
+        v10 = [(NSMutableDictionary *)self->_accountHandlersByACAccountID objectForKeyedSubscript:identifier];
       }
 
       else
       {
-        v10 = [(BRCAccountsManager *)self _createAccountHandlerForAccountID:v5];
-        [(NSMutableDictionary *)self->_accountHandlersByACAccountID setObject:v10 forKeyedSubscript:v5];
+        v10 = [(BRCAccountsManager *)self _createAccountHandlerForAccountID:identifier];
+        [(NSMutableDictionary *)self->_accountHandlersByACAccountID setObject:v10 forKeyedSubscript:identifier];
       }
 
       objc_sync_exit(v8);
@@ -2147,13 +2147,13 @@ LABEL_11:
   return v10;
 }
 
-- (void)createSessionWithACAccountID:(id)a3 dsid:(id)a4 completionHandler:(id)a5
+- (void)createSessionWithACAccountID:(id)d dsid:(id)dsid completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CB8F48] defaultStore];
-  v12 = [v11 accountWithIdentifier:v8];
+  dCopy = d;
+  dsidCopy = dsid;
+  handlerCopy = handler;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  v12 = [defaultStore accountWithIdentifier:dCopy];
 
   maintainFPDomainsQueue = self->_maintainFPDomainsQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2161,14 +2161,14 @@ LABEL_11:
   block[2] = __74__BRCAccountsManager_createSessionWithACAccountID_dsid_completionHandler___block_invoke;
   block[3] = &unk_278502FF8;
   block[4] = self;
-  v20 = v8;
+  v20 = dCopy;
   v21 = v12;
-  v22 = v9;
-  v23 = v10;
-  v14 = v10;
-  v15 = v9;
+  v22 = dsidCopy;
+  v23 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = dsidCopy;
   v16 = v12;
-  v17 = v8;
+  v17 = dCopy;
   v18 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_UTILITY, 0, block);
   dispatch_async(maintainFPDomainsQueue, v18);
 }
@@ -2242,27 +2242,27 @@ id __74__BRCAccountsManager_createSessionWithACAccountID_dsid_completionHandler_
   return v2;
 }
 
-- (void)updateAccountDisplayName:(id)a3 completionHandler:(id)a4
+- (void)updateAccountDisplayName:(id)name completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  nameCopy = name;
+  handlerCopy = handler;
+  if (!nameCopy)
   {
     [BRCAccountsManager updateAccountDisplayName:completionHandler:];
   }
 
-  v8 = [MEMORY[0x277CB8F48] defaultStore];
-  [v8 invalidateAccountForPersonaCache];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  [defaultStore invalidateAccountForPersonaCache];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__BRCAccountsManager_updateAccountDisplayName_completionHandler___block_invoke;
   block[3] = &unk_2784FF5B8;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = nameCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = nameCopy;
   dispatch_sync(queue, block);
 }
 
@@ -2338,10 +2338,10 @@ void __65__BRCAccountsManager_updateAccountDisplayName_completionHandler___block
   }
 }
 
-- (BOOL)destroySessionWithACAccountID:(id)a3
+- (BOOL)destroySessionWithACAccountID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     [BRCAccountsManager destroySessionWithACAccountID:];
   }
@@ -2356,10 +2356,10 @@ void __65__BRCAccountsManager_updateAccountDisplayName_completionHandler___block
   block[1] = 3221225472;
   block[2] = __52__BRCAccountsManager_destroySessionWithACAccountID___block_invoke;
   block[3] = &unk_278502B88;
-  v11 = v4;
-  v12 = self;
+  v11 = dCopy;
+  selfCopy = self;
   v13 = &v14;
-  v7 = v4;
+  v7 = dCopy;
   dispatch_sync(queue, block);
   dispatch_group_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v8 = *(v15 + 24);
@@ -2478,14 +2478,14 @@ uint64_t __47__BRCAccountsManager_waitUntilDeviceIsUnlocked__block_invoke_76(uin
   v19 = *MEMORY[0x277D85DE8];
   v3 = self->_accountHandlersByACAccountID;
   objc_sync_enter(v3);
-  v4 = [(NSMutableDictionary *)self->_accountHandlersByACAccountID allValues];
+  allValues = [(NSMutableDictionary *)self->_accountHandlersByACAccountID allValues];
   objc_sync_exit(v3);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = allValues;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -2500,16 +2500,16 @@ uint64_t __47__BRCAccountsManager_waitUntilDeviceIsUnlocked__block_invoke_76(uin
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v8) session];
-        v10 = [v9 clientTruthWorkloop];
-        if (v10)
+        session = [*(*(&v14 + 1) + 8 * v8) session];
+        clientTruthWorkloop = [session clientTruthWorkloop];
+        if (clientTruthWorkloop)
         {
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __55__BRCAccountsManager__createSyncBubbleTasksIfNecessary__block_invoke;
           block[3] = &unk_2784FF450;
-          v13 = v9;
-          dispatch_async_and_wait(v10, block);
+          v13 = session;
+          dispatch_async_and_wait(clientTruthWorkloop, block);
         }
 
         ++v8;
@@ -2576,17 +2576,17 @@ void __36__BRCAccountsManager_willSwitchUser__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)retrySyncBubbleLaterIfNeededWithError:(id)a3
+- (BOOL)retrySyncBubbleLaterIfNeededWithError:(id)error
 {
-  v4 = a3;
-  if (-[BRCAccountsManager isInSyncBubble](self, "isInSyncBubble") && [v4 brc_shouldRetryLater])
+  errorCopy = error;
+  if (-[BRCAccountsManager isInSyncBubble](self, "isInSyncBubble") && [errorCopy brc_shouldRetryLater])
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __60__BRCAccountsManager_retrySyncBubbleLaterIfNeededWithError___block_invoke;
     v7[3] = &unk_2784FF478;
-    v8 = v4;
-    v9 = self;
+    v8 = errorCopy;
+    selfCopy = self;
     if (retrySyncBubbleLaterIfNeededWithError__onceToken != -1)
     {
       dispatch_once(&retrySyncBubbleLaterIfNeededWithError__onceToken, v7);

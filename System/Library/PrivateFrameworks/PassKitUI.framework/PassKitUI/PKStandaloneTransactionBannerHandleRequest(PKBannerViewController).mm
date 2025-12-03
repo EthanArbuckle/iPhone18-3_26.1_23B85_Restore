@@ -6,12 +6,12 @@
 
 - (id)createBannerViewController
 {
-  v2 = [MEMORY[0x1E69B8A58] sharedInstance];
-  v3 = [a1 passUniqueIdentifier];
-  v4 = [v2 passWithUniqueID:v3];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+  passUniqueIdentifier = [self passUniqueIdentifier];
+  v4 = [mEMORY[0x1E69B8A58] passWithUniqueID:passUniqueIdentifier];
 
-  v5 = [a1 transactionType];
-  if (v5 == 1)
+  transactionType = [self transactionType];
+  if (transactionType == 1)
   {
     v6 = @"lock.fill";
     v7 = @"TRANSACTION_LOCKED";
@@ -19,7 +19,7 @@
 
   else
   {
-    if (v5 != 2)
+    if (transactionType != 2)
     {
       v9 = 0;
 LABEL_13:
@@ -48,41 +48,41 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v11 = [v4 secureElementPass];
-  v12 = [a1 displayableName];
+  secureElementPass = [v4 secureElementPass];
+  displayableName = [self displayableName];
   if (SBSIsSystemApertureAvailable())
   {
-    if (v12)
+    if (displayableName)
     {
-      v13 = v12;
+      localizedDescription = displayableName;
     }
 
     else
     {
-      v16 = [v11 isCarKeyPass];
-      v13 = [v4 localizedDescription];
-      if (v16)
+      isCarKeyPass = [secureElementPass isCarKeyPass];
+      localizedDescription = [v4 localizedDescription];
+      if (isCarKeyPass)
       {
-        v17 = [v4 organizationName];
-        v18 = v17;
-        if (v13)
+        organizationName = [v4 organizationName];
+        v18 = organizationName;
+        if (localizedDescription)
         {
-          v19 = [v13 length];
+          v19 = [localizedDescription length];
           v20 = [v18 length];
           if (v19 > v20 + 1)
           {
             v21 = v20;
             v29 = v20 + 1;
-            if ([v13 hasPrefix:v18])
+            if ([localizedDescription hasPrefix:v18])
             {
-              v22 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-              v23 = [v22 characterIsMember:{objc_msgSend(v13, "characterAtIndex:", v21)}];
+              whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+              v23 = [whitespaceCharacterSet characterIsMember:{objc_msgSend(localizedDescription, "characterAtIndex:", v21)}];
 
               if (v23)
               {
-                v24 = [v13 substringFromIndex:v29];
+                v24 = [localizedDescription substringFromIndex:v29];
 
-                v13 = v24;
+                localizedDescription = v24;
               }
             }
           }
@@ -90,34 +90,34 @@ LABEL_13:
 
         else
         {
-          v13 = v17;
+          localizedDescription = organizationName;
         }
       }
     }
 
     v25 = v9;
-    v26 = 0;
+    systemWhiteColor = 0;
   }
 
   else
   {
-    v13 = v9;
-    if (v12)
+    localizedDescription = v9;
+    if (displayableName)
     {
-      v15 = v12;
+      localizedDescription2 = displayableName;
     }
 
     else
     {
-      v15 = [v4 localizedDescription];
+      localizedDescription2 = [v4 localizedDescription];
     }
 
-    v25 = v15;
-    v26 = [MEMORY[0x1E69DC888] systemWhiteColor];
+    v25 = localizedDescription2;
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
   }
 
-  v27 = [PKPassBannerTrailingViewConfiguration createWithSymbolName:v6 overrideColor:v26];
-  v14 = +[PKPassBannerViewController createForTransactionWithPass:primaryText:secondaryText:trailingViewConfiguration:walletForeground:](PKPassBannerViewController, "createForTransactionWithPass:primaryText:secondaryText:trailingViewConfiguration:walletForeground:", v4, v13, v25, v27, [a1 isWalletForeground]);
+  v27 = [PKPassBannerTrailingViewConfiguration createWithSymbolName:v6 overrideColor:systemWhiteColor];
+  v14 = +[PKPassBannerViewController createForTransactionWithPass:primaryText:secondaryText:trailingViewConfiguration:walletForeground:](PKPassBannerViewController, "createForTransactionWithPass:primaryText:secondaryText:trailingViewConfiguration:walletForeground:", v4, localizedDescription, v25, v27, [self isWalletForeground]);
 
 LABEL_28:
   return v14;

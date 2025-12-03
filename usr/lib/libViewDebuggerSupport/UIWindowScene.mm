@@ -1,8 +1,8 @@
 @interface UIWindowScene
 + (id)fallback_debugHierarchyAdditionalGroupingIDs;
-+ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5;
++ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options;
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UIWindowScene
@@ -16,33 +16,33 @@
   return v2;
 }
 
-+ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5
++ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"com.apple.UIKit.UIWindow"])
+  dCopy = d;
+  objectCopy = object;
+  if ([dCopy isEqualToString:@"com.apple.UIKit.UIWindow"])
   {
-    v8 = [v7 windows];
+    windows = [objectCopy windows];
   }
 
-  else if ([v6 isEqualToString:@"com.apple.UIKit.UIScreen"])
+  else if ([dCopy isEqualToString:@"com.apple.UIKit.UIScreen"])
   {
-    v8 = [v7 screen];
+    windows = [objectCopy screen];
 
-    if (v8)
+    if (windows)
     {
-      v9 = [v7 screen];
-      v11 = v9;
-      v8 = [NSArray arrayWithObjects:&v11 count:1];
+      screen = [objectCopy screen];
+      v11 = screen;
+      windows = [NSArray arrayWithObjects:&v11 count:1];
     }
   }
 
   else
   {
-    v8 = 0;
+    windows = 0;
   }
 
-  return v8;
+  return windows;
 }
 
 + (id)fallback_debugHierarchyPropertyDescriptions
@@ -92,14 +92,14 @@
   return v7;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"bounds"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"bounds"])
   {
-    v10 = [v9 coordinateSpace];
-    [v10 bounds];
+    coordinateSpace = [objectCopy coordinateSpace];
+    [coordinateSpace bounds];
     v34 = v11;
     v35 = v12;
     v36 = v13;
@@ -110,7 +110,7 @@
       v15[i] = CFNumberCreate(0, kCFNumberCGFloatType, &v34 + i * 8);
     }
 
-    a6 = CFArrayCreate(0, v15, 4, &kCFTypeArrayCallBacks);
+    error = CFArrayCreate(0, v15, 4, &kCFTypeArrayCallBacks);
     for (j = 0; j != 4; ++j)
     {
       CFRelease(v15[j]);
@@ -120,38 +120,38 @@
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:@"traitCollectionUserInterfaceStyle"])
+  if ([nameCopy isEqualToString:@"traitCollectionUserInterfaceStyle"])
   {
-    v10 = [v9 traitCollection];
-    v18 = [v10 userInterfaceStyle];
+    coordinateSpace = [objectCopy traitCollection];
+    userInterfaceStyle = [coordinateSpace userInterfaceStyle];
 LABEL_15:
-    a6 = [NSNumber numberWithInteger:v18];
+    error = [NSNumber numberWithInteger:userInterfaceStyle];
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:@"traitCollectionVerticalSizeClass"])
+  if ([nameCopy isEqualToString:@"traitCollectionVerticalSizeClass"])
   {
-    v10 = [v9 traitCollection];
-    v18 = [v10 verticalSizeClass];
+    coordinateSpace = [objectCopy traitCollection];
+    userInterfaceStyle = [coordinateSpace verticalSizeClass];
     goto LABEL_15;
   }
 
-  if ([v8 isEqualToString:@"traitCollectionHorizontalSizeClass"])
+  if ([nameCopy isEqualToString:@"traitCollectionHorizontalSizeClass"])
   {
-    v10 = [v9 traitCollection];
-    v18 = [v10 horizontalSizeClass];
+    coordinateSpace = [objectCopy traitCollection];
+    userInterfaceStyle = [coordinateSpace horizontalSizeClass];
     goto LABEL_15;
   }
 
-  if ([v8 isEqualToString:@"traitCollectionLayoutDirection"])
+  if ([nameCopy isEqualToString:@"traitCollectionLayoutDirection"])
   {
-    v10 = [v9 traitCollection];
-    v18 = [v10 layoutDirection];
+    coordinateSpace = [objectCopy traitCollection];
+    userInterfaceStyle = [coordinateSpace layoutDirection];
     goto LABEL_15;
   }
 
-  v10 = v9;
-  v20 = v8;
+  coordinateSpace = objectCopy;
+  v20 = nameCopy;
   if (![v20 length])
   {
     goto LABEL_31;
@@ -167,36 +167,36 @@ LABEL_15:
   {
     if ([v20 length] < 2)
     {
-      v25 = [v20 uppercaseString];
+      uppercaseString = [v20 uppercaseString];
     }
 
     else
     {
       v22 = [v20 substringToIndex:1];
-      v23 = [v22 uppercaseString];
+      uppercaseString2 = [v22 uppercaseString];
       v24 = [v20 substringFromIndex:1];
-      v25 = [v23 stringByAppendingString:v24];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v24];
     }
 
-    v26 = [@"is" stringByAppendingString:v25];
+    v26 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v26);
     v21 = (objc_opt_respondsToSelector() & 1) != 0 ? v26 : 0;
   }
 
   if (v21)
   {
-    a6 = [v10 valueForKey:v21];
+    error = [coordinateSpace valueForKey:v21];
   }
 
   else
   {
 LABEL_31:
-    if (a6)
+    if (error)
     {
       v27 = v20;
-      if (v10)
+      if (coordinateSpace)
       {
-        v28 = [NSString stringWithFormat:@"%@", v10];
+        v28 = [NSString stringWithFormat:@"%@", coordinateSpace];
       }
 
       else
@@ -225,10 +225,10 @@ LABEL_31:
       v32 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v31];
 
       v33 = v32;
-      *a6 = v32;
+      *error = v32;
 
       v21 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -239,7 +239,7 @@ LABEL_31:
 
 LABEL_16:
 
-  return a6;
+  return error;
 }
 
 @end

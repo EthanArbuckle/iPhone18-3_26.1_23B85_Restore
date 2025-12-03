@@ -1,24 +1,24 @@
 @interface PowerUICalendarSignalMonitor
-+ (id)monitorWithDelegate:(id)a3;
-+ (id)monitorWithDelegate:(id)a3 trialManager:(id)a4 withContext:(id)a5;
-- (BOOL)isEventEligible:(id)a3 AtTime:(id)a4;
-- (PowerUICalendarSignalMonitor)initWithDelegate:(id)a3 trialManager:(id)a4 withContext:(id)a5;
++ (id)monitorWithDelegate:(id)delegate;
++ (id)monitorWithDelegate:(id)delegate trialManager:(id)manager withContext:(id)context;
+- (BOOL)isEventEligible:(id)eligible AtTime:(id)time;
+- (PowerUICalendarSignalMonitor)initWithDelegate:(id)delegate trialManager:(id)manager withContext:(id)context;
 - (id)detectedSignals;
-- (id)nextFlightEventWithEventIDs:(id)a3;
-- (id)nextRelevantDeadlineWithEventIDs:(id)a3;
+- (id)nextFlightEventWithEventIDs:(id)ds;
+- (id)nextRelevantDeadlineWithEventIDs:(id)ds;
 - (id)requiredFullChargeDate;
 - (id)upcomingEventIDs;
-- (void)sourceInformationChangedNotification:(id)a3;
+- (void)sourceInformationChangedNotification:(id)notification;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
 
 @implementation PowerUICalendarSignalMonitor
 
-- (PowerUICalendarSignalMonitor)initWithDelegate:(id)a3 trialManager:(id)a4 withContext:(id)a5
+- (PowerUICalendarSignalMonitor)initWithDelegate:(id)delegate trialManager:(id)manager withContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v26.receiver = self;
   v26.super_class = PowerUICalendarSignalMonitor;
   v10 = [(PowerUICalendarSignalMonitor *)&v26 init];
@@ -28,7 +28,7 @@
     calendar = v10->_calendar;
     v10->_calendar = v11;
 
-    objc_storeStrong(&v10->_delegate, a3);
+    objc_storeStrong(&v10->_delegate, delegate);
     v13 = os_log_create("com.apple.powerui.smartcharging", "signals");
     log = v10->_log;
     v10->_log = v13;
@@ -37,7 +37,7 @@
     v23[1] = 3221225472;
     v23[2] = __74__PowerUICalendarSignalMonitor_initWithDelegate_trialManager_withContext___block_invoke;
     v23[3] = &unk_2782D4AC0;
-    v15 = v9;
+    v15 = managerCopy;
     v24 = v15;
     v16 = v10;
     v25 = v16;
@@ -103,64 +103,64 @@ id __74__PowerUICalendarSignalMonitor_initWithDelegate_trialManager_withContext_
   return [*(a1 + 32) requiredFullChargeDate];
 }
 
-+ (id)monitorWithDelegate:(id)a3
++ (id)monitorWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDelegate:v3 trialManager:0 withContext:0];
+  delegateCopy = delegate;
+  v4 = [objc_alloc(objc_opt_class()) initWithDelegate:delegateCopy trialManager:0 withContext:0];
 
   return v4;
 }
 
-+ (id)monitorWithDelegate:(id)a3 trialManager:(id)a4 withContext:(id)a5
++ (id)monitorWithDelegate:(id)delegate trialManager:(id)manager withContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) initWithDelegate:v9 trialManager:v8 withContext:v7];
+  contextCopy = context;
+  managerCopy = manager;
+  delegateCopy = delegate;
+  v10 = [objc_alloc(objc_opt_class()) initWithDelegate:delegateCopy trialManager:managerCopy withContext:contextCopy];
 
   return v10;
 }
 
 - (void)startMonitoring
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_sourceInformationChangedNotification_ name:*MEMORY[0x277CC5948] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_sourceInformationChangedNotification_ name:*MEMORY[0x277CC5948] object:0];
 }
 
-- (void)sourceInformationChangedNotification:(id)a3
+- (void)sourceInformationChangedNotification:(id)notification
 {
-  v4 = [(PowerUICalendarSignalMonitor *)self requiredFullChargeDate];
-  [(PowerUISignalMonitorDelegate *)self->_delegate monitor:self maySuggestNewFullChargeDeadline:v4];
+  requiredFullChargeDate = [(PowerUICalendarSignalMonitor *)self requiredFullChargeDate];
+  [(PowerUISignalMonitorDelegate *)self->_delegate monitor:self maySuggestNewFullChargeDeadline:requiredFullChargeDate];
 }
 
 - (void)stopMonitoring
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CC5948] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CC5948] object:0];
 }
 
 - (id)upcomingEventIDs
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v3 dateByAddingTimeInterval:-86400.0];
-  v5 = [v3 dateByAddingTimeInterval:86400.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [date dateByAddingTimeInterval:-86400.0];
+  v5 = [date dateByAddingTimeInterval:86400.0];
   v6 = [(EKEventStore *)self->_calendar predicateForEventsWithStartDate:v4 endDate:v5 calendars:0 loadDefaultProperties:1];
-  v7 = [(PowerUICalendarSignalMonitor *)self calendar];
-  v8 = [v7 eventObjectIDsMatchingPredicate:v6];
+  calendar = [(PowerUICalendarSignalMonitor *)self calendar];
+  v8 = [calendar eventObjectIDsMatchingPredicate:v6];
 
   return v8;
 }
 
-- (id)nextFlightEventWithEventIDs:(id)a3
+- (id)nextFlightEventWithEventIDs:(id)ds
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] distantFuture];
+  dsCopy = ds;
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v7)
   {
@@ -188,41 +188,41 @@ id __74__PowerUICalendarSignalMonitor_initWithDelegate_trialManager_withContext_
           v15 = v13;
           if (([v15 isAllDay] & 1) == 0)
           {
-            v16 = [v15 suggestionInfo];
+            suggestionInfo = [v15 suggestionInfo];
 
-            if (v16)
+            if (suggestionInfo)
             {
               v17 = [MEMORY[0x277D01FC8] eventMetadataFromEKEvent:v15];
-              v18 = [v17 categoryDescription];
-              v19 = [v18 localizedCaseInsensitiveContainsString:@"flight"];
+              categoryDescription = [v17 categoryDescription];
+              v19 = [categoryDescription localizedCaseInsensitiveContainsString:@"flight"];
 
-              if (v19 && ([v15 startDate], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "timeIntervalSinceDate:", v5), v22 = v21, v20, v22 < 0.0))
+              if (v19 && ([v15 startDate], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "timeIntervalSinceDate:", distantFuture), v22 = v21, v20, v22 < 0.0))
               {
                 v23 = v15;
 
-                v24 = [v23 startDate];
+                startDate = [v23 startDate];
 
                 v25 = self->_log;
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
                 {
                   loga = v25;
-                  v30 = [v23 startDate];
-                  v29 = [v23 endDate];
+                  startDate2 = [v23 startDate];
+                  endDate = [v23 endDate];
                   *buf = v28;
-                  v39 = v30;
+                  v39 = startDate2;
                   v40 = 2112;
-                  v41 = v29;
+                  v41 = endDate;
                   _os_log_impl(&dword_21B766000, loga, OS_LOG_TYPE_DEFAULT, "Found flight from %@-%@", buf, 0x16u);
                 }
               }
 
               else
               {
-                v24 = v5;
+                startDate = distantFuture;
                 v23 = log;
               }
 
-              v5 = v24;
+              distantFuture = startDate;
               log = v23;
               v6 = v31;
               v11 = 0x277CC5000;
@@ -247,29 +247,29 @@ id __74__PowerUICalendarSignalMonitor_initWithDelegate_trialManager_withContext_
   return log;
 }
 
-- (BOOL)isEventEligible:(id)a3 AtTime:(id)a4
+- (BOOL)isEventEligible:(id)eligible AtTime:(id)time
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isAllDay])
+  eligibleCopy = eligible;
+  timeCopy = time;
+  if ([eligibleCopy isAllDay])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v5 endDate];
-    v9 = [v5 startDate];
-    [v8 timeIntervalSinceDate:v9];
-    if (v10 > 2073600.0 || [v5 status] == 3)
+    endDate = [eligibleCopy endDate];
+    startDate = [eligibleCopy startDate];
+    [endDate timeIntervalSinceDate:startDate];
+    if (v10 > 2073600.0 || [eligibleCopy status] == 3)
     {
       v7 = 0;
     }
 
     else
     {
-      v11 = [v5 endDate];
-      [v11 timeIntervalSinceDate:v6];
+      endDate2 = [eligibleCopy endDate];
+      [endDate2 timeIntervalSinceDate:timeCopy];
       v7 = v12 >= 0.0;
     }
   }
@@ -277,20 +277,20 @@ id __74__PowerUICalendarSignalMonitor_initWithDelegate_trialManager_withContext_
   return v7;
 }
 
-- (id)nextRelevantDeadlineWithEventIDs:(id)a3
+- (id)nextRelevantDeadlineWithEventIDs:(id)ds
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v55 = [MEMORY[0x277CBEAA8] distantFuture];
-  v5 = [MEMORY[0x277CBEAA8] date];
+  dsCopy = ds;
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  date = [MEMORY[0x277CBEAA8] date];
   v6 = +[PowerUISmartChargeManager manager];
-  v52 = [v6 lastAcquiredLocation];
+  lastAcquiredLocation = [v6 lastAcquiredLocation];
 
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v7 = v4;
+  v7 = dsCopy;
   v8 = [v7 countByEnumeratingWithState:&v56 objects:v66 count:16];
   if (v8)
   {
@@ -318,10 +318,10 @@ id __74__PowerUICalendarSignalMonitor_initWithDelegate_trialManager_withContext_
         if (objc_opt_isKindOfClass())
         {
           v17 = v15;
-          if ([(PowerUICalendarSignalMonitor *)self isEventEligible:v17 AtTime:v5])
+          if ([(PowerUICalendarSignalMonitor *)self isEventEligible:v17 AtTime:date])
           {
-            v18 = [v17 startDate];
-            [v18 timeIntervalSinceDate:v5];
+            startDate = [v17 startDate];
+            [startDate timeIntervalSinceDate:date];
             v20 = v19;
 
             if (v20 >= 0.0)
@@ -333,35 +333,35 @@ id __74__PowerUICalendarSignalMonitor_initWithDelegate_trialManager_withContext_
                 if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
                 {
                   v37 = log;
-                  v38 = [v17 title];
-                  v51 = [v17 preferredLocation];
-                  v39 = [v51 geoLocation];
+                  title = [v17 title];
+                  preferredLocation = [v17 preferredLocation];
+                  geoLocation = [preferredLocation geoLocation];
                   *buf = v50;
-                  v61 = v38;
+                  v61 = title;
                   v62 = 2112;
-                  v63 = *&v39;
+                  v63 = *&geoLocation;
                   _os_log_debug_impl(&dword_21B766000, v37, OS_LOG_TYPE_DEBUG, "%@ %@", buf, 0x16u);
                 }
 
-                if (v52)
+                if (lastAcquiredLocation)
                 {
-                  v24 = [v17 preferredLocation];
-                  v25 = [v24 geoLocation];
+                  preferredLocation2 = [v17 preferredLocation];
+                  geoLocation2 = [preferredLocation2 geoLocation];
 
-                  if (v25)
+                  if (geoLocation2)
                   {
-                    v26 = [v17 preferredLocation];
-                    v27 = [v26 geoLocation];
-                    [v52 distanceFromLocation:v27];
+                    preferredLocation3 = [v17 preferredLocation];
+                    geoLocation3 = [preferredLocation3 geoLocation];
+                    [lastAcquiredLocation distanceFromLocation:geoLocation3];
                     v29 = v28;
 
                     v30 = self->_log;
                     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
                     {
                       v40 = v30;
-                      v41 = [v17 title];
+                      title2 = [v17 title];
                       *buf = v50;
-                      v61 = v41;
+                      v61 = title2;
                       v62 = 2048;
                       v63 = v29;
                       _os_log_debug_impl(&dword_21B766000, v40, OS_LOG_TYPE_DEBUG, "%@ is %fm away", buf, 0x16u);
@@ -375,28 +375,28 @@ id __74__PowerUICalendarSignalMonitor_initWithDelegate_trialManager_withContext_
                 }
               }
 
-              v21 = [v17 startDate];
+              startDate2 = [v17 startDate];
             }
 
             else
             {
-              v21 = [v17 endDate];
+              startDate2 = [v17 endDate];
               v22 = kBufferBeforeFirstCalendarEvent;
             }
 
-            v31 = [v21 dateByAddingTimeInterval:-*&v22];
+            v31 = [startDate2 dateByAddingTimeInterval:-*&v22];
 
-            [v31 timeIntervalSinceDate:v55];
+            [v31 timeIntervalSinceDate:distantFuture];
             if (v32 < 0.0)
             {
               v33 = v17;
 
               v34 = v7;
-              v35 = v5;
+              v35 = date;
               v36 = v31;
 
-              v55 = v36;
-              v5 = v35;
+              distantFuture = v36;
+              date = v35;
               v7 = v34;
               v11 = v33;
             }
@@ -427,30 +427,30 @@ id __74__PowerUICalendarSignalMonitor_initWithDelegate_trialManager_withContext_
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
   {
     v43 = v42;
-    v44 = [v11 startDate];
+    startDate3 = [v11 startDate];
     [v11 endDate];
     v46 = v45 = v11;
     *buf = 138412802;
-    v61 = v44;
+    v61 = startDate3;
     v62 = 2112;
     v63 = *&v46;
     v64 = 2112;
-    v65 = v55;
+    v65 = distantFuture;
     _os_log_impl(&dword_21B766000, v43, OS_LOG_TYPE_DEFAULT, "Found upcoming event: %@-%@, requiring full charge by %@", buf, 0x20u);
 
     v11 = v45;
   }
 
-  v47 = v55;
+  v47 = distantFuture;
 
   v48 = *MEMORY[0x277D85DE8];
-  return v55;
+  return distantFuture;
 }
 
 - (id)requiredFullChargeDate
 {
-  v3 = [(PowerUICalendarSignalMonitor *)self upcomingEventIDs];
-  v4 = [(PowerUICalendarSignalMonitor *)self nextFlightEventWithEventIDs:v3];
+  upcomingEventIDs = [(PowerUICalendarSignalMonitor *)self upcomingEventIDs];
+  v4 = [(PowerUICalendarSignalMonitor *)self nextFlightEventWithEventIDs:upcomingEventIDs];
   if (v4)
   {
     log = self->_log;
@@ -460,15 +460,15 @@ id __74__PowerUICalendarSignalMonitor_initWithDelegate_trialManager_withContext_
       _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Upcoming or recent flight; forcing immediate charge", v9, 2u);
     }
 
-    v6 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
   else
   {
-    v6 = [(PowerUICalendarSignalMonitor *)self nextRelevantDeadlineWithEventIDs:v3];
+    distantPast = [(PowerUICalendarSignalMonitor *)self nextRelevantDeadlineWithEventIDs:upcomingEventIDs];
   }
 
-  v7 = v6;
+  v7 = distantPast;
 
   return v7;
 }
@@ -476,14 +476,14 @@ id __74__PowerUICalendarSignalMonitor_initWithDelegate_trialManager_withContext_
 - (id)detectedSignals
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(PowerUICalendarSignalMonitor *)self upcomingEventIDs];
-  v16 = [MEMORY[0x277CBEB18] array];
+  date = [MEMORY[0x277CBEAA8] date];
+  upcomingEventIDs = [(PowerUICalendarSignalMonitor *)self upcomingEventIDs];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v4;
+  v5 = upcomingEventIDs;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -503,10 +503,10 @@ id __74__PowerUICalendarSignalMonitor_initWithDelegate_trialManager_withContext_
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          if ([(PowerUICalendarSignalMonitor *)self isEventEligible:v11 AtTime:v3])
+          if ([(PowerUICalendarSignalMonitor *)self isEventEligible:v11 AtTime:date])
           {
-            v12 = [v11 startDate];
-            [v16 addObject:v12];
+            startDate = [v11 startDate];
+            [array addObject:startDate];
           }
         }
       }
@@ -517,7 +517,7 @@ id __74__PowerUICalendarSignalMonitor_initWithDelegate_trialManager_withContext_
     while (v7);
   }
 
-  v13 = [MEMORY[0x277CBEA60] arrayWithArray:v16];
+  v13 = [MEMORY[0x277CBEA60] arrayWithArray:array];
 
   v14 = *MEMORY[0x277D85DE8];
 

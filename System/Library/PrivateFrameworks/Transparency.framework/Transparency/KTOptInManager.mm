@@ -1,34 +1,34 @@
 @interface KTOptInManager
-+ (id)notificationKeyForApplication:(id)a3;
-+ (void)getOptInState:(id)a3 completion:(id)a4;
++ (id)notificationKeyForApplication:(id)application;
++ (void)getOptInState:(id)state completion:(id)completion;
 - (BOOL)getOptInState;
-- (KTOptInManager)initWithApplication:(id)a3;
-- (void)changeOptInState:(unint64_t)a3 detailedCompletionBlock:(id)a4;
-- (void)getOptInState:(BOOL)a3 completionBlock:(id)a4;
-- (void)setOptInState:(BOOL)a3 detailedCompletionBlock:(id)a4;
-- (void)waitForIDSRegistration:(BOOL)a3 complete:(id)a4;
+- (KTOptInManager)initWithApplication:(id)application;
+- (void)changeOptInState:(unint64_t)state detailedCompletionBlock:(id)block;
+- (void)getOptInState:(BOOL)state completionBlock:(id)block;
+- (void)setOptInState:(BOOL)state detailedCompletionBlock:(id)block;
+- (void)waitForIDSRegistration:(BOOL)registration complete:(id)complete;
 @end
 
 @implementation KTOptInManager
 
-+ (void)getOptInState:(id)a3 completion:(id)a4
++ (void)getOptInState:(id)state completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   v7 = [KTOptInState alloc];
-  v8 = [v5 application];
-  v9 = [(KTOptInState *)v7 initWithApplication:v8];
+  application = [stateCopy application];
+  v9 = [(KTOptInState *)v7 initWithApplication:application];
 
   [(KTOptInState *)v9 setState:2];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __43__KTOptInManager_getOptInState_completion___block_invoke;
   v17[3] = &unk_1E87014E0;
-  v20 = v6;
+  v20 = completionCopy;
   v18 = v9;
-  v19 = v5;
-  v10 = v5;
-  v11 = [v10 sync];
+  v19 = stateCopy;
+  v10 = stateCopy;
+  sync = [v10 sync];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __43__KTOptInManager_getOptInState_completion___block_invoke_209;
@@ -37,7 +37,7 @@
   v16 = v20;
   v12 = v18;
   v13 = v20;
-  [TransparencyXPCConnection invokeXPCWithBlock:v17 synchronous:v11 errorHandler:v14];
+  [TransparencyXPCConnection invokeXPCWithBlock:v17 synchronous:sync errorHandler:v14];
 }
 
 void __43__KTOptInManager_getOptInState_completion___block_invoke(void *a1, void *a2, void *a3)
@@ -110,25 +110,25 @@ uint64_t __43__KTOptInManager_getOptInState_completion___block_invoke_2_210()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)notificationKeyForApplication:(id)a3
++ (id)notificationKeyForApplication:(id)application
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"IDS"])
+  applicationCopy = application;
+  if ([applicationCopy isEqualToString:@"IDS"])
   {
     v4 = @"com.apple.Transparency.KT.IDS.OptInStateChanged";
   }
 
-  else if ([v3 isEqualToString:@"MP"])
+  else if ([applicationCopy isEqualToString:@"MP"])
   {
     v4 = @"com.apple.Transparency.KT.MP.OptInStateChanged";
   }
 
-  else if ([v3 isEqualToString:@"FT"])
+  else if ([applicationCopy isEqualToString:@"FT"])
   {
     v4 = @"com.apple.Transparency.KT.FT.OptInStateChanged";
   }
 
-  else if ([v3 isEqualToString:@"CK"])
+  else if ([applicationCopy isEqualToString:@"CK"])
   {
     v4 = @"com.apple.Transparency.KT.CK.OptInStateChanged";
   }
@@ -141,11 +141,11 @@ uint64_t __43__KTOptInManager_getOptInState_completion___block_invoke_2_210()
   return v4;
 }
 
-- (KTOptInManager)initWithApplication:(id)a3
+- (KTOptInManager)initWithApplication:(id)application
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [TransparencyApplication applicationValueForIdentifier:v5];
+  applicationCopy = application;
+  v6 = [TransparencyApplication applicationValueForIdentifier:applicationCopy];
 
   if (v6)
   {
@@ -155,14 +155,14 @@ uint64_t __43__KTOptInManager_getOptInState_completion___block_invoke_2_210()
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_applicationIdentifier, a3);
+      objc_storeStrong(&v7->_applicationIdentifier, application);
       v9 = [[TransparencyApplication alloc] initWithIdentifier:v8->_applicationIdentifier];
       application = v8->_application;
       v8->_application = v9;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -176,15 +176,15 @@ uint64_t __43__KTOptInManager_getOptInState_completion___block_invoke_2_210()
     if (os_log_type_enabled(TRANSPARENCY_DEFAULT_LOG_INTERNAL_3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = applicationCopy;
       _os_log_impl(&dword_1E10DB000, v12, OS_LOG_TYPE_ERROR, "Unknown application identifier: %@", buf, 0xCu);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 uint64_t __38__KTOptInManager_initWithApplication___block_invoke()
@@ -349,16 +349,16 @@ uint64_t __31__KTOptInManager_getOptInState__block_invoke_2_232()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getOptInState:(BOOL)a3 completionBlock:(id)a4
+- (void)getOptInState:(BOOL)state completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __48__KTOptInManager_getOptInState_completionBlock___block_invoke;
   v10[3] = &unk_1E87015C8;
   v10[4] = self;
-  v11 = v6;
-  v12 = a3;
+  v11 = blockCopy;
+  stateCopy = state;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__KTOptInManager_getOptInState_completionBlock___block_invoke_2_241;
@@ -451,15 +451,15 @@ void __48__KTOptInManager_getOptInState_completionBlock___block_invoke_240(uint6
   (*(v8 + 16))(v8, v7, v9, v5);
 }
 
-- (void)waitForIDSRegistration:(BOOL)a3 complete:(id)a4
+- (void)waitForIDSRegistration:(BOOL)registration complete:(id)complete
 {
-  v5 = a4;
+  completeCopy = complete;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__KTOptInManager_waitForIDSRegistration_complete___block_invoke;
   v9[3] = &unk_1E8701618;
-  v10 = v5;
-  v11 = a3;
+  v10 = completeCopy;
+  registrationCopy = registration;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__KTOptInManager_waitForIDSRegistration_complete___block_invoke_245;
@@ -537,18 +537,18 @@ uint64_t __50__KTOptInManager_waitForIDSRegistration_complete___block_invoke_2_2
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setOptInState:(BOOL)a3 detailedCompletionBlock:(id)a4
+- (void)setOptInState:(BOOL)state detailedCompletionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = dispatch_get_global_queue(33, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__KTOptInManager_setOptInState_detailedCompletionBlock___block_invoke;
   block[3] = &unk_1E8701640;
-  v11 = a3;
+  stateCopy = state;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(v7, block);
 }
 
@@ -663,18 +663,18 @@ uint64_t __56__KTOptInManager_setOptInState_detailedCompletionBlock___block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)changeOptInState:(unint64_t)a3 detailedCompletionBlock:(id)a4
+- (void)changeOptInState:(unint64_t)state detailedCompletionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = dispatch_get_global_queue(33, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__KTOptInManager_changeOptInState_detailedCompletionBlock___block_invoke;
   block[3] = &unk_1E8701690;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = blockCopy;
+  stateCopy = state;
+  v8 = blockCopy;
   dispatch_async(v7, block);
 }
 

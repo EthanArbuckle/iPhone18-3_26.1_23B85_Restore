@@ -6,7 +6,7 @@
 
 - (void)setDefaultValues
 {
-  v2 = self;
+  selfCopy = self;
   sub_188C4ED80();
 }
 

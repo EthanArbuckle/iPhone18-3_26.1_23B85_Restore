@@ -1,34 +1,34 @@
 @interface ASDPurgeableAppResponse
-- (ASDPurgeableAppResponse)initWithCoder:(id)a3;
-- (ASDPurgeableAppResponse)initWithError:(id)a3;
-- (ASDPurgeableAppResponse)initWithPurgeableSize:(int64_t)a3 purgeableApps:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASDPurgeableAppResponse)initWithCoder:(id)coder;
+- (ASDPurgeableAppResponse)initWithError:(id)error;
+- (ASDPurgeableAppResponse)initWithPurgeableSize:(int64_t)size purgeableApps:(id)apps;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDPurgeableAppResponse
 
-- (ASDPurgeableAppResponse)initWithPurgeableSize:(int64_t)a3 purgeableApps:(id)a4
+- (ASDPurgeableAppResponse)initWithPurgeableSize:(int64_t)size purgeableApps:(id)apps
 {
-  v7 = a4;
+  appsCopy = apps;
   v11.receiver = self;
   v11.super_class = ASDPurgeableAppResponse;
   v8 = [(ASDRequestResponse *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_purgeableApps, a4);
-    v9->_purgeableSize = a3;
+    objc_storeStrong(&v8->_purgeableApps, apps);
+    v9->_purgeableSize = size;
   }
 
   return v9;
 }
 
-- (ASDPurgeableAppResponse)initWithError:(id)a3
+- (ASDPurgeableAppResponse)initWithError:(id)error
 {
   v7.receiver = self;
   v7.super_class = ASDPurgeableAppResponse;
-  v3 = [(ASDRequestResponse *)&v7 initWithError:a3];
+  v3 = [(ASDRequestResponse *)&v7 initWithError:error];
   v4 = v3;
   if (v3)
   {
@@ -41,10 +41,10 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSArray *)self->_purgeableApps copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSArray *)self->_purgeableApps copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -52,37 +52,37 @@
   return v5;
 }
 
-- (ASDPurgeableAppResponse)initWithCoder:(id)a3
+- (ASDPurgeableAppResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ASDPurgeableAppResponse;
-  v5 = [(ASDRequestResponse *)&v12 initWithCoder:v4];
+  v5 = [(ASDRequestResponse *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"purgeableApps"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"purgeableApps"];
     purgeableApps = v5->_purgeableApps;
     v5->_purgeableApps = v9;
 
-    v5->_purgeableSize = [v4 decodeInt64ForKey:@"purgeableSize"];
+    v5->_purgeableSize = [coderCopy decodeInt64ForKey:@"purgeableSize"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ASDPurgeableAppResponse;
-  v4 = a3;
-  [(ASDRequestResponse *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ASDRequestResponse *)&v6 encodeWithCoder:coderCopy];
   v5 = [(ASDPurgeableAppResponse *)self purgeableApps:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"purgeableApps"];
+  [coderCopy encodeObject:v5 forKey:@"purgeableApps"];
 
-  [v4 encodeInt64:-[ASDPurgeableAppResponse purgeableSize](self forKey:{"purgeableSize"), @"purgeableSize"}];
+  [coderCopy encodeInt64:-[ASDPurgeableAppResponse purgeableSize](self forKey:{"purgeableSize"), @"purgeableSize"}];
 }
 
 @end

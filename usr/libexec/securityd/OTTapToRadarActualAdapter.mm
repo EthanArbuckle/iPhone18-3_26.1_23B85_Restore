@@ -1,13 +1,13 @@
 @interface OTTapToRadarActualAdapter
 - (OTTapToRadarActualAdapter)init;
-- (void)postHomePodLostTrustTTR:(id)a3;
+- (void)postHomePodLostTrustTTR:(id)r;
 @end
 
 @implementation OTTapToRadarActualAdapter
 
-- (void)postHomePodLostTrustTTR:(id)a3
+- (void)postHomePodLostTrustTTR:(id)r
 {
-  v3 = a3;
+  rCopy = r;
   if (!objc_opt_class())
   {
     v5 = sub_100006274("octagon-ttr");
@@ -55,8 +55,8 @@ LABEL_10:
   [v5 setRemoteDeviceClasses:63];
   [v5 setRemoteDeviceSelections:1];
   [v5 setTitle:@"Lost CDP trust"];
-  v8 = [NSString stringWithFormat:@"HomePod unexpectedly lost CDP trust (please do not file this radar if you performed Reset Protected Data on another device, or otherwise intended to cause CDP trust loss on this HomePod). To disable this prompt for testing, turn off the Security/TTRTrustLossOnHomePod feature flag on the HomePod.\n\n%@", v3];
-  [v5 setProblemDescription:v8];
+  rCopy = [NSString stringWithFormat:@"HomePod unexpectedly lost CDP trust (please do not file this radar if you performed Reset Protected Data on another device, or otherwise intended to cause CDP trust loss on this HomePod). To disable this prompt for testing, turn off the Security/TTRTrustLossOnHomePod feature flag on the HomePod.\n\n%@", rCopy];
+  [v5 setProblemDescription:rCopy];
 
   [v5 setClassification:7];
   v9 = +[TapToRadarService shared];

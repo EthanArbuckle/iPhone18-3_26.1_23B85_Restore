@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneSearchBooleanTopLevelScorers_ReqSingleOptScorer
-- (OrgApacheLuceneSearchBooleanTopLevelScorers_ReqSingleOptScorer)initWithOrgApacheLuceneSearchScorer:(id)a3 withOrgApacheLuceneSearchScorer:(id)a4 withFloat:(float)a5 withFloat:(float)a6;
+- (OrgApacheLuceneSearchBooleanTopLevelScorers_ReqSingleOptScorer)initWithOrgApacheLuceneSearchScorer:(id)scorer withOrgApacheLuceneSearchScorer:(id)searchScorer withFloat:(float)float withFloat:(float)withFloat;
 - (float)score;
 @end
 
 @implementation OrgApacheLuceneSearchBooleanTopLevelScorers_ReqSingleOptScorer
 
-- (OrgApacheLuceneSearchBooleanTopLevelScorers_ReqSingleOptScorer)initWithOrgApacheLuceneSearchScorer:(id)a3 withOrgApacheLuceneSearchScorer:(id)a4 withFloat:(float)a5 withFloat:(float)a6
+- (OrgApacheLuceneSearchBooleanTopLevelScorers_ReqSingleOptScorer)initWithOrgApacheLuceneSearchScorer:(id)scorer withOrgApacheLuceneSearchScorer:(id)searchScorer withFloat:(float)float withFloat:(float)withFloat
 {
-  OrgApacheLuceneSearchReqOptSumScorer_initWithOrgApacheLuceneSearchScorer_withOrgApacheLuceneSearchScorer_(self, a3, a4);
-  self->coordReq_ = a5;
-  self->coordBoth_ = a6;
+  OrgApacheLuceneSearchReqOptSumScorer_initWithOrgApacheLuceneSearchScorer_withOrgApacheLuceneSearchScorer_(self, scorer, searchScorer);
+  self->coordReq_ = float;
+  self->coordBoth_ = withFloat;
   return self;
 }
 
@@ -21,7 +21,7 @@
     goto LABEL_11;
   }
 
-  v4 = [(OrgApacheLuceneSearchScorer *)reqScorer docID];
+  docID = [(OrgApacheLuceneSearchScorer *)reqScorer docID];
   [(OrgApacheLuceneSearchScorer *)self->super.reqScorer_ score];
   v6 = v5;
   optScorer = self->super.optScorer_;
@@ -32,18 +32,18 @@ LABEL_9:
     return v6 * *(&self->super.super.super.super.isa + *v11);
   }
 
-  v8 = [(OrgApacheLuceneSearchScorer *)optScorer docID];
-  if (v8 < v4)
+  docID2 = [(OrgApacheLuceneSearchScorer *)optScorer docID];
+  if (docID2 < docID)
   {
-    v8 = [(OrgApacheLuceneSearchScorer *)self->super.optScorer_ advanceWithInt:v4];
-    if (v8 == 0x7FFFFFFF)
+    docID2 = [(OrgApacheLuceneSearchScorer *)self->super.optScorer_ advanceWithInt:docID];
+    if (docID2 == 0x7FFFFFFF)
     {
       JreStrongAssign(&self->super.optScorer_, 0);
       goto LABEL_9;
     }
   }
 
-  if (v8 != v4)
+  if (docID2 != docID)
   {
     goto LABEL_9;
   }

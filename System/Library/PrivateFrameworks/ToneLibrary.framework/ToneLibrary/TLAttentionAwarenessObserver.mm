@@ -2,15 +2,15 @@
 + (BOOL)supportsAttenuatingTonesForAttentionDetected;
 + (TLAttentionAwarenessObserver)sharedAttentionAwarenessObserver;
 - (TLAttentionAwarenessObserver)init;
-- (id)pollForAttentionWithEventHandler:(id)a3;
+- (id)pollForAttentionWithEventHandler:(id)handler;
 - (void)_assertNotRunningOnAccessQueue;
 - (void)_assertRunningOnAccessQueue;
 - (void)_beginPollingForAttention;
 - (void)_didCompleteInitialization;
-- (void)_didReceiveAttentionPollingEventOfType:(unint64_t)a3 attentionEvent:(id)a4;
+- (void)_didReceiveAttentionPollingEventOfType:(unint64_t)type attentionEvent:(id)event;
 - (void)_endPollingForAttention;
-- (void)_invokePollingForAttentionEventHandlers:(id)a3 eventType:(int64_t)a4;
-- (void)cancelPollForAttentionWithToken:(id)a3;
+- (void)_invokePollingForAttentionEventHandlers:(id)handlers eventType:(int64_t)type;
+- (void)cancelPollForAttentionWithToken:(id)token;
 - (void)dealloc;
 @end
 
@@ -45,9 +45,9 @@ uint64_t __64__TLAttentionAwarenessObserver_sharedAttentionAwarenessObserver__bl
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:v3];
-    v6 = [v5 bundleIdentifier];
+    bundleIdentifier = [v5 bundleIdentifier];
 
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@-%@", v6, v4, @"AccessQueue"];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@-%@", bundleIdentifier, v4, @"AccessQueue"];
     accessQueueLabel = v2->_accessQueueLabel;
     v2->_accessQueueLabel = v7;
 
@@ -59,22 +59,22 @@ uint64_t __64__TLAttentionAwarenessObserver_sharedAttentionAwarenessObserver__bl
     pollingForAttentionEventHandlers = v2->_pollingForAttentionEventHandlers;
     v2->_pollingForAttentionEventHandlers = v11;
 
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@-%@", v6, v4, @"AttentionAwarenessClientQueue"];
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@-%@", bundleIdentifier, v4, @"AttentionAwarenessClientQueue"];
     v14 = dispatch_queue_create([v13 UTF8String], 0);
     attentionAwarenessClientQueue = v2->_attentionAwarenessClientQueue;
     v2->_attentionAwarenessClientQueue = v14;
 
     v16 = +[TLCapabilitiesManager sharedCapabilitiesManager];
-    v17 = [v16 isHomePod];
+    isHomePod = [v16 isHomePod];
 
-    if ((v17 & 1) == 0)
+    if ((isHomePod & 1) == 0)
     {
       v18 = v2->_attentionAwarenessClientQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __36__TLAttentionAwarenessObserver_init__block_invoke;
       block[3] = &unk_1E8578900;
-      v21 = v6;
+      v21 = bundleIdentifier;
       v22 = v2;
       dispatch_async(v18, block);
     }
@@ -267,9 +267,9 @@ void __39__TLAttentionAwarenessObserver_dealloc__block_invoke_2(uint64_t a1)
 + (BOOL)supportsAttenuatingTonesForAttentionDetected
 {
   v2 = +[TLCapabilitiesManager sharedCapabilitiesManager];
-  v3 = [v2 isHomePod];
+  isHomePod = [v2 isHomePod];
 
-  if (v3)
+  if (isHomePod)
   {
     LOBYTE(v4) = 0;
   }
@@ -282,11 +282,11 @@ void __39__TLAttentionAwarenessObserver_dealloc__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (id)pollForAttentionWithEventHandler:(id)a3
+- (id)pollForAttentionWithEventHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
+  handlerCopy = handler;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -294,10 +294,10 @@ void __39__TLAttentionAwarenessObserver_dealloc__block_invoke_2(uint64_t a1)
   block[2] = __65__TLAttentionAwarenessObserver_pollForAttentionWithEventHandler___block_invoke;
   block[3] = &unk_1E85799A0;
   block[4] = self;
-  v15 = v4;
-  v8 = v6;
+  v15 = handlerCopy;
+  v8 = uUIDString;
   v14 = v8;
-  v9 = v4;
+  v9 = handlerCopy;
   dispatch_async(accessQueue, block);
   v10 = v14;
   v11 = v8;
@@ -322,17 +322,17 @@ _BYTE *__65__TLAttentionAwarenessObserver_pollForAttentionWithEventHandler___blo
   return result;
 }
 
-- (void)cancelPollForAttentionWithToken:(id)a3
+- (void)cancelPollForAttentionWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__TLAttentionAwarenessObserver_cancelPollForAttentionWithToken___block_invoke;
   v7[3] = &unk_1E8578900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -606,24 +606,24 @@ void __55__TLAttentionAwarenessObserver__endPollingForAttention__block_invoke(ui
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_didReceiveAttentionPollingEventOfType:(unint64_t)a3 attentionEvent:(id)a4
+- (void)_didReceiveAttentionPollingEventOfType:(unint64_t)type attentionEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  eventCopy = event;
   [(TLAttentionAwarenessObserver *)self _assertRunningOnAccessQueue];
   v7 = TLLogPlayback();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
-    v17 = a3;
+    typeCopy = type;
     v18 = 2114;
-    v19 = v6;
+    v19 = eventCopy;
     _os_log_impl(&dword_1D9356000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didReceiveAttentionPollingEventOfType:(%ld) attentionEvent:(%{public}@).", &v14, 0x20u);
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v8 = 1;
     v10 = 1;
@@ -633,7 +633,7 @@ void __55__TLAttentionAwarenessObserver__endPollingForAttention__block_invoke(ui
   else
   {
     v8 = 0;
-    if (a3 == 1)
+    if (type == 1)
     {
       v9 = 0;
       v10 = 1;
@@ -646,8 +646,8 @@ void __55__TLAttentionAwarenessObserver__endPollingForAttention__block_invoke(ui
     }
   }
 
-  v11 = [(NSMutableDictionary *)self->_pollingForAttentionEventHandlers allValues];
-  v12 = [v11 copy];
+  allValues = [(NSMutableDictionary *)self->_pollingForAttentionEventHandlers allValues];
+  v12 = [allValues copy];
 
   if (v8)
   {
@@ -676,18 +676,18 @@ void __55__TLAttentionAwarenessObserver__endPollingForAttention__block_invoke(ui
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_invokePollingForAttentionEventHandlers:(id)a3 eventType:(int64_t)a4
+- (void)_invokePollingForAttentionEventHandlers:(id)handlers eventType:(int64_t)type
 {
-  v5 = a3;
-  if ([v5 count])
+  handlersCopy = handlers;
+  if ([handlersCopy count])
   {
     v6 = dispatch_get_global_queue(0, 0);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __82__TLAttentionAwarenessObserver__invokePollingForAttentionEventHandlers_eventType___block_invoke;
     v7[3] = &unk_1E8578CC0;
-    v8 = v5;
-    v9 = a4;
+    v8 = handlersCopy;
+    typeCopy = type;
     dispatch_async(v6, v7);
   }
 }

@@ -1,20 +1,20 @@
 @interface GEOComposedTransitTripRouteSegment
 - (NSArray)alternateRouteItemsForTransitInfoLabel;
-- (id)clusteredRouteVehicleInfoItemsIgnoringSelectedVehicle:(BOOL)a3;
+- (id)clusteredRouteVehicleInfoItemsIgnoringSelectedVehicle:(BOOL)vehicle;
 @end
 
 @implementation GEOComposedTransitTripRouteSegment
 
-- (id)clusteredRouteVehicleInfoItemsIgnoringSelectedVehicle:(BOOL)a3
+- (id)clusteredRouteVehicleInfoItemsIgnoringSelectedVehicle:(BOOL)vehicle
 {
-  v3 = a3;
+  vehicleCopy = vehicle;
   v5 = [[NSMutableArray alloc] initWithCapacity:{-[GEOComposedTransitTripRouteSegment rideOptionsCount](self, "rideOptionsCount")}];
   if ([(GEOComposedTransitTripRouteSegment *)self rideOptionsCount])
   {
     v6 = 0;
     do
     {
-      if (!v3 || v6 != [(GEOComposedTransitTripRouteSegment *)self selectedRideOptionIndex])
+      if (!vehicleCopy || v6 != [(GEOComposedTransitTripRouteSegment *)self selectedRideOptionIndex])
       {
         v7 = [[TransitClusteredVehicleInfoItem alloc] initWithSegment:self rideOptionIndex:v6];
         [v5 addObject:v7];

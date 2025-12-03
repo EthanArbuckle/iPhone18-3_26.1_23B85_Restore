@@ -14,21 +14,21 @@
 
 - (void)registerForContactsChangedNotification
 {
-  v2 = [a1 contactsChangedObserverToken];
+  contactsChangedObserverToken = [self contactsChangedObserverToken];
 
-  if (!v2)
+  if (!contactsChangedObserverToken)
   {
-    objc_initWeak(&location, a1);
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    v4 = [MEMORY[0x1E695BAD8] ic_mentionableNamesCache];
+    objc_initWeak(&location, self);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    ic_mentionableNamesCache = [MEMORY[0x1E695BAD8] ic_mentionableNamesCache];
     v5 = *MEMORY[0x1E69B79E0];
     v7 = MEMORY[0x1E69E9820];
     v8 = 3221225472;
     v9 = __66__ICMentionsController_UI__registerForContactsChangedNotification__block_invoke;
     v10 = &unk_1E846D5E8;
     objc_copyWeak(&v11, &location);
-    v6 = [v3 addObserverForName:v5 object:v4 queue:0 usingBlock:&v7];
-    [a1 setContactsChangedObserverToken:{v6, v7, v8, v9, v10}];
+    v6 = [defaultCenter addObserverForName:v5 object:ic_mentionableNamesCache queue:0 usingBlock:&v7];
+    [self setContactsChangedObserverToken:{v6, v7, v8, v9, v10}];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -65,8 +65,8 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 ic_mentionTokensFromContacts];
-        [v4 ic_setNonNilObject:v11 forKey:v10];
+        ic_mentionTokensFromContacts = [v10 ic_mentionTokensFromContacts];
+        [v4 ic_setNonNilObject:ic_mentionTokensFromContacts forKey:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -86,17 +86,17 @@
   v17 = a6;
   v18 = a7;
   v19 = a11;
-  if ([a1 allowsMentions])
+  if ([self allowsMentions])
   {
-    v20 = [a1 maxLengthOfStringForCheckingMention];
-    v21 = v20 + 1;
+    maxLengthOfStringForCheckingMention = [self maxLengthOfStringForCheckingMention];
+    v21 = maxLengthOfStringForCheckingMention + 1;
     v22 = a4;
     v23 = a3;
-    if (v20 + 1 > a4)
+    if (maxLengthOfStringForCheckingMention + 1 > a4)
     {
-      if (a3 >= v20 + 1 - a4)
+      if (a3 >= maxLengthOfStringForCheckingMention + 1 - a4)
       {
-        v24 = v20 + 1 - a4;
+        v24 = maxLengthOfStringForCheckingMention + 1 - a4;
       }
 
       else
@@ -123,14 +123,14 @@
     }
 
     v26 = [v16 hasNamedStyle:4 inRange:{a3, a4}];
-    v81 = a1;
+    selfCopy = self;
     if ((v26 & 1) != 0 || a4)
     {
       if ((v26 & 1) == 0)
       {
 LABEL_14:
-        v36 = [v18 selectedRange];
-        v38 = [v81 checkForMentionsInString:v16 inRange:v23 selectionRange:v22 languageHasSpaces:{v36, v37, a10}];
+        selectedRange = [v18 selectedRange];
+        v38 = [selfCopy checkForMentionsInString:v16 inRange:v23 selectionRange:v22 languageHasSpaces:{selectedRange, v37, a10}];
         if (v38)
         {
           v78 = v19;
@@ -142,17 +142,17 @@ LABEL_14:
             [ICMentionsController(UI) checkForMentionInEditedRange:v84 ofTextStorage:v38 note:? textView:? allowAutoExplicitMention:? isEndingEditing:? languageHasSpaces:? parentAttachment:?];
           }
 
-          v41 = [v38 rangeOfMention];
+          rangeOfMention = [v38 rangeOfMention];
           v42 = v40;
           v43 = a3 + a4;
-          if (v41 + v40 == a3 + a4)
+          if (rangeOfMention + v40 == a3 + a4)
           {
             v44 = v40;
             v45 = objc_opt_class();
-            v46 = [v16 string];
+            string = [v16 string];
             v47 = v45;
             v42 = v44;
-            if (([v47 range:v41 hasValidPostfixCharacterForString:{v44, v46}] & 1) != 0 || v43 == objc_msgSend(v16, "length"))
+            if (([v47 range:rangeOfMention hasValidPostfixCharacterForString:{v44, string}] & 1) != 0 || v43 == objc_msgSend(v16, "length"))
             {
 
               if ((a9 & 1) == 0)
@@ -162,7 +162,7 @@ LABEL_14:
                   v48 = os_log_create("com.apple.notes", "Mentions");
                   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
                   {
-                    v82.location = v41;
+                    v82.location = rangeOfMention;
                     v82.length = v44;
                     [ICMentionsController(UI) checkForMentionInEditedRange:v82 ofTextStorage:? note:? textView:? allowAutoExplicitMention:? isEndingEditing:? languageHasSpaces:? parentAttachment:?];
                   }
@@ -171,8 +171,8 @@ LABEL_52:
 
                   [v38 matchingParticipants];
                   v58 = v57 = v42;
-                  v59 = [v38 mentionString];
-                  [v81 applyUnconfirmedMentionToTextStorage:v16 participants:v58 range:v41 textView:v57 mentionString:{v18, v59}];
+                  mentionString = [v38 mentionString];
+                  [selfCopy applyUnconfirmedMentionToTextStorage:v16 participants:v58 range:rangeOfMention textView:v57 mentionString:{v18, mentionString}];
 
                   v49 = 1;
                   v19 = v78;
@@ -184,7 +184,7 @@ LABEL_52:
                   v48 = os_log_create("com.apple.notes", "Mentions");
                   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
                   {
-                    v85.location = v41;
+                    v85.location = rangeOfMention;
                     v85.length = v44;
                     [ICMentionsController(UI) checkForMentionInEditedRange:v85 ofTextStorage:? note:? textView:? allowAutoExplicitMention:? isEndingEditing:? languageHasSpaces:? parentAttachment:?];
                   }
@@ -205,22 +205,22 @@ LABEL_32:
             }
           }
 
-          v50 = [v38 rangeOfMention];
-          if (v51 + v50 + 1 != v43 && !a9)
+          rangeOfMention2 = [v38 rangeOfMention];
+          if (v51 + rangeOfMention2 + 1 != v43 && !a9)
           {
             goto LABEL_31;
           }
 
-          v53 = [v38 isExplicitMention];
+          isExplicitMention = [v38 isExplicitMention];
           if (!a8)
           {
             v49 = 0;
-            if (v53 && (a9 & 1) == 0)
+            if (isExplicitMention && (a9 & 1) == 0)
             {
               v48 = os_log_create("com.apple.notes", "Mentions");
               if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
               {
-                v83.location = v41;
+                v83.location = rangeOfMention;
                 v83.length = v42;
                 [ICMentionsController(UI) checkForMentionInEditedRange:v83 ofTextStorage:? note:? textView:? allowAutoExplicitMention:? isEndingEditing:? languageHasSpaces:? parentAttachment:?];
               }
@@ -231,14 +231,14 @@ LABEL_32:
             goto LABEL_32;
           }
 
-          if (!v53 || ([v38 isPartialMention] & 1) != 0)
+          if (!isExplicitMention || ([v38 isPartialMention] & 1) != 0)
           {
             goto LABEL_31;
           }
 
           v54 = v17;
-          v55 = [v38 matchingParticipants];
-          if ([v55 count] == 1)
+          matchingParticipants = [v38 matchingParticipants];
+          if ([matchingParticipants count] == 1)
           {
           }
 
@@ -270,31 +270,31 @@ LABEL_74:
           v56 = os_log_create("com.apple.notes", "Mentions");
           if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
           {
-            v86.location = v41;
+            v86.location = rangeOfMention;
             v86.length = v42;
             [ICMentionsController(UI) checkForMentionInEditedRange:v86 ofTextStorage:? note:? textView:? allowAutoExplicitMention:? isEndingEditing:? languageHasSpaces:? parentAttachment:?];
           }
 
           if ([v38 isAllMention])
           {
-            v55 = [objc_opt_class() allUserRecordName];
+            matchingParticipants = [objc_opt_class() allUserRecordName];
           }
 
           else
           {
             [v38 matchingParticipants];
             v64 = v63 = v42;
-            v65 = [v64 anyObject];
-            v55 = [v65 ic_userRecordNameInNote:v54];
+            anyObject = [v64 anyObject];
+            matchingParticipants = [anyObject ic_userRecordNameInNote:v54];
 
             v42 = v63;
           }
 
           if ([v38 isAllMention])
           {
-            v66 = [objc_opt_class() allKeyword];
+            allKeyword = [objc_opt_class() allKeyword];
 LABEL_68:
-            v74 = [MEMORY[0x1E69B7778] createMentionAttachmentIfApplicableWithMentionText:v66 userRecordName:v55 note:v54 parentAttachment:v78];
+            v74 = [MEMORY[0x1E69B7778] createMentionAttachmentIfApplicableWithMentionText:allKeyword userRecordName:matchingParticipants note:v54 parentAttachment:v78];
             v75 = v74;
             if (v74)
             {
@@ -303,7 +303,7 @@ LABEL_68:
               v49 = objc_opt_respondsToSelector();
               if (v49)
               {
-                [v81 insertMentionAttachment:v75 atRange:v41 viaAutoComplete:{v42, 0}];
+                [selfCopy insertMentionAttachment:v75 atRange:rangeOfMention viaAutoComplete:{v42, 0}];
               }
 
               [v54 save];
@@ -318,21 +318,21 @@ LABEL_68:
           }
 
           v80 = v42;
-          v67 = [v38 matchingParticipants];
-          v68 = [v67 anyObject];
+          matchingParticipants2 = [v38 matchingParticipants];
+          anyObject2 = [matchingParticipants2 anyObject];
 
-          v69 = [v38 mentionString];
-          v70 = [v69 length];
+          mentionString2 = [v38 mentionString];
+          v70 = [mentionString2 length];
 
           if (v70)
           {
-            v71 = [v38 mentionString];
-            v72 = [v71 ic_trailingTrimmedString];
-            v73 = [v68 ic_participantNameMatchingString:v72 returnFullName:0];
+            mentionString3 = [v38 mentionString];
+            ic_trailingTrimmedString = [mentionString3 ic_trailingTrimmedString];
+            v73 = [anyObject2 ic_participantNameMatchingString:ic_trailingTrimmedString returnFullName:0];
 
             if (v73)
             {
-              v66 = v73;
+              allKeyword = v73;
               v42 = v80;
               if ([v73 length])
               {
@@ -342,7 +342,7 @@ LABEL_67:
               }
 
 LABEL_66:
-              v66 = [v68 ic_shortParticipantName];
+              allKeyword = [anyObject2 ic_shortParticipantName];
 
               goto LABEL_67;
             }
@@ -360,7 +360,7 @@ LABEL_66:
 LABEL_27:
         v49 = 0;
 LABEL_33:
-        [v81 clearUnconfirmedMentionInTextStorage:{v16, v76}];
+        [selfCopy clearUnconfirmedMentionInTextStorage:{v16, v76}];
 LABEL_34:
 
         goto LABEL_35;
@@ -379,11 +379,11 @@ LABEL_34:
       v31 = v18;
       v32 = v16;
       v33 = v17;
-      v34 = [v29 style];
+      style = [v29 style];
 
       v22 = v76;
       v23 = v77;
-      v35 = v34 == 4;
+      v35 = style == 4;
       v17 = v33;
       v16 = v32;
       v18 = v31;
@@ -431,7 +431,7 @@ LABEL_35:
   v6 = a3;
   if (objc_opt_respondsToSelector())
   {
-    [a1 updateAutoCompletionView:0 range:0 textView:0 mentionString:{0, 0}];
+    [self updateAutoCompletionView:0 range:0 textView:0 mentionString:{0, 0}];
   }
 
   v4 = [objc_opt_class() rangeOfUnconfirmedMentionInTextStorage:v6];
@@ -447,8 +447,8 @@ LABEL_35:
   v9 = a5;
   v10 = a4;
   v11 = a3;
-  v12 = [a1 note];
-  v13 = [v8 createMentionAttachmentIfApplicableWithMentionText:v11 userRecordName:v10 note:v12 parentAttachment:v9];
+  note = [self note];
+  v13 = [v8 createMentionAttachmentIfApplicableWithMentionText:v11 userRecordName:v10 note:note parentAttachment:v9];
 
   if (v13)
   {
@@ -456,8 +456,8 @@ LABEL_35:
     [v13 setMentionNotificationState:1];
     if (objc_opt_respondsToSelector())
     {
-      v14 = [a1 editedRange];
-      [a1 insertMentionAttachment:v13 atRange:v14 viaAutoComplete:{v15, 1}];
+      editedRange = [self editedRange];
+      [self insertMentionAttachment:v13 atRange:editedRange viaAutoComplete:{v15, 1}];
     }
   }
 
@@ -474,7 +474,7 @@ LABEL_35:
 - (void)sendPendingNotificationsAfterDelay:()UI forNote:
 {
   v5 = [MEMORY[0x1E695DF00] now];
-  if ([a1 allowsMentions])
+  if ([self allowsMentions])
   {
     v6 = dispatch_time(0, 1000000000 * a3);
     block[0] = MEMORY[0x1E69E9820];
@@ -541,7 +541,7 @@ LABEL_35:
 
   if (objc_opt_respondsToSelector())
   {
-    [a1 updateAutoCompletionView:v14 range:a5 textView:a6 mentionString:{v15, v16}];
+    [self updateAutoCompletionView:v14 range:a5 textView:a6 mentionString:{v15, v16}];
   }
 }
 

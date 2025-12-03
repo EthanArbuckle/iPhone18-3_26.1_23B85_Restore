@@ -1,15 +1,15 @@
 @interface AKImageAnnotationEventHandler
 - (CGSize)naturalSizeForAnnotation;
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4;
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options;
 @end
 
 @implementation AKImageAnnotationEventHandler
 
 - (CGSize)naturalSizeForAnnotation
 {
-  v2 = [(AKAnnotationEventHandler *)self annotation];
-  v3 = [v2 image];
-  [v3 size];
+  annotation = [(AKAnnotationEventHandler *)self annotation];
+  image = [annotation image];
+  [image size];
   v5 = v4;
   v7 = v6;
 
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options
 {
   v4.receiver = self;
   v4.super_class = AKImageAnnotationEventHandler;
-  [(AKRectangularAnnotationEventHandler *)&v4 updateModelWithCurrentPoint:a4 options:a3.x, a3.y];
+  [(AKRectangularAnnotationEventHandler *)&v4 updateModelWithCurrentPoint:options options:point.x, point.y];
 }
 
 @end

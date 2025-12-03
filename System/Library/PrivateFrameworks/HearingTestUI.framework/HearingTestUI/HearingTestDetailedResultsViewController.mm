@@ -1,12 +1,12 @@
 @interface HearingTestDetailedResultsViewController
-- (_TtC13HearingTestUI40HearingTestDetailedResultsViewController)initWithCoder:(id)a3;
-- (_TtC13HearingTestUI40HearingTestDetailedResultsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC13HearingTestUI40HearingTestDetailedResultsViewController)initWithCoder:(id)coder;
+- (_TtC13HearingTestUI40HearingTestDetailedResultsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation HearingTestDetailedResultsViewController
 
-- (_TtC13HearingTestUI40HearingTestDetailedResultsViewController)initWithCoder:(id)a3
+- (_TtC13HearingTestUI40HearingTestDetailedResultsViewController)initWithCoder:(id)coder
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -16,7 +16,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_20CDCDDA8();
 }
 
@@ -30,11 +30,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_20CDCBE88();
 }
 
-- (_TtC13HearingTestUI40HearingTestDetailedResultsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13HearingTestUI40HearingTestDetailedResultsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_20CE13B84();
   sub_20CE13B74();

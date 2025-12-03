@@ -1,32 +1,32 @@
 @interface NTKVivaldiGlobeView
-- (NTKVivaldiGlobeView)initWithDevice:(id)a3;
+- (NTKVivaldiGlobeView)initWithDevice:(id)device;
 - (id)_displayDate;
-- (id)_globeImageForSecond:(unint64_t)a3;
-- (unint64_t)_secondsFromDate:(id)a3;
-- (void)_displayCurrentGlobeImage:(BOOL)a3;
+- (id)_globeImageForSecond:(unint64_t)second;
+- (unint64_t)_secondsFromDate:(id)date;
+- (void)_displayCurrentGlobeImage:(BOOL)image;
 - (void)_loadDefaultGlobe;
 - (void)_startGlobeTimer;
 - (void)_stopGlobeTimer;
 - (void)_updateGlobeImage;
 - (void)layoutSubviews;
-- (void)setAnimating:(BOOL)a3;
-- (void)setDate:(id)a3;
-- (void)setTritiumFraction:(double)a3;
-- (void)updateColorsForComplicationsEditingFraction:(double)a3 withColorPalette:(id)a4;
+- (void)setAnimating:(BOOL)animating;
+- (void)setDate:(id)date;
+- (void)setTritiumFraction:(double)fraction;
+- (void)updateColorsForComplicationsEditingFraction:(double)fraction withColorPalette:(id)palette;
 @end
 
 @implementation NTKVivaldiGlobeView
 
-- (NTKVivaldiGlobeView)initWithDevice:(id)a3
+- (NTKVivaldiGlobeView)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = NTKVivaldiGlobeView;
   v6 = [(NTKVivaldiGlobeView *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v7->_imageLock._os_unfair_lock_opaque = 0;
     v8 = dispatch_queue_create("com.apple.NanoTimeKit.NTKVivaldiGlobeImage", 0);
     imageQueue = v7->_imageQueue;
@@ -72,12 +72,12 @@
   [(UIImageView *)globeTritiumView setFrame:v7, v9, v10, v10];
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (self->_animating != a3)
+  if (self->_animating != animating)
   {
-    self->_animating = a3;
-    if (a3)
+    self->_animating = animating;
+    if (animating)
     {
       MEMORY[0x2821F9670](self, sel__startGlobeTimer);
     }
@@ -94,13 +94,13 @@
   if (!self->_globeTimerToken)
   {
     objc_initWeak(&location, self);
-    v3 = [MEMORY[0x277CBB700] sharedInstance];
+    mEMORY[0x277CBB700] = [MEMORY[0x277CBB700] sharedInstance];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = sub_23C0A937C;
     v6[3] = &unk_278BAECB0;
     objc_copyWeak(&v7, &location);
-    v4 = [v3 startUpdatesWithUpdateFrequency:1 withHandler:v6 identificationLog:&unk_284EDE428];
+    v4 = [mEMORY[0x277CBB700] startUpdatesWithUpdateFrequency:1 withHandler:v6 identificationLog:&unk_284EDE428];
     globeTimerToken = self->_globeTimerToken;
     self->_globeTimerToken = v4;
 
@@ -114,17 +114,17 @@
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   if (self->_globeTimerToken)
   {
-    v3 = [MEMORY[0x277CBB700] sharedInstance];
-    [v3 stopUpdatesForToken:self->_globeTimerToken];
+    mEMORY[0x277CBB700] = [MEMORY[0x277CBB700] sharedInstance];
+    [mEMORY[0x277CBB700] stopUpdatesForToken:self->_globeTimerToken];
 
     globeTimerToken = self->_globeTimerToken;
     self->_globeTimerToken = 0;
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  objc_storeStrong(&self->_date, a3);
+  objc_storeStrong(&self->_date, date);
 
   [(NTKVivaldiGlobeView *)self _updateGlobeImage];
 }
@@ -134,26 +134,26 @@
   date = self->_date;
   if (date)
   {
-    v3 = date;
+    faceDate = date;
   }
 
   else
   {
-    v3 = [MEMORY[0x277D2BFD8] faceDate];
+    faceDate = [MEMORY[0x277D2BFD8] faceDate];
   }
 
-  return v3;
+  return faceDate;
 }
 
-- (unint64_t)_secondsFromDate:(id)a3
+- (unint64_t)_secondsFromDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:128 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:128 fromDate:dateCopy];
 
-  v7 = [v6 second];
-  return v7;
+  second = [v6 second];
+  return second;
 }
 
 - (void)_loadDefaultGlobe
@@ -185,8 +185,8 @@
 
 - (void)_updateGlobeImage
 {
-  v3 = [(NTKVivaldiGlobeView *)self _displayDate];
-  v4 = [(NTKVivaldiGlobeView *)self _secondsFromDate:v3];
+  _displayDate = [(NTKVivaldiGlobeView *)self _displayDate];
+  v4 = [(NTKVivaldiGlobeView *)self _secondsFromDate:_displayDate];
 
   v5 = (v4 + 1) % 0x3C;
   if (v4)
@@ -277,21 +277,21 @@
   }
 }
 
-- (void)_displayCurrentGlobeImage:(BOOL)a3
+- (void)_displayCurrentGlobeImage:(BOOL)image
 {
-  v3 = a3;
+  imageCopy = image;
   os_unfair_lock_lock(&self->_imageLock);
-  v5 = [(UIImageView *)self->_globeView image];
-  if (!v5 || self->_tritiumFraction > 0.0)
+  image = [(UIImageView *)self->_globeView image];
+  if (!image || self->_tritiumFraction > 0.0)
   {
-    v3 = 0;
+    imageCopy = 0;
   }
 
   v6 = self->_currentGlobeSecondImage;
   os_unfair_lock_unlock(&self->_imageLock);
-  if (v3)
+  if (imageCopy)
   {
-    [(UIImageView *)self->_globeOutgoingView setImage:v5];
+    [(UIImageView *)self->_globeOutgoingView setImage:image];
     [(UIImageView *)self->_globeView setImage:v6];
     [(UIImageView *)self->_globeOutgoingView setAlpha:1.0];
     v8[0] = MEMORY[0x277D85DD0];
@@ -313,23 +313,23 @@
   }
 }
 
-- (void)updateColorsForComplicationsEditingFraction:(double)a3 withColorPalette:(id)a4
+- (void)updateColorsForComplicationsEditingFraction:(double)fraction withColorPalette:(id)palette
 {
   v5 = MEMORY[0x277D75348];
-  v6 = a4;
-  v7 = [v5 blackColor];
-  v8 = [v6 background];
+  paletteCopy = palette;
+  blackColor = [v5 blackColor];
+  background = [paletteCopy background];
   v9 = *MEMORY[0x277D2BF18];
   v21 = CLKInterpolateBetweenColors();
 
-  v10 = [v6 background];
+  background2 = [paletteCopy background];
   v11 = CLKInterpolateBetweenColors();
 
-  v12 = [MEMORY[0x277D75348] blackColor];
-  v13 = [v6 globeGrid];
+  blackColor2 = [MEMORY[0x277D75348] blackColor];
+  globeGrid = [paletteCopy globeGrid];
   v14 = CLKInterpolateBetweenColors();
 
-  v15 = [v6 globeGrid];
+  globeGrid2 = [paletteCopy globeGrid];
   v16 = CLKInterpolateBetweenColors();
 
   [(UIImageView *)self->_globeView setTintColor:v16];
@@ -337,28 +337,28 @@
   [(UIImageView *)self->_globeView setBackgroundColor:v11];
   [(UIImageView *)self->_globeOutgoingView setBackgroundColor:v11];
   globeTritiumView = self->_globeTritiumView;
-  v18 = [v6 globeGrid_tritium];
-  [(UIImageView *)globeTritiumView setTintColor:v18];
+  globeGrid_tritium = [paletteCopy globeGrid_tritium];
+  [(UIImageView *)globeTritiumView setTintColor:globeGrid_tritium];
 
   v19 = self->_globeTritiumView;
-  v20 = [v6 background];
+  background3 = [paletteCopy background];
 
-  [(UIImageView *)v19 setBackgroundColor:v20];
+  [(UIImageView *)v19 setBackgroundColor:background3];
 }
 
-- (void)setTritiumFraction:(double)a3
+- (void)setTritiumFraction:(double)fraction
 {
-  self->_tritiumFraction = a3;
-  [(UIImageView *)self->_globeView setAlpha:1.0 - a3];
+  self->_tritiumFraction = fraction;
+  [(UIImageView *)self->_globeView setAlpha:1.0 - fraction];
   [(UIImageView *)self->_globeOutgoingView setAlpha:0.0];
   globeTritiumView = self->_globeTritiumView;
 
-  [(UIImageView *)globeTritiumView setAlpha:a3];
+  [(UIImageView *)globeTritiumView setAlpha:fraction];
 }
 
-- (id)_globeImageForSecond:(unint64_t)a3
+- (id)_globeImageForSecond:(unint64_t)second
 {
-  v3 = [(NTKVivaldiGlobeView *)self _assetNameForSecond:a3];
+  v3 = [(NTKVivaldiGlobeView *)self _assetNameForSecond:second];
   v4 = [(NTKFaceBundle *)NTKVivaldiFaceBundle imageWithName:v3];
 
   return v4;

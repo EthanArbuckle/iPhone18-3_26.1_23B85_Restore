@@ -1,14 +1,14 @@
 @interface WCM_Session
 - (WCM_Session)init;
-- (WCM_Session)initWithConnection:(id)a3;
+- (WCM_Session)initWithConnection:(id)connection;
 - (id)description;
 - (void)dealloc;
-- (void)handleCoexProcessRegistration:(id)a3;
+- (void)handleCoexProcessRegistration:(id)registration;
 - (void)handleDisconnection;
-- (void)handleMessage:(id)a3;
-- (void)handleXPCMessage:(id)a3;
-- (void)handleiRATProcessRegistration:(id)a3;
-- (void)sendMessage:(id)a3;
+- (void)handleMessage:(id)message;
+- (void)handleXPCMessage:(id)message;
+- (void)handleiRATProcessRegistration:(id)registration;
+- (void)sendMessage:(id)message;
 - (void)suspendExternalConnection;
 @end
 
@@ -72,44 +72,44 @@
 
 - (void)suspendExternalConnection
 {
-  v3 = [(WCM_Session *)self getProcessId];
-  if (v3 != 6)
+  getProcessId = [(WCM_Session *)self getProcessId];
+  if (getProcessId != 6)
   {
-    [WCM_Logging logLevel:2 message:@"Suspending XPC with Process %d Connection %@", v3, [(WCM_Session *)self getConnection]];
+    [WCM_Logging logLevel:2 message:@"Suspending XPC with Process %d Connection %@", getProcessId, [(WCM_Session *)self getConnection]];
   }
 }
 
-- (WCM_Session)initWithConnection:(id)a3
+- (WCM_Session)initWithConnection:(id)connection
 {
-  self->mConnection = a3;
-  xpc_retain(a3);
+  self->mConnection = connection;
+  xpc_retain(connection);
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_1000E5200;
   handler[3] = &unk_10023F930;
   handler[4] = self;
-  xpc_connection_set_event_handler(a3, handler);
+  xpc_connection_set_event_handler(connection, handler);
   xpc_connection_resume(self->mConnection);
   return result;
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000E5298;
   v3[3] = &unk_10023DC80;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = message;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], v3);
 }
 
-- (void)handleXPCMessage:(id)a3
+- (void)handleXPCMessage:(id)message
 {
-  type = xpc_get_type(a3);
+  type = xpc_get_type(message);
   if (type == &_xpc_type_error)
   {
-    [WCM_Logging logLevel:1 message:@"WCM_Session: XPC server error: %s", xpc_dictionary_get_string(a3, _xpc_error_key_description)];
+    [WCM_Logging logLevel:1 message:@"WCM_Session: XPC server error: %s", xpc_dictionary_get_string(message, _xpc_error_key_description)];
 
     [(WCM_Session *)self handleDisconnection];
     return;
@@ -117,21 +117,21 @@
 
   if (type != &_xpc_type_dictionary)
   {
-    v6 = xpc_copy_description(a3);
+    v6 = xpc_copy_description(message);
     [WCM_Logging logLevel:0 message:@"Unexpected XPC server event: %s", v6];
 
     free(v6);
     return;
   }
 
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  uint64 = xpc_dictionary_get_uint64(message, "kMessageId");
+  value = xpc_dictionary_get_value(message, "kMessageArgs");
   if (uint64)
   {
     goto LABEL_12;
   }
 
-  uint64 = xpc_dictionary_get_int64(a3, "kMessageId");
+  uint64 = xpc_dictionary_get_int64(message, "kMessageId");
   if (uint64)
   {
     [WCM_Logging logLevel:1 message:@"Got a message with a INT64 instead of a UINT64. Please file a radar in Purple Coex Manager"];
@@ -158,7 +158,7 @@ LABEL_12:
     v10 = "INVALID_PROC_ID!!!";
   }
 
-  [WCM_Logging logLevel:2 message:@"Received messageId(%lld) from %s %@", uint64, v10, a3];
+  [WCM_Logging logLevel:2 message:@"Received messageId(%lld) from %s %@", uint64, v10, message];
   if (uint64 == 1)
   {
     [(WCM_Session *)self handleCoexProcessRegistration:value];
@@ -181,7 +181,7 @@ LABEL_12:
     mController = self->mController;
 LABEL_34:
 
-    [(WCM_Controller *)mController handleMessage:a3];
+    [(WCM_Controller *)mController handleMessage:message];
     return;
   }
 
@@ -302,25 +302,25 @@ LABEL_30:
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], block);
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000E59A4;
   v3[3] = &unk_10023DC80;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = message;
   dispatch_async([+[WCM_Server singleton](WCM_Server "singleton")], v3);
 }
 
-- (void)handleCoexProcessRegistration:(id)a3
+- (void)handleCoexProcessRegistration:(id)registration
 {
-  if (a3)
+  if (registration)
   {
-    int64 = xpc_dictionary_get_int64(a3, "kWCMRegisterProcess_ProcessId");
+    int64 = xpc_dictionary_get_int64(registration, "kWCMRegisterProcess_ProcessId");
     if (!int64)
     {
-      int64 = xpc_dictionary_get_uint64(a3, "kWCMRegisterProcess_ProcessId");
+      int64 = xpc_dictionary_get_uint64(registration, "kWCMRegisterProcess_ProcessId");
     }
 
     v6 = [+[WCM_Server singleton](WCM_Server "singleton")];
@@ -403,15 +403,15 @@ LABEL_30:
   }
 }
 
-- (void)handleiRATProcessRegistration:(id)a3
+- (void)handleiRATProcessRegistration:(id)registration
 {
-  if (a3)
+  if (registration)
   {
-    int64 = xpc_dictionary_get_int64(a3, "kWCMRegisterProcess_ProcessId");
+    int64 = xpc_dictionary_get_int64(registration, "kWCMRegisterProcess_ProcessId");
     self->mProcessId = int64;
     if (!int64)
     {
-      self->mProcessId = xpc_dictionary_get_uint64(a3, "kWCMRegisterProcess_ProcessId");
+      self->mProcessId = xpc_dictionary_get_uint64(registration, "kWCMRegisterProcess_ProcessId");
     }
 
     if ([+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])

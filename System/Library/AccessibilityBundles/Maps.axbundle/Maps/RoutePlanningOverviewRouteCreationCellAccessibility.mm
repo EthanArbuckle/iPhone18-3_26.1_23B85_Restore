@@ -1,14 +1,14 @@
 @interface RoutePlanningOverviewRouteCreationCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation RoutePlanningOverviewRouteCreationCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"RoutePlanningOverviewRouteCreationCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"RoutePlanningOverviewRouteCreationCell" hasInstanceVariable:@"_bodyLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"RoutePlanningOverviewRouteCreationCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"RoutePlanningOverviewRouteCreationCell" hasInstanceVariable:@"_bodyLabel" withType:"UILabel"];
 }
 
 @end

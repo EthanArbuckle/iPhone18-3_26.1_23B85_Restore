@@ -1,20 +1,20 @@
 @interface CCUIDismissalGestureRecognizer
-- (CCUIDismissalGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)_cancelOtherGestureRecognizersForTouches:(id)a3;
+- (CCUIDismissalGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)_cancelOtherGestureRecognizersForTouches:(id)touches;
 - (void)_tryToCancelTouches;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CCUIDismissalGestureRecognizer
 
-- (CCUIDismissalGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (CCUIDismissalGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = CCUIDismissalGestureRecognizer;
-  v4 = [(CCUIDismissalGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(CCUIDismissalGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -31,53 +31,53 @@
   self->_currentTouches = 0;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CCUIDismissalGestureRecognizer *)self _activeTouchesForEvent:v6];
+  eventCopy = event;
+  beganCopy = began;
+  v8 = [(CCUIDismissalGestureRecognizer *)self _activeTouchesForEvent:eventCopy];
   currentTouches = self->_currentTouches;
   self->_currentTouches = v8;
 
   v10.receiver = self;
   v10.super_class = CCUIDismissalGestureRecognizer;
-  [(CCUIDismissalGestureRecognizer *)&v10 touchesBegan:v7 withEvent:v6];
+  [(CCUIDismissalGestureRecognizer *)&v10 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CCUIDismissalGestureRecognizer *)self _activeTouchesForEvent:v6];
+  eventCopy = event;
+  movedCopy = moved;
+  v8 = [(CCUIDismissalGestureRecognizer *)self _activeTouchesForEvent:eventCopy];
   currentTouches = self->_currentTouches;
   self->_currentTouches = v8;
 
   v10.receiver = self;
   v10.super_class = CCUIDismissalGestureRecognizer;
-  [(CCUIDismissalGestureRecognizer *)&v10 touchesMoved:v7 withEvent:v6];
+  [(CCUIDismissalGestureRecognizer *)&v10 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CCUIDismissalGestureRecognizer *)self _activeTouchesForEvent:v6];
+  eventCopy = event;
+  endedCopy = ended;
+  v8 = [(CCUIDismissalGestureRecognizer *)self _activeTouchesForEvent:eventCopy];
   currentTouches = self->_currentTouches;
   self->_currentTouches = v8;
 
   v10.receiver = self;
   v10.super_class = CCUIDismissalGestureRecognizer;
-  [(CCUIDismissalGestureRecognizer *)&v10 touchesEnded:v7 withEvent:v6];
+  [(CCUIDismissalGestureRecognizer *)&v10 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
 - (void)_tryToCancelTouches
 {
   if (!self->_triggered)
   {
-    v3 = [(CCUIDismissalGestureRecognizer *)self state];
-    if ((v3 - 1) >= 3)
+    state = [(CCUIDismissalGestureRecognizer *)self state];
+    if ((state - 1) >= 3)
     {
-      if ((v3 - 4) >= 2)
+      if ((state - 4) >= 2)
       {
         return;
       }
@@ -98,15 +98,15 @@
   }
 }
 
-- (void)_cancelOtherGestureRecognizersForTouches:(id)a3
+- (void)_cancelOtherGestureRecognizersForTouches:(id)touches
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  touchesCopy = touches;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v5 = [touchesCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -118,7 +118,7 @@
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(touchesCopy);
         }
 
         v9 = *(*(&v20 + 1) + 8 * v8);
@@ -126,8 +126,8 @@
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v10 = [v9 gestureRecognizers];
-        v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        gestureRecognizers = [v9 gestureRecognizers];
+        v11 = [gestureRecognizers countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v11)
         {
           v12 = v11;
@@ -139,7 +139,7 @@
             {
               if (*v17 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(gestureRecognizers);
               }
 
               v15 = *(*(&v16 + 1) + 8 * v14);
@@ -153,7 +153,7 @@
             }
 
             while (v12 != v14);
-            v12 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v12 = [gestureRecognizers countByEnumeratingWithState:&v16 objects:v24 count:16];
           }
 
           while (v12);
@@ -163,7 +163,7 @@
       }
 
       while (v8 != v6);
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v6 = [touchesCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v6);

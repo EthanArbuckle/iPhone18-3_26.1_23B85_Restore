@@ -1,19 +1,19 @@
 @interface BaseMifareDecoder
-+ (BOOL)didTransactionError:(id *)a3 withTransactionResult:(unsigned __int16 *)a4;
-+ (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
-+ (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9;
-+ (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7;
++ (BOOL)didTransactionError:(id *)error withTransactionResult:(unsigned __int16 *)result;
++ (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
++ (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error;
++ (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
 @end
 
 @implementation BaseMifareDecoder
 
-+ (BOOL)didTransactionError:(id *)a3 withTransactionResult:(unsigned __int16 *)a4
++ (BOOL)didTransactionError:(id *)error withTransactionResult:(unsigned __int16 *)result
 {
-  v6 = *(&a3->var7 + 1) == 18 && a3->var8[1] == 1 || *(&a3->var7 + 1) == 19 && a3->var8[1] == 238;
-  v7 = *&a3->var4[31] == 0x4000 && v6;
-  if (a4)
+  v6 = *(&error->var7 + 1) == 18 && error->var8[1] == 1 || *(&error->var7 + 1) == 19 && error->var8[1] == 238;
+  v7 = *&error->var4[31] == 0x4000 && v6;
+  if (result)
   {
-    if (*&a3->var4[31] == 0x4000 && v6)
+    if (*&error->var4[31] == 0x4000 && v6)
     {
       v8 = 64;
     }
@@ -23,7 +23,7 @@
       v8 = 0;
     }
 
-    if (HIBYTE(a3->var7) == 15)
+    if (HIBYTE(error->var7) == 15)
     {
       v9 = -4096;
     }
@@ -33,13 +33,13 @@
       v9 = v8;
     }
 
-    *a4 = v9;
+    *result = v9;
   }
 
   return !v7;
 }
 
-+ (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
++ (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v8 = ATLLogObject();
@@ -51,12 +51,12 @@
 
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"MIFARE Decoder doesn't support GetState"];
   v10 = v9;
-  if (a7)
+  if (error)
   {
-    v11 = *a7;
+    v11 = *error;
     v12 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277CCA450];
-    if (*a7)
+    if (*error)
     {
       v14 = *MEMORY[0x277CCA7E8];
       v23[0] = *MEMORY[0x277CCA450];
@@ -80,14 +80,14 @@
     }
 
     v19 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:v18];
-    *a7 = [v12 errorWithDomain:@"ATL" code:2 userInfo:v19];
+    *error = [v12 errorWithDomain:@"ATL" code:2 userInfo:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-+ (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withPublicKey:(id)a6 withEncryptionScheme:(id)a7 withTransceiver:(id)a8 withError:(id *)a9
++ (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withPublicKey:(id)key withEncryptionScheme:(id)scheme withTransceiver:(id)transceiver withError:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
   v9 = ATLLogObject();
@@ -99,12 +99,12 @@
 
   v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"MIFARE Decoder doesn't support getServiceProviderData"];
   v11 = v10;
-  if (a9)
+  if (error)
   {
-    v12 = *a9;
+    v12 = *error;
     v13 = MEMORY[0x277CCA9B8];
     v14 = *MEMORY[0x277CCA450];
-    if (*a9)
+    if (*error)
     {
       v15 = *MEMORY[0x277CCA7E8];
       v24[0] = *MEMORY[0x277CCA450];
@@ -128,14 +128,14 @@
     }
 
     v20 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:v19];
-    *a9 = [v13 errorWithDomain:@"ATL" code:2 userInfo:v20];
+    *error = [v13 errorWithDomain:@"ATL" code:2 userInfo:v20];
   }
 
   v21 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-+ (id)getServiceProviderData:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7
++ (id)getServiceProviderData:(id)data withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v8 = ATLLogObject();
@@ -147,12 +147,12 @@
 
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"MIFARE Decoder doesn't support getServiceProviderData"];
   v10 = v9;
-  if (a7)
+  if (error)
   {
-    v11 = *a7;
+    v11 = *error;
     v12 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277CCA450];
-    if (*a7)
+    if (*error)
     {
       v14 = *MEMORY[0x277CCA7E8];
       v23[0] = *MEMORY[0x277CCA450];
@@ -176,7 +176,7 @@
     }
 
     v19 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:v18];
-    *a7 = [v12 errorWithDomain:@"ATL" code:2 userInfo:v19];
+    *error = [v12 errorWithDomain:@"ATL" code:2 userInfo:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];

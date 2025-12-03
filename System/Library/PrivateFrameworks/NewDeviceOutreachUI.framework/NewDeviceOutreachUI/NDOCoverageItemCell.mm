@@ -1,56 +1,56 @@
 @interface NDOCoverageItemCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NDOCoverageItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NDOCoverageItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)_setupWarrantyCoverageCell;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateConstraints;
 - (void)updateDeviceImage;
 @end
 
 @implementation NDOCoverageItemCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v19.receiver = self;
   v19.super_class = NDOCoverageItemCell;
-  [(PSTableCell *)&v19 refreshCellContentsWithSpecifier:a3];
+  [(PSTableCell *)&v19 refreshCellContentsWithSpecifier:specifier];
   [(NDOCoverageItemCell *)self updateDeviceImage];
-  v4 = [(PSTableCell *)self specifier];
-  v5 = [v4 name];
-  [(UILabel *)self->_itemTitleLabel setText:v5];
+  specifier = [(PSTableCell *)self specifier];
+  name = [specifier name];
+  [(UILabel *)self->_itemTitleLabel setText:name];
 
-  v6 = [(PSTableCell *)self specifier];
-  v7 = [v6 objectForKeyedSubscript:@"NDOCoverageItemCellCoverageLabelKey"];
+  specifier2 = [(PSTableCell *)self specifier];
+  v7 = [specifier2 objectForKeyedSubscript:@"NDOCoverageItemCellCoverageLabelKey"];
   [(UILabel *)self->_itemSubtitleLabel setText:v7];
 
-  v8 = [(PSTableCell *)self specifier];
-  v9 = [v8 objectForKeyedSubscript:@"NDOCoverageItemCellOfferLabelKey"];
+  specifier3 = [(PSTableCell *)self specifier];
+  v9 = [specifier3 objectForKeyedSubscript:@"NDOCoverageItemCellOfferLabelKey"];
 
   if (v9)
   {
     self->_hasOffer = 1;
-    v10 = [(PSTableCell *)self specifier];
-    v11 = [v10 objectForKeyedSubscript:@"NDOCoverageItemCellOfferLabelKey"];
+    specifier4 = [(PSTableCell *)self specifier];
+    v11 = [specifier4 objectForKeyedSubscript:@"NDOCoverageItemCellOfferLabelKey"];
     [(UILabel *)self->_itemOfferLabel setText:v11];
 
     v12 = MEMORY[0x277CCACA8];
-    v13 = [(PSTableCell *)self specifier];
-    v14 = [v13 name];
-    v15 = [(UILabel *)self->_itemSubtitleLabel text];
-    v16 = [(UILabel *)self->_itemOfferLabel text];
-    v17 = [v12 stringWithFormat:@"%@\n%@\n%@", v14, v15, v16];
+    specifier5 = [(PSTableCell *)self specifier];
+    name2 = [specifier5 name];
+    text = [(UILabel *)self->_itemSubtitleLabel text];
+    text2 = [(UILabel *)self->_itemOfferLabel text];
+    v17 = [v12 stringWithFormat:@"%@\n%@\n%@", name2, text, text2];
     [(NDOCoverageItemCell *)self setAccessibilityLabel:v17];
   }
 
   else
   {
     v18 = MEMORY[0x277CCACA8];
-    v13 = [(PSTableCell *)self specifier];
-    v14 = [v13 name];
-    v15 = [(UILabel *)self->_itemSubtitleLabel text];
-    v16 = [v18 stringWithFormat:@"%@\n%@", v14, v15];
-    [(NDOCoverageItemCell *)self setAccessibilityLabel:v16];
+    specifier5 = [(PSTableCell *)self specifier];
+    name2 = [specifier5 name];
+    text = [(UILabel *)self->_itemSubtitleLabel text];
+    text2 = [v18 stringWithFormat:@"%@\n%@", name2, text];
+    [(NDOCoverageItemCell *)self setAccessibilityLabel:text2];
   }
 
   [(NDOCoverageItemCell *)self setNeedsLayout];
@@ -65,11 +65,11 @@
   [(PSTableCell *)self setCellEnabled:1];
 }
 
-- (NDOCoverageItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (NDOCoverageItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = NDOCoverageItemCell;
-  v5 = [(PSTableCell *)&v8 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(PSTableCell *)&v8 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
@@ -81,16 +81,16 @@
 
 - (void)_setupWarrantyCoverageCell
 {
-  v3 = [(PSTableCell *)self titleLabel];
-  [v3 setHidden:1];
+  titleLabel = [(PSTableCell *)self titleLabel];
+  [titleLabel setHidden:1];
 
   v4 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:0];
   itemImageView = self->_itemImageView;
   self->_itemImageView = v4;
 
   [(UIImageView *)self->_itemImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(NDOCoverageItemCell *)self contentView];
-  [v6 addSubview:self->_itemImageView];
+  contentView = [(NDOCoverageItemCell *)self contentView];
+  [contentView addSubview:self->_itemImageView];
 
   v7 = objc_alloc(MEMORY[0x277D756B8]);
   v8 = *MEMORY[0x277CBF3A0];
@@ -120,8 +120,8 @@
   v18 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
   [(UILabel *)self->_itemSubtitleLabel setFont:v18];
 
-  v19 = [MEMORY[0x277D75348] systemGrayColor];
-  [(UILabel *)self->_itemSubtitleLabel setTextColor:v19];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [(UILabel *)self->_itemSubtitleLabel setTextColor:systemGrayColor];
 
   v20 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v8, v9, v10, v11}];
   itemOfferLabel = self->_itemOfferLabel;
@@ -134,8 +134,8 @@
   v22 = [MEMORY[0x277D74300] preferredFontForTextStyle:v17];
   [(UILabel *)self->_itemOfferLabel setFont:v22];
 
-  v23 = [MEMORY[0x277D75348] systemOrangeColor];
-  [(UILabel *)self->_itemOfferLabel setTextColor:v23];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  [(UILabel *)self->_itemOfferLabel setTextColor:systemOrangeColor];
 
   v24 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v8, v9, v10, v11}];
   itemTitleView = self->_itemTitleView;
@@ -145,187 +145,187 @@
   [(UIView *)self->_itemTitleView addSubview:self->_itemTitleLabel];
   [(UIView *)self->_itemTitleView addSubview:self->_itemSubtitleLabel];
   [(UIView *)self->_itemTitleView addSubview:self->_itemOfferLabel];
-  v26 = [(NDOCoverageItemCell *)self contentView];
-  [v26 addSubview:self->_itemTitleView];
+  contentView2 = [(NDOCoverageItemCell *)self contentView];
+  [contentView2 addSubview:self->_itemTitleView];
 
   [(NDOCoverageItemCell *)self layoutSubviews];
 }
 
 - (void)updateConstraints
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   imageConstraints = self->_imageConstraints;
-  self->_imageConstraints = v3;
+  self->_imageConstraints = array;
 
   v5 = self->_imageConstraints;
   v6 = MEMORY[0x277CCAAD0];
-  v7 = [(NDOCoverageItemCell *)self itemImageView];
-  v8 = [(NDOCoverageItemCell *)self contentView];
-  v9 = [v6 constraintWithItem:v7 attribute:5 relatedBy:0 toItem:v8 attribute:5 multiplier:1.0 constant:15.0];
+  itemImageView = [(NDOCoverageItemCell *)self itemImageView];
+  contentView = [(NDOCoverageItemCell *)self contentView];
+  v9 = [v6 constraintWithItem:itemImageView attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:15.0];
   [(NSMutableArray *)v5 addObject:v9];
 
   v10 = self->_imageConstraints;
   v11 = MEMORY[0x277CCAAD0];
-  v12 = [(NDOCoverageItemCell *)self itemImageView];
-  v13 = [(NDOCoverageItemCell *)self contentView];
-  v14 = [v11 constraintWithItem:v12 attribute:3 relatedBy:1 toItem:v13 attribute:3 multiplier:1.0 constant:8.0];
+  itemImageView2 = [(NDOCoverageItemCell *)self itemImageView];
+  contentView2 = [(NDOCoverageItemCell *)self contentView];
+  v14 = [v11 constraintWithItem:itemImageView2 attribute:3 relatedBy:1 toItem:contentView2 attribute:3 multiplier:1.0 constant:8.0];
   [(NSMutableArray *)v10 addObject:v14];
 
   v15 = self->_imageConstraints;
   v16 = MEMORY[0x277CCAAD0];
-  v17 = [(NDOCoverageItemCell *)self itemImageView];
-  v18 = [(NDOCoverageItemCell *)self contentView];
-  v19 = [v16 constraintWithItem:v17 attribute:10 relatedBy:0 toItem:v18 attribute:10 multiplier:1.0 constant:0.0];
+  itemImageView3 = [(NDOCoverageItemCell *)self itemImageView];
+  contentView3 = [(NDOCoverageItemCell *)self contentView];
+  v19 = [v16 constraintWithItem:itemImageView3 attribute:10 relatedBy:0 toItem:contentView3 attribute:10 multiplier:1.0 constant:0.0];
   [(NSMutableArray *)v15 addObject:v19];
 
   v20 = self->_imageConstraints;
   v21 = MEMORY[0x277CCAAD0];
-  v22 = [(NDOCoverageItemCell *)self itemImageView];
-  v23 = [v21 constraintWithItem:v22 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:40.0];
+  itemImageView4 = [(NDOCoverageItemCell *)self itemImageView];
+  v23 = [v21 constraintWithItem:itemImageView4 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:40.0];
   [(NSMutableArray *)v20 addObject:v23];
 
   v24 = self->_imageConstraints;
   v25 = MEMORY[0x277CCAAD0];
-  v26 = [(NDOCoverageItemCell *)self itemImageView];
-  v27 = [v25 constraintWithItem:v26 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:40.0];
+  itemImageView5 = [(NDOCoverageItemCell *)self itemImageView];
+  v27 = [v25 constraintWithItem:itemImageView5 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:40.0];
   [(NSMutableArray *)v24 addObject:v27];
 
-  v28 = [(NDOCoverageItemCell *)self itemImageView];
+  itemImageView6 = [(NDOCoverageItemCell *)self itemImageView];
   LODWORD(v29) = 1148846080;
-  [v28 setContentCompressionResistancePriority:0 forAxis:v29];
+  [itemImageView6 setContentCompressionResistancePriority:0 forAxis:v29];
 
-  v30 = [(NDOCoverageItemCell *)self itemImageView];
+  itemImageView7 = [(NDOCoverageItemCell *)self itemImageView];
   LODWORD(v31) = 1148846080;
-  [v30 setContentCompressionResistancePriority:1 forAxis:v31];
+  [itemImageView7 setContentCompressionResistancePriority:1 forAxis:v31];
 
   v32 = MEMORY[0x277CCAAD0];
-  v33 = [(NDOCoverageItemCell *)self contentView];
-  v34 = [(NDOCoverageItemCell *)self itemImageView];
-  v35 = [v32 constraintWithItem:v33 attribute:8 relatedBy:1 toItem:v34 attribute:8 multiplier:1.0 constant:16.0];
+  contentView4 = [(NDOCoverageItemCell *)self contentView];
+  itemImageView8 = [(NDOCoverageItemCell *)self itemImageView];
+  v35 = [v32 constraintWithItem:contentView4 attribute:8 relatedBy:1 toItem:itemImageView8 attribute:8 multiplier:1.0 constant:16.0];
 
   LODWORD(v36) = 1148829696;
   [v35 setPriority:v36];
   [(NSMutableArray *)self->_imageConstraints addObject:v35];
   [MEMORY[0x277CCAAD0] activateConstraints:self->_imageConstraints];
-  v37 = [(NDOCoverageItemCell *)self itemTitleView];
+  itemTitleView = [(NDOCoverageItemCell *)self itemTitleView];
   v38 = MEMORY[0x277CCAAD0];
-  v39 = [(NDOCoverageItemCell *)self itemTitleLabel];
-  v40 = [(NDOCoverageItemCell *)self itemTitleView];
-  v41 = [v38 constraintWithItem:v39 attribute:3 relatedBy:0 toItem:v40 attribute:3 multiplier:1.0 constant:0.0];
-  [v37 addConstraint:v41];
+  itemTitleLabel = [(NDOCoverageItemCell *)self itemTitleLabel];
+  itemTitleView2 = [(NDOCoverageItemCell *)self itemTitleView];
+  v41 = [v38 constraintWithItem:itemTitleLabel attribute:3 relatedBy:0 toItem:itemTitleView2 attribute:3 multiplier:1.0 constant:0.0];
+  [itemTitleView addConstraint:v41];
 
-  v42 = [(NDOCoverageItemCell *)self itemTitleView];
+  itemTitleView3 = [(NDOCoverageItemCell *)self itemTitleView];
   v43 = MEMORY[0x277CCAAD0];
-  v44 = [(NDOCoverageItemCell *)self itemTitleLabel];
-  v45 = [(NDOCoverageItemCell *)self itemTitleView];
-  v46 = [v43 constraintWithItem:v44 attribute:5 relatedBy:0 toItem:v45 attribute:5 multiplier:1.0 constant:0.0];
-  [v42 addConstraint:v46];
+  itemTitleLabel2 = [(NDOCoverageItemCell *)self itemTitleLabel];
+  itemTitleView4 = [(NDOCoverageItemCell *)self itemTitleView];
+  v46 = [v43 constraintWithItem:itemTitleLabel2 attribute:5 relatedBy:0 toItem:itemTitleView4 attribute:5 multiplier:1.0 constant:0.0];
+  [itemTitleView3 addConstraint:v46];
 
-  v47 = [(NDOCoverageItemCell *)self itemTitleView];
+  itemTitleView5 = [(NDOCoverageItemCell *)self itemTitleView];
   v48 = MEMORY[0x277CCAAD0];
-  v49 = [(NDOCoverageItemCell *)self itemTitleView];
-  v50 = [(NDOCoverageItemCell *)self itemTitleLabel];
-  v51 = [v48 constraintWithItem:v49 attribute:6 relatedBy:1 toItem:v50 attribute:6 multiplier:1.0 constant:0.0];
-  [v47 addConstraint:v51];
+  itemTitleView6 = [(NDOCoverageItemCell *)self itemTitleView];
+  itemTitleLabel3 = [(NDOCoverageItemCell *)self itemTitleLabel];
+  v51 = [v48 constraintWithItem:itemTitleView6 attribute:6 relatedBy:1 toItem:itemTitleLabel3 attribute:6 multiplier:1.0 constant:0.0];
+  [itemTitleView5 addConstraint:v51];
 
-  v52 = [(NDOCoverageItemCell *)self itemTitleView];
+  itemTitleView7 = [(NDOCoverageItemCell *)self itemTitleView];
   v53 = MEMORY[0x277CCAAD0];
-  v54 = [(NDOCoverageItemCell *)self itemSubtitleLabel];
-  v55 = [(NDOCoverageItemCell *)self itemTitleLabel];
-  v56 = [v53 constraintWithItem:v54 attribute:3 relatedBy:0 toItem:v55 attribute:4 multiplier:1.0 constant:0.0];
-  [v52 addConstraint:v56];
+  itemSubtitleLabel = [(NDOCoverageItemCell *)self itemSubtitleLabel];
+  itemTitleLabel4 = [(NDOCoverageItemCell *)self itemTitleLabel];
+  v56 = [v53 constraintWithItem:itemSubtitleLabel attribute:3 relatedBy:0 toItem:itemTitleLabel4 attribute:4 multiplier:1.0 constant:0.0];
+  [itemTitleView7 addConstraint:v56];
 
-  v57 = [(NDOCoverageItemCell *)self itemTitleView];
+  itemTitleView8 = [(NDOCoverageItemCell *)self itemTitleView];
   v58 = MEMORY[0x277CCAAD0];
-  v59 = [(NDOCoverageItemCell *)self itemSubtitleLabel];
-  v60 = [(NDOCoverageItemCell *)self itemTitleView];
-  v61 = [v58 constraintWithItem:v59 attribute:5 relatedBy:0 toItem:v60 attribute:5 multiplier:1.0 constant:0.0];
-  [v57 addConstraint:v61];
+  itemSubtitleLabel2 = [(NDOCoverageItemCell *)self itemSubtitleLabel];
+  itemTitleView9 = [(NDOCoverageItemCell *)self itemTitleView];
+  v61 = [v58 constraintWithItem:itemSubtitleLabel2 attribute:5 relatedBy:0 toItem:itemTitleView9 attribute:5 multiplier:1.0 constant:0.0];
+  [itemTitleView8 addConstraint:v61];
 
-  v62 = [(NDOCoverageItemCell *)self itemTitleView];
+  itemTitleView10 = [(NDOCoverageItemCell *)self itemTitleView];
   v63 = MEMORY[0x277CCAAD0];
-  v64 = [(NDOCoverageItemCell *)self itemTitleView];
-  v65 = [(NDOCoverageItemCell *)self itemSubtitleLabel];
-  v66 = [v63 constraintWithItem:v64 attribute:6 relatedBy:1 toItem:v65 attribute:6 multiplier:1.0 constant:0.0];
-  [v62 addConstraint:v66];
+  itemTitleView11 = [(NDOCoverageItemCell *)self itemTitleView];
+  itemSubtitleLabel3 = [(NDOCoverageItemCell *)self itemSubtitleLabel];
+  v66 = [v63 constraintWithItem:itemTitleView11 attribute:6 relatedBy:1 toItem:itemSubtitleLabel3 attribute:6 multiplier:1.0 constant:0.0];
+  [itemTitleView10 addConstraint:v66];
 
   LOBYTE(v66) = self->_hasOffer;
-  v67 = [(NDOCoverageItemCell *)self itemTitleView];
+  itemTitleView12 = [(NDOCoverageItemCell *)self itemTitleView];
   v68 = MEMORY[0x277CCAAD0];
   if (v66)
   {
-    v69 = [(NDOCoverageItemCell *)self itemOfferLabel];
-    v70 = [(NDOCoverageItemCell *)self itemSubtitleLabel];
-    v71 = [v68 constraintWithItem:v69 attribute:3 relatedBy:0 toItem:v70 attribute:4 multiplier:1.0 constant:0.0];
-    [v67 addConstraint:v71];
+    itemOfferLabel = [(NDOCoverageItemCell *)self itemOfferLabel];
+    itemSubtitleLabel4 = [(NDOCoverageItemCell *)self itemSubtitleLabel];
+    v71 = [v68 constraintWithItem:itemOfferLabel attribute:3 relatedBy:0 toItem:itemSubtitleLabel4 attribute:4 multiplier:1.0 constant:0.0];
+    [itemTitleView12 addConstraint:v71];
 
-    v72 = [(NDOCoverageItemCell *)self itemTitleView];
+    itemTitleView13 = [(NDOCoverageItemCell *)self itemTitleView];
     v73 = MEMORY[0x277CCAAD0];
-    v74 = [(NDOCoverageItemCell *)self itemOfferLabel];
-    v75 = [(NDOCoverageItemCell *)self itemTitleView];
-    v76 = [v73 constraintWithItem:v74 attribute:5 relatedBy:0 toItem:v75 attribute:5 multiplier:1.0 constant:0.0];
-    [v72 addConstraint:v76];
+    itemOfferLabel2 = [(NDOCoverageItemCell *)self itemOfferLabel];
+    itemTitleView14 = [(NDOCoverageItemCell *)self itemTitleView];
+    v76 = [v73 constraintWithItem:itemOfferLabel2 attribute:5 relatedBy:0 toItem:itemTitleView14 attribute:5 multiplier:1.0 constant:0.0];
+    [itemTitleView13 addConstraint:v76];
 
-    v77 = [(NDOCoverageItemCell *)self itemTitleView];
+    itemTitleView15 = [(NDOCoverageItemCell *)self itemTitleView];
     v78 = MEMORY[0x277CCAAD0];
-    v79 = [(NDOCoverageItemCell *)self itemTitleView];
-    v80 = [(NDOCoverageItemCell *)self itemOfferLabel];
-    v81 = [v78 constraintWithItem:v79 attribute:6 relatedBy:1 toItem:v80 attribute:6 multiplier:1.0 constant:0.0];
-    [v77 addConstraint:v81];
+    itemTitleView16 = [(NDOCoverageItemCell *)self itemTitleView];
+    itemOfferLabel3 = [(NDOCoverageItemCell *)self itemOfferLabel];
+    v81 = [v78 constraintWithItem:itemTitleView16 attribute:6 relatedBy:1 toItem:itemOfferLabel3 attribute:6 multiplier:1.0 constant:0.0];
+    [itemTitleView15 addConstraint:v81];
 
-    v67 = [(NDOCoverageItemCell *)self itemTitleView];
+    itemTitleView12 = [(NDOCoverageItemCell *)self itemTitleView];
     v68 = MEMORY[0x277CCAAD0];
-    v82 = [(NDOCoverageItemCell *)self itemTitleView];
+    itemTitleView17 = [(NDOCoverageItemCell *)self itemTitleView];
     [(NDOCoverageItemCell *)self itemOfferLabel];
   }
 
   else
   {
-    v82 = [(NDOCoverageItemCell *)self itemTitleView];
+    itemTitleView17 = [(NDOCoverageItemCell *)self itemTitleView];
     [(NDOCoverageItemCell *)self itemSubtitleLabel];
   }
   v83 = ;
-  v84 = [v68 constraintWithItem:v82 attribute:4 relatedBy:0 toItem:v83 attribute:4 multiplier:1.0 constant:0.0];
-  [v67 addConstraint:v84];
+  v84 = [v68 constraintWithItem:itemTitleView17 attribute:4 relatedBy:0 toItem:v83 attribute:4 multiplier:1.0 constant:0.0];
+  [itemTitleView12 addConstraint:v84];
 
-  v85 = [(NDOCoverageItemCell *)self contentView];
+  contentView5 = [(NDOCoverageItemCell *)self contentView];
   v86 = MEMORY[0x277CCAAD0];
-  v87 = [(NDOCoverageItemCell *)self itemTitleView];
-  v88 = [(NDOCoverageItemCell *)self itemImageView];
-  v89 = [v86 constraintWithItem:v87 attribute:10 relatedBy:0 toItem:v88 attribute:10 multiplier:1.0 constant:0.0];
-  [v85 addConstraint:v89];
+  itemTitleView18 = [(NDOCoverageItemCell *)self itemTitleView];
+  itemImageView9 = [(NDOCoverageItemCell *)self itemImageView];
+  v89 = [v86 constraintWithItem:itemTitleView18 attribute:10 relatedBy:0 toItem:itemImageView9 attribute:10 multiplier:1.0 constant:0.0];
+  [contentView5 addConstraint:v89];
 
-  v90 = [(NDOCoverageItemCell *)self contentView];
+  contentView6 = [(NDOCoverageItemCell *)self contentView];
   v91 = MEMORY[0x277CCAAD0];
-  v92 = [(NDOCoverageItemCell *)self itemTitleView];
-  v93 = [(NDOCoverageItemCell *)self itemImageView];
-  v94 = [v91 constraintWithItem:v92 attribute:5 relatedBy:0 toItem:v93 attribute:6 multiplier:1.0 constant:12.0];
-  [v90 addConstraint:v94];
+  itemTitleView19 = [(NDOCoverageItemCell *)self itemTitleView];
+  itemImageView10 = [(NDOCoverageItemCell *)self itemImageView];
+  v94 = [v91 constraintWithItem:itemTitleView19 attribute:5 relatedBy:0 toItem:itemImageView10 attribute:6 multiplier:1.0 constant:12.0];
+  [contentView6 addConstraint:v94];
 
-  v95 = [(NDOCoverageItemCell *)self contentView];
+  contentView7 = [(NDOCoverageItemCell *)self contentView];
   v96 = MEMORY[0x277CCAAD0];
-  v97 = [(NDOCoverageItemCell *)self itemTitleView];
-  v98 = [(NDOCoverageItemCell *)self contentView];
-  v99 = [v96 constraintWithItem:v97 attribute:6 relatedBy:0 toItem:v98 attribute:6 multiplier:1.0 constant:-12.0];
-  [v95 addConstraint:v99];
+  itemTitleView20 = [(NDOCoverageItemCell *)self itemTitleView];
+  contentView8 = [(NDOCoverageItemCell *)self contentView];
+  v99 = [v96 constraintWithItem:itemTitleView20 attribute:6 relatedBy:0 toItem:contentView8 attribute:6 multiplier:1.0 constant:-12.0];
+  [contentView7 addConstraint:v99];
 
-  v100 = [(NDOCoverageItemCell *)self contentView];
+  contentView9 = [(NDOCoverageItemCell *)self contentView];
   v101 = MEMORY[0x277CCAAD0];
-  v102 = [(NDOCoverageItemCell *)self itemTitleView];
-  v103 = [(NDOCoverageItemCell *)self contentView];
-  v104 = [v101 constraintWithItem:v102 attribute:3 relatedBy:1 toItem:v103 attribute:3 multiplier:1.0 constant:8.0];
-  [v100 addConstraint:v104];
+  itemTitleView21 = [(NDOCoverageItemCell *)self itemTitleView];
+  contentView10 = [(NDOCoverageItemCell *)self contentView];
+  v104 = [v101 constraintWithItem:itemTitleView21 attribute:3 relatedBy:1 toItem:contentView10 attribute:3 multiplier:1.0 constant:8.0];
+  [contentView9 addConstraint:v104];
 
   v105.receiver = self;
   v105.super_class = NDOCoverageItemCell;
   [(NDOCoverageItemCell *)&v105 updateConstraints];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v5.receiver = self;
   v5.super_class = NDOCoverageItemCell;
-  [(NDOCoverageItemCell *)&v5 sizeThatFits:a3.width, a3.height];
+  [(NDOCoverageItemCell *)&v5 sizeThatFits:fits.width, fits.height];
   if (v4 < 60.0)
   {
     v4 = 60.0;
@@ -338,8 +338,8 @@
 
 - (void)updateDeviceImage
 {
-  v3 = [(PSTableCell *)self specifier];
-  v4 = [v3 objectForKeyedSubscript:@"NDOCoverageItemCellImageURLKey"];
+  specifier = [(PSTableCell *)self specifier];
+  v4 = [specifier objectForKeyedSubscript:@"NDOCoverageItemCellImageURLKey"];
 
   if (v4)
   {
@@ -359,8 +359,8 @@
 
   else
   {
-    v7 = [(PSTableCell *)self specifier];
-    v8 = [v7 objectForKeyedSubscript:@"NDOCoverageItemCellFallbackImageKey"];
+    specifier2 = [(PSTableCell *)self specifier];
+    v8 = [specifier2 objectForKeyedSubscript:@"NDOCoverageItemCellFallbackImageKey"];
     [(UIImageView *)self->_itemImageView setImage:v8];
   }
 }

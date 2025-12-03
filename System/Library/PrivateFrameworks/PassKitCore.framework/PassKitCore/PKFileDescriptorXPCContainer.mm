@@ -1,12 +1,12 @@
 @interface PKFileDescriptorXPCContainer
 - (BOOL)isInvalidated;
-- (PKFileDescriptorXPCContainer)initWithCoder:(id)a3;
-- (PKFileDescriptorXPCContainer)initWithFileDescriptor:(int)a3;
-- (PKFileDescriptorXPCContainer)initWithFileURL:(id)a3;
+- (PKFileDescriptorXPCContainer)initWithCoder:(id)coder;
+- (PKFileDescriptorXPCContainer)initWithFileDescriptor:(int)descriptor;
+- (PKFileDescriptorXPCContainer)initWithFileURL:(id)l;
 - (id)_init;
-- (id)_initWithXPCFileDescriptor:(id)a3;
-- (void)accessFileDescriptorWithBlock:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_initWithXPCFileDescriptor:(id)descriptor;
+- (void)accessFileDescriptorWithBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 @end
 
@@ -26,30 +26,30 @@
   return result;
 }
 
-- (id)_initWithXPCFileDescriptor:(id)a3
+- (id)_initWithXPCFileDescriptor:(id)descriptor
 {
-  v5 = a3;
-  v6 = [(PKFileDescriptorXPCContainer *)self _init];
-  v7 = v6;
-  if (v6)
+  descriptorCopy = descriptor;
+  _init = [(PKFileDescriptorXPCContainer *)self _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 3, a3);
+    objc_storeStrong(_init + 3, descriptor);
   }
 
   return v7;
 }
 
-- (PKFileDescriptorXPCContainer)initWithFileURL:(id)a3
+- (PKFileDescriptorXPCContainer)initWithFileURL:(id)l
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (!lCopy)
   {
     goto LABEL_12;
   }
 
-  if (([v4 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
     v10 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -66,7 +66,7 @@ LABEL_10:
 LABEL_11:
 
 LABEL_12:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -107,65 +107,65 @@ LABEL_12:
   close(v7);
   self = v9;
 
-  v16 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v16;
+  return selfCopy;
 }
 
-- (PKFileDescriptorXPCContainer)initWithFileDescriptor:(int)a3
+- (PKFileDescriptorXPCContainer)initWithFileDescriptor:(int)descriptor
 {
-  if (a3 < 0)
+  if (descriptor < 0)
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v4 = xpc_fd_create(a3);
+    v4 = xpc_fd_create(descriptor);
     if (v4)
     {
       self = [(PKFileDescriptorXPCContainer *)self _initWithXPCFileDescriptor:v4];
-      v5 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (PKFileDescriptorXPCContainer)initWithCoder:(id)a3
+- (PKFileDescriptorXPCContainer)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeXPCObjectOfType:MEMORY[0x1E69E9EA0] forKey:@"fd"];
+  v4 = [coder decodeXPCObjectOfType:MEMORY[0x1E69E9EA0] forKey:@"fd"];
   v5 = [(PKFileDescriptorXPCContainer *)self _initWithXPCFileDescriptor:v4];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_readLock);
   v4 = self->_fd;
   os_unfair_lock_unlock(&self->_readLock);
-  [v5 encodeXPCObject:v4 forKey:@"fd"];
+  [coderCopy encodeXPCObject:v4 forKey:@"fd"];
 }
 
-- (void)accessFileDescriptorWithBlock:(id)a3
+- (void)accessFileDescriptorWithBlock:(id)block
 {
-  v6 = a3;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     os_unfair_lock_lock(&self->_writeLock);
     os_unfair_lock_lock(&self->_readLock);
     fd = self->_fd;
     v5 = fd ? xpc_fd_dup(fd) : 0xFFFFFFFFLL;
     os_unfair_lock_unlock(&self->_readLock);
-    v6[2](v6, v5);
+    blockCopy[2](blockCopy, v5);
     os_unfair_lock_unlock(&self->_writeLock);
     if ((v5 & 0x80000000) == 0)
     {

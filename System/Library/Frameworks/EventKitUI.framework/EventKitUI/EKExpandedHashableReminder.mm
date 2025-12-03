@@ -1,55 +1,55 @@
 @interface EKExpandedHashableReminder
-- (BOOL)isEqual:(id)a3;
-- (EKExpandedHashableReminder)initWithEKEvent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EKExpandedHashableReminder)initWithEKEvent:(id)event;
 - (unint64_t)hash;
 @end
 
 @implementation EKExpandedHashableReminder
 
-- (EKExpandedHashableReminder)initWithEKEvent:(id)a3
+- (EKExpandedHashableReminder)initWithEKEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v17.receiver = self;
   v17.super_class = EKExpandedHashableReminder;
   v5 = [(EKExpandedHashableReminder *)&v17 init];
-  v5->_completed = [(EKEvent *)v4 completed];
-  v6 = [(EKEvent *)v4 startDate];
+  v5->_completed = [(EKEvent *)eventCopy completed];
+  startDate = [(EKEvent *)eventCopy startDate];
   date = v5->_date;
-  v5->_date = v6;
+  v5->_date = startDate;
 
-  v8 = [(EKEvent *)v4 title];
+  title = [(EKEvent *)eventCopy title];
   title = v5->_title;
-  v5->_title = v8;
+  v5->_title = title;
 
-  v10 = [(EKEvent *)v4 CUIK_reminderShouldBeEditable];
-  v5->_editable = v10;
-  if (v10)
+  cUIK_reminderShouldBeEditable = [(EKEvent *)eventCopy CUIK_reminderShouldBeEditable];
+  v5->_editable = cUIK_reminderShouldBeEditable;
+  if (cUIK_reminderShouldBeEditable)
   {
-    [(EKEvent *)v4 CUIK_symbolColor];
+    [(EKEvent *)eventCopy CUIK_symbolColor];
   }
 
   else
   {
-    [(EKEvent *)v4 CUIK_disabledSymbolColor];
+    [(EKEvent *)eventCopy CUIK_disabledSymbolColor];
   }
   v11 = ;
   color = v5->_color;
   v5->_color = v11;
 
-  v13 = [(EKEvent *)v4 CUIK_symbolName:[(EKEvent *)v4 isAllDay]];
+  v13 = [(EKEvent *)eventCopy CUIK_symbolName:[(EKEvent *)eventCopy isAllDay]];
   buttonImageName = v5->_buttonImageName;
   v5->_buttonImageName = v13;
 
   event = v5->_event;
-  v5->_event = v4;
+  v5->_event = eventCopy;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -59,25 +59,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       completed = self->_completed;
       if (completed == [(EKExpandedHashableReminder *)v5 completed])
       {
         date = self->_date;
-        v8 = [(EKExpandedHashableReminder *)v5 date];
-        if ([(NSDate *)date isEqualToDate:v8])
+        date = [(EKExpandedHashableReminder *)v5 date];
+        if ([(NSDate *)date isEqualToDate:date])
         {
           color = self->_color;
-          v10 = [(EKExpandedHashableReminder *)v5 color];
-          if ([(UIColor *)color isEqual:v10])
+          color = [(EKExpandedHashableReminder *)v5 color];
+          if ([(UIColor *)color isEqual:color])
           {
             title = self->_title;
-            v12 = [(EKExpandedHashableReminder *)v5 title];
-            if ([(NSString *)title isEqualToString:v12])
+            title = [(EKExpandedHashableReminder *)v5 title];
+            if ([(NSString *)title isEqualToString:title])
             {
               buttonImageName = self->_buttonImageName;
-              v14 = [(EKExpandedHashableReminder *)v5 buttonImageName];
-              if ([(NSString *)buttonImageName isEqualToString:v14]&& (editable = self->_editable, editable == [(EKExpandedHashableReminder *)v5 editable]))
+              buttonImageName = [(EKExpandedHashableReminder *)v5 buttonImageName];
+              if ([(NSString *)buttonImageName isEqualToString:buttonImageName]&& (editable = self->_editable, editable == [(EKExpandedHashableReminder *)v5 editable]))
               {
                 v16 = [(EKEvent *)self->_event isEqual:v5];
               }

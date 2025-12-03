@@ -1,26 +1,26 @@
 @interface CODefaults
-+ (id)userDefaultsForIdentifer:(id)a3;
++ (id)userDefaultsForIdentifer:(id)identifer;
 @end
 
 @implementation CODefaults
 
-+ (id)userDefaultsForIdentifer:(id)a3
++ (id)userDefaultsForIdentifer:(id)identifer
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.coordinated"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.coordinated"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   }
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.coordinated"];
+    standardUserDefaults = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.coordinated"];
   }
 
-  return v6;
+  return standardUserDefaults;
 }
 
 @end

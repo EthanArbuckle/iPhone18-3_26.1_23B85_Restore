@@ -1,49 +1,49 @@
 @interface EMMailboxChangeAction
-- (EMMailboxChangeAction)initWithCoder:(id)a3;
-- (EMMailboxChangeAction)initWithMailbox:(id)a3;
-- (EMMailboxChangeAction)initWithMailboxObjectID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (EMMailboxChangeAction)initWithCoder:(id)coder;
+- (EMMailboxChangeAction)initWithMailbox:(id)mailbox;
+- (EMMailboxChangeAction)initWithMailboxObjectID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMMailboxChangeAction
 
-- (EMMailboxChangeAction)initWithMailbox:(id)a3
+- (EMMailboxChangeAction)initWithMailbox:(id)mailbox
 {
-  v4 = [a3 objectID];
-  v5 = [(EMMailboxChangeAction *)self initWithMailboxObjectID:v4];
+  objectID = [mailbox objectID];
+  v5 = [(EMMailboxChangeAction *)self initWithMailboxObjectID:objectID];
 
   return v5;
 }
 
-- (EMMailboxChangeAction)initWithMailboxObjectID:(id)a3
+- (EMMailboxChangeAction)initWithMailboxObjectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = EMMailboxChangeAction;
   v6 = [(EMMailboxChangeAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mailboxObjectID, a3);
+    objc_storeStrong(&v6->_mailboxObjectID, d);
   }
 
   return v7;
 }
 
-- (EMMailboxChangeAction)initWithCoder:(id)a3
+- (EMMailboxChangeAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_mailboxObjectID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_mailboxObjectID"];
   v6 = [(EMMailboxChangeAction *)self initWithMailboxObjectID:v5];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(EMMailboxChangeAction *)self mailboxObjectID];
-  [v5 encodeObject:v4 forKey:@"EFPropertyKey_mailboxObjectID"];
+  coderCopy = coder;
+  mailboxObjectID = [(EMMailboxChangeAction *)self mailboxObjectID];
+  [coderCopy encodeObject:mailboxObjectID forKey:@"EFPropertyKey_mailboxObjectID"];
 }
 
 @end

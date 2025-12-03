@@ -7,7 +7,7 @@
 - (void)initWithCLLocation:()VLExtras location:heading:
 {
   v8 = a4;
-  v9 = [a1 init];
+  v9 = [self init];
   if (v9)
   {
     v10 = objc_alloc(MEMORY[0x277D0EB58]);

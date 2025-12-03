@@ -1,74 +1,74 @@
 @interface MPReportFlowPresenter
 - (MPReportFlowPresenter)init;
-- (MPReportFlowPresenter)initWithCallReportingViewModel:(id)a3 alertPresentingViewController:(id)a4 contactsService:(id)a5;
-- (void)_showCarrierVoiceCallReportAlertForCall:(id)a3;
-- (void)controller:(id)a3 didCompleteClassificationRequest:(id)a4 withResponse:(id)a5;
-- (void)presentBlockAllAlertFor:(id)a3;
-- (void)presentBlockUnknownAlertFor:(id)a3;
-- (void)presentFaceTimeSpamReportAlertFor:(id)a3;
-- (void)presentFaceTimeSpamReportAndBlockAlertFor:(id)a3;
-- (void)presentGroupFaceTimeSpamReportAndBlockAlertFor:(id)a3;
-- (void)showReportingExtensionForCall:(id)a3;
+- (MPReportFlowPresenter)initWithCallReportingViewModel:(id)model alertPresentingViewController:(id)controller contactsService:(id)service;
+- (void)_showCarrierVoiceCallReportAlertForCall:(id)call;
+- (void)controller:(id)controller didCompleteClassificationRequest:(id)request withResponse:(id)response;
+- (void)presentBlockAllAlertFor:(id)for;
+- (void)presentBlockUnknownAlertFor:(id)for;
+- (void)presentFaceTimeSpamReportAlertFor:(id)for;
+- (void)presentFaceTimeSpamReportAndBlockAlertFor:(id)for;
+- (void)presentGroupFaceTimeSpamReportAndBlockAlertFor:(id)for;
+- (void)showReportingExtensionForCall:(id)call;
 @end
 
 @implementation MPReportFlowPresenter
 
-- (MPReportFlowPresenter)initWithCallReportingViewModel:(id)a3 alertPresentingViewController:(id)a4 contactsService:(id)a5
+- (MPReportFlowPresenter)initWithCallReportingViewModel:(id)model alertPresentingViewController:(id)controller contactsService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = specialized ReportFlowPresenter.init(callReportingViewModel:alertPresentingViewController:contactsService:)(v7, v8, a5);
+  modelCopy = model;
+  controllerCopy = controller;
+  v9 = specialized ReportFlowPresenter.init(callReportingViewModel:alertPresentingViewController:contactsService:)(modelCopy, controllerCopy, service);
 
   return v9;
 }
 
-- (void)presentFaceTimeSpamReportAlertFor:(id)a3
+- (void)presentFaceTimeSpamReportAlertFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  ReportFlowPresenter.presentFaceTimeSpamReportAlert(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  ReportFlowPresenter.presentFaceTimeSpamReportAlert(for:)(forCopy);
 }
 
-- (void)presentBlockAllAlertFor:(id)a3
+- (void)presentBlockAllAlertFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  ReportFlowPresenter.presentBlockAllAlert(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  ReportFlowPresenter.presentBlockAllAlert(for:)(forCopy);
 }
 
-- (void)presentBlockUnknownAlertFor:(id)a3
+- (void)presentBlockUnknownAlertFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  ReportFlowPresenter.presentBlockUnknownAlert(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  ReportFlowPresenter.presentBlockUnknownAlert(for:)(forCopy);
 }
 
-- (void)presentFaceTimeSpamReportAndBlockAlertFor:(id)a3
+- (void)presentFaceTimeSpamReportAndBlockAlertFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  ReportFlowPresenter.presentFaceTimeSpamReportAndBlockAlert(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  ReportFlowPresenter.presentFaceTimeSpamReportAndBlockAlert(for:)(forCopy);
 }
 
-- (void)presentGroupFaceTimeSpamReportAndBlockAlertFor:(id)a3
+- (void)presentGroupFaceTimeSpamReportAndBlockAlertFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  ReportFlowPresenter.presentGroupFaceTimeSpamReportAndBlockAlert(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  ReportFlowPresenter.presentGroupFaceTimeSpamReportAndBlockAlert(for:)(forCopy);
 }
 
-- (void)showReportingExtensionForCall:(id)a3
+- (void)showReportingExtensionForCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  ReportFlowPresenter.showReportingExtension(for:)(v4);
+  callCopy = call;
+  selfCopy = self;
+  ReportFlowPresenter.showReportingExtension(for:)(callCopy);
 }
 
-- (void)_showCarrierVoiceCallReportAlertForCall:(id)a3
+- (void)_showCarrierVoiceCallReportAlertForCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  ReportFlowPresenter.showCarrierVoiceCallReportAlert(for:)(v4);
+  callCopy = call;
+  selfCopy = self;
+  ReportFlowPresenter.showCarrierVoiceCallReportAlert(for:)(callCopy);
 }
 
 - (MPReportFlowPresenter)init
@@ -78,9 +78,9 @@
   return result;
 }
 
-- (void)controller:(id)a3 didCompleteClassificationRequest:(id)a4 withResponse:(id)a5
+- (void)controller:(id)controller didCompleteClassificationRequest:(id)request withResponse:(id)response
 {
-  v25 = a5;
+  responseCopy = response;
   v8 = type metadata accessor for Logger();
   v27 = v8;
   v9 = *(v8 - 8);
@@ -94,21 +94,21 @@
   (*(*(v15 - 8) + 56))(v14, 1, 1, v15);
   (*(v9 + 16))(v11, self + OBJC_IVAR___MPReportFlowPresenter_logger, v8);
   type metadata accessor for MainActor();
-  v16 = a4;
-  v17 = a5;
-  v18 = self;
-  v19 = v16;
-  v26 = v17;
+  requestCopy = request;
+  responseCopy2 = response;
+  selfCopy = self;
+  v19 = requestCopy;
+  v26 = responseCopy2;
   v20 = static MainActor.shared.getter();
   v21 = (*(v9 + 80) + 40) & ~*(v9 + 80);
   v22 = (v10 + v21 + 7) & 0xFFFFFFFFFFFFFFF8;
   v23 = swift_allocObject();
   *(v23 + 2) = v20;
   *(v23 + 3) = &protocol witness table for MainActor;
-  *(v23 + 4) = v18;
+  *(v23 + 4) = selfCopy;
   (*(v9 + 32))(&v23[v21], v11, v27);
   *&v23[v22] = v19;
-  *&v23[(v22 + 15) & 0xFFFFFFFFFFFFFFF8] = v25;
+  *&v23[(v22 + 15) & 0xFFFFFFFFFFFFFFF8] = responseCopy;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCytSg_Tt2g5(0, 0, v14, &closure #1 in ReportFlowPresenter.controller(_:didComplete:with:)partial apply, v23);
 }
 

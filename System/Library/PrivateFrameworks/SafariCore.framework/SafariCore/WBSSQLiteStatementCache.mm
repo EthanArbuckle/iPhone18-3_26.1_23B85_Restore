@@ -1,27 +1,27 @@
 @interface WBSSQLiteStatementCache
-- (WBSSQLiteStatementCache)initWithDatabase:(id)a3;
-- (id)_createStatementForQuery:(id)a3 error:(id *)a4;
-- (id)cachedStatementForQuery:(id)a3;
-- (id)statementForQuery:(id)a3 error:(id *)a4;
+- (WBSSQLiteStatementCache)initWithDatabase:(id)database;
+- (id)_createStatementForQuery:(id)query error:(id *)error;
+- (id)cachedStatementForQuery:(id)query;
+- (id)statementForQuery:(id)query error:(id *)error;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation WBSSQLiteStatementCache
 
-- (WBSSQLiteStatementCache)initWithDatabase:(id)a3
+- (WBSSQLiteStatementCache)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v12.receiver = self;
   v12.super_class = WBSSQLiteStatementCache;
   v6 = [(WBSSQLiteStatementCache *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v6->_database, database);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     statements = v7->_statements;
-    v7->_statements = v8;
+    v7->_statements = dictionary;
 
     v10 = v7;
   }
@@ -29,23 +29,23 @@
   return v7;
 }
 
-- (id)cachedStatementForQuery:(id)a3
+- (id)cachedStatementForQuery:(id)query
 {
-  v3 = [(NSMutableDictionary *)self->_statements objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_statements objectForKeyedSubscript:query];
 
   return v3;
 }
 
-- (id)_createStatementForQuery:(id)a3 error:(id *)a4
+- (id)_createStatementForQuery:(id)query error:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [[WBSSQLiteStatement alloc] initWithDatabase:self->_database query:v6];
+  queryCopy = query;
+  v7 = [[WBSSQLiteStatement alloc] initWithDatabase:self->_database query:queryCopy];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [(WBSSQLiteDatabase *)self->_database lastErrorWithMethodName:"[WBSSQLiteStatementCache _createStatementForQuery:error:]"];
+      *error = [(WBSSQLiteDatabase *)self->_database lastErrorWithMethodName:"[WBSSQLiteStatementCache _createStatementForQuery:error:]"];
     }
 
     else
@@ -53,8 +53,8 @@
       v8 = WBS_LOG_CHANNEL_PREFIXSQLite();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
-        [(WBSSQLiteStatementCache *)v6 _createStatementForQuery:v9 error:v12, v8];
+        lastErrorMessage = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
+        [(WBSSQLiteStatementCache *)queryCopy _createStatementForQuery:lastErrorMessage error:v12, v8];
       }
     }
   }
@@ -64,16 +64,16 @@
   return v7;
 }
 
-- (id)statementForQuery:(id)a3 error:(id *)a4
+- (id)statementForQuery:(id)query error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WBSSQLiteStatementCache *)self cachedStatementForQuery:v6];
+  queryCopy = query;
+  v7 = [(WBSSQLiteStatementCache *)self cachedStatementForQuery:queryCopy];
   if (!v7)
   {
-    v7 = [(WBSSQLiteStatementCache *)self _createStatementForQuery:v6 error:a4];
+    v7 = [(WBSSQLiteStatementCache *)self _createStatementForQuery:queryCopy error:error];
     if (v7)
     {
-      [(WBSSQLiteStatementCache *)self setCachedStatement:v7 forQuery:v6];
+      [(WBSSQLiteStatementCache *)self setCachedStatement:v7 forQuery:queryCopy];
     }
   }
 
@@ -87,8 +87,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_statements allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_statements allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -99,14 +99,14 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) invalidate];
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);

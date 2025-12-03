@@ -1,11 +1,11 @@
 @interface _UITabBarContainerView
-- (CGRect)frameForHostedElement:(int64_t)a3 options:(int64_t)a4;
+- (CGRect)frameForHostedElement:(int64_t)element options:(int64_t)options;
 - (UITabBarController)tabBarController;
-- (_TtC5UIKit22_UITabBarContainerView)initWithCoder:(id)a3;
-- (_TtC5UIKit22_UITabBarContainerView)initWithFrame:(CGRect)a3;
+- (_TtC5UIKit22_UITabBarContainerView)initWithCoder:(id)coder;
+- (_TtC5UIKit22_UITabBarContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)safeAreaInsetsDidChange;
-- (void)setTabBar:(id)a3;
+- (void)setTabBar:(id)bar;
 - (void)updateLayoutContentSize;
 @end
 
@@ -55,7 +55,7 @@
   v8[2] = sub_188A4A968;
   v8[3] = &block_descriptor_83;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v3 performWithoutAnimation_];
   _Block_release(v6);
@@ -70,20 +70,20 @@
 - (UITabBarController)tabBarController
 {
   Strong = swift_unknownObjectUnownedLoadStrong();
-  v4 = self;
-  v5 = [Strong tabBarController];
+  selfCopy = self;
+  tabBarController = [Strong tabBarController];
 
-  return v5;
+  return tabBarController;
 }
 
-- (CGRect)frameForHostedElement:(int64_t)a3 options:(int64_t)a4
+- (CGRect)frameForHostedElement:(int64_t)element options:(int64_t)options
 {
   v4 = OBJC_IVAR____TtC5UIKit22_UITabBarContainerView_tabBar;
   v5 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit22_UITabBarContainerView_tabBar);
   if (v5)
   {
-    v9 = self;
-    [(UIView *)v9 convertRect:*(&self->super.super.super.super.isa + v4) fromView:[(UITabBar *)v5 _frameForHostedElement:a3 options:a4]];
+    selfCopy = self;
+    [(UIView *)selfCopy convertRect:*(&self->super.super.super.super.isa + v4) fromView:[(UITabBar *)v5 _frameForHostedElement:element options:options]];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -107,22 +107,22 @@
   return result;
 }
 
-- (void)setTabBar:(id)a3
+- (void)setTabBar:(id)bar
 {
   v5 = OBJC_IVAR____TtC5UIKit22_UITabBarContainerView_tabBar;
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit22_UITabBarContainerView_tabBar);
   v7 = v6;
-  v8 = a3;
-  v11 = self;
-  sub_1890463C8(a3);
+  barCopy = bar;
+  selfCopy = self;
+  sub_1890463C8(bar);
   v9 = *(&self->super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.isa + v5) = a3;
-  v10 = v8;
+  *(&self->super.super.super.super.isa + v5) = bar;
+  v10 = barCopy;
 
   sub_1890464A0(v6);
 }
 
-- (_TtC5UIKit22_UITabBarContainerView)initWithCoder:(id)a3
+- (_TtC5UIKit22_UITabBarContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit22_UITabBarContainerView_tabBar) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit22_UITabBarContainerView_isBarHidden) = 0;
@@ -132,7 +132,7 @@
   return result;
 }
 
-- (_TtC5UIKit22_UITabBarContainerView)initWithFrame:(CGRect)a3
+- (_TtC5UIKit22_UITabBarContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

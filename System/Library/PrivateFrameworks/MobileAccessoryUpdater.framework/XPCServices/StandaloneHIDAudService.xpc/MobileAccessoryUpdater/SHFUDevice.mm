@@ -1,51 +1,51 @@
 @interface SHFUDevice
 + (BOOL)ignoreVersionCheck;
-+ (id)getDevicesWithMatchingDict:(__CFDictionary *)a3 hasPowerSource:(BOOL)a4 errorDomain:(id)a5 error:(id *)a6 delegate:(id)a7 logHandle:(id)a8;
-+ (id)getNumberPropertyFromService:(unsigned int)a3 withKey:(__CFString *)a4 recursive:(BOOL)a5;
-+ (id)getStringPropertyFromService:(unsigned int)a3 withKey:(__CFString *)a4;
-+ (id)sendAllFirmwaresToDeviceWithVendorID:(id)a3 productID:(id)a4 interfaceNum:(id)a5 hasPowerSource:(BOOL)a6 parsers:(id)a7 totalPrepareBytes:(unint64_t)a8 bytesSent:(unint64_t *)a9 featureReportDelay:(id)a10 waitForRenumeration:(BOOL)a11 logHandle:(id)a12 pluginDelegate:(id)a13 errorDomain:(id)a14;
++ (id)getDevicesWithMatchingDict:(__CFDictionary *)dict hasPowerSource:(BOOL)source errorDomain:(id)domain error:(id *)error delegate:(id)delegate logHandle:(id)handle;
++ (id)getNumberPropertyFromService:(unsigned int)service withKey:(__CFString *)key recursive:(BOOL)recursive;
++ (id)getStringPropertyFromService:(unsigned int)service withKey:(__CFString *)key;
++ (id)sendAllFirmwaresToDeviceWithVendorID:(id)d productID:(id)iD interfaceNum:(id)num hasPowerSource:(BOOL)source parsers:(id)parsers totalPrepareBytes:(unint64_t)bytes bytesSent:(unint64_t *)sent featureReportDelay:(id)self0 waitForRenumeration:(BOOL)self1 logHandle:(id)self2 pluginDelegate:(id)self3 errorDomain:(id)self4;
 - (BOOL)GATTServicesDiscoveryNeeded;
 - (BOOL)batteryIsCharging;
-- (BOOL)firmwareVersionsEqualTo:(id)a3;
-- (BOOL)firmwareVersionsOlderThan:(id)a3;
-- (BOOL)hardwareVersionSupportedBy:(id)a3;
-- (BOOL)shouldInstallFW:(id)a3 personalizationAllowed:(BOOL)a4;
+- (BOOL)firmwareVersionsEqualTo:(id)to;
+- (BOOL)firmwareVersionsOlderThan:(id)than;
+- (BOOL)hardwareVersionSupportedBy:(id)by;
+- (BOOL)shouldInstallFW:(id)w personalizationAllowed:(BOOL)allowed;
 - (FudPluginDelegate)delegate;
 - (NSDictionary)powerSource;
 - (NSMutableDictionary)fwVersions;
 - (NSNumber)R1FWVersion;
 - (OS_os_log)logHandle;
 - (SHFUDevice)init;
-- (id)auErrorString:(unsigned __int8)a3;
+- (id)auErrorString:(unsigned __int8)string;
 - (id)commitAllFirmwares;
-- (id)createPersonalizationRequest:(id)a3 error:(id *)a4;
+- (id)createPersonalizationRequest:(id)request error:(id *)error;
 - (id)description;
-- (id)latestFirmwareForHardware:(id)a3;
-- (id)sendAllFirmwaresToDevice:(id)a3 totalPrepareBytes:(unint64_t)a4 bytesSent:(unint64_t *)a5 featureReportDelay:(id)a6;
-- (id)sendPersonalizedManifestsToDevice:(id)a3 featureReportDelay:(id)a4 manifestCount:(id)a5;
-- (id)sendSingleFirmwareToDevice:(id)a3 totalPrepareBytes:(unint64_t)a4 bytesSent:(unint64_t *)a5 featureReportDelay:(id)a6;
-- (id)sendUnsignedFWToDevice:(id)a3 featureReportDelay:(id)a4 sendPersonalizedManifests:(BOOL *)a5;
+- (id)latestFirmwareForHardware:(id)hardware;
+- (id)sendAllFirmwaresToDevice:(id)device totalPrepareBytes:(unint64_t)bytes bytesSent:(unint64_t *)sent featureReportDelay:(id)delay;
+- (id)sendPersonalizedManifestsToDevice:(id)device featureReportDelay:(id)delay manifestCount:(id)count;
+- (id)sendSingleFirmwareToDevice:(id)device totalPrepareBytes:(unint64_t)bytes bytesSent:(unint64_t *)sent featureReportDelay:(id)delay;
+- (id)sendUnsignedFWToDevice:(id)device featureReportDelay:(id)delay sendPersonalizedManifests:(BOOL *)manifests;
 - (id)waitForSecureFWReenumeration;
 - (int)batteryCapacity;
-- (int)getReportID:(unsigned __int8)a3 buffer:(char *)a4 length:(unsigned int *)a5;
-- (int)setReportID:(unsigned __int8)a3 buffer:(char *)a4 length:(unsigned int)a5;
-- (unint64_t)getTotalFirmwareBytes:(id)a3;
+- (int)getReportID:(unsigned __int8)d buffer:(char *)buffer length:(unsigned int *)length;
+- (int)setReportID:(unsigned __int8)d buffer:(char *)buffer length:(unsigned int)length;
+- (unint64_t)getTotalFirmwareBytes:(id)bytes;
 - (unsigned)hardwareVersion;
 - (void)dealloc;
 - (void)delayAfterInitReport;
-- (void)logVersions:(id)a3;
+- (void)logVersions:(id)versions;
 - (void)resetSecureFW;
 @end
 
 @implementation SHFUDevice
 
-+ (id)getNumberPropertyFromService:(unsigned int)a3 withKey:(__CFString *)a4 recursive:(BOOL)a5
++ (id)getNumberPropertyFromService:(unsigned int)service withKey:(__CFString *)key recursive:(BOOL)recursive
 {
   v5 = 0;
-  if (a3 && a4)
+  if (service && key)
   {
-    v6 = a5 ? 3 : 0;
-    v7 = IORegistryEntrySearchCFProperty(a3, "IOService", a4, kCFAllocatorDefault, v6);
+    v6 = recursive ? 3 : 0;
+    v7 = IORegistryEntrySearchCFProperty(service, "IOService", key, kCFAllocatorDefault, v6);
     v5 = v7;
     if (v7)
     {
@@ -61,14 +61,14 @@
   return v5;
 }
 
-+ (id)getStringPropertyFromService:(unsigned int)a3 withKey:(__CFString *)a4
++ (id)getStringPropertyFromService:(unsigned int)service withKey:(__CFString *)key
 {
   v4 = 0;
-  if (a3)
+  if (service)
   {
-    if (a4)
+    if (key)
     {
-      v5 = IORegistryEntrySearchCFProperty(a3, "IOService", a4, kCFAllocatorDefault, 0);
+      v5 = IORegistryEntrySearchCFProperty(service, "IOService", key, kCFAllocatorDefault, 0);
       v4 = v5;
       if (v5)
       {
@@ -85,15 +85,15 @@
   return v4;
 }
 
-+ (id)getDevicesWithMatchingDict:(__CFDictionary *)a3 hasPowerSource:(BOOL)a4 errorDomain:(id)a5 error:(id *)a6 delegate:(id)a7 logHandle:(id)a8
++ (id)getDevicesWithMatchingDict:(__CFDictionary *)dict hasPowerSource:(BOOL)source errorDomain:(id)domain error:(id *)error delegate:(id)delegate logHandle:(id)handle
 {
-  v36 = a4;
-  v12 = a5;
-  v13 = a7;
-  v14 = a8;
+  sourceCopy = source;
+  domainCopy = domain;
+  delegateCopy = delegate;
+  handleCopy = handle;
   v15 = objc_alloc_init(NSMutableArray);
   existing = 0;
-  MutableCopy = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, a3);
+  MutableCopy = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, dict);
   MatchingServices = IOServiceGetMatchingServices(kIOMasterPortDefault, MutableCopy, &existing);
   v18 = existing;
   if (existing && !MatchingServices)
@@ -102,15 +102,15 @@
     if (v19)
     {
       v20 = v19;
-      v35 = v14;
+      v35 = handleCopy;
       do
       {
-        if (*a6)
+        if (*error)
         {
           break;
         }
 
-        v21 = [(__CFDictionary *)a3 objectForKeyedSubscript:@"bInterfaceNumber"];
+        v21 = [(__CFDictionary *)dict objectForKeyedSubscript:@"bInterfaceNumber"];
         if (!v21)
         {
           goto LABEL_12;
@@ -127,28 +127,28 @@
             if (v23 == CFNumberGetTypeID() && ([v21 isEqualToNumber:v22] & 1) != 0)
             {
               CFRelease(v22);
-              v14 = v35;
+              handleCopy = v35;
 LABEL_12:
-              v24 = [[SHFUDevice alloc] initWithService:v20 hasPowerSource:v36 delegate:v13 logHandle:v14 errorDomain:v12 error:a6];
+              v24 = [[SHFUDevice alloc] initWithService:v20 hasPowerSource:sourceCopy delegate:delegateCopy logHandle:handleCopy errorDomain:domainCopy error:error];
               if (v24)
               {
                 [v15 addObject:v24];
               }
 
-              else if (!*a6)
+              else if (!*error)
               {
                 v25 = [NSError alloc];
                 v41 = NSLocalizedDescriptionKey;
                 v42 = @"Failed to initialize SHFUDevice";
                 [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-                v34 = v13;
-                v27 = v26 = v12;
+                v34 = delegateCopy;
+                v27 = v26 = domainCopy;
                 v28 = v25;
-                v14 = v35;
-                *a6 = [v28 initWithDomain:v26 code:1 userInfo:v27];
+                handleCopy = v35;
+                *error = [v28 initWithDomain:v26 code:1 userInfo:v27];
 
-                v12 = v26;
-                v13 = v34;
+                domainCopy = v26;
+                delegateCopy = v34;
               }
 
               IOObjectRelease(v20);
@@ -157,7 +157,7 @@ LABEL_12:
             }
 
             CFRelease(v22);
-            v14 = v35;
+            handleCopy = v35;
           }
         }
 
@@ -179,23 +179,23 @@ LABEL_19:
     existing = 0;
   }
 
-  if (*a6)
+  if (*error)
   {
     goto LABEL_24;
   }
 
   if (![v15 count])
   {
-    [NSString stringWithFormat:@"No standalone HID devices detected matching %@", a3];
-    v31 = v30 = v12;
+    [NSString stringWithFormat:@"No standalone HID devices detected matching %@", dict];
+    v31 = v30 = domainCopy;
     v32 = [NSError alloc];
     v39 = NSLocalizedDescriptionKey;
     v40 = v31;
     v33 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-    *a6 = [v32 initWithDomain:v30 code:0 userInfo:v33];
+    *error = [v32 initWithDomain:v30 code:0 userInfo:v33];
 
     v15 = v31;
-    v12 = v30;
+    domainCopy = v30;
 LABEL_24:
 
     v15 = 0;
@@ -227,40 +227,40 @@ LABEL_24:
 
 - (id)description
 {
-  v3 = [(SHFUDevice *)self className];
-  v4 = [(SHFUDevice *)self productName];
-  v5 = [(SHFUDevice *)self transport];
-  v33 = [(SHFUDevice *)self productID];
-  v31 = [(SHFUDevice *)self vendorID];
-  v30 = [(SHFUDevice *)self primaryUsage];
-  v29 = [(SHFUDevice *)self primaryUsagePage];
-  v28 = [(SHFUDevice *)self locationID];
+  className = [(SHFUDevice *)self className];
+  productName = [(SHFUDevice *)self productName];
+  transport = [(SHFUDevice *)self transport];
+  productID = [(SHFUDevice *)self productID];
+  vendorID = [(SHFUDevice *)self vendorID];
+  primaryUsage = [(SHFUDevice *)self primaryUsage];
+  primaryUsagePage = [(SHFUDevice *)self primaryUsagePage];
+  locationID = [(SHFUDevice *)self locationID];
   [(SHFUDevice *)self interfaceNum];
-  v36 = v4;
-  obj = v3;
-  v34 = v35 = v5;
+  v36 = productName;
+  obj = className;
+  v34 = v35 = transport;
   if (v34)
   {
-    v32 = [(SHFUDevice *)self interfaceNum];
+    interfaceNum = [(SHFUDevice *)self interfaceNum];
   }
 
   else
   {
-    v32 = @"N/A";
+    interfaceNum = @"N/A";
   }
 
-  v27 = [(SHFUDevice *)self useFWUpdateReportIDs];
-  v26 = [(SHFUDevice *)self sendOffsets];
-  v6 = [(SHFUDevice *)self sendUberInitAndCommit];
-  v7 = [(SHFUDevice *)self writeBufferSize];
-  v8 = [(SHFUDevice *)self updateFlags];
-  v9 = [(SHFUDevice *)self initReportDelay];
-  v10 = [(SHFUDevice *)self hardwareVersion];
-  v11 = [(SHFUDevice *)self powerSource];
-  v12 = [(SHFUDevice *)self deviceAddress];
-  v13 = [(SHFUDevice *)self serialNumber];
-  v14 = [(SHFUDevice *)self registryEntryID];
-  v15 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"class: %@, product: %@, transport: %@, PID 0x%x, VID 0x%x, primary usage 0x%x, primary usage page 0x%x, locationID 0x%x, interface %@, useFWUpdateReportIDs %d, sendOffsets %d, sendUberInitAndCommit %d, writeBufferSize %u, updateFlags %u, init report delay %u, hardware version 0x%02x, power source %@, deviceAddress %@, serial number %@ IORegistryEntryID 0x%016llX", obj, v36, v35, v33, v31, v30, v29, v28, v32, v27, v26, v6, v7, v8, v9, v10, v11, v12, v13, [v14 unsignedLongLongValue]);
+  useFWUpdateReportIDs = [(SHFUDevice *)self useFWUpdateReportIDs];
+  sendOffsets = [(SHFUDevice *)self sendOffsets];
+  sendUberInitAndCommit = [(SHFUDevice *)self sendUberInitAndCommit];
+  writeBufferSize = [(SHFUDevice *)self writeBufferSize];
+  updateFlags = [(SHFUDevice *)self updateFlags];
+  initReportDelay = [(SHFUDevice *)self initReportDelay];
+  hardwareVersion = [(SHFUDevice *)self hardwareVersion];
+  powerSource = [(SHFUDevice *)self powerSource];
+  deviceAddress = [(SHFUDevice *)self deviceAddress];
+  serialNumber = [(SHFUDevice *)self serialNumber];
+  registryEntryID = [(SHFUDevice *)self registryEntryID];
+  v15 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"class: %@, product: %@, transport: %@, PID 0x%x, VID 0x%x, primary usage 0x%x, primary usage page 0x%x, locationID 0x%x, interface %@, useFWUpdateReportIDs %d, sendOffsets %d, sendUberInitAndCommit %d, writeBufferSize %u, updateFlags %u, init report delay %u, hardware version 0x%02x, power source %@, deviceAddress %@, serial number %@ IORegistryEntryID 0x%016llX", obj, v36, v35, productID, vendorID, primaryUsage, primaryUsagePage, locationID, interfaceNum, useFWUpdateReportIDs, sendOffsets, sendUberInitAndCommit, writeBufferSize, updateFlags, initReportDelay, hardwareVersion, powerSource, deviceAddress, serialNumber, [registryEntryID unsignedLongLongValue]);
 
   if (v34)
   {
@@ -270,7 +270,7 @@ LABEL_24:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v16 = self;
+  selfCopy = self;
   obja = [(SHFUDevice *)self fwVersions];
   v17 = [obja countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v17)
@@ -288,8 +288,8 @@ LABEL_24:
 
         v21 = *(*(&v39 + 1) + 8 * i);
         v22 = +[AUFileParser auTypeString:](AUFileParser, "auTypeString:", [v21 unsignedIntValue]);
-        v23 = [(SHFUDevice *)v16 fwVersions];
-        v24 = [v23 objectForKeyedSubscript:v21];
+        fwVersions = [(SHFUDevice *)selfCopy fwVersions];
+        v24 = [fwVersions objectForKeyedSubscript:v21];
         [v15 appendFormat:@", %@ version 0x%02x", v22, objc_msgSend(v24, "unsignedIntValue")];
       }
 
@@ -302,12 +302,12 @@ LABEL_24:
   return v15;
 }
 
-- (void)logVersions:(id)a3
+- (void)logVersions:(id)versions
 {
-  v4 = a3;
+  versionsCopy = versions;
   v5 = objc_alloc_init(NSMutableDictionary);
-  v40 = v4;
-  [v5 setObject:v4 forKeyedSubscript:@"deviceType"];
+  v40 = versionsCopy;
+  [v5 setObject:versionsCopy forKeyedSubscript:@"deviceType"];
   v6 = [NSNumber numberWithUnsignedShort:[(SHFUDevice *)self hardwareVersion]];
   [v5 setObject:v6 forKeyedSubscript:@"hardwareVersion"];
 
@@ -318,8 +318,8 @@ LABEL_24:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v8 = [(SHFUDevice *)self fwVersions];
-  v9 = [v8 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  fwVersions = [(SHFUDevice *)self fwVersions];
+  v9 = [fwVersions countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v9)
   {
     v10 = v9;
@@ -330,36 +330,36 @@ LABEL_24:
       {
         if (*v43 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(fwVersions);
         }
 
         v13 = *(*(&v42 + 1) + 8 * i);
         v14 = +[AUFileParser auTypeString:](AUFileParser, "auTypeString:", [v13 unsignedIntValue]);
-        v15 = [(SHFUDevice *)self fwVersions];
-        v16 = [v15 objectForKeyedSubscript:v13];
+        fwVersions2 = [(SHFUDevice *)self fwVersions];
+        v16 = [fwVersions2 objectForKeyedSubscript:v13];
         [v5 setObject:v16 forKeyedSubscript:v14];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v10 = [fwVersions countByEnumeratingWithState:&v42 objects:v46 count:16];
     }
 
     while (v10);
   }
 
-  v17 = [(SHFUDevice *)self serialNumber];
-  v18 = [v17 length];
+  serialNumber = [(SHFUDevice *)self serialNumber];
+  v18 = [serialNumber length];
 
   if (v18)
   {
-    v19 = [(SHFUDevice *)self serialNumber];
+    serialNumber2 = [(SHFUDevice *)self serialNumber];
   }
 
   else
   {
-    v19 = v40;
+    serialNumber2 = v40;
   }
 
-  v20 = v19;
+  v20 = serialNumber2;
   v21 = +[NSUserDefaults standardUserDefaults];
   v22 = [v21 dictionaryForKey:@"CoreAnalyticsTimestamps"];
   v23 = [v22 mutableCopy];
@@ -367,8 +367,8 @@ LABEL_24:
   v24 = +[NSDate date];
   v25 = [NSDate dateWithTimeIntervalSinceNow:-86400.0];
   v26 = objc_alloc_init(NSISO8601DateFormatter);
-  v27 = [(SHFUDevice *)self logHandle];
-  v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG);
+  logHandle = [(SHFUDevice *)self logHandle];
+  v28 = os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG);
   if (!v23)
   {
     if (v28)
@@ -392,8 +392,8 @@ LABEL_24:
     v32 = v26;
     v33 = v24;
     v34 = v25;
-    v35 = [(SHFUDevice *)self logHandle];
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
+    logHandle2 = [(SHFUDevice *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
     {
       sub_100015534();
     }
@@ -409,8 +409,8 @@ LABEL_24:
     v32 = v26;
     v33 = v24;
     v34 = v25;
-    v35 = [(SHFUDevice *)self logHandle];
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
+    logHandle2 = [(SHFUDevice *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
     {
       sub_1000154B8();
     }
@@ -424,8 +424,8 @@ LABEL_22:
 LABEL_23:
 
 LABEL_27:
-    v36 = [(SHFUDevice *)self logHandle];
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
+    logHandle3 = [(SHFUDevice *)self logHandle];
+    if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEBUG))
     {
       sub_1000155A4();
     }
@@ -445,8 +445,8 @@ LABEL_27:
     goto LABEL_23;
   }
 
-  v38 = [(SHFUDevice *)self logHandle];
-  if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
+  logHandle4 = [(SHFUDevice *)self logHandle];
+  if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEBUG))
   {
     sub_10001543C();
   }
@@ -454,27 +454,27 @@ LABEL_27:
 LABEL_30:
 }
 
-- (BOOL)shouldInstallFW:(id)a3 personalizationAllowed:(BOOL)a4
+- (BOOL)shouldInstallFW:(id)w personalizationAllowed:(BOOL)allowed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SHFUDevice *)self fwVersions];
-  v8 = [v6 getFirmwareType];
-  v9 = [v7 objectForKeyedSubscript:v8];
-  v10 = [v9 unsignedIntValue];
+  allowedCopy = allowed;
+  wCopy = w;
+  fwVersions = [(SHFUDevice *)self fwVersions];
+  getFirmwareType = [wCopy getFirmwareType];
+  v9 = [fwVersions objectForKeyedSubscript:getFirmwareType];
+  unsignedIntValue = [v9 unsignedIntValue];
 
-  v11 = [v6 getFirmwareVersion];
-  v12 = [v11 unsignedIntValue];
+  getFirmwareVersion = [wCopy getFirmwareVersion];
+  unsignedIntValue2 = [getFirmwareVersion unsignedIntValue];
 
-  v13 = [v6 getFirmwareType];
-  v14 = +[AUFileParser auTypeString:](AUFileParser, "auTypeString:", [v13 unsignedIntValue]);
+  getFirmwareType2 = [wCopy getFirmwareType];
+  v14 = +[AUFileParser auTypeString:](AUFileParser, "auTypeString:", [getFirmwareType2 unsignedIntValue]);
 
-  if (v12 == v10 && !+[SHFUDevice ignoreVersionCheck])
+  if (unsignedIntValue2 == unsignedIntValue && !+[SHFUDevice ignoreVersionCheck])
   {
-    if (-[SHFUDevice productID](self, "productID") != 614 || ([v6 getFirmwareType], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "unsignedIntValue"), v16, v17 != 48))
+    if (-[SHFUDevice productID](self, "productID") != 614 || ([wCopy getFirmwareType], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "unsignedIntValue"), v16, v17 != 48))
     {
-      v18 = [(SHFUDevice *)self logHandle];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+      logHandle = [(SHFUDevice *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
         sub_1000155E0();
       }
@@ -486,18 +486,18 @@ LABEL_16:
     }
   }
 
-  if ((![v6 personalizationRequired] || v4) && ((objc_msgSend(v6, "personalizationRequired") & 1) != 0 || !v4))
+  if ((![wCopy personalizationRequired] || allowedCopy) && ((objc_msgSend(wCopy, "personalizationRequired") & 1) != 0 || !allowedCopy))
   {
-    v18 = [(SHFUDevice *)self logHandle];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+    logHandle = [(SHFUDevice *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
       v20 = 138412802;
       v21 = v14;
       v22 = 1024;
-      v23 = v10;
+      v23 = unsignedIntValue;
       v24 = 1024;
-      v25 = v12;
-      _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "%@ has FW version 0x%X installed. Start installation of FW version 0x%X.", &v20, 0x18u);
+      v25 = unsignedIntValue2;
+      _os_log_debug_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEBUG, "%@ has FW version 0x%X installed. Start installation of FW version 0x%X.", &v20, 0x18u);
     }
 
     v15 = 1;
@@ -515,8 +515,8 @@ LABEL_17:
   fwVersions = self->_fwVersions;
   self->_fwVersions = 0;
 
-  v4 = [(SHFUDevice *)self fwVersions];
-  v5 = [v4 objectForKeyedSubscript:&off_100026A30];
+  fwVersions = [(SHFUDevice *)self fwVersions];
+  v5 = [fwVersions objectForKeyedSubscript:&off_100026A30];
 
   return v5;
 }
@@ -524,8 +524,8 @@ LABEL_17:
 - (id)waitForSecureFWReenumeration
 {
   v3 = [NSDate dateWithTimeIntervalSinceNow:450.0];
-  v4 = [(SHFUDevice *)self logHandle];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  logHandle = [(SHFUDevice *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_10001565C();
   }
@@ -538,11 +538,11 @@ LABEL_17:
     while (1)
     {
       [NSThread sleepForTimeInterval:5.0];
-      v7 = [(SHFUDevice *)self R1FWVersion];
-      v8 = v7;
-      if (v7)
+      r1FWVersion = [(SHFUDevice *)self R1FWVersion];
+      0x407C200000000000 = r1FWVersion;
+      if (r1FWVersion)
       {
-        if ([v7 unsignedIntValue])
+        if ([r1FWVersion unsignedIntValue])
         {
           break;
         }
@@ -557,8 +557,8 @@ LABEL_17:
       }
     }
 
-    v12 = [(SHFUDevice *)self logHandle];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    logHandle2 = [(SHFUDevice *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
     {
       sub_1000156DC();
     }
@@ -569,21 +569,21 @@ LABEL_17:
   else
   {
 LABEL_7:
-    v8 = [NSString stringWithFormat:@"Timed out after %f seconds waiting for secure firmware", 0x407C200000000000];
+    0x407C200000000000 = [NSString stringWithFormat:@"Timed out after %f seconds waiting for secure firmware", 0x407C200000000000];
     v11 = [NSError alloc];
-    v12 = [(SHFUDevice *)self errorDomain];
+    logHandle2 = [(SHFUDevice *)self errorDomain];
     v16 = NSLocalizedDescriptionKey;
-    v17 = v8;
+    v17 = 0x407C200000000000;
     v13 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    v14 = [v11 initWithDomain:v12 code:52 userInfo:v13];
+    v14 = [v11 initWithDomain:logHandle2 code:52 userInfo:v13];
   }
 
   return v14;
 }
 
-- (id)createPersonalizationRequest:(id)a3 error:(id *)a4
+- (id)createPersonalizationRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v69 = 0u;
   v70 = 0u;
   v67 = 0u;
@@ -627,10 +627,10 @@ LABEL_7:
     }
 
     v9 = v8;
-    v10 = [(SHFUDevice *)self logHandle];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    logHandle = [(SHFUDevice *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      sub_100015718(buf, v38, v10);
+      sub_100015718(buf, v38, logHandle);
     }
 
     [NSThread sleepForTimeInterval:5.0];
@@ -640,11 +640,11 @@ LABEL_7:
       v19 = [NSString stringWithFormat:@"Personalization info feature report ID 0x%02X failed with %@ for device %@", 189, v18, self];
 
       v20 = [NSError alloc];
-      v21 = [(SHFUDevice *)self errorDomain];
+      errorDomain = [(SHFUDevice *)self errorDomain];
       v35 = NSLocalizedDescriptionKey;
       v36 = v19;
       v22 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-      *a4 = [v20 initWithDomain:v21 code:53 userInfo:v22];
+      *error = [v20 initWithDomain:errorDomain code:53 userInfo:v22];
 
       v23 = 0;
       goto LABEL_11;
@@ -668,7 +668,7 @@ LABEL_7:
   [v11 setNonceHash:v14];
 
   v15 = objc_opt_new();
-  v16 = [v6 getFTABDigests];
+  getFTABDigests = [requestCopy getFTABDigests];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10000E5F8;
@@ -677,7 +677,7 @@ LABEL_7:
   v29 = v19;
   v17 = v15;
   v30 = v17;
-  [v16 enumerateKeysAndObjectsUsingBlock:v28];
+  [getFTABDigests enumerateKeysAndObjectsUsingBlock:v28];
   if ([v17 count])
   {
     [v19 setObjectList:v17];
@@ -687,11 +687,11 @@ LABEL_7:
   else
   {
     v24 = [NSError alloc];
-    v25 = [(SHFUDevice *)self errorDomain];
+    errorDomain2 = [(SHFUDevice *)self errorDomain];
     v32 = NSLocalizedDescriptionKey;
     v33 = @"Failed to create personalization request";
     v26 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-    *a4 = [v24 initWithDomain:v25 code:52 userInfo:v26];
+    *error = [v24 initWithDomain:errorDomain2 code:52 userInfo:v26];
 
     v23 = 0;
   }
@@ -701,27 +701,27 @@ LABEL_11:
   return v23;
 }
 
-- (id)sendUnsignedFWToDevice:(id)a3 featureReportDelay:(id)a4 sendPersonalizedManifests:(BOOL *)a5
+- (id)sendUnsignedFWToDevice:(id)device featureReportDelay:(id)delay sendPersonalizedManifests:(BOOL *)manifests
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SHFUDevice *)self logHandle];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  deviceCopy = device;
+  delayCopy = delay;
+  logHandle = [(SHFUDevice *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_100015764();
   }
 
-  *a5 = 0;
-  if ([v8 personalizationRequired])
+  *manifests = 0;
+  if ([deviceCopy personalizationRequired])
   {
-    if ([(SHFUDevice *)self shouldInstallFW:v8 personalizationAllowed:1])
+    if ([(SHFUDevice *)self shouldInstallFW:deviceCopy personalizationAllowed:1])
     {
-      v11 = [v8 payload];
-      v12 = [(SHFUDevice *)self sendSingleFirmwareToDevice:v11 totalPrepareBytes:0 bytesSent:0 featureReportDelay:v9];
+      payload = [deviceCopy payload];
+      v12 = [(SHFUDevice *)self sendSingleFirmwareToDevice:payload totalPrepareBytes:0 bytesSent:0 featureReportDelay:delayCopy];
 
       if (!v12)
       {
-        *a5 = 1;
+        *manifests = 1;
       }
     }
 
@@ -734,47 +734,47 @@ LABEL_11:
   else
   {
     v13 = [NSError alloc];
-    v14 = [(SHFUDevice *)self errorDomain];
+    errorDomain = [(SHFUDevice *)self errorDomain];
     v17 = NSLocalizedDescriptionKey;
     v18 = @"Personalization not required for AFU file parser";
     v15 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    v12 = [v13 initWithDomain:v14 code:52 userInfo:v15];
+    v12 = [v13 initWithDomain:errorDomain code:52 userInfo:v15];
   }
 
   return v12;
 }
 
-- (id)sendPersonalizedManifestsToDevice:(id)a3 featureReportDelay:(id)a4 manifestCount:(id)a5
+- (id)sendPersonalizedManifestsToDevice:(id)device featureReportDelay:(id)delay manifestCount:(id)count
 {
-  v49 = a3;
-  v48 = a4;
-  v8 = a5;
-  v9 = [(SHFUDevice *)self logHandle];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  deviceCopy = device;
+  delayCopy = delay;
+  countCopy = count;
+  logHandle = [(SHFUDevice *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_1000157E4();
   }
 
-  if (!v8)
+  if (!countCopy)
   {
     v30 = [NSError alloc];
-    v31 = [(SHFUDevice *)self errorDomain];
+    errorDomain = [(SHFUDevice *)self errorDomain];
     v75 = NSLocalizedDescriptionKey;
     v76 = @"Manifest count not specified";
     v32 = [NSDictionary dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-    v33 = [v30 initWithDomain:v31 code:52 userInfo:v32];
+    v33 = [v30 initWithDomain:errorDomain code:52 userInfo:v32];
 
     goto LABEL_25;
   }
 
-  if (([v49 personalizationRequired] & 1) == 0)
+  if (([deviceCopy personalizationRequired] & 1) == 0)
   {
     v34 = [NSError alloc];
-    v35 = [(SHFUDevice *)self errorDomain];
+    errorDomain2 = [(SHFUDevice *)self errorDomain];
     v73 = NSLocalizedDescriptionKey;
     v74 = @"Personalization not required for AFU file parser";
     v36 = [NSDictionary dictionaryWithObjects:&v74 forKeys:&v73 count:1];
-    v33 = [v34 initWithDomain:v35 code:52 userInfo:v36];
+    v33 = [v34 initWithDomain:errorDomain2 code:52 userInfo:v36];
 
     goto LABEL_25;
   }
@@ -805,17 +805,17 @@ LABEL_11:
   v51[2] = sub_10000EFD0;
   v51[3] = &unk_1000247B0;
   v54 = v64;
-  v12 = v49;
+  v12 = deviceCopy;
   v57 = v11;
   v52 = v12;
   v55 = &v66;
-  v53 = v48;
+  v53 = delayCopy;
   v56 = &v58;
   v13 = objc_retainBlock(v51);
   v14 = -1;
   do
   {
-    if (++v14 >= [v8 intValue])
+    if (++v14 >= [countCopy intValue])
     {
       break;
     }
@@ -838,14 +838,14 @@ LABEL_11:
     v21 = [v20 addObserverForName:v19 object:0 queue:0 usingBlock:v13];
     [(SHFUDevice *)self setPersonalizationObserver:v21];
 
-    v22 = [(SHFUDevice *)self delegate];
-    [v22 personalizationRequest:v16];
+    delegate = [(SHFUDevice *)self delegate];
+    [delegate personalizationRequest:v16];
 
     v23 = dispatch_time(0, 120000000000);
-    v24 = [(SHFUDevice *)self logHandle];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+    logHandle2 = [(SHFUDevice *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
     {
-      sub_100015864(buf, &v72, v24);
+      sub_100015864(buf, &v72, logHandle2);
     }
 
     v25 = dispatch_semaphore_wait(v59[5], v23);
@@ -860,11 +860,11 @@ LABEL_11:
     if (v25)
     {
       v37 = [NSError alloc];
-      v38 = [(SHFUDevice *)self errorDomain];
+      errorDomain3 = [(SHFUDevice *)self errorDomain];
       v69 = NSLocalizedDescriptionKey;
       v70 = @"Timed out waiting for personalization response.";
       v39 = [NSDictionary dictionaryWithObjects:&v70 forKeys:&v69 count:1];
-      v40 = [v37 initWithDomain:v38 code:52 userInfo:v39];
+      v40 = [v37 initWithDomain:errorDomain3 code:52 userInfo:v39];
       v41 = *(v67[0] + 40);
       *(v67[0] + 40) = v40;
 
@@ -874,9 +874,9 @@ LABEL_18:
       break;
     }
 
-    v27 = [(SHFUDevice *)self waitForSecureFWReenumeration];
+    waitForSecureFWReenumeration = [(SHFUDevice *)self waitForSecureFWReenumeration];
     v28 = *(v67[0] + 40);
-    *(v67[0] + 40) = v27;
+    *(v67[0] + 40) = waitForSecureFWReenumeration;
 
     v29 = *(v67[0] + 40) == 0;
   }
@@ -887,8 +887,8 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  v44 = [(SHFUDevice *)self R1FWVersion];
-  v45 = [v44 unsignedIntValue] == 1;
+  r1FWVersion = [(SHFUDevice *)self R1FWVersion];
+  v45 = [r1FWVersion unsignedIntValue] == 1;
 
   if (!v45)
   {
@@ -898,8 +898,8 @@ LABEL_18:
   if (*(v67[0] + 40))
   {
 LABEL_20:
-    v42 = [(SHFUDevice *)self logHandle];
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+    logHandle3 = [(SHFUDevice *)self logHandle];
+    if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_ERROR))
     {
       sub_1000158B0(v67);
     }
@@ -907,16 +907,16 @@ LABEL_20:
 
   else
   {
-    v46 = [(SHFUDevice *)self R1FWVersion];
-    v47 = [v46 unsignedIntValue] == 1;
+    r1FWVersion2 = [(SHFUDevice *)self R1FWVersion];
+    v47 = [r1FWVersion2 unsignedIntValue] == 1;
 
     if (!v47)
     {
       goto LABEL_23;
     }
 
-    v42 = [(SHFUDevice *)self logHandle];
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+    logHandle3 = [(SHFUDevice *)self logHandle];
+    if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_ERROR))
     {
       sub_10001592C();
     }
@@ -941,25 +941,25 @@ LABEL_25:
 {
   if ([(SHFUDevice *)self initReportDelay])
   {
-    v3 = [(SHFUDevice *)self logHandle];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+    logHandle = [(SHFUDevice *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
       sub_100015A54(self);
     }
 
     [NSThread sleepForTimeInterval:[(SHFUDevice *)self initReportDelay]];
-    v4 = [(SHFUDevice *)self logHandle];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    logHandle2 = [(SHFUDevice *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
     {
       sub_100015AD8(self);
     }
   }
 }
 
-- (id)sendAllFirmwaresToDevice:(id)a3 totalPrepareBytes:(unint64_t)a4 bytesSent:(unint64_t *)a5 featureReportDelay:(id)a6
+- (id)sendAllFirmwaresToDevice:(id)device totalPrepareBytes:(unint64_t)bytes bytesSent:(unint64_t *)sent featureReportDelay:(id)delay
 {
-  v10 = a3;
-  v11 = a6;
+  deviceCopy = device;
+  delayCopy = delay;
   if (![(SHFUDevice *)self sendUberInitAndCommit])
   {
     goto LABEL_4;
@@ -976,11 +976,11 @@ LABEL_25:
   v14 = [NSString stringWithFormat:@"Uber init report ID 0x%02X failed with %@ for device %@", 176, v13, self];
 
   v15 = [NSError alloc];
-  v16 = [(SHFUDevice *)self errorDomain];
+  errorDomain = [(SHFUDevice *)self errorDomain];
   v34 = NSLocalizedDescriptionKey;
   v35 = v14;
   v17 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-  v18 = [v15 initWithDomain:v16 code:24 userInfo:v17];
+  v18 = [v15 initWithDomain:errorDomain code:24 userInfo:v17];
 
   if (!v18)
   {
@@ -989,12 +989,12 @@ LABEL_4:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v19 = v10;
+    v19 = deviceCopy;
     v20 = [v19 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v20)
     {
       v21 = v20;
-      v27 = v10;
+      v27 = deviceCopy;
       v22 = *v29;
 LABEL_6:
       v23 = 0;
@@ -1008,8 +1008,8 @@ LABEL_6:
         v24 = *(*(&v28 + 1) + 8 * v23);
         if ([(SHFUDevice *)self shouldInstallFW:v24 personalizationAllowed:0])
         {
-          v25 = [v24 payload];
-          v18 = [(SHFUDevice *)self sendSingleFirmwareToDevice:v25 totalPrepareBytes:a4 bytesSent:a5 featureReportDelay:v11];
+          payload = [v24 payload];
+          v18 = [(SHFUDevice *)self sendSingleFirmwareToDevice:payload totalPrepareBytes:bytes bytesSent:sent featureReportDelay:delayCopy];
 
           if (v18)
           {
@@ -1030,7 +1030,7 @@ LABEL_6:
         }
       }
 
-      v10 = v27;
+      deviceCopy = v27;
     }
 
     else
@@ -1050,17 +1050,17 @@ LABEL_6:
   return v3;
 }
 
-+ (id)sendAllFirmwaresToDeviceWithVendorID:(id)a3 productID:(id)a4 interfaceNum:(id)a5 hasPowerSource:(BOOL)a6 parsers:(id)a7 totalPrepareBytes:(unint64_t)a8 bytesSent:(unint64_t *)a9 featureReportDelay:(id)a10 waitForRenumeration:(BOOL)a11 logHandle:(id)a12 pluginDelegate:(id)a13 errorDomain:(id)a14
++ (id)sendAllFirmwaresToDeviceWithVendorID:(id)d productID:(id)iD interfaceNum:(id)num hasPowerSource:(BOOL)source parsers:(id)parsers totalPrepareBytes:(unint64_t)bytes bytesSent:(unint64_t *)sent featureReportDelay:(id)self0 waitForRenumeration:(BOOL)self1 logHandle:(id)self2 pluginDelegate:(id)self3 errorDomain:(id)self4
 {
-  v61 = a6;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a7;
-  v70 = a10;
-  v63 = a12;
-  v62 = a13;
-  v67 = a14;
+  sourceCopy = source;
+  dCopy = d;
+  iDCopy = iD;
+  numCopy = num;
+  parsersCopy = parsers;
+  delayCopy = delay;
+  handleCopy = handle;
+  delegateCopy = delegate;
+  domainCopy = domain;
   v21 = dispatch_semaphore_create(0);
   v22 = dispatch_semaphore_create(0);
   v23 = IONotificationPortCreate(kIOMasterPortDefault);
@@ -1072,10 +1072,10 @@ LABEL_6:
   v54 = v24;
   IONotificationPortSetDispatchQueue(v23, v24);
   v25 = IOServiceMatching("IOHIDDevice");
-  v65 = v17;
-  [(__CFDictionary *)v25 setObject:v17 forKeyedSubscript:@"VendorID"];
-  v64 = v18;
-  [(__CFDictionary *)v25 setObject:v18 forKeyedSubscript:@"ProductID"];
+  v65 = dCopy;
+  [(__CFDictionary *)v25 setObject:dCopy forKeyedSubscript:@"VendorID"];
+  v64 = iDCopy;
+  [(__CFDictionary *)v25 setObject:iDCopy forKeyedSubscript:@"ProductID"];
   [(__CFDictionary *)v25 setObject:&off_100026A00 forKeyedSubscript:@"PrimaryUsagePage"];
   [(__CFDictionary *)v25 setObject:&off_100026A18 forKeyedSubscript:@"PrimaryUsage"];
   v26 = v25;
@@ -1090,7 +1090,7 @@ LABEL_6:
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = v20;
+  obj = parsersCopy;
   v60 = [obj countByEnumeratingWithState:&v76 objects:v84 count:16];
   if (!v60)
   {
@@ -1099,7 +1099,7 @@ LABEL_6:
   }
 
   v59 = *v77;
-  v56 = v19;
+  v56 = numCopy;
   v52 = v26;
   v53 = v23;
   do
@@ -1112,22 +1112,22 @@ LABEL_6:
       }
 
       v28 = *(*(&v76 + 1) + 8 * i);
-      v29 = [v65 intValue];
-      v30 = [v64 intValue];
+      intValue = [v65 intValue];
+      intValue2 = [v64 intValue];
       v31 = SHFU_UNKNOWN_LOCATION_ID;
-      if (v19)
+      if (numCopy)
       {
-        v32 = [v19 unsignedIntValue];
+        unsignedIntValue = [numCopy unsignedIntValue];
       }
 
       else
       {
-        v32 = SHFU_UNKNOWN_INTERFACE_NUMBER;
+        unsignedIntValue = SHFU_UNKNOWN_INTERFACE_NUMBER;
       }
 
       v75 = 0;
-      LODWORD(v51) = v32;
-      v33 = [SHFUDevice getDevices:v62 hasPowerSource:v61 logHandle:v63 withVendorID:v29 productID:v30 locationID:v31 interfaceNumber:v51 errorDomain:v67 error:&v75];
+      LODWORD(v51) = unsignedIntValue;
+      v33 = [SHFUDevice getDevices:delegateCopy hasPowerSource:sourceCopy logHandle:handleCopy withVendorID:intValue productID:intValue2 locationID:v31 interfaceNumber:v51 errorDomain:domainCopy error:&v75];
       v34 = v75;
       if (v34)
       {
@@ -1166,8 +1166,8 @@ LABEL_6:
           v42 = *(*(&v71 + 1) + 8 * j);
           if ([v42 shouldInstallFW:v28 personalizationAllowed:0])
           {
-            v43 = [v28 payload];
-            v44 = [v42 sendSingleFirmwareToDevice:v43 totalPrepareBytes:a8 bytesSent:a9 featureReportDelay:v70];
+            payload = [v28 payload];
+            v44 = [v42 sendSingleFirmwareToDevice:payload totalPrepareBytes:bytes bytesSent:sent featureReportDelay:delayCopy];
 
             if (v44)
             {
@@ -1186,7 +1186,7 @@ LABEL_25:
             else
             {
               [v42 reset];
-              if (a11)
+              if (renumeration)
               {
                 v46 = dispatch_time(0, 60000000000);
                 if (dispatch_semaphore_wait(dsema, v46))
@@ -1195,7 +1195,7 @@ LABEL_25:
                   v81 = NSLocalizedDescriptionKey;
                   v82 = @"No devices enumerated";
                   v48 = [NSDictionary dictionaryWithObjects:&v82 forKeys:&v81 count:1];
-                  v49 = [v47 initWithDomain:v67 code:0 userInfo:v48];
+                  v49 = [v47 initWithDomain:domainCopy code:0 userInfo:v48];
 
                   v39 = v49;
                   goto LABEL_30;
@@ -1219,7 +1219,7 @@ LABEL_25:
 
 LABEL_30:
 
-      v19 = v56;
+      numCopy = v56;
       i = v66;
       if (v39)
       {
@@ -1260,14 +1260,14 @@ LABEL_39:
   return v39;
 }
 
-- (unint64_t)getTotalFirmwareBytes:(id)a3
+- (unint64_t)getTotalFirmwareBytes:(id)bytes
 {
-  v3 = a3;
+  bytesCopy = bytes;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [bytesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1279,18 +1279,18 @@ LABEL_39:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(bytesCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if (([v9 personalizationRequired] & 1) == 0)
         {
-          v10 = [v9 payload];
-          v6 += [v10 length];
+          payload = [v9 payload];
+          v6 += [payload length];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [bytesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -1322,11 +1322,11 @@ LABEL_39:
   v5 = [NSString stringWithFormat:@"Set uber commit report ID 0x%02X failed with %@ for device %@", 178, v4, self];
 
   v6 = [NSError alloc];
-  v7 = [(SHFUDevice *)self errorDomain];
+  errorDomain = [(SHFUDevice *)self errorDomain];
   v12 = NSLocalizedDescriptionKey;
   v13 = v5;
   v8 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-  v9 = [v6 initWithDomain:v7 code:26 userInfo:v8];
+  v9 = [v6 initWithDomain:errorDomain code:26 userInfo:v8];
 
   if (!v9)
   {
@@ -1347,60 +1347,60 @@ LABEL_4:
 
 - (BOOL)GATTServicesDiscoveryNeeded
 {
-  v3 = [(SHFUDevice *)self fwVersions];
-  v4 = [v3 objectForKeyedSubscript:&off_100026A48];
-  v5 = [v4 unsignedIntValue];
+  fwVersions = [(SHFUDevice *)self fwVersions];
+  v4 = [fwVersions objectForKeyedSubscript:&off_100026A48];
+  unsignedIntValue = [v4 unsignedIntValue];
 
-  v6 = [(SHFUDevice *)self productID]== 788 && v5 < 0x80u || [(SHFUDevice *)self productID]== 789 && v5 < 0x30u;
-  v8 = [(SHFUDevice *)self logHandle];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  v6 = [(SHFUDevice *)self productID]== 788 && unsignedIntValue < 0x80u || [(SHFUDevice *)self productID]== 789 && unsignedIntValue < 0x30u;
+  logHandle = [(SHFUDevice *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     v10[0] = 67109632;
     v10[1] = [(SHFUDevice *)self productID];
     v11 = 1024;
-    v12 = v5;
+    v12 = unsignedIntValue;
     v13 = 1024;
     v14 = v6;
-    _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "PID 0x%04X ST FW version 0x%04X GATT service discovery needed %d", v10, 0x14u);
+    _os_log_debug_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEBUG, "PID 0x%04X ST FW version 0x%04X GATT service discovery needed %d", v10, 0x14u);
   }
 
   return v6;
 }
 
-- (id)latestFirmwareForHardware:(id)a3
+- (id)latestFirmwareForHardware:(id)hardware
 {
-  v4 = a3;
+  hardwareCopy = hardware;
   v5 = [NSString stringWithFormat:@"%u", [(SHFUDevice *)self hardwareVersion]];
-  v6 = [NSString stringWithFormat:@"%u", 0xFFFFLL];
-  v7 = [v4 objectForKeyedSubscript:v5];
+  0xFFFFLL = [NSString stringWithFormat:@"%u", 0xFFFFLL];
+  v7 = [hardwareCopy objectForKeyedSubscript:v5];
   if (v7)
   {
   }
 
   else
   {
-    v12 = [v4 objectForKeyedSubscript:v6];
+    v12 = [hardwareCopy objectForKeyedSubscript:0xFFFFLL];
 
     if (v12)
     {
-      v11 = [v4 objectForKeyedSubscript:v6];
+      v11 = [hardwareCopy objectForKeyedSubscript:0xFFFFLL];
       v8 = [NSMutableDictionary dictionaryWithDictionary:v11];
       goto LABEL_8;
     }
   }
 
-  v8 = [v4 objectForKeyedSubscript:v5];
+  v8 = [hardwareCopy objectForKeyedSubscript:v5];
 
   if (v8)
   {
-    v9 = [v4 objectForKeyedSubscript:v5];
+    v9 = [hardwareCopy objectForKeyedSubscript:v5];
     v8 = [NSMutableDictionary dictionaryWithDictionary:v9];
 
-    v10 = [v4 objectForKeyedSubscript:v6];
+    v10 = [hardwareCopy objectForKeyedSubscript:0xFFFFLL];
 
     if (v10)
     {
-      v11 = [v4 objectForKeyedSubscript:v6];
+      v11 = [hardwareCopy objectForKeyedSubscript:0xFFFFLL];
       [v8 addEntriesFromDictionary:v11];
 LABEL_8:
     }
@@ -1409,17 +1409,17 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)hardwareVersionSupportedBy:(id)a3
+- (BOOL)hardwareVersionSupportedBy:(id)by
 {
-  v3 = [(SHFUDevice *)self latestFirmwareForHardware:a3];
+  v3 = [(SHFUDevice *)self latestFirmwareForHardware:by];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (BOOL)firmwareVersionsOlderThan:(id)a3
+- (BOOL)firmwareVersionsOlderThan:(id)than
 {
-  v4 = [(SHFUDevice *)self latestFirmwareForHardware:a3];
+  v4 = [(SHFUDevice *)self latestFirmwareForHardware:than];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -1446,18 +1446,18 @@ LABEL_8:
 
       v10 = *(*(&v27 + 1) + 8 * i);
       v11 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v10 intValue]);
-      v12 = [(SHFUDevice *)self fwVersions];
-      v13 = [v12 objectForKeyedSubscript:v11];
-      v14 = [v13 unsignedIntValue];
+      fwVersions = [(SHFUDevice *)self fwVersions];
+      v13 = [fwVersions objectForKeyedSubscript:v11];
+      unsignedIntValue = [v13 unsignedIntValue];
 
       v15 = [v4 objectForKeyedSubscript:v10];
-      v16 = [v15 unsignedIntValue];
+      unsignedIntValue2 = [v15 unsignedIntValue];
 
-      if (v14)
+      if (unsignedIntValue)
       {
-        v17 = [(SHFUDevice *)self logHandle];
-        v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
-        if (v14 >= v16)
+        logHandle = [(SHFUDevice *)self logHandle];
+        v18 = os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG);
+        if (unsignedIntValue >= unsignedIntValue2)
         {
           if (v18)
           {
@@ -1465,10 +1465,10 @@ LABEL_8:
             *buf = 138412802;
             v32 = v21;
             v33 = 1024;
-            LODWORD(v34[0]) = v14;
+            LODWORD(v34[0]) = unsignedIntValue;
             WORD2(v34[0]) = 1024;
-            *(v34 + 6) = v16;
-            _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%@ has version 0x%x equal (or newer) than version 0x%x", buf, 0x18u);
+            *(v34 + 6) = unsignedIntValue2;
+            _os_log_debug_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEBUG, "%@ has version 0x%x equal (or newer) than version 0x%x", buf, 0x18u);
           }
         }
 
@@ -1480,10 +1480,10 @@ LABEL_8:
             *buf = 138412802;
             v32 = v20;
             v33 = 1024;
-            LODWORD(v34[0]) = v14;
+            LODWORD(v34[0]) = unsignedIntValue;
             WORD2(v34[0]) = 1024;
-            *(v34 + 6) = v16;
-            _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%@ has version 0x%x older than version 0x%x", buf, 0x18u);
+            *(v34 + 6) = unsignedIntValue2;
+            _os_log_debug_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEBUG, "%@ has version 0x%x older than version 0x%x", buf, 0x18u);
           }
 
           v26 = 1;
@@ -1492,15 +1492,15 @@ LABEL_8:
 
       else
       {
-        v17 = [(SHFUDevice *)self logHandle];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        logHandle = [(SHFUDevice *)self logHandle];
+        if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
         {
           v19 = +[AUFileParser auTypeString:](AUFileParser, "auTypeString:", [v11 unsignedIntValue]);
           *buf = v25;
           v32 = v19;
           v33 = 2112;
           v34[0] = self;
-          _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%@ does not have a version number reported by %@", buf, 0x16u);
+          _os_log_error_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_ERROR, "%@ does not have a version number reported by %@", buf, 0x16u);
         }
       }
     }
@@ -1517,8 +1517,8 @@ LABEL_8:
   else
   {
 LABEL_19:
-    v23 = [(SHFUDevice *)self logHandle];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+    logHandle2 = [(SHFUDevice *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
     {
       sub_100015B5C();
     }
@@ -1529,9 +1529,9 @@ LABEL_19:
   return v22;
 }
 
-- (BOOL)firmwareVersionsEqualTo:(id)a3
+- (BOOL)firmwareVersionsEqualTo:(id)to
 {
-  v4 = [(SHFUDevice *)self latestFirmwareForHardware:a3];
+  v4 = [(SHFUDevice *)self latestFirmwareForHardware:to];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -1560,17 +1560,17 @@ LABEL_19:
 
       v10 = *(*(&v26 + 1) + 8 * i);
       v11 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v10 intValue]);
-      v12 = [(SHFUDevice *)self fwVersions];
-      v13 = [v12 objectForKeyedSubscript:v11];
-      v14 = [v13 unsignedIntValue];
+      fwVersions = [(SHFUDevice *)self fwVersions];
+      v13 = [fwVersions objectForKeyedSubscript:v11];
+      unsignedIntValue = [v13 unsignedIntValue];
 
       v15 = [v4 objectForKeyedSubscript:v10];
-      v16 = [v15 unsignedIntValue];
+      unsignedIntValue2 = [v15 unsignedIntValue];
 
-      if (!v14)
+      if (!unsignedIntValue)
       {
-        v17 = [(SHFUDevice *)self logHandle];
-        if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        logHandle = [(SHFUDevice *)self logHandle];
+        if (!os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_16;
         }
@@ -1580,13 +1580,13 @@ LABEL_19:
         v31 = v19;
         v32 = 2112;
         v33[0] = self;
-        _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%@ does not have a version number reported by %@", buf, 0x16u);
+        _os_log_error_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_ERROR, "%@ does not have a version number reported by %@", buf, 0x16u);
         goto LABEL_12;
       }
 
-      v17 = [(SHFUDevice *)self logHandle];
-      v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
-      if (v14 == v16)
+      logHandle = [(SHFUDevice *)self logHandle];
+      v18 = os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG);
+      if (unsignedIntValue == unsignedIntValue2)
       {
         if (!v18)
         {
@@ -1597,10 +1597,10 @@ LABEL_19:
         *buf = 138412802;
         v31 = v19;
         v32 = 1024;
-        LODWORD(v33[0]) = v14;
+        LODWORD(v33[0]) = unsignedIntValue;
         WORD2(v33[0]) = 1024;
-        *(v33 + 6) = v14;
-        _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%@ has version 0x%x equal to version 0x%x", buf, 0x18u);
+        *(v33 + 6) = unsignedIntValue;
+        _os_log_debug_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEBUG, "%@ has version 0x%x equal to version 0x%x", buf, 0x18u);
 LABEL_12:
 
         goto LABEL_16;
@@ -1612,10 +1612,10 @@ LABEL_12:
         *buf = 138412802;
         v31 = v20;
         v32 = 1024;
-        LODWORD(v33[0]) = v14;
+        LODWORD(v33[0]) = unsignedIntValue;
         WORD2(v33[0]) = 1024;
-        *(v33 + 6) = v16;
-        _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%@ has version 0x%x not equal to version 0x%x", buf, 0x18u);
+        *(v33 + 6) = unsignedIntValue2;
+        _os_log_debug_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEBUG, "%@ has version 0x%x not equal to version 0x%x", buf, 0x18u);
       }
 
       v25 = 0;
@@ -1631,8 +1631,8 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  v22 = [(SHFUDevice *)self logHandle];
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+  logHandle2 = [(SHFUDevice *)self logHandle];
+  if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
   {
     sub_100015B98();
   }
@@ -1643,19 +1643,19 @@ LABEL_23:
   return v21;
 }
 
-- (id)sendSingleFirmwareToDevice:(id)a3 totalPrepareBytes:(unint64_t)a4 bytesSent:(unint64_t *)a5 featureReportDelay:(id)a6
+- (id)sendSingleFirmwareToDevice:(id)device totalPrepareBytes:(unint64_t)bytes bytesSent:(unint64_t *)sent featureReportDelay:(id)delay
 {
-  v8 = a3;
-  v9 = a6;
-  v10 = [(SHFUDevice *)self logHandle];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  deviceCopy = device;
+  delayCopy = delay;
+  logHandle = [(SHFUDevice *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     sub_100015BD4();
   }
 
   v11 = [(SHFUDevice *)self writeBufferSize]- 1;
   v96 = 29282;
-  v94 = self;
+  selfCopy = self;
   if ([(SHFUDevice *)self sendOffsets])
   {
     v12 = 3;
@@ -1675,7 +1675,7 @@ LABEL_23:
   v91 = v13;
   v92 = v11;
   v93 = v12;
-  v88 = v9;
+  v88 = delayCopy;
   if (v12 + v11 && (v14 = malloc_type_malloc(v12 + v11, 0xD087D295uLL)) != 0)
   {
     v15 = v14;
@@ -1690,15 +1690,15 @@ LABEL_23:
     v17 = SHFUIOReturnString(v16);
     v18 = [NSString stringWithFormat:@"Regular init report ID 0x%02X failed with %@ for device %@", 176, v17, self];
 
-    v19 = v8;
+    v19 = deviceCopy;
     v20 = [NSError alloc];
-    v21 = [(SHFUDevice *)self errorDomain];
+    errorDomain = [(SHFUDevice *)self errorDomain];
     v140 = NSLocalizedDescriptionKey;
     v141 = v18;
     v22 = [NSDictionary dictionaryWithObjects:&v141 forKeys:&v140 count:1];
     v23 = v20;
-    v8 = v19;
-    v24 = [v23 initWithDomain:v21 code:25 userInfo:v22];
+    deviceCopy = v19;
+    v24 = [v23 initWithDomain:errorDomain code:25 userInfo:v22];
     v25 = 0;
   }
 
@@ -1706,12 +1706,12 @@ LABEL_23:
   {
     v18 = [NSString stringWithFormat:@"Ran out of memory for device %@", self];
     v26 = [NSError alloc];
-    v21 = [(SHFUDevice *)self errorDomain];
+    errorDomain = [(SHFUDevice *)self errorDomain];
     v142 = NSLocalizedDescriptionKey;
     v143 = v18;
     v25 = 1;
     v22 = [NSDictionary dictionaryWithObjects:&v143 forKeys:&v142 count:1];
-    v24 = [v26 initWithDomain:v21 code:31 userInfo:v22];
+    v24 = [v26 initWithDomain:errorDomain code:31 userInfo:v22];
     v15 = 0;
   }
 
@@ -1726,33 +1726,33 @@ LABEL_16:
   v29 = v92;
   v89 = &v15[v93];
   v86 = v15;
-  v87 = v8;
-  while (v28 < [v8 length])
+  v87 = deviceCopy;
+  while (v28 < [deviceCopy length])
   {
     if (!(v28 % v91))
     {
-      v30 = [(SHFUDevice *)v94 logHandle];
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+      logHandle2 = [(SHFUDevice *)selfCopy logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [v8 length];
+        v31 = [deviceCopy length];
         *buf = 134218240;
         *&buf[4] = v28;
         *&buf[12] = 2048;
         *&buf[14] = v31;
-        _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "wrote %lu bytes out of %lu", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "wrote %lu bytes out of %lu", buf, 0x16u);
       }
 
-      if (a5)
+      if (sent)
       {
-        v32 = (100 * *a5 / a4);
-        v33 = [(SHFUDevice *)v94 delegate];
-        [v33 progress:v32];
+        v32 = (100 * *sent / bytes);
+        delegate = [(SHFUDevice *)selfCopy delegate];
+        [delegate progress:v32];
       }
     }
 
-    if (&v29[v28] > [v8 length])
+    if (&v29[v28] > [deviceCopy length])
     {
-      v34 = [v8 length];
+      v34 = [deviceCopy length];
       if (v34 == v28)
       {
         break;
@@ -1761,36 +1761,36 @@ LABEL_16:
       v29 = &v34[v27];
     }
 
-    if ([(SHFUDevice *)v94 sendOffsets])
+    if ([(SHFUDevice *)selfCopy sendOffsets])
     {
       *v15 = BYTE2(v28);
       v15[1] = BYTE1(v28);
       v15[2] = v28;
     }
 
-    [v8 getBytes:v89 range:{v28, v29}];
-    v35 = [(SHFUDevice *)v94 setReportID:177 buffer:v15 length:&v29[v93]];
+    [deviceCopy getBytes:v89 range:{v28, v29}];
+    v35 = [(SHFUDevice *)selfCopy setReportID:177 buffer:v15 length:&v29[v93]];
     if (v35)
     {
       v36 = v35;
-      v37 = [(SHFUDevice *)v94 logHandle];
-      if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+      logHandle3 = [(SHFUDevice *)selfCopy logHandle];
+      if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_ERROR))
       {
-        v52 = [v8 length];
+        v52 = [deviceCopy length];
         *buf = 134218240;
         *&buf[4] = v28;
         *&buf[12] = 2048;
         *&buf[14] = v52;
-        _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "wrote %lu bytes out of %lu", buf, 0x16u);
+        _os_log_error_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_ERROR, "wrote %lu bytes out of %lu", buf, 0x16u);
       }
 
       v38 = [NSData dataWithBytes:v15 length:&v29[v93]];
-      v39 = [(SHFUDevice *)v94 logHandle];
-      if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+      logHandle4 = [(SHFUDevice *)selfCopy logHandle];
+      if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         *&buf[4] = v38;
-        _os_log_error_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "Failed feature report buffer: %@", buf, 0xCu);
+        _os_log_error_impl(&_mh_execute_header, logHandle4, OS_LOG_TYPE_ERROR, "Failed feature report buffer: %@", buf, 0xCu);
       }
 
       v138 = 0u;
@@ -1825,40 +1825,40 @@ LABEL_16:
       v111 = 0u;
       memset(buf, 0, sizeof(buf));
       v95 = 512;
-      v40 = [(SHFUDevice *)v94 getReportID:178 buffer:buf length:&v95];
+      v40 = [(SHFUDevice *)selfCopy getReportID:178 buffer:buf length:&v95];
       v41 = v95;
       v42 = buf[0];
       v43 = SHFUIOReturnString(v36);
       v44 = v43;
       if (v40 || v41 != 1 || (v42 & 0xFFFFFFEF) == 0xA1)
       {
-        v45 = v94;
-        v47 = [NSString stringWithFormat:@"Write report ID 0x%02X failed with %@ for device %@", 177, v43, v94];
+        v45 = selfCopy;
+        selfCopy = [NSString stringWithFormat:@"Write report ID 0x%02X failed with %@ for device %@", 177, v43, selfCopy];
       }
 
       else
       {
-        v45 = v94;
-        v46 = [(SHFUDevice *)v94 auErrorString:buf[0]];
-        v47 = [NSString stringWithFormat:@"Write report ID 0x%02X failed with %@ (%@) for device %@", 177, v44, v46, v94];
+        v45 = selfCopy;
+        v46 = [(SHFUDevice *)selfCopy auErrorString:buf[0]];
+        selfCopy = [NSString stringWithFormat:@"Write report ID 0x%02X failed with %@ (%@) for device %@", 177, v44, v46, selfCopy];
       }
 
       v49 = [NSError alloc];
-      v50 = [(SHFUDevice *)v45 errorDomain];
+      errorDomain2 = [(SHFUDevice *)v45 errorDomain];
       v107 = NSLocalizedDescriptionKey;
-      v108 = v47;
+      v108 = selfCopy;
       v51 = [NSDictionary dictionaryWithObjects:&v108 forKeys:&v107 count:1];
-      v24 = [v49 initWithDomain:v50 code:32 userInfo:v51];
+      v24 = [v49 initWithDomain:errorDomain2 code:32 userInfo:v51];
 
       v15 = v86;
-      v8 = v87;
+      deviceCopy = v87;
     }
 
     else
     {
-      if (a5)
+      if (sent)
       {
-        *a5 += v29;
+        *sent += v29;
       }
 
       [v88 doubleValue];
@@ -1879,13 +1879,13 @@ LABEL_16:
     }
   }
 
-  v53 = [(SHFUDevice *)v94 logHandle];
-  if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
+  logHandle5 = [(SHFUDevice *)selfCopy logHandle];
+  if (os_log_type_enabled(logHandle5, OS_LOG_TYPE_DEFAULT))
   {
-    v54 = [v8 length];
+    v54 = [deviceCopy length];
     *buf = 134217984;
     *&buf[4] = v54;
-    _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "wrote %lu bytes successfully.", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logHandle5, OS_LOG_TYPE_DEFAULT, "wrote %lu bytes successfully.", buf, 0xCu);
   }
 
   v55 = v15;
@@ -1924,7 +1924,7 @@ LABEL_16:
     v110 = 0u;
     v111 = 0u;
     memset(buf, 0, sizeof(buf));
-    v57 = [(SHFUDevice *)v94 setReportID:178 buffer:buf length:1];
+    v57 = [(SHFUDevice *)selfCopy setReportID:178 buffer:buf length:1];
     if (v56 > 2)
     {
       break;
@@ -1937,14 +1937,14 @@ LABEL_16:
   if (v57)
   {
     v58 = SHFUIOReturnString(v57);
-    v59 = [NSString stringWithFormat:@"Set regular commit report ID 0x%02X failed with %@ for device %@", 178, v58, v94];
+    selfCopy2 = [NSString stringWithFormat:@"Set regular commit report ID 0x%02X failed with %@ for device %@", 178, v58, selfCopy];
 
     v60 = [NSError alloc];
-    v61 = [(SHFUDevice *)v94 errorDomain];
+    errorDomain3 = [(SHFUDevice *)selfCopy errorDomain];
     v105 = NSLocalizedDescriptionKey;
-    v106 = v59;
+    v106 = selfCopy2;
     v62 = [NSDictionary dictionaryWithObjects:&v106 forKeys:&v105 count:1];
-    v24 = [v60 initWithDomain:v61 code:27 userInfo:v62];
+    v24 = [v60 initWithDomain:errorDomain3 code:27 userInfo:v62];
 
     if (v24)
     {
@@ -1994,33 +1994,33 @@ LABEL_54:
     v111 = 0u;
     memset(buf, 0, sizeof(buf));
     v95 = 512;
-    v65 = [(SHFUDevice *)v94 getReportID:178 buffer:buf length:&v95];
+    v65 = [(SHFUDevice *)selfCopy getReportID:178 buffer:buf length:&v95];
     if (v65)
     {
       v74 = SHFUIOReturnString(v65);
-      v75 = [NSString stringWithFormat:@"Get regular commit report ID 0x%02X failed with %@ for device %@", 178, v74, v94];
+      selfCopy3 = [NSString stringWithFormat:@"Get regular commit report ID 0x%02X failed with %@ for device %@", 178, v74, selfCopy];
 
       v76 = [NSError alloc];
-      v77 = [(SHFUDevice *)v94 errorDomain];
+      errorDomain4 = [(SHFUDevice *)selfCopy errorDomain];
       v99 = NSLocalizedDescriptionKey;
-      v100 = v75;
+      v100 = selfCopy3;
       v78 = [NSDictionary dictionaryWithObjects:&v100 forKeys:&v99 count:1];
       v79 = v76;
-      v80 = v77;
+      v80 = errorDomain4;
       v81 = 28;
       goto LABEL_70;
     }
 
     if (v95 != 1)
     {
-      v75 = [NSString stringWithFormat:@"Get regular commit report ID 0x%02X returned invalid payload length %u for device %@", 178, v95, v94];
+      selfCopy3 = [NSString stringWithFormat:@"Get regular commit report ID 0x%02X returned invalid payload length %u for device %@", 178, v95, selfCopy];
       v82 = [NSError alloc];
-      v77 = [(SHFUDevice *)v94 errorDomain];
+      errorDomain4 = [(SHFUDevice *)selfCopy errorDomain];
       v103 = NSLocalizedDescriptionKey;
-      v104 = v75;
+      v104 = selfCopy3;
       v78 = [NSDictionary dictionaryWithObjects:&v104 forKeys:&v103 count:1];
       v79 = v82;
-      v80 = v77;
+      v80 = errorDomain4;
       v81 = 29;
       goto LABEL_70;
     }
@@ -2037,15 +2037,15 @@ LABEL_54:
 
     if (v68 != -1)
     {
-      v69 = [(SHFUDevice *)v94 auErrorString:1];
-      v70 = [NSString stringWithFormat:@"Get regular commit report ID 0x%02X returned invalid payload contents 0x%02X %@ for device %@", 178, 1, v69, v94];
+      v69 = [(SHFUDevice *)selfCopy auErrorString:1];
+      selfCopy4 = [NSString stringWithFormat:@"Get regular commit report ID 0x%02X returned invalid payload contents 0x%02X %@ for device %@", 178, 1, v69, selfCopy];
 
       v71 = [NSError alloc];
-      v72 = [(SHFUDevice *)v94 errorDomain];
+      errorDomain5 = [(SHFUDevice *)selfCopy errorDomain];
       v97 = NSLocalizedDescriptionKey;
-      v98 = v70;
+      v98 = selfCopy4;
       v73 = [NSDictionary dictionaryWithObjects:&v98 forKeys:&v97 count:1];
-      v24 = [v71 initWithDomain:v72 code:30 userInfo:v73];
+      v24 = [v71 initWithDomain:errorDomain5 code:30 userInfo:v73];
 
       goto LABEL_71;
     }
@@ -2057,16 +2057,16 @@ LABEL_54:
     goto LABEL_71;
   }
 
-  v83 = [(SHFUDevice *)v94 auErrorString:buf[0]];
-  v75 = [NSString stringWithFormat:@"Get regular commit report ID 0x%02X returned invalid payload contents 0x%02X %@ for device %@", 178, v66, v83, v94];
+  v83 = [(SHFUDevice *)selfCopy auErrorString:buf[0]];
+  selfCopy3 = [NSString stringWithFormat:@"Get regular commit report ID 0x%02X returned invalid payload contents 0x%02X %@ for device %@", 178, v66, v83, selfCopy];
 
   v84 = [NSError alloc];
-  v77 = [(SHFUDevice *)v94 errorDomain];
+  errorDomain4 = [(SHFUDevice *)selfCopy errorDomain];
   v101 = NSLocalizedDescriptionKey;
-  v102 = v75;
+  v102 = selfCopy3;
   v78 = [NSDictionary dictionaryWithObjects:&v102 forKeys:&v101 count:1];
   v79 = v84;
-  v80 = v77;
+  v80 = errorDomain4;
   v81 = 30;
 LABEL_70:
   v24 = [v79 initWithDomain:v80 code:v81 userInfo:v78];
@@ -2084,31 +2084,31 @@ LABEL_56:
   return v24;
 }
 
-- (int)getReportID:(unsigned __int8)a3 buffer:(char *)a4 length:(unsigned int *)a5
+- (int)getReportID:(unsigned __int8)d buffer:(char *)buffer length:(unsigned int *)length
 {
-  v7 = a3;
+  dCopy = d;
   deviceRef = self->_deviceRef;
-  v9 = [(SHFUDevice *)self logHandle];
-  LODWORD(a5) = sub_10000C8B8(v7, a4, a5, deviceRef, v9);
+  logHandle = [(SHFUDevice *)self logHandle];
+  LODWORD(length) = sub_10000C8B8(dCopy, buffer, length, deviceRef, logHandle);
 
-  return a5;
+  return length;
 }
 
-- (int)setReportID:(unsigned __int8)a3 buffer:(char *)a4 length:(unsigned int)a5
+- (int)setReportID:(unsigned __int8)d buffer:(char *)buffer length:(unsigned int)length
 {
-  v6 = a3;
+  dCopy = d;
   v8 = 3758097090;
-  if (a4 || !a5)
+  if (buffer || !length)
   {
-    if (a5 <= 0x200)
+    if (length <= 0x200)
     {
-      report[0] = a3;
-      if (a4 && a5)
+      report[0] = d;
+      if (buffer && length)
       {
         __memmove_chk();
       }
 
-      v8 = IOHIDDeviceSetReport(self->_deviceRef, kIOHIDReportTypeFeature, v6, report, a5 + 1);
+      v8 = IOHIDDeviceSetReport(self->_deviceRef, kIOHIDReportTypeFeature, dCopy, report, length + 1);
     }
 
     else
@@ -2117,39 +2117,39 @@ LABEL_56:
     }
   }
 
-  if (v6 != 179 && v8)
+  if (dCopy != 179 && v8)
   {
-    v9 = [NSData dataWithBytes:report length:a5 + 1];
-    v10 = [(SHFUDevice *)self logHandle];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    v9 = [NSData dataWithBytes:report length:length + 1];
+    logHandle = [(SHFUDevice *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       v12 = SHFUIOReturnString(v8);
       v13[0] = 67109890;
-      v13[1] = v6;
+      v13[1] = dCopy;
       v14 = 2112;
       v15 = v9;
       v16 = 1024;
       v17 = v8;
       v18 = 2112;
       v19 = v12;
-      _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "reportID 0x%02X payload %@ error 0x%08X %@", v13, 0x22u);
+      _os_log_error_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_ERROR, "reportID 0x%02X payload %@ error 0x%08X %@", v13, 0x22u);
     }
   }
 
   return v8;
 }
 
-- (id)auErrorString:(unsigned __int8)a3
+- (id)auErrorString:(unsigned __int8)string
 {
-  if (a3 > 63)
+  if (string > 63)
   {
-    if (a3 <= 118)
+    if (string <= 118)
     {
-      if (a3 > 114)
+      if (string > 114)
       {
-        if (a3 > 116)
+        if (string > 116)
         {
-          if (a3 == 117)
+          if (string == 117)
           {
             return @"kAUErrorSigBadDigestInfo";
           }
@@ -2160,7 +2160,7 @@ LABEL_56:
           }
         }
 
-        else if (a3 == 115)
+        else if (string == 115)
         {
           return @"kAUErrorSigBadMagic";
         }
@@ -2171,9 +2171,9 @@ LABEL_56:
         }
       }
 
-      if (a3 > 112)
+      if (string > 112)
       {
-        if (a3 == 113)
+        if (string == 113)
         {
           return @"kAUErrorSigDigestMismatch";
         }
@@ -2184,22 +2184,22 @@ LABEL_56:
         }
       }
 
-      if (a3 == 64)
+      if (string == 64)
       {
         return @"kAUErrorInvalidRegion";
       }
 
-      if (a3 == 112)
+      if (string == 112)
       {
         return @"kAUErrorSigInvalid";
       }
     }
 
-    else if (a3 <= 130)
+    else if (string <= 130)
     {
-      if (a3 > 128)
+      if (string > 128)
       {
-        if (a3 == 129)
+        if (string == 129)
         {
           return @"kAUErrorPersVerUnsupported";
         }
@@ -2210,25 +2210,25 @@ LABEL_56:
         }
       }
 
-      if (a3 == 119)
+      if (string == 119)
       {
         return @"kAUErrorNotSigned";
       }
 
-      if (a3 == 128)
+      if (string == 128)
       {
         return @"kAUErrorNotPersonalized";
       }
     }
 
-    else if (a3 <= 175)
+    else if (string <= 175)
     {
-      if (a3 == 131)
+      if (string == 131)
       {
         return @"kAUErrorPersBadMagic";
       }
 
-      if (a3 == 161)
+      if (string == 161)
       {
         return @"kAUErrorSuccessKey";
       }
@@ -2236,7 +2236,7 @@ LABEL_56:
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 0xB0u:
           return @"kAUErrorInitKeyIncorrect";
@@ -2251,7 +2251,7 @@ LABEL_56:
   }
 
   result = @"kAUErrorNone";
-  switch(a3)
+  switch(string)
   {
     case 0u:
       return result;
@@ -2328,8 +2328,8 @@ LABEL_56:
         v6 = [NSNumber numberWithUnsignedShort:*(v32 + 5)];
         [(NSMutableDictionary *)self->_fwVersions setObject:v6 forKeyedSubscript:&off_100026A48];
 
-        v7 = [(SHFUDevice *)self logHandle];
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+        logHandle = [(SHFUDevice *)self logHandle];
+        if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
         {
           sub_100015C54();
         }
@@ -2368,8 +2368,8 @@ LABEL_56:
             v18 = [NSNumber numberWithUnsignedShort:v14];
             [(NSMutableDictionary *)v17 setObject:v16 forKeyedSubscript:v18];
 
-            v19 = [(SHFUDevice *)self logHandle];
-            if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+            logHandle2 = [(SHFUDevice *)self logHandle];
+            if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
             {
               v21 = [AUFileParser auTypeString:v14];
               *buf = v22;
@@ -2380,7 +2380,7 @@ LABEL_56:
               v29 = v15;
               v30 = 1024;
               *v31 = v15;
-              _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "%@ (%d) version 0x%x (%d)", buf, 0x1Eu);
+              _os_log_debug_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEBUG, "%@ (%d) version 0x%x (%d)", buf, 0x1Eu);
             }
 
             if ((v23 & 3) != 0)
@@ -2449,20 +2449,20 @@ LABEL_13:
 
 - (BOOL)batteryIsCharging
 {
-  v2 = [(SHFUDevice *)self powerSource];
-  v3 = [v2 objectForKeyedSubscript:@"Is Charging"];
+  powerSource = [(SHFUDevice *)self powerSource];
+  v3 = [powerSource objectForKeyedSubscript:@"Is Charging"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(powerSource) = [v3 BOOLValue];
+  return powerSource;
 }
 
 - (int)batteryCapacity
 {
-  v2 = [(SHFUDevice *)self powerSource];
-  v3 = [v2 objectForKeyedSubscript:@"Current Capacity"];
+  powerSource = [(SHFUDevice *)self powerSource];
+  v3 = [powerSource objectForKeyedSubscript:@"Current Capacity"];
 
-  LODWORD(v2) = [v3 intValue];
-  return v2;
+  LODWORD(powerSource) = [v3 intValue];
+  return powerSource;
 }
 
 - (NSDictionary)powerSource
@@ -2501,7 +2501,7 @@ LABEL_16:
     v20 = v3;
     v8 = objc_retainBlock(v19);
     out_token = 0;
-    v9 = [(SHFUDevice *)self serialQueue];
+    serialQueue = [(SHFUDevice *)self serialQueue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100012570;
@@ -2509,21 +2509,21 @@ LABEL_16:
     handler[4] = self;
     v10 = v8;
     v17 = v10;
-    v11 = notify_register_dispatch("com.apple.system.accpowersources.attach", &out_token, v9, handler);
+    v11 = notify_register_dispatch("com.apple.system.accpowersources.attach", &out_token, serialQueue, handler);
 
     if (!v11)
     {
-      v12 = [(SHFUDevice *)self serialQueue];
-      dispatch_async(v12, v10);
+      serialQueue2 = [(SHFUDevice *)self serialQueue];
+      dispatch_async(serialQueue2, v10);
 
       v13 = dispatch_time(0, 15000000000);
-      v14 = [(SHFUDevice *)self powerSemaphore];
-      [(SHFUDevice *)self setPowerSourceTimedOut:dispatch_semaphore_wait(v14, v13)];
+      powerSemaphore = [(SHFUDevice *)self powerSemaphore];
+      [(SHFUDevice *)self setPowerSourceTimedOut:dispatch_semaphore_wait(powerSemaphore, v13)];
 
       if ([(SHFUDevice *)self powerSourceTimedOut])
       {
-        v15 = [(SHFUDevice *)self logHandle];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        logHandle = [(SHFUDevice *)self logHandle];
+        if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
         {
           sub_100015D1C();
         }

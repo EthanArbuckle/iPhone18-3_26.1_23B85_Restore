@@ -1,13 +1,13 @@
 @interface SiriAnalyticsXPCConnectionEntitlements
-- (SiriAnalyticsXPCConnectionEntitlements)initWithEntitlements:(id)a3;
+- (SiriAnalyticsXPCConnectionEntitlements)initWithEntitlements:(id)entitlements;
 @end
 
 @implementation SiriAnalyticsXPCConnectionEntitlements
 
-- (SiriAnalyticsXPCConnectionEntitlements)initWithEntitlements:(id)a3
+- (SiriAnalyticsXPCConnectionEntitlements)initWithEntitlements:(id)entitlements
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entitlementsCopy = entitlements;
   v29.receiver = self;
   v29.super_class = SiriAnalyticsXPCConnectionEntitlements;
   v5 = [(SiriAnalyticsXPCConnectionEntitlements *)&v29 init];
@@ -24,8 +24,8 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v24 = v4;
-        v6 = v4;
+        v24 = entitlementsCopy;
+        v6 = entitlementsCopy;
         v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v25 = 0u;
         v26 = 0u;
@@ -78,7 +78,7 @@ LABEL_16:
         extendedEntitlements = v5->_extendedEntitlements;
         v5->_extendedEntitlements = v7;
 
-        v4 = v24;
+        entitlementsCopy = v24;
       }
     }
   }

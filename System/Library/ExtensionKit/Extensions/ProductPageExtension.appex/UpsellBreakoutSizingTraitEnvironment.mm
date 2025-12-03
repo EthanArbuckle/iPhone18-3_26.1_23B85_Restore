@@ -3,16 +3,16 @@
 - (UIEdgeInsets)pageMarginInsets;
 - (_TtC20ProductPageExtensionP33_18AA49E3A0089529D9EAA38FB165277F36UpsellBreakoutSizingTraitEnvironment)init;
 - (_TtP20ProductPageExtension20PageTraitEnvironment_)snapshotPageTraitEnvironment;
-- (void)setTraitCollection:(id)a3;
+- (void)setTraitCollection:(id)collection;
 @end
 
 @implementation UpsellBreakoutSizingTraitEnvironment
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC20ProductPageExtensionP33_18AA49E3A0089529D9EAA38FB165277F36UpsellBreakoutSizingTraitEnvironment_traitCollection);
-  *(&self->super.isa + OBJC_IVAR____TtC20ProductPageExtensionP33_18AA49E3A0089529D9EAA38FB165277F36UpsellBreakoutSizingTraitEnvironment_traitCollection) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC20ProductPageExtensionP33_18AA49E3A0089529D9EAA38FB165277F36UpsellBreakoutSizingTraitEnvironment_traitCollection) = collection;
+  collectionCopy = collection;
 }
 
 - (CGSize)pageContainerSize

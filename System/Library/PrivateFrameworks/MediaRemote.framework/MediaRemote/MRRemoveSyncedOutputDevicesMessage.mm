@@ -1,22 +1,22 @@
 @interface MRRemoveSyncedOutputDevicesMessage
-- (MRRemoveSyncedOutputDevicesMessage)initWithOutputDeviceUID:(id)a3;
-- (MRRemoveSyncedOutputDevicesMessage)initWithOutputDeviceUIDs:(id)a3;
+- (MRRemoveSyncedOutputDevicesMessage)initWithOutputDeviceUID:(id)d;
+- (MRRemoveSyncedOutputDevicesMessage)initWithOutputDeviceUIDs:(id)ds;
 - (NSArray)outputDeviceUIDs;
 @end
 
 @implementation MRRemoveSyncedOutputDevicesMessage
 
-- (MRRemoveSyncedOutputDevicesMessage)initWithOutputDeviceUID:(id)a3
+- (MRRemoveSyncedOutputDevicesMessage)initWithOutputDeviceUID:(id)d
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
-    v10 = a3;
+    dCopy = d;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v10 count:1];
+    dCopy2 = d;
+    v6 = [v4 arrayWithObjects:&dCopy count:1];
 
-    v7 = [(MRRemoveSyncedOutputDevicesMessage *)self initWithOutputDeviceUIDs:v6, v10, v11];
+    v7 = [(MRRemoveSyncedOutputDevicesMessage *)self initWithOutputDeviceUIDs:v6, dCopy, v11];
     self = v7;
   }
 
@@ -29,16 +29,16 @@
   return v7;
 }
 
-- (MRRemoveSyncedOutputDevicesMessage)initWithOutputDeviceUIDs:(id)a3
+- (MRRemoveSyncedOutputDevicesMessage)initWithOutputDeviceUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v9.receiver = self;
   v9.super_class = MRRemoveSyncedOutputDevicesMessage;
   v5 = [(MRProtocolMessage *)&v9 init];
   if (v5)
   {
     v6 = objc_alloc_init(_MRRemoveOutputDevicesMessageProtobuf);
-    v7 = [v4 mutableCopy];
+    v7 = [dsCopy mutableCopy];
     [(_MRRemoveOutputDevicesMessageProtobuf *)v6 setOutputDeviceUIDs:v7];
 
     [(MRProtocolMessage *)v5 setUnderlyingCodableMessage:v6];
@@ -49,10 +49,10 @@
 
 - (NSArray)outputDeviceUIDs
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 outputDeviceUIDs];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  outputDeviceUIDs = [underlyingCodableMessage outputDeviceUIDs];
 
-  return v3;
+  return outputDeviceUIDs;
 }
 
 @end

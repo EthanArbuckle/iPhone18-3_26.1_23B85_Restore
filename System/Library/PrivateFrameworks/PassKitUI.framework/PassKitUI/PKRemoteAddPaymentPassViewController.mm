@@ -1,9 +1,9 @@
 @interface PKRemoteAddPaymentPassViewController
 - (PKAddPaymentPassViewControllerDelegate)delegate;
 - (void)dealloc;
-- (void)didFinishWithPass:(id)a3 error:(id)a4;
-- (void)generateRequestWithCertificateChain:(id)a3 nonce:(id)a4 nonceSignature:(id)a5 completionHandler:(id)a6;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)didFinishWithPass:(id)pass error:(id)error;
+- (void)generateRequestWithCertificateChain:(id)chain nonce:(id)nonce nonceSignature:(id)signature completionHandler:(id)handler;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation PKRemoteAddPaymentPassViewController
@@ -15,15 +15,15 @@
   [(PKRemoteAddPaymentPassViewController *)&v2 dealloc];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
     v8 = *MEMORY[0x1E696AA08];
-    v9[0] = v4;
+    v9[0] = errorCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   }
 
@@ -36,35 +36,35 @@
   [(PKRemoteAddPaymentPassViewController *)self didFinishWithPass:0 error:v7];
 }
 
-- (void)didFinishWithPass:(id)a3 error:(id)a4
+- (void)didFinishWithPass:(id)pass error:(id)error
 {
   if (!self->_finished)
   {
     self->_finished = 1;
-    v7 = a4;
-    v8 = a3;
-    v10 = [(PKRemoteAddPaymentPassViewController *)self delegate];
-    v9 = [(PKRemoteAddPaymentPassViewController *)self _addPaymentPassVC];
-    [v10 addPaymentPassViewController:v9 didFinishAddingPaymentPass:v8 error:v7];
+    errorCopy = error;
+    passCopy = pass;
+    delegate = [(PKRemoteAddPaymentPassViewController *)self delegate];
+    _addPaymentPassVC = [(PKRemoteAddPaymentPassViewController *)self _addPaymentPassVC];
+    [delegate addPaymentPassViewController:_addPaymentPassVC didFinishAddingPaymentPass:passCopy error:errorCopy];
   }
 }
 
-- (void)generateRequestWithCertificateChain:(id)a3 nonce:(id)a4 nonceSignature:(id)a5 completionHandler:(id)a6
+- (void)generateRequestWithCertificateChain:(id)chain nonce:(id)nonce nonceSignature:(id)signature completionHandler:(id)handler
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(PKRemoteAddPaymentPassViewController *)self delegate];
-  if (v13)
+  chainCopy = chain;
+  nonceCopy = nonce;
+  signatureCopy = signature;
+  handlerCopy = handler;
+  delegate = [(PKRemoteAddPaymentPassViewController *)self delegate];
+  if (delegate)
   {
-    v14 = [(PKRemoteAddPaymentPassViewController *)self _addPaymentPassVC];
-    [v13 addPaymentPassViewController:v14 generateRequestWithCertificateChain:v15 nonce:v10 nonceSignature:v11 completionHandler:v12];
+    _addPaymentPassVC = [(PKRemoteAddPaymentPassViewController *)self _addPaymentPassVC];
+    [delegate addPaymentPassViewController:_addPaymentPassVC generateRequestWithCertificateChain:chainCopy nonce:nonceCopy nonceSignature:signatureCopy completionHandler:handlerCopy];
   }
 
-  else if (v12)
+  else if (handlerCopy)
   {
-    v12[2](v12, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 

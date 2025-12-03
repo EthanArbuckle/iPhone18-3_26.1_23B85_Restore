@@ -1,15 +1,15 @@
 @interface CSDConversationABTestConfiguration
-- (CSDConversationABTestConfiguration)initWithGroupUUID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CSDConversationABTestConfiguration)initWithGroupUUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_generateABTestConfiguration;
 @end
 
 @implementation CSDConversationABTestConfiguration
 
-- (CSDConversationABTestConfiguration)initWithGroupUUID:(id)a3
+- (CSDConversationABTestConfiguration)initWithGroupUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = CSDConversationABTestConfiguration;
   v6 = [(CSDConversationABTestConfiguration *)&v15 init];
@@ -19,21 +19,21 @@
     serverBag = v6->_serverBag;
     v6->_serverBag = v7;
 
-    objc_storeStrong(&v6->_groupUUID, a3);
-    v9 = [(CSDConversationABTestConfiguration *)v6 serverBag];
-    v6->_authTagSampleRate = [v9 uPlusOneAuthTagSampleRate];
+    objc_storeStrong(&v6->_groupUUID, d);
+    serverBag = [(CSDConversationABTestConfiguration *)v6 serverBag];
+    v6->_authTagSampleRate = [serverBag uPlusOneAuthTagSampleRate];
 
-    v10 = [(CSDConversationABTestConfiguration *)v6 serverBag];
-    v6->_TLESampleRate = [v10 groupFaceTimeTLESampleRate];
+    serverBag2 = [(CSDConversationABTestConfiguration *)v6 serverBag];
+    v6->_TLESampleRate = [serverBag2 groupFaceTimeTLESampleRate];
 
-    v11 = [(CSDConversationABTestConfiguration *)v6 serverBag];
-    v6->_isShortMKIEnabled = [v11 isShortMKIEnabled];
+    serverBag3 = [(CSDConversationABTestConfiguration *)v6 serverBag];
+    v6->_isShortMKIEnabled = [serverBag3 isShortMKIEnabled];
 
-    v12 = [(CSDConversationABTestConfiguration *)v6 serverBag];
-    v6->_isTLEUPlusOneEnabled = [v12 isTLEUPlusOneEnabled];
+    serverBag4 = [(CSDConversationABTestConfiguration *)v6 serverBag];
+    v6->_isTLEUPlusOneEnabled = [serverBag4 isTLEUPlusOneEnabled];
 
-    v13 = [(CSDConversationABTestConfiguration *)v6 serverBag];
-    v6->_TLEUPlusOneSampleRate = [v13 uPlusOneTLESampleRate];
+    serverBag5 = [(CSDConversationABTestConfiguration *)v6 serverBag];
+    v6->_TLEUPlusOneSampleRate = [serverBag5 uPlusOneTLESampleRate];
 
     [(CSDConversationABTestConfiguration *)v6 _generateABTestConfiguration];
   }
@@ -44,8 +44,8 @@
 - (id)description
 {
   v3 = [NSMutableString stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CSDConversationABTestConfiguration *)self groupUUID];
-  [v3 appendFormat:@" groupUUID=%@", v4];
+  groupUUID = [(CSDConversationABTestConfiguration *)self groupUUID];
+  [v3 appendFormat:@" groupUUID=%@", groupUUID];
 
   if ([(CSDConversationABTestConfiguration *)self isShortMKIEnabled])
   {
@@ -100,12 +100,12 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CSDConversationABTestConfiguration *)self groupUUID];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  groupUUID = [(CSDConversationABTestConfiguration *)self groupUUID];
   v6 = v4[3];
-  v4[3] = v5;
+  v4[3] = groupUUID;
 
   *(v4 + 8) = [(CSDConversationABTestConfiguration *)self isShortMKIEnabled];
   *(v4 + 9) = [(CSDConversationABTestConfiguration *)self isAuthTagEnabled];
@@ -119,8 +119,8 @@
 
 - (void)_generateABTestConfiguration
 {
-  v3 = [(CSDConversationABTestConfiguration *)self groupUUID];
-  v4 = [v3 hash];
+  groupUUID = [(CSDConversationABTestConfiguration *)self groupUUID];
+  v4 = [groupUUID hash];
 
   if ([(CSDConversationABTestConfiguration *)self isShortMKIEnabled])
   {
@@ -206,9 +206,9 @@
     }
 
     v14 = v4;
-    v15 = [(CSDConversationABTestConfiguration *)self authTagSampleRate];
-    v16 = [(CSDConversationABTestConfiguration *)self TLESampleRate];
-    v17 = [(CSDConversationABTestConfiguration *)self TLEUPlusOneSampleRate];
+    authTagSampleRate = [(CSDConversationABTestConfiguration *)self authTagSampleRate];
+    tLESampleRate = [(CSDConversationABTestConfiguration *)self TLESampleRate];
+    tLEUPlusOneSampleRate = [(CSDConversationABTestConfiguration *)self TLEUPlusOneSampleRate];
     v18 = 138414082;
     v19 = v11;
     v20 = 2112;
@@ -220,11 +220,11 @@
     v26 = 2048;
     v27 = v14;
     v28 = 2048;
-    v29 = v15;
+    v29 = authTagSampleRate;
     v30 = 2048;
-    v31 = v16;
+    v31 = tLESampleRate;
     v32 = 2048;
-    v33 = v17;
+    v33 = tLEUPlusOneSampleRate;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "isTLEEnabled: %@, isShortMKIEnabled: %@, isAuthTagEnabled: %@, isTLEUPlusOneEnabled: %@, hashValue: %lu, authTagSampleRate: %lu, TLESampleRate: %lu, TLEUPlusOneSampleRate: %lu", &v18, 0x52u);
   }
 }

@@ -1,33 +1,33 @@
 @interface EditClassifier
 + (void)initialize;
-- (EditClassifier)initWithLanguage:(id)a3 task:(id)a4 samplingRate:(unint64_t)a5;
-- (id)classifyWithUUID:(id)a3 parameters:(id)a4 nbestTokens:(id)a5 recognizedText:(id)a6 correctedText:(id)a7;
-- (id)labelConfusionPair:(id)a3 errorType:(int64_t)a4 alignedSourceIndex:(unint64_t)a5 alignedTargetIndex:(unint64_t)a6;
+- (EditClassifier)initWithLanguage:(id)language task:(id)task samplingRate:(unint64_t)rate;
+- (id)classifyWithUUID:(id)d parameters:(id)parameters nbestTokens:(id)tokens recognizedText:(id)text correctedText:(id)correctedText;
+- (id)labelConfusionPair:(id)pair errorType:(int64_t)type alignedSourceIndex:(unint64_t)index alignedTargetIndex:(unint64_t)targetIndex;
 @end
 
 @implementation EditClassifier
 
-- (id)labelConfusionPair:(id)a3 errorType:(int64_t)a4 alignedSourceIndex:(unint64_t)a5 alignedTargetIndex:(unint64_t)a6
+- (id)labelConfusionPair:(id)pair errorType:(int64_t)type alignedSourceIndex:(unint64_t)index alignedTargetIndex:(unint64_t)targetIndex
 {
-  v10 = a3;
-  [v10 setErrorType:a4];
-  [v10 setAlignedSourceIndex:a5];
-  [v10 setAlignedTargetIndex:a6];
-  [(NSMutableArray *)self->_confusionPairs addObject:v10];
+  pairCopy = pair;
+  [pairCopy setErrorType:type];
+  [pairCopy setAlignedSourceIndex:index];
+  [pairCopy setAlignedTargetIndex:targetIndex];
+  [(NSMutableArray *)self->_confusionPairs addObject:pairCopy];
 
   return 0;
 }
 
-- (id)classifyWithUUID:(id)a3 parameters:(id)a4 nbestTokens:(id)a5 recognizedText:(id)a6 correctedText:(id)a7
+- (id)classifyWithUUID:(id)d parameters:(id)parameters nbestTokens:(id)tokens recognizedText:(id)text correctedText:(id)correctedText
 {
-  v12 = a3;
-  v63 = a4;
-  v62 = a5;
-  v13 = a6;
-  v64 = a7;
-  v65 = v12;
-  v61 = v13;
-  v14 = [[ConfusionPairAligner alloc] initWithUttId:v12 recognizedText:v13 correctedText:v64 errorType:0 editMethod:0];
+  dCopy = d;
+  parametersCopy = parameters;
+  tokensCopy = tokens;
+  textCopy = text;
+  correctedTextCopy = correctedText;
+  v65 = dCopy;
+  v61 = textCopy;
+  v14 = [[ConfusionPairAligner alloc] initWithUttId:dCopy recognizedText:textCopy correctedText:correctedTextCopy errorType:0 editMethod:0];
   v15 = v14;
   if (!v14)
   {
@@ -35,14 +35,14 @@
     goto LABEL_49;
   }
 
-  v60 = [(ConfusionPairAligner *)v14 confusionPairs];
-  if ([v60 count])
+  confusionPairs = [(ConfusionPairAligner *)v14 confusionPairs];
+  if ([confusionPairs count])
   {
     v81 = 0u;
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v16 = v60;
+    v16 = confusionPairs;
     v17 = [v16 countByEnumeratingWithState:&v79 objects:v94 count:16];
     if (v17)
     {
@@ -86,7 +86,7 @@
 
         synthesizer = self->_synthesizer;
         v92 = v65;
-        v93 = v64;
+        v93 = correctedTextCopy;
         v26 = [NSDictionary dictionaryWithObjects:&v93 forKeys:&v92 count:1];
         v27 = [(SRAudioGenerator *)synthesizer generateTTSAudiosFromTexts:v26 language:self->_language downsample:0];
 
@@ -122,29 +122,29 @@
             v36 = qword_10003FF20;
             if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
             {
-              v37 = [v62 count];
+              v37 = [tokensCopy count];
               v38 = [v33 count];
-              v39 = [v63 nbestAlignmentSourceBound];
-              v40 = [v63 nbestAlignmentTargetBound];
+              nbestAlignmentSourceBound = [parametersCopy nbestAlignmentSourceBound];
+              nbestAlignmentTargetBound = [parametersCopy nbestAlignmentTargetBound];
               *v84 = 134218752;
               v85 = v37;
               v86 = 2048;
               v87 = v38;
               v88 = 2048;
-              v89 = v39;
+              v89 = nbestAlignmentSourceBound;
               v90 = 2048;
-              v91 = v40;
+              v91 = nbestAlignmentTargetBound;
               _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "User Edit: Aligning original decoding nbest result and redecoded nbest result, original nbest size: %lu, redecoded nbest size: %lu, alignment source bound: %lu, alignment target bound: %lu", v84, 0x2Au);
             }
 
-            v58 = sub_10000E088(v62);
+            v58 = sub_10000E088(tokensCopy);
             v59 = objc_alloc_init(NSMutableDictionary);
-            v41 = sub_10000E338(self->_aligner, v33, v58, [v63 nbestAlignmentSourceBound], objc_msgSend(v63, "nbestAlignmentTargetBound"), v59);
+            v41 = sub_10000E338(self->_aligner, v33, v58, [parametersCopy nbestAlignmentSourceBound], objc_msgSend(parametersCopy, "nbestAlignmentTargetBound"), v59);
             v42 = [v59 objectForKeyedSubscript:@"sourceIndex"];
-            v43 = [v42 intValue];
+            intValue = [v42 intValue];
 
             v44 = [v59 objectForKeyedSubscript:@"targetIndex"];
-            v45 = [v44 intValue];
+            intValue2 = [v44 intValue];
 
             v56 = v27;
             v57 = v23;
@@ -171,7 +171,7 @@
                   {
                     if (v41)
                     {
-                      v51 = [(EditClassifier *)self labelConfusionPair:v50 errorType:1 alignedSourceIndex:v43 alignedTargetIndex:v45];
+                      v51 = [(EditClassifier *)self labelConfusionPair:v50 errorType:1 alignedSourceIndex:intValue alignedTargetIndex:intValue2];
                     }
 
                     else
@@ -243,10 +243,10 @@ LABEL_49:
   return v34;
 }
 
-- (EditClassifier)initWithLanguage:(id)a3 task:(id)a4 samplingRate:(unint64_t)a5
+- (EditClassifier)initWithLanguage:(id)language task:(id)task samplingRate:(unint64_t)rate
 {
-  v8 = a3;
-  v9 = a4;
+  languageCopy = language;
+  taskCopy = task;
   v26.receiver = self;
   v26.super_class = EditClassifier;
   v10 = [(EditClassifier *)&v26 init];
@@ -268,26 +268,26 @@ LABEL_49:
   synthesizer = v10->_synthesizer;
   v10->_synthesizer = v13;
 
-  if (!v10->_synthesizer || (v15 = objc_alloc_init(_EAREditDistance), aligner = v10->_aligner, v10->_aligner = v15, aligner, !v10->_aligner) || ![v8 length])
+  if (!v10->_synthesizer || (v15 = objc_alloc_init(_EAREditDistance), aligner = v10->_aligner, v10->_aligner = v15, aligner, !v10->_aligner) || ![languageCopy length])
   {
 LABEL_10:
     v18 = 0;
     goto LABEL_11;
   }
 
-  v17 = [v9 length];
+  v17 = [taskCopy length];
   v18 = 0;
-  if (a5 && v17)
+  if (rate && v17)
   {
-    v19 = [v8 copy];
+    v19 = [languageCopy copy];
     language = v10->_language;
     v10->_language = v19;
 
-    v21 = [v9 copy];
+    v21 = [taskCopy copy];
     task = v10->_task;
     v10->_task = v21;
 
-    v10->_samplingRate = a5;
+    v10->_samplingRate = rate;
     v23 = objc_alloc_init(NSMutableArray);
     confusionPairs = v10->_confusionPairs;
     v10->_confusionPairs = v23;
@@ -303,7 +303,7 @@ LABEL_11:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10003FF20 = os_log_create("com.apple.speech.speechmodeltraining", "useredit");
 

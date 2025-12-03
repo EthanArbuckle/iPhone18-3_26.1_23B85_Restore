@@ -1,20 +1,20 @@
 @interface HFFakeMediaAccessoryItem
-- (HFFakeMediaAccessoryItem)initWithMediaAccessoryItemType:(int64_t)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)createControlItemsWithOptions:(id)a3;
+- (HFFakeMediaAccessoryItem)initWithMediaAccessoryItemType:(int64_t)type;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)createControlItemsWithOptions:(id)options;
 - (id)description;
 @end
 
 @implementation HFFakeMediaAccessoryItem
 
-- (HFFakeMediaAccessoryItem)initWithMediaAccessoryItemType:(int64_t)a3
+- (HFFakeMediaAccessoryItem)initWithMediaAccessoryItemType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = HFFakeMediaAccessoryItem;
   result = [(HFFakeMediaAccessoryItem *)&v5 init];
   if (result)
   {
-    result->_mediaAccessoryItemType = a3;
+    result->_mediaAccessoryItemType = type;
   }
 
   return result;
@@ -29,18 +29,18 @@
   return v4;
 }
 
-- (id)createControlItemsWithOptions:(id)a3
+- (id)createControlItemsWithOptions:(id)options
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v3 = objc_alloc_init(HFMutableItemUpdateOutcome);
-  v4 = [MEMORY[0x277CBEB68] null];
-  [(HFMutableItemUpdateOutcome *)v3 setObject:v4 forKeyedSubscript:@"HFResultMediaRouteIdentifierKey"];
+  null = [MEMORY[0x277CBEB68] null];
+  [(HFMutableItemUpdateOutcome *)v3 setObject:null forKeyedSubscript:@"HFResultMediaRouteIdentifierKey"];
 
   v5 = [MEMORY[0x277D2C900] futureWithResult:v3];
 

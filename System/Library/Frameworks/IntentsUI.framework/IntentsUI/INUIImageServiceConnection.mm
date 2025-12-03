@@ -1,23 +1,23 @@
 @interface INUIImageServiceConnection
 + (id)sharedConnection;
-- (void)loadUIImageForINImage:(id)a3 traitCollection:(id)a4 reply:(id)a5;
+- (void)loadUIImageForINImage:(id)image traitCollection:(id)collection reply:(id)reply;
 @end
 
 @implementation INUIImageServiceConnection
 
-- (void)loadUIImageForINImage:(id)a3 traitCollection:(id)a4 reply:(id)a5
+- (void)loadUIImageForINImage:(id)image traitCollection:(id)collection reply:(id)reply
 {
-  v6 = a5;
+  replyCopy = reply;
   v7 = MEMORY[0x277CD3D20];
-  v8 = a3;
-  v9 = [v7 sharedConnection];
+  imageCopy = image;
+  sharedConnection = [v7 sharedConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__INUIImageServiceConnection_loadUIImageForINImage_traitCollection_reply___block_invoke;
   v11[3] = &unk_27872BA90;
-  v12 = v6;
-  v10 = v6;
-  [v9 loadImageDataAndSizeForImage:v8 reply:v11];
+  v12 = replyCopy;
+  v10 = replyCopy;
+  [sharedConnection loadImageDataAndSizeForImage:imageCopy reply:v11];
 }
 
 void __74__INUIImageServiceConnection_loadUIImageForINImage_traitCollection_reply___block_invoke(uint64_t a1, void *a2, void *a3)

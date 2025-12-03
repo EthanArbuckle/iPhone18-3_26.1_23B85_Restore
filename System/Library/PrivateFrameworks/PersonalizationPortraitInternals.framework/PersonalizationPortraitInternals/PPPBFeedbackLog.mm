@@ -1,26 +1,26 @@
 @interface PPPBFeedbackLog
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)predictionType;
 - (unint64_t)hash;
-- (void)addExperimentalGroups:(id)a3;
-- (void)addExtractedDonations:(id)a3;
-- (void)addScoredItems:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addExperimentalGroups:(id)groups;
+- (void)addExtractedDonations:(id)donations;
+- (void)addScoredItems:(id)items;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPPBFeedbackLog
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   feedbackMetadata = self->_feedbackMetadata;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (feedbackMetadata)
   {
     if (v6)
@@ -34,9 +34,9 @@
     [(PPPBFeedbackLog *)self setFeedbackMetadata:?];
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_predictionType = *(v4 + 12);
+    self->_predictionType = *(fromCopy + 12);
     *&self->_has |= 1u;
   }
 
@@ -44,7 +44,7 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = *(v4 + 7);
+  v7 = *(fromCopy + 7);
   v8 = [v7 countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v8)
   {
@@ -72,7 +72,7 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = *(v4 + 3);
+  v12 = *(fromCopy + 3);
   v13 = [v12 countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v13)
   {
@@ -100,7 +100,7 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v17 = *(v4 + 2);
+  v17 = *(fromCopy + 2);
   v18 = [v17 countByEnumeratingWithState:&v23 objects:v35 count:16];
   if (v18)
   {
@@ -124,12 +124,12 @@
     while (v19);
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PPPBFeedbackLog *)self setHomeLocationGeohash:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PPPBFeedbackLog *)self setAssetVersion:?];
   }
@@ -158,16 +158,16 @@
   return v7 ^ v9 ^ [(NSString *)self->_assetVersion hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   feedbackMetadata = self->_feedbackMetadata;
-  if (feedbackMetadata | *(v4 + 4))
+  if (feedbackMetadata | *(equalCopy + 4))
   {
     if (![(PPPBFeedbackMetadata *)feedbackMetadata isEqual:?])
     {
@@ -175,16 +175,16 @@
     }
   }
 
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_predictionType != *(v4 + 12))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_predictionType != *(equalCopy + 12))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v12 = 0;
@@ -192,13 +192,13 @@ LABEL_19:
   }
 
   scoredItems = self->_scoredItems;
-  if (scoredItems | *(v4 + 7) && ![(NSMutableArray *)scoredItems isEqual:?])
+  if (scoredItems | *(equalCopy + 7) && ![(NSMutableArray *)scoredItems isEqual:?])
   {
     goto LABEL_19;
   }
 
   extractedDonations = self->_extractedDonations;
-  if (extractedDonations | *(v4 + 3))
+  if (extractedDonations | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)extractedDonations isEqual:?])
     {
@@ -207,7 +207,7 @@ LABEL_19:
   }
 
   experimentalGroups = self->_experimentalGroups;
-  if (experimentalGroups | *(v4 + 2))
+  if (experimentalGroups | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)experimentalGroups isEqual:?])
     {
@@ -216,7 +216,7 @@ LABEL_19:
   }
 
   homeLocationGeohash = self->_homeLocationGeohash;
-  if (homeLocationGeohash | *(v4 + 5))
+  if (homeLocationGeohash | *(equalCopy + 5))
   {
     if (![(NSString *)homeLocationGeohash isEqual:?])
     {
@@ -225,7 +225,7 @@ LABEL_19:
   }
 
   assetVersion = self->_assetVersion;
-  if (assetVersion | *(v4 + 1))
+  if (assetVersion | *(equalCopy + 1))
   {
     v12 = [(NSString *)assetVersion isEqual:?];
   }
@@ -240,11 +240,11 @@ LABEL_20:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PPPBFeedbackMetadata *)self->_feedbackMetadata copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PPPBFeedbackMetadata *)self->_feedbackMetadata copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -274,7 +274,7 @@ LABEL_20:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v40 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v40 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addScoredItems:v13];
 
         ++v12;
@@ -307,7 +307,7 @@ LABEL_20:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v36 + 1) + 8 * v18) copyWithZone:a3];
+        v19 = [*(*(&v36 + 1) + 8 * v18) copyWithZone:zone];
         [v5 addExtractedDonations:v19];
 
         ++v18;
@@ -340,7 +340,7 @@ LABEL_20:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v32 + 1) + 8 * v24) copyWithZone:{a3, v32}];
+        v25 = [*(*(&v32 + 1) + 8 * v24) copyWithZone:{zone, v32}];
         [v5 addExperimentalGroups:v25];
 
         ++v24;
@@ -353,11 +353,11 @@ LABEL_20:
     while (v22);
   }
 
-  v26 = [(NSString *)self->_homeLocationGeohash copyWithZone:a3];
+  v26 = [(NSString *)self->_homeLocationGeohash copyWithZone:zone];
   v27 = *(v5 + 40);
   *(v5 + 40) = v26;
 
-  v28 = [(NSString *)self->_assetVersion copyWithZone:a3];
+  v28 = [(NSString *)self->_assetVersion copyWithZone:zone];
   v29 = *(v5 + 8);
   *(v5 + 8) = v28;
 
@@ -365,29 +365,29 @@ LABEL_20:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v18 = v4;
+  toCopy = to;
+  v18 = toCopy;
   if (self->_feedbackMetadata)
   {
-    [v4 setFeedbackMetadata:?];
-    v4 = v18;
+    [toCopy setFeedbackMetadata:?];
+    toCopy = v18;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 12) = self->_predictionType;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 12) = self->_predictionType;
+    *(toCopy + 64) |= 1u;
   }
 
   if ([(PPPBFeedbackLog *)self scoredItemsCount])
   {
     [v18 clearScoredItems];
-    v5 = [(PPPBFeedbackLog *)self scoredItemsCount];
-    if (v5)
+    scoredItemsCount = [(PPPBFeedbackLog *)self scoredItemsCount];
+    if (scoredItemsCount)
     {
-      v6 = v5;
+      v6 = scoredItemsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PPPBFeedbackLog *)self scoredItemsAtIndex:i];
@@ -399,10 +399,10 @@ LABEL_20:
   if ([(PPPBFeedbackLog *)self extractedDonationsCount])
   {
     [v18 clearExtractedDonations];
-    v9 = [(PPPBFeedbackLog *)self extractedDonationsCount];
-    if (v9)
+    extractedDonationsCount = [(PPPBFeedbackLog *)self extractedDonationsCount];
+    if (extractedDonationsCount)
     {
-      v10 = v9;
+      v10 = extractedDonationsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(PPPBFeedbackLog *)self extractedDonationsAtIndex:j];
@@ -414,10 +414,10 @@ LABEL_20:
   if ([(PPPBFeedbackLog *)self experimentalGroupsCount])
   {
     [v18 clearExperimentalGroups];
-    v13 = [(PPPBFeedbackLog *)self experimentalGroupsCount];
-    if (v13)
+    experimentalGroupsCount = [(PPPBFeedbackLog *)self experimentalGroupsCount];
+    if (experimentalGroupsCount)
     {
-      v14 = v13;
+      v14 = experimentalGroupsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(PPPBFeedbackLog *)self experimentalGroupsAtIndex:k];
@@ -439,10 +439,10 @@ LABEL_20:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_feedbackMetadata)
   {
     PBDataWriterWriteSubmessage();
@@ -566,18 +566,18 @@ LABEL_20:
 - (id)dictionaryRepresentation
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   feedbackMetadata = self->_feedbackMetadata;
   if (feedbackMetadata)
   {
-    v5 = [(PPPBFeedbackMetadata *)feedbackMetadata dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"feedbackMetadata"];
+    dictionaryRepresentation = [(PPPBFeedbackMetadata *)feedbackMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"feedbackMetadata"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInt:self->_predictionType];
-    [v3 setObject:v6 forKey:@"predictionType"];
+    [dictionary setObject:v6 forKey:@"predictionType"];
   }
 
   if ([(NSMutableArray *)self->_scoredItems count])
@@ -602,8 +602,8 @@ LABEL_20:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v40 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v40 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v40 objects:v46 count:16];
@@ -612,7 +612,7 @@ LABEL_20:
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"scoredItems"];
+    [dictionary setObject:v7 forKey:@"scoredItems"];
   }
 
   if ([(NSMutableArray *)self->_extractedDonations count])
@@ -637,8 +637,8 @@ LABEL_20:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v36 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation3 = [*(*(&v36 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation3];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v36 objects:v45 count:16];
@@ -647,7 +647,7 @@ LABEL_20:
       while (v17);
     }
 
-    [v3 setObject:v14 forKey:@"extractedDonations"];
+    [dictionary setObject:v14 forKey:@"extractedDonations"];
   }
 
   if ([(NSMutableArray *)self->_experimentalGroups count])
@@ -672,8 +672,8 @@ LABEL_20:
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v32 + 1) + 8 * k) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation4 = [*(*(&v32 + 1) + 8 * k) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation4];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v32 objects:v44 count:16];
@@ -682,24 +682,24 @@ LABEL_20:
       while (v24);
     }
 
-    [v3 setObject:v21 forKey:@"experimentalGroups"];
+    [dictionary setObject:v21 forKey:@"experimentalGroups"];
   }
 
   homeLocationGeohash = self->_homeLocationGeohash;
   if (homeLocationGeohash)
   {
-    [v3 setObject:homeLocationGeohash forKey:@"homeLocationGeohash"];
+    [dictionary setObject:homeLocationGeohash forKey:@"homeLocationGeohash"];
   }
 
   assetVersion = self->_assetVersion;
   if (assetVersion)
   {
-    [v3 setObject:assetVersion forKey:@"assetVersion"];
+    [dictionary setObject:assetVersion forKey:@"assetVersion"];
   }
 
   v30 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -708,64 +708,64 @@ LABEL_20:
   v8.receiver = self;
   v8.super_class = PPPBFeedbackLog;
   v4 = [(PPPBFeedbackLog *)&v8 description];
-  v5 = [(PPPBFeedbackLog *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPPBFeedbackLog *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addExperimentalGroups:(id)a3
+- (void)addExperimentalGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   experimentalGroups = self->_experimentalGroups;
-  v8 = v4;
+  v8 = groupsCopy;
   if (!experimentalGroups)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_experimentalGroups;
     self->_experimentalGroups = v6;
 
-    v4 = v8;
+    groupsCopy = v8;
     experimentalGroups = self->_experimentalGroups;
   }
 
-  [(NSMutableArray *)experimentalGroups addObject:v4];
+  [(NSMutableArray *)experimentalGroups addObject:groupsCopy];
 }
 
-- (void)addExtractedDonations:(id)a3
+- (void)addExtractedDonations:(id)donations
 {
-  v4 = a3;
+  donationsCopy = donations;
   extractedDonations = self->_extractedDonations;
-  v8 = v4;
+  v8 = donationsCopy;
   if (!extractedDonations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_extractedDonations;
     self->_extractedDonations = v6;
 
-    v4 = v8;
+    donationsCopy = v8;
     extractedDonations = self->_extractedDonations;
   }
 
-  [(NSMutableArray *)extractedDonations addObject:v4];
+  [(NSMutableArray *)extractedDonations addObject:donationsCopy];
 }
 
-- (void)addScoredItems:(id)a3
+- (void)addScoredItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   scoredItems = self->_scoredItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!scoredItems)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_scoredItems;
     self->_scoredItems = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     scoredItems = self->_scoredItems;
   }
 
-  [(NSMutableArray *)scoredItems addObject:v4];
+  [(NSMutableArray *)scoredItems addObject:itemsCopy];
 }
 
 - (int)predictionType

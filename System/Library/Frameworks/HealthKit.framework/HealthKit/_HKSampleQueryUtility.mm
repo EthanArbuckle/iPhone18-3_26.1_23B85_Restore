@@ -1,36 +1,36 @@
 @interface _HKSampleQueryUtility
 - (_HKSampleQueryUtility)init;
-- (_HKSampleQueryUtility)initWithHealthStore:(id)a3 sampleType:(id)a4 predicate:(id)a5 completionHandler:(id)a6 updateHandler:(id)a7;
-- (void)handleAddedObjects:(id)a3 deletedObjects:(id)a4 queryAnchor:(id)a5 error:(id)a6 resultsHandler:(id)a7;
-- (void)setUpdateHandler:(id)a3;
-- (void)setupQueryWithCompletionHandler:(id)a3;
+- (_HKSampleQueryUtility)initWithHealthStore:(id)store sampleType:(id)type predicate:(id)predicate completionHandler:(id)handler updateHandler:(id)updateHandler;
+- (void)handleAddedObjects:(id)objects deletedObjects:(id)deletedObjects queryAnchor:(id)anchor error:(id)error resultsHandler:(id)handler;
+- (void)setUpdateHandler:(id)handler;
+- (void)setupQueryWithCompletionHandler:(id)handler;
 - (void)stop;
 @end
 
 @implementation _HKSampleQueryUtility
 
-- (_HKSampleQueryUtility)initWithHealthStore:(id)a3 sampleType:(id)a4 predicate:(id)a5 completionHandler:(id)a6 updateHandler:(id)a7
+- (_HKSampleQueryUtility)initWithHealthStore:(id)store sampleType:(id)type predicate:(id)predicate completionHandler:(id)handler updateHandler:(id)updateHandler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  storeCopy = store;
+  typeCopy = type;
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  updateHandlerCopy = updateHandler;
   v23.receiver = self;
   v23.super_class = _HKSampleQueryUtility;
   v18 = [(_HKSampleQueryUtility *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_healthStore, a3);
-    objc_storeStrong(&v19->_sampleType, a4);
-    objc_storeStrong(&v19->_predicate, a5);
+    objc_storeStrong(&v18->_healthStore, store);
+    objc_storeStrong(&v19->_sampleType, type);
+    objc_storeStrong(&v19->_predicate, predicate);
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     samples = v19->_samples;
     v19->_samples = v20;
 
-    [(_HKSampleQueryUtility *)v19 setupQueryWithCompletionHandler:v16];
-    [(_HKSampleQueryUtility *)v19 setUpdateHandler:v17];
+    [(_HKSampleQueryUtility *)v19 setupQueryWithCompletionHandler:handlerCopy];
+    [(_HKSampleQueryUtility *)v19 setUpdateHandler:updateHandlerCopy];
   }
 
   return v19;
@@ -46,9 +46,9 @@
   return 0;
 }
 
-- (void)setupQueryWithCompletionHandler:(id)a3
+- (void)setupQueryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v5 = [(HKSampleType *)self->_sampleType copy];
   v6 = [HKAnchoredObjectQuery alloc];
@@ -62,7 +62,7 @@
   v10 = v5;
   v15 = v10;
   objc_copyWeak(&v17, &location);
-  v11 = v4;
+  v11 = handlerCopy;
   v16 = v11;
   v12 = [(HKAnchoredObjectQuery *)v6 initWithType:sampleType predicate:predicate anchor:queryAnchor limit:0 resultsHandler:v14];
   query = self->_query;
@@ -72,13 +72,13 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setUpdateHandler:(id)a3
+- (void)setUpdateHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_query)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     updateHandler = self->_updateHandler;
     self->_updateHandler = v6;
 
@@ -94,29 +94,29 @@
   }
 }
 
-- (void)handleAddedObjects:(id)a3 deletedObjects:(id)a4 queryAnchor:(id)a5 error:(id)a6 resultsHandler:(id)a7
+- (void)handleAddedObjects:(id)objects deletedObjects:(id)deletedObjects queryAnchor:(id)anchor error:(id)error resultsHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = v15;
-  if (a6)
+  objectsCopy = objects;
+  deletedObjectsCopy = deletedObjects;
+  anchorCopy = anchor;
+  handlerCopy = handler;
+  v16 = handlerCopy;
+  if (error)
   {
-    (*(v15 + 2))(v15, self, 0, a6);
+    (*(handlerCopy + 2))(handlerCopy, self, 0, error);
   }
 
   else
   {
-    obj = a5;
-    v31 = v15;
+    obj = anchor;
+    v31 = handlerCopy;
     v17 = objc_alloc_init(MEMORY[0x1E696AD50]);
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v18 = v13;
+    v18 = deletedObjectsCopy;
     v19 = [v18 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v19)
     {
@@ -152,7 +152,7 @@
     }
 
     [(NSMutableArray *)self->_samples removeObjectsAtIndexes:v17];
-    [(NSMutableArray *)self->_samples addObjectsFromArray:v12];
+    [(NSMutableArray *)self->_samples addObjectsFromArray:objectsCopy];
     v26 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"startDate" ascending:self->_sortStartDateAscending];
     v27 = self->_samples;
     v37 = v26;

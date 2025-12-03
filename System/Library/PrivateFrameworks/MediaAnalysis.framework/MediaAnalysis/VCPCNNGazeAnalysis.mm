@@ -1,10 +1,10 @@
 @interface VCPCNNGazeAnalysis
-+ (id)sharedModel:(id)a3;
++ (id)sharedModel:(id)model;
 - (VCPCNNGazeAnalysis)init;
 - (id).cxx_construct;
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4;
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6 faceBounds:(CGRect)a7;
-- (int)detectEyeOpennessForFace:(CGRect)a3 inBuffer:(__CVBuffer *)a4 eyeOpenness:(BOOL *)a5;
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data;
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width faceBounds:(CGRect)bounds;
+- (int)detectEyeOpennessForFace:(CGRect)face inBuffer:(__CVBuffer *)buffer eyeOpenness:(BOOL *)openness;
 - (void)dealloc;
 @end
 
@@ -12,10 +12,10 @@
 
 - (VCPCNNGazeAnalysis)init
 {
-  v3 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v4 = [v3 resourceURL];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v5 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_blink.espresso.net" relativeToURL:v4];
+  v5 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_blink.espresso.net" relativeToURL:resourceURL];
   v24.receiver = self;
   v24.super_class = VCPCNNGazeAnalysis;
   v6 = [(VCPCNNGazeAnalysis *)&v24 init];
@@ -89,15 +89,15 @@ LABEL_7:
   return v11;
 }
 
-+ (id)sharedModel:(id)a3
++ (id)sharedModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = +[VCPSharedInstanceManager sharedManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __34__VCPCNNGazeAnalysis_sharedModel___block_invoke;
   v8[3] = &unk_1E834CF10;
-  v5 = v3;
+  v5 = modelCopy;
   v9 = v5;
   v6 = [v4 sharedInstanceWithIdentifier:@"VCPGazeEspresso" andCreationBlock:v8];
 
@@ -124,18 +124,18 @@ VCPCNNModelEspresso *__34__VCPCNNGazeAnalysis_sharedModel___block_invoke(uint64_
   [(VCPCNNGazeAnalysis *)&v4 dealloc];
 }
 
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data
 {
-  if (CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (!a3)
+  if (!image)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -146,7 +146,7 @@ VCPCNNModelEspresso *__34__VCPCNNGazeAnalysis_sharedModel___block_invoke(uint64_
   }
 
   v8 = Height;
-  v9 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v9 = CVPixelBufferLockBaseAddress(image, 1uLL);
   v23 = v9;
   if (v9)
   {
@@ -159,14 +159,14 @@ VCPCNNModelEspresso *__34__VCPCNNGazeAnalysis_sharedModel___block_invoke(uint64_
 
   else
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-    bzero(a4, 3 * 4 * Width * v8);
+    BaseAddress = CVPixelBufferGetBaseAddress(image);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+    bzero(data, 3 * 4 * Width * v8);
     if (v8 >= 1)
     {
       v15 = 0;
-      v16 = &a4[2 * v8 * Width];
-      v17 = &a4[v8 * Width];
+      v16 = &data[2 * v8 * Width];
+      v17 = &data[v8 * Width];
       v18 = 4 * Width;
       do
       {
@@ -178,7 +178,7 @@ VCPCNNModelEspresso *__34__VCPCNNGazeAnalysis_sharedModel___block_invoke(uint64_
           {
             LOBYTE(v14) = BaseAddress[(v19 * 4) + 2];
             *&v21 = ((LODWORD(v14) / 255.0) + -0.485) / 0.229;
-            a4[v19] = *&v21;
+            data[v19] = *&v21;
             LOBYTE(v21) = BaseAddress[(v19 * 4) + 1];
             *&v22 = ((v21 / 255.0) + -0.456) / 0.224;
             v17[v19] = *&v22;
@@ -195,7 +195,7 @@ VCPCNNModelEspresso *__34__VCPCNNGazeAnalysis_sharedModel___block_invoke(uint64_
         ++v15;
         v16 = (v16 + v18);
         v17 = (v17 + v18);
-        a4 = (a4 + v18);
+        data = (data + v18);
       }
 
       while (v15 != v8);
@@ -211,18 +211,18 @@ VCPCNNModelEspresso *__34__VCPCNNGazeAnalysis_sharedModel___block_invoke(uint64_
   return v10;
 }
 
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6 faceBounds:(CGRect)a7
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width faceBounds:(CGRect)bounds
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v11 = *&a6;
-  v12 = *&a5;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v11 = *&width;
+  v12 = *&height;
   cf = 0;
-  v16 = CVPixelBufferGetWidth(a4);
-  v17 = CVPixelBufferGetHeight(a4);
-  if (!a3)
+  v16 = CVPixelBufferGetWidth(buffer);
+  v17 = CVPixelBufferGetHeight(buffer);
+  if (!input)
   {
     return -108;
   }
@@ -268,7 +268,7 @@ VCPCNNModelEspresso *__34__VCPCNNGazeAnalysis_sharedModel___block_invoke(uint64_
   v32.origin.y = (v23 / v17);
   v32.size.width = ((v24 - v20) / v16);
   v32.size.height = ((v26 - v23) / v17);
-  v27 = Scaler::ScaleCropped(&self->_scaler, v32, a4, &cf, v11, v12, 1111970369);
+  v27 = Scaler::ScaleCropped(&self->_scaler, v32, buffer, &cf, v11, v12, 1111970369);
   v28 = cf;
   if (v27)
   {
@@ -281,7 +281,7 @@ VCPCNNModelEspresso *__34__VCPCNNGazeAnalysis_sharedModel___block_invoke(uint64_
     goto LABEL_17;
   }
 
-  v29 = [(VCPCNNGazeAnalysis *)self copyImage:cf toData:a3];
+  v29 = [(VCPCNNGazeAnalysis *)self copyImage:cf toData:input];
   v28 = cf;
   if (cf)
   {
@@ -292,18 +292,18 @@ LABEL_17:
   return v29;
 }
 
-- (int)detectEyeOpennessForFace:(CGRect)a3 inBuffer:(__CVBuffer *)a4 eyeOpenness:(BOOL *)a5
+- (int)detectEyeOpennessForFace:(CGRect)face inBuffer:(__CVBuffer *)buffer eyeOpenness:(BOOL *)openness
 {
-  if (a3.size.width < 40.0 || a3.size.height < 40.0)
+  if (face.size.width < 40.0 || face.size.height < 40.0)
   {
     v7 = 1;
 LABEL_7:
     result = 0;
-    *a5 = v7;
+    *openness = v7;
     return result;
   }
 
-  result = [(VCPCNNGazeAnalysis *)self createInput:self->_inputData withBuffer:a4 cnnInputHeight:64 cnnInputWidth:64 faceBounds:a3.origin.x, a3.origin.y];
+  result = [(VCPCNNGazeAnalysis *)self createInput:self->_inputData withBuffer:buffer cnnInputHeight:64 cnnInputWidth:64 faceBounds:face.origin.x, face.origin.y];
   if (!result)
   {
     result = [(VCPCNNModelEspresso *)self->_modelEspresso espressoForward:self->_inputData];

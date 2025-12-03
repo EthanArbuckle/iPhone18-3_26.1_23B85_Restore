@@ -1,8 +1,8 @@
 @interface CSSiriRecordingInfo
 - (BOOL)codecIsNarrowband;
 - (BOOL)isBluetooth;
-- (CSSiriRecordingInfo)initWithDictation:(BOOL)a3 codec:(id)a4;
-- (CSSiriRecordingInfo)initWithDictation:(BOOL)a3 fingerprintOnly:(BOOL)a4 secureOfflineOnly:(BOOL)a5 audioAlertStyle:(int64_t)a6 recordSettings:(id)a7 recordRoute:(id)a8 recordDeviceInfo:(id)a9 playbackRoute:(id)a10 audioDeviceID:(unsigned int)a11 audioSessionID:(unsigned int)a12 voiceTriggerEventInfo:(id)a13 activationAlertStartTimestamp:(double)a14 startRecordingTimestamp:(double)a15 firstBufferTimestamp:(double)a16 firstBufferHostTime:(unint64_t)a17 estimatedSpeechEndHostTime:(unint64_t)a18 deviceIdentifier:(id)a19 includeBTInfo:(BOOL)a20 speechEvent:(int64_t)a21;
+- (CSSiriRecordingInfo)initWithDictation:(BOOL)dictation codec:(id)codec;
+- (CSSiriRecordingInfo)initWithDictation:(BOOL)dictation fingerprintOnly:(BOOL)only secureOfflineOnly:(BOOL)offlineOnly audioAlertStyle:(int64_t)style recordSettings:(id)settings recordRoute:(id)route recordDeviceInfo:(id)info playbackRoute:(id)self0 audioDeviceID:(unsigned int)self1 audioSessionID:(unsigned int)self2 voiceTriggerEventInfo:(id)self3 activationAlertStartTimestamp:(double)self4 startRecordingTimestamp:(double)self5 firstBufferTimestamp:(double)self6 firstBufferHostTime:(unint64_t)self7 estimatedSpeechEndHostTime:(unint64_t)self8 deviceIdentifier:(id)self9 includeBTInfo:(BOOL)tInfo speechEvent:(int64_t)event;
 - (NSString)headsetAddress;
 - (NSString)productId;
 - (NSString)vendorId;
@@ -16,36 +16,36 @@
   headsetAddress = self->_headsetAddress;
   if (headsetAddress)
   {
-    v3 = headsetAddress;
+    address = headsetAddress;
   }
 
   else
   {
-    v4 = [(CSSiriRecordingInfo *)self _bluetoothDeviceInfo];
-    v3 = [v4 address];
+    _bluetoothDeviceInfo = [(CSSiriRecordingInfo *)self _bluetoothDeviceInfo];
+    address = [_bluetoothDeviceInfo address];
   }
 
-  return v3;
+  return address;
 }
 
 - (NSString)productId
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(CSSiriRecordingInfo *)self _bluetoothDeviceInfo];
-  v4 = [v2 numberWithUnsignedInt:{objc_msgSend(v3, "productID")}];
-  v5 = [v4 stringValue];
+  _bluetoothDeviceInfo = [(CSSiriRecordingInfo *)self _bluetoothDeviceInfo];
+  v4 = [v2 numberWithUnsignedInt:{objc_msgSend(_bluetoothDeviceInfo, "productID")}];
+  stringValue = [v4 stringValue];
 
-  return v5;
+  return stringValue;
 }
 
 - (NSString)vendorId
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(CSSiriRecordingInfo *)self _bluetoothDeviceInfo];
-  v4 = [v2 numberWithUnsignedInt:{objc_msgSend(v3, "vendorID")}];
-  v5 = [v4 stringValue];
+  _bluetoothDeviceInfo = [(CSSiriRecordingInfo *)self _bluetoothDeviceInfo];
+  v4 = [v2 numberWithUnsignedInt:{objc_msgSend(_bluetoothDeviceInfo, "vendorID")}];
+  stringValue = [v4 stringValue];
 
-  return v5;
+  return stringValue;
 }
 
 - (BOOL)codecIsNarrowband
@@ -71,7 +71,7 @@
     self->_bluetoothDevice = v3;
 LABEL_3:
 
-    v5 = v8;
+    remoteDeviceUID = v8;
     goto LABEL_4;
   }
 
@@ -80,10 +80,10 @@ LABEL_3:
     return;
   }
 
-  v5 = [(CSFAudioRecordDeviceInfo *)self->_deviceInfo remoteDeviceUID];
-  if (v5)
+  remoteDeviceUID = [(CSFAudioRecordDeviceInfo *)self->_deviceInfo remoteDeviceUID];
+  if (remoteDeviceUID)
   {
-    v8 = v5;
+    v8 = remoteDeviceUID;
     bluetoothDevice = +[CSSiriBluetoothManager sharedInstance];
     v6 = [bluetoothDevice deviceWithUID:v8];
     v7 = self->_bluetoothDevice;
@@ -108,17 +108,17 @@ LABEL_4:
   return [(NSString *)source isEqualToString:v5];
 }
 
-- (CSSiriRecordingInfo)initWithDictation:(BOOL)a3 codec:(id)a4
+- (CSSiriRecordingInfo)initWithDictation:(BOOL)dictation codec:(id)codec
 {
-  v6 = a4;
+  codecCopy = codec;
   v12.receiver = self;
   v12.super_class = CSSiriRecordingInfo;
   v7 = [(CSSiriRecordingInfo *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_isDictation = a3;
-    v9 = [v6 copy];
+    v7->_isDictation = dictation;
+    v9 = [codecCopy copy];
     codec = v8->_codec;
     v8->_codec = v9;
   }
@@ -126,15 +126,15 @@ LABEL_4:
   return v8;
 }
 
-- (CSSiriRecordingInfo)initWithDictation:(BOOL)a3 fingerprintOnly:(BOOL)a4 secureOfflineOnly:(BOOL)a5 audioAlertStyle:(int64_t)a6 recordSettings:(id)a7 recordRoute:(id)a8 recordDeviceInfo:(id)a9 playbackRoute:(id)a10 audioDeviceID:(unsigned int)a11 audioSessionID:(unsigned int)a12 voiceTriggerEventInfo:(id)a13 activationAlertStartTimestamp:(double)a14 startRecordingTimestamp:(double)a15 firstBufferTimestamp:(double)a16 firstBufferHostTime:(unint64_t)a17 estimatedSpeechEndHostTime:(unint64_t)a18 deviceIdentifier:(id)a19 includeBTInfo:(BOOL)a20 speechEvent:(int64_t)a21
+- (CSSiriRecordingInfo)initWithDictation:(BOOL)dictation fingerprintOnly:(BOOL)only secureOfflineOnly:(BOOL)offlineOnly audioAlertStyle:(int64_t)style recordSettings:(id)settings recordRoute:(id)route recordDeviceInfo:(id)info playbackRoute:(id)self0 audioDeviceID:(unsigned int)self1 audioSessionID:(unsigned int)self2 voiceTriggerEventInfo:(id)self3 activationAlertStartTimestamp:(double)self4 startRecordingTimestamp:(double)self5 firstBufferTimestamp:(double)self6 firstBufferHostTime:(unint64_t)self7 estimatedSpeechEndHostTime:(unint64_t)self8 deviceIdentifier:(id)self9 includeBTInfo:(BOOL)tInfo speechEvent:(int64_t)event
 {
   v125 = *MEMORY[0x277D85DE8];
-  v116 = a7;
-  v115 = a8;
-  v117 = a9;
-  v114 = a10;
-  v30 = a13;
-  v31 = a19;
+  settingsCopy = settings;
+  routeCopy = route;
+  infoCopy = info;
+  playbackRouteCopy = playbackRoute;
+  eventInfoCopy = eventInfo;
+  identifierCopy = identifier;
   v118.receiver = self;
   v118.super_class = CSSiriRecordingInfo;
   v32 = [(CSSiriRecordingInfo *)&v118 init];
@@ -144,37 +144,37 @@ LABEL_4:
     goto LABEL_137;
   }
 
-  v32->_isDictation = a3;
-  v32->_isFingerprintOnly = a4;
-  v32->_isSecureOfflineOnly = a5;
-  v32->_audioAlertStyle = a6;
+  v32->_isDictation = dictation;
+  v32->_isFingerprintOnly = only;
+  v32->_isSecureOfflineOnly = offlineOnly;
+  v32->_audioAlertStyle = style;
   v33 = *MEMORY[0x277CB8280];
-  v34 = v116;
+  v34 = settingsCopy;
   v35 = [v34 objectForKey:v33];
-  v36 = [v35 intValue];
+  intValue = [v35 intValue];
 
   v37 = [v34 objectForKey:*MEMORY[0x277CB82B0]];
-  v38 = [v37 intValue];
+  intValue2 = [v37 intValue];
 
   v39 = [v34 objectForKey:*MEMORY[0x277CB8288]];
-  v40 = [v39 intValue];
+  intValue3 = [v39 intValue];
 
   v41 = [v34 objectForKey:*MEMORY[0x277CB82E0]];
 
-  v42 = [v41 intValue];
-  if (v36 == 1819304813 && v38 == 1 && v40 == 16)
+  intValue4 = [v41 intValue];
+  if (intValue == 1819304813 && intValue2 == 1 && intValue3 == 16)
   {
     v43 = 0;
-    if (v42 <= 15999)
+    if (intValue4 <= 15999)
     {
-      if (v42 == 8000)
+      if (intValue4 == 8000)
       {
         v44 = MEMORY[0x277D48800];
       }
 
       else
       {
-        if (v42 != 11025)
+        if (intValue4 != 11025)
         {
           goto LABEL_28;
         }
@@ -185,7 +185,7 @@ LABEL_4:
 
     else
     {
-      switch(v42)
+      switch(intValue4)
       {
         case 16000:
           v44 = MEMORY[0x277D487E8];
@@ -204,15 +204,15 @@ LABEL_4:
     goto LABEL_27;
   }
 
-  if (v36 == 1869641075)
+  if (intValue == 1869641075)
   {
-    if (v42 == 8000)
+    if (intValue4 == 8000)
     {
       v44 = MEMORY[0x277D487D8];
       goto LABEL_27;
     }
 
-    if (v42 == 16000)
+    if (intValue4 == 16000)
     {
       v44 = MEMORY[0x277D487D0];
       goto LABEL_27;
@@ -223,18 +223,18 @@ LABEL_21:
     goto LABEL_28;
   }
 
-  if (v36 != 1936745848)
+  if (intValue != 1936745848)
   {
     goto LABEL_21;
   }
 
-  if (v42 == 8000)
+  if (intValue4 == 8000)
   {
     v44 = MEMORY[0x277D48808];
     goto LABEL_27;
   }
 
-  if (v42 != 16000)
+  if (intValue4 != 16000)
   {
     goto LABEL_21;
   }
@@ -243,10 +243,10 @@ LABEL_21:
 LABEL_27:
   v43 = *v44;
 LABEL_28:
-  v45 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v46 = NSHomeDirectoryForUser(&cfstr_Mobile.isa);
   v47 = [v46 stringByAppendingPathComponent:@"forceSiriPCMAudio"];
-  v48 = [v45 fileExistsAtPath:v47];
+  v48 = [defaultManager fileExistsAtPath:v47];
 
   if (v48)
   {
@@ -255,7 +255,7 @@ LABEL_28:
     v43 = v49;
   }
 
-  v112 = v30;
+  v112 = eventInfoCopy;
   codec = v32->_codec;
   v32->_codec = v43;
 
@@ -272,8 +272,8 @@ LABEL_28:
     }
   }
 
-  v52 = a11;
-  v53 = v115;
+  dCopy = d;
+  v53 = routeCopy;
   v54 = *MEMORY[0x277CB81E8];
   v55 = [v53 isEqualToString:*MEMORY[0x277CB81E8]];
   v56 = MEMORY[0x277D488D0];
@@ -334,14 +334,14 @@ LABEL_28:
   }
 
 LABEL_51:
-  if (!a11)
+  if (!d)
   {
     goto LABEL_53;
   }
 
   ioPropertyDataSize = 4;
   *buf = 0;
-  if (AudioDeviceGetProperty(a11, 0, 1u, 0x7472616Eu, &ioPropertyDataSize, buf))
+  if (AudioDeviceGetProperty(d, 0, 1u, 0x7472616Eu, &ioPropertyDataSize, buf))
   {
     goto LABEL_53;
   }
@@ -381,7 +381,7 @@ LABEL_80:
 
   outPropertyData = 0;
   ioPropertyDataSize = 4;
-  if (!AudioDeviceGetProperty(a11, 0, 1u, 0x73737263u, &ioPropertyDataSize, &outPropertyData))
+  if (!AudioDeviceGetProperty(d, 0, 1u, 0x73737263u, &ioPropertyDataSize, &outPropertyData))
   {
     if (outPropertyData == 1768778083)
     {
@@ -455,14 +455,14 @@ LABEL_85:
     goto LABEL_85;
   }
 
-  if (!a11)
+  if (!d)
   {
     goto LABEL_104;
   }
 
   ioPropertyDataSize = 4;
   *buf = 0;
-  if (AudioDeviceGetProperty(a11, 0, 1u, 0x7472616Eu, &ioPropertyDataSize, buf))
+  if (AudioDeviceGetProperty(d, 0, 1u, 0x7472616Eu, &ioPropertyDataSize, buf))
   {
     goto LABEL_104;
   }
@@ -502,7 +502,7 @@ LABEL_104:
 
     outPropertyData = 0;
     ioPropertyDataSize = 4;
-    if (AudioDeviceGetProperty(a11, 0, 1u, 0x73737263u, &ioPropertyDataSize, &outPropertyData))
+    if (AudioDeviceGetProperty(d, 0, 1u, 0x73737263u, &ioPropertyDataSize, &outPropertyData))
     {
       goto LABEL_104;
     }
@@ -525,7 +525,7 @@ LABEL_104:
 
 LABEL_86:
   v32->_mhSource = v64;
-  v67 = v114;
+  v67 = playbackRouteCopy;
   v68 = [v67 isEqualToString:*MEMORY[0x277CB81A0]];
   v69 = MEMORY[0x277CB8158];
   if (v68)
@@ -601,13 +601,13 @@ LABEL_110:
   destination = v32->_destination;
   v32->_destination = v71;
 
-  v73 = v63;
+  route = v63;
   if (!v63)
   {
-    v73 = [v117 route];
+    route = [infoCopy route];
   }
 
-  v74 = [v73 copy];
+  v74 = [route copy];
   route = v32->_route;
   v32->_route = v74;
 
@@ -615,7 +615,7 @@ LABEL_110:
   {
   }
 
-  v76 = [v117 copy];
+  v76 = [infoCopy copy];
   deviceInfo = v32->_deviceInfo;
   v32->_deviceInfo = v76;
 
@@ -623,51 +623,51 @@ LABEL_110:
   voiceTriggerEventInfo = v32->_voiceTriggerEventInfo;
   v32->_voiceTriggerEventInfo = v78;
 
-  v32->_activationAlertStartTimestamp = a14;
-  v32->_startRecordingTimestamp = a15;
-  v32->_firstBufferTimestamp = a16;
-  v80 = v31;
-  v32->_firstBufferHostTime = a17;
-  if (!v31)
+  v32->_activationAlertStartTimestamp = timestamp;
+  v32->_startRecordingTimestamp = recordingTimestamp;
+  v32->_firstBufferTimestamp = bufferTimestamp;
+  uUIDString = identifierCopy;
+  v32->_firstBufferHostTime = time;
+  if (!identifierCopy)
   {
-    v52 = [v117 remoteDeviceUID];
-    v80 = [v52 UUIDString];
+    dCopy = [infoCopy remoteDeviceUID];
+    uUIDString = [dCopy UUIDString];
   }
 
-  v81 = [v80 copy];
+  v81 = [uUIDString copy];
   deviceIdentifier = v32->_deviceIdentifier;
   v32->_deviceIdentifier = v81;
 
-  if (!v31)
+  if (!identifierCopy)
   {
   }
 
-  v32->_speechEvent = a21;
+  v32->_speechEvent = event;
   v83 = [v34 objectForKey:@"CSSpeechRecordSettingsKey_isDucking"];
   v32->_isDucking = [v83 BOOLValue];
 
-  v32->_audioSessionID = a12;
-  v32->_estimatedSpeechEndHostTime = a18;
+  v32->_audioSessionID = iD;
+  v32->_estimatedSpeechEndHostTime = hostTime;
   if (([v63 isEqualToString:*v69] & 1) != 0 || (objc_msgSend(v63, "isEqualToString:", *MEMORY[0x277CB8168]) & 1) != 0 || objc_msgSend(v63, "isEqualToString:", *MEMORY[0x277CB8178]))
   {
-    v84 = [MEMORY[0x277CB83F8] retrieveSessionWithID:a12];
-    v85 = [v84 currentRoute];
-    v86 = [v85 inputs];
-    v87 = [v86 firstObject];
+    v84 = [MEMORY[0x277CB83F8] retrieveSessionWithID:iD];
+    currentRoute = [v84 currentRoute];
+    inputs = [currentRoute inputs];
+    firstObject = [inputs firstObject];
 
-    v88 = [v87 portName];
-    v89 = [v88 copy];
+    portName = [firstObject portName];
+    v89 = [portName copy];
     headsetName = v32->_headsetName;
     v32->_headsetName = v89;
 
-    v91 = [v87 UID];
+    v91 = [firstObject UID];
     v92 = [v91 copy];
     headsetAddress = v32->_headsetAddress;
     v32->_headsetAddress = v92;
 
-    v94 = [v84 isEarpieceActiveNoiseCancelationEnabled];
+    isEarpieceActiveNoiseCancelationEnabled = [v84 isEarpieceActiveNoiseCancelationEnabled];
     v95 = *MEMORY[0x277D488E8];
-    if (v94)
+    if (isEarpieceActiveNoiseCancelationEnabled)
     {
       v96 = *MEMORY[0x277D488E8];
     }
@@ -680,11 +680,11 @@ LABEL_110:
     objc_storeStrong(&v32->_dspStatus, v96);
   }
 
-  v30 = v113;
+  eventInfoCopy = v113;
   if ([v63 isEqualToString:*MEMORY[0x277CB8320]])
   {
-    v97 = [v117 remoteDeviceUID];
-    v98 = v97 != 0;
+    remoteDeviceUID = [infoCopy remoteDeviceUID];
+    v98 = remoteDeviceUID != 0;
   }
 
   else
@@ -717,7 +717,7 @@ LABEL_131:
   if (v32->_headsetAddress != 0 || v98)
   {
 LABEL_132:
-    if (a20)
+    if (tInfo)
     {
       [(CSSiriRecordingInfo *)v32 _fetchBTInfo];
     }
@@ -726,14 +726,14 @@ LABEL_132:
 LABEL_134:
   if (([v63 isEqualToString:*MEMORY[0x277CB81B0]] & 1) != 0 || objc_msgSend(v63, "isEqualToString:", *MEMORY[0x277CB8348]))
   {
-    v100 = [MEMORY[0x277CE64E8] currentCarPlayExternalDevice];
-    v101 = [v100 screenIDs];
-    v102 = [v101 componentsJoinedByString:{@", "}];
+    currentCarPlayExternalDevice = [MEMORY[0x277CE64E8] currentCarPlayExternalDevice];
+    screenIDs = [currentCarPlayExternalDevice screenIDs];
+    v102 = [screenIDs componentsJoinedByString:{@", "}];
     v103 = v32->_deviceIdentifier;
     v32->_deviceIdentifier = v102;
 
-    v104 = [v100 modelName];
-    v105 = [v104 copy];
+    modelName = [currentCarPlayExternalDevice modelName];
+    v105 = [modelName copy];
     modelName = v32->_modelName;
     v32->_modelName = v105;
   }

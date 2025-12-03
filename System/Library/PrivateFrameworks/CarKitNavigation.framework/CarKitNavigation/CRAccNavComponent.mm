@@ -1,44 +1,44 @@
 @interface CRAccNavComponent
-- (CRAccNavComponent)initWithAccessoryUID:(id)a3 component:(id)a4;
-- (CRAccNavComponent)initWithCoder:(id)a3;
-- (CRAccNavComponent)initWithUUID:(id)a3 accessoryUID:(id)a4 component:(id)a5;
+- (CRAccNavComponent)initWithAccessoryUID:(id)d component:(id)component;
+- (CRAccNavComponent)initWithCoder:(id)coder;
+- (CRAccNavComponent)initWithUUID:(id)d accessoryUID:(id)iD component:(id)component;
 - (NSString)configDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRAccNavComponent
 
-- (CRAccNavComponent)initWithAccessoryUID:(id)a3 component:(id)a4
+- (CRAccNavComponent)initWithAccessoryUID:(id)d component:(id)component
 {
   v6 = MEMORY[0x277CCAD78];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 UUID];
-  v10 = [(CRAccNavComponent *)self initWithUUID:v9 accessoryUID:v8 component:v7];
+  componentCopy = component;
+  dCopy = d;
+  uUID = [v6 UUID];
+  v10 = [(CRAccNavComponent *)self initWithUUID:uUID accessoryUID:dCopy component:componentCopy];
 
   return v10;
 }
 
-- (CRAccNavComponent)initWithUUID:(id)a3 accessoryUID:(id)a4 component:(id)a5
+- (CRAccNavComponent)initWithUUID:(id)d accessoryUID:(id)iD component:(id)component
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  componentCopy = component;
   v17.receiver = self;
   v17.super_class = CRAccNavComponent;
   v12 = [(CRAccNavComponent *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_uuid, a3);
-    objc_storeStrong(&v13->_accessoryUID, a4);
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "identifier")}];
+    objc_storeStrong(&v12->_uuid, d);
+    objc_storeStrong(&v13->_accessoryUID, iD);
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(componentCopy, "identifier")}];
     componentIdentifier = v13->_componentIdentifier;
     v13->_componentIdentifier = v14;
 
-    objc_storeStrong(&v13->_component, a5);
+    objc_storeStrong(&v13->_component, component);
   }
 
   return v13;
@@ -48,11 +48,11 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRAccNavComponent *)self uuid];
-  v6 = [v5 UUIDString];
-  v7 = [(CRAccNavComponent *)self componentIdentifier];
-  v8 = [(CRAccNavComponent *)self accessoryUID];
-  v9 = [v3 stringWithFormat:@"<%@: %p %@ identifier=%@ accessory=%@>", v4, self, v6, v7, v8];
+  uuid = [(CRAccNavComponent *)self uuid];
+  uUIDString = [uuid UUIDString];
+  componentIdentifier = [(CRAccNavComponent *)self componentIdentifier];
+  accessoryUID = [(CRAccNavComponent *)self accessoryUID];
+  v9 = [v3 stringWithFormat:@"<%@: %p %@ identifier=%@ accessory=%@>", v4, self, uUIDString, componentIdentifier, accessoryUID];
 
   return v9;
 }
@@ -61,28 +61,28 @@
 {
   v54[13] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCACA8];
-  v53 = [(CRAccNavComponent *)self component];
-  v52 = [v3 stringWithFormat:@"\tmaxLength_CurrentRoadName: %lu", objc_msgSend(v53, "maxLength_CurrentRoadName")];
+  component = [(CRAccNavComponent *)self component];
+  v52 = [v3 stringWithFormat:@"\tmaxLength_CurrentRoadName: %lu", objc_msgSend(component, "maxLength_CurrentRoadName")];
   v54[0] = v52;
   v4 = MEMORY[0x277CCACA8];
-  v51 = [(CRAccNavComponent *)self component];
-  v50 = [v4 stringWithFormat:@"\tmaxLength_DestinationRoadName: %lu", objc_msgSend(v51, "maxLength_DestinationRoadName")];
+  component2 = [(CRAccNavComponent *)self component];
+  v50 = [v4 stringWithFormat:@"\tmaxLength_DestinationRoadName: %lu", objc_msgSend(component2, "maxLength_DestinationRoadName")];
   v54[1] = v50;
   v5 = MEMORY[0x277CCACA8];
-  v49 = [(CRAccNavComponent *)self component];
-  v48 = [v5 stringWithFormat:@"\tmaxLength_PostManeuverRoadName: %lu", objc_msgSend(v49, "maxLength_PostManeuverRoadName")];
+  component3 = [(CRAccNavComponent *)self component];
+  v48 = [v5 stringWithFormat:@"\tmaxLength_PostManeuverRoadName: %lu", objc_msgSend(component3, "maxLength_PostManeuverRoadName")];
   v54[2] = v48;
   v6 = MEMORY[0x277CCACA8];
-  v47 = [(CRAccNavComponent *)self component];
-  v46 = [v6 stringWithFormat:@"\tmaxLength_ManeuverDescription: %lu", objc_msgSend(v47, "maxLength_ManeuverDescription")];
+  component4 = [(CRAccNavComponent *)self component];
+  v46 = [v6 stringWithFormat:@"\tmaxLength_ManeuverDescription: %lu", objc_msgSend(component4, "maxLength_ManeuverDescription")];
   v54[3] = v46;
   v7 = MEMORY[0x277CCACA8];
-  v45 = [(CRAccNavComponent *)self component];
-  v44 = [v7 stringWithFormat:@"\tmaxLength_LaneGuidanceDescription: %lu", objc_msgSend(v45, "maxLength_LaneGuidanceDescription")];
+  component5 = [(CRAccNavComponent *)self component];
+  v44 = [v7 stringWithFormat:@"\tmaxLength_LaneGuidanceDescription: %lu", objc_msgSend(component5, "maxLength_LaneGuidanceDescription")];
   v54[4] = v44;
   v8 = MEMORY[0x277CCACA8];
-  v43 = [(CRAccNavComponent *)self component];
-  if ([v43 requestSourceName])
+  component6 = [(CRAccNavComponent *)self component];
+  if ([component6 requestSourceName])
   {
     v9 = @"YES";
   }
@@ -95,8 +95,8 @@
   v42 = [v8 stringWithFormat:@"\trequestSourceName: %@", v9];
   v54[5] = v42;
   v10 = MEMORY[0x277CCACA8];
-  v41 = [(CRAccNavComponent *)self component];
-  if ([v41 requestSourceSupportsRouteGuidance])
+  component7 = [(CRAccNavComponent *)self component];
+  if ([component7 requestSourceSupportsRouteGuidance])
   {
     v11 = @"YES";
   }
@@ -109,8 +109,8 @@
   v40 = [v10 stringWithFormat:@"\trequestSourceSupportsRouteGuidance: %@", v11];
   v54[6] = v40;
   v12 = MEMORY[0x277CCACA8];
-  v39 = [(CRAccNavComponent *)self component];
-  if ([v39 supportsExitInfo])
+  component8 = [(CRAccNavComponent *)self component];
+  if ([component8 supportsExitInfo])
   {
     v13 = @"YES";
   }
@@ -123,8 +123,8 @@
   v38 = [v12 stringWithFormat:@"\tsupportsExitInfo: %@", v13];
   v54[7] = v38;
   v14 = MEMORY[0x277CCACA8];
-  v37 = [(CRAccNavComponent *)self component];
-  if ([v37 supportsLaneGuidance])
+  component9 = [(CRAccNavComponent *)self component];
+  if ([component9 supportsLaneGuidance])
   {
     v15 = @"YES";
   }
@@ -137,8 +137,8 @@
   v16 = [v14 stringWithFormat:@"\tsupportsLaneGuidance: %@", v15];
   v54[8] = v16;
   v17 = MEMORY[0x277CCACA8];
-  v18 = [(CRAccNavComponent *)self component];
-  if ([v18 supportsTimeZoneOffset])
+  component10 = [(CRAccNavComponent *)self component];
+  if ([component10 supportsTimeZoneOffset])
   {
     v19 = @"YES";
   }
@@ -151,8 +151,8 @@
   v20 = [v17 stringWithFormat:@"\tsupportsTimeZoneOffset: %@", v19];
   v54[9] = v20;
   v21 = MEMORY[0x277CCACA8];
-  v22 = [(CRAccNavComponent *)self component];
-  if ([v22 supportsPreconditioning])
+  component11 = [(CRAccNavComponent *)self component];
+  if ([component11 supportsPreconditioning])
   {
     v23 = @"YES";
   }
@@ -165,12 +165,12 @@
   v24 = [v21 stringWithFormat:@"\tsupportsPreconditioning: %@", v23];
   v54[10] = v24;
   v25 = MEMORY[0x277CCACA8];
-  v26 = [(CRAccNavComponent *)self component];
-  v27 = [v25 stringWithFormat:@"\tmaxCapacity_GuidanceManeuver: %lu", objc_msgSend(v26, "maxCapacity_GuidanceManeuver")];
+  component12 = [(CRAccNavComponent *)self component];
+  v27 = [v25 stringWithFormat:@"\tmaxCapacity_GuidanceManeuver: %lu", objc_msgSend(component12, "maxCapacity_GuidanceManeuver")];
   v54[11] = v27;
   v28 = MEMORY[0x277CCACA8];
-  v29 = [(CRAccNavComponent *)self component];
-  v30 = [v28 stringWithFormat:@"\tmaxCapacity_LaneGuidance: %lu", objc_msgSend(v29, "maxCapacity_LaneGuidance")];
+  component13 = [(CRAccNavComponent *)self component];
+  v30 = [v28 stringWithFormat:@"\tmaxCapacity_LaneGuidance: %lu", objc_msgSend(component13, "maxCapacity_LaneGuidance")];
   v54[12] = v30;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:13];
 
@@ -183,48 +183,48 @@
   return v34;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRAccNavComponent *)self uuid];
+  coderCopy = coder;
+  uuid = [(CRAccNavComponent *)self uuid];
   v6 = NSStringFromSelector(sel_uuid);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:uuid forKey:v6];
 
-  v7 = [(CRAccNavComponent *)self accessoryUID];
+  accessoryUID = [(CRAccNavComponent *)self accessoryUID];
   v8 = NSStringFromSelector(sel_accessoryUID);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:accessoryUID forKey:v8];
 
-  v10 = [(CRAccNavComponent *)self component];
+  component = [(CRAccNavComponent *)self component];
   v9 = NSStringFromSelector(sel_component);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:component forKey:v9];
 }
 
-- (CRAccNavComponent)initWithCoder:(id)a3
+- (CRAccNavComponent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_uuid);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_accessoryUID);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_component);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
   v14 = [(CRAccNavComponent *)self initWithUUID:v7 accessoryUID:v10 component:v13];
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CRAccNavComponent alloc];
-  v5 = [(CRAccNavComponent *)self uuid];
-  v6 = [(CRAccNavComponent *)self accessoryUID];
-  v7 = [(CRAccNavComponent *)self component];
-  v8 = [(CRAccNavComponent *)v4 initWithUUID:v5 accessoryUID:v6 component:v7];
+  uuid = [(CRAccNavComponent *)self uuid];
+  accessoryUID = [(CRAccNavComponent *)self accessoryUID];
+  component = [(CRAccNavComponent *)self component];
+  v8 = [(CRAccNavComponent *)v4 initWithUUID:uuid accessoryUID:accessoryUID component:component];
 
   return v8;
 }

@@ -1,22 +1,22 @@
 @interface ARFrameUpdateTimer
 - (ARFrameUpdateTimer)init;
-- (ARFrameUpdateTimer)initWithTimeProvider:(id)a3 executor:(id)a4;
+- (ARFrameUpdateTimer)initWithTimeProvider:(id)provider executor:(id)executor;
 - (ARFrameUpdateTimerDelegate)delegate;
-- (double)_timeSinceFrameWasScheduled:(id)a3;
+- (double)_timeSinceFrameWasScheduled:(id)scheduled;
 - (double)_timeTillNextTimerTick;
-- (double)timeoutForNextFrameUpdateWithNumberOfInFlightContexts:(unint64_t)a3;
+- (double)timeoutForNextFrameUpdateWithNumberOfInFlightContexts:(unint64_t)contexts;
 - (unint64_t)_unvendedFramesCount;
 - (void)_frameUpdateTick;
-- (void)_startExecutorWithFrameRate:(unint64_t)a3 initialDelay:(double)a4;
-- (void)_storeNewFrame:(id)a3;
-- (void)_updateExecutorForFrameRate:(unint64_t)a3;
-- (void)_vendFrame:(id)a3 withReason:(unint64_t)a4;
+- (void)_startExecutorWithFrameRate:(unint64_t)rate initialDelay:(double)delay;
+- (void)_storeNewFrame:(id)frame;
+- (void)_updateExecutorForFrameRate:(unint64_t)rate;
+- (void)_vendFrame:(id)frame withReason:(unint64_t)reason;
 - (void)_vendFrameIfAtLastTickNoFrameWasVended;
 - (void)_vendFramesIfTooManyFramesAreQueued;
 - (void)_vendFramesThatExceedTheMaximumLatency;
 - (void)resetState;
-- (void)scheduleFrame:(id)a3 captureFramesPerSecond:(unint64_t)a4;
-- (void)setActive:(BOOL)a3;
+- (void)scheduleFrame:(id)frame captureFramesPerSecond:(unint64_t)second;
+- (void)setActive:(BOOL)active;
 - (void)stop;
 @end
 
@@ -31,10 +31,10 @@
   return v5;
 }
 
-- (ARFrameUpdateTimer)initWithTimeProvider:(id)a3 executor:(id)a4
+- (ARFrameUpdateTimer)initWithTimeProvider:(id)provider executor:(id)executor
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  executorCopy = executor;
   v12.receiver = self;
   v12.super_class = ARFrameUpdateTimer;
   v9 = [(ARFrameUpdateTimer *)&v12 init];
@@ -44,8 +44,8 @@
     *(v9 + 104) = xmmword_1C25F0A20;
     *(v9 + 8) = 0;
     v9[88] = ![ARKitUserDefaults BOOLForKey:@"com.apple.arkit.session.disableRenderSyncScheduling"];
-    objc_storeStrong(&v10->_timeProvider, a3);
-    objc_storeStrong(&v10->_executor, a4);
+    objc_storeStrong(&v10->_timeProvider, provider);
+    objc_storeStrong(&v10->_executor, executor);
     [(ARFrameUpdateTimer *)v10 resetState];
   }
 
@@ -68,12 +68,12 @@
   os_unfair_lock_unlock(&self->_unvendedFramesLock);
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
       [(ARFrameUpdateTimer *)self resetState];
     }
@@ -100,11 +100,11 @@
   return v3;
 }
 
-- (void)_storeNewFrame:(id)a3
+- (void)_storeNewFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_unvendedFrames addObject:v4];
+  [(NSMutableArray *)self->_unvendedFrames addObject:frameCopy];
   [(NSMutableArray *)self->_unvendedFrames sortUsingComparator:&__block_literal_global_19];
   os_unfair_lock_unlock(&self->_unvendedFramesLock);
 }
@@ -139,8 +139,8 @@ uint64_t __37__ARFrameUpdateTimer__storeNewFrame___block_invoke(uint64_t a1, voi
     if (v4 >= v5 * 0.5)
     {
       os_unfair_lock_lock_with_options();
-      v6 = [(NSMutableArray *)self->_unvendedFrames firstObject];
-      if (!v6 || [(ARFrameUpdateTimer *)self _latencyIsTooLowForFrame:v6]&& self->_lastFrameVendReason == 1)
+      firstObject = [(NSMutableArray *)self->_unvendedFrames firstObject];
+      if (!firstObject || [(ARFrameUpdateTimer *)self _latencyIsTooLowForFrame:firstObject]&& self->_lastFrameVendReason == 1)
       {
         os_unfair_lock_unlock(&self->_unvendedFramesLock);
       }
@@ -155,13 +155,13 @@ uint64_t __37__ARFrameUpdateTimer__storeNewFrame___block_invoke(uint64_t a1, voi
           v10 = 138543618;
           v11 = v9;
           v12 = 2048;
-          v13 = self;
+          selfCopy = self;
           _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Vending frame outside of timer tick.", &v10, 0x16u);
         }
 
         [(NSMutableArray *)self->_unvendedFrames removeObjectAtIndex:0];
         os_unfair_lock_unlock(&self->_unvendedFramesLock);
-        [(ARFrameUpdateTimer *)self _vendFrame:v6 withReason:1];
+        [(ARFrameUpdateTimer *)self _vendFrame:firstObject withReason:1];
       }
     }
   }
@@ -176,8 +176,8 @@ uint64_t __37__ARFrameUpdateTimer__storeNewFrame___block_invoke(uint64_t a1, voi
   v14 = v4;
   while ([(NSMutableArray *)self->_unvendedFrames count])
   {
-    v5 = [(NSMutableArray *)self->_unvendedFrames firstObject];
-    if (![(ARFrameUpdateTimer *)self _latencyIsTooHighForFrame:v5])
+    firstObject = [(NSMutableArray *)self->_unvendedFrames firstObject];
+    if (![(ARFrameUpdateTimer *)self _latencyIsTooHighForFrame:firstObject])
     {
 
       break;
@@ -192,14 +192,14 @@ uint64_t __37__ARFrameUpdateTimer__storeNewFrame___block_invoke(uint64_t a1, voi
       *buf = v14;
       v21 = v8;
       v22 = 2048;
-      v23 = self;
+      selfCopy = self;
       v24 = 2048;
       v25 = maxDesiredLatency;
       _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Vending frame outside of timer tick because maximum latency of %f s is reached.", buf, 0x20u);
     }
 
     [(NSMutableArray *)self->_unvendedFrames removeObjectAtIndex:0];
-    [v3 addObject:v5];
+    [v3 addObject:firstObject];
   }
 
   os_unfair_lock_unlock(&self->_unvendedFramesLock);
@@ -242,7 +242,7 @@ uint64_t __37__ARFrameUpdateTimer__storeNewFrame___block_invoke(uint64_t a1, voi
   v14 = v4;
   while ([(NSMutableArray *)self->_unvendedFrames count]>= 3)
   {
-    v5 = [(NSMutableArray *)self->_unvendedFrames firstObject];
+    firstObject = [(NSMutableArray *)self->_unvendedFrames firstObject];
     v6 = _ARLogGeneral_40();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -252,14 +252,14 @@ uint64_t __37__ARFrameUpdateTimer__storeNewFrame___block_invoke(uint64_t a1, voi
       *buf = v14;
       v21 = v8;
       v22 = 2048;
-      v23 = self;
+      selfCopy = self;
       v24 = 2048;
       v25 = v9 - 1;
       _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Vending frame outside of timer tick because %lu frames are already queued.", buf, 0x20u);
     }
 
     [(NSMutableArray *)self->_unvendedFrames removeObjectAtIndex:0];
-    [v3 addObject:v5];
+    [v3 addObject:firstObject];
   }
 
   os_unfair_lock_unlock(&self->_unvendedFramesLock);
@@ -293,22 +293,22 @@ uint64_t __37__ARFrameUpdateTimer__storeNewFrame___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)scheduleFrame:(id)a3 captureFramesPerSecond:(unint64_t)a4
+- (void)scheduleFrame:(id)frame captureFramesPerSecond:(unint64_t)second
 {
   active = self->_active;
-  v7 = a3;
-  [v7 timestamp];
+  frameCopy = frame;
+  [frameCopy timestamp];
   if (active)
   {
     [(ARFrameUpdateTimer *)self _unvendedFramesCount];
     kdebug_trace();
-    [(ARFrameUpdateTimer *)self _storeNewFrame:v7];
+    [(ARFrameUpdateTimer *)self _storeNewFrame:frameCopy];
 
     [(ARFrameUpdateTimer *)self _vendFrameIfAtLastTickNoFrameWasVended];
     if ([(ARFrameUpdateTimer *)self _unvendedFramesCount]>= 2 && [(ARFrameUpdateTimer *)self _isBeforeFirstTimerTick])
     {
 
-      [(ARFrameUpdateTimer *)self _startExecutorWithFrameRate:a4 initialDelay:0.0];
+      [(ARFrameUpdateTimer *)self _startExecutorWithFrameRate:second initialDelay:0.0];
     }
 
     else
@@ -316,18 +316,18 @@ uint64_t __37__ARFrameUpdateTimer__storeNewFrame___block_invoke(uint64_t a1, voi
       [(ARFrameUpdateTimer *)self _vendFramesThatExceedTheMaximumLatency];
       [(ARFrameUpdateTimer *)self _vendFramesIfTooManyFramesAreQueued];
 
-      [(ARFrameUpdateTimer *)self _updateExecutorForFrameRate:a4];
+      [(ARFrameUpdateTimer *)self _updateExecutorForFrameRate:second];
     }
   }
 
   else
   {
     kdebug_trace();
-    [(ARFrameUpdateTimer *)self _vendFrame:v7 withReason:3];
+    [(ARFrameUpdateTimer *)self _vendFrame:frameCopy withReason:3];
   }
 }
 
-- (double)timeoutForNextFrameUpdateWithNumberOfInFlightContexts:(unint64_t)a3
+- (double)timeoutForNextFrameUpdateWithNumberOfInFlightContexts:(unint64_t)contexts
 {
   result = 0.022;
   if (self->_active)
@@ -336,7 +336,7 @@ uint64_t __37__ARFrameUpdateTimer__storeNewFrame___block_invoke(uint64_t a1, voi
     {
       [(ARFrameUpdateTimer *)self _timeTillNextTimerTick];
       v7 = v6;
-      v8 = (a3 + [(ARFrameUpdateTimer *)self _unvendedFramesCount]- 1);
+      v8 = (contexts + [(ARFrameUpdateTimer *)self _unvendedFramesCount]- 1);
       [(ARFrameUpdateTimer *)self _frameDuration];
       return fmax(v7 + v8 * v9 + -0.003, 0.022);
     }
@@ -345,18 +345,18 @@ uint64_t __37__ARFrameUpdateTimer__storeNewFrame___block_invoke(uint64_t a1, voi
   return result;
 }
 
-- (void)_updateExecutorForFrameRate:(unint64_t)a3
+- (void)_updateExecutorForFrameRate:(unint64_t)rate
 {
-  if (![(ARRepetitiveExecutor *)self->_executor isRunning]|| self->_frameRate != a3)
+  if (![(ARRepetitiveExecutor *)self->_executor isRunning]|| self->_frameRate != rate)
   {
-    self->_frameRate = a3;
+    self->_frameRate = rate;
     [(ARFrameUpdateTimer *)self minLatency];
 
-    [(ARFrameUpdateTimer *)self _startExecutorWithFrameRate:a3 initialDelay:?];
+    [(ARFrameUpdateTimer *)self _startExecutorWithFrameRate:rate initialDelay:?];
   }
 }
 
-- (void)_startExecutorWithFrameRate:(unint64_t)a3 initialDelay:(double)a4
+- (void)_startExecutorWithFrameRate:(unint64_t)rate initialDelay:(double)delay
 {
   v21 = *MEMORY[0x1E69E9840];
   v7 = _ARLogGeneral_40();
@@ -367,11 +367,11 @@ uint64_t __37__ARFrameUpdateTimer__storeNewFrame___block_invoke(uint64_t a1, voi
     *buf = 138544130;
     v14 = v9;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
-    v18 = a3;
+    rateCopy = rate;
     v19 = 2048;
-    v20 = a4;
+    delayCopy = delay;
     _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Starting ARDispatchSourceExecutor with frame rate %lu and initialDelay %f", buf, 0x2Au);
   }
 
@@ -382,7 +382,7 @@ uint64_t __37__ARFrameUpdateTimer__storeNewFrame___block_invoke(uint64_t a1, voi
   v11[2] = __63__ARFrameUpdateTimer__startExecutorWithFrameRate_initialDelay___block_invoke;
   v11[3] = &unk_1E817BD88;
   objc_copyWeak(&v12, buf);
-  [(ARRepetitiveExecutor *)executor executeWithInterval:v11 initialDelay:1.0 / a3 block:a4];
+  [(ARRepetitiveExecutor *)executor executeWithInterval:v11 initialDelay:1.0 / rate block:delay];
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
 }
@@ -406,13 +406,13 @@ void __63__ARFrameUpdateTimer__startExecutorWithFrameRate_initialDelay___block_i
   return v6 - v5;
 }
 
-- (double)_timeSinceFrameWasScheduled:(id)a3
+- (double)_timeSinceFrameWasScheduled:(id)scheduled
 {
   timeProvider = self->_timeProvider;
-  v4 = a3;
+  scheduledCopy = scheduled;
   [(ARTimeProviding *)timeProvider currentTime];
   v6 = v5;
-  [v4 scheduledTimestamp];
+  [scheduledCopy scheduledTimestamp];
   v8 = v7;
 
   return v6 - v8;
@@ -426,12 +426,12 @@ void __63__ARFrameUpdateTimer__startExecutorWithFrameRate_initialDelay___block_i
   os_unfair_lock_lock_with_options();
   if ([(NSMutableArray *)self->_unvendedFrames count])
   {
-    v16 = [(NSMutableArray *)self->_unvendedFrames firstObject];
+    firstObject = [(NSMutableArray *)self->_unvendedFrames firstObject];
     lastTimerTick = self->_lastTimerTick;
     lastFrameVendTimestamp = self->_lastFrameVendTimestamp;
     [(ARFrameUpdateTimer *)self _frameDuration];
     v7 = v6;
-    v8 = [(ARFrameUpdateTimer *)self _latencyIsTooLowForFrame:v16];
+    v8 = [(ARFrameUpdateTimer *)self _latencyIsTooLowForFrame:firstObject];
     if (lastTimerTick - lastFrameVendTimestamp <= v7 && v8)
     {
       v10 = _ARLogGeneral_40();
@@ -442,7 +442,7 @@ void __63__ARFrameUpdateTimer__startExecutorWithFrameRate_initialDelay___block_i
         *buf = 138543618;
         v18 = v12;
         v19 = 2048;
-        v20 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Holding back frame because we're under the minimum latency.", buf, 0x16u);
       }
 
@@ -454,10 +454,10 @@ void __63__ARFrameUpdateTimer__startExecutorWithFrameRate_initialDelay___block_i
 
     [(NSMutableArray *)self->_unvendedFrames removeObjectAtIndex:0, lastTimerTick - lastFrameVendTimestamp];
     os_unfair_lock_unlock(&self->_unvendedFramesLock);
-    if (v16)
+    if (firstObject)
     {
       self->_frameWasVendedAtLastTimerTick = 1;
-      [(ARFrameUpdateTimer *)self _vendFrame:v16 withReason:0];
+      [(ARFrameUpdateTimer *)self _vendFrame:firstObject withReason:0];
 
       return;
     }
@@ -477,26 +477,26 @@ void __63__ARFrameUpdateTimer__startExecutorWithFrameRate_initialDelay___block_i
     *buf = 138543618;
     v18 = v15;
     v19 = 2048;
-    v20 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C241C000, v13, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: No new unvended frame ready to publish at timer tick. Will attempt to push shortly.", buf, 0x16u);
   }
 
   self->_frameWasVendedAtLastTimerTick = 0;
 }
 
-- (void)_vendFrame:(id)a3 withReason:(unint64_t)a4
+- (void)_vendFrame:(id)frame withReason:(unint64_t)reason
 {
-  v6 = a3;
-  [v6 timestamp];
+  frameCopy = frame;
+  [frameCopy timestamp];
   [(ARTimeProviding *)self->_timeProvider currentTime];
-  [v6 scheduledTimestamp];
+  [frameCopy scheduledTimestamp];
   ARInstrumentsValueFromFrameVendReason();
   kdebug_trace();
   [(ARTimeProviding *)self->_timeProvider currentTime];
   self->_lastFrameVendTimestamp = v7;
-  self->_lastFrameVendReason = a4;
-  v8 = [(ARFrameUpdateTimer *)self delegate];
-  [v8 timerDidVendFrame:v6];
+  self->_lastFrameVendReason = reason;
+  delegate = [(ARFrameUpdateTimer *)self delegate];
+  [delegate timerDidVendFrame:frameCopy];
 }
 
 - (ARFrameUpdateTimerDelegate)delegate

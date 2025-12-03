@@ -1,38 +1,38 @@
 @interface SBIdleTimerDescriptorFactory
 + (id)disabledIdleTimerDescriptor;
-- (BOOL)_isIdleDurationForever:(double)a3;
+- (BOOL)_isIdleDurationForever:(double)forever;
 - (BOOL)_shouldUseAttentionSensor;
-- (BOOL)sanitizeDescriptorForLockscreenDefaults:(id)a3;
-- (BOOL)sanitizeSettingsAfterInitialSetup:(id)a3;
-- (BOOL)sanitizeSettingsAfterSetup:(id)a3 duration:(int64_t)a4;
-- (BOOL)sanitizeTotalDuration:(id)a3;
-- (BOOL)sanitizeWarnInterval:(id)a3;
-- (BOOL)updateIdleTimerSettingsForActiveClientConfiguration:(id)a3;
-- (BOOL)updateIdleTimerSettingsForAutoLockTimeout:(id)a3;
-- (BOOL)updateIdleTimerSettingsForBatterySaverMode:(id)a3;
-- (BOOL)updateIdleTimerSettingsForDefaultWarnInterval:(id)a3;
-- (BOOL)updateIdleTimerSettingsForDuration:(int64_t)a3 descriptor:(id)a4;
-- (BOOL)updateIdleTimerSettingsForFaceDown:(id)a3;
-- (BOOL)updateIdleTimerSettingsForPowerDefaults:(id)a3;
-- (BOOL)updateIdleTimerSettingsForPrototypeSettingsDisable:(id)a3;
-- (BOOL)updateIdleTimerSettingsForPrototypeSettingsOverride:(id)a3;
-- (BOOL)updateIdleTimerSettingsForSecurityDefaults:(id)a3;
-- (BOOL)updateIdleTimerSettingsForTelephony:(id)a3;
-- (BOOL)updateIdleTimerSettingsForThermalBlockedMode:(id)a3;
-- (BOOL)updateIdleTimerSettingsForUnlockedWithMesa:(id)a3;
-- (BOOL)updateIdleTimerSettingsForWarnInterval:(id)a3;
-- (BOOL)updateIdleTimerSettingsWithCustomTimeouts:(id)a3 fromBehavior:(id)a4;
+- (BOOL)sanitizeDescriptorForLockscreenDefaults:(id)defaults;
+- (BOOL)sanitizeSettingsAfterInitialSetup:(id)setup;
+- (BOOL)sanitizeSettingsAfterSetup:(id)setup duration:(int64_t)duration;
+- (BOOL)sanitizeTotalDuration:(id)duration;
+- (BOOL)sanitizeWarnInterval:(id)interval;
+- (BOOL)updateIdleTimerSettingsForActiveClientConfiguration:(id)configuration;
+- (BOOL)updateIdleTimerSettingsForAutoLockTimeout:(id)timeout;
+- (BOOL)updateIdleTimerSettingsForBatterySaverMode:(id)mode;
+- (BOOL)updateIdleTimerSettingsForDefaultWarnInterval:(id)interval;
+- (BOOL)updateIdleTimerSettingsForDuration:(int64_t)duration descriptor:(id)descriptor;
+- (BOOL)updateIdleTimerSettingsForFaceDown:(id)down;
+- (BOOL)updateIdleTimerSettingsForPowerDefaults:(id)defaults;
+- (BOOL)updateIdleTimerSettingsForPrototypeSettingsDisable:(id)disable;
+- (BOOL)updateIdleTimerSettingsForPrototypeSettingsOverride:(id)override;
+- (BOOL)updateIdleTimerSettingsForSecurityDefaults:(id)defaults;
+- (BOOL)updateIdleTimerSettingsForTelephony:(id)telephony;
+- (BOOL)updateIdleTimerSettingsForThermalBlockedMode:(id)mode;
+- (BOOL)updateIdleTimerSettingsForUnlockedWithMesa:(id)mesa;
+- (BOOL)updateIdleTimerSettingsForWarnInterval:(id)interval;
+- (BOOL)updateIdleTimerSettingsWithCustomTimeouts:(id)timeouts fromBehavior:(id)behavior;
 - (SBBacklightController)_backlightController;
 - (SBConferenceManager)_conferenceManager;
-- (SBIdleTimerDescriptorFactory)initWithGlobalStateMonitor:(id)a3;
+- (SBIdleTimerDescriptorFactory)initWithGlobalStateMonitor:(id)monitor;
 - (SBIdleTimerSettings)_idleTimerPrototypeSettings;
 - (SBLockScreenManager)_lockScreenManager;
 - (SBMainWorkspace)_mainWorkspace;
 - (SBPrototypeController)_prototypeController;
 - (SBTelephonyManager)_telephonyManager;
 - (SBUIBiometricResource)_biometricResource;
-- (id)idleTimerDescriptorForBehavior:(id)a3;
-- (void)_updateIdleTimerSettingsWarnInterval:(id)a3 totalInterval:(double)a4;
+- (id)idleTimerDescriptorForBehavior:(id)behavior;
+- (void)_updateIdleTimerSettingsWarnInterval:(id)interval totalInterval:(double)totalInterval;
 @end
 
 @implementation SBIdleTimerDescriptorFactory
@@ -122,24 +122,24 @@
   override_biometricResource = self->_override_biometricResource;
   if (override_biometricResource)
   {
-    v3 = override_biometricResource;
+    mEMORY[0x277D67C98] = override_biometricResource;
   }
 
   else
   {
-    v3 = [MEMORY[0x277D67C98] sharedInstance];
+    mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
   }
 
-  return v3;
+  return mEMORY[0x277D67C98];
 }
 
 - (BOOL)_shouldUseAttentionSensor
 {
-  v3 = [(SBIdleTimerDescriptorFactory *)self _prototypeController];
-  v4 = [v3 rootSettings];
-  v5 = [v4 attentionAwarenessSettings];
+  _prototypeController = [(SBIdleTimerDescriptorFactory *)self _prototypeController];
+  rootSettings = [_prototypeController rootSettings];
+  attentionAwarenessSettings = [rootSettings attentionAwarenessSettings];
 
-  if ([v5 shouldUseAttentionSensor])
+  if ([attentionAwarenessSettings shouldUseAttentionSensor])
   {
     if ([(SBIdleTimerGlobalStateMonitor *)self->_stateMonitor disableAttentionAwareness])
     {
@@ -225,33 +225,33 @@ LABEL_15:
   return v2;
 }
 
-- (SBIdleTimerDescriptorFactory)initWithGlobalStateMonitor:(id)a3
+- (SBIdleTimerDescriptorFactory)initWithGlobalStateMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v12.receiver = self;
   v12.super_class = SBIdleTimerDescriptorFactory;
   v6 = [(SBIdleTimerDescriptorFactory *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stateMonitor, a3);
+    objc_storeStrong(&v6->_stateMonitor, monitor);
     v8 = +[SBDefaults localDefaults];
-    v9 = [v8 idleTimerDefaults];
+    idleTimerDefaults = [v8 idleTimerDefaults];
     override_idleTimerDefaults = v7->_override_idleTimerDefaults;
-    v7->_override_idleTimerDefaults = v9;
+    v7->_override_idleTimerDefaults = idleTimerDefaults;
   }
 
   return v7;
 }
 
-- (id)idleTimerDescriptorForBehavior:(id)a3
+- (id)idleTimerDescriptorForBehavior:(id)behavior
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 idleTimerMode] == 3)
+  behaviorCopy = behavior;
+  if ([behaviorCopy idleTimerMode] == 3)
   {
-    v5 = [objc_opt_class() disabledIdleTimerDescriptor];
-    v6 = [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForThermalBlockedMode:v5];
+    disabledIdleTimerDescriptor = [objc_opt_class() disabledIdleTimerDescriptor];
+    v6 = [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForThermalBlockedMode:disabledIdleTimerDescriptor];
     v7 = SBLogIdleTimer();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
     if (v6)
@@ -264,7 +264,7 @@ LABEL_15:
       *v28 = 138543618;
       *&v28[4] = objc_opt_class();
       *&v28[12] = 2048;
-      *&v28[14] = v4;
+      *&v28[14] = behaviorCopy;
       v9 = *&v28[4];
       v10 = "idleTimerDescriptorForBehavior: <%{public}@: 0x%p> disabled proposed SBFIdleTimerModeDisabled but it was overriden due to thermal block";
     }
@@ -279,7 +279,7 @@ LABEL_15:
       *v28 = 138543618;
       *&v28[4] = objc_opt_class();
       *&v28[12] = 2048;
-      *&v28[14] = v4;
+      *&v28[14] = behaviorCopy;
       v9 = *&v28[4];
       v10 = "idleTimerDescriptorForBehavior: <%{public}@: 0x%p> returning disabled idle timer descriptor because behavior provider proposed SBFIdleTimerModeDisabled";
     }
@@ -290,7 +290,7 @@ LABEL_15:
   else
   {
     v11 = objc_opt_class();
-    v12 = v4;
+    v12 = behaviorCopy;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -339,119 +339,119 @@ LABEL_15:
       }
     }
 
-    v16 = [v7 idleTimerDuration];
-    v17 = [v7 idleTimerMode];
-    v19 = [v7 idleWarnMode]== 2 && v17 != 3;
-    v5 = [[SBIdleTimerDescriptor alloc] initWithTimerMode:v17 warnInterval:0.0 totalInterval:0.0];
-    if (v16 == 3)
+    idleTimerDuration = [v7 idleTimerDuration];
+    idleTimerMode = [v7 idleTimerMode];
+    v19 = [v7 idleWarnMode]== 2 && idleTimerMode != 3;
+    disabledIdleTimerDescriptor = [[SBIdleTimerDescriptor alloc] initWithTimerMode:idleTimerMode warnInterval:0.0 totalInterval:0.0];
+    if (idleTimerDuration == 3)
     {
-      [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForDuration:3 descriptor:v5];
+      [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForDuration:3 descriptor:disabledIdleTimerDescriptor];
     }
 
     else
     {
-      [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForSecurityDefaults:v5];
-      [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForAutoLockTimeout:v5];
-      [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForTelephony:v5];
-      [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForPrototypeSettingsDisable:v5];
-      [(SBIdleTimerDescriptorFactory *)self sanitizeSettingsAfterInitialSetup:v5];
-      if ((v16 & 0xFFFFFFFFFFFFFFFELL) == 0x10)
+      [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForSecurityDefaults:disabledIdleTimerDescriptor];
+      [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForAutoLockTimeout:disabledIdleTimerDescriptor];
+      [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForTelephony:disabledIdleTimerDescriptor];
+      [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForPrototypeSettingsDisable:disabledIdleTimerDescriptor];
+      [(SBIdleTimerDescriptorFactory *)self sanitizeSettingsAfterInitialSetup:disabledIdleTimerDescriptor];
+      if ((idleTimerDuration & 0xFFFFFFFFFFFFFFFELL) == 0x10)
       {
-        if (v16 == 17)
+        if (idleTimerDuration == 17)
         {
-          v20 = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
-          [v20 unlockedIdleTimerCap];
+          _idleTimerPrototypeSettings = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
+          [_idleTimerPrototypeSettings unlockedIdleTimerCap];
           v22 = v21;
 
-          [(SBIdleTimerDescriptor *)v5 totalInterval];
+          [(SBIdleTimerDescriptor *)disabledIdleTimerDescriptor totalInterval];
           if (v22 < v23)
           {
             v23 = v22;
           }
 
-          [(SBIdleTimerDescriptor *)v5 setTotalInterval:v23, *v28, *&v28[16], v29];
+          [(SBIdleTimerDescriptor *)disabledIdleTimerDescriptor setTotalInterval:v23, *v28, *&v28[16], v29];
         }
 
         else
         {
-          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForPowerDefaults:v5];
-          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForDefaultWarnInterval:v5];
-          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsWithCustomTimeouts:v5 fromBehavior:v7];
-          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForUnlockedWithMesa:v5];
-          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForPrototypeSettingsOverride:v5];
+          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForPowerDefaults:disabledIdleTimerDescriptor];
+          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForDefaultWarnInterval:disabledIdleTimerDescriptor];
+          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsWithCustomTimeouts:disabledIdleTimerDescriptor fromBehavior:v7];
+          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForUnlockedWithMesa:disabledIdleTimerDescriptor];
+          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForPrototypeSettingsOverride:disabledIdleTimerDescriptor];
         }
 
-        if (![(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForBatterySaverMode:v5, *v28, *&v28[8]])
+        if (![(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForBatterySaverMode:disabledIdleTimerDescriptor, *v28, *&v28[8]])
         {
-          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForFaceDown:v5];
-          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForWarnInterval:v5];
+          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForFaceDown:disabledIdleTimerDescriptor];
+          [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForWarnInterval:disabledIdleTimerDescriptor];
         }
       }
 
       else
       {
-        [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForDuration:v16 descriptor:v5];
-        [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsWithCustomTimeouts:v5 fromBehavior:v7];
-        [(SBIdleTimerDescriptorFactory *)self sanitizeDescriptorForLockscreenDefaults:v5];
-        [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForDefaultWarnInterval:v5];
+        [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForDuration:idleTimerDuration descriptor:disabledIdleTimerDescriptor];
+        [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsWithCustomTimeouts:disabledIdleTimerDescriptor fromBehavior:v7];
+        [(SBIdleTimerDescriptorFactory *)self sanitizeDescriptorForLockscreenDefaults:disabledIdleTimerDescriptor];
+        [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForDefaultWarnInterval:disabledIdleTimerDescriptor];
       }
 
-      [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForThermalBlockedMode:v5, *v28, *&v28[8]];
-      if ([(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForActiveClientConfiguration:v5])
+      [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForThermalBlockedMode:disabledIdleTimerDescriptor, *v28, *&v28[8]];
+      if ([(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForActiveClientConfiguration:disabledIdleTimerDescriptor])
       {
-        [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForWarnInterval:v5];
+        [(SBIdleTimerDescriptorFactory *)self updateIdleTimerSettingsForWarnInterval:disabledIdleTimerDescriptor];
       }
 
       if (!v19)
       {
-        [(SBIdleTimerDescriptor *)v5 setWarnInterval:1.79769313e308];
-        [(SBIdleTimerDescriptor *)v5 setQuickUnwarnInterval:1.79769313e308];
-        [(SBIdleTimerDescriptor *)v5 addAuditReason:@"should not warn"];
+        [(SBIdleTimerDescriptor *)disabledIdleTimerDescriptor setWarnInterval:1.79769313e308];
+        [(SBIdleTimerDescriptor *)disabledIdleTimerDescriptor setQuickUnwarnInterval:1.79769313e308];
+        [(SBIdleTimerDescriptor *)disabledIdleTimerDescriptor addAuditReason:@"should not warn"];
       }
 
-      [(SBIdleTimerDescriptorFactory *)self sanitizeSettingsAfterSetup:v5 duration:v16];
-      if ((v16 & 0xFFFFFFFFFFFFFFFELL) == 0x10 && [(SBIdleTimerDescriptorFactory *)self _shouldUseAttentionSensor]&& [(SBIdleTimerDescriptor *)v5 timerMode]!= 3)
+      [(SBIdleTimerDescriptorFactory *)self sanitizeSettingsAfterSetup:disabledIdleTimerDescriptor duration:idleTimerDuration];
+      if ((idleTimerDuration & 0xFFFFFFFFFFFFFFFELL) == 0x10 && [(SBIdleTimerDescriptorFactory *)self _shouldUseAttentionSensor]&& [(SBIdleTimerDescriptor *)disabledIdleTimerDescriptor timerMode]!= 3)
       {
-        v24 = [(SBIdleTimerDescriptorFactory *)self _prototypeController];
-        v25 = [v24 rootSettings];
-        v26 = [v25 attentionAwarenessSettings];
+        _prototypeController = [(SBIdleTimerDescriptorFactory *)self _prototypeController];
+        rootSettings = [_prototypeController rootSettings];
+        attentionAwarenessSettings = [rootSettings attentionAwarenessSettings];
 
-        [v26 sampleInterval];
-        [(SBIdleTimerDescriptor *)v5 setSampleInterval:?];
-        [(SBIdleTimerDescriptor *)v5 addAuditReason:@"should use attention awareness"];
+        [attentionAwarenessSettings sampleInterval];
+        [(SBIdleTimerDescriptor *)disabledIdleTimerDescriptor setSampleInterval:?];
+        [(SBIdleTimerDescriptor *)disabledIdleTimerDescriptor addAuditReason:@"should use attention awareness"];
       }
     }
   }
 
 LABEL_43:
 
-  return v5;
+  return disabledIdleTimerDescriptor;
 }
 
-- (BOOL)updateIdleTimerSettingsForSecurityDefaults:(id)a3
+- (BOOL)updateIdleTimerSettingsForSecurityDefaults:(id)defaults
 {
-  v4 = a3;
-  v5 = [(SBIdleTimerGlobalStateMonitor *)self->_stateMonitor dontLockEver];
-  if (v5)
+  defaultsCopy = defaults;
+  dontLockEver = [(SBIdleTimerGlobalStateMonitor *)self->_stateMonitor dontLockEver];
+  if (dontLockEver)
   {
-    [v4 setTotalInterval:1.79769313e308];
-    [v4 setWarnInterval:1.79769313e308];
-    [v4 setTimerMode:3];
-    [v4 addAuditReason:@"securityDefaults dontLockEver is YES"];
+    [defaultsCopy setTotalInterval:1.79769313e308];
+    [defaultsCopy setWarnInterval:1.79769313e308];
+    [defaultsCopy setTimerMode:3];
+    [defaultsCopy addAuditReason:@"securityDefaults dontLockEver is YES"];
   }
 
-  return v5;
+  return dontLockEver;
 }
 
-- (BOOL)updateIdleTimerSettingsForPowerDefaults:(id)a3
+- (BOOL)updateIdleTimerSettingsForPowerDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   if ([(SBIdleTimerGlobalStateMonitor *)self->_stateMonitor dontDimOrLockOnAC]&& [(SBIdleTimerGlobalStateMonitor *)self->_stateMonitor isOnACPower])
   {
-    [v4 setTotalInterval:1.79769313e308];
-    [v4 setWarnInterval:1.79769313e308];
-    [v4 setTimerMode:3];
-    [v4 addAuditReason:@"idleTimerDefaults dontDimOrLockWhileConnectedToPower is YES and device is on AC"];
+    [defaultsCopy setTotalInterval:1.79769313e308];
+    [defaultsCopy setWarnInterval:1.79769313e308];
+    [defaultsCopy setTimerMode:3];
+    [defaultsCopy addAuditReason:@"idleTimerDefaults dontDimOrLockWhileConnectedToPower is YES and device is on AC"];
     v5 = 1;
   }
 
@@ -463,31 +463,31 @@ LABEL_43:
   return v5;
 }
 
-- (BOOL)updateIdleTimerSettingsForAutoLockTimeout:(id)a3
+- (BOOL)updateIdleTimerSettingsForAutoLockTimeout:(id)timeout
 {
-  v5 = a3;
-  v6 = [(SBIdleTimerGlobalStateMonitor *)self->_stateMonitor autoLockTimeout];
-  v7 = v6;
-  if (v6)
+  timeoutCopy = timeout;
+  autoLockTimeout = [(SBIdleTimerGlobalStateMonitor *)self->_stateMonitor autoLockTimeout];
+  v7 = autoLockTimeout;
+  if (autoLockTimeout)
   {
-    [v6 floatValue];
+    [autoLockTimeout floatValue];
     v9 = v8;
     if (BSFloatLessThanOrEqualToFloat())
     {
-      [v5 setTotalInterval:v9];
+      [timeoutCopy setTotalInterval:v9];
       v10 = @"MCFeatureAutoLockTime (%@) is lte MAX (%@)";
     }
 
     else
     {
-      [v5 setTotalInterval:1.79769313e308];
-      [v5 setWarnInterval:1.79769313e308];
+      [timeoutCopy setTotalInterval:1.79769313e308];
+      [timeoutCopy setWarnInterval:1.79769313e308];
       v10 = @"MCFeatureAutoLockTime (%@) is gt MAX (%@)";
     }
 
-    v3 = SBIdleTimerIntervalToNSString(v9);
+    currentDevice = SBIdleTimerIntervalToNSString(v9);
     v13 = SBIdleTimerIntervalToNSString(3600.0);
-    [v5 addAuditReason:{v10, v3, v13}];
+    [timeoutCopy addAuditReason:{v10, currentDevice, v13}];
 
 LABEL_19:
     goto LABEL_20;
@@ -502,20 +502,20 @@ LABEL_19:
       v12 = 300.0;
     }
 
-    [v5 setTotalInterval:v12];
+    [timeoutCopy setTotalInterval:v12];
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v14 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
     v15 = 60.0;
-    if (v14 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v15 = 300.0;
     }
 
-    [v5 setTotalInterval:v15];
+    [timeoutCopy setTotalInterval:v15];
   }
 
   v16 = __sb__runningInSpringBoard();
@@ -527,8 +527,8 @@ LABEL_19:
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v18 = [v3 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v18 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   v19 = 60.0;
@@ -538,7 +538,7 @@ LABEL_19:
   }
 
   v20 = SBIdleTimerIntervalToNSString(v19);
-  [v5 addAuditReason:{@"ERROR: MCFeatureAutoLockTime is <nil>; setting totalInterval to DEFAULT: %@", v20}];
+  [timeoutCopy addAuditReason:{@"ERROR: MCFeatureAutoLockTime is <nil>; setting totalInterval to DEFAULT: %@", v20}];
 
   if ((v17 & 1) == 0)
   {
@@ -550,63 +550,63 @@ LABEL_20:
   return 1;
 }
 
-- (BOOL)updateIdleTimerSettingsForActiveClientConfiguration:(id)a3
+- (BOOL)updateIdleTimerSettingsForActiveClientConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SBIdleTimerGlobalStateMonitor *)self->_stateMonitor aggregatedClientConfiguration];
-  v6 = v5;
-  if (v5)
+  configurationCopy = configuration;
+  aggregatedClientConfiguration = [(SBIdleTimerGlobalStateMonitor *)self->_stateMonitor aggregatedClientConfiguration];
+  v6 = aggregatedClientConfiguration;
+  if (aggregatedClientConfiguration)
   {
-    v7 = [v5 disableTimerSetting];
-    v8 = [v6 maxExpirationTimeoutSettings];
-    v9 = [v6 minExpirationTimeoutSettings];
-    v10 = v7 != 0;
-    if (!v7 || ([v4 setTimerMode:3], objc_msgSend(v4, "setTotalInterval:", 1.79769313e308), objc_msgSend(v4, "setWarnInterval:", 1.79769313e308), objc_msgSend(v4, "addAuditReason:", @"Active client configuration: [%@]", v6), v8) && (v11 = objc_msgSend(v8, "highestPrecedence"), v11 >= objc_msgSend(v7, "precedence")))
+    disableTimerSetting = [aggregatedClientConfiguration disableTimerSetting];
+    maxExpirationTimeoutSettings = [v6 maxExpirationTimeoutSettings];
+    minExpirationTimeoutSettings = [v6 minExpirationTimeoutSettings];
+    v10 = disableTimerSetting != 0;
+    if (!disableTimerSetting || ([configurationCopy setTimerMode:3], objc_msgSend(configurationCopy, "setTotalInterval:", 1.79769313e308), objc_msgSend(configurationCopy, "setWarnInterval:", 1.79769313e308), objc_msgSend(configurationCopy, "addAuditReason:", @"Active client configuration: [%@]", v6), maxExpirationTimeoutSettings) && (v11 = objc_msgSend(maxExpirationTimeoutSettings, "highestPrecedence"), v11 >= objc_msgSend(disableTimerSetting, "precedence")))
     {
-      v12 = [v6 resolvedExpirationTimeoutRange];
-      [v12 lowerTimeout];
+      resolvedExpirationTimeoutRange = [v6 resolvedExpirationTimeoutRange];
+      [resolvedExpirationTimeoutRange lowerTimeout];
       v14 = v13;
-      [v12 upperTimeout];
+      [resolvedExpirationTimeoutRange upperTimeout];
       v16 = v15;
-      [v4 totalInterval];
-      if (v9 && BSFloatLessThanFloat())
+      [configurationCopy totalInterval];
+      if (minExpirationTimeoutSettings && BSFloatLessThanFloat())
       {
         if (BSFloatLessThanOrEqualToFloat())
         {
-          [v4 setTotalInterval:v14];
+          [configurationCopy setTotalInterval:v14];
           v17 = @"MinExpirationTimeoutFromService (%@) is lte MAX_TOTAL_INTERVAL (%@)";
         }
 
         else
         {
-          [v4 setTotalInterval:1.79769313e308];
-          [v4 setWarnInterval:1.79769313e308];
+          [configurationCopy setTotalInterval:1.79769313e308];
+          [configurationCopy setWarnInterval:1.79769313e308];
           v17 = @"MinExpirationTimeoutFromService (%@) is gt MAX_TOTAL_INTERVAL (%@)";
         }
 
         v18 = SBIdleTimerIntervalToNSString(v14);
         v19 = SBIdleTimerIntervalToNSString(3600.0);
-        [v4 addAuditReason:{v17, v18, v19}];
+        [configurationCopy addAuditReason:{v17, v18, v19}];
 
         v10 = 1;
       }
 
-      [v4 totalInterval];
-      if (v8)
+      [configurationCopy totalInterval];
+      if (maxExpirationTimeoutSettings)
       {
         v21 = v20;
         if (BSFloatGreaterThanFloat())
         {
-          [v4 setTotalInterval:v16];
-          if ([v4 timerMode] == 3)
+          [configurationCopy setTotalInterval:v16];
+          if ([configurationCopy timerMode] == 3)
           {
-            [v4 setWarnInterval:v21 * 0.666666667];
-            [v4 setTimerMode:1];
+            [configurationCopy setWarnInterval:v21 * 0.666666667];
+            [configurationCopy setTimerMode:1];
           }
 
           v22 = SBIdleTimerIntervalToNSString(v14);
           v23 = SBIdleTimerIntervalToNSString(3600.0);
-          [v4 addAuditReason:{@"MaxExpirationTimeoutFromService", v22, v23}];
+          [configurationCopy addAuditReason:{@"MaxExpirationTimeoutFromService", v22, v23}];
 
           v10 = 1;
         }
@@ -627,97 +627,97 @@ LABEL_20:
   return v10;
 }
 
-- (BOOL)updateIdleTimerSettingsForDefaultWarnInterval:(id)a3
+- (BOOL)updateIdleTimerSettingsForDefaultWarnInterval:(id)interval
 {
-  v4 = a3;
-  [v4 totalInterval];
+  intervalCopy = interval;
+  [intervalCopy totalInterval];
   v6 = v5;
   v7 = BSFloatGreaterThanFloat();
   if (v7)
   {
-    [(SBIdleTimerDescriptorFactory *)self _updateIdleTimerSettingsWarnInterval:v4 totalInterval:v6];
+    [(SBIdleTimerDescriptorFactory *)self _updateIdleTimerSettingsWarnInterval:intervalCopy totalInterval:v6];
   }
 
   return v7;
 }
 
-- (BOOL)updateIdleTimerSettingsForPrototypeSettingsDisable:(id)a3
+- (BOOL)updateIdleTimerSettingsForPrototypeSettingsDisable:(id)disable
 {
-  v4 = a3;
-  v5 = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
-  v6 = [v5 disableIdleTimer];
+  disableCopy = disable;
+  _idleTimerPrototypeSettings = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
+  disableIdleTimer = [_idleTimerPrototypeSettings disableIdleTimer];
 
-  if (v6)
+  if (disableIdleTimer)
   {
-    [v4 setTotalInterval:1.79769313e308];
-    [v4 setWarnInterval:1.79769313e308];
-    [v4 setTimerMode:3];
-    [v4 addAuditReason:@"SBIdleTimerSettings disableIdleTimer is YES"];
+    [disableCopy setTotalInterval:1.79769313e308];
+    [disableCopy setWarnInterval:1.79769313e308];
+    [disableCopy setTimerMode:3];
+    [disableCopy addAuditReason:@"SBIdleTimerSettings disableIdleTimer is YES"];
   }
 
-  return v6;
+  return disableIdleTimer;
 }
 
-- (BOOL)updateIdleTimerSettingsForPrototypeSettingsOverride:(id)a3
+- (BOOL)updateIdleTimerSettingsForPrototypeSettingsOverride:(id)override
 {
-  v4 = a3;
-  v5 = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
-  v6 = [v5 overrideIdleTimer];
+  overrideCopy = override;
+  _idleTimerPrototypeSettings = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
+  overrideIdleTimer = [_idleTimerPrototypeSettings overrideIdleTimer];
 
-  if (v6)
+  if (overrideIdleTimer)
   {
-    v7 = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
-    [v7 durationInterval];
-    [v4 setTotalInterval:?];
+    _idleTimerPrototypeSettings2 = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
+    [_idleTimerPrototypeSettings2 durationInterval];
+    [overrideCopy setTotalInterval:?];
 
-    v8 = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
-    [v8 warnInterval];
-    [v4 setWarnInterval:?];
+    _idleTimerPrototypeSettings3 = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
+    [_idleTimerPrototypeSettings3 warnInterval];
+    [overrideCopy setWarnInterval:?];
 
-    v9 = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
-    [v9 samplingStartBeforeFirstTimeout];
-    [v4 setSamplingStartBeforeFirstTimeout:?];
+    _idleTimerPrototypeSettings4 = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
+    [_idleTimerPrototypeSettings4 samplingStartBeforeFirstTimeout];
+    [overrideCopy setSamplingStartBeforeFirstTimeout:?];
 
-    [v4 addAuditReason:@"SBIdleTimerSettings override is YES"];
+    [overrideCopy addAuditReason:@"SBIdleTimerSettings override is YES"];
   }
 
-  return v6;
+  return overrideIdleTimer;
 }
 
-- (BOOL)updateIdleTimerSettingsForTelephony:(id)a3
+- (BOOL)updateIdleTimerSettingsForTelephony:(id)telephony
 {
-  v4 = a3;
-  v5 = [(SBIdleTimerDescriptorFactory *)self _telephonyManager];
-  v6 = [(SBIdleTimerDescriptorFactory *)self _conferenceManager];
-  if ([v5 isInEmergencyCallbackMode])
+  telephonyCopy = telephony;
+  _telephonyManager = [(SBIdleTimerDescriptorFactory *)self _telephonyManager];
+  _conferenceManager = [(SBIdleTimerDescriptorFactory *)self _conferenceManager];
+  if ([_telephonyManager isInEmergencyCallbackMode])
   {
-    [v4 setTotalInterval:1.79769313e308];
-    [v4 setWarnInterval:1.79769313e308];
-    [v4 setTimerMode:3];
-    [v4 addAuditReason:@"SBTelephonyManager is in emergency call"];
+    [telephonyCopy setTotalInterval:1.79769313e308];
+    [telephonyCopy setWarnInterval:1.79769313e308];
+    [telephonyCopy setTimerMode:3];
+    [telephonyCopy addAuditReason:@"SBTelephonyManager is in emergency call"];
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 inCallUsingSpeakerOrReceiver];
-    v9 = [v6 activeFaceTimeCallExists];
-    v10 = [(SBIdleTimerDescriptorFactory *)self _lockScreenManager];
-    v11 = v10;
-    if (v10)
+    inCallUsingSpeakerOrReceiver = [_telephonyManager inCallUsingSpeakerOrReceiver];
+    activeFaceTimeCallExists = [_conferenceManager activeFaceTimeCallExists];
+    _lockScreenManager = [(SBIdleTimerDescriptorFactory *)self _lockScreenManager];
+    v11 = _lockScreenManager;
+    if (_lockScreenManager)
     {
       v7 = 0;
-      if (![v10 isUILocked] && ((v8 | v9) & 1) != 0)
+      if (![_lockScreenManager isUILocked] && ((inCallUsingSpeakerOrReceiver | activeFaceTimeCallExists) & 1) != 0)
       {
-        [v4 setTotalInterval:1.79769313e308];
-        if (v8)
+        [telephonyCopy setTotalInterval:1.79769313e308];
+        if (inCallUsingSpeakerOrReceiver)
         {
-          [v4 addAuditReason:@"normal call"];
+          [telephonyCopy addAuditReason:@"normal call"];
         }
 
-        if (v9)
+        if (activeFaceTimeCallExists)
         {
-          [v4 addAuditReason:@"FaceTime call"];
+          [telephonyCopy addAuditReason:@"FaceTime call"];
         }
 
         v7 = 1;
@@ -733,12 +733,12 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)sanitizeSettingsAfterInitialSetup:(id)a3
+- (BOOL)sanitizeSettingsAfterInitialSetup:(id)setup
 {
-  v3 = a3;
-  [v3 totalInterval];
+  setupCopy = setup;
+  [setupCopy totalInterval];
   v5 = v4;
-  [v3 warnInterval];
+  [setupCopy warnInterval];
   v7 = v6;
   if ((BSFloatLessThanFloat() & 1) != 0 || BSFloatIsZero())
   {
@@ -751,20 +751,20 @@ LABEL_20:
         v9 = 300.0;
       }
 
-      [v3 setTotalInterval:v9];
+      [setupCopy setTotalInterval:v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x277D75418] currentDevice];
-      v11 = [v10 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
       v12 = 60.0;
-      if (v11 == 1)
+      if (userInterfaceIdiom == 1)
       {
         v12 = 300.0;
       }
 
-      [v3 setTotalInterval:v12];
+      [setupCopy setTotalInterval:v12];
     }
 
     if (__sb__runningInSpringBoard())
@@ -776,30 +776,30 @@ LABEL_20:
         v14 = 280.0;
       }
 
-      [v3 setWarnInterval:v14];
+      [setupCopy setWarnInterval:v14];
     }
 
     else
     {
-      v15 = [MEMORY[0x277D75418] currentDevice];
-      v16 = [v15 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
       v17 = 40.0;
-      if (v16 == 1)
+      if (userInterfaceIdiom2 == 1)
       {
         v17 = 280.0;
       }
 
-      [v3 setWarnInterval:v17];
+      [setupCopy setWarnInterval:v17];
     }
 
-    if ([v3 timerMode] != 3)
+    if ([setupCopy timerMode] != 3)
     {
-      [v3 setTimerMode:1];
+      [setupCopy setTimerMode:1];
     }
 
     v18 = SBIdleTimerIntervalToNSString(v5);
     v19 = SBIdleTimerIntervalToNSString(v7);
-    [v3 addAuditReason:{@"totalInterval (%@) and/or warnInterval (%@) is not sane", v18, v19}];
+    [setupCopy addAuditReason:{@"totalInterval (%@) and/or warnInterval (%@) is not sane", v18, v19}];
 
     v20 = 1;
   }
@@ -812,10 +812,10 @@ LABEL_20:
   return v20;
 }
 
-- (BOOL)sanitizeTotalDuration:(id)a3
+- (BOOL)sanitizeTotalDuration:(id)duration
 {
-  v3 = a3;
-  [v3 totalInterval];
+  durationCopy = duration;
+  [durationCopy totalInterval];
   v5 = v4;
   IsZero = BSFloatIsZero();
   if (IsZero)
@@ -829,33 +829,33 @@ LABEL_20:
         v8 = 300.0;
       }
 
-      [v3 setTotalInterval:v8];
+      [durationCopy setTotalInterval:v8];
     }
 
     else
     {
-      v9 = [MEMORY[0x277D75418] currentDevice];
-      v10 = [v9 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
       v11 = 60.0;
-      if (v10 == 1)
+      if (userInterfaceIdiom == 1)
       {
         v11 = 300.0;
       }
 
-      [v3 setTotalInterval:v11];
+      [durationCopy setTotalInterval:v11];
     }
 
     v12 = SBIdleTimerIntervalToNSString(v5);
-    [v3 addAuditReason:{@"totalInterval (%@) is float equals to 0", v12}];
+    [durationCopy addAuditReason:{@"totalInterval (%@) is float equals to 0", v12}];
   }
 
   return IsZero;
 }
 
-- (BOOL)sanitizeWarnInterval:(id)a3
+- (BOOL)sanitizeWarnInterval:(id)interval
 {
-  v3 = a3;
-  [v3 warnInterval];
+  intervalCopy = interval;
+  [intervalCopy warnInterval];
   v5 = v4;
   IsZero = BSFloatIsZero();
   if (IsZero)
@@ -869,37 +869,37 @@ LABEL_20:
         v8 = 280.0;
       }
 
-      [v3 setWarnInterval:v8];
+      [intervalCopy setWarnInterval:v8];
     }
 
     else
     {
-      v9 = [MEMORY[0x277D75418] currentDevice];
-      v10 = [v9 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
       v11 = 40.0;
-      if (v10 == 1)
+      if (userInterfaceIdiom == 1)
       {
         v11 = 280.0;
       }
 
-      [v3 setWarnInterval:v11];
+      [intervalCopy setWarnInterval:v11];
     }
 
     v12 = SBIdleTimerIntervalToNSString(v5);
-    [v3 addAuditReason:{@"warnInterval (%@) is float equals to 0", v12}];
+    [intervalCopy addAuditReason:{@"warnInterval (%@) is float equals to 0", v12}];
   }
 
   return IsZero;
 }
 
-- (BOOL)sanitizeSettingsAfterSetup:(id)a3 duration:(int64_t)a4
+- (BOOL)sanitizeSettingsAfterSetup:(id)setup duration:(int64_t)duration
 {
-  v5 = a3;
-  [v5 addAuditReason:@"after setup"];
-  [v5 totalInterval];
+  setupCopy = setup;
+  [setupCopy addAuditReason:@"after setup"];
+  [setupCopy totalInterval];
   if (BSFloatEqualToFloat())
   {
-    [v5 warnInterval];
+    [setupCopy warnInterval];
     if (BSFloatEqualToFloat())
     {
       if (__sb__runningInSpringBoard())
@@ -911,81 +911,81 @@ LABEL_20:
           v7 = 280.0;
         }
 
-        [v5 setWarnInterval:v7];
+        [setupCopy setWarnInterval:v7];
       }
 
       else
       {
-        v8 = [MEMORY[0x277D75418] currentDevice];
-        v9 = [v8 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
         v10 = 40.0;
-        if (v9 == 1)
+        if (userInterfaceIdiom == 1)
         {
           v10 = 280.0;
         }
 
-        [v5 setWarnInterval:v10];
+        [setupCopy setWarnInterval:v10];
       }
 
-      [v5 addAuditReason:{@"after setup, setting default warn interval"}];
+      [setupCopy addAuditReason:{@"after setup, setting default warn interval"}];
     }
   }
 
-  [v5 warnInterval];
+  [setupCopy warnInterval];
   v12 = v11;
-  if ([v5 shouldWarn])
+  if ([setupCopy shouldWarn])
   {
-    if ([v5 timerMode] == 2)
+    if ([setupCopy timerMode] == 2)
     {
-      [v5 setTimerMode:1];
-      [v5 addAuditReason:{@"after setup, timer mode was: Manual"}];
+      [setupCopy setTimerMode:1];
+      [setupCopy addAuditReason:{@"after setup, timer mode was: Manual"}];
     }
   }
 
   else if (BSFloatLessThanOrEqualToFloat())
   {
-    [v5 setWarnInterval:1.79769313e308];
+    [setupCopy setWarnInterval:1.79769313e308];
     v13 = SBIdleTimerIntervalToNSString(v12);
-    [v5 addAuditReason:{@"after setup, warnInterval was %@", v13}];
+    [setupCopy addAuditReason:{@"after setup, warnInterval was %@", v13}];
   }
 
-  v14 = [v5 shouldWarn];
-  [v5 totalInterval];
-  if (v14)
+  shouldWarn = [setupCopy shouldWarn];
+  [setupCopy totalInterval];
+  if (shouldWarn)
   {
-    [v5 warnInterval];
+    [setupCopy warnInterval];
   }
 
-  if (a4 == 18 || BSFloatEqualToFloat())
+  if (duration == 18 || BSFloatEqualToFloat())
   {
-    [v5 setTotalInterval:1.79769313e308];
-    [v5 addAuditReason:{@"after setup, should not expire"}];
+    [setupCopy setTotalInterval:1.79769313e308];
+    [setupCopy addAuditReason:{@"after setup, should not expire"}];
   }
 
-  if (([v5 shouldWarn] & 1) == 0 && BSFloatEqualToFloat())
+  if (([setupCopy shouldWarn] & 1) == 0 && BSFloatEqualToFloat())
   {
-    [v5 setTimerMode:3];
-    [v5 addAuditReason:{@"after setup, shouldWarn is NO and expireInterval is <never>"}];
+    [setupCopy setTimerMode:3];
+    [setupCopy addAuditReason:{@"after setup, shouldWarn is NO and expireInterval is <never>"}];
   }
 
-  [v5 warnInterval];
+  [setupCopy warnInterval];
   if (BSFloatEqualToFloat())
   {
-    [v5 totalInterval];
+    [setupCopy totalInterval];
     if (BSFloatEqualToFloat())
     {
-      [v5 setTimerMode:3];
-      [v5 addAuditReason:{@"after setup, warnInterval is <never> and totalInterval is <never>"}];
+      [setupCopy setTimerMode:3];
+      [setupCopy addAuditReason:{@"after setup, warnInterval is <never> and totalInterval is <never>"}];
     }
   }
 
   return 0;
 }
 
-- (BOOL)sanitizeDescriptorForLockscreenDefaults:(id)a3
+- (BOOL)sanitizeDescriptorForLockscreenDefaults:(id)defaults
 {
-  v4 = a3;
-  [v4 totalInterval];
+  defaultsCopy = defaults;
+  [defaultsCopy totalInterval];
   v6 = v5;
   v7 = BSFloatGreaterThanOrEqualToFloat();
   if (v7)
@@ -996,18 +996,18 @@ LABEL_20:
       v8 = v6;
     }
 
-    [v4 setTotalInterval:v8];
+    [defaultsCopy setTotalInterval:v8];
     v9 = SBIdleTimerIntervalToNSString(v6);
-    [v4 addAuditReason:{@"totalInterval (%@) is gte 0", v9}];
+    [defaultsCopy addAuditReason:{@"totalInterval (%@) is gte 0", v9}];
   }
 
   return v7;
 }
 
-- (BOOL)updateIdleTimerSettingsForDuration:(int64_t)a3 descriptor:(id)a4
+- (BOOL)updateIdleTimerSettingsForDuration:(int64_t)duration descriptor:(id)descriptor
 {
-  v6 = a4;
-  if ([v6 timerMode] == 3)
+  descriptorCopy = descriptor;
+  if ([descriptorCopy timerMode] == 3)
   {
     v7 = 0;
   }
@@ -1015,7 +1015,7 @@ LABEL_20:
   else
   {
     v7 = 0;
-    switch(a3)
+    switch(duration)
     {
       case 0:
       case 1:
@@ -1025,12 +1025,12 @@ LABEL_20:
         v8 = 2.0;
         goto LABEL_19;
       case 3:
-        v9 = [SBApp accidentalActivationMitigationSessionCoordinator];
-        v10 = [v9 currentSession];
-        [v10 duration];
-        [v6 setTotalInterval:?];
+        accidentalActivationMitigationSessionCoordinator = [SBApp accidentalActivationMitigationSessionCoordinator];
+        currentSession = [accidentalActivationMitigationSessionCoordinator currentSession];
+        [currentSession duration];
+        [descriptorCopy setTotalInterval:?];
 
-        [v6 setWarnInterval:0.01];
+        [descriptorCopy setWarnInterval:0.01];
         goto LABEL_20;
       case 4:
         [(SBIdleTimerDefaults *)self->_override_idleTimerDefaults notificationVisibleIdleTimer];
@@ -1063,25 +1063,25 @@ LABEL_20:
         v8 = 8.0;
         goto LABEL_19;
       case 17:
-        v11 = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
-        [v11 unlockedIdleTimerCap];
+        _idleTimerPrototypeSettings = [(SBIdleTimerDescriptorFactory *)self _idleTimerPrototypeSettings];
+        [_idleTimerPrototypeSettings unlockedIdleTimerCap];
         v13 = v12;
 
-        [v6 totalInterval];
+        [descriptorCopy totalInterval];
         if (v13 < v8)
         {
           v8 = v13;
         }
 
 LABEL_19:
-        [v6 setTotalInterval:v8];
+        [descriptorCopy setTotalInterval:v8];
         goto LABEL_20;
       case 18:
-        [v6 setTotalInterval:1.79769313e308];
-        [v6 setTimerMode:3];
+        [descriptorCopy setTotalInterval:1.79769313e308];
+        [descriptorCopy setTimerMode:3];
 LABEL_20:
         v14 = NSStringFromIdleTimerDuration();
-        [v6 addAuditReason:{@"duration is %@", v14}];
+        [descriptorCopy addAuditReason:{@"duration is %@", v14}];
 
         v7 = 1;
         break;
@@ -1093,61 +1093,61 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)updateIdleTimerSettingsWithCustomTimeouts:(id)a3 fromBehavior:(id)a4
+- (BOOL)updateIdleTimerSettingsWithCustomTimeouts:(id)timeouts fromBehavior:(id)behavior
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 customIdleExpirationTimeout];
+  timeoutsCopy = timeouts;
+  behaviorCopy = behavior;
+  [behaviorCopy customIdleExpirationTimeout];
   v9 = v8;
   IsZero = BSFloatIsZero();
   if ((IsZero & 1) == 0)
   {
     if ([(SBIdleTimerDescriptorFactory *)self _isIdleDurationForever:v9])
     {
-      [v6 setTotalInterval:1.79769313e308];
+      [timeoutsCopy setTotalInterval:1.79769313e308];
       v11 = SBIdleTimerIntervalToNSString(v9);
-      [v6 addAuditReason:{@"customIdleExpirationTimeout (%@) lt 0", v11}];
+      [timeoutsCopy addAuditReason:{@"customIdleExpirationTimeout (%@) lt 0", v11}];
     }
 
     else
     {
-      [v6 setTotalInterval:v9];
-      if ([v7 idleWarnMode] == 1)
+      [timeoutsCopy setTotalInterval:v9];
+      if ([behaviorCopy idleWarnMode] == 1)
       {
-        [v6 setWarnInterval:0.0];
+        [timeoutsCopy setWarnInterval:0.0];
         v12 = @"Setting totalInterval to custom customIdleExpirationTimeout gte 0";
 LABEL_15:
-        [v6 addAuditReason:v12];
+        [timeoutsCopy addAuditReason:v12];
         goto LABEL_16;
       }
 
-      [v6 addAuditReason:@"Setting totalInterval to custom customIdleExpirationTimeout gte 0"];
+      [timeoutsCopy addAuditReason:@"Setting totalInterval to custom customIdleExpirationTimeout gte 0"];
     }
 
-    [v7 customIdleWarningTimeout];
+    [behaviorCopy customIdleWarningTimeout];
     v14 = v13;
     if ((BSFloatIsZero() & 1) == 0 && (BSFloatGreaterThanFloat() & 1) == 0)
     {
       if ([(SBIdleTimerDescriptorFactory *)self _isIdleDurationForever:v14])
       {
-        [v6 setWarnInterval:1.79769313e308];
+        [timeoutsCopy setWarnInterval:1.79769313e308];
         v15 = SBIdleTimerIntervalToNSString(v14);
-        [v6 addAuditReason:{@"customIdleWarningTimeout (%@) lt 0", v15}];
+        [timeoutsCopy addAuditReason:{@"customIdleWarningTimeout (%@) lt 0", v15}];
       }
 
       else
       {
-        [v6 setWarnInterval:v14];
-        [v6 addAuditReason:@"Setting warnInterval to custom customIdleWarningTimeout"];
+        [timeoutsCopy setWarnInterval:v14];
+        [timeoutsCopy addAuditReason:@"Setting warnInterval to custom customIdleWarningTimeout"];
       }
 
-      [v6 warnInterval];
+      [timeoutsCopy warnInterval];
       if (v16 == 1.79769313e308)
       {
-        [v6 totalInterval];
+        [timeoutsCopy totalInterval];
         if (v17 == 1.79769313e308)
         {
-          [v6 setTimerMode:3];
+          [timeoutsCopy setTimerMode:3];
           v12 = @"warnInterval is <never> and totalInterval is <never>";
           goto LABEL_15;
         }
@@ -1160,20 +1160,20 @@ LABEL_16:
   return IsZero ^ 1;
 }
 
-- (BOOL)updateIdleTimerSettingsForUnlockedWithMesa:(id)a3
+- (BOOL)updateIdleTimerSettingsForUnlockedWithMesa:(id)mesa
 {
-  v4 = a3;
-  v5 = [(SBIdleTimerDescriptorFactory *)self _mainWorkspace];
-  v6 = [v5 isSpringBoardActive];
+  mesaCopy = mesa;
+  _mainWorkspace = [(SBIdleTimerDescriptorFactory *)self _mainWorkspace];
+  isSpringBoardActive = [_mainWorkspace isSpringBoardActive];
 
-  v7 = [(SBIdleTimerDescriptorFactory *)self _biometricResource];
-  LODWORD(v5) = [v7 hasBiometricAuthenticationCapabilityEnabled];
+  _biometricResource = [(SBIdleTimerDescriptorFactory *)self _biometricResource];
+  LODWORD(_mainWorkspace) = [_biometricResource hasBiometricAuthenticationCapabilityEnabled];
 
-  [v4 totalInterval];
-  v8 = (BSFloatEqualToFloat() ^ 1) & v6 & v5;
+  [mesaCopy totalInterval];
+  v8 = (BSFloatEqualToFloat() ^ 1) & isSpringBoardActive & _mainWorkspace;
   if (v8 == 1)
   {
-    [v4 totalInterval];
+    [mesaCopy totalInterval];
     v10 = v9 * 0.5;
     if (_AXSAttentionAwarenessFeaturesEnabled())
     {
@@ -1190,7 +1190,7 @@ LABEL_16:
       v11 = v10;
     }
 
-    [v4 setTotalInterval:v11];
+    [mesaCopy setTotalInterval:v11];
     v12 = SBIdleTimerIntervalToNSString(v10);
     if (_AXSAttentionAwarenessFeaturesEnabled())
     {
@@ -1203,21 +1203,21 @@ LABEL_16:
     }
 
     v14 = SBIdleTimerIntervalToNSString(v13);
-    [v4 addAuditReason:{@"sbIsActive and mesaEnabled are YES; calculating totalInterval as half (%@) or MIN_TOTAL_INTERVAL_HOMESCREEN_MESA (%@), whichever is greater", v12, v14}];
+    [mesaCopy addAuditReason:{@"sbIsActive and mesaEnabled are YES; calculating totalInterval as half (%@) or MIN_TOTAL_INTERVAL_HOMESCREEN_MESA (%@), whichever is greater", v12, v14}];
   }
 
   return v8;
 }
 
-- (BOOL)updateIdleTimerSettingsForThermalBlockedMode:(id)a3
+- (BOOL)updateIdleTimerSettingsForThermalBlockedMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(SBIdleTimerGlobalStateMonitor *)self->_stateMonitor isThermalBlocked];
-  if (v5)
+  modeCopy = mode;
+  isThermalBlocked = [(SBIdleTimerGlobalStateMonitor *)self->_stateMonitor isThermalBlocked];
+  if (isThermalBlocked)
   {
-    [v4 totalInterval];
+    [modeCopy totalInterval];
     v7 = v6;
-    [v4 warnInterval];
+    [modeCopy warnInterval];
     v9 = v8;
     v10 = BSFloatEqualToFloat();
     v11 = 30.0;
@@ -1250,30 +1250,30 @@ LABEL_16:
       }
     }
 
-    [v4 setTotalInterval:v11];
-    [v4 setWarnInterval:v12];
-    if ([v4 timerMode] == 3)
+    [modeCopy setTotalInterval:v11];
+    [modeCopy setWarnInterval:v12];
+    if ([modeCopy timerMode] == 3)
     {
-      [v4 setTimerMode:1];
+      [modeCopy setTimerMode:1];
     }
 
     v14 = SBIdleTimerIntervalToNSString(30.0);
     v15 = SBIdleTimerIntervalToNSString(10.0);
-    [v4 addAuditReason:{@"thermally blocked - applying max total interval: %@ and max warn interval: %@ thermal block limits", v14, v15}];
+    [modeCopy addAuditReason:{@"thermally blocked - applying max total interval: %@ and max warn interval: %@ thermal block limits", v14, v15}];
   }
 
-  return v5;
+  return isThermalBlocked;
 }
 
-- (BOOL)updateIdleTimerSettingsForBatterySaverMode:(id)a3
+- (BOOL)updateIdleTimerSettingsForBatterySaverMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(SBIdleTimerGlobalStateMonitor *)self->_stateMonitor isBatterySaverModeActive];
-  if (v5)
+  modeCopy = mode;
+  isBatterySaverModeActive = [(SBIdleTimerGlobalStateMonitor *)self->_stateMonitor isBatterySaverModeActive];
+  if (isBatterySaverModeActive)
   {
-    [v4 totalInterval];
+    [modeCopy totalInterval];
     v7 = v6;
-    [v4 warnInterval];
+    [modeCopy warnInterval];
     v9 = 30.0;
     if (v7 <= 30.0)
     {
@@ -1299,30 +1299,30 @@ LABEL_16:
       v14 = 2.0;
     }
 
-    [v4 setTotalInterval:v11];
+    [modeCopy setTotalInterval:v11];
     v15 = v14;
-    [v4 setWarnInterval:v15];
-    [v4 addAuditReason:@"isBatterySaverModeActive is YES"];
+    [modeCopy setWarnInterval:v15];
+    [modeCopy addAuditReason:@"isBatterySaverModeActive is YES"];
     if (BSFloatLessThanFloat())
     {
-      [v4 setWarnInterval:v11 * 0.666666667];
+      [modeCopy setWarnInterval:v11 * 0.666666667];
       v16 = SBIdleTimerIntervalToNSString(v15);
       v17 = SBIdleTimerIntervalToNSString(10.0);
-      [v4 addAuditReason:{@"isBatterySaverModeActive is YES and warnInterval (%@) lt MAX_WARNING_INTERVAL_DELTA_BATTERY_SAVER (%@)", v16, v17}];
+      [modeCopy addAuditReason:{@"isBatterySaverModeActive is YES and warnInterval (%@) lt MAX_WARNING_INTERVAL_DELTA_BATTERY_SAVER (%@)", v16, v17}];
     }
   }
 
-  return v5;
+  return isBatterySaverModeActive;
 }
 
-- (BOOL)updateIdleTimerSettingsForFaceDown:(id)a3
+- (BOOL)updateIdleTimerSettingsForFaceDown:(id)down
 {
-  v4 = a3;
-  if (-[SBIdleTimerGlobalStateMonitor isFaceDownOnTable](self->_stateMonitor, "isFaceDownOnTable") && ([v4 totalInterval], (BSFloatEqualToFloat() & 1) == 0))
+  downCopy = down;
+  if (-[SBIdleTimerGlobalStateMonitor isFaceDownOnTable](self->_stateMonitor, "isFaceDownOnTable") && ([downCopy totalInterval], (BSFloatEqualToFloat() & 1) == 0))
   {
-    [v4 totalInterval];
-    [v4 setTotalInterval:v6 * 0.25];
-    [v4 addAuditReason:{@"facedown on a table - reducing total time by the factor %g", 0x3FD0000000000000}];
+    [downCopy totalInterval];
+    [downCopy setTotalInterval:v6 * 0.25];
+    [downCopy addAuditReason:{@"facedown on a table - reducing total time by the factor %g", 0x3FD0000000000000}];
     v5 = 1;
   }
 
@@ -1334,37 +1334,37 @@ LABEL_16:
   return v5;
 }
 
-- (void)_updateIdleTimerSettingsWarnInterval:(id)a3 totalInterval:(double)a4
+- (void)_updateIdleTimerSettingsWarnInterval:(id)interval totalInterval:(double)totalInterval
 {
-  v6 = a3;
-  [v6 totalInterval];
+  intervalCopy = interval;
+  [intervalCopy totalInterval];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
     if (BSFloatLessThanOrEqualToFloat())
     {
-      [v6 setWarnInterval:?];
-      [v6 setQuickUnwarnInterval:a4 * 0.666666667 + a4 * 0.666666667 * 0.1];
-      v5 = SBIdleTimerIntervalToNSString(a4);
-      [v6 addAuditReason:{@"totalInterval (%@) lte 30; applying factor (%g) to calculate warnInterval", v5, 0x3FE5555555555555}];
+      [intervalCopy setWarnInterval:?];
+      [intervalCopy setQuickUnwarnInterval:totalInterval * 0.666666667 + totalInterval * 0.666666667 * 0.1];
+      v5 = SBIdleTimerIntervalToNSString(totalInterval);
+      [intervalCopy addAuditReason:{@"totalInterval (%@) lte 30; applying factor (%g) to calculate warnInterval", v5, 0x3FE5555555555555}];
     }
 
     else
     {
-      [v6 setWarnInterval:?];
-      [v6 setQuickUnwarnInterval:a4 + -20.0 + 2.0];
-      v5 = SBIdleTimerIntervalToNSString(a4);
-      [v6 addAuditReason:{@"totalInterval (%@) lte 30; subtracting delta (%g) to calculate warnInterval", v5, 0x4034000000000000}];
+      [intervalCopy setWarnInterval:?];
+      [intervalCopy setQuickUnwarnInterval:totalInterval + -20.0 + 2.0];
+      v5 = SBIdleTimerIntervalToNSString(totalInterval);
+      [intervalCopy addAuditReason:{@"totalInterval (%@) lte 30; subtracting delta (%g) to calculate warnInterval", v5, 0x4034000000000000}];
     }
   }
 }
 
-- (BOOL)updateIdleTimerSettingsForWarnInterval:(id)a3
+- (BOOL)updateIdleTimerSettingsForWarnInterval:(id)interval
 {
-  v4 = a3;
-  if ([v4 shouldWarn] && (objc_msgSend(v4, "warnInterval"), BSFloatGreaterThanOrEqualToFloat()))
+  intervalCopy = interval;
+  if ([intervalCopy shouldWarn] && (objc_msgSend(intervalCopy, "warnInterval"), BSFloatGreaterThanOrEqualToFloat()))
   {
-    [v4 totalInterval];
-    [(SBIdleTimerDescriptorFactory *)self _updateIdleTimerSettingsWarnInterval:v4 totalInterval:?];
+    [intervalCopy totalInterval];
+    [(SBIdleTimerDescriptorFactory *)self _updateIdleTimerSettingsWarnInterval:intervalCopy totalInterval:?];
     v5 = 1;
   }
 
@@ -1392,9 +1392,9 @@ LABEL_16:
   return v3;
 }
 
-- (BOOL)_isIdleDurationForever:(double)a3
+- (BOOL)_isIdleDurationForever:(double)forever
 {
-  if (a3 == 1.79769313e308)
+  if (forever == 1.79769313e308)
   {
     return 1;
   }

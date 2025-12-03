@@ -1,19 +1,19 @@
 @interface EntitlementABCIssueReporter
 - (BiometricAutoBugCapture)biometricABC;
-- (EntitlementABCIssueReporter)initWithBiometricABC:(id)a3;
-- (id)issueForTag:(id)a3;
-- (void)addIssue:(id)a3;
-- (void)reportGraylistedClient:(id)a3 withProcessName:(id)a4 clientUUID:(id)a5 platform:(id)a6;
-- (void)reportLegacyClient:(id)a3 withProcessName:(id)a4 clientUUID:(id)a5 platform:(id)a6;
+- (EntitlementABCIssueReporter)initWithBiometricABC:(id)c;
+- (id)issueForTag:(id)tag;
+- (void)addIssue:(id)issue;
+- (void)reportGraylistedClient:(id)client withProcessName:(id)name clientUUID:(id)d platform:(id)platform;
+- (void)reportLegacyClient:(id)client withProcessName:(id)name clientUUID:(id)d platform:(id)platform;
 - (void)rescheduleTimer;
 - (void)rescheduleTimerMain;
 @end
 
 @implementation EntitlementABCIssueReporter
 
-- (EntitlementABCIssueReporter)initWithBiometricABC:(id)a3
+- (EntitlementABCIssueReporter)initWithBiometricABC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v8.receiver = self;
   v8.super_class = EntitlementABCIssueReporter;
   v5 = [(EntitlementABCIssueReporter *)&v8 init];
@@ -22,51 +22,51 @@
     v6 = objc_opt_new();
     [(EntitlementABCIssueReporter *)v5 setIssues:v6];
 
-    [(EntitlementABCIssueReporter *)v5 setBiometricABC:v4];
+    [(EntitlementABCIssueReporter *)v5 setBiometricABC:cCopy];
   }
 
   return v5;
 }
 
-- (void)reportLegacyClient:(id)a3 withProcessName:(id)a4 clientUUID:(id)a5 platform:(id)a6
+- (void)reportLegacyClient:(id)client withProcessName:(id)name clientUUID:(id)d platform:(id)platform
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
-  objc_sync_enter(v13);
-  [LegacyEntitlementABCIssue reportClient:v14 withProcessName:v10 clientUUID:v11 platform:v12 forReporter:v13];
-  objc_sync_exit(v13);
+  clientCopy = client;
+  nameCopy = name;
+  dCopy = d;
+  platformCopy = platform;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [LegacyEntitlementABCIssue reportClient:clientCopy withProcessName:nameCopy clientUUID:dCopy platform:platformCopy forReporter:selfCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)reportGraylistedClient:(id)a3 withProcessName:(id)a4 clientUUID:(id)a5 platform:(id)a6
+- (void)reportGraylistedClient:(id)client withProcessName:(id)name clientUUID:(id)d platform:(id)platform
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
-  objc_sync_enter(v13);
-  [GraylistedClientABCIssue reportClient:v14 withProcessName:v10 clientUUID:v11 platform:v12 forReporter:v13];
-  objc_sync_exit(v13);
+  clientCopy = client;
+  nameCopy = name;
+  dCopy = d;
+  platformCopy = platform;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [GraylistedClientABCIssue reportClient:clientCopy withProcessName:nameCopy clientUUID:dCopy platform:platformCopy forReporter:selfCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)issueForTag:(id)a3
+- (id)issueForTag:(id)tag
 {
-  v4 = a3;
-  v5 = [(EntitlementABCIssueReporter *)self issues];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  tagCopy = tag;
+  issues = [(EntitlementABCIssueReporter *)self issues];
+  v6 = [issues objectForKeyedSubscript:tagCopy];
 
   return v6;
 }
 
-- (void)addIssue:(id)a3
+- (void)addIssue:(id)issue
 {
-  v4 = a3;
-  v6 = [(EntitlementABCIssueReporter *)self issues];
-  v5 = [v4 tag];
-  [v6 setObject:v4 forKeyedSubscript:v5];
+  issueCopy = issue;
+  issues = [(EntitlementABCIssueReporter *)self issues];
+  v5 = [issueCopy tag];
+  [issues setObject:issueCopy forKeyedSubscript:v5];
 }
 
 - (void)rescheduleTimer
@@ -99,24 +99,24 @@
     _os_log_impl(&dword_223E00000, v4, OS_LOG_TYPE_DEFAULT, "rescheduleTimerMain\n", buf, 2u);
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  obj = v5;
-  v6 = [(EntitlementABCIssueReporter *)v5 timer];
-  [v6 invalidate];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = selfCopy;
+  timer = [(EntitlementABCIssueReporter *)selfCopy timer];
+  [timer invalidate];
 
-  [(EntitlementABCIssueReporter *)v5 setTimer:0];
+  [(EntitlementABCIssueReporter *)selfCopy setTimer:0];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [(EntitlementABCIssueReporter *)v5 issues];
-  v8 = [v7 allValues];
+  issues = [(EntitlementABCIssueReporter *)selfCopy issues];
+  allValues = [issues allValues];
 
-  v9 = [v8 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  v9 = [allValues countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v9)
   {
-    v10 = 0;
+    nextAction5 = 0;
     v11 = *v35;
     do
     {
@@ -124,7 +124,7 @@
       {
         if (*v35 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v13 = *(*(&v34 + 1) + 8 * i);
@@ -139,50 +139,50 @@
         {
           v16 = v3;
           v17 = [v13 tag];
-          v18 = [v13 nextAction];
+          nextAction = [v13 nextAction];
           *buf = 138412546;
           v39 = v17;
           v40 = 2112;
-          v41 = v18;
+          v41 = nextAction;
           _os_log_impl(&dword_223E00000, v15, OS_LOG_TYPE_INFO, "rescheduleTimerMain: examining issue %@ nextAction=%@\n", buf, 0x16u);
 
           v3 = v16;
         }
 
         [v13 reportIfNeeded];
-        v19 = [v13 nextAction];
+        nextAction2 = [v13 nextAction];
 
-        if (v19)
+        if (nextAction2)
         {
-          if (v10)
+          if (nextAction5)
           {
-            v20 = [v13 nextAction];
-            v21 = [v10 compare:v20] == 1;
+            nextAction3 = [v13 nextAction];
+            v21 = [nextAction5 compare:nextAction3] == 1;
 
             if (v21)
             {
-              v22 = [v13 nextAction];
+              nextAction4 = [v13 nextAction];
 
-              v10 = v22;
+              nextAction5 = nextAction4;
             }
           }
 
           else
           {
-            v10 = [v13 nextAction];
+            nextAction5 = [v13 nextAction];
           }
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v9);
 
-    if (v10)
+    if (nextAction5)
     {
       v23 = [MEMORY[0x277CBEAA8] now];
-      [v10 timeIntervalSinceDate:v23];
+      [nextAction5 timeIntervalSinceDate:v23];
       v25 = v24;
 
       if (__osLog)
@@ -198,7 +198,7 @@
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v39 = v10;
+        v39 = nextAction5;
         v40 = 1024;
         LODWORD(v41) = v25;
         _os_log_impl(&dword_223E00000, v26, OS_LOG_TYPE_INFO, "Entitlement issue timer will fire at %@, interval=%d\n", buf, 0x12u);
@@ -212,8 +212,8 @@
       v27 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:0 repeats:v33 block:v25];
       [(EntitlementABCIssueReporter *)obj setTimer:v27];
 
-      v28 = [(EntitlementABCIssueReporter *)obj timer];
-      [v28 setTolerance:10.0];
+      timer2 = [(EntitlementABCIssueReporter *)obj timer];
+      [timer2 setTolerance:10.0];
 
       goto LABEL_36;
     }
@@ -239,7 +239,7 @@
     _os_log_impl(&dword_223E00000, v29, OS_LOG_TYPE_INFO, "Entitlement issue timer not scheduled\n", buf, 2u);
   }
 
-  v10 = 0;
+  nextAction5 = 0;
 LABEL_36:
   objc_sync_exit(obj);
 

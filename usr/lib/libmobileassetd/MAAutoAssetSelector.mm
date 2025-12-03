@@ -6,17 +6,17 @@
 
 - (BOOL)isFullAssetSelector
 {
-  v3 = [(MAAutoAssetSelector *)self assetType];
-  if (v3)
+  assetType = [(MAAutoAssetSelector *)self assetType];
+  if (assetType)
   {
-    v4 = v3;
-    v5 = [(MAAutoAssetSelector *)self assetSpecifier];
-    if (v5)
+    v4 = assetType;
+    assetSpecifier = [(MAAutoAssetSelector *)self assetSpecifier];
+    if (assetSpecifier)
     {
-      v6 = v5;
-      v7 = [(MAAutoAssetSelector *)self assetVersion];
+      v6 = assetSpecifier;
+      assetVersion = [(MAAutoAssetSelector *)self assetVersion];
 
-      if (v7)
+      if (assetVersion)
       {
         return 1;
       }
@@ -31,9 +31,9 @@
   {
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
+      setAtomicInstanceUUID = [(MAAutoAssetSelector *)self setAtomicInstanceUUID];
 
-      if (v8)
+      if (setAtomicInstanceUUID)
       {
         return 1;
       }

@@ -1,17 +1,17 @@
 @interface _DASDataBudgetPolicy
-+ (BOOL)budget:(id)a3 isPositive:(id)a4;
-+ (BOOL)budgetIsPositive:(id)a3;
-+ (BOOL)isBudgetAvailable:(id)a3;
++ (BOOL)budget:(id)budget isPositive:(id)positive;
++ (BOOL)budgetIsPositive:(id)positive;
++ (BOOL)isBudgetAvailable:(id)available;
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)budgetAvailableForActivity:(id)a3 withContext:(id)a4 rationale:(id)a5;
-- (BOOL)shouldIgnoreBudgetForActivity:(id)a3 withState:(id)a4 rationale:(id)a5;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)budgetAvailableForActivity:(id)activity withContext:(id)context rationale:(id)rationale;
+- (BOOL)shouldIgnoreBudgetForActivity:(id)activity withState:(id)state rationale:(id)rationale;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASDataBudgetPolicy)init;
-- (double)projectedUsageForActivity:(id)a3 withContext:(id)a4;
+- (double)projectedUsageForActivity:(id)activity withContext:(id)context;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
-- (void)updateSystemConstraintsWithContext:(id)a3;
+- (id)responseForActivity:(id)activity withState:(id)state;
+- (void)updateSystemConstraintsWithContext:(id)context;
 @end
 
 @implementation _DASDataBudgetPolicy
@@ -61,9 +61,9 @@
     policyName = v2->_policyName;
     v2->_policyName = @"Data Budget Policy";
 
-    v5 = [(_DASDataBudgetPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASDataBudgetPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v5;
+    v3->_triggers = initializeTriggers;
 
     v7 = +[_DASComplicationManager sharedInstance];
     complicationManager = v3->_complicationManager;
@@ -85,13 +85,13 @@
   return v3;
 }
 
-+ (BOOL)isBudgetAvailable:(id)a3
++ (BOOL)isBudgetAvailable:(id)available
 {
-  v3 = a3;
-  if ([_CDNetworkContext wifiQuality:v3]<= 0)
+  availableCopy = available;
+  if ([_CDNetworkContext wifiQuality:availableCopy]<= 0)
   {
     v5 = +[_CDContextQueries keyPathForNetworkingBudgetRemainingStatus];
-    v4 = [_DASDataBudgetPolicy budget:v5 isPositive:v3];
+    v4 = [_DASDataBudgetPolicy budget:v5 isPositive:availableCopy];
   }
 
   else
@@ -102,36 +102,36 @@
   return v4;
 }
 
-+ (BOOL)budgetIsPositive:(id)a3
++ (BOOL)budgetIsPositive:(id)positive
 {
-  v4 = a3;
+  positiveCopy = positive;
   v5 = +[_CDContextQueries keyPathForNetworkingBudgetRemainingStatus];
-  LOBYTE(a1) = [a1 budget:v5 isPositive:v4];
+  LOBYTE(self) = [self budget:v5 isPositive:positiveCopy];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)budget:(id)a3 isPositive:(id)a4
++ (BOOL)budget:(id)budget isPositive:(id)positive
 {
-  v4 = [a4 objectForKeyedSubscript:a3];
+  v4 = [positive objectForKeyedSubscript:budget];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)updateSystemConstraintsWithContext:(id)a3
+- (void)updateSystemConstraintsWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [objc_opt_class() isBudgetAvailable:v3];
+  contextCopy = context;
+  v4 = [objc_opt_class() isBudgetAvailable:contextCopy];
 
   v5 = +[_DASDaemon sharedInstance];
   v6 = v5;
@@ -146,13 +146,13 @@
   }
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v6 = a4;
-  if ([a3 isEqualToString:@"com.apple.duetactivityscheduler.databudgetpolicy.status"])
+  stateCopy = state;
+  if ([trigger isEqualToString:@"com.apple.duetactivityscheduler.databudgetpolicy.status"])
   {
-    [(_DASDataBudgetPolicy *)self updateSystemConstraintsWithContext:v6];
-    v7 = [_DASDataBudgetPolicy budgetIsPositive:v6];
+    [(_DASDataBudgetPolicy *)self updateSystemConstraintsWithContext:stateCopy];
+    v7 = [_DASDataBudgetPolicy budgetIsPositive:stateCopy];
     v8 = +[_DASPLLogger sharedInstance];
     [v8 reportNewStatus:v7 forTrigger:off_10020ACC8];
 
@@ -167,56 +167,56 @@
   return v9;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 widgetID];
-  if (!v4 || (v5 = [v3 schedulingPriority], v5 >= _DASSchedulingPriorityUserInitiated))
+  activityCopy = activity;
+  widgetID = [activityCopy widgetID];
+  if (!widgetID || (v5 = [activityCopy schedulingPriority], v5 >= _DASSchedulingPriorityUserInitiated))
   {
-    if (![v3 requiresNetwork])
+    if (![activityCopy requiresNetwork])
     {
-      v6 = 0;
+      dataBudgeted = 0;
       goto LABEL_8;
     }
 
-    if (([v3 budgeted] & 1) == 0)
+    if (([activityCopy budgeted] & 1) == 0)
     {
-      v6 = [v3 dataBudgeted];
+      dataBudgeted = [activityCopy dataBudgeted];
       goto LABEL_8;
     }
   }
 
-  v6 = 1;
+  dataBudgeted = 1;
 LABEL_8:
 
-  return v6;
+  return dataBudgeted;
 }
 
-- (BOOL)shouldIgnoreBudgetForActivity:(id)a3 withState:(id)a4 rationale:(id)a5
+- (BOOL)shouldIgnoreBudgetForActivity:(id)activity withState:(id)state rationale:(id)rationale
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([_DASPhotosPolicy isiCPLActivity:v7])
+  activityCopy = activity;
+  stateCopy = state;
+  rationaleCopy = rationale;
+  if ([_DASPhotosPolicy isiCPLActivity:activityCopy])
   {
     v10 = +[_DASPhotosPolicy keyPathForPhotosBudgetOverride];
-    v11 = [v8 objectForKeyedSubscript:v10];
-    v12 = [v11 unsignedIntegerValue];
+    v11 = [stateCopy objectForKeyedSubscript:v10];
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-    if (v12)
+    if (unsignedIntegerValue)
     {
       v13 = @"shouldOverrideBudget == YES";
 LABEL_7:
       v14 = [NSPredicate predicateWithFormat:v13];
-      [v9 addRationaleWithCondition:v14];
+      [rationaleCopy addRationaleWithCondition:v14];
 
       goto LABEL_8;
     }
   }
 
-  if ([_CDNetworkContext cellQuality:v8]>= 1)
+  if ([_CDNetworkContext cellQuality:stateCopy]>= 1)
   {
-    if (![v7 deferred])
+    if (![activityCopy deferred])
     {
       v15 = 0;
       goto LABEL_10;
@@ -233,12 +233,12 @@ LABEL_10:
   return v15;
 }
 
-- (double)projectedUsageForActivity:(id)a3 withContext:(id)a4
+- (double)projectedUsageForActivity:(id)activity withContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  activityCopy = activity;
   v7 = +[_DASNetworkEvaluationMonitor inexpensivePathAvailable];
-  v8 = [_CDNetworkContext cellQuality:v5];
+  v8 = [_CDNetworkContext cellQuality:contextCopy];
 
   v9 = &unk_1001588D0;
   if ((v7 & (v8 > 20)) == 0)
@@ -247,37 +247,37 @@ LABEL_10:
   }
 
   v10 = *v9;
-  v11 = [v6 transferSize];
+  transferSize = [activityCopy transferSize];
 
-  return v10 * (v11 << 10);
+  return v10 * (transferSize << 10);
 }
 
-- (BOOL)budgetAvailableForActivity:(id)a3 withContext:(id)a4 rationale:(id)a5
+- (BOOL)budgetAvailableForActivity:(id)activity withContext:(id)context rationale:(id)rationale
 {
-  v8 = a3;
-  v9 = a5;
-  [(_DASDataBudgetPolicy *)self projectedUsageForActivity:v8 withContext:a4];
+  activityCopy = activity;
+  rationaleCopy = rationale;
+  [(_DASDataBudgetPolicy *)self projectedUsageForActivity:activityCopy withContext:context];
   v11 = v10;
   v12 = +[_DASBudgetManager sharedInstance];
   [v12 balanceForBudgetWithName:@"com.apple.dasd.systemCellular"];
   v14 = v13;
   [v12 capacityForBudgetWithName:@"com.apple.dasd.systemCellular"];
   v16 = v15;
-  v17 = [v8 startDate];
+  startDate = [activityCopy startDate];
 
-  if (v17)
+  if (startDate)
   {
     v18 = [NSNumber numberWithDouble:v14];
     v19 = [NSPredicate predicateWithFormat:@"remainingBudget == %@", v18];
-    [v9 addRationaleWithCondition:v19];
+    [rationaleCopy addRationaleWithCondition:v19];
 
     v20 = v14 > 0.0;
   }
 
   else
   {
-    v21 = [v8 userInfo];
-    v22 = [v21 objectForKeyedSubscript:_DASCTSMinDataBudgetPercentRemainingKey];
+    userInfo = [activityCopy userInfo];
+    v22 = [userInfo objectForKeyedSubscript:_DASCTSMinDataBudgetPercentRemainingKey];
 
     [v22 doubleValue];
     if (v22)
@@ -301,38 +301,38 @@ LABEL_10:
       v26 = [NSNumber numberWithDouble:v11];
       v27 = [NSNumber numberWithDouble:v24];
       v28 = [NSPredicate predicateWithFormat:@"remainingBudget == %@ AND projectedUsage == %@ and percentage == %@", v25, v26, v27];
-      [v9 addRationaleWithCondition:v28];
+      [rationaleCopy addRationaleWithCondition:v28];
     }
   }
 
   return v20;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
+  activityCopy = activity;
   v27 = _NSConcreteStackBlock;
   v28 = 3221225472;
   v29 = sub_10004CE08;
   v30 = &unk_1001B56E0;
-  v31 = self;
-  v7 = a4;
-  v32 = v7;
+  selfCopy = self;
+  stateCopy = state;
+  v32 = stateCopy;
   if (qword_10020B128 != -1)
   {
     dispatch_once(&qword_10020B128, &v27);
   }
 
-  v8 = [v6 clientDataBudgetName];
+  clientDataBudgetName = [activityCopy clientDataBudgetName];
 
-  if (!v8)
+  if (!clientDataBudgetName)
   {
     goto LABEL_5;
   }
 
   v9 = +[_DASBudgetManager sharedInstance];
-  v10 = [v6 clientDataBudgetName];
-  v11 = [v9 budgetKeyPathForBudgetName:v10];
+  clientDataBudgetName2 = [activityCopy clientDataBudgetName];
+  v11 = [v9 budgetKeyPathForBudgetName:clientDataBudgetName2];
 
   if (!v11)
   {
@@ -341,12 +341,12 @@ LABEL_5:
   }
 
   v12 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
-  if ([(_DASDataBudgetPolicy *)self shouldIgnoreBudgetForActivity:v6 withState:v7 rationale:v12])
+  if ([(_DASDataBudgetPolicy *)self shouldIgnoreBudgetForActivity:activityCopy withState:stateCopy rationale:v12])
   {
     goto LABEL_7;
   }
 
-  if ([_DASDataBudgetPolicy budget:v11 isPositive:v7])
+  if ([_DASDataBudgetPolicy budget:v11 isPositive:stateCopy])
   {
     v14 = +[_DASNetworkQualityPolicy policyInstance];
     if ([v14 privateNetworkCellConnection])
@@ -357,7 +357,7 @@ LABEL_7:
       goto LABEL_15;
     }
 
-    v16 = [(_DASDataBudgetPolicy *)self budgetAvailableForActivity:v6 withContext:v7 rationale:v12];
+    v16 = [(_DASDataBudgetPolicy *)self budgetAvailableForActivity:activityCopy withContext:stateCopy rationale:v12];
 
     if (v16)
     {
@@ -379,25 +379,25 @@ LABEL_7:
   }
 
 LABEL_15:
-  v17 = [_CDNetworkContext wifiQuality:v7];
+  v17 = [_CDNetworkContext wifiQuality:stateCopy];
   if (v17 >= 1)
   {
     [(_DASPolicyResponseRationale *)v12 addRationaleForCondition:@"wifiQuality" withRequiredValue:20.0 withCurrentValue:v17];
     v13 = 0;
   }
 
-  v18 = [_CDNetworkContext wiredQuality:v7];
+  v18 = [_CDNetworkContext wiredQuality:stateCopy];
   if (v18 < 1)
   {
     if (v13)
     {
       v19 = +[NSDate date];
       complicationManager = self->_complicationManager;
-      v21 = [v6 relatedApplications];
-      if ([(_DASComplicationManager *)complicationManager isAnyActiveComplication:v21])
+      relatedApplications = [activityCopy relatedApplications];
+      if ([(_DASComplicationManager *)complicationManager isAnyActiveComplication:relatedApplications])
       {
-        v22 = [v6 startAfter];
-        [v19 timeIntervalSinceDate:v22];
+        startAfter = [activityCopy startAfter];
+        [v19 timeIntervalSinceDate:startAfter];
         v24 = v23;
 
         if (v24 > 1800.0)

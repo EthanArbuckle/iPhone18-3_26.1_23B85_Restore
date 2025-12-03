@@ -1,40 +1,40 @@
 @interface ACUIRemoteSetupViewController
-- (void)controller:(id)a3 didFinishSettingUpAccount:(id)a4;
+- (void)controller:(id)controller didFinishSettingUpAccount:(id)account;
 @end
 
 @implementation ACUIRemoteSetupViewController
 
-- (void)controller:(id)a3 didFinishSettingUpAccount:(id)a4
+- (void)controller:(id)controller didFinishSettingUpAccount:(id)account
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, account);
   v25 = _ACUILogSystem();
   v24 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
     v11 = objc_opt_class();
-    v12 = [v26 username];
-    sub_92B0(v30, "[ACUIRemoteSetupViewController controller:didFinishSettingUpAccount:]", 23, v11, v12);
+    username = [v26 username];
+    sub_92B0(v30, "[ACUIRemoteSetupViewController controller:didFinishSettingUpAccount:]", 23, v11, username);
     _os_log_debug_impl(&dword_0, v25, v24, "%s (%d) Controller %@ reports being finished with setting up account %@.", v30, 0x26u);
   }
 
   objc_storeStrong(&v25, 0);
   v23 = 0;
-  if (!v28->_didAttemptDataclassSetup)
+  if (!selfCopy->_didAttemptDataclassSetup)
   {
-    v28->_didAttemptDataclassSetup = 1;
-    v22 = [(ACUIRemoteSetupViewController *)v28 topViewController];
+    selfCopy->_didAttemptDataclassSetup = 1;
+    topViewController = [(ACUIRemoteSetupViewController *)selfCopy topViewController];
     v7 = objc_opt_class();
-    v9 = [v22 specifier];
-    v8 = [v9 name];
+    specifier = [topViewController specifier];
+    name = [specifier name];
     v21 = [ACUISetupViewController _specifierForDataclassEditControllerClass:"_specifierForDataclassEditControllerClass:withName:account:" withName:v7 account:?];
 
-    v10 = [location[0] specifier];
-    v20 = [v10 propertyForKey:ACUIAddAccountDataSourceKey];
+    specifier2 = [location[0] specifier];
+    v20 = [specifier2 propertyForKey:ACUIAddAccountDataSourceKey];
 
     if (v20)
     {
@@ -45,7 +45,7 @@
       v16 = 0;
       v17 = sub_9330;
       v18 = &unk_1C4C0;
-      v19 = v28;
+      v19 = selfCopy;
       [v6 accountControllerCompletedWithAccount:v5 action:1 data:? specifier:? viewController:? completion:?];
       objc_storeStrong(&v19, 0);
     }
@@ -53,7 +53,7 @@
     v23 = 1;
     objc_storeStrong(&v20, 0);
     objc_storeStrong(&v21, 0);
-    objc_storeStrong(&v22, 0);
+    objc_storeStrong(&topViewController, 0);
   }
 
   oslog[0] = _ACUILogSystem();
@@ -76,7 +76,7 @@
   objc_storeStrong(oslog, 0);
   if ((v23 & 1) == 0)
   {
-    [(ACUIRemoteSetupViewController *)v28 _dismissAndNotifyParent];
+    [(ACUIRemoteSetupViewController *)selfCopy _dismissAndNotifyParent];
   }
 
   objc_storeStrong(&v26, 0);

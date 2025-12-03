@@ -1,12 +1,12 @@
 @interface UniLibrary
-- (UniLibrary)initWithDevice:(id)a3 metalOnly:(BOOL)a4;
+- (UniLibrary)initWithDevice:(id)device metalOnly:(BOOL)only;
 @end
 
 @implementation UniLibrary
 
-- (UniLibrary)initWithDevice:(id)a3 metalOnly:(BOOL)a4
+- (UniLibrary)initWithDevice:(id)device metalOnly:(BOOL)only
 {
-  v6 = a3;
+  deviceCopy = device;
   v25.receiver = self;
   v25.super_class = UniLibrary;
   v7 = [(UniLibrary *)&v25 init];
@@ -18,7 +18,7 @@
   v8 = MEMORY[0x29EDB9F48];
   v9 = objc_opt_class();
   v11 = objc_msgSend_bundleForClass_(v8, v10, v9);
-  if (!a4)
+  if (!only)
   {
     v12 = objc_opt_new();
     objc_msgSend_setCoreImageLibrary_(v7, v13, v12);

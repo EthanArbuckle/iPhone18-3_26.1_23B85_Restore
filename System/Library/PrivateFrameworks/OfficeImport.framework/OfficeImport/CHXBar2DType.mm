@@ -1,47 +1,47 @@
 @interface CHXBar2DType
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4;
-+ (void)readFrom:(_xmlNode *)a3 chartType:(id)a4 state:(id)a5;
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state;
++ (void)readFrom:(_xmlNode *)from chartType:(id)type state:(id)state;
 @end
 
 @implementation CHXBar2DType
 
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  v7 = [v6 chart];
-  v8 = [(CHDChartType *)CHDBar2DType chartTypeWithChart:v7];
+  stateCopy = state;
+  chart = [stateCopy chart];
+  v8 = [(CHDChartType *)CHDBar2DType chartTypeWithChart:chart];
 
-  [a1 readFrom:a3 chartType:v8 state:v6];
+  [self readFrom:element chartType:v8 state:stateCopy];
 
   return v8;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 chartType:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from chartType:(id)type state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  [v7 setVaryColors:0];
-  v9 = [v8 drawingState];
-  v10 = [v9 OAXChartNamespace];
-  v11 = OCXFindChild(a3, v10, "gapWidth");
+  typeCopy = type;
+  stateCopy = state;
+  [typeCopy setVaryColors:0];
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v11 = OCXFindChild(from, oAXChartNamespace, "gapWidth");
 
   if (v11)
   {
-    [v7 setGapWidth:{CXRequiredUnsignedLongAttribute(v11, CXNoNamespace, "val")}];
+    [typeCopy setGapWidth:{CXRequiredUnsignedLongAttribute(v11, CXNoNamespace, "val")}];
   }
 
-  v12 = [v8 drawingState];
-  v13 = [v12 OAXChartNamespace];
-  v14 = OCXFindChild(a3, v13, "overlap");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v14 = OCXFindChild(from, oAXChartNamespace2, "overlap");
 
   if (v14)
   {
-    [v7 setOverlap:{-CXRequiredLongAttribute(v14, CXNoNamespace, "val")}];
+    [typeCopy setOverlap:{-CXRequiredLongAttribute(v14, CXNoNamespace, "val")}];
   }
 
-  v15 = [v8 drawingState];
-  v16 = [v15 OAXChartNamespace];
-  v17 = OCXFindChild(a3, v16, "barDir");
+  drawingState3 = [stateCopy drawingState];
+  oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+  v17 = OCXFindChild(from, oAXChartNamespace3, "barDir");
 
   if (v17)
   {
@@ -55,12 +55,12 @@
     }
   }
 
-  [v7 setColumn:v17];
-  v20 = [v8 drawingState];
-  v21 = [v20 OAXChartNamespace];
-  v22 = OCXFindChild(a3, v21, "grouping");
+  [typeCopy setColumn:v17];
+  drawingState4 = [stateCopy drawingState];
+  oAXChartNamespace4 = [drawingState4 OAXChartNamespace];
+  v22 = OCXFindChild(from, oAXChartNamespace4, "grouping");
 
-  [v7 setGrouping:{+[CHXChartType chdGroupingFromXmlGroupingElement:](CHXChartType, "chdGroupingFromXmlGroupingElement:", v22)}];
+  [typeCopy setGrouping:{+[CHXChartType chdGroupingFromXmlGroupingElement:](CHXChartType, "chdGroupingFromXmlGroupingElement:", v22)}];
 }
 
 @end

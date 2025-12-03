@@ -1,27 +1,27 @@
 @interface SKDBaseJob
-- (SKDBaseJob)initWithName:(id)a3 version:(id)a4 pipelines:(id)a5;
+- (SKDBaseJob)initWithName:(id)name version:(id)version pipelines:(id)pipelines;
 - (SKDEventLogger)logger;
 @end
 
 @implementation SKDBaseJob
 
-- (SKDBaseJob)initWithName:(id)a3 version:(id)a4 pipelines:(id)a5
+- (SKDBaseJob)initWithName:(id)name version:(id)version pipelines:(id)pipelines
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  versionCopy = version;
+  pipelinesCopy = pipelines;
   v18.receiver = self;
   v18.super_class = SKDBaseJob;
   v11 = [(SKDBaseJob *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_version, a4);
-    v13 = [v8 copy];
+    objc_storeStrong(&v11->_version, version);
+    v13 = [nameCopy copy];
     name = v12->_name;
     v12->_name = v13;
 
-    v15 = [v10 copy];
+    v15 = [pipelinesCopy copy];
     pipelines = v12->_pipelines;
     v12->_pipelines = v15;
   }

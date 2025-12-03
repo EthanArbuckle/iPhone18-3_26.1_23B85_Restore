@@ -1,45 +1,45 @@
 @interface CACOnboardingFeature
-+ (id)featureWithTitleText:(id)a3 helperText:(id)a4;
-+ (id)featureWithTitleText:(id)a3 helperText:(id)a4 imageBundleName:(id)a5;
-- (CACOnboardingFeature)initWithTitleText:(id)a3 helperText:(id)a4 imageBundleName:(id)a5;
++ (id)featureWithTitleText:(id)text helperText:(id)helperText;
++ (id)featureWithTitleText:(id)text helperText:(id)helperText imageBundleName:(id)name;
+- (CACOnboardingFeature)initWithTitleText:(id)text helperText:(id)helperText imageBundleName:(id)name;
 @end
 
 @implementation CACOnboardingFeature
 
-- (CACOnboardingFeature)initWithTitleText:(id)a3 helperText:(id)a4 imageBundleName:(id)a5
+- (CACOnboardingFeature)initWithTitleText:(id)text helperText:(id)helperText imageBundleName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  textCopy = text;
+  helperTextCopy = helperText;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = CACOnboardingFeature;
   v12 = [(CACOnboardingFeature *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_titleText, a3);
-    objc_storeStrong(&v13->_helperText, a4);
-    objc_storeStrong(&v13->_imageBundleName, a5);
+    objc_storeStrong(&v12->_titleText, text);
+    objc_storeStrong(&v13->_helperText, helperText);
+    objc_storeStrong(&v13->_imageBundleName, name);
   }
 
   return v13;
 }
 
-+ (id)featureWithTitleText:(id)a3 helperText:(id)a4
++ (id)featureWithTitleText:(id)text helperText:(id)helperText
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CACOnboardingFeature alloc] initWithTitleText:v6 helperText:v5 imageBundleName:0];
+  helperTextCopy = helperText;
+  textCopy = text;
+  v7 = [[CACOnboardingFeature alloc] initWithTitleText:textCopy helperText:helperTextCopy imageBundleName:0];
 
   return v7;
 }
 
-+ (id)featureWithTitleText:(id)a3 helperText:(id)a4 imageBundleName:(id)a5
++ (id)featureWithTitleText:(id)text helperText:(id)helperText imageBundleName:(id)name
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CACOnboardingFeature alloc] initWithTitleText:v9 helperText:v8 imageBundleName:v7];
+  nameCopy = name;
+  helperTextCopy = helperText;
+  textCopy = text;
+  v10 = [[CACOnboardingFeature alloc] initWithTitleText:textCopy helperText:helperTextCopy imageBundleName:nameCopy];
 
   return v10;
 }

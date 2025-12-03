@@ -1,23 +1,23 @@
 @interface TokenizerRunnerObjC
-- (TokenizerRunnerObjC)initWithTokenizerPath:(id)a3 error:(id *)a4;
-- (id)detokenize:(id)a3 error:(id *)a4;
-- (id)textForTokenID:(int64_t)a3;
-- (id)tokenize:(id)a3 error:(id *)a4;
+- (TokenizerRunnerObjC)initWithTokenizerPath:(id)path error:(id *)error;
+- (id)detokenize:(id)detokenize error:(id *)error;
+- (id)textForTokenID:(int64_t)d;
+- (id)tokenize:(id)tokenize error:(id *)error;
 - (id)vocabulary;
 - (int64_t)longestTokenLength;
-- (int64_t)tokenIDForText:(id)a3;
-- (void)enumeratePrefixTokenIDsForPrefix:(id)a3 block:(id)a4;
-- (void)enumerateTokenIDsForDecodedPrefix:(id)a3 block:(id)a4;
-- (void)enumerateTokenIDsForRawPrefix:(id)a3 block:(id)a4;
-- (void)prefixMatchesForText:(id)a3 block:(id)a4;
+- (int64_t)tokenIDForText:(id)text;
+- (void)enumeratePrefixTokenIDsForPrefix:(id)prefix block:(id)block;
+- (void)enumerateTokenIDsForDecodedPrefix:(id)prefix block:(id)block;
+- (void)enumerateTokenIDsForRawPrefix:(id)prefix block:(id)block;
+- (void)prefixMatchesForText:(id)text block:(id)block;
 @end
 
 @implementation TokenizerRunnerObjC
 
-- (TokenizerRunnerObjC)initWithTokenizerPath:(id)a3 error:(id *)a4
+- (TokenizerRunnerObjC)initWithTokenizerPath:(id)path error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  pathCopy = path;
   v24.receiver = self;
   v24.super_class = TokenizerRunnerObjC;
   v7 = [(TokenizerRunnerObjC *)&v24 init];
@@ -34,12 +34,12 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v28 = v6;
+    v28 = pathCopy;
     _os_log_impl(&dword_1A8E85000, v10, OS_LOG_TYPE_DEFAULT, "Initializing tokenizer with path: %{public}@", buf, 0xCu);
   }
 
-  v11 = v6;
-  strlen([v6 UTF8String]);
+  v11 = pathCopy;
+  strlen([pathCopy UTF8String]);
   (*(*(v7 + 1) + 16))(&v23);
   if (!v23)
   {
@@ -62,7 +62,7 @@ LABEL_13:
     [TokenizerRunnerObjC initWithTokenizerPath:v14 error:?];
   }
 
-  if (a4)
+  if (error)
   {
     v15 = MEMORY[0x1E696ABC0];
     v16 = +[TokenizerRunnerObjC sentencePieceErrorDomain];
@@ -71,7 +71,7 @@ LABEL_13:
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load tokenizer."];
     v26 = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-    *a4 = [v15 errorWithDomain:v16 code:v17 userInfo:v19];
+    *error = [v15 errorWithDomain:v16 code:v17 userInfo:v19];
   }
 
   sentencepiece::util::Status::~Status(&v23);
@@ -84,7 +84,7 @@ LABEL_14:
 
 - (id)vocabulary
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = 0;
   p_processor = &self->_processor;
   while (v4 < (*(p_processor->_vptr$SentencePieceProcessor + 62))(p_processor))
@@ -125,12 +125,12 @@ LABEL_14:
       operator delete(__dst);
     }
 
-    [v3 addObject:v11];
+    [array addObject:v11];
 
     v4 = (v4 + 1);
   }
 
-  return v3;
+  return array;
 }
 
 - (int64_t)longestTokenLength
@@ -158,14 +158,14 @@ LABEL_14:
   return v3;
 }
 
-- (id)tokenize:(id)a3 error:(id *)a4
+- (id)tokenize:(id)tokenize error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  tokenizeCopy = tokenize;
   __p = 0;
   v22 = 0;
   v23 = 0;
-  strlen([v6 UTF8String]);
+  strlen([tokenizeCopy UTF8String]);
   (*(self->_processor._vptr$SentencePieceProcessor + 18))(&v20);
   if (v20)
   {
@@ -176,7 +176,7 @@ LABEL_14:
       [(TokenizerRunnerObjC *)v8 tokenize:v26 error:v7];
     }
 
-    if (a4)
+    if (error)
     {
       v9 = MEMORY[0x1E696ABC0];
       v10 = +[TokenizerRunnerObjC sentencePieceErrorDomain];
@@ -185,16 +185,16 @@ LABEL_14:
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to tokenize text: %{public}s", sentencepiece::util::Status::error_message(&v20)];
       v25 = v12;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-      *a4 = [v9 errorWithDomain:v10 code:v11 userInfo:v13];
+      *error = [v9 errorWithDomain:v10 code:v11 userInfo:v13];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   else
   {
     v14 = objc_alloc(MEMORY[0x1E695DF70]);
-    a4 = [v14 initWithCapacity:(v22 - __p) >> 2];
+    error = [v14 initWithCapacity:(v22 - __p) >> 2];
     v15 = __p;
     if (v22 != __p)
     {
@@ -202,7 +202,7 @@ LABEL_14:
       do
       {
         v17 = [MEMORY[0x1E696AD98] numberWithInt:v15[v16]];
-        [a4 setObject:v17 atIndexedSubscript:v16];
+        [error setObject:v17 atIndexedSubscript:v16];
 
         ++v16;
         v15 = __p;
@@ -221,20 +221,20 @@ LABEL_14:
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
-- (id)detokenize:(id)a3 error:(id *)a4
+- (id)detokenize:(id)detokenize error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  detokenizeCopy = detokenize;
   memset(&v30, 0, sizeof(v30));
-  std::vector<int>::resize(&v30, [v6 count]);
+  std::vector<int>::resize(&v30, [detokenizeCopy count]);
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v6;
+  v7 = detokenizeCopy;
   v8 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v8)
   {
@@ -249,8 +249,8 @@ LABEL_14:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v26 + 1) + 8 * i) intValue];
-        v30.__begin_[v9++] = v12;
+        intValue = [*(*(&v26 + 1) + 8 * i) intValue];
+        v30.__begin_[v9++] = intValue;
       }
 
       v8 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -272,7 +272,7 @@ LABEL_14:
       [(TokenizerRunnerObjC *)v14 detokenize:v33 error:v13];
     }
 
-    if (a4)
+    if (error)
     {
       v15 = MEMORY[0x1E696ABC0];
       v16 = +[TokenizerRunnerObjC sentencePieceErrorDomain];
@@ -281,9 +281,9 @@ LABEL_14:
       v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to detokenize tokens: %{public}s", sentencepiece::util::Status::error_message(&v23)];
       v32 = v18;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-      *a4 = [v15 errorWithDomain:v16 code:v17 userInfo:v19];
+      *error = [v15 errorWithDomain:v16 code:v17 userInfo:v19];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
@@ -299,7 +299,7 @@ LABEL_14:
       v20 = __p[0];
     }
 
-    a4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v20];
+    error = [MEMORY[0x1E696AEC0] stringWithUTF8String:v20];
   }
 
   sentencepiece::util::Status::~Status(&v23);
@@ -316,10 +316,10 @@ LABEL_14:
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
-- (id)textForTokenID:(int64_t)a3
+- (id)textForTokenID:(int64_t)d
 {
   v3 = (*(self->_processor._vptr$SentencePieceProcessor + 64))();
   if (v4 >= 0x7FFFFFFFFFFFFFF8)
@@ -359,25 +359,25 @@ LABEL_14:
   return v7;
 }
 
-- (int64_t)tokenIDForText:(id)a3
+- (int64_t)tokenIDForText:(id)text
 {
-  v4 = a3;
-  v5 = [v4 UTF8String];
-  v6 = strlen(v5);
-  v7 = (*(self->_processor._vptr$SentencePieceProcessor + 63))(&self->_processor, v5, v6);
+  textCopy = text;
+  uTF8String = [textCopy UTF8String];
+  v6 = strlen(uTF8String);
+  v7 = (*(self->_processor._vptr$SentencePieceProcessor + 63))(&self->_processor, uTF8String, v6);
 
   return v7;
 }
 
-- (void)prefixMatchesForText:(id)a3 block:(id)a4
+- (void)prefixMatchesForText:(id)text block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  blockCopy = block;
   __p = 0;
   v28 = 0;
   v29 = 0;
-  v8 = [v6 UTF8String];
-  v9 = strlen(v8);
+  uTF8String = [textCopy UTF8String];
+  v9 = strlen(uTF8String);
   if (v9 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -392,7 +392,7 @@ LABEL_14:
   v25 = v9;
   if (v9)
   {
-    memmove(&__dst, v8, v9);
+    memmove(&__dst, uTF8String, v9);
   }
 
   *(&__dst + v10) = 0;
@@ -406,8 +406,8 @@ LABEL_14:
 
   if (v26)
   {
-    v13 = [v6 UTF8String];
-    v14 = strlen(v13);
+    uTF8String2 = [textCopy UTF8String];
+    v14 = strlen(uTF8String2);
     v15 = 0;
     LOBYTE(__dst) = 0;
     while (v15 < (*(p_processor->_vptr$SentencePieceProcessor + 62))(p_processor))
@@ -423,11 +423,11 @@ LABEL_14:
         v18 = v17;
       }
 
-      v19 = v13;
+      v19 = uTF8String2;
       if (v18)
       {
-        v20 = &v13[v18];
-        v19 = v13;
+        v20 = &uTF8String2[v18];
+        v19 = uTF8String2;
         while (*v19 == *v16)
         {
           ++v19;
@@ -440,9 +440,9 @@ LABEL_14:
         }
       }
 
-      if (&v13[v14] == v19)
+      if (&uTF8String2[v14] == v19)
       {
-        v7[2](v7, v15, &__dst);
+        blockCopy[2](blockCopy, v15, &__dst);
         if (__dst)
         {
           break;
@@ -462,7 +462,7 @@ LABEL_14:
       v22 = __p + 4;
       do
       {
-        v7[2](v7, *(v22 - 1), &__dst);
+        blockCopy[2](blockCopy, *(v22 - 1), &__dst);
         if (__dst)
         {
           break;
@@ -484,13 +484,13 @@ LABEL_14:
   }
 }
 
-- (void)enumeratePrefixTokenIDsForPrefix:(id)a3 block:(id)a4
+- (void)enumeratePrefixTokenIDsForPrefix:(id)prefix block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v19 = [v6 UTF8String];
+  prefixCopy = prefix;
+  blockCopy = block;
+  uTF8String = [prefixCopy UTF8String];
   v8 = 0;
-  v20 = strlen(v19);
+  v20 = strlen(uTF8String);
   p_processor = &self->_processor;
   while (v8 < (*(p_processor->_vptr$SentencePieceProcessor + 62))(p_processor))
   {
@@ -498,9 +498,9 @@ LABEL_14:
     v18 = v10;
     if (v10)
     {
-      if (std::string_view::compare[abi:ne200100](&v17, 0, v20, v19, v20))
+      if (std::string_view::compare[abi:ne200100](&v17, 0, v20, uTF8String, v20))
       {
-        if (!std::string_view::compare[abi:ne200100](&v19, 0, v18, v17, v18))
+        if (!std::string_view::compare[abi:ne200100](&uTF8String, 0, v18, v17, v18))
         {
           if (v20 < v18)
           {
@@ -531,7 +531,7 @@ LABEL_14:
           v16 = v11;
           if (v11)
           {
-            memmove(&__dst, &v19[v18], v11);
+            memmove(&__dst, &uTF8String[v18], v11);
           }
 
           *(&__dst + v11) = 0;
@@ -546,7 +546,7 @@ LABEL_14:
           }
 
           v14 = [v12 stringWithUTF8String:p_dst];
-          v7[2](v7, v8, v14);
+          blockCopy[2](blockCopy, v8, v14);
 
           if (v16 < 0)
           {
@@ -557,7 +557,7 @@ LABEL_14:
 
       else
       {
-        v7[2](v7, v8, &stru_1F1CAD038);
+        blockCopy[2](blockCopy, v8, &stru_1F1CAD038);
       }
     }
 
@@ -565,20 +565,20 @@ LABEL_14:
   }
 }
 
-- (void)enumerateTokenIDsForRawPrefix:(id)a3 block:(id)a4
+- (void)enumerateTokenIDsForRawPrefix:(id)prefix block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v17 = v6;
-  v8 = [v6 UTF8String];
-  v9 = strlen(v8);
+  prefixCopy = prefix;
+  blockCopy = block;
+  v17 = prefixCopy;
+  uTF8String = [prefixCopy UTF8String];
+  v9 = strlen(uTF8String);
   v10 = 0;
   p_processor = &self->_processor;
   while (v10 < (*(p_processor->_vptr$SentencePieceProcessor + 62))(p_processor))
   {
     v20 = (*(p_processor->_vptr$SentencePieceProcessor + 64))(p_processor, v10);
     v21 = v12;
-    if (v12 && !std::string_view::compare[abi:ne200100](&v20, 0, v9, v8, v9))
+    if (v12 && !std::string_view::compare[abi:ne200100](&v20, 0, v9, uTF8String, v9))
     {
       if (v21 < v9)
       {
@@ -624,7 +624,7 @@ LABEL_14:
       }
 
       v16 = [v14 stringWithUTF8String:p_dst];
-      v7[2](v7, v10, v16);
+      blockCopy[2](blockCopy, v10, v16);
 
       if (v19 < 0)
       {
@@ -636,12 +636,12 @@ LABEL_14:
   }
 }
 
-- (void)enumerateTokenIDsForDecodedPrefix:(id)a3 block:(id)a4
+- (void)enumerateTokenIDsForDecodedPrefix:(id)prefix block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 UTF8String];
-  v9 = strlen(v8);
+  prefixCopy = prefix;
+  blockCopy = block;
+  uTF8String = [prefixCopy UTF8String];
+  v9 = strlen(uTF8String);
   v10 = 0;
   p_processor = &self->_processor;
   memset(&__str, 0, sizeof(__str));
@@ -685,7 +685,7 @@ LABEL_14:
 
       __p.__r_.__value_.__r.__words[0] = p_str;
       __p.__r_.__value_.__l.__size_ = size;
-      if (!std::string_view::compare[abi:ne200100](&__p, 0, v9, v8, v9))
+      if (!std::string_view::compare[abi:ne200100](&__p, 0, v9, uTF8String, v9))
       {
         if ((__str.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
         {
@@ -720,7 +720,7 @@ LABEL_14:
         }
 
         v18 = [v16 stringWithUTF8String:{v17, *&v19.__r_.__value_.__l.__data_, v19.__r_.__value_.__r.__words[2]}];
-        v7[2](v7, v10, v18);
+        blockCopy[2](blockCopy, v10, v18);
 
         if (SHIBYTE(v19.__r_.__value_.__r.__words[2]) < 0)
         {

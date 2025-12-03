@@ -1,25 +1,25 @@
 @interface UIButton
 - (BOOL)isTextTruncated;
-- (BOOL)isTextTruncatedIgnoringLeading:(BOOL)a3;
+- (BOOL)isTextTruncatedIgnoringLeading:(BOOL)leading;
 @end
 
 @implementation UIButton
 
 - (BOOL)isTextTruncated
 {
-  v2 = [(UIButton *)self titleLabel];
-  v3 = [v2 isTextTruncated];
+  titleLabel = [(UIButton *)self titleLabel];
+  isTextTruncated = [titleLabel isTextTruncated];
 
-  return v3;
+  return isTextTruncated;
 }
 
-- (BOOL)isTextTruncatedIgnoringLeading:(BOOL)a3
+- (BOOL)isTextTruncatedIgnoringLeading:(BOOL)leading
 {
-  v3 = a3;
-  v4 = [(UIButton *)self titleLabel];
-  LOBYTE(v3) = [v4 isTextTruncatedIgnoringLeading:v3];
+  leadingCopy = leading;
+  titleLabel = [(UIButton *)self titleLabel];
+  LOBYTE(leadingCopy) = [titleLabel isTextTruncatedIgnoringLeading:leadingCopy];
 
-  return v3;
+  return leadingCopy;
 }
 
 @end

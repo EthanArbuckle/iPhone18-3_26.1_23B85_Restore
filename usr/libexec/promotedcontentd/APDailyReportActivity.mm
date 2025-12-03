@@ -1,13 +1,13 @@
 @interface APDailyReportActivity
 - (APXPCActivityCriteria)criteria;
 - (BOOL)_isEventDatabaseStorageEnabled;
-- (BOOL)runActivity:(id)a3;
+- (BOOL)runActivity:(id)activity;
 - (double)_timeIntervalToTomorrow;
 - (id)_expirationOfEventDatabaseDataTimestamp;
 - (int)_deliveryLeeway;
 - (void)_deleteDataForUnusedAccounts;
 - (void)_deleteExpiredDataFromActionStore;
-- (void)terminateActivity:(id)a3;
+- (void)terminateActivity:(id)activity;
 @end
 
 @implementation APDailyReportActivity
@@ -27,9 +27,9 @@
   return v3;
 }
 
-- (BOOL)runActivity:(id)a3
+- (BOOL)runActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -41,11 +41,11 @@
   v6 = objc_alloc_init(APReportHelper);
   [(APDailyReportActivity *)self setReportHelper:v6];
 
-  v7 = [(APDailyReportActivity *)self reportHelper];
-  [v7 preparePastDueReports];
+  reportHelper = [(APDailyReportActivity *)self reportHelper];
+  [reportHelper preparePastDueReports];
 
-  v8 = [(APDailyReportActivity *)self reportHelper];
-  [v8 prepareReports];
+  reportHelper2 = [(APDailyReportActivity *)self reportHelper];
+  [reportHelper2 prepareReports];
 
   [(APDailyReportActivity *)self setReportHelper:0];
   [(APDailyReportActivity *)self _deleteDataForUnusedAccounts];
@@ -65,11 +65,11 @@
   v15 = +[APDatabaseManager mainDatabase];
   [v15 optimize];
 
-  [v4 schedule];
+  [activityCopy schedule];
   return 0;
 }
 
-- (void)terminateActivity:(id)a3
+- (void)terminateActivity:(id)activity
 {
   v4 = APLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -78,27 +78,27 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Daily Report Activity Terminated.", v6, 2u);
   }
 
-  v5 = [(APDailyReportActivity *)self reportHelper];
-  [v5 cancelReportGeneration];
+  reportHelper = [(APDailyReportActivity *)self reportHelper];
+  [reportHelper cancelReportGeneration];
 }
 
 - (int)_deliveryLeeway
 {
   v2 = [APConfigurationMediator configurationForClass:objc_opt_class() usingCache:0];
-  v3 = [v2 deliveryLeeway];
+  deliveryLeeway = [v2 deliveryLeeway];
 
-  if (v3)
+  if (deliveryLeeway)
   {
-    v4 = [v2 deliveryLeeway];
-    v5 = [v4 intValue];
+    deliveryLeeway2 = [v2 deliveryLeeway];
+    intValue = [deliveryLeeway2 intValue];
   }
 
   else
   {
-    v5 = 10800;
+    intValue = 10800;
   }
 
-  return v5;
+  return intValue;
 }
 
 - (double)_timeIntervalToTomorrow
@@ -131,9 +131,9 @@
     v5 = [v4 getTableForClass:objc_opt_class()];
 
     v6 = +[APIDAccountProvider privateUserAccount];
-    v7 = [v6 accountToken];
-    v8 = [v3 reportDate];
-    [v5 deleteAdInstancesWithAccountTokenDifferentThan:v7 andDataOlderThan:v8];
+    accountToken = [v6 accountToken];
+    reportDate = [v3 reportDate];
+    [v5 deleteAdInstancesWithAccountTokenDifferentThan:accountToken andDataOlderThan:reportDate];
   }
 }
 
@@ -146,8 +146,8 @@
 
     if (v4)
     {
-      v5 = [(APDailyReportActivity *)self _expirationOfEventDatabaseDataTimestamp];
-      v6 = [v4 deleteEventsOlderThan:v5];
+      _expirationOfEventDatabaseDataTimestamp = [(APDailyReportActivity *)self _expirationOfEventDatabaseDataTimestamp];
+      v6 = [v4 deleteEventsOlderThan:_expirationOfEventDatabaseDataTimestamp];
 
       if (v6)
       {
@@ -200,24 +200,24 @@ LABEL_14:
   if ([v2 actionStoreEnabled])
   {
     v3 = [APConfigurationMediator configurationForClass:objc_opt_class()];
-    v4 = [v3 isEventDatabaseStorageEnabled];
+    isEventDatabaseStorageEnabled = [v3 isEventDatabaseStorageEnabled];
 
-    if (v4)
+    if (isEventDatabaseStorageEnabled)
     {
-      v5 = [v3 isEventDatabaseStorageEnabled];
-      v6 = [v5 BOOLValue];
+      isEventDatabaseStorageEnabled2 = [v3 isEventDatabaseStorageEnabled];
+      bOOLValue = [isEventDatabaseStorageEnabled2 BOOLValue];
     }
 
     else
     {
-      v6 = 1;
+      bOOLValue = 1;
     }
 
     v7 = APLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v8 = @"DISABLED";
-      if (v6)
+      if (bOOLValue)
       {
         v8 = @"ENABLED";
       }
@@ -237,32 +237,32 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[Event Database] Event storage is Disabled by user defaults.", &v10, 2u);
     }
 
-    LOBYTE(v6) = 0;
+    LOBYTE(bOOLValue) = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (id)_expirationOfEventDatabaseDataTimestamp
 {
   v2 = [APConfigurationMediator configurationForClass:objc_opt_class()];
-  v3 = [v2 expirationOfData2024E];
+  expirationOfData2024E = [v2 expirationOfData2024E];
 
-  if (v3)
+  if (expirationOfData2024E)
   {
-    v4 = [v2 expirationOfData2024E];
-    v5 = [v4 integerValue];
+    expirationOfData2024E2 = [v2 expirationOfData2024E];
+    integerValue = [expirationOfData2024E2 integerValue];
   }
 
   else
   {
-    v5 = 90;
+    integerValue = 90;
   }
 
   v6 = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
   v7 = +[NSDate date];
   v8 = [v6 startOfDayForDate:v7];
-  v9 = [v6 dateByAddingUnit:16 value:-v5 toDate:v8 options:0];
+  v9 = [v6 dateByAddingUnit:16 value:-integerValue toDate:v8 options:0];
 
   return v9;
 }

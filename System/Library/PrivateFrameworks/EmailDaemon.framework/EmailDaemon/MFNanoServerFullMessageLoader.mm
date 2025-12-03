@@ -1,39 +1,39 @@
 @interface MFNanoServerFullMessageLoader
 - (BOOL)_isProtectedDataAvailable;
-- (MFNanoServerFullMessageLoader)initWithCallbackQueue:(id)a3;
+- (MFNanoServerFullMessageLoader)initWithCallbackQueue:(id)queue;
 - (double)_exponentialBackoff;
-- (id)_dequeueMessageIdsFromFirstRequestAvailable:(id *)a3;
-- (id)_libraryMessagesKeyedByStore:(id)a3;
-- (id)_loadFullMessageForMessageIds:(id)a3 isProtectedMessage:(BOOL *)a4 deletedMessagesIds:(id *)a5;
+- (id)_dequeueMessageIdsFromFirstRequestAvailable:(id *)available;
+- (id)_libraryMessagesKeyedByStore:(id)store;
+- (id)_loadFullMessageForMessageIds:(id)ids isProtectedMessage:(BOOL *)message deletedMessagesIds:(id *)messagesIds;
 - (void)_dispatchOperation;
-- (void)_enqueueMessageIds:(id)a3 forRequest:(id)a4;
-- (void)_handleResultsAdded:(id)a3 deleted:(id)a4 forRequest:(id)a5 isProtectedMessage:(BOOL)a6;
+- (void)_enqueueMessageIds:(id)ids forRequest:(id)request;
+- (void)_handleResultsAdded:(id)added deleted:(id)deleted forRequest:(id)request isProtectedMessage:(BOOL)message;
 - (void)_libraryAvailabilityChanged;
 - (void)_networkStatusChanged;
 - (void)_processPendingRequests;
 - (void)_registerForLibraryAvailabilityNotifications;
-- (void)_scheduleRetryForFailedMessageIds:(id)a3 failedRequest:(id)a4;
+- (void)_scheduleRetryForFailedMessageIds:(id)ids failedRequest:(id)request;
 - (void)_setupNetworkObserver;
 - (void)_suspendOrResumeOperationQueue;
-- (void)attemptToCancelFullMessageLoadForMessageIds:(id)a3;
+- (void)attemptToCancelFullMessageLoadForMessageIds:(id)ids;
 - (void)cancelAllPendingOperations;
 - (void)dealloc;
-- (void)loadFullMessagesForMessageIds:(id)a3 completion:(id)a4;
+- (void)loadFullMessagesForMessageIds:(id)ids completion:(id)completion;
 - (void)start;
 @end
 
 @implementation MFNanoServerFullMessageLoader
 
-- (MFNanoServerFullMessageLoader)initWithCallbackQueue:(id)a3
+- (MFNanoServerFullMessageLoader)initWithCallbackQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = MFNanoServerFullMessageLoader;
   v6 = [(MFNanoServerFullMessageLoader *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callbackQueue, a3);
+    objc_storeStrong(&v6->_callbackQueue, queue);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.MobileMail.NanoServerFullMessageLoader", v8);
     privateQueue = v7->_privateQueue;
@@ -101,64 +101,64 @@
   [(MFNanoServerFullMessageLoader *)&v3 dealloc];
 }
 
-- (void)loadFullMessagesForMessageIds:(id)a3 completion:(id)a4
+- (void)loadFullMessagesForMessageIds:(id)ids completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  idsCopy = ids;
+  completionCopy = completion;
+  if ([idsCopy count])
   {
-    v8 = [(MFNanoServerFullMessageLoader *)self privateQueue];
+    privateQueue = [(MFNanoServerFullMessageLoader *)self privateQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10008A258;
     v13[3] = &unk_100158B88;
     v13[4] = self;
-    v14 = v6;
-    v15 = v7;
-    v9 = v7;
-    dispatch_async(v8, v13);
+    v14 = idsCopy;
+    v15 = completionCopy;
+    v9 = completionCopy;
+    dispatch_async(privateQueue, v13);
 
     v10 = v14;
   }
 
   else
   {
-    v11 = [(MFNanoServerFullMessageLoader *)self callbackQueue];
+    callbackQueue = [(MFNanoServerFullMessageLoader *)self callbackQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10008A240;
     block[3] = &unk_1001598D0;
-    v17 = v7;
-    v12 = v7;
-    dispatch_async(v11, block);
+    v17 = completionCopy;
+    v12 = completionCopy;
+    dispatch_async(callbackQueue, block);
 
     v10 = v17;
   }
 }
 
-- (void)attemptToCancelFullMessageLoadForMessageIds:(id)a3
+- (void)attemptToCancelFullMessageLoadForMessageIds:(id)ids
 {
-  v4 = a3;
-  v5 = [(MFNanoServerFullMessageLoader *)self privateQueue];
+  idsCopy = ids;
+  privateQueue = [(MFNanoServerFullMessageLoader *)self privateQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008A450;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = idsCopy;
+  v6 = idsCopy;
+  dispatch_async(privateQueue, v7);
 }
 
 - (void)cancelAllPendingOperations
 {
-  v3 = [(MFNanoServerFullMessageLoader *)self privateQueue];
+  privateQueue = [(MFNanoServerFullMessageLoader *)self privateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008A69C;
   block[3] = &unk_100156400;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(privateQueue, block);
 }
 
 - (void)start
@@ -205,9 +205,9 @@
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#Nano MFNanoServerFullMessageLoader: Message header requests finished successfully - message count: %ld - deleted count: %ld - request: %@", buf, 0x20u);
       }
 
-      v11 = [v6 allValues];
-      v12 = [v7 allObjects];
-      [(MFNanoServerFullMessageLoader *)self _handleResultsAdded:v11 deleted:v12 forRequest:v22 isProtectedMessage:v28];
+      allValues = [v6 allValues];
+      allObjects = [v7 allObjects];
+      [(MFNanoServerFullMessageLoader *)self _handleResultsAdded:allValues deleted:allObjects forRequest:v22 isProtectedMessage:v28];
     }
 
     v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count") + objc_msgSend(v7, "count")}];
@@ -267,20 +267,20 @@
   }
 }
 
-- (id)_loadFullMessageForMessageIds:(id)a3 isProtectedMessage:(BOOL *)a4 deletedMessagesIds:(id *)a5
+- (id)_loadFullMessageForMessageIds:(id)ids isProtectedMessage:(BOOL *)message deletedMessagesIds:(id *)messagesIds
 {
-  v37 = a4;
-  v39 = a3;
-  v56 = [(MFNanoServerFullMessageLoader *)self _isProtectedDataAvailable];
+  messageCopy = message;
+  idsCopy = ids;
+  _isProtectedDataAvailable = [(MFNanoServerFullMessageLoader *)self _isProtectedDataAvailable];
   v7 = +[MFMailMessageLibrary defaultInstance];
-  v38 = [v7 libraryMessagesForMessageIds:v39 protectedDataAvailable:&v56];
+  v38 = [v7 libraryMessagesForMessageIds:idsCopy protectedDataAvailable:&_isProtectedDataAvailable];
 
-  v8 = [(MFNanoServerFullMessageLoader *)self _isProtectedDataAvailable];
-  v56 &= v8;
+  _isProtectedDataAvailable2 = [(MFNanoServerFullMessageLoader *)self _isProtectedDataAvailable];
+  _isProtectedDataAvailable &= _isProtectedDataAvailable2;
   v9 = [v38 count];
-  if (v9 != [v39 count])
+  if (v9 != [idsCopy count])
   {
-    v10 = [[NSMutableSet alloc] initWithArray:v39];
+    v10 = [[NSMutableSet alloc] initWithArray:idsCopy];
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
@@ -299,8 +299,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v15 = [*(*(&v52 + 1) + 8 * i) messageID];
-          [v10 removeObject:v15];
+          messageID = [*(*(&v52 + 1) + 8 * i) messageID];
+          [v10 removeObject:messageID];
         }
 
         v12 = [v11 countByEnumeratingWithState:&v52 objects:v60 count:16];
@@ -309,10 +309,10 @@
       while (v12);
     }
 
-    if (a5)
+    if (messagesIds)
     {
       v16 = v10;
-      *a5 = v10;
+      *messagesIds = v10;
     }
 
     v17 = MFLogGeneral();
@@ -322,8 +322,8 @@
     }
   }
 
-  v41 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v39, "count")}];
-  if (v56 == 1)
+  v41 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(idsCopy, "count")}];
+  if (_isProtectedDataAvailable == 1)
   {
     v18 = MFLogGeneral();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -350,9 +350,9 @@
           }
 
           v23 = *(*(&v48 + 1) + 8 * j);
-          v24 = [v23 nanoMessage];
-          v25 = [v23 nanoMessageId];
-          [v41 setObject:v24 forKeyedSubscript:v25];
+          nanoMessage = [v23 nanoMessage];
+          nanoMessageId = [v23 nanoMessageId];
+          [v41 setObject:nanoMessage forKeyedSubscript:nanoMessageId];
         }
 
         v20 = [v19 countByEnumeratingWithState:&v48 objects:v58 count:16];
@@ -361,7 +361,7 @@
       while (v20);
     }
 
-    *v37 = 1;
+    *messageCopy = 1;
   }
 
   else
@@ -395,7 +395,7 @@
           }
 
           v32 = *(*(&v44 + 1) + 8 * k);
-          v33 = [v28 objectForKeyedSubscript:{v32, v37}];
+          v33 = [v28 objectForKeyedSubscript:{v32, messageCopy}];
           v34 = [v32 _downloadHeadersForMessages:v33];
 
           v42[0] = _NSConcreteStackBlock;
@@ -412,7 +412,7 @@
       while (v29);
     }
 
-    *v37 = 0;
+    *messageCopy = 0;
     v35 = +[MFPowerController sharedInstance];
     [v35 releaseAssertionWithIdentifier:@"com.apple.mobileMail.nanoServerFullMessageLoader"];
   }
@@ -422,32 +422,32 @@
 
 - (BOOL)_isProtectedDataAvailable
 {
-  v2 = self;
-  v3 = [(MFNanoServerFullMessageLoader *)self privateQueue];
-  dispatch_assert_queue_not_V2(v3);
+  selfCopy = self;
+  privateQueue = [(MFNanoServerFullMessageLoader *)self privateQueue];
+  dispatch_assert_queue_not_V2(privateQueue);
 
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(MFNanoServerFullMessageLoader *)v2 privateQueue];
+  privateQueue2 = [(MFNanoServerFullMessageLoader *)selfCopy privateQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10008B3CC;
   v6[3] = &unk_1001578D0;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v6[5] = &v7;
-  dispatch_sync(v4, v6);
+  dispatch_sync(privateQueue2, v6);
 
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (id)_dequeueMessageIdsFromFirstRequestAvailable:(id *)a3
+- (id)_dequeueMessageIdsFromFirstRequestAvailable:(id *)available
 {
-  v5 = [(MFNanoServerFullMessageLoader *)self privateQueue];
-  dispatch_assert_queue_not_V2(v5);
+  privateQueue = [(MFNanoServerFullMessageLoader *)self privateQueue];
+  dispatch_assert_queue_not_V2(privateQueue);
 
   v16 = 0;
   v17 = &v16;
@@ -461,7 +461,7 @@
   v13 = sub_10008B5A4;
   v14 = sub_10008B5B4;
   v15 = 0;
-  v6 = [(MFNanoServerFullMessageLoader *)self privateQueue];
+  privateQueue2 = [(MFNanoServerFullMessageLoader *)self privateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008B5BC;
@@ -469,9 +469,9 @@
   block[4] = self;
   block[5] = &v16;
   block[6] = &v10;
-  dispatch_sync(v6, block);
+  dispatch_sync(privateQueue2, block);
 
-  *a3 = v11[5];
+  *available = v11[5];
   v7 = v17[5];
   _Block_object_dispose(&v10, 8);
 
@@ -480,39 +480,39 @@
   return v7;
 }
 
-- (void)_scheduleRetryForFailedMessageIds:(id)a3 failedRequest:(id)a4
+- (void)_scheduleRetryForFailedMessageIds:(id)ids failedRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFNanoServerFullMessageLoader *)self privateQueue];
+  idsCopy = ids;
+  requestCopy = request;
+  privateQueue = [(MFNanoServerFullMessageLoader *)self privateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008B810;
   block[3] = &unk_1001573C0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = requestCopy;
+  v13 = idsCopy;
+  v9 = idsCopy;
+  v10 = requestCopy;
+  dispatch_async(privateQueue, block);
 }
 
-- (void)_handleResultsAdded:(id)a3 deleted:(id)a4 forRequest:(id)a5 isProtectedMessage:(BOOL)a6
+- (void)_handleResultsAdded:(id)added deleted:(id)deleted forRequest:(id)request isProtectedMessage:(BOOL)message
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(MFNanoServerFullMessageLoader *)self privateQueue];
+  addedCopy = added;
+  deletedCopy = deleted;
+  privateQueue = [(MFNanoServerFullMessageLoader *)self privateQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10008BDC8;
   v14[3] = &unk_100157170;
   v14[4] = self;
-  v15 = v9;
-  v17 = a6;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
-  dispatch_async(v11, v14);
+  v15 = addedCopy;
+  messageCopy = message;
+  v16 = deletedCopy;
+  v12 = deletedCopy;
+  v13 = addedCopy;
+  dispatch_async(privateQueue, v14);
 }
 
 - (void)_dispatchOperation
@@ -534,11 +534,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_enqueueMessageIds:(id)a3 forRequest:(id)a4
+- (void)_enqueueMessageIds:(id)ids forRequest:(id)request
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v6 enqueueMessageIds:v7])
+  idsCopy = ids;
+  requestCopy = request;
+  if ([requestCopy enqueueMessageIds:idsCopy])
   {
     [(MFNanoServerFullMessageLoader *)self _dispatchOperation];
   }
@@ -643,15 +643,15 @@ LABEL_16:
   dispatch_async(privateQueue, block);
 }
 
-- (id)_libraryMessagesKeyedByStore:(id)a3
+- (id)_libraryMessagesKeyedByStore:(id)store
 {
-  v3 = a3;
+  storeCopy = store;
   v4 = objc_alloc_init(NSMutableDictionary);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = storeCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -666,16 +666,16 @@ LABEL_16:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 mailbox];
-        v11 = [v10 store];
+        mailbox = [v9 mailbox];
+        store = [mailbox store];
 
-        if (v11)
+        if (store)
         {
-          v12 = [v4 objectForKeyedSubscript:v11];
+          v12 = [v4 objectForKeyedSubscript:store];
           if (!v12)
           {
             v12 = objc_alloc_init(NSMutableArray);
-            [v4 setObject:v12 forKeyedSubscript:v11];
+            [v4 setObject:v12 forKeyedSubscript:store];
           }
 
           [v12 addObject:v9];

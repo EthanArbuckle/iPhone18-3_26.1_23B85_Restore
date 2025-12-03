@@ -1,37 +1,37 @@
 @interface AKThoughtBubbleAnnotationRenderer
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5;
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4;
-+ (CGPath)_newCloudPathScaledToModelSpaceForAnnotation:(id)a3;
-+ (CGPath)_newConcreteTextExclusionPathForAnnotation:(id)a3 withOptionalAnnotationRect:(CGRect)a4;
-+ (CGPath)_newLargestBubblePathScaledToModelSpaceForAnnotation:(id)a3;
-+ (CGPath)_newPathTransformedFromUnitToModelSpace:(CGPath *)a3 forAnnotation:(id)a4;
-+ (CGPath)_newSmallBubblePathForAnnotation:(id)a3 atCenter:(CGPoint)a4 withSize:(CGSize)a5;
-+ (CGPath)_newSmallestBubblePathScaledToModelSpaceForAnnotation:(id)a3;
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness;
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation;
++ (CGPath)_newCloudPathScaledToModelSpaceForAnnotation:(id)annotation;
++ (CGPath)_newConcreteTextExclusionPathForAnnotation:(id)annotation withOptionalAnnotationRect:(CGRect)rect;
++ (CGPath)_newLargestBubblePathScaledToModelSpaceForAnnotation:(id)annotation;
++ (CGPath)_newPathTransformedFromUnitToModelSpace:(CGPath *)space forAnnotation:(id)annotation;
++ (CGPath)_newSmallBubblePathForAnnotation:(id)annotation atCenter:(CGPoint)center withSize:(CGSize)size;
++ (CGPath)_newSmallestBubblePathScaledToModelSpaceForAnnotation:(id)annotation;
 + (CGPoint)_templatePointyPointToCircleIntersect;
-+ (CGPoint)_unitAnnotationPointyPointForAnnotation:(id)a3;
++ (CGPoint)_unitAnnotationPointyPointForAnnotation:(id)annotation;
 + (CGPoint)_unitCloudCenter;
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGRect)_concreteRectangleForAnnotation:(id)a3 withTextBounds:(CGRect)a4;
-+ (CGRect)_concreteTextBoundsOfAnnotation:(id)a3 withOptionalAnnotationRect:(CGRect)a4 optionalText:(id)a5;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
-+ (double)_templateToUnitPointyPointScaleForAnnotation:(id)a3;
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
-+ (void)_fillAndStrokePath:(CGPath *)a3 forAnnotation:(id)a4 inContext:(CGContext *)a5 options:(id)a6;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGRect)_concreteRectangleForAnnotation:(id)annotation withTextBounds:(CGRect)bounds;
++ (CGRect)_concreteTextBoundsOfAnnotation:(id)annotation withOptionalAnnotationRect:(CGRect)rect optionalText:(id)text;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
++ (double)_templateToUnitPointyPointScaleForAnnotation:(id)annotation;
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
++ (void)_fillAndStrokePath:(CGPath *)path forAnnotation:(id)annotation inContext:(CGContext *)context options:(id)options;
 @end
 
 @implementation AKThoughtBubbleAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
-  v3 = a3;
-  [v3 rectangle];
+  annotationCopy = annotation;
+  [annotationCopy rectangle];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 pointyBitPoint];
+  [annotationCopy pointyBitPoint];
   v13 = v12;
-  [v3 pointyBitPoint];
+  [annotationCopy pointyBitPoint];
   v53.origin.y = v14;
   v53.size.width = 0.0;
   v53.size.height = 0.0;
@@ -45,7 +45,7 @@
   y = v47.origin.y;
   width = v47.size.width;
   height = v47.size.height;
-  [v3 strokeWidth];
+  [annotationCopy strokeWidth];
   v20 = v19 * -4.0;
   v48.origin.x = x;
   v48.origin.y = y;
@@ -56,15 +56,15 @@
   v22 = v49.origin.y;
   v23 = v49.size.width;
   v24 = v49.size.height;
-  [v3 rotationAngle];
+  [annotationCopy rotationAngle];
   [AKGeometryHelper boundsOfRotatedRectangle:v21 angle:v22, v23, v24, v25];
   v27 = v26;
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  if ([v3 hasShadow])
+  if ([annotationCopy hasShadow])
   {
-    [AKAnnotationRendererUtilities outsetRectForShadow:v3 onAnnotation:v27, v29, v31, v33];
+    [AKAnnotationRendererUtilities outsetRectForShadow:annotationCopy onAnnotation:v27, v29, v31, v33];
     v27 = v34;
     v29 = v35;
     v31 = v36;
@@ -92,7 +92,7 @@
   return result;
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -101,16 +101,16 @@
   return result;
 }
 
-+ (CGRect)_concreteTextBoundsOfAnnotation:(id)a3 withOptionalAnnotationRect:(CGRect)a4 optionalText:(id)a5
++ (CGRect)_concreteTextBoundsOfAnnotation:(id)annotation withOptionalAnnotationRect:(CGRect)rect optionalText:(id)text
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  [v9 strokeWidth];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  annotationCopy = annotation;
+  [annotationCopy strokeWidth];
   v11 = v10;
-  [v9 originalModelBaseScaleFactor];
+  [annotationCopy originalModelBaseScaleFactor];
   v13 = v12;
   v26.origin.x = x;
   v26.origin.y = y;
@@ -118,7 +118,7 @@
   v26.size.height = height;
   if (CGRectIsEmpty(v26))
   {
-    [v9 rectangle];
+    [annotationCopy rectangle];
     x = v14;
     y = v15;
     width = v16;
@@ -146,16 +146,16 @@
   return result;
 }
 
-+ (CGRect)_concreteRectangleForAnnotation:(id)a3 withTextBounds:(CGRect)a4
++ (CGRect)_concreteRectangleForAnnotation:(id)annotation withTextBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  [v8 strokeWidth];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  annotationCopy = annotation;
+  [annotationCopy strokeWidth];
   v10 = v9 * 0.5;
-  [v8 originalModelBaseScaleFactor];
+  [annotationCopy originalModelBaseScaleFactor];
   v12 = v11;
 
   v13 = x;
@@ -166,16 +166,16 @@
   return CGRectInset(*&v13, -(v10 + v12 * 2.0), -(v10 + v12 * 2.0));
 }
 
-+ (CGPath)_newConcreteTextExclusionPathForAnnotation:(id)a3 withOptionalAnnotationRect:(CGRect)a4
++ (CGPath)_newConcreteTextExclusionPathForAnnotation:(id)annotation withOptionalAnnotationRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  [v9 strokeWidth];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  annotationCopy = annotation;
+  [annotationCopy strokeWidth];
   v11 = v10 * 0.5;
-  [v9 originalModelBaseScaleFactor];
+  [annotationCopy originalModelBaseScaleFactor];
   v13 = v11 + v12 * 2.0;
   v37.origin.x = x;
   v37.origin.y = y;
@@ -196,7 +196,7 @@
   if (![AKGeometryHelper isUnpresentableRect:v14, v15, v16, v17])
   {
     v20 = v32 / v18;
-    v21 = [a1 _newCloudPathScaledToModelSpaceForAnnotation:v9];
+    v21 = [self _newCloudPathScaledToModelSpaceForAnnotation:annotationCopy];
     BoundingBox = CGPathGetBoundingBox(v21);
     v22 = BoundingBox.origin.x;
     v23 = BoundingBox.origin.y;
@@ -238,137 +238,137 @@
   return MutableCopy;
 }
 
-+ (void)_fillAndStrokePath:(CGPath *)a3 forAnnotation:(id)a4 inContext:(CGContext *)a5 options:(id)a6
++ (void)_fillAndStrokePath:(CGPath *)path forAnnotation:(id)annotation inContext:(CGContext *)context options:(id)options
 {
-  v24 = a4;
-  v9 = a6;
-  [v9 allowHDR];
-  CGContextSaveGState(a5);
-  v10 = [v24 fillColor];
-  if (v10)
+  annotationCopy = annotation;
+  optionsCopy = options;
+  [optionsCopy allowHDR];
+  CGContextSaveGState(context);
+  fillColor = [annotationCopy fillColor];
+  if (fillColor)
   {
-    v11 = v10;
-    v12 = [v24 fillColor];
-    Alpha = CGColorGetAlpha([v12 CGColor]);
+    v11 = fillColor;
+    fillColor2 = [annotationCopy fillColor];
+    Alpha = CGColorGetAlpha([fillColor2 CGColor]);
 
     if (Alpha != 0.0)
     {
-      v14 = [v24 fillColorForOptions:v9];
-      CGContextSetFillColorWithColor(a5, [v14 CGColor]);
+      v14 = [annotationCopy fillColorForOptions:optionsCopy];
+      CGContextSetFillColorWithColor(context, [v14 CGColor]);
 
-      CGContextAddPath(a5, a3);
-      CGContextFillPath(a5);
+      CGContextAddPath(context, path);
+      CGContextFillPath(context);
     }
   }
 
-  v15 = [v24 strokeColor];
+  strokeColor = [annotationCopy strokeColor];
 
-  if (v15)
+  if (strokeColor)
   {
-    if ([v24 brushStyle])
+    if ([annotationCopy brushStyle])
     {
-      v16 = [v24 brushStyle];
-      v17 = [v24 strokeColor];
-      [v24 strokeWidth];
-      v18 = [AKTSDBrushStroke strokeWithType:v16 color:v17 width:?];
+      brushStyle = [annotationCopy brushStyle];
+      strokeColor2 = [annotationCopy strokeColor];
+      [annotationCopy strokeWidth];
+      v18 = [AKTSDBrushStroke strokeWithType:brushStyle color:strokeColor2 width:?];
 
-      v19 = [AKTSDBezierPath bezierPathWithCGPath:a3];
+      v19 = [AKTSDBezierPath bezierPathWithCGPath:path];
       v20 = objc_alloc_init(AKTSDShape);
       [(AKTSDShape *)v20 setStroke:v18];
       [(AKTSDShape *)v20 setPath:v19];
-      [(AKTSDShape *)v20 drawInContext:a5];
+      [(AKTSDShape *)v20 drawInContext:context];
     }
 
     else
     {
-      [v24 strokeWidth];
+      [annotationCopy strokeWidth];
       v22 = v21;
-      v23 = [v24 strokeColorForOptions:v9];
-      CGContextSetStrokeColorWithColor(a5, [v23 CGColor]);
+      v23 = [annotationCopy strokeColorForOptions:optionsCopy];
+      CGContextSetStrokeColorWithColor(context, [v23 CGColor]);
 
-      [AKAnnotationRendererUtilities setStandardLineStateInContext:a5 forLineWidth:v22];
-      if ([v24 isDashed])
+      [AKAnnotationRendererUtilities setStandardLineStateInContext:context forLineWidth:v22];
+      if ([annotationCopy isDashed])
       {
-        [AKAnnotationRendererUtilities setStandardLineDashInContext:a5 forLineWidth:v22];
+        [AKAnnotationRendererUtilities setStandardLineDashInContext:context forLineWidth:v22];
       }
 
-      CGContextAddPath(a5, a3);
-      CGContextStrokePath(a5);
+      CGContextAddPath(context, path);
+      CGContextStrokePath(context);
     }
   }
 
-  CGContextRestoreGState(a5);
+  CGContextRestoreGState(context);
 }
 
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  CGContextSaveGState(a4);
-  v13 = [a1 _newCloudPathScaledToModelSpaceForAnnotation:v10];
-  v14 = [a1 _newLargestBubblePathScaledToModelSpaceForAnnotation:v10];
-  v15 = [a1 _newSmallestBubblePathScaledToModelSpaceForAnnotation:v10];
+  annotationCopy = annotation;
+  optionsCopy = options;
+  nilCopy = nil;
+  CGContextSaveGState(context);
+  v13 = [self _newCloudPathScaledToModelSpaceForAnnotation:annotationCopy];
+  v14 = [self _newLargestBubblePathScaledToModelSpaceForAnnotation:annotationCopy];
+  v15 = [self _newSmallestBubblePathScaledToModelSpaceForAnnotation:annotationCopy];
   v16 = v15;
   if (v13 && v14 && v15)
   {
-    [a1 _transformContextToModelCoordinates:a4 forAnnotation:v10 forDisplay:objc_msgSend(v11 pageControllerOrNil:{"forDisplay"), v12}];
-    CGContextSaveGState(a4);
+    [self _transformContextToModelCoordinates:context forAnnotation:annotationCopy forDisplay:objc_msgSend(optionsCopy pageControllerOrNil:{"forDisplay"), nilCopy}];
+    CGContextSaveGState(context);
     memset(&v17[1], 0, sizeof(CGAffineTransform));
-    [AKGeometryHelper rotationTransformForRectangularAnnotation:v10 hasRotation:0];
+    [AKGeometryHelper rotationTransformForRectangularAnnotation:annotationCopy hasRotation:0];
     v17[0] = v17[1];
-    CGContextConcatCTM(a4, v17);
-    CGContextSaveGState(a4);
-    if ([v10 hasShadow])
+    CGContextConcatCTM(context, v17);
+    CGContextSaveGState(context);
+    if ([annotationCopy hasShadow])
     {
-      [AKAnnotationRendererUtilities beginShadowInContext:a4 forAnnotation:v10];
-      [a1 _fillAndStrokePath:v13 forAnnotation:v10 inContext:a4 options:v11];
-      [a1 _fillAndStrokePath:v14 forAnnotation:v10 inContext:a4 options:v11];
-      [a1 _fillAndStrokePath:v16 forAnnotation:v10 inContext:a4 options:v11];
-      CGContextRestoreGState(a4);
-      [AKTextAnnotationRenderHelper renderAnnotationText:v10 intoContext:a4 options:v11 pageControllerOrNil:v12];
-      CGContextRestoreGState(a4);
-      [AKAnnotationRendererUtilities endShadowInContext:a4];
+      [AKAnnotationRendererUtilities beginShadowInContext:context forAnnotation:annotationCopy];
+      [self _fillAndStrokePath:v13 forAnnotation:annotationCopy inContext:context options:optionsCopy];
+      [self _fillAndStrokePath:v14 forAnnotation:annotationCopy inContext:context options:optionsCopy];
+      [self _fillAndStrokePath:v16 forAnnotation:annotationCopy inContext:context options:optionsCopy];
+      CGContextRestoreGState(context);
+      [AKTextAnnotationRenderHelper renderAnnotationText:annotationCopy intoContext:context options:optionsCopy pageControllerOrNil:nilCopy];
+      CGContextRestoreGState(context);
+      [AKAnnotationRendererUtilities endShadowInContext:context];
     }
 
     else
     {
-      [a1 _fillAndStrokePath:v13 forAnnotation:v10 inContext:a4 options:v11];
-      [a1 _fillAndStrokePath:v14 forAnnotation:v10 inContext:a4 options:v11];
-      [a1 _fillAndStrokePath:v16 forAnnotation:v10 inContext:a4 options:v11];
-      CGContextRestoreGState(a4);
-      [AKTextAnnotationRenderHelper renderAnnotationText:v10 intoContext:a4 options:v11 pageControllerOrNil:v12];
-      CGContextRestoreGState(a4);
+      [self _fillAndStrokePath:v13 forAnnotation:annotationCopy inContext:context options:optionsCopy];
+      [self _fillAndStrokePath:v14 forAnnotation:annotationCopy inContext:context options:optionsCopy];
+      [self _fillAndStrokePath:v16 forAnnotation:annotationCopy inContext:context options:optionsCopy];
+      CGContextRestoreGState(context);
+      [AKTextAnnotationRenderHelper renderAnnotationText:annotationCopy intoContext:context options:optionsCopy pageControllerOrNil:nilCopy];
+      CGContextRestoreGState(context);
     }
   }
 
   CGPathRelease(v13);
   CGPathRelease(v14);
   CGPathRelease(v16);
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  [v9 strokeWidth];
-  if (v10 > a5)
+  y = border.y;
+  x = border.x;
+  annotationCopy = annotation;
+  [annotationCopy strokeWidth];
+  if (v10 > thickness)
   {
-    a5 = v10;
+    thickness = v10;
   }
 
   memset(&m, 0, sizeof(m));
-  [AKGeometryHelper rotationTransformForRectangularAnnotation:v9 hasRotation:0];
+  [AKGeometryHelper rotationTransformForRectangularAnnotation:annotationCopy hasRotation:0];
   v27 = m;
   CGAffineTransformInvert(&v28, &v27);
   m = v28;
-  v11 = [a1 _newCloudPathScaledToModelSpaceForAnnotation:v9];
+  v11 = [self _newCloudPathScaledToModelSpaceForAnnotation:annotationCopy];
   if (v11)
   {
     v12 = v11;
-    v13 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v11 withStrokeWidth:a5];
+    v13 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v11 withStrokeWidth:thickness];
     if (v13)
     {
       v14 = v13;
@@ -389,11 +389,11 @@
     }
   }
 
-  v16 = [a1 _newLargestBubblePathScaledToModelSpaceForAnnotation:v9];
+  v16 = [self _newLargestBubblePathScaledToModelSpaceForAnnotation:annotationCopy];
   if (v16)
   {
     v17 = v16;
-    v18 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v16 withStrokeWidth:a5];
+    v18 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v16 withStrokeWidth:thickness];
     if (v18)
     {
       v19 = v18;
@@ -416,11 +416,11 @@ LABEL_11:
     }
   }
 
-  v22 = [a1 _newSmallestBubblePathScaledToModelSpaceForAnnotation:v9];
+  v22 = [self _newSmallestBubblePathScaledToModelSpaceForAnnotation:annotationCopy];
   if (v22)
   {
     v23 = v22;
-    v24 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v22 withStrokeWidth:a5];
+    v24 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:v22 withStrokeWidth:thickness];
     if (v24)
     {
       v25 = v24;
@@ -448,25 +448,25 @@ LABEL_19:
   return v21;
 }
 
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  annotationCopy = annotation;
   memset(&m, 0, sizeof(m));
-  [AKGeometryHelper rotationTransformForRectangularAnnotation:v7 hasRotation:0];
+  [AKGeometryHelper rotationTransformForRectangularAnnotation:annotationCopy hasRotation:0];
   v18 = m;
   CGAffineTransformInvert(&v19, &v18);
   m = v19;
-  v8 = [a1 _newCloudPathScaledToModelSpaceForAnnotation:v7];
-  if (v8 && (v9 = v8, v21.x = x, v21.y = y, v10 = CGPathContainsPoint(v8, &m, v21, 0), CGPathRelease(v9), v10) || (v11 = [a1 _newLargestBubblePathScaledToModelSpaceForAnnotation:v7]) != 0 && (v12 = v11, v22.x = x, v22.y = y, v13 = CGPathContainsPoint(v11, &m, v22, 0), CGPathRelease(v12), v13))
+  v8 = [self _newCloudPathScaledToModelSpaceForAnnotation:annotationCopy];
+  if (v8 && (v9 = v8, v21.x = x, v21.y = y, v10 = CGPathContainsPoint(v8, &m, v21, 0), CGPathRelease(v9), v10) || (v11 = [self _newLargestBubblePathScaledToModelSpaceForAnnotation:annotationCopy]) != 0 && (v12 = v11, v22.x = x, v22.y = y, v13 = CGPathContainsPoint(v11, &m, v22, 0), CGPathRelease(v12), v13))
   {
     v14 = 1;
   }
 
   else
   {
-    v15 = [a1 _newSmallestBubblePathScaledToModelSpaceForAnnotation:v7];
+    v15 = [self _newSmallestBubblePathScaledToModelSpaceForAnnotation:annotationCopy];
     if (v15)
     {
       v16 = v15;
@@ -485,10 +485,10 @@ LABEL_19:
   return v14;
 }
 
-+ (CGPoint)_unitAnnotationPointyPointForAnnotation:(id)a3
++ (CGPoint)_unitAnnotationPointyPointForAnnotation:(id)annotation
 {
-  v3 = a3;
-  [v3 rectangle];
+  annotationCopy = annotation;
+  [annotationCopy rectangle];
   x = v36.origin.x;
   y = v36.origin.y;
   width = v36.size.width;
@@ -535,7 +535,7 @@ LABEL_19:
   d = v34.d;
   v22 = v34.tx;
   v23 = v34.ty;
-  [v3 pointyBitPoint];
+  [annotationCopy pointyBitPoint];
   v25 = v24;
   v27 = v26;
 
@@ -557,10 +557,10 @@ LABEL_19:
 
 + (CGPoint)_templatePointyPointToCircleIntersect
 {
-  [a1 _unitCloudCenter];
+  [self _unitCloudCenter];
   v4 = v3;
   v6 = v5;
-  [a1 _unitCloudRadius];
+  [self _unitCloudRadius];
   v8 = v7;
   v9 = *MEMORY[0x277CBF348];
   v10 = *(MEMORY[0x277CBF348] + 8);
@@ -571,18 +571,18 @@ LABEL_19:
   return result;
 }
 
-+ (double)_templateToUnitPointyPointScaleForAnnotation:(id)a3
++ (double)_templateToUnitPointyPointScaleForAnnotation:(id)annotation
 {
-  [a1 _unitAnnotationPointyPointForAnnotation:a3];
+  [self _unitAnnotationPointyPointForAnnotation:annotation];
   v5 = v4;
   v7 = v6;
-  [a1 _templatePointyPointToCircleIntersect];
+  [self _templatePointyPointToCircleIntersect];
   v9 = v8;
   v11 = v10;
-  [a1 _unitCloudCenter];
+  [self _unitCloudCenter];
   v13 = v12;
   v15 = v14;
-  [a1 _unitCloudRadius];
+  [self _unitCloudRadius];
   [AKGeometryHelper intersectLineSegmentStartingAt:0 ending:v5 withCircleWithCenter:v7 andRadius:v13 farthestResult:v15, v13, v15, v16];
   v19 = v18;
   result = 1.0;
@@ -595,28 +595,28 @@ LABEL_19:
   return result;
 }
 
-+ (CGPath)_newSmallestBubblePathScaledToModelSpaceForAnnotation:(id)a3
++ (CGPath)_newSmallestBubblePathScaledToModelSpaceForAnnotation:(id)annotation
 {
-  v4 = a3;
-  [a1 _unitAnnotationPointyPointForAnnotation:v4];
+  annotationCopy = annotation;
+  [self _unitAnnotationPointyPointForAnnotation:annotationCopy];
   v14 = v6;
   v15 = v5;
-  [a1 _unitCloudCenter];
+  [self _unitCloudCenter];
   v8 = v7;
   v10 = v9;
   [AKGeometryHelper angleBetweenPoint:-v7 andPoint:-v9, v15 - v7, v14 - v9];
   [AKGeometryHelper rotationTransformAroundPoint:v8 withAngle:v10, -v11];
-  v12 = [a1 _newSmallBubblePathForAnnotation:v4 atCenter:vaddq_f64(vaddq_f64(v18 withSize:{vmlaq_n_f64(vmulq_n_f64(v17, v14), v16, v15)), vdupq_n_s64(0x3FA47AE147AE147BuLL)), 0.08, 0.08}];
+  v12 = [self _newSmallBubblePathForAnnotation:annotationCopy atCenter:vaddq_f64(vaddq_f64(v18 withSize:{vmlaq_n_f64(vmulq_n_f64(v17, v14), v16, v15)), vdupq_n_s64(0x3FA47AE147AE147BuLL)), 0.08, 0.08}];
 
   return v12;
 }
 
-+ (CGPath)_newLargestBubblePathScaledToModelSpaceForAnnotation:(id)a3
++ (CGPath)_newLargestBubblePathScaledToModelSpaceForAnnotation:(id)annotation
 {
-  v4 = a3;
-  [a1 _templateToUnitPointyPointScaleForAnnotation:v4];
+  annotationCopy = annotation;
+  [self _templateToUnitPointyPointScaleForAnnotation:annotationCopy];
   v6 = v5;
-  [a1 _templatePointyPointToCircleIntersect];
+  [self _templatePointyPointToCircleIntersect];
   v8 = v7;
   v10 = v9;
   v11 = MEMORY[0x277CBF2C0];
@@ -650,22 +650,22 @@ LABEL_19:
   t1.ty = v18;
   CGAffineTransformConcat(&v28, &t1, &t2);
   v19 = vdupq_n_s64(0x3FB999999999999AuLL);
-  v20 = [a1 _newSmallBubblePathForAnnotation:v4 atCenter:vaddq_f64(*&v28.tx withSize:{vmlaq_f64(vmulq_f64(*&v28.c, v19), v19, *&v28.a)), 0.13, 0.11}];
+  v20 = [self _newSmallBubblePathForAnnotation:annotationCopy atCenter:vaddq_f64(*&v28.tx withSize:{vmlaq_f64(vmulq_f64(*&v28.c, v19), v19, *&v28.a)), 0.13, 0.11}];
 
   return v20;
 }
 
-+ (CGPath)_newSmallBubblePathForAnnotation:(id)a3 atCenter:(CGPoint)a4 withSize:(CGSize)a5
++ (CGPath)_newSmallBubblePathForAnnotation:(id)annotation atCenter:(CGPoint)center withSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
-  [a1 _unitCloudCenter];
+  height = size.height;
+  width = size.width;
+  y = center.y;
+  x = center.x;
+  annotationCopy = annotation;
+  [self _unitCloudCenter];
   v12 = v11;
   v14 = v13;
-  [a1 _unitAnnotationPointyPointForAnnotation:v10];
+  [self _unitAnnotationPointyPointForAnnotation:annotationCopy];
   [AKGeometryHelper angleBetweenPoint:-v12 andPoint:-v14, v15 - v12, v16 - v14];
   [AKGeometryHelper rotationTransformAroundPoint:v12 withAngle:v14, v17];
   v18 = y * 0.0 + 0.0 * x + 0.0;
@@ -675,15 +675,15 @@ LABEL_19:
   v22.size.width = width;
   v22.size.height = height;
   CGPathAddEllipseInRect(Mutable, 0, v22);
-  v20 = [a1 _newPathTransformedFromUnitToModelSpace:Mutable forAnnotation:v10];
+  v20 = [self _newPathTransformedFromUnitToModelSpace:Mutable forAnnotation:annotationCopy];
 
   CGPathRelease(Mutable);
   return v20;
 }
 
-+ (CGPath)_newCloudPathScaledToModelSpaceForAnnotation:(id)a3
++ (CGPath)_newCloudPathScaledToModelSpaceForAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   Mutable = CGPathCreateMutable();
   CGPathMoveToPoint(Mutable, 0, 0.30244827, 0.01343505);
   CGPathAddCurveToPoint(Mutable, 0, 0.35887423, -0.00959289, 0.42427887, 0.00619094, 0.47937859, 0.04929641);
@@ -705,15 +705,15 @@ LABEL_19:
   CGPathAddCurveToPoint(Mutable, 0, 0.07287601, 0.19389922, 0.13305774, 0.16448633, 0.20298753, 0.16251968);
   CGPathAddCurveToPoint(Mutable, 0, 0.2105341, 0.094648, 0.24368711, 0.04628048, 0.30244827, 0.01343505);
   CGPathCloseSubpath(Mutable);
-  v6 = [a1 _newPathTransformedFromUnitToModelSpace:Mutable forAnnotation:v4];
+  v6 = [self _newPathTransformedFromUnitToModelSpace:Mutable forAnnotation:annotationCopy];
 
   CGPathRelease(Mutable);
   return v6;
 }
 
-+ (CGPath)_newPathTransformedFromUnitToModelSpace:(CGPath *)a3 forAnnotation:(id)a4
++ (CGPath)_newPathTransformedFromUnitToModelSpace:(CGPath *)space forAnnotation:(id)annotation
 {
-  [a4 rectangle];
+  [annotation rectangle];
   x = v21.origin.x;
   y = v21.origin.y;
   width = v21.size.width;
@@ -749,7 +749,7 @@ LABEL_19:
   v17 = v20;
   CGAffineTransformConcat(&t2, &v17, &t1);
   v20 = t2;
-  return MEMORY[0x245CAE590](a3, &v20);
+  return MEMORY[0x245CAE590](space, &v20);
 }
 
 @end

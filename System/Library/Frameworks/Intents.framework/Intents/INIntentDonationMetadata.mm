@@ -1,22 +1,22 @@
 @interface INIntentDonationMetadata
 + (Class)_intentClass;
-- (INIntentDonationMetadata)initWithCoder:(id)a3;
+- (INIntentDonationMetadata)initWithCoder:(id)coder;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation INIntentDonationMetadata
 
-- (INIntentDonationMetadata)initWithCoder:(id)a3
+- (INIntentDonationMetadata)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INIntentDonationMetadata;
   return [(INIntentDonationMetadata *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 _init];
 }

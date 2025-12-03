@@ -1,27 +1,27 @@
 @interface IPABestFitEvenWidthTotalPixelCountImageSizePolicy
-- (CGSize)transformSize:(CGSize)a3;
+- (CGSize)transformSize:(CGSize)size;
 @end
 
 @implementation IPABestFitEvenWidthTotalPixelCountImageSizePolicy
 
-- (CGSize)transformSize:(CGSize)a3
+- (CGSize)transformSize:(CGSize)size
 {
-  if (a3.width == 0.0 || a3.height == 0.0)
+  if (size.width == 0.0 || size.height == 0.0)
   {
-    height = a3.height;
-    width = a3.width;
+    height = size.height;
+    width = size.width;
   }
 
   else
   {
     totalPixelCount = self->super._totalPixelCount;
-    v4 = sqrt(totalPixelCount / (a3.width / a3.height));
+    v4 = sqrt(totalPixelCount / (size.width / size.height));
     v5 = floor(v4);
-    v6 = vcvtpd_s64_f64(a3.width / a3.height * v5);
+    v6 = vcvtpd_s64_f64(size.width / size.height * v5);
     v7 = v6 - ((v6 & 0x8000000000000001) == 1);
-    v8 = vcvtmd_s64_f64(sqrt(a3.width / a3.height * totalPixelCount));
+    v8 = vcvtmd_s64_f64(sqrt(size.width / size.height * totalPixelCount));
     v9 = v8 - ((v8 & 0x8000000000000001) == 1);
-    v10 = vcvtpd_s64_f64(v9 / (a3.width / a3.height));
+    v10 = vcvtpd_s64_f64(v9 / (size.width / size.height));
     if ((v7 * vcvtmd_s64_f64(v4)) >= v9 * v10)
     {
       width = v7;
@@ -44,19 +44,19 @@
       }
     }
 
-    if (width > a3.width || height > a3.height)
+    if (width > size.width || height > size.height)
     {
-      if ((a3.width & 0x80000001) == 1)
+      if ((size.width & 0x80000001) == 1)
       {
-        width = a3.width + -1.0;
+        width = size.width + -1.0;
       }
 
       else
       {
-        width = a3.width;
+        width = size.width;
       }
 
-      height = a3.height;
+      height = size.height;
     }
   }
 

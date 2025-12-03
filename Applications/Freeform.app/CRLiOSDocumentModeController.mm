@@ -1,22 +1,22 @@
 @interface CRLiOSDocumentModeController
-- (BOOL)setToPreviousModeAnimated:(BOOL)a3;
-- (CRLiOSDocumentModeController)initWithDelegate:(id)a3;
+- (BOOL)setToPreviousModeAnimated:(BOOL)animated;
+- (CRLiOSDocumentModeController)initWithDelegate:(id)delegate;
 - (CRLiOSDocumentModeControllerDelegate)delegate;
-- (void)addModeObserver:(id)a3;
-- (void)p_editorControllerSelectionPathDidChange:(id)a3;
-- (void)p_notifyAllObserversOfModeChangeTo:(id)a3 from:(id)a4 animated:(BOOL)a5 didChange:(BOOL)a6;
-- (void)p_setMode:(id)a3 animated:(BOOL)a4 forced:(BOOL)a5;
-- (void)removeModeObserver:(id)a3;
-- (void)resetToDefaultModeAnimated:(BOOL)a3;
-- (void)setMode:(id)a3;
-- (void)willTeardownEditorController:(id)a3;
+- (void)addModeObserver:(id)observer;
+- (void)p_editorControllerSelectionPathDidChange:(id)change;
+- (void)p_notifyAllObserversOfModeChangeTo:(id)to from:(id)from animated:(BOOL)animated didChange:(BOOL)change;
+- (void)p_setMode:(id)mode animated:(BOOL)animated forced:(BOOL)forced;
+- (void)removeModeObserver:(id)observer;
+- (void)resetToDefaultModeAnimated:(BOOL)animated;
+- (void)setMode:(id)mode;
+- (void)willTeardownEditorController:(id)controller;
 @end
 
 @implementation CRLiOSDocumentModeController
 
-- (CRLiOSDocumentModeController)initWithDelegate:(id)a3
+- (CRLiOSDocumentModeController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = CRLiOSDocumentModeController;
   v5 = [(CRLiOSDocumentModeController *)&v17 init];
@@ -51,9 +51,9 @@
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:35 isFatal:0 description:"This operation must only be performed on the main thread."];
     }
 
-    v9 = [v4 defaultDocumentMode];
+    defaultDocumentMode = [delegateCopy defaultDocumentMode];
     mode = v5->_mode;
-    v5->_mode = v9;
+    v5->_mode = defaultDocumentMode;
 
     if (!v5->_mode)
     {
@@ -88,19 +88,19 @@
     observers = v5->_observers;
     v5->_observers = v14;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v5;
 }
 
-- (void)p_editorControllerSelectionPathDidChange:(id)a3
+- (void)p_editorControllerSelectionPathDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = objc_opt_class();
-  v6 = [v4 object];
+  object = [changeCopy object];
 
-  v14 = sub_100013F00(v5, v6);
+  v14 = sub_100013F00(v5, object);
 
   if (!self->_currentlyChangingMode)
   {
@@ -111,23 +111,23 @@
       v11 = v10;
       if (v10)
       {
-        v12 = v10;
+        defaultDocumentMode = v10;
       }
 
       else
       {
         v13 = objc_loadWeakRetained(&self->_delegate);
-        v12 = [v13 defaultDocumentMode];
+        defaultDocumentMode = [v13 defaultDocumentMode];
       }
 
-      [(CRLiOSDocumentModeController *)self p_setMode:v12 animated:1 forced:1];
+      [(CRLiOSDocumentModeController *)self p_setMode:defaultDocumentMode animated:1 forced:1];
     }
   }
 }
 
-- (void)addModeObserver:(id)a3
+- (void)addModeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -157,7 +157,7 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:54 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  if ([(NSHashTable *)self->_observers containsObject:v4])
+  if ([(NSHashTable *)self->_observers containsObject:observerCopy])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -186,12 +186,12 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:55 isFatal:0 description:"Trying to add a document mode observer that's already added"];
   }
 
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 }
 
-- (void)removeModeObserver:(id)a3
+- (void)removeModeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -221,7 +221,7 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:61 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  if (![(NSHashTable *)self->_observers containsObject:v4])
+  if (![(NSHashTable *)self->_observers containsObject:observerCopy])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -250,12 +250,12 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:62 isFatal:0 description:"Trying to remove a document mode observer that has not been added"];
   }
 
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 }
 
-- (void)setMode:(id)a3
+- (void)setMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -285,14 +285,14 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:68 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  [(CRLiOSDocumentModeController *)self setMode:v4 animated:1];
+  [(CRLiOSDocumentModeController *)self setMode:modeCopy animated:1];
 }
 
-- (void)p_setMode:(id)a3 animated:(BOOL)a4 forced:(BOOL)a5
+- (void)p_setMode:(id)mode animated:(BOOL)animated forced:(BOOL)forced
 {
-  v5 = a5;
-  v6 = a4;
-  v46 = a3;
+  forcedCopy = forced;
+  animatedCopy = animated;
+  modeCopy = mode;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -355,8 +355,8 @@
     abort();
   }
 
-  v43 = v5;
-  v44 = v6;
+  v43 = forcedCopy;
+  v44 = animatedCopy;
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
@@ -387,8 +387,8 @@
     while (v13);
   }
 
-  v18 = [v46 editorControllersToObserve];
-  v19 = [v18 copy];
+  editorControllersToObserve = [modeCopy editorControllersToObserve];
+  v19 = [editorControllersToObserve copy];
   observedEditorControllers = self->_observedEditorControllers;
   self->_observedEditorControllers = v19;
 
@@ -423,26 +423,26 @@
   }
 
   mode = self->_mode;
-  v29 = mode;
-  v30 = v46;
-  if (([v30 isEqual:v29] & 1) == 0)
+  modeCopy2 = mode;
+  v30 = modeCopy;
+  if (([v30 isEqual:modeCopy2] & 1) == 0)
   {
     self->_currentlyChangingMode = 1;
-    [(CRLiOSDocumentMode *)v29 modeWillEndForMode:v30 forced:v43];
-    [v30 modeWillBeginFromMode:v29 forced:v43];
-    [(CRLiOSDocumentModeController *)self p_notifyAllObserversOfModeChangeTo:v30 from:v29 animated:v44 didChange:0];
-    objc_storeStrong(&self->_mode, a3);
+    [(CRLiOSDocumentMode *)modeCopy2 modeWillEndForMode:v30 forced:v43];
+    [v30 modeWillBeginFromMode:modeCopy2 forced:v43];
+    [(CRLiOSDocumentModeController *)self p_notifyAllObserversOfModeChangeTo:v30 from:modeCopy2 animated:v44 didChange:0];
+    objc_storeStrong(&self->_mode, mode);
     objc_storeStrong(&self->_previousMode, mode);
-    [(CRLiOSDocumentMode *)v29 modeDidEndForMode:v30 forced:v43];
-    [v30 modeDidBeginFromMode:v29 forced:v43];
-    [(CRLiOSDocumentModeController *)self p_notifyAllObserversOfModeChangeTo:v30 from:v29 animated:v44 didChange:1];
+    [(CRLiOSDocumentMode *)modeCopy2 modeDidEndForMode:v30 forced:v43];
+    [v30 modeDidBeginFromMode:modeCopy2 forced:v43];
+    [(CRLiOSDocumentModeController *)self p_notifyAllObserversOfModeChangeTo:v30 from:modeCopy2 animated:v44 didChange:1];
     self->_currentlyChangingMode = 0;
   }
 }
 
-- (BOOL)setToPreviousModeAnimated:(BOOL)a3
+- (BOOL)setToPreviousModeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -475,15 +475,15 @@
   previousMode = self->_previousMode;
   if (previousMode)
   {
-    [(CRLiOSDocumentModeController *)self setMode:self->_previousMode animated:v3];
+    [(CRLiOSDocumentModeController *)self setMode:self->_previousMode animated:animatedCopy];
   }
 
   return previousMode != 0;
 }
 
-- (void)resetToDefaultModeAnimated:(BOOL)a3
+- (void)resetToDefaultModeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -514,20 +514,20 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained defaultDocumentMode];
-  [(CRLiOSDocumentModeController *)self setMode:v9 animated:v3];
+  defaultDocumentMode = [WeakRetained defaultDocumentMode];
+  [(CRLiOSDocumentModeController *)self setMode:defaultDocumentMode animated:animatedCopy];
 }
 
-- (void)willTeardownEditorController:(id)a3
+- (void)willTeardownEditorController:(id)controller
 {
-  v4 = a3;
-  if ([(NSArray *)self->_observedEditorControllers containsObject:v4])
+  controllerCopy = controller;
+  if ([(NSArray *)self->_observedEditorControllers containsObject:controllerCopy])
   {
     v5 = +[NSNotificationCenter defaultCenter];
-    [v5 removeObserver:self name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:v4];
+    [v5 removeObserver:self name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:controllerCopy];
 
     observedEditorControllers = self->_observedEditorControllers;
-    v10 = v4;
+    v10 = controllerCopy;
     v7 = [NSArray arrayWithObjects:&v10 count:1];
     v8 = [(NSArray *)observedEditorControllers crl_arrayByRemovingObjectsIdenticalToObjectsInArray:v7];
     v9 = self->_observedEditorControllers;
@@ -535,12 +535,12 @@
   }
 }
 
-- (void)p_notifyAllObserversOfModeChangeTo:(id)a3 from:(id)a4 animated:(BOOL)a5 didChange:(BOOL)a6
+- (void)p_notifyAllObserversOfModeChangeTo:(id)to from:(id)from animated:(BOOL)animated didChange:(BOOL)change
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  changeCopy = change;
+  animatedCopy = animated;
+  toCopy = to;
+  fromCopy = from;
   v12 = [(NSHashTable *)self->_observers copy];
   v19 = 0u;
   v20 = 0u;
@@ -562,14 +562,14 @@
         }
 
         v18 = *(*(&v19 + 1) + 8 * i);
-        if (v6)
+        if (changeCopy)
         {
-          [v18 didSetDocumentToMode:v10 fromMode:v11 animated:v7];
+          [v18 didSetDocumentToMode:toCopy fromMode:fromCopy animated:animatedCopy];
         }
 
         else
         {
-          [v18 willSetDocumentToMode:v10 fromMode:v11 animated:{v7, v19}];
+          [v18 willSetDocumentToMode:toCopy fromMode:fromCopy animated:{animatedCopy, v19}];
         }
       }
 

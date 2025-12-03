@@ -1,47 +1,47 @@
 @interface ICPreviewLayoutManager
-- (ICPreviewLayoutManager)initWithNote:(id)a3 maxCharacterCount:(unint64_t)a4 textContainer:(id)a5 textController:(id)a6;
-- (id)todoImageForParagraphStyle:(id)a3;
-- (void)drawGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4;
-- (void)drawTodoItemForListRange:(_NSRange)a3 paragraphStyle:(id)a4 atOrigin:(CGPoint)a5;
-- (void)drawTodosForCharacterRange:(_NSRange)a3 atOrigin:(CGPoint)a4;
+- (ICPreviewLayoutManager)initWithNote:(id)note maxCharacterCount:(unint64_t)count textContainer:(id)container textController:(id)controller;
+- (id)todoImageForParagraphStyle:(id)style;
+- (void)drawGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point;
+- (void)drawTodoItemForListRange:(_NSRange)range paragraphStyle:(id)style atOrigin:(CGPoint)origin;
+- (void)drawTodosForCharacterRange:(_NSRange)range atOrigin:(CGPoint)origin;
 @end
 
 @implementation ICPreviewLayoutManager
 
-- (ICPreviewLayoutManager)initWithNote:(id)a3 maxCharacterCount:(unint64_t)a4 textContainer:(id)a5 textController:(id)a6
+- (ICPreviewLayoutManager)initWithNote:(id)note maxCharacterCount:(unint64_t)count textContainer:(id)container textController:(id)controller
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  noteCopy = note;
+  containerCopy = container;
+  controllerCopy = controller;
   v61.receiver = self;
   v61.super_class = ICPreviewLayoutManager;
   v13 = [(ICPreviewLayoutManager *)&v61 init];
   v14 = v13;
   if (v13)
   {
-    v13->_maxCharacterCount = a4;
+    v13->_maxCharacterCount = count;
     [(ICPreviewLayoutManager *)v13 setAllowsNonContiguousLayout:1];
-    v15 = [v10 textStorage];
-    v16 = [v15 attributedString];
+    textStorage = [noteCopy textStorage];
+    attributedString = [textStorage attributedString];
 
-    v17 = [v10 textStorage];
-    v18 = [v17 styler];
+    textStorage2 = [noteCopy textStorage];
+    styler = [textStorage2 styler];
 
-    if (!v18)
+    if (!styler)
     {
       v19 = objc_opt_new();
 
-      v20 = [v10 textStorage];
-      [v19 refreshTextStylingForTextStorage:v20 withTextController:v19];
+      textStorage3 = [noteCopy textStorage];
+      [v19 refreshTextStylingForTextStorage:textStorage3 withTextController:v19];
 
-      v12 = v19;
+      controllerCopy = v19;
     }
 
-    if ([v10 calculatePreviewBehavior] != 1)
+    if ([noteCopy calculatePreviewBehavior] != 1)
     {
-      v21 = [v10 calculateDocumentController];
-      [v21 updateAffectingChangeCounts:0];
-      if ([v21 hasExpressions])
+      calculateDocumentController = [noteCopy calculateDocumentController];
+      [calculateDocumentController updateAffectingChangeCounts:0];
+      if ([calculateDocumentController hasExpressions])
       {
         v55 = 0;
         v56 = &v55;
@@ -54,71 +54,71 @@
         aBlock[2] = __86__ICPreviewLayoutManager_initWithNote_maxCharacterCount_textContainer_textController___block_invoke;
         aBlock[3] = &unk_1E846DD08;
         v54 = &v55;
-        v22 = v16;
+        v22 = attributedString;
         v53 = v22;
         v23 = _Block_copy(aBlock);
         v24 = v23[2]();
-        v25 = [v56[5] ic_range];
-        [v21 formatExpressionsInAttributedString:v24 range:v25 textStorageOffset:v26 skipStaleExpressions:{0, 1}];
+        ic_range = [v56[5] ic_range];
+        [calculateDocumentController formatExpressionsInAttributedString:v24 range:ic_range textStorageOffset:v26 skipStaleExpressions:{0, 1}];
 
-        v16 = v56[5];
+        attributedString = v56[5];
         _Block_object_dispose(&v55, 8);
       }
     }
 
-    v27 = [v16 length];
-    if (v27 >= a4)
+    v27 = [attributedString length];
+    if (v27 >= count)
     {
-      v28 = a4;
+      countCopy = count;
     }
 
     else
     {
-      v28 = v27;
+      countCopy = v27;
     }
 
-    v29 = [v16 attributedSubstringFromRange:{0, v28}];
+    v29 = [attributedString attributedSubstringFromRange:{0, countCopy}];
 
-    v30 = [v10 managedObjectContext];
-    v31 = [v29 ic_attributedStringByFlatteningInlineAttachmentsWithContext:v30 formatter:0];
+    managedObjectContext = [noteCopy managedObjectContext];
+    v31 = [v29 ic_attributedStringByFlatteningInlineAttachmentsWithContext:managedObjectContext formatter:0];
 
     v32 = [v31 mutableCopy];
     v33 = *MEMORY[0x1E69B7630];
-    v34 = [v32 ic_range];
+    ic_range2 = [v32 ic_range];
     v36 = v35;
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __86__ICPreviewLayoutManager_initWithNote_maxCharacterCount_textContainer_textController___block_invoke_2;
     v49[3] = &unk_1E846A768;
-    v12 = v12;
-    v50 = v12;
+    controllerCopy = controllerCopy;
+    v50 = controllerCopy;
     v51 = v32;
     v37 = v32;
-    [v37 enumerateAttribute:v33 inRange:v34 options:v36 usingBlock:{0, v49}];
+    [v37 enumerateAttribute:v33 inRange:ic_range2 options:v36 usingBlock:{0, v49}];
     v38 = [v37 copy];
 
     v39 = [ICTTTextStorage alloc];
-    v40 = [MEMORY[0x1E696AFB0] UUID];
-    v41 = [(ICTTTextStorage *)v39 initWithData:0 replicaID:v40];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v41 = [(ICTTTextStorage *)v39 initWithData:0 replicaID:uUID];
 
     [(ICTTTextStorage *)v41 setWantsUndoCommands:0];
     [(ICTTTextStorage *)v41 replaceCharactersInRange:0 withAttributedString:0, v38];
-    [v12 styleDataDetectorTypesForPreviewInTextStorage:v41];
+    [controllerCopy styleDataDetectorTypesForPreviewInTextStorage:v41];
     v42 = *MEMORY[0x1E69DB5F8];
     v43 = [(ICTTTextStorage *)v41 length];
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __86__ICPreviewLayoutManager_initWithNote_maxCharacterCount_textContainer_textController___block_invoke_3;
     v46[3] = &unk_1E846A768;
-    v47 = v10;
+    v47 = noteCopy;
     v48 = v41;
     v44 = v41;
     [(ICTTTextStorage *)v44 enumerateAttribute:v42 inRange:0 options:v43 usingBlock:0, v46];
-    [(ICTTTextStorage *)v44 setStyler:v12];
-    [v12 styleText:v44 inExactRange:0 fixModelAttributes:{-[ICTTTextStorage length](v44, "length"), 0}];
+    [(ICTTTextStorage *)v44 setStyler:controllerCopy];
+    [controllerCopy styleText:v44 inExactRange:0 fixModelAttributes:{-[ICTTTextStorage length](v44, "length"), 0}];
     [(ICPreviewLayoutManager *)v14 setTextStorage:v44];
     [(ICPreviewLayoutManager *)v14 setStrongTextStorage:v44];
-    [(ICPreviewLayoutManager *)v14 addTextContainer:v11];
+    [(ICPreviewLayoutManager *)v14 addTextContainer:containerCopy];
   }
 
   return v14;
@@ -193,17 +193,17 @@ void __86__ICPreviewLayoutManager_initWithNote_maxCharacterCount_textContainer_t
   }
 }
 
-- (void)drawGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4
+- (void)drawGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
   v13[3] = 0;
-  v7 = [(ICPreviewLayoutManager *)self characterRangeForGlyphRange:a3.location actualGlyphRange:a3.length, 0];
+  v7 = [(ICPreviewLayoutManager *)self characterRangeForGlyphRange:range.location actualGlyphRange:range.length, 0];
   v9 = v8;
-  v10 = [(ICPreviewLayoutManager *)self textStorage];
+  textStorage = [(ICPreviewLayoutManager *)self textStorage];
   v11 = *MEMORY[0x1E69DB5F8];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -213,7 +213,7 @@ void __86__ICPreviewLayoutManager_initWithNote_maxCharacterCount_textContainer_t
   *&v12[7] = y;
   v12[4] = self;
   v12[5] = v13;
-  [v10 enumerateAttribute:v11 inRange:v7 options:v9 usingBlock:{0, v12}];
+  [textStorage enumerateAttribute:v11 inRange:v7 options:v9 usingBlock:{0, v12}];
 
   _Block_object_dispose(v13, 8);
 }
@@ -276,13 +276,13 @@ void __58__ICPreviewLayoutManager_drawGlyphsForGlyphRange_atPoint___block_invoke
   }
 }
 
-- (void)drawTodosForCharacterRange:(_NSRange)a3 atOrigin:(CGPoint)a4
+- (void)drawTodosForCharacterRange:(_NSRange)range atOrigin:(CGPoint)origin
 {
-  y = a4.y;
-  x = a4.x;
-  length = a3.length;
-  location = a3.location;
-  v9 = [(ICPreviewLayoutManager *)self textStorage];
+  y = origin.y;
+  x = origin.x;
+  length = range.length;
+  location = range.location;
+  textStorage = [(ICPreviewLayoutManager *)self textStorage];
   v10 = *MEMORY[0x1E69B7600];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -291,7 +291,7 @@ void __58__ICPreviewLayoutManager_drawGlyphsForGlyphRange_atPoint___block_invoke
   v11[4] = self;
   *&v11[5] = x;
   *&v11[6] = y;
-  [v9 ic_enumerateUnclampedAttribute:v10 inRange:location options:length usingBlock:{0, v11}];
+  [textStorage ic_enumerateUnclampedAttribute:v10 inRange:location options:length usingBlock:{0, v11}];
 }
 
 void __62__ICPreviewLayoutManager_drawTodosForCharacterRange_atOrigin___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -307,29 +307,29 @@ void __62__ICPreviewLayoutManager_drawTodosForCharacterRange_atOrigin___block_in
   }
 }
 
-- (id)todoImageForParagraphStyle:(id)a3
+- (id)todoImageForParagraphStyle:(id)style
 {
-  v3 = [a3 todo];
-  v4 = [v3 done];
+  todo = [style todo];
+  done = [todo done];
 
   v5 = @"circle";
-  if (v4)
+  if (done)
   {
     v5 = @"checkmark.circle.fill";
   }
 
   v6 = v5;
-  v7 = [MEMORY[0x1E69DC888] ICGrayTodoButtonColor];
-  v8 = [MEMORY[0x1E69DC888] ICControlAccentColor];
-  v9 = v8;
-  if (v4)
+  iCGrayTodoButtonColor = [MEMORY[0x1E69DC888] ICGrayTodoButtonColor];
+  iCControlAccentColor = [MEMORY[0x1E69DC888] ICControlAccentColor];
+  v9 = iCControlAccentColor;
+  if (done)
   {
-    v10 = v8;
+    v10 = iCControlAccentColor;
   }
 
   else
   {
-    v10 = v7;
+    v10 = iCGrayTodoButtonColor;
   }
 
   v11 = v10;
@@ -346,21 +346,21 @@ void __62__ICPreviewLayoutManager_drawTodosForCharacterRange_atOrigin___block_in
   return v14;
 }
 
-- (void)drawTodoItemForListRange:(_NSRange)a3 paragraphStyle:(id)a4 atOrigin:(CGPoint)a5
+- (void)drawTodoItemForListRange:(_NSRange)range paragraphStyle:(id)style atOrigin:(CGPoint)origin
 {
-  y = a5.y;
-  x = a5.x;
-  length = a3.length;
-  location = a3.location;
-  v40 = [(ICPreviewLayoutManager *)self todoImageForParagraphStyle:a4];
+  y = origin.y;
+  x = origin.x;
+  length = range.length;
+  location = range.location;
+  v40 = [(ICPreviewLayoutManager *)self todoImageForParagraphStyle:style];
   [(ICPreviewLayoutManager *)self lineFragmentUsedRectForGlyphAtIndex:[(ICPreviewLayoutManager *)self glyphRangeForCharacterRange:location actualCharacterRange:length effectiveRange:0], 0];
   v43 = CGRectOffset(v42, x, y);
   v10 = v43.origin.x;
   v11 = v43.origin.y;
   width = v43.size.width;
   height = v43.size.height;
-  v14 = [(ICBaseLayoutManager *)self textContainer];
-  [v14 lineFragmentPadding];
+  textContainer = [(ICBaseLayoutManager *)self textContainer];
+  [textContainer lineFragmentPadding];
   v16 = v15;
   v44.origin.x = v10;
   v44.origin.y = v11;
@@ -379,9 +379,9 @@ void __62__ICPreviewLayoutManager_drawTodosForCharacterRange_atOrigin___block_in
   IsNull = CGRectIsNull(v46);
   if ((IsNull & 1) == 0 && v40)
   {
-    v22 = [(ICBaseLayoutManager *)self textController];
-    v23 = [(ICPreviewLayoutManager *)self textStorage];
-    v24 = [v22 writingDirectionForRange:location inTextView:length inTextStorage:{0, v23}];
+    textController = [(ICBaseLayoutManager *)self textController];
+    textStorage = [(ICPreviewLayoutManager *)self textStorage];
+    v24 = [textController writingDirectionForRange:location inTextView:length inTextStorage:{0, textStorage}];
 
     v25 = v17;
     v26 = v18;

@@ -1,9 +1,9 @@
 @interface WeekPaletteTappableDay
 - (WeekPaletteTappableDay)init;
 - (void)layoutSubviews;
-- (void)setCircleHidden:(BOOL)a3 updateCircleColor:(BOOL)a4;
-- (void)setFont:(id)a3 textColor:(id)a4;
-- (void)setTextColorHighlighted:(BOOL)a3;
+- (void)setCircleHidden:(BOOL)hidden updateCircleColor:(BOOL)color;
+- (void)setFont:(id)font textColor:(id)color;
+- (void)setTextColorHighlighted:(BOOL)highlighted;
 @end
 
 @implementation WeekPaletteTappableDay
@@ -36,29 +36,29 @@
   return v2;
 }
 
-- (void)setFont:(id)a3 textColor:(id)a4
+- (void)setFont:(id)font textColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  fontCopy = font;
+  colorCopy = color;
   dayFont = self->_dayFont;
-  self->_dayFont = v6;
-  v11 = v6;
+  self->_dayFont = fontCopy;
+  v11 = fontCopy;
 
   dayTextColor = self->_dayTextColor;
-  self->_dayTextColor = v7;
-  v10 = v7;
+  self->_dayTextColor = colorCopy;
+  v10 = colorCopy;
 
   [(UILabel *)self->_weekDayLabel setFont:v11];
   [(UILabel *)self->_weekDayLabel setTextColor:v10];
 }
 
-- (void)setTextColorHighlighted:(BOOL)a3
+- (void)setTextColorHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
     v4 = +[ARUIMetricColors energyColors];
-    v5 = [v4 nonGradientTextColor];
-    v6 = [v5 colorWithAlphaComponent:0.99];
+    nonGradientTextColor = [v4 nonGradientTextColor];
+    v6 = [nonGradientTextColor colorWithAlphaComponent:0.99];
   }
 
   else
@@ -79,8 +79,8 @@
   [(WeekPaletteTappableDay *)self bounds];
   if (vabdd_f64(v4, v5) >= 2.0)
   {
-    v10 = [(UIView *)self->_circle layer];
-    [v10 setCornerRadius:8.0];
+    layer = [(UIView *)self->_circle layer];
+    [layer setCornerRadius:8.0];
 
     [(WeekPaletteTappableDay *)self bounds];
     [(UIView *)self->_circle setFrame:?];
@@ -95,19 +95,19 @@
     [(WeekPaletteTappableDay *)self bounds];
     v7 = v6;
     v8 = v6 * 0.5;
-    v9 = [(UIView *)self->_circle layer];
-    [v9 setCornerRadius:v8];
+    layer2 = [(UIView *)self->_circle layer];
+    [layer2 setCornerRadius:v8];
 
     [(UIView *)self->_circle setFrame:0.0, 0.0, v7, v7];
   }
 
   v12 = [NSAttributedString alloc];
-  v13 = [(UILabel *)self->_weekDayLabel text];
+  text = [(UILabel *)self->_weekDayLabel text];
   dayFont = self->_dayFont;
   v24 = NSFontAttributeName;
   v25 = dayFont;
   v15 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-  v16 = [v12 initWithString:v13 attributes:v15];
+  v16 = [v12 initWithString:text attributes:v15];
 
   [(WeekPaletteTappableDay *)self bounds];
   [v16 boundingRectWithSize:0 options:0 context:{v17, 1.79769313e308}];
@@ -122,10 +122,10 @@
   [(UILabel *)self->_weekDayLabel setFrame:v21, v22, width, height];
 }
 
-- (void)setCircleHidden:(BOOL)a3 updateCircleColor:(BOOL)a4
+- (void)setCircleHidden:(BOOL)hidden updateCircleColor:(BOOL)color
 {
-  v5 = a3;
-  if (a3)
+  hiddenCopy = hidden;
+  if (hidden)
   {
     v7 = 0.0;
   }
@@ -135,15 +135,15 @@
     v7 = 1.0;
   }
 
-  v8 = [(WeekPaletteTappableDay *)self circle];
-  [v8 setAlpha:v7];
+  circle = [(WeekPaletteTappableDay *)self circle];
+  [circle setAlpha:v7];
 
-  if (a4)
+  if (color)
   {
     v9 = +[ARUIMetricColors energyColors];
-    v13 = [v9 nonGradientTextColor];
+    nonGradientTextColor = [v9 nonGradientTextColor];
 
-    v10 = v13;
+    v10 = nonGradientTextColor;
   }
 
   else
@@ -153,7 +153,7 @@
 
   v14 = v10;
   [(UIView *)self->_circle setBackgroundColor:v10];
-  if (v5)
+  if (hiddenCopy)
   {
     v11 = self->_dayTextColor;
   }

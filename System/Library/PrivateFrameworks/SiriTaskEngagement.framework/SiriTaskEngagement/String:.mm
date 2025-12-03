@@ -7,8 +7,8 @@
 
 - (Class)NSObject
 {
-  v1 = *(a1 + 32);
-  v2 = *(a1 + 40);
+  v1 = *(self + 32);
+  v2 = *(self + 40);
 
   v4 = v1(v3);
 

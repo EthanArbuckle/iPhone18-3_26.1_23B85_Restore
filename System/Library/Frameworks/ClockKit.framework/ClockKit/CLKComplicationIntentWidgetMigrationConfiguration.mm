@@ -1,11 +1,11 @@
 @interface CLKComplicationIntentWidgetMigrationConfiguration
 + (CLKComplicationIntentWidgetMigrationConfiguration)intentWidgetMigrationConfigurationWithKind:(NSString *)kind extensionBundleIdentifier:(NSString *)extensionBundleIdentifier intent:(INIntent *)intent localizedDisplayName:(NSString *)localizedDisplayName;
-- (BOOL)isEqual:(id)a3;
-- (CLKComplicationIntentWidgetMigrationConfiguration)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLKComplicationIntentWidgetMigrationConfiguration)initWithCoder:(id)coder;
 - (CLKComplicationIntentWidgetMigrationConfiguration)initWithKind:(NSString *)kind extensionBundleIdentifier:(NSString *)extensionBundleIdentifier intent:(INIntent *)intent localizedDisplayName:(NSString *)localizedDisplayName;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIntent:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIntent:(id)intent;
 @end
 
 @implementation CLKComplicationIntentWidgetMigrationConfiguration
@@ -18,35 +18,35 @@
   v13 = localizedDisplayName;
   v24.receiver = self;
   v24.super_class = CLKComplicationIntentWidgetMigrationConfiguration;
-  v14 = [(CLKComplicationWidgetMigrationConfiguration *)&v24 initPrivate];
-  if (v14)
+  initPrivate = [(CLKComplicationWidgetMigrationConfiguration *)&v24 initPrivate];
+  if (initPrivate)
   {
     v15 = [(NSString *)v10 copy];
-    v16 = v14->_kind;
-    v14->_kind = v15;
+    v16 = initPrivate->_kind;
+    initPrivate->_kind = v15;
 
     v17 = [(NSString *)v11 copy];
-    v18 = v14->_extensionBundleIdentifier;
-    v14->_extensionBundleIdentifier = v17;
+    v18 = initPrivate->_extensionBundleIdentifier;
+    initPrivate->_extensionBundleIdentifier = v17;
 
     v19 = [(INIntent *)v12 copy];
-    v20 = v14->_intent;
-    v14->_intent = v19;
+    v20 = initPrivate->_intent;
+    initPrivate->_intent = v19;
 
     v21 = [(NSString *)v13 copy];
-    v22 = v14->_localizedDisplayName;
-    v14->_localizedDisplayName = v21;
+    v22 = initPrivate->_localizedDisplayName;
+    initPrivate->_localizedDisplayName = v21;
   }
 
-  return v14;
+  return initPrivate;
 }
 
-- (void)setIntent:(id)a3
+- (void)setIntent:(id)intent
 {
-  v5 = a3;
+  intentCopy = intent;
   if (([(INIntent *)self->_intent isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_intent, a3);
+    objc_storeStrong(&self->_intent, intent);
   }
 }
 
@@ -56,34 +56,34 @@
   v11 = intent;
   v12 = extensionBundleIdentifier;
   v13 = kind;
-  v14 = [[a1 alloc] initWithKind:v13 extensionBundleIdentifier:v12 intent:v11 localizedDisplayName:v10];
+  v14 = [[self alloc] initWithKind:v13 extensionBundleIdentifier:v12 intent:v11 localizedDisplayName:v10];
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = CLKComplicationIntentWidgetMigrationConfiguration;
-  if ([(CLKComplicationWidgetMigrationConfiguration *)&v16 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(CLKComplicationWidgetMigrationConfiguration *)&v16 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     kind = self->_kind;
-    v7 = [v5 kind];
-    if ([(NSString *)kind isEqualToString:v7])
+    kind = [v5 kind];
+    if ([(NSString *)kind isEqualToString:kind])
     {
       extensionBundleIdentifier = self->_extensionBundleIdentifier;
-      v9 = [v5 extensionBundleIdentifier];
-      if ([(NSString *)extensionBundleIdentifier isEqualToString:v9])
+      extensionBundleIdentifier = [v5 extensionBundleIdentifier];
+      if ([(NSString *)extensionBundleIdentifier isEqualToString:extensionBundleIdentifier])
       {
         intent = self->_intent;
-        v11 = [v5 intent];
-        if ([(INIntent *)intent isEqual:v11])
+        intent = [v5 intent];
+        if ([(INIntent *)intent isEqual:intent])
         {
           localizedDisplayName = self->_localizedDisplayName;
-          v13 = [v5 localizedDisplayName];
-          v14 = [(NSString *)localizedDisplayName isEqualToString:v13];
+          localizedDisplayName = [v5 localizedDisplayName];
+          v14 = [(NSString *)localizedDisplayName isEqualToString:localizedDisplayName];
         }
 
         else
@@ -112,11 +112,11 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CLKComplicationIntentWidgetMigrationConfiguration;
-  v4 = [(CLKComplicationWidgetMigrationConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(CLKComplicationWidgetMigrationConfiguration *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 1, self->_kind);
   objc_storeStrong(v4 + 2, self->_extensionBundleIdentifier);
   objc_storeStrong(v4 + 3, self->_intent);
@@ -124,19 +124,19 @@
   return v4;
 }
 
-- (CLKComplicationIntentWidgetMigrationConfiguration)initWithCoder:(id)a3
+- (CLKComplicationIntentWidgetMigrationConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CLKComplicationIntentWidgetMigrationConfiguration;
-  v5 = [(CLKComplicationWidgetMigrationConfiguration *)&v17 initWithCoder:v4];
+  v5 = [(CLKComplicationWidgetMigrationConfiguration *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_WidgetMigrationConfigurationKind"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_WidgetMigrationConfigurationKind"];
     kind = v5->_kind;
     v5->_kind = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_WidgetMigrationConfigurationKindExtensionBundleIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_WidgetMigrationConfigurationKindExtensionBundleIdentifier"];
     extensionBundleIdentifier = v5->_extensionBundleIdentifier;
     v5->_extensionBundleIdentifier = v8;
 
@@ -158,11 +158,11 @@
 
     v11 = v10;
     _Block_object_dispose(&v19, 8);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:@"_WidgetMigrationConfigurationKindIntent"];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:@"_WidgetMigrationConfigurationKindIntent"];
     intent = v5->_intent;
     v5->_intent = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_WidgetMigrationConfigurationKindLocalizedDisplayName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_WidgetMigrationConfigurationKindLocalizedDisplayName"];
     localizedDisplayName = v5->_localizedDisplayName;
     v5->_localizedDisplayName = v14;
   }
@@ -170,14 +170,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CLKComplicationIntentWidgetMigrationConfiguration;
-  [(CLKComplicationWidgetMigrationConfiguration *)&v11 encodeWithCoder:v4];
-  [v4 encodeObject:self->_kind forKey:@"_WidgetMigrationConfigurationKind"];
-  [v4 encodeObject:self->_extensionBundleIdentifier forKey:@"_WidgetMigrationConfigurationKindExtensionBundleIdentifier"];
+  [(CLKComplicationWidgetMigrationConfiguration *)&v11 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_kind forKey:@"_WidgetMigrationConfigurationKind"];
+  [coderCopy encodeObject:self->_extensionBundleIdentifier forKey:@"_WidgetMigrationConfigurationKindExtensionBundleIdentifier"];
   v5 = self->_intent;
   v17 = 0;
   v18 = &v17;
@@ -208,8 +208,8 @@
 
   v9 = v6(v5);
 
-  [v4 encodeObject:v9 forKey:@"_WidgetMigrationConfigurationKindIntent"];
-  [v4 encodeObject:self->_localizedDisplayName forKey:@"_WidgetMigrationConfigurationKindLocalizedDisplayName"];
+  [coderCopy encodeObject:v9 forKey:@"_WidgetMigrationConfigurationKindIntent"];
+  [coderCopy encodeObject:self->_localizedDisplayName forKey:@"_WidgetMigrationConfigurationKindLocalizedDisplayName"];
 }
 
 - (uint64_t)encodeWithCoder:.cold.1()

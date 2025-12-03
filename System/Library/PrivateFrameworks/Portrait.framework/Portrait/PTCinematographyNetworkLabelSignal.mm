@@ -1,21 +1,21 @@
 @interface PTCinematographyNetworkLabelSignal
-- (PTCinematographyNetworkLabelSignal)initWithModelDictionary:(id)a3;
-- (unint64_t)_networkLabelForDetection:(id)a3;
-- (void)writePayload:(id)a3 toStream:(id)a4;
+- (PTCinematographyNetworkLabelSignal)initWithModelDictionary:(id)dictionary;
+- (unint64_t)_networkLabelForDetection:(id)detection;
+- (void)writePayload:(id)payload toStream:(id)stream;
 @end
 
 @implementation PTCinematographyNetworkLabelSignal
 
-- (PTCinematographyNetworkLabelSignal)initWithModelDictionary:(id)a3
+- (PTCinematographyNetworkLabelSignal)initWithModelDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = PTCinematographyNetworkLabelSignal;
-  v5 = [(PTCinematographyNetworkSignal *)&v26 initWithModelDictionary:v4];
+  v5 = [(PTCinematographyNetworkSignal *)&v26 initWithModelDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"params"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"params"];
     v7 = [v6 objectForKeyedSubscript:@"zero_label"];
     v5->_labelZero = [v7 unsignedIntegerValue];
 
@@ -34,7 +34,7 @@
     if (v9)
     {
       v23 = v6;
-      v24 = v4;
+      v24 = dictionaryCopy;
       v10 = objc_opt_new();
       if ([v9 count])
       {
@@ -97,7 +97,7 @@
 
       v20 = [v10 copy];
 
-      v4 = v24;
+      dictionaryCopy = v24;
       v6 = v23;
     }
 
@@ -113,16 +113,16 @@
   return v5;
 }
 
-- (void)writePayload:(id)a3 toStream:(id)a4
+- (void)writePayload:(id)payload toStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(PTCinematographyNetworkSignal *)self checkSignalForStream:v7])
+  payloadCopy = payload;
+  streamCopy = stream;
+  if ([(PTCinematographyNetworkSignal *)self checkSignalForStream:streamCopy])
   {
-    v8 = [v6 detection];
-    v9 = [(PTCinematographyNetworkLabelSignal *)self _networkLabelForDetection:v8];
+    detection = [payloadCopy detection];
+    v9 = [(PTCinematographyNetworkLabelSignal *)self _networkLabelForDetection:detection];
 
-    [v7 writeOneHot:v9 count:{-[PTCinematographyNetworkSignal count](self, "count")}];
+    [streamCopy writeOneHot:v9 count:{-[PTCinematographyNetworkSignal count](self, "count")}];
   }
 
   else
@@ -135,37 +135,37 @@
   }
 }
 
-- (unint64_t)_networkLabelForDetection:(id)a3
+- (unint64_t)_networkLabelForDetection:(id)detection
 {
-  v4 = a3;
+  detectionCopy = detection;
   remap = self->_remap;
-  v6 = [v4 trackIdentifier];
+  trackIdentifier = [detectionCopy trackIdentifier];
   if (remap)
   {
-    if (v6 == 0x1000000000)
+    if (trackIdentifier == 0x1000000000)
     {
-      v7 = 0;
+      detectionType = 0;
     }
 
     else
     {
-      v7 = [v4 detectionType];
+      detectionType = [detectionCopy detectionType];
     }
 
     v8 = self->_remap;
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:detectionType];
     v10 = [(NSDictionary *)v8 objectForKeyedSubscript:v9];
     labelZero = [v10 unsignedIntegerValue];
   }
 
-  else if (v6 == 0x1000000000)
+  else if (trackIdentifier == 0x1000000000)
   {
     labelZero = self->_labelZero;
   }
 
   else
   {
-    labelZero = self->_labelOffset + [v4 detectionType];
+    labelZero = self->_labelOffset + [detectionCopy detectionType];
   }
 
   return labelZero;

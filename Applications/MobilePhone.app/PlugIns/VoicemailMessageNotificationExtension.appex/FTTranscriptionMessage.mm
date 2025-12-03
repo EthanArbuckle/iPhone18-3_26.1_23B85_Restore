@@ -8,7 +8,7 @@
 
 - (NSAttributedString)attributedText
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000606DC();
   v3 = objc_allocWithZone(NSAttributedString);
   v4 = sub_1000607EC();
@@ -20,7 +20,7 @@
 
 - (NSString)text
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000606DC();
 
   v3 = sub_1000607EC();

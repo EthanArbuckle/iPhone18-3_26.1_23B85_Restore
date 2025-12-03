@@ -1,6 +1,6 @@
 @interface NPKAuthIntentListener
 - (NPKAuthIntentListener)init;
-- (void)_handleButtonEvent:(__IOHIDEvent *)a3;
+- (void)_handleButtonEvent:(__IOHIDEvent *)event;
 - (void)_initializeHIDClient;
 - (void)dealloc;
 @end
@@ -30,8 +30,8 @@
   {
     v4 = self->_hidSystemClient;
     IOHIDEventSystemClientUnregisterEventBlock();
-    v5 = [(NPKButtonListener *)self handlerQueue];
-    MEMORY[0x25F8669F0](hidSystemClient, v5);
+    handlerQueue = [(NPKButtonListener *)self handlerQueue];
+    MEMORY[0x25F8669F0](hidSystemClient, handlerQueue);
 
     CFRelease(hidSystemClient);
     self->_hidSystemClient = 0;
@@ -63,7 +63,7 @@
   {
     v8 = v7;
     IOHIDEventSystemClientSetMatching();
-    v9 = [(NPKButtonListener *)self handlerQueue];
+    handlerQueue = [(NPKButtonListener *)self handlerQueue];
     IOHIDEventSystemClientScheduleWithDispatchQueue();
 
     objc_initWeak(buf, self);
@@ -97,7 +97,7 @@ void __45__NPKAuthIntentListener__initializeHIDClient__block_invoke(uint64_t a1,
   [WeakRetained _handleButtonEvent:a5];
 }
 
-- (void)_handleButtonEvent:(__IOHIDEvent *)a3
+- (void)_handleButtonEvent:(__IOHIDEvent *)event
 {
   IntegerValue = IOHIDEventGetIntegerValue();
   v5 = IOHIDEventGetIntegerValue();
@@ -105,12 +105,12 @@ void __45__NPKAuthIntentListener__initializeHIDClient__block_invoke(uint64_t a1,
   if (IntegerValue == 12 && v5 == 442 && v6)
   {
     kdebug_trace();
-    v7 = [(NPKButtonListener *)self _handlerQueue_buttonHandler];
-    if (v7)
+    _handlerQueue_buttonHandler = [(NPKButtonListener *)self _handlerQueue_buttonHandler];
+    if (_handlerQueue_buttonHandler)
     {
-      v8 = v7;
-      v7[2](v7, 0);
-      v7 = v8;
+      v8 = _handlerQueue_buttonHandler;
+      _handlerQueue_buttonHandler[2](_handlerQueue_buttonHandler, 0);
+      _handlerQueue_buttonHandler = v8;
     }
   }
 }

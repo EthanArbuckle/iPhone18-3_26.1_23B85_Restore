@@ -1,39 +1,39 @@
 @interface MailboxHierarchyNode
-- (MailboxHierarchyNode)initWithMailbox:(id)a3;
-- (id)_findNodeForMailbox:(id)a3 removeNode:(BOOL)a4;
+- (MailboxHierarchyNode)initWithMailbox:(id)mailbox;
+- (id)_findNodeForMailbox:(id)mailbox removeNode:(BOOL)node;
 - (id)description;
-- (id)findNodeForMailbox:(id)a3;
-- (id)removeNodeForMailbox:(id)a3;
-- (void)addChild:(id)a3;
+- (id)findNodeForMailbox:(id)mailbox;
+- (id)removeNodeForMailbox:(id)mailbox;
+- (void)addChild:(id)child;
 @end
 
 @implementation MailboxHierarchyNode
 
-- (MailboxHierarchyNode)initWithMailbox:(id)a3
+- (MailboxHierarchyNode)initWithMailbox:(id)mailbox
 {
-  v5 = a3;
+  mailboxCopy = mailbox;
   v10.receiver = self;
   v10.super_class = MailboxHierarchyNode;
   v6 = [(MailboxHierarchyNode *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mailbox, a3);
+    objc_storeStrong(&v6->_mailbox, mailbox);
     if (![(MFMailboxUid *)v7->_mailbox mailboxType])
     {
-      v8 = [v5 displayName];
-      [(MailboxHierarchyNode *)v7 setDisplayName:v8];
+      displayName = [mailboxCopy displayName];
+      [(MailboxHierarchyNode *)v7 setDisplayName:displayName];
     }
   }
 
   return v7;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v4 = a3;
+  childCopy = child;
   children = self->_children;
-  v8 = v4;
+  v8 = childCopy;
   if (!children)
   {
     v6 = objc_alloc_init(NSMutableArray);
@@ -41,24 +41,24 @@
     self->_children = v6;
 
     children = self->_children;
-    v4 = v8;
+    childCopy = v8;
   }
 
-  [(NSMutableArray *)children ef_insertObject:v4 usingSortFunction:sub_308C context:0 allowDuplicates:1];
+  [(NSMutableArray *)children ef_insertObject:childCopy usingSortFunction:sub_308C context:0 allowDuplicates:1];
 }
 
-- (id)_findNodeForMailbox:(id)a3 removeNode:(BOOL)a4
+- (id)_findNodeForMailbox:(id)mailbox removeNode:(BOOL)node
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MailboxHierarchyNode *)self children];
-  v8 = [(MailboxHierarchyNode *)self mailbox];
+  nodeCopy = node;
+  mailboxCopy = mailbox;
+  children = [(MailboxHierarchyNode *)self children];
+  mailbox = [(MailboxHierarchyNode *)self mailbox];
 
-  if (v8 == v6)
+  if (mailbox == mailboxCopy)
   {
-    v19 = self;
-    v18 = v19;
-    if (!v19)
+    selfCopy = self;
+    v18 = selfCopy;
+    if (!selfCopy)
     {
       goto LABEL_21;
     }
@@ -70,7 +70,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v7;
+  v9 = children;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -85,8 +85,8 @@
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 mailbox];
-        v15 = v14 == v6;
+        mailbox2 = [v13 mailbox];
+        v15 = mailbox2 == mailboxCopy;
 
         if (v15)
         {
@@ -95,11 +95,11 @@
           goto LABEL_18;
         }
 
-        v16 = [v13 children];
+        children2 = [v13 children];
 
-        if (v16)
+        if (children2)
         {
-          v17 = [v13 _findNodeForMailbox:v6 removeNode:v4];
+          v17 = [v13 _findNodeForMailbox:mailboxCopy removeNode:nodeCopy];
           if (v17)
           {
             goto LABEL_17;
@@ -128,31 +128,31 @@ LABEL_17:
 
 LABEL_18:
 
-  v19 = v17;
+  selfCopy = v17;
   if (v18)
   {
 LABEL_19:
-    if (v4)
+    if (nodeCopy)
     {
-      [v7 removeObject:v18];
+      [children removeObject:v18];
     }
   }
 
 LABEL_21:
 
-  return v19;
+  return selfCopy;
 }
 
-- (id)removeNodeForMailbox:(id)a3
+- (id)removeNodeForMailbox:(id)mailbox
 {
-  v3 = [(MailboxHierarchyNode *)self _findNodeForMailbox:a3 removeNode:1];
+  v3 = [(MailboxHierarchyNode *)self _findNodeForMailbox:mailbox removeNode:1];
 
   return v3;
 }
 
-- (id)findNodeForMailbox:(id)a3
+- (id)findNodeForMailbox:(id)mailbox
 {
-  v3 = [(MailboxHierarchyNode *)self _findNodeForMailbox:a3 removeNode:0];
+  v3 = [(MailboxHierarchyNode *)self _findNodeForMailbox:mailbox removeNode:0];
 
   return v3;
 }
@@ -162,8 +162,8 @@ LABEL_21:
   v7.receiver = self;
   v7.super_class = MailboxHierarchyNode;
   v3 = [(MailboxHierarchyNode *)&v7 description];
-  v4 = [(MailboxHierarchyNode *)self mailbox];
-  v5 = [NSString stringWithFormat:@"%@, %@", v3, v4];
+  mailbox = [(MailboxHierarchyNode *)self mailbox];
+  v5 = [NSString stringWithFormat:@"%@, %@", v3, mailbox];
 
   return v5;
 }

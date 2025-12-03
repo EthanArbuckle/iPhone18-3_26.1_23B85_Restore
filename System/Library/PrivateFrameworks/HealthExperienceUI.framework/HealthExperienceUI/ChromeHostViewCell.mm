@@ -1,27 +1,27 @@
 @interface ChromeHostViewCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (_TtC18HealthExperienceUI18ChromeHostViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (_TtC18HealthExperienceUI18ChromeHostViewCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ChromeHostViewCell
 
-- (_TtC18HealthExperienceUI18ChromeHostViewCell)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI18ChromeHostViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ChromeHostViewCell(0);
   return [(HostViewCell *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  sub_1B9F77F18(width, height, a4, a5);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  sub_1B9F77F18(width, height, priority, fittingPriority);
   v11 = v10;
   v13 = v12;
 

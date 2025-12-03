@@ -1,18 +1,18 @@
 @interface SBSingleSceneSnapshotRequestStrategy
-- (id)snapshotRequestsForSceneHandle:(id)a3 settings:(id)a4 snapshotRequestContext:(id)a5;
+- (id)snapshotRequestsForSceneHandle:(id)handle settings:(id)settings snapshotRequestContext:(id)context;
 @end
 
 @implementation SBSingleSceneSnapshotRequestStrategy
 
-- (id)snapshotRequestsForSceneHandle:(id)a3 settings:(id)a4 snapshotRequestContext:(id)a5
+- (id)snapshotRequestsForSceneHandle:(id)handle settings:(id)settings snapshotRequestContext:(id)context
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  handleCopy = handle;
+  settingsCopy = settings;
+  contextCopy = context;
+  if (handleCopy)
   {
-    if (v8)
+    if (settingsCopy)
     {
       goto LABEL_3;
     }
@@ -21,7 +21,7 @@
   else
   {
     [SBSingleSceneSnapshotRequestStrategy snapshotRequestsForSceneHandle:settings:snapshotRequestContext:];
-    if (v8)
+    if (settingsCopy)
     {
       goto LABEL_3;
     }
@@ -29,7 +29,7 @@
 
   [SBSingleSceneSnapshotRequestStrategy snapshotRequestsForSceneHandle:settings:snapshotRequestContext:];
 LABEL_3:
-  if ([v8 isUISubclass])
+  if ([settingsCopy isUISubclass])
   {
     v10 = [[SBSceneSnapshotRequest alloc] initWithSize:0 orientation:0 userInterfaceStyle:0];
     v13[0] = v10;

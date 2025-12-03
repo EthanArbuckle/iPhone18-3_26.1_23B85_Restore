@@ -1,53 +1,53 @@
 @interface TUISearchBarView
-+ (id)renderModelWithStates:(id)a3 actionHandler:(id)a4 viewState:(id)a5 enabled:(BOOL)a6 name:(id)a7 identifier:(id)a8 editingInsets:(UIEdgeInsets)a9 placeholderText:(id)a10 style:(id)a11 text:(id)a12 returnKeyType:(id)a13 keyboardAppearance:(unint64_t)a14 cancelText:(id)a15 showCancel:(BOOL)a16;
-- (id)_textForControlUsingRenderModel:(id)a3;
++ (id)renderModelWithStates:(id)states actionHandler:(id)handler viewState:(id)state enabled:(BOOL)enabled name:(id)name identifier:(id)identifier editingInsets:(UIEdgeInsets)insets placeholderText:(id)self0 style:(id)self1 text:(id)self2 returnKeyType:(id)self3 keyboardAppearance:(unint64_t)self4 cancelText:(id)self5 showCancel:(BOOL)self6;
+- (id)_textForControlUsingRenderModel:(id)model;
 - (id)currentState;
 - (id)viewStateSave;
-- (void)_callActionHandlerForTrigger:(id)a3 arguments:(id)a4;
-- (void)_searchBarDidSubmitSearch:(id)a3;
+- (void)_callActionHandlerForTrigger:(id)trigger arguments:(id)arguments;
+- (void)_searchBarDidSubmitSearch:(id)search;
 - (void)_updateDynamicViewState;
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4;
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets;
 - (void)dealloc;
 - (void)loadControlIfNeeded;
 - (void)prepareForReuse;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)viewStateRestore:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)viewStateRestore:(id)restore;
 @end
 
 @implementation TUISearchBarView
 
-+ (id)renderModelWithStates:(id)a3 actionHandler:(id)a4 viewState:(id)a5 enabled:(BOOL)a6 name:(id)a7 identifier:(id)a8 editingInsets:(UIEdgeInsets)a9 placeholderText:(id)a10 style:(id)a11 text:(id)a12 returnKeyType:(id)a13 keyboardAppearance:(unint64_t)a14 cancelText:(id)a15 showCancel:(BOOL)a16
++ (id)renderModelWithStates:(id)states actionHandler:(id)handler viewState:(id)state enabled:(BOOL)enabled name:(id)name identifier:(id)identifier editingInsets:(UIEdgeInsets)insets placeholderText:(id)self0 style:(id)self1 text:(id)self2 returnKeyType:(id)self3 keyboardAppearance:(unint64_t)self4 cancelText:(id)self5 showCancel:(BOOL)self6
 {
-  v40 = a6;
-  right = a9.right;
-  bottom = a9.bottom;
-  left = a9.left;
-  top = a9.top;
-  v35 = a15;
-  v34 = a13;
+  enabledCopy = enabled;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  cancelTextCopy = cancelText;
+  typeCopy = type;
   v23 = a12;
-  v24 = a11;
-  v25 = a10;
-  v33 = a8;
-  v32 = a7;
-  v37 = a5;
-  v26 = a4;
-  v27 = a3;
+  styleCopy = style;
+  textCopy = text;
+  identifierCopy = identifier;
+  nameCopy = name;
+  stateCopy = state;
+  handlerCopy = handler;
+  statesCopy = states;
   v28 = [TUIRenderModelInteractiveText alloc];
-  v29 = [a1 tuiReuseIdentifier];
-  LOBYTE(v31) = a16;
-  v41 = [(TUIRenderModelInteractiveText *)v28 initWithReuseIdentifier:v29 identifier:v33 elementStates:v27 actionHandler:v26 viewState:v37 enabled:v40 name:top editingInsets:left style:bottom placeholderText:right text:v32 returnKeyType:v24 keyboardAppearance:v25 cancelText:v23 showCancel:v34, a14, v35, v31];
+  tuiReuseIdentifier = [self tuiReuseIdentifier];
+  LOBYTE(v31) = cancel;
+  v41 = [(TUIRenderModelInteractiveText *)v28 initWithReuseIdentifier:tuiReuseIdentifier identifier:identifierCopy elementStates:statesCopy actionHandler:handlerCopy viewState:stateCopy enabled:enabledCopy name:top editingInsets:left style:bottom placeholderText:right text:nameCopy returnKeyType:styleCopy keyboardAppearance:textCopy cancelText:v23 showCancel:typeCopy, appearance, cancelTextCopy, v31];
 
   return v41;
 }
 
 - (void)dealloc
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
-  [v3 setDelegate:0];
+  control = [(TUIInteractiveBaseView *)self control];
+  [control setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = TUISearchBarView;
@@ -57,16 +57,16 @@
 - (id)currentState
 {
   v3 = @"default";
-  v4 = [(TUIInteractiveBaseView *)self control];
-  v5 = [v4 isFocused];
-  v6 = [v4 text];
-  v7 = [v6 length];
+  control = [(TUIInteractiveBaseView *)self control];
+  isFocused = [control isFocused];
+  text = [control text];
+  v7 = [text length];
 
   if (v7)
   {
     v8 = @"hasValue";
 
-    if ((v5 & 1) == 0)
+    if ((isFocused & 1) == 0)
     {
       goto LABEL_8;
     }
@@ -75,7 +75,7 @@
     goto LABEL_6;
   }
 
-  if (v5)
+  if (isFocused)
   {
     v9 = TUIElementStateEditing;
     v8 = v3;
@@ -91,15 +91,15 @@ LABEL_8:
 
 - (void)loadControlIfNeeded
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
-  if (!v3)
+  control = [(TUIInteractiveBaseView *)self control];
+  if (!control)
   {
     v4 = [TUIUIKitSearchBar alloc];
     [(TUISearchBarView *)self bounds];
     v7 = [(TUIUIKitSearchBar *)v4 initWithFrame:?];
-    v5 = [(TUISearchBarView *)self viewStateToRestore];
-    v6 = [v5 text];
-    [(TUIUIKitSearchBar *)v7 setText:v6];
+    viewStateToRestore = [(TUISearchBarView *)self viewStateToRestore];
+    text = [viewStateToRestore text];
+    [(TUIUIKitSearchBar *)v7 setText:text];
 
     [(TUIUIKitSearchBar *)v7 setDelegate:self];
     [(TUIUIKitSearchBar *)v7 setSearchBarStyle:2];
@@ -107,76 +107,76 @@ LABEL_8:
     [(TUISearchBarView *)self addSubview:v7];
     [(TUIInteractiveBaseView *)self setControl:v7];
     [(TUISearchBarView *)self setViewStateToRestore:0];
-    v3 = v7;
+    control = v7;
   }
 }
 
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
+  right = outsets.right;
+  bottom = outsets.bottom;
+  left = outsets.left;
+  top = outsets.top;
+  modelCopy = model;
   v32.receiver = self;
   v32.super_class = TUISearchBarView;
-  [(TUIInteractiveBaseView *)&v32 configureWithModel:v9 outsets:top, left, bottom, right];
+  [(TUIInteractiveBaseView *)&v32 configureWithModel:modelCopy outsets:top, left, bottom, right];
   [(TUISearchBarView *)self setViewStateToRestore:0];
-  v10 = v9;
+  v10 = modelCopy;
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 viewState];
+    viewState = [v10 viewState];
     dynamicViewState = self->_dynamicViewState;
-    self->_dynamicViewState = v12;
+    self->_dynamicViewState = viewState;
 
-    v14 = [(TUIInteractiveBaseView *)self control];
+    control = [(TUIInteractiveBaseView *)self control];
     v15 = [(TUISearchBarView *)self _textForControlUsingRenderModel:v11];
-    [v14 setText:v15];
+    [control setText:v15];
 
     if ([v11 returnKeyType])
     {
-      v16 = [(TUIInteractiveBaseView *)self control];
-      [v16 setReturnKeyType:{objc_msgSend(v11, "returnKeyType")}];
+      control2 = [(TUIInteractiveBaseView *)self control];
+      [control2 setReturnKeyType:{objc_msgSend(v11, "returnKeyType")}];
     }
 
-    v17 = [v11 cancelText];
+    cancelText = [v11 cancelText];
 
-    if (v17)
+    if (cancelText)
     {
-      v18 = [(TUIInteractiveBaseView *)self control];
-      v19 = [v11 cancelText];
-      [v18 setCancelText:v19];
+      control3 = [(TUIInteractiveBaseView *)self control];
+      cancelText2 = [v11 cancelText];
+      [control3 setCancelText:cancelText2];
     }
 
-    v20 = [v11 enabled];
-    v21 = [(TUIInteractiveBaseView *)self control];
-    [v21 setEnabled:v20];
+    enabled = [v11 enabled];
+    control4 = [(TUIInteractiveBaseView *)self control];
+    [control4 setEnabled:enabled];
 
-    v22 = [(TUIInteractiveBaseView *)self control];
-    [v22 setShouldShowCancelButton:{objc_msgSend(v11, "showCancel")}];
+    control5 = [(TUIInteractiveBaseView *)self control];
+    [control5 setShouldShowCancelButton:{objc_msgSend(v11, "showCancel")}];
 
-    v23 = [v11 placeholderText];
+    placeholderText = [v11 placeholderText];
 
-    if (v23)
+    if (placeholderText)
     {
-      v24 = [(TUIInteractiveBaseView *)self control];
-      v25 = [v24 searchField];
-      v26 = [v11 placeholderText];
-      [v25 setAttributedPlaceholder:v26];
+      control6 = [(TUIInteractiveBaseView *)self control];
+      searchField = [control6 searchField];
+      placeholderText2 = [v11 placeholderText];
+      [searchField setAttributedPlaceholder:placeholderText2];
     }
 
     v27 = TUIPlatformKeyboardAppearanceFromKeyboardAppearance([v11 keyboardAppearance]);
-    v28 = [(TUIInteractiveBaseView *)self control];
-    v29 = [v28 keyboardAppearance];
+    control7 = [(TUIInteractiveBaseView *)self control];
+    keyboardAppearance = [control7 keyboardAppearance];
 
-    if (v27 != v29)
+    if (v27 != keyboardAppearance)
     {
-      v30 = [(TUIInteractiveBaseView *)self control];
-      [v30 setKeyboardAppearance:v27];
+      control8 = [(TUIInteractiveBaseView *)self control];
+      [control8 setKeyboardAppearance:v27];
 
-      v31 = [(TUIInteractiveBaseView *)self control];
-      [v31 reloadInputViewsWithoutReset];
+      control9 = [(TUIInteractiveBaseView *)self control];
+      [control9 reloadInputViewsWithoutReset];
     }
   }
 }
@@ -185,16 +185,16 @@ LABEL_8:
 {
   if (self->_dynamicViewState)
   {
-    v3 = [(TUIInteractiveBaseView *)self control];
+    control = [(TUIInteractiveBaseView *)self control];
 
-    if (v3)
+    if (control)
     {
       dynamicViewState = self->_dynamicViewState;
       v9 = @"value";
-      v5 = [(TUIInteractiveBaseView *)self control];
-      v6 = [v5 searchField];
-      v7 = [v6 text];
-      v10 = v7;
+      control2 = [(TUIInteractiveBaseView *)self control];
+      searchField = [control2 searchField];
+      text = [searchField text];
+      v10 = text;
       v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
       [(TUIMutableDynamicValue *)dynamicViewState updateWithValueIfChanged:v8];
     }
@@ -203,12 +203,12 @@ LABEL_8:
 
 - (id)viewStateSave
 {
-  v2 = [(TUIInteractiveBaseView *)self control];
-  if (v2)
+  control = [(TUIInteractiveBaseView *)self control];
+  if (control)
   {
     v3 = [_TUISearchBarViewState alloc];
-    v4 = [v2 text];
-    v5 = [(_TUISearchBarViewState *)v3 initWithText:v4];
+    text = [control text];
+    v5 = [(_TUISearchBarViewState *)v3 initWithText:text];
   }
 
   else
@@ -219,149 +219,149 @@ LABEL_8:
   return v5;
 }
 
-- (void)viewStateRestore:(id)a3
+- (void)viewStateRestore:(id)restore
 {
-  v7 = a3;
-  v4 = [(TUIInteractiveBaseView *)self control];
+  restoreCopy = restore;
+  control = [(TUIInteractiveBaseView *)self control];
 
-  if (v7 && v4)
+  if (restoreCopy && control)
   {
-    v5 = [v7 text];
+    text = [restoreCopy text];
 
-    v6 = [(TUIInteractiveBaseView *)self control];
-    [v6 setText:v5];
+    control2 = [(TUIInteractiveBaseView *)self control];
+    [control2 setText:text];
 
     [(TUIInteractiveBaseView *)self updateFromState];
   }
 
   else
   {
-    [(TUISearchBarView *)self setViewStateToRestore:v7];
+    [(TUISearchBarView *)self setViewStateToRestore:restoreCopy];
   }
 }
 
-- (id)_textForControlUsingRenderModel:(id)a3
+- (id)_textForControlUsingRenderModel:(id)model
 {
-  v4 = a3;
-  v5 = [(TUIInteractiveBaseView *)self control];
-  v6 = [v5 text];
+  modelCopy = model;
+  control = [(TUIInteractiveBaseView *)self control];
+  text = [control text];
 
-  if (!v6)
+  if (!text)
   {
-    v7 = [(_TUISearchBarViewState *)self->_viewStateToRestore text];
-    if (!v7)
+    text2 = [(_TUISearchBarViewState *)self->_viewStateToRestore text];
+    if (!text2)
     {
-      v7 = [v4 text];
+      text2 = [modelCopy text];
     }
 
-    v6 = v7;
+    text = text2;
   }
 
-  return v6;
+  return text;
 }
 
-- (void)_callActionHandlerForTrigger:(id)a3 arguments:(id)a4
+- (void)_callActionHandlerForTrigger:(id)trigger arguments:(id)arguments
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(TUIInteractiveBaseView *)self renderModel];
-  v8 = [v9 actionHandler];
-  [v8 invoke:v7 arguments:v6];
+  argumentsCopy = arguments;
+  triggerCopy = trigger;
+  renderModel = [(TUIInteractiveBaseView *)self renderModel];
+  actionHandler = [renderModel actionHandler];
+  [actionHandler invoke:triggerCopy arguments:argumentsCopy];
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   [(TUIInteractiveBaseView *)self updateFromState];
   v9 = @"value";
-  v5 = [(TUIInteractiveBaseView *)self control];
-  v6 = [v5 text];
-  v10 = v6;
+  control = [(TUIInteractiveBaseView *)self control];
+  text = [control text];
+  v10 = text;
   v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   [(TUISearchBarView *)self _callActionHandlerForTrigger:@"beginInput" arguments:v7];
 
-  v8 = [(TUIInteractiveBaseView *)self control];
-  LODWORD(v5) = [v8 shouldShowCancelButton];
+  control2 = [(TUIInteractiveBaseView *)self control];
+  LODWORD(control) = [control2 shouldShowCancelButton];
 
-  if (v5)
+  if (control)
   {
-    [v4 setShowsCancelButton:1 animated:1];
-    [v4 becomeFirstResponder];
+    [editingCopy setShowsCancelButton:1 animated:1];
+    [editingCopy becomeFirstResponder];
   }
 
   [(TUISearchBarView *)self _updateDynamicViewState];
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   [(TUIInteractiveBaseView *)self updateFromState];
   v11 = @"value";
-  v5 = [(TUIInteractiveBaseView *)self control];
-  v6 = [v5 text];
-  v12 = v6;
+  control = [(TUIInteractiveBaseView *)self control];
+  text = [control text];
+  v12 = text;
   v7 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   [(TUISearchBarView *)self _callActionHandlerForTrigger:@"endInput" arguments:v7];
 
-  v8 = [(TUIInteractiveBaseView *)self control];
-  v9 = [v8 text];
-  v10 = [v9 length];
+  control2 = [(TUIInteractiveBaseView *)self control];
+  text2 = [control2 text];
+  v10 = [text2 length];
 
   if (!v10)
   {
-    [v4 setShowsCancelButton:0 animated:1];
+    [editingCopy setShowsCancelButton:0 animated:1];
   }
 
   [(TUISearchBarView *)self _updateDynamicViewState];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  [(TUIInteractiveBaseView *)self updateFromState:a3];
+  [(TUIInteractiveBaseView *)self updateFromState:bar];
   v8 = @"value";
-  v5 = [(TUIInteractiveBaseView *)self control];
-  v6 = [v5 text];
-  v9 = v6;
+  control = [(TUIInteractiveBaseView *)self control];
+  text = [control text];
+  v9 = text;
   v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   [(TUISearchBarView *)self _callActionHandlerForTrigger:@"changedInput" arguments:v7];
 
   [(TUISearchBarView *)self _updateDynamicViewState];
 }
 
-- (void)_searchBarDidSubmitSearch:(id)a3
+- (void)_searchBarDidSubmitSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   v10 = @"value";
-  v5 = [(TUIInteractiveBaseView *)self control];
-  v6 = [v5 text];
-  v11 = v6;
+  control = [(TUIInteractiveBaseView *)self control];
+  text = [control text];
+  v11 = text;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   [(TUISearchBarView *)self _callActionHandlerForTrigger:@"returnPressed" arguments:v7];
 
-  v8 = [(TUIInteractiveBaseView *)self control];
-  v9 = [v8 shouldShowCancelButton];
+  control2 = [(TUIInteractiveBaseView *)self control];
+  shouldShowCancelButton = [control2 shouldShowCancelButton];
 
-  if (v9)
+  if (shouldShowCancelButton)
   {
-    [v4 resignFirstResponder];
+    [searchCopy resignFirstResponder];
   }
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = [(TUIInteractiveBaseView *)self control];
-  [v5 setText:&stru_264550];
+  clickedCopy = clicked;
+  control = [(TUIInteractiveBaseView *)self control];
+  [control setText:&stru_264550];
 
   v9 = @"value";
-  v6 = [(TUIInteractiveBaseView *)self control];
-  v7 = [v6 text];
-  v10 = v7;
+  control2 = [(TUIInteractiveBaseView *)self control];
+  text = [control2 text];
+  v10 = text;
   v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   [(TUISearchBarView *)self _callActionHandlerForTrigger:@"cancelPressed" arguments:v8];
 
-  [v4 setShowsCancelButton:0 animated:1];
-  [v4 resignFirstResponder];
+  [clickedCopy setShowsCancelButton:0 animated:1];
+  [clickedCopy resignFirstResponder];
 }
 
 - (void)prepareForReuse
@@ -370,8 +370,8 @@ LABEL_8:
   v4.super_class = TUISearchBarView;
   [(TUIInteractiveBaseView *)&v4 prepareForReuse];
   [(TUISearchBarView *)self setViewStateToRestore:0];
-  v3 = [(TUIInteractiveBaseView *)self control];
-  [v3 setText:0];
+  control = [(TUIInteractiveBaseView *)self control];
+  [control setText:0];
 }
 
 @end

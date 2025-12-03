@@ -1,8 +1,8 @@
 @interface SWCollaborationCoordinatorSceneComponent
 + (void)_registerWithUIKit;
-- (SWCollaborationCoordinatorSceneComponent)initWithScene:(id)a3;
+- (SWCollaborationCoordinatorSceneComponent)initWithScene:(id)scene;
 - (UIScene)_scene;
-- (id)_actionRespondersForScene:(id)a3;
+- (id)_actionRespondersForScene:(id)scene;
 @end
 
 @implementation SWCollaborationCoordinatorSceneComponent
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __62__SWCollaborationCoordinatorSceneComponent__registerWithUIKit__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_registerWithUIKit_onceToken != -1)
   {
     dispatch_once(&_registerWithUIKit_onceToken, block);
@@ -42,22 +42,22 @@ void __62__SWCollaborationCoordinatorSceneComponent__registerWithUIKit__block_in
   [v1 _registerSceneComponentClass:v2 withKey:@"SWCollaborationCoordinatorSceneComponent" predicate:v3];
 }
 
-- (SWCollaborationCoordinatorSceneComponent)initWithScene:(id)a3
+- (SWCollaborationCoordinatorSceneComponent)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = SWCollaborationCoordinatorSceneComponent;
   v5 = [(SWCollaborationCoordinatorSceneComponent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
   }
 
   return v6;
 }
 
-- (id)_actionRespondersForScene:(id)a3
+- (id)_actionRespondersForScene:(id)scene
 {
   v8[2] = *MEMORY[0x1E69E9840];
   v3 = +[SWCollaborationCoordinatorBSActionResponder sharedActionResponder];

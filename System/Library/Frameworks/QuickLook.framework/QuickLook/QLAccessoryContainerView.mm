@@ -1,6 +1,6 @@
 @interface QLAccessoryContainerView
-- (_TtC9QuickLook24QLAccessoryContainerView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC9QuickLook24QLAccessoryContainerView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 @end
 
@@ -8,19 +8,19 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_23A7A6FA8();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for QLAccessoryContainerView();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(QLAccessoryContainerView *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(QLAccessoryContainerView *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -43,12 +43,12 @@ LABEL_5:
   return v7;
 }
 
-- (_TtC9QuickLook24QLAccessoryContainerView)initWithFrame:(CGRect)a3
+- (_TtC9QuickLook24QLAccessoryContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9QuickLook24QLAccessoryContainerView_containedView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9QuickLook24QLAccessoryContainerView_leftConstraint) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9QuickLook24QLAccessoryContainerView_rightConstraint) = 0;

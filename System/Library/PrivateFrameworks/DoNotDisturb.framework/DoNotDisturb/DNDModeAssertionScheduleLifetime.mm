@@ -1,45 +1,45 @@
 @interface DNDModeAssertionScheduleLifetime
-- (BOOL)isEqual:(id)a3;
-- (DNDModeAssertionScheduleLifetime)initWithCoder:(id)a3;
-- (DNDModeAssertionScheduleLifetime)initWithScheduleIdentifier:(id)a3 behavior:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (DNDModeAssertionScheduleLifetime)initWithCoder:(id)coder;
+- (DNDModeAssertionScheduleLifetime)initWithScheduleIdentifier:(id)identifier behavior:(unint64_t)behavior;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDModeAssertionScheduleLifetime
 
-- (DNDModeAssertionScheduleLifetime)initWithScheduleIdentifier:(id)a3 behavior:(unint64_t)a4
+- (DNDModeAssertionScheduleLifetime)initWithScheduleIdentifier:(id)identifier behavior:(unint64_t)behavior
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = DNDModeAssertionScheduleLifetime;
-  v7 = [(DNDModeAssertionLifetime *)&v11 _init];
-  if (v7)
+  _init = [(DNDModeAssertionLifetime *)&v11 _init];
+  if (_init)
   {
-    v8 = [v6 copy];
-    scheduleIdentifier = v7->_scheduleIdentifier;
-    v7->_scheduleIdentifier = v8;
+    v8 = [identifierCopy copy];
+    scheduleIdentifier = _init->_scheduleIdentifier;
+    _init->_scheduleIdentifier = v8;
 
-    v7->_behavior = a4;
+    _init->_behavior = behavior;
   }
 
-  return v7;
+  return _init;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(DNDModeAssertionScheduleLifetime *)self scheduleIdentifier];
-  v4 = [v3 hash];
-  v5 = [(DNDModeAssertionScheduleLifetime *)self lifetimeType];
+  scheduleIdentifier = [(DNDModeAssertionScheduleLifetime *)self scheduleIdentifier];
+  v4 = [scheduleIdentifier hash];
+  lifetimeType = [(DNDModeAssertionScheduleLifetime *)self lifetimeType];
 
-  return v5 ^ v4;
+  return lifetimeType ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
-  if (self == v8)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -49,30 +49,30 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
-      v10 = [(DNDModeAssertionScheduleLifetime *)self scheduleIdentifier];
-      v11 = [(DNDModeAssertionScheduleLifetime *)v9 scheduleIdentifier];
-      if (v10 != v11)
+      v9 = equalCopy;
+      scheduleIdentifier = [(DNDModeAssertionScheduleLifetime *)self scheduleIdentifier];
+      scheduleIdentifier2 = [(DNDModeAssertionScheduleLifetime *)v9 scheduleIdentifier];
+      if (scheduleIdentifier != scheduleIdentifier2)
       {
-        v12 = [(DNDModeAssertionScheduleLifetime *)self scheduleIdentifier];
-        if (!v12)
+        scheduleIdentifier3 = [(DNDModeAssertionScheduleLifetime *)self scheduleIdentifier];
+        if (!scheduleIdentifier3)
         {
           v14 = 0;
           goto LABEL_15;
         }
 
-        v3 = v12;
-        v13 = [(DNDModeAssertionScheduleLifetime *)v9 scheduleIdentifier];
-        if (!v13)
+        v3 = scheduleIdentifier3;
+        scheduleIdentifier4 = [(DNDModeAssertionScheduleLifetime *)v9 scheduleIdentifier];
+        if (!scheduleIdentifier4)
         {
           v14 = 0;
           goto LABEL_14;
         }
 
-        v4 = v13;
-        v5 = [(DNDModeAssertionScheduleLifetime *)self scheduleIdentifier];
-        v6 = [(DNDModeAssertionScheduleLifetime *)v9 scheduleIdentifier];
-        if (![v5 isEqual:v6])
+        v4 = scheduleIdentifier4;
+        scheduleIdentifier5 = [(DNDModeAssertionScheduleLifetime *)self scheduleIdentifier];
+        scheduleIdentifier6 = [(DNDModeAssertionScheduleLifetime *)v9 scheduleIdentifier];
+        if (![scheduleIdentifier5 isEqual:scheduleIdentifier6])
         {
           v14 = 0;
 LABEL_11:
@@ -82,9 +82,9 @@ LABEL_14:
         }
       }
 
-      v15 = [(DNDModeAssertionScheduleLifetime *)self behavior];
-      v14 = v15 == [(DNDModeAssertionScheduleLifetime *)v9 behavior];
-      if (v10 != v11)
+      behavior = [(DNDModeAssertionScheduleLifetime *)self behavior];
+      v14 = behavior == [(DNDModeAssertionScheduleLifetime *)v9 behavior];
+      if (scheduleIdentifier != scheduleIdentifier2)
       {
         goto LABEL_11;
       }
@@ -106,30 +106,30 @@ LABEL_16:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDModeAssertionScheduleLifetime *)self scheduleIdentifier];
+  scheduleIdentifier = [(DNDModeAssertionScheduleLifetime *)self scheduleIdentifier];
   v6 = DNDStringFromModeAssertionScheduleLifetimeBehavior([(DNDModeAssertionScheduleLifetime *)self behavior]);
-  v7 = [v3 stringWithFormat:@"<%@: %p scheduleIdentifier: '%@'; behavior: %@>", v4, self, v5, v6];;
+  v7 = [v3 stringWithFormat:@"<%@: %p scheduleIdentifier: '%@'; behavior: %@>", v4, self, scheduleIdentifier, v6];;
 
   return v7;
 }
 
-- (DNDModeAssertionScheduleLifetime)initWithCoder:(id)a3
+- (DNDModeAssertionScheduleLifetime)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scheduleIdentifier"];
-  v6 = [v4 decodeIntegerForKey:@"behavior"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scheduleIdentifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"behavior"];
 
   v7 = [(DNDModeAssertionScheduleLifetime *)self initWithScheduleIdentifier:v5 behavior:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(DNDModeAssertionScheduleLifetime *)self scheduleIdentifier];
-  [v5 encodeObject:v4 forKey:@"scheduleIdentifier"];
+  coderCopy = coder;
+  scheduleIdentifier = [(DNDModeAssertionScheduleLifetime *)self scheduleIdentifier];
+  [coderCopy encodeObject:scheduleIdentifier forKey:@"scheduleIdentifier"];
 
-  [v5 encodeInteger:-[DNDModeAssertionScheduleLifetime behavior](self forKey:{"behavior"), @"behavior"}];
+  [coderCopy encodeInteger:-[DNDModeAssertionScheduleLifetime behavior](self forKey:{"behavior"), @"behavior"}];
 }
 
 @end

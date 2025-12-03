@@ -1,9 +1,9 @@
 @interface CAMShutterIndicatorView
-- (CAMShutterIndicatorView)initWithCoder:(id)a3;
-- (CAMShutterIndicatorView)initWithFrame:(CGRect)a3;
+- (CAMShutterIndicatorView)initWithCoder:(id)coder;
+- (CAMShutterIndicatorView)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
 - (void)_commonCAMShutterIndicatorViewInitialization;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation CAMShutterIndicatorView
@@ -19,8 +19,8 @@
   v5 = *MEMORY[0x1E69DB650];
   v13[1] = v4;
   v13[2] = v5;
-  v6 = [MEMORY[0x1E69DC888] whiteColor];
-  v14[2] = v6;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v14[2] = whiteColor;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
 
   v8 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -29,16 +29,16 @@
   indicatorText = self->__indicatorText;
   self->__indicatorText = v10;
 
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  [(CAMShutterIndicatorView *)self setBackgroundColor:v12];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(CAMShutterIndicatorView *)self setBackgroundColor:clearColor];
 
   [(CAMShutterIndicatorView *)self setUserInteractionEnabled:0];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CAMShutterIndicatorView *)self _indicatorText];
-  [v2 size];
+  _indicatorText = [(CAMShutterIndicatorView *)self _indicatorText];
+  [_indicatorText size];
   UIRoundToViewScale();
   v4 = v3;
 
@@ -49,11 +49,11 @@
   return result;
 }
 
-- (CAMShutterIndicatorView)initWithFrame:(CGRect)a3
+- (CAMShutterIndicatorView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CAMShutterIndicatorView;
-  v3 = [(CAMShutterIndicatorView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMShutterIndicatorView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -64,11 +64,11 @@
   return v4;
 }
 
-- (CAMShutterIndicatorView)initWithCoder:(id)a3
+- (CAMShutterIndicatorView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CAMShutterIndicatorView;
-  v3 = [(CAMShutterIndicatorView *)&v7 initWithCoder:a3];
+  v3 = [(CAMShutterIndicatorView *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -79,9 +79,9 @@
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(CAMShutterIndicatorView *)self bounds:a3.origin.x];
+  [(CAMShutterIndicatorView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -103,13 +103,13 @@
   [v37 appendPath:v38];
   [v37 setUsesEvenOddFillRule:1];
   [v37 addClip];
-  v14 = [MEMORY[0x1E69DC888] whiteColor];
-  [v14 set];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [whiteColor set];
 
   [v39 fill];
   CGContextRestoreGState(CurrentContext);
-  v36 = [(CAMShutterIndicatorView *)self _indicatorText];
-  [v36 size];
+  _indicatorText = [(CAMShutterIndicatorView *)self _indicatorText];
+  [_indicatorText size];
   UIRectCenteredIntegralRectScale();
   v16 = v15;
   v18 = v17;
@@ -123,7 +123,7 @@
   v41.height = v11;
   UIGraphicsBeginImageContextWithOptions(v41, 0, 0.0);
   UIGraphicsGetCurrentContext();
-  [v36 drawInRect:{v20, v21, v16, v18, 0}];
+  [_indicatorText drawInRect:{v20, v21, v16, v18, 0}];
   v22 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   CGContextSaveGState(CurrentContext);
@@ -134,23 +134,23 @@
   v45.size.height = v11;
   Height = CGRectGetHeight(v45);
   CGContextTranslateCTM(CurrentContext, 0.0, -Height);
-  v24 = [v22 CGImage];
-  Width = CGImageGetWidth(v24);
-  v26 = CGImageGetHeight(v24);
-  BitsPerComponent = CGImageGetBitsPerComponent(v24);
-  BitsPerPixel = CGImageGetBitsPerPixel(v24);
-  BytesPerRow = CGImageGetBytesPerRow(v24);
-  DataProvider = CGImageGetDataProvider(v24);
-  Decode = CGImageGetDecode(v24);
-  ShouldInterpolate = CGImageGetShouldInterpolate(v24);
+  cGImage = [v22 CGImage];
+  Width = CGImageGetWidth(cGImage);
+  v26 = CGImageGetHeight(cGImage);
+  BitsPerComponent = CGImageGetBitsPerComponent(cGImage);
+  BitsPerPixel = CGImageGetBitsPerPixel(cGImage);
+  BytesPerRow = CGImageGetBytesPerRow(cGImage);
+  DataProvider = CGImageGetDataProvider(cGImage);
+  Decode = CGImageGetDecode(cGImage);
+  ShouldInterpolate = CGImageGetShouldInterpolate(cGImage);
   v33 = CGImageMaskCreate(Width, v26, BitsPerComponent, BitsPerPixel, BytesPerRow, DataProvider, Decode, ShouldInterpolate);
   v46.origin.x = v5;
   v46.origin.y = v7;
   v46.size.width = v9;
   v46.size.height = v11;
   CGContextClipToMask(CurrentContext, v46, v33);
-  v34 = [MEMORY[0x1E69DC888] whiteColor];
-  [v34 set];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  [whiteColor2 set];
 
   v47.origin.x = v5;
   v47.origin.y = v7;

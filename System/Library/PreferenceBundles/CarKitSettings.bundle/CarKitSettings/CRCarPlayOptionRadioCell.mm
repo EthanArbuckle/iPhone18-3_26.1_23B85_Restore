@@ -1,54 +1,54 @@
 @interface CRCarPlayOptionRadioCell
-- (CRCarPlayOptionRadioCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
+- (CRCarPlayOptionRadioCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 @end
 
 @implementation CRCarPlayOptionRadioCell
 
-- (CRCarPlayOptionRadioCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (CRCarPlayOptionRadioCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v60.receiver = self;
   v60.super_class = CRCarPlayOptionRadioCell;
-  v9 = [(CRCarPlayOptionRadioCell *)&v60 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(CRCarPlayOptionRadioCell *)&v60 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [(CRCarPlayOptionRadioCell *)v9 contentView];
-    v12 = [(CRCarPlayOptionRadioCell *)v10 textLabel];
+    contentView = [(CRCarPlayOptionRadioCell *)v9 contentView];
+    textLabel = [(CRCarPlayOptionRadioCell *)v10 textLabel];
     [(CRCarPlayOptionRadioCell *)v10 setAccessoryType:0];
     v13 = [[CRCheckmarkView alloc] initWithChecked:[(CRCarPlayOptionRadioCell *)v10 isChecked]];
     [(CRCheckmarkView *)v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v11 addSubview:v13];
+    [contentView addSubview:v13];
     checkmarkView = v10->_checkmarkView;
     v10->_checkmarkView = v13;
     v57 = v13;
 
     v15 = objc_alloc_init(UILabel);
     [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v58 = v12;
-    v16 = [v12 font];
-    [v15 setFont:v16];
+    v58 = textLabel;
+    font = [textLabel font];
+    [v15 setFont:font];
 
-    v17 = [v12 textColor];
-    [v15 setTextColor:v17];
+    textColor = [textLabel textColor];
+    [v15 setTextColor:textColor];
 
     [v15 setTextAlignment:4];
-    v18 = [v8 name];
-    [(CRCarPlayOptionRadioCell *)v10 setSpecifierName:v18];
+    name = [specifierCopy name];
+    [(CRCarPlayOptionRadioCell *)v10 setSpecifierName:name];
 
-    v19 = [(CRCarPlayOptionRadioCell *)v10 specifierName];
-    [v15 setText:v19];
+    specifierName = [(CRCarPlayOptionRadioCell *)v10 specifierName];
+    [v15 setText:specifierName];
 
     v56 = v15;
     [(CRCarPlayOptionRadioCell *)v10 setNameLabel:v15];
-    v20 = [(CRCarPlayOptionRadioCell *)v10 textLabel];
-    [v20 setHidden:1];
+    textLabel2 = [(CRCarPlayOptionRadioCell *)v10 textLabel];
+    [textLabel2 setHidden:1];
 
     v21 = [UIStackView alloc];
     [(CRCarPlayOptionRadioCell *)v10 checkmarkView];
-    v22 = v59 = v8;
+    v22 = v59 = specifierCopy;
     v63[0] = v22;
     v63[1] = v15;
     v23 = [NSArray arrayWithObjects:v63 count:2];
@@ -59,19 +59,19 @@
     [v24 setAlignment:3];
     [v24 setDistribution:0];
     [v24 setSpacing:1.17549435e-38];
-    v25 = v11;
-    [v11 addSubview:v24];
-    v54 = [v24 leadingAnchor];
-    v52 = [v11 leadingAnchor];
-    v50 = [v54 constraintEqualToSystemSpacingAfterAnchor:v52 multiplier:2.0];
+    v25 = contentView;
+    [contentView addSubview:v24];
+    leadingAnchor = [v24 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v50 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:leadingAnchor2 multiplier:2.0];
     v62[0] = v50;
-    v26 = [v11 trailingAnchor];
-    v27 = [v24 trailingAnchor];
-    v28 = [v26 constraintEqualToSystemSpacingAfterAnchor:v27 multiplier:2.0];
+    trailingAnchor = [contentView trailingAnchor];
+    trailingAnchor2 = [v24 trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:2.0];
     v62[1] = v28;
-    v29 = [v24 topAnchor];
-    v30 = [v25 topAnchor];
-    v31 = [v29 constraintEqualToSystemSpacingBelowAnchor:v30 multiplier:2.0];
+    topAnchor = [v24 topAnchor];
+    topAnchor2 = [v25 topAnchor];
+    v31 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:2.0];
     v62[2] = v31;
     v32 = [NSArray arrayWithObjects:v62 count:3];
     [v25 addConstraints:v32];
@@ -86,49 +86,49 @@
     [v34 setContentMode:2];
     [v25 addSubview:v34];
     [(CRCarPlayOptionRadioCell *)v10 setDrawingView:v34];
-    v51 = [v34 leadingAnchor];
-    v49 = [v25 leadingAnchor];
-    v48 = [v51 constraintEqualToSystemSpacingAfterAnchor:v49 multiplier:2.0];
+    leadingAnchor3 = [v34 leadingAnchor];
+    leadingAnchor4 = [v25 leadingAnchor];
+    v48 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:leadingAnchor4 multiplier:2.0];
     v61[0] = v48;
     v35 = v25;
-    v46 = [v25 trailingAnchor];
-    v45 = [v34 trailingAnchor];
-    v44 = [v46 constraintEqualToSystemSpacingAfterAnchor:v45 multiplier:2.0];
+    trailingAnchor3 = [v25 trailingAnchor];
+    trailingAnchor4 = [v34 trailingAnchor];
+    v44 = [trailingAnchor3 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor4 multiplier:2.0];
     v61[1] = v44;
-    v36 = [v34 topAnchor];
-    v37 = [v24 bottomAnchor];
-    v38 = [v36 constraintEqualToSystemSpacingBelowAnchor:v37 multiplier:2.0];
+    topAnchor3 = [v34 topAnchor];
+    bottomAnchor = [v24 bottomAnchor];
+    v38 = [topAnchor3 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:2.0];
     v61[2] = v38;
     [v25 bottomAnchor];
     v39 = v47 = v10;
-    v40 = [v34 bottomAnchor];
-    v41 = [v39 constraintEqualToSystemSpacingBelowAnchor:v40 multiplier:4.0];
+    bottomAnchor2 = [v34 bottomAnchor];
+    v41 = [v39 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:4.0];
     v61[3] = v41;
     v42 = [NSArray arrayWithObjects:v61 count:4];
 
     [v35 addConstraints:v42];
     v10 = v47;
 
-    v8 = v59;
+    specifierCopy = v59;
   }
 
   return v10;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v15.receiver = self;
   v15.super_class = CRCarPlayOptionRadioCell;
-  v4 = a3;
-  [(CRCarPlayOptionRadioCell *)&v15 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 name];
-  v6 = [v4 propertyForKey:@"CRCarPlayOptionImageNameKey"];
+  specifierCopy = specifier;
+  [(CRCarPlayOptionRadioCell *)&v15 refreshCellContentsWithSpecifier:specifierCopy];
+  name = [specifierCopy name];
+  v6 = [specifierCopy propertyForKey:@"CRCarPlayOptionImageNameKey"];
 
-  v7 = [(CRCarPlayOptionRadioCell *)self specifierName];
-  if ([v5 isEqualToString:v7])
+  specifierName = [(CRCarPlayOptionRadioCell *)self specifierName];
+  if ([name isEqualToString:specifierName])
   {
-    v8 = [(CRCarPlayOptionRadioCell *)self drawingName];
-    v9 = [v6 isEqualToString:v8];
+    drawingName = [(CRCarPlayOptionRadioCell *)self drawingName];
+    v9 = [v6 isEqualToString:drawingName];
 
     if (v9)
     {
@@ -141,26 +141,26 @@
   }
 
   [(CRCarPlayOptionRadioCell *)self setAccessoryType:0];
-  v10 = [(CRCarPlayOptionRadioCell *)self checkmarkView];
-  [v10 setChecked:{-[CRCarPlayOptionRadioCell isChecked](self, "isChecked")}];
+  checkmarkView = [(CRCarPlayOptionRadioCell *)self checkmarkView];
+  [checkmarkView setChecked:{-[CRCarPlayOptionRadioCell isChecked](self, "isChecked")}];
 
-  [(CRCarPlayOptionRadioCell *)self setSpecifierName:v5];
-  v11 = [(CRCarPlayOptionRadioCell *)self nameLabel];
-  [v11 setText:v5];
+  [(CRCarPlayOptionRadioCell *)self setSpecifierName:name];
+  nameLabel = [(CRCarPlayOptionRadioCell *)self nameLabel];
+  [nameLabel setText:name];
 
   [(CRCarPlayOptionRadioCell *)self setDrawingName:v6];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
   v13 = [UIImage imageNamed:v6 inBundle:v12];
 
-  v14 = [(CRCarPlayOptionRadioCell *)self drawingView];
-  [v14 setImage:v13];
+  drawingView = [(CRCarPlayOptionRadioCell *)self drawingView];
+  [drawingView setImage:v13];
 
 LABEL_6:
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  if (a3)
+  if (highlighted)
   {
     v5 = 0.5;
   }
@@ -170,14 +170,14 @@ LABEL_6:
     v5 = 1.0;
   }
 
-  v6 = [(CRCarPlayOptionRadioCell *)self checkmarkView];
-  [v6 setAlpha:v5];
+  checkmarkView = [(CRCarPlayOptionRadioCell *)self checkmarkView];
+  [checkmarkView setAlpha:v5];
 
-  v7 = [(CRCarPlayOptionRadioCell *)self nameLabel];
-  [v7 setAlpha:v5];
+  nameLabel = [(CRCarPlayOptionRadioCell *)self nameLabel];
+  [nameLabel setAlpha:v5];
 
-  v8 = [(CRCarPlayOptionRadioCell *)self drawingView];
-  [v8 setAlpha:v5];
+  drawingView = [(CRCarPlayOptionRadioCell *)self drawingView];
+  [drawingView setAlpha:v5];
 }
 
 @end

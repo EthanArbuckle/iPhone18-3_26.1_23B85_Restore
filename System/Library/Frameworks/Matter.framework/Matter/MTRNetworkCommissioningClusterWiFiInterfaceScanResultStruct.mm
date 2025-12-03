@@ -1,6 +1,6 @@
 @interface MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct
 - (MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -17,13 +17,13 @@
     security = v2->_security;
     v2->_security = &unk_284C3E588;
 
-    v5 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     ssid = v3->_ssid;
-    v3->_ssid = v5;
+    v3->_ssid = data;
 
-    v7 = [MEMORY[0x277CBEA90] data];
+    data2 = [MEMORY[0x277CBEA90] data];
     bssid = v3->_bssid;
-    v3->_bssid = v7;
+    v3->_bssid = data2;
 
     channel = v3->_channel;
     v3->_channel = &unk_284C3E588;
@@ -38,26 +38,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct);
-  v5 = [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)self security];
-  [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)v4 setSecurity:v5];
+  security = [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)self security];
+  [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)v4 setSecurity:security];
 
-  v6 = [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)self ssid];
-  [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)v4 setSsid:v6];
+  ssid = [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)self ssid];
+  [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)v4 setSsid:ssid];
 
-  v7 = [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)self bssid];
-  [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)v4 setBssid:v7];
+  bssid = [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)self bssid];
+  [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)v4 setBssid:bssid];
 
-  v8 = [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)self channel];
-  [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)v4 setChannel:v8];
+  channel = [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)self channel];
+  [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)v4 setChannel:channel];
 
-  v9 = [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)self wiFiBand];
-  [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)v4 setWiFiBand:v9];
+  wiFiBand = [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)self wiFiBand];
+  [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)v4 setWiFiBand:wiFiBand];
 
-  v10 = [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)self rssi];
-  [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)v4 setRssi:v10];
+  rssi = [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)self rssi];
+  [(MTRNetworkCommissioningClusterWiFiInterfaceScanResultStruct *)v4 setRssi:rssi];
 
   return v4;
 }

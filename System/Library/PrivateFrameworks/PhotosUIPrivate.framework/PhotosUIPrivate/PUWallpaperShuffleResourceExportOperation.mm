@@ -2,7 +2,7 @@
 - (BOOL)_canExportFromDirectory;
 - (BOOL)_exportFromDirectory;
 - (BOOL)_tryExportFromDirectory;
-- (void)_handleExportCompletion:(id)a3;
+- (void)_handleExportCompletion:(id)completion;
 - (void)cancel;
 - (void)px_finishIfPossible;
 - (void)px_start;
@@ -16,12 +16,12 @@
   v3 = PLWallpaperGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-    v5 = [v4 assetUUID];
+    posterMedia = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+    assetUUID = [posterMedia assetUUID];
     *buf = 138543618;
-    v8 = v5;
+    v8 = assetUUID;
     v9 = 1024;
-    v10 = [(PUWallpaperShuffleResourceExportOperation *)self isCancelled];
+    isCancelled = [(PUWallpaperShuffleResourceExportOperation *)self isCancelled];
     _os_log_impl(&dword_1B36F3000, v3, OS_LOG_TYPE_DEFAULT, "Finished export operation for shuffle asset %{public}@ (cancelled: %d)", buf, 0x12u);
   }
 
@@ -35,40 +35,40 @@
   v4.receiver = self;
   v4.super_class = PUWallpaperShuffleResourceExportOperation;
   [(PXAsyncOperation *)&v4 cancel];
-  v3 = [(PUWallpaperShuffleResourceExportOperation *)self exportTask];
-  [v3 cancel];
+  exportTask = [(PUWallpaperShuffleResourceExportOperation *)self exportTask];
+  [exportTask cancel];
 }
 
-- (void)_handleExportCompletion:(id)a3
+- (void)_handleExportCompletion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = PLWallpaperGetLog();
   v6 = v5;
-  if (v4)
+  if (completionCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-      v8 = [v7 assetUUID];
+      posterMedia = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+      assetUUID = [posterMedia assetUUID];
       v11 = 138543618;
-      v12 = v8;
+      v12 = assetUUID;
       v13 = 2114;
-      v14 = v4;
+      v14 = completionCopy;
       _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_ERROR, "Error while exporting resources for shuffle asset %{public}@: %{public}@", &v11, 0x16u);
     }
 
-    [(PUWallpaperShuffleResourceExportOperation *)self setError:v4];
+    [(PUWallpaperShuffleResourceExportOperation *)self setError:completionCopy];
   }
 
   else
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v9 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-      v10 = [v9 assetUUID];
+      posterMedia2 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+      assetUUID2 = [posterMedia2 assetUUID];
       v11 = 138543362;
-      v12 = v10;
+      v12 = assetUUID2;
       _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_INFO, "Successfully exported shuffle asset %{public}@", &v11, 0xCu);
     }
   }
@@ -79,19 +79,19 @@
 - (BOOL)_exportFromDirectory
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperShuffleResourceExportOperation *)self sourceDirectory];
-  v4 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-  v5 = [v4 subpath];
-  v6 = [v3 URLByAppendingPathComponent:v5];
+  sourceDirectory = [(PUWallpaperShuffleResourceExportOperation *)self sourceDirectory];
+  posterMedia = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+  subpath = [posterMedia subpath];
+  v6 = [sourceDirectory URLByAppendingPathComponent:subpath];
 
-  v7 = [(PUWallpaperShuffleResourceExportOperation *)self exportDirectory];
-  v8 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-  v9 = [v8 subpath];
-  v10 = [v7 URLByAppendingPathComponent:v9];
+  exportDirectory = [(PUWallpaperShuffleResourceExportOperation *)self exportDirectory];
+  posterMedia2 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+  subpath2 = [posterMedia2 subpath];
+  v10 = [exportDirectory URLByAppendingPathComponent:subpath2];
 
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v21 = 0;
-  v12 = [v11 copyItemAtURL:v6 toURL:v10 error:&v21];
+  v12 = [defaultManager copyItemAtURL:v6 toURL:v10 error:&v21];
   v13 = v21;
 
   v14 = PLWallpaperGetLog();
@@ -100,10 +100,10 @@
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v16 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-      v17 = [v16 assetUUID];
+      posterMedia3 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+      assetUUID = [posterMedia3 assetUUID];
       *buf = 138543362;
-      v23 = v17;
+      v23 = assetUUID;
       _os_log_impl(&dword_1B36F3000, v15, OS_LOG_TYPE_INFO, "Successfully copied existing data for shuffle asset %{public}@", buf, 0xCu);
     }
   }
@@ -112,10 +112,10 @@
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-      v19 = [v18 assetUUID];
+      posterMedia4 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+      assetUUID2 = [posterMedia4 assetUUID];
       *buf = 138543618;
-      v23 = v19;
+      v23 = assetUUID2;
       v24 = 2114;
       v25 = v13;
       _os_log_impl(&dword_1B36F3000, v15, OS_LOG_TYPE_ERROR, "Failed to copy shuffle asset %{public}@, error: %{public}@", buf, 0x16u);
@@ -129,41 +129,41 @@
 
 - (BOOL)_canExportFromDirectory
 {
-  v3 = [(PUWallpaperShuffleResourceExportOperation *)self sourceDirectory];
-  v4 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-  v5 = [v4 subpath];
-  v6 = [v3 URLByAppendingPathComponent:v5];
+  sourceDirectory = [(PUWallpaperShuffleResourceExportOperation *)self sourceDirectory];
+  posterMedia = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+  subpath = [posterMedia subpath];
+  v6 = [sourceDirectory URLByAppendingPathComponent:subpath];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v6 path];
-  LODWORD(v5) = [v7 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v6 path];
+  LODWORD(subpath) = [defaultManager fileExistsAtPath:path];
 
-  if (v5)
+  if (subpath)
   {
-    v9 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-    v10 = [v9 editConfiguration];
+    posterMedia2 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+    editConfiguration = [posterMedia2 editConfiguration];
 
-    if (v10)
+    if (editConfiguration)
     {
-      v11 = [v10 style];
+      style = [editConfiguration style];
     }
 
     else
     {
-      v13 = [(PUWallpaperShuffleResourceExportOperation *)self persistedStyle];
-      v11 = [v13 bakedStyle];
+      persistedStyle = [(PUWallpaperShuffleResourceExportOperation *)self persistedStyle];
+      style = [persistedStyle bakedStyle];
     }
 
-    v14 = [(PUWallpaperShuffleResourceExportOperation *)self style];
-    v15 = [v14 bakedStyle];
-    v16 = v15;
-    if (v11 == v15)
+    style2 = [(PUWallpaperShuffleResourceExportOperation *)self style];
+    bakedStyle = [style2 bakedStyle];
+    v16 = bakedStyle;
+    if (style == bakedStyle)
     {
     }
 
     else
     {
-      v17 = [v11 isEqual:v15];
+      v17 = [style isEqual:bakedStyle];
 
       if ((v17 & 1) == 0)
       {
@@ -174,32 +174,32 @@ LABEL_29:
       }
     }
 
-    v18 = [(PUWallpaperShuffleResourceExportOperation *)self editConfiguration];
-    if (!v18 || ([v10 normalizedVisibleFrame], objc_msgSend(v18, "normalizedVisibleFrame"), PXRectApproximatelyEqualToRect()) && (objc_msgSend(v10, "normalizedLandscapeVisibleFrame"), objc_msgSend(v18, "normalizedLandscapeVisibleFrame"), PXRectApproximatelyEqualToRect()) && (objc_msgSend(v10, "normalizedAdaptiveVisibleFrame"), objc_msgSend(v18, "normalizedAdaptiveVisibleFrame"), PXRectApproximatelyEqualToRect()) && (objc_msgSend(v10, "normalizedLandscapeAdaptiveVisibleFrame"), objc_msgSend(v18, "normalizedLandscapeAdaptiveVisibleFrame"), PXRectApproximatelyEqualToRect()) && (objc_msgSend(v10, "normalizedAdaptiveTimeFrame"), objc_msgSend(v18, "normalizedAdaptiveTimeFrame"), PXRectApproximatelyEqualToRect()) && (objc_msgSend(v10, "normalizedLandscapeAdaptiveTimeFrame"), objc_msgSend(v18, "normalizedLandscapeAdaptiveTimeFrame"), PXRectApproximatelyEqualToRect()) && (objc_msgSend(v10, "additionalTitleLabelHeight"), objc_msgSend(v18, "additionalTitleLabelHeight"), PXFloatApproximatelyEqualToFloat()) && (objc_msgSend(v10, "userAdjustedTitleLabelHeightOffset"), objc_msgSend(v18, "userAdjustedTitleLabelHeightOffset"), PXFloatApproximatelyEqualToFloat()) && (v19 = objc_msgSend(v10, "userAdjustedVisibleFrame"), v19 == objc_msgSend(v18, "userAdjustedVisibleFrame")) && (v20 = objc_msgSend(v18, "isDepthEnabled"), v20 == objc_msgSend(v10, "isDepthEnabled")) && (v21 = objc_msgSend(v18, "isSpatialPhotoEnabled"), v21 == objc_msgSend(v10, "isSpatialPhotoEnabled")) && (v22 = objc_msgSend(v18, "isPerspectiveZoomEnabled"), v22 == objc_msgSend(v10, "isPerspectiveZoomEnabled")))
+    editConfiguration2 = [(PUWallpaperShuffleResourceExportOperation *)self editConfiguration];
+    if (!editConfiguration2 || ([editConfiguration normalizedVisibleFrame], objc_msgSend(editConfiguration2, "normalizedVisibleFrame"), PXRectApproximatelyEqualToRect()) && (objc_msgSend(editConfiguration, "normalizedLandscapeVisibleFrame"), objc_msgSend(editConfiguration2, "normalizedLandscapeVisibleFrame"), PXRectApproximatelyEqualToRect()) && (objc_msgSend(editConfiguration, "normalizedAdaptiveVisibleFrame"), objc_msgSend(editConfiguration2, "normalizedAdaptiveVisibleFrame"), PXRectApproximatelyEqualToRect()) && (objc_msgSend(editConfiguration, "normalizedLandscapeAdaptiveVisibleFrame"), objc_msgSend(editConfiguration2, "normalizedLandscapeAdaptiveVisibleFrame"), PXRectApproximatelyEqualToRect()) && (objc_msgSend(editConfiguration, "normalizedAdaptiveTimeFrame"), objc_msgSend(editConfiguration2, "normalizedAdaptiveTimeFrame"), PXRectApproximatelyEqualToRect()) && (objc_msgSend(editConfiguration, "normalizedLandscapeAdaptiveTimeFrame"), objc_msgSend(editConfiguration2, "normalizedLandscapeAdaptiveTimeFrame"), PXRectApproximatelyEqualToRect()) && (objc_msgSend(editConfiguration, "additionalTitleLabelHeight"), objc_msgSend(editConfiguration2, "additionalTitleLabelHeight"), PXFloatApproximatelyEqualToFloat()) && (objc_msgSend(editConfiguration, "userAdjustedTitleLabelHeightOffset"), objc_msgSend(editConfiguration2, "userAdjustedTitleLabelHeightOffset"), PXFloatApproximatelyEqualToFloat()) && (v19 = objc_msgSend(editConfiguration, "userAdjustedVisibleFrame"), v19 == objc_msgSend(editConfiguration2, "userAdjustedVisibleFrame")) && (v20 = objc_msgSend(editConfiguration2, "isDepthEnabled"), v20 == objc_msgSend(editConfiguration, "isDepthEnabled")) && (v21 = objc_msgSend(editConfiguration2, "isSpatialPhotoEnabled"), v21 == objc_msgSend(editConfiguration, "isSpatialPhotoEnabled")) && (v22 = objc_msgSend(editConfiguration2, "isPerspectiveZoomEnabled"), v22 == objc_msgSend(editConfiguration, "isPerspectiveZoomEnabled")))
     {
       v51 = 0;
       v23 = [MEMORY[0x1E69BDF40] loadCompoundLayerStackFromWallpaperURL:v6 options:0 error:&v51];
-      v24 = [v23 portraitLayerStack];
+      portraitLayerStack = [v23 portraitLayerStack];
 
-      v25 = [v24 layout];
-      [v25 visibleFrame];
+      layout = [portraitLayerStack layout];
+      [layout visibleFrame];
       v49 = v27;
       v50 = v26;
       v29 = v28;
       v31 = v30;
 
-      v32 = [v24 layout];
-      [v32 inactiveFrame];
+      layout2 = [portraitLayerStack layout];
+      [layout2 inactiveFrame];
       v34 = v33;
       v36 = v35;
       v38 = v37;
       v40 = v39;
 
-      v41 = [v24 layout];
-      [v41 imageSize];
+      layout3 = [portraitLayerStack layout];
+      [layout3 imageSize];
       v43 = v42;
-      v44 = [v24 layout];
-      [v44 imageSize];
+      layout4 = [portraitLayerStack layout];
+      [layout4 imageSize];
       v46 = v45;
 
       v52.origin.x = 0.0;
@@ -210,7 +210,7 @@ LABEL_29:
       v54.origin.x = v50;
       v54.size.width = v29;
       v54.size.height = v31;
-      LODWORD(v41) = CGRectContainsRect(v52, v54);
+      LODWORD(layout3) = CGRectContainsRect(v52, v54);
       v53.origin.x = 0.0;
       v53.origin.y = 0.0;
       v53.size.width = v43;
@@ -219,10 +219,10 @@ LABEL_29:
       v55.origin.y = v36;
       v55.size.width = v38;
       v55.size.height = v40;
-      if (v41 == CGRectContainsRect(v53, v55))
+      if (layout3 == CGRectContainsRect(v53, v55))
       {
-        v47 = [(PUWallpaperShuffleResourceExportOperation *)self options];
-        v12 = [v24 spatialPhotoEnabled] ^ ((v47 & 0x100) == 0);
+        options = [(PUWallpaperShuffleResourceExportOperation *)self options];
+        v12 = [portraitLayerStack spatialPhotoEnabled] ^ ((options & 0x100) == 0);
       }
 
       else
@@ -247,14 +247,14 @@ LABEL_30:
 
 - (BOOL)_tryExportFromDirectory
 {
-  v3 = [(PUWallpaperShuffleResourceExportOperation *)self _canExportFromDirectory];
-  if (v3)
+  _canExportFromDirectory = [(PUWallpaperShuffleResourceExportOperation *)self _canExportFromDirectory];
+  if (_canExportFromDirectory)
   {
 
-    LOBYTE(v3) = [(PUWallpaperShuffleResourceExportOperation *)self _exportFromDirectory];
+    LOBYTE(_canExportFromDirectory) = [(PUWallpaperShuffleResourceExportOperation *)self _exportFromDirectory];
   }
 
-  return v3;
+  return _canExportFromDirectory;
 }
 
 - (void)px_start
@@ -263,82 +263,82 @@ LABEL_30:
   v4 = PLWallpaperGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-    v6 = [v5 assetUUID];
+    posterMedia = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+    assetUUID = [posterMedia assetUUID];
     *buf = 138543362;
-    v41 = v6;
+    v41 = assetUUID;
     _os_log_impl(&dword_1B36F3000, v4, OS_LOG_TYPE_DEFAULT, "Started exporting resources for shuffle asset %{public}@.", buf, 0xCu);
   }
 
-  v7 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-  v8 = [(PUWallpaperShuffleResourceExportOperation *)self exportDirectory];
-  if (!v7)
+  posterMedia2 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+  exportDirectory = [(PUWallpaperShuffleResourceExportOperation *)self exportDirectory];
+  if (!posterMedia2)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleResourceManager.m" lineNumber:941 description:{@"Invalid parameter not satisfying: %@", @"posterMedia != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleResourceManager.m" lineNumber:941 description:{@"Invalid parameter not satisfying: %@", @"posterMedia != nil"}];
   }
 
-  if (!v8)
+  if (!exportDirectory)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleResourceManager.m" lineNumber:942 description:{@"Invalid parameter not satisfying: %@", @"exportDirectory"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleResourceManager.m" lineNumber:942 description:{@"Invalid parameter not satisfying: %@", @"exportDirectory"}];
   }
 
-  v9 = [(PUWallpaperShuffleResourceExportOperation *)self segmentationItem];
-  if (!v9 || [(PUWallpaperShuffleResourceExportOperation *)self _tryExportFromDirectory])
+  segmentationItem = [(PUWallpaperShuffleResourceExportOperation *)self segmentationItem];
+  if (!segmentationItem || [(PUWallpaperShuffleResourceExportOperation *)self _tryExportFromDirectory])
   {
     [(PUWallpaperShuffleResourceExportOperation *)self px_finishIfPossible];
     goto LABEL_24;
   }
 
-  v10 = [(PUWallpaperShuffleResourceExportOperation *)self exportDirectory];
-  v11 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-  v12 = [v11 subpath];
-  v36 = [v10 URLByAppendingPathComponent:v12];
+  exportDirectory2 = [(PUWallpaperShuffleResourceExportOperation *)self exportDirectory];
+  posterMedia3 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+  subpath = [posterMedia3 subpath];
+  v36 = [exportDirectory2 URLByAppendingPathComponent:subpath];
 
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
-  v14 = [v36 path];
-  LODWORD(v11) = [v13 fileExistsAtPath:v14];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v36 path];
+  LODWORD(posterMedia3) = [defaultManager fileExistsAtPath:path];
 
-  if (!v11)
+  if (!posterMedia3)
   {
     goto LABEL_14;
   }
 
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v39 = 0;
-  v16 = [v15 removeItemAtURL:v36 error:&v39];
+  v16 = [defaultManager2 removeItemAtURL:v36 error:&v39];
   v17 = v39;
 
   if (v16)
   {
 
 LABEL_14:
-    v18 = [(PUWallpaperShuffleResourceExportOperation *)self editConfiguration];
-    v19 = v18;
-    if (v18)
+    editConfiguration = [(PUWallpaperShuffleResourceExportOperation *)self editConfiguration];
+    v19 = editConfiguration;
+    if (editConfiguration)
     {
-      v20 = v18;
+      editConfiguration2 = editConfiguration;
     }
 
     else
     {
-      v21 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-      v20 = [v21 editConfiguration];
+      posterMedia4 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+      editConfiguration2 = [posterMedia4 editConfiguration];
     }
 
-    v22 = [(PUWallpaperShuffleResourceExportOperation *)self style];
-    v23 = [v22 bakedStyle];
+    style = [(PUWallpaperShuffleResourceExportOperation *)self style];
+    bakedStyle = [style bakedStyle];
 
     v24 = +[PUPosterSettings sharedInstance];
-    v25 = [v24 recalculateLayoutProperties];
+    recalculateLayoutProperties = [v24 recalculateLayoutProperties];
 
     objc_initWeak(buf, self);
     v26 = MEMORY[0x1E69BDF40];
-    v27 = [(PUWallpaperShuffleResourceExportOperation *)self options];
-    if (v20)
+    options = [(PUWallpaperShuffleResourceExportOperation *)self options];
+    if (editConfiguration2)
     {
-      v28 = v25;
+      v28 = recalculateLayoutProperties;
     }
 
     else
@@ -353,7 +353,7 @@ LABEL_14:
     objc_copyWeak(&v38, buf);
     BYTE1(v35) = 1;
     LOBYTE(v35) = v28;
-    v29 = [v26 saveSegmentationItem:v9 layerStackOptions:v27 configuration:v20 style:v23 layout:0 allowedLayoutStrategies:3 shouldRecalculateLayoutProperties:v35 shouldKeepSpecifiedStyle:v36 toWallpaperURL:v37 completion:?];
+    v29 = [v26 saveSegmentationItem:segmentationItem layerStackOptions:options configuration:editConfiguration2 style:bakedStyle layout:0 allowedLayoutStrategies:3 shouldRecalculateLayoutProperties:v35 shouldKeepSpecifiedStyle:v36 toWallpaperURL:v37 completion:?];
     [(PUWallpaperShuffleResourceExportOperation *)self setExportTask:v29];
 
     objc_destroyWeak(&v38);
@@ -365,10 +365,10 @@ LABEL_14:
   v30 = PLWallpaperGetLog();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
   {
-    v31 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
-    v32 = [v31 assetUUID];
+    posterMedia5 = [(PUWallpaperShuffleResourceExportOperation *)self posterMedia];
+    assetUUID2 = [posterMedia5 assetUUID];
     *buf = 138543618;
-    v41 = v32;
+    v41 = assetUUID2;
     v42 = 2114;
     v43 = v17;
     _os_log_impl(&dword_1B36F3000, v30, OS_LOG_TYPE_ERROR, "Failed to delete wallpaper directory %{public}@, error: %{public}@", buf, 0x16u);

@@ -1,14 +1,14 @@
 @interface MapsSyncManagedReviewedPlace
-- (MapsSyncManagedReviewedPlace)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (MapsSyncManagedReviewedPlace)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation MapsSyncManagedReviewedPlace
 
-- (MapsSyncManagedReviewedPlace)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (MapsSyncManagedReviewedPlace)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for MapsSyncManagedReviewedPlace();
-  return [(MapsSyncManagedReviewedPlace *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(MapsSyncManagedReviewedPlace *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

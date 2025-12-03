@@ -1,7 +1,7 @@
 @interface RPNWActivityMetrics
-+ (id)metricsUsingToken:(id)a3;
-- (id)_initWithNWActivity:(id)a3;
-- (void)_withLock:(os_unfair_lock_s *)a1;
++ (id)metricsUsingToken:(id)token;
+- (id)_initWithNWActivity:(id)activity;
+- (void)_withLock:(os_unfair_lock_s *)lock;
 - (void)submitMetrics;
 @end
 
@@ -9,11 +9,11 @@
 
 - (void)submitMetrics
 {
-  v5 = [(RPNWActivityMetrics *)self _metricsDictionary];
+  _metricsDictionary = [(RPNWActivityMetrics *)self _metricsDictionary];
   v3 = _CFXPCCreateXPCObjectFromCFObject();
   if (v3)
   {
-    v4 = [(RPNWActivityMetrics *)self nwActivity];
+    nwActivity = [(RPNWActivityMetrics *)self nwActivity];
     nw_activity_submit_metrics();
   }
 
@@ -23,13 +23,13 @@
   }
 }
 
-+ (id)metricsUsingToken:(id)a3
++ (id)metricsUsingToken:(id)token
 {
-  v4 = a3;
-  v5 = [RPNWActivityUtils activityFromToken:v4];
+  tokenCopy = token;
+  v5 = [RPNWActivityUtils activityFromToken:tokenCopy];
   if (v5)
   {
-    v6 = [[a1 alloc] _initWithNWActivity:v5];
+    v6 = [[self alloc] _initWithNWActivity:v5];
   }
 
   else
@@ -45,9 +45,9 @@
   return v6;
 }
 
-- (id)_initWithNWActivity:(id)a3
+- (id)_initWithNWActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   v9.receiver = self;
   v9.super_class = RPNWActivityMetrics;
   v6 = [(RPNWActivityMetrics *)&v9 init];
@@ -55,21 +55,21 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_nwActivity, a3);
+    objc_storeStrong(&v6->_nwActivity, activity);
   }
 
   return v7;
 }
 
-- (void)_withLock:(os_unfair_lock_s *)a1
+- (void)_withLock:(os_unfair_lock_s *)lock
 {
-  if (a1)
+  if (lock)
   {
     v3 = a2;
-    os_unfair_lock_lock(a1 + 2);
+    os_unfair_lock_lock(lock + 2);
     v3[2](v3);
 
-    os_unfair_lock_unlock(a1 + 2);
+    os_unfair_lock_unlock(lock + 2);
   }
 }
 

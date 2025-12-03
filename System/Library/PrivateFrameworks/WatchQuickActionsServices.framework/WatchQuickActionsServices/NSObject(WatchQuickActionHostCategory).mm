@@ -7,7 +7,7 @@
 - (void)setQuickActionHostObserver:()WatchQuickActionHostCategory
 {
   v7 = a3;
-  v4 = objc_getAssociatedObject(a1, &WQAHostObserverIdentifier);
+  v4 = objc_getAssociatedObject(self, &WQAHostObserverIdentifier);
   v5 = v4;
   if (v4)
   {
@@ -18,12 +18,12 @@
   {
     v6 = objc_opt_new();
     [v6 setHostObserver:v7];
-    objc_setAssociatedObject(a1, &WQAHostObserverIdentifier, v6, 1);
+    objc_setAssociatedObject(self, &WQAHostObserverIdentifier, v6, 1);
   }
 
   else
   {
-    objc_setAssociatedObject(a1, &WQAHostObserverIdentifier, 0, 1);
+    objc_setAssociatedObject(self, &WQAHostObserverIdentifier, 0, 1);
   }
 }
 

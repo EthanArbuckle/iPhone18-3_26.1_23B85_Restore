@@ -1,22 +1,22 @@
 @interface APSSharedDecoder
 - (APSSharedCoderDelegate)delegate;
-- (APSSharedDecoder)initWithMaxTableSize:(unint64_t)a3 shouldUsePack:(BOOL)a4 direction:(int)a5;
-- (BOOL)decodeMessage:(id)a3 parser:(id)a4 parameters:(id *)a5 isInvalid:(BOOL *)a6 lengthParsed:(unint64_t *)a7;
-- (id)_parseMessage:(id)a3;
+- (APSSharedDecoder)initWithMaxTableSize:(unint64_t)size shouldUsePack:(BOOL)pack direction:(int)direction;
+- (BOOL)decodeMessage:(id)message parser:(id)parser parameters:(id *)parameters isInvalid:(BOOL *)invalid lengthParsed:(unint64_t *)parsed;
+- (id)_parseMessage:(id)message;
 - (void)dealloc;
 @end
 
 @implementation APSSharedDecoder
 
-- (APSSharedDecoder)initWithMaxTableSize:(unint64_t)a3 shouldUsePack:(BOOL)a4 direction:(int)a5
+- (APSSharedDecoder)initWithMaxTableSize:(unint64_t)size shouldUsePack:(BOOL)pack direction:(int)direction
 {
   v9.receiver = self;
   v9.super_class = APSSharedDecoder;
   v7 = [(APSSharedDecoder *)&v9 init];
   if (v7)
   {
-    v7->_maxTableSize = a3;
-    v7->_usingPack = a4;
+    v7->_maxTableSize = size;
+    v7->_usingPack = pack;
     operator new();
   }
 
@@ -58,61 +58,61 @@
   [(APSSharedDecoder *)&v6 dealloc];
 }
 
-- (BOOL)decodeMessage:(id)a3 parser:(id)a4 parameters:(id *)a5 isInvalid:(BOOL *)a6 lengthParsed:(unint64_t *)a7
+- (BOOL)decodeMessage:(id)message parser:(id)parser parameters:(id *)parameters isInvalid:(BOOL *)invalid lengthParsed:(unint64_t *)parsed
 {
-  v12 = a3;
-  v13 = a4;
+  messageCopy = message;
+  parserCopy = parser;
   if (!self->_courierMessage)
   {
     operator new();
   }
 
-  if (![v12 length])
+  if (![messageCopy length])
   {
     goto LABEL_11;
   }
 
-  v14 = [v12 bytes];
+  bytes = [messageCopy bytes];
   v28 = 0;
   if ([(APSSharedDecoder *)self usingPack])
   {
-    v15 = [v12 length];
-    v18 = uaps::CourierMessage::decodeNeededPacked(v14, v15, &v28, v16, v17);
+    v15 = [messageCopy length];
+    v18 = uaps::CourierMessage::decodeNeededPacked(bytes, v15, &v28, v16, v17);
   }
 
   else
   {
-    v19 = [v12 length];
-    v18 = uaps::CourierMessage::decodeNeededSerialized(v14, v19, &v28, v20, v21);
+    v19 = [messageCopy length];
+    v18 = uaps::CourierMessage::decodeNeededSerialized(bytes, v19, &v28, v20, v21);
   }
 
   if (!v18)
   {
 LABEL_17:
     v23 = 0;
-    *a6 = 1;
+    *invalid = 1;
     goto LABEL_18;
   }
 
   v22 = v28;
-  if (v22 <= [v12 length])
+  if (v22 <= [messageCopy length])
   {
-    v24 = [(APSSharedDecoder *)self usingPack];
+    usingPack = [(APSSharedDecoder *)self usingPack];
     courierMessage = self->_courierMessage;
-    if (v24)
+    if (usingPack)
     {
-      v26 = uaps::CourierMessage::decodePacked(courierMessage, v14, &v28, self->_packState);
+      v26 = uaps::CourierMessage::decodePacked(courierMessage, bytes, &v28, self->_packState);
     }
 
     else
     {
-      v26 = uaps::CourierMessage::decodeSerialized(courierMessage, v14, &v28, self->_serialState);
+      v26 = uaps::CourierMessage::decodeSerialized(courierMessage, bytes, &v28, self->_serialState);
     }
 
     if (v26)
     {
-      *a5 = [(APSSharedDecoder *)self _parseMessage:v13];
-      *a7 = v28;
+      *parameters = [(APSSharedDecoder *)self _parseMessage:parserCopy];
+      *parsed = v28;
       v23 = 1;
       goto LABEL_18;
     }
@@ -124,7 +124,7 @@ LABEL_17:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ we don't have entire frame data yet when parsing", buf, 0xCu);
 LABEL_11:
     v23 = 0;
@@ -135,14 +135,14 @@ LABEL_18:
   return v23;
 }
 
-- (id)_parseMessage:(id)a3
+- (id)_parseMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[NSMutableDictionary dictionary];
   Command = uaps::CourierMessage::getCommand(self->_courierMessage);
   v7 = 0;
   v34 = malloc_type_malloc(0x10000uLL, 0xE55ECB08uLL);
-  v33 = v4;
+  v33 = messageCopy;
   while (v7 < uaps::CourierMessage::getAttributeCount(self->_courierMessage))
   {
     v44 = 0x10000;
@@ -257,9 +257,9 @@ LABEL_32:
               if (Command == 10 && v43 == 4)
               {
                 v21 = [v5 objectForKeyedSubscript:v11];
-                v22 = [v21 unsignedIntValue];
+                unsignedIntValue = [v21 unsignedIntValue];
 
-                *v37 = v22;
+                *v37 = unsignedIntValue;
                 v23 = [NSData dataWithBytes:v37 length:4];
                 [v5 setObject:v23 forKeyedSubscript:v11];
 
@@ -281,16 +281,16 @@ LABEL_32:
                 }
 
                 v26 = [v5 objectForKeyedSubscript:v11];
-                v27 = [v26 unsignedIntValue];
+                unsignedIntValue2 = [v26 unsignedIntValue];
 
                 [v5 setObject:0 forKeyedSubscript:v11];
-                v24 = [NSNumber numberWithBool:v27 & 1];
+                v24 = [NSNumber numberWithBool:unsignedIntValue2 & 1];
                 [v5 setObject:v24 forKey:@"APSProtocolDualChannelSupport"];
-                v25 = [NSNumber numberWithBool:(v27 >> 1) & 1];
+                v25 = [NSNumber numberWithBool:(unsignedIntValue2 >> 1) & 1];
                 [v5 setObject:v25 forKey:@"APSProtocolReportLastReversePushRTT"];
-                v28 = [NSNumber numberWithBool:(v27 >> 2) & 1];
+                v28 = [NSNumber numberWithBool:(unsignedIntValue2 >> 2) & 1];
                 [v5 setObject:v28 forKey:@"APSProtocolFilterOptimizationSupport"];
-                v29 = [NSNumber numberWithBool:(v27 >> 3) & 1];
+                v29 = [NSNumber numberWithBool:(unsignedIntValue2 >> 3) & 1];
                 [v5 setObject:v29 forKey:@"APSProtocolServerRequestedTTR"];
               }
 

@@ -1,10 +1,10 @@
 @interface HFCameraAnalyticsPayloadDecorator
 + (id)sharedDecorator;
 - (HFCameraAnalyticsPayloadDecorator)init;
-- (id)decoratePayload:(id)a3;
+- (id)decoratePayload:(id)payload;
 - (void)_initialiseAdditionalPayloadForNewHome;
-- (void)_updateHomeInformation:(id)a3;
-- (void)homeManagerDidFinishInitialDatabaseLoad:(id)a3;
+- (void)_updateHomeInformation:(id)information;
+- (void)homeManagerDidFinishInitialDatabaseLoad:(id)load;
 @end
 
 @implementation HFCameraAnalyticsPayloadDecorator
@@ -35,19 +35,19 @@ void __52__HFCameraAnalyticsPayloadDecorator_sharedDecorator__block_invoke()
   v2 = [(HFCameraAnalyticsPayloadDecorator *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     additionalPayload = v2->_additionalPayload;
-    v2->_additionalPayload = v3;
+    v2->_additionalPayload = dictionary;
 
     [(HFCameraAnalyticsPayloadDecorator *)v2 _initialiseAdditionalPayload];
     v5 = +[HFHomeKitDispatcher sharedDispatcher];
     [v5 addHomeManagerObserver:v2];
-    v6 = [v5 home];
+    home = [v5 home];
 
-    if (v6)
+    if (home)
     {
-      v7 = [v5 home];
-      [(HFCameraAnalyticsPayloadDecorator *)v2 _updateHomeInformation:v7];
+      home2 = [v5 home];
+      [(HFCameraAnalyticsPayloadDecorator *)v2 _updateHomeInformation:home2];
     }
   }
 
@@ -56,43 +56,43 @@ void __52__HFCameraAnalyticsPayloadDecorator_sharedDecorator__block_invoke()
 
 - (void)_initialiseAdditionalPayloadForNewHome
 {
-  v3 = [(HFCameraAnalyticsPayloadDecorator *)self additionalPayload];
-  [v3 setObject:@"Unknown" forKeyedSubscript:HFCameraAnalyticsISOCountryCode];
+  additionalPayload = [(HFCameraAnalyticsPayloadDecorator *)self additionalPayload];
+  [additionalPayload setObject:@"Unknown" forKeyedSubscript:HFCameraAnalyticsISOCountryCode];
 
-  v4 = [(HFCameraAnalyticsPayloadDecorator *)self additionalPayload];
-  [v4 setObject:@"Unknown" forKeyedSubscript:HFCameraAnalyticsAdministrativeArea];
+  additionalPayload2 = [(HFCameraAnalyticsPayloadDecorator *)self additionalPayload];
+  [additionalPayload2 setObject:@"Unknown" forKeyedSubscript:HFCameraAnalyticsAdministrativeArea];
 }
 
-- (id)decoratePayload:(id)a3
+- (id)decoratePayload:(id)payload
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v6 = [v4 dictionary];
-  [v6 addEntriesFromDictionary:v5];
+  payloadCopy = payload;
+  dictionary = [v4 dictionary];
+  [dictionary addEntriesFromDictionary:payloadCopy];
 
-  v7 = [(HFCameraAnalyticsPayloadDecorator *)self additionalPayload];
-  [v6 addEntriesFromDictionary:v7];
+  additionalPayload = [(HFCameraAnalyticsPayloadDecorator *)self additionalPayload];
+  [dictionary addEntriesFromDictionary:additionalPayload];
 
-  return v6;
+  return dictionary;
 }
 
-- (void)_updateHomeInformation:(id)a3
+- (void)_updateHomeInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   [(HFCameraAnalyticsPayloadDecorator *)self _initialiseAdditionalPayloadForNewHome];
-  v5 = [v4 location];
+  location = [informationCopy location];
 
-  if (v5)
+  if (location)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBFBE8]);
-    v7 = [v4 location];
+    location2 = [informationCopy location];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __60__HFCameraAnalyticsPayloadDecorator__updateHomeInformation___block_invoke;
     v8[3] = &unk_277DFA638;
-    v9 = v4;
-    v10 = self;
-    [v6 reverseGeocodeLocation:v7 completionHandler:v8];
+    v9 = informationCopy;
+    selfCopy = self;
+    [v6 reverseGeocodeLocation:location2 completionHandler:v8];
   }
 }
 
@@ -166,10 +166,10 @@ LABEL_15:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)homeManagerDidFinishInitialDatabaseLoad:(id)a3
+- (void)homeManagerDidFinishInitialDatabaseLoad:(id)load
 {
-  v4 = [a3 currentHome];
-  [(HFCameraAnalyticsPayloadDecorator *)self _updateHomeInformation:v4];
+  currentHome = [load currentHome];
+  [(HFCameraAnalyticsPayloadDecorator *)self _updateHomeInformation:currentHome];
 }
 
 @end

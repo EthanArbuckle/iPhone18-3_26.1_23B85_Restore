@@ -1,8 +1,8 @@
 @interface SBFView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CGSize)intrinsicContentSize;
 - (void)didMoveToWindow;
-- (void)setIntrinsicContentSize:(CGSize)a3;
+- (void)setIntrinsicContentSize:(CGSize)size;
 @end
 
 @implementation SBFView
@@ -12,28 +12,28 @@
   v5.receiver = self;
   v5.super_class = SBFView;
   [(SBFView *)&v5 didMoveToWindow];
-  v3 = [(SBFView *)self didMoveToWindowHandler];
-  if (v3)
+  didMoveToWindowHandler = [(SBFView *)self didMoveToWindowHandler];
+  if (didMoveToWindowHandler)
   {
-    v4 = [(SBFView *)self window];
-    (v3)[2](v3, self, v4);
+    window = [(SBFView *)self window];
+    (didMoveToWindowHandler)[2](didMoveToWindowHandler, self, window);
   }
 }
 
-- (void)setIntrinsicContentSize:(CGSize)a3
+- (void)setIntrinsicContentSize:(CGSize)size
 {
-  if (self->_intrinsicContentSize.width != a3.width || self->_intrinsicContentSize.height != a3.height)
+  if (self->_intrinsicContentSize.width != size.width || self->_intrinsicContentSize.height != size.height)
   {
-    self->_intrinsicContentSize = a3;
+    self->_intrinsicContentSize = size;
     [(SBFView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SBFView *)self animatedLayerProperties];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  animatedLayerProperties = [(SBFView *)self animatedLayerProperties];
+  v6 = [animatedLayerProperties containsObject:keyCopy];
 
   if (v6)
   {
@@ -44,7 +44,7 @@
   {
     v9.receiver = self;
     v9.super_class = SBFView;
-    v7 = [(SBFView *)&v9 _shouldAnimatePropertyWithKey:v4];
+    v7 = [(SBFView *)&v9 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v7;

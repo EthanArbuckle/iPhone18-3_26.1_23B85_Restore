@@ -1,18 +1,18 @@
 @interface TVAppExtensionHostViewController
-+ (id)createWithURLWithUrl:(id)a3;
-+ (id)createWithURLWithUrl:(id)a3 completion:(id)a4;
-- (_TtC8VideosUI32TVAppExtensionHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC8VideosUI32TVAppExtensionHostViewController)initWithURL:(id)a3;
-- (_TtC8VideosUI32TVAppExtensionHostViewController)initWithUrl:(id)a3 completion:(id)a4;
-- (void)reportWithError:(id)a3;
-- (void)setURL:(id)a3;
++ (id)createWithURLWithUrl:(id)url;
++ (id)createWithURLWithUrl:(id)url completion:(id)completion;
+- (_TtC8VideosUI32TVAppExtensionHostViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC8VideosUI32TVAppExtensionHostViewController)initWithURL:(id)l;
+- (_TtC8VideosUI32TVAppExtensionHostViewController)initWithUrl:(id)url completion:(id)completion;
+- (void)reportWithError:(id)error;
+- (void)setURL:(id)l;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation TVAppExtensionHostViewController
 
-+ (id)createWithURLWithUrl:(id)a3
++ (id)createWithURLWithUrl:(id)url
 {
   v4 = sub_1E41FE414();
   OUTLINED_FUNCTION_0_10();
@@ -26,14 +26,14 @@
   return v8;
 }
 
-+ (id)createWithURLWithUrl:(id)a3 completion:(id)a4
++ (id)createWithURLWithUrl:(id)url completion:(id)completion
 {
   sub_1E41FE414();
   OUTLINED_FUNCTION_0_10();
   MEMORY[0x1EEE9AC00](v5);
   OUTLINED_FUNCTION_5();
   v8 = v7 - v6;
-  v9 = _Block_copy(a4);
+  v9 = _Block_copy(completion);
   sub_1E41FE3C4();
   if (v9)
   {
@@ -56,7 +56,7 @@
   return v11;
 }
 
-- (_TtC8VideosUI32TVAppExtensionHostViewController)initWithURL:(id)a3
+- (_TtC8VideosUI32TVAppExtensionHostViewController)initWithURL:(id)l
 {
   OUTLINED_FUNCTION_106();
   v3 = sub_1E41FE414();
@@ -67,7 +67,7 @@
   return TVAppExtensionHostViewController.init(url:)();
 }
 
-- (_TtC8VideosUI32TVAppExtensionHostViewController)initWithUrl:(id)a3 completion:(id)a4
+- (_TtC8VideosUI32TVAppExtensionHostViewController)initWithUrl:(id)url completion:(id)completion
 {
   OUTLINED_FUNCTION_106();
   v5 = sub_1E41FE414();
@@ -75,7 +75,7 @@
   MEMORY[0x1EEE9AC00](v6);
   OUTLINED_FUNCTION_5();
   v9 = v8 - v7;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   sub_1E41FE3C4();
   if (v10)
   {
@@ -93,7 +93,7 @@
   return TVAppExtensionHostViewController.init(url:completion:)(v9, v12, v11);
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
   OUTLINED_FUNCTION_106();
   sub_1E41FE414();
@@ -109,33 +109,33 @@
   v10(v9);
 }
 
-- (void)reportWithError:(id)a3
+- (void)reportWithError:(id)error
 {
-  v4 = a3;
-  v5 = self;
-  TVAppExtensionHostViewController.report(error:)(v4);
+  errorCopy = error;
+  selfCopy = self;
+  TVAppExtensionHostViewController.report(error:)(errorCopy);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   TVAppExtensionHostViewController.viewDidLoad()();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   TVAppExtensionHostViewController.viewWillLayoutSubviews()();
 }
 
-- (_TtC8VideosUI32TVAppExtensionHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI32TVAppExtensionHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   TVAppExtensionHostViewController.init(nibName:bundle:)();
 }
 

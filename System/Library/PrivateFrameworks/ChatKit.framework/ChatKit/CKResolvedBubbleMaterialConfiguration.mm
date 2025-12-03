@@ -46,7 +46,7 @@
   v9 = MEMORY[0x1EEE9AC00](v7);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   (*(v8 + 16))(v11, self + OBJC_IVAR___CKResolvedBubbleMaterialConfiguration_wrapped, v7, v9);
-  v12 = self;
+  selfCopy = self;
   sub_190D56B50();
   (*(v8 + 8))(v11, v7);
   v13 = sub_190D56A50();

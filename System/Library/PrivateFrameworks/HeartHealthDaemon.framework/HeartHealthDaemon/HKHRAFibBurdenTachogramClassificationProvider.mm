@@ -1,40 +1,40 @@
 @interface HKHRAFibBurdenTachogramClassificationProvider
 - (ABTachogramClassification)tachogramClassification;
-- (BOOL)isEqual:(id)a3;
-- (HKHRAFibBurdenTachogramClassificationProvider)initWithCoder:(id)a3;
-- (HKHRAFibBurdenTachogramClassificationProvider)initWithSampleClassification:(id)a3;
-- (HKHRAFibBurdenTachogramClassificationProvider)initWithSampleClassification:(id)a3 tachogramClassification:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HKHRAFibBurdenTachogramClassificationProvider)initWithCoder:(id)coder;
+- (HKHRAFibBurdenTachogramClassificationProvider)initWithSampleClassification:(id)classification;
+- (HKHRAFibBurdenTachogramClassificationProvider)initWithSampleClassification:(id)classification tachogramClassification:(id)tachogramClassification;
 @end
 
 @implementation HKHRAFibBurdenTachogramClassificationProvider
 
-- (HKHRAFibBurdenTachogramClassificationProvider)initWithSampleClassification:(id)a3
+- (HKHRAFibBurdenTachogramClassificationProvider)initWithSampleClassification:(id)classification
 {
-  v5 = a3;
+  classificationCopy = classification;
   v9.receiver = self;
   v9.super_class = HKHRAFibBurdenTachogramClassificationProvider;
   v6 = [(HKHRAFibBurdenTachogramClassificationProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sampleClassification, a3);
+    objc_storeStrong(&v6->_sampleClassification, classification);
   }
 
   return v7;
 }
 
-- (HKHRAFibBurdenTachogramClassificationProvider)initWithSampleClassification:(id)a3 tachogramClassification:(id)a4
+- (HKHRAFibBurdenTachogramClassificationProvider)initWithSampleClassification:(id)classification tachogramClassification:(id)tachogramClassification
 {
-  v7 = a3;
-  v8 = a4;
+  classificationCopy = classification;
+  tachogramClassificationCopy = tachogramClassification;
   v12.receiver = self;
   v12.super_class = HKHRAFibBurdenTachogramClassificationProvider;
   v9 = [(HKHRAFibBurdenTachogramClassificationProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sampleClassification, a3);
-    objc_storeStrong(&v10->_computedTachogramClassification, a4);
+    objc_storeStrong(&v9->_sampleClassification, classification);
+    objc_storeStrong(&v10->_computedTachogramClassification, tachogramClassification);
   }
 
   return v10;
@@ -49,12 +49,12 @@
     v5 = self->_computedTachogramClassification;
     self->_computedTachogramClassification = v4;
 
-    v6 = [(HKHRSampleClassification *)self->_sampleClassification sampleUUID];
-    [(ABTachogramClassification *)self->_computedTachogramClassification setUuid:v6];
+    sampleUUID = [(HKHRSampleClassification *)self->_sampleClassification sampleUUID];
+    [(ABTachogramClassification *)self->_computedTachogramClassification setUuid:sampleUUID];
 
-    v7 = [(HKHRSampleClassification *)self->_sampleClassification sampleDateInterval];
-    v8 = [v7 endDate];
-    [(ABTachogramClassification *)self->_computedTachogramClassification setDate:v8];
+    sampleDateInterval = [(HKHRSampleClassification *)self->_sampleClassification sampleDateInterval];
+    endDate = [sampleDateInterval endDate];
+    [(ABTachogramClassification *)self->_computedTachogramClassification setDate:endDate];
 
     [(ABTachogramClassification *)self->_computedTachogramClassification setAFibDetected:[(HKHRSampleClassification *)self->_sampleClassification classification]== 1];
     computedTachogramClassification = self->_computedTachogramClassification;
@@ -65,10 +65,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -79,8 +79,8 @@
     if (objc_opt_isKindOfClass())
     {
       sampleClassification = self->_sampleClassification;
-      v6 = [(HKHRAFibBurdenTachogramClassificationProvider *)v4 sampleClassification];
-      v7 = [(HKHRSampleClassification *)sampleClassification isEqual:v6];
+      sampleClassification = [(HKHRAFibBurdenTachogramClassificationProvider *)equalCopy sampleClassification];
+      v7 = [(HKHRSampleClassification *)sampleClassification isEqual:sampleClassification];
     }
 
     else
@@ -92,15 +92,15 @@
   return v7;
 }
 
-- (HKHRAFibBurdenTachogramClassificationProvider)initWithCoder:(id)a3
+- (HKHRAFibBurdenTachogramClassificationProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKHRAFibBurdenTachogramClassificationProvider;
   v5 = [(HKHRAFibBurdenTachogramClassificationProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SampleClassification"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SampleClassification"];
     sampleClassification = v5->_sampleClassification;
     v5->_sampleClassification = v6;
   }

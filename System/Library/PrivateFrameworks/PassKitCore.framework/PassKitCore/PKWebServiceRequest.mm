@@ -1,60 +1,60 @@
 @interface PKWebServiceRequest
-+ (id)_HTTPBodyWithDictionary:(id)a3;
++ (id)_HTTPBodyWithDictionary:(id)dictionary;
 - (NSArray)diagnosticReasons;
-- (PKWebServiceRequest)initWithCoder:(id)a3;
-- (id)_murlRequestWithServiceURL:(id)a3 endpointComponents:(id)a4 queryParameters:(id)a5 appleAccountInformation:(id)a6;
-- (id)_murlRequestWithURL:(id)a3;
-- (id)_murlRequestWithURL:(id)a3 appleAccountInformation:(id)a4;
-- (void)addDiagnosticReason:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDiagnosticReasons:(id)a3;
+- (PKWebServiceRequest)initWithCoder:(id)coder;
+- (id)_murlRequestWithServiceURL:(id)l endpointComponents:(id)components queryParameters:(id)parameters appleAccountInformation:(id)information;
+- (id)_murlRequestWithURL:(id)l;
+- (id)_murlRequestWithURL:(id)l appleAccountInformation:(id)information;
+- (void)addDiagnosticReason:(id)reason;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDiagnosticReasons:(id)reasons;
 @end
 
 @implementation PKWebServiceRequest
 
-- (PKWebServiceRequest)initWithCoder:(id)a3
+- (PKWebServiceRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKWebServiceRequest;
   v5 = [(PKWebServiceRequest *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"boundInterfaceIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"boundInterfaceIdentifier"];
     boundInterfaceIdentifier = v5->_boundInterfaceIdentifier;
     v5->_boundInterfaceIdentifier = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"diagnosticReasonsList"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"diagnosticReasonsList"];
     diagnosticReasonsList = v5->_diagnosticReasonsList;
     v5->_diagnosticReasonsList = v11;
 
-    v5->_cachePolicyOverride = [v4 decodeIntegerForKey:@"cachePolicyOverride"];
-    [v4 decodeDoubleForKey:@"timeoutOverride"];
+    v5->_cachePolicyOverride = [coderCopy decodeIntegerForKey:@"cachePolicyOverride"];
+    [coderCopy decodeDoubleForKey:@"timeoutOverride"];
     v5->_timeoutOverride = v13;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   boundInterfaceIdentifier = self->_boundInterfaceIdentifier;
-  v5 = a3;
-  [v5 encodeObject:boundInterfaceIdentifier forKey:@"boundInterfaceIdentifier"];
-  [v5 encodeObject:self->_diagnosticReasonsList forKey:@"diagnosticReasonsList"];
-  [v5 encodeInteger:self->_cachePolicyOverride forKey:@"cachePolicyOverride"];
-  [v5 encodeDouble:@"timeoutOverride" forKey:self->_timeoutOverride];
+  coderCopy = coder;
+  [coderCopy encodeObject:boundInterfaceIdentifier forKey:@"boundInterfaceIdentifier"];
+  [coderCopy encodeObject:self->_diagnosticReasonsList forKey:@"diagnosticReasonsList"];
+  [coderCopy encodeInteger:self->_cachePolicyOverride forKey:@"cachePolicyOverride"];
+  [coderCopy encodeDouble:@"timeoutOverride" forKey:self->_timeoutOverride];
 }
 
-+ (id)_HTTPBodyWithDictionary:(id)a3
++ (id)_HTTPBodyWithDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v6 = 0;
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:1 error:&v6];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:1 error:&v6];
     v4 = v6;
     if (!v3)
     {
@@ -70,13 +70,13 @@
   return v3;
 }
 
-- (void)addDiagnosticReason:(id)a3
+- (void)addDiagnosticReason:(id)reason
 {
-  v4 = a3;
-  if (v4)
+  reasonCopy = reason;
+  if (reasonCopy)
   {
     diagnosticReasonsList = self->_diagnosticReasonsList;
-    v8 = v4;
+    v8 = reasonCopy;
     if (!diagnosticReasonsList)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -87,13 +87,13 @@
     }
 
     [(NSMutableArray *)diagnosticReasonsList addObject:v8];
-    v4 = v8;
+    reasonCopy = v8;
   }
 }
 
-- (void)setDiagnosticReasons:(id)a3
+- (void)setDiagnosticReasons:(id)reasons
 {
-  v4 = [a3 mutableCopy];
+  v4 = [reasons mutableCopy];
   diagnosticReasonsList = self->_diagnosticReasonsList;
   self->_diagnosticReasonsList = v4;
 }
@@ -105,10 +105,10 @@
   return v2;
 }
 
-- (id)_murlRequestWithURL:(id)a3
+- (id)_murlRequestWithURL:(id)l
 {
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     v5 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -118,7 +118,7 @@
     }
   }
 
-  v6 = [MEMORY[0x1E695AC18] requestWithURL:v4];
+  v6 = [MEMORY[0x1E695AC18] requestWithURL:lCopy];
   v7 = +[PKPaymentDevice clientInfoHTTPHeader];
   [v6 setValue:v7 forHTTPHeaderField:@"X-Apple-Client-Info"];
 
@@ -163,19 +163,19 @@
   return v6;
 }
 
-- (id)_murlRequestWithURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_murlRequestWithURL:(id)l appleAccountInformation:(id)information
 {
-  v6 = a4;
-  v7 = [(PKWebServiceRequest *)self _murlRequestWithURL:a3];
-  v8 = [v6 authorizationHeader];
+  informationCopy = information;
+  v7 = [(PKWebServiceRequest *)self _murlRequestWithURL:l];
+  authorizationHeader = [informationCopy authorizationHeader];
 
-  if (v8)
+  if (authorizationHeader)
   {
-    [v7 setValue:v8 forHTTPHeaderField:@"Authorization"];
+    [v7 setValue:authorizationHeader forHTTPHeaderField:@"Authorization"];
   }
 
-  v9 = [MEMORY[0x1E695DF58] pk_deviceLanguage];
-  if (![(__CFString *)v9 length])
+  pk_deviceLanguage = [MEMORY[0x1E695DF58] pk_deviceLanguage];
+  if (![(__CFString *)pk_deviceLanguage length])
   {
     v10 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -184,26 +184,26 @@
       _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Error: No device language returned. Defaulting to en", v12, 2u);
     }
 
-    v9 = @"en";
+    pk_deviceLanguage = @"en";
   }
 
-  [v7 setValue:v9 forHTTPHeaderField:@"Accept-Language"];
+  [v7 setValue:pk_deviceLanguage forHTTPHeaderField:@"Accept-Language"];
 
   return v7;
 }
 
-- (id)_murlRequestWithServiceURL:(id)a3 endpointComponents:(id)a4 queryParameters:(id)a5 appleAccountInformation:(id)a6
+- (id)_murlRequestWithServiceURL:(id)l endpointComponents:(id)components queryParameters:(id)parameters appleAccountInformation:(id)information
 {
   v51 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v40 = a5;
-  v36 = a6;
+  lCopy = l;
+  componentsCopy = components;
+  parametersCopy = parameters;
+  informationCopy = information;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v45 objects:v50 count:16];
+  v11 = [componentsCopy countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v11)
   {
     v12 = v11;
@@ -211,38 +211,38 @@
     do
     {
       v14 = 0;
-      v15 = v9;
+      v15 = lCopy;
       do
       {
         if (*v46 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(componentsCopy);
         }
 
         v16 = *(*(&v45 + 1) + 8 * v14);
-        v17 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-        v18 = [v16 stringByAddingPercentEncodingWithAllowedCharacters:v17];
-        v9 = [v15 URLByAppendingPathComponent:v18];
+        uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+        v18 = [v16 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
+        lCopy = [v15 URLByAppendingPathComponent:v18];
 
         ++v14;
-        v15 = v9;
+        v15 = lCopy;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v45 objects:v50 count:16];
+      v12 = [componentsCopy countByEnumeratingWithState:&v45 objects:v50 count:16];
     }
 
     while (v12);
   }
 
-  v38 = v10;
-  v19 = [MEMORY[0x1E696AD60] string];
-  v20 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+  v38 = componentsCopy;
+  string = [MEMORY[0x1E696AD60] string];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = [v40 allKeys];
+  obj = [parametersCopy allKeys];
   v21 = [obj countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v21)
   {
@@ -259,11 +259,11 @@
         }
 
         v26 = *(*(&v41 + 1) + 8 * i);
-        v27 = [v26 stringByAddingPercentEncodingWithAllowedCharacters:v20];
-        v28 = [v40 objectForKey:v26];
-        v29 = [v28 stringByAddingPercentEncodingWithAllowedCharacters:v20];
+        v27 = [v26 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
+        v28 = [parametersCopy objectForKey:v26];
+        v29 = [v28 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
-        [v19 appendFormat:@"%@%@=%@", v24, v27, v29];
+        [string appendFormat:@"%@%@=%@", v24, v27, v29];
         v24 = @"&";
       }
 
@@ -273,12 +273,12 @@
     while (v22);
   }
 
-  v30 = [v9 absoluteString];
+  absoluteString = [lCopy absoluteString];
   v31 = MEMORY[0x1E695DFF8];
-  v32 = [v30 stringByAppendingString:v19];
+  v32 = [absoluteString stringByAppendingString:string];
   v33 = [v31 URLWithString:v32];
 
-  v34 = [(PKWebServiceRequest *)self _murlRequestWithURL:v33 appleAccountInformation:v36];
+  v34 = [(PKWebServiceRequest *)self _murlRequestWithURL:v33 appleAccountInformation:informationCopy];
 
   return v34;
 }

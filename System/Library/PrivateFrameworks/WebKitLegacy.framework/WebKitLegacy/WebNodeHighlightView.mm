@@ -1,11 +1,11 @@
 @interface WebNodeHighlightView
-- (WebNodeHighlightView)initWithWebNodeHighlight:(id)a3;
-- (void)_attach:(id)a3 numLayers:(unint64_t)a4;
-- (void)_layoutForNodeHighlight:(void *)a3 parent:(id)a4;
-- (void)_layoutForRectsHighlight:(void *)a3 parent:(id)a4;
+- (WebNodeHighlightView)initWithWebNodeHighlight:(id)highlight;
+- (void)_attach:(id)_attach numLayers:(unint64_t)layers;
+- (void)_layoutForNodeHighlight:(void *)highlight parent:(id)parent;
+- (void)_layoutForRectsHighlight:(void *)highlight parent:(id)parent;
 - (void)_removeAllLayers;
 - (void)dealloc;
-- (void)layoutSublayers:(id)a3;
+- (void)layoutSublayers:(id)sublayers;
 @end
 
 @implementation WebNodeHighlightView
@@ -44,12 +44,12 @@
   [(NSMutableArray *)self->_layers removeAllObjects];
 }
 
-- (WebNodeHighlightView)initWithWebNodeHighlight:(id)a3
+- (WebNodeHighlightView)initWithWebNodeHighlight:(id)highlight
 {
   v4 = [(WebNodeHighlightView *)self initWithFrame:*MEMORY[0x1E696AA80], *(MEMORY[0x1E696AA80] + 8), *(MEMORY[0x1E696AA80] + 16), *(MEMORY[0x1E696AA80] + 24)];
   if (v4)
   {
-    v4->_webNodeHighlight = a3;
+    v4->_webNodeHighlight = highlight;
     v4->_layers = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
@@ -66,17 +66,17 @@
   [(WebNodeHighlightView *)&v3 dealloc];
 }
 
-- (void)_attach:(id)a3 numLayers:(unint64_t)a4
+- (void)_attach:(id)_attach numLayers:(unint64_t)layers
 {
-  v4 = a4;
-  if (-[NSMutableArray count](self->_layers, "count") != a4 || [-[NSMutableArray objectAtIndex:](self->_layers objectAtIndex:{0), "superlayer"}] != a3)
+  layersCopy = layers;
+  if (-[NSMutableArray count](self->_layers, "count") != layers || [-[NSMutableArray objectAtIndex:](self->_layers objectAtIndex:{0), "superlayer"}] != _attach)
   {
     [(WebNodeHighlightView *)self _removeAllLayers];
-    for (; v4; --v4)
+    for (; layersCopy; --layersCopy)
     {
       v7 = objc_alloc_init(MEMORY[0x1E69794A0]);
       [(NSMutableArray *)self->_layers addObject:v7];
-      [a3 addSublayer:v7];
+      [_attach addSublayer:v7];
       if (v7)
       {
       }
@@ -84,22 +84,22 @@
   }
 }
 
-- (void)_layoutForNodeHighlight:(void *)a3 parent:(id)a4
+- (void)_layoutForNodeHighlight:(void *)highlight parent:(id)parent
 {
-  if (*(a3 + 15))
+  if (*(highlight + 15))
   {
-    [(WebNodeHighlightView *)self _attach:a4 numLayers:4];
+    [(WebNodeHighlightView *)self _attach:parent numLayers:4];
     v6 = [(NSMutableArray *)self->_layers objectAtIndex:0];
     v7 = [(NSMutableArray *)self->_layers objectAtIndex:1];
     v8 = [(NSMutableArray *)self->_layers objectAtIndex:2];
     v9 = [(NSMutableArray *)self->_layers objectAtIndex:3];
-    v10 = *(a3 + 15);
+    v10 = *(highlight + 15);
     if (!v10)
     {
       goto LABEL_15;
     }
 
-    v11 = *(a3 + 6);
+    v11 = *(highlight + 6);
     v12 = v11[1];
     v21[0] = *v11;
     v21[1] = v12;
@@ -158,12 +158,12 @@ LABEL_15:
   }
 }
 
-- (void)_layoutForRectsHighlight:(void *)a3 parent:(id)a4
+- (void)_layoutForRectsHighlight:(void *)highlight parent:(id)parent
 {
-  v5 = *(a3 + 15);
+  v5 = *(highlight + 15);
   if (v5)
   {
-    [(WebNodeHighlightView *)self _attach:a4 numLayers:v5];
+    [(WebNodeHighlightView *)self _attach:parent numLayers:v5];
     WebCore::cachedCGColor();
     v7 = 0;
     v8 = 0;
@@ -172,13 +172,13 @@ LABEL_15:
     {
       v10 = [(NSMutableArray *)self->_layers objectAtIndex:v8];
       [(CAShapeLayer *)v10 setFillColor:cf];
-      if (v8 >= *(a3 + 15))
+      if (v8 >= *(highlight + 15))
       {
         __break(0xC471u);
         return;
       }
 
-      layerPath(v10, (*(a3 + 6) + v7));
+      layerPath(v10, (*(highlight + 6) + v7));
       ++v8;
       v7 += 32;
     }
@@ -197,7 +197,7 @@ LABEL_15:
   }
 }
 
-- (void)layoutSublayers:(id)a3
+- (void)layoutSublayers:(id)sublayers
 {
   if (self->_webNodeHighlight)
   {
@@ -224,12 +224,12 @@ LABEL_15:
         WebCore::InspectorController::getHighlight();
         if (v10 == 3)
         {
-          [(WebNodeHighlightView *)self _layoutForRectsHighlight:v8 parent:a3];
+          [(WebNodeHighlightView *)self _layoutForRectsHighlight:v8 parent:sublayers];
         }
 
         else if (v10 == 1)
         {
-          [(WebNodeHighlightView *)self _layoutForNodeHighlight:v8 parent:a3];
+          [(WebNodeHighlightView *)self _layoutForNodeHighlight:v8 parent:sublayers];
         }
 
         WebCore::InspectorOverlayHighlight::~InspectorOverlayHighlight(v8, v7);

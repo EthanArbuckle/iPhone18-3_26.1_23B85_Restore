@@ -7,13 +7,13 @@
 
 - (uint64_t)setTopExtensionViewColor:()SUAdditions
 {
-  v5 = [a1 viewWithTag:800];
+  v5 = [self viewWithTag:800];
   v6 = v5;
   if (a3)
   {
     if (v5)
     {
-      [a1 sendSubviewToBack:v5];
+      [self sendSubviewToBack:v5];
     }
 
     else
@@ -31,11 +31,11 @@
         v8 = v9;
       }
 
-      [a1 frame];
+      [self frame];
       v6 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v7, -v8, v10, v8}];
       [v6 setAutoresizingMask:2];
       [v6 setTag:800];
-      [a1 insertSubview:v6 atIndex:0];
+      [self insertSubview:v6 atIndex:0];
     }
   }
 
@@ -50,7 +50,7 @@
 
 - (uint64_t)topExtensionViewColor
 {
-  v1 = [a1 viewWithTag:800];
+  v1 = [self viewWithTag:800];
 
   return [v1 backgroundColor];
 }

@@ -1,25 +1,25 @@
 @interface FocusSystemConfigurationDetailView.Coordinator
-- (void)focusConfigurationViewController:(id)a3 configurationUIStateDidChange:(id)a4;
-- (void)focusConfigurationViewController:(id)a3 didPressButtonWithIdentifier:(id)a4 cellFrame:(CGRect)a5;
+- (void)focusConfigurationViewController:(id)controller configurationUIStateDidChange:(id)change;
+- (void)focusConfigurationViewController:(id)controller didPressButtonWithIdentifier:(id)identifier cellFrame:(CGRect)frame;
 @end
 
 @implementation FocusSystemConfigurationDetailView.Coordinator
 
-- (void)focusConfigurationViewController:(id)a3 configurationUIStateDidChange:(id)a4
+- (void)focusConfigurationViewController:(id)controller configurationUIStateDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_24B918158(v7);
+  controllerCopy = controller;
+  changeCopy = change;
+  selfCopy = self;
+  sub_24B918158(changeCopy);
 }
 
-- (void)focusConfigurationViewController:(id)a3 didPressButtonWithIdentifier:(id)a4 cellFrame:(CGRect)a5
+- (void)focusConfigurationViewController:(id)controller didPressButtonWithIdentifier:(id)identifier cellFrame:(CGRect)frame
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtCV15FocusSettingsUI34FocusSystemConfigurationDetailView11Coordinator_updateConfigurationHandler);
-  v7 = a5;
+  frameCopy = frame;
   v8 = 0;
-  v6 = self;
-  v5(0, 2, &v7);
+  selfCopy = self;
+  v5(0, 2, &frameCopy);
 }
 
 @end

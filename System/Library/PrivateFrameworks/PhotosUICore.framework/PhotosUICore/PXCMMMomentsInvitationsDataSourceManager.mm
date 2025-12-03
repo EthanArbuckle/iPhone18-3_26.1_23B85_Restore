@@ -1,67 +1,67 @@
 @interface PXCMMMomentsInvitationsDataSourceManager
 - (PXCMMMomentsInvitationsDataSourceManager)init;
-- (PXCMMMomentsInvitationsDataSourceManager)initWithPhotoLibrary:(id)a3;
+- (PXCMMMomentsInvitationsDataSourceManager)initWithPhotoLibrary:(id)library;
 - (id)_createInvitationsDataSourceFromCurrentState;
 - (id)assetCollections;
 - (id)createInitialDataSource;
-- (id)prepareForPhotoLibraryChange:(id)a3;
-- (void)_handleFinishedFetchingBatch:(id)a3 preparedChangeDetails:(id)a4 forFetchResult:(id)a5;
+- (id)prepareForPhotoLibraryChange:(id)change;
+- (void)_handleFinishedFetchingBatch:(id)batch preparedChangeDetails:(id)details forFetchResult:(id)result;
 - (void)_workerQueue_fetchRemainingAssetCollectionsInBatches;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info;
 - (void)startLoadingIfNeeded;
 @end
 
 @implementation PXCMMMomentsInvitationsDataSourceManager
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3 withPreparedInfo:(id)a4
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue withPreparedInfo:(id)info
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXCMMMomentsInvitationsDataSourceManager *)self _state];
-  v9 = [v7 objectForKeyedSubscript:@"preparedForCurrentState"];
+  queueCopy = queue;
+  infoCopy = info;
+  _state = [(PXCMMMomentsInvitationsDataSourceManager *)self _state];
+  v9 = [infoCopy objectForKeyedSubscript:@"preparedForCurrentState"];
 
-  if (v9 == v8)
+  if (v9 == _state)
   {
-    v10 = [v7 objectForKeyedSubscript:@"preparedState"];
-    v11 = [v7 objectForKeyedSubscript:@"preparedChangeDetails"];
+    v10 = [infoCopy objectForKeyedSubscript:@"preparedState"];
+    v11 = [infoCopy objectForKeyedSubscript:@"preparedChangeDetails"];
   }
 
   else
   {
     v23 = 0;
-    v10 = [v8 stateUpdatedWithChange:v6 changeDetails:&v23];
+    v10 = [_state stateUpdatedWithChange:queueCopy changeDetails:&v23];
     v11 = v23;
   }
 
   v12 = v11;
-  if (v10 != v8)
+  if (v10 != _state)
   {
     [(PXCMMMomentsInvitationsDataSourceManager *)self set_state:v10];
-    v21 = [(PXSectionedDataSourceManager *)self dataSource];
-    v13 = [(PXCMMMomentsInvitationsDataSourceManager *)self _createInvitationsDataSourceFromCurrentState];
+    dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+    _createInvitationsDataSourceFromCurrentState = [(PXCMMMomentsInvitationsDataSourceManager *)self _createInvitationsDataSourceFromCurrentState];
     v20 = [off_1E77218B0 alloc];
-    v14 = [v21 identifier];
-    v22 = v6;
-    v15 = [v13 identifier];
-    v16 = [off_1E7721450 changeDetailsWithNoChanges];
+    identifier = [dataSource identifier];
+    v22 = queueCopy;
+    identifier2 = [_createInvitationsDataSourceFromCurrentState identifier];
+    changeDetailsWithNoChanges = [off_1E7721450 changeDetailsWithNoChanges];
     v24 = &unk_1F190CDD8;
     v25[0] = v12;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-    v18 = v17 = v7;
-    v19 = [v20 initWithFromDataSourceIdentifier:v14 toDataSourceIdentifier:v15 sectionChanges:v16 itemChangeDetailsBySection:v18 subitemChangeDetailsByItemBySection:0];
+    v18 = v17 = infoCopy;
+    v19 = [v20 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v18 subitemChangeDetailsByItemBySection:0];
 
-    v7 = v17;
-    [(PXSectionedDataSourceManager *)self setDataSource:v13 changeDetails:v19];
+    infoCopy = v17;
+    [(PXSectionedDataSourceManager *)self setDataSource:_createInvitationsDataSourceFromCurrentState changeDetails:v19];
 
-    v6 = v22;
+    queueCopy = v22;
   }
 }
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -77,7 +77,7 @@
   dispatch_sync(MEMORY[0x1E69E96A0], block);
   v5 = v14[5];
   v11 = 0;
-  v6 = [v5 stateUpdatedWithChange:v4 changeDetails:&v11];
+  v6 = [v5 stateUpdatedWithChange:changeCopy changeDetails:&v11];
   v7 = v11;
   v8 = v14[5];
   v19[0] = @"preparedForCurrentState";
@@ -101,15 +101,15 @@ void __73__PXCMMMomentsInvitationsDataSourceManager_prepareForPhotoLibraryChange
   *(v3 + 40) = v2;
 }
 
-- (void)_handleFinishedFetchingBatch:(id)a3 preparedChangeDetails:(id)a4 forFetchResult:(id)a5
+- (void)_handleFinishedFetchingBatch:(id)batch preparedChangeDetails:(id)details forFetchResult:(id)result
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PXCMMMomentsInvitationsDataSourceManager *)self _state];
-  v12 = [v11 invitationsByAssetCollectionObjectID];
-  v13 = [v12 mutableCopy];
+  batchCopy = batch;
+  detailsCopy = details;
+  resultCopy = result;
+  _state = [(PXCMMMomentsInvitationsDataSourceManager *)self _state];
+  invitationsByAssetCollectionObjectID = [_state invitationsByAssetCollectionObjectID];
+  v13 = [invitationsByAssetCollectionObjectID mutableCopy];
 
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
@@ -117,57 +117,57 @@ void __73__PXCMMMomentsInvitationsDataSourceManager_prepareForPhotoLibraryChange
   v41[3] = &unk_1E773F198;
   v14 = v13;
   v42 = v14;
-  [v8 enumerateKeysAndObjectsUsingBlock:v41];
+  [batchCopy enumerateKeysAndObjectsUsingBlock:v41];
   v15 = [PXCMMMomentsInvitationsDataSourceState alloc];
-  v16 = [v11 assetCollections];
-  v17 = [(PXCMMMomentsInvitationsDataSourceState *)v15 initWithAssetCollections:v16 invitationsByAssetCollectionObjectID:v14];
+  assetCollections = [_state assetCollections];
+  v17 = [(PXCMMMomentsInvitationsDataSourceState *)v15 initWithAssetCollections:assetCollections invitationsByAssetCollectionObjectID:v14];
 
   [(PXCMMMomentsInvitationsDataSourceManager *)self set_state:v17];
   if (self->_hasCreatedInitialDataSource)
   {
     v35 = v17;
-    v18 = [(PXSectionedDataSourceManager *)self dataSource];
-    v39 = [(PXCMMMomentsInvitationsDataSourceManager *)self _createInvitationsDataSourceFromCurrentState];
-    v19 = [(PXCMMMomentsInvitationsDataSourceManager *)self assetCollections];
+    dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+    _createInvitationsDataSourceFromCurrentState = [(PXCMMMomentsInvitationsDataSourceManager *)self _createInvitationsDataSourceFromCurrentState];
+    assetCollections2 = [(PXCMMMomentsInvitationsDataSourceManager *)self assetCollections];
 
-    v36 = v10;
-    v37 = v9;
-    v38 = v8;
-    v40 = v18;
-    if (v19 == v10)
+    v36 = resultCopy;
+    v37 = detailsCopy;
+    v38 = batchCopy;
+    v40 = dataSource;
+    if (assetCollections2 == resultCopy)
     {
-      v28 = v9;
+      v28 = detailsCopy;
     }
 
     else
     {
-      v20 = [v8 allKeys];
+      allKeys = [batchCopy allKeys];
       v21 = MEMORY[0x1E6978848];
-      v22 = [v18 _state];
-      v23 = [v22 assetCollections];
-      v24 = [v39 _state];
-      v25 = [v24 assetCollections];
-      v26 = v20;
-      v27 = [v21 changeDetailsFromFetchResult:v23 toFetchResult:v25 changedObjects:v20];
+      _state2 = [dataSource _state];
+      assetCollections3 = [_state2 assetCollections];
+      _state3 = [_createInvitationsDataSourceFromCurrentState _state];
+      assetCollections4 = [_state3 assetCollections];
+      v26 = allKeys;
+      v27 = [v21 changeDetailsFromFetchResult:assetCollections3 toFetchResult:assetCollections4 changedObjects:allKeys];
 
-      v18 = v40;
+      dataSource = v40;
       v28 = [off_1E7721450 changeDetailsFromFetchResultChangeDetails:v27];
     }
 
     v29 = [off_1E77218B0 alloc];
-    v30 = [v18 identifier];
-    v31 = [v39 identifier];
-    v32 = [off_1E7721450 changeDetailsWithNoChanges];
+    identifier = [dataSource identifier];
+    identifier2 = [_createInvitationsDataSourceFromCurrentState identifier];
+    changeDetailsWithNoChanges = [off_1E7721450 changeDetailsWithNoChanges];
     v43 = &unk_1F190CDD8;
     v44[0] = v28;
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
-    v34 = [v29 initWithFromDataSourceIdentifier:v30 toDataSourceIdentifier:v31 sectionChanges:v32 itemChangeDetailsBySection:v33 subitemChangeDetailsByItemBySection:0];
+    v34 = [v29 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v33 subitemChangeDetailsByItemBySection:0];
 
-    [(PXSectionedDataSourceManager *)self setDataSource:v39 changeDetails:v34];
-    v9 = v37;
-    v8 = v38;
+    [(PXSectionedDataSourceManager *)self setDataSource:_createInvitationsDataSourceFromCurrentState changeDetails:v34];
+    detailsCopy = v37;
+    batchCopy = v38;
     v17 = v35;
-    v10 = v36;
+    resultCopy = v36;
   }
 
   self->_isLoading = 0;
@@ -189,16 +189,16 @@ void __110__PXCMMMomentsInvitationsDataSourceManager__handleFinishedFetchingBatc
 - (void)_workerQueue_fetchRemainingAssetCollectionsInBatches
 {
   v55 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   val = self;
-  v4 = [(PXCMMMomentsInvitationsDataSourceManager *)self _remainingAssetCollectionObjectIDsToFetch];
+  _remainingAssetCollectionObjectIDsToFetch = [(PXCMMMomentsInvitationsDataSourceManager *)self _remainingAssetCollectionObjectIDsToFetch];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v6 = v5;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v7 = v4;
+  v7 = _remainingAssetCollectionObjectIDsToFetch;
   v8 = [v7 countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v8)
   {
@@ -217,14 +217,14 @@ LABEL_3:
       v13 = objc_alloc(MEMORY[0x1E69788E0]);
       v53 = v12;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
-      v15 = [(PXCMMMomentsInvitationsDataSourceManager *)val photoLibrary];
-      v16 = [MEMORY[0x1E6978650] fetchType];
-      v17 = [v13 initWithOids:v14 photoLibrary:v15 fetchType:v16 fetchPropertySets:0 identifier:0 registerIfNeeded:1];
+      photoLibrary = [(PXCMMMomentsInvitationsDataSourceManager *)val photoLibrary];
+      fetchType = [MEMORY[0x1E6978650] fetchType];
+      v17 = [v13 initWithOids:v14 photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:0 identifier:0 registerIfNeeded:1];
 
-      v18 = [v17 firstObject];
-      v19 = [PXCMMMomentsInvitation invitationWithAssetCollection:v18];
+      firstObject = [v17 firstObject];
+      v19 = [PXCMMMomentsInvitation invitationWithAssetCollection:firstObject];
 
-      [v3 setObject:v19 forKeyedSubscript:v12];
+      [dictionary setObject:v19 forKeyedSubscript:v12];
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       v21 = v20 - v6;
 
@@ -248,10 +248,10 @@ LABEL_3:
 
   v22 = v7;
 
-  if ([v3 count])
+  if ([dictionary count])
   {
-    v23 = [v3 allKeys];
-    [v7 removeObjectsInArray:v23];
+    allKeys = [dictionary allKeys];
+    [v7 removeObjectsInArray:allKeys];
   }
 
   if (![v7 count])
@@ -259,14 +259,14 @@ LABEL_3:
     [(PXCMMMomentsInvitationsDataSourceManager *)val set_remainingAssetCollectionObjectIDsToFetch:0];
   }
 
-  v24 = [MEMORY[0x1E696AD50] indexSet];
-  v25 = [(PXCMMMomentsInvitationsDataSourceManager *)val assetCollections];
-  v26 = [v25 fetchedObjectIDs];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  assetCollections = [(PXCMMMomentsInvitationsDataSourceManager *)val assetCollections];
+  fetchedObjectIDs = [assetCollections fetchedObjectIDs];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v27 = v3;
+  v27 = dictionary;
   v28 = [v27 countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v28)
   {
@@ -282,10 +282,10 @@ LABEL_3:
           objc_enumerationMutation(v27);
         }
 
-        v32 = [v26 indexOfObject:*(*(&v44 + 1) + 8 * v31)];
+        v32 = [fetchedObjectIDs indexOfObject:*(*(&v44 + 1) + 8 * v31)];
         if (v32 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v24 addIndex:v32];
+          [indexSet addIndex:v32];
         }
 
         ++v31;
@@ -298,7 +298,7 @@ LABEL_3:
     while (v29);
   }
 
-  v33 = [[off_1E7721450 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:v24];
+  v33 = [[off_1E7721450 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:indexSet];
   objc_initWeak(&location, val);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -307,8 +307,8 @@ LABEL_3:
   objc_copyWeak(&v42, &location);
   v39 = v27;
   v40 = v33;
-  v41 = v25;
-  v34 = v25;
+  v41 = assetCollections;
+  v34 = assetCollections;
   v35 = v33;
   v36 = v27;
   dispatch_async(MEMORY[0x1E69E96A0], block);
@@ -327,9 +327,9 @@ void __96__PXCMMMomentsInvitationsDataSourceManager__workerQueue_fetchRemainingA
 {
   if (!self->_isLoading)
   {
-    v3 = [(PXCMMMomentsInvitationsDataSourceManager *)self _remainingAssetCollectionObjectIDsToFetch];
+    _remainingAssetCollectionObjectIDsToFetch = [(PXCMMMomentsInvitationsDataSourceManager *)self _remainingAssetCollectionObjectIDsToFetch];
 
-    if (v3)
+    if (_remainingAssetCollectionObjectIDsToFetch)
     {
       self->_isLoading = 1;
       objc_initWeak(&location, self);
@@ -355,37 +355,37 @@ void __64__PXCMMMomentsInvitationsDataSourceManager_startLoadingIfNeeded__block_
 - (id)_createInvitationsDataSourceFromCurrentState
 {
   v3 = [PXCMMMomentsInvitationsDataSource alloc];
-  v4 = [(PXCMMMomentsInvitationsDataSourceManager *)self _state];
-  v5 = [(PXCMMMomentsInvitationsDataSource *)v3 initWithState:v4];
+  _state = [(PXCMMMomentsInvitationsDataSourceManager *)self _state];
+  v5 = [(PXCMMMomentsInvitationsDataSource *)v3 initWithState:_state];
 
   return v5;
 }
 
 - (id)createInitialDataSource
 {
-  v3 = [(PXCMMMomentsInvitationsDataSourceManager *)self _createInvitationsDataSourceFromCurrentState];
+  _createInvitationsDataSourceFromCurrentState = [(PXCMMMomentsInvitationsDataSourceManager *)self _createInvitationsDataSourceFromCurrentState];
   self->_hasCreatedInitialDataSource = 1;
   [(PXCMMMomentsInvitationsDataSourceManager *)self startLoadingIfNeeded];
 
-  return v3;
+  return _createInvitationsDataSourceFromCurrentState;
 }
 
 - (id)assetCollections
 {
-  v2 = [(PXCMMMomentsInvitationsDataSourceManager *)self _state];
-  v3 = [v2 assetCollections];
+  _state = [(PXCMMMomentsInvitationsDataSourceManager *)self _state];
+  assetCollections = [_state assetCollections];
 
-  return v3;
+  return assetCollections;
 }
 
-- (PXCMMMomentsInvitationsDataSourceManager)initWithPhotoLibrary:(id)a3
+- (PXCMMMomentsInvitationsDataSourceManager)initWithPhotoLibrary:(id)library
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PXCMMMomentsInvitationsDataSourceManager.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMMomentsInvitationsDataSourceManager.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v27.receiver = self;
@@ -394,7 +394,7 @@ void __64__PXCMMMomentsInvitationsDataSourceManager_startLoadingIfNeeded__block_
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_photoLibrary, a3);
+    objc_storeStrong(&v7->_photoLibrary, library);
     [(PHPhotoLibrary *)v8->_photoLibrary px_registerChangeObserver:v8];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_UTILITY, 0);
@@ -403,20 +403,20 @@ void __64__PXCMMMomentsInvitationsDataSourceManager_startLoadingIfNeeded__block_
     workerQueue = v8->_workerQueue;
     v8->_workerQueue = v11;
 
-    v13 = [v6 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
     v14 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startDate" ascending:0];
     v28[0] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
-    [v13 setSortDescriptors:v15];
+    [librarySpecificFetchOptions setSortDescriptors:v15];
 
     v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"estimatedAssetCount > 8"];
-    [v13 setPredicate:v16];
+    [librarySpecificFetchOptions setPredicate:v16];
 
-    [v13 setFetchLimit:6];
-    v17 = [MEMORY[0x1E6978650] fetchMomentsWithOptions:v13];
+    [librarySpecificFetchOptions setFetchLimit:6];
+    v17 = [MEMORY[0x1E6978650] fetchMomentsWithOptions:librarySpecificFetchOptions];
     v18 = MEMORY[0x1E695DFA0];
-    v19 = [v17 fetchedObjectIDs];
-    v20 = [v18 orderedSetWithArray:v19];
+    fetchedObjectIDs = [v17 fetchedObjectIDs];
+    v20 = [v18 orderedSetWithArray:fetchedObjectIDs];
     remainingAssetCollectionObjectIDsToFetch = v8->__remainingAssetCollectionObjectIDsToFetch;
     v8->__remainingAssetCollectionObjectIDsToFetch = v20;
 
@@ -431,8 +431,8 @@ void __64__PXCMMMomentsInvitationsDataSourceManager_startLoadingIfNeeded__block_
 
 - (PXCMMMomentsInvitationsDataSourceManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCMMMomentsInvitationsDataSourceManager.m" lineNumber:55 description:{@"%s is not available as initializer", "-[PXCMMMomentsInvitationsDataSourceManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMMomentsInvitationsDataSourceManager.m" lineNumber:55 description:{@"%s is not available as initializer", "-[PXCMMMomentsInvitationsDataSourceManager init]"}];
 
   abort();
 }

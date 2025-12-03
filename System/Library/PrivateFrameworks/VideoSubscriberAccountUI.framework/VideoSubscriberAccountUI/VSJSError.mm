@@ -8,10 +8,10 @@
 
 - (VSJSError)init
 {
-  v3 = [MEMORY[0x277D1B028] currentAppContext];
+  currentAppContext = [MEMORY[0x277D1B028] currentAppContext];
   v6.receiver = self;
   v6.super_class = VSJSError;
-  v4 = [(IKJSObject *)&v6 initWithAppContext:v3];
+  v4 = [(IKJSObject *)&v6 initWithAppContext:currentAppContext];
 
   return v4;
 }
@@ -30,8 +30,8 @@
   [v3 addObject:v7];
 
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(VSJSError *)self message];
-  v10 = [v8 stringWithFormat:@"%@=%@", @"message", v9];
+  message = [(VSJSError *)self message];
+  v10 = [v8 stringWithFormat:@"%@=%@", @"message", message];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x277CCACA8];
@@ -44,12 +44,12 @@
 - (id)error
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [(VSJSError *)self message];
-  v4 = v3;
-  if (v3)
+  message = [(VSJSError *)self message];
+  v4 = message;
+  if (message)
   {
     v10 = *MEMORY[0x277CCA450];
-    v5 = [v3 copy];
+    v5 = [message copy];
     v11[0] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }

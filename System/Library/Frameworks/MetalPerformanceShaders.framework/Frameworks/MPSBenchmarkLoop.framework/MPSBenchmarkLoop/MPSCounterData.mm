@@ -1,14 +1,14 @@
 @interface MPSCounterData
-- (MPSCounterData)initWithData:(id)a3 numberOfSamples:(unint64_t)a4;
+- (MPSCounterData)initWithData:(id)data numberOfSamples:(unint64_t)samples;
 - (void)dealloc;
 @end
 
 @implementation MPSCounterData
 
-- (MPSCounterData)initWithData:(id)a3 numberOfSamples:(unint64_t)a4
+- (MPSCounterData)initWithData:(id)data numberOfSamples:(unint64_t)samples
 {
-  self->_numberOfSamples = a4;
-  self->_rawData = a3;
+  self->_numberOfSamples = samples;
+  self->_rawData = data;
   v6.receiver = self;
   v6.super_class = MPSCounterData;
   return [(MPSCounterData *)&v6 init];

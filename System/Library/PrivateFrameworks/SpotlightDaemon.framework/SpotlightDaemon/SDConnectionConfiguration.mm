@@ -1,13 +1,13 @@
 @interface SDConnectionConfiguration
-- (SDConnectionConfiguration)initWithConnection:(id)a3 isPrivate:(BOOL)a4 isManaged:(BOOL)a5;
+- (SDConnectionConfiguration)initWithConnection:(id)connection isPrivate:(BOOL)private isManaged:(BOOL)managed;
 @end
 
 @implementation SDConnectionConfiguration
 
-- (SDConnectionConfiguration)initWithConnection:(id)a3 isPrivate:(BOOL)a4 isManaged:(BOOL)a5
+- (SDConnectionConfiguration)initWithConnection:(id)connection isPrivate:(BOOL)private isManaged:(BOOL)managed
 {
   v54 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  connectionCopy = connection;
   v52.receiver = self;
   v52.super_class = SDConnectionConfiguration;
   v10 = [(SDConnectionConfiguration *)&v52 init];
@@ -17,13 +17,13 @@
     goto LABEL_55;
   }
 
-  objc_storeStrong(&v10->_connection, a3);
-  v11->_pid = xpc_connection_get_pid(v9);
-  v11->_euid = xpc_connection_get_euid(v9);
-  v11->_egid = xpc_connection_get_egid(v9);
+  objc_storeStrong(&v10->_connection, connection);
+  v11->_pid = xpc_connection_get_pid(connectionCopy);
+  v11->_euid = xpc_connection_get_euid(connectionCopy);
+  v11->_egid = xpc_connection_get_egid(connectionCopy);
   v11->_isExtension = xpc_connection_is_extension();
-  v11->_isPrivate = a4;
-  v11->_isManaged = a5;
+  v11->_isPrivate = private;
+  v11->_isManaged = managed;
   xpc_connection_get_audit_token();
   v12 = *MEMORY[0x277CBECE8];
   memset(&token, 0, sizeof(token));
@@ -78,14 +78,14 @@
     {
       if (v11->_isExtension)
       {
-        v19 = [MEMORY[0x277D3D350] defaultManager];
-        v20 = [v19 containingAppForPlugInWithPid:v11->_pid];
+        defaultManager = [MEMORY[0x277D3D350] defaultManager];
+        v20 = [defaultManager containingAppForPlugInWithPid:v11->_pid];
         bundleID = v11->_bundleID;
         v11->_bundleID = v20;
 
         if (!v11->_bundleID)
         {
-          v22 = [v19 informationForPlugInWithPid:v11->_pid];
+          v22 = [defaultManager informationForPlugInWithPid:v11->_pid];
           v23 = [v22 objectForKeyedSubscript:*MEMORY[0x277D3D368]];
           v24 = v11->_bundleID;
           v11->_bundleID = v23;
@@ -115,12 +115,12 @@
             {
               v28 = objc_alloc(MEMORY[0x277CC1E50]);
               v51 = [v28 initWithBundleIdentifier:*token.val error:0];
-              v29 = [v51 containingBundleRecord];
-              v30 = [v29 bundleIdentifier];
+              containingBundleRecord = [v51 containingBundleRecord];
+              bundleIdentifier = [containingBundleRecord bundleIdentifier];
 
-              if (v30)
+              if (bundleIdentifier)
               {
-                v31 = v30;
+                v31 = bundleIdentifier;
               }
 
               else
@@ -196,13 +196,13 @@ LABEL_37:
   }
 
 LABEL_45:
-  if (!a4 && !a5)
+  if (!private && !managed)
   {
-    v42 = [MEMORY[0x277D77BF8] sharedManager];
-    v43 = [v42 currentPersona];
-    v44 = [v43 userPersonaUniqueString];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    currentPersona = [mEMORY[0x277D77BF8] currentPersona];
+    userPersonaUniqueString = [currentPersona userPersonaUniqueString];
     personaID = v11->_personaID;
-    v11->_personaID = v44;
+    v11->_personaID = userPersonaUniqueString;
   }
 
   if (v11->_bundleID || v11->_searchInternal)
@@ -225,7 +225,7 @@ LABEL_45:
     v46 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
-      [SDConnectionConfiguration initWithConnection:v9 isPrivate:v46 isManaged:?];
+      [SDConnectionConfiguration initWithConnection:connectionCopy isPrivate:v46 isManaged:?];
     }
   }
 

@@ -1,20 +1,20 @@
 @interface VUIBookmark
 - (BOOL)hasRemoteData;
-- (VUIBookmark)initWithCoder:(id)a3;
-- (VUIBookmark)initWithKey:(id)a3;
-- (id)_copyWithResultClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VUIBookmark)initWithCoder:(id)coder;
+- (VUIBookmark)initWithKey:(id)key;
+- (id)_copyWithResultClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VUIBookmark
 
-- (VUIBookmark)initWithKey:(id)a3
+- (VUIBookmark)initWithKey:(id)key
 {
-  v5 = a3;
-  if (v5)
+  keyCopy = key;
+  if (keyCopy)
   {
     v10.receiver = self;
     v10.super_class = VUIBookmark;
@@ -22,25 +22,25 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_key, a3);
+      objc_storeStrong(&v6->_key, key);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (VUIBookmark)initWithCoder:(id)a3
+- (VUIBookmark)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Coder must allow keyed coding."];
   }
@@ -50,53 +50,53 @@
   v5 = [(VUIBookmark *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TVSBookmark.Key"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TVSBookmark.Key"];
     key = v5->_key;
     v5->_key = v6;
 
-    [v4 decodeDoubleForKey:@"TVSBookmark.BookmarkTime"];
+    [coderCopy decodeDoubleForKey:@"TVSBookmark.BookmarkTime"];
     v5->_bookmarkTime = v8;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TVSBookmark.BookmarkTimestamp"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TVSBookmark.BookmarkTimestamp"];
     v10 = [v9 copy];
     bookmarkTimestamp = v5->_bookmarkTimestamp;
     v5->_bookmarkTimestamp = v10;
 
-    v5->_playCount = [v4 decodeIntegerForKey:@"TVSBookmark.PlayCount"];
-    v5->_hasBeenPlayed = [v4 decodeBoolForKey:@"TVSBookmark.HasBeenPlayed"];
-    v5->_hasBeenRented = [v4 decodeBoolForKey:@"TVSBookmark.HasBeenRented"];
-    v5->_isMarkedAsUnwatched = [v4 decodeBoolForKey:@"TVSBookmark.IsMarkedAsUnwatched"];
-    v5->_hasFakeTimestamp = [v4 decodeBoolForKey:@"TVSBookmark.HasFakeTimestamp"];
+    v5->_playCount = [coderCopy decodeIntegerForKey:@"TVSBookmark.PlayCount"];
+    v5->_hasBeenPlayed = [coderCopy decodeBoolForKey:@"TVSBookmark.HasBeenPlayed"];
+    v5->_hasBeenRented = [coderCopy decodeBoolForKey:@"TVSBookmark.HasBeenRented"];
+    v5->_isMarkedAsUnwatched = [coderCopy decodeBoolForKey:@"TVSBookmark.IsMarkedAsUnwatched"];
+    v5->_hasFakeTimestamp = [coderCopy decodeBoolForKey:@"TVSBookmark.HasFakeTimestamp"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  if (([v6 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Coder must allow keyed coding."];
   }
 
   v4 = [(VUIBookmark *)self key];
-  [v6 encodeObject:v4 forKey:@"TVSBookmark.Key"];
+  [coderCopy encodeObject:v4 forKey:@"TVSBookmark.Key"];
 
   [(VUIBookmark *)self bookmarkTime];
-  [v6 encodeDouble:@"TVSBookmark.BookmarkTime" forKey:?];
-  v5 = [(VUIBookmark *)self bookmarkTimestamp];
-  [v6 encodeObject:v5 forKey:@"TVSBookmark.BookmarkTimestamp"];
+  [coderCopy encodeDouble:@"TVSBookmark.BookmarkTime" forKey:?];
+  bookmarkTimestamp = [(VUIBookmark *)self bookmarkTimestamp];
+  [coderCopy encodeObject:bookmarkTimestamp forKey:@"TVSBookmark.BookmarkTimestamp"];
 
-  [v6 encodeInteger:-[VUIBookmark playCount](self forKey:{"playCount"), @"TVSBookmark.PlayCount"}];
-  [v6 encodeBool:-[VUIBookmark hasBeenPlayed](self forKey:{"hasBeenPlayed"), @"TVSBookmark.HasBeenPlayed"}];
-  [v6 encodeBool:-[VUIBookmark hasBeenRented](self forKey:{"hasBeenRented"), @"TVSBookmark.HasBeenRented"}];
-  [v6 encodeBool:-[VUIBookmark isMarkedAsUnwatched](self forKey:{"isMarkedAsUnwatched"), @"TVSBookmark.IsMarkedAsUnwatched"}];
-  [v6 encodeBool:-[VUIBookmark hasFakeTimestamp](self forKey:{"hasFakeTimestamp"), @"TVSBookmark.HasFakeTimestamp"}];
+  [coderCopy encodeInteger:-[VUIBookmark playCount](self forKey:{"playCount"), @"TVSBookmark.PlayCount"}];
+  [coderCopy encodeBool:-[VUIBookmark hasBeenPlayed](self forKey:{"hasBeenPlayed"), @"TVSBookmark.HasBeenPlayed"}];
+  [coderCopy encodeBool:-[VUIBookmark hasBeenRented](self forKey:{"hasBeenRented"), @"TVSBookmark.HasBeenRented"}];
+  [coderCopy encodeBool:-[VUIBookmark isMarkedAsUnwatched](self forKey:{"isMarkedAsUnwatched"), @"TVSBookmark.IsMarkedAsUnwatched"}];
+  [coderCopy encodeBool:-[VUIBookmark hasFakeTimestamp](self forKey:{"hasFakeTimestamp"), @"TVSBookmark.HasFakeTimestamp"}];
 }
 
-- (id)_copyWithResultClass:(Class)a3
+- (id)_copyWithResultClass:(Class)class
 {
-  v4 = [[a3 alloc] initWithKey:self->_key];
+  v4 = [[class alloc] initWithKey:self->_key];
   *(v4 + 24) = self->_bookmarkTime;
   objc_storeStrong((v4 + 32), self->_bookmarkTimestamp);
   *(v4 + 11) = self->_hasFakeTimestamp;
@@ -107,7 +107,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(VUIBookmark *)self isMemberOfClass:objc_opt_class()])
   {
@@ -123,7 +123,7 @@
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
@@ -143,8 +143,8 @@
 
 - (BOOL)hasRemoteData
 {
-  v2 = [(VUIBookmark *)self bookmarkTimestamp];
-  v3 = v2 != 0;
+  bookmarkTimestamp = [(VUIBookmark *)self bookmarkTimestamp];
+  v3 = bookmarkTimestamp != 0;
 
   return v3;
 }

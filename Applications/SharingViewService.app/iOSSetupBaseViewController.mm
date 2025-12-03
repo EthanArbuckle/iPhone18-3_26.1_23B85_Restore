@@ -1,12 +1,12 @@
 @interface iOSSetupBaseViewController
-- (void)dismissWithType:(int)a3;
+- (void)dismissWithType:(int)type;
 @end
 
 @implementation iOSSetupBaseViewController
 
-- (void)dismissWithType:(int)a3
+- (void)dismissWithType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   if ([(SVSCardContainerView *)self->super._containerView swipeDismissible])
   {
     mainController = self->super._mainController;

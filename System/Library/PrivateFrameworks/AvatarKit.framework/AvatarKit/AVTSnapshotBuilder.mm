@@ -1,16 +1,16 @@
 @interface AVTSnapshotBuilder
-+ (CGImage)copyRescaledCGImage:(CGImage *)a3 by:(float)a4;
++ (CGImage)copyRescaledCGImage:(CGImage *)image by:(float)by;
 + (id)sharedInstance;
 - (AVTSnapshotBuilder)init;
-- (double)deprecated_avtui_fieldOfViewForFramingMode:(id)a3;
-- (id)_imageWithSize:(CGSize)a3 scale:(double)a4 options:(id)a5;
-- (id)animatedImageWithSize:(CGSize)a3 scale:(double)a4 options:(id)a5;
-- (id)imageWithSize:(CGSize)a3 scale:(double)a4 options:(id)a5;
-- (void)_applyOptions:(id)a3;
+- (double)deprecated_avtui_fieldOfViewForFramingMode:(id)mode;
+- (id)_imageWithSize:(CGSize)size scale:(double)scale options:(id)options;
+- (id)animatedImageWithSize:(CGSize)size scale:(double)scale options:(id)options;
+- (id)imageWithSize:(CGSize)size scale:(double)scale options:(id)options;
+- (void)_applyOptions:(id)options;
 - (void)dealloc;
-- (void)deprecated_avtui_applyModificationsForFramingMode:(id)a3 projectionDirectionModification:(int64_t)a4 fieldOfViewModification:(double)a5 lensShiftModification:;
-- (void)setAvatar:(id)a3;
-- (void)setupAvatarWithOptions:(id)a3 useACopy:(BOOL)a4;
+- (void)deprecated_avtui_applyModificationsForFramingMode:(id)mode projectionDirectionModification:(int64_t)modification fieldOfViewModification:(double)viewModification lensShiftModification:;
+- (void)setAvatar:(id)avatar;
+- (void)setupAvatarWithOptions:(id)options useACopy:(BOOL)copy;
 @end
 
 @implementation AVTSnapshotBuilder
@@ -36,21 +36,21 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)setAvatar:(id)a3
+- (void)setAvatar:(id)avatar
 {
-  v5 = a3;
+  avatarCopy = avatar;
   p_avatar = &self->_avatar;
-  if (self->_avatar != v5)
+  if (self->_avatar != avatarCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_avatar, a3);
+    v8 = avatarCopy;
+    objc_storeStrong(p_avatar, avatar);
     snapshotedAvatar = self->_snapshotedAvatar;
     self->_snapshotedAvatar = 0;
 
-    v5 = v8;
+    avatarCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](p_avatar, v5);
+  MEMORY[0x1EEE66BB8](p_avatar, avatarCopy);
 }
 
 - (AVTSnapshotBuilder)init
@@ -85,9 +85,9 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
   [(AVTSnapshotBuilder *)&v2 dealloc];
 }
 
-- (void)_applyOptions:(id)a3
+- (void)_applyOptions:(id)options
 {
-  v4 = [a3 objectForKeyedSubscript:@"AVTSnapshotFramingMode"];
+  v4 = [options objectForKeyedSubscript:@"AVTSnapshotFramingMode"];
   v5 = v4;
   v6 = @"cameraHead";
   if (v4)
@@ -100,14 +100,14 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
   [(AVTRenderer *)self->_renderer setFramingMode:v7];
 }
 
-- (void)setupAvatarWithOptions:(id)a3 useACopy:(BOOL)a4
+- (void)setupAvatarWithOptions:(id)options useACopy:(BOOL)copy
 {
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   if (!self->_snapshotedAvatar)
   {
     avatar = self->_avatar;
-    if (a4)
+    if (copy)
     {
       v8 = [(AVTAvatar *)avatar copy];
     }
@@ -143,11 +143,11 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
         }
       }
 
-      if (a4)
+      if (copy)
       {
         [(AVTAvatar *)v12 setShowsBody:[(AVTAvatar *)v11 showsBody]];
-        v17 = [(AVTAvatar *)v11 bodyPose];
-        [(AVTAvatar *)v12 setBodyPose:v17];
+        bodyPose = [(AVTAvatar *)v11 bodyPose];
+        [(AVTAvatar *)v12 setBodyPose:bodyPose];
       }
     }
 
@@ -155,7 +155,7 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v18 = [v6 objectForKeyedSubscript:@"AVTSnapshotMemojiPresetSubstitutions"];
+    v18 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotMemojiPresetSubstitutions"];
     v19 = [v18 countByEnumeratingWithState:&v52 objects:v59 count:16];
     if (v19)
     {
@@ -186,7 +186,7 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v23 = [v6 objectForKeyedSubscript:@"AVTSnapshotMemojiColorPresetSubstitutions"];
+    v23 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotMemojiColorPresetSubstitutions"];
     v24 = [v23 countByEnumeratingWithState:&v48 objects:v58 count:16];
     if (v24)
     {
@@ -217,7 +217,7 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v28 = [v6 objectForKeyedSubscript:@"AVTSnapshotMemojiSecondaryColorPresetSubstitutions"];
+    v28 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotMemojiSecondaryColorPresetSubstitutions"];
     v29 = [v28 countByEnumeratingWithState:&v44 objects:v57 count:16];
     if (v29)
     {
@@ -248,7 +248,7 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v33 = [v6 objectForKeyedSubscript:{@"AVTSnapshotMemojiThirdColorPresetSubstitutions", 0}];
+    v33 = [optionsCopy objectForKeyedSubscript:{@"AVTSnapshotMemojiThirdColorPresetSubstitutions", 0}];
     v34 = [v33 countByEnumeratingWithState:&v40 objects:v56 count:16];
     if (v34)
     {
@@ -277,7 +277,7 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
   }
 
   [(AVTAvatar *)self->_snapshotedAvatar updateWithOptions:1];
-  v38 = [v6 objectForKeyedSubscript:@"AVTSnapshotPose"];
+  v38 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotPose"];
   if (v38)
   {
     [(AVTAvatar *)self->_snapshotedAvatar setPose:v38];
@@ -286,14 +286,14 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
   v39 = *MEMORY[0x1E69E9840];
 }
 
-+ (CGImage)copyRescaledCGImage:(CGImage *)a3 by:(float)a4
++ (CGImage)copyRescaledCGImage:(CGImage *)image by:(float)by
 {
-  v6 = (CGImageGetWidth(a3) * a4);
-  v7 = (CGImageGetHeight(a3) * a4);
-  BitsPerComponent = CGImageGetBitsPerComponent(a3);
-  v9 = (CGImageGetBitsPerPixel(a3) >> 3) * v6;
-  ColorSpace = CGImageGetColorSpace(a3);
-  BitmapInfo = CGImageGetBitmapInfo(a3);
+  v6 = (CGImageGetWidth(image) * by);
+  v7 = (CGImageGetHeight(image) * by);
+  BitsPerComponent = CGImageGetBitsPerComponent(image);
+  v9 = (CGImageGetBitsPerPixel(image) >> 3) * v6;
+  ColorSpace = CGImageGetColorSpace(image);
+  BitmapInfo = CGImageGetBitmapInfo(image);
   result = CGBitmapContextCreate(0, v6, v7, BitsPerComponent, v9, ColorSpace, BitmapInfo);
   if (result)
   {
@@ -302,7 +302,7 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
     v15.size.height = v7;
     v15.origin.x = 0.0;
     v15.origin.y = 0.0;
-    CGContextDrawImage(result, v15, a3);
+    CGContextDrawImage(result, v15, image);
     Image = CGBitmapContextCreateImage(v13);
     CGContextRelease(v13);
     return Image;
@@ -311,40 +311,40 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
   return result;
 }
 
-- (id)imageWithSize:(CGSize)a3 scale:(double)a4 options:(id)a5
+- (id)imageWithSize:(CGSize)size scale:(double)scale options:(id)options
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
-  v10 = [v9 valueForKey:@"AVTSnapshotNoCopy"];
-  v11 = [v10 BOOLValue];
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
+  v10 = [optionsCopy valueForKey:@"AVTSnapshotNoCopy"];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [(AVTSnapshotBuilder *)self _imageWithSize:v9 scale:v11 ^ 1u options:width useACopy:height, a4];
+  scale = [(AVTSnapshotBuilder *)self _imageWithSize:optionsCopy scale:bOOLValue ^ 1u options:width useACopy:height, scale];
 
-  return v12;
+  return scale;
 }
 
-- (id)_imageWithSize:(CGSize)a3 scale:(double)a4 options:(id)a5
+- (id)_imageWithSize:(CGSize)size scale:(double)scale options:(id)options
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
-  v10 = [v9 valueForKey:@"AVTSnapshotNoCopy"];
-  v11 = [v10 BOOLValue];
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
+  v10 = [optionsCopy valueForKey:@"AVTSnapshotNoCopy"];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [(AVTSnapshotBuilder *)self _imageWithSize:v9 scale:v11 ^ 1u options:width useACopy:height, a4];
+  scale = [(AVTSnapshotBuilder *)self _imageWithSize:optionsCopy scale:bOOLValue ^ 1u options:width useACopy:height, scale];
 
-  return v12;
+  return scale;
 }
 
-- (id)animatedImageWithSize:(CGSize)a3 scale:(double)a4 options:(id)a5
+- (id)animatedImageWithSize:(CGSize)size scale:(double)scale options:(id)options
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a5;
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
   context = objc_autoreleasePoolPush();
-  [(AVTSnapshotBuilder *)self setupAvatarWithOptions:v8 useACopy:1];
-  v9 = [v8 objectForKeyedSubscript:@"AVTSnapshotPoseAnimation"];
+  [(AVTSnapshotBuilder *)self setupAvatarWithOptions:optionsCopy useACopy:1];
+  v9 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotPoseAnimation"];
   v10 = v9;
   if (v9)
   {
@@ -358,11 +358,11 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
     v13 = 2.0;
   }
 
-  v14 = [v8 objectForKeyedSubscript:@"AVTSnapshotAntialiasedKey"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotAntialiasedKey"];
   v52 = v10;
   if (v14)
   {
-    v15 = [v8 objectForKeyedSubscript:@"AVTSnapshotAntialiasedKey"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotAntialiasedKey"];
     if ([v15 BOOLValue])
     {
       v16 = 2;
@@ -380,7 +380,7 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
   }
 
   [(AVTRenderer *)self->_renderer setJitteringEnabled:0];
-  v17 = [v8 objectForKeyedSubscript:@"AVTSnapshotUpscaleKey"];
+  v17 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotUpscaleKey"];
   [v17 floatValue];
   v19 = v18;
 
@@ -394,7 +394,7 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
     v20 = v19;
   }
 
-  v21 = [v8 objectForKeyedSubscript:@"AVTSnapshotRateKey"];
+  v21 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotRateKey"];
   [v21 floatValue];
   v23 = v22;
 
@@ -410,56 +410,56 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
 
   v25 = v13 * v24;
   v26 = vcvtps_s32_f32(v25);
-  v54 = v8;
-  [(AVTSnapshotBuilder *)self _applyOptions:v8, *&v13];
+  v54 = optionsCopy;
+  [(AVTSnapshotBuilder *)self _applyOptions:optionsCopy, *&v13];
   [MEMORY[0x1E69DF378] flush];
-  v55 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   Current = CFAbsoluteTimeGetCurrent();
   if (v26 >= 1)
   {
     v28 = Current;
     v29 = 0;
-    v30 = v20 * a4;
+    v30 = v20 * scale;
     v31 = (width * v30);
     v32 = (height * v30);
     do
     {
       v34 = objc_autoreleasePoolPush();
-      v35 = [(AVTRenderer *)self->_renderer world];
-      v36 = [v35 clock];
-      [v36 setTime:(v29 / v24)];
+      world = [(AVTRenderer *)self->_renderer world];
+      clock = [world clock];
+      [clock setTime:(v29 / v24)];
 
       renderer = self->_renderer;
-      v38 = [(AVTRenderer *)renderer world];
-      v39 = [v38 clock];
-      [v39 time];
+      world2 = [(AVTRenderer *)renderer world];
+      clock2 = [world2 clock];
+      [clock2 time];
       [(AVTRenderer *)renderer updateAtTime:v28 + v40];
 
-      v33 = a4;
-      v41 = [(AVTSnapshotHelper *)self->_snapshotHelper newImageWithRenderer:v16 antialiasingMode:v31 pixelWidth:v32 pixelHeight:0 imagePointSize:width contentScaleFactor:height error:v33];
+      scaleCopy = scale;
+      v41 = [(AVTSnapshotHelper *)self->_snapshotHelper newImageWithRenderer:v16 antialiasingMode:v31 pixelWidth:v32 pixelHeight:0 imagePointSize:width contentScaleFactor:height error:scaleCopy];
       v42 = v41;
       if (v20 != 1.0)
       {
-        v43 = [v41 CGImage];
+        cGImage = [v41 CGImage];
         v44 = objc_opt_class();
         *&v45 = 1.0 / v20;
-        v46 = [v44 copyRescaledCGImage:v43 by:v45];
+        v46 = [v44 copyRescaledCGImage:cGImage by:v45];
         v47 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v46];
 
         CGImageRelease(v46);
         v42 = v47;
       }
 
-      if (a4 != 1.0)
+      if (scale != 1.0)
       {
-        v48 = [MEMORY[0x1E69DCAB8] imageWithCGImage:objc_msgSend(v42 scale:"CGImage") orientation:{0, a4}];
+        v48 = [MEMORY[0x1E69DCAB8] imageWithCGImage:objc_msgSend(v42 scale:"CGImage") orientation:{0, scale}];
 
         v42 = v48;
       }
 
       if (v42)
       {
-        [v55 addObject:v42];
+        [array addObject:v42];
       }
 
       objc_autoreleasePoolPop(v34);
@@ -469,47 +469,47 @@ uint64_t __36__AVTSnapshotBuilder_sharedInstance__block_invoke()
     while (v26 != v29);
   }
 
-  v49 = [MEMORY[0x1E69DCAB8] animatedImageWithImages:v55 duration:v51];
+  v49 = [MEMORY[0x1E69DCAB8] animatedImageWithImages:array duration:v51];
 
   objc_autoreleasePoolPop(context);
 
   return v49;
 }
 
-- (double)deprecated_avtui_fieldOfViewForFramingMode:(id)a3
+- (double)deprecated_avtui_fieldOfViewForFramingMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(AVTSnapshotBuilder *)self renderer];
-  v6 = [v5 world];
-  v7 = [v6 rootNode];
-  v8 = [v7 childNodeWithName:v4 recursively:1];
+  modeCopy = mode;
+  renderer = [(AVTSnapshotBuilder *)self renderer];
+  world = [renderer world];
+  rootNode = [world rootNode];
+  v8 = [rootNode childNodeWithName:modeCopy recursively:1];
 
-  v9 = [v8 camera];
-  [v9 fieldOfView];
+  camera = [v8 camera];
+  [camera fieldOfView];
   v11 = v10;
 
   return v11;
 }
 
-- (void)deprecated_avtui_applyModificationsForFramingMode:(id)a3 projectionDirectionModification:(int64_t)a4 fieldOfViewModification:(double)a5 lensShiftModification:
+- (void)deprecated_avtui_applyModificationsForFramingMode:(id)mode projectionDirectionModification:(int64_t)modification fieldOfViewModification:(double)viewModification lensShiftModification:
 {
   v6 = v5;
-  v10 = a3;
-  v18 = [(AVTSnapshotBuilder *)self renderer];
-  v11 = [v18 world];
-  v12 = [v11 rootNode];
-  v13 = [v12 childNodeWithName:v10 recursively:1];
+  modeCopy = mode;
+  renderer = [(AVTSnapshotBuilder *)self renderer];
+  world = [renderer world];
+  rootNode = [world rootNode];
+  v13 = [rootNode childNodeWithName:modeCopy recursively:1];
 
-  v14 = [v13 camera];
-  *&a5 = a5;
-  LODWORD(v15) = LODWORD(a5);
-  [v14 setFieldOfView:v15];
+  camera = [v13 camera];
+  *&viewModification = viewModification;
+  LODWORD(v15) = LODWORD(viewModification);
+  [camera setFieldOfView:v15];
 
-  v16 = [v13 camera];
-  [v16 setProjectionDirection:a4];
+  camera2 = [v13 camera];
+  [camera2 setProjectionDirection:modification];
 
-  v17 = [v13 camera];
-  [v17 setFilmOffset:v6];
+  camera3 = [v13 camera];
+  [camera3 setFilmOffset:v6];
 }
 
 @end

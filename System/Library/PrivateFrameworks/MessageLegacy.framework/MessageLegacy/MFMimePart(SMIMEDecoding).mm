@@ -11,19 +11,19 @@
 {
   v34[1] = *MEMORY[0x277D85DE8];
   v32 = 0;
-  v2 = [a1 firstChildPart];
-  v3 = [v2 contentsForTextSystem];
-  if (v3)
+  firstChildPart = [self firstChildPart];
+  contentsForTextSystem = [firstChildPart contentsForTextSystem];
+  if (contentsForTextSystem)
   {
-    if (![a1 _needsSignatureVerification:&v32] || !objc_msgSend(a1, "usesKnownSignatureProtocol"))
+    if (![self _needsSignatureVerification:&v32] || !objc_msgSend(self, "usesKnownSignatureProtocol"))
     {
       goto LABEL_42;
     }
 
-    v4 = [objc_msgSend(objc_msgSend(a1 "mimeBody")];
+    v4 = [objc_msgSend(objc_msgSend(self "mimeBody")];
     if ([v4 length])
     {
-      v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"--%@", objc_msgSend(a1, "bodyParameterForKey:", @"boundary"];
+      v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"--%@", objc_msgSend(self, "bodyParameterForKey:", @"boundary"];
       v6 = [v5 mf_dataUsingEncoding:4];
 
       v7 = [v4 mf_rangeOfData:v6 options:0 range:{0, objc_msgSend(v4, "length")}];
@@ -34,10 +34,10 @@
 
       v9 = v7 + v8;
       v10 = [v4 length];
-      v11 = [v4 bytes];
+      bytes = [v4 bytes];
       while (1)
       {
-        v12 = *(v11 + v9);
+        v12 = *(bytes + v9);
         if (v12 != 13 && v12 != 10)
         {
           break;
@@ -67,7 +67,7 @@ LABEL_23:
           }
 
 LABEL_27:
-          v20 = [objc_msgSend(v2 "nextSiblingPart")];
+          v20 = [objc_msgSend(firstChildPart "nextSiblingPart")];
           if (v20)
           {
             v18 = [[_MFSecCMSDecoder alloc] initWithPartData:v20 error:&v32];
@@ -78,15 +78,15 @@ LABEL_38:
               {
                 *buf = 0;
                 [(_MFSecCMSDecoder *)v18 done];
-                v32 = -[_MFSecCMSDecoder verifyAgainstSenders:signingError:](v18, "verifyAgainstSenders:signingError:", [objc_msgSend(objc_msgSend(a1 "mimeBody")], buf);
-                [a1 _setSigners:{-[_MFSecCMSDecoder signers](v18, "signers")}];
+                v32 = -[_MFSecCMSDecoder verifyAgainstSenders:signingError:](v18, "verifyAgainstSenders:signingError:", [objc_msgSend(objc_msgSend(self "mimeBody")], buf);
+                [self _setSigners:{-[_MFSecCMSDecoder signers](v18, "signers")}];
                 if (!v32)
                 {
                   v32 = *buf;
                 }
               }
 
-              [a1 _setSMIMEError:v32];
+              [self _setSMIMEError:v32];
 LABEL_42:
               v14 = v32;
               if (!v32)
@@ -118,10 +118,10 @@ LABEL_42:
           [v4 mf_dataByConvertingUnixNewlinesToNetwork];
           if (MFDataConsumerConsumeCompleteData() < 0)
           {
-            v22 = [(_MFSecCMSDecoder *)v18 lastSecCMSError];
-            if (v22)
+            lastSecCMSError = [(_MFSecCMSDecoder *)v18 lastSecCMSError];
+            if (lastSecCMSError)
             {
-              v23 = v22;
+              v23 = lastSecCMSError;
               v24 = objc_alloc(MEMORY[0x277CCA9B8]);
               v25 = [v24 initWithDomain:*MEMORY[0x277CCA590] code:v23 userInfo:0];
               v33 = *MEMORY[0x277CCA7E8];
@@ -159,15 +159,15 @@ LABEL_24:
         goto LABEL_27;
       }
 
-      v15 = [v4 mf_subdataWithRange:{0, v17 - 1}];
+      signedData = [v4 mf_subdataWithRange:{0, v17 - 1}];
     }
 
     else
     {
-      v15 = [a1 signedData];
+      signedData = [self signedData];
     }
 
-    v4 = v15;
+    v4 = signedData;
     goto LABEL_21;
   }
 
@@ -194,23 +194,23 @@ LABEL_43:
 
 LABEL_47:
   v29 = *MEMORY[0x277D85DE8];
-  return v3;
+  return contentsForTextSystem;
 }
 
 - (uint64_t)decodeApplicationPkcs7_mime
 {
   v63 = *MEMORY[0x277D85DE8];
-  v61 = [a1 SMIMEError];
-  v4 = [a1 decryptedMessageBodyIsEncrypted:0 isSigned:0];
-  if (v61 | v4)
+  sMIMEError = [self SMIMEError];
+  v4 = [self decryptedMessageBodyIsEncrypted:0 isSigned:0];
+  if (sMIMEError | v4)
   {
-    v11 = v4;
-    v9 = 0;
+    messageBody = v4;
+    signers = 0;
     v6 = 1;
     if (!v4)
     {
 LABEL_48:
-      v13 = 0;
+      contentsForTextSystem = 0;
       goto LABEL_49;
     }
   }
@@ -218,18 +218,18 @@ LABEL_48:
   else
   {
     v60 = 0;
-    v5 = [a1 bodyData];
-    v6 = v5 != 0;
-    if (v5)
+    bodyData = [self bodyData];
+    v6 = bodyData != 0;
+    if (bodyData)
     {
-      v7 = [[_MFSecCMSDecoder alloc] initWithPartData:v5 error:&v61];
+      v7 = [[_MFSecCMSDecoder alloc] initWithPartData:bodyData error:&sMIMEError];
       [-[_MFSecCMSDecoder signedData](v7 "signedData")];
       if (MFDataConsumerConsumeCompleteData() < 0)
       {
-        v14 = [(_MFSecCMSDecoder *)v7 lastSecCMSError];
-        if (v14)
+        lastSecCMSError = [(_MFSecCMSDecoder *)v7 lastSecCMSError];
+        if (lastSecCMSError)
         {
-          v15 = v14;
+          v15 = lastSecCMSError;
           v16 = objc_alloc(MEMORY[0x277CCA9B8]);
           v17 = [v16 initWithDomain:*MEMORY[0x277CCA590] code:v15 userInfo:0];
           v18 = objc_alloc(MEMORY[0x277CBEAC0]);
@@ -241,80 +241,80 @@ LABEL_48:
           v19 = 0;
         }
 
-        v61 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 userInfo:v19];
-        [v61 setLocalizedDescription:{MFLookupLocalizedString(@"SMIME_CANT_DECRYPT_MESSAGE", @"This message is encrypted.  Install a profile containing your encryption identity to decrypt this message.", @"Delayed"}];
+        sMIMEError = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 userInfo:v19];
+        [sMIMEError setLocalizedDescription:{MFLookupLocalizedString(@"SMIME_CANT_DECRYPT_MESSAGE", @"This message is encrypted.  Install a profile containing your encryption identity to decrypt this message.", @"Delayed"}];
 
-        v9 = 0;
+        signers = 0;
         v10 = 1;
-        v8 = 1;
+        isContentEncrypted = 1;
       }
 
       else
       {
         [(_MFSecCMSDecoder *)v7 done];
-        v8 = [(_MFSecCMSDecoder *)v7 isContentEncrypted];
+        isContentEncrypted = [(_MFSecCMSDecoder *)v7 isContentEncrypted];
         if ([(_MFSecCMSDecoder *)v7 isContentSigned])
         {
-          v61 = -[_MFSecCMSDecoder verifyAgainstSenders:signingError:](v7, "verifyAgainstSenders:signingError:", [objc_msgSend(objc_msgSend(a1 "mimeBody")], &v60);
-          v9 = [(_MFSecCMSDecoder *)v7 signers];
+          sMIMEError = -[_MFSecCMSDecoder verifyAgainstSenders:signingError:](v7, "verifyAgainstSenders:signingError:", [objc_msgSend(objc_msgSend(self "mimeBody")], &v60);
+          signers = [(_MFSecCMSDecoder *)v7 signers];
           v10 = 1;
         }
 
         else
         {
           v10 = 0;
-          v9 = 0;
+          signers = 0;
         }
       }
 
-      if (v61)
+      if (sMIMEError)
       {
         v20 = 0;
       }
 
       else
       {
-        v21 = [(_MFSecCMSDecoder *)v7 data];
-        if (!v21)
+        data = [(_MFSecCMSDecoder *)v7 data];
+        if (!data)
         {
-          v21 = [(_MFSecCMSDecoder *)v7 signedData];
+          data = [(_MFSecCMSDecoder *)v7 signedData];
         }
 
-        v20 = [v21 mutableCopy];
+        v20 = [data mutableCopy];
         [v20 mf_convertNetworkLineEndingsToUnix];
         [v20 mf_makeImmutable];
       }
 
-      v11 = 0;
-      if (v20 && !v61)
+      messageBody = 0;
+      if (v20 && !sMIMEError)
       {
-        v54 = v8;
+        v54 = isContentEncrypted;
         v22 = [(MFDataMessageStore *)[_MFSecDataMessageStore alloc] initWithData:v20];
         [(MFMessage *)MFMailMessage setMessageClassForStore:v22];
-        -[MFDataMessageStore setStoragePath:](v22, "setStoragePath:", [objc_msgSend(objc_msgSend(a1 "mimeBody")]);
-        v23 = [(MFDataMessageStore *)v22 message];
-        [v23 setMessagePropertiesFromMessage:{objc_msgSend(objc_msgSend(a1, "mimeBody"), "message")}];
-        v24 = [objc_msgSend(a1 "mimeBody")];
+        -[MFDataMessageStore setStoragePath:](v22, "setStoragePath:", [objc_msgSend(objc_msgSend(self "mimeBody")]);
+        message = [(MFDataMessageStore *)v22 message];
+        [message setMessagePropertiesFromMessage:{objc_msgSend(objc_msgSend(self, "mimeBody"), "message")}];
+        v24 = [objc_msgSend(self "mimeBody")];
         v55 = a2;
         v53 = v10;
         if ([v24 isLibraryMessage])
         {
-          v25 = [MEMORY[0x277CBEBC0] URLWithString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@://%@", @"x-attach-SMIME", objc_msgSend(v24, "messageID"))}];
+          messageURL = [MEMORY[0x277CBEBC0] URLWithString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@://%@", @"x-attach-SMIME", objc_msgSend(v24, "messageID"))}];
         }
 
         else
         {
-          v25 = [v24 messageURL];
+          messageURL = [v24 messageURL];
         }
 
-        [v23 setMessageURL:v25];
-        v11 = [v23 messageBody];
-        v26 = [objc_msgSend(objc_msgSend(objc_msgSend(v11 "topLevelPart")];
+        [message setMessageURL:messageURL];
+        messageBody = [message messageBody];
+        v26 = [objc_msgSend(objc_msgSend(objc_msgSend(messageBody "topLevelPart")];
         if (v26)
         {
           v27 = v26;
           v52 = v6;
-          v28 = [[MFDecryptedAttachmentDataProvider alloc] initWithDecryptedMessage:v23];
+          v28 = [[MFDecryptedAttachmentDataProvider alloc] initWithDecryptedMessage:message];
           v56 = 0u;
           v57 = 0u;
           v58 = 0u;
@@ -348,13 +348,13 @@ LABEL_48:
 
         a2 = v55;
         v10 = v53;
-        v8 = v54;
+        isContentEncrypted = v54;
       }
 
-      if (!v61)
+      if (!sMIMEError)
       {
-        v61 = v60;
-        if (!(v11 | v60))
+        sMIMEError = v60;
+        if (!(messageBody | v60))
         {
           v34 = MFLogGeneral();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -362,7 +362,7 @@ LABEL_48:
             [(MFMimePart(SMIMEDecoding) *)v34 decodeApplicationPkcs7_mime:v35];
           }
 
-          if ((v8 | v10 ^ 1))
+          if ((isContentEncrypted | v10 ^ 1))
           {
             v42 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:MFLookupLocalizedString(@"SMIME_CANT_DECRYPT_MESSAGE", @"This message is encrypted.  Install a profile containing your encryption identity to decrypt this message.", @"Delayed")];
           }
@@ -370,26 +370,26 @@ LABEL_48:
           else
           {
             v42 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1036 localizedDescription:MFLookupLocalizedString(@"SMIME_UNREADABLE_SIG", @"There was a problem reading the digital signature for this message.", @"Delayed")];
-            v8 = 0;
+            isContentEncrypted = 0;
           }
 
-          v11 = 0;
-          v61 = v42;
+          messageBody = 0;
+          sMIMEError = v42;
         }
       }
     }
 
     else
     {
-      v11 = 0;
-      v9 = 0;
-      v61 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:MFLookupLocalizedString(@"SMIME_CANT_DECRYPT_MESSAGE", @"This message is encrypted.  Install a profile containing your encryption identity to decrypt this message.", @"Delayed")];
+      messageBody = 0;
+      signers = 0;
+      sMIMEError = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1035 localizedDescription:MFLookupLocalizedString(@"SMIME_CANT_DECRYPT_MESSAGE", @"This message is encrypted.  Install a profile containing your encryption identity to decrypt this message.", @"Delayed")];
       v10 = 1;
-      v8 = 1;
+      isContentEncrypted = 1;
     }
 
-    [a1 _setDecryptedMessageBody:v11 isEncrypted:v8 isSigned:v10];
-    if (!v11)
+    [self _setDecryptedMessageBody:messageBody isEncrypted:isContentEncrypted isSigned:v10];
+    if (!messageBody)
     {
       goto LABEL_48;
     }
@@ -401,33 +401,33 @@ LABEL_48:
     [(MFMimePart(SMIMEDecoding) *)a2 decodeApplicationPkcs7_mime];
   }
 
-  v12 = [v11 topLevelPart];
-  v13 = [v12 contentsForTextSystem];
-  if (!v9)
+  topLevelPart = [messageBody topLevelPart];
+  contentsForTextSystem = [topLevelPart contentsForTextSystem];
+  if (!signers)
   {
-    v9 = [v12 copySigners];
+    signers = [topLevelPart copySigners];
   }
 
-  if (!v61)
+  if (!sMIMEError)
   {
-    v61 = [v12 SMIMEError];
+    sMIMEError = [topLevelPart SMIMEError];
   }
 
 LABEL_49:
-  if (v9)
+  if (signers)
   {
-    [a1 _setSigners:v9];
+    [self _setSigners:signers];
   }
 
-  if (v61)
+  if (sMIMEError)
   {
-    [a1 _setSMIMEError:?];
-    if (v61)
+    [self _setSMIMEError:?];
+    if (sMIMEError)
     {
-      if (![v61 mf_shortDescription])
+      if (![sMIMEError mf_shortDescription])
       {
-        v43 = v61;
-        if ([v61 code] == 1036)
+        v43 = sMIMEError;
+        if ([sMIMEError code] == 1036)
         {
           v44 = @"SMIME_SIG_TITLE";
           v45 = @"Unable to verify message signature";
@@ -443,11 +443,11 @@ LABEL_49:
       }
 
       v46 = +[MFActivityMonitor currentMonitor];
-      [v46 setError:v61];
+      [v46 setError:sMIMEError];
       v47 = MFLogGeneral();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
       {
-        [(MFMimePart(SMIMEDecoding) *)&v61 decodeApplicationPkcs7_mime];
+        [(MFMimePart(SMIMEDecoding) *)&sMIMEError decodeApplicationPkcs7_mime];
       }
     }
   }
@@ -456,13 +456,13 @@ LABEL_49:
   v49 = [MEMORY[0x277CCABB0] numberWithBool:v6];
   [v48 setObject:v49 forKey:*MEMORY[0x277D24EA0]];
   v50 = *MEMORY[0x277D85DE8];
-  return v13;
+  return contentsForTextSystem;
 }
 
 - (void)decodeMultipartSigned
 {
   v1 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_6_0(a1);
+  OUTLINED_FUNCTION_6_0(self);
   OUTLINED_FUNCTION_6();
   OUTLINED_FUNCTION_0_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -472,7 +472,7 @@ LABEL_49:
 - (void)decodeApplicationPkcs7_mime
 {
   v1 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_6_0(a1);
+  OUTLINED_FUNCTION_6_0(self);
   OUTLINED_FUNCTION_6();
   OUTLINED_FUNCTION_0_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);

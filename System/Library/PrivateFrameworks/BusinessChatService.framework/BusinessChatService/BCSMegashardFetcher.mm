@@ -1,44 +1,44 @@
 @interface BCSMegashardFetcher
-- (BCSMegashardFetcher)initWithShardType:(int64_t)a3 configCache:(id)a4 shardCache:(id)a5 shardCacheSkipper:(id)a6 shardInstantiator:(id)a7 megashardRemoteFetcher:(id)a8 userDefaults:(id)a9 metricFactory:(id)a10;
-- (void)addFetchTrigger:(id)a3;
+- (BCSMegashardFetcher)initWithShardType:(int64_t)type configCache:(id)cache shardCache:(id)shardCache shardCacheSkipper:(id)skipper shardInstantiator:(id)instantiator megashardRemoteFetcher:(id)fetcher userDefaults:(id)defaults metricFactory:(id)self0;
+- (void)addFetchTrigger:(id)trigger;
 @end
 
 @implementation BCSMegashardFetcher
 
-- (BCSMegashardFetcher)initWithShardType:(int64_t)a3 configCache:(id)a4 shardCache:(id)a5 shardCacheSkipper:(id)a6 shardInstantiator:(id)a7 megashardRemoteFetcher:(id)a8 userDefaults:(id)a9 metricFactory:(id)a10
+- (BCSMegashardFetcher)initWithShardType:(int64_t)type configCache:(id)cache shardCache:(id)shardCache shardCacheSkipper:(id)skipper shardInstantiator:(id)instantiator megashardRemoteFetcher:(id)fetcher userDefaults:(id)defaults metricFactory:(id)self0
 {
-  v29 = a4;
-  v28 = a5;
-  v27 = a6;
-  v26 = a7;
-  v25 = a8;
-  v24 = a9;
-  v17 = a10;
+  cacheCopy = cache;
+  shardCacheCopy = shardCache;
+  skipperCopy = skipper;
+  instantiatorCopy = instantiator;
+  fetcherCopy = fetcher;
+  defaultsCopy = defaults;
+  factoryCopy = factory;
   v30.receiver = self;
   v30.super_class = BCSMegashardFetcher;
   v18 = [(BCSMegashardFetcher *)&v30 init];
   v19 = v18;
   if (v18)
   {
-    v18->_shardType = a3;
-    if ((a3 - 2) > 4)
+    v18->_shardType = type;
+    if ((type - 2) > 4)
     {
       v20 = 1;
     }
 
     else
     {
-      v20 = qword_2420E9108[a3 - 2];
+      v20 = qword_2420E9108[type - 2];
     }
 
     v18->_type = v20;
-    objc_storeStrong(&v18->_configCache, a4);
-    objc_storeStrong(&v19->_shardCache, a5);
-    objc_storeStrong(&v19->_shardCacheSkipper, a6);
-    objc_storeStrong(&v19->_megashardRemoteFetcher, a8);
-    objc_storeStrong(&v19->_shardInstantiator, a7);
-    objc_storeStrong(&v19->_userDefaults, a9);
-    objc_storeStrong(&v19->_metricFactory, a10);
+    objc_storeStrong(&v18->_configCache, cache);
+    objc_storeStrong(&v19->_shardCache, shardCache);
+    objc_storeStrong(&v19->_shardCacheSkipper, skipper);
+    objc_storeStrong(&v19->_megashardRemoteFetcher, fetcher);
+    objc_storeStrong(&v19->_shardInstantiator, instantiator);
+    objc_storeStrong(&v19->_userDefaults, defaults);
+    objc_storeStrong(&v19->_metricFactory, factory);
     v21 = [MEMORY[0x277CBEB58] set];
     triggers = v19->_triggers;
     v19->_triggers = v21;
@@ -47,11 +47,11 @@
   return v19;
 }
 
-- (void)addFetchTrigger:(id)a3
+- (void)addFetchTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   objc_initWeak(&location, self);
-  v5 = [v4 description];
+  v5 = [triggerCopy description];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __39__BCSMegashardFetcher_addFetchTrigger___block_invoke;
@@ -59,8 +59,8 @@
   objc_copyWeak(&v15, &location);
   v6 = v5;
   v13 = v6;
-  v14 = self;
-  [v4 scheduleFetchBlock:&v9];
+  selfCopy = self;
+  [triggerCopy scheduleFetchBlock:&v9];
   if (self)
   {
     triggers = self->_triggers;
@@ -72,7 +72,7 @@
   }
 
   v8 = triggers;
-  [(NSMutableSet *)v8 addObject:v4, v9, v10, v11, v12];
+  [(NSMutableSet *)v8 addObject:triggerCopy, v9, v10, v11, v12];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);

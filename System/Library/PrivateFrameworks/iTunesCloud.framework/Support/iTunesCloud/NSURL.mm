@@ -1,41 +1,41 @@
 @interface NSURL
-- (BOOL)ic_referencesSameFile:(id)a3;
+- (BOOL)ic_referencesSameFile:(id)file;
 @end
 
 @implementation NSURL
 
-- (BOOL)ic_referencesSameFile:(id)a3
+- (BOOL)ic_referencesSameFile:(id)file
 {
-  v4 = a3;
-  if (-[NSURL isFileURL](self, "isFileURL") && [v4 isFileURL])
+  fileCopy = file;
+  if (-[NSURL isFileURL](self, "isFileURL") && [fileCopy isFileURL])
   {
-    if (([(NSURL *)self isEqual:v4]& 1) != 0)
+    if (([(NSURL *)self isEqual:fileCopy]& 1) != 0)
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [(NSURL *)self path];
-      v8 = [v7 stringByStandardizingPath];
+      path = [(NSURL *)self path];
+      stringByStandardizingPath = [path stringByStandardizingPath];
 
-      v9 = [v4 path];
-      v10 = [v9 stringByStandardizingPath];
+      path2 = [fileCopy path];
+      stringByStandardizingPath2 = [path2 stringByStandardizingPath];
 
-      if ([v8 isEqualToString:v10])
+      if ([stringByStandardizingPath isEqualToString:stringByStandardizingPath2])
       {
         v5 = 1;
       }
 
       else
       {
-        v11 = [v8 stringByResolvingSymlinksInPath];
+        stringByResolvingSymlinksInPath = [stringByStandardizingPath stringByResolvingSymlinksInPath];
 
-        v12 = [v10 stringByResolvingSymlinksInPath];
+        stringByResolvingSymlinksInPath2 = [stringByStandardizingPath2 stringByResolvingSymlinksInPath];
 
-        v5 = [v11 isEqualToString:v12];
-        v8 = v11;
-        v10 = v12;
+        v5 = [stringByResolvingSymlinksInPath isEqualToString:stringByResolvingSymlinksInPath2];
+        stringByStandardizingPath = stringByResolvingSymlinksInPath;
+        stringByStandardizingPath2 = stringByResolvingSymlinksInPath2;
       }
     }
   }

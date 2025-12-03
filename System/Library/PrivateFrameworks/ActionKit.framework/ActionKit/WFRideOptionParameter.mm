@@ -1,8 +1,8 @@
 @interface WFRideOptionParameter
-- (BOOL)parameterStateIsValid:(id)a3;
+- (BOOL)parameterStateIsValid:(id)valid;
 - (WFAction)action;
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4;
-- (void)setAction:(id)a3;
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key;
+- (void)setAction:(id)action;
 @end
 
 @implementation WFRideOptionParameter
@@ -14,12 +14,12 @@
   return WeakRetained;
 }
 
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key
 {
-  v5 = a4;
-  v6 = [(WFRideOptionParameter *)self definition];
-  v7 = [v6 objectForKey:@"PartySizeKey"];
-  v8 = [v5 isEqualToString:v7];
+  keyCopy = key;
+  definition = [(WFRideOptionParameter *)self definition];
+  v7 = [definition objectForKey:@"PartySizeKey"];
+  v8 = [keyCopy isEqualToString:v7];
 
   if (v8)
   {
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  obj = a3;
+  obj = action;
   WeakRetained = objc_loadWeakRetained(&self->_action);
 
   if (WeakRetained != obj)
@@ -43,25 +43,25 @@
   }
 }
 
-- (BOOL)parameterStateIsValid:(id)a3
+- (BOOL)parameterStateIsValid:(id)valid
 {
-  v5 = a3;
-  v6 = [(WFDynamicEnumerationParameter *)self possibleStates];
-  if (!v6)
+  validCopy = valid;
+  possibleStates = [(WFDynamicEnumerationParameter *)self possibleStates];
+  if (!possibleStates)
   {
-    v3 = [(WFDynamicEnumerationParameter *)self possibleStatesLoadingError];
-    if (!v3)
+    possibleStatesLoadingError = [(WFDynamicEnumerationParameter *)self possibleStatesLoadingError];
+    if (!possibleStatesLoadingError)
     {
       goto LABEL_9;
     }
   }
 
-  v7 = [v5 value];
+  value = [validCopy value];
 
-  if (!v6)
+  if (!possibleStates)
   {
 
-    if (v7)
+    if (value)
     {
       goto LABEL_5;
     }
@@ -71,38 +71,38 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (!v7)
+  if (!value)
   {
     goto LABEL_9;
   }
 
 LABEL_5:
   v8 = MEMORY[0x277CBEB98];
-  v9 = [(WFDynamicEnumerationParameter *)self possibleStates];
-  v10 = [v9 valueForKeyPath:@"value.name"];
+  possibleStates2 = [(WFDynamicEnumerationParameter *)self possibleStates];
+  v10 = [possibleStates2 valueForKeyPath:@"value.name"];
   v11 = [v8 setWithArray:v10];
 
-  v12 = [v5 value];
-  v13 = [v12 name];
-  v14 = [v11 containsObject:v13];
+  value2 = [validCopy value];
+  name = [value2 name];
+  v14 = [v11 containsObject:name];
 
   if (v14)
   {
-    v15 = [(WFRideOptionParameter *)self action];
-    v16 = [(WFRideOptionParameter *)self definition];
-    v17 = [v16 objectForKey:@"PartySizeKey"];
-    v18 = [v15 parameterStateForKey:v17];
+    action = [(WFRideOptionParameter *)self action];
+    definition = [(WFRideOptionParameter *)self definition];
+    v17 = [definition objectForKey:@"PartySizeKey"];
+    v18 = [action parameterStateForKey:v17];
 
-    v19 = [v18 value];
+    value3 = [v18 value];
 
-    if (v19)
+    if (value3)
     {
-      v20 = [v18 value];
-      v21 = [v20 number];
-      v22 = [v21 unsignedIntegerValue];
+      value4 = [v18 value];
+      number = [value4 number];
+      unsignedIntegerValue = [number unsignedIntegerValue];
 
-      v23 = [v5 value];
-      v24 = [v23 wf_isAvailableForPartySize:v22];
+      value5 = [validCopy value];
+      v24 = [value5 wf_isAvailableForPartySize:unsignedIntegerValue];
     }
 
     else

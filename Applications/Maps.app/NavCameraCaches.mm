@@ -1,20 +1,20 @@
 @interface NavCameraCaches
-+ (id)cachesWithRoute:(id)a3 context:(id)a4;
++ (id)cachesWithRoute:(id)route context:(id)context;
 - (NavCameraCaches)init;
-- (void)_calculateRoadTileGroupedManeuversWithUpdateHandler:(id)a3;
+- (void)_calculateRoadTileGroupedManeuversWithUpdateHandler:(id)handler;
 - (void)_calculateRouteGroupedManeuvers;
-- (void)_roadForCoordinate:(id)a3 course:(double)a4 handler:(id)a5;
+- (void)_roadForCoordinate:(id)coordinate course:(double)course handler:(id)handler;
 - (void)_updateGroupedManeuverCounts;
 - (void)recalculateGroupedManeuversCaches;
 @end
 
 @implementation NavCameraCaches
 
-- (void)_roadForCoordinate:(id)a3 course:(double)a4 handler:(id)a5
+- (void)_roadForCoordinate:(id)coordinate course:(double)course handler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v9 = a5;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
+  handlerCopy = handler;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
@@ -26,26 +26,26 @@
   v13[3] = &unk_101631820;
   v16 = var0;
   v17 = var1;
-  v18 = a4;
+  courseCopy = course;
   v15 = v19;
-  v11 = v9;
+  v11 = handlerCopy;
   v14 = v11;
   v12 = [(GEOMapFeatureAccess *)mapFeatureAccess findRoadsNear:v13 radius:0 handler:var0 completionHandler:var1, 50.0];
 
   _Block_object_dispose(v19, 8);
 }
 
-- (void)_calculateRoadTileGroupedManeuversWithUpdateHandler:(id)a3
+- (void)_calculateRoadTileGroupedManeuversWithUpdateHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NavCameraCaches *)self currentRoute];
-  v6 = [v5 stepsCount];
+  handlerCopy = handler;
+  currentRoute = [(NavCameraCaches *)self currentRoute];
+  stepsCount = [currentRoute stepsCount];
 
-  v7 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F70 withCapacity:v6];
+  v7 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F70 withCapacity:stepsCount];
   v8 = [v7 mutableCopy];
 
-  v9 = [(NavCameraCaches *)self currentRoute];
-  v10 = [v9 steps];
+  currentRoute2 = [(NavCameraCaches *)self currentRoute];
+  steps = [currentRoute2 steps];
 
   GEOConfigGetDouble();
   v12 = v11;
@@ -53,7 +53,7 @@
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v10;
+  obj = steps;
   v13 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v13)
   {
@@ -69,26 +69,26 @@
         }
 
         v17 = *(*(&v36 + 1) + 8 * i);
-        v18 = [v17 stepIndex];
-        v19 = [v8 objectAtIndexedSubscript:v18];
-        v20 = [v19 integerValue];
+        stepIndex = [v17 stepIndex];
+        v19 = [v8 objectAtIndexedSubscript:stepIndex];
+        integerValue = [v19 integerValue];
 
-        if ((v20 & 0x8000000000000000) != 0)
+        if ((integerValue & 0x8000000000000000) != 0)
         {
           [v17 distance];
           if (v22 > v12)
           {
-            [v8 setObject:&off_1016E7F58 atIndexedSubscript:v18];
-            v4[2](v4);
+            [v8 setObject:&off_1016E7F58 atIndexedSubscript:stepIndex];
+            handlerCopy[2](handlerCopy);
           }
 
-          v23 = [(NavCameraCaches *)self currentRoute];
-          [v23 pointAtRouteCoordinate:{objc_msgSend(v17, "endRouteCoordinate")}];
+          currentRoute3 = [(NavCameraCaches *)self currentRoute];
+          [currentRoute3 pointAtRouteCoordinate:{objc_msgSend(v17, "endRouteCoordinate")}];
           v25 = v24;
           v27 = v26;
 
-          v28 = [(NavCameraCaches *)self currentRoute];
-          [v28 courseAtRouteCoordinateIndex:{objc_msgSend(v17, "endRouteCoordinate")}];
+          currentRoute4 = [(NavCameraCaches *)self currentRoute];
+          [currentRoute4 courseAtRouteCoordinateIndex:{objc_msgSend(v17, "endRouteCoordinate")}];
           v30 = v29;
 
           v32[0] = _NSConcreteStackBlock;
@@ -96,16 +96,16 @@
           v32[2] = sub_1009EB480;
           v32[3] = &unk_1016317F8;
           v32[4] = self;
-          v35 = v18;
+          v35 = stepIndex;
           v33 = v8;
-          v34 = v4;
+          v34 = handlerCopy;
           [(NavCameraCaches *)self _roadForCoordinate:v32 course:v25 handler:v27, v30];
         }
 
         else
         {
-          v21 = [(NSArray *)self->_stepsWithRampCache objectAtIndexedSubscript:v18];
-          [v8 setObject:v21 atIndexedSubscript:v18];
+          v21 = [(NSArray *)self->_stepsWithRampCache objectAtIndexedSubscript:stepIndex];
+          [v8 setObject:v21 atIndexedSubscript:stepIndex];
         }
       }
 
@@ -118,8 +118,8 @@
 
 - (void)_calculateRouteGroupedManeuvers
 {
-  v4 = [(NavCameraCaches *)self currentRoute];
-  v5 = [v4 stepsCount];
+  currentRoute = [(NavCameraCaches *)self currentRoute];
+  stepsCount = [currentRoute stepsCount];
 
   GEOConfigGetDouble();
   v7 = v6;
@@ -127,24 +127,24 @@
   v9 = v8;
   GEOConfigGetDouble();
   v11 = v10;
-  v12 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:v5];
+  v12 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:stepsCount];
   v48 = [v12 mutableCopy];
 
-  v13 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:v5];
+  v13 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:stepsCount];
   v47 = [v13 mutableCopy];
 
-  v14 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:v5];
+  v14 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:stepsCount];
   v46 = [v14 mutableCopy];
 
-  v45 = self;
-  v15 = [(NavCameraCaches *)self currentRoute];
-  v16 = [v15 steps];
+  selfCopy = self;
+  currentRoute2 = [(NavCameraCaches *)self currentRoute];
+  steps = [currentRoute2 steps];
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v16;
+  obj = steps;
   v17 = [obj countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (v17)
   {
@@ -163,14 +163,14 @@
         }
 
         v22 = *(*(&v51 + 1) + 8 * v21);
-        v23 = [v22 stepIndex];
+        stepIndex = [v22 stepIndex];
         [v22 distance];
         if (v24 > 0.0)
         {
           [v22 distance];
           if (v25 <= v7)
           {
-            [v48 setObject:v20 atIndexedSubscript:v23];
+            [v48 setObject:v20 atIndexedSubscript:stepIndex];
           }
         }
 
@@ -180,22 +180,22 @@
           [v22 distance];
           if (v27 <= v9)
           {
-            [v47 setObject:v20 atIndexedSubscript:v23];
+            [v47 setObject:v20 atIndexedSubscript:stepIndex];
           }
         }
 
-        v28 = [v22 geoStep];
-        v29 = [v28 maneuverType];
-        if (v29 < 41 || ([v22 geoStep], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "maneuverType") >= 60))
+        geoStep = [v22 geoStep];
+        maneuverType = [geoStep maneuverType];
+        if (maneuverType < 41 || ([v22 geoStep], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "maneuverType") >= 60))
         {
-          v33 = [v22 geoStep];
-          if ([v33 maneuverType] == 6)
+          geoStep2 = [v22 geoStep];
+          if ([geoStep2 maneuverType] == 6)
           {
             [v22 distance];
             if (v34 <= 0.0)
             {
 
-              if (v29 > 40)
+              if (maneuverType > 40)
               {
 LABEL_24:
               }
@@ -211,11 +211,11 @@ LABEL_24:
           {
             v37 = v19;
             v38 = v20;
-            v39 = [v22 geoStep];
-            if ([v39 maneuverType] != 7)
+            geoStep3 = [v22 geoStep];
+            if ([geoStep3 maneuverType] != 7)
             {
 
-              if (v29 > 40)
+              if (maneuverType > 40)
               {
               }
 
@@ -242,7 +242,7 @@ LABEL_24:
             v18 = v49;
           }
 
-          if (v29 <= 40)
+          if (maneuverType <= 40)
           {
 
             if (!v36)
@@ -251,7 +251,7 @@ LABEL_24:
             }
 
 LABEL_35:
-            [v46 setObject:v20 atIndexedSubscript:v23];
+            [v46 setObject:v20 atIndexedSubscript:stepIndex];
             goto LABEL_36;
           }
 
@@ -290,40 +290,40 @@ LABEL_36:
   }
 
   v42 = [v48 copy];
-  [(NavCameraCaches *)v45 setStepsWithCloseDistanceCache:v42];
+  [(NavCameraCaches *)selfCopy setStepsWithCloseDistanceCache:v42];
 
   v43 = [v47 copy];
-  [(NavCameraCaches *)v45 setStepsWithNearDistanceCache:v43];
+  [(NavCameraCaches *)selfCopy setStepsWithNearDistanceCache:v43];
 
   v44 = [v46 copy];
-  [(NavCameraCaches *)v45 setStepsWithRoundaboutCache:v44];
+  [(NavCameraCaches *)selfCopy setStepsWithRoundaboutCache:v44];
 }
 
 - (void)_updateGroupedManeuverCounts
 {
-  v3 = [(NavCameraCaches *)self currentRoute];
-  v4 = [v3 stepsCount];
+  currentRoute = [(NavCameraCaches *)self currentRoute];
+  stepsCount = [currentRoute stepsCount];
 
-  v5 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:v4];
+  v5 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:stepsCount];
   v6 = [v5 mutableCopy];
 
-  v7 = [(NavCameraCaches *)self stepsWithCloseDistanceCache];
+  stepsWithCloseDistanceCache = [(NavCameraCaches *)self stepsWithCloseDistanceCache];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1009EBC8C;
   v32[3] = &unk_101652D90;
   v8 = v6;
   v33 = v8;
-  [v7 enumerateObjectsUsingBlock:v32];
+  [stepsWithCloseDistanceCache enumerateObjectsUsingBlock:v32];
 
-  v9 = [(NavCameraCaches *)self stepsWithRoundaboutCache];
+  stepsWithRoundaboutCache = [(NavCameraCaches *)self stepsWithRoundaboutCache];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_1009EBCEC;
   v30[3] = &unk_101652D90;
   v10 = v8;
   v31 = v10;
-  [v9 enumerateObjectsUsingBlock:v30];
+  [stepsWithRoundaboutCache enumerateObjectsUsingBlock:v30];
 
   stepsWithRampCache = self->_stepsWithRampCache;
   v28[0] = _NSConcreteStackBlock;
@@ -382,9 +382,9 @@ LABEL_36:
   }
 
   [(NavCameraCaches *)self setGroupedManeuverCounts:v14];
-  v21 = [(NavCameraCaches *)self groupedManeuverCounts];
-  v22 = [(NavCameraCaches *)self navContex];
-  [v22 setGroupedManeuverCounts:v21];
+  groupedManeuverCounts = [(NavCameraCaches *)self groupedManeuverCounts];
+  navContex = [(NavCameraCaches *)self navContex];
+  [navContex setGroupedManeuverCounts:groupedManeuverCounts];
 }
 
 - (void)recalculateGroupedManeuversCaches
@@ -417,27 +417,27 @@ LABEL_36:
   return v2;
 }
 
-+ (id)cachesWithRoute:(id)a3 context:(id)a4
++ (id)cachesWithRoute:(id)route context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  routeCopy = route;
   v7 = objc_alloc_init(NavCameraCaches);
-  [(NavCameraCaches *)v7 setCurrentRoute:v6];
+  [(NavCameraCaches *)v7 setCurrentRoute:routeCopy];
 
-  [(NavCameraCaches *)v7 setNavContex:v5];
-  v8 = [(NavCameraCaches *)v7 currentRoute];
-  v9 = [v8 stepsCount];
+  [(NavCameraCaches *)v7 setNavContex:contextCopy];
+  currentRoute = [(NavCameraCaches *)v7 currentRoute];
+  stepsCount = [currentRoute stepsCount];
 
-  v10 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:v9];
+  v10 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:stepsCount];
   [(NavCameraCaches *)v7 setStepsWithCloseDistanceCache:v10];
 
-  v11 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:v9];
+  v11 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:stepsCount];
   [(NavCameraCaches *)v7 setStepsWithNearDistanceCache:v11];
 
-  v12 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:v9];
+  v12 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F58 withCapacity:stepsCount];
   [(NavCameraCaches *)v7 setStepsWithRoundaboutCache:v12];
 
-  v13 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F70 withCapacity:v9];
+  v13 = [NSArray _navigation_newArrayWithDefaultValue:&off_1016E7F70 withCapacity:stepsCount];
   [(NavCameraCaches *)v7 setStepsWithRampCache:v13];
 
   [(NavCameraCaches *)v7 recalculateGroupedManeuversCaches];

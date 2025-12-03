@@ -1,12 +1,12 @@
 @interface CLIntersiloService
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-+ (void)performSyncOnSilo:(id)a3 invoker:(id)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
++ (void)performSyncOnSilo:(id)silo invoker:(id)invoker;
 - (CLIntersiloService)init;
-- (CLIntersiloService)initWithInboundProtocol:(id)a3 outboundProtocol:(id)a4;
+- (CLIntersiloService)initWithInboundProtocol:(id)protocol outboundProtocol:(id)outboundProtocol;
 - (NSString)debugDescription;
-- (void)setSilo:(id)a3;
-- (void)setVendor:(id)a3;
+- (void)setSilo:(id)silo;
+- (void)setVendor:(id)vendor;
 @end
 
 @implementation CLIntersiloService
@@ -77,10 +77,10 @@ LABEL_11:
   }
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  blockedCopy = blocked;
   if (qword_1ED5FAD40 != -1)
   {
     dispatch_once(&qword_1ED5FAD40, &unk_1F5AC65B8);
@@ -118,21 +118,21 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&dword_1DF7FE000, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "-becameFatallyBlocked:index: was not overriden", "{msg%{public}.0s:-becameFatallyBlocked:index: was not overriden, class:%{public, location:escape_only}@}", &v16, 0x1Cu);
   }
 
-  v13 = a4 + 1;
-  if (v13 < [v5 count])
+  v13 = index + 1;
+  if (v13 < [blockedCopy count])
   {
-    v14 = [v5 objectAtIndexedSubscript:v13];
-    [v14 becameFatallyBlocked:v5 index:v13];
+    v14 = [blockedCopy objectAtIndexedSubscript:v13];
+    [v14 becameFatallyBlocked:blockedCopy index:v13];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)performSyncOnSilo:(id)a3 invoker:(id)a4
++ (void)performSyncOnSilo:(id)silo invoker:(id)invoker
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  siloCopy = silo;
+  invokerCopy = invoker;
   if (qword_1ED5FAD40 != -1)
   {
     goto LABEL_11;
@@ -262,29 +262,29 @@ LABEL_11:
   }
 }
 
-- (CLIntersiloService)initWithInboundProtocol:(id)a3 outboundProtocol:(id)a4
+- (CLIntersiloService)initWithInboundProtocol:(id)protocol outboundProtocol:(id)outboundProtocol
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  protocolCopy = protocol;
+  outboundProtocolCopy = outboundProtocol;
   v16.receiver = self;
   v16.super_class = CLIntersiloService;
   v8 = [(CLIntersiloService *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    if (v6 && v7)
+    if (protocolCopy && outboundProtocolCopy)
     {
       v10 = +[CLIntersiloInterface sharedInterface];
       v18[0] = &unk_1F5ACAE18;
       v18[1] = &unk_1F5ACA788;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-      [v10 extendSelectorInfoWithProtocol:v6 bases:v11];
+      [v10 extendSelectorInfoWithProtocol:protocolCopy bases:v11];
 
       v12 = +[CLIntersiloInterface sharedInterface];
       v17 = &unk_1F5ACA788;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
-      [v12 extendSelectorInfoWithProtocol:v7 bases:v13];
+      [v12 extendSelectorInfoWithProtocol:outboundProtocolCopy bases:v13];
     }
 
     else
@@ -298,10 +298,10 @@ LABEL_11:
   return v9;
 }
 
-- (void)setSilo:(id)a3
+- (void)setSilo:(id)silo
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  siloCopy = silo;
   if (self->_silo)
   {
     v6 = sub_1DF814218();
@@ -349,14 +349,14 @@ LABEL_11:
     abort_report_np();
   }
 
-  self->_silo = v4;
+  self->_silo = siloCopy;
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setVendor:(id)a3
+- (void)setVendor:(id)vendor
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  vendorCopy = vendor;
   if (self->_vendor)
   {
     v6 = sub_1DF814218();
@@ -404,7 +404,7 @@ LABEL_11:
     abort_report_np();
   }
 
-  self->_vendor = v4;
+  self->_vendor = vendorCopy;
   v5 = *MEMORY[0x1E69E9840];
 }
 
@@ -414,9 +414,9 @@ LABEL_11:
   v9.receiver = self;
   v9.super_class = CLIntersiloService;
   v4 = [(CLIntersiloService *)&v9 debugDescription];
-  v5 = [(CLIntersiloService *)self universe];
-  v6 = [v5 silo];
-  v7 = [v3 stringWithFormat:@"%@\nSilo: %@", v4, v6];
+  universe = [(CLIntersiloService *)self universe];
+  silo = [universe silo];
+  v7 = [v3 stringWithFormat:@"%@\nSilo: %@", v4, silo];
 
   return v7;
 }

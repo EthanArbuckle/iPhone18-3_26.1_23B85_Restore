@@ -1,5 +1,5 @@
 @interface _CUINameContentRendition
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
 - (void)dealloc;
 @end
 
@@ -12,16 +12,16 @@
   [(CUIThemeRendition *)&v3 dealloc];
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v14.receiver = self;
   v14.super_class = _CUINameContentRendition;
-  v5 = [(CUIThemeRendition *)&v14 _initWithCSIHeader:a3 version:*&a4];
-  var10 = a3->var10;
+  v5 = [(CUIThemeRendition *)&v14 _initWithCSIHeader:header version:*&version];
+  var10 = header->var10;
   if (var10)
   {
-    v7 = (&a3->var11.var1[a3->var11.var0 + 1] + var10);
-    v8 = &a3->var11.var1[a3->var11.var0 + 1];
+    v7 = (&header->var11.var1[header->var11.var0 + 1] + var10);
+    v8 = &header->var11.var1[header->var11.var0 + 1];
     do
     {
       if (*v8 == 1013)

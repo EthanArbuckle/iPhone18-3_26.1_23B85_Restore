@@ -8,8 +8,8 @@
 - (void)cancel
 {
   [(RSDLocalServiceSocketListener *)self setCanceled:1];
-  v3 = [(RSDLocalServiceSocketListener *)self socket_source];
-  dispatch_source_cancel(v3);
+  socket_source = [(RSDLocalServiceSocketListener *)self socket_source];
+  dispatch_source_cancel(socket_source);
 
   v4.receiver = self;
   v4.super_class = RSDLocalServiceSocketListener;

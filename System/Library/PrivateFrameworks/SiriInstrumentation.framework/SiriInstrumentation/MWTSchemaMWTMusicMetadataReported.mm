@@ -1,77 +1,77 @@
 @interface MWTSchemaMWTMusicMetadataReported
-- (BOOL)isEqual:(id)a3;
-- (MWTSchemaMWTMusicMetadataReported)initWithDictionary:(id)a3;
-- (MWTSchemaMWTMusicMetadataReported)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MWTSchemaMWTMusicMetadataReported)initWithDictionary:(id)dictionary;
+- (MWTSchemaMWTMusicMetadataReported)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAssetEndPoint:(BOOL)a3;
-- (void)setHasAssetLocation:(BOOL)a3;
-- (void)setHasAssetSource:(BOOL)a3;
-- (void)setHasCmInitialStartupItemCreationToLtluDurationInMs:(BOOL)a3;
-- (void)setHasCmInitialStartupItemCreationToReadyToPlayDurationInMs:(BOOL)a3;
-- (void)setHasContentConnectionTlsHandshakeDurationInMs:(BOOL)a3;
-- (void)setHasContentFirstSegmentDurationInMs:(BOOL)a3;
-- (void)setHasEndPointType:(BOOL)a3;
-- (void)setHasFormatBitDepth:(BOOL)a3;
-- (void)setHasFormatBitrate:(BOOL)a3;
-- (void)setHasFormatChannels:(BOOL)a3;
-- (void)setHasFormatCodec:(BOOL)a3;
-- (void)setHasFormatLayout:(BOOL)a3;
-- (void)setHasFormatLayoutValue:(BOOL)a3;
-- (void)setHasFormatSampleRate:(BOOL)a3;
-- (void)setHasFormatTier:(BOOL)a3;
-- (void)setHasHasBagWaitTime:(BOOL)a3;
-- (void)setHasHasLeaseWaitTime:(BOOL)a3;
-- (void)setHasHasLookupWaitTime:(BOOL)a3;
-- (void)setHasHasMediaRedownloadWaitTime:(BOOL)a3;
-- (void)setHasHasSubscriptionAssetLoadWaitTime:(BOOL)a3;
-- (void)setHasHasSuzeLeaseWaitTime:(BOOL)a3;
-- (void)setHasIsAccountDataReady:(BOOL)a3;
-- (void)setHasIsAutoPlay:(BOOL)a3;
-- (void)setHasIsDelegatedPlayback:(BOOL)a3;
-- (void)setHasIsFirstPlayAfterAppLaunch:(BOOL)a3;
-- (void)setHasIsHlsKeysReady:(BOOL)a3;
-- (void)setHasIsInterruptingPlayback:(BOOL)a3;
-- (void)setHasIsLeaseReady:(BOOL)a3;
-- (void)setHasIsMiniSinfAvailable:(BOOL)a3;
-- (void)setHasIsNonDefaultUser:(BOOL)a3;
-- (void)setHasIsOfflineKeyReady:(BOOL)a3;
-- (void)setHasIsOnlineKeyReady:(BOOL)a3;
-- (void)setHasIsPrimaryUser:(BOOL)a3;
-- (void)setHasIsRemoteSetQueue:(BOOL)a3;
-- (void)setHasIsSharePlayPlayback:(BOOL)a3;
-- (void)setHasIsShuffled:(BOOL)a3;
-- (void)setHasIsStoreBagReady:(BOOL)a3;
-- (void)setHasIsSuzeLease:(BOOL)a3;
-- (void)setHasMasterPlaylistRequestDurationInMs:(BOOL)a3;
-- (void)setHasNetworkConnectionType:(BOOL)a3;
-- (void)setHasNumberOfSpeakers:(BOOL)a3;
-- (void)setHasPrefetchedMetadataSource:(BOOL)a3;
-- (void)setHasQueueSize:(BOOL)a3;
-- (void)setHasQueueType:(BOOL)a3;
-- (void)setHasRouteConfiguration:(BOOL)a3;
-- (void)setHasRouteType:(BOOL)a3;
-- (void)setHasStreamingContentType:(BOOL)a3;
-- (void)setHasSubPlaylistConnectionTlsHandshakeDurationInMs:(BOOL)a3;
-- (void)setHasSubPlaylistRequestDurationInMs:(BOOL)a3;
-- (void)setHasSubscriptionType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAssetEndPoint:(BOOL)point;
+- (void)setHasAssetLocation:(BOOL)location;
+- (void)setHasAssetSource:(BOOL)source;
+- (void)setHasCmInitialStartupItemCreationToLtluDurationInMs:(BOOL)ms;
+- (void)setHasCmInitialStartupItemCreationToReadyToPlayDurationInMs:(BOOL)ms;
+- (void)setHasContentConnectionTlsHandshakeDurationInMs:(BOOL)ms;
+- (void)setHasContentFirstSegmentDurationInMs:(BOOL)ms;
+- (void)setHasEndPointType:(BOOL)type;
+- (void)setHasFormatBitDepth:(BOOL)depth;
+- (void)setHasFormatBitrate:(BOOL)bitrate;
+- (void)setHasFormatChannels:(BOOL)channels;
+- (void)setHasFormatCodec:(BOOL)codec;
+- (void)setHasFormatLayout:(BOOL)layout;
+- (void)setHasFormatLayoutValue:(BOOL)value;
+- (void)setHasFormatSampleRate:(BOOL)rate;
+- (void)setHasFormatTier:(BOOL)tier;
+- (void)setHasHasBagWaitTime:(BOOL)time;
+- (void)setHasHasLeaseWaitTime:(BOOL)time;
+- (void)setHasHasLookupWaitTime:(BOOL)time;
+- (void)setHasHasMediaRedownloadWaitTime:(BOOL)time;
+- (void)setHasHasSubscriptionAssetLoadWaitTime:(BOOL)time;
+- (void)setHasHasSuzeLeaseWaitTime:(BOOL)time;
+- (void)setHasIsAccountDataReady:(BOOL)ready;
+- (void)setHasIsAutoPlay:(BOOL)play;
+- (void)setHasIsDelegatedPlayback:(BOOL)playback;
+- (void)setHasIsFirstPlayAfterAppLaunch:(BOOL)launch;
+- (void)setHasIsHlsKeysReady:(BOOL)ready;
+- (void)setHasIsInterruptingPlayback:(BOOL)playback;
+- (void)setHasIsLeaseReady:(BOOL)ready;
+- (void)setHasIsMiniSinfAvailable:(BOOL)available;
+- (void)setHasIsNonDefaultUser:(BOOL)user;
+- (void)setHasIsOfflineKeyReady:(BOOL)ready;
+- (void)setHasIsOnlineKeyReady:(BOOL)ready;
+- (void)setHasIsPrimaryUser:(BOOL)user;
+- (void)setHasIsRemoteSetQueue:(BOOL)queue;
+- (void)setHasIsSharePlayPlayback:(BOOL)playback;
+- (void)setHasIsShuffled:(BOOL)shuffled;
+- (void)setHasIsStoreBagReady:(BOOL)ready;
+- (void)setHasIsSuzeLease:(BOOL)lease;
+- (void)setHasMasterPlaylistRequestDurationInMs:(BOOL)ms;
+- (void)setHasNetworkConnectionType:(BOOL)type;
+- (void)setHasNumberOfSpeakers:(BOOL)speakers;
+- (void)setHasPrefetchedMetadataSource:(BOOL)source;
+- (void)setHasQueueSize:(BOOL)size;
+- (void)setHasQueueType:(BOOL)type;
+- (void)setHasRouteConfiguration:(BOOL)configuration;
+- (void)setHasRouteType:(BOOL)type;
+- (void)setHasStreamingContentType:(BOOL)type;
+- (void)setHasSubPlaylistConnectionTlsHandshakeDurationInMs:(BOOL)ms;
+- (void)setHasSubPlaylistRequestDurationInMs:(BOOL)ms;
+- (void)setHasSubscriptionType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MWTSchemaMWTMusicMetadataReported
 
-- (MWTSchemaMWTMusicMetadataReported)initWithDictionary:(id)a3
+- (MWTSchemaMWTMusicMetadataReported)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v117.receiver = self;
   v117.super_class = MWTSchemaMWTMusicMetadataReported;
   v5 = [(MWTSchemaMWTMusicMetadataReported *)&v117 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"musicDomain"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"musicDomain"];
     objc_opt_class();
     v85 = v6;
     if (objc_opt_isKindOfClass())
@@ -79,7 +79,7 @@
       -[MWTSchemaMWTMusicMetadataReported setMusicDomain:](v5, "setMusicDomain:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"queueType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"queueType"];
     objc_opt_class();
     v83 = v7;
     if (objc_opt_isKindOfClass())
@@ -87,7 +87,7 @@
       -[MWTSchemaMWTMusicMetadataReported setQueueType:](v5, "setQueueType:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"queueSize"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"queueSize"];
     objc_opt_class();
     v81 = v8;
     if (objc_opt_isKindOfClass())
@@ -95,7 +95,7 @@
       -[MWTSchemaMWTMusicMetadataReported setQueueSize:](v5, "setQueueSize:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isShuffled"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isShuffled"];
     objc_opt_class();
     v116 = v9;
     if (objc_opt_isKindOfClass())
@@ -103,7 +103,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsShuffled:](v5, "setIsShuffled:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"prefetchedMetadataSource"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"prefetchedMetadataSource"];
     objc_opt_class();
     v78 = v10;
     if (objc_opt_isKindOfClass())
@@ -111,7 +111,7 @@
       -[MWTSchemaMWTMusicMetadataReported setPrefetchedMetadataSource:](v5, "setPrefetchedMetadataSource:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"assetEndPoint"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"assetEndPoint"];
     objc_opt_class();
     v76 = v11;
     if (objc_opt_isKindOfClass())
@@ -119,7 +119,7 @@
       -[MWTSchemaMWTMusicMetadataReported setAssetEndPoint:](v5, "setAssetEndPoint:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"streamingContentType"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"streamingContentType"];
     objc_opt_class();
     v115 = v12;
     if (objc_opt_isKindOfClass())
@@ -127,7 +127,7 @@
       -[MWTSchemaMWTMusicMetadataReported setStreamingContentType:](v5, "setStreamingContentType:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"formatCodec"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"formatCodec"];
     objc_opt_class();
     v114 = v13;
     if (objc_opt_isKindOfClass())
@@ -135,7 +135,7 @@
       -[MWTSchemaMWTMusicMetadataReported setFormatCodec:](v5, "setFormatCodec:", [v13 intValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"formatBitrate"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"formatBitrate"];
     objc_opt_class();
     v113 = v14;
     if (objc_opt_isKindOfClass())
@@ -143,7 +143,7 @@
       -[MWTSchemaMWTMusicMetadataReported setFormatBitrate:](v5, "setFormatBitrate:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"formatBitDepth"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"formatBitDepth"];
     objc_opt_class();
     v112 = v15;
     if (objc_opt_isKindOfClass())
@@ -151,7 +151,7 @@
       -[MWTSchemaMWTMusicMetadataReported setFormatBitDepth:](v5, "setFormatBitDepth:", [v15 unsignedIntValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"formatChannels"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"formatChannels"];
     objc_opt_class();
     v111 = v16;
     if (objc_opt_isKindOfClass())
@@ -159,7 +159,7 @@
       -[MWTSchemaMWTMusicMetadataReported setFormatChannels:](v5, "setFormatChannels:", [v16 unsignedIntValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"formatLayout"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"formatLayout"];
     objc_opt_class();
     v110 = v17;
     if (objc_opt_isKindOfClass())
@@ -167,7 +167,7 @@
       -[MWTSchemaMWTMusicMetadataReported setFormatLayout:](v5, "setFormatLayout:", [v17 intValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"formatSampleRate"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"formatSampleRate"];
     objc_opt_class();
     v109 = v18;
     if (objc_opt_isKindOfClass())
@@ -175,7 +175,7 @@
       -[MWTSchemaMWTMusicMetadataReported setFormatSampleRate:](v5, "setFormatSampleRate:", [v18 unsignedIntValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"formatTier"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"formatTier"];
     objc_opt_class();
     v108 = v19;
     if (objc_opt_isKindOfClass())
@@ -183,7 +183,7 @@
       -[MWTSchemaMWTMusicMetadataReported setFormatTier:](v5, "setFormatTier:", [v19 intValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"numberOfSpeakers"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"numberOfSpeakers"];
     objc_opt_class();
     v107 = v20;
     if (objc_opt_isKindOfClass())
@@ -191,7 +191,7 @@
       -[MWTSchemaMWTMusicMetadataReported setNumberOfSpeakers:](v5, "setNumberOfSpeakers:", [v20 unsignedIntValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"routeConfiguration"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"routeConfiguration"];
     objc_opt_class();
     v106 = v21;
     if (objc_opt_isKindOfClass())
@@ -199,7 +199,7 @@
       -[MWTSchemaMWTMusicMetadataReported setRouteConfiguration:](v5, "setRouteConfiguration:", [v21 intValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"isAccountDataReady"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"isAccountDataReady"];
     objc_opt_class();
     v105 = v22;
     if (objc_opt_isKindOfClass())
@@ -207,7 +207,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsAccountDataReady:](v5, "setIsAccountDataReady:", [v22 BOOLValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"isStoreBagReady"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"isStoreBagReady"];
     objc_opt_class();
     v104 = v23;
     if (objc_opt_isKindOfClass())
@@ -215,7 +215,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsStoreBagReady:](v5, "setIsStoreBagReady:", [v23 BOOLValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"isLeaseReady"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"isLeaseReady"];
     objc_opt_class();
     v103 = v24;
     if (objc_opt_isKindOfClass())
@@ -223,7 +223,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsLeaseReady:](v5, "setIsLeaseReady:", [v24 BOOLValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"isOnlineKeyReady"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"isOnlineKeyReady"];
     objc_opt_class();
     v102 = v25;
     if (objc_opt_isKindOfClass())
@@ -231,7 +231,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsOnlineKeyReady:](v5, "setIsOnlineKeyReady:", [v25 BOOLValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"isOfflineKeyReady"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"isOfflineKeyReady"];
     objc_opt_class();
     v101 = v26;
     if (objc_opt_isKindOfClass())
@@ -239,7 +239,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsOfflineKeyReady:](v5, "setIsOfflineKeyReady:", [v26 BOOLValue]);
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"isHlsKeysReady"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"isHlsKeysReady"];
     objc_opt_class();
     v100 = v27;
     if (objc_opt_isKindOfClass())
@@ -247,7 +247,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsHlsKeysReady:](v5, "setIsHlsKeysReady:", [v27 BOOLValue]);
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"isInterruptingPlayback"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"isInterruptingPlayback"];
     objc_opt_class();
     v99 = v28;
     if (objc_opt_isKindOfClass())
@@ -255,7 +255,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsInterruptingPlayback:](v5, "setIsInterruptingPlayback:", [v28 BOOLValue]);
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"isRemoteSetQueue"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"isRemoteSetQueue"];
     objc_opt_class();
     v98 = v29;
     if (objc_opt_isKindOfClass())
@@ -263,7 +263,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsRemoteSetQueue:](v5, "setIsRemoteSetQueue:", [v29 BOOLValue]);
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"isDelegatedPlayback"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"isDelegatedPlayback"];
     objc_opt_class();
     v97 = v30;
     if (objc_opt_isKindOfClass())
@@ -271,7 +271,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsDelegatedPlayback:](v5, "setIsDelegatedPlayback:", [v30 BOOLValue]);
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"isNonDefaultUser"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"isNonDefaultUser"];
     objc_opt_class();
     v96 = v31;
     if (objc_opt_isKindOfClass())
@@ -279,7 +279,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsNonDefaultUser:](v5, "setIsNonDefaultUser:", [v31 BOOLValue]);
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"isAutoPlay"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"isAutoPlay"];
     objc_opt_class();
     v95 = v32;
     if (objc_opt_isKindOfClass())
@@ -287,7 +287,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsAutoPlay:](v5, "setIsAutoPlay:", [v32 BOOLValue]);
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"isFirstPlayAfterAppLaunch"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"isFirstPlayAfterAppLaunch"];
     objc_opt_class();
     v94 = v33;
     if (objc_opt_isKindOfClass())
@@ -295,7 +295,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsFirstPlayAfterAppLaunch:](v5, "setIsFirstPlayAfterAppLaunch:", [v33 BOOLValue]);
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"isMiniSinfAvailable"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"isMiniSinfAvailable"];
     objc_opt_class();
     v93 = v34;
     if (objc_opt_isKindOfClass())
@@ -303,7 +303,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsMiniSinfAvailable:](v5, "setIsMiniSinfAvailable:", [v34 BOOLValue]);
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"isSharePlayPlayback"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"isSharePlayPlayback"];
     objc_opt_class();
     v92 = v35;
     if (objc_opt_isKindOfClass())
@@ -311,7 +311,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsSharePlayPlayback:](v5, "setIsSharePlayPlayback:", [v35 BOOLValue]);
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"isSuzeLease"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"isSuzeLease"];
     objc_opt_class();
     v91 = v36;
     if (objc_opt_isKindOfClass())
@@ -319,7 +319,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsSuzeLease:](v5, "setIsSuzeLease:", [v36 BOOLValue]);
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"networkConnectionType"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"networkConnectionType"];
     objc_opt_class();
     v90 = v37;
     if (objc_opt_isKindOfClass())
@@ -327,7 +327,7 @@
       -[MWTSchemaMWTMusicMetadataReported setNetworkConnectionType:](v5, "setNetworkConnectionType:", [v37 intValue]);
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"wasMediaLibraryDatabaseUpgraded"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"wasMediaLibraryDatabaseUpgraded"];
     objc_opt_class();
     v89 = v38;
     if (objc_opt_isKindOfClass())
@@ -335,7 +335,7 @@
       -[MWTSchemaMWTMusicMetadataReported setWasMediaLibraryDatabaseUpgraded:](v5, "setWasMediaLibraryDatabaseUpgraded:", [v38 BOOLValue]);
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"isPrimaryUser"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"isPrimaryUser"];
     objc_opt_class();
     v88 = v39;
     if (objc_opt_isKindOfClass())
@@ -343,7 +343,7 @@
       -[MWTSchemaMWTMusicMetadataReported setIsPrimaryUser:](v5, "setIsPrimaryUser:", [v39 BOOLValue]);
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"errorResolutionType"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"errorResolutionType"];
     objc_opt_class();
     v87 = v40;
     if (objc_opt_isKindOfClass())
@@ -352,7 +352,7 @@
       [(MWTSchemaMWTMusicMetadataReported *)v5 setErrorResolutionType:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"endPointType"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"endPointType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -360,7 +360,7 @@
     }
 
     v70 = v42;
-    v43 = [v4 objectForKeyedSubscript:@"routeType"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"routeType"];
     objc_opt_class();
     v86 = v43;
     if (objc_opt_isKindOfClass())
@@ -368,7 +368,7 @@
       -[MWTSchemaMWTMusicMetadataReported setRouteType:](v5, "setRouteType:", [v43 intValue]);
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"formatLayoutValue"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"formatLayoutValue"];
     objc_opt_class();
     v73 = v44;
     if (objc_opt_isKindOfClass())
@@ -376,7 +376,7 @@
       -[MWTSchemaMWTMusicMetadataReported setFormatLayoutValue:](v5, "setFormatLayoutValue:", [v44 unsignedIntValue]);
     }
 
-    v45 = [v4 objectForKeyedSubscript:@"assetSource"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"assetSource"];
     objc_opt_class();
     v84 = v45;
     if (objc_opt_isKindOfClass())
@@ -384,7 +384,7 @@
       -[MWTSchemaMWTMusicMetadataReported setAssetSource:](v5, "setAssetSource:", [v45 intValue]);
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"assetLocation"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"assetLocation"];
     objc_opt_class();
     v72 = v46;
     if (objc_opt_isKindOfClass())
@@ -392,7 +392,7 @@
       -[MWTSchemaMWTMusicMetadataReported setAssetLocation:](v5, "setAssetLocation:", [v46 intValue]);
     }
 
-    v47 = [v4 objectForKeyedSubscript:@"subscriptionType"];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"subscriptionType"];
     objc_opt_class();
     v82 = v47;
     if (objc_opt_isKindOfClass())
@@ -400,7 +400,7 @@
       -[MWTSchemaMWTMusicMetadataReported setSubscriptionType:](v5, "setSubscriptionType:", [v47 intValue]);
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"hasLookupWaitTime"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"hasLookupWaitTime"];
     objc_opt_class();
     v71 = v48;
     if (objc_opt_isKindOfClass())
@@ -408,7 +408,7 @@
       -[MWTSchemaMWTMusicMetadataReported setHasLookupWaitTime:](v5, "setHasLookupWaitTime:", [v48 BOOLValue]);
     }
 
-    v49 = [v4 objectForKeyedSubscript:@"hasBagWaitTime"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"hasBagWaitTime"];
     objc_opt_class();
     v80 = v49;
     if (objc_opt_isKindOfClass())
@@ -416,14 +416,14 @@
       -[MWTSchemaMWTMusicMetadataReported setHasBagWaitTime:](v5, "setHasBagWaitTime:", [v49 BOOLValue]);
     }
 
-    v50 = [v4 objectForKeyedSubscript:@"hasLeaseWaitTime"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"hasLeaseWaitTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MWTSchemaMWTMusicMetadataReported setHasLeaseWaitTime:](v5, "setHasLeaseWaitTime:", [v50 BOOLValue]);
     }
 
-    v51 = [v4 objectForKeyedSubscript:@"hasSuzeLeaseWaitTime"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"hasSuzeLeaseWaitTime"];
     objc_opt_class();
     v79 = v51;
     if (objc_opt_isKindOfClass())
@@ -431,14 +431,14 @@
       -[MWTSchemaMWTMusicMetadataReported setHasSuzeLeaseWaitTime:](v5, "setHasSuzeLeaseWaitTime:", [v51 BOOLValue]);
     }
 
-    v52 = [v4 objectForKeyedSubscript:@"hasSubscriptionAssetLoadWaitTime"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"hasSubscriptionAssetLoadWaitTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MWTSchemaMWTMusicMetadataReported setHasSubscriptionAssetLoadWaitTime:](v5, "setHasSubscriptionAssetLoadWaitTime:", [v52 BOOLValue]);
     }
 
-    v53 = [v4 objectForKeyedSubscript:@"hasMediaRedownloadWaitTime"];
+    v53 = [dictionaryCopy objectForKeyedSubscript:@"hasMediaRedownloadWaitTime"];
     objc_opt_class();
     v77 = v53;
     if (objc_opt_isKindOfClass())
@@ -446,14 +446,14 @@
       -[MWTSchemaMWTMusicMetadataReported setHasMediaRedownloadWaitTime:](v5, "setHasMediaRedownloadWaitTime:", [v53 BOOLValue]);
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"cmInitialStartupItemCreationToReadyToPlayDurationInMs"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"cmInitialStartupItemCreationToReadyToPlayDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MWTSchemaMWTMusicMetadataReported setCmInitialStartupItemCreationToReadyToPlayDurationInMs:](v5, "setCmInitialStartupItemCreationToReadyToPlayDurationInMs:", [v54 unsignedIntValue]);
     }
 
-    v55 = [v4 objectForKeyedSubscript:@"cmInitialStartupItemCreationToLtluDurationInMs"];
+    v55 = [dictionaryCopy objectForKeyedSubscript:@"cmInitialStartupItemCreationToLtluDurationInMs"];
     objc_opt_class();
     v75 = v55;
     if (objc_opt_isKindOfClass())
@@ -461,14 +461,14 @@
       -[MWTSchemaMWTMusicMetadataReported setCmInitialStartupItemCreationToLtluDurationInMs:](v5, "setCmInitialStartupItemCreationToLtluDurationInMs:", [v55 unsignedIntValue]);
     }
 
-    v56 = [v4 objectForKeyedSubscript:@"masterPlaylistConnectionTlsHandshakeDurationInMs"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"masterPlaylistConnectionTlsHandshakeDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MWTSchemaMWTMusicMetadataReported setMasterPlaylistConnectionTlsHandshakeDurationInMs:](v5, "setMasterPlaylistConnectionTlsHandshakeDurationInMs:", [v56 unsignedIntValue]);
     }
 
-    v57 = [v4 objectForKeyedSubscript:@"masterPlaylistRequestDurationInMs"];
+    v57 = [dictionaryCopy objectForKeyedSubscript:@"masterPlaylistRequestDurationInMs"];
     objc_opt_class();
     v74 = v57;
     if (objc_opt_isKindOfClass())
@@ -476,7 +476,7 @@
       -[MWTSchemaMWTMusicMetadataReported setMasterPlaylistRequestDurationInMs:](v5, "setMasterPlaylistRequestDurationInMs:", [v57 unsignedIntValue]);
     }
 
-    v58 = [v4 objectForKeyedSubscript:@"subPlaylistConnectionTlsHandshakeDurationInMs"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"subPlaylistConnectionTlsHandshakeDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -484,7 +484,7 @@
     }
 
     v69 = v52;
-    v59 = [v4 objectForKeyedSubscript:@"subPlaylistRequestDurationInMs"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"subPlaylistRequestDurationInMs"];
     objc_opt_class();
     v60 = v54;
     if (objc_opt_isKindOfClass())
@@ -492,21 +492,21 @@
       -[MWTSchemaMWTMusicMetadataReported setSubPlaylistRequestDurationInMs:](v5, "setSubPlaylistRequestDurationInMs:", [v59 unsignedIntValue]);
     }
 
-    v61 = [v4 objectForKeyedSubscript:@"contentConnectionTlsHandshakeDurationInMs"];
+    v61 = [dictionaryCopy objectForKeyedSubscript:@"contentConnectionTlsHandshakeDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MWTSchemaMWTMusicMetadataReported setContentConnectionTlsHandshakeDurationInMs:](v5, "setContentConnectionTlsHandshakeDurationInMs:", [v61 unsignedIntValue]);
     }
 
-    v62 = [v4 objectForKeyedSubscript:@"contentFirstSegmentDurationInMs"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"contentFirstSegmentDurationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MWTSchemaMWTMusicMetadataReported setContentFirstSegmentDurationInMs:](v5, "setContentFirstSegmentDurationInMs:", [v62 unsignedIntValue]);
     }
 
-    v63 = [v4 objectForKeyedSubscript:@"audioQueueType"];
+    v63 = [dictionaryCopy objectForKeyedSubscript:@"audioQueueType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -525,30 +525,30 @@
   return v5;
 }
 
-- (MWTSchemaMWTMusicMetadataReported)initWithJSON:(id)a3
+- (MWTSchemaMWTMusicMetadataReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MWTSchemaMWTMusicMetadataReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MWTSchemaMWTMusicMetadataReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MWTSchemaMWTMusicMetadataReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -561,7 +561,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   p_has = &self->_has;
   if ((*&self->_has & 0x20) != 0)
   {
@@ -576,20 +576,20 @@
       v6 = off_1E78DA708[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"assetEndPoint"];
+    [dictionary setObject:v6 forKeyedSubscript:@"assetEndPoint"];
   }
 
   v7 = *(&self->_has + 2);
   if ((v7 & 0x40) != 0)
   {
-    v8 = [(MWTSchemaMWTMusicMetadataReported *)self assetLocation];
+    assetLocation = [(MWTSchemaMWTMusicMetadataReported *)self assetLocation];
     v9 = @"MWTASSETLOCATION_UNKNOWN";
-    if (v8 == 1)
+    if (assetLocation == 1)
     {
       v9 = @"MWTASSETLOCATION_LOCAL_FILE";
     }
 
-    if (v8 == 2)
+    if (assetLocation == 2)
     {
       v10 = @"MWTASSETLOCATION_CDN";
     }
@@ -599,7 +599,7 @@
       v10 = v9;
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"assetLocation"];
+    [dictionary setObject:v10 forKeyedSubscript:@"assetLocation"];
     v7 = *(&self->_has + 2);
   }
 
@@ -616,14 +616,14 @@
       v12 = off_1E78DA730[v11];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"assetSource"];
+    [dictionary setObject:v12 forKeyedSubscript:@"assetSource"];
   }
 
   if (self->_audioQueueType)
   {
-    v13 = [(MWTSchemaMWTMusicMetadataReported *)self audioQueueType];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"audioQueueType"];
+    audioQueueType = [(MWTSchemaMWTMusicMetadataReported *)self audioQueueType];
+    v14 = [audioQueueType copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"audioQueueType"];
   }
 
   v15 = *(&self->_has + 2);
@@ -638,13 +638,13 @@
   }
 
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported cmInitialStartupItemCreationToLtluDurationInMs](self, "cmInitialStartupItemCreationToLtluDurationInMs")}];
-  [v3 setObject:v22 forKeyedSubscript:@"cmInitialStartupItemCreationToLtluDurationInMs"];
+  [dictionary setObject:v22 forKeyedSubscript:@"cmInitialStartupItemCreationToLtluDurationInMs"];
 
   if ((*(&self->_has + 2) & 0x4000) != 0)
   {
 LABEL_22:
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported cmInitialStartupItemCreationToReadyToPlayDurationInMs](self, "cmInitialStartupItemCreationToReadyToPlayDurationInMs")}];
-    [v3 setObject:v16 forKeyedSubscript:@"cmInitialStartupItemCreationToReadyToPlayDurationInMs"];
+    [dictionary setObject:v16 forKeyedSubscript:@"cmInitialStartupItemCreationToReadyToPlayDurationInMs"];
   }
 
 LABEL_23:
@@ -652,7 +652,7 @@ LABEL_23:
   if ((v17 & 0x10) != 0)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported contentConnectionTlsHandshakeDurationInMs](self, "contentConnectionTlsHandshakeDurationInMs")}];
-    [v3 setObject:v18 forKeyedSubscript:@"contentConnectionTlsHandshakeDurationInMs"];
+    [dictionary setObject:v18 forKeyedSubscript:@"contentConnectionTlsHandshakeDurationInMs"];
 
     v17 = *(&self->_has + 6);
   }
@@ -660,7 +660,7 @@ LABEL_23:
   if ((v17 & 0x20) != 0)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported contentFirstSegmentDurationInMs](self, "contentFirstSegmentDurationInMs")}];
-    [v3 setObject:v19 forKeyedSubscript:@"contentFirstSegmentDurationInMs"];
+    [dictionary setObject:v19 forKeyedSubscript:@"contentFirstSegmentDurationInMs"];
   }
 
   if ((*(&self->_has + 2) & 4) != 0)
@@ -676,21 +676,21 @@ LABEL_23:
       v21 = off_1E78DA760[v20];
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"endPointType"];
+    [dictionary setObject:v21 forKeyedSubscript:@"endPointType"];
   }
 
   if (self->_errorResolutionType)
   {
-    v23 = [(MWTSchemaMWTMusicMetadataReported *)self errorResolutionType];
-    v24 = [v23 copy];
-    [v3 setObject:v24 forKeyedSubscript:@"errorResolutionType"];
+    errorResolutionType = [(MWTSchemaMWTMusicMetadataReported *)self errorResolutionType];
+    v24 = [errorResolutionType copy];
+    [dictionary setObject:v24 forKeyedSubscript:@"errorResolutionType"];
   }
 
   v25 = *p_has;
   if ((*p_has & 0x200) != 0)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported formatBitDepth](self, "formatBitDepth")}];
-    [v3 setObject:v26 forKeyedSubscript:@"formatBitDepth"];
+    [dictionary setObject:v26 forKeyedSubscript:@"formatBitDepth"];
 
     v25 = *p_has;
     if ((*p_has & 0x100) == 0)
@@ -711,7 +711,7 @@ LABEL_38:
   }
 
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported formatBitrate](self, "formatBitrate")}];
-  [v3 setObject:v27 forKeyedSubscript:@"formatBitrate"];
+  [dictionary setObject:v27 forKeyedSubscript:@"formatBitrate"];
 
   v25 = *p_has;
   if ((*p_has & 0x400) == 0)
@@ -727,7 +727,7 @@ LABEL_39:
 
 LABEL_44:
   v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported formatChannels](self, "formatChannels")}];
-  [v3 setObject:v28 forKeyedSubscript:@"formatChannels"];
+  [dictionary setObject:v28 forKeyedSubscript:@"formatChannels"];
 
   v25 = *p_has;
   if ((*p_has & 0x80) == 0)
@@ -753,7 +753,7 @@ LABEL_45:
     v30 = off_1E78DA778[v29];
   }
 
-  [v3 setObject:v30 forKeyedSubscript:@"formatCodec"];
+  [dictionary setObject:v30 forKeyedSubscript:@"formatCodec"];
   if ((*p_has & 0x800) != 0)
   {
 LABEL_49:
@@ -768,21 +768,21 @@ LABEL_49:
       v32 = off_1E78DA8B8[v31];
     }
 
-    [v3 setObject:v32 forKeyedSubscript:@"formatLayout"];
+    [dictionary setObject:v32 forKeyedSubscript:@"formatLayout"];
   }
 
 LABEL_53:
   if ((*(&self->_has + 2) & 0x10) != 0)
   {
     v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported formatLayoutValue](self, "formatLayoutValue")}];
-    [v3 setObject:v33 forKeyedSubscript:@"formatLayoutValue"];
+    [dictionary setObject:v33 forKeyedSubscript:@"formatLayoutValue"];
   }
 
   v34 = *p_has;
   if ((*p_has & 0x1000) != 0)
   {
     v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported formatSampleRate](self, "formatSampleRate")}];
-    [v3 setObject:v35 forKeyedSubscript:@"formatSampleRate"];
+    [dictionary setObject:v35 forKeyedSubscript:@"formatSampleRate"];
 
     v34 = *p_has;
   }
@@ -800,14 +800,14 @@ LABEL_53:
       v37 = off_1E78DAE28[v36];
     }
 
-    [v3 setObject:v37 forKeyedSubscript:@"formatTier"];
+    [dictionary setObject:v37 forKeyedSubscript:@"formatTier"];
   }
 
   v38 = *(&self->_has + 2);
   if ((v38 & 0x200) != 0)
   {
     v49 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported hasBagWaitTime](self, "hasBagWaitTime")}];
-    [v3 setObject:v49 forKeyedSubscript:@"hasBagWaitTime"];
+    [dictionary setObject:v49 forKeyedSubscript:@"hasBagWaitTime"];
 
     v38 = *(&self->_has + 2);
     if ((v38 & 0x400) == 0)
@@ -828,7 +828,7 @@ LABEL_64:
   }
 
   v50 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported hasLeaseWaitTime](self, "hasLeaseWaitTime")}];
-  [v3 setObject:v50 forKeyedSubscript:@"hasLeaseWaitTime"];
+  [dictionary setObject:v50 forKeyedSubscript:@"hasLeaseWaitTime"];
 
   v38 = *(&self->_has + 2);
   if ((v38 & 0x100) == 0)
@@ -844,7 +844,7 @@ LABEL_65:
 
 LABEL_103:
   v51 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported hasLookupWaitTime](self, "hasLookupWaitTime")}];
-  [v3 setObject:v51 forKeyedSubscript:@"hasLookupWaitTime"];
+  [dictionary setObject:v51 forKeyedSubscript:@"hasLookupWaitTime"];
 
   v38 = *(&self->_has + 2);
   if ((v38 & 0x2000) == 0)
@@ -860,7 +860,7 @@ LABEL_66:
 
 LABEL_104:
   v52 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported hasMediaRedownloadWaitTime](self, "hasMediaRedownloadWaitTime")}];
-  [v3 setObject:v52 forKeyedSubscript:@"hasMediaRedownloadWaitTime"];
+  [dictionary setObject:v52 forKeyedSubscript:@"hasMediaRedownloadWaitTime"];
 
   v38 = *(&self->_has + 2);
   if ((v38 & 0x1000) == 0)
@@ -876,13 +876,13 @@ LABEL_67:
 
 LABEL_105:
   v53 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported hasSubscriptionAssetLoadWaitTime](self, "hasSubscriptionAssetLoadWaitTime")}];
-  [v3 setObject:v53 forKeyedSubscript:@"hasSubscriptionAssetLoadWaitTime"];
+  [dictionary setObject:v53 forKeyedSubscript:@"hasSubscriptionAssetLoadWaitTime"];
 
   if ((*(&self->_has + 2) & 0x800) != 0)
   {
 LABEL_68:
     v39 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported hasSuzeLeaseWaitTime](self, "hasSuzeLeaseWaitTime")}];
-    [v3 setObject:v39 forKeyedSubscript:@"hasSuzeLeaseWaitTime"];
+    [dictionary setObject:v39 forKeyedSubscript:@"hasSuzeLeaseWaitTime"];
   }
 
 LABEL_69:
@@ -890,7 +890,7 @@ LABEL_69:
   if ((*p_has & 0x10000) != 0)
   {
     v54 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isAccountDataReady](self, "isAccountDataReady")}];
-    [v3 setObject:v54 forKeyedSubscript:@"isAccountDataReady"];
+    [dictionary setObject:v54 forKeyedSubscript:@"isAccountDataReady"];
 
     v40 = *p_has;
     if ((*p_has & 0x4000000) == 0)
@@ -911,7 +911,7 @@ LABEL_71:
   }
 
   v55 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isAutoPlay](self, "isAutoPlay")}];
-  [v3 setObject:v55 forKeyedSubscript:@"isAutoPlay"];
+  [dictionary setObject:v55 forKeyedSubscript:@"isAutoPlay"];
 
   v40 = *p_has;
   if ((*p_has & 0x1000000) == 0)
@@ -927,7 +927,7 @@ LABEL_72:
 
 LABEL_109:
   v56 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isDelegatedPlayback](self, "isDelegatedPlayback")}];
-  [v3 setObject:v56 forKeyedSubscript:@"isDelegatedPlayback"];
+  [dictionary setObject:v56 forKeyedSubscript:@"isDelegatedPlayback"];
 
   v40 = *p_has;
   if ((*p_has & 0x8000000) == 0)
@@ -943,7 +943,7 @@ LABEL_73:
 
 LABEL_110:
   v57 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isFirstPlayAfterAppLaunch](self, "isFirstPlayAfterAppLaunch")}];
-  [v3 setObject:v57 forKeyedSubscript:@"isFirstPlayAfterAppLaunch"];
+  [dictionary setObject:v57 forKeyedSubscript:@"isFirstPlayAfterAppLaunch"];
 
   v40 = *p_has;
   if ((*p_has & 0x200000) == 0)
@@ -959,7 +959,7 @@ LABEL_74:
 
 LABEL_111:
   v58 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isHlsKeysReady](self, "isHlsKeysReady")}];
-  [v3 setObject:v58 forKeyedSubscript:@"isHlsKeysReady"];
+  [dictionary setObject:v58 forKeyedSubscript:@"isHlsKeysReady"];
 
   v40 = *p_has;
   if ((*p_has & 0x400000) == 0)
@@ -975,7 +975,7 @@ LABEL_75:
 
 LABEL_112:
   v59 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isInterruptingPlayback](self, "isInterruptingPlayback")}];
-  [v3 setObject:v59 forKeyedSubscript:@"isInterruptingPlayback"];
+  [dictionary setObject:v59 forKeyedSubscript:@"isInterruptingPlayback"];
 
   v40 = *p_has;
   if ((*p_has & 0x40000) == 0)
@@ -991,7 +991,7 @@ LABEL_76:
 
 LABEL_113:
   v60 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isLeaseReady](self, "isLeaseReady")}];
-  [v3 setObject:v60 forKeyedSubscript:@"isLeaseReady"];
+  [dictionary setObject:v60 forKeyedSubscript:@"isLeaseReady"];
 
   v40 = *p_has;
   if ((*p_has & 0x10000000) == 0)
@@ -1007,7 +1007,7 @@ LABEL_77:
 
 LABEL_114:
   v61 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isMiniSinfAvailable](self, "isMiniSinfAvailable")}];
-  [v3 setObject:v61 forKeyedSubscript:@"isMiniSinfAvailable"];
+  [dictionary setObject:v61 forKeyedSubscript:@"isMiniSinfAvailable"];
 
   v40 = *p_has;
   if ((*p_has & 0x2000000) == 0)
@@ -1023,7 +1023,7 @@ LABEL_78:
 
 LABEL_115:
   v62 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isNonDefaultUser](self, "isNonDefaultUser")}];
-  [v3 setObject:v62 forKeyedSubscript:@"isNonDefaultUser"];
+  [dictionary setObject:v62 forKeyedSubscript:@"isNonDefaultUser"];
 
   v40 = *p_has;
   if ((*p_has & 0x100000) == 0)
@@ -1039,27 +1039,27 @@ LABEL_79:
 
 LABEL_116:
   v63 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isOfflineKeyReady](self, "isOfflineKeyReady")}];
-  [v3 setObject:v63 forKeyedSubscript:@"isOfflineKeyReady"];
+  [dictionary setObject:v63 forKeyedSubscript:@"isOfflineKeyReady"];
 
   if ((*p_has & 0x80000) != 0)
   {
 LABEL_80:
     v41 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isOnlineKeyReady](self, "isOnlineKeyReady")}];
-    [v3 setObject:v41 forKeyedSubscript:@"isOnlineKeyReady"];
+    [dictionary setObject:v41 forKeyedSubscript:@"isOnlineKeyReady"];
   }
 
 LABEL_81:
   if ((*(&self->_has + 2) & 2) != 0)
   {
     v42 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isPrimaryUser](self, "isPrimaryUser")}];
-    [v3 setObject:v42 forKeyedSubscript:@"isPrimaryUser"];
+    [dictionary setObject:v42 forKeyedSubscript:@"isPrimaryUser"];
   }
 
   v43 = *p_has;
   if ((*p_has & 0x800000) != 0)
   {
     v64 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isRemoteSetQueue](self, "isRemoteSetQueue")}];
-    [v3 setObject:v64 forKeyedSubscript:@"isRemoteSetQueue"];
+    [dictionary setObject:v64 forKeyedSubscript:@"isRemoteSetQueue"];
 
     v43 = *p_has;
     if ((*p_has & 0x20000000) == 0)
@@ -1080,7 +1080,7 @@ LABEL_85:
   }
 
   v65 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isSharePlayPlayback](self, "isSharePlayPlayback")}];
-  [v3 setObject:v65 forKeyedSubscript:@"isSharePlayPlayback"];
+  [dictionary setObject:v65 forKeyedSubscript:@"isSharePlayPlayback"];
 
   v43 = *p_has;
   if ((*p_has & 8) == 0)
@@ -1096,7 +1096,7 @@ LABEL_86:
 
 LABEL_120:
   v66 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isShuffled](self, "isShuffled")}];
-  [v3 setObject:v66 forKeyedSubscript:@"isShuffled"];
+  [dictionary setObject:v66 forKeyedSubscript:@"isShuffled"];
 
   v43 = *p_has;
   if ((*p_has & 0x20000) == 0)
@@ -1112,13 +1112,13 @@ LABEL_87:
 
 LABEL_121:
   v67 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isStoreBagReady](self, "isStoreBagReady")}];
-  [v3 setObject:v67 forKeyedSubscript:@"isStoreBagReady"];
+  [dictionary setObject:v67 forKeyedSubscript:@"isStoreBagReady"];
 
   if ((*p_has & 0x40000000) != 0)
   {
 LABEL_88:
     v44 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported isSuzeLease](self, "isSuzeLease")}];
-    [v3 setObject:v44 forKeyedSubscript:@"isSuzeLease"];
+    [dictionary setObject:v44 forKeyedSubscript:@"isSuzeLease"];
   }
 
 LABEL_89:
@@ -1126,7 +1126,7 @@ LABEL_89:
   if (v45)
   {
     v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported masterPlaylistConnectionTlsHandshakeDurationInMs](self, "masterPlaylistConnectionTlsHandshakeDurationInMs")}];
-    [v3 setObject:v46 forKeyedSubscript:@"masterPlaylistConnectionTlsHandshakeDurationInMs"];
+    [dictionary setObject:v46 forKeyedSubscript:@"masterPlaylistConnectionTlsHandshakeDurationInMs"];
 
     v45 = *(&self->_has + 6);
   }
@@ -1134,7 +1134,7 @@ LABEL_89:
   if ((v45 & 2) != 0)
   {
     v47 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported masterPlaylistRequestDurationInMs](self, "masterPlaylistRequestDurationInMs")}];
-    [v3 setObject:v47 forKeyedSubscript:@"masterPlaylistRequestDurationInMs"];
+    [dictionary setObject:v47 forKeyedSubscript:@"masterPlaylistRequestDurationInMs"];
   }
 
   v48 = *p_has;
@@ -1151,7 +1151,7 @@ LABEL_89:
       v69 = off_1E78DAE50[v68];
     }
 
-    [v3 setObject:v69 forKeyedSubscript:@"musicDomain"];
+    [dictionary setObject:v69 forKeyedSubscript:@"musicDomain"];
     v48 = *p_has;
     if ((*p_has & 0x80000000) == 0)
     {
@@ -1181,7 +1181,7 @@ LABEL_95:
     v71 = off_1E78DAE70[v70];
   }
 
-  [v3 setObject:v71 forKeyedSubscript:@"networkConnectionType"];
+  [dictionary setObject:v71 forKeyedSubscript:@"networkConnectionType"];
   v48 = *p_has;
   if ((*p_has & 0x4000) == 0)
   {
@@ -1196,7 +1196,7 @@ LABEL_96:
 
 LABEL_131:
   v72 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported numberOfSpeakers](self, "numberOfSpeakers")}];
-  [v3 setObject:v72 forKeyedSubscript:@"numberOfSpeakers"];
+  [dictionary setObject:v72 forKeyedSubscript:@"numberOfSpeakers"];
 
   v48 = *p_has;
   if ((*p_has & 0x10) == 0)
@@ -1222,7 +1222,7 @@ LABEL_132:
     v74 = off_1E78DAEE0[v73];
   }
 
-  [v3 setObject:v74 forKeyedSubscript:@"prefetchedMetadataSource"];
+  [dictionary setObject:v74 forKeyedSubscript:@"prefetchedMetadataSource"];
   v48 = *p_has;
   if ((*p_has & 4) == 0)
   {
@@ -1237,7 +1237,7 @@ LABEL_98:
 
 LABEL_136:
   v75 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported queueSize](self, "queueSize")}];
-  [v3 setObject:v75 forKeyedSubscript:@"queueSize"];
+  [dictionary setObject:v75 forKeyedSubscript:@"queueSize"];
 
   v48 = *p_has;
   if ((*p_has & 2) == 0)
@@ -1263,7 +1263,7 @@ LABEL_137:
     v77 = off_1E78DAF00[v76];
   }
 
-  [v3 setObject:v77 forKeyedSubscript:@"queueType"];
+  [dictionary setObject:v77 forKeyedSubscript:@"queueType"];
   if ((*p_has & 0x8000) != 0)
   {
 LABEL_141:
@@ -1278,7 +1278,7 @@ LABEL_141:
       v79 = off_1E78DAF38[v78];
     }
 
-    [v3 setObject:v79 forKeyedSubscript:@"routeConfiguration"];
+    [dictionary setObject:v79 forKeyedSubscript:@"routeConfiguration"];
   }
 
 LABEL_145:
@@ -1295,7 +1295,7 @@ LABEL_145:
       v81 = off_1E78DAF68[v80];
     }
 
-    [v3 setObject:v81 forKeyedSubscript:@"routeType"];
+    [dictionary setObject:v81 forKeyedSubscript:@"routeType"];
   }
 
   if ((*p_has & 0x40) != 0)
@@ -1311,14 +1311,14 @@ LABEL_145:
       v83 = off_1E78DAFB0[v82];
     }
 
-    [v3 setObject:v83 forKeyedSubscript:@"streamingContentType"];
+    [dictionary setObject:v83 forKeyedSubscript:@"streamingContentType"];
   }
 
   v84 = *(&self->_has + 6);
   if ((v84 & 4) != 0)
   {
     v85 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported subPlaylistConnectionTlsHandshakeDurationInMs](self, "subPlaylistConnectionTlsHandshakeDurationInMs")}];
-    [v3 setObject:v85 forKeyedSubscript:@"subPlaylistConnectionTlsHandshakeDurationInMs"];
+    [dictionary setObject:v85 forKeyedSubscript:@"subPlaylistConnectionTlsHandshakeDurationInMs"];
 
     v84 = *(&self->_has + 6);
   }
@@ -1326,7 +1326,7 @@ LABEL_145:
   if ((v84 & 8) != 0)
   {
     v86 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MWTSchemaMWTMusicMetadataReported subPlaylistRequestDurationInMs](self, "subPlaylistRequestDurationInMs")}];
-    [v3 setObject:v86 forKeyedSubscript:@"subPlaylistRequestDurationInMs"];
+    [dictionary setObject:v86 forKeyedSubscript:@"subPlaylistRequestDurationInMs"];
   }
 
   v87 = *(&self->_has + 2);
@@ -1343,20 +1343,20 @@ LABEL_145:
       v89 = off_1E78DAFD0[v88];
     }
 
-    [v3 setObject:v89 forKeyedSubscript:@"subscriptionType"];
+    [dictionary setObject:v89 forKeyedSubscript:@"subscriptionType"];
     v87 = *(&self->_has + 2);
   }
 
   if (v87)
   {
     v90 = [MEMORY[0x1E696AD98] numberWithBool:{-[MWTSchemaMWTMusicMetadataReported wasMediaLibraryDatabaseUpgraded](self, "wasMediaLibraryDatabaseUpgraded")}];
-    [v3 setObject:v90 forKeyedSubscript:@"wasMediaLibraryDatabaseUpgraded"];
+    [dictionary setObject:v90 forKeyedSubscript:@"wasMediaLibraryDatabaseUpgraded"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v91 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v91 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -2101,18 +2101,18 @@ LABEL_106:
   return v64 ^ v5 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v6 ^ v7 ^ v9 ^ v10 ^ v13 ^ v14 ^ v15 ^ v11 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v28 ^ v29 ^ v30 ^ v31 ^ v32 ^ v33 ^ [(NSString *)self->_audioQueueType hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_224;
   }
 
   p_has = &self->_has;
   has = self->_has;
-  v7 = v4 + 44;
-  v8 = v4[44];
+  v7 = equalCopy + 44;
+  v8 = equalCopy[44];
   if ((has & 1) != (v8 & 1))
   {
     goto LABEL_224;
@@ -2121,7 +2121,7 @@ LABEL_106:
   if (has)
   {
     musicDomain = self->_musicDomain;
-    if (musicDomain != [v4 musicDomain])
+    if (musicDomain != [equalCopy musicDomain])
     {
       goto LABEL_224;
     }
@@ -2139,7 +2139,7 @@ LABEL_106:
   if (v10)
   {
     queueType = self->_queueType;
-    if (queueType != [v4 queueType])
+    if (queueType != [equalCopy queueType])
     {
       goto LABEL_224;
     }
@@ -2157,7 +2157,7 @@ LABEL_106:
   if (v12)
   {
     queueSize = self->_queueSize;
-    if (queueSize != [v4 queueSize])
+    if (queueSize != [equalCopy queueSize])
     {
       goto LABEL_224;
     }
@@ -2175,7 +2175,7 @@ LABEL_106:
   if (v14)
   {
     isShuffled = self->_isShuffled;
-    if (isShuffled != [v4 isShuffled])
+    if (isShuffled != [equalCopy isShuffled])
     {
       goto LABEL_224;
     }
@@ -2193,7 +2193,7 @@ LABEL_106:
   if (v16)
   {
     prefetchedMetadataSource = self->_prefetchedMetadataSource;
-    if (prefetchedMetadataSource != [v4 prefetchedMetadataSource])
+    if (prefetchedMetadataSource != [equalCopy prefetchedMetadataSource])
     {
       goto LABEL_224;
     }
@@ -2211,7 +2211,7 @@ LABEL_106:
   if (v18)
   {
     assetEndPoint = self->_assetEndPoint;
-    if (assetEndPoint != [v4 assetEndPoint])
+    if (assetEndPoint != [equalCopy assetEndPoint])
     {
       goto LABEL_224;
     }
@@ -2229,7 +2229,7 @@ LABEL_106:
   if (v20)
   {
     streamingContentType = self->_streamingContentType;
-    if (streamingContentType != [v4 streamingContentType])
+    if (streamingContentType != [equalCopy streamingContentType])
     {
       goto LABEL_224;
     }
@@ -2247,7 +2247,7 @@ LABEL_106:
   if (v22)
   {
     formatCodec = self->_formatCodec;
-    if (formatCodec != [v4 formatCodec])
+    if (formatCodec != [equalCopy formatCodec])
     {
       goto LABEL_224;
     }
@@ -2265,7 +2265,7 @@ LABEL_106:
   if (v24)
   {
     formatBitrate = self->_formatBitrate;
-    if (formatBitrate != [v4 formatBitrate])
+    if (formatBitrate != [equalCopy formatBitrate])
     {
       goto LABEL_224;
     }
@@ -2283,7 +2283,7 @@ LABEL_106:
   if (v26)
   {
     formatBitDepth = self->_formatBitDepth;
-    if (formatBitDepth != [v4 formatBitDepth])
+    if (formatBitDepth != [equalCopy formatBitDepth])
     {
       goto LABEL_224;
     }
@@ -2301,7 +2301,7 @@ LABEL_106:
   if (v28)
   {
     formatChannels = self->_formatChannels;
-    if (formatChannels != [v4 formatChannels])
+    if (formatChannels != [equalCopy formatChannels])
     {
       goto LABEL_224;
     }
@@ -2319,7 +2319,7 @@ LABEL_106:
   if (v30)
   {
     formatLayout = self->_formatLayout;
-    if (formatLayout != [v4 formatLayout])
+    if (formatLayout != [equalCopy formatLayout])
     {
       goto LABEL_224;
     }
@@ -2337,7 +2337,7 @@ LABEL_106:
   if (v32)
   {
     formatSampleRate = self->_formatSampleRate;
-    if (formatSampleRate != [v4 formatSampleRate])
+    if (formatSampleRate != [equalCopy formatSampleRate])
     {
       goto LABEL_224;
     }
@@ -2355,7 +2355,7 @@ LABEL_106:
   if (v34)
   {
     formatTier = self->_formatTier;
-    if (formatTier != [v4 formatTier])
+    if (formatTier != [equalCopy formatTier])
     {
       goto LABEL_224;
     }
@@ -2373,7 +2373,7 @@ LABEL_106:
   if (v36)
   {
     numberOfSpeakers = self->_numberOfSpeakers;
-    if (numberOfSpeakers != [v4 numberOfSpeakers])
+    if (numberOfSpeakers != [equalCopy numberOfSpeakers])
     {
       goto LABEL_224;
     }
@@ -2391,7 +2391,7 @@ LABEL_106:
   if (v38)
   {
     routeConfiguration = self->_routeConfiguration;
-    if (routeConfiguration != [v4 routeConfiguration])
+    if (routeConfiguration != [equalCopy routeConfiguration])
     {
       goto LABEL_224;
     }
@@ -2409,7 +2409,7 @@ LABEL_106:
   if (v40)
   {
     isAccountDataReady = self->_isAccountDataReady;
-    if (isAccountDataReady != [v4 isAccountDataReady])
+    if (isAccountDataReady != [equalCopy isAccountDataReady])
     {
       goto LABEL_224;
     }
@@ -2427,7 +2427,7 @@ LABEL_106:
   if (v42)
   {
     isStoreBagReady = self->_isStoreBagReady;
-    if (isStoreBagReady != [v4 isStoreBagReady])
+    if (isStoreBagReady != [equalCopy isStoreBagReady])
     {
       goto LABEL_224;
     }
@@ -2445,7 +2445,7 @@ LABEL_106:
   if (v44)
   {
     isLeaseReady = self->_isLeaseReady;
-    if (isLeaseReady != [v4 isLeaseReady])
+    if (isLeaseReady != [equalCopy isLeaseReady])
     {
       goto LABEL_224;
     }
@@ -2463,7 +2463,7 @@ LABEL_106:
   if (v46)
   {
     isOnlineKeyReady = self->_isOnlineKeyReady;
-    if (isOnlineKeyReady != [v4 isOnlineKeyReady])
+    if (isOnlineKeyReady != [equalCopy isOnlineKeyReady])
     {
       goto LABEL_224;
     }
@@ -2481,7 +2481,7 @@ LABEL_106:
   if (v48)
   {
     isOfflineKeyReady = self->_isOfflineKeyReady;
-    if (isOfflineKeyReady != [v4 isOfflineKeyReady])
+    if (isOfflineKeyReady != [equalCopy isOfflineKeyReady])
     {
       goto LABEL_224;
     }
@@ -2499,7 +2499,7 @@ LABEL_106:
   if (v50)
   {
     isHlsKeysReady = self->_isHlsKeysReady;
-    if (isHlsKeysReady != [v4 isHlsKeysReady])
+    if (isHlsKeysReady != [equalCopy isHlsKeysReady])
     {
       goto LABEL_224;
     }
@@ -2517,7 +2517,7 @@ LABEL_106:
   if (v52)
   {
     isInterruptingPlayback = self->_isInterruptingPlayback;
-    if (isInterruptingPlayback != [v4 isInterruptingPlayback])
+    if (isInterruptingPlayback != [equalCopy isInterruptingPlayback])
     {
       goto LABEL_224;
     }
@@ -2535,7 +2535,7 @@ LABEL_106:
   if (v54)
   {
     isRemoteSetQueue = self->_isRemoteSetQueue;
-    if (isRemoteSetQueue != [v4 isRemoteSetQueue])
+    if (isRemoteSetQueue != [equalCopy isRemoteSetQueue])
     {
       goto LABEL_224;
     }
@@ -2553,7 +2553,7 @@ LABEL_106:
   if (v56)
   {
     isDelegatedPlayback = self->_isDelegatedPlayback;
-    if (isDelegatedPlayback != [v4 isDelegatedPlayback])
+    if (isDelegatedPlayback != [equalCopy isDelegatedPlayback])
     {
       goto LABEL_224;
     }
@@ -2571,7 +2571,7 @@ LABEL_106:
   if (v58)
   {
     isNonDefaultUser = self->_isNonDefaultUser;
-    if (isNonDefaultUser != [v4 isNonDefaultUser])
+    if (isNonDefaultUser != [equalCopy isNonDefaultUser])
     {
       goto LABEL_224;
     }
@@ -2589,7 +2589,7 @@ LABEL_106:
   if (v60)
   {
     isAutoPlay = self->_isAutoPlay;
-    if (isAutoPlay != [v4 isAutoPlay])
+    if (isAutoPlay != [equalCopy isAutoPlay])
     {
       goto LABEL_224;
     }
@@ -2607,7 +2607,7 @@ LABEL_106:
   if (v62)
   {
     isFirstPlayAfterAppLaunch = self->_isFirstPlayAfterAppLaunch;
-    if (isFirstPlayAfterAppLaunch != [v4 isFirstPlayAfterAppLaunch])
+    if (isFirstPlayAfterAppLaunch != [equalCopy isFirstPlayAfterAppLaunch])
     {
       goto LABEL_224;
     }
@@ -2625,7 +2625,7 @@ LABEL_106:
   if (v64)
   {
     isMiniSinfAvailable = self->_isMiniSinfAvailable;
-    if (isMiniSinfAvailable != [v4 isMiniSinfAvailable])
+    if (isMiniSinfAvailable != [equalCopy isMiniSinfAvailable])
     {
       goto LABEL_224;
     }
@@ -2643,7 +2643,7 @@ LABEL_106:
   if (v66)
   {
     isSharePlayPlayback = self->_isSharePlayPlayback;
-    if (isSharePlayPlayback != [v4 isSharePlayPlayback])
+    if (isSharePlayPlayback != [equalCopy isSharePlayPlayback])
     {
       goto LABEL_224;
     }
@@ -2661,7 +2661,7 @@ LABEL_106:
   if (v68)
   {
     isSuzeLease = self->_isSuzeLease;
-    if (isSuzeLease != [v4 isSuzeLease])
+    if (isSuzeLease != [equalCopy isSuzeLease])
     {
       goto LABEL_224;
     }
@@ -2678,14 +2678,14 @@ LABEL_106:
   if ((has & 0x80000000) != 0)
   {
     networkConnectionType = self->_networkConnectionType;
-    if (networkConnectionType != [v4 networkConnectionType])
+    if (networkConnectionType != [equalCopy networkConnectionType])
     {
       goto LABEL_224;
     }
   }
 
   v71 = *(&self->_has + 2);
-  v72 = *(v4 + 90);
+  v72 = *(equalCopy + 90);
   if ((v71 & 1) != (v72 & 1))
   {
     goto LABEL_224;
@@ -2694,13 +2694,13 @@ LABEL_106:
   if (v71)
   {
     wasMediaLibraryDatabaseUpgraded = self->_wasMediaLibraryDatabaseUpgraded;
-    if (wasMediaLibraryDatabaseUpgraded != [v4 wasMediaLibraryDatabaseUpgraded])
+    if (wasMediaLibraryDatabaseUpgraded != [equalCopy wasMediaLibraryDatabaseUpgraded])
     {
       goto LABEL_224;
     }
 
     v71 = *(&self->_has + 2);
-    v72 = *(v4 + 90);
+    v72 = *(equalCopy + 90);
   }
 
   v74 = (v71 >> 1) & 1;
@@ -2712,26 +2712,26 @@ LABEL_106:
   if (v74)
   {
     isPrimaryUser = self->_isPrimaryUser;
-    if (isPrimaryUser != [v4 isPrimaryUser])
+    if (isPrimaryUser != [equalCopy isPrimaryUser])
     {
       goto LABEL_224;
     }
   }
 
-  v76 = [(MWTSchemaMWTMusicMetadataReported *)self errorResolutionType];
-  v77 = [v4 errorResolutionType];
-  if ((v76 != 0) == (v77 == 0))
+  errorResolutionType = [(MWTSchemaMWTMusicMetadataReported *)self errorResolutionType];
+  errorResolutionType2 = [equalCopy errorResolutionType];
+  if ((errorResolutionType != 0) == (errorResolutionType2 == 0))
   {
     goto LABEL_223;
   }
 
-  v78 = [(MWTSchemaMWTMusicMetadataReported *)self errorResolutionType];
-  if (v78)
+  errorResolutionType3 = [(MWTSchemaMWTMusicMetadataReported *)self errorResolutionType];
+  if (errorResolutionType3)
   {
-    v79 = v78;
-    v80 = [(MWTSchemaMWTMusicMetadataReported *)self errorResolutionType];
-    v81 = [v4 errorResolutionType];
-    v82 = [v80 isEqual:v81];
+    v79 = errorResolutionType3;
+    errorResolutionType4 = [(MWTSchemaMWTMusicMetadataReported *)self errorResolutionType];
+    errorResolutionType5 = [equalCopy errorResolutionType];
+    v82 = [errorResolutionType4 isEqual:errorResolutionType5];
 
     if (!v82)
     {
@@ -2745,7 +2745,7 @@ LABEL_106:
 
   v83 = *(&self->_has + 2);
   v84 = (v83 >> 2) & 1;
-  v85 = *(v4 + 90);
+  v85 = *(equalCopy + 90);
   if (v84 != ((v85 >> 2) & 1))
   {
     goto LABEL_224;
@@ -2754,13 +2754,13 @@ LABEL_106:
   if (v84)
   {
     endPointType = self->_endPointType;
-    if (endPointType != [v4 endPointType])
+    if (endPointType != [equalCopy endPointType])
     {
       goto LABEL_224;
     }
 
     v83 = *(&self->_has + 2);
-    v85 = *(v4 + 90);
+    v85 = *(equalCopy + 90);
   }
 
   v87 = (v83 >> 3) & 1;
@@ -2772,13 +2772,13 @@ LABEL_106:
   if (v87)
   {
     routeType = self->_routeType;
-    if (routeType != [v4 routeType])
+    if (routeType != [equalCopy routeType])
     {
       goto LABEL_224;
     }
 
     v83 = *(&self->_has + 2);
-    v85 = *(v4 + 90);
+    v85 = *(equalCopy + 90);
   }
 
   v89 = (v83 >> 4) & 1;
@@ -2790,13 +2790,13 @@ LABEL_106:
   if (v89)
   {
     formatLayoutValue = self->_formatLayoutValue;
-    if (formatLayoutValue != [v4 formatLayoutValue])
+    if (formatLayoutValue != [equalCopy formatLayoutValue])
     {
       goto LABEL_224;
     }
 
     v83 = *(&self->_has + 2);
-    v85 = *(v4 + 90);
+    v85 = *(equalCopy + 90);
   }
 
   v91 = (v83 >> 5) & 1;
@@ -2808,13 +2808,13 @@ LABEL_106:
   if (v91)
   {
     assetSource = self->_assetSource;
-    if (assetSource != [v4 assetSource])
+    if (assetSource != [equalCopy assetSource])
     {
       goto LABEL_224;
     }
 
     v83 = *(&self->_has + 2);
-    v85 = *(v4 + 90);
+    v85 = *(equalCopy + 90);
   }
 
   v93 = (v83 >> 6) & 1;
@@ -2826,13 +2826,13 @@ LABEL_106:
   if (v93)
   {
     assetLocation = self->_assetLocation;
-    if (assetLocation != [v4 assetLocation])
+    if (assetLocation != [equalCopy assetLocation])
     {
       goto LABEL_224;
     }
 
     v83 = *(&self->_has + 2);
-    v85 = *(v4 + 90);
+    v85 = *(equalCopy + 90);
   }
 
   v95 = (v83 >> 7) & 1;
@@ -2844,13 +2844,13 @@ LABEL_106:
   if (v95)
   {
     subscriptionType = self->_subscriptionType;
-    if (subscriptionType != [v4 subscriptionType])
+    if (subscriptionType != [equalCopy subscriptionType])
     {
       goto LABEL_224;
     }
 
     v83 = *(&self->_has + 2);
-    v85 = *(v4 + 90);
+    v85 = *(equalCopy + 90);
   }
 
   v97 = (v83 >> 8) & 1;
@@ -2862,13 +2862,13 @@ LABEL_106:
   if (v97)
   {
     hasLookupWaitTime = self->_hasLookupWaitTime;
-    if (hasLookupWaitTime != [v4 hasLookupWaitTime])
+    if (hasLookupWaitTime != [equalCopy hasLookupWaitTime])
     {
       goto LABEL_224;
     }
 
     v83 = *(&self->_has + 2);
-    v85 = *(v4 + 90);
+    v85 = *(equalCopy + 90);
   }
 
   v99 = (v83 >> 9) & 1;
@@ -2880,13 +2880,13 @@ LABEL_106:
   if (v99)
   {
     hasBagWaitTime = self->_hasBagWaitTime;
-    if (hasBagWaitTime != [v4 hasBagWaitTime])
+    if (hasBagWaitTime != [equalCopy hasBagWaitTime])
     {
       goto LABEL_224;
     }
 
     v83 = *(&self->_has + 2);
-    v85 = *(v4 + 90);
+    v85 = *(equalCopy + 90);
   }
 
   v101 = (v83 >> 10) & 1;
@@ -2898,13 +2898,13 @@ LABEL_106:
   if (v101)
   {
     hasLeaseWaitTime = self->_hasLeaseWaitTime;
-    if (hasLeaseWaitTime != [v4 hasLeaseWaitTime])
+    if (hasLeaseWaitTime != [equalCopy hasLeaseWaitTime])
     {
       goto LABEL_224;
     }
 
     v83 = *(&self->_has + 2);
-    v85 = *(v4 + 90);
+    v85 = *(equalCopy + 90);
   }
 
   v103 = (v83 >> 11) & 1;
@@ -2916,13 +2916,13 @@ LABEL_106:
   if (v103)
   {
     hasSuzeLeaseWaitTime = self->_hasSuzeLeaseWaitTime;
-    if (hasSuzeLeaseWaitTime != [v4 hasSuzeLeaseWaitTime])
+    if (hasSuzeLeaseWaitTime != [equalCopy hasSuzeLeaseWaitTime])
     {
       goto LABEL_224;
     }
 
     v83 = *(&self->_has + 2);
-    v85 = *(v4 + 90);
+    v85 = *(equalCopy + 90);
   }
 
   v105 = (v83 >> 12) & 1;
@@ -2934,13 +2934,13 @@ LABEL_106:
   if (v105)
   {
     hasSubscriptionAssetLoadWaitTime = self->_hasSubscriptionAssetLoadWaitTime;
-    if (hasSubscriptionAssetLoadWaitTime != [v4 hasSubscriptionAssetLoadWaitTime])
+    if (hasSubscriptionAssetLoadWaitTime != [equalCopy hasSubscriptionAssetLoadWaitTime])
     {
       goto LABEL_224;
     }
 
     v83 = *(&self->_has + 2);
-    v85 = *(v4 + 90);
+    v85 = *(equalCopy + 90);
   }
 
   v107 = (v83 >> 13) & 1;
@@ -2952,13 +2952,13 @@ LABEL_106:
   if (v107)
   {
     hasMediaRedownloadWaitTime = self->_hasMediaRedownloadWaitTime;
-    if (hasMediaRedownloadWaitTime != [v4 hasMediaRedownloadWaitTime])
+    if (hasMediaRedownloadWaitTime != [equalCopy hasMediaRedownloadWaitTime])
     {
       goto LABEL_224;
     }
 
     v83 = *(&self->_has + 2);
-    v85 = *(v4 + 90);
+    v85 = *(equalCopy + 90);
   }
 
   v109 = (v83 >> 14) & 1;
@@ -2970,13 +2970,13 @@ LABEL_106:
   if (v109)
   {
     cmInitialStartupItemCreationToReadyToPlayDurationInMs = self->_cmInitialStartupItemCreationToReadyToPlayDurationInMs;
-    if (cmInitialStartupItemCreationToReadyToPlayDurationInMs != [v4 cmInitialStartupItemCreationToReadyToPlayDurationInMs])
+    if (cmInitialStartupItemCreationToReadyToPlayDurationInMs != [equalCopy cmInitialStartupItemCreationToReadyToPlayDurationInMs])
     {
       goto LABEL_224;
     }
 
     v83 = *(&self->_has + 2);
-    v85 = *(v4 + 90);
+    v85 = *(equalCopy + 90);
   }
 
   if (((v85 ^ v83) & 0x8000) != 0)
@@ -2987,14 +2987,14 @@ LABEL_106:
   if ((v83 & 0x8000) != 0)
   {
     cmInitialStartupItemCreationToLtluDurationInMs = self->_cmInitialStartupItemCreationToLtluDurationInMs;
-    if (cmInitialStartupItemCreationToLtluDurationInMs != [v4 cmInitialStartupItemCreationToLtluDurationInMs])
+    if (cmInitialStartupItemCreationToLtluDurationInMs != [equalCopy cmInitialStartupItemCreationToLtluDurationInMs])
     {
       goto LABEL_224;
     }
   }
 
   v112 = *(&self->_has + 6);
-  v113 = *(v4 + 182);
+  v113 = *(equalCopy + 182);
   if ((v112 & 1) != (v113 & 1))
   {
     goto LABEL_224;
@@ -3003,13 +3003,13 @@ LABEL_106:
   if (v112)
   {
     masterPlaylistConnectionTlsHandshakeDurationInMs = self->_masterPlaylistConnectionTlsHandshakeDurationInMs;
-    if (masterPlaylistConnectionTlsHandshakeDurationInMs != [v4 masterPlaylistConnectionTlsHandshakeDurationInMs])
+    if (masterPlaylistConnectionTlsHandshakeDurationInMs != [equalCopy masterPlaylistConnectionTlsHandshakeDurationInMs])
     {
       goto LABEL_224;
     }
 
     v112 = *(&self->_has + 6);
-    v113 = *(v4 + 182);
+    v113 = *(equalCopy + 182);
   }
 
   v115 = (v112 >> 1) & 1;
@@ -3021,13 +3021,13 @@ LABEL_106:
   if (v115)
   {
     masterPlaylistRequestDurationInMs = self->_masterPlaylistRequestDurationInMs;
-    if (masterPlaylistRequestDurationInMs != [v4 masterPlaylistRequestDurationInMs])
+    if (masterPlaylistRequestDurationInMs != [equalCopy masterPlaylistRequestDurationInMs])
     {
       goto LABEL_224;
     }
 
     v112 = *(&self->_has + 6);
-    v113 = *(v4 + 182);
+    v113 = *(equalCopy + 182);
   }
 
   v117 = (v112 >> 2) & 1;
@@ -3039,13 +3039,13 @@ LABEL_106:
   if (v117)
   {
     subPlaylistConnectionTlsHandshakeDurationInMs = self->_subPlaylistConnectionTlsHandshakeDurationInMs;
-    if (subPlaylistConnectionTlsHandshakeDurationInMs != [v4 subPlaylistConnectionTlsHandshakeDurationInMs])
+    if (subPlaylistConnectionTlsHandshakeDurationInMs != [equalCopy subPlaylistConnectionTlsHandshakeDurationInMs])
     {
       goto LABEL_224;
     }
 
     v112 = *(&self->_has + 6);
-    v113 = *(v4 + 182);
+    v113 = *(equalCopy + 182);
   }
 
   v119 = (v112 >> 3) & 1;
@@ -3057,13 +3057,13 @@ LABEL_106:
   if (v119)
   {
     subPlaylistRequestDurationInMs = self->_subPlaylistRequestDurationInMs;
-    if (subPlaylistRequestDurationInMs != [v4 subPlaylistRequestDurationInMs])
+    if (subPlaylistRequestDurationInMs != [equalCopy subPlaylistRequestDurationInMs])
     {
       goto LABEL_224;
     }
 
     v112 = *(&self->_has + 6);
-    v113 = *(v4 + 182);
+    v113 = *(equalCopy + 182);
   }
 
   v121 = (v112 >> 4) & 1;
@@ -3075,13 +3075,13 @@ LABEL_106:
   if (v121)
   {
     contentConnectionTlsHandshakeDurationInMs = self->_contentConnectionTlsHandshakeDurationInMs;
-    if (contentConnectionTlsHandshakeDurationInMs != [v4 contentConnectionTlsHandshakeDurationInMs])
+    if (contentConnectionTlsHandshakeDurationInMs != [equalCopy contentConnectionTlsHandshakeDurationInMs])
     {
       goto LABEL_224;
     }
 
     v112 = *(&self->_has + 6);
-    v113 = *(v4 + 182);
+    v113 = *(equalCopy + 182);
   }
 
   v123 = (v112 >> 5) & 1;
@@ -3093,23 +3093,23 @@ LABEL_106:
   if (v123)
   {
     contentFirstSegmentDurationInMs = self->_contentFirstSegmentDurationInMs;
-    if (contentFirstSegmentDurationInMs != [v4 contentFirstSegmentDurationInMs])
+    if (contentFirstSegmentDurationInMs != [equalCopy contentFirstSegmentDurationInMs])
     {
       goto LABEL_224;
     }
   }
 
-  v76 = [(MWTSchemaMWTMusicMetadataReported *)self audioQueueType];
-  v77 = [v4 audioQueueType];
-  if ((v76 != 0) == (v77 == 0))
+  errorResolutionType = [(MWTSchemaMWTMusicMetadataReported *)self audioQueueType];
+  errorResolutionType2 = [equalCopy audioQueueType];
+  if ((errorResolutionType != 0) == (errorResolutionType2 == 0))
   {
 LABEL_223:
 
     goto LABEL_224;
   }
 
-  v125 = [(MWTSchemaMWTMusicMetadataReported *)self audioQueueType];
-  if (!v125)
+  audioQueueType = [(MWTSchemaMWTMusicMetadataReported *)self audioQueueType];
+  if (!audioQueueType)
   {
 
 LABEL_227:
@@ -3117,10 +3117,10 @@ LABEL_227:
     goto LABEL_225;
   }
 
-  v126 = v125;
-  v127 = [(MWTSchemaMWTMusicMetadataReported *)self audioQueueType];
-  v128 = [v4 audioQueueType];
-  v129 = [v127 isEqual:v128];
+  v126 = audioQueueType;
+  audioQueueType2 = [(MWTSchemaMWTMusicMetadataReported *)self audioQueueType];
+  audioQueueType3 = [equalCopy audioQueueType];
+  v129 = [audioQueueType2 isEqual:audioQueueType3];
 
   if (v129)
   {
@@ -3134,9 +3134,9 @@ LABEL_225:
   return v130;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   p_has = &self->_has;
   has = self->_has;
   if (has)
@@ -3587,9 +3587,9 @@ LABEL_33:
     PBDataWriterWriteBOOLField();
   }
 
-  v7 = [(MWTSchemaMWTMusicMetadataReported *)self errorResolutionType];
+  errorResolutionType = [(MWTSchemaMWTMusicMetadataReported *)self errorResolutionType];
 
-  if (v7)
+  if (errorResolutionType)
   {
     PBDataWriterWriteStringField();
   }
@@ -3851,19 +3851,19 @@ LABEL_59:
   }
 
 LABEL_60:
-  v10 = [(MWTSchemaMWTMusicMetadataReported *)self audioQueueType];
+  audioQueueType = [(MWTSchemaMWTMusicMetadataReported *)self audioQueueType];
 
-  v11 = v12;
-  if (v10)
+  v11 = toCopy;
+  if (audioQueueType)
   {
     PBDataWriterWriteStringField();
-    v11 = v12;
+    v11 = toCopy;
   }
 }
 
-- (void)setHasContentFirstSegmentDurationInMs:(BOOL)a3
+- (void)setHasContentFirstSegmentDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 32;
   }
@@ -3876,9 +3876,9 @@ LABEL_60:
   *(&self->_has + 6) = *(&self->_has + 6) & 0xDF | v3;
 }
 
-- (void)setHasContentConnectionTlsHandshakeDurationInMs:(BOOL)a3
+- (void)setHasContentConnectionTlsHandshakeDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 16;
   }
@@ -3891,9 +3891,9 @@ LABEL_60:
   *(&self->_has + 6) = *(&self->_has + 6) & 0xEF | v3;
 }
 
-- (void)setHasSubPlaylistRequestDurationInMs:(BOOL)a3
+- (void)setHasSubPlaylistRequestDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 8;
   }
@@ -3906,9 +3906,9 @@ LABEL_60:
   *(&self->_has + 6) = *(&self->_has + 6) & 0xF7 | v3;
 }
 
-- (void)setHasSubPlaylistConnectionTlsHandshakeDurationInMs:(BOOL)a3
+- (void)setHasSubPlaylistConnectionTlsHandshakeDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -3921,9 +3921,9 @@ LABEL_60:
   *(&self->_has + 6) = *(&self->_has + 6) & 0xFB | v3;
 }
 
-- (void)setHasMasterPlaylistRequestDurationInMs:(BOOL)a3
+- (void)setHasMasterPlaylistRequestDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -3936,9 +3936,9 @@ LABEL_60:
   *(&self->_has + 6) = *(&self->_has + 6) & 0xFD | v3;
 }
 
-- (void)setHasCmInitialStartupItemCreationToLtluDurationInMs:(BOOL)a3
+- (void)setHasCmInitialStartupItemCreationToLtluDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x8000;
   }
@@ -3951,9 +3951,9 @@ LABEL_60:
   *(&self->_has + 2) = v3 & 0x8000 | *(&self->_has + 2) & 0x7FFF;
 }
 
-- (void)setHasCmInitialStartupItemCreationToReadyToPlayDurationInMs:(BOOL)a3
+- (void)setHasCmInitialStartupItemCreationToReadyToPlayDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 0x4000;
   }
@@ -3966,9 +3966,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xBFFF | v3;
 }
 
-- (void)setHasHasMediaRedownloadWaitTime:(BOOL)a3
+- (void)setHasHasMediaRedownloadWaitTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 0x2000;
   }
@@ -3981,9 +3981,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xDFFF | v3;
 }
 
-- (void)setHasHasSubscriptionAssetLoadWaitTime:(BOOL)a3
+- (void)setHasHasSubscriptionAssetLoadWaitTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 4096;
   }
@@ -3996,9 +3996,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xEFFF | v3;
 }
 
-- (void)setHasHasSuzeLeaseWaitTime:(BOOL)a3
+- (void)setHasHasSuzeLeaseWaitTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2048;
   }
@@ -4011,9 +4011,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xF7FF | v3;
 }
 
-- (void)setHasHasLeaseWaitTime:(BOOL)a3
+- (void)setHasHasLeaseWaitTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 1024;
   }
@@ -4026,9 +4026,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFBFF | v3;
 }
 
-- (void)setHasHasBagWaitTime:(BOOL)a3
+- (void)setHasHasBagWaitTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 512;
   }
@@ -4041,9 +4041,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFDFF | v3;
 }
 
-- (void)setHasHasLookupWaitTime:(BOOL)a3
+- (void)setHasHasLookupWaitTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 256;
   }
@@ -4056,9 +4056,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFEFF | v3;
 }
 
-- (void)setHasSubscriptionType:(BOOL)a3
+- (void)setHasSubscriptionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 128;
   }
@@ -4071,9 +4071,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFF7F | v3;
 }
 
-- (void)setHasAssetLocation:(BOOL)a3
+- (void)setHasAssetLocation:(BOOL)location
 {
-  if (a3)
+  if (location)
   {
     v3 = 64;
   }
@@ -4086,9 +4086,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFBF | v3;
 }
 
-- (void)setHasAssetSource:(BOOL)a3
+- (void)setHasAssetSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 32;
   }
@@ -4101,9 +4101,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFDF | v3;
 }
 
-- (void)setHasFormatLayoutValue:(BOOL)a3
+- (void)setHasFormatLayoutValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 16;
   }
@@ -4116,9 +4116,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFEF | v3;
 }
 
-- (void)setHasRouteType:(BOOL)a3
+- (void)setHasRouteType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -4131,9 +4131,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFF7 | v3;
 }
 
-- (void)setHasEndPointType:(BOOL)a3
+- (void)setHasEndPointType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -4146,9 +4146,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFB | v3;
 }
 
-- (void)setHasIsPrimaryUser:(BOOL)a3
+- (void)setHasIsPrimaryUser:(BOOL)user
 {
-  if (a3)
+  if (user)
   {
     v3 = 2;
   }
@@ -4161,9 +4161,9 @@ LABEL_60:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFFFD | v3;
 }
 
-- (void)setHasNetworkConnectionType:(BOOL)a3
+- (void)setHasNetworkConnectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x80000000;
   }
@@ -4176,9 +4176,9 @@ LABEL_60:
   *&self->_has = v3 & 0x80000000 | *&self->_has & 0x7FFFFFFF;
 }
 
-- (void)setHasIsSuzeLease:(BOOL)a3
+- (void)setHasIsSuzeLease:(BOOL)lease
 {
-  if (a3)
+  if (lease)
   {
     v3 = 0x40000000;
   }
@@ -4191,9 +4191,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xBFFFFFFF | v3;
 }
 
-- (void)setHasIsSharePlayPlayback:(BOOL)a3
+- (void)setHasIsSharePlayPlayback:(BOOL)playback
 {
-  if (a3)
+  if (playback)
   {
     v3 = 0x20000000;
   }
@@ -4206,9 +4206,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xDFFFFFFF | v3;
 }
 
-- (void)setHasIsMiniSinfAvailable:(BOOL)a3
+- (void)setHasIsMiniSinfAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 0x10000000;
   }
@@ -4221,9 +4221,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xEFFFFFFF | v3;
 }
 
-- (void)setHasIsFirstPlayAfterAppLaunch:(BOOL)a3
+- (void)setHasIsFirstPlayAfterAppLaunch:(BOOL)launch
 {
-  if (a3)
+  if (launch)
   {
     v3 = 0x8000000;
   }
@@ -4236,9 +4236,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xF7FFFFFF | v3;
 }
 
-- (void)setHasIsAutoPlay:(BOOL)a3
+- (void)setHasIsAutoPlay:(BOOL)play
 {
-  if (a3)
+  if (play)
   {
     v3 = 0x4000000;
   }
@@ -4251,9 +4251,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFBFFFFFF | v3;
 }
 
-- (void)setHasIsNonDefaultUser:(BOOL)a3
+- (void)setHasIsNonDefaultUser:(BOOL)user
 {
-  if (a3)
+  if (user)
   {
     v3 = 0x2000000;
   }
@@ -4266,9 +4266,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFDFFFFFF | v3;
 }
 
-- (void)setHasIsDelegatedPlayback:(BOOL)a3
+- (void)setHasIsDelegatedPlayback:(BOOL)playback
 {
-  if (a3)
+  if (playback)
   {
     v3 = 0x1000000;
   }
@@ -4281,9 +4281,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFEFFFFFF | v3;
 }
 
-- (void)setHasIsRemoteSetQueue:(BOOL)a3
+- (void)setHasIsRemoteSetQueue:(BOOL)queue
 {
-  if (a3)
+  if (queue)
   {
     v3 = 0x800000;
   }
@@ -4296,9 +4296,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFF7FFFFF | v3;
 }
 
-- (void)setHasIsInterruptingPlayback:(BOOL)a3
+- (void)setHasIsInterruptingPlayback:(BOOL)playback
 {
-  if (a3)
+  if (playback)
   {
     v3 = 0x400000;
   }
@@ -4311,9 +4311,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFBFFFFF | v3;
 }
 
-- (void)setHasIsHlsKeysReady:(BOOL)a3
+- (void)setHasIsHlsKeysReady:(BOOL)ready
 {
-  if (a3)
+  if (ready)
   {
     v3 = 0x200000;
   }
@@ -4326,9 +4326,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFDFFFFF | v3;
 }
 
-- (void)setHasIsOfflineKeyReady:(BOOL)a3
+- (void)setHasIsOfflineKeyReady:(BOOL)ready
 {
-  if (a3)
+  if (ready)
   {
     v3 = 0x100000;
   }
@@ -4341,9 +4341,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFEFFFFF | v3;
 }
 
-- (void)setHasIsOnlineKeyReady:(BOOL)a3
+- (void)setHasIsOnlineKeyReady:(BOOL)ready
 {
-  if (a3)
+  if (ready)
   {
     v3 = 0x80000;
   }
@@ -4356,9 +4356,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFF7FFFF | v3;
 }
 
-- (void)setHasIsLeaseReady:(BOOL)a3
+- (void)setHasIsLeaseReady:(BOOL)ready
 {
-  if (a3)
+  if (ready)
   {
     v3 = 0x40000;
   }
@@ -4371,9 +4371,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFBFFFF | v3;
 }
 
-- (void)setHasIsStoreBagReady:(BOOL)a3
+- (void)setHasIsStoreBagReady:(BOOL)ready
 {
-  if (a3)
+  if (ready)
   {
     v3 = 0x20000;
   }
@@ -4386,9 +4386,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFDFFFF | v3;
 }
 
-- (void)setHasIsAccountDataReady:(BOOL)a3
+- (void)setHasIsAccountDataReady:(BOOL)ready
 {
-  if (a3)
+  if (ready)
   {
     v3 = 0x10000;
   }
@@ -4401,9 +4401,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFEFFFF | v3;
 }
 
-- (void)setHasRouteConfiguration:(BOOL)a3
+- (void)setHasRouteConfiguration:(BOOL)configuration
 {
-  if (a3)
+  if (configuration)
   {
     v3 = 0x8000;
   }
@@ -4416,9 +4416,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFF7FFF | v3;
 }
 
-- (void)setHasNumberOfSpeakers:(BOOL)a3
+- (void)setHasNumberOfSpeakers:(BOOL)speakers
 {
-  if (a3)
+  if (speakers)
   {
     v3 = 0x4000;
   }
@@ -4431,9 +4431,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFFBFFF | v3;
 }
 
-- (void)setHasFormatTier:(BOOL)a3
+- (void)setHasFormatTier:(BOOL)tier
 {
-  if (a3)
+  if (tier)
   {
     v3 = 0x2000;
   }
@@ -4446,9 +4446,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFFDFFF | v3;
 }
 
-- (void)setHasFormatSampleRate:(BOOL)a3
+- (void)setHasFormatSampleRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 4096;
   }
@@ -4461,9 +4461,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFFEFFF | v3;
 }
 
-- (void)setHasFormatLayout:(BOOL)a3
+- (void)setHasFormatLayout:(BOOL)layout
 {
-  if (a3)
+  if (layout)
   {
     v3 = 2048;
   }
@@ -4476,9 +4476,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFFF7FF | v3;
 }
 
-- (void)setHasFormatChannels:(BOOL)a3
+- (void)setHasFormatChannels:(BOOL)channels
 {
-  if (a3)
+  if (channels)
   {
     v3 = 1024;
   }
@@ -4491,9 +4491,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFFFBFF | v3;
 }
 
-- (void)setHasFormatBitDepth:(BOOL)a3
+- (void)setHasFormatBitDepth:(BOOL)depth
 {
-  if (a3)
+  if (depth)
   {
     v3 = 512;
   }
@@ -4506,9 +4506,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFFFDFF | v3;
 }
 
-- (void)setHasFormatBitrate:(BOOL)a3
+- (void)setHasFormatBitrate:(BOOL)bitrate
 {
-  if (a3)
+  if (bitrate)
   {
     v3 = 256;
   }
@@ -4521,9 +4521,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFFFEFF | v3;
 }
 
-- (void)setHasFormatCodec:(BOOL)a3
+- (void)setHasFormatCodec:(BOOL)codec
 {
-  if (a3)
+  if (codec)
   {
     v3 = 128;
   }
@@ -4536,9 +4536,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFFFF7F | v3;
 }
 
-- (void)setHasStreamingContentType:(BOOL)a3
+- (void)setHasStreamingContentType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -4551,9 +4551,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFFFFBF | v3;
 }
 
-- (void)setHasAssetEndPoint:(BOOL)a3
+- (void)setHasAssetEndPoint:(BOOL)point
 {
-  if (a3)
+  if (point)
   {
     v3 = 32;
   }
@@ -4566,9 +4566,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFFFFDF | v3;
 }
 
-- (void)setHasPrefetchedMetadataSource:(BOOL)a3
+- (void)setHasPrefetchedMetadataSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 16;
   }
@@ -4581,9 +4581,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFFFFEF | v3;
 }
 
-- (void)setHasIsShuffled:(BOOL)a3
+- (void)setHasIsShuffled:(BOOL)shuffled
 {
-  if (a3)
+  if (shuffled)
   {
     v3 = 8;
   }
@@ -4596,9 +4596,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFFFFF7 | v3;
 }
 
-- (void)setHasQueueSize:(BOOL)a3
+- (void)setHasQueueSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 4;
   }
@@ -4611,9 +4611,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFFFFFFFB | v3;
 }
 
-- (void)setHasQueueType:(BOOL)a3
+- (void)setHasQueueType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

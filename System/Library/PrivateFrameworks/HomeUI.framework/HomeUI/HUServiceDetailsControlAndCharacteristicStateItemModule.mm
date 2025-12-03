@@ -2,59 +2,59 @@
 - (BOOL)isServiceGroup;
 - (HFCharacteristicStateItemProvider)characteristicStateItemProvider;
 - (HFControlPanelItemProvider)controlPanelItemProvider;
-- (HUServiceDetailsControlAndCharacteristicStateItemModule)initWithItemUpdater:(id)a3 home:(id)a4 sourceItem:(id)a5;
-- (HUServiceDetailsControlAndCharacteristicStateItemModule)initWithItemUpdater:(id)a3 home:(id)a4 sourceItem:(id)a5 delegate:(id)a6;
+- (HUServiceDetailsControlAndCharacteristicStateItemModule)initWithItemUpdater:(id)updater home:(id)home sourceItem:(id)item;
+- (HUServiceDetailsControlAndCharacteristicStateItemModule)initWithItemUpdater:(id)updater home:(id)home sourceItem:(id)item delegate:(id)delegate;
 - (HUServiceDetailsControlAndCharacteristicStateItemModuleDelegate)delegate;
-- (id)_allCharacteristicTypesForItem:(id)a3;
+- (id)_allCharacteristicTypesForItem:(id)item;
 - (id)_characteristicStateItemComparator;
-- (id)_createGroupCharacteristicSectionsForItems:(id)a3;
-- (id)_createStandaloneCharacteristicSectionsForItems:(id)a3;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)_createGroupCharacteristicSectionsForItems:(id)items;
+- (id)_createStandaloneCharacteristicSectionsForItems:(id)items;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
 - (id)sourceServiceItem;
 @end
 
 @implementation HUServiceDetailsControlAndCharacteristicStateItemModule
 
-- (HUServiceDetailsControlAndCharacteristicStateItemModule)initWithItemUpdater:(id)a3 home:(id)a4 sourceItem:(id)a5 delegate:(id)a6
+- (HUServiceDetailsControlAndCharacteristicStateItemModule)initWithItemUpdater:(id)updater home:(id)home sourceItem:(id)item delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  updaterCopy = updater;
+  homeCopy = home;
+  itemCopy = item;
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsControlAndCharacteristicStateItemModule.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsControlAndCharacteristicStateItemModule.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
   }
 
   v19.receiver = self;
   v19.super_class = HUServiceDetailsControlAndCharacteristicStateItemModule;
-  v15 = [(HUServiceDetailsItemModule *)&v19 initWithItemUpdater:v11 home:v12 sourceItem:v13];
+  v15 = [(HUServiceDetailsItemModule *)&v19 initWithItemUpdater:updaterCopy home:homeCopy sourceItem:itemCopy];
   v16 = v15;
   if (v15)
   {
-    [(HUServiceDetailsControlAndCharacteristicStateItemModule *)v15 setDelegate:v14];
+    [(HUServiceDetailsControlAndCharacteristicStateItemModule *)v15 setDelegate:delegateCopy];
   }
 
   return v16;
 }
 
-- (HUServiceDetailsControlAndCharacteristicStateItemModule)initWithItemUpdater:(id)a3 home:(id)a4 sourceItem:(id)a5
+- (HUServiceDetailsControlAndCharacteristicStateItemModule)initWithItemUpdater:(id)updater home:(id)home sourceItem:(id)item
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithItemUpdater_home_sourceItem_delegate_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsControlAndCharacteristicStateItemModule.m" lineNumber:43 description:{@"%s is unavailable; use %@ instead", "-[HUServiceDetailsControlAndCharacteristicStateItemModule initWithItemUpdater:home:sourceItem:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsControlAndCharacteristicStateItemModule.m" lineNumber:43 description:{@"%s is unavailable; use %@ instead", "-[HUServiceDetailsControlAndCharacteristicStateItemModule initWithItemUpdater:home:sourceItem:]", v8}];
 
   return 0;
 }
 
 - (BOOL)isServiceGroup
 {
-  v2 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
-  if ([v2 conformsToProtocol:&unk_28251B268])
+  sourceServiceItem = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
+  if ([sourceServiceItem conformsToProtocol:&unk_28251B268])
   {
-    v3 = v2;
+    v3 = sourceServiceItem;
   }
 
   else
@@ -69,9 +69,9 @@
 
 - (id)sourceServiceItem
 {
-  v2 = [(HUServiceDetailsItemModule *)self sourceItem];
+  sourceItem = [(HUServiceDetailsItemModule *)self sourceItem];
   v3 = &unk_28251B0C8;
-  v4 = v2;
+  v4 = sourceItem;
   v5 = v4;
   if (v4)
   {
@@ -91,10 +91,10 @@
       goto LABEL_8;
     }
 
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertProtocolCast(Protocol * _Nonnull __strong, id  _Nonnull __strong)"}];
     v10 = NSStringFromProtocol(v3);
-    [v8 handleFailureInFunction:v9 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v10}];
+    [currentHandler handleFailureInFunction:v9 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v10}];
   }
 
   v7 = 0;
@@ -115,10 +115,10 @@ LABEL_8:
   {
     objc_initWeak(&location, self);
     v5 = objc_alloc(MEMORY[0x277D145D8]);
-    v6 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
-    v7 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
-    v8 = [v7 valueSource];
-    v9 = [v5 initWithItem:v6 valueSource:v8];
+    sourceServiceItem = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
+    sourceServiceItem2 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
+    valueSource = [sourceServiceItem2 valueSource];
+    v9 = [v5 initWithItem:sourceServiceItem valueSource:valueSource];
     v10 = self->_controlPanelItemProvider;
     self->_controlPanelItemProvider = v9;
 
@@ -163,19 +163,19 @@ uint64_t __83__HUServiceDetailsControlAndCharacteristicStateItemModule_controlPa
   {
     if (![(HUServiceDetailsControlAndCharacteristicStateItemModule *)self isServiceGroup])
     {
-      v4 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
-      v5 = [v4 services];
-      v6 = [v5 count];
+      sourceServiceItem = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
+      services = [sourceServiceItem services];
+      v6 = [services count];
 
       if (v6 == 1)
       {
         v7 = objc_alloc(MEMORY[0x277D14540]);
-        v8 = [(HUServiceDetailsItemModule *)self home];
-        v9 = [v8 hf_characteristicValueManager];
-        v10 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
-        v11 = [v10 services];
-        v12 = [v11 anyObject];
-        v13 = [v7 initWithValueSource:v9 service:v12];
+        home = [(HUServiceDetailsItemModule *)self home];
+        hf_characteristicValueManager = [home hf_characteristicValueManager];
+        sourceServiceItem2 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
+        services2 = [sourceServiceItem2 services];
+        anyObject = [services2 anyObject];
+        v13 = [v7 initWithValueSource:hf_characteristicValueManager service:anyObject];
 LABEL_7:
         v18 = self->_characteristicStateItemProvider;
         self->_characteristicStateItemProvider = v13;
@@ -183,19 +183,19 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v14 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
-      v15 = [v14 accessories];
-      v16 = [v15 count];
+      sourceServiceItem3 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
+      accessories = [sourceServiceItem3 accessories];
+      v16 = [accessories count];
 
       if (v16 == 1)
       {
         v17 = objc_alloc(MEMORY[0x277D14540]);
-        v8 = [(HUServiceDetailsItemModule *)self home];
-        v9 = [v8 hf_characteristicValueManager];
-        v10 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
-        v11 = [v10 accessories];
-        v12 = [v11 anyObject];
-        v13 = [v17 initWithValueSource:v9 accessory:v12];
+        home = [(HUServiceDetailsItemModule *)self home];
+        hf_characteristicValueManager = [home hf_characteristicValueManager];
+        sourceServiceItem2 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self sourceServiceItem];
+        services2 = [sourceServiceItem2 accessories];
+        anyObject = [services2 anyObject];
+        v13 = [v17 initWithValueSource:hf_characteristicValueManager accessory:anyObject];
         goto LABEL_7;
       }
     }
@@ -220,11 +220,11 @@ LABEL_8:
   else
   {
     v5 = objc_opt_new();
-    v6 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self controlPanelItemProvider];
-    [v5 na_safeAddObject:v6];
+    controlPanelItemProvider = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self controlPanelItemProvider];
+    [v5 na_safeAddObject:controlPanelItemProvider];
 
-    v7 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self characteristicStateItemProvider];
-    [v5 na_safeAddObject:v7];
+    characteristicStateItemProvider = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self characteristicStateItemProvider];
+    [v5 na_safeAddObject:characteristicStateItemProvider];
 
     v8 = [MEMORY[0x277CBEB98] setWithArray:v5];
     v9 = self->_itemProviders;
@@ -236,18 +236,18 @@ LABEL_8:
   return v3;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self controlPanelItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 na_setByIntersectingWithSet:v4];
+  itemsCopy = items;
+  controlPanelItemProvider = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self controlPanelItemProvider];
+  items = [controlPanelItemProvider items];
+  v7 = [items na_setByIntersectingWithSet:itemsCopy];
   v8 = [v7 mutableCopy];
 
-  v9 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self characteristicStateItemProvider];
-  v10 = [v9 items];
-  v11 = [v10 na_setByIntersectingWithSet:v4];
+  characteristicStateItemProvider = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self characteristicStateItemProvider];
+  items2 = [characteristicStateItemProvider items];
+  v11 = [items2 na_setByIntersectingWithSet:itemsCopy];
   [v8 unionSet:v11];
 
   v12 = [v8 objectsPassingTest:&__block_literal_global_179];
@@ -257,11 +257,11 @@ LABEL_8:
   v37[1] = 3221225472;
   v37[2] = __91__HUServiceDetailsControlAndCharacteristicStateItemModule_buildSectionsWithDisplayedItems___block_invoke_2;
   v37[3] = &unk_277DB85D8;
-  v31 = v4;
+  v31 = itemsCopy;
   v38 = v31;
   v13 = [v8 na_filter:v37];
   v14 = objc_opt_new();
-  v32 = self;
+  selfCopy = self;
   v15 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self _createGroupCharacteristicSectionsForItems:v8];
   [v14 addObjectsFromArray:v15];
   v16 = [v8 mutableCopy];
@@ -286,11 +286,11 @@ LABEL_8:
         }
 
         v23 = MEMORY[0x277CBEB98];
-        v24 = [*(*(&v33 + 1) + 8 * i) items];
-        v25 = v24;
-        if (v24)
+        items3 = [*(*(&v33 + 1) + 8 * i) items];
+        v25 = items3;
+        if (items3)
         {
-          v26 = v24;
+          v26 = items3;
         }
 
         else
@@ -308,7 +308,7 @@ LABEL_8:
     while (v19);
   }
 
-  v28 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)v32 _createStandaloneCharacteristicSectionsForItems:v16];
+  v28 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)selfCopy _createStandaloneCharacteristicSectionsForItems:v16];
   [v14 addObjectsFromArray:v28];
 
   v29 = [v14 copy];
@@ -324,17 +324,17 @@ BOOL __91__HUServiceDetailsControlAndCharacteristicStateItemModule_buildSections
   return v3;
 }
 
-- (id)_createGroupCharacteristicSectionsForItems:(id)a3
+- (id)_createGroupCharacteristicSectionsForItems:(id)items
 {
   v70 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v36 = objc_opt_new();
   v4 = objc_opt_new();
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v3;
+  obj = itemsCopy;
   v38 = [obj countByEnumeratingWithState:&v55 objects:v69 count:16];
   if (v38)
   {
@@ -351,9 +351,9 @@ BOOL __91__HUServiceDetailsControlAndCharacteristicStateItemModule_buildSections
 
         v39 = v5;
         v6 = *(*(&v55 + 1) + 8 * v5);
-        v7 = [v6 latestResults];
+        latestResults = [v6 latestResults];
 
-        if (!v7)
+        if (!latestResults)
         {
           NSLog(&cfstr_ItemHasNotBeen.isa, v6);
         }
@@ -445,8 +445,8 @@ BOOL __91__HUServiceDetailsControlAndCharacteristicStateItemModule_buildSections
         if (v24)
         {
           [v41 addObject:v24];
-          v25 = [v24 identifier];
-          v26 = [v40 na_objectForKey:v25 withDefaultValue:&__block_literal_global_110_0];
+          identifier = [v24 identifier];
+          v26 = [v40 na_objectForKey:identifier withDefaultValue:&__block_literal_global_110_0];
           [v26 addObject:v23];
         }
       }
@@ -459,16 +459,16 @@ BOOL __91__HUServiceDetailsControlAndCharacteristicStateItemModule_buildSections
 
   v27 = v18;
 
-  v28 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self _characteristicStateItemComparator];
+  _characteristicStateItemComparator = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self _characteristicStateItemComparator];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __102__HUServiceDetailsControlAndCharacteristicStateItemModule__createGroupCharacteristicSectionsForItems___block_invoke_2;
   v42[3] = &unk_277DC0658;
   v43 = v40;
   v44 = v4;
-  v45 = self;
-  v46 = v28;
-  v29 = v28;
+  selfCopy = self;
+  v46 = _characteristicStateItemComparator;
+  v29 = _characteristicStateItemComparator;
   v30 = v4;
   v31 = v40;
   v32 = [v41 na_map:v42];
@@ -561,17 +561,17 @@ uint64_t __102__HUServiceDetailsControlAndCharacteristicStateItemModule__createG
   return isKindOfClass & 1;
 }
 
-- (id)_createStandaloneCharacteristicSectionsForItems:(id)a3
+- (id)_createStandaloneCharacteristicSectionsForItems:(id)items
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __107__HUServiceDetailsControlAndCharacteristicStateItemModule__createStandaloneCharacteristicSectionsForItems___block_invoke;
   v6[3] = &unk_277DC0680;
   v6[4] = self;
-  v3 = [a3 na_map:v6];
-  v4 = [v3 allObjects];
+  v3 = [items na_map:v6];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 id __107__HUServiceDetailsControlAndCharacteristicStateItemModule__createStandaloneCharacteristicSectionsForItems___block_invoke(uint64_t a1, void *a2)
@@ -658,11 +658,11 @@ uint64_t __107__HUServiceDetailsControlAndCharacteristicStateItemModule__createS
   return v11;
 }
 
-- (id)_allCharacteristicTypesForItem:(id)a3
+- (id)_allCharacteristicTypesForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13D78]];
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13D78]];
   v7 = v6;
   if (v6)
   {
@@ -676,8 +676,8 @@ uint64_t __107__HUServiceDetailsControlAndCharacteristicStateItemModule__createS
 
   v9 = v8;
 
-  v10 = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self delegate];
-  v11 = [v10 controlAndCharacteristicStateItemModule:self childItemsForItem:v4];
+  delegate = [(HUServiceDetailsControlAndCharacteristicStateItemModule *)self delegate];
+  v11 = [delegate controlAndCharacteristicStateItemModule:self childItemsForItem:itemCopy];
 
   v12 = [v11 na_flatMap:&__block_literal_global_139];
 

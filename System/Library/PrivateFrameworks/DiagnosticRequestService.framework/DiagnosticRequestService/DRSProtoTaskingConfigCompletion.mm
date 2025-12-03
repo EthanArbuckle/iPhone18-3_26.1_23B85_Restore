@@ -1,12 +1,12 @@
 @interface DRSProtoTaskingConfigCompletion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DRSProtoTaskingConfigCompletion
@@ -17,115 +17,115 @@
   v8.receiver = self;
   v8.super_class = DRSProtoTaskingConfigCompletion;
   v4 = [(DRSProtoTaskingConfigCompletion *)&v8 description];
-  v5 = [(DRSProtoTaskingConfigCompletion *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DRSProtoTaskingConfigCompletion *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   taskingConfigMetadata = self->_taskingConfigMetadata;
   if (taskingConfigMetadata)
   {
-    v6 = [(DRSProtoTaskingConfigMetadata *)taskingConfigMetadata dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"tasking_config_metadata"];
+    dictionaryRepresentation = [(DRSProtoTaskingConfigMetadata *)taskingConfigMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"tasking_config_metadata"];
   }
 
   completionType = self->_completionType;
   if (completionType)
   {
-    [v3 setObject:completionType forKey:@"completion_type"];
+    [dictionary setObject:completionType forKey:@"completion_type"];
   }
 
   completionDescription = self->_completionDescription;
   if (completionDescription)
   {
-    [v3 setObject:completionDescription forKey:@"completion_description"];
+    [dictionary setObject:completionDescription forKey:@"completion_description"];
   }
 
   if (*&self->_has)
   {
     *&v4 = self->_activeDuration;
     v9 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v9 forKey:@"active_duration"];
+    [dictionary setObject:v9 forKey:@"active_duration"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_taskingConfigMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_completionType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_completionDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     activeDuration = self->_activeDuration;
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_taskingConfigMetadata)
   {
-    [v4 setTaskingConfigMetadata:?];
-    v4 = v5;
+    [toCopy setTaskingConfigMetadata:?];
+    toCopy = v5;
   }
 
   if (self->_completionType)
   {
     [v5 setCompletionType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_completionDescription)
   {
     [v5 setCompletionDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = LODWORD(self->_activeDuration);
-    *(v4 + 40) |= 1u;
+    *(toCopy + 2) = LODWORD(self->_activeDuration);
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(DRSProtoTaskingConfigMetadata *)self->_taskingConfigMetadata copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(DRSProtoTaskingConfigMetadata *)self->_taskingConfigMetadata copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_completionType copyWithZone:a3];
+  v8 = [(NSString *)self->_completionType copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_completionDescription copyWithZone:a3];
+  v10 = [(NSString *)self->_completionDescription copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -138,16 +138,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   taskingConfigMetadata = self->_taskingConfigMetadata;
-  if (taskingConfigMetadata | *(v4 + 4))
+  if (taskingConfigMetadata | *(equalCopy + 4))
   {
     if (![(DRSProtoTaskingConfigMetadata *)taskingConfigMetadata isEqual:?])
     {
@@ -156,7 +156,7 @@
   }
 
   completionType = self->_completionType;
-  if (completionType | *(v4 + 3))
+  if (completionType | *(equalCopy + 3))
   {
     if (![(NSString *)completionType isEqual:?])
     {
@@ -165,7 +165,7 @@
   }
 
   completionDescription = self->_completionDescription;
-  if (completionDescription | *(v4 + 2))
+  if (completionDescription | *(equalCopy + 2))
   {
     if (![(NSString *)completionDescription isEqual:?])
     {
@@ -173,10 +173,10 @@
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_activeDuration == *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_activeDuration == *(equalCopy + 2))
     {
       v8 = 1;
       goto LABEL_13;
@@ -232,12 +232,12 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   taskingConfigMetadata = self->_taskingConfigMetadata;
-  v6 = *(v4 + 4);
-  v7 = v4;
+  v6 = *(fromCopy + 4);
+  v7 = fromCopy;
   if (taskingConfigMetadata)
   {
     if (!v6)
@@ -258,23 +258,23 @@ LABEL_13:
     [(DRSProtoTaskingConfigCompletion *)self setTaskingConfigMetadata:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(DRSProtoTaskingConfigCompletion *)self setCompletionType:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(DRSProtoTaskingConfigCompletion *)self setCompletionDescription:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_activeDuration = *(v4 + 2);
+    self->_activeDuration = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }

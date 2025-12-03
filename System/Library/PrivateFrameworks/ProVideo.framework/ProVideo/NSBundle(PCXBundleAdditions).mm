@@ -25,7 +25,7 @@ LABEL_3:
         objc_enumerationMutation(&unk_28732D940);
       }
 
-      result = [a1 pathForResource:a3 ofType:*(*(&v9 + 1) + 8 * v8)];
+      result = [self pathForResource:a3 ofType:*(*(&v9 + 1) + 8 * v8)];
       if (result)
       {
         break;

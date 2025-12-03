@@ -8,13 +8,13 @@
 {
   v12.receiver = self;
   v12.super_class = PUBrowsingBackgroundTileViewControllerInvertColorsAccessibility;
-  v2 = [(PUBrowsingBackgroundTileViewControllerInvertColorsAccessibility *)&v12 backgroundColorOverride];
+  backgroundColorOverride = [(PUBrowsingBackgroundTileViewControllerInvertColorsAccessibility *)&v12 backgroundColorOverride];
   if (!UIAccessibilityIsInvertColorsEnabled())
   {
     goto LABEL_5;
   }
 
-  if (v2)
+  if (backgroundColorOverride)
   {
     AXColorGetLuma();
     if (v3 >= 0.5)
@@ -24,15 +24,15 @@
   }
 
   v4 = __UIAccessibilitySafeClass();
-  v5 = [v4 view];
-  v6 = [v5 window];
-  v7 = [v6 traitCollection];
-  v8 = [v7 userInterfaceStyle];
+  view = [v4 view];
+  window = [view window];
+  traitCollection = [window traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v8 == &dword_0 + 2)
+  if (userInterfaceStyle == &dword_0 + 2)
   {
 LABEL_5:
-    v9 = v2;
+    v9 = backgroundColorOverride;
   }
 
   else

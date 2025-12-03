@@ -12,8 +12,8 @@
     v3 = _Failover;
     _Failover = v2;
 
-    v4 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v4 performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_301 postValidationHandler:&__block_literal_global_307 safeCategoryInstallationHandler:&__block_literal_global_310];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_301 postValidationHandler:&__block_literal_global_307 safeCategoryInstallationHandler:&__block_literal_global_310];
   }
 }
 

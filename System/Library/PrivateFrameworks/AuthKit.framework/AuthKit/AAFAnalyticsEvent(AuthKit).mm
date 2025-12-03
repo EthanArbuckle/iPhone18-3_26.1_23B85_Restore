@@ -16,16 +16,16 @@
 
 + (id)ak_analyticsEventWithEventName:()AuthKit error:
 {
-  v11 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v9 = 0;
   objc_storeStrong(&v9, a4);
   v8 = +[AKAccountManager sharedInstance];
-  v7 = [(AKAccountManager *)v8 primaryAuthKitAccount];
-  v6 = [v11 ak_analyticsEventWithEventName:location[0] account:v7 error:v9];
-  objc_storeStrong(&v7, 0);
+  primaryAuthKitAccount = [(AKAccountManager *)v8 primaryAuthKitAccount];
+  v6 = [selfCopy ak_analyticsEventWithEventName:location[0] account:primaryAuthKitAccount error:v9];
+  objc_storeStrong(&primaryAuthKitAccount, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
@@ -35,7 +35,7 @@
 
 + (id)ak_analyticsEventWithEventName:()AuthKit account:error:
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -68,20 +68,20 @@
 
 - (void)ak_updateTelemetryIdWithAccount:()AuthKit
 {
-  v14 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   if (location[0])
   {
-    v5 = [v14 objectForKeyedSubscript:*MEMORY[0x1E6985E38]];
+    v5 = [selfCopy objectForKeyedSubscript:*MEMORY[0x1E6985E38]];
     MEMORY[0x1E69E5920](v5);
     if (!v5)
     {
       v8 = +[AKAccountManager sharedInstance];
       v4 = [(AKAccountManager *)v8 telemetryDeviceSessionIDForAccount:location[0]];
       v3 = *MEMORY[0x1E6985E38];
-      [v14 setObject:? forKeyedSubscript:?];
+      [selfCopy setObject:? forKeyedSubscript:?];
       MEMORY[0x1E69E5920](v4);
       objc_storeStrong(&v8, 0);
     }
@@ -110,7 +110,7 @@
 
 + (id)ak_analyticsEventWithContext:()AuthKit eventName:error:
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -120,9 +120,9 @@
   objc_storeStrong(&v19, a5);
   v18 = [location[0] authKitAccount:0];
   v17 = [MEMORY[0x1E6985DB0] ak_analyticsEventWithEventName:v20 account:v18 error:v19];
-  v13 = [location[0] telemetryFlowID];
-  MEMORY[0x1E69E5920](v13);
-  if (!v13)
+  telemetryFlowID = [location[0] telemetryFlowID];
+  MEMORY[0x1E69E5920](telemetryFlowID);
+  if (!telemetryFlowID)
   {
     v16 = _AKLogSystem();
     v15 = 2;
@@ -137,10 +137,10 @@
     objc_storeStrong(&v16, 0);
   }
 
-  v7 = [location[0] telemetryFlowID];
+  telemetryFlowID2 = [location[0] telemetryFlowID];
   v5 = *MEMORY[0x1E6985E50];
   [v17 setObject:? forKeyedSubscript:?];
-  MEMORY[0x1E69E5920](v7);
+  MEMORY[0x1E69E5920](telemetryFlowID2);
   v8 = MEMORY[0x1E69E5928](v17);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
@@ -153,7 +153,7 @@
 
 + (id)ak_analyticsEventWithContext:()AuthKit client:eventName:error:
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -164,9 +164,9 @@
   v13 = 0;
   objc_storeStrong(&v13, a6);
   v12 = [MEMORY[0x1E6985DB0] ak_analyticsEventWithContext:location[0] eventName:v14 error:v13];
-  v10 = [v15 name];
+  name = [v15 name];
   [v12 setObject:? forKeyedSubscript:?];
-  MEMORY[0x1E69E5920](v10);
+  MEMORY[0x1E69E5920](name);
   v11 = MEMORY[0x1E69E5928](v12);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
@@ -180,7 +180,7 @@
 - (void)ak_updateWithAuthenticationResults:()AuthKit authContext:error:
 {
   v22 = *MEMORY[0x1E69E9840];
-  v20 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -206,27 +206,27 @@
     objc_storeStrong(&v13, 0);
   }
 
-  v7 = [v18 telemetryFlowID];
+  telemetryFlowID = [v18 telemetryFlowID];
   v5 = *MEMORY[0x1E6985E50];
-  [v20 setObject:? forKeyedSubscript:?];
-  MEMORY[0x1E69E5920](v7);
-  [v20 ak_updateTelemetryIdWithAccount:v15];
+  [selfCopy setObject:? forKeyedSubscript:?];
+  MEMORY[0x1E69E5920](telemetryFlowID);
+  [selfCopy ak_updateTelemetryIdWithAccount:v15];
   if (location[0])
   {
-    [v20 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E6985E40]];
+    [selfCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E6985E40]];
   }
 
   else
   {
-    [v20 setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E6985E40]];
-    [v20 populateUnderlyingErrorsStartingWithRootError:v17];
+    [selfCopy setObject:MEMORY[0x1E695E110] forKeyedSubscript:*MEMORY[0x1E6985E40]];
+    [selfCopy populateUnderlyingErrorsStartingWithRootError:v17];
   }
 
   v11 = +[AKAccountManager sharedInstance];
   if (v15)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v11, "securityLevelForAccount:", v15)}];
-    [v20 setObject:? forKeyedSubscript:?];
+    [selfCopy setObject:? forKeyedSubscript:?];
     MEMORY[0x1E69E5920](v6);
   }
 
@@ -241,7 +241,7 @@
 
 + (id)encodedURLWithPrefix:()AuthKit url:
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -249,9 +249,9 @@
   objc_storeStrong(&v13, a4);
   if (v13 && (v10 = [v13 host], MEMORY[0x1E69E5920](v10), v10))
   {
-    v9 = [v13 pathComponents];
-    v12 = [v9 mutableCopy];
-    MEMORY[0x1E69E5920](v9);
+    pathComponents = [v13 pathComponents];
+    v12 = [pathComponents mutableCopy];
+    MEMORY[0x1E69E5920](pathComponents);
     if ([v12 count] <= 1)
     {
       v15 = MEMORY[0x1E69E5928](location[0]);
@@ -284,7 +284,7 @@
 
 + (void)encodeElementNameWithIndexPostFix:()AuthKit prefix:element:activeElements:
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -295,13 +295,13 @@
   v43 = 0;
   objc_storeStrong(&v43, a6);
   v42 = 0;
-  v29 = [v44 children];
-  v30 = [v29 count];
-  MEMORY[0x1E69E5920](v29);
+  children = [v44 children];
+  v30 = [children count];
+  MEMORY[0x1E69E5920](children);
   if (v30)
   {
     v39 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v10 = [v44 children];
+    children2 = [v44 children];
     v31 = MEMORY[0x1E69E9820];
     v32 = -1073741824;
     v33 = 0;
@@ -310,8 +310,8 @@
     v36 = MEMORY[0x1E69E5928](v39);
     v37 = MEMORY[0x1E69E5928](v45);
     v38 = MEMORY[0x1E69E5928](v43);
-    [v10 enumerateObjectsUsingBlock:&v31];
-    MEMORY[0x1E69E5920](v10);
+    [children2 enumerateObjectsUsingBlock:&v31];
+    MEMORY[0x1E69E5920](children2);
     objc_storeStrong(&v38, 0);
     objc_storeStrong(&v37, 0);
     objc_storeStrong(&v36, 0);
@@ -322,20 +322,20 @@
   else
   {
     v11 = location[0];
-    v12 = [v44 name];
+    name = [v44 name];
     v6 = [v11 objectForKeyedSubscript:?];
     v7 = v42;
     v42 = v6;
     MEMORY[0x1E69E5920](v7);
-    MEMORY[0x1E69E5920](v12);
+    MEMORY[0x1E69E5920](name);
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v42, "intValue") + 1}];
     v9 = v42;
     v42 = v8;
     MEMORY[0x1E69E5920](v9);
     v13 = location[0];
-    v14 = [v44 name];
+    name2 = [v44 name];
     [v13 setObject:v42 forKeyedSubscript:?];
-    MEMORY[0x1E69E5920](v14);
+    MEMORY[0x1E69E5920](name2);
     v16 = MEMORY[0x1E6985DB0];
     v15 = v45;
     v17 = [v44 url];
@@ -344,16 +344,16 @@
     v21 = v43;
     v20 = MEMORY[0x1E696AEC0];
     v19 = v41;
-    v25 = [v44 name];
+    name3 = [v44 name];
     v18 = location[0];
-    v24 = [v44 name];
+    name4 = [v44 name];
     v23 = [v18 objectForKeyedSubscript:?];
-    v22 = [v20 stringWithFormat:@"%@_%@_%@", v19, v25, v23];
+    v22 = [v20 stringWithFormat:@"%@_%@_%@", v19, name3, v23];
     [v21 addObject:?];
     MEMORY[0x1E69E5920](v22);
     MEMORY[0x1E69E5920](v23);
-    MEMORY[0x1E69E5920](v24);
-    MEMORY[0x1E69E5920](v25);
+    MEMORY[0x1E69E5920](name4);
+    MEMORY[0x1E69E5920](name3);
     v40 = 1;
     objc_storeStrong(&v41, 0);
   }
@@ -367,7 +367,7 @@
 
 + (void)encodedElementNameWithDomainPrefix:()AuthKit element:activeElements:
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -385,19 +385,19 @@
 
 + (uint64_t)elementIndex:()AuthKit
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  v17 = [location[0] parent];
-  if (v17)
+  parent = [location[0] parent];
+  if (parent)
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x20000000;
     v14 = 32;
     v15 = 0;
-    v4 = [v17 children];
+    children = [parent children];
     v5 = MEMORY[0x1E69E9820];
     v6 = -1073741824;
     v7 = 0;
@@ -405,8 +405,8 @@
     v9 = &unk_1E73D89D0;
     v10[0] = MEMORY[0x1E69E5928](location[0]);
     v10[1] = &v11;
-    [v4 enumerateObjectsUsingBlock:&v5];
-    MEMORY[0x1E69E5920](v4);
+    [children enumerateObjectsUsingBlock:&v5];
+    MEMORY[0x1E69E5920](children);
     v19 = v12[3];
     v16 = 1;
     objc_storeStrong(v10, 0);
@@ -419,14 +419,14 @@
     v16 = 1;
   }
 
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&parent, 0);
   objc_storeStrong(location, 0);
   return v19;
 }
 
 + (id)ak_analyticsEventWithRUITelemetryElement:()AuthKit eventName:error:
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -441,29 +441,29 @@
   v20 = [v15 encodedURLWithPrefix:v22 url:?];
   MEMORY[0x1E69E5920](v16);
   v19 = [MEMORY[0x1E6985DB0] elementIndex:location[0]];
-  v17 = [location[0] name];
-  v18 = [v17 length];
-  MEMORY[0x1E69E5920](v17);
+  name = [location[0] name];
+  v18 = [name length];
+  MEMORY[0x1E69E5920](name);
   if (v18)
   {
     if (v19)
     {
       v10 = MEMORY[0x1E696AEC0];
-      v12 = [location[0] name];
-      v11 = [v10 stringWithFormat:@"%@_%@_%lu", v20, v12, v19];
+      name2 = [location[0] name];
+      v11 = [v10 stringWithFormat:@"%@_%@_%lu", v20, name2, v19];
       [v21 setObject:? forKeyedSubscript:?];
       MEMORY[0x1E69E5920](v11);
-      MEMORY[0x1E69E5920](v12);
+      MEMORY[0x1E69E5920](name2);
     }
 
     else
     {
       v7 = MEMORY[0x1E696AEC0];
-      v9 = [location[0] name];
-      v8 = [v7 stringWithFormat:@"%@_%@", v20, v9];
+      name3 = [location[0] name];
+      v8 = [v7 stringWithFormat:@"%@_%@", v20, name3];
       [v21 setObject:? forKeyedSubscript:?];
       MEMORY[0x1E69E5920](v8);
-      MEMORY[0x1E69E5920](v9);
+      MEMORY[0x1E69E5920](name3);
     }
   }
 

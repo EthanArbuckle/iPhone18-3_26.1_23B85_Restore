@@ -1,7 +1,7 @@
 @interface SDAirDropBLEController
 + (_TtC16DaemoniOSLibrary22SDAirDropBLEController)shared;
-- (void)startScanningWithIdentifier:(id)a3 deviceUpdatesHandler:(id)a4;
-- (void)stopScanningWithIdentifier:(id)a3;
+- (void)startScanningWithIdentifier:(id)identifier deviceUpdatesHandler:(id)handler;
+- (void)stopScanningWithIdentifier:(id)identifier;
 @end
 
 @implementation SDAirDropBLEController
@@ -18,24 +18,24 @@
   return v3;
 }
 
-- (void)startScanningWithIdentifier:(id)a3 deviceUpdatesHandler:(id)a4
+- (void)startScanningWithIdentifier:(id)identifier deviceUpdatesHandler:(id)handler
 {
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   __chkstk_darwin(v6);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1005C442C(v10, sub_1005C6CE0, v12, &unk_1008E8EC8, sub_1005C6CFC, &unk_1008E8EE0);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)stopScanningWithIdentifier:(id)a3
+- (void)stopScanningWithIdentifier:(id)identifier
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -43,7 +43,7 @@
   __chkstk_darwin(v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_1005C1F94(v8, &unk_1008E8E50, sub_1005C56E0, &unk_1008E8E68);
 
   (*(v5 + 8))(v8, v4);

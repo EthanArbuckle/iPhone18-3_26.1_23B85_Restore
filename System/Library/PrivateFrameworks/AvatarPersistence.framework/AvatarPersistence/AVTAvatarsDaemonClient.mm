@@ -1,8 +1,8 @@
 @interface AVTAvatarsDaemonClient
-- (AVTAvatarsDaemonClient)initWithConnectionFactory:(id)a3 logger:(id)a4;
+- (AVTAvatarsDaemonClient)initWithConnectionFactory:(id)factory logger:(id)logger;
 - (void)checkIn;
-- (void)performWorkWithConnection:(id)a3;
-- (void)performWorkWithSynchronousProxy:(id)a3;
+- (void)performWorkWithConnection:(id)connection;
+- (void)performWorkWithSynchronousProxy:(id)proxy;
 @end
 
 @implementation AVTAvatarsDaemonClient
@@ -14,37 +14,37 @@ id __41__AVTAvatarsDaemonClient_initWithLogger___block_invoke()
   return v0;
 }
 
-- (AVTAvatarsDaemonClient)initWithConnectionFactory:(id)a3 logger:(id)a4
+- (AVTAvatarsDaemonClient)initWithConnectionFactory:(id)factory logger:(id)logger
 {
-  v6 = a3;
-  v7 = a4;
+  factoryCopy = factory;
+  loggerCopy = logger;
   v12.receiver = self;
   v12.super_class = AVTAvatarsDaemonClient;
   v8 = [(AVTAvatarsDaemonClient *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [factoryCopy copy];
     connectionFactory = v8->_connectionFactory;
     v8->_connectionFactory = v9;
 
-    objc_storeStrong(&v8->_logger, a4);
+    objc_storeStrong(&v8->_logger, logger);
   }
 
   return v8;
 }
 
-- (void)performWorkWithConnection:(id)a3
+- (void)performWorkWithConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(AVTAvatarsDaemonClient *)self connectionFactory];
-  v6 = v5[2]();
+  connectionCopy = connection;
+  connectionFactory = [(AVTAvatarsDaemonClient *)self connectionFactory];
+  v6 = connectionFactory[2]();
 
-  v7 = [(AVTAvatarsDaemonClient *)self logger];
+  logger = [(AVTAvatarsDaemonClient *)self logger];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __52__AVTAvatarsDaemonClient_performWorkWithConnection___block_invoke;
   v16[3] = &unk_278CFA4E8;
-  v8 = v7;
+  v8 = logger;
   v17 = v8;
   [v6 setInterruptionHandler:v16];
   v11 = MEMORY[0x277D85DD0];
@@ -58,23 +58,23 @@ id __41__AVTAvatarsDaemonClient_initWithLogger___block_invoke()
   [v6 setRemoteObjectInterface:v10];
 
   [v6 resume];
-  v4[2](v4, v6);
+  connectionCopy[2](connectionCopy, v6);
 
   [v6 invalidate];
 }
 
-- (void)performWorkWithSynchronousProxy:(id)a3
+- (void)performWorkWithSynchronousProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = [(AVTAvatarsDaemonClient *)self logger];
+  proxyCopy = proxy;
+  logger = [(AVTAvatarsDaemonClient *)self logger];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__AVTAvatarsDaemonClient_performWorkWithSynchronousProxy___block_invoke;
   v8[3] = &unk_278CFA538;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = logger;
+  v10 = proxyCopy;
+  v6 = proxyCopy;
+  v7 = logger;
   [(AVTAvatarsDaemonClient *)self performWorkWithConnection:v8];
 }
 
@@ -101,13 +101,13 @@ void __58__AVTAvatarsDaemonClient_performWorkWithSynchronousProxy___block_invoke
 
 - (void)checkIn
 {
-  v3 = [(AVTAvatarsDaemonClient *)self logger];
+  logger = [(AVTAvatarsDaemonClient *)self logger];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __33__AVTAvatarsDaemonClient_checkIn__block_invoke;
   v4[3] = &unk_278CFA430;
   v4[4] = self;
-  [v3 checkingIn:v4];
+  [logger checkingIn:v4];
 }
 
 @end

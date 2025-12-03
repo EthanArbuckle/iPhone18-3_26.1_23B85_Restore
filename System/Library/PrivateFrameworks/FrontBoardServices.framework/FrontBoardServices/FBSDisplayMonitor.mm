@@ -3,25 +3,25 @@
 - (BOOL)canPostToBookendObserver;
 - (FBSDisplayConfiguration)mainConfiguration;
 - (FBSDisplayIdentity)mainIdentity;
-- (FBSDisplayMonitor)initWithInitializationCompletion:(id)a3;
-- (FBSDisplayMonitor)initWithTransformer:(id)a3;
+- (FBSDisplayMonitor)initWithInitializationCompletion:(id)completion;
+- (FBSDisplayMonitor)initWithTransformer:(id)transformer;
 - (FBSDisplayObserving)bookendObserver;
 - (NSArray)observers;
 - (NSSet)connectedIdentities;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)_initWithBookendObserver:(id)a3 transformer:(id)a4;
+- (id)_initWithBookendObserver:(id)observer transformer:(id)transformer;
 - (id)_sortedSources;
-- (id)configurationForIdentity:(id)a3;
-- (void)_lock_enumerateConnectedWithBlock:(id)a3;
-- (void)_lock_enumerateSourcesWithBlock:(id)a3;
+- (id)configurationForIdentity:(id)identity;
+- (void)_lock_enumerateConnectedWithBlock:(id)block;
+- (void)_lock_enumerateSourcesWithBlock:(id)block;
 - (void)_postInitialBookendObserverConnections;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
-- (void)setAllowsUnknownDisplays:(BOOL)a3;
-- (void)updateTransformsWithCompletion:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setAllowsUnknownDisplays:(BOOL)displays;
+- (void)updateTransformsWithCompletion:(id)completion;
 @end
 
 @implementation FBSDisplayMonitor
@@ -33,8 +33,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(FBSDisplaySource *)self->_mainDisplaySource connectedConfigurations];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  connectedConfigurations = [(FBSDisplaySource *)self->_mainDisplaySource connectedConfigurations];
+  v3 = [connectedConfigurations countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -44,7 +44,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(connectedConfigurations);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -55,7 +55,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [connectedConfigurations countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -72,10 +72,10 @@ LABEL_11:
 
 - (FBSDisplayIdentity)mainIdentity
 {
-  v2 = [(FBSDisplayMonitor *)self mainConfiguration];
-  v3 = [v2 identity];
+  mainConfiguration = [(FBSDisplayMonitor *)self mainConfiguration];
+  identity = [mainConfiguration identity];
 
-  return v3;
+  return identity;
 }
 
 - (NSSet)connectedIdentities
@@ -132,17 +132,17 @@ void __40__FBSDisplayMonitor_connectedIdentities__block_invoke(uint64_t a1, void
 - (NSArray)observers
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_lock_observers allObjects];
+  allObjects = [(NSHashTable *)self->_lock_observers allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
-- (id)_initWithBookendObserver:(id)a3 transformer:(id)a4
+- (id)_initWithBookendObserver:(id)observer transformer:(id)transformer
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  observerCopy = observer;
+  transformerCopy = transformer;
   v41.receiver = self;
   v41.super_class = FBSDisplayMonitor;
   v9 = [(FBSDisplayMonitor *)&v41 init];
@@ -150,22 +150,22 @@ void __40__FBSDisplayMonitor_connectedIdentities__block_invoke(uint64_t a1, void
   if (v9)
   {
     objc_storeStrong(&v9->_callOutQueue, MEMORY[0x1E69E96A0]);
-    objc_storeWeak(&v10->_lock_bookendObserver, v7);
+    objc_storeWeak(&v10->_lock_bookendObserver, observerCopy);
     v10->_lock._os_unfair_lock_opaque = 0;
     v11 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:517 capacity:4];
     lock_observers = v10->_lock_observers;
     v10->_lock_observers = v11;
 
-    objc_storeStrong(&v10->_transformer, a4);
+    objc_storeStrong(&v10->_transformer, transformer);
     if (!getCADisplayClass())
     {
       [FBSDisplayMonitor _initWithBookendObserver:a2 transformer:?];
     }
 
-    v13 = [getCADisplayClass() displays];
-    v14 = [v13 firstObject];
+    displays = [getCADisplayClass() displays];
+    firstObject = [displays firstObject];
     mainDisplay = v10->_mainDisplay;
-    v10->_mainDisplay = v14;
+    v10->_mainDisplay = firstObject;
 
     if (!v10->_mainDisplay)
     {
@@ -186,22 +186,22 @@ void __40__FBSDisplayMonitor_connectedIdentities__block_invoke(uint64_t a1, void
     v10->_lock_sourcesByDisplay = v18;
 
     [(NSMapTable *)v10->_lock_sourcesByDisplay setObject:v10->_mainDisplaySource forKey:v10->_mainDisplay];
-    v20 = [(FBSDisplayMonitor *)v10 mainIdentity];
-    v21 = [v20 isMainDisplay];
+    mainIdentity = [(FBSDisplayMonitor *)v10 mainIdentity];
+    isMainDisplay = [mainIdentity isMainDisplay];
 
-    if ((v21 & 1) == 0)
+    if ((isMainDisplay & 1) == 0)
     {
       [FBSDisplayMonitor _initWithBookendObserver:v10 transformer:a2];
     }
 
-    v35 = v8;
+    v35 = transformerCopy;
     v34 = a2;
-    v22 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v13, "count")}];
+    v22 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(displays, "count")}];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v13;
+    obj = displays;
     v23 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v23)
     {
@@ -217,11 +217,11 @@ void __40__FBSDisplayMonitor_connectedIdentities__block_invoke(uint64_t a1, void
           }
 
           v27 = *(*(&v37 + 1) + 8 * i);
-          v28 = [(CADisplay *)v27 displayId];
-          v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v28];
+          displayId = [(CADisplay *)v27 displayId];
+          v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:displayId];
           if ([v22 containsObject:v29])
           {
-            v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"two CADisplays had the same displayID(%u) -> $@", v28, obj];
+            v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"two CADisplays had the same displayID(%u) -> $@", displayId, obj];
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
               [FBSDisplayMonitor _initWithBookendObserver:v34 transformer:?];
@@ -252,18 +252,18 @@ void __40__FBSDisplayMonitor_connectedIdentities__block_invoke(uint64_t a1, void
       while (v24);
     }
 
-    v8 = v35;
+    transformerCopy = v35;
   }
 
   return v10;
 }
 
-- (FBSDisplayMonitor)initWithInitializationCompletion:(id)a3
+- (FBSDisplayMonitor)initWithInitializationCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(FBSDisplayMonitor *)self _initWithBookendObserver:0 transformer:0];
   v6 = v5;
-  if (v4 && v5)
+  if (completionCopy && v5)
   {
     callOutQueue = v5->_callOutQueue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -271,7 +271,7 @@ void __40__FBSDisplayMonitor_connectedIdentities__block_invoke(uint64_t a1, void
     v9[2] = __54__FBSDisplayMonitor_initWithInitializationCompletion___block_invoke;
     v9[3] = &unk_1E76BDA90;
     v10 = v5;
-    v11 = v4;
+    v11 = completionCopy;
     dispatch_async(callOutQueue, v9);
   }
 
@@ -294,9 +294,9 @@ void __54__FBSDisplayMonitor_initWithInitializationCompletion___block_invoke(uin
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)configurationForIdentity:(id)a3
+- (id)configurationForIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   os_unfair_lock_lock(&self->_lock);
   v14 = 0;
   v15 = &v14;
@@ -308,9 +308,9 @@ void __54__FBSDisplayMonitor_initWithInitializationCompletion___block_invoke(uin
   v9[1] = 3221225472;
   v9[2] = __46__FBSDisplayMonitor_configurationForIdentity___block_invoke;
   v9[3] = &unk_1E76BFA60;
-  v6 = v5;
+  v6 = identityCopy;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v12 = &v14;
   v13 = a2;
   [(FBSDisplayMonitor *)self _lock_enumerateConnectedWithBlock:v9];
@@ -329,55 +329,55 @@ void __46__FBSDisplayMonitor_configurationForIdentity___block_invoke(uint64_t a1
   BSEqualObjects();
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  if (![(NSHashTable *)self->_lock_observers containsObject:v4])
+  if (![(NSHashTable *)self->_lock_observers containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_lock_observers addObject:v4];
+    [(NSHashTable *)self->_lock_observers addObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  if ([(NSHashTable *)self->_lock_observers containsObject:v4])
+  if ([(NSHashTable *)self->_lock_observers containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_lock_observers removeObject:v4];
+    [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (FBSDisplayMonitor)initWithTransformer:(id)a3
+- (FBSDisplayMonitor)initWithTransformer:(id)transformer
 {
-  v5 = a3;
-  if (!v5)
+  transformerCopy = transformer;
+  if (!transformerCopy)
   {
     [FBSDisplayMonitor initWithTransformer:a2];
   }
 
-  v6 = v5;
-  v7 = [(FBSDisplayMonitor *)self _initWithBookendObserver:0 transformer:v5];
+  v6 = transformerCopy;
+  v7 = [(FBSDisplayMonitor *)self _initWithBookendObserver:0 transformer:transformerCopy];
 
   return v7;
 }
 
-- (void)updateTransformsWithCompletion:(id)a3
+- (void)updateTransformsWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  completionCopy = completion;
+  array = [MEMORY[0x1E695DF70] array];
   os_unfair_lock_lock(&self->_lock);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __52__FBSDisplayMonitor_updateTransformsWithCompletion___block_invoke;
   v16[3] = &unk_1E76BFAA8;
-  v6 = v5;
+  v6 = array;
   v17 = v6;
   [(FBSDisplayMonitor *)self _lock_enumerateSourcesWithBlock:v16];
   os_unfair_lock_unlock(&self->_lock);
@@ -411,9 +411,9 @@ void __46__FBSDisplayMonitor_configurationForIdentity___block_invoke(uint64_t a1
     while (v9);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    dispatch_async(self->_callOutQueue, v4);
+    dispatch_async(self->_callOutQueue, completionCopy);
   }
 }
 
@@ -425,21 +425,21 @@ void __46__FBSDisplayMonitor_configurationForIdentity___block_invoke(uint64_t a1
   return lock_allowsUnknownDisplays;
 }
 
-- (void)setAllowsUnknownDisplays:(BOOL)a3
+- (void)setAllowsUnknownDisplays:(BOOL)displays
 {
-  v3 = a3;
+  displaysCopy = displays;
   v18 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&setAllowsUnknownDisplays____allowsUnknownLock);
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   os_unfair_lock_lock(&self->_lock);
-  if (self->_lock_allowsUnknownDisplays != v3)
+  if (self->_lock_allowsUnknownDisplays != displaysCopy)
   {
-    self->_lock_allowsUnknownDisplays = v3;
+    self->_lock_allowsUnknownDisplays = displaysCopy;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __46__FBSDisplayMonitor_setAllowsUnknownDisplays___block_invoke;
     v15[3] = &unk_1E76BFAA8;
-    v16 = v5;
+    v16 = array;
     [(FBSDisplayMonitor *)self _lock_enumerateSourcesWithBlock:v15];
   }
 
@@ -448,7 +448,7 @@ void __46__FBSDisplayMonitor_configurationForIdentity___block_invoke(uint64_t a1
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v5;
+  v6 = array;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v17 count:16];
   if (v7)
   {
@@ -464,7 +464,7 @@ void __46__FBSDisplayMonitor_configurationForIdentity___block_invoke(uint64_t a1
           objc_enumerationMutation(v6);
         }
 
-        [(FBSDisplaySource *)*(*(&v11 + 1) + 8 * v10++) setAllowsUnknown:v3];
+        [(FBSDisplaySource *)*(*(&v11 + 1) + 8 * v10++) setAllowsUnknown:displaysCopy];
       }
 
       while (v8 != v10);
@@ -513,19 +513,19 @@ void __59__FBSDisplayMonitor__postInitialBookendObserverConnections__block_invok
 - (NSString)description
 {
   v3 = [off_1E76BC9B0 builderWithObject:self];
-  v4 = [v3 activeMultilinePrefix];
+  activeMultilinePrefix = [v3 activeMultilinePrefix];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __32__FBSDisplayMonitor_description__block_invoke;
   v11 = &unk_1E76BCD60;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
-  [v5 appendBodySectionWithName:@"sources" multilinePrefix:v4 block:&v8];
+  [v5 appendBodySectionWithName:@"sources" multilinePrefix:activeMultilinePrefix block:&v8];
 
-  v6 = [v5 build];
+  build = [v5 build];
 
-  return v6;
+  return build;
 }
 
 void __32__FBSDisplayMonitor_description__block_invoke(uint64_t a1)
@@ -574,12 +574,12 @@ void __32__FBSDisplayMonitor_description__block_invoke(uint64_t a1)
   v10 = __37__FBSDisplayMonitor_debugDescription__block_invoke;
   v11 = &unk_1E76BCD60;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v4 = v3;
   v5 = [v4 modifyBody:&v8];
-  v6 = [v4 build];
+  build = [v4 build];
 
-  return v6;
+  return build;
 }
 
 void __37__FBSDisplayMonitor_debugDescription__block_invoke(uint64_t a1)
@@ -592,8 +592,8 @@ void __37__FBSDisplayMonitor_debugDescription__block_invoke(uint64_t a1)
 - (id)_sortedSources
 {
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(NSMapTable *)self->_lock_sourcesByDisplay objectEnumerator];
-  v5 = [v4 allObjects];
+  objectEnumerator = [(NSMapTable *)self->_lock_sourcesByDisplay objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
   os_unfair_lock_unlock(&self->_lock);
   v8[0] = MEMORY[0x1E69E9820];
@@ -602,7 +602,7 @@ void __37__FBSDisplayMonitor_debugDescription__block_invoke(uint64_t a1)
   v8[3] = &unk_1E76BFAF8;
   v8[4] = self;
   v8[5] = a2;
-  v6 = [v5 sortedArrayUsingComparator:v8];
+  v6 = [allObjects sortedArrayUsingComparator:v8];
 
   return v6;
 }
@@ -631,19 +631,19 @@ uint64_t __35__FBSDisplayMonitor__sortedSources__block_invoke(uint64_t a1, void 
   return v9;
 }
 
-- (void)_lock_enumerateSourcesWithBlock:(id)a3
+- (void)_lock_enumerateSourcesWithBlock:(id)block
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     os_unfair_lock_assert_owner(&self->_lock);
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(NSMapTable *)self->_lock_sourcesByDisplay objectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    objectEnumerator = [(NSMapTable *)self->_lock_sourcesByDisplay objectEnumerator];
+    v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -655,14 +655,14 @@ uint64_t __35__FBSDisplayMonitor__sortedSources__block_invoke(uint64_t a1, void 
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+          blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9++));
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -670,17 +670,17 @@ uint64_t __35__FBSDisplayMonitor__sortedSources__block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)_lock_enumerateConnectedWithBlock:(id)a3
+- (void)_lock_enumerateConnectedWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __55__FBSDisplayMonitor__lock_enumerateConnectedWithBlock___block_invoke;
     v6[3] = &unk_1E76BFB20;
-    v7 = v4;
+    v7 = blockCopy;
     [(FBSDisplayMonitor *)self _lock_enumerateSourcesWithBlock:v6];
   }
 }
@@ -853,7 +853,7 @@ void __46__FBSDisplayMonitor_configurationForIdentity___block_invoke_cold_1(uint
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1A2DBB000, a2, OS_LOG_TYPE_DEBUG, "posting bookend initialization %@", &v2, 0xCu);
 }
 

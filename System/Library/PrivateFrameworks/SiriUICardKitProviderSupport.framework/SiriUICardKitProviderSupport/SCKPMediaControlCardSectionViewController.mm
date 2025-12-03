@@ -1,36 +1,36 @@
 @interface SCKPMediaControlCardSectionViewController
 + (void)initialize;
 - (CRKCardSectionViewControllingDelegate)cardSectionViewControllingDelegate;
-- (SCKPMediaControlCardSectionViewController)initWithMediaRemoteControlCardSection:(id)a3;
-- (id)_nowPlayingViewControllerWithRouteUID:(id)a3;
+- (SCKPMediaControlCardSectionViewController)initWithMediaRemoteControlCardSection:(id)section;
+- (id)_nowPlayingViewControllerWithRouteUID:(id)d;
 - (id)_nowPlayingVisualStylingProvider;
-- (void)_updateActiveSystemEndpointForRouteUID:(id)a3;
-- (void)_updatePlatterForHashedRouteUID:(id)a3;
-- (void)_updatePlatterForRouteUID:(id)a3;
+- (void)_updateActiveSystemEndpointForRouteUID:(id)d;
+- (void)_updatePlatterForHashedRouteUID:(id)d;
+- (void)_updatePlatterForRouteUID:(id)d;
 - (void)loadView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SCKPMediaControlCardSectionViewController
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___SCKPMediaControlCardSectionViewController;
   objc_msgSendSuper2(&v2, sel_initialize);
   CRLogInitIfNeeded();
 }
 
-- (SCKPMediaControlCardSectionViewController)initWithMediaRemoteControlCardSection:(id)a3
+- (SCKPMediaControlCardSectionViewController)initWithMediaRemoteControlCardSection:(id)section
 {
-  v5 = a3;
+  sectionCopy = section;
   v9.receiver = self;
   v9.super_class = SCKPMediaControlCardSectionViewController;
   v6 = [(SCKPMediaControlCardSectionViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cardSection, a3);
+    objc_storeStrong(&v6->_cardSection, section);
   }
 
   return v7;
@@ -40,26 +40,26 @@
 {
   v7 = objc_alloc_init(SCKPMediaControlCardSectionView);
   [(SCKPMediaControlCardSectionViewController *)self setView:?];
-  v3 = [(SCKPMediaControlCardSectionViewController *)self cardSection];
-  v4 = [v3 playbackRouteUniqueIdentifierIsEncrypted];
+  cardSection = [(SCKPMediaControlCardSectionViewController *)self cardSection];
+  playbackRouteUniqueIdentifierIsEncrypted = [cardSection playbackRouteUniqueIdentifierIsEncrypted];
 
-  v5 = [(SCKPMediaControlCardSectionViewController *)self cardSection];
-  v6 = [v5 playbackRouteUniqueIdentifier];
-  if (v4)
+  cardSection2 = [(SCKPMediaControlCardSectionViewController *)self cardSection];
+  playbackRouteUniqueIdentifier = [cardSection2 playbackRouteUniqueIdentifier];
+  if (playbackRouteUniqueIdentifierIsEncrypted)
   {
-    [(SCKPMediaControlCardSectionViewController *)self _updatePlatterForHashedRouteUID:v6];
+    [(SCKPMediaControlCardSectionViewController *)self _updatePlatterForHashedRouteUID:playbackRouteUniqueIdentifier];
   }
 
   else
   {
-    [(SCKPMediaControlCardSectionViewController *)self _updatePlatterForRouteUID:v6];
+    [(SCKPMediaControlCardSectionViewController *)self _updatePlatterForRouteUID:playbackRouteUniqueIdentifier];
   }
 }
 
-- (void)_updatePlatterForHashedRouteUID:(id)a3
+- (void)_updatePlatterForHashedRouteUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   if (!self->_assistantSecurityConnection)
   {
     v8 = objc_alloc_init(MEMORY[0x277CEF388]);
@@ -76,7 +76,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     goto LABEL_5;
   }
@@ -151,56 +151,56 @@ void __77__SCKPMediaControlCardSectionViewController__updatePlatterForHashedRout
   [WeakRetained _updatePlatterForRouteUID:*(a1 + 32)];
 }
 
-- (void)_updatePlatterForRouteUID:(id)a3
+- (void)_updatePlatterForRouteUID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = *MEMORY[0x277CF93F0];
   if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = dCopy;
     _os_log_impl(&dword_26950D000, v5, OS_LOG_TYPE_DEFAULT, "update platter for routeUID: %@", &v12, 0xCu);
   }
 
-  v6 = [(SCKPMediaControlCardSectionViewController *)self view];
+  view = [(SCKPMediaControlCardSectionViewController *)self view];
   mediaPlatterViewController = self->_mediaPlatterViewController;
   if (mediaPlatterViewController)
   {
     [(UIViewController *)mediaPlatterViewController willMoveToParentViewController:0];
-    [v6 setContentView:0];
+    [view setContentView:0];
     [(UIViewController *)self->_mediaPlatterViewController removeFromParentViewController];
     v8 = self->_mediaPlatterViewController;
     self->_mediaPlatterViewController = 0;
   }
 
-  v9 = [(SCKPMediaControlCardSectionViewController *)self _nowPlayingViewControllerWithRouteUID:v4];
+  v9 = [(SCKPMediaControlCardSectionViewController *)self _nowPlayingViewControllerWithRouteUID:dCopy];
   if (v9)
   {
     [(SCKPMediaControlCardSectionViewController *)self addChildViewController:v9];
-    v10 = [v9 view];
-    [v6 setContentView:v10];
+    view2 = [v9 view];
+    [view setContentView:view2];
 
     [v9 didMoveToParentViewController:self];
     objc_storeStrong(&self->_mediaPlatterViewController, v9);
-    [(SCKPMediaControlCardSectionViewController *)self _updateActiveSystemEndpointForRouteUID:v4];
+    [(SCKPMediaControlCardSectionViewController *)self _updateActiveSystemEndpointForRouteUID:dCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_nowPlayingViewControllerWithRouteUID:(id)a3
+- (id)_nowPlayingViewControllerWithRouteUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (_os_feature_enabled_impl())
   {
     MRUNowPlayingViewControllerClass = getMRUNowPlayingViewControllerClass();
     if (MRUNowPlayingViewControllerClass)
     {
-      v6 = [[MRUNowPlayingViewControllerClass alloc] initWithRouteUID:v4];
+      v6 = [[MRUNowPlayingViewControllerClass alloc] initWithRouteUID:dCopy];
       v7 = objc_alloc(getMRUVisualStylingProviderClass());
-      v8 = [(SCKPMediaControlCardSectionViewController *)self _nowPlayingVisualStylingProvider];
-      v9 = [v7 initWithVisualStylingProvider:v8];
+      _nowPlayingVisualStylingProvider = [(SCKPMediaControlCardSectionViewController *)self _nowPlayingVisualStylingProvider];
+      v9 = [v7 initWithVisualStylingProvider:_nowPlayingVisualStylingProvider];
       [v6 setStylingProvider:v9];
 
       [v6 setLayout:4];
@@ -216,7 +216,7 @@ void __77__SCKPMediaControlCardSectionViewController__updatePlatterForHashedRout
 
   if (getMRPlatterViewControllerClass())
   {
-    v6 = [objc_alloc(getMRPlatterViewControllerClass()) initWithRouteUID:v4];
+    v6 = [objc_alloc(getMRPlatterViewControllerClass()) initWithRouteUID:dCopy];
     [v6 setStyle:4];
     [v6 setAllowsNowPlayingAppLaunch:1];
   }
@@ -256,20 +256,20 @@ LABEL_11:
 
   v4 = v3;
   _Block_object_dispose(&v9, 8);
-  v5 = [(SCKPMediaControlCardSectionViewController *)self traitCollection];
-  v6 = [v3 _visualStylingProviderForRecipe:1 category:1 andUserInterfaceStyle:{objc_msgSend(v5, "userInterfaceStyle")}];
+  traitCollection = [(SCKPMediaControlCardSectionViewController *)self traitCollection];
+  v6 = [v3 _visualStylingProviderForRecipe:1 category:1 andUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
   return v6;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v12.receiver = self;
   v12.super_class = SCKPMediaControlCardSectionViewController;
-  v4 = a3;
-  [(SCKPMediaControlCardSectionViewController *)&v12 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(SCKPMediaControlCardSectionViewController *)&v12 traitCollectionDidChange:changeCopy];
   v5 = [(SCKPMediaControlCardSectionViewController *)self traitCollection:v12.receiver];
-  v6 = [v4 hasDifferentColorAppearanceComparedToTraitCollection:v5];
+  v6 = [changeCopy hasDifferentColorAppearanceComparedToTraitCollection:v5];
 
   if (v6)
   {
@@ -279,16 +279,16 @@ LABEL_11:
     if (objc_opt_isKindOfClass())
     {
       v9 = objc_alloc(getMRUVisualStylingProviderClass());
-      v10 = [(SCKPMediaControlCardSectionViewController *)self _nowPlayingVisualStylingProvider];
-      v11 = [v9 initWithVisualStylingProvider:v10];
+      _nowPlayingVisualStylingProvider = [(SCKPMediaControlCardSectionViewController *)self _nowPlayingVisualStylingProvider];
+      v11 = [v9 initWithVisualStylingProvider:_nowPlayingVisualStylingProvider];
       [(UIViewController *)v7 setStylingProvider:v11];
     }
   }
 }
 
-- (void)_updateActiveSystemEndpointForRouteUID:(id)a3
+- (void)_updateActiveSystemEndpointForRouteUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -313,7 +313,7 @@ LABEL_11:
     _Unwind_Resume(v5);
   }
 
-  (v4)(v3, 0, @"SCKPMediaControlCardSectionViewController", 0, &__block_literal_global_1);
+  (v4)(dCopy, 0, @"SCKPMediaControlCardSectionViewController", 0, &__block_literal_global_1);
 }
 
 void __84__SCKPMediaControlCardSectionViewController__updateActiveSystemEndpointForRouteUID___block_invoke(uint64_t a1, uint64_t a2)

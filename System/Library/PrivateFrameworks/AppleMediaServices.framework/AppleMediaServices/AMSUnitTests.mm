@@ -2,9 +2,9 @@
 + (BOOL)isRunningPerformanceTests;
 + (BOOL)isRunningUnitTests;
 + (id)_encryptionKeys;
-+ (id)encryptionKeyForDataProtectionClass:(unint64_t)a3;
-+ (void)_sync:(id)a3;
-+ (void)setEncryptionKey:(id)a3 forDataProtectionClass:(unint64_t)a4;
++ (id)encryptionKeyForDataProtectionClass:(unint64_t)class;
++ (void)_sync:(id)_sync;
++ (void)setEncryptionKey:(id)key forDataProtectionClass:(unint64_t)class;
 @end
 
 @implementation AMSUnitTests
@@ -35,13 +35,13 @@
 + (BOOL)isRunningPerformanceTests
 {
   v2 = +[AMSProcessInfo currentProcess];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.AppleMediaServicesPerformanceTests.xctrunner"];
+  bundleIdentifier = [v2 bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.AppleMediaServicesPerformanceTests.xctrunner"];
 
   return v4;
 }
 
-+ (id)encryptionKeyForDataProtectionClass:(unint64_t)a3
++ (id)encryptionKeyForDataProtectionClass:(unint64_t)class
 {
   v6 = 0;
   v7 = &v6;
@@ -54,9 +54,9 @@
   v5[2] = __52__AMSUnitTests_encryptionKeyForDataProtectionClass___block_invoke;
   v5[3] = &unk_1E73BCD40;
   v5[4] = &v6;
-  v5[5] = a1;
-  v5[6] = a3;
-  [a1 _sync:v5];
+  v5[5] = self;
+  v5[6] = class;
+  [self _sync:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
@@ -73,18 +73,18 @@ void __52__AMSUnitTests_encryptionKeyForDataProtectionClass___block_invoke(uint6
   *(v4 + 40) = v3;
 }
 
-+ (void)setEncryptionKey:(id)a3 forDataProtectionClass:(unint64_t)a4
++ (void)setEncryptionKey:(id)key forDataProtectionClass:(unint64_t)class
 {
-  v6 = a3;
+  keyCopy = key;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__AMSUnitTests_setEncryptionKey_forDataProtectionClass___block_invoke;
   v8[3] = &unk_1E73BCD68;
-  v10 = a1;
-  v11 = a4;
-  v9 = v6;
-  v7 = v6;
-  [a1 _sync:v8];
+  selfCopy = self;
+  classCopy = class;
+  v9 = keyCopy;
+  v7 = keyCopy;
+  [self _sync:v8];
 }
 
 void __56__AMSUnitTests_setEncryptionKey_forDataProtectionClass___block_invoke(uint64_t a1)
@@ -114,10 +114,10 @@ uint64_t __31__AMSUnitTests__encryptionKeys__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)_sync:(id)a3
++ (void)_sync:(id)_sync
 {
   v3 = qword_1ED6E3190;
-  v4 = a3;
+  _syncCopy = _sync;
   if (v3 != -1)
   {
     dispatch_once(&qword_1ED6E3190, &__block_literal_global_18_2);
@@ -125,7 +125,7 @@ uint64_t __31__AMSUnitTests__encryptionKeys__block_invoke()
 
   v5 = qword_1ED6E3198;
   [v5 lock];
-  v4[2](v4);
+  _syncCopy[2](_syncCopy);
 
   [v5 unlock];
 }

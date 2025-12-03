@@ -1,6 +1,6 @@
 @interface XPCAppRemovalService
-+ (void)clearUserDefaultsDomain:(id)a3;
-+ (void)removeFileAtPath:(id)a3;
++ (void)clearUserDefaultsDomain:(id)domain;
++ (void)removeFileAtPath:(id)path;
 - (id)_bridgeDeleteMobileAssets;
 - (void)_clearBridgeData;
 - (void)_clearNanoPassKitData;
@@ -8,14 +8,14 @@
 - (void)_clearNanoRegistryData;
 - (void)_clearNanoSystemSettingsData;
 - (void)_clearPairedSyncData;
-- (void)removeAppWithReply:(id)a3;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation XPCAppRemovalService
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   [(XPCAppRemovalService *)self _clearBridgeData];
   [(XPCAppRemovalService *)self _clearNanoSystemSettingsData];
   [(XPCAppRemovalService *)self _clearNanoPreferencesSyncData];
@@ -23,26 +23,26 @@
   [(XPCAppRemovalService *)self _clearNanoRegistryData];
   [(XPCAppRemovalService *)self _clearAppConduitData];
   [(XPCAppRemovalService *)self _clearNanoTimeKitData];
-  v4 = [(XPCAppRemovalService *)self _clearNanoPassKitData];
-  if (v5)
+  _clearNanoPassKitData = [(XPCAppRemovalService *)self _clearNanoPassKitData];
+  if (replyCopy)
   {
-    v4 = v5[2](v5, 0);
+    _clearNanoPassKitData = replyCopy[2](replyCopy, 0);
   }
 
-  _objc_release_x8(v4);
+  _objc_release_x8(_clearNanoPassKitData);
 }
 
-+ (void)clearUserDefaultsDomain:(id)a3
++ (void)clearUserDefaultsDomain:(id)domain
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  domainCopy = domain;
+  v4 = domainCopy;
+  if (domainCopy)
   {
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = CFPreferencesCopyKeyList(v3, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+    v5 = CFPreferencesCopyKeyList(domainCopy, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
     v6 = [(__CFArray *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -75,31 +75,31 @@
   }
 }
 
-+ (void)removeFileAtPath:(id)a3
++ (void)removeFileAtPath:(id)path
 {
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
     v4 = +[NSFileManager defaultManager];
     v7 = 0;
-    v5 = [v4 removeItemAtPath:v3 error:&v7];
+    v5 = [v4 removeItemAtPath:pathCopy error:&v7];
     v6 = v7;
 
     if (v5)
     {
-      NSLog(@"Removed file at path: (%@)", v3);
+      NSLog(@"Removed file at path: (%@)", pathCopy);
     }
 
     else
     {
-      NSLog(@"Failed to remove file at path: (%@) with error: (%@)", v3, v6);
+      NSLog(@"Failed to remove file at path: (%@) with error: (%@)", pathCopy, v6);
     }
   }
 }
 
 - (void)_clearBridgeData
 {
-  v2 = [(XPCAppRemovalService *)self _bridgeDeleteMobileAssets];
+  _bridgeDeleteMobileAssets = [(XPCAppRemovalService *)self _bridgeDeleteMobileAssets];
   [objc_opt_class() removeFileAtPath:@"/var/mobile/Library/Caches/BridgeIconCache"];
   v3 = objc_opt_class();
 

@@ -1,110 +1,110 @@
 @interface BMBookmarkNode
-- (BMBookmarkNode)initWithCoder:(id)a3;
-- (BMBookmarkNode)initWithValue:(id)a3 upstreams:(id)a4 name:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)descriptionAtLevel:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BMBookmarkNode)initWithCoder:(id)coder;
+- (BMBookmarkNode)initWithValue:(id)value upstreams:(id)upstreams name:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (id)descriptionAtLevel:(int64_t)level;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMBookmarkNode
 
-- (BMBookmarkNode)initWithValue:(id)a3 upstreams:(id)a4 name:(id)a5
+- (BMBookmarkNode)initWithValue:(id)value upstreams:(id)upstreams name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  valueCopy = value;
+  upstreamsCopy = upstreams;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = BMBookmarkNode;
   v12 = [(BMBookmarkNode *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a5);
-    objc_storeStrong(&v13->_value, a3);
-    objc_storeStrong(&v13->_upstreams, a4);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_value, value);
+    objc_storeStrong(&v13->_upstreams, upstreams);
   }
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(BMBookmarkNode *)self value];
+  coderCopy = coder;
+  value = [(BMBookmarkNode *)self value];
 
-  if (v4)
+  if (value)
   {
-    v5 = [(BMBookmarkNode *)self value];
-    [v11 encodeObject:v5 forKey:@"value"];
+    value2 = [(BMBookmarkNode *)self value];
+    [coderCopy encodeObject:value2 forKey:@"value"];
   }
 
-  v6 = [(BMBookmarkNode *)self upstreams];
+  upstreams = [(BMBookmarkNode *)self upstreams];
 
-  if (v6)
+  if (upstreams)
   {
-    v7 = [(BMBookmarkNode *)self upstreams];
-    [v11 encodeObject:v7 forKey:@"upstreams"];
+    upstreams2 = [(BMBookmarkNode *)self upstreams];
+    [coderCopy encodeObject:upstreams2 forKey:@"upstreams"];
   }
 
-  v8 = [(BMBookmarkNode *)self name];
+  name = [(BMBookmarkNode *)self name];
 
-  v9 = v11;
-  if (v8)
+  v9 = coderCopy;
+  if (name)
   {
-    v10 = [(BMBookmarkNode *)self name];
-    [v11 encodeObject:v10 forKey:@"name"];
+    name2 = [(BMBookmarkNode *)self name];
+    [coderCopy encodeObject:name2 forKey:@"name"];
 
-    v9 = v11;
+    v9 = coderCopy;
   }
 }
 
-- (BMBookmarkNode)initWithCoder:(id)a3
+- (BMBookmarkNode)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AB10];
-  v5 = a3;
-  v6 = [v4 bm_allowedClassesForSecureCodingBMBookmark];
-  v7 = [v5 decodeObjectOfClasses:v6 forKey:@"value"];
-  v8 = [v5 decodeObjectOfClasses:v6 forKey:@"upstreams"];
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  bm_allowedClassesForSecureCodingBMBookmark = [v4 bm_allowedClassesForSecureCodingBMBookmark];
+  v7 = [coderCopy decodeObjectOfClasses:bm_allowedClassesForSecureCodingBMBookmark forKey:@"value"];
+  v8 = [coderCopy decodeObjectOfClasses:bm_allowedClassesForSecureCodingBMBookmark forKey:@"upstreams"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
 
   v10 = [(BMBookmarkNode *)self initWithValue:v7 upstreams:v8 name:v9];
   return v10;
 }
 
-- (id)descriptionAtLevel:(int64_t)a3
+- (id)descriptionAtLevel:(int64_t)level
 {
   v5 = [&stru_1F485B050 mutableCopy];
   v6 = [&stru_1F485B050 mutableCopy];
-  if (a3 >= 1)
+  if (level >= 1)
   {
-    v7 = a3;
+    levelCopy = level;
     do
     {
       [v6 appendString:@"  "];
-      --v7;
+      --levelCopy;
     }
 
-    while (v7);
+    while (levelCopy);
   }
 
-  v8 = [(BMBookmarkNode *)self name];
-  [v5 appendFormat:@"%@\n", v8];
+  name = [(BMBookmarkNode *)self name];
+  [v5 appendFormat:@"%@\n", name];
 
-  v9 = [(BMBookmarkNode *)self upstreams];
-  v10 = [v9 count];
+  upstreams = [(BMBookmarkNode *)self upstreams];
+  v10 = [upstreams count];
 
   if (v10)
   {
     v11 = 0;
     do
     {
-      v12 = [(BMBookmarkNode *)self upstreams];
-      v13 = [v12 objectAtIndexedSubscript:v11];
+      upstreams2 = [(BMBookmarkNode *)self upstreams];
+      v13 = [upstreams2 objectAtIndexedSubscript:v11];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [v13 descriptionAtLevel:a3 + 1];
+        v14 = [v13 descriptionAtLevel:level + 1];
         [v5 appendFormat:@"%@%@\n", v6, v14];
       }
 
@@ -114,8 +114,8 @@
       }
 
       ++v11;
-      v15 = [(BMBookmarkNode *)self upstreams];
-      v16 = [v15 count];
+      upstreams3 = [(BMBookmarkNode *)self upstreams];
+      v16 = [upstreams3 count];
     }
 
     while (v11 < v16);
@@ -126,10 +126,10 @@
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -139,47 +139,47 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(BMBookmarkNode *)self name];
-      v7 = [(BMBookmarkNode *)v5 name];
-      if (v6 == v7)
+      v5 = equalCopy;
+      name = [(BMBookmarkNode *)self name];
+      name2 = [(BMBookmarkNode *)v5 name];
+      if (name == name2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(BMBookmarkNode *)self name];
-        v9 = [(BMBookmarkNode *)v5 name];
-        v10 = [v8 isEqual:v9];
+        name3 = [(BMBookmarkNode *)self name];
+        name4 = [(BMBookmarkNode *)v5 name];
+        v10 = [name3 isEqual:name4];
       }
 
-      v12 = [(BMBookmarkNode *)self value];
-      v13 = [(BMBookmarkNode *)v5 value];
-      if (v12 == v13)
+      value = [(BMBookmarkNode *)self value];
+      value2 = [(BMBookmarkNode *)v5 value];
+      if (value == value2)
       {
         v16 = 1;
       }
 
       else
       {
-        v14 = [(BMBookmarkNode *)self value];
-        v15 = [(BMBookmarkNode *)v5 value];
-        v16 = [v14 isEqual:v15];
+        value3 = [(BMBookmarkNode *)self value];
+        value4 = [(BMBookmarkNode *)v5 value];
+        v16 = [value3 isEqual:value4];
       }
 
-      v17 = [(BMBookmarkNode *)self upstreams];
-      v18 = [(BMBookmarkNode *)v5 upstreams];
-      if (v17 == v18)
+      upstreams = [(BMBookmarkNode *)self upstreams];
+      upstreams2 = [(BMBookmarkNode *)v5 upstreams];
+      if (upstreams == upstreams2)
       {
         v21 = 1;
       }
 
       else
       {
-        v19 = [(BMBookmarkNode *)self upstreams];
-        v20 = [(BMBookmarkNode *)v5 upstreams];
-        v21 = [v19 isEqual:v20];
+        upstreams3 = [(BMBookmarkNode *)self upstreams];
+        upstreams4 = [(BMBookmarkNode *)v5 upstreams];
+        v21 = [upstreams3 isEqual:upstreams4];
       }
 
       v11 = v10 & v16 & v21;

@@ -1,42 +1,42 @@
 @interface GCGamepadHIDServicePlugin
 - (BOOL)isAnyHapticMotorEnabled;
 - (BOOL)isIdle;
-- (BOOL)isTwoAxisInputIdle:(GCGamepadHIDServicePlugin *)self prevInput:(SEL)a2 noiseBuffer:;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 client:(id)a5;
-- (BOOL)updateHapticMotor:(id)a3;
+- (BOOL)isTwoAxisInputIdle:(GCGamepadHIDServicePlugin *)self prevInput:(SEL)input noiseBuffer:;
+- (BOOL)setProperty:(id)property forKey:(id)key client:(id)client;
+- (BOOL)updateHapticMotor:(id)motor;
 - (HIDConnection)client;
 - (HIDEventDispatcher)dispatcher;
-- (id)eventMatching:(id)a3 forClient:(id)a4;
-- (id)propertyForKey:(id)a3 client:(id)a4;
+- (id)eventMatching:(id)matching forClient:(id)client;
+- (id)propertyForKey:(id)key client:(id)client;
 - (void)activate;
 - (void)cancel;
-- (void)clientNotification:(id)a3 added:(BOOL)a4;
-- (void)connectToBatteryServiceWithClient:(id)a3 reply:(id)a4;
-- (void)connectToIdleServiceWithClient:(id)a3 reply:(id)a4;
+- (void)clientNotification:(id)notification added:(BOOL)added;
+- (void)connectToBatteryServiceWithClient:(id)client reply:(id)reply;
+- (void)connectToIdleServiceWithClient:(id)client reply:(id)reply;
 - (void)createVirtualHIDDeviceForBattery;
 - (void)dealloc;
 - (void)disconnect;
-- (void)dispatchEvent:(id)a3 withInputDelay:(BOOL)a4;
-- (void)dispatchGameControllerExtendedEventWithState:(id *)a3 timestamp:(unint64_t)a4;
-- (void)dispatchGameControllerExtendedEventWithState:(id *)a3 timestamp:(unint64_t)a4 children:(id)a5;
-- (void)dispatchHomeButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4;
-- (void)dispatchIdleEvent:(id)a3 withInputDelay:(BOOL)a4;
-- (void)dispatchMenuButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4;
-- (void)dispatchMotionEventWithState:(id *)a3 timestamp:(unint64_t)a4;
-- (void)dispatchOptionsButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4;
-- (void)dispatchSearchButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4;
-- (void)dispatchShareButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4;
+- (void)dispatchEvent:(id)event withInputDelay:(BOOL)delay;
+- (void)dispatchGameControllerExtendedEventWithState:(id *)state timestamp:(unint64_t)timestamp;
+- (void)dispatchGameControllerExtendedEventWithState:(id *)state timestamp:(unint64_t)timestamp children:(id)children;
+- (void)dispatchHomeButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp;
+- (void)dispatchIdleEvent:(id)event withInputDelay:(BOOL)delay;
+- (void)dispatchMenuButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp;
+- (void)dispatchMotionEventWithState:(id *)state timestamp:(unint64_t)timestamp;
+- (void)dispatchOptionsButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp;
+- (void)dispatchSearchButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp;
+- (void)dispatchShareButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp;
 - (void)enableHaptics;
-- (void)enqueueTransient:(id)a3 hapticMotor:(unint64_t)a4;
-- (void)fetchDeviceRegistryIDWithReply:(id)a3;
+- (void)enqueueTransient:(id)transient hapticMotor:(unint64_t)motor;
+- (void)fetchDeviceRegistryIDWithReply:(id)reply;
 - (void)initGameControllerDaemonXPC;
-- (void)readBatteryWithReply:(id)a3;
+- (void)readBatteryWithReply:(id)reply;
 - (void)scheduleIdleTimer;
 - (void)sendBatteryReport;
-- (void)setCancelHandler:(id)a3;
-- (void)setDispatchQueue:(id)a3;
-- (void)setEventDispatcher:(id)a3;
-- (void)setHapticMotor:(unint64_t)a3 frequency:(float)a4 amplitude:(float)a5;
+- (void)setCancelHandler:(id)handler;
+- (void)setDispatchQueue:(id)queue;
+- (void)setEventDispatcher:(id)dispatcher;
+- (void)setHapticMotor:(unint64_t)motor frequency:(float)frequency amplitude:(float)amplitude;
 - (void)stopHaptics;
 - (void)updateClientBattery;
 - (void)updateIdleState;
@@ -75,8 +75,8 @@
 
   [(NSXPCConnection *)self->_daemonConnection setExportedObject:self];
   [(NSXPCConnection *)self->_daemonConnection resume];
-  v8 = [(NSXPCConnection *)self->_daemonConnection remoteObjectProxy];
-  [v8 driverCheckIn];
+  remoteObjectProxy = [(NSXPCConnection *)self->_daemonConnection remoteObjectProxy];
+  [remoteObjectProxy driverCheckIn];
 
   os_activity_scope_leave(&state);
   objc_destroyWeak(&v10);
@@ -133,11 +133,11 @@
   [(GCGamepadHIDServicePlugin *)&v10 dealloc];
 }
 
-- (id)propertyForKey:(id)a3 client:(id)a4
+- (id)propertyForKey:(id)key client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"BatteryCapacity"])
+  keyCopy = key;
+  clientCopy = client;
+  if ([keyCopy isEqualToString:@"BatteryCapacity"])
   {
     v8 = [[NSNumber alloc] initWithInt:self->_batteryReport->var0];
 LABEL_5:
@@ -145,13 +145,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v6 isEqualToString:@"IsPowerSupplyConnected"])
+  if ([keyCopy isEqualToString:@"IsPowerSupplyConnected"])
   {
     v8 = [[NSNumber alloc] initWithBool:self->_batteryReport->var2 != 0];
     goto LABEL_5;
   }
 
-  if ([v6 isEqualToString:@"ServicePluginDebug"])
+  if ([keyCopy isEqualToString:@"ServicePluginDebug"])
   {
     v9 = objc_opt_new();
     v11 = objc_opt_class();
@@ -186,29 +186,29 @@ LABEL_5:
     v16 = [NSNumber numberWithBool:self->_clientAdded];
     [v9 setObject:v16 forKeyedSubscript:@"clientAdded"];
 
-    v17 = [(GCGamepadHIDServicePlugin *)self propertyForKey:@"BatteryCapacity" client:v7];
+    v17 = [(GCGamepadHIDServicePlugin *)self propertyForKey:@"BatteryCapacity" client:clientCopy];
     [v9 setObject:v17 forKeyedSubscript:@"BatteryCapacity"];
 
-    v18 = [(GCGamepadHIDServicePlugin *)self propertyForKey:@"IsPowerSupplyConnected" client:v7];
+    v18 = [(GCGamepadHIDServicePlugin *)self propertyForKey:@"IsPowerSupplyConnected" client:clientCopy];
     [v9 setObject:v18 forKeyedSubscript:@"IsPowerSupplyConnected"];
 
     goto LABEL_6;
   }
 
-  if ([v6 isEqualToString:@"GameControllerPointer"])
+  if ([keyCopy isEqualToString:@"GameControllerPointer"])
   {
     v8 = objc_alloc_init(NSMutableDictionary);
     goto LABEL_5;
   }
 
-  if ([v6 isEqualToString:@"InputDelay"])
+  if ([keyCopy isEqualToString:@"InputDelay"])
   {
     v8 = [NSNumber numberWithDouble:self->_inputEventDelay];
     goto LABEL_5;
   }
 
-  v19 = [v6 isEqualToString:@"DeviceUsagePairs"];
-  v9 = [(HIDDevice *)self->_device propertyForKey:v6];
+  v19 = [keyCopy isEqualToString:@"DeviceUsagePairs"];
+  v9 = [(HIDDevice *)self->_device propertyForKey:keyCopy];
   if (v19)
   {
     objc_opt_class();
@@ -226,21 +226,21 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 client:(id)a5
+- (BOOL)setProperty:(id)property forKey:(id)key client:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   if (sub_DE8())
   {
-    sub_14348(self, v7, v8);
+    sub_14348(self, propertyCopy, keyCopy);
   }
 
-  if (![v8 isEqualToString:@"InputDelay"])
+  if (![keyCopy isEqualToString:@"InputDelay"])
   {
-    if (([v8 isEqualToString:@"IOHIDDeviceSuspend"] & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", @"ReportBufferEntrySize") & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", @"MaxReportBufferCount") & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", @"IOHIDDeviceForceInterfaceRematch") & 1) == 0)
+    if (([keyCopy isEqualToString:@"IOHIDDeviceSuspend"] & 1) == 0 && (objc_msgSend(keyCopy, "isEqualToString:", @"ReportBufferEntrySize") & 1) == 0 && (objc_msgSend(keyCopy, "isEqualToString:", @"MaxReportBufferCount") & 1) == 0 && (objc_msgSend(keyCopy, "isEqualToString:", @"IOHIDDeviceForceInterfaceRematch") & 1) == 0)
     {
-      v12 = [(GCGamepadHIDServicePlugin *)self device];
-      v10 = [v12 setProperty:v7 forKey:v8];
+      device = [(GCGamepadHIDServicePlugin *)self device];
+      v10 = [device setProperty:propertyCopy forKey:keyCopy];
 
       goto LABEL_11;
     }
@@ -256,7 +256,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  [v7 doubleValue];
+  [propertyCopy doubleValue];
   self->_inputEventDelay = v9;
   v10 = 1;
 LABEL_11:
@@ -264,11 +264,11 @@ LABEL_11:
   return v10;
 }
 
-- (id)eventMatching:(id)a3 forClient:(id)a4
+- (id)eventMatching:(id)matching forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  matchingCopy = matching;
+  clientCopy = client;
+  if (matchingCopy)
   {
     v8 = sub_10A8();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -277,13 +277,13 @@ LABEL_11:
       v14 = 134218498;
       v15 = regID;
       v16 = 2112;
-      v17 = v6;
+      v17 = matchingCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = clientCopy;
       _os_log_debug_impl(&dword_0, v8, OS_LOG_TYPE_DEBUG, "[%#010llx] eventMatching: %@ client: %@", &v14, 0x20u);
     }
 
-    v9 = [v6 objectForKeyedSubscript:@"EventType"];
+    v9 = [matchingCopy objectForKeyedSubscript:@"EventType"];
     v10 = v9;
     if (v9)
     {
@@ -309,9 +309,9 @@ LABEL_11:
   return v11;
 }
 
-- (void)setEventDispatcher:(id)a3
+- (void)setEventDispatcher:(id)dispatcher
 {
-  v4 = a3;
+  dispatcherCopy = dispatcher;
   v5 = sub_10A8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -321,12 +321,12 @@ LABEL_11:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "[%#010llx] SetEventDispatcher", &v7, 0xCu);
   }
 
-  objc_storeWeak(&self->_dispatcher, v4);
+  objc_storeWeak(&self->_dispatcher, dispatcherCopy);
 }
 
-- (void)setCancelHandler:(id)a3
+- (void)setCancelHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_10A8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -336,7 +336,7 @@ LABEL_11:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "[%#010llx] SetCancelHandler", buf, 0xCu);
   }
 
-  v7 = objc_retainBlock(v4);
+  v7 = objc_retainBlock(handlerCopy);
   cancelHandler = self->_cancelHandler;
   self->_cancelHandler = v7;
 
@@ -392,9 +392,9 @@ LABEL_11:
   dispatch_async(internalQueue, block);
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = sub_10A8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -405,16 +405,16 @@ LABEL_11:
   }
 
   dispatchQueue = self->_dispatchQueue;
-  self->_dispatchQueue = v4;
-  v8 = v4;
+  self->_dispatchQueue = queueCopy;
+  v8 = queueCopy;
 
   [(HIDDevice *)self->_device setDispatchQueue:self->_dispatchQueue];
 }
 
-- (void)clientNotification:(id)a3 added:(BOOL)a4
+- (void)clientNotification:(id)notification added:(BOOL)added
 {
-  v4 = a4;
-  v6 = a3;
+  addedCopy = added;
+  notificationCopy = notification;
   v7 = sub_10A8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -422,15 +422,15 @@ LABEL_11:
     v10 = 134218498;
     v11 = regID;
     v12 = 2112;
-    v13 = v6;
+    v13 = notificationCopy;
     v14 = 1024;
-    v15 = v4;
+    v15 = addedCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "[%#010llx] clientNotification %@ added: %d", &v10, 0x1Cu);
   }
 
-  if (v4)
+  if (addedCopy)
   {
-    v9 = v6;
+    v9 = notificationCopy;
   }
 
   else
@@ -438,7 +438,7 @@ LABEL_11:
     v9 = 0;
   }
 
-  self->_clientAdded = v4;
+  self->_clientAdded = addedCopy;
   objc_storeWeak(&self->_client, v9);
 }
 
@@ -584,8 +584,8 @@ LABEL_11:
 
 - (BOOL)isIdle
 {
-  v3 = [(GCGamepadHIDServicePlugin *)self lastEventTime];
-  v4 = mach_absolute_time() - v3;
+  lastEventTime = [(GCGamepadHIDServicePlugin *)self lastEventTime];
+  v4 = mach_absolute_time() - lastEventTime;
   if (qword_2B060 != -1)
   {
     sub_14418();
@@ -619,37 +619,37 @@ LABEL_11:
   return v5 > idleTimeoutDuration;
 }
 
-- (void)dispatchEvent:(id)a3 withInputDelay:(BOOL)a4
+- (void)dispatchEvent:(id)event withInputDelay:(BOOL)delay
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 && self->_inputEventDelay > 0.0)
+  delayCopy = delay;
+  eventCopy = event;
+  if (delayCopy && self->_inputEventDelay > 0.0)
   {
-    sub_1442C(self, v6);
+    sub_1442C(self, eventCopy);
   }
 
   else
   {
-    [(GCGamepadHIDServicePlugin *)self dispatchEvent:v6];
+    [(GCGamepadHIDServicePlugin *)self dispatchEvent:eventCopy];
   }
 }
 
-- (void)dispatchIdleEvent:(id)a3 withInputDelay:(BOOL)a4
+- (void)dispatchIdleEvent:(id)event withInputDelay:(BOOL)delay
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 && self->_inputEventDelay > 0.0)
+  delayCopy = delay;
+  eventCopy = event;
+  if (delayCopy && self->_inputEventDelay > 0.0)
   {
-    sub_144DC(self, v6);
+    sub_144DC(self, eventCopy);
   }
 
   else
   {
-    [(GCGamepadHIDServicePlugin *)self dispatchIdleEvent:v6];
+    [(GCGamepadHIDServicePlugin *)self dispatchIdleEvent:eventCopy];
   }
 }
 
-- (BOOL)isTwoAxisInputIdle:(GCGamepadHIDServicePlugin *)self prevInput:(SEL)a2 noiseBuffer:
+- (BOOL)isTwoAxisInputIdle:(GCGamepadHIDServicePlugin *)self prevInput:(SEL)input noiseBuffer:
 {
   v5 = *v2;
   v6 = COERCE_FLOAT(HIDWORD(*v3)) == 0.0;
@@ -668,43 +668,43 @@ LABEL_11:
   return (sqrtf(vaddv_f32(vmul_f32(v8, v8))) < v4) & v7;
 }
 
-- (void)dispatchMotionEventWithState:(id *)a3 timestamp:(unint64_t)a4
+- (void)dispatchMotionEventWithState:(id *)state timestamp:(unint64_t)timestamp
 {
-  if (a3->var0 || a3->var4 || a3->var8)
+  if (state->var0 || state->var4 || state->var8)
   {
-    v14 = [(GCGamepadHIDServicePlugin *)self createEvent:1 timestamp:a4];
+    v14 = [(GCGamepadHIDServicePlugin *)self createEvent:1 timestamp:timestamp];
     [v14 setIntegerValue:65280 forField:0x10000];
     [v14 setIntegerValue:59 forField:65537];
     [v14 setIntegerValue:1 forField:65538];
-    if (a3->var0)
+    if (state->var0)
     {
-      v7 = [(GCGamepadHIDServicePlugin *)self createEvent:20 timestamp:a4];
+      v7 = [(GCGamepadHIDServicePlugin *)self createEvent:20 timestamp:timestamp];
       IOHIDEventSetEventFlags();
-      [v7 setDoubleValue:1310720 forField:a3->var1];
-      [v7 setDoubleValue:1310721 forField:a3->var2];
-      [v7 setDoubleValue:1310722 forField:a3->var3];
+      [v7 setDoubleValue:1310720 forField:state->var1];
+      [v7 setDoubleValue:1310721 forField:state->var2];
+      [v7 setDoubleValue:1310722 forField:state->var3];
       [v7 setIntegerValue:self->_motionSequenceNumber forField:1310725];
       IOHIDEventAppendEvent();
     }
 
-    if (a3->var4)
+    if (state->var4)
     {
-      v8 = [(GCGamepadHIDServicePlugin *)self createEvent:13 timestamp:a4];
+      v8 = [(GCGamepadHIDServicePlugin *)self createEvent:13 timestamp:timestamp];
       IOHIDEventSetEventFlags();
-      [v8 setDoubleValue:851968 forField:a3->var5];
-      [v8 setDoubleValue:851969 forField:a3->var6];
-      [v8 setDoubleValue:851970 forField:a3->var7];
+      [v8 setDoubleValue:851968 forField:state->var5];
+      [v8 setDoubleValue:851969 forField:state->var6];
+      [v8 setDoubleValue:851970 forField:state->var7];
       [v8 setIntegerValue:self->_motionSequenceNumber forField:851973];
       IOHIDEventAppendEvent();
     }
 
-    if (a3->var8)
+    if (state->var8)
     {
       mach_absolute_time();
-      var9 = a3->var9;
-      var10 = a3->var10;
-      var11 = a3->var11;
-      var12 = a3->var12;
+      var9 = state->var9;
+      var10 = state->var10;
+      var11 = state->var11;
+      var12 = state->var12;
       QuaternionOrientationEvent = IOHIDEventCreateQuaternionOrientationEvent();
       IOHIDEventAppendEvent();
     }
@@ -714,31 +714,31 @@ LABEL_11:
   }
 }
 
-- (void)dispatchGameControllerExtendedEventWithState:(id *)a3 timestamp:(unint64_t)a4 children:(id)a5
+- (void)dispatchGameControllerExtendedEventWithState:(id *)state timestamp:(unint64_t)timestamp children:(id)children
 {
-  v8 = a5;
-  v9 = vcvtq_f64_f32(*&a3->var1[2]);
-  v53 = vcvtq_f64_f32(*a3->var1);
+  childrenCopy = children;
+  v9 = vcvtq_f64_f32(*&state->var1[2]);
+  v53 = vcvtq_f64_f32(*state->var1);
   v54 = v9;
-  v10 = vcvtq_f64_f32(*&a3->var1[6]);
-  v55 = vcvtq_f64_f32(*&a3->var1[4]);
+  v10 = vcvtq_f64_f32(*&state->var1[6]);
+  v55 = vcvtq_f64_f32(*&state->var1[4]);
   v56 = v10;
-  v11 = vcvtq_f64_f32(*&a3->var1[18]);
-  v57 = vcvtq_f64_f32(*&a3->var1[8]);
+  v11 = vcvtq_f64_f32(*&state->var1[18]);
+  v57 = vcvtq_f64_f32(*&state->var1[8]);
   v58 = v11;
-  v12.i32[0] = LODWORD(a3->var1[10]);
-  v12.i32[1] = LODWORD(a3->var1[13]);
-  v13 = vsub_f32(v12, *&a3->var1[11]);
-  *v11.f64 = a3->var1[14];
-  HIDWORD(v11.f64[0]) = LODWORD(a3->var1[17]);
-  v14 = *&a3->var1[15];
+  v12.i32[0] = LODWORD(state->var1[10]);
+  v12.i32[1] = LODWORD(state->var1[13]);
+  v13 = vsub_f32(v12, *&state->var1[11]);
+  *v11.f64 = state->var1[14];
+  HIDWORD(v11.f64[0]) = LODWORD(state->var1[17]);
+  v14 = *&state->var1[15];
   v60 = 0;
   v15 = COERCE_DOUBLE(vrev64_s32(v13));
   *&v11.f64[0] = vrev64_s32(vsub_f32(*&v11.f64[0], v14));
   *&v59 = v15;
   *(&v59 + 1) = *&v11.f64[0];
-  *v11.f64 = a3->var1[21];
-  LOBYTE(v60) = a3->var1[20] != 0.0;
+  *v11.f64 = state->var1[21];
+  LOBYTE(v60) = state->var1[20] != 0.0;
   BYTE1(v60) = *v11.f64 != 0.0;
   *&v15 = self->_leftThumbstickDeadzoneRadius;
   *v11.f64 = self->_leftThumbstickAxisSnapRadius;
@@ -752,21 +752,21 @@ LABEL_11:
   v21 = [(GCGamepadHIDServicePlugin *)self isTwoAxisInputIdle:&v59 + 8 prevInput:&self->_anon_90[8] noiseBuffer:v20];
   if ((v19 & 1) == 0)
   {
-    a3->var0 |= 0x3C00uLL;
+    state->var0 |= 0x3C00uLL;
   }
 
   if ((v21 & 1) == 0)
   {
-    a3->var0 |= 0x3C000uLL;
+    state->var0 |= 0x3C000uLL;
   }
 
   v22 = 0;
   v23 = -10;
   do
   {
-    if (v23 >= 8 && a3->var1[v22] != self->_gameControllerExtendedState.buttons[v22])
+    if (v23 >= 8 && state->var1[v22] != self->_gameControllerExtendedState.buttons[v22])
     {
-      a3->var0 |= 1 << v22;
+      state->var0 |= 1 << v22;
     }
 
     ++v22;
@@ -774,9 +774,9 @@ LABEL_11:
   }
 
   while (v22 != 47);
-  if (a3->var0)
+  if (state->var0)
   {
-    v24 = [(GCGamepadHIDServicePlugin *)self createEvent:35 timestamp:a4];
+    v24 = [(GCGamepadHIDServicePlugin *)self createEvent:35 timestamp:timestamp];
     [v24 setDoubleValue:2293761 forField:v53.f64[0]];
     [v24 setDoubleValue:2293762 forField:v53.f64[1]];
     [v24 setDoubleValue:2293763 forField:v54.f64[0]];
@@ -798,7 +798,7 @@ LABEL_11:
     [v24 setIntegerValue:HIDWORD(v60) forField:2293760];
     v26 = *(&v59 + 8);
     v25 = v59;
-    a3->var1[10] = fmaxf(*(&v59 + 1), 0.0);
+    state->var1[10] = fmaxf(*(&v59 + 1), 0.0);
     v27 = vrev64_s32(v26);
     *v28.f32 = vrev64_s32(v25);
     v25.i32[1] = v26.i32[1];
@@ -807,9 +807,9 @@ LABEL_11:
     v30.i32[0] = vmovn_s32(vcltzq_f32(v28)).u32[0];
     v30.i32[1] = vmovn_s32(vcgtzq_f32(v28)).i32[1];
     v29.u64[1] = v25;
-    *&a3->var1[11] = vandq_s8(v29, vmovl_s16(v30));
-    *&a3->var1[15] = vand_s8(vneg_f32(v27), vcltz_f32(v27));
-    a3->var1[17] = fmaxf(*v26.i32, 0.0);
+    *&state->var1[11] = vandq_s8(v29, vmovl_s16(v30));
+    *&state->var1[15] = vand_s8(vneg_f32(v27), vcltz_f32(v27));
+    state->var1[17] = fmaxf(*v26.i32, 0.0);
     mach_absolute_time();
     VendorDefinedEvent = IOHIDEventCreateVendorDefinedEvent();
     IOHIDEventSetIntegerValue();
@@ -824,7 +824,7 @@ LABEL_11:
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v32 = v8;
+    v32 = childrenCopy;
     v33 = [v32 countByEnumeratingWithState:&v49 objects:v61 count:16];
     if (v33)
     {
@@ -860,25 +860,25 @@ LABEL_11:
     *&self->_gameControllerState.buttonL2 = v58;
     *self->_anon_90 = v39;
     *&self->_gameControllerState.buttonL1 = v57;
-    *&self->_gameControllerExtendedState.mask = *&a3->var0;
-    v40 = *&a3->var1[2];
-    v41 = *&a3->var1[6];
-    v42 = *&a3->var1[10];
-    *&self->_gameControllerExtendedState.buttons[14] = *&a3->var1[14];
+    *&self->_gameControllerExtendedState.mask = *&state->var0;
+    v40 = *&state->var1[2];
+    v41 = *&state->var1[6];
+    v42 = *&state->var1[10];
+    *&self->_gameControllerExtendedState.buttons[14] = *&state->var1[14];
     *&self->_gameControllerExtendedState.buttons[10] = v42;
     *&self->_gameControllerExtendedState.buttons[6] = v41;
     *&self->_gameControllerExtendedState.buttons[2] = v40;
-    v43 = *&a3->var1[18];
-    v44 = *&a3->var1[22];
-    v45 = *&a3->var1[30];
-    *&self->_gameControllerExtendedState.buttons[26] = *&a3->var1[26];
+    v43 = *&state->var1[18];
+    v44 = *&state->var1[22];
+    v45 = *&state->var1[30];
+    *&self->_gameControllerExtendedState.buttons[26] = *&state->var1[26];
     *&self->_gameControllerExtendedState.buttons[30] = v45;
     *&self->_gameControllerExtendedState.buttons[22] = v44;
     *&self->_gameControllerExtendedState.buttons[18] = v43;
-    v46 = *&a3->var1[34];
-    v47 = *&a3->var1[38];
-    v48 = *&a3->var1[42];
-    *&self->_gameControllerExtendedState.buttons[46] = *&a3->var1[46];
+    v46 = *&state->var1[34];
+    v47 = *&state->var1[38];
+    v48 = *&state->var1[42];
+    *&self->_gameControllerExtendedState.buttons[46] = *&state->var1[46];
     *&self->_gameControllerExtendedState.buttons[38] = v47;
     *&self->_gameControllerExtendedState.buttons[42] = v48;
     *&self->_gameControllerExtendedState.buttons[34] = v46;
@@ -890,107 +890,107 @@ LABEL_11:
   }
 }
 
-- (void)dispatchGameControllerExtendedEventWithState:(id *)a3 timestamp:(unint64_t)a4
+- (void)dispatchGameControllerExtendedEventWithState:(id *)state timestamp:(unint64_t)timestamp
 {
-  v4 = *&a3->var1[42];
-  v10[10] = *&a3->var1[38];
+  v4 = *&state->var1[42];
+  v10[10] = *&state->var1[38];
   v10[11] = v4;
-  v11 = *&a3->var1[46];
-  v5 = *&a3->var1[26];
-  v10[6] = *&a3->var1[22];
+  v11 = *&state->var1[46];
+  v5 = *&state->var1[26];
+  v10[6] = *&state->var1[22];
   v10[7] = v5;
-  v6 = *&a3->var1[34];
-  v10[8] = *&a3->var1[30];
+  v6 = *&state->var1[34];
+  v10[8] = *&state->var1[30];
   v10[9] = v6;
-  v7 = *&a3->var1[10];
-  v10[2] = *&a3->var1[6];
+  v7 = *&state->var1[10];
+  v10[2] = *&state->var1[6];
   v10[3] = v7;
-  v8 = *&a3->var1[18];
-  v10[4] = *&a3->var1[14];
+  v8 = *&state->var1[18];
+  v10[4] = *&state->var1[14];
   v10[5] = v8;
-  v9 = *&a3->var1[2];
-  v10[0] = *&a3->var0;
+  v9 = *&state->var1[2];
+  v10[0] = *&state->var0;
   v10[1] = v9;
-  [(GCGamepadHIDServicePlugin *)self dispatchGameControllerExtendedEventWithState:v10 timestamp:a4 children:0];
+  [(GCGamepadHIDServicePlugin *)self dispatchGameControllerExtendedEventWithState:v10 timestamp:timestamp children:0];
 }
 
-- (void)dispatchHomeButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4
+- (void)dispatchHomeButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp
 {
-  if (self->_buttonHome != a3)
+  if (self->_buttonHome != value)
   {
-    v5 = a3;
-    v7 = [(GCGamepadHIDServicePlugin *)self createEvent:3 timestamp:a4];
+    valueCopy = value;
+    v7 = [(GCGamepadHIDServicePlugin *)self createEvent:3 timestamp:timestamp];
     IOHIDEventSetEventFlags();
     [v7 setIntegerValue:12 forField:196608];
     [v7 setIntegerValue:547 forField:196609];
-    [v7 setIntegerValue:v5 forField:196610];
+    [v7 setIntegerValue:valueCopy forField:196610];
     [v7 setIntegerValue:1 forField:196612];
     [(GCGamepadHIDServicePlugin *)self dispatchEvent:v7 withInputDelay:1];
-    self->_buttonHome = v5;
+    self->_buttonHome = valueCopy;
   }
 }
 
-- (void)dispatchMenuButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4
+- (void)dispatchMenuButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp
 {
-  if (self->_buttonMenu != a3)
+  if (self->_buttonMenu != value)
   {
-    v5 = a3;
-    v7 = [(GCGamepadHIDServicePlugin *)self createEvent:3 timestamp:a4];
+    valueCopy = value;
+    v7 = [(GCGamepadHIDServicePlugin *)self createEvent:3 timestamp:timestamp];
     IOHIDEventSetEventFlags();
     [v7 setIntegerValue:12 forField:196608];
     [v7 setIntegerValue:516 forField:196609];
-    [v7 setIntegerValue:v5 forField:196610];
+    [v7 setIntegerValue:valueCopy forField:196610];
     [v7 setIntegerValue:1 forField:196612];
     [(GCGamepadHIDServicePlugin *)self dispatchEvent:v7 withInputDelay:1];
-    self->_buttonMenu = v5;
+    self->_buttonMenu = valueCopy;
   }
 }
 
-- (void)dispatchOptionsButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4
+- (void)dispatchOptionsButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp
 {
-  if (self->_buttonOptions != a3)
+  if (self->_buttonOptions != value)
   {
-    v5 = a3;
-    v7 = [(GCGamepadHIDServicePlugin *)self createEvent:3 timestamp:a4];
+    valueCopy = value;
+    v7 = [(GCGamepadHIDServicePlugin *)self createEvent:3 timestamp:timestamp];
     IOHIDEventSetEventFlags();
     [v7 setIntegerValue:12 forField:196608];
     [v7 setIntegerValue:521 forField:196609];
-    [v7 setIntegerValue:v5 forField:196610];
+    [v7 setIntegerValue:valueCopy forField:196610];
     [v7 setIntegerValue:1 forField:196612];
     [(GCGamepadHIDServicePlugin *)self dispatchEvent:v7 withInputDelay:1];
-    self->_buttonOptions = v5;
+    self->_buttonOptions = valueCopy;
   }
 }
 
-- (void)dispatchSearchButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4
+- (void)dispatchSearchButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp
 {
-  if (self->_buttonSearch != a3)
+  if (self->_buttonSearch != value)
   {
-    v5 = a3;
-    v7 = [(GCGamepadHIDServicePlugin *)self createEvent:3 timestamp:a4];
+    valueCopy = value;
+    v7 = [(GCGamepadHIDServicePlugin *)self createEvent:3 timestamp:timestamp];
     IOHIDEventSetEventFlags();
     [v7 setIntegerValue:12 forField:196608];
     [v7 setIntegerValue:545 forField:196609];
-    [v7 setIntegerValue:v5 forField:196610];
+    [v7 setIntegerValue:valueCopy forField:196610];
     [v7 setIntegerValue:1 forField:196612];
     [(GCGamepadHIDServicePlugin *)self dispatchEvent:v7 withInputDelay:1];
-    self->_buttonSearch = v5;
+    self->_buttonSearch = valueCopy;
   }
 }
 
-- (void)dispatchShareButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4
+- (void)dispatchShareButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp
 {
-  if (self->_buttonShare != a3)
+  if (self->_buttonShare != value)
   {
-    v5 = a3;
-    v7 = [(GCGamepadHIDServicePlugin *)self createEvent:3 timestamp:a4];
+    valueCopy = value;
+    v7 = [(GCGamepadHIDServicePlugin *)self createEvent:3 timestamp:timestamp];
     IOHIDEventSetEventFlags();
     [v7 setIntegerValue:12 forField:196608];
     [v7 setIntegerValue:178 forField:196609];
-    [v7 setIntegerValue:v5 forField:196610];
+    [v7 setIntegerValue:valueCopy forField:196610];
     [v7 setIntegerValue:1 forField:196612];
     [(GCGamepadHIDServicePlugin *)self dispatchEvent:v7 withInputDelay:1];
-    self->_buttonShare = v5;
+    self->_buttonShare = valueCopy;
   }
 }
 
@@ -1000,8 +1000,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(GCGamepadHIDServicePlugin *)self hapticMotors];
-  v3 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  hapticMotors = [(GCGamepadHIDServicePlugin *)self hapticMotors];
+  v3 = [hapticMotors countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1012,7 +1012,7 @@ LABEL_3:
     {
       if (*v16 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(hapticMotors);
       }
 
       v7 = *(*(&v15 + 1) + 8 * v6);
@@ -1033,8 +1033,8 @@ LABEL_3:
         v9 = 0;
       }
 
-      v11 = [v7 queuedTransients];
-      v12 = [v11 count];
+      queuedTransients = [v7 queuedTransients];
+      v12 = [queuedTransients count];
 
       v13 = 1;
       if (!v9 || v12)
@@ -1044,7 +1044,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v4 = [hapticMotors countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -1072,8 +1072,8 @@ LABEL_15:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(GCGamepadHIDServicePlugin *)self hapticMotors];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    hapticMotors = [(GCGamepadHIDServicePlugin *)self hapticMotors];
+    v4 = [hapticMotors countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1084,7 +1084,7 @@ LABEL_15:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(hapticMotors);
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
@@ -1092,7 +1092,7 @@ LABEL_15:
           [v8 setAmplitude:0.0];
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [hapticMotors countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -1116,21 +1116,21 @@ LABEL_15:
   }
 }
 
-- (BOOL)updateHapticMotor:(id)a3
+- (BOOL)updateHapticMotor:(id)motor
 {
-  v4 = a3;
-  if (([v4 index] & 0x80000000) == 0)
+  motorCopy = motor;
+  if (([motorCopy index] & 0x80000000) == 0)
   {
-    v5 = [v4 index];
-    v6 = [(GCGamepadHIDServicePlugin *)self hapticMotors];
-    v7 = [v6 count];
+    index = [motorCopy index];
+    hapticMotors = [(GCGamepadHIDServicePlugin *)self hapticMotors];
+    v7 = [hapticMotors count];
 
-    if (v7 > v5)
+    if (v7 > index)
     {
-      v8 = [(GCGamepadHIDServicePlugin *)self hapticMotors];
-      v9 = [v8 objectAtIndex:{objc_msgSend(v4, "index")}];
+      hapticMotors2 = [(GCGamepadHIDServicePlugin *)self hapticMotors];
+      v9 = [hapticMotors2 objectAtIndex:{objc_msgSend(motorCopy, "index")}];
 
-      [v9 applyValuesFrom:v4];
+      [v9 applyValuesFrom:motorCopy];
     }
   }
 
@@ -1151,57 +1151,57 @@ LABEL_15:
   objc_destroyWeak(&location);
 }
 
-- (void)setHapticMotor:(unint64_t)a3 frequency:(float)a4 amplitude:(float)a5
+- (void)setHapticMotor:(unint64_t)motor frequency:(float)frequency amplitude:(float)amplitude
 {
   v9 = [GCHapticMotor alloc];
-  *&v10 = a4;
-  *&v11 = a5;
-  v12 = [(GCHapticMotor *)v9 initWithIndex:a3 name:0 features:1 frequency:v10 amplitude:v11];
+  *&v10 = frequency;
+  *&v11 = amplitude;
+  v12 = [(GCHapticMotor *)v9 initWithIndex:motor name:0 features:1 frequency:v10 amplitude:v11];
   [(GCGamepadHIDServicePlugin *)self updateHapticMotor:v12];
 }
 
-- (void)enqueueTransient:(id)a3 hapticMotor:(unint64_t)a4
+- (void)enqueueTransient:(id)transient hapticMotor:(unint64_t)motor
 {
-  v10 = a3;
-  v6 = [(GCGamepadHIDServicePlugin *)self hapticMotors];
-  v7 = [v6 count];
+  transientCopy = transient;
+  hapticMotors = [(GCGamepadHIDServicePlugin *)self hapticMotors];
+  v7 = [hapticMotors count];
 
-  if (v7 > a4)
+  if (v7 > motor)
   {
-    v8 = [(GCGamepadHIDServicePlugin *)self hapticMotors];
-    v9 = [v8 objectAtIndex:a4];
+    hapticMotors2 = [(GCGamepadHIDServicePlugin *)self hapticMotors];
+    v9 = [hapticMotors2 objectAtIndex:motor];
 
-    [v9 enqueueHapticTransientEvent:v10];
+    [v9 enqueueHapticTransientEvent:transientCopy];
   }
 }
 
-- (void)connectToIdleServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToIdleServiceWithClient:(id)client reply:(id)reply
 {
-  objc_storeStrong(&self->_idleClient, a3);
-  v6 = a4;
-  v6[2](v6, self, 0);
+  objc_storeStrong(&self->_idleClient, client);
+  replyCopy = reply;
+  replyCopy[2](replyCopy, self, 0);
 }
 
-- (void)connectToBatteryServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToBatteryServiceWithClient:(id)client reply:(id)reply
 {
-  objc_storeStrong(&self->_batteryClient, a3);
-  v6 = a4;
-  v6[2](v6, self, 0);
+  objc_storeStrong(&self->_batteryClient, client);
+  replyCopy = reply;
+  replyCopy[2](replyCopy, self, 0);
 }
 
-- (void)readBatteryWithReply:(id)a3
+- (void)readBatteryWithReply:(id)reply
 {
-  v7 = a3;
+  replyCopy = reply;
   if ([(GCGamepadHIDServicePlugin *)self batteryReport]&& *[(GCGamepadHIDServicePlugin *)self batteryReport])
   {
     v4 = *[(GCGamepadHIDServicePlugin *)self batteryReport];
     v5 = *([(GCGamepadHIDServicePlugin *)self batteryReport]+ 2) != 0;
-    v6 = v7[2];
+    v6 = replyCopy[2];
   }
 
   else
   {
-    v6 = v7[2];
+    v6 = replyCopy[2];
   }
 
   v6();
@@ -1221,7 +1221,7 @@ LABEL_15:
   return WeakRetained;
 }
 
-- (void)fetchDeviceRegistryIDWithReply:(id)a3
+- (void)fetchDeviceRegistryIDWithReply:(id)reply
 {
   if (self)
   {
@@ -1233,9 +1233,9 @@ LABEL_15:
     regID = 0;
   }
 
-  v5 = a3;
+  replyCopy = reply;
   v6 = [NSNumber numberWithUnsignedLongLong:regID];
-  (*(a3 + 2))(v5, v6, 0);
+  (*(reply + 2))(replyCopy, v6, 0);
 }
 
 @end

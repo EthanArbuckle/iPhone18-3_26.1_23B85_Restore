@@ -1,64 +1,64 @@
 @interface AMUIBatteryChargingRingView
-- (AMUIBatteryChargingRingView)initWithFrame:(CGRect)a3;
-- (AMUIBatteryChargingRingView)initWithFrame:(CGRect)a3 configuration:(id)a4;
-- (BOOL)_layerHasGaussianBlurFilter:(id)a3;
-- (CGPath)_pathForRingConfiguration:(id)a3;
+- (AMUIBatteryChargingRingView)initWithFrame:(CGRect)frame;
+- (AMUIBatteryChargingRingView)initWithFrame:(CGRect)frame configuration:(id)configuration;
+- (BOOL)_layerHasGaussianBlurFilter:(id)filter;
+- (CGPath)_pathForRingConfiguration:(id)configuration;
 - (CGPoint)_initialRingCenterPosition;
 - (CGPoint)_ringOrigin;
-- (id)_powerStatusForBattery:(id)a3;
-- (id)_ringLayerForRingConfiguration:(id)a3;
-- (id)_springAnimationForKeyPath:(id)a3 duration:(double)a4 delay:(double)a5 fromValue:(id)a6 toValue:(id)a7 fillMode:(id)a8 stiffness:(double)a9 mass:(double)a10 damping:(double)a11;
-- (id)_trackRingForRingConfiguration:(id)a3 withBlendMode:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_addGaussianBlurToLayerIfNeeded:(id)a3 inputRadius:(double)a4;
+- (id)_powerStatusForBattery:(id)battery;
+- (id)_ringLayerForRingConfiguration:(id)configuration;
+- (id)_springAnimationForKeyPath:(id)path duration:(double)duration delay:(double)delay fromValue:(id)value toValue:(id)toValue fillMode:(id)mode stiffness:(double)stiffness mass:(double)self0 damping:(double)self1;
+- (id)_trackRingForRingConfiguration:(id)configuration withBlendMode:(id)mode;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_addGaussianBlurToLayerIfNeeded:(id)needed inputRadius:(double)radius;
 - (void)_removeAllAnimations;
 - (void)_runBatteryLevelAnimation;
-- (void)_updateForPowerStatus:(id)a3;
+- (void)_updateForPowerStatus:(id)status;
 - (void)layoutSubviews;
-- (void)presentChargingViewWithCompletionHandler:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)updateWithBattery:(id)a3;
+- (void)presentChargingViewWithCompletionHandler:(id)handler;
+- (void)setLegibilitySettings:(id)settings;
+- (void)updateWithBattery:(id)battery;
 @end
 
 @implementation AMUIBatteryChargingRingView
 
-- (AMUIBatteryChargingRingView)initWithFrame:(CGRect)a3
+- (AMUIBatteryChargingRingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = +[AMUIBatteryChargingUIConfiguration defaultConfiguration];
-  v9 = [(AMUIBatteryChargingRingView *)self initWithFrame:v8 configuration:x, y, width, height];
+  height = [(AMUIBatteryChargingRingView *)self initWithFrame:v8 configuration:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (AMUIBatteryChargingRingView)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (AMUIBatteryChargingRingView)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v81[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
+  configurationCopy = configuration;
   v80.receiver = self;
   v80.super_class = AMUIBatteryChargingRingView;
-  v11 = [(AMUIBatteryChargingView *)&v80 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(AMUIBatteryChargingView *)&v80 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_configuration, a4);
+    objc_storeStrong(&height->_configuration, configuration);
     v13 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{x, y, width, height}];
     chargingContainerView = v12->_chargingContainerView;
     v12->_chargingContainerView = v13;
 
-    v15 = [(UIView *)v12->_chargingContainerView layer];
-    [v15 setAllowsGroupBlending:0];
+    layer = [(UIView *)v12->_chargingContainerView layer];
+    [layer setAllowsGroupBlending:0];
 
-    v16 = [MEMORY[0x277CD9ED0] layer];
+    layer2 = [MEMORY[0x277CD9ED0] layer];
     magSafeLayer = v12->_magSafeLayer;
-    v12->_magSafeLayer = v16;
+    v12->_magSafeLayer = layer2;
 
     [(CALayer *)v12->_magSafeLayer setAllowsEdgeAntialiasing:1];
     [(CALayer *)v12->_magSafeLayer setDoubleSided:1];
@@ -69,9 +69,9 @@
     v20 = v19;
     [(AMUIBatteryChargingUIConfiguration *)v12->_configuration ringDiameter];
     [(CALayer *)v18 setBounds:0.0, 0.0, v20, v21];
-    v22 = [MEMORY[0x277CD9ED0] layer];
+    layer3 = [MEMORY[0x277CD9ED0] layer];
     chargeRingLayer = v12->_chargeRingLayer;
-    v12->_chargeRingLayer = v22;
+    v12->_chargeRingLayer = layer3;
 
     [(CALayer *)v12->_chargeRingLayer setAllowsEdgeAntialiasing:1];
     [(CALayer *)v12->_chargeRingLayer setDoubleSided:1];
@@ -83,9 +83,9 @@
     v27 = v26;
     [(AMUIBatteryChargingUIConfiguration *)v12->_configuration ringDiameter];
     [(CALayer *)v25 setBounds:0.0, 0.0, v27, v28];
-    v29 = [MEMORY[0x277CD9ED0] layer];
+    layer4 = [MEMORY[0x277CD9ED0] layer];
     ringContainerLayer = v12->_ringContainerLayer;
-    v12->_ringContainerLayer = v29;
+    v12->_ringContainerLayer = layer4;
 
     [(CALayer *)v12->_ringContainerLayer setAllowsEdgeAntialiasing:1];
     [(CALayer *)v12->_ringContainerLayer setDoubleSided:1];
@@ -97,9 +97,9 @@
     v34 = v33;
     [(AMUIBatteryChargingUIConfiguration *)v12->_configuration ringDiameter];
     [(CALayer *)v32 setBounds:0.0, 0.0, v34, v35];
-    v36 = [MEMORY[0x277CD9ED0] layer];
+    layer5 = [MEMORY[0x277CD9ED0] layer];
     ringLayer = v12->_ringLayer;
-    v12->_ringLayer = v36;
+    v12->_ringLayer = layer5;
 
     [(CALayer *)v12->_ringLayer setAllowsEdgeAntialiasing:1];
     [(CALayer *)v12->_ringLayer setDoubleSided:1];
@@ -111,28 +111,28 @@
     v41 = v40;
     [(AMUIBatteryChargingUIConfiguration *)v12->_configuration ringDiameter];
     [(CALayer *)v39 setBounds:0.0, 0.0, v41, v42];
-    v43 = [(AMUIBatteryChargingRingView *)v12 _isDarkerSystemColorsEnabled];
+    _isDarkerSystemColorsEnabled = [(AMUIBatteryChargingRingView *)v12 _isDarkerSystemColorsEnabled];
     v44 = MEMORY[0x277CDA5C0];
-    if (!v43)
+    if (!_isDarkerSystemColorsEnabled)
     {
       v44 = MEMORY[0x277CDA5E8];
     }
 
     v45 = *v44;
-    v46 = [(AMUIBatteryChargingRingView *)v12 _trackRingForRingConfiguration:v10 withBlendMode:v45];
+    v46 = [(AMUIBatteryChargingRingView *)v12 _trackRingForRingConfiguration:configurationCopy withBlendMode:v45];
     trackFillRingLayer = v12->_trackFillRingLayer;
     v12->_trackFillRingLayer = v46;
 
     v48 = [MEMORY[0x277D755B8] systemImageNamed:@"bolt.fill"];
     [MEMORY[0x277D75348] whiteColor];
-    v49 = v79 = v10;
+    v49 = v79 = configurationCopy;
     v50 = [v48 _flatImageWithColor:v49];
 
     v51 = [v50 imageWithRenderingMode:2];
 
-    v52 = [MEMORY[0x277CD9ED0] layer];
+    layer6 = [MEMORY[0x277CD9ED0] layer];
     chargingBoltGlyph = v12->_chargingBoltGlyph;
-    v12->_chargingBoltGlyph = v52;
+    v12->_chargingBoltGlyph = layer6;
 
     -[CALayer setContents:](v12->_chargingBoltGlyph, "setContents:", [v51 CGImage]);
     v54 = v12->_chargingBoltGlyph;
@@ -172,22 +172,22 @@
     v12->_grabberView = v68;
 
     [(PLPlatterView *)v12->_grabberView setRecipeDynamic:0];
-    v70 = [(UIView *)v12->_chargingContainerView layer];
-    [v70 addSublayer:v12->_magSafeLayer];
+    layer7 = [(UIView *)v12->_chargingContainerView layer];
+    [layer7 addSublayer:v12->_magSafeLayer];
 
     [(CALayer *)v12->_magSafeLayer addSublayer:v12->_chargeRingLayer];
     [(CALayer *)v12->_magSafeLayer addSublayer:v12->_chargingBoltGlyph];
     [(CALayer *)v12->_chargeRingLayer addSublayer:v12->_ringContainerLayer];
     v71 = v12->_chargeRingLayer;
-    v72 = [(UILabel *)v12->_chargePercentLabel layer];
-    [(CALayer *)v71 addSublayer:v72];
+    layer8 = [(UILabel *)v12->_chargePercentLabel layer];
+    [(CALayer *)v71 addSublayer:layer8];
 
     [(CALayer *)v12->_ringContainerLayer addSublayer:v12->_ringLayer];
     v73 = v12->_ringLayer;
-    v74 = [(PLPlatterView *)v12->_platterView layer];
+    layer9 = [(PLPlatterView *)v12->_platterView layer];
     v75 = v73;
-    v10 = v79;
-    [(CALayer *)v75 addSublayer:v74];
+    configurationCopy = v79;
+    [(CALayer *)v75 addSublayer:layer9];
 
     [(CALayer *)v12->_ringLayer addSublayer:v12->_trackFillRingLayer];
     [(CALayer *)v12->_ringLayer addSublayer:v12->_batteryLevelRing];
@@ -237,14 +237,14 @@
   chargePercentLabel = self->_chargePercentLabel;
   [(AMUIBatteryChargingRingView *)self _initialRingCenterPosition];
   [(UILabel *)chargePercentLabel setCenter:?];
-  v20 = [(UILabel *)self->_chargePercentLabel layer];
-  [v20 setOpacity:0.0];
+  layer = [(UILabel *)self->_chargePercentLabel layer];
+  [layer setOpacity:0.0];
 
   [(PLPlatterView *)self->_platterView setFrame:v8, v10, v4, v6];
   [(PLPlatterView *)self->_platterView setBounds:v8, v10, v4, v6];
-  LODWORD(v20) = [(AMUIBatteryChargingRingView *)self _isRTL];
+  LODWORD(layer) = [(AMUIBatteryChargingRingView *)self _isRTL];
   [(AMUIBatteryChargingRingView *)self _initialRingCenterPosition];
-  if (v20)
+  if (layer)
   {
     v22 = v21;
   }
@@ -264,40 +264,40 @@
   [(CALayer *)self->_chargingBoltGlyph setOpacity:0.0];
   LODWORD(v25) = 1.0;
   [(AMUIRingLayer *)self->_batteryLevelRing setOpacity:v25];
-  v26 = [(UILabel *)self->_chargePercentLabel layer];
-  [v26 setOpacity:0.0];
+  layer2 = [(UILabel *)self->_chargePercentLabel layer];
+  [layer2 setOpacity:0.0];
 
-  v27 = [(PLPlatterView *)self->_platterView layer];
+  layer3 = [(PLPlatterView *)self->_platterView layer];
   LODWORD(v28) = 1.0;
-  [v27 setOpacity:v28];
+  [layer3 setOpacity:v28];
 
-  v29 = [(PLPlatterView *)self->_grabberView layer];
-  [v29 setOpacity:0.0];
+  layer4 = [(PLPlatterView *)self->_grabberView layer];
+  [layer4 setOpacity:0.0];
 }
 
-- (void)updateWithBattery:(id)a3
+- (void)updateWithBattery:(id)battery
 {
-  objc_storeStrong(&self->_internalBattery, a3);
-  v7 = a3;
-  v5 = [(AMUIBatteryChargingRingView *)self _powerStatusForBattery:v7];
+  objc_storeStrong(&self->_internalBattery, battery);
+  batteryCopy = battery;
+  v5 = [(AMUIBatteryChargingRingView *)self _powerStatusForBattery:batteryCopy];
   internalStatus = self->_internalStatus;
   self->_internalStatus = v5;
 
   [(AMUIBatteryChargingRingView *)self _updateForPowerStatus:self->_internalStatus];
 }
 
-- (void)presentChargingViewWithCompletionHandler:(id)a3
+- (void)presentChargingViewWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [MEMORY[0x277CD9FF0] begin];
   v5 = MEMORY[0x277CD9FF0];
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __72__AMUIBatteryChargingRingView_presentChargingViewWithCompletionHandler___block_invoke;
   v10 = &unk_278C766E0;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v6 = handlerCopy;
   [v5 setCompletionBlock:&v7];
   [(AMUIBatteryChargingRingView *)self _runBatteryLevelAnimation:v7];
   [MEMORY[0x277CD9FF0] commit];
@@ -317,10 +317,10 @@ uint64_t __72__AMUIBatteryChargingRingView_presentChargingViewWithCompletionHand
   return result;
 }
 
-- (void)_updateForPowerStatus:(id)a3
+- (void)_updateForPowerStatus:(id)status
 {
-  v4 = a3;
-  v19 = AMUIRingColorForPowerStatus(v4);
+  statusCopy = status;
+  v19 = AMUIRingColorForPowerStatus(statusCopy);
   chargingBoltGlyph = self->_chargingBoltGlyph;
   v6 = v19;
   -[CALayer setContentsMultiplyColor:](chargingBoltGlyph, "setContentsMultiplyColor:", [v19 CGColor]);
@@ -331,11 +331,11 @@ uint64_t __72__AMUIBatteryChargingRingView_presentChargingViewWithCompletionHand
   v10 = v19;
   -[AMUIRingLayer setStrokeColor:](v9, "setStrokeColor:", [v19 CGColor]);
   v11 = self->_batteryLevelRing;
-  [v4 powerPercent];
+  [statusCopy powerPercent];
   [(AMUIRingLayer *)v11 setStrokeEnd:v12 / 100.0];
   v13 = MEMORY[0x277CCABB8];
   v14 = MEMORY[0x277CCABB0];
-  [v4 powerPercent];
+  [statusCopy powerPercent];
   v16 = v15;
 
   v17 = [v14 numberWithDouble:v16];
@@ -346,12 +346,12 @@ uint64_t __72__AMUIBatteryChargingRingView_presentChargingViewWithCompletionHand
   [(AMUIBatteryChargingRingView *)self setNeedsLayout];
 }
 
-- (id)_powerStatusForBattery:(id)a3
+- (id)_powerStatusForBattery:(id)battery
 {
-  v4 = a3;
+  batteryCopy = battery;
   v5 = objc_alloc_init(AMUIPowerStatus);
-  -[AMUIPowerStatus setPowerPercent:](v5, "setPowerPercent:", [v4 percentCharge]);
-  if ([v4 isLowPowerModeActive])
+  -[AMUIPowerStatus setPowerPercent:](v5, "setPowerPercent:", [batteryCopy percentCharge]);
+  if ([batteryCopy isLowPowerModeActive])
   {
     v6 = 4;
   }
@@ -361,17 +361,17 @@ uint64_t __72__AMUIBatteryChargingRingView_presentChargingViewWithCompletionHand
     v6 = 0;
   }
 
-  [v4 percentCharge];
+  [batteryCopy percentCharge];
   [MEMORY[0x277D75A78] lowBatteryLevel];
   if (BSFloatLessThanOrEqualToFloat())
   {
     v6 |= 2uLL;
   }
 
-  -[AMUIPowerStatus setPowerStatus:](v5, "setPowerStatus:", v6 | [v4 isCharging]);
-  if ([v4 isCharging])
+  -[AMUIPowerStatus setPowerStatus:](v5, "setPowerStatus:", v6 | [batteryCopy isCharging]);
+  if ([batteryCopy isCharging])
   {
-    if ([v4 powerSourceState] == 2)
+    if ([batteryCopy powerSourceState] == 2)
     {
       v7 = 4;
     }
@@ -382,7 +382,7 @@ uint64_t __72__AMUIBatteryChargingRingView_presentChargingViewWithCompletionHand
     }
   }
 
-  else if (([v4 isInternal] & 1) != 0 || (objc_msgSend(v4, "isCharging") & 1) != 0 || !-[BCBatteryDevice isCharging](self->_internalBattery, "isCharging") || -[BCBatteryDevice powerSourceState](self->_internalBattery, "powerSourceState") != 2)
+  else if (([batteryCopy isInternal] & 1) != 0 || (objc_msgSend(batteryCopy, "isCharging") & 1) != 0 || !-[BCBatteryDevice isCharging](self->_internalBattery, "isCharging") || -[BCBatteryDevice powerSourceState](self->_internalBattery, "powerSourceState") != 2)
   {
     v7 = 0;
   }
@@ -407,13 +407,13 @@ uint64_t __72__AMUIBatteryChargingRingView_presentChargingViewWithCompletionHand
   [(AMUIBatteryChargingUIConfiguration *)self->_configuration ringDiameter];
   [(AMUIBatteryChargingRingView *)self frame];
   [(AMUIBatteryChargingRingView *)self _isRTL];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   BSFloatRoundForScale();
   v5 = v4;
 
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   BSFloatRoundForScale();
   v8 = v7;
 
@@ -427,9 +427,9 @@ uint64_t __72__AMUIBatteryChargingRingView_presentChargingViewWithCompletionHand
 - (CGPoint)_initialRingCenterPosition
 {
   [(AMUIBatteryChargingUIConfiguration *)self->_configuration ringDiameter];
-  v3 = [(AMUIBatteryChargingRingView *)self _ringOrigin];
+  _ringOrigin = [(AMUIBatteryChargingRingView *)self _ringOrigin];
 
-  MEMORY[0x2821DE7B8](v3);
+  MEMORY[0x2821DE7B8](_ringOrigin);
   result.y = v5;
   result.x = v4;
   return result;
@@ -437,8 +437,8 @@ uint64_t __72__AMUIBatteryChargingRingView_presentChargingViewWithCompletionHand
 
 - (void)_removeAllAnimations
 {
-  v3 = [(AMUIBatteryChargingRingView *)self layer];
-  [v3 removeAllAnimations];
+  layer = [(AMUIBatteryChargingRingView *)self layer];
+  [layer removeAllAnimations];
 
   [(CALayer *)self->_magSafeLayer removeAllAnimations];
   [(CALayer *)self->_ringContainerLayer removeAllAnimations];
@@ -447,25 +447,25 @@ uint64_t __72__AMUIBatteryChargingRingView_presentChargingViewWithCompletionHand
   [(AMUIRingLayer *)self->_trackFillRingLayer removeAllAnimations];
   [(AMUIRingLayer *)self->_batteryLevelRing removeAllAnimations];
   [(AMUIRingLayer *)self->_trackFillRingLayer removeAllAnimations];
-  v4 = [(UILabel *)self->_chargePercentLabel layer];
-  [v4 removeAllAnimations];
+  layer2 = [(UILabel *)self->_chargePercentLabel layer];
+  [layer2 removeAllAnimations];
 
-  v5 = [(PLPlatterView *)self->_platterView layer];
-  [v5 removeAllAnimations];
+  layer3 = [(PLPlatterView *)self->_platterView layer];
+  [layer3 removeAllAnimations];
 
-  v6 = [(PLPlatterView *)self->_grabberView layer];
-  [v6 removeAllAnimations];
+  layer4 = [(PLPlatterView *)self->_grabberView layer];
+  [layer4 removeAllAnimations];
 }
 
-- (BOOL)_layerHasGaussianBlurFilter:(id)a3
+- (BOOL)_layerHasGaussianBlurFilter:(id)filter
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a3 filters];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  filters = [filter filters];
+  v4 = [filters countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -477,11 +477,11 @@ uint64_t __72__AMUIBatteryChargingRingView_presentChargingViewWithCompletionHand
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(filters);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) name];
-        v10 = [v9 isEqualToString:v7];
+        name = [*(*(&v14 + 1) + 8 * i) name];
+        v10 = [name isEqualToString:v7];
 
         if (v10)
         {
@@ -490,7 +490,7 @@ uint64_t __72__AMUIBatteryChargingRingView_presentChargingViewWithCompletionHand
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [filters countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -507,43 +507,43 @@ LABEL_11:
   return v11;
 }
 
-- (void)_addGaussianBlurToLayerIfNeeded:(id)a3 inputRadius:(double)a4
+- (void)_addGaussianBlurToLayerIfNeeded:(id)needed inputRadius:(double)radius
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (![(AMUIBatteryChargingRingView *)self _layerHasGaussianBlurFilter:v6])
+  neededCopy = needed;
+  if (![(AMUIBatteryChargingRingView *)self _layerHasGaussianBlurFilter:neededCopy])
   {
     v7 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
     [v7 setName:@"gaussianBlur"];
     [v7 setValue:@"default" forKey:@"inputQuality"];
     [v7 setValue:@"default" forKey:@"inputIntermediateBitDepth"];
-    v8 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v8 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
     [v7 setValue:v8 forKey:@"inputRadius"];
 
     v9 = MEMORY[0x277CBEC28];
     [v7 setValue:MEMORY[0x277CBEC28] forKey:@"inputNormalizeEdges"];
     [v7 setValue:v9 forKey:@"inputHardEdges"];
-    v10 = [v6 filters];
-    v11 = [v10 mutableCopy];
+    filters = [neededCopy filters];
+    v11 = [filters mutableCopy];
 
     [v11 addObject:v7];
     v14[0] = v7;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-    [v6 setFilters:v12];
+    [neededCopy setFilters:v12];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
   v6.receiver = self;
   v6.super_class = AMUIBatteryChargingRingView;
-  v4 = a3;
-  [(AMUIBatteryChargingView *)&v6 setLegibilitySettings:v4];
-  v5 = [v4 primaryColor];
+  settingsCopy = settings;
+  [(AMUIBatteryChargingView *)&v6 setLegibilitySettings:settingsCopy];
+  primaryColor = [settingsCopy primaryColor];
 
-  -[AMUIRingLayer setStrokeColor:](self->_trackFillRingLayer, "setStrokeColor:", [v5 CGColor]);
+  -[AMUIRingLayer setStrokeColor:](self->_trackFillRingLayer, "setStrokeColor:", [primaryColor CGColor]);
 }
 
 - (void)_runBatteryLevelAnimation
@@ -569,8 +569,8 @@ LABEL_11:
   v31 = [(AMUIBatteryChargingRingView *)self _springAnimationForKeyPath:@"transform.scale.xy" duration:&unk_28519CD70 delay:&unk_28519CD80 fromValue:v5 toValue:1.1993 fillMode:3.1 stiffness:200.0 mass:2.0 damping:25.0];
   [(AMUIBatteryChargingRingView *)self _initialRingCenterPosition];
   v7 = v6;
-  v8 = [(PLPlatterView *)self->_grabberView layer];
-  v9 = [v8 valueForKeyPath:@"position.y"];
+  layer = [(PLPlatterView *)self->_grabberView layer];
+  v9 = [layer valueForKeyPath:@"position.y"];
   [v9 floatValue];
   v28 = v10;
 
@@ -590,15 +590,15 @@ LABEL_11:
   [(AMUIBatteryChargingRingView *)self _addGaussianBlurToLayerIfNeeded:self->_magSafeLayer inputRadius:0.0];
   [(AMUIBatteryChargingRingView *)self _addGaussianBlurToLayerIfNeeded:self->_chargingBoltGlyph inputRadius:50.0];
   [(AMUIBatteryChargingRingView *)self _addGaussianBlurToLayerIfNeeded:self->_batteryLevelRing inputRadius:0.0];
-  v14 = [(UILabel *)self->_chargePercentLabel layer];
-  [(AMUIBatteryChargingRingView *)self _addGaussianBlurToLayerIfNeeded:v14 inputRadius:40.0];
+  layer2 = [(UILabel *)self->_chargePercentLabel layer];
+  [(AMUIBatteryChargingRingView *)self _addGaussianBlurToLayerIfNeeded:layer2 inputRadius:40.0];
 
   [(CALayer *)self->_magSafeLayer setValue:&unk_28519CD70 forKey:@"transform.scale.xy"];
-  v15 = [(UILabel *)self->_chargePercentLabel layer];
-  [v15 setValue:&unk_28519CD60 forKey:@"transform.scale.xy"];
+  layer3 = [(UILabel *)self->_chargePercentLabel layer];
+  [layer3 setValue:&unk_28519CD60 forKey:@"transform.scale.xy"];
 
-  v16 = [(PLPlatterView *)self->_grabberView layer];
-  [v16 setOpacity:0.0];
+  layer4 = [(PLPlatterView *)self->_grabberView layer];
+  [layer4 setOpacity:0.0];
 
   [(CALayer *)self->_magSafeLayer addAnimation:v44 forKey:@"magSafeFadeInAnimation"];
   [(CALayer *)self->_magSafeLayer addAnimation:v45 forKey:@"magSafeScaleAnimation"];
@@ -616,37 +616,37 @@ LABEL_11:
   [(CALayer *)self->_chargingBoltGlyph addAnimation:v34 forKey:@"chargingBoltFadeOutAnimation"];
   [(AMUIRingLayer *)self->_batteryLevelRing setValue:&unk_28519CD60 forKey:@"strokeEnd"];
   [(AMUIRingLayer *)self->_batteryLevelRing addAnimation:v46 forKey:@"levelRingStrokeEndAnimation"];
-  v17 = [(UILabel *)self->_chargePercentLabel layer];
-  [v17 addAnimation:v33 forKey:@"chargingLabelFadeInAnimation"];
+  layer5 = [(UILabel *)self->_chargePercentLabel layer];
+  [layer5 addAnimation:v33 forKey:@"chargingLabelFadeInAnimation"];
 
-  v18 = [(UILabel *)self->_chargePercentLabel layer];
-  [v18 addAnimation:v32 forKey:@"chargingLabelBlurInAnimation"];
+  layer6 = [(UILabel *)self->_chargePercentLabel layer];
+  [layer6 addAnimation:v32 forKey:@"chargingLabelBlurInAnimation"];
 
-  v19 = [(UILabel *)self->_chargePercentLabel layer];
-  [v19 addAnimation:v31 forKey:@"chargingLabelScaleInAnimation"];
+  layer7 = [(UILabel *)self->_chargePercentLabel layer];
+  [layer7 addAnimation:v31 forKey:@"chargingLabelScaleInAnimation"];
 
-  v20 = [(UILabel *)self->_chargePercentLabel layer];
-  [v20 addAnimation:v30 forKey:@"chargingLabelDissappearScaleOutAnimation"];
+  layer8 = [(UILabel *)self->_chargePercentLabel layer];
+  [layer8 addAnimation:v30 forKey:@"chargingLabelDissappearScaleOutAnimation"];
 
-  v21 = [(PLPlatterView *)self->_grabberView layer];
-  [v21 addAnimation:v29 forKey:@"grabberMoveUpAnimation"];
+  layer9 = [(PLPlatterView *)self->_grabberView layer];
+  [layer9 addAnimation:v29 forKey:@"grabberMoveUpAnimation"];
 
-  v22 = [(PLPlatterView *)self->_grabberView layer];
-  [v22 addAnimation:v27 forKey:@"grabberFadeInAnimation"];
+  layer10 = [(PLPlatterView *)self->_grabberView layer];
+  [layer10 addAnimation:v27 forKey:@"grabberFadeInAnimation"];
 
-  v23 = [(PLPlatterView *)self->_grabberView layer];
-  [v23 addAnimation:v26 forKey:@"grabberFadeOutAnimation"];
+  layer11 = [(PLPlatterView *)self->_grabberView layer];
+  [layer11 addAnimation:v26 forKey:@"grabberFadeOutAnimation"];
 }
 
-- (id)_ringLayerForRingConfiguration:(id)a3
+- (id)_ringLayerForRingConfiguration:(id)configuration
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (configuration)
   {
-    v4 = a3;
-    [v4 ringDiameter];
+    configurationCopy = configuration;
+    [configurationCopy ringDiameter];
     v6 = v5;
-    [v4 lineWidth];
+    [configurationCopy lineWidth];
     v8 = v7;
 
     v9 = [AMUIRingLayer ringWithDiameter:v6 lineWidth:v8];
@@ -683,67 +683,67 @@ LABEL_11:
   return v9;
 }
 
-- (CGPath)_pathForRingConfiguration:(id)a3
+- (CGPath)_pathForRingConfiguration:(id)configuration
 {
-  v3 = a3;
-  [v3 ringDiameter];
+  configurationCopy = configuration;
+  [configurationCopy ringDiameter];
   v5 = v4;
-  [v3 lineWidth];
+  [configurationCopy lineWidth];
   v7 = v6;
 
   return [AMUIRingLayer newPathForDiameter:v5 lineWidth:v7];
 }
 
-- (id)_trackRingForRingConfiguration:(id)a3 withBlendMode:(id)a4
+- (id)_trackRingForRingConfiguration:(id)configuration withBlendMode:(id)mode
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 ringDiameter];
+  modeCopy = mode;
+  configurationCopy = configuration;
+  [configurationCopy ringDiameter];
   v8 = v7;
-  [v6 lineWidth];
+  [configurationCopy lineWidth];
   v10 = v9;
 
-  v11 = [AMUIRingLayer ringLayerWithBlendMode:v5 diameter:v8 lineWidth:v10 brightnessAmount:0.2 saturationAmount:1.25];
+  v11 = [AMUIRingLayer ringLayerWithBlendMode:modeCopy diameter:v8 lineWidth:v10 brightnessAmount:0.2 saturationAmount:1.25];
 
   return v11;
 }
 
-- (id)_springAnimationForKeyPath:(id)a3 duration:(double)a4 delay:(double)a5 fromValue:(id)a6 toValue:(id)a7 fillMode:(id)a8 stiffness:(double)a9 mass:(double)a10 damping:(double)a11
+- (id)_springAnimationForKeyPath:(id)path duration:(double)duration delay:(double)delay fromValue:(id)value toValue:(id)toValue fillMode:(id)mode stiffness:(double)stiffness mass:(double)self0 damping:(double)self1
 {
   v19 = MEMORY[0x277CD9FA0];
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = [v19 animationWithKeyPath:a3];
+  modeCopy = mode;
+  toValueCopy = toValue;
+  valueCopy = value;
+  v23 = [v19 animationWithKeyPath:path];
   v24 = CACurrentMediaTime();
-  if (a5 != 0.0)
+  if (delay != 0.0)
   {
-    v24 = v24 + a5;
+    v24 = v24 + delay;
   }
 
   [v23 setBeginTime:v24];
-  [v23 setFillMode:v20];
+  [v23 setFillMode:modeCopy];
 
   [v23 setRemovedOnCompletion:0];
-  [v23 setFromValue:v22];
+  [v23 setFromValue:valueCopy];
 
-  [v23 setToValue:v21];
-  [v23 setMass:a10];
-  [v23 setStiffness:a9];
-  [v23 setDamping:a11];
-  [v23 setDuration:a4];
+  [v23 setToValue:toValueCopy];
+  [v23 setMass:mass];
+  [v23 setStiffness:stiffness];
+  [v23 setDamping:damping];
+  [v23 setDuration:duration];
 
   return v23;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = AMUIBatteryChargingRingView;
-  v5 = [(AMUIBatteryChargingView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
-  v6 = [v5 layer];
-  v7 = v6;
-  if (v6 == self->_chargingBoltGlyph || v6 == self->_batteryLevelRing || v6 == self->_trackFillRingLayer)
+  v5 = [(AMUIBatteryChargingView *)&v10 hitTest:event withEvent:test.x, test.y];
+  layer = [v5 layer];
+  v7 = layer;
+  if (layer == self->_chargingBoltGlyph || layer == self->_batteryLevelRing || layer == self->_trackFillRingLayer)
   {
     v8 = v5;
   }

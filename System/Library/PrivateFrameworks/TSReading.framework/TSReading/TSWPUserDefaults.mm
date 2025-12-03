@@ -3,104 +3,104 @@
 + (BOOL)automaticallyDetectLists;
 + (BOOL)spellCheckingEnabled;
 + (BOOL)superscriptNumericalSuffixes;
-+ (void)registerUserDefaults:(BOOL)a3;
-+ (void)setAutomaticallyDetectLinks:(BOOL)a3;
-+ (void)setAutomaticallyDetectLists:(BOOL)a3;
-+ (void)setInvisiblesColor:(id)a3;
-+ (void)setSpellCheckingEnabled:(BOOL)a3;
-+ (void)setSuperscriptNumericalSuffixes:(BOOL)a3;
++ (void)registerUserDefaults:(BOOL)defaults;
++ (void)setAutomaticallyDetectLinks:(BOOL)links;
++ (void)setAutomaticallyDetectLists:(BOOL)lists;
++ (void)setInvisiblesColor:(id)color;
++ (void)setSpellCheckingEnabled:(BOOL)enabled;
++ (void)setSuperscriptNumericalSuffixes:(BOOL)suffixes;
 @end
 
 @implementation TSWPUserDefaults
 
 + (BOOL)automaticallyDetectLinks
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  return [v2 BOOLForKey:@"TWSPAutomaticallyDetectLinks"];
+  return [standardUserDefaults BOOLForKey:@"TWSPAutomaticallyDetectLinks"];
 }
 
 + (BOOL)automaticallyDetectLists
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  return [v2 BOOLForKey:@"TWSPAutomaticallyDetectLists"];
+  return [standardUserDefaults BOOLForKey:@"TWSPAutomaticallyDetectLists"];
 }
 
 + (BOOL)superscriptNumericalSuffixes
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  return [v2 BOOLForKey:@"TWSPSuperscriptNumericalSuffixes"];
+  return [standardUserDefaults BOOLForKey:@"TWSPSuperscriptNumericalSuffixes"];
 }
 
 + (BOOL)spellCheckingEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  return [v2 BOOLForKey:@"TSWPSpellCheckingEnabled"];
+  return [standardUserDefaults BOOLForKey:@"TSWPSpellCheckingEnabled"];
 }
 
-+ (void)setInvisiblesColor:(id)a3
++ (void)setInvisiblesColor:(id)color
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPUserDefaults setInvisiblesColor:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPUserDefaults.m"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:137 description:@"iOS does not support setting the invisibles color"];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:137 description:@"iOS does not support setting the invisibles color"];
 }
 
-+ (void)setAutomaticallyDetectLinks:(BOOL)a3
++ (void)setAutomaticallyDetectLinks:(BOOL)links
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  linksCopy = links;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  [v4 setBool:v3 forKey:@"TWSPAutomaticallyDetectLinks"];
+  [standardUserDefaults setBool:linksCopy forKey:@"TWSPAutomaticallyDetectLinks"];
 }
 
-+ (void)setAutomaticallyDetectLists:(BOOL)a3
++ (void)setAutomaticallyDetectLists:(BOOL)lists
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  listsCopy = lists;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  [v4 setBool:v3 forKey:@"TWSPAutomaticallyDetectLists"];
+  [standardUserDefaults setBool:listsCopy forKey:@"TWSPAutomaticallyDetectLists"];
 }
 
-+ (void)setSuperscriptNumericalSuffixes:(BOOL)a3
++ (void)setSuperscriptNumericalSuffixes:(BOOL)suffixes
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  suffixesCopy = suffixes;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  [v4 setBool:v3 forKey:@"TWSPSuperscriptNumericalSuffixes"];
+  [standardUserDefaults setBool:suffixesCopy forKey:@"TWSPSuperscriptNumericalSuffixes"];
 }
 
-+ (void)setSpellCheckingEnabled:(BOOL)a3
++ (void)setSpellCheckingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  enabledCopy = enabled;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  [v4 setBool:v3 forKey:@"TSWPSpellCheckingEnabled"];
+  [standardUserDefaults setBool:enabledCopy forKey:@"TSWPSpellCheckingEnabled"];
 }
 
-+ (void)registerUserDefaults:(BOOL)a3
++ (void)registerUserDefaults:(BOOL)defaults
 {
-  v3 = a3;
-  if (([a1 p_UserDefaultSet:@"TWSPAutomaticallyDetectLinks" force:a3] & 1) == 0)
+  defaultsCopy = defaults;
+  if (([self p_UserDefaultSet:@"TWSPAutomaticallyDetectLinks" force:defaults] & 1) == 0)
   {
-    [a1 setAutomaticallyDetectLinks:1];
+    [self setAutomaticallyDetectLinks:1];
   }
 
-  if (([a1 p_UserDefaultSet:@"TWSPAutomaticallyDetectLists" force:v3] & 1) == 0)
+  if (([self p_UserDefaultSet:@"TWSPAutomaticallyDetectLists" force:defaultsCopy] & 1) == 0)
   {
-    [a1 setAutomaticallyDetectLists:1];
+    [self setAutomaticallyDetectLists:1];
   }
 
-  if (([a1 p_UserDefaultSet:@"TWSPSuperscriptNumericalSuffixes" force:v3] & 1) == 0)
+  if (([self p_UserDefaultSet:@"TWSPSuperscriptNumericalSuffixes" force:defaultsCopy] & 1) == 0)
   {
-    [a1 setSuperscriptNumericalSuffixes:0];
+    [self setSuperscriptNumericalSuffixes:0];
   }
 
-  if (([a1 p_UserDefaultSet:@"TSWPSpellCheckingEnabled" force:v3] & 1) == 0)
+  if (([self p_UserDefaultSet:@"TSWPSpellCheckingEnabled" force:defaultsCopy] & 1) == 0)
   {
     if ([objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")])
     {
@@ -112,12 +112,12 @@
       v5 = 1;
     }
 
-    [a1 setSpellCheckingEnabled:v5];
+    [self setSpellCheckingEnabled:v5];
   }
 
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
 
-  [v6 synchronize];
+  [standardUserDefaults synchronize];
 }
 
 @end

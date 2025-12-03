@@ -1,45 +1,45 @@
 @interface HMDCharacteristicReadWriteLogEventManager
 + (HMDCharacteristicReadWriteLogEventManager)sharedInstance;
-- (BOOL)_compareIPSignatures:(id)a3 secondSignature:(id)a4;
-- (HMDCharacteristicReadWriteLogEventManager)initWithUptimeProvider:(id)a3;
-- (double)elapsedTimeInterval:(double)a3;
-- (id)_getOrCreateAccessoryStatisticsForAccessoryUUID:(id)a3;
-- (void)_setupNetworkCacheWithWifiManager:(id)a3;
-- (void)_updateBluetoothStatisticsForLogEvent:(id)a3;
-- (void)_updateNetworkStatisticsForLogEvent:(id)a3;
-- (void)_updateWiFiStatisticsForLogEvent:(id)a3;
-- (void)updateSessionConnectivity:(BOOL)a3 withSessionInfo:(id)a4 forAccessoryUUID:(id)a5;
-- (void)updateStatisticsForLogEvent:(id)a3;
+- (BOOL)_compareIPSignatures:(id)signatures secondSignature:(id)signature;
+- (HMDCharacteristicReadWriteLogEventManager)initWithUptimeProvider:(id)provider;
+- (double)elapsedTimeInterval:(double)interval;
+- (id)_getOrCreateAccessoryStatisticsForAccessoryUUID:(id)d;
+- (void)_setupNetworkCacheWithWifiManager:(id)manager;
+- (void)_updateBluetoothStatisticsForLogEvent:(id)event;
+- (void)_updateNetworkStatisticsForLogEvent:(id)event;
+- (void)_updateWiFiStatisticsForLogEvent:(id)event;
+- (void)updateSessionConnectivity:(BOOL)connectivity withSessionInfo:(id)info forAccessoryUUID:(id)d;
+- (void)updateStatisticsForLogEvent:(id)event;
 @end
 
 @implementation HMDCharacteristicReadWriteLogEventManager
 
-- (void)updateStatisticsForLogEvent:(id)a3
+- (void)updateStatisticsForLogEvent:(id)event
 {
-  v13 = a3;
+  eventCopy = event;
   os_unfair_lock_lock_with_options();
-  v4 = [v13 accessoryUUID];
-  v5 = [v13 error];
-  v6 = [v5 code];
+  accessoryUUID = [eventCopy accessoryUUID];
+  error = [eventCopy error];
+  code = [error code];
 
-  v7 = [v13 linkLayerType];
-  v8 = [(HMDCharacteristicReadWriteLogEventManager *)self _getOrCreateAccessoryStatisticsForAccessoryUUID:v4];
+  linkLayerType = [eventCopy linkLayerType];
+  v8 = [(HMDCharacteristicReadWriteLogEventManager *)self _getOrCreateAccessoryStatisticsForAccessoryUUID:accessoryUUID];
   [v8 timeOfLastSuccessfulRequest];
   [(HMDCharacteristicReadWriteLogEventManager *)self elapsedTimeInterval:?];
-  [v13 setTimeIntervalSinceLastSuccessfulRequest:?];
+  [eventCopy setTimeIntervalSinceLastSuccessfulRequest:?];
   [v8 timeOfLastFailedRequest];
   [(HMDCharacteristicReadWriteLogEventManager *)self elapsedTimeInterval:?];
-  [v13 setTimeIntervalSinceLastFailedRequest:?];
-  [v13 setLastSuccessLinkLayerType:{objc_msgSend(v8, "lastSuccessLinkLayerType")}];
-  [v13 setLastFailedLinkLayerType:{objc_msgSend(v8, "lastFailedLinkLayerType")}];
-  if (v6)
+  [eventCopy setTimeIntervalSinceLastFailedRequest:?];
+  [eventCopy setLastSuccessLinkLayerType:{objc_msgSend(v8, "lastSuccessLinkLayerType")}];
+  [eventCopy setLastFailedLinkLayerType:{objc_msgSend(v8, "lastFailedLinkLayerType")}];
+  if (code)
   {
     [v8 timeOfFirstFailureRequest];
     if (v9 <= 0.0)
     {
       [v8 setConsecutiveFailureCount:1];
-      v11 = [(HMDCharacteristicReadWriteLogEventManager *)self uptimeProvider];
-      [v11 uptime];
+      uptimeProvider = [(HMDCharacteristicReadWriteLogEventManager *)self uptimeProvider];
+      [uptimeProvider uptime];
       [v8 setTimeOfFirstFailureRequest:?];
     }
 
@@ -48,51 +48,51 @@
       [v8 setConsecutiveFailureCount:{objc_msgSend(v8, "consecutiveFailureCount") + 1}];
     }
 
-    v12 = [(HMDCharacteristicReadWriteLogEventManager *)self uptimeProvider];
-    [v12 uptime];
+    uptimeProvider2 = [(HMDCharacteristicReadWriteLogEventManager *)self uptimeProvider];
+    [uptimeProvider2 uptime];
     [v8 setTimeOfLastFailedRequest:?];
 
     [v8 setHasFailedOnce:1];
     [v8 setConsecutiveSuccessCount:0];
-    [v8 setLastFailedLinkLayerType:v7];
+    [v8 setLastFailedLinkLayerType:linkLayerType];
   }
 
   else
   {
     [v8 setConsecutiveFailureCount:0];
     [v8 setTimeOfFirstFailureRequest:0.0];
-    v10 = [(HMDCharacteristicReadWriteLogEventManager *)self uptimeProvider];
-    [v10 uptime];
+    uptimeProvider3 = [(HMDCharacteristicReadWriteLogEventManager *)self uptimeProvider];
+    [uptimeProvider3 uptime];
     [v8 setTimeOfLastSuccessfulRequest:?];
 
     [v8 setHasSucceededOnce:1];
     [v8 setConsecutiveSuccessCount:{objc_msgSend(v8, "consecutiveSuccessCount") + 1}];
-    [v8 setLastSuccessLinkLayerType:v7];
+    [v8 setLastSuccessLinkLayerType:linkLayerType];
   }
 
-  [v13 setHasSucceededOnce:{objc_msgSend(v8, "hasSucceededOnce")}];
-  [v13 setHasFailedOnce:{objc_msgSend(v8, "hasFailedOnce")}];
-  [v13 setConsecutiveFailureCount:{objc_msgSend(v8, "consecutiveFailureCount")}];
+  [eventCopy setHasSucceededOnce:{objc_msgSend(v8, "hasSucceededOnce")}];
+  [eventCopy setHasFailedOnce:{objc_msgSend(v8, "hasFailedOnce")}];
+  [eventCopy setConsecutiveFailureCount:{objc_msgSend(v8, "consecutiveFailureCount")}];
   [v8 timeOfFirstFailureRequest];
   [(HMDCharacteristicReadWriteLogEventManager *)self elapsedTimeInterval:?];
-  [v13 setTimeIntervalSinceFirstFailure:?];
+  [eventCopy setTimeIntervalSinceFirstFailure:?];
   [v8 noSessionStartTime];
   [(HMDCharacteristicReadWriteLogEventManager *)self elapsedTimeInterval:?];
-  [v13 setNoSessionDuration:?];
-  [v13 setConsecutiveSuccessCount:{objc_msgSend(v8, "consecutiveSuccessCount")}];
+  [eventCopy setNoSessionDuration:?];
+  [eventCopy setConsecutiveSuccessCount:{objc_msgSend(v8, "consecutiveSuccessCount")}];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updateSessionConnectivity:(BOOL)a3 withSessionInfo:(id)a4 forAccessoryUUID:(id)a5
+- (void)updateSessionConnectivity:(BOOL)connectivity withSessionInfo:(id)info forAccessoryUUID:(id)d
 {
-  v6 = a3;
-  v17 = a4;
-  v8 = a5;
+  connectivityCopy = connectivity;
+  infoCopy = info;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v9 = [(HMDCharacteristicReadWriteLogEventManager *)self _getOrCreateAccessoryStatisticsForAccessoryUUID:v8];
+  v9 = [(HMDCharacteristicReadWriteLogEventManager *)self _getOrCreateAccessoryStatisticsForAccessoryUUID:dCopy];
   v10 = v9;
-  if (v6)
+  if (connectivityCopy)
   {
     [v9 setNoSessionStartTime:0.0];
   }
@@ -102,18 +102,18 @@
     [v9 noSessionStartTime];
     if (v11 == 0.0)
     {
-      v12 = [(HMDCharacteristicReadWriteLogEventManager *)self uptimeProvider];
-      [v12 uptime];
+      uptimeProvider = [(HMDCharacteristicReadWriteLogEventManager *)self uptimeProvider];
+      [uptimeProvider uptime];
       [v10 setNoSessionStartTime:?];
     }
   }
 
-  if (v17)
+  if (infoCopy)
   {
-    v13 = [v17 ipAddress];
-    if (v13)
+    ipAddress = [infoCopy ipAddress];
+    if (ipAddress)
     {
-      [v17 ipAddress];
+      [infoCopy ipAddress];
     }
 
     else
@@ -123,10 +123,10 @@
     v14 = ;
     [v10 setIpAddress:v14];
 
-    v15 = [v17 serviceName];
-    if (v15)
+    serviceName = [infoCopy serviceName];
+    if (serviceName)
     {
-      [v17 serviceName];
+      [infoCopy serviceName];
     }
 
     else
@@ -136,112 +136,112 @@
     v16 = ;
     [v10 setServiceName:v16];
 
-    [v10 setNumIPAddresses:{objc_msgSend(v17, "numIPAddresses")}];
-    [v10 setResolveAttempted:{objc_msgSend(v17, "resolveAttempted")}];
+    [v10 setNumIPAddresses:{objc_msgSend(infoCopy, "numIPAddresses")}];
+    [v10 setResolveAttempted:{objc_msgSend(infoCopy, "resolveAttempted")}];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_updateNetworkStatisticsForLogEvent:(id)a3
+- (void)_updateNetworkStatisticsForLogEvent:(id)event
 {
-  v43 = a3;
+  eventCopy = event;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDCharacteristicReadWriteLogEventManager *)self uptimeProvider];
-  [v4 uptime];
+  uptimeProvider = [(HMDCharacteristicReadWriteLogEventManager *)self uptimeProvider];
+  [uptimeProvider uptime];
   v6 = v5;
-  v7 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-  [v7 timeIntervalNetworkInformationCache];
+  networkInformationCache = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+  [networkInformationCache timeIntervalNetworkInformationCache];
   v9 = v6 - v8;
 
   if (v9 > 10.0)
   {
-    v10 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-    [v10 refreshNetworkInformation];
+    networkInformationCache2 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+    [networkInformationCache2 refreshNetworkInformation];
   }
 
-  [(HMDCharacteristicReadWriteLogEventManager *)self _updateWiFiStatisticsForLogEvent:v43];
-  [(HMDCharacteristicReadWriteLogEventManager *)self _updateBluetoothStatisticsForLogEvent:v43];
-  v11 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-  [v43 setEthernetConnectionState:{objc_msgSend(v11, "ethernetConnectionState")}];
+  [(HMDCharacteristicReadWriteLogEventManager *)self _updateWiFiStatisticsForLogEvent:eventCopy];
+  [(HMDCharacteristicReadWriteLogEventManager *)self _updateBluetoothStatisticsForLogEvent:eventCopy];
+  networkInformationCache3 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+  [eventCopy setEthernetConnectionState:{objc_msgSend(networkInformationCache3, "ethernetConnectionState")}];
 
-  v12 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-  [v43 setCellularDataConnectionState:{objc_msgSend(v12, "cellularDataConnectionState")}];
+  networkInformationCache4 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+  [eventCopy setCellularDataConnectionState:{objc_msgSend(networkInformationCache4, "cellularDataConnectionState")}];
 
-  v13 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-  [v43 setIsConnectedToInternet:{objc_msgSend(v13, "isConnectedToInternet")}];
+  networkInformationCache5 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+  [eventCopy setIsConnectedToInternet:{objc_msgSend(networkInformationCache5, "isConnectedToInternet")}];
 
-  v14 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-  v15 = [v14 isInfraRelayInterfaceActive];
+  networkInformationCache6 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+  isInfraRelayInterfaceActive = [networkInformationCache6 isInfraRelayInterfaceActive];
 
-  if (v15)
+  if (isInfraRelayInterfaceActive)
   {
-    [v43 setMediaSystemConfiguration:{objc_msgSend(v43, "mediaSystemConfiguration") | 1}];
+    [eventCopy setMediaSystemConfiguration:{objc_msgSend(eventCopy, "mediaSystemConfiguration") | 1}];
   }
 
-  v16 = [v43 accessoryUUID];
-  v17 = [v43 error];
-  v18 = [v17 code];
+  accessoryUUID = [eventCopy accessoryUUID];
+  error = [eventCopy error];
+  code = [error code];
 
-  v19 = [(HMDCharacteristicReadWriteLogEventManager *)self accessoryStatisticsByHMDAccessoryUUID];
-  v20 = [v19 objectForKeyedSubscript:v16];
+  accessoryStatisticsByHMDAccessoryUUID = [(HMDCharacteristicReadWriteLogEventManager *)self accessoryStatisticsByHMDAccessoryUUID];
+  v20 = [accessoryStatisticsByHMDAccessoryUUID objectForKeyedSubscript:accessoryUUID];
 
   if (v20)
   {
-    v21 = [v20 lastSuccessIpv4Signature];
-    v22 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-    v23 = [v22 ipv4Signature];
-    v42 = [(HMDCharacteristicReadWriteLogEventManager *)self _compareIPSignatures:v21 secondSignature:v23];
+    lastSuccessIpv4Signature = [v20 lastSuccessIpv4Signature];
+    networkInformationCache7 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+    ipv4Signature = [networkInformationCache7 ipv4Signature];
+    v42 = [(HMDCharacteristicReadWriteLogEventManager *)self _compareIPSignatures:lastSuccessIpv4Signature secondSignature:ipv4Signature];
 
-    v24 = [v20 lastSuccessIpv6Signature];
-    v25 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-    v26 = [v25 ipv6Signature];
-    v27 = [(HMDCharacteristicReadWriteLogEventManager *)self _compareIPSignatures:v24 secondSignature:v26];
+    lastSuccessIpv6Signature = [v20 lastSuccessIpv6Signature];
+    networkInformationCache8 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+    ipv6Signature = [networkInformationCache8 ipv6Signature];
+    v27 = [(HMDCharacteristicReadWriteLogEventManager *)self _compareIPSignatures:lastSuccessIpv6Signature secondSignature:ipv6Signature];
 
-    v28 = [v20 lastFailureIpv4Signature];
-    v29 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-    v30 = [v29 ipv4Signature];
-    v31 = [(HMDCharacteristicReadWriteLogEventManager *)self _compareIPSignatures:v28 secondSignature:v30];
+    lastFailureIpv4Signature = [v20 lastFailureIpv4Signature];
+    networkInformationCache9 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+    ipv4Signature2 = [networkInformationCache9 ipv4Signature];
+    v31 = [(HMDCharacteristicReadWriteLogEventManager *)self _compareIPSignatures:lastFailureIpv4Signature secondSignature:ipv4Signature2];
 
-    v32 = [v20 lastFailureIpv6Signature];
-    v33 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-    v34 = [v33 ipv6Signature];
-    v35 = [(HMDCharacteristicReadWriteLogEventManager *)self _compareIPSignatures:v32 secondSignature:v34];
+    lastFailureIpv6Signature = [v20 lastFailureIpv6Signature];
+    networkInformationCache10 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+    ipv6Signature2 = [networkInformationCache10 ipv6Signature];
+    v35 = [(HMDCharacteristicReadWriteLogEventManager *)self _compareIPSignatures:lastFailureIpv6Signature secondSignature:ipv6Signature2];
 
     [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-    if (v18)
+    if (code)
       v36 = {;
-      v37 = [v36 ipv4Signature];
-      [v20 setLastFailureIpv4Signature:v37];
+      ipv4Signature3 = [v36 ipv4Signature];
+      [v20 setLastFailureIpv4Signature:ipv4Signature3];
 
-      v38 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-      v39 = [v38 ipv6Signature];
-      [v20 setLastFailureIpv6Signature:v39];
+      networkInformationCache11 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+      ipv6Signature3 = [networkInformationCache11 ipv6Signature];
+      [v20 setLastFailureIpv6Signature:ipv6Signature3];
     }
 
     else
       v40 = {;
-      v41 = [v40 ipv4Signature];
-      [v20 setLastSuccessIpv4Signature:v41];
+      ipv4Signature4 = [v40 ipv4Signature];
+      [v20 setLastSuccessIpv4Signature:ipv4Signature4];
 
-      v38 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-      v39 = [v38 ipv6Signature];
-      [v20 setLastSuccessIpv6Signature:v39];
+      networkInformationCache11 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+      ipv6Signature3 = [networkInformationCache11 ipv6Signature];
+      [v20 setLastSuccessIpv6Signature:ipv6Signature3];
     }
 
-    [v43 setIsCurrentNetworkSignatureSameAsLastSuccess:v42 & v27];
-    [v43 setIsCurrentNetworkSignatureSameAsLastFailure:v31 & v35];
+    [eventCopy setIsCurrentNetworkSignatureSameAsLastSuccess:v42 & v27];
+    [eventCopy setIsCurrentNetworkSignatureSameAsLastFailure:v31 & v35];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)_compareIPSignatures:(id)a3 secondSignature:(id)a4
+- (BOOL)_compareIPSignatures:(id)signatures secondSignature:(id)signature
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 == v6)
+  signaturesCopy = signatures;
+  signatureCopy = signature;
+  v7 = signatureCopy;
+  if (signaturesCopy == signatureCopy)
   {
     v8 = 1;
   }
@@ -249,53 +249,53 @@
   else
   {
     v8 = 0;
-    if (v5 && v6)
+    if (signaturesCopy && signatureCopy)
     {
-      v8 = [v5 isEqualToData:v6];
+      v8 = [signaturesCopy isEqualToData:signatureCopy];
     }
   }
 
   return v8;
 }
 
-- (void)_updateBluetoothStatisticsForLogEvent:(id)a3
+- (void)_updateBluetoothStatisticsForLogEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-  [v4 setBluetoothState:{objc_msgSend(v5, "bluetoothState")}];
+  eventCopy = event;
+  networkInformationCache = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+  [eventCopy setBluetoothState:{objc_msgSend(networkInformationCache, "bluetoothState")}];
 }
 
-- (void)_updateWiFiStatisticsForLogEvent:(id)a3
+- (void)_updateWiFiStatisticsForLogEvent:(id)event
 {
-  v35 = a3;
-  v4 = [v35 accessoryUUID];
-  v5 = [v35 error];
-  v6 = [v5 code];
+  eventCopy = event;
+  accessoryUUID = [eventCopy accessoryUUID];
+  error = [eventCopy error];
+  code = [error code];
 
-  v7 = [(HMDCharacteristicReadWriteLogEventManager *)self accessoryStatisticsByHMDAccessoryUUID];
-  v8 = [v7 objectForKeyedSubscript:v4];
+  accessoryStatisticsByHMDAccessoryUUID = [(HMDCharacteristicReadWriteLogEventManager *)self accessoryStatisticsByHMDAccessoryUUID];
+  v8 = [accessoryStatisticsByHMDAccessoryUUID objectForKeyedSubscript:accessoryUUID];
 
   if (!v8)
   {
     goto LABEL_17;
   }
 
-  v9 = [v8 lastSuccessSSID];
-  if (v9)
+  lastSuccessSSID = [v8 lastSuccessSSID];
+  if (lastSuccessSSID)
   {
-    v10 = v9;
-    v11 = [v8 lastSuccessBSSID];
+    v10 = lastSuccessSSID;
+    lastSuccessBSSID = [v8 lastSuccessBSSID];
 
-    if (v11)
+    if (lastSuccessBSSID)
     {
-      v12 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-      v13 = [v12 wifiSSID];
-      if (v13)
+      networkInformationCache = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+      wifiSSID = [networkInformationCache wifiSSID];
+      if (wifiSSID)
       {
-        v14 = [v8 lastSuccessSSID];
-        v15 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-        v16 = [v15 wifiSSID];
-        v34 = [v14 isEqualToString:v16];
+        lastSuccessSSID2 = [v8 lastSuccessSSID];
+        networkInformationCache2 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+        wifiSSID2 = [networkInformationCache2 wifiSSID];
+        v34 = [lastSuccessSSID2 isEqualToString:wifiSSID2];
       }
 
       else
@@ -303,19 +303,19 @@
         v34 = 0;
       }
 
-      v18 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-      v19 = [v18 wifiBSSID];
-      if (v19)
+      networkInformationCache3 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+      wifiBSSID = [networkInformationCache3 wifiBSSID];
+      if (wifiBSSID)
       {
-        v20 = [v8 lastSuccessBSSID];
-        v21 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-        v22 = [v21 wifiBSSID];
-        v11 = [v20 isEqualToString:v22];
+        lastSuccessBSSID2 = [v8 lastSuccessBSSID];
+        networkInformationCache4 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+        wifiBSSID2 = [networkInformationCache4 wifiBSSID];
+        lastSuccessBSSID = [lastSuccessBSSID2 isEqualToString:wifiBSSID2];
       }
 
       else
       {
-        v11 = 0;
+        lastSuccessBSSID = 0;
       }
 
       v17 = v34;
@@ -325,96 +325,96 @@
 
   else
   {
-    v11 = 0;
+    lastSuccessBSSID = 0;
   }
 
   v17 = 0;
 LABEL_13:
-  v23 = v35;
-  if (!v6)
+  v23 = eventCopy;
+  if (!code)
   {
-    v24 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-    v25 = [v24 wifiSSID];
-    [v8 setLastSuccessSSID:v25];
+    networkInformationCache5 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+    wifiSSID3 = [networkInformationCache5 wifiSSID];
+    [v8 setLastSuccessSSID:wifiSSID3];
 
-    v26 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-    v27 = [v26 wifiBSSID];
-    [v8 setLastSuccessBSSID:v27];
+    networkInformationCache6 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+    wifiBSSID3 = [networkInformationCache6 wifiBSSID];
+    [v8 setLastSuccessBSSID:wifiBSSID3];
 
-    v23 = v35;
+    v23 = eventCopy;
   }
 
   [v23 setIsSSIDSameAsLastSuccessRequest:v17];
-  [v35 setIsBSSIDSameAsLastSuccessRequest:v11];
-  v28 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-  [v35 setWifiConnectionState:{objc_msgSend(v28, "wifiConnectionState")}];
+  [eventCopy setIsBSSIDSameAsLastSuccessRequest:lastSuccessBSSID];
+  networkInformationCache7 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+  [eventCopy setWifiConnectionState:{objc_msgSend(networkInformationCache7, "wifiConnectionState")}];
 
-  v29 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-  v30 = [v29 wifiBSSID];
+  networkInformationCache8 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+  wifiBSSID4 = [networkInformationCache8 wifiBSSID];
 
-  if (v30)
+  if (wifiBSSID4)
   {
-    v31 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
-    v32 = [v31 wifiBSSID];
-    v33 = [v32 substringToIndex:8];
-    [v35 setWifiAccessPointOUI:v33];
+    networkInformationCache9 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+    wifiBSSID5 = [networkInformationCache9 wifiBSSID];
+    v33 = [wifiBSSID5 substringToIndex:8];
+    [eventCopy setWifiAccessPointOUI:v33];
   }
 
 LABEL_17:
 }
 
-- (void)_setupNetworkCacheWithWifiManager:(id)a3
+- (void)_setupNetworkCacheWithWifiManager:(id)manager
 {
-  v6 = a3;
-  v4 = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
+  managerCopy = manager;
+  networkInformationCache = [(HMDCharacteristicReadWriteLogEventManager *)self networkInformationCache];
 
-  if (!v4)
+  if (!networkInformationCache)
   {
-    v5 = [[HMDCharacteristicReadWriteNetworkInformation alloc] initWithWifiManager:v6];
+    v5 = [[HMDCharacteristicReadWriteNetworkInformation alloc] initWithWifiManager:managerCopy];
     [(HMDCharacteristicReadWriteLogEventManager *)self setNetworkInformationCache:v5];
   }
 }
 
-- (double)elapsedTimeInterval:(double)a3
+- (double)elapsedTimeInterval:(double)interval
 {
   v3 = 0.0;
-  if (a3 > 0.0)
+  if (interval > 0.0)
   {
-    v5 = [(HMDCharacteristicReadWriteLogEventManager *)self uptimeProvider];
-    [v5 uptime];
-    v3 = v6 - a3;
+    uptimeProvider = [(HMDCharacteristicReadWriteLogEventManager *)self uptimeProvider];
+    [uptimeProvider uptime];
+    v3 = v6 - interval;
   }
 
   return v3;
 }
 
-- (id)_getOrCreateAccessoryStatisticsForAccessoryUUID:(id)a3
+- (id)_getOrCreateAccessoryStatisticsForAccessoryUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(HMDCharacteristicReadWriteLogEventManager *)self accessoryStatisticsByHMDAccessoryUUID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  accessoryStatisticsByHMDAccessoryUUID = [(HMDCharacteristicReadWriteLogEventManager *)self accessoryStatisticsByHMDAccessoryUUID];
+  v6 = [accessoryStatisticsByHMDAccessoryUUID objectForKeyedSubscript:dCopy];
 
   if (!v6)
   {
     v6 = objc_alloc_init(HMDCharacteristicReadWriteAccessoryStatistics);
-    v7 = [(HMDCharacteristicReadWriteLogEventManager *)self accessoryStatisticsByHMDAccessoryUUID];
-    [v7 setObject:v6 forKeyedSubscript:v4];
+    accessoryStatisticsByHMDAccessoryUUID2 = [(HMDCharacteristicReadWriteLogEventManager *)self accessoryStatisticsByHMDAccessoryUUID];
+    [accessoryStatisticsByHMDAccessoryUUID2 setObject:v6 forKeyedSubscript:dCopy];
   }
 
   return v6;
 }
 
-- (HMDCharacteristicReadWriteLogEventManager)initWithUptimeProvider:(id)a3
+- (HMDCharacteristicReadWriteLogEventManager)initWithUptimeProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = HMDCharacteristicReadWriteLogEventManager;
   v6 = [(HMDCharacteristicReadWriteLogEventManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uptimeProvider, a3);
+    objc_storeStrong(&v6->_uptimeProvider, provider);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     accessoryStatisticsByHMDAccessoryUUID = v7->_accessoryStatisticsByHMDAccessoryUUID;
     v7->_accessoryStatisticsByHMDAccessoryUUID = v8;

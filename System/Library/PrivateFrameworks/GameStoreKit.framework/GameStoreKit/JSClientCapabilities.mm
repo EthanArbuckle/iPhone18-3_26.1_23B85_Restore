@@ -1,11 +1,11 @@
 @interface JSClientCapabilities
-- (BOOL)isEnabled:(id)a3;
+- (BOOL)isEnabled:(id)enabled;
 - (_TtC12GameStoreKit20JSClientCapabilities)init;
 @end
 
 @implementation JSClientCapabilities
 
-- (BOOL)isEnabled:(id)a3
+- (BOOL)isEnabled:(id)enabled
 {
   v3 = sub_24F92B0D8();
   v5 = v4;

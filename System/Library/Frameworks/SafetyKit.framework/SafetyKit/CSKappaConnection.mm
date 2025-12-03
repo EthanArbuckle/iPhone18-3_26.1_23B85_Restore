@@ -1,15 +1,15 @@
 @interface CSKappaConnection
 - (CSKappaConnection)init;
-- (void)bringupFeedbackAssistantWithUUID:(id)a3;
-- (void)defaultMessageHandler:(shared_ptr<CLConnectionMessage>)a3;
+- (void)bringupFeedbackAssistantWithUUID:(id)d;
+- (void)defaultMessageHandler:(shared_ptr<CLConnectionMessage>)handler;
 - (void)interruptionHandler;
-- (void)sendTestAOI:(id)a3;
-- (void)sendTestPowerAssertion:(double)a3;
-- (void)sendTestSMSignal:(double)a3;
+- (void)sendTestAOI:(id)i;
+- (void)sendTestPowerAssertion:(double)assertion;
+- (void)sendTestSMSignal:(double)signal;
 - (void)sendTestSOS;
 - (void)sendTestTTR;
 - (void)sendTestTrigger;
-- (void)testSensorAccessQueryWithReply:(id)a3;
+- (void)testSensorAccessQueryWithReply:(id)reply;
 @end
 
 @implementation CSKappaConnection
@@ -56,9 +56,9 @@ void __25__CSKappaConnection_init__block_invoke_2(uint64_t a1)
   [WeakRetained interruptionHandler];
 }
 
-- (void)defaultMessageHandler:(shared_ptr<CLConnectionMessage>)a3
+- (void)defaultMessageHandler:(shared_ptr<CLConnectionMessage>)handler
 {
-  var0 = a3.var0;
+  var0 = handler.var0;
   v19 = *MEMORY[0x277D85DE8];
   if (onceToken_CSConnection_Default != -1)
   {
@@ -112,10 +112,10 @@ void __25__CSKappaConnection_init__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)sendTestAOI:(id)a3
+- (void)sendTestAOI:(id)i
 {
   __p[5] = *MEMORY[0x277D85DE8];
-  a3;
+  i;
   std::string::basic_string[abi:ne200100]<0>(__p, [@"com.apple.anomalydetectiond.kappa.aoi.test" UTF8String]);
   std::allocate_shared[abi:ne200100]<CLConnectionMessage,std::allocator<CLConnectionMessage>,std::string,NSDictionary<NSString *,objc_object *> * {__strong}&,0>();
 }
@@ -141,20 +141,20 @@ void __25__CSKappaConnection_init__block_invoke_2(uint64_t a1)
   std::allocate_shared[abi:ne200100]<CLConnectionMessage,std::allocator<CLConnectionMessage>,std::string,0>();
 }
 
-- (void)bringupFeedbackAssistantWithUUID:(id)a3
+- (void)bringupFeedbackAssistantWithUUID:(id)d
 {
   v5[1] = *MEMORY[0x277D85DE8];
   v4 = @"CSKappaFeedbackAssistantUUIDKey";
-  v5[0] = a3;
+  v5[0] = d;
   __p[5] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   std::string::basic_string[abi:ne200100]<0>(__p, [@"CSKappaConnectionBringupFeedbackAssistantMessage" UTF8String]);
   std::allocate_shared[abi:ne200100]<CLConnectionMessage,std::allocator<CLConnectionMessage>,std::string,NSDictionary * {__strong}&,0>();
 }
 
-- (void)testSensorAccessQueryWithReply:(id)a3
+- (void)testSensorAccessQueryWithReply:(id)reply
 {
   __p[5] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  replyCopy = reply;
   std::string::basic_string[abi:ne200100]<0>(__p, [@"CSKappaConnectionTestSensorAccessQuery" UTF8String]);
   std::allocate_shared[abi:ne200100]<CLConnectionMessage,std::allocator<CLConnectionMessage>,std::string,0>();
 }
@@ -239,11 +239,11 @@ void __43__CSKappaConnection_sendCommand_withValue___block_invoke(uint64_t a1, C
   }
 }
 
-- (void)sendTestSMSignal:(double)a3
+- (void)sendTestSMSignal:(double)signal
 {
   v6[1] = *MEMORY[0x277D85DE8];
   v5 = @"testSMSignal";
-  v3 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithDouble:signal];
   v6[0] = v3;
   [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
   objc_claimAutoreleasedReturnValue();
@@ -252,11 +252,11 @@ void __43__CSKappaConnection_sendCommand_withValue___block_invoke(uint64_t a1, C
   std::allocate_shared[abi:ne200100]<CLConnectionMessage,std::allocator<CLConnectionMessage>,std::string,NSDictionary * {__strong}&,0>();
 }
 
-- (void)sendTestPowerAssertion:(double)a3
+- (void)sendTestPowerAssertion:(double)assertion
 {
   v6[1] = *MEMORY[0x277D85DE8];
   v5 = @"testPowerAssertionCmd";
-  v3 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithDouble:assertion];
   v6[0] = v3;
   [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
   objc_claimAutoreleasedReturnValue();

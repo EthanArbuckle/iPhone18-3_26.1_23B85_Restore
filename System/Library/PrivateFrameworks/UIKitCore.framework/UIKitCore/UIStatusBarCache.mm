@@ -1,9 +1,9 @@
 @interface UIStatusBarCache
 + (id)sharedInstance;
 - (UIStatusBarCache)init;
-- (id)imageNamed:(id)a3 forGroup:(id)a4 withScale:(double)a5;
-- (void)cacheImage:(id)a3 named:(id)a4 forGroup:(id)a5;
-- (void)removeImagesInGroup:(id)a3;
+- (id)imageNamed:(id)named forGroup:(id)group withScale:(double)scale;
+- (void)cacheImage:(id)image named:(id)named forGroup:(id)group;
+- (void)removeImagesInGroup:(id)group;
 @end
 
 @implementation UIStatusBarCache
@@ -87,11 +87,11 @@ LABEL_11:
   return v2;
 }
 
-- (id)imageNamed:(id)a3 forGroup:(id)a4 withScale:(double)a5
+- (id)imageNamed:(id)named forGroup:(id)group withScale:(double)scale
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  namedCopy = named;
+  groupCopy = group;
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("StatusBar", &qword_1ED4A0A98);
   if (*CategoryCachedImpl)
   {
@@ -99,18 +99,18 @@ LABEL_11:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v20 = 138412546;
-      v21 = v8;
+      v21 = namedCopy;
       v22 = 2112;
-      v23 = v9;
+      v23 = groupCopy;
       _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_ERROR, "Looking for image %@ for group %@...", &v20, 0x16u);
     }
   }
 
-  v11 = [(CPBitmapStore *)self->_store copyImageForKey:v8 inGroup:v9];
+  v11 = [(CPBitmapStore *)self->_store copyImageForKey:namedCopy inGroup:groupCopy];
   if (v11)
   {
     v12 = v11;
-    v13 = [UIImage imageWithCGImage:v11 scale:0 orientation:a5];
+    v13 = [UIImage imageWithCGImage:v11 scale:0 orientation:scale];
     CGImageRelease(v12);
     v14 = __UILogGetCategoryCachedImpl("StatusBar", &qword_1ED4A0AA0);
     if (*v14)
@@ -119,9 +119,9 @@ LABEL_11:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v20 = 138412546;
-        v21 = v8;
+        v21 = namedCopy;
         v22 = 2112;
-        v23 = v9;
+        v23 = groupCopy;
         _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_ERROR, "...image %@ for group %@ found in the cache.", &v20, 0x16u);
       }
     }
@@ -136,9 +136,9 @@ LABEL_11:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         v20 = 138412546;
-        v21 = v8;
+        v21 = namedCopy;
         v22 = 2112;
-        v23 = v9;
+        v23 = groupCopy;
         _os_log_impl(&dword_188A29000, v19, OS_LOG_TYPE_ERROR, "...image %@ for group %@ not found in the cache.", &v20, 0x16u);
       }
     }
@@ -149,15 +149,15 @@ LABEL_11:
   return v13;
 }
 
-- (void)cacheImage:(id)a3 named:(id)a4 forGroup:(id)a5
+- (void)cacheImage:(id)image named:(id)named forGroup:(id)group
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  namedCopy = named;
+  groupCopy = group;
   if ([(UIStatusBarCache *)self isWriteable])
   {
-    if ([v8 CGImage])
+    if ([imageCopy CGImage])
     {
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("StatusBar", &qword_1ED4A0AB0);
       if (*CategoryCachedImpl)
@@ -166,14 +166,14 @@ LABEL_11:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           v15 = 138412546;
-          v16 = v9;
+          v16 = namedCopy;
           v17 = 2112;
-          v18 = v10;
+          v18 = groupCopy;
           _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "Caching image %@ for group %@", &v15, 0x16u);
         }
       }
 
-      -[CPBitmapStore storeImageForKey:inGroup:opaque:image:](self->_store, "storeImageForKey:inGroup:opaque:image:", v9, v10, 0, [v8 CGImage]);
+      -[CPBitmapStore storeImageForKey:inGroup:opaque:image:](self->_store, "storeImageForKey:inGroup:opaque:image:", namedCopy, groupCopy, 0, [imageCopy CGImage]);
     }
   }
 
@@ -192,10 +192,10 @@ LABEL_11:
   }
 }
 
-- (void)removeImagesInGroup:(id)a3
+- (void)removeImagesInGroup:(id)group
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupCopy = group;
   if (![(UIStatusBarCache *)self isWriteable])
   {
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("StatusBar", &qword_1ED4A0AD0);
@@ -217,7 +217,7 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  if (!v4)
+  if (!groupCopy)
   {
     v13 = *(__UILogGetCategoryCachedImpl("StatusBar", &qword_1ED4A0AC8) + 8);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -237,12 +237,12 @@ LABEL_9:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = groupCopy;
       _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_ERROR, "Removing images in group %@", buf, 0xCu);
     }
   }
 
-  v6 = [MEMORY[0x1E695DFD8] setWithObject:v4];
+  v6 = [MEMORY[0x1E695DFD8] setWithObject:groupCopy];
   v7 = UIApp;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);

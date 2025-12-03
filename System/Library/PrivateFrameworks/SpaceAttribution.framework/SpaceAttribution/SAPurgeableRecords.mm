@@ -1,16 +1,16 @@
 @interface SAPurgeableRecords
-+ (id)newWithBGTask:(id)a3 withRunMode:(unint64_t)a4;
-- (SAPurgeableRecords)initWithBGTask:(id)a3 withRunMode:(unint64_t)a4;
++ (id)newWithBGTask:(id)task withRunMode:(unint64_t)mode;
+- (SAPurgeableRecords)initWithBGTask:(id)task withRunMode:(unint64_t)mode;
 - (unsigned)waitForProcessingSUPurgeableUrgencyFiles;
-- (void)asyncStartProcessingSUPurgeableUrgencyFiles:(id)a3;
-- (void)processPurgeableAttributionTagsOnRelevantVolumes:(id)a3 reply:(id)a4;
+- (void)asyncStartProcessingSUPurgeableUrgencyFiles:(id)files;
+- (void)processPurgeableAttributionTagsOnRelevantVolumes:(id)volumes reply:(id)reply;
 @end
 
 @implementation SAPurgeableRecords
 
-- (SAPurgeableRecords)initWithBGTask:(id)a3 withRunMode:(unint64_t)a4
+- (SAPurgeableRecords)initWithBGTask:(id)task withRunMode:(unint64_t)mode
 {
-  v7 = a3;
+  taskCopy = task;
   v14.receiver = self;
   v14.super_class = SAPurgeableRecords;
   v8 = [(SAPurgeableRecords *)&v14 init];
@@ -24,33 +24,33 @@
     queue = v8->_queue;
     v8->_queue = v11;
 
-    objc_storeStrong(&v8->_task, a3);
-    v8->_mode = a4;
+    objc_storeStrong(&v8->_task, task);
+    v8->_mode = mode;
   }
 
   return v8;
 }
 
-+ (id)newWithBGTask:(id)a3 withRunMode:(unint64_t)a4
++ (id)newWithBGTask:(id)task withRunMode:(unint64_t)mode
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithBGTask:v6 withRunMode:a4];
+  taskCopy = task;
+  v7 = [[self alloc] initWithBGTask:taskCopy withRunMode:mode];
 
   return v7;
 }
 
-- (void)asyncStartProcessingSUPurgeableUrgencyFiles:(id)a3
+- (void)asyncStartProcessingSUPurgeableUrgencyFiles:(id)files
 {
-  v4 = a3;
+  filesCopy = files;
   group = self->_group;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10002C6B8;
   v8[3] = &unk_1000658C8;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = filesCopy;
+  selfCopy = self;
+  v7 = filesCopy;
   dispatch_group_async(group, queue, v8);
 }
 
@@ -74,10 +74,10 @@ LABEL_8:
       v5 = self->_group;
       v6 = dispatch_time(0, 2000000000);
       v7 = dispatch_group_wait(v5, v6);
-      v8 = [(SAPurgeableRecords *)self task];
-      v9 = [v8 shouldDefer];
+      task = [(SAPurgeableRecords *)self task];
+      shouldDefer = [task shouldDefer];
 
-      if (v9)
+      if (shouldDefer)
       {
         break;
       }
@@ -132,17 +132,17 @@ LABEL_18:
   return v12;
 }
 
-- (void)processPurgeableAttributionTagsOnRelevantVolumes:(id)a3 reply:(id)a4
+- (void)processPurgeableAttributionTagsOnRelevantVolumes:(id)volumes reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  volumesCopy = volumes;
+  replyCopy = reply;
   v49 = +[SAAppSizerScan appSizerScan];
   v7 = objc_opt_new();
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v8 = v5;
+  v8 = volumesCopy;
   v40 = [v8 countByEnumeratingWithState:&v57 objects:v71 count:16];
   v9 = 0;
   v10 = 0;
@@ -152,7 +152,7 @@ LABEL_18:
     *(&v11 + 1) = 3584;
     *&v11 = 67109634;
     v38 = v11;
-    v39 = v6;
+    v39 = replyCopy;
     v43 = v8;
     v41 = v7;
     while (1)
@@ -182,7 +182,7 @@ LABEL_4:
       *&v55.tv_usec = 0;
       v15 = objc_opt_new();
       [v7 setObject:v15 forKey:v13];
-      v48 = [v13 fileSystemRepresentation];
+      fileSystemRepresentation = [v13 fileSystemRepresentation];
       v16 = malloc_type_malloc(0x8000uLL, 0x1000040FA0F61DDuLL);
       if (!v16)
       {
@@ -209,7 +209,7 @@ LABEL_4:
           goto LABEL_27;
         }
 
-        v18 = fsctl(v48, 0xC0404A83uLL, buf, 0);
+        v18 = fsctl(fileSystemRepresentation, 0xC0404A83uLL, buf, 0);
         if (v18)
         {
           break;
@@ -296,7 +296,7 @@ LABEL_23:
         goto LABEL_4;
       }
 
-      v6 = v39;
+      replyCopy = v39;
       v40 = [v43 countByEnumeratingWithState:&v57 objects:v71 count:16];
       if (!v40)
       {
@@ -313,14 +313,14 @@ LABEL_23:
 LABEL_27:
     v8 = v43;
 
-    v6 = v39;
+    replyCopy = v39;
   }
 
   else
   {
 LABEL_25:
 
-    v6[2](v6, v7, v9, v10);
+    replyCopy[2](replyCopy, v7, v9, v10);
   }
 }
 

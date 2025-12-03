@@ -80,7 +80,7 @@
   block[1] = 3221225472;
   block[2] = __58__UIImage_TelephonyUI__recentsOutgoingVideoCallGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (recentsOutgoingVideoCallGlyphImage_onceToken != -1)
   {
     dispatch_once(&recentsOutgoingVideoCallGlyphImage_onceToken, block);
@@ -97,7 +97,7 @@
   block[1] = 3221225472;
   block[2] = __58__UIImage_TelephonyUI__recentsOutgoingAudioCallGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (recentsOutgoingAudioCallGlyphImage_onceToken != -1)
   {
     dispatch_once(&recentsOutgoingAudioCallGlyphImage_onceToken, block);
@@ -110,18 +110,18 @@
 
 + (BOOL)isIPad
 {
-  v0 = [MEMORY[0x1E69DC938] currentDevice];
-  v1 = [v0 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v1 = [currentDevice userInterfaceIdiom] == 1;
 
   return v1;
 }
 
 + (BOOL)cappedSizedImagesAreValid
 {
-  v0 = [MEMORY[0x1E69DC668] sharedApplication];
-  v1 = [v0 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  v2 = __lastCappedImageSizeContentCategory && ([v1 isEqualToString:?] & 1) != 0;
+  v2 = __lastCappedImageSizeContentCategory && ([preferredContentSizeCategory isEqualToString:?] & 1) != 0;
   return v2;
 }
 
@@ -129,10 +129,10 @@
 {
   if (([MEMORY[0x1E69DCAB8] cappedSizedImagesAreValid] & 1) == 0)
   {
-    v0 = [MEMORY[0x1E69DC668] sharedApplication];
-    v1 = [v0 preferredContentSizeCategory];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
     v2 = __lastCappedImageSizeContentCategory;
-    __lastCappedImageSizeContentCategory = v1;
+    __lastCappedImageSizeContentCategory = preferredContentSizeCategory;
 
     v3 = __telephonyUIActionButtonGlyphImage;
     __telephonyUIActionButtonGlyphImage = 0;
@@ -192,7 +192,7 @@
   block[1] = 3221225472;
   block[2] = __48__UIImage_TelephonyUI__favoritesAudioGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (favoritesAudioGlyphImage_onceToken != -1)
   {
     dispatch_once(&favoritesAudioGlyphImage_onceToken, block);
@@ -209,7 +209,7 @@
   block[1] = 3221225472;
   block[2] = __47__UIImage_TelephonyUI__favoritesMailGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (favoritesMailGlyphImage_onceToken != -1)
   {
     dispatch_once(&favoritesMailGlyphImage_onceToken, block);
@@ -226,7 +226,7 @@
   block[1] = 3221225472;
   block[2] = __50__UIImage_TelephonyUI__favoritesMessageGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (favoritesMessageGlyphImage_onceToken != -1)
   {
     dispatch_once(&favoritesMessageGlyphImage_onceToken, block);
@@ -243,7 +243,7 @@
   block[1] = 3221225472;
   block[2] = __52__UIImage_TelephonyUI__favoritesTTYDirectGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (favoritesTTYDirectGlyphImage_onceToken != -1)
   {
     dispatch_once(&favoritesTTYDirectGlyphImage_onceToken, block);
@@ -260,7 +260,7 @@
   block[1] = 3221225472;
   block[2] = __51__UIImage_TelephonyUI__favoritesTTYRelayGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (favoritesTTYRelayGlyphImage_onceToken != -1)
   {
     dispatch_once(&favoritesTTYRelayGlyphImage_onceToken, block);
@@ -277,7 +277,7 @@
   block[1] = 3221225472;
   block[2] = __48__UIImage_TelephonyUI__favoritesVideoGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (favoritesVideoGlyphImage_onceToken != -1)
   {
     dispatch_once(&favoritesVideoGlyphImage_onceToken, block);
@@ -294,7 +294,7 @@
   block[1] = 3221225472;
   block[2] = __58__UIImage_TelephonyUI__recentsIncomingAudioCallGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (recentsIncomingAudioCallGlyphImage_onceToken != -1)
   {
     dispatch_once(&recentsIncomingAudioCallGlyphImage_onceToken, block);
@@ -311,7 +311,7 @@
   block[1] = 3221225472;
   block[2] = __58__UIImage_TelephonyUI__recentsIncomingVideoCallGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (recentsIncomingVideoCallGlyphImage_onceToken != -1)
   {
     dispatch_once(&recentsIncomingVideoCallGlyphImage_onceToken, block);
@@ -328,7 +328,7 @@
   block[1] = 3221225472;
   block[2] = __44__UIImage_TelephonyUI__recentsTTYGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (recentsTTYGlyphImage_onceToken != -1)
   {
     dispatch_once(&recentsTTYGlyphImage_onceToken, block);
@@ -345,7 +345,7 @@
   block[1] = 3221225472;
   block[2] = __53__UIImage_TelephonyUI__recentsVerifiedCheckmarkImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (recentsVerifiedCheckmarkImage_onceToken != -1)
   {
     dispatch_once(&recentsVerifiedCheckmarkImage_onceToken, block);
@@ -362,7 +362,7 @@
   block[1] = 3221225472;
   block[2] = __46__UIImage_TelephonyUI__recentsRTTChevronImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (recentsRTTChevronImage_onceToken != -1)
   {
     dispatch_once(&recentsRTTChevronImage_onceToken, block);
@@ -379,7 +379,7 @@
   block[1] = 3221225472;
   block[2] = __45__UIImage_TelephonyUI__recentsAudioCallImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (recentsAudioCallImage_onceToken != -1)
   {
     dispatch_once(&recentsAudioCallImage_onceToken, block);
@@ -396,7 +396,7 @@
   block[1] = 3221225472;
   block[2] = __45__UIImage_TelephonyUI__recentsVideoCallImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (recentsVideoCallImage_onceToken != -1)
   {
     dispatch_once(&recentsVideoCallImage_onceToken, block);
@@ -413,7 +413,7 @@
   block[1] = 3221225472;
   block[2] = __39__UIImage_TelephonyUI__mailActionImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mailActionImage_onceToken != -1)
   {
     dispatch_once(&mailActionImage_onceToken, block);
@@ -430,7 +430,7 @@
   block[1] = 3221225472;
   block[2] = __43__UIImage_TelephonyUI__messagesActionImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (messagesActionImage_onceToken != -1)
   {
     dispatch_once(&messagesActionImage_onceToken, block);
@@ -447,7 +447,7 @@
   block[1] = 3221225472;
   block[2] = __38__UIImage_TelephonyUI__TTYActionImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (TTYActionImage_onceToken != -1)
   {
     dispatch_once(&TTYActionImage_onceToken, block);
@@ -462,10 +462,10 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DCAB8];
-  v5 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v11[0] = v5;
-  v6 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-  v11[1] = v6;
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v11[0] = systemBlueColor;
+  quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+  v11[1] = quaternarySystemFillColor;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
   v8 = [v4 tpImageForSymbolType:a3 scale:2 paletteColors:v7];
 
@@ -480,7 +480,7 @@
   block[1] = 3221225472;
   block[2] = __53__UIImage_TelephonyUI__voicemailAudioRouteGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (voicemailAudioRouteGlyphImage_onceToken != -1)
   {
     dispatch_once(&voicemailAudioRouteGlyphImage_onceToken, block);
@@ -497,7 +497,7 @@
   block[1] = 3221225472;
   block[2] = __54__UIImage_TelephonyUI__voicemailDialRequestGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (voicemailDialRequestGlyphImage_onceToken != -1)
   {
     dispatch_once(&voicemailDialRequestGlyphImage_onceToken, block);
@@ -514,7 +514,7 @@
   block[1] = 3221225472;
   block[2] = __49__UIImage_TelephonyUI__voicemailDeleteGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (voicemailDeleteGlyphImage_onceToken != -1)
   {
     dispatch_once(&voicemailDeleteGlyphImage_onceToken, block);
@@ -531,7 +531,7 @@
   block[1] = 3221225472;
   block[2] = __51__UIImage_TelephonyUI__voicemailUndeleteGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (voicemailUndeleteGlyphImage_onceToken != -1)
   {
     dispatch_once(&voicemailUndeleteGlyphImage_onceToken, block);
@@ -548,7 +548,7 @@
   block[1] = 3221225472;
   block[2] = __47__UIImage_TelephonyUI__voicemailPlayGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (voicemailPlayGlyphImage_onceToken != -1)
   {
     dispatch_once(&voicemailPlayGlyphImage_onceToken, block);
@@ -565,7 +565,7 @@
   block[1] = 3221225472;
   block[2] = __55__UIImage_TelephonyUI__voicemailPlayGlyphDisabledImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (voicemailPlayGlyphDisabledImage_onceToken != -1)
   {
     dispatch_once(&voicemailPlayGlyphDisabledImage_onceToken, block);
@@ -582,7 +582,7 @@
   block[1] = 3221225472;
   block[2] = __48__UIImage_TelephonyUI__voicemailPauseGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (voicemailPauseGlyphImage_onceToken != -1)
   {
     dispatch_once(&voicemailPauseGlyphImage_onceToken, block);
@@ -599,7 +599,7 @@
   block[1] = 3221225472;
   block[2] = __56__UIImage_TelephonyUI__voicemailPauseGlyphDisabledImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (voicemailPauseGlyphDisabledImage_onceToken != -1)
   {
     dispatch_once(&voicemailPauseGlyphDisabledImage_onceToken, block);
@@ -616,7 +616,7 @@
   block[1] = 3221225472;
   block[2] = __57__UIImage_TelephonyUI__voicemailReportFeedbackGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (voicemailReportFeedbackGlyphImage_onceToken != -1)
   {
     dispatch_once(&voicemailReportFeedbackGlyphImage_onceToken, block);
@@ -633,7 +633,7 @@
   block[1] = 3221225472;
   block[2] = __46__UIImage_TelephonyUI__voicemailTTYGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (voicemailTTYGlyphImage_onceToken != -1)
   {
     dispatch_once(&voicemailTTYGlyphImage_onceToken, block);
@@ -677,7 +677,7 @@
   block[1] = 3221225472;
   block[2] = __52__UIImage_TelephonyUI__videoMessageRecordGlyphImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (videoMessageRecordGlyphImage_onceToken != -1)
   {
     dispatch_once(&videoMessageRecordGlyphImage_onceToken, block);
@@ -690,7 +690,7 @@
 
 + (id)currentDeviceRouteGlyphForDisplayStyle:()TelephonyUI
 {
-  v5 = [a1 routeGlyphWithSymbolType:81 displayStyle:a3];
+  v5 = [self routeGlyphWithSymbolType:81 displayStyle:a3];
   v6 = v5;
   if (v5)
   {
@@ -699,14 +699,14 @@
 
   else
   {
-    v8 = [a1 fallbackSymbolTypeForCurrentDevice];
+    fallbackSymbolTypeForCurrentDevice = [self fallbackSymbolTypeForCurrentDevice];
     v9 = TPDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(UIImage(TelephonyUI) *)a1 currentDeviceRouteGlyphForDisplayStyle:v8, v9];
+      [(UIImage(TelephonyUI) *)self currentDeviceRouteGlyphForDisplayStyle:fallbackSymbolTypeForCurrentDevice, v9];
     }
 
-    v7 = [a1 routeGlyphWithSymbolType:v8 displayStyle:a3];
+    v7 = [self routeGlyphWithSymbolType:fallbackSymbolTypeForCurrentDevice displayStyle:a3];
   }
 
   v10 = v7;
@@ -716,8 +716,8 @@
 
 + (id)routeGlyphWithSymbolType:()TelephonyUI displayStyle:
 {
-  v7 = [MEMORY[0x1E69DC888] labelColor];
-  v8 = [a1 routeGlyphWithSymbolType:a3 displayStyle:a4 color:v7];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v8 = [self routeGlyphWithSymbolType:a3 displayStyle:a4 color:labelColor];
 
   return v8;
 }
@@ -738,7 +738,7 @@
         break;
       case 4:
         v10 = *MEMORY[0x1E69DDDC8];
-        v11 = a1;
+        selfCopy2 = self;
         v12 = a3;
         v13 = 2;
         goto LABEL_12;
@@ -747,11 +747,11 @@
     }
 
     v10 = *v15;
-    v11 = a1;
+    selfCopy2 = self;
     v12 = a3;
     v13 = 3;
 LABEL_12:
-    v14 = [v11 tpImageForSymbolType:v12 textStyle:v10 scale:v13 symbolWeight:4];
+    v14 = [selfCopy2 tpImageForSymbolType:v12 textStyle:v10 scale:v13 symbolWeight:4];
     goto LABEL_13;
   }
 
@@ -762,19 +762,19 @@ LABEL_12:
       goto LABEL_14;
     }
 
-    v14 = [a1 tpHierarchicalImageForSymbolType:a3 pointSize:32.0];
+    v14 = [self tpHierarchicalImageForSymbolType:a3 pointSize:32.0];
   }
 
   else
   {
-    if ([a1 shouldBeHierarchicalSymbolType:a3])
+    if ([self shouldBeHierarchicalSymbolType:a3])
     {
-      [a1 hierarchicalImageForSymbolType:a3 color:v8];
+      [self hierarchicalImageForSymbolType:a3 color:v8];
     }
 
     else
     {
-      [a1 flatImageForSymbolType:a3];
+      [self flatImageForSymbolType:a3];
     }
     v14 = ;
   }
@@ -788,23 +788,23 @@ LABEL_14:
 
 + (id)flatImageForSymbolType:()TelephonyUI
 {
-  v5 = [a1 isCustomSymbol:?];
+  v5 = [self isCustomSymbol:?];
   v6 = MEMORY[0x1E69DCAB8];
   if (v5)
   {
-    v7 = [a1 customImageNameForSymbolType:a3];
+    v7 = [self customImageNameForSymbolType:a3];
     [v6 imageNamed:v7];
   }
 
   else
   {
-    v7 = [a1 systemImageNameForSymbolType:a3];
+    v7 = [self systemImageNameForSymbolType:a3];
     [v6 _systemImageNamed:v7];
   }
   v8 = ;
   v9 = [v8 imageWithRenderingMode:2];
-  v10 = [MEMORY[0x1E69DC888] labelColor];
-  v11 = [v9 imageWithTintColor:v10];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v11 = [v9 imageWithTintColor:labelColor];
 
   return v11;
 }
@@ -812,11 +812,11 @@ LABEL_14:
 + (id)hierarchicalImageForSymbolType:()TelephonyUI color:
 {
   v6 = [MEMORY[0x1E69DCAD8] configurationWithHierarchicalColor:a4];
-  v7 = [a1 isCustomSymbol:a3];
+  v7 = [self isCustomSymbol:a3];
   v8 = MEMORY[0x1E69DCAB8];
   if (v7)
   {
-    v9 = [a1 customImageNameForSymbolType:a3];
+    v9 = [self customImageNameForSymbolType:a3];
     v10 = TelephonyUIBundle();
     v11 = [v8 imageNamed:v9 inBundle:v10 withConfiguration:v6];
     v12 = [v11 imageWithRenderingMode:2];
@@ -824,7 +824,7 @@ LABEL_14:
 
   else
   {
-    v9 = [a1 systemImageNameForSymbolType:a3];
+    v9 = [self systemImageNameForSymbolType:a3];
     v10 = [v8 _systemImageNamed:v9 withConfiguration:v6];
     v12 = [v10 imageWithRenderingMode:2];
   }
@@ -834,8 +834,8 @@ LABEL_14:
 
 + (id)routeGlyphForDeviceType:()TelephonyUI displayStyle:
 {
-  v7 = [MEMORY[0x1E69DC888] labelColor];
-  v8 = [a1 routeGlyphForDeviceType:a3 displayStyle:a4 color:v7];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v8 = [self routeGlyphForDeviceType:a3 displayStyle:a4 color:labelColor];
 
   return v8;
 }
@@ -855,9 +855,9 @@ LABEL_14:
 
 + (uint64_t)systemImageNameForDeviceType:()TelephonyUI
 {
-  v2 = [a1 symbolTypeForDeviceType:?];
+  v2 = [self symbolTypeForDeviceType:?];
 
-  return [a1 systemImageNameForSymbolType:v2];
+  return [self systemImageNameForSymbolType:v2];
 }
 
 + (void)routeGlyphForModelId:()TelephonyUI displayStyle:completion:
@@ -875,8 +875,8 @@ LABEL_14:
       v13 = v8;
       v14 = v9;
       v15 = a4;
-      v16 = a1;
-      [a1 systemImageNameForModelId:v13 completion:v12];
+      selfCopy = self;
+      [self systemImageNameForModelId:v13 completion:v12];
     }
 
     else
@@ -908,7 +908,7 @@ LABEL_14:
   if (v11)
   {
     v12 = MEMORY[0x1E69DCAD8];
-    v13 = [a1 scaleForTPScale:a4];
+    v13 = [self scaleForTPScale:a4];
     if (a5)
     {
       [v12 tpConfigurationWithStaticTextStyle:v10 scale:v13 symbolWeight:a5];
@@ -959,8 +959,8 @@ LABEL_14:
 
   if (v6 && [v6 length])
   {
-    v8 = [a1 _modelSymbolCache];
-    v9 = [v8 objectForKey:v6];
+    _modelSymbolCache = [self _modelSymbolCache];
+    v9 = [_modelSymbolCache objectForKey:v6];
 
     if (v9)
     {
@@ -975,7 +975,7 @@ LABEL_14:
       block[2] = __61__UIImage_TelephonyUI__systemImageNameForModelId_completion___block_invoke;
       block[3] = &unk_1E7C0C2A0;
       v13 = v6;
-      v15 = a1;
+      selfCopy = self;
       v14 = v7;
       dispatch_async(v11, block);
     }
@@ -1001,13 +1001,13 @@ LABEL_13:
   v5 = v4;
   if (v4 && [v4 length])
   {
-    v6 = [a1 _modelSymbolCache];
-    v7 = [v6 objectForKey:v5];
+    _modelSymbolCache = [self _modelSymbolCache];
+    v7 = [_modelSymbolCache objectForKey:v5];
 
     if (v7)
     {
       v7 = v7;
-      v8 = v7;
+      name = v7;
     }
 
     else
@@ -1017,9 +1017,9 @@ LABEL_13:
       if (v10)
       {
         v12 = MEMORY[0x1E69A8A40];
-        v13 = [v10 identifier];
+        identifier = [v10 identifier];
         v18 = 0;
-        v14 = [v12 symbolForTypeIdentifier:v13 withResolutionStrategy:1 variantOptions:1 error:&v18];
+        v14 = [v12 symbolForTypeIdentifier:identifier withResolutionStrategy:1 variantOptions:1 error:&v18];
         v15 = v18;
 
         if (v15 || !v14)
@@ -1030,14 +1030,14 @@ LABEL_13:
             +[UIImage(TelephonyUI) systemImageNameForModelIdSync:];
           }
 
-          v8 = 0;
+          name = 0;
         }
 
         else
         {
-          v8 = [v14 name];
-          v16 = [a1 _modelSymbolCache];
-          [v16 setObject:v8 forKey:v5];
+          name = [v14 name];
+          _modelSymbolCache2 = [self _modelSymbolCache];
+          [_modelSymbolCache2 setObject:name forKey:v5];
 
           v17 = TPDefaultLog();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1049,7 +1049,7 @@ LABEL_13:
 
       else
       {
-        v8 = 0;
+        name = 0;
         v15 = 0;
       }
     }
@@ -1063,19 +1063,19 @@ LABEL_13:
       +[UIImage(TelephonyUI) routeGlyphForModelId:displayStyle:completion:];
     }
 
-    v8 = 0;
+    name = 0;
   }
 
-  return v8;
+  return name;
 }
 
 + (id)routeGlyphForDeviceType:()TelephonyUI displayStyle:color:
 {
   v8 = a5;
-  v9 = [a1 symbolTypeForDeviceType:a3];
+  v9 = [self symbolTypeForDeviceType:a3];
   if (v9)
   {
-    v10 = [a1 routeGlyphWithSymbolType:v9 displayStyle:a4 color:v8];
+    v10 = [self routeGlyphWithSymbolType:v9 displayStyle:a4 color:v8];
   }
 
   else
@@ -1103,8 +1103,8 @@ LABEL_13:
 {
   v10 = MEMORY[0x1E69DC888];
   v11 = a4;
-  v12 = [v10 labelColor];
-  v13 = [a1 tpImageForSymbolType:a3 textStyle:v11 scale:a5 hierarchicalColor:v12 isStaticSize:a6];
+  labelColor = [v10 labelColor];
+  v13 = [self tpImageForSymbolType:a3 textStyle:v11 scale:a5 hierarchicalColor:labelColor isStaticSize:a6];
 
   return v13;
 }
@@ -1115,9 +1115,9 @@ LABEL_13:
   v13 = a6;
   if (a7)
   {
-    v14 = [a1 shouldBeHierarchicalSymbolType:a3];
+    v14 = [self shouldBeHierarchicalSymbolType:a3];
     v15 = MEMORY[0x1E69DCAD8];
-    v16 = [a1 scaleForTPScale:a5];
+    v16 = [self scaleForTPScale:a5];
     if (v14)
     {
       [v15 hierarchicalTpConfigurationWithStaticTextStyle:v12 scale:v16 color:v13];
@@ -1132,11 +1132,11 @@ LABEL_13:
 
   else
   {
-    v17 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:v12 scale:{objc_msgSend(a1, "scaleForTPScale:", a5)}];
+    v17 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:v12 scale:{objc_msgSend(self, "scaleForTPScale:", a5)}];
   }
 
   v18 = v17;
-  v19 = [a1 tpImageForSymbolType:a3 configuration:v17];
+  v19 = [self tpImageForSymbolType:a3 configuration:v17];
 
   return v19;
 }
@@ -1147,9 +1147,9 @@ LABEL_13:
   v13 = a6;
   if (a7)
   {
-    v14 = [a1 shouldBeHierarchicalSymbolType:a3];
+    v14 = [self shouldBeHierarchicalSymbolType:a3];
     v15 = MEMORY[0x1E69DCAD8];
-    v16 = [a1 scaleForTPScale:a5];
+    v16 = [self scaleForTPScale:a5];
     if (v14)
     {
       [v15 paletteTpConfigurationWithStaticTextStyle:v12 scale:v16 colors:v13];
@@ -1164,11 +1164,11 @@ LABEL_13:
 
   else
   {
-    v17 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:v12 scale:{objc_msgSend(a1, "scaleForTPScale:", a5)}];
+    v17 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:v12 scale:{objc_msgSend(self, "scaleForTPScale:", a5)}];
   }
 
   v18 = v17;
-  v19 = [a1 tpImageForSymbolType:a3 configuration:v17];
+  v19 = [self tpImageForSymbolType:a3 configuration:v17];
 
   return v19;
 }
@@ -1177,12 +1177,12 @@ LABEL_13:
 {
   v8 = MEMORY[0x1E69DCAD8];
   v9 = a5;
-  v10 = [v8 configurationWithScale:{objc_msgSend(a1, "scaleForTPScale:", a4)}];
+  v10 = [v8 configurationWithScale:{objc_msgSend(self, "scaleForTPScale:", a4)}];
   v11 = [MEMORY[0x1E69DCAD8] configurationWithPaletteColors:v9];
 
   v12 = [v10 configurationByApplyingConfiguration:v11];
 
-  v13 = [a1 tpImageForSymbolType:a3 configuration:v12];
+  v13 = [self tpImageForSymbolType:a3 configuration:v12];
 
   return v13;
 }
@@ -1191,7 +1191,7 @@ LABEL_13:
 {
   v10 = MEMORY[0x1E69DCAD8];
   v11 = a4;
-  v12 = [a1 scaleForTPScale:a5];
+  v12 = [self scaleForTPScale:a5];
   if (a6)
   {
     [v10 tpConfigurationWithStaticTextStyle:v11 scale:v12 symbolWeight:a6];
@@ -1203,7 +1203,7 @@ LABEL_13:
   }
   v13 = ;
 
-  v14 = [a1 tpImageForSymbolType:a3 configuration:v13];
+  v14 = [self tpImageForSymbolType:a3 configuration:v13];
 
   return v14;
 }
@@ -1213,7 +1213,7 @@ LABEL_13:
   v10 = MEMORY[0x1E69DCAD8];
   v11 = a4;
   v12 = a3;
-  v13 = [a1 scaleForTPScale:a5];
+  v13 = [self scaleForTPScale:a5];
   if (a6)
   {
     [v10 tpConfigurationWithStaticTextStyle:v11 scale:v13 symbolWeight:a6];
@@ -1233,19 +1233,19 @@ LABEL_13:
 + (id)tpImageForSymbolType:()TelephonyUI textStyle:cappedAt:
 {
   v7 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:a4 maximumContentSizeCategory:a5];
-  v8 = [v7 fontDescriptor];
-  v9 = [v8 fontAttributes];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69DB8F0]];
+  fontDescriptor = [v7 fontDescriptor];
+  fontAttributes = [fontDescriptor fontAttributes];
+  v10 = [fontAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB8F0]];
   v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69DB990]];
   [v11 floatValue];
   v13 = v12;
 
   v14 = MEMORY[0x1E69DCAD8];
-  v15 = [v7 fontDescriptor];
-  v16 = [v15 pointSize];
-  v18 = [v14 configurationWithPointSize:MEMORY[0x1B8C79DB0](v16 weight:{v13), v17}];
+  fontDescriptor2 = [v7 fontDescriptor];
+  pointSize = [fontDescriptor2 pointSize];
+  v18 = [v14 configurationWithPointSize:MEMORY[0x1B8C79DB0](pointSize weight:{v13), v17}];
 
-  v19 = [a1 tpImageForSymbolType:a3 configuration:v18];
+  v19 = [self tpImageForSymbolType:a3 configuration:v18];
 
   return v19;
 }
@@ -1253,14 +1253,14 @@ LABEL_13:
 + (id)tpImageForSymbolType:()TelephonyUI pointSize:
 {
   v5 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:?];
-  v6 = [a1 tpImageForSymbolType:a3 configuration:v5];
+  v6 = [self tpImageForSymbolType:a3 configuration:v5];
 
   return v6;
 }
 
 + (id)tpHierarchicalImageForSymbolType:()TelephonyUI pointSize:
 {
-  if ([a1 isIPad])
+  if ([self isIPad])
   {
     v6 = 2;
   }
@@ -1277,22 +1277,22 @@ LABEL_13:
 
 + (id)tpHierarchicalImageForSymbolType:()TelephonyUI pointSize:scale:
 {
-  if ([a1 shouldBeHierarchicalSymbolType:?])
+  if ([self shouldBeHierarchicalSymbolType:?])
   {
     v9 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:2 scale:a2];
     v10 = MEMORY[0x1E69DCAD8];
-    v11 = [MEMORY[0x1E69DC888] systemBlackColor];
-    v12 = [v10 configurationWithHierarchicalColor:v11];
+    systemBlackColor = [MEMORY[0x1E69DC888] systemBlackColor];
+    v12 = [v10 configurationWithHierarchicalColor:systemBlackColor];
     v13 = [v12 configurationByApplyingConfiguration:v9];
 
-    v14 = [a1 tpImageForSymbolType:a4 configuration:v13];
+    v14 = [self tpImageForSymbolType:a4 configuration:v13];
   }
 
   else
   {
     v15 = *MEMORY[0x1E69DDD58];
-    [a1 isIPad];
-    v14 = [a1 tpImageForSymbolType:a4 textStyle:v15 scale:a5 isStaticSize:1];
+    [self isIPad];
+    v14 = [self tpImageForSymbolType:a4 textStyle:v15 scale:a5 isStaticSize:1];
   }
 
   return v14;
@@ -1301,9 +1301,9 @@ LABEL_13:
 + (id)tpImageForSymbolType:()TelephonyUI configuration:
 {
   v6 = a4;
-  if ([a1 isCustomSymbol:a3])
+  if ([self isCustomSymbol:a3])
   {
-    v7 = [a1 customImageNameForSymbolType:a3];
+    v7 = [self customImageNameForSymbolType:a3];
     v8 = MEMORY[0x1E69DCAB8];
     v9 = TelephonyUIBundle();
     [v8 imageNamed:v7 inBundle:v9 withConfiguration:v6];
@@ -1311,7 +1311,7 @@ LABEL_13:
 
   else
   {
-    v7 = [a1 systemImageNameForSymbolType:a3];
+    v7 = [self systemImageNameForSymbolType:a3];
     v9 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v7];
     [v9 imageWithConfiguration:v6];
   }
@@ -1322,20 +1322,20 @@ LABEL_13:
 
 + (__CFString)systemImageNameForSymbolType:()TelephonyUI
 {
-  v4 = &stru_1F2CA8008;
+  symbolNameForCurrentDevice = &stru_1F2CA8008;
   switch(a3)
   {
     case 0:
       break;
     case 1:
     case 85:
-      v4 = @"phone.fill";
+      symbolNameForCurrentDevice = @"phone.fill";
       break;
     case 2:
-      v4 = @"phone.down.fill";
+      symbolNameForCurrentDevice = @"phone.down.fill";
       break;
     case 3:
-      v4 = @"phone.down.circle.fill";
+      symbolNameForCurrentDevice = @"phone.down.circle.fill";
       break;
     case 4:
       v5 = _os_feature_enabled_impl();
@@ -1343,7 +1343,7 @@ LABEL_13:
       goto LABEL_64;
     case 5:
     case 87:
-      v4 = @"video.fill";
+      symbolNameForCurrentDevice = @"video.fill";
       break;
     case 6:
       v5 = _os_feature_enabled_impl();
@@ -1352,222 +1352,222 @@ LABEL_64:
       v7 = @"arrow.up.right";
       goto LABEL_83;
     case 7:
-      v4 = @"questionmark.video.fill";
+      symbolNameForCurrentDevice = @"questionmark.video.fill";
       break;
     case 8:
     case 9:
     case 11:
-      v4 = @"xmark";
+      symbolNameForCurrentDevice = @"xmark";
       break;
     case 10:
-      v4 = @"checkmark";
+      symbolNameForCurrentDevice = @"checkmark";
       break;
     case 12:
     case 46:
-      v4 = @"speaker.wave.3.fill";
+      symbolNameForCurrentDevice = @"speaker.wave.3.fill";
       break;
     case 13:
-      v4 = @"person.crop.circle";
+      symbolNameForCurrentDevice = @"person.crop.circle";
       break;
     case 14:
-      v4 = @"message.fill";
+      symbolNameForCurrentDevice = @"message.fill";
       break;
     case 15:
-      v4 = @"hand.raised.fill";
+      symbolNameForCurrentDevice = @"hand.raised.fill";
       break;
     case 16:
-      v4 = @"envelope.fill";
+      symbolNameForCurrentDevice = @"envelope.fill";
       break;
     case 17:
-      v4 = @"plus";
+      symbolNameForCurrentDevice = @"plus";
       break;
     case 18:
-      v4 = @"person.crop.circle.badge.plus";
+      symbolNameForCurrentDevice = @"person.crop.circle.badge.plus";
       break;
     case 19:
-      v4 = @"circle.grid.3x3.fill";
+      symbolNameForCurrentDevice = @"circle.grid.3x3.fill";
       break;
     case 20:
-      v4 = @"arrow.merge";
+      symbolNameForCurrentDevice = @"arrow.merge";
       break;
     case 21:
-      v4 = @"arrow.swap";
+      symbolNameForCurrentDevice = @"arrow.swap";
       break;
     case 22:
-      v4 = @"mic.slash.fill";
+      symbolNameForCurrentDevice = @"mic.slash.fill";
       break;
     case 23:
-      v4 = @"delete.backward.fill";
+      symbolNameForCurrentDevice = @"delete.backward.fill";
       break;
     case 24:
-      v4 = @"backward.end.fill";
+      symbolNameForCurrentDevice = @"backward.end.fill";
       break;
     case 25:
     case 82:
-      v4 = @"play.fill";
+      symbolNameForCurrentDevice = @"play.fill";
       break;
     case 26:
-      v4 = @"pause.fill";
+      symbolNameForCurrentDevice = @"pause.fill";
       break;
     case 27:
-      v4 = @"square.and.arrow.up";
+      symbolNameForCurrentDevice = @"square.and.arrow.up";
       break;
     case 28:
-      v4 = @"info.circle";
+      symbolNameForCurrentDevice = @"info.circle";
       break;
     case 29:
-      v4 = @"teletype";
+      symbolNameForCurrentDevice = @"teletype";
       break;
     case 30:
-      v4 = @"realtimetext";
+      symbolNameForCurrentDevice = @"realtimetext";
       break;
     case 31:
-      v4 = @"recordingtape";
+      symbolNameForCurrentDevice = @"recordingtape";
       break;
     case 32:
-      v4 = @"volume.2.fill";
+      symbolNameForCurrentDevice = @"volume.2.fill";
       break;
     case 33:
-      v4 = @"trash.fill";
+      symbolNameForCurrentDevice = @"trash.fill";
       break;
     case 34:
-      v4 = @"trash.slash.fill";
+      symbolNameForCurrentDevice = @"trash.slash.fill";
       break;
     case 35:
-      v4 = @"exclamationmark.bubble";
+      symbolNameForCurrentDevice = @"exclamationmark.bubble";
       break;
     case 36:
-      v4 = @"checkmark.square.fill";
+      symbolNameForCurrentDevice = @"checkmark.square.fill";
       break;
     case 37:
-      v4 = @"chevron.forward";
+      symbolNameForCurrentDevice = @"chevron.forward";
       break;
     case 38:
-      v4 = @"staroflife.fill";
+      symbolNameForCurrentDevice = @"staroflife.fill";
       break;
     case 39:
-      v4 = @"alarm.fill";
+      symbolNameForCurrentDevice = @"alarm.fill";
       break;
     case 40:
-      v4 = @"xmark.circle.fill";
+      symbolNameForCurrentDevice = @"xmark.circle.fill";
       break;
     case 41:
-      v4 = @"hourglass.tophalf.fill";
+      symbolNameForCurrentDevice = @"hourglass.tophalf.fill";
       break;
     case 42:
-      v4 = @"hourglass";
+      symbolNameForCurrentDevice = @"hourglass";
       break;
     case 43:
-      v4 = @"exclamationmark.triangle";
+      symbolNameForCurrentDevice = @"exclamationmark.triangle";
       break;
     case 44:
-      v4 = @"speaker.bluetooth.fill";
+      symbolNameForCurrentDevice = @"speaker.bluetooth.fill";
       break;
     case 45:
-      v4 = @"carplay";
+      symbolNameForCurrentDevice = @"carplay";
       break;
     case 47:
-      v4 = @"airpods";
+      symbolNameForCurrentDevice = @"airpods";
       break;
     case 48:
     case 76:
-      v4 = @"airpodspro";
+      symbolNameForCurrentDevice = @"airpodspro";
       break;
     case 49:
-      v4 = @"airpodsmax";
+      symbolNameForCurrentDevice = @"airpodsmax";
       break;
     case 50:
-      v4 = @"beats.powerbeats";
+      symbolNameForCurrentDevice = @"beats.powerbeats";
       break;
     case 51:
-      v4 = @"beats.powerbeatspro.right";
+      symbolNameForCurrentDevice = @"beats.powerbeatspro.right";
       break;
     case 52:
-      v4 = @"beats.logo";
+      symbolNameForCurrentDevice = @"beats.logo";
       break;
     case 53:
-      v4 = @"beats.pill.fill";
+      symbolNameForCurrentDevice = @"beats.pill.fill";
       break;
     case 54:
-      v4 = @"beats.earphones";
+      symbolNameForCurrentDevice = @"beats.earphones";
       break;
     case 55:
-      v4 = @"beats.headphones";
+      symbolNameForCurrentDevice = @"beats.headphones";
       break;
     case 56:
-      v4 = @"headphones";
+      symbolNameForCurrentDevice = @"headphones";
       break;
     case 57:
     case 74:
-      v4 = @"homepod.fill";
+      symbolNameForCurrentDevice = @"homepod.fill";
       break;
     case 58:
     case 75:
-      v4 = @"homepod.2.fill";
+      symbolNameForCurrentDevice = @"homepod.2.fill";
       break;
     case 59:
-      v4 = @"homepodmini.fill";
+      symbolNameForCurrentDevice = @"homepodmini.fill";
       break;
     case 60:
-      v4 = @"homepodmini.2.fill";
+      symbolNameForCurrentDevice = @"homepodmini.2.fill";
       break;
     case 61:
-      v4 = @"applewatch.side.right";
+      symbolNameForCurrentDevice = @"applewatch.side.right";
       break;
     case 62:
-      v4 = @"desktopcomputer";
+      symbolNameForCurrentDevice = @"desktopcomputer";
       break;
     case 63:
-      v4 = @"macbook.gen2";
+      symbolNameForCurrentDevice = @"macbook.gen2";
       break;
     case 64:
-      v4 = @"ipad";
+      symbolNameForCurrentDevice = @"ipad";
       break;
     case 65:
-      v4 = @"ipad.homebutton";
+      symbolNameForCurrentDevice = @"ipad.homebutton";
       break;
     case 66:
-      v4 = @"iphone";
+      symbolNameForCurrentDevice = @"iphone";
       break;
     case 67:
-      v4 = @"iphone.homebutton";
+      symbolNameForCurrentDevice = @"iphone.homebutton";
       break;
     case 68:
-      v4 = @"ipodtouch";
+      symbolNameForCurrentDevice = @"ipodtouch";
       break;
     case 69:
-      v4 = @"beats.powerbeats3";
+      symbolNameForCurrentDevice = @"beats.powerbeats3";
       break;
     case 70:
-      v4 = @"beats.studiobuds";
+      symbolNameForCurrentDevice = @"beats.studiobuds";
       break;
     case 71:
-      v4 = @"beats.solobuds";
+      symbolNameForCurrentDevice = @"beats.solobuds";
       break;
     case 72:
     case 79:
-      v4 = @"beats.fit.pro";
+      symbolNameForCurrentDevice = @"beats.fit.pro";
       break;
     case 73:
-      v4 = @"airpods.gen3";
+      symbolNameForCurrentDevice = @"airpods.gen3";
       break;
     case 77:
-      v4 = @"40262ECA475D4CCF9722443885EC78D8";
+      symbolNameForCurrentDevice = @"40262ECA475D4CCF9722443885EC78D8";
       break;
     case 78:
-      v4 = @"95B33B9C3A4D472CBFCABF219ACA88CC";
+      symbolNameForCurrentDevice = @"95B33B9C3A4D472CBFCABF219ACA88CC";
       break;
     case 80:
-      v4 = @"711495D10BB643F6BDA3693886C0BCAF";
+      symbolNameForCurrentDevice = @"711495D10BB643F6BDA3693886C0BCAF";
       break;
     case 81:
-      v4 = [a1 symbolNameForCurrentDevice];
+      symbolNameForCurrentDevice = [self symbolNameForCurrentDevice];
       break;
     case 83:
-      v4 = @"eye.slash.fill";
+      symbolNameForCurrentDevice = @"eye.slash.fill";
       break;
     case 84:
-      v4 = @"circle.fill";
+      symbolNameForCurrentDevice = @"circle.fill";
       break;
     case 86:
       v5 = _os_feature_enabled_impl();
@@ -1581,46 +1581,46 @@ LABEL_82:
 LABEL_83:
       if (v5)
       {
-        v4 = v7;
+        symbolNameForCurrentDevice = v7;
       }
 
       else
       {
-        v4 = v6;
+        symbolNameForCurrentDevice = v6;
       }
 
       break;
     case 89:
-      v4 = @"person.text.rectangle.fill";
+      symbolNameForCurrentDevice = @"person.text.rectangle.fill";
       break;
     case 90:
-      v4 = @"photo.fill.on.rectangle.fill";
+      symbolNameForCurrentDevice = @"photo.fill.on.rectangle.fill";
       break;
     case 91:
-      v4 = @"rectangle.inset.filled.and.person.filled";
+      symbolNameForCurrentDevice = @"rectangle.inset.filled.and.person.filled";
       break;
     case 92:
-      v4 = @"vision.pro";
+      symbolNameForCurrentDevice = @"vision.pro";
       break;
     case 93:
     case 94:
-      v4 = @"ellipsis";
+      symbolNameForCurrentDevice = @"ellipsis";
       break;
     case 95:
-      v4 = @"waveform.bubble.fill";
+      symbolNameForCurrentDevice = @"waveform.bubble.fill";
       break;
     case 96:
-      v4 = @"arrowshape.turn.up.left.fill";
+      symbolNameForCurrentDevice = @"arrowshape.turn.up.left.fill";
       break;
     case 97:
-      v4 = @"message";
+      symbolNameForCurrentDevice = @"message";
       break;
     default:
-      v4 = 0;
+      symbolNameForCurrentDevice = 0;
       break;
   }
 
-  return v4;
+  return symbolNameForCurrentDevice;
 }
 
 + (id)symbolNameForCurrentDevice
@@ -1629,7 +1629,7 @@ LABEL_83:
   block[1] = 3221225472;
   block[2] = __50__UIImage_TelephonyUI__symbolNameForCurrentDevice__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (symbolNameForCurrentDevice_onceToken != -1)
   {
     dispatch_once(&symbolNameForCurrentDevice_onceToken, block);
@@ -1653,7 +1653,7 @@ LABEL_83:
 - (id)imageWithEtchedBorderOfColor:()TelephonyUI radius:
 {
   v6 = a4;
-  [a1 size];
+  [self size];
   v9 = v8 + a2 * 2.0;
   v10 = a2 <= 0.0;
   if (a2 <= 0.0)
@@ -1676,13 +1676,13 @@ LABEL_83:
     v12 = v9;
   }
 
-  [a1 scale];
+  [self scale];
   v14 = v13;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __60__UIImage_TelephonyUI__imageWithEtchedBorderOfColor_radius___block_invoke;
   v18[3] = &unk_1E7C0C2C8;
-  v18[4] = a1;
+  v18[4] = self;
   v19 = v6;
   v15 = v6;
   v16 = TPCreateImageWithDrawing(v18, v11, v12, v14);
@@ -1693,16 +1693,16 @@ LABEL_83:
 - (id)imageWithShadow:()TelephonyUI
 {
   v4 = a3;
-  v5 = a1;
+  selfCopy = self;
   [v4 shadowOffset];
   v7 = v6;
   v9 = v8;
   v10 = -v8;
   [v4 shadowBlurRadius];
   v12 = v11;
-  [v5 scale];
+  [selfCopy scale];
   v14 = v13;
-  [v5 size];
+  [selfCopy size];
   v17 = fabs(v9);
   if (v9 <= 0.0)
   {
@@ -1720,8 +1720,8 @@ LABEL_83:
   v30 = v10;
   v19 = v16 + v17 + v12 * 2.0;
   v25 = v4;
-  v26 = v5;
-  v20 = v5;
+  v26 = selfCopy;
+  v20 = selfCopy;
   v21 = v4;
   v22 = TPCreateImageWithDrawing(v24, v18, v19, v14);
 
@@ -1733,9 +1733,9 @@ LABEL_83:
   v4 = MEMORY[0x1E696AAE8];
   v5 = a3;
   v6 = [v4 bundleWithIdentifier:@"com.apple.TelephonyUI"];
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v8 = [v7 traitCollection];
-  v9 = [a1 imageNamed:v5 inBundle:v6 compatibleWithTraitCollection:v8];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v9 = [self imageNamed:v5 inBundle:v6 compatibleWithTraitCollection:traitCollection];
 
   return v9;
 }
@@ -1743,7 +1743,7 @@ LABEL_83:
 - (id)tpFlattenedWithColor:()TelephonyUI
 {
   v4 = a3;
-  v5 = [a1 imageWithRenderingMode:1];
+  v5 = [self imageWithRenderingMode:1];
   v6 = [v5 imageWithTintColor:v4];
 
   return v6;

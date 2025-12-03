@@ -1,20 +1,20 @@
 @interface JSAWindow
-- (JSAWindow)initWithHosting:(id)a3;
+- (JSAWindow)initWithHosting:(id)hosting;
 - (NSDictionary)size;
 @end
 
 @implementation JSAWindow
 
-- (JSAWindow)initWithHosting:(id)a3
+- (JSAWindow)initWithHosting:(id)hosting
 {
-  v5 = a3;
+  hostingCopy = hosting;
   v9.receiver = self;
   v9.super_class = JSAWindow;
   v6 = [(JSAWindow *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_hosting, a3);
+    objc_storeStrong(&v6->_hosting, hosting);
   }
 
   return v7;
@@ -22,8 +22,8 @@
 
 - (NSDictionary)size
 {
-  v2 = [(JSAWindow *)self hosting];
-  [v2 windowHostingWindowSize];
+  hosting = [(JSAWindow *)self hosting];
+  [hosting windowHostingWindowSize];
   v4 = v3;
   v6 = v5;
 

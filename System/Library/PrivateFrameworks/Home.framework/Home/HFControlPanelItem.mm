@@ -1,34 +1,34 @@
 @interface HFControlPanelItem
 + (NAIdentity)na_identity;
 + (id)_controlPanelItemRules;
-+ (id)standardControlPanelItemsForControlItems:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)standardControlPanelItemsForControlItems:(id)items;
+- (BOOL)isEqual:(id)equal;
 - (HFControlPanelItem)init;
-- (HFControlPanelItem)initWithControlItems:(id)a3 displayResults:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)controlItemForIdentifier:(id)a3;
-- (id)identifierForControlItem:(id)a3;
+- (HFControlPanelItem)initWithControlItems:(id)items displayResults:(id)results;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)controlItemForIdentifier:(id)identifier;
+- (id)identifierForControlItem:(id)item;
 - (int64_t)sortPriority;
 - (unint64_t)hash;
 @end
 
 @implementation HFControlPanelItem
 
-- (HFControlPanelItem)initWithControlItems:(id)a3 displayResults:(id)a4
+- (HFControlPanelItem)initWithControlItems:(id)items displayResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  resultsCopy = results;
   v27.receiver = self;
   v27.super_class = HFControlPanelItem;
   v8 = [(HFControlPanelItem *)&v27 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v9 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     uniqueIdentifier = v8->_uniqueIdentifier;
-    v8->_uniqueIdentifier = v10;
+    v8->_uniqueIdentifier = uUIDString;
 
-    v12 = [v7 copy];
+    v12 = [resultsCopy copy];
     v13 = v12;
     if (v12)
     {
@@ -42,23 +42,23 @@
 
     objc_storeStrong(&v8->_displayResults, v14);
 
-    v15 = [v6 copy];
+    v15 = [itemsCopy copy];
     controlItems = v8->_controlItems;
     v8->_controlItems = v15;
 
-    v17 = [v6 allObjects];
-    v18 = [v17 na_dictionaryWithKeyGenerator:&__block_literal_global_95];
+    allObjects = [itemsCopy allObjects];
+    v18 = [allObjects na_dictionaryWithKeyGenerator:&__block_literal_global_95];
     controlItemsByUUID = v8->_controlItemsByUUID;
     v8->_controlItemsByUUID = v18;
 
-    v20 = [(NSDictionary *)v8->_controlItemsByUUID allKeys];
+    allKeys = [(NSDictionary *)v8->_controlItemsByUUID allKeys];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __58__HFControlPanelItem_initWithControlItems_displayResults___block_invoke_2;
     v25[3] = &unk_277DFA6D0;
     v21 = v8;
     v26 = v21;
-    v22 = [v20 na_dictionaryWithKeyGenerator:v25];
+    v22 = [allKeys na_dictionaryWithKeyGenerator:v25];
     UUIDsByControlItemPointer = v21->_UUIDsByControlItemPointer;
     v21->_UUIDsByControlItemPointer = v22;
   }
@@ -85,46 +85,46 @@ id __58__HFControlPanelItem_initWithControlItems_displayResults___block_invoke_2
 
 - (HFControlPanelItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithControlItems_displayResults_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFControlPanelItem.m" lineNumber:48 description:{@"%s is unavailable; use %@ instead", "-[HFControlPanelItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFControlPanelItem.m" lineNumber:48 description:{@"%s is unavailable; use %@ instead", "-[HFControlPanelItem init]", v5}];
 
   return 0;
 }
 
-- (id)identifierForControlItem:(id)a3
+- (id)identifierForControlItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HFControlPanelItem *)self UUIDsByControlItemPointer];
-  v6 = [MEMORY[0x277CCAE60] valueWithPointer:v4];
+  itemCopy = item;
+  uUIDsByControlItemPointer = [(HFControlPanelItem *)self UUIDsByControlItemPointer];
+  v6 = [MEMORY[0x277CCAE60] valueWithPointer:itemCopy];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [uUIDsByControlItemPointer objectForKeyedSubscript:v6];
 
   return v7;
 }
 
-- (id)controlItemForIdentifier:(id)a3
+- (id)controlItemForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HFControlPanelItem *)self controlItemsByUUID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  controlItemsByUUID = [(HFControlPanelItem *)self controlItemsByUUID];
+  v6 = [controlItemsByUUID objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = [(HFControlPanelItem *)self displayResults];
-  v5 = v4;
-  if (!v4)
+  displayResults = [(HFControlPanelItem *)self displayResults];
+  v5 = displayResults;
+  if (!displayResults)
   {
-    v4 = MEMORY[0x277CBEC10];
+    displayResults = MEMORY[0x277CBEC10];
   }
 
-  v6 = [v4 mutableCopy];
+  v6 = [displayResults mutableCopy];
 
-  v7 = [(HFControlPanelItem *)self controlItems];
-  [v6 setObject:v7 forKeyedSubscript:@"childItems"];
+  controlItems = [(HFControlPanelItem *)self controlItems];
+  [v6 setObject:controlItems forKeyedSubscript:@"childItems"];
 
   v8 = MEMORY[0x277D2C900];
   v9 = [HFItemUpdateOutcome outcomeWithResults:v6];
@@ -225,19 +225,19 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -249,8 +249,8 @@ LABEL_7:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(HFControlPanelItem *)self controlItems];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  controlItems = [(HFControlPanelItem *)self controlItems];
+  v3 = [controlItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -262,17 +262,17 @@ LABEL_7:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(controlItems);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) sortPriority];
-        if (v6 <= v8)
+        sortPriority = [*(*(&v11 + 1) + 8 * i) sortPriority];
+        if (v6 <= sortPriority)
         {
-          v6 = v8;
+          v6 = sortPriority;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [controlItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -623,18 +623,18 @@ id __56__HFControlPanelItem_Generating___controlPanelItemRules__block_invoke_21(
   return v1;
 }
 
-+ (id)standardControlPanelItemsForControlItems:(id)a3
++ (id)standardControlPanelItemsForControlItems:(id)items
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [a3 na_filter:&__block_literal_global_159];
+  v3 = [items na_filter:&__block_literal_global_159];
   v4 = [MEMORY[0x277CBEB58] set];
   v5 = [v3 mutableCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [objc_opt_class() _controlPanelItemRules];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  _controlPanelItemRules = [objc_opt_class() _controlPanelItemRules];
+  v7 = [_controlPanelItemRules countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -645,7 +645,7 @@ id __56__HFControlPanelItem_Generating___controlPanelItemRules__block_invoke_21(
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_controlPanelItemRules);
         }
 
         v11 = 0;
@@ -661,14 +661,14 @@ id __56__HFControlPanelItem_Generating___controlPanelItemRules__block_invoke_21(
           }
 
           [v4 addObject:v11];
-          v14 = [v11 controlItems];
-          [v5 minusSet:v14];
+          controlItems = [v11 controlItems];
+          [v5 minusSet:controlItems];
         }
 
         while ([v5 count]);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [_controlPanelItemRules countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);

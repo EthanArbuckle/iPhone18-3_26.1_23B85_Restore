@@ -10,10 +10,10 @@
   v0 = _LSResourceProxyGetDeviceType_sDeviceType;
   if (_LSResourceProxyGetDeviceType_sDeviceType == -1)
   {
-    v1 = [+[UIDevice currentDevice](UIDevice userInterfaceIdiom];
-    if (v1)
+    userInterfaceIdiom = [+[UIDevice currentDevice](UIDevice userInterfaceIdiom];
+    if (userInterfaceIdiom)
     {
-      if (v1 == UIUserInterfaceIdiomPad)
+      if (userInterfaceIdiom == UIUserInterfaceIdiomPad)
       {
         [objc_msgSend(objc_opt_self() "mainScreen")];
         if (v2 == 1.0)
@@ -66,7 +66,7 @@
 + (uint64_t)_compareApplicationIconCanvasSize:()UIKitPrivate withSize:
 {
   [MEMORY[0x1E6963698] _applicationIconCanvasSize];
-  v10 = vabdd_f64(a1, v8);
+  v10 = vabdd_f64(self, v8);
   v11 = vabdd_f64(a2, v9);
   v12 = vabdd_f64(a3, v8);
   v13 = vabdd_f64(a4, v9);
@@ -77,14 +77,14 @@
     v15 = -1;
   }
 
-  v16 = a2 <= v9 || a1 <= v8;
+  v16 = a2 <= v9 || self <= v8;
   v17 = 1;
   if (v16)
   {
     v17 = -1;
   }
 
-  if (a2 == a4 && a1 == a3)
+  if (a2 == a4 && self == a3)
   {
     v17 = 0;
   }

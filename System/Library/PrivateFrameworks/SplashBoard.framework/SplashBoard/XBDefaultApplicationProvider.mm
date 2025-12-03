@@ -1,17 +1,17 @@
 @interface XBDefaultApplicationProvider
-- (id)_allApplicationsFilteredBySystem:(BOOL)a3 bySplashBoard:(BOOL)a4;
+- (id)_allApplicationsFilteredBySystem:(BOOL)system bySplashBoard:(BOOL)board;
 @end
 
 @implementation XBDefaultApplicationProvider
 
-- (id)_allApplicationsFilteredBySystem:(BOOL)a3 bySplashBoard:(BOOL)a4
+- (id)_allApplicationsFilteredBySystem:(BOOL)system bySplashBoard:(BOOL)board
 {
-  v4 = a4;
-  v5 = a3;
+  boardCopy = board;
+  systemCopy = system;
   v28 = *MEMORY[0x277D85DE8];
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = [MEMORY[0x277CBEB98] setWithObjects:{@"UILaunchStoryboards", @"UILaunchScreen", 0}];
-  [MEMORY[0x277CC1E70] enumeratorWithOptions:v5];
+  [MEMORY[0x277CC1E70] enumeratorWithOptions:systemCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -32,11 +32,11 @@
         }
 
         v10 = *(*(&v23 + 1) + 8 * v9);
-        v11 = [v10 compatibilityObject];
-        if (v5)
+        compatibilityObject = [v10 compatibilityObject];
+        if (systemCopy)
         {
-          v12 = [MEMORY[0x277D75DD8] _applicationTypeForProxy:v11];
-          if (v12 != 1 || !v4)
+          v12 = [MEMORY[0x277D75DD8] _applicationTypeForProxy:compatibilityObject];
+          if (v12 != 1 || !boardCopy)
           {
             if (v12 == 1)
             {
@@ -47,21 +47,21 @@
           }
         }
 
-        else if (!v4)
+        else if (!boardCopy)
         {
           goto LABEL_15;
         }
 
-        v13 = [v10 infoDictionary];
-        v14 = [v13 objectsForKeys:v20];
+        infoDictionary = [v10 infoDictionary];
+        v14 = [infoDictionary objectsForKeys:v20];
 
         v15 = [v14 objectForKey:@"UILaunchStoryboardName" ofClass:objc_opt_class()];
         if (v15 || ([v14 objectForKey:@"UILaunchStoryboards" ofClass:objc_opt_class()], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
         {
 
 LABEL_15:
-          v16 = [objc_alloc(MEMORY[0x277D75DD8]) initWithApplicationProxy:v11];
-          [v22 addObject:v16];
+          v16 = [objc_alloc(MEMORY[0x277D75DD8]) initWithApplicationProxy:compatibilityObject];
+          [array addObject:v16];
 
           goto LABEL_16;
         }
@@ -86,7 +86,7 @@ LABEL_16:
     while (v18);
   }
 
-  return v22;
+  return array;
 }
 
 @end

@@ -1,69 +1,69 @@
 @interface CPSEntityStylesDropShadow
-- (CGRect)rectsForSource:(CGRect)a3 shadowRect:(CGRect *)a4 unionRect:(CGRect *)a5 positionTransform:(CGAffineTransform *)a6;
+- (CGRect)rectsForSource:(CGRect)source shadowRect:(CGRect *)rect unionRect:(CGRect *)unionRect positionTransform:(CGAffineTransform *)transform;
 - (CGSize)offset;
-- (void)applyShadowToLayer:(id)a3;
+- (void)applyShadowToLayer:(id)layer;
 @end
 
 @implementation CPSEntityStylesDropShadow
 
-- (void)applyShadowToLayer:(id)a3
+- (void)applyShadowToLayer:(id)layer
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, layer);
   v8 = location[0];
-  v9 = [(CPSEntityStylesDropShadow *)v14 color];
-  v3 = v9;
-  [v8 setShadowColor:{-[UIColor CGColor](v9, "CGColor")}];
-  *&v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+  color = [(CPSEntityStylesDropShadow *)selfCopy color];
+  v3 = color;
+  [v8 setShadowColor:{-[UIColor CGColor](color, "CGColor")}];
+  *&v4 = MEMORY[0x277D82BD8](color).n128_u64[0];
   v10 = location[0];
-  [(CPSEntityStylesDropShadow *)v14 offset];
+  [(CPSEntityStylesDropShadow *)selfCopy offset];
   [v10 setShadowOffset:{v5, v6}];
   v11 = location[0];
-  [(CPSEntityStylesDropShadow *)v14 radius];
+  [(CPSEntityStylesDropShadow *)selfCopy radius];
   [v11 setShadowRadius:?];
   v12 = location[0];
-  [(CPSEntityStylesDropShadow *)v14 opacity];
+  [(CPSEntityStylesDropShadow *)selfCopy opacity];
   *&v7 = v7;
   [v12 setShadowOpacity:v7];
   objc_storeStrong(location, 0);
 }
 
-- (CGRect)rectsForSource:(CGRect)a3 shadowRect:(CGRect *)a4 unionRect:(CGRect *)a5 positionTransform:(CGAffineTransform *)a6
+- (CGRect)rectsForSource:(CGRect)source shadowRect:(CGRect *)rect unionRect:(CGRect *)unionRect positionTransform:(CGAffineTransform *)transform
 {
-  v38 = a3;
-  v37 = self;
+  sourceCopy = source;
+  selfCopy = self;
   v36 = a2;
-  v35 = a4;
-  v34 = a5;
-  v33 = a6;
+  rectCopy = rect;
+  unionRectCopy = unionRect;
+  transformCopy = transform;
   [(CPSEntityStylesDropShadow *)self radius];
-  [(CPSEntityStylesDropShadow *)v37 radius];
-  [(CPSEntityStylesDropShadow *)v37 radius];
-  [(CPSEntityStylesDropShadow *)v37 radius];
+  [(CPSEntityStylesDropShadow *)selfCopy radius];
+  [(CPSEntityStylesDropShadow *)selfCopy radius];
+  [(CPSEntityStylesDropShadow *)selfCopy radius];
   CGRectMake_9();
   v32.origin.x = v6;
   v32.origin.y = v7;
   v32.size.width = v8;
   v32.size.height = v9;
-  [(CPSEntityStylesDropShadow *)v37 offset];
+  [(CPSEntityStylesDropShadow *)selfCopy offset];
   v28 = v10;
   v29 = v11;
   tx = v10;
-  [(CPSEntityStylesDropShadow *)v37 offset];
+  [(CPSEntityStylesDropShadow *)selfCopy offset];
   v26 = v12;
   ty = v13;
   CGAffineTransformMakeTranslation(&v30, tx, v13);
   v31 = CGRectApplyAffineTransform(v32, &v30);
   v32 = v31;
-  v25 = CGRectUnion(v38, v31);
+  v25 = CGRectUnion(sourceCopy, v31);
   memset(&__b, 0, sizeof(__b));
   CGAffineTransformMakeTranslation(&__b, -v25.origin.x, -v25.origin.y);
   v39 = 0u;
   v40 = 0u;
   memcpy(&__dst, &__b, sizeof(__dst));
-  v41 = CGRectApplyAffineTransform(v38, &__dst);
+  v41 = CGRectApplyAffineTransform(sourceCopy, &__dst);
   *&v39 = v41.origin.x;
   *(&v39 + 1) = *&v41.origin.y;
   *&v40 = v41.size.width;
@@ -74,19 +74,19 @@
   memcpy(&v19, &__b, sizeof(v19));
   v20 = CGRectApplyAffineTransform(v25, &v19);
   v25 = v20;
-  if (v35)
+  if (rectCopy)
   {
-    *v35 = v32;
+    *rectCopy = v32;
   }
 
-  if (v34)
+  if (unionRectCopy)
   {
-    *v34 = v25;
+    *unionRectCopy = v25;
   }
 
-  if (v33)
+  if (transformCopy)
   {
-    memcpy(v33, &__b, sizeof(CGAffineTransform));
+    memcpy(transformCopy, &__b, sizeof(CGAffineTransform));
   }
 
   v15 = *(&v39 + 1);

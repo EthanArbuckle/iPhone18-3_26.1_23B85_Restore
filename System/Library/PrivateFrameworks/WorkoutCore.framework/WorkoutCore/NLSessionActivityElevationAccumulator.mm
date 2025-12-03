@@ -4,17 +4,17 @@
 - (HKQuantity)maximumAltitude;
 - (HKQuantity)minimumAltitude;
 - (HKUnit)chartUnit;
-- (NLSessionActivityElevationAccumulator)initWithBuilder:(id)a3;
-- (NLSessionActivityElevationAccumulator)initWithBuilder:(id)a3 healthStore:(id)a4 liveWorkoutConfiguration:(id)a5 workoutSettingsManager:(id)a6 elevationUnit:(id)a7 delegate:(id)a8;
+- (NLSessionActivityElevationAccumulator)initWithBuilder:(id)builder;
+- (NLSessionActivityElevationAccumulator)initWithBuilder:(id)builder healthStore:(id)store liveWorkoutConfiguration:(id)configuration workoutSettingsManager:(id)manager elevationUnit:(id)unit delegate:(id)delegate;
 - (NSArray)chartDataElements;
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4;
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler;
 - (void)accumulatorDidStop;
-- (void)handleMetricPlattersUpdatedWithNotification:(id)a3;
-- (void)processSample:(id)a3;
-- (void)recoverLocationsFromStartDate:(id)a3 workoutUUID:(id)a4;
-- (void)setChartUnit:(id)a3;
-- (void)setCurrentAltitude:(id)a3;
-- (void)setElevationGain:(id)a3;
+- (void)handleMetricPlattersUpdatedWithNotification:(id)notification;
+- (void)processSample:(id)sample;
+- (void)recoverLocationsFromStartDate:(id)date workoutUUID:(id)d;
+- (void)setChartUnit:(id)unit;
+- (void)setCurrentAltitude:(id)altitude;
+- (void)setElevationGain:(id)gain;
 @end
 
 @implementation NLSessionActivityElevationAccumulator
@@ -26,20 +26,20 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setElevationGain:(id)a3
+- (void)setElevationGain:(id)gain
 {
   v5 = OBJC_IVAR___NLSessionActivityElevationAccumulator_elevationGain;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.isa + v5) = gain;
+  gainCopy = gain;
+  selfCopy = self;
 
-  v9 = [(NLSessionActivityDataAccumulator *)v8 updateHandler];
-  if (v9)
+  updateHandler = [(NLSessionActivityDataAccumulator *)selfCopy updateHandler];
+  if (updateHandler)
   {
-    v10 = v9;
-    (*(v9 + 2))();
+    v10 = updateHandler;
+    (*(updateHandler + 2))();
 
     _Block_release(v10);
   }
@@ -47,7 +47,7 @@
   else
   {
 
-    v8 = v7;
+    selfCopy = gainCopy;
   }
 }
 
@@ -72,14 +72,14 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setCurrentAltitude:(id)a3
+- (void)setCurrentAltitude:(id)altitude
 {
   v5 = OBJC_IVAR___NLSessionActivityElevationAccumulator_currentAltitude;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.isa + v5) = altitude;
+  altitudeCopy = altitude;
+  selfCopy = self;
 
   ElevationAccumulator.currentAltitude.didset();
 }
@@ -92,7 +92,7 @@
   {
     swift_getKeyPath();
     swift_getKeyPath();
-    v4 = self;
+    selfCopy = self;
 
     static Published.subscript.getter();
   }
@@ -110,27 +110,27 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setChartUnit:(id)a3
+- (void)setChartUnit:(id)unit
 {
   v5 = OBJC_IVAR___NLSessionActivityElevationAccumulator_chartUnit;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.super.isa + v5) = unit;
+  unitCopy = unit;
 }
 
-- (NLSessionActivityElevationAccumulator)initWithBuilder:(id)a3 healthStore:(id)a4 liveWorkoutConfiguration:(id)a5 workoutSettingsManager:(id)a6 elevationUnit:(id)a7 delegate:(id)a8
+- (NLSessionActivityElevationAccumulator)initWithBuilder:(id)builder healthStore:(id)store liveWorkoutConfiguration:(id)configuration workoutSettingsManager:(id)manager elevationUnit:(id)unit delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  builderCopy = builder;
+  storeCopy = store;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  unitCopy = unit;
   swift_unknownObjectRetain();
-  return ElevationAccumulator.init(builder:healthStore:liveWorkoutConfiguration:workoutSettingsManager:elevationUnit:delegate:)(v12, v13, v14, v15, v16);
+  return ElevationAccumulator.init(builder:healthStore:liveWorkoutConfiguration:workoutSettingsManager:elevationUnit:delegate:)(builderCopy, storeCopy, configurationCopy, managerCopy, unitCopy);
 }
 
-- (void)recoverLocationsFromStartDate:(id)a3 workoutUUID:(id)a4
+- (void)recoverLocationsFromStartDate:(id)date workoutUUID:(id)d
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -144,21 +144,21 @@
   v14 = &v16 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v15 = self;
+  selfCopy = self;
   ElevationAccumulator.recoverLocations(fromStartDate:workoutUUID:)(v14);
 
   (*(v6 + 8))(v9, v5);
   (*(v11 + 8))(v14, v10);
 }
 
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v15 - v9;
-  v11 = _Block_copy(a4);
-  if (a3)
+  v11 = _Block_copy(handler);
+  if (date)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = type metadata accessor for Date();
@@ -177,7 +177,7 @@
     v11 = _sIeyB_Ieg_TRTA_4;
   }
 
-  v14 = self;
+  selfCopy = self;
   specialized ElevationAccumulator.accumulatorDidStart(withStart:handler:)(v10);
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v11);
 
@@ -186,25 +186,25 @@
 
 - (void)accumulatorDidStop
 {
-  v2 = self;
+  selfCopy = self;
   ElevationAccumulator.accumulatorDidStop()();
 }
 
-- (void)processSample:(id)a3
+- (void)processSample:(id)sample
 {
-  v4 = a3;
-  v5 = self;
-  ElevationAccumulator.process(sample:)(v4);
+  sampleCopy = sample;
+  selfCopy = self;
+  ElevationAccumulator.process(sample:)(sampleCopy);
 }
 
-- (void)handleMetricPlattersUpdatedWithNotification:(id)a3
+- (void)handleMetricPlattersUpdatedWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   specialized ElevationAccumulator.handleMetricPlattersUpdated(notification:)();
 }
 
-- (NLSessionActivityElevationAccumulator)initWithBuilder:(id)a3
+- (NLSessionActivityElevationAccumulator)initWithBuilder:(id)builder
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

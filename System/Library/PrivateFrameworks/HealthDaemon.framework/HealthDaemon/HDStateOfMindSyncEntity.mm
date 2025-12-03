@@ -1,38 +1,38 @@
 @interface HDStateOfMindSyncEntity
-+ (BOOL)supportsSyncStore:(id)a3;
-+ (id)_basePruningPredicateForDate:(id)a3 profile:(id)a4;
++ (BOOL)supportsSyncStore:(id)store;
++ (id)_basePruningPredicateForDate:(id)date profile:(id)profile;
 @end
 
 @implementation HDStateOfMindSyncEntity
 
-+ (BOOL)supportsSyncStore:(id)a3
++ (BOOL)supportsSyncStore:(id)store
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 features];
-  v5 = [v4 chamomile];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  chamomile = [features chamomile];
 
-  return v5;
+  return chamomile;
 }
 
-+ (id)_basePruningPredicateForDate:(id)a3 profile:(id)a4
++ (id)_basePruningPredicateForDate:(id)date profile:(id)profile
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 daemon];
-  v7 = [v6 behavior];
-  if ([v7 supportsSampleExpiration])
+  dateCopy = date;
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  if ([behavior supportsSampleExpiration])
   {
-    v8 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v9 = [v8 features];
-    v10 = [v9 chamomile];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    features = [mEMORY[0x277CCDD30] features];
+    chamomile = [features chamomile];
 
-    if (v10)
+    if (chamomile)
     {
-      v11 = [MEMORY[0x277CBEA80] currentCalendar];
-      v12 = [MEMORY[0x277CCD8D8] stateOfMindType];
-      v17[0] = v12;
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      stateOfMindType = [MEMORY[0x277CCD8D8] stateOfMindType];
+      v17[0] = stateOfMindType;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-      v14 = [v11 hd_predicateForSamplesWithTypes:v13 endingBeforeDate:v5 minusDays:*MEMORY[0x277CCCF18]];
+      v14 = [currentCalendar hd_predicateForSamplesWithTypes:v13 endingBeforeDate:dateCopy minusDays:*MEMORY[0x277CCCF18]];
 
       goto LABEL_6;
     }

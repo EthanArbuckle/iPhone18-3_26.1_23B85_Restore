@@ -1,39 +1,39 @@
 @interface ACCTransportPlugin
-- (ACCTransportPlugin)initWithDelegate:(id)a3;
+- (ACCTransportPlugin)initWithDelegate:(id)delegate;
 - (ACCTransportPluginManagerProtocol)delegate;
-- (BOOL)connectedThroughAdapter:(id)a3;
-- (BOOL)destroyConnectionWithUUID:(id)a3;
-- (BOOL)destroyEndpointWithUUID:(id)a3;
-- (BOOL)processIncomingData:(id)a3 forEndpointWithUUID:(id)a4;
-- (BOOL)publishConnectionWithUUID:(id)a3;
-- (BOOL)routeOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5;
-- (BOOL)sendOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5;
-- (BOOL)setAccessoryInfo:(id)a3 forEndpointWithUUID:(id)a4;
-- (BOOL)setProperties:(id)a3 forConnectionWithUUID:(id)a4;
-- (BOOL)setProperties:(id)a3 forEndpointWithUUID:(id)a4;
+- (BOOL)connectedThroughAdapter:(id)adapter;
+- (BOOL)destroyConnectionWithUUID:(id)d;
+- (BOOL)destroyEndpointWithUUID:(id)d;
+- (BOOL)processIncomingData:(id)data forEndpointWithUUID:(id)d;
+- (BOOL)publishConnectionWithUUID:(id)d;
+- (BOOL)routeOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD;
+- (BOOL)sendOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD;
+- (BOOL)setAccessoryInfo:(id)info forEndpointWithUUID:(id)d;
+- (BOOL)setProperties:(id)properties forConnectionWithUUID:(id)d;
+- (BOOL)setProperties:(id)properties forEndpointWithUUID:(id)d;
 - (NSString)pluginClassAndName;
 - (id)allConnectionUUIDs;
 - (id)allEndpointsUUIDs;
-- (id)certificateCapabilitiesForConnectionWithUUID:(id)a3;
-- (id)certificateDataForConnectionWithUUID:(id)a3;
-- (id)certificateSerialForConnectionWithUUID:(id)a3;
-- (id)certificateSerialStringForConnectionWithUUID:(id)a3;
-- (id)connectionUUIDForEndpointWithUUID:(id)a3;
-- (id)endpointUUIDsForConnectionWithUUID:(id)a3;
-- (id)identifierForConnectionWithUUID:(id)a3;
-- (id)identifierForEndpointWithUUID:(id)a3;
-- (id)propertiesForConnectionWithUUID:(id)a3;
-- (id)propertiesForEndpointWithUUID:(id)a3;
-- (int)connectionTypeForConnectionWithUUID:(id)a3;
-- (int)protocolForEndpointWithUUID:(id)a3;
-- (int)transportTypeForEndpointWithUUID:(id)a3;
-- (void)authStatusDidChangeHandler:(id)a3;
-- (void)connectionPropertiesDidChangeHandler:(id)a3;
+- (id)certificateCapabilitiesForConnectionWithUUID:(id)d;
+- (id)certificateDataForConnectionWithUUID:(id)d;
+- (id)certificateSerialForConnectionWithUUID:(id)d;
+- (id)certificateSerialStringForConnectionWithUUID:(id)d;
+- (id)connectionUUIDForEndpointWithUUID:(id)d;
+- (id)endpointUUIDsForConnectionWithUUID:(id)d;
+- (id)identifierForConnectionWithUUID:(id)d;
+- (id)identifierForEndpointWithUUID:(id)d;
+- (id)propertiesForConnectionWithUUID:(id)d;
+- (id)propertiesForEndpointWithUUID:(id)d;
+- (int)connectionTypeForConnectionWithUUID:(id)d;
+- (int)protocolForEndpointWithUUID:(id)d;
+- (int)transportTypeForEndpointWithUUID:(id)d;
+- (void)authStatusDidChangeHandler:(id)handler;
+- (void)connectionPropertiesDidChangeHandler:(id)handler;
 - (void)dealloc;
-- (void)endpointPropertiesDidChangeHandler:(id)a3;
+- (void)endpointPropertiesDidChangeHandler:(id)handler;
 - (void)initPlugin;
-- (void)setHandler:(id)a3 forConnectionProperty:(id)a4;
-- (void)setHandler:(id)a3 forEndpointProperty:(id)a4;
+- (void)setHandler:(id)handler forConnectionProperty:(id)property;
+- (void)setHandler:(id)handler forEndpointProperty:(id)property;
 - (void)startPlugin;
 - (void)startSafeConnectionTransaction;
 - (void)stopPlugin;
@@ -44,17 +44,17 @@
 
 - (void)startSafeConnectionTransaction
 {
-  v3 = [(ACCTransportPlugin *)self delegate];
-  if (v3)
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    v5 = [(ACCTransportPlugin *)self delegate];
+    v4 = delegate;
+    delegate2 = [(ACCTransportPlugin *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(ACCTransportPlugin *)self delegate];
-      [v7 startSafeConnectionTransaction];
+      delegate3 = [(ACCTransportPlugin *)self delegate];
+      [delegate3 startSafeConnectionTransaction];
     }
   }
 }
@@ -68,41 +68,41 @@
 
 - (id)allEndpointsUUIDs
 {
-  v3 = [(ACCTransportPlugin *)self delegate];
-  if (v3 && (v4 = v3, [(ACCTransportPlugin *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) != 0))
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v4 = delegate, [(ACCTransportPlugin *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) != 0))
   {
-    v7 = [(ACCTransportPlugin *)self delegate];
-    v8 = [v7 allEndpointsUUIDs];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    allEndpointsUUIDs = [delegate2 allEndpointsUUIDs];
   }
 
   else
   {
-    v8 = 0;
+    allEndpointsUUIDs = 0;
   }
 
-  return v8;
+  return allEndpointsUUIDs;
 }
 
 - (void)stopSafeConnectionTransaction
 {
-  v3 = [(ACCTransportPlugin *)self delegate];
-  if (v3)
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    v5 = [(ACCTransportPlugin *)self delegate];
+    v4 = delegate;
+    delegate2 = [(ACCTransportPlugin *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(ACCTransportPlugin *)self delegate];
-      [v7 stopSafeConnectionTransaction];
+      delegate3 = [(ACCTransportPlugin *)self delegate];
+      [delegate3 stopSafeConnectionTransaction];
     }
   }
 }
 
-- (ACCTransportPlugin)initWithDelegate:(id)a3
+- (ACCTransportPlugin)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   init_logging();
   if (gLogObjects)
   {
@@ -141,7 +141,7 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v10 = [MEMORY[0x277CBEB58] set];
     activeConnectionUUIDs = v9->_activeConnectionUUIDs;
     v9->_activeConnectionUUIDs = v10;
@@ -161,7 +161,7 @@
 - (void)dealloc
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 pluginClassAndName];
+  pluginClassAndName = [self pluginClassAndName];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -174,8 +174,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ACCTransportPlugin *)self pluginName];
-  v7 = [v3 stringWithFormat:@"%@ (%@)", v5, v6];
+  pluginName = [(ACCTransportPlugin *)self pluginName];
+  v7 = [v3 stringWithFormat:@"%@ (%@)", v5, pluginName];
 
   return v7;
 }
@@ -183,7 +183,7 @@
 - (void)initPlugin
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 pluginClassAndName];
+  pluginClassAndName = [self pluginClassAndName];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -194,7 +194,7 @@
 - (void)startPlugin
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 pluginClassAndName];
+  pluginClassAndName = [self pluginClassAndName];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -205,7 +205,7 @@
 - (void)stopPlugin
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 pluginClassAndName];
+  pluginClassAndName = [self pluginClassAndName];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -213,9 +213,9 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)authStatusDidChangeHandler:(id)a3
+- (void)authStatusDidChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 2;
@@ -249,37 +249,37 @@
 
   if ([(ACCTransportPlugin *)self conformsToProtocol:&unk_283537440]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKey:@"ACCTransportPlugin_AuthStatusDidChangeNotification_ConnectionUUID"];
+    userInfo = [handlerCopy userInfo];
+    v9 = [userInfo objectForKey:@"ACCTransportPlugin_AuthStatusDidChangeNotification_ConnectionUUID"];
 
-    v10 = [v4 userInfo];
-    v11 = [v10 objectForKey:@"ACCTransportPlugin_AuthStatusDidChangeNotification_AuthStatusOld"];
-    v12 = [v11 intValue];
+    userInfo2 = [handlerCopy userInfo];
+    v11 = [userInfo2 objectForKey:@"ACCTransportPlugin_AuthStatusDidChangeNotification_AuthStatusOld"];
+    intValue = [v11 intValue];
 
-    v13 = [v4 userInfo];
-    v14 = [v13 objectForKey:@"ACCTransportPlugin_AuthStatusDidChangeNotification_AuthStatusNew"];
-    v15 = [v14 intValue];
+    userInfo3 = [handlerCopy userInfo];
+    v14 = [userInfo3 objectForKey:@"ACCTransportPlugin_AuthStatusDidChangeNotification_AuthStatusNew"];
+    intValue2 = [v14 intValue];
 
-    v16 = [v4 userInfo];
-    v17 = [v16 objectForKey:@"ACCTransportPlugin_AuthStatusDidChangeNotification_AuthType"];
-    v18 = [v17 intValue];
+    userInfo4 = [handlerCopy userInfo];
+    v17 = [userInfo4 objectForKey:@"ACCTransportPlugin_AuthStatusDidChangeNotification_AuthType"];
+    intValue3 = [v17 intValue];
 
-    v19 = [v4 userInfo];
-    v20 = [v19 objectForKey:@"ACCTransportPlugin_AuthStatusDidChangeNotification_ConnectionIsAuthenticated"];
-    v21 = [v20 BOOLValue];
+    userInfo5 = [handlerCopy userInfo];
+    v20 = [userInfo5 objectForKey:@"ACCTransportPlugin_AuthStatusDidChangeNotification_ConnectionIsAuthenticated"];
+    bOOLValue = [v20 BOOLValue];
 
-    v22 = [v4 userInfo];
-    v23 = [v22 objectForKey:@"ACCTransportPlugin_AuthStatusDidChangeNotification_ConnectionWasAuthenticated"];
-    v24 = [v23 BOOLValue];
+    userInfo6 = [handlerCopy userInfo];
+    v23 = [userInfo6 objectForKey:@"ACCTransportPlugin_AuthStatusDidChangeNotification_ConnectionWasAuthenticated"];
+    bOOLValue2 = [v23 BOOLValue];
 
-    [(ACCTransportPlugin *)self authStatusDidChange:v15 forConnectionWithUUID:v9 previousAuthStatus:v12 authType:v18 connectionIsAuthenticated:v21 connectionWasAuthenticated:v24];
+    [(ACCTransportPlugin *)self authStatusDidChange:intValue2 forConnectionWithUUID:v9 previousAuthStatus:intValue authType:intValue3 connectionIsAuthenticated:bOOLValue connectionWasAuthenticated:bOOLValue2];
   }
 }
 
-- (void)connectionPropertiesDidChangeHandler:(id)a3
+- (void)connectionPropertiesDidChangeHandler:(id)handler
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 2;
@@ -311,21 +311,21 @@
     [ACCTransportPlugin authStatusDidChangeHandler:?];
   }
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKey:@"ACCTransportPlugin_PropertiesDidChangeNotification_ConnectionUUID"];
+  userInfo = [handlerCopy userInfo];
+  v9 = [userInfo objectForKey:@"ACCTransportPlugin_PropertiesDidChangeNotification_ConnectionUUID"];
 
-  v10 = [(ACCTransportPlugin *)self activeConnectionUUIDs];
+  activeConnectionUUIDs = [(ACCTransportPlugin *)self activeConnectionUUIDs];
   v34 = v9;
-  LODWORD(v9) = [v10 containsObject:v9];
+  LODWORD(v9) = [activeConnectionUUIDs containsObject:v9];
 
   if (v9)
   {
-    v11 = [v4 userInfo];
-    v12 = [v11 objectForKey:@"ACCTransportPlugin_PropertiesDidChangeNotification_PropertiesOld"];
+    userInfo2 = [handlerCopy userInfo];
+    v12 = [userInfo2 objectForKey:@"ACCTransportPlugin_PropertiesDidChangeNotification_PropertiesOld"];
 
-    v32 = v4;
-    v13 = [v4 userInfo];
-    v14 = [v13 objectForKey:@"ACCTransportPlugin_PropertiesDidChangeNotification_PropertiesNew"];
+    v32 = handlerCopy;
+    userInfo3 = [handlerCopy userInfo];
+    v14 = [userInfo3 objectForKey:@"ACCTransportPlugin_PropertiesDidChangeNotification_PropertiesNew"];
 
     if ([(ACCTransportPlugin *)self conformsToProtocol:&unk_283537440]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
@@ -336,12 +336,12 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v35 = self;
-    v15 = [(ACCTransportPlugin *)self connectionPropertyChangeHandlers];
-    v16 = [v15 allKeys];
+    selfCopy = self;
+    connectionPropertyChangeHandlers = [(ACCTransportPlugin *)self connectionPropertyChangeHandlers];
+    allKeys = [connectionPropertyChangeHandlers allKeys];
 
-    obj = v16;
-    v17 = [v16 countByEnumeratingWithState:&v38 objects:v48 count:16];
+    obj = allKeys;
+    v17 = [allKeys countByEnumeratingWithState:&v38 objects:v48 count:16];
     if (v17)
     {
       v18 = v17;
@@ -398,8 +398,8 @@
               _os_log_debug_impl(&dword_221CB0000, v27, OS_LOG_TYPE_DEBUG, "Calling connection property did change handler for property: %@ (newValue: %@, oldValue: %@)", buf, 0x20u);
             }
 
-            v29 = [(ACCTransportPlugin *)v35 connectionPropertyChangeHandlers];
-            v30 = [v29 objectForKey:v22];
+            connectionPropertyChangeHandlers2 = [(ACCTransportPlugin *)selfCopy connectionPropertyChangeHandlers];
+            v30 = [connectionPropertyChangeHandlers2 objectForKey:v22];
 
             if (v30)
             {
@@ -419,16 +419,16 @@
       while (v18);
     }
 
-    v4 = v32;
+    handlerCopy = v32;
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endpointPropertiesDidChangeHandler:(id)a3
+- (void)endpointPropertiesDidChangeHandler:(id)handler
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 2;
@@ -460,24 +460,24 @@
     [ACCTransportPlugin authStatusDidChangeHandler:?];
   }
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKey:@"ACCTransportPlugin_PropertiesDidChangeNotification_ConnectionUUID"];
+  userInfo = [handlerCopy userInfo];
+  v9 = [userInfo objectForKey:@"ACCTransportPlugin_PropertiesDidChangeNotification_ConnectionUUID"];
 
-  v10 = [(ACCTransportPlugin *)self activeConnectionUUIDs];
+  activeConnectionUUIDs = [(ACCTransportPlugin *)self activeConnectionUUIDs];
   v36 = v9;
-  LODWORD(v9) = [v10 containsObject:v9];
+  LODWORD(v9) = [activeConnectionUUIDs containsObject:v9];
 
   if (v9)
   {
-    v11 = [v4 userInfo];
-    v35 = [v11 objectForKey:@"ACCTransportPlugin_EndpointPropertiesDidChangeNotification_EndpointUUID"];
+    userInfo2 = [handlerCopy userInfo];
+    v35 = [userInfo2 objectForKey:@"ACCTransportPlugin_EndpointPropertiesDidChangeNotification_EndpointUUID"];
 
-    v12 = [v4 userInfo];
-    v13 = [v12 objectForKey:@"ACCTransportPlugin_PropertiesDidChangeNotification_PropertiesOld"];
+    userInfo3 = [handlerCopy userInfo];
+    v13 = [userInfo3 objectForKey:@"ACCTransportPlugin_PropertiesDidChangeNotification_PropertiesOld"];
 
-    v33 = v4;
-    v14 = [v4 userInfo];
-    v34 = [v14 objectForKey:@"ACCTransportPlugin_PropertiesDidChangeNotification_PropertiesNew"];
+    v33 = handlerCopy;
+    userInfo4 = [handlerCopy userInfo];
+    v34 = [userInfo4 objectForKey:@"ACCTransportPlugin_PropertiesDidChangeNotification_PropertiesNew"];
 
     if ([(ACCTransportPlugin *)self conformsToProtocol:&unk_283537440]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
@@ -488,12 +488,12 @@
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v37 = self;
-    v15 = [(ACCTransportPlugin *)self endpointPropertyChangeHandlers];
-    v16 = [v15 allKeys];
+    selfCopy = self;
+    endpointPropertyChangeHandlers = [(ACCTransportPlugin *)self endpointPropertyChangeHandlers];
+    allKeys = [endpointPropertyChangeHandlers allKeys];
 
-    obj = v16;
-    v17 = [v16 countByEnumeratingWithState:&v40 objects:v50 count:16];
+    obj = allKeys;
+    v17 = [allKeys countByEnumeratingWithState:&v40 objects:v50 count:16];
     v18 = v34;
     if (v17)
     {
@@ -550,8 +550,8 @@
               _os_log_debug_impl(&dword_221CB0000, v28, OS_LOG_TYPE_DEBUG, "Calling endpoint property did change handler for property: %@ (newValue: %@, oldValue: %@)", buf, 0x20u);
             }
 
-            v30 = [(ACCTransportPlugin *)v37 endpointPropertyChangeHandlers];
-            v31 = [v30 objectForKey:v23];
+            endpointPropertyChangeHandlers2 = [(ACCTransportPlugin *)selfCopy endpointPropertyChangeHandlers];
+            v31 = [endpointPropertyChangeHandlers2 objectForKey:v23];
 
             if (v31)
             {
@@ -571,21 +571,21 @@
       while (v19);
     }
 
-    v4 = v33;
+    handlerCopy = v33;
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setProperties:(id)a3 forConnectionWithUUID:(id)a4
+- (BOOL)setProperties:(id)properties forConnectionWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACCTransportPlugin *)self delegate];
-  if (v8 && (v9 = v8, [(ACCTransportPlugin *)self delegate], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, v9, (v11 & 1) != 0))
+  propertiesCopy = properties;
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v9 = delegate, [(ACCTransportPlugin *)self delegate], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, v9, (v11 & 1) != 0))
   {
-    v12 = [(ACCTransportPlugin *)self delegate];
-    v13 = [v12 setProperties:v6 forConnectionWithUUID:v7];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v13 = [delegate2 setProperties:propertiesCopy forConnectionWithUUID:dCopy];
   }
 
   else
@@ -596,15 +596,15 @@
   return v13;
 }
 
-- (BOOL)setAccessoryInfo:(id)a3 forEndpointWithUUID:(id)a4
+- (BOOL)setAccessoryInfo:(id)info forEndpointWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACCTransportPlugin *)self delegate];
-  if (v8 && (v9 = v8, [(ACCTransportPlugin *)self delegate], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, v9, (v11 & 1) != 0))
+  infoCopy = info;
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v9 = delegate, [(ACCTransportPlugin *)self delegate], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, v9, (v11 & 1) != 0))
   {
-    v12 = [(ACCTransportPlugin *)self delegate];
-    v13 = [v12 setAccessoryInfo:v6 forEndpointWithUUID:v7];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v13 = [delegate2 setAccessoryInfo:infoCopy forEndpointWithUUID:dCopy];
   }
 
   else
@@ -615,15 +615,15 @@
   return v13;
 }
 
-- (BOOL)setProperties:(id)a3 forEndpointWithUUID:(id)a4
+- (BOOL)setProperties:(id)properties forEndpointWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACCTransportPlugin *)self delegate];
-  if (v8 && (v9 = v8, [(ACCTransportPlugin *)self delegate], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, v9, (v11 & 1) != 0))
+  propertiesCopy = properties;
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v9 = delegate, [(ACCTransportPlugin *)self delegate], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, v9, (v11 & 1) != 0))
   {
-    v12 = [(ACCTransportPlugin *)self delegate];
-    v13 = [v12 setProperties:v6 forEndpointWithUUID:v7];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v13 = [delegate2 setProperties:propertiesCopy forEndpointWithUUID:dCopy];
   }
 
   else
@@ -634,14 +634,14 @@
   return v13;
 }
 
-- (BOOL)publishConnectionWithUUID:(id)a3
+- (BOOL)publishConnectionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 publishConnectionWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 publishConnectionWithUUID:dCopy];
   }
 
   else
@@ -652,14 +652,14 @@
   return v10;
 }
 
-- (BOOL)destroyEndpointWithUUID:(id)a3
+- (BOOL)destroyEndpointWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 destroyEndpointWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 destroyEndpointWithUUID:dCopy];
   }
 
   else
@@ -670,20 +670,20 @@
   return v10;
 }
 
-- (BOOL)destroyConnectionWithUUID:(id)a3
+- (BOOL)destroyConnectionWithUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(ACCTransportPlugin *)self activeConnectionUUIDs];
-    [v5 removeObject:v4];
+    activeConnectionUUIDs = [(ACCTransportPlugin *)self activeConnectionUUIDs];
+    [activeConnectionUUIDs removeObject:dCopy];
   }
 
-  v6 = [(ACCTransportPlugin *)self delegate];
-  if (v6 && (v7 = v6, [(ACCTransportPlugin *)self delegate], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, v7, (v9 & 1) != 0))
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v7 = delegate, [(ACCTransportPlugin *)self delegate], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, v7, (v9 & 1) != 0))
   {
-    v10 = [(ACCTransportPlugin *)self delegate];
-    v11 = [v10 destroyConnectionWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v11 = [delegate2 destroyConnectionWithUUID:dCopy];
   }
 
   else
@@ -696,47 +696,29 @@
 
 - (id)allConnectionUUIDs
 {
-  v3 = [(ACCTransportPlugin *)self delegate];
-  if (v3 && (v4 = v3, [(ACCTransportPlugin *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) != 0))
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v4 = delegate, [(ACCTransportPlugin *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) != 0))
   {
-    v7 = [(ACCTransportPlugin *)self delegate];
-    v8 = [v7 allConnectionUUIDs];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    allConnectionUUIDs = [delegate2 allConnectionUUIDs];
   }
 
   else
   {
-    v8 = 0;
+    allConnectionUUIDs = 0;
   }
 
-  return v8;
+  return allConnectionUUIDs;
 }
 
-- (id)connectionUUIDForEndpointWithUUID:(id)a3
+- (id)connectionUUIDForEndpointWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 connectionUUIDForEndpointWithUUID:v4];
-  }
-
-  else
-  {
-    v10 = 0;
-  }
-
-  return v10;
-}
-
-- (id)endpointUUIDsForConnectionWithUUID:(id)a3
-{
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
-  {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 endpointUUIDsForConnectionWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 connectionUUIDForEndpointWithUUID:dCopy];
   }
 
   else
@@ -747,14 +729,32 @@
   return v10;
 }
 
-- (int)connectionTypeForConnectionWithUUID:(id)a3
+- (id)endpointUUIDsForConnectionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 connectionTypeForConnectionWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 endpointUUIDsForConnectionWithUUID:dCopy];
+  }
+
+  else
+  {
+    v10 = 0;
+  }
+
+  return v10;
+}
+
+- (int)connectionTypeForConnectionWithUUID:(id)d
+{
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  {
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 connectionTypeForConnectionWithUUID:dCopy];
   }
 
   else
@@ -765,14 +765,14 @@
   return v10;
 }
 
-- (id)certificateDataForConnectionWithUUID:(id)a3
+- (id)certificateDataForConnectionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 certificateDataForConnectionWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 certificateDataForConnectionWithUUID:dCopy];
   }
 
   else
@@ -783,14 +783,14 @@
   return v10;
 }
 
-- (id)certificateSerialForConnectionWithUUID:(id)a3
+- (id)certificateSerialForConnectionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 certificateSerialForConnectionWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 certificateSerialForConnectionWithUUID:dCopy];
   }
 
   else
@@ -801,14 +801,14 @@
   return v10;
 }
 
-- (id)certificateSerialStringForConnectionWithUUID:(id)a3
+- (id)certificateSerialStringForConnectionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 certificateSerialStringForConnectionWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 certificateSerialStringForConnectionWithUUID:dCopy];
   }
 
   else
@@ -819,14 +819,14 @@
   return v10;
 }
 
-- (id)certificateCapabilitiesForConnectionWithUUID:(id)a3
+- (id)certificateCapabilitiesForConnectionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 certificateCapabilitiesForConnectionWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 certificateCapabilitiesForConnectionWithUUID:dCopy];
   }
 
   else
@@ -837,14 +837,14 @@
   return v10;
 }
 
-- (int)transportTypeForEndpointWithUUID:(id)a3
+- (int)transportTypeForEndpointWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 transportTypeForEndpointWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 transportTypeForEndpointWithUUID:dCopy];
   }
 
   else
@@ -855,14 +855,14 @@
   return v10;
 }
 
-- (int)protocolForEndpointWithUUID:(id)a3
+- (int)protocolForEndpointWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 protocolForEndpointWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 protocolForEndpointWithUUID:dCopy];
   }
 
   else
@@ -873,14 +873,14 @@
   return v10;
 }
 
-- (id)identifierForConnectionWithUUID:(id)a3
+- (id)identifierForConnectionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 identifierForConnectionWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 identifierForConnectionWithUUID:dCopy];
   }
 
   else
@@ -891,14 +891,14 @@
   return v10;
 }
 
-- (id)identifierForEndpointWithUUID:(id)a3
+- (id)identifierForEndpointWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 identifierForEndpointWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 identifierForEndpointWithUUID:dCopy];
   }
 
   else
@@ -909,14 +909,14 @@
   return v10;
 }
 
-- (id)propertiesForConnectionWithUUID:(id)a3
+- (id)propertiesForConnectionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 propertiesForConnectionWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 propertiesForConnectionWithUUID:dCopy];
   }
 
   else
@@ -927,14 +927,14 @@
   return v10;
 }
 
-- (id)propertiesForEndpointWithUUID:(id)a3
+- (id)propertiesForEndpointWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  dCopy = d;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 propertiesForEndpointWithUUID:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 propertiesForEndpointWithUUID:dCopy];
   }
 
   else
@@ -945,54 +945,54 @@
   return v10;
 }
 
-- (void)setHandler:(id)a3 forConnectionProperty:(id)a4
+- (void)setHandler:(id)handler forConnectionProperty:(id)property
 {
-  aBlock = a3;
-  v6 = a4;
-  if (v6)
+  aBlock = handler;
+  propertyCopy = property;
+  if (propertyCopy)
   {
-    v7 = [(ACCTransportPlugin *)self connectionPropertyChangeHandlers];
+    connectionPropertyChangeHandlers = [(ACCTransportPlugin *)self connectionPropertyChangeHandlers];
     if (aBlock)
     {
       v8 = _Block_copy(aBlock);
-      [v7 setObject:v8 forKey:v6];
+      [connectionPropertyChangeHandlers setObject:v8 forKey:propertyCopy];
     }
 
     else
     {
-      [v7 removeObjectForKey:v6];
+      [connectionPropertyChangeHandlers removeObjectForKey:propertyCopy];
     }
   }
 }
 
-- (void)setHandler:(id)a3 forEndpointProperty:(id)a4
+- (void)setHandler:(id)handler forEndpointProperty:(id)property
 {
-  aBlock = a3;
-  v6 = a4;
-  if (v6)
+  aBlock = handler;
+  propertyCopy = property;
+  if (propertyCopy)
   {
-    v7 = [(ACCTransportPlugin *)self endpointPropertyChangeHandlers];
+    endpointPropertyChangeHandlers = [(ACCTransportPlugin *)self endpointPropertyChangeHandlers];
     if (aBlock)
     {
       v8 = _Block_copy(aBlock);
-      [v7 setObject:v8 forKey:v6];
+      [endpointPropertyChangeHandlers setObject:v8 forKey:propertyCopy];
     }
 
     else
     {
-      [v7 removeObjectForKey:v6];
+      [endpointPropertyChangeHandlers removeObjectForKey:propertyCopy];
     }
   }
 }
 
-- (BOOL)connectedThroughAdapter:(id)a3
+- (BOOL)connectedThroughAdapter:(id)adapter
 {
-  v4 = a3;
-  v5 = [(ACCTransportPlugin *)self delegate];
-  if (v5 && (v6 = v5, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  adapterCopy = adapter;
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (delegate && (v6 = delegate, [(ACCTransportPlugin *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(ACCTransportPlugin *)self delegate];
-    v10 = [v9 connectedThroughAdapter:v4];
+    delegate2 = [(ACCTransportPlugin *)self delegate];
+    v10 = [delegate2 connectedThroughAdapter:adapterCopy];
   }
 
   else
@@ -1003,21 +1003,21 @@
   return v10;
 }
 
-- (BOOL)routeOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5
+- (BOOL)routeOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ACCTransportPlugin *)self conformsToProtocol:&unk_283537440]&& (objc_opt_respondsToSelector() & 1) != 0 && [(ACCTransportPlugin *)self sendOutgoingData:v8 forEndpointWithUUID:v9 connectionUUID:v10];
+  dataCopy = data;
+  dCopy = d;
+  iDCopy = iD;
+  v11 = [(ACCTransportPlugin *)self conformsToProtocol:&unk_283537440]&& (objc_opt_respondsToSelector() & 1) != 0 && [(ACCTransportPlugin *)self sendOutgoingData:dataCopy forEndpointWithUUID:dCopy connectionUUID:iDCopy];
 
   return v11;
 }
 
-- (BOOL)sendOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5
+- (BOOL)sendOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  dCopy = d;
+  iDCopy = iD;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 2;
@@ -1052,29 +1052,29 @@
   return 0;
 }
 
-- (BOOL)processIncomingData:(id)a3 forEndpointWithUUID:(id)a4
+- (BOOL)processIncomingData:(id)data forEndpointWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dataCopy = data;
+  dCopy = d;
+  if (!dataCopy)
   {
     goto LABEL_5;
   }
 
-  v8 = [(ACCTransportPlugin *)self delegate];
-  if (!v8)
+  delegate = [(ACCTransportPlugin *)self delegate];
+  if (!delegate)
   {
     goto LABEL_5;
   }
 
-  v9 = v8;
-  v10 = [(ACCTransportPlugin *)self delegate];
+  v9 = delegate;
+  delegate2 = [(ACCTransportPlugin *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(ACCTransportPlugin *)self delegate];
-    v13 = [v12 processIncomingData:v6 forEndpointWithUUID:v7];
+    delegate3 = [(ACCTransportPlugin *)self delegate];
+    v13 = [delegate3 processIncomingData:dataCopy forEndpointWithUUID:dCopy];
   }
 
   else

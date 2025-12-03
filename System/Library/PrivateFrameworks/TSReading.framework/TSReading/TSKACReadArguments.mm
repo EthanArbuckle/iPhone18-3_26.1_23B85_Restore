@@ -1,12 +1,12 @@
 @interface TSKACReadArguments
 - (SEL)selector;
-- (TSKACReadArguments)initWithSelector:(SEL)a3 target:(id)a4 argument:(void *)a5 argument2:(id)a6;
+- (TSKACReadArguments)initWithSelector:(SEL)selector target:(id)target argument:(void *)argument argument2:(id)argument2;
 - (void)dealloc;
 @end
 
 @implementation TSKACReadArguments
 
-- (TSKACReadArguments)initWithSelector:(SEL)a3 target:(id)a4 argument:(void *)a5 argument2:(id)a6
+- (TSKACReadArguments)initWithSelector:(SEL)selector target:(id)target argument:(void *)argument argument2:(id)argument2
 {
   v14.receiver = self;
   v14.super_class = TSKACReadArguments;
@@ -14,20 +14,20 @@
   v11 = v10;
   if (v10)
   {
-    if (a3)
+    if (selector)
     {
-      v12 = a3;
+      selectorCopy = selector;
     }
 
     else
     {
-      v12 = 0;
+      selectorCopy = 0;
     }
 
-    v10->_selector = v12;
-    v10->_target = a4;
-    v10->_argument = a5;
-    v10->_argument2 = a6;
+    v10->_selector = selectorCopy;
+    v10->_target = target;
+    v10->_argument = argument;
+    v10->_argument2 = argument2;
   }
 
   return v11;

@@ -2,7 +2,7 @@
 + (id)Donation;
 + (id)configurationForDonation;
 + (id)storeConfigurationForDonation;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,8 +11,8 @@
 + (id)configurationForDonation
 {
   v33[7] = *MEMORY[0x1E69E9840];
-  v32 = [a1 storeConfigurationForDonation];
-  v31 = [a1 syncPolicyForDonation];
+  storeConfigurationForDonation = [self storeConfigurationForDonation];
+  syncPolicyForDonation = [self syncPolicyForDonation];
   v3 = objc_alloc(MEMORY[0x1E698F330]);
   v30 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SUBQUERY(candidateInteractions argumentArray:$g, $g.candidateId.identifier == $uninstalled AND $g.candidateId.type.app != NULL).@count > 0 OR SUBQUERY(tupleInteraction.candidateIds, $g, $g.identifier == $uninstalled AND $g.type.app != NULL).@count > 0", 0];
   v29 = [v3 initWithIdentifier:@"app-uninstall" predicate:v30];
@@ -47,7 +47,7 @@
   v21 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"A5D4D71C-2E3F-47ED-8772-1C04D0A6E738"];
   BYTE2(v25) = 1;
   LOWORD(v25) = 1;
-  v22 = [v20 _libraryStreamConfigurationWithUUID:v21 streamIdentifier:@"IntelligenceEngine.Interaction.Donation" eventClass:objc_opt_class() storeConfig:v32 syncPolicy:v31 legacyNames:0 internalMetadata:0 enableSubscriptions:v25 enableSubscriptionSubstream:0 enableTombstoneSubstream:v19 allowedClients:@"com.apple.intelligenceflowd" pruningTriggers:? spaceAttributionOwner:?];
+  v22 = [v20 _libraryStreamConfigurationWithUUID:v21 streamIdentifier:@"IntelligenceEngine.Interaction.Donation" eventClass:objc_opt_class() storeConfig:storeConfigurationForDonation syncPolicy:syncPolicyForDonation legacyNames:0 internalMetadata:0 enableSubscriptions:v25 enableSubscriptionSubstream:0 enableTombstoneSubstream:v19 allowedClients:@"com.apple.intelligenceflowd" pruningTriggers:? spaceAttributionOwner:?];
 
   v23 = *MEMORY[0x1E69E9840];
 
@@ -57,7 +57,7 @@
 + (id)Donation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForDonation];
+  configurationForDonation = [self configurationForDonation];
   v3 = +[BMIntelligenceEngineInteraction columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -69,7 +69,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"IntelligenceEngine.Interaction.Donation" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"IntelligenceEngine.Interaction.Donation" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"IntelligenceEngine.Interaction.Donation" schema:v9 configuration:configurationForDonation];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -85,19 +85,19 @@
   return v4;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Donation"])
+  if ([name isEqualToString:@"Donation"])
   {
-    v4 = [a1 Donation];
+    donation = [self Donation];
   }
 
   else
   {
-    v4 = 0;
+    donation = 0;
   }
 
-  return v4;
+  return donation;
 }
 
 + (id)validKeyPaths

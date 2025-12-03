@@ -7,28 +7,28 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setCarName:(id)a3;
-- (void)setDefaultProfile:(id)a3;
-- (void)setProfileName:(id)a3;
-- (void)setProfileNumber:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setCarName:(id)name;
+- (void)setDefaultProfile:(id)profile;
+- (void)setProfileName:(id)name;
+- (void)setProfileNumber:(id)number;
 @end
 
 @implementation INSetProfileInCarIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INSetProfileInCarIntent *)self _typedBackingStore];
-  v13 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 profileNumber];
-  v10 = INIntentSlotValueRedactedIntegerFromInteger(v9, a3);
+  idCopy = id;
+  _typedBackingStore = [(INSetProfileInCarIntent *)self _typedBackingStore];
+  v13 = idCopy;
+  v8 = [_typedBackingStore copy];
+  profileNumber = [_typedBackingStore profileNumber];
+  v10 = INIntentSlotValueRedactedIntegerFromInteger(profileNumber, options);
   [v8 setProfileNumber:v10];
 
-  v11 = [v7 profileName];
-  v12 = INIntentSlotValueRedactedStringFromString(v11, a3, v13);
+  profileName = [_typedBackingStore profileName];
+  v12 = INIntentSlotValueRedactedStringFromString(profileName, options, v13);
 
   [v8 setProfileName:v12];
   [(INIntent *)self setBackingStore:v8];
@@ -38,55 +38,55 @@
 {
   v15[4] = *MEMORY[0x1E69E9840];
   v14[0] = @"profileNumber";
-  v3 = [(INSetProfileInCarIntent *)self profileNumber];
-  v4 = v3;
-  if (!v3)
+  profileNumber = [(INSetProfileInCarIntent *)self profileNumber];
+  null = profileNumber;
+  if (!profileNumber)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v4;
+  v15[0] = null;
   v14[1] = @"profileName";
-  v5 = [(INSetProfileInCarIntent *)self profileName];
-  v6 = v5;
-  if (!v5)
+  profileName = [(INSetProfileInCarIntent *)self profileName];
+  null2 = profileName;
+  if (!profileName)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v6;
+  v15[1] = null2;
   v14[2] = @"defaultProfile";
-  v7 = [(INSetProfileInCarIntent *)self defaultProfile];
-  v8 = v7;
-  if (!v7)
+  defaultProfile = [(INSetProfileInCarIntent *)self defaultProfile];
+  null3 = defaultProfile;
+  if (!defaultProfile)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v8;
+  v15[2] = null3;
   v14[3] = @"carName";
-  v9 = [(INSetProfileInCarIntent *)self carName];
-  v10 = v9;
-  if (!v9)
+  carName = [(INSetProfileInCarIntent *)self carName];
+  null4 = carName;
+  if (!carName)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
-  if (!v9)
+  if (!carName)
   {
   }
 
-  if (!v7)
+  if (!defaultProfile)
   {
   }
 
-  if (!v5)
+  if (!profileName)
   {
   }
 
-  if (!v3)
+  if (!profileNumber)
   {
   }
 
@@ -95,47 +95,47 @@
   return v11;
 }
 
-- (void)setCarName:(id)a3
+- (void)setCarName:(id)name
 {
-  v4 = a3;
-  v6 = [(INSetProfileInCarIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  nameCopy = name;
+  _typedBackingStore = [(INSetProfileInCarIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(nameCopy);
 
-  [v6 setCarName:v5];
+  [_typedBackingStore setCarName:v5];
 }
 
 - (INSpeakableString)carName
 {
-  v2 = [(INSetProfileInCarIntent *)self _typedBackingStore];
-  v3 = [v2 carName];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INSetProfileInCarIntent *)self _typedBackingStore];
+  carName = [_typedBackingStore carName];
+  v4 = INIntentSlotValueTransformFromDataString(carName);
 
   return v4;
 }
 
-- (void)setDefaultProfile:(id)a3
+- (void)setDefaultProfile:(id)profile
 {
-  v5 = a3;
-  v4 = [(INSetProfileInCarIntent *)self _typedBackingStore];
-  if (v5)
+  profileCopy = profile;
+  _typedBackingStore = [(INSetProfileInCarIntent *)self _typedBackingStore];
+  if (profileCopy)
   {
-    [v4 setDefaultProfile:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setDefaultProfile:{objc_msgSend(profileCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasDefaultProfile:0];
+    [_typedBackingStore setHasDefaultProfile:0];
   }
 }
 
 - (NSNumber)defaultProfile
 {
-  v3 = [(INSetProfileInCarIntent *)self _typedBackingStore];
-  if ([v3 hasDefaultProfile])
+  _typedBackingStore = [(INSetProfileInCarIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasDefaultProfile])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INSetProfileInCarIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "defaultProfile")}];
+    _typedBackingStore2 = [(INSetProfileInCarIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "defaultProfile")}];
   }
 
   else
@@ -146,38 +146,38 @@
   return v6;
 }
 
-- (void)setProfileName:(id)a3
+- (void)setProfileName:(id)name
 {
-  v4 = a3;
-  v6 = [(INSetProfileInCarIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToString(v4);
+  nameCopy = name;
+  _typedBackingStore = [(INSetProfileInCarIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToString(nameCopy);
 
-  [v6 setProfileName:v5];
+  [_typedBackingStore setProfileName:v5];
 }
 
 - (NSString)profileName
 {
-  v2 = [(INSetProfileInCarIntent *)self _typedBackingStore];
-  v3 = [v2 profileName];
-  v4 = INIntentSlotValueTransformFromString(v3);
+  _typedBackingStore = [(INSetProfileInCarIntent *)self _typedBackingStore];
+  profileName = [_typedBackingStore profileName];
+  v4 = INIntentSlotValueTransformFromString(profileName);
 
   return v4;
 }
 
-- (void)setProfileNumber:(id)a3
+- (void)setProfileNumber:(id)number
 {
-  v4 = a3;
-  v6 = [(INSetProfileInCarIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToInteger(v4);
+  numberCopy = number;
+  _typedBackingStore = [(INSetProfileInCarIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToInteger(numberCopy);
 
-  [v6 setProfileNumber:v5];
+  [_typedBackingStore setProfileNumber:v5];
 }
 
 - (NSNumber)profileNumber
 {
-  v2 = [(INSetProfileInCarIntent *)self _typedBackingStore];
-  v3 = [v2 profileNumber];
-  v4 = INIntentSlotValueTransformFromInteger(v3);
+  _typedBackingStore = [(INSetProfileInCarIntent *)self _typedBackingStore];
+  profileNumber = [_typedBackingStore profileNumber];
+  v4 = INIntentSlotValueTransformFromInteger(profileNumber);
 
   return v4;
 }
@@ -203,28 +203,28 @@
   return v15;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSetProfileInCarIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSetProfileInCarIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSetProfileInCarIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSetProfileInCarIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

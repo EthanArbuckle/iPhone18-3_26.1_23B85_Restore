@@ -1,62 +1,62 @@
 @interface CarNavigationSearchView
-- (CarNavigationSearchView)initWithFrame:(CGRect)a3;
-- (double)preferredHeightForAvailableSize:(CGSize)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (CarNavigationSearchView)initWithFrame:(CGRect)frame;
+- (double)preferredHeightForAvailableSize:(CGSize)size;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (unint64_t)_numberOfItems;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)setCategories:(id)a3;
+- (void)setCategories:(id)categories;
 @end
 
 @implementation CarNavigationSearchView
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [v6 row];
-  v8 = [(CarNavigationSearchView *)self categories];
-  v9 = [v8 count];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [pathCopy row];
+  categories = [(CarNavigationSearchView *)self categories];
+  v9 = [categories count];
 
   if (v7 == v9)
   {
-    v10 = [(CarNavigationSearchView *)self siriSearchHandler];
+    siriSearchHandler = [(CarNavigationSearchView *)self siriSearchHandler];
 
-    if (!v10)
+    if (!siriSearchHandler)
     {
       goto LABEL_7;
     }
 
-    v11 = [(CarNavigationSearchView *)self siriSearchHandler];
-    v11[2]();
+    siriSearchHandler2 = [(CarNavigationSearchView *)self siriSearchHandler];
+    siriSearchHandler2[2]();
   }
 
   else
   {
-    v12 = [(CarNavigationSearchView *)self categorySearchHandler];
+    categorySearchHandler = [(CarNavigationSearchView *)self categorySearchHandler];
 
-    if (!v12)
+    if (!categorySearchHandler)
     {
       goto LABEL_7;
     }
 
-    v11 = [(CarNavigationSearchView *)self categorySearchHandler];
-    v13 = [(CarNavigationSearchView *)self categories];
-    v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-    (v11[2])(v11, v14);
+    siriSearchHandler2 = [(CarNavigationSearchView *)self categorySearchHandler];
+    categories2 = [(CarNavigationSearchView *)self categories];
+    v14 = [categories2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+    (siriSearchHandler2[2])(siriSearchHandler2, v14);
   }
 
 LABEL_7:
-  [v15 deselectItemAtIndexPath:v6 animated:1];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:v6];
-  v8 = [v6 row];
-  v9 = [(CarNavigationSearchView *)self categories];
-  v10 = [v9 count];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"Cell" forIndexPath:pathCopy];
+  v8 = [pathCopy row];
+  categories = [(CarNavigationSearchView *)self categories];
+  v10 = [categories count];
 
   if (v8 == v10)
   {
@@ -80,8 +80,8 @@ LABEL_7:
     v22 = v7;
     v12 = v11;
     v13 = objc_retainBlock(v20);
-    v14 = [(CarNavigationSearchView *)self categories];
-    v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    categories2 = [(CarNavigationSearchView *)self categories];
+    v15 = [categories2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -97,20 +97,20 @@ LABEL_7:
 
 - (unint64_t)_numberOfItems
 {
-  v2 = [(CarNavigationSearchView *)self categories];
-  v3 = [v2 count];
+  categories = [(CarNavigationSearchView *)self categories];
+  v3 = [categories count];
 
   return v3 + 1;
 }
 
-- (void)setCategories:(id)a3
+- (void)setCategories:(id)categories
 {
-  v7 = a3;
+  categoriesCopy = categories;
   if (![(NSArray *)self->_categories isEqualToArray:?])
   {
-    if ([v7 count] <= 3)
+    if ([categoriesCopy count] <= 3)
     {
-      v4 = [v7 count];
+      v4 = [categoriesCopy count];
     }
 
     else
@@ -118,7 +118,7 @@ LABEL_7:
       v4 = 3;
     }
 
-    v5 = [v7 subarrayWithRange:{0, v4}];
+    v5 = [categoriesCopy subarrayWithRange:{0, v4}];
     categories = self->_categories;
     self->_categories = v5;
 
@@ -126,22 +126,22 @@ LABEL_7:
   }
 }
 
-- (double)preferredHeightForAvailableSize:(CGSize)a3
+- (double)preferredHeightForAvailableSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  [v6 preferredHeightForItemCount:-[CarNavigationSearchView _numberOfItems](self availableSize:{"_numberOfItems"), width, height}];
+  height = size.height;
+  width = size.width;
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  [collectionViewLayout preferredHeightForItemCount:-[CarNavigationSearchView _numberOfItems](self availableSize:{"_numberOfItems"), width, height}];
   v8 = v7;
 
   return v8;
 }
 
-- (CarNavigationSearchView)initWithFrame:(CGRect)a3
+- (CarNavigationSearchView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CarNavigationSearchView;
-  v3 = [(CarNavigationSearchView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarNavigationSearchView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(CarNavigationSearchViewLayout);

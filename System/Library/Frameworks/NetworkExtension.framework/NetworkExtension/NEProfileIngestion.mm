@@ -1,50 +1,50 @@
 @interface NEProfileIngestion
-+ (id)getServiceIDForPayload:(id)a3;
-- (BOOL)createConfigurationFromPayload:(id)a3 payloadType:(id)a4;
++ (id)getServiceIDForPayload:(id)payload;
+- (BOOL)createConfigurationFromPayload:(id)payload payloadType:(id)type;
 - (BOOL)enableAlwaysOnVpn;
-- (BOOL)isInstalled:(id)a3;
+- (BOOL)isInstalled:(id)installed;
 - (BOOL)loadConfigurationsForceReloadFromDisk;
 - (BOOL)lockConfigurations;
-- (BOOL)removeConfiguration:(id)a3;
-- (BOOL)removeConfigurationWithIdentifier:(id)a3;
+- (BOOL)removeConfiguration:(id)configuration;
+- (BOOL)removeConfigurationWithIdentifier:(id)identifier;
 - (BOOL)removeIngestedConfiguration;
 - (BOOL)saveIngestedConfiguration;
-- (BOOL)saveIngestedConfiguration:(id *)a3;
-- (BOOL)updateAccountIdentifiers:(id)a3;
-- (BOOL)updateAppLayerVPNMappingRules:(id)a3;
+- (BOOL)saveIngestedConfiguration:(id *)configuration;
+- (BOOL)updateAccountIdentifiers:(id)identifiers;
+- (BOOL)updateAppLayerVPNMappingRules:(id)rules;
 - (BOOL)updateDefaultAfterAddingConfiguration;
 - (BOOL)updateDefaultAfterDeletingConfiguration;
-- (BOOL)updateManagedAppRules:(id)a3;
-- (BOOL)updatePerAppMappingRules:(id)a3;
-- (NEProfileIngestion)initWithNameAndType:(id)a3 payloadType:(id)a4;
+- (BOOL)updateManagedAppRules:(id)rules;
+- (BOOL)updatePerAppMappingRules:(id)rules;
+- (NEProfileIngestion)initWithNameAndType:(id)type payloadType:(id)payloadType;
 - (id)copyManagedConfigurationIDs;
-- (id)findConfigurationByConfigurationID:(id)a3;
-- (id)findConfigurationByName:(id)a3;
-- (id)findConfigurationByPayloadUUID:(id)a3;
-- (id)getCertificatesForConfigurationWithIdentifier:(id)a3;
-- (id)setAsideConfigurationName:(id)a3 unsetAside:(BOOL)a4;
-- (uint64_t)enableAlwaysOnVpnInternal:(void *)a1;
-- (uint64_t)matchConfigAppUUID:(void *)a3 configUUIDType:(void *)a4 configAppUUID:;
-- (uint64_t)saveConfiguration:(void *)a3 returnError:;
+- (id)findConfigurationByConfigurationID:(id)d;
+- (id)findConfigurationByName:(id)name;
+- (id)findConfigurationByPayloadUUID:(id)d;
+- (id)getCertificatesForConfigurationWithIdentifier:(id)identifier;
+- (id)setAsideConfigurationName:(id)name unsetAside:(BOOL)aside;
+- (uint64_t)enableAlwaysOnVpnInternal:(void *)internal;
+- (uint64_t)matchConfigAppUUID:(void *)d configUUIDType:(void *)type configAppUUID:;
+- (uint64_t)saveConfiguration:(void *)configuration returnError:;
 - (void)dealloc;
 - (void)enableDefaultService;
-- (void)removeAllConfigurationsWithPayload:(id)a3 profile:(id)a4;
+- (void)removeAllConfigurationsWithPayload:(id)payload profile:(id)profile;
 - (void)unlockConfigurations;
 @end
 
 @implementation NEProfileIngestion
 
-- (BOOL)updateManagedAppRules:(id)a3
+- (BOOL)updateManagedAppRules:(id)rules
 {
   v118 = *MEMORY[0x1E69E9840];
-  v68 = a3;
+  rulesCopy = rules;
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
     v113 = objc_opt_class();
     v114 = 2112;
-    v115 = v68;
+    v115 = rulesCopy;
     v66 = v113;
     _os_log_debug_impl(&dword_1BA83C000, v4, OS_LOG_TYPE_DEBUG, "%@ updateManagedAppRules %@", buf, 0x16u);
   }
@@ -60,7 +60,7 @@
     v70 = *v97;
     *&v5 = 138412802;
     v67 = v5;
-    v74 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v71; ++i)
@@ -93,12 +93,12 @@
           continue;
         }
 
-        v73 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v92 = 0u;
         v93 = 0u;
         v94 = 0u;
         v95 = 0u;
-        v76 = v68;
+        v76 = rulesCopy;
         v80 = [v76 countByEnumeratingWithState:&v92 objects:v109 count:16];
         if (!v80)
         {
@@ -130,16 +130,16 @@
                 v105 = 0u;
                 v106 = 0u;
                 v107 = 0u;
-                v18 = [v16 pathController];
-                v20 = v18;
-                if (v18)
+                pathController = [v16 pathController];
+                v20 = pathController;
+                if (pathController)
                 {
-                  v18 = objc_getProperty(v18, v19, 32, 1);
+                  pathController = objc_getProperty(pathController, v19, 32, 1);
                 }
 
                 v77 = v16;
                 v78 = v13;
-                v21 = v18;
+                v21 = pathController;
 
                 v22 = [v21 countByEnumeratingWithState:&v104 objects:buf count:16];
                 if (v22)
@@ -255,7 +255,7 @@
                   v25 = 0;
                 }
 
-                self = v74;
+                self = selfCopy;
                 v7 = v75;
                 v16 = v77;
                 v13 = v78;
@@ -272,10 +272,10 @@
                 v43 = [v25 objectForKeyedSubscript:@"AllowCellularData"];
                 if (isa_nsnumber(v42))
                 {
-                  v44 = [v42 BOOLValue];
+                  bOOLValue = [v42 BOOLValue];
                   if ((isa_nsnumber(v43) & 1) == 0)
                   {
-                    if ((v44 & 1) == 0)
+                    if ((bOOLValue & 1) == 0)
                     {
                       v45 = 0;
                       goto LABEL_61;
@@ -292,18 +292,18 @@
                     goto LABEL_64;
                   }
 
-                  v44 = 1;
+                  bOOLValue = 1;
                 }
 
                 v45 = [v43 BOOLValue] ^ 1;
-                if ((v45 & 1) != 0 || (v44 & 1) == 0)
+                if ((v45 & 1) != 0 || (bOOLValue & 1) == 0)
                 {
 LABEL_61:
                   v46 = [(NEAppRule *)[NEPathRule alloc] initWithSigningIdentifier:v86];
                   [(NEPathRule *)v46 setCellularBehavior:v45];
                   if (v46)
                   {
-                    [v73 addObject:v46];
+                    [array addObject:v46];
                   }
                 }
 
@@ -327,21 +327,21 @@ LABEL_70:
         {
           v61 = objc_opt_class();
           v62 = v61;
-          v63 = [v7 name];
+          name = [v7 name];
           *buf = v67;
           v113 = v61;
           v114 = 2112;
-          v115 = v63;
+          v115 = name;
           v116 = 2112;
-          v117 = v73;
+          v117 = array;
           _os_log_debug_impl(&dword_1BA83C000, v48, OS_LOG_TYPE_DEBUG, "%@ newPathRules for %@: %@", buf, 0x20u);
         }
 
-        v49 = [v7 pathController];
-        v50 = [v49 pathRules];
-        v51 = [v50 count];
-        v52 = v73;
-        v53 = [v73 count];
+        pathController2 = [v7 pathController];
+        pathRules = [pathController2 pathRules];
+        v51 = [pathRules count];
+        v52 = array;
+        v53 = [array count];
 
         if (v51 == v53)
         {
@@ -349,10 +349,10 @@ LABEL_70:
           v91 = 0u;
           v88 = 0u;
           v89 = 0u;
-          v54 = [v7 pathController];
-          v55 = [v54 pathRules];
+          pathController3 = [v7 pathController];
+          pathRules2 = [pathController3 pathRules];
 
-          v56 = [v55 countByEnumeratingWithState:&v88 objects:v108 count:16];
+          v56 = [pathRules2 countByEnumeratingWithState:&v88 objects:v108 count:16];
           if (v56)
           {
             v57 = v56;
@@ -363,18 +363,18 @@ LABEL_70:
               {
                 if (*v89 != v58)
                 {
-                  objc_enumerationMutation(v55);
+                  objc_enumerationMutation(pathRules2);
                 }
 
-                if (![v73 containsObject:*(*(&v88 + 1) + 8 * k)])
+                if (![array containsObject:*(*(&v88 + 1) + 8 * k)])
                 {
 
-                  v52 = v73;
+                  v52 = array;
                   goto LABEL_83;
                 }
               }
 
-              v57 = [v55 countByEnumeratingWithState:&v88 objects:v108 count:16];
+              v57 = [pathRules2 countByEnumeratingWithState:&v88 objects:v108 count:16];
               if (v57)
               {
                 continue;
@@ -384,14 +384,14 @@ LABEL_70:
             }
           }
 
-          v52 = v73;
+          v52 = array;
         }
 
         else
         {
 LABEL_83:
-          v60 = [v7 pathController];
-          [v60 setPathRules:v52];
+          pathController4 = [v7 pathController];
+          [pathController4 setPathRules:v52];
 
           [(NEProfileIngestion *)self saveConfiguration:v7 returnError:0];
         }
@@ -409,12 +409,12 @@ LABEL_83:
   return 1;
 }
 
-- (uint64_t)saveConfiguration:(void *)a3 returnError:
+- (uint64_t)saveConfiguration:(void *)configuration returnError:
 {
   v52 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v40 = 0;
     v41 = &v40;
@@ -443,38 +443,38 @@ LABEL_83:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v19 = objc_opt_class();
-      v20 = [v6 name];
+      name = [v6 name];
       *buf = 138412546;
       v45 = v19;
       v46 = 2112;
-      v47 = v20;
+      v47 = name;
       _os_log_debug_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_DEBUG, "%@ saveConfiguration: '%@'", buf, 0x16u);
     }
 
-    v11 = [a1 manager];
+    manager = [self manager];
     v12 = MEMORY[0x1E69E96A0];
     v13 = MEMORY[0x1E69E96A0];
     v26 = MEMORY[0x1E69E9820];
     v27 = 3221225472;
     v28 = __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke;
     v29 = &unk_1E7F0A750;
-    v30 = a1;
+    selfCopy = self;
     v14 = v6;
     v31 = v14;
     v32 = &v34;
     v33 = &v40;
-    [v11 saveConfiguration:v14 withCompletionQueue:v12 handler:&v26];
+    [manager saveConfiguration:v14 withCompletionQueue:v12 handler:&v26];
 
     v15 = ne_log_obj();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v21 = objc_opt_class();
-      v22 = [v14 name];
+      name2 = [v14 name];
       v23 = *(v41 + 24);
       *buf = 138413058;
       v45 = v21;
       v46 = 2112;
-      v47 = v22;
+      v47 = name2;
       v48 = 1024;
       v49 = v23;
       v50 = 2112;
@@ -482,9 +482,9 @@ LABEL_83:
       _os_log_debug_impl(&dword_1BA83C000, v15, OS_LOG_TYPE_DEBUG, "%@ saveConfiguration '%@', ok = %d, configuration %@", buf, 0x26u);
     }
 
-    if (a3)
+    if (configuration)
     {
-      *a3 = v35[5];
+      *configuration = v35[5];
     }
 
     v16 = *(v41 + 24);
@@ -558,15 +558,15 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)updateAccountIdentifiers:(id)a3
+- (BOOL)updateAccountIdentifiers:(id)identifiers
 {
   v44 = *MEMORY[0x1E69E9840];
-  v30 = a3;
+  identifiersCopy = identifiers;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v32 = self;
+  selfCopy = self;
   obj = [(NEProfileIngestion *)self currentConfigurations];
   v4 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v4)
@@ -584,9 +584,9 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
         }
 
         v8 = *(*(&v38 + 1) + 8 * i);
-        v9 = [v8 appVPN];
+        appVPN = [v8 appVPN];
 
-        if (v9)
+        if (appVPN)
         {
           v36 = 0u;
           v37 = 0u;
@@ -607,8 +607,8 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
                 }
 
                 v14 = *(*(&v34 + 1) + 8 * j);
-                v15 = [v8 appVPN];
-                [v15 removeAppRuleByID:v14];
+                appVPN2 = [v8 appVPN];
+                [appVPN2 removeAppRuleByID:v14];
               }
 
               v11 = [&unk_1F38BA880 countByEnumeratingWithState:&v34 objects:v42 count:16];
@@ -617,42 +617,42 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
             while (v11);
           }
 
-          v16 = [v8 externalIdentifier];
+          externalIdentifier = [v8 externalIdentifier];
 
-          if (v16)
+          if (externalIdentifier)
           {
-            v17 = [v8 externalIdentifier];
-            v18 = [v30 objectForKeyedSubscript:v17];
+            externalIdentifier2 = [v8 externalIdentifier];
+            v18 = [identifiersCopy objectForKeyedSubscript:externalIdentifier2];
 
-            v19 = [v18 mailAccountIdentifiers];
-            v20 = [v19 count];
+            mailAccountIdentifiers = [v18 mailAccountIdentifiers];
+            v20 = [mailAccountIdentifiers count];
 
             if (v20)
             {
-              v21 = [v18 mailAccountIdentifiers];
-              [v8 setMailDomains:0 accountIdentifiers:v21];
+              mailAccountIdentifiers2 = [v18 mailAccountIdentifiers];
+              [v8 setMailDomains:0 accountIdentifiers:mailAccountIdentifiers2];
             }
 
-            v22 = [v18 calendarAccountIdentifiers];
-            v23 = [v22 count];
+            calendarAccountIdentifiers = [v18 calendarAccountIdentifiers];
+            v23 = [calendarAccountIdentifiers count];
 
             if (v23)
             {
-              v24 = [v18 calendarAccountIdentifiers];
-              [v8 setCalendarDomains:0 accountIdentifiers:v24];
+              calendarAccountIdentifiers2 = [v18 calendarAccountIdentifiers];
+              [v8 setCalendarDomains:0 accountIdentifiers:calendarAccountIdentifiers2];
             }
 
-            v25 = [v18 contactsAccountIdentifiers];
-            v26 = [v25 count];
+            contactsAccountIdentifiers = [v18 contactsAccountIdentifiers];
+            v26 = [contactsAccountIdentifiers count];
 
             if (v26)
             {
-              v27 = [v18 contactsAccountIdentifiers];
-              [v8 setContactsDomains:0 accountIdentifiers:v27];
+              contactsAccountIdentifiers2 = [v18 contactsAccountIdentifiers];
+              [v8 setContactsDomains:0 accountIdentifiers:contactsAccountIdentifiers2];
             }
           }
 
-          v6 &= [(NEProfileIngestion *)v32 saveConfiguration:v8 returnError:0];
+          v6 &= [(NEProfileIngestion *)selfCopy saveConfiguration:v8 returnError:0];
         }
       }
 
@@ -671,10 +671,10 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
   return v6 & 1;
 }
 
-- (BOOL)updateAppLayerVPNMappingRules:(id)a3
+- (BOOL)updateAppLayerVPNMappingRules:(id)rules
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rulesCopy = rules;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -683,39 +683,39 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
     v12 = 2080;
     v13 = "[NEProfileIngestion updateAppLayerVPNMappingRules:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = rulesCopy;
     v9 = v11;
     _os_log_error_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_ERROR, "%@ %s %@", &v10, 0x20u);
   }
 
-  v6 = [(NEProfileIngestion *)self updatePerAppMappingRules:v4];
+  v6 = [(NEProfileIngestion *)self updatePerAppMappingRules:rulesCopy];
   v7 = *MEMORY[0x1E69E9840];
   return v6;
 }
 
-- (BOOL)updatePerAppMappingRules:(id)a3
+- (BOOL)updatePerAppMappingRules:(id)rules
 {
   v179 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rulesCopy = rules;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
     v169 = objc_opt_class();
     v170 = 2112;
-    v171 = v4;
+    v171 = rulesCopy;
     v109 = v169;
     _os_log_debug_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_DEBUG, "%@ updatePerAppMappingRules %@", buf, 0x16u);
   }
 
-  v134 = self;
+  selfCopy = self;
 
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(rulesCopy, "count")}];
   v160 = 0u;
   v161 = 0u;
   v162 = 0u;
   v163 = 0u;
-  obj = v4;
+  obj = rulesCopy;
   v130 = [obj countByEnumeratingWithState:&v160 objects:v178 count:16];
   if (v130)
   {
@@ -736,8 +736,8 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
         v158 = 0u;
         v159 = 0u;
         v132 = v9;
-        v10 = [v9 allValues];
-        v11 = [v10 countByEnumeratingWithState:&v156 objects:v177 count:16];
+        allValues = [v9 allValues];
+        v11 = [allValues countByEnumeratingWithState:&v156 objects:v177 count:16];
         if (v11)
         {
           v12 = v11;
@@ -748,7 +748,7 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
             {
               if (*v157 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(allValues);
               }
 
               v15 = *(*(&v156 + 1) + 8 * j);
@@ -762,7 +762,7 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
               [v16 addObject:v8];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v156 objects:v177 count:16];
+            v12 = [allValues countByEnumeratingWithState:&v156 objects:v177 count:16];
           }
 
           while (v12);
@@ -776,7 +776,7 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
   }
 
   v17 = ne_log_obj();
-  v18 = v134;
+  v18 = selfCopy;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     v110 = objc_opt_class();
@@ -792,8 +792,8 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
   v155 = 0u;
   v152 = 0u;
   v153 = 0u;
-  v117 = [(NEProfileIngestion *)v134 currentConfigurations];
-  v19 = [v117 countByEnumeratingWithState:&v152 objects:v176 count:16];
+  currentConfigurations = [(NEProfileIngestion *)selfCopy currentConfigurations];
+  v19 = [currentConfigurations countByEnumeratingWithState:&v152 objects:v176 count:16];
   if (v19)
   {
     v21 = v19;
@@ -809,47 +809,47 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
       {
         if (*v153 != v22)
         {
-          objc_enumerationMutation(v117);
+          objc_enumerationMutation(currentConfigurations);
         }
 
         v24 = *(*(&v152 + 1) + 8 * v23);
-        v131 = [v24 externalIdentifier];
-        if (v131)
+        externalIdentifier = [v24 externalIdentifier];
+        if (externalIdentifier)
         {
-          v123 = [MEMORY[0x1E695DF70] array];
-          v25 = [v24 appVPN];
+          array = [MEMORY[0x1E695DF70] array];
+          appVPN = [v24 appVPN];
 
           v119 = v24;
-          if (v25)
+          if (appVPN)
           {
-            v26 = [v24 appVPN];
+            appVPN2 = [v24 appVPN];
             v27 = @"VPNUUID";
             v125 = 0;
             v128 = @"VPNUUID";
-            v28 = v26;
+            v28 = appVPN2;
           }
 
           else
           {
-            v29 = [v24 relay];
+            relay = [v24 relay];
 
-            if (v29)
+            if (relay)
             {
-              v30 = [v24 relay];
-              v26 = [v30 perApp];
+              relay2 = [v24 relay];
+              appVPN2 = [relay2 perApp];
 
               v31 = @"RelayUUID";
               v28 = 0;
-              v125 = v26;
+              v125 = appVPN2;
               v128 = @"RelayUUID";
             }
 
             else
             {
               v32 = v23;
-              v33 = [v24 contentFilter];
-              v34 = [v33 perApp];
-              if (v34)
+              contentFilter = [v24 contentFilter];
+              perApp = [contentFilter perApp];
+              if (perApp)
               {
                 [v24 contentFilter];
               }
@@ -859,12 +859,12 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
                 [v24 dnsProxy];
               }
               v35 = ;
-              v26 = [v35 perApp];
+              appVPN2 = [v35 perApp];
 
-              v36 = [v24 contentFilter];
-              v37 = [v36 perApp];
+              contentFilter2 = [v24 contentFilter];
+              perApp2 = [contentFilter2 perApp];
               v38 = @"ContentFilterUUID";
-              if (!v37)
+              if (!perApp2)
               {
                 v38 = @"DNSProxyUUID";
               }
@@ -872,29 +872,29 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
               v128 = v38;
 
               v28 = 0;
-              v125 = v26;
-              v18 = v134;
+              v125 = appVPN2;
+              v18 = selfCopy;
               v23 = v32;
             }
           }
 
-          v39 = [(__CFString *)v26 copyAppRuleIDs];
-          if (v39)
+          copyAppRuleIDs = [(__CFString *)appVPN2 copyAppRuleIDs];
+          if (copyAppRuleIDs)
           {
-            v40 = v39;
+            v40 = copyAppRuleIDs;
             v121 = v23;
             v41 = ne_log_obj();
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
             {
               v63 = objc_opt_class();
               v64 = v63;
-              v65 = [v119 name];
+              name = [v119 name];
               *buf = v112;
               v169 = v63;
               v170 = 2112;
-              v171 = v65;
+              v171 = name;
               v172 = 2112;
-              v173 = v131;
+              v173 = externalIdentifier;
               v174 = 2112;
               v175 = v40;
               _os_log_debug_impl(&dword_1BA83C000, v41, OS_LOG_TYPE_DEBUG, "%@ updatePerAppMappingRules config %@ perAppUUID %@, existing appRules %@", buf, 0x2Au);
@@ -927,9 +927,9 @@ void __52__NEProfileIngestion_saveConfiguration_returnError___block_invoke(void 
 
 LABEL_49:
                     v50 = [obj objectForKey:v48];
-                    if (([(NEProfileIngestion *)v18 matchConfigAppUUID:v50 configUUIDType:v128 configAppUUID:v131]& 1) == 0)
+                    if (([(NEProfileIngestion *)v18 matchConfigAppUUID:v50 configUUIDType:v128 configAppUUID:externalIdentifier]& 1) == 0)
                     {
-                      [v123 addObject:v48];
+                      [array addObject:v48];
                     }
 
                     goto LABEL_52;
@@ -963,7 +963,7 @@ LABEL_52:
             v147 = 0u;
             v144 = 0u;
             v145 = 0u;
-            v52 = v123;
+            v52 = array;
             v53 = [v52 countByEnumeratingWithState:&v144 objects:v166 count:16];
             if (v53)
             {
@@ -1020,10 +1020,10 @@ LABEL_52:
 
               while (v54);
 
-              v18 = v134;
+              v18 = selfCopy;
               if (v55)
               {
-                [(NEProfileIngestion *)v134 saveConfiguration:v119 returnError:0];
+                [(NEProfileIngestion *)selfCopy saveConfiguration:v119 returnError:0];
               }
             }
 
@@ -1049,7 +1049,7 @@ LABEL_52:
       }
 
       while (v23 != v21);
-      v21 = [v117 countByEnumeratingWithState:&v152 objects:v176 count:16];
+      v21 = [currentConfigurations countByEnumeratingWithState:&v152 objects:v176 count:16];
     }
 
     while (v21);
@@ -1059,8 +1059,8 @@ LABEL_52:
   v143 = 0u;
   v140 = 0u;
   v141 = 0u;
-  v118 = [(NEProfileIngestion *)v18 currentConfigurations];
-  v66 = [v118 countByEnumeratingWithState:&v140 objects:v165 count:16];
+  currentConfigurations2 = [(NEProfileIngestion *)v18 currentConfigurations];
+  v66 = [currentConfigurations2 countByEnumeratingWithState:&v140 objects:v165 count:16];
   if (!v66)
   {
     goto LABEL_132;
@@ -1077,88 +1077,88 @@ LABEL_52:
     {
       if (*v141 != v68)
       {
-        objc_enumerationMutation(v118);
+        objc_enumerationMutation(currentConfigurations2);
       }
 
       v70 = *(*(&v140 + 1) + 8 * v69);
-      v71 = [v70 externalIdentifier];
-      if (v71)
+      externalIdentifier2 = [v70 externalIdentifier];
+      if (externalIdentifier2)
       {
-        v122 = [v6 objectForKeyedSubscript:v71];
-        v72 = [v70 appVPN];
+        v122 = [v6 objectForKeyedSubscript:externalIdentifier2];
+        appVPN3 = [v70 appVPN];
 
-        if (v72)
+        if (appVPN3)
         {
-          v133 = [v70 appVPN];
+          appVPN4 = [v70 appVPN];
           v73 = @"VPNUUID";
           v74 = @"VPNUUID";
         }
 
         else
         {
-          v133 = 0;
+          appVPN4 = 0;
           v73 = 0;
         }
 
-        v75 = [v70 contentFilter];
+        contentFilter3 = [v70 contentFilter];
 
-        if (v75)
+        if (contentFilter3)
         {
-          v76 = [v70 contentFilter];
-          v77 = [v76 perApp];
+          contentFilter4 = [v70 contentFilter];
+          perApp3 = [contentFilter4 perApp];
 
-          if (!v77)
+          if (!perApp3)
           {
             v78 = objc_alloc_init(NEPerApp);
-            v79 = [v70 contentFilter];
-            [v79 setPerApp:v78];
+            contentFilter5 = [v70 contentFilter];
+            [contentFilter5 setPerApp:v78];
           }
 
           v80 = v70;
-          v81 = [v70 contentFilter];
+          contentFilter6 = [v70 contentFilter];
           v82 = @"ContentFilterUUID";
           goto LABEL_102;
         }
 
-        v83 = [v70 dnsProxy];
+        dnsProxy = [v70 dnsProxy];
 
-        if (v83)
+        if (dnsProxy)
         {
-          v84 = [v70 dnsProxy];
-          v85 = [v84 perApp];
+          dnsProxy2 = [v70 dnsProxy];
+          perApp4 = [dnsProxy2 perApp];
 
-          if (!v85)
+          if (!perApp4)
           {
             v86 = objc_alloc_init(NEPerApp);
-            v87 = [v70 dnsProxy];
-            [v87 setPerApp:v86];
+            dnsProxy3 = [v70 dnsProxy];
+            [dnsProxy3 setPerApp:v86];
           }
 
           v80 = v70;
-          v81 = [v70 dnsProxy];
+          contentFilter6 = [v70 dnsProxy];
           v82 = @"DNSProxyUUID";
           goto LABEL_102;
         }
 
-        v88 = [v70 relay];
+        relay3 = [v70 relay];
 
-        if (v88)
+        if (relay3)
         {
-          v89 = [v70 relay];
-          v90 = [v89 perApp];
+          relay4 = [v70 relay];
+          perApp5 = [relay4 perApp];
 
-          if (!v90)
+          if (!perApp5)
           {
             v91 = objc_alloc_init(NEPerApp);
-            v92 = [v70 relay];
-            [v92 setPerApp:v91];
+            relay5 = [v70 relay];
+            [relay5 setPerApp:v91];
           }
 
           v80 = v70;
-          v81 = [v70 relay];
+          contentFilter6 = [v70 relay];
           v82 = @"RelayUUID";
 LABEL_102:
-          v93 = [v81 perApp];
+          perApp6 = [contentFilter6 perApp];
 
           v94 = v82;
           v73 = v94;
@@ -1167,10 +1167,10 @@ LABEL_102:
 
         else
         {
-          v93 = 0;
+          perApp6 = 0;
         }
 
-        if (v133 | v93)
+        if (appVPN4 | perApp6)
         {
           v120 = v69;
           v138 = 0u;
@@ -1182,7 +1182,7 @@ LABEL_102:
           if (v96)
           {
             v97 = v96;
-            v126 = v93;
+            v126 = perApp6;
             v129 = v70;
             v124 = 0;
             v98 = *v137;
@@ -1197,10 +1197,10 @@ LABEL_102:
 
                 v100 = *(*(&v136 + 1) + 8 * m);
                 v101 = [obj objectForKey:v100];
-                if (([(NEProfileIngestion *)v134 matchConfigAppUUID:v101 configUUIDType:v73 configAppUUID:v71]& 1) != 0)
+                if (([(NEProfileIngestion *)selfCopy matchConfigAppUUID:v101 configUUIDType:v73 configAppUUID:externalIdentifier2]& 1) != 0)
                 {
-                  v102 = v133;
-                  if (!v133)
+                  v102 = appVPN4;
+                  if (!appVPN4)
                   {
                     v102 = v126;
                   }
@@ -1257,10 +1257,10 @@ LABEL_102:
             v68 = v114;
             v67 = v116;
             v69 = v120;
-            v93 = v126;
+            perApp6 = v126;
             if (v124)
             {
-              [(NEProfileIngestion *)v134 saveConfiguration:v129 returnError:0];
+              [(NEProfileIngestion *)selfCopy saveConfiguration:v129 returnError:0];
             }
           }
 
@@ -1277,7 +1277,7 @@ LABEL_102:
     }
 
     while (v69 != v67);
-    v106 = [v118 countByEnumeratingWithState:&v140 objects:v165 count:16];
+    v106 = [currentConfigurations2 countByEnumeratingWithState:&v140 objects:v165 count:16];
     v67 = v106;
   }
 
@@ -1288,13 +1288,13 @@ LABEL_132:
   return 1;
 }
 
-- (uint64_t)matchConfigAppUUID:(void *)a3 configUUIDType:(void *)a4 configAppUUID:
+- (uint64_t)matchConfigAppUUID:(void *)d configUUIDType:(void *)type configAppUUID:
 {
   v23 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  dCopy = d;
+  typeCopy = type;
+  if (self)
   {
     v20 = 0u;
     v21 = 0u;
@@ -1316,7 +1316,7 @@ LABEL_132:
 
           v14 = *(*(&v18 + 1) + 8 * i);
           v15 = [v10 objectForKeyedSubscript:{v14, v18}];
-          if ([v14 isEqual:v8] && objc_msgSend(v15, "isEqual:", v9))
+          if ([v14 isEqual:dCopy] && objc_msgSend(v15, "isEqual:", typeCopy))
           {
 
             v11 = 1;
@@ -1401,16 +1401,16 @@ void __40__NEProfileIngestion_isAutoCreatedRule___block_invoke()
   return result;
 }
 
-- (uint64_t)enableAlwaysOnVpnInternal:(void *)a1
+- (uint64_t)enableAlwaysOnVpnInternal:(void *)internal
 {
   v60 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!internal)
   {
     v35 = 0;
     goto LABEL_32;
   }
 
-  v3 = a1;
+  internalCopy = internal;
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -1422,17 +1422,17 @@ void __40__NEProfileIngestion_isAutoCreatedRule___block_invoke()
     _os_log_debug_impl(&dword_1BA83C000, v4, OS_LOG_TYPE_DEBUG, "%@ enableAlwaysOnVpnInternal with sanityCheck %d", buf, 0x12u);
   }
 
-  [v3 loadConfigurationsForceReloadFromDisk];
-  v5 = [v3 currentConfigurations];
+  [internalCopy loadConfigurationsForceReloadFromDisk];
+  currentConfigurations = [internalCopy currentConfigurations];
 
-  if (v5)
+  if (currentConfigurations)
   {
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v6 = [v3 currentConfigurations];
-    v7 = [v6 countByEnumeratingWithState:&v51 objects:v59 count:16];
+    currentConfigurations2 = [internalCopy currentConfigurations];
+    v7 = [currentConfigurations2 countByEnumeratingWithState:&v51 objects:v59 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1441,25 +1441,25 @@ void __40__NEProfileIngestion_isAutoCreatedRule___block_invoke()
       v10 = 0;
       v11 = 0;
       v12 = *v52;
-      v50 = v3;
+      v50 = internalCopy;
       do
       {
         for (i = 0; i != v8; ++i)
         {
           if (*v52 != v12)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(currentConfigurations2);
           }
 
           v14 = *(*(&v51 + 1) + 8 * i);
-          v15 = [v14 alwaysOnVPN];
+          alwaysOnVPN = [v14 alwaysOnVPN];
 
-          if (v15)
+          if (alwaysOnVPN)
           {
             v16 = v14;
 
-            v17 = [v16 payloadInfo];
-            v18 = [v17 isSetAside];
+            payloadInfo = [v16 payloadInfo];
+            isSetAside = [payloadInfo isSetAside];
 
             v19 = ne_log_obj();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -1472,17 +1472,17 @@ void __40__NEProfileIngestion_isAutoCreatedRule___block_invoke()
               v21 = v20;
               _os_log_debug_impl(&dword_1BA83C000, v19, OS_LOG_TYPE_DEBUG, "%@ enableAlwaysOnVpnInternal: Always-On VPN configs found %@", buf, 0x16u);
 
-              v3 = v50;
+              internalCopy = v50;
             }
 
             ++v11;
-            v10 += v18;
+            v10 += isSetAside;
 
             v9 = v16;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v51 objects:v59 count:16];
+        v8 = [currentConfigurations2 countByEnumeratingWithState:&v51 objects:v59 count:16];
       }
 
       while (v8);
@@ -1564,12 +1564,12 @@ LABEL_38:
 
       if (v9)
       {
-        v32 = [v9 alwaysOnVPN];
-        v33 = [v32 isEnabled];
+        alwaysOnVPN2 = [v9 alwaysOnVPN];
+        isEnabled = [alwaysOnVPN2 isEnabled];
 
         v23 = ne_log_obj();
         v34 = os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG);
-        if ((v33 & 1) == 0)
+        if ((isEnabled & 1) == 0)
         {
           if (v34)
           {
@@ -1588,11 +1588,11 @@ LABEL_38:
             _os_log_debug_impl(&dword_1BA83C000, v23, OS_LOG_TYPE_DEBUG, "%@ enableAlwaysOnVpnInternal: enable the only Always-On VPN config%s.", buf, 0x16u);
           }
 
-          v41 = [v9 alwaysOnVPN];
+          alwaysOnVPN3 = [v9 alwaysOnVPN];
           v35 = 1;
-          [v41 setEnabled:1];
+          [alwaysOnVPN3 setEnabled:1];
 
-          [(NEProfileIngestion *)v3 saveConfiguration:v9 returnError:0];
+          [(NEProfileIngestion *)internalCopy saveConfiguration:v9 returnError:0];
           goto LABEL_31;
         }
 
@@ -1656,17 +1656,17 @@ LABEL_32:
 - (id)copyManagedConfigurationIDs
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(NEProfileIngestion *)self currentConfigurations];
+  array = [MEMORY[0x1E695DF70] array];
+  currentConfigurations = [(NEProfileIngestion *)self currentConfigurations];
 
-  if (v4)
+  if (currentConfigurations)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(NEProfileIngestion *)self currentConfigurations];
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    currentConfigurations2 = [(NEProfileIngestion *)self currentConfigurations];
+    v6 = [currentConfigurations2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1677,29 +1677,29 @@ LABEL_32:
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(currentConfigurations2);
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
-          v11 = [v10 payloadInfo];
-          v12 = [v11 payloadUUID];
+          payloadInfo = [v10 payloadInfo];
+          payloadUUID = [payloadInfo payloadUUID];
 
-          if (v12)
+          if (payloadUUID)
           {
-            v13 = [v10 identifier];
-            v14 = [v13 UUIDString];
-            [v3 addObject:v14];
+            identifier = [v10 identifier];
+            uUIDString = [identifier UUIDString];
+            [array addObject:uUIDString];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v7 = [currentConfigurations2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v7);
     }
   }
 
-  v15 = [v3 copy];
+  v15 = [array copy];
 
   v16 = *MEMORY[0x1E69E9840];
   return v15;
@@ -1719,26 +1719,26 @@ LABEL_32:
 
 - (BOOL)updateDefaultAfterAddingConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v66 = *MEMORY[0x1E69E9840];
-  v3 = [(NEProfileIngestion *)self ingestedConfiguration];
-  v4 = [v3 name];
+  ingestedConfiguration = [(NEProfileIngestion *)self ingestedConfiguration];
+  name = [ingestedConfiguration name];
 
-  if (v4)
+  if (name)
   {
-    v49 = v4;
+    v49 = name;
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v5 = [(NEProfileIngestion *)v2 currentConfigurations];
-    v6 = [v5 countByEnumeratingWithState:&v57 objects:v65 count:16];
+    currentConfigurations = [(NEProfileIngestion *)selfCopy currentConfigurations];
+    v6 = [currentConfigurations countByEnumeratingWithState:&v57 objects:v65 count:16];
     if (v6)
     {
       v7 = v6;
       v8 = *v58;
-      v51 = v5;
-      v52 = v2;
+      v51 = currentConfigurations;
+      v52 = selfCopy;
       v50 = *v58;
 LABEL_4:
       v9 = 0;
@@ -1747,63 +1747,63 @@ LABEL_4:
       {
         if (*v58 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(currentConfigurations);
         }
 
         v10 = *(*(&v57 + 1) + 8 * v9);
-        v11 = [v10 payloadInfo];
-        if (!v11)
+        payloadInfo = [v10 payloadInfo];
+        if (!payloadInfo)
         {
           goto LABEL_13;
         }
 
-        v12 = v11;
-        v13 = [v10 payloadInfo];
-        if (![v13 isSetAside])
+        v12 = payloadInfo;
+        payloadInfo2 = [v10 payloadInfo];
+        if (![payloadInfo2 isSetAside])
         {
           goto LABEL_11;
         }
 
-        v14 = [v10 identifier];
-        v15 = [(NEProfileIngestion *)v2 ingestedConfiguration];
-        v16 = [v15 identifier];
-        if ([v14 isEqual:v16])
+        identifier = [v10 identifier];
+        ingestedConfiguration2 = [(NEProfileIngestion *)selfCopy ingestedConfiguration];
+        identifier2 = [ingestedConfiguration2 identifier];
+        if ([identifier isEqual:identifier2])
         {
           break;
         }
 
-        v55 = [v10 payloadInfo];
-        [v55 profileIdentifier];
-        v17 = v53 = v14;
-        v18 = [(NEProfileIngestion *)v2 ingestedConfiguration];
-        v19 = [v18 payloadInfo];
-        v20 = [v19 profileIdentifier];
-        v54 = [v17 isEqualToString:v20];
+        payloadInfo3 = [v10 payloadInfo];
+        [payloadInfo3 profileIdentifier];
+        v17 = v53 = identifier;
+        ingestedConfiguration3 = [(NEProfileIngestion *)selfCopy ingestedConfiguration];
+        payloadInfo4 = [ingestedConfiguration3 payloadInfo];
+        profileIdentifier = [payloadInfo4 profileIdentifier];
+        v54 = [v17 isEqualToString:profileIdentifier];
 
-        v5 = v51;
+        currentConfigurations = v51;
         v8 = v50;
 
-        v2 = v52;
+        selfCopy = v52;
         v7 = v56;
         if (!v54)
         {
           goto LABEL_13;
         }
 
-        v21 = [(NEProfileIngestion *)v52 ingestedConfiguration];
-        v22 = [v21 name];
-        v23 = [v10 identifier];
-        v24 = [v23 UUIDString];
-        v12 = [v22 stringByAppendingString:v24];
+        ingestedConfiguration4 = [(NEProfileIngestion *)v52 ingestedConfiguration];
+        name2 = [ingestedConfiguration4 name];
+        identifier3 = [v10 identifier];
+        uUIDString = [identifier3 UUIDString];
+        v12 = [name2 stringByAppendingString:uUIDString];
 
-        v25 = [v10 name];
-        LOBYTE(v23) = [v25 isEqualToString:v12];
+        name3 = [v10 name];
+        LOBYTE(identifier3) = [name3 isEqualToString:v12];
 
-        if (v23)
+        if (identifier3)
         {
           v27 = v10;
 
-          v2 = v52;
+          selfCopy = v52;
           if (!v27)
           {
             goto LABEL_25;
@@ -1821,18 +1821,18 @@ LABEL_4:
           }
           v33 = ;
 
-          v34 = [(NEProfileIngestion *)v52 ingestedConfiguration];
-          v35 = [v34 VPN];
-          v36 = [(NEProfileIngestion *)v52 ingestedConfiguration];
-          v37 = v36;
+          ingestedConfiguration5 = [(NEProfileIngestion *)v52 ingestedConfiguration];
+          v35 = [ingestedConfiguration5 VPN];
+          ingestedConfiguration6 = [(NEProfileIngestion *)v52 ingestedConfiguration];
+          v37 = ingestedConfiguration6;
           if (v35)
           {
-            [v36 VPN];
+            [ingestedConfiguration6 VPN];
           }
 
           else
           {
-            [v36 appVPN];
+            [ingestedConfiguration6 appVPN];
           }
           v38 = ;
 
@@ -1841,13 +1841,13 @@ LABEL_4:
             v40 = ne_log_obj();
             if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
             {
-              v41 = [(NEProfileIngestion *)v52 ingestedConfiguration];
-              v42 = [v41 name];
-              v43 = [v33 isOnDemandEnabled];
+              ingestedConfiguration7 = [(NEProfileIngestion *)v52 ingestedConfiguration];
+              name4 = [ingestedConfiguration7 name];
+              isOnDemandEnabled = [v33 isOnDemandEnabled];
               *buf = 138412546;
-              v62 = v42;
+              v62 = name4;
               v63 = 1024;
-              v64 = v43;
+              v64 = isOnDemandEnabled;
               _os_log_impl(&dword_1BA83C000, v40, OS_LOG_TYPE_DEFAULT, "%@: Using onDemandEnabled setting from set-aside configuration (%d)", buf, 0x12u);
             }
 
@@ -1859,10 +1859,10 @@ LABEL_4:
             v44 = ne_log_obj();
             if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
             {
-              v45 = [(NEProfileIngestion *)v52 ingestedConfiguration];
-              v46 = [v45 name];
+              ingestedConfiguration8 = [(NEProfileIngestion *)v52 ingestedConfiguration];
+              name5 = [ingestedConfiguration8 name];
               *buf = 138412290;
-              v62 = v46;
+              v62 = name5;
               _os_log_impl(&dword_1BA83C000, v44, OS_LOG_TYPE_DEFAULT, "%@: VPN type mis-match with set-aside configuration", buf, 0xCu);
             }
           }
@@ -1870,15 +1870,15 @@ LABEL_4:
           goto LABEL_41;
         }
 
-        v5 = v51;
-        v2 = v52;
+        currentConfigurations = v51;
+        selfCopy = v52;
         v8 = v50;
 LABEL_12:
 
 LABEL_13:
         if (v7 == ++v9)
         {
-          v26 = [v5 countByEnumeratingWithState:&v57 objects:v65 count:16];
+          v26 = [currentConfigurations countByEnumeratingWithState:&v57 objects:v65 count:16];
           v7 = v26;
           if (v26)
           {
@@ -1901,15 +1901,15 @@ LABEL_25:
     v27 = ne_log_obj();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [(NEProfileIngestion *)v2 ingestedConfiguration];
-      v32 = [v31 name];
+      ingestedConfiguration9 = [(NEProfileIngestion *)selfCopy ingestedConfiguration];
+      name6 = [ingestedConfiguration9 name];
       *buf = 138412290;
-      v62 = v32;
+      v62 = name6;
       _os_log_impl(&dword_1BA83C000, v27, OS_LOG_TYPE_DEFAULT, "%@: No set-aside configuration", buf, 0xCu);
     }
 
 LABEL_41:
-    v4 = v49;
+    name = v49;
   }
 
   else
@@ -1917,27 +1917,27 @@ LABEL_41:
     v27 = ne_log_obj();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v28 = [(NEProfileIngestion *)v2 ingestedConfiguration];
-      v29 = [v28 identifier];
+      ingestedConfiguration10 = [(NEProfileIngestion *)selfCopy ingestedConfiguration];
+      identifier4 = [ingestedConfiguration10 identifier];
       *buf = 138412290;
-      v62 = v29;
+      v62 = identifier4;
       _os_log_error_impl(&dword_1BA83C000, v27, OS_LOG_TYPE_ERROR, "The ingested configuration (%@) has no name, cannot update from the set aside version of the configuration", buf, 0xCu);
     }
   }
 
   v47 = *MEMORY[0x1E69E9840];
-  return v4 != 0;
+  return name != 0;
 }
 
 - (BOOL)removeIngestedConfiguration
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(NEProfileIngestion *)self ingestedConfiguration];
+  ingestedConfiguration = [(NEProfileIngestion *)self ingestedConfiguration];
 
-  if (v3)
+  if (ingestedConfiguration)
   {
-    v4 = [(NEProfileIngestion *)self ingestedConfiguration];
-    v5 = [(NEProfileIngestion *)self removeConfiguration:v4];
+    ingestedConfiguration2 = [(NEProfileIngestion *)self ingestedConfiguration];
+    v5 = [(NEProfileIngestion *)self removeConfiguration:ingestedConfiguration2];
 
     if (!v5)
     {
@@ -1966,19 +1966,19 @@ LABEL_9:
   return result;
 }
 
-- (id)getCertificatesForConfigurationWithIdentifier:(id)a3
+- (id)getCertificatesForConfigurationWithIdentifier:(id)identifier
 {
-  v3 = [(NEProfileIngestion *)self findConfigurationByConfigurationID:a3];
-  v4 = [v3 getCertificates];
+  v3 = [(NEProfileIngestion *)self findConfigurationByConfigurationID:identifier];
+  getCertificates = [v3 getCertificates];
 
-  return v4;
+  return getCertificates;
 }
 
-- (BOOL)removeConfigurationWithIdentifier:(id)a3
+- (BOOL)removeConfigurationWithIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NEProfileIngestion *)self findConfigurationByConfigurationID:v4];
+  identifierCopy = identifier;
+  v5 = [(NEProfileIngestion *)self findConfigurationByConfigurationID:identifierCopy];
   if (v5)
   {
     [(NEProfileIngestion *)self removeConfiguration:v5];
@@ -1992,7 +1992,7 @@ LABEL_9:
       v10 = 138412546;
       v11 = objc_opt_class();
       v12 = 2112;
-      v13 = v4;
+      v13 = identifierCopy;
       v9 = v11;
       _os_log_debug_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_DEBUG, "%@ removeConfigurationWithIdentifier failed: no configuration found with id %@", &v10, 0x16u);
     }
@@ -2002,96 +2002,96 @@ LABEL_9:
   return 1;
 }
 
-- (BOOL)removeConfiguration:(id)a3
+- (BOOL)removeConfiguration:(id)configuration
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 payloadInfo];
-  v39 = [v5 isSetAside];
+  configurationCopy = configuration;
+  payloadInfo = [configurationCopy payloadInfo];
+  isSetAside = [payloadInfo isSetAside];
 
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
   v46 = 0;
-  if (v4)
+  if (configurationCopy)
   {
     v6 = ne_log_obj();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v30 = objc_opt_class();
-      v31 = [v4 name];
+      name = [configurationCopy name];
       *buf = 138412546;
       v48 = v30;
       v49 = 2112;
-      v50 = v31;
+      v50 = name;
       _os_log_debug_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_DEBUG, "%@ removeConfiguration: '%@'", buf, 0x16u);
     }
 
-    v7 = [(NEProfileIngestion *)self manager];
+    manager = [(NEProfileIngestion *)self manager];
     v8 = MEMORY[0x1E69E96A0];
     v9 = MEMORY[0x1E69E96A0];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __42__NEProfileIngestion_removeConfiguration___block_invoke;
     v40[3] = &unk_1E7F0AD00;
-    v10 = v4;
+    v10 = configurationCopy;
     v41 = v10;
     v42 = &v43;
-    [v7 removeConfiguration:v10 withCompletionQueue:v8 handler:v40];
+    [manager removeConfiguration:v10 withCompletionQueue:v8 handler:v40];
 
     v11 = ne_log_obj();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v32 = objc_opt_class();
-      v33 = [v10 name];
+      name2 = [v10 name];
       v34 = *(v44 + 24);
       *buf = 138412802;
       v48 = v32;
       v49 = 2112;
-      v50 = v33;
+      v50 = name2;
       v51 = 1024;
       v52 = v34;
       _os_log_debug_impl(&dword_1BA83C000, v11, OS_LOG_TYPE_DEBUG, "%@ removeConfiguration '%@', ok = %d", buf, 0x1Cu);
     }
 
-    v12 = [(NEProfileIngestion *)self currentConfigurations];
-    v13 = v12 == 0;
+    currentConfigurations = [(NEProfileIngestion *)self currentConfigurations];
+    v13 = currentConfigurations == 0;
 
     if (!v13)
     {
       for (i = 0; ; ++i)
       {
-        v15 = [(NEProfileIngestion *)self currentConfigurations];
-        v16 = i < [v15 count];
+        currentConfigurations2 = [(NEProfileIngestion *)self currentConfigurations];
+        v16 = i < [currentConfigurations2 count];
 
         if (!v16)
         {
           break;
         }
 
-        v17 = [(NEProfileIngestion *)self currentConfigurations];
-        v18 = [v17 objectAtIndex:i];
+        currentConfigurations3 = [(NEProfileIngestion *)self currentConfigurations];
+        v18 = [currentConfigurations3 objectAtIndex:i];
 
-        v19 = [v18 identifier];
-        v20 = [v19 UUIDString];
-        v21 = [v10 identifier];
-        v22 = [v21 UUIDString];
-        v23 = [v20 isEqualToString:v22];
+        identifier = [v18 identifier];
+        uUIDString = [identifier UUIDString];
+        identifier2 = [v10 identifier];
+        uUIDString2 = [identifier2 UUIDString];
+        v23 = [uUIDString isEqualToString:uUIDString2];
 
         if (v23)
         {
-          v26 = [(NEProfileIngestion *)self currentConfigurations];
-          [v26 removeObjectAtIndex:i];
+          currentConfigurations4 = [(NEProfileIngestion *)self currentConfigurations];
+          [currentConfigurations4 removeObjectAtIndex:i];
 
           v27 = ne_log_obj();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
           {
             v37 = objc_opt_class();
-            v38 = [v10 name];
+            name3 = [v10 name];
             *buf = 138412546;
             v48 = v37;
             v49 = 2112;
-            v50 = v38;
+            v50 = name3;
             _os_log_debug_impl(&dword_1BA83C000, v27, OS_LOG_TYPE_DEBUG, "%@ removeConfiguration '%@' from cached list", buf, 0x16u);
           }
 
@@ -2100,7 +2100,7 @@ LABEL_9:
       }
     }
 
-    if (v39)
+    if (isSetAside)
     {
       [(NEProfileIngestion *)self enableAlwaysOnVpnInternal:?];
     }
@@ -2156,44 +2156,44 @@ void __42__NEProfileIngestion_removeConfiguration___block_invoke(uint64_t a1, vo
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)saveIngestedConfiguration:(id *)a3
+- (BOOL)saveIngestedConfiguration:(id *)configuration
 {
-  v5 = [(NEProfileIngestion *)self ingestedConfiguration];
-  LOBYTE(a3) = [(NEProfileIngestion *)self saveConfiguration:v5 returnError:a3];
+  ingestedConfiguration = [(NEProfileIngestion *)self ingestedConfiguration];
+  LOBYTE(configuration) = [(NEProfileIngestion *)self saveConfiguration:ingestedConfiguration returnError:configuration];
 
-  return a3;
+  return configuration;
 }
 
 - (BOOL)saveIngestedConfiguration
 {
-  v2 = self;
-  v3 = [(NEProfileIngestion *)self ingestedConfiguration];
-  LOBYTE(v2) = [(NEProfileIngestion *)v2 saveConfiguration:v3 returnError:0];
+  selfCopy = self;
+  ingestedConfiguration = [(NEProfileIngestion *)self ingestedConfiguration];
+  LOBYTE(selfCopy) = [(NEProfileIngestion *)selfCopy saveConfiguration:ingestedConfiguration returnError:0];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)createConfigurationFromPayload:(id)a3 payloadType:(id)a4
+- (BOOL)createConfigurationFromPayload:(id)payload payloadType:(id)type
 {
   v233 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 payloadAtom];
-  v9 = [v8 objectForKeyedSubscript:@"UserDefinedName"];
-  v10 = [v8 objectForKeyedSubscript:@"VPNSubType"];
+  payloadCopy = payload;
+  typeCopy = type;
+  payloadAtom = [payloadCopy payloadAtom];
+  v9 = [payloadAtom objectForKeyedSubscript:@"UserDefinedName"];
+  v10 = [payloadAtom objectForKeyedSubscript:@"VPNSubType"];
   if (!v9)
   {
-    v11 = [v8 objectForKeyedSubscript:@"PayloadDisplayName"];
+    v11 = [payloadAtom objectForKeyedSubscript:@"PayloadDisplayName"];
     if (!v11)
     {
-      if (([(NEConfiguration *)v7 isEqualToString:@"com.apple.webcontent-filter"]& 1) != 0)
+      if (([(NEConfiguration *)typeCopy isEqualToString:@"com.apple.webcontent-filter"]& 1) != 0)
       {
         v12 = kNECFPluginBundleIDKey;
       }
 
       else
       {
-        v13 = [(NEConfiguration *)v7 isEqualToString:@"com.apple.dnsProxy.managed"];
+        v13 = [(NEConfiguration *)typeCopy isEqualToString:@"com.apple.dnsProxy.managed"];
         v12 = kNEVPNTypeKey;
         if (v13)
         {
@@ -2201,7 +2201,7 @@ void __42__NEProfileIngestion_removeConfiguration___block_invoke(uint64_t a1, vo
         }
       }
 
-      v11 = [v8 objectForKeyedSubscript:*v12];
+      v11 = [payloadAtom objectForKeyedSubscript:*v12];
     }
 
     v9 = v11;
@@ -2211,20 +2211,20 @@ void __42__NEProfileIngestion_removeConfiguration___block_invoke(uint64_t a1, vo
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v228 = v7;
+    v228 = typeCopy;
     v229 = 2112;
     v230 = v9;
     _os_log_debug_impl(&dword_1BA83C000, v14, OS_LOG_TYPE_DEBUG, "createConfigurationFromPayload type %@, name '%@'", buf, 0x16u);
   }
 
   v15 = [(NEProfileIngestion *)self findConfigurationByName:v9];
-  v199 = self;
+  selfCopy = self;
   if (!v15)
   {
     goto LABEL_186;
   }
 
-  v189 = v6;
+  v189 = payloadCopy;
   v16 = v9;
   v17 = v16;
   v191 = v15;
@@ -2237,7 +2237,7 @@ void __42__NEProfileIngestion_removeConfiguration___block_invoke(uint64_t a1, vo
     v197 = v18;
     if (v19 > 1)
     {
-      v24 = v7;
+      v24 = typeCopy;
       v25 = [v18 objectAtIndex:v20];
       v26 = v18;
       v27 = [v25 length];
@@ -2247,40 +2247,40 @@ void __42__NEProfileIngestion_removeConfiguration___block_invoke(uint64_t a1, vo
       if ([v29 length])
       {
         v22 = v17;
-        v23 = 0;
+        intValue = 0;
       }
 
       else
       {
         v30 = [v26 objectAtIndex:v20];
-        v23 = [v30 intValue];
+        intValue = [v30 intValue];
 
         v22 = [(__CFString *)v17 substringToIndex:[(__CFString *)v17 length]- v27];
       }
 
       v21 = v24;
-      self = v199;
+      self = selfCopy;
     }
 
     else
     {
-      v21 = v7;
+      v21 = typeCopy;
       v22 = v17;
-      v23 = 0;
+      intValue = 0;
     }
 
-    v31 = [(NEProfileIngestion *)self currentConfigurations];
+    currentConfigurations = [(NEProfileIngestion *)self currentConfigurations];
 
-    if (v31)
+    if (currentConfigurations)
     {
-      v32 = self;
+      selfCopy2 = self;
       v33 = 0;
-      v34 = v23 + 1;
+      v34 = intValue + 1;
       do
       {
         v35 = [(__CFString *)v22 stringByAppendingFormat:@" %ld", v34];
 
-        v36 = [(NEProfileIngestion *)v32 findConfigurationByName:v35];
+        v36 = [(NEProfileIngestion *)selfCopy2 findConfigurationByName:v35];
 
         ++v34;
         v33 = v35;
@@ -2306,15 +2306,15 @@ void __42__NEProfileIngestion_removeConfiguration___block_invoke(uint64_t a1, vo
 
   else
   {
-    v21 = v7;
+    v21 = typeCopy;
     v9 = 0;
   }
 
   v38 = ne_log_obj();
-  v6 = v189;
+  payloadCopy = v189;
   v15 = v191;
-  self = v199;
-  v7 = v21;
+  self = selfCopy;
+  typeCopy = v21;
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
   {
     v66 = objc_opt_class();
@@ -2334,18 +2334,18 @@ void __42__NEProfileIngestion_removeConfiguration___block_invoke(uint64_t a1, vo
 LABEL_186:
     if (isa_nsstring(v10) && [NETunnelProviderProtocol isLegacyPluginType:v10])
     {
-      v39 = [(NEProfileIngestion *)self manager];
+      manager = [(NEProfileIngestion *)self manager];
       v220[0] = MEMORY[0x1E69E9820];
       v220[1] = 3221225472;
       v220[2] = __65__NEProfileIngestion_createConfigurationFromPayload_payloadType___block_invoke;
       v220[3] = &unk_1E7F0A6F0;
-      v221 = v6;
-      [v39 fetchUpgradeInfoForPluginType:v10 completionQueue:MEMORY[0x1E69E96A0] handler:v220];
+      v221 = payloadCopy;
+      [manager fetchUpgradeInfoForPluginType:v10 completionQueue:MEMORY[0x1E69E96A0] handler:v220];
     }
 
-    if ([(NEConfiguration *)v7 isEqualToString:@"com.apple.vpn.managed"])
+    if ([(NEConfiguration *)typeCopy isEqualToString:@"com.apple.vpn.managed"])
     {
-      v40 = [v8 objectForKeyedSubscript:@"VPNType"];
+      v40 = [payloadAtom objectForKeyedSubscript:@"VPNType"];
       v41 = [v40 isEqualToString:@"PPTP"];
 
       if (v41)
@@ -2364,26 +2364,26 @@ LABEL_58:
         goto LABEL_59;
       }
 
-      v56 = [[NEConfiguration alloc] initWithVPNPayload:v6 configurationName:v9 grade:1];
+      v56 = [[NEConfiguration alloc] initWithVPNPayload:payloadCopy configurationName:v9 grade:1];
       goto LABEL_55;
     }
 
-    if ([(NEConfiguration *)v7 isEqualToString:@"com.apple.vpn.managed.alwayson"])
+    if ([(NEConfiguration *)typeCopy isEqualToString:@"com.apple.vpn.managed.alwayson"])
     {
-      v44 = [(NEProfileIngestion *)self currentConfigurations];
+      currentConfigurations2 = [(NEProfileIngestion *)self currentConfigurations];
 
-      if (v44)
+      if (currentConfigurations2)
       {
         v192 = v15;
         v195 = v10;
-        v187 = v7;
-        v45 = v8;
+        v187 = typeCopy;
+        v45 = payloadAtom;
         v218 = 0u;
         v219 = 0u;
         v216 = 0u;
         v217 = 0u;
-        v46 = [(NEProfileIngestion *)self currentConfigurations];
-        v47 = [v46 countByEnumeratingWithState:&v216 objects:v226 count:16];
+        currentConfigurations3 = [(NEProfileIngestion *)self currentConfigurations];
+        v47 = [currentConfigurations3 countByEnumeratingWithState:&v216 objects:v226 count:16];
         if (v47)
         {
           v48 = v47;
@@ -2394,18 +2394,18 @@ LABEL_58:
             {
               if (*v217 != v49)
               {
-                objc_enumerationMutation(v46);
+                objc_enumerationMutation(currentConfigurations3);
               }
 
               v51 = *(*(&v216 + 1) + 8 * i);
-              v52 = [v51 alwaysOnVPN];
-              if (v52)
+              alwaysOnVPN = [v51 alwaysOnVPN];
+              if (alwaysOnVPN)
               {
-                v53 = v52;
-                v54 = [v51 payloadInfo];
-                v55 = [v54 isSetAside];
+                v53 = alwaysOnVPN;
+                payloadInfo = [v51 payloadInfo];
+                isSetAside = [payloadInfo isSetAside];
 
-                if ((v55 & 1) == 0)
+                if ((isSetAside & 1) == 0)
                 {
                   v65 = ne_log_obj();
                   if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
@@ -2418,16 +2418,16 @@ LABEL_58:
                   }
 
                   v43 = 0;
-                  v8 = v45;
+                  payloadAtom = v45;
                   v15 = v192;
                   v10 = v195;
-                  v7 = v187;
+                  typeCopy = v187;
                   goto LABEL_58;
                 }
               }
             }
 
-            v48 = [v46 countByEnumeratingWithState:&v216 objects:v226 count:16];
+            v48 = [currentConfigurations3 countByEnumeratingWithState:&v216 objects:v226 count:16];
             if (v48)
             {
               continue;
@@ -2437,34 +2437,34 @@ LABEL_58:
           }
         }
 
-        v8 = v45;
+        payloadAtom = v45;
         v15 = v192;
         v10 = v195;
-        self = v199;
-        v7 = v187;
+        self = selfCopy;
+        typeCopy = v187;
       }
 
-      v56 = [[NEConfiguration alloc] initWithAlwaysOnVPNPayload:v6 configurationName:v9 grade:1];
+      v56 = [[NEConfiguration alloc] initWithAlwaysOnVPNPayload:payloadCopy configurationName:v9 grade:1];
       goto LABEL_55;
     }
 
-    if ([(NEConfiguration *)v7 isEqualToString:@"com.apple.vpn.managed.applayer"])
+    if ([(NEConfiguration *)typeCopy isEqualToString:@"com.apple.vpn.managed.applayer"])
     {
-      v56 = [[NEConfiguration alloc] initWithAppLayerVPNPayload:v6 configurationName:v9 grade:1];
+      v56 = [[NEConfiguration alloc] initWithAppLayerVPNPayload:payloadCopy configurationName:v9 grade:1];
 LABEL_55:
       v57 = v56;
       [(NEProfileIngestion *)self setIngestedConfiguration:v56];
 LABEL_56:
 
-      v58 = [(NEProfileIngestion *)self ingestedConfiguration];
-      v43 = v58 != 0;
+      ingestedConfiguration = [(NEProfileIngestion *)self ingestedConfiguration];
+      v43 = ingestedConfiguration != 0;
 
       v59 = ne_log_obj();
       if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
       {
         v68 = objc_opt_class();
         v69 = "no";
-        if (v58)
+        if (ingestedConfiguration)
         {
           v69 = "yes";
         }
@@ -2480,30 +2480,30 @@ LABEL_56:
       goto LABEL_58;
     }
 
-    if (![(NEConfiguration *)v7 isEqualToString:@"com.apple.webcontent-filter"])
+    if (![(NEConfiguration *)typeCopy isEqualToString:@"com.apple.webcontent-filter"])
     {
-      if ([(NEConfiguration *)v7 isEqualToString:@"com.apple.networkusagerules"])
+      if ([(NEConfiguration *)typeCopy isEqualToString:@"com.apple.networkusagerules"])
       {
-        v56 = [[NEConfiguration alloc] initWithPathControllerPayload:v6 configurationName:v9 grade:1];
+        v56 = [[NEConfiguration alloc] initWithPathControllerPayload:payloadCopy configurationName:v9 grade:1];
         goto LABEL_55;
       }
 
-      if (![(NEConfiguration *)v7 isEqualToString:@"com.apple.dnsProxy.managed"])
+      if (![(NEConfiguration *)typeCopy isEqualToString:@"com.apple.dnsProxy.managed"])
       {
-        if ([(NEConfiguration *)v7 isEqualToString:@"com.apple.dnsSettings.managed"])
+        if ([(NEConfiguration *)typeCopy isEqualToString:@"com.apple.dnsSettings.managed"])
         {
-          v56 = [[NEConfiguration alloc] initWithDNSSettingsPayload:v6 configurationName:v9 grade:2];
+          v56 = [[NEConfiguration alloc] initWithDNSSettingsPayload:payloadCopy configurationName:v9 grade:2];
         }
 
         else
         {
-          if (![(NEConfiguration *)v7 isEqualToString:@"com.apple.relay.managed"])
+          if (![(NEConfiguration *)typeCopy isEqualToString:@"com.apple.relay.managed"])
           {
             v115 = ne_log_obj();
             if (os_log_type_enabled(v115, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v228 = v7;
+              v228 = typeCopy;
               _os_log_error_impl(&dword_1BA83C000, v115, OS_LOG_TYPE_ERROR, "NEProfileIngestion createConfigurationFromPayload: unsupported payload type '%@'", buf, 0xCu);
             }
 
@@ -2511,7 +2511,7 @@ LABEL_56:
             goto LABEL_58;
           }
 
-          v56 = [[NEConfiguration alloc] initWithRelayPayload:v6 configurationName:v9 grade:1];
+          v56 = [[NEConfiguration alloc] initWithRelayPayload:payloadCopy configurationName:v9 grade:1];
         }
 
         goto LABEL_55;
@@ -2519,20 +2519,20 @@ LABEL_56:
 
       v193 = v15;
       v196 = v10;
-      v186 = v8;
+      v186 = payloadAtom;
       v57 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v81 = [(NEProfileIngestion *)self currentConfigurations];
+      currentConfigurations4 = [(NEProfileIngestion *)self currentConfigurations];
 
       v185 = v9;
-      if (v81)
+      if (currentConfigurations4)
       {
-        v82 = v7;
+        v82 = typeCopy;
         v206 = 0u;
         v207 = 0u;
         v204 = 0u;
         v205 = 0u;
-        v83 = [(NEProfileIngestion *)self currentConfigurations];
-        v84 = [v83 countByEnumeratingWithState:&v204 objects:v223 count:16];
+        currentConfigurations5 = [(NEProfileIngestion *)self currentConfigurations];
+        v84 = [currentConfigurations5 countByEnumeratingWithState:&v204 objects:v223 count:16];
         if (v84)
         {
           v85 = v84;
@@ -2543,45 +2543,45 @@ LABEL_56:
             {
               if (*v205 != v86)
               {
-                objc_enumerationMutation(v83);
+                objc_enumerationMutation(currentConfigurations5);
               }
 
               v88 = *(*(&v204 + 1) + 8 * j);
-              v89 = [v88 dnsProxy];
-              if (v89)
+              dnsProxy = [v88 dnsProxy];
+              if (dnsProxy)
               {
-                v90 = v89;
-                v91 = [v88 payloadInfo];
+                v90 = dnsProxy;
+                payloadInfo2 = [v88 payloadInfo];
 
-                if (!v91)
+                if (!payloadInfo2)
                 {
                   [v57 addObject:v88];
                 }
               }
             }
 
-            v85 = [v83 countByEnumeratingWithState:&v204 objects:v223 count:16];
+            v85 = [currentConfigurations5 countByEnumeratingWithState:&v204 objects:v223 count:16];
           }
 
           while (v85);
         }
 
-        v7 = v82;
-        self = v199;
+        typeCopy = v82;
+        self = selfCopy;
         v9 = v185;
       }
 
-      v92 = [NEConfiguration initWithDNSProxyPayload:v6 configurationName:v9 grade:?];
+      v92 = [NEConfiguration initWithDNSProxyPayload:payloadCopy configurationName:v9 grade:?];
       [(NEProfileIngestion *)self setIngestedConfiguration:v92];
 
-      v93 = [(NEProfileIngestion *)self ingestedConfiguration];
+      ingestedConfiguration2 = [(NEProfileIngestion *)self ingestedConfiguration];
 
-      if (v93)
+      if (ingestedConfiguration2)
       {
-        v188 = v7;
-        v190 = v6;
-        v94 = [(NEProfileIngestion *)self ingestedConfiguration];
-        [v94 setName:v9];
+        v188 = typeCopy;
+        v190 = payloadCopy;
+        ingestedConfiguration3 = [(NEProfileIngestion *)self ingestedConfiguration];
+        [ingestedConfiguration3 setName:v9];
 
         v202 = 0u;
         v203 = 0u;
@@ -2617,7 +2617,7 @@ LABEL_56:
                 _os_log_impl(&dword_1BA83C000, v100, OS_LOG_TYPE_INFO, "%@ createConfigurationFromPayload: Removing overridden DNS proxy configuration %@.", buf, 0x16u);
 
                 v57 = v103;
-                self = v199;
+                self = selfCopy;
               }
 
               [(NEProfileIngestion *)self removeConfiguration:v99];
@@ -2633,15 +2633,15 @@ LABEL_56:
       }
 
 LABEL_154:
-      v8 = v186;
+      payloadAtom = v186;
       goto LABEL_155;
     }
 
-    v188 = v7;
-    v62 = [v8 objectForKeyedSubscript:@"FilterURLs"];
+    v188 = typeCopy;
+    v62 = [payloadAtom objectForKeyedSubscript:@"FilterURLs"];
     if (isa_nsnumber(v62))
     {
-      v63 = [v8 objectForKeyedSubscript:@"FilterURLs"];
+      v63 = [payloadAtom objectForKeyedSubscript:@"FilterURLs"];
       v64 = [v63 BOOLValue] ^ 1;
     }
 
@@ -2651,22 +2651,22 @@ LABEL_154:
     }
 
     v57 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v190 = v6;
+    v190 = payloadCopy;
     v193 = v15;
-    v186 = v8;
+    v186 = payloadAtom;
     v196 = v10;
     if (v64)
     {
-      v71 = [(NEProfileIngestion *)self currentConfigurations];
+      currentConfigurations6 = [(NEProfileIngestion *)self currentConfigurations];
 
-      if (v71)
+      if (currentConfigurations6)
       {
         v214 = 0u;
         v215 = 0u;
         v212 = 0u;
         v213 = 0u;
-        v72 = [(NEProfileIngestion *)self currentConfigurations];
-        v73 = [v72 countByEnumeratingWithState:&v212 objects:v225 count:16];
+        currentConfigurations7 = [(NEProfileIngestion *)self currentConfigurations];
+        v73 = [currentConfigurations7 countByEnumeratingWithState:&v212 objects:v225 count:16];
         if (v73)
         {
           v74 = v73;
@@ -2677,38 +2677,38 @@ LABEL_154:
             {
               if (*v213 != v75)
               {
-                objc_enumerationMutation(v72);
+                objc_enumerationMutation(currentConfigurations7);
               }
 
               v77 = *(*(&v212 + 1) + 8 * m);
-              v78 = [v77 contentFilter];
+              contentFilter = [v77 contentFilter];
 
-              if (v78)
+              if (contentFilter)
               {
-                v79 = [v77 payloadInfo];
+                payloadInfo3 = [v77 payloadInfo];
 
-                if (!v79)
+                if (!payloadInfo3)
                 {
                   [v57 addObject:v77];
                 }
               }
             }
 
-            v74 = [v72 countByEnumeratingWithState:&v212 objects:v225 count:16];
+            v74 = [currentConfigurations7 countByEnumeratingWithState:&v212 objects:v225 count:16];
           }
 
           while (v74);
         }
 
-        self = v199;
+        self = selfCopy;
       }
 
-      v80 = [[NEConfiguration alloc] initWithContentFilterPayload:v6 configurationName:v9 grade:1];
+      v80 = [[NEConfiguration alloc] initWithContentFilterPayload:payloadCopy configurationName:v9 grade:1];
       goto LABEL_142;
     }
 
     v105 = [NEConfiguration alloc];
-    v106 = v6;
+    v106 = payloadCopy;
     v198 = v9;
     if (!v105)
     {
@@ -2717,7 +2717,7 @@ LABEL_154:
     }
 
     v184 = v106;
-    v107 = [v106 payloadAtom];
+    payloadAtom2 = [v106 payloadAtom];
     v108 = ne_log_large_obj();
     if (os_log_type_enabled(v108, OS_LOG_TYPE_DEBUG))
     {
@@ -2728,7 +2728,7 @@ LABEL_154:
       _os_log_debug_impl(&dword_1BA83C000, v108, OS_LOG_TYPE_DEBUG, "%@ initWithURLFilterPayload", buf, 0xCu);
     }
 
-    v109 = [v107 objectForKeyedSubscript:@"FilterURLs"];
+    v109 = [payloadAtom2 objectForKeyedSubscript:@"FilterURLs"];
     v110 = isa_nsnumber(v109);
 
     if ((v110 & 1) == 0)
@@ -2745,15 +2745,15 @@ LABEL_154:
       goto LABEL_139;
     }
 
-    if (!v107)
+    if (!payloadAtom2)
     {
       goto LABEL_136;
     }
 
-    v111 = [v107 objectForKeyedSubscript:@"FilterType"];
+    v111 = [payloadAtom2 objectForKeyedSubscript:@"FilterType"];
     if (v111)
     {
-      v109 = [v107 objectForKeyedSubscript:@"FilterType"];
+      v109 = [payloadAtom2 objectForKeyedSubscript:@"FilterType"];
       if (([@"Plugin" isEqualToString:v109] & 1) == 0)
       {
 
@@ -2776,7 +2776,7 @@ LABEL_181:
       }
     }
 
-    v116 = [v107 objectForKeyedSubscript:@"PluginBundleID"];
+    v116 = [payloadAtom2 objectForKeyedSubscript:@"PluginBundleID"];
 
     if (v111)
     {
@@ -2805,23 +2805,23 @@ LABEL_137:
 
 LABEL_138:
       v80 = 0;
-      self = v199;
+      self = selfCopy;
 LABEL_139:
       v106 = v184;
 LABEL_140:
 
 LABEL_141:
-      v6 = v190;
+      payloadCopy = v190;
 LABEL_142:
       [(NEProfileIngestion *)self setIngestedConfiguration:v80];
 
-      v130 = [(NEProfileIngestion *)self ingestedConfiguration];
+      ingestedConfiguration4 = [(NEProfileIngestion *)self ingestedConfiguration];
 
-      if (v130)
+      if (ingestedConfiguration4)
       {
-        v131 = [(NEProfileIngestion *)self ingestedConfiguration];
+        ingestedConfiguration5 = [(NEProfileIngestion *)self ingestedConfiguration];
         v185 = v9;
-        [v131 setName:v9];
+        [ingestedConfiguration5 setName:v9];
 
         v210 = 0u;
         v211 = 0u;
@@ -2857,7 +2857,7 @@ LABEL_142:
                 _os_log_impl(&dword_1BA83C000, v137, OS_LOG_TYPE_DEFAULT, "%@ createConfigurationFromPayload: Removing overridden content filter configuration %@.", buf, 0x16u);
 
                 v57 = v140;
-                self = v199;
+                self = selfCopy;
               }
 
               [(NEProfileIngestion *)self removeConfiguration:v136];
@@ -2871,17 +2871,17 @@ LABEL_142:
 
 LABEL_152:
 
-        v7 = v188;
-        v6 = v190;
+        typeCopy = v188;
+        payloadCopy = v190;
         v9 = v185;
-        v8 = v186;
+        payloadAtom = v186;
 LABEL_155:
         v15 = v193;
         v10 = v196;
         goto LABEL_56;
       }
 
-      v7 = v188;
+      typeCopy = v188;
       goto LABEL_154;
     }
 
@@ -2889,9 +2889,9 @@ LABEL_155:
     v118 = objc_alloc_init(NEURLFilterConfiguration);
     [(NEConfiguration *)v105 setUrlFilter:v118];
 
-    v119 = [(NEConfiguration *)v105 urlFilter];
+    urlFilter = [(NEConfiguration *)v105 urlFilter];
 
-    if (!v119)
+    if (!urlFilter)
     {
       v129 = ne_log_obj();
       if (!os_log_type_enabled(v129, OS_LOG_TYPE_ERROR))
@@ -2907,28 +2907,28 @@ LABEL_155:
       goto LABEL_181;
     }
 
-    v120 = [v107 objectForKeyedSubscript:@"PluginBundleID"];
-    v121 = [(NEConfiguration *)v105 urlFilter];
-    [v121 setAppBundleIdentifier:v120];
+    v120 = [payloadAtom2 objectForKeyedSubscript:@"PluginBundleID"];
+    urlFilter2 = [(NEConfiguration *)v105 urlFilter];
+    [urlFilter2 setAppBundleIdentifier:v120];
 
-    v122 = [(NEConfiguration *)v105 urlFilter];
-    v123 = [v122 appBundleIdentifier];
-    [(NEConfiguration *)v105 setApplication:v123];
+    urlFilter3 = [(NEConfiguration *)v105 urlFilter];
+    appBundleIdentifier = [urlFilter3 appBundleIdentifier];
+    [(NEConfiguration *)v105 setApplication:appBundleIdentifier];
 
-    v124 = [(NEConfiguration *)v105 urlFilter];
-    v125 = [v124 appBundleIdentifier];
-    [(NEConfiguration *)v105 setApplicationIdentifier:v125];
+    urlFilter4 = [(NEConfiguration *)v105 urlFilter];
+    appBundleIdentifier2 = [urlFilter4 appBundleIdentifier];
+    [(NEConfiguration *)v105 setApplicationIdentifier:appBundleIdentifier2];
 
-    v126 = [v107 objectForKeyedSubscript:@"Enabled"];
+    v126 = [payloadAtom2 objectForKeyedSubscript:@"Enabled"];
     if (isa_nsnumber(v126))
     {
-      v127 = [v107 objectForKeyedSubscript:@"Enabled"];
-      v128 = [v127 BOOLValue];
+      v127 = [payloadAtom2 objectForKeyedSubscript:@"Enabled"];
+      bOOLValue = [v127 BOOLValue];
 
-      if (!v128)
+      if (!bOOLValue)
       {
 LABEL_162:
-        v149 = [v107 objectForKeyedSubscript:@"URLFilterParameters"];
+        v149 = [payloadAtom2 objectForKeyedSubscript:@"URLFilterParameters"];
         if ((isa_nsdictionary(v149) & 1) == 0)
         {
           v177 = ne_log_obj();
@@ -2947,35 +2947,35 @@ LABEL_162:
           goto LABEL_179;
         }
 
-        v150 = [(NEConfiguration *)v105 urlFilter];
-        [v150 setShouldFailClosed:0];
+        urlFilter5 = [(NEConfiguration *)v105 urlFilter];
+        [urlFilter5 setShouldFailClosed:0];
 
-        v151 = [v149 objectForKeyedSubscript:@"URLFilterFailClosed"];
-        if (isa_nsnumber(v151))
+        urlFilter13 = [v149 objectForKeyedSubscript:@"URLFilterFailClosed"];
+        if (isa_nsnumber(urlFilter13))
         {
           v152 = [v149 objectForKeyedSubscript:@"URLFilterFailClosed"];
-          v153 = [v152 BOOLValue];
+          bOOLValue2 = [v152 BOOLValue];
 
-          if (!v153)
+          if (!bOOLValue2)
           {
 LABEL_167:
             v154 = [v149 objectForKeyedSubscript:@"URLFilterControlProviderDesignatedRequirement"];
-            v155 = [(NEConfiguration *)v105 urlFilter];
-            [v155 setControlProviderDesignatedRequirement:v154];
+            urlFilter6 = [(NEConfiguration *)v105 urlFilter];
+            [urlFilter6 setControlProviderDesignatedRequirement:v154];
 
             v156 = [v149 objectForKeyedSubscript:@"URLFilterControlProviderBundleIdentifier"];
-            v157 = [(NEConfiguration *)v105 urlFilter];
-            [v157 setControlProviderBundleIdentifier:v156];
+            urlFilter7 = [(NEConfiguration *)v105 urlFilter];
+            [urlFilter7 setControlProviderBundleIdentifier:v156];
 
             v158 = [v149 objectForKeyedSubscript:@"URLPrefilterFetchFrequency"];
-            LODWORD(v157) = isa_nsnumber(v158);
+            LODWORD(urlFilter7) = isa_nsnumber(v158);
 
-            if (v157)
+            if (urlFilter7)
             {
               v159 = [v149 objectForKeyedSubscript:@"URLPrefilterFetchFrequency"];
-              v160 = [v159 intValue];
-              v161 = [(NEConfiguration *)v105 urlFilter];
-              [v161 setPrefilterFetchInterval:v160];
+              intValue2 = [v159 intValue];
+              urlFilter8 = [(NEConfiguration *)v105 urlFilter];
+              [urlFilter8 setPrefilterFetchInterval:intValue2];
             }
 
             v162 = [v149 objectForKeyedSubscript:@"PIRServerURL"];
@@ -2986,8 +2986,8 @@ LABEL_167:
               v164 = objc_alloc(MEMORY[0x1E695DFF8]);
               v165 = [v149 objectForKeyedSubscript:@"PIRServerURL"];
               v166 = [v164 initWithString:v165];
-              v167 = [(NEConfiguration *)v105 urlFilter];
-              [v167 setPirServerURL:v166];
+              urlFilter9 = [(NEConfiguration *)v105 urlFilter];
+              [urlFilter9 setPirServerURL:v166];
             }
 
             v168 = [v149 objectForKeyedSubscript:@"PIRPrivacyPassIssuerURL"];
@@ -2998,37 +2998,37 @@ LABEL_167:
               v170 = objc_alloc(MEMORY[0x1E695DFF8]);
               v171 = [v149 objectForKeyedSubscript:@"PIRPrivacyPassIssuerURL"];
               v172 = [v170 initWithString:v171];
-              v173 = [(NEConfiguration *)v105 urlFilter];
-              [v173 setPirPrivacyPassIssuerURL:v172];
+              urlFilter10 = [(NEConfiguration *)v105 urlFilter];
+              [urlFilter10 setPirPrivacyPassIssuerURL:v172];
             }
 
             v174 = [v149 objectForKeyedSubscript:@"PIRAuthenticationToken"];
-            v175 = [(NEConfiguration *)v105 urlFilter];
-            [v175 setPirAuthenticationToken:v174];
+            urlFilter11 = [(NEConfiguration *)v105 urlFilter];
+            [urlFilter11 setPirAuthenticationToken:v174];
 
             v176 = ne_log_obj();
             if (os_log_type_enabled(v176, OS_LOG_TYPE_DEBUG))
             {
               v179 = objc_opt_class();
               v180 = v179;
-              v181 = [(NEConfiguration *)v105 urlFilter];
+              urlFilter12 = [(NEConfiguration *)v105 urlFilter];
               *buf = 138412546;
               v228 = v179;
               v229 = 2112;
-              v230 = v181;
+              v230 = urlFilter12;
               _os_log_debug_impl(&dword_1BA83C000, v176, OS_LOG_TYPE_DEBUG, "%@ initWithURLFilterPayload: config %@", buf, 0x16u);
             }
 
             v80 = v105;
 LABEL_179:
-            self = v199;
+            self = selfCopy;
             v106 = v184;
 
             goto LABEL_140;
           }
 
-          v151 = [(NEConfiguration *)v105 urlFilter];
-          [v151 setShouldFailClosed:1];
+          urlFilter13 = [(NEConfiguration *)v105 urlFilter];
+          [urlFilter13 setShouldFailClosed:1];
         }
 
         goto LABEL_167;
@@ -3039,8 +3039,8 @@ LABEL_179:
     {
     }
 
-    v148 = [(NEConfiguration *)v105 urlFilter];
-    [v148 setEnabled:1];
+    urlFilter14 = [(NEConfiguration *)v105 urlFilter];
+    [urlFilter14 setEnabled:1];
 
     goto LABEL_162;
   }
@@ -3052,20 +3052,20 @@ LABEL_59:
   return v43;
 }
 
-- (void)removeAllConfigurationsWithPayload:(id)a3 profile:(id)a4
+- (void)removeAllConfigurationsWithPayload:(id)payload profile:(id)profile
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (isa_nsstring(v6) && (isa_nsstring(v7) & 1) != 0)
+  payloadCopy = payload;
+  profileCopy = profile;
+  if (isa_nsstring(payloadCopy) && (isa_nsstring(profileCopy) & 1) != 0)
   {
     v8 = ne_log_obj();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v39 = v6;
+      v39 = payloadCopy;
       v40 = 2112;
-      v41 = v7;
+      v41 = profileCopy;
       _os_log_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_DEFAULT, "Removing existing configurations with payload UUID %@ and profile UUID %@", buf, 0x16u);
     }
 
@@ -3074,14 +3074,14 @@ LABEL_59:
     v34[1] = 3221225472;
     v34[2] = __65__NEProfileIngestion_removeAllConfigurationsWithPayload_profile___block_invoke;
     v34[3] = &unk_1E7F0A690;
-    v29 = v6;
-    v35 = v6;
-    v28 = v7;
-    v36 = v7;
+    v29 = payloadCopy;
+    v35 = payloadCopy;
+    v28 = profileCopy;
+    v36 = profileCopy;
     v10 = [v9 predicateWithBlock:v34];
-    v11 = [(NEProfileIngestion *)self currentConfigurations];
+    currentConfigurations = [(NEProfileIngestion *)self currentConfigurations];
     v27 = v10;
-    v12 = [v11 filteredArrayUsingPredicate:v10];
+    v12 = [currentConfigurations filteredArrayUsingPredicate:v10];
 
     v32 = 0u;
     v33 = 0u;
@@ -3114,24 +3114,24 @@ LABEL_59:
               goto LABEL_15;
             }
 
-            v22 = [v18 name];
-            v23 = [v18 identifier];
+            name = [v18 name];
+            identifier = [v18 identifier];
             *buf = 138412546;
-            v39 = v22;
+            v39 = name;
             v40 = 2112;
-            v41 = v23;
+            v41 = identifier;
             _os_log_impl(&dword_1BA83C000, v21, OS_LOG_TYPE_DEFAULT, "Removed duplicate configuration %@ (%@)", buf, 0x16u);
             goto LABEL_13;
           }
 
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
-            v22 = [v18 name];
-            v23 = [v18 identifier];
+            name = [v18 name];
+            identifier = [v18 identifier];
             *buf = 138412546;
-            v39 = v22;
+            v39 = name;
             v40 = 2112;
-            v41 = v23;
+            v41 = identifier;
             _os_log_error_impl(&dword_1BA83C000, v21, OS_LOG_TYPE_ERROR, "Failed to remove duplicate configuration %@ (%@)", buf, 0x16u);
 LABEL_13:
           }
@@ -3150,8 +3150,8 @@ LABEL_15:
     }
 
     v25 = v35;
-    v7 = v28;
-    v6 = v29;
+    profileCopy = v28;
+    payloadCopy = v29;
   }
 
   else
@@ -3160,9 +3160,9 @@ LABEL_15:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v39 = v6;
+      v39 = payloadCopy;
       v40 = 2112;
-      v41 = v7;
+      v41 = profileCopy;
       _os_log_error_impl(&dword_1BA83C000, v25, OS_LOG_TYPE_ERROR, "Payload UUID (%@) and/or profile UUID (%@) is invalid", buf, 0x16u);
     }
   }
@@ -3208,23 +3208,23 @@ uint64_t __65__NEProfileIngestion_removeAllConfigurationsWithPayload_profile___b
   return v9;
 }
 
-- (BOOL)isInstalled:(id)a3
+- (BOOL)isInstalled:(id)installed
 {
-  v3 = [(NEProfileIngestion *)self findConfigurationByPayloadUUID:a3];
+  v3 = [(NEProfileIngestion *)self findConfigurationByPayloadUUID:installed];
 
   return v3 != 0;
 }
 
-- (id)findConfigurationByConfigurationID:(id)a3
+- (id)findConfigurationByConfigurationID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy && [dCopy length])
   {
-    v6 = [(NEProfileIngestion *)self currentConfigurations];
+    currentConfigurations = [(NEProfileIngestion *)self currentConfigurations];
 
-    if (!v6)
+    if (!currentConfigurations)
     {
       goto LABEL_17;
     }
@@ -3233,34 +3233,34 @@ uint64_t __65__NEProfileIngestion_removeAllConfigurationsWithPayload_profile___b
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(NEProfileIngestion *)self currentConfigurations];
-    v6 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
-    if (v6)
+    currentConfigurations2 = [(NEProfileIngestion *)self currentConfigurations];
+    currentConfigurations = [currentConfigurations2 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    if (currentConfigurations)
     {
       v8 = *v17;
       while (2)
       {
-        for (i = 0; i != v6; i = i + 1)
+        for (i = 0; i != currentConfigurations; i = i + 1)
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(currentConfigurations2);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 identifier];
-          v12 = [v11 UUIDString];
-          v13 = [v12 isEqualToString:v5];
+          identifier = [v10 identifier];
+          uUIDString = [identifier UUIDString];
+          v13 = [uUIDString isEqualToString:v5];
 
           if (v13)
           {
-            v6 = v10;
+            currentConfigurations = v10;
             goto LABEL_16;
           }
         }
 
-        v6 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
-        if (v6)
+        currentConfigurations = [currentConfigurations2 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        if (currentConfigurations)
         {
           continue;
         }
@@ -3272,14 +3272,14 @@ uint64_t __65__NEProfileIngestion_removeAllConfigurationsWithPayload_profile___b
 
   else
   {
-    v7 = ne_log_obj();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    currentConfigurations2 = ne_log_obj();
+    if (os_log_type_enabled(currentConfigurations2, OS_LOG_TYPE_DEBUG))
     {
       *buf = 0;
-      _os_log_debug_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_DEBUG, "findConfigurationByConfigurationID failed: empty identifier", buf, 2u);
+      _os_log_debug_impl(&dword_1BA83C000, currentConfigurations2, OS_LOG_TYPE_DEBUG, "findConfigurationByConfigurationID failed: empty identifier", buf, 2u);
     }
 
-    v6 = 0;
+    currentConfigurations = 0;
   }
 
 LABEL_16:
@@ -3287,31 +3287,31 @@ LABEL_16:
 LABEL_17:
   v14 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return currentConfigurations;
 }
 
-- (id)findConfigurationByPayloadUUID:(id)a3
+- (id)findConfigurationByPayloadUUID:(id)d
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v31 = v4;
+    v31 = dCopy;
     _os_log_debug_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_DEBUG, "findConfigurationByPayloadUUID for payloadUUID %@", buf, 0xCu);
   }
 
-  v6 = [(NEProfileIngestion *)self currentConfigurations];
+  currentConfigurations = [(NEProfileIngestion *)self currentConfigurations];
 
-  if (v6)
+  if (currentConfigurations)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = [(NEProfileIngestion *)self currentConfigurations];
-    v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    currentConfigurations2 = [(NEProfileIngestion *)self currentConfigurations];
+    v8 = [currentConfigurations2 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v8)
     {
       v9 = v8;
@@ -3323,20 +3323,20 @@ LABEL_17:
         {
           if (*v26 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(currentConfigurations2);
           }
 
           v12 = *(*(&v25 + 1) + 8 * v11);
           v13 = ne_log_obj();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
           {
-            v19 = [v12 payloadInfo];
-            if (v19)
+            payloadInfo = [v12 payloadInfo];
+            if (payloadInfo)
             {
-              v20 = [v12 payloadInfo];
-              v21 = [v20 payloadUUID];
+              payloadInfo2 = [v12 payloadInfo];
+              payloadUUID = [payloadInfo2 payloadUUID];
               *buf = 138412290;
-              v31 = v21;
+              v31 = payloadUUID;
               _os_log_debug_impl(&dword_1BA83C000, v13, OS_LOG_TYPE_DEBUG, "findConfigurationByPayloadUUID check config with payloadUUID %@", buf, 0xCu);
             }
 
@@ -3348,17 +3348,17 @@ LABEL_17:
             }
           }
 
-          v14 = [v12 payloadInfo];
-          if (v14)
+          payloadInfo3 = [v12 payloadInfo];
+          if (payloadInfo3)
           {
-            v15 = v14;
-            v16 = [v12 payloadInfo];
-            v17 = [v16 payloadUUID];
-            v18 = [v17 isEqualToString:v4];
+            v15 = payloadInfo3;
+            payloadInfo4 = [v12 payloadInfo];
+            payloadUUID2 = [payloadInfo4 payloadUUID];
+            v18 = [payloadUUID2 isEqualToString:dCopy];
 
             if (v18)
             {
-              v6 = v12;
+              currentConfigurations = v12;
               goto LABEL_21;
             }
           }
@@ -3367,35 +3367,35 @@ LABEL_17:
         }
 
         while (v9 != v11);
-        v22 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v22 = [currentConfigurations2 countByEnumeratingWithState:&v25 objects:v29 count:16];
         v9 = v22;
       }
 
       while (v22);
     }
 
-    v6 = 0;
+    currentConfigurations = 0;
 LABEL_21:
   }
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return currentConfigurations;
 }
 
-- (id)setAsideConfigurationName:(id)a3 unsetAside:(BOOL)a4
+- (id)setAsideConfigurationName:(id)name unsetAside:(BOOL)aside
 {
-  v4 = a4;
+  asideCopy = aside;
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NEProfileIngestion *)self findConfigurationByConfigurationID:v6];
+  nameCopy = name;
+  v7 = [(NEProfileIngestion *)self findConfigurationByConfigurationID:nameCopy];
   v8 = ne_log_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v27 = 138412802;
-    *v28 = v6;
+    *v28 = nameCopy;
     *&v28[8] = 1024;
-    *&v28[10] = v4;
+    *&v28[10] = asideCopy;
     v29 = 2112;
     v30 = v7;
     _os_log_debug_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_DEBUG, "setAsideConfigurationName: configID %@, unset %d, configurations %@", &v27, 0x1Cu);
@@ -3407,18 +3407,18 @@ LABEL_21:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v27 = 138412290;
-      *v28 = v6;
+      *v28 = nameCopy;
       _os_log_debug_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_DEBUG, "setAsideConfigurationName can't find configuration of ID  %@", &v27, 0xCu);
     }
 
     goto LABEL_16;
   }
 
-  v9 = [v7 name];
-  v10 = v9;
-  if (v4)
+  name = [v7 name];
+  name3 = name;
+  if (asideCopy)
   {
-    v11 = [v9 hasSuffix:v6];
+    v11 = [name hasSuffix:nameCopy];
 
     if (!v11)
     {
@@ -3426,7 +3426,7 @@ LABEL_21:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         v27 = 138412290;
-        *v28 = v6;
+        *v28 = nameCopy;
         v17 = "setAsideConfigurationName: unset-aside failed. Name '%@' is not a set-aside name";
         goto LABEL_28;
       }
@@ -3436,9 +3436,9 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v12 = [v7 name];
-    v13 = [v12 length];
-    v14 = [v6 length];
+    name2 = [v7 name];
+    v13 = [name2 length];
+    v14 = [nameCopy length];
 
     v15 = v13 - v14;
     if (v13 == v14)
@@ -3447,7 +3447,7 @@ LABEL_16:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         v27 = 138412290;
-        *v28 = v6;
+        *v28 = nameCopy;
         v17 = "setAsideConfigurationName: unset-aside failed. Name '%@' would be empty after unset-aside";
 LABEL_28:
         _os_log_error_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_ERROR, v17, &v27, 0xCu);
@@ -3457,13 +3457,13 @@ LABEL_28:
       goto LABEL_16;
     }
 
-    v10 = [v7 name];
-    v18 = [v10 substringToIndex:v15];
+    name3 = [v7 name];
+    v18 = [name3 substringToIndex:v15];
   }
 
   else
   {
-    v18 = [v9 stringByAppendingString:v6];
+    v18 = [name stringByAppendingString:nameCopy];
   }
 
   v16 = v18;
@@ -3481,7 +3481,7 @@ LABEL_14:
     }
 
     v27 = 67109378;
-    *v28 = v4;
+    *v28 = asideCopy;
     *&v28[4] = 2112;
     *&v28[6] = v16;
     v26 = "setAsideConfigurationName failed (unSetAside = %d), name '%@' in use.";
@@ -3490,9 +3490,9 @@ LABEL_26:
     goto LABEL_14;
   }
 
-  v24 = [v7 payloadInfo];
+  payloadInfo = [v7 payloadInfo];
 
-  if (!v24)
+  if (!payloadInfo)
   {
     v20 = ne_log_obj();
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -3501,15 +3501,15 @@ LABEL_26:
     }
 
     v27 = 67109378;
-    *v28 = v4;
+    *v28 = asideCopy;
     *&v28[4] = 2112;
     *&v28[6] = v16;
     v26 = "setAsideConfigurationName failed (unSetAside = %d), configuration '%@' is missing payload info.";
     goto LABEL_26;
   }
 
-  v25 = [v7 payloadInfo];
-  [v25 setIsSetAside:!v4];
+  payloadInfo2 = [v7 payloadInfo];
+  [payloadInfo2 setIsSetAside:!asideCopy];
 
   [v7 setName:v16];
   [(NEProfileIngestion *)self saveConfiguration:v7 returnError:0];
@@ -3521,45 +3521,45 @@ LABEL_17:
   return v21;
 }
 
-- (id)findConfigurationByName:(id)a3
+- (id)findConfigurationByName:(id)name
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NEProfileIngestion *)self currentConfigurations];
+  nameCopy = name;
+  currentConfigurations = [(NEProfileIngestion *)self currentConfigurations];
 
-  if (v5)
+  if (currentConfigurations)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(NEProfileIngestion *)self currentConfigurations];
-    v5 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
-    if (v5)
+    currentConfigurations2 = [(NEProfileIngestion *)self currentConfigurations];
+    currentConfigurations = [currentConfigurations2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    if (currentConfigurations)
     {
       v7 = *v15;
       while (2)
       {
-        for (i = 0; i != v5; i = i + 1)
+        for (i = 0; i != currentConfigurations; i = i + 1)
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(currentConfigurations2);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 name];
-          v11 = [v10 isEqualToString:v4];
+          name = [v9 name];
+          v11 = [name isEqualToString:nameCopy];
 
           if (v11)
           {
-            v5 = v9;
+            currentConfigurations = v9;
             goto LABEL_12;
           }
         }
 
-        v5 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
-        if (v5)
+        currentConfigurations = [currentConfigurations2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        if (currentConfigurations)
         {
           continue;
         }
@@ -3573,12 +3573,12 @@ LABEL_12:
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return currentConfigurations;
 }
 
 - (BOOL)loadConfigurationsForceReloadFromDisk
 {
-  v2 = self;
+  selfCopy = self;
   v26 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -3588,24 +3588,24 @@ LABEL_12:
     v17 = 1;
     [(NEProfileIngestion *)self currentConfigurations];
 
-    v3 = [(NEProfileIngestion *)v2 manager];
+    manager = [(NEProfileIngestion *)selfCopy manager];
     v4 = MEMORY[0x1E69E96A0];
     v5 = MEMORY[0x1E69E96A0];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __58__NEProfileIngestion_loadConfigurationsWithRefreshOption___block_invoke;
     v13[3] = &unk_1E7F0A668;
-    v13[4] = v2;
+    v13[4] = selfCopy;
     v13[5] = &v14;
-    [v3 loadConfigurationsWithCompletionQueue:v4 handler:v13];
+    [manager loadConfigurationsWithCompletionQueue:v4 handler:v13];
 
     v6 = ne_log_obj();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v9 = objc_opt_class();
       v10 = *(v15 + 24);
-      v11 = [(NEProfileIngestion *)v2 currentConfigurations];
-      v12 = [v11 count];
+      currentConfigurations = [(NEProfileIngestion *)selfCopy currentConfigurations];
+      v12 = [currentConfigurations count];
       *buf = 138413058;
       v19 = v9;
       v20 = 1024;
@@ -3617,12 +3617,12 @@ LABEL_12:
       _os_log_debug_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_DEBUG, "%@ loadConfigurationsWithRefreshOption (refresh = %d) done, error = %d, #configs loaded %lu", buf, 0x22u);
     }
 
-    LOBYTE(v2) = *(v15 + 24) ^ 1;
+    LOBYTE(selfCopy) = *(v15 + 24) ^ 1;
     _Block_object_dispose(&v14, 8);
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v2 & 1;
+  return selfCopy & 1;
 }
 
 void __58__NEProfileIngestion_loadConfigurationsWithRefreshOption___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3675,27 +3675,27 @@ void __58__NEProfileIngestion_loadConfigurationsWithRefreshOption___block_invoke
   [(NEProfileIngestion *)&v2 dealloc];
 }
 
-- (NEProfileIngestion)initWithNameAndType:(id)a3 payloadType:(id)a4
+- (NEProfileIngestion)initWithNameAndType:(id)type payloadType:(id)payloadType
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  payloadTypeCopy = payloadType;
   v20.receiver = self;
   v20.super_class = NEProfileIngestion;
   v8 = [(NEProfileIngestion *)&v20 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [typeCopy copy];
     clientName = v8->_clientName;
     v8->_clientName = v9;
 
-    v11 = [v7 copy];
+    v11 = [payloadTypeCopy copy];
     payloadType = v8->_payloadType;
     v8->_payloadType = v11;
 
-    v13 = [[NEConfigurationManager alloc] initSynchronous];
+    initSynchronous = [[NEConfigurationManager alloc] initSynchronous];
     manager = v8->_manager;
-    v8->_manager = v13;
+    v8->_manager = initSynchronous;
 
     if (!v8->_manager)
     {
@@ -3711,9 +3711,9 @@ void __58__NEProfileIngestion_loadConfigurationsWithRefreshOption___block_invoke
     *buf = 138412802;
     v22 = v18;
     v23 = 2112;
-    v24 = v6;
+    v24 = typeCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = payloadTypeCopy;
     v19 = v18;
     _os_log_debug_impl(&dword_1BA83C000, v15, OS_LOG_TYPE_DEBUG, "%@ initWithNameAndType name %@, type %@", buf, 0x20u);
   }
@@ -3722,16 +3722,16 @@ void __58__NEProfileIngestion_loadConfigurationsWithRefreshOption___block_invoke
   return v8;
 }
 
-+ (id)getServiceIDForPayload:(id)a3
++ (id)getServiceIDForPayload:(id)payload
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"PayloadType"];
+  payloadCopy = payload;
+  v4 = [payloadCopy objectForKeyedSubscript:@"PayloadType"];
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v38 = v3;
+    v38 = payloadCopy;
     _os_log_debug_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_DEBUG, "getServiceIDForPayload start with payload stub %@", buf, 0xCu);
   }
 
@@ -3747,7 +3747,7 @@ void __58__NEProfileIngestion_loadConfigurationsWithRefreshOption___block_invoke
     goto LABEL_40;
   }
 
-  log = [v3 objectForKeyedSubscript:@"PayloadUUID"];
+  log = [payloadCopy objectForKeyedSubscript:@"PayloadUUID"];
   if (!log)
   {
     log = ne_log_obj();
@@ -3807,7 +3807,7 @@ LABEL_40:
 
   v13 = v12;
   v29 = v4;
-  v30 = v3;
+  v30 = payloadCopy;
   v14 = *v33;
   while (2)
   {
@@ -3874,7 +3874,7 @@ LABEL_32:
   v22 = 0;
 LABEL_43:
   v4 = v29;
-  v3 = v30;
+  payloadCopy = v30;
 LABEL_45:
 
   CFRelease(v11);

@@ -1,48 +1,48 @@
 @interface HUChimeOnAccessoriesListItem
 - (HUChimeOnAccessoriesListItem)init;
-- (HUChimeOnAccessoriesListItem)initWithAccessory:(id)a3;
-- (HUChimeOnAccessoriesListItem)initWithHome:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUChimeOnAccessoriesListItem)initWithAccessory:(id)accessory;
+- (HUChimeOnAccessoriesListItem)initWithHome:(id)home;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUChimeOnAccessoriesListItem
 
 - (HUChimeOnAccessoriesListItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUChimeOnAccessoriesListItem.m" lineNumber:20 description:{@"%s is unavailable; use %@ instead", "-[HUChimeOnAccessoriesListItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUChimeOnAccessoriesListItem.m" lineNumber:20 description:{@"%s is unavailable; use %@ instead", "-[HUChimeOnAccessoriesListItem init]", v5}];
 
   return 0;
 }
 
-- (HUChimeOnAccessoriesListItem)initWithHome:(id)a3
+- (HUChimeOnAccessoriesListItem)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v9.receiver = self;
   v9.super_class = HUChimeOnAccessoriesListItem;
   v6 = [(HUChimeOnAccessoriesListItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v7->_accessoryIsCameraWithDoorbell = 1;
   }
 
   return v7;
 }
 
-- (HUChimeOnAccessoriesListItem)initWithAccessory:(id)a3
+- (HUChimeOnAccessoriesListItem)initWithAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 home];
-  v6 = [(HUChimeOnAccessoriesListItem *)self initWithHome:v5];
+  accessoryCopy = accessory;
+  home = [accessoryCopy home];
+  v6 = [(HUChimeOnAccessoriesListItem *)self initWithHome:home];
 
   if (v6)
   {
-    if ([v4 hf_isCamera])
+    if ([accessoryCopy hf_isCamera])
     {
-      v7 = [v4 hf_serviceOfType:*MEMORY[0x277CD0E38]];
+      v7 = [accessoryCopy hf_serviceOfType:*MEMORY[0x277CD0E38]];
       v6->_accessoryIsCameraWithDoorbell = v7 != 0;
     }
 
@@ -55,15 +55,15 @@
   return v6;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_opt_new();
-  v5 = [(HUChimeOnAccessoriesListItem *)self home];
-  v6 = [v5 hf_allHomePodsOrStereoPairs];
-  v7 = [v6 count];
+  home = [(HUChimeOnAccessoriesListItem *)self home];
+  hf_allHomePodsOrStereoPairs = [home hf_allHomePodsOrStereoPairs];
+  v7 = [hf_allHomePodsOrStereoPairs count];
 
-  v8 = [(HUChimeOnAccessoriesListItem *)self home];
-  if (![v8 hf_currentUserIsAdministrator] || !-[HUChimeOnAccessoriesListItem accessoryIsCameraWithDoorbell](self, "accessoryIsCameraWithDoorbell"))
+  home2 = [(HUChimeOnAccessoriesListItem *)self home];
+  if (![home2 hf_currentUserIsAdministrator] || !-[HUChimeOnAccessoriesListItem accessoryIsCameraWithDoorbell](self, "accessoryIsCameraWithDoorbell"))
   {
 
     goto LABEL_8;
@@ -82,17 +82,17 @@ LABEL_8:
   v9 = _HULocalizedStringWithDefaultValue(@"HUDoorbellChimeSetting", @"HUDoorbellChimeSetting", 1);
   [v4 setObject:v9 forKeyedSubscript:*MEMORY[0x277D13F60]];
 
-  v10 = [(HUChimeOnAccessoriesListItem *)self home];
-  v11 = [v10 hf_allHomePodsOrStereoPairsThatWillChime];
-  v12 = [v11 count];
+  home3 = [(HUChimeOnAccessoriesListItem *)self home];
+  hf_allHomePodsOrStereoPairsThatWillChime = [home3 hf_allHomePodsOrStereoPairsThatWillChime];
+  v12 = [hf_allHomePodsOrStereoPairsThatWillChime count];
 
-  v13 = [(HUChimeOnAccessoriesListItem *)self home];
-  v14 = [v13 hf_allSiriEndPointProfileContainersThatWillChime];
-  v15 = [v14 count] + v12;
+  home4 = [(HUChimeOnAccessoriesListItem *)self home];
+  hf_allSiriEndPointProfileContainersThatWillChime = [home4 hf_allSiriEndPointProfileContainersThatWillChime];
+  v15 = [hf_allSiriEndPointProfileContainersThatWillChime count] + v12;
 
-  v16 = [(HUChimeOnAccessoriesListItem *)self home];
-  v17 = [v16 hf_allSiriEndPointProfileContainers];
-  v18 = [v17 count];
+  home5 = [(HUChimeOnAccessoriesListItem *)self home];
+  hf_allSiriEndPointProfileContainers = [home5 hf_allSiriEndPointProfileContainers];
+  v18 = [hf_allSiriEndPointProfileContainers count];
 
   if (v15)
   {
@@ -117,9 +117,9 @@ LABEL_8:
 LABEL_15:
   [v4 setObject:v21 forKeyedSubscript:*MEMORY[0x277D13E20]];
   v26 = MEMORY[0x277CBEB58];
-  v27 = [(HUChimeOnAccessoriesListItem *)self home];
-  v28 = [v27 hf_homePods];
-  v29 = [v26 setWithArray:v28];
+  home6 = [(HUChimeOnAccessoriesListItem *)self home];
+  hf_homePods = [home6 hf_homePods];
+  v29 = [v26 setWithArray:hf_homePods];
   [v4 setObject:v29 forKeyedSubscript:*MEMORY[0x277D13DA8]];
 
   v30 = MEMORY[0x277D2C900];

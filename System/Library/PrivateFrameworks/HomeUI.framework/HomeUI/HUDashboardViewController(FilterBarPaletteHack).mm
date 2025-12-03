@@ -10,17 +10,17 @@
   if (!palettePlaceholderView)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
-    v5 = [(HUDashboardViewController *)self view];
-    [v5 frame];
+    view = [(HUDashboardViewController *)self view];
+    [view frame];
     v7 = v6;
-    v8 = [(HUDashboardViewController *)self _filterBarController];
-    [v8 intrinsicHeight];
+    _filterBarController = [(HUDashboardViewController *)self _filterBarController];
+    [_filterBarController intrinsicHeight];
     v10 = [v4 initWithFrame:{0.0, 0.0, v7, v9}];
 
     if ([MEMORY[0x277D14CE8] isInternalInstall] && HFPreferencesBoolForKey())
     {
-      v11 = [MEMORY[0x277D75348] redColor];
-      v12 = [v11 colorWithAlphaComponent:0.25];
+      redColor = [MEMORY[0x277D75348] redColor];
+      v12 = [redColor colorWithAlphaComponent:0.25];
       [v10 setBackgroundColor:v12];
     }
 

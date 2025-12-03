@@ -1,10 +1,10 @@
 @interface APUISystemApertureView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (_TtC18ActivityProgressUI22APUISystemApertureView)init;
-- (_TtC18ActivityProgressUI22APUISystemApertureView)initWithCoder:(id)a3;
-- (_TtC18ActivityProgressUI22APUISystemApertureView)initWithFrame:(CGRect)a3;
+- (_TtC18ActivityProgressUI22APUISystemApertureView)initWithCoder:(id)coder;
+- (_TtC18ActivityProgressUI22APUISystemApertureView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation APUISystemApertureView
@@ -17,7 +17,7 @@
   return [(APUISystemApertureView *)&v3 initWithFrame:0.0, 0.0, 23.0, 23.0];
 }
 
-- (_TtC18ActivityProgressUI22APUISystemApertureView)initWithCoder:(id)a3
+- (_TtC18ActivityProgressUI22APUISystemApertureView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ActivityProgressUI22APUISystemApertureView_expanded) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -25,10 +25,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *((swift_isaMask & self->super.super.super.isa) + 0x58);
-  v4 = self;
+  selfCopy = self;
   LOBYTE(v3) = v3();
 
   v5 = 48.3333;
@@ -43,10 +43,10 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
   v5 = *((swift_isaMask & self->super.super.super.isa) + 0x58);
-  v6 = self;
+  selfCopy = self;
   LOBYTE(v5) = v5();
 
   v7 = 48.3333;
@@ -61,10 +61,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
   v4 = 48.3333;
-  if ((a4 + 1) < 5)
+  if ((mode + 1) < 5)
   {
     v4 = 23.0;
   }
@@ -75,7 +75,7 @@
   return result;
 }
 
-- (_TtC18ActivityProgressUI22APUISystemApertureView)initWithFrame:(CGRect)a3
+- (_TtC18ActivityProgressUI22APUISystemApertureView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

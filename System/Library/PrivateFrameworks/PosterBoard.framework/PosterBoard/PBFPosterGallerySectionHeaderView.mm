@@ -1,21 +1,21 @@
 @interface PBFPosterGallerySectionHeaderView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (PBFPosterGallerySectionHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (PBFPosterGallerySectionHeaderView)initWithFrame:(CGRect)frame;
 - (UILabel)label;
 - (UILabel)subtitleLabel;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setSubtitle:(id)a3;
-- (void)setText:(id)a3;
+- (void)setSubtitle:(id)subtitle;
+- (void)setText:(id)text;
 @end
 
 @implementation PBFPosterGallerySectionHeaderView
 
-- (PBFPosterGallerySectionHeaderView)initWithFrame:(CGRect)a3
+- (PBFPosterGallerySectionHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PBFPosterGallerySectionHeaderView;
-  v3 = [(PBFPosterGallerySectionHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PBFPosterGallerySectionHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -25,30 +25,30 @@
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v7 = a3;
-  v4 = [(PBFPosterGallerySectionHeaderView *)self label];
-  v5 = [v4 text];
-  v6 = [v5 isEqual:v7];
+  textCopy = text;
+  label = [(PBFPosterGallerySectionHeaderView *)self label];
+  text = [label text];
+  v6 = [text isEqual:textCopy];
 
   if ((v6 & 1) == 0)
   {
-    [(UILabel *)self->_label setText:v7];
+    [(UILabel *)self->_label setText:textCopy];
     [(PBFPosterGallerySectionHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v7 = a3;
-  v4 = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
-  v5 = [v4 text];
-  v6 = [v5 isEqual:v7];
+  subtitleCopy = subtitle;
+  subtitleLabel = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
+  text = [subtitleLabel text];
+  v6 = [text isEqual:subtitleCopy];
 
   if ((v6 & 1) == 0)
   {
-    [(UILabel *)self->_subtitleLabel setText:v7];
+    [(UILabel *)self->_subtitleLabel setText:subtitleCopy];
     [(PBFPosterGallerySectionHeaderView *)self setNeedsLayout];
   }
 }
@@ -67,18 +67,18 @@
     v6 = self->_label;
     self->_label = v5;
 
-    v7 = [(PBFPosterGallerySectionHeaderView *)self window];
-    v8 = [v7 screen];
-    v9 = [PBFPosterGalleryViewSpec specForScreen:v8];
+    window = [(PBFPosterGallerySectionHeaderView *)self window];
+    screen = [window screen];
+    v9 = [PBFPosterGalleryViewSpec specForScreen:screen];
 
     [(UILabel *)self->_label setNumberOfLines:0];
     v10 = self->_label;
-    v11 = [v9 sectionHeaderTitleFont];
-    [(UILabel *)v10 setFont:v11];
+    sectionHeaderTitleFont = [v9 sectionHeaderTitleFont];
+    [(UILabel *)v10 setFont:sectionHeaderTitleFont];
 
     v12 = self->_label;
-    v13 = [v9 sectionHeaderTitleColor];
-    [(UILabel *)v12 setTextColor:v13];
+    sectionHeaderTitleColor = [v9 sectionHeaderTitleColor];
+    [(UILabel *)v12 setTextColor:sectionHeaderTitleColor];
 
     [(PBFPosterGallerySectionHeaderView *)self addSubview:self->_label];
     v3 = self->_label;
@@ -97,9 +97,9 @@
 
   else
   {
-    v5 = [(PBFPosterGallerySectionHeaderView *)self window];
-    v6 = [v5 screen];
-    v7 = [PBFPosterGalleryViewSpec specForScreen:v6];
+    window = [(PBFPosterGallerySectionHeaderView *)self window];
+    screen = [window screen];
+    v7 = [PBFPosterGalleryViewSpec specForScreen:screen];
 
     v8 = objc_opt_new();
     v9 = self->_subtitleLabel;
@@ -107,12 +107,12 @@
 
     [(UILabel *)self->_subtitleLabel setNumberOfLines:0];
     v10 = self->_subtitleLabel;
-    v11 = [v7 sectionHeaderSubtitleFont];
-    [(UILabel *)v10 setFont:v11];
+    sectionHeaderSubtitleFont = [v7 sectionHeaderSubtitleFont];
+    [(UILabel *)v10 setFont:sectionHeaderSubtitleFont];
 
     v12 = self->_subtitleLabel;
-    v13 = [v7 sectionHeaderSubtitleColor];
-    [(UILabel *)v12 setTextColor:v13];
+    sectionHeaderSubtitleColor = [v7 sectionHeaderSubtitleColor];
+    [(UILabel *)v12 setTextColor:sectionHeaderSubtitleColor];
 
     [(PBFPosterGallerySectionHeaderView *)self addSubview:self->_subtitleLabel];
     v3 = self->_subtitleLabel;
@@ -135,20 +135,20 @@
   v43.receiver = self;
   v43.super_class = PBFPosterGallerySectionHeaderView;
   [(PBFPosterGallerySectionHeaderView *)&v43 layoutSubviews];
-  v3 = [(PBFPosterGallerySectionHeaderView *)self window];
-  v4 = [v3 screen];
-  v5 = [PBFPosterGalleryViewSpec specForScreen:v4];
+  window = [(PBFPosterGallerySectionHeaderView *)self window];
+  screen = [window screen];
+  v5 = [PBFPosterGalleryViewSpec specForScreen:screen];
 
-  v6 = [(PBFPosterGallerySectionHeaderView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(PBFPosterGallerySectionHeaderView *)self effectiveUserInterfaceLayoutDirection];
   [(PBFPosterGallerySectionHeaderView *)self bounds];
   v8 = v7;
   v10 = v9;
-  v11 = [(PBFPosterGallerySectionHeaderView *)self label];
-  [v11 systemLayoutSizeFittingSize:{v8, v10}];
+  label = [(PBFPosterGallerySectionHeaderView *)self label];
+  [label systemLayoutSizeFittingSize:{v8, v10}];
   v13 = v12;
   v15 = v14;
 
-  if (v6)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v16 = v8 - v13;
   }
@@ -160,29 +160,29 @@
 
   [v5 sectionHeaderTopSpacing];
   v18 = v17;
-  v19 = [(PBFPosterGallerySectionHeaderView *)self label];
-  [v19 setFrame:{v16, v18, v13, v15}];
+  label2 = [(PBFPosterGallerySectionHeaderView *)self label];
+  [label2 setFrame:{v16, v18, v13, v15}];
 
   v20 = MEMORY[0x277CCACA8];
-  v21 = [(PBFPosterGallerySectionHeaderView *)self label];
-  v22 = [v21 text];
-  v23 = [v20 stringWithFormat:@"header-%@", v22];
+  label3 = [(PBFPosterGallerySectionHeaderView *)self label];
+  text = [label3 text];
+  v23 = [v20 stringWithFormat:@"header-%@", text];
 
-  v24 = [(PBFPosterGallerySectionHeaderView *)self label];
-  [v24 setAccessibilityIdentifier:v23];
+  label4 = [(PBFPosterGallerySectionHeaderView *)self label];
+  [label4 setAccessibilityIdentifier:v23];
 
-  v25 = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
-  v26 = [v25 text];
-  v27 = [v26 length];
+  subtitleLabel = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
+  text2 = [subtitleLabel text];
+  v27 = [text2 length];
 
   if (v27)
   {
-    v28 = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
-    [v28 systemLayoutSizeFittingSize:{v8, v10}];
+    subtitleLabel2 = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
+    [subtitleLabel2 systemLayoutSizeFittingSize:{v8, v10}];
     v30 = v29;
     v32 = v31;
 
-    if (v6)
+    if (effectiveUserInterfaceLayoutDirection)
     {
       v33 = v8 - v30;
     }
@@ -199,47 +199,47 @@
     MaxY = CGRectGetMaxY(v44);
     [v5 sectionHeaderSubtitleTopMargin];
     v36 = MaxY + v35;
-    v37 = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
-    [v37 setFrame:{v33, v36, v30, v32}];
+    subtitleLabel3 = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
+    [subtitleLabel3 setFrame:{v33, v36, v30, v32}];
 
     v38 = MEMORY[0x277CCACA8];
-    v39 = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
-    v40 = [v39 text];
-    v41 = [v38 stringWithFormat:@"subtitle-%@", v40];
+    subtitleLabel4 = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
+    text3 = [subtitleLabel4 text];
+    v41 = [v38 stringWithFormat:@"subtitle-%@", text3];
 
-    v42 = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
-    [v42 setAccessibilityIdentifier:v41];
+    subtitleLabel5 = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
+    [subtitleLabel5 setAccessibilityIdentifier:v41];
   }
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [(PBFPosterGallerySectionHeaderView *)self window];
-  v11 = [v10 screen];
-  v12 = [PBFPosterGalleryViewSpec specForScreen:v11];
+  height = size.height;
+  width = size.width;
+  window = [(PBFPosterGallerySectionHeaderView *)self window];
+  screen = [window screen];
+  v12 = [PBFPosterGalleryViewSpec specForScreen:screen];
 
   [v12 sectionHeaderTopSpacing];
   v14 = v13;
   [v12 sectionHeaderBottomSpacing];
   v16 = v14 + v15;
-  v17 = [(PBFPosterGallerySectionHeaderView *)self label];
-  *&v18 = a4;
-  *&v19 = a5;
-  [v17 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v18, v19}];
+  label = [(PBFPosterGallerySectionHeaderView *)self label];
+  *&v18 = priority;
+  *&v19 = fittingPriority;
+  [label systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v18, v19}];
   v21 = v20;
 
   v22 = v16 + v21;
-  v23 = [(UILabel *)self->_subtitleLabel text];
-  v24 = [v23 length];
+  text = [(UILabel *)self->_subtitleLabel text];
+  v24 = [text length];
 
   if (v24)
   {
-    v25 = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
-    *&v26 = a4;
-    *&v27 = a5;
-    [v25 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v26, v27}];
+    subtitleLabel = [(PBFPosterGallerySectionHeaderView *)self subtitleLabel];
+    *&v26 = priority;
+    *&v27 = fittingPriority;
+    [subtitleLabel systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v26, v27}];
     v29 = v28;
 
     [v12 sectionHeaderSubtitleTopMargin];

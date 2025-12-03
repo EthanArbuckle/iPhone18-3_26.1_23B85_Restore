@@ -4,11 +4,11 @@
 - (BOOL)isMisRecoveryAllowed;
 - (WiFiSoftApStateMonitor)init;
 - (id)stateDictionary;
-- (void)initState:(id)a3;
+- (void)initState:(id)state;
 - (void)persistState;
 - (void)resetState;
-- (void)setMisEnabled:(BOOL)a3;
-- (void)setMisNanPublisherServiceName:(id)a3;
+- (void)setMisEnabled:(BOOL)enabled;
+- (void)setMisNanPublisherServiceName:(id)name;
 @end
 
 @implementation WiFiSoftApStateMonitor
@@ -58,35 +58,35 @@
   return v2;
 }
 
-- (void)initState:(id)a3
+- (void)initState:(id)state
 {
-  v16 = a3;
-  v4 = [v16 keyEnumerator];
+  stateCopy = state;
+  keyEnumerator = [stateCopy keyEnumerator];
   v5 = 0;
-  v6 = 0;
+  nextObject = 0;
 LABEL_2:
   v7 = v5;
   while (1)
   {
-    v8 = v6;
-    v6 = [v4 nextObject];
+    v8 = nextObject;
+    nextObject = [keyEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 stringValue];
-      v5 = [v16 objectForKey:v9];
+      stringValue = [nextObject stringValue];
+      v5 = [stateCopy objectForKey:stringValue];
 
       if (v5)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if ([v9 isEqualToString:@"misEnabledAt"])
+          if ([stringValue isEqualToString:@"misEnabledAt"])
           {
             p_misEnabledAt = &self->_misEnabledAt;
             goto LABEL_15;
@@ -98,7 +98,7 @@ LABEL_2:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if ([v9 isEqualToString:@"misNanPublisherServiceName"])
+          if ([stringValue isEqualToString:@"misNanPublisherServiceName"])
           {
             p_misEnabledAt = &self->_misNanServiceName;
 LABEL_15:
@@ -113,47 +113,47 @@ LABEL_16:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if ([v9 isEqualToString:@"isStateValid"])
+          if ([stringValue isEqualToString:@"isStateValid"])
           {
             self->_isStateValid = [v5 BOOLValue];
           }
 
-          else if ([v9 isEqualToString:@"misEnabled"])
+          else if ([stringValue isEqualToString:@"misEnabled"])
           {
             self->_misEnabled = [v5 BOOLValue];
           }
 
-          else if ([v9 isEqualToString:@"misIsHidden"])
+          else if ([stringValue isEqualToString:@"misIsHidden"])
           {
             self->_misIsHidden = [v5 BOOLValue];
           }
 
-          else if ([v9 isEqualToString:@"misNanPublisherActive"])
+          else if ([stringValue isEqualToString:@"misNanPublisherActive"])
           {
             self->_misNanPublisherActive = [v5 BOOLValue];
           }
 
           else
           {
-            v12 = [v5 unsignedLongValue];
-            if ([v9 isEqualToString:@"misChannel"])
+            unsignedLongValue = [v5 unsignedLongValue];
+            if ([stringValue isEqualToString:@"misChannel"])
             {
-              self->_misChannel = v12;
+              self->_misChannel = unsignedLongValue;
             }
 
-            else if ([v9 isEqualToString:@"misBandWidth"])
+            else if ([stringValue isEqualToString:@"misBandWidth"])
             {
-              self->_misBandWidth = v12;
+              self->_misBandWidth = unsignedLongValue;
             }
 
-            else if ([v9 isEqualToString:@"userPreferredBand"])
+            else if ([stringValue isEqualToString:@"userPreferredBand"])
             {
-              self->_userPreferredBand = v12;
+              self->_userPreferredBand = unsignedLongValue;
             }
 
-            else if ([v9 isEqualToString:@"misRecoveryAttempts"])
+            else if ([stringValue isEqualToString:@"misRecoveryAttempts"])
             {
-              self->_recoveryAttempts = v12;
+              self->_recoveryAttempts = unsignedLongValue;
             }
           }
 
@@ -163,7 +163,7 @@ LABEL_16:
         v11 = objc_autoreleasePoolPush();
         if (off_100298C40)
         {
-          [off_100298C40 WFLog:3 message:{"%s: unexpected value for %@", "-[WiFiSoftApStateMonitor initState:]", v9}];
+          [off_100298C40 WFLog:3 message:{"%s: unexpected value for %@", "-[WiFiSoftApStateMonitor initState:]", stringValue}];
         }
       }
 
@@ -172,7 +172,7 @@ LABEL_16:
         v11 = objc_autoreleasePoolPush();
         if (off_100298C40)
         {
-          [off_100298C40 WFLog:3 message:{"%s: value is null for %@", "-[WiFiSoftApStateMonitor initState:]", v9}];
+          [off_100298C40 WFLog:3 message:{"%s: value is null for %@", "-[WiFiSoftApStateMonitor initState:]", stringValue}];
         }
       }
 
@@ -272,9 +272,9 @@ LABEL_16:
 
 - (void)persistState
 {
-  v3 = [(WiFiSoftApStateMonitor *)self stateDictionary];
+  stateDictionary = [(WiFiSoftApStateMonitor *)self stateDictionary];
   v2 = +[NSUserDefaults standardUserDefaults];
-  [v2 setObject:v3 forKey:@"WiFiMISState"];
+  [v2 setObject:stateDictionary forKey:@"WiFiMISState"];
 }
 
 - (BOOL)isMisRecoveryAllowed
@@ -319,9 +319,9 @@ LABEL_16:
   return v4;
 }
 
-- (void)setMisEnabled:(BOOL)a3
+- (void)setMisEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     self->_misEnabled = 1;
     v4 = +[NSDate now];
@@ -339,9 +339,9 @@ LABEL_16:
   [(WiFiSoftApStateMonitor *)self persistState];
 }
 
-- (void)setMisNanPublisherServiceName:(id)a3
+- (void)setMisNanPublisherServiceName:(id)name
 {
-  objc_storeStrong(&self->_misNanServiceName, a3);
+  objc_storeStrong(&self->_misNanServiceName, name);
 
   [(WiFiSoftApStateMonitor *)self persistState];
 }

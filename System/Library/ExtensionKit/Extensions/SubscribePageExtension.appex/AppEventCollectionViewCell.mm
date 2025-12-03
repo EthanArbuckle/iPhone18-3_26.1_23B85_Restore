@@ -1,12 +1,12 @@
 @interface AppEventCollectionViewCell
-- (_TtC22SubscribePageExtension26AppEventCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension26AppEventCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation AppEventCollectionViewCell
 
-- (_TtC22SubscribePageExtension26AppEventCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension26AppEventCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension26AppEventCollectionViewCell_itemLayoutContext;
   v5 = sub_1007469A4();
@@ -42,7 +42,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003A3564();
 }
 

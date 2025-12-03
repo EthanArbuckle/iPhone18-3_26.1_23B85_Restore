@@ -3,21 +3,21 @@
 + (BOOL)shouldEnableStewie;
 - (BOOL)shouldSupressRepairLogic;
 - (IDSRegistrationConductor)init;
-- (void)SIM:(id)a3 didDeactivateWithInfo:(id)a4;
-- (void)SIM:(id)a3 didUpdateRegistrationState:(BOOL)a4;
+- (void)SIM:(id)m didDeactivateWithInfo:(id)info;
+- (void)SIM:(id)m didUpdateRegistrationState:(BOOL)state;
 - (void)_logServiceRegistrationStateDump;
-- (void)accountControllerDidFinishLoadingAccounts:(id)a3;
-- (void)bagReloaded:(id)a3;
+- (void)accountControllerDidFinishLoadingAccounts:(id)accounts;
+- (void)bagReloaded:(id)reloaded;
 - (void)carrierBundleInformationDidChange;
 - (void)checkRestorationState;
-- (void)deviceRecertificationCompleted:(id)a3;
-- (void)forceRepairAccounts:(id)a3;
+- (void)deviceRecertificationCompleted:(id)completed;
+- (void)forceRepairAccounts:(id)accounts;
 - (void)kickMissedTemporaryAlerts;
 - (void)kickRepair;
 - (void)kickiCloudRepair;
-- (void)registrationController:(id)a3 allRegistrationsSucceeded:(id)a4;
-- (void)serviceRestrictionsChanged:(id)a3;
-- (void)setShouldSupressRepairLogic:(BOOL)a3;
+- (void)registrationController:(id)controller allRegistrationsSucceeded:(id)succeeded;
+- (void)serviceRestrictionsChanged:(id)changed;
+- (void)setShouldSupressRepairLogic:(BOOL)logic;
 - (void)setup;
 - (void)systemDidLeaveFirstDataProtectionLock;
 @end
@@ -79,9 +79,9 @@
     v27 = +[IMSystemMonitor sharedInstance];
     v28 = v2->_CTAdapter;
     v29 = +[FTUserConfiguration sharedInstance];
-    v30 = [(IDSRegistrationConductor *)v2 registrationController];
+    registrationController = [(IDSRegistrationConductor *)v2 registrationController];
     v31 = +[IDSPairingManager sharedInstance];
-    v32 = [(IDSSIMPhoneUserSynchronizer *)v23 initWithUserStore:v24 queue:v25 lockdownManager:v26 systemMonitor:v27 CTAdapter:v28 userConfiguration:v29 registrationController:v30 pairingManager:v31 phoneUserRegistry:v2->_phoneUserRegistry];
+    v32 = [(IDSSIMPhoneUserSynchronizer *)v23 initWithUserStore:v24 queue:v25 lockdownManager:v26 systemMonitor:v27 CTAdapter:v28 userConfiguration:v29 registrationController:registrationController pairingManager:v31 phoneUserRegistry:v2->_phoneUserRegistry];
     SIMPhoneUserSynchronizer = v2->_SIMPhoneUserSynchronizer;
     v2->_SIMPhoneUserSynchronizer = v32;
 
@@ -192,19 +192,19 @@
 
 - (void)setup
 {
-  v3 = [(IDSRegistrationConductor *)self registrationController];
-  [v3 addListener:self];
+  registrationController = [(IDSRegistrationConductor *)self registrationController];
+  [registrationController addListener:self];
 
-  v4 = [(IDSRegistrationConductor *)self accountController];
-  [v4 setDelegate:self];
+  accountController = [(IDSRegistrationConductor *)self accountController];
+  [accountController setDelegate:self];
 
-  v5 = [(IDSRegistrationConductor *)self userStore];
-  [v5 reloadUsers];
+  userStore = [(IDSRegistrationConductor *)self userStore];
+  [userStore reloadUsers];
 
   v6 = +[IMSystemMonitor sharedInstance];
-  v7 = [v6 isUnderFirstDataProtectionLock];
+  isUnderFirstDataProtectionLock = [v6 isUnderFirstDataProtectionLock];
 
-  if ((v7 & 1) == 0)
+  if ((isUnderFirstDataProtectionLock & 1) == 0)
   {
     im_dispatch_after_primary_queue();
     im_dispatch_after_primary_queue();
@@ -215,8 +215,8 @@
 
 - (void)kickMissedTemporaryAlerts
 {
-  v3 = [(IDSRegistrationConductor *)self userStore];
-  v4 = [v3 usersWithRealm:2];
+  userStore = [(IDSRegistrationConductor *)self userStore];
+  v4 = [userStore usersWithRealm:2];
 
   v18 = 0u;
   v19 = 0u;
@@ -251,9 +251,9 @@
           }
 
           [IDSTemporaryPhoneAlertManager presentSuccessAlertForUser:v11];
-          v13 = [v11 temporaryPhoneUserWithNotifiedSuccess];
-          v14 = [(IDSRegistrationConductor *)self userStore];
-          [v14 updateUser:v13];
+          temporaryPhoneUserWithNotifiedSuccess = [v11 temporaryPhoneUserWithNotifiedSuccess];
+          userStore2 = [(IDSRegistrationConductor *)self userStore];
+          [userStore2 updateUser:temporaryPhoneUserWithNotifiedSuccess];
         }
       }
 
@@ -302,42 +302,42 @@
 
 - (void)_logServiceRegistrationStateDump
 {
-  v3 = [(IDSRegistrationConductor *)self serviceController];
-  v4 = [v3 primaryServiceForAdhocServiceType:3];
+  serviceController = [(IDSRegistrationConductor *)self serviceController];
+  v4 = [serviceController primaryServiceForAdhocServiceType:3];
 
-  v5 = [(IDSRegistrationConductor *)self accountController];
-  v6 = [v5 accountsOnService:v4 withType:0];
+  accountController = [(IDSRegistrationConductor *)self accountController];
+  v6 = [accountController accountsOnService:v4 withType:0];
   v7 = [v6 __imArrayByFilteringWithBlock:&stru_100BDD538];
   v33 = [v7 count];
 
-  v8 = [(IDSRegistrationConductor *)self accountController];
-  v9 = [v8 accountsOnService:v4 withType:1];
+  accountController2 = [(IDSRegistrationConductor *)self accountController];
+  v9 = [accountController2 accountsOnService:v4 withType:1];
   v10 = [v9 __imArrayByFilteringWithBlock:&stru_100BDD558];
   v32 = [v10 count];
 
-  v11 = [(IDSRegistrationConductor *)self serviceController];
-  v12 = [v11 primaryServiceForAdhocServiceType:1];
+  serviceController2 = [(IDSRegistrationConductor *)self serviceController];
+  v12 = [serviceController2 primaryServiceForAdhocServiceType:1];
 
-  v13 = [(IDSRegistrationConductor *)self accountController];
-  v14 = [v13 accountsOnService:v12 withType:0];
+  accountController3 = [(IDSRegistrationConductor *)self accountController];
+  v14 = [accountController3 accountsOnService:v12 withType:0];
   v15 = [v14 __imArrayByFilteringWithBlock:&stru_100BDD578];
   v16 = [v15 count];
 
-  v17 = [(IDSRegistrationConductor *)self accountController];
-  v18 = [v17 accountsOnService:v12 withType:1];
+  accountController4 = [(IDSRegistrationConductor *)self accountController];
+  v18 = [accountController4 accountsOnService:v12 withType:1];
   v19 = [v18 __imArrayByFilteringWithBlock:&stru_100BDD598];
   v20 = [v19 count];
 
-  v21 = [(IDSRegistrationConductor *)self serviceController];
-  v22 = [v21 primaryServiceForAdhocServiceType:7];
+  serviceController3 = [(IDSRegistrationConductor *)self serviceController];
+  v22 = [serviceController3 primaryServiceForAdhocServiceType:7];
 
-  v23 = [(IDSRegistrationConductor *)self accountController];
-  v24 = [v23 accountsOnService:v22 withType:0];
+  accountController5 = [(IDSRegistrationConductor *)self accountController];
+  v24 = [accountController5 accountsOnService:v22 withType:0];
   v25 = [v24 __imArrayByFilteringWithBlock:&stru_100BDD5B8];
   v26 = [v25 count];
 
-  v27 = [(IDSRegistrationConductor *)self accountController];
-  v28 = [v27 accountsOnService:v22 withType:1];
+  accountController6 = [(IDSRegistrationConductor *)self accountController];
+  v28 = [accountController6 accountsOnService:v22 withType:1];
   v29 = [v28 __imArrayByFilteringWithBlock:&stru_100BDD5D8];
   v30 = [v29 count];
 
@@ -362,67 +362,67 @@
 
 - (BOOL)shouldSupressRepairLogic
 {
-  v2 = [(IDSRegistrationConductor *)self accountRepair];
-  v3 = [v2 shouldSupressRepairLogic];
+  accountRepair = [(IDSRegistrationConductor *)self accountRepair];
+  shouldSupressRepairLogic = [accountRepair shouldSupressRepairLogic];
 
-  return v3;
+  return shouldSupressRepairLogic;
 }
 
-- (void)setShouldSupressRepairLogic:(BOOL)a3
+- (void)setShouldSupressRepairLogic:(BOOL)logic
 {
-  v3 = a3;
-  v4 = [(IDSRegistrationConductor *)self accountRepair];
-  [v4 setShouldSupressRepairLogic:v3];
+  logicCopy = logic;
+  accountRepair = [(IDSRegistrationConductor *)self accountRepair];
+  [accountRepair setShouldSupressRepairLogic:logicCopy];
 }
 
 - (void)kickRepair
 {
-  v2 = [(IDSRegistrationConductor *)self accountRepair];
-  [v2 repairAccounts];
+  accountRepair = [(IDSRegistrationConductor *)self accountRepair];
+  [accountRepair repairAccounts];
 }
 
 - (void)kickiCloudRepair
 {
-  v2 = [(IDSRegistrationConductor *)self accountRepair];
-  [v2 repairiCloudBasedAccounts];
+  accountRepair = [(IDSRegistrationConductor *)self accountRepair];
+  [accountRepair repairiCloudBasedAccounts];
 }
 
-- (void)forceRepairAccounts:(id)a3
+- (void)forceRepairAccounts:(id)accounts
 {
-  v4 = a3;
-  v5 = [(IDSRegistrationConductor *)self accountRepair];
-  [v5 forceRepairAccounts:v4];
+  accountsCopy = accounts;
+  accountRepair = [(IDSRegistrationConductor *)self accountRepair];
+  [accountRepair forceRepairAccounts:accountsCopy];
 }
 
-- (void)accountControllerDidFinishLoadingAccounts:(id)a3
+- (void)accountControllerDidFinishLoadingAccounts:(id)accounts
 {
-  v4 = [(IDSRegistrationConductor *)self restrictions];
-  [v4 updateAccountActivation];
+  restrictions = [(IDSRegistrationConductor *)self restrictions];
+  [restrictions updateAccountActivation];
 
-  v5 = [(IDSRegistrationConductor *)self accountSync];
-  [v5 kickAnyUnfinishedSynchronization];
+  accountSync = [(IDSRegistrationConductor *)self accountSync];
+  [accountSync kickAnyUnfinishedSynchronization];
 
-  v6 = [(IDSRegistrationConductor *)self userAccountSynchronizer];
-  [v6 synchronize];
+  userAccountSynchronizer = [(IDSRegistrationConductor *)self userAccountSynchronizer];
+  [userAccountSynchronizer synchronize];
 }
 
-- (void)registrationController:(id)a3 allRegistrationsSucceeded:(id)a4
+- (void)registrationController:(id)controller allRegistrationsSucceeded:(id)succeeded
 {
-  v5 = a4;
-  v6 = [(IDSRegistrationConductor *)self accountSync];
-  [v6 stopAnyUnfinishedSynchronization];
+  succeededCopy = succeeded;
+  accountSync = [(IDSRegistrationConductor *)self accountSync];
+  [accountSync stopAnyUnfinishedSynchronization];
 
-  v7 = [(IDSRegistrationConductor *)self accountSync];
-  [v7 noteShouldSynchronizeAllServices];
+  accountSync2 = [(IDSRegistrationConductor *)self accountSync];
+  [accountSync2 noteShouldSynchronizeAllServices];
 
-  v8 = [(IDSRegistrationConductor *)self accountSync];
-  [v8 noteShouldSynchronizeTinkerDeviceInfo];
+  accountSync3 = [(IDSRegistrationConductor *)self accountSync];
+  [accountSync3 noteShouldSynchronizeTinkerDeviceInfo];
 
-  v9 = [(IDSRegistrationConductor *)self accountSync];
-  [v9 noteShouldSynchronizeSPSProvisioningInfo];
+  accountSync4 = [(IDSRegistrationConductor *)self accountSync];
+  [accountSync4 noteShouldSynchronizeSPSProvisioningInfo];
 
-  v10 = [(IDSRegistrationConductor *)self accountRepair];
-  [v10 kickRepairForAllRegistrationsSucceeded:v5];
+  accountRepair = [(IDSRegistrationConductor *)self accountRepair];
+  [accountRepair kickRepairForAllRegistrationsSucceeded:succeededCopy];
 
   [(IDSRegistrationConductor *)self _logServiceRegistrationStateDump];
 }
@@ -440,74 +440,74 @@
   [(IDSRegistrationConductor *)self kickMissedTemporaryAlerts];
 }
 
-- (void)bagReloaded:(id)a3
+- (void)bagReloaded:(id)reloaded
 {
-  v3 = [(IDSRegistrationConductor *)self accountRepair];
-  [v3 recalculatePhoneRepairTimer];
+  accountRepair = [(IDSRegistrationConductor *)self accountRepair];
+  [accountRepair recalculatePhoneRepairTimer];
 }
 
-- (void)serviceRestrictionsChanged:(id)a3
+- (void)serviceRestrictionsChanged:(id)changed
 {
-  v4 = [(IDSRegistrationConductor *)self accountRepair];
-  [v4 setupPhoneNumberRepairTimer];
+  accountRepair = [(IDSRegistrationConductor *)self accountRepair];
+  [accountRepair setupPhoneNumberRepairTimer];
 
-  v5 = [(IDSRegistrationConductor *)self userAccountSynchronizer];
-  [v5 synchronize];
+  userAccountSynchronizer = [(IDSRegistrationConductor *)self userAccountSynchronizer];
+  [userAccountSynchronizer synchronize];
 }
 
-- (void)deviceRecertificationCompleted:(id)a3
+- (void)deviceRecertificationCompleted:(id)completed
 {
-  v3 = [(IDSRegistrationConductor *)self accountRepair];
-  [v3 repairAccounts];
+  accountRepair = [(IDSRegistrationConductor *)self accountRepair];
+  [accountRepair repairAccounts];
 }
 
-- (void)SIM:(id)a3 didUpdateRegistrationState:(BOOL)a4
+- (void)SIM:(id)m didUpdateRegistrationState:(BOOL)state
 {
-  v6 = [(IDSRegistrationConductor *)self registrationQueue];
+  registrationQueue = [(IDSRegistrationConductor *)self registrationQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100492214;
   v7[3] = &unk_100BD7478;
   v7[4] = self;
-  v8 = a4;
-  dispatch_async(v6, v7);
+  stateCopy = state;
+  dispatch_async(registrationQueue, v7);
 }
 
 - (void)carrierBundleInformationDidChange
 {
-  v3 = [(IDSRegistrationConductor *)self registrationQueue];
+  registrationQueue = [(IDSRegistrationConductor *)self registrationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10049233C;
   block[3] = &unk_100BD6ED0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(registrationQueue, block);
 }
 
-- (void)SIM:(id)a3 didDeactivateWithInfo:(id)a4
+- (void)SIM:(id)m didDeactivateWithInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSRegistrationConductor *)self registrationQueue];
+  mCopy = m;
+  infoCopy = info;
+  registrationQueue = [(IDSRegistrationConductor *)self registrationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10049247C;
   block[3] = &unk_100BD6E18;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = mCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = mCopy;
+  dispatch_async(registrationQueue, block);
 }
 
 - (void)checkRestorationState
 {
   [(IDSRestoreMonitor *)self->_restoreMonitor removeTarget:self];
   v3 = +[IMSystemMonitor sharedInstance];
-  v4 = [v3 isSetup];
+  isSetup = [v3 isSetup];
 
-  if (v4)
+  if (isSetup)
   {
     v5 = +[IMRGLog registration];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -516,8 +516,8 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Device is properly setup", v7, 2u);
     }
 
-    v6 = [(IDSRegistrationConductor *)self SIMPhoneUserSynchronizer];
-    [v6 verifyState];
+    sIMPhoneUserSynchronizer = [(IDSRegistrationConductor *)self SIMPhoneUserSynchronizer];
+    [sIMPhoneUserSynchronizer verifyState];
   }
 
   else

@@ -1,24 +1,24 @@
 @interface CESRSpeechProfileBuilder
-+ (BOOL)deleteProfileAtDirectory:(id)a3 locale:(id)a4 userId:(id)a5 error:(id *)a6;
-+ (id)CESRErrorForXPCError:(id)a3;
++ (BOOL)deleteProfileAtDirectory:(id)directory locale:(id)locale userId:(id)id error:(id *)error;
++ (id)CESRErrorForXPCError:(id)error;
 + (id)_speechProfileConfig;
 + (id)categoryToFieldTypeMap;
 + (id)categoryToLimitHintMap;
-+ (id)getSpeechLocaleForLocale:(id)a3;
-+ (id)profileDirPathFromBasePath:(id)a3 language:(id)a4 userId:(id)a5;
-+ (id)profileFilePathFromBasePath:(id)a3 language:(id)a4 userId:(id)a5;
-+ (id)speechProfilePathsForLocale:(id)a3;
++ (id)getSpeechLocaleForLocale:(id)locale;
++ (id)profileDirPathFromBasePath:(id)path language:(id)language userId:(id)id;
++ (id)profileFilePathFromBasePath:(id)path language:(id)language userId:(id)id;
++ (id)speechProfilePathsForLocale:(id)locale;
 + (id)supportedCategories;
-+ (unsigned)_fieldTypeFromString:(id)a3;
++ (unsigned)_fieldTypeFromString:(id)string;
 + (void)deleteLegacyProfiles;
-- (BOOL)_flushItemsWithError:(id *)a3;
-- (BOOL)addCodepathId:(id)a3 error:(id *)a4;
-- (BOOL)beginWithCategoriesAndVersions:(id)a3 bundleId:(id)a4 error:(id *)a5;
-- (BOOL)cancelCategoriesWithError:(id *)a3;
-- (BOOL)removeCodepathId:(id)a3 error:(id *)a4;
+- (BOOL)_flushItemsWithError:(id *)error;
+- (BOOL)addCodepathId:(id)id error:(id *)error;
+- (BOOL)beginWithCategoriesAndVersions:(id)versions bundleId:(id)id error:(id *)error;
+- (BOOL)cancelCategoriesWithError:(id *)error;
+- (BOOL)removeCodepathId:(id)id error:(id *)error;
 - (id)_newConnection;
-- (id)getCodepathIdsWithError:(id *)a3;
-- (int64_t)getVersionForCategory:(id)a3 error:(id *)a4;
+- (id)getCodepathIdsWithError:(id *)error;
+- (int64_t)getVersionForCategory:(id)category error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -74,7 +74,7 @@ void __55__CESRSpeechProfileBuilder_finishAndSaveProfile_error___block_invoke_40
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)cancelCategoriesWithError:(id *)a3
+- (BOOL)cancelCategoriesWithError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
   v35 = 0;
@@ -108,7 +108,7 @@ void __55__CESRSpeechProfileBuilder_finishAndSaveProfile_error___block_invoke_40
   v21[5] = &v23;
   [v6 cancelWithCompletion:v21];
 
-  if (a3 && (v36[3] & 1) == 0)
+  if (error && (v36[3] & 1) == 0)
   {
     v7 = v30[5];
     if (!v7)
@@ -116,7 +116,7 @@ void __55__CESRSpeechProfileBuilder_finishAndSaveProfile_error___block_invoke_40
       v7 = v24[5];
     }
 
-    *a3 = v7;
+    *error = v7;
     if ((v36[3] & 1) == 0)
     {
       goto LABEL_6;
@@ -151,9 +151,9 @@ LABEL_6:
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * i) content];
-        v13 = [v12 data];
-        self->_uncommittedItemsMemoryInBytes -= [v13 length];
+        content = [*(*(&v17 + 1) + 8 * i) content];
+        data = [content data];
+        self->_uncommittedItemsMemoryInBytes -= [data length];
       }
 
       v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v17 objects:v39 count:16];
@@ -225,7 +225,7 @@ void __54__CESRSpeechProfileBuilder_cancelCategoriesWithError___block_invoke_399
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_flushItemsWithError:(id *)a3
+- (BOOL)_flushItemsWithError:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
   if ([(NSMutableArray *)self->_pendingItems count])
@@ -265,7 +265,7 @@ void __54__CESRSpeechProfileBuilder_cancelCategoriesWithError___block_invoke_399
     [v6 addVocabularyItems:pendingItems sourceBundleIds:sourceBundleIds isBoosted:isBoosted completion:v25];
 
     v10 = *(v40 + 24);
-    if (a3 && (v40[3] & 1) == 0)
+    if (error && (v40[3] & 1) == 0)
     {
       v11 = v34[5];
       if (!v11)
@@ -273,7 +273,7 @@ void __54__CESRSpeechProfileBuilder_cancelCategoriesWithError___block_invoke_399
         v11 = v28[5];
       }
 
-      *a3 = v11;
+      *error = v11;
       v10 = *(v40 + 24);
     }
 
@@ -297,9 +297,9 @@ void __54__CESRSpeechProfileBuilder_cancelCategoriesWithError___block_invoke_399
               objc_enumerationMutation(v12);
             }
 
-            v16 = [*(*(&v21 + 1) + 8 * i) content];
-            v17 = [v16 data];
-            self->_uncommittedItemsMemoryInBytes -= [v17 length];
+            content = [*(*(&v21 + 1) + 8 * i) content];
+            data = [content data];
+            self->_uncommittedItemsMemoryInBytes -= [data length];
           }
 
           v13 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v21 objects:v43 count:16];
@@ -378,10 +378,10 @@ void __49__CESRSpeechProfileBuilder__flushItemsWithError___block_invoke_398(uint
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)beginWithCategoriesAndVersions:(id)a3 bundleId:(id)a4 error:(id *)a5
+- (BOOL)beginWithCategoriesAndVersions:(id)versions bundleId:(id)id error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  versionsCopy = versions;
+  idCopy = id;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -411,10 +411,10 @@ void __49__CESRSpeechProfileBuilder__flushItemsWithError___block_invoke_398(uint
   v15[3] = &unk_2785803E8;
   v15[4] = &v29;
   v15[5] = &v17;
-  [v11 beginWithCategoriesAndVersions:v8 bundleId:v9 completion:v15];
+  [v11 beginWithCategoriesAndVersions:versionsCopy bundleId:idCopy completion:v15];
 
   v12 = *(v30 + 24);
-  if (a5 && (v30[3] & 1) == 0)
+  if (error && (v30[3] & 1) == 0)
   {
     v13 = v24[5];
     if (!v13)
@@ -422,7 +422,7 @@ void __49__CESRSpeechProfileBuilder__flushItemsWithError___block_invoke_398(uint
       v13 = v18[5];
     }
 
-    *a5 = v13;
+    *error = v13;
     v12 = *(v30 + 24);
   }
 
@@ -484,7 +484,7 @@ void __74__CESRSpeechProfileBuilder_beginWithCategoriesAndVersions_bundleId_erro
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getCodepathIdsWithError:(id *)a3
+- (id)getCodepathIdsWithError:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -519,7 +519,7 @@ void __74__CESRSpeechProfileBuilder_beginWithCategoriesAndVersions_bundleId_erro
   v10[5] = &v24;
   [v6 getCodepathIdsWithCompletion:v10];
 
-  if (a3)
+  if (error)
   {
     v7 = v19[5];
     if (!v7)
@@ -527,7 +527,7 @@ void __74__CESRSpeechProfileBuilder_beginWithCategoriesAndVersions_bundleId_erro
       v7 = v13[5];
     }
 
-    *a3 = v7;
+    *error = v7;
   }
 
   v8 = v25[5];
@@ -596,9 +596,9 @@ void __52__CESRSpeechProfileBuilder_getCodepathIdsWithError___block_invoke_390(u
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeCodepathId:(id)a3 error:(id *)a4
+- (BOOL)removeCodepathId:(id)id error:(id *)error
 {
-  v6 = a3;
+  idCopy = id;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -628,10 +628,10 @@ void __52__CESRSpeechProfileBuilder_getCodepathIdsWithError___block_invoke_390(u
   v12[3] = &unk_2785803E8;
   v12[4] = &v14;
   v12[5] = &v26;
-  [v8 removeCodepathId:v6 completion:v12];
+  [v8 removeCodepathId:idCopy completion:v12];
 
   v9 = *(v27 + 24);
-  if (a4 && (v27[3] & 1) == 0)
+  if (error && (v27[3] & 1) == 0)
   {
     v10 = v21[5];
     if (!v10)
@@ -639,7 +639,7 @@ void __52__CESRSpeechProfileBuilder_getCodepathIdsWithError___block_invoke_390(u
       v10 = v15[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = *(v27 + 24);
   }
 
@@ -702,9 +702,9 @@ void __51__CESRSpeechProfileBuilder_removeCodepathId_error___block_invoke_388(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addCodepathId:(id)a3 error:(id *)a4
+- (BOOL)addCodepathId:(id)id error:(id *)error
 {
-  v6 = a3;
+  idCopy = id;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -734,10 +734,10 @@ void __51__CESRSpeechProfileBuilder_removeCodepathId_error___block_invoke_388(ui
   v12[3] = &unk_2785803E8;
   v12[4] = &v14;
   v12[5] = &v26;
-  [v8 addCodepathId:v6 completion:v12];
+  [v8 addCodepathId:idCopy completion:v12];
 
   v9 = *(v27 + 24);
-  if (a4 && (v27[3] & 1) == 0)
+  if (error && (v27[3] & 1) == 0)
   {
     v10 = v21[5];
     if (!v10)
@@ -745,7 +745,7 @@ void __51__CESRSpeechProfileBuilder_removeCodepathId_error___block_invoke_388(ui
       v10 = v15[5];
     }
 
-    *a4 = v10;
+    *error = v10;
     v9 = *(v27 + 24);
   }
 
@@ -808,9 +808,9 @@ void __48__CESRSpeechProfileBuilder_addCodepathId_error___block_invoke_387(uint6
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)getVersionForCategory:(id)a3 error:(id *)a4
+- (int64_t)getVersionForCategory:(id)category error:(id *)error
 {
-  v6 = a3;
+  categoryCopy = category;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -840,9 +840,9 @@ void __48__CESRSpeechProfileBuilder_addCodepathId_error___block_invoke_387(uint6
   v12[3] = &unk_27857F738;
   v12[4] = &v14;
   v12[5] = &v26;
-  [v8 getVersionForCategory:v6 completion:v12];
+  [v8 getVersionForCategory:categoryCopy completion:v12];
 
-  if (a4)
+  if (error)
   {
     v9 = v21[5];
     if (!v9)
@@ -850,7 +850,7 @@ void __48__CESRSpeechProfileBuilder_addCodepathId_error___block_invoke_387(uint6
       v9 = v15[5];
     }
 
-    *a4 = v9;
+    *error = v9;
   }
 
   v10 = v27[3];
@@ -1009,7 +1009,7 @@ void __42__CESRSpeechProfileBuilder__newConnection__block_invoke(uint64_t a1)
     *buf = 136315394;
     v7 = "[CESRSpeechProfileBuilder dealloc]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_225EEB000, v3, OS_LOG_TYPE_INFO, "%s %@ deallocating", buf, 0x16u);
   }
 
@@ -1019,17 +1019,17 @@ void __42__CESRSpeechProfileBuilder__newConnection__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)CESRErrorForXPCError:(id)a3
++ (id)CESRErrorForXPCError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v5 = v4;
   v6 = @"Connection to the profile builder service was interrupted";
-  if (v3)
+  if (errorCopy)
   {
-    [v4 setObject:v3 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
-    v7 = [v3 code];
-    if (v7 == 4099)
+    [v4 setObject:errorCopy forKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    code = [errorCopy code];
+    if (code == 4099)
     {
       v8 = 1;
     }
@@ -1039,7 +1039,7 @@ void __42__CESRSpeechProfileBuilder__newConnection__block_invoke(uint64_t a1)
       v8 = 2;
     }
 
-    if (v7 == 4099)
+    if (code == 4099)
     {
       v6 = @"Connection to the profile builder service was rejected";
     }
@@ -1056,20 +1056,20 @@ void __42__CESRSpeechProfileBuilder__newConnection__block_invoke(uint64_t a1)
   return v9;
 }
 
-+ (id)profileFilePathFromBasePath:(id)a3 language:(id)a4 userId:(id)a5
++ (id)profileFilePathFromBasePath:(id)path language:(id)language userId:(id)id
 {
-  v5 = [CESRSpeechProfileBuilder profileDirPathFromBasePath:a3 language:a4 userId:a5];
+  v5 = [CESRSpeechProfileBuilder profileDirPathFromBasePath:path language:language userId:id];
   v6 = [v5 stringByAppendingPathComponent:@"SpeechProfile"];
 
   return v6;
 }
 
-+ (id)profileDirPathFromBasePath:(id)a3 language:(id)a4 userId:(id)a5
++ (id)profileDirPathFromBasePath:(id)path language:(id)language userId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 length])
+  pathCopy = path;
+  languageCopy = language;
+  idCopy = id;
+  if ([languageCopy length])
   {
     v10 = SFUserIdHash();
     v11 = SFUserIdHashToString();
@@ -1082,9 +1082,9 @@ void __42__CESRSpeechProfileBuilder__newConnection__block_invoke(uint64_t a1)
 
     v14 = v13;
 
-    v15 = [v7 stringByAppendingPathComponent:v14];
+    v15 = [pathCopy stringByAppendingPathComponent:v14];
 
-    v16 = [v15 stringByAppendingPathComponent:v8];
+    v16 = [v15 stringByAppendingPathComponent:languageCopy];
   }
 
   else
@@ -1098,9 +1098,9 @@ void __42__CESRSpeechProfileBuilder__newConnection__block_invoke(uint64_t a1)
 + (void)deleteLegacyProfiles
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v3 = AFLibraryDirectoryWithSubPath();
-  v4 = [v2 contentsOfDirectoryAtPath:v3 error:0];
+  v4 = [defaultManager contentsOfDirectoryAtPath:v3 error:0];
   v5 = [@"SpeechProfile" stringByAppendingString:@"_"];
   v14 = 0u;
   v15 = 0u;
@@ -1125,7 +1125,7 @@ void __42__CESRSpeechProfileBuilder__newConnection__block_invoke(uint64_t a1)
         if ([v11 hasPrefix:{v5, v14}])
         {
           v12 = [v3 stringByAppendingPathComponent:v11];
-          [v2 removeItemAtPath:v12 error:0];
+          [defaultManager removeItemAtPath:v12 error:0];
         }
       }
 
@@ -1138,38 +1138,38 @@ void __42__CESRSpeechProfileBuilder__newConnection__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)deleteProfileAtDirectory:(id)a3 locale:(id)a4 userId:(id)a5 error:(id *)a6
++ (BOOL)deleteProfileAtDirectory:(id)directory locale:(id)locale userId:(id)id error:(id *)error
 {
-  v9 = a5;
-  v10 = a3;
-  v11 = [a4 localeIdentifier];
-  v12 = [CESRUtilities languageStringForLocaleString:v11];
+  idCopy = id;
+  directoryCopy = directory;
+  localeIdentifier = [locale localeIdentifier];
+  v12 = [CESRUtilities languageStringForLocaleString:localeIdentifier];
 
-  v13 = [v10 path];
+  path = [directoryCopy path];
 
-  v14 = [CESRSpeechProfileBuilder profileDirPathFromBasePath:v13 language:v12 userId:v9];
+  v14 = [CESRSpeechProfileBuilder profileDirPathFromBasePath:path language:v12 userId:idCopy];
 
-  v15 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v20 = 0;
-  v16 = [v15 removeItemAtPath:v14 error:&v20];
+  v16 = [defaultManager removeItemAtPath:v14 error:&v20];
   v17 = v20;
 
-  if (a6 && v17)
+  if (error && v17)
   {
     v18 = v17;
-    *a6 = v17;
+    *error = v17;
   }
 
   return v16;
 }
 
-+ (id)speechProfilePathsForLocale:(id)a3
++ (id)speechProfilePathsForLocale:(id)locale
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (locale)
   {
-    v3 = [a3 localeIdentifier];
-    v4 = [CESRUtilities languageStringForLocaleString:v3];
+    localeIdentifier = [locale localeIdentifier];
+    v4 = [CESRUtilities languageStringForLocaleString:localeIdentifier];
 
     v5 = [CESRUtilities speechProfilePathsWithLanguage:v4];
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1215,15 +1215,15 @@ void __42__CESRSpeechProfileBuilder__newConnection__block_invoke(uint64_t a1)
   return v6;
 }
 
-+ (id)getSpeechLocaleForLocale:(id)a3
++ (id)getSpeechLocaleForLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [v3 localeIdentifier];
-  v5 = [CESRUtilities languageStringForLocaleString:v4];
+  localeCopy = locale;
+  localeIdentifier = [localeCopy localeIdentifier];
+  v5 = [CESRUtilities languageStringForLocaleString:localeIdentifier];
 
   v6 = SFReplacementLocaleCodeForLocaleIdentifier();
 
-  v7 = v3;
+  v7 = localeCopy;
   if (v6)
   {
     v8 = objc_alloc(MEMORY[0x277CBEAF8]);
@@ -1241,21 +1241,21 @@ void __42__CESRSpeechProfileBuilder__newConnection__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (unsigned)_fieldTypeFromString:(id)a3
++ (unsigned)_fieldTypeFromString:(id)string
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (_fieldTypeFromString__onceToken == -1)
   {
-    if (v3)
+    if (stringCopy)
     {
 LABEL_3:
       v5 = [_fieldTypeFromString__fieldTypeForString objectForKey:v4];
       v6 = v5;
       if (v5)
       {
-        v7 = [v5 unsignedShortValue];
+        unsignedShortValue = [v5 unsignedShortValue];
       }
 
       else
@@ -1270,7 +1270,7 @@ LABEL_3:
           _os_log_error_impl(&dword_225EEB000, v8, OS_LOG_TYPE_ERROR, "%s %@ did not match any known field type.", &v12, 0x16u);
         }
 
-        v7 = 0;
+        unsignedShortValue = 0;
       }
 
       goto LABEL_13;
@@ -1294,11 +1294,11 @@ LABEL_3:
     _os_log_error_impl(&dword_225EEB000, v9, OS_LOG_TYPE_ERROR, "%s fieldTypeAsString cannot be nil.", &v12, 0xCu);
   }
 
-  v7 = 0;
+  unsignedShortValue = 0;
 LABEL_13:
 
   v10 = *MEMORY[0x277D85DE8];
-  return v7;
+  return unsignedShortValue;
 }
 
 void __49__CESRSpeechProfileBuilder__fieldTypeFromString___block_invoke()
@@ -1389,15 +1389,15 @@ void __49__CESRSpeechProfileBuilder__fieldTypeFromString___block_invoke()
       _os_log_debug_impl(&dword_225EEB000, v15, OS_LOG_TYPE_DEBUG, "%s Siri/asr_speech_profile_app_entities feature flag is enabled.", buf, 0xCu);
     }
 
-    v17 = [v13 appEntityConfig];
-    if ([v17 overallAppEntityLimit])
+    appEntityConfig = [v13 appEntityConfig];
+    if ([appEntityConfig overallAppEntityLimit])
     {
-      v18 = [v17 supportedLmeTemplates];
+      supportedLmeTemplates = [appEntityConfig supportedLmeTemplates];
       v76 = 0u;
       v77 = 0u;
       v78 = 0u;
       v79 = 0u;
-      v19 = [v18 countByEnumeratingWithState:&v76 objects:v86 count:16];
+      v19 = [supportedLmeTemplates countByEnumeratingWithState:&v76 objects:v86 count:16];
       if (v19)
       {
         v20 = v19;
@@ -1408,7 +1408,7 @@ void __49__CESRSpeechProfileBuilder__fieldTypeFromString___block_invoke()
           {
             if (*v77 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(supportedLmeTemplates);
             }
 
             v23 = *(*(&v76 + 1) + 8 * i);
@@ -1428,7 +1428,7 @@ void __49__CESRSpeechProfileBuilder__fieldTypeFromString___block_invoke()
             [v26 addObject:&unk_283952990];
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v76 objects:v86 count:16];
+          v20 = [supportedLmeTemplates countByEnumeratingWithState:&v76 objects:v86 count:16];
         }
 
         while (v20);
@@ -1441,7 +1441,7 @@ void __49__CESRSpeechProfileBuilder__fieldTypeFromString___block_invoke()
         *buf = 136315394;
         v83 = "+[CESRSpeechProfileBuilder categoryToFieldTypeMap]";
         v84 = 2112;
-        v85 = v18;
+        v85 = supportedLmeTemplates;
         _os_log_debug_impl(&dword_225EEB000, v27, OS_LOG_TYPE_DEBUG, "%s App Entity ingestion is enabled in config for categories: %@", buf, 0x16u);
       }
     }
@@ -1465,15 +1465,15 @@ void __49__CESRSpeechProfileBuilder__fieldTypeFromString___block_invoke()
     _os_log_debug_impl(&dword_225EEB000, v15, OS_LOG_TYPE_DEBUG, "%s Siri/asr_speech_profile_app_entities feature flag is disabled. App Entities will not be consumed on speech profile updates.", buf, 0xCu);
   }
 
-  v55 = [v13 directDonationConfig];
-  v29 = [v55 fieldTypeToMapping];
+  directDonationConfig = [v13 directDonationConfig];
+  fieldTypeToMapping = [directDonationConfig fieldTypeToMapping];
   v30 = *v14;
   if (os_log_type_enabled(*v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v83 = "+[CESRSpeechProfileBuilder categoryToFieldTypeMap]";
     v84 = 2112;
-    v85 = v29;
+    v85 = fieldTypeToMapping;
     _os_log_debug_impl(&dword_225EEB000, v30, OS_LOG_TYPE_DEBUG, "%s Adding any additional Direct Donation mappings: %@", buf, 0x16u);
   }
 
@@ -1481,13 +1481,13 @@ void __49__CESRSpeechProfileBuilder__fieldTypeFromString___block_invoke()
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = [v29 allKeys];
+  obj = [fieldTypeToMapping allKeys];
   v31 = off_27857E000;
   v65 = [obj countByEnumeratingWithState:&v72 objects:v81 count:16];
   if (v65)
   {
     v61 = *v73;
-    v63 = v29;
+    v63 = fieldTypeToMapping;
     do
     {
       v32 = 0;
@@ -1500,7 +1500,7 @@ void __49__CESRSpeechProfileBuilder__fieldTypeFromString___block_invoke()
 
         v67 = v32;
         v33 = *(*(&v72 + 1) + 8 * v32);
-        v34 = [v29 objectForKeyedSubscript:v33];
+        v34 = [fieldTypeToMapping objectForKeyedSubscript:v33];
         v68 = 0u;
         v69 = 0u;
         v70 = 0u;
@@ -1519,28 +1519,28 @@ void __49__CESRSpeechProfileBuilder__fieldTypeFromString___block_invoke()
                 objc_enumerationMutation(v34);
               }
 
-              v39 = [*(*(&v68 + 1) + 8 * j) vocabularyLabel];
-              v40 = [v39 lmeTemplate];
+              vocabularyLabel = [*(*(&v68 + 1) + 8 * j) vocabularyLabel];
+              lmeTemplate = [vocabularyLabel lmeTemplate];
 
               v41 = [(__objc2_class *)v31[27] _fieldTypeFromString:v33];
               if (v41)
               {
                 v42 = v41;
-                v43 = [v12 objectForKeyedSubscript:v40];
+                v43 = [v12 objectForKeyedSubscript:lmeTemplate];
                 if (v43)
                 {
-                  [v12 setObject:v43 forKeyedSubscript:v40];
+                  [v12 setObject:v43 forKeyedSubscript:lmeTemplate];
                 }
 
                 else
                 {
                   v44 = [MEMORY[0x277CBEB58] set];
-                  [v12 setObject:v44 forKeyedSubscript:v40];
+                  [v12 setObject:v44 forKeyedSubscript:lmeTemplate];
 
                   v31 = off_27857E000;
                 }
 
-                v45 = [v12 objectForKeyedSubscript:v40];
+                v45 = [v12 objectForKeyedSubscript:lmeTemplate];
                 v46 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v42];
                 [v45 addObject:v46];
               }
@@ -1553,7 +1553,7 @@ void __49__CESRSpeechProfileBuilder__fieldTypeFromString___block_invoke()
         }
 
         v32 = v67 + 1;
-        v29 = v63;
+        fieldTypeToMapping = v63;
       }
 
       while (v67 + 1 != v65);
@@ -1572,8 +1572,8 @@ void __49__CESRSpeechProfileBuilder__fieldTypeFromString___block_invoke()
 {
   v2 = objc_alloc(MEMORY[0x277CBEB98]);
   v3 = +[CESRSpeechProfileBuilder categoryToFieldTypeMap];
-  v4 = [v3 allKeys];
-  v5 = [v2 initWithArray:v4];
+  allKeys = [v3 allKeys];
+  v5 = [v2 initWithArray:allKeys];
 
   return v5;
 }

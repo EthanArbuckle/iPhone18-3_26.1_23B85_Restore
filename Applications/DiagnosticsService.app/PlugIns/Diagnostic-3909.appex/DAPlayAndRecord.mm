@@ -1,29 +1,29 @@
 @interface DAPlayAndRecord
-- (BOOL)setDeviceVolume:(float)a3;
+- (BOOL)setDeviceVolume:(float)volume;
 - (DAAudioPlayAndRecordDelegate)delegate;
-- (DAPlayAndRecord)initWithFileURL:(id)a3 fileName:(id)a4 numberOfInputs:(id)a5 inputID:(int64_t)a6 outputID:(int64_t)a7 volume:(id)a8 channel:(id)a9 sendRawData:(BOOL)a10 delegate:(id)a11 sequentialAudioInput:(BOOL)a12 error:(id *)a13;
+- (DAPlayAndRecord)initWithFileURL:(id)l fileName:(id)name numberOfInputs:(id)inputs inputID:(int64_t)d outputID:(int64_t)iD volume:(id)volume channel:(id)channel sendRawData:(BOOL)self0 delegate:(id)self1 sequentialAudioInput:(BOOL)self2 error:(id *)self3;
 - (id)makeSignalsDataObjects;
-- (int)calculateFileDurationForFile:(OpaqueAudioFileID *)a3 error:(id *)a4;
-- (int)createAUGraphWithError:(id *)a3;
+- (int)calculateFileDurationForFile:(OpaqueAudioFileID *)file error:(id *)error;
+- (int)createAUGraphWithError:(id *)error;
 - (int)startAudioTestCase;
 - (void)cancel;
 - (void)dealloc;
 - (void)endAudioTestCase;
-- (void)grabPlayBackFrameData:(AudioBufferList *)a3 withNumberOfFrames:(unsigned int)a4;
-- (void)grabRecordedFrameData:(AudioBufferList *)a3 withNumberOfFrames:(unsigned int)a4;
+- (void)grabPlayBackFrameData:(AudioBufferList *)data withNumberOfFrames:(unsigned int)frames;
+- (void)grabRecordedFrameData:(AudioBufferList *)data withNumberOfFrames:(unsigned int)frames;
 - (void)resetToPreviousVolume;
 @end
 
 @implementation DAPlayAndRecord
 
-- (DAPlayAndRecord)initWithFileURL:(id)a3 fileName:(id)a4 numberOfInputs:(id)a5 inputID:(int64_t)a6 outputID:(int64_t)a7 volume:(id)a8 channel:(id)a9 sendRawData:(BOOL)a10 delegate:(id)a11 sequentialAudioInput:(BOOL)a12 error:(id *)a13
+- (DAPlayAndRecord)initWithFileURL:(id)l fileName:(id)name numberOfInputs:(id)inputs inputID:(int64_t)d outputID:(int64_t)iD volume:(id)volume channel:(id)channel sendRawData:(BOOL)self0 delegate:(id)self1 sequentialAudioInput:(BOOL)self2 error:(id *)self3
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a8;
-  v23 = a9;
-  v24 = a11;
+  lCopy = l;
+  nameCopy = name;
+  inputsCopy = inputs;
+  volumeCopy = volume;
+  channelCopy = channel;
+  delegateCopy = delegate;
   v29.receiver = self;
   v29.super_class = DAPlayAndRecord;
   v25 = [(DAPlayAndRecord *)&v29 init];
@@ -33,19 +33,19 @@
     goto LABEL_8;
   }
 
-  [(DAPlayAndRecord *)v25 setError:a13];
-  [(AudioFileID *)p_isa setFileName:v20];
-  [(AudioFileID *)p_isa setFileURL:v19];
-  [(AudioFileID *)p_isa setDelegate:v24];
-  [(AudioFileID *)p_isa setNumInputs:v21];
-  [(AudioFileID *)p_isa setInputID:a6];
-  [(AudioFileID *)p_isa setOutputID:a7];
-  [(AudioFileID *)p_isa setSendRawData:a10];
-  [(AudioFileID *)p_isa setSequentialAudioInput:a12];
-  [(AudioFileID *)p_isa setVolume:v22];
-  [(AudioFileID *)p_isa setChannel:v23];
+  [(DAPlayAndRecord *)v25 setError:error];
+  [(AudioFileID *)p_isa setFileName:nameCopy];
+  [(AudioFileID *)p_isa setFileURL:lCopy];
+  [(AudioFileID *)p_isa setDelegate:delegateCopy];
+  [(AudioFileID *)p_isa setNumInputs:inputsCopy];
+  [(AudioFileID *)p_isa setInputID:d];
+  [(AudioFileID *)p_isa setOutputID:iD];
+  [(AudioFileID *)p_isa setSendRawData:data];
+  [(AudioFileID *)p_isa setSequentialAudioInput:input];
+  [(AudioFileID *)p_isa setVolume:volumeCopy];
+  [(AudioFileID *)p_isa setChannel:channelCopy];
   [(AudioFileID *)p_isa setVolumeNeedsReset:0];
-  if (!AudioFileOpenURL(v19, kAudioFileReadPermission, 0x57415645u, p_isa + 8))
+  if (!AudioFileOpenURL(lCopy, kAudioFileReadPermission, 0x57415645u, p_isa + 8))
   {
     if ([(AudioFileID *)p_isa calculateFileDurationForFile:p_isa[8] error:[(AudioFileID *)p_isa error]])
     {
@@ -75,33 +75,33 @@ LABEL_9:
 {
   [(DAPlayAndRecord *)self fileTimeInFrames];
   self->sourceSignal = malloc_type_malloc(vcvts_n_u32_f32(v3, 2uLL), 0x100004052888210uLL);
-  v4 = [(DAPlayAndRecord *)self numInputs];
-  self->receiveSignals = malloc_type_malloc(8 * [v4 intValue], 0x80040B8603338uLL);
+  numInputs = [(DAPlayAndRecord *)self numInputs];
+  self->receiveSignals = malloc_type_malloc(8 * [numInputs intValue], 0x80040B8603338uLL);
 
-  v5 = [(DAPlayAndRecord *)self numInputs];
-  v6 = [v5 intValue];
+  numInputs2 = [(DAPlayAndRecord *)self numInputs];
+  intValue = [numInputs2 intValue];
 
-  if (v6 >= 1)
+  if (intValue >= 1)
   {
-    for (i = 0; i < v10; ++i)
+    for (i = 0; i < intValue2; ++i)
     {
       [(DAPlayAndRecord *)self fileTimeInFrames];
       self->receiveSignals[i] = malloc_type_malloc(vcvts_n_u32_f32(v8, 2uLL), 0x100004052888210uLL);
-      v9 = [(DAPlayAndRecord *)self numInputs];
-      v10 = [v9 intValue];
+      numInputs3 = [(DAPlayAndRecord *)self numInputs];
+      intValue2 = [numInputs3 intValue];
     }
   }
 
-  v11 = [(DAPlayAndRecord *)self numInputs];
-  self->recordBufferList = malloc_type_malloc((16 * [v11 intValue]) | 8, 0x10800404ACF7207uLL);
+  numInputs4 = [(DAPlayAndRecord *)self numInputs];
+  self->recordBufferList = malloc_type_malloc((16 * [numInputs4 intValue]) | 8, 0x10800404ACF7207uLL);
 
-  v12 = [(DAPlayAndRecord *)self numInputs];
-  self->recordBufferList->mNumberBuffers = [v12 unsignedIntValue];
+  numInputs5 = [(DAPlayAndRecord *)self numInputs];
+  self->recordBufferList->mNumberBuffers = [numInputs5 unsignedIntValue];
 
-  v13 = [(DAPlayAndRecord *)self numInputs];
-  v14 = [v13 intValue];
+  numInputs6 = [(DAPlayAndRecord *)self numInputs];
+  intValue3 = [numInputs6 intValue];
 
-  if (v14 >= 1)
+  if (intValue3 >= 1)
   {
     v15 = 0;
     v16 = 0;
@@ -112,14 +112,14 @@ LABEL_9:
       *(v18 + 2) = 1;
       *(v18 + 3) = 4096;
       *(v18 + 2) = v17;
-      v19 = [(DAPlayAndRecord *)self numInputs];
+      numInputs7 = [(DAPlayAndRecord *)self numInputs];
       ++v16;
-      v20 = [v19 intValue];
+      intValue4 = [numInputs7 intValue];
 
       v15 += 16;
     }
 
-    while (v16 < v20);
+    while (v16 < intValue4);
   }
 
   v21 = AudioUnitReset(self->generatorUnit, 0, 0);
@@ -218,41 +218,41 @@ LABEL_9:
 
     [v28 getVolume:&self->previousDeviceVolume forCategory:v29];
 
-    v30 = [(DAPlayAndRecord *)self volume];
-    [v30 floatValue];
+    volume = [(DAPlayAndRecord *)self volume];
+    [volume floatValue];
     v31 = [(DAPlayAndRecord *)self setDeviceVolume:?];
 
     if (v31)
     {
-      v32 = self;
-      objc_sync_enter(v32);
-      [(DAPlayAndRecord *)v32 setVolumeNeedsReset:1];
-      if (![(DAPlayAndRecord *)v32 isCancelled])
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      [(DAPlayAndRecord *)selfCopy setVolumeNeedsReset:1];
+      if (![(DAPlayAndRecord *)selfCopy isCancelled])
       {
         v33 = DiagnosticLogHandleForCategory();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
-          v34 = [(DAPlayAndRecord *)v32 fileURL];
-          v35 = [v34 lastPathComponent];
-          v36 = [(DAPlayAndRecord *)v32 outputID];
+          fileURL = [(DAPlayAndRecord *)selfCopy fileURL];
+          lastPathComponent = [fileURL lastPathComponent];
+          outputID = [(DAPlayAndRecord *)selfCopy outputID];
           *buf = 138412546;
-          v57 = v35;
+          v57 = lastPathComponent;
           v58 = 2048;
-          v59 = v36;
+          v59 = outputID;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "Beginning %@ (outputID = %ld).", buf, 0x16u);
         }
 
-        Property = AUGraphStart(v32->testCaseGraph);
+        Property = AUGraphStart(selfCopy->testCaseGraph);
         if (Property)
         {
-          [LegacyAudioSystemController setCode:2 forError:[(DAPlayAndRecord *)v32 error]];
-          objc_sync_exit(v32);
+          [LegacyAudioSystemController setCode:2 forError:[(DAPlayAndRecord *)selfCopy error]];
+          objc_sync_exit(selfCopy);
 
           return Property;
         }
       }
 
-      objc_sync_exit(v32);
+      objc_sync_exit(selfCopy);
     }
 
     else
@@ -274,51 +274,51 @@ LABEL_9:
   v3 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(DAPlayAndRecord *)self fileURL];
-    v5 = [v4 lastPathComponent];
+    fileURL = [(DAPlayAndRecord *)self fileURL];
+    lastPathComponent = [fileURL lastPathComponent];
     v10 = 138412546;
-    v11 = v5;
+    v11 = lastPathComponent;
     v12 = 2048;
-    v13 = [(DAPlayAndRecord *)self outputID];
+    outputID = [(DAPlayAndRecord *)self outputID];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Ended %@ (outputID = %ld).", &v10, 0x16u);
   }
 
   [(DAPlayAndRecord *)self resetToPreviousVolume];
-  v6 = [(DAPlayAndRecord *)self makeSignalsDataObjects];
-  v7 = [NSMutableArray arrayWithArray:v6];
+  makeSignalsDataObjects = [(DAPlayAndRecord *)self makeSignalsDataObjects];
+  v7 = [NSMutableArray arrayWithArray:makeSignalsDataObjects];
   [(DAPlayAndRecord *)self setResults:v7];
 
   [(DAPlayAndRecord *)self sendRawData];
-  v8 = [(DAPlayAndRecord *)self delegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  delegate = [(DAPlayAndRecord *)self delegate];
+  LOBYTE(makeSignalsDataObjects) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (makeSignalsDataObjects)
   {
-    v9 = [(DAPlayAndRecord *)self delegate];
-    [v9 playAndRecordFinished];
+    delegate2 = [(DAPlayAndRecord *)self delegate];
+    [delegate2 playAndRecordFinished];
   }
 }
 
 - (void)cancel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(DAPlayAndRecord *)v2 setIsCancelled:1];
-  AUGraphStop(v2->testCaseGraph);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(DAPlayAndRecord *)selfCopy setIsCancelled:1];
+  AUGraphStop(selfCopy->testCaseGraph);
   v3 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(DAPlayAndRecord *)v2 fileURL];
-    v5 = [v4 lastPathComponent];
+    fileURL = [(DAPlayAndRecord *)selfCopy fileURL];
+    lastPathComponent = [fileURL lastPathComponent];
     v6 = 138412546;
-    v7 = v5;
+    v7 = lastPathComponent;
     v8 = 2048;
-    v9 = [(DAPlayAndRecord *)v2 outputID];
+    outputID = [(DAPlayAndRecord *)selfCopy outputID];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Cancelled %@ (outputID = %ld).", &v6, 0x16u);
   }
 
-  objc_sync_exit(v2);
-  [(DAPlayAndRecord *)v2 resetToPreviousVolume];
+  objc_sync_exit(selfCopy);
+  [(DAPlayAndRecord *)selfCopy resetToPreviousVolume];
 }
 
 - (void)resetToPreviousVolume
@@ -335,12 +335,12 @@ LABEL_9:
   objc_sync_exit(obj);
 }
 
-- (BOOL)setDeviceVolume:(float)a3
+- (BOOL)setDeviceVolume:(float)volume
 {
   v15 = 0.0;
-  v5 = [(DAPlayAndRecord *)self outputID];
+  outputID = [(DAPlayAndRecord *)self outputID];
   v6 = @"Audio/Video";
-  if (!v5)
+  if (!outputID)
   {
     v6 = @"PlayAndRecord";
   }
@@ -352,20 +352,20 @@ LABEL_9:
   v9 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [(DAPlayAndRecord *)self outputID];
+    outputID2 = [(DAPlayAndRecord *)self outputID];
     *buf = 138413058;
     v17 = v7;
     v18 = 2048;
-    v19 = v10;
+    v19 = outputID2;
     v20 = 2048;
     v21 = v15;
     v22 = 2048;
-    v23 = a3;
+    volumeCopy = volume;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Changing %@ Volume (outputID = %ld): %f -> %f", buf, 0x2Au);
   }
 
   v11 = +[AVSystemController sharedAVSystemController];
-  *&v12 = a3;
+  *&v12 = volume;
   v13 = [v11 setVolumeTo:v7 forCategory:v12];
 
   return v13;
@@ -379,75 +379,75 @@ LABEL_9:
   [(DAPlayAndRecord *)&v3 dealloc];
 }
 
-- (void)grabPlayBackFrameData:(AudioBufferList *)a3 withNumberOfFrames:(unsigned int)a4
+- (void)grabPlayBackFrameData:(AudioBufferList *)data withNumberOfFrames:(unsigned int)frames
 {
-  v7 = [(DAPlayAndRecord *)self playFrameCount];
+  playFrameCount = [(DAPlayAndRecord *)self playFrameCount];
   [(DAPlayAndRecord *)self fileTimeInFrames];
-  if (v8 >= v7)
+  if (v8 >= playFrameCount)
   {
-    v9 = [(DAPlayAndRecord *)self channel];
-    v10 = [v9 intValue];
-    mNumberBuffers = a3->mNumberBuffers;
+    channel = [(DAPlayAndRecord *)self channel];
+    intValue = [channel intValue];
+    mNumberBuffers = data->mNumberBuffers;
 
-    if (v10 < mNumberBuffers)
+    if (intValue < mNumberBuffers)
     {
       sourceSignal = self->sourceSignal;
       v13 = &sourceSignal[[(DAPlayAndRecord *)self playFrameCount]];
-      v14 = [(DAPlayAndRecord *)self channel];
-      memcpy(v13, a3->mBuffers[[v14 intValue]].mData, 4 * a4);
+      channel2 = [(DAPlayAndRecord *)self channel];
+      memcpy(v13, data->mBuffers[[channel2 intValue]].mData, 4 * frames);
 
-      v15 = [(DAPlayAndRecord *)self playFrameCount]+ a4;
+      v15 = [(DAPlayAndRecord *)self playFrameCount]+ frames;
 
       [(DAPlayAndRecord *)self setPlayFrameCount:v15];
     }
   }
 }
 
-- (void)grabRecordedFrameData:(AudioBufferList *)a3 withNumberOfFrames:(unsigned int)a4
+- (void)grabRecordedFrameData:(AudioBufferList *)data withNumberOfFrames:(unsigned int)frames
 {
-  v7 = ([(DAPlayAndRecord *)self recordFrameCount]+ a4);
+  v7 = ([(DAPlayAndRecord *)self recordFrameCount]+ frames);
   [(DAPlayAndRecord *)self fileTimeInFrames];
-  if (v8 >= v7 && (-[DAPlayAndRecord numInputs](self, "numInputs"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 intValue], mNumberBuffers = a3->mNumberBuffers, v9, v10 <= mNumberBuffers))
+  if (v8 >= v7 && (-[DAPlayAndRecord numInputs](self, "numInputs"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 intValue], mNumberBuffers = data->mNumberBuffers, v9, v10 <= mNumberBuffers))
   {
-    v14 = [(DAPlayAndRecord *)self numInputs];
-    v15 = [v14 intValue];
+    numInputs = [(DAPlayAndRecord *)self numInputs];
+    intValue = [numInputs intValue];
 
-    if (v15 >= 1)
+    if (intValue >= 1)
     {
       v16 = 0;
-      p_mData = &a3->mBuffers[0].mData;
+      p_mData = &data->mBuffers[0].mData;
       do
       {
         v18 = self->receiveSignals[v16];
-        v19 = [(DAPlayAndRecord *)self recordFrameCount];
+        recordFrameCount = [(DAPlayAndRecord *)self recordFrameCount];
         v20 = *p_mData;
         p_mData += 2;
-        memcpy(&v18[v19], v20, 4 * a4);
+        memcpy(&v18[recordFrameCount], v20, 4 * frames);
         ++v16;
-        v21 = [(DAPlayAndRecord *)self numInputs];
-        v22 = [v21 intValue];
+        numInputs2 = [(DAPlayAndRecord *)self numInputs];
+        intValue2 = [numInputs2 intValue];
       }
 
-      while (v16 < v22);
+      while (v16 < intValue2);
     }
   }
 
   else
   {
-    v12 = [(DAPlayAndRecord *)self recordFrameCount];
+    recordFrameCount2 = [(DAPlayAndRecord *)self recordFrameCount];
     [(DAPlayAndRecord *)self fileTimeInFrames];
-    if ((v13 + 16384.0) <= v12)
+    if ((v13 + 16384.0) <= recordFrameCount2)
     {
       [(DAPlayAndRecord *)self endAudioTestCase];
     }
   }
 
-  v23 = [(DAPlayAndRecord *)self recordFrameCount]+ a4;
+  v23 = [(DAPlayAndRecord *)self recordFrameCount]+ frames;
 
   [(DAPlayAndRecord *)self setRecordFrameCount:v23];
 }
 
-- (int)createAUGraphWithError:(id *)a3
+- (int)createAUGraphWithError:(id *)error
 {
   v5 = NewAUGraph(&self->testCaseGraph);
   if (v5 || (v5 = AUGraphOpen(self->testCaseGraph)) != 0)
@@ -468,8 +468,8 @@ LABEL_9:
     v43 = 0u;
     v44 = 0u;
     +[DAAudioUnitHelper getBasicStreamDescription];
-    v9 = [(DAPlayAndRecord *)self numInputs];
-    HIDWORD(v44) = [v9 unsignedIntValue];
+    numInputs = [(DAPlayAndRecord *)self numInputs];
+    HIDWORD(v44) = [numInputs unsignedIntValue];
 
     memset(&outDescription, 0, sizeof(outDescription));
     +[DAAudioUnitHelper getGeneratorDescription];
@@ -775,7 +775,7 @@ LABEL_9:
     }
   }
 
-  [LegacyAudioSystemController setCode:v7 forError:a3];
+  [LegacyAudioSystemController setCode:v7 forError:error];
   return v6;
 }
 
@@ -789,21 +789,21 @@ LABEL_9:
     v6 = *self->receiveSignals;
     [(DAPlayAndRecord *)self fileTimeInFrames];
     v8 = v7;
-    v9 = [(DAPlayAndRecord *)self outputID];
-    v10 = [(DAPlayAndRecord *)self inputID];
-    v11 = [(DAPlayAndRecord *)self fileName];
+    outputID = [(DAPlayAndRecord *)self outputID];
+    inputID = [(DAPlayAndRecord *)self inputID];
+    fileName = [(DAPlayAndRecord *)self fileName];
     LODWORD(v12) = v8;
-    v13 = [(DASignalData *)v4 initWithSourceSignal:sourceSignal receivedSignal:v6 minimumDelay:1900 maximumDelay:3000 fileTimeInFrames:v9 outputID:v10 inputID:v12 fileName:v11];
+    v13 = [(DASignalData *)v4 initWithSourceSignal:sourceSignal receivedSignal:v6 minimumDelay:1900 maximumDelay:3000 fileTimeInFrames:outputID outputID:inputID inputID:v12 fileName:fileName];
 
     [v3 addObject:v13];
   }
 
   else
   {
-    v14 = [(DAPlayAndRecord *)self numInputs];
-    v15 = [v14 intValue];
+    numInputs = [(DAPlayAndRecord *)self numInputs];
+    intValue = [numInputs intValue];
 
-    if (v15 >= 1)
+    if (intValue >= 1)
     {
       v16 = 0;
       do
@@ -813,15 +813,15 @@ LABEL_9:
         v19 = self->receiveSignals[v16];
         [(DAPlayAndRecord *)self fileTimeInFrames];
         v21 = v20;
-        v22 = [(DAPlayAndRecord *)self outputID];
-        v23 = [(DAPlayAndRecord *)self fileName];
+        outputID2 = [(DAPlayAndRecord *)self outputID];
+        fileName2 = [(DAPlayAndRecord *)self fileName];
         LODWORD(v24) = v21;
-        v25 = [(DASignalData *)v17 initWithSourceSignal:v18 receivedSignal:v19 minimumDelay:1900 maximumDelay:3000 fileTimeInFrames:v22 outputID:v16 inputID:v24 fileName:v23];
+        v25 = [(DASignalData *)v17 initWithSourceSignal:v18 receivedSignal:v19 minimumDelay:1900 maximumDelay:3000 fileTimeInFrames:outputID2 outputID:v16 inputID:v24 fileName:fileName2];
 
         [v3 addObject:v25];
         ++v16;
-        v26 = [(DAPlayAndRecord *)self numInputs];
-        LODWORD(v18) = [v26 intValue];
+        numInputs2 = [(DAPlayAndRecord *)self numInputs];
+        LODWORD(v18) = [numInputs2 intValue];
       }
 
       while (v16 < v18);
@@ -833,14 +833,14 @@ LABEL_9:
   return v3;
 }
 
-- (int)calculateFileDurationForFile:(OpaqueAudioFileID *)a3 error:(id *)a4
+- (int)calculateFileDurationForFile:(OpaqueAudioFileID *)file error:(id *)error
 {
   outPropertyData = 0;
   ioDataSize = 8;
   Property = AudioFileGetProperty(self->testSignalFile, 0x70636E74u, &ioDataSize, &outPropertyData);
   if (Property)
   {
-    [LegacyAudioSystemController setCode:-10 forError:a4];
+    [LegacyAudioSystemController setCode:-10 forError:error];
   }
 
   else

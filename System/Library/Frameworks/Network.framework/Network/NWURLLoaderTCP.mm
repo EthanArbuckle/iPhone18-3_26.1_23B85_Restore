@@ -1,14 +1,14 @@
 @interface NWURLLoaderTCP
 - (OS_nw_connection)underlyingConnection;
 - (OS_sec_trust)peerTrust;
-- (id)errorForNWError:(id *)a1;
-- (void)configureTLS:(uint64_t)a1;
-- (void)readDataOfMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5;
-- (void)readResponse:(id)a3;
-- (void)start:(id)a3;
+- (id)errorForNWError:(id *)error;
+- (void)configureTLS:(uint64_t)s;
+- (void)readDataOfMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler;
+- (void)readResponse:(id)response;
+- (void)start:(id)start;
 - (void)stop;
-- (void)updateClient:(id)a3;
-- (void)writeData:(id)a3 complete:(BOOL)a4 completionHandler:(id)a5;
+- (void)updateClient:(id)client;
+- (void)writeData:(id)data complete:(BOOL)complete completionHandler:(id)handler;
 @end
 
 @implementation NWURLLoaderTCP
@@ -23,19 +23,19 @@
   return self;
 }
 
-- (void)writeData:(id)a3 complete:(BOOL)a4 completionHandler:(id)a5
+- (void)writeData:(id)data complete:(BOOL)complete completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __55__NWURLLoaderTCP_writeData_complete_completionHandler___block_invoke;
   v20 = &unk_1E6A39CC0;
-  v21 = self;
-  v10 = v8;
+  selfCopy = self;
+  v10 = dataCopy;
   v22 = v10;
-  v24 = a4;
-  v11 = v9;
+  completeCopy = complete;
+  v11 = handlerCopy;
   v23 = v11;
   v12 = _Block_copy(&v17);
   v13 = v12;
@@ -51,7 +51,7 @@
 LABEL_6:
     v15 = pendingWork;
     v16 = _Block_copy(v13);
-    [(NSMutableArray *)v15 addObject:v16, v17, v18, v19, v20, v21, v22];
+    [(NSMutableArray *)v15 addObject:v16, v17, v18, v19, v20, selfCopy, v22];
 
     goto LABEL_4;
   }
@@ -124,18 +124,18 @@ LABEL_10:
 LABEL_11:
 }
 
-- (id)errorForNWError:(id *)a1
+- (id)errorForNWError:(id *)error
 {
-  v2 = a1;
-  if (a1)
+  errorCopy = error;
+  if (error)
   {
     v3 = a2;
     v4 = [NWURLError alloc];
-    v5 = [v2[5] loaderTask];
-    v2 = [(NWURLError *)v4 initWithNWError:v3 forLoader:v2 andTask:v5];
+    loaderTask = [errorCopy[5] loaderTask];
+    errorCopy = [(NWURLError *)v4 initWithNWError:v3 forLoader:errorCopy andTask:loaderTask];
   }
 
-  return v2;
+  return errorCopy;
 }
 
 - (OS_sec_trust)peerTrust
@@ -148,17 +148,17 @@ LABEL_11:
   return self;
 }
 
-- (void)readDataOfMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5
+- (void)readDataOfMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __84__NWURLLoaderTCP_readDataOfMinimumIncompleteLength_maximumLength_completionHandler___block_invoke;
   v18 = &unk_1E6A2D7C0;
-  v19 = self;
-  v21 = a3;
-  v22 = a4;
-  v9 = v8;
+  selfCopy = self;
+  lengthCopy = length;
+  maximumLengthCopy = maximumLength;
+  v9 = handlerCopy;
   v20 = v9;
   v10 = _Block_copy(&v15);
   v11 = v10;
@@ -174,7 +174,7 @@ LABEL_11:
 LABEL_6:
     v13 = pendingWork;
     v14 = _Block_copy(v11);
-    [(NSMutableArray *)v13 addObject:v14, v15, v16, v17, v18, v19];
+    [(NSMutableArray *)v13 addObject:v14, v15, v16, v17, v18, selfCopy];
 
     goto LABEL_4;
   }
@@ -251,19 +251,19 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)readResponse:(id)a3
+- (void)readResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   _os_crash();
   __break(1u);
 }
 
-- (void)updateClient:(id)a3
+- (void)updateClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   if (self)
   {
-    objc_storeStrong(&self->_client, a3);
+    objc_storeStrong(&self->_client, client);
   }
 }
 
@@ -288,7 +288,7 @@ LABEL_12:
   }
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
   if (self)
   {
@@ -301,11 +301,11 @@ LABEL_12:
   }
 
   v6 = hostname;
-  v7 = a3;
-  v8 = [(NSString *)v6 UTF8String];
+  startCopy = start;
+  uTF8String = [(NSString *)v6 UTF8String];
   if (self)
   {
-    host_with_numeric_port = nw_endpoint_create_host_with_numeric_port(v8, LOWORD(self->_port));
+    host_with_numeric_port = nw_endpoint_create_host_with_numeric_port(uTF8String, LOWORD(self->_port));
     v10 = _Block_copy(&__block_literal_global_19409);
     if (self->_TLS)
     {
@@ -326,7 +326,7 @@ LABEL_12:
 
   else
   {
-    host_with_numeric_port = nw_endpoint_create_host_with_numeric_port(v8, 0);
+    host_with_numeric_port = nw_endpoint_create_host_with_numeric_port(uTF8String, 0);
     v10 = _Block_copy(&__block_literal_global_19409);
     secure_tcp = nw_parameters_create_secure_tcp(v10, &__block_literal_global_498);
     configuration = 0;
@@ -415,7 +415,7 @@ LABEL_12:
   }
 
   nw_connection_start(v22);
-  v7[2](v7);
+  startCopy[2](startCopy);
 }
 
 void __24__NWURLLoaderTCP_start___block_invoke(uint64_t a1, void *a2)
@@ -773,25 +773,25 @@ LABEL_19:
   }
 }
 
-- (void)configureTLS:(uint64_t)a1
+- (void)configureTLS:(uint64_t)s
 {
-  if (a1)
+  if (s)
   {
     verify_block[0] = MEMORY[0x1E69E9820];
     verify_block[1] = 3221225472;
     verify_block[2] = __31__NWURLLoaderTCP_configureTLS___block_invoke;
     verify_block[3] = &unk_1E6A3A2A8;
-    verify_block[4] = a1;
-    v3 = *(a1 + 48);
+    verify_block[4] = s;
+    v3 = *(s + 48);
     v4 = a2;
     sec_protocol_options_set_verify_block(v4, verify_block, v3);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __31__NWURLLoaderTCP_configureTLS___block_invoke_2;
     v5[3] = &unk_1E6A3A2F8;
-    v5[4] = a1;
-    sec_protocol_options_set_challenge_block(v4, v5, *(a1 + 48));
-    [(NWURLSessionTaskConfiguration *)*(a1 + 32) configureSecProtocolOptions:v4 QUIC:0];
+    v5[4] = s;
+    sec_protocol_options_set_challenge_block(v4, v5, *(s + 48));
+    [(NWURLSessionTaskConfiguration *)*(s + 32) configureSecProtocolOptions:v4 QUIC:0];
   }
 }
 

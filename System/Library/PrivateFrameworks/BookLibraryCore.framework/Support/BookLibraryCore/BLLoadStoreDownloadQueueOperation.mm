@@ -1,57 +1,57 @@
 @interface BLLoadStoreDownloadQueueOperation
 + (id)operationForAutomaticDownloadQueue;
-- (BLLoadStoreDownloadQueueOperation)initWithBagURL:(id)a3 account:(id)a4;
-- (BLLoadStoreDownloadQueueOperation)initWithURL:(id)a3;
-- (BOOL)_loadDownloadsFromStart:(id)a3 toEnd:(id)a4;
+- (BLLoadStoreDownloadQueueOperation)initWithBagURL:(id)l account:(id)account;
+- (BLLoadStoreDownloadQueueOperation)initWithURL:(id)l;
+- (BOOL)_loadDownloadsFromStart:(id)start toEnd:(id)end;
 - (id)_account;
-- (id)_newURLRequestWithStartIdentifier:(id)a3 endIdentifier:(id)a4 error:(id *)a5;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6;
-- (void)_handleResponse:(id)a3;
+- (id)_newURLRequestWithStartIdentifier:(id)identifier endIdentifier:(id)endIdentifier error:(id *)error;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion;
+- (void)_handleResponse:(id)response;
 - (void)run;
-- (void)setUiHostProxy:(id)a3;
+- (void)setUiHostProxy:(id)proxy;
 @end
 
 @implementation BLLoadStoreDownloadQueueOperation
 
 + (id)operationForAutomaticDownloadQueue
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[BUBag defaultBag];
-  v4 = [v3 automaticDownloadQueueURL];
-  v5 = [v2 initWithBagURL:v4];
+  automaticDownloadQueueURL = [v3 automaticDownloadQueueURL];
+  v5 = [v2 initWithBagURL:automaticDownloadQueueURL];
 
   return v5;
 }
 
-- (BLLoadStoreDownloadQueueOperation)initWithBagURL:(id)a3 account:(id)a4
+- (BLLoadStoreDownloadQueueOperation)initWithBagURL:(id)l account:(id)account
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  accountCopy = account;
   v12.receiver = self;
   v12.super_class = BLLoadStoreDownloadQueueOperation;
   v9 = [(BLOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bagURL, a3);
-    objc_storeStrong(&v10->_account, a4);
+    objc_storeStrong(&v9->_bagURL, l);
+    objc_storeStrong(&v10->_account, account);
   }
 
   return v10;
 }
 
-- (BLLoadStoreDownloadQueueOperation)initWithURL:(id)a3
+- (BLLoadStoreDownloadQueueOperation)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = BLLoadStoreDownloadQueueOperation;
   v6 = [(BLOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URL, a3);
+    objc_storeStrong(&v6->_URL, l);
   }
 
   return v7;
@@ -134,44 +134,44 @@ LABEL_7:
   self->_rangesToLoad = 0;
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = [(BLLoadStoreDownloadQueueOperation *)self uiHelper];
-  [v10 handleDialogRequest:v9 completion:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  uiHelper = [(BLLoadStoreDownloadQueueOperation *)self uiHelper];
+  [uiHelper handleDialogRequest:requestCopy completion:completionCopy];
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = [(BLLoadStoreDownloadQueueOperation *)self uiHelper];
-  [v10 handleEngagementRequest:v9 completion:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  uiHelper = [(BLLoadStoreDownloadQueueOperation *)self uiHelper];
+  [uiHelper handleEngagementRequest:requestCopy completion:completionCopy];
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = [(BLLoadStoreDownloadQueueOperation *)self uiHelper];
-  [v10 handleAuthenticateRequest:v9 completion:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  uiHelper = [(BLLoadStoreDownloadQueueOperation *)self uiHelper];
+  [uiHelper handleAuthenticateRequest:requestCopy completion:completionCopy];
 }
 
-- (void)setUiHostProxy:(id)a3
+- (void)setUiHostProxy:(id)proxy
 {
-  v8 = a3;
-  objc_storeStrong(&self->_uiHostProxy, a3);
-  v5 = [(BLLoadStoreDownloadQueueOperation *)self uiHelper];
+  proxyCopy = proxy;
+  objc_storeStrong(&self->_uiHostProxy, proxy);
+  uiHelper = [(BLLoadStoreDownloadQueueOperation *)self uiHelper];
 
-  if (!v5)
+  if (!uiHelper)
   {
     v6 = objc_alloc_init(BLPurchaseUIHelper);
     [(BLLoadStoreDownloadQueueOperation *)self setUiHelper:v6];
   }
 
-  v7 = [(BLLoadStoreDownloadQueueOperation *)self uiHelper];
-  [v7 setUiHostProxy:v8];
+  uiHelper2 = [(BLLoadStoreDownloadQueueOperation *)self uiHelper];
+  [uiHelper2 setUiHostProxy:proxyCopy];
 }
 
 - (id)_account
@@ -180,9 +180,9 @@ LABEL_7:
   if (!account)
   {
     v4 = +[BUAccountsProvider sharedProvider];
-    v5 = [v4 activeStoreAccount];
+    activeStoreAccount = [v4 activeStoreAccount];
     v6 = self->_account;
-    self->_account = v5;
+    self->_account = activeStoreAccount;
 
     account = self->_account;
   }
@@ -190,18 +190,18 @@ LABEL_7:
   return account;
 }
 
-- (void)_handleResponse:(id)a3
+- (void)_handleResponse:(id)response
 {
-  v9 = a3;
-  v4 = [v9 rangesToLoad];
-  if ([v4 count])
+  responseCopy = response;
+  rangesToLoad = [responseCopy rangesToLoad];
+  if ([rangesToLoad count])
   {
-    [(NSMutableArray *)self->_rangesToLoad addObjectsFromArray:v4];
+    [(NSMutableArray *)self->_rangesToLoad addObjectsFromArray:rangesToLoad];
   }
 
-  v5 = [v9 downloads];
+  downloads = [responseCopy downloads];
 
-  if (v5)
+  if (downloads)
   {
     [(BLOperation *)self lock];
     downloads = self->_downloads;
@@ -214,23 +214,23 @@ LABEL_7:
       downloads = self->_downloads;
     }
 
-    [(NSMutableOrderedSet *)downloads unionOrderedSet:v5];
+    [(NSMutableOrderedSet *)downloads unionOrderedSet:downloads];
     [(BLOperation *)self unlock];
   }
 }
 
-- (BOOL)_loadDownloadsFromStart:(id)a3 toEnd:(id)a4
+- (BOOL)_loadDownloadsFromStart:(id)start toEnd:(id)end
 {
-  v6 = a3;
-  v7 = a4;
+  startCopy = start;
+  endCopy = end;
   v39 = 0;
-  v8 = [(BLLoadStoreDownloadQueueOperation *)self _newURLRequestWithStartIdentifier:v6 endIdentifier:v7 error:&v39];
+  v8 = [(BLLoadStoreDownloadQueueOperation *)self _newURLRequestWithStartIdentifier:startCopy endIdentifier:endCopy error:&v39];
   v9 = v39;
   if (v8)
   {
-    v10 = [(BLLoadStoreDownloadQueueOperation *)self uiHostProxy];
+    uiHostProxy = [(BLLoadStoreDownloadQueueOperation *)self uiHostProxy];
 
-    if (v10)
+    if (uiHostProxy)
     {
       v11 = objc_alloc_init(AMSURLSession);
       [v11 setDelegate:self];
@@ -253,17 +253,17 @@ LABEL_7:
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v15 object];
+        object = [v15 object];
         *buf = 134218242;
         v41 = v8;
         v42 = 2112;
-        v43 = v18;
+        v43 = object;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[DownloadQueueOperation] Received result from AMSURLRequest %p: %@", buf, 0x16u);
       }
 
       objc_opt_class();
       v37 = v15;
-      v19 = [v15 object];
+      object2 = [v15 object];
       v20 = BUDynamicCast();
 
       v21 = BLServiceLog();
@@ -272,9 +272,9 @@ LABEL_7:
         *buf = 134218754;
         v41 = v8;
         v42 = 2114;
-        v43 = v6;
+        v43 = startCopy;
         v44 = 2114;
-        v45 = v7;
+        v45 = endCopy;
         v46 = 2112;
         v47 = v20;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "[DownloadQueueOperation] load downloads (request=%p, startID=%{public}@, endID=%{public}@), result.object = %@", buf, 0x2Au);
@@ -285,11 +285,11 @@ LABEL_7:
         v36 = v20;
         v22 = [BLStoreDownloadQueueResponse alloc];
         [(BLLoadStoreDownloadQueueOperation *)self account];
-        v35 = v7;
-        v23 = v6;
+        v35 = endCopy;
+        v23 = startCopy;
         v25 = v24 = v11;
         [v25 ams_DSID];
-        v26 = self;
+        selfCopy = self;
         v27 = v8;
         v28 = v13;
         v30 = v29 = v12;
@@ -302,18 +302,18 @@ LABEL_7:
         v8 = v27;
 
         v11 = v24;
-        v6 = v23;
-        v7 = v35;
+        startCopy = v23;
+        endCopy = v35;
         if (v32)
         {
-          v33 = [(BLStoreDownloadQueueResponse *)v32 keybag];
+          keybag = [(BLStoreDownloadQueueResponse *)v32 keybag];
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v33 length])
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [keybag length])
           {
-            [AMSKeybag bl_importKeybagData:v33];
+            [AMSKeybag bl_importKeybagData:keybag];
           }
 
-          [(BLLoadStoreDownloadQueueOperation *)v26 _handleResponse:v32];
+          [(BLLoadStoreDownloadQueueOperation *)selfCopy _handleResponse:v32];
 
           v20 = v36;
         }
@@ -347,11 +347,11 @@ LABEL_7:
   return v12;
 }
 
-- (id)_newURLRequestWithStartIdentifier:(id)a3 endIdentifier:(id)a4 error:(id *)a5
+- (id)_newURLRequestWithStartIdentifier:(id)identifier endIdentifier:(id)endIdentifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(BLLoadStoreDownloadQueueOperation *)self _account];
+  endIdentifierCopy = endIdentifier;
+  identifierCopy = identifier;
+  _account = [(BLLoadStoreDownloadQueueOperation *)self _account];
   if (!self->_requestEncoder)
   {
     v11 = [_BLLoadStoreDownloadRequestEncoder alloc];
@@ -360,7 +360,7 @@ LABEL_7:
     requestEncoder = self->_requestEncoder;
     self->_requestEncoder = v13;
 
-    [(AMSURLRequestEncoder *)self->_requestEncoder setAccount:v10];
+    [(AMSURLRequestEncoder *)self->_requestEncoder setAccount:_account];
     [(AMSURLRequestEncoder *)self->_requestEncoder setRequestEncoding:2];
     [(AMSURLRequestEncoder *)self->_requestEncoder setAnisetteType:1];
   }
@@ -369,37 +369,37 @@ LABEL_7:
   v16 = +[AMSDevice deviceGUID];
   [v15 setObject:v16 forKeyedSubscript:@"guid"];
 
-  v17 = [AMSKeybag bl_keybagSyncDataForAccount:v10 withTransactionType:1];
+  v17 = [AMSKeybag bl_keybagSyncDataForAccount:_account withTransactionType:1];
   [v15 setObject:v17 forKeyedSubscript:@"kbsync"];
 
-  v18 = [v9 unsignedLongLongValue];
-  v19 = [v8 unsignedLongLongValue];
+  unsignedLongLongValue = [identifierCopy unsignedLongLongValue];
+  unsignedLongLongValue2 = [endIdentifierCopy unsignedLongLongValue];
 
-  if (v18 - 1 < v19)
+  if (unsignedLongLongValue - 1 < unsignedLongLongValue2)
   {
-    v20 = [NSString stringWithFormat:@"%llu", v18];
+    v20 = [NSString stringWithFormat:@"%llu", unsignedLongLongValue];
     [v15 setObject:v20 forKeyedSubscript:@"startId"];
 
-    v21 = [NSString stringWithFormat:@"%llu", v19];
+    v21 = [NSString stringWithFormat:@"%llu", unsignedLongLongValue2];
     [v15 setObject:v21 forKeyedSubscript:@"endId"];
   }
 
-  v22 = [(BLLoadStoreDownloadQueueOperation *)self bagURL];
+  bagURL = [(BLLoadStoreDownloadQueueOperation *)self bagURL];
   v23 = self->_requestEncoder;
-  if (v22)
+  if (bagURL)
   {
-    v24 = [(BLLoadStoreDownloadQueueOperation *)self bagURL];
-    [(AMSURLRequestEncoder *)v23 requestWithMethod:4 bagURL:v24 parameters:v15];
+    bagURL2 = [(BLLoadStoreDownloadQueueOperation *)self bagURL];
+    [(AMSURLRequestEncoder *)v23 requestWithMethod:4 bagURL:bagURL2 parameters:v15];
   }
 
   else
   {
-    v24 = [(BLLoadStoreDownloadQueueOperation *)self URL];
-    [(AMSURLRequestEncoder *)v23 requestWithMethod:4 URL:v24 parameters:v15];
+    bagURL2 = [(BLLoadStoreDownloadQueueOperation *)self URL];
+    [(AMSURLRequestEncoder *)v23 requestWithMethod:4 URL:bagURL2 parameters:v15];
   }
   v25 = ;
 
-  v26 = [v25 resultWithError:a5];
+  v26 = [v25 resultWithError:error];
 
   return v26;
 }

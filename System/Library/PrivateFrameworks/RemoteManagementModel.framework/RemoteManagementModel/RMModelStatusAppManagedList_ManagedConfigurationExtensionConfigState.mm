@@ -1,7 +1,7 @@
 @interface RMModelStatusAppManagedList_ManagedConfigurationExtensionConfigState
 + (id)build;
 + (id)buildRequiredOnly;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RMModelStatusAppManagedList_ManagedConfigurationExtensionConfigState
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = RMModelStatusAppManagedList_ManagedConfigurationExtensionConfigState;
-  v4 = [(RMModelPayloadBase *)&v8 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v8 copyWithZone:zone];
   v5 = [(NSDictionary *)self->_statusDictionary copy];
   v6 = v4[2];
   v4[2] = v5;

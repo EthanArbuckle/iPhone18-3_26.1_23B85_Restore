@@ -7,29 +7,29 @@
 - (NSString)knownActiveAccountDSID;
 - (id)_init;
 - (int64_t)lastKnownMusicSubscriptionType;
-- (void)_setOrRemoveObject:(id)a3 forKey:(id)a4;
-- (void)setKnownAccountDSIDs:(id)a3;
-- (void)setKnownActiveAccountDSID:(id)a3;
-- (void)setLastKnownMusicSubscriptionType:(int64_t)a3;
-- (void)setPendingBackgroundTasksData:(id)a3;
+- (void)_setOrRemoveObject:(id)object forKey:(id)key;
+- (void)setKnownAccountDSIDs:(id)ds;
+- (void)setKnownActiveAccountDSID:(id)d;
+- (void)setLastKnownMusicSubscriptionType:(int64_t)type;
+- (void)setPendingBackgroundTasksData:(id)data;
 @end
 
 @implementation ICDDefaults
 
-- (void)_setOrRemoveObject:(id)a3 forKey:(id)a4
+- (void)_setOrRemoveObject:(id)object forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ICDDefaults *)self userDefaults];
-  v8 = v7;
-  if (v9)
+  objectCopy = object;
+  keyCopy = key;
+  userDefaults = [(ICDDefaults *)self userDefaults];
+  v8 = userDefaults;
+  if (objectCopy)
   {
-    [v7 setObject:v9 forKey:v6];
+    [userDefaults setObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
-    [v7 removeObjectForKey:v6];
+    [userDefaults removeObjectForKey:keyCopy];
   }
 }
 
@@ -45,9 +45,9 @@
     v2->_userDefaults = v3;
 
     v5 = +[ICDeviceInfo currentDeviceInfo];
-    v6 = [v5 isInternalBuild];
+    isInternalBuild = [v5 isInternalBuild];
 
-    if (v6)
+    if (isInternalBuild)
     {
       v7 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.itunescloud.daemon.internal"];
       internalDefaults = v2->_internalDefaults;
@@ -58,56 +58,56 @@
   return v2;
 }
 
-- (void)setLastKnownMusicSubscriptionType:(int64_t)a3
+- (void)setLastKnownMusicSubscriptionType:(int64_t)type
 {
-  v4 = [(ICDDefaults *)self userDefaults];
-  [v4 setInteger:a3 forKey:@"ICDDefaultsKeyLastKnownMusicSubscriptionType"];
+  userDefaults = [(ICDDefaults *)self userDefaults];
+  [userDefaults setInteger:type forKey:@"ICDDefaultsKeyLastKnownMusicSubscriptionType"];
 }
 
 - (int64_t)lastKnownMusicSubscriptionType
 {
-  v2 = [(ICDDefaults *)self userDefaults];
-  v3 = [v2 integerForKey:@"ICDDefaultsKeyLastKnownMusicSubscriptionType"];
+  userDefaults = [(ICDDefaults *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"ICDDefaultsKeyLastKnownMusicSubscriptionType"];
 
   return v3;
 }
 
 - (BOOL)lastKnownMusicVideosAllowed
 {
-  v2 = [(ICDDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"ICDDefaultsKeyLastKnownMusicVideosAllowed"];
+  userDefaults = [(ICDDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"ICDDefaultsKeyLastKnownMusicVideosAllowed"];
 
   return v3;
 }
 
 - (BOOL)lastKnownExplicitContentAllowed
 {
-  v2 = [(ICDDefaults *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"ICDDefaultsKeyLastKnownExplicitContentAllowed"];
+  userDefaults = [(ICDDefaults *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"ICDDefaultsKeyLastKnownExplicitContentAllowed"];
 
   return v3;
 }
 
-- (void)setPendingBackgroundTasksData:(id)a3
+- (void)setPendingBackgroundTasksData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 134218242;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = dataCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "ICDDefaults %p - setPendingBackgroundTasksData: %@", &v6, 0x16u);
   }
 
-  [(ICDDefaults *)self _setOrRemoveObject:v4 forKey:@"ICDDefaultsKeyPendingBackgroundTasksData"];
+  [(ICDDefaults *)self _setOrRemoveObject:dataCopy forKey:@"ICDDefaultsKeyPendingBackgroundTasksData"];
 }
 
 - (NSData)pendingBackgroundTasksData
 {
-  v3 = [(ICDDefaults *)self userDefaults];
-  v4 = [v3 dataForKey:@"ICDDefaultsKeyPendingBackgroundTasksData"];
+  userDefaults = [(ICDDefaults *)self userDefaults];
+  v4 = [userDefaults dataForKey:@"ICDDefaultsKeyPendingBackgroundTasksData"];
 
   v5 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -123,7 +123,7 @@
     }
 
     v10 = 134218242;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "ICDDefaults %p - pendingBackgroundTasksData: %@", &v10, 0x16u);
@@ -144,26 +144,26 @@
   return v7;
 }
 
-- (void)setKnownActiveAccountDSID:(id)a3
+- (void)setKnownActiveAccountDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 134218242;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "ICDDefaults %p - setKnownActiveAccountDSID: %@", &v6, 0x16u);
   }
 
-  [(ICDDefaults *)self _setOrRemoveObject:v4 forKey:@"ICDDefaultsKeyKnownActiveAccountDSID"];
+  [(ICDDefaults *)self _setOrRemoveObject:dCopy forKey:@"ICDDefaultsKeyKnownActiveAccountDSID"];
 }
 
 - (NSString)knownActiveAccountDSID
 {
-  v3 = [(ICDDefaults *)self userDefaults];
-  v4 = [v3 stringForKey:@"ICDDefaultsKeyKnownActiveAccountDSID"];
+  userDefaults = [(ICDDefaults *)self userDefaults];
+  v4 = [userDefaults stringForKey:@"ICDDefaultsKeyKnownActiveAccountDSID"];
 
   v5 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -179,7 +179,7 @@
     }
 
     v10 = 134218242;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "ICDDefaults %p - knownActiveAccountDSID: %@", &v10, 0x16u);
@@ -200,26 +200,26 @@
   return v7;
 }
 
-- (void)setKnownAccountDSIDs:(id)a3
+- (void)setKnownAccountDSIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 134218242;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = dsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "ICDDefaults %p - setKnownAccountDSIDs: %@", &v6, 0x16u);
   }
 
-  [(ICDDefaults *)self _setOrRemoveObject:v4 forKey:@"ICDDefaultsKeyKnowAccountDSIDs"];
+  [(ICDDefaults *)self _setOrRemoveObject:dsCopy forKey:@"ICDDefaultsKeyKnowAccountDSIDs"];
 }
 
 - (NSArray)knownAccountDSIDs
 {
-  v3 = [(ICDDefaults *)self userDefaults];
-  v4 = [v3 objectForKey:@"ICDDefaultsKeyKnowAccountDSIDs"];
+  userDefaults = [(ICDDefaults *)self userDefaults];
+  v4 = [userDefaults objectForKey:@"ICDDefaultsKeyKnowAccountDSIDs"];
 
   v5 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -235,7 +235,7 @@
     }
 
     v10 = 134218242;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "ICDDefaults %p - knownActiveAccountDSID: %@", &v10, 0x16u);

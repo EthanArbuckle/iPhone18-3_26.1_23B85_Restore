@@ -1,8 +1,8 @@
 @interface AAPersonaUtility
-+ (BOOL)personaConsistencyCheck:(id)a3;
++ (BOOL)personaConsistencyCheck:(id)check;
 + (id)findEnterprisePersonaIdentifier;
 + (void)findEnterprisePersonaIdentifier;
-+ (void)verifyAndFixPersonaIfNeeded:(id)a3 desiredContext:(id)a4;
++ (void)verifyAndFixPersonaIfNeeded:(id)needed desiredContext:(id)context;
 @end
 
 @implementation AAPersonaUtility
@@ -10,20 +10,20 @@
 + (id)findEnterprisePersonaIdentifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69DF068] sharedManager];
-  v3 = [v2 listAllPersonaWithAttributes];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  listAllPersonaWithAttributes = [mEMORY[0x1E69DF068] listAllPersonaWithAttributes];
 
   v4 = _AALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    +[(AAPersonaUtility *)v3];
+    +[(AAPersonaUtility *)listAllPersonaWithAttributes];
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = listAllPersonaWithAttributes;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
@@ -44,17 +44,17 @@
         v12 = *(*(&v18 + 1) + 8 * i);
         if ([v12 isEnterprisePersona])
         {
-          v13 = [v12 userPersonaUniqueString];
+          userPersonaUniqueString = [v12 userPersonaUniqueString];
 
           v14 = _AALogSystem();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
             *buf = v17;
-            v23 = v13;
+            v23 = userPersonaUniqueString;
             _os_log_debug_impl(&dword_1B6F6A000, v14, OS_LOG_TYPE_DEBUG, "Found the enterprise persona (%@)!", buf, 0xCu);
           }
 
-          v9 = v13;
+          v9 = userPersonaUniqueString;
         }
       }
 
@@ -74,13 +74,13 @@
   return v9;
 }
 
-+ (BOOL)personaConsistencyCheck:(id)a3
++ (BOOL)personaConsistencyCheck:(id)check
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DF068] sharedManager];
-  v5 = [v4 currentPersona];
+  checkCopy = check;
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
-  v6 = [v3 isEqualToPersona:v5];
+  v6 = [checkCopy isEqualToPersona:currentPersona];
   v7 = _AALogSystem();
   v8 = v7;
   if (v6)
@@ -99,14 +99,14 @@
   return v6;
 }
 
-+ (void)verifyAndFixPersonaIfNeeded:(id)a3 desiredContext:(id)a4
++ (void)verifyAndFixPersonaIfNeeded:(id)needed desiredContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69DF068] sharedManager];
-  v9 = [v8 currentPersona];
+  neededCopy = needed;
+  contextCopy = context;
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
-  v10 = [v6 isEqualToPersona:v9];
+  v10 = [neededCopy isEqualToPersona:currentPersona];
   v11 = _AALogSystem();
   v12 = v11;
   if (v10)
@@ -124,15 +124,15 @@
       +[AAPersonaUtility verifyAndFixPersonaIfNeeded:desiredContext:];
     }
 
-    v13 = [MEMORY[0x1E69DF068] sharedManager];
-    v14 = [v13 currentPersona];
-    v15 = [v14 restorePersonaWithSavedPersonaContext:v7];
+    mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona2 = [mEMORY[0x1E69DF068]2 currentPersona];
+    v15 = [currentPersona2 restorePersonaWithSavedPersonaContext:contextCopy];
 
-    v16 = [MEMORY[0x1E69DF068] sharedManager];
-    v17 = [v16 currentPersona];
+    mEMORY[0x1E69DF068]3 = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona3 = [mEMORY[0x1E69DF068]3 currentPersona];
 
-    [a1 personaConsistencyCheck:v6];
-    v9 = v17;
+    [self personaConsistencyCheck:neededCopy];
+    currentPersona = currentPersona3;
   }
 }
 
@@ -140,7 +140,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1B6F6A000, a2, OS_LOG_TYPE_DEBUG, "personaAttributes: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

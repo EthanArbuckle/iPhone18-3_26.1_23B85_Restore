@@ -1,31 +1,31 @@
 @interface TSKReverseShadowButton
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation TSKReverseShadowButton
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(TSKReverseShadowButton *)self titleLabel];
+  selectedCopy = selected;
+  titleLabel = [(TSKReverseShadowButton *)self titleLabel];
   v6 = -1.0;
-  if (!v3)
+  if (!selectedCopy)
   {
     v6 = 1.0;
   }
 
-  [v5 setShadowOffset:{0.0, v6}];
+  [titleLabel setShadowOffset:{0.0, v6}];
   [(TSKReverseShadowButton *)self setNeedsDisplay];
   v7.receiver = self;
   v7.super_class = TSKReverseShadowButton;
-  [(TSKReverseShadowButton *)&v7 setSelected:v3];
+  [(TSKReverseShadowButton *)&v7 setSelected:selectedCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if (a3)
+  highlightedCopy = highlighted;
+  if (highlighted)
   {
     [-[TSKReverseShadowButton titleLabel](self "titleLabel")];
   }
@@ -33,7 +33,7 @@
   [(TSKReverseShadowButton *)self setNeedsDisplay];
   v5.receiver = self;
   v5.super_class = TSKReverseShadowButton;
-  [(TSKReverseShadowButton *)&v5 setHighlighted:v3];
+  [(TSKReverseShadowButton *)&v5 setHighlighted:highlightedCopy];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface BatteryAnalysisService
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BatteryAnalysisService)init;
-- (void)estimateForTarget:(int64_t)a3 withHandler:(id)a4;
+- (void)estimateForTarget:(int64_t)target withHandler:(id)handler;
 - (void)initFromDefaults;
 - (void)start;
-- (void)updateAdditionalInformationForAllTarget:(int64_t)a3;
-- (void)updateEstimate:(double)a3 forTarget:(int64_t)a4 atStartSOC:(int64_t)a5 withEndSOC:(int64_t)a6 confidenceScore:(double)a7 isFirstEstimate:(BOOL)a8 isEstimateOverridden:(BOOL)a9 andAdditionalInformation:(int64_t)a10;
+- (void)updateAdditionalInformationForAllTarget:(int64_t)target;
+- (void)updateEstimate:(double)estimate forTarget:(int64_t)target atStartSOC:(int64_t)c withEndSOC:(int64_t)oC confidenceScore:(double)score isFirstEstimate:(BOOL)firstEstimate isEstimateOverridden:(BOOL)overridden andAdditionalInformation:(int64_t)self0;
 @end
 
 @implementation BatteryAnalysisService
@@ -84,12 +84,12 @@
         }
 
         v9 = *(*(&v43 + 1) + 8 * v8);
-        v10 = [v3[144] sharedTargetDetails];
-        v11 = [v10 objectForKey:v9];
+        sharedTargetDetails = [v3[144] sharedTargetDetails];
+        v11 = [sharedTargetDetails objectForKey:v9];
 
         v12 = qword_100057A40;
-        v13 = [v11 friendlyName];
-        v14 = [v12 objectForKey:v13];
+        friendlyName = [v11 friendlyName];
+        v14 = [v12 objectForKey:friendlyName];
 
         if ([v9 integerValue] == 1 && objc_msgSend(v2, "integerValue") <= 80)
         {
@@ -133,9 +133,9 @@ LABEL_18:
           if (os_log_type_enabled(qword_100057A38, OS_LOG_TYPE_ERROR))
           {
             v33 = v21;
-            v34 = [v11 friendlyName];
+            friendlyName2 = [v11 friendlyName];
             *buf = 138412546;
-            v48 = v34;
+            v48 = friendlyName2;
             v49 = 2112;
             v50 = v20;
             _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Skipping loading from defaults for %@ target due to error: %@.", buf, 0x16u);
@@ -150,8 +150,8 @@ LABEL_15:
 
         if ([v9 integerValue] == 1)
         {
-          v23 = [v19 estimateObj];
-          v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v23 endSOC]);
+          estimateObj = [v19 estimateObj];
+          v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [estimateObj endSOC]);
           v25 = [v39 isEqualToNumber:v24];
 
           v2 = v39;
@@ -163,10 +163,10 @@ LABEL_15:
             if (os_log_type_enabled(qword_100057A38, OS_LOG_TYPE_DEFAULT))
             {
               v30 = v29;
-              v31 = [v19 estimateObj];
-              v32 = [v31 endSOC];
+              estimateObj2 = [v19 estimateObj];
+              endSOC = [estimateObj2 endSOC];
               *buf = v37;
-              v48 = v32;
+              v48 = endSOC;
               v49 = 2112;
               v50 = v39;
               _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Not loading charge time estimate for TTL. Charge limit within defaults:%lu and current charge limit: %@", buf, 0x16u);
@@ -179,8 +179,8 @@ LABEL_15:
         }
 
         targetOutputs = self->_targetOutputs;
-        v27 = [v11 friendlyName];
-        [(NSMutableDictionary *)targetOutputs setObject:v19 forKey:v27];
+        friendlyName3 = [v11 friendlyName];
+        [(NSMutableDictionary *)targetOutputs setObject:v19 forKey:friendlyName3];
 
         v28 = qword_100057A38;
         if (os_log_type_enabled(qword_100057A38, OS_LOG_TYPE_DEFAULT))
@@ -226,30 +226,30 @@ LABEL_19:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BIBatteryAnalysisProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  v7 = [v5 valueForEntitlement:@"com.apple.batteryintelligenced.batteryanalysis-read"];
+  [connectionCopy setExportedObject:self];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.batteryintelligenced.batteryanalysis-read"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v7 BOOLValue])
   {
     v8 = qword_100057A38;
     if (os_log_type_enabled(qword_100057A38, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v5 processIdentifier];
-      v11 = [v5 serviceName];
+      processIdentifier = [connectionCopy processIdentifier];
+      serviceName = [connectionCopy serviceName];
       v15[0] = 67109378;
-      v15[1] = v10;
+      v15[1] = processIdentifier;
       v16 = 2112;
-      v17 = v11;
+      v17 = serviceName;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "BatteryAnalysisService: accepted new connection from pid %d and service name: %@", v15, 0x12u);
     }
 
-    [v5 resume];
+    [connectionCopy resume];
     v12 = 1;
   }
 
@@ -258,7 +258,7 @@ LABEL_19:
     v13 = qword_100057A38;
     if (os_log_type_enabled(qword_100057A38, OS_LOG_TYPE_ERROR))
     {
-      sub_100032D58(v13, v5);
+      sub_100032D58(v13, connectionCopy);
     }
 
     v12 = 0;
@@ -267,41 +267,41 @@ LABEL_19:
   return v12;
 }
 
-- (void)estimateForTarget:(int64_t)a3 withHandler:(id)a4
+- (void)estimateForTarget:(int64_t)target withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100023CBC;
   block[3] = &unk_100048F80;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  targetCopy = target;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)updateEstimate:(double)a3 forTarget:(int64_t)a4 atStartSOC:(int64_t)a5 withEndSOC:(int64_t)a6 confidenceScore:(double)a7 isFirstEstimate:(BOOL)a8 isEstimateOverridden:(BOOL)a9 andAdditionalInformation:(int64_t)a10
+- (void)updateEstimate:(double)estimate forTarget:(int64_t)target atStartSOC:(int64_t)c withEndSOC:(int64_t)oC confidenceScore:(double)score isFirstEstimate:(BOOL)firstEstimate isEstimateOverridden:(BOOL)overridden andAdditionalInformation:(int64_t)self0
 {
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000241A0;
   v11[3] = &unk_100048FA8;
-  *&v11[6] = a3;
-  v11[7] = a5;
-  v11[8] = a6;
-  *&v11[9] = a7;
-  v12 = a8;
-  v13 = a9;
-  v11[10] = a10;
+  *&v11[6] = estimate;
+  v11[7] = c;
+  v11[8] = oC;
+  *&v11[9] = score;
+  firstEstimateCopy = firstEstimate;
+  overriddenCopy = overridden;
+  v11[10] = information;
   v11[4] = self;
-  v11[5] = a4;
+  v11[5] = target;
   dispatch_barrier_sync(queue, v11);
 }
 
-- (void)updateAdditionalInformationForAllTarget:(int64_t)a3
+- (void)updateAdditionalInformationForAllTarget:(int64_t)target
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -309,7 +309,7 @@ LABEL_19:
   v4[2] = sub_10002454C;
   v4[3] = &unk_100048FD0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = target;
   dispatch_barrier_sync(queue, v4);
 }
 

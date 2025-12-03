@@ -1,19 +1,19 @@
 @interface LACCacheAsync
-- (LACCacheAsync)initWithTimeout:(double)a3 block:(id)a4;
-- (void)valueWithParameter:(id)a3 completion:(id)a4;
+- (LACCacheAsync)initWithTimeout:(double)timeout block:(id)block;
+- (void)valueWithParameter:(id)parameter completion:(id)completion;
 @end
 
 @implementation LACCacheAsync
 
-- (LACCacheAsync)initWithTimeout:(double)a3 block:(id)a4
+- (LACCacheAsync)initWithTimeout:(double)timeout block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = LACCacheAsync;
-  v7 = [(LACCache *)&v11 initWithTimeout:a3];
+  v7 = [(LACCache *)&v11 initWithTimeout:timeout];
   if (v7)
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(blockCopy);
     block = v7->_block;
     v7->_block = v8;
   }
@@ -21,14 +21,14 @@
   return v7;
 }
 
-- (void)valueWithParameter:(id)a3 completion:(id)a4
+- (void)valueWithParameter:(id)parameter completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LACCache *)self cachedValueWithParameter:v6];
+  parameterCopy = parameter;
+  completionCopy = completion;
+  v8 = [(LACCache *)self cachedValueWithParameter:parameterCopy];
   if (v8)
   {
-    v7[2](v7, v8, 0);
+    completionCopy[2](completionCopy, v8, 0);
   }
 
   else
@@ -40,8 +40,8 @@
     v10[2] = __47__LACCacheAsync_valueWithParameter_completion___block_invoke;
     v10[3] = &unk_1E7A97EC0;
     objc_copyWeak(&v13, &location);
-    v11 = v6;
-    v12 = v7;
+    v11 = parameterCopy;
+    v12 = completionCopy;
     block[2](block, v11, v10);
 
     objc_destroyWeak(&v13);

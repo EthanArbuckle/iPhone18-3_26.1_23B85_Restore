@@ -1,18 +1,18 @@
 @interface _UIActionSlider
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)shouldHideTrackLabelForXPoint:(double)a3;
-- (BOOL)xPointIsWithinTrack:(double)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)shouldHideTrackLabelForXPoint:(double)point;
+- (BOOL)xPointIsWithinTrack:(double)track;
 - (CGRect)_trackFrame;
 - (CGRect)knobRect;
 - (CGRect)trackTextRect;
 - (CGSize)knobImageOffset;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CGSize)trackSize;
 - (UIBezierPath)knobMaskPath;
 - (UIEdgeInsets)knobInsets;
 - (UILabel)trackLabel;
-- (_UIActionSlider)initWithCoder:(id)a3;
-- (_UIActionSlider)initWithFrame:(CGRect)a3 vibrantSettings:(id)a4;
+- (_UIActionSlider)initWithCoder:(id)coder;
+- (_UIActionSlider)initWithFrame:(CGRect)frame vibrantSettings:(id)settings;
 - (_UIActionSliderDelegate)delegate;
 - (double)_knobAvailableX;
 - (double)_knobHorizontalPosition;
@@ -22,46 +22,46 @@
 - (double)_knobRightMostX;
 - (id)trackMaskImage;
 - (id)trackMaskPath;
-- (void)_hideTrackLabel:(BOOL)a3;
-- (void)_knobPanGesture:(id)a3;
+- (void)_hideTrackLabel:(BOOL)label;
+- (void)_knobPanGesture:(id)gesture;
 - (void)_makeTrackLabel;
 - (void)_showTrackLabel;
-- (void)_slideCompleted:(BOOL)a3;
-- (void)closeTrackAnimated:(BOOL)a3;
+- (void)_slideCompleted:(BOOL)completed;
+- (void)closeTrackAnimated:(BOOL)animated;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)openTrackAnimated:(BOOL)a3;
-- (void)setKnobImage:(id)a3;
-- (void)setKnobImageOffset:(CGSize)a3;
-- (void)setKnobInsets:(UIEdgeInsets)a3;
-- (void)setKnobPosition:(double)a3;
-- (void)setKnobWidth:(double)a3;
-- (void)setMaskFromImage:(id)a3 onView:(id)a4;
-- (void)setMaskPath:(CGPath *)a3 onView:(id)a4;
-- (void)setStyle:(int64_t)a3;
-- (void)setTrackFont:(id)a3;
-- (void)setTrackSize:(CGSize)a3;
-- (void)setTrackText:(id)a3;
+- (void)openTrackAnimated:(BOOL)animated;
+- (void)setKnobImage:(id)image;
+- (void)setKnobImageOffset:(CGSize)offset;
+- (void)setKnobInsets:(UIEdgeInsets)insets;
+- (void)setKnobPosition:(double)position;
+- (void)setKnobWidth:(double)width;
+- (void)setMaskFromImage:(id)image onView:(id)view;
+- (void)setMaskPath:(CGPath *)path onView:(id)view;
+- (void)setStyle:(int64_t)style;
+- (void)setTrackFont:(id)font;
+- (void)setTrackSize:(CGSize)size;
+- (void)setTrackText:(id)text;
 - (void)updateAllTrackMasks;
 @end
 
 @implementation _UIActionSlider
 
-- (_UIActionSlider)initWithFrame:(CGRect)a3 vibrantSettings:(id)a4
+- (_UIActionSlider)initWithFrame:(CGRect)frame vibrantSettings:(id)settings
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  settingsCopy = settings;
   v52.receiver = self;
   v52.super_class = _UIActionSlider;
-  v11 = [(UIControl *)&v52 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(UIControl *)&v52 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    [(UIView *)v11 setOpaque:0];
+    [(UIView *)height setOpaque:0];
     v13 = +[UIColor clearColor];
     [(_UIActionSlider *)v12 setBackgroundColor:v13];
 
@@ -70,9 +70,9 @@
     v12->_knobInsets.left = 3.5;
     v12->_knobInsets.right = 3.5;
     v14 = +[UIDevice currentDevice];
-    v15 = [v14 userInterfaceIdiom];
+    userInterfaceIdiom = [v14 userInterfaceIdiom];
 
-    if (v15 || ([objc_opt_self() mainScreen], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "_referenceBounds"), v17 = CGRectGetHeight(v53), v16, v17 > 480.0))
+    if (userInterfaceIdiom || ([objc_opt_self() mainScreen], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "_referenceBounds"), v17 = CGRectGetHeight(v53), v16, v17 > 480.0))
     {
       v18 = 5.0;
       v19 = 0x403F800000000000;
@@ -93,7 +93,7 @@
     v12->_knobInsets.bottom = v18;
     *&v12->_trackSize.height = v20;
     *&v12->_trackTextBaselineFromBottom = v19;
-    objc_storeStrong(&v12->_vibrantSettings, a4);
+    objc_storeStrong(&v12->_vibrantSettings, settings);
     [(UIView *)v12 bounds];
     v23 = v22;
     v25 = v24;
@@ -108,8 +108,8 @@
     trackBackgroundView = v12->_trackBackgroundView;
     v12->_trackBackgroundView = v32;
 
-    v34 = [(UIView *)v12->_trackBackgroundView layer];
-    [v34 setAllowsGroupBlending:0];
+    layer = [(UIView *)v12->_trackBackgroundView layer];
+    [layer setAllowsGroupBlending:0];
 
     [(UIView *)v12->_contentView addSubview:v12->_trackBackgroundView];
     v35 = objc_alloc_init(_UIActionSliderTrackComponentView);
@@ -120,8 +120,8 @@
     v38 = [UIColor colorWithWhite:0.65 alpha:1.0];
     [(UIView *)v37 setBackgroundColor:v38];
 
-    v39 = [(UIView *)v12->_trackDodgeView layer];
-    [v39 setCompositingFilter:*MEMORY[0x1E6979860]];
+    layer2 = [(UIView *)v12->_trackDodgeView layer];
+    [layer2 setCompositingFilter:*MEMORY[0x1E6979860]];
 
     [(UIView *)v12->_trackBackgroundView addSubview:v12->_trackDodgeView];
     v40 = [&stru_1EFB14550 copy];
@@ -154,23 +154,23 @@
     [(UIPanGestureRecognizer *)v12->_slideGestureRecognizer _setHysteresis:2.0];
     [(UIPanGestureRecognizer *)v12->_slideGestureRecognizer setDelegate:v12];
     [(UIView *)v12 addGestureRecognizer:v12->_slideGestureRecognizer];
-    v50 = [(UIView *)v12 layer];
-    [v50 setHitTestsAsOpaque:1];
+    layer3 = [(UIView *)v12 layer];
+    [layer3 setHitTestsAsOpaque:1];
   }
 
   return v12;
 }
 
-- (_UIActionSlider)initWithCoder:(id)a3
+- (_UIActionSlider)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _UIActionSlider;
-  return [(UIControl *)&v4 initWithCoder:a3];
+  return [(UIControl *)&v4 initWithCoder:coder];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style == a3)
+  if (self->_style == style)
   {
     return;
   }
@@ -179,8 +179,8 @@
   v17 = v5;
   v18 = v4;
   v19 = v3;
-  self->_style = a3;
-  switch(a3)
+  self->_style = style;
+  switch(style)
   {
     case 2:
       [(UIView *)self->_trackDodgeView removeFromSuperview];
@@ -233,27 +233,27 @@ LABEL_12:
   return [UIBezierPath bezierPathWithOvalInRect:?];
 }
 
-- (void)setKnobImage:(id)a3
+- (void)setKnobImage:(id)image
 {
-  [(UIImageView *)self->_knobImageView setImage:a3];
+  [(UIImageView *)self->_knobImageView setImage:image];
 
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setKnobImageOffset:(CGSize)a3
+- (void)setKnobImageOffset:(CGSize)offset
 {
-  if (self->_knobImageOffset.width != a3.width || self->_knobImageOffset.height != a3.height)
+  if (self->_knobImageOffset.width != offset.width || self->_knobImageOffset.height != offset.height)
   {
-    self->_knobImageOffset = a3;
+    self->_knobImageOffset = offset;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setTrackText:(id)a3
+- (void)setTrackText:(id)text
 {
-  if (self->_trackText != a3)
+  if (self->_trackText != text)
   {
-    v4 = [a3 copy];
+    v4 = [text copy];
     trackText = self->_trackText;
     self->_trackText = v4;
 
@@ -263,24 +263,24 @@ LABEL_12:
   }
 }
 
-- (void)setTrackFont:(id)a3
+- (void)setTrackFont:(id)font
 {
-  v5 = a3;
-  if (self->_trackFont != v5)
+  fontCopy = font;
+  if (self->_trackFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_trackFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_trackFont, font);
     [(_UIActionSliderLabel *)self->_trackLabel setFont:v6];
     [(UIView *)self setNeedsLayout];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setTrackSize:(CGSize)a3
+- (void)setTrackSize:(CGSize)size
 {
-  if (a3.width != self->_trackSize.width || a3.height != self->_trackSize.height)
+  if (size.width != self->_trackSize.width || size.height != self->_trackSize.height)
   {
-    self->_trackSize = a3;
+    self->_trackSize = size;
     [(UIView *)self setNeedsLayout];
   }
 }
@@ -303,33 +303,33 @@ LABEL_12:
   return trackLabel;
 }
 
-- (void)setKnobPosition:(double)a3
+- (void)setKnobPosition:(double)position
 {
-  if (self->_knobPosition != a3)
+  if (self->_knobPosition != position)
   {
-    self->_knobPosition = a3;
+    self->_knobPosition = position;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setKnobWidth:(double)a3
+- (void)setKnobWidth:(double)width
 {
-  if (self->_knobWidth != a3)
+  if (self->_knobWidth != width)
   {
-    self->_knobWidth = a3;
+    self->_knobWidth = width;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setKnobInsets:(UIEdgeInsets)a3
+- (void)setKnobInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_knobInsets.top), vceqq_f64(v4, *&self->_knobInsets.bottom)))) & 1) == 0)
   {
-    self->_knobInsets = a3;
+    self->_knobInsets = insets;
     [(UIView *)self setNeedsLayout];
   }
 }
@@ -482,14 +482,14 @@ LABEL_12:
     v38 = v43;
   }
 
-  v45 = [(_UIActionSlider *)self trackText];
-  v46 = [(_UIActionSlider *)self textStyle];
+  trackText = [(_UIActionSlider *)self trackText];
+  textStyle = [(_UIActionSlider *)self textStyle];
   [(UIView *)self->_trackBackgroundView bounds];
   v48 = v47;
   v50 = v49;
   v52 = v51;
   v54 = v53;
-  if (v46 == 1 && (-[_UIActionSliderLabel numberOfLines](self->_trackLabel, "numberOfLines") > 1 || !-[_UIActionSliderLabel numberOfLines](self->_trackLabel, "numberOfLines")) && [v45 containsString:@"\n"])
+  if (textStyle == 1 && (-[_UIActionSliderLabel numberOfLines](self->_trackLabel, "numberOfLines") > 1 || !-[_UIActionSliderLabel numberOfLines](self->_trackLabel, "numberOfLines")) && [trackText containsString:@"\n"])
   {
     v92.origin.x = v48;
     v92.origin.y = v50;
@@ -550,10 +550,10 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(UIView *)self superview:a3.width];
+  width = fits.width;
+  v5 = [(UIView *)self superview:fits.width];
   v6 = v5;
   if (v5)
   {
@@ -563,8 +563,8 @@ LABEL_12:
 
   else
   {
-    v8 = [objc_opt_self() mainScreen];
-    [v8 bounds];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen bounds];
     v7 = CGRectGetWidth(v16);
   }
 
@@ -583,17 +583,17 @@ LABEL_12:
   return result;
 }
 
-- (void)openTrackAnimated:(BOOL)a3
+- (void)openTrackAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
     [(_UIActionSlider *)self _hideTrackLabel:1];
     [(_UIActionSlider *)self setAnimating:1];
-    v4 = [(UIView *)self->_trackBackgroundView layer];
-    [v4 removeAllAnimations];
+    layer = [(UIView *)self->_trackBackgroundView layer];
+    [layer removeAllAnimations];
 
-    v5 = [(UIView *)self->_trackDodgeView layer];
-    [v5 removeAllAnimations];
+    layer2 = [(UIView *)self->_trackDodgeView layer];
+    [layer2 removeAllAnimations];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -631,17 +631,17 @@ LABEL_12:
   }
 }
 
-- (void)closeTrackAnimated:(BOOL)a3
+- (void)closeTrackAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(_UIActionSlider *)self _hideTrackLabel:?];
-  if (v3)
+  if (animatedCopy)
   {
-    v5 = [(UIView *)self->_trackBackgroundView layer];
-    [v5 removeAllAnimations];
+    layer = [(UIView *)self->_trackBackgroundView layer];
+    [layer removeAllAnimations];
 
-    v6 = [(UIView *)self->_trackDodgeView layer];
-    [v6 removeAllAnimations];
+    layer2 = [(UIView *)self->_trackDodgeView layer];
+    [layer2 removeAllAnimations];
 
     [(_UIActionSlider *)self setAnimating:1];
     [(_UIActionSlider *)self updateAllTrackMasks];
@@ -773,33 +773,33 @@ LABEL_12:
   return vabdd_f64(v4, v5);
 }
 
-- (BOOL)xPointIsWithinTrack:(double)a3
+- (BOOL)xPointIsWithinTrack:(double)track
 {
   v4 = *(&self->super.super._viewFlags + 2);
   [(_UIActionSlider *)self _knobMinX];
   if ((v4 & 0x400000) != 0)
   {
-    return v5 >= a3;
+    return v5 >= track;
   }
 
   else
   {
-    return v5 <= a3;
+    return v5 <= track;
   }
 }
 
-- (BOOL)shouldHideTrackLabelForXPoint:(double)a3
+- (BOOL)shouldHideTrackLabelForXPoint:(double)point
 {
   v4 = *(&self->super.super._viewFlags + 2);
   [(_UIActionSlider *)self _knobMinX];
   if ((v4 & 0x400000) != 0)
   {
-    return v5 > a3;
+    return v5 > point;
   }
 
   else
   {
-    return v5 < a3;
+    return v5 < point;
   }
 }
 
@@ -836,33 +836,33 @@ LABEL_12:
 
 - (void)_makeTrackLabel
 {
-  v11 = [(_UIActionSlider *)self trackText];
-  v3 = [(_UIActionSlider *)self trackFont];
-  v4 = [(_UIActionSlider *)self textStyle];
-  if (v4 == 1)
+  trackText = [(_UIActionSlider *)self trackText];
+  trackFont = [(_UIActionSlider *)self trackFont];
+  textStyle = [(_UIActionSlider *)self textStyle];
+  if (textStyle == 1)
   {
     v6 = objc_alloc_init(UILabel);
     v8 = [UIColor colorWithWhite:1.0 alpha:0.9];
     [(UILabel *)v6 setTextColor:v8];
 
-    [(UILabel *)v6 setText:v11];
-    [(UILabel *)v6 setFont:v3];
+    [(UILabel *)v6 setText:trackText];
+    [(UILabel *)v6 setFont:trackFont];
   }
 
-  else if (v4)
+  else if (textStyle)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(_UIActionSlider *)self vibrantSettings];
-    v6 = [[_UIGlintyStringView alloc] initWithText:v11 andFont:v3];
+    vibrantSettings = [(_UIActionSlider *)self vibrantSettings];
+    v6 = [[_UIGlintyStringView alloc] initWithText:trackText andFont:trackFont];
     [(UILabel *)v6 setAllowsLuminanceAdjustments:0];
     [(UILabel *)v6 setUsesBackgroundDimming:1];
-    [(UILabel *)v6 setVibrantSettings:v5];
-    v7 = [v5 legibilitySettings];
-    [(UILabel *)v6 setLegibilitySettings:v7];
+    [(UILabel *)v6 setVibrantSettings:vibrantSettings];
+    legibilitySettings = [vibrantSettings legibilitySettings];
+    [(UILabel *)v6 setLegibilitySettings:legibilitySettings];
 
     [(UILabel *)v6 setChevronStyle:0];
     [(UILabel *)v6 setAdjustsFontSizeToFitWidth:1];
@@ -890,8 +890,8 @@ LABEL_12:
   [(UIView *)self _currentScreenScale];
   if (v11 <= 0.0)
   {
-    v13 = [objc_opt_self() mainScreen];
-    [v13 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v12 = v14;
 
     if (v12 <= 0.0)
@@ -1018,13 +1018,13 @@ LABEL_12:
 - (id)trackMaskImage
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(UIView *)self _screen];
+  _screen = [(UIView *)self _screen];
   [(UIView *)self->_trackBackgroundView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 scale];
+  [_screen scale];
   v13 = v12;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v26.origin.x = v5;
@@ -1072,8 +1072,8 @@ LABEL_12:
 {
   if ([(_UIActionSlider *)self isAnimating])
   {
-    v3 = [(_UIActionSlider *)self trackMaskPath];
-    MutableCopy = CGPathCreateMutableCopy([v3 CGPath]);
+    trackMaskPath = [(_UIActionSlider *)self trackMaskPath];
+    MutableCopy = CGPathCreateMutableCopy([trackMaskPath CGPath]);
     [(_UIActionSlider *)self setMaskPath:MutableCopy onView:self->_trackDodgeView];
     if (self->_trackSolidView)
     {
@@ -1085,39 +1085,39 @@ LABEL_12:
     p_trackBlurView = &self->_trackBlurView;
     if (!self->_trackBlurView)
     {
-      v9 = 0;
+      trackMaskImage = 0;
       goto LABEL_12;
     }
 
     goto LABEL_10;
   }
 
-  v9 = [(_UIActionSlider *)self trackMaskImage];
+  trackMaskImage = [(_UIActionSlider *)self trackMaskImage];
   [_UIActionSlider setMaskFromImage:"setMaskFromImage:onView:" onView:?];
   if (self->_trackSolidView)
   {
-    [(_UIActionSlider *)self setMaskFromImage:v9 onView:?];
+    [(_UIActionSlider *)self setMaskFromImage:trackMaskImage onView:?];
   }
 
-  v6 = v9;
+  trackMaskImage2 = trackMaskImage;
   p_trackBlurView = &self->_trackBlurView;
   trackBlurView = self->_trackBlurView;
   if (trackBlurView)
   {
-    if (v9)
+    if (trackMaskImage)
     {
 LABEL_11:
-      v9 = v6;
-      v8 = [(_UIBackdropView *)trackBlurView inputSettings];
-      [v8 setFilterMaskImage:v9];
-      [v8 setGrayscaleTintMaskImage:v9];
-      [v8 setColorTintMaskImage:v9];
+      trackMaskImage = trackMaskImage2;
+      inputSettings = [(_UIBackdropView *)trackBlurView inputSettings];
+      [inputSettings setFilterMaskImage:trackMaskImage];
+      [inputSettings setGrayscaleTintMaskImage:trackMaskImage];
+      [inputSettings setColorTintMaskImage:trackMaskImage];
 
       goto LABEL_12;
     }
 
 LABEL_10:
-    v6 = [(_UIActionSlider *)self trackMaskImage];
+    trackMaskImage2 = [(_UIActionSlider *)self trackMaskImage];
     trackBlurView = *p_trackBlurView;
     goto LABEL_11;
   }
@@ -1127,56 +1127,56 @@ LABEL_12:
   [(_UIActionSlider *)self setCachedTrackMaskWidth:CGRectGetWidth(v11)];
 }
 
-- (void)setMaskPath:(CGPath *)a3 onView:(id)a4
+- (void)setMaskPath:(CGPath *)path onView:(id)view
 {
-  v10 = a4;
-  v5 = [v10 layer];
-  v6 = [v5 mask];
+  viewCopy = view;
+  layer = [viewCopy layer];
+  mask = [layer mask];
   v7 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v9 = [MEMORY[0x1E69794A0] layer];
+    layer2 = [MEMORY[0x1E69794A0] layer];
 
-    [v9 setAnchorPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
-    [v9 setDelegate:v10];
-    [v5 setMask:v9];
-    v6 = v9;
+    [layer2 setAnchorPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    [layer2 setDelegate:viewCopy];
+    [layer setMask:layer2];
+    mask = layer2;
   }
 
-  [v10 bounds];
-  [v6 setBounds:?];
-  [v6 setPath:a3];
+  [viewCopy bounds];
+  [mask setBounds:?];
+  [mask setPath:path];
 }
 
-- (void)setMaskFromImage:(id)a3 onView:(id)a4
+- (void)setMaskFromImage:(id)image onView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 CGImage];
-  v23 = [MEMORY[0x1E6979398] layer];
-  [v7 bounds];
-  [v23 setBounds:?];
-  [v23 setAnchorPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
-  [v8 scale];
-  [v23 setContentsScale:?];
-  [v23 setDelegate:v7];
-  [v8 size];
+  imageCopy = image;
+  viewCopy = view;
+  imageCopy2 = image;
+  cGImage = [imageCopy2 CGImage];
+  layer = [MEMORY[0x1E6979398] layer];
+  [viewCopy bounds];
+  [layer setBounds:?];
+  [layer setAnchorPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  [imageCopy2 scale];
+  [layer setContentsScale:?];
+  [layer setDelegate:viewCopy];
+  [imageCopy2 size];
   v11 = v10;
   v13 = v12;
-  [v8 capInsets];
+  [imageCopy2 capInsets];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  [v23 setContentsCenter:{v17 / v11, v15 / v13, (v11 - v21 - v17) / v11, (v13 - v15 - v19) / v13}];
-  [v23 setContents:v9];
-  v22 = [v7 layer];
+  [layer setContentsCenter:{v17 / v11, v15 / v13, (v11 - v21 - v17) / v11, (v13 - v15 - v19) / v13}];
+  [layer setContents:cGImage];
+  layer2 = [viewCopy layer];
 
-  [v22 setMask:v23];
+  [layer2 setMask:layer];
 }
 
 - (void)_showTrackLabel
@@ -1207,9 +1207,9 @@ LABEL_12:
   }
 }
 
-- (void)_hideTrackLabel:(BOOL)a3
+- (void)_hideTrackLabel:(BOOL)label
 {
-  v3 = a3;
+  labelCopy = label;
   if ([(_UIActionSlider *)self isShowingTrackLabel])
   {
     if (!self->_trackLabel)
@@ -1220,7 +1220,7 @@ LABEL_12:
     if ([(_UIActionSlider *)self textStyle])
     {
       v5 = 0.15;
-      if (!v3)
+      if (!labelCopy)
       {
         v5 = 0.0;
       }
@@ -1236,7 +1236,7 @@ LABEL_12:
     else
     {
       trackLabel = self->_trackLabel;
-      if (v3)
+      if (labelCopy)
       {
         [(_UIActionSliderLabel *)trackLabel fadeOutWithDuration:0.15];
       }
@@ -1251,9 +1251,9 @@ LABEL_12:
   }
 }
 
-- (void)_slideCompleted:(BOOL)a3
+- (void)_slideCompleted:(BOOL)completed
 {
-  v3 = a3;
+  completedCopy = completed;
   [(_UIActionSlider *)self setAnimating:1];
   [(_UIActionSlider *)self updateAllTrackMasks];
   self->_slideGestureInitialPoint = *MEMORY[0x1E695EFF8];
@@ -1262,20 +1262,20 @@ LABEL_12:
   v9[1] = 3221225472;
   v9[2] = __35___UIActionSlider__slideCompleted___block_invoke;
   v9[3] = &unk_1E70F35E0;
-  v10 = v3;
+  v10 = completedCopy;
   v9[4] = self;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __35___UIActionSlider__slideCompleted___block_invoke_2;
   v8[3] = &unk_1E70F5AC0;
   [UIView _animateUsingDefaultTimingWithOptions:0 animations:v9 completion:v8];
-  if (v3)
+  if (completedCopy)
   {
-    v5 = [(_UIActionSlider *)self delegate];
+    delegate = [(_UIActionSlider *)self delegate];
     [(UIControl *)self _incrementStatisticsForUserActionForEvents:64];
     if (objc_opt_respondsToSelector())
     {
-      [v5 actionSliderDidCompleteSlide:self];
+      [delegate actionSliderDidCompleteSlide:self];
     }
   }
 
@@ -1288,20 +1288,20 @@ LABEL_12:
     v7[3] = &unk_1E70F3590;
     v7[4] = self;
     dispatch_after(v6, MEMORY[0x1E69E96A0], v7);
-    v5 = [(_UIActionSlider *)self delegate];
+    delegate = [(_UIActionSlider *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 actionSliderDidCancelSlide:self];
+      [delegate actionSliderDidCancelSlide:self];
     }
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   slideGestureRecognizer = self->_slideGestureRecognizer;
   v10 = 1;
-  if (slideGestureRecognizer == v4)
+  if (slideGestureRecognizer == beginCopy)
   {
     [(UIPanGestureRecognizer *)slideGestureRecognizer locationInView:self->_knobView];
     v7 = v6;
@@ -1318,20 +1318,20 @@ LABEL_12:
   return v10;
 }
 
-- (void)_knobPanGesture:(id)a3
+- (void)_knobPanGesture:(id)gesture
 {
-  v28 = a3;
+  gestureCopy = gesture;
   v4 = *(&self->super.super._viewFlags + 2);
   [(_UIActionSlider *)self _knobMinX];
   v6 = v5;
   [(_UIActionSlider *)self _knobAvailableX];
   v8 = v7;
-  [v28 locationInView:self];
+  [gestureCopy locationInView:self];
   v10 = v9;
   v12 = v11;
   p_slideGestureInitialPoint = &self->_slideGestureInitialPoint;
   x = self->_slideGestureInitialPoint.x;
-  [v28 velocityInView:self];
+  [gestureCopy velocityInView:self];
   v16 = v15;
   v17 = self->_slideGestureInitialPoint.x;
   if ((v4 & 0x400000) != 0)
@@ -1358,26 +1358,26 @@ LABEL_6:
 
   v20 = v8;
 LABEL_8:
-  v21 = [(_UIActionSlider *)self delegate];
-  v22 = [v28 state];
-  if (v22 > 3)
+  delegate = [(_UIActionSlider *)self delegate];
+  state = [gestureCopy state];
+  if (state > 3)
   {
-    if ((v22 - 4) >= 2)
+    if ((state - 4) >= 2)
     {
       goto LABEL_21;
     }
 
-    v26 = self;
+    selfCopy2 = self;
     v25 = 0;
     goto LABEL_20;
   }
 
-  if (v22 != 1)
+  if (state != 1)
   {
     v23 = v18 / v20;
-    if (v22 != 2)
+    if (state != 2)
     {
-      if (v22 != 3)
+      if (state != 3)
       {
         goto LABEL_21;
       }
@@ -1389,9 +1389,9 @@ LABEL_8:
       }
 
       v25 = v18 / (v20 * 0.6) >= 0.999000013 || v24;
-      v26 = self;
+      selfCopy2 = self;
 LABEL_20:
-      [(_UIActionSlider *)v26 _slideCompleted:v25];
+      [(_UIActionSlider *)selfCopy2 _slideCompleted:v25];
       goto LABEL_21;
     }
 
@@ -1434,7 +1434,7 @@ LABEL_39:
     [(UIView *)self setNeedsDisplay];
     if (objc_opt_respondsToSelector())
     {
-      [v21 actionSlider:self didUpdateSlideWithValue:*p_knobPosition];
+      [delegate actionSlider:self didUpdateSlideWithValue:*p_knobPosition];
     }
 
     goto LABEL_21;
@@ -1449,7 +1449,7 @@ LABEL_39:
 
   if (objc_opt_respondsToSelector())
   {
-    [v21 actionSliderDidBeginSlide:self];
+    [delegate actionSliderDidBeginSlide:self];
   }
 
 LABEL_21:

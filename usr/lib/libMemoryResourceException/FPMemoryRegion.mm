@@ -1,6 +1,6 @@
 @interface FPMemoryRegion
-+ (id)vmLedgerNameForTag:(unint64_t)a3;
-- (BOOL)eligibleForSubrangesUsingPageSize:(unint64_t)a3;
++ (id)vmLedgerNameForTag:(unint64_t)tag;
+- (BOOL)eligibleForSubrangesUsingPageSize:(unint64_t)size;
 - (BOOL)privateSharedCacheRegion;
 - (NSString)description;
 - (NSString)extendedInfo;
@@ -8,20 +8,20 @@
 - (id)ensureMemoryObject;
 - (unint64_t)end;
 - (unint64_t)wiredSize;
-- (void)addSubrange:(_NSRange)a3 memoryTotal:(id *)a4;
-- (void)setEnd:(unint64_t)a3;
-- (void)setExtendedInfo:(id)a3;
-- (void)setInSharedCache:(BOOL)a3;
-- (void)setOwnedExclusivelyByParentProcess:(BOOL)a3;
-- (void)setUnusedSharedCacheRegion:(BOOL)a3;
-- (void)setVerbose:(BOOL)a3;
+- (void)addSubrange:(_NSRange)subrange memoryTotal:(id *)total;
+- (void)setEnd:(unint64_t)end;
+- (void)setExtendedInfo:(id)info;
+- (void)setInSharedCache:(BOOL)cache;
+- (void)setOwnedExclusivelyByParentProcess:(BOOL)process;
+- (void)setUnusedSharedCacheRegion:(BOOL)region;
+- (void)setVerbose:(BOOL)verbose;
 @end
 
 @implementation FPMemoryRegion
 
-- (void)setInSharedCache:(BOOL)a3
+- (void)setInSharedCache:(BOOL)cache
 {
-  if (a3)
+  if (cache)
   {
     v3 = 2;
   }
@@ -34,9 +34,9 @@
   *(self + 8) = *(self + 8) & 0xFD | v3;
 }
 
-- (void)setUnusedSharedCacheRegion:(BOOL)a3
+- (void)setUnusedSharedCacheRegion:(BOOL)region
 {
-  if (a3)
+  if (region)
   {
     v3 = 4;
   }
@@ -49,9 +49,9 @@
   *(self + 8) = *(self + 8) & 0xFB | v3;
 }
 
-- (void)setOwnedExclusivelyByParentProcess:(BOOL)a3
+- (void)setOwnedExclusivelyByParentProcess:(BOOL)process
 {
-  if (a3)
+  if (process)
   {
     v3 = 8;
   }
@@ -64,9 +64,9 @@
   *(self + 8) = *(self + 8) & 0xF7 | v3;
 }
 
-- (void)setVerbose:(BOOL)a3
+- (void)setVerbose:(BOOL)verbose
 {
-  if (a3)
+  if (verbose)
   {
     v3 = 16;
   }
@@ -84,21 +84,21 @@
   result = [(FPMemoryRegion *)self start];
   if (result != -1)
   {
-    v4 = [(FPMemoryRegion *)self start];
-    return [(FPMemoryRegion *)self size]+ v4;
+    start = [(FPMemoryRegion *)self start];
+    return [(FPMemoryRegion *)self size]+ start;
   }
 
   return result;
 }
 
-- (void)setEnd:(unint64_t)a3
+- (void)setEnd:(unint64_t)end
 {
-  if ([(FPMemoryRegion *)self start]> a3)
+  if ([(FPMemoryRegion *)self start]> end)
   {
     __assert_rtn("[FPMemoryRegion setEnd:]", "FPMemoryRegion.m", 185, "end >= self.start");
   }
 
-  v5 = a3 - [(FPMemoryRegion *)self start];
+  v5 = end - [(FPMemoryRegion *)self start];
 
   [(FPMemoryRegion *)self setSize:v5];
 }
@@ -116,10 +116,10 @@
   }
 }
 
-- (void)addSubrange:(_NSRange)a3 memoryTotal:(id *)a4
+- (void)addSubrange:(_NSRange)subrange memoryTotal:(id *)total
 {
-  length = a3.length;
-  location = a3.location;
+  length = subrange.length;
+  location = subrange.location;
   subrangeList = self->_subrangeList;
   if (!subrangeList)
   {
@@ -130,19 +130,19 @@
     subrangeList = self->_subrangeList;
   }
 
-  sub_297E25A38(subrangeList, location, length, a4);
+  sub_297E25A38(subrangeList, location, length, total);
 }
 
-+ (id)vmLedgerNameForTag:(unint64_t)a3
++ (id)vmLedgerNameForTag:(unint64_t)tag
 {
-  if (a3 > 5)
+  if (tag > 5)
   {
-    v3 = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithFormat:@"VM ledger tag %llu", a3];
+    v3 = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithFormat:@"VM ledger tag %llu", tag];
   }
 
   else
   {
-    v3 = qword_29EE853C8[a3];
+    v3 = qword_29EE853C8[tag];
   }
 
   return v3;
@@ -167,17 +167,17 @@
   return v6;
 }
 
-- (BOOL)eligibleForSubrangesUsingPageSize:(unint64_t)a3
+- (BOOL)eligibleForSubrangesUsingPageSize:(unint64_t)size
 {
   if (![(FPMemoryRegion *)self isFake])
   {
-    v5 = [(FPMemoryRegion *)self eligibleForProcessView];
-    if (!v5)
+    eligibleForProcessView = [(FPMemoryRegion *)self eligibleForProcessView];
+    if (!eligibleForProcessView)
     {
-      return v5;
+      return eligibleForProcessView;
     }
 
-    if (self->_size > a3 && ![(FPMemoryRegion *)self ownedExclusivelyByParentProcess])
+    if (self->_size > size && ![(FPMemoryRegion *)self ownedExclusivelyByParentProcess])
     {
       dirtySize = self->_dirtySize;
       size = self->_size;
@@ -192,8 +192,8 @@
             reclaimableSize = self->_reclaimableSize;
             if (reclaimableSize != size)
             {
-              LOBYTE(v5) = (swappedSize | dirtySize | cleanSize | reclaimableSize) != 0;
-              return v5;
+              LOBYTE(eligibleForProcessView) = (swappedSize | dirtySize | cleanSize | reclaimableSize) != 0;
+              return eligibleForProcessView;
             }
           }
         }
@@ -201,8 +201,8 @@
     }
   }
 
-  LOBYTE(v5) = 0;
-  return v5;
+  LOBYTE(eligibleForProcessView) = 0;
+  return eligibleForProcessView;
 }
 
 - (BOOL)privateSharedCacheRegion
@@ -230,14 +230,14 @@
 {
   offset = self->_offset;
   v4 = MEMORY[0x29EDBA0F8];
-  v5 = [(FPMemoryRegion *)self fullName];
+  fullName = [(FPMemoryRegion *)self fullName];
   if (offset)
   {
     v6 = self->_offset;
     start = self->_start;
     v8 = [(FPMemoryRegion *)self end];
     v9 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_size];
-    [v4 stringWithFormat:@"%@ Offset %#llx [%#llx - %#llx](%@)", v5, v6, start, v8, v9];
+    [v4 stringWithFormat:@"%@ Offset %#llx [%#llx - %#llx](%@)", fullName, v6, start, v8, v9];
   }
 
   else
@@ -245,7 +245,7 @@
     v10 = self->_start;
     v11 = [(FPMemoryRegion *)self end];
     v9 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_size];
-    [v4 stringWithFormat:@"%@ [%#llx - %#llx](%@)", v5, v10, v11, v9, v14];
+    [v4 stringWithFormat:@"%@ [%#llx - %#llx](%@)", fullName, v10, v11, v9, v14];
   }
   v12 = ;
 
@@ -279,16 +279,16 @@
   return v3;
 }
 
-- (void)setExtendedInfo:(id)a3
+- (void)setExtendedInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   os_unfair_lock_lock(&unk_2A18A6030);
   if (qword_2A18A6048[0] != -1)
   {
     dispatch_once(qword_2A18A6048, &unk_2A1E8FA50);
   }
 
-  [qword_2A18A6040 setObject:v4 forKey:self];
+  [qword_2A18A6040 setObject:infoCopy forKey:self];
 
   os_unfair_lock_unlock(&unk_2A18A6030);
 }

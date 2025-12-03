@@ -1,7 +1,7 @@
 @interface PXSearchToken
-- (PXSearchToken)initWithAttributedText:(id)a3 searchObject:(id)a4 representedObject:(id)a5;
-- (PXSearchToken)initWithText:(id)a3 image:(id)a4 representedObject:(id)a5;
-- (PXSearchToken)initWithText:(id)a3 searchObject:(id)a4 representedObject:(id)a5;
+- (PXSearchToken)initWithAttributedText:(id)text searchObject:(id)object representedObject:(id)representedObject;
+- (PXSearchToken)initWithText:(id)text image:(id)image representedObject:(id)object;
+- (PXSearchToken)initWithText:(id)text searchObject:(id)object representedObject:(id)representedObject;
 - (id)textValue;
 @end
 
@@ -9,96 +9,96 @@
 
 - (id)textValue
 {
-  v3 = [(PXSearchToken *)self attributedText];
-  v4 = [v3 string];
-  if ([v4 length])
+  attributedText = [(PXSearchToken *)self attributedText];
+  string = [attributedText string];
+  if ([string length])
   {
-    v5 = [(PXSearchToken *)self attributedText];
-    v6 = [v5 string];
+    attributedText2 = [(PXSearchToken *)self attributedText];
+    string2 = [attributedText2 string];
   }
 
   else
   {
-    v6 = [(PXSearchToken *)self text];
+    string2 = [(PXSearchToken *)self text];
   }
 
-  if (![v6 length])
+  if (![string2 length])
   {
     PXAssertGetLog();
   }
 
-  return v6;
+  return string2;
 }
 
-- (PXSearchToken)initWithText:(id)a3 searchObject:(id)a4 representedObject:(id)a5
+- (PXSearchToken)initWithText:(id)text searchObject:(id)object representedObject:(id)representedObject
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  objectCopy = object;
+  representedObjectCopy = representedObject;
   v15.receiver = self;
   v15.super_class = PXSearchToken;
   v11 = [(PXSearchToken *)&v15 init];
   if (v11)
   {
-    v12 = [MEMORY[0x1E69DCF30] tokenWithIcon:0 text:v8];
+    v12 = [MEMORY[0x1E69DCF30] tokenWithIcon:0 text:textCopy];
     [(PXSearchToken *)v11 setSearchObject:v12];
 
-    v13 = [(PXSearchToken *)v11 searchObject];
-    [v13 setRepresentedObject:v10];
+    searchObject = [(PXSearchToken *)v11 searchObject];
+    [searchObject setRepresentedObject:representedObjectCopy];
 
-    [(PXSearchToken *)v11 setText:v8];
-    [(PXSearchToken *)v11 setSearchObject:v9];
-    [(PXSearchToken *)v11 setRepresentedObject:v10];
+    [(PXSearchToken *)v11 setText:textCopy];
+    [(PXSearchToken *)v11 setSearchObject:objectCopy];
+    [(PXSearchToken *)v11 setRepresentedObject:representedObjectCopy];
   }
 
   return v11;
 }
 
-- (PXSearchToken)initWithAttributedText:(id)a3 searchObject:(id)a4 representedObject:(id)a5
+- (PXSearchToken)initWithAttributedText:(id)text searchObject:(id)object representedObject:(id)representedObject
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  objectCopy = object;
+  representedObjectCopy = representedObject;
   v17.receiver = self;
   v17.super_class = PXSearchToken;
   v11 = [(PXSearchToken *)&v17 init];
   if (v11)
   {
     v12 = MEMORY[0x1E69DCF30];
-    v13 = [v8 string];
-    v14 = [v12 tokenWithIcon:0 text:v13];
+    string = [textCopy string];
+    v14 = [v12 tokenWithIcon:0 text:string];
     [(PXSearchToken *)v11 setSearchObject:v14];
 
-    v15 = [(PXSearchToken *)v11 searchObject];
-    [v15 setRepresentedObject:v10];
+    searchObject = [(PXSearchToken *)v11 searchObject];
+    [searchObject setRepresentedObject:representedObjectCopy];
 
-    [(PXSearchToken *)v11 setAttributedText:v8];
-    [(PXSearchToken *)v11 setSearchObject:v9];
-    [(PXSearchToken *)v11 setRepresentedObject:v10];
+    [(PXSearchToken *)v11 setAttributedText:textCopy];
+    [(PXSearchToken *)v11 setSearchObject:objectCopy];
+    [(PXSearchToken *)v11 setRepresentedObject:representedObjectCopy];
   }
 
   return v11;
 }
 
-- (PXSearchToken)initWithText:(id)a3 image:(id)a4 representedObject:(id)a5
+- (PXSearchToken)initWithText:(id)text image:(id)image representedObject:(id)object
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  imageCopy = image;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = PXSearchToken;
   v11 = [(PXSearchToken *)&v15 init];
   if (v11)
   {
-    v12 = [MEMORY[0x1E69DCF30] tokenWithIcon:v9 text:v8];
+    v12 = [MEMORY[0x1E69DCF30] tokenWithIcon:imageCopy text:textCopy];
     [(PXSearchToken *)v11 setSearchObject:v12];
 
-    v13 = [(PXSearchToken *)v11 searchObject];
-    [v13 setRepresentedObject:v10];
+    searchObject = [(PXSearchToken *)v11 searchObject];
+    [searchObject setRepresentedObject:objectCopy];
 
-    [(PXSearchToken *)v11 setRepresentedObject:v10];
-    [(PXSearchToken *)v11 setText:v8];
-    [(PXSearchToken *)v11 setImage:v9];
+    [(PXSearchToken *)v11 setRepresentedObject:objectCopy];
+    [(PXSearchToken *)v11 setText:textCopy];
+    [(PXSearchToken *)v11 setImage:imageCopy];
   }
 
   return v11;

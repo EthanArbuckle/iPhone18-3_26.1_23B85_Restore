@@ -1,5 +1,5 @@
 @interface RTTNotificationViewController
-- (void)didReceiveNotification:(id)a3;
+- (void)didReceiveNotification:(id)notification;
 - (void)viewDidLoad;
 @end
 
@@ -12,13 +12,13 @@
   [(RTTNotificationViewController *)&v2 viewDidLoad];
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 request];
-  v6 = [v5 content];
-  v7 = [v6 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"CallUID"];
+  notificationCopy = notification;
+  request = [notificationCopy request];
+  content = [request content];
+  userInfo = [content userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"CallUID"];
 
   v9 = AXLogRTT();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -26,7 +26,7 @@
     *buf = 138412546;
     *&buf[4] = v8;
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = notificationCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Received notification[%@]: %@", buf, 0x16u);
   }
 
@@ -62,10 +62,10 @@
         goto LABEL_9;
       }
 
-      v13 = [(RTTUIConversationViewController *)viewController call];
-      v14 = [v13 callUUID];
-      v15 = [*(*&buf[8] + 40) callUUID];
-      v16 = [v14 isEqualToString:v15];
+      call = [(RTTUIConversationViewController *)viewController call];
+      callUUID = [call callUUID];
+      callUUID2 = [*(*&buf[8] + 40) callUUID];
+      v16 = [callUUID isEqualToString:callUUID2];
 
       if ((v16 & 1) == 0)
       {
@@ -74,8 +74,8 @@ LABEL_9:
         v18 = self->_viewController;
         self->_viewController = v17;
 
-        v19 = [(RTTUIConversationViewController *)self->_viewController conversation];
-        v20 = v19 == 0;
+        conversation = [(RTTUIConversationViewController *)self->_viewController conversation];
+        v20 = conversation == 0;
 
         if (v20)
         {
@@ -96,8 +96,8 @@ LABEL_9:
 
         else
         {
-          v21 = [(RTTUIConversationViewController *)self->_viewController contactDisplayString];
-          [(RTTNotificationViewController *)self setTitle:v21];
+          contactDisplayString = [(RTTUIConversationViewController *)self->_viewController contactDisplayString];
+          [(RTTNotificationViewController *)self setTitle:contactDisplayString];
         }
 
         v26 = AXLogRTT();
@@ -109,21 +109,21 @@ LABEL_9:
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Created VC: %@", v40, 0xCu);
         }
 
-        v28 = [(RTTUIConversationViewController *)self->_viewController view];
-        v29 = [(RTTNotificationViewController *)self view];
-        [v29 frame];
-        [v28 setFrame:?];
+        view = [(RTTUIConversationViewController *)self->_viewController view];
+        view2 = [(RTTNotificationViewController *)self view];
+        [view2 frame];
+        [view setFrame:?];
 
         [(RTTNotificationViewController *)self addChildViewController:self->_viewController];
-        v30 = [(RTTNotificationViewController *)self view];
-        v31 = [(RTTUIConversationViewController *)self->_viewController view];
-        [v30 addSubview:v31];
+        view3 = [(RTTNotificationViewController *)self view];
+        view4 = [(RTTUIConversationViewController *)self->_viewController view];
+        [view3 addSubview:view4];
 
         [(RTTUIConversationViewController *)self->_viewController didMoveToParentViewController:self];
       }
 
-      v32 = [(RTTUIConversationViewController *)self->_viewController inputTextView];
-      [v32 becomeFirstResponder];
+      inputTextView = [(RTTUIConversationViewController *)self->_viewController inputTextView];
+      [inputTextView becomeFirstResponder];
     }
 
     _Block_object_dispose(buf, 8);
@@ -134,11 +134,11 @@ LABEL_9:
     v22 = AXLogRTT();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [v4 request];
-      v24 = [v23 content];
-      v25 = [v24 userInfo];
+      request2 = [notificationCopy request];
+      content2 = [request2 content];
+      userInfo2 = [content2 userInfo];
       *buf = 138412290;
-      *&buf[4] = v25;
+      *&buf[4] = userInfo2;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "No callId: %@", buf, 0xCu);
     }
   }

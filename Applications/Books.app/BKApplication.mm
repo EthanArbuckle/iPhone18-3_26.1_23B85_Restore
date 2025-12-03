@@ -1,18 +1,18 @@
 @interface BKApplication
-+ (int64_t)intValueForProcessArgument:(id)a3;
++ (int64_t)intValueForProcessArgument:(id)argument;
 - (BOOL)isConnectedToInternet;
-- (BOOL)runTest:(id)a3 options:(id)a4;
+- (BOOL)runTest:(id)test options:(id)options;
 - (id)_accessibilitySpeakThisPreferredHighlightColor;
 - (id)_accessibilitySpeakThisPreferredUnderlineColor;
-- (id)_mainViewControllerForTransaction:(id)a3;
+- (id)_mainViewControllerForTransaction:(id)transaction;
 - (id)clientApplicationController;
 - (id)osBuildVersion;
 - (void)_accessibilitySetUpQuickSpeak;
 - (void)_loadWebKitOverrides;
 - (void)accessibilityInitialize;
-- (void)prepareForDefaultImageSnapshotForScreen:(id)a3;
-- (void)presentViewController:(id)a3 transaction:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)presentViewControllerOverMainCanvas:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)prepareForDefaultImageSnapshotForScreen:(id)screen;
+- (void)presentViewController:(id)controller transaction:(id)transaction animated:(BOOL)animated completion:(id)completion;
+- (void)presentViewControllerOverMainCanvas:(id)canvas animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation BKApplication
@@ -22,9 +22,9 @@
   if (![(NSString *)self->_osBuildVersion length])
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [v3 buildVersion];
+    buildVersion = [v3 buildVersion];
     osBuildVersion = self->_osBuildVersion;
-    self->_osBuildVersion = v4;
+    self->_osBuildVersion = buildVersion;
   }
 
   v6 = self->_osBuildVersion;
@@ -32,17 +32,17 @@
   return v6;
 }
 
-+ (int64_t)intValueForProcessArgument:(id)a3
++ (int64_t)intValueForProcessArgument:(id)argument
 {
-  v3 = a3;
+  argumentCopy = argument;
   v4 = +[NSProcessInfo processInfo];
-  v5 = [v4 arguments];
+  arguments = [v4 arguments];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v5;
+  v6 = arguments;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -60,7 +60,7 @@ LABEL_3:
         objc_enumerationMutation(v6);
       }
 
-      if ([*(*(&v17 + 1) + 8 * v11) isEqualToString:{v3, v17}])
+      if ([*(*(&v17 + 1) + 8 * v11) isEqualToString:{argumentCopy, v17}])
       {
         break;
       }
@@ -80,7 +80,7 @@ LABEL_3:
 
     if (v12 >= [v6 count] - 1)
     {
-      v13 = 0x7FFFFFFFFFFFFFFFLL;
+      intValue = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_16;
     }
 
@@ -88,64 +88,64 @@ LABEL_3:
     v14 = v15;
     if (v15)
     {
-      v13 = [v15 intValue];
+      intValue = [v15 intValue];
     }
 
     else
     {
-      v13 = 0x7FFFFFFFFFFFFFFFLL;
+      intValue = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
   else
   {
 LABEL_9:
-    v13 = 0x7FFFFFFFFFFFFFFFLL;
+    intValue = 0x7FFFFFFFFFFFFFFFLL;
     v14 = v6;
   }
 
 LABEL_16:
-  return v13;
+  return intValue;
 }
 
-- (void)presentViewController:(id)a3 transaction:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)presentViewController:(id)controller transaction:(id)transaction animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  transactionCopy = transaction;
+  controllerCopy = controller;
   v12 = +[BKAppDelegate sceneManager];
-  v13 = [v12 defaultSceneControllerForTransaction:v10];
+  v13 = [v12 defaultSceneControllerForTransaction:transactionCopy];
 
-  [v13 presentViewController:v11 animated:v6 completion:v9];
+  [v13 presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)presentViewControllerOverMainCanvas:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewControllerOverMainCanvas:(id)canvas animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  canvasCopy = canvas;
+  completionCopy = completion;
   v9 = +[BKAppDelegate sceneManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100074668;
   v12[3] = &unk_100A045A8;
-  v15 = a4;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  animatedCopy = animated;
+  v13 = canvasCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = canvasCopy;
   [v9 requestPrimaryScene:v12];
 }
 
-- (id)_mainViewControllerForTransaction:(id)a3
+- (id)_mainViewControllerForTransaction:(id)transaction
 {
-  v3 = a3;
+  transactionCopy = transaction;
   v4 = +[BKAppDelegate sceneManager];
-  v5 = [v4 defaultSceneControllerForTransaction:v3];
+  v5 = [v4 defaultSceneControllerForTransaction:transactionCopy];
 
-  v6 = [v5 _mainViewControllerForModalPresenting];
+  _mainViewControllerForModalPresenting = [v5 _mainViewControllerForModalPresenting];
 
-  return v6;
+  return _mainViewControllerForModalPresenting;
 }
 
 - (id)clientApplicationController
@@ -154,28 +154,28 @@ LABEL_16:
   v2 = BCGetUnsafeAppDelegateReference();
   v3 = BUDynamicCast();
 
-  v4 = [v3 storeController];
+  storeController = [v3 storeController];
 
-  return v4;
+  return storeController;
 }
 
 - (BOOL)isConnectedToInternet
 {
-  v2 = [(BKApplication *)self delegate];
-  v3 = [v2 isConnectedToInternet];
+  delegate = [(BKApplication *)self delegate];
+  isConnectedToInternet = [delegate isConnectedToInternet];
 
-  return v3;
+  return isConnectedToInternet;
 }
 
-- (void)prepareForDefaultImageSnapshotForScreen:(id)a3
+- (void)prepareForDefaultImageSnapshotForScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 postNotificationName:@"BKApplicationWillTakeSnapshot" object:self];
 
   v7.receiver = self;
   v7.super_class = BKApplication;
-  [(BKApplication *)&v7 prepareForDefaultImageSnapshotForScreen:v4];
+  [(BKApplication *)&v7 prepareForDefaultImageSnapshotForScreen:screenCopy];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -185,10 +185,10 @@ LABEL_16:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  optionsCopy = options;
   +[AETestDriver prewarm];
   +[BKTestDriver prewarm];
   +[BKTestDriverDispatcher prewarm];
@@ -201,7 +201,7 @@ LABEL_16:
   [v11 setTestStateProvider:v10];
 
   v12 = +[_TtC5Books9PPTRunner shared];
-  LOBYTE(v11) = [v12 runTestWithName:v6 options:v7];
+  LOBYTE(v11) = [v12 runTestWithName:testCopy options:optionsCopy];
 
   if (v11)
   {
@@ -212,7 +212,7 @@ LABEL_16:
   {
     v15.receiver = self;
     v15.super_class = BKApplication;
-    v13 = [(BKApplication *)&v15 runTest:v6 options:v7];
+    v13 = [(BKApplication *)&v15 runTest:testCopy options:optionsCopy];
   }
 
   return v13;
@@ -441,17 +441,17 @@ LABEL_16:
 - (id)_accessibilitySpeakThisPreferredHighlightColor
 {
   v2 = +[IMCommonCoreAccessibility sharedInstance];
-  v3 = [v2 preferredSpeakScreenHighlightColor];
+  preferredSpeakScreenHighlightColor = [v2 preferredSpeakScreenHighlightColor];
 
-  return v3;
+  return preferredSpeakScreenHighlightColor;
 }
 
 - (id)_accessibilitySpeakThisPreferredUnderlineColor
 {
   v2 = +[IMCommonCoreAccessibility sharedInstance];
-  v3 = [v2 preferredSpeakScreenUnderlineColor];
+  preferredSpeakScreenUnderlineColor = [v2 preferredSpeakScreenUnderlineColor];
 
-  return v3;
+  return preferredSpeakScreenUnderlineColor;
 }
 
 @end

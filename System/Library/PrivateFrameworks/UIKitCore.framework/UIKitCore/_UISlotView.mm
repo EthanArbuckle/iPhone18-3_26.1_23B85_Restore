@@ -6,14 +6,14 @@
 - (id)_slotAnyContentProvider;
 - (id)_slotStyle;
 - (id)_slotStyleResolver;
-- (void)_overlayView:(id)a3 centerInView:(id)a4;
-- (void)_setContentDelegate:(id)a3;
-- (void)_setSlotAnyContentProvider:(id)a3;
-- (void)_setSlotStyleResolver:(id)a3;
+- (void)_overlayView:(id)view centerInView:(id)inView;
+- (void)_setContentDelegate:(id)delegate;
+- (void)_setSlotAnyContentProvider:(id)provider;
+- (void)_setSlotStyleResolver:(id)resolver;
 - (void)_slotStyleDidChange;
 - (void)_updateContent;
 - (void)dealloc;
-- (void)displayLayer:(id)a3;
+- (void)displayLayer:(id)layer;
 @end
 
 @implementation _UISlotView
@@ -26,10 +26,10 @@
   if (v2)
   {
     v3 = _UIKitBundle();
-    v4 = [v3 preferredLocalizations];
-    v5 = [v4 firstObject];
+    preferredLocalizations = [v3 preferredLocalizations];
+    firstObject = [preferredLocalizations firstObject];
     localization = v2->_localization;
-    v2->_localization = v5;
+    v2->_localization = firstObject;
 
     slotStyleResolver = v2->_slotStyleResolver;
     v2->_slotStyleResolver = &__block_literal_global_584;
@@ -37,17 +37,17 @@
     slotAnyContentProvider = v2->_slotAnyContentProvider;
     v2->_slotAnyContentProvider = 0;
 
-    v9 = [(_UISlotView *)v2 _slotStyle];
+    _slotStyle = [(_UISlotView *)v2 _slotStyle];
     currentSlotStyle = v2->_currentSlotStyle;
-    v2->_currentSlotStyle = v9;
+    v2->_currentSlotStyle = _slotStyle;
 
     v2->_intrinsicContentSize = *MEMORY[0x1E695F060];
     slotContent = v2->_slotContent;
     v2->_slotContent = 0;
 
     v2->_currentGeneration = 0;
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v2 selector:sel__slotStyleDidChange_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__slotStyleDidChange_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
   }
 
   return v2;
@@ -55,7 +55,7 @@
 
 - (id)_slotStyle
 {
-  v1 = [a1 traitCollection];
+  traitCollection = [self traitCollection];
   v82 = 0;
   v83 = &v82;
   v84 = 0x2020000000;
@@ -102,8 +102,8 @@
   v49 = &v60;
   v50 = &v56;
   v51 = &v52;
-  v28 = v1;
-  __25___UISlotView__slotStyle__block_invoke(v41, v1);
+  v28 = traitCollection;
+  __25___UISlotView__slotStyle__block_invoke(v41, traitCollection);
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v31 = __25___UISlotView__slotStyle__block_invoke_2;
@@ -118,42 +118,42 @@
   v40 = &v52;
   if (__25___UISlotView__slotStyle__block_invoke_2(v30))
   {
-    v2 = [a1 window];
-    v3 = v2;
-    if (v2)
+    window = [self window];
+    v3 = window;
+    if (window)
     {
-      v4 = [v2 traitCollection];
-      v42(v41, v4);
+      traitCollection2 = [window traitCollection];
+      v42(v41, traitCollection2);
     }
 
     if ((v31)(v30))
     {
-      v5 = [v3 windowScene];
-      v6 = v5;
-      if (v5)
+      windowScene = [v3 windowScene];
+      v6 = windowScene;
+      if (windowScene)
       {
-        v7 = [v5 traitCollection];
-        v42(v41, v7);
+        traitCollection3 = [windowScene traitCollection];
+        v42(v41, traitCollection3);
       }
 
       if ((v31)(v30))
       {
-        v8 = [v6 screen];
-        v9 = v8;
-        if (v8)
+        screen = [v6 screen];
+        v9 = screen;
+        if (screen)
         {
-          v10 = [v8 traitCollection];
-          v42(v41, v10);
+          traitCollection4 = [screen traitCollection];
+          v42(v41, traitCollection4);
         }
 
         if ((v31)(v30))
         {
-          v11 = [objc_opt_self() mainScreen];
-          v12 = v11;
-          if (v11 && v11 != v9)
+          mainScreen = [objc_opt_self() mainScreen];
+          v12 = mainScreen;
+          if (mainScreen && mainScreen != v9)
           {
-            v13 = [v11 traitCollection];
-            v42(v41, v13);
+            traitCollection5 = [mainScreen traitCollection];
+            v42(v41, traitCollection5);
           }
         }
       }
@@ -167,12 +167,12 @@
   v16 = _UISSlotDisplayScaleFromDisplayScale(v75[3]);
   v17 = _UISSlotLayoutDirectionFromTraitEnvironmentLayoutDirection(v71[3]);
   v18 = _UISSlotLegibilityWeightFromLegibilityWeight(v67[3]);
-  v19 = a1[51];
+  v19 = self[51];
   v20 = _UISSlotContentSizeCategoryFromContentSizeCategory(v61[5]);
-  v21 = [a1 tintColor];
-  v22 = [v21 CGColor];
+  tintColor = [self tintColor];
+  cGColor = [tintColor CGColor];
   v23 = _UISSlotUserInterfaceIdiomFromUserInterfaceIdiom(v57[3]);
-  v24 = [v27 slotStyleWithAccessibilityButtonShapes:v26 accessibilityContrast:v14 displayRange:v15 displayScale:v16 layoutDirection:v17 legibilityWeight:v18 localization:v19 preferredContentSizeCategory:v20 tintColor:v22 userInterfaceIdiom:v23 userInterfaceStyle:_UISSlotUserInterfaceStyleFromUserInterfaceStyle(v53[3])];
+  v24 = [v27 slotStyleWithAccessibilityButtonShapes:v26 accessibilityContrast:v14 displayRange:v15 displayScale:v16 layoutDirection:v17 legibilityWeight:v18 localization:v19 preferredContentSizeCategory:v20 tintColor:cGColor userInterfaceIdiom:v23 userInterfaceStyle:_UISSlotUserInterfaceStyleFromUserInterfaceStyle(v53[3])];
 
   _Block_object_dispose(&v52, 8);
   _Block_object_dispose(&v56, 8);
@@ -193,8 +193,8 @@
   v4 = +[_UISlotView _sharedLayerContext];
   [(UISSlotAnyContent *)slotContent deleteFromLayerContext:v4];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
 
   v6.receiver = self;
   v6.super_class = _UISlotView;
@@ -214,21 +214,21 @@
   return v0;
 }
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
   v4 = *MEMORY[0x1E6979DD0];
-  v5 = a3;
-  [v5 setContentsGravity:v4];
+  layerCopy = layer;
+  [layerCopy setContentsGravity:v4];
   v6 = objc_opt_respondsToSelector();
-  v7 = 1.0;
+  contentScale = 1.0;
   if (v6)
   {
-    v7 = [(UISSlotAnyContent *)self->_slotContent contentScale];
+    contentScale = [(UISSlotAnyContent *)self->_slotContent contentScale];
   }
 
-  [v5 setContentsScale:v7];
-  v8 = [(UISSlotAnyContent *)self->_slotContent image];
-  [v5 setContents:v8];
+  [layerCopy setContentsScale:contentScale];
+  image = [(UISSlotAnyContent *)self->_slotContent image];
+  [layerCopy setContents:image];
 }
 
 - (CGSize)intrinsicContentSize
@@ -242,16 +242,16 @@
 
 - (void)_slotStyleDidChange
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = *(a1 + 416);
-  v3 = [(_UISlotView *)a1 _slotStyle];
-  v4 = (*(v2 + 16))(v2, v3);
+  v2 = *(self + 416);
+  _slotStyle = [(_UISlotView *)self _slotStyle];
+  v4 = (*(v2 + 16))(v2, _slotStyle);
 
-  v5 = *(a1 + 440);
+  v5 = *(self + 440);
   v6 = v4;
   v9 = v6;
   if (v5 == v6)
@@ -274,8 +274,8 @@
     {
 
 LABEL_11:
-      objc_storeStrong((a1 + 440), v4);
-      [a1 _updateContent];
+      objc_storeStrong((self + 440), v4);
+      [self _updateContent];
       goto LABEL_12;
     }
 
@@ -297,9 +297,9 @@ LABEL_12:
   return v2;
 }
 
-- (void)_setSlotAnyContentProvider:(id)a3
+- (void)_setSlotAnyContentProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   slotAnyContentProvider = self->_slotAnyContentProvider;
   self->_slotAnyContentProvider = v4;
 
@@ -313,9 +313,9 @@ LABEL_12:
   return v2;
 }
 
-- (void)_setSlotStyleResolver:(id)a3
+- (void)_setSlotStyleResolver:(id)resolver
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(resolver);
   slotStyleResolver = self->_slotStyleResolver;
   self->_slotStyleResolver = v4;
 
@@ -331,14 +331,14 @@ LABEL_12:
   return WeakRetained;
 }
 
-- (void)_setContentDelegate:(id)a3
+- (void)_setContentDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_contentDelegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_contentDelegate, v4);
+    objc_storeWeak(&self->_contentDelegate, delegateCopy);
     objc_initWeak(&location, self);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -358,26 +358,26 @@ LABEL_12:
   }
 }
 
-- (void)_overlayView:(id)a3 centerInView:(id)a4
+- (void)_overlayView:(id)view centerInView:(id)inView
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIView *)self superview];
+  viewCopy = view;
+  inViewCopy = inView;
+  superview = [(UIView *)self superview];
 
-  if (v8 != v6)
+  if (superview != viewCopy)
   {
     [(UIView *)self setUserInteractionEnabled:0];
     [(UIView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v6 addSubview:self];
+    [viewCopy addSubview:self];
     v9 = MEMORY[0x1E69977A0];
-    v10 = [(UIView *)self centerXAnchor];
-    v11 = [v7 centerXAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    centerXAnchor = [(UIView *)self centerXAnchor];
+    centerXAnchor2 = [inViewCopy centerXAnchor];
+    v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v17[0] = v12;
-    v13 = [(UIView *)self centerYAnchor];
-    v14 = [v7 centerYAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    centerYAnchor = [(UIView *)self centerYAnchor];
+    centerYAnchor2 = [inViewCopy centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v17[1] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
     [v9 activateConstraints:v16];
@@ -393,7 +393,7 @@ LABEL_12:
     self->_currentGeneration = v3;
     slotAnyContentProvider = self->_slotAnyContentProvider;
     v5 = +[_UISlotView _sharedLayerContext];
-    v6 = [v5 contextId];
+    contextId = [v5 contextId];
     currentSlotStyle = self->_currentSlotStyle;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -401,7 +401,7 @@ LABEL_12:
     v8[3] = &unk_1E7124158;
     objc_copyWeak(v9, &location);
     v9[1] = v3;
-    slotAnyContentProvider[2](slotAnyContentProvider, v6, currentSlotStyle, v8);
+    slotAnyContentProvider[2](slotAnyContentProvider, contextId, currentSlotStyle, v8);
 
     objc_destroyWeak(v9);
     objc_destroyWeak(&location);

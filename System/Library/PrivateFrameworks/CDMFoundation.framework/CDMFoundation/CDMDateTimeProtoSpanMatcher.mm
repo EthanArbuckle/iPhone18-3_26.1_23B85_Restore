@@ -1,8 +1,8 @@
 @interface CDMDateTimeProtoSpanMatcher
-+ (id)buildMatchingSpan:(id)a3 tokenChain:(id)a4;
++ (id)buildMatchingSpan:(id)span tokenChain:(id)chain;
 + (id)getCDMServiceAssetConfig;
-- (CDMDateTimeProtoSpanMatcher)initWithDataDetectorPath:(id)a3 locale:(id)a4;
-- (id)matchSpansForTokenChain:(id)a3 asrHypothesis:(id)a4;
+- (CDMDateTimeProtoSpanMatcher)initWithDataDetectorPath:(id)path locale:(id)locale;
+- (id)matchSpansForTokenChain:(id)chain asrHypothesis:(id)hypothesis;
 @end
 
 @implementation CDMDateTimeProtoSpanMatcher
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (id)matchSpansForTokenChain:(id)a3 asrHypothesis:(id)a4
+- (id)matchSpansForTokenChain:(id)chain asrHypothesis:(id)hypothesis
 {
   v40 = *MEMORY[0x1E69E9840];
-  v32 = a3;
+  chainCopy = chain;
   v5 = os_signpost_id_generate(CDMLogContext);
   v6 = CDMLogContext;
   v7 = v6;
@@ -41,15 +41,15 @@
   }
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v12 = [v32 string];
+  string = [chainCopy string];
 
-  if (v12)
+  if (string)
   {
     v30 = v5 - 1;
     v31 = v5;
     upDataDetectors = self->_upDataDetectors;
-    v14 = [v32 string];
-    v15 = [(UPDataDetectors *)upDataDetectors matchSpansForUtterance:v14];
+    string2 = [chainCopy string];
+    v15 = [(UPDataDetectors *)upDataDetectors matchSpansForUtterance:string2];
 
     v35 = 0u;
     v36 = 0u;
@@ -71,10 +71,10 @@
           }
 
           v21 = *(*(&v33 + 1) + 8 * i);
-          v22 = [CDMDateTimeProtoSpanMatcher buildMatchingSpan:v21 tokenChain:v32];
+          v22 = [CDMDateTimeProtoSpanMatcher buildMatchingSpan:v21 tokenChain:chainCopy];
           v23 = MEMORY[0x1E69D1408];
-          v24 = [v21 usoGraph];
-          v25 = [v23 convertFromUsoGraph:v24];
+          usoGraph = [v21 usoGraph];
+          v25 = [v23 convertFromUsoGraph:usoGraph];
 
           [v22 setUsoGraph:v25];
           [v11 addObject:v22];
@@ -103,16 +103,16 @@
   return v11;
 }
 
-- (CDMDateTimeProtoSpanMatcher)initWithDataDetectorPath:(id)a3 locale:(id)a4
+- (CDMDateTimeProtoSpanMatcher)initWithDataDetectorPath:(id)path locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  localeCopy = locale;
   v12.receiver = self;
   v12.super_class = CDMDateTimeProtoSpanMatcher;
   v8 = [(CDMDateTimeProtoSpanMatcher *)&v12 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E69D14B0]) initLoadFromDataDetectorsDirectoryPath:v6 forLocale:v7];
+    v9 = [objc_alloc(MEMORY[0x1E69D14B0]) initLoadFromDataDetectorsDirectoryPath:pathCopy forLocale:localeCopy];
     upDataDetectors = v8->_upDataDetectors;
     v8->_upDataDetectors = v9;
   }
@@ -120,46 +120,46 @@
   return v8;
 }
 
-+ (id)buildMatchingSpan:(id)a3 tokenChain:(id)a4
++ (id)buildMatchingSpan:(id)span tokenChain:(id)chain
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 tokens];
-  v8 = [v7 count];
+  spanCopy = span;
+  chainCopy = chain;
+  tokens = [chainCopy tokens];
+  v8 = [tokens count];
 
-  v9 = [v6 tokens];
-  v10 = [v9 count];
+  tokens2 = [chainCopy tokens];
+  v10 = [tokens2 count];
 
-  v11 = [v6 tokens];
-  v12 = [v11 lastObject];
-  v13 = [v12 value];
+  tokens3 = [chainCopy tokens];
+  lastObject = [tokens3 lastObject];
+  value = [lastObject value];
 
-  v14 = [v5 range];
-  v15 = [v6 string];
-  if (v14 >= [v15 length])
+  range = [spanCopy range];
+  string = [chainCopy string];
+  if (range >= [string length])
   {
   }
 
   else
   {
-    v16 = [v5 range];
-    [v5 range];
-    v18 = v16 + v17 - 1;
-    v19 = [v6 string];
-    v20 = [v19 length];
+    range2 = [spanCopy range];
+    [spanCopy range];
+    v18 = range2 + v17 - 1;
+    string2 = [chainCopy string];
+    v20 = [string2 length];
 
     if (v18 < v20)
     {
-      v21 = [v6 tokenIndexFromCharacterIndex:{objc_msgSend(v5, "range")}];
-      v22 = [v5 range];
-      [v5 range];
-      v10 = [v6 tokenIndexFromCharacterIndex:v22 + v23 - 1] + 1;
-      v24 = [v6 string];
-      v25 = [v5 range];
-      v27 = [v24 substringWithRange:{v25, v26}];
+      v21 = [chainCopy tokenIndexFromCharacterIndex:{objc_msgSend(spanCopy, "range")}];
+      range3 = [spanCopy range];
+      [spanCopy range];
+      v10 = [chainCopy tokenIndexFromCharacterIndex:range3 + v23 - 1] + 1;
+      string3 = [chainCopy string];
+      range4 = [spanCopy range];
+      v27 = [string3 substringWithRange:{range4, v26}];
 
-      v13 = v27;
+      value = v27;
       goto LABEL_8;
     }
   }
@@ -167,30 +167,30 @@
   v28 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
-    v36 = [v5 range];
-    v37 = [v5 range];
-    [v5 range];
-    v39 = v38 + v37;
-    v40 = [v6 string];
+    range5 = [spanCopy range];
+    range6 = [spanCopy range];
+    [spanCopy range];
+    v39 = v38 + range6;
+    string4 = [chainCopy string];
     *buf = 136315906;
     v43 = "+[CDMDateTimeProtoSpanMatcher buildMatchingSpan:tokenChain:]";
     v44 = 1024;
-    v45 = v36;
+    v45 = range5;
     v46 = 1024;
     v47 = v39;
     v48 = 1024;
-    v49 = [v40 length];
+    v49 = [string4 length];
     _os_log_debug_impl(&dword_1DC287000, v28, OS_LOG_TYPE_DEBUG, "%s Forced DateTime span match to align with final token due to invalid DD match range start=<%u>, end=<%u> (exclusive), tokenChain string length=<%u>", buf, 0x1Eu);
   }
 
   v21 = (v8 - 1);
 LABEL_8:
-  v29 = [v5 category];
-  v30 = [v5 range];
-  v31 = [v5 range];
-  [v5 range];
+  category = [spanCopy category];
+  range7 = [spanCopy range];
+  range8 = [spanCopy range];
+  [spanCopy range];
   LODWORD(v41) = 0;
-  v33 = [CDMProtoSpanMatcherHelper buildMatchingSpanProtoWithLabel:v29 inputStringForDebug:v13 startTokenIndex:v21 endTokenIndex:v10 startCharIndex:v30 endCharIndex:(v32 + v31) spanMatcherName:v41];
+  v33 = [CDMProtoSpanMatcherHelper buildMatchingSpanProtoWithLabel:category inputStringForDebug:value startTokenIndex:v21 endTokenIndex:v10 startCharIndex:range7 endCharIndex:(v32 + range8) spanMatcherName:v41];
 
   v34 = *MEMORY[0x1E69E9840];
 

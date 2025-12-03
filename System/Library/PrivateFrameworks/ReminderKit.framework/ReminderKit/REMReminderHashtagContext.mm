@@ -1,21 +1,21 @@
 @interface REMReminderHashtagContext
 - (NSSet)hashtags;
 - (REMReminder)reminder;
-- (REMReminderHashtagContext)initWithReminder:(id)a3;
+- (REMReminderHashtagContext)initWithReminder:(id)reminder;
 @end
 
 @implementation REMReminderHashtagContext
 
-- (REMReminderHashtagContext)initWithReminder:(id)a3
+- (REMReminderHashtagContext)initWithReminder:(id)reminder
 {
-  v4 = a3;
+  reminderCopy = reminder;
   v8.receiver = self;
   v8.super_class = REMReminderHashtagContext;
   v5 = [(REMReminderHashtagContext *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_reminder, v4);
+    objc_storeWeak(&v5->_reminder, reminderCopy);
   }
 
   return v6;
@@ -23,21 +23,21 @@
 
 - (NSSet)hashtags
 {
-  v3 = [(REMReminderHashtagContext *)self reminder];
-  v4 = [v3 hashtags];
+  reminder = [(REMReminderHashtagContext *)self reminder];
+  hashtags = [reminder hashtags];
 
-  if (v4)
+  if (hashtags)
   {
-    v5 = [(REMReminderHashtagContext *)self reminder];
-    v6 = [v5 hashtags];
+    reminder2 = [(REMReminderHashtagContext *)self reminder];
+    hashtags2 = [reminder2 hashtags];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DFD8] set];
+    hashtags2 = [MEMORY[0x1E695DFD8] set];
   }
 
-  return v6;
+  return hashtags2;
 }
 
 - (REMReminder)reminder

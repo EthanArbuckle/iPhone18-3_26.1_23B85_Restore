@@ -6,7 +6,7 @@
 
 + (id)XPCInterface
 {
-  v17[2] = a1;
+  v17[2] = self;
   v17[1] = a2;
   v19 = &XPCInterface_onceToken_8;
   location = 0;

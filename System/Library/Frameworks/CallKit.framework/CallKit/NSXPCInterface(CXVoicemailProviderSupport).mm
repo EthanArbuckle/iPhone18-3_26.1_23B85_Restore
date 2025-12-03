@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __81__NSXPCInterface_CXVoicemailProviderSupport___cx_voicemailProviderAllowedClasses__block_invoke;
   block[3] = &unk_1E7C06CA8;
-  block[4] = a1;
+  block[4] = self;
   if (_cx_voicemailProviderAllowedClasses_onceToken != -1)
   {
     dispatch_once(&_cx_voicemailProviderAllowedClasses_onceToken, block);
@@ -41,20 +41,20 @@
 
 - (void)cx_setAllowedClassesForVoicemailProviderHostProtocol
 {
-  v2 = [a1 _cx_providerAllowedClasses];
-  [a1 setClasses:v2 forSelector:sel_reportNewVoicemailsWithUpdates_ argumentIndex:0 ofReply:0];
+  _cx_providerAllowedClasses = [self _cx_providerAllowedClasses];
+  [self setClasses:_cx_providerAllowedClasses forSelector:sel_reportNewVoicemailsWithUpdates_ argumentIndex:0 ofReply:0];
 
-  v3 = [a1 _cx_providerAllowedClasses];
-  [a1 setClasses:v3 forSelector:sel_reportVoicemailsUpdated_ argumentIndex:0 ofReply:0];
+  _cx_providerAllowedClasses2 = [self _cx_providerAllowedClasses];
+  [self setClasses:_cx_providerAllowedClasses2 forSelector:sel_reportVoicemailsUpdated_ argumentIndex:0 ofReply:0];
 
-  v4 = [a1 _cx_providerAllowedClasses];
-  [a1 setClasses:v4 forSelector:sel_reportVoicemailsRemovedWithUUIDs_ argumentIndex:0 ofReply:0];
+  _cx_providerAllowedClasses3 = [self _cx_providerAllowedClasses];
+  [self setClasses:_cx_providerAllowedClasses3 forSelector:sel_reportVoicemailsRemovedWithUUIDs_ argumentIndex:0 ofReply:0];
 }
 
 - (void)cx_setAllowedClassesForVoicemailProviderVendorProtocol
 {
-  v2 = [a1 _cx_providerAllowedClasses];
-  [a1 setClasses:v2 forSelector:sel_commitTransaction_ argumentIndex:0 ofReply:0];
+  _cx_providerAllowedClasses = [self _cx_providerAllowedClasses];
+  [self setClasses:_cx_providerAllowedClasses forSelector:sel_commitTransaction_ argumentIndex:0 ofReply:0];
 }
 
 @end

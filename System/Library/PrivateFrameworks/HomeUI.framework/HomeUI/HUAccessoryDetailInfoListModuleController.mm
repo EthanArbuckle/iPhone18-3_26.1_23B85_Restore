@@ -1,16 +1,16 @@
 @interface HUAccessoryDetailInfoListModuleController
-- (Class)cellClassForItem:(id)a3;
-- (HUAccessoryDetailInfoListModuleController)initWithModule:(id)a3;
-- (id)init:(id)a3;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)accessoryButtonTappedForItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (Class)cellClassForItem:(id)item;
+- (HUAccessoryDetailInfoListModuleController)initWithModule:(id)module;
+- (id)init:(id)init;
+- (unint64_t)didSelectItem:(id)item;
+- (void)accessoryButtonTappedForItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUAccessoryDetailInfoListModuleController
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   v5 = self + OBJC_IVAR___HUAccessoryDetailInfoListModuleController_delegate;
   v6 = type metadata accessor for AccessoryDetailInfoListModuleController();
@@ -19,61 +19,61 @@
   *(v5 + 4) = 0;
   v8.receiver = self;
   v8.super_class = v6;
-  return [(HUItemModuleController *)&v8 initWithModule:a3];
+  return [(HUItemModuleController *)&v8 initWithModule:init];
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
   sub_20D08472C();
 
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
   v13.receiver = self;
   v13.super_class = type metadata accessor for AccessoryDetailInfoListModuleController();
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v8 = v13.receiver;
-  [(HUItemModuleController *)&v13 setupCell:v6 forItem:v7];
+  [(HUItemModuleController *)&v13 setupCell:cellCopy forItem:itemCopy];
   objc_opt_self();
   v9 = swift_dynamicCastObjCClass();
   if (v9)
   {
     v10 = v9;
-    v11 = v6;
+    v11 = cellCopy;
     [v10 setHideIcon_];
     v12 = v11;
     [v10 setAccessoryType_];
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_20D08488C(v8, v9, a5);
+  cellCopy = cell;
+  itemCopy = item;
+  selfCopy = self;
+  sub_20D08488C(cellCopy, itemCopy, animated);
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_20D084CDC(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_20D084CDC(itemCopy);
 
   return 0;
 }
 
-- (void)accessoryButtonTappedForItem:(id)a3
+- (void)accessoryButtonTappedForItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_20D084DF0(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_20D084DF0(itemCopy);
 }
 
-- (HUAccessoryDetailInfoListModuleController)initWithModule:(id)a3
+- (HUAccessoryDetailInfoListModuleController)initWithModule:(id)module
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

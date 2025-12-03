@@ -3,7 +3,7 @@
 - (void)dealloc;
 - (void)languageDidChange;
 - (void)localeDidChange;
-- (void)localeTimerFired:(id)a3;
+- (void)localeTimerFired:(id)fired;
 - (void)startLocaleTimer;
 - (void)startObservingLanguageChanges;
 - (void)stopObservingLanguageChanges;
@@ -13,10 +13,10 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(BuddyLanguageChangeObserver *)self stopObservingLanguageChanges];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = BuddyLanguageChangeObserver;
   [(BuddyLanguageChangeObserver *)&v2 dealloc];
 }
@@ -37,8 +37,8 @@
   {
     [(BuddyLanguageChangeObserver *)self unsubscribeFromLanguageChangeNotification];
     [(BuddyLanguageChangeObserver *)self unsubscribeFromLocaleChangeNotification];
-    v2 = [(BuddyLanguageChangeObserver *)self localeTimer];
-    [(NSTimer *)v2 invalidate];
+    localeTimer = [(BuddyLanguageChangeObserver *)self localeTimer];
+    [(NSTimer *)localeTimer invalidate];
 
     [(BuddyLanguageChangeObserver *)self setLocaleTimer:0];
     [(BuddyLanguageChangeObserver *)self setObserving:0];
@@ -47,7 +47,7 @@
 
 - (void)languageDidChange
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [(NSUserDefaults *)v2 objectForKey:@"LockdownSetLanguage"];
@@ -67,17 +67,17 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    [(BuddyLanguageChangeObserver *)v12 startLocaleTimer];
+    [(BuddyLanguageChangeObserver *)selfCopy startLocaleTimer];
   }
 }
 
 - (void)startLocaleTimer
 {
-  v15 = self;
+  selfCopy = self;
   oslog[1] = a2;
-  v2 = [(BuddyLanguageChangeObserver *)self localeTimer];
+  localeTimer = [(BuddyLanguageChangeObserver *)self localeTimer];
 
-  if (v2)
+  if (localeTimer)
   {
     oslog[0] = _BYLoggingFacility();
     v13 = OS_LOG_TYPE_DEFAULT;
@@ -90,10 +90,10 @@
     }
 
     objc_storeStrong(oslog, 0);
-    v5 = [(BuddyLanguageChangeObserver *)v15 localeTimer];
-    [(NSTimer *)v5 invalidate];
+    localeTimer2 = [(BuddyLanguageChangeObserver *)selfCopy localeTimer];
+    [(NSTimer *)localeTimer2 invalidate];
 
-    [(BuddyLanguageChangeObserver *)v15 setLocaleTimer:0];
+    [(BuddyLanguageChangeObserver *)selfCopy setLocaleTimer:0];
   }
 
   else
@@ -111,16 +111,16 @@
     objc_storeStrong(&v11, 0);
   }
 
-  v8 = [NSTimer scheduledTimerWithTimeInterval:v15 target:"localeTimerFired:" selector:0 userInfo:0 repeats:8.0];
-  [(BuddyLanguageChangeObserver *)v15 setLocaleTimer:v8];
+  v8 = [NSTimer scheduledTimerWithTimeInterval:selfCopy target:"localeTimerFired:" selector:0 userInfo:0 repeats:8.0];
+  [(BuddyLanguageChangeObserver *)selfCopy setLocaleTimer:v8];
 }
 
-- (void)localeTimerFired:(id)a3
+- (void)localeTimerFired:(id)fired
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, fired);
   oslog = _BYLoggingFacility();
   v8 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -132,19 +132,19 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v5 = [(BuddyLanguageChangeObserver *)v11 localeTimer];
-  [(NSTimer *)v5 invalidate];
+  localeTimer = [(BuddyLanguageChangeObserver *)selfCopy localeTimer];
+  [(NSTimer *)localeTimer invalidate];
 
-  [(BuddyLanguageChangeObserver *)v11 setLocaleTimer:0];
-  v6 = [(BuddyLanguageChangeObserver *)v11 delegate];
-  [(BuddyLanguageChangeObserverDelegate *)v6 observer:v11 didObserveLanguageChange:1 localeChange:0];
+  [(BuddyLanguageChangeObserver *)selfCopy setLocaleTimer:0];
+  delegate = [(BuddyLanguageChangeObserver *)selfCopy delegate];
+  [(BuddyLanguageChangeObserverDelegate *)delegate observer:selfCopy didObserveLanguageChange:1 localeChange:0];
 
   objc_storeStrong(location, 0);
 }
 
 - (void)localeDidChange
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [(NSUserDefaults *)v2 objectForKey:@"LockdownSetLocale"];
@@ -164,16 +164,16 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    v7 = [(BuddyLanguageChangeObserver *)v17 localeTimer];
-    v8 = v7 != 0;
+    localeTimer = [(BuddyLanguageChangeObserver *)selfCopy localeTimer];
+    v8 = localeTimer != 0;
 
     v11 = v8;
-    v9 = [(BuddyLanguageChangeObserver *)v17 localeTimer];
-    [(NSTimer *)v9 invalidate];
+    localeTimer2 = [(BuddyLanguageChangeObserver *)selfCopy localeTimer];
+    [(NSTimer *)localeTimer2 invalidate];
 
-    [(BuddyLanguageChangeObserver *)v17 setLocaleTimer:0];
-    v10 = [(BuddyLanguageChangeObserver *)v17 delegate];
-    [(BuddyLanguageChangeObserverDelegate *)v10 observer:v17 didObserveLanguageChange:v11 localeChange:1];
+    [(BuddyLanguageChangeObserver *)selfCopy setLocaleTimer:0];
+    delegate = [(BuddyLanguageChangeObserver *)selfCopy delegate];
+    [(BuddyLanguageChangeObserverDelegate *)delegate observer:selfCopy didObserveLanguageChange:v11 localeChange:1];
   }
 }
 

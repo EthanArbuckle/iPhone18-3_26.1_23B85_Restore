@@ -1,16 +1,16 @@
 @interface SFSSServerTTSTask
-+ (AudioStreamBasicDescription)audioStreamBasicDescription:(SEL)a3;
-+ (id)createGrpcHeadersFromRequest:(id)a3;
-+ (id)createOspreyRequestFromReqeust:(id)a3;
-+ (id)flatPhonemeSequence:(id)a3;
-+ (id)generateProsodyTransferConfig:(id)a3;
-+ (id)generateResourceAssetFromResourceMetaInfo:(id)a3;
-+ (id)generateVoiceAssetFromVoiceMetaInfo:(id)a3;
-+ (int64_t)convertVoiceTypeToServerType:(int64_t)a3;
++ (AudioStreamBasicDescription)audioStreamBasicDescription:(SEL)description;
++ (id)createGrpcHeadersFromRequest:(id)request;
++ (id)createOspreyRequestFromReqeust:(id)reqeust;
++ (id)flatPhonemeSequence:(id)sequence;
++ (id)generateProsodyTransferConfig:(id)config;
++ (id)generateResourceAssetFromResourceMetaInfo:(id)info;
++ (id)generateVoiceAssetFromVoiceMetaInfo:(id)info;
++ (int64_t)convertVoiceTypeToServerType:(int64_t)type;
 - (SFSSOspreyTTSClient)ospreyTTSClient;
-- (SFSSServerTTSTask)initWithRequest:(id)a3;
+- (SFSSServerTTSTask)initWithRequest:(id)request;
 - (void)cancelTask;
-- (void)startTask:(id)a3;
+- (void)startTask:(id)task;
 @end
 
 @implementation SFSSServerTTSTask
@@ -32,21 +32,21 @@
   }
 }
 
-- (void)startTask:(id)a3
+- (void)startTask:(id)task
 {
-  v4 = a3;
-  v5 = [(SFSpeechSynthesisTask *)self request];
-  v6 = [SFSSServerTTSTask createOspreyRequestFromReqeust:v5];
+  taskCopy = task;
+  request = [(SFSpeechSynthesisTask *)self request];
+  v6 = [SFSSServerTTSTask createOspreyRequestFromReqeust:request];
 
-  v7 = [(SFSpeechSynthesisTask *)self request];
-  v8 = [SFSSServerTTSTask createGrpcHeadersFromRequest:v7];
+  request2 = [(SFSpeechSynthesisTask *)self request];
+  v8 = [SFSSServerTTSTask createGrpcHeadersFromRequest:request2];
 
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
   v17[3] = __Block_byref_object_copy__353;
   v17[4] = __Block_byref_object_dispose__354;
-  v18 = MEMORY[0x26D631550](v4);
+  v18 = MEMORY[0x26D631550](taskCopy);
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_ospreyTTSClient);
   v14[0] = MEMORY[0x277D85DD0];
@@ -183,9 +183,9 @@ void __31__SFSSServerTTSTask_startTask___block_invoke_21(uint64_t a1, void *a2)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (SFSSServerTTSTask)initWithRequest:(id)a3
+- (SFSSServerTTSTask)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = SFSSGetLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -195,68 +195,68 @@ void __31__SFSSServerTTSTask_startTask___block_invoke_21(uint64_t a1, void *a2)
 
   v24.receiver = self;
   v24.super_class = SFSSServerTTSTask;
-  v6 = [(SFSpeechSynthesisTask *)&v24 initWithRequest:v4];
+  v6 = [(SFSpeechSynthesisTask *)&v24 initWithRequest:requestCopy];
   if (v6)
   {
-    v7 = [v4 voice];
-    v8 = [v7 voiceReleaseType];
+    voice = [requestCopy voice];
+    voiceReleaseType = [voice voiceReleaseType];
 
-    if (v8 == 6)
+    if (voiceReleaseType == 6)
     {
       v9 = +[SFSSOspreyTTSClientFactory sharedInstance];
-      v23 = [v4 voice];
-      v10 = [v23 serverVoiceConfig];
-      v11 = [v10 ospreyEndpointUrl];
-      v12 = [v4 voice];
-      v13 = [v12 serverVoiceConfig];
-      v14 = [v13 useBlazar];
-      v15 = [v4 voice];
-      v16 = [v15 serverVoiceConfig];
-      v17 = [v9 getOspreyClientByUrl:v11 useBlazar:v14 enableAuthentication:{objc_msgSend(v16, "enableAuthentication")}];
+      voice2 = [requestCopy voice];
+      serverVoiceConfig = [voice2 serverVoiceConfig];
+      ospreyEndpointUrl = [serverVoiceConfig ospreyEndpointUrl];
+      voice3 = [requestCopy voice];
+      serverVoiceConfig2 = [voice3 serverVoiceConfig];
+      useBlazar = [serverVoiceConfig2 useBlazar];
+      voice4 = [requestCopy voice];
+      serverVoiceConfig3 = [voice4 serverVoiceConfig];
+      v17 = [v9 getOspreyClientByUrl:ospreyEndpointUrl useBlazar:useBlazar enableAuthentication:{objc_msgSend(serverVoiceConfig3, "enableAuthentication")}];
       objc_storeWeak(&v6->_ospreyTTSClient, v17);
 
-      v18 = v23;
+      v18 = voice2;
     }
 
     else
     {
-      v19 = [v4 voice];
-      v20 = [v19 voiceReleaseType];
+      voice5 = [requestCopy voice];
+      voiceReleaseType2 = [voice5 voiceReleaseType];
 
       v9 = +[SFSSOspreyTTSClientFactory sharedInstance];
       v18 = +[SFSpeechSynthesisInternalSetting sharedInstance];
-      v10 = [v4 voice];
-      v11 = [v18 ospreyEndpointURLByType:{objc_msgSend(v10, "voiceReleaseType")}];
-      if (v20 == 7)
+      serverVoiceConfig = [requestCopy voice];
+      ospreyEndpointUrl = [v18 ospreyEndpointURLByType:{objc_msgSend(serverVoiceConfig, "voiceReleaseType")}];
+      if (voiceReleaseType2 == 7)
       {
-        [v9 getOspreyClientByUrl:v11 useBlazar:0 enableAuthentication:0];
+        [v9 getOspreyClientByUrl:ospreyEndpointUrl useBlazar:0 enableAuthentication:0];
       }
 
       else
       {
-        [v9 getOspreyClientByUrl:v11];
+        [v9 getOspreyClientByUrl:ospreyEndpointUrl];
       }
-      v12 = ;
-      objc_storeWeak(&v6->_ospreyTTSClient, v12);
+      voice3 = ;
+      objc_storeWeak(&v6->_ospreyTTSClient, voice3);
     }
 
-    v21 = [(SFSpeechSynthesisTask *)v6 instrumentMetrics];
-    [v21 setSourceOfTTS:3];
+    instrumentMetrics = [(SFSpeechSynthesisTask *)v6 instrumentMetrics];
+    [instrumentMetrics setSourceOfTTS:3];
   }
 
   return v6;
 }
 
-+ (id)flatPhonemeSequence:(id)a3
++ (id)flatPhonemeSequence:(id)sequence
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  sequenceCopy = sequence;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v3;
+  obj = sequenceCopy;
   v22 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v22)
   {
@@ -275,8 +275,8 @@ void __31__SFSSServerTTSTask_startTask___block_invoke_21(uint64_t a1, void *a2)
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v7 = [v6 word_phonemes];
-        v8 = [v7 countByEnumeratingWithState:&v27 objects:v36 count:16];
+        word_phonemes = [v6 word_phonemes];
+        v8 = [word_phonemes countByEnumeratingWithState:&v27 objects:v36 count:16];
         if (v8)
         {
           v9 = v8;
@@ -287,7 +287,7 @@ void __31__SFSSServerTTSTask_startTask___block_invoke_21(uint64_t a1, void *a2)
             {
               if (*v28 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(word_phonemes);
               }
 
               v12 = *(*(&v27 + 1) + 8 * j);
@@ -295,8 +295,8 @@ void __31__SFSSServerTTSTask_startTask___block_invoke_21(uint64_t a1, void *a2)
               v24 = 0u;
               v25 = 0u;
               v26 = 0u;
-              v13 = [v12 phonemes];
-              v14 = [v13 countByEnumeratingWithState:&v23 objects:v35 count:16];
+              phonemes = [v12 phonemes];
+              v14 = [phonemes countByEnumeratingWithState:&v23 objects:v35 count:16];
               if (v14)
               {
                 v15 = v14;
@@ -307,20 +307,20 @@ void __31__SFSSServerTTSTask_startTask___block_invoke_21(uint64_t a1, void *a2)
                   {
                     if (*v24 != v16)
                     {
-                      objc_enumerationMutation(v13);
+                      objc_enumerationMutation(phonemes);
                     }
 
                     [v4 addObject:*(*(&v23 + 1) + 8 * k)];
                   }
 
-                  v15 = [v13 countByEnumeratingWithState:&v23 objects:v35 count:16];
+                  v15 = [phonemes countByEnumeratingWithState:&v23 objects:v35 count:16];
                 }
 
                 while (v15);
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v27 objects:v36 count:16];
+            v9 = [word_phonemes countByEnumeratingWithState:&v27 objects:v36 count:16];
           }
 
           while (v9);
@@ -338,20 +338,20 @@ void __31__SFSSServerTTSTask_startTask___block_invoke_21(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (int64_t)convertVoiceTypeToServerType:(int64_t)a3
++ (int64_t)convertVoiceTypeToServerType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 3;
+    return type == 3;
   }
 }
 
-+ (AudioStreamBasicDescription)audioStreamBasicDescription:(SEL)a3
++ (AudioStreamBasicDescription)audioStreamBasicDescription:(SEL)description
 {
   v5 = a4;
   retstr->mFormatID = [v5 format_id];
@@ -363,22 +363,22 @@ void __31__SFSSServerTTSTask_startTask___block_invoke_21(uint64_t a1, void *a2)
   retstr->mBytesPerFrame = [v5 bytes_per_frame];
   retstr->mChannelsPerFrame = [v5 channels_per_frame];
   retstr->mBitsPerChannel = [v5 bits_per_channel];
-  v7 = [v5 reserved];
+  reserved = [v5 reserved];
 
-  retstr->mReserved = v7;
+  retstr->mReserved = reserved;
   return result;
 }
 
-+ (id)createGrpcHeadersFromRequest:(id)a3
++ (id)createGrpcHeadersFromRequest:(id)request
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 devServiceType];
-  if ([v4 length])
+  requestCopy = request;
+  devServiceType = [requestCopy devServiceType];
+  if ([devServiceType length])
   {
     v9 = @"tts-dev-proxy-service-name";
-    v5 = [v3 devServiceType];
-    v10[0] = v5;
+    devServiceType2 = [requestCopy devServiceType];
+    v10[0] = devServiceType2;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
@@ -392,94 +392,94 @@ void __31__SFSSServerTTSTask_startTask___block_invoke_21(uint64_t a1, void *a2)
   return v6;
 }
 
-+ (id)createOspreyRequestFromReqeust:(id)a3
++ (id)createOspreyRequestFromReqeust:(id)reqeust
 {
-  v3 = a3;
+  reqeustCopy = reqeust;
   v4 = objc_alloc_init(QSSMutableStartTextToSpeechStreamingRequest);
-  v5 = [v3 requestIdentifer];
-  [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setSession_id:v5];
+  requestIdentifer = [reqeustCopy requestIdentifer];
+  [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setSession_id:requestIdentifer];
 
-  v6 = [v3 locale];
-  v7 = [v6 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  locale = [reqeustCopy locale];
+  v7 = [locale stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
   [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setLanguage:v7];
 
-  v8 = [v3 gender];
-  [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setGender:v8];
+  gender = [reqeustCopy gender];
+  [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setGender:gender];
 
-  v9 = [v3 text];
-  [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setText:v9];
+  text = [reqeustCopy text];
+  [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setText:text];
 
   [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setAudio_type:1];
   [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setEnable_word_timing_info:0];
-  v10 = [v3 voiceName];
-  [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setVoice_name:v10];
+  voiceName = [reqeustCopy voiceName];
+  [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setVoice_name:voiceName];
 
   v11 = objc_alloc_init(QSSMutableTextToSpeechRequestMeta);
-  v12 = [v3 clientBundleIdentifier];
-  [(QSSMutableTextToSpeechRequestMeta *)v11 setApp_id:v12];
+  clientBundleIdentifier = [reqeustCopy clientBundleIdentifier];
+  [(QSSMutableTextToSpeechRequestMeta *)v11 setApp_id:clientBundleIdentifier];
 
   [(QSSMutableTextToSpeechRequestMeta *)v11 setChannel_type:2];
-  -[QSSMutableTextToSpeechRequestMeta setIs_synthesis:](v11, "setIs_synthesis:", [v3 type] == 1);
+  -[QSSMutableTextToSpeechRequestMeta setIs_synthesis:](v11, "setIs_synthesis:", [reqeustCopy type] == 1);
   [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setMeta_info:v11];
-  v13 = [v3 voice];
-  -[QSSMutableStartTextToSpeechStreamingRequest setPreferred_voice_type:](v4, "setPreferred_voice_type:", +[SFSSServerTTSTask convertVoiceTypeToServerType:](SFSSServerTTSTask, "convertVoiceTypeToServerType:", [v13 voiceType]));
+  voice = [reqeustCopy voice];
+  -[QSSMutableStartTextToSpeechStreamingRequest setPreferred_voice_type:](v4, "setPreferred_voice_type:", +[SFSSServerTTSTask convertVoiceTypeToServerType:](SFSSServerTTSTask, "convertVoiceTypeToServerType:", [voice voiceType]));
 
   v14 = objc_alloc_init(QSSMutableTTSRequestFeatureFlags);
-  -[QSSMutableTTSRequestFeatureFlags setFe_feature:](v14, "setFe_feature:", [v3 returnFrontEndFeature]);
-  -[QSSMutableTTSRequestFeatureFlags setPhoneset_type:](v14, "setPhoneset_type:", +[SFSSServerTTSTask convertPhoneSetTypeToServerPhoneSetType:](SFSSServerTTSTask, "convertPhoneSetTypeToServerPhoneSetType:", [v3 phoneSetType]));
+  -[QSSMutableTTSRequestFeatureFlags setFe_feature:](v14, "setFe_feature:", [reqeustCopy returnFrontEndFeature]);
+  -[QSSMutableTTSRequestFeatureFlags setPhoneset_type:](v14, "setPhoneset_type:", +[SFSSServerTTSTask convertPhoneSetTypeToServerPhoneSetType:](SFSSServerTTSTask, "convertPhoneSetTypeToServerPhoneSetType:", [reqeustCopy phoneSetType]));
   [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setFeature_flags:v14];
-  v15 = [SFSSServerTTSTask generateProsodyTransferConfig:v3];
+  v15 = [SFSSServerTTSTask generateProsodyTransferConfig:reqeustCopy];
 
   [(QSSMutableStartTextToSpeechStreamingRequest *)v4 setProsody_config:v15];
 
   return v4;
 }
 
-+ (id)generateProsodyTransferConfig:(id)a3
++ (id)generateProsodyTransferConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   v4 = objc_alloc_init(QSSMutableTextToSpeechRequestProsodyTransferConfig);
   v5 = objc_alloc_init(QSSMutableTextToSpeechSpeechFeatureInputWave);
   v6 = objc_alloc_init(QSSMutableTextToSpeechUserVoiceProfile);
-  v7 = [v3 prosodyTransferData];
-  v8 = [v7 userVoiceProfile];
-  [v8 pitch_mean];
+  prosodyTransferData = [configCopy prosodyTransferData];
+  userVoiceProfile = [prosodyTransferData userVoiceProfile];
+  [userVoiceProfile pitch_mean];
   [(QSSMutableTextToSpeechUserVoiceProfile *)v6 setPitch_mean:?];
 
-  v9 = [v3 prosodyTransferData];
-  v10 = [v9 userVoiceProfile];
-  [v10 pitch_std];
+  prosodyTransferData2 = [configCopy prosodyTransferData];
+  userVoiceProfile2 = [prosodyTransferData2 userVoiceProfile];
+  [userVoiceProfile2 pitch_std];
   [(QSSMutableTextToSpeechUserVoiceProfile *)v6 setPitch_std:?];
 
-  v11 = [v3 prosodyTransferData];
-  v12 = [v11 userVoiceProfile];
-  [v12 energy_mean];
+  prosodyTransferData3 = [configCopy prosodyTransferData];
+  userVoiceProfile3 = [prosodyTransferData3 userVoiceProfile];
+  [userVoiceProfile3 energy_mean];
   [(QSSMutableTextToSpeechUserVoiceProfile *)v6 setEnergy_mean:?];
 
-  v13 = [v3 prosodyTransferData];
-  v14 = [v13 userVoiceProfile];
-  [v14 energy_std];
+  prosodyTransferData4 = [configCopy prosodyTransferData];
+  userVoiceProfile4 = [prosodyTransferData4 userVoiceProfile];
+  [userVoiceProfile4 energy_std];
   [(QSSMutableTextToSpeechUserVoiceProfile *)v6 setEnergy_std:?];
 
-  v15 = [v3 prosodyTransferData];
-  v16 = [v15 userVoiceProfile];
-  [v16 duration_mean];
+  prosodyTransferData5 = [configCopy prosodyTransferData];
+  userVoiceProfile5 = [prosodyTransferData5 userVoiceProfile];
+  [userVoiceProfile5 duration_mean];
   [(QSSMutableTextToSpeechUserVoiceProfile *)v6 setDuration_mean:?];
 
-  v17 = [v3 prosodyTransferData];
-  v18 = [v17 userVoiceProfile];
-  [v18 duration_std];
+  prosodyTransferData6 = [configCopy prosodyTransferData];
+  userVoiceProfile6 = [prosodyTransferData6 userVoiceProfile];
+  [userVoiceProfile6 duration_std];
   [(QSSMutableTextToSpeechUserVoiceProfile *)v6 setDuration_std:?];
 
-  v19 = [v3 prosodyTransferData];
-  v20 = [v19 waveData];
-  [(QSSMutableTextToSpeechSpeechFeatureInputWave *)v5 setPcm_data:v20];
+  prosodyTransferData7 = [configCopy prosodyTransferData];
+  waveData = [prosodyTransferData7 waveData];
+  [(QSSMutableTextToSpeechSpeechFeatureInputWave *)v5 setPcm_data:waveData];
 
-  v21 = [v3 prosodyTransferData];
-  v22 = v21;
-  if (v21)
+  prosodyTransferData8 = [configCopy prosodyTransferData];
+  v22 = prosodyTransferData8;
+  if (prosodyTransferData8)
   {
-    [v21 asbd];
+    [prosodyTransferData8 asbd];
     v23 = *&v27;
   }
 
@@ -495,43 +495,43 @@ void __31__SFSSServerTTSTask_startTask___block_invoke_21(uint64_t a1, void *a2)
 
   [(QSSMutableTextToSpeechRequestProsodyTransferConfig *)v4 setWave_data:v5];
   [(QSSMutableTextToSpeechRequestProsodyTransferConfig *)v4 setUser_voice_profile:v6];
-  v24 = [v3 prosodyTransferData];
-  v25 = [v24 userVoiceProfileUrl];
-  [(QSSMutableTextToSpeechRequestProsodyTransferConfig *)v4 setUser_voice_profile_url:v25];
+  prosodyTransferData9 = [configCopy prosodyTransferData];
+  userVoiceProfileUrl = [prosodyTransferData9 userVoiceProfileUrl];
+  [(QSSMutableTextToSpeechRequestProsodyTransferConfig *)v4 setUser_voice_profile_url:userVoiceProfileUrl];
 
   return v4;
 }
 
-+ (id)generateResourceAssetFromResourceMetaInfo:(id)a3
++ (id)generateResourceAssetFromResourceMetaInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = [SFSSResourceAsset alloc];
-  v5 = [v3 language];
-  v6 = [v3 version];
+  language = [infoCopy language];
+  version = [infoCopy version];
 
-  v7 = -[SFSSResourceAsset init:contentVersion:](v4, "init:contentVersion:", v5, [v6 integerValue]);
+  v7 = -[SFSSResourceAsset init:contentVersion:](v4, "init:contentVersion:", language, [version integerValue]);
 
   return v7;
 }
 
-+ (id)generateVoiceAssetFromVoiceMetaInfo:(id)a3
++ (id)generateVoiceAssetFromVoiceMetaInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 gender];
-  v5 = [SFSpeechSynthesisUtils genderFromString:v4];
+  infoCopy = info;
+  gender = [infoCopy gender];
+  v5 = [SFSpeechSynthesisUtils genderFromString:gender];
 
-  v6 = [v3 quality];
-  v7 = [SFSpeechSynthesisUtils footprintFromString:v6];
+  quality = [infoCopy quality];
+  v7 = [SFSpeechSynthesisUtils footprintFromString:quality];
 
-  v8 = [v3 type];
-  v9 = [SFSpeechSynthesisUtils typeFromString:v8];
+  type = [infoCopy type];
+  v9 = [SFSpeechSynthesisUtils typeFromString:type];
 
   v10 = [SFSSVoiceAsset alloc];
-  v11 = [v3 language];
-  v12 = [v3 name];
-  v13 = [v3 version];
+  language = [infoCopy language];
+  name = [infoCopy name];
+  version = [infoCopy version];
 
-  v14 = -[SFSSVoiceAsset init:gender:name:type:footprint:contentVersion:](v10, "init:gender:name:type:footprint:contentVersion:", v11, v5, v12, v9, v7, [v13 integerValue]);
+  v14 = -[SFSSVoiceAsset init:gender:name:type:footprint:contentVersion:](v10, "init:gender:name:type:footprint:contentVersion:", language, v5, name, v9, v7, [version integerValue]);
 
   return v14;
 }

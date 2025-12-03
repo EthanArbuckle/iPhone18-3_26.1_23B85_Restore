@@ -1,8 +1,8 @@
 @interface ISDeferredDealloc
 + (id)sharedInstance;
 - (ISDeferredDealloc)init;
-- (void)_performDeferredDealloc:(id)a3;
-- (void)_performDeferredDealloc:(id)a3 withDelay:(double)a4;
+- (void)_performDeferredDealloc:(id)dealloc;
+- (void)_performDeferredDealloc:(id)dealloc withDelay:(double)delay;
 - (void)dealloc;
 @end
 
@@ -17,17 +17,17 @@
   [(ISDeferredDealloc *)&v3 dealloc];
 }
 
-- (void)_performDeferredDealloc:(id)a3
+- (void)_performDeferredDealloc:(id)dealloc
 {
-  if (a3)
+  if (dealloc)
   {
-    v5 = a3;
+    deallocCopy = dealloc;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__ISDeferredDealloc__performDeferredDealloc___block_invoke;
     v6[3] = &unk_279A2A348;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = dealloc;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 }
@@ -43,18 +43,18 @@ void __45__ISDeferredDealloc__performDeferredDealloc___block_invoke(uint64_t a1)
   dispatch_async(v1, block);
 }
 
-- (void)_performDeferredDealloc:(id)a3 withDelay:(double)a4
+- (void)_performDeferredDealloc:(id)dealloc withDelay:(double)delay
 {
-  if (a3)
+  if (dealloc)
   {
-    v7 = a3;
-    v8 = dispatch_time(0, (a4 * 1000000000.0));
+    deallocCopy = dealloc;
+    v8 = dispatch_time(0, (delay * 1000000000.0));
     deferredDeallocQueue = self->_deferredDeallocQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55__ISDeferredDealloc__performDeferredDealloc_withDelay___block_invoke;
     block[3] = &unk_279A2A180;
-    block[4] = a3;
+    block[4] = dealloc;
     dispatch_after(v8, deferredDeallocQueue, block);
   }
 }

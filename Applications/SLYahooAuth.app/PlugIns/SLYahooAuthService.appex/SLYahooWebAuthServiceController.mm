@@ -1,16 +1,16 @@
 @interface SLYahooWebAuthServiceController
-- (SLYahooWebAuthServiceController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SLYahooWebAuthServiceController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)webViewController:(id)a3 didFinishWithSuccess:(BOOL)a4 response:(id)a5 error:(id)a6;
+- (void)webViewController:(id)controller didFinishWithSuccess:(BOOL)success response:(id)response error:(id)error;
 @end
 
 @implementation SLYahooWebAuthServiceController
 
-- (SLYahooWebAuthServiceController)initWithNibName:(id)a3 bundle:(id)a4
+- (SLYahooWebAuthServiceController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = SLYahooWebAuthServiceController;
-  v4 = [(SLYahooWebAuthServiceController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(SLYahooWebAuthServiceController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(SL_OOPAWebViewController);
@@ -28,23 +28,23 @@
   v20.receiver = self;
   v20.super_class = SLYahooWebAuthServiceController;
   [(SLYahooWebAuthServiceController *)&v20 loadView];
-  v3 = [(SLYahooWebAuthServiceController *)self view];
-  [v3 setOpaque:1];
+  view = [(SLYahooWebAuthServiceController *)self view];
+  [view setOpaque:1];
 
   v4 = +[UIColor clearColor];
-  v5 = [(SLYahooWebAuthServiceController *)self view];
-  [v5 setBackgroundColor:v4];
+  view2 = [(SLYahooWebAuthServiceController *)self view];
+  [view2 setBackgroundColor:v4];
 
-  v6 = [(SLYahooWebAuthServiceController *)self extensionContext];
-  v7 = [v6 inputItems];
-  v8 = [v7 firstObject];
+  extensionContext = [(SLYahooWebAuthServiceController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
+  firstObject = [inputItems firstObject];
 
-  v9 = [v8 userInfo];
+  userInfo = [firstObject userInfo];
   _SLLog();
-  v10 = [v9 objectForKeyedSubscript:{@"description", v9}];
+  v10 = [userInfo objectForKeyedSubscript:{@"description", userInfo}];
   [(SL_OOPAWebViewController *)self->_webViewController setNavBarTitle:v10];
 
-  v11 = [v9 objectForKeyedSubscript:@"username"];
+  v11 = [userInfo objectForKeyedSubscript:@"username"];
   if (v11)
   {
     [(SL_OOPAWebViewController *)self->_webViewController setUsername:v11];
@@ -52,7 +52,7 @@
 
   v12 = objc_opt_class();
   v13 = [NSSet setWithObjects:v12, objc_opt_class(), 0];
-  v14 = [v9 objectForKeyedSubscript:@"webClient"];
+  v14 = [userInfo objectForKeyedSubscript:@"webClient"];
   v19 = 0;
   v15 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v13 fromData:v14 error:&v19];
   v16 = v19;
@@ -68,32 +68,32 @@
   [(SL_OOPAWebViewController *)self->_webViewController setAuthFlowDelegate:v17];
 }
 
-- (void)webViewController:(id)a3 didFinishWithSuccess:(BOOL)a4 response:(id)a5 error:(id)a6
+- (void)webViewController:(id)controller didFinishWithSuccess:(BOOL)success response:(id)response error:(id)error
 {
-  v7 = a4;
-  v9 = a6;
-  v10 = v9;
-  if (a5 || v7)
+  successCopy = success;
+  errorCopy = error;
+  v10 = errorCopy;
+  if (response || successCopy)
   {
-    v12 = [NSKeyedArchiver archivedDataWithRootObject:a5 requiringSecureCoding:1 error:0];
+    v12 = [NSKeyedArchiver archivedDataWithRootObject:response requiringSecureCoding:1 error:0];
     v13 = [[NSItemProvider alloc] initWithItem:v12 typeIdentifier:kUTTypeData];
     v20 = v13;
     v14 = [NSArray arrayWithObjects:&v20 count:1];
     v15 = objc_alloc_init(NSExtensionItem);
     [v15 setAttachments:v14];
     _SLLog();
-    v16 = [(SLYahooWebAuthServiceController *)self extensionContext];
+    extensionContext = [(SLYahooWebAuthServiceController *)self extensionContext];
     v19 = v15;
     v17 = [NSArray arrayWithObjects:&v19 count:1];
-    [v16 completeRequestReturningItems:v17 completionHandler:&stru_100004178];
+    [extensionContext completeRequestReturningItems:v17 completionHandler:&stru_100004178];
   }
 
   else
   {
-    v18 = v9;
+    v18 = errorCopy;
     _SLLog();
-    v11 = [(SLYahooWebAuthServiceController *)self extensionContext];
-    [v11 cancelRequestWithError:v10];
+    extensionContext2 = [(SLYahooWebAuthServiceController *)self extensionContext];
+    [extensionContext2 cancelRequestWithError:v10];
 
     _SLLog();
   }

@@ -1,69 +1,69 @@
 @interface _SEHostingUpdateCoordinator
-- (_SEHostingUpdateCoordinator)initWithCoder:(id)a3;
-- (id)initFromXPCRepresentation:(id)a3;
+- (_SEHostingUpdateCoordinator)initWithCoder:(id)coder;
+- (id)initFromXPCRepresentation:(id)representation;
 - (id)xpcRepresentation;
-- (void)addHostable:(id)a3;
-- (void)addHostingView:(id)a3;
+- (void)addHostable:(id)hostable;
+- (void)addHostingView:(id)view;
 - (void)commit;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SEHostingUpdateCoordinator
 
-- (id)initFromXPCRepresentation:(id)a3
+- (id)initFromXPCRepresentation:(id)representation
 {
   swift_unknownObjectRetain();
-  v4 = sub_26574F6A4(a3);
+  v4 = sub_26574F6A4(representation);
   swift_unknownObjectRelease();
   return v4;
 }
 
 - (id)xpcRepresentation
 {
-  v3 = *(&self->super.isa + OBJC_IVAR____SEHostingUpdateCoordinator__fence);
-  if (v3)
+  createXPCRepresentation = *(&self->super.isa + OBJC_IVAR____SEHostingUpdateCoordinator__fence);
+  if (createXPCRepresentation)
   {
-    v3 = [v3 createXPCRepresentation];
+    createXPCRepresentation = [createXPCRepresentation createXPCRepresentation];
     v2 = vars8;
   }
 
-  return v3;
+  return createXPCRepresentation;
 }
 
-- (_SEHostingUpdateCoordinator)initWithCoder:(id)a3
+- (_SEHostingUpdateCoordinator)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_26574F78C();
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____SEHostingUpdateCoordinator__fence);
-  v7 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = sub_2657501B8();
-  [v7 encodeObject:v4 forKey:v6];
+  [coderCopy encodeObject:v4 forKey:v6];
 }
 
-- (void)addHostable:(id)a3
+- (void)addHostable:(id)hostable
 {
-  v4 = a3;
-  v5 = self;
-  _SEHostingUpdateCoordinator.add(_:)(v4);
+  hostableCopy = hostable;
+  selfCopy = self;
+  _SEHostingUpdateCoordinator.add(_:)(hostableCopy);
 }
 
-- (void)addHostingView:(id)a3
+- (void)addHostingView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  _SEHostingUpdateCoordinator.add(_:)(v4);
+  viewCopy = view;
+  selfCopy = self;
+  _SEHostingUpdateCoordinator.add(_:)(viewCopy);
 }
 
 - (void)commit
 {
-  v2 = self;
+  selfCopy = self;
   _SEHostingUpdateCoordinator.commit()();
 }
 

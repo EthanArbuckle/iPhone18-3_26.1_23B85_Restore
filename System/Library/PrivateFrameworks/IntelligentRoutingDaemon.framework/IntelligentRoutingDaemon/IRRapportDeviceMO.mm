@@ -1,62 +1,62 @@
 @interface IRRapportDeviceMO
-+ (id)aVOutputDeviceMOFromRapportDeviceDO:(id)a3 inNode:(id)a4 withManagedObjectContext:(id)a5;
-+ (void)setPropertiesOfRapportDeviceMO:(id)a3 withRapportDO:(id)a4;
++ (id)aVOutputDeviceMOFromRapportDeviceDO:(id)o inNode:(id)node withManagedObjectContext:(id)context;
++ (void)setPropertiesOfRapportDeviceMO:(id)o withRapportDO:(id)dO;
 - (id)convert;
 @end
 
 @implementation IRRapportDeviceMO
 
-+ (id)aVOutputDeviceMOFromRapportDeviceDO:(id)a3 inNode:(id)a4 withManagedObjectContext:(id)a5
++ (id)aVOutputDeviceMOFromRapportDeviceDO:(id)o inNode:(id)node withManagedObjectContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[IRRapportDeviceMO alloc] initWithContext:v7];
+  contextCopy = context;
+  nodeCopy = node;
+  oCopy = o;
+  v10 = [[IRRapportDeviceMO alloc] initWithContext:contextCopy];
 
-  [(IRRapportDeviceMO *)v10 setNode:v8];
-  [IRRapportDeviceMO setPropertiesOfRapportDeviceMO:v10 withRapportDO:v9];
+  [(IRRapportDeviceMO *)v10 setNode:nodeCopy];
+  [IRRapportDeviceMO setPropertiesOfRapportDeviceMO:v10 withRapportDO:oCopy];
 
   return v10;
 }
 
-+ (void)setPropertiesOfRapportDeviceMO:(id)a3 withRapportDO:(id)a4
++ (void)setPropertiesOfRapportDeviceMO:(id)o withRapportDO:(id)dO
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 rapportEffectiveID];
-  [v6 setRapportEffectiveID:v7];
+  dOCopy = dO;
+  oCopy = o;
+  rapportEffectiveID = [dOCopy rapportEffectiveID];
+  [oCopy setRapportEffectiveID:rapportEffectiveID];
 
-  v8 = [v5 idsID];
-  [v6 setIdsID:v8];
+  idsID = [dOCopy idsID];
+  [oCopy setIdsID:idsID];
 
-  v9 = [v5 name];
-  [v6 setName:v9];
+  name = [dOCopy name];
+  [oCopy setName:name];
 
-  v10 = [v5 deviceModel];
-  [v6 setDeviceModel:v10];
+  deviceModel = [dOCopy deviceModel];
+  [oCopy setDeviceModel:deviceModel];
 
-  v11 = [v5 mediaRemoteIdentifier];
-  [v6 setMediaRemoteIdentifier:v11];
+  mediaRemoteIdentifier = [dOCopy mediaRemoteIdentifier];
+  [oCopy setMediaRemoteIdentifier:mediaRemoteIdentifier];
 
-  v12 = [v5 iCloudId];
-  [v6 setICloudId:v12];
+  iCloudId = [dOCopy iCloudId];
+  [oCopy setICloudId:iCloudId];
 
-  v13 = [v5 mediaRouteIdentifier];
+  mediaRouteIdentifier = [dOCopy mediaRouteIdentifier];
 
-  [v6 setMediaRouteIdentifier:v13];
+  [oCopy setMediaRouteIdentifier:mediaRouteIdentifier];
 }
 
 - (id)convert
 {
   v3 = [IRRapportDeviceDO alloc];
-  v4 = [(IRRapportDeviceMO *)self rapportEffectiveID];
-  v5 = [(IRRapportDeviceMO *)self idsID];
-  v6 = [(IRRapportDeviceMO *)self name];
-  v7 = [(IRRapportDeviceMO *)self deviceModel];
-  v8 = [(IRRapportDeviceMO *)self mediaRemoteIdentifier];
-  v9 = [(IRRapportDeviceMO *)self iCloudId];
-  v10 = [(IRRapportDeviceMO *)self mediaRouteIdentifier];
-  v11 = [(IRRapportDeviceDO *)v3 initWithRapportEffectiveID:v4 idsID:v5 name:v6 deviceModel:v7 mediaRemoteIdentifier:v8 iCloudId:v9 mediaRouteIdentifier:v10];
+  rapportEffectiveID = [(IRRapportDeviceMO *)self rapportEffectiveID];
+  idsID = [(IRRapportDeviceMO *)self idsID];
+  name = [(IRRapportDeviceMO *)self name];
+  deviceModel = [(IRRapportDeviceMO *)self deviceModel];
+  mediaRemoteIdentifier = [(IRRapportDeviceMO *)self mediaRemoteIdentifier];
+  iCloudId = [(IRRapportDeviceMO *)self iCloudId];
+  mediaRouteIdentifier = [(IRRapportDeviceMO *)self mediaRouteIdentifier];
+  v11 = [(IRRapportDeviceDO *)v3 initWithRapportEffectiveID:rapportEffectiveID idsID:idsID name:name deviceModel:deviceModel mediaRemoteIdentifier:mediaRemoteIdentifier iCloudId:iCloudId mediaRouteIdentifier:mediaRouteIdentifier];
 
   return v11;
 }

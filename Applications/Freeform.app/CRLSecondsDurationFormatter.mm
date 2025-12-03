@@ -1,6 +1,6 @@
 @interface CRLSecondsDurationFormatter
 - (CRLSecondsDurationFormatter)init;
-- (CRLSecondsDurationFormatter)initWithCoder:(id)a3;
+- (CRLSecondsDurationFormatter)initWithCoder:(id)coder;
 - (void)p_commonInitDurationFormatter;
 @end
 
@@ -20,11 +20,11 @@
   [(CRLInspectorTextFieldAbstractNumberFormatter *)self setCrlaxValueFormat:v8];
 }
 
-- (CRLSecondsDurationFormatter)initWithCoder:(id)a3
+- (CRLSecondsDurationFormatter)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CRLSecondsDurationFormatter;
-  v3 = [(CRLInspectorTextFieldClampNumberFormatter *)&v6 initWithCoder:a3];
+  v3 = [(CRLInspectorTextFieldClampNumberFormatter *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

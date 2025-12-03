@@ -6,16 +6,16 @@
 - (id)bkaxTarget;
 - (int64_t)bkaxPageCount;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)bkaxDeleteAnnotation:(id)a3;
-- (void)bkaxEditNoteForAnnotation:(id)a3;
-- (void)bkaxScrub:(id)a3;
-- (void)bkaxTurnToPageNumber:(int64_t)a3 animated:(BOOL)a4;
-- (void)directoryContent:(id)a3 didSelectLocation:(id)a4;
-- (void)goToPath:(id)a3 fragment:(id)a4 animated:(BOOL)a5;
-- (void)resume:(id)a3;
-- (void)scrub:(id)a3;
-- (void)showTOC:(id)a3;
-- (void)tocViewController:(id)a3 didSelectChapter:(id)a4;
+- (void)bkaxDeleteAnnotation:(id)annotation;
+- (void)bkaxEditNoteForAnnotation:(id)annotation;
+- (void)bkaxScrub:(id)scrub;
+- (void)bkaxTurnToPageNumber:(int64_t)number animated:(BOOL)animated;
+- (void)directoryContent:(id)content didSelectLocation:(id)location;
+- (void)goToPath:(id)path fragment:(id)fragment animated:(BOOL)animated;
+- (void)resume:(id)resume;
+- (void)scrub:(id)scrub;
+- (void)showTOC:(id)c;
+- (void)tocViewController:(id)controller didSelectChapter:(id)chapter;
 - (void)viewDidLoad;
 @end
 
@@ -31,19 +31,19 @@
 
 - (int64_t)bkaxPageCount
 {
-  v2 = [(BKBookViewControllerAccessibility *)self bkaxTarget];
-  v3 = [v2 pageCountIncludingUpsell];
+  bkaxTarget = [(BKBookViewControllerAccessibility *)self bkaxTarget];
+  pageCountIncludingUpsell = [bkaxTarget pageCountIncludingUpsell];
 
-  return v3;
+  return pageCountIncludingUpsell;
 }
 
 - (NSString)bkaxLocalizedScrollStatus
 {
-  v3 = [(BKBookViewControllerAccessibility *)self bkaxTarget];
-  v4 = [v3 currentPages];
+  bkaxTarget = [(BKBookViewControllerAccessibility *)self bkaxTarget];
+  currentPages = [bkaxTarget currentPages];
   v6 = v5;
 
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (currentPages == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = sub_1000765EC(@"page.num.of.loading");
   }
@@ -51,13 +51,13 @@
   else if (v6 < 2)
   {
     v9 = sub_1000765EC(@"page.num.of.with.total.single %lu %lu");
-    v7 = [NSString stringWithFormat:v9, v4, [(BKBookViewControllerAccessibility *)self bkaxPageCount]];
+    v7 = [NSString stringWithFormat:v9, currentPages, [(BKBookViewControllerAccessibility *)self bkaxPageCount]];
   }
 
   else
   {
     v8 = sub_1000765EC(@"page.num.of.with.total.spread %lu %lu %lu");
-    v7 = [NSString stringWithFormat:v8, v4, &v4[v6 - 1], [(BKBookViewControllerAccessibility *)self bkaxPageCount]];
+    v7 = [NSString stringWithFormat:v8, currentPages, &currentPages[v6 - 1], [(BKBookViewControllerAccessibility *)self bkaxPageCount]];
   }
 
   return v7;
@@ -69,14 +69,14 @@
   v18 = 0;
   objc_opt_class();
   v3 = __IMAccessibilityCastAsClass();
-  v4 = [v3 view];
-  v5 = [v4 _accessibleSubviews];
+  view = [v3 view];
+  _accessibleSubviews = [view _accessibleSubviews];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v5;
+  v6 = _accessibleSubviews;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
@@ -110,7 +110,7 @@
   return v12;
 }
 
-- (void)bkaxTurnToPageNumber:(int64_t)a3 animated:(BOOL)a4
+- (void)bkaxTurnToPageNumber:(int64_t)number animated:(BOOL)animated
 {
   if (__IMAccessibilityPerformSafeBlock())
   {
@@ -118,18 +118,18 @@
   }
 }
 
-- (void)bkaxEditNoteForAnnotation:(id)a3
+- (void)bkaxEditNoteForAnnotation:(id)annotation
 {
-  v3 = a3;
+  annotationCopy = annotation;
   if (__IMAccessibilityPerformSafeBlock())
   {
     abort();
   }
 }
 
-- (void)bkaxDeleteAnnotation:(id)a3
+- (void)bkaxDeleteAnnotation:(id)annotation
 {
-  v3 = a3;
+  annotationCopy = annotation;
   if (__IMAccessibilityPerformSafeBlock())
   {
     abort();
@@ -151,79 +151,79 @@
   [(BKBookViewControllerAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)showTOC:(id)a3
+- (void)showTOC:(id)c
 {
   v3.receiver = self;
   v3.super_class = BKBookViewControllerAccessibility;
-  [(BKBookViewControllerAccessibility *)&v3 showTOC:a3];
+  [(BKBookViewControllerAccessibility *)&v3 showTOC:c];
   UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, 0);
 }
 
-- (void)resume:(id)a3
+- (void)resume:(id)resume
 {
   v3.receiver = self;
   v3.super_class = BKBookViewControllerAccessibility;
-  [(BKBookViewControllerAccessibility *)&v3 resume:a3];
+  [(BKBookViewControllerAccessibility *)&v3 resume:resume];
   UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, 0);
 }
 
-- (void)scrub:(id)a3
+- (void)scrub:(id)scrub
 {
-  v4 = a3;
+  scrubCopy = scrub;
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    [(BKBookViewControllerAccessibility *)self bkaxScrub:v4];
+    [(BKBookViewControllerAccessibility *)self bkaxScrub:scrubCopy];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = BKBookViewControllerAccessibility;
-    [(BKBookViewControllerAccessibility *)&v5 scrub:v4];
+    [(BKBookViewControllerAccessibility *)&v5 scrub:scrubCopy];
   }
 }
 
-- (void)bkaxScrub:(id)a3
+- (void)bkaxScrub:(id)scrub
 {
-  v4 = a3;
+  scrubCopy = scrub;
   objc_opt_class();
   v5 = __IMAccessibilityCastAsClass();
-  v6 = [v5 pageNumber];
+  pageNumber = [v5 pageNumber];
 
   if (objc_opt_respondsToSelector())
   {
-    [(BKBookViewControllerAccessibility *)self bkaxTurnToPageNumber:v6 animated:0];
+    [(BKBookViewControllerAccessibility *)self bkaxTurnToPageNumber:pageNumber animated:0];
   }
 
   [(BKBookViewControllerAccessibility *)self performSelector:"_axSendLayoutChange" withObject:0 afterDelay:0.5];
 }
 
-- (void)tocViewController:(id)a3 didSelectChapter:(id)a4
+- (void)tocViewController:(id)controller didSelectChapter:(id)chapter
 {
-  v6 = a4;
-  v7 = a3;
-  [(BKBookViewControllerAccessibility *)self _axSetAssociatedObject:v6 forKey:@"SelectedChapter"];
+  chapterCopy = chapter;
+  controllerCopy = controller;
+  [(BKBookViewControllerAccessibility *)self _axSetAssociatedObject:chapterCopy forKey:@"SelectedChapter"];
   v8.receiver = self;
   v8.super_class = BKBookViewControllerAccessibility;
-  [(BKBookViewControllerAccessibility *)&v8 tocViewController:v7 didSelectChapter:v6];
+  [(BKBookViewControllerAccessibility *)&v8 tocViewController:controllerCopy didSelectChapter:chapterCopy];
 }
 
-- (void)directoryContent:(id)a3 didSelectLocation:(id)a4
+- (void)directoryContent:(id)content didSelectLocation:(id)location
 {
   v11.receiver = self;
   v11.super_class = BKBookViewControllerAccessibility;
-  [(BKBookViewControllerAccessibility *)&v11 directoryContent:a3 didSelectLocation:a4];
+  [(BKBookViewControllerAccessibility *)&v11 directoryContent:content didSelectLocation:location];
   v5 = [(BKBookViewControllerAccessibility *)self _axAssociatedObjectForKey:@"SelectedChapter"];
   v6 = +[NSMutableDictionary dictionary];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 name];
+    name = [v5 name];
 
-    if (v7)
+    if (name)
     {
-      v8 = [v5 name];
-      [v6 setObject:v8 forKey:@"lineString"];
+      name2 = [v5 name];
+      [v6 setObject:name2 forKey:@"lineString"];
     }
   }
 
@@ -238,11 +238,11 @@
   dispatch_after(v9, &_dispatch_main_q, block);
 }
 
-- (void)goToPath:(id)a3 fragment:(id)a4 animated:(BOOL)a5
+- (void)goToPath:(id)path fragment:(id)fragment animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = BKBookViewControllerAccessibility;
-  [(BKBookViewControllerAccessibility *)&v5 goToPath:a3 fragment:a4 animated:a5];
+  [(BKBookViewControllerAccessibility *)&v5 goToPath:path fragment:fragment animated:animated];
   UIAccessibilityPostNotification(UIAccessibilityPageScrolledNotification, &stru_100A30A68);
 }
 

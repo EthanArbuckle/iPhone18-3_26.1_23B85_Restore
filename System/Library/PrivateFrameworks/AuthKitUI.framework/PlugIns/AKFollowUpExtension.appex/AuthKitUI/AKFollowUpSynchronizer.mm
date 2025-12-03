@@ -1,22 +1,22 @@
 @interface AKFollowUpSynchronizer
-+ (void)updateSynchronizeTimeForAccount:(id)a3 inStore:(id)a4;
-+ (void)updateSynchronizeTimeNoSaveForAccount:(id)a3;
-- (BOOL)authenticationController:(id)a3 shouldContinueWithAuthenticationResults:(id)a4 error:(id)a5 forContext:(id)a6;
-- (BOOL)shouldSynchronizeForAccount:(id)a3;
-- (BOOL)synchronizeFollowUpsForAccount:(id)a3 error:(id *)a4;
-- (BOOL)synchronizeFollowUpsForAccount:(id)a3 inStore:(id)a4 error:(id *)a5;
++ (void)updateSynchronizeTimeForAccount:(id)account inStore:(id)store;
++ (void)updateSynchronizeTimeNoSaveForAccount:(id)account;
+- (BOOL)authenticationController:(id)controller shouldContinueWithAuthenticationResults:(id)results error:(id)error forContext:(id)context;
+- (BOOL)shouldSynchronizeForAccount:(id)account;
+- (BOOL)synchronizeFollowUpsForAccount:(id)account error:(id *)error;
+- (BOOL)synchronizeFollowUpsForAccount:(id)account inStore:(id)store error:(id *)error;
 - (id)_authController;
 @end
 
 @implementation AKFollowUpSynchronizer
 
-- (BOOL)synchronizeFollowUpsForAccount:(id)a3 error:(id *)a4
+- (BOOL)synchronizeFollowUpsForAccount:(id)account error:(id *)error
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18[1] = a4;
+  objc_storeStrong(location, account);
+  v18[1] = error;
   if (!location[0])
   {
     v18[0] = _AKLogSystem();
@@ -31,29 +31,29 @@
 
     objc_storeStrong(v18, 0);
     v12 = +[AKAccountManager sharedInstance];
-    v4 = [(AKAccountManager *)v12 primaryiCloudAccount];
+    primaryiCloudAccount = [(AKAccountManager *)v12 primaryiCloudAccount];
     v5 = location[0];
-    location[0] = v4;
+    location[0] = primaryiCloudAccount;
   }
 
   v10 = [AKAccountManager sharedInstance:location[0]];
-  v9 = [(AKAccountManager *)v10 store];
+  store = [(AKAccountManager *)v10 store];
   v11 = [v8 synchronizeFollowUpsForAccount:v7 inStore:? error:?];
 
   objc_storeStrong(location, 0);
   return v11;
 }
 
-- (BOOL)synchronizeFollowUpsForAccount:(id)a3 inStore:(id)a4 error:(id *)a5
+- (BOOL)synchronizeFollowUpsForAccount:(id)account inStore:(id)store error:(id *)error
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
-  v27 = a5;
-  if ([(AKFollowUpSynchronizer *)v30 shouldSynchronizeForAccount:location[0]])
+  objc_storeStrong(&v28, store);
+  errorCopy = error;
+  if ([(AKFollowUpSynchronizer *)selfCopy shouldSynchronizeForAccount:location[0]])
   {
     v26 = _AKLogSystem();
     v25 = 16;
@@ -61,11 +61,11 @@
     {
       log = v26;
       type = v25;
-      v18 = [location[0] username];
+      username = [location[0] username];
       v17 = +[AKAccountManager sharedInstance];
       v16 = [(AKAccountManager *)v17 altDSIDForAccount:location[0]];
       v24 = v16;
-      sub_100001610(v32, v18, v24);
+      sub_100001610(v32, username, v24);
       _os_log_error_impl(&_mh_execute_header, log, type, "Sync for account: %{private}@ - %{private}@", v32, 0x16u);
 
       objc_storeStrong(&v24, 0);
@@ -78,9 +78,9 @@
     [v23 setAltDSID:?];
 
     v22 = 0;
-    v12 = [(AKFollowUpSynchronizer *)v30 _authController];
+    _authController = [(AKFollowUpSynchronizer *)selfCopy _authController];
     v21 = v22;
-    v13 = [v12 synchronizeFollowUpItemsForContext:v23 error:&v21];
+    v13 = [_authController synchronizeFollowUpItemsForContext:v23 error:&v21];
     objc_storeStrong(&v22, v21);
 
     if (v13)
@@ -91,11 +91,11 @@
 
     else
     {
-      if (v27)
+      if (errorCopy)
       {
         v9 = v22;
         v5 = v22;
-        *v27 = v9;
+        *errorCopy = v9;
       }
 
       v31 = 0;
@@ -107,11 +107,11 @@
 
   else
   {
-    if (v27)
+    if (errorCopy)
     {
       v8 = [NSError ak_errorWithCode:-7064];
       v6 = v8;
-      *v27 = v8;
+      *errorCopy = v8;
     }
 
     v31 = 0;
@@ -138,18 +138,18 @@
   return v4;
 }
 
-- (BOOL)authenticationController:(id)a3 shouldContinueWithAuthenticationResults:(id)a4 error:(id)a5 forContext:(id)a6
+- (BOOL)authenticationController:(id)controller shouldContinueWithAuthenticationResults:(id)results error:(id)error forContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, results);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, error);
   v10 = 0;
-  objc_storeStrong(&v10, a6);
+  objc_storeStrong(&v10, context);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
@@ -157,12 +157,12 @@
   return 1;
 }
 
-- (BOOL)shouldSynchronizeForAccount:(id)a3
+- (BOOL)shouldSynchronizeForAccount:(id)account
 {
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   if (location[0])
   {
     v45 = 0;
@@ -196,9 +196,9 @@
     v13 = 0;
     if (!v45)
     {
-      v40 = [(AKFollowUpSynchronizer *)v48 followupProvider];
+      followupProvider = [(AKFollowUpSynchronizer *)selfCopy followupProvider];
       v39 = 1;
-      v13 = v40 != 0;
+      v13 = followupProvider != 0;
     }
 
     if (v39)
@@ -219,9 +219,9 @@
 
       objc_storeStrong(&v38, 0);
       v35 = 0;
-      v10 = [(AKFollowUpSynchronizer *)v48 followupProvider];
+      followupProvider2 = [(AKFollowUpSynchronizer *)selfCopy followupProvider];
       v33 = v35;
-      v9 = [(AKFollowUpProvider *)v10 pendingFollowUpItems:&v33];
+      v9 = [(AKFollowUpProvider *)followupProvider2 pendingFollowUpItems:&v33];
       objc_storeStrong(&v35, v33);
       v34 = v9;
 
@@ -315,15 +315,15 @@
   return v49;
 }
 
-+ (void)updateSynchronizeTimeForAccount:(id)a3 inStore:(id)a4
++ (void)updateSynchronizeTimeForAccount:(id)account inStore:(id)store
 {
-  v16 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  [v16 updateSynchronizeTimeNoSaveForAccount:location[0]];
+  objc_storeStrong(&v14, store);
+  [selfCopy updateSynchronizeTimeNoSaveForAccount:location[0]];
   v13 = dispatch_semaphore_create(0);
   v6 = v14;
   v5 = location[0];
@@ -341,12 +341,12 @@
   objc_storeStrong(location, 0);
 }
 
-+ (void)updateSynchronizeTimeNoSaveForAccount:(id)a3
++ (void)updateSynchronizeTimeNoSaveForAccount:(id)account
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v5 = _AKLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {

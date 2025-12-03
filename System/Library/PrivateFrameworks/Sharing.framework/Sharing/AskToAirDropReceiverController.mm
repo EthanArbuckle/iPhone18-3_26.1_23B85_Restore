@@ -4,19 +4,19 @@
 - (BOOL)isLegacyMode;
 - (BOOL)isNearbyDeviceClose;
 - (NSArray)connectedNearbyDeviceNames;
-- (_TtC7Sharing30AskToAirDropReceiverController)initWithQueue:(id)a3;
+- (_TtC7Sharing30AskToAirDropReceiverController)initWithQueue:(id)queue;
 - (id)errorHandler;
 - (int64_t)connectionState;
 - (void)connectToAllNearbyDevices;
 - (void)disconnectFromAllNearbyDevices;
-- (void)setConnectedNearbyDeviceNames:(id)a3;
-- (void)setConnectionState:(int64_t)a3;
-- (void)setConnectionStateChangedHandler:(id)a3;
-- (void)setErrorHandler:(id)a3;
-- (void)setIsLegacyMode:(BOOL)a3;
-- (void)setNearbyDeviceCloseChangedHandler:(id)a3;
-- (void)setPendingOrActiveConnectionsChangedHandler:(id)a3;
-- (void)setStateChangedHandler:(id)a3;
+- (void)setConnectedNearbyDeviceNames:(id)names;
+- (void)setConnectionState:(int64_t)state;
+- (void)setConnectionStateChangedHandler:(id)handler;
+- (void)setErrorHandler:(id)handler;
+- (void)setIsLegacyMode:(BOOL)mode;
+- (void)setNearbyDeviceCloseChangedHandler:(id)handler;
+- (void)setPendingOrActiveConnectionsChangedHandler:(id)handler;
+- (void)setStateChangedHandler:(id)handler;
 @end
 
 @implementation AskToAirDropReceiverController
@@ -42,11 +42,11 @@
   return *(self + v3);
 }
 
-- (void)setIsLegacyMode:(BOOL)a3
+- (void)setIsLegacyMode:(BOOL)mode
 {
   v5 = OBJC_IVAR____TtC7Sharing30AskToAirDropReceiverController_isLegacyMode;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = mode;
 }
 
 - (int64_t)connectionState
@@ -56,15 +56,15 @@
   return *(self + v3);
 }
 
-- (void)setConnectionState:(int64_t)a3
+- (void)setConnectionState:(int64_t)state
 {
-  v4 = self;
-  sub_1A98A23F0(a3);
+  selfCopy = self;
+  sub_1A98A23F0(state);
 }
 
-- (void)setStateChangedHandler:(id)a3
+- (void)setStateChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -83,13 +83,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1A967C46C(v7);
 }
 
-- (void)setConnectionStateChangedHandler:(id)a3
+- (void)setConnectionStateChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -108,13 +108,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1A967C46C(v7);
 }
 
-- (void)setPendingOrActiveConnectionsChangedHandler:(id)a3
+- (void)setPendingOrActiveConnectionsChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -133,13 +133,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1A967C46C(v7);
 }
 
-- (void)setNearbyDeviceCloseChangedHandler:(id)a3
+- (void)setNearbyDeviceCloseChangedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -158,7 +158,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1A967C46C(v7);
 }
 
@@ -186,9 +186,9 @@
   return v4;
 }
 
-- (void)setErrorHandler:(id)a3
+- (void)setErrorHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -207,7 +207,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1A967C46C(v7);
 }
 
@@ -215,17 +215,17 @@
 {
   v2 = objc_allocWithZone(MEMORY[0x1E695E000]);
   v3 = sub_1A99767E0();
-  v4 = [v2 initWithSuiteName_];
+  initWithSuiteName_ = [v2 initWithSuiteName_];
 
-  if (!v4)
+  if (!initWithSuiteName_)
   {
     return 0;
   }
 
   v5 = sub_1A99767E0();
-  v6 = [v4 BOOLForKey_];
+  bOOLForKey_ = [initWithSuiteName_ BOOLForKey_];
 
-  return v6;
+  return bOOLForKey_;
 }
 
 - (NSArray)connectedNearbyDeviceNames
@@ -239,7 +239,7 @@
   return v5;
 }
 
-- (void)setConnectedNearbyDeviceNames:(id)a3
+- (void)setConnectedNearbyDeviceNames:(id)names
 {
   v4 = sub_1A9976AC0();
   v5 = OBJC_IVAR____TtC7Sharing30AskToAirDropReceiverController_connectedNearbyDeviceNames;
@@ -248,23 +248,23 @@
   *(self + v5) = v4;
 }
 
-- (_TtC7Sharing30AskToAirDropReceiverController)initWithQueue:(id)a3
+- (_TtC7Sharing30AskToAirDropReceiverController)initWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = sub_1A98A717C(v3);
+  queueCopy = queue;
+  v4 = sub_1A98A717C(queueCopy);
 
   return v4;
 }
 
 - (void)connectToAllNearbyDevices
 {
-  v2 = self;
+  selfCopy = self;
   AskToAirDropReceiverController.connectToAllNearbyDevices()();
 }
 
 - (void)disconnectFromAllNearbyDevices
 {
-  v2 = self;
+  selfCopy = self;
   AskToAirDropReceiverController.disconnectFromAllNearbyDevices()();
 }
 

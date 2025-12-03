@@ -1,18 +1,18 @@
 @interface INMediaItem
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INMediaItem)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INMediaItem)initWithCoder:(id)coder;
 - (INMediaItem)initWithIdentifier:(NSString *)identifier title:(NSString *)title type:(INMediaItemType)type artwork:(INImage *)artwork artist:(NSString *)artist;
-- (INMediaItem)initWithIdentifier:(id)a3 title:(id)a4 type:(int64_t)a5 artwork:(id)a6 artist:(id)a7 topics:(id)a8 namedEntities:(id)a9 privateMediaItemValueData:(id)a10;
+- (INMediaItem)initWithIdentifier:(id)identifier title:(id)title type:(int64_t)type artwork:(id)artwork artist:(id)artist topics:(id)topics namedEntities:(id)entities privateMediaItemValueData:(id)self0;
 - (id)_dictionaryRepresentation;
 - (id)_intents_cacheableObjects;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (id)spokenPhrase;
 - (unint64_t)hash;
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4;
-- (void)_intents_updateContainerWithCache:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_injectProxiesForImages:(id)images completion:(id)completion;
+- (void)_intents_updateContainerWithCache:(id)cache;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INMediaItem
@@ -22,43 +22,43 @@
   v16[5] = *MEMORY[0x1E69E9840];
   v15[0] = @"identifier";
   identifier = self->_identifier;
-  v4 = identifier;
+  null = identifier;
   if (!identifier)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v4;
+  v16[0] = null;
   v15[1] = @"title";
   title = self->_title;
-  v6 = title;
+  null2 = title;
   if (!title)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v6;
+  v16[1] = null2;
   v15[2] = @"type";
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_type];
   v16[2] = v7;
   v15[3] = @"artwork";
   artwork = self->_artwork;
-  v9 = artwork;
+  null3 = artwork;
   if (!artwork)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[3] = v9;
+  v16[3] = null3;
   v15[4] = @"artist";
   artist = self->_artist;
-  v11 = artist;
+  null4 = artist;
   if (!artist)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[4] = v11;
+  v16[4] = null4;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:5];
   if (artist)
   {
@@ -101,29 +101,29 @@ LABEL_13:
   return v12;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INMediaItem;
   v6 = [(INMediaItem *)&v11 description];
-  v7 = [(INMediaItem *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INMediaItem *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_identifier];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"identifier"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_identifier];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"identifier"];
 
-  v9 = [v6 encodeObject:self->_title];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"title"];
+  v9 = [encoderCopy encodeObject:self->_title];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"title"];
 
   v10 = self->_type - 1;
   if (v10 > 0x13)
@@ -137,53 +137,53 @@ LABEL_13:
   }
 
   v12 = v11;
-  [v7 if_setObjectIfNonNil:v12 forKey:@"type"];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"type"];
 
-  v13 = [v6 encodeObject:self->_artwork];
-  [v7 if_setObjectIfNonNil:v13 forKey:@"artwork"];
+  v13 = [encoderCopy encodeObject:self->_artwork];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"artwork"];
 
-  v14 = [v6 encodeObject:self->_artist];
-  [v7 if_setObjectIfNonNil:v14 forKey:@"artist"];
+  v14 = [encoderCopy encodeObject:self->_artist];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"artist"];
 
-  [v7 if_setObjectIfNonNil:self->_topics forKey:@"topics"];
-  [v7 if_setObjectIfNonNil:self->_namedEntities forKey:@"namedEntities"];
-  v15 = [v6 encodeObject:self->_privateMediaItemValueData];
+  [dictionary if_setObjectIfNonNil:self->_topics forKey:@"topics"];
+  [dictionary if_setObjectIfNonNil:self->_namedEntities forKey:@"namedEntities"];
+  v15 = [encoderCopy encodeObject:self->_privateMediaItemValueData];
 
-  [v7 if_setObjectIfNonNil:v15 forKey:@"privateMediaItemValueData"];
+  [dictionary if_setObjectIfNonNil:v15 forKey:@"privateMediaItemValueData"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeObject:self->_artwork forKey:@"artwork"];
-  [v5 encodeObject:self->_artist forKey:@"artist"];
-  [v5 encodeObject:self->_topics forKey:@"topics"];
-  [v5 encodeObject:self->_namedEntities forKey:@"namedEntities"];
-  [v5 encodeObject:self->_privateMediaItemValueData forKey:@"privateMediaItemValueData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_artwork forKey:@"artwork"];
+  [coderCopy encodeObject:self->_artist forKey:@"artist"];
+  [coderCopy encodeObject:self->_topics forKey:@"topics"];
+  [coderCopy encodeObject:self->_namedEntities forKey:@"namedEntities"];
+  [coderCopy encodeObject:self->_privateMediaItemValueData forKey:@"privateMediaItemValueData"];
 }
 
-- (INMediaItem)initWithCoder:(id)a3
+- (INMediaItem)initWithCoder:(id)coder
 {
   v29[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v26 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v4 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
   v6 = [v4 setWithObjects:{v5, objc_opt_class(), 0}];
-  v25 = [v3 decodeObjectOfClasses:v6 forKey:@"title"];
+  v25 = [coderCopy decodeObjectOfClasses:v6 forKey:@"title"];
 
-  v24 = [v3 decodeIntegerForKey:@"type"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"artwork"];
+  v24 = [coderCopy decodeIntegerForKey:@"type"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"artwork"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v3 decodeObjectOfClasses:v9 forKey:@"artist"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"artist"];
 
   v11 = MEMORY[0x1E695DFD8];
   v29[0] = objc_opt_class();
@@ -191,7 +191,7 @@ LABEL_13:
   v29[2] = objc_opt_class();
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:3];
   v13 = [v11 setWithArray:v12];
-  v14 = [v3 decodeObjectOfClasses:v13 forKey:@"topics"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"topics"];
 
   v15 = MEMORY[0x1E695DFD8];
   v28[0] = objc_opt_class();
@@ -199,19 +199,19 @@ LABEL_13:
   v28[2] = objc_opt_class();
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:3];
   v17 = [v15 setWithArray:v16];
-  v18 = [v3 decodeObjectOfClasses:v17 forKey:@"namedEntities"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"namedEntities"];
 
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"privateMediaItemValueData"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privateMediaItemValueData"];
 
   v20 = [(INMediaItem *)self initWithIdentifier:v26 title:v25 type:v24 artwork:v23 artist:v10 topics:v14 namedEntities:v18 privateMediaItemValueData:v19];
   v21 = *MEMORY[0x1E69E9840];
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -221,7 +221,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
       v9 = 0;
       if (identifier == v5->_identifier || [(NSString *)identifier isEqual:?])
@@ -258,46 +258,46 @@ LABEL_13:
   return v7 ^ v6;
 }
 
-- (INMediaItem)initWithIdentifier:(id)a3 title:(id)a4 type:(int64_t)a5 artwork:(id)a6 artist:(id)a7 topics:(id)a8 namedEntities:(id)a9 privateMediaItemValueData:(id)a10
+- (INMediaItem)initWithIdentifier:(id)identifier title:(id)title type:(int64_t)type artwork:(id)artwork artist:(id)artist topics:(id)topics namedEntities:(id)entities privateMediaItemValueData:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  identifierCopy = identifier;
+  titleCopy = title;
+  artworkCopy = artwork;
+  artistCopy = artist;
+  topicsCopy = topics;
+  entitiesCopy = entities;
+  dataCopy = data;
   v39.receiver = self;
   v39.super_class = INMediaItem;
   v23 = [(INMediaItem *)&v39 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [identifierCopy copy];
     identifier = v23->_identifier;
     v23->_identifier = v24;
 
-    v26 = [v17 copy];
+    v26 = [titleCopy copy];
     title = v23->_title;
     v23->_title = v26;
 
-    v23->_type = a5;
-    v28 = [v18 copy];
+    v23->_type = type;
+    v28 = [artworkCopy copy];
     artwork = v23->_artwork;
     v23->_artwork = v28;
 
-    v30 = [v19 copy];
+    v30 = [artistCopy copy];
     artist = v23->_artist;
     v23->_artist = v30;
 
-    v32 = [v20 copy];
+    v32 = [topicsCopy copy];
     topics = v23->_topics;
     v23->_topics = v32;
 
-    v34 = [v21 copy];
+    v34 = [entitiesCopy copy];
     namedEntities = v23->_namedEntities;
     v23->_namedEntities = v34;
 
-    v36 = [v22 copy];
+    v36 = [dataCopy copy];
     privateMediaItemValueData = v23->_privateMediaItemValueData;
     v23->_privateMediaItemValueData = v36;
   }
@@ -337,51 +337,51 @@ LABEL_13:
   return v16;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v7 objectForKeyedSubscript:@"identifier"];
-  v10 = [v7 objectForKeyedSubscript:@"title"];
-  v11 = [v7 objectForKeyedSubscript:@"type"];
+  fromCopy = from;
+  decoderCopy = decoder;
+  v9 = [fromCopy objectForKeyedSubscript:@"identifier"];
+  v10 = [fromCopy objectForKeyedSubscript:@"title"];
+  v11 = [fromCopy objectForKeyedSubscript:@"type"];
   v12 = INMediaItemTypeWithString(v11);
 
   v13 = objc_opt_class();
-  v14 = [v7 objectForKeyedSubscript:@"artwork"];
-  v15 = [v8 decodeObjectOfClass:v13 from:v14];
+  v14 = [fromCopy objectForKeyedSubscript:@"artwork"];
+  v15 = [decoderCopy decodeObjectOfClass:v13 from:v14];
 
-  v16 = [v7 objectForKeyedSubscript:@"artist"];
-  v17 = [v7 objectForKeyedSubscript:@"topics"];
-  v18 = [v7 objectForKeyedSubscript:@"topics"];
-  v19 = [v7 objectForKeyedSubscript:@"privateMediaItemValueData"];
+  v16 = [fromCopy objectForKeyedSubscript:@"artist"];
+  v17 = [fromCopy objectForKeyedSubscript:@"topics"];
+  v18 = [fromCopy objectForKeyedSubscript:@"topics"];
+  v19 = [fromCopy objectForKeyedSubscript:@"privateMediaItemValueData"];
 
-  v20 = [[a1 alloc] initWithIdentifier:v9 title:v10 type:v12 artwork:v15 artist:v16 topics:v17 namedEntities:v18 privateMediaItemValueData:v19];
+  v20 = [[self alloc] initWithIdentifier:v9 title:v10 type:v12 artwork:v15 artist:v16 topics:v17 namedEntities:v18 privateMediaItemValueData:v19];
 
   return v20;
 }
 
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4
+- (void)_injectProxiesForImages:(id)images completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  imagesCopy = images;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = [(INMediaItem *)self copy];
-    v9 = [(INMediaItem *)self artwork];
-    if (v9)
+    artwork = [(INMediaItem *)self artwork];
+    if (artwork)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __73__INMediaItem_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke;
       v10[3] = &unk_1E7285CD0;
       v10[4] = v8;
-      v11 = v7;
-      v6[2](v6, v9, v10);
+      v11 = completionCopy;
+      imagesCopy[2](imagesCopy, artwork, v10);
     }
 
     else
     {
-      (*(v7 + 2))(v7, v8);
+      (*(completionCopy + 2))(completionCopy, v8);
     }
   }
 }
@@ -397,41 +397,41 @@ uint64_t __73__INMediaItem_INImageProxyInjecting___injectProxiesForImages_comple
 
 - (id)spokenPhrase
 {
-  v3 = [(INMediaItem *)self title];
-  v4 = [(INMediaItem *)self artist];
-  if ([v3 length] && objc_msgSend(v4, "length"))
+  title = [(INMediaItem *)self title];
+  artist = [(INMediaItem *)self artist];
+  if ([title length] && objc_msgSend(artist, "length"))
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = +[INStringLocalizer siriLocalizer];
-    v7 = INLocalizedStringWithLocalizer(@"%1$@ by %2$@", 0, v6);
-    v8 = [v5 stringWithFormat:v7, v3, v4];
+    identifier = +[INStringLocalizer siriLocalizer];
+    v7 = INLocalizedStringWithLocalizer(@"%1$@ by %2$@", 0, identifier);
+    v8 = [v5 stringWithFormat:v7, title, artist];
 
 LABEL_4:
     goto LABEL_10;
   }
 
-  if ([v3 length])
+  if ([title length])
   {
-    v9 = v3;
+    v9 = title;
   }
 
   else
   {
-    if (![v4 length])
+    if (![artist length])
     {
-      v6 = [(INMediaItem *)self identifier];
-      v11 = [(__CFString *)v6 length];
+      identifier = [(INMediaItem *)self identifier];
+      v11 = [(__CFString *)identifier length];
       v12 = &stru_1F01E0850;
       if (v11)
       {
-        v12 = v6;
+        v12 = identifier;
       }
 
       v8 = v12;
       goto LABEL_4;
     }
 
-    v9 = v4;
+    v9 = artist;
   }
 
   v8 = v9;
@@ -440,29 +440,29 @@ LABEL_10:
   return v8;
 }
 
-- (void)_intents_updateContainerWithCache:(id)a3
+- (void)_intents_updateContainerWithCache:(id)cache
 {
-  v13 = a3;
-  v4 = [(INMediaItem *)self artwork];
-  if (v4)
+  cacheCopy = cache;
+  artwork = [(INMediaItem *)self artwork];
+  if (artwork)
   {
-    v5 = v4;
-    v6 = [(INMediaItem *)self artwork];
-    v7 = [v6 _identifier];
-    v8 = [v13 cacheableObjectForIdentifier:v7];
+    v5 = artwork;
+    artwork2 = [(INMediaItem *)self artwork];
+    _identifier = [artwork2 _identifier];
+    v8 = [cacheCopy cacheableObjectForIdentifier:_identifier];
 
     if (v8)
     {
-      v9 = [(INMediaItem *)self artwork];
-      v10 = [v9 _identifier];
-      v11 = [v13 cacheableObjectForIdentifier:v10];
+      artwork3 = [(INMediaItem *)self artwork];
+      _identifier2 = [artwork3 _identifier];
+      v11 = [cacheCopy cacheableObjectForIdentifier:_identifier2];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [(INMediaItem *)self artwork];
+        artwork4 = [(INMediaItem *)self artwork];
         [v11 _imageSize];
-        [v12 _setImageSize:?];
+        [artwork4 _setImageSize:?];
       }
     }
   }
@@ -471,12 +471,12 @@ LABEL_10:
 - (id)_intents_cacheableObjects
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(INMediaItem *)self artwork];
+  artwork = [(INMediaItem *)self artwork];
 
-  if (v4)
+  if (artwork)
   {
-    v5 = [(INMediaItem *)self artwork];
-    [v3 addObject:v5];
+    artwork2 = [(INMediaItem *)self artwork];
+    [v3 addObject:artwork2];
   }
 
   if ([v3 count])

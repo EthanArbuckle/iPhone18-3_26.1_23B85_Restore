@@ -1,33 +1,33 @@
 @interface iAP2NMEAFilterParam
-- (BOOL)isEqual:(id)a3;
-- (iAP2NMEAFilterParam)initWithTypeParamID:(unsigned int)a3 andIntervalParamID:(unsigned int)a4 andIntervalMinMs:(unsigned int)a5;
+- (BOOL)isEqual:(id)equal;
+- (iAP2NMEAFilterParam)initWithTypeParamID:(unsigned int)d andIntervalParamID:(unsigned int)iD andIntervalMinMs:(unsigned int)ms;
 @end
 
 @implementation iAP2NMEAFilterParam
 
-- (iAP2NMEAFilterParam)initWithTypeParamID:(unsigned int)a3 andIntervalParamID:(unsigned int)a4 andIntervalMinMs:(unsigned int)a5
+- (iAP2NMEAFilterParam)initWithTypeParamID:(unsigned int)d andIntervalParamID:(unsigned int)iD andIntervalMinMs:(unsigned int)ms
 {
   v9.receiver = self;
   v9.super_class = iAP2NMEAFilterParam;
   result = [(iAP2NMEAFilterParam *)&v9 init];
   if (result)
   {
-    result->_nmeaTypeParamID = a3;
-    result->_nmeaIntervalParamID = a4;
-    result->_nmeaIntervalMinMs = a5;
+    result->_nmeaTypeParamID = d;
+    result->_nmeaIntervalParamID = iD;
+    result->_nmeaIntervalMinMs = ms;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[iAP2NMEAFilterParam nmeaTypeParamID](self, "nmeaTypeParamID"), v5 == [v4 nmeaTypeParamID]) && (v6 = -[iAP2NMEAFilterParam nmeaIntervalParamID](self, "nmeaIntervalParamID"), v6 == objc_msgSend(v4, "nmeaIntervalParamID")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[iAP2NMEAFilterParam nmeaTypeParamID](self, "nmeaTypeParamID"), v5 == [equalCopy nmeaTypeParamID]) && (v6 = -[iAP2NMEAFilterParam nmeaIntervalParamID](self, "nmeaIntervalParamID"), v6 == objc_msgSend(equalCopy, "nmeaIntervalParamID")))
   {
-    v7 = [(iAP2NMEAFilterParam *)self nmeaIntervalMinMs];
-    v8 = v7 == [v4 nmeaIntervalMinMs];
+    nmeaIntervalMinMs = [(iAP2NMEAFilterParam *)self nmeaIntervalMinMs];
+    v8 = nmeaIntervalMinMs == [equalCopy nmeaIntervalMinMs];
   }
 
   else

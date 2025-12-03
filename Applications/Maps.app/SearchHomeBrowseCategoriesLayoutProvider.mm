@@ -1,27 +1,27 @@
 @interface SearchHomeBrowseCategoriesLayoutProvider
 - (BOOL)useSingleColumn;
-- (SearchHomeBrowseCategoriesLayoutProvider)initWithSearchAlongRoute:(BOOL)a3 supportsFullTextSearch:(BOOL)a4 parentViewController:(id)a5;
+- (SearchHomeBrowseCategoriesLayoutProvider)initWithSearchAlongRoute:(BOOL)route supportsFullTextSearch:(BOOL)search parentViewController:(id)controller;
 - (id)cellClasses;
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5;
-- (id)cellForRowAtIndexPath:(id)a3 tableview:(id)a4 item:(id)a5;
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8;
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item;
+- (id)cellForRowAtIndexPath:(id)path tableview:(id)tableview item:(id)item;
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme;
 @end
 
 @implementation SearchHomeBrowseCategoriesLayoutProvider
 
-- (id)cellForRowAtIndexPath:(id)a3 tableview:(id)a4 item:(id)a5
+- (id)cellForRowAtIndexPath:(id)path tableview:(id)tableview item:(id)item
 {
-  v6 = a5;
-  v7 = a4;
+  itemCopy = item;
+  tableviewCopy = tableview;
   v8 = +[_TtC4Maps27BrowseCategoryTableViewCell identifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8];
+  v9 = [tableviewCopy dequeueReusableCellWithIdentifier:v8];
 
-  v10 = v6;
+  v10 = itemCopy;
   v11 = +[NSUUID UUID];
-  v12 = [v11 UUIDString];
+  uUIDString = [v11 UUIDString];
 
-  v13 = [v10 name];
-  [v9 updateContents:v13 uniqueID:v12];
+  name = [v10 name];
+  [v9 updateContents:name uniqueID:uUIDString];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -29,8 +29,8 @@
   v19[3] = &unk_10165FED0;
   v14 = v9;
   v20 = v14;
-  v21 = v12;
-  v15 = v12;
+  v21 = uUIDString;
+  v15 = uUIDString;
   [v10 imageWithResultHandler:v19];
 
   v16 = v21;
@@ -41,26 +41,26 @@
 
 - (BOOL)useSingleColumn
 {
-  v3 = [(SearchHomeBrowseCategoriesLayoutProvider *)self searchAlongRoute];
+  searchAlongRoute = [(SearchHomeBrowseCategoriesLayoutProvider *)self searchAlongRoute];
   WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
 
-  if (!WeakRetained || (v3 & 1) != 0)
+  if (!WeakRetained || (searchAlongRoute & 1) != 0)
   {
-    return (WeakRetained != 0) | v3 & 1;
+    return (WeakRetained != 0) | searchAlongRoute & 1;
   }
 
   v5 = objc_loadWeakRetained(&self->_parentViewController);
-  v6 = [v5 useSingleColumnLayout];
+  useSingleColumnLayout = [v5 useSingleColumnLayout];
 
-  return v6;
+  return useSingleColumnLayout;
 }
 
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme
 {
-  v10 = a3;
+  environmentCopy = environment;
   if ([(SearchHomeBrowseCategoriesLayoutProvider *)self useSingleColumn])
   {
-    v32 = v10;
+    v32 = environmentCopy;
     v11 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
     v12 = [NSCollectionLayoutDimension fractionalHeightDimension:1.0];
     v13 = [NSCollectionLayoutSize sizeWithWidthDimension:v11 heightDimension:v12];
@@ -76,7 +76,7 @@
 
     v20 = [NSCollectionLayoutSection sectionWithGroup:v19];
     v21 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
-    v22 = [NSCollectionLayoutDimension estimatedDimension:a4];
+    v22 = [NSCollectionLayoutDimension estimatedDimension:height];
     v23 = [NSCollectionLayoutSize sizeWithWidthDimension:v21 heightDimension:v22];
 
     v24 = [NSCollectionLayoutBoundarySupplementaryItem boundarySupplementaryItemWithLayoutSize:v23 elementKind:UICollectionElementKindSectionHeader alignment:1];
@@ -89,7 +89,7 @@
       [v20 setBoundarySupplementaryItems:v26];
     }
 
-    v10 = v32;
+    environmentCopy = v32;
   }
 
   else
@@ -101,10 +101,10 @@
 
     [v13 setShowsSeparators:0];
     [v13 setHeaderTopPadding:0.0];
-    v20 = [NSCollectionLayoutSection sectionWithListConfiguration:v13 layoutEnvironment:v10];
+    v20 = [NSCollectionLayoutSection sectionWithListConfiguration:v13 layoutEnvironment:environmentCopy];
     [v20 setContentInsets:{0.0, 0.0, 0.0, 0.0}];
     v28 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
-    v29 = [NSCollectionLayoutDimension estimatedDimension:a4];
+    v29 = [NSCollectionLayoutDimension estimatedDimension:height];
     v14 = [NSCollectionLayoutSize sizeWithWidthDimension:v28 heightDimension:v29];
 
     v15 = [NSCollectionLayoutBoundarySupplementaryItem boundarySupplementaryItemWithLayoutSize:v14 elementKind:UICollectionElementKindSectionHeader alignment:1];
@@ -125,16 +125,16 @@ LABEL_8:
   return v20;
 }
 
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SearchHomeBrowseCategoriesLayoutProvider *)self cellReuseIdentifier];
-  v12 = [v9 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v10];
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  cellReuseIdentifier = [(SearchHomeBrowseCategoriesLayoutProvider *)self cellReuseIdentifier];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier forIndexPath:pathCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
-  [v12 configureWithCategories:v8 delegate:WeakRetained singleColumnLayout:-[SearchHomeBrowseCategoriesLayoutProvider useSingleColumn](self searchAlongRoute:{"useSingleColumn"), -[SearchHomeBrowseCategoriesLayoutProvider searchAlongRoute](self, "searchAlongRoute")}];
+  [v12 configureWithCategories:itemCopy delegate:WeakRetained singleColumnLayout:-[SearchHomeBrowseCategoriesLayoutProvider useSingleColumn](self searchAlongRoute:{"useSingleColumn"), -[SearchHomeBrowseCategoriesLayoutProvider searchAlongRoute](self, "searchAlongRoute")}];
 
   return v12;
 }
@@ -147,20 +147,20 @@ LABEL_8:
   return v2;
 }
 
-- (SearchHomeBrowseCategoriesLayoutProvider)initWithSearchAlongRoute:(BOOL)a3 supportsFullTextSearch:(BOOL)a4 parentViewController:(id)a5
+- (SearchHomeBrowseCategoriesLayoutProvider)initWithSearchAlongRoute:(BOOL)route supportsFullTextSearch:(BOOL)search parentViewController:(id)controller
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  searchCopy = search;
+  routeCopy = route;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = SearchHomeBrowseCategoriesLayoutProvider;
   v9 = [(SearchHomeBrowseCategoriesLayoutProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    [(SearchHomeBrowseCategoriesLayoutProvider *)v9 setSearchAlongRoute:v6];
-    [(SearchHomeBrowseCategoriesLayoutProvider *)v10 setSupportsFullTextSearch:v5];
-    objc_storeWeak(&v10->_parentViewController, v8);
+    [(SearchHomeBrowseCategoriesLayoutProvider *)v9 setSearchAlongRoute:routeCopy];
+    [(SearchHomeBrowseCategoriesLayoutProvider *)v10 setSupportsFullTextSearch:searchCopy];
+    objc_storeWeak(&v10->_parentViewController, controllerCopy);
   }
 
   return v10;

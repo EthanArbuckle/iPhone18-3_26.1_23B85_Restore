@@ -1,37 +1,37 @@
 @interface RAPReportComposerViewController
-- (RAPReportComposerViewController)initWithReport:(id)a3 categoryQuestion:(id)a4 completion:(id)a5;
-- (RAPReportComposerViewController)initWithReport:(id)a3 commentQuestion:(id)a4 completion:(id)a5;
-- (RAPReportComposerViewController)initWithReport:(id)a3 curatedCollectionQuestion:(id)a4 completion:(id)a5;
-- (RAPReportComposerViewController)initWithReport:(id)a3 lookAroundQuestion:(id)a4 completion:(id)a5;
-- (RAPReportComposerViewController)initWithReport:(id)a3 placecardQuestion:(id)a4 completion:(id)a5;
-- (id)_cancelButtonWithSelector:(SEL)a3;
-- (id)popViewControllerAnimated:(BOOL)a3;
-- (void)_cancelWithAnalyticsTarget:(int)a3;
+- (RAPReportComposerViewController)initWithReport:(id)report categoryQuestion:(id)question completion:(id)completion;
+- (RAPReportComposerViewController)initWithReport:(id)report commentQuestion:(id)question completion:(id)completion;
+- (RAPReportComposerViewController)initWithReport:(id)report curatedCollectionQuestion:(id)question completion:(id)completion;
+- (RAPReportComposerViewController)initWithReport:(id)report lookAroundQuestion:(id)question completion:(id)completion;
+- (RAPReportComposerViewController)initWithReport:(id)report placecardQuestion:(id)question completion:(id)completion;
+- (id)_cancelButtonWithSelector:(SEL)selector;
+- (id)popViewControllerAnimated:(BOOL)animated;
+- (void)_cancelWithAnalyticsTarget:(int)target;
 - (void)_capturePrivacyBackActionIfNeeded;
 - (void)_exitCommentCorrections;
 - (void)_exitCuratedCollections;
 - (void)_exitLookAround;
 - (void)_exitPlaceCorrections;
-- (void)_handlePrivacyCancelledNotification:(id)a3;
-- (void)_invokeCompletionWithOutcome:(int64_t)a3;
+- (void)_handlePrivacyCancelledNotification:(id)notification;
+- (void)_invokeCompletionWithOutcome:(int64_t)outcome;
 - (void)_registerForPrivacyNotification;
-- (void)_sendWithFinalOutcome:(int64_t)a3 acknowledgementOptions:(id)a4;
-- (void)returnFromViewController:(id)a3;
-- (void)segueToViewController:(id)a3 afterReturningFromViewController:(id)a4;
+- (void)_sendWithFinalOutcome:(int64_t)outcome acknowledgementOptions:(id)options;
+- (void)returnFromViewController:(id)controller;
+- (void)segueToViewController:(id)controller afterReturningFromViewController:(id)viewController;
 @end
 
 @implementation RAPReportComposerViewController
 
-- (void)returnFromViewController:(id)a3
+- (void)returnFromViewController:(id)controller
 {
-  v14 = a3;
-  v4 = [(RAPReportComposerViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 indexOfObject:v14];
+  controllerCopy = controller;
+  navigationController = [(RAPReportComposerViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v6 = [viewControllers indexOfObject:controllerCopy];
 
   if (v6 && v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = v14;
+    v7 = controllerCopy;
     if ([v7 conformsToProtocol:&OBJC_PROTOCOL___RAPInstrumentableTarget])
     {
       v8 = v7;
@@ -50,46 +50,46 @@
       [v10 captureUserAction:10111 onTarget:objc_msgSend(v9 eventValue:{"analyticTarget"), 0}];
     }
 
-    v11 = [(RAPReportComposerViewController *)self navigationController];
-    v12 = [v11 viewControllers];
-    v13 = [v12 mutableCopy];
+    navigationController2 = [(RAPReportComposerViewController *)self navigationController];
+    viewControllers2 = [navigationController2 viewControllers];
+    v13 = [viewControllers2 mutableCopy];
 
     [v13 trimToLength:v6];
     [(RAPReportComposerViewController *)self setViewControllers:v13 animated:1];
   }
 }
 
-- (void)segueToViewController:(id)a3 afterReturningFromViewController:(id)a4
+- (void)segueToViewController:(id)controller afterReturningFromViewController:(id)viewController
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 navigationController];
-  v8 = [v7 viewControllers];
-  v9 = [v8 mutableCopy];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  navigationController = [controllerCopy navigationController];
+  viewControllers = [navigationController viewControllers];
+  v9 = [viewControllers mutableCopy];
 
-  if (v6)
+  if (viewControllerCopy)
   {
-    [v9 removeObject:v6];
+    [v9 removeObject:viewControllerCopy];
   }
 
-  [v9 addObject:v10];
+  [v9 addObject:controllerCopy];
   [(RAPReportComposerViewController *)self setViewControllers:v9 animated:1];
 }
 
-- (void)_cancelWithAnalyticsTarget:(int)a3
+- (void)_cancelWithAnalyticsTarget:(int)target
 {
-  [GEOAPPortal captureUserAction:10109 target:*&a3 value:0];
+  [GEOAPPortal captureUserAction:10109 target:*&target value:0];
 
   [(RAPReportComposerViewController *)self _invokeCompletionWithOutcome:0];
 }
 
-- (void)_sendWithFinalOutcome:(int64_t)a3 acknowledgementOptions:(id)a4
+- (void)_sendWithFinalOutcome:(int64_t)outcome acknowledgementOptions:(id)options
 {
-  v6 = a4;
-  v7 = [(RAPReportComposerViewController *)self topViewController];
-  if ([v7 conformsToProtocol:&OBJC_PROTOCOL___RAPInstrumentableTarget])
+  optionsCopy = options;
+  topViewController = [(RAPReportComposerViewController *)self topViewController];
+  if ([topViewController conformsToProtocol:&OBJC_PROTOCOL___RAPInstrumentableTarget])
   {
-    v8 = v7;
+    v8 = topViewController;
   }
 
   else
@@ -101,17 +101,17 @@
 
   if ([v9 analyticTarget])
   {
-    v10 = [(RAPReport *)self->_report initialQuestion];
+    initialQuestion = [(RAPReport *)self->_report initialQuestion];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v12 = [(RAPReport *)self->_report initialQuestion];
-      v13 = [v12 selectedMenuItem];
-      if ([v13 conformsToProtocol:&OBJC_PROTOCOL___RAPInstrumentableTarget])
+      initialQuestion2 = [(RAPReport *)self->_report initialQuestion];
+      selectedMenuItem = [initialQuestion2 selectedMenuItem];
+      if ([selectedMenuItem conformsToProtocol:&OBJC_PROTOCOL___RAPInstrumentableTarget])
       {
-        v14 = v13;
+        v14 = selectedMenuItem;
       }
 
       else
@@ -124,9 +124,9 @@
       if (objc_opt_respondsToSelector())
       {
         v16 = +[MKMapService sharedService];
-        v17 = [v9 analyticTarget];
-        v18 = [v15 eventValue];
-        [v16 captureUserAction:2152 onTarget:v17 eventValue:v18];
+        analyticTarget = [v9 analyticTarget];
+        eventValue = [v15 eventValue];
+        [v16 captureUserAction:2152 onTarget:analyticTarget eventValue:eventValue];
       }
 
       else
@@ -148,16 +148,16 @@
   v41[2] = sub_100D85508;
   v41[3] = &unk_10165FBC0;
   objc_copyWeak(v42, location);
-  v42[1] = a3;
-  v20 = [(UGCCommunityAcknowledgementViewController *)v19 initWithOptions:v6 completion:v41];
-  v21 = [(UGCCommunityAcknowledgementViewController *)v20 navigationItem];
-  [v21 setHidesBackButton:1];
+  v42[1] = outcome;
+  v20 = [(UGCCommunityAcknowledgementViewController *)v19 initWithOptions:optionsCopy completion:v41];
+  navigationItem = [(UGCCommunityAcknowledgementViewController *)v20 navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v22 = [(RAPReportComposerViewController *)self topViewController];
-  v23 = [v22 navigationItem];
+  topViewController2 = [(RAPReportComposerViewController *)self topViewController];
+  navigationItem2 = [topViewController2 navigationItem];
   v24 = objc_alloc_init(RAPNavigationItemValues);
-  [(RAPNavigationItemValues *)v24 takeValuesFromNavigationItem:v23];
-  v25 = [v22 view];
+  [(RAPNavigationItemValues *)v24 takeValuesFromNavigationItem:navigationItem2];
+  view = [topViewController2 view];
   report = self->_report;
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
@@ -169,8 +169,8 @@
   v36[2] = sub_100D857FC;
   v36[3] = &unk_1016538D0;
   v37 = v20;
-  v38 = self;
-  v39 = a3;
+  selfCopy = self;
+  outcomeCopy = outcome;
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_100D85900;
@@ -178,11 +178,11 @@
   v31[4] = self;
   v27 = v37;
   v32 = v27;
-  v28 = v23;
+  v28 = navigationItem2;
   v33 = v28;
   v29 = v24;
   v34 = v29;
-  v30 = v25;
+  v30 = view;
   v35 = v30;
   [(RAPReport *)report submitWithPrivacyRequestHandler:v40 willStartSubmitting:v36 didFinishSubmitting:v31];
 
@@ -190,24 +190,24 @@
   objc_destroyWeak(location);
 }
 
-- (void)_invokeCompletionWithOutcome:(int64_t)a3
+- (void)_invokeCompletionWithOutcome:(int64_t)outcome
 {
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, self, a3);
+    completion[2](completion, self, outcome);
     v5 = self->_completion;
     self->_completion = 0;
   }
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(RAPReportComposerViewController *)self topViewController];
-  if ([v5 conformsToProtocol:&OBJC_PROTOCOL___RAPInstrumentableTarget])
+  animatedCopy = animated;
+  topViewController = [(RAPReportComposerViewController *)self topViewController];
+  if ([topViewController conformsToProtocol:&OBJC_PROTOCOL___RAPInstrumentableTarget])
   {
-    v6 = v5;
+    v6 = topViewController;
   }
 
   else
@@ -219,24 +219,24 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 backAction];
+    backAction = [v7 backAction];
   }
 
   else
   {
-    v8 = 10111;
+    backAction = 10111;
   }
 
   if ([v7 analyticTarget])
   {
     v9 = +[MKMapService sharedService];
-    [v9 captureUserAction:v8 onTarget:objc_msgSend(v7 eventValue:{"analyticTarget"), 0}];
+    [v9 captureUserAction:backAction onTarget:objc_msgSend(v7 eventValue:{"analyticTarget"), 0}];
   }
 
   [(RAPReportComposerViewController *)self _capturePrivacyBackActionIfNeeded];
   v12.receiver = self;
   v12.super_class = RAPReportComposerViewController;
-  v10 = [(RAPReportComposerViewController *)&v12 popViewControllerAnimated:v3];
+  v10 = [(RAPReportComposerViewController *)&v12 popViewControllerAnimated:animatedCopy];
 
   return v10;
 }
@@ -273,10 +273,10 @@
 {
   if (self->_shouldInstrumentPrivacyCancelOnNextBackAction)
   {
-    v3 = [(RAPReportComposerViewController *)self topViewController];
-    v4 = [(RAPReportComposerViewController *)self rootViewController];
+    topViewController = [(RAPReportComposerViewController *)self topViewController];
+    rootViewController = [(RAPReportComposerViewController *)self rootViewController];
 
-    if (v3 == v4)
+    if (topViewController == rootViewController)
     {
       v5 = 10109;
     }
@@ -291,12 +291,12 @@
   }
 }
 
-- (void)_handlePrivacyCancelledNotification:(id)a3
+- (void)_handlePrivacyCancelledNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(RAPReportComposerViewController *)self _maps_uiScene];
+  object = [notification object];
+  _maps_uiScene = [(RAPReportComposerViewController *)self _maps_uiScene];
 
-  if (v4 == v5)
+  if (object == _maps_uiScene)
   {
     self->_shouldInstrumentPrivacyCancelOnNextBackAction = 1;
   }
@@ -309,26 +309,26 @@
   [v3 addObserver:self selector:"_handlePrivacyCancelledNotification:" name:@"RAPUserDidCancelPrivacyAgreementNotification" object:0];
 }
 
-- (id)_cancelButtonWithSelector:(SEL)a3
+- (id)_cancelButtonWithSelector:(SEL)selector
 {
-  v3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:a3];
+  v3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:selector];
 
   return v3;
 }
 
-- (RAPReportComposerViewController)initWithReport:(id)a3 commentQuestion:(id)a4 completion:(id)a5
+- (RAPReportComposerViewController)initWithReport:(id)report commentQuestion:(id)question completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  reportCopy = report;
+  questionCopy = question;
+  completionCopy = completion;
   v28.receiver = self;
   v28.super_class = RAPReportComposerViewController;
   v12 = [(RAPReportComposerViewController *)&v28 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_report, a3);
-    v14 = objc_retainBlock(v11);
+    objc_storeStrong(&v12->_report, report);
+    v14 = objc_retainBlock(completionCopy);
     completion = v13->_completion;
     v13->_completion = v14;
 
@@ -339,10 +339,10 @@
     v24 = sub_100D86364;
     v25 = &unk_101653858;
     objc_copyWeak(&v26, &location);
-    v17 = [(RAPReportComposerCommentViewController *)v16 initWithReport:v9 question:v10 completion:&v22];
+    v17 = [(RAPReportComposerCommentViewController *)v16 initWithReport:reportCopy question:questionCopy completion:&v22];
     v18 = [(RAPReportComposerViewController *)v13 _cancelButtonWithSelector:"_exitCuratedCollections", v22, v23, v24, v25];
-    v19 = [(RAPReportComposerCommentViewController *)v17 navigationItem];
-    [v19 setLeftBarButtonItem:v18];
+    navigationItem = [(RAPReportComposerCommentViewController *)v17 navigationItem];
+    [navigationItem setLeftBarButtonItem:v18];
 
     v29 = v17;
     v20 = [NSArray arrayWithObjects:&v29 count:1];
@@ -355,19 +355,19 @@
   return v13;
 }
 
-- (RAPReportComposerViewController)initWithReport:(id)a3 curatedCollectionQuestion:(id)a4 completion:(id)a5
+- (RAPReportComposerViewController)initWithReport:(id)report curatedCollectionQuestion:(id)question completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  reportCopy = report;
+  questionCopy = question;
+  completionCopy = completion;
   v33.receiver = self;
   v33.super_class = RAPReportComposerViewController;
   v12 = [(RAPReportComposerViewController *)&v33 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_report, a3);
-    v14 = objc_retainBlock(v11);
+    objc_storeStrong(&v12->_report, report);
+    v14 = objc_retainBlock(completionCopy);
     completion = v13->_completion;
     v13->_completion = v14;
 
@@ -377,7 +377,7 @@
     v29[2] = sub_100D8672C;
     v29[3] = &unk_101653880;
     objc_copyWeak(&v31, &location);
-    v16 = v10;
+    v16 = questionCopy;
     v30 = v16;
     v17 = objc_retainBlock(v29);
     if ([v16 selectedQuestionType] == 3)
@@ -389,7 +389,7 @@
       v28[2] = sub_100D867CC;
       v28[3] = &unk_1016538A8;
       v28[4] = v17;
-      v20 = [(RAPCuratedCollectionPOISelectionViewController *)v18 initWithReport:v9 parentQuestion:v16 completion:v28];
+      v20 = [(RAPCuratedCollectionPOISelectionViewController *)v18 initWithReport:reportCopy parentQuestion:v16 completion:v28];
     }
 
     else
@@ -401,14 +401,14 @@
       v27[2] = sub_100D867DC;
       v27[3] = &unk_1016538A8;
       v27[4] = v17;
-      v20 = [(RAPCuratedCollectionCategoriesViewController *)v21 initWithReport:v9 question:v16 completion:v27];
+      v20 = [(RAPCuratedCollectionCategoriesViewController *)v21 initWithReport:reportCopy question:v16 completion:v27];
     }
 
     v22 = v20;
 
     v23 = [(RAPReportComposerViewController *)v13 _cancelButtonWithSelector:"_exitCommentCorrections"];
-    v24 = [(RAPCuratedCollectionPOISelectionViewController *)v22 navigationItem];
-    [v24 setLeftBarButtonItem:v23];
+    navigationItem = [(RAPCuratedCollectionPOISelectionViewController *)v22 navigationItem];
+    [navigationItem setLeftBarButtonItem:v23];
 
     v34 = v22;
     v25 = [NSArray arrayWithObjects:&v34 count:1];
@@ -421,19 +421,19 @@
   return v13;
 }
 
-- (RAPReportComposerViewController)initWithReport:(id)a3 lookAroundQuestion:(id)a4 completion:(id)a5
+- (RAPReportComposerViewController)initWithReport:(id)report lookAroundQuestion:(id)question completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  reportCopy = report;
+  questionCopy = question;
+  completionCopy = completion;
   v29.receiver = self;
   v29.super_class = RAPReportComposerViewController;
   v12 = [(RAPReportComposerViewController *)&v29 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_report, a3);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_report, report);
+    v14 = [completionCopy copy];
     completion = v13->_completion;
     v13->_completion = v14;
 
@@ -445,10 +445,10 @@
     objc_copyWeak(&v27, &location);
     v16 = objc_retainBlock(&v23);
     v17 = [RAPLookAroundInitialCategoriesViewController alloc];
-    v18 = [(RAPLookAroundInitialCategoriesViewController *)v17 initWithReport:v9 question:v10 completion:v16, v23, v24, v25, v26];
+    v18 = [(RAPLookAroundInitialCategoriesViewController *)v17 initWithReport:reportCopy question:questionCopy completion:v16, v23, v24, v25, v26];
     v19 = [(RAPReportComposerViewController *)v13 _cancelButtonWithSelector:"_exitLookAround"];
-    v20 = [(RAPLookAroundInitialCategoriesViewController *)v18 navigationItem];
-    [v20 setLeftBarButtonItem:v19];
+    navigationItem = [(RAPLookAroundInitialCategoriesViewController *)v18 navigationItem];
+    [navigationItem setLeftBarButtonItem:v19];
 
     [(RAPReportComposerViewController *)v13 _registerForPrivacyNotification];
     [(RAPReportComposerViewController *)v13 setOverrideUserInterfaceStyle:2];
@@ -463,18 +463,18 @@
   return v13;
 }
 
-- (RAPReportComposerViewController)initWithReport:(id)a3 placecardQuestion:(id)a4 completion:(id)a5
+- (RAPReportComposerViewController)initWithReport:(id)report placecardQuestion:(id)question completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  reportCopy = report;
+  completionCopy = completion;
   v15.receiver = self;
   v15.super_class = RAPReportComposerViewController;
   v10 = [(RAPReportComposerViewController *)&v15 initWithNibName:0 bundle:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_report, a3);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_report, report);
+    v12 = [completionCopy copy];
     completion = v11->_completion;
     v11->_completion = v12;
 
@@ -484,19 +484,19 @@
   return v11;
 }
 
-- (RAPReportComposerViewController)initWithReport:(id)a3 categoryQuestion:(id)a4 completion:(id)a5
+- (RAPReportComposerViewController)initWithReport:(id)report categoryQuestion:(id)question completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  reportCopy = report;
+  questionCopy = question;
+  completionCopy = completion;
   v26.receiver = self;
   v26.super_class = RAPReportComposerViewController;
   v12 = [(RAPReportComposerViewController *)&v26 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_report, a3);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_report, report);
+    v14 = [completionCopy copy];
     completion = v13->_completion;
     v13->_completion = v14;
 
@@ -508,7 +508,7 @@
     objc_copyWeak(&v24, &location);
     v16 = objc_retainBlock(&v20);
     [(RAPReportComposerViewController *)v13 _registerForPrivacyNotification:v20];
-    v17 = [[RAPReportComposerCategoryViewController alloc] initWithReport:v13->_report question:v10 completion:v16];
+    v17 = [[RAPReportComposerCategoryViewController alloc] initWithReport:v13->_report question:questionCopy completion:v16];
     v27 = v17;
     v18 = [NSArray arrayWithObjects:&v27 count:1];
     [(RAPReportComposerViewController *)v13 setViewControllers:v18];

@@ -1,43 +1,43 @@
 @interface SFCardSearchMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCardSearchMetadata)initWithCoder:(id)a3;
-- (SFCardSearchMetadata)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCardSearchMetadata)initWithCoder:(id)coder;
+- (SFCardSearchMetadata)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCardSearchMetadata
 
 - (unint64_t)hash
 {
-  v3 = [(SFCardSearchMetadata *)self isServerEntity];
-  v4 = [(SFCardSearchMetadata *)self searchQuery];
-  v5 = [v4 hash];
-  v6 = [(SFCardSearchMetadata *)self viewConfigName];
-  v7 = v5 ^ [v6 hash] ^ v3;
-  v8 = [(SFCardSearchMetadata *)self isFederatedDomainSearch];
+  isServerEntity = [(SFCardSearchMetadata *)self isServerEntity];
+  searchQuery = [(SFCardSearchMetadata *)self searchQuery];
+  v5 = [searchQuery hash];
+  viewConfigName = [(SFCardSearchMetadata *)self viewConfigName];
+  v7 = v5 ^ [viewConfigName hash] ^ isServerEntity;
+  isFederatedDomainSearch = [(SFCardSearchMetadata *)self isFederatedDomainSearch];
 
-  return v7 ^ v8;
+  return v7 ^ isFederatedDomainSearch;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v8) = 1;
   }
 
   else
   {
-    if ([(SFCardSearchMetadata *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFCardSearchMetadata *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFCardSearchMetadata *)self isServerEntity];
-      if (v7 != [(SFCardSearchMetadata *)v6 isServerEntity])
+      v6 = equalCopy;
+      isServerEntity = [(SFCardSearchMetadata *)self isServerEntity];
+      if (isServerEntity != [(SFCardSearchMetadata *)v6 isServerEntity])
       {
         LOBYTE(v8) = 0;
 LABEL_27:
@@ -45,9 +45,9 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      v9 = [(SFCardSearchMetadata *)self searchQuery];
-      v10 = [(SFCardSearchMetadata *)v6 searchQuery];
-      if ((v9 != 0) == (v10 == 0))
+      searchQuery = [(SFCardSearchMetadata *)self searchQuery];
+      searchQuery2 = [(SFCardSearchMetadata *)v6 searchQuery];
+      if ((searchQuery != 0) == (searchQuery2 == 0))
       {
         LOBYTE(v8) = 0;
 LABEL_26:
@@ -55,47 +55,47 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v11 = [(SFCardSearchMetadata *)self searchQuery];
-      if (v11)
+      searchQuery3 = [(SFCardSearchMetadata *)self searchQuery];
+      if (searchQuery3)
       {
-        v12 = [(SFCardSearchMetadata *)self searchQuery];
-        v3 = [(SFCardSearchMetadata *)v6 searchQuery];
-        if (![v12 isEqual:v3])
+        searchQuery4 = [(SFCardSearchMetadata *)self searchQuery];
+        searchQuery5 = [(SFCardSearchMetadata *)v6 searchQuery];
+        if (![searchQuery4 isEqual:searchQuery5])
         {
           LOBYTE(v8) = 0;
           goto LABEL_24;
         }
 
-        v23 = v12;
+        v23 = searchQuery4;
       }
 
-      v13 = [(SFCardSearchMetadata *)self viewConfigName];
-      v14 = [(SFCardSearchMetadata *)v6 viewConfigName];
-      v15 = v14;
-      if ((v13 != 0) == (v14 == 0))
+      viewConfigName = [(SFCardSearchMetadata *)self viewConfigName];
+      viewConfigName2 = [(SFCardSearchMetadata *)v6 viewConfigName];
+      v15 = viewConfigName2;
+      if ((viewConfigName != 0) == (viewConfigName2 == 0))
       {
 
         LOBYTE(v8) = 0;
         goto LABEL_23;
       }
 
-      v16 = [(SFCardSearchMetadata *)self viewConfigName];
-      if (v16)
+      viewConfigName3 = [(SFCardSearchMetadata *)self viewConfigName];
+      if (viewConfigName3)
       {
-        v20 = v3;
-        v17 = [(SFCardSearchMetadata *)self viewConfigName];
-        v21 = [(SFCardSearchMetadata *)v6 viewConfigName];
-        v22 = v17;
-        if (![v17 isEqual:?])
+        v20 = searchQuery5;
+        viewConfigName4 = [(SFCardSearchMetadata *)self viewConfigName];
+        viewConfigName5 = [(SFCardSearchMetadata *)v6 viewConfigName];
+        v22 = viewConfigName4;
+        if (![viewConfigName4 isEqual:?])
         {
           LOBYTE(v8) = 0;
-          v3 = v20;
+          searchQuery5 = v20;
 LABEL_21:
 
 LABEL_22:
 LABEL_23:
-          v12 = v23;
-          if (!v11)
+          searchQuery4 = v23;
+          if (!searchQuery3)
           {
 LABEL_25:
 
@@ -107,12 +107,12 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v3 = v20;
+        searchQuery5 = v20;
       }
 
-      v18 = [(SFCardSearchMetadata *)self isFederatedDomainSearch];
-      v8 = v18 ^ [(SFCardSearchMetadata *)v6 isFederatedDomainSearch]^ 1;
-      if (!v16)
+      isFederatedDomainSearch = [(SFCardSearchMetadata *)self isFederatedDomainSearch];
+      v8 = isFederatedDomainSearch ^ [(SFCardSearchMetadata *)v6 isFederatedDomainSearch]^ 1;
+      if (!viewConfigName3)
       {
         goto LABEL_22;
       }
@@ -128,16 +128,16 @@ LABEL_28:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setIsServerEntity:{-[SFCardSearchMetadata isServerEntity](self, "isServerEntity")}];
-  v5 = [(SFCardSearchMetadata *)self searchQuery];
-  v6 = [v5 copy];
+  searchQuery = [(SFCardSearchMetadata *)self searchQuery];
+  v6 = [searchQuery copy];
   [v4 setSearchQuery:v6];
 
-  v7 = [(SFCardSearchMetadata *)self viewConfigName];
-  v8 = [v7 copy];
+  viewConfigName = [(SFCardSearchMetadata *)self viewConfigName];
+  v8 = [viewConfigName copy];
   [v4 setViewConfigName:v8];
 
   [v4 setIsFederatedDomainSearch:{-[SFCardSearchMetadata isFederatedDomainSearch](self, "isFederatedDomainSearch")}];
@@ -147,31 +147,31 @@ LABEL_28:
 - (NSData)jsonData
 {
   v2 = [[_SFPBCardSearchMetadata alloc] initWithFacade:self];
-  v3 = [(_SFPBCardSearchMetadata *)v2 jsonData];
+  jsonData = [(_SFPBCardSearchMetadata *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCardSearchMetadata alloc] initWithFacade:self];
-  v3 = [(_SFPBCardSearchMetadata *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCardSearchMetadata *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBCardSearchMetadata alloc] initWithFacade:self];
-  v5 = [(_SFPBCardSearchMetadata *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBCardSearchMetadata *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFCardSearchMetadata)initWithCoder:(id)a3
+- (SFCardSearchMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBCardSearchMetadata alloc] initWithData:v5];
   v7 = [(SFCardSearchMetadata *)self initWithProtobuf:v6];
@@ -179,38 +179,38 @@ LABEL_28:
   return v7;
 }
 
-- (SFCardSearchMetadata)initWithProtobuf:(id)a3
+- (SFCardSearchMetadata)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFCardSearchMetadata;
   v5 = [(SFCardSearchMetadata *)&v12 init];
   if (v5)
   {
-    if ([v4 isServerEntity])
+    if ([protobufCopy isServerEntity])
     {
-      -[SFCardSearchMetadata setIsServerEntity:](v5, "setIsServerEntity:", [v4 isServerEntity]);
+      -[SFCardSearchMetadata setIsServerEntity:](v5, "setIsServerEntity:", [protobufCopy isServerEntity]);
     }
 
-    v6 = [v4 searchQuery];
+    searchQuery = [protobufCopy searchQuery];
 
-    if (v6)
+    if (searchQuery)
     {
-      v7 = [v4 searchQuery];
-      [(SFCardSearchMetadata *)v5 setSearchQuery:v7];
+      searchQuery2 = [protobufCopy searchQuery];
+      [(SFCardSearchMetadata *)v5 setSearchQuery:searchQuery2];
     }
 
-    v8 = [v4 viewConfigName];
+    viewConfigName = [protobufCopy viewConfigName];
 
-    if (v8)
+    if (viewConfigName)
     {
-      v9 = [v4 viewConfigName];
-      [(SFCardSearchMetadata *)v5 setViewConfigName:v9];
+      viewConfigName2 = [protobufCopy viewConfigName];
+      [(SFCardSearchMetadata *)v5 setViewConfigName:viewConfigName2];
     }
 
-    if ([v4 isFederatedDomainSearch])
+    if ([protobufCopy isFederatedDomainSearch])
     {
-      -[SFCardSearchMetadata setIsFederatedDomainSearch:](v5, "setIsFederatedDomainSearch:", [v4 isFederatedDomainSearch]);
+      -[SFCardSearchMetadata setIsFederatedDomainSearch:](v5, "setIsFederatedDomainSearch:", [protobufCopy isFederatedDomainSearch]);
     }
 
     v10 = v5;

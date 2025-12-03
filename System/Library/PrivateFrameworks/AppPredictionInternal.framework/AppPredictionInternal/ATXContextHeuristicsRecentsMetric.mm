@@ -8,15 +8,15 @@
 {
   v27[10] = *MEMORY[0x277D85DE8];
   v26[0] = @"recentType";
-  v3 = [(ATXContextHeuristicsRecentsMetric *)self recentType];
-  v25 = v3;
-  if (!v3)
+  recentType = [(ATXContextHeuristicsRecentsMetric *)self recentType];
+  v25 = recentType;
+  if (!recentType)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
+    recentType = [MEMORY[0x277CBEB68] null];
   }
 
-  v20 = v3;
-  v27[0] = v3;
+  v20 = recentType;
+  v27[0] = recentType;
   v26[1] = @"recentAge";
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXContextHeuristicsRecentsMetric recentAge](self, "recentAge")}];
   v27[1] = v24;
@@ -27,74 +27,74 @@
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXContextHeuristicsRecentsMetric numSearched](self, "numSearched")}];
   v27[3] = v22;
   v26[4] = @"trialDeploymentId";
-  v4 = [(ATXContextHeuristicsRecentsMetric *)self trialDeploymentId];
-  v5 = v4;
-  if (!v4)
+  trialDeploymentId = [(ATXContextHeuristicsRecentsMetric *)self trialDeploymentId];
+  v5 = trialDeploymentId;
+  if (!trialDeploymentId)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    trialDeploymentId = [MEMORY[0x277CBEB68] null];
   }
 
-  v19 = v4;
-  v27[4] = v4;
+  v19 = trialDeploymentId;
+  v27[4] = trialDeploymentId;
   v26[5] = @"trialExperimentId";
-  v6 = [(ATXContextHeuristicsRecentsMetric *)self trialExperimentId];
-  v7 = v6;
-  if (!v6)
+  trialExperimentId = [(ATXContextHeuristicsRecentsMetric *)self trialExperimentId];
+  v7 = trialExperimentId;
+  if (!trialExperimentId)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    trialExperimentId = [MEMORY[0x277CBEB68] null];
   }
 
-  v27[5] = v6;
+  v27[5] = trialExperimentId;
   v26[6] = @"trialTreatmentId";
-  v8 = [(ATXContextHeuristicsRecentsMetric *)self trialTreatmentId];
-  v9 = v8;
-  if (!v8)
+  trialTreatmentId = [(ATXContextHeuristicsRecentsMetric *)self trialTreatmentId];
+  null = trialTreatmentId;
+  if (!trialTreatmentId)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v27[6] = v9;
+  v27[6] = null;
   v26[7] = @"atxTrialDeploymentId";
-  v10 = [(ATXContextHeuristicsRecentsMetric *)self atxTrialDeploymentId];
-  v11 = v10;
-  if (!v10)
+  atxTrialDeploymentId = [(ATXContextHeuristicsRecentsMetric *)self atxTrialDeploymentId];
+  null2 = atxTrialDeploymentId;
+  if (!atxTrialDeploymentId)
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v27[7] = v11;
+  v27[7] = null2;
   v26[8] = @"atxTrialExperimentId";
-  v12 = [(ATXContextHeuristicsRecentsMetric *)self atxTrialExperimentId];
-  v13 = v12;
-  if (!v12)
+  atxTrialExperimentId = [(ATXContextHeuristicsRecentsMetric *)self atxTrialExperimentId];
+  null3 = atxTrialExperimentId;
+  if (!atxTrialExperimentId)
   {
-    v13 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v27[8] = v13;
+  v27[8] = null3;
   v26[9] = @"atxTrialTreatmentId";
-  v14 = [(ATXContextHeuristicsRecentsMetric *)self atxTrialTreatmentId];
-  v15 = v14;
-  if (!v14)
+  atxTrialTreatmentId = [(ATXContextHeuristicsRecentsMetric *)self atxTrialTreatmentId];
+  null4 = atxTrialTreatmentId;
+  if (!atxTrialTreatmentId)
   {
-    v15 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v27[9] = v15;
+  v27[9] = null4;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:10];
-  if (!v14)
+  if (!atxTrialTreatmentId)
   {
   }
 
-  if (!v12)
+  if (!atxTrialExperimentId)
   {
   }
 
-  if (!v10)
+  if (!atxTrialDeploymentId)
   {
   }
 
-  if (!v8)
+  if (!trialTreatmentId)
   {
   }
 

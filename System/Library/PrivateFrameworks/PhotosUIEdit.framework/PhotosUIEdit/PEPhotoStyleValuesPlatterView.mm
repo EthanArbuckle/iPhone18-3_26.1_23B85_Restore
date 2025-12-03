@@ -7,119 +7,119 @@
 - (double)palette;
 - (double)tone;
 - (id)resetAction;
-- (void)setColor:(double)a3;
-- (void)setHidePaletteLabel:(BOOL)a3;
-- (void)setHideResetButton:(BOOL)a3;
-- (void)setHideToneAndColorLabels:(BOOL)a3;
-- (void)setIsResetButtonEnabled:(BOOL)a3;
-- (void)setPalette:(double)a3;
-- (void)setResetAction:(id)a3;
-- (void)setTone:(double)a3;
+- (void)setColor:(double)color;
+- (void)setHidePaletteLabel:(BOOL)label;
+- (void)setHideResetButton:(BOOL)button;
+- (void)setHideToneAndColorLabels:(BOOL)labels;
+- (void)setIsResetButtonEnabled:(BOOL)enabled;
+- (void)setPalette:(double)palette;
+- (void)setResetAction:(id)action;
+- (void)setTone:(double)tone;
 @end
 
 @implementation PEPhotoStyleValuesPlatterView
 
 - (double)tone
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleValuesPlatterView.tone.getter();
 
   return v3;
 }
 
-- (void)setTone:(double)a3
+- (void)setTone:(double)tone
 {
-  v3 = self;
+  selfCopy = self;
   PEPhotoStyleValuesPlatterView.tone.setter();
 }
 
 - (double)color
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleValuesPlatterView.color.getter();
 
   return v3;
 }
 
-- (void)setColor:(double)a3
+- (void)setColor:(double)color
 {
-  v3 = self;
+  selfCopy = self;
   PEPhotoStyleValuesPlatterView.color.setter();
 }
 
 - (double)palette
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleValuesPlatterView.palette.getter();
 
   return v3;
 }
 
-- (void)setPalette:(double)a3
+- (void)setPalette:(double)palette
 {
-  v3 = self;
+  selfCopy = self;
   PEPhotoStyleValuesPlatterView.palette.setter();
 }
 
 - (BOOL)hideToneAndColorLabels
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleValuesPlatterView.hideToneAndColorLabels.getter();
 
   return v3 & 1;
 }
 
-- (void)setHideToneAndColorLabels:(BOOL)a3
+- (void)setHideToneAndColorLabels:(BOOL)labels
 {
-  v3 = self;
+  selfCopy = self;
   PEPhotoStyleValuesPlatterView.hideToneAndColorLabels.setter();
 }
 
 - (BOOL)hidePaletteLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleValuesPlatterView.hidePaletteLabel.getter();
 
   return v3 & 1;
 }
 
-- (void)setHidePaletteLabel:(BOOL)a3
+- (void)setHidePaletteLabel:(BOOL)label
 {
-  v3 = self;
+  selfCopy = self;
   PEPhotoStyleValuesPlatterView.hidePaletteLabel.setter();
 }
 
 - (BOOL)hideResetButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleValuesPlatterView.hideResetButton.getter();
 
   return v3 & 1;
 }
 
-- (void)setHideResetButton:(BOOL)a3
+- (void)setHideResetButton:(BOOL)button
 {
-  v3 = self;
+  selfCopy = self;
   PEPhotoStyleValuesPlatterView.hideResetButton.setter();
 }
 
 - (BOOL)isResetButtonEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleValuesPlatterView.isResetButtonEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setIsResetButtonEnabled:(BOOL)a3
+- (void)setIsResetButtonEnabled:(BOOL)enabled
 {
-  v3 = self;
+  selfCopy = self;
   PEPhotoStyleValuesPlatterView.isResetButtonEnabled.setter();
 }
 
 - (id)resetAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleValuesPlatterView.resetAction.getter();
   v5 = v4;
 
@@ -134,11 +134,11 @@
   return v6;
 }
 
-- (void)setResetAction:(id)a3
+- (void)setResetAction:(id)action
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(action);
   *(swift_allocObject() + 16) = v4;
-  v5 = self;
+  selfCopy = self;
   PEPhotoStyleValuesPlatterView.resetAction.setter();
 }
 

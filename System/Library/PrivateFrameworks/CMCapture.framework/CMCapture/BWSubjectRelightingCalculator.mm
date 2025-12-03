@@ -1,18 +1,18 @@
 @interface BWSubjectRelightingCalculator
-- (BWSubjectRelightingCalculator)initWithInferenceScheduler:(id)a3;
-- (BWSubjectRelightingInferences)_runInferencesOnSampleBuffer:(uint64_t)a3 stillImageRequestSettings:(uint64_t)a4 stillImageCaptureSettings:;
-- (double)_curveParameterForSampleBuffer:(uint64_t)a3 stillImageRequestSettings:(void *)a4 stillImageCaptureSettings:;
-- (float)_runSubjectRelightingWithInferences:(void *)target sampleBuffer:(int)a4 stillImageCaptureType:(char)a5 stillImageCaptureFlags:;
-- (id)startCalculationWithJPEGSampleBuffer:(opaqueCMSampleBuffer *)a3 stillImageRequestSettings:(id)a4 stillImageCaptureSettings:(id)a5;
+- (BWSubjectRelightingCalculator)initWithInferenceScheduler:(id)scheduler;
+- (BWSubjectRelightingInferences)_runInferencesOnSampleBuffer:(uint64_t)buffer stillImageRequestSettings:(uint64_t)settings stillImageCaptureSettings:;
+- (double)_curveParameterForSampleBuffer:(uint64_t)buffer stillImageRequestSettings:(void *)settings stillImageCaptureSettings:;
+- (float)_runSubjectRelightingWithInferences:(void *)target sampleBuffer:(int)buffer stillImageCaptureType:(char)type stillImageCaptureFlags:;
+- (id)startCalculationWithJPEGSampleBuffer:(opaqueCMSampleBuffer *)buffer stillImageRequestSettings:(id)settings stillImageCaptureSettings:(id)captureSettings;
 - (uint64_t)_setupInferenceControllerWithInputVideoFormat:(uint64_t)result;
 - (uint64_t)_setupSubjectRelightingStage;
 - (void)dealloc;
-- (void)prepareForVideoFormatAsync:(id)a3;
+- (void)prepareForVideoFormatAsync:(id)async;
 @end
 
 @implementation BWSubjectRelightingCalculator
 
-- (BWSubjectRelightingCalculator)initWithInferenceScheduler:(id)a3
+- (BWSubjectRelightingCalculator)initWithInferenceScheduler:(id)scheduler
 {
   v8.receiver = self;
   v8.super_class = BWSubjectRelightingCalculator;
@@ -22,17 +22,17 @@
     v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v4->_prepareQueue = dispatch_queue_create("com.apple.bwgraph.subject-relighting-calculator-prepare", v5);
     v4->_calculationQueue = FigDispatchQueueCreateWithPriority();
-    if (a3)
+    if (scheduler)
     {
-      v6 = a3;
+      schedulerCopy = scheduler;
     }
 
     else
     {
-      v6 = objc_alloc_init(BWInferenceScheduler);
+      schedulerCopy = objc_alloc_init(BWInferenceScheduler);
     }
 
-    v4->_inferenceScheduler = v6;
+    v4->_inferenceScheduler = schedulerCopy;
   }
 
   return v4;
@@ -45,17 +45,17 @@
   [(BWSubjectRelightingCalculator *)&v3 dealloc];
 }
 
-- (void)prepareForVideoFormatAsync:(id)a3
+- (void)prepareForVideoFormatAsync:(id)async
 {
   self->_startedPrepare = 1;
 
-  self->_preparedVideoFormat = a3;
+  self->_preparedVideoFormat = async;
   prepareQueue = self->_prepareQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__BWSubjectRelightingCalculator_prepareForVideoFormatAsync___block_invoke;
   v6[3] = &unk_1E798F898;
-  v6[4] = a3;
+  v6[4] = async;
   v6[5] = self;
   dispatch_async(prepareQueue, v6);
 }
@@ -87,7 +87,7 @@ void __60__BWSubjectRelightingCalculator_prepareForVideoFormatAsync___block_invo
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)startCalculationWithJPEGSampleBuffer:(opaqueCMSampleBuffer *)a3 stillImageRequestSettings:(id)a4 stillImageCaptureSettings:(id)a5
+- (id)startCalculationWithJPEGSampleBuffer:(opaqueCMSampleBuffer *)buffer stillImageRequestSettings:(id)settings stillImageCaptureSettings:(id)captureSettings
 {
   v9 = objc_alloc_init(BWSubjectRelightingCalculatorResult);
   if (!self->_startedPrepare)
@@ -96,7 +96,7 @@ void __60__BWSubjectRelightingCalculator_prepareForVideoFormatAsync___block_invo
     goto LABEL_12;
   }
 
-  if (!BWSampleBufferHasDetectedFaces(a3, 0, 0, 0, 1, 0))
+  if (!BWSampleBufferHasDetectedFaces(buffer, 0, 0, 0, 1, 0))
   {
 LABEL_12:
     [BWSubjectRelightingCalculator startCalculationWithJPEGSampleBuffer:v9 stillImageRequestSettings:v10 stillImageCaptureSettings:?];
@@ -114,7 +114,7 @@ LABEL_12:
     dispatch_sync(prepareQueue, block);
   }
 
-  v12 = [(BWPhotoDecompressor *)self->_jpegDecompressor newUncompressedSampleBufferFromSampleBuffer:a3];
+  v12 = [(BWPhotoDecompressor *)self->_jpegDecompressor newUncompressedSampleBufferFromSampleBuffer:buffer];
   if (!v12)
   {
     [BWSubjectRelightingCalculator startCalculationWithJPEGSampleBuffer:stillImageRequestSettings:stillImageCaptureSettings:];
@@ -139,8 +139,8 @@ LABEL_12:
   v16[7] = v9;
   v16[8] = sampleBufferOut;
   v16[4] = self;
-  v16[5] = a4;
-  v16[6] = a5;
+  v16[5] = settings;
+  v16[6] = captureSettings;
   dispatch_async(calculationQueue, v16);
   return v9;
 }
@@ -205,7 +205,7 @@ void __122__BWSubjectRelightingCalculator_startCalculationWithJPEGSampleBuffer_s
   if (result && !*(result + 48))
   {
     v28 = result;
-    v2 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -249,7 +249,7 @@ void __122__BWSubjectRelightingCalculator_startCalculationWithJPEGSampleBuffer_s
                     objc_enumerationMutation(v6);
                   }
 
-                  [v2 setObject:-[BWSensorConfiguration initWithPortType:sensorIDString:sensorIDDictionary:cameraInfo:]([BWSensorConfiguration alloc] forKeyedSubscript:{"initWithPortType:sensorIDString:sensorIDDictionary:cameraInfo:", v5, *(*(&v40 + 1) + 8 * i), objc_msgSend(v6, "objectForKeyedSubscript:", *(*(&v40 + 1) + 8 * i)), v3), v5}];
+                  [dictionary setObject:-[BWSensorConfiguration initWithPortType:sensorIDString:sensorIDDictionary:cameraInfo:]([BWSensorConfiguration alloc] forKeyedSubscript:{"initWithPortType:sensorIDString:sensorIDDictionary:cameraInfo:", v5, *(*(&v40 + 1) + 8 * i), objc_msgSend(v6, "objectForKeyedSubscript:", *(*(&v40 + 1) + 8 * i)), v3), v5}];
                 }
 
                 v8 = [v6 countByEnumeratingWithState:&v40 objects:v39 count:16];
@@ -269,15 +269,15 @@ void __122__BWSubjectRelightingCalculator_startCalculationWithJPEGSampleBuffer_s
       while (v30);
     }
 
-    if ([v2 count] && (v11 = objc_alloc_init(BWInferenceEngineControllerConfiguration), -[BWStillImageProcessorControllerConfiguration setSensorConfigurationsByPortType:](v11, "setSensorConfigurationsByPortType:", v2), -[BWInferenceEngineControllerConfiguration setInputFormat:](v11, "setInputFormat:", a2), -[BWStillImageProcessorControllerConfiguration setFigThreadPriority:](v11, "setFigThreadPriority:", 14), v12 = v28, -[BWStillImageProcessorControllerConfiguration setInferenceScheduler:](v11, "setInferenceScheduler:", *(v28 + 40)), v13 = objc_msgSend(MEMORY[0x1E695DF70], "array"), objc_msgSend(v13, "addObject:", @"PersonSemanticsSkin"), objc_msgSend(v13, "addObject:", 0x1F219E750), BWInferenceLowResPersonInstanceMaskKeys(), objc_msgSend(OUTLINED_FUNCTION_17(), "addObjectsFromArray:"), -[BWInferenceEngineControllerConfiguration setEnabledInferenceMasks:](v11, "setEnabledInferenceMasks:", v13), -[BWInferenceEngineControllerConfiguration setEnabledVisionInferences:](v11, "setEnabledVisionInferences:", 16), -[BWInferenceEngineControllerConfiguration setPersonSemanticsVersion:](v11, "setPersonSemanticsVersion:", -[FigCaptureCameraParameters personSemanticsVersion](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "personSemanticsVersion")), v14 = -[BWInferenceEngineController initWithConfiguration:contextName:]([BWInferenceEngineController alloc], "initWithConfiguration:contextName:", v11, @"SubjectRelightingCalculator"), (*(v28 + 48) = v14) != 0))
+    if ([dictionary count] && (v11 = objc_alloc_init(BWInferenceEngineControllerConfiguration), -[BWStillImageProcessorControllerConfiguration setSensorConfigurationsByPortType:](v11, "setSensorConfigurationsByPortType:", dictionary), -[BWInferenceEngineControllerConfiguration setInputFormat:](v11, "setInputFormat:", a2), -[BWStillImageProcessorControllerConfiguration setFigThreadPriority:](v11, "setFigThreadPriority:", 14), v12 = v28, -[BWStillImageProcessorControllerConfiguration setInferenceScheduler:](v11, "setInferenceScheduler:", *(v28 + 40)), v13 = objc_msgSend(MEMORY[0x1E695DF70], "array"), objc_msgSend(v13, "addObject:", @"PersonSemanticsSkin"), objc_msgSend(v13, "addObject:", 0x1F219E750), BWInferenceLowResPersonInstanceMaskKeys(), objc_msgSend(OUTLINED_FUNCTION_17(), "addObjectsFromArray:"), -[BWInferenceEngineControllerConfiguration setEnabledInferenceMasks:](v11, "setEnabledInferenceMasks:", v13), -[BWInferenceEngineControllerConfiguration setEnabledVisionInferences:](v11, "setEnabledVisionInferences:", 16), -[BWInferenceEngineControllerConfiguration setPersonSemanticsVersion:](v11, "setPersonSemanticsVersion:", -[FigCaptureCameraParameters personSemanticsVersion](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "personSemanticsVersion")), v14 = -[BWInferenceEngineController initWithConfiguration:contextName:]([BWInferenceEngineController alloc], "initWithConfiguration:contextName:", v11, @"SubjectRelightingCalculator"), (*(v28 + 48) = v14) != 0))
     {
-      v15 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v33 = [*(v28 + 48) providedAttachedMediaKeys];
-      v16 = [v33 countByEnumeratingWithState:&v35 objects:v34 count:16];
+      providedAttachedMediaKeys = [*(v28 + 48) providedAttachedMediaKeys];
+      v16 = [providedAttachedMediaKeys countByEnumeratingWithState:&v35 objects:v34 count:16];
       if (v16)
       {
         v17 = v16;
@@ -288,7 +288,7 @@ LABEL_22:
         {
           if (*v36 != v18)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(providedAttachedMediaKeys);
           }
 
           v20 = *(*(&v35 + 1) + 8 * v19);
@@ -311,11 +311,11 @@ LABEL_22:
           }
 
           v26 = result;
-          [v15 setObject:result forKeyedSubscript:v20];
+          [dictionary2 setObject:result forKeyedSubscript:v20];
 
           if (v17 == ++v19)
           {
-            v17 = [v33 countByEnumeratingWithState:&v35 objects:v34 count:16];
+            v17 = [providedAttachedMediaKeys countByEnumeratingWithState:&v35 objects:v34 count:16];
             if (v17)
             {
               goto LABEL_22;
@@ -330,7 +330,7 @@ LABEL_22:
       {
 LABEL_29:
 
-        *(v12 + 56) = v15;
+        *(v12 + 56) = dictionary2;
         return [*(v12 + 48) prepareWithPixelBufferPoolProvider:v12];
       }
     }
@@ -346,30 +346,30 @@ LABEL_29:
   return result;
 }
 
-- (double)_curveParameterForSampleBuffer:(uint64_t)a3 stillImageRequestSettings:(void *)a4 stillImageCaptureSettings:
+- (double)_curveParameterForSampleBuffer:(uint64_t)buffer stillImageRequestSettings:(void *)settings stillImageCaptureSettings:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v7 = [(BWSubjectRelightingCalculator *)a1 _runInferencesOnSampleBuffer:a2 stillImageRequestSettings:a3 stillImageCaptureSettings:a4];
-  v8 = [a4 captureType];
-  v9 = [a4 captureFlags];
+  v7 = [(BWSubjectRelightingCalculator *)self _runInferencesOnSampleBuffer:a2 stillImageRequestSettings:buffer stillImageCaptureSettings:settings];
+  captureType = [settings captureType];
+  captureFlags = [settings captureFlags];
 
-  *&result = [(BWSubjectRelightingCalculator *)a1 _runSubjectRelightingWithInferences:v7 sampleBuffer:a2 stillImageCaptureType:v8 stillImageCaptureFlags:v9];
+  *&result = [(BWSubjectRelightingCalculator *)self _runSubjectRelightingWithInferences:v7 sampleBuffer:a2 stillImageCaptureType:captureType stillImageCaptureFlags:captureFlags];
   return result;
 }
 
-- (BWSubjectRelightingInferences)_runInferencesOnSampleBuffer:(uint64_t)a3 stillImageRequestSettings:(uint64_t)a4 stillImageCaptureSettings:
+- (BWSubjectRelightingInferences)_runInferencesOnSampleBuffer:(uint64_t)buffer stillImageRequestSettings:(uint64_t)settings stillImageCaptureSettings:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v8 = objc_alloc_init(BWSubjectRelightingInferences);
-  v9 = *(a1 + 48);
+  v9 = *(self + 48);
   v10 = [CMGetAttachment(a2 *off_1E798A3C8];
   if (!a2 || (v11 = v10, !CMSampleBufferGetImageBuffer(a2)))
   {
@@ -382,15 +382,15 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v12 = [[BWInferenceEngineControllerInput alloc] initWithSettings:[[BWStillImageSettings alloc] initWithRequestedSettings:a3 captureSettings:a4 processingSettings:[[BWStillImageProcessingSettings alloc] initWithPhotoManifest:objc_alloc_init(BWPhotoManifest) processIntelligentDistortionCorrection:0]] portType:v11];
+  v12 = [[BWInferenceEngineControllerInput alloc] initWithSettings:[[BWStillImageSettings alloc] initWithRequestedSettings:buffer captureSettings:settings processingSettings:[[BWStillImageProcessingSettings alloc] initWithPhotoManifest:objc_alloc_init(BWPhotoManifest) processIntelligentDistortionCorrection:0]] portType:v11];
   [(BWInferenceEngineControllerInput *)v12 addInferenceImage:a2];
-  v13 = [MEMORY[0x1E695DF70] array];
-  [v13 addObject:@"PersonSemanticsSkin"];
-  [v13 addObject:0x1F219E750];
-  [v13 addObjectsFromArray:BWInferenceLowResPersonInstanceMaskKeys()];
-  [(BWInferenceEngineControllerInput *)v12 setEnabledInferenceMasks:v13];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:@"PersonSemanticsSkin"];
+  [array addObject:0x1F219E750];
+  [array addObjectsFromArray:BWInferenceLowResPersonInstanceMaskKeys()];
+  [(BWInferenceEngineControllerInput *)v12 setEnabledInferenceMasks:array];
   [(BWInferenceEngineControllerInput *)v12 setEnabledVisionInferences:16];
-  if ([v9 enqueueInputForProcessing:v12 delegate:a1])
+  if ([v9 enqueueInputForProcessing:v12 delegate:self])
   {
     fig_log_get_emitter();
     FigDebugAssert3();
@@ -414,9 +414,9 @@ LABEL_8:
   return v8;
 }
 
-- (float)_runSubjectRelightingWithInferences:(void *)target sampleBuffer:(int)a4 stillImageCaptureType:(char)a5 stillImageCaptureFlags:
+- (float)_runSubjectRelightingWithInferences:(void *)target sampleBuffer:(int)buffer stillImageCaptureType:(char)type stillImageCaptureFlags:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -437,17 +437,17 @@ LABEL_8:
   [objc_msgSend(v11 objectForKeyedSubscript:{*off_1E798B2B0), "floatValue"}];
   v17 = v16;
   v18 = CMGetAttachment(target, @"UprightExifOrientation", 0);
-  v19 = [v18 intValue];
-  v20 = v18 ? v19 : 1;
+  intValue = [v18 intValue];
+  v20 = v18 ? intValue : 1;
   v21 = [objc_msgSend(objc_msgSend(-[FigCaptureCameraParameters sensorIDDictionaryForPortType:sensorIDString:](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters "sharedInstance")];
-  if (a4 == 10)
+  if (buffer == 10)
   {
     v23 = [objc_msgSend(v11 objectForKeyedSubscript:{*off_1E798B588), "intValue"}] == 1 ? @"DefaultUBModeQuadraParameters" : @"DefaultUBModeParameters";
   }
 
   else
   {
-    if (a4 == 11)
+    if (buffer == 11)
     {
       [objc_msgSend(v11 objectForKeyedSubscript:{*off_1E798B588), "intValue"}];
       fig_log_get_emitter();
@@ -455,7 +455,7 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    if ((a4 & 0xFFFFFFFE) == 0xC)
+    if ((buffer & 0xFFFFFFFE) == 0xC)
     {
       [objc_msgSend(v11 objectForKeyedSubscript:{*off_1E798B588), "intValue"}];
       v23 = @"DefaultUBModeParameters";
@@ -465,13 +465,13 @@ LABEL_8:
     {
       v24 = [objc_msgSend(v11 objectForKeyedSubscript:{*off_1E798B588), "intValue"}];
       v25 = @"SingleImageParametersForLearnedNR";
-      if ((a5 & 0x80) == 0)
+      if ((type & 0x80) == 0)
       {
         v25 = @"SingleImageParameters";
       }
 
       v26 = @"SingleImageQuadraParameters";
-      if (a5 < 0)
+      if (type < 0)
       {
         v26 = @"SingleImageParametersForQuadraLearnedNR";
       }
@@ -490,21 +490,21 @@ LABEL_29:
   }
 
   v28 = v27;
-  v29 = *(a1 + 64);
-  v30 = [a2 skinMask];
-  v31 = [a2 personMask];
-  v32 = [a2 lowResPersonInstanceMasks];
-  v33 = [a2 lowResPersonInstanceConfidences];
-  v34 = [a2 skinToneClassificationsForFaces];
+  v29 = *(self + 64);
+  skinMask = [a2 skinMask];
+  personMask = [a2 personMask];
+  lowResPersonInstanceMasks = [a2 lowResPersonInstanceMasks];
+  lowResPersonInstanceConfidences = [a2 lowResPersonInstanceConfidences];
+  skinToneClassificationsForFaces = [a2 skinToneClassificationsForFaces];
   LODWORD(v42) = v20;
   LODWORD(v35) = v15;
   LODWORD(v36) = v17;
-  v37 = [v29 runSRLForLivePhotosWithInputBuffer:v13 skinMask:v30 personMask:v31 instanceMasks:v32 instanceMaskConfidences:v33 skinToneClassification:v34 validROI:0.0 expBias:0.0 faceExpRatio:Width exifOrientation:Height srlV2Plist:{v35, v36, v42, v28}];
+  v37 = [v29 runSRLForLivePhotosWithInputBuffer:v13 skinMask:skinMask personMask:personMask instanceMasks:lowResPersonInstanceMasks instanceMaskConfidences:lowResPersonInstanceConfidences skinToneClassification:skinToneClassificationsForFaces validROI:0.0 expBias:0.0 faceExpRatio:Width exifOrientation:Height srlV2Plist:{v35, v36, v42, v28}];
   if (!v37)
   {
-    v38 = [*(a1 + 64) mitigationNeeded];
-    [*(a1 + 64) curveParameter];
-    if (v38)
+    mitigationNeeded = [*(self + 64) mitigationNeeded];
+    [*(self + 64) curveParameter];
+    if (mitigationNeeded)
     {
       v22 = v39;
     }
@@ -525,7 +525,7 @@ LABEL_9:
   FigDebugAssert3();
   v22 = -1.0;
 LABEL_27:
-  [*(a1 + 64) reset];
+  [*(self + 64) reset];
   return v22;
 }
 

@@ -1,17 +1,17 @@
 @interface UMTestError
-+ (id)errorWithMessage:(id)a3;
++ (id)errorWithMessage:(id)message;
 @end
 
 @implementation UMTestError
 
-+ (id)errorWithMessage:(id)a3
++ (id)errorWithMessage:(id)message
 {
-  if (a3)
+  if (message)
   {
     v7 = NSLocalizedDescriptionKey;
-    v8 = a3;
-    v3 = a3;
-    v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
+    messageCopy = message;
+    messageCopy2 = message;
+    v4 = [NSDictionary dictionaryWithObjects:&messageCopy forKeys:&v7 count:1];
     v5 = [NSError errorWithDomain:@"UMTestDomain" code:-1 userInfo:v4];
   }
 

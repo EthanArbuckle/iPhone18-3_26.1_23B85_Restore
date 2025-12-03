@@ -1,11 +1,11 @@
 @interface MKPlaceSectionItemView
-- (MKPlaceSectionItemView)initWithFrame:(CGRect)a3;
+- (MKPlaceSectionItemView)initWithFrame:(CGRect)frame;
 - (void)_updateHairlineInsets;
 - (void)didMoveToWindow;
 - (void)infoCardThemeChanged;
 - (void)layoutMarginsDidChange;
-- (void)setFullWidthHairline:(BOOL)a3;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)setFullWidthHairline:(BOOL)hairline;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 @end
 
 @implementation MKPlaceSectionItemView
@@ -16,18 +16,18 @@
   v4.super_class = MKPlaceSectionItemView;
   [(MKPlaceSectionItemView *)&v4 didMoveToWindow];
   [(MKPlaceSectionItemView *)self _updateHairlineInsets];
-  v3 = [(MKPlaceSectionItemView *)self window];
+  window = [(MKPlaceSectionItemView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(MKPlaceSectionItemView *)self infoCardThemeChanged];
   }
 }
 
-- (void)setFullWidthHairline:(BOOL)a3
+- (void)setFullWidthHairline:(BOOL)hairline
 {
-  self->_fullWidthHairline = a3;
-  if (a3)
+  self->_fullWidthHairline = hairline;
+  if (hairline)
   {
     [(MKViewWithHairline *)self setLeftHairlineInset:0.0];
 
@@ -84,13 +84,13 @@
   [(MKPlaceSectionItemView *)self _updateHairlineInsets];
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = [a4 userInterfaceStyle];
-  v6 = [(MKPlaceSectionItemView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  userInterfaceStyle = [collection userInterfaceStyle];
+  traitCollection = [(MKPlaceSectionItemView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(MKPlaceSectionItemView *)self infoCardThemeChanged];
@@ -102,23 +102,23 @@
   v5.receiver = self;
   v5.super_class = MKPlaceSectionItemView;
   [(UIView *)&v5 infoCardThemeChanged];
-  v3 = [(UIView *)self mk_theme];
-  v4 = [v3 separatorLineColor];
-  [(MKViewWithHairline *)self setHairlineColor:v4];
+  mk_theme = [(UIView *)self mk_theme];
+  separatorLineColor = [mk_theme separatorLineColor];
+  [(MKViewWithHairline *)self setHairlineColor:separatorLineColor];
 }
 
-- (MKPlaceSectionItemView)initWithFrame:(CGRect)a3
+- (MKPlaceSectionItemView)initWithFrame:(CGRect)frame
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = MKPlaceSectionItemView;
-  v3 = [(MKViewWithHairline *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKViewWithHairline *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 mk_theme];
-    v6 = [v5 separatorLineColor];
-    [(MKViewWithHairline *)v4 setHairlineColor:v6];
+    mk_theme = [(UIView *)v3 mk_theme];
+    separatorLineColor = [mk_theme separatorLineColor];
+    [(MKViewWithHairline *)v4 setHairlineColor:separatorLineColor];
 
     [(MKViewWithHairline *)v4 setTopHairlineHidden:1];
     [(MKViewWithHairline *)v4 setBottomHairlineHidden:1];

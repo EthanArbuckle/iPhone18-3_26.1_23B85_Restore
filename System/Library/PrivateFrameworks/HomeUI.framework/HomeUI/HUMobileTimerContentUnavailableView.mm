@@ -26,8 +26,8 @@
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
     v7 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:&stru_2823E0EE8 attributes:v6];
-    v8 = [(_UIContentUnavailableView *)v2 _messageLabel];
-    [v8 setAttributedText:v7];
+    _messageLabel = [(_UIContentUnavailableView *)v2 _messageLabel];
+    [_messageLabel setAttributedText:v7];
   }
 
   return v2;

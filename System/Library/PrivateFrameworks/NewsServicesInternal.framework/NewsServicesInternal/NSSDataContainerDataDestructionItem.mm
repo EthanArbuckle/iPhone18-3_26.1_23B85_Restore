@@ -1,6 +1,6 @@
 @interface NSSDataContainerDataDestructionItem
 - (NSSDataContainerDataDestructionItem)init;
-- (NSSDataContainerDataDestructionItem)initWithContainerClass:(unint64_t)a3 identifier:(const char *)a4;
+- (NSSDataContainerDataDestructionItem)initWithContainerClass:(unint64_t)class identifier:(const char *)identifier;
 @end
 
 @implementation NSSDataContainerDataDestructionItem
@@ -31,9 +31,9 @@
   objc_exception_throw(v6);
 }
 
-- (NSSDataContainerDataDestructionItem)initWithContainerClass:(unint64_t)a3 identifier:(const char *)a4
+- (NSSDataContainerDataDestructionItem)initWithContainerClass:(unint64_t)class identifier:(const char *)identifier
 {
-  if (!a4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!identifier && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NSSDataContainerDataDestructionItem initWithContainerClass:identifier:];
   }
@@ -43,8 +43,8 @@
   result = [(NSSDataContainerDataDestructionItem *)&v8 init];
   if (result)
   {
-    result->_containerClass = a3;
-    result->_identifier = a4;
+    result->_containerClass = class;
+    result->_identifier = identifier;
   }
 
   return result;

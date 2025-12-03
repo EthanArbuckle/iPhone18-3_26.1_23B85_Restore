@@ -1,25 +1,25 @@
 @interface BSSettingsDiff
-+ (id)diffFromSettings:(id)a3 toSettings:(id)a4;
++ (id)diffFromSettings:(id)settings toSettings:(id)toSettings;
 - (BOOL)isEmpty;
-- (BOOL)settingChangedForKey:(id)a3 type:(unint64_t *)a4;
+- (BOOL)settingChangedForKey:(id)key type:(unint64_t *)type;
 - (BSSettingDescriptionProvider)descriptionProvider;
-- (BSSettingsDiff)initWithBSXPCCoder:(id)a3;
-- (BSSettingsDiff)initWithCoder:(id)a3;
-- (BSSettingsDiff)initWithXPCDictionary:(id)a3;
-- (id)_initWithChanges:(void *)a3 flagRemovals:(void *)a4 objectRemovals:;
+- (BSSettingsDiff)initWithBSXPCCoder:(id)coder;
+- (BSSettingsDiff)initWithCoder:(id)coder;
+- (BSSettingsDiff)initWithXPCDictionary:(id)dictionary;
+- (id)_initWithChanges:(void *)changes flagRemovals:(void *)removals objectRemovals:;
 - (id)allSettings;
-- (id)copyApplyingDiff:(id)a3;
-- (id)copyWithKeys:(id)a3;
-- (id)copyWithSettings:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (unint64_t)_diffTypesForSetting:(unint64_t)a3;
-- (void)_enumerateSettingsInSet:(void *)a3 withBlock:;
-- (void)applyToSettings:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)inspectChangesWithBlock:(id)a3;
+- (id)copyApplyingDiff:(id)diff;
+- (id)copyWithKeys:(id)keys;
+- (id)copyWithSettings:(id)settings;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (unint64_t)_diffTypesForSetting:(unint64_t)setting;
+- (void)_enumerateSettingsInSet:(void *)set withBlock:;
+- (void)applyToSettings:(id)settings;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)inspectChangesWithBlock:(id)block;
 @end
 
 @implementation BSSettingsDiff
@@ -45,8 +45,8 @@
 
 - (id)allSettings
 {
-  v3 = [(BSSettings *)self->_changes allSettings];
-  v4 = [v3 mutableCopy];
+  allSettings = [(BSSettings *)self->_changes allSettings];
+  v4 = [allSettings mutableCopy];
   v5 = v4;
   if (v4)
   {
@@ -81,13 +81,13 @@
   return WeakRetained;
 }
 
-+ (id)diffFromSettings:(id)a3 toSettings:(id)a4
++ (id)diffFromSettings:(id)settings toSettings:(id)toSettings
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isKeyedSettings] & 1) != 0 || objc_msgSend(v7, "isKeyedSettings"))
+  settingsCopy = settings;
+  toSettingsCopy = toSettings;
+  if (([settingsCopy isKeyedSettings] & 1) != 0 || objc_msgSend(toSettingsCopy, "isKeyedSettings"))
   {
-    v8 = [BSKeyedSettingsDiff diffFromSettings:v6 toSettings:v7];
+    v8 = [BSKeyedSettingsDiff diffFromSettings:settingsCopy toSettings:toSettingsCopy];
   }
 
   else
@@ -114,10 +114,10 @@
     v29[1] = 3221225472;
     v29[2] = __46__BSSettingsDiff_diffFromSettings_toSettings___block_invoke;
     v29[3] = &unk_1E72CBEC0;
-    v9 = v6;
+    v9 = settingsCopy;
     v30 = v9;
     v31 = &v44;
-    [v7 enumerateFlagsWithBlock:v29];
+    [toSettingsCopy enumerateFlagsWithBlock:v29];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __46__BSSettingsDiff_diffFromSettings_toSettings___block_invoke_2;
@@ -125,12 +125,12 @@
     v10 = v9;
     v27 = v10;
     v28 = &v44;
-    [v7 enumerateObjectsWithBlock:v26];
+    [toSettingsCopy enumerateObjectsWithBlock:v26];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __46__BSSettingsDiff_diffFromSettings_toSettings___block_invoke_3;
     v23[3] = &unk_1E72CBF10;
-    v11 = v7;
+    v11 = toSettingsCopy;
     v24 = v11;
     v25 = &v38;
     [(BSSettings *)v10 _enumerateSettingsForFlagsWithBlock:v23];
@@ -145,22 +145,22 @@
     [v10 enumerateObjectsWithBlock:v19];
     if (!BSSettingsIsEmpty(v45[5]) || [v39[5] count] || objc_msgSend(v33[5], "count"))
     {
-      v13 = [v12 descriptionProvider];
-      v14 = v13;
-      if (v13)
+      descriptionProvider = [v12 descriptionProvider];
+      v14 = descriptionProvider;
+      if (descriptionProvider)
       {
-        v15 = v13;
+        descriptionProvider2 = descriptionProvider;
       }
 
       else
       {
-        v15 = [v10 descriptionProvider];
+        descriptionProvider2 = [v10 descriptionProvider];
       }
 
-      v16 = v15;
+      v16 = descriptionProvider2;
 
       [v45[5] setDescriptionProvider:v16];
-      v17 = [a1 alloc];
+      v17 = [self alloc];
       v8 = [(BSSettingsDiff *)v17 _initWithChanges:v39[5] flagRemovals:v33[5] objectRemovals:?];
       [v8 setDescriptionProvider:v16];
     }
@@ -291,95 +291,95 @@ void __46__BSSettingsDiff_diffFromSettings_toSettings___block_invoke_4(void *a1,
   }
 }
 
-- (id)_initWithChanges:(void *)a3 flagRemovals:(void *)a4 objectRemovals:
+- (id)_initWithChanges:(void *)changes flagRemovals:(void *)removals objectRemovals:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  changesCopy = changes;
+  removalsCopy = removals;
+  if (self)
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = BSSettingsDiff;
     v11 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       objc_storeStrong(v11 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      objc_storeStrong(a1 + 3, a4);
+      objc_storeStrong(self + 2, changes);
+      objc_storeStrong(self + 3, removals);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_changes forKey:@"_changes"];
-  [v4 encodeCollection:self->_flagRemovals forKey:@"_flagRemovals"];
-  [v4 encodeCollection:self->_objectRemovals forKey:@"_objectRemovals"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_changes forKey:@"_changes"];
+  [coderCopy encodeCollection:self->_flagRemovals forKey:@"_flagRemovals"];
+  [coderCopy encodeCollection:self->_objectRemovals forKey:@"_objectRemovals"];
 }
 
-- (BSSettingsDiff)initWithBSXPCCoder:(id)a3
+- (BSSettingsDiff)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_changes"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_changes"];
   v6 = objc_opt_class();
-  v7 = [v4 decodeCollectionOfClass:v6 containingClass:objc_msgSend(objc_opt_class() forKey:{"_removalClass"), @"_flagRemovals"}];
+  v7 = [coderCopy decodeCollectionOfClass:v6 containingClass:objc_msgSend(objc_opt_class() forKey:{"_removalClass"), @"_flagRemovals"}];
   v8 = objc_opt_class();
-  v9 = [v4 decodeCollectionOfClass:v8 containingClass:objc_msgSend(objc_opt_class() forKey:{"_removalClass"), @"_objectRemovals"}];
+  v9 = [coderCopy decodeCollectionOfClass:v8 containingClass:objc_msgSend(objc_opt_class() forKey:{"_removalClass"), @"_objectRemovals"}];
   v10 = [(BSSettingsDiff *)&self->super.isa _initWithChanges:v5 flagRemovals:v7 objectRemovals:v9];
 
   return v10;
 }
 
-- (BSSettingsDiff)initWithXPCDictionary:(id)a3
+- (BSSettingsDiff)initWithXPCDictionary:(id)dictionary
 {
-  v4 = [BSXPCCoder coderWithMessage:a3];
+  v4 = [BSXPCCoder coderWithMessage:dictionary];
   v5 = [(BSSettingsDiff *)self initWithBSXPCCoder:v4];
 
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = [BSXPCCoder coderWithMessage:a3];
+  v4 = [BSXPCCoder coderWithMessage:dictionary];
   [(BSSettingsDiff *)self encodeWithBSXPCCoder:?];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_changes forKey:@"changes"];
-  [v4 encodeObject:self->_flagRemovals forKey:@"flagRemovals"];
-  [v4 encodeObject:self->_objectRemovals forKey:@"objectRemovals"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_changes forKey:@"changes"];
+  [coderCopy encodeObject:self->_flagRemovals forKey:@"flagRemovals"];
+  [coderCopy encodeObject:self->_objectRemovals forKey:@"objectRemovals"];
 }
 
-- (BSSettingsDiff)initWithCoder:(id)a3
+- (BSSettingsDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_msgSend(objc_opt_class(), "_removalClass"), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"flagRemovals"];
-  v10 = [v4 decodeObjectOfClasses:v8 forKey:@"objectRemovals"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"flagRemovals"];
+  v10 = [coderCopy decodeObjectOfClasses:v8 forKey:@"objectRemovals"];
   v11 = [(BSSettingsDiff *)&self->super.isa _initWithChanges:v5 flagRemovals:v9 objectRemovals:v10];
 
   return v11;
 }
 
-- (void)applyToSettings:(id)a3
+- (void)applyToSettings:(id)settings
 {
-  v4 = a3;
-  [v4 applySettings:self->_changes];
+  settingsCopy = settings;
+  [settingsCopy applySettings:self->_changes];
   flagRemovals = self->_flagRemovals;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __34__BSSettingsDiff_applyToSettings___block_invoke;
   v11[3] = &unk_1E72CBF60;
-  v6 = v4;
+  v6 = settingsCopy;
   v12 = v6;
   [(BSSettingsDiff *)self _enumerateSettingsInSet:v11 withBlock:?];
   objectRemovals = self->_objectRemovals;
@@ -392,13 +392,13 @@ void __46__BSSettingsDiff_diffFromSettings_toSettings___block_invoke_4(void *a1,
   [(BSSettingsDiff *)self _enumerateSettingsInSet:v9 withBlock:?];
 }
 
-- (void)_enumerateSettingsInSet:(void *)a3 withBlock:
+- (void)_enumerateSettingsInSet:(void *)set withBlock:
 {
   v20 = *MEMORY[0x1E69E9840];
   v13 = a2;
-  v5 = a3;
-  v6 = v5;
-  if (a1 && v5)
+  setCopy = set;
+  v6 = setCopy;
+  if (self && setCopy)
   {
     v18 = 0;
     v14 = 0u;
@@ -433,8 +433,8 @@ LABEL_5:
 
         else
         {
-          v12 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v12 handleFailureInMethod:sel__enumerateSettingsInSet_withBlock_ object:a1 file:@"BSSettingsDiff.m" lineNumber:314 description:@"Unexpected type found in the hashtable."];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:sel__enumerateSettingsInSet_withBlock_ object:self file:@"BSSettingsDiff.m" lineNumber:314 description:@"Unexpected type found in the hashtable."];
         }
 
         if (v8 == ++v10)
@@ -452,19 +452,19 @@ LABEL_5:
   }
 }
 
-- (void)inspectChangesWithBlock:(id)a3
+- (void)inspectChangesWithBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [(BSSettingsDiff *)self allSettings];
+    allSettings = [(BSSettingsDiff *)self allSettings];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __42__BSSettingsDiff_inspectChangesWithBlock___block_invoke;
     v6[3] = &unk_1E72CBF88;
     v6[4] = self;
-    v7 = v4;
-    [v5 enumerateWithBlock:v6];
+    v7 = blockCopy;
+    [allSettings enumerateWithBlock:v6];
   }
 }
 
@@ -477,10 +477,10 @@ uint64_t __42__BSSettingsDiff_inspectChangesWithBlock___block_invoke(uint64_t a1
   return v5(v3, a2, v4);
 }
 
-- (id)copyWithSettings:(id)a3
+- (id)copyWithSettings:(id)settings
 {
-  v4 = a3;
-  if ([v4 count])
+  settingsCopy = settings;
+  if ([settingsCopy count])
   {
     v13 = 0;
     v14 = &v13;
@@ -488,15 +488,15 @@ uint64_t __42__BSSettingsDiff_inspectChangesWithBlock___block_invoke(uint64_t a1
     v16 = __Block_byref_object_copy__7;
     v17 = __Block_byref_object_dispose__7;
     v18 = 0;
-    v5 = [(BSSettings *)self->_changes allSettings];
+    allSettings = [(BSSettings *)self->_changes allSettings];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __35__BSSettingsDiff_copyWithSettings___block_invoke;
     v10[3] = &unk_1E72CBFB0;
     v10[4] = self;
-    v11 = v4;
+    v11 = settingsCopy;
     v12 = &v13;
-    [v5 enumerateWithBlock:v10];
+    [allSettings enumerateWithBlock:v10];
 
     v6 = [v14[5] copy];
     if (!v6)
@@ -602,10 +602,10 @@ void __35__BSSettingsDiff_copyWithSettings___block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (id)copyWithKeys:(id)a3
+- (id)copyWithKeys:(id)keys
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  keysCopy = keys;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot call -copyWithKeys: on a non-keyed diff"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -617,7 +617,7 @@ void __35__BSSettingsDiff_copyWithSettings___block_invoke(uint64_t a1, uint64_t 
     v14 = 2114;
     v15 = v9;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = @"BSSettingsDiff.m";
     v20 = 1024;
@@ -634,21 +634,21 @@ void __35__BSSettingsDiff_copyWithSettings___block_invoke(uint64_t a1, uint64_t 
   return result;
 }
 
-- (id)copyApplyingDiff:(id)a3
+- (id)copyApplyingDiff:(id)diff
 {
   v80 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  v46 = self;
-  if (!v5)
+  diffCopy = diff;
+  v6 = diffCopy;
+  selfCopy = self;
+  if (!diffCopy)
   {
-    v36 = self;
+    selfCopy2 = self;
 LABEL_51:
-    v35 = self;
+    selfCopy3 = self;
     goto LABEL_58;
   }
 
-  if ([v5 _isKeyed])
+  if ([diffCopy _isKeyed])
   {
     v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cannot apply a keyed diff to a non-keyed diff"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -661,7 +661,7 @@ LABEL_51:
       v70 = 2114;
       v71 = v43;
       v72 = 2048;
-      v73 = self;
+      selfCopy4 = self;
       v74 = 2114;
       v75 = @"BSSettingsDiff.m";
       v76 = 1024;
@@ -677,26 +677,26 @@ LABEL_51:
     JUMPOUT(0x18FF7A750);
   }
 
-  v7 = self;
+  selfCopy5 = self;
   v47 = v6;
-  if (v47 == v7)
+  if (v47 == selfCopy5)
   {
     goto LABEL_51;
   }
 
-  p_isa = &v7->super.isa;
+  p_isa = &selfCopy5->super.isa;
   v8 = objc_opt_new();
-  [(BSSettings *)v7->_changes _applyToSettings:v8 preserveDiffs:1];
+  [(BSSettings *)selfCopy5->_changes _applyToSettings:v8 preserveDiffs:1];
   [v47[1] _applyToSettings:v8 preserveDiffs:1];
-  v9 = [(BSSettings *)v7->_changes descriptionProvider];
-  v10 = v9;
-  if (!v9)
+  descriptionProvider = [(BSSettings *)selfCopy5->_changes descriptionProvider];
+  descriptionProvider2 = descriptionProvider;
+  if (!descriptionProvider)
   {
-    v10 = [v47[1] descriptionProvider];
+    descriptionProvider2 = [v47[1] descriptionProvider];
   }
 
-  [v8 setDescriptionProvider:v10];
-  if (!v9)
+  [v8 setDescriptionProvider:descriptionProvider2];
+  if (!descriptionProvider)
   {
   }
 
@@ -845,37 +845,37 @@ LABEL_51:
 
   if (v8 || v11 || v12)
   {
-    v35 = [[BSSettingsDiff alloc] _initWithChanges:v8 flagRemovals:v11 objectRemovals:v12];
-    v37 = [p_isa descriptionProvider];
-    v38 = v37;
-    if (!v37)
+    selfCopy3 = [[BSSettingsDiff alloc] _initWithChanges:v8 flagRemovals:v11 objectRemovals:v12];
+    descriptionProvider3 = [p_isa descriptionProvider];
+    descriptionProvider4 = descriptionProvider3;
+    if (!descriptionProvider3)
     {
-      v38 = [v47 descriptionProvider];
+      descriptionProvider4 = [v47 descriptionProvider];
     }
 
-    [(BSSettingsDiff *)v35 setDescriptionProvider:v38];
-    if (!v37)
+    [(BSSettingsDiff *)selfCopy3 setDescriptionProvider:descriptionProvider4];
+    if (!descriptionProvider3)
     {
     }
   }
 
   else
   {
-    v35 = 0;
+    selfCopy3 = 0;
   }
 
 LABEL_58:
-  return v35;
+  return selfCopy3;
 }
 
-- (unint64_t)_diffTypesForSetting:(unint64_t)a3
+- (unint64_t)_diffTypesForSetting:(unint64_t)setting
 {
   changes = self->_changes;
   v8 = 1;
-  if (!changes || [(BSSettings *)changes flagForSetting:a3]== 0x7FFFFFFFFFFFFFFFLL)
+  if (!changes || [(BSSettings *)changes flagForSetting:setting]== 0x7FFFFFFFFFFFFFFFLL)
   {
     flagRemovals = self->_flagRemovals;
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:setting];
     LODWORD(flagRemovals) = [(NSSet *)flagRemovals containsObject:v7];
 
     if (!flagRemovals)
@@ -885,7 +885,7 @@ LABEL_58:
   }
 
   v9 = self->_changes;
-  if (v9 && ([(BSSettings *)self->_changes objectForSetting:a3], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v9 && ([(BSSettings *)self->_changes objectForSetting:setting], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v11 = 1;
   }
@@ -893,7 +893,7 @@ LABEL_58:
   else
   {
     objectRemovals = self->_objectRemovals;
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:setting];
     v11 = [(NSSet *)objectRemovals containsObject:v13];
 
     if (!v9)
@@ -916,42 +916,42 @@ LABEL_12:
   }
 }
 
-- (BOOL)settingChangedForKey:(id)a3 type:(unint64_t *)a4
+- (BOOL)settingChangedForKey:(id)key type:(unint64_t *)type
 {
-  v5 = [(BSSettingsDiff *)self _diffTypesForKey:a3];
-  if (a4)
+  v5 = [(BSSettingsDiff *)self _diffTypesForKey:key];
+  if (type)
   {
-    *a4 = v5;
+    *type = v5;
   }
 
   return v5 != 0;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSSettingsDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSSettingsDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [BSDescriptionBuilder builderWithObject:self];
-  v7 = [(BSSettingsDiff *)self allSettings];
-  if ([v7 count])
+  allSettings = [(BSSettingsDiff *)self allSettings];
+  if ([allSettings count])
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __56__BSSettingsDiff_descriptionBuilderWithMultilinePrefix___block_invoke;
     v13[3] = &unk_1E72CC000;
-    v14 = v7;
-    v15 = self;
+    v14 = allSettings;
+    selfCopy = self;
     v8 = v6;
     v16 = v8;
     v17 = a2;
-    [v8 appendBodySectionWithName:0 multilinePrefix:v5 block:v13];
+    [v8 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v13];
     v9 = v16;
     v10 = v8;
   }

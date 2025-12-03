@@ -1,16 +1,16 @@
 @interface PHAWallpaperDemoDescriptorConfig
-- (PHAWallpaperDemoDescriptorConfig)initWithDictionary:(id)a3;
+- (PHAWallpaperDemoDescriptorConfig)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PHAWallpaperDemoDescriptorConfig
 
-- (PHAWallpaperDemoDescriptorConfig)initWithDictionary:(id)a3
+- (PHAWallpaperDemoDescriptorConfig)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PHAWallpaperDemoDescriptorConfig *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"AssetUUID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"AssetUUID"];
     assetUUID = v5->_assetUUID;
     v5->_assetUUID = v6;
 
@@ -20,11 +20,11 @@
       goto LABEL_6;
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"StyleCategory"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"StyleCategory"];
     styleCategory = v5->_styleCategory;
     v5->_styleCategory = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"TitleKey"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"TitleKey"];
     titleKey = v5->_titleKey;
     v5->_titleKey = v10;
   }

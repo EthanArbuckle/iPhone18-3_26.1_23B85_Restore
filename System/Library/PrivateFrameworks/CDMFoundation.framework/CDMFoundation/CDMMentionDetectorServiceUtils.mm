@@ -1,16 +1,16 @@
 @interface CDMMentionDetectorServiceUtils
-+ (id)buildMDRequestWithUtterance:(id)a3 tokenChain:(id)a4 embedding:(id)a5 nluRequestId:(id)a6 resultCandidateId:(id)a7 cdmRequestId:(id)a8;
-+ (void)logMDRequestToFile:(id)a3;
-+ (void)logMDResponseToFile:(id)a3;
++ (id)buildMDRequestWithUtterance:(id)utterance tokenChain:(id)chain embedding:(id)embedding nluRequestId:(id)id resultCandidateId:(id)candidateId cdmRequestId:(id)requestId;
++ (void)logMDRequestToFile:(id)file;
++ (void)logMDResponseToFile:(id)file;
 @end
 
 @implementation CDMMentionDetectorServiceUtils
 
-+ (void)logMDResponseToFile:(id)a3
++ (void)logMDResponseToFile:(id)file
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  fileCopy = file;
+  if (!fileCopy)
   {
     v6 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -25,7 +25,7 @@
   }
 
   v8 = 0;
-  v4 = [CDMNluLogUtil writeMDResponseToDisk:v3 error:&v8];
+  v4 = [CDMNluLogUtil writeMDResponseToDisk:fileCopy error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -46,11 +46,11 @@ LABEL_8:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logMDRequestToFile:(id)a3
++ (void)logMDRequestToFile:(id)file
 {
   v12 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  v3 = [CDMNluLogUtil writeMDRequestToDisk:a3 error:&v7];
+  v3 = [CDMNluLogUtil writeMDRequestToDisk:file error:&v7];
   v4 = v7;
 
   if (!v3)
@@ -69,23 +69,23 @@ LABEL_8:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)buildMDRequestWithUtterance:(id)a3 tokenChain:(id)a4 embedding:(id)a5 nluRequestId:(id)a6 resultCandidateId:(id)a7 cdmRequestId:(id)a8
++ (id)buildMDRequestWithUtterance:(id)utterance tokenChain:(id)chain embedding:(id)embedding nluRequestId:(id)id resultCandidateId:(id)candidateId cdmRequestId:(id)requestId
 {
   v40 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v13 = a4;
-  v33 = a5;
-  v32 = a6;
-  v31 = a7;
-  v30 = a8;
+  utteranceCopy = utterance;
+  chainCopy = chain;
+  embeddingCopy = embedding;
+  idCopy = id;
+  candidateIdCopy = candidateId;
+  requestIdCopy = requestId;
   v14 = objc_alloc_init(MEMORY[0x1E69D12E8]);
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v16 = [v13 tokens];
-  v17 = [v16 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  tokens = [chainCopy tokens];
+  v17 = [tokens countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v17)
   {
     v18 = v17;
@@ -96,46 +96,46 @@ LABEL_8:
       {
         if (*v36 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(tokens);
         }
 
         v21 = *(*(&v35 + 1) + 8 * i);
         if (([v21 isWhitespace] & 1) == 0)
         {
-          v22 = [v21 cleanValue];
-          v23 = [v22 length];
+          cleanValue = [v21 cleanValue];
+          v23 = [cleanValue length];
 
           if (v23)
           {
-            [v15 addObject:v21];
+            [array addObject:v21];
           }
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v18 = [tokens countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v18);
   }
 
   v24 = objc_alloc_init(MEMORY[0x1E69D13D8]);
-  v25 = [v13 locale];
-  [v24 setLocale:v25];
+  locale = [chainCopy locale];
+  [v24 setLocale:locale];
 
-  [v24 setTokens:v15];
-  v26 = [v13 stringValue];
-  [v24 setStringValue:v26];
+  [v24 setTokens:array];
+  stringValue = [chainCopy stringValue];
+  [v24 setStringValue:stringValue];
 
-  [v14 setUtterance:v34];
+  [v14 setUtterance:utteranceCopy];
   v27 = objc_alloc_init(MEMORY[0x1E69D1230]);
   [v14 setRequestId:v27];
 
-  [v14 setResultCandidateId:v31];
-  [v14 setNluRequestId:v32];
+  [v14 setResultCandidateId:candidateIdCopy];
+  [v14 setNluRequestId:idCopy];
   [v14 setTokenChain:v24];
   [v14 setMaxCandidates:10];
-  [v14 setEmbeddingTensor:v33];
-  [v14 setCdmRequestId:v30];
+  [v14 setEmbeddingTensor:embeddingCopy];
+  [v14 setCdmRequestId:requestIdCopy];
 
   v28 = *MEMORY[0x1E69E9840];
 

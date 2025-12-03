@@ -11,14 +11,14 @@
   v4 = [objc_alloc(MEMORY[0x1E696AB60]) initWithTypes:32 error:&v38];
   v28 = v38;
   v29 = v4;
-  v32 = [a1 mutableCopy];
+  v32 = [self mutableCopy];
   [v4 matchesInString:v32 options:0 range:{0, objc_msgSend(v32, "length")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v27 = v37 = 0u;
-  v5 = [v27 reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  reverseObjectEnumerator = [v27 reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (!v6)
   {
     v33 = 0;
@@ -36,20 +36,20 @@
     {
       if (*v35 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v10 = *(*(&v34 + 1) + 8 * i);
       if ([v10 resultType] == 32)
       {
         v11 = [v10 URL];
-        v12 = [v11 scheme];
-        v13 = [v10 range];
-        if ([a1 rangeOfString:v12 options:1 range:{v13, v14}] == v13)
+        scheme = [v11 scheme];
+        range = [v10 range];
+        if ([self rangeOfString:scheme options:1 range:{range, v14}] == range)
         {
-          if ([v12 compare:@"https" options:1])
+          if ([scheme compare:@"https" options:1])
           {
-            if (![v12 compare:@"http" options:1])
+            if (![scheme compare:@"http" options:1])
             {
               ++v31;
               goto LABEL_12;
@@ -60,8 +60,8 @@
           {
             ++v33;
 LABEL_12:
-            v15 = [v10 range];
-            [v32 replaceCharactersInRange:v15 withString:{v16, &stru_1F41EC300}];
+            range2 = [v10 range];
+            [v32 replaceCharactersInRange:range2 withString:{v16, &stru_1F41EC300}];
           }
         }
 
@@ -69,7 +69,7 @@ LABEL_12:
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v34 objects:v39 count:16];
   }
 
   while (v7);

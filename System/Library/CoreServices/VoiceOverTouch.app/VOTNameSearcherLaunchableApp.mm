@@ -1,17 +1,17 @@
 @interface VOTNameSearcherLaunchableApp
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (VOTNameSearcherLaunchableApp)initWithName:(id)a3 value:(id)a4 displayID:(id)a5;
+- (VOTNameSearcherLaunchableApp)initWithName:(id)name value:(id)value displayID:(id)d;
 - (void)select;
 @end
 
 @implementation VOTNameSearcherLaunchableApp
 
-- (VOTNameSearcherLaunchableApp)initWithName:(id)a3 value:(id)a4 displayID:(id)a5
+- (VOTNameSearcherLaunchableApp)initWithName:(id)name value:(id)value displayID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  valueCopy = value;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = VOTNameSearcherLaunchableApp;
   v11 = [(VOTNameSearcherLaunchableApp *)&v14 init];
@@ -22,11 +22,11 @@
       sub_100129D84();
     }
 
-    v12 = [v8 stringByTrimmingCharactersInSet:qword_1001FEBE0];
+    v12 = [nameCopy stringByTrimmingCharactersInSet:qword_1001FEBE0];
     [(VOTNameSearcherLaunchableApp *)v11 setName:v12];
 
-    [(VOTNameSearcherLaunchableApp *)v11 setValue:v9];
-    [(VOTNameSearcherLaunchableApp *)v11 setDisplayID:v10];
+    [(VOTNameSearcherLaunchableApp *)v11 setValue:valueCopy];
+    [(VOTNameSearcherLaunchableApp *)v11 setDisplayID:dCopy];
   }
 
   return v11;
@@ -35,22 +35,22 @@
 - (void)select
 {
   v3 = +[VOTElement springBoardApplication];
-  v4 = [(VOTNameSearcherLaunchableApp *)self displayID];
-  [v3 launchAppWithDisplayID:v4];
+  displayID = [(VOTNameSearcherLaunchableApp *)self displayID];
+  [v3 launchAppWithDisplayID:displayID];
 
-  v5 = [VOTSharedWorkspace elementManager];
-  [v5 deactivateGesturedTextInputIfNeeded:0];
+  elementManager = [VOTSharedWorkspace elementManager];
+  [elementManager deactivateGesturedTextInputIfNeeded:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 displayID];
-    v6 = [(VOTNameSearcherLaunchableApp *)self displayID];
-    v7 = [v5 isEqual:v6];
+    displayID = [equalCopy displayID];
+    displayID2 = [(VOTNameSearcherLaunchableApp *)self displayID];
+    v7 = [displayID isEqual:displayID2];
   }
 
   else
@@ -63,9 +63,9 @@
 
 - (NSString)description
 {
-  v3 = [(VOTNameSearcherLaunchableApp *)self name];
-  v4 = [(VOTNameSearcherLaunchableApp *)self displayID];
-  v5 = [NSString stringWithFormat:@"%@ : %@", v3, v4];
+  name = [(VOTNameSearcherLaunchableApp *)self name];
+  displayID = [(VOTNameSearcherLaunchableApp *)self displayID];
+  v5 = [NSString stringWithFormat:@"%@ : %@", name, displayID];
 
   return v5;
 }

@@ -1,6 +1,6 @@
 @interface PUReviewScreenControlBarButton
 - (CGSize)intrinsicContentSize;
-- (PUReviewScreenControlBarButton)initWithFrame:(CGRect)a3;
+- (PUReviewScreenControlBarButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)alignmentRectInsets;
 - (double)_padding;
 - (void)layoutSubviews;
@@ -21,14 +21,14 @@
   [(PUReviewScreenControlBarButton *)self _padding];
   v12 = v11;
   v38 = v11;
-  v13 = [(PUReviewScreenControlBarButton *)self imageView];
-  v14 = [(PUReviewScreenControlBarButton *)self titleLabel];
-  v15 = [(PUReviewScreenControlBarButton *)self _backgroundView];
-  [v13 frame];
+  imageView = [(PUReviewScreenControlBarButton *)self imageView];
+  titleLabel = [(PUReviewScreenControlBarButton *)self titleLabel];
+  _backgroundView = [(PUReviewScreenControlBarButton *)self _backgroundView];
+  [imageView frame];
   [(PUReviewScreenControlBarButton *)self intrinsicContentSize];
   v17 = v16;
   v19 = v18;
-  [v14 intrinsicContentSize];
+  [titleLabel intrinsicContentSize];
   v39 = v20;
   v40 = v21;
   v22 = v12 + v21;
@@ -46,16 +46,16 @@
   v27 = v26;
   v29 = v28;
   v31 = v30;
-  [v15 setFrame:?];
-  v32 = [v15 layer];
-  [v32 setCornerRadius:v29 * 0.5];
+  [_backgroundView setFrame:?];
+  layer = [_backgroundView layer];
+  [layer setCornerRadius:v29 * 0.5];
 
-  [v13 bounds];
-  v33 = [(PUReviewScreenControlBarButton *)self traitCollection];
-  [v33 displayScale];
+  [imageView bounds];
+  traitCollection = [(PUReviewScreenControlBarButton *)self traitCollection];
+  [traitCollection displayScale];
   v37 = v34;
   UIRectCenteredIntegralRectScale();
-  [v13 setFrame:v37];
+  [imageView setFrame:v37];
 
   v44.origin.x = v25;
   v44.origin.y = v27;
@@ -67,13 +67,13 @@
   v45.size.width = v29;
   v45.size.height = v31;
   v36 = CGRectGetMidX(v45);
-  [v14 setFrame:{PUExtendRectToPixel(v36 - v39 * 0.5, v35, v39, v40)}];
+  [titleLabel setFrame:{PUExtendRectToPixel(v36 - v39 * 0.5, v35, v39, v40)}];
 }
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v3 = [(PUReviewScreenControlBarButton *)self titleLabel];
-  [v3 intrinsicContentSize];
+  titleLabel = [(PUReviewScreenControlBarButton *)self titleLabel];
+  [titleLabel intrinsicContentSize];
   v5 = v4;
   v7 = v6;
 
@@ -111,9 +111,9 @@
 
 - (double)_padding
 {
-  v2 = [(PUReviewScreenControlBarButton *)self useCompactSize];
+  useCompactSize = [(PUReviewScreenControlBarButton *)self useCompactSize];
   result = 6.0;
-  if (v2)
+  if (useCompactSize)
   {
     return 4.0;
   }
@@ -123,9 +123,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(PUReviewScreenControlBarButton *)self useCompactSize];
+  useCompactSize = [(PUReviewScreenControlBarButton *)self useCompactSize];
   v3 = 42.0;
-  if (v2)
+  if (useCompactSize)
   {
     v3 = 30.0;
   }
@@ -136,11 +136,11 @@
   return result;
 }
 
-- (PUReviewScreenControlBarButton)initWithFrame:(CGRect)a3
+- (PUReviewScreenControlBarButton)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PUReviewScreenControlBarButton;
-  v3 = [(PUReviewScreenControlBarButton *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUReviewScreenControlBarButton *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -156,12 +156,12 @@
     else
     {
       v6 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.560784314];
-      v7 = [v6 CGColor];
-      v8 = [(UIView *)v3->__backgroundView layer];
-      [v8 setBorderColor:v7];
+      cGColor = [v6 CGColor];
+      layer = [(UIView *)v3->__backgroundView layer];
+      [layer setBorderColor:cGColor];
 
-      v9 = [(UIView *)v3->__backgroundView layer];
-      [v9 setBorderWidth:1.0];
+      layer2 = [(UIView *)v3->__backgroundView layer];
+      [layer2 setBorderWidth:1.0];
     }
   }
 

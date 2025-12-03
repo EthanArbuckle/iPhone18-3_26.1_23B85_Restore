@@ -1,18 +1,18 @@
 @interface AWDWiFiNWActivity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addActivities:(id)a3;
-- (void)addBtleConnection:(id)a3;
-- (void)addInterfaceStats:(id)a3;
-- (void)addPeerStats:(id)a3;
-- (void)addScore:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addActivities:(id)activities;
+- (void)addBtleConnection:(id)connection;
+- (void)addInterfaceStats:(id)stats;
+- (void)addPeerStats:(id)stats;
+- (void)addScore:(id)score;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiNWActivity
@@ -32,7 +32,7 @@
   [(AWDWiFiNWActivity *)&v3 dealloc];
 }
 
-- (void)addActivities:(id)a3
+- (void)addActivities:(id)activities
 {
   activities = self->_activities;
   if (!activities)
@@ -41,10 +41,10 @@
     self->_activities = activities;
   }
 
-  [(NSMutableArray *)activities addObject:a3];
+  [(NSMutableArray *)activities addObject:activities];
 }
 
-- (void)addInterfaceStats:(id)a3
+- (void)addInterfaceStats:(id)stats
 {
   interfaceStats = self->_interfaceStats;
   if (!interfaceStats)
@@ -53,10 +53,10 @@
     self->_interfaceStats = interfaceStats;
   }
 
-  [(NSMutableArray *)interfaceStats addObject:a3];
+  [(NSMutableArray *)interfaceStats addObject:stats];
 }
 
-- (void)addPeerStats:(id)a3
+- (void)addPeerStats:(id)stats
 {
   peerStats = self->_peerStats;
   if (!peerStats)
@@ -65,10 +65,10 @@
     self->_peerStats = peerStats;
   }
 
-  [(NSMutableArray *)peerStats addObject:a3];
+  [(NSMutableArray *)peerStats addObject:stats];
 }
 
-- (void)addScore:(id)a3
+- (void)addScore:(id)score
 {
   scores = self->_scores;
   if (!scores)
@@ -77,10 +77,10 @@
     self->_scores = scores;
   }
 
-  [(NSMutableArray *)scores addObject:a3];
+  [(NSMutableArray *)scores addObject:score];
 }
 
-- (void)addBtleConnection:(id)a3
+- (void)addBtleConnection:(id)connection
 {
   btleConnections = self->_btleConnections;
   if (!btleConnections)
@@ -89,7 +89,7 @@
     self->_btleConnections = btleConnections;
   }
 
-  [(NSMutableArray *)btleConnections addObject:a3];
+  [(NSMutableArray *)btleConnections addObject:connection];
 }
 
 - (id)description
@@ -102,16 +102,16 @@
 - (id)dictionaryRepresentation
 {
   v54 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   activities = self->_activities;
   if (activities)
   {
-    [v3 setObject:activities forKey:@"activities"];
+    [dictionary setObject:activities forKey:@"activities"];
   }
 
   if ([(NSMutableArray *)self->_interfaceStats count])
@@ -145,7 +145,7 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"interfaceStats"];
+    [dictionary setObject:v5 forKey:@"interfaceStats"];
   }
 
   if ([(NSMutableArray *)self->_peerStats count])
@@ -179,19 +179,19 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"peerStats"];
+    [dictionary setObject:v11 forKey:@"peerStats"];
   }
 
   controllerStats = self->_controllerStats;
   if (controllerStats)
   {
-    [v3 setObject:-[AWDWiFiNWActivityControllerStats dictionaryRepresentation](controllerStats forKey:{"dictionaryRepresentation"), @"controllerStats"}];
+    [dictionary setObject:-[AWDWiFiNWActivityControllerStats dictionaryRepresentation](controllerStats forKey:{"dictionaryRepresentation"), @"controllerStats"}];
   }
 
   linkQualSample = self->_linkQualSample;
   if (linkQualSample)
   {
-    [v3 setObject:-[AWDLinkQualityMeasurements dictionaryRepresentation](linkQualSample forKey:{"dictionaryRepresentation"), @"linkQualSample"}];
+    [dictionary setObject:-[AWDLinkQualityMeasurements dictionaryRepresentation](linkQualSample forKey:{"dictionaryRepresentation"), @"linkQualSample"}];
   }
 
   if ([(NSMutableArray *)self->_scores count])
@@ -225,7 +225,7 @@
       while (v22);
     }
 
-    [v3 setObject:v19 forKey:@"score"];
+    [dictionary setObject:v19 forKey:@"score"];
   }
 
   if ([(NSMutableArray *)self->_btleConnections count])
@@ -259,20 +259,20 @@
       while (v28);
     }
 
-    [v3 setObject:v25 forKey:@"btleConnection"];
+    [dictionary setObject:v25 forKey:@"btleConnection"];
   }
 
   apProfile = self->_apProfile;
   if (apProfile)
   {
-    [v3 setObject:apProfile forKey:@"apProfile"];
+    [dictionary setObject:apProfile forKey:@"apProfile"];
   }
 
   v32 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v61 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -444,90 +444,90 @@
   v35 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 80) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 80) |= 1u;
   }
 
   if ([(AWDWiFiNWActivity *)self activitiesCount])
   {
-    [a3 clearActivities];
-    v5 = [(AWDWiFiNWActivity *)self activitiesCount];
-    if (v5)
+    [to clearActivities];
+    activitiesCount = [(AWDWiFiNWActivity *)self activitiesCount];
+    if (activitiesCount)
     {
-      v6 = v5;
+      v6 = activitiesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addActivities:{-[AWDWiFiNWActivity activitiesAtIndex:](self, "activitiesAtIndex:", i)}];
+        [to addActivities:{-[AWDWiFiNWActivity activitiesAtIndex:](self, "activitiesAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDWiFiNWActivity *)self interfaceStatsCount])
   {
-    [a3 clearInterfaceStats];
-    v8 = [(AWDWiFiNWActivity *)self interfaceStatsCount];
-    if (v8)
+    [to clearInterfaceStats];
+    interfaceStatsCount = [(AWDWiFiNWActivity *)self interfaceStatsCount];
+    if (interfaceStatsCount)
     {
-      v9 = v8;
+      v9 = interfaceStatsCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addInterfaceStats:{-[AWDWiFiNWActivity interfaceStatsAtIndex:](self, "interfaceStatsAtIndex:", j)}];
+        [to addInterfaceStats:{-[AWDWiFiNWActivity interfaceStatsAtIndex:](self, "interfaceStatsAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDWiFiNWActivity *)self peerStatsCount])
   {
-    [a3 clearPeerStats];
-    v11 = [(AWDWiFiNWActivity *)self peerStatsCount];
-    if (v11)
+    [to clearPeerStats];
+    peerStatsCount = [(AWDWiFiNWActivity *)self peerStatsCount];
+    if (peerStatsCount)
     {
-      v12 = v11;
+      v12 = peerStatsCount;
       for (k = 0; k != v12; ++k)
       {
-        [a3 addPeerStats:{-[AWDWiFiNWActivity peerStatsAtIndex:](self, "peerStatsAtIndex:", k)}];
+        [to addPeerStats:{-[AWDWiFiNWActivity peerStatsAtIndex:](self, "peerStatsAtIndex:", k)}];
       }
     }
   }
 
   if (self->_controllerStats)
   {
-    [a3 setControllerStats:?];
+    [to setControllerStats:?];
   }
 
   if (self->_linkQualSample)
   {
-    [a3 setLinkQualSample:?];
+    [to setLinkQualSample:?];
   }
 
   if ([(AWDWiFiNWActivity *)self scoresCount])
   {
-    [a3 clearScores];
-    v14 = [(AWDWiFiNWActivity *)self scoresCount];
-    if (v14)
+    [to clearScores];
+    scoresCount = [(AWDWiFiNWActivity *)self scoresCount];
+    if (scoresCount)
     {
-      v15 = v14;
+      v15 = scoresCount;
       for (m = 0; m != v15; ++m)
       {
-        [a3 addScore:{-[AWDWiFiNWActivity scoreAtIndex:](self, "scoreAtIndex:", m)}];
+        [to addScore:{-[AWDWiFiNWActivity scoreAtIndex:](self, "scoreAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDWiFiNWActivity *)self btleConnectionsCount])
   {
-    [a3 clearBtleConnections];
-    v17 = [(AWDWiFiNWActivity *)self btleConnectionsCount];
-    if (v17)
+    [to clearBtleConnections];
+    btleConnectionsCount = [(AWDWiFiNWActivity *)self btleConnectionsCount];
+    if (btleConnectionsCount)
     {
-      v18 = v17;
+      v18 = btleConnectionsCount;
       for (n = 0; n != v18; ++n)
       {
-        [a3 addBtleConnection:{-[AWDWiFiNWActivity btleConnectionAtIndex:](self, "btleConnectionAtIndex:", n)}];
+        [to addBtleConnection:{-[AWDWiFiNWActivity btleConnectionAtIndex:](self, "btleConnectionAtIndex:", n)}];
       }
     }
   }
@@ -535,14 +535,14 @@
   if (self->_apProfile)
   {
 
-    [a3 setApProfile:?];
+    [to setApProfile:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v64 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -569,7 +569,7 @@
           objc_enumerationMutation(activities);
         }
 
-        v12 = [*(*(&v55 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v55 + 1) + 8 * i) copyWithZone:zone];
         [v6 addActivities:v12];
       }
 
@@ -598,7 +598,7 @@
           objc_enumerationMutation(interfaceStats);
         }
 
-        v18 = [*(*(&v51 + 1) + 8 * j) copyWithZone:a3];
+        v18 = [*(*(&v51 + 1) + 8 * j) copyWithZone:zone];
         [v6 addInterfaceStats:v18];
       }
 
@@ -627,7 +627,7 @@
           objc_enumerationMutation(peerStats);
         }
 
-        v24 = [*(*(&v47 + 1) + 8 * k) copyWithZone:a3];
+        v24 = [*(*(&v47 + 1) + 8 * k) copyWithZone:zone];
         [v6 addPeerStats:v24];
       }
 
@@ -637,8 +637,8 @@
     while (v21);
   }
 
-  v6[5] = [(AWDWiFiNWActivityControllerStats *)self->_controllerStats copyWithZone:a3];
-  v6[7] = [(AWDLinkQualityMeasurements *)self->_linkQualSample copyWithZone:a3];
+  v6[5] = [(AWDWiFiNWActivityControllerStats *)self->_controllerStats copyWithZone:zone];
+  v6[7] = [(AWDLinkQualityMeasurements *)self->_linkQualSample copyWithZone:zone];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -658,7 +658,7 @@
           objc_enumerationMutation(scores);
         }
 
-        v30 = [*(*(&v43 + 1) + 8 * m) copyWithZone:a3];
+        v30 = [*(*(&v43 + 1) + 8 * m) copyWithZone:zone];
         [v6 addScore:v30];
       }
 
@@ -687,7 +687,7 @@
           objc_enumerationMutation(btleConnections);
         }
 
-        v36 = [*(*(&v39 + 1) + 8 * n) copyWithZone:a3];
+        v36 = [*(*(&v39 + 1) + 8 * n) copyWithZone:zone];
         [v6 addBtleConnection:v36];
       }
 
@@ -697,26 +697,26 @@
     while (v33);
   }
 
-  v6[3] = [(NSString *)self->_apProfile copyWithZone:a3];
+  v6[3] = [(NSString *)self->_apProfile copyWithZone:zone];
   v37 = *MEMORY[0x29EDCA608];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 80);
+    v6 = *(equal + 80);
     if (*&self->_has)
     {
-      if ((*(a3 + 80) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 80) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_23;
       }
     }
 
-    else if (*(a3 + 80))
+    else if (*(equal + 80))
     {
 LABEL_23:
       LOBYTE(v5) = 0;
@@ -724,28 +724,28 @@ LABEL_23:
     }
 
     activities = self->_activities;
-    if (!(activities | *(a3 + 2)) || (v5 = [(NSMutableArray *)activities isEqual:?]) != 0)
+    if (!(activities | *(equal + 2)) || (v5 = [(NSMutableArray *)activities isEqual:?]) != 0)
     {
       interfaceStats = self->_interfaceStats;
-      if (!(interfaceStats | *(a3 + 6)) || (v5 = [(NSMutableArray *)interfaceStats isEqual:?]) != 0)
+      if (!(interfaceStats | *(equal + 6)) || (v5 = [(NSMutableArray *)interfaceStats isEqual:?]) != 0)
       {
         peerStats = self->_peerStats;
-        if (!(peerStats | *(a3 + 8)) || (v5 = [(NSMutableArray *)peerStats isEqual:?]) != 0)
+        if (!(peerStats | *(equal + 8)) || (v5 = [(NSMutableArray *)peerStats isEqual:?]) != 0)
         {
           controllerStats = self->_controllerStats;
-          if (!(controllerStats | *(a3 + 5)) || (v5 = [(AWDWiFiNWActivityControllerStats *)controllerStats isEqual:?]) != 0)
+          if (!(controllerStats | *(equal + 5)) || (v5 = [(AWDWiFiNWActivityControllerStats *)controllerStats isEqual:?]) != 0)
           {
             linkQualSample = self->_linkQualSample;
-            if (!(linkQualSample | *(a3 + 7)) || (v5 = [(AWDLinkQualityMeasurements *)linkQualSample isEqual:?]) != 0)
+            if (!(linkQualSample | *(equal + 7)) || (v5 = [(AWDLinkQualityMeasurements *)linkQualSample isEqual:?]) != 0)
             {
               scores = self->_scores;
-              if (!(scores | *(a3 + 9)) || (v5 = [(NSMutableArray *)scores isEqual:?]) != 0)
+              if (!(scores | *(equal + 9)) || (v5 = [(NSMutableArray *)scores isEqual:?]) != 0)
               {
                 btleConnections = self->_btleConnections;
-                if (!(btleConnections | *(a3 + 4)) || (v5 = [(NSMutableArray *)btleConnections isEqual:?]) != 0)
+                if (!(btleConnections | *(equal + 4)) || (v5 = [(NSMutableArray *)btleConnections isEqual:?]) != 0)
                 {
                   apProfile = self->_apProfile;
-                  if (apProfile | *(a3 + 3))
+                  if (apProfile | *(equal + 3))
                   {
 
                     LOBYTE(v5) = [(NSString *)apProfile isEqual:?];
@@ -789,12 +789,12 @@ LABEL_23:
   return v9 ^ v10 ^ [(NSString *)self->_apProfile hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v60 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 80))
+  if (*(from + 80))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
@@ -802,7 +802,7 @@ LABEL_23:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v5 = *(a3 + 2);
+  v5 = *(from + 2);
   v6 = [v5 countByEnumeratingWithState:&v51 objects:v59 count:16];
   if (v6)
   {
@@ -830,7 +830,7 @@ LABEL_23:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v10 = *(a3 + 6);
+  v10 = *(from + 6);
   v11 = [v10 countByEnumeratingWithState:&v47 objects:v58 count:16];
   if (v11)
   {
@@ -858,7 +858,7 @@ LABEL_23:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v15 = *(a3 + 8);
+  v15 = *(from + 8);
   v16 = [v15 countByEnumeratingWithState:&v43 objects:v57 count:16];
   if (v16)
   {
@@ -883,7 +883,7 @@ LABEL_23:
   }
 
   controllerStats = self->_controllerStats;
-  v21 = *(a3 + 5);
+  v21 = *(from + 5);
   if (controllerStats)
   {
     if (v21)
@@ -898,7 +898,7 @@ LABEL_23:
   }
 
   linkQualSample = self->_linkQualSample;
-  v23 = *(a3 + 7);
+  v23 = *(from + 7);
   if (linkQualSample)
   {
     if (v23)
@@ -916,7 +916,7 @@ LABEL_23:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v24 = *(a3 + 9);
+  v24 = *(from + 9);
   v25 = [v24 countByEnumeratingWithState:&v39 objects:v56 count:16];
   if (v25)
   {
@@ -944,7 +944,7 @@ LABEL_23:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v29 = *(a3 + 4);
+  v29 = *(from + 4);
   v30 = [v29 countByEnumeratingWithState:&v35 objects:v55 count:16];
   if (v30)
   {
@@ -968,7 +968,7 @@ LABEL_23:
     while (v31);
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDWiFiNWActivity *)self setApProfile:?];
   }

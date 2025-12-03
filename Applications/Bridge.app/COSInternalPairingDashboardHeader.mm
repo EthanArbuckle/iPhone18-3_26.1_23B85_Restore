@@ -1,19 +1,19 @@
 @interface COSInternalPairingDashboardHeader
 - (CGRect)_computedFrameForTextLabel;
 - (CGRect)_computedFrameForWatchImage;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (COSInternalPairingDashboardHeader)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (COSInternalPairingDashboardHeader)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)refreshForWatchDetails:(id)a3;
+- (void)refreshForWatchDetails:(id)details;
 @end
 
 @implementation COSInternalPairingDashboardHeader
 
-- (COSInternalPairingDashboardHeader)initWithFrame:(CGRect)a3
+- (COSInternalPairingDashboardHeader)initWithFrame:(CGRect)frame
 {
   v40.receiver = self;
   v40.super_class = COSInternalPairingDashboardHeader;
-  v3 = [(COSInternalPairingDashboardHeader *)&v40 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSInternalPairingDashboardHeader *)&v40 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = BPSSetupBackgroundColor();
@@ -176,9 +176,9 @@
   [(UIStackView *)watchDetails setDistribution:1];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(COSInternalPairingDashboardHeader *)self bounds:a3.width];
+  [(COSInternalPairingDashboardHeader *)self bounds:fits.width];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -204,11 +204,11 @@
   return result;
 }
 
-- (void)refreshForWatchDetails:(id)a3
+- (void)refreshForWatchDetails:(id)details
 {
-  v3 = a3;
-  v4 = [v3 valueForProperty:NRDevicePropertyProductType];
-  v5 = [v3 valueForProperty:NRDevicePropertyArtworkTraits];
+  detailsCopy = details;
+  v4 = [detailsCopy valueForProperty:NRDevicePropertyProductType];
+  v5 = [detailsCopy valueForProperty:NRDevicePropertyArtworkTraits];
   v6 = MGGetBoolAnswer();
   v7 = pbb_bridge_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -249,7 +249,7 @@
   v43 = v12;
   v42 = [v13 localizedStringForKey:v12 value:&stru_10026E598 table:@"Pairing"];
 
-  v37 = [PBBridgeWatchAttributeController materialFromDevice:v3];
+  v37 = [PBBridgeWatchAttributeController materialFromDevice:detailsCopy];
   v15 = BPSUnlocalizedNameForMaterial();
   v16 = [v15 stringByAppendingString:@"_ACTIVE_DEVICE"];
 
@@ -257,19 +257,19 @@
   v41 = v16;
   v40 = [v17 localizedStringForKey:v16 value:&stru_10026E598 table:@"Pairing"];
 
-  v18 = [v3 valueForProperty:NRDevicePropertySystemBuildVersion];
-  v19 = [v3 valueForProperty:NRDevicePropertyName];
-  v20 = [v3 valueForProperty:NRDevicePropertyAdvertisedName];
-  [v3 valueForProperty:NRDevicePropertyHWModelString];
+  v18 = [detailsCopy valueForProperty:NRDevicePropertySystemBuildVersion];
+  v19 = [detailsCopy valueForProperty:NRDevicePropertyName];
+  v20 = [detailsCopy valueForProperty:NRDevicePropertyAdvertisedName];
+  [detailsCopy valueForProperty:NRDevicePropertyHWModelString];
   v38 = v46 = v4;
   v21 = [v38 stringByAppendingFormat:@" / %@", v4];
-  v22 = [v3 valueForProperty:NRDevicePropertyIsInternalInstall];
+  v22 = [detailsCopy valueForProperty:NRDevicePropertyIsInternalInstall];
   v23 = v22;
   if (v22)
   {
-    v24 = [v22 BOOLValue];
+    bOOLValue = [v22 BOOLValue];
     v25 = @"Customer";
-    if (v24)
+    if (bOOLValue)
     {
       v25 = @"Internal";
     }
@@ -277,13 +277,13 @@
     v14 = v25;
   }
 
-  v26 = [v3 valueForProperty:NRDevicePropertyIsAltAccount];
+  v26 = [detailsCopy valueForProperty:NRDevicePropertyIsAltAccount];
   v27 = v26;
   if (v26)
   {
-    v28 = [v26 BOOLValue];
+    bOOLValue2 = [v26 BOOLValue];
     v29 = @"Classic";
-    if (v28)
+    if (bOOLValue2)
     {
       v29 = @"Tinker";
     }

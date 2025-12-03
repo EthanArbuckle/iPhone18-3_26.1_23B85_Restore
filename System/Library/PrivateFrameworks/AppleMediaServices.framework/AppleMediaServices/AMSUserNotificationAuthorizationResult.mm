@@ -1,35 +1,35 @@
 @interface AMSUserNotificationAuthorizationResult
-- (AMSUserNotificationAuthorizationResult)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AMSUserNotificationAuthorizationResult)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSUserNotificationAuthorizationResult
 
-- (AMSUserNotificationAuthorizationResult)initWithCoder:(id)a3
+- (AMSUserNotificationAuthorizationResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AMSUserNotificationAuthorizationResult;
   v5 = [(AMSUserNotificationAuthorizationResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyRequest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyRequest"];
     request = v5->_request;
     v5->_request = v6;
 
-    v5->_authorizationStatus = [v4 decodeIntegerForKey:@"kCodingKeyAuthorizationStatus"];
+    v5->_authorizationStatus = [coderCopy decodeIntegerForKey:@"kCodingKeyAuthorizationStatus"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(AMSUserNotificationAuthorizationResult *)self request];
-  [v5 encodeObject:v4 forKey:@"kCodingKeyRequest"];
+  coderCopy = coder;
+  request = [(AMSUserNotificationAuthorizationResult *)self request];
+  [coderCopy encodeObject:request forKey:@"kCodingKeyRequest"];
 
-  [v5 encodeInteger:-[AMSUserNotificationAuthorizationResult authorizationStatus](self forKey:{"authorizationStatus"), @"kCodingKeyAuthorizationStatus"}];
+  [coderCopy encodeInteger:-[AMSUserNotificationAuthorizationResult authorizationStatus](self forKey:{"authorizationStatus"), @"kCodingKeyAuthorizationStatus"}];
 }
 
 @end

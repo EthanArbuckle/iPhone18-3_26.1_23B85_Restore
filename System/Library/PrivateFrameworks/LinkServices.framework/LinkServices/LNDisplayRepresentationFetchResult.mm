@@ -1,21 +1,21 @@
 @interface LNDisplayRepresentationFetchResult
-- (BOOL)isEqual:(id)a3;
-- (LNDisplayRepresentationFetchResult)initWithAction:(id)a3 displayRepresentation:(id)a4 error:(id)a5;
-- (LNDisplayRepresentationFetchResult)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNDisplayRepresentationFetchResult)initWithAction:(id)action displayRepresentation:(id)representation error:(id)error;
+- (LNDisplayRepresentationFetchResult)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNDisplayRepresentationFetchResult
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -24,10 +24,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(LNDisplayRepresentationFetchResult *)self action];
-    v8 = [(LNDisplayRepresentationFetchResult *)v6 action];
-    v9 = v7;
-    v10 = v8;
+    action = [(LNDisplayRepresentationFetchResult *)self action];
+    action2 = [(LNDisplayRepresentationFetchResult *)v6 action];
+    v9 = action;
+    v10 = action2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -54,10 +54,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(LNDisplayRepresentationFetchResult *)self displayRepresentation];
-    v17 = [(LNDisplayRepresentationFetchResult *)v6 displayRepresentation];
-    v14 = v16;
-    v18 = v17;
+    displayRepresentation = [(LNDisplayRepresentationFetchResult *)self displayRepresentation];
+    displayRepresentation2 = [(LNDisplayRepresentationFetchResult *)v6 displayRepresentation];
+    v14 = displayRepresentation;
+    v18 = displayRepresentation2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -84,10 +84,10 @@ LABEL_25:
       }
     }
 
-    v21 = [(LNDisplayRepresentationFetchResult *)self error];
-    v22 = [(LNDisplayRepresentationFetchResult *)v6 error];
-    v20 = v21;
-    v23 = v22;
+    error = [(LNDisplayRepresentationFetchResult *)self error];
+    error2 = [(LNDisplayRepresentationFetchResult *)v6 error];
+    v20 = error;
+    v23 = error2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -114,38 +114,38 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v3 = [(LNDisplayRepresentationFetchResult *)self action];
-  v4 = [v3 hash];
-  v5 = [(LNDisplayRepresentationFetchResult *)self displayRepresentation];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNDisplayRepresentationFetchResult *)self error];
-  v8 = [v7 hash];
+  action = [(LNDisplayRepresentationFetchResult *)self action];
+  v4 = [action hash];
+  displayRepresentation = [(LNDisplayRepresentationFetchResult *)self displayRepresentation];
+  v6 = [displayRepresentation hash] ^ v4;
+  error = [(LNDisplayRepresentationFetchResult *)self error];
+  v8 = [error hash];
 
   return v6 ^ v8;
 }
 
-- (LNDisplayRepresentationFetchResult)initWithCoder:(id)a3
+- (LNDisplayRepresentationFetchResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayRepresentation"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayRepresentation"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
 
   v8 = [(LNDisplayRepresentationFetchResult *)self initWithAction:v5 displayRepresentation:v6 error:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNDisplayRepresentationFetchResult *)self action];
-  [v4 encodeObject:v5 forKey:@"action"];
+  coderCopy = coder;
+  action = [(LNDisplayRepresentationFetchResult *)self action];
+  [coderCopy encodeObject:action forKey:@"action"];
 
-  v6 = [(LNDisplayRepresentationFetchResult *)self displayRepresentation];
-  [v4 encodeObject:v6 forKey:@"displayRepresentation"];
+  displayRepresentation = [(LNDisplayRepresentationFetchResult *)self displayRepresentation];
+  [coderCopy encodeObject:displayRepresentation forKey:@"displayRepresentation"];
 
-  v7 = [(LNDisplayRepresentationFetchResult *)self error];
-  [v4 encodeObject:v7 forKey:@"error"];
+  error = [(LNDisplayRepresentationFetchResult *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 }
 
 - (id)description
@@ -153,34 +153,34 @@ LABEL_28:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNDisplayRepresentationFetchResult *)self action];
-  v7 = [(LNDisplayRepresentationFetchResult *)self displayRepresentation];
-  v8 = [(LNDisplayRepresentationFetchResult *)self error];
-  v9 = [v8 debugDescription];
-  v10 = [v3 stringWithFormat:@"<%@: %p, action: %@, displayRepresentation: %@, error: %@>", v5, self, v6, v7, v9];
+  action = [(LNDisplayRepresentationFetchResult *)self action];
+  displayRepresentation = [(LNDisplayRepresentationFetchResult *)self displayRepresentation];
+  error = [(LNDisplayRepresentationFetchResult *)self error];
+  v9 = [error debugDescription];
+  v10 = [v3 stringWithFormat:@"<%@: %p, action: %@, displayRepresentation: %@, error: %@>", v5, self, action, displayRepresentation, v9];
 
   return v10;
 }
 
-- (LNDisplayRepresentationFetchResult)initWithAction:(id)a3 displayRepresentation:(id)a4 error:(id)a5
+- (LNDisplayRepresentationFetchResult)initWithAction:(id)action displayRepresentation:(id)representation error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  representationCopy = representation;
+  errorCopy = error;
   v20.receiver = self;
   v20.super_class = LNDisplayRepresentationFetchResult;
   v11 = [(LNDisplayRepresentationFetchResult *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [actionCopy copy];
     action = v11->_action;
     v11->_action = v12;
 
-    v14 = [v9 copy];
+    v14 = [representationCopy copy];
     displayRepresentation = v11->_displayRepresentation;
     v11->_displayRepresentation = v14;
 
-    v16 = [v10 copy];
+    v16 = [errorCopy copy];
     error = v11->_error;
     v11->_error = v16;
 

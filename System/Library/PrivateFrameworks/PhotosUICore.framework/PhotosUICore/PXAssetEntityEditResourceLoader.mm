@@ -1,27 +1,27 @@
 @interface PXAssetEntityEditResourceLoader
 - (_TtC12PhotosUICore31PXAssetEntityEditResourceLoader)init;
-- (void)resourceLoader:(id)a3 request:(id)a4 didCompleteWithResult:(id)a5;
-- (void)resourceLoader:(id)a3 request:(id)a4 mediaLoadDidFailWithError:(id)a5;
+- (void)resourceLoader:(id)loader request:(id)request didCompleteWithResult:(id)result;
+- (void)resourceLoader:(id)loader request:(id)request mediaLoadDidFailWithError:(id)error;
 @end
 
 @implementation PXAssetEntityEditResourceLoader
 
-- (void)resourceLoader:(id)a3 request:(id)a4 mediaLoadDidFailWithError:(id)a5
+- (void)resourceLoader:(id)loader request:(id)request mediaLoadDidFailWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  sub_1A4A52148(v11);
+  loaderCopy = loader;
+  requestCopy = request;
+  errorCopy = error;
+  selfCopy = self;
+  sub_1A4A52148(errorCopy);
 }
 
-- (void)resourceLoader:(id)a3 request:(id)a4 didCompleteWithResult:(id)a5
+- (void)resourceLoader:(id)loader request:(id)request didCompleteWithResult:(id)result
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1A4A52430(v10);
+  loaderCopy = loader;
+  requestCopy = request;
+  resultCopy = result;
+  selfCopy = self;
+  sub_1A4A52430(resultCopy);
 }
 
 - (_TtC12PhotosUICore31PXAssetEntityEditResourceLoader)init

@@ -1,19 +1,19 @@
 @interface CloudBookmarkCKAssetValueTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation CloudBookmarkCKAssetValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 path];
-    v6 = [v5 length];
+    v4 = valueCopy;
+    path = [v4 path];
+    v6 = [path length];
 
     if (v6)
     {
@@ -34,21 +34,21 @@
   return v7;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 fileURL];
+    fileURL = [valueCopy fileURL];
   }
 
   else
   {
-    v4 = 0;
+    fileURL = 0;
   }
 
-  return v4;
+  return fileURL;
 }
 
 @end

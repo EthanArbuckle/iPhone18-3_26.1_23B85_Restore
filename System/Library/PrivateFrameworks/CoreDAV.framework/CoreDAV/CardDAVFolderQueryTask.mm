@@ -1,15 +1,15 @@
 @interface CardDAVFolderQueryTask
-- (CardDAVFolderQueryTask)initWithSearchTerms:(id)a3 searchLimit:(unint64_t)a4 atURL:(id)a5 appSpecificDataItemClass:(Class)a6;
-- (void)addFiltersToXMLData:(id)a3;
+- (CardDAVFolderQueryTask)initWithSearchTerms:(id)terms searchLimit:(unint64_t)limit atURL:(id)l appSpecificDataItemClass:(Class)class;
+- (void)addFiltersToXMLData:(id)data;
 @end
 
 @implementation CardDAVFolderQueryTask
 
-- (CardDAVFolderQueryTask)initWithSearchTerms:(id)a3 searchLimit:(unint64_t)a4 atURL:(id)a5 appSpecificDataItemClass:(Class)a6
+- (CardDAVFolderQueryTask)initWithSearchTerms:(id)terms searchLimit:(unint64_t)limit atURL:(id)l appSpecificDataItemClass:(Class)class
 {
   v9.receiver = self;
   v9.super_class = CardDAVFolderQueryTask;
-  v6 = [(CoreDAVContainerQueryTask *)&v9 _initWithSearchTerms:a3 searchLimit:a4 atURL:a5 appSpecificDataItemClass:a6];
+  v6 = [(CoreDAVContainerQueryTask *)&v9 _initWithSearchTerms:terms searchLimit:limit atURL:l appSpecificDataItemClass:class];
   v7 = v6;
   if (v6)
   {
@@ -21,12 +21,12 @@
   return v7;
 }
 
-- (void)addFiltersToXMLData:(id)a3
+- (void)addFiltersToXMLData:(id)data
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = @"urn:ietf:params:xml:ns:carddav";
-  [v4 startElement:@"anyof" inNamespace:0 withAttributeNamesAndValues:?];
+  [dataCopy startElement:@"anyof" inNamespace:0 withAttributeNamesAndValues:?];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -36,7 +36,7 @@
   if (v20)
   {
     v18 = *v27;
-    v19 = self;
+    selfCopy = self;
     do
     {
       v6 = 0;
@@ -49,9 +49,9 @@
 
         v21 = v6;
         v16 = *(*(&v26 + 1) + 8 * v6);
-        v7 = v4;
+        v7 = dataCopy;
         v8 = v5;
-        [v4 startElement:@"prop-filter" inNamespace:v5 withAttributeNamesAndValues:{@"name", v16, @"test", @"allof", 0}];
+        [dataCopy startElement:@"prop-filter" inNamespace:v5 withAttributeNamesAndValues:{@"name", v16, @"test", @"allof", 0}];
         v24 = 0u;
         v25 = 0u;
         v22 = 0u;
@@ -80,11 +80,11 @@
           while (v11);
         }
 
-        v4 = v7;
+        dataCopy = v7;
         v5 = v8;
         [v7 endElement:@"prop-filter" inNamespace:v8];
         v6 = v21 + 1;
-        self = v19;
+        self = selfCopy;
       }
 
       while (v21 + 1 != v20);
@@ -94,14 +94,14 @@
     while (v20);
   }
 
-  [v4 endElement:@"filter" inNamespace:v5];
+  [dataCopy endElement:@"filter" inNamespace:v5];
   if (self->super._searchLimit)
   {
-    [v4 startElement:@"limit" inNamespace:v5 withAttributeNamesAndValues:0];
+    [dataCopy startElement:@"limit" inNamespace:v5 withAttributeNamesAndValues:0];
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", self->super._searchLimit];
-    [v4 appendElement:@"nresults" inNamespace:v5 withStringContent:v14 withAttributeNamesAndValues:0];
+    [dataCopy appendElement:@"nresults" inNamespace:v5 withStringContent:v14 withAttributeNamesAndValues:0];
 
-    [v4 endElement:@"limit" inNamespace:v5];
+    [dataCopy endElement:@"limit" inNamespace:v5];
   }
 
   v15 = *MEMORY[0x277D85DE8];

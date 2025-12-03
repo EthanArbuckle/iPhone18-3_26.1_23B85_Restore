@@ -1,6 +1,6 @@
 @interface STSSearchBrowserHeaderView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (STSSearchBrowserHeaderView)init;
 - (void)updateConstraints;
 @end
@@ -15,66 +15,66 @@
   v2 = [(STSSearchBrowserHeaderView *)&v33 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] sts_defaultBackgroundColor];
-    [(STSSearchBrowserHeaderView *)v2 setBackgroundColor:v3];
+    sts_defaultBackgroundColor = [MEMORY[0x277D75348] sts_defaultBackgroundColor];
+    [(STSSearchBrowserHeaderView *)v2 setBackgroundColor:sts_defaultBackgroundColor];
 
     v4 = objc_alloc_init(STSSearchBar);
     searchBar = v2->_searchBar;
     v2->_searchBar = &v4->super;
 
-    v6 = [(UISearchBar *)v2->_searchBar searchField];
+    searchField = [(UISearchBar *)v2->_searchBar searchField];
     [(UISearchBar *)v2->_searchBar setSearchBarStyle:2];
-    v7 = [(UISearchBar *)v2->_searchBar searchTextField];
-    v8 = [v7 layer];
-    [v8 setCornerRadius:20.0];
+    searchTextField = [(UISearchBar *)v2->_searchBar searchTextField];
+    layer = [searchTextField layer];
+    [layer setCornerRadius:20.0];
 
-    v9 = [(UISearchBar *)v2->_searchBar searchTextField];
-    v10 = [v9 layer];
-    [v10 setMasksToBounds:1];
+    searchTextField2 = [(UISearchBar *)v2->_searchBar searchTextField];
+    layer2 = [searchTextField2 layer];
+    [layer2 setMasksToBounds:1];
 
-    v11 = [(UISearchBar *)v2->_searchBar searchTextField];
-    v12 = [MEMORY[0x277D75348] sts_headerZKWSearchButtonAndSearchTextFieldBackgroundColor];
-    [v11 setBackgroundColor:v12];
+    searchTextField3 = [(UISearchBar *)v2->_searchBar searchTextField];
+    sts_headerZKWSearchButtonAndSearchTextFieldBackgroundColor = [MEMORY[0x277D75348] sts_headerZKWSearchButtonAndSearchTextFieldBackgroundColor];
+    [searchTextField3 setBackgroundColor:sts_headerZKWSearchButtonAndSearchTextFieldBackgroundColor];
 
     v13 = v2->_searchBar;
-    v14 = [MEMORY[0x277D75348] systemPinkColor];
-    [(UISearchBar *)v13 setTintColor:v14];
+    systemPinkColor = [MEMORY[0x277D75348] systemPinkColor];
+    [(UISearchBar *)v13 setTintColor:systemPinkColor];
 
     [(UISearchBar *)v2->_searchBar setTranslatesAutoresizingMaskIntoConstraints:0];
     v15 = STSLocalizedString(@"SEARCHBAR_PLACEHOLDER");
     v16 = objc_alloc(MEMORY[0x277CCAB48]);
     v34 = *MEMORY[0x277D740C0];
-    v17 = [MEMORY[0x277D75348] lightGrayColor];
-    v35[0] = v17;
+    lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+    v35[0] = lightGrayColor;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
     v19 = [v16 initWithString:v15 attributes:v18];
 
-    [v6 setAttributedPlaceholder:v19];
+    [searchField setAttributedPlaceholder:v19];
     [(UISearchBar *)v2->_searchBar setShowsCancelButton:1];
-    v20 = [(UISearchBar *)v2->_searchBar cancelButton];
-    [v20 setEnabled:1];
+    cancelButton = [(UISearchBar *)v2->_searchBar cancelButton];
+    [cancelButton setEnabled:1];
 
     [(UISearchBar *)v2->_searchBar _setAutoDisableCancelButton:0];
     [(STSSearchBrowserHeaderView *)v2 addSubview:v2->_searchBar];
-    v21 = [MEMORY[0x277CBEB18] array];
-    v22 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
 
-    v23 = [(UISearchBar *)v2->_searchBar leadingAnchor];
-    v24 = [(STSSearchBrowserHeaderView *)v2 leadingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
-    [v22 addObject:v25];
+    leadingAnchor = [(UISearchBar *)v2->_searchBar leadingAnchor];
+    leadingAnchor2 = [(STSSearchBrowserHeaderView *)v2 leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array2 addObject:v25];
 
-    v26 = [(UISearchBar *)v2->_searchBar trailingAnchor];
-    v27 = [(STSSearchBrowserHeaderView *)v2 trailingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
-    [v22 addObject:v28];
+    trailingAnchor = [(UISearchBar *)v2->_searchBar trailingAnchor];
+    trailingAnchor2 = [(STSSearchBrowserHeaderView *)v2 trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array2 addObject:v28];
 
-    v29 = [(UISearchBar *)v2->_searchBar topAnchor];
-    v30 = [(STSSearchBrowserHeaderView *)v2 topAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
-    [v22 addObject:v31];
+    topAnchor = [(UISearchBar *)v2->_searchBar topAnchor];
+    topAnchor2 = [(STSSearchBrowserHeaderView *)v2 topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array2 addObject:v31];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v22];
+    [MEMORY[0x277CCAAD0] activateConstraints:array2];
   }
 
   return v2;
@@ -98,9 +98,9 @@
   }
 
   [(UISearchBar *)self->_searchBar sizeToFit];
-  v6 = [(UISearchBar *)self->_searchBar heightAnchor];
+  heightAnchor = [(UISearchBar *)self->_searchBar heightAnchor];
   [(UISearchBar *)self->_searchBar bounds];
-  v8 = [v6 constraintEqualToConstant:v7];
+  v8 = [heightAnchor constraintEqualToConstant:v7];
   v9 = self->_searchBarHeight;
   self->_searchBarHeight = v8;
 
@@ -120,9 +120,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UISearchBar *)self->_searchBar sizeThatFits:a3.width, a3.height];
+  [(UISearchBar *)self->_searchBar sizeThatFits:fits.width, fits.height];
   v5 = v4 + 7.0;
   result.height = v5;
   result.width = v3;

@@ -1,12 +1,12 @@
 @interface PersonalizedCompoundItem
 - (AddressBookAddress)address;
 - (AutocompleteMatchInfo)matchInfo;
-- (BOOL)containsPossiblePersonalizedItemSourceSubtype:(int64_t)a3;
-- (BOOL)containsPossiblePersonalizedItemSourceType:(int64_t)a3;
+- (BOOL)containsPossiblePersonalizedItemSourceSubtype:(int64_t)subtype;
+- (BOOL)containsPossiblePersonalizedItemSourceType:(int64_t)type;
 - (BOOL)hasPriorityOverride;
 - (BOOL)hasServerItemIndex;
 - (BOOL)hidden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRouteStartOrEnd;
 - (BOOL)mustRefineMapItem;
 - (BOOL)needsToPreserveSelection;
@@ -26,8 +26,8 @@
 - (ParkedCar)parkedCar;
 - (PersonalizedAutocompleteItem)autocompleteItemWithHighestPriority;
 - (PersonalizedAutocompleteItem)cachedAutocompleteItemWithHighestPriority;
-- (PersonalizedCompoundItem)initWithItems:(id)a3;
-- (PersonalizedCompoundItem)itemWithHighestPriorityForFunction:(id)a3;
+- (PersonalizedCompoundItem)initWithItems:(id)items;
+- (PersonalizedCompoundItem)itemWithHighestPriorityForFunction:(id)function;
 - (PersonalizedItemClientFeatureIDAdornment)clientFeatureID;
 - (PersonalizedItemPrioritizedStringAdornment)prefix;
 - (PersonalizedItemPrioritizedStringAdornment)subtitle;
@@ -49,8 +49,8 @@
 - (unint64_t)serverItemIndexInSection;
 - (unint64_t)serverSectionIndex;
 - (unint64_t)sortOrder;
-- (void)configureWithClientACSuggestionEntry:(id)a3;
-- (void)setPriorityFunction:(id)a3;
+- (void)configureWithClientACSuggestionEntry:(id)entry;
+- (void)setPriorityFunction:(id)function;
 @end
 
 @implementation PersonalizedCompoundItem
@@ -116,8 +116,8 @@ LABEL_11:
 
   v5 = v4;
   obj = v3;
-  v25 = self;
-  v6 = 0;
+  selfCopy = self;
+  priority2 = 0;
   v7 = 0;
   v8 = 0;
   v30 = *v32;
@@ -132,11 +132,11 @@ LABEL_11:
       }
 
       v10 = *(*(&v31 + 1) + 8 * v9);
-      v11 = [v10 mapItem];
-      v12 = [v10 priority];
-      if ([v11 _hasResolvablePartialInformation])
+      mapItem = [v10 mapItem];
+      priority = [v10 priority];
+      if ([mapItem _hasResolvablePartialInformation])
       {
-        v13 = 1;
+        mustRefineMapItem = 1;
         if (!v8)
         {
           goto LABEL_20;
@@ -145,49 +145,49 @@ LABEL_11:
 
       else
       {
-        v15 = [v11 _geoMapItem];
-        if ([v15 hasExpiredComponents])
+        _geoMapItem = [mapItem _geoMapItem];
+        if ([_geoMapItem hasExpiredComponents])
         {
-          v13 = 1;
+          mustRefineMapItem = 1;
         }
 
         else
         {
-          v13 = [v10 mustRefineMapItem];
+          mustRefineMapItem = [v10 mustRefineMapItem];
         }
 
         if (!v8)
         {
 LABEL_20:
-          v8 = v11;
-          v6 = [v10 priority];
-          v7 = v13;
+          v8 = mapItem;
+          priority2 = [v10 priority];
+          v7 = mustRefineMapItem;
           goto LABEL_21;
         }
       }
 
-      if (v6 >= v12)
+      if (priority2 >= priority)
       {
-        if (v6 <= v12)
+        if (priority2 <= priority)
         {
-          if (v13 & 1 | ((v7 & 1) == 0))
+          if (mustRefineMapItem & 1 | ((v7 & 1) == 0))
           {
-            if (v7 & 1 | ((v13 & 1) == 0))
+            if (v7 & 1 | ((mustRefineMapItem & 1) == 0))
             {
-              v16 = [v11 _geoMapItemStorageForPersistence];
-              v17 = [v8 _geoMapItemStorageForPersistence];
-              v28 = v16;
-              v18 = [v16 encodedData];
-              v26 = [v18 length];
-              v27 = v17;
-              v19 = [v17 encodedData];
-              v20 = [v19 length];
+              _geoMapItemStorageForPersistence = [mapItem _geoMapItemStorageForPersistence];
+              _geoMapItemStorageForPersistence2 = [v8 _geoMapItemStorageForPersistence];
+              v28 = _geoMapItemStorageForPersistence;
+              encodedData = [_geoMapItemStorageForPersistence encodedData];
+              v26 = [encodedData length];
+              v27 = _geoMapItemStorageForPersistence2;
+              encodedData2 = [_geoMapItemStorageForPersistence2 encodedData];
+              v20 = [encodedData2 length];
 
               if (v26 > v20)
               {
-                v21 = v11;
+                v21 = mapItem;
 
-                v6 = [v10 priority];
+                priority2 = [v10 priority];
                 v8 = v21;
               }
             }
@@ -200,9 +200,9 @@ LABEL_20:
 
           else
           {
-            v22 = v11;
+            v22 = mapItem;
 
-            v6 = [v10 priority];
+            priority2 = [v10 priority];
             v7 = 0;
             v8 = v22;
           }
@@ -211,10 +211,10 @@ LABEL_20:
 
       else
       {
-        v14 = v11;
+        v14 = mapItem;
 
-        v6 = [v10 priority];
-        v7 = v13;
+        priority2 = [v10 priority];
+        v7 = mustRefineMapItem;
         v8 = v14;
       }
 
@@ -232,7 +232,7 @@ LABEL_21:
 
   if (v8)
   {
-    [v8 setPersonalizedCompoundItem:v25];
+    [v8 setPersonalizedCompoundItem:selfCopy];
   }
 
 LABEL_29:
@@ -262,10 +262,10 @@ LABEL_29:
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * v6) sortOrder];
-        if (v7)
+        sortOrder = [*(*(&v10 + 1) + 8 * v6) sortOrder];
+        if (sortOrder)
         {
-          v8 = v7;
+          v8 = sortOrder;
           goto LABEL_11;
         }
 
@@ -310,10 +310,10 @@ LABEL_11:
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) searchResult];
-        if (v7)
+        searchResult = [*(*(&v10 + 1) + 8 * i) searchResult];
+        if (searchResult)
         {
-          v8 = v7;
+          v8 = searchResult;
           goto LABEL_11;
         }
       }
@@ -400,8 +400,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v8) title];
-        v3 = [v9 combineAdornment:v10];
+        title = [*(*(&v12 + 1) + 8 * v8) title];
+        v3 = [v9 combineAdornment:title];
 
         v8 = v8 + 1;
         v9 = v3;
@@ -441,8 +441,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v8) subtitle];
-        v3 = [v9 combineAdornment:v10];
+        subtitle = [*(*(&v12 + 1) + 8 * v8) subtitle];
+        v3 = [v9 combineAdornment:subtitle];
 
         v8 = v8 + 1;
         v9 = v3;
@@ -533,8 +533,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v8) styleAttributes];
-        v3 = [v9 combineAdornment:v10];
+        styleAttributes = [*(*(&v12 + 1) + 8 * v8) styleAttributes];
+        v3 = [v9 combineAdornment:styleAttributes];
 
         v8 = v8 + 1;
         v9 = v3;
@@ -661,8 +661,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v8) prefix];
-        v3 = [v9 combineAdornment:v10];
+        prefix = [*(*(&v12 + 1) + 8 * v8) prefix];
+        v3 = [v9 combineAdornment:prefix];
 
         v8 = v8 + 1;
         v9 = v3;
@@ -685,13 +685,13 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v2 = self->_items;
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-  if (v3)
+  labelGeometry2 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  if (labelGeometry2)
   {
     v4 = *v10;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != labelGeometry2; i = i + 1)
       {
         if (*v10 != v4)
         {
@@ -699,17 +699,17 @@ LABEL_11:
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
-        v7 = [v6 labelGeometry];
+        labelGeometry = [v6 labelGeometry];
 
-        if (v7)
+        if (labelGeometry)
         {
-          v3 = [v6 labelGeometry];
+          labelGeometry2 = [v6 labelGeometry];
           goto LABEL_11;
         }
       }
 
-      v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-      if (v3)
+      labelGeometry2 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      if (labelGeometry2)
       {
         continue;
       }
@@ -720,7 +720,7 @@ LABEL_11:
 
 LABEL_11:
 
-  return v3;
+  return labelGeometry2;
 }
 
 - (GEOEnhancedPlacement)enhancedPlacement
@@ -730,13 +730,13 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v2 = self->_items;
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-  if (v3)
+  enhancedPlacement2 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  if (enhancedPlacement2)
   {
     v4 = *v10;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != enhancedPlacement2; i = i + 1)
       {
         if (*v10 != v4)
         {
@@ -744,17 +744,17 @@ LABEL_11:
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
-        v7 = [v6 enhancedPlacement];
+        enhancedPlacement = [v6 enhancedPlacement];
 
-        if (v7)
+        if (enhancedPlacement)
         {
-          v3 = [v6 enhancedPlacement];
+          enhancedPlacement2 = [v6 enhancedPlacement];
           goto LABEL_11;
         }
       }
 
-      v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-      if (v3)
+      enhancedPlacement2 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      if (enhancedPlacement2)
       {
         continue;
       }
@@ -765,7 +765,7 @@ LABEL_11:
 
 LABEL_11:
 
-  return v3;
+  return enhancedPlacement2;
 }
 
 - (PersonalizedItemClientFeatureIDAdornment)clientFeatureID
@@ -790,10 +790,10 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) clientFeatureID];
-        if (v9)
+        clientFeatureID = [*(*(&v12 + 1) + 8 * i) clientFeatureID];
+        if (clientFeatureID)
         {
-          v10 = [v3 combineAdornment:v9];
+          v10 = [v3 combineAdornment:clientFeatureID];
 
           v3 = v10;
         }
@@ -822,35 +822,35 @@ LABEL_11:
   return WeakRetained;
 }
 
-- (void)configureWithClientACSuggestionEntry:(id)a3
+- (void)configureWithClientACSuggestionEntry:(id)entry
 {
-  v5 = a3;
-  if (self->_mifClientACSuggestionEntry != v5)
+  entryCopy = entry;
+  if (self->_mifClientACSuggestionEntry != entryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_mifClientACSuggestionEntry, a3);
+    v8 = entryCopy;
+    objc_storeStrong(&self->_mifClientACSuggestionEntry, entry);
     v6 = +[NSUUID UUID];
     mifItemIdentifier = self->_mifItemIdentifier;
     self->_mifItemIdentifier = v6;
 
-    v5 = v8;
+    entryCopy = v8;
   }
 }
 
-- (BOOL)containsPossiblePersonalizedItemSourceType:(int64_t)a3
+- (BOOL)containsPossiblePersonalizedItemSourceType:(int64_t)type
 {
-  v4 = [(PersonalizedCompoundItem *)self possiblePersonalizedItemSourceTypes];
-  v5 = [NSNumber numberWithInteger:a3];
-  v6 = [v4 containsObject:v5];
+  possiblePersonalizedItemSourceTypes = [(PersonalizedCompoundItem *)self possiblePersonalizedItemSourceTypes];
+  v5 = [NSNumber numberWithInteger:type];
+  v6 = [possiblePersonalizedItemSourceTypes containsObject:v5];
 
   return v6;
 }
 
-- (BOOL)containsPossiblePersonalizedItemSourceSubtype:(int64_t)a3
+- (BOOL)containsPossiblePersonalizedItemSourceSubtype:(int64_t)subtype
 {
-  v4 = [(PersonalizedCompoundItem *)self possiblePersonalizedItemSourceSubtypes];
-  v5 = [NSNumber numberWithInteger:a3];
-  v6 = [v4 containsObject:v5];
+  possiblePersonalizedItemSourceSubtypes = [(PersonalizedCompoundItem *)self possiblePersonalizedItemSourceSubtypes];
+  v5 = [NSNumber numberWithInteger:subtype];
+  v6 = [possiblePersonalizedItemSourceSubtypes containsObject:v5];
 
   return v6;
 }
@@ -898,54 +898,54 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v28 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(PersonalizedCompoundItem *)self keys];
-    v8 = [(PersonalizedCompoundItem *)v6 keys];
-    v9 = [v7 isEqual:v8];
+    keys = [(PersonalizedCompoundItem *)self keys];
+    keys2 = [(PersonalizedCompoundItem *)v6 keys];
+    v9 = [keys isEqual:keys2];
 
     if (v9 && ([(PersonalizedCompoundItem *)self coordinate], v11 = v10, v13 = v12, [(PersonalizedCompoundItem *)v6 coordinate], vabdd_f64(v11, v15) < 0.00000000999999994) && vabdd_f64(v13, v14) < 0.00000000999999994)
     {
-      v16 = [(PersonalizedCompoundItem *)self title];
-      v17 = [v16 value];
-      v18 = [(PersonalizedCompoundItem *)v6 title];
-      v19 = [v18 value];
-      if ([v17 isEqualToString:v19])
+      title = [(PersonalizedCompoundItem *)self title];
+      value = [title value];
+      title2 = [(PersonalizedCompoundItem *)v6 title];
+      value2 = [title2 value];
+      if ([value isEqualToString:value2])
       {
-        v20 = [(PersonalizedCompoundItem *)self subtitle];
-        v21 = [v20 value];
-        v37 = [(PersonalizedCompoundItem *)v6 subtitle];
-        v22 = [v37 value];
-        v38 = v21;
-        if ([v21 isEqualToString:v22])
+        subtitle = [(PersonalizedCompoundItem *)self subtitle];
+        value3 = [subtitle value];
+        subtitle2 = [(PersonalizedCompoundItem *)v6 subtitle];
+        value4 = [subtitle2 value];
+        v38 = value3;
+        if ([value3 isEqualToString:value4])
         {
-          v35 = [(PersonalizedCompoundItem *)self prefix];
-          v23 = [v35 value];
-          v34 = [(PersonalizedCompoundItem *)v6 prefix];
-          v24 = [v34 value];
-          v36 = v23;
-          v25 = v23;
-          v26 = v24;
-          if ([v25 isEqualToString:v24])
+          prefix = [(PersonalizedCompoundItem *)self prefix];
+          value5 = [prefix value];
+          prefix2 = [(PersonalizedCompoundItem *)v6 prefix];
+          value6 = [prefix2 value];
+          v36 = value5;
+          v25 = value5;
+          v26 = value6;
+          if ([v25 isEqualToString:value6])
           {
-            v32 = [(PersonalizedCompoundItem *)self styleAttributes];
-            v30 = [v32 styleAttributes];
-            v31 = [(PersonalizedCompoundItem *)v6 styleAttributes];
-            [v31 styleAttributes];
-            v27 = v33 = v20;
-            v28 = [v30 isEqual:v27];
+            styleAttributes = [(PersonalizedCompoundItem *)self styleAttributes];
+            v32StyleAttributes = [styleAttributes styleAttributes];
+            styleAttributes2 = [(PersonalizedCompoundItem *)v6 styleAttributes];
+            [styleAttributes2 styleAttributes];
+            v27 = v33 = subtitle;
+            v28 = [v32StyleAttributes isEqual:v27];
 
-            v20 = v33;
+            subtitle = v33;
           }
 
           else
@@ -986,16 +986,16 @@ LABEL_12:
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [(NSArray *)self->_items count];
-  v7 = [(NSArray *)self->_items firstObject];
-  v8 = [v7 mapItem];
-  v9 = [v8 name];
-  v10 = [NSString stringWithFormat:@"\n<%@: %p (%d items) name='%@'", v5, self, v6, v9];
+  firstObject = [(NSArray *)self->_items firstObject];
+  mapItem = [firstObject mapItem];
+  name = [mapItem name];
+  v10 = [NSString stringWithFormat:@"\n<%@: %p (%d items) name='%@'", v5, self, v6, name];
   v11 = [v3 initWithString:v10];
 
   if (MapsFeature_IsEnabled_PersonalizedAutocompleteRanker())
   {
-    v12 = [(PersonalizedCompoundItem *)self autocompleteObject];
-    if (v12)
+    autocompleteObject = [(PersonalizedCompoundItem *)self autocompleteObject];
+    if (autocompleteObject)
     {
       [v11 appendFormat:@"- %@ -", objc_opt_class()];
       [v11 appendFormat:@"- %@ -", self->_mifItemIdentifier];
@@ -1009,37 +1009,37 @@ LABEL_12:
 
 - (id)autocompleteObject
 {
-  v2 = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestObjectPriority];
-  v3 = v2;
-  if (v2)
+  autocompleteItemWithHighestObjectPriority = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestObjectPriority];
+  v3 = autocompleteItemWithHighestObjectPriority;
+  if (autocompleteItemWithHighestObjectPriority)
   {
-    v4 = [v2 autocompleteObject];
+    autocompleteObject = [autocompleteItemWithHighestObjectPriority autocompleteObject];
   }
 
   else
   {
-    v4 = 0;
+    autocompleteObject = 0;
   }
 
-  return v4;
+  return autocompleteObject;
 }
 
 - (id)leafPersonalizedAutocompleteItems
 {
-  v3 = [(PersonalizedCompoundItem *)self items];
-  v4 = [v3 count];
+  items = [(PersonalizedCompoundItem *)self items];
+  v4 = [items count];
 
   if (v4 != 1)
   {
-    v10 = [(PersonalizedCompoundItem *)self items];
-    v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+    items2 = [(PersonalizedCompoundItem *)self items];
+    v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [items2 count]);
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = [(PersonalizedCompoundItem *)self items];
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    items3 = [(PersonalizedCompoundItem *)self items];
+    v12 = [items3 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1050,7 +1050,7 @@ LABEL_12:
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(items3);
           }
 
           v16 = *(*(&v20 + 1) + 8 * i);
@@ -1070,7 +1070,7 @@ LABEL_12:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v13 = [items3 countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v13);
@@ -1080,10 +1080,10 @@ LABEL_12:
     goto LABEL_20;
   }
 
-  v5 = [(PersonalizedCompoundItem *)self items];
-  v6 = [v5 firstObject];
+  items4 = [(PersonalizedCompoundItem *)self items];
+  firstObject = [items4 firstObject];
 
-  v7 = v6;
+  v7 = firstObject;
   if ([v7 conformsToProtocol:&OBJC_PROTOCOL___PersonalizedAutocompleteItem])
   {
     v8 = v7;
@@ -1111,18 +1111,18 @@ LABEL_21:
 
 - (unint64_t)serverItemIndexInSection
 {
-  v2 = [(PersonalizedCompoundItem *)self autocompleteItemWithEarliestServerSectionAndIndexInSection];
-  v3 = [v2 serverItemIndexInSection];
+  autocompleteItemWithEarliestServerSectionAndIndexInSection = [(PersonalizedCompoundItem *)self autocompleteItemWithEarliestServerSectionAndIndexInSection];
+  serverItemIndexInSection = [autocompleteItemWithEarliestServerSectionAndIndexInSection serverItemIndexInSection];
 
-  return v3;
+  return serverItemIndexInSection;
 }
 
 - (unint64_t)serverSectionIndex
 {
-  v2 = [(PersonalizedCompoundItem *)self autocompleteItemWithEarliestServerSectionAndIndexInSection];
-  v3 = [v2 serverSectionIndex];
+  autocompleteItemWithEarliestServerSectionAndIndexInSection = [(PersonalizedCompoundItem *)self autocompleteItemWithEarliestServerSectionAndIndexInSection];
+  serverSectionIndex = [autocompleteItemWithEarliestServerSectionAndIndexInSection serverSectionIndex];
 
-  return v3;
+  return serverSectionIndex;
 }
 
 - (BOOL)hasServerItemIndex
@@ -1160,9 +1160,9 @@ LABEL_21:
 
         if (v8)
         {
-          v9 = [v6 hasServerItemIndex];
+          hasServerItemIndex = [v6 hasServerItemIndex];
 
-          if (v9)
+          if (hasServerItemIndex)
           {
             LOBYTE(v3) = 1;
             goto LABEL_15;
@@ -1220,10 +1220,10 @@ LABEL_15:
 
         if (v10)
         {
-          v11 = [v9 autocompletionStrings];
-          if (v11)
+          autocompletionStrings = [v9 autocompletionStrings];
+          if (autocompletionStrings)
           {
-            [v3 addObjectsFromArray:v11];
+            [v3 addObjectsFromArray:autocompletionStrings];
           }
         }
       }
@@ -1241,95 +1241,95 @@ LABEL_15:
 
 - (BOOL)hidden
 {
-  v2 = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
-  v3 = v2;
-  if (v2)
+  autocompleteItemWithHighestPriority = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
+  v3 = autocompleteItemWithHighestPriority;
+  if (autocompleteItemWithHighestPriority)
   {
-    v4 = [v2 hidden];
+    hidden = [autocompleteItemWithHighestPriority hidden];
   }
 
   else
   {
-    v4 = 1;
+    hidden = 1;
   }
 
-  return v4;
+  return hidden;
 }
 
 - (GEOServerResultScoreMetadata)serverResultScoreMetadata
 {
-  v2 = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
-  v3 = [v2 serverResultScoreMetadata];
+  autocompleteItemWithHighestPriority = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
+  serverResultScoreMetadata = [autocompleteItemWithHighestPriority serverResultScoreMetadata];
 
-  return v3;
+  return serverResultScoreMetadata;
 }
 
 - (int64_t)priorityOverride
 {
-  v2 = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
-  v3 = v2;
-  if (v2)
+  autocompleteItemWithHighestPriority = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
+  v3 = autocompleteItemWithHighestPriority;
+  if (autocompleteItemWithHighestPriority)
   {
-    v4 = [v2 priorityOverride];
+    priorityOverride = [autocompleteItemWithHighestPriority priorityOverride];
   }
 
   else
   {
-    v4 = 0;
+    priorityOverride = 0;
   }
 
-  return v4;
+  return priorityOverride;
 }
 
 - (BOOL)hasPriorityOverride
 {
-  v2 = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
-  v3 = v2;
-  if (v2)
+  autocompleteItemWithHighestPriority = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
+  v3 = autocompleteItemWithHighestPriority;
+  if (autocompleteItemWithHighestPriority)
   {
-    v4 = [v2 hasPriorityOverride];
+    hasPriorityOverride = [autocompleteItemWithHighestPriority hasPriorityOverride];
   }
 
   else
   {
-    v4 = 0;
+    hasPriorityOverride = 0;
   }
 
-  return v4;
+  return hasPriorityOverride;
 }
 
 - (int64_t)sourceSubtype
 {
-  v2 = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
-  v3 = v2;
-  if (v2)
+  autocompleteItemWithHighestPriority = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
+  v3 = autocompleteItemWithHighestPriority;
+  if (autocompleteItemWithHighestPriority)
   {
-    v4 = [v2 sourceSubtype];
+    sourceSubtype = [autocompleteItemWithHighestPriority sourceSubtype];
   }
 
   else
   {
-    v4 = 0;
+    sourceSubtype = 0;
   }
 
-  return v4;
+  return sourceSubtype;
 }
 
 - (int64_t)sourceType
 {
-  v2 = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
-  v3 = v2;
-  if (v2)
+  autocompleteItemWithHighestPriority = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
+  v3 = autocompleteItemWithHighestPriority;
+  if (autocompleteItemWithHighestPriority)
   {
-    v4 = [v2 sourceType];
+    sourceType = [autocompleteItemWithHighestPriority sourceType];
   }
 
   else
   {
-    v4 = 0;
+    sourceType = 0;
   }
 
-  return v4;
+  return sourceType;
 }
 
 - (id)autocompleteItemWithEarliestServerSectionAndIndexInSection
@@ -1371,9 +1371,9 @@ LABEL_15:
 
         if (v11)
         {
-          v12 = [v9 hasServerItemIndex];
+          hasServerItemIndex = [v9 hasServerItemIndex];
 
-          if (v12)
+          if (hasServerItemIndex)
           {
             if ((v13 = [v9 serverSectionIndex], v14 = objc_msgSend(v9, "serverItemIndexInSection"), v15 = v14, !v5) || v13 < v6 || (v13 == v6 ? (v16 = v14 >= v19) : (v16 = 1), !v16))
             {
@@ -1413,24 +1413,24 @@ LABEL_15:
 {
   if ([(PersonalizedCompoundItem *)self hasCachedAutocompleteItemWithHighestPriority])
   {
-    v3 = [(PersonalizedCompoundItem *)self cachedAutocompleteItemWithHighestPriority];
+    cachedAutocompleteItemWithHighestPriority = [(PersonalizedCompoundItem *)self cachedAutocompleteItemWithHighestPriority];
   }
 
   else
   {
-    v4 = [(PersonalizedCompoundItem *)self priorityFunction];
-    v3 = [(PersonalizedCompoundItem *)self itemWithHighestPriorityForFunction:v4];
+    priorityFunction = [(PersonalizedCompoundItem *)self priorityFunction];
+    cachedAutocompleteItemWithHighestPriority = [(PersonalizedCompoundItem *)self itemWithHighestPriorityForFunction:priorityFunction];
 
-    [(PersonalizedCompoundItem *)self setCachedAutocompleteItemWithHighestPriority:v3];
+    [(PersonalizedCompoundItem *)self setCachedAutocompleteItemWithHighestPriority:cachedAutocompleteItemWithHighestPriority];
     [(PersonalizedCompoundItem *)self setHasCachedAutocompleteItemWithHighestPriority:1];
   }
 
-  return v3;
+  return cachedAutocompleteItemWithHighestPriority;
 }
 
-- (PersonalizedCompoundItem)itemWithHighestPriorityForFunction:(id)a3
+- (PersonalizedCompoundItem)itemWithHighestPriorityForFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1465,7 +1465,7 @@ LABEL_15:
 
         if (v12)
         {
-          if ((v13 = [v4 priorityForPersonalizedAutocompleteItem:v11], !v8) || objc_msgSend(v8, "hidden") && !objc_msgSend(v11, "hidden") || ((v14 = objc_msgSend(v8, "hidden"), v14 == objc_msgSend(v11, "hidden")) ? (v15 = v13 <= v7) : (v15 = 1), !v15))
+          if ((v13 = [functionCopy priorityForPersonalizedAutocompleteItem:v11], !v8) || objc_msgSend(v8, "hidden") && !objc_msgSend(v11, "hidden") || ((v14 = objc_msgSend(v8, "hidden"), v14 == objc_msgSend(v11, "hidden")) ? (v15 = v13 <= v7) : (v15 = 1), !v15))
           {
             v16 = v11;
 
@@ -1610,10 +1610,10 @@ LABEL_11:
         v7 = *(*(&v11 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v8 = [v7 locationOfInterest];
-          if (v8)
+          locationOfInterest = [v7 locationOfInterest];
+          if (locationOfInterest)
           {
-            v9 = v8;
+            v9 = locationOfInterest;
             goto LABEL_12;
           }
         }
@@ -1656,10 +1656,10 @@ LABEL_12:
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) searchDotPlace];
-        if (v7)
+        searchDotPlace = [*(*(&v10 + 1) + 8 * i) searchDotPlace];
+        if (searchDotPlace)
         {
-          v8 = v7;
+          v8 = searchDotPlace;
           goto LABEL_11;
         }
       }
@@ -1701,10 +1701,10 @@ LABEL_11:
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) address];
-        if (v7)
+        address = [*(*(&v10 + 1) + 8 * i) address];
+        if (address)
         {
-          v8 = v7;
+          v8 = address;
           goto LABEL_11;
         }
       }
@@ -1746,10 +1746,10 @@ LABEL_11:
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) sourceLabelMarker];
-        if (v7)
+        sourceLabelMarker = [*(*(&v10 + 1) + 8 * i) sourceLabelMarker];
+        if (sourceLabelMarker)
         {
-          v8 = v7;
+          v8 = sourceLabelMarker;
           goto LABEL_11;
         }
       }
@@ -1794,10 +1794,10 @@ LABEL_11:
         v7 = *(*(&v11 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v8 = [v7 incidentReport];
-          if (v8)
+          incidentReport = [v7 incidentReport];
+          if (incidentReport)
           {
-            v9 = v8;
+            v9 = incidentReport;
             goto LABEL_12;
           }
         }
@@ -1843,10 +1843,10 @@ LABEL_12:
         v7 = *(*(&v11 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v8 = [v7 parkedCar];
-          if (v8)
+          parkedCar = [v7 parkedCar];
+          if (parkedCar)
           {
-            v9 = v8;
+            v9 = parkedCar;
             goto LABEL_12;
           }
         }
@@ -1890,10 +1890,10 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) searchableStrings];
-        if (v9)
+        searchableStrings = [*(*(&v12 + 1) + 8 * i) searchableStrings];
+        if (searchableStrings)
         {
-          [v3 addObjectsFromArray:v9];
+          [v3 addObjectsFromArray:searchableStrings];
         }
       }
 
@@ -1919,7 +1919,7 @@ LABEL_12:
   if (v3)
   {
     v4 = v3;
-    v5 = 0;
+    priority = 0;
     v6 = *v11;
     do
     {
@@ -1931,9 +1931,9 @@ LABEL_12:
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
-        if ([v8 priority] > v5)
+        if ([v8 priority] > priority)
         {
-          v5 = [v8 priority];
+          priority = [v8 priority];
         }
       }
 
@@ -1945,38 +1945,38 @@ LABEL_12:
 
   else
   {
-    v5 = 0;
+    priority = 0;
   }
 
-  return v5;
+  return priority;
 }
 
-- (void)setPriorityFunction:(id)a3
+- (void)setPriorityFunction:(id)function
 {
-  v4 = a3;
-  if (!v4)
+  functionCopy = function;
+  if (!functionCopy)
   {
-    v4 = +[PersonalizedItemPriorityFunction defaultPriorityFunctionForCompoundItemResolution];
+    functionCopy = +[PersonalizedItemPriorityFunction defaultPriorityFunctionForCompoundItemResolution];
   }
 
-  if (self->_priorityFunction != v4)
+  if (self->_priorityFunction != functionCopy)
   {
-    obj = v4;
+    obj = functionCopy;
     [(PersonalizedCompoundItem *)self setHasCachedAutocompleteItemWithHighestPriority:0];
     objc_storeStrong(&self->_priorityFunction, obj);
-    v4 = obj;
+    functionCopy = obj;
   }
 }
 
-- (PersonalizedCompoundItem)initWithItems:(id)a3
+- (PersonalizedCompoundItem)initWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v34.receiver = self;
   v34.super_class = PersonalizedCompoundItem;
   v5 = [(PersonalizedCompoundItem *)&v34 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     items = v5->_items;
     v27 = v5;
     v5->_items = v6;
@@ -1988,7 +1988,7 @@ LABEL_12:
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v9 = v4;
+    v9 = itemsCopy;
     v10 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v10)
     {
@@ -2004,8 +2004,8 @@ LABEL_12:
           }
 
           v14 = *(*(&v30 + 1) + 8 * i);
-          v15 = [v14 keys];
-          [v8 unionSet:v15];
+          keys = [v14 keys];
+          [v8 unionSet:keys];
 
           if ([v14 conformsToProtocol:&OBJC_PROTOCOL___PersonalizedAutocompleteItem])
           {
@@ -2013,8 +2013,8 @@ LABEL_12:
             v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v16 sourceType]);
             [v29 addObject:v17];
 
-            v18 = [v16 sourceSubtype];
-            v19 = [NSNumber numberWithInteger:v18];
+            sourceSubtype = [v16 sourceSubtype];
+            v19 = [NSNumber numberWithInteger:sourceSubtype];
             [v28 addObject:v19];
           }
         }
@@ -2046,18 +2046,18 @@ LABEL_12:
 
 - (AutocompleteMatchInfo)matchInfo
 {
-  v2 = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
-  if ([v2 conformsToProtocol:&OBJC_PROTOCOL___AutocompleteItemWithMatchInfo])
+  autocompleteItemWithHighestPriority = [(PersonalizedCompoundItem *)self autocompleteItemWithHighestPriority];
+  if ([autocompleteItemWithHighestPriority conformsToProtocol:&OBJC_PROTOCOL___AutocompleteItemWithMatchInfo])
   {
-    v3 = [v2 matchInfo];
+    matchInfo = [autocompleteItemWithHighestPriority matchInfo];
   }
 
   else
   {
-    v3 = 0;
+    matchInfo = 0;
   }
 
-  return v3;
+  return matchInfo;
 }
 
 @end

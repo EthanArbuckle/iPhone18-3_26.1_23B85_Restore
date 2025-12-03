@@ -2,24 +2,24 @@
 - (CGRect)inputCrop;
 - (CGSize)inputSize;
 - (CGSize)outputSize;
-- (PFLImageDataScaler)initWithSize:(CGSize)a3 crop:(CGRect)a4 data:(id)a5 orientation:(unsigned int)a6 type:(id)a7 outputSize:(CGSize)a8;
-- (void)cropAndScaleWithCompletion:(id)a3;
+- (PFLImageDataScaler)initWithSize:(CGSize)size crop:(CGRect)crop data:(id)data orientation:(unsigned int)orientation type:(id)type outputSize:(CGSize)outputSize;
+- (void)cropAndScaleWithCompletion:(id)completion;
 @end
 
 @implementation PFLImageDataScaler
 
-- (PFLImageDataScaler)initWithSize:(CGSize)a3 crop:(CGRect)a4 data:(id)a5 orientation:(unsigned int)a6 type:(id)a7 outputSize:(CGSize)a8
+- (PFLImageDataScaler)initWithSize:(CGSize)size crop:(CGRect)crop data:(id)data orientation:(unsigned int)orientation type:(id)type outputSize:(CGSize)outputSize
 {
-  height = a8.height;
-  width = a8.width;
-  v13 = a4.size.height;
-  v14 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v17 = a3.height;
-  v18 = a3.width;
-  v20 = a5;
-  v21 = a7;
+  height = outputSize.height;
+  width = outputSize.width;
+  v13 = crop.size.height;
+  v14 = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  v17 = size.height;
+  v18 = size.width;
+  dataCopy = data;
+  typeCopy = type;
   v33.receiver = self;
   v33.super_class = PFLImageDataScaler;
   v22 = [(PFLImageDataScaler *)&v33 init];
@@ -32,15 +32,15 @@
     v22->_inputCrop.origin.y = y;
     v22->_inputCrop.size.width = v14;
     v22->_inputCrop.size.height = v13;
-    objc_storeStrong(&v22->_data, a5);
-    v23->_orientation = a6;
-    objc_storeStrong(&v23->_type, a7);
+    objc_storeStrong(&v22->_data, data);
+    v23->_orientation = orientation;
+    objc_storeStrong(&v23->_type, type);
     v23->_outputSize.width = width;
     v23->_outputSize.height = height;
-    v24 = [*MEMORY[0x277CE1DC0] identifier];
-    v25 = [*MEMORY[0x277CE1D90] identifier];
-    v26 = [(UTType *)v23->_type identifier];
-    v27 = [v26 isEqualToString:v24];
+    identifier = [*MEMORY[0x277CE1DC0] identifier];
+    identifier2 = [*MEMORY[0x277CE1D90] identifier];
+    identifier3 = [(UTType *)v23->_type identifier];
+    v27 = [identifier3 isEqualToString:identifier];
 
     if (v27)
     {
@@ -49,8 +49,8 @@
 
     else
     {
-      v29 = [(UTType *)v23->_type identifier];
-      v30 = [v29 isEqualToString:v25];
+      identifier4 = [(UTType *)v23->_type identifier];
+      v30 = [identifier4 isEqualToString:identifier2];
 
       if (!v30)
       {
@@ -74,17 +74,17 @@ LABEL_10:
   return v23;
 }
 
-- (void)cropAndScaleWithCompletion:(id)a3
+- (void)cropAndScaleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(25, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__PFLImageDataScaler_cropAndScaleWithCompletion___block_invoke;
   v7[3] = &unk_27875BA10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 

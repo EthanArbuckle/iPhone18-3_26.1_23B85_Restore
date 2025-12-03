@@ -1,17 +1,17 @@
 @interface HDUserNotificationSystemApertureContentDefinition
 - (_TtC22HealthDaemonFoundation49HDUserNotificationSystemApertureContentDefinition)init;
-- (_TtC22HealthDaemonFoundation49HDUserNotificationSystemApertureContentDefinition)initWithImageDefinition:(id)a3 preventAutomaticDismissal:(BOOL)a4;
+- (_TtC22HealthDaemonFoundation49HDUserNotificationSystemApertureContentDefinition)initWithImageDefinition:(id)definition preventAutomaticDismissal:(BOOL)dismissal;
 @end
 
 @implementation HDUserNotificationSystemApertureContentDefinition
 
-- (_TtC22HealthDaemonFoundation49HDUserNotificationSystemApertureContentDefinition)initWithImageDefinition:(id)a3 preventAutomaticDismissal:(BOOL)a4
+- (_TtC22HealthDaemonFoundation49HDUserNotificationSystemApertureContentDefinition)initWithImageDefinition:(id)definition preventAutomaticDismissal:(BOOL)dismissal
 {
-  *(&self->super.isa + OBJC_IVAR____TtC22HealthDaemonFoundation49HDUserNotificationSystemApertureContentDefinition_imageDefinition) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC22HealthDaemonFoundation49HDUserNotificationSystemApertureContentDefinition_preventAutomaticDismissal) = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC22HealthDaemonFoundation49HDUserNotificationSystemApertureContentDefinition_imageDefinition) = definition;
+  *(&self->super.isa + OBJC_IVAR____TtC22HealthDaemonFoundation49HDUserNotificationSystemApertureContentDefinition_preventAutomaticDismissal) = dismissal;
   v7.receiver = self;
   v7.super_class = type metadata accessor for HDUserNotificationSystemApertureContentDefinition();
-  v5 = a3;
+  definitionCopy = definition;
   return [(HDUserNotificationSystemApertureContentDefinition *)&v7 init];
 }
 

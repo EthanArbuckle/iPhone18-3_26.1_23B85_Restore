@@ -1,44 +1,44 @@
 @interface BKCADisplayMonitor
 - (BKCADisplayMonitor)init;
-- (BKCADisplayMonitor)initWithDisplayProvider:(id)a3 log:(id)a4 filterPredicate:(id)a5;
-- (BKCADisplayMonitor)initWithLog:(id)a3;
-- (BKCADisplayMonitor)initWithLog:(id)a3 filterPredicate:(id)a4;
-- (BOOL)_filterDisplay:(id)a3 usingPredicate:(id)a4;
-- (BOOL)displayUUIDIsActive:(id)a3;
-- (id)_filterDisplays:(id)a3 usingPredicate:(id)a4;
+- (BKCADisplayMonitor)initWithDisplayProvider:(id)provider log:(id)log filterPredicate:(id)predicate;
+- (BKCADisplayMonitor)initWithLog:(id)log;
+- (BKCADisplayMonitor)initWithLog:(id)log filterPredicate:(id)predicate;
+- (BOOL)_filterDisplay:(id)display usingPredicate:(id)predicate;
+- (BOOL)displayUUIDIsActive:(id)active;
+- (id)_filterDisplays:(id)displays usingPredicate:(id)predicate;
 - (id)_immutableDisplays;
-- (id)addDiffObserver:(id)a3;
-- (id)addObserver:(id)a3;
+- (id)addDiffObserver:(id)observer;
+- (id)addObserver:(id)observer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)reevaluateActiveDisplaysWithReason:(id)a3;
-- (void)setDisplayFilterPredicate:(id)a3;
+- (void)reevaluateActiveDisplaysWithReason:(id)reason;
+- (void)setDisplayFilterPredicate:(id)predicate;
 @end
 
 @implementation BKCADisplayMonitor
 
-- (void)reevaluateActiveDisplaysWithReason:(id)a3
+- (void)reevaluateActiveDisplaysWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v81 = v4;
+    v81 = reasonCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "reevaluateActiveDisplaysWithReason: %{public}@", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_filterPredicateLock);
   v6 = [self->_filterPredicateLock_displayFilterPredicate copy];
   os_unfair_lock_unlock(&self->_filterPredicateLock);
-  v7 = [(BKCADisplayMonitor *)self _immutableDisplays];
-  v8 = [(BKCADisplayMonitor *)self _filterDisplays:v7 usingPredicate:v6];
+  _immutableDisplays = [(BKCADisplayMonitor *)self _immutableDisplays];
+  v8 = [(BKCADisplayMonitor *)self _filterDisplays:_immutableDisplays usingPredicate:v6];
   os_unfair_lock_lock(&self->_displayLock);
-  v9 = [(NSMutableDictionary *)self->_displayLock_displayUUIDKeyToImmutableCADisplay allValues];
-  v10 = [NSSet setWithArray:v9];
+  allValues = [(NSMutableDictionary *)self->_displayLock_displayUUIDKeyToImmutableCADisplay allValues];
+  v10 = [NSSet setWithArray:allValues];
 
-  v11 = [v8 allValues];
-  v12 = [NSSet setWithArray:v11];
+  allValues2 = [v8 allValues];
+  v12 = [NSSet setWithArray:allValues2];
 
   objc_storeStrong(&self->_displayLock_displayUUIDKeyToImmutableCADisplay, v8);
   [(NSMutableDictionary *)self->_displayLock_displayIndexToDisplayUUID removeAllObjects];
@@ -49,11 +49,11 @@
   v74[3] = &unk_1000FCAB8;
   v74[4] = self;
   [(NSMutableDictionary *)displayLock_displayUUIDKeyToImmutableCADisplay enumerateKeysAndObjectsUsingBlock:v74];
-  v14 = [(BSCompoundAssertion *)self->_displayLock_observerAssertion context];
-  v15 = [v14 copy];
+  context = [(BSCompoundAssertion *)self->_displayLock_observerAssertion context];
+  v15 = [context copy];
 
-  v16 = [(BSCompoundAssertion *)self->_displayLock_diffObserverAssertion context];
-  v49 = [v16 copy];
+  context2 = [(BSCompoundAssertion *)self->_displayLock_diffObserverAssertion context];
+  v49 = [context2 copy];
 
   os_unfair_lock_unlock(&self->_displayLock);
   v72 = 0u;
@@ -88,9 +88,9 @@
   if ([v49 count])
   {
     v45 = v8;
-    v46 = v7;
+    v46 = _immutableDisplays;
     v47 = v6;
-    v48 = v4;
+    v48 = reasonCopy;
     v53 = [v12 mutableCopy];
     [v53 intersectSet:v10];
     v52 = [v12 mutableCopy];
@@ -211,18 +211,18 @@
     }
 
     v6 = v47;
-    v4 = v48;
+    reasonCopy = v48;
     v8 = v45;
-    v7 = v46;
+    _immutableDisplays = v46;
     v12 = v43;
     v10 = v44;
     v21 = v49;
   }
 }
 
-- (void)setDisplayFilterPredicate:(id)a3
+- (void)setDisplayFilterPredicate:(id)predicate
 {
-  v4 = [a3 copy];
+  v4 = [predicate copy];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -242,16 +242,16 @@
   [(BKCADisplayMonitor *)self reevaluateActiveDisplaysWithReason:@"predicate changed"];
 }
 
-- (id)_filterDisplays:(id)a3 usingPredicate:(id)a4
+- (id)_filterDisplays:(id)displays usingPredicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  displaysCopy = displays;
+  predicateCopy = predicate;
   v19 = objc_alloc_init(NSMutableDictionary);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v6;
+  v8 = displaysCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -268,12 +268,12 @@
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        if ([(BKCADisplayMonitor *)self _filterDisplay:v14 usingPredicate:v7])
+        if ([(BKCADisplayMonitor *)self _filterDisplay:v14 usingPredicate:predicateCopy])
         {
-          v15 = [v14 uniqueId];
-          if ([v15 length])
+          uniqueId = [v14 uniqueId];
+          if ([uniqueId length])
           {
-            v16 = v15;
+            v16 = uniqueId;
           }
 
           else
@@ -296,42 +296,42 @@
   return v19;
 }
 
-- (BOOL)_filterDisplay:(id)a3 usingPredicate:(id)a4
+- (BOOL)_filterDisplay:(id)display usingPredicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uniqueId];
-  v9 = [v8 length];
+  displayCopy = display;
+  predicateCopy = predicate;
+  uniqueId = [displayCopy uniqueId];
+  v9 = [uniqueId length];
   v10 = BKSDisplayUUIDMainKey;
   if (v9)
   {
-    v10 = v8;
+    v10 = uniqueId;
   }
 
   v11 = v10;
 
-  v12 = [v6 currentMode];
-  if (v12)
+  currentMode = [displayCopy currentMode];
+  if (currentMode)
   {
-    v13 = v12;
-    v14 = [v6 availableModes];
-    v15 = [v14 count];
+    v13 = currentMode;
+    availableModes = [displayCopy availableModes];
+    v15 = [availableModes count];
 
     if (v15)
     {
-      v16 = [v6 currentMode];
-      v17 = [v16 width];
-      v18 = [v16 height];
-      v19 = v18;
-      if (v17 && v18)
+      currentMode2 = [displayCopy currentMode];
+      width = [currentMode2 width];
+      height = [currentMode2 height];
+      v19 = height;
+      if (width && height)
       {
-        if (!v7)
+        if (!predicateCopy)
         {
           log = self->_log;
           if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v31 = v6;
+            v31 = displayCopy;
             v32 = 2114;
             v33 = v11;
             _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Display is active %{public}@ %{public}@ because: connected", buf, 0x16u);
@@ -341,7 +341,7 @@
         }
 
         v29 = 0;
-        v20 = v7[2](v7, v6, &v29);
+        v20 = predicateCopy[2](predicateCopy, displayCopy, &v29);
         v21 = v29;
         v22 = self->_log;
         v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
@@ -350,7 +350,7 @@
           if (v23)
           {
             *buf = 138543874;
-            v31 = v6;
+            v31 = displayCopy;
             v32 = 2114;
             v33 = v11;
             v34 = 2114;
@@ -366,7 +366,7 @@ LABEL_18:
         if (v23)
         {
           *buf = 138543874;
-          v31 = v6;
+          v31 = displayCopy;
           v32 = 2114;
           v33 = v11;
           v34 = 2114;
@@ -387,11 +387,11 @@ LABEL_23:
         }
 
         *buf = 138544130;
-        v31 = v6;
+        v31 = displayCopy;
         v32 = 2114;
         v33 = v11;
         v34 = 2048;
-        v35 = v17;
+        v35 = width;
         v36 = 2048;
         v37 = v19;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Display is inactive %{public}@ %{public}@ because: size is (%g,%g)", buf, 0x2Au);
@@ -407,7 +407,7 @@ LABEL_23:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v31 = v6;
+    v31 = displayCopy;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Display is inactive %{public}@ because: not connected", buf, 0xCu);
     v25 = 0;
   }
@@ -420,25 +420,25 @@ LABEL_24:
 - (id)_immutableDisplays
 {
   os_unfair_lock_assert_not_owner(&self->_displayLock);
-  v3 = [(BKCADisplayProvider *)self->_displayProvider displays];
-  v4 = [v3 bs_map:&stru_1000FCAF8];
+  displays = [(BKCADisplayProvider *)self->_displayProvider displays];
+  v4 = [displays bs_map:&stru_1000FCAF8];
 
   return v4;
 }
 
-- (BOOL)displayUUIDIsActive:(id)a3
+- (BOOL)displayUUIDIsActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   os_unfair_lock_lock(&self->_displayLock);
-  v5 = [(NSMutableDictionary *)self->_displayLock_displayUUIDKeyToImmutableCADisplay objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_displayLock_displayUUIDKeyToImmutableCADisplay objectForKey:activeCopy];
 
   os_unfair_lock_unlock(&self->_displayLock);
   return v5 != 0;
 }
 
-- (id)addDiffObserver:(id)a3
+- (id)addDiffObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_displayLock);
   displayLock_diffObserverAssertion = self->_displayLock_diffObserverAssertion;
   if (!displayLock_diffObserverAssertion)
@@ -451,16 +451,16 @@ LABEL_24:
   }
 
   v8 = [objc_opt_class() description];
-  v9 = [(BSCompoundAssertion *)displayLock_diffObserverAssertion acquireForReason:v8 withContext:v4];
+  v9 = [(BSCompoundAssertion *)displayLock_diffObserverAssertion acquireForReason:v8 withContext:observerCopy];
 
   os_unfair_lock_unlock(&self->_displayLock);
 
   return v9;
 }
 
-- (id)addObserver:(id)a3
+- (id)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_assert_not_owner(&self->_displayLock);
   os_unfair_lock_lock(&self->_displayLock);
   displayLock_observerAssertion = self->_displayLock_observerAssertion;
@@ -474,7 +474,7 @@ LABEL_24:
   }
 
   v8 = [objc_opt_class() description];
-  v9 = [(BSCompoundAssertion *)displayLock_observerAssertion acquireForReason:v8 withContext:v4];
+  v9 = [(BSCompoundAssertion *)displayLock_observerAssertion acquireForReason:v8 withContext:observerCopy];
 
   os_unfair_lock_unlock(&self->_displayLock);
 
@@ -509,25 +509,25 @@ LABEL_24:
   os_unfair_lock_unlock(&self->_displayLock);
 }
 
-- (BKCADisplayMonitor)initWithDisplayProvider:(id)a3 log:(id)a4 filterPredicate:(id)a5
+- (BKCADisplayMonitor)initWithDisplayProvider:(id)provider log:(id)log filterPredicate:(id)predicate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  logCopy = log;
+  predicateCopy = predicate;
   v28.receiver = self;
   v28.super_class = BKCADisplayMonitor;
   v11 = [(BKCADisplayMonitor *)&v28 init];
   if (v11)
   {
-    if (!v8)
+    if (!providerCopy)
     {
-      v8 = +[BKSharedCADisplayProvider sharedInstance];
+      providerCopy = +[BKSharedCADisplayProvider sharedInstance];
     }
 
-    objc_storeStrong(&v11->_displayProvider, v8);
-    if (v9)
+    objc_storeStrong(&v11->_displayProvider, providerCopy);
+    if (logCopy)
     {
-      v12 = v9;
+      v12 = logCopy;
     }
 
     else
@@ -547,8 +547,8 @@ LABEL_24:
     displayLock_displayIndexToDisplayUUID = v11->_displayLock_displayIndexToDisplayUUID;
     v11->_displayLock_displayIndexToDisplayUUID = v16;
 
-    v18 = [(BKCADisplayMonitor *)v11 _immutableDisplays];
-    v19 = [(BKCADisplayMonitor *)v11 _filterDisplays:v18 usingPredicate:v11->_filterPredicateLock_displayFilterPredicate];
+    _immutableDisplays = [(BKCADisplayMonitor *)v11 _immutableDisplays];
+    v19 = [(BKCADisplayMonitor *)v11 _filterDisplays:_immutableDisplays usingPredicate:v11->_filterPredicateLock_displayFilterPredicate];
     v20 = v11->_displayLock_displayUUIDKeyToImmutableCADisplay;
     v11->_displayLock_displayUUIDKeyToImmutableCADisplay = v19;
 
@@ -561,7 +561,7 @@ LABEL_24:
     v27 = v22;
     [(NSMutableDictionary *)v21 enumerateKeysAndObjectsUsingBlock:v26];
     v22->_filterPredicateLock._os_unfair_lock_opaque = 0;
-    v23 = [v10 copy];
+    v23 = [predicateCopy copy];
     filterPredicateLock_displayFilterPredicate = v11->_filterPredicateLock_displayFilterPredicate;
     v11->_filterPredicateLock_displayFilterPredicate = v23;
 
@@ -571,21 +571,21 @@ LABEL_24:
   return v11;
 }
 
-- (BKCADisplayMonitor)initWithLog:(id)a3 filterPredicate:(id)a4
+- (BKCADisplayMonitor)initWithLog:(id)log filterPredicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
+  predicateCopy = predicate;
+  logCopy = log;
   v8 = +[BKSharedCADisplayProvider sharedInstance];
-  v9 = [(BKCADisplayMonitor *)self initWithDisplayProvider:v8 log:v7 filterPredicate:v6];
+  v9 = [(BKCADisplayMonitor *)self initWithDisplayProvider:v8 log:logCopy filterPredicate:predicateCopy];
 
   return v9;
 }
 
-- (BKCADisplayMonitor)initWithLog:(id)a3
+- (BKCADisplayMonitor)initWithLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   v5 = +[BKSharedCADisplayProvider sharedInstance];
-  v6 = [(BKCADisplayMonitor *)self initWithDisplayProvider:v5 log:v4 filterPredicate:0];
+  v6 = [(BKCADisplayMonitor *)self initWithDisplayProvider:v5 log:logCopy filterPredicate:0];
 
   return v6;
 }
@@ -614,7 +614,7 @@ LABEL_24:
       v11 = 2114;
       v12 = v7;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = @"BKCADisplayMonitor.m";
       v17 = 1024;

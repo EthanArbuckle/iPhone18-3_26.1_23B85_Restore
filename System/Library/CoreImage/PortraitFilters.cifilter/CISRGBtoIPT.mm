@@ -50,16 +50,16 @@
     return 0;
   }
 
-  v3 = [(CISRGBtoIPT *)self _srgbToIPT];
+  _srgbToIPT = [(CISRGBtoIPT *)self _srgbToIPT];
   [(CIImage *)self->inputImage extent];
   inputImage = self->inputImage;
-  v8 = [v3 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &inputImage, 1), v4, v5, v6, v7}];
+  v8 = [_srgbToIPT applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &inputImage, 1), v4, v5, v6, v7}];
   if ([(NSNumber *)self->inputReturnHueChroma BOOLValue])
   {
-    v9 = [(CISRGBtoIPT *)self _rectToHueChroma];
+    _rectToHueChroma = [(CISRGBtoIPT *)self _rectToHueChroma];
     [(CIImage *)self->inputImage extent];
     v15 = v8;
-    return [v9 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v15, 1), v10, v11, v12, v13}];
+    return [_rectToHueChroma applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v15, 1), v10, v11, v12, v13}];
   }
 
   return v8;

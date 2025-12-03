@@ -1,10 +1,10 @@
 @interface HDHealthRecordConstructClinicalRecordsTask
-- (BOOL)_applyReferenceRulesToClinicalItem:(id)a3 ruleset:(id)a4 error:(id *)a5;
-- (BOOL)_isEligibleClinicalItem:(id)a3 error:(id *)a4;
-- (BOOL)processWithError:(id *)a3;
+- (BOOL)_applyReferenceRulesToClinicalItem:(id)item ruleset:(id)ruleset error:(id *)error;
+- (BOOL)_isEligibleClinicalItem:(id)item error:(id *)error;
+- (BOOL)processWithError:(id *)error;
 - (HDHealthRecordConstructClinicalRecordsTask)init;
-- (HDHealthRecordConstructClinicalRecordsTask)initWithProcessingContext:(id)a3;
-- (id)_clinicalRecordWithClinicalItem:(id)a3 resourceObject:(id)a4 error:(id *)a5;
+- (HDHealthRecordConstructClinicalRecordsTask)initWithProcessingContext:(id)context;
+- (id)_clinicalRecordWithClinicalItem:(id)item resourceObject:(id)object error:(id *)error;
 @end
 
 @implementation HDHealthRecordConstructClinicalRecordsTask
@@ -19,32 +19,32 @@
   return 0;
 }
 
-- (HDHealthRecordConstructClinicalRecordsTask)initWithProcessingContext:(id)a3
+- (HDHealthRecordConstructClinicalRecordsTask)initWithProcessingContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = HDHealthRecordConstructClinicalRecordsTask;
   v6 = [(HDHealthRecordConstructClinicalRecordsTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_processingContext, a3);
+    objc_storeStrong(&v6->_processingContext, context);
   }
 
   return v7;
 }
 
-- (BOOL)processWithError:(id *)a3
+- (BOOL)processWithError:(id *)error
 {
-  v5 = [(HDHealthRecordProcessingContext *)self->_processingContext extractionRuleset];
+  extractionRuleset = [(HDHealthRecordProcessingContext *)self->_processingContext extractionRuleset];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__HDHealthRecordConstructClinicalRecordsTask_processWithError___block_invoke;
   v8[3] = &unk_2796E2A88;
-  v9 = v5;
+  v9 = extractionRuleset;
   v10 = a2;
   v8[4] = self;
-  v6 = v5;
+  v6 = extractionRuleset;
   [HDHealthRecordClinicalType enumerateClinicalTypesUsingBlock:v8];
 
   return 1;
@@ -208,12 +208,12 @@ void __63__HDHealthRecordConstructClinicalRecordsTask_processWithError___block_i
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isEligibleClinicalItem:(id)a3 error:(id *)a4
+- (BOOL)_isEligibleClinicalItem:(id)item error:(id *)error
 {
-  v4 = a3;
-  v5 = [v4 extractedMedicalRecord];
+  itemCopy = item;
+  extractedMedicalRecord = [itemCopy extractedMedicalRecord];
 
-  if (!v5)
+  if (!extractedMedicalRecord)
   {
     _HKInitializeLogging();
     v12 = *MEMORY[0x277CCC2C0];
@@ -225,67 +225,67 @@ void __63__HDHealthRecordConstructClinicalRecordsTask_processWithError___block_i
     goto LABEL_7;
   }
 
-  v6 = [v4 extractedMedicalRecord];
+  extractedMedicalRecord2 = [itemCopy extractedMedicalRecord];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if (isKindOfClass & 1) != 0 || ([v4 extractedMedicalRecord], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "enteredInError"), v8, (v9))
+  if (isKindOfClass & 1) != 0 || ([itemCopy extractedMedicalRecord], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "enteredInError"), v8, (v9))
   {
 LABEL_7:
     v11 = 0;
     goto LABEL_8;
   }
 
-  v10 = [v4 extractedMedicalRecord];
-  v11 = [v10 state] != 1;
+  extractedMedicalRecord3 = [itemCopy extractedMedicalRecord];
+  v11 = [extractedMedicalRecord3 state] != 1;
 
 LABEL_8:
   return v11;
 }
 
-- (BOOL)_applyReferenceRulesToClinicalItem:(id)a3 ruleset:(id)a4 error:(id *)a5
+- (BOOL)_applyReferenceRulesToClinicalItem:(id)item ruleset:(id)ruleset error:(id *)error
 {
   v100 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v60 = a4;
-  v8 = [v60 rulesetForClinicalType:{objc_msgSend(v7, "type")}];
+  itemCopy = item;
+  rulesetCopy = ruleset;
+  v8 = [rulesetCopy rulesetForClinicalType:{objc_msgSend(itemCopy, "type")}];
   v61 = v8;
   if (!v8)
   {
     v49 = [MEMORY[0x277D12390] extractionFailureRecordWithCode:3 propertyName:0 resourceKeyPath:0];
     v50 = objc_alloc_init(MEMORY[0x277D12388]);
     [v50 addFailureRecord:v49];
-    [v7 setMedicalRecordPropertyValue:v50 forKey:*MEMORY[0x277D122E8]];
+    [itemCopy setMedicalRecordPropertyValue:v50 forKey:*MEMORY[0x277D122E8]];
 
     v48 = 0;
 LABEL_39:
-    v53 = v60;
+    v53 = rulesetCopy;
     goto LABEL_42;
   }
 
-  v9 = [v8 APIReferenceRules];
-  v10 = [v9 count];
+  aPIReferenceRules = [v8 APIReferenceRules];
+  v10 = [aPIReferenceRules count];
 
-  v11 = [v7 representedResource];
-  v12 = v11;
+  representedResource = [itemCopy representedResource];
+  v12 = representedResource;
   if (!v10)
   {
-    v51 = v11;
-    v52 = [v11 copy];
-    [v7 setAPIResource:v52];
+    v51 = representedResource;
+    v52 = [representedResource copy];
+    [itemCopy setAPIResource:v52];
 
     v48 = 1;
     goto LABEL_39;
   }
 
-  v13 = [HDFHIRReferenceProcessor resourcesContainedInResource:v11 error:a5];
+  v13 = [HDFHIRReferenceProcessor resourcesContainedInResource:representedResource error:error];
   v58 = v13;
   v59 = v12;
   if (v13)
   {
     v14 = v13;
-    v56 = a5;
-    v57 = v7;
+    errorCopy = error;
+    v57 = itemCopy;
     v90[0] = MEMORY[0x277D85DD0];
     v90[1] = 3221225472;
     v90[2] = __95__HDHealthRecordConstructClinicalRecordsTask__applyReferenceRulesToClinicalItem_ruleset_error___block_invoke;
@@ -316,10 +316,10 @@ LABEL_39:
           v16 = *(*(&v86 + 1) + 8 * i);
           [v16 appliesTo];
           v76 = v16;
-          v17 = [v16 keyPath];
-          v18 = [v64 JSONObject];
+          keyPath = [v16 keyPath];
+          jSONObject = [v64 JSONObject];
           v85 = 0;
-          v19 = [HDFHIRReferenceProcessor referencesAtKeyPath:v17 resourceDictionary:v18 error:&v85];
+          v19 = [HDFHIRReferenceProcessor referencesAtKeyPath:keyPath resourceDictionary:jSONObject error:&v85];
           v20 = v85;
 
           if (v19)
@@ -368,12 +368,12 @@ LABEL_39:
                         }
 
                         v28 = *(*(&v77 + 1) + 8 * j);
-                        v29 = [v28 identifier];
-                        if ([HDFHIRReferenceProcessor reference:v22 matchesIdentifier:v29])
+                        identifier = [v28 identifier];
+                        if ([HDFHIRReferenceProcessor reference:v22 matchesIdentifier:identifier])
                         {
-                          v30 = [v76 disallowedResourceTypes];
-                          v31 = [v29 resourceType];
-                          v32 = [v30 containsObject:v31];
+                          disallowedResourceTypes = [v76 disallowedResourceTypes];
+                          resourceType = [identifier resourceType];
+                          v32 = [disallowedResourceTypes containsObject:resourceType];
 
                           v33 = v75;
                           if (v32)
@@ -381,9 +381,9 @@ LABEL_39:
                             goto LABEL_24;
                           }
 
-                          v34 = [v76 allowedResourceTypes];
-                          v35 = [v29 resourceType];
-                          v36 = [v34 containsObject:v35];
+                          allowedResourceTypes = [v76 allowedResourceTypes];
+                          resourceType2 = [identifier resourceType];
+                          v36 = [allowedResourceTypes containsObject:resourceType2];
 
                           v33 = v74;
                           if ((v36 & 1) != 0 || ([v76 allowedResourceTypes], v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "containsObject:", @"Any"), v37, v33 = v74, v38))
@@ -422,10 +422,10 @@ LABEL_24:
             if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_ERROR))
             {
               v40 = v39;
-              v41 = [v16 keyPath];
+              keyPath2 = [v16 keyPath];
               v42 = HKSensitiveLogItem();
               *buf = 138543618;
-              v96 = v41;
+              v96 = keyPath2;
               v97 = 2114;
               v98 = v42;
               _os_log_error_impl(&dword_251CC8000, v40, OS_LOG_TYPE_ERROR, "[ConstructClinicalRecordsTask] Error parsing reference(s) at «%{public}@»: %{public}@. Skipping.", buf, 0x16u);
@@ -446,14 +446,14 @@ LABEL_24:
     v45 = [v74 sortedArrayUsingDescriptors:v44];
     v46 = [v45 hk_map:&__block_literal_global_0];
 
-    v47 = [HDFHIRReferenceProcessor newResourceFromResource:v64 containingOnlyResources:v46 error:v56];
+    v47 = [HDFHIRReferenceProcessor newResourceFromResource:v64 containingOnlyResources:v46 error:errorCopy];
     v48 = v47 != 0;
     if (v47)
     {
       [v57 setAPIResource:v47];
     }
 
-    v7 = v57;
+    itemCopy = v57;
   }
 
   else
@@ -461,7 +461,7 @@ LABEL_24:
     v48 = 0;
   }
 
-  v53 = v60;
+  v53 = rulesetCopy;
 
 LABEL_42:
   v54 = *MEMORY[0x277D85DE8];
@@ -498,34 +498,34 @@ id __95__HDHealthRecordConstructClinicalRecordsTask__applyReferenceRulesToClinic
   return v8;
 }
 
-- (id)_clinicalRecordWithClinicalItem:(id)a3 resourceObject:(id)a4 error:(id *)a5
+- (id)_clinicalRecordWithClinicalItem:(id)item resourceObject:(id)object error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 correspondingClinicalTypeWithError:a5];
+  itemCopy = item;
+  objectCopy = object;
+  v9 = [itemCopy correspondingClinicalTypeWithError:error];
   if (v9)
   {
-    v10 = [v8 identifier];
+    identifier = [objectCopy identifier];
     v11 = objc_alloc(MEMORY[0x277CCD3C8]);
-    v12 = [v10 resourceType];
-    v13 = [v10 identifier];
-    v14 = [v8 FHIRVersion];
-    [v8 data];
-    v15 = v27 = v7;
-    v16 = [v8 sourceURL];
-    v17 = [v8 receivedDate];
-    v18 = [v11 initWithResourceType:v12 identifier:v13 FHIRVersion:v14 data:v15 sourceURL:v16 lastUpdatedDate:v17];
+    resourceType = [identifier resourceType];
+    v10Identifier = [identifier identifier];
+    fHIRVersion = [objectCopy FHIRVersion];
+    [objectCopy data];
+    v15 = v27 = itemCopy;
+    sourceURL = [objectCopy sourceURL];
+    receivedDate = [objectCopy receivedDate];
+    v18 = [v11 initWithResourceType:resourceType identifier:v10Identifier FHIRVersion:fHIRVersion data:v15 sourceURL:sourceURL lastUpdatedDate:receivedDate];
 
-    v19 = [v8 receivedDate];
+    receivedDate2 = [objectCopy receivedDate];
     v20 = MEMORY[0x277CCD110];
-    v21 = [MEMORY[0x277CCD2E8] localDevice];
-    v22 = [v10 stringValue];
-    v23 = [v20 clinicalRecordWithType:v9 startDate:v19 endDate:v19 device:v21 metadata:0 displayName:v22 FHIRResource:v18];
+    localDevice = [MEMORY[0x277CCD2E8] localDevice];
+    stringValue = [identifier stringValue];
+    v23 = [v20 clinicalRecordWithType:v9 startDate:receivedDate2 endDate:receivedDate2 device:localDevice metadata:0 displayName:stringValue FHIRResource:v18];
 
-    v7 = v27;
-    v24 = [v27 representedResource];
-    v25 = [v24 firstSeenDate];
-    [v23 _setCreationDate:v25];
+    itemCopy = v27;
+    representedResource = [v27 representedResource];
+    firstSeenDate = [representedResource firstSeenDate];
+    [v23 _setCreationDate:firstSeenDate];
   }
 
   else

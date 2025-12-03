@@ -1,27 +1,27 @@
 @interface FMInsetLabel
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC6FindMy12FMInsetLabel)initWithFrame:(CGRect)a3;
-- (void)drawTextInRect:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC6FindMy12FMInsetLabel)initWithFrame:(CGRect)frame;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation FMInsetLabel
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_10010AE0C(x, y, width, height);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_10010AF1C(width, height);
   v8 = v7;
 
@@ -34,7 +34,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10010B040();
   v5 = v4;
 
@@ -45,12 +45,12 @@
   return result;
 }
 
-- (_TtC6FindMy12FMInsetLabel)initWithFrame:(CGRect)a3
+- (_TtC6FindMy12FMInsetLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy12FMInsetLabel_topInset) = 0x4020000000000000;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy12FMInsetLabel_leftInset) = 0x4020000000000000;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy12FMInsetLabel_bottomInset) = 0x4020000000000000;

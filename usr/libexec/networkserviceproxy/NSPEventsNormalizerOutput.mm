@@ -1,31 +1,31 @@
 @interface NSPEventsNormalizerOutput
-- (NSPEventsNormalizerOutput)initWithIdentity:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (NSPEventsNormalizerOutput)initWithIdentity:(id)identity;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation NSPEventsNormalizerOutput
 
-- (NSPEventsNormalizerOutput)initWithIdentity:(id)a3
+- (NSPEventsNormalizerOutput)initWithIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v9.receiver = self;
   v9.super_class = NSPEventsNormalizerOutput;
   v6 = [(NSPEventsNormalizerOutput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_Identity, a3);
+    objc_storeStrong(&v6->_Identity, identity);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"Identity"])
+  if ([name isEqualToString:@"Identity"])
   {
-    v4 = [(NSPEventsNormalizerOutput *)self Identity];
-    v5 = [MLFeatureValue featureValueWithMultiArray:v4];
+    identity = [(NSPEventsNormalizerOutput *)self Identity];
+    v5 = [MLFeatureValue featureValueWithMultiArray:identity];
   }
 
   else

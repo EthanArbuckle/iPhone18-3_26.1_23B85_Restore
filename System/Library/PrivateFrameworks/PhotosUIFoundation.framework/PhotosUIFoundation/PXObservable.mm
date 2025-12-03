@@ -4,14 +4,14 @@
 - (void)_didChange;
 - (void)_observersQueue_copyChangeObserversForWriteIfNeeded;
 - (void)_publishChanges;
-- (void)_setHasObservers:(BOOL)a3;
+- (void)_setHasObservers:(BOOL)observers;
 - (void)_willChange;
-- (void)copyLogConfigurationFrom:(id)a3;
-- (void)enumerateObserversUsingBlock:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)registerChangeObserver:(id)a3 context:(void *)a4;
-- (void)setLog:(id)a3;
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4;
+- (void)copyLogConfigurationFrom:(id)from;
+- (void)enumerateObserversUsingBlock:(id)block;
+- (void)performChanges:(id)changes;
+- (void)registerChangeObserver:(id)observer context:(void *)context;
+- (void)setLog:(id)log;
+- (void)unregisterChangeObserver:(id)observer context:(void *)context;
 @end
 
 @implementation PXObservable
@@ -40,13 +40,13 @@
   v18 = *MEMORY[0x1E69E9840];
   if (self->_observersQueue_shouldCopyChangeObserversOnWrite)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(NSMapTable *)self->_observersQueue_changeObserversWithContexts keyEnumerator];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    keyEnumerator = [(NSMapTable *)self->_observersQueue_changeObserversWithContexts keyEnumerator];
+    v5 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -57,24 +57,24 @@
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
           v10 = [(NSMapTable *)self->_observersQueue_changeObserversWithContexts objectForKey:v9];
           v11 = [v10 copy];
 
-          [(NSMapTable *)v3 setObject:v11 forKey:v9];
+          [(NSMapTable *)weakToStrongObjectsMapTable setObject:v11 forKey:v9];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
     }
 
     observersQueue_changeObserversWithContexts = self->_observersQueue_changeObserversWithContexts;
-    self->_observersQueue_changeObserversWithContexts = v3;
+    self->_observersQueue_changeObserversWithContexts = weakToStrongObjectsMapTable;
 
     self->_observersQueue_shouldCopyChangeObserversOnWrite = 0;
   }
@@ -146,8 +146,8 @@
 
     if (self->_numAppliedPendingChanges >= 50)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXObservable.m" lineNumber:257 description:{@"Change depth limit reached (%ld), this indicates infinite state ping-ponging, investigate the stack trace and figure out why the observable doesn't reach a stable state. Typically because two observers are trying to set different new values in response to the same change.", 50}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXObservable.m" lineNumber:257 description:{@"Change depth limit reached (%ld), this indicates infinite state ping-ponging, investigate the stack trace and figure out why the observable doesn't reach a stable state. Typically because two observers are trying to set different new values in response to the same change.", 50}];
     }
   }
 
@@ -206,19 +206,19 @@ void __36__PXObservable__applyPendingChanges__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)_setHasObservers:(BOOL)a3
+- (void)_setHasObservers:(BOOL)observers
 {
-  if (self->_hasObservers != a3)
+  if (self->_hasObservers != observers)
   {
-    self->_hasObservers = a3;
+    self->_hasObservers = observers;
     [(PXObservable *)self hasObserversDidChange];
   }
 }
 
-- (void)enumerateObserversUsingBlock:(id)a3
+- (void)enumerateObserversUsingBlock:(id)block
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   isEnumeratingObservers = self->_isEnumeratingObservers;
   self->_isEnumeratingObservers = 1;
   v25 = 0;
@@ -240,8 +240,8 @@ void __36__PXObservable__applyPendingChanges__block_invoke(uint64_t a1, void *a2
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v26[5] keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v31 count:16];
+  keyEnumerator = [v26[5] keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v19 objects:v31 count:16];
   v8 = v7;
   if (v7)
   {
@@ -253,7 +253,7 @@ LABEL_3:
     {
       if (*v20 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(keyEnumerator);
       }
 
       v11 = *(*(&v19 + 1) + 8 * v10);
@@ -261,7 +261,7 @@ LABEL_3:
       v13 = 0;
       while (v13 < [v12 count])
       {
-        v4[2](v4, v11, [v12 pointerAtIndex:v13++], &v23);
+        blockCopy[2](blockCopy, v11, [v12 pointerAtIndex:v13++], &v23);
         if (v23 == 1)
         {
 
@@ -278,7 +278,7 @@ LABEL_3:
 
       if (++v10 == v16)
       {
-        v16 = [v6 countByEnumeratingWithState:&v19 objects:v31 count:16];
+        v16 = [keyEnumerator countByEnumeratingWithState:&v19 objects:v31 count:16];
         if (v16)
         {
           goto LABEL_3;
@@ -303,18 +303,18 @@ LABEL_13:
   _Block_object_dispose(&v25, 8);
 }
 
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4
+- (void)unregisterChangeObserver:(id)observer context:(void *)context
 {
-  v6 = a3;
+  observerCopy = observer;
   observersQueue = self->_observersQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__PXObservable_unregisterChangeObserver_context___block_invoke;
   block[3] = &unk_1E7BB7F20;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = observerCopy;
+  contextCopy = context;
+  v8 = observerCopy;
   dispatch_sync(observersQueue, block);
 }
 
@@ -363,18 +363,18 @@ LABEL_7:
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (void)registerChangeObserver:(id)a3 context:(void *)a4
+- (void)registerChangeObserver:(id)observer context:(void *)context
 {
-  v6 = a3;
+  observerCopy = observer;
   observersQueue = self->_observersQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__PXObservable_registerChangeObserver_context___block_invoke;
   block[3] = &unk_1E7BB7F20;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = observerCopy;
+  contextCopy = context;
+  v8 = observerCopy;
   dispatch_sync(observersQueue, block);
   if (v8)
   {
@@ -437,16 +437,16 @@ LABEL_14:
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v5 = a3;
-  v14 = v5;
-  if (!v5)
+  changesCopy = changes;
+  v14 = changesCopy;
+  if (!changesCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXObservable.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"changeBlock != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXObservable.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"changeBlock != nil"}];
 
-    v5 = 0;
+    changesCopy = 0;
   }
 
   if (self->_isEnumeratingObservers)
@@ -454,14 +454,14 @@ LABEL_14:
     pendingChangeBlocks = self->_pendingChangeBlocks;
     if (pendingChangeBlocks)
     {
-      v7 = [v5 copy];
+      v7 = [changesCopy copy];
       [(NSMutableArray *)pendingChangeBlocks addObject:v7];
     }
 
     else
     {
       v9 = MEMORY[0x1E695DF70];
-      v10 = [v5 copy];
+      v10 = [changesCopy copy];
       v11 = [v9 arrayWithObject:v10];
       v12 = self->_pendingChangeBlocks;
       self->_pendingChangeBlocks = v11;
@@ -471,37 +471,37 @@ LABEL_14:
   else
   {
     [(PXObservable *)self _willChange];
-    v8 = [(PXObservable *)self mutableChangeObject];
-    v14[2](v14, v8);
+    mutableChangeObject = [(PXObservable *)self mutableChangeObject];
+    v14[2](v14, mutableChangeObject);
 
     [(PXObservable *)self _didChange];
   }
 }
 
-- (void)copyLogConfigurationFrom:(id)a3
+- (void)copyLogConfigurationFrom:(id)from
 {
-  v4 = a3;
-  v5 = [v4 log];
+  fromCopy = from;
+  v5 = [fromCopy log];
   [(PXObservable *)self setLog:v5];
 
-  v6 = [v4 logContext];
+  logContext = [fromCopy logContext];
 
-  [(PXObservable *)self setLogContext:v6];
+  [(PXObservable *)self setLogContext:logContext];
 }
 
-- (void)setLog:(id)a3
+- (void)setLog:(id)log
 {
-  v4 = a3;
-  if (!v4)
+  logCopy = log;
+  if (!logCopy)
   {
     v5 = *MEMORY[0x1E69BDDA0];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v4 = os_log_create(v5, [v7 UTF8String]);
+    logCopy = os_log_create(v5, [v7 UTF8String]);
   }
 
   log = self->_log;
-  self->_log = v4;
+  self->_log = logCopy;
 }
 
 @end

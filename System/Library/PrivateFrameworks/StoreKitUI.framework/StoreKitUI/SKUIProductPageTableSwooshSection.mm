@@ -1,24 +1,24 @@
 @interface SKUIProductPageTableSwooshSection
 - (SKUIColorScheme)colorScheme;
-- (SKUIProductPageTableSwooshSection)initWithItems:(id)a3 title:(id)a4;
-- (SKUIProductPageTableSwooshSection)initWithLockups:(id)a3 title:(id)a4;
+- (SKUIProductPageTableSwooshSection)initWithItems:(id)items title:(id)title;
+- (SKUIProductPageTableSwooshSection)initWithLockups:(id)lockups title:(id)title;
 - (id)_artworkLoader;
 - (id)_missingItemLoader;
 - (id)_swooshViewController;
-- (id)headerViewForTableView:(id)a3;
-- (id)swoosh:(id)a3 imageForCellAtIndex:(int64_t)a4;
+- (id)headerViewForTableView:(id)view;
+- (id)swoosh:(id)swoosh imageForCellAtIndex:(int64_t)index;
 - (void)dealloc;
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5;
-- (void)setColorScheme:(id)a3;
-- (void)swoosh:(id)a3 didSelectCellAtIndex:(int64_t)a4;
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers;
+- (void)setColorScheme:(id)scheme;
+- (void)swoosh:(id)swoosh didSelectCellAtIndex:(int64_t)index;
 @end
 
 @implementation SKUIProductPageTableSwooshSection
 
-- (SKUIProductPageTableSwooshSection)initWithItems:(id)a3 title:(id)a4
+- (SKUIProductPageTableSwooshSection)initWithItems:(id)items title:(id)title
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  titleCopy = title;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductPageTableSwooshSection initWithItems:title:];
@@ -30,8 +30,8 @@
   if (v8)
   {
     v9 = objc_alloc_init(SKUIItemList);
-    [(SKUIItemList *)v9 setItems:v6];
-    [(SKUIItemList *)v9 setTitle:v7];
+    [(SKUIItemList *)v9 setItems:itemsCopy];
+    [(SKUIItemList *)v9 setTitle:titleCopy];
     v10 = [[SKUISwooshPageComponent alloc] initWithItemList:v9];
     swooshComponent = v8->_swooshComponent;
     v8->_swooshComponent = v10;
@@ -40,10 +40,10 @@
   return v8;
 }
 
-- (SKUIProductPageTableSwooshSection)initWithLockups:(id)a3 title:(id)a4
+- (SKUIProductPageTableSwooshSection)initWithLockups:(id)lockups title:(id)title
 {
-  v6 = a3;
-  v7 = a4;
+  lockupsCopy = lockups;
+  titleCopy = title;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductPageTableSwooshSection initWithLockups:title:];
@@ -54,7 +54,7 @@
   v8 = [(SKUIProductPageTableSwooshSection *)&v12 init];
   if (v8)
   {
-    v9 = [[SKUISwooshPageComponent alloc] initWithLockups:v6 swooshType:0 title:v7];
+    v9 = [[SKUISwooshPageComponent alloc] initWithLockups:lockupsCopy swooshType:0 title:titleCopy];
     swooshComponent = v8->_swooshComponent;
     v8->_swooshComponent = v9;
   }
@@ -73,86 +73,86 @@
 
 - (SKUIColorScheme)colorScheme
 {
-  v2 = [(SKUIProductPageTableSwooshSection *)self _swooshViewController];
-  v3 = [v2 colorScheme];
+  _swooshViewController = [(SKUIProductPageTableSwooshSection *)self _swooshViewController];
+  colorScheme = [_swooshViewController colorScheme];
 
-  return v3;
+  return colorScheme;
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v4 = a3;
-  v5 = [(SKUIProductPageTableSwooshSection *)self _swooshViewController];
-  [v5 setColorScheme:v4];
+  schemeCopy = scheme;
+  _swooshViewController = [(SKUIProductPageTableSwooshSection *)self _swooshViewController];
+  [_swooshViewController setColorScheme:schemeCopy];
 }
 
-- (id)headerViewForTableView:(id)a3
+- (id)headerViewForTableView:(id)view
 {
   if (!self->_missingItemLoader && [(SKUISwooshPageComponent *)self->_swooshComponent isMissingItemData])
   {
-    v4 = [(SKUIProductPageTableSwooshSection *)self _missingItemLoader];
-    [v4 loadItemsForPageComponent:self->_swooshComponent startIndex:0 reason:1];
+    _missingItemLoader = [(SKUIProductPageTableSwooshSection *)self _missingItemLoader];
+    [_missingItemLoader loadItemsForPageComponent:self->_swooshComponent startIndex:0 reason:1];
   }
 
-  v5 = [(SKUIProductPageTableSwooshSection *)self _swooshViewController];
-  v6 = [v5 view];
+  _swooshViewController = [(SKUIProductPageTableSwooshSection *)self _swooshViewController];
+  view = [_swooshViewController view];
 
-  return v6;
+  return view;
 }
 
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers
 {
-  v10 = a4;
-  if ([v10 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v6 = [(SKUISwooshPageComponent *)self->_swooshComponent _updateLockupItemsWithItems:v10];
+    v6 = [(SKUISwooshPageComponent *)self->_swooshComponent _updateLockupItemsWithItems:itemsCopy];
     swooshViewController = self->_swooshViewController;
-    v8 = [(SKUISwooshPageComponent *)self->_swooshComponent lockups];
-    [(SKUILockupSwooshViewController *)swooshViewController setLockups:v8];
+    lockups = [(SKUISwooshPageComponent *)self->_swooshComponent lockups];
+    [(SKUILockupSwooshViewController *)swooshViewController setLockups:lockups];
 
-    v9 = [(SKUIProductPageTableSwooshSection *)self _artworkLoader];
-    [v9 loadImagesForNextPageWithReason:0];
+    _artworkLoader = [(SKUIProductPageTableSwooshSection *)self _artworkLoader];
+    [_artworkLoader loadImagesForNextPageWithReason:0];
   }
 }
 
-- (void)swoosh:(id)a3 didSelectCellAtIndex:(int64_t)a4
+- (void)swoosh:(id)swoosh didSelectCellAtIndex:(int64_t)index
 {
   if (self->_actionBlock)
   {
-    v6 = [a3 lockups];
-    v9 = [v6 objectAtIndex:a4];
+    lockups = [swoosh lockups];
+    v9 = [lockups objectAtIndex:index];
 
     actionBlock = self->_actionBlock;
-    v8 = [v9 item];
-    actionBlock[2](actionBlock, v8);
+    item = [v9 item];
+    actionBlock[2](actionBlock, item);
   }
 }
 
-- (id)swoosh:(id)a3 imageForCellAtIndex:(int64_t)a4
+- (id)swoosh:(id)swoosh imageForCellAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(SKUIProductPageTableSwooshSection *)self _artworkLoader];
-  v8 = [v6 lockups];
+  swooshCopy = swoosh;
+  _artworkLoader = [(SKUIProductPageTableSwooshSection *)self _artworkLoader];
+  lockups = [swooshCopy lockups];
 
-  v9 = [v8 objectAtIndex:a4];
+  v9 = [lockups objectAtIndex:index];
 
-  v10 = [v9 item];
-  if (v10)
+  item = [v9 item];
+  if (item)
   {
-    v11 = [v7 cachedImageForItem:v10];
+    v11 = [_artworkLoader cachedImageForItem:item];
     if (v11)
     {
       goto LABEL_6;
     }
 
-    [v7 loadImageForItem:v10 reason:1];
-    v12 = v7;
-    v13 = v10;
+    [_artworkLoader loadImageForItem:item reason:1];
+    v12 = _artworkLoader;
+    v13 = item;
   }
 
   else
   {
-    v12 = v7;
+    v12 = _artworkLoader;
     v13 = 0;
   }
 
@@ -168,9 +168,9 @@ LABEL_6:
   if (!artworkLoader)
   {
     v4 = [SKUILockupSwooshArtworkLoader alloc];
-    v5 = [(SKUIProductPageTableSwooshSection *)self resourceLoader];
-    v6 = [(SKUIProductPageTableSwooshSection *)self _swooshViewController];
-    v7 = [(SKUILockupSwooshArtworkLoader *)v4 initWithArtworkLoader:v5 swoosh:v6];
+    resourceLoader = [(SKUIProductPageTableSwooshSection *)self resourceLoader];
+    _swooshViewController = [(SKUIProductPageTableSwooshSection *)self _swooshViewController];
+    v7 = [(SKUILockupSwooshArtworkLoader *)v4 initWithArtworkLoader:resourceLoader swoosh:_swooshViewController];
     v8 = self->_artworkLoader;
     self->_artworkLoader = v7;
 
@@ -186,8 +186,8 @@ LABEL_6:
   if (!missingItemLoader)
   {
     v4 = [SKUIMissingItemLoader alloc];
-    v5 = [(SKUIProductPageTableSwooshSection *)self resourceLoader];
-    v6 = [(SKUIMissingItemLoader *)v4 initWithResourceLoader:v5];
+    resourceLoader = [(SKUIProductPageTableSwooshSection *)self resourceLoader];
+    v6 = [(SKUIMissingItemLoader *)v4 initWithResourceLoader:resourceLoader];
     v7 = self->_missingItemLoader;
     self->_missingItemLoader = v6;
 
@@ -208,14 +208,14 @@ LABEL_6:
     self->_swooshViewController = v4;
 
     v6 = self->_swooshViewController;
-    v7 = [(SKUIProductPageTableSection *)self clientContext];
-    [(SKUILockupSwooshViewController *)v6 setClientContext:v7];
+    clientContext = [(SKUIProductPageTableSection *)self clientContext];
+    [(SKUILockupSwooshViewController *)v6 setClientContext:clientContext];
 
     [(SKUILockupSwooshViewController *)self->_swooshViewController setDelegate:self];
     v8 = self->_swooshViewController;
-    v9 = [(SKUILockupSwooshViewController *)v8 artworkContext];
-    v10 = [v9 iconConsumer];
-    [v10 imageSize];
+    artworkContext = [(SKUILockupSwooshViewController *)v8 artworkContext];
+    iconConsumer = [artworkContext iconConsumer];
+    [iconConsumer imageSize];
     [(SKUILockupSwooshViewController *)v8 _setExpectedImageSize:?];
 
     swooshViewController = self->_swooshViewController;

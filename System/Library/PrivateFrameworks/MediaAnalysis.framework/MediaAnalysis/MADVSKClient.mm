@@ -1,5 +1,5 @@
 @interface MADVSKClient
-- (MADVSKClient)initWithConfig:(id)a3 error:(id *)a4;
+- (MADVSKClient)initWithConfig:(id)config error:(id *)error;
 - (void)cooldown;
 - (void)dealloc;
 - (void)warmup;
@@ -7,15 +7,15 @@
 
 @implementation MADVSKClient
 
-- (MADVSKClient)initWithConfig:(id)a3 error:(id *)a4
+- (MADVSKClient)initWithConfig:(id)config error:(id *)error
 {
-  v6 = a3;
+  configCopy = config;
   v11.receiver = self;
   v11.super_class = MADVSKClient;
   v7 = [(MADVSKClient *)&v11 init];
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x1E69DF608]) initWithConfig:v6 error:a4];
+    v8 = [objc_alloc(MEMORY[0x1E69DF608]) initWithConfig:configCopy error:error];
     client = v7->_client;
     v7->_client = v8;
   }

@@ -1,7 +1,7 @@
 @interface TGIE5BaseModelObjC
-- (BOOL)load:(id *)a3;
+- (BOOL)load:(id *)load;
 - (NSString)assetIdentifier;
-- (TGIE5BaseModelObjC)initWithModelConfiguration:(id)a3;
+- (TGIE5BaseModelObjC)initWithModelConfiguration:(id)configuration;
 - (id).cxx_construct;
 - (shared_ptr<cgm::token_generation_inference::espresso_inference::AJAXE5MLModelBase>)baseModel;
 - (unordered_map<std::string,)sharedConstants;
@@ -11,17 +11,17 @@
 
 @implementation TGIE5BaseModelObjC
 
-- (TGIE5BaseModelObjC)initWithModelConfiguration:(id)a3
+- (TGIE5BaseModelObjC)initWithModelConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = TGIE5BaseModelObjC;
   v5 = [(TGIE5BaseModelObjC *)&v18 init];
   if (v5)
   {
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [v4 modelBundlePath];
-    v8 = [v6 URLWithString:v7];
+    modelBundlePath = [configurationCopy modelBundlePath];
+    v8 = [v6 URLWithString:modelBundlePath];
     modelURL = v5->_modelURL;
     v5->_modelURL = v8;
 
@@ -29,44 +29,44 @@
     log = v5->_log;
     v5->_log = v10;
 
-    v5->_useEnergyEfficientMode = [v4 useEnergyEfficientMode];
+    v5->_useEnergyEfficientMode = [configurationCopy useEnergyEfficientMode];
     v12 = [TGIE5ANESessionObjC alloc];
     v13 = v5->_modelURL;
-    v14 = [v4 useEnergyEfficientMode];
-    v15 = [v4 assetIdentifier];
-    v16 = [(TGIE5ANESessionObjC *)v12 initWithResourceURL:v13 useEnergyEfficientMode:v14 assetIdentifier:v15];
+    useEnergyEfficientMode = [configurationCopy useEnergyEfficientMode];
+    assetIdentifier = [configurationCopy assetIdentifier];
+    v16 = [(TGIE5ANESessionObjC *)v12 initWithResourceURL:v13 useEnergyEfficientMode:useEnergyEfficientMode assetIdentifier:assetIdentifier];
     [(TGIE5BaseModelObjC *)v5 setAneSession:v16];
   }
 
   return v5;
 }
 
-- (BOOL)load:(id *)a3
+- (BOOL)load:(id *)load
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = self->_log;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(TGIE5BaseModelObjC *)self modelURL];
+    modelURL = [(TGIE5BaseModelObjC *)self modelURL];
     LODWORD(buf.__r_.__value_.__l.__data_) = 138412290;
-    *(buf.__r_.__value_.__r.__words + 4) = v5;
+    *(buf.__r_.__value_.__r.__words + 4) = modelURL;
     _os_log_impl(&dword_220940000, v4, OS_LOG_TYPE_INFO, "Loading base model with model : %@", &buf, 0xCu);
   }
 
   [(TGIE5BaseModelObjC *)self modelURL];
-  v6 = [objc_claimAutoreleasedReturnValue() path];
-  v7 = v6;
-  v10 = [v6 UTF8String];
-  std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&buf, &v10);
+  path = [objc_claimAutoreleasedReturnValue() path];
+  v7 = path;
+  uTF8String = [path UTF8String];
+  std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&buf, &uTF8String);
   cgm::token_generation_inference::espresso_inference::AJAXE5MLModelBase::create(&buf, v8);
 }
 
 - (NSString)assetIdentifier
 {
-  v2 = [(TGIE5BaseModelObjC *)self aneSession];
-  v3 = [v2 assetIdentifier];
+  aneSession = [(TGIE5BaseModelObjC *)self aneSession];
+  assetIdentifier = [aneSession assetIdentifier];
 
-  return v3;
+  return assetIdentifier;
 }
 
 - (unordered_map<std::string,)sharedConstants
@@ -84,14 +84,14 @@
 
 - (void)moveToDynamicState
 {
-  v2 = [(TGIE5BaseModelObjC *)self aneSession];
-  [v2 stop];
+  aneSession = [(TGIE5BaseModelObjC *)self aneSession];
+  [aneSession stop];
 }
 
 - (void)moveToFullyLoadedState
 {
-  v2 = [(TGIE5BaseModelObjC *)self aneSession];
-  [v2 resume];
+  aneSession = [(TGIE5BaseModelObjC *)self aneSession];
+  [aneSession resume];
 }
 
 - (shared_ptr<cgm::token_generation_inference::espresso_inference::AJAXE5MLModelBase>)baseModel

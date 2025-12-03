@@ -2,14 +2,14 @@
 + (id)systemChangeDictionaryAccumulatorKeys;
 - (ATXHomeScreenLogSystemChangeDictionary)init;
 - (BOOL)_fetchHasHadWidgetsOnHomeScreenUserDefault;
-- (BOOL)_suggestedWidgetWasExplicitlyDismissedWithEvent:(id)a3;
+- (BOOL)_suggestedWidgetWasExplicitlyDismissedWithEvent:(id)event;
 - (id)_createNewSystemChangeDictionary;
 - (id)dryRunResult;
-- (void)_logSuggestedWidgetDismissalWithEvent:(id)a3;
-- (void)_logSuggestedWidgetExplicitDismissalWithEvent:(id)a3;
+- (void)_logSuggestedWidgetDismissalWithEvent:(id)event;
+- (void)_logSuggestedWidgetExplicitDismissalWithEvent:(id)event;
 - (void)sendToCoreAnalytics;
-- (void)updateSystemChangeSummaryForHomeScreenEvent:(id)a3;
-- (void)updateSystemChangeSummaryForHomeScreenPages:(id)a3;
+- (void)updateSystemChangeSummaryForHomeScreenEvent:(id)event;
+- (void)updateSystemChangeSummaryForHomeScreenPages:(id)pages;
 @end
 
 @implementation ATXHomeScreenLogSystemChangeDictionary
@@ -22,9 +22,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(ATXHomeScreenLogSystemChangeDictionary *)v2 _createNewSystemChangeDictionary];
+    _createNewSystemChangeDictionary = [(ATXHomeScreenLogSystemChangeDictionary *)v2 _createNewSystemChangeDictionary];
     systemChangeDictionary = v3->_systemChangeDictionary;
-    v3->_systemChangeDictionary = v4;
+    v3->_systemChangeDictionary = _createNewSystemChangeDictionary;
   }
 
   return v3;
@@ -78,8 +78,8 @@ void __79__ATXHomeScreenLogSystemChangeDictionary_systemChangeDictionaryAccumula
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [objc_opt_class() systemChangeDictionaryAccumulatorKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  systemChangeDictionaryAccumulatorKeys = [objc_opt_class() systemChangeDictionaryAccumulatorKeys];
+  v6 = [systemChangeDictionaryAccumulatorKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -90,13 +90,13 @@ void __79__ATXHomeScreenLogSystemChangeDictionary_systemChangeDictionaryAccumula
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(systemChangeDictionaryAccumulatorKeys);
         }
 
         [v3 setObject:&unk_283A55FD0 forKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [systemChangeDictionaryAccumulatorKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -107,14 +107,14 @@ void __79__ATXHomeScreenLogSystemChangeDictionary_systemChangeDictionaryAccumula
   return v3;
 }
 
-- (void)updateSystemChangeSummaryForHomeScreenPages:(id)a3
+- (void)updateSystemChangeSummaryForHomeScreenPages:(id)pages
 {
   v33 = *MEMORY[0x277D85DE8];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = a3;
+  obj = pages;
   v4 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v4)
   {
@@ -141,9 +141,9 @@ void __79__ATXHomeScreenLogSystemChangeDictionary_systemChangeDictionaryAccumula
           v26 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v10 = [v9 stacks];
-          v11 = [v9 panels];
-          v12 = [v10 arrayByAddingObjectsFromArray:v11];
+          stacks = [v9 stacks];
+          panels = [v9 panels];
+          v12 = [stacks arrayByAddingObjectsFromArray:panels];
 
           v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v13)
@@ -159,8 +159,8 @@ void __79__ATXHomeScreenLogSystemChangeDictionary_systemChangeDictionaryAccumula
                   objc_enumerationMutation(v12);
                 }
 
-                v17 = [*(*(&v23 + 1) + 8 * i) widgets];
-                +[ATXHomeScreenLogUploaderUtilities add:toDictionary:forKey:](ATXHomeScreenLogUploaderUtilities, "add:toDictionary:forKey:", [v17 count], self->_systemChangeDictionary, @"WidgetsOnHomeScreen");
+                widgets = [*(*(&v23 + 1) + 8 * i) widgets];
+                +[ATXHomeScreenLogUploaderUtilities add:toDictionary:forKey:](ATXHomeScreenLogUploaderUtilities, "add:toDictionary:forKey:", [widgets count], self->_systemChangeDictionary, @"WidgetsOnHomeScreen");
               }
 
               v14 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -196,28 +196,28 @@ void __79__ATXHomeScreenLogSystemChangeDictionary_systemChangeDictionaryAccumula
   return v4;
 }
 
-- (void)updateSystemChangeSummaryForHomeScreenEvent:(id)a3
+- (void)updateSystemChangeSummaryForHomeScreenEvent:(id)event
 {
-  v20 = a3;
-  v4 = [v20 eventTypeString];
-  if ([v4 isEqualToString:@"Unknown"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"HomeScreenPageShown") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"HomeScreenDisappeared") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"StackChanged") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"WidgetTapped") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"WidgetLongLook"))
+  eventCopy = event;
+  eventTypeString = [eventCopy eventTypeString];
+  if ([eventTypeString isEqualToString:@"Unknown"] & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"HomeScreenPageShown") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"HomeScreenDisappeared") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"StackChanged") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"WidgetTapped") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"WidgetLongLook"))
   {
     goto LABEL_7;
   }
 
-  if (([v4 isEqualToString:@"WidgetUserFeedback"] & 1) == 0)
+  if (([eventTypeString isEqualToString:@"WidgetUserFeedback"] & 1) == 0)
   {
-    if (([v4 isEqualToString:@"UserStackConfigChanged"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"DeviceLocked") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"DeviceUnlocked") & 1) == 0)
+    if (([eventTypeString isEqualToString:@"UserStackConfigChanged"] & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"DeviceLocked") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"DeviceUnlocked") & 1) == 0)
     {
-      if ([v4 isEqualToString:@"PinnedWidgetAdded"])
+      if ([eventTypeString isEqualToString:@"PinnedWidgetAdded"])
       {
 
-        v5 = [v20 metadata];
-        v6 = [v5 isSuggestionInAddWidgetSheet];
-        v7 = [v6 BOOLValue];
+        metadata = [eventCopy metadata];
+        isSuggestionInAddWidgetSheet = [metadata isSuggestionInAddWidgetSheet];
+        bOOLValue = [isSuggestionInAddWidgetSheet BOOLValue];
 
         systemChangeDictionary = self->_systemChangeDictionary;
-        if (v7)
+        if (bOOLValue)
         {
           v9 = @"WidgetsAddedViaGallery";
         }
@@ -232,29 +232,29 @@ LABEL_25:
         goto LABEL_8;
       }
 
-      if ([v4 isEqualToString:@"PinnedWidgetDeleted"])
+      if ([eventTypeString isEqualToString:@"PinnedWidgetDeleted"])
       {
 
-        v5 = [v20 metadata];
+        metadata = [eventCopy metadata];
         [ATXHomeScreenLogUploaderUtilities incrementDictionary:self->_systemChangeDictionary forKey:@"WidgetsRemoved"];
         goto LABEL_22;
       }
 
-      if (([v4 isEqualToString:@"SpecialPageAppeared"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"SpecialPageDisappeared") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"StackShown") & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"StackDisappeared") & 1) == 0)
+      if (([eventTypeString isEqualToString:@"SpecialPageAppeared"] & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"SpecialPageDisappeared") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackShown") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackDisappeared") & 1) == 0)
       {
-        if ([v4 isEqualToString:@"StackCreated"])
+        if ([eventTypeString isEqualToString:@"StackCreated"])
         {
 
-          v5 = [v20 metadata];
-          v10 = [v5 isSuggestionInAddWidgetSheet];
-          v11 = [v10 BOOLValue];
+          metadata = [eventCopy metadata];
+          isSuggestionInAddWidgetSheet2 = [metadata isSuggestionInAddWidgetSheet];
+          bOOLValue2 = [isSuggestionInAddWidgetSheet2 BOOLValue];
 
           v12 = self->_systemChangeDictionary;
-          if (v11)
+          if (bOOLValue2)
           {
             [ATXHomeScreenLogUploaderUtilities incrementDictionary:v12 forKey:@"DefaultStacksCreated"];
-            v13 = [v5 widgetsInStack];
-            v14 = [v13 count];
+            widgetsInStack = [metadata widgetsInStack];
+            v14 = [widgetsInStack count];
             v15 = self->_systemChangeDictionary;
             v16 = @"WidgetsAddedToStackInGallerySuggestions";
           }
@@ -262,8 +262,8 @@ LABEL_25:
           else
           {
             [ATXHomeScreenLogUploaderUtilities incrementDictionary:v12 forKey:@"ManualStacksCreated"];
-            v13 = [v5 widgetsInStack];
-            v14 = [v13 count];
+            widgetsInStack = [metadata widgetsInStack];
+            v14 = [widgetsInStack count];
             v15 = self->_systemChangeDictionary;
             v16 = @"WidgetsAddedToStackNotInGallerySuggestions";
           }
@@ -271,17 +271,17 @@ LABEL_25:
 
         else
         {
-          if (([v4 isEqualToString:@"StackDeleted"] & 1) == 0)
+          if (([eventTypeString isEqualToString:@"StackDeleted"] & 1) == 0)
           {
-            if ([v4 isEqualToString:@"WidgetAddedToStack"])
+            if ([eventTypeString isEqualToString:@"WidgetAddedToStack"])
             {
 
-              v5 = [v20 metadata];
-              v18 = [v5 isSuggestionInAddWidgetSheet];
-              v19 = [v18 BOOLValue];
+              metadata = [eventCopy metadata];
+              isSuggestionInAddWidgetSheet3 = [metadata isSuggestionInAddWidgetSheet];
+              bOOLValue3 = [isSuggestionInAddWidgetSheet3 BOOLValue];
 
               systemChangeDictionary = self->_systemChangeDictionary;
-              if (v19)
+              if (bOOLValue3)
               {
                 v9 = @"WidgetsAddedToStackInGallerySuggestions";
               }
@@ -294,21 +294,21 @@ LABEL_25:
               goto LABEL_25;
             }
 
-            if (([v4 isEqualToString:@"WidgetRemovedFromStack"] & 1) == 0)
+            if (([eventTypeString isEqualToString:@"WidgetRemovedFromStack"] & 1) == 0)
             {
-              if (([v4 isEqualToString:@"StackVisibilityChanged"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"AppAdded") & 1) == 0)
+              if (([eventTypeString isEqualToString:@"StackVisibilityChanged"] & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"AppAdded") & 1) == 0)
               {
-                [v4 isEqualToString:@"AppRemoved"];
+                [eventTypeString isEqualToString:@"AppRemoved"];
               }
 
               goto LABEL_7;
             }
 
-            v5 = [v20 metadata];
+            metadata = [eventCopy metadata];
             [ATXHomeScreenLogUploaderUtilities incrementDictionary:self->_systemChangeDictionary forKey:@"WidgetsRemovedFromStack"];
-            [(ATXHomeScreenLogSystemChangeDictionary *)self _logSuggestedWidgetDismissalWithEvent:v20];
+            [(ATXHomeScreenLogSystemChangeDictionary *)self _logSuggestedWidgetDismissalWithEvent:eventCopy];
 LABEL_22:
-            [v20 stackLocation];
+            [eventCopy stackLocation];
             if (!ATXStackLocationIsHomeScreen())
             {
               goto LABEL_8;
@@ -319,19 +319,19 @@ LABEL_22:
             goto LABEL_25;
           }
 
-          v5 = [v20 metadata];
+          metadata = [eventCopy metadata];
           [ATXHomeScreenLogUploaderUtilities incrementDictionary:self->_systemChangeDictionary forKey:@"StacksRemoved"];
-          v17 = [v5 widgetsInStack];
-          +[ATXHomeScreenLogUploaderUtilities add:toDictionary:forKey:](ATXHomeScreenLogUploaderUtilities, "add:toDictionary:forKey:", [v17 count], self->_systemChangeDictionary, @"WidgetsRemovedFromStack");
+          widgetsInStack2 = [metadata widgetsInStack];
+          +[ATXHomeScreenLogUploaderUtilities add:toDictionary:forKey:](ATXHomeScreenLogUploaderUtilities, "add:toDictionary:forKey:", [widgetsInStack2 count], self->_systemChangeDictionary, @"WidgetsRemovedFromStack");
 
-          [v20 stackLocation];
+          [eventCopy stackLocation];
           if (!ATXStackLocationIsHomeScreen())
           {
             goto LABEL_8;
           }
 
-          v13 = [v5 widgetsInStack];
-          v14 = [v13 count];
+          widgetsInStack = [metadata widgetsInStack];
+          v14 = [widgetsInStack count];
           v15 = self->_systemChangeDictionary;
           v16 = @"WidgetsRemovedFromHomeScreen";
         }
@@ -344,37 +344,37 @@ LABEL_22:
 
 LABEL_7:
 
-    v5 = [v20 metadata];
+    metadata = [eventCopy metadata];
     goto LABEL_8;
   }
 
-  v5 = [v20 metadata];
-  if ([(ATXHomeScreenLogSystemChangeDictionary *)self _suggestedWidgetWasExplicitlyDismissedWithEvent:v20])
+  metadata = [eventCopy metadata];
+  if ([(ATXHomeScreenLogSystemChangeDictionary *)self _suggestedWidgetWasExplicitlyDismissedWithEvent:eventCopy])
   {
-    [(ATXHomeScreenLogSystemChangeDictionary *)self _logSuggestedWidgetExplicitDismissalWithEvent:v20];
-    [(ATXHomeScreenLogSystemChangeDictionary *)self _logSuggestedWidgetDismissalWithEvent:v20];
+    [(ATXHomeScreenLogSystemChangeDictionary *)self _logSuggestedWidgetExplicitDismissalWithEvent:eventCopy];
+    [(ATXHomeScreenLogSystemChangeDictionary *)self _logSuggestedWidgetDismissalWithEvent:eventCopy];
   }
 
 LABEL_8:
 }
 
-- (BOOL)_suggestedWidgetWasExplicitlyDismissedWithEvent:(id)a3
+- (BOOL)_suggestedWidgetWasExplicitlyDismissedWithEvent:(id)event
 {
-  v3 = [a3 reason];
+  reason = [event reason];
   v4 = NSStringForATXHomeScreenWidgetExplicitFeedback();
-  v5 = v3 == v4;
+  v5 = reason == v4;
 
   return v5;
 }
 
-- (void)_logSuggestedWidgetExplicitDismissalWithEvent:(id)a3
+- (void)_logSuggestedWidgetExplicitDismissalWithEvent:(id)event
 {
-  v6 = a3;
-  if ([v6 isSuggestedWidget])
+  eventCopy = event;
+  if ([eventCopy isSuggestedWidget])
   {
     [ATXHomeScreenLogUploaderUtilities incrementDictionary:self->_systemChangeDictionary forKey:@"SuggestedWidgetsDismissed"];
-    v4 = [v6 appBundleId];
-    v5 = [ATXHomeScreenLogUploaderUtilities isFirstPartyApp:v4];
+    appBundleId = [eventCopy appBundleId];
+    v5 = [ATXHomeScreenLogUploaderUtilities isFirstPartyApp:appBundleId];
 
     if (!v5)
     {
@@ -383,18 +383,18 @@ LABEL_8:
   }
 }
 
-- (void)_logSuggestedWidgetDismissalWithEvent:(id)a3
+- (void)_logSuggestedWidgetDismissalWithEvent:(id)event
 {
-  v8 = a3;
-  if ([v8 isSuggestedWidget])
+  eventCopy = event;
+  if ([eventCopy isSuggestedWidget])
   {
     [ATXHomeScreenLogUploaderUtilities incrementDictionary:self->_systemChangeDictionary forKey:@"SuggestedWidgetsRemovedFromStack"];
-    v4 = [v8 appBundleId];
-    if (v4)
+    appBundleId = [eventCopy appBundleId];
+    if (appBundleId)
     {
-      v5 = v4;
-      v6 = [v8 appBundleId];
-      v7 = [ATXHomeScreenLogUploaderUtilities isFirstPartyApp:v6];
+      v5 = appBundleId;
+      appBundleId2 = [eventCopy appBundleId];
+      v7 = [ATXHomeScreenLogUploaderUtilities isFirstPartyApp:appBundleId2];
 
       if (!v7)
       {

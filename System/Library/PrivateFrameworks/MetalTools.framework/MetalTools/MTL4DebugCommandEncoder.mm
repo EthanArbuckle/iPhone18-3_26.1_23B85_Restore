@@ -1,89 +1,89 @@
 @interface MTL4DebugCommandEncoder
-- (MTL4DebugCommandEncoder)initWithBaseObject:(id)a3 device:(id)a4 commandBuffer:(id)a5 encoderStageMask:(unint64_t)a6;
+- (MTL4DebugCommandEncoder)initWithBaseObject:(id)object device:(id)device commandBuffer:(id)buffer encoderStageMask:(unint64_t)mask;
 - (id)endEncodingAndRetrieveProgramAddressTable;
-- (void)barrierAfterEncoderStages:(unint64_t)a3 beforeEncoderStages:(unint64_t)a4 visibilityOptions:(unint64_t)a5;
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4 visibilityOptions:(unint64_t)a5;
-- (void)barrierAfterStages:(unint64_t)a3 beforeQueueStages:(unint64_t)a4 visibilityOptions:(unint64_t)a5;
+- (void)barrierAfterEncoderStages:(unint64_t)stages beforeEncoderStages:(unint64_t)encoderStages visibilityOptions:(unint64_t)options;
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages visibilityOptions:(unint64_t)options;
+- (void)barrierAfterStages:(unint64_t)stages beforeQueueStages:(unint64_t)queueStages visibilityOptions:(unint64_t)options;
 - (void)endEncodingPreamble;
-- (void)updateFence:(id)a3 afterEncoderStages:(unint64_t)a4;
-- (void)validateFunctionArguments:(_MTLMessageContext *)a3 stage:(id)a4 functionName:(id)a5 argumentTable:(id)a6 boundThreadgroupMemoryArguments:(MTLDebugFunctionArgument *)a7 bindings:(id)a8 allowNullBufferBindings:(BOOL)a9;
-- (void)waitForFence:(id)a3 beforeEncoderStages:(unint64_t)a4;
+- (void)updateFence:(id)fence afterEncoderStages:(unint64_t)stages;
+- (void)validateFunctionArguments:(_MTLMessageContext *)arguments stage:(id)stage functionName:(id)name argumentTable:(id)table boundThreadgroupMemoryArguments:(MTLDebugFunctionArgument *)memoryArguments bindings:(id)bindings allowNullBufferBindings:(BOOL)bufferBindings;
+- (void)waitForFence:(id)fence beforeEncoderStages:(unint64_t)stages;
 @end
 
 @implementation MTL4DebugCommandEncoder
 
-- (MTL4DebugCommandEncoder)initWithBaseObject:(id)a3 device:(id)a4 commandBuffer:(id)a5 encoderStageMask:(unint64_t)a6
+- (MTL4DebugCommandEncoder)initWithBaseObject:(id)object device:(id)device commandBuffer:(id)buffer encoderStageMask:(unint64_t)mask
 {
   v11.receiver = self;
   v11.super_class = MTL4DebugCommandEncoder;
   result = [(MTL4DebugCommandEncoder *)&v11 init];
   if (result)
   {
-    result->_baseObject = a3;
-    result->_device = a4;
-    result->_commandBuffer = a5;
-    result->_encoderStageMask = a6;
+    result->_baseObject = object;
+    result->_device = device;
+    result->_commandBuffer = buffer;
+    result->_encoderStageMask = mask;
     *&result->_encoderState &= 0xFCu;
   }
 
   return result;
 }
 
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4 visibilityOptions:(unint64_t)a5
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages visibilityOptions:(unint64_t)options
 {
   device = self->_device;
   _MTLMessageContextBegin_();
-  if (a3 <= 0)
+  if (stages <= 0)
   {
     _MTLMessageContextPush_();
   }
 
-  if (a4 <= 0)
+  if (beforeStages <= 0)
   {
     _MTLMessageContextPush_();
   }
 
-  if (a5 >= 8)
+  if (options >= 8)
   {
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
   [(MTL4DebugCommandEncoder *)self setCanEndEncoding:1, 0, 0, 0, 0, 0, 0, 0];
-  [self->_baseObject barrierAfterQueueStages:a3 beforeStages:a4 visibilityOptions:a5];
+  [self->_baseObject barrierAfterQueueStages:stages beforeStages:beforeStages visibilityOptions:options];
 }
 
-- (void)barrierAfterStages:(unint64_t)a3 beforeQueueStages:(unint64_t)a4 visibilityOptions:(unint64_t)a5
+- (void)barrierAfterStages:(unint64_t)stages beforeQueueStages:(unint64_t)queueStages visibilityOptions:(unint64_t)options
 {
   device = self->_device;
   _MTLMessageContextBegin_();
-  if (a3 <= 0)
+  if (stages <= 0)
   {
     _MTLMessageContextPush_();
   }
 
-  if (a4 <= 0)
+  if (queueStages <= 0)
   {
     _MTLMessageContextPush_();
   }
 
-  if (a5 >= 8)
+  if (options >= 8)
   {
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
   [(MTL4DebugCommandEncoder *)self setCanEndEncoding:1, 0, 0, 0, 0, 0, 0, 0];
-  [self->_baseObject barrierAfterStages:a3 beforeQueueStages:a4 visibilityOptions:a5];
+  [self->_baseObject barrierAfterStages:stages beforeQueueStages:queueStages visibilityOptions:options];
 }
 
-- (void)barrierAfterEncoderStages:(unint64_t)a3 beforeEncoderStages:(unint64_t)a4 visibilityOptions:(unint64_t)a5
+- (void)barrierAfterEncoderStages:(unint64_t)stages beforeEncoderStages:(unint64_t)encoderStages visibilityOptions:(unint64_t)options
 {
   device = self->_device;
   _MTLMessageContextBegin_();
-  if (a3 && (encoderStageMask = self->_encoderStageMask, (encoderStageMask & a3) == a3))
+  if (stages && (encoderStageMask = self->_encoderStageMask, (encoderStageMask & stages) == stages))
   {
-    if (a4)
+    if (encoderStages)
     {
       goto LABEL_4;
     }
@@ -93,10 +93,10 @@
   {
     _MTLMessageContextPush_();
     encoderStageMask = self->_encoderStageMask;
-    if (a4)
+    if (encoderStages)
     {
 LABEL_4:
-      if ((encoderStageMask & a4) == a4)
+      if ((encoderStageMask & encoderStages) == encoderStages)
       {
         goto LABEL_5;
       }
@@ -105,22 +105,22 @@ LABEL_4:
 
   _MTLMessageContextPush_();
 LABEL_5:
-  if (a5 >= 8)
+  if (options >= 8)
   {
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
-  [self->_baseObject barrierAfterEncoderStages:a3 beforeEncoderStages:a4 visibilityOptions:{a5, 0, 0, 0, 0, 0, 0, 0}];
+  [self->_baseObject barrierAfterEncoderStages:stages beforeEncoderStages:encoderStages visibilityOptions:{options, 0, 0, 0, 0, 0, 0, 0}];
 }
 
-- (void)updateFence:(id)a3 afterEncoderStages:(unint64_t)a4
+- (void)updateFence:(id)fence afterEncoderStages:(unint64_t)stages
 {
   device = self->_device;
   _MTLMessageContextBegin_();
-  if (a4 && (self->_encoderStageMask & a4) == a4)
+  if (stages && (self->_encoderStageMask & stages) == stages)
   {
-    if (a3)
+    if (fence)
     {
       goto LABEL_4;
     }
@@ -129,7 +129,7 @@ LABEL_5:
   else
   {
     _MTLMessageContextPush_();
-    if (a3)
+    if (fence)
     {
       goto LABEL_4;
     }
@@ -137,22 +137,22 @@ LABEL_5:
 
   _MTLMessageContextPush_();
 LABEL_4:
-  if (([a3 conformsToProtocol:{&unk_284220438, 0, 0, 0, 0, 0, 0, 0}] & 1) == 0)
+  if (([fence conformsToProtocol:{&unk_284220438, 0, 0, 0, 0, 0, 0, 0}] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
-  [self->_baseObject updateFence:objc_msgSend(a3 afterEncoderStages:{"baseObject"), a4}];
+  [self->_baseObject updateFence:objc_msgSend(fence afterEncoderStages:{"baseObject"), stages}];
 }
 
-- (void)waitForFence:(id)a3 beforeEncoderStages:(unint64_t)a4
+- (void)waitForFence:(id)fence beforeEncoderStages:(unint64_t)stages
 {
   device = self->_device;
   _MTLMessageContextBegin_();
-  if (a4 && (self->_encoderStageMask & a4) == a4)
+  if (stages && (self->_encoderStageMask & stages) == stages)
   {
-    if (a3)
+    if (fence)
     {
       goto LABEL_4;
     }
@@ -161,7 +161,7 @@ LABEL_4:
   else
   {
     _MTLMessageContextPush_();
-    if (a3)
+    if (fence)
     {
       goto LABEL_4;
     }
@@ -169,13 +169,13 @@ LABEL_4:
 
   _MTLMessageContextPush_();
 LABEL_4:
-  if (([a3 conformsToProtocol:{&unk_284220438, 0, 0, 0, 0, 0, 0, 0}] & 1) == 0)
+  if (([fence conformsToProtocol:{&unk_284220438, 0, 0, 0, 0, 0, 0, 0}] & 1) == 0)
   {
     _MTLMessageContextPush_();
   }
 
   _MTLMessageContextEnd();
-  [self->_baseObject waitForFence:objc_msgSend(a3 beforeEncoderStages:{"baseObject"), a4}];
+  [self->_baseObject waitForFence:objc_msgSend(fence beforeEncoderStages:{"baseObject"), stages}];
 }
 
 - (void)endEncodingPreamble
@@ -199,14 +199,14 @@ LABEL_4:
   return [baseObject endEncodingAndRetrieveProgramAddressTable];
 }
 
-- (void)validateFunctionArguments:(_MTLMessageContext *)a3 stage:(id)a4 functionName:(id)a5 argumentTable:(id)a6 boundThreadgroupMemoryArguments:(MTLDebugFunctionArgument *)a7 bindings:(id)a8 allowNullBufferBindings:(BOOL)a9
+- (void)validateFunctionArguments:(_MTLMessageContext *)arguments stage:(id)stage functionName:(id)name argumentTable:(id)table boundThreadgroupMemoryArguments:(MTLDebugFunctionArgument *)memoryArguments bindings:(id)bindings allowNullBufferBindings:(BOOL)bufferBindings
 {
   v49 = *MEMORY[0x277D85DE8];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v11 = [a8 countByEnumeratingWithState:&v44 objects:v48 count:16];
+  v11 = [bindings countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v11)
   {
     v12 = v11;
@@ -218,7 +218,7 @@ LABEL_4:
       {
         if (*v45 != v13)
         {
-          objc_enumerationMutation(a8);
+          objc_enumerationMutation(bindings);
         }
 
         v15 = *(*(&v44 + 1) + 8 * v14);
@@ -227,16 +227,16 @@ LABEL_4:
           goto LABEL_51;
         }
 
-        v16 = [v15 type];
-        v17 = [v15 index];
-        v18 = [v15 name];
-        if (v16 > 2)
+        type = [v15 type];
+        index = [v15 index];
+        name = [v15 name];
+        if (type > 2)
         {
-          if ((v16 - 24) >= 4)
+          if ((type - 24) >= 4)
           {
-            if (v16 == 3)
+            if (type == 3)
             {
-              v30 = [a6 samplerBindingAtIndex:v17];
+              v30 = [table samplerBindingAtIndex:index];
               if (v30)
               {
                 if (*v30)
@@ -244,67 +244,67 @@ LABEL_4:
                   goto LABEL_51;
                 }
 
-                v36 = v17;
-                v37 = v18;
-                v34 = a4;
-                v35 = a5;
+                v36 = index;
+                threadgroupMemoryDataSize = name;
+                stageCopy9 = stage;
+                nameCopy9 = name;
               }
 
               else
               {
-                if (a6)
+                if (table)
                 {
-                  v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Argument table only supports %lu sampler bindings", objc_msgSend(a6, "samplerBindingCount")];
+                  stage = [MEMORY[0x277CCACA8] stringWithFormat:@"Argument table only supports %lu sampler bindings", objc_msgSend(table, "samplerBindingCount")];
                 }
 
                 else
                 {
-                  v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"No argument table set for %@ stage", a4];
+                  stage = [MEMORY[0x277CCACA8] stringWithFormat:@"No argument table set for %@ stage", stage];
                 }
 
-                v37 = v18;
-                v38 = v31;
-                v35 = a5;
-                v36 = v17;
-                v34 = a4;
+                threadgroupMemoryDataSize = name;
+                v38 = stage;
+                nameCopy9 = name;
+                v36 = index;
+                stageCopy9 = stage;
               }
 
               goto LABEL_50;
             }
 
-            if (v16 != 37)
+            if (type != 37)
             {
               goto LABEL_51;
             }
           }
 
 LABEL_27:
-          v25 = [a6 bufferBindingAtIndex:v17];
+          v25 = [table bufferBindingAtIndex:index];
           if (!v25)
           {
-            if (a6)
+            if (table)
             {
-              v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Argument table only supports %lu buffer bindings", objc_msgSend(a6, "bufferBindingCount")];
+              stage2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Argument table only supports %lu buffer bindings", objc_msgSend(table, "bufferBindingCount")];
             }
 
             else
             {
-              v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"No argument table set for %@ stage", a4];
+              stage2 = [MEMORY[0x277CCACA8] stringWithFormat:@"No argument table set for %@ stage", stage];
             }
 
-            v38 = v18;
-            v39 = v27;
-            v36 = MTLArgumentTypeToString(v16);
-            v37 = v17;
-            v34 = a4;
-            v35 = a5;
+            v38 = name;
+            v39 = stage2;
+            v36 = MTLArgumentTypeToString(type);
+            threadgroupMemoryDataSize = index;
+            stageCopy9 = stage;
+            nameCopy9 = name;
             goto LABEL_50;
           }
 
           v26 = *v25;
           if (*v25 == 2)
           {
-            if ((v16 - 24) >= 4 && v16 != 37)
+            if ((type - 24) >= 4 && type != 37)
             {
               goto LABEL_44;
             }
@@ -320,28 +320,28 @@ LABEL_27:
               }
 
 LABEL_44:
-              v37 = v17;
-              v38 = v18;
-              v35 = a5;
-              v36 = MTLArgumentTypeToString(v16);
-              v34 = a4;
+              threadgroupMemoryDataSize = index;
+              v38 = name;
+              nameCopy9 = name;
+              v36 = MTLArgumentTypeToString(type);
+              stageCopy9 = stage;
 LABEL_50:
               _MTLMessageContextPush_();
               goto LABEL_51;
             }
 
-            if (v16)
+            if (type)
             {
               goto LABEL_44;
             }
 
-            if ((!a9 & *(v25 + 4)) == 1)
+            if ((!bufferBindings & *(v25 + 4)) == 1)
             {
-              v37 = v17;
-              v38 = v18;
-              v35 = a5;
+              threadgroupMemoryDataSize = index;
+              v38 = name;
+              nameCopy9 = name;
               v36 = MTLArgumentTypeToString(0);
-              v34 = a4;
+              stageCopy9 = stage;
               goto LABEL_50;
             }
           }
@@ -349,58 +349,58 @@ LABEL_50:
           goto LABEL_51;
         }
 
-        if (!v16)
+        if (!type)
         {
           goto LABEL_27;
         }
 
-        if (v16 != 1)
+        if (type != 1)
         {
-          if (v16 != 2)
+          if (type != 2)
           {
             goto LABEL_51;
           }
 
-          v19 = [v15 arrayLength];
-          if (!v19)
+          arrayLength = [v15 arrayLength];
+          if (!arrayLength)
           {
             goto LABEL_51;
           }
 
-          v20 = v19;
+          v20 = arrayLength;
           v21 = 1;
           while (2)
           {
-            v22 = [a6 textureBindingAtIndex:{v17, v34}];
+            v22 = [table textureBindingAtIndex:{index, stageCopy9}];
             if (v22)
             {
               if (!*v22)
               {
-                v36 = v17;
-                v37 = v18;
-                v34 = a4;
-                v35 = a5;
+                v36 = index;
+                threadgroupMemoryDataSize = name;
+                stageCopy9 = stage;
+                nameCopy9 = name;
                 goto LABEL_24;
               }
             }
 
             else
             {
-              if (a6)
+              if (table)
               {
-                v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Argument table only supports %lu texture bindings", objc_msgSend(a6, "textureBindingCount")];
+                stage3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Argument table only supports %lu texture bindings", objc_msgSend(table, "textureBindingCount")];
               }
 
               else
               {
-                v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"No argument table set for %@ stage", a4];
+                stage3 = [MEMORY[0x277CCACA8] stringWithFormat:@"No argument table set for %@ stage", stage];
               }
 
-              v37 = v18;
-              v38 = v23;
-              v35 = a5;
-              v36 = v17;
-              v34 = a4;
+              threadgroupMemoryDataSize = name;
+              v38 = stage3;
+              nameCopy9 = name;
+              v36 = index;
+              stageCopy9 = stage;
 LABEL_24:
               _MTLMessageContextPush_();
             }
@@ -415,27 +415,27 @@ LABEL_24:
         }
 
         [(MTLToolsDevice *)self->_device maxComputeLocalMemorySizes];
-        v28 = &a7[v17];
-        if (v28->isValid || (v35 = v17, v36 = v18, v34 = a5, _MTLMessageContextPush_(), v28->isValid))
+        v28 = &memoryArguments[index];
+        if (v28->isValid || (nameCopy9 = index, v36 = name, stageCopy9 = name, _MTLMessageContextPush_(), v28->isValid))
         {
           if (v28->type != 3)
           {
-            v36 = v17;
-            v37 = v18;
-            v34 = a4;
-            v35 = a5;
+            v36 = index;
+            threadgroupMemoryDataSize = name;
+            stageCopy9 = stage;
+            nameCopy9 = name;
             _MTLMessageContextPush_();
           }
 
           threadgroupMemoryLength = v28->threadgroupMemoryLength;
           if (threadgroupMemoryLength < [v15 threadgroupMemoryDataSize])
           {
-            v38 = v17;
-            v39 = v18;
+            v38 = index;
+            v39 = name;
             v36 = v28->threadgroupMemoryLength;
-            v37 = [v15 threadgroupMemoryDataSize];
-            v34 = a4;
-            v35 = a5;
+            threadgroupMemoryDataSize = [v15 threadgroupMemoryDataSize];
+            stageCopy9 = stage;
+            nameCopy9 = name;
             _MTLMessageContextPush_();
           }
         }
@@ -446,7 +446,7 @@ LABEL_51:
       }
 
       while (v14 != v12);
-      v32 = [a8 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      v32 = [bindings countByEnumeratingWithState:&v44 objects:v48 count:16];
       v12 = v32;
     }
 

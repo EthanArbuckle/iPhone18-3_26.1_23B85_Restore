@@ -19,7 +19,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_13 = v2;
     acceptsTopLevelLeaves___haveChecked_13 = 1;
   }
@@ -36,7 +36,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_13 = v2;
     parsingLeafNode___haveChecked_13 = 1;
   }
@@ -53,7 +53,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_13 = v2;
     parsingWithSubItems___haveChecked_13 = 1;
   }
@@ -70,7 +70,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_13 = v2;
     frontingBasicTypes___haveChecked_13 = 1;
   }
@@ -87,7 +87,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_13 = v2;
     notifyOfUnknownTokens___haveChecked_13 = 1;
   }
@@ -112,12 +112,12 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
   {
-    v60.receiver = a1;
+    v60.receiver = self;
     v60.super_class = &OBJC_METACLASS___ASItemOperationsFetchResult;
     v6 = objc_msgSendSuper2(&v60, sel_asParseRules);
     v46 = [v6 mutableCopy];
@@ -141,7 +141,7 @@
     v7 = [ASParseRule alloc];
     v8 = objc_opt_class();
     v9 = MEMORY[0x277CBEAC0];
-    v43 = a1;
+    selfCopy = self;
     v39 = [[ASParseRule alloc] initWithMinimumNumber:0 maximumNumber:1209 codePage:2 token:5 objectClass:objc_opt_class() setterMethod:sel_addItem_ dataclass:0 callbackDict:0 streamCallbackDict:0 subclassRuleSet:0];
     v38 = [MEMORY[0x277CCABB0] numberWithInt:517];
     v37 = [v9 dictionaryWithObjectsAndKeys:{v39, v38, 0}];
@@ -175,7 +175,7 @@
     v5 = v46;
     [v46 addEntriesFromDictionary:v45];
     v23 = +[ASItem parseRuleCache];
-    v24 = NSStringFromClass(v43);
+    v24 = NSStringFromClass(selfCopy);
     [v23 setObject:v46 forKey:v24];
   }
 

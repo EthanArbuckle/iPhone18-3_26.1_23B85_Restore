@@ -1,21 +1,21 @@
 @interface _SFPerSitePreferencesUtilities
-+ (BOOL)isBinaryPreferenceValueOn:(id)a3 preference:(id)a4 preferenceManager:(id)a5;
-+ (id)preferenceValueForBoolValue:(BOOL)a3 preference:(id)a4 preferenceManager:(id)a5;
-+ (id)preferenceValueForPSSpecifierValue:(id)a3 specifier:(id)a4 preference:(id)a5 preferenceManager:(id)a6;
-+ (id)specifierValueForSpecifier:(id)a3 preferenceValue:(id)a4 preference:(id)a5 preferenceManager:(id)a6;
++ (BOOL)isBinaryPreferenceValueOn:(id)on preference:(id)preference preferenceManager:(id)manager;
++ (id)preferenceValueForBoolValue:(BOOL)value preference:(id)preference preferenceManager:(id)manager;
++ (id)preferenceValueForPSSpecifierValue:(id)value specifier:(id)specifier preference:(id)preference preferenceManager:(id)manager;
++ (id)specifierValueForSpecifier:(id)specifier preferenceValue:(id)value preference:(id)preference preferenceManager:(id)manager;
 @end
 
 @implementation _SFPerSitePreferencesUtilities
 
-+ (id)preferenceValueForPSSpecifierValue:(id)a3 specifier:(id)a4 preference:(id)a5 preferenceManager:(id)a6
++ (id)preferenceValueForPSSpecifierValue:(id)value specifier:(id)specifier preference:(id)preference preferenceManager:(id)manager
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([a4 cellType] == 6 && objc_msgSend(v12, "conformsToProtocol:", &unk_1F5061748))
+  valueCopy = value;
+  preferenceCopy = preference;
+  managerCopy = manager;
+  if ([specifier cellType] == 6 && objc_msgSend(managerCopy, "conformsToProtocol:", &unk_1F5061748))
   {
-    v13 = [a1 preferenceValueForBoolValue:objc_msgSend(v10 preference:"BOOLValue") preferenceManager:{v11, v12}];
+    v13 = [self preferenceValueForBoolValue:objc_msgSend(valueCopy preference:"BOOLValue") preferenceManager:{preferenceCopy, managerCopy}];
   }
 
   else
@@ -24,7 +24,7 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = [v12 valuesForPreference:{v11, 0}];
+    v14 = [managerCopy valuesForPreference:{preferenceCopy, 0}];
     v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v15)
     {
@@ -40,7 +40,7 @@
           }
 
           v19 = *(*(&v21 + 1) + 8 * i);
-          if ([v19 isEqual:v10])
+          if ([v19 isEqual:valueCopy])
           {
             v13 = v19;
 
@@ -66,19 +66,19 @@ LABEL_14:
   return v13;
 }
 
-+ (id)specifierValueForSpecifier:(id)a3 preferenceValue:(id)a4 preference:(id)a5 preferenceManager:(id)a6
++ (id)specifierValueForSpecifier:(id)specifier preferenceValue:(id)value preference:(id)preference preferenceManager:(id)manager
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([a3 cellType] == 6)
+  valueCopy = value;
+  preferenceCopy = preference;
+  managerCopy = manager;
+  if ([specifier cellType] == 6)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "isBinaryPreferenceValueOn:preference:preferenceManager:", v10, v11, v12)}];
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "isBinaryPreferenceValueOn:preference:preferenceManager:", valueCopy, preferenceCopy, managerCopy)}];
   }
 
   else
   {
-    v13 = v10;
+    v13 = valueCopy;
   }
 
   v14 = v13;
@@ -86,15 +86,15 @@ LABEL_14:
   return v14;
 }
 
-+ (BOOL)isBinaryPreferenceValueOn:(id)a3 preference:(id)a4 preferenceManager:(id)a5
++ (BOOL)isBinaryPreferenceValueOn:(id)on preference:(id)preference preferenceManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 conformsToProtocol:&unk_1F5061748])
+  onCopy = on;
+  preferenceCopy = preference;
+  managerCopy = manager;
+  if ([managerCopy conformsToProtocol:&unk_1F5061748])
   {
-    v10 = [v9 onValueForPreference:v8];
-    v11 = [v7 isEqual:v10];
+    v10 = [managerCopy onValueForPreference:preferenceCopy];
+    v11 = [onCopy isEqual:v10];
   }
 
   else
@@ -105,20 +105,20 @@ LABEL_14:
   return v11;
 }
 
-+ (id)preferenceValueForBoolValue:(BOOL)a3 preference:(id)a4 preferenceManager:(id)a5
++ (id)preferenceValueForBoolValue:(BOOL)value preference:(id)preference preferenceManager:(id)manager
 {
-  v7 = a4;
-  v8 = a5;
-  if ([v8 conformsToProtocol:&unk_1F5061748])
+  preferenceCopy = preference;
+  managerCopy = manager;
+  if ([managerCopy conformsToProtocol:&unk_1F5061748])
   {
-    if (a3)
+    if (value)
     {
-      [v8 onValueForPreference:v7];
+      [managerCopy onValueForPreference:preferenceCopy];
     }
 
     else
     {
-      [v8 offValueForPreference:v7];
+      [managerCopy offValueForPreference:preferenceCopy];
     }
     v9 = ;
   }

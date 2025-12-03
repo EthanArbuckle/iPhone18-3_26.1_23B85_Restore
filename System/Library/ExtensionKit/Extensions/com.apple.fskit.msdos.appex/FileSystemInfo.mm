@@ -1,25 +1,25 @@
 @interface FileSystemInfo
-- (unint64_t)offsetForCluster:(unint64_t)a3;
-- (unint64_t)offsetForDirBlock:(unint64_t)a3;
+- (unint64_t)offsetForCluster:(unint64_t)cluster;
+- (unint64_t)offsetForDirBlock:(unint64_t)block;
 - (unint64_t)rootDirBytes;
 @end
 
 @implementation FileSystemInfo
 
-- (unint64_t)offsetForCluster:(unint64_t)a3
+- (unint64_t)offsetForCluster:(unint64_t)cluster
 {
-  v4 = a3 - 2;
-  v5 = [(FileSystemInfo *)self bytesPerCluster];
-  v6 = [(FileSystemInfo *)self firstClusterOffset];
-  return [(FileSystemInfo *)self bytesPerSector]* v6 + v4 * v5;
+  v4 = cluster - 2;
+  bytesPerCluster = [(FileSystemInfo *)self bytesPerCluster];
+  firstClusterOffset = [(FileSystemInfo *)self firstClusterOffset];
+  return [(FileSystemInfo *)self bytesPerSector]* firstClusterOffset + v4 * bytesPerCluster;
 }
 
-- (unint64_t)offsetForDirBlock:(unint64_t)a3
+- (unint64_t)offsetForDirBlock:(unint64_t)block
 {
-  v4 = a3 - [(FileSystemInfo *)self firstDirBlockNum];
-  v5 = [(FileSystemInfo *)self dirBlockSize];
-  v6 = [(FileSystemInfo *)self firstClusterOffset];
-  return [(FileSystemInfo *)self bytesPerSector]* v6 + v4 * v5;
+  v4 = block - [(FileSystemInfo *)self firstDirBlockNum];
+  dirBlockSize = [(FileSystemInfo *)self dirBlockSize];
+  firstClusterOffset = [(FileSystemInfo *)self firstClusterOffset];
+  return [(FileSystemInfo *)self bytesPerSector]* firstClusterOffset + v4 * dirBlockSize;
 }
 
 - (unint64_t)rootDirBytes
@@ -29,8 +29,8 @@
     return 0;
   }
 
-  v3 = [(FileSystemInfo *)self rootDirSize];
-  return [(FileSystemInfo *)self bytesPerSector]* v3;
+  rootDirSize = [(FileSystemInfo *)self rootDirSize];
+  return [(FileSystemInfo *)self bytesPerSector]* rootDirSize;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface EBConditionalFormatTable
-+ (void)readWithState:(id)a3;
++ (void)readWithState:(id)state;
 @end
 
 @implementation EBConditionalFormatTable
 
-+ (void)readWithState:(id)a3
++ (void)readWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v11 = 0;
   v12 = 0;
   v13 = 0;
-  v4 = [v3 xlReader];
-  (*(*v4 + 464))(v4, &v10);
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 464))(xlReader, &v10);
   v5 = (v12 - v11) >> 3;
   if (v5)
   {
-    v6 = [v3 edSheet];
-    v7 = [v6 conditionalFormattings];
+    edSheet = [stateCopy edSheet];
+    conditionalFormattings = [edSheet conditionalFormattings];
 
     v8 = 0;
     do
     {
       v9 = objc_alloc_init(EDConditionalFormatting);
-      [EBConditionalFormat readXlConditionalFormat:XlConditionalFormatTable::at(&v10 toEDConditionalFormatting:v8) state:v9, v3];
-      [v7 addObject:v9];
+      [EBConditionalFormat readXlConditionalFormat:XlConditionalFormatTable::at(&v10 toEDConditionalFormatting:v8) state:v9, stateCopy];
+      [conditionalFormattings addObject:v9];
 
       ++v8;
     }

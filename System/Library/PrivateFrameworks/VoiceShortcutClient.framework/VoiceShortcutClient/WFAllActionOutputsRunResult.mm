@@ -1,34 +1,34 @@
 @interface WFAllActionOutputsRunResult
 - (BOOL)hasOutputs;
-- (WFAllActionOutputsRunResult)initWithActionOutputs:(id)a3 runError:(id)a4;
-- (WFAllActionOutputsRunResult)initWithCoder:(id)a3;
+- (WFAllActionOutputsRunResult)initWithActionOutputs:(id)outputs runError:(id)error;
+- (WFAllActionOutputsRunResult)initWithCoder:(id)coder;
 - (id)unableToDecodeError;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateOutputsFromRepresentation:(id)a3 withCompletion:(id)a4;
-- (void)getActionOutputsWithCompletionHandler:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateOutputsFromRepresentation:(id)representation withCompletion:(id)completion;
+- (void)getActionOutputsWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFAllActionOutputsRunResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFAllActionOutputsRunResult;
-  v4 = a3;
-  [(WFWorkflowRunResult *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFWorkflowRunResult *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFAllActionOutputsRunResult *)self archivedOutputs:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"archivedOutputs"];
+  [coderCopy encodeObject:v5 forKey:@"archivedOutputs"];
 }
 
-- (WFAllActionOutputsRunResult)initWithCoder:(id)a3
+- (WFAllActionOutputsRunResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFAllActionOutputsRunResult;
-  v5 = [(WFWorkflowRunResult *)&v10 initWithCoder:v4];
+  v5 = [(WFWorkflowRunResult *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"archivedOutputs"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"archivedOutputs"];
     archivedOutputs = v5->_archivedOutputs;
     v5->_archivedOutputs = v6;
 
@@ -38,11 +38,11 @@
   return v5;
 }
 
-- (void)generateOutputsFromRepresentation:(id)a3 withCompletion:(id)a4
+- (void)generateOutputsFromRepresentation:(id)representation withCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  representationCopy = representation;
+  completionCopy = completion;
   v7 = NSClassFromString(@"WFContentCollection");
   if (v7)
   {
@@ -58,8 +58,8 @@
     v15[1] = 3221225472;
     v15[2] = __80__WFAllActionOutputsRunResult_generateOutputsFromRepresentation_withCompletion___block_invoke;
     v15[3] = &unk_1E7B02790;
-    v16 = v6;
-    v12 = [v11 wf_securelyUnarchiveObjectWithData:v5 allowedClasses:v10 completionHandler:v15];
+    v16 = completionCopy;
+    v12 = [v11 wf_securelyUnarchiveObjectWithData:representationCopy allowedClasses:v10 completionHandler:v15];
   }
 
   else
@@ -72,7 +72,7 @@
       _os_log_impl(&dword_1B1DE3000, v13, OS_LOG_TYPE_FAULT, "%s Unable to get output from WFWorkflowRunRequest, since ContentKit isn't linked.", buf, 0xCu);
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -97,37 +97,37 @@
   return v7;
 }
 
-- (void)getActionOutputsWithCompletionHandler:(id)a3
+- (void)getActionOutputsWithCompletionHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFAllActionOutputsRunResult *)self cachedOutputs];
+  handlerCopy = handler;
+  cachedOutputs = [(WFAllActionOutputsRunResult *)self cachedOutputs];
 
-  if (v5)
+  if (cachedOutputs)
   {
-    v6 = [(WFAllActionOutputsRunResult *)self cachedOutputs];
-    v4[2](v4, v6, 0);
+    cachedOutputs2 = [(WFAllActionOutputsRunResult *)self cachedOutputs];
+    handlerCopy[2](handlerCopy, cachedOutputs2, 0);
   }
 
   else
   {
-    v7 = [(WFAllActionOutputsRunResult *)self archivedOutputs];
+    archivedOutputs = [(WFAllActionOutputsRunResult *)self archivedOutputs];
 
-    if (v7)
+    if (archivedOutputs)
     {
-      v8 = [(WFAllActionOutputsRunResult *)self archivedOutputs];
+      archivedOutputs2 = [(WFAllActionOutputsRunResult *)self archivedOutputs];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __69__WFAllActionOutputsRunResult_getActionOutputsWithCompletionHandler___block_invoke;
       v10[3] = &unk_1E7B02768;
       v10[4] = self;
-      v11 = v4;
-      [(WFAllActionOutputsRunResult *)self generateOutputsFromRepresentation:v8 withCompletion:v10];
+      v11 = handlerCopy;
+      [(WFAllActionOutputsRunResult *)self generateOutputsFromRepresentation:archivedOutputs2 withCompletion:v10];
     }
 
     else
     {
-      v4[2](v4, 0, 0);
+      handlerCopy[2](handlerCopy, 0, 0);
     }
   }
 
@@ -144,32 +144,32 @@ void __69__WFAllActionOutputsRunResult_getActionOutputsWithCompletionHandler___b
 
 - (BOOL)hasOutputs
 {
-  v2 = [(WFAllActionOutputsRunResult *)self archivedOutputs];
-  v3 = v2 != 0;
+  archivedOutputs = [(WFAllActionOutputsRunResult *)self archivedOutputs];
+  v3 = archivedOutputs != 0;
 
   return v3;
 }
 
-- (WFAllActionOutputsRunResult)initWithActionOutputs:(id)a3 runError:(id)a4
+- (WFAllActionOutputsRunResult)initWithActionOutputs:(id)outputs runError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  outputsCopy = outputs;
+  errorCopy = error;
+  if (!outputsCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFAllActionOutputsRunResult.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"actionOutputs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAllActionOutputsRunResult.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"actionOutputs"}];
   }
 
   v17.receiver = self;
   v17.super_class = WFAllActionOutputsRunResult;
-  v9 = [(WFWorkflowRunResult *)&v17 initWithError:v8];
+  v9 = [(WFWorkflowRunResult *)&v17 initWithError:errorCopy];
   if (v9)
   {
-    v10 = [MEMORY[0x1E696ACC8] wf_securelyArchivedDataWithRootObject:v7 deletionResponsibility:1];
+    v10 = [MEMORY[0x1E696ACC8] wf_securelyArchivedDataWithRootObject:outputsCopy deletionResponsibility:1];
     archivedOutputs = v9->_archivedOutputs;
     v9->_archivedOutputs = v10;
 
-    v12 = [v7 copy];
+    v12 = [outputsCopy copy];
     cachedOutputs = v9->_cachedOutputs;
     v9->_cachedOutputs = v12;
 

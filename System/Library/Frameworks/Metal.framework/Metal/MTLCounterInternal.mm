@@ -1,6 +1,6 @@
 @interface MTLCounterInternal
-- (BOOL)isEqual:(id)a3;
-- (MTLCounterInternal)initWithName:(id)a3 description:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MTLCounterInternal)initWithName:(id)name description:(id)description;
 - (NSString)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -8,13 +8,13 @@
 
 @implementation MTLCounterInternal
 
-- (MTLCounterInternal)initWithName:(id)a3 description:(id)a4
+- (MTLCounterInternal)initWithName:(id)name description:(id)description
 {
   v8.receiver = self;
   v8.super_class = MTLCounterInternal;
   v6 = [(MTLCounterInternal *)&v8 init];
-  v6->_name = a3;
-  v6->_description = a4;
+  v6->_name = name;
+  v6->_description = description;
   return v6;
 }
 
@@ -42,9 +42,9 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -55,13 +55,13 @@
     v17 = v4;
     v18 = v3;
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       name = self->_name;
-      if (name == [a3 name] || (v12 = -[NSString isEqual:](self->_name, "isEqual:", objc_msgSend(a3, "name"))) != 0)
+      if (name == [equal name] || (v12 = -[NSString isEqual:](self->_name, "isEqual:", objc_msgSend(equal, "name"))) != 0)
       {
         description = self->_description;
-        if (description == [a3 description] || (v12 = -[NSString isEqual:](self->_description, "isEqual:", objc_msgSend(a3, "description"))) != 0)
+        if (description == [equal description] || (v12 = -[NSString isEqual:](self->_description, "isEqual:", objc_msgSend(equal, "description"))) != 0)
         {
           LOBYTE(v12) = 1;
         }

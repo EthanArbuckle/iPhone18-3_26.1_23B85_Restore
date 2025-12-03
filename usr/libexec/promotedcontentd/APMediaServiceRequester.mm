@@ -1,10 +1,10 @@
 @interface APMediaServiceRequester
 - (APMediaServiceRequester)init;
-- (id)_loadInternalPropertiesFromContentData:(id)a3;
-- (id)_loadJourneyStartRelayValuesFromContentData:(id)a3;
-- (void)_handleMediaServiceResponse:(id)a3 params:(id)a4 completionHandler:(id)a5;
-- (void)_handleRankedRepresentations:(id)a3 params:(id)a4;
-- (void)sendRequest:(id)a3 params:(id)a4 completionHandler:(id)a5;
+- (id)_loadInternalPropertiesFromContentData:(id)data;
+- (id)_loadJourneyStartRelayValuesFromContentData:(id)data;
+- (void)_handleMediaServiceResponse:(id)response params:(id)params completionHandler:(id)handler;
+- (void)_handleRankedRepresentations:(id)representations params:(id)params;
+- (void)sendRequest:(id)request params:(id)params completionHandler:(id)handler;
 @end
 
 @implementation APMediaServiceRequester
@@ -16,48 +16,48 @@
   return [(APMediaServiceRequester *)&v3 init];
 }
 
-- (void)sendRequest:(id)a3 params:(id)a4 completionHandler:(id)a5
+- (void)sendRequest:(id)request params:(id)params completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  requestCopy = request;
+  paramsCopy = params;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = [(APMediaServiceRequester *)self deliveryBlock];
+    deliveryBlock = [(APMediaServiceRequester *)self deliveryBlock];
 
-    if (v8)
+    if (requestCopy)
     {
-      if (v11)
+      if (deliveryBlock)
       {
-        [(APMediaServiceRequester *)self setCompletionHandler:v10];
-        v12 = [v9 context];
-        v13 = [v12 fingerprint];
-        [(APMediaServiceRequester *)self setContextFingerprint:v13];
+        [(APMediaServiceRequester *)self setCompletionHandler:handlerCopy];
+        context = [paramsCopy context];
+        fingerprint = [context fingerprint];
+        [(APMediaServiceRequester *)self setContextFingerprint:fingerprint];
 
-        [(APMediaServiceRequester *)self setMediaServiceRequest:v8];
-        -[APMediaServiceRequester setHasOdml:](self, "setHasOdml:", [v9 hasOdml]);
+        [(APMediaServiceRequester *)self setMediaServiceRequest:requestCopy];
+        -[APMediaServiceRequester setHasOdml:](self, "setHasOdml:", [paramsCopy hasOdml]);
         if (+[APSystemInternal isAppleInternalInstall](APSystemInternal, "isAppleInternalInstall") && (+[APMockMAPIResponseSettings settings](APMockMAPIResponseSettings, "settings"), v14 = objc_claimAutoreleasedReturnValue(), [v14 contentDataObjects], v15 = objc_claimAutoreleasedReturnValue(), v14, v15))
         {
-          [(APMediaServiceRequester *)self _handleMediaServiceResponse:v15 params:v9 completionHandler:v10];
+          [(APMediaServiceRequester *)self _handleMediaServiceResponse:v15 params:paramsCopy completionHandler:handlerCopy];
         }
 
         else
         {
           v16 = [NSUserDefaults alloc];
           v15 = [v16 initWithSuiteName:APDefaultsBundleID];
-          v17 = [v9 appMetadataFields];
-          [v15 setObject:v17 forKey:@"cachedAppMetadataFields"];
+          appMetadataFields = [paramsCopy appMetadataFields];
+          [v15 setObject:appMetadataFields forKey:@"cachedAppMetadataFields"];
 
           objc_initWeak(&location, self);
-          v18 = [(APMediaServiceRequester *)self mediaServiceRequest];
+          mediaServiceRequest = [(APMediaServiceRequester *)self mediaServiceRequest];
           v19[0] = _NSConcreteStackBlock;
           v19[1] = 3221225472;
           v19[2] = sub_1003750E4;
           v19[3] = &unk_1004804E8;
           objc_copyWeak(&v22, &location);
-          v20 = v9;
-          v21 = v10;
-          [v18 runWithParameters:v20 completionHandler:v19];
+          v20 = paramsCopy;
+          v21 = handlerCopy;
+          [mediaServiceRequest runWithParameters:v20 completionHandler:v19];
 
           objc_destroyWeak(&v22);
           objc_destroyWeak(&location);
@@ -67,25 +67,25 @@
   }
 }
 
-- (void)_handleMediaServiceResponse:(id)a3 params:(id)a4 completionHandler:(id)a5
+- (void)_handleMediaServiceResponse:(id)response params:(id)params completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(APMediaServiceRequester *)self mediaServiceRequest];
-  [v11 responseTime];
+  responseCopy = response;
+  paramsCopy = params;
+  handlerCopy = handler;
+  mediaServiceRequest = [(APMediaServiceRequester *)self mediaServiceRequest];
+  [mediaServiceRequest responseTime];
   [(APMediaServiceRequester *)self setResponseTime:?];
 
-  [(APMediaServiceRequester *)self setReceivedContentDataItems:v8];
-  v12 = [(APMediaServiceRequester *)self contextFingerprint];
-  [APMediaServiceErrorResponseProcessor processJourneyErrorEventsForContentDataItems:v8 contextFingerprint:v12 params:v9];
+  [(APMediaServiceRequester *)self setReceivedContentDataItems:responseCopy];
+  contextFingerprint = [(APMediaServiceRequester *)self contextFingerprint];
+  [APMediaServiceErrorResponseProcessor processJourneyErrorEventsForContentDataItems:responseCopy contextFingerprint:contextFingerprint params:paramsCopy];
 
-  if ([v8 count])
+  if ([responseCopy count])
   {
-    v13 = [(APMediaServiceRequester *)self hasOdml];
+    hasOdml = [(APMediaServiceRequester *)self hasOdml];
     v14 = APLogForCategory();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG);
-    if (v13)
+    if (hasOdml)
     {
       if (v15)
       {
@@ -99,8 +99,8 @@
       v23[2] = sub_1003755D8;
       v23[3] = &unk_100480510;
       objc_copyWeak(&v25, buf);
-      v24 = v9;
-      [APMediaServicesRanker rankRepresentations:v8 completionHandler:v23];
+      v24 = paramsCopy;
+      [APMediaServicesRanker rankRepresentations:responseCopy completionHandler:v23];
 
       objc_destroyWeak(&v25);
       objc_destroyWeak(buf);
@@ -114,46 +114,46 @@
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "ODML disabled. Sorting content data.", buf, 2u);
       }
 
-      v22 = [APMediaServicesRanker sortByRank:v8];
-      [(APMediaServiceRequester *)self _handleRankedRepresentations:v22 params:v9];
+      v22 = [APMediaServicesRanker sortByRank:responseCopy];
+      [(APMediaServiceRequester *)self _handleRankedRepresentations:v22 params:paramsCopy];
     }
   }
 
   else
   {
     v16 = [NSUUID alloc];
-    v17 = [(APMediaServiceRequester *)self contextFingerprint];
-    v18 = [v16 initWithUUIDString:v17];
+    contextFingerprint2 = [(APMediaServiceRequester *)self contextFingerprint];
+    v18 = [v16 initWithUUIDString:contextFingerprint2];
     v19 = [APContentData createForServerUnfilledReason:1025 placementType:5 contextIdentifier:v18];
 
     [v19 setDiagnosticCode:1];
-    v20 = [(APMediaServiceRequester *)self deliveryBlock];
+    deliveryBlock = [(APMediaServiceRequester *)self deliveryBlock];
     v27 = v19;
     v21 = [NSArray arrayWithObjects:&v27 count:1];
-    (v20)[2](v20, v21);
+    (deliveryBlock)[2](deliveryBlock, v21);
 
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)_handleRankedRepresentations:(id)a3 params:(id)a4
+- (void)_handleRankedRepresentations:(id)representations params:(id)params
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 firstObject];
-  if (v8)
+  representationsCopy = representations;
+  paramsCopy = params;
+  firstObject = [representationsCopy firstObject];
+  if (firstObject)
   {
-    v9 = [v7 deliverEntireBatch];
-    v10 = [(APMediaServiceRequester *)self deliveryBlock];
-    v11 = v10;
-    if (v9)
+    deliverEntireBatch = [paramsCopy deliverEntireBatch];
+    deliveryBlock = [(APMediaServiceRequester *)self deliveryBlock];
+    v11 = deliveryBlock;
+    if (deliverEntireBatch)
     {
-      (*(v10 + 16))(v10, v6);
+      (*(deliveryBlock + 16))(deliveryBlock, representationsCopy);
     }
 
     else
     {
-      v23 = v8;
+      v23 = firstObject;
       v17 = [NSArray arrayWithObjects:&v23 count:1];
       (v11)[2](v11, v17);
     }
@@ -163,7 +163,7 @@
     v21[2] = sub_1003758A8;
     v21[3] = &unk_100480538;
     v21[4] = self;
-    [v6 enumerateObjectsUsingBlock:v21];
+    [representationsCopy enumerateObjectsUsingBlock:v21];
   }
 
   else
@@ -175,39 +175,39 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "No valid content data object was returned by Media API.", buf, 2u);
     }
 
-    v13 = [v7 deliverEntireBatch];
-    v14 = [(APMediaServiceRequester *)self deliveryBlock];
-    v15 = [(APMediaServiceRequester *)self receivedContentDataItems];
-    v16 = v15;
-    if (v13)
+    deliverEntireBatch2 = [paramsCopy deliverEntireBatch];
+    deliveryBlock2 = [(APMediaServiceRequester *)self deliveryBlock];
+    receivedContentDataItems = [(APMediaServiceRequester *)self receivedContentDataItems];
+    v16 = receivedContentDataItems;
+    if (deliverEntireBatch2)
     {
-      (v14)[2](v14, v15);
+      (deliveryBlock2)[2](deliveryBlock2, receivedContentDataItems);
     }
 
     else
     {
-      v18 = [v15 firstObject];
-      v24 = v18;
+      firstObject2 = [receivedContentDataItems firstObject];
+      v24 = firstObject2;
       v19 = [NSArray arrayWithObjects:&v24 count:1];
-      (v14)[2](v14, v19);
+      (deliveryBlock2)[2](deliveryBlock2, v19);
     }
   }
 
-  v20 = [(APMediaServiceRequester *)self completionHandler];
-  v20[2]();
+  completionHandler = [(APMediaServiceRequester *)self completionHandler];
+  completionHandler[2]();
 }
 
-- (id)_loadJourneyStartRelayValuesFromContentData:(id)a3
+- (id)_loadJourneyStartRelayValuesFromContentData:(id)data
 {
-  v3 = [a3 representations];
-  v4 = [v3 anyObject];
+  representations = [data representations];
+  anyObject = [representations anyObject];
 
   v13[0] = kAPMetricAdGroupId;
-  v5 = [v4 journeyRelayAdGroupId];
-  v6 = v5;
-  if (v5)
+  journeyRelayAdGroupId = [anyObject journeyRelayAdGroupId];
+  v6 = journeyRelayAdGroupId;
+  if (journeyRelayAdGroupId)
   {
-    v7 = v5;
+    v7 = journeyRelayAdGroupId;
   }
 
   else
@@ -217,11 +217,11 @@
 
   v14[0] = v7;
   v13[1] = kAPMetricCampaignId;
-  v8 = [v4 journeyRelayCampaignId];
-  v9 = v8;
-  if (v8)
+  journeyRelayCampaignId = [anyObject journeyRelayCampaignId];
+  v9 = journeyRelayCampaignId;
+  if (journeyRelayCampaignId)
   {
-    v10 = v8;
+    v10 = journeyRelayCampaignId;
   }
 
   else
@@ -235,43 +235,43 @@
   return v11;
 }
 
-- (id)_loadInternalPropertiesFromContentData:(id)a3
+- (id)_loadInternalPropertiesFromContentData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 representations];
-  v5 = [v4 anyObject];
+  dataCopy = data;
+  representations = [dataCopy representations];
+  anyObject = [representations anyObject];
 
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [v5 adamID];
+  adamID = [anyObject adamID];
 
-  if (v7)
+  if (adamID)
   {
-    v8 = [v5 adamID];
-    [v6 setObject:v8 forKey:kAPMetricSubscriptionIdentifier];
+    adamID2 = [anyObject adamID];
+    [v6 setObject:adamID2 forKey:kAPMetricSubscriptionIdentifier];
   }
 
-  v9 = [v3 impressionId];
+  impressionId = [dataCopy impressionId];
 
-  if (v9)
+  if (impressionId)
   {
-    v10 = [v3 impressionId];
-    [v6 setObject:v10 forKey:@"impressionId"];
+    impressionId2 = [dataCopy impressionId];
+    [v6 setObject:impressionId2 forKey:@"impressionId"];
   }
 
-  v11 = [v5 metadata];
+  metadata = [anyObject metadata];
 
-  if (v11)
+  if (metadata)
   {
-    v12 = [v5 metadata];
-    [v6 setObject:v12 forKey:kAPMetadataIdentifier];
+    metadata2 = [anyObject metadata];
+    [v6 setObject:metadata2 forKey:kAPMetadataIdentifier];
   }
 
-  v13 = [v5 triggers];
+  triggers = [anyObject triggers];
 
-  if (v13)
+  if (triggers)
   {
-    v14 = [v5 triggers];
-    [v6 setObject:v14 forKey:kAPTriggersIdentifier];
+    triggers2 = [anyObject triggers];
+    [v6 setObject:triggers2 forKey:kAPTriggersIdentifier];
   }
 
   v15 = [NSDictionary dictionaryWithDictionary:v6];

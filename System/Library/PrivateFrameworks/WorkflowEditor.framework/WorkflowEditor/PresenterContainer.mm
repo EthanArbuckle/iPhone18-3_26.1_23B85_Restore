@@ -1,36 +1,36 @@
 @interface PresenterContainer
-- (void)moduleSummaryPresenterDidFinish:(id)a3;
-- (void)revealAction:(id)a3 preScrollHandler:(id)a4 goBackHandler:(id)a5 scrolledAwayHandler:(id)a6;
-- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)a3 variableProvider:(id)a4 completionHandler:(id)a5;
-- (void)showParameterEditingHint:(id)a3;
+- (void)moduleSummaryPresenterDidFinish:(id)finish;
+- (void)revealAction:(id)action preScrollHandler:(id)handler goBackHandler:(id)backHandler scrolledAwayHandler:(id)awayHandler;
+- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)input variableProvider:(id)provider completionHandler:(id)handler;
+- (void)showParameterEditingHint:(id)hint;
 @end
 
 @implementation PresenterContainer
 
-- (void)moduleSummaryPresenterDidFinish:(id)a3
+- (void)moduleSummaryPresenterDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = self;
+  finishCopy = finish;
+  selfCopy = self;
   sub_27456AEB8();
 }
 
-- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)a3 variableProvider:(id)a4 completionHandler:(id)a5
+- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)input variableProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = _Block_copy(a5);
+  inputCopy = input;
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_27456AF9C(v6, a4, sub_27456CCCC, v9);
+  selfCopy = self;
+  sub_27456AF9C(inputCopy, provider, sub_27456CCCC, v9);
   swift_unknownObjectRelease();
 }
 
-- (void)revealAction:(id)a3 preScrollHandler:(id)a4 goBackHandler:(id)a5 scrolledAwayHandler:(id)a6
+- (void)revealAction:(id)action preScrollHandler:(id)handler goBackHandler:(id)backHandler scrolledAwayHandler:(id)awayHandler
 {
-  v10 = _Block_copy(a4);
-  v11 = _Block_copy(a5);
-  v12 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
+  v11 = _Block_copy(backHandler);
+  v12 = _Block_copy(awayHandler);
   v13 = swift_allocObject();
   *(v13 + 16) = v10;
   v14 = swift_allocObject();
@@ -47,20 +47,20 @@
     v15 = 0;
   }
 
-  v16 = a3;
-  v17 = self;
-  sub_27456B0F4(v16, sub_27445B624, v13, sub_27445B860, v14, v12, v15);
+  actionCopy = action;
+  selfCopy = self;
+  sub_27456B0F4(actionCopy, sub_27445B624, v13, sub_27445B860, v14, v12, v15);
   sub_274406A94(v12);
 }
 
-- (void)showParameterEditingHint:(id)a3
+- (void)showParameterEditingHint:(id)hint
 {
-  if (a3)
+  if (hint)
   {
     sub_27463B6AC();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_27456B3A8();
 }
 

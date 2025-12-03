@@ -1,29 +1,29 @@
 @interface ADUserNotificationServiceProvider
 + (id)personalDomainNotificationProvider;
-- (ADUserNotificationServiceProvider)initWithConnection:(id)a3 bundleIdentifier:(id)a4 notificationCategories:(id)a5;
-- (void)_clearNotificationWithIdentifier:(id)a3;
+- (ADUserNotificationServiceProvider)initWithConnection:(id)connection bundleIdentifier:(id)identifier notificationCategories:(id)categories;
+- (void)_clearNotificationWithIdentifier:(id)identifier;
 - (void)_snoozeNotifications;
 - (void)_startMonitoringUnlockActivity;
 - (void)_stopMonitoringUnlockActivity;
-- (void)postNotificationRequest:(id)a3 options:(unint64_t)a4 responseHandler:(id)a5;
-- (void)setDelegate:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)withdrawNotificationRequestWithIdentifier:(id)a3;
+- (void)postNotificationRequest:(id)request options:(unint64_t)options responseHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)withdrawNotificationRequestWithIdentifier:(id)identifier;
 @end
 
 @implementation ADUserNotificationServiceProvider
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v9 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v17 = "[ADUserNotificationServiceProvider userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]";
     v18 = 2112;
-    v19 = v7;
+    v19 = responseCopy;
     _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
   }
 
@@ -33,51 +33,51 @@
   block[2] = sub_1002FFBE0;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
+  v14 = responseCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = responseCopy;
   dispatch_async(queue, block);
 }
 
-- (void)postNotificationRequest:(id)a3 options:(unint64_t)a4 responseHandler:(id)a5
+- (void)postNotificationRequest:(id)request options:(unint64_t)options responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1002FFF98;
   v13[3] = &unk_10051C0D8;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = requestCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  optionsCopy = options;
+  v11 = handlerCopy;
+  v12 = requestCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003003CC;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_clearNotificationWithIdentifier:(id)a3
+- (void)_clearNotificationWithIdentifier:(id)identifier
 {
   responseHandlersByNotificationID = self->_responseHandlersByNotificationID;
-  v5 = a3;
-  [(NSMutableDictionary *)responseHandlersByNotificationID removeObjectForKey:v5];
-  [(NSMutableDictionary *)self->_notificationsToBeSnoozed removeObjectForKey:v5];
+  identifierCopy = identifier;
+  [(NSMutableDictionary *)responseHandlersByNotificationID removeObjectForKey:identifierCopy];
+  [(NSMutableDictionary *)self->_notificationsToBeSnoozed removeObjectForKey:identifierCopy];
 
   if (![(NSMutableDictionary *)self->_notificationsToBeSnoozed count])
   {
@@ -159,42 +159,42 @@
   self->_layoutMonitor = v4;
 }
 
-- (void)withdrawNotificationRequestWithIdentifier:(id)a3
+- (void)withdrawNotificationRequestWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100300A6C;
   v7[3] = &unk_10051E010;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
-- (ADUserNotificationServiceProvider)initWithConnection:(id)a3 bundleIdentifier:(id)a4 notificationCategories:(id)a5
+- (ADUserNotificationServiceProvider)initWithConnection:(id)connection bundleIdentifier:(id)identifier notificationCategories:(id)categories
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  identifierCopy = identifier;
+  categoriesCopy = categories;
   v29.receiver = self;
   v29.super_class = ADUserNotificationServiceProvider;
   v11 = [(ADUserNotificationServiceProvider *)&v29 init];
   if (v11)
   {
     v12 = kAssistantNotificationBundleID;
-    if (v9)
+    if (identifierCopy)
     {
-      v12 = v9;
+      v12 = identifierCopy;
     }
 
     v13 = v12;
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v15 UTF8String];
+    uTF8String = [v15 UTF8String];
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v18 = dispatch_queue_create(v16, v17);
+    v18 = dispatch_queue_create(uTF8String, v17);
 
     queue = v11->_queue;
     v11->_queue = v18;
@@ -205,7 +205,7 @@
 
     [(UNUserNotificationCenter *)v11->_notificationCenter setDelegate:v11];
     [(UNUserNotificationCenter *)v11->_notificationCenter setWantsNotificationResponsesDelivered];
-    [(UNUserNotificationCenter *)v11->_notificationCenter setNotificationCategories:v10];
+    [(UNUserNotificationCenter *)v11->_notificationCenter setNotificationCategories:categoriesCopy];
     v22 = objc_alloc_init(NSMutableDictionary);
     responseHandlersByNotificationID = v11->_responseHandlersByNotificationID;
     v11->_responseHandlersByNotificationID = v22;
@@ -214,7 +214,7 @@
     notificationsToBeSnoozed = v11->_notificationsToBeSnoozed;
     v11->_notificationsToBeSnoozed = v24;
 
-    v26 = v8;
+    v26 = connectionCopy;
     connection = v11->_connection;
     v11->_connection = v26;
   }

@@ -6,10 +6,10 @@
 
 - (id)_web_createTarget
 {
-  v2 = [(WKObject *)self _apiObject];
-  if ((*(v2->var0 + 2))(v2) == 10)
+  _apiObject = [(WKObject *)self _apiObject];
+  if ((*(_apiObject->var0 + 2))(_apiObject) == 10)
   {
-    v3 = WebCore::ResourceError::nsError(&v2[1]);
+    v3 = WebCore::ResourceError::nsError(&_apiObject[1]);
 
     return [v3 copy];
   }

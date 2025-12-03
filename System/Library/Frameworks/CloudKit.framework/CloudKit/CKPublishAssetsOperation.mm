@@ -1,32 +1,32 @@
 @interface CKPublishAssetsOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
-- (BOOL)CKOperationShouldRun:(id *)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (BOOL)hasCKOperationCallbacksSet;
-- (CKPublishAssetsOperation)initWithRecordIDs:(id)a3;
+- (CKPublishAssetsOperation)initWithRecordIDs:(id)ds;
 - (id)activityCreate;
 - (id)assetPublishedBlock;
 - (id)publishAssetCompletionBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)handleAssetPublishCompletionForRecordID:(id)a3 publishedAsset:(id)a4 recordKey:(id)a5 error:(id)a6;
-- (void)setAssetPublishedBlock:(id)a3;
-- (void)setPublishAssetCompletionBlock:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)handleAssetPublishCompletionForRecordID:(id)d publishedAsset:(id)asset recordKey:(id)key error:(id)error;
+- (void)setAssetPublishedBlock:(id)block;
+- (void)setPublishAssetCompletionBlock:(id)block;
 @end
 
 @implementation CKPublishAssetsOperation
 
-- (CKPublishAssetsOperation)initWithRecordIDs:(id)a3
+- (CKPublishAssetsOperation)initWithRecordIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v13.receiver = self;
   v13.super_class = CKPublishAssetsOperation;
   v7 = [(CKOperation *)&v13 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(dsCopy, v5, v6);
     recordIDs = v7->_recordIDs;
     v7->_recordIDs = v8;
 
@@ -38,9 +38,9 @@
   return v7;
 }
 
-- (void)setAssetPublishedBlock:(id)a3
+- (void)setAssetPublishedBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -54,16 +54,16 @@
     v12[2] = sub_1885E3C38;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     assetPublishedBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_assetPublishedBlock != v6)
+  if (self->_assetPublishedBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     assetPublishedBlock = self->_assetPublishedBlock;
     self->_assetPublishedBlock = v9;
 LABEL_9:
@@ -106,9 +106,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setPublishAssetCompletionBlock:(id)a3
+- (void)setPublishAssetCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -122,16 +122,16 @@ LABEL_9:
     v12[2] = sub_1885E3FC4;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     publishAssetCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_publishAssetCompletionBlock != v6)
+  if (self->_publishAssetCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     publishAssetCompletionBlock = self->_publishAssetCompletionBlock;
     self->_publishAssetCompletionBlock = v9;
 LABEL_9:
@@ -174,39 +174,39 @@ LABEL_9:
   return v6;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_recordIDs(self, v5, v6);
-  objc_msgSend_setRecordIDs_(v4, v8, v7);
+  objc_msgSend_setRecordIDs_(infoCopy, v8, v7);
 
   v11 = objc_msgSend_fileNamesByAssetFieldNames(self, v9, v10);
-  objc_msgSend_setFileNamesByAssetFieldNames_(v4, v12, v11);
+  objc_msgSend_setFileNamesByAssetFieldNames_(infoCopy, v12, v11);
 
   v15 = objc_msgSend_requestedTTL(self, v13, v14);
-  objc_msgSend_setRequestedTTL_(v4, v16, v15);
+  objc_msgSend_setRequestedTTL_(infoCopy, v16, v15);
   v19 = objc_msgSend_URLOptions(self, v17, v18);
-  objc_msgSend_setURLOptions_(v4, v20, v19);
+  objc_msgSend_setURLOptions_(infoCopy, v20, v19);
   v21.receiver = self;
   v21.super_class = CKPublishAssetsOperation;
-  [(CKDatabaseOperation *)&v21 fillOutOperationInfo:v4];
+  [(CKDatabaseOperation *)&v21 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v21.receiver = self;
   v21.super_class = CKPublishAssetsOperation;
-  v4 = a3;
-  [(CKDatabaseOperation *)&v21 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_recordIDs(v4, v5, v6, v21.receiver, v21.super_class);
+  infoCopy = info;
+  [(CKDatabaseOperation *)&v21 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_recordIDs(infoCopy, v5, v6, v21.receiver, v21.super_class);
   objc_msgSend_setRecordIDs_(self, v8, v7);
 
-  v11 = objc_msgSend_fileNamesByAssetFieldNames(v4, v9, v10);
+  v11 = objc_msgSend_fileNamesByAssetFieldNames(infoCopy, v9, v10);
   objc_msgSend_setFileNamesByAssetFieldNames_(self, v12, v11);
 
-  v15 = objc_msgSend_requestedTTL(v4, v13, v14);
+  v15 = objc_msgSend_requestedTTL(infoCopy, v13, v14);
   objc_msgSend_setRequestedTTL_(self, v16, v15);
-  v19 = objc_msgSend_URLOptions(v4, v17, v18);
+  v19 = objc_msgSend_URLOptions(infoCopy, v17, v18);
 
   objc_msgSend_setURLOptions_(self, v20, v19);
 }
@@ -235,10 +235,10 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_recordIDs(self, a2, a3);
+  v5 = objc_msgSend_recordIDs(self, a2, run);
   if (!objc_msgSend_count(v5, v6, v7))
   {
 LABEL_12:
@@ -276,7 +276,7 @@ LABEL_5:
       }
 
       v23 = objc_msgSend_zoneID(*(*(&v29 + 1) + 8 * v22), v18, v19);
-      v25 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v24, v23, a3);
+      v25 = objc_msgSend_zoneIDHasCorrectDatabaseScope_error_(self, v24, v23, run);
 
       if (!v25)
       {
@@ -298,19 +298,19 @@ LABEL_5:
 
   v28.receiver = self;
   v28.super_class = CKPublishAssetsOperation;
-  result = [(CKDatabaseOperation *)&v28 CKOperationShouldRun:a3];
+  result = [(CKDatabaseOperation *)&v28 CKOperationShouldRun:run];
 LABEL_14:
   v27 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)handleAssetPublishCompletionForRecordID:(id)a3 publishedAsset:(id)a4 recordKey:(id)a5 error:(id)a6
+- (void)handleAssetPublishCompletionForRecordID:(id)d publishedAsset:(id)asset recordKey:(id)key error:(id)error
 {
   v113 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v15 = objc_msgSend_CKClientSuitableError(a6, v13, v14);
+  dCopy = d;
+  assetCopy = asset;
+  keyCopy = key;
+  v15 = objc_msgSend_CKClientSuitableError(error, v13, v14);
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -362,9 +362,9 @@ LABEL_14:
     }
 
     *buf = 138412802;
-    v104 = v10;
+    v104 = dCopy;
     v105 = 2112;
-    v106 = v12;
+    v106 = keyCopy;
     v107 = 2112;
     v108 = v15;
     v28 = "Record %@ published asset for %@ with error: %@";
@@ -408,9 +408,9 @@ LABEL_14:
   if ((v40 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
   {
     *buf = 138412546;
-    v104 = v10;
+    v104 = dCopy;
     v105 = 2112;
-    v106 = v12;
+    v106 = keyCopy;
     v28 = "Record %@ published asset for %@";
     v29 = v22;
     v30 = v40;
@@ -435,11 +435,11 @@ LABEL_22:
     *buf = 138544386;
     v104 = v91;
     v105 = 2112;
-    v106 = v10;
+    v106 = dCopy;
     v107 = 2112;
-    v108 = v11;
+    v108 = assetCopy;
     v109 = 2114;
-    v110 = v12;
+    v110 = keyCopy;
     v111 = 2112;
     v112 = v15;
     _os_log_debug_impl(&dword_1883EA000, v88, OS_LOG_TYPE_DEBUG, "Operation %{public}@ received callback: %@ %@ %{public}@ %@", buf, 0x34u);
@@ -448,7 +448,7 @@ LABEL_22:
   if (v15)
   {
     v44 = objc_msgSend_perItemErrorsByRecordID(self, v42, v43);
-    objc_msgSend_setObject_forKeyedSubscript_(v44, v45, v15, v10);
+    objc_msgSend_setObject_forKeyedSubscript_(v44, v45, v15, dCopy);
   }
 
   else
@@ -460,29 +460,29 @@ LABEL_22:
     }
 
     v48 = objc_msgSend_fileNamesByAssetFieldNames(self, v46, v47);
-    v44 = objc_msgSend_objectForKeyedSubscript_(v48, v49, v12);
+    v44 = objc_msgSend_objectForKeyedSubscript_(v48, v49, keyCopy);
 
-    v97 = objc_msgSend_contentBaseURL(v11, v50, v51);
-    v101 = objc_msgSend_owner(v11, v52, v53);
-    v100 = objc_msgSend_authToken(v11, v54, v55);
-    v96 = objc_msgSend_requestor(v11, v56, v57);
-    v95 = objc_msgSend_signature(v11, v58, v59);
-    v94 = objc_msgSend_referenceSignature(v11, v60, v61);
-    v64 = objc_msgSend_size(v11, v62, v63);
-    v93 = objc_msgSend_assetKey(v11, v65, v66);
+    v97 = objc_msgSend_contentBaseURL(assetCopy, v50, v51);
+    v101 = objc_msgSend_owner(assetCopy, v52, v53);
+    v100 = objc_msgSend_authToken(assetCopy, v54, v55);
+    v96 = objc_msgSend_requestor(assetCopy, v56, v57);
+    v95 = objc_msgSend_signature(assetCopy, v58, v59);
+    v94 = objc_msgSend_referenceSignature(assetCopy, v60, v61);
+    v64 = objc_msgSend_size(assetCopy, v62, v63);
+    v93 = objc_msgSend_assetKey(assetCopy, v65, v66);
     v92 = objc_msgSend_pathExtension(v44, v67, v68);
     v71 = objc_msgSend_configuration(self, v69, v70);
     objc_msgSend_container(v71, v72, v73);
-    v74 = v99 = v10;
+    v74 = v99 = dCopy;
     v77 = objc_msgSend_containerIdentifier(v74, v75, v76);
     v102 = 0;
     v98 = objc_msgSend_makeAssetStreamHandleWithPartition_owner_accessToken_requestorID_signature_referenceSignature_size_assetKey_filenameExtension_applicationID_error_(_TtC8CloudKit28CloudAssetsAssetStreamHandle, v78, v97, v101, v100, v96, v95, v94, v64, v93, v92, v77, &v102);
     v15 = v102;
 
-    v10 = v99;
+    dCopy = v99;
     v79 = [CKMediaItemMaker alloc];
     v81 = objc_msgSend_initWithCloudAssetsAssetStreamHandle_(v79, v80, v98);
-    objc_msgSend_setMediaItemMaker_(v11, v82, v81);
+    objc_msgSend_setMediaItemMaker_(assetCopy, v82, v81);
   }
 
 LABEL_32:
@@ -491,16 +491,16 @@ LABEL_32:
   if (v83)
   {
     v86 = objc_msgSend_assetPublishedBlock(self, v84, v85);
-    (v86)[2](v86, v10, v12, v11, v15);
+    (v86)[2](v86, dCopy, keyCopy, assetCopy, v15);
   }
 
   v87 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -548,7 +548,7 @@ LABEL_32:
     }
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     v19 = objc_msgSend_perItemErrorsByRecordID(self, v7, v8);
     v22 = objc_msgSend_count(v19, v20, v21);
@@ -559,12 +559,12 @@ LABEL_32:
       v26 = objc_msgSend_perItemErrorsByRecordID(self, v24, v25);
       objc_msgSend_setObject_forKeyedSubscript_(v23, v27, v26, @"CKPartialErrors");
 
-      v4 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to publish assets for some records");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to publish assets for some records");
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
@@ -587,16 +587,16 @@ LABEL_32:
       *buf = 138544130;
       v48 = v42;
       v49 = 2048;
-      v50 = self;
+      selfCopy = self;
       v51 = 2114;
       v52 = v45;
       v53 = 2112;
-      v54 = v4;
+      v54 = errorCopy;
       _os_log_debug_impl(&dword_1883EA000, v40, OS_LOG_TYPE_DEBUG, "Calling publishAssetCompletionBlock for operation <%{public}@: %p; %{public}@> with error %@", buf, 0x2Au);
     }
 
     v34 = objc_msgSend_publishAssetCompletionBlock(self, v32, v33);
-    v37 = objc_msgSend_CKClientSuitableError(v4, v35, v36);
+    v37 = objc_msgSend_CKClientSuitableError(errorCopy, v35, v36);
     (v34)[2](v34, v37);
 
     objc_msgSend_setPublishAssetCompletionBlock_(self, v38, 0);
@@ -605,7 +605,7 @@ LABEL_32:
   objc_msgSend_setAssetPublishedBlock_(self, v30, 0);
   v46.receiver = self;
   v46.super_class = CKPublishAssetsOperation;
-  [(CKOperation *)&v46 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v46 _finishOnCallbackQueueWithError:errorCopy];
 
   v39 = *MEMORY[0x1E69E9840];
 }
@@ -684,10 +684,10 @@ LABEL_32:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -731,7 +731,7 @@ LABEL_32:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKPublishAssetsOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -746,15 +746,15 @@ LABEL_32:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleAssetPublishCompletionForRecordID_publishedAsset_recordKey_error_, 3, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleAssetPublishCompletionForRecordID_publishedAsset_recordKey_error_, 3, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKPublishAssetsOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

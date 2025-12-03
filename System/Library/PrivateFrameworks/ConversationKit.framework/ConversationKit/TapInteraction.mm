@@ -1,13 +1,13 @@
 @interface TapInteraction
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (UIView)view;
 - (int64_t)numberOfTapsRequired;
-- (void)didMoveToView:(id)a3;
-- (void)handleRecognizer:(id)a3;
-- (void)setNumberOfTapsRequired:(int64_t)a3;
-- (void)setView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)handleRecognizer:(id)recognizer;
+- (void)setNumberOfTapsRequired:(int64_t)required;
+- (void)setView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation TapInteraction
@@ -19,64 +19,64 @@
   return v2;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  TapInteraction.view.setter(a3);
+  viewCopy = view;
+  selfCopy = self;
+  TapInteraction.view.setter(view);
 }
 
 - (int64_t)numberOfTapsRequired
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TapInteraction.numberOfTapsRequired.getter();
 
   return v3;
 }
 
-- (void)setNumberOfTapsRequired:(int64_t)a3
+- (void)setNumberOfTapsRequired:(int64_t)required
 {
-  v4 = self;
-  TapInteraction.numberOfTapsRequired.setter(a3);
+  selfCopy = self;
+  TapInteraction.numberOfTapsRequired.setter(required);
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  TapInteraction.willMove(to:)(a3);
+  viewCopy = view;
+  selfCopy = self;
+  TapInteraction.willMove(to:)(view);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  TapInteraction.didMove(to:)(a3);
+  viewCopy = view;
+  selfCopy = self;
+  TapInteraction.didMove(to:)(view);
 }
 
-- (void)handleRecognizer:(id)a3
+- (void)handleRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  TapInteraction.handleRecognizer(_:)(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  TapInteraction.handleRecognizer(_:)(recognizerCopy);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = TapInteraction.gestureRecognizer(_:shouldRequireFailureOf:)(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = TapInteraction.gestureRecognizer(_:shouldRequireFailureOf:)(recognizerCopy, gestureRecognizerCopy);
 
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = TapInteraction.gestureRecognizer(_:shouldReceive:)(v8, v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = TapInteraction.gestureRecognizer(_:shouldReceive:)(selfCopy, touchCopy);
 
   return v9;
 }

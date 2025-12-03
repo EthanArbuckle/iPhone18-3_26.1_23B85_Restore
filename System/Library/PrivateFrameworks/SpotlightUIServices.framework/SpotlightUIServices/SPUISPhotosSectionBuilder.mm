@@ -67,20 +67,20 @@ BOOL __61__SPUISPhotosSectionBuilder_maxVisibleColumnsInPhotosSection__block_inv
 {
   v4.receiver = self;
   v4.super_class = SPUISPhotosSectionBuilder;
-  v2 = [(SPUISSectionBuilder *)&v4 buildBridgedResult];
-  [v2 setType:3];
+  buildBridgedResult = [(SPUISSectionBuilder *)&v4 buildBridgedResult];
+  [buildBridgedResult setType:3];
 
-  return v2;
+  return buildBridgedResult;
 }
 
 - (id)buildCollectionStyle
 {
-  v3 = [(SPUISSectionBuilder *)self section];
+  section = [(SPUISSectionBuilder *)self section];
   if ([(SPUISPhotosSectionBuilder *)self useHorizontallyScrollingCardSectionUI])
   {
     v4 = objc_opt_new();
-    v5 = [v3 results];
-    v6 = [v5 count];
+    results = [section results];
+    v6 = [results count];
     if (v6 < 2 * [objc_opt_class() maxVisibleColumnsInPhotosSection])
     {
       v7 = 1;
@@ -99,7 +99,7 @@ BOOL __61__SPUISPhotosSectionBuilder_maxVisibleColumnsInPhotosSection__block_inv
     v4 = objc_opt_new();
   }
 
-  [v4 setInitiallyVisibleCardSectionCount:{objc_msgSend(v3, "maxInitiallyVisibleResults")}];
+  [v4 setInitiallyVisibleCardSectionCount:{objc_msgSend(section, "maxInitiallyVisibleResults")}];
 
   return v4;
 }
@@ -109,13 +109,13 @@ BOOL __61__SPUISPhotosSectionBuilder_maxVisibleColumnsInPhotosSection__block_inv
   v33 = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = SPUISPhotosSectionBuilder;
-  v2 = [(SPUISSectionBuilder *)&v29 buildCardSections];
-  v24 = [MEMORY[0x277CCAB68] string];
+  buildCardSections = [(SPUISSectionBuilder *)&v29 buildCardSections];
+  string = [MEMORY[0x277CCAB68] string];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v3 = v2;
+  v3 = buildCardSections;
   v4 = [v3 countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v4)
   {
@@ -135,25 +135,25 @@ BOOL __61__SPUISPhotosSectionBuilder_maxVisibleColumnsInPhotosSection__block_inv
         if (objc_opt_isKindOfClass())
         {
           v9 = v8;
-          v10 = [v9 thumbnail];
+          thumbnail = [v9 thumbnail];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v12 = [v9 thumbnail];
-            v13 = [v12 photoIdentifier];
-            v14 = [v13 length];
+            thumbnail2 = [v9 thumbnail];
+            photoIdentifier = [thumbnail2 photoIdentifier];
+            v14 = [photoIdentifier length];
 
             if (v14)
             {
-              v15 = [v12 photoIdentifier];
-              [v9 setCardSectionId:v15];
+              photoIdentifier2 = [thumbnail2 photoIdentifier];
+              [v9 setCardSectionId:photoIdentifier2];
 
-              v16 = [v12 photoIdentifier];
-              [v24 appendString:v16];
+              photoIdentifier3 = [thumbnail2 photoIdentifier];
+              [string appendString:photoIdentifier3];
 
-              [v24 appendString:@" "];
+              [string appendString:@" "];
             }
           }
         }
@@ -171,9 +171,9 @@ BOOL __61__SPUISPhotosSectionBuilder_maxVisibleColumnsInPhotosSection__block_inv
   v20 = v19;
   if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
   {
-    v21 = [v24 UTF8String];
+    uTF8String = [string UTF8String];
     *buf = 136315138;
-    v31 = v21;
+    v31 = uTF8String;
     _os_signpost_emit_with_name_impl(&dword_26B882000, v20, OS_SIGNPOST_EVENT, v18, "ResultPhotos", "%{name=photoIdentifiers}s", buf, 0xCu);
   }
 
@@ -184,29 +184,29 @@ BOOL __61__SPUISPhotosSectionBuilder_maxVisibleColumnsInPhotosSection__block_inv
 
 - (id)buildButtonItem
 {
-  v2 = [(SPUISSectionBuilder *)self queryContext];
-  v3 = [v2 searchEntities];
-  v4 = [v3 firstObject];
+  queryContext = [(SPUISSectionBuilder *)self queryContext];
+  searchEntities = [queryContext searchEntities];
+  firstObject = [searchEntities firstObject];
 
-  v5 = [v2 searchString];
-  if ([v4 isContactEntitySearch])
+  searchString = [queryContext searchString];
+  if ([firstObject isContactEntitySearch])
   {
-    v6 = [v4 tokenText];
+    tokenText = [firstObject tokenText];
   }
 
   else
   {
-    if (!v4)
+    if (!firstObject)
     {
       goto LABEL_6;
     }
 
-    v6 = [v4 searchString];
+    tokenText = [firstObject searchString];
   }
 
-  v7 = v6;
+  v7 = tokenText;
 
-  v5 = v7;
+  searchString = v7;
 LABEL_6:
   v8 = objc_opt_new();
   [v8 setSymbolName:@"chevron.forward"];
@@ -215,9 +215,9 @@ LABEL_6:
   [v9 setTitle:v10];
 
   [v9 setImage:v8];
-  if (v5)
+  if (searchString)
   {
-    v11 = v5;
+    v11 = searchString;
   }
 
   else
@@ -226,8 +226,8 @@ LABEL_6:
   }
 
   v12 = [MEMORY[0x277D65890] searchEntityWithPhotosSearchString:v11 fromSuggestion:0];
-  v13 = [v12 command];
-  [v9 setCommand:v13];
+  command = [v12 command];
+  [v9 setCommand:command];
 
   return v9;
 }

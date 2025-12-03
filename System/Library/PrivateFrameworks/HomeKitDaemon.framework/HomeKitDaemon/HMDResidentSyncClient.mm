@@ -1,25 +1,25 @@
 @interface HMDResidentSyncClient
-- (HMDResidentSyncClient)initWithHome:(id)a3 codingModel:(id)a4 dispatcher:(id)a5 residentDeviceManager:(id)a6 notificationCenter:(id)a7 persistence:(id)a8 isResidentCapable:(BOOL)a9 dataSource:(id)a10 logEventSubmitter:(id)a11;
-- (_BYTE)_syncDetailsWithChangeToken:(_BYTE *)a1;
+- (HMDResidentSyncClient)initWithHome:(id)home codingModel:(id)model dispatcher:(id)dispatcher residentDeviceManager:(id)manager notificationCenter:(id)center persistence:(id)persistence isResidentCapable:(BOOL)capable dataSource:(id)self0 logEventSubmitter:(id)self1;
+- (_BYTE)_syncDetailsWithChangeToken:(_BYTE *)token;
 - (id)_performFetchIfRequired;
-- (id)_performFetchWithReason:(uint64_t)a1;
-- (id)_performMaybeDelayedFetchWithReason:(uint64_t)a1;
+- (id)_performFetchWithReason:(uint64_t)reason;
+- (id)_performMaybeDelayedFetchWithReason:(uint64_t)reason;
 - (id)start;
-- (uint64_t)_applyAndSaveHomeDataChanges:(void *)a3 forRequest:(void *)a4 previousLastSeenToken:(void *)a5 versionChecksum:(void *)a6 error:;
+- (uint64_t)_applyAndSaveHomeDataChanges:(void *)changes forRequest:(void *)request previousLastSeenToken:(void *)token versionChecksum:(void *)checksum error:;
 - (uint64_t)_fetchOrCreateMetadataWithError:(uint64_t)result;
-- (void)_handleHomeDataChanged:(id)a3;
-- (void)handlePrimaryResidentChanged:(id)a3;
-- (void)performResidentRequest:(id)a3 options:(unint64_t)a4;
+- (void)_handleHomeDataChanged:(id)changed;
+- (void)handlePrimaryResidentChanged:(id)changed;
+- (void)performResidentRequest:(id)request options:(unint64_t)options;
 - (void)performSync;
 - (void)stop;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDResidentSyncClient
 
-- (void)_handleHomeDataChanged:(id)a3
+- (void)_handleHomeDataChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
   context = self->super._context;
   v7[0] = MEMORY[0x277D85DD0];
@@ -27,7 +27,7 @@
   v7[2] = __48__HMDResidentSyncClient__handleHomeDataChanged___block_invoke;
   v7[3] = &unk_278686B48;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = changedCopy;
   v8 = v6;
   [(HMDManagedObjectContext *)context performBlock:v7];
 
@@ -246,30 +246,30 @@ LABEL_12:
   return v11;
 }
 
-- (id)_performMaybeDelayedFetchWithReason:(uint64_t)a1
+- (id)_performMaybeDelayedFetchWithReason:(uint64_t)reason
 {
   v35 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (!a1)
+  if (!reason)
   {
     v11 = 0;
     goto LABEL_9;
   }
 
-  if ((*(a1 + 80) & 1) == 0)
+  if ((*(reason + 80) & 1) == 0)
   {
-    v12 = [(HMDResidentSyncClient *)a1 _performFetchWithReason:v3];
+    v12 = [(HMDResidentSyncClient *)reason _performFetchWithReason:v3];
 LABEL_8:
     v11 = v12;
     goto LABEL_9;
   }
 
-  v4 = [*(a1 + 88) anyObject];
+  anyObject = [*(reason + 88) anyObject];
 
-  if (v4)
+  if (anyObject)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = a1;
+    reasonCopy = reason;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -287,10 +287,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (*(a1 + 112))
+  if (*(reason + 112))
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = a1;
+    reasonCopy2 = reason;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -303,13 +303,13 @@ LABEL_8:
     }
 
     objc_autoreleasePoolPop(v15);
-    v12 = v16[14];
+    v12 = reasonCopy2[14];
     goto LABEL_8;
   }
 
   v19 = arc4random_uniform(0xAu) + 5;
   v20 = objc_autoreleasePoolPush();
-  v21 = a1;
+  reasonCopy3 = reason;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
@@ -322,14 +322,14 @@ LABEL_8:
   }
 
   objc_autoreleasePoolPop(v20);
-  v24 = [MEMORY[0x277D0F7C0] futureWithPromise:v21 + 15];
-  objc_storeStrong(v21 + 14, v24);
-  v25 = v21[9];
+  v24 = [MEMORY[0x277D0F7C0] futureWithPromise:reasonCopy3 + 15];
+  objc_storeStrong(reasonCopy3 + 14, v24);
+  v25 = reasonCopy3[9];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __61__HMDResidentSyncClient__performMaybeDelayedFetchWithReason___block_invoke;
   v28[3] = &unk_27868A010;
-  v28[4] = v21;
+  v28[4] = reasonCopy3;
   v26 = v24;
   v29 = v26;
   v30 = v3;
@@ -343,28 +343,28 @@ LABEL_9:
   return v11;
 }
 
-- (id)_performFetchWithReason:(uint64_t)a1
+- (id)_performFetchWithReason:(uint64_t)reason
 {
   v53[1] = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (reason)
   {
-    v4 = *(a1 + 112);
+    v4 = *(reason + 112);
     if (v4)
     {
-      *(a1 + 112) = 0;
+      *(reason + 112) = 0;
     }
 
     v42 = v3;
     v43 = v3;
-    *(a1 + 128) = 0;
-    [*(a1 + 104) suspend];
-    v5 = [*(a1 + 88) anyObject];
+    *(reason + 128) = 0;
+    [*(reason + 104) suspend];
+    anyObject = [*(reason + 88) anyObject];
 
-    if (v5)
+    if (anyObject)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = a1;
+      reasonCopy = reason;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
@@ -382,49 +382,49 @@ LABEL_9:
 
     else
     {
-      v13 = [*(a1 + 32) persistentStoreCoordinator];
-      v14 = [v13 managedObjectModel];
-      v15 = [v14 versionChecksum];
+      persistentStoreCoordinator = [*(reason + 32) persistentStoreCoordinator];
+      managedObjectModel = [persistentStoreCoordinator managedObjectModel];
+      versionChecksum = [managedObjectModel versionChecksum];
 
-      v16 = [*(a1 + 96) lastSyncChecksum];
+      lastSyncChecksum = [*(reason + 96) lastSyncChecksum];
       v17 = HMFEqualObjects();
 
       if ((v17 & 1) == 0)
       {
         v18 = objc_autoreleasePoolPush();
-        v19 = a1;
+        reasonCopy2 = reason;
         v20 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
           v21 = HMFGetLogIdentifier();
-          v22 = [v19[12] lastSyncChecksum];
+          lastSyncChecksum2 = [reasonCopy2[12] lastSyncChecksum];
           *buf = 138543874;
           *&buf[4] = v21;
           *&buf[12] = 2114;
-          *&buf[14] = v15;
+          *&buf[14] = versionChecksum;
           *&buf[22] = 2114;
-          v49 = v22;
+          v49 = lastSyncChecksum2;
           _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@Database checksums don't match, forcing a full sync: %{public}@ != %{public}@", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v18);
       }
 
-      v23 = [*(a1 + 96) lastSeenToken];
+      lastSeenToken = [*(reason + 96) lastSeenToken];
       if (v17)
       {
-        v24 = [*(a1 + 96) lastSyncToken];
+        lastSyncToken = [*(reason + 96) lastSyncToken];
       }
 
       else
       {
-        v24 = 0;
+        lastSyncToken = 0;
       }
 
-      v40 = v24;
-      v41 = [(HMDResidentSyncClient *)a1 _syncDetailsWithChangeToken:v24];
+      v40 = lastSyncToken;
+      v41 = [(HMDResidentSyncClient *)reason _syncDetailsWithChangeToken:lastSyncToken];
       v25 = objc_autoreleasePoolPush();
-      v26 = a1;
+      reasonCopy3 = reason;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
@@ -437,11 +437,11 @@ LABEL_9:
       }
 
       objc_autoreleasePoolPop(v25);
-      v29 = [[HMDRemoteHomeMessageDestination alloc] initWithTarget:v26[2] homeUUID:v26[2]];
+      v29 = [[HMDRemoteHomeMessageDestination alloc] initWithTarget:reasonCopy3[2] homeUUID:reasonCopy3[2]];
       v30 = [HMDRemoteMessage secureMessageWithName:@"HMDFetchHomeDataMessage" destination:v29 messagePayload:v41];
-      [v26[11] addObject:v30];
-      objc_initWeak(&location, v26);
-      v31 = [v26[7] sendMessageExpectingResponse:v30];
+      [reasonCopy3[11] addObject:v30];
+      objc_initWeak(&location, reasonCopy3);
+      v31 = [reasonCopy3[7] sendMessageExpectingResponse:v30];
       *buf = MEMORY[0x277D85DD0];
       *&buf[8] = 3221225472;
       *&buf[16] = __55__HMDResidentSyncClient__reallyPerformFetchWithReason___block_invoke;
@@ -449,9 +449,9 @@ LABEL_9:
       objc_copyWeak(v53, &location);
       v32 = v30;
       v50 = v32;
-      v33 = v23;
+      v33 = lastSeenToken;
       v51 = v33;
-      v11 = v15;
+      v11 = versionChecksum;
       v52 = v11;
       v34 = [v31 then:buf];
       v44[0] = MEMORY[0x277D85DD0];
@@ -469,12 +469,12 @@ LABEL_9:
       objc_destroyWeak(&location);
     }
 
-    v36 = *(a1 + 120);
+    v36 = *(reason + 120);
     if (v36)
     {
       [v36 resolveWithFuture:v12];
-      v37 = *(a1 + 120);
-      *(a1 + 120) = 0;
+      v37 = *(reason + 120);
+      *(reason + 120) = 0;
     }
 
     v3 = v42;
@@ -545,16 +545,16 @@ void __61__HMDResidentSyncClient__performMaybeDelayedFetchWithReason___block_inv
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (_BYTE)_syncDetailsWithChangeToken:(_BYTE *)a1
+- (_BYTE)_syncDetailsWithChangeToken:(_BYTE *)token
 {
   v3 = a2;
-  if (a1)
+  if (token)
   {
-    v4 = a1[80];
+    v4 = token[80];
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v6 = [a1 schemaVersion];
-    v7 = [v6 versionString];
-    [v5 setObject:v7 forKeyedSubscript:@"schema"];
+    schemaVersion = [token schemaVersion];
+    versionString = [schemaVersion versionString];
+    [v5 setObject:versionString forKeyedSubscript:@"schema"];
 
     if (v4)
     {
@@ -564,11 +564,11 @@ void __61__HMDResidentSyncClient__performMaybeDelayedFetchWithReason___block_inv
       if (v3)
       {
 LABEL_4:
-        v9 = [a1 encodeToken:v3 error:0];
+        v9 = [token encodeToken:v3 error:0];
         [v5 setObject:v9 forKeyedSubscript:@"etag"];
 
 LABEL_7:
-        a1 = [v5 copy];
+        token = [v5 copy];
 
         goto LABEL_8;
       }
@@ -589,7 +589,7 @@ LABEL_7:
 
 LABEL_8:
 
-  return a1;
+  return token;
 }
 
 uint64_t __55__HMDResidentSyncClient__reallyPerformFetchWithReason___block_invoke(uint64_t a1, void *a2)
@@ -759,14 +759,14 @@ LABEL_16:
   return v18;
 }
 
-- (uint64_t)_applyAndSaveHomeDataChanges:(void *)a3 forRequest:(void *)a4 previousLastSeenToken:(void *)a5 versionChecksum:(void *)a6 error:
+- (uint64_t)_applyAndSaveHomeDataChanges:(void *)changes forRequest:(void *)request previousLastSeenToken:(void *)token versionChecksum:(void *)checksum error:
 {
   v206 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!a1)
+  changesCopy = changes;
+  requestCopy = request;
+  tokenCopy = token;
+  if (!self)
   {
     v28 = 0;
     goto LABEL_128;
@@ -789,28 +789,28 @@ LABEL_16:
   if (!v17)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = a1;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v24 = v13;
-      v25 = v12;
-      v27 = v26 = v14;
+      v24 = requestCopy;
+      v25 = changesCopy;
+      v27 = v26 = tokenCopy;
       *buf = 138543362;
       v193 = v27;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Invalid home data response, missing response type", buf, 0xCu);
 
-      v14 = v26;
-      v12 = v25;
-      v13 = v24;
+      tokenCopy = v26;
+      changesCopy = v25;
+      requestCopy = v24;
     }
 
     objc_autoreleasePoolPop(v21);
-    if (a6)
+    if (checksum)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-      *a6 = v28 = 0;
+      *checksum = v28 = 0;
     }
 
     else
@@ -838,7 +838,7 @@ LABEL_16:
 
   if (v20)
   {
-    v189 = [a1 decodeToken:v20 error:0];
+    v189 = [self decodeToken:v20 error:0];
   }
 
   else
@@ -846,11 +846,11 @@ LABEL_16:
     v189 = 0;
   }
 
-  v29 = [(__CFString *)v17 integerValue];
-  v188 = v13;
-  if ((v29 - 1) < 2)
+  integerValue = [(__CFString *)v17 integerValue];
+  v188 = requestCopy;
+  if ((integerValue - 1) < 2)
   {
-    v30 = v12;
+    v30 = changesCopy;
     v31 = [v11 objectForKeyedSubscript:@"data"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -870,7 +870,7 @@ LABEL_16:
     {
       if (v189)
       {
-        v12 = v30;
+        changesCopy = v30;
         goto LABEL_25;
       }
 
@@ -879,24 +879,24 @@ LABEL_16:
       v58 = 0;
       v59 = v20;
       v70 = objc_autoreleasePoolPush();
-      v71 = a1;
+      selfCopy2 = self;
       v72 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v74 = v73 = v14;
+        v74 = v73 = tokenCopy;
         *buf = 138543362;
         v193 = v74;
         _os_log_impl(&dword_229538000, v72, OS_LOG_TYPE_ERROR, "%{public}@Invalid home data response, missing change token", buf, 0xCu);
 
-        v14 = v73;
+        tokenCopy = v73;
       }
 
       objc_autoreleasePoolPop(v70);
-      v12 = v30;
-      if (a6)
+      changesCopy = v30;
+      if (checksum)
       {
-        *a6 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
+        *checksum = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
       }
     }
 
@@ -907,32 +907,32 @@ LABEL_16:
       v58 = v189;
       v59 = v20;
       v60 = objc_autoreleasePoolPush();
-      v61 = a1;
+      selfCopy3 = self;
       v62 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v64 = v63 = v14;
+        v64 = v63 = tokenCopy;
         *buf = 138543362;
         v193 = v64;
         _os_log_impl(&dword_229538000, v62, OS_LOG_TYPE_ERROR, "%{public}@Invalid home data response, missing data payload", buf, 0xCu);
 
-        v14 = v63;
+        tokenCopy = v63;
       }
 
       objc_autoreleasePoolPop(v60);
-      v12 = v30;
-      if (a6)
+      changesCopy = v30;
+      if (checksum)
       {
         [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-        *a6 = v28 = 0;
+        *checksum = v28 = 0;
 LABEL_53:
         v20 = v59;
         v39 = v58;
         v11 = v184;
         v17 = v179;
 LABEL_125:
-        v13 = v188;
+        requestCopy = v188;
         goto LABEL_126;
       }
     }
@@ -941,33 +941,33 @@ LABEL_125:
     goto LABEL_53;
   }
 
-  if (v29)
+  if (integerValue)
   {
-    v50 = a6;
+    checksumCopy = checksum;
     v51 = v20;
     v52 = objc_autoreleasePoolPush();
-    v53 = a1;
+    selfCopy4 = self;
     v54 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v55 = v12;
-      v57 = v56 = v14;
+      v55 = changesCopy;
+      v57 = v56 = tokenCopy;
       *buf = 138543618;
       v193 = v57;
       v194 = 2114;
       v195 = v17;
       _os_log_impl(&dword_229538000, v54, OS_LOG_TYPE_ERROR, "%{public}@Invalid home data response, invalid response type: %{public}@", buf, 0x16u);
 
-      v14 = v56;
-      v12 = v55;
+      tokenCopy = v56;
+      changesCopy = v55;
     }
 
     objc_autoreleasePoolPop(v52);
-    if (v50)
+    if (checksumCopy)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-      *v50 = v28 = 0;
+      *checksumCopy = v28 = 0;
     }
 
     else
@@ -983,39 +983,39 @@ LABEL_125:
   v186 = 0;
 LABEL_25:
   v34 = &OBJC_IVAR___HMDCameraMetricsLogEvent__accessory;
-  if (a1[12] || ([(HMDResidentSyncClient *)a1 _fetchOrCreateMetadataWithError:a6]& 1) != 0)
+  if (self[12] || ([(HMDResidentSyncClient *)self _fetchOrCreateMetadataWithError:checksum]& 1) != 0)
   {
-    v35 = a1[4];
-    v36 = [MEMORY[0x277CBE4F8] currentQueryGenerationToken];
-    [v35 setQueryGenerationFromToken:v36 error:0];
+    v35 = self[4];
+    currentQueryGenerationToken = [MEMORY[0x277CBE4F8] currentQueryGenerationToken];
+    [v35 setQueryGenerationFromToken:currentQueryGenerationToken error:0];
 
-    v178 = [a1[12] home];
+    home = [self[12] home];
     v183 = v20;
-    if (!v178)
+    if (!home)
     {
       v65 = objc_autoreleasePoolPush();
-      v66 = a1;
+      selfCopy5 = self;
       v67 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v68 = v177 = v14;
-        v69 = [v12 shortDescription];
+        v68 = v177 = tokenCopy;
+        shortDescription = [changesCopy shortDescription];
         *buf = 138543618;
         v193 = v68;
         v194 = 2114;
-        v195 = v69;
+        v195 = shortDescription;
         _os_log_impl(&dword_229538000, v67, OS_LOG_TYPE_ERROR, "%{public}@Unable to apply home data for %{public}@, home has been removed", buf, 0x16u);
 
         v34 = &OBJC_IVAR___HMDCameraMetricsLogEvent__accessory;
-        v14 = v177;
+        tokenCopy = v177;
       }
 
       objc_autoreleasePoolPop(v65);
-      if (a6)
+      if (checksum)
       {
         [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-        *a6 = v28 = 0;
+        *checksum = v28 = 0;
       }
 
       else
@@ -1026,51 +1026,51 @@ LABEL_25:
       goto LABEL_123;
     }
 
-    v169 = a6;
+    checksumCopy2 = checksum;
     v37 = [MEMORY[0x277CBEAA8] now];
-    [a1[12] setLastSyncTimestamp:v37];
+    [self[12] setLastSyncTimestamp:v37];
 
-    v38 = [(__CFString *)v17 integerValue];
+    integerValue2 = [(__CFString *)v17 integerValue];
     v39 = v189;
-    v175 = v12;
-    v176 = v14;
-    context = v38;
+    v175 = changesCopy;
+    v176 = tokenCopy;
+    context = integerValue2;
     if (v189)
     {
-      v40 = v38 == 1;
-      v41 = [a1[12] lastSyncToken];
-      LOBYTE(v40) = [(HMDResidentSyncController *)a1 changeToken:v189 isAheadOf:v41 orEqual:v40];
+      v40 = integerValue2 == 1;
+      lastSyncToken = [self[12] lastSyncToken];
+      LOBYTE(v40) = [(HMDResidentSyncController *)self changeToken:v189 isAheadOf:lastSyncToken orEqual:v40];
 
       if (v40)
       {
-        [a1[12] setLastSyncToken:v189];
+        [self[12] setLastSyncToken:v189];
         if (v186)
         {
-          v171 = [(__CFString *)v17 integerValue];
+          integerValue3 = [(__CFString *)v17 integerValue];
           v42 = objc_autoreleasePoolPush();
-          v43 = a1;
+          selfCopy6 = self;
           v44 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
           {
             v164 = v42;
             v45 = HMFGetLogIdentifier();
-            v46 = [v12 shortDescription];
+            shortDescription2 = [changesCopy shortDescription];
             v47 = HMDShortDescriptionForToken(v189);
             v48 = v47;
-            if (v171 > 2)
+            if (integerValue3 > 2)
             {
               v49 = @"Unknown";
             }
 
             else
             {
-              v49 = off_27867D020[v171];
+              v49 = off_27867D020[integerValue3];
             }
 
             *buf = 138544130;
             v193 = v45;
             v194 = 2112;
-            v195 = v46;
+            v195 = shortDescription2;
             v196 = 2114;
             v197 = v47;
             v198 = 2114;
@@ -1101,16 +1101,16 @@ LABEL_25:
           v168 = v131;
           if (v131)
           {
-            v132 = [(__CFString *)v131 integerValue];
-            if (v132 > 7)
+            integerValue4 = [(__CFString *)v131 integerValue];
+            if (integerValue4 > 7)
             {
               goto LABEL_108;
             }
 
-            if (((1 << v132) & 0x3A) != 0)
+            if (((1 << integerValue4) & 0x3A) != 0)
             {
               v133 = objc_autoreleasePoolPush();
-              v134 = v43;
+              v134 = selfCopy6;
               v135 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v135, OS_LOG_TYPE_ERROR))
               {
@@ -1128,16 +1128,16 @@ LABEL_25:
               goto LABEL_115;
             }
 
-            if (((1 << v132) & 0xC4) != 0)
+            if (((1 << integerValue4) & 0xC4) != 0)
             {
-              v138 = [(__CFString *)v131 integerValue];
+              integerValue5 = [(__CFString *)v131 integerValue];
             }
 
             else
             {
 LABEL_108:
               v139 = objc_autoreleasePoolPush();
-              v140 = v43;
+              v140 = selfCopy6;
               v141 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v141, OS_LOG_TYPE_ERROR))
               {
@@ -1150,50 +1150,50 @@ LABEL_108:
               }
 
               objc_autoreleasePoolPop(v139);
-              v138 = 0;
+              integerValue5 = 0;
             }
           }
 
           else
           {
-            v138 = 0;
+            integerValue5 = 0;
           }
 
-          if (v171)
+          if (integerValue3)
           {
-            v143 = [v43 logEventSubmitter];
+            logEventSubmitter = [selfCopy6 logEventSubmitter];
             v144 = [HMDResidentSyncClientHomeDataLogEvent alloc];
-            v145 = v43[2];
+            v145 = selfCopy6[2];
             v146 = v166;
             v147 = [v166 length];
             v148 = v145;
             v34 = &OBJC_IVAR___HMDCameraMetricsLogEvent__accessory;
-            v149 = [(HMDResidentSyncClientHomeDataLogEvent *)v144 initWithHomeUUID:v148 encodedDataSize:v147 homeDataType:v171 transportType:v138];
-            [v143 submitLogEvent:v149];
+            v149 = [(HMDResidentSyncClientHomeDataLogEvent *)v144 initWithHomeUUID:v148 encodedDataSize:v147 homeDataType:integerValue3 transportType:integerValue5];
+            [logEventSubmitter submitLogEvent:v149];
 
 LABEL_116:
             v151 = [HMDStructuredReader readerFromOPACKData:v146];
-            if ([v43[3] updateRootObject:v178 fromReader:v151])
+            if ([selfCopy6[3] updateRootObject:home fromReader:v151])
             {
 
               v86 = 0;
-              v14 = v176;
+              tokenCopy = v176;
               v20 = v183;
               v39 = v189;
 LABEL_64:
-              v87 = [a1[12] lastSeenToken];
-              v88 = [a1[12] lastSyncToken];
-              v172 = v87;
-              v190 = v88;
-              if (v39 && [a1 changeToken:v39 isAheadOf:v87])
+              lastSeenToken = [self[12] lastSeenToken];
+              lastSyncToken2 = [self[12] lastSyncToken];
+              v172 = lastSeenToken;
+              v190 = lastSyncToken2;
+              if (v39 && [self changeToken:v39 isAheadOf:lastSeenToken])
               {
-                [a1[12] setLastSeenToken:v39];
+                [self[12] setLastSeenToken:v39];
               }
 
-              else if (([a1 changeToken:v87 isAheadOf:v188] & 1) == 0 && objc_msgSend(a1, "changeToken:isAheadOf:", v87, v88))
+              else if (([self changeToken:lastSeenToken isAheadOf:v188] & 1) == 0 && objc_msgSend(self, "changeToken:isAheadOf:", lastSeenToken, lastSyncToken2))
               {
                 v89 = objc_autoreleasePoolPush();
-                v90 = a1;
+                selfCopy7 = self;
                 v91 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v91, OS_LOG_TYPE_DEFAULT))
                 {
@@ -1215,15 +1215,15 @@ LABEL_64:
                   v11 = v93;
                   v17 = v180;
 
-                  v14 = v176;
+                  tokenCopy = v176;
                 }
 
                 objc_autoreleasePoolPop(v89);
-                [v90[12] setLastSeenToken:v190];
+                [selfCopy7[12] setLastSeenToken:v190];
                 v20 = v183;
               }
 
-              if (v14)
+              if (tokenCopy)
               {
                 v97 = context == 1;
               }
@@ -1246,13 +1246,13 @@ LABEL_64:
               if ((v98 & 1) == 0)
               {
                 v99 = objc_autoreleasePoolPush();
-                v100 = a1;
+                selfCopy8 = self;
                 v101 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v101, OS_LOG_TYPE_INFO))
                 {
                   HMFGetLogIdentifier();
-                  v103 = v102 = v14;
-                  [v100[12] lastSyncChecksum];
+                  v103 = v102 = tokenCopy;
+                  [selfCopy8[12] lastSyncChecksum];
                   v104 = v17;
                   v105 = v11;
                   v107 = v106 = v39;
@@ -1268,29 +1268,29 @@ LABEL_64:
                   v11 = v105;
                   v17 = v104;
 
-                  v14 = v102;
+                  tokenCopy = v102;
                 }
 
                 objc_autoreleasePoolPop(v99);
-                [v100[12] setLastSyncChecksum:v14];
+                [selfCopy8[12] setLastSyncChecksum:tokenCopy];
                 v20 = v183;
               }
 
-              v108 = [a1[4] insertedObjects];
-              v167 = [v108 count];
+              insertedObjects = [self[4] insertedObjects];
+              v167 = [insertedObjects count];
 
-              v109 = [a1[4] updatedObjects];
-              v165 = [v109 count];
+              updatedObjects = [self[4] updatedObjects];
+              v165 = [updatedObjects count];
 
-              v110 = [a1[4] deletedObjects];
-              v111 = [v110 count];
+              deletedObjects = [self[4] deletedObjects];
+              v111 = [deletedObjects count];
 
-              v112 = a1[4];
+              v112 = self[4];
               v191 = 0;
               v28 = [v112 save:&v191];
               v113 = v191;
               contexta = objc_autoreleasePoolPush();
-              v114 = a1;
+              selfCopy9 = self;
               v115 = HMFGetOSLogHandle();
               v116 = v115;
               if (v28)
@@ -1299,7 +1299,7 @@ LABEL_64:
                 {
                   HMFGetLogIdentifier();
                   v117 = v170 = v113;
-                  v118 = [v175 shortDescription];
+                  shortDescription3 = [v175 shortDescription];
                   HMDShortDescriptionForToken(v39);
                   v181 = v17;
                   v119 = v11;
@@ -1313,7 +1313,7 @@ LABEL_64:
                   v198 = 2048;
                   v199 = v111;
                   v200 = 2112;
-                  v201 = v118;
+                  v201 = shortDescription3;
                   v202 = 2114;
                   v203 = v121;
                   _os_log_impl(&dword_229538000, v116, OS_LOG_TYPE_DEFAULT, "%{public}@Database changes saved (%tu / %tu / %tu) for %@ with change token %{public}@", buf, 0x3Eu);
@@ -1335,7 +1335,7 @@ LABEL_64:
                 {
                   HMFGetLogIdentifier();
                   v122 = v162 = v111;
-                  v123 = [v175 shortDescription];
+                  shortDescription4 = [v175 shortDescription];
                   HMDShortDescriptionForToken(v39);
                   v182 = v17;
                   v124 = v11;
@@ -1349,7 +1349,7 @@ LABEL_64:
                   v198 = 2048;
                   v199 = v162;
                   v200 = 2112;
-                  v201 = v123;
+                  v201 = shortDescription4;
                   v202 = 2114;
                   v203 = v126;
                   v204 = 2114;
@@ -1363,23 +1363,23 @@ LABEL_64:
                 }
 
                 objc_autoreleasePoolPop(contexta);
-                if (v169)
+                if (checksumCopy2)
                 {
-                  *v169 = HMDSanitizeCoreDataError(v113);
+                  *checksumCopy2 = HMDSanitizeCoreDataError(v113);
                 }
 
-                [a1[4] rollback];
+                [self[4] rollback];
               }
 
-              v12 = v175;
-              v14 = v176;
+              changesCopy = v175;
+              tokenCopy = v176;
               v34 = &OBJC_IVAR___HMDCameraMetricsLogEvent__accessory;
 
               goto LABEL_124;
             }
 
             v152 = objc_autoreleasePoolPush();
-            v153 = v43;
+            v153 = selfCopy6;
             v154 = v152;
             v155 = v153;
             v156 = HMFGetOSLogHandle();
@@ -1387,42 +1387,42 @@ LABEL_64:
             {
               v157 = HMFGetLogIdentifier();
               [v151 error];
-              v159 = v158 = v12;
+              v159 = v158 = changesCopy;
               *buf = 138543618;
               v193 = v157;
               v194 = 2114;
               v195 = v159;
               _os_log_impl(&dword_229538000, v156, OS_LOG_TYPE_ERROR, "%{public}@Failed to apply home data: %{public}@", buf, 0x16u);
 
-              v12 = v158;
+              changesCopy = v158;
               v34 = &OBJC_IVAR___HMDCameraMetricsLogEvent__accessory;
             }
 
             objc_autoreleasePoolPop(v154);
             v11 = v185;
-            if (v169)
+            if (checksumCopy2)
             {
-              *v169 = [v151 error];
+              *checksumCopy2 = [v151 error];
             }
 
-            [a1[4] rollback];
+            [self[4] rollback];
 
             v28 = 0;
-            v14 = v176;
+            tokenCopy = v176;
 LABEL_123:
             v20 = v183;
             v39 = v189;
 LABEL_124:
 
-            [a1[4] refreshAllObjects];
-            [*(a1 + v34[35]) willAccessValueForKey:0];
-            [a1[4] setQueryGenerationFromToken:0 error:0];
+            [self[4] refreshAllObjects];
+            [*(self + v34[35]) willAccessValueForKey:0];
+            [self[4] setQueryGenerationFromToken:0 error:0];
 
             goto LABEL_125;
           }
 
           v133 = objc_autoreleasePoolPush();
-          v134 = v43;
+          v134 = selfCopy6;
           v135 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v135, OS_LOG_TYPE_ERROR))
           {
@@ -1442,18 +1442,18 @@ LABEL_115:
         }
 
         v75 = objc_autoreleasePoolPush();
-        v76 = a1;
+        selfCopy12 = self;
         v77 = HMFGetOSLogHandle();
         v39 = v189;
         if (os_log_type_enabled(v77, OS_LOG_TYPE_INFO))
         {
           v78 = HMFGetLogIdentifier();
-          v127 = [v12 shortDescription];
+          shortDescription5 = [changesCopy shortDescription];
           v128 = HMDShortDescriptionForToken(v189);
           *buf = 138543874;
           v193 = v78;
           v194 = 2112;
-          v195 = v127;
+          v195 = shortDescription5;
           v196 = 2114;
           v197 = v128;
           _os_log_impl(&dword_229538000, v77, OS_LOG_TYPE_INFO, "%{public}@Applying last sync token update only for %@ with change token %{public}@", buf, 0x20u);
@@ -1471,7 +1471,7 @@ LABEL_63:
       }
 
       v75 = objc_autoreleasePoolPush();
-      v76 = a1;
+      selfCopy12 = self;
       v77 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
       {
@@ -1479,7 +1479,7 @@ LABEL_63:
       }
 
       v78 = HMFGetLogIdentifier();
-      [v12 shortDescription];
+      [changesCopy shortDescription];
       v79 = v17;
       v80 = v11;
       v82 = v81 = v189;
@@ -1495,7 +1495,7 @@ LABEL_63:
     else
     {
       v75 = objc_autoreleasePoolPush();
-      v76 = a1;
+      selfCopy12 = self;
       v77 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v77, OS_LOG_TYPE_INFO))
       {
@@ -1503,7 +1503,7 @@ LABEL_63:
       }
 
       v78 = HMFGetLogIdentifier();
-      [v12 shortDescription];
+      [changesCopy shortDescription];
       v79 = v17;
       v80 = v11;
       v82 = v81 = 0;
@@ -1523,12 +1523,12 @@ LABEL_63:
     v17 = v79;
 LABEL_62:
 
-    v14 = v176;
+    tokenCopy = v176;
     goto LABEL_63;
   }
 
   v28 = 0;
-  v13 = v188;
+  requestCopy = v188;
   v39 = v189;
 LABEL_126:
 
@@ -1541,30 +1541,30 @@ LABEL_128:
 
 - (id)_performFetchIfRequired
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1[11] anyObject];
+    anyObject = [self[11] anyObject];
 
-    if (v2)
+    if (anyObject)
     {
-      v1 = [MEMORY[0x277D0F7C0] futureWithNoValue];
+      selfCopy = [MEMORY[0x277D0F7C0] futureWithNoValue];
       goto LABEL_13;
     }
 
-    v3 = [v1[4] persistentStoreCoordinator];
-    v4 = [v3 managedObjectModel];
-    v5 = [v4 versionChecksum];
+    persistentStoreCoordinator = [selfCopy[4] persistentStoreCoordinator];
+    managedObjectModel = [persistentStoreCoordinator managedObjectModel];
+    versionChecksum = [managedObjectModel versionChecksum];
 
-    v6 = [v1[12] lastSeenToken];
+    lastSeenToken = [selfCopy[12] lastSeenToken];
 
-    if (v6)
+    if (lastSeenToken)
     {
-      v7 = [v1[12] lastSeenToken];
-      v8 = [v1[12] lastSyncToken];
-      v9 = [v1[12] lastSyncChecksum];
+      lastSeenToken2 = [selfCopy[12] lastSeenToken];
+      lastSyncToken = [selfCopy[12] lastSyncToken];
+      lastSyncChecksum = [selfCopy[12] lastSyncChecksum];
       v10 = HMFEqualObjects();
-      v11 = [(HMDResidentSyncController *)v1 changeToken:v7 isAheadOf:v8 orEqual:v10 ^ 1u];
+      v11 = [(HMDResidentSyncController *)selfCopy changeToken:lastSeenToken2 isAheadOf:lastSyncToken orEqual:v10 ^ 1u];
 
       if (v11)
       {
@@ -1574,16 +1574,16 @@ LABEL_128:
       else
       {
         v13 = [MEMORY[0x277CBEAA8] now];
-        v14 = [v1[12] lastSyncTimestamp];
-        [v13 timeIntervalSinceDate:v14];
+        lastSyncTimestamp = [selfCopy[12] lastSyncTimestamp];
+        [v13 timeIntervalSinceDate:lastSyncTimestamp];
         v16 = v15;
         v17 = HMDHomeDataChangedMessageTimeout();
 
         if (v16 < v17)
         {
-          v18 = [MEMORY[0x277D0F7C0] futureWithNoValue];
+          futureWithNoValue = [MEMORY[0x277D0F7C0] futureWithNoValue];
 LABEL_12:
-          v1 = v18;
+          selfCopy = futureWithNoValue;
 
           goto LABEL_13;
         }
@@ -1597,13 +1597,13 @@ LABEL_12:
       v12 = @"lastSeenToken is nil";
     }
 
-    v18 = [(HMDResidentSyncClient *)v1 _performFetchWithReason:v12];
+    futureWithNoValue = [(HMDResidentSyncClient *)selfCopy _performFetchWithReason:v12];
     goto LABEL_12;
   }
 
 LABEL_13:
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)_fetchOrCreateMetadataWithError:(uint64_t)result
@@ -1643,10 +1643,10 @@ LABEL_13:
       goto LABEL_16;
     }
 
-    v8 = [v6 residentSyncMetadata];
-    if (v8)
+    residentSyncMetadata = [v6 residentSyncMetadata];
+    if (residentSyncMetadata)
     {
-      v9 = v8;
+      v9 = residentSyncMetadata;
       v10 = v7;
     }
 
@@ -1717,10 +1717,10 @@ LABEL_16:
   return result;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   retryTimer = self->_retryTimer;
-  if (retryTimer == a3)
+  if (retryTimer == fire)
   {
     [(HMFExponentialBackoffTimer *)retryTimer suspend];
     context = self->super._context;
@@ -1744,17 +1744,17 @@ id *__38__HMDResidentSyncClient_timerDidFire___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)performResidentRequest:(id)a3 options:(unint64_t)a4
+- (void)performResidentRequest:(id)request options:(unint64_t)options
 {
-  v5 = a3;
-  if (v5)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v6 = v5;
-    v7 = [v5 destination];
+    v6 = requestCopy;
+    destination = [requestCopy destination];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = destination;
     }
 
     else
@@ -1767,9 +1767,9 @@ id *__38__HMDResidentSyncClient_timerDidFire___block_invoke(uint64_t a1)
     if (!v9)
     {
       v10 = [HMDRemoteHomeMessageDestination alloc];
-      v11 = [v6 destination];
-      v12 = [v11 target];
-      v7 = [(HMDRemoteHomeMessageDestination *)v10 initWithTarget:v12 homeUUID:self->super._homeUUID];
+      destination2 = [v6 destination];
+      target = [destination2 target];
+      destination = [(HMDRemoteHomeMessageDestination *)v10 initWithTarget:target homeUUID:self->super._homeUUID];
     }
 
     v13 = MEMORY[0x277D0F7C0];
@@ -1780,8 +1780,8 @@ id *__38__HMDResidentSyncClient_timerDidFire___block_invoke(uint64_t a1)
     v19[3] = &unk_278686828;
     v19[4] = self;
     v20 = v6;
-    v21 = v7;
-    v15 = v7;
+    v21 = destination;
+    v15 = destination;
     v16 = v6;
     v17 = [v13 inContext:context perform:v19];
     [v16 respondWithOutcomeOf:v17];
@@ -2012,24 +2012,24 @@ uint64_t __56__HMDResidentSyncClient_performResidentRequest_options___block_invo
   return 1;
 }
 
-- (void)handlePrimaryResidentChanged:(id)a3
+- (void)handlePrimaryResidentChanged:(id)changed
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->super._home);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained homeManager];
-    v8 = [v6 uuid];
-    v9 = [v7 sharedUserAcceptEventBuilderForHomeUuid:v8];
+    homeManager = [WeakRetained homeManager];
+    uuid = [v6 uuid];
+    v9 = [homeManager sharedUserAcceptEventBuilderForHomeUuid:uuid];
 
     [v9 markDiscoverPrimaryResidentEnd];
     [v9 markResidentSyncBegin];
   }
 
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKeyedSubscript:@"HMDResidentDeviceManagerResidentDeviceNotificationKey"];
+  userInfo = [changedCopy userInfo];
+  v11 = [userInfo objectForKeyedSubscript:@"HMDResidentDeviceManagerResidentDeviceNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2051,17 +2051,17 @@ uint64_t __56__HMDResidentSyncClient_performResidentRequest_options___block_invo
     v27 = 3221225472;
     v28 = __54__HMDResidentSyncClient_handlePrimaryResidentChanged___block_invoke;
     v29 = &unk_27868A728;
-    v30 = self;
+    selfCopy = self;
     v15 = &v26;
 LABEL_12:
-    [(HMDManagedObjectContext *)context performBlock:v15, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30];
+    [(HMDManagedObjectContext *)context performBlock:v15, v21, v22, v23, v24, v25, v26, v27, v28, v29, selfCopy];
     goto LABEL_13;
   }
 
   if (v13)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
@@ -2072,12 +2072,12 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(v16);
-    context = v17->super._context;
+    context = selfCopy2->super._context;
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __54__HMDResidentSyncClient_handlePrimaryResidentChanged___block_invoke_223;
     v24 = &unk_27868A728;
-    v25 = v17;
+    v25 = selfCopy2;
     v15 = &v21;
     goto LABEL_12;
   }
@@ -2204,32 +2204,32 @@ LABEL_8:
   return [(HMDResidentSyncClient *)v22 initWithHome:v23 codingModel:v24 dispatcher:v25 residentDeviceManager:v26 notificationCenter:v27 persistence:v28 isResidentCapable:v29 dataSource:a9 logEventSubmitter:a10, a11];
 }
 
-- (HMDResidentSyncClient)initWithHome:(id)a3 codingModel:(id)a4 dispatcher:(id)a5 residentDeviceManager:(id)a6 notificationCenter:(id)a7 persistence:(id)a8 isResidentCapable:(BOOL)a9 dataSource:(id)a10 logEventSubmitter:(id)a11
+- (HMDResidentSyncClient)initWithHome:(id)home codingModel:(id)model dispatcher:(id)dispatcher residentDeviceManager:(id)manager notificationCenter:(id)center persistence:(id)persistence isResidentCapable:(BOOL)capable dataSource:(id)self0 logEventSubmitter:(id)self1
 {
-  v29 = a5;
-  v28 = a6;
-  v27 = a10;
-  v18 = a11;
+  dispatcherCopy = dispatcher;
+  managerCopy = manager;
+  sourceCopy = source;
+  submitterCopy = submitter;
   v30.receiver = self;
   v30.super_class = HMDResidentSyncClient;
-  v19 = [(HMDResidentSyncController *)&v30 initWithHome:a3 codingModel:a4 notificationCenter:a7 persistence:a8];
+  v19 = [(HMDResidentSyncController *)&v30 initWithHome:home codingModel:model notificationCenter:center persistence:persistence];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_dispatcher, a5);
-    objc_storeStrong(&v20->_residentDeviceManager, a6);
-    objc_storeStrong(&v20->_dataSource, a10);
-    v20->_residentCapable = a9;
-    v21 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v19->_dispatcher, dispatcher);
+    objc_storeStrong(&v20->_residentDeviceManager, manager);
+    objc_storeStrong(&v20->_dataSource, source);
+    v20->_residentCapable = capable;
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     requestsInProgress = v20->_requestsInProgress;
-    v20->_requestsInProgress = v21;
+    v20->_requestsInProgress = weakObjectsHashTable;
 
     v23 = [objc_alloc(MEMORY[0x277D0F7B0]) initWithMinimumTimeInterval:2 maximumTimeInterval:0 exponentialFactor:10.0 options:28800.0];
     retryTimer = v20->_retryTimer;
     v20->_retryTimer = v23;
 
     [(HMFExponentialBackoffTimer *)v20->_retryTimer setDelegate:v20];
-    objc_storeStrong(&v20->_logEventSubmitter, a11);
+    objc_storeStrong(&v20->_logEventSubmitter, submitter);
     v25 = objc_opt_new();
     [(HMDManagedObjectContext *)v20->super._context setMergePolicy:v25];
 

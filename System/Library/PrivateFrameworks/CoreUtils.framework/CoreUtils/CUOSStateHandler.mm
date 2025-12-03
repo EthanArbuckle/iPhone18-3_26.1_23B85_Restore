@@ -1,5 +1,5 @@
 @interface CUOSStateHandler
-- (CUOSStateHandler)initWithTitle:(id)a3 dispatchQueue:(id)a4 handler:(id)a5;
+- (CUOSStateHandler)initWithTitle:(id)title dispatchQueue:(id)queue handler:(id)handler;
 - (os_state_data_s)_generateState;
 - (void)dealloc;
 - (void)remove;
@@ -58,21 +58,21 @@
   [(CUOSStateHandler *)&v3 dealloc];
 }
 
-- (CUOSStateHandler)initWithTitle:(id)a3 dispatchQueue:(id)a4 handler:(id)a5
+- (CUOSStateHandler)initWithTitle:(id)title dispatchQueue:(id)queue handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  queueCopy = queue;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = CUOSStateHandler;
   v12 = [(CUOSStateHandler *)&v19 init];
   if (v12)
   {
-    v13 = _Block_copy(v11);
+    v13 = _Block_copy(handlerCopy);
     handler = v12->_handler;
     v12->_handler = v13;
 
-    objc_storeStrong(&v12->_title, a3);
+    objc_storeStrong(&v12->_title, title);
     objc_initWeak(&location, v12);
     objc_copyWeak(&v17, &location);
     v12->_stateHandle = os_state_add_handler();

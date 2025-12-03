@@ -1,52 +1,52 @@
 @interface MPVolumeView
 - (BOOL)isWirelessRouteActive;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)routeButtonRectForBounds:(CGRect)bounds;
 - (CGRect)volumeSliderRectForBounds:(CGRect)bounds;
 - (CGRect)volumeThumbRectForBounds:(CGRect)bounds volumeSliderRect:(CGRect)rect value:(float)value;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MPVolumeView)initWithCoder:(id)a3;
-- (MPVolumeView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MPVolumeView)initWithCoder:(id)coder;
+- (MPVolumeView)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (UIImage)maximumVolumeSliderImageForState:(UIControlState)state;
 - (UIImage)minimumVolumeSliderImageForState:(UIControlState)state;
 - (UIImage)routeButtonImageForState:(UIControlState)state;
-- (id)_defaultRouteButtonImageAsSelected:(BOOL)a3;
-- (void)_applicationWillEnterForegroundNotification:(id)a3;
+- (id)_defaultRouteButtonImageAsSelected:(BOOL)selected;
+- (void)_applicationWillEnterForegroundNotification:(id)notification;
 - (void)_createSubviews;
 - (void)_displayAudioRoutePicker;
-- (void)_getDefaultVolumeSliderFrame:(CGRect *)a3 routeButtonFrame:(CGRect *)a4 forBounds:(CGRect)a5;
-- (void)_initWithStyle:(int64_t)a3;
+- (void)_getDefaultVolumeSliderFrame:(CGRect *)frame routeButtonFrame:(CGRect *)buttonFrame forBounds:(CGRect)bounds;
+- (void)_initWithStyle:(int64_t)style;
 - (void)_loadAudioRoutePickerIfNeeded;
-- (void)_setRouteDiscoveryEnabled:(BOOL)a3;
-- (void)_setShowsRouteButton:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setShowsVolumeSlider:(BOOL)a3;
+- (void)_setRouteDiscoveryEnabled:(BOOL)enabled;
+- (void)_setShowsRouteButton:(BOOL)button animated:(BOOL)animated;
+- (void)_setShowsVolumeSlider:(BOOL)slider;
 - (void)_startPrewarmingAudioRoutePicker;
 - (void)_updateWirelessRouteStatus;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)lightweightRoutingController:(id)a3 didChangeDevicePresenceDetected:(BOOL)a4;
-- (void)lightweightRoutingController:(id)a3 didChangePickedRoutes:(id)a4;
-- (void)setAlpha:(double)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setHidesRouteLabelWhenNoRouteChoice:(BOOL)a3;
+- (void)lightweightRoutingController:(id)controller didChangeDevicePresenceDetected:(BOOL)detected;
+- (void)lightweightRoutingController:(id)controller didChangePickedRoutes:(id)routes;
+- (void)setAlpha:(double)alpha;
+- (void)setHidden:(BOOL)hidden;
+- (void)setHidesRouteLabelWhenNoRouteChoice:(BOOL)choice;
 - (void)setMaximumVolumeSliderImage:(UIImage *)image forState:(UIControlState)state;
 - (void)setMinimumVolumeSliderImage:(UIImage *)image forState:(UIControlState)state;
 - (void)setRouteButtonImage:(UIImage *)image forState:(UIControlState)state;
 - (void)setShowsRouteButton:(BOOL)showsRouteButton;
 - (void)setShowsVolumeSlider:(BOOL)showsVolumeSlider;
-- (void)setVolumeSliderShrinksFromBothEnds:(BOOL)a3;
+- (void)setVolumeSliderShrinksFromBothEnds:(BOOL)ends;
 @end
 
 @implementation MPVolumeView
 
-- (void)_applicationWillEnterForegroundNotification:(id)a3
+- (void)_applicationWillEnterForegroundNotification:(id)notification
 {
-  v4 = [(MPVolumeView *)self window];
+  window = [(MPVolumeView *)self window];
 
-  if (v4)
+  if (window)
   {
 
     [(MPVolumeView *)self _setRouteDiscoveryEnabled:1];
@@ -55,13 +55,13 @@
 
 - (void)_updateWirelessRouteStatus
 {
-  v3 = [(MPAVLightweightRoutingController *)self->_lightweightRoutingController isDevicePresenceDetected];
-  v4 = [(MPAVLightweightRoutingController *)self->_lightweightRoutingController pickedRoutes];
-  v5 = [v4 firstObject];
+  isDevicePresenceDetected = [(MPAVLightweightRoutingController *)self->_lightweightRoutingController isDevicePresenceDetected];
+  pickedRoutes = [(MPAVLightweightRoutingController *)self->_lightweightRoutingController pickedRoutes];
+  firstObject = [pickedRoutes firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [v5 pickableRouteType] == 1;
+    v6 = [firstObject pickableRouteType] == 1;
   }
 
   else
@@ -74,7 +74,7 @@
   v7[2] = __42__MPVolumeView__updateWirelessRouteStatus__block_invoke;
   v7[3] = &unk_1E76822D0;
   v7[4] = self;
-  v8 = v3;
+  v8 = isDevicePresenceDetected;
   v9 = v6;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
@@ -103,13 +103,13 @@ void __42__MPVolumeView__updateWirelessRouteStatus__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setRouteDiscoveryEnabled:(BOOL)a3
+- (void)_setRouteDiscoveryEnabled:(BOOL)enabled
 {
-  if (self->_routeDiscoveryEnabled != a3)
+  if (self->_routeDiscoveryEnabled != enabled)
   {
-    self->_routeDiscoveryEnabled = a3;
+    self->_routeDiscoveryEnabled = enabled;
     pushedRouteDiscoveryModeState = self->_pushedRouteDiscoveryModeState;
-    if (a3)
+    if (enabled)
     {
       v5 = 1;
       [(MPAVLightweightRoutingController *)self->_lightweightRoutingController setDiscoveryMode:1];
@@ -134,14 +134,14 @@ void __42__MPVolumeView__updateWirelessRouteStatus__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setShowsVolumeSlider:(BOOL)a3
+- (void)_setShowsVolumeSlider:(BOOL)slider
 {
-  v3 = a3;
-  v5 = [(MPVolumeView *)self isVisible];
+  sliderCopy = slider;
+  isVisible = [(MPVolumeView *)self isVisible];
   if ([(MPAVLightweightRoutingController *)self->_lightweightRoutingController isDevicePresenceDetected])
   {
-    v6 = [(MPAVLightweightRoutingController *)self->_lightweightRoutingController pickedRoutes];
-    v7 = [v6 count] != 0;
+    pickedRoutes = [(MPAVLightweightRoutingController *)self->_lightweightRoutingController pickedRoutes];
+    v7 = [pickedRoutes count] != 0;
   }
 
   else
@@ -149,7 +149,7 @@ void __42__MPVolumeView__updateWirelessRouteStatus__block_invoke(uint64_t a1)
     v7 = 0;
   }
 
-  v8 = !v3 && self->_showsVolumeSlider;
+  v8 = !sliderCopy && self->_showsVolumeSlider;
   if (self->_style)
   {
     v9 = 1;
@@ -180,34 +180,34 @@ LABEL_13:
 LABEL_10:
   if (v7)
   {
-    v10 = [(MPAVLightweightRoutingController *)self->_lightweightRoutingController pickedRoutes];
-    v11 = [v10 firstObject];
-    v12 = [v11 routeName];
+    pickedRoutes2 = [(MPAVLightweightRoutingController *)self->_lightweightRoutingController pickedRoutes];
+    firstObject = [pickedRoutes2 firstObject];
+    routeName = [firstObject routeName];
 
-    [(UILabel *)self->_routeLabel setText:v12];
+    [(UILabel *)self->_routeLabel setText:routeName];
   }
 
   else
   {
     routeLabel = self->_routeLabel;
-    v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
-    v15 = [v12 localizedStringForKey:@"NO_VOLUME_AVAILABLE" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+    routeName = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.MediaPlayer"];
+    v15 = [routeName localizedStringForKey:@"NO_VOLUME_AVAILABLE" value:&stru_1F149ECA8 table:@"MediaPlayer"];
     [(UILabel *)routeLabel setText:v15];
   }
 
   v13 = 1;
 LABEL_16:
-  v16 = [(MPVolumeSlider *)self->_volumeSlider superview];
+  superview = [(MPVolumeSlider *)self->_volumeSlider superview];
 
-  if (v3)
+  if (sliderCopy)
   {
-    if (!v16)
+    if (!superview)
     {
       [(MPVolumeView *)self addSubview:self->_volumeSlider];
     }
   }
 
-  else if (v16)
+  else if (superview)
   {
     [(MPVolumeSlider *)self->_volumeSlider removeFromSuperview];
   }
@@ -223,29 +223,29 @@ LABEL_16:
 
   else
   {
-    v18 = [(UILabel *)v17 superview];
+    superview2 = [(UILabel *)v17 superview];
 
-    if (v18)
+    if (superview2)
     {
       [(UILabel *)self->_routeLabel removeFromSuperview];
     }
   }
 
-  self->_showingSlider = v3;
+  self->_showingSlider = sliderCopy;
   self->_showingLabel = v13;
-  if (v5 != [(MPVolumeView *)self isVisible])
+  if (isVisible != [(MPVolumeView *)self isVisible])
   {
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 postNotificationName:@"MPVolumeViewVisibilityChangedNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPVolumeViewVisibilityChangedNotification" object:self];
   }
 }
 
-- (void)_setShowsRouteButton:(BOOL)a3 animated:(BOOL)a4
+- (void)_setShowsRouteButton:(BOOL)button animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(MPVolumeView *)self isVisible];
+  animatedCopy = animated;
+  isVisible = [(MPVolumeView *)self isVisible];
   showingButton = self->_showingButton;
-  self->_showingButton = a3;
+  self->_showingButton = button;
   [(MPVolumeView *)self bounds];
   v10 = v9;
   v12 = v11;
@@ -267,29 +267,29 @@ LABEL_16:
   v30 = MEMORY[0x1E69E9820];
   v32 = __46__MPVolumeView__setShowsRouteButton_animated___block_invoke;
   v33 = &unk_1E76822A8;
-  if (!v4)
+  if (!animatedCopy)
   {
     v27 = 0.0;
   }
 
-  v39 = v4;
-  v34 = self;
-  v40 = a3;
+  v39 = animatedCopy;
+  selfCopy = self;
+  buttonCopy = button;
   v35 = v18;
   v36 = v20;
   v37 = v22;
   v38 = v24;
   [MEMORY[0x1E69DD250] animateWithDuration:4 delay:&v30 options:0 animations:v27 completion:?];
-  if (v7 != [(MPVolumeView *)self isVisible:v30])
+  if (isVisible != [(MPVolumeView *)self isVisible:v30])
   {
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 postNotificationName:@"MPVolumeViewVisibilityChangedNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPVolumeViewVisibilityChangedNotification" object:self];
   }
 
   if (showingButton != [(MPVolumeView *)self isShowingRouteButton])
   {
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v29 postNotificationName:@"MPVolumeViewRouteButtonChangedNotification" object:self];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"MPVolumeViewRouteButtonChangedNotification" object:self];
   }
 }
 
@@ -323,11 +323,11 @@ uint64_t __46__MPVolumeView__setShowsRouteButton_animated___block_invoke_2(uint6
   return [*(*(a1 + 32) + 424) setAlpha:v1];
 }
 
-- (void)_getDefaultVolumeSliderFrame:(CGRect *)a3 routeButtonFrame:(CGRect *)a4 forBounds:(CGRect)a5
+- (void)_getDefaultVolumeSliderFrame:(CGRect *)frame routeButtonFrame:(CGRect *)buttonFrame forBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  [(UIButton *)self->_routeButton frame:a5.origin.x];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [(UIButton *)self->_routeButton frame:bounds.origin.x];
   v12 = v10;
   v13 = v11;
   if (!self->_showingSlider)
@@ -392,7 +392,7 @@ LABEL_19:
     v25 = v26;
     UIRoundToViewScale();
     v22 = v27;
-    if (!a3)
+    if (!frame)
     {
       goto LABEL_21;
     }
@@ -416,22 +416,22 @@ LABEL_17:
   v29.size.width = v17;
   v29.size.height = v21;
   v25 = CGRectGetMaxX(v29) + 7.0;
-  if (a3)
+  if (frame)
   {
 LABEL_20:
-    a3->origin.x = v18;
-    a3->origin.y = v20;
-    a3->size.width = v17;
-    a3->size.height = v21;
+    frame->origin.x = v18;
+    frame->origin.y = v20;
+    frame->size.width = v17;
+    frame->size.height = v21;
   }
 
 LABEL_21:
-  if (a4)
+  if (buttonFrame)
   {
-    a4->origin.x = v25;
-    a4->origin.y = v22;
-    a4->size.width = v12;
-    a4->size.height = v13;
+    buttonFrame->origin.x = v25;
+    buttonFrame->origin.y = v22;
+    buttonFrame->size.width = v12;
+    buttonFrame->size.height = v13;
   }
 }
 
@@ -447,17 +447,17 @@ LABEL_21:
 {
   [(MPVolumeView *)self _loadAudioRoutePickerIfNeeded];
   [(MPMediaControls *)self->_mediaControls present];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"MPVolumeViewRoutePickerPresentedNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPVolumeViewRoutePickerPresentedNotification" object:self];
 }
 
 - (void)_loadAudioRoutePickerIfNeeded
 {
   if (self->_mediaControls || ([(MPVolumeView *)self window], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
-    v3 = [(MPVolumeView *)self window];
+    window = [(MPVolumeView *)self window];
 
-    if (v3)
+    if (window)
     {
       return;
     }
@@ -474,10 +474,10 @@ LABEL_21:
   self->_mediaControls = v5;
 }
 
-- (id)_defaultRouteButtonImageAsSelected:(BOOL)a3
+- (id)_defaultRouteButtonImageAsSelected:(BOOL)selected
 {
   v3 = @"airplay";
-  if (a3)
+  if (selected)
   {
     v3 = @"airplay_on";
   }
@@ -485,8 +485,8 @@ LABEL_21:
   v4 = MEMORY[0x1E69DCAB8];
   v5 = MEMORY[0x1E696AAE8];
   v6 = v3;
-  v7 = [v5 mediaPlayerBundle];
-  v8 = [v4 imageNamed:v6 inBundle:v7];
+  mediaPlayerBundle = [v5 mediaPlayerBundle];
+  v8 = [v4 imageNamed:v6 inBundle:mediaPlayerBundle];
 
   return v8;
 }
@@ -512,8 +512,8 @@ LABEL_21:
 
   [v8 setTextAlignment:1];
   [v8 setBackgroundColor:0];
-  v10 = [MEMORY[0x1E69DC888] whiteColor];
-  [v8 setTextColor:v10];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v8 setTextColor:whiteColor];
 
   [v8 setOpaque:0];
   [(MPVolumeView *)self addSubview:v8];
@@ -526,8 +526,8 @@ LABEL_21:
   v13 = [(MPVolumeView *)self _defaultRouteButtonImageAsSelected:0];
   if (self->_style == 1)
   {
-    v14 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v15 = [v13 _flatImageWithColor:v14];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    v15 = [v13 _flatImageWithColor:systemBlueColor];
 
     v13 = v15;
   }
@@ -547,20 +547,20 @@ LABEL_21:
   [(MPVolumeView *)self addSubview:self->_routeButton];
 }
 
-- (void)setVolumeSliderShrinksFromBothEnds:(BOOL)a3
+- (void)setVolumeSliderShrinksFromBothEnds:(BOOL)ends
 {
-  if (self->_volumeSliderShrinksFromBothEnds != a3)
+  if (self->_volumeSliderShrinksFromBothEnds != ends)
   {
-    self->_volumeSliderShrinksFromBothEnds = a3;
+    self->_volumeSliderShrinksFromBothEnds = ends;
     [(MPVolumeView *)self setNeedsLayout];
   }
 }
 
-- (void)setHidesRouteLabelWhenNoRouteChoice:(BOOL)a3
+- (void)setHidesRouteLabelWhenNoRouteChoice:(BOOL)choice
 {
-  if (self->_hidesRouteLabelWhenNoRouteChoice != a3)
+  if (self->_hidesRouteLabelWhenNoRouteChoice != choice)
   {
-    self->_hidesRouteLabelWhenNoRouteChoice = a3;
+    self->_hidesRouteLabelWhenNoRouteChoice = choice;
     [(MPVolumeView *)self setNeedsLayout];
   }
 }
@@ -720,12 +720,12 @@ LABEL_21:
 
 - (BOOL)isWirelessRouteActive
 {
-  v2 = [(MPAVLightweightRoutingController *)self->_lightweightRoutingController pickedRoutes];
-  v3 = [v2 firstObject];
+  pickedRoutes = [(MPAVLightweightRoutingController *)self->_lightweightRoutingController pickedRoutes];
+  firstObject = [pickedRoutes firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 pickableRouteType] == 1;
+    v4 = [firstObject pickableRouteType] == 1;
   }
 
   else
@@ -736,7 +736,7 @@ LABEL_21:
   return v4;
 }
 
-- (void)lightweightRoutingController:(id)a3 didChangePickedRoutes:(id)a4
+- (void)lightweightRoutingController:(id)controller didChangePickedRoutes:(id)routes
 {
   v5 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -747,9 +747,9 @@ LABEL_21:
   dispatch_async(v5, block);
 }
 
-- (void)lightweightRoutingController:(id)a3 didChangeDevicePresenceDetected:(BOOL)a4
+- (void)lightweightRoutingController:(id)controller didChangeDevicePresenceDetected:(BOOL)detected
 {
-  [(MPVolumeView *)self _setShowsRouteButton:self->_showsRouteButton && a4 animated:1];
+  [(MPVolumeView *)self _setShowsRouteButton:self->_showsRouteButton && detected animated:1];
   v5 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -759,20 +759,20 @@ LABEL_21:
   dispatch_async(v5, block);
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = MPVolumeView;
-  [(MPVolumeView *)&v4 setHidden:a3];
+  [(MPVolumeView *)&v4 setHidden:hidden];
   v3 = +[MPVolumeHUDController sharedInstance];
   [v3 setNeedsUpdate];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v4.receiver = self;
   v4.super_class = MPVolumeView;
-  [(MPVolumeView *)&v4 setAlpha:a3];
+  [(MPVolumeView *)&v4 setAlpha:alpha];
   v3 = +[MPVolumeHUDController sharedInstance];
   [v3 setNeedsUpdate];
 }
@@ -787,14 +787,14 @@ LABEL_21:
 
   if (!self->_routeDiscoveryEnabled)
   {
-    v4 = [(MPVolumeView *)self window];
-    if (v4)
+    window = [(MPVolumeView *)self window];
+    if (window)
     {
-      v5 = v4;
+      v5 = window;
       v6 = MPUIApplication();
-      v7 = [v6 applicationState];
+      applicationState = [v6 applicationState];
 
-      if (v7 != 2)
+      if (applicationState != 2)
       {
         v9 = 1;
         goto LABEL_8;
@@ -804,9 +804,9 @@ LABEL_21:
 
   if (self->_routeDiscoveryEnabled)
   {
-    v8 = [(MPVolumeView *)self window];
+    window2 = [(MPVolumeView *)self window];
 
-    if (!v8)
+    if (!window2)
     {
       v9 = 0;
 LABEL_8:
@@ -826,10 +826,10 @@ LABEL_8:
   [v2 setNeedsUpdate];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(MPVolumeSlider *)self->_volumeSlider sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   v7 = v6;
   [(MPVolumeSlider *)self->_volumeSlider sizeThatFits:width, height];
@@ -853,13 +853,13 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   routeButton = self->_routeButton;
-  if (routeButton && ([(UIButton *)self->_routeButton convertPoint:self fromView:x, y], ([(UIButton *)routeButton pointInside:v7 withEvent:?]& 1) != 0))
+  if (routeButton && ([(UIButton *)self->_routeButton convertPoint:self fromView:x, y], ([(UIButton *)routeButton pointInside:eventCopy withEvent:?]& 1) != 0))
   {
     v9 = 1;
   }
@@ -868,7 +868,7 @@ LABEL_8:
   {
     v11.receiver = self;
     v11.super_class = MPVolumeView;
-    v9 = [(MPVolumeView *)&v11 pointInside:v7 withEvent:x, y];
+    v9 = [(MPVolumeView *)&v11 pointInside:eventCopy withEvent:x, y];
   }
 
   return v9;
@@ -882,29 +882,29 @@ LABEL_8:
   v3 = self->_showsRouteButton && [(MPAVLightweightRoutingController *)self->_lightweightRoutingController isDevicePresenceDetected];
   if (self->_showsVolumeSlider)
   {
-    v4 = [(MPVolumeSlider *)self->_volumeSlider volumeController];
-    v5 = [v4 isVolumeControlAvailable];
+    volumeController = [(MPVolumeSlider *)self->_volumeSlider volumeController];
+    isVolumeControlAvailable = [volumeController isVolumeControlAvailable];
   }
 
   else
   {
-    v5 = 0;
+    isVolumeControlAvailable = 0;
   }
 
-  [(MPVolumeView *)self _setShowsVolumeSlider:v5];
+  [(MPVolumeView *)self _setShowsVolumeSlider:isVolumeControlAvailable];
   [(MPVolumeView *)self _setShowsRouteButton:v3 animated:0];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     v5.receiver = self;
     v5.super_class = MPVolumeView;
-    [(MPVolumeView *)&v5 encodeWithCoder:v4];
-    [v4 encodeBool:self->_showsVolumeSlider forKey:@"MPVolumeViewShowsVolumeSlider"];
-    [v4 encodeBool:self->_showsRouteButton forKey:@"MPVolumeViewShowsRouteButton"];
+    [(MPVolumeView *)&v5 encodeWithCoder:coderCopy];
+    [coderCopy encodeBool:self->_showsVolumeSlider forKey:@"MPVolumeViewShowsVolumeSlider"];
+    [coderCopy encodeBool:self->_showsRouteButton forKey:@"MPVolumeViewShowsRouteButton"];
   }
 
   else
@@ -913,74 +913,74 @@ LABEL_8:
   }
 }
 
-- (MPVolumeView)initWithCoder:(id)a3
+- (MPVolumeView)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     v9.receiver = self;
     v9.super_class = MPVolumeView;
-    v5 = [(MPVolumeView *)&v9 initWithCoder:v4];
+    v5 = [(MPVolumeView *)&v9 initWithCoder:coderCopy];
     v6 = v5;
     if (v5)
     {
       [(MPVolumeView *)v5 _initWithStyle:0];
-      if ([v4 containsValueForKey:@"MPVolumeViewShowsVolumeSlider"])
+      if ([coderCopy containsValueForKey:@"MPVolumeViewShowsVolumeSlider"])
       {
-        v6->_showsVolumeSlider = [v4 decodeBoolForKey:@"MPVolumeViewShowsVolumeSlider"];
+        v6->_showsVolumeSlider = [coderCopy decodeBoolForKey:@"MPVolumeViewShowsVolumeSlider"];
       }
 
-      if ([v4 containsValueForKey:@"MPVolumeViewShowsRouteButton"])
+      if ([coderCopy containsValueForKey:@"MPVolumeViewShowsRouteButton"])
       {
-        v6->_showsRouteButton = [v4 decodeBoolForKey:@"MPVolumeViewShowsRouteButton"];
+        v6->_showsRouteButton = [coderCopy decodeBoolForKey:@"MPVolumeViewShowsRouteButton"];
       }
 
       [(MPVolumeView *)v6 setNeedsLayout];
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E696A4C8] format:@"only keyed archiving is supported"];
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
   [(MPAVLightweightRoutingController *)self->_lightweightRoutingController setDelegate:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
-  [v3 removeObserver:self name:@"MPVolumeSliderVolumeControlAvailabilityDidChangeNotification" object:self->_volumeSlider];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
+  [defaultCenter removeObserver:self name:@"MPVolumeSliderVolumeControlAvailabilityDidChangeNotification" object:self->_volumeSlider];
 
   v4.receiver = self;
   v4.super_class = MPVolumeView;
   [(MPVolumeView *)&v4 dealloc];
 }
 
-- (MPVolumeView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (MPVolumeView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = MPVolumeView;
-  v5 = [(MPVolumeView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(MPVolumeView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    [(MPVolumeView *)v5 _initWithStyle:a4];
+    [(MPVolumeView *)v5 _initWithStyle:style];
   }
 
   return v6;
 }
 
-- (void)_initWithStyle:(int64_t)a3
+- (void)_initWithStyle:(int64_t)style
 {
-  self->_style = a3;
+  self->_style = style;
   self->_showsVolumeSlider = 1;
   self->_showsRouteButton = dyld_program_sdk_at_least() ^ 1;
   v4 = [MPAVLightweightRoutingController alloc];
@@ -992,10 +992,10 @@ LABEL_8:
 
   [(MPAVLightweightRoutingController *)self->_lightweightRoutingController setDelegate:self];
   [(MPVolumeView *)self _createSubviews];
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 addObserver:self selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
-  [v9 addObserver:self selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
-  [v9 addObserver:self selector:sel__volumeSliderVolumeControlAvailabilityDidChangeNotification_ name:@"MPVolumeSliderVolumeControlAvailabilityDidChangeNotification" object:self->_volumeSlider];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
+  [defaultCenter addObserver:self selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x1E69DDBC0] object:0];
+  [defaultCenter addObserver:self selector:sel__volumeSliderVolumeControlAvailabilityDidChangeNotification_ name:@"MPVolumeSliderVolumeControlAvailabilityDidChangeNotification" object:self->_volumeSlider];
 }
 
 @end

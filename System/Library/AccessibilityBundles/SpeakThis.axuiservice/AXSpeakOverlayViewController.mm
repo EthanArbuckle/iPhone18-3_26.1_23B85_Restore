@@ -2,7 +2,7 @@
 - (AXSpeakOverlayViewController)init;
 - (BOOL)isPaused;
 - (BOOL)isSpeaking;
-- (CGPoint)_denormalizedNubbitOriginForViewSize:(CGSize)a3;
+- (CGPoint)_denormalizedNubbitOriginForViewSize:(CGSize)size;
 - (CGPoint)gestureMoveStartPosition;
 - (CGPoint)nubbitMoveStartPosition;
 - (CGRect)overlayFrame;
@@ -10,66 +10,66 @@
 - (SSUIDelegate)delegate;
 - (UIColor)highlightColor;
 - (UIColor)underlineColor;
-- (double)idleOpacityForNubbit:(id)a3;
+- (double)idleOpacityForNubbit:(id)nubbit;
 - (double)speakingRateAsMultiplier;
-- (id)_sliceRects:(id)a3 withSentenceRects:(id)a4 wordRects:(id)a5;
-- (id)highlightColorForColor:(id)a3;
-- (id)sentenceHighlightColorForColor:(id)a3;
+- (id)_sliceRects:(id)rects withSentenceRects:(id)sentenceRects wordRects:(id)wordRects;
+- (id)highlightColorForColor:(id)color;
+- (id)sentenceHighlightColorForColor:(id)color;
 - (void)_enqueueCollapseTimer;
 - (void)_initializeContainingView;
 - (void)_registerNubbit;
 - (void)_saveNubbitPosition;
 - (void)_subscribeEventMonitor;
 - (void)_unsubscribeEventMonitors;
-- (void)_updateForTabModeUsingSpeakFingerButton:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateForTabModeUsingSpeakFingerButton:(BOOL)button animated:(BOOL)animated;
 - (void)_updateNubbitForTabModeChange;
 - (void)_updateTabButtonToExpandCollapseButton;
 - (void)_updateTabButtonToSpeakFingerButton;
 - (void)_updateUI;
 - (void)barDidReceiveFocus;
 - (void)collapseNubbit;
-- (void)controlBarDragged:(CGPoint)a3 gestureRecognizer:(id)a4;
+- (void)controlBarDragged:(CGPoint)dragged gestureRecognizer:(id)recognizer;
 - (void)dealloc;
-- (void)deviceEventMonitorDidReceiveEvent:(id)a3;
-- (void)deviceLockMonitor:(id)a3 didReceiveDeviceLockStateChanged:(BOOL)a4 timestamp:(double)a5;
+- (void)deviceEventMonitorDidReceiveEvent:(id)event;
+- (void)deviceLockMonitor:(id)monitor didReceiveDeviceLockStateChanged:(BOOL)changed timestamp:(double)timestamp;
 - (void)didStop;
 - (void)expandNubbit;
 - (void)fastForwardButtonPressed;
 - (void)finishLoading;
-- (void)handleKBFrameWillUpdate:(id)a3;
-- (void)handleReachabilityToggled:(double)a3;
+- (void)handleKBFrameWillUpdate:(id)update;
+- (void)handleReachabilityToggled:(double)toggled;
 - (void)headerTapped;
-- (void)hideWithCompletion:(id)a3;
+- (void)hideWithCompletion:(id)completion;
 - (void)loadView;
 - (void)moveBackInBounds;
-- (void)nubbitDidUpdatePosition:(id)a3;
-- (void)panToPosition:(CGPoint)a3;
+- (void)nubbitDidUpdatePosition:(id)position;
+- (void)panToPosition:(CGPoint)position;
 - (void)pauseButtonPressed;
 - (void)playButtonPressed;
 - (void)resetUI;
 - (void)rewindButtonPressed;
-- (void)sbs_unlockDeviceIfNeededAndPerform:(id)a3;
+- (void)sbs_unlockDeviceIfNeededAndPerform:(id)perform;
 - (void)screenTimeOutCheck;
-- (void)setHighlightColor:(id)a3;
-- (void)setHighlightSelectionRects:(id)a3;
-- (void)setSentenceHighlightSelectionRects:(id)a3;
-- (void)setUnderlineColor:(id)a3;
-- (void)showErrorMessage:(id)a3;
+- (void)setHighlightColor:(id)color;
+- (void)setHighlightSelectionRects:(id)rects;
+- (void)setSentenceHighlightSelectionRects:(id)rects;
+- (void)setUnderlineColor:(id)color;
+- (void)showErrorMessage:(id)message;
 - (void)showUI;
-- (void)showUIForApplication:(id)a3;
+- (void)showUIForApplication:(id)application;
 - (void)speakUnderFingerButtonPressed;
 - (void)speedButtonPressed;
 - (void)startNewReadAllFromGesture;
-- (void)startWithCompletion:(id)a3;
+- (void)startWithCompletion:(id)completion;
 - (void)stop;
 - (void)stopButtonPressed;
 - (void)stopSpeakFingerButtonPressed;
 - (void)tabModeButtonPressed;
-- (void)updateBarWithAppTitleForApp:(id)a3;
-- (void)updateSpeakUnderFingerState:(unint64_t)a3;
+- (void)updateBarWithAppTitleForApp:(id)app;
+- (void)updateSpeakUnderFingerState:(unint64_t)state;
 - (void)updateUIForDisplayChange;
 - (void)updateUIForSpeakUnderFingerSettingsChange;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AXSpeakOverlayViewController
@@ -126,9 +126,9 @@
   self->monitor = 0;
 }
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -136,8 +136,8 @@
   block[2] = sub_12AA8;
   block[3] = &unk_30ED0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -166,16 +166,16 @@
   v6 = [v3 initWithFrame:?];
 
   [(AXSpeakOverlayViewController *)self setView:v6];
-  v5 = [(AXSpeakOverlayViewController *)self view];
-  [v5 setAccessibilityIgnoresInvertColors:1];
+  view = [(AXSpeakOverlayViewController *)self view];
+  [view setAccessibilityIgnoresInvertColors:1];
 }
 
 - (void)_initializeContainingView
 {
   if (AXDeviceSupportsAccessibilityReader())
   {
-    v3 = [(AXSpeakOverlayViewController *)self speakScreenHudUIManager];
-    [v3 showUI];
+    speakScreenHudUIManager = [(AXSpeakOverlayViewController *)self speakScreenHudUIManager];
+    [speakScreenHudUIManager showUI];
   }
 
   else
@@ -183,11 +183,11 @@
     +[AXSpeakOverlayControlBar controlBarSize];
     v5 = v4;
     v7 = v6;
-    v8 = [(AXSpeakOverlayViewController *)self view];
-    [v8 frame];
+    view = [(AXSpeakOverlayViewController *)self view];
+    [view frame];
     v10 = v9 * 0.5 - v5 * 0.5;
-    v11 = [(AXSpeakOverlayViewController *)self view];
-    [v11 frame];
+    view2 = [(AXSpeakOverlayViewController *)self view];
+    [view2 frame];
     v13 = v12 * 0.5 - v7 * 0.5;
 
     v14 = [[UIVisualEffectView alloc] initWithFrame:{v10, v13, v5, v7}];
@@ -198,14 +198,14 @@
     [(UIVisualEffectView *)self->_containingView setEffect:v16];
 
     [(UIVisualEffectView *)self->_containingView setUserInteractionEnabled:1];
-    v17 = [(UIVisualEffectView *)self->_containingView layer];
-    [v17 setMasksToBounds:1];
+    layer = [(UIVisualEffectView *)self->_containingView layer];
+    [layer setMasksToBounds:1];
 
-    v18 = [(UIVisualEffectView *)self->_containingView layer];
-    [v18 setCornerRadius:15.0];
+    layer2 = [(UIVisualEffectView *)self->_containingView layer];
+    [layer2 setCornerRadius:15.0];
 
-    v19 = [(AXSpeakOverlayViewController *)self view];
-    [v19 addSubview:self->_containingView];
+    view3 = [(AXSpeakOverlayViewController *)self view];
+    [view3 addSubview:self->_containingView];
 
     v20 = [AXSpeakOverlayControlBar alloc];
     [(UIVisualEffectView *)self->_containingView bounds];
@@ -216,8 +216,8 @@
     [(AXSpeakOverlayControlBar *)self->_bar setAutoresizingMask:18];
     [(AXSpeakOverlayControlBar *)self->_bar setDelegate:self];
     [(AXSpeakOverlayControlBar *)self->_bar currentSpeakingRateChanged];
-    v23 = [(UIVisualEffectView *)self->_containingView contentView];
-    [v23 addSubview:self->_bar];
+    contentView = [(UIVisualEffectView *)self->_containingView contentView];
+    [contentView addSubview:self->_bar];
 
     [(UIVisualEffectView *)self->_containingView setAlpha:0.0];
     [(AXSpeakOverlayViewController *)self setReachabilityOffset:0.0];
@@ -241,15 +241,15 @@
 - (void)updateUIForDisplayChange
 {
   [(AXSpeakOverlayViewController *)self showUI];
-  v3 = [(AXSpeakOverlayViewController *)self stateManager];
-  v4 = [v3 currentState];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  currentState = [stateManager currentState];
 
-  if (v4)
+  if (currentState)
   {
-    v5 = [(AXSpeakOverlayViewController *)self stateManager];
-    v6 = [v5 currentState];
+    stateManager2 = [(AXSpeakOverlayViewController *)self stateManager];
+    currentState2 = [stateManager2 currentState];
 
-    if (v6 != &dword_0 + 1)
+    if (currentState2 != &dword_0 + 1)
     {
       return;
     }
@@ -267,43 +267,43 @@
 
 - (void)showUI
 {
-  v3 = [(AXSpeakOverlayViewController *)self stateManager];
-  v4 = [v3 collapseTimer];
-  [v4 cancel];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  collapseTimer = [stateManager collapseTimer];
+  [collapseTimer cancel];
 
   if (!self->_containingView)
   {
     [(AXSpeakOverlayViewController *)self _initializeContainingView];
   }
 
-  v5 = [(AXSpeakOverlayViewController *)self stateManager];
-  if (![v5 currentState])
+  stateManager2 = [(AXSpeakOverlayViewController *)self stateManager];
+  if (![stateManager2 currentState])
   {
 
     goto LABEL_8;
   }
 
-  v6 = [(AXSpeakOverlayViewController *)self stateManager];
-  v7 = [v6 currentState];
+  stateManager3 = [(AXSpeakOverlayViewController *)self stateManager];
+  currentState = [stateManager3 currentState];
 
-  if (v7 == &dword_0 + 1)
+  if (currentState == &dword_0 + 1)
   {
 LABEL_8:
     [(AXSpeakOverlayControlBar *)self->_bar showSpeakFingerUI];
     goto LABEL_9;
   }
 
-  v8 = [(AXSpeakOverlayViewController *)self stateManager];
-  v9 = [v8 currentState];
+  stateManager4 = [(AXSpeakOverlayViewController *)self stateManager];
+  currentState2 = [stateManager4 currentState];
 
-  if (v9 == &dword_0 + 2)
+  if (currentState2 == &dword_0 + 2)
   {
     [(AXSpeakOverlayViewController *)self finishLoading];
   }
 
 LABEL_9:
-  v10 = [(AXSpeakOverlayViewController *)self stateManager];
-  [v10 setCurrentAppBundleIdentifier:0];
+  stateManager5 = [(AXSpeakOverlayViewController *)self stateManager];
+  [stateManager5 setCurrentAppBundleIdentifier:0];
 
   [(AXSpeakOverlayViewController *)self _updateUI];
 }
@@ -311,8 +311,8 @@ LABEL_9:
 - (void)resetUI
 {
   [(AXSpeakOverlayControlBar *)self->_bar showSpeakFingerUI];
-  v3 = [(AXSpeakOverlayViewController *)self stateManager];
-  [v3 setCurrentAppBundleIdentifier:0];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  [stateManager setCurrentAppBundleIdentifier:0];
 
   self->_isSessionProtected = 0;
 }
@@ -337,16 +337,16 @@ LABEL_9:
 
 - (void)expandNubbit
 {
-  v3 = [(AXSpeakOverlayViewController *)self stateManager];
-  [v3 setInTabMode:0];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  [stateManager setInTabMode:0];
 
   [(AXSpeakOverlayViewController *)self _updateUI];
 }
 
 - (void)collapseNubbit
 {
-  v3 = [(AXSpeakOverlayViewController *)self stateManager];
-  [v3 setInTabMode:1];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  [stateManager setInTabMode:1];
 
   [(AXSpeakOverlayViewController *)self _updateUI];
 }
@@ -354,10 +354,10 @@ LABEL_9:
 - (void)updateUIForSpeakUnderFingerSettingsChange
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 showSpeechController];
+  showSpeechController = [v3 showSpeechController];
 
   bar = self->_bar;
-  if (v4)
+  if (showSpeechController)
   {
     [(AXSpeakOverlayControlBar *)bar hideStopButton];
   }
@@ -367,10 +367,10 @@ LABEL_9:
     [(AXSpeakOverlayControlBar *)bar showStopButton];
   }
 
-  v6 = [(AXSpeakOverlayViewController *)self stateManager];
-  v7 = [v6 inTabMode];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  inTabMode = [stateManager inTabMode];
 
-  if ((v7 & 1) == 0)
+  if ((inTabMode & 1) == 0)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -381,36 +381,36 @@ LABEL_9:
   }
 }
 
-- (void)updateBarWithAppTitleForApp:(id)a3
+- (void)updateBarWithAppTitleForApp:(id)app
 {
-  v4 = a3;
-  v5 = [(AXSpeakOverlayViewController *)self stateManager];
-  v6 = [v4 bundleId];
-  [v5 setCurrentAppBundleIdentifier:v6];
+  appCopy = app;
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  bundleId = [appCopy bundleId];
+  [stateManager setCurrentAppBundleIdentifier:bundleId];
 
-  v9 = [v4 label];
-  LODWORD(v5) = [v4 isSpringBoard];
+  label = [appCopy label];
+  LODWORD(stateManager) = [appCopy isSpringBoard];
 
-  if (v5)
+  if (stateManager)
   {
     v7 = AXSpeakThisLocString(@"HOME_SCREEN");
 
-    v9 = v7;
+    label = v7;
   }
 
-  v8 = [(AXSpeakOverlayViewController *)self stateManager];
-  [v8 setCurrentControllerTitle:v9];
+  stateManager2 = [(AXSpeakOverlayViewController *)self stateManager];
+  [stateManager2 setCurrentControllerTitle:label];
 }
 
-- (void)showUIForApplication:(id)a3
+- (void)showUIForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   if (self->_containingView)
   {
-    v5 = [(AXSpeakOverlayViewController *)self stateManager];
-    v6 = [v5 inTabMode];
+    stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+    inTabMode = [stateManager inTabMode];
 
-    if (v6)
+    if (inTabMode)
     {
       [(AXSpeakOverlayViewController *)self tabModeButtonPressed];
     }
@@ -421,7 +421,7 @@ LABEL_9:
     [(AXSpeakOverlayViewController *)self _initializeContainingView];
   }
 
-  [(AXSpeakOverlayViewController *)self updateBarWithAppTitleForApp:v4];
+  [(AXSpeakOverlayViewController *)self updateBarWithAppTitleForApp:applicationCopy];
   [(AXSpeakOverlayControlBar *)self->_bar showLoading];
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"showUI" object:0];
   [(UIVisualEffectView *)self->_containingView alpha];
@@ -436,7 +436,7 @@ LABEL_9:
   }
 }
 
-- (void)panToPosition:(CGPoint)a3
+- (void)panToPosition:(CGPoint)position
 {
   containingView = self->_containingView;
   if (containingView)
@@ -462,16 +462,16 @@ LABEL_9:
     if (v4 >= 0.0)
     {
       v13 = v4 + v5;
-      v14 = [(AXSpeakOverlayViewController *)self view];
-      [v14 bounds];
+      view = [(AXSpeakOverlayViewController *)self view];
+      [view bounds];
       v16 = v15;
 
       v17 = v13 <= v16;
       v12 = v8;
       if (!v17)
       {
-        v18 = [(AXSpeakOverlayViewController *)self view];
-        [v18 bounds];
+        view2 = [(AXSpeakOverlayViewController *)self view];
+        [view2 bounds];
         v12 = v19 - v11;
       }
     }
@@ -504,38 +504,38 @@ LABEL_9:
     [(AXSpeakOverlayViewController *)self didPause];
   }
 
-  v3 = [(AXSpeakOverlayViewController *)self stateManager];
-  [v3 setCurrentState:2];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  [stateManager setCurrentState:2];
 
   v4 = UIAccessibilityLayoutChangedNotification;
 
   UIAccessibilityPostNotification(v4, 0);
 }
 
-- (id)highlightColorForColor:(id)a3
+- (id)highlightColorForColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 quickSpeakSentenceHighlightColor];
+  quickSpeakSentenceHighlightColor = [v4 quickSpeakSentenceHighlightColor];
 
   v6 = 0.2;
-  if (v5)
+  if (quickSpeakSentenceHighlightColor)
   {
     v6 = 0.5;
   }
 
-  v7 = [v3 colorWithAlphaComponent:v6];
+  v7 = [colorCopy colorWithAlphaComponent:v6];
 
   return v7;
 }
 
-- (id)sentenceHighlightColorForColor:(id)a3
+- (id)sentenceHighlightColorForColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 quickSpeakSentenceHighlightColor];
+  quickSpeakSentenceHighlightColor = [v4 quickSpeakSentenceHighlightColor];
 
-  if (v5)
+  if (quickSpeakSentenceHighlightColor)
   {
     v6 = +[AXSettings sharedInstance];
     [v6 quickSpeakSentenceHighlightColor];
@@ -549,7 +549,7 @@ LABEL_9:
     v17 = 0.0;
     v14 = 0;
     v15 = 0.0;
-    if ([v3 getRed:&v17 green:&v16 blue:&v15 alpha:&v14])
+    if ([colorCopy getRed:&v17 green:&v16 blue:&v15 alpha:&v14])
     {
       v9 = v17 * 0.8;
       if (v17 * 0.8 < 0.0)
@@ -574,7 +574,7 @@ LABEL_9:
 
     else
     {
-      v12 = v3;
+      v12 = colorCopy;
     }
 
     v8 = v12;
@@ -599,25 +599,25 @@ LABEL_9:
   return v3;
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  v9 = [(AXSpeakOverlayViewController *)self highlightColorForColor:a3];
+  v9 = [(AXSpeakOverlayViewController *)self highlightColorForColor:color];
   objc_storeStrong(&self->_highlightColor, v9);
-  v4 = [(AXSpeakOverlayViewController *)self highlightView];
+  highlightView = [(AXSpeakOverlayViewController *)self highlightView];
 
-  if (v4)
+  if (highlightView)
   {
-    v5 = [(AXSpeakOverlayViewController *)self highlightView];
-    [v5 setSelectionColor:v9];
+    highlightView2 = [(AXSpeakOverlayViewController *)self highlightView];
+    [highlightView2 setSelectionColor:v9];
   }
 
-  v6 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
+  sentenceHighlightView = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
 
-  if (v6)
+  if (sentenceHighlightView)
   {
     v7 = [(AXSpeakOverlayViewController *)self sentenceHighlightColorForColor:v9];
-    v8 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
-    [v8 setSelectionColor:v7];
+    sentenceHighlightView2 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
+    [sentenceHighlightView2 setSelectionColor:v7];
   }
 }
 
@@ -637,63 +637,63 @@ LABEL_9:
   return v3;
 }
 
-- (void)setUnderlineColor:(id)a3
+- (void)setUnderlineColor:(id)color
 {
-  v7 = a3;
-  objc_storeStrong(&self->_underlineColor, a3);
-  v5 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
+  colorCopy = color;
+  objc_storeStrong(&self->_underlineColor, color);
+  sentenceHighlightView = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
 
-  if (v5)
+  if (sentenceHighlightView)
   {
-    v6 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
-    [v6 setUnderlineColor:v7];
+    sentenceHighlightView2 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
+    [sentenceHighlightView2 setUnderlineColor:colorCopy];
   }
 }
 
-- (void)setHighlightSelectionRects:(id)a3
+- (void)setHighlightSelectionRects:(id)rects
 {
-  v24 = a3;
-  if ([v24 count])
+  rectsCopy = rects;
+  if ([rectsCopy count])
   {
-    v5 = [(AXSpeakOverlayViewController *)self highlightView];
+    highlightView = [(AXSpeakOverlayViewController *)self highlightView];
 
-    if (!v5)
+    if (!highlightView)
     {
       v6 = [QSSelectionHighlightView alloc];
       v7 = +[UIScreen mainScreen];
       [v7 bounds];
       v8 = [v6 initWithFrame:?];
 
-      v9 = [(AXSpeakOverlayViewController *)self highlightColor];
-      [v8 setSelectionColor:v9];
+      highlightColor = [(AXSpeakOverlayViewController *)self highlightColor];
+      [v8 setSelectionColor:highlightColor];
 
-      v10 = [(AXSpeakOverlayViewController *)self view];
-      [v10 insertSubview:v8 atIndex:0];
+      view = [(AXSpeakOverlayViewController *)self view];
+      [view insertSubview:v8 atIndex:0];
 
       [(AXSpeakOverlayViewController *)self setHighlightView:v8];
     }
   }
 
-  v11 = [(AXSpeakOverlayViewController *)self sentenceHighlightSelectionRects];
-  if (v11 && (v12 = v11, +[AXSettings sharedInstance](AXSettings, "sharedInstance"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 quickSpeakSentenceHighlightOption], v13, v12, v14 == &dword_0 + 2))
+  sentenceHighlightSelectionRects = [(AXSpeakOverlayViewController *)self sentenceHighlightSelectionRects];
+  if (sentenceHighlightSelectionRects && (v12 = sentenceHighlightSelectionRects, +[AXSettings sharedInstance](AXSettings, "sharedInstance"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 quickSpeakSentenceHighlightOption], v13, v12, v14 == &dword_0 + 2))
   {
-    v15 = +[NSMutableArray array];
-    v16 = [(AXSpeakOverlayViewController *)self currentUnmodifiedSentenceRects];
-    v17 = [(AXSpeakOverlayViewController *)self _sliceRects:v15 withSentenceRects:v16 wordRects:v24];
+    highlightView3 = +[NSMutableArray array];
+    currentUnmodifiedSentenceRects = [(AXSpeakOverlayViewController *)self currentUnmodifiedSentenceRects];
+    v17 = [(AXSpeakOverlayViewController *)self _sliceRects:highlightView3 withSentenceRects:currentUnmodifiedSentenceRects wordRects:rectsCopy];
 
     v18 = [(NSArray *)v17 count];
-    if (v18 < [v24 count])
+    if (v18 < [rectsCopy count])
     {
-      v19 = v24;
+      v19 = rectsCopy;
 
       v17 = v19;
     }
 
-    v20 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
-    [v20 setHighlightSelectionRects:v15];
+    sentenceHighlightView = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
+    [sentenceHighlightView setHighlightSelectionRects:highlightView3];
 
-    v21 = [(AXSpeakOverlayViewController *)self highlightView];
-    [v21 setHighlightSelectionRects:v17];
+    highlightView2 = [(AXSpeakOverlayViewController *)self highlightView];
+    [highlightView2 setHighlightSelectionRects:v17];
 
     highlightSelectionRects = self->_highlightSelectionRects;
     self->_highlightSelectionRects = v17;
@@ -701,31 +701,31 @@ LABEL_9:
 
   else
   {
-    objc_storeStrong(&self->_highlightSelectionRects, a3);
-    v15 = [(AXSpeakOverlayViewController *)self highlightView];
-    [v15 setHighlightSelectionRects:v24];
+    objc_storeStrong(&self->_highlightSelectionRects, rects);
+    highlightView3 = [(AXSpeakOverlayViewController *)self highlightView];
+    [highlightView3 setHighlightSelectionRects:rectsCopy];
   }
 
-  v23 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
-  [v23 updateVisualRects];
+  sentenceHighlightView2 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
+  [sentenceHighlightView2 updateVisualRects];
 }
 
 - (NSArray)sentenceHighlightSelectionRects
 {
-  v2 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
-  v3 = [v2 highlightSelectionRects];
+  sentenceHighlightView = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
+  highlightSelectionRects = [sentenceHighlightView highlightSelectionRects];
 
-  return v3;
+  return highlightSelectionRects;
 }
 
-- (void)setSentenceHighlightSelectionRects:(id)a3
+- (void)setSentenceHighlightSelectionRects:(id)rects
 {
-  v24 = a3;
-  if ([v24 count])
+  rectsCopy = rects;
+  if ([rectsCopy count])
   {
-    v4 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
+    sentenceHighlightView = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
 
-    if (!v4)
+    if (!sentenceHighlightView)
     {
       v5 = [QSSelectionHighlightView alloc];
       v6 = +[UIScreen mainScreen];
@@ -733,70 +733,70 @@ LABEL_9:
       v7 = [v5 initWithFrame:?];
 
       [v7 setSentenceHighlight:1];
-      v8 = [(AXSpeakOverlayViewController *)self highlightColor];
-      v9 = [(AXSpeakOverlayViewController *)self sentenceHighlightColorForColor:v8];
+      highlightColor = [(AXSpeakOverlayViewController *)self highlightColor];
+      v9 = [(AXSpeakOverlayViewController *)self sentenceHighlightColorForColor:highlightColor];
       [v7 setSelectionColor:v9];
 
-      v10 = [(AXSpeakOverlayViewController *)self underlineColor];
-      [v7 setUnderlineColor:v10];
+      underlineColor = [(AXSpeakOverlayViewController *)self underlineColor];
+      [v7 setUnderlineColor:underlineColor];
 
-      v11 = [(AXSpeakOverlayViewController *)self highlightView];
+      highlightView = [(AXSpeakOverlayViewController *)self highlightView];
 
-      v12 = [(AXSpeakOverlayViewController *)self view];
-      v13 = v12;
-      if (v11)
+      view = [(AXSpeakOverlayViewController *)self view];
+      v13 = view;
+      if (highlightView)
       {
-        v14 = [(AXSpeakOverlayViewController *)self highlightView];
-        [v13 insertSubview:v7 belowSubview:v14];
+        highlightView2 = [(AXSpeakOverlayViewController *)self highlightView];
+        [v13 insertSubview:v7 belowSubview:highlightView2];
       }
 
       else
       {
-        [v12 insertSubview:v7 atIndex:0];
+        [view insertSubview:v7 atIndex:0];
       }
 
       [(AXSpeakOverlayViewController *)self setSentenceHighlightView:v7];
     }
   }
 
-  v15 = [(AXSpeakOverlayViewController *)self highlightSelectionRects];
-  if (v15 && (v16 = v15, +[AXSettings sharedInstance](AXSettings, "sharedInstance"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 quickSpeakSentenceHighlightOption], v17, v16, v18 == &dword_0 + 2))
+  highlightSelectionRects = [(AXSpeakOverlayViewController *)self highlightSelectionRects];
+  if (highlightSelectionRects && (v16 = highlightSelectionRects, +[AXSettings sharedInstance](AXSettings, "sharedInstance"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 quickSpeakSentenceHighlightOption], v17, v16, v18 == &dword_0 + 2))
   {
-    v19 = +[NSMutableArray array];
-    v20 = [(AXSpeakOverlayViewController *)self highlightSelectionRects];
-    v21 = [(AXSpeakOverlayViewController *)self _sliceRects:v19 withSentenceRects:v24 wordRects:v20];
+    sentenceHighlightView3 = +[NSMutableArray array];
+    highlightSelectionRects2 = [(AXSpeakOverlayViewController *)self highlightSelectionRects];
+    v21 = [(AXSpeakOverlayViewController *)self _sliceRects:sentenceHighlightView3 withSentenceRects:rectsCopy wordRects:highlightSelectionRects2];
 
-    v22 = [(AXSpeakOverlayViewController *)self highlightView];
-    [v22 setHighlightSelectionRects:v21];
+    highlightView3 = [(AXSpeakOverlayViewController *)self highlightView];
+    [highlightView3 setHighlightSelectionRects:v21];
 
-    v23 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
-    [v23 setHighlightSelectionRects:v19];
+    sentenceHighlightView2 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
+    [sentenceHighlightView2 setHighlightSelectionRects:sentenceHighlightView3];
   }
 
   else
   {
-    v19 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
-    [v19 setHighlightSelectionRects:v24];
+    sentenceHighlightView3 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
+    [sentenceHighlightView3 setHighlightSelectionRects:rectsCopy];
   }
 
-  [(AXSpeakOverlayViewController *)self setCurrentUnmodifiedSentenceRects:v24];
+  [(AXSpeakOverlayViewController *)self setCurrentUnmodifiedSentenceRects:rectsCopy];
 }
 
-- (id)_sliceRects:(id)a3 withSentenceRects:(id)a4 wordRects:(id)a5
+- (id)_sliceRects:(id)rects withSentenceRects:(id)sentenceRects wordRects:(id)wordRects
 {
-  v72 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  rectsCopy = rects;
+  sentenceRectsCopy = sentenceRects;
+  wordRectsCopy = wordRects;
+  v9 = wordRectsCopy;
+  if (sentenceRectsCopy)
   {
     +[NSMutableArray array];
-    v63 = v62 = v7;
+    v63 = v62 = sentenceRectsCopy;
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
-    obj = v7;
+    obj = sentenceRectsCopy;
     v73 = [obj countByEnumeratingWithState:&v78 objects:v83 count:16];
     if (!v73)
     {
@@ -827,7 +827,7 @@ LABEL_9:
         {
 
 LABEL_45:
-          [v72 addObject:v11];
+          [rectsCopy addObject:v11];
           goto LABEL_46;
         }
 
@@ -998,16 +998,16 @@ LABEL_45:
         }
 
         v56 = [NSValue valueWithCGRect:v47, v49, v66, v43];
-        [v72 addObject:v56];
+        [rectsCopy addObject:v56];
 
         v57 = [NSValue valueWithCGRect:v25 + v48, v49, v67, v43];
-        [v72 addObject:v57];
+        [rectsCopy addObject:v57];
 
         v58 = [NSValue valueWithCGRect:v48, v49, v25, v68];
-        [v72 addObject:v58];
+        [rectsCopy addObject:v58];
 
         v59 = [NSValue valueWithCGRect:v48, v69, v25, v55];
-        [v72 addObject:v59];
+        [rectsCopy addObject:v59];
 
         v60 = [NSValue valueWithRect:v48, v50, v25, v65];
         [v63 addObject:v60];
@@ -1020,13 +1020,13 @@ LABEL_46:
       {
 LABEL_48:
 
-        v7 = v62;
+        sentenceRectsCopy = v62;
         goto LABEL_50;
       }
     }
   }
 
-  v63 = v8;
+  v63 = wordRectsCopy;
 LABEL_50:
 
   return v63;
@@ -1034,31 +1034,31 @@ LABEL_50:
 
 - (void)_enqueueCollapseTimer
 {
-  v3 = [(AXSpeakOverlayViewController *)self stateManager];
-  v4 = [v3 collapseTimer];
-  [v4 cancel];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  collapseTimer = [stateManager collapseTimer];
+  [collapseTimer cancel];
 
   if (!UIAccessibilityIsVoiceOverRunning() && !UIAccessibilityIsSwitchControlRunning())
   {
     objc_initWeak(&location, self);
-    v5 = [(AXSpeakOverlayViewController *)self stateManager];
-    v6 = [v5 collapseTimer];
+    stateManager2 = [(AXSpeakOverlayViewController *)self stateManager];
+    collapseTimer2 = [stateManager2 collapseTimer];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_14A08;
     v7[3] = &unk_30A30;
     objc_copyWeak(&v8, &location);
-    [v6 afterDelay:v7 processBlock:8.0];
+    [collapseTimer2 afterDelay:v7 processBlock:8.0];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 }
 
-- (CGPoint)_denormalizedNubbitOriginForViewSize:(CGSize)a3
+- (CGPoint)_denormalizedNubbitOriginForViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = +[AXSettings sharedInstance];
   [v5 quickSpeakNubbitNormalizedPosition];
   v7 = v6;
@@ -1096,7 +1096,7 @@ LABEL_50:
 
 - (void)_saveNubbitPosition
 {
-  v13 = [(AXSpeakOverlayViewController *)self view];
+  view = [(AXSpeakOverlayViewController *)self view];
   [(UIVisualEffectView *)self->_containingView frame];
   v4 = v3;
   [(UIVisualEffectView *)self->_containingView frame];
@@ -1105,9 +1105,9 @@ LABEL_50:
   v7 = v4 + v6 * 0.5;
   +[AXSpeakOverlayControlBar nubbitSize];
   v9 = MaxY - v8 * 0.5;
-  [v13 frame];
+  [view frame];
   v10 = v7 / CGRectGetWidth(v16);
-  [v13 frame];
+  [view frame];
   v11 = v9 / CGRectGetHeight(v17);
   v12 = +[AXSettings sharedInstance];
   [v12 setQuickSpeakNubbitNormalizedPosition:{v10, v11}];
@@ -1126,25 +1126,25 @@ LABEL_50:
   [(UIVisualEffectView *)containingView setAlpha:v4];
 }
 
-- (void)_updateForTabModeUsingSpeakFingerButton:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateForTabModeUsingSpeakFingerButton:(BOOL)button animated:(BOOL)animated
 {
   v5 = 0.0;
   v9 = 3221225472;
   v8 = _NSConcreteStackBlock;
   v10 = sub_14DB8;
   v11 = &unk_30F48;
-  if (a4)
+  if (animated)
   {
     v5 = 0.25;
   }
 
-  v12 = self;
-  v13 = a3;
+  selfCopy = self;
+  buttonCopy = button;
   [UIView animateWithDuration:&v8 animations:v5];
   v6 = [(AXSpeakOverlayViewController *)self stateManager:v8];
-  v7 = [v6 inTabMode];
+  inTabMode = [v6 inTabMode];
 
-  if ((v7 & 1) == 0)
+  if ((inTabMode & 1) == 0)
   {
     [(AXSpeakOverlayViewController *)self _enqueueCollapseTimer];
   }
@@ -1155,10 +1155,10 @@ LABEL_50:
 
 - (void)_updateNubbitForTabModeChange
 {
-  v3 = [(AXSpeakOverlayViewController *)self stateManager];
-  v4 = [v3 inTabMode];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  inTabMode = [stateManager inTabMode];
 
-  if (v4)
+  if (inTabMode)
   {
     [(AXSpeakOverlayViewController *)self _registerNubbit];
     if (self->_nubbitMovedOutsideOfTabMode)
@@ -1175,12 +1175,12 @@ LABEL_50:
   }
 }
 
-- (void)hideWithCompletion:(id)a3
+- (void)hideWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AXSpeakOverlayViewController *)self stateManager];
-  v6 = [v5 collapseTimer];
-  [v6 cancel];
+  completionCopy = completion;
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  collapseTimer = [stateManager collapseTimer];
+  [collapseTimer cancel];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -1191,29 +1191,29 @@ LABEL_50:
   v8[1] = 3221225472;
   v8[2] = sub_15180;
   v8[3] = &unk_30F70;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [UIView animateWithDuration:v10 animations:v8 completion:0.25];
   UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, 0);
 }
 
-- (void)showErrorMessage:(id)a3
+- (void)showErrorMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(AXSpeakOverlayViewController *)self moveBackInBounds];
-  v4 = [(AXSpeakOverlayViewController *)self stateManager];
-  [v4 setCurrentState:1];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  [stateManager setCurrentState:1];
 
-  [(AXSpeakOverlayControlBar *)self->_bar showErrorMessage:v5];
+  [(AXSpeakOverlayControlBar *)self->_bar showErrorMessage:messageCopy];
 }
 
 - (void)didStop
 {
-  v3 = [(AXSpeakOverlayViewController *)self highlightView];
-  [v3 setHighlightSelectionRects:0];
+  highlightView = [(AXSpeakOverlayViewController *)self highlightView];
+  [highlightView setHighlightSelectionRects:0];
 
-  v4 = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
-  [v4 setHighlightSelectionRects:0];
+  sentenceHighlightView = [(AXSpeakOverlayViewController *)self sentenceHighlightView];
+  [sentenceHighlightView setHighlightSelectionRects:0];
 
   highlightSelectionRects = self->_highlightSelectionRects;
   self->_highlightSelectionRects = 0;
@@ -1227,24 +1227,24 @@ LABEL_50:
 
 - (BOOL)isSpeaking
 {
-  v2 = [(AXSpeakOverlayViewController *)self delegate];
-  v3 = [v2 isSpeaking];
+  delegate = [(AXSpeakOverlayViewController *)self delegate];
+  isSpeaking = [delegate isSpeaking];
 
-  return v3;
+  return isSpeaking;
 }
 
 - (BOOL)isPaused
 {
-  v2 = [(AXSpeakOverlayViewController *)self delegate];
-  v3 = [v2 isPaused];
+  delegate = [(AXSpeakOverlayViewController *)self delegate];
+  isPaused = [delegate isPaused];
 
-  return v3;
+  return isPaused;
 }
 
 - (double)speakingRateAsMultiplier
 {
-  v2 = [(AXSpeakOverlayViewController *)self delegate];
-  [v2 speakingRateAsMultiplier];
+  delegate = [(AXSpeakOverlayViewController *)self delegate];
+  [delegate speakingRateAsMultiplier];
   v4 = v3;
 
   return v4;
@@ -1262,10 +1262,10 @@ LABEL_50:
 
 - (void)_updateTabButtonToSpeakFingerButton
 {
-  v3 = [(AXSpeakOverlayViewController *)self stateManager];
-  v4 = [v3 inTabMode];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  inTabMode = [stateManager inTabMode];
 
-  if (v4)
+  if (inTabMode)
   {
     bar = self->_bar;
 
@@ -1274,9 +1274,9 @@ LABEL_50:
 
   else
   {
-    v6 = [(AXSpeakOverlayViewController *)self stateManager];
-    v7 = [v6 collapseTimer];
-    [v7 cancel];
+    stateManager2 = [(AXSpeakOverlayViewController *)self stateManager];
+    collapseTimer = [stateManager2 collapseTimer];
+    [collapseTimer cancel];
 
     [(AXSpeakOverlayViewController *)self _updateForTabModeUsingSpeakFingerButton:1 animated:0];
   }
@@ -1284,10 +1284,10 @@ LABEL_50:
 
 - (void)_updateTabButtonToExpandCollapseButton
 {
-  v3 = [(AXSpeakOverlayViewController *)self stateManager];
-  v4 = [v3 inTabMode];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  inTabMode = [stateManager inTabMode];
 
-  if (v4)
+  if (inTabMode)
   {
     bar = self->_bar;
 
@@ -1296,52 +1296,52 @@ LABEL_50:
 
   else
   {
-    v6 = [(AXSpeakOverlayViewController *)self stateManager];
-    v7 = [v6 collapseTimer];
-    [v7 cancel];
+    stateManager2 = [(AXSpeakOverlayViewController *)self stateManager];
+    collapseTimer = [stateManager2 collapseTimer];
+    [collapseTimer cancel];
 
     [(AXSpeakOverlayViewController *)self _updateForTabModeUsingSpeakFingerButton:0 animated:0];
   }
 }
 
-- (void)updateSpeakUnderFingerState:(unint64_t)a3
+- (void)updateSpeakUnderFingerState:(unint64_t)state
 {
-  v5 = +[AXUIDisplayManager sharedDisplayManager];
-  [v5 cancelNubbitFade:self->_containingView];
+  stateManager = +[AXUIDisplayManager sharedDisplayManager];
+  [stateManager cancelNubbitFade:self->_containingView];
 
-  if (a3 == 4 || a3 == 1)
+  if (state == 4 || state == 1)
   {
-    v5 = [(AXSpeakOverlayViewController *)self stateManager];
-    v6 = [v5 inTabMode];
+    stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+    inTabMode = [stateManager inTabMode];
   }
 
   else
   {
-    v6 = 0;
+    inTabMode = 0;
   }
 
-  if (a3 == 4 || a3 == 1)
+  if (state == 4 || state == 1)
   {
   }
 
-  if (v6)
+  if (inTabMode)
   {
     [(AXSpeakOverlayViewController *)self _updateTabButtonToSpeakFingerButton];
   }
 
   else
   {
-    v7 = [(AXSpeakOverlayViewController *)self stateManager];
-    v8 = [v7 inTabMode];
+    stateManager2 = [(AXSpeakOverlayViewController *)self stateManager];
+    inTabMode2 = [stateManager2 inTabMode];
 
-    if (v8)
+    if (inTabMode2)
     {
       [(AXSpeakOverlayViewController *)self _updateTabButtonToExpandCollapseButton];
     }
   }
 
   bar = self->_bar;
-  if (a3 == 2)
+  if (state == 2)
   {
 
     [(AXSpeakOverlayControlBar *)bar changeToResumeButton];
@@ -1356,24 +1356,24 @@ LABEL_50:
 
 - (void)fastForwardButtonPressed
 {
-  v3 = [(AXSpeakOverlayViewController *)self delegate];
-  [v3 fastForwardButtonPressed];
+  delegate = [(AXSpeakOverlayViewController *)self delegate];
+  [delegate fastForwardButtonPressed];
 
   [(AXSpeakOverlayViewController *)self _enqueueCollapseTimer];
 }
 
 - (void)rewindButtonPressed
 {
-  v3 = [(AXSpeakOverlayViewController *)self delegate];
-  [v3 rewindButtonPressed];
+  delegate = [(AXSpeakOverlayViewController *)self delegate];
+  [delegate rewindButtonPressed];
 
   [(AXSpeakOverlayViewController *)self _enqueueCollapseTimer];
 }
 
 - (void)startNewReadAllFromGesture
 {
-  v3 = [(AXSpeakOverlayViewController *)self delegate];
-  [v3 startNewReadAllFromGesture];
+  delegate = [(AXSpeakOverlayViewController *)self delegate];
+  [delegate startNewReadAllFromGesture];
 
   [(AXSpeakOverlayViewController *)self _enqueueCollapseTimer];
 }
@@ -1397,8 +1397,8 @@ LABEL_50:
 
   else
   {
-    v3 = [(AXSpeakOverlayViewController *)self delegate];
-    [v3 playButtonPressedForBundleID:0 sceneID:0 rootAccessibilityElementIdentifier:0];
+    delegate = [(AXSpeakOverlayViewController *)self delegate];
+    [delegate playButtonPressedForBundleID:0 sceneID:0 rootAccessibilityElementIdentifier:0];
   }
 
   [(AXSpeakOverlayViewController *)self _enqueueCollapseTimer];
@@ -1406,16 +1406,16 @@ LABEL_50:
 
 - (void)stopButtonPressed
 {
-  v3 = [(AXSpeakOverlayViewController *)self delegate];
-  [v3 stopButtonPressed];
+  delegate = [(AXSpeakOverlayViewController *)self delegate];
+  [delegate stopButtonPressed];
 
-  v4 = [(AXSpeakOverlayViewController *)self stateManager];
-  [v4 setCurrentAppBundleIdentifier:0];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  [stateManager setCurrentAppBundleIdentifier:0];
 
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 showSpeechController];
+  showSpeechController = [v5 showSpeechController];
 
-  if (v6)
+  if (showSpeechController)
   {
 
     [(AXSpeakOverlayViewController *)self _enqueueCollapseTimer];
@@ -1424,16 +1424,16 @@ LABEL_50:
 
 - (void)stopSpeakFingerButtonPressed
 {
-  v3 = [(AXSpeakOverlayViewController *)self delegate];
-  [v3 stopSpeakFingerButtonPressed];
+  delegate = [(AXSpeakOverlayViewController *)self delegate];
+  [delegate stopSpeakFingerButtonPressed];
 
   [(AXSpeakOverlayViewController *)self _enqueueCollapseTimer];
 }
 
 - (void)pauseButtonPressed
 {
-  v3 = [(AXSpeakOverlayViewController *)self delegate];
-  [v3 pauseButtonPressed];
+  delegate = [(AXSpeakOverlayViewController *)self delegate];
+  [delegate pauseButtonPressed];
 
   [(AXSpeakOverlayViewController *)self screenTimeOutCheck];
 
@@ -1452,8 +1452,8 @@ LABEL_50:
 
 - (void)speedButtonPressed
 {
-  v3 = [(AXSpeakOverlayViewController *)self delegate];
-  [v3 speedButtonPressed];
+  delegate = [(AXSpeakOverlayViewController *)self delegate];
+  [delegate speedButtonPressed];
 
   [(AXSpeakOverlayViewController *)self _enqueueCollapseTimer];
 }
@@ -1461,23 +1461,23 @@ LABEL_50:
 - (void)headerTapped
 {
   v5 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
-  v3 = [(AXSpeakOverlayViewController *)self stateManager];
-  v4 = [v3 currentAppBundleIdentifier];
-  [v5 openApplication:v4 withOptions:0 completion:0];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  currentAppBundleIdentifier = [stateManager currentAppBundleIdentifier];
+  [v5 openApplication:currentAppBundleIdentifier withOptions:0 completion:0];
 }
 
-- (void)controlBarDragged:(CGPoint)a3 gestureRecognizer:(id)a4
+- (void)controlBarDragged:(CGPoint)dragged gestureRecognizer:(id)recognizer
 {
-  y = a3.y;
-  x = a3.x;
+  y = dragged.y;
+  x = dragged.x;
   [(UIVisualEffectView *)self->_containingView frame];
   v8 = v7;
   v10 = v9;
   v13 = y + v12;
   v14 = fmax(x + v11, 2.0);
   v15 = fmax(v13, 2.0);
-  v16 = [(AXSpeakOverlayViewController *)self view];
-  [v16 frame];
+  view = [(AXSpeakOverlayViewController *)self view];
+  [view frame];
   v18 = v17 - v8 + -2.0;
 
   if (v18 < v14)
@@ -1485,8 +1485,8 @@ LABEL_50:
     v14 = v18;
   }
 
-  v19 = [(AXSpeakOverlayViewController *)self view];
-  [v19 frame];
+  view2 = [(AXSpeakOverlayViewController *)self view];
+  [view2 frame];
   v21 = v20 - v10 + -2.0;
 
   if (v21 >= v15)
@@ -1508,17 +1508,17 @@ LABEL_50:
 
 - (void)speakUnderFingerButtonPressed
 {
-  v3 = [(AXSpeakOverlayViewController *)self stateManager];
-  v4 = [v3 collapseTimer];
-  [v4 cancel];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  collapseTimer = [stateManager collapseTimer];
+  [collapseTimer cancel];
 
-  v5 = [(AXSpeakOverlayViewController *)self stateManager];
-  LOBYTE(v4) = [v5 inTabMode];
+  stateManager2 = [(AXSpeakOverlayViewController *)self stateManager];
+  LOBYTE(collapseTimer) = [stateManager2 inTabMode];
 
-  if (v4)
+  if (collapseTimer)
   {
-    v6 = [(AXSpeakOverlayViewController *)self stateManager];
-    [v6 setCurrentState:0];
+    stateManager3 = [(AXSpeakOverlayViewController *)self stateManager];
+    [stateManager3 setCurrentState:0];
 
     [(AXSpeakOverlayViewController *)self showUI];
   }
@@ -1528,20 +1528,20 @@ LABEL_50:
     [(AXSpeakOverlayViewController *)self collapseNubbit];
   }
 
-  v7 = [(AXSpeakOverlayViewController *)self delegate];
-  [v7 speakUnderFingerButtonPressed];
+  delegate = [(AXSpeakOverlayViewController *)self delegate];
+  [delegate speakUnderFingerButtonPressed];
 }
 
 - (void)tabModeButtonPressed
 {
-  v3 = [(AXSpeakOverlayViewController *)self stateManager];
-  v4 = [v3 collapseTimer];
-  [v4 cancel];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  collapseTimer = [stateManager collapseTimer];
+  [collapseTimer cancel];
 
-  v5 = [(AXSpeakOverlayViewController *)self stateManager];
-  LODWORD(v4) = [v5 inTabMode];
+  stateManager2 = [(AXSpeakOverlayViewController *)self stateManager];
+  LODWORD(collapseTimer) = [stateManager2 inTabMode];
 
-  if (v4)
+  if (collapseTimer)
   {
     [(AXSpeakOverlayViewController *)self expandNubbit];
   }
@@ -1554,18 +1554,18 @@ LABEL_50:
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"showUI" object:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v12.receiver = self;
   v12.super_class = AXSpeakOverlayViewController;
-  [(AXSpeakOverlayViewController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(AXSpeakOverlayViewController *)self stateManager];
-  v9 = [v8 inTabMode];
+  [(AXSpeakOverlayViewController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  inTabMode = [stateManager inTabMode];
 
-  if (v9)
+  if (inTabMode)
   {
     [(AXSpeakOverlayViewController *)self unregisterNubbit:0];
   }
@@ -1582,10 +1582,10 @@ LABEL_50:
   v10[2] = sub_15F80;
   v10[3] = &unk_30FC0;
   v10[4] = self;
-  [v7 animateAlongsideTransition:v11 completion:v10];
+  [coordinatorCopy animateAlongsideTransition:v11 completion:v10];
 }
 
-- (void)nubbitDidUpdatePosition:(id)a3
+- (void)nubbitDidUpdatePosition:(id)position
 {
   if (![(AXSpeakOverlayViewController *)self ignoreNextNubbitPositionUpdate])
   {
@@ -1594,7 +1594,7 @@ LABEL_50:
   }
 }
 
-- (double)idleOpacityForNubbit:(id)a3
+- (double)idleOpacityForNubbit:(id)nubbit
 {
   v3 = +[AXSettings sharedInstance];
   [v3 speechControllerIdleOpacity];
@@ -1603,12 +1603,12 @@ LABEL_50:
   return v5;
 }
 
-- (void)handleReachabilityToggled:(double)a3
+- (void)handleReachabilityToggled:(double)toggled
 {
-  v5 = [(AXSpeakOverlayViewController *)self stateManager];
-  v6 = [v5 inTabMode];
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  inTabMode = [stateManager inTabMode];
 
-  if (v6)
+  if (inTabMode)
   {
     [(AXSpeakOverlayViewController *)self unregisterNubbit:0];
   }
@@ -1618,10 +1618,10 @@ LABEL_50:
   v9 = v8;
 
   [(UIVisualEffectView *)self->_containingView frame];
-  v10 = CGRectGetMaxY(v33) + a3;
+  v10 = CGRectGetMaxY(v33) + toggled;
   if (v10 <= v9)
   {
-    if (a3 == 0.0)
+    if (toggled == 0.0)
     {
       [(AXSpeakOverlayViewController *)self reachabilityOffset];
       if (v20 != 0.0)
@@ -1652,28 +1652,28 @@ LABEL_50:
     [(AXSpeakOverlayViewController *)self _saveNubbitPosition];
   }
 
-  v30 = [(AXSpeakOverlayViewController *)self stateManager];
-  v31 = [v30 inTabMode];
+  stateManager2 = [(AXSpeakOverlayViewController *)self stateManager];
+  inTabMode2 = [stateManager2 inTabMode];
 
-  if (v31)
+  if (inTabMode2)
   {
 
     [(AXSpeakOverlayViewController *)self _registerNubbit];
   }
 }
 
-- (void)handleKBFrameWillUpdate:(id)a3
+- (void)handleKBFrameWillUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(AXSpeakOverlayViewController *)self stateManager];
-  v6 = [v5 inTabMode];
+  updateCopy = update;
+  stateManager = [(AXSpeakOverlayViewController *)self stateManager];
+  inTabMode = [stateManager inTabMode];
 
-  if (v6)
+  if (inTabMode)
   {
     [(AXSpeakOverlayViewController *)self unregisterNubbit:0];
   }
 
-  v7 = [v4 objectForKeyedSubscript:STSMessageKeyKBFrame];
+  v7 = [updateCopy objectForKeyedSubscript:STSMessageKeyKBFrame];
   v22 = CGRectFromString(v7);
   x = v22.origin.x;
   y = v22.origin.y;
@@ -1682,21 +1682,21 @@ LABEL_50:
 
   if (fabs(y) >= 2.22044605e-16)
   {
-    v14 = [v4 objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
+    v14 = [updateCopy objectForKeyedSubscript:UIKeyboardAnimationDurationUserInfoKey];
     [v14 floatValue];
     v16 = v15;
 
-    v17 = [v4 objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
-    v18 = [v17 unsignedIntegerValue];
+    v17 = [updateCopy objectForKeyedSubscript:UIKeyboardAnimationCurveUserInfoKey];
+    unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-    if ((v18 - 1) >= 6)
+    if ((unsignedIntegerValue - 1) >= 6)
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = ((v18 - 1) << 16) + 0x10000;
+      v19 = ((unsignedIntegerValue - 1) << 16) + 0x10000;
     }
 
     v21[0] = _NSConcreteStackBlock;
@@ -1718,17 +1718,17 @@ LABEL_50:
 
   else
   {
-    v12 = [(AXSpeakOverlayViewController *)self stateManager];
-    v13 = [v12 inTabMode];
+    stateManager2 = [(AXSpeakOverlayViewController *)self stateManager];
+    inTabMode2 = [stateManager2 inTabMode];
 
-    if (v13)
+    if (inTabMode2)
     {
       [(AXSpeakOverlayViewController *)self _registerNubbit];
     }
   }
 }
 
-- (void)deviceLockMonitor:(id)a3 didReceiveDeviceLockStateChanged:(BOOL)a4 timestamp:(double)a5
+- (void)deviceLockMonitor:(id)monitor didReceiveDeviceLockStateChanged:(BOOL)changed timestamp:(double)timestamp
 {
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
@@ -1736,14 +1736,14 @@ LABEL_50:
   v7[2] = sub_167B8;
   v7[3] = &unk_31010;
   objc_copyWeak(&v8, &location);
-  v9 = a4;
+  changedCopy = changed;
   v7[4] = self;
   dispatch_async(&_dispatch_main_q, v7);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)deviceEventMonitorDidReceiveEvent:(id)a3
+- (void)deviceEventMonitorDidReceiveEvent:(id)event
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -1757,10 +1757,10 @@ LABEL_50:
   objc_destroyWeak(&location);
 }
 
-- (void)sbs_unlockDeviceIfNeededAndPerform:(id)a3
+- (void)sbs_unlockDeviceIfNeededAndPerform:(id)perform
 {
-  v4 = a3;
-  v3 = v4;
+  performCopy = perform;
+  v3 = performCopy;
   SBSRequestPasscodeUnlockUI();
 }
 

@@ -1,81 +1,81 @@
 @interface RPTTestRunner
-+ (void)playInteraction:(id)a3 completionHandler:(id)a4;
-+ (void)runTestWithParameters:(id)a3;
-+ (void)runTestWithParameters:(id)a3 delegate:(id)a4;
-+ (void)runTestWithParameters:(id)a3 resultHandler:(id)a4;
-- (BOOL)_isReadyForRunningParameters:(id)a3 error:(id *)a4;
-- (BOOL)_managePPTLifetimeEvent:(int64_t)a3 forParameters:(id)a4;
-- (BOOL)_startSerializedRunnerWithError:(id *)a3;
-- (BOOL)checkTestRequirementsWithError:(id *)a3;
-- (RPTTestRunner)initWithInteractionOptions:(id)a3;
++ (void)playInteraction:(id)interaction completionHandler:(id)handler;
++ (void)runTestWithParameters:(id)parameters;
++ (void)runTestWithParameters:(id)parameters delegate:(id)delegate;
++ (void)runTestWithParameters:(id)parameters resultHandler:(id)handler;
+- (BOOL)_isReadyForRunningParameters:(id)parameters error:(id *)error;
+- (BOOL)_managePPTLifetimeEvent:(int64_t)event forParameters:(id)parameters;
+- (BOOL)_startSerializedRunnerWithError:(id *)error;
+- (BOOL)checkTestRequirementsWithError:(id *)error;
+- (RPTTestRunner)initWithInteractionOptions:(id)options;
 - (RPTTestRunnerDelegate)delegate;
 - (void)_endSerializedRunner;
-- (void)_failWithParameters:(id)a3 error:(id)a4;
-- (void)_finishWithParameters:(id)a3;
-- (void)_runTestWithParameters:(id)a3;
-- (void)_runTestWithParameters:(id)a3 retries:(int64_t)a4;
-- (void)playInteraction:(id)a3 completionHandler:(id)a4;
-- (void)runTestWithParameters:(id)a3;
-- (void)runTestWithParameters:(id)a3 resultHandler:(id)a4;
+- (void)_failWithParameters:(id)parameters error:(id)error;
+- (void)_finishWithParameters:(id)parameters;
+- (void)_runTestWithParameters:(id)parameters;
+- (void)_runTestWithParameters:(id)parameters retries:(int64_t)retries;
+- (void)playInteraction:(id)interaction completionHandler:(id)handler;
+- (void)runTestWithParameters:(id)parameters;
+- (void)runTestWithParameters:(id)parameters resultHandler:(id)handler;
 @end
 
 @implementation RPTTestRunner
 
-+ (void)playInteraction:(id)a3 completionHandler:(id)a4
++ (void)playInteraction:(id)interaction completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
+  handlerCopy = handler;
+  interactionCopy = interaction;
+  v8 = [self alloc];
   v10 = +[RPTInteractionOptions defaultForPlatform];
   v9 = [v8 initWithInteractionOptions:v10];
-  [v9 playInteraction:v7 completionHandler:v6];
+  [v9 playInteraction:interactionCopy completionHandler:handlerCopy];
 }
 
-+ (void)runTestWithParameters:(id)a3
++ (void)runTestWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [a1 alloc];
+  parametersCopy = parameters;
+  v5 = [self alloc];
   v6 = +[RPTInteractionOptions defaultForPlatform];
   v7 = [v5 initWithInteractionOptions:v6];
 
-  [v7 runTestWithParameters:v4];
+  [v7 runTestWithParameters:parametersCopy];
 }
 
-+ (void)runTestWithParameters:(id)a3 resultHandler:(id)a4
++ (void)runTestWithParameters:(id)parameters resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
+  handlerCopy = handler;
+  parametersCopy = parameters;
+  v8 = [self alloc];
   v9 = +[RPTInteractionOptions defaultForPlatform];
   v10 = [v8 initWithInteractionOptions:v9];
 
-  [v10 runTestWithParameters:v7 resultHandler:v6];
+  [v10 runTestWithParameters:parametersCopy resultHandler:handlerCopy];
 }
 
-+ (void)runTestWithParameters:(id)a3 delegate:(id)a4
++ (void)runTestWithParameters:(id)parameters delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
+  delegateCopy = delegate;
+  parametersCopy = parameters;
+  v8 = [self alloc];
   v9 = +[RPTInteractionOptions defaultForPlatform];
   v10 = [v8 initWithInteractionOptions:v9];
 
-  [v10 setDelegate:v6];
-  [v10 runTestWithParameters:v7];
+  [v10 setDelegate:delegateCopy];
+  [v10 runTestWithParameters:parametersCopy];
 }
 
-- (RPTTestRunner)initWithInteractionOptions:(id)a3
+- (RPTTestRunner)initWithInteractionOptions:(id)options
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = RPTTestRunner;
   v5 = [(RPTTestRunner *)&v14 init];
   if (v5)
   {
-    if (v4)
+    if (optionsCopy)
     {
-      v6 = v4;
+      v6 = optionsCopy;
     }
 
     else
@@ -98,7 +98,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v16 = v4;
+      v16 = optionsCopy;
       _os_log_impl(&dword_261A17000, v12, OS_LOG_TYPE_DEFAULT, "RPT: [RPTTestRunner initWithOptions:]", buf, 0xCu);
     }
   }
@@ -106,22 +106,22 @@
   return v5;
 }
 
-- (void)playInteraction:(id)a3 completionHandler:(id)a4
+- (void)playInteraction:(id)interaction completionHandler:(id)handler
 {
-  v5 = [RPTInteractionTestParameters interactionTestParametersWithTestName:0 interaction:a3 duration:a4 completionHandler:1.0];
+  v5 = [RPTInteractionTestParameters interactionTestParametersWithTestName:0 interaction:interaction duration:handler completionHandler:1.0];
   [(RPTTestRunner *)self runTestWithParameters:v5];
 }
 
-- (BOOL)_isReadyForRunningParameters:(id)a3 error:(id *)a4
+- (BOOL)_isReadyForRunningParameters:(id)parameters error:(id *)error
 {
-  v5 = a3;
-  v6 = [(RPTTestRunner *)self delegate];
+  parametersCopy = parameters;
+  delegate = [(RPTTestRunner *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(RPTTestRunner *)self delegate];
-    v9 = [v8 testRunner:self isReadyForRunningParameters:v5];
+    delegate2 = [(RPTTestRunner *)self delegate];
+    v9 = [delegate2 testRunner:self isReadyForRunningParameters:parametersCopy];
   }
 
   else
@@ -132,20 +132,20 @@
   return v9;
 }
 
-- (void)_runTestWithParameters:(id)a3 retries:(int64_t)a4
+- (void)_runTestWithParameters:(id)parameters retries:(int64_t)retries
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  parametersCopy = parameters;
   v17 = 0;
-  v7 = [(RPTTestRunner *)self _isReadyForRunningParameters:v6 error:&v17];
+  v7 = [(RPTTestRunner *)self _isReadyForRunningParameters:parametersCopy error:&v17];
   v8 = v17;
   v9 = v8;
   if (v7)
   {
-    [(RPTTestRunner *)self _runTestWithParameters:v6];
+    [(RPTTestRunner *)self _runTestWithParameters:parametersCopy];
   }
 
-  else if (a4 < 1)
+  else if (retries < 1)
   {
     if (!v8)
     {
@@ -161,7 +161,7 @@
       v9 = [v11 errorWithDomain:@"com.apple.RecapPerformanceTesting" code:4 userInfo:v13];
     }
 
-    [(RPTTestRunner *)self _failWithParameters:v6 error:v9];
+    [(RPTTestRunner *)self _failWithParameters:parametersCopy error:v9];
   }
 
   else
@@ -172,51 +172,51 @@
     block[2] = __48__RPTTestRunner__runTestWithParameters_retries___block_invoke;
     block[3] = &unk_279AF39C8;
     block[4] = self;
-    v15 = v6;
-    v16 = a4;
+    v15 = parametersCopy;
+    retriesCopy = retries;
     dispatch_after(v10, MEMORY[0x277D85CD0], block);
   }
 }
 
-- (void)runTestWithParameters:(id)a3
+- (void)runTestWithParameters:(id)parameters
 {
   v7 = 0;
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = [(RPTTestRunner *)self _startSerializedRunnerWithError:&v7];
   v6 = v7;
   if (v5)
   {
-    [(RPTTestRunner *)self _runTestWithParameters:v4 retries:10];
+    [(RPTTestRunner *)self _runTestWithParameters:parametersCopy retries:10];
   }
 
   else
   {
-    [(RPTTestRunner *)self _failWithParameters:v4 error:v6];
+    [(RPTTestRunner *)self _failWithParameters:parametersCopy error:v6];
   }
 }
 
-- (void)_runTestWithParameters:(id)a3
+- (void)_runTestWithParameters:(id)parameters
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = RPTLogTestRunning();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = parametersCopy;
     _os_log_impl(&dword_261A17000, v5, OS_LOG_TYPE_DEFAULT, "RPT: [RPTTestRunner runTestWithParameters:]", &buf, 0xCu);
   }
 
-  v6 = [v4 testName];
-  v7 = [(RPTTestRunner *)self settings];
-  v8 = [v7 recapOverrideFileURL];
-  v9 = v8 != 0;
+  testName = [parametersCopy testName];
+  settings = [(RPTTestRunner *)self settings];
+  recapOverrideFileURL = [settings recapOverrideFileURL];
+  v9 = recapOverrideFileURL != 0;
 
   v10 = RPTLogTestRunning();
   if (os_signpost_enabled(v10))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = testName;
     _os_signpost_emit_with_name_impl(&dword_261A17000, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "RunTestWithParameters", "<testName>=%{public, name=testName}@", &buf, 0xCu);
   }
 
@@ -228,9 +228,9 @@
     v13 = RPTLogTestRunning();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v4 testName];
+      testName2 = [parametersCopy testName];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v14;
+      *(&buf + 4) = testName2;
       _os_log_impl(&dword_261A17000, v13, OS_LOG_TYPE_DEFAULT, "RPT: PrepareForTest begin %{public}@", &buf, 0xCu);
     }
 
@@ -238,7 +238,7 @@
     if (os_signpost_enabled(v15))
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = testName;
       _os_signpost_emit_with_name_impl(&dword_261A17000, v15, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "PrepareForTest", "<testName>=%{public, name=testName}@", &buf, 0xCu);
     }
 
@@ -249,7 +249,7 @@
     v41 = __Block_byref_object_dispose__0;
     v42 = 0;
     v16 = makeRCPPlayerPlaybackOptions();
-    v17 = [(RPTTestRunner *)self interactionOptions];
+    interactionOptions = [(RPTTestRunner *)self interactionOptions];
     RCPSyntheticEventStreamClass = getRCPSyntheticEventStreamClass();
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
@@ -257,12 +257,12 @@
     v32[3] = &unk_279AF39F0;
     v36 = v9;
     p_buf = &buf;
-    v19 = v17;
+    v19 = interactionOptions;
     v33 = v19;
-    v20 = v4;
+    v20 = parametersCopy;
     v34 = v20;
     v21 = [RCPSyntheticEventStreamClass eventStreamWithEventActions:v32];
-    v22 = [(RPTTestRunner *)self inlinePlayer];
+    inlinePlayer = [(RPTTestRunner *)self inlinePlayer];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __40__RPTTestRunner__runTestWithParameters___block_invoke_2;
@@ -270,19 +270,19 @@
     v25 = v20;
     v26 = 0;
     v31 = v9;
-    v27 = self;
+    selfCopy = self;
     v30 = &buf;
     v23 = v19;
     v28 = v23;
-    v29 = v6;
-    [v22 playEventStream:v21 options:v16 completion:v24];
+    v29 = testName;
+    [inlinePlayer playEventStream:v21 options:v16 completion:v24];
 
     _Block_object_dispose(&buf, 8);
   }
 
   else
   {
-    [(RPTTestRunner *)self _failWithParameters:v4 error:v12];
+    [(RPTTestRunner *)self _failWithParameters:parametersCopy error:v12];
   }
 }
 
@@ -652,29 +652,29 @@ uint64_t __40__RPTTestRunner__runTestWithParameters___block_invoke_94(uint64_t a
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)runTestWithParameters:(id)a3 resultHandler:(id)a4
+- (void)runTestWithParameters:(id)parameters resultHandler:(id)handler
 {
-  v7 = a3;
-  if (a4)
+  parametersCopy = parameters;
+  if (handler)
   {
-    v6 = a4;
-    a4 = objc_opt_new();
-    [a4 setResultsHandler:v6];
+    handlerCopy = handler;
+    handler = objc_opt_new();
+    [handler setResultsHandler:handlerCopy];
   }
 
-  [(RPTTestRunner *)self setDelegate:a4];
-  [(RPTTestRunner *)self runTestWithParameters:v7];
+  [(RPTTestRunner *)self setDelegate:handler];
+  [(RPTTestRunner *)self runTestWithParameters:parametersCopy];
 }
 
-- (BOOL)_startSerializedRunnerWithError:(id *)a3
+- (BOOL)_startSerializedRunnerWithError:(id *)error
 {
   v4 = objc_opt_class();
   objc_sync_enter(v4);
   ++_testIsRunning;
   objc_sync_exit(v4);
 
-  v5 = [(RPTTestRunner *)self delegate];
-  objc_setAssociatedObject(self, "RPTTestRunner_delegateKey", v5, 0x301);
+  delegate = [(RPTTestRunner *)self delegate];
+  objc_setAssociatedObject(self, "RPTTestRunner_delegateKey", delegate, 0x301);
 
   return 1;
 }
@@ -688,107 +688,107 @@ uint64_t __40__RPTTestRunner__runTestWithParameters___block_invoke_94(uint64_t a
   objc_sync_exit(obj);
 }
 
-- (void)_finishWithParameters:(id)a3
+- (void)_finishWithParameters:(id)parameters
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RPTTestRunner *)self delegate];
+  parametersCopy = parameters;
+  delegate = [(RPTTestRunner *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(RPTTestRunner *)self delegate];
-    [v7 testRunner:self didFinishRunningParameters:v4];
+    delegate2 = [(RPTTestRunner *)self delegate];
+    [delegate2 testRunner:self didFinishRunningParameters:parametersCopy];
   }
 
   v8 = RPTLogTestRunning();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = parametersCopy;
     _os_log_impl(&dword_261A17000, v8, OS_LOG_TYPE_DEFAULT, "RPT: [RPTTestRunner _finishWithParameters:]", &v9, 0xCu);
   }
 
   [(RPTTestRunner *)self _endSerializedRunner];
 }
 
-- (void)_failWithParameters:(id)a3 error:(id)a4
+- (void)_failWithParameters:(id)parameters error:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 testName];
-  if (v8)
+  parametersCopy = parameters;
+  errorCopy = error;
+  testName = [parametersCopy testName];
+  if (testName)
   {
-    v9 = v8;
-    v10 = [(RPTTestRunner *)self _managePPTLifetimeEvent:2 forParameters:v6];
+    v9 = testName;
+    v10 = [(RPTTestRunner *)self _managePPTLifetimeEvent:2 forParameters:parametersCopy];
 
     if (v10)
     {
-      v11 = [MEMORY[0x277D75128] sharedApplication];
-      v12 = [v6 testName];
-      v13 = [v7 debugDescription];
-      [v11 failedTest:v12 withFailure:v13];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      testName2 = [parametersCopy testName];
+      v13 = [errorCopy debugDescription];
+      [mEMORY[0x277D75128] failedTest:testName2 withFailure:v13];
     }
   }
 
   v14 = RPTLogTestRunning();
   if (os_signpost_enabled(v14))
   {
-    v15 = [v7 debugDescription];
+    v15 = [errorCopy debugDescription];
     v20 = 138412290;
     v21 = v15;
     _os_signpost_emit_with_name_impl(&dword_261A17000, v14, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "RunTestWithParameters", "<failure?>=%@", &v20, 0xCu);
   }
 
-  v16 = [(RPTTestRunner *)self delegate];
+  delegate = [(RPTTestRunner *)self delegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(RPTTestRunner *)self delegate];
-    [v18 testRunner:self didFailRunningParameters:v6 withError:v7];
+    delegate2 = [(RPTTestRunner *)self delegate];
+    [delegate2 testRunner:self didFailRunningParameters:parametersCopy withError:errorCopy];
   }
 
   v19 = RPTLogTestRunning();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    [(RPTTestRunner *)v6 _failWithParameters:v7 error:v19];
+    [(RPTTestRunner *)parametersCopy _failWithParameters:errorCopy error:v19];
   }
 
   [(RPTTestRunner *)self _endSerializedRunner];
 }
 
-- (BOOL)_managePPTLifetimeEvent:(int64_t)a3 forParameters:(id)a4
+- (BOOL)_managePPTLifetimeEvent:(int64_t)event forParameters:(id)parameters
 {
-  v6 = a4;
+  parametersCopy = parameters;
   if (objc_opt_respondsToSelector())
   {
-    LODWORD(a3) = [v6 managesTestStartAndEnd] ^ 1;
+    LODWORD(event) = [parametersCopy managesTestStartAndEnd] ^ 1;
   }
 
   else
   {
-    v7 = [(RPTTestRunner *)self delegate];
+    delegate = [(RPTTestRunner *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(RPTTestRunner *)self delegate];
-      LOBYTE(a3) = [v9 testRunner:self shouldManagePPTLifetimeEvent:a3 forParamaters:v6];
+      delegate2 = [(RPTTestRunner *)self delegate];
+      LOBYTE(event) = [delegate2 testRunner:self shouldManagePPTLifetimeEvent:event forParamaters:parametersCopy];
     }
 
     else
     {
-      v10 = [v6 testName];
-      LOBYTE(a3) = v10 != 0;
+      testName = [parametersCopy testName];
+      LOBYTE(event) = testName != 0;
     }
   }
 
-  return a3;
+  return event;
 }
 
-- (BOOL)checkTestRequirementsWithError:(id *)a3
+- (BOOL)checkTestRequirementsWithError:(id *)error
 {
   v23[3] = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
@@ -821,7 +821,7 @@ uint64_t __40__RPTTestRunner__runTestWithParameters___block_invoke_94(uint64_t a
 
     v13 = [v4 count];
     v14 = v13 == 0;
-    if (a3 && v13)
+    if (error && v13)
     {
       v15 = MEMORY[0x277CCA9B8];
       v16 = *MEMORY[0x277CCA578];
@@ -830,7 +830,7 @@ uint64_t __40__RPTTestRunner__runTestWithParameters___block_invoke_94(uint64_t a
       v21[0] = @"Test running requirements failed.";
       v21[1] = v4;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
-      *a3 = [v15 errorWithDomain:@"com.apple.RecapPerformanceTesting" code:1 userInfo:v17];
+      *error = [v15 errorWithDomain:@"com.apple.RecapPerformanceTesting" code:1 userInfo:v17];
 
       v14 = 0;
     }

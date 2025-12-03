@@ -1,32 +1,32 @@
 @interface MTKMeshBuffer
-- (id)_initWithBytes:(const void *)a3 length:(unint64_t)a4 offset:(unint64_t)a5 allocator:(id)a6 zone:(id)a7 type:(unint64_t)a8;
-- (id)_initWithData:(id)a3 allocator:(id)a4 type:(unint64_t)a5;
-- (id)_initWithLength:(unint64_t)a3 offset:(unint64_t)a4 zone:(id)a5 type:(unint64_t)a6;
+- (id)_initWithBytes:(const void *)bytes length:(unint64_t)length offset:(unint64_t)offset allocator:(id)allocator zone:(id)zone type:(unint64_t)type;
+- (id)_initWithData:(id)data allocator:(id)allocator type:(unint64_t)type;
+- (id)_initWithLength:(unint64_t)length offset:(unint64_t)offset zone:(id)zone type:(unint64_t)type;
 - (id)_newMap;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)map;
 - (void)dealloc;
-- (void)fillData:(id)a3 offset:(unint64_t)a4;
+- (void)fillData:(id)data offset:(unint64_t)offset;
 @end
 
 @implementation MTKMeshBuffer
 
-- (id)_initWithLength:(unint64_t)a3 offset:(unint64_t)a4 zone:(id)a5 type:(unint64_t)a6
+- (id)_initWithLength:(unint64_t)length offset:(unint64_t)offset zone:(id)zone type:(unint64_t)type
 {
-  v11 = [a5 allocator];
+  allocator = [zone allocator];
 
-  return [(MTKMeshBuffer *)self _initWithBytes:0 length:a3 offset:a4 allocator:v11 zone:a5 type:a6];
+  return [(MTKMeshBuffer *)self _initWithBytes:0 length:length offset:offset allocator:allocator zone:zone type:type];
 }
 
-- (id)_initWithData:(id)a3 allocator:(id)a4 type:(unint64_t)a5
+- (id)_initWithData:(id)data allocator:(id)allocator type:(unint64_t)type
 {
-  v9 = [a3 bytes];
-  v10 = [a3 length];
+  bytes = [data bytes];
+  v10 = [data length];
 
-  return [(MTKMeshBuffer *)self _initWithBytes:v9 length:v10 offset:0 allocator:a4 zone:0 type:a5];
+  return [(MTKMeshBuffer *)self _initWithBytes:bytes length:v10 offset:0 allocator:allocator zone:0 type:type];
 }
 
-- (id)_initWithBytes:(const void *)a3 length:(unint64_t)a4 offset:(unint64_t)a5 allocator:(id)a6 zone:(id)a7 type:(unint64_t)a8
+- (id)_initWithBytes:(const void *)bytes length:(unint64_t)length offset:(unint64_t)offset allocator:(id)allocator zone:(id)zone type:(unint64_t)type
 {
   v18.receiver = self;
   v18.super_class = MTKMeshBuffer;
@@ -34,29 +34,29 @@
   if (result)
   {
     v15 = result;
-    v16 = [objc_msgSend(a6 "device")];
+    v16 = [objc_msgSend(allocator "device")];
     result = 0;
-    if (a8 - 3 >= 0xFFFFFFFFFFFFFFFELL && a4 - 1 < v16)
+    if (type - 3 >= 0xFFFFFFFFFFFFFFFELL && length - 1 < v16)
     {
-      v15[2] = a4;
-      v15[3] = a6;
-      v15[1] = a7;
-      v15[5] = a5;
-      v15[6] = a8;
-      if (a7)
+      v15[2] = length;
+      v15[3] = allocator;
+      v15[1] = zone;
+      v15[5] = offset;
+      v15[6] = type;
+      if (zone)
       {
-        v17 = [a7 buffer];
+        buffer = [zone buffer];
       }
 
       else
       {
-        v17 = [objc_msgSend(a6 "device")];
+        buffer = [objc_msgSend(allocator "device")];
       }
 
-      v15[4] = v17;
-      if (a3)
+      v15[4] = buffer;
+      if (bytes)
       {
-        memcpy([v17 contents], a3, a4);
+        memcpy([buffer contents], bytes, length);
       }
 
       return v15;
@@ -75,16 +75,16 @@
   [(MTKMeshBuffer *)&v3 dealloc];
 }
 
-- (void)fillData:(id)a3 offset:(unint64_t)a4
+- (void)fillData:(id)data offset:(unint64_t)offset
 {
-  if (self->_length >= a4)
+  if (self->_length >= offset)
   {
-    v8 = [a3 length];
+    v8 = [data length];
     v9 = v8;
     length = self->_length;
-    if (v8 + a4 >= length)
+    if (v8 + offset >= length)
     {
-      v11 = v8 + a4 - length;
+      v11 = v8 + offset - length;
     }
 
     else
@@ -92,11 +92,11 @@
       v11 = 0;
     }
 
-    v12 = [(MTLBuffer *)self->_buffer contents];
-    v13 = self->_offset + a4;
-    v14 = [a3 bytes];
+    contents = [(MTLBuffer *)self->_buffer contents];
+    v13 = self->_offset + offset;
+    bytes = [data bytes];
 
-    memcpy((v12 + v13), v14, v11 + v9);
+    memcpy((contents + v13), bytes, v11 + v9);
   }
 }
 
@@ -104,24 +104,24 @@
 {
   v3 = self->_buffer;
   v4 = objc_alloc(getMDLMeshBufferMapClass());
-  v5 = [(MTLBuffer *)v3 contents];
+  contents = [(MTLBuffer *)v3 contents];
   offset = self->_offset;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __24__MTKMeshBuffer__newMap__block_invoke;
   v8[3] = &unk_1E8580DD8;
   v8[4] = v3;
-  return [v4 initWithBytes:v5 + offset deallocator:v8];
+  return [v4 initWithBytes:contents + offset deallocator:v8];
 }
 
 - (id)map
 {
-  v2 = [(MTKMeshBuffer *)self _newMap];
+  _newMap = [(MTKMeshBuffer *)self _newMap];
 
-  return v2;
+  return _newMap;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[MTKMeshBuffer alloc] _initWithLength:self->_length allocator:self->_allocator type:self->_type];
   memcpy([v4[4] contents], -[MTLBuffer contents](self->_buffer, "contents"), self->_length);

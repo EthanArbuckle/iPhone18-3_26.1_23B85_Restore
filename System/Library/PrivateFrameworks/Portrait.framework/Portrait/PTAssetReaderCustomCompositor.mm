@@ -1,7 +1,7 @@
 @interface PTAssetReaderCustomCompositor
 - (NSDictionary)requiredPixelBufferAttributesForRenderContext;
 - (NSDictionary)sourcePixelBufferAttributes;
-- (void)startVideoCompositionRequest:(id)a3;
+- (void)startVideoCompositionRequest:(id)request;
 @end
 
 @implementation PTAssetReaderCustomCompositor
@@ -32,20 +32,20 @@
   return v3;
 }
 
-- (void)startVideoCompositionRequest:(id)a3
+- (void)startVideoCompositionRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 videoCompositionInstruction];
-  v6 = [v3 sourceFrameByTrackID:{objc_msgSend(v5, "videTrackID")}];
-  v7 = [v3 sourceFrameByTrackID:{objc_msgSend(v5, "auxvTrackID")}];
+  videoCompositionInstruction = [requestCopy videoCompositionInstruction];
+  v6 = [requestCopy sourceFrameByTrackID:{objc_msgSend(videoCompositionInstruction, "videTrackID")}];
+  v7 = [requestCopy sourceFrameByTrackID:{objc_msgSend(videoCompositionInstruction, "auxvTrackID")}];
   if (v6)
   {
     v8 = v7;
     v9 = [PTAssetReaderComposedFrame alloc];
-    if (v3)
+    if (requestCopy)
     {
-      [v3 compositionTime];
+      [requestCopy compositionTime];
     }
 
     else
@@ -54,16 +54,16 @@
     }
 
     v11 = [(PTAssetReaderComposedFrame *)v9 initWithTime:v13 colorBuffer:v6 auxBuffer:v8];
-    v12 = [v5 assetReader];
-    [v12 pushComposedFrame:v11];
+    assetReader = [videoCompositionInstruction assetReader];
+    [assetReader pushComposedFrame:v11];
 
-    [v3 finishWithComposedVideoFrame:v6];
+    [requestCopy finishWithComposedVideoFrame:v6];
   }
 
   else
   {
     v10 = AssetReaderError(@"Did not receive videoBuffer from async request");
-    [v3 finishWithError:v10];
+    [requestCopy finishWithError:v10];
   }
 
   objc_autoreleasePoolPop(v4);

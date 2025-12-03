@@ -1,34 +1,34 @@
 @interface CUIShapeEffectStack
-+ (CGColor)newColorByAdjustingLightnessOfColor:(CGColor *)a3 darker:(BOOL)a4;
-+ (id)adjustOpacity:(id)a3 by:(float)a4;
-+ (id)bevelEmbossFrom:(id)a3 withSize:(unsigned int)a4 soften:(unsigned int)a5 angle:(float)a6 altitude:(float)a7 highlightRed:(float)a8 highlightGreen:(float)a9 highlightBlue:(float)a10 highlightOpacity:(float)a11 shadowRed:(float)a12 shadowGreen:(float)a13 shadowBlue:(float)a14 shadowOpacity:(float)a15 bevelStyle:(unsigned int)a16;
-+ (id)blend:(id)a3 over:(id)a4 blendKind:(unsigned int)a5;
-+ (id)blur:(id)a3 radius:(float)a4;
-+ (id)colorWithGray:(float)a3 alpha:(float)a4;
-+ (id)colorWithRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6;
-+ (id)composite:(id)a3 atop:(id)a4;
-+ (id)composite:(id)a3 into:(id)a4;
-+ (id)composite:(id)a3 outOf:(id)a4;
-+ (id)composite:(id)a3 over:(id)a4;
-+ (id)gradientWithParameters:(id *)a3 inRect:(CGRect)a4;
-+ (id)hueSaturationFrom:(id)a3 withCenterAngle:(double)a4 width:(double)a5 tintRed:(float)a6 tintGreen:(float)a7 tintBlue:(float)a8;
-+ (id)image:(id)a3 withOpacity:(float)a4;
-+ (id)imageFromBlendWithMask:(id)a3 foreground:(id)a4 background:(id)a5;
-+ (id)innerGlowFrom:(id)a3 withRadius:(float)a4 red:(float)a5 green:(float)a6 blue:(float)a7 opacity:(float)a8;
-+ (id)innerShadowFrom:(id)a3 withOffset:(CGPoint)a4 radius:(float)a5 red:(float)a6 green:(float)a7 blue:(float)a8 opacity:(float)a9;
-+ (id)invert:(id)a3;
-+ (id)outerGlowFrom:(id)a3 withSize:(unsigned int)a4 spread:(unsigned int)a5 red:(float)a6 green:(float)a7 blue:(float)a8 opacity:(float)a9;
-+ (id)outerShadowFrom:(id)a3 withOffset:(CGPoint)a4 size:(unsigned int)a5 spread:(unsigned int)a6 red:(float)a7 green:(float)a8 blue:(float)a9 opacity:(float)a10;
-+ (id)pixelZoomed:(id)a3 scale:(int)a4 about:(CGPoint)a5;
++ (CGColor)newColorByAdjustingLightnessOfColor:(CGColor *)color darker:(BOOL)darker;
++ (id)adjustOpacity:(id)opacity by:(float)by;
++ (id)bevelEmbossFrom:(id)from withSize:(unsigned int)size soften:(unsigned int)soften angle:(float)angle altitude:(float)altitude highlightRed:(float)red highlightGreen:(float)green highlightBlue:(float)self0 highlightOpacity:(float)self1 shadowRed:(float)self2 shadowGreen:(float)self3 shadowBlue:(float)self4 shadowOpacity:(float)self5 bevelStyle:(unsigned int)self6;
++ (id)blend:(id)blend over:(id)over blendKind:(unsigned int)kind;
++ (id)blur:(id)blur radius:(float)radius;
++ (id)colorWithGray:(float)gray alpha:(float)alpha;
++ (id)colorWithRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
++ (id)composite:(id)composite atop:(id)atop;
++ (id)composite:(id)composite into:(id)into;
++ (id)composite:(id)composite outOf:(id)of;
++ (id)composite:(id)composite over:(id)over;
++ (id)gradientWithParameters:(id *)parameters inRect:(CGRect)rect;
++ (id)hueSaturationFrom:(id)from withCenterAngle:(double)angle width:(double)width tintRed:(float)red tintGreen:(float)green tintBlue:(float)blue;
++ (id)image:(id)image withOpacity:(float)opacity;
++ (id)imageFromBlendWithMask:(id)mask foreground:(id)foreground background:(id)background;
++ (id)innerGlowFrom:(id)from withRadius:(float)radius red:(float)red green:(float)green blue:(float)blue opacity:(float)opacity;
++ (id)innerShadowFrom:(id)from withOffset:(CGPoint)offset radius:(float)radius red:(float)red green:(float)green blue:(float)blue opacity:(float)opacity;
++ (id)invert:(id)invert;
++ (id)outerGlowFrom:(id)from withSize:(unsigned int)size spread:(unsigned int)spread red:(float)red green:(float)green blue:(float)blue opacity:(float)opacity;
++ (id)outerShadowFrom:(id)from withOffset:(CGPoint)offset size:(unsigned int)size spread:(unsigned int)spread red:(float)red green:(float)green blue:(float)blue opacity:(float)self0;
++ (id)pixelZoomed:(id)zoomed scale:(int)scale about:(CGPoint)about;
 + (id)preferredCIContextOptions;
-+ (id)rectangle:(CGRect)a3 withRed:(float)a4 green:(float)a5 blue:(float)a6 alpha:(float)a7;
-+ (id)shadowFrom:(id)a3 red:(float)a4 green:(float)a5 blue:(float)a6 opacity:(float)a7;
-+ (id)shapeEffectSingleBlurFrom:(id)a3 withInteriorFill:(id)a4 offset:(CGPoint)a5 blurSize:(float)a6 innerGlowRed:(float)a7 innerGlowGreen:(float)a8 innerGlowBlue:(float)a9 innerGlowOpacity:(float)a10 innerShadowRed:(float)a11 innerShadowGreen:(float)a12 innerShadowBlue:(float)a13 innerShadowOpacity:(float)a14 outerGlowRed:(float)a15 outerGlowGreen:(float)a16 outerGlowBlue:(float)a17 outerGlowOpacity:(float)a18 outerShadowRed:(float)a19 outerShadowGreen:(float)a20 outerShadowBlue:(float)a21 outerShadowOpacity:(float)a22 hasInsideShadowBlur:(BOOL)a23 hasOutsideShadowBlur:(BOOL)a24;
++ (id)rectangle:(CGRect)rectangle withRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
++ (id)shadowFrom:(id)from red:(float)red green:(float)green blue:(float)blue opacity:(float)opacity;
++ (id)shapeEffectSingleBlurFrom:(id)from withInteriorFill:(id)fill offset:(CGPoint)offset blurSize:(float)size innerGlowRed:(float)red innerGlowGreen:(float)green innerGlowBlue:(float)blue innerGlowOpacity:(float)self0 innerShadowRed:(float)self1 innerShadowGreen:(float)self2 innerShadowBlue:(float)self3 innerShadowOpacity:(float)self4 outerGlowRed:(float)self5 outerGlowGreen:(float)self6 outerGlowBlue:(float)self7 outerGlowOpacity:(float)self8 outerShadowRed:(float)self9 outerShadowGreen:(float)outerShadowGreen outerShadowBlue:(float)outerShadowBlue outerShadowOpacity:(float)outerShadowOpacity hasInsideShadowBlur:(BOOL)blur hasOutsideShadowBlur:(BOOL)shadowBlur;
 + (id)sharedCIContext;
-+ (id)unsharpMask:(id)a3 radius:(float)a4 intensity:(float)a5;
-- ($01BB1521EC52D44A8E7628F5261DCEC8)effectInsetsWithScale:(double)a3;
++ (id)unsharpMask:(id)mask radius:(float)radius intensity:(float)intensity;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)effectInsetsWithScale:(double)scale;
 - (BOOL)anyEffectAllowsTintSubstitution;
-- (BOOL)expressableByColorFillCheckingOutputBlending:(BOOL)a3;
+- (BOOL)expressableByColorFillCheckingOutputBlending:(BOOL)blending;
 - (BOOL)hasColorOverlay;
 - (BOOL)hasEffects;
 - (BOOL)hasEngraveShadow;
@@ -37,47 +37,47 @@
 - (BOOL)hasInnerGradient;
 - (BOOL)hasInnerShadow;
 - (BOOL)hasOuterGlow;
-- (CGImage)_newFlattenedImageFromShapeCGImage:(CGImage *)a3 withScale:(double)a4 ciContext:(id)a5 blendOverImage:(BOOL)a6;
-- (CGImage)newFlattenedImageFromShapeCGImage:(CGImage *)a3 withScale:(double)a4 cache:(BOOL)a5;
-- (CGRect)effectPaddingWithScale:(double)a3;
-- (CUIShapeEffectStack)initWithEffectPreset:(id)a3;
+- (CGImage)_newFlattenedImageFromShapeCGImage:(CGImage *)image withScale:(double)scale ciContext:(id)context blendOverImage:(BOOL)overImage;
+- (CGImage)newFlattenedImageFromShapeCGImage:(CGImage *)image withScale:(double)scale cache:(BOOL)cache;
+- (CGRect)effectPaddingWithScale:(double)scale;
+- (CUIShapeEffectStack)initWithEffectPreset:(id)preset;
 - (float)colorOverlayOpacity;
 - (float)innerGradientOpacity;
 - (id)cacheKey;
-- (id)compositeEffectStackWithShapeImage:(id)a3 withScale:(double)a4 blendOntoImage:(BOOL)a5;
+- (id)compositeEffectStackWithShapeImage:(id)image withScale:(double)scale blendOntoImage:(BOOL)ontoImage;
 - (id)effectPreset;
-- (id)image:(id)a3 withAdjustedOpacity:(float)a4;
-- (id)imageWithBevelEmbossOfImage:(id)a3 effect:(id *)a4;
-- (id)imageWithColorOverlayOfImage:(id)a3 effect:(id *)a4;
-- (id)imageWithEngraveShadowOfImage:(id)a3 effect:(id *)a4;
-- (id)imageWithExtraShadowOfImage:(id)a3 effect:(id *)a4;
-- (id)imageWithHueSaturationOfImage:(id)a3 effect:(id *)a4;
-- (id)imageWithInnerGlowOfImage:(id)a3 effect:(id *)a4;
-- (id)imageWithInnerShadowOfImage:(id)a3 effect:(id *)a4;
-- (id)imageWithInteriorGradientFillOfImage:(id)a3 effect:(id *)a4;
-- (id)imageWithOuterGlowOfImage:(id)a3 effect:(id *)a4;
-- (id)imageWithSingleBlurShapeEffectOfImage:(id)a3 withInteriorFill:(id)a4;
-- (id)optimizedSingleBlurEffectCompositeWithShapeImage:(id)a3;
-- (id)processedImageFromShapeImage:(id)a3 withScale:(double)a4 invertShadows:(BOOL)a5;
-- (id)standardEffectCompositeWithShapeImage:(id)a3 blendOntoImage:(BOOL)a4;
+- (id)image:(id)image withAdjustedOpacity:(float)opacity;
+- (id)imageWithBevelEmbossOfImage:(id)image effect:(id *)effect;
+- (id)imageWithColorOverlayOfImage:(id)image effect:(id *)effect;
+- (id)imageWithEngraveShadowOfImage:(id)image effect:(id *)effect;
+- (id)imageWithExtraShadowOfImage:(id)image effect:(id *)effect;
+- (id)imageWithHueSaturationOfImage:(id)image effect:(id *)effect;
+- (id)imageWithInnerGlowOfImage:(id)image effect:(id *)effect;
+- (id)imageWithInnerShadowOfImage:(id)image effect:(id *)effect;
+- (id)imageWithInteriorGradientFillOfImage:(id)image effect:(id *)effect;
+- (id)imageWithOuterGlowOfImage:(id)image effect:(id *)effect;
+- (id)imageWithSingleBlurShapeEffectOfImage:(id)image withInteriorFill:(id)fill;
+- (id)optimizedSingleBlurEffectCompositeWithShapeImage:(id)image;
+- (id)processedImageFromShapeImage:(id)image withScale:(double)scale invertShadows:(BOOL)shadows;
+- (id)standardEffectCompositeWithShapeImage:(id)image blendOntoImage:(BOOL)ontoImage;
 - (int)cgBlendModeForOutputBlending;
 - (void)_cleanupEffectSettings;
 - (void)_normalizeEffectParameters;
-- (void)_setBevelEmbossAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5;
-- (void)_setColorFillAtIndex:(unint64_t)a3 FromPreset:(id)a4 index:(unsigned int)a5;
-- (void)_setEngraveShadowAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5;
-- (void)_setExtraShadowAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5;
-- (void)_setHueSaturationAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5;
-- (void)_setInnerGlowAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5;
-- (void)_setInnerShadowAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5;
-- (void)_setInteriorGradientAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5;
-- (void)_setOuterGlowAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5;
-- (void)_updateRenderStrategyFromEffect:(unsigned int)a3;
-- (void)adjustEffectColorsToTemperature:(int)a3 onlyTintableColors:(BOOL)a4;
-- (void)applyCustomForegroundColor:(CGColor *)a3 tintEffectColors:(BOOL)a4;
+- (void)_setBevelEmbossAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5;
+- (void)_setColorFillAtIndex:(unint64_t)index FromPreset:(id)preset index:(unsigned int)a5;
+- (void)_setEngraveShadowAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5;
+- (void)_setExtraShadowAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5;
+- (void)_setHueSaturationAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5;
+- (void)_setInnerGlowAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5;
+- (void)_setInnerShadowAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5;
+- (void)_setInteriorGradientAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5;
+- (void)_setOuterGlowAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5;
+- (void)_updateRenderStrategyFromEffect:(unsigned int)effect;
+- (void)adjustEffectColorsToTemperature:(int)temperature onlyTintableColors:(BOOL)colors;
+- (void)applyCustomForegroundColor:(CGColor *)color tintEffectColors:(BOOL)colors;
 - (void)dealloc;
-- (void)scaleBrightnessOfEffectColorsByAmount:(double)a3 onlyTintableColors:(BOOL)a4;
-- (void)scaleEffectParametersBy:(double)a3;
+- (void)scaleBrightnessOfEffectColorsByAmount:(double)amount onlyTintableColors:(BOOL)colors;
+- (void)scaleEffectParametersBy:(double)by;
 - (void)updateOutputBlendingWithInteriorFillHeuristic;
 @end
 
@@ -193,23 +193,23 @@ CIContext *__38__CUIShapeEffectStack_sharedCIContext__block_invoke()
   return result;
 }
 
-- (void)_setColorFillAtIndex:(unint64_t)a3 FromPreset:(id)a4 index:(unsigned int)a5
+- (void)_setColorFillAtIndex:(unint64_t)index FromPreset:(id)preset index:(unsigned int)a5
 {
-  if (self->_colorOverlayCount > a3)
+  if (self->_colorOverlayCount > index)
   {
     colorOverlay = self->_colorOverlay;
     if (colorOverlay)
     {
-      v7 = &colorOverlay[a3];
+      v7 = &colorOverlay[index];
       v8 = a5;
-      v7->var0 = [a4 valueForParameter:7 inEffectAtIndex:a5];
-      v9.i32[0] = [a4 valueForParameter:0 inEffectAtIndex:v8];
+      v7->var0 = [preset valueForParameter:7 inEffectAtIndex:a5];
+      v9.i32[0] = [preset valueForParameter:0 inEffectAtIndex:v8];
       v9.i32[1] = v9.i32[0] >> 8;
       *&v7->var1 = vdiv_f32(vcvt_f32_u32(vand_s8(v9, 0xFF000000FFLL)), vdup_n_s32(0x437F0000u));
       v7->var3 = v9.u8[2] / 255.0;
-      v10 = COERCE_DOUBLE([a4 valueForParameter:2 inEffectAtIndex:v8]);
+      v10 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v8]);
       v7->var4 = v10;
-      v7->var5 = [a4 valueForParameter:10 inEffectAtIndex:v8] == 1;
+      v7->var5 = [preset valueForParameter:10 inEffectAtIndex:v8] == 1;
     }
   }
 }
@@ -272,26 +272,26 @@ CIContext *__38__CUIShapeEffectStack_sharedCIContext__block_invoke()
   return result;
 }
 
-- (void)_setInteriorGradientAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5
+- (void)_setInteriorGradientAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5
 {
-  if (self->_innerGradientCount > a3)
+  if (self->_innerGradientCount > index)
   {
     innerGradient = self->_innerGradient;
     if (innerGradient)
     {
-      v7 = &innerGradient[a3];
+      v7 = &innerGradient[index];
       v8 = a5;
-      v7->var0 = [a4 valueForParameter:7 inEffectAtIndex:a5];
-      v9.i32[0] = [a4 valueForParameter:0 inEffectAtIndex:v8];
+      v7->var0 = [preset valueForParameter:7 inEffectAtIndex:a5];
+      v9.i32[0] = [preset valueForParameter:0 inEffectAtIndex:v8];
       v9.i32[1] = v9.i32[0] >> 8;
       v10 = vdup_n_s32(0x437F0000u);
       *&v7->var1 = vdiv_f32(vcvt_f32_u32(vand_s8(v9, 0xFF000000FFLL)), v10);
       v7->var3 = v9.u8[2] / 255.0;
-      v11.i32[0] = [a4 valueForParameter:1 inEffectAtIndex:v8];
+      v11.i32[0] = [preset valueForParameter:1 inEffectAtIndex:v8];
       v11.i32[1] = v11.i32[0] >> 8;
       *&v7->var4 = vdiv_f32(vcvt_f32_u32(vand_s8(v11, 0xFF000000FFLL)), v10);
       v7->var6 = v11.u8[2] / 255.0;
-      v12 = COERCE_DOUBLE([a4 valueForParameter:2 inEffectAtIndex:v8]);
+      v12 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v8]);
       v14 = 1.0;
       if (v12 != 0.0)
       {
@@ -362,23 +362,23 @@ CIContext *__38__CUIShapeEffectStack_sharedCIContext__block_invoke()
   return result;
 }
 
-- (void)_setInnerGlowAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5
+- (void)_setInnerGlowAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5
 {
-  if (self->_innerGlowCount > a3)
+  if (self->_innerGlowCount > index)
   {
     innerGlow = self->_innerGlow;
     if (innerGlow)
     {
-      v7 = &innerGlow[a3];
+      v7 = &innerGlow[index];
       v8 = a5;
-      v7->var0 = [a4 valueForParameter:7 inEffectAtIndex:a5];
-      v9.i32[0] = [a4 valueForParameter:0 inEffectAtIndex:v8];
+      v7->var0 = [preset valueForParameter:7 inEffectAtIndex:a5];
+      v9.i32[0] = [preset valueForParameter:0 inEffectAtIndex:v8];
       v9.i32[1] = v9.i32[0] >> 8;
       *&v7->var1 = vdiv_f32(vcvt_f32_u32(vand_s8(v9, 0xFF000000FFLL)), vdup_n_s32(0x437F0000u));
       v7->var3 = v9.u8[2] / 255.0;
-      v10 = COERCE_DOUBLE([a4 valueForParameter:2 inEffectAtIndex:v8]);
+      v10 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v8]);
       v7->var4 = v10;
-      v7->var5 = [a4 valueForParameter:4 inEffectAtIndex:v8];
+      v7->var5 = [preset valueForParameter:4 inEffectAtIndex:v8];
     }
   }
 }
@@ -416,25 +416,25 @@ CIContext *__38__CUIShapeEffectStack_sharedCIContext__block_invoke()
   return v7 < innerGlowCount;
 }
 
-- (void)_setInnerShadowAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5
+- (void)_setInnerShadowAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5
 {
-  if (self->_innerShadowCount > a3)
+  if (self->_innerShadowCount > index)
   {
     innerShadow = self->_innerShadow;
     if (innerShadow)
     {
-      v7 = &innerShadow[a3];
+      v7 = &innerShadow[index];
       v8 = a5;
-      v7->var0 = [a4 valueForParameter:7 inEffectAtIndex:a5];
-      v9.i32[0] = [a4 valueForParameter:0 inEffectAtIndex:v8];
+      v7->var0 = [preset valueForParameter:7 inEffectAtIndex:a5];
+      v9.i32[0] = [preset valueForParameter:0 inEffectAtIndex:v8];
       v9.i32[1] = v9.i32[0] >> 8;
       *&v7->var1 = vdiv_f32(vcvt_f32_u32(vand_s8(v9, 0xFF000000FFLL)), vdup_n_s32(0x437F0000u));
       v7->var3 = v9.u8[2] / 255.0;
-      v10 = COERCE_DOUBLE([a4 valueForParameter:2 inEffectAtIndex:v8]);
+      v10 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v8]);
       v7->var5 = v10;
-      v7->var4 = [a4 valueForParameter:4 inEffectAtIndex:v8];
-      v7->var6 = [a4 valueForParameter:5 inEffectAtIndex:v8];
-      v11 = [a4 valueForParameter:6 inEffectAtIndex:v8] * 0.0174532925;
+      v7->var4 = [preset valueForParameter:4 inEffectAtIndex:v8];
+      v7->var6 = [preset valueForParameter:5 inEffectAtIndex:v8];
+      v11 = [preset valueForParameter:6 inEffectAtIndex:v8] * 0.0174532925;
       v7->var7 = v11;
       v12 = __sincosf_stret(v11);
       var6 = v7->var6;
@@ -490,23 +490,23 @@ CIContext *__38__CUIShapeEffectStack_sharedCIContext__block_invoke()
   return v7 < innerShadowCount;
 }
 
-- (void)_setOuterGlowAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5
+- (void)_setOuterGlowAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5
 {
-  if (self->_outerGlowCount > a3)
+  if (self->_outerGlowCount > index)
   {
     outerGlow = self->_outerGlow;
     if (outerGlow)
     {
-      v7 = &outerGlow[a3];
+      v7 = &outerGlow[index];
       v8 = a5;
-      v9.i32[0] = [a4 valueForParameter:0 inEffectAtIndex:a5];
+      v9.i32[0] = [preset valueForParameter:0 inEffectAtIndex:a5];
       v9.i32[1] = v9.i32[0] >> 8;
       *v7 = vdiv_f32(vcvt_f32_u32(vand_s8(v9, 0xFF000000FFLL)), vdup_n_s32(0x437F0000u));
       v7[1].f32[0] = v9.u8[2] / 255.0;
-      v10 = COERCE_DOUBLE([a4 valueForParameter:2 inEffectAtIndex:v8]);
+      v10 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v8]);
       v7[1].f32[1] = v10;
-      v7[2].f32[0] = [a4 valueForParameter:4 inEffectAtIndex:v8];
-      v7[2].f32[1] = [a4 valueForParameter:9 inEffectAtIndex:v8];
+      v7[2].f32[0] = [preset valueForParameter:4 inEffectAtIndex:v8];
+      v7[2].f32[1] = [preset valueForParameter:9 inEffectAtIndex:v8];
     }
   }
 }
@@ -544,25 +544,25 @@ CIContext *__38__CUIShapeEffectStack_sharedCIContext__block_invoke()
   return v7 < outerGlowCount;
 }
 
-- (void)_setEngraveShadowAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5
+- (void)_setEngraveShadowAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5
 {
-  if (self->_engraveShadowCount > a3)
+  if (self->_engraveShadowCount > index)
   {
     engraveShadow = self->_engraveShadow;
     if (engraveShadow)
     {
-      v7 = &engraveShadow[a3];
+      v7 = &engraveShadow[index];
       v8 = a5;
-      v9.i32[0] = [a4 valueForParameter:0 inEffectAtIndex:a5];
+      v9.i32[0] = [preset valueForParameter:0 inEffectAtIndex:a5];
       v9.i32[1] = v9.i32[0] >> 8;
       *&v7->var0 = vdiv_f32(vcvt_f32_u32(vand_s8(v9, 0xFF000000FFLL)), vdup_n_s32(0x437F0000u));
       v7->var2 = v9.u8[2] / 255.0;
-      v10 = COERCE_DOUBLE([a4 valueForParameter:2 inEffectAtIndex:v8]);
+      v10 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v8]);
       v7->var3 = v10;
-      v7->var4 = [a4 valueForParameter:4 inEffectAtIndex:v8];
-      v7->var5 = [a4 valueForParameter:9 inEffectAtIndex:v8];
-      v7->var6 = [a4 valueForParameter:5 inEffectAtIndex:v8];
-      v11 = [a4 valueForParameter:6 inEffectAtIndex:v8] * 0.0174532925;
+      v7->var4 = [preset valueForParameter:4 inEffectAtIndex:v8];
+      v7->var5 = [preset valueForParameter:9 inEffectAtIndex:v8];
+      v7->var6 = [preset valueForParameter:5 inEffectAtIndex:v8];
+      v11 = [preset valueForParameter:6 inEffectAtIndex:v8] * 0.0174532925;
       v7->var7 = v11;
       v12 = __sincosf_stret(v11);
       var6 = v7->var6;
@@ -618,25 +618,25 @@ CIContext *__38__CUIShapeEffectStack_sharedCIContext__block_invoke()
   return v7 < engraveShadowCount;
 }
 
-- (void)_setExtraShadowAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5
+- (void)_setExtraShadowAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5
 {
-  if (self->_extraShadowCount > a3)
+  if (self->_extraShadowCount > index)
   {
     extraShadow = self->_extraShadow;
     if (extraShadow)
     {
-      v7 = &extraShadow[a3];
+      v7 = &extraShadow[index];
       v8 = a5;
-      v9.i32[0] = [a4 valueForParameter:0 inEffectAtIndex:a5];
+      v9.i32[0] = [preset valueForParameter:0 inEffectAtIndex:a5];
       v9.i32[1] = v9.i32[0] >> 8;
       *&v7->var0 = vdiv_f32(vcvt_f32_u32(vand_s8(v9, 0xFF000000FFLL)), vdup_n_s32(0x437F0000u));
       v7->var2 = v9.u8[2] / 255.0;
-      v10 = COERCE_DOUBLE([a4 valueForParameter:2 inEffectAtIndex:v8]);
+      v10 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v8]);
       v7->var3 = v10;
-      v7->var4 = [a4 valueForParameter:4 inEffectAtIndex:v8];
-      v7->var5 = [a4 valueForParameter:9 inEffectAtIndex:v8];
-      v7->var6 = [a4 valueForParameter:5 inEffectAtIndex:v8];
-      v11 = [a4 valueForParameter:6 inEffectAtIndex:v8] * 0.0174532925;
+      v7->var4 = [preset valueForParameter:4 inEffectAtIndex:v8];
+      v7->var5 = [preset valueForParameter:9 inEffectAtIndex:v8];
+      v7->var6 = [preset valueForParameter:5 inEffectAtIndex:v8];
+      v11 = [preset valueForParameter:6 inEffectAtIndex:v8] * 0.0174532925;
       v7->var7 = v11;
       v12 = __sincosf_stret(v11);
       var6 = v7->var6;
@@ -692,32 +692,32 @@ CIContext *__38__CUIShapeEffectStack_sharedCIContext__block_invoke()
   return v7 < extraShadowCount;
 }
 
-- (void)_setBevelEmbossAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5
+- (void)_setBevelEmbossAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5
 {
-  if (self->_bevelEmbossCount > a3)
+  if (self->_bevelEmbossCount > index)
   {
     emboss = self->_emboss;
     if (emboss)
     {
-      v7 = &emboss[a3];
+      v7 = &emboss[index];
       v8 = a5;
-      v7->f32[0] = [a4 valueForParameter:4 inEffectAtIndex:a5];
-      v7->f32[1] = [a4 valueForParameter:8 inEffectAtIndex:v8];
+      v7->f32[0] = [preset valueForParameter:4 inEffectAtIndex:a5];
+      v7->f32[1] = [preset valueForParameter:8 inEffectAtIndex:v8];
       v7[1] = 0x41F0000042B40000;
-      v9.i32[0] = [a4 valueForParameter:0 inEffectAtIndex:v8];
+      v9.i32[0] = [preset valueForParameter:0 inEffectAtIndex:v8];
       v9.i32[1] = v9.i32[0] >> 8;
       v10 = vdup_n_s32(0x437F0000u);
       v7[2] = vdiv_f32(vcvt_f32_u32(vand_s8(v9, 0xFF000000FFLL)), v10);
       v7[3].f32[0] = v9.u8[2] / 255.0;
-      v11 = COERCE_DOUBLE([a4 valueForParameter:2 inEffectAtIndex:v8]);
+      v11 = COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:v8]);
       v7[3].f32[1] = v11;
-      v12.i32[0] = [a4 valueForParameter:1 inEffectAtIndex:v8];
+      v12.i32[0] = [preset valueForParameter:1 inEffectAtIndex:v8];
       v12.i32[1] = v12.i32[0] >> 8;
       v7[4] = vdiv_f32(vcvt_f32_u32(vand_s8(v12, 0xFF000000FFLL)), v10);
       v7[5].f32[0] = v12.u8[2] / 255.0;
-      v13 = COERCE_DOUBLE([a4 valueForParameter:3 inEffectAtIndex:v8]);
+      v13 = COERCE_DOUBLE([preset valueForParameter:3 inEffectAtIndex:v8]);
       v7[5].f32[1] = v13;
-      v7[6].i32[0] = [a4 valueForParameter:11 inEffectAtIndex:v8];
+      v7[6].i32[0] = [preset valueForParameter:11 inEffectAtIndex:v8];
     }
   }
 }
@@ -732,22 +732,22 @@ CIContext *__38__CUIShapeEffectStack_sharedCIContext__block_invoke()
   return [(CUIShapeEffectStack *)self hasBevelEmboss];
 }
 
-- (void)_setHueSaturationAtIndex:(unint64_t)a3 fromPreset:(id)a4 index:(unsigned int)a5
+- (void)_setHueSaturationAtIndex:(unint64_t)index fromPreset:(id)preset index:(unsigned int)a5
 {
-  v6 = &self->_hueSaturation[a3];
+  v6 = &self->_hueSaturation[index];
   v7 = a5;
-  v8 = [a4 valueForParameter:6 inEffectAtIndex:a5] * 0.0174532925;
+  v8 = [preset valueForParameter:6 inEffectAtIndex:a5] * 0.0174532925;
   v6->f32[0] = v8;
-  v9 = [a4 valueForParameter:5 inEffectAtIndex:v7] * 0.0174532925;
+  v9 = [preset valueForParameter:5 inEffectAtIndex:v7] * 0.0174532925;
   v6->f32[1] = v9;
-  v10.i32[0] = [a4 valueForParameter:0 inEffectAtIndex:v7];
+  v10.i32[0] = [preset valueForParameter:0 inEffectAtIndex:v7];
   v10.i32[1] = v10.i32[0] >> 8;
   v6[1] = vdiv_f32(vcvt_f32_u32(vand_s8(v10, 0xFF000000FFLL)), vdup_n_s32(0x437F0000u));
   v6[2].f32[0] = v10.u8[2] / 255.0;
-  v6[2].i8[4] = [a4 valueForParameter:10 inEffectAtIndex:v7] == 1;
+  v6[2].i8[4] = [preset valueForParameter:10 inEffectAtIndex:v7] == 1;
 }
 
-- (void)_updateRenderStrategyFromEffect:(unsigned int)a3
+- (void)_updateRenderStrategyFromEffect:(unsigned int)effect
 {
   if (self->_renderStrategy == 1)
   {
@@ -755,11 +755,11 @@ CIContext *__38__CUIShapeEffectStack_sharedCIContext__block_invoke()
   }
 
   v48 = v3;
-  if (a3 <= 1215653202)
+  if (effect <= 1215653202)
   {
-    if (a3 <= 1164796530)
+    if (effect <= 1164796530)
     {
-      if (a3 != 1131375730)
+      if (effect != 1131375730)
       {
         v8 = 1148350320;
         goto LABEL_17;
@@ -768,12 +768,12 @@ CIContext *__38__CUIShapeEffectStack_sharedCIContext__block_invoke()
 
     else
     {
-      if (a3 == 1164796531 || a3 == 1180787813)
+      if (effect == 1164796531 || effect == 1180787813)
       {
         goto LABEL_83;
       }
 
-      if (a3 != 1198678372)
+      if (effect != 1198678372)
       {
         return;
       }
@@ -806,9 +806,9 @@ CIContext *__38__CUIShapeEffectStack_sharedCIContext__block_invoke()
     goto LABEL_83;
   }
 
-  if (a3 <= 1766288502)
+  if (effect <= 1766288502)
   {
-    if (a3 != 1215653203 && a3 != 1397715043)
+    if (effect != 1215653203 && effect != 1397715043)
     {
       v8 = 1484026465;
       goto LABEL_17;
@@ -819,14 +819,14 @@ LABEL_83:
     return;
   }
 
-  if (a3 == 1766288503 || a3 == 1768837992)
+  if (effect == 1766288503 || effect == 1768837992)
   {
     goto LABEL_18;
   }
 
   v8 = 1866951799;
 LABEL_17:
-  if (a3 != v8)
+  if (effect != v8)
   {
     return;
   }
@@ -1047,29 +1047,29 @@ LABEL_18:
   }
 }
 
-- (CUIShapeEffectStack)initWithEffectPreset:(id)a3
+- (CUIShapeEffectStack)initWithEffectPreset:(id)preset
 {
   v42.receiver = self;
   v42.super_class = CUIShapeEffectStack;
   v4 = [(CUIShapeEffectStack *)&v42 init];
   if (v4)
   {
-    [a3 effectScale];
+    [preset effectScale];
     *&v5 = v5;
     v4->_scalefactor = *&v5;
     __asm { FMOV            V0.2S, #1.0 }
 
     *&v4->_shapeOpacity = _D0;
     v4->_renderStrategy = 2;
-    v11 = [a3 effectCount];
+    effectCount = [preset effectCount];
     [(CUIShapeEffectStack *)v4 _cleanupEffectSettings];
-    if (v11)
+    if (effectCount)
     {
       v12 = 0;
       v13 = 1;
       do
       {
-        v14 = [a3 effectTypeAtIndex:v12];
+        v14 = [preset effectTypeAtIndex:v12];
         if (v14 <= 1215653202)
         {
           if (v14 > 1164796530)
@@ -1136,7 +1136,7 @@ LABEL_17:
 
 LABEL_18:
         v12 = v13;
-        v17 = v11 > v13++;
+        v17 = effectCount > v13++;
       }
 
       while (v17);
@@ -1196,7 +1196,7 @@ LABEL_18:
       v4->_hueSaturation = malloc_type_calloc(hueSaturationCount, 0x18uLL, 0x100004020B92A0BuLL);
     }
 
-    if (v11)
+    if (effectCount)
     {
       v27 = 0;
       v40 = 0;
@@ -1211,7 +1211,7 @@ LABEL_18:
       v29 = 1;
       while (1)
       {
-        v30 = [a3 effectTypeAtIndex:{v27, v33}];
+        v30 = [preset effectTypeAtIndex:{v27, v33}];
         v31 = v30;
         if (v30 > 1215653202)
         {
@@ -1227,7 +1227,7 @@ LABEL_18:
               ++v39;
               break;
             case 0x46616465:
-              [(CUIShapeEffectStack *)v4 _setOutputOpacityFromPreset:a3 atIndex:v29 - 1];
+              [(CUIShapeEffectStack *)v4 _setOutputOpacityFromPreset:preset atIndex:v29 - 1];
               break;
             case 0x47726164:
               [CUIShapeEffectStack _setInteriorGradientAtIndex:v4 fromPreset:"_setInteriorGradientAtIndex:fromPreset:index:" index:?];
@@ -1253,7 +1253,7 @@ LABEL_18:
         [(CUIShapeEffectStack *)v4 _updateRenderStrategyFromEffect:v31, v34 + 1];
 LABEL_67:
         v27 = v29;
-        v17 = v11 > v29++;
+        v17 = effectCount > v29++;
         if (!v17)
         {
           return v4;
@@ -1265,7 +1265,7 @@ LABEL_67:
         switch(v30)
         {
           case 0x69476C77:
-            [(CUIShapeEffectStack *)v4 _setInnerGlowAtIndex:v28++ fromPreset:a3 index:v29 - 1];
+            [(CUIShapeEffectStack *)v4 _setInnerGlowAtIndex:v28++ fromPreset:preset index:v29 - 1];
             break;
           case 0x696E5368:
             [CUIShapeEffectStack _setInnerShadowAtIndex:v4 fromPreset:"_setInnerShadowAtIndex:fromPreset:index:" index:?];
@@ -1287,7 +1287,7 @@ LABEL_67:
             ++v41;
             break;
           case 0x534F7063:
-            [(CUIShapeEffectStack *)v4 _setShapeOpacityFromPreset:a3 atIndex:v29 - 1];
+            [(CUIShapeEffectStack *)v4 _setShapeOpacityFromPreset:preset atIndex:v29 - 1];
             break;
           case 0x58747261:
             [CUIShapeEffectStack _setExtraShadowAtIndex:v4 fromPreset:"_setExtraShadowAtIndex:fromPreset:index:" index:?];
@@ -1498,154 +1498,154 @@ LABEL_66:
   return v10;
 }
 
-+ (id)adjustOpacity:(id)a3 by:(float)a4
++ (id)adjustOpacity:(id)opacity by:(float)by
 {
-  v6 = [CIFilter filterWithName:@"CUIScaleClampFilter" keysAndValues:@"inputImage", a3, @"inputScale", [NSNumber numberWithFloat:?], 0];
+  v6 = [CIFilter filterWithName:@"CUIScaleClampFilter" keysAndValues:@"inputImage", opacity, @"inputScale", [NSNumber numberWithFloat:?], 0];
   if (!v6)
   {
-    *&v7 = a4;
-    v6 = [CIFilter filterWithName:@"CUIScaleClampFilterLocal" keysAndValues:@"inputImage", a3, @"inputScale", [NSNumber numberWithFloat:v7], 0];
+    *&v7 = by;
+    v6 = [CIFilter filterWithName:@"CUIScaleClampFilterLocal" keysAndValues:@"inputImage", opacity, @"inputScale", [NSNumber numberWithFloat:v7], 0];
     if (!v6)
     {
-      return a3;
+      return opacity;
     }
   }
 
   return [(CIFilter *)v6 valueForKey:@"outputImage"];
 }
 
-+ (id)pixelZoomed:(id)a3 scale:(int)a4 about:(CGPoint)a5
++ (id)pixelZoomed:(id)zoomed scale:(int)scale about:(CGPoint)about
 {
-  v5 = [CIFilter filterWithName:@"CIPixelZoom" keysAndValues:@"inputImage", a3, @"inputScale", [NSNumber numberWithInt:*&a4], @"inputSourceCenter", [CIVector vectorWithX:a5.x Y:a5.y], @"inputDestCenter", [CIVector vectorWithX:a5.x Y:a5.y], 0];
+  v5 = [CIFilter filterWithName:@"CIPixelZoom" keysAndValues:@"inputImage", zoomed, @"inputScale", [NSNumber numberWithInt:*&scale], @"inputSourceCenter", [CIVector vectorWithX:about.x Y:about.y], @"inputDestCenter", [CIVector vectorWithX:about.x Y:about.y], 0];
 
   return [(CIFilter *)v5 valueForKey:@"outputImage"];
 }
 
-+ (id)unsharpMask:(id)a3 radius:(float)a4 intensity:(float)a5
++ (id)unsharpMask:(id)mask radius:(float)radius intensity:(float)intensity
 {
   v7 = [NSNumber numberWithFloat:?];
-  *&v8 = a5;
-  v9 = [CIFilter filterWithName:@"CIUnsharpMask" keysAndValues:@"inputImage", a3, @"inputRadius", v7, @"inputIntensity", [NSNumber numberWithFloat:v8], 0];
+  *&v8 = intensity;
+  v9 = [CIFilter filterWithName:@"CIUnsharpMask" keysAndValues:@"inputImage", mask, @"inputRadius", v7, @"inputIntensity", [NSNumber numberWithFloat:v8], 0];
 
   return [(CIFilter *)v9 valueForKey:@"outputImage"];
 }
 
-+ (id)composite:(id)a3 over:(id)a4
++ (id)composite:(id)composite over:(id)over
 {
-  v4 = [CIFilter filterWithName:@"CISourceOverCompositing" keysAndValues:@"inputImage", a3, @"inputBackgroundImage", a4, 0];
+  v4 = [CIFilter filterWithName:@"CISourceOverCompositing" keysAndValues:@"inputImage", composite, @"inputBackgroundImage", over, 0];
 
   return [(CIFilter *)v4 valueForKey:@"outputImage"];
 }
 
-+ (id)composite:(id)a3 into:(id)a4
++ (id)composite:(id)composite into:(id)into
 {
-  v4 = [CIFilter filterWithName:@"CISourceInCompositing" keysAndValues:@"inputImage", a3, @"inputBackgroundImage", a4, 0];
+  v4 = [CIFilter filterWithName:@"CISourceInCompositing" keysAndValues:@"inputImage", composite, @"inputBackgroundImage", into, 0];
 
   return [(CIFilter *)v4 valueForKey:@"outputImage"];
 }
 
-+ (id)composite:(id)a3 outOf:(id)a4
++ (id)composite:(id)composite outOf:(id)of
 {
-  v4 = [CIFilter filterWithName:@"CISourceOutCompositing" keysAndValues:@"inputImage", a3, @"inputBackgroundImage", a4, 0];
+  v4 = [CIFilter filterWithName:@"CISourceOutCompositing" keysAndValues:@"inputImage", composite, @"inputBackgroundImage", of, 0];
 
   return [(CIFilter *)v4 valueForKey:@"outputImage"];
 }
 
-+ (id)composite:(id)a3 atop:(id)a4
++ (id)composite:(id)composite atop:(id)atop
 {
-  v4 = [CIFilter filterWithName:@"CISourceAtopCompositing" keysAndValues:@"inputImage", a3, @"inputBackgroundImage", a4, 0];
+  v4 = [CIFilter filterWithName:@"CISourceAtopCompositing" keysAndValues:@"inputImage", composite, @"inputBackgroundImage", atop, 0];
 
   return [(CIFilter *)v4 valueForKey:@"outputImage"];
 }
 
-+ (id)blend:(id)a3 over:(id)a4 blendKind:(unsigned int)a5
++ (id)blend:(id)blend over:(id)over blendKind:(unsigned int)kind
 {
-  if (a3)
+  if (blend)
   {
-    v9 = a3;
-    if (a4)
+    blendCopy = blend;
+    if (over)
     {
-      if (a5 > 1749903735)
+      if (kind > 1749903735)
       {
-        if (a5 <= 1852797548)
+        if (kind <= 1852797548)
         {
-          if (a5 <= 1818518630)
+          if (kind <= 1818518630)
           {
-            if (a5 <= 1768188277)
+            if (kind <= 1768188277)
             {
               v18 = @"CIHueBlendMode";
-              if (a5 != 1752524064)
+              if (kind != 1752524064)
               {
                 v18 = 0;
               }
 
-              if (a5 == 1749903736)
+              if (kind == 1749903736)
               {
-                a3 = @"CIHardMixBlendMode";
+                blend = @"CIHardMixBlendMode";
               }
 
               else
               {
-                a3 = v18;
+                blend = v18;
               }
             }
 
-            else if (a5 == 1768188278)
+            else if (kind == 1768188278)
             {
-              a3 = @"CIColorBurnBlendMode";
+              blend = @"CIColorBurnBlendMode";
             }
 
-            else if (a5 == 1816947060)
+            else if (kind == 1816947060)
             {
-              a3 = @"CILinearLightBlendMode";
+              blend = @"CILinearLightBlendMode";
             }
 
             else
             {
-              a3 = 0;
-              if (a5 == 1818391150)
+              blend = 0;
+              if (kind == 1818391150)
               {
-                a3 = @"CILinearBurnBlendMode";
+                blend = @"CILinearBurnBlendMode";
               }
             }
 
             goto LABEL_69;
           }
 
-          if (a5 > 1818850404)
+          if (kind > 1818850404)
           {
-            if (a5 == 1818850405)
+            if (kind == 1818850405)
             {
-              a3 = @"CILightenBlendMode";
+              blend = @"CILightenBlendMode";
             }
 
-            else if (a5 == 1819634976)
+            else if (kind == 1819634976)
             {
-              a3 = @"CILuminosityBlendMode";
+              blend = @"CILuminosityBlendMode";
             }
 
             else
             {
-              a3 = 0;
-              if (a5 == 1836411936)
+              blend = 0;
+              if (kind == 1836411936)
               {
-                a3 = @"CIMultiplyBlendMode";
+                blend = @"CIMultiplyBlendMode";
               }
             }
 
             goto LABEL_69;
           }
 
-          if (a5 == 1818518631)
+          if (kind == 1818518631)
           {
-            a3 = @"CILinearDodgeBlendMode";
+            blend = @"CILinearDodgeBlendMode";
             goto LABEL_69;
           }
 
-          a3 = 0;
+          blend = 0;
           v14 = 1818706796;
 LABEL_66:
-          if (a5 != v14)
+          if (kind != v14)
           {
             goto LABEL_69;
           }
@@ -1653,92 +1653,92 @@ LABEL_66:
           goto LABEL_67;
         }
 
-        if (a5 > 1935766559)
+        if (kind > 1935766559)
         {
-          if (a5 <= 1984719219)
+          if (kind <= 1984719219)
           {
-            if (a5 == 1935766560)
+            if (kind == 1935766560)
             {
-              a3 = @"CISaturationBlendMode";
+              blend = @"CISaturationBlendMode";
             }
 
-            else if (a5 == 1935897198)
+            else if (kind == 1935897198)
             {
-              a3 = @"CIScreenBlendMode";
+              blend = @"CIScreenBlendMode";
             }
 
             else
             {
-              a3 = 0;
-              if (a5 == 1936553316)
+              blend = 0;
+              if (kind == 1936553316)
               {
-                a3 = @"CIExclusionBlendMode";
+                blend = @"CIExclusionBlendMode";
               }
             }
 
             goto LABEL_69;
           }
 
-          if (a5 == 1984719220)
+          if (kind == 1984719220)
           {
-            a3 = @"CIVividLightBlendMode";
+            blend = @"CIVividLightBlendMode";
             goto LABEL_69;
           }
 
-          if (a5 == 1986227573)
+          if (kind == 1986227573)
           {
             goto LABEL_68;
           }
 
-          a3 = 0;
-          if (a5 == 1986229103)
+          blend = 0;
+          if (kind == 1986229103)
           {
             goto LABEL_68;
           }
 
 LABEL_69:
-          v19 = [CIFilter filterWithName:a3 keysAndValues:@"inputImage", v9, @"inputBackgroundImage", a4, 0];
+          v19 = [CIFilter filterWithName:blend keysAndValues:@"inputImage", blendCopy, @"inputBackgroundImage", over, 0];
 
           return [(CIFilter *)v19 valueForKey:@"outputImage"];
         }
 
-        if (a5 <= 1884055923)
+        if (kind <= 1884055923)
         {
-          if (a5 != 1852797549)
+          if (kind != 1852797549)
           {
-            v10 = a5 == 1870030194;
+            v10 = kind == 1870030194;
             v11 = @"CIOverlayBlendMode";
 LABEL_74:
             if (v10)
             {
-              a3 = v11;
+              blend = v11;
             }
 
             else
             {
-              a3 = 0;
+              blend = 0;
             }
 
             goto LABEL_69;
           }
 
 LABEL_68:
-          a3 = @"CISourceOverCompositing";
+          blend = @"CISourceOverCompositing";
           goto LABEL_69;
         }
 
-        if (a5 == 1884055924)
+        if (kind == 1884055924)
         {
-          a3 = @"CIPinLightBlendMode";
+          blend = @"CIPinLightBlendMode";
           goto LABEL_69;
         }
 
-        if (a5 != 1885434739)
+        if (kind != 1885434739)
         {
-          a3 = 0;
-          if (a5 == 1934387572)
+          blend = 0;
+          if (kind == 1934387572)
           {
-            a3 = @"CISoftLightBlendMode";
+            blend = @"CISoftLightBlendMode";
           }
 
           goto LABEL_69;
@@ -1747,15 +1747,15 @@ LABEL_68:
 
       else
       {
-        if (a5 <= 25)
+        if (kind <= 25)
         {
-          if (a5 <= 18)
+          if (kind <= 18)
           {
-            if (a5 - 16 >= 2)
+            if (kind - 16 >= 2)
             {
-              if (a5)
+              if (kind)
               {
-                v10 = a5 == 18;
+                v10 = kind == 18;
                 v11 = @"CISourceInCompositing";
                 goto LABEL_74;
               }
@@ -1766,42 +1766,42 @@ LABEL_68:
             goto LABEL_67;
           }
 
-          if (a5 - 21 < 5)
+          if (kind - 21 < 5)
           {
             goto LABEL_67;
           }
 
           v15 = @"CISourceOutCompositing";
           v16 = @"CISourceAtopCompositing";
-          if (a5 != 20)
+          if (kind != 20)
           {
             v16 = 0;
           }
 
-          v17 = a5 == 19;
+          v17 = kind == 19;
           goto LABEL_80;
         }
 
-        if (a5 <= 1684632434)
+        if (kind <= 1684632434)
         {
-          if (a5 > 1668246641)
+          if (kind > 1668246641)
           {
-            if (a5 == 1668246642)
+            if (kind == 1668246642)
             {
-              a3 = @"CIColorBlendMode";
+              blend = @"CIColorBlendMode";
             }
 
-            else if (a5 == 1684107883)
+            else if (kind == 1684107883)
             {
-              a3 = @"CIDarkenBlendMode";
+              blend = @"CIDarkenBlendMode";
             }
 
             else
             {
-              a3 = 0;
-              if (a5 == 1684629094)
+              blend = 0;
+              if (kind == 1684629094)
               {
-                a3 = @"CIDifferenceBlendMode";
+                blend = @"CIDifferenceBlendMode";
               }
             }
 
@@ -1810,41 +1810,41 @@ LABEL_68:
 
           v15 = @"CIPlusDarkerCompositing";
           v16 = @"CIAdditionCompositing";
-          if (a5 != 27)
+          if (kind != 27)
           {
             v16 = 0;
           }
 
-          v17 = a5 == 26;
+          v17 = kind == 26;
 LABEL_80:
           if (v17)
           {
-            a3 = v15;
+            blend = v15;
           }
 
           else
           {
-            a3 = v16;
+            blend = v16;
           }
 
           goto LABEL_69;
         }
 
-        if (a5 > 1717856629)
+        if (kind > 1717856629)
         {
-          if (a5 != 1717856630)
+          if (kind != 1717856630)
           {
-            if (a5 == 1718842722)
+            if (kind == 1718842722)
             {
-              a3 = @"CISubtractBlendMode";
+              blend = @"CISubtractBlendMode";
             }
 
             else
             {
-              a3 = 0;
-              if (a5 == 1749838196)
+              blend = 0;
+              if (kind == 1749838196)
               {
-                a3 = @"CIHardLightBlendMode";
+                blend = @"CIHardLightBlendMode";
               }
             }
 
@@ -1854,78 +1854,78 @@ LABEL_80:
           goto LABEL_67;
         }
 
-        if (a5 != 1684632435)
+        if (kind != 1684632435)
         {
-          if (a5 == 1684633120)
+          if (kind == 1684633120)
           {
-            a3 = @"CIColorDodgeBlendMode";
+            blend = @"CIColorDodgeBlendMode";
             goto LABEL_69;
           }
 
-          a3 = 0;
+          blend = 0;
           v14 = 1684751212;
           goto LABEL_66;
         }
       }
 
 LABEL_67:
-      _CUILog(4, "CUIShapeEffectStack: Unsupported blend mode %d encountered. Using SourceOver instead.", a3, a4, *&a5, v5, v6, v7, *&a5);
+      _CUILog(4, "CUIShapeEffectStack: Unsupported blend mode %d encountered. Using SourceOver instead.", blend, over, *&kind, v5, v6, v7, *&kind);
       goto LABEL_68;
     }
 
-    v12 = a3;
+    overCopy = blend;
   }
 
   else
   {
-    v12 = a4;
+    overCopy = over;
   }
 
-  return v12;
+  return overCopy;
 }
 
-+ (id)image:(id)a3 withOpacity:(float)a4
++ (id)image:(id)image withOpacity:(float)opacity
 {
-  v4 = [CIFilter filterWithName:@"CIOpacity" keysAndValues:@"inputImage", a3, @"inputOpacity", [NSNumber numberWithFloat:?], 0];
+  v4 = [CIFilter filterWithName:@"CIOpacity" keysAndValues:@"inputImage", image, @"inputOpacity", [NSNumber numberWithFloat:?], 0];
 
   return [(CIFilter *)v4 valueForKey:@"outputImage"];
 }
 
-+ (id)invert:(id)a3
++ (id)invert:(id)invert
 {
-  v3 = [CIFilter filterWithName:@"CIColorInvert" keysAndValues:@"inputImage", a3, 0];
+  v3 = [CIFilter filterWithName:@"CIColorInvert" keysAndValues:@"inputImage", invert, 0];
 
   return [(CIFilter *)v3 valueForKey:@"outputImage"];
 }
 
-+ (id)blur:(id)a3 radius:(float)a4
++ (id)blur:(id)blur radius:(float)radius
 {
-  v4 = [CIFilter filterWithName:@"CIGaussianBlur" keysAndValues:@"inputImage", a3, @"inputRadius", [NSNumber numberWithFloat:?], 0];
+  v4 = [CIFilter filterWithName:@"CIGaussianBlur" keysAndValues:@"inputImage", blur, @"inputRadius", [NSNumber numberWithFloat:?], 0];
 
   return [(CIFilter *)v4 valueForKey:@"outputImage"];
 }
 
-+ (id)colorWithGray:(float)a3 alpha:(float)a4
++ (id)colorWithGray:(float)gray alpha:(float)alpha
 {
-  v4 = [CIFilter filterWithName:@"CIConstantColorGenerator" keysAndValues:@"inputColor", [CIColor colorWithSRGBRed:a3 green:a3 blue:a3 alpha:a4], 0];
+  v4 = [CIFilter filterWithName:@"CIConstantColorGenerator" keysAndValues:@"inputColor", [CIColor colorWithSRGBRed:gray green:gray blue:gray alpha:alpha], 0];
 
   return [(CIFilter *)v4 valueForKey:@"outputImage"];
 }
 
-+ (id)colorWithRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6
++ (id)colorWithRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
 {
-  v6 = [CIFilter filterWithName:@"CIConstantColorGenerator" keysAndValues:@"inputColor", [CIColor colorWithSRGBRed:a3 green:a4 blue:a5 alpha:a6], 0];
+  v6 = [CIFilter filterWithName:@"CIConstantColorGenerator" keysAndValues:@"inputColor", [CIColor colorWithSRGBRed:red green:green blue:blue alpha:alpha], 0];
 
   return [(CIFilter *)v6 valueForKey:@"outputImage"];
 }
 
-+ (id)rectangle:(CGRect)a3 withRed:(float)a4 green:(float)a5 blue:(float)a6 alpha:(float)a7
++ (id)rectangle:(CGRect)rectangle withRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = [CIColor colorWithSRGBRed:a4 green:a5 blue:a6 alpha:a7];
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  v11 = [CIColor colorWithSRGBRed:red green:green blue:blue alpha:alpha];
   v12 = [CIVector vectorWithX:x Y:y Z:width W:height];
   LODWORD(v13) = 1.0;
   v14 = [CIFilter filterWithName:@"CIRectangleGenerator" keysAndValues:@"inputColor", v11, @"inputRectangle", v12, @"inputEdgeBlur", [NSNumber numberWithFloat:v13], 0];
@@ -1933,44 +1933,44 @@ LABEL_67:
   return [(CIFilter *)v14 valueForKey:@"outputImage"];
 }
 
-+ (id)gradientWithParameters:(id *)a3 inRect:(CGRect)a4
++ (id)gradientWithParameters:(id *)parameters inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  MaxY = CGRectGetMaxY(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MaxY = CGRectGetMaxY(rect);
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
   v13.size.height = height;
-  v10 = [CIFilter filterWithName:@"CILinearGradient" keysAndValues:@"inputColor0", [CIColor colorWithSRGBRed:a3->var1 green:a3->var2 blue:a3->var3 alpha:a3->var7], @"inputColor1", [CIColor colorWithSRGBRed:a3->var4 green:a3->var5 blue:a3->var6 alpha:a3->var7], @"inputPoint0", [CIVector vectorWithX:0.0 Y:MaxY], @"inputPoint1", [CIVector vectorWithX:0.0 Y:CGRectGetMinY(v13)], 0];
+  v10 = [CIFilter filterWithName:@"CILinearGradient" keysAndValues:@"inputColor0", [CIColor colorWithSRGBRed:parameters->var1 green:parameters->var2 blue:parameters->var3 alpha:parameters->var7], @"inputColor1", [CIColor colorWithSRGBRed:parameters->var4 green:parameters->var5 blue:parameters->var6 alpha:parameters->var7], @"inputPoint0", [CIVector vectorWithX:0.0 Y:MaxY], @"inputPoint1", [CIVector vectorWithX:0.0 Y:CGRectGetMinY(v13)], 0];
 
   return [(CIFilter *)v10 valueForKey:@"outputImage"];
 }
 
-+ (id)shadowFrom:(id)a3 red:(float)a4 green:(float)a5 blue:(float)a6 opacity:(float)a7
++ (id)shadowFrom:(id)from red:(float)red green:(float)green blue:(float)blue opacity:(float)opacity
 {
   v12 = [CIFilter filterWithName:@"CIMakeShadowMask"];
-  [(CIFilter *)v12 setValue:a3 forKey:@"inputImage"];
-  [(CIFilter *)v12 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:a4 green:a5 blue:a6 alpha:1.0], @"inputColor"];
-  *&v13 = a7;
+  [(CIFilter *)v12 setValue:from forKey:@"inputImage"];
+  [(CIFilter *)v12 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:red green:green blue:blue alpha:1.0], @"inputColor"];
+  *&v13 = opacity;
   [(CIFilter *)v12 setValue:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v13], @"inputOpacity"];
 
   return [(CIFilter *)v12 valueForKey:@"outputImage"];
 }
 
-+ (id)imageFromBlendWithMask:(id)a3 foreground:(id)a4 background:(id)a5
++ (id)imageFromBlendWithMask:(id)mask foreground:(id)foreground background:(id)background
 {
   v8 = [CIFilter filterWithName:@"CIBlendWithAlphaMask"];
-  [(CIFilter *)v8 setValue:a3 forKey:@"inputMaskImage"];
-  [(CIFilter *)v8 setValue:a4 forKey:@"inputImage"];
-  [(CIFilter *)v8 setValue:a5 forKey:@"inputBackgroundImage"];
+  [(CIFilter *)v8 setValue:mask forKey:@"inputMaskImage"];
+  [(CIFilter *)v8 setValue:foreground forKey:@"inputImage"];
+  [(CIFilter *)v8 setValue:background forKey:@"inputBackgroundImage"];
 
   return [(CIFilter *)v8 valueForKey:@"outputImage"];
 }
 
-+ (id)innerGlowFrom:(id)a3 withRadius:(float)a4 red:(float)a5 green:(float)a6 blue:(float)a7 opacity:(float)a8
++ (id)innerGlowFrom:(id)from withRadius:(float)radius red:(float)red green:(float)green blue:(float)blue opacity:(float)opacity
 {
   v14 = [CIFilter filterWithName:@"CUIInnerGlowOrShadowFilter"];
   if (!v14)
@@ -1978,25 +1978,25 @@ LABEL_67:
     v14 = [CIFilter filterWithName:@"CUIInnerGlowOrShadowFilterLocal"];
     if (!v14)
     {
-      return a3;
+      return from;
     }
   }
 
   v15 = v14;
-  [(CIFilter *)v14 setValue:a3 forKey:@"inputImage"];
-  *&v16 = a4;
+  [(CIFilter *)v14 setValue:from forKey:@"inputImage"];
+  *&v16 = radius;
   [(CIFilter *)v15 setValue:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v16], @"inputRadius"];
   LODWORD(v17) = 0.5;
   [(CIFilter *)v15 setValue:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v17], @"inputRange"];
-  [(CIFilter *)v15 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:a5 green:a6 blue:a7 alpha:a8], @"inputColor"];
+  [(CIFilter *)v15 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:red green:green blue:blue alpha:opacity], @"inputColor"];
 
   return [(CIFilter *)v15 valueForKey:@"outputImage"];
 }
 
-+ (id)innerShadowFrom:(id)a3 withOffset:(CGPoint)a4 radius:(float)a5 red:(float)a6 green:(float)a7 blue:(float)a8 opacity:(float)a9
++ (id)innerShadowFrom:(id)from withOffset:(CGPoint)offset radius:(float)radius red:(float)red green:(float)green blue:(float)blue opacity:(float)opacity
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v17 = [CIFilter filterWithName:@"CUIInnerGlowOrShadowFilter"];
   LODWORD(v18) = 1.0;
   [(CIFilter *)v17 setValue:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v18], @"inputRange"];
@@ -2007,30 +2007,30 @@ LABEL_67:
     [(CIFilter *)v17 setValue:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v19], @"inputRange"];
     if (!v17)
     {
-      return a3;
+      return from;
     }
   }
 
-  [(CIFilter *)v17 setValue:a3 forKey:@"inputImage"];
+  [(CIFilter *)v17 setValue:from forKey:@"inputImage"];
   [(CIFilter *)v17 setValue:[CIVector forKey:"vectorWithX:Y:" vectorWithX:y Y:?], @"inputOffset"];
-  *&v20 = a5;
+  *&v20 = radius;
   [(CIFilter *)v17 setValue:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v20], @"inputRadius"];
-  [(CIFilter *)v17 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:a6 green:a7 blue:a8 alpha:a9], @"inputColor"];
+  [(CIFilter *)v17 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:red green:green blue:blue alpha:opacity], @"inputColor"];
 
   return [(CIFilter *)v17 valueForKey:@"outputImage"];
 }
 
-+ (id)outerGlowFrom:(id)a3 withSize:(unsigned int)a4 spread:(unsigned int)a5 red:(float)a6 green:(float)a7 blue:(float)a8 opacity:(float)a9
++ (id)outerGlowFrom:(id)from withSize:(unsigned int)size spread:(unsigned int)spread red:(float)red green:(float)green blue:(float)blue opacity:(float)opacity
 {
-  v13 = *&a5;
-  v14 = *&a4;
+  v13 = *&spread;
+  v14 = *&size;
   v16 = [CIFilter filterWithName:@"CUIOuterGlowOrShadowFilter"];
   if (!v16)
   {
     v16 = [CIFilter filterWithName:@"CUIOuterGlowOrShadowFilterLocal"];
     if (!v16)
     {
-      return a3;
+      return from;
     }
   }
 
@@ -2050,27 +2050,27 @@ LABEL_67:
   }
 
   [(CIFilter *)v17 setValue:v19 forKey:v20];
-  [(CIFilter *)v17 setValue:a3 forKey:@"inputImage"];
+  [(CIFilter *)v17 setValue:from forKey:@"inputImage"];
   LODWORD(v21) = 0.5;
   [(CIFilter *)v17 setValue:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v21], @"inputRange"];
-  [(CIFilter *)v17 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:a6 green:a7 blue:a8 alpha:a9], @"inputColor"];
+  [(CIFilter *)v17 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:red green:green blue:blue alpha:opacity], @"inputColor"];
 
   return [(CIFilter *)v17 valueForKey:@"outputImage"];
 }
 
-+ (id)outerShadowFrom:(id)a3 withOffset:(CGPoint)a4 size:(unsigned int)a5 spread:(unsigned int)a6 red:(float)a7 green:(float)a8 blue:(float)a9 opacity:(float)a10
++ (id)outerShadowFrom:(id)from withOffset:(CGPoint)offset size:(unsigned int)size spread:(unsigned int)spread red:(float)red green:(float)green blue:(float)blue opacity:(float)self0
 {
-  v14 = *&a6;
-  v15 = *&a5;
-  y = a4.y;
-  x = a4.x;
+  v14 = *&spread;
+  v15 = *&size;
+  y = offset.y;
+  x = offset.x;
   v19 = [CIFilter filterWithName:@"CUIOuterGlowOrShadowFilter"];
   if (!v19)
   {
     v19 = [CIFilter filterWithName:@"CUIOuterGlowOrShadowFilterLocal"];
     if (!v19)
     {
-      return a3;
+      return from;
     }
   }
 
@@ -2092,18 +2092,18 @@ LABEL_67:
   }
 
   [(CIFilter *)v21 setValue:v23 forKey:v24];
-  [(CIFilter *)v21 setValue:a3 forKey:@"inputImage"];
+  [(CIFilter *)v21 setValue:from forKey:@"inputImage"];
   [(CIFilter *)v21 setValue:[CIVector forKey:"vectorWithX:Y:" vectorWithX:y Y:?], @"inputOffset"];
-  [(CIFilter *)v21 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:a7 green:a8 blue:a9 alpha:a10], @"inputColor"];
+  [(CIFilter *)v21 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:red green:green blue:blue alpha:opacity], @"inputColor"];
 
   return [(CIFilter *)v21 valueForKey:@"outputImage"];
 }
 
-+ (id)bevelEmbossFrom:(id)a3 withSize:(unsigned int)a4 soften:(unsigned int)a5 angle:(float)a6 altitude:(float)a7 highlightRed:(float)a8 highlightGreen:(float)a9 highlightBlue:(float)a10 highlightOpacity:(float)a11 shadowRed:(float)a12 shadowGreen:(float)a13 shadowBlue:(float)a14 shadowOpacity:(float)a15 bevelStyle:(unsigned int)a16
++ (id)bevelEmbossFrom:(id)from withSize:(unsigned int)size soften:(unsigned int)soften angle:(float)angle altitude:(float)altitude highlightRed:(float)red highlightGreen:(float)green highlightBlue:(float)self0 highlightOpacity:(float)self1 shadowRed:(float)self2 shadowGreen:(float)self3 shadowBlue:(float)self4 shadowOpacity:(float)self5 bevelStyle:(unsigned int)self6
 {
-  if (a16 > 1)
+  if (style > 1)
   {
-    switch(a16)
+    switch(style)
     {
       case 2u:
         v19 = "Emboss bevel style isn't yet implemented";
@@ -2114,8 +2114,8 @@ LABEL_67:
       case 4u:
         v19 = "Stroke emboss bevel style isn't yet implemented";
 LABEL_18:
-        _CUILog(4, v19, a3, *&a4, *&a5, *&a16, v16, v17, v37);
-        return a3;
+        _CUILog(4, v19, from, *&size, *&soften, *&style, v16, v17, v37);
+        return from;
     }
 
 LABEL_17:
@@ -2123,11 +2123,11 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v27 = *&a5;
-  v28 = *&a4;
-  if (!a16)
+  v27 = *&soften;
+  v28 = *&size;
+  if (!style)
   {
-    v38 = a14;
+    shadowBlueCopy2 = shadowBlue;
     v29 = [CIFilter filterWithName:@"CUIOuterBevelEmbossFilter"];
     if (v29)
     {
@@ -2138,12 +2138,12 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  if (a16 != 1)
+  if (style != 1)
   {
     goto LABEL_17;
   }
 
-  v38 = a14;
+  shadowBlueCopy2 = shadowBlue;
   v29 = [CIFilter filterWithName:@"CUIInnerBevelEmbossFilter"];
   if (!v29)
   {
@@ -2152,13 +2152,13 @@ LABEL_14:
     v29 = [CIFilter filterWithName:v30];
     if (!v29)
     {
-      return a3;
+      return from;
     }
   }
 
 LABEL_15:
   v31 = v29;
-  [(CIFilter *)v29 setValue:a3 forKey:@"inputImage"];
+  [(CIFilter *)v29 setValue:from forKey:@"inputImage"];
   if ([(NSDictionary *)[(CIFilter *)v31 attributes] valueForKey:@"inputSize"])
   {
     [(CIFilter *)v31 setValue:[NSNumber forKey:"numberWithUnsignedInt:" numberWithUnsignedInt:v28], @"inputSize"];
@@ -2174,15 +2174,15 @@ LABEL_15:
   }
 
   [(CIFilter *)v31 setValue:v33 forKey:@"inputSoften"];
-  *&v36 = a6;
+  *&v36 = angle;
   [(CIFilter *)v31 setValue:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v36], @"inputAngle"];
-  [(CIFilter *)v31 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:a8 green:a9 blue:a10 alpha:a11], @"inputHighlightColor"];
-  [(CIFilter *)v31 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:a12 green:a13 blue:v38 alpha:a15], @"inputShadowColor"];
+  [(CIFilter *)v31 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:red green:green blue:blue alpha:opacity], @"inputHighlightColor"];
+  [(CIFilter *)v31 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:shadowRed green:shadowGreen blue:shadowBlueCopy2 alpha:shadowOpacity], @"inputShadowColor"];
 
   return [(CIFilter *)v31 valueForKey:@"outputImage"];
 }
 
-+ (id)hueSaturationFrom:(id)a3 withCenterAngle:(double)a4 width:(double)a5 tintRed:(float)a6 tintGreen:(float)a7 tintBlue:(float)a8
++ (id)hueSaturationFrom:(id)from withCenterAngle:(double)angle width:(double)width tintRed:(float)red tintGreen:(float)green tintBlue:(float)blue
 {
   v14 = [CIFilter filterWithName:@"CUIHueSaturationFilter"];
   if (!v14)
@@ -2190,54 +2190,54 @@ LABEL_15:
     v14 = [CIFilter filterWithName:@"CUIHueSaturationFilterLocal"];
     if (!v14)
     {
-      return a3;
+      return from;
     }
   }
 
   v15 = v14;
-  [(CIFilter *)v14 setValue:a3 forKey:@"inputImage"];
-  [(CIFilter *)v15 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:" colorWithSRGBRed:a6 green:a7 blue:a8], @"inputTintColor"];
-  [(CIFilter *)v15 setValue:[NSNumber forKey:"numberWithDouble:" numberWithDouble:a4], @"inputCenterAngle"];
-  [(CIFilter *)v15 setValue:[NSNumber forKey:"numberWithDouble:" numberWithDouble:a5], @"inputAngleWidth"];
+  [(CIFilter *)v14 setValue:from forKey:@"inputImage"];
+  [(CIFilter *)v15 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:" colorWithSRGBRed:red green:green blue:blue], @"inputTintColor"];
+  [(CIFilter *)v15 setValue:[NSNumber forKey:"numberWithDouble:" numberWithDouble:angle], @"inputCenterAngle"];
+  [(CIFilter *)v15 setValue:[NSNumber forKey:"numberWithDouble:" numberWithDouble:width], @"inputAngleWidth"];
 
   return [(CIFilter *)v15 valueForKey:@"outputImage"];
 }
 
-+ (id)shapeEffectSingleBlurFrom:(id)a3 withInteriorFill:(id)a4 offset:(CGPoint)a5 blurSize:(float)a6 innerGlowRed:(float)a7 innerGlowGreen:(float)a8 innerGlowBlue:(float)a9 innerGlowOpacity:(float)a10 innerShadowRed:(float)a11 innerShadowGreen:(float)a12 innerShadowBlue:(float)a13 innerShadowOpacity:(float)a14 outerGlowRed:(float)a15 outerGlowGreen:(float)a16 outerGlowBlue:(float)a17 outerGlowOpacity:(float)a18 outerShadowRed:(float)a19 outerShadowGreen:(float)a20 outerShadowBlue:(float)a21 outerShadowOpacity:(float)a22 hasInsideShadowBlur:(BOOL)a23 hasOutsideShadowBlur:(BOOL)a24
++ (id)shapeEffectSingleBlurFrom:(id)from withInteriorFill:(id)fill offset:(CGPoint)offset blurSize:(float)size innerGlowRed:(float)red innerGlowGreen:(float)green innerGlowBlue:(float)blue innerGlowOpacity:(float)self0 innerShadowRed:(float)self1 innerShadowGreen:(float)self2 innerShadowBlue:(float)self3 innerShadowOpacity:(float)self4 outerGlowRed:(float)self5 outerGlowGreen:(float)self6 outerGlowBlue:(float)self7 outerGlowOpacity:(float)self8 outerShadowRed:(float)self9 outerShadowGreen:(float)outerShadowGreen outerShadowBlue:(float)outerShadowBlue outerShadowOpacity:(float)outerShadowOpacity hasInsideShadowBlur:(BOOL)blur hasOutsideShadowBlur:(BOOL)shadowBlur
 {
-  v24 = a24;
-  v25 = a23;
-  y = a5.y;
-  x = a5.x;
+  shadowBlurCopy = shadowBlur;
+  blurCopy = blur;
+  y = offset.y;
+  x = offset.x;
   v35 = [CIFilter filterWithName:@"CUIShapeEffectBlur1"];
   if (!v35)
   {
     v35 = [CIFilter filterWithName:@"CUIShapeEffectBlur1Local"];
     if (!v35)
     {
-      return a3;
+      return from;
     }
   }
 
   v36 = v35;
-  [(CIFilter *)v35 setValue:a3 forKey:@"inputImage"];
-  [(CIFilter *)v36 setValue:a4 forKey:@"inputFill"];
+  [(CIFilter *)v35 setValue:from forKey:@"inputImage"];
+  [(CIFilter *)v36 setValue:fill forKey:@"inputFill"];
   [(CIFilter *)v36 setValue:[CIVector forKey:"vectorWithX:Y:" vectorWithX:y Y:?], @"inputOffset"];
-  *&v37 = a6;
+  *&v37 = size;
   [(CIFilter *)v36 setValue:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v37], @"inputRadius"];
-  [(CIFilter *)v36 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:a7 green:a8 blue:a9 alpha:a10], @"inputGlowColorInner"];
-  [(CIFilter *)v36 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:a15 green:a16 blue:a17 alpha:a18], @"inputGlowColorOuter"];
-  [(CIFilter *)v36 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:a19 green:a20 blue:a21 alpha:a22], @"inputShadowColorOuter"];
-  [(CIFilter *)v36 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:a11 green:a12 blue:a13 alpha:a14], @"inputShadowColorInner"];
-  [(CIFilter *)v36 setValue:[NSNumber forKey:"numberWithBool:" numberWithBool:v25], @"inputShadowBlurInner"];
-  [(CIFilter *)v36 setValue:[NSNumber forKey:"numberWithBool:" numberWithBool:v24], @"inputShadowBlurOuter"];
+  [(CIFilter *)v36 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:red green:green blue:blue alpha:opacity], @"inputGlowColorInner"];
+  [(CIFilter *)v36 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:glowRed green:glowGreen blue:glowBlue alpha:glowOpacity], @"inputGlowColorOuter"];
+  [(CIFilter *)v36 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:outerShadowRed green:outerShadowGreen blue:outerShadowBlue alpha:outerShadowOpacity], @"inputShadowColorOuter"];
+  [(CIFilter *)v36 setValue:[CIColor forKey:"colorWithSRGBRed:green:blue:alpha:" colorWithSRGBRed:shadowRed green:shadowGreen blue:shadowBlue alpha:shadowOpacity], @"inputShadowColorInner"];
+  [(CIFilter *)v36 setValue:[NSNumber forKey:"numberWithBool:" numberWithBool:blurCopy], @"inputShadowBlurInner"];
+  [(CIFilter *)v36 setValue:[NSNumber forKey:"numberWithBool:" numberWithBool:shadowBlurCopy], @"inputShadowBlurOuter"];
 
   return [(CIFilter *)v36 valueForKey:@"outputImage"];
 }
 
-- (id)imageWithSingleBlurShapeEffectOfImage:(id)a3 withInteriorFill:(id)a4
+- (id)imageWithSingleBlurShapeEffectOfImage:(id)image withInteriorFill:(id)fill
 {
-  v7 = [(CUIShapeEffectStack *)self hasInnerShadow];
+  hasInnerShadow = [(CUIShapeEffectStack *)self hasInnerShadow];
   if ([(CUIShapeEffectStack *)self hasEngraveShadow])
   {
     v8 = 128;
@@ -2252,14 +2252,14 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [(CUIShapeEffectStack *)self hasExtraShadow];
+  hasExtraShadow = [(CUIShapeEffectStack *)self hasExtraShadow];
   v10 = 0.0;
   v11 = 0;
   v12 = 0;
   v13 = 0;
   v14 = 0.0;
   v57 = 0.0;
-  if (v9)
+  if (hasExtraShadow)
   {
     v8 = 144;
     goto LABEL_5;
@@ -2270,13 +2270,13 @@ LABEL_6:
   v55 = v11;
   v56 = LODWORD(v10);
   v16 = ([(CUIShapeEffectStack *)self hasEngraveShadow]|| [(CUIShapeEffectStack *)self hasExtraShadow]) && v14 > 0.0;
-  v17 = [(CUIShapeEffectStack *)self hasInnerGlow];
+  hasInnerGlow = [(CUIShapeEffectStack *)self hasInnerGlow];
   var1 = 0.0;
   var2 = 0.0;
   var3 = 0.0;
   var4 = 0.0;
   var5 = 0.0;
-  if (v17)
+  if (hasInnerGlow)
   {
     innerGlow = self->_innerGlow;
     var1 = innerGlow->var1;
@@ -2312,13 +2312,13 @@ LABEL_6:
     v45 = 0.0;
   }
 
-  v27 = [(CUIShapeEffectStack *)self hasOuterGlow];
+  hasOuterGlow = [(CUIShapeEffectStack *)self hasOuterGlow];
   v34 = 0.0;
   v35 = 0.0;
   v36 = 0.0;
   v37 = 0.0;
   v38 = 0.0;
-  if (v27)
+  if (hasOuterGlow)
   {
     outerGlow = self->_outerGlow;
     *&v34 = outerGlow->var0;
@@ -2387,121 +2387,121 @@ LABEL_6:
   *&v32 = v48;
   *&v31 = v49;
   *&v33 = v52;
-  return [CUIShapeEffectStack shapeEffectSingleBlurFrom:a3 withInteriorFill:a4 offset:v7 blurSize:v16 innerGlowRed:0.0 innerGlowGreen:v40 innerGlowBlue:v28 innerGlowOpacity:v29 innerShadowRed:v30 innerShadowGreen:v31 innerShadowBlue:v32 innerShadowOpacity:v33 outerGlowRed:__PAIR64__(LODWORD(v46) outerGlowGreen:LODWORD(v47)) outerGlowBlue:__PAIR64__(v44 outerGlowOpacity:LODWORD(v45)) outerShadowRed:__PAIR64__(LODWORD(v36) outerShadowGreen:LODWORD(v35)) outerShadowBlue:__PAIR64__(v56 outerShadowOpacity:LODWORD(v37)) hasInsideShadowBlur:__PAIR64__(v54 hasOutsideShadowBlur:v55), v43];
+  return [CUIShapeEffectStack shapeEffectSingleBlurFrom:image withInteriorFill:fill offset:hasInnerShadow blurSize:v16 innerGlowRed:0.0 innerGlowGreen:v40 innerGlowBlue:v28 innerGlowOpacity:v29 innerShadowRed:v30 innerShadowGreen:v31 innerShadowBlue:v32 innerShadowOpacity:v33 outerGlowRed:__PAIR64__(LODWORD(v46) outerGlowGreen:LODWORD(v47)) outerGlowBlue:__PAIR64__(v44 outerGlowOpacity:LODWORD(v45)) outerShadowRed:__PAIR64__(LODWORD(v36) outerShadowGreen:LODWORD(v35)) outerShadowBlue:__PAIR64__(v56 outerShadowOpacity:LODWORD(v37)) hasInsideShadowBlur:__PAIR64__(v54 hasOutsideShadowBlur:v55), v43];
 }
 
-- (id)imageWithInnerGlowOfImage:(id)a3 effect:(id *)a4
+- (id)imageWithInnerGlowOfImage:(id)image effect:(id *)effect
 {
-  *&v8 = a4->var4;
-  *&v4 = a4->var5 / 2.853;
-  *&v5 = a4->var1;
-  *&v6 = a4->var2;
-  *&v7 = a4->var3;
-  return [CUIShapeEffectStack innerGlowFrom:a3 withRadius:v4 red:v5 green:v6 blue:v7 opacity:v8];
+  *&v8 = effect->var4;
+  *&v4 = effect->var5 / 2.853;
+  *&v5 = effect->var1;
+  *&v6 = effect->var2;
+  *&v7 = effect->var3;
+  return [CUIShapeEffectStack innerGlowFrom:image withRadius:v4 red:v5 green:v6 blue:v7 opacity:v8];
 }
 
-- (id)imageWithInnerShadowOfImage:(id)a3 effect:(id *)a4
+- (id)imageWithInnerShadowOfImage:(id)image effect:(id *)effect
 {
-  *&v7 = a4->var3;
-  *&v4 = a4->var4 / 2.853;
-  *&v5 = a4->var1;
-  *&v6 = a4->var2;
-  *&v8 = a4->var5;
-  return [CUIShapeEffectStack innerShadowFrom:a3 withOffset:-a4->var8.x radius:-a4->var8.y red:v4 green:v5 blue:v6 opacity:v7, v8];
+  *&v7 = effect->var3;
+  *&v4 = effect->var4 / 2.853;
+  *&v5 = effect->var1;
+  *&v6 = effect->var2;
+  *&v8 = effect->var5;
+  return [CUIShapeEffectStack innerShadowFrom:image withOffset:-effect->var8.x radius:-effect->var8.y red:v4 green:v5 blue:v6 opacity:v7, v8];
 }
 
-- (id)image:(id)a3 withAdjustedOpacity:(float)a4
+- (id)image:(id)image withAdjustedOpacity:(float)opacity
 {
-  if (a4 >= 1.0)
+  if (opacity >= 1.0)
   {
-    return a3;
+    return image;
   }
 
   else
   {
-    return [CUIShapeEffectStack adjustOpacity:a3 by:?];
+    return [CUIShapeEffectStack adjustOpacity:image by:?];
   }
 }
 
-- (id)imageWithColorOverlayOfImage:(id)a3 effect:(id *)a4
+- (id)imageWithColorOverlayOfImage:(id)image effect:(id *)effect
 {
-  *&v4 = a4->var1;
-  *&v5 = a4->var2;
-  *&v6 = a4->var3;
-  *&v7 = a4->var4;
+  *&v4 = effect->var1;
+  *&v5 = effect->var2;
+  *&v6 = effect->var3;
+  *&v7 = effect->var4;
   v10 = [CUIShapeEffectStack colorWithRed:v4 green:v5 blue:v6 alpha:v7];
-  var0 = a4->var0;
+  var0 = effect->var0;
 
-  return [CUIShapeEffectStack blend:v10 over:a3 blendKind:var0];
+  return [CUIShapeEffectStack blend:v10 over:image blendKind:var0];
 }
 
-- (id)imageWithHueSaturationOfImage:(id)a3 effect:(id *)a4
+- (id)imageWithHueSaturationOfImage:(id)image effect:(id *)effect
 {
-  if (!a4->var6)
+  if (!effect->var6)
   {
-    return a3;
+    return image;
   }
 
-  *&v4 = a4->var2;
-  *&v5 = a4->var3;
-  *&v6 = a4->var4;
-  return [CUIShapeEffectStack hueSaturationFrom:a3 withCenterAngle:a4->var0 width:a4->var1 tintRed:v4 tintGreen:v5 tintBlue:v6];
+  *&v4 = effect->var2;
+  *&v5 = effect->var3;
+  *&v6 = effect->var4;
+  return [CUIShapeEffectStack hueSaturationFrom:image withCenterAngle:effect->var0 width:effect->var1 tintRed:v4 tintGreen:v5 tintBlue:v6];
 }
 
-- (id)imageWithInteriorGradientFillOfImage:(id)a3 effect:(id *)a4
+- (id)imageWithInteriorGradientFillOfImage:(id)image effect:(id *)effect
 {
-  [a3 extent];
-  v6 = [CUIShapeEffectStack gradientWithParameters:a4 inRect:?];
-  var0 = a4->var0;
+  [image extent];
+  v6 = [CUIShapeEffectStack gradientWithParameters:effect inRect:?];
+  var0 = effect->var0;
 
-  return [CUIShapeEffectStack blend:v6 over:a3 blendKind:var0];
+  return [CUIShapeEffectStack blend:v6 over:image blendKind:var0];
 }
 
-- (id)imageWithOuterGlowOfImage:(id)a3 effect:(id *)a4
+- (id)imageWithOuterGlowOfImage:(id)image effect:(id *)effect
 {
-  *&v4 = a4->var0;
-  *&v5 = a4->var1;
-  *&v6 = a4->var2;
-  *&v7 = a4->var3;
-  return [CUIShapeEffectStack outerGlowFrom:a3 withSize:a4->var4 spread:a4->var5 red:v4 green:v5 blue:v6 opacity:v7];
+  *&v4 = effect->var0;
+  *&v5 = effect->var1;
+  *&v6 = effect->var2;
+  *&v7 = effect->var3;
+  return [CUIShapeEffectStack outerGlowFrom:image withSize:effect->var4 spread:effect->var5 red:v4 green:v5 blue:v6 opacity:v7];
 }
 
-- (id)imageWithEngraveShadowOfImage:(id)a3 effect:(id *)a4
+- (id)imageWithEngraveShadowOfImage:(id)image effect:(id *)effect
 {
-  *&v4 = a4->var0;
-  *&v5 = a4->var1;
-  *&v6 = a4->var2;
-  *&v7 = a4->var3;
-  return [CUIShapeEffectStack outerShadowFrom:a3 withOffset:a4->var4 size:a4->var5 spread:-a4->var8.x red:-a4->var8.y green:v4 blue:v5 opacity:v6, v7];
+  *&v4 = effect->var0;
+  *&v5 = effect->var1;
+  *&v6 = effect->var2;
+  *&v7 = effect->var3;
+  return [CUIShapeEffectStack outerShadowFrom:image withOffset:effect->var4 size:effect->var5 spread:-effect->var8.x red:-effect->var8.y green:v4 blue:v5 opacity:v6, v7];
 }
 
-- (id)imageWithExtraShadowOfImage:(id)a3 effect:(id *)a4
+- (id)imageWithExtraShadowOfImage:(id)image effect:(id *)effect
 {
-  *&v4 = a4->var0;
-  *&v5 = a4->var1;
-  *&v6 = a4->var2;
-  *&v7 = a4->var3;
-  return [CUIShapeEffectStack outerShadowFrom:a3 withOffset:a4->var4 size:a4->var5 spread:-a4->var8.x red:-a4->var8.y green:v4 blue:v5 opacity:v6, v7];
+  *&v4 = effect->var0;
+  *&v5 = effect->var1;
+  *&v6 = effect->var2;
+  *&v7 = effect->var3;
+  return [CUIShapeEffectStack outerShadowFrom:image withOffset:effect->var4 size:effect->var5 spread:-effect->var8.x red:-effect->var8.y green:v4 blue:v5 opacity:v6, v7];
 }
 
-- (id)imageWithBevelEmbossOfImage:(id)a3 effect:(id *)a4
+- (id)imageWithBevelEmbossOfImage:(id)image effect:(id *)effect
 {
-  *&v4 = a4->var2;
-  *&v5 = a4->var3;
-  *&v6 = a4->var4;
-  *&v7 = a4->var5;
-  *&v8 = a4->var6;
-  *&v9 = a4->var7;
-  *&v10 = a4->var8;
-  *&v11 = a4->var9;
-  return [CUIShapeEffectStack bevelEmbossFrom:a3 withSize:a4->var0 soften:a4->var1 angle:a4->var12 altitude:v4 highlightRed:v5 highlightGreen:v6 highlightBlue:v7 highlightOpacity:v8 shadowRed:v9 shadowGreen:v10 shadowBlue:v11 shadowOpacity:*&a4->var10 bevelStyle:?];
+  *&v4 = effect->var2;
+  *&v5 = effect->var3;
+  *&v6 = effect->var4;
+  *&v7 = effect->var5;
+  *&v8 = effect->var6;
+  *&v9 = effect->var7;
+  *&v10 = effect->var8;
+  *&v11 = effect->var9;
+  return [CUIShapeEffectStack bevelEmbossFrom:image withSize:effect->var0 soften:effect->var1 angle:effect->var12 altitude:v4 highlightRed:v5 highlightGreen:v6 highlightBlue:v7 highlightOpacity:v8 shadowRed:v9 shadowGreen:v10 shadowBlue:v11 shadowOpacity:*&effect->var10 bevelStyle:?];
 }
 
 - (int)cgBlendModeForOutputBlending
 {
-  v2 = [(CUIShapeEffectStack *)self outputBlendMode];
+  outputBlendMode = [(CUIShapeEffectStack *)self outputBlendMode];
 
-  return [CUIShapeEffectPreset cgBlendModeFromCUIEffectBlendMode:v2];
+  return [CUIShapeEffectPreset cgBlendModeFromCUIEffectBlendMode:outputBlendMode];
 }
 
 - (void)updateOutputBlendingWithInteriorFillHeuristic
@@ -2530,9 +2530,9 @@ LABEL_6:
   }
 }
 
-- (void)scaleEffectParametersBy:(double)a3
+- (void)scaleEffectParametersBy:(double)by
 {
-  if (self->_scalefactor != a3)
+  if (self->_scalefactor != by)
   {
     innerGlowCount = self->_innerGlowCount;
     if (innerGlowCount)
@@ -2540,8 +2540,8 @@ LABEL_6:
       p_var5 = &self->_innerGlow->var5;
       do
       {
-        v6 = a3;
-        *p_var5 = (*p_var5 / self->_scalefactor) * v6;
+        byCopy = by;
+        *p_var5 = (*p_var5 / self->_scalefactor) * byCopy;
         p_var5 += 6;
         --innerGlowCount;
       }
@@ -2552,13 +2552,13 @@ LABEL_6:
     innerShadowCount = self->_innerShadowCount;
     if (innerShadowCount)
     {
-      v9 = a3;
+      byCopy2 = by;
       p_var6 = &self->_innerShadow->var6;
       do
       {
-        *(p_var6 - 2) = (*(p_var6 - 2) / self->_scalefactor) * v9;
+        *(p_var6 - 2) = (*(p_var6 - 2) / self->_scalefactor) * byCopy2;
         v11 = p_var6[1];
-        v12 = (*p_var6 / self->_scalefactor) * v9;
+        v12 = (*p_var6 / self->_scalefactor) * byCopy2;
         *p_var6 = v12;
         v13 = __sincosf_stret(v11);
         *(p_var6 + 1) = (v13.__cosval * v12);
@@ -2576,8 +2576,8 @@ LABEL_6:
       p_var4 = &self->_outerGlow->var4;
       do
       {
-        v15 = a3;
-        *p_var4 = (*p_var4 / self->_scalefactor) * v15;
+        byCopy3 = by;
+        *p_var4 = (*p_var4 / self->_scalefactor) * byCopy3;
         p_var4 += 6;
         --outerGlowCount;
       }
@@ -2588,13 +2588,13 @@ LABEL_6:
     engraveShadowCount = self->_engraveShadowCount;
     if (engraveShadowCount)
     {
-      v18 = a3;
+      byCopy4 = by;
       v19 = &self->_engraveShadow->var6;
       do
       {
-        *(v19 - 2) = (*(v19 - 2) / self->_scalefactor) * v18;
+        *(v19 - 2) = (*(v19 - 2) / self->_scalefactor) * byCopy4;
         v20 = v19[1];
-        v21 = (*v19 / self->_scalefactor) * v18;
+        v21 = (*v19 / self->_scalefactor) * byCopy4;
         *v19 = v21;
         v22 = __sincosf_stret(v20);
         *(v19 + 1) = (v22.__cosval * v21);
@@ -2609,13 +2609,13 @@ LABEL_6:
     bevelEmbossCount = self->_bevelEmbossCount;
     if (bevelEmbossCount)
     {
-      v24 = a3;
+      byCopy6 = by;
       p_var1 = &self->_emboss->var1;
       do
       {
         v26 = *p_var1;
-        *(p_var1 - 1) = (*(p_var1 - 1) / self->_scalefactor) * v24;
-        *p_var1 = (v26 / self->_scalefactor) * v24;
+        *(p_var1 - 1) = (*(p_var1 - 1) / self->_scalefactor) * byCopy6;
+        *p_var1 = (v26 / self->_scalefactor) * byCopy6;
         p_var1 += 13;
         --bevelEmbossCount;
       }
@@ -2625,10 +2625,10 @@ LABEL_6:
 
     else
     {
-      v24 = a3;
+      byCopy6 = by;
     }
 
-    self->_scalefactor = v24;
+    self->_scalefactor = byCopy6;
 
     [(CUIShapeEffectStack *)self _updateRenderStrategyFromEffect:1148350320];
   }
@@ -2743,10 +2743,10 @@ LABEL_5:
   return hueSaturationCount & 1;
 }
 
-- (void)applyCustomForegroundColor:(CGColor *)a3 tintEffectColors:(BOOL)a4
+- (void)applyCustomForegroundColor:(CGColor *)color tintEffectColors:(BOOL)colors
 {
-  v4 = a4;
-  ColorSpace = CGColorGetColorSpace(a3);
+  colorsCopy = colors;
+  ColorSpace = CGColorGetColorSpace(color);
   if (ColorSpace)
   {
     Model = CGColorSpaceGetModel(ColorSpace);
@@ -2754,11 +2754,11 @@ LABEL_5:
     {
       if (Model == kCGColorSpaceModelRGB)
       {
-        Components = CGColorGetComponents(a3);
+        Components = CGColorGetComponents(color);
         v11 = *Components;
         v10 = Components[1];
         v12 = Components[2];
-        Alpha = CGColorGetAlpha(a3);
+        Alpha = CGColorGetAlpha(color);
       }
 
       else
@@ -2783,16 +2783,16 @@ LABEL_5:
 
     else
     {
-      v12 = *CGColorGetComponents(a3);
-      Alpha = CGColorGetAlpha(a3);
+      v12 = *CGColorGetComponents(color);
+      Alpha = CGColorGetAlpha(color);
       v10 = v12;
       v11 = v12;
     }
 
-    v17 = [(CUIShapeEffectStack *)self anyEffectAllowsTintSubstitution];
-    if (v4)
+    anyEffectAllowsTintSubstitution = [(CUIShapeEffectStack *)self anyEffectAllowsTintSubstitution];
+    if (colorsCopy)
     {
-      if (v17)
+      if (anyEffectAllowsTintSubstitution)
       {
         colorOverlayCount = self->_colorOverlayCount;
         if (colorOverlayCount)
@@ -2976,7 +2976,7 @@ LABEL_5:
       }
     }
 
-    if ((v17 & 1) == 0)
+    if ((anyEffectAllowsTintSubstitution & 1) == 0)
     {
       if ([(CUIShapeEffectStack *)self hasInnerGradient])
       {
@@ -3046,11 +3046,11 @@ LABEL_5:
   }
 }
 
-- (void)scaleBrightnessOfEffectColorsByAmount:(double)a3 onlyTintableColors:(BOOL)a4
+- (void)scaleBrightnessOfEffectColorsByAmount:(double)amount onlyTintableColors:(BOOL)colors
 {
-  if (vabdd_f64(1.0, a3) > 0.00000011920929)
+  if (vabdd_f64(1.0, amount) > 0.00000011920929)
   {
-    v5 = a4;
+    colorsCopy = colors;
     colorOverlayCount = self->_colorOverlayCount;
     if (colorOverlayCount)
     {
@@ -3058,7 +3058,7 @@ LABEL_5:
       for (i = 0; i < colorOverlayCount; ++i)
       {
         colorOverlay = self->_colorOverlay;
-        if (!v5 || colorOverlay[v8].var5)
+        if (!colorsCopy || colorOverlay[v8].var5)
         {
           v27 = 0.0;
           v28 = 0.0;
@@ -3068,7 +3068,7 @@ LABEL_5:
           v24 = 0.0;
           p_var0 = &colorOverlay[v8].var0;
           _CUIRGBToHSB(&v28, &v27, &v26, colorOverlay[v8].var1, colorOverlay[v8].var2, colorOverlay[v8].var3);
-          v26 = v26 * a3;
+          v26 = v26 * amount;
           _CUIHSBToRGB(&v25, &v24, &v23, v28, v27, v26);
           v12 = v25;
           p_var0[1] = v12;
@@ -3090,7 +3090,7 @@ LABEL_5:
       for (j = 0; j < hueSaturationCount; ++j)
       {
         hueSaturation = self->_hueSaturation;
-        if (!v5 || hueSaturation[v16].var5)
+        if (!colorsCopy || hueSaturation[v16].var5)
         {
           v27 = 0.0;
           v28 = 0.0;
@@ -3100,7 +3100,7 @@ LABEL_5:
           v24 = 0.0;
           v19 = &hueSaturation[v16];
           _CUIRGBToHSB(&v28, &v27, &v26, hueSaturation[v16].var2, hueSaturation[v16].var3, hueSaturation[v16].var4);
-          v26 = v26 * a3;
+          v26 = v26 * amount;
           _CUIHSBToRGB(&v25, &v24, &v23, v28, v27, v26);
           v20 = v25;
           v19->var2 = v20;
@@ -3118,15 +3118,15 @@ LABEL_5:
   }
 }
 
-- (void)adjustEffectColorsToTemperature:(int)a3 onlyTintableColors:(BOOL)a4
+- (void)adjustEffectColorsToTemperature:(int)temperature onlyTintableColors:(BOOL)colors
 {
-  if (a3 != 6500)
+  if (temperature != 6500)
   {
     v27[9] = v4;
     v27[10] = v5;
-    if ((a3 - 1000) <= 0x9858)
+    if ((temperature - 1000) <= 0x9858)
     {
-      v7 = a4;
+      colorsCopy = colors;
       v26 = 0.0;
       v27[0] = 0.0;
       v25 = 0.0;
@@ -3137,10 +3137,10 @@ LABEL_5:
         for (i = 0; i < colorOverlayCount; ++i)
         {
           colorOverlay = self->_colorOverlay;
-          if (!v7 || colorOverlay[v10].var5)
+          if (!colorsCopy || colorOverlay[v10].var5)
           {
             p_var0 = &colorOverlay[v10].var0;
-            _CUICreateColorByAdjustingTemperature(a3, v27, &v26, &v25, colorOverlay[v10].var1, colorOverlay[v10].var2, colorOverlay[v10].var3);
+            _CUICreateColorByAdjustingTemperature(temperature, v27, &v26, &v25, colorOverlay[v10].var1, colorOverlay[v10].var2, colorOverlay[v10].var3);
             v14 = v27[0];
             v15 = v26;
             p_var0[1] = v14;
@@ -3161,10 +3161,10 @@ LABEL_5:
         for (j = 0; j < hueSaturationCount; ++j)
         {
           hueSaturation = self->_hueSaturation;
-          if (!v7 || hueSaturation[v18].var5)
+          if (!colorsCopy || hueSaturation[v18].var5)
           {
             v21 = &hueSaturation[v18];
-            _CUICreateColorByAdjustingTemperature(a3, v27, &v26, &v25, hueSaturation[v18].var2, hueSaturation[v18].var3, hueSaturation[v18].var4);
+            _CUICreateColorByAdjustingTemperature(temperature, v27, &v26, &v25, hueSaturation[v18].var2, hueSaturation[v18].var3, hueSaturation[v18].var4);
             v22 = v27[0];
             v23 = v26;
             v21->var2 = v22;
@@ -3182,9 +3182,9 @@ LABEL_5:
   }
 }
 
-- (id)standardEffectCompositeWithShapeImage:(id)a3 blendOntoImage:(BOOL)a4
+- (id)standardEffectCompositeWithShapeImage:(id)image blendOntoImage:(BOOL)ontoImage
 {
-  v5 = a4;
+  ontoImageCopy = ontoImage;
   if (standardEffectCompositeWithShapeImage_blendOntoImage__once_token != -1)
   {
     [CUIShapeEffectStack standardEffectCompositeWithShapeImage:blendOntoImage:];
@@ -3192,13 +3192,13 @@ LABEL_5:
 
   v8 = standardEffectCompositeWithShapeImage_blendOntoImage__blendWithMaskAvailable;
   *&v4 = self->_shapeOpacity;
-  v9 = [(CUIShapeEffectStack *)self image:a3 withAdjustedOpacity:v4];
+  v9 = [(CUIShapeEffectStack *)self image:image withAdjustedOpacity:v4];
   if ([(CUIShapeEffectStack *)self hasEffects])
   {
     v11 = +[CIImage emptyImage];
-    if (v5)
+    if (ontoImageCopy)
     {
-      v11 = [CUIShapeEffectStack composite:a3 over:v11];
+      v11 = [CUIShapeEffectStack composite:image over:v11];
     }
 
     if (!self->_bypassColorFills)
@@ -3413,7 +3413,7 @@ LABEL_5:
 
     if (v8)
     {
-      v64 = [CUIShapeEffectStack imageFromBlendWithMask:a3 foreground:v11 background:v42];
+      v64 = [CUIShapeEffectStack imageFromBlendWithMask:image foreground:v11 background:v42];
     }
 
     else
@@ -3435,7 +3435,7 @@ CIFilter *__76__CUIShapeEffectStack_standardEffectCompositeWithShapeImage_blendO
   return result;
 }
 
-- (id)optimizedSingleBlurEffectCompositeWithShapeImage:(id)a3
+- (id)optimizedSingleBlurEffectCompositeWithShapeImage:(id)image
 {
   v5 = +[CIImage emptyImage];
   if ([(CUIShapeEffectStack *)self hasInnerGradient])
@@ -3444,7 +3444,7 @@ CIFilter *__76__CUIShapeEffectStack_standardEffectCompositeWithShapeImage_blendO
     v7 = *&innerGradient->var4;
     v11 = *&innerGradient->var0;
     v12 = v7;
-    v5 = [(CUIShapeEffectStack *)self imageWithInteriorGradientFillOfImage:a3 effect:&v11];
+    v5 = [(CUIShapeEffectStack *)self imageWithInteriorGradientFillOfImage:image effect:&v11];
   }
 
   if ([(CUIShapeEffectStack *)self hasColorOverlay])
@@ -3456,13 +3456,13 @@ CIFilter *__76__CUIShapeEffectStack_standardEffectCompositeWithShapeImage_blendO
     v5 = [(CUIShapeEffectStack *)self imageWithColorOverlayOfImage:v5 effect:&v11];
   }
 
-  return [(CUIShapeEffectStack *)self imageWithSingleBlurShapeEffectOfImage:a3 withInteriorFill:v5];
+  return [(CUIShapeEffectStack *)self imageWithSingleBlurShapeEffectOfImage:image withInteriorFill:v5];
 }
 
-- (id)compositeEffectStackWithShapeImage:(id)a3 withScale:(double)a4 blendOntoImage:(BOOL)a5
+- (id)compositeEffectStackWithShapeImage:(id)image withScale:(double)scale blendOntoImage:(BOOL)ontoImage
 {
-  v5 = a5;
-  if (self->_scalefactor != a4)
+  ontoImageCopy = ontoImage;
+  if (self->_scalefactor != scale)
   {
     [(CUIShapeEffectStack *)self scaleEffectParametersBy:?];
   }
@@ -3473,7 +3473,7 @@ CIFilter *__76__CUIShapeEffectStack_standardEffectCompositeWithShapeImage_blendO
     self->_renderStrategy = 1;
 LABEL_10:
 
-    return [(CUIShapeEffectStack *)self standardEffectCompositeWithShapeImage:a3 blendOntoImage:v5];
+    return [(CUIShapeEffectStack *)self standardEffectCompositeWithShapeImage:image blendOntoImage:ontoImageCopy];
   }
 
   renderStrategy = self->_renderStrategy;
@@ -3487,12 +3487,12 @@ LABEL_10:
     return 0;
   }
 
-  return [(CUIShapeEffectStack *)self optimizedSingleBlurEffectCompositeWithShapeImage:a3];
+  return [(CUIShapeEffectStack *)self optimizedSingleBlurEffectCompositeWithShapeImage:image];
 }
 
-- (CGRect)effectPaddingWithScale:(double)a3
+- (CGRect)effectPaddingWithScale:(double)scale
 {
-  if (self->_scalefactor != a3)
+  if (self->_scalefactor != scale)
   {
     [(CUIShapeEffectStack *)self scaleEffectParametersBy:?];
   }
@@ -3607,9 +3607,9 @@ LABEL_10:
   return result;
 }
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)effectInsetsWithScale:(double)a3
+- ($01BB1521EC52D44A8E7628F5261DCEC8)effectInsetsWithScale:(double)scale
 {
-  [(CUIShapeEffectStack *)self effectPaddingWithScale:a3];
+  [(CUIShapeEffectStack *)self effectPaddingWithScale:scale];
   v4 = v3;
   v6 = v5;
   v8 = -(v7 + v3);
@@ -3624,9 +3624,9 @@ LABEL_10:
   return result;
 }
 
-- (id)processedImageFromShapeImage:(id)a3 withScale:(double)a4 invertShadows:(BOOL)a5
+- (id)processedImageFromShapeImage:(id)image withScale:(double)scale invertShadows:(BOOL)shadows
 {
-  if (a5)
+  if (shadows)
   {
     innerShadowCount = self->_innerShadowCount;
     if (innerShadowCount)
@@ -3671,28 +3671,28 @@ LABEL_10:
     }
   }
 
-  return [(CUIShapeEffectStack *)self compositeEffectStackWithShapeImage:a3 withScale:0 blendOntoImage:a4];
+  return [(CUIShapeEffectStack *)self compositeEffectStackWithShapeImage:image withScale:0 blendOntoImage:scale];
 }
 
-- (CGImage)newFlattenedImageFromShapeCGImage:(CGImage *)a3 withScale:(double)a4 cache:(BOOL)a5
+- (CGImage)newFlattenedImageFromShapeCGImage:(CGImage *)image withScale:(double)scale cache:(BOOL)cache
 {
-  v5 = a5;
+  cacheCopy = cache;
   [(CUIShapeEffectStack *)self cacheKey];
   Property = CGImageGetProperty();
-  if (!Property || (v10 = Property, Property == a3))
+  if (!Property || (v10 = Property, Property == image))
   {
-    v11 = [[CIImage alloc] initWithCGImage:a3];
-    v12 = [(CUIShapeEffectStack *)self compositeEffectStackWithShapeImage:v11 withScale:0 blendOntoImage:a4];
+    v11 = [[CIImage alloc] initWithCGImage:image];
+    v12 = [(CUIShapeEffectStack *)self compositeEffectStackWithShapeImage:v11 withScale:0 blendOntoImage:scale];
     [v12 extent];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
     SRGB = _CUIColorSpaceGetSRGB();
-    v22 = [objc_opt_class() sharedCIContext];
-    v10 = [v22 createCGImage:v12 fromRect:objc_msgSend(v22 format:"workingFormat") colorSpace:SRGB deferred:{1, v14, v16, v18, v20}];
+    sharedCIContext = [objc_opt_class() sharedCIContext];
+    v10 = [sharedCIContext createCGImage:v12 fromRect:objc_msgSend(sharedCIContext format:"workingFormat") colorSpace:SRGB deferred:{1, v14, v16, v18, v20}];
 
-    if (v5)
+    if (cacheCopy)
     {
       CGImageSetProperty();
     }
@@ -3706,15 +3706,15 @@ LABEL_10:
   return v10;
 }
 
-- (CGImage)_newFlattenedImageFromShapeCGImage:(CGImage *)a3 withScale:(double)a4 ciContext:(id)a5 blendOverImage:(BOOL)a6
+- (CGImage)_newFlattenedImageFromShapeCGImage:(CGImage *)image withScale:(double)scale ciContext:(id)context blendOverImage:(BOOL)overImage
 {
-  v6 = a6;
-  v10 = [[CIImage alloc] initWithCGImage:a3 options:&unk_1F00F7FB8];
-  v11 = [(CUIShapeEffectStack *)self compositeEffectStackWithShapeImage:v10 withScale:v6 blendOntoImage:a4];
+  overImageCopy = overImage;
+  v10 = [[CIImage alloc] initWithCGImage:image options:&unk_1F00F7FB8];
+  v11 = [(CUIShapeEffectStack *)self compositeEffectStackWithShapeImage:v10 withScale:overImageCopy blendOntoImage:scale];
   [v10 extent];
   v13 = v12;
   v15 = v14;
-  [(CUIShapeEffectStack *)self effectPaddingWithScale:a4];
+  [(CUIShapeEffectStack *)self effectPaddingWithScale:scale];
   v17 = v16;
   v19 = v18;
   v21 = v13 + v20;
@@ -3722,7 +3722,7 @@ LABEL_10:
   SRGB = _CUIColorSpaceGetSRGB();
   AlignedBytesPerRow = CGBitmapGetAlignedBytesPerRow();
   Data = CGBitmapAllocateData();
-  [a5 render:v11 toBitmap:Data rowBytes:AlignedBytesPerRow bounds:kCIFormatBGRA8 format:SRGB colorSpace:{v17, v19, v21, v23}];
+  [context render:v11 toBitmap:Data rowBytes:AlignedBytesPerRow bounds:kCIFormatBGRA8 format:SRGB colorSpace:{v17, v19, v21, v23}];
   v27 = CGDataProviderCreateWithData(0, Data, (v23 * AlignedBytesPerRow), CGBitmapDataProviderReleaseData);
   v28 = CGImageCreate(v21, v23, 8uLL, 0x20uLL, AlignedBytesPerRow, SRGB, 0x2002u, v27, 0, 0, kCGRenderingIntentDefault);
   CGDataProviderRelease(v27);
@@ -3730,7 +3730,7 @@ LABEL_10:
   return v28;
 }
 
-- (BOOL)expressableByColorFillCheckingOutputBlending:(BOOL)a3
+- (BOOL)expressableByColorFillCheckingOutputBlending:(BOOL)blending
 {
   v3 = 0;
   innerGlowCount = self->_innerGlowCount;
@@ -3754,7 +3754,7 @@ LABEL_10:
   }
 
   while (v3 != 7);
-  if (a3)
+  if (blending)
   {
     colorOverlayCount = self->_colorOverlayCount;
     if (colorOverlayCount)
@@ -3802,15 +3802,15 @@ LABEL_10:
   return 1;
 }
 
-+ (CGColor)newColorByAdjustingLightnessOfColor:(CGColor *)a3 darker:(BOOL)a4
++ (CGColor)newColorByAdjustingLightnessOfColor:(CGColor *)color darker:(BOOL)darker
 {
-  if (!a3)
+  if (!color)
   {
     return 0;
   }
 
-  v4 = a4;
-  CopyByMatchingToColorSpace = a3;
+  darkerCopy = darker;
+  CopyByMatchingToColorSpace = color;
   SRGB = _CUIColorSpaceGetSRGB();
   CGColorGetColorSpace(CopyByMatchingToColorSpace);
   if (!CGColorSpaceEqualToColorSpace())
@@ -3837,7 +3837,7 @@ LABEL_5:
   v28 = 0.0;
   v29 = 0.0;
   v27 = 0.0;
-  if (v4)
+  if (darkerCopy)
   {
     v26 = v11;
     _CUIRGBToHSB(&v29, &v28, &v27, v8, v9, v10);

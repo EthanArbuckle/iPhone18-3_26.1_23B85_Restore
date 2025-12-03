@@ -1,6 +1,6 @@
 @interface _AFDeviceContextHistoryConfigurationMutation
 - (BOOL)getKeepsHistory;
-- (_AFDeviceContextHistoryConfigurationMutation)initWithBase:(id)a3;
+- (_AFDeviceContextHistoryConfigurationMutation)initWithBase:(id)base;
 - (unint64_t)getHistoryBufferSize;
 @end
 
@@ -32,16 +32,16 @@
   }
 }
 
-- (_AFDeviceContextHistoryConfigurationMutation)initWithBase:(id)a3
+- (_AFDeviceContextHistoryConfigurationMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFDeviceContextHistoryConfigurationMutation;
   v6 = [(_AFDeviceContextHistoryConfigurationMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

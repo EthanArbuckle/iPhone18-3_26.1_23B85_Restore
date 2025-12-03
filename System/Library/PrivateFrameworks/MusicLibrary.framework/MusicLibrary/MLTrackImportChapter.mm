@@ -1,34 +1,34 @@
 @interface MLTrackImportChapter
-- (BOOL)isEqualIgnoringTimesAndTitle:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqualIgnoringTimesAndTitle:(id)title;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (void)normalizeProperties;
 @end
 
 @implementation MLTrackImportChapter
 
-- (BOOL)isEqualIgnoringTimesAndTitle:(id)a3
+- (BOOL)isEqualIgnoringTimesAndTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 URL];
-    v6 = [v4 URLTitle];
-    v7 = [v4 imageCacheKey];
+    v5 = [titleCopy URL];
+    uRLTitle = [titleCopy URLTitle];
+    imageCacheKey = [titleCopy imageCacheKey];
     url = self->_url;
-    if ((url == v5 || [(NSURL *)url isEqual:v5]) && (self->_urlTitle == v6 || [(NSURL *)self->_url isEqual:v6]))
+    if ((url == v5 || [(NSURL *)url isEqual:v5]) && (self->_urlTitle == uRLTitle || [(NSURL *)self->_url isEqual:uRLTitle]))
     {
       imageCacheKey = self->_imageCacheKey;
-      if (imageCacheKey == v7)
+      if (imageCacheKey == imageCacheKey)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = [(NSString *)imageCacheKey isEqual:v7];
+        v10 = [(NSString *)imageCacheKey isEqual:imageCacheKey];
       }
     }
 
@@ -46,24 +46,24 @@
   return v10;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(MLTrackImportChapter *)self startTimeInMilliseconds];
-  v6 = [v4 startTimeInMilliseconds];
+  compareCopy = compare;
+  startTimeInMilliseconds = [(MLTrackImportChapter *)self startTimeInMilliseconds];
+  startTimeInMilliseconds2 = [compareCopy startTimeInMilliseconds];
 
-  if (v5 < v6)
+  if (startTimeInMilliseconds < startTimeInMilliseconds2)
   {
     return -1;
   }
 
   else
   {
-    return v5 > v6;
+    return startTimeInMilliseconds > startTimeInMilliseconds2;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSString *)self->_title copy];
@@ -92,15 +92,15 @@
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"startMS=%7lu", -[MLTrackImportChapter startTimeInMilliseconds](self, "startTimeInMilliseconds")];
   v7 = [v5 arrayWithObjects:{v6, 0}];
 
-  v8 = [(MLTrackImportChapter *)self title];
-  v9 = [v8 length];
+  title = [(MLTrackImportChapter *)self title];
+  v9 = [title length];
 
   if (v9)
   {
     [v4 appendString:@"t|"];
     v10 = MEMORY[0x277CCACA8];
-    v11 = [(MLTrackImportChapter *)self title];
-    v12 = [v10 stringWithFormat:@"title='%@'", v11];
+    title2 = [(MLTrackImportChapter *)self title];
+    v12 = [v10 stringWithFormat:@"title='%@'", title2];
     [v7 addObject:v12];
   }
 
@@ -109,14 +109,14 @@
     [v4 appendString:@" |"];
   }
 
-  v13 = [(MLTrackImportChapter *)self imageData];
+  imageData = [(MLTrackImportChapter *)self imageData];
 
-  if (v13)
+  if (imageData)
   {
     [v4 appendString:@"i|"];
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(MLTrackImportChapter *)self imageData];
-    v16 = [v14 stringWithFormat:@"image=%p", v15];
+    imageData2 = [(MLTrackImportChapter *)self imageData];
+    v16 = [v14 stringWithFormat:@"image=%p", imageData2];
     [v7 addObject:v16];
   }
 
@@ -125,14 +125,14 @@
     [v4 appendString:@" |"];
   }
 
-  v17 = [(MLTrackImportChapter *)self imageCacheKey];
+  imageCacheKey = [(MLTrackImportChapter *)self imageCacheKey];
 
-  if (v17)
+  if (imageCacheKey)
   {
     [v4 appendString:@"ik|"];
     v18 = MEMORY[0x277CCACA8];
-    v19 = [(MLTrackImportChapter *)self imageCacheKey];
-    v20 = [v18 stringWithFormat:@"imageKey=%@", v19];
+    imageCacheKey2 = [(MLTrackImportChapter *)self imageCacheKey];
+    v20 = [v18 stringWithFormat:@"imageKey=%@", imageCacheKey2];
     [v7 addObject:v20];
   }
 
@@ -157,15 +157,15 @@
     [v4 appendString:@" |"];
   }
 
-  v25 = [(MLTrackImportChapter *)self URLTitle];
-  v26 = [v25 length];
+  uRLTitle = [(MLTrackImportChapter *)self URLTitle];
+  v26 = [uRLTitle length];
 
   if (v26)
   {
     [v4 appendString:@"ut"];
     v27 = MEMORY[0x277CCACA8];
-    v28 = [(MLTrackImportChapter *)self URLTitle];
-    v29 = [v27 stringWithFormat:@"urlTitle='%@'", v28];
+    uRLTitle2 = [(MLTrackImportChapter *)self URLTitle];
+    v29 = [v27 stringWithFormat:@"urlTitle='%@'", uRLTitle2];
     [v7 addObject:v29];
   }
 
@@ -188,14 +188,14 @@
 - (void)normalizeProperties
 {
   title = self->_title;
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v5 = [(NSString *)title stringByTrimmingCharactersInSet:v4];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v5 = [(NSString *)title stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v6 = self->_title;
   self->_title = v5;
 
   urlTitle = self->_urlTitle;
-  v10 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v8 = [(NSString *)urlTitle stringByTrimmingCharactersInSet:v10];
+  whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v8 = [(NSString *)urlTitle stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
   v9 = self->_urlTitle;
   self->_urlTitle = v8;
 }

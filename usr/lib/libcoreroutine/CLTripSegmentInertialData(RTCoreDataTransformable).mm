@@ -48,7 +48,7 @@ LABEL_8:
   v3 = MEMORY[0x277CBFC88];
   v4 = a3;
   v5 = [v3 alloc];
-  v6 = [v4 timestamp];
+  timestamp = [v4 timestamp];
   [v4 dataPeriodSec];
   v8 = v7;
   [v4 deltaCourseRad];
@@ -62,7 +62,7 @@ LABEL_8:
   [v4 deltaCourseSpeedCovRadMps];
   v18 = v17;
 
-  v19 = [v5 initWithTime:v6 dataPeriodSec:v8 deltaCourseRad:v10 deltaSpeedMps:v12 deltaCourseVarRad2:v14 deltaSpeedVarMps2:v16 deltaCourseSpeedCovarRadMps:v18];
+  v19 = [v5 initWithTime:timestamp dataPeriodSec:v8 deltaCourseRad:v10 deltaSpeedMps:v12 deltaCourseVarRad2:v14 deltaSpeedVarMps2:v16 deltaCourseSpeedCovarRadMps:v18];
 
   return v19;
 }
@@ -71,7 +71,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTTripSegmentInertialDataMO managedObjectWithTripSegmentInertialData:a1 inManagedObjectContext:a3];
+    v3 = [RTTripSegmentInertialDataMO managedObjectWithTripSegmentInertialData:self inManagedObjectContext:a3];
   }
 
   else

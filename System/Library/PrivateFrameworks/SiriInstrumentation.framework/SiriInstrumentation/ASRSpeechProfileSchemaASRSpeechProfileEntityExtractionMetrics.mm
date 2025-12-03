@@ -1,57 +1,57 @@
 @interface ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics
-- (ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics)initWithDictionary:(id)a3;
-- (ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics)initWithDictionary:(id)dictionary;
+- (ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsExtractionSetupSuccessful:(BOOL)a3;
-- (void)setHasNumEntitiesContainingExtractions:(BOOL)a3;
-- (void)setHasNumEntitiesExtracted:(BOOL)a3;
-- (void)setHasNumEntitiesExtractionAttempted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsExtractionSetupSuccessful:(BOOL)successful;
+- (void)setHasNumEntitiesContainingExtractions:(BOOL)extractions;
+- (void)setHasNumEntitiesExtracted:(BOOL)extracted;
+- (void)setHasNumEntitiesExtractionAttempted:(BOOL)attempted;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics
 
-- (ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics)initWithDictionary:(id)a3
+- (ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics;
   v5 = [(ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isExtractionIngestionEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isExtractionIngestionEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics setIsExtractionIngestionEnabled:](v5, "setIsExtractionIngestionEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isExtractionSetupSuccessful"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isExtractionSetupSuccessful"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics setIsExtractionSetupSuccessful:](v5, "setIsExtractionSetupSuccessful:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numEntitiesExtractionAttempted"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numEntitiesExtractionAttempted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics setNumEntitiesExtractionAttempted:](v5, "setNumEntitiesExtractionAttempted:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numEntitiesContainingExtractions"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numEntitiesContainingExtractions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics setNumEntitiesContainingExtractions:](v5, "setNumEntitiesContainingExtractions:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"numEntitiesExtracted"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numEntitiesExtracted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics)initWithJSON:(id)a3
+- (ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,12 +100,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics isExtractionIngestionEnabled](self, "isExtractionIngestionEnabled")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isExtractionIngestionEnabled"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isExtractionIngestionEnabled"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -126,7 +126,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics isExtractionSetupSuccessful](self, "isExtractionSetupSuccessful")}];
-  [v3 setObject:v8 forKeyedSubscript:@"isExtractionSetupSuccessful"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isExtractionSetupSuccessful"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -142,7 +142,7 @@ LABEL_4:
 
 LABEL_12:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics numEntitiesContainingExtractions](self, "numEntitiesContainingExtractions")}];
-  [v3 setObject:v9 forKeyedSubscript:@"numEntitiesContainingExtractions"];
+  [dictionary setObject:v9 forKeyedSubscript:@"numEntitiesContainingExtractions"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -158,19 +158,19 @@ LABEL_5:
 
 LABEL_13:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics numEntitiesExtracted](self, "numEntitiesExtracted")}];
-  [v3 setObject:v10 forKeyedSubscript:@"numEntitiesExtracted"];
+  [dictionary setObject:v10 forKeyedSubscript:@"numEntitiesExtracted"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ASRSpeechProfileSchemaASRSpeechProfileEntityExtractionMetrics numEntitiesExtractionAttempted](self, "numEntitiesExtractionAttempted")}];
-    [v3 setObject:v5 forKeyedSubscript:@"numEntitiesExtractionAttempted"];
+    [dictionary setObject:v5 forKeyedSubscript:@"numEntitiesExtractionAttempted"];
   }
 
 LABEL_7:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -241,16 +241,16 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -259,13 +259,13 @@ LABEL_6:
   if (*&has)
   {
     isExtractionIngestionEnabled = self->_isExtractionIngestionEnabled;
-    if (isExtractionIngestionEnabled != [v4 isExtractionIngestionEnabled])
+    if (isExtractionIngestionEnabled != [equalCopy isExtractionIngestionEnabled])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -277,13 +277,13 @@ LABEL_6:
   if (v8)
   {
     isExtractionSetupSuccessful = self->_isExtractionSetupSuccessful;
-    if (isExtractionSetupSuccessful != [v4 isExtractionSetupSuccessful])
+    if (isExtractionSetupSuccessful != [equalCopy isExtractionSetupSuccessful])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -295,13 +295,13 @@ LABEL_6:
   if (v10)
   {
     numEntitiesExtractionAttempted = self->_numEntitiesExtractionAttempted;
-    if (numEntitiesExtractionAttempted != [v4 numEntitiesExtractionAttempted])
+    if (numEntitiesExtractionAttempted != [equalCopy numEntitiesExtractionAttempted])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -313,10 +313,10 @@ LABEL_6:
   if (v12)
   {
     numEntitiesContainingExtractions = self->_numEntitiesContainingExtractions;
-    if (numEntitiesContainingExtractions == [v4 numEntitiesContainingExtractions])
+    if (numEntitiesContainingExtractions == [equalCopy numEntitiesContainingExtractions])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_18;
     }
 
@@ -335,7 +335,7 @@ LABEL_18:
   if (v14)
   {
     numEntitiesExtracted = self->_numEntitiesExtracted;
-    if (numEntitiesExtracted != [v4 numEntitiesExtracted])
+    if (numEntitiesExtracted != [equalCopy numEntitiesExtracted])
     {
       goto LABEL_22;
     }
@@ -347,9 +347,9 @@ LABEL_23:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -410,9 +410,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setHasNumEntitiesExtracted:(BOOL)a3
+- (void)setHasNumEntitiesExtracted:(BOOL)extracted
 {
-  if (a3)
+  if (extracted)
   {
     v3 = 16;
   }
@@ -425,9 +425,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasNumEntitiesContainingExtractions:(BOOL)a3
+- (void)setHasNumEntitiesContainingExtractions:(BOOL)extractions
 {
-  if (a3)
+  if (extractions)
   {
     v3 = 8;
   }
@@ -440,9 +440,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumEntitiesExtractionAttempted:(BOOL)a3
+- (void)setHasNumEntitiesExtractionAttempted:(BOOL)attempted
 {
-  if (a3)
+  if (attempted)
   {
     v3 = 4;
   }
@@ -455,9 +455,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsExtractionSetupSuccessful:(BOOL)a3
+- (void)setHasIsExtractionSetupSuccessful:(BOOL)successful
 {
-  if (a3)
+  if (successful)
   {
     v3 = 2;
   }

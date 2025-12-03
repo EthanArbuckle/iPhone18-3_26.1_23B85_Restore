@@ -1,11 +1,11 @@
 @interface ATSSymbolicationProvider
-- (BOOL)shouldAmendWithFile:(ktrace_file *)a3 error:(id *)a4;
-- (BOOL)shouldInitializeWithLogger:(id)a3 machine:(ktrace_machine *)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)a3 error:(id *)a4;
-- (id)describeChunk:(ktrace_chunk *)a3;
+- (BOOL)shouldAmendWithFile:(ktrace_file *)file error:(id *)error;
+- (BOOL)shouldInitializeWithLogger:(id)logger machine:(ktrace_machine *)machine options:(id)options error:(id *)error;
+- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)configuration error:(id *)error;
+- (id)describeChunk:(ktrace_chunk *)chunk;
 - (void)dealloc;
-- (void)postprocessingCompleteWithFile:(ktrace_file *)a3;
-- (void)willFinishWithCatalog:(ktrace_catalog *)a3 file:(ktrace_file *)a4;
+- (void)postprocessingCompleteWithFile:(ktrace_file *)file;
+- (void)willFinishWithCatalog:(ktrace_catalog *)catalog file:(ktrace_file *)file;
 @end
 
 @implementation ATSSymbolicationProvider
@@ -19,26 +19,26 @@
   [(ATSSymbolicationProvider *)&v4 dealloc];
 }
 
-- (BOOL)shouldInitializeWithLogger:(id)a3 machine:(ktrace_machine *)a4 options:(id)a5 error:(id *)a6
+- (BOOL)shouldInitializeWithLogger:(id)logger machine:(ktrace_machine *)machine options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a5;
+  loggerCopy = logger;
+  optionsCopy = options;
   symbolication_config = ats_create_symbolication_config();
   symbolication_config->var4 = 1;
   logger = self->_logger;
   self->_symbolicationConfig = symbolication_config;
-  self->_logger = v8;
-  v12 = v8;
+  self->_logger = loggerCopy;
+  v12 = loggerCopy;
 
   objc_storeStrong(&qword_8300, self->_logger);
   self->_symbolicationConfig->var5 = sub_D10;
   incomingOptions = self->_incomingOptions;
-  self->_incomingOptions = v9;
+  self->_incomingOptions = optionsCopy;
 
   return 1;
 }
 
-- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)a3 error:(id *)a4
+- (BOOL)shouldStartTracingWithConfiguration:(ktrace_config *)configuration error:(id *)error
 {
   incomingOptions = self->_incomingOptions;
   if (incomingOptions)
@@ -57,9 +57,9 @@
     [(NSDictionary *)incomingOptions enumerateKeysAndObjectsUsingBlock:v25];
     if (v27[5])
     {
-      if (a4)
+      if (error)
       {
-        *a4 = sub_FE4(@"Unrecognized symbolication record option key: %@", v7, v8, v9, v10, v11, v12, v13, v27[5]);
+        *error = sub_FE4(@"Unrecognized symbolication record option key: %@", v7, v8, v9, v10, v11, v12, v13, v27[5]);
       }
 
 LABEL_5:
@@ -82,9 +82,9 @@ LABEL_5:
       {
         if (([v16 isEqualToString:@"all"] & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
-            *a4 = sub_FE4(@"Unrecognized symbolication record option: %@", v18, v19, v20, v21, v22, v23, v24, v16);
+            *error = sub_FE4(@"Unrecognized symbolication record option: %@", v18, v19, v20, v21, v22, v23, v24, v16);
           }
 
           goto LABEL_5;
@@ -102,33 +102,33 @@ LABEL_5:
   return 1;
 }
 
-- (BOOL)shouldAmendWithFile:(ktrace_file *)a3 error:(id *)a4
+- (BOOL)shouldAmendWithFile:(ktrace_file *)file error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = sub_FE4(@"Amending symbolication is not supported on this platform. Run this command on the host.", a2, a3, a4, v4, v5, v6, v7, v10);
+    *error = sub_FE4(@"Amending symbolication is not supported on this platform. Run this command on the host.", a2, file, error, v4, v5, v6, v7, v10);
   }
 
   return 0;
 }
 
-- (void)postprocessingCompleteWithFile:(ktrace_file *)a3
+- (void)postprocessingCompleteWithFile:(ktrace_file *)file
 {
   if (self->_symbolicationConfig->var2 == 1)
   {
-    _ats_postprocessing_complete(a3, a2);
+    _ats_postprocessing_complete(file, a2);
   }
 }
 
-- (void)willFinishWithCatalog:(ktrace_catalog *)a3 file:(ktrace_file *)a4
+- (void)willFinishWithCatalog:(ktrace_catalog *)catalog file:(ktrace_file *)file
 {
   if (!self->_symbolicationConfig->var2)
   {
-    _ats_postprocessing_complete(a4, a2);
+    _ats_postprocessing_complete(file, a2);
   }
 }
 
-- (id)describeChunk:(ktrace_chunk *)a3
+- (id)describeChunk:(ktrace_chunk *)chunk
 {
   if (ktrace_chunk_tag() == 20583)
   {

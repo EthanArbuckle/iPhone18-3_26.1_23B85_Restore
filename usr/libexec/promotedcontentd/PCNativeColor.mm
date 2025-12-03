@@ -1,38 +1,38 @@
 @interface PCNativeColor
-- (id)initWithColor:(id)a3;
+- (id)initWithColor:(id)color;
 @end
 
 @implementation PCNativeColor
 
-- (id)initWithColor:(id)a3
+- (id)initWithColor:(id)color
 {
-  v4 = a3;
-  if (v4)
+  colorCopy = color;
+  if (colorCopy)
   {
     v5 = [(PCNativeColor *)self init];
     if (v5)
     {
-      v6 = [v4 colors];
-      v7 = [APPBColor stringsToColorArray:v6];
+      colors = [colorCopy colors];
+      v7 = [APPBColor stringsToColorArray:colors];
       [(PCNativeColor *)v5 setLightModeColors:v7];
 
-      v8 = [v4 darkModeColors];
-      v9 = [APPBColor stringsToColorArray:v8];
+      darkModeColors = [colorCopy darkModeColors];
+      v9 = [APPBColor stringsToColorArray:darkModeColors];
       [(PCNativeColor *)v5 setDarkModeColors:v9];
 
-      -[PCNativeColor setGradientOrientation:](v5, "setGradientOrientation:", +[APLegacyTypeTranslator directionToGradientOrientation:](APLegacyTypeTranslator, "directionToGradientOrientation:", [v4 direction]));
+      -[PCNativeColor setGradientOrientation:](v5, "setGradientOrientation:", +[APLegacyTypeTranslator directionToGradientOrientation:](APLegacyTypeTranslator, "directionToGradientOrientation:", [colorCopy direction]));
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

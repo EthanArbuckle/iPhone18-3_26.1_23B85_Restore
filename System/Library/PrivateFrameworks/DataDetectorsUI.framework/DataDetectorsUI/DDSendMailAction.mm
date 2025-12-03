@@ -3,7 +3,7 @@
 - (id)extractedActionSubtitle;
 - (id)notificationIconBundleIdentifier;
 - (id)notificationTitle;
-- (uint64_t)displayNameForEmails:(void *)a3 phoneNumbers:;
+- (uint64_t)displayNameForEmails:(void *)emails phoneNumbers:;
 @end
 
 @implementation DDSendMailAction
@@ -13,17 +13,17 @@
   v15 = *MEMORY[0x277D85DE8];
   if (dd_isLSTrusted())
   {
-    v2 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v10 = 0;
-    v3 = [v2 defaultApplicationForCategory:2 error:&v10];
+    v3 = [defaultWorkspace defaultApplicationForCategory:2 error:&v10];
     v4 = v10;
 
     if (v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [MEMORY[0x277CCA8D8] mainBundle];
-      v6 = [v5 bundleIdentifier];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
       *buf = 138412546;
-      v12 = v6;
+      v12 = bundleIdentifier;
       v13 = 2112;
       v14 = v4;
       _os_log_impl(&dword_21AB70000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Couldn't get default email app from %@. Error: %@", buf, 0x16u);
@@ -36,19 +36,19 @@
     v3 = 0;
   }
 
-  v7 = [v3 localizedName];
+  localizedName = [v3 localizedName];
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return localizedName;
 }
 
-- (uint64_t)displayNameForEmails:(void *)a3 phoneNumbers:
+- (uint64_t)displayNameForEmails:(void *)emails phoneNumbers:
 {
   v48[1] = *MEMORY[0x277D85DE8];
   v24 = a2;
-  v23 = a3;
-  if (!a1 || (dd_isDeviceLocked() & 1) != 0 || [MEMORY[0x277CBDAB8] authorizationStatusForEntityType:0] != 3)
+  emailsCopy = emails;
+  if (!self || (dd_isDeviceLocked() & 1) != 0 || [MEMORY[0x277CBDAB8] authorizationStatusForEntityType:0] != 3)
   {
     goto LABEL_22;
   }
@@ -86,7 +86,7 @@
           objc_enumerationMutation(obj);
         }
 
-        v13 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:{*(*(&v36 + 1) + 8 * i), v23}];
+        v13 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:{*(*(&v36 + 1) + 8 * i), emailsCopy}];
         [v8 setPredicate:v13];
 
         v34[4] = &v40;
@@ -114,7 +114,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obja = v23;
+  obja = emailsCopy;
   v15 = [obja countByEnumeratingWithState:&v30 objects:v46 count:16];
   if (v15)
   {
@@ -130,7 +130,7 @@
           objc_enumerationMutation(obja);
         }
 
-        v19 = [MEMORY[0x277CBDA58] predicateForContactsMatchingPhoneNumber:{*(*(&v30 + 1) + 8 * j), v23}];
+        v19 = [MEMORY[0x277CBDA58] predicateForContactsMatchingPhoneNumber:{*(*(&v30 + 1) + 8 * j), emailsCopy}];
         [v8 setPredicate:v19];
 
         v28[4] = &v40;
@@ -152,7 +152,7 @@
   if (v14)
   {
 LABEL_20:
-    v6 = [MEMORY[0x277CBDA78] stringFromContact:v14 style:{0, v23}];
+    v6 = [MEMORY[0x277CBDA78] stringFromContact:v14 style:{0, emailsCopy}];
     v20 = 0;
   }
 
@@ -193,19 +193,19 @@ LABEL_22:
       v6 = v3;
     }
 
-    v7 = v6;
+    compactTitle = v6;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = DDSendMailAction;
-    v7 = [(DDAction *)&v10 compactTitle];
+    compactTitle = [(DDAction *)&v10 compactTitle];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return compactTitle;
 }
 
 - (id)notificationTitle
@@ -249,17 +249,17 @@ LABEL_22:
   v18 = *MEMORY[0x277D85DE8];
   if (dd_isLSTrusted())
   {
-    v2 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v13 = 0;
-    v3 = [v2 defaultApplicationForCategory:2 error:&v13];
+    v3 = [defaultWorkspace defaultApplicationForCategory:2 error:&v13];
     v4 = v13;
 
     if (v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [MEMORY[0x277CCA8D8] mainBundle];
-      v6 = [v5 bundleIdentifier];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
       *buf = 138412546;
-      v15 = v6;
+      v15 = bundleIdentifier;
       v16 = 2112;
       v17 = v4;
       _os_log_impl(&dword_21AB70000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Couldn't get default email app from %@. Error: %@", buf, 0x16u);
@@ -272,11 +272,11 @@ LABEL_22:
     v3 = 0;
   }
 
-  v7 = [v3 bundleIdentifier];
-  v8 = v7;
-  if (v7)
+  bundleIdentifier2 = [v3 bundleIdentifier];
+  v8 = bundleIdentifier2;
+  if (bundleIdentifier2)
   {
-    v9 = v7;
+    v9 = bundleIdentifier2;
   }
 
   else

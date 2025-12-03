@@ -1,12 +1,12 @@
 @interface ACAccountUniquingCache
 + (id)sharedUniqueCache;
 - (ACAccountUniquingCache)init;
-- (BOOL)_lock_hydrateParentChain:(id)a3;
-- (id)cachedAccountsByIdentifiers:(id)a3;
-- (void)_lock_cacheParentChain:(id)a3;
-- (void)_lock_clearParentChains:(id)a3;
-- (void)cacheAccounts:(id)a3;
-- (void)clearAccountsByIdentifiers:(id)a3;
+- (BOOL)_lock_hydrateParentChain:(id)chain;
+- (id)cachedAccountsByIdentifiers:(id)identifiers;
+- (void)_lock_cacheParentChain:(id)chain;
+- (void)_lock_clearParentChains:(id)chains;
+- (void)cacheAccounts:(id)accounts;
+- (void)clearAccountsByIdentifiers:(id)identifiers;
 @end
 
 @implementation ACAccountUniquingCache
@@ -47,16 +47,16 @@ uint64_t __43__ACAccountUniquingCache_sharedUniqueCache__block_invoke()
   return v3;
 }
 
-- (void)cacheAccounts:(id)a3
+- (void)cacheAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __40__ACAccountUniquingCache_cacheAccounts___block_invoke;
   v9 = &unk_1E7975590;
-  v5 = v4;
+  v5 = accountsCopy;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = v7;
   os_unfair_lock_lock(&self->_uniqueCachedAccountsLock);
   v8(v6);
@@ -101,35 +101,35 @@ void __40__ACAccountUniquingCache_cacheAccounts___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lock_cacheParentChain:(id)a3
+- (void)_lock_cacheParentChain:(id)chain
 {
-  v9 = a3;
-  v4 = [v9 parentAccount];
+  chainCopy = chain;
+  parentAccount = [chainCopy parentAccount];
 
-  if (v4)
+  if (parentAccount)
   {
-    v5 = [v9 parentAccount];
-    [(ACAccountUniquingCache *)self _lock_cacheParentChain:v5];
+    parentAccount2 = [chainCopy parentAccount];
+    [(ACAccountUniquingCache *)self _lock_cacheParentChain:parentAccount2];
 
-    v6 = [v9 parentAccount];
+    parentAccount3 = [chainCopy parentAccount];
     cachedAccounts = self->_cachedAccounts;
-    v8 = [v9 identifier];
-    [(NSMutableDictionary *)cachedAccounts setObject:v6 forKeyedSubscript:v8];
+    identifier = [chainCopy identifier];
+    [(NSMutableDictionary *)cachedAccounts setObject:parentAccount3 forKeyedSubscript:identifier];
 
-    [v9 _cacheParentAccountID];
+    [chainCopy _cacheParentAccountID];
   }
 }
 
-- (id)cachedAccountsByIdentifiers:(id)a3
+- (id)cachedAccountsByIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v10 = __54__ACAccountUniquingCache_cachedAccountsByIdentifiers___block_invoke;
   v11 = &unk_1E7977180;
-  v5 = v4;
+  v5 = identifiersCopy;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v6 = v9;
   os_unfair_lock_lock(&self->_uniqueCachedAccountsLock);
   v7 = v10(v6);
@@ -201,25 +201,25 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)_lock_hydrateParentChain:(id)a3
+- (BOOL)_lock_hydrateParentChain:(id)chain
 {
-  v4 = a3;
-  v5 = [v4 _cachedParentAccountID];
+  chainCopy = chain;
+  _cachedParentAccountID = [chainCopy _cachedParentAccountID];
 
-  if (v5)
+  if (_cachedParentAccountID)
   {
     cachedAccounts = self->_cachedAccounts;
-    v7 = [v4 _cachedParentAccountID];
-    v8 = [(NSMutableDictionary *)cachedAccounts objectForKeyedSubscript:v7];
+    _cachedParentAccountID2 = [chainCopy _cachedParentAccountID];
+    v8 = [(NSMutableDictionary *)cachedAccounts objectForKeyedSubscript:_cachedParentAccountID2];
 
     if (v8)
     {
       v9 = self->_cachedAccounts;
-      v10 = [v4 _cachedParentAccountID];
-      v11 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v10];
+      _cachedParentAccountID3 = [chainCopy _cachedParentAccountID];
+      v11 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:_cachedParentAccountID3];
       v12 = [v11 copy];
 
-      [v4 _resetParentAccount:v12];
+      [chainCopy _resetParentAccount:v12];
       v13 = [(ACAccountUniquingCache *)self _lock_hydrateParentChain:v12];
     }
 
@@ -237,16 +237,16 @@ LABEL_13:
   return v13;
 }
 
-- (void)clearAccountsByIdentifiers:(id)a3
+- (void)clearAccountsByIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __53__ACAccountUniquingCache_clearAccountsByIdentifiers___block_invoke;
   v9 = &unk_1E7975590;
-  v5 = v4;
+  v5 = identifiersCopy;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = v7;
   os_unfair_lock_lock(&self->_uniqueCachedAccountsLock);
   v8(v6);
@@ -297,21 +297,21 @@ void __53__ACAccountUniquingCache_clearAccountsByIdentifiers___block_invoke(uint
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lock_clearParentChains:(id)a3
+- (void)_lock_clearParentChains:(id)chains
 {
-  v10 = a3;
-  v4 = [v10 _cachedParentAccountID];
+  chainsCopy = chains;
+  _cachedParentAccountID = [chainsCopy _cachedParentAccountID];
 
-  if (v4)
+  if (_cachedParentAccountID)
   {
     cachedAccounts = self->_cachedAccounts;
-    v6 = [v10 _cachedParentAccountID];
-    v7 = [(NSMutableDictionary *)cachedAccounts objectForKeyedSubscript:v6];
+    _cachedParentAccountID2 = [chainsCopy _cachedParentAccountID];
+    v7 = [(NSMutableDictionary *)cachedAccounts objectForKeyedSubscript:_cachedParentAccountID2];
     [(ACAccountUniquingCache *)self _lock_clearParentChains:v7];
 
     v8 = self->_cachedAccounts;
-    v9 = [v10 _cachedParentAccountID];
-    [(NSMutableDictionary *)v8 setObject:0 forKeyedSubscript:v9];
+    _cachedParentAccountID3 = [chainsCopy _cachedParentAccountID];
+    [(NSMutableDictionary *)v8 setObject:0 forKeyedSubscript:_cachedParentAccountID3];
   }
 }
 

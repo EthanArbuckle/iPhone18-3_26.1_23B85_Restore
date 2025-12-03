@@ -1,32 +1,32 @@
 @interface CSAudioStreamProvidingProxy
 - (CSAudioStreamProviding)audioStreamProviding;
-- (CSAudioStreamProvidingProxy)initWithXPCConnection:(id)a3;
+- (CSAudioStreamProvidingProxy)initWithXPCConnection:(id)connection;
 - (CSClientXPCConnection)xpcConnection;
 - (CSTriggerInfoProviding)triggerInfoProviding;
-- (void)CSClientXPCConnectionReceivedClientError:(id)a3 clientError:(id)a4 client:(id)a5;
-- (void)_handleAudioDeviceInfo:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleAudioStreamPrepareMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleAudioStreamRequestMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleIsNarrowband:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleIsRecordingMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handlePlaybackRouteMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleRecordDeviceInfo:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleRecordRouteMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleRecordSettings:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleSetCurrentConextMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleStartAudioStreamMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleStopAudioStreamMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleSupportsDuckingWithStreamHandleID:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleVoiceTriggerInfoMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_sendDelegateMessageToClient:(id)a3;
-- (void)_sendReply:(id)a3 client:(id)a4 result:(BOOL)a5 error:(id)a6;
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 audioChunkForTVAvailable:(id)a4;
-- (void)audioStreamProvider:(id)a3 didHardwareConfigurationChange:(int64_t)a4;
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4;
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)setAudioStreamProvidingForProxy:(id)a3;
-- (void)setInitialContext:(id)a3;
+- (void)CSClientXPCConnectionReceivedClientError:(id)error clientError:(id)clientError client:(id)client;
+- (void)_handleAudioDeviceInfo:(id)info messageBody:(id)body client:(id)client;
+- (void)_handleAudioStreamPrepareMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_handleAudioStreamRequestMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_handleIsNarrowband:(id)narrowband messageBody:(id)body client:(id)client;
+- (void)_handleIsRecordingMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_handlePlaybackRouteMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_handleRecordDeviceInfo:(id)info messageBody:(id)body client:(id)client;
+- (void)_handleRecordRouteMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_handleRecordSettings:(id)settings messageBody:(id)body client:(id)client;
+- (void)_handleSetCurrentConextMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_handleStartAudioStreamMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_handleStopAudioStreamMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_handleSupportsDuckingWithStreamHandleID:(id)d messageBody:(id)body client:(id)client;
+- (void)_handleVoiceTriggerInfoMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_sendDelegateMessageToClient:(id)client;
+- (void)_sendReply:(id)reply client:(id)client result:(BOOL)result error:(id)error;
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider audioChunkForTVAvailable:(id)available;
+- (void)audioStreamProvider:(id)provider didHardwareConfigurationChange:(int64_t)change;
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly;
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)setAudioStreamProvidingForProxy:(id)proxy;
+- (void)setInitialContext:(id)context;
 @end
 
 @implementation CSAudioStreamProvidingProxy
@@ -52,12 +52,12 @@
   return WeakRetained;
 }
 
-- (void)_sendDelegateMessageToClient:(id)a3
+- (void)_sendDelegateMessageToClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   *keys = *off_100252E40;
   v9[0] = xpc_int64_create(5);
-  v5 = v4;
+  v5 = clientCopy;
   v9[1] = v5;
   v6 = xpc_dictionary_create(keys, v9, 2uLL);
   WeakRetained = objc_loadWeakRetained(&self->_xpcConnection);
@@ -68,9 +68,9 @@
   }
 }
 
-- (void)audioStreamProvider:(id)a3 didHardwareConfigurationChange:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didHardwareConfigurationChange:(int64_t)change
 {
-  v6 = a3;
+  providerCopy = provider;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO))
   {
@@ -81,7 +81,7 @@
 
   *buf = *&off_10024E7B8;
   v10[0] = xpc_int64_create(4);
-  v10[1] = xpc_int64_create(a4);
+  v10[1] = xpc_int64_create(change);
   v8 = xpc_dictionary_create(buf, v10, 2uLL);
   [(CSAudioStreamProvidingProxy *)self _sendDelegateMessageToClient:v8, v10[0]];
 
@@ -90,14 +90,14 @@
   }
 }
 
-- (void)audioStreamProvider:(id)a3 audioChunkForTVAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioChunkForTVAvailable:(id)available
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  availableCopy = available;
   if (self->_streamClientType != 4)
   {
     *keys = *&off_10024E7A8;
-    v10[1] = [v7 xpcObject];
+    v10[1] = [availableCopy xpcObject];
     v8 = xpc_dictionary_create(keys, v10, 2uLL);
     [(CSAudioStreamProvidingProxy *)self _sendDelegateMessageToClient:v8];
 
@@ -107,14 +107,14 @@
   }
 }
 
-- (void)audioStreamProvider:(id)a3 audioBufferAvailable:(id)a4
+- (void)audioStreamProvider:(id)provider audioBufferAvailable:(id)available
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  availableCopy = available;
   if (self->_streamClientType != 4)
   {
     *keys = *&off_10024E7A8;
-    v10[1] = [v7 xpcObject];
+    v10[1] = [availableCopy xpcObject];
     v8 = xpc_dictionary_create(keys, v10, 2uLL);
     [(CSAudioStreamProvidingProxy *)self _sendDelegateMessageToClient:v8];
 
@@ -124,9 +124,9 @@
   }
 }
 
-- (void)audioStreamProvider:(id)a3 didStopStreamUnexpectedly:(int64_t)a4
+- (void)audioStreamProvider:(id)provider didStopStreamUnexpectedly:(int64_t)unexpectedly
 {
-  v6 = a3;
+  providerCopy = provider;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -187,7 +187,7 @@ LABEL_15:
 
   *buf = *&off_10024E798;
   v13[0] = xpc_int64_create(1);
-  v13[1] = xpc_int64_create(a4);
+  v13[1] = xpc_int64_create(unexpectedly);
   v11 = xpc_dictionary_create(buf, v13, 2uLL);
   [(CSAudioStreamProvidingProxy *)self _sendDelegateMessageToClient:v11, v13[0]];
 
@@ -196,24 +196,24 @@ LABEL_15:
   }
 }
 
-- (void)_handlePlaybackRouteMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handlePlaybackRouteMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+  clientCopy = client;
+  messageCopy = message;
+  audioStreamProviding = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
 
-  if (v9)
+  if (audioStreamProviding)
   {
     WeakRetained = objc_loadWeakRetained(&self->_audioStreamProviding);
-    v11 = [WeakRetained playbackRoute];
+    playbackRoute = [WeakRetained playbackRoute];
 
-    reply = xpc_dictionary_create_reply(v8);
-    if (v11)
+    reply = xpc_dictionary_create_reply(messageCopy);
+    if (playbackRoute)
     {
-      xpc_dictionary_set_string(reply, "playbackRoute", [v11 UTF8String]);
+      xpc_dictionary_set_string(reply, "playbackRoute", [playbackRoute UTF8String]);
     }
 
-    xpc_connection_send_message(v7, reply);
+    xpc_connection_send_message(clientCopy, reply);
   }
 
   else
@@ -226,24 +226,24 @@ LABEL_15:
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s Cannot handle PlaybackRoute : audioStreamProviding is nil", &v14, 0xCu);
     }
 
-    [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v7 result:0 error:0];
+    [(CSAudioStreamProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:0 error:0];
   }
 }
 
-- (void)_handleIsNarrowband:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleIsNarrowband:(id)narrowband messageBody:(id)body client:(id)client
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+  clientCopy = client;
+  narrowbandCopy = narrowband;
+  audioStreamProviding = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
 
-  if (v9)
+  if (audioStreamProviding)
   {
     WeakRetained = objc_loadWeakRetained(&self->_audioStreamProviding);
-    v11 = [WeakRetained isNarrowBand];
+    isNarrowBand = [WeakRetained isNarrowBand];
 
-    xdict = xpc_dictionary_create_reply(v8);
-    xpc_dictionary_set_BOOL(xdict, "result", v11);
-    xpc_connection_send_message(v7, xdict);
+    xdict = xpc_dictionary_create_reply(narrowbandCopy);
+    xpc_dictionary_set_BOOL(xdict, "result", isNarrowBand);
+    xpc_connection_send_message(clientCopy, xdict);
   }
 
   else
@@ -256,29 +256,29 @@ LABEL_15:
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s Cannot handle IsNarrowband : audioStreamProviding is nil", buf, 0xCu);
     }
 
-    [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v7 result:0 error:0];
+    [(CSAudioStreamProvidingProxy *)self _sendReply:narrowbandCopy client:clientCopy result:0 error:0];
   }
 }
 
-- (void)_handleRecordSettings:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleRecordSettings:(id)settings messageBody:(id)body client:(id)client
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+  clientCopy = client;
+  settingsCopy = settings;
+  audioStreamProviding = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
 
-  if (v9)
+  if (audioStreamProviding)
   {
     WeakRetained = objc_loadWeakRetained(&self->_audioStreamProviding);
-    v11 = [WeakRetained recordSettings];
+    recordSettings = [WeakRetained recordSettings];
 
-    reply = xpc_dictionary_create_reply(v8);
-    if (v11)
+    reply = xpc_dictionary_create_reply(settingsCopy);
+    if (recordSettings)
     {
-      v13 = [v11 _cs_xpcObject];
-      xpc_dictionary_set_value(reply, "recordSettings", v13);
+      _cs_xpcObject = [recordSettings _cs_xpcObject];
+      xpc_dictionary_set_value(reply, "recordSettings", _cs_xpcObject);
     }
 
-    xpc_connection_send_message(v7, reply);
+    xpc_connection_send_message(clientCopy, reply);
   }
 
   else
@@ -291,36 +291,36 @@ LABEL_15:
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s Cannot handle RecordSettings : audioStreamProviding is nil", &v15, 0xCu);
     }
 
-    [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v7 result:0 error:0];
+    [(CSAudioStreamProvidingProxy *)self _sendReply:settingsCopy client:clientCopy result:0 error:0];
   }
 }
 
-- (void)_handleAudioDeviceInfo:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleAudioDeviceInfo:(id)info messageBody:(id)body client:(id)client
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+  clientCopy = client;
+  infoCopy = info;
+  audioStreamProviding = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
 
-  if (v9)
+  if (audioStreamProviding)
   {
     WeakRetained = objc_loadWeakRetained(&self->_audioStreamProviding);
-    v11 = [WeakRetained audioDeviceInfo];
+    audioDeviceInfo = [WeakRetained audioDeviceInfo];
 
-    reply = xpc_dictionary_create_reply(v8);
-    if (v11)
+    reply = xpc_dictionary_create_reply(infoCopy);
+    if (audioDeviceInfo)
     {
-      v13 = [v11 xpcObject];
-      xpc_dictionary_set_value(reply, "audioDeviceInfo", v13);
+      xpcObject = [audioDeviceInfo xpcObject];
+      xpc_dictionary_set_value(reply, "audioDeviceInfo", xpcObject);
     }
 
     if (self->_streamClientType == 1 && [(CSAudioStreamProvidingProxy *)self _isHubRequest])
     {
       v14 = +[CSSiriClientBehaviorMonitor sharedInstance];
-      v15 = [v11 copy];
+      v15 = [audioDeviceInfo copy];
       [v14 notifyAudioDeviceInfoUpdated:v15];
     }
 
-    xpc_connection_send_message(v7, reply);
+    xpc_connection_send_message(clientCopy, reply);
   }
 
   else
@@ -333,29 +333,29 @@ LABEL_15:
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s Cannot handle AudioDeviceInfo : audioStreamProviding is nil", &v17, 0xCu);
     }
 
-    [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v7 result:0 error:0];
+    [(CSAudioStreamProvidingProxy *)self _sendReply:infoCopy client:clientCopy result:0 error:0];
   }
 }
 
-- (void)_handleRecordDeviceInfo:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleRecordDeviceInfo:(id)info messageBody:(id)body client:(id)client
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+  clientCopy = client;
+  infoCopy = info;
+  audioStreamProviding = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
 
-  if (v9)
+  if (audioStreamProviding)
   {
     WeakRetained = objc_loadWeakRetained(&self->_audioStreamProviding);
-    v11 = [WeakRetained recordDeviceInfo];
+    recordDeviceInfo = [WeakRetained recordDeviceInfo];
 
-    reply = xpc_dictionary_create_reply(v8);
-    if (v11)
+    reply = xpc_dictionary_create_reply(infoCopy);
+    if (recordDeviceInfo)
     {
-      v13 = [v11 xpcObject];
-      xpc_dictionary_set_value(reply, "recordDeviceInfo", v13);
+      xpcObject = [recordDeviceInfo xpcObject];
+      xpc_dictionary_set_value(reply, "recordDeviceInfo", xpcObject);
     }
 
-    xpc_connection_send_message(v7, reply);
+    xpc_connection_send_message(clientCopy, reply);
   }
 
   else
@@ -368,28 +368,28 @@ LABEL_15:
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s Cannot handle RecordDeviceInfo : audioStreamProviding is nil", &v15, 0xCu);
     }
 
-    [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v7 result:0 error:0];
+    [(CSAudioStreamProvidingProxy *)self _sendReply:infoCopy client:clientCopy result:0 error:0];
   }
 }
 
-- (void)_handleRecordRouteMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleRecordRouteMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+  clientCopy = client;
+  messageCopy = message;
+  audioStreamProviding = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
 
-  if (v9)
+  if (audioStreamProviding)
   {
     WeakRetained = objc_loadWeakRetained(&self->_audioStreamProviding);
-    v11 = [WeakRetained recordRoute];
+    recordRoute = [WeakRetained recordRoute];
 
-    reply = xpc_dictionary_create_reply(v8);
-    if (v11)
+    reply = xpc_dictionary_create_reply(messageCopy);
+    if (recordRoute)
     {
-      xpc_dictionary_set_string(reply, "recordRoute", [v11 UTF8String]);
+      xpc_dictionary_set_string(reply, "recordRoute", [recordRoute UTF8String]);
     }
 
-    xpc_connection_send_message(v7, reply);
+    xpc_connection_send_message(clientCopy, reply);
   }
 
   else
@@ -402,24 +402,24 @@ LABEL_15:
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s Cannot handle RecordRoute : audioStreamProviding is nil", &v14, 0xCu);
     }
 
-    [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v7 result:0 error:0];
+    [(CSAudioStreamProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:0 error:0];
   }
 }
 
-- (void)_handleIsRecordingMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleIsRecordingMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+  clientCopy = client;
+  messageCopy = message;
+  audioStreamProviding = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
 
-  if (v9)
+  if (audioStreamProviding)
   {
     WeakRetained = objc_loadWeakRetained(&self->_audioStreamProviding);
-    v11 = [WeakRetained isRecording];
+    isRecording = [WeakRetained isRecording];
 
-    xdict = xpc_dictionary_create_reply(v8);
-    xpc_dictionary_set_BOOL(xdict, "result", v11);
-    xpc_connection_send_message(v7, xdict);
+    xdict = xpc_dictionary_create_reply(messageCopy);
+    xpc_dictionary_set_BOOL(xdict, "result", isRecording);
+    xpc_connection_send_message(clientCopy, xdict);
   }
 
   else
@@ -432,16 +432,16 @@ LABEL_15:
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s Cannot handle IsRecording : audioStreamProviding is nil", buf, 0xCu);
     }
 
-    [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v7 result:0 error:0];
+    [(CSAudioStreamProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:0 error:0];
   }
 }
 
-- (void)_handleVoiceTriggerInfoMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleVoiceTriggerInfoMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a5;
-  v9 = a4;
-  reply = xpc_dictionary_create_reply(a3);
-  v11 = xpc_dictionary_get_dictionary(v9, "context");
+  clientCopy = client;
+  bodyCopy = body;
+  reply = xpc_dictionary_create_reply(message);
+  v11 = xpc_dictionary_get_dictionary(bodyCopy, "context");
 
   if (!v11)
   {
@@ -466,33 +466,33 @@ LABEL_15:
   xpc_dictionary_set_BOOL(reply, "result", 1);
   if (v15)
   {
-    v17 = [v15 _cs_xpcObject];
-    xpc_dictionary_set_value(reply, "voiceTriggerInfo", v17);
+    _cs_xpcObject = [v15 _cs_xpcObject];
+    xpc_dictionary_set_value(reply, "voiceTriggerInfo", _cs_xpcObject);
   }
 
   if (v16)
   {
-    v18 = [v16 _cs_xpcObject];
-    xpc_dictionary_set_value(reply, "rtsTriggerInfo", v18);
+    _cs_xpcObject2 = [v16 _cs_xpcObject];
+    xpc_dictionary_set_value(reply, "rtsTriggerInfo", _cs_xpcObject2);
   }
 
-  xpc_connection_send_message(v8, reply);
+  xpc_connection_send_message(clientCopy, reply);
 }
 
-- (void)_handleStopAudioStreamMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleStopAudioStreamMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+  messageCopy = message;
+  bodyCopy = body;
+  clientCopy = client;
+  audioStreamProviding = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
 
-  if (v11)
+  if (audioStreamProviding)
   {
-    v12 = [(CSAudioStreamProvidingProxy *)self audioStream];
+    audioStream = [(CSAudioStreamProvidingProxy *)self audioStream];
 
-    if (v12)
+    if (audioStream)
     {
-      v13 = xpc_dictionary_get_dictionary(v9, "stopAudioStreamOption");
+      v13 = xpc_dictionary_get_dictionary(bodyCopy, "stopAudioStreamOption");
       if (v13)
       {
         v14 = [[CSAudioStopStreamOption alloc] initWithXPCObject:v13];
@@ -520,8 +520,8 @@ LABEL_15:
 
         if (streamClientType == 4)
         {
-          v21 = +[CSIntuitiveConvAudioCaptureMonitor sharedInstance];
-          [v21 notifyWillStopAudioCaptureWithReason:0];
+          sharedInstance = +[CSIntuitiveConvAudioCaptureMonitor sharedInstance];
+          [sharedInstance notifyWillStopAudioCaptureWithReason:0];
 LABEL_25:
         }
       }
@@ -532,14 +532,14 @@ LABEL_25:
         {
           if ([(CSAudioStreamProvidingProxy *)self _isHubRequest])
           {
-            v21 = +[CSSiriClientBehaviorMonitor sharedInstance];
-            [v21 notifyWillStopStream:v14 reason:0 withEventUUID:self->_recordEventUUID];
+            sharedInstance = +[CSSiriClientBehaviorMonitor sharedInstance];
+            [sharedInstance notifyWillStopStream:v14 reason:0 withEventUUID:self->_recordEventUUID];
           }
 
           else
           {
-            v21 = +[CSAccessorySiriClientBehaviorMonitor sharedInstance];
-            [v21 notifyWillStopStream:0 reason:0 forAccessory:self->_accessoryId];
+            sharedInstance = +[CSAccessorySiriClientBehaviorMonitor sharedInstance];
+            [sharedInstance notifyWillStopStream:0 reason:0 forAccessory:self->_accessoryId];
           }
 
           goto LABEL_25;
@@ -549,24 +549,24 @@ LABEL_25:
         {
           v20 = CSOpportuneSpeakBehaviorMonitor;
 LABEL_24:
-          v21 = [(__objc2_class *)v20 sharedInstance];
-          [v21 notifyWillStopStream:0];
+          sharedInstance = [(__objc2_class *)v20 sharedInstance];
+          [sharedInstance notifyWillStopStream:0];
           goto LABEL_25;
         }
       }
 
 LABEL_26:
-      v22 = [(CSAudioStreamProvidingProxy *)self audioStream];
+      audioStream2 = [(CSAudioStreamProvidingProxy *)self audioStream];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_100021B64;
       v24[3] = &unk_10024E778;
       v24[4] = self;
       v25 = v14;
-      v26 = v8;
-      v27 = v10;
+      v26 = messageCopy;
+      v27 = clientCopy;
       v23 = v14;
-      [v22 stopAudioStreamWithOption:v23 completion:v24];
+      [audioStream2 stopAudioStreamWithOption:v23 completion:v24];
 
       goto LABEL_27;
     }
@@ -598,31 +598,31 @@ LABEL_26:
   }
 
   v13 = [NSError errorWithDomain:v16 code:v17 userInfo:0];
-  [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v10 result:0 error:v13];
+  [(CSAudioStreamProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:0 error:v13];
 LABEL_27:
 }
 
-- (void)_handleStartAudioStreamMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleStartAudioStreamMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = xpc_dictionary_get_dictionary(a4, "startAudioStreamOption");
+  messageCopy = message;
+  clientCopy = client;
+  v10 = xpc_dictionary_get_dictionary(body, "startAudioStreamOption");
   if (v10)
   {
-    v11 = [(CSAudioStreamProvidingProxy *)self audioStream];
+    audioStream = [(CSAudioStreamProvidingProxy *)self audioStream];
 
-    if (v11)
+    if (audioStream)
     {
-      v12 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+      audioStreamProviding = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
 
-      if (v12)
+      if (audioStreamProviding)
       {
         v13 = [[CSAudioStartStreamOption alloc] initWithXPCObject:v10];
         [(CSAudioStreamProvidingProxy *)self _setAllowMixableAudioWhileRecordingIfNeeded:1];
         v14 = +[NSUUID UUID];
-        v15 = [v14 UUIDString];
+        uUIDString = [v14 UUIDString];
         recordEventUUID = self->_recordEventUUID;
-        self->_recordEventUUID = v15;
+        self->_recordEventUUID = uUIDString;
 
         if (!self->_clientRequestedSkipMonitorUpdate)
         {
@@ -633,8 +633,8 @@ LABEL_27:
             {
               v18 = +[CSCommandControlBehaviorMonitor sharedInstance];
               recordContext = self->_recordContext;
-              v20 = [v13 copy];
-              [v18 notifyWillStartStreamWithContext:recordContext option:v20];
+              audioStreamProviding2 = [v13 copy];
+              [v18 notifyWillStartStreamWithContext:recordContext option:audioStreamProviding2];
               goto LABEL_25;
             }
 
@@ -642,8 +642,8 @@ LABEL_27:
             {
               v18 = +[CSIntuitiveConvAudioCaptureMonitor sharedInstance];
               v29 = self->_recordContext;
-              v20 = [v13 copy];
-              [v18 notifyWillStartAudioCaptureWithContext:v29 option:v20];
+              audioStreamProviding2 = [v13 copy];
+              [v18 notifyWillStartAudioCaptureWithContext:v29 option:audioStreamProviding2];
               goto LABEL_25;
             }
           }
@@ -671,10 +671,10 @@ LABEL_27:
             {
               v18 = +[CSOpportuneSpeakBehaviorMonitor sharedInstance];
               v19 = self->_recordContext;
-              v20 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
-              v21 = [v20 UUID];
+              audioStreamProviding2 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+              uUID = [audioStreamProviding2 UUID];
               v22 = [v13 copy];
-              [v18 notifyWillStartStreamWithContext:v19 audioProviderUUID:v21 option:v22];
+              [v18 notifyWillStartStreamWithContext:v19 audioProviderUUID:uUID option:v22];
 
 LABEL_25:
 LABEL_26:
@@ -682,17 +682,17 @@ LABEL_26:
           }
         }
 
-        v31 = [(CSAudioStreamProvidingProxy *)self audioStream];
+        audioStream2 = [(CSAudioStreamProvidingProxy *)self audioStream];
         v32[0] = _NSConcreteStackBlock;
         v32[1] = 3221225472;
         v32[2] = sub_100022178;
         v32[3] = &unk_10024E778;
         v32[4] = self;
         v33 = v13;
-        v34 = v8;
-        v35 = v9;
+        v34 = messageCopy;
+        v35 = clientCopy;
         v28 = v13;
-        [v31 startAudioStreamWithOption:v28 completion:v32];
+        [audioStream2 startAudioStreamWithOption:v28 completion:v32];
 
         goto LABEL_28;
       }
@@ -739,22 +739,22 @@ LABEL_26:
   }
 
   v28 = [NSError errorWithDomain:v24 code:v25 userInfo:0];
-  [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v9 result:0 error:v28];
+  [(CSAudioStreamProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:0 error:v28];
 LABEL_28:
 }
 
-- (void)_handleAudioStreamPrepareMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleAudioStreamPrepareMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = xpc_dictionary_get_dictionary(a4, "audioStreamRequest");
-  v11 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+  messageCopy = message;
+  clientCopy = client;
+  v10 = xpc_dictionary_get_dictionary(body, "audioStreamRequest");
+  audioStreamProviding = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
 
-  if (v11)
+  if (audioStreamProviding)
   {
     if (v10)
     {
-      v12 = [[CSAudioStreamRequest alloc] initWithXPCObject:v10];
+      streamRequest = [[CSAudioStreamRequest alloc] initWithXPCObject:v10];
     }
 
     else
@@ -767,18 +767,18 @@ LABEL_28:
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s Given audioStreamRequest is nil, use default audioStreamRequest", buf, 0xCu);
       }
 
-      v15 = [(CSAudioStreamProvidingProxy *)self audioStream];
-      v12 = [v15 streamRequest];
+      audioStream = [(CSAudioStreamProvidingProxy *)self audioStream];
+      streamRequest = [audioStream streamRequest];
     }
 
-    self->_clientRequestedSkipMonitorUpdate = [v12 requestSkipClientMonitorUpdate];
-    v16 = [(CSAudioStreamProvidingProxy *)self audioStream];
+    self->_clientRequestedSkipMonitorUpdate = [streamRequest requestSkipClientMonitorUpdate];
+    audioStream2 = [(CSAudioStreamProvidingProxy *)self audioStream];
 
-    if (v16)
+    if (audioStream2)
     {
-      v17 = [(CSAudioStreamProvidingProxy *)self audioStream];
+      audioStream3 = [(CSAudioStreamProvidingProxy *)self audioStream];
       v29 = 0;
-      v18 = [v17 prepareAudioStreamSyncWithRequest:v12 error:&v29];
+      v18 = [audioStream3 prepareAudioStreamSyncWithRequest:streamRequest error:&v29];
       v19 = v29;
 
       if (self->_streamClientType != 1 || ![(CSAudioStreamProvidingProxy *)self _isHubRequest])
@@ -787,8 +787,8 @@ LABEL_28:
       }
 
       v20 = +[CSSiriClientBehaviorMonitor sharedInstance];
-      v21 = [(CSAudioStreamProvidingProxy *)self audioStream];
-      [v20 notifyPreparedSiriClientAudioStream:v21 successfully:v18];
+      audioStream4 = [(CSAudioStreamProvidingProxy *)self audioStream];
+      [v20 notifyPreparedSiriClientAudioStream:audioStream4 successfully:v18];
     }
 
     else
@@ -797,7 +797,7 @@ LABEL_28:
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
       v28 = 0;
-      v20 = [WeakRetained audioStreamWithRequest:v12 streamName:v24 error:&v28];
+      v20 = [WeakRetained audioStreamWithRequest:streamRequest streamName:v24 error:&v28];
       v19 = v28;
 
       v18 = v20 != 0;
@@ -813,11 +813,11 @@ LABEL_28:
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
         {
           v26 = v25;
-          v27 = [v19 localizedDescription];
+          localizedDescription = [v19 localizedDescription];
           *buf = 136315394;
           v31 = "[CSAudioStreamProvidingProxy _handleAudioStreamPrepareMessage:messageBody:client:]";
           v32 = 2114;
-          v33 = v27;
+          v33 = localizedDescription;
           _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%s Getting audio stream has failed : %{public}@", buf, 0x16u);
         }
       }
@@ -827,13 +827,13 @@ LABEL_28:
         goto LABEL_22;
       }
 
-      v21 = +[CSSiriClientBehaviorMonitor sharedInstance];
-      [v21 notifyFetchedSiriClientAudioStream:v20 successfully:v20 != 0];
+      audioStream4 = +[CSSiriClientBehaviorMonitor sharedInstance];
+      [audioStream4 notifyFetchedSiriClientAudioStream:v20 successfully:v20 != 0];
     }
 
 LABEL_22:
 LABEL_23:
-    [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v9 result:v18 error:v19];
+    [(CSAudioStreamProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:v18 error:v19];
 
     goto LABEL_24;
   }
@@ -846,21 +846,21 @@ LABEL_23:
     _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s Cannot handle PrepareRequest throught XPC : audioStreamProviding is nil", buf, 0xCu);
   }
 
-  v12 = [NSError errorWithDomain:CSErrorDomain code:1401 userInfo:0];
-  [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v9 result:0 error:v12];
+  streamRequest = [NSError errorWithDomain:CSErrorDomain code:1401 userInfo:0];
+  [(CSAudioStreamProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:0 error:streamRequest];
 LABEL_24:
 }
 
-- (void)_handleAudioStreamRequestMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleAudioStreamRequestMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = xpc_dictionary_get_dictionary(a4, "audioStreamRequest");
+  messageCopy = message;
+  clientCopy = client;
+  v10 = xpc_dictionary_get_dictionary(body, "audioStreamRequest");
   if (v10)
   {
-    v11 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+    audioStreamProviding = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
 
-    if (v11)
+    if (audioStreamProviding)
     {
       v12 = [[CSAudioStreamRequest alloc] initWithXPCObject:v10];
       self->_clientRequestedSkipMonitorUpdate = [v12 requestSkipClientMonitorUpdate];
@@ -883,16 +883,16 @@ LABEL_24:
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
         {
           v25 = v22;
-          v26 = [v17 localizedDescription];
+          localizedDescription = [v17 localizedDescription];
           *buf = 136315394;
           v29 = "[CSAudioStreamProvidingProxy _handleAudioStreamRequestMessage:messageBody:client:]";
           v30 = 2114;
-          v31 = v26;
+          v31 = localizedDescription;
           _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s Getting audio stream has failed : %{public}@", buf, 0x16u);
         }
       }
 
-      [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v9 result:v16 != 0 error:v17];
+      [(CSAudioStreamProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:v16 != 0 error:v17];
       streamClientType = self->_streamClientType;
       if (streamClientType == 4)
       {
@@ -942,20 +942,20 @@ LABEL_20:
   }
 
   v12 = [NSError errorWithDomain:v19 code:v20 userInfo:0];
-  [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v9 result:0 error:v12];
+  [(CSAudioStreamProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:0 error:v12];
 LABEL_21:
 }
 
-- (void)_handleSetCurrentConextMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleSetCurrentConextMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+  messageCopy = message;
+  bodyCopy = body;
+  clientCopy = client;
+  audioStreamProviding = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
 
-  if (v11)
+  if (audioStreamProviding)
   {
-    v12 = xpc_dictionary_get_dictionary(v9, "context");
+    v12 = xpc_dictionary_get_dictionary(bodyCopy, "context");
     if (v12)
     {
       v13 = [[CSAudioRecordContext alloc] initWithXPCObject:v12];
@@ -965,7 +965,7 @@ LABEL_21:
       v15 = [WeakRetained setCurrentContext:v13 error:&v19];
       v16 = v19;
 
-      [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v10 result:v15 error:v16];
+      [(CSAudioStreamProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:v15 error:v16];
     }
 
     else
@@ -979,7 +979,7 @@ LABEL_21:
       }
 
       v13 = [NSError errorWithDomain:CSErrorDomain code:114 userInfo:0];
-      [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v10 result:0 error:v13];
+      [(CSAudioStreamProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:0 error:v13];
     }
   }
 
@@ -994,24 +994,24 @@ LABEL_21:
     }
 
     v12 = [NSError errorWithDomain:CSErrorDomain code:1401 userInfo:0];
-    [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v10 result:0 error:v12];
+    [(CSAudioStreamProvidingProxy *)self _sendReply:messageCopy client:clientCopy result:0 error:v12];
   }
 }
 
-- (void)_handleSupportsDuckingWithStreamHandleID:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleSupportsDuckingWithStreamHandleID:(id)d messageBody:(id)body client:(id)client
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
+  clientCopy = client;
+  dCopy = d;
+  audioStreamProviding = [(CSAudioStreamProvidingProxy *)self audioStreamProviding];
 
-  if (v9)
+  if (audioStreamProviding)
   {
     WeakRetained = objc_loadWeakRetained(&self->_audioStreamProviding);
     v15 = 0;
     v11 = [WeakRetained supportsDuckingOnCurrentRouteWithError:&v15];
     v12 = v15;
 
-    [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v7 result:v11 error:v12];
+    [(CSAudioStreamProvidingProxy *)self _sendReply:dCopy client:clientCopy result:v11 error:v12];
   }
 
   else
@@ -1025,19 +1025,19 @@ LABEL_21:
     }
 
     v14 = [NSError errorWithDomain:CSErrorDomain code:1401 userInfo:0];
-    [(CSAudioStreamProvidingProxy *)self _sendReply:v8 client:v7 result:0 error:v14];
-    v12 = v7;
-    v7 = v8;
-    v8 = v14;
+    [(CSAudioStreamProvidingProxy *)self _sendReply:dCopy client:clientCopy result:0 error:v14];
+    v12 = clientCopy;
+    clientCopy = dCopy;
+    dCopy = v14;
   }
 }
 
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  int64 = xpc_dictionary_get_int64(v9, "type");
+  messageCopy = message;
+  bodyCopy = body;
+  clientCopy = client;
+  int64 = xpc_dictionary_get_int64(bodyCopy, "type");
   v12 = int64;
   if (int64 > 7)
   {
@@ -1045,17 +1045,17 @@ LABEL_21:
     {
       if (int64 == 8)
       {
-        [(CSAudioStreamProvidingProxy *)self _handleRecordDeviceInfo:v8 messageBody:v9 client:v10];
+        [(CSAudioStreamProvidingProxy *)self _handleRecordDeviceInfo:messageCopy messageBody:bodyCopy client:clientCopy];
       }
 
       else if (int64 == 9)
       {
-        [(CSAudioStreamProvidingProxy *)self _handleRecordSettings:v8 messageBody:v9 client:v10];
+        [(CSAudioStreamProvidingProxy *)self _handleRecordSettings:messageCopy messageBody:bodyCopy client:clientCopy];
       }
 
       else
       {
-        [(CSAudioStreamProvidingProxy *)self _handleIsNarrowband:v8 messageBody:v9 client:v10];
+        [(CSAudioStreamProvidingProxy *)self _handleIsNarrowband:messageCopy messageBody:bodyCopy client:clientCopy];
       }
 
       goto LABEL_33;
@@ -1065,13 +1065,13 @@ LABEL_21:
     {
       if (int64 == 100)
       {
-        [(CSAudioStreamProvidingProxy *)self _handleVoiceTriggerInfoMessage:v8 messageBody:v9 client:v10];
+        [(CSAudioStreamProvidingProxy *)self _handleVoiceTriggerInfoMessage:messageCopy messageBody:bodyCopy client:clientCopy];
         goto LABEL_33;
       }
 
       if (int64 == 102)
       {
-        [(CSAudioStreamProvidingProxy *)self _handleSupportsDuckingWithStreamHandleID:v8 messageBody:v9 client:v10];
+        [(CSAudioStreamProvidingProxy *)self _handleSupportsDuckingWithStreamHandleID:messageCopy messageBody:bodyCopy client:clientCopy];
         goto LABEL_33;
       }
     }
@@ -1080,13 +1080,13 @@ LABEL_21:
     {
       if (int64 == 11)
       {
-        [(CSAudioStreamProvidingProxy *)self _handlePlaybackRouteMessage:v8 messageBody:v9 client:v10];
+        [(CSAudioStreamProvidingProxy *)self _handlePlaybackRouteMessage:messageCopy messageBody:bodyCopy client:clientCopy];
         goto LABEL_33;
       }
 
       if (int64 == 12)
       {
-        [(CSAudioStreamProvidingProxy *)self _handleAudioDeviceInfo:v8 messageBody:v9 client:v10];
+        [(CSAudioStreamProvidingProxy *)self _handleAudioDeviceInfo:messageCopy messageBody:bodyCopy client:clientCopy];
         goto LABEL_33;
       }
     }
@@ -1100,23 +1100,23 @@ LABEL_21:
       {
         if (int64 == 6)
         {
-          [(CSAudioStreamProvidingProxy *)self _handleIsRecordingMessage:v8 messageBody:v9 client:v10];
+          [(CSAudioStreamProvidingProxy *)self _handleIsRecordingMessage:messageCopy messageBody:bodyCopy client:clientCopy];
         }
 
         else
         {
-          [(CSAudioStreamProvidingProxy *)self _handleRecordRouteMessage:v8 messageBody:v9 client:v10];
+          [(CSAudioStreamProvidingProxy *)self _handleRecordRouteMessage:messageCopy messageBody:bodyCopy client:clientCopy];
         }
       }
 
       else if (int64 == 4)
       {
-        [(CSAudioStreamProvidingProxy *)self _handleStartAudioStreamMessage:v8 messageBody:v9 client:v10];
+        [(CSAudioStreamProvidingProxy *)self _handleStartAudioStreamMessage:messageCopy messageBody:bodyCopy client:clientCopy];
       }
 
       else
       {
-        [(CSAudioStreamProvidingProxy *)self _handleStopAudioStreamMessage:v8 messageBody:v9 client:v10];
+        [(CSAudioStreamProvidingProxy *)self _handleStopAudioStreamMessage:messageCopy messageBody:bodyCopy client:clientCopy];
       }
 
       goto LABEL_33;
@@ -1125,13 +1125,13 @@ LABEL_21:
     switch(int64)
     {
       case 1:
-        [(CSAudioStreamProvidingProxy *)self _handleSetCurrentConextMessage:v8 messageBody:v9 client:v10];
+        [(CSAudioStreamProvidingProxy *)self _handleSetCurrentConextMessage:messageCopy messageBody:bodyCopy client:clientCopy];
         goto LABEL_33;
       case 2:
-        [(CSAudioStreamProvidingProxy *)self _handleAudioStreamRequestMessage:v8 messageBody:v9 client:v10];
+        [(CSAudioStreamProvidingProxy *)self _handleAudioStreamRequestMessage:messageCopy messageBody:bodyCopy client:clientCopy];
         goto LABEL_33;
       case 3:
-        [(CSAudioStreamProvidingProxy *)self _handleAudioStreamPrepareMessage:v8 messageBody:v9 client:v10];
+        [(CSAudioStreamProvidingProxy *)self _handleAudioStreamPrepareMessage:messageCopy messageBody:bodyCopy client:clientCopy];
         goto LABEL_33;
     }
   }
@@ -1149,11 +1149,11 @@ LABEL_21:
 LABEL_33:
 }
 
-- (void)CSClientXPCConnectionReceivedClientError:(id)a3 clientError:(id)a4 client:(id)a5
+- (void)CSClientXPCConnectionReceivedClientError:(id)error clientError:(id)clientError client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  errorCopy = error;
+  clientErrorCopy = clientError;
+  clientCopy = client;
   v11 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -1162,9 +1162,9 @@ LABEL_33:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s CSAudioStreamProvidingProxy has received xpc disconnection", buf, 0xCu);
   }
 
-  v12 = [(CSAudioStreamProvidingProxy *)self audioStream];
+  audioStream = [(CSAudioStreamProvidingProxy *)self audioStream];
 
-  if (v12)
+  if (audioStream)
   {
     v13 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -1175,21 +1175,21 @@ LABEL_33:
     }
 
     clientRequestedSkipMonitorUpdate = self->_clientRequestedSkipMonitorUpdate;
-    v15 = [(CSAudioStreamProvidingProxy *)self audioStream];
-    v16 = [v15 isStreaming];
+    audioStream2 = [(CSAudioStreamProvidingProxy *)self audioStream];
+    isStreaming = [audioStream2 isStreaming];
 
-    if ((v16 & 1) == 0)
+    if ((isStreaming & 1) == 0)
     {
       v17 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
       {
         v18 = v17;
-        v19 = [(CSAudioStreamProvidingProxy *)self audioStream];
-        v20 = [v19 name];
+        audioStream3 = [(CSAudioStreamProvidingProxy *)self audioStream];
+        name = [audioStream3 name];
         *buf = 136315394;
         v31 = "[CSAudioStreamProvidingProxy CSClientXPCConnectionReceivedClientError:clientError:client:]";
         v32 = 2114;
-        v33 = v20;
+        v33 = name;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s audioStream %{public}@ already stopped streaming, we will skip monitor notification in this case", buf, 0x16u);
       }
 
@@ -1214,8 +1214,8 @@ LABEL_33:
 
       if (streamClientType == 4)
       {
-        v24 = +[CSIntuitiveConvAudioCaptureMonitor sharedInstance];
-        [v24 notifyWillStopAudioCaptureWithReason:1];
+        sharedInstance = +[CSIntuitiveConvAudioCaptureMonitor sharedInstance];
+        [sharedInstance notifyWillStopAudioCaptureWithReason:1];
 LABEL_22:
       }
     }
@@ -1226,14 +1226,14 @@ LABEL_22:
       {
         if ([(CSAudioStreamProvidingProxy *)self _isHubRequest])
         {
-          v24 = +[CSSiriClientBehaviorMonitor sharedInstance];
-          [v24 notifyWillStopStream:0 reason:1 withEventUUID:self->_recordEventUUID];
+          sharedInstance = +[CSSiriClientBehaviorMonitor sharedInstance];
+          [sharedInstance notifyWillStopStream:0 reason:1 withEventUUID:self->_recordEventUUID];
         }
 
         else
         {
-          v24 = +[CSAccessorySiriClientBehaviorMonitor sharedInstance];
-          [v24 notifyWillStopStream:0 reason:1 forAccessory:self->_accessoryId];
+          sharedInstance = +[CSAccessorySiriClientBehaviorMonitor sharedInstance];
+          [sharedInstance notifyWillStopStream:0 reason:1 forAccessory:self->_accessoryId];
         }
 
         goto LABEL_22;
@@ -1243,14 +1243,14 @@ LABEL_22:
       {
         v23 = CSOpportuneSpeakBehaviorMonitor;
 LABEL_21:
-        v24 = [(__objc2_class *)v23 sharedInstance];
-        [v24 notifyWillStopStream:0];
+        sharedInstance = [(__objc2_class *)v23 sharedInstance];
+        [sharedInstance notifyWillStopStream:0];
         goto LABEL_22;
       }
     }
 
 LABEL_23:
-    v25 = [(CSAudioStreamProvidingProxy *)self audioStream];
+    audioStream4 = [(CSAudioStreamProvidingProxy *)self audioStream];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_100023690;
@@ -1259,16 +1259,16 @@ LABEL_23:
     v27[4] = self;
     v28 = v21;
     v26 = v21;
-    [v25 stopAudioStreamWithOption:0 completion:v27];
+    [audioStream4 stopAudioStreamWithOption:0 completion:v27];
   }
 }
 
-- (void)_sendReply:(id)a3 client:(id)a4 result:(BOOL)a5 error:(id)a6
+- (void)_sendReply:(id)reply client:(id)client result:(BOOL)result error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (!v9)
+  replyCopy = reply;
+  clientCopy = client;
+  errorCopy = error;
+  if (!replyCopy)
   {
     v12 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -1279,22 +1279,22 @@ LABEL_23:
     }
   }
 
-  reply = xpc_dictionary_create_reply(v9);
-  v14 = reply;
+  reply = xpc_dictionary_create_reply(replyCopy);
+  replyCopy2 = reply;
   if (reply)
   {
-    xpc_dictionary_set_BOOL(reply, "result", a5);
-    if (v11)
+    xpc_dictionary_set_BOOL(reply, "result", result);
+    if (errorCopy)
     {
-      v15 = [v11 domain];
-      xpc_dictionary_set_string(v14, "resultErrorDomain", [v15 UTF8String]);
+      domain = [errorCopy domain];
+      xpc_dictionary_set_string(replyCopy2, "resultErrorDomain", [domain UTF8String]);
 
-      xpc_dictionary_set_int64(v14, "resultErrorCode", [v11 code]);
+      xpc_dictionary_set_int64(replyCopy2, "resultErrorCode", [errorCopy code]);
     }
 
-    if (v10)
+    if (clientCopy)
     {
-      xpc_connection_send_message(v10, v14);
+      xpc_connection_send_message(clientCopy, replyCopy2);
     }
 
     else
@@ -1321,34 +1321,34 @@ LABEL_23:
   }
 }
 
-- (void)setInitialContext:(id)a3
+- (void)setInitialContext:(id)context
 {
-  v6 = a3;
-  if (v6)
+  contextCopy = context;
+  if (contextCopy)
   {
-    [(CSAudioStreamProvidingProxy *)self setRecordContext:v6];
-    if ([v6 type] == 17 || objc_msgSend(v6, "type") == 18)
+    [(CSAudioStreamProvidingProxy *)self setRecordContext:contextCopy];
+    if ([contextCopy type] == 17 || objc_msgSend(contextCopy, "type") == 18)
     {
-      v4 = [v6 deviceId];
+      deviceId = [contextCopy deviceId];
       accessoryId = self->_accessoryId;
-      self->_accessoryId = v4;
+      self->_accessoryId = deviceId;
     }
   }
 }
 
-- (void)setAudioStreamProvidingForProxy:(id)a3
+- (void)setAudioStreamProvidingForProxy:(id)proxy
 {
-  v4 = a3;
-  objc_storeWeak(&self->_audioStreamProviding, v4);
-  v5 = [(CSAudioStreamProvidingProxy *)self audioStream];
-  v6 = [v5 streamProvider];
+  proxyCopy = proxy;
+  objc_storeWeak(&self->_audioStreamProviding, proxyCopy);
+  audioStream = [(CSAudioStreamProvidingProxy *)self audioStream];
+  streamProvider = [audioStream streamProvider];
 
-  if (v6 != v4)
+  if (streamProvider != proxyCopy)
   {
-    v7 = [(CSAudioStreamProvidingProxy *)self audioStream];
-    v8 = [v7 isStreaming];
+    audioStream2 = [(CSAudioStreamProvidingProxy *)self audioStream];
+    isStreaming = [audioStream2 isStreaming];
 
-    if (v8)
+    if (isStreaming)
     {
       v9 = +[CSDiagnosticReporter sharedInstance];
       [v9 submitAudioIssueReport:kCSDiagnosticReporterAudioStreamDeallocDuringStreaming];
@@ -1357,12 +1357,12 @@ LABEL_23:
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_FAULT))
       {
         v11 = v10;
-        v12 = [(CSAudioStreamProvidingProxy *)self audioStream];
-        v13 = [v12 name];
+        audioStream3 = [(CSAudioStreamProvidingProxy *)self audioStream];
+        name = [audioStream3 name];
         v14 = 136315394;
         v15 = "[CSAudioStreamProvidingProxy setAudioStreamProvidingForProxy:]";
         v16 = 2114;
-        v17 = v13;
+        v17 = name;
         _os_log_fault_impl(&_mh_execute_header, v11, OS_LOG_TYPE_FAULT, "%s Audio steam %{public}@ is still streaming when we get new streamProvider", &v14, 0x16u);
       }
     }
@@ -1371,16 +1371,16 @@ LABEL_23:
   }
 }
 
-- (CSAudioStreamProvidingProxy)initWithXPCConnection:(id)a3
+- (CSAudioStreamProvidingProxy)initWithXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = CSAudioStreamProvidingProxy;
   v5 = [(CSAudioStreamProvidingProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CSAudioStreamProvidingProxy *)v5 setXpcConnection:v4];
+    [(CSAudioStreamProvidingProxy *)v5 setXpcConnection:connectionCopy];
   }
 
   return v6;

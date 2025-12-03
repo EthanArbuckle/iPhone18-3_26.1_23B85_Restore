@@ -1,5 +1,5 @@
 @interface FCHeadlineThumbnail
-+ (FCHeadlineThumbnail)headlineThumbnailWithAssetHandle:(id)a3 thumbnailSize:(CGSize)a4;
++ (FCHeadlineThumbnail)headlineThumbnailWithAssetHandle:(id)handle thumbnailSize:(CGSize)size;
 - (CGSize)thumbnailSize;
 @end
 
@@ -14,12 +14,12 @@
   return result;
 }
 
-+ (FCHeadlineThumbnail)headlineThumbnailWithAssetHandle:(id)a3 thumbnailSize:(CGSize)a4
++ (FCHeadlineThumbnail)headlineThumbnailWithAssetHandle:(id)handle thumbnailSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  if (!v6 || (width == *MEMORY[0x1E695F060] ? (v7 = height == *(MEMORY[0x1E695F060] + 8)) : (v7 = 0), v7))
+  height = size.height;
+  width = size.width;
+  handleCopy = handle;
+  if (!handleCopy || (width == *MEMORY[0x1E695F060] ? (v7 = height == *(MEMORY[0x1E695F060] + 8)) : (v7 = 0), v7))
   {
     v8 = 0;
   }
@@ -27,7 +27,7 @@
   else
   {
     v8 = objc_alloc_init(FCHeadlineThumbnail);
-    [(FCHeadlineThumbnail *)v8 setThumbnailAssetHandle:v6];
+    [(FCHeadlineThumbnail *)v8 setThumbnailAssetHandle:handleCopy];
     [(FCHeadlineThumbnail *)v8 setThumbnailSize:width, height];
   }
 

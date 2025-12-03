@@ -1,40 +1,40 @@
 @interface PKRewardsEducationViewController
-- (PKRewardsEducationViewController)initWithAccount:(id)a3 accountService:(id)a4 paymentPass:(id)a5 enhancedMerchantsFetcher:(id)a6;
-- (id)_linkTableViewCellForIndexPath:(id)a3;
-- (id)_tierTableViewCellForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_close:(id)a3;
+- (PKRewardsEducationViewController)initWithAccount:(id)account accountService:(id)service paymentPass:(id)pass enhancedMerchantsFetcher:(id)fetcher;
+- (id)_linkTableViewCellForIndexPath:(id)path;
+- (id)_tierTableViewCellForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_close:(id)_close;
 - (void)_presentMerchantBenefitsView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation PKRewardsEducationViewController
 
-- (PKRewardsEducationViewController)initWithAccount:(id)a3 accountService:(id)a4 paymentPass:(id)a5 enhancedMerchantsFetcher:(id)a6
+- (PKRewardsEducationViewController)initWithAccount:(id)account accountService:(id)service paymentPass:(id)pass enhancedMerchantsFetcher:(id)fetcher
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  accountCopy = account;
+  serviceCopy = service;
+  passCopy = pass;
+  fetcherCopy = fetcher;
   v22.receiver = self;
   v22.super_class = PKRewardsEducationViewController;
   v15 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v22, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1], 2);
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_account, a3);
-    objc_storeStrong(&v16->_accountService, a4);
-    objc_storeStrong(&v16->_paymentPass, a5);
-    objc_storeStrong(&v16->_enhancedMerchantsFetcher, a6);
-    v17 = [(PKRewardsEducationViewController *)v16 navigationItem];
+    objc_storeStrong(&v15->_account, account);
+    objc_storeStrong(&v16->_accountService, service);
+    objc_storeStrong(&v16->_paymentPass, pass);
+    objc_storeStrong(&v16->_enhancedMerchantsFetcher, fetcher);
+    navigationItem = [(PKRewardsEducationViewController *)v16 navigationItem];
     v18 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:v16 action:sel__close_];
-    [v17 setLeftBarButtonItem:v18];
+    [navigationItem setLeftBarButtonItem:v18];
 
     v23[0] = objc_opt_class();
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
@@ -84,14 +84,14 @@ void __104__PKRewardsEducationViewController_initWithAccount_accountService_paym
   tiers = self->_tiers;
   self->_tiers = v19;
 
-  v21 = [(PKRewardsEducationViewController *)self tableView];
-  [v21 registerClass:objc_opt_class() forCellReuseIdentifier:@"RewardsTierEducationCellIdentifier"];
-  [v21 registerClass:objc_opt_class() forCellReuseIdentifier:@"LinkEducationCellIdentifier"];
-  [v21 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"HeaderIdentifier"];
-  [v21 setDataSource:self];
+  tableView = [(PKRewardsEducationViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"RewardsTierEducationCellIdentifier"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"LinkEducationCellIdentifier"];
+  [tableView registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"HeaderIdentifier"];
+  [tableView setDataSource:self];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(PKRewardsEducationViewController *)self _shouldShowLinkSection])
   {
@@ -104,40 +104,40 @@ void __104__PKRewardsEducationViewController_initWithAccount_accountService_paym
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
-    v7 = [(PKRewardsEducationViewController *)self _shouldShowLinkSection];
+    _shouldShowLinkSection = [(PKRewardsEducationViewController *)self _shouldShowLinkSection];
   }
 
-  else if (a4)
+  else if (section)
   {
-    v7 = 0;
+    _shouldShowLinkSection = 0;
   }
 
   else
   {
-    v7 = [(NSArray *)self->_tiers count];
+    _shouldShowLinkSection = [(NSArray *)self->_tiers count];
   }
 
-  return v7;
+  return _shouldShowLinkSection;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  if (v6 == 1)
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == 1)
   {
-    v7 = [(PKRewardsEducationViewController *)self _linkTableViewCellForIndexPath:v5];
+    v7 = [(PKRewardsEducationViewController *)self _linkTableViewCellForIndexPath:pathCopy];
     goto LABEL_5;
   }
 
-  if (!v6)
+  if (!section)
   {
-    v7 = [(PKRewardsEducationViewController *)self _tierTableViewCellForIndexPath:v5];
+    v7 = [(PKRewardsEducationViewController *)self _tierTableViewCellForIndexPath:pathCopy];
 LABEL_5:
     v8 = v7;
     goto LABEL_7;
@@ -149,21 +149,21 @@ LABEL_7:
   return v8;
 }
 
-- (id)_tierTableViewCellForIndexPath:(id)a3
+- (id)_tierTableViewCellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PKRewardsEducationViewController *)self tableView];
-  v6 = [v5 dequeueReusableCellWithIdentifier:@"RewardsTierEducationCellIdentifier" forIndexPath:v4];
+  pathCopy = path;
+  tableView = [(PKRewardsEducationViewController *)self tableView];
+  v6 = [tableView dequeueReusableCellWithIdentifier:@"RewardsTierEducationCellIdentifier" forIndexPath:pathCopy];
 
   tiers = self->_tiers;
-  v8 = [v4 row];
+  v8 = [pathCopy row];
 
   v9 = [(NSArray *)tiers objectAtIndex:v8];
-  v10 = [v9 localizedTitle];
-  [v6 setTitle:v10];
+  localizedTitle = [v9 localizedTitle];
+  [v6 setTitle:localizedTitle];
 
-  v11 = [v9 localizedSubtitle];
-  [v6 setSubtitle:v11];
+  localizedSubtitle = [v9 localizedSubtitle];
+  [v6 setSubtitle:localizedSubtitle];
 
   v12 = [v9 tier] - 1;
   if (v12 > 3)
@@ -176,8 +176,8 @@ LABEL_7:
     v13 = PKUIImageNamed(off_1E8011CD8[v12]);
   }
 
-  v14 = [v6 tierIcon];
-  [v14 setImage:v13];
+  tierIcon = [v6 tierIcon];
+  [tierIcon setImage:v13];
 
   [v6 setLink:0];
   [v6 setSelectionStyle:0];
@@ -185,55 +185,55 @@ LABEL_7:
   return v6;
 }
 
-- (id)_linkTableViewCellForIndexPath:(id)a3
+- (id)_linkTableViewCellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PKRewardsEducationViewController *)self tableView];
-  v6 = [v5 dequeueReusableCellWithIdentifier:@"LinkEducationCellIdentifier" forIndexPath:v4];
+  pathCopy = path;
+  tableView = [(PKRewardsEducationViewController *)self tableView];
+  v6 = [tableView dequeueReusableCellWithIdentifier:@"LinkEducationCellIdentifier" forIndexPath:pathCopy];
 
-  v7 = [v6 textLabel];
+  textLabel = [v6 textLabel];
   v8 = PKLocalizedFeatureString();
-  [v7 setText:v8];
+  [textLabel setText:v8];
 
-  v9 = [v6 textLabel];
-  v10 = [MEMORY[0x1E69DC888] linkColor];
-  [v9 setTextColor:v10];
+  textLabel2 = [v6 textLabel];
+  linkColor = [MEMORY[0x1E69DC888] linkColor];
+  [textLabel2 setTextColor:linkColor];
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [v6 section];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  section = [pathCopy section];
 
-  if (v7 == 1)
+  if (section == 1)
   {
 
     [(PKRewardsEducationViewController *)self _presentMerchantBenefitsView];
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(PKRewardsEducationViewController *)self tableView];
-    v4 = [v5 dequeueReusableHeaderFooterViewWithIdentifier:@"HeaderIdentifier"];
+    tableView = [(PKRewardsEducationViewController *)self tableView];
+    v4 = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"HeaderIdentifier"];
   }
 
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if ([a3 numberOfSections] - 1 == a4)
+  if ([view numberOfSections] - 1 == section)
   {
     v4 = PKLocalizedFeatureString();
   }
@@ -297,10 +297,10 @@ void __64__PKRewardsEducationViewController__presentMerchantBenefitsView__block_
   [WeakRetained presentViewController:v2 animated:1 completion:0];
 }
 
-- (void)_close:(id)a3
+- (void)_close:(id)_close
 {
-  v3 = [(PKRewardsEducationViewController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(PKRewardsEducationViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

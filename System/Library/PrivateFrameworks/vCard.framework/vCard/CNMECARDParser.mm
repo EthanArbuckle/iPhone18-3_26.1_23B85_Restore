@@ -1,34 +1,34 @@
 @interface CNMECARDParser
-+ (id)parseString:(id)a3 resultFactory:(id)a4 error:(id *)a5;
-+ (void)enumerateTagsInString:(id)a3 usingBlock:(id)a4;
++ (id)parseString:(id)string resultFactory:(id)factory error:(id *)error;
++ (void)enumerateTagsInString:(id)string usingBlock:(id)block;
 @end
 
 @implementation CNMECARDParser
 
-+ (id)parseString:(id)a3 resultFactory:(id)a4 error:(id *)a5
++ (id)parseString:(id)string resultFactory:(id)factory error:(id *)error
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [a4 makeBuilder];
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [MEMORY[0x277CBEB18] array];
+  stringCopy = string;
+  makeBuilder = [factory makeBuilder];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __50__CNMECARDParser_parseString_resultFactory_error___block_invoke;
   v31[3] = &unk_27A711208;
-  v13 = v8;
+  v13 = makeBuilder;
   v32 = v13;
-  v14 = v9;
+  v14 = array;
   v33 = v14;
-  v15 = v10;
+  v15 = array2;
   v34 = v15;
-  v16 = v11;
+  v16 = array3;
   v35 = v16;
-  v17 = v12;
+  v17 = array4;
   v36 = v17;
-  [a1 enumerateTagsInString:v7 usingBlock:v31];
+  [self enumerateTagsInString:stringCopy usingBlock:v31];
 
   v18 = [v14 _cn_map:&__block_literal_global_13];
   v19 = [v14 _cn_map:&__block_literal_global_43];
@@ -46,11 +46,11 @@
   v25 = [v17 _cn_map:&__block_literal_global_43];
   [v13 setValues:v17 labels:v24 isPrimaries:v25 forProperty:@"URLs"];
 
-  v26 = [v13 build];
-  v27 = v26;
-  if (v26)
+  build = [v13 build];
+  v27 = build;
+  if (build)
   {
-    v37[0] = v26;
+    v37[0] = build;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
   }
 
@@ -219,11 +219,11 @@ LABEL_8:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)enumerateTagsInString:(id)a3 usingBlock:(id)a4
++ (void)enumerateTagsInString:(id)string usingBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 substringFromIndex:7];
+  blockCopy = block;
+  v6 = [string substringFromIndex:7];
   v7 = [v6 componentsSeparatedByString:@""];;
 
   v22 = 0u;
@@ -266,7 +266,7 @@ LABEL_8:
             v17 = v15;
             v16 = [v14 substringToIndex:v15];
             v18 = [v14 substringFromIndex:v17 + 1];
-            v5[2](v5, v16, v18);
+            blockCopy[2](blockCopy, v16, v18);
           }
         }
       }

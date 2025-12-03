@@ -1,20 +1,20 @@
 @interface SHPreRecordingWorker
 - (NSUUID)workerID;
-- (SHPreRecordingWorker)initWithRequestID:(id)a3 audioTapProvider:(id)a4;
+- (SHPreRecordingWorker)initWithRequestID:(id)d audioTapProvider:(id)provider;
 - (SHWorkerDelegate)workerDelegate;
 - (void)shutdownWorker;
-- (void)startRecordingWithCompletionHandler:(id)a3;
+- (void)startRecordingWithCompletionHandler:(id)handler;
 - (void)stopAfterTransferingBuffers;
 @end
 
 @implementation SHPreRecordingWorker
 
-- (SHPreRecordingWorker)initWithRequestID:(id)a3 audioTapProvider:(id)a4
+- (SHPreRecordingWorker)initWithRequestID:(id)d audioTapProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 tapsForAvailableSources];
-  v10 = [v9 count];
+  dCopy = d;
+  providerCopy = provider;
+  tapsForAvailableSources = [providerCopy tapsForAvailableSources];
+  v10 = [tapsForAvailableSources count];
 
   if (v10)
   {
@@ -24,12 +24,12 @@
     p_isa = &v11->super.isa;
     if (v11)
     {
-      objc_storeStrong(&v11->_requestID, a3);
-      objc_storeStrong(p_isa + 4, a4);
+      objc_storeStrong(&v11->_requestID, d);
+      objc_storeStrong(p_isa + 4, provider);
     }
 
     self = p_isa;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -41,20 +41,20 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to create pre recording worker, there are no recorders available", buf, 2u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)startRecordingWithCompletionHandler:(id)a3
+- (void)startRecordingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHPreRecordingWorker *)self buffers];
+  handlerCopy = handler;
+  buffers = [(SHPreRecordingWorker *)self buffers];
 
-  if (v5)
+  if (buffers)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
     v6 = sh_log_object();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -65,17 +65,17 @@
 
   else
   {
-    v19 = v4;
-    [(SHPreRecordingWorker *)self setCompletionHandler:v4];
+    v19 = handlerCopy;
+    [(SHPreRecordingWorker *)self setCompletionHandler:handlerCopy];
     v6 = +[NSMutableArray array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = [(SHPreRecordingWorker *)self audioTapProvider];
-    v8 = [v7 tapsForAvailableSources];
+    audioTapProvider = [(SHPreRecordingWorker *)self audioTapProvider];
+    tapsForAvailableSources = [audioTapProvider tapsForAvailableSources];
 
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    v9 = [tapsForAvailableSources countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -86,19 +86,19 @@
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(tapsForAvailableSources);
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
           v14 = [[SHRecordingBuffer alloc] initWithTap:v13];
-          v15 = [(SHPreRecordingWorker *)self audioTapProvider];
-          v16 = [v15 audioRecordingManager];
-          [v16 attachTap:v13];
+          audioTapProvider2 = [(SHPreRecordingWorker *)self audioTapProvider];
+          audioRecordingManager = [audioTapProvider2 audioRecordingManager];
+          [audioRecordingManager attachTap:v13];
 
           [v6 addObject:v14];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v10 = [tapsForAvailableSources countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v10);
@@ -108,7 +108,7 @@
     buffers = self->_buffers;
     self->_buffers = v17;
 
-    v4 = v19;
+    handlerCopy = v19;
   }
 }
 
@@ -124,19 +124,19 @@
   buffers = self->_buffers;
   self->_buffers = 0;
 
-  v4 = [(SHPreRecordingWorker *)self completionHandler];
+  completionHandler = [(SHPreRecordingWorker *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(SHPreRecordingWorker *)self completionHandler];
-    v5[2]();
+    completionHandler2 = [(SHPreRecordingWorker *)self completionHandler];
+    completionHandler2[2]();
 
     completionHandler = self->_completionHandler;
     self->_completionHandler = 0;
   }
 
-  v7 = [(SHPreRecordingWorker *)self workerDelegate];
-  [v7 finishedWorker:self];
+  workerDelegate = [(SHPreRecordingWorker *)self workerDelegate];
+  [workerDelegate finishedWorker:self];
 
   [(SHPreRecordingWorker *)self setWorkerDelegate:0];
 }
@@ -147,8 +147,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(SHPreRecordingWorker *)self buffers];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  buffers = [(SHPreRecordingWorker *)self buffers];
+  v4 = [buffers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -160,20 +160,20 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(buffers);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
-        v9 = [(SHPreRecordingWorker *)self audioTapProvider];
-        v10 = [v9 audioRecordingManager];
+        audioTapProvider = [(SHPreRecordingWorker *)self audioTapProvider];
+        audioRecordingManager = [audioTapProvider audioRecordingManager];
         v11 = [v8 tap];
-        [v10 detachTap:v11];
+        [audioRecordingManager detachTap:v11];
 
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [buffers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

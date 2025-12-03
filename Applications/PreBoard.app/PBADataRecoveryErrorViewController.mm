@@ -21,14 +21,14 @@
   [v7 setNumberOfLines:0];
   [v7 setTextAlignment:1];
   [v17 addSubview:v7];
-  v11 = [v7 centerXAnchor];
-  v12 = [v17 centerXAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  centerXAnchor = [v7 centerXAnchor];
+  centerXAnchor2 = [v17 centerXAnchor];
+  v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v13 setActive:1];
 
-  v14 = [v7 centerYAnchor];
-  v15 = [v17 centerYAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:-20.0];
+  centerYAnchor = [v7 centerYAnchor];
+  centerYAnchor2 = [v17 centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:-20.0];
   [v16 setActive:1];
 
   [(PBADataRecoveryErrorViewController *)self setView:v17];

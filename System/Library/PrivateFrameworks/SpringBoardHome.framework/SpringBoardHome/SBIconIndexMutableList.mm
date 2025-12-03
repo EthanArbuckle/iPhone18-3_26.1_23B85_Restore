@@ -1,41 +1,41 @@
 @interface SBIconIndexMutableList
-- (BOOL)containsNode:(id)a3;
-- (BOOL)containsNodeIdentifier:(id)a3;
-- (BOOL)directlyContainsNodeIdentifier:(id)a3;
-- (BOOL)directlyContainsNodeIdentifier:(id)a3 passingTest:(id)a4;
+- (BOOL)containsNode:(id)node;
+- (BOOL)containsNodeIdentifier:(id)identifier;
+- (BOOL)directlyContainsNodeIdentifier:(id)identifier;
+- (BOOL)directlyContainsNodeIdentifier:(id)identifier passingTest:(id)test;
 - (SBIconIndexMutableList)init;
-- (SBIconIndexMutableList)initWithList:(id)a3 copyNodes:(BOOL)a4;
+- (SBIconIndexMutableList)initWithList:(id)list copyNodes:(BOOL)nodes;
 - (SBIconIndexMutableListObserver)observer;
 - (id)containedNodeIdentifiers;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)directlyContainedNodeIdentifier:(id)a3;
-- (id)indexPathsForContainedNodeIdentifier:(id)a3 prefixPath:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)directlyContainedNodeIdentifier:(id)identifier;
+- (id)indexPathsForContainedNodeIdentifier:(id)identifier prefixPath:(id)path;
 - (id)nodes;
-- (id)nodesAlongIndexPath:(id)a3 consumedIndexes:(unint64_t)a4;
-- (id)nodesContainingNodeIdentifier:(id)a3;
-- (void)addNode:(id)a3;
+- (id)nodesAlongIndexPath:(id)path consumedIndexes:(unint64_t)indexes;
+- (id)nodesContainingNodeIdentifier:(id)identifier;
+- (void)addNode:(id)node;
 - (void)dealloc;
-- (void)didAddNode:(id)a3;
-- (void)didAddNodes:(id)a3;
-- (void)didRemoveNode:(id)a3;
-- (void)didRemoveNodes:(id)a3;
-- (void)insertNode:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertNodes:(id)a3 atIndexes:(id)a4;
-- (void)moveNode:(id)a3 toIndex:(unint64_t)a4;
-- (void)moveNodes:(id)a3 toContiguousIndicesStartingAt:(unint64_t)a4;
-- (void)node:(id)a3 didAddContainedNodeIdentifiers:(id)a4;
-- (void)node:(id)a3 didRemoveContainedNodeIdentifiers:(id)a4;
-- (void)nodeDidMoveContainedNodes:(id)a3;
+- (void)didAddNode:(id)node;
+- (void)didAddNodes:(id)nodes;
+- (void)didRemoveNode:(id)node;
+- (void)didRemoveNodes:(id)nodes;
+- (void)insertNode:(id)node atIndex:(unint64_t)index;
+- (void)insertNodes:(id)nodes atIndexes:(id)indexes;
+- (void)moveNode:(id)node toIndex:(unint64_t)index;
+- (void)moveNodes:(id)nodes toContiguousIndicesStartingAt:(unint64_t)at;
+- (void)node:(id)node didAddContainedNodeIdentifiers:(id)identifiers;
+- (void)node:(id)node didRemoveContainedNodeIdentifiers:(id)identifiers;
+- (void)nodeDidMoveContainedNodes:(id)nodes;
 - (void)removeAllNodes;
 - (void)removeLastNode;
-- (void)removeNode:(id)a3;
-- (void)removeNodeAtIndex:(unint64_t)a3;
-- (void)removeNodeIdenticalTo:(id)a3;
-- (void)removeNodesAtIndexes:(id)a3;
-- (void)removeNodesInArray:(id)a3;
-- (void)removeNodesInRange:(_NSRange)a3;
-- (void)replaceNodeAtIndex:(unint64_t)a3 withNode:(id)a4;
-- (void)setNodes:(id)a3;
+- (void)removeNode:(id)node;
+- (void)removeNodeAtIndex:(unint64_t)index;
+- (void)removeNodeIdenticalTo:(id)to;
+- (void)removeNodesAtIndexes:(id)indexes;
+- (void)removeNodesInArray:(id)array;
+- (void)removeNodesInRange:(_NSRange)range;
+- (void)replaceNodeAtIndex:(unint64_t)index withNode:(id)node;
+- (void)setNodes:(id)nodes;
 @end
 
 @implementation SBIconIndexMutableList
@@ -62,16 +62,16 @@
   return v2;
 }
 
-- (SBIconIndexMutableList)initWithList:(id)a3 copyNodes:(BOOL)a4
+- (SBIconIndexMutableList)initWithList:(id)list copyNodes:(BOOL)nodes
 {
-  v4 = a4;
-  v6 = a3;
+  nodesCopy = nodes;
+  listCopy = list;
   v11.receiver = self;
   v11.super_class = SBIconIndexMutableList;
   v7 = [(SBIconIndexMutableList *)&v11 init];
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v6[1] copyItems:v4];
+    v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:listCopy[1] copyItems:nodesCopy];
     nodes = v7->_nodes;
     v7->_nodes = v8;
   }
@@ -117,10 +117,10 @@
   [(SBIconIndexMutableList *)&v8 dealloc];
 }
 
-- (BOOL)containsNodeIdentifier:(id)a3
+- (BOOL)containsNodeIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -141,8 +141,8 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 nodeIdentifier];
-        if ([v11 isEqual:v4])
+        nodeIdentifier = [v10 nodeIdentifier];
+        if ([nodeIdentifier isEqual:identifierCopy])
         {
 
 LABEL_13:
@@ -150,7 +150,7 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v12 = [v10 containsNodeIdentifier:v4];
+        v12 = [v10 containsNodeIdentifier:identifierCopy];
 
         if (v12)
         {
@@ -179,16 +179,16 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)directlyContainsNodeIdentifier:(id)a3
+- (BOOL)directlyContainsNodeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   nodes = self->_nodes;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__SBIconIndexMutableList_directlyContainsNodeIdentifier___block_invoke;
   v8[3] = &unk_1E808AFD8;
-  v9 = v4;
-  v6 = v4;
+  v9 = identifierCopy;
+  v6 = identifierCopy;
   LOBYTE(nodes) = [(NSMutableArray *)nodes bs_containsObjectPassingTest:v8];
 
   return nodes;
@@ -203,19 +203,19 @@ uint64_t __57__SBIconIndexMutableList_directlyContainsNodeIdentifier___block_inv
   return v4;
 }
 
-- (BOOL)directlyContainsNodeIdentifier:(id)a3 passingTest:(id)a4
+- (BOOL)directlyContainsNodeIdentifier:(id)identifier passingTest:(id)test
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  testCopy = test;
   nodes = self->_nodes;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __69__SBIconIndexMutableList_directlyContainsNodeIdentifier_passingTest___block_invoke;
   v12[3] = &unk_1E808B000;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = identifierCopy;
+  v14 = testCopy;
+  v9 = testCopy;
+  v10 = identifierCopy;
   LOBYTE(nodes) = [(NSMutableArray *)nodes bs_containsObjectPassingTest:v12];
 
   return nodes;
@@ -239,15 +239,15 @@ uint64_t __69__SBIconIndexMutableList_directlyContainsNodeIdentifier_passingTest
   return v6;
 }
 
-- (id)directlyContainedNodeIdentifier:(id)a3
+- (id)directlyContainedNodeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   nodes = self->_nodes;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__SBIconIndexMutableList_directlyContainedNodeIdentifier___block_invoke;
   v10[3] = &unk_1E808B028;
-  v6 = v4;
+  v6 = identifierCopy;
   v11 = v6;
   v7 = [(NSMutableArray *)nodes indexOfObjectPassingTest:v10];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -272,10 +272,10 @@ uint64_t __58__SBIconIndexMutableList_directlyContainedNodeIdentifier___block_in
   return v4;
 }
 
-- (id)nodesContainingNodeIdentifier:(id)a3
+- (id)nodesContainingNodeIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -296,8 +296,8 @@ uint64_t __58__SBIconIndexMutableList_directlyContainedNodeIdentifier___block_in
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 nodeIdentifier];
-        if ([v11 isEqual:v4] & 1) != 0 || (objc_msgSend(v10, "containsNodeIdentifier:", v4))
+        nodeIdentifier = [v10 nodeIdentifier];
+        if ([nodeIdentifier isEqual:identifierCopy] & 1) != 0 || (objc_msgSend(v10, "containsNodeIdentifier:", identifierCopy))
         {
           v12 = [MEMORY[0x1E695DFA8] setWithObject:v10];
 
@@ -350,12 +350,12 @@ LABEL_13:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 nodeIdentifier];
-        [v3 addObject:v10];
-        v11 = [v9 containedNodeIdentifiers];
-        if (v11)
+        nodeIdentifier = [v9 nodeIdentifier];
+        [v3 addObject:nodeIdentifier];
+        containedNodeIdentifiers = [v9 containedNodeIdentifiers];
+        if (containedNodeIdentifiers)
         {
-          [v3 unionSet:v11];
+          [v3 unionSet:containedNodeIdentifiers];
         }
       }
 
@@ -368,10 +368,10 @@ LABEL_13:
   return v3;
 }
 
-- (id)indexPathsForContainedNodeIdentifier:(id)a3 prefixPath:(id)a4
+- (id)indexPathsForContainedNodeIdentifier:(id)identifier prefixPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -383,10 +383,10 @@ LABEL_13:
   v16[1] = 3221225472;
   v16[2] = __74__SBIconIndexMutableList_indexPathsForContainedNodeIdentifier_prefixPath___block_invoke;
   v16[3] = &unk_1E808B050;
-  v9 = v6;
+  v9 = identifierCopy;
   v17 = v9;
   v19 = &v20;
-  v10 = v7;
+  v10 = pathCopy;
   v18 = v10;
   [(NSMutableArray *)nodes enumerateObjectsUsingBlock:v16];
   v11 = v21[5];
@@ -457,74 +457,74 @@ void __74__SBIconIndexMutableList_indexPathsForContainedNodeIdentifier_prefixPat
 LABEL_11:
 }
 
-- (id)nodesAlongIndexPath:(id)a3 consumedIndexes:(unint64_t)a4
+- (id)nodesAlongIndexPath:(id)path consumedIndexes:(unint64_t)indexes
 {
-  v6 = a3;
-  if ([v6 length] <= a4 || (v7 = objc_msgSend(v6, "indexAtPosition:", a4), v7 >= -[SBIconIndexMutableList count](self, "count")))
+  pathCopy = path;
+  if ([pathCopy length] <= indexes || (v7 = objc_msgSend(pathCopy, "indexAtPosition:", indexes), v7 >= -[SBIconIndexMutableList count](self, "count")))
   {
-    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4 + 1];
+    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:indexes + 1];
   }
 
   else
   {
     v8 = [(SBIconIndexMutableList *)self nodeAtIndex:v7];
-    v9 = [v8 nodesAlongIndexPath:v6 consumedIndexes:a4 + 1];
+    v9 = [v8 nodesAlongIndexPath:pathCopy consumedIndexes:indexes + 1];
   }
 
   return v9;
 }
 
-- (BOOL)containsNode:(id)a3
+- (BOOL)containsNode:(id)node
 {
-  v4 = [a3 nodeIdentifier];
-  LOBYTE(self) = [(SBIconIndexMutableList *)self containsNodeIdentifier:v4];
+  nodeIdentifier = [node nodeIdentifier];
+  LOBYTE(self) = [(SBIconIndexMutableList *)self containsNodeIdentifier:nodeIdentifier];
 
   return self;
 }
 
-- (void)insertNode:(id)a3 atIndex:(unint64_t)a4
+- (void)insertNode:(id)node atIndex:(unint64_t)index
 {
   nodes = self->_nodes;
-  v7 = a3;
-  [(NSMutableArray *)nodes insertObject:v7 atIndex:a4];
-  [(SBIconIndexMutableList *)self didAddNode:v7];
+  nodeCopy = node;
+  [(NSMutableArray *)nodes insertObject:nodeCopy atIndex:index];
+  [(SBIconIndexMutableList *)self didAddNode:nodeCopy];
 }
 
-- (void)insertNodes:(id)a3 atIndexes:(id)a4
+- (void)insertNodes:(id)nodes atIndexes:(id)indexes
 {
   nodes = self->_nodes;
-  v7 = a3;
-  [(NSMutableArray *)nodes insertObjects:v7 atIndexes:a4];
-  [(SBIconIndexMutableList *)self didAddNodes:v7];
+  nodesCopy = nodes;
+  [(NSMutableArray *)nodes insertObjects:nodesCopy atIndexes:indexes];
+  [(SBIconIndexMutableList *)self didAddNodes:nodesCopy];
 }
 
-- (void)addNode:(id)a3
+- (void)addNode:(id)node
 {
-  v4 = a3;
-  [(SBIconIndexMutableList *)self insertNode:v4 atIndex:[(SBIconIndexMutableList *)self count]];
+  nodeCopy = node;
+  [(SBIconIndexMutableList *)self insertNode:nodeCopy atIndex:[(SBIconIndexMutableList *)self count]];
 }
 
-- (void)replaceNodeAtIndex:(unint64_t)a3 withNode:(id)a4
+- (void)replaceNodeAtIndex:(unint64_t)index withNode:(id)node
 {
-  v6 = a4;
-  v7 = [(SBIconIndexMutableList *)self nodeAtIndex:a3];
-  [(NSMutableArray *)self->_nodes replaceObjectAtIndex:a3 withObject:v6];
-  [(SBIconIndexMutableList *)self didAddNode:v6];
+  nodeCopy = node;
+  v7 = [(SBIconIndexMutableList *)self nodeAtIndex:index];
+  [(NSMutableArray *)self->_nodes replaceObjectAtIndex:index withObject:nodeCopy];
+  [(SBIconIndexMutableList *)self didAddNode:nodeCopy];
 
   [(SBIconIndexMutableList *)self didRemoveNode:v7];
 }
 
-- (void)removeNode:(id)a3
+- (void)removeNode:(id)node
 {
-  v4 = a3;
-  if ([(NSMutableArray *)self->_nodes containsObject:v4])
+  nodeCopy = node;
+  if ([(NSMutableArray *)self->_nodes containsObject:nodeCopy])
   {
     nodes = self->_nodes;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __37__SBIconIndexMutableList_removeNode___block_invoke;
     v9[3] = &unk_1E808B028;
-    v6 = v4;
+    v6 = nodeCopy;
     v10 = v6;
     v7 = [(NSMutableArray *)nodes indexesOfObjectsPassingTest:v9];
     v8 = [(NSMutableArray *)self->_nodes objectsAtIndexes:v7];
@@ -533,53 +533,53 @@ LABEL_11:
   }
 }
 
-- (void)removeNodeIdenticalTo:(id)a3
+- (void)removeNodeIdenticalTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ([(NSMutableArray *)self->_nodes containsObject:?])
   {
-    [(NSMutableArray *)self->_nodes removeObjectIdenticalTo:v4];
-    [(SBIconIndexMutableList *)self didRemoveNode:v4];
+    [(NSMutableArray *)self->_nodes removeObjectIdenticalTo:toCopy];
+    [(SBIconIndexMutableList *)self didRemoveNode:toCopy];
   }
 }
 
-- (void)removeNodeAtIndex:(unint64_t)a3
+- (void)removeNodeAtIndex:(unint64_t)index
 {
-  v4 = [MEMORY[0x1E696AC90] indexSetWithIndex:a3];
+  v4 = [MEMORY[0x1E696AC90] indexSetWithIndex:index];
   [(SBIconIndexMutableList *)self removeNodesAtIndexes:v4];
 }
 
-- (void)removeNodesAtIndexes:(id)a3
+- (void)removeNodesAtIndexes:(id)indexes
 {
-  if (a3)
+  if (indexes)
   {
     nodes = self->_nodes;
-    v5 = a3;
-    v6 = [(NSMutableArray *)nodes objectsAtIndexes:v5];
-    [(NSMutableArray *)self->_nodes removeObjectsAtIndexes:v5];
+    indexesCopy = indexes;
+    v6 = [(NSMutableArray *)nodes objectsAtIndexes:indexesCopy];
+    [(NSMutableArray *)self->_nodes removeObjectsAtIndexes:indexesCopy];
 
     [(SBIconIndexMutableList *)self didRemoveNodes:v6];
   }
 }
 
-- (void)removeNodesInRange:(_NSRange)a3
+- (void)removeNodesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [(NSMutableArray *)self->_nodes subarrayWithRange:?];
   [(NSMutableArray *)self->_nodes removeObjectsInRange:location, length];
   [(SBIconIndexMutableList *)self didRemoveNodes:v6];
 }
 
-- (void)removeNodesInArray:(id)a3
+- (void)removeNodesInArray:(id)array
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [arrayCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -591,14 +591,14 @@ LABEL_11:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrayCopy);
         }
 
         [(SBIconIndexMutableList *)self removeNode:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [arrayCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -607,9 +607,9 @@ LABEL_11:
 
 - (void)removeLastNode
 {
-  v3 = [(NSMutableArray *)self->_nodes lastObject];
+  lastObject = [(NSMutableArray *)self->_nodes lastObject];
   [(NSMutableArray *)self->_nodes removeLastObject];
-  [(SBIconIndexMutableList *)self didRemoveNode:v3];
+  [(SBIconIndexMutableList *)self didRemoveNode:lastObject];
 }
 
 - (void)removeAllNodes
@@ -619,10 +619,10 @@ LABEL_11:
   [(SBIconIndexMutableList *)self removeNodesInRange:0, v3];
 }
 
-- (void)setNodes:(id)a3
+- (void)setNodes:(id)nodes
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nodesCopy = nodes;
   v5 = self->_nodes;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   nodes = self->_nodes;
@@ -632,7 +632,7 @@ LABEL_11:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v4;
+  v8 = nodesCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -670,61 +670,61 @@ LABEL_11:
   [(SBIconIndexMutableList *)self didRemoveNodes:v5];
 }
 
-- (void)moveNode:(id)a3 toIndex:(unint64_t)a4
+- (void)moveNode:(id)node toIndex:(unint64_t)index
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  nodeCopy = node;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v9 count:1];
+  nodeCopy2 = node;
+  v8 = [v6 arrayWithObjects:&nodeCopy count:1];
 
-  [(SBIconIndexMutableList *)self moveNodes:v8 toContiguousIndicesStartingAt:a4, v9, v10];
+  [(SBIconIndexMutableList *)self moveNodes:v8 toContiguousIndicesStartingAt:index, nodeCopy, v10];
 }
 
-- (void)moveNodes:(id)a3 toContiguousIndicesStartingAt:(unint64_t)a4
+- (void)moveNodes:(id)nodes toContiguousIndicesStartingAt:(unint64_t)at
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nodesCopy = nodes;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v39 objects:v45 count:16];
+  v7 = [nodesCopy countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
     v10 = *v40;
-    v11 = a4;
+    atCopy = at;
     do
     {
       v12 = 0;
-      v13 = v11;
+      v13 = atCopy;
       do
       {
         if (*v40 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(nodesCopy);
         }
 
         v9 |= v13++ != [(SBIconIndexMutableList *)self indexOfNode:*(*(&v39 + 1) + 8 * v12++)];
       }
 
       while (v8 != v12);
-      v11 += v8;
-      v8 = [v6 countByEnumeratingWithState:&v39 objects:v45 count:16];
+      atCopy += v8;
+      v8 = [nodesCopy countByEnumeratingWithState:&v39 objects:v45 count:16];
     }
 
     while (v8);
     if (v9)
     {
       v14 = [(NSMutableArray *)self->_nodes count];
-      v15 = [v6 count];
+      v15 = [nodesCopy count];
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v16 = v6;
+      v16 = nodesCopy;
       v17 = [v16 countByEnumeratingWithState:&v35 objects:v44 count:16];
       if (v17)
       {
@@ -759,7 +759,7 @@ LABEL_11:
         v23 = v22;
         v24 = v14 - v15;
         v25 = *v32;
-        v26 = a4;
+        atCopy2 = at;
         do
         {
           for (j = 0; j != v23; ++j)
@@ -771,14 +771,14 @@ LABEL_11:
 
             v28 = *(*(&v31 + 1) + 8 * j);
             nodes = self->_nodes;
-            if (v24 <= a4)
+            if (v24 <= at)
             {
               [(NSMutableArray *)nodes addObject:v28, v31];
             }
 
             else
             {
-              [(NSMutableArray *)nodes insertObject:v28 atIndex:v26++];
+              [(NSMutableArray *)nodes insertObject:v28 atIndex:atCopy2++];
             }
           }
 
@@ -794,23 +794,23 @@ LABEL_11:
   }
 }
 
-- (void)didAddNode:(id)a3
+- (void)didAddNode:(id)node
 {
-  v4 = a3;
-  [v4 addNodeObserver:self];
-  v5 = [v4 containedNodeIdentifiers];
-  [(SBIconIndexMutableList *)self node:v4 didAddContainedNodeIdentifiers:v5];
+  nodeCopy = node;
+  [nodeCopy addNodeObserver:self];
+  containedNodeIdentifiers = [nodeCopy containedNodeIdentifiers];
+  [(SBIconIndexMutableList *)self node:nodeCopy didAddContainedNodeIdentifiers:containedNodeIdentifiers];
 }
 
-- (void)didAddNodes:(id)a3
+- (void)didAddNodes:(id)nodes
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nodesCopy = nodes;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [nodesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -822,37 +822,37 @@ LABEL_11:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodesCopy);
         }
 
         [(SBIconIndexMutableList *)self didAddNode:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [nodesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)didRemoveNode:(id)a3
+- (void)didRemoveNode:(id)node
 {
-  v4 = a3;
-  [v4 removeNodeObserver:self];
-  v5 = [v4 containedNodeIdentifiers];
-  [(SBIconIndexMutableList *)self node:v4 didRemoveContainedNodeIdentifiers:v5];
+  nodeCopy = node;
+  [nodeCopy removeNodeObserver:self];
+  containedNodeIdentifiers = [nodeCopy containedNodeIdentifiers];
+  [(SBIconIndexMutableList *)self node:nodeCopy didRemoveContainedNodeIdentifiers:containedNodeIdentifiers];
 }
 
-- (void)didRemoveNodes:(id)a3
+- (void)didRemoveNodes:(id)nodes
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nodesCopy = nodes;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [nodesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -864,46 +864,46 @@ LABEL_11:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodesCopy);
         }
 
         [(SBIconIndexMutableList *)self didRemoveNode:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [nodesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)node:(id)a3 didAddContainedNodeIdentifiers:(id)a4
+- (void)node:(id)node didAddContainedNodeIdentifiers:(id)identifiers
 {
-  v5 = a4;
+  identifiersCopy = identifiers;
   WeakRetained = objc_loadWeakRetained(&self->_observer);
-  [WeakRetained list:self didAddContainedNodeIdentifiers:v5];
+  [WeakRetained list:self didAddContainedNodeIdentifiers:identifiersCopy];
 }
 
-- (void)node:(id)a3 didRemoveContainedNodeIdentifiers:(id)a4
+- (void)node:(id)node didRemoveContainedNodeIdentifiers:(id)identifiers
 {
-  v5 = a4;
+  identifiersCopy = identifiers;
   WeakRetained = objc_loadWeakRetained(&self->_observer);
-  [WeakRetained list:self didRemoveContainedNodeIdentifiers:v5];
+  [WeakRetained list:self didRemoveContainedNodeIdentifiers:identifiersCopy];
 }
 
-- (void)nodeDidMoveContainedNodes:(id)a3
+- (void)nodeDidMoveContainedNodes:(id)nodes
 {
   WeakRetained = objc_loadWeakRetained(&self->_observer);
   [WeakRetained listDidMoveNodes:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSMutableArray *)self->_nodes mutableCopyWithZone:a3];
+    v6 = [(NSMutableArray *)self->_nodes mutableCopyWithZone:zone];
     v7 = v5[1];
     v5[1] = v6;
 

@@ -1,6 +1,6 @@
 @interface DisplayModalAlert
-- (_TtC17ContinuityDisplay17DisplayModalAlert)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_disconnectPressedWithSender:(id)a3;
+- (_TtC17ContinuityDisplay17DisplayModalAlert)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_disconnectPressedWithSender:(id)sender;
 - (void)loadView;
 @end
 
@@ -8,25 +8,25 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001E54C();
 }
 
-- (void)_disconnectPressedWithSender:(id)a3
+- (void)_disconnectPressedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_10001EF50();
 }
 
-- (_TtC17ContinuityDisplay17DisplayModalAlert)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17ContinuityDisplay17DisplayModalAlert)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_100057A50();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_10001F010();
 }
 

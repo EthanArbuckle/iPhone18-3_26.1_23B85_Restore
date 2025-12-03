@@ -1,19 +1,19 @@
 @interface TUIAXAttributes
-- (TUIAXAttributes)initWithAXAttributes:(id)a3;
+- (TUIAXAttributes)initWithAXAttributes:(id)attributes;
 @end
 
 @implementation TUIAXAttributes
 
-- (TUIAXAttributes)initWithAXAttributes:(id)a3
+- (TUIAXAttributes)initWithAXAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v27.receiver = self;
   v27.super_class = TUIAXAttributes;
   v5 = [(TUIAXAttributes *)&v27 init];
   if (v5)
   {
-    *&v5->_flags = *&v5->_flags & 0xFFFE | [v4 axDisabled];
-    if ([v4 isAXElement])
+    *&v5->_flags = *&v5->_flags & 0xFFFE | [attributesCopy axDisabled];
+    if ([attributesCopy isAXElement])
     {
       v6 = 2;
     }
@@ -24,7 +24,7 @@
     }
 
     *&v5->_flags = *&v5->_flags & 0xFFFD | v6;
-    if ([v4 axTouchContainer])
+    if ([attributesCopy axTouchContainer])
     {
       v7 = 4;
     }
@@ -35,7 +35,7 @@
     }
 
     *&v5->_flags = *&v5->_flags & 0xFFFB | v7;
-    if ([v4 axButton])
+    if ([attributesCopy axButton])
     {
       v8 = 8;
     }
@@ -46,7 +46,7 @@
     }
 
     *&v5->_flags = *&v5->_flags & 0xFFF7 | v8;
-    if ([v4 axImage])
+    if ([attributesCopy axImage])
     {
       v9 = 16;
     }
@@ -57,7 +57,7 @@
     }
 
     *&v5->_flags = *&v5->_flags & 0xFFEF | v9;
-    if ([v4 axHeading])
+    if ([attributesCopy axHeading])
     {
       v10 = 32;
     }
@@ -68,7 +68,7 @@
     }
 
     *&v5->_flags = *&v5->_flags & 0xFFDF | v10;
-    if ([v4 axAdjustable])
+    if ([attributesCopy axAdjustable])
     {
       v11 = 64;
     }
@@ -79,7 +79,7 @@
     }
 
     *&v5->_flags = *&v5->_flags & 0xFFBF | v11;
-    if ([v4 axToggle])
+    if ([attributesCopy axToggle])
     {
       v12 = 128;
     }
@@ -90,7 +90,7 @@
     }
 
     *&v5->_flags = *&v5->_flags & 0xFF7F | v12;
-    if ([v4 axStaticText])
+    if ([attributesCopy axStaticText])
     {
       v13 = 256;
     }
@@ -101,23 +101,23 @@
     }
 
     *&v5->_flags = *&v5->_flags & 0xFEFF | v13;
-    v14 = [v4 axIdentifier];
-    v15 = [v14 copy];
+    axIdentifier = [attributesCopy axIdentifier];
+    v15 = [axIdentifier copy];
     axIdentifier = v5->_axIdentifier;
     v5->_axIdentifier = v15;
 
-    v17 = [v4 axLabel];
-    v18 = [v17 copy];
+    axLabel = [attributesCopy axLabel];
+    v18 = [axLabel copy];
     axLabel = v5->_axLabel;
     v5->_axLabel = v18;
 
-    v20 = [v4 axValue];
-    v21 = [v20 copy];
+    axValue = [attributesCopy axValue];
+    v21 = [axValue copy];
     axValue = v5->_axValue;
     v5->_axValue = v21;
 
-    v23 = [v4 axHint];
-    v24 = [v23 copy];
+    axHint = [attributesCopy axHint];
+    v24 = [axHint copy];
     axHint = v5->_axHint;
     v5->_axHint = v24;
   }

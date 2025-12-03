@@ -1,9 +1,9 @@
 @interface CKMessageEditingViewController
 - (BOOL)becomeFirstResponder;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)messageEditingViewBalloonHasTail;
 - (CGRect)editedMessageAchorPosition;
-- (CKMessageEditingViewController)initWithTransitionContext:(id)a3 conversation:(id)a4;
+- (CKMessageEditingViewController)initWithTransitionContext:(id)context conversation:(id)conversation;
 - (CKMessageEditingViewControllerInteractionDelegate)interactionDelegate;
 - (CKTranscriptOverlayTransitionDelegate)transcriptOverlayTransitionDelegate;
 - (UIEdgeInsets)messageEditingViewDismissAnimationContentInsets;
@@ -11,50 +11,50 @@
 - (char)messageEditingColorType;
 - (double)messageEditingViewDismissAnimationBalloonMaxWidth;
 - (id)messageEditingColor;
-- (id)textEffectCoordinator:(id)a3 textViewForTextViewIdentifier:(id)a4;
-- (id)visibleTextViewIdentifiersFor:(id)a3;
+- (id)textEffectCoordinator:(id)coordinator textViewForTextViewIdentifier:(id)identifier;
+- (id)visibleTextViewIdentifiersFor:(id)for;
 - (void)_animateIn;
-- (void)_animateOutWithState:(int64_t)a3;
+- (void)_animateOutWithState:(int64_t)state;
 - (void)_applyProofreadingIfNecessary;
 - (void)_informDelegateOfUpdatedBalloonViewFrame;
 - (void)_requestDismissal;
 - (void)configureForInitialAppearance;
 - (void)dismissAndRejectChanges;
 - (void)dismissIfNoChanges;
-- (void)messageEditingView:(id)a3 didChangeTextAnimationInRange:(_NSRange)a4;
-- (void)messageEditingViewConfirmButtonSelected:(id)a3;
-- (void)messageEditingViewDidUpdateBalloonViewContent:(id)a3;
-- (void)messageEditingViewRejectButtonSelected:(id)a3;
-- (void)messageEditingViewWritingToolsDidEnd:(id)a3;
-- (void)messageEditingViewWritingToolsWillBegin:(id)a3;
-- (void)modifySelectedTextByTogglingTextEffectType:(int64_t)a3;
-- (void)modifySelectedTextByTogglingTextStyle:(unint64_t)a3;
+- (void)messageEditingView:(id)view didChangeTextAnimationInRange:(_NSRange)range;
+- (void)messageEditingViewConfirmButtonSelected:(id)selected;
+- (void)messageEditingViewDidUpdateBalloonViewContent:(id)content;
+- (void)messageEditingViewRejectButtonSelected:(id)selected;
+- (void)messageEditingViewWritingToolsDidEnd:(id)end;
+- (void)messageEditingViewWritingToolsWillBegin:(id)begin;
+- (void)modifySelectedTextByTogglingTextEffectType:(int64_t)type;
+- (void)modifySelectedTextByTogglingTextStyle:(unint64_t)style;
 - (void)transcriptContentInsetsDidChange;
-- (void)transcriptOverlayTapGestureRecognized:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)transcriptOverlayTapGestureRecognized:(id)recognized;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CKMessageEditingViewController
 
-- (void)modifySelectedTextByTogglingTextEffectType:(int64_t)a3
+- (void)modifySelectedTextByTogglingTextEffectType:(int64_t)type
 {
-  v4 = [(CKMessageEditingViewController *)self messageEditingView];
-  [v4 modifySelectedTextByTogglingTextEffectType:a3];
+  messageEditingView = [(CKMessageEditingViewController *)self messageEditingView];
+  [messageEditingView modifySelectedTextByTogglingTextEffectType:type];
 }
 
-- (void)modifySelectedTextByTogglingTextStyle:(unint64_t)a3
+- (void)modifySelectedTextByTogglingTextStyle:(unint64_t)style
 {
-  v4 = [(CKMessageEditingViewController *)self messageEditingView];
-  [v4 modifySelectedTextByTogglingTextStyle:a3];
+  messageEditingView = [(CKMessageEditingViewController *)self messageEditingView];
+  [messageEditingView modifySelectedTextByTogglingTextStyle:style];
 }
 
-- (CKMessageEditingViewController)initWithTransitionContext:(id)a3 conversation:(id)a4
+- (CKMessageEditingViewController)initWithTransitionContext:(id)context conversation:(id)conversation
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  conversationCopy = conversation;
   v18.receiver = self;
   v18.super_class = CKMessageEditingViewController;
   v9 = [(CKMessageEditingViewController *)&v18 init];
@@ -62,15 +62,15 @@
   if (v9)
   {
     v9->_isInitialLoad = 1;
-    objc_storeStrong(&v9->_transitionContext, a3);
+    objc_storeStrong(&v9->_transitionContext, context);
     v11 = *(MEMORY[0x1E695F058] + 16);
     v10->_editedMessageAchorPosition.origin = *MEMORY[0x1E695F058];
     v10->_editedMessageAchorPosition.size = v11;
-    objc_storeStrong(&v10->_conversation, a4);
-    v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v13 = [v12 isExpressiveTextEnabled];
+    objc_storeStrong(&v10->_conversation, conversation);
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-    if (v13)
+    if (isExpressiveTextEnabled)
     {
       if (!+[_TtC7ChatKit23CKTextEffectCoordinator messageEditingTextEffectCoordinationDisabled])
       {
@@ -92,45 +92,45 @@
   v50.receiver = self;
   v50.super_class = CKMessageEditingViewController;
   [(CKMessageEditingViewController *)&v50 viewDidLoad];
-  v3 = [(CKMessageEditingViewController *)self view];
-  [v3 setBackgroundColor:0];
+  view = [(CKMessageEditingViewController *)self view];
+  [view setBackgroundColor:0];
 
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   v6 = 0x1E69DD250;
-  if (!v5)
+  if (!isEntryViewRefreshEnabled)
   {
     v6 = 0x1E69DD298;
   }
 
   v7 = objc_alloc(*v6);
-  v8 = [(CKMessageEditingViewController *)self view];
-  [v8 bounds];
+  view2 = [(CKMessageEditingViewController *)self view];
+  [view2 bounds];
   v9 = [v7 initWithFrame:?];
 
-  v10 = [(CKMessageEditingViewController *)self view];
-  [v10 insertSubview:v9 atIndex:0];
+  view3 = [(CKMessageEditingViewController *)self view];
+  [view3 insertSubview:v9 atIndex:0];
 
   [(CKMessageEditingViewController *)self setTranscriptOverlayView:v9];
   v11 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_transcriptOverlayTapGestureRecognized_];
   [v11 setDelegate:self];
   [v9 addGestureRecognizer:v11];
   [(CKMessageEditingViewController *)self setTapGestureRecognizer:v11];
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isAutomaticOutgoingTranslationEnabled];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isAutomaticOutgoingTranslationEnabled = [mEMORY[0x1E69A8070]2 isAutomaticOutgoingTranslationEnabled];
 
   v14 = 0;
   v15 = 0;
-  if (v13)
+  if (isAutomaticOutgoingTranslationEnabled)
   {
-    v16 = [(CKMessageEditingViewController *)self conversation];
-    v17 = [v16 chat];
-    v18 = [v17 translationLanguageCode];
+    conversation = [(CKMessageEditingViewController *)self conversation];
+    chat = [conversation chat];
+    translationLanguageCode = [chat translationLanguageCode];
 
-    if ([v18 length] && (-[CKMessageEditingViewController conversation](self, "conversation"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "chat"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isAutomaticTranslationEnabled"), v20, v19, v21))
+    if ([translationLanguageCode length] && (-[CKMessageEditingViewController conversation](self, "conversation"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "chat"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isAutomaticTranslationEnabled"), v20, v19, v21))
     {
-      v15 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v18];
+      v15 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:translationLanguageCode];
     }
 
     else
@@ -138,13 +138,13 @@
       v15 = 0;
     }
 
-    v22 = [(CKMessageEditingViewController *)self conversation];
-    v23 = [v22 chat];
-    v24 = [v23 userTranslationLanguageCode];
+    conversation2 = [(CKMessageEditingViewController *)self conversation];
+    chat2 = [conversation2 chat];
+    userTranslationLanguageCode = [chat2 userTranslationLanguageCode];
 
-    if ([v24 length] && (-[CKMessageEditingViewController conversation](self, "conversation"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "chat"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "isAutomaticTranslationEnabled"), v26, v25, v27))
+    if ([userTranslationLanguageCode length] && (-[CKMessageEditingViewController conversation](self, "conversation"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "chat"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "isAutomaticTranslationEnabled"), v26, v25, v27))
     {
-      v14 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v24];
+      v14 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:userTranslationLanguageCode];
     }
 
     else
@@ -155,53 +155,53 @@
 
   v28 = [[CKMessageEditingView alloc] initWithMessageEditingViewDelegate:self translationLanguage:v15 toTranslationLanguage:v14];
   [(CKMessageEditingView *)v28 setMessageEditingViewDelegate:self];
-  v29 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v30 = [v29 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled2 = [mEMORY[0x1E69A8070]3 isEntryViewRefreshEnabled];
 
-  if (v30)
+  if (isEntryViewRefreshEnabled2)
   {
     [v9 addSubview:v28];
   }
 
   else
   {
-    v31 = [v9 contentView];
-    [v31 addSubview:v28];
+    contentView = [v9 contentView];
+    [contentView addSubview:v28];
   }
 
   v49 = v15;
   [(CKMessageEditingViewController *)self setMessageEditingView:v28];
-  v32 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v33 = [v32 isExpressiveTextEnabled];
+  mEMORY[0x1E69A8070]4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070]4 isExpressiveTextEnabled];
 
-  if (v33)
+  if (isExpressiveTextEnabled)
   {
-    v34 = [(CKMessageEditingViewController *)self conversation];
-    v35 = [v34 chat];
-    v36 = [v35 supportsCapabilities:0x100000];
+    conversation3 = [(CKMessageEditingViewController *)self conversation];
+    chat3 = [conversation3 chat];
+    v36 = [chat3 supportsCapabilities:0x100000];
 
-    v37 = [(CKMessageEditingViewController *)self messageEditingView];
-    v38 = [v37 messageEditingBalloonView];
-    v39 = [v38 messageEditingBalloonTextView];
-    [v39 setExpressiveTextEnabled:v36];
+    messageEditingView = [(CKMessageEditingViewController *)self messageEditingView];
+    messageEditingBalloonView = [messageEditingView messageEditingBalloonView];
+    messageEditingBalloonTextView = [messageEditingBalloonView messageEditingBalloonTextView];
+    [messageEditingBalloonTextView setExpressiveTextEnabled:v36];
   }
 
   v40 = [CKMentionsController alloc];
-  v41 = [(CKMessageEditingViewController *)self messageEditingView];
-  v42 = [v41 messageEditingBalloonView];
-  v43 = [v42 messageEditingBalloonTextView];
-  v44 = [(CKMessageEditingViewController *)self conversation];
-  v45 = [(CKMentionsController *)v40 initWithEntryTextView:v43 conversation:v44];
+  messageEditingView2 = [(CKMessageEditingViewController *)self messageEditingView];
+  messageEditingBalloonView2 = [messageEditingView2 messageEditingBalloonView];
+  messageEditingBalloonTextView2 = [messageEditingBalloonView2 messageEditingBalloonTextView];
+  conversation4 = [(CKMessageEditingViewController *)self conversation];
+  v45 = [(CKMentionsController *)v40 initWithEntryTextView:messageEditingBalloonTextView2 conversation:conversation4];
   [(CKMessageEditingViewController *)self setMentionsController:v45];
 
-  v46 = [(CKMessageEditingViewController *)self mentionsController];
-  [v46 deferredSetup];
+  mentionsController = [(CKMessageEditingViewController *)self mentionsController];
+  [mentionsController deferredSetup];
 
-  v47 = [(CKMessageEditingViewController *)self view];
-  [v47 setNeedsLayout];
+  view4 = [(CKMessageEditingViewController *)self view];
+  [view4 setNeedsLayout];
 
-  v48 = [(CKMessageEditingViewController *)self view];
-  [v48 layoutIfNeeded];
+  view5 = [(CKMessageEditingViewController *)self view];
+  [view5 layoutIfNeeded];
 }
 
 - (void)viewDidLayoutSubviews
@@ -209,22 +209,22 @@
   v61.receiver = self;
   v61.super_class = CKMessageEditingViewController;
   [(CKMessageEditingViewController *)&v61 viewDidLayoutSubviews];
-  v3 = [(CKMessageEditingViewController *)self view];
-  [v3 bounds];
+  view = [(CKMessageEditingViewController *)self view];
+  [view bounds];
   v5 = v4;
   y = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKMessageEditingViewController *)self messageEditingView];
-  [v12 frame];
+  messageEditingView = [(CKMessageEditingViewController *)self messageEditingView];
+  [messageEditingView frame];
   v58 = v14;
   v59 = v13;
   v56 = v16;
   v57 = v15;
 
-  v17 = [(CKMessageEditingViewController *)self transcriptOverlayView];
-  [v17 setFrame:{v5, y, v9, v11}];
+  transcriptOverlayView = [(CKMessageEditingViewController *)self transcriptOverlayView];
+  [transcriptOverlayView setFrame:{v5, y, v9, v11}];
 
   if ([(CKMessageEditingViewController *)self isInitialLoad])
   {
@@ -265,8 +265,8 @@
   [v27 messageEditingKeyboardToBalloonMinimumPadding];
   v29 = v28;
 
-  v30 = [(CKMessageEditingViewController *)self interactionDelegate];
-  [v30 transcriptContentInsetsForMessageEditingViewController:self];
+  interactionDelegate = [(CKMessageEditingViewController *)self interactionDelegate];
+  [interactionDelegate transcriptContentInsetsForMessageEditingViewController:self];
   v32 = v31;
   v34 = v33;
 
@@ -286,8 +286,8 @@
   v39 = CGRectGetMaxY(v63) - v34;
   v40 = v39 - v54;
   v41 = v39 - v29;
-  v42 = [(CKMessageEditingViewController *)self messageEditingView];
-  [v42 sizeThatFits:{v9, v11}];
+  messageEditingView2 = [(CKMessageEditingViewController *)self messageEditingView];
+  [messageEditingView2 sizeThatFits:{v9, v11}];
   v44 = v43;
 
   MaxY = CGRectGetMaxY(v55);
@@ -314,11 +314,11 @@
   }
 
   v49 = v48 - v47;
-  v50 = [(CKMessageEditingViewController *)self messageEditingView];
-  [v50 setFrame:{v20, v47, v9, v49}];
+  messageEditingView3 = [(CKMessageEditingViewController *)self messageEditingView];
+  [messageEditingView3 setFrame:{v20, v47, v9, v49}];
 
-  v51 = [(CKMessageEditingViewController *)self messageEditingView];
-  [v51 frame];
+  messageEditingView4 = [(CKMessageEditingViewController *)self messageEditingView];
+  [messageEditingView4 frame];
   v65.origin.y = v58;
   v65.origin.x = v59;
   v65.size.height = v56;
@@ -329,10 +329,10 @@
 
   else
   {
-    v52 = [(CKMessageEditingViewController *)self messageEditingView];
-    v53 = [v52 firstLayoutPassCompleted];
+    messageEditingView5 = [(CKMessageEditingViewController *)self messageEditingView];
+    firstLayoutPassCompleted = [messageEditingView5 firstLayoutPassCompleted];
 
-    if (v53)
+    if (firstLayoutPassCompleted)
     {
       [(CKMessageEditingViewController *)self _informDelegateOfUpdatedBalloonViewFrame];
     }
@@ -350,41 +350,41 @@ void __55__CKMessageEditingViewController_viewDidLayoutSubviews__block_invoke(ui
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(CKMessageEditingViewController *)self messageEditingView];
-  v3 = [v2 becomeFirstResponder];
+  messageEditingView = [(CKMessageEditingViewController *)self messageEditingView];
+  becomeFirstResponder = [messageEditingView becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (void)configureForInitialAppearance
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = [a2 visibleChatItemToFrameMap];
+  visibleChatItemToFrameMap = [a2 visibleChatItemToFrameMap];
   v6 = 138412546;
-  v7 = a1;
+  selfCopy = self;
   v8 = 2112;
-  v9 = v5;
+  v9 = visibleChatItemToFrameMap;
   _os_log_error_impl(&dword_19020E000, a3, OS_LOG_TYPE_ERROR, "Anchor chat item %@ has no frame in the visible chat item map for inital layout. Map: %@", &v6, 0x16u);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CKMessageEditingViewController;
-  [(CKMessageEditingViewController *)&v5 viewDidAppear:a3];
+  [(CKMessageEditingViewController *)&v5 viewDidAppear:appear];
   [(CKMessageEditingViewController *)self _animateIn];
-  v4 = [(CKMessageEditingViewController *)self mentionsController];
-  [v4 checkForMentions];
+  mentionsController = [(CKMessageEditingViewController *)self mentionsController];
+  [mentionsController checkForMentions];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v17.receiver = self;
   v17.super_class = CKMessageEditingViewController;
-  [(CKMessageEditingViewController *)&v17 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(CKMessageEditingViewController *)&v17 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(CKMessageEditingViewController *)self editedMessageAchorPosition];
   if (!CGRectIsEmpty(v18) && ![(CKMessageEditingViewController *)self isInitialLoad])
   {
@@ -400,7 +400,7 @@ void __55__CKMessageEditingViewController_viewDidLayoutSubviews__block_invoke(ui
       v15[1] = *&height;
       v9 = _Block_copy(aBlock);
       v10 = v9;
-      if (v7)
+      if (coordinatorCopy)
       {
         v11[0] = MEMORY[0x1E69E9820];
         v11[1] = 3221225472;
@@ -408,7 +408,7 @@ void __55__CKMessageEditingViewController_viewDidLayoutSubviews__block_invoke(ui
         v11[3] = &unk_1E72F3B98;
         v12 = v9;
         objc_copyWeak(&v13, &location);
-        [v7 animateAlongsideTransition:v11 completion:0];
+        [coordinatorCopy animateAlongsideTransition:v11 completion:0];
         objc_destroyWeak(&v13);
       }
 
@@ -460,15 +460,15 @@ void __85__CKMessageEditingViewController_viewWillTransitionToSize_withTransitio
 
 - (void)dismissIfNoChanges
 {
-  v3 = [(CKMessageEditingViewController *)self messageEditingView];
-  v4 = [v3 currentComposition];
+  messageEditingView = [(CKMessageEditingViewController *)self messageEditingView];
+  currentComposition = [messageEditingView currentComposition];
 
-  v5 = [(CKMessageEditingViewController *)self messageEditingView];
-  v6 = [v5 originalComposition];
+  messageEditingView2 = [(CKMessageEditingViewController *)self messageEditingView];
+  originalComposition = [messageEditingView2 originalComposition];
 
-  LODWORD(v5) = [v4 isPlainTextEqual:v6];
+  LODWORD(messageEditingView2) = [currentComposition isPlainTextEqual:originalComposition];
   v7 = IMOSLoggingEnabled();
-  if (v5)
+  if (messageEditingView2)
   {
     if (v7)
     {
@@ -497,9 +497,9 @@ void __85__CKMessageEditingViewController_viewWillTransitionToSize_withTransitio
 - (void)_animateIn
 {
   [(CKMessageEditingViewController *)self setAnimatingIn:1];
-  v3 = [(CKMessageEditingViewController *)self transcriptOverlayView];
+  transcriptOverlayView = [(CKMessageEditingViewController *)self transcriptOverlayView];
 
-  if (v3)
+  if (transcriptOverlayView)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
     [v4 messageEditingAnimateInDuration];
@@ -509,29 +509,29 @@ void __85__CKMessageEditingViewController_viewWillTransitionToSize_withTransitio
     [v7 messageEditingAnimateInDamping];
     v9 = v8;
 
-    v10 = [(CKMessageEditingViewController *)self transcriptOverlayTransitionDelegate];
-    [v10 transcriptOverlayViewControllerWillAnimateIn:self];
+    transcriptOverlayTransitionDelegate = [(CKMessageEditingViewController *)self transcriptOverlayTransitionDelegate];
+    [transcriptOverlayTransitionDelegate transcriptOverlayViewControllerWillAnimateIn:self];
 
-    v11 = [(CKMessageEditingViewController *)self splitViewController];
-    LOBYTE(v10) = [v11 isCollapsed];
-    v12 = [(CKMessageEditingViewController *)self splitViewController];
-    v13 = v12;
-    if (v10)
+    splitViewController = [(CKMessageEditingViewController *)self splitViewController];
+    LOBYTE(transcriptOverlayTransitionDelegate) = [splitViewController isCollapsed];
+    splitViewController2 = [(CKMessageEditingViewController *)self splitViewController];
+    v13 = splitViewController2;
+    if (transcriptOverlayTransitionDelegate)
     {
-      [v12 masterViewController];
+      [splitViewController2 masterViewController];
     }
 
     else
     {
-      [v12 detailViewController];
+      [splitViewController2 detailViewController];
     }
     v14 = ;
 
-    v15 = [v14 navigationBar];
-    [v15 setNeedsLayout];
+    navigationBar = [v14 navigationBar];
+    [navigationBar setNeedsLayout];
 
-    v16 = [v14 navigationBar];
-    [v16 layoutIfNeeded];
+    navigationBar2 = [v14 navigationBar];
+    [navigationBar2 layoutIfNeeded];
 
     IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -616,10 +616,10 @@ uint64_t __44__CKMessageEditingViewController__animateIn__block_invoke_2(uint64_
   return [v3 _applyProofreadingIfNecessary];
 }
 
-- (void)_animateOutWithState:(int64_t)a3
+- (void)_animateOutWithState:(int64_t)state
 {
-  v5 = [(CKMessageEditingViewController *)self interactionDelegate];
-  [v5 messageEditingViewControllerWillAnimateOut:self];
+  interactionDelegate = [(CKMessageEditingViewController *)self interactionDelegate];
+  [interactionDelegate messageEditingViewControllerWillAnimateOut:self];
 
   [(CKMessageEditingViewController *)self setAnimatingOut:1];
   IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
@@ -627,17 +627,17 @@ uint64_t __44__CKMessageEditingViewController__animateIn__block_invoke_2(uint64_
   v8 = *(MEMORY[0x1E695F058] + 8);
   v9 = *(MEMORY[0x1E695F058] + 16);
   v10 = *(MEMORY[0x1E695F058] + 24);
-  v11 = [(CKMessageEditingViewController *)self transitionContext];
-  v12 = v11;
+  transitionContext = [(CKMessageEditingViewController *)self transitionContext];
+  v12 = transitionContext;
   if (!IsReduceMotionEnabled)
   {
-    v13 = [v11 anchorChatItemGUID];
-    if ([v13 length])
+    anchorChatItemGUID = [transitionContext anchorChatItemGUID];
+    if ([anchorChatItemGUID length])
     {
-      v14 = [(CKMessageEditingViewController *)self transcriptOverlayTransitionDelegate];
-      v15 = [v14 updatedFrameMapForTranscriptOverlayViewController:self];
+      transcriptOverlayTransitionDelegate = [(CKMessageEditingViewController *)self transcriptOverlayTransitionDelegate];
+      v15 = [transcriptOverlayTransitionDelegate updatedFrameMapForTranscriptOverlayViewController:self];
 
-      v16 = [v15 objectForKeyedSubscript:v13];
+      v16 = [v15 objectForKeyedSubscript:anchorChatItemGUID];
       v17 = v16;
       if (v16)
       {
@@ -653,7 +653,7 @@ uint64_t __44__CKMessageEditingViewController__animateIn__block_invoke_2(uint64_
         v22 = IMLogHandleForCategory();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          [(CKMessageEditingViewController *)v13 _animateOutWithState:v15, v22];
+          [(CKMessageEditingViewController *)anchorChatItemGUID _animateOutWithState:v15, v22];
         }
       }
     }
@@ -668,7 +668,7 @@ uint64_t __44__CKMessageEditingViewController__animateIn__block_invoke_2(uint64_
     }
   }
 
-  if (a3 == 4)
+  if (state == 4)
   {
     if (IMOSLoggingEnabled())
     {
@@ -680,8 +680,8 @@ uint64_t __44__CKMessageEditingViewController__animateIn__block_invoke_2(uint64_
       }
     }
 
-    v24 = [(CKMessageEditingViewController *)self messageEditingView];
-    [v24 resetMessageToOriginalContent];
+    messageEditingView = [(CKMessageEditingViewController *)self messageEditingView];
+    [messageEditingView resetMessageToOriginalContent];
   }
 
   v25 = +[CKUIBehavior sharedBehaviors];
@@ -692,20 +692,20 @@ uint64_t __44__CKMessageEditingViewController__animateIn__block_invoke_2(uint64_
   [v28 messageEditingAnimateOutDamping];
   v30 = v29;
 
-  v31 = [(CKMessageEditingViewController *)self transcriptOverlayTransitionDelegate];
-  [v31 transcriptOverlayViewControllerWillAnimateOut:self];
+  transcriptOverlayTransitionDelegate2 = [(CKMessageEditingViewController *)self transcriptOverlayTransitionDelegate];
+  [transcriptOverlayTransitionDelegate2 transcriptOverlayViewControllerWillAnimateOut:self];
 
-  v32 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v33 = [v32 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v33)
+  if (isEntryViewRefreshEnabled)
   {
-    v34 = [(CKMessageEditingViewController *)self messageEditingColor];
+    messageEditingColor = [(CKMessageEditingViewController *)self messageEditingColor];
   }
 
   else
   {
-    v34 = 0;
+    messageEditingColor = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -718,8 +718,8 @@ uint64_t __44__CKMessageEditingViewController__animateIn__block_invoke_2(uint64_
   v43 = v8;
   v44 = v9;
   v45 = v10;
-  v46 = a3;
-  v35 = v34;
+  stateCopy = state;
+  v35 = messageEditingColor;
   v41 = v35;
   v36 = _Block_copy(aBlock);
   v38[0] = MEMORY[0x1E69E9820];
@@ -803,16 +803,16 @@ void __55__CKMessageEditingViewController__animateOutWithState___block_invoke_2(
 
 - (void)_requestDismissal
 {
-  v3 = [(CKMessageEditingViewController *)self transcriptOverlayTransitionDelegate];
-  [v3 transcriptOverlayViewControllerDidAnimateOut:self];
+  transcriptOverlayTransitionDelegate = [(CKMessageEditingViewController *)self transcriptOverlayTransitionDelegate];
+  [transcriptOverlayTransitionDelegate transcriptOverlayViewControllerDidAnimateOut:self];
 
-  v4 = [(CKMessageEditingViewController *)self interactionDelegate];
-  [v4 messageEditingViewControllerRequestsDismissal:self presentKeyboard:1];
+  interactionDelegate = [(CKMessageEditingViewController *)self interactionDelegate];
+  [interactionDelegate messageEditingViewControllerRequestsDismissal:self presentKeyboard:1];
 }
 
-- (void)transcriptOverlayTapGestureRecognized:(id)a3
+- (void)transcriptOverlayTapGestureRecognized:(id)recognized
 {
-  v4 = a3;
+  recognizedCopy = recognized;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -826,12 +826,12 @@ void __55__CKMessageEditingViewController__animateOutWithState___block_invoke_2(
   [(CKMessageEditingViewController *)self dismissIfNoChanges];
 }
 
-- (void)messageEditingViewWritingToolsWillBegin:(id)a3
+- (void)messageEditingViewWritingToolsWillBegin:(id)begin
 {
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isExpressiveTextEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v5)
+  if (isExpressiveTextEnabled)
   {
     textEffectsCoordinator = self->_textEffectsCoordinator;
     if (textEffectsCoordinator)
@@ -845,12 +845,12 @@ void __55__CKMessageEditingViewController__animateOutWithState___block_invoke_2(
   }
 }
 
-- (void)messageEditingViewWritingToolsDidEnd:(id)a3
+- (void)messageEditingViewWritingToolsDidEnd:(id)end
 {
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isExpressiveTextEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v5)
+  if (isExpressiveTextEnabled)
   {
     textEffectsCoordinator = self->_textEffectsCoordinator;
     if (textEffectsCoordinator)
@@ -863,9 +863,9 @@ void __55__CKMessageEditingViewController__animateOutWithState___block_invoke_2(
   }
 }
 
-- (void)messageEditingViewConfirmButtonSelected:(id)a3
+- (void)messageEditingViewConfirmButtonSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -876,14 +876,14 @@ void __55__CKMessageEditingViewController__animateOutWithState___block_invoke_2(
     }
   }
 
-  v6 = [v4 currentComposition];
-  v7 = [v6 text];
-  v8 = [v7 length];
+  currentComposition = [selectedCopy currentComposition];
+  text = [currentComposition text];
+  v8 = [text length];
 
   if (v8)
   {
-    v9 = [v4 originalComposition];
-    v10 = [v6 hasNotBeenEdited:v9];
+    originalComposition = [selectedCopy originalComposition];
+    v10 = [currentComposition hasNotBeenEdited:originalComposition];
     if (v10)
     {
       v11 = 0;
@@ -891,7 +891,7 @@ void __55__CKMessageEditingViewController__animateOutWithState___block_invoke_2(
 
     else
     {
-      v11 = v6;
+      v11 = currentComposition;
     }
 
     if (v10)
@@ -905,25 +905,25 @@ void __55__CKMessageEditingViewController__animateOutWithState___block_invoke_2(
     }
 
     v13 = v11;
-    v14 = [(CKMessageEditingViewController *)self interactionDelegate];
-    [v14 messageEditingViewController:self confirmedEditWithComposition:v13];
+    interactionDelegate = [(CKMessageEditingViewController *)self interactionDelegate];
+    [interactionDelegate messageEditingViewController:self confirmedEditWithComposition:v13];
 
     [(CKMessageEditingViewController *)self _animateOutWithState:v12];
   }
 
   else
   {
-    v9 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    originalComposition = IMLogHandleForCategory();
+    if (os_log_type_enabled(originalComposition, OS_LOG_TYPE_ERROR))
     {
-      [CKMessageEditingViewController messageEditingViewConfirmButtonSelected:v9];
+      [CKMessageEditingViewController messageEditingViewConfirmButtonSelected:originalComposition];
     }
   }
 }
 
-- (void)messageEditingViewRejectButtonSelected:(id)a3
+- (void)messageEditingViewRejectButtonSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -939,8 +939,8 @@ void __55__CKMessageEditingViewController__animateOutWithState___block_invoke_2(
 
 - (double)messageEditingViewDismissAnimationBalloonMaxWidth
 {
-  v3 = [(CKMessageEditingViewController *)self interactionDelegate];
-  [v3 balloonMaxWidthForMessageEditingViewController:self];
+  interactionDelegate = [(CKMessageEditingViewController *)self interactionDelegate];
+  [interactionDelegate balloonMaxWidthForMessageEditingViewController:self];
   v5 = v4;
 
   return v5;
@@ -948,11 +948,11 @@ void __55__CKMessageEditingViewController__animateOutWithState___block_invoke_2(
 
 - (UIEdgeInsets)messageEditingViewDismissAnimationContentInsets
 {
-  v3 = [(CKMessageEditingViewController *)self transitionContext];
-  v4 = [v3 anchorChatItemGUID];
+  transitionContext = [(CKMessageEditingViewController *)self transitionContext];
+  anchorChatItemGUID = [transitionContext anchorChatItemGUID];
 
-  v5 = [(CKMessageEditingViewController *)self interactionDelegate];
-  [v5 messageEditingViewController:self contentInsetsForChatItemGuid:v4];
+  interactionDelegate = [(CKMessageEditingViewController *)self interactionDelegate];
+  [interactionDelegate messageEditingViewController:self contentInsetsForChatItemGuid:anchorChatItemGUID];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -971,48 +971,48 @@ void __55__CKMessageEditingViewController__animateOutWithState___block_invoke_2(
 
 - (BOOL)messageEditingViewBalloonHasTail
 {
-  v2 = self;
-  v3 = [(CKMessageEditingViewController *)self transitionContext];
-  v4 = [v3 anchorChatItemGUID];
+  selfCopy = self;
+  transitionContext = [(CKMessageEditingViewController *)self transitionContext];
+  anchorChatItemGUID = [transitionContext anchorChatItemGUID];
 
-  v5 = [(CKMessageEditingViewController *)v2 interactionDelegate];
-  LOBYTE(v2) = [v5 messageEditingViewController:v2 balloonHasTailForChatItemGuid:v4];
+  interactionDelegate = [(CKMessageEditingViewController *)selfCopy interactionDelegate];
+  LOBYTE(selfCopy) = [interactionDelegate messageEditingViewController:selfCopy balloonHasTailForChatItemGuid:anchorChatItemGUID];
 
-  return v2;
+  return selfCopy;
 }
 
 - (char)messageEditingColorType
 {
-  v2 = self;
-  v3 = [(CKMessageEditingViewController *)self transitionContext];
-  v4 = [v3 anchorChatItemGUID];
+  selfCopy = self;
+  transitionContext = [(CKMessageEditingViewController *)self transitionContext];
+  anchorChatItemGUID = [transitionContext anchorChatItemGUID];
 
-  v5 = [(CKMessageEditingViewController *)v2 interactionDelegate];
-  LOBYTE(v2) = [v5 messageEditingViewController:v2 colorTypeForChatItemGuid:v4];
+  interactionDelegate = [(CKMessageEditingViewController *)selfCopy interactionDelegate];
+  LOBYTE(selfCopy) = [interactionDelegate messageEditingViewController:selfCopy colorTypeForChatItemGuid:anchorChatItemGUID];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)messageEditingColor
 {
-  v3 = [(CKMessageEditingViewController *)self transitionContext];
-  v4 = [v3 anchorChatItemGUID];
+  transitionContext = [(CKMessageEditingViewController *)self transitionContext];
+  anchorChatItemGUID = [transitionContext anchorChatItemGUID];
 
-  v5 = [(CKMessageEditingViewController *)self interactionDelegate];
-  v6 = [v5 messageEditingViewController:self colorForChatItemGuid:v4];
+  interactionDelegate = [(CKMessageEditingViewController *)self interactionDelegate];
+  v6 = [interactionDelegate messageEditingViewController:self colorForChatItemGuid:anchorChatItemGUID];
 
   return v6;
 }
 
-- (void)messageEditingViewDidUpdateBalloonViewContent:(id)a3
+- (void)messageEditingViewDidUpdateBalloonViewContent:(id)content
 {
-  v4 = [(CKMessageEditingViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(CKMessageEditingViewController *)self view];
+  [view setNeedsLayout];
 
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isExpressiveTextEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v6)
+  if (isExpressiveTextEnabled)
   {
     textEffectsCoordinator = self->_textEffectsCoordinator;
     if (textEffectsCoordinator)
@@ -1023,13 +1023,13 @@ void __55__CKMessageEditingViewController__animateOutWithState___block_invoke_2(
   }
 }
 
-- (void)messageEditingView:(id)a3 didChangeTextAnimationInRange:(_NSRange)a4
+- (void)messageEditingView:(id)view didChangeTextAnimationInRange:(_NSRange)range
 {
-  location = a4.location;
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isExpressiveTextEnabled];
+  location = range.location;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v7 && self->_textEffectsCoordinator)
+  if (isExpressiveTextEnabled && self->_textEffectsCoordinator)
   {
     v8 = [[CKTextEffectCoordinatorContinuationState alloc] initWithTextViewIdentifier:@"textView" locationInAttributedText:location ignoreTextViewEligibilityCheck:0];
     [(CKTextEffectCoordinator *)self->_textEffectsCoordinator resetAndContinueFromState:v8];
@@ -1038,55 +1038,55 @@ void __55__CKMessageEditingViewController__animateOutWithState___block_invoke_2(
 
 - (void)_informDelegateOfUpdatedBalloonViewFrame
 {
-  v4 = [(CKMessageEditingViewController *)self interactionDelegate];
-  v3 = [(CKMessageEditingView *)self->_messageEditingView balloonViewForAlignment];
-  [v4 messageEditingViewController:self didUpdateFrameForBalloonView:v3];
+  interactionDelegate = [(CKMessageEditingViewController *)self interactionDelegate];
+  balloonViewForAlignment = [(CKMessageEditingView *)self->_messageEditingView balloonViewForAlignment];
+  [interactionDelegate messageEditingViewController:self didUpdateFrameForBalloonView:balloonViewForAlignment];
 }
 
 - (UIView)balloonViewForAlignment
 {
-  v2 = [(CKMessageEditingViewController *)self messageEditingView];
-  v3 = [v2 balloonViewForAlignment];
+  messageEditingView = [(CKMessageEditingViewController *)self messageEditingView];
+  balloonViewForAlignment = [messageEditingView balloonViewForAlignment];
 
-  return v3;
+  return balloonViewForAlignment;
 }
 
 - (void)transcriptContentInsetsDidChange
 {
-  v3 = [(CKMessageEditingViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(CKMessageEditingViewController *)self view];
+  [view setNeedsLayout];
 
-  v4 = [(CKMessageEditingViewController *)self view];
-  [v4 layoutIfNeeded];
+  view2 = [(CKMessageEditingViewController *)self view];
+  [view2 layoutIfNeeded];
 }
 
 - (void)_applyProofreadingIfNecessary
 {
-  v3 = [(CKMessageEditingViewController *)self messageEditingView];
-  [v3 applyGrammarCheckingIndication];
+  messageEditingView = [(CKMessageEditingViewController *)self messageEditingView];
+  [messageEditingView applyGrammarCheckingIndication];
 
-  v4 = [(CKMessageEditingViewController *)self interactionDelegate];
-  v10 = [v4 proofReadingInfoForMessageEditingViewController:self];
+  interactionDelegate = [(CKMessageEditingViewController *)self interactionDelegate];
+  v10 = [interactionDelegate proofReadingInfoForMessageEditingViewController:self];
 
   if ([v10 count])
   {
-    v5 = [(CKMessageEditingViewController *)self transitionContext];
-    v6 = [v5 anchorChatItemGUID];
+    transitionContext = [(CKMessageEditingViewController *)self transitionContext];
+    anchorChatItemGUID = [transitionContext anchorChatItemGUID];
 
     v7 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69A5868]];
-    if ([v6 isEqualToString:v7])
+    if ([anchorChatItemGUID isEqualToString:v7])
     {
       v8 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69A5860]];
       if ([v8 count])
       {
-        v9 = [(CKMessageEditingViewController *)self messageEditingView];
-        [v9 underlineWithProofreadingInfo:v8];
+        messageEditingView2 = [(CKMessageEditingViewController *)self messageEditingView];
+        [messageEditingView2 underlineWithProofreadingInfo:v8];
       }
     }
   }
 }
 
-- (id)visibleTextViewIdentifiersFor:(id)a3
+- (id)visibleTextViewIdentifiersFor:(id)for
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = @"textView";
@@ -1095,38 +1095,38 @@ void __55__CKMessageEditingViewController__animateOutWithState___block_invoke_2(
   return v3;
 }
 
-- (id)textEffectCoordinator:(id)a3 textViewForTextViewIdentifier:(id)a4
+- (id)textEffectCoordinator:(id)coordinator textViewForTextViewIdentifier:(id)identifier
 {
-  if ([a4 isEqualToString:@"textView"])
+  if ([identifier isEqualToString:@"textView"])
   {
-    v5 = [(CKMessageEditingViewController *)self messageEditingView];
-    v6 = [v5 messageEditingBalloonView];
-    v7 = [v6 messageEditingBalloonTextView];
+    messageEditingView = [(CKMessageEditingViewController *)self messageEditingView];
+    messageEditingBalloonView = [messageEditingView messageEditingBalloonView];
+    messageEditingBalloonTextView = [messageEditingBalloonView messageEditingBalloonTextView];
   }
 
   else
   {
-    v7 = 0;
+    messageEditingBalloonTextView = 0;
   }
 
-  return v7;
+  return messageEditingBalloonTextView;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKMessageEditingViewController *)self tapGestureRecognizer];
+  touchCopy = touch;
+  recognizerCopy = recognizer;
+  tapGestureRecognizer = [(CKMessageEditingViewController *)self tapGestureRecognizer];
 
-  if (v8 != v7)
+  if (tapGestureRecognizer != recognizerCopy)
   {
     goto LABEL_2;
   }
 
-  v10 = [v6 view];
-  v11 = [(CKMessageEditingViewController *)self messageEditingView];
-  v12 = [v11 confirmButton];
-  if ([v10 isDescendantOfView:v12])
+  view = [touchCopy view];
+  messageEditingView = [(CKMessageEditingViewController *)self messageEditingView];
+  confirmButton = [messageEditingView confirmButton];
+  if ([view isDescendantOfView:confirmButton])
   {
 
 LABEL_6:
@@ -1134,9 +1134,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v13 = [(CKMessageEditingViewController *)self messageEditingView];
-  v14 = [v13 rejectButton];
-  v15 = [v10 isDescendantOfView:v14];
+  messageEditingView2 = [(CKMessageEditingViewController *)self messageEditingView];
+  rejectButton = [messageEditingView2 rejectButton];
+  v15 = [view isDescendantOfView:rejectButton];
 
   if (v15)
   {

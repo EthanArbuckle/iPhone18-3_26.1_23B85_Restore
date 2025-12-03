@@ -1,7 +1,7 @@
 @interface FMFTitleView
 - (id)initFromNib;
-- (void)_updateLabels:(id)a3;
-- (void)updateLocation:(id)a3;
+- (void)_updateLabels:(id)labels;
+- (void)updateLocation:(id)location;
 @end
 
 @implementation FMFTitleView
@@ -11,44 +11,44 @@
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 loadNibNamed:@"TitleView_iOS" owner:self options:0];
 
-  v5 = [v4 lastObject];
+  lastObject = [v4 lastObject];
 
-  return v5;
+  return lastObject;
 }
 
-- (void)updateLocation:(id)a3
+- (void)updateLocation:(id)location
 {
-  v4 = a3;
-  [(FMFTitleView *)self setLocation:v4];
-  [(FMFTitleView *)self _updateLabels:v4];
+  locationCopy = location;
+  [(FMFTitleView *)self setLocation:locationCopy];
+  [(FMFTitleView *)self _updateLabels:locationCopy];
 }
 
-- (void)_updateLabels:(id)a3
+- (void)_updateLabels:(id)labels
 {
-  v4 = a3;
-  v5 = [v4 locationShortAddressWithAge];
-  v6 = [(FMFTitleView *)self subtitleLabel];
-  [v6 setText:v5];
+  labelsCopy = labels;
+  locationShortAddressWithAge = [labelsCopy locationShortAddressWithAge];
+  subtitleLabel = [(FMFTitleView *)self subtitleLabel];
+  [subtitleLabel setText:locationShortAddressWithAge];
 
-  v7 = [v4 location];
+  location = [labelsCopy location];
 
-  v8 = [(FMFTitleView *)self titleBottomConstraint];
-  v9 = v8;
+  titleBottomConstraint = [(FMFTitleView *)self titleBottomConstraint];
+  v9 = titleBottomConstraint;
   v10 = 16.0;
-  if (!v7)
+  if (!location)
   {
     v10 = 2.0;
   }
 
-  [v8 setConstant:v10];
+  [titleBottomConstraint setConstant:v10];
 
-  v11 = [v4 handle];
+  handle = [labelsCopy handle];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __30__FMFTitleView__updateLabels___block_invoke;
   v12[3] = &unk_278FE2930;
   v12[4] = self;
-  [v11 prettyNameWithCompletion:v12];
+  [handle prettyNameWithCompletion:v12];
 }
 
 void __30__FMFTitleView__updateLabels___block_invoke(uint64_t a1, void *a2)

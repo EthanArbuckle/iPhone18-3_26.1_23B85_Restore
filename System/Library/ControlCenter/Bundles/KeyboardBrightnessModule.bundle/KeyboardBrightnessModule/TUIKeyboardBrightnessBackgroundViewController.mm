@@ -1,14 +1,14 @@
 @interface TUIKeyboardBrightnessBackgroundViewController
-- (TUIKeyboardBrightnessBackgroundViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (TUIKeyboardBrightnessBackgroundViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation TUIKeyboardBrightnessBackgroundViewController
 
-- (TUIKeyboardBrightnessBackgroundViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TUIKeyboardBrightnessBackgroundViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v23.receiver = self;
   v23.super_class = TUIKeyboardBrightnessBackgroundViewController;
-  v4 = [(TUIKeyboardBrightnessBackgroundViewController *)&v23 initWithNibName:a3 bundle:a4];
+  v4 = [(TUIKeyboardBrightnessBackgroundViewController *)&v23 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = MEMORY[0x29EDC7AC8];

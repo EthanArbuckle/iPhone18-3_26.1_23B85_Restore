@@ -8,11 +8,11 @@
 
 - (NSString)largeContentTitle
 {
-  v2 = self;
-  v3 = [(UITabBarItem *)v2 title];
-  if (v3)
+  selfCopy = self;
+  title = [(UITabBarItem *)selfCopy title];
+  if (title)
   {
-    v4 = v3;
+    v4 = title;
     static String._unconditionallyBridgeFromObjectiveC(_:)();
 
     v5 = String._bridgeToObjectiveC()();
@@ -29,9 +29,9 @@
 
 - (UIImage)largeContentImage
 {
-  v2 = [(UITabBarItem *)self image];
+  image = [(UITabBarItem *)self image];
 
-  return v2;
+  return image;
 }
 
 - (UIEdgeInsets)largeContentImageInsets

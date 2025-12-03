@@ -1,18 +1,18 @@
 @interface _CPLFakeDerivativeMapper
-+ (unint64_t)destinationresourceTypeFromShortDescription:(id)a3;
++ (unint64_t)destinationresourceTypeFromShortDescription:(id)description;
 + (void)initialize;
-- (CGSize)_dimensionsFromBaseResource:(id)a3;
-- (_CPLFakeDerivativeMapper)initWithRule:(id)a3;
-- (id)_bestSourceResourceFromResources:(id)a3;
+- (CGSize)_dimensionsFromBaseResource:(id)resource;
+- (_CPLFakeDerivativeMapper)initWithRule:(id)rule;
+- (id)_bestSourceResourceFromResources:(id)resources;
 - (id)description;
-- (void)updateResources:(id)a3;
+- (void)updateResources:(id)resources;
 @end
 
 @implementation _CPLFakeDerivativeMapper
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = CGImageDestinationCopyTypeIdentifiers();
     v3 = qword_1002C5140;
@@ -24,9 +24,9 @@
   }
 }
 
-+ (unint64_t)destinationresourceTypeFromShortDescription:(id)a3
++ (unint64_t)destinationresourceTypeFromShortDescription:(id)description
 {
-  result = [CPLResource resourceTypeFromShortDescription:a3];
+  result = [CPLResource resourceTypeFromShortDescription:description];
   if (result - 2 >= 4)
   {
     return 0;
@@ -35,9 +35,9 @@
   return result;
 }
 
-- (_CPLFakeDerivativeMapper)initWithRule:(id)a3
+- (_CPLFakeDerivativeMapper)initWithRule:(id)rule
 {
-  v4 = a3;
+  ruleCopy = rule;
   v17.receiver = self;
   v17.super_class = _CPLFakeDerivativeMapper;
   v5 = [(_CPLFakeDerivativeMapper *)&v17 init];
@@ -46,7 +46,7 @@
     goto LABEL_11;
   }
 
-  v6 = [v4 componentsSeparatedByString:@"/"];
+  v6 = [ruleCopy componentsSeparatedByString:@"/"];
   v7 = [v6 objectAtIndexedSubscript:0];
   if ([v6 count] < 2)
   {
@@ -120,9 +120,9 @@ LABEL_20:
   return v14;
 }
 
-- (id)_bestSourceResourceFromResources:(id)a3
+- (id)_bestSourceResourceFromResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   if (self->_maxPixelCount != 0.0)
   {
     v10 = 0;
@@ -132,18 +132,18 @@ LABEL_20:
     while (1)
     {
       v11 = [NSNumber numberWithUnsignedInteger:*(&resourceType + v10), resourceType, v18, v19];
-      v9 = [v4 objectForKeyedSubscript:v11];
+      v9 = [resourcesCopy objectForKeyedSubscript:v11];
 
       if (v9 && ![CPLCloudKitFakeDynamicDerivatives isFakeDerivative:v9])
       {
-        v12 = [v9 identity];
-        if ([v12 isAvailable])
+        identity = [v9 identity];
+        if ([identity isAvailable])
         {
-          [v12 imageDimensions];
+          [identity imageDimensions];
           if (v13 * v14 >= self->_maxPixelCount)
           {
-            v15 = [v12 fileUTI];
-            if (v15 && ([qword_1002C5148 containsObject:v15] & 1) != 0)
+            fileUTI = [identity fileUTI];
+            if (fileUTI && ([qword_1002C5148 containsObject:fileUTI] & 1) != 0)
             {
 
               goto LABEL_18;
@@ -163,7 +163,7 @@ LABEL_20:
   }
 
   v5 = [NSNumber numberWithUnsignedInteger:self->_resourceType];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [resourcesCopy objectForKeyedSubscript:v5];
 
   if (v6 && ([v6 identity], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isAvailable"), v7, v8))
   {
@@ -180,11 +180,11 @@ LABEL_18:
   return v9;
 }
 
-- (CGSize)_dimensionsFromBaseResource:(id)a3
+- (CGSize)_dimensionsFromBaseResource:(id)resource
 {
-  v4 = a3;
-  v5 = [v4 identity];
-  [v5 imageDimensions];
+  resourceCopy = resource;
+  identity = [resourceCopy identity];
+  [identity imageDimensions];
   v8 = v7;
   v9 = v6;
   maxPixelCount = self->_maxPixelCount;
@@ -232,29 +232,29 @@ LABEL_18:
   return result;
 }
 
-- (void)updateResources:(id)a3
+- (void)updateResources:(id)resources
 {
-  v20 = a3;
+  resourcesCopy = resources;
   v4 = [(_CPLFakeDerivativeMapper *)self _bestSourceResourceFromResources:?];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 identity];
+    identity = [v4 identity];
     [(_CPLFakeDerivativeMapper *)self _dimensionsFromBaseResource:v5];
     v8 = v7;
     v10 = v9;
     v11 = [_CPLCloudKitFakeFingerPrint alloc];
-    v12 = [v5 resourceType];
-    v13 = [v6 fingerPrint];
-    v14 = [(_CPLCloudKitFakeFingerPrint *)v11 initWithRealResourceType:v12 realFingerPrint:v13 outputType:self->_outputType dimensions:v8, v10];
+    resourceType = [v5 resourceType];
+    fingerPrint = [identity fingerPrint];
+    v14 = [(_CPLCloudKitFakeFingerPrint *)v11 initWithRealResourceType:resourceType realFingerPrint:fingerPrint outputType:self->_outputType dimensions:v8, v10];
 
     v15 = [CPLResource alloc];
-    v16 = [(_CPLCloudKitFakeFingerPrint *)v14 fakeIdentity];
-    v17 = [v5 itemScopedIdentifier];
-    v18 = [v15 initWithResourceIdentity:v16 itemScopedIdentifier:v17 resourceType:self->_resourceType];
+    fakeIdentity = [(_CPLCloudKitFakeFingerPrint *)v14 fakeIdentity];
+    itemScopedIdentifier = [v5 itemScopedIdentifier];
+    v18 = [v15 initWithResourceIdentity:fakeIdentity itemScopedIdentifier:itemScopedIdentifier resourceType:self->_resourceType];
 
     v19 = [NSNumber numberWithUnsignedInteger:self->_resourceType];
-    [v20 setObject:v18 forKeyedSubscript:v19];
+    [resourcesCopy setObject:v18 forKeyedSubscript:v19];
   }
 }
 

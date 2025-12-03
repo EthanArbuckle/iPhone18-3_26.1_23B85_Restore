@@ -1,16 +1,16 @@
 @interface EDInteractionEventLogPersistence
 + (OS_os_log)log;
-- (EDInteractionEventLogPersistence)initWithDatabase:(id)a3;
-- (id)_partialEventForMessage:(id)a3;
+- (EDInteractionEventLogPersistence)initWithDatabase:(id)database;
+- (id)_partialEventForMessage:(id)message;
 - (id)recentRecipients;
-- (void)_asyncPersistEvent:(id)a3;
-- (void)persistEvent:(id)a3;
-- (void)persistEvent:(id)a3 dataFromMessage:(id)a4;
-- (void)persistEvent:(id)a3 dataFromMessage:(id)a4 account:(id)a5;
-- (void)persistEvent:(id)a3 date:(id)a4 conversationID:(int64_t)a5 data:(id)a6;
-- (void)persistEvent:(id)a3 date:(id)a4 message:(id)a5 data:(id)a6;
-- (void)persistEvent:(id)a3 date:(id)a4 message:(id)a5 mailbox:(id)a6;
-- (void)persistEvent:(id)a3 date:(id)a4 message:(id)a5 mailboxType:(int64_t)a6;
+- (void)_asyncPersistEvent:(id)event;
+- (void)persistEvent:(id)event;
+- (void)persistEvent:(id)event dataFromMessage:(id)message;
+- (void)persistEvent:(id)event dataFromMessage:(id)message account:(id)account;
+- (void)persistEvent:(id)event date:(id)date conversationID:(int64_t)d data:(id)data;
+- (void)persistEvent:(id)event date:(id)date message:(id)message data:(id)data;
+- (void)persistEvent:(id)event date:(id)date message:(id)message mailbox:(id)mailbox;
+- (void)persistEvent:(id)event date:(id)date message:(id)message mailboxType:(int64_t)type;
 @end
 
 @implementation EDInteractionEventLogPersistence
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __39__EDInteractionEventLogPersistence_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_46 != -1)
   {
     dispatch_once(&log_onceToken_46, block);
@@ -40,16 +40,16 @@ void __39__EDInteractionEventLogPersistence_log__block_invoke(uint64_t a1)
   log_log_46 = v1;
 }
 
-- (EDInteractionEventLogPersistence)initWithDatabase:(id)a3
+- (EDInteractionEventLogPersistence)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v13.receiver = self;
   v13.super_class = EDInteractionEventLogPersistence;
   v6 = [(EDInteractionEventLogPersistence *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
+    objc_storeStrong(&v6->_database, database);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_BACKGROUND, 0);
 
@@ -61,67 +61,67 @@ void __39__EDInteractionEventLogPersistence_log__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)persistEvent:(id)a3 date:(id)a4 message:(id)a5 data:(id)a6
+- (void)persistEvent:(id)event date:(id)date message:(id)message data:(id)data
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(EDInteractionEventLogPersistence *)self _partialEventForMessage:a5];
-  [v12 setName:v13];
-  [v12 setDate:v10];
-  [v12 setData:v11];
+  eventCopy = event;
+  dateCopy = date;
+  dataCopy = data;
+  v12 = [(EDInteractionEventLogPersistence *)self _partialEventForMessage:message];
+  [v12 setName:eventCopy];
+  [v12 setDate:dateCopy];
+  [v12 setData:dataCopy];
   [(EDInteractionEventLogPersistence *)self _asyncPersistEvent:v12];
 }
 
-- (void)persistEvent:(id)a3 date:(id)a4 conversationID:(int64_t)a5 data:(id)a6
+- (void)persistEvent:(id)event date:(id)date conversationID:(int64_t)d data:(id)data
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a6;
+  eventCopy = event;
+  dateCopy = date;
+  dataCopy = data;
   v12 = [(EDInteractionEventLogPersistence *)self _partialEventForMessage:0];
-  [v12 setConversationID:a5];
-  [v12 setName:v13];
-  [v12 setDate:v10];
-  [v12 setData:v11];
+  [v12 setConversationID:d];
+  [v12 setName:eventCopy];
+  [v12 setDate:dateCopy];
+  [v12 setData:dataCopy];
   [(EDInteractionEventLogPersistence *)self _asyncPersistEvent:v12];
 }
 
-- (void)persistEvent:(id)a3 dataFromMessage:(id)a4
+- (void)persistEvent:(id)event dataFromMessage:(id)message
 {
-  v7 = a3;
-  v6 = [(EDInteractionEventLogPersistence *)self _partialEventForMessage:a4];
-  [v6 setName:v7];
+  eventCopy = event;
+  v6 = [(EDInteractionEventLogPersistence *)self _partialEventForMessage:message];
+  [v6 setName:eventCopy];
   [(EDInteractionEventLogPersistence *)self _asyncPersistEvent:v6];
 }
 
-- (void)persistEvent:(id)a3 dataFromMessage:(id)a4 account:(id)a5
+- (void)persistEvent:(id)event dataFromMessage:(id)message account:(id)account
 {
-  v11 = a3;
-  v8 = a5;
-  v9 = [(EDInteractionEventLogPersistence *)self _partialEventForMessage:a4];
-  [v9 setName:v11];
-  if (v8)
+  eventCopy = event;
+  accountCopy = account;
+  v9 = [(EDInteractionEventLogPersistence *)self _partialEventForMessage:message];
+  [v9 setName:eventCopy];
+  if (accountCopy)
   {
-    v10 = [v8 identifier];
-    [v9 setAccountID:v10];
+    identifier = [accountCopy identifier];
+    [v9 setAccountID:identifier];
   }
 
   [(EDInteractionEventLogPersistence *)self _asyncPersistEvent:v9];
 }
 
-- (void)persistEvent:(id)a3 date:(id)a4 message:(id)a5 mailbox:(id)a6
+- (void)persistEvent:(id)event date:(id)date message:(id)message mailbox:(id)mailbox
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(EDInteractionEventLogPersistence *)self _partialEventForMessage:a5];
-  [v13 setName:v10];
-  [v13 setDate:v11];
+  eventCopy = event;
+  dateCopy = date;
+  mailboxCopy = mailbox;
+  v13 = [(EDInteractionEventLogPersistence *)self _partialEventForMessage:message];
+  [v13 setName:eventCopy];
+  [v13 setDate:dateCopy];
   v19 = @"mailbox_id";
   v14 = MEMORY[0x1E696AD98];
-  v15 = [v12 persistentID];
-  v16 = [v14 numberWithLongLong:{objc_msgSend(v15, "longLongValue")}];
+  persistentID = [mailboxCopy persistentID];
+  v16 = [v14 numberWithLongLong:{objc_msgSend(persistentID, "longLongValue")}];
   v20[0] = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
   [v13 setData:v17];
@@ -130,16 +130,16 @@ void __39__EDInteractionEventLogPersistence_log__block_invoke(uint64_t a1)
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistEvent:(id)a3 date:(id)a4 message:(id)a5 mailboxType:(int64_t)a6
+- (void)persistEvent:(id)event date:(id)date message:(id)message mailboxType:(int64_t)type
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = [(EDInteractionEventLogPersistence *)self _partialEventForMessage:a5];
-  [v12 setName:v10];
-  [v12 setDate:v11];
+  eventCopy = event;
+  dateCopy = date;
+  v12 = [(EDInteractionEventLogPersistence *)self _partialEventForMessage:message];
+  [v12 setName:eventCopy];
+  [v12 setDate:dateCopy];
   v16 = @"mailbox_type";
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v17[0] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
   [v12 setData:v14];
@@ -148,69 +148,69 @@ void __39__EDInteractionEventLogPersistence_log__block_invoke(uint64_t a1)
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_partialEventForMessage:(id)a3
+- (id)_partialEventForMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_alloc_init(EDInteractionEvent);
   [(EDInteractionEvent *)v4 setVersion:15];
-  v5 = [v3 account];
-  v6 = [v5 identifier];
-  [(EDInteractionEvent *)v4 setAccountID:v6];
+  account = [messageCopy account];
+  identifier = [account identifier];
+  [(EDInteractionEvent *)v4 setAccountID:identifier];
 
-  v7 = [v3 mailbox];
-  v8 = [v7 persistentID];
-  -[EDInteractionEvent setMailboxID:](v4, "setMailboxID:", [v8 longLongValue]);
+  mailbox = [messageCopy mailbox];
+  persistentID = [mailbox persistentID];
+  -[EDInteractionEvent setMailboxID:](v4, "setMailboxID:", [persistentID longLongValue]);
 
-  -[EDInteractionEvent setConversationID:](v4, "setConversationID:", [v3 conversationID]);
-  v9 = [v3 messageIDHeaderHash];
-  -[EDInteractionEvent setMessageIDHash:](v4, "setMessageIDHash:", [v9 int64Value]);
+  -[EDInteractionEvent setConversationID:](v4, "setConversationID:", [messageCopy conversationID]);
+  messageIDHeaderHash = [messageCopy messageIDHeaderHash];
+  -[EDInteractionEvent setMessageIDHash:](v4, "setMessageIDHash:", [messageIDHeaderHash int64Value]);
 
-  v10 = [v3 persistentID];
-  -[EDInteractionEvent setMessagePersistentID:](v4, "setMessagePersistentID:", [v10 longLongValue]);
+  persistentID2 = [messageCopy persistentID];
+  -[EDInteractionEvent setMessagePersistentID:](v4, "setMessagePersistentID:", [persistentID2 longLongValue]);
 
   return v4;
 }
 
-- (void)_asyncPersistEvent:(id)a3
+- (void)_asyncPersistEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 date];
+  eventCopy = event;
+  date = [eventCopy date];
 
-  if (!v5)
+  if (!date)
   {
-    v6 = [MEMORY[0x1E695DF00] date];
-    [v4 setDate:v6];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [eventCopy setDate:date2];
   }
 
-  v7 = [(EDInteractionEventLogPersistence *)self writeQueue];
+  writeQueue = [(EDInteractionEventLogPersistence *)self writeQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__EDInteractionEventLogPersistence__asyncPersistEvent___block_invoke;
   v9[3] = &unk_1E8250128;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  dispatch_async(v7, v9);
+  v10 = eventCopy;
+  v8 = eventCopy;
+  dispatch_async(writeQueue, v9);
 }
 
-- (void)persistEvent:(id)a3
+- (void)persistEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (persistEvent__onceToken != -1)
   {
     [EDInteractionEventLogPersistence persistEvent:];
   }
 
-  v5 = [(EDInteractionEventLogPersistence *)self database];
-  v6 = [v5 propertyMapper];
+  database = [(EDInteractionEventLogPersistence *)self database];
+  propertyMapper = [database propertyMapper];
   WeakRetained = objc_loadWeakRetained(&persistEvent__propertyMapper);
 
-  if (v6 != WeakRetained)
+  if (propertyMapper != WeakRetained)
   {
     [persistEvent__nameCache removeAllObjects];
-    v8 = [(EDInteractionEventLogPersistence *)self database];
-    v9 = [v8 propertyMapper];
-    objc_storeWeak(&persistEvent__propertyMapper, v9);
+    database2 = [(EDInteractionEventLogPersistence *)self database];
+    propertyMapper2 = [database2 propertyMapper];
+    objc_storeWeak(&persistEvent__propertyMapper, propertyMapper2);
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -220,35 +220,35 @@ void __39__EDInteractionEventLogPersistence_log__block_invoke(uint64_t a1)
   aBlock[4] = self;
   v10 = _Block_copy(aBlock);
   v11 = [objc_alloc(MEMORY[0x1E699B910]) initWithTable:@"interaction_log"];
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "version")}];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(eventCopy, "version")}];
   v13 = v10[2](v10, sel_version);
   [v11 setObject:v12 forKeyedSubscript:v13];
 
-  v14 = [v4 date];
+  date = [eventCopy date];
   v15 = v10[2](v10, sel_date);
-  [v11 setObject:v14 forKeyedSubscript:v15];
+  [v11 setObject:date forKeyedSubscript:v15];
 
-  v16 = [v4 name];
+  name = [eventCopy name];
   v17 = v10[2](v10, sel_name);
-  [v11 setObject:v16 forKeyedSubscript:v17];
+  [v11 setObject:name forKeyedSubscript:v17];
 
-  v18 = [v4 accountID];
-  v19 = v18;
-  if (!v18)
+  accountID = [eventCopy accountID];
+  null = accountID;
+  if (!accountID)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v20 = v10[2](v10, sel_accountID);
-  [v11 setObject:v19 forKeyedSubscript:v20];
+  [v11 setObject:null forKeyedSubscript:v20];
 
-  if (!v18)
+  if (!accountID)
   {
   }
 
-  if ([v4 mailboxID])
+  if ([eventCopy mailboxID])
   {
-    [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v4, "mailboxID")}];
+    [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(eventCopy, "mailboxID")}];
   }
 
   else
@@ -259,9 +259,9 @@ void __39__EDInteractionEventLogPersistence_log__block_invoke(uint64_t a1)
   v22 = v10[2](v10, sel_mailboxID);
   [v11 setObject:v21 forKeyedSubscript:v22];
 
-  if ([v4 conversationID])
+  if ([eventCopy conversationID])
   {
-    [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v4, "conversationID")}];
+    [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(eventCopy, "conversationID")}];
   }
 
   else
@@ -272,9 +272,9 @@ void __39__EDInteractionEventLogPersistence_log__block_invoke(uint64_t a1)
   v24 = v10[2](v10, sel_conversationID);
   [v11 setObject:v23 forKeyedSubscript:v24];
 
-  if ([v4 messageIDHash])
+  if ([eventCopy messageIDHash])
   {
-    [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v4, "messageIDHash")}];
+    [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(eventCopy, "messageIDHash")}];
   }
 
   else
@@ -285,9 +285,9 @@ void __39__EDInteractionEventLogPersistence_log__block_invoke(uint64_t a1)
   v26 = v10[2](v10, sel_messageIDHash);
   [v11 setObject:v25 forKeyedSubscript:v26];
 
-  if ([v4 messagePersistentID])
+  if ([eventCopy messagePersistentID])
   {
-    [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v4, "messagePersistentID")}];
+    [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(eventCopy, "messagePersistentID")}];
   }
 
   else
@@ -298,20 +298,20 @@ void __39__EDInteractionEventLogPersistence_log__block_invoke(uint64_t a1)
   v28 = v10[2](v10, sel_messagePersistentID);
   [v11 setObject:v27 forKeyedSubscript:v28];
 
-  v29 = [v4 data];
-  v30 = [v29 count];
+  data = [eventCopy data];
+  v30 = [data count];
 
   if (v30)
   {
     v31 = MEMORY[0x1E696ACB0];
-    v32 = [v4 data];
-    v33 = [v31 dataWithJSONObject:v32 options:0 error:0];
+    data2 = [eventCopy data];
+    v33 = [v31 dataWithJSONObject:data2 options:0 error:0];
 
     v34 = v10[2](v10, sel_data);
     [v11 setObject:v33 forKeyedSubscript:v34];
   }
 
-  v35 = [(EDInteractionEventLogPersistence *)self database];
+  database3 = [(EDInteractionEventLogPersistence *)self database];
   v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDInteractionEventLogPersistence persistEvent:]"];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
@@ -319,7 +319,7 @@ void __39__EDInteractionEventLogPersistence_log__block_invoke(uint64_t a1)
   v38[3] = &unk_1E8251CB8;
   v37 = v11;
   v39 = v37;
-  [v35 __performWriteWithCaller:v36 usingBlock:v38];
+  [database3 __performWriteWithCaller:v36 usingBlock:v38];
 }
 
 void __49__EDInteractionEventLogPersistence_persistEvent___block_invoke()
@@ -362,16 +362,16 @@ id __49__EDInteractionEventLogPersistence_persistEvent___block_invoke_3(uint64_t
   v42 = __Block_byref_object_copy__15;
   v43 = __Block_byref_object_dispose__15;
   v44 = 0;
-  v2 = [(EDInteractionEventLogPersistence *)self database];
-  v3 = [v2 schema];
-  v29 = [v3 tableForName:@"recipients"];
+  database = [(EDInteractionEventLogPersistence *)self database];
+  schema = [database schema];
+  v29 = [schema tableForName:@"recipients"];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v4 = [v29 columns];
-  v5 = [v4 countByEnumeratingWithState:&v35 objects:v45 count:16];
+  columns = [v29 columns];
+  v5 = [columns countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (!v5)
   {
 
@@ -389,37 +389,37 @@ id __49__EDInteractionEventLogPersistence_persistEvent___block_invoke_3(uint64_t
     {
       if (*v36 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(columns);
       }
 
       v9 = *(*(&v35 + 1) + 8 * i);
-      v10 = [v9 name];
-      v11 = [v10 hasPrefix:@"address"];
+      name = [v9 name];
+      v11 = [name hasPrefix:@"address"];
 
       if (v11)
       {
-        v12 = [v9 name];
+        name2 = [v9 name];
         v13 = v6;
-        v6 = v12;
+        v6 = name2;
       }
 
       else
       {
-        v14 = [v9 name];
-        v15 = [v14 hasPrefix:@"message"];
+        name3 = [v9 name];
+        v15 = [name3 hasPrefix:@"message"];
 
         if (!v15)
         {
           continue;
         }
 
-        v16 = [v9 name];
+        name4 = [v9 name];
         v13 = v30;
-        v30 = v16;
+        v30 = name4;
       }
     }
 
-    v5 = [v4 countByEnumeratingWithState:&v35 objects:v45 count:16];
+    v5 = [columns countByEnumeratingWithState:&v35 objects:v45 count:16];
   }
 
   while (v5);
@@ -427,11 +427,11 @@ id __49__EDInteractionEventLogPersistence_persistEvent___block_invoke_3(uint64_t
   if (!v30 || !v6)
   {
 LABEL_17:
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"EDInteractionEventLogPersistence.m" lineNumber:182 description:@"Could not find message and address columns in schema"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDInteractionEventLogPersistence.m" lineNumber:182 description:@"Could not find message and address columns in schema"];
   }
 
-  v18 = [(EDInteractionEventLogPersistence *)self database];
+  database2 = [(EDInteractionEventLogPersistence *)self database];
   v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDInteractionEventLogPersistence recentRecipients]"];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
@@ -442,7 +442,7 @@ LABEL_17:
   v21 = v6;
   v33 = v21;
   v34 = &v39;
-  [v18 __performReadWithCaller:v19 usingBlock:v31];
+  [database2 __performReadWithCaller:v19 usingBlock:v31];
 
   v22 = v40[5];
   if (v22)

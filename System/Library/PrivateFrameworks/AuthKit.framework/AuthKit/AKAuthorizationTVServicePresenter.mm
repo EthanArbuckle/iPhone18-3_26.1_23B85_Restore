@@ -1,24 +1,24 @@
 @interface AKAuthorizationTVServicePresenter
-- (id)_filterDeprecatedType:(id)a3;
-- (id)_stringForType:(int64_t)a3;
+- (id)_filterDeprecatedType:(id)type;
+- (id)_stringForType:(int64_t)type;
 - (id)buildDidStartServerAuthorizationMessage;
 - (id)buildDidTapNotificationMessage;
 - (id)buildFetchAppIconMessage;
-- (id)buildFetchAppIconReplyWithImageData:(id)a3 imageScale:(id)a4;
-- (int64_t)_typeFromString:(id)a3;
-- (int64_t)typeOfMessage:(id)a3;
+- (id)buildFetchAppIconReplyWithImageData:(id)data imageScale:(id)scale;
+- (int64_t)_typeFromString:(id)string;
+- (int64_t)typeOfMessage:(id)message;
 @end
 
 @implementation AKAuthorizationTVServicePresenter
 
-- (int64_t)typeOfMessage:(id)a3
+- (int64_t)typeOfMessage:(id)message
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v5 = [location[0] objectForKeyedSubscript:@"type"];
-  v4 = [(AKAuthorizationTVServicePresenter *)v7 _typeFromString:v5];
+  v4 = [(AKAuthorizationTVServicePresenter *)selfCopy _typeFromString:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
   return v4;
@@ -63,17 +63,17 @@
   return v4;
 }
 
-- (id)buildFetchAppIconReplyWithImageData:(id)a3 imageScale:(id)a4
+- (id)buildFetchAppIconReplyWithImageData:(id)data imageScale:(id)scale
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, scale);
   v14 = @"type";
-  v9 = [(AKAuthorizationTVServicePresenter *)v13 _stringForType:4];
+  v9 = [(AKAuthorizationTVServicePresenter *)selfCopy _stringForType:4];
   v15[0] = v9;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v10 = [v8 mutableCopy];
@@ -94,13 +94,13 @@
   return v6;
 }
 
-- (int64_t)_typeFromString:(id)a3
+- (int64_t)_typeFromString:(id)string
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(AKAuthorizationTVServicePresenter *)v7 _filterDeprecatedType:location[0]];
+  objc_storeStrong(location, string);
+  v3 = [(AKAuthorizationTVServicePresenter *)selfCopy _filterDeprecatedType:location[0]];
   v4 = location[0];
   location[0] = v3;
   MEMORY[0x1E69E5920](v4);
@@ -133,9 +133,9 @@
   return v8;
 }
 
-- (id)_stringForType:(int64_t)a3
+- (id)_stringForType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 1:
       v4 = MEMORY[0x1E69E5928](@"DidTapNotification");
@@ -157,12 +157,12 @@
   return v4;
 }
 
-- (id)_filterDeprecatedType:(id)a3
+- (id)_filterDeprecatedType:(id)type
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   if ([location[0] isEqualToString:@"StartProgressAnimation"])
   {
     v6 = MEMORY[0x1E69E5928](@"DidTapNotification");

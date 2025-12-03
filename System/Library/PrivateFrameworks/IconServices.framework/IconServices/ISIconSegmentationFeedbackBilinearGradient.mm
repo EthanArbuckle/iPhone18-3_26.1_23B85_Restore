@@ -1,23 +1,23 @@
 @interface ISIconSegmentationFeedbackBilinearGradient
-- (ISIconSegmentationFeedbackBilinearGradient)gradientWithSize:(CGSize)a3;
-- (ISIconSegmentationFeedbackBilinearGradient)initWithTopLeftColor:(CGColor *)a3 topRightColor:(CGColor *)a4 bottomRightColor:(CGColor *)a5 bottomLeftColor:(CGColor *)a6 meanColor:(CGColor *)a7;
+- (ISIconSegmentationFeedbackBilinearGradient)gradientWithSize:(CGSize)size;
+- (ISIconSegmentationFeedbackBilinearGradient)initWithTopLeftColor:(CGColor *)color topRightColor:(CGColor *)rightColor bottomRightColor:(CGColor *)bottomRightColor bottomLeftColor:(CGColor *)leftColor meanColor:(CGColor *)meanColor;
 - (void)dealloc;
 @end
 
 @implementation ISIconSegmentationFeedbackBilinearGradient
 
-- (ISIconSegmentationFeedbackBilinearGradient)initWithTopLeftColor:(CGColor *)a3 topRightColor:(CGColor *)a4 bottomRightColor:(CGColor *)a5 bottomLeftColor:(CGColor *)a6 meanColor:(CGColor *)a7
+- (ISIconSegmentationFeedbackBilinearGradient)initWithTopLeftColor:(CGColor *)color topRightColor:(CGColor *)rightColor bottomRightColor:(CGColor *)bottomRightColor bottomLeftColor:(CGColor *)leftColor meanColor:(CGColor *)meanColor
 {
   v14.receiver = self;
   v14.super_class = ISIconSegmentationFeedbackBilinearGradient;
   v12 = [(ISIconSegmentationFeedbackBilinearGradient *)&v14 init];
   if (v12)
   {
-    v12->_topLeftColor = CGColorRetain(a3);
-    v12->_topRightColor = CGColorRetain(a4);
-    v12->_bottomRightColor = CGColorRetain(a5);
-    v12->_bottomLeftColor = CGColorRetain(a6);
-    v12->_meanColor = CGColorRetain(a7);
+    v12->_topLeftColor = CGColorRetain(color);
+    v12->_topRightColor = CGColorRetain(rightColor);
+    v12->_bottomRightColor = CGColorRetain(bottomRightColor);
+    v12->_bottomLeftColor = CGColorRetain(leftColor);
+    v12->_meanColor = CGColorRetain(meanColor);
   }
 
   return v12;
@@ -35,9 +35,9 @@
   [(ISIconSegmentationFeedbackBilinearGradient *)&v3 dealloc];
 }
 
-- (ISIconSegmentationFeedbackBilinearGradient)gradientWithSize:(CGSize)a3
+- (ISIconSegmentationFeedbackBilinearGradient)gradientWithSize:(CGSize)size
 {
-  height = a3.height;
+  height = size.height;
   v20[2] = *MEMORY[0x1E69E9840];
   Components = CGColorGetComponents(self->_topLeftColor);
   NumberOfComponents = CGColorGetNumberOfComponents(self->_topLeftColor);

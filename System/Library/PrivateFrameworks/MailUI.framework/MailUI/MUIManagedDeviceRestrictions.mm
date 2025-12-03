@@ -7,18 +7,18 @@
 
 + (BOOL)isManualSummaryRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isMailSummaryAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isMailSummaryAllowed = [mEMORY[0x277D262A0] isMailSummaryAllowed];
 
-  return v3 ^ 1;
+  return isMailSummaryAllowed ^ 1;
 }
 
 + (BOOL)isSmartReplyRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isMailSmartRepliesAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isMailSmartRepliesAllowed = [mEMORY[0x277D262A0] isMailSmartRepliesAllowed];
 
-  return v3 ^ 1;
+  return isMailSmartRepliesAllowed ^ 1;
 }
 
 @end

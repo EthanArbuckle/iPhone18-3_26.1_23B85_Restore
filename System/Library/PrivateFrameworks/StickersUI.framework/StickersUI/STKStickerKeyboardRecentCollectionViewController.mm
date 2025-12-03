@@ -1,7 +1,7 @@
 @interface STKStickerKeyboardRecentCollectionViewController
-- (BOOL)collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view canMoveItemAtIndexPath:(id)path;
 - (STKStickerKeyboardRecentCollectionViewController)init;
-- (STKStickerKeyboardRecentCollectionViewController)initWithCoder:(id)a3;
+- (STKStickerKeyboardRecentCollectionViewController)initWithCoder:(id)coder;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -21,9 +21,9 @@
   return v7;
 }
 
-- (STKStickerKeyboardRecentCollectionViewController)initWithCoder:(id)a3
+- (STKStickerKeyboardRecentCollectionViewController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   sub_26BA9AD4C();
   v5 = MEMORY[0x277D84FA0];
   *&self->_anon_0[OBJC_IVAR___STKStickerKeyboardRecentCollectionViewController_blankCellUUIDs] = MEMORY[0x277D84FA0];
@@ -42,11 +42,11 @@
   v6.super_class = type metadata accessor for StickerKeyboardRecentCollectionViewController();
   v2 = v6.receiver;
   [(StickerCollectionViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() clearColor];
+    v4 = view;
+    clearColor = [objc_opt_self() clearColor];
     [v4 setBackgroundColor_];
   }
 
@@ -58,11 +58,11 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_26BA89764();
 }
 
-- (BOOL)collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canMoveItemAtIndexPath:(id)path
 {
   v4 = sub_26BA9AE2C();
   v5 = *(v4 - 8);

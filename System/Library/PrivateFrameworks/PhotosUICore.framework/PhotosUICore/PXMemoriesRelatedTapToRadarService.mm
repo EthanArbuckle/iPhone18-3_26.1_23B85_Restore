@@ -1,34 +1,34 @@
 @interface PXMemoriesRelatedTapToRadarService
-+ (BOOL)isServiceAvailableForProviders:(id)a3;
++ (BOOL)isServiceAvailableForProviders:(id)providers;
 - (BOOL)canProvideContextualViewController;
 - (id)_libraryStatDictionary;
 - (id)_providerItemsSummary;
 - (id)collectProviderItemsSummaryAndLibraryStat;
 - (id)consoleDescription;
 - (id)contextualViewController;
-- (id)diagnosticFilesForPeopleContactSuggestionWithError:(id *)a3;
-- (id)parseProviderItemsSummary:(id)a3 error:(id *)a4;
-- (id)snapshotMemoriesRelatedResults:(id)a3 error:(id *)a4;
-- (id)tapToRadarURLWithTitle:(id)a3 descriptionString:(id)a4;
-- (id)writeGraphData:(id)a3 errorsList:(id)a4;
-- (id)writeGraphStatistics:(id)a3 errorsList:(id)a4;
-- (id)writeLibraryStatistics:(id)a3 analysisClient:(id)a4 errorsList:(id)a5;
-- (id)writeMemoriesSummary:(id)a3 analysisClient:(id)a4 errorsList:(id)a5;
-- (id)writePeopleContactSuggestionsGraphStatistics:(id)a3 errorsList:(id)a4;
-- (void)writeErrorsToErrorLog:(id)a3;
+- (id)diagnosticFilesForPeopleContactSuggestionWithError:(id *)error;
+- (id)parseProviderItemsSummary:(id)summary error:(id *)error;
+- (id)snapshotMemoriesRelatedResults:(id)results error:(id *)error;
+- (id)tapToRadarURLWithTitle:(id)title descriptionString:(id)string;
+- (id)writeGraphData:(id)data errorsList:(id)list;
+- (id)writeGraphStatistics:(id)statistics errorsList:(id)list;
+- (id)writeLibraryStatistics:(id)statistics analysisClient:(id)client errorsList:(id)list;
+- (id)writeMemoriesSummary:(id)summary analysisClient:(id)client errorsList:(id)list;
+- (id)writePeopleContactSuggestionsGraphStatistics:(id)statistics errorsList:(id)list;
+- (void)writeErrorsToErrorLog:(id)log;
 @end
 
 @implementation PXMemoriesRelatedTapToRadarService
 
-+ (BOOL)isServiceAvailableForProviders:(id)a3
++ (BOOL)isServiceAvailableForProviders:(id)providers
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  providersCopy = providers;
+  v4 = [providersCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -39,7 +39,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(providersCopy);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) hasItemForIdentifier:{@"PXDiagnosticsItemIdentifierMemory", v10}])
@@ -49,7 +49,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [providersCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -75,8 +75,8 @@ LABEL_11:
     v6[3] = &unk_1E774BB70;
     v6[4] = self;
     v3 = [MEMORY[0x1E69DD258] px_viewControllerWithOutput:v6];
-    v4 = [(PXMemoriesRelatedTapToRadarService *)self title];
-    [v3 setTitle:v4];
+    title = [(PXMemoriesRelatedTapToRadarService *)self title];
+    [v3 setTitle:title];
   }
 
   else
@@ -90,44 +90,44 @@ LABEL_11:
 - (BOOL)canProvideContextualViewController
 {
   v2 = +[PXDiagnosticsSettings sharedInstance];
-  v3 = [v2 enableGraphService];
+  enableGraphService = [v2 enableGraphService];
 
-  return v3;
+  return enableGraphService;
 }
 
-- (id)snapshotMemoriesRelatedResults:(id)a3 error:(id *)a4
+- (id)snapshotMemoriesRelatedResults:(id)results error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v8 = [v7 photoAnalysisClient];
-  v9 = [MEMORY[0x1E695DF70] array];
+  resultsCopy = results;
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  photoAnalysisClient = [px_deprecated_appPhotoLibrary photoAnalysisClient];
+  array = [MEMORY[0x1E695DF70] array];
   v38 = 0;
-  v35 = [(PXMemoriesRelatedTapToRadarService *)self parseProviderItemsSummary:v6 error:&v38];
+  v35 = [(PXMemoriesRelatedTapToRadarService *)self parseProviderItemsSummary:resultsCopy error:&v38];
   v10 = v38;
   v11 = v10;
-  if (a4 && v10)
+  if (error && v10)
   {
     v12 = v10;
-    *a4 = v11;
+    *error = v11;
     v13 = [v11 description];
-    [v9 addObject:v13];
+    [array addObject:v13];
   }
 
   v14 = MEMORY[0x1E69BE3F0];
-  v15 = [v7 pathManager];
-  v16 = [v14 createOrEmptyMemoriesRelatedSnapshotOutputFolderWithPathManager:v15];
+  pathManager = [px_deprecated_appPhotoLibrary pathManager];
+  v16 = [v14 createOrEmptyMemoriesRelatedSnapshotOutputFolderWithPathManager:pathManager];
 
   v17 = [v35 mutableCopy];
-  v18 = [(PXMemoriesRelatedTapToRadarService *)self writeGraphData:v8 errorsList:v9];
-  v19 = [(PXMemoriesRelatedTapToRadarService *)self writeGraphStatistics:v8 errorsList:v9];
-  v20 = [(PXMemoriesRelatedTapToRadarService *)self writeMemoriesSummary:v17 analysisClient:v8 errorsList:v9];
-  v21 = [(PXMemoriesRelatedTapToRadarService *)self writeLibraryStatistics:v6 analysisClient:v8 errorsList:v9];
+  v18 = [(PXMemoriesRelatedTapToRadarService *)self writeGraphData:photoAnalysisClient errorsList:array];
+  v19 = [(PXMemoriesRelatedTapToRadarService *)self writeGraphStatistics:photoAnalysisClient errorsList:array];
+  v20 = [(PXMemoriesRelatedTapToRadarService *)self writeMemoriesSummary:v17 analysisClient:photoAnalysisClient errorsList:array];
+  v21 = [(PXMemoriesRelatedTapToRadarService *)self writeLibraryStatistics:resultsCopy analysisClient:photoAnalysisClient errorsList:array];
   if (v11)
   {
-    if ([v9 count])
+    if ([array count])
     {
-      [(PXMemoriesRelatedTapToRadarService *)self writeErrorsToErrorLog:v9];
+      [(PXMemoriesRelatedTapToRadarService *)self writeErrorsToErrorLog:array];
     }
 
     v22 = 0;
@@ -137,10 +137,10 @@ LABEL_11:
   {
     v32 = [v17 objectForKey:@"identifiers"];
     v34 = [v32 objectForKey:@"referenceObjectIdentifier"];
-    v23 = [v34 allValues];
-    v31 = [v23 firstObject];
+    allValues = [v34 allValues];
+    firstObject = [allValues firstObject];
 
-    v33 = [v31 objectForKey:@"referenceOrigin"];
+    v33 = [firstObject objectForKey:@"referenceOrigin"];
     if (v33)
     {
       [v17 setObject:v33 forKey:@"referenceObjectType"];
@@ -158,19 +158,19 @@ LABEL_11:
       v40 = 0x3032000000;
       v41 = __Block_byref_object_copy__209800;
       v42 = __Block_byref_object_dispose__209801;
-      v43 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __75__PXMemoriesRelatedTapToRadarService_snapshotMemoriesRelatedResults_error___block_invoke;
       v37[3] = &unk_1E77453D8;
       v37[4] = &buf;
       [v25 enumerateKeysAndObjectsUsingBlock:v37];
-      if ([v9 count])
+      if ([array count])
       {
-        [(PXMemoriesRelatedTapToRadarService *)self writeErrorsToErrorLog:v9];
-        if (a4)
+        [(PXMemoriesRelatedTapToRadarService *)self writeErrorsToErrorLog:array];
+        if (error)
         {
-          *a4 = [v9 firstObject];
+          *error = [array firstObject];
         }
       }
 
@@ -181,7 +181,7 @@ LABEL_11:
         _os_log_impl(&dword_1A3C1C000, v26, OS_LOG_TYPE_DEBUG, "Snapshotting Memories and Related results has completed.", v36, 2u);
       }
 
-      if ([v9 count])
+      if ([array count])
       {
         v27 = 0;
       }
@@ -217,8 +217,8 @@ LABEL_11:
         _os_log_impl(&dword_1A3C1C000, v29, OS_LOG_TYPE_ERROR, "%@\n", &buf, 0xCu);
       }
 
-      [v9 addObject:v25];
-      [(PXMemoriesRelatedTapToRadarService *)self writeErrorsToErrorLog:v9];
+      [array addObject:v25];
+      [(PXMemoriesRelatedTapToRadarService *)self writeErrorsToErrorLog:array];
       v22 = 0;
     }
   }
@@ -249,21 +249,21 @@ void __75__PXMemoriesRelatedTapToRadarService_snapshotMemoriesRelatedResults_err
   }
 }
 
-- (id)diagnosticFilesForPeopleContactSuggestionWithError:(id *)a3
+- (id)diagnosticFilesForPeopleContactSuggestionWithError:(id *)error
 {
-  v4 = [MEMORY[0x1E69789A8] px:a3 deprecated:?appPhotoLibrary];
-  v5 = [v4 photoAnalysisClient];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-  v8 = [MEMORY[0x1E69BE3F0] createOrEmptyMemoriesRelatedSnapshotOutputFolderWithPathManager:v7];
-  v9 = [(PXMemoriesRelatedTapToRadarService *)self writeGraphData:v5 errorsList:v6];
-  v10 = [(PXMemoriesRelatedTapToRadarService *)self writePeopleContactSuggestionsGraphStatistics:v5 errorsList:v6];
-  v11 = [(PXMemoriesRelatedTapToRadarService *)self writeGraphStatistics:v5 errorsList:v6];
-  v12 = [MEMORY[0x1E695DF70] array];
-  v13 = v12;
+  v4 = [MEMORY[0x1E69789A8] px:error deprecated:?appPhotoLibrary];
+  photoAnalysisClient = [v4 photoAnalysisClient];
+  array = [MEMORY[0x1E695DF70] array];
+  systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+  v8 = [MEMORY[0x1E69BE3F0] createOrEmptyMemoriesRelatedSnapshotOutputFolderWithPathManager:systemLibraryPathManager];
+  v9 = [(PXMemoriesRelatedTapToRadarService *)self writeGraphData:photoAnalysisClient errorsList:array];
+  v10 = [(PXMemoriesRelatedTapToRadarService *)self writePeopleContactSuggestionsGraphStatistics:photoAnalysisClient errorsList:array];
+  v11 = [(PXMemoriesRelatedTapToRadarService *)self writeGraphStatistics:photoAnalysisClient errorsList:array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  v13 = array2;
   if (v9)
   {
-    [v12 addObject:v9];
+    [array2 addObject:v9];
   }
 
   if (v10)
@@ -279,18 +279,18 @@ void __75__PXMemoriesRelatedTapToRadarService_snapshotMemoriesRelatedResults_err
   return v13;
 }
 
-- (void)writeErrorsToErrorLog:(id)a3
+- (void)writeErrorsToErrorLog:(id)log
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  logCopy = log;
   v5 = [v3 stringWithFormat:@"ErrorsSnapshotMemoriesAndRelated.log"];
-  v6 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-  v7 = [MEMORY[0x1E69BE3F0] memoriesAndRelatedDiagnosticsOutputURLWithPathManager:v6];
+  systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+  v7 = [MEMORY[0x1E69BE3F0] memoriesAndRelatedDiagnosticsOutputURLWithPathManager:systemLibraryPathManager];
   v8 = [v7 URLByAppendingPathComponent:v5];
 
   v15 = 0;
-  v9 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:100 options:0 error:&v15];
+  v9 = [MEMORY[0x1E696AE40] dataWithPropertyList:logCopy format:100 options:0 error:&v15];
 
   v10 = v15;
   if (![v9 length] || (v14 = v10, v11 = objc_msgSend(v9, "writeToURL:options:error:", v8, 1073741825, &v14), v12 = v14, v10, v10 = v12, (v11 & 1) == 0))
@@ -305,18 +305,18 @@ void __75__PXMemoriesRelatedTapToRadarService_snapshotMemoriesRelatedResults_err
   }
 }
 
-- (id)writeLibraryStatistics:(id)a3 analysisClient:(id)a4 errorsList:(id)a5
+- (id)writeLibraryStatistics:(id)statistics analysisClient:(id)client errorsList:(id)list
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [a3 objectForKey:@"libraryStatSummary"];
+  listCopy = list;
+  v7 = [statistics objectForKey:@"libraryStatSummary"];
   if ([v7 count])
   {
-    v8 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-    v9 = [MEMORY[0x1E69BE3F0] memoriesAndRelatedDiagnosticsOutputURLWithPathManager:v8];
+    systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+    v9 = [MEMORY[0x1E69BE3F0] memoriesAndRelatedDiagnosticsOutputURLWithPathManager:systemLibraryPathManager];
     v10 = [v9 URLByAppendingPathComponent:@"LibraryStatistics.plist"];
 
-    v11 = [v10 path];
+    path = [v10 path];
     v20 = 0;
     v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:v7 format:200 options:0 error:&v20];
     v19 = v20;
@@ -336,30 +336,30 @@ void __75__PXMemoriesRelatedTapToRadarService_snapshotMemoriesRelatedResults_err
         _os_log_impl(&dword_1A3C1C000, v17, OS_LOG_TYPE_ERROR, "== writing library statistics summary ==\nFailed writing Library Statistics List - ERROR(%@)\n", buf, 0xCu);
       }
 
-      [v6 addObject:v16];
+      [listCopy addObject:v16];
     }
   }
 
   else
   {
-    v11 = 0;
+    path = 0;
   }
 
-  return v11;
+  return path;
 }
 
-- (id)writeMemoriesSummary:(id)a3 analysisClient:(id)a4 errorsList:(id)a5
+- (id)writeMemoriesSummary:(id)summary analysisClient:(id)client errorsList:(id)list
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 objectForKey:@"listOfMemoriesSummaries"];
-  v11 = [MEMORY[0x1E695DF70] array];
+  summaryCopy = summary;
+  clientCopy = client;
+  listCopy = list;
+  v10 = [summaryCopy objectForKey:@"listOfMemoriesSummaries"];
+  array = [MEMORY[0x1E695DF70] array];
   if (v10)
   {
-    v12 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-    v13 = [MEMORY[0x1E69BE3F0] memoriesAndRelatedDiagnosticsOutputURLWithPathManager:v12];
+    systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+    v13 = [MEMORY[0x1E69BE3F0] memoriesAndRelatedDiagnosticsOutputURLWithPathManager:systemLibraryPathManager];
     v14 = [v13 URLByAppendingPathComponent:@"Memories"];
 
     v33 = 0;
@@ -371,10 +371,10 @@ void __75__PXMemoriesRelatedTapToRadarService_snapshotMemoriesRelatedResults_err
     v29 = 0;
     v30 = &v29;
     v31 = 0x2020000000;
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v16 = (v34 + 5);
     obj = v34[5];
-    v17 = [v15 createDirectoryAtURL:v14 withIntermediateDirectories:1 attributes:0 error:&obj];
+    v17 = [defaultManager createDirectoryAtURL:v14 withIntermediateDirectories:1 attributes:0 error:&obj];
     objc_storeStrong(v16, obj);
 
     v32 = v17;
@@ -387,8 +387,8 @@ void __75__PXMemoriesRelatedTapToRadarService_snapshotMemoriesRelatedResults_err
       v26 = &v33;
       v23 = v14;
       v27 = &v29;
-      v24 = v11;
-      v25 = v9;
+      v24 = array;
+      v25 = listCopy;
       [v10 enumerateKeysAndObjectsUsingBlock:v22];
 
       v18 = v23;
@@ -407,14 +407,14 @@ void __75__PXMemoriesRelatedTapToRadarService_snapshotMemoriesRelatedResults_err
         _os_log_impl(&dword_1A3C1C000, v19, OS_LOG_TYPE_ERROR, "== writing summary list ==\nFailed writing Memories/Related summary list - ERROR(%@)\n", buf, 0xCu);
       }
 
-      [v9 addObject:v18];
+      [listCopy addObject:v18];
     }
 
     _Block_object_dispose(&v29, 8);
     _Block_object_dispose(&v33, 8);
   }
 
-  return v11;
+  return array;
 }
 
 void __85__PXMemoriesRelatedTapToRadarService_writeMemoriesSummary_analysisClient_errorsList___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -466,20 +466,20 @@ void __85__PXMemoriesRelatedTapToRadarService_writeMemoriesSummary_analysisClien
   }
 }
 
-- (id)writePeopleContactSuggestionsGraphStatistics:(id)a3 errorsList:(id)a4
+- (id)writePeopleContactSuggestionsGraphStatistics:(id)statistics errorsList:(id)list
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  listCopy = list;
   v22 = 0;
-  v6 = [a3 requestGraphStatisticsWithOptions:&unk_1F190F760 error:&v22];
+  v6 = [statistics requestGraphStatisticsWithOptions:&unk_1F190F760 error:&v22];
   v7 = v22;
   if (!v7)
   {
-    v8 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-    v11 = [MEMORY[0x1E69BE3F0] memoriesAndRelatedDiagnosticsOutputURLWithPathManager:v8];
+    systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+    v11 = [MEMORY[0x1E69BE3F0] memoriesAndRelatedDiagnosticsOutputURLWithPathManager:systemLibraryPathManager];
     v12 = [v11 URLByAppendingPathComponent:@"PeopleContactSuggestions.txt"];
 
-    v10 = [v12 path];
+    path = [v12 path];
     v13 = [v6 dataUsingEncoding:4];
     if ([v13 length])
     {
@@ -513,12 +513,12 @@ LABEL_12:
       _os_log_impl(&dword_1A3C1C000, v19, OS_LOG_TYPE_ERROR, "== writing Graph statistics ==\nFailed writing Graph Statistics - ERROR(%@)\n", buf, 0xCu);
     }
 
-    [v5 addObject:v18];
+    [listCopy addObject:v18];
     goto LABEL_12;
   }
 
-  v8 = [MEMORY[0x1E696AD60] stringWithFormat:@"== requestGraphStatistic ==\n"];
-  [v8 appendFormat:@"Failed obtaining People Contact Suggestions Graph Statistics - ERROR(%@)\n", v7];
+  systemLibraryPathManager = [MEMORY[0x1E696AD60] stringWithFormat:@"== requestGraphStatistic ==\n"];
+  [systemLibraryPathManager appendFormat:@"Failed obtaining People Contact Suggestions Graph Statistics - ERROR(%@)\n", v7];
   v9 = PLUIGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -527,27 +527,27 @@ LABEL_12:
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_ERROR, "== requestGraphStatistic ==\nFailed obtaining Graph Statistics - ERROR(%@)\n", buf, 0xCu);
   }
 
-  [v5 addObject:v8];
-  v10 = 0;
+  [listCopy addObject:systemLibraryPathManager];
+  path = 0;
 LABEL_13:
 
-  return v10;
+  return path;
 }
 
-- (id)writeGraphStatistics:(id)a3 errorsList:(id)a4
+- (id)writeGraphStatistics:(id)statistics errorsList:(id)list
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  listCopy = list;
   v22 = 0;
-  v6 = [a3 requestGraphStatisticsWithOptions:MEMORY[0x1E695E0F8] error:&v22];
+  v6 = [statistics requestGraphStatisticsWithOptions:MEMORY[0x1E695E0F8] error:&v22];
   v7 = v22;
   if (!v7)
   {
-    v8 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-    v11 = [MEMORY[0x1E69BE3F0] memoriesAndRelatedDiagnosticsOutputURLWithPathManager:v8];
+    systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+    v11 = [MEMORY[0x1E69BE3F0] memoriesAndRelatedDiagnosticsOutputURLWithPathManager:systemLibraryPathManager];
     v12 = [v11 URLByAppendingPathComponent:@"GraphStatistics.txt"];
 
-    v10 = [v12 path];
+    path = [v12 path];
     v13 = [v6 dataUsingEncoding:4];
     if ([v13 length])
     {
@@ -581,12 +581,12 @@ LABEL_12:
       _os_log_impl(&dword_1A3C1C000, v19, OS_LOG_TYPE_ERROR, "== writing Graph statistics ==\nFailed writing Graph Statistics - ERROR(%@)\n", buf, 0xCu);
     }
 
-    [v5 addObject:v18];
+    [listCopy addObject:v18];
     goto LABEL_12;
   }
 
-  v8 = [MEMORY[0x1E696AD60] stringWithFormat:@"== requestGraphStatistic ==\n"];
-  [v8 appendFormat:@"Failed obtaining Graph Statistics - ERROR(%@)\n", v7];
+  systemLibraryPathManager = [MEMORY[0x1E696AD60] stringWithFormat:@"== requestGraphStatistic ==\n"];
+  [systemLibraryPathManager appendFormat:@"Failed obtaining Graph Statistics - ERROR(%@)\n", v7];
   v9 = PLUIGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -595,19 +595,19 @@ LABEL_12:
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_ERROR, "== requestGraphStatistic ==\nFailed obtaining Graph Statistics - ERROR(%@)\n", buf, 0xCu);
   }
 
-  [v5 addObject:v8];
-  v10 = 0;
+  [listCopy addObject:systemLibraryPathManager];
+  path = 0;
 LABEL_13:
 
-  return v10;
+  return path;
 }
 
-- (id)writeGraphData:(id)a3 errorsList:(id)a4
+- (id)writeGraphData:(id)data errorsList:(id)list
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  listCopy = list;
   v11 = 0;
-  v6 = [a3 requestExportGraphForPurpose:@"snapshot" error:&v11];
+  v6 = [data requestExportGraphForPurpose:@"snapshot" error:&v11];
   v7 = v11;
   if (v7)
   {
@@ -621,41 +621,41 @@ LABEL_13:
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_ERROR, "== requestExportGraphForPurpose:snapshot ==\nFailed writing Memories/Related Graph State - ERROR(%@)\n", buf, 0xCu);
     }
 
-    [v5 addObject:v8];
+    [listCopy addObject:v8];
   }
 
   return v6;
 }
 
-- (id)tapToRadarURLWithTitle:(id)a3 descriptionString:(id)a4
+- (id)tapToRadarURLWithTitle:(id)title descriptionString:(id)string
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7 || !v8)
+  titleCopy = title;
+  stringCopy = string;
+  v9 = stringCopy;
+  if (!titleCopy || !stringCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PXMemoriesRelatedTapToRadarService.m" lineNumber:339 description:{@"Invalid parameter not satisfying: %@", @"title && descriptionString"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesRelatedTapToRadarService.m" lineNumber:339 description:{@"Invalid parameter not satisfying: %@", @"title && descriptionString"}];
   }
 
-  v10 = [MEMORY[0x1E695DF90] dictionary];
-  [v10 setObject:v7 forKey:@"Title"];
-  [v10 setObject:@"com.apple.PhotoLibraryServices.PhotosDiagnostics" forKey:@"ExtensionIdentifiers"];
-  [v10 setObject:@"Serious Bug" forKey:@"Classification"];
-  [v10 setObject:@"Always" forKey:@"Reproducibility"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:titleCopy forKey:@"Title"];
+  [dictionary setObject:@"com.apple.PhotoLibraryServices.PhotosDiagnostics" forKey:@"ExtensionIdentifiers"];
+  [dictionary setObject:@"Serious Bug" forKey:@"Classification"];
+  [dictionary setObject:@"Always" forKey:@"Reproducibility"];
   v25 = v9;
-  [v10 setObject:v9 forKey:@"Description"];
-  [v10 setObject:@"819256" forKey:@"ComponentID"];
-  [v10 setObject:@"all" forKey:@"ComponentVersion"];
-  [v10 setObject:@"Photos Media Mining (New Bugs)" forKey:@"ComponentName"];
+  [dictionary setObject:v9 forKey:@"Description"];
+  [dictionary setObject:@"819256" forKey:@"ComponentID"];
+  [dictionary setObject:@"all" forKey:@"ComponentVersion"];
+  [dictionary setObject:@"Photos Media Mining (New Bugs)" forKey:@"ComponentName"];
   v11 = [MEMORY[0x1E696AF20] componentsWithString:@"tap-to-radar://new"];
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v13 = v10;
+  v13 = dictionary;
   v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v14)
   {
@@ -674,7 +674,7 @@ LABEL_13:
         v19 = MEMORY[0x1E696AF60];
         v20 = [v13 objectForKeyedSubscript:v18];
         v21 = [v19 queryItemWithName:v18 value:v20];
-        [v12 addObject:v21];
+        [array addObject:v21];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -683,7 +683,7 @@ LABEL_13:
     while (v15);
   }
 
-  [v11 setQueryItems:v12];
+  [v11 setQueryItems:array];
   v22 = [v11 URL];
 
   return v22;
@@ -691,28 +691,28 @@ LABEL_13:
 
 - (id)collectProviderItemsSummaryAndLibraryStat
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PXMemoriesRelatedTapToRadarService *)self _providerItemsSummary];
-  if ([v4 count])
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  _providerItemsSummary = [(PXMemoriesRelatedTapToRadarService *)self _providerItemsSummary];
+  if ([_providerItemsSummary count])
   {
-    [v3 setObject:v4 forKey:@"providerItemSummary"];
+    [dictionary setObject:_providerItemsSummary forKey:@"providerItemSummary"];
   }
 
-  v5 = [(PXMemoriesRelatedTapToRadarService *)self _libraryStatDictionary];
-  if ([v5 count])
+  _libraryStatDictionary = [(PXMemoriesRelatedTapToRadarService *)self _libraryStatDictionary];
+  if ([_libraryStatDictionary count])
   {
-    [v3 setObject:v5 forKey:@"libraryStatSummary"];
+    [dictionary setObject:_libraryStatDictionary forKey:@"libraryStatSummary"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (id)parseProviderItemsSummary:(id)a3 error:(id *)a4
+- (id)parseProviderItemsSummary:(id)summary error:(id *)error
 {
   v92[1] = *MEMORY[0x1E69E9840];
-  v55 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v54 = [v55 objectForKey:@"providerItemSummary"];
+  summaryCopy = summary;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v54 = [summaryCopy objectForKey:@"providerItemSummary"];
   v81 = 0;
   v82 = &v81;
   v83 = 0x3032000000;
@@ -746,17 +746,17 @@ LABEL_13:
   v70[6] = &v73;
   v70[7] = v71;
   [v54 enumerateKeysAndObjectsUsingBlock:v70];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v56 = [v6 librarySpecificFetchOptions];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  librarySpecificFetchOptions = [px_deprecated_appPhotoLibrary librarySpecificFetchOptions];
 
-  [v56 setIncludePendingMemories:1];
+  [librarySpecificFetchOptions setIncludePendingMemories:1];
   v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
   v92[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:1];
-  [v56 setSortDescriptors:v8];
+  [librarySpecificFetchOptions setSortDescriptors:v8];
 
-  v53 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v56];
+  v53 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   v9 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(v53, "count")}];
   v10 = [v53 objectsAtIndexes:v9];
 
@@ -782,7 +782,7 @@ LABEL_13:
         v16 = [v15 objectForKey:@"localIdentifier"];
         if (v16)
         {
-          [v5 setObject:v15 forKey:v16];
+          [dictionary2 setObject:v15 forKey:v16];
         }
       }
 
@@ -792,9 +792,9 @@ LABEL_13:
     while (v12);
   }
 
-  [v4 setObject:v5 forKey:@"listOfMemoriesSummaries"];
-  v17 = [MEMORY[0x1E695DF90] dictionary];
-  v18 = v17;
+  [dictionary setObject:dictionary2 forKey:@"listOfMemoriesSummaries"];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  v18 = dictionary3;
   v19 = v74[5];
   if (v19)
   {
@@ -802,38 +802,38 @@ LABEL_13:
     v64[1] = 3221225472;
     v64[2] = __70__PXMemoriesRelatedTapToRadarService_parseProviderItemsSummary_error___block_invoke_3;
     v64[3] = &unk_1E774BC88;
-    v65 = v17;
+    v65 = dictionary3;
     [v19 enumerateKeysAndObjectsUsingBlock:v64];
   }
 
-  [v4 setObject:v18 forKey:@"listOfSummaries"];
-  v20 = [MEMORY[0x1E696AD60] string];
-  [v20 appendFormat:@"More details can be found in the attachments, but here is the high level library stats:\n"];
-  [v20 appendFormat:@"\n ======== Library Summary Stat =======\n"];
-  v52 = [v55 objectForKey:@"libraryStatSummary"];
+  [dictionary setObject:v18 forKey:@"listOfSummaries"];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"More details can be found in the attachments, but here is the high level library stats:\n"];
+  [string appendFormat:@"\n ======== Library Summary Stat =======\n"];
+  v52 = [summaryCopy objectForKey:@"libraryStatSummary"];
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
   v62[2] = __70__PXMemoriesRelatedTapToRadarService_parseProviderItemsSummary_error___block_invoke_4;
   v62[3] = &unk_1E774BC88;
-  v21 = v20;
+  v21 = string;
   v63 = v21;
   [v52 enumerateKeysAndObjectsUsingBlock:v62];
-  [v4 setObject:v21 forKey:@"summaryDescription"];
+  [dictionary setObject:v21 forKey:@"summaryDescription"];
   v22 = [v82[5] objectForKey:@"summaryInfo"];
   if ((v82[5] || ([v74[5] allValues], v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "firstObject"), v24 = objc_claimAutoreleasedReturnValue(), v25 = v82[5], v82[5] = v24, v25, v23, objc_msgSend(v82[5], "objectForKey:", @"summaryInfo"), v26 = objc_claimAutoreleasedReturnValue(), v22, v22 = v26, v82[5])) && v22)
   {
     v49 = [v22 objectForKey:@"referenceOrigin"];
-    v48 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     v47 = [v82[5] objectForKey:@"summaryInfo"];
     v44 = [v82[5] objectForKey:@"providerItem"];
     v27 = [v47 objectForKey:@"localIdentifier"];
     if (v27)
     {
-      v51 = v4;
+      v51 = dictionary;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v49, @"referenceOrigin", v44, @"providerItem", 0}];
-      [v48 setObject:v28 forKey:v27];
+      [dictionary4 setObject:v28 forKey:v27];
       v29 = v18;
-      v30 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary5 = [MEMORY[0x1E695DF90] dictionary];
       v31 = v74[5];
       v57[0] = MEMORY[0x1E69E9820];
       v57[1] = 3221225472;
@@ -842,13 +842,13 @@ LABEL_13:
       v60 = a2;
       v57[4] = self;
       v58 = v49;
-      v32 = v30;
+      v32 = dictionary5;
       v59 = v32;
       [v31 enumerateKeysAndObjectsUsingBlock:v57];
       [MEMORY[0x1E695DF90] dictionary];
       v18 = v29;
-      v33 = v4 = v51;
-      [v33 setObject:v48 forKey:@"referenceObjectIdentifier"];
+      v33 = dictionary = v51;
+      [v33 setObject:dictionary4 forKey:@"referenceObjectIdentifier"];
       [v33 setObject:v32 forKey:@"collectionIdentifiers"];
       [v51 setObject:v33 forKey:@"identifiers"];
       v34 = v51;
@@ -863,16 +863,16 @@ LABEL_13:
         _os_log_impl(&dword_1A3C1C000, v39, OS_LOG_TYPE_ERROR, "Error - Local Identifier for a reference object wasn't set", buf, 2u);
       }
 
-      if (a4)
+      if (error)
       {
         v40 = MEMORY[0x1E696ABC0];
         v87 = *MEMORY[0x1E696A578];
         v88 = @"Error - Local Identifier for a reference object wasn't set";
         v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v88 forKeys:&v87 count:1];
-        *a4 = [v40 errorWithDomain:@"com.apple.Photos.TTR.metadataSnapshot" code:2 userInfo:v41];
+        *error = [v40 errorWithDomain:@"com.apple.Photos.TTR.metadataSnapshot" code:2 userInfo:v41];
       }
 
-      v42 = v4;
+      v42 = dictionary;
     }
   }
 
@@ -885,16 +885,16 @@ LABEL_13:
       _os_log_impl(&dword_1A3C1C000, v35, OS_LOG_TYPE_ERROR, "Error - the main reference object (Moment / Memory) was not found. Please try to capture the data once all results were fully loaded on the screen.", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v36 = MEMORY[0x1E696ABC0];
       v89 = *MEMORY[0x1E696A578];
       v90 = @"Error - the main reference object (Moment / Memory) was not found. Please try to capture the data once all results were fully loaded on the screen.";
       v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v90 forKeys:&v89 count:1];
-      *a4 = [v36 errorWithDomain:@"com.apple.Photos.TTR.metadataSnapshot" code:2 userInfo:v37];
+      *error = [v36 errorWithDomain:@"com.apple.Photos.TTR.metadataSnapshot" code:2 userInfo:v37];
     }
 
-    v38 = v4;
+    v38 = dictionary;
   }
 
   _Block_object_dispose(v71, 8);
@@ -903,7 +903,7 @@ LABEL_13:
   _Block_object_dispose(v79, 8);
   _Block_object_dispose(&v81, 8);
 
-  return v4;
+  return dictionary;
 }
 
 void __70__PXMemoriesRelatedTapToRadarService_parseProviderItemsSummary_error___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -973,7 +973,7 @@ void __70__PXMemoriesRelatedTapToRadarService_parseProviderItemsSummary_error___
 - (id)_providerItemsSummary
 {
   v43 = *MEMORY[0x1E69E9840];
-  v32 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -999,13 +999,13 @@ void __70__PXMemoriesRelatedTapToRadarService_parseProviderItemsSummary_error___
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v5 = [v4 registeredIdentifiers];
-        v6 = [v5 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        registeredIdentifiers = [v4 registeredIdentifiers];
+        v6 = [registeredIdentifiers countByEnumeratingWithState:&v33 objects:v41 count:16];
         if (v6)
         {
           v7 = v6;
           v8 = *v34;
-          v30 = v5;
+          v30 = registeredIdentifiers;
           v31 = v4;
           v29 = *v34;
           do
@@ -1014,7 +1014,7 @@ void __70__PXMemoriesRelatedTapToRadarService_parseProviderItemsSummary_error___
             {
               if (*v34 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(registeredIdentifiers);
               }
 
               v10 = *(*(&v33 + 1) + 8 * i);
@@ -1029,53 +1029,53 @@ void __70__PXMemoriesRelatedTapToRadarService_parseProviderItemsSummary_error___
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v13 = [v32 objectForKey:v10];
-                  v14 = [v13 mutableCopy];
+                  v13 = [dictionary objectForKey:v10];
+                  dictionary2 = [v13 mutableCopy];
 
-                  if (!v14)
+                  if (!dictionary2)
                   {
-                    v14 = [MEMORY[0x1E695DF90] dictionary];
+                    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
                   }
 
-                  v15 = [v14 count];
-                  v16 = [v12 uuid];
-                  v17 = [v14 objectForKey:v16];
-                  v18 = [v17 mutableCopy];
+                  v15 = [dictionary2 count];
+                  uuid = [v12 uuid];
+                  v17 = [dictionary2 objectForKey:uuid];
+                  dictionary3 = [v17 mutableCopy];
 
-                  if (!v18)
+                  if (!dictionary3)
                   {
-                    v18 = [MEMORY[0x1E695DF90] dictionary];
+                    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
                   }
 
-                  v19 = [v18 count];
-                  v20 = [v18 objectForKey:v16];
+                  v19 = [dictionary3 count];
+                  v20 = [dictionary3 objectForKey:uuid];
 
                   if (!v20)
                   {
                     v21 = [PXMemoriesRelatedDiagnosticsHelper getSummaryFromProviderItem:v12];
-                    [v18 setObject:v21 forKey:v16];
+                    [dictionary3 setObject:v21 forKey:uuid];
                   }
 
-                  if ([v18 count] > v19)
+                  if ([dictionary3 count] > v19)
                   {
-                    v22 = [v18 valueForKey:v16];
+                    v22 = [dictionary3 valueForKey:uuid];
                     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v22, @"summaryInfo", v12, @"providerItem", 0}];
-                    [v14 setObject:v23 forKey:v16];
+                    [dictionary2 setObject:v23 forKey:uuid];
                   }
 
                   v8 = v29;
-                  if ([v14 count] > v15)
+                  if ([dictionary2 count] > v15)
                   {
-                    [v32 setObject:v14 forKey:v10];
+                    [dictionary setObject:dictionary2 forKey:v10];
                   }
 
-                  v5 = v30;
+                  registeredIdentifiers = v30;
                   v4 = v31;
                 }
               }
             }
 
-            v7 = [v5 countByEnumeratingWithState:&v33 objects:v41 count:16];
+            v7 = [registeredIdentifiers countByEnumeratingWithState:&v33 objects:v41 count:16];
           }
 
           while (v7);
@@ -1091,7 +1091,7 @@ void __70__PXMemoriesRelatedTapToRadarService_parseProviderItemsSummary_error___
     while (v27);
   }
 
-  return v32;
+  return dictionary;
 }
 
 - (id)_libraryStatDictionary
@@ -1101,13 +1101,13 @@ void __70__PXMemoriesRelatedTapToRadarService_parseProviderItemsSummary_error___
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__209800;
   v13 = __Block_byref_object_dispose__209801;
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  v2 = [MEMORY[0x1E69BE670] systemPhotoLibrary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  systemPhotoLibrary = [MEMORY[0x1E69BE670] systemPhotoLibrary];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__PXMemoriesRelatedTapToRadarService__libraryStatDictionary__block_invoke;
   v6[3] = &unk_1E7749A28;
-  v3 = v2;
+  v3 = systemPhotoLibrary;
   v7 = v3;
   v8 = &v9;
   [v3 performBlockAndWait:v6];
@@ -1142,7 +1142,7 @@ uint64_t __60__PXMemoriesRelatedTapToRadarService__libraryStatDictionary__block_
 - (id)consoleDescription
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -1168,8 +1168,8 @@ uint64_t __60__PXMemoriesRelatedTapToRadarService__libraryStatDictionary__block_
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v6 = [v5 registeredIdentifiers];
-        v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        registeredIdentifiers = [v5 registeredIdentifiers];
+        v7 = [registeredIdentifiers countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v7)
         {
           v8 = v7;
@@ -1180,20 +1180,20 @@ uint64_t __60__PXMemoriesRelatedTapToRadarService__libraryStatDictionary__block_
             {
               if (*v19 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(registeredIdentifiers);
               }
 
               v11 = *(*(&v18 + 1) + 8 * i);
               v12 = [v5 itemForIdentifier:v11];
-              if ([v3 length])
+              if ([string length])
               {
-                [v3 appendString:@"\n"];
+                [string appendString:@"\n"];
               }
 
-              [v3 appendFormat:@"%@: %@\n", v11, v12];
+              [string appendFormat:@"%@: %@\n", v11, v12];
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v8 = [registeredIdentifiers countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v8);
@@ -1209,7 +1209,7 @@ uint64_t __60__PXMemoriesRelatedTapToRadarService__libraryStatDictionary__block_
     while (v16);
   }
 
-  return v3;
+  return string;
 }
 
 @end

@@ -1,44 +1,44 @@
 @interface SGMultiHeadEspressoModel
-+ (id)classifierWithEspressoModelFile:(id)a3 inputName:(id)a4 headDimensionality:(id)a5;
-+ (id)makeStringForShape:(unint64_t)a3[10];
-+ (unint64_t)getNumParametersFromShape:(unint64_t)a3[10] rank:(unint64_t)a4;
-- (SGMultiHeadEspressoModel)initWithEspressoContext:(void *)a3 espressoPlan:(void *)a4 espressoModel:(id)a5 inputName:(id)a6 inputNumParameters:(unint64_t)a7 headDimensionality:(id)a8;
-- (id)predict:(id)a3;
-- (id)predict:(id)a3 heads:(id)a4;
++ (id)classifierWithEspressoModelFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality;
++ (id)makeStringForShape:(unint64_t)shape[10];
++ (unint64_t)getNumParametersFromShape:(unint64_t)shape[10] rank:(unint64_t)rank;
+- (SGMultiHeadEspressoModel)initWithEspressoContext:(void *)context espressoPlan:(void *)plan espressoModel:(id)model inputName:(id)name inputNumParameters:(unint64_t)parameters headDimensionality:(id)dimensionality;
+- (id)predict:(id)predict;
+- (id)predict:(id)predict heads:(id)heads;
 - (void)dealloc;
 @end
 
 @implementation SGMultiHeadEspressoModel
 
-- (id)predict:(id)a3
+- (id)predict:(id)predict
 {
   headDimensionality = self->_headDimensionality;
-  v5 = a3;
-  v6 = [(NSDictionary *)headDimensionality allKeys];
-  v7 = [(SGMultiHeadEspressoModel *)self predict:v5 heads:v6];
+  predictCopy = predict;
+  allKeys = [(NSDictionary *)headDimensionality allKeys];
+  v7 = [(SGMultiHeadEspressoModel *)self predict:predictCopy heads:allKeys];
 
   return v7;
 }
 
-- (id)predict:(id)a3 heads:(id)a4
+- (id)predict:(id)predict heads:(id)heads
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![v7 count])
+  predictCopy = predict;
+  headsCopy = heads;
+  if (![headsCopy count])
   {
     v21 = MEMORY[0x277CBEC10];
     goto LABEL_45;
   }
 
-  v64 = v6;
+  v64 = predictCopy;
   v8 = objc_opt_new();
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v63 = v7;
-  v9 = v7;
+  v63 = headsCopy;
+  v9 = headsCopy;
   v10 = [v9 countByEnumeratingWithState:&v67 objects:v79 count:16];
   if (v10)
   {
@@ -86,7 +86,7 @@
     v19 = v18;
     if (v17 >= 9)
     {
-      v6 = v64;
+      predictCopy = v64;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
       {
         v20 = [v8 componentsJoinedByString:{@", "}];
@@ -100,7 +100,7 @@
       goto LABEL_43;
     }
 
-    v6 = v64;
+    predictCopy = v64;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v22 = [v8 componentsJoinedByString:{@", "}];
@@ -227,9 +227,9 @@ LABEL_43:
       {
         v52 = [v8 objectAtIndexedSubscript:v51];
         v53 = [(NSDictionary *)self->_headDimensionality objectForKeyedSubscript:v52];
-        v54 = [v53 unsignedIntegerValue];
+        unsignedIntegerValue = [v53 unsignedIntegerValue];
 
-        if (v54)
+        if (unsignedIntegerValue)
         {
           v56 = 0;
           do
@@ -241,10 +241,10 @@ LABEL_43:
 
             ++v56;
             v59 = [(NSDictionary *)self->_headDimensionality objectForKeyedSubscript:v52];
-            v60 = [v59 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v59 unsignedIntegerValue];
           }
 
-          while (v56 < v60);
+          while (v56 < unsignedIntegerValue2);
         }
 
         ++v51;
@@ -270,10 +270,10 @@ LABEL_43:
     v21 = 0;
   }
 
-  v6 = v64;
+  predictCopy = v64;
 LABEL_44:
 
-  v7 = v63;
+  headsCopy = v63;
 LABEL_45:
 
   v49 = *MEMORY[0x277D85DE8];
@@ -281,25 +281,25 @@ LABEL_45:
   return v21;
 }
 
-- (SGMultiHeadEspressoModel)initWithEspressoContext:(void *)a3 espressoPlan:(void *)a4 espressoModel:(id)a5 inputName:(id)a6 inputNumParameters:(unint64_t)a7 headDimensionality:(id)a8
+- (SGMultiHeadEspressoModel)initWithEspressoContext:(void *)context espressoPlan:(void *)plan espressoModel:(id)model inputName:(id)name inputNumParameters:(unint64_t)parameters headDimensionality:(id)dimensionality
 {
-  v10 = *&a5.var1;
-  var0 = a5.var0;
-  v15 = a6;
-  v16 = a8;
+  v10 = *&model.var1;
+  var0 = model.var0;
+  nameCopy = name;
+  dimensionalityCopy = dimensionality;
   v20.receiver = self;
   v20.super_class = SGMultiHeadEspressoModel;
   v17 = [(SGMultiHeadEspressoModel *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_espressoPlan = a4;
-    v17->_espressoContext = a3;
+    v17->_espressoPlan = plan;
+    v17->_espressoContext = context;
     v17->_espressoModel.plan = var0;
     *&v17->_espressoModel.network_index = v10;
-    objc_storeStrong(&v17->_inputName, a6);
-    v18->_inputNumParameters = a7;
-    objc_storeStrong(&v18->_headDimensionality, a8);
+    objc_storeStrong(&v17->_inputName, name);
+    v18->_inputNumParameters = parameters;
+    objc_storeStrong(&v18->_headDimensionality, dimensionality);
   }
 
   return v18;
@@ -316,12 +316,12 @@ LABEL_45:
   [(SGMultiHeadEspressoModel *)&v5 dealloc];
 }
 
-+ (id)classifierWithEspressoModelFile:(id)a3 inputName:(id)a4 headDimensionality:(id)a5
++ (id)classifierWithEspressoModelFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality
 {
   v126 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  fileCopy = file;
+  nameCopy = name;
+  dimensionalityCopy = dimensionality;
   v10 = espresso_create_context();
   if (!v10)
   {
@@ -357,7 +357,7 @@ LABEL_10:
   v13 = plan;
   v89 = 0;
   v90 = 0;
-  [v7 UTF8String];
+  [fileCopy UTF8String];
   v14 = espresso_plan_add_network();
   if (v14)
   {
@@ -366,7 +366,7 @@ LABEL_10:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412802;
-      *&buf[4] = v7;
+      *&buf[4] = fileCopy;
       *&buf[12] = 1024;
       *&buf[14] = 65568;
       *&buf[18] = 1024;
@@ -385,7 +385,7 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  [v8 cStringUsingEncoding:4];
+  [nameCopy cStringUsingEncoding:4];
   v20 = espresso_network_declare_input();
   if (v20)
   {
@@ -397,7 +397,7 @@ LABEL_33:
     }
 
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = nameCopy;
     *&buf[12] = 1024;
     *&buf[14] = v21;
     v17 = "Could not declare espresso network input %@, status code %d";
@@ -411,13 +411,13 @@ LABEL_33:
   v86 = 0u;
   v87 = 0u;
   v85 = 0u;
-  v22 = v9;
+  v22 = dimensionalityCopy;
   v23 = [v22 countByEnumeratingWithState:&v85 objects:v125 count:16];
   if (v23)
   {
     v24 = v23;
-    v75 = v8;
-    v77 = v7;
+    v75 = nameCopy;
+    v77 = fileCopy;
     v25 = 0;
     v26 = *v86;
     do
@@ -454,8 +454,8 @@ LABEL_33:
 
     while (v24);
 
-    v8 = v75;
-    v7 = v77;
+    nameCopy = v75;
+    fileCopy = v77;
     if (v25)
     {
       v16 = sgLogHandle();
@@ -503,7 +503,7 @@ LABEL_33:
   v116 = 0u;
   v117 = 0u;
   memset(buf, 0, sizeof(buf));
-  [v8 cStringUsingEncoding:4];
+  [nameCopy cStringUsingEncoding:4];
   v37 = espresso_network_bind_buffer();
   if (v37)
   {
@@ -512,7 +512,7 @@ LABEL_33:
     if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
     {
       *v103 = 138412546;
-      *&v103[4] = v8;
+      *&v103[4] = nameCopy;
       *&v103[12] = 1024;
       *&v103[14] = v38;
       v40 = "Could not bind the input buffer to layer %@ in espresso plan during initialization, status code %d";
@@ -534,7 +534,7 @@ LABEL_76:
     if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
     {
       *v103 = 138412546;
-      *&v103[4] = v8;
+      *&v103[4] = nameCopy;
       *&v103[12] = 1024;
       *&v103[14] = v42;
       v40 = "Unable to get input shape to layer %@ in espresso plan during initialization, status code %d";
@@ -547,15 +547,15 @@ LABEL_42:
     goto LABEL_33;
   }
 
-  v74 = v9;
-  v78 = v7;
+  v74 = dimensionalityCopy;
+  v78 = fileCopy;
   v43 = [SGMultiHeadEspressoModel getNumParametersFromShape:v114 rank:v84];
   v44 = sgLogHandle();
   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
   {
     v69 = [SGMultiHeadEspressoModel makeStringForShape:v114];
     *v103 = 138413058;
-    *&v103[4] = v8;
+    *&v103[4] = nameCopy;
     *&v103[12] = 2048;
     *&v103[14] = v84;
     *&v103[22] = 2112;
@@ -565,7 +565,7 @@ LABEL_42:
     _os_log_debug_impl(&dword_24799E000, v44, OS_LOG_TYPE_DEBUG, "Input layer %@ has rank %zu, shape %@, num parameters %tu", v103, 0x2Au);
   }
 
-  v76 = v8;
+  v76 = nameCopy;
 
   v82 = 0u;
   v83 = 0u;
@@ -634,10 +634,10 @@ LABEL_42:
 
         v79 = v48;
         v62 = [SGMultiHeadEspressoModel getNumParametersFromShape:v99 rank:0];
-        v63 = [v52 unsignedIntegerValue];
+        unsignedIntegerValue = [v52 unsignedIntegerValue];
         v64 = sgLogHandle();
         v58 = v64;
-        if (v63 == v62)
+        if (unsignedIntegerValue == v62)
         {
           if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
           {
@@ -660,11 +660,11 @@ LABEL_42:
         {
           if (os_log_type_enabled(v64, OS_LOG_TYPE_FAULT))
           {
-            v65 = [v52 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v52 unsignedIntegerValue];
             *v91 = 138412802;
             v92 = v51;
             v93 = 2048;
-            v94 = v65;
+            v94 = unsignedIntegerValue2;
             v95 = 2048;
             v96 = v62;
             v59 = v58;
@@ -708,16 +708,16 @@ LABEL_74:
     objc_autoreleasePoolPop(context);
     v68 = [SGMultiHeadEspressoModel alloc];
     v70 = v45;
-    v8 = v76;
+    nameCopy = v76;
     v34 = [(SGMultiHeadEspressoModel *)v68 initWithEspressoContext:v73 espressoPlan:v13 espressoModel:v89 inputName:v90 inputNumParameters:v76 headDimensionality:v43, v70];
-    v7 = v78;
-    v9 = v74;
+    fileCopy = v78;
+    dimensionalityCopy = v74;
     goto LABEL_34;
   }
 
   v67 = sgLogHandle();
-  v7 = v78;
-  v9 = v74;
+  fileCopy = v78;
+  dimensionalityCopy = v74;
   if (os_log_type_enabled(v67, OS_LOG_TYPE_FAULT))
   {
     *v103 = 0;
@@ -726,7 +726,7 @@ LABEL_74:
 
   objc_autoreleasePoolPop(context);
   v34 = 0;
-  v8 = v76;
+  nameCopy = v76;
 LABEL_34:
 
   v35 = *MEMORY[0x277D85DE8];
@@ -734,38 +734,38 @@ LABEL_34:
   return v34;
 }
 
-+ (unint64_t)getNumParametersFromShape:(unint64_t)a3[10] rank:(unint64_t)a4
++ (unint64_t)getNumParametersFromShape:(unint64_t)shape[10] rank:(unint64_t)rank
 {
-  if (!a4)
+  if (!rank)
   {
     return 0;
   }
 
-  v4 = 10;
-  if (a4 < 0xA)
+  rankCopy = 10;
+  if (rank < 0xA)
   {
-    v4 = a4;
+    rankCopy = rank;
   }
 
   result = 1;
   do
   {
-    v6 = *a3++;
+    v6 = *shape++;
     result *= v6;
-    --v4;
+    --rankCopy;
   }
 
-  while (v4);
+  while (rankCopy);
   return result;
 }
 
-+ (id)makeStringForShape:(unint64_t)a3[10]
++ (id)makeStringForShape:(unint64_t)shape[10]
 {
   v4 = objc_opt_new();
   [v4 appendString:@"{"];
   for (i = 0; i != 10; ++i)
   {
-    [v4 appendFormat:@" %zu", a3[i]];
+    [v4 appendFormat:@" %zu", shape[i]];
   }
 
   [v4 appendString:@" }"];

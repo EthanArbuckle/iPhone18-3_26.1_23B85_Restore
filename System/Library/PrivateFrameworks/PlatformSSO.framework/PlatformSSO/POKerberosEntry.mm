@@ -1,6 +1,6 @@
 @interface POKerberosEntry
 - (BOOL)hasAllRequiredValues;
-- (POKerberosEntry)initWithData:(id)a3;
+- (POKerberosEntry)initWithData:(id)data;
 - (id)dataRepresentation;
 - (id)dictionaryRepresentation;
 @end
@@ -9,23 +9,23 @@
 
 - (BOOL)hasAllRequiredValues
 {
-  v3 = [(POKerberosEntry *)self ticketKeyPath];
-  if ([v3 length])
+  ticketKeyPath = [(POKerberosEntry *)self ticketKeyPath];
+  if ([ticketKeyPath length])
   {
-    v4 = [(POKerberosEntry *)self messageBuffer];
-    if ([v4 length])
+    messageBuffer = [(POKerberosEntry *)self messageBuffer];
+    if ([messageBuffer length])
     {
-      v5 = [(POKerberosEntry *)self realm];
-      if ([v5 length])
+      realm = [(POKerberosEntry *)self realm];
+      if ([realm length])
       {
-        v6 = [(POKerberosEntry *)self serviceName];
-        if ([v6 length])
+        serviceName = [(POKerberosEntry *)self serviceName];
+        if ([serviceName length])
         {
-          v7 = [(POKerberosEntry *)self clientName];
-          if ([v7 length] && -[POKerberosEntry encryptionKeyType](self, "encryptionKeyType") >= 1)
+          clientName = [(POKerberosEntry *)self clientName];
+          if ([clientName length] && -[POKerberosEntry encryptionKeyType](self, "encryptionKeyType") >= 1)
           {
-            v8 = [(POKerberosEntry *)self sessionKey];
-            v9 = [v8 length] != 0;
+            sessionKey = [(POKerberosEntry *)self sessionKey];
+            v9 = [sessionKey length] != 0;
           }
 
           else
@@ -107,8 +107,8 @@
 
   v19 = objc_alloc_init(MEMORY[0x277CCAA68]);
   [v19 setFormatOptions:1907];
-  v20 = [MEMORY[0x277CBEAA8] date];
-  v21 = [v19 stringFromDate:v20];
+  date = [MEMORY[0x277CBEAA8] date];
+  v21 = [v19 stringFromDate:date];
   [v3 setObject:v21 forKeyedSubscript:@"created"];
 
   return v3;
@@ -117,9 +117,9 @@
 - (id)dataRepresentation
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(POKerberosEntry *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(POKerberosEntry *)self dictionaryRepresentation];
   v9 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:11 error:&v9];
+  v4 = [v2 dataWithJSONObject:dictionaryRepresentation options:11 error:&v9];
   v5 = v9;
 
   if (v5)
@@ -148,9 +148,9 @@ id __37__POKerberosEntry_dataRepresentation__block_invoke()
   return v0;
 }
 
-- (POKerberosEntry)initWithData:(id)a3
+- (POKerberosEntry)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(POKerberosEntry *)self init];
   if (!v5)
   {
@@ -160,7 +160,7 @@ LABEL_11:
   }
 
   v42 = 0;
-  v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:16 error:&v42];
+  v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:16 error:&v42];
   v7 = v42;
   if (!v7)
   {

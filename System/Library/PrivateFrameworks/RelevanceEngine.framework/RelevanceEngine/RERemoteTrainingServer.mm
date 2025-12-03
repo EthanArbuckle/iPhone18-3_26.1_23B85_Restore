@@ -1,22 +1,22 @@
 @interface RERemoteTrainingServer
-- (RERemoteTrainingServer)initWithTargetProcessName:(id)a3;
+- (RERemoteTrainingServer)initWithTargetProcessName:(id)name;
 - (void)_clearConnection;
 - (void)_queue_setupConnectionIfNeeded;
-- (void)performTrainingWithElements:(id)a3 events:(id)a4 interactions:(id)a5 completion:(id)a6;
-- (void)updateRemoteAttribute:(id)a3 forKey:(id)a4 completion:(id)a5;
+- (void)performTrainingWithElements:(id)elements events:(id)events interactions:(id)interactions completion:(id)completion;
+- (void)updateRemoteAttribute:(id)attribute forKey:(id)key completion:(id)completion;
 @end
 
 @implementation RERemoteTrainingServer
 
-- (RERemoteTrainingServer)initWithTargetProcessName:(id)a3
+- (RERemoteTrainingServer)initWithTargetProcessName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = RERemoteTrainingServer;
   v5 = [(RERemoteTrainingServer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     processName = v5->_processName;
     v5->_processName = v6;
   }
@@ -87,14 +87,14 @@ void __56__RERemoteTrainingServer__queue_setupConnectionIfNeeded__block_invoke_1
   MEMORY[0x2821F96F8]();
 }
 
-- (void)updateRemoteAttribute:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)updateRemoteAttribute:(id)attribute forKey:(id)key completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  keyCopy = key;
+  attributeCopy = attribute;
   [(RERemoteTrainingServer *)self _queue_setupConnectionIfNeeded];
   v11 = [(NSXPCConnection *)self->_connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_4_1];
-  [v11 updateRemoteAttribute:v10 forKey:v9 completion:v8];
+  [v11 updateRemoteAttribute:attributeCopy forKey:keyCopy completion:completionCopy];
 }
 
 void __66__RERemoteTrainingServer_updateRemoteAttribute_forKey_completion___block_invoke(uint64_t a1, void *a2)
@@ -113,15 +113,15 @@ void __66__RERemoteTrainingServer_updateRemoteAttribute_forKey_completion___bloc
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performTrainingWithElements:(id)a3 events:(id)a4 interactions:(id)a5 completion:(id)a6
+- (void)performTrainingWithElements:(id)elements events:(id)events interactions:(id)interactions completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  interactionsCopy = interactions;
+  eventsCopy = events;
+  elementsCopy = elements;
   [(RERemoteTrainingServer *)self _queue_setupConnectionIfNeeded];
   v14 = [(NSXPCConnection *)self->_connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_6_0];
-  [v14 performTrainingWithElements:v13 events:v12 interactions:v11 completion:v10];
+  [v14 performTrainingWithElements:elementsCopy events:eventsCopy interactions:interactionsCopy completion:completionCopy];
 }
 
 void __85__RERemoteTrainingServer_performTrainingWithElements_events_interactions_completion___block_invoke(uint64_t a1, void *a2)

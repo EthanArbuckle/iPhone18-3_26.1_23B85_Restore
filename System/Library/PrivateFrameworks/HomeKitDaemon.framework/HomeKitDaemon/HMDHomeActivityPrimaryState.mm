@@ -1,34 +1,34 @@
 @interface HMDHomeActivityPrimaryState
 + (id)logCategory;
 - (BOOL)_transitionToInitialHeldState;
-- (HMDHomeActivityPrimaryState)initWithParent:(id)a3;
-- (int64_t)handleEvent:(id)a3;
-- (unint64_t)probeHomeActivityStateWithTransitionalStateEndDate:(id *)a3;
-- (void)handleManualStateChangeRequest:(id)a3;
-- (void)handleProbeAndTransitionToState:(id)a3;
-- (void)onInitialTransition:(id)a3;
+- (HMDHomeActivityPrimaryState)initWithParent:(id)parent;
+- (int64_t)handleEvent:(id)event;
+- (unint64_t)probeHomeActivityStateWithTransitionalStateEndDate:(id *)date;
+- (void)handleManualStateChangeRequest:(id)request;
+- (void)handleProbeAndTransitionToState:(id)state;
+- (void)onInitialTransition:(id)transition;
 @end
 
 @implementation HMDHomeActivityPrimaryState
 
-- (unint64_t)probeHomeActivityStateWithTransitionalStateEndDate:(id *)a3
+- (unint64_t)probeHomeActivityStateWithTransitionalStateEndDate:(id *)date
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDHomeActivityState *)self homeActivityStateMachine];
-  v6 = v5;
-  if (v5)
+  homeActivityStateMachine = [(HMDHomeActivityState *)self homeActivityStateMachine];
+  v6 = homeActivityStateMachine;
+  if (homeActivityStateMachine)
   {
-    v7 = [v5 homeAwayAggregator];
-    v8 = [v7 computedState];
+    homeAwayAggregator = [homeActivityStateMachine homeAwayAggregator];
+    computedState = [homeAwayAggregator computedState];
 
-    v9 = [v6 vacationAggregator];
-    v10 = [v9 computedState];
+    vacationAggregator = [v6 vacationAggregator];
+    computedState2 = [vacationAggregator computedState];
 
-    v11 = [v6 comingHomeAggregator];
-    v12 = [v11 computedState];
+    comingHomeAggregator = [v6 comingHomeAggregator];
+    computedState3 = [comingHomeAggregator computedState];
 
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -36,71 +36,71 @@
       v26 = 138544130;
       v27 = v16;
       v28 = 2112;
-      v29 = v8;
+      v29 = computedState;
       v30 = 2112;
-      v31 = v10;
+      v31 = computedState2;
       v32 = 2112;
-      v33 = v12;
+      v33 = computedState3;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Probing state with %@ %@ %@", &v26, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v13);
-    v17 = [v8 type];
-    if (v17 != 2)
+    type = [computedState type];
+    if (type != 2)
     {
-      v14 = v17 == 1;
+      selfCopy = type == 1;
 LABEL_16:
 
       goto LABEL_17;
     }
 
-    v22 = [v10 type];
-    if (v22 != 1)
+    type2 = [computedState2 type];
+    if (type2 != 1)
     {
-      if (v22)
+      if (type2)
       {
         goto LABEL_16;
       }
 
-      v23 = [v12 type];
-      if (!v23)
+      type3 = [computedState3 type];
+      if (!type3)
       {
-        v14 = 2;
+        selfCopy = 2;
         goto LABEL_16;
       }
 
-      if (v23 == 1)
+      if (type3 == 1)
       {
-        if (a3)
+        if (date)
         {
-          *a3 = [v12 transitionalStateEndDate];
+          *date = [computedState3 transitionalStateEndDate];
         }
 
-        v14 = 6;
+        selfCopy = 6;
         goto LABEL_16;
       }
     }
 
-    if ([v12 type] == 1)
+    if ([computedState3 type] == 1)
     {
-      if (a3)
+      if (date)
       {
-        *a3 = [v12 transitionalStateEndDate];
+        *date = [computedState3 transitionalStateEndDate];
       }
 
-      v14 = 7;
+      selfCopy = 7;
     }
 
     else
     {
-      v14 = 4;
+      selfCopy = 4;
     }
 
     goto LABEL_16;
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy2 = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
@@ -111,30 +111,30 @@ LABEL_16:
   }
 
   objc_autoreleasePoolPop(v18);
-  v14 = 0;
+  selfCopy = 0;
 LABEL_17:
 
   v24 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
-- (void)handleManualStateChangeRequest:(id)a3
+- (void)handleManualStateChangeRequest:(id)request
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 hmf_numberForKey:@"stateName"];
-  v7 = [v6 unsignedIntegerValue];
+  requestCopy = request;
+  userInfo = [requestCopy userInfo];
+  v6 = [userInfo hmf_numberForKey:@"stateName"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (v7 > 0xA || ((0x729uLL >> v7) & 1) != 0)
+  if (unsignedIntegerValue > 0xA || ((0x729uLL >> unsignedIntegerValue) & 1) != 0)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = HMDHomeActivityStateTypeToString(v7);
+      v26 = HMDHomeActivityStateTypeToString(unsignedIntegerValue);
       *buf = 138543618;
       v37 = v25;
       v38 = 2112;
@@ -144,57 +144,57 @@ LABEL_17:
 
     objc_autoreleasePoolPop(v22);
     v13 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2801];
-    [v4 completedWithError:v13];
+    [requestCopy completedWithError:v13];
   }
 
   else
   {
-    v8 = qword_22A587C50[v7];
+    v8 = qword_22A587C50[unsignedIntegerValue];
     v9 = [HMDHomeActivityStateTimedHoldInfo alloc];
-    v10 = [(HMDHomeActivityState *)self dataSource];
-    v11 = [v10 currentDate];
-    v12 = [(HMDHomeActivityState *)self homeActivityStateMachine];
-    [v12 holdTimeOutInSeconds];
-    v13 = [(HMDHomeActivityStateTimedHoldInfo *)v9 initWithHomeActivityState:v8 activationDate:v11 duration:?];
+    dataSource = [(HMDHomeActivityState *)self dataSource];
+    currentDate = [dataSource currentDate];
+    homeActivityStateMachine = [(HMDHomeActivityState *)self homeActivityStateMachine];
+    [homeActivityStateMachine holdTimeOutInSeconds];
+    v13 = [(HMDHomeActivityStateTimedHoldInfo *)v9 initWithHomeActivityState:v8 activationDate:currentDate duration:?];
 
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = HMDHomeActivityStateTypeToString(v7);
+      v18 = HMDHomeActivityStateTypeToString(unsignedIntegerValue);
       *buf = 138544130;
       v37 = v17;
       v38 = 2112;
       v39 = v18;
       v40 = 2112;
-      v41 = v4;
+      v41 = requestCopy;
       v42 = 2112;
       v43 = v13;
       _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@User manually requested to change the home activity state to %@, event: %@, hold info: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v14);
-    v19 = [MEMORY[0x277CCABB0] numberWithInteger:{+[HMDHomeActivityStateMachine reasonForStateEvent:](HMDHomeActivityStateMachine, "reasonForStateEvent:", v4, @"holdInfo", @"stateTransitionReason", v13)}];
+    v19 = [MEMORY[0x277CCABB0] numberWithInteger:{+[HMDHomeActivityStateMachine reasonForStateEvent:](HMDHomeActivityStateMachine, "reasonForStateEvent:", requestCopy, @"holdInfo", @"stateTransitionReason", v13)}];
     v35[1] = v19;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:2];
 
     v21 = [objc_alloc(MEMORY[0x277D02920]) initWithName:@"requestToApplyHold" userInfo:v20];
-    if (-[HMDHomeActivityState lookupAndTransitionToState:withEvent:](v15, "lookupAndTransitionToState:withEvent:", [objc_opt_class() stateType], v21))
+    if (-[HMDHomeActivityState lookupAndTransitionToState:withEvent:](selfCopy2, "lookupAndTransitionToState:withEvent:", [objc_opt_class() stateType], v21))
     {
-      [v4 completedWithError:0];
+      [requestCopy completedWithError:0];
     }
 
     else
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = v15;
+      v28 = selfCopy2;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         v30 = HMFGetLogIdentifier();
-        v31 = HMDHomeActivityStateTypeToString(v7);
+        v31 = HMDHomeActivityStateTypeToString(unsignedIntegerValue);
         *buf = 138543618;
         v37 = v30;
         v38 = 2112;
@@ -204,7 +204,7 @@ LABEL_17:
 
       objc_autoreleasePoolPop(v27);
       v32 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2801];
-      [v4 completedWithError:v32];
+      [requestCopy completedWithError:v32];
     }
   }
 
@@ -214,52 +214,52 @@ LABEL_17:
 - (BOOL)_transitionToInitialHeldState
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeActivityState *)self homeActivityStateMachine];
-  v4 = v3;
-  if (v3)
+  homeActivityStateMachine = [(HMDHomeActivityState *)self homeActivityStateMachine];
+  v4 = homeActivityStateMachine;
+  if (homeActivityStateMachine)
   {
-    v5 = [v3 initialStateHoldDetails];
-    if (v5)
+    initialStateHoldDetails = [homeActivityStateMachine initialStateHoldDetails];
+    if (initialStateHoldDetails)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v9 = HMFGetLogIdentifier();
-        [v5 state];
+        [initialStateHoldDetails state];
         v10 = HMHomeActivityStateToString();
         *buf = 138543874;
         v24 = v9;
         v25 = 2112;
         v26 = v10;
         v27 = 2112;
-        v28 = v5;
+        v28 = initialStateHoldDetails;
         _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Transitioning to held state %@ with hold info: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v6);
       v21 = @"holdInfo";
-      v22 = v5;
+      v22 = initialStateHoldDetails;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
       v12 = [objc_alloc(MEMORY[0x277D02920]) initWithName:@"requestToApplyHold" userInfo:v11];
-      v13 = -[HMDHomeActivityState lookupAndTransitionToState:withEvent:](v7, "lookupAndTransitionToState:withEvent:", [objc_opt_class() stateType], v12);
+      v13 = -[HMDHomeActivityState lookupAndTransitionToState:withEvent:](selfCopy, "lookupAndTransitionToState:withEvent:", [objc_opt_class() stateType], v12);
       if (!v13)
       {
         v14 = objc_autoreleasePoolPush();
-        v15 = v7;
+        v15 = selfCopy;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           v17 = HMFGetLogIdentifier();
-          [v5 state];
+          [initialStateHoldDetails state];
           v18 = HMHomeActivityStateToString();
           *buf = 138543874;
           v24 = v17;
           v25 = 2112;
           v26 = v18;
           v27 = 2112;
-          v28 = v5;
+          v28 = initialStateHoldDetails;
           _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_ERROR, "%{public}@Failed to look up and transition to held state %@ with hold info: %@", buf, 0x20u);
         }
 
@@ -282,48 +282,48 @@ LABEL_17:
   return v13;
 }
 
-- (void)handleProbeAndTransitionToState:(id)a3
+- (void)handleProbeAndTransitionToState:(id)state
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v31 = 0;
   v5 = [(HMDHomeActivityPrimaryState *)self probeHomeActivityStateWithTransitionalStateEndDate:&v31];
   v6 = v31;
   if (v5)
   {
-    v7 = [(HMDHomeActivityState *)self homeActivityStateMachine];
-    v8 = [v7 currentHomeActivityState];
+    homeActivityStateMachine = [(HMDHomeActivityState *)self homeActivityStateMachine];
+    currentHomeActivityState = [homeActivityStateMachine currentHomeActivityState];
 
-    v9 = [objc_opt_class() stateType];
+    stateType = [objc_opt_class() stateType];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     v30 = v6;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
-      v13 = v29 = v4;
+      v13 = v29 = stateCopy;
       v14 = HMDHomeActivityStateTypeToString(v5);
-      v15 = [v6 hmf_localTimeDescription];
-      v16 = HMDHomeActivityStateTypeToString(v9);
+      hmf_localTimeDescription = [v6 hmf_localTimeDescription];
+      v16 = HMDHomeActivityStateTypeToString(stateType);
       *buf = 138544130;
       v33 = v13;
       v34 = 2114;
       v35 = v14;
       v36 = 2114;
-      v37 = v15;
+      v37 = hmf_localTimeDescription;
       v38 = 2114;
       v39 = v16;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Probed state: %{public}@, transitionStateEndDate: %{public}@, current state: %{public}@", buf, 0x2Au);
 
       v6 = v30;
-      v4 = v29;
+      stateCopy = v29;
     }
 
     objc_autoreleasePoolPop(v10);
-    if (v9 == v5)
+    if (stateType == v5)
     {
-      v17 = v8;
+      v17 = currentHomeActivityState;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -335,12 +335,12 @@ LABEL_17:
         v18 = 0;
       }
 
-      v19 = v18;
+      dictionary = v18;
 
-      if (v19)
+      if (dictionary)
       {
         v6 = v30;
-        [v19 handleProbedTransitionalStateEndDate:v30 withEvent:v4];
+        [dictionary handleProbedTransitionalStateEndDate:v30 withEvent:stateCopy];
 LABEL_15:
 
         goto LABEL_16;
@@ -349,17 +349,17 @@ LABEL_15:
 
     else
     {
-      v19 = [MEMORY[0x277CBEB38] dictionary];
-      [v19 setObject:v6 forKeyedSubscript:@"transitionalStateEndDate"];
-      v24 = [MEMORY[0x277CCABB0] numberWithInteger:{+[HMDHomeActivityStateMachine reasonForStateEvent:](HMDHomeActivityStateMachine, "reasonForStateEvent:", v4)}];
-      [v19 setObject:v24 forKeyedSubscript:@"stateTransitionReason"];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setObject:v6 forKeyedSubscript:@"transitionalStateEndDate"];
+      v24 = [MEMORY[0x277CCABB0] numberWithInteger:{+[HMDHomeActivityStateMachine reasonForStateEvent:](HMDHomeActivityStateMachine, "reasonForStateEvent:", stateCopy)}];
+      [dictionary setObject:v24 forKeyedSubscript:@"stateTransitionReason"];
 
       v25 = objc_alloc(MEMORY[0x277D02920]);
-      v26 = [v19 copy];
+      v26 = [dictionary copy];
       v27 = [v25 initWithName:@"startProbe" userInfo:v26];
 
-      [(HMDHomeActivityState *)v11 lookupAndTransitionToState:v5 withEvent:v27];
-      [v4 completedWithError:0];
+      [(HMDHomeActivityState *)selfCopy lookupAndTransitionToState:v5 withEvent:v27];
+      [stateCopy completedWithError:0];
     }
 
     v6 = v30;
@@ -367,7 +367,7 @@ LABEL_15:
   }
 
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy2 = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
@@ -383,32 +383,32 @@ LABEL_16:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onInitialTransition:(id)a3
+- (void)onInitialTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   v5.receiver = self;
   v5.super_class = HMDHomeActivityPrimaryState;
-  [(HMDHomeActivityState *)&v5 onInitialTransition:v4];
+  [(HMDHomeActivityState *)&v5 onInitialTransition:transitionCopy];
   if (![(HMDHomeActivityPrimaryState *)self _transitionToInitialHeldState])
   {
-    [(HMDHomeActivityPrimaryState *)self handleProbeAndTransitionToState:v4];
+    [(HMDHomeActivityPrimaryState *)self handleProbeAndTransitionToState:transitionCopy];
   }
 }
 
-- (int64_t)handleEvent:(id)a3
+- (int64_t)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 name];
+  eventCopy = event;
+  name = [eventCopy name];
   v6 = HMFEqualObjects();
 
   if (v6)
   {
-    [(HMDHomeActivityPrimaryState *)self handleManualStateChangeRequest:v4];
+    [(HMDHomeActivityPrimaryState *)self handleManualStateChangeRequest:eventCopy];
   }
 
   else
   {
-    v7 = [v4 name];
+    name2 = [eventCopy name];
     v8 = HMFEqualObjects();
 
     if (!v8)
@@ -417,7 +417,7 @@ LABEL_16:
       goto LABEL_7;
     }
 
-    [(HMDHomeActivityPrimaryState *)self handleProbeAndTransitionToState:v4];
+    [(HMDHomeActivityPrimaryState *)self handleProbeAndTransitionToState:eventCopy];
   }
 
   v9 = 2;
@@ -426,11 +426,11 @@ LABEL_7:
   return v9;
 }
 
-- (HMDHomeActivityPrimaryState)initWithParent:(id)a3
+- (HMDHomeActivityPrimaryState)initWithParent:(id)parent
 {
   v6.receiver = self;
   v6.super_class = HMDHomeActivityPrimaryState;
-  v3 = [(HMDHomeActivityState *)&v6 initWithParent:a3];
+  v3 = [(HMDHomeActivityState *)&v6 initWithParent:parent];
   v4 = v3;
   if (v3)
   {

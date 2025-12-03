@@ -2,7 +2,7 @@
 + (id)Feedback;
 + (id)configurationForFeedback;
 + (id)storeConfigurationForFeedback;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)syncPolicyForFeedback;
 + (id)validKeyPaths;
 @end
@@ -12,7 +12,7 @@
 + (id)Feedback
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForFeedback];
+  configurationForFeedback = [self configurationForFeedback];
   v3 = +[BMMessagesSharedWithYouFeedback columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -24,7 +24,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Messages.SharedWithYou.Feedback" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Messages.SharedWithYou.Feedback" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Messages.SharedWithYou.Feedback" schema:v9 configuration:configurationForFeedback];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -33,13 +33,13 @@
 
 + (id)configurationForFeedback
 {
-  v3 = [a1 storeConfigurationForFeedback];
-  v4 = [a1 syncPolicyForFeedback];
+  storeConfigurationForFeedback = [self storeConfigurationForFeedback];
+  syncPolicyForFeedback = [self syncPolicyForFeedback];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"851C3B0D-34A4-4E50-BF8F-209CBCAF12E4"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Messages.SharedWithYou.Feedback" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EB970 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.MobileSMS" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Messages.SharedWithYou.Feedback" eventClass:objc_opt_class() storeConfig:storeConfigurationForFeedback syncPolicy:syncPolicyForFeedback legacyNames:&unk_1EF3EB970 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.MobileSMS" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -89,19 +89,19 @@
   return v13;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Feedback"])
+  if ([name isEqualToString:@"Feedback"])
   {
-    v4 = [a1 Feedback];
+    feedback = [self Feedback];
   }
 
   else
   {
-    v4 = 0;
+    feedback = 0;
   }
 
-  return v4;
+  return feedback;
 }
 
 + (id)validKeyPaths

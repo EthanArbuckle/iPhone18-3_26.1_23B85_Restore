@@ -1,16 +1,16 @@
 @interface UGCRatingCategoryLikeDislikeView
-- (UGCRatingCategoryLikeDislikeView)initWithCurrentState:(int64_t)a3 isInlineMode:(BOOL)a4;
+- (UGCRatingCategoryLikeDislikeView)initWithCurrentState:(int64_t)state isInlineMode:(BOOL)mode;
 - (UGCRatingCategoryLikeDislikeViewDelegate)delegate;
 - (id)_percentageString;
 - (void)_dislikeButtonPressed;
 - (void)_likeButtonPressed;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
-- (void)_updateAppearance:(BOOL)a3;
-- (void)didTapOnGlyphView:(id)a3;
-- (void)setCurrentState:(int64_t)a3 animated:(BOOL)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setViewModel:(id)a3;
+- (void)_updateAppearance:(BOOL)appearance;
+- (void)didTapOnGlyphView:(id)view;
+- (void)setCurrentState:(int64_t)state animated:(BOOL)animated;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation UGCRatingCategoryLikeDislikeView
@@ -22,48 +22,48 @@
   return WeakRetained;
 }
 
-- (void)didTapOnGlyphView:(id)a3
+- (void)didTapOnGlyphView:(id)view
 {
-  v4 = a3;
-  if (self->_likeButton == v4)
+  viewCopy = view;
+  if (self->_likeButton == viewCopy)
   {
-    v5 = v4;
+    v5 = viewCopy;
     [(UGCRatingCategoryLikeDislikeView *)self _likeButtonPressed];
   }
 
   else
   {
-    if (self->_dislikeButton != v4)
+    if (self->_dislikeButton != viewCopy)
     {
       goto LABEL_6;
     }
 
-    v5 = v4;
+    v5 = viewCopy;
     [(UGCRatingCategoryLikeDislikeView *)self _dislikeButtonPressed];
   }
 
-  v4 = v5;
+  viewCopy = v5;
 LABEL_6:
 }
 
-- (void)_updateAppearance:(BOOL)a3
+- (void)_updateAppearance:(BOOL)appearance
 {
-  v3 = a3;
+  appearanceCopy = appearance;
   currentState = self->_currentState;
   [(UGCGlyphButtonView *)self->_likeButton setMuted:currentState == 1];
   [(UGCGlyphButtonView *)self->_dislikeButton setMuted:currentState == 2];
   if ((currentState == 2) != [(UGCGlyphButtonView *)self->_likeButton isSelected])
   {
-    [(UGCGlyphButtonView *)self->_likeButton setSelected:currentState == 2 animated:v3];
+    [(UGCGlyphButtonView *)self->_likeButton setSelected:currentState == 2 animated:appearanceCopy];
   }
 
   if ((currentState == 1) != [(UGCGlyphButtonView *)self->_dislikeButton isSelected])
   {
-    [(UGCGlyphButtonView *)self->_dislikeButton setSelected:currentState == 1 animated:v3];
+    [(UGCGlyphButtonView *)self->_dislikeButton setSelected:currentState == 1 animated:appearanceCopy];
   }
 
-  v6 = [(UGCRatingCategoryLikeDislikeView *)self _percentageString];
-  [(UILabel *)self->_percentageLabel setAttributedText:v6];
+  _percentageString = [(UGCRatingCategoryLikeDislikeView *)self _percentageString];
+  [(UILabel *)self->_percentageLabel setAttributedText:_percentageString];
 
   if ([(MURatingPercentageViewModel *)self->_viewModel displayPercentage]== 100)
   {
@@ -73,9 +73,9 @@ LABEL_6:
 
   else
   {
-    v9 = [(MURatingPercentageViewModel *)self->_viewModel displayPercentage];
+    displayPercentage = [(MURatingPercentageViewModel *)self->_viewModel displayPercentage];
     percentageLabelWidthConstraint = self->_percentageLabelWidthConstraint;
-    if (v9 > 9)
+    if (displayPercentage > 9)
     {
       v8 = 65.0;
     }
@@ -89,36 +89,36 @@ LABEL_6:
   [(NSLayoutConstraint *)percentageLabelWidthConstraint setConstant:v8];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(UGCRatingCategoryLikeDislikeView *)self enabled]!= a3)
+  enabledCopy = enabled;
+  if ([(UGCRatingCategoryLikeDislikeView *)self enabled]!= enabled)
   {
-    [(UGCGlyphButtonView *)self->_likeButton setEnabled:v3];
+    [(UGCGlyphButtonView *)self->_likeButton setEnabled:enabledCopy];
     dislikeButton = self->_dislikeButton;
 
-    [(UGCGlyphButtonView *)dislikeButton setEnabled:v3];
+    [(UGCGlyphButtonView *)dislikeButton setEnabled:enabledCopy];
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_viewModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_viewModel, model);
     [(UGCRatingCategoryLikeDislikeView *)self _updateAppearance:0];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
-- (void)setCurrentState:(int64_t)a3 animated:(BOOL)a4
+- (void)setCurrentState:(int64_t)state animated:(BOOL)animated
 {
-  if (self->_currentState != a3)
+  if (self->_currentState != state)
   {
-    self->_currentState = a3;
-    [(UGCRatingCategoryLikeDislikeView *)self _updateAppearance:a4];
+    self->_currentState = state;
+    [(UGCRatingCategoryLikeDislikeView *)self _updateAppearance:animated];
   }
 }
 
@@ -153,8 +153,8 @@ LABEL_6:
 - (void)_setupConstraints
 {
   p_percentageLabel = &self->_percentageLabel;
-  v4 = [(UILabel *)self->_percentageLabel widthAnchor];
-  v5 = [v4 constraintEqualToConstant:65.0];
+  widthAnchor = [(UILabel *)self->_percentageLabel widthAnchor];
+  v5 = [widthAnchor constraintEqualToConstant:65.0];
   percentageLabelWidthConstraint = self->_percentageLabelWidthConstraint;
   self->_percentageLabelWidthConstraint = v5;
 
@@ -224,8 +224,8 @@ LABEL_6:
   }
 
   v11 = self->_likeButton;
-  v13 = self;
-  [(UGCRatingCategoryLikeDislikeView *)v13 addSubview:v11];
+  selfCopy = self;
+  [(UGCRatingCategoryLikeDislikeView *)selfCopy addSubview:v11];
   if (self->_isInlineMode)
   {
     v12 = &OBJC_IVAR___UGCRatingCategoryLikeDislikeView__percentageLabel;
@@ -236,10 +236,10 @@ LABEL_6:
     v12 = &OBJC_IVAR___UGCRatingCategoryLikeDislikeView__dislikeButton;
   }
 
-  [(UGCRatingCategoryLikeDislikeView *)v13 addSubview:*(&v13->super.super.super.isa + *v12)];
+  [(UGCRatingCategoryLikeDislikeView *)selfCopy addSubview:*(&selfCopy->super.super.super.isa + *v12)];
 }
 
-- (UGCRatingCategoryLikeDislikeView)initWithCurrentState:(int64_t)a3 isInlineMode:(BOOL)a4
+- (UGCRatingCategoryLikeDislikeView)initWithCurrentState:(int64_t)state isInlineMode:(BOOL)mode
 {
   v11.receiver = self;
   v11.super_class = UGCRatingCategoryLikeDislikeView;
@@ -247,14 +247,14 @@ LABEL_6:
   v7 = v6;
   if (v6)
   {
-    v6->_isInlineMode = a4;
+    v6->_isInlineMode = mode;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     [(UGCRatingCategoryLikeDislikeView *)v7 setAccessibilityIdentifier:v9];
 
     [(UGCRatingCategoryLikeDislikeView *)v7 _setupSubviews];
     [(UGCRatingCategoryLikeDislikeView *)v7 _setupConstraints];
-    [(UGCRatingCategoryLikeDislikeView *)v7 setCurrentState:a3 animated:0];
+    [(UGCRatingCategoryLikeDislikeView *)v7 setCurrentState:state animated:0];
   }
 
   return v7;

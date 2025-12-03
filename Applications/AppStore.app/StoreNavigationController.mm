@@ -1,22 +1,22 @@
 @interface StoreNavigationController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)navigationBar:(id)a3 shouldPopItem:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)navigationBar:(id)bar shouldPopItem:(id)item;
 - (UIViewController)childViewControllerForStatusBarStyle;
-- (_TtC8AppStore25StoreNavigationController)initWithCoder:(id)a3;
-- (_TtC8AppStore25StoreNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC8AppStore25StoreNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC8AppStore25StoreNavigationController)initWithRootViewController:(id)a3;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
+- (_TtC8AppStore25StoreNavigationController)initWithCoder:(id)coder;
+- (_TtC8AppStore25StoreNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC8AppStore25StoreNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC8AppStore25StoreNavigationController)initWithRootViewController:(id)controller;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)handleBackKeyCommandWithCommand:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)handleBackKeyCommandWithCommand:(id)command;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation StoreNavigationController
 
-- (_TtC8AppStore25StoreNavigationController)initWithCoder:(id)a3
+- (_TtC8AppStore25StoreNavigationController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -29,35 +29,35 @@
   v5.super_class = type metadata accessor for StoreNavigationController();
   v2 = v5.receiver;
   [(StoreNavigationController *)&v5 viewDidLoad];
-  v3 = [v2 navigationBar];
+  navigationBar = [v2 navigationBar];
   [v2 pageMarginInsets];
-  [v3 setLayoutMargins:?];
+  [navigationBar setLayoutMargins:?];
 
-  v4 = [v2 navigationBar];
-  [v4 setPrefersLargeTitles:1];
+  navigationBar2 = [v2 navigationBar];
+  [navigationBar2 setPrefersLargeTitles:1];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for StoreNavigationController();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(StoreNavigationController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 navigationBar];
+  [(StoreNavigationController *)&v7 traitCollectionDidChange:changeCopy];
+  navigationBar = [v5 navigationBar];
   [v5 pageMarginInsets];
-  [v6 setLayoutMargins:?];
+  [navigationBar setLayoutMargins:?];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = type metadata accessor for StoreNavigationController();
   swift_unknownObjectRetain();
   v7 = v12.receiver;
-  [(StoreNavigationController *)&v12 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(StoreNavigationController *)&v12 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v11[4] = sub_100475704;
@@ -69,7 +69,7 @@
   v9 = _Block_copy(v11);
   v10 = v7;
 
-  [a4 animateAlongsideTransition:v9 completion:0];
+  [coordinator animateAlongsideTransition:v9 completion:0];
   swift_unknownObjectRelease();
 
   _Block_release(v9);
@@ -77,37 +77,37 @@
 
 - (UIViewController)childViewControllerForStatusBarStyle
 {
-  v2 = [(StoreNavigationController *)self topViewController];
+  topViewController = [(StoreNavigationController *)self topViewController];
 
-  return v2;
+  return topViewController;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(StoreNavigationController *)v2 topViewController];
-  if (v3)
+  selfCopy = self;
+  topViewController = [(StoreNavigationController *)selfCopy topViewController];
+  if (topViewController)
   {
-    v4 = v3;
-    v5 = [v3 supportedInterfaceOrientations];
+    v4 = topViewController;
+    supportedInterfaceOrientations = [topViewController supportedInterfaceOrientations];
 
-    return v5;
+    return supportedInterfaceOrientations;
   }
 
   else
   {
-    v8.receiver = v2;
+    v8.receiver = selfCopy;
     v8.super_class = type metadata accessor for StoreNavigationController();
-    v7 = [(StoreNavigationController *)&v8 supportedInterfaceOrientations];
+    supportedInterfaceOrientations2 = [(StoreNavigationController *)&v8 supportedInterfaceOrientations];
 
-    return v7;
+    return supportedInterfaceOrientations2;
   }
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
-  v4 = self;
-  v5 = sub_100474CBC(a3);
+  selfCopy = self;
+  v5 = sub_100474CBC(animated);
 
   if (v5)
   {
@@ -123,11 +123,11 @@
   return v6.super.isa;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -136,58 +136,58 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_100474E94(a3, v10);
+  v8 = sub_100474E94(action, v10);
 
   sub_10002B894(v10, &unk_1009711D0);
   return v8;
 }
 
-- (void)handleBackKeyCommandWithCommand:(id)a3
+- (void)handleBackKeyCommandWithCommand:(id)command
 {
   v3 = [(StoreNavigationController *)self popViewControllerAnimated:1];
 }
 
-- (BOOL)navigationBar:(id)a3 shouldPopItem:(id)a4
+- (BOOL)navigationBar:(id)bar shouldPopItem:(id)item
 {
   v7 = type metadata accessor for Date();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   type metadata accessor for PageRenderMetricsEvent();
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
+  barCopy = bar;
+  itemCopy = item;
+  selfCopy = self;
   Date.init()();
   Date.timeIntervalSince1970.getter();
   (*(v8 + 8))(v10, v7);
   static PageRenderMetricsEvent.lastInteractionTime.setter();
   static PageRenderEvent.willPerformAction()();
   v14 = type metadata accessor for StoreNavigationController();
-  v16.receiver = v13;
+  v16.receiver = selfCopy;
   v16.super_class = v14;
-  LOBYTE(a4) = [(StoreNavigationController *)&v16 navigationBar:v11 shouldPopItem:v12];
+  LOBYTE(item) = [(StoreNavigationController *)&v16 navigationBar:barCopy shouldPopItem:itemCopy];
 
-  return a4;
+  return item;
 }
 
-- (_TtC8AppStore25StoreNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC8AppStore25StoreNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC8AppStore25StoreNavigationController)initWithRootViewController:(id)a3
+- (_TtC8AppStore25StoreNavigationController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC8AppStore25StoreNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8AppStore25StoreNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

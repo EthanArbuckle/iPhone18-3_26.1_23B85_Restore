@@ -1,9 +1,9 @@
 @interface ICNoteFormattingViewController
-- (ICNoteFormattingViewController)initWithConfiguration:(id)a3;
+- (ICNoteFormattingViewController)initWithConfiguration:(id)configuration;
 - (ICNoteFormattingViewControllerDelegate)formattingDelegate;
-- (void)updateWithDataSource:(id)a3 ignoreTypingAttributes:(BOOL)a4;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)updateWithDataSource:(id)source ignoreTypingAttributes:(BOOL)attributes;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ICNoteFormattingViewController
@@ -16,27 +16,27 @@
   return Strong;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_2153B2AE0(a3);
+  selfCopy = self;
+  sub_2153B2AE0(appearing);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_2153B2C20(a3);
+  selfCopy = self;
+  sub_2153B2C20(disappear);
 }
 
-- (void)updateWithDataSource:(id)a3 ignoreTypingAttributes:(BOOL)a4
+- (void)updateWithDataSource:(id)source ignoreTypingAttributes:(BOOL)attributes
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_2153B2D1C(a3, a4);
+  selfCopy = self;
+  sub_2153B2D1C(source, attributes);
   swift_unknownObjectRelease();
 }
 
-- (ICNoteFormattingViewController)initWithConfiguration:(id)a3
+- (ICNoteFormattingViewController)initWithConfiguration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

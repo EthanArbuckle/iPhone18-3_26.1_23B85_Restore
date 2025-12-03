@@ -1,13 +1,13 @@
 @interface DESNumericMetadataEncoder
-- (id)encodeNumber:(id)a3 toLength:(unint64_t)a4;
-- (id)encodeNumberVector:(id)a3 toLength:(unint64_t)a4;
-- (id)encodeString:(id)a3 toLength:(unint64_t)a4;
-- (id)encodeStringVector:(id)a3 toLength:(unint64_t)a4;
+- (id)encodeNumber:(id)number toLength:(unint64_t)length;
+- (id)encodeNumberVector:(id)vector toLength:(unint64_t)length;
+- (id)encodeString:(id)string toLength:(unint64_t)length;
+- (id)encodeStringVector:(id)vector toLength:(unint64_t)length;
 @end
 
 @implementation DESNumericMetadataEncoder
 
-- (id)encodeString:(id)a3 toLength:(unint64_t)a4
+- (id)encodeString:(id)string toLength:(unint64_t)length
 {
   v6 = +[DESLogging coreChannel];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -16,27 +16,27 @@
     _os_log_impl(&dword_248FF7000, v6, OS_LOG_TYPE_INFO, "Numeric metadata encoder does not support string.", v9, 2u);
   }
 
-  v7 = [(DESNumericMetadataEncoder *)self zeroWithLength:a4];
+  v7 = [(DESNumericMetadataEncoder *)self zeroWithLength:length];
 
   return v7;
 }
 
-- (id)encodeNumber:(id)a3 toLength:(unint64_t)a4
+- (id)encodeNumber:(id)number toLength:(unint64_t)length
 {
   v13 = *MEMORY[0x277D85DE8];
-  v12 = a3;
+  numberCopy = number;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v12 count:1];
+  numberCopy2 = number;
+  v8 = [v6 arrayWithObjects:&numberCopy count:1];
 
-  v9 = [(DESNumericMetadataEncoder *)self encodeNumberVector:v8 toLength:a4, v12, v13];
+  v9 = [(DESNumericMetadataEncoder *)self encodeNumberVector:v8 toLength:length, numberCopy, v13];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (id)encodeStringVector:(id)a3 toLength:(unint64_t)a4
+- (id)encodeStringVector:(id)vector toLength:(unint64_t)length
 {
   v6 = +[DESLogging coreChannel];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -45,39 +45,39 @@
     _os_log_impl(&dword_248FF7000, v6, OS_LOG_TYPE_INFO, "Numeric metadata encoder does not support string vector.", v9, 2u);
   }
 
-  v7 = [(DESNumericMetadataEncoder *)self zeroWithLength:a4];
+  v7 = [(DESNumericMetadataEncoder *)self zeroWithLength:length];
 
   return v7;
 }
 
-- (id)encodeNumberVector:(id)a3 toLength:(unint64_t)a4
+- (id)encodeNumberVector:(id)vector toLength:(unint64_t)length
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] <= a4)
+  vectorCopy = vector;
+  lengthCopy = length;
+  if ([vectorCopy count] <= length)
   {
-    v7 = [v6 count];
+    lengthCopy = [vectorCopy count];
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:4 * v7];
-  if (v7)
+  lengthCopy = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:4 * lengthCopy];
+  if (lengthCopy)
   {
-    for (i = 0; i != v7; ++i)
+    for (i = 0; i != lengthCopy; ++i)
     {
-      v10 = [v6 objectAtIndexedSubscript:i];
+      v10 = [vectorCopy objectAtIndexedSubscript:i];
       [v10 floatValue];
       v14 = v11;
-      [v8 appendBytes:&v14 length:4];
+      [lengthCopy appendBytes:&v14 length:4];
     }
   }
 
-  if ([v6 count] < a4)
+  if ([vectorCopy count] < length)
   {
-    v12 = -[DESNumericMetadataEncoder zeroWithLength:](self, "zeroWithLength:", a4 - [v6 count]);
-    [v8 appendData:v12];
+    v12 = -[DESNumericMetadataEncoder zeroWithLength:](self, "zeroWithLength:", length - [vectorCopy count]);
+    [lengthCopy appendData:v12];
   }
 
-  return v8;
+  return lengthCopy;
 }
 
 @end

@@ -2,13 +2,13 @@
 + (id)sharedConnectivityPublisher;
 - (BOOL)isConnected;
 - (NRConnectivityPublisher)init;
-- (int)_registerNotifyTokenWithName:(id)a3 withQueue:(id)a4 withBlock:(id)a5;
+- (int)_registerNotifyTokenWithName:(id)name withQueue:(id)queue withBlock:(id)block;
 - (int64_t)getDropoutCounter;
-- (unint64_t)_readNotifyToken:(int)a3;
+- (unint64_t)_readNotifyToken:(int)token;
 - (void)_readConnectivityStatus;
-- (void)_updateNotifyToken:(int)a3 withValue:(unint64_t)a4 withNotificationName:(id)a5;
+- (void)_updateNotifyToken:(int)token withValue:(unint64_t)value withNotificationName:(id)name;
 - (void)_writeConnectivityStatus;
-- (void)setConnected:(BOOL)a3;
+- (void)setConnected:(BOOL)connected;
 @end
 
 @implementation NRConnectivityPublisher
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000A9254;
   block[3] = &unk_1001756A8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001B39B0 != -1)
   {
     dispatch_once(&qword_1001B39B0, block);
@@ -49,14 +49,14 @@
   return v2;
 }
 
-- (void)setConnected:(BOOL)a3
+- (void)setConnected:(BOOL)connected
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000A93A8;
   v4[3] = &unk_100176198;
-  v5 = a3;
+  connectedCopy = connected;
   v4[4] = self;
   dispatch_sync(queue, v4);
 }
@@ -117,12 +117,12 @@
   [(NRConnectivityPublisher *)self _updateNotifyToken:self->_dropoutCounterNotifyToken withValue:v2 | self->_dropoutCounter withNotificationName:@"com.apple.nanoregistry.dropoutcounter"];
 }
 
-- (void)_updateNotifyToken:(int)a3 withValue:(unint64_t)a4 withNotificationName:(id)a5
+- (void)_updateNotifyToken:(int)token withValue:(unint64_t)value withNotificationName:(id)name
 {
-  v7 = a5;
+  nameCopy = name;
   v8 = nr_daemon_log();
   v9 = v8;
-  if (a3 == -1)
+  if (token == -1)
   {
     v12 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
 
@@ -131,7 +131,7 @@
       v13 = nr_daemon_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        sub_10010269C(v7, v13);
+        sub_10010269C(nameCopy, v13);
       }
     }
   }
@@ -146,27 +146,27 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412546;
-        v15 = v7;
+        v15 = nameCopy;
         v16 = 2048;
-        v17 = a4;
+        valueCopy = value;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Updating token %@ with value %lld", &v14, 0x16u);
       }
     }
 
-    notify_set_state(a3, a4);
-    notify_post([v7 UTF8String]);
+    notify_set_state(token, value);
+    notify_post([nameCopy UTF8String]);
   }
 }
 
-- (unint64_t)_readNotifyToken:(int)a3
+- (unint64_t)_readNotifyToken:(int)token
 {
-  if (a3 == -1)
+  if (token == -1)
   {
     return 0;
   }
 
   state64 = 0;
-  if (notify_get_state(a3, &state64))
+  if (notify_get_state(token, &state64))
   {
     return 0;
   }
@@ -177,22 +177,22 @@
   }
 }
 
-- (int)_registerNotifyTokenWithName:(id)a3 withQueue:(id)a4 withBlock:(id)a5
+- (int)_registerNotifyTokenWithName:(id)name withQueue:(id)queue withBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
   out_token = -1;
-  v10 = [v7 UTF8String];
-  if (v9)
+  uTF8String = [nameCopy UTF8String];
+  if (blockCopy)
   {
-    if (!notify_register_dispatch(v10, &out_token, v8, v9))
+    if (!notify_register_dispatch(uTF8String, &out_token, queueCopy, blockCopy))
     {
       goto LABEL_9;
     }
   }
 
-  else if (!notify_register_check(v10, &out_token))
+  else if (!notify_register_check(uTF8String, &out_token))
   {
     goto LABEL_9;
   }
@@ -206,7 +206,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v7;
+      v18 = nameCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Failed to register block and get notify token for %@", buf, 0xCu);
     }
   }

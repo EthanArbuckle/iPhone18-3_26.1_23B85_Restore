@@ -1,19 +1,19 @@
 @interface AXXPCUtilities
-+ (id)copyXPCMessageFromDictionary:(id)a3 inReplyToXPCMessage:(id)a4 error:(id *)a5;
-+ (id)dictionaryFromXPCMessage:(id)a3 error:(id *)a4;
++ (id)copyXPCMessageFromDictionary:(id)dictionary inReplyToXPCMessage:(id)message error:(id *)error;
++ (id)dictionaryFromXPCMessage:(id)message error:(id *)error;
 @end
 
 @implementation AXXPCUtilities
 
-+ (id)dictionaryFromXPCMessage:(id)a3 error:(id *)a4
++ (id)dictionaryFromXPCMessage:(id)message error:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  messageCopy = message;
+  v6 = messageCopy;
+  if (error)
   {
-    *a4 = 0;
-    if (!v5)
+    *error = 0;
+    if (!messageCopy)
     {
       v7 = MEMORY[0x1E696ABC0];
       v23 = *MEMORY[0x1E696A578];
@@ -25,19 +25,19 @@
     }
   }
 
-  else if (!v5)
+  else if (!messageCopy)
   {
 LABEL_18:
-    a4 = 0;
+    error = 0;
     goto LABEL_19;
   }
 
-  Class = object_getClass(v5);
+  Class = object_getClass(messageCopy);
   if (Class != MEMORY[0x1E69E9E80])
   {
     if (Class == MEMORY[0x1E69E9E98])
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_19;
       }
@@ -47,12 +47,12 @@ LABEL_18:
       v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected error: %s.", xpc_dictionary_get_string(v6, *MEMORY[0x1E69E9E28])];
       v28 = v16;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-      *a4 = [v15 errorWithDomain:@"AXCoreUtilitiesXPCError" code:0 userInfo:v17];
+      *error = [v15 errorWithDomain:@"AXCoreUtilitiesXPCError" code:0 userInfo:v17];
 
       goto LABEL_17;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -65,7 +65,7 @@ LABEL_18:
     v10 = &v25;
 LABEL_16:
     v16 = [v8 dictionaryWithObjects:v9 forKeys:v10 count:1];
-    *a4 = [v7 errorWithDomain:@"AXCoreUtilitiesXPCError" code:0 userInfo:v16];
+    *error = [v7 errorWithDomain:@"AXCoreUtilitiesXPCError" code:0 userInfo:v16];
 LABEL_17:
 
     goto LABEL_18;
@@ -74,7 +74,7 @@ LABEL_17:
   v12 = _CFXPCCreateCFObjectFromXPCMessage();
   if (!v12)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -92,19 +92,19 @@ LABEL_17:
   v14 = CFGetTypeID(v12);
   if (v14 == CFDictionaryGetTypeID())
   {
-    a4 = [v13 copy];
+    error = [v13 copy];
   }
 
-  else if (a4)
+  else if (error)
   {
     v20 = MEMORY[0x1E696ABC0];
     v31 = *MEMORY[0x1E696A578];
     v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Converted XPC object is not a dictionary instead it has the following type ID: %lu.", v14];;
     v32[0] = v21;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-    *a4 = [v20 errorWithDomain:@"AXCoreUtilitiesXPCError" code:0 userInfo:v22];
+    *error = [v20 errorWithDomain:@"AXCoreUtilitiesXPCError" code:0 userInfo:v22];
 
-    a4 = 0;
+    error = 0;
   }
 
   CFRelease(v13);
@@ -112,19 +112,19 @@ LABEL_19:
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
-+ (id)copyXPCMessageFromDictionary:(id)a3 inReplyToXPCMessage:(id)a4 error:(id *)a5
++ (id)copyXPCMessageFromDictionary:(id)dictionary inReplyToXPCMessage:(id)message error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a5)
+  dictionaryCopy = dictionary;
+  messageCopy = message;
+  v9 = messageCopy;
+  if (error)
   {
-    *a5 = 0;
-    if (!v7)
+    *error = 0;
+    if (!dictionaryCopy)
     {
       v10 = MEMORY[0x1E696ABC0];
       v33 = *MEMORY[0x1E696A578];
@@ -135,28 +135,28 @@ LABEL_19:
 LABEL_9:
       v16 = [v11 dictionaryWithObjects:v12 forKeys:v13 count:1];
       [v10 errorWithDomain:@"AXCoreUtilitiesXPCError" code:0 userInfo:v16];
-      *a5 = v15 = 0;
+      *error = v15 = 0;
 LABEL_25:
 
       goto LABEL_26;
     }
   }
 
-  else if (!v7)
+  else if (!dictionaryCopy)
   {
     v15 = 0;
     goto LABEL_26;
   }
 
-  if (!v8)
+  if (!messageCopy)
   {
     v15 = 0;
     goto LABEL_12;
   }
 
-  reply = xpc_dictionary_create_reply(v8);
+  reply = xpc_dictionary_create_reply(messageCopy);
   v15 = reply;
-  if (a5 && !reply)
+  if (error && !reply)
   {
     v10 = MEMORY[0x1E696ABC0];
     v31 = *MEMORY[0x1E696A578];
@@ -196,7 +196,7 @@ LABEL_12:
         goto LABEL_25;
       }
 
-      if (!a5)
+      if (!error)
       {
 LABEL_20:
         if (v15)
@@ -218,7 +218,7 @@ LABEL_20:
 
     else
     {
-      if (!a5)
+      if (!error)
       {
         goto LABEL_20;
       }
@@ -232,7 +232,7 @@ LABEL_20:
     }
 
     v22 = [v19 dictionaryWithObjects:v20 forKeys:v21 count:1];
-    *a5 = [v18 errorWithDomain:@"AXCoreUtilitiesXPCError" code:0 userInfo:v22];
+    *error = [v18 errorWithDomain:@"AXCoreUtilitiesXPCError" code:0 userInfo:v22];
 
     goto LABEL_20;
   }

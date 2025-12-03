@@ -1,10 +1,10 @@
 @interface JSMetricsController
-- (void)sessionDidConnect:(id)a3;
+- (void)sessionDidConnect:(id)connect;
 @end
 
 @implementation JSMetricsController
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
   if ((*(&self->super.super.isa + OBJC_IVAR____TtC11MusicJSCore19JSMetricsController_carPlayMetricsRecordingState) & 1) == 0)
   {

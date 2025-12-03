@@ -1,22 +1,22 @@
 @interface PFAppleArchiveLogger
-+ (BOOL)encodeFile:(id)a3 destination:(id)a4 error:(id *)a5;
-- (BOOL)encodeBuffer:(const void *)a3 size:(unint64_t)a4 error:(id *)a5;
-- (BOOL)flush:(id *)a3;
-- (PFAppleArchiveLogger)initWithArchiveURL:(id)a3;
++ (BOOL)encodeFile:(id)file destination:(id)destination error:(id *)error;
+- (BOOL)encodeBuffer:(const void *)buffer size:(unint64_t)size error:(id *)error;
+- (BOOL)flush:(id *)flush;
+- (PFAppleArchiveLogger)initWithArchiveURL:(id)l;
 @end
 
 @implementation PFAppleArchiveLogger
 
-- (BOOL)encodeBuffer:(const void *)a3 size:(unint64_t)a4 error:(id *)a5
+- (BOOL)encodeBuffer:(const void *)buffer size:(unint64_t)size error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!buffer)
   {
     _PFAssertFailHandler();
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!size)
   {
 LABEL_10:
     _PFAssertFailHandler();
@@ -37,34 +37,34 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v8 = AAByteStreamWrite(compressionStream, a3, a4);
+  v8 = AAByteStreamWrite(compressionStream, buffer, size);
   v9 = v8;
-  if (a5 && v8 != a4)
+  if (error && v8 != size)
   {
     v10 = MEMORY[0x1E696ABC0];
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", @"Failed to write to stream", *MEMORY[0x1E696A278]];
     v15[0] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    *a5 = [v10 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v12];
+    *error = [v10 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v12];
   }
 
-  return v9 == a4;
+  return v9 == size;
 }
 
-- (BOOL)flush:(id *)a3
+- (BOOL)flush:(id *)flush
 {
   v11[1] = *MEMORY[0x1E69E9840];
   if (self->super._compressionStream)
   {
     v4 = AAByteStreamFlush();
-    if (a3 && v4)
+    if (flush && v4)
     {
       v5 = MEMORY[0x1E696ABC0];
       v6 = v4;
       v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", @"Failed to flush compression stream", *MEMORY[0x1E696A278]];
       v11[0] = v7;
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-      *a3 = [v5 errorWithDomain:@"com.apple.PhotosFormats" code:v6 userInfo:v8];
+      *flush = [v5 errorWithDomain:@"com.apple.PhotosFormats" code:v6 userInfo:v8];
 
       return 0;
     }
@@ -78,11 +78,11 @@ LABEL_12:
   return 1;
 }
 
-- (PFAppleArchiveLogger)initWithArchiveURL:(id)a3
+- (PFAppleArchiveLogger)initWithArchiveURL:(id)l
 {
   v6.receiver = self;
   v6.super_class = PFAppleArchiveLogger;
-  v3 = [(PFAppleArchiveStream *)&v6 initWithArchiveURL:a3];
+  v3 = [(PFAppleArchiveStream *)&v6 initWithArchiveURL:l];
   v4 = v3;
   if (v3)
   {
@@ -93,16 +93,16 @@ LABEL_12:
   return v4;
 }
 
-+ (BOOL)encodeFile:(id)a3 destination:(id)a4 error:(id *)a5
++ (BOOL)encodeFile:(id)file destination:(id)destination error:(id *)error
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [a3 path];
-  v9 = open([v8 fileSystemRepresentation], 0, 0);
+  destinationCopy = destination;
+  path = [file path];
+  v9 = open([path fileSystemRepresentation], 0, 0);
 
   if (v9 < 0)
   {
-    if (!a5)
+    if (!error)
     {
       v24 = 0;
       goto LABEL_23;
@@ -113,17 +113,17 @@ LABEL_12:
     p_isa = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", @"failed to open encode source"];
     v35[0] = p_isa;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
-    *a5 = [v19 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v20];
+    *error = [v19 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v20];
   }
 
   else
   {
-    v10 = [[PFAppleArchiveLogger alloc] initWithArchiveURL:v7];
+    v10 = [[PFAppleArchiveLogger alloc] initWithArchiveURL:destinationCopy];
     if (v10)
     {
       p_isa = &v10->super.super.isa;
       [(PFAppleArchiveStream *)v10 setAppendToExistingArchive:0];
-      if ([p_isa openForWriting:a5])
+      if ([p_isa openForWriting:error])
       {
         v12 = p_isa[3];
         while (1)
@@ -136,7 +136,7 @@ LABEL_12:
 
           if (AAByteStreamWrite(v12, buf, v13) != v13)
           {
-            if (!a5)
+            if (!error)
             {
               goto LABEL_20;
             }
@@ -155,11 +155,11 @@ LABEL_12:
         if ((v13 & 0x8000000000000000) == 0)
         {
           close(v9);
-          v24 = [p_isa close:a5];
+          v24 = [p_isa close:error];
           goto LABEL_22;
         }
 
-        if (a5)
+        if (error)
         {
           v14 = MEMORY[0x1E696ABC0];
           v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", @"Failed to write to stream", *MEMORY[0x1E696A278]];
@@ -169,7 +169,7 @@ LABEL_12:
           v18 = &v27;
 LABEL_19:
           v25 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:1];
-          *a5 = [v14 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v25];
+          *error = [v14 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v25];
         }
 
 LABEL_20:
@@ -179,14 +179,14 @@ LABEL_20:
 
     else
     {
-      if (a5)
+      if (error)
       {
         v21 = MEMORY[0x1E696ABC0];
         v32 = *MEMORY[0x1E696A278];
         v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", @"failed to make archive logger"];
         v33 = v22;
         v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-        *a5 = [v21 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v23];
+        *error = [v21 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v23];
       }
 
       p_isa = 0;

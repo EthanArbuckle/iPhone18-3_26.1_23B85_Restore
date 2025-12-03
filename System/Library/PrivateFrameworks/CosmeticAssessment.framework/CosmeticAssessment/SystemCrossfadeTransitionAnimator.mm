@@ -1,13 +1,13 @@
 @interface SystemCrossfadeTransitionAnimator
 - (BOOL)_shouldCrossFadeBottomBars;
 - (_TtC18CosmeticAssessment33SystemCrossfadeTransitionAnimator)init;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation SystemCrossfadeTransitionAnimator
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -20,7 +20,7 @@
   return 0.35;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -31,8 +31,8 @@
   }
 
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_247CE9BC4(a3);
+  selfCopy = self;
+  sub_247CE9BC4(transition);
 
   swift_unknownObjectRelease();
 }

@@ -1,24 +1,24 @@
 @interface _UICollectionViewCompositionLayout
-- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4;
-- (CGRect)_frameForLayout:(id)a3 offset:(CGPoint)a4 relativeToEdges:(unint64_t)a5 fromSiblingLayout:(id)a6;
+- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes;
+- (CGRect)_frameForLayout:(id)layout offset:(CGPoint)offset relativeToEdges:(unint64_t)edges fromSiblingLayout:(id)siblingLayout;
 - (CGSize)collectionViewContentSize;
 - (NSArray)sublayouts;
 - (_UICollectionViewCompositionLayout)init;
-- (id)_originConvertedSublayoutAttributesForAttributes:(id)a3 inLayout:(id)a4;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)invalidationContextForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)_prepareLayout:(id)a3;
-- (void)addSublayout:(id)a3 forElementKinds:(id)a4;
-- (void)addSublayout:(id)a3 forItems:(id)a4 inSection:(int64_t)a5 offset:(CGPoint)a6 relativeToEdges:(unint64_t)a7 fromSiblingLayout:(id)a8;
-- (void)addSublayout:(id)a3 forRect:(CGRect)a4;
-- (void)addSublayout:(id)a3 forSections:(id)a4 offset:(CGPoint)a5 relativeToEdges:(unint64_t)a6 fromSiblingLayout:(id)a7;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (id)_originConvertedSublayoutAttributesForAttributes:(id)attributes inLayout:(id)layout;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)invalidationContextForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (void)_prepareLayout:(id)layout;
+- (void)addSublayout:(id)sublayout forElementKinds:(id)kinds;
+- (void)addSublayout:(id)sublayout forItems:(id)items inSection:(int64_t)section offset:(CGPoint)offset relativeToEdges:(unint64_t)edges fromSiblingLayout:(id)layout;
+- (void)addSublayout:(id)sublayout forRect:(CGRect)rect;
+- (void)addSublayout:(id)sublayout forSections:(id)sections offset:(CGPoint)offset relativeToEdges:(unint64_t)edges fromSiblingLayout:(id)layout;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
-- (void)removeSublayout:(id)a3;
+- (void)removeSublayout:(id)sublayout;
 @end
 
 @implementation _UICollectionViewCompositionLayout
@@ -41,31 +41,31 @@
   return v2;
 }
 
-- (void)addSublayout:(id)a3 forRect:(CGRect)a4
+- (void)addSublayout:(id)sublayout forRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  [v9 _setFrame:{x, y, width, height}];
-  [v9 _setSublayoutType:1];
-  [v9 _setCompositionLayout:self];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  sublayoutCopy = sublayout;
+  [sublayoutCopy _setFrame:{x, y, width, height}];
+  [sublayoutCopy _setSublayoutType:1];
+  [sublayoutCopy _setCompositionLayout:self];
   v10 = [(NSMutableDictionary *)self->_sublayoutsDict objectForKeyedSubscript:@"UINoElementKind"];
-  [v10 addObject:v9];
+  [v10 addObject:sublayoutCopy];
 }
 
-- (CGRect)_frameForLayout:(id)a3 offset:(CGPoint)a4 relativeToEdges:(unint64_t)a5 fromSiblingLayout:(id)a6
+- (CGRect)_frameForLayout:(id)layout offset:(CGPoint)offset relativeToEdges:(unint64_t)edges fromSiblingLayout:(id)siblingLayout
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v11 = *MEMORY[0x1E695F058];
   v10 = *(MEMORY[0x1E695F058] + 8);
-  v12 = a6;
-  [a3 collectionViewContentSize];
+  siblingLayoutCopy = siblingLayout;
+  [layout collectionViewContentSize];
   v14 = v13;
   v16 = v15;
-  [v12 _frame];
+  [siblingLayoutCopy _frame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -82,7 +82,7 @@
     v11 = v27 - CGRectGetWidth(v40);
     v24 = 8;
     v25 = 2;
-    if ((a5 & 1) == 0)
+    if ((edges & 1) == 0)
     {
       goto LABEL_8;
     }
@@ -92,16 +92,16 @@
   {
     v24 = 2;
     v25 = 8;
-    if ((a5 & 1) == 0)
+    if ((edges & 1) == 0)
     {
       goto LABEL_8;
     }
   }
 
-  if ((a5 & 4) != 0)
+  if ((edges & 4) != 0)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionLayout.m" lineNumber:79 description:@"UICollectionViewCompositionLayout cannot place a sublayout relative to both the top and bottom edge of a sibling layout"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionLayout.m" lineNumber:79 description:@"UICollectionViewCompositionLayout cannot place a sublayout relative to both the top and bottom edge of a sibling layout"];
   }
 
   v41.origin.x = v18;
@@ -115,7 +115,7 @@
   v42.size.height = v16;
   v10 = MinY - (y + CGRectGetHeight(v42));
 LABEL_8:
-  if ((a5 & 4) != 0)
+  if ((edges & 4) != 0)
   {
     v43.origin.x = v18;
     v43.origin.y = v20;
@@ -124,13 +124,13 @@ LABEL_8:
     v10 = y + CGRectGetMaxY(v43);
   }
 
-  v29 = v25 & a5;
-  if ((v24 & a5) != 0)
+  v29 = v25 & edges;
+  if ((v24 & edges) != 0)
   {
     if (v29)
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v35 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionLayout.m" lineNumber:86 description:@"UICollectionViewCompositionLayout cannot place a sublayout relative to both the leading and trailing edge of a sibling layout"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionLayout.m" lineNumber:86 description:@"UICollectionViewCompositionLayout cannot place a sublayout relative to both the leading and trailing edge of a sibling layout"];
     }
 
     v44.origin.x = v18;
@@ -165,80 +165,80 @@ LABEL_8:
   return result;
 }
 
-- (void)addSublayout:(id)a3 forSections:(id)a4 offset:(CGPoint)a5 relativeToEdges:(unint64_t)a6 fromSiblingLayout:(id)a7
+- (void)addSublayout:(id)sublayout forSections:(id)sections offset:(CGPoint)offset relativeToEdges:(unint64_t)edges fromSiblingLayout:(id)layout
 {
-  y = a5.y;
-  x = a5.x;
-  v19 = a3;
-  v14 = a7;
-  [v19 _setSections:a4];
-  [v19 _setSublayoutType:2];
-  [v19 _setCompositionLayout:self];
-  if (v14)
+  y = offset.y;
+  x = offset.x;
+  sublayoutCopy = sublayout;
+  layoutCopy = layout;
+  [sublayoutCopy _setSections:sections];
+  [sublayoutCopy _setSublayoutType:2];
+  [sublayoutCopy _setCompositionLayout:self];
+  if (layoutCopy)
   {
-    v15 = [(_UICollectionViewCompositionLayout *)self sublayouts];
-    v16 = [v15 containsObject:v14];
+    sublayouts = [(_UICollectionViewCompositionLayout *)self sublayouts];
+    v16 = [sublayouts containsObject:layoutCopy];
 
     if ((v16 & 1) == 0)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionLayout.m" lineNumber:101 description:{@"attempt to add layout (%@) to composition layout with sibling (%@) where the sibling does not have the same parent", v19, v14}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionLayout.m" lineNumber:101 description:{@"attempt to add layout (%@) to composition layout with sibling (%@) where the sibling does not have the same parent", sublayoutCopy, layoutCopy}];
     }
   }
 
-  [v19 _setLayoutOffset:{x, y}];
-  [v19 _setLayoutOffsetEdges:a6];
-  [v19 _setSiblingLayout:v14];
+  [sublayoutCopy _setLayoutOffset:{x, y}];
+  [sublayoutCopy _setLayoutOffsetEdges:edges];
+  [sublayoutCopy _setSiblingLayout:layoutCopy];
   v18 = [(NSMutableDictionary *)self->_sublayoutsDict objectForKeyedSubscript:@"UINoElementKind"];
-  [v18 addObject:v19];
+  [v18 addObject:sublayoutCopy];
 }
 
-- (void)addSublayout:(id)a3 forItems:(id)a4 inSection:(int64_t)a5 offset:(CGPoint)a6 relativeToEdges:(unint64_t)a7 fromSiblingLayout:(id)a8
+- (void)addSublayout:(id)sublayout forItems:(id)items inSection:(int64_t)section offset:(CGPoint)offset relativeToEdges:(unint64_t)edges fromSiblingLayout:(id)layout
 {
-  y = a6.y;
-  x = a6.x;
-  v24 = a3;
-  v16 = a8;
+  y = offset.y;
+  x = offset.x;
+  sublayoutCopy = sublayout;
+  layoutCopy = layout;
   v17 = MEMORY[0x1E696AC90];
-  v18 = a4;
-  v19 = [v17 indexSetWithIndex:a5];
-  [v24 _setSections:v19];
+  itemsCopy = items;
+  v19 = [v17 indexSetWithIndex:section];
+  [sublayoutCopy _setSections:v19];
 
-  [v24 _setItems:v18];
-  [v24 _setSublayoutType:3];
-  [v24 _setCompositionLayout:self];
-  if (v16)
+  [sublayoutCopy _setItems:itemsCopy];
+  [sublayoutCopy _setSublayoutType:3];
+  [sublayoutCopy _setCompositionLayout:self];
+  if (layoutCopy)
   {
-    v20 = [(_UICollectionViewCompositionLayout *)self sublayouts];
-    v21 = [v20 containsObject:v16];
+    sublayouts = [(_UICollectionViewCompositionLayout *)self sublayouts];
+    v21 = [sublayouts containsObject:layoutCopy];
 
     if ((v21 & 1) == 0)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionLayout.m" lineNumber:114 description:{@"attempt to add layout (%@) to composition layout with sibling (%@) where the sibling does not have the same parent", v24, v16}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCompositionLayout.m" lineNumber:114 description:{@"attempt to add layout (%@) to composition layout with sibling (%@) where the sibling does not have the same parent", sublayoutCopy, layoutCopy}];
     }
   }
 
-  [v24 _setLayoutOffset:{x, y}];
-  [v24 _setLayoutOffsetEdges:a7];
-  [v24 _setSiblingLayout:v16];
+  [sublayoutCopy _setLayoutOffset:{x, y}];
+  [sublayoutCopy _setLayoutOffsetEdges:edges];
+  [sublayoutCopy _setSiblingLayout:layoutCopy];
   v23 = [(NSMutableDictionary *)self->_sublayoutsDict objectForKeyedSubscript:@"UINoElementKind"];
-  [v23 addObject:v24];
+  [v23 addObject:sublayoutCopy];
 }
 
-- (void)addSublayout:(id)a3 forElementKinds:(id)a4
+- (void)addSublayout:(id)sublayout forElementKinds:(id)kinds
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 _setElementKinds:v7];
-  [v6 _setSublayoutType:4];
-  [v6 _setCompositionLayout:self];
+  sublayoutCopy = sublayout;
+  kindsCopy = kinds;
+  [sublayoutCopy _setElementKinds:kindsCopy];
+  [sublayoutCopy _setSublayoutType:4];
+  [sublayoutCopy _setCompositionLayout:self];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = v7;
+  v8 = kindsCopy;
   v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
@@ -254,7 +254,7 @@ LABEL_8:
           objc_enumerationMutation(v8);
         }
 
-        [(NSMutableDictionary *)self->_sublayoutsDict setObject:v6 forKeyedSubscript:*(*(&v13 + 1) + 8 * v12++), v13];
+        [(NSMutableDictionary *)self->_sublayoutsDict setObject:sublayoutCopy forKeyedSubscript:*(*(&v13 + 1) + 8 * v12++), v13];
       }
 
       while (v10 != v12);
@@ -265,19 +265,19 @@ LABEL_8:
   }
 }
 
-- (void)removeSublayout:(id)a3
+- (void)removeSublayout:(id)sublayout
 {
-  v4 = a3;
+  sublayoutCopy = sublayout;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   sublayoutsDict = self->_sublayoutsDict;
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __54___UICollectionViewCompositionLayout_removeSublayout___block_invoke;
   v13 = &unk_1E70FFDB0;
-  v14 = v4;
+  v14 = sublayoutCopy;
   v15 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = sublayoutCopy;
   [(NSMutableDictionary *)sublayoutsDict enumerateKeysAndObjectsUsingBlock:&v10];
   [(NSMutableDictionary *)self->_sublayoutsDict removeObjectsForKeys:v7, v10, v11, v12, v13];
   v9 = [(NSMutableDictionary *)self->_sublayoutsDict objectForKeyedSubscript:@"UINoElementKind"];
@@ -289,15 +289,15 @@ LABEL_8:
   v19 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
   v4 = [(NSMutableDictionary *)self->_sublayoutsDict valueForKey:@"UINoElementKind"];
-  v5 = [v4 allObjects];
-  v6 = [v3 initWithArray:v5];
+  allObjects = [v4 allObjects];
+  v6 = [v3 initWithArray:allObjects];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(NSMutableDictionary *)self->_sublayoutsDict objectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_sublayoutsDict objectEnumerator];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -308,7 +308,7 @@ LABEL_8:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
@@ -319,7 +319,7 @@ LABEL_8:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -338,8 +338,8 @@ LABEL_8:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(_UICollectionViewCompositionLayout *)self sublayouts];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  sublayouts = [(_UICollectionViewCompositionLayout *)self sublayouts];
+  v6 = [sublayouts countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -353,7 +353,7 @@ LABEL_8:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sublayouts);
         }
 
         [*(*(&v18 + 1) + 8 * v11) _frame];
@@ -374,7 +374,7 @@ LABEL_8:
       }
 
       while (v7 != v11);
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [sublayouts countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
@@ -387,33 +387,33 @@ LABEL_8:
   return result;
 }
 
-- (id)_originConvertedSublayoutAttributesForAttributes:(id)a3 inLayout:(id)a4
+- (id)_originConvertedSublayoutAttributesForAttributes:(id)attributes inLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 _frame];
+  attributesCopy = attributes;
+  layoutCopy = layout;
+  [layoutCopy _frame];
   if (v9 == *MEMORY[0x1E695EFF8] && v8 == *(MEMORY[0x1E695EFF8] + 8))
   {
-    v11 = v6;
+    v11 = attributesCopy;
   }
 
   else
   {
-    v11 = [v6 copy];
-    [v6 frame];
-    [(UICollectionViewLayout *)self convertRect:v7 fromLayout:?];
+    v11 = [attributesCopy copy];
+    [attributesCopy frame];
+    [(UICollectionViewLayout *)self convertRect:layoutCopy fromLayout:?];
     [v11 setFrame:?];
   }
 
   return v11;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v50 = *MEMORY[0x1E69E9840];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v44 = 0u;
@@ -512,23 +512,23 @@ LABEL_8:
   return v8;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pathCopy = path;
   v6 = [(NSMutableDictionary *)self->_sublayoutsDict objectForKeyedSubscript:0x1EFB32ED0];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 layoutAttributesForItemAtIndexPath:v5];
+    v8 = [v6 layoutAttributesForItemAtIndexPath:pathCopy];
     v9 = [(_UICollectionViewCompositionLayout *)self _originConvertedSublayoutAttributesForAttributes:v8 inLayout:v7];
   }
 
   else
   {
     v22 = a2;
-    v23 = v5;
-    v10 = [v5 section];
+    v23 = pathCopy;
+    section = [pathCopy section];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -549,12 +549,12 @@ LABEL_8:
           }
 
           v16 = *(*(&v24 + 1) + 8 * i);
-          v17 = [v16 _sections];
-          v18 = [v17 containsIndex:v10];
+          _sections = [v16 _sections];
+          v18 = [_sections containsIndex:section];
 
           if (v18)
           {
-            v5 = v23;
+            pathCopy = v23;
             v20 = [v16 layoutAttributesForItemAtIndexPath:v23];
             v9 = [(_UICollectionViewCompositionLayout *)self _originConvertedSublayoutAttributesForAttributes:v20 inLayout:v16];
 
@@ -572,11 +572,11 @@ LABEL_8:
       }
     }
 
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:v22 object:self file:@"UICollectionViewCompositionLayout.m" lineNumber:208 description:{@"composition layout (%@) does not have a sublayout for UICollectionElementKindCell or for section %ld", self, v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:v22 object:self file:@"UICollectionViewCompositionLayout.m" lineNumber:208 description:{@"composition layout (%@) does not have a sublayout for UICollectionElementKindCell or for section %ld", self, section}];
 
     v9 = 0;
-    v5 = v23;
+    pathCopy = v23;
   }
 
 LABEL_13:
@@ -584,32 +584,32 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4
+- (BOOL)shouldInvalidateLayoutForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  attributesCopy = attributes;
+  originalAttributesCopy = originalAttributes;
   sublayoutsDict = self->_sublayoutsDict;
-  v10 = [(_UILabelConfiguration *)v8 _content];
-  v11 = [(NSMutableDictionary *)sublayoutsDict objectForKeyedSubscript:v10];
+  _content = [(_UILabelConfiguration *)originalAttributesCopy _content];
+  v11 = [(NSMutableDictionary *)sublayoutsDict objectForKeyedSubscript:_content];
 
   if (v11)
   {
-    v12 = [v11 shouldInvalidateLayoutForPreferredLayoutAttributes:v7 withOriginalAttributes:v8];
+    v12 = [v11 shouldInvalidateLayoutForPreferredLayoutAttributes:attributesCopy withOriginalAttributes:originalAttributesCopy];
   }
 
   else
   {
     v25 = a2;
-    v27 = v7;
-    v13 = [v8 indexPath];
-    v14 = [v13 section];
+    v27 = attributesCopy;
+    indexPath = [originalAttributesCopy indexPath];
+    section = [indexPath section];
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v26 = self;
+    selfCopy = self;
     v15 = [(NSMutableDictionary *)self->_sublayoutsDict objectForKeyedSubscript:@"UINoElementKind"];
     v16 = [v15 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v16)
@@ -626,13 +626,13 @@ LABEL_13:
           }
 
           v20 = *(*(&v28 + 1) + 8 * i);
-          v21 = [v20 _sections];
-          v22 = [v21 containsIndex:v14];
+          _sections = [v20 _sections];
+          v22 = [_sections containsIndex:section];
 
           if (v22)
           {
-            v7 = v27;
-            v12 = [v20 shouldInvalidateLayoutForPreferredLayoutAttributes:v27 withOriginalAttributes:v8];
+            attributesCopy = v27;
+            v12 = [v20 shouldInvalidateLayoutForPreferredLayoutAttributes:v27 withOriginalAttributes:originalAttributesCopy];
 
             goto LABEL_13;
           }
@@ -648,11 +648,11 @@ LABEL_13:
       }
     }
 
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:v25 object:v26 file:v14 lineNumber:? description:?];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:v25 object:selfCopy file:section lineNumber:? description:?];
 
     v12 = 0;
-    v7 = v27;
+    attributesCopy = v27;
   }
 
 LABEL_13:
@@ -660,28 +660,28 @@ LABEL_13:
   return v12;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(NSMutableDictionary *)self->_sublayoutsDict objectForKeyedSubscript:v7];
+  kindCopy = kind;
+  pathCopy = path;
+  v9 = [(NSMutableDictionary *)self->_sublayoutsDict objectForKeyedSubscript:kindCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 layoutAttributesForSupplementaryViewOfKind:v7 atIndexPath:v8];
+    v11 = [v9 layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:pathCopy];
   }
 
   else
   {
     v23 = a2;
-    v25 = v8;
-    v12 = [v8 section];
+    v25 = pathCopy;
+    section = [pathCopy section];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v24 = self;
+    selfCopy = self;
     v13 = [(NSMutableDictionary *)self->_sublayoutsDict objectForKeyedSubscript:@"UINoElementKind"];
     v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v14)
@@ -698,13 +698,13 @@ LABEL_13:
           }
 
           v18 = *(*(&v26 + 1) + 8 * i);
-          v19 = [v18 _sections];
-          v20 = [v19 containsIndex:v12];
+          _sections = [v18 _sections];
+          v20 = [_sections containsIndex:section];
 
           if (v20)
           {
-            v8 = v25;
-            v11 = [v18 layoutAttributesForSupplementaryViewOfKind:v7 atIndexPath:v25];
+            pathCopy = v25;
+            v11 = [v18 layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:v25];
 
             goto LABEL_13;
           }
@@ -720,11 +720,11 @@ LABEL_13:
       }
     }
 
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:v23 object:v24 file:v7 lineNumber:v12 description:?];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:v23 object:selfCopy file:kindCopy lineNumber:section description:?];
 
     v11 = 0;
-    v8 = v25;
+    pathCopy = v25;
   }
 
 LABEL_13:
@@ -732,28 +732,28 @@ LABEL_13:
   return v11;
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(NSMutableDictionary *)self->_sublayoutsDict objectForKeyedSubscript:v7];
+  kindCopy = kind;
+  pathCopy = path;
+  v9 = [(NSMutableDictionary *)self->_sublayoutsDict objectForKeyedSubscript:kindCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 layoutAttributesForDecorationViewOfKind:v7 atIndexPath:v8];
+    v11 = [v9 layoutAttributesForDecorationViewOfKind:kindCopy atIndexPath:pathCopy];
   }
 
   else
   {
     v23 = a2;
-    v25 = v8;
-    v12 = [v8 section];
+    v25 = pathCopy;
+    section = [pathCopy section];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v24 = self;
+    selfCopy = self;
     v13 = [(NSMutableDictionary *)self->_sublayoutsDict objectForKeyedSubscript:@"UINoElementKind"];
     v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v14)
@@ -770,13 +770,13 @@ LABEL_13:
           }
 
           v18 = *(*(&v26 + 1) + 8 * i);
-          v19 = [v18 _sections];
-          v20 = [v19 containsIndex:v12];
+          _sections = [v18 _sections];
+          v20 = [_sections containsIndex:section];
 
           if (v20)
           {
-            v8 = v25;
-            v11 = [v18 layoutAttributesForDecorationViewOfKind:v7 atIndexPath:v25];
+            pathCopy = v25;
+            v11 = [v18 layoutAttributesForDecorationViewOfKind:kindCopy atIndexPath:v25];
 
             goto LABEL_13;
           }
@@ -792,11 +792,11 @@ LABEL_13:
       }
     }
 
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:v23 object:v24 file:v7 lineNumber:v12 description:?];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:v23 object:selfCopy file:kindCopy lineNumber:section description:?];
 
     v11 = 0;
-    v8 = v25;
+    pathCopy = v25;
   }
 
 LABEL_13:
@@ -814,8 +814,8 @@ LABEL_13:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(_UICollectionViewCompositionLayout *)self sublayouts];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  sublayouts = [(_UICollectionViewCompositionLayout *)self sublayouts];
+  v4 = [sublayouts countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -827,56 +827,56 @@ LABEL_13:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sublayouts);
         }
 
         [(_UICollectionViewCompositionLayout *)self _prepareLayout:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [sublayouts countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_prepareLayout:(id)a3
+- (void)_prepareLayout:(id)layout
 {
-  v4 = a3;
-  v11 = [v4 _siblingLayout];
-  if (v11 && ([v11 _isPrepared] & 1) == 0)
+  layoutCopy = layout;
+  _siblingLayout = [layoutCopy _siblingLayout];
+  if (_siblingLayout && ([_siblingLayout _isPrepared] & 1) == 0)
   {
-    [(_UICollectionViewCompositionLayout *)self _prepareLayout:v11];
+    [(_UICollectionViewCompositionLayout *)self _prepareLayout:_siblingLayout];
   }
 
-  [v4 prepareLayout];
-  [v4 _layoutOffset];
+  [layoutCopy prepareLayout];
+  [layoutCopy _layoutOffset];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 _layoutOffsetEdges];
-  v10 = [v4 _siblingLayout];
-  [(_UICollectionViewCompositionLayout *)self _frameForLayout:v4 offset:v9 relativeToEdges:v10 fromSiblingLayout:v6, v8];
-  [v4 _setFrame:?];
+  _layoutOffsetEdges = [layoutCopy _layoutOffsetEdges];
+  _siblingLayout2 = [layoutCopy _siblingLayout];
+  [(_UICollectionViewCompositionLayout *)self _frameForLayout:layoutCopy offset:_layoutOffsetEdges relativeToEdges:_siblingLayout2 fromSiblingLayout:v6, v8];
+  [layoutCopy _setFrame:?];
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v28.receiver = self;
   v28.super_class = _UICollectionViewCompositionLayout;
-  [(UICollectionViewLayout *)&v28 invalidateLayoutWithContext:v4];
-  v5 = [v4 _invalidationContextTable];
-  v6 = v5;
-  if (v5)
+  [(UICollectionViewLayout *)&v28 invalidateLayoutWithContext:contextCopy];
+  _invalidationContextTable = [contextCopy _invalidationContextTable];
+  v6 = _invalidationContextTable;
+  if (_invalidationContextTable)
   {
     v26 = 0uLL;
     v27 = 0uLL;
     v24 = 0uLL;
     v25 = 0uLL;
-    v7 = [v5 keyEnumerator];
-    v8 = [v7 countByEnumeratingWithState:&v24 objects:v30 count:16];
+    keyEnumerator = [_invalidationContextTable keyEnumerator];
+    v8 = [keyEnumerator countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v8)
     {
       v9 = v8;
@@ -887,7 +887,7 @@ LABEL_13:
         {
           if (*v25 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v12 = *(*(&v24 + 1) + 8 * i);
@@ -895,7 +895,7 @@ LABEL_13:
           [v12 invalidateLayoutWithContext:v13];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v24 objects:v30 count:16];
+        v9 = [keyEnumerator countByEnumeratingWithState:&v24 objects:v30 count:16];
       }
 
       while (v9);
@@ -908,8 +908,8 @@ LABEL_13:
     v23 = 0uLL;
     *(&v20 + 1) = 0;
     v21 = 0uLL;
-    v7 = [(_UICollectionViewCompositionLayout *)self sublayouts];
-    v14 = [v7 countByEnumeratingWithState:&v20 objects:v29 count:16];
+    keyEnumerator = [(_UICollectionViewCompositionLayout *)self sublayouts];
+    v14 = [keyEnumerator countByEnumeratingWithState:&v20 objects:v29 count:16];
     if (v14)
     {
       v15 = v14;
@@ -920,17 +920,17 @@ LABEL_13:
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v18 = *(*(&v20 + 1) + 8 * j);
           v19 = objc_alloc_init([objc_opt_class() invalidationContextClass]);
-          [v19 _setInvalidateEverything:{objc_msgSend(v4, "invalidateEverything")}];
-          [v19 _setInvalidateDataSourceCounts:{objc_msgSend(v4, "invalidateDataSourceCounts")}];
+          [v19 _setInvalidateEverything:{objc_msgSend(contextCopy, "invalidateEverything")}];
+          [v19 _setInvalidateDataSourceCounts:{objc_msgSend(contextCopy, "invalidateDataSourceCounts")}];
           [v18 invalidateLayoutWithContext:v19];
         }
 
-        v15 = [v7 countByEnumeratingWithState:&v20 objects:v29 count:16];
+        v15 = [keyEnumerator countByEnumeratingWithState:&v20 objects:v29 count:16];
       }
 
       while (v15);
@@ -938,12 +938,12 @@ LABEL_13:
   }
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v23 = *MEMORY[0x1E69E9840];
   v8 = objc_alloc_init([objc_opt_class() invalidationContextClass]);
   v9 = objc_alloc_init(MEMORY[0x1E696AD18]);
@@ -951,8 +951,8 @@ LABEL_13:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [(_UICollectionViewCompositionLayout *)self sublayouts];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  sublayouts = [(_UICollectionViewCompositionLayout *)self sublayouts];
+  v11 = [sublayouts countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -963,7 +963,7 @@ LABEL_13:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(sublayouts);
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
@@ -971,7 +971,7 @@ LABEL_13:
         [v9 setObject:v16 forKey:v15];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [sublayouts countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
@@ -982,23 +982,23 @@ LABEL_13:
   return v8;
 }
 
-- (id)invalidationContextForPreferredLayoutAttributes:(id)a3 withOriginalAttributes:(id)a4
+- (id)invalidationContextForPreferredLayoutAttributes:(id)attributes withOriginalAttributes:(id)originalAttributes
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  originalAttributesCopy = originalAttributes;
   v33.receiver = self;
   v33.super_class = _UICollectionViewCompositionLayout;
-  v8 = [(UICollectionViewLayout *)&v33 invalidationContextForPreferredLayoutAttributes:v6 withOriginalAttributes:v7];
+  v8 = [(UICollectionViewLayout *)&v33 invalidationContextForPreferredLayoutAttributes:attributesCopy withOriginalAttributes:originalAttributesCopy];
   v9 = objc_alloc_init(MEMORY[0x1E696AD18]);
   sublayoutsDict = self->_sublayoutsDict;
-  v11 = [(_UILabelConfiguration *)v7 _content];
-  v12 = [(NSMutableDictionary *)sublayoutsDict objectForKeyedSubscript:v11];
+  _content = [(_UILabelConfiguration *)originalAttributesCopy _content];
+  v12 = [(NSMutableDictionary *)sublayoutsDict objectForKeyedSubscript:_content];
 
   if (!v12)
   {
-    v13 = [v7 indexPath];
-    v14 = [v13 section];
+    indexPath = [originalAttributesCopy indexPath];
+    section = [indexPath section];
 
     v31 = 0u;
     v32 = 0u;
@@ -1010,7 +1010,7 @@ LABEL_13:
     {
       v17 = v16;
       v27 = v8;
-      v28 = v6;
+      v28 = attributesCopy;
       v18 = *v30;
       while (2)
       {
@@ -1022,8 +1022,8 @@ LABEL_13:
           }
 
           v20 = *(*(&v29 + 1) + 8 * i);
-          v21 = [v20 _sections];
-          v22 = [v21 containsIndex:v14];
+          _sections = [v20 _sections];
+          v22 = [_sections containsIndex:section];
 
           if (v22)
           {
@@ -1044,7 +1044,7 @@ LABEL_13:
       v12 = 0;
 LABEL_12:
       v8 = v27;
-      v6 = v28;
+      attributesCopy = v28;
     }
 
     else
@@ -1053,12 +1053,12 @@ LABEL_12:
     }
   }
 
-  v23 = [v12 invalidationContextForPreferredLayoutAttributes:v6 withOriginalAttributes:v7];
+  v23 = [v12 invalidationContextForPreferredLayoutAttributes:attributesCopy withOriginalAttributes:originalAttributesCopy];
   v24 = v23;
   if (v23)
   {
-    v25 = [v23 invalidatedItemIndexPaths];
-    [v8 invalidateItemsAtIndexPaths:v25];
+    invalidatedItemIndexPaths = [v23 invalidatedItemIndexPaths];
+    [v8 invalidateItemsAtIndexPaths:invalidatedItemIndexPaths];
 
     [v9 setObject:v24 forKey:v12];
   }

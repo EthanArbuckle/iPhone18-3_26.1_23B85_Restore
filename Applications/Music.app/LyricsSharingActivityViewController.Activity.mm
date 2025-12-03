@@ -17,11 +17,11 @@
 - (void)performActivity
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtCC5Music35LyricsSharingActivityViewController8Activity_performBlock);
-  v4 = self;
+  selfCopy = self;
 
   v2(v3);
 
-  [(LyricsSharingActivityViewController.Activity *)v4 activityDidFinish:1];
+  [(LyricsSharingActivityViewController.Activity *)selfCopy activityDidFinish:1];
 }
 
 - (_TtCC5Music35LyricsSharingActivityViewController8Activity)init

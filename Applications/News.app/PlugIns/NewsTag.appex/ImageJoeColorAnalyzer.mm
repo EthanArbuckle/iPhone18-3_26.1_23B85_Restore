@@ -1,14 +1,14 @@
 @interface ImageJoeColorAnalyzer
-- (id)colorsForImage:(id)a3;
+- (id)colorsForImage:(id)image;
 @end
 
 @implementation ImageJoeColorAnalyzer
 
-- (id)colorsForImage:(id)a3
+- (id)colorsForImage:(id)image
 {
   v4 = objc_opt_self();
-  v5 = a3;
-  result = [v4 colorsForImage:v5];
+  imageCopy = image;
+  result = [v4 colorsForImage:imageCopy];
   if (result)
   {
     v7 = result;

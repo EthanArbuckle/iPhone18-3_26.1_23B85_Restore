@@ -5,11 +5,11 @@
 - (BOOL)isAnimationComplete;
 - (id)debugDescription;
 - (id)description;
-- (id)initForEnvironment:(id)a3 visualState:(id)a4 previousVisualState:(id)a5 frameSpecifier:(id)a6 animated:(BOOL)a7 triggerEvent:(id)a8 touchTargetable:(BOOL)a9 isUpdateToDateSpecifier:(BOOL)a10 sceneContentsUpdated:(id)a11 performBacklightRamp:(id)a12 sceneContentsAnimationComplete:(id)a13;
-- (void)performBacklightRampWithDuration:(double)a3;
+- (id)initForEnvironment:(id)environment visualState:(id)state previousVisualState:(id)visualState frameSpecifier:(id)specifier animated:(BOOL)animated triggerEvent:(id)event touchTargetable:(BOOL)targetable isUpdateToDateSpecifier:(BOOL)self0 sceneContentsUpdated:(id)self1 performBacklightRamp:(id)self2 sceneContentsAnimationComplete:(id)self3;
+- (void)performBacklightRampWithDuration:(double)duration;
 - (void)sceneContentsAnimationDidComplete;
 - (void)sceneContentsDidUpdate;
-- (void)setReplacedSceneUpdate:(id)a3;
+- (void)setReplacedSceneUpdate:(id)update;
 @end
 
 @implementation BLSBacklightSceneUpdate
@@ -21,7 +21,7 @@
   v8 = 3221225472;
   v9 = __38__BLSBacklightSceneUpdate_description__block_invoke;
   v10 = &unk_278428688;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:0 block:&v7];
@@ -80,7 +80,7 @@ void __38__BLSBacklightSceneUpdate_description__block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21FE25000, a2, OS_LOG_TYPE_ERROR, "sceneContentsAnimationDidComplete should only be called once for update:%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -101,17 +101,17 @@ void __38__BLSBacklightSceneUpdate_description__block_invoke(uint64_t a1)
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initForEnvironment:(id)a3 visualState:(id)a4 previousVisualState:(id)a5 frameSpecifier:(id)a6 animated:(BOOL)a7 triggerEvent:(id)a8 touchTargetable:(BOOL)a9 isUpdateToDateSpecifier:(BOOL)a10 sceneContentsUpdated:(id)a11 performBacklightRamp:(id)a12 sceneContentsAnimationComplete:(id)a13
+- (id)initForEnvironment:(id)environment visualState:(id)state previousVisualState:(id)visualState frameSpecifier:(id)specifier animated:(BOOL)animated triggerEvent:(id)event touchTargetable:(BOOL)targetable isUpdateToDateSpecifier:(BOOL)self0 sceneContentsUpdated:(id)self1 performBacklightRamp:(id)self2 sceneContentsAnimationComplete:(id)self3
 {
-  v37 = a7;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a8;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
+  animatedCopy = animated;
+  environmentCopy = environment;
+  stateCopy = state;
+  visualStateCopy = visualState;
+  specifierCopy = specifier;
+  eventCopy = event;
+  updatedCopy = updated;
+  rampCopy = ramp;
+  completeCopy = complete;
   v38.receiver = self;
   v38.super_class = BLSBacklightSceneUpdate;
   v26 = [(BLSBacklightSceneUpdate *)&v38 init];
@@ -119,21 +119,21 @@ void __38__BLSBacklightSceneUpdate_description__block_invoke(uint64_t a1)
   if (v26)
   {
     v26->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v26->_environment, v18);
-    v28 = [[BLSBacklightSceneUpdateContext alloc] initWithVisualState:v19 previousVisualState:v20 frameSpecifier:v21 animated:v37 triggerEvent:v22 touchTargetable:a9];
+    objc_storeWeak(&v26->_environment, environmentCopy);
+    v28 = [[BLSBacklightSceneUpdateContext alloc] initWithVisualState:stateCopy previousVisualState:visualStateCopy frameSpecifier:specifierCopy animated:animatedCopy triggerEvent:eventCopy touchTargetable:targetable];
     context = v27->_context;
     v27->_context = v28;
 
-    v27->_isUpdateToDateSpecifier = a10;
-    v30 = MEMORY[0x223D716E0](v23);
+    v27->_isUpdateToDateSpecifier = dateSpecifier;
+    v30 = MEMORY[0x223D716E0](updatedCopy);
     sceneContentsUpdatedBlock = v27->_sceneContentsUpdatedBlock;
     v27->_sceneContentsUpdatedBlock = v30;
 
-    v32 = MEMORY[0x223D716E0](v24);
+    v32 = MEMORY[0x223D716E0](rampCopy);
     performBacklightRampBlock = v27->_performBacklightRampBlock;
     v27->_performBacklightRampBlock = v32;
 
-    v34 = MEMORY[0x223D716E0](v25);
+    v34 = MEMORY[0x223D716E0](completeCopy);
     sceneContentsAnimationCompleteBlock = v27->_sceneContentsAnimationCompleteBlock;
     v27->_sceneContentsAnimationCompleteBlock = v34;
   }
@@ -146,18 +146,18 @@ void __38__BLSBacklightSceneUpdate_description__block_invoke(uint64_t a1)
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(BLSBacklightSceneUpdateContext *)self->_context visualState];
-  v5 = [v3 appendObject:v4 withName:@"new"];
+  visualState = [(BLSBacklightSceneUpdateContext *)self->_context visualState];
+  v5 = [v3 appendObject:visualState withName:@"new"];
 
-  v6 = [(BLSBacklightSceneUpdateContext *)self->_context previousVisualState];
-  v7 = [v3 appendObject:v6 withName:@"previous"];
+  previousVisualState = [(BLSBacklightSceneUpdateContext *)self->_context previousVisualState];
+  v7 = [v3 appendObject:previousVisualState withName:@"previous"];
 
-  v8 = [(BLSBacklightSceneUpdateContext *)self->_context frameSpecifier];
-  v9 = [v3 appendObject:v8 withName:@"specifier" skipIfNil:1];
+  frameSpecifier = [(BLSBacklightSceneUpdateContext *)self->_context frameSpecifier];
+  v9 = [v3 appendObject:frameSpecifier withName:@"specifier" skipIfNil:1];
 
   v10 = [v3 appendBool:-[BLSBacklightSceneUpdateContext isAnimated](self->_context withName:{"isAnimated"), @"animated"}];
-  v11 = [(BLSBacklightSceneUpdateContext *)self->_context triggerEvent];
-  v12 = [v3 appendObject:v11 withName:@"trigger" skipIfNil:1];
+  triggerEvent = [(BLSBacklightSceneUpdateContext *)self->_context triggerEvent];
+  v12 = [v3 appendObject:triggerEvent withName:@"trigger" skipIfNil:1];
 
   v13 = [v3 appendBool:self->_isUpdateToDateSpecifier withName:@"isUpdateToDateSpecifier"];
   v14 = [v3 appendBool:self->_lock_sceneContentsUpdated withName:@"sceneContentsUpdated"];
@@ -166,23 +166,23 @@ void __38__BLSBacklightSceneUpdate_description__block_invoke(uint64_t a1)
   v17 = [v3 appendBool:self->_performBacklightRampBlock != 0 withName:@"backlightRampNonNil" ifEqualTo:1];
   v18 = [v3 appendBool:self->_sceneContentsAnimationCompleteBlock != 0 withName:@"animationCompletionNonNil" ifEqualTo:1];
   os_unfair_lock_unlock(&self->_lock);
-  v19 = [v3 build];
+  build = [v3 build];
 
-  return v19;
+  return build;
 }
 
-- (void)setReplacedSceneUpdate:(id)a3
+- (void)setReplacedSceneUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   os_unfair_lock_lock(&self->_lock);
-  if (([v4 areSceneContentsUpdated] & 1) == 0)
+  if (([updateCopy areSceneContentsUpdated] & 1) == 0)
   {
     v5 = MEMORY[0x223D716E0](self->_sceneContentsUpdatedBlock);
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __50__BLSBacklightSceneUpdate_setReplacedSceneUpdate___block_invoke;
     v25[3] = &unk_278428978;
-    v26 = v4;
+    v26 = updateCopy;
     v27 = v5;
     v6 = v5;
     v7 = MEMORY[0x223D716E0](v25);
@@ -190,16 +190,16 @@ void __38__BLSBacklightSceneUpdate_description__block_invoke(uint64_t a1)
     self->_sceneContentsUpdatedBlock = v7;
   }
 
-  if (([v4 didStartBacklightRamp] & 1) == 0)
+  if (([updateCopy didStartBacklightRamp] & 1) == 0)
   {
     v9 = MEMORY[0x223D716E0](self->_performBacklightRampBlock);
-    v10 = [(BLSBacklightSceneUpdateContext *)self->_context isAnimated];
+    isAnimated = [(BLSBacklightSceneUpdateContext *)self->_context isAnimated];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __50__BLSBacklightSceneUpdate_setReplacedSceneUpdate___block_invoke_2;
     v21[3] = &unk_278428B50;
-    v24 = v10;
-    v22 = v4;
+    v24 = isAnimated;
+    v22 = updateCopy;
     v23 = v9;
     v11 = v9;
     v12 = MEMORY[0x223D716E0](v21);
@@ -207,14 +207,14 @@ void __38__BLSBacklightSceneUpdate_description__block_invoke(uint64_t a1)
     self->_performBacklightRampBlock = v12;
   }
 
-  if (([v4 isAnimationComplete] & 1) == 0)
+  if (([updateCopy isAnimationComplete] & 1) == 0)
   {
     v14 = MEMORY[0x223D716E0](self->_sceneContentsAnimationCompleteBlock);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __50__BLSBacklightSceneUpdate_setReplacedSceneUpdate___block_invoke_3;
     v18[3] = &unk_278428978;
-    v19 = v4;
+    v19 = updateCopy;
     v20 = v14;
     v15 = v14;
     v16 = MEMORY[0x223D716E0](v18);
@@ -277,7 +277,7 @@ uint64_t __50__BLSBacklightSceneUpdate_setReplacedSceneUpdate___block_invoke_3(u
   return lock_didStartBacklightRamp;
 }
 
-- (void)performBacklightRampWithDuration:(double)a3
+- (void)performBacklightRampWithDuration:(double)duration
 {
   os_unfair_lock_lock(&self->_lock);
   lock_didStartBacklightRamp = self->_lock_didStartBacklightRamp;
@@ -317,7 +317,7 @@ LABEL_10:
     [BLSBacklightSceneUpdate performBacklightRampWithDuration:];
   }
 
-  v6[2](v6, a3);
+  v6[2](v6, duration);
 LABEL_11:
 }
 

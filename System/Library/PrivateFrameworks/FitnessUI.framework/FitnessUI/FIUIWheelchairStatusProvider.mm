@@ -1,10 +1,10 @@
 @interface FIUIWheelchairStatusProvider
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4;
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change;
 @end
 
 @implementation FIUIWheelchairStatusProvider
 
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1ED06A408);
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -21,7 +21,7 @@
   *(v11 + 16) = v10;
   *(v11 + 24) = v12;
   *(v11 + 32) = v9;
-  *(v11 + 40) = a4;
+  *(v11 + 40) = change;
 
   sub_1E5D580A8(0, 0, v7, &unk_1E5DB21F8, v11);
 }

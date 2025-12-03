@@ -1,18 +1,18 @@
 @interface BFMRequestMetadata
 - (BFMRequestMetadata)init;
-- (BFMRequestMetadata)initWithFileID:(id)a3 line:(int)a4;
+- (BFMRequestMetadata)initWithFileID:(id)d line:(int)line;
 - (NSString)fileID;
 @end
 
 @implementation BFMRequestMetadata
 
-- (BFMRequestMetadata)initWithFileID:(id)a3 line:(int)a4
+- (BFMRequestMetadata)initWithFileID:(id)d line:(int)line
 {
   v6 = sub_241CF9038();
   v7 = self + OBJC_IVAR___BFMRequestMetadata_impl;
   *v7 = v6;
   *(v7 + 1) = v8;
-  *(v7 + 4) = a4;
+  *(v7 + 4) = line;
   v10.receiver = self;
   v10.super_class = BFMRequestMetadata;
   return [(BFMRequestMetadata *)&v10 init];

@@ -1,11 +1,11 @@
 @interface VFXRenderer
-+ (VFXRenderer)rendererWithCommandQueue:(id)a3 options:(id)a4;
-+ (VFXRenderer)rendererWithDevice:(id)a3 options:(id)a4;
++ (VFXRenderer)rendererWithCommandQueue:(id)queue options:(id)options;
++ (VFXRenderer)rendererWithDevice:(id)device options:(id)options;
 + (id)remoteDecoder;
 + (id)remoteEncoder;
 + (void)logSharedResources;
 - (BOOL)_enableARMode;
-- (BOOL)_isNodeInsideFrustum:(id)a3 withPointOfView:(id)a4 viewport:;
+- (BOOL)_isNodeInsideFrustum:(id)frustum withPointOfView:(id)view viewport:;
 - (BOOL)_legacyAdditiveWritesToAlpha;
 - (BOOL)_needsRedrawAsap;
 - (BOOL)_needsRepetitiveRedraw;
@@ -17,12 +17,12 @@
 - (BOOL)enableDeferredRendering;
 - (BOOL)hasMissingParticlePipelineState;
 - (BOOL)hasRenderableObjects;
-- (BOOL)isNodeInsideFrustum:(id)a3 withPointOfView:(id)a4;
-- (BOOL)prepareObject:(id)a3 shouldAbortBlock:(id)a4;
-- (BOOL)renderMovieToURL:(id)a3 size:(CGSize)a4 antialiasingMode:(unint64_t)a5 attributes:(id)a6 error:(id *)a7;
+- (BOOL)isNodeInsideFrustum:(id)frustum withPointOfView:(id)view;
+- (BOOL)prepareObject:(id)object shouldAbortBlock:(id)block;
+- (BOOL)renderMovieToURL:(id)l size:(CGSize)size antialiasingMode:(unint64_t)mode attributes:(id)attributes error:(id *)error;
 - (BOOL)showsDebugUI;
-- (CGImage)_createBackgroundColorImageWithSize:(CGSize)a3;
-- (CGImage)_createSnapshotWithSize:(CGSize)a3 error:(id *)a4;
+- (CGImage)_createBackgroundColorImageWithSize:(CGSize)size;
+- (CGImage)_createSnapshotWithSize:(CGSize)size error:(id *)error;
 - (CGRect)currentViewport;
 - (CGRect)viewport;
 - (CGSize)_backingSize;
@@ -32,50 +32,50 @@
 - (NSString)description;
 - (UIColor)backgroundColor;
 - (VFXNode)audioListener;
-- (VFXRenderer)initWithCommandQueue:(id)a3;
+- (VFXRenderer)initWithCommandQueue:(id)queue;
 - (_TtC3VFX8VFXScene)scene;
 - (_TtC3VFX9VFXEffect)effect;
 - (__n128)_currentProjectionMatrix;
 - (__n128)_currentViewMatrix;
-- (__n128)_projectPoint:(uint64_t)a3 viewport:(uint64_t)a4;
+- (__n128)_projectPoint:(uint64_t)point viewport:(uint64_t)viewport;
 - (double)_computeNextFrameTime;
-- (double)_unprojectPoint:(__n128)a3 viewport:(double)a4;
+- (double)_unprojectPoint:(__n128)point viewport:(double)viewport;
 - (float32x2_t)_screenSize;
 - (id)_copyPerformanceStatistics;
-- (id)_defaultPOVForWorld:(id)a3;
-- (id)_hitTest:(CGPoint)a3 viewport:(CGSize)a4 options:(id)a5;
-- (id)_initWithDevice:(id)a3 commandQueue:(id)a4 options:(id)a5 isPrivateRenderer:(BOOL)a6 privateRendererOwner:(id)a7 clearsOnDraw:(BOOL)a8;
-- (id)_newLayeredRenderTargetWithSize:(CGSize)a3 arrayLength:(unsigned int)a4;
-- (id)_newRenderTargetWithSize:(CGSize)a3;
-- (id)_nodesInsideFrustumWithPointOfView:(id)a3 viewport:;
-- (id)_readSubdivCacheForHash:(id)a3;
-- (id)encodeRemoteFrameWithBuffers:(id)a3 textures:(id)a4;
-- (id)hitTest:(CGPoint)a3 options:(id)a4;
-- (id)hitTestWithSegmentFromPoint:(VFXRenderer *)self toPoint:(SEL)a2 options:(id)a3;
+- (id)_defaultPOVForWorld:(id)world;
+- (id)_hitTest:(CGPoint)test viewport:(CGSize)viewport options:(id)options;
+- (id)_initWithDevice:(id)device commandQueue:(id)queue options:(id)options isPrivateRenderer:(BOOL)renderer privateRendererOwner:(id)owner clearsOnDraw:(BOOL)draw;
+- (id)_newLayeredRenderTargetWithSize:(CGSize)size arrayLength:(unsigned int)length;
+- (id)_newRenderTargetWithSize:(CGSize)size;
+- (id)_nodesInsideFrustumWithPointOfView:(id)view viewport:;
+- (id)_readSubdivCacheForHash:(id)hash;
+- (id)encodeRemoteFrameWithBuffers:(id)buffers textures:(id)textures;
+- (id)hitTest:(CGPoint)test options:(id)options;
+- (id)hitTestWithSegmentFromPoint:(VFXRenderer *)self toPoint:(SEL)point options:(id)options;
 - (id)legacyRenderer;
 - (id)makeCompatibleRenderer;
 - (id)metalLayer;
-- (id)nodesInsideFrustumWithPointOfView:(id)a3;
+- (id)nodesInsideFrustumWithPointOfView:(id)view;
 - (id)postRenderCallback;
 - (id)resourceConsumer;
-- (id)setupLegacyRendererWithCommandQueue:(id)a3;
-- (id)snapshotImageWithSize:(CGSize)a3 deltaTime:(double)a4;
-- (id)snapshotWithSize:(CGSize)a3;
-- (id)snapshotWithSize:(CGSize)a3 deltaTime:(double)a4;
+- (id)setupLegacyRendererWithCommandQueue:(id)queue;
+- (id)snapshotImageWithSize:(CGSize)size deltaTime:(double)time;
+- (id)snapshotWithSize:(CGSize)size;
+- (id)snapshotWithSize:(CGSize)size deltaTime:(double)time;
 - (id)statistics;
-- (uint64_t)unprojectPoint:(uint64_t)a3;
+- (uint64_t)unprojectPoint:(uint64_t)point;
 - (uint64_t)workingColorSpace;
 - (unint64_t)antialiasingMode;
 - (unint64_t)debugUIOptions;
-- (void)_addGPUFrameCompletedHandler:(id)a3;
-- (void)_addGPUFramePresentedHandler:(id)a3;
-- (void)_addGPUFrameScheduledHandler:(id)a3;
+- (void)_addGPUFrameCompletedHandler:(id)handler;
+- (void)_addGPUFramePresentedHandler:(id)handler;
+- (void)_addGPUFrameScheduledHandler:(id)handler;
 - (void)_allowGPUBackgroundExecution;
 - (void)_beginFrame;
 - (void)_cfxBackgroundColorDidChange;
 - (void)_clearBackBuffer;
-- (void)_didPresentAtTime:(double)a3;
-- (void)_didRenderWorld:(id)a3;
+- (void)_didPresentAtTime:(double)time;
+- (void)_didRenderWorld:(id)world;
 - (void)_discardPendingGPUFrameCompletedHandlers;
 - (void)_discardPendingGPUFramePresentedHandlers;
 - (void)_discardPendingGPUFrameScheduledHandlers;
@@ -84,86 +84,86 @@
 - (void)_endFrame;
 - (void)_endImGuiFrameAndRender;
 - (void)_interfaceOrientationDidChange;
-- (void)_jitterAtStep:(unint64_t)a3 updateMainFramebuffer:(BOOL)a4 redisplay:(BOOL)a5 jitterer:(id)a6;
-- (void)_projectPoints:(VFXRenderer *)self count:(SEL)a2 viewport:;
+- (void)_jitterAtStep:(unint64_t)step updateMainFramebuffer:(BOOL)framebuffer redisplay:(BOOL)redisplay jitterer:(id)jitterer;
+- (void)_projectPoints:(VFXRenderer *)self count:(SEL)count viewport:;
 - (void)_render;
-- (void)_renderWithViewport:(CGRect)a3 encoder:(id)a4 passDescriptor:(id)a5 commandQueue:(id)a6 commandBuffer:(id)a7;
+- (void)_renderWithViewport:(CGRect)viewport encoder:(id)encoder passDescriptor:(id)descriptor commandQueue:(id)queue commandBuffer:(id)buffer;
 - (void)_renderWorldOrRemoteData;
-- (void)_setBackingSize:(CGSize)a3;
-- (void)_setInterfaceOrientation:(int64_t)a3;
-- (void)_setLegacyAdditiveWritesToAlpha:(BOOL)a3;
+- (void)_setBackingSize:(CGSize)size;
+- (void)_setInterfaceOrientation:(int64_t)orientation;
+- (void)_setLegacyAdditiveWritesToAlpha:(BOOL)alpha;
 - (void)_startCaptureIfNeeded;
 - (void)_stopCapture;
-- (void)_unprojectPoints:(VFXRenderer *)self count:(SEL)a2 viewport:;
+- (void)_unprojectPoints:(VFXRenderer *)self count:(SEL)count viewport:;
 - (void)_updateEngineCallbacks;
-- (void)_updateProbes:(id)a3 progress:(id)a4 completionHandler:(id)a5;
-- (void)_willRenderWorld:(id)a3;
+- (void)_updateProbes:(id)probes progress:(id)progress completionHandler:(id)handler;
+- (void)_willRenderWorld:(id)world;
 - (void)_worldDidChange;
-- (void)_writeSubdivCacheForHash:(id)a3 dataProvider:(id)a4;
-- (void)clearBackBufferWithUpdate:(id)a3;
+- (void)_writeSubdivCacheForHash:(id)hash dataProvider:(id)provider;
+- (void)clearBackBufferWithUpdate:(id)update;
 - (void)dealloc;
-- (void)decodeAndEnumerateRemoteFrame:(id)a3 usingBlock:(id)a4;
-- (void)decodeRemoteFrame:(id)a3 skipDrawCalls:(BOOL)a4;
+- (void)decodeAndEnumerateRemoteFrame:(id)frame usingBlock:(id)block;
+- (void)decodeRemoteFrame:(id)frame skipDrawCalls:(BOOL)calls;
 - (void)drawStatisticsIfNeeded;
-- (void)encodeWithCommandBuffer:(id)a3;
+- (void)encodeWithCommandBuffer:(id)buffer;
 - (void)finalizeEncoding;
 - (void)lock;
-- (void)prepareObjects:(id)a3 withCompletionHandler:(id)a4;
-- (void)projectPoint:(uint64_t)a3;
+- (void)prepareObjects:(id)objects withCompletionHandler:(id)handler;
+- (void)projectPoint:(uint64_t)point;
 - (void)render;
-- (void)renderContext:(id)a3 commandBufferDidCompleteWithError:(id)a4;
-- (void)renderContext:(id)a3 didFallbackToDefaultTextureForSource:(id)a4 message:(id)a5;
-- (void)renderToTexture:(id)a3 options:(id)a4;
-- (void)renderWithCommandBuffer:(id)a3 viewPoints:(id)a4 mode:(unint64_t)a5;
-- (void)renderWithTextureAttachmentProvider:(id)a3 options:(id)a4;
-- (void)renderWithViewport:(CGRect)a3 commandBuffer:(id)a4 passDescriptor:(id)a5;
+- (void)renderContext:(id)context commandBufferDidCompleteWithError:(id)error;
+- (void)renderContext:(id)context didFallbackToDefaultTextureForSource:(id)source message:(id)message;
+- (void)renderToTexture:(id)texture options:(id)options;
+- (void)renderWithCommandBuffer:(id)buffer viewPoints:(id)points mode:(unint64_t)mode;
+- (void)renderWithTextureAttachmentProvider:(id)provider options:(id)options;
+- (void)renderWithViewport:(CGRect)viewport commandBuffer:(id)buffer passDescriptor:(id)descriptor;
 - (void)resolvedBackgroundColorDidChange;
-- (void)setAdditiveWritesToAlpha:(BOOL)a3;
-- (void)setAntialiasingMode:(unint64_t)a3;
-- (void)setAudioListener:(id)a3;
-- (void)setAutoAdjustCamera:(BOOL)a3;
-- (void)setAutoenablesDefaultLighting:(BOOL)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBinaryArchives:(id)a3;
-- (void)setDebugOptions:(unint64_t)a3;
-- (void)setDebugUIOptions:(unint64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDepthTexture:(id)a3;
-- (void)setEffect:(id)a3;
-- (void)setEmulateRRM:(BOOL)a3;
-- (void)setEmulateStereo:(BOOL)a3;
-- (void)setEnableDeferredRendering:(BOOL)a3;
-- (void)setFrozen:(BOOL)a3;
-- (void)setJitteringEnabled:(BOOL)a3;
-- (void)setPointOfCulling:(id)a3;
-- (void)setPointOfView:(id)a3;
-- (void)setPostRenderCallback:(id)a3;
-- (void)setRenderGraph:(id)a3;
-- (void)setRenderMode:(unint64_t)a3;
-- (void)setRendererKind:(unint64_t)a3;
-- (void)setRendersContinuously:(BOOL)a3;
-- (void)setScene:(id)a3;
-- (void)setShowsStatistics:(BOOL)a3;
-- (void)setSideBySideStereo:(BOOL)a3;
-- (void)setTemporalAntialiasingEnabled:(BOOL)a3;
-- (void)setTexture:(id)a3;
-- (void)setWorld:(id)a3;
-- (void)setWorld:(id)a3 completionHandler:(id)a4;
-- (void)set_commandBufferStatusMonitor:(id)a3;
+- (void)setAdditiveWritesToAlpha:(BOOL)alpha;
+- (void)setAntialiasingMode:(unint64_t)mode;
+- (void)setAudioListener:(id)listener;
+- (void)setAutoAdjustCamera:(BOOL)camera;
+- (void)setAutoenablesDefaultLighting:(BOOL)lighting;
+- (void)setBackgroundColor:(id)color;
+- (void)setBinaryArchives:(id)archives;
+- (void)setDebugOptions:(unint64_t)options;
+- (void)setDebugUIOptions:(unint64_t)options;
+- (void)setDelegate:(id)delegate;
+- (void)setDepthTexture:(id)texture;
+- (void)setEffect:(id)effect;
+- (void)setEmulateRRM:(BOOL)m;
+- (void)setEmulateStereo:(BOOL)stereo;
+- (void)setEnableDeferredRendering:(BOOL)rendering;
+- (void)setFrozen:(BOOL)frozen;
+- (void)setJitteringEnabled:(BOOL)enabled;
+- (void)setPointOfCulling:(id)culling;
+- (void)setPointOfView:(id)view;
+- (void)setPostRenderCallback:(id)callback;
+- (void)setRenderGraph:(id)graph;
+- (void)setRenderMode:(unint64_t)mode;
+- (void)setRendererKind:(unint64_t)kind;
+- (void)setRendersContinuously:(BOOL)continuously;
+- (void)setScene:(id)scene;
+- (void)setShowsStatistics:(BOOL)statistics;
+- (void)setSideBySideStereo:(BOOL)stereo;
+- (void)setTemporalAntialiasingEnabled:(BOOL)enabled;
+- (void)setTexture:(id)texture;
+- (void)setWorld:(id)world;
+- (void)setWorld:(id)world completionHandler:(id)handler;
+- (void)set_commandBufferStatusMonitor:(id)monitor;
 - (void)set_drawableSafeAreaInsets:(VFXRenderer *)self;
-- (void)set_enableARMode:(BOOL)a3;
-- (void)set_resourceManagerMonitor:(id)a3;
-- (void)set_shouldDelegateARCompositing:(BOOL)a3;
-- (void)set_shouldForwardWorldRendererDelegationMessagesToPrivateRendererOwner:(BOOL)a3;
-- (void)set_triggersEnabled:(BOOL)a3;
+- (void)set_enableARMode:(BOOL)mode;
+- (void)set_resourceManagerMonitor:(id)monitor;
+- (void)set_shouldDelegateARCompositing:(BOOL)compositing;
+- (void)set_shouldForwardWorldRendererDelegationMessagesToPrivateRendererOwner:(BOOL)owner;
+- (void)set_triggersEnabled:(BOOL)enabled;
 - (void)set_viewport:(VFXRenderer *)self;
-- (void)set_wantsWorldRendererDelegationMessages:(BOOL)a3;
+- (void)set_wantsWorldRendererDelegationMessages:(BOOL)messages;
 - (void)setupAuthoringEnvironment;
 - (void)startManipulatingPointOfView;
 - (void)stopManipulatingPointOfView;
-- (void)transferRenderGraphResourcesFrom:(id)a3;
-- (void)updateAtTime:(double)a3;
-- (void)updateProbes:(id)a3 atTime:(double)a4 completionHandler:(id)a5;
+- (void)transferRenderGraphResourcesFrom:(id)from;
+- (void)updateAtTime:(double)time;
+- (void)updateProbes:(id)probes atTime:(double)time completionHandler:(id)handler;
 @end
 
 @implementation VFXRenderer
@@ -232,9 +232,9 @@
   return v4;
 }
 
-- (id)encodeRemoteFrameWithBuffers:(id)a3 textures:(id)a4
+- (id)encodeRemoteFrameWithBuffers:(id)buffers textures:(id)textures
 {
-  v6 = objc_msgSend__engineContext(self, a2, a3, a4);
+  v6 = objc_msgSend__engineContext(self, a2, buffers, textures);
   v7 = sub_1AF1310A0(v6);
   objc_msgSend_render(self, v8, v9, v10);
   v11 = sub_1AF13099C(v6);
@@ -242,34 +242,34 @@
   v15[1] = 3221225472;
   v15[2] = sub_1AF31B044;
   v15[3] = &unk_1E7A7EE38;
-  v15[4] = a3;
+  v15[4] = buffers;
   CFXGPUDeviceFetchAllNewlyCreatedBuffers(v11, v15);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_1AF31B0FC;
   v14[3] = &unk_1E7A7EE60;
-  v14[4] = a3;
+  v14[4] = buffers;
   CFXGPUDeviceFetchAllNewlyDestroyedBuffers(v11, v14);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_1AF31B180;
   v13[3] = &unk_1E7A7EE60;
-  v13[4] = a3;
+  v13[4] = buffers;
   CFXGPUDeviceFetchAllNewlyDestroyedTextures(v11, v13);
   return sub_1AF0FB884(v7);
 }
 
-- (void)decodeRemoteFrame:(id)a3 skipDrawCalls:(BOOL)a4
+- (void)decodeRemoteFrame:(id)frame skipDrawCalls:(BOOL)calls
 {
-  v5 = objc_msgSend__engineContext(self, a2, a3, a4);
-  sub_1AF131114(v5, a3);
+  v5 = objc_msgSend__engineContext(self, a2, frame, calls);
+  sub_1AF131114(v5, frame);
   v6 = sub_1AF12E2AC(v5);
   v10 = objc_msgSend_resourceManager(v6, v7, v8, v9);
 
-  sub_1AF22E280(a3, v10);
+  sub_1AF22E280(frame, v10);
 }
 
-- (void)decodeAndEnumerateRemoteFrame:(id)a3 usingBlock:(id)a4
+- (void)decodeAndEnumerateRemoteFrame:(id)frame usingBlock:(id)block
 {
   v7 = objc_opt_new();
   v11 = objc_msgSend__engineContext(self, v8, v9, v10);
@@ -280,11 +280,11 @@
   v17[2] = sub_1AF31B318;
   v17[3] = &unk_1E7A7EEB0;
   v17[4] = v7;
-  v17[5] = a3;
+  v17[5] = frame;
   v17[6] = v12;
   v17[7] = v16;
-  v17[8] = a4;
-  sub_1AF22E074(a3, 0, 0, v17);
+  v17[8] = block;
+  sub_1AF22E074(frame, 0, 0, v17);
 }
 
 - (id)resourceConsumer
@@ -295,9 +295,9 @@
   return objc_msgSend_resourceManager(v5, v6, v7, v8);
 }
 
-- (id)_initWithDevice:(id)a3 commandQueue:(id)a4 options:(id)a5 isPrivateRenderer:(BOOL)a6 privateRendererOwner:(id)a7 clearsOnDraw:(BOOL)a8
+- (id)_initWithDevice:(id)device commandQueue:(id)queue options:(id)options isPrivateRenderer:(BOOL)renderer privateRendererOwner:(id)owner clearsOnDraw:(BOOL)draw
 {
-  v10 = a6;
+  rendererCopy = renderer;
   v105.receiver = self;
   v105.super_class = VFXRenderer;
   v14 = [(VFXRenderer *)&v105 init];
@@ -308,12 +308,12 @@
     v14->_viewpoints = 0;
     v14->_contentScaleFactor = 1.0;
     v14->_isSetupForRE = 0;
-    v18 = objc_msgSend_objectForKeyedSubscript_(a5, v15, @"kVFXRendererInitOptionForRERendering", v16);
+    v18 = objc_msgSend_objectForKeyedSubscript_(options, v15, @"kVFXRendererInitOptionForRERendering", v16);
     if (objc_msgSend_BOOLValue(v18, v19, v20, v21))
     {
-      v25 = objc_msgSend_mutableCopy(a5, v22, v23, v24);
+      v25 = objc_msgSend_mutableCopy(options, v22, v23, v24);
       objc_msgSend_setObject_forKeyedSubscript_(v25, v26, MEMORY[0x1E695E118], @"VFXRenderingInRE");
-      a5 = v25;
+      options = v25;
       v27 = 1;
       *(v17 + 389) = 1;
     }
@@ -323,22 +323,22 @@
       v27 = 0;
     }
 
-    v28 = objc_msgSend_objectForKeyedSubscript_(a5, v22, @"VFXRendererInitForRemoteEncoding", v24);
+    v28 = objc_msgSend_objectForKeyedSubscript_(options, v22, @"VFXRendererInitForRemoteEncoding", v24);
     v32 = objc_msgSend_BOOLValue(v28, v29, v30, v31);
     *(v17 + 144) = VFXCoreGetShaderCache();
     if (v32)
     {
-      v33 = sub_1AF20C004(VFXMTLResourceManager, a3, 1);
+      v33 = sub_1AF20C004(VFXMTLResourceManager, device, 1);
     }
 
     else
     {
-      v33 = sub_1AF20C050(VFXMTLResourceManager, a3);
+      v33 = sub_1AF20C050(VFXMTLResourceManager, device);
     }
 
     v34 = v33;
     v35 = sub_1AFDE323C(v33);
-    v36 = sub_1AF12E500(v35, a5);
+    v36 = sub_1AF12E500(v35, options);
     *(v17 + 136) = v36;
     if (sub_1AF130D5C(v36))
     {
@@ -354,12 +354,12 @@
     *(v17 + 32) = objc_alloc_init(VFXRecursiveLock);
     objc_msgSend__updateEngineCallbacks(v17, v38, v39, v40);
     sub_1AF12FD44(*(v17 + 136), @"frustumCulling", *MEMORY[0x1E695E4D0]);
-    sub_1AF12FDD4(*(v17 + 136), a8);
+    sub_1AF12FDD4(*(v17 + 136), draw);
     v41 = *(v17 + 136);
     if (v41)
     {
       sub_1AF12F3E0(v41, v17);
-      sub_1AF12F47C(*(v17 + 136), a7);
+      sub_1AF12F47C(*(v17 + 136), owner);
     }
 
     else
@@ -371,7 +371,7 @@
       }
     }
 
-    if (v10)
+    if (rendererCopy)
     {
       v43 = 4;
     }
@@ -382,7 +382,7 @@
     }
 
     *(v17 + 81) = *(v17 + 81) & 0xFB | v43;
-    *(v17 + 272) = a7;
+    *(v17 + 272) = owner;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
@@ -429,7 +429,7 @@
     }
 
     *(v17 + 48) = 2;
-    if (v10)
+    if (rendererCopy)
     {
       if ((byte_1ED73B338 & 1) == 0)
       {
@@ -458,7 +458,7 @@
     }
 
     v93 = [VFXMTLRenderContext alloc];
-    *(v17 + 216) = objc_msgSend_initWithEngineContext_resourceManager_commandQueue_(v93, v94, *(v17 + 136), v34, a4);
+    *(v17 + 216) = objc_msgSend_initWithEngineContext_resourceManager_commandQueue_(v93, v94, *(v17 + 136), v34, queue);
     v98 = objc_msgSend_antialiasingMode(v17, v95, v96, v97);
     v99 = sub_1AF1F31D4(v98);
     objc_msgSend_setSampleCount_(*(v17 + 216), v100, v99, v101);
@@ -470,13 +470,13 @@
   return v17;
 }
 
-+ (VFXRenderer)rendererWithDevice:(id)a3 options:(id)a4
++ (VFXRenderer)rendererWithDevice:(id)device options:(id)options
 {
-  v5 = a3;
-  if (a3 || (result = objc_msgSend_deviceForOptions_(VFXView, a2, a4, a4), (v5 = result) != 0))
+  deviceCopy = device;
+  if (device || (result = objc_msgSend_deviceForOptions_(VFXView, a2, options, options), (deviceCopy = result) != 0))
   {
-    v8 = [a1 alloc];
-    isPrivateRenderer_privateRendererOwner_clearsOnDraw = objc_msgSend__initWithDevice_options_isPrivateRenderer_privateRendererOwner_clearsOnDraw_(v8, v9, v5, a4, 0, 0, 0);
+    v8 = [self alloc];
+    isPrivateRenderer_privateRendererOwner_clearsOnDraw = objc_msgSend__initWithDevice_options_isPrivateRenderer_privateRendererOwner_clearsOnDraw_(v8, v9, deviceCopy, options, 0, 0, 0);
 
     return isPrivateRenderer_privateRendererOwner_clearsOnDraw;
   }
@@ -484,11 +484,11 @@
   return result;
 }
 
-+ (VFXRenderer)rendererWithCommandQueue:(id)a3 options:(id)a4
++ (VFXRenderer)rendererWithCommandQueue:(id)queue options:(id)options
 {
-  v6 = [a1 alloc];
-  v10 = objc_msgSend_device(a3, v7, v8, v9);
-  isPrivateRenderer_privateRendererOwner_clearsOnDraw = objc_msgSend__initWithDevice_commandQueue_options_isPrivateRenderer_privateRendererOwner_clearsOnDraw_(v6, v11, v10, a3, a4, 0, 0, 0);
+  v6 = [self alloc];
+  v10 = objc_msgSend_device(queue, v7, v8, v9);
+  isPrivateRenderer_privateRendererOwner_clearsOnDraw = objc_msgSend__initWithDevice_commandQueue_options_isPrivateRenderer_privateRendererOwner_clearsOnDraw_(v6, v11, v10, queue, options, 0, 0, 0);
 
   return isPrivateRenderer_privateRendererOwner_clearsOnDraw;
 }
@@ -550,10 +550,10 @@
   objc_msgSend_unlock(self, v6, v7, v8);
 }
 
-- (void)clearBackBufferWithUpdate:(id)a3
+- (void)clearBackBufferWithUpdate:(id)update
 {
-  objc_msgSend_lock(self, a2, a3, v3);
-  objc_msgSend_setMetalDisplayLinkUpdate_(self, v6, a3, v7);
+  objc_msgSend_lock(self, a2, update, v3);
+  objc_msgSend_setMetalDisplayLinkUpdate_(self, v6, update, v7);
   objc_msgSend__beginFrame(self, v8, v9, v10);
   objc_msgSend__clearBackBuffer(self, v11, v12, v13);
   objc_msgSend__endFrame(self, v14, v15, v16);
@@ -563,9 +563,9 @@
 
 - (float32x2_t)_screenSize
 {
-  v1 = &a1[36];
+  v1 = &self[36];
   v2 = vld1_dup_f32(v1);
-  return vdiv_f32(a1[21], v2);
+  return vdiv_f32(self[21], v2);
 }
 
 - (CGSize)_backingSize
@@ -577,11 +577,11 @@
   return result;
 }
 
-- (void)_setBackingSize:(CGSize)a3
+- (void)_setBackingSize:(CGSize)size
 {
-  if (a3.width != self->__drawableSize.width || a3.height != self->__drawableSize.height)
+  if (size.width != self->__drawableSize.width || size.height != self->__drawableSize.height)
   {
-    self->__drawableSize = a3;
+    self->__drawableSize = size;
     objc_msgSend__drawablePropertiesDidChange(self, a2, v3, v4);
   }
 }
@@ -736,12 +736,12 @@ LABEL_17:
   }
 }
 
-- (void)setAntialiasingMode:(unint64_t)a3
+- (void)setAntialiasingMode:(unint64_t)mode
 {
-  if (self->__antialiasingMode != a3)
+  if (self->__antialiasingMode != mode)
   {
-    self->__antialiasingMode = a3;
-    objc_msgSend__drawablePropertiesDidChange(self, a2, a3, v3);
+    self->__antialiasingMode = mode;
+    objc_msgSend__drawablePropertiesDidChange(self, a2, mode, v3);
     v9 = objc_msgSend_antialiasingMode(self, v6, v7, v8);
     v11 = sub_1AF1F31D4(v9);
     renderContext = self->_renderContext;
@@ -758,7 +758,7 @@ LABEL_17:
 
 - (__n128)_currentProjectionMatrix
 {
-  v1 = sub_1AF13050C(*(a1 + 136), 0);
+  v1 = sub_1AF13050C(*(self + 136), 0);
   v2 = &VFXMatrix4Identity;
   if (v1)
   {
@@ -770,7 +770,7 @@ LABEL_17:
 
 - (__n128)_currentViewMatrix
 {
-  v1 = sub_1AF13050C(*(a1 + 136), 1);
+  v1 = sub_1AF13050C(*(self + 136), 1);
   v2 = &VFXMatrix4Identity;
   if (v1)
   {
@@ -804,10 +804,10 @@ LABEL_17:
   return v12;
 }
 
-- (void)setAutoenablesDefaultLighting:(BOOL)a3
+- (void)setAutoenablesDefaultLighting:(BOOL)lighting
 {
-  v4 = a3;
-  objc_msgSend_lock(self, a2, a3, v3);
+  lightingCopy = lighting;
+  objc_msgSend_lock(self, a2, lighting, v3);
   v9 = objc_msgSend__engineContext(self, v6, v7, v8);
   if (v9)
   {
@@ -818,7 +818,7 @@ LABEL_17:
       v12 = v11;
       sub_1AF1CEA20(v11);
       v13 = MEMORY[0x1E695E4C0];
-      if (v4)
+      if (lightingCopy)
       {
         v13 = MEMORY[0x1E695E4D0];
       }
@@ -830,7 +830,7 @@ LABEL_17:
     else
     {
       v18 = MEMORY[0x1E695E4C0];
-      if (v4)
+      if (lightingCopy)
       {
         v18 = MEMORY[0x1E695E4D0];
       }
@@ -851,14 +851,14 @@ LABEL_17:
   objc_msgSend_unlock(self, v14, v15, v16);
 }
 
-- (void)setPointOfView:(id)a3
+- (void)setPointOfView:(id)view
 {
   v381 = *MEMORY[0x1E69E9840];
-  if (self->_pointOfView != a3)
+  if (self->_pointOfView != view)
   {
-    v4 = a3;
+    viewCopy = view;
     self->_pointOfViewWasSet = 1;
-    if (objc_msgSend_isPresentationObject(a3, a2, a3, v3))
+    if (objc_msgSend_isPresentationObject(view, a2, view, v3))
     {
       v9 = sub_1AF0D5194();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -870,7 +870,7 @@ LABEL_17:
     v14 = objc_msgSend_pointOfView(self, v6, v7, v8);
     v18 = objc_msgSend_presentationNode(v14, v15, v16, v17);
     v19 = self->_pointOfView;
-    self->_pointOfView = v4;
+    self->_pointOfView = viewCopy;
     objc_msgSend_animationDuration(VFXTransaction, v20, v21, v22);
     v24 = v23;
     v28 = objc_msgSend_worldRef(self->_world, v25, v26, v27);
@@ -900,7 +900,7 @@ LABEL_17:
     v375[3] = &unk_1E7A7E2E8;
     v375[5] = self;
     v375[6] = v28;
-    v375[4] = v4;
+    v375[4] = viewCopy;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v44, world, v375);
     if (!v47)
     {
@@ -913,9 +913,9 @@ LABEL_17:
       v368 = sub_1AF291040(0, v55, v56, v57);
     }
 
-    if (objc_msgSend_parentNode(v4, v55, v56, v57))
+    if (objc_msgSend_parentNode(viewCopy, v55, v56, v57))
     {
-      v61 = objc_msgSend_parentNode(v4, v58, v59, v60);
+      v61 = objc_msgSend_parentNode(viewCopy, v58, v59, v60);
       v65 = objc_msgSend_presentationNode(v61, v62, v63, v64);
       objc_msgSend_convertTransform_fromNode_(v65, v66, v18, v67, *&VFXMatrix4Identity, 0.0078125, 0.0, 0.0);
     }
@@ -925,7 +925,7 @@ LABEL_17:
       objc_msgSend_worldTransform(v18, v58, v59, v60);
     }
 
-    v79 = objc_msgSend_presentationNode(v4, v68, v69, v70, v73, v74, v71, v72, v77, v78, v75, v76);
+    v79 = objc_msgSend_presentationNode(viewCopy, v68, v69, v70, v73, v74, v71, v72, v77, v78, v75, v76);
     objc_msgSend_transform(v79, v80, v81, v82);
     v383 = __invert_f4(v382);
     v85 = 0;
@@ -952,9 +952,9 @@ LABEL_17:
     objc_msgSend_setFromValue_(v86, v98, v97, v99);
     v103 = objc_msgSend_valueWithVFXMatrix4_(MEMORY[0x1E696B098], v100, v101, v102, *&VFXMatrix4Identity, 0.0078125, 0.0, 0.0);
     objc_msgSend_setToValue_(v86, v104, v103, v105);
-    objc_msgSend_addAnimation_forKey_(v4, v106, v86, 0);
+    objc_msgSend_addAnimation_forKey_(viewCopy, v106, v86, 0);
     v110 = objc_msgSend_camera(v18, v107, v108, v109);
-    v114 = objc_msgSend_presentationNode(v4, v111, v112, v113);
+    v114 = objc_msgSend_presentationNode(viewCopy, v111, v112, v113);
     v118 = objc_msgSend_camera(v114, v115, v116, v117);
     if (objc_msgSend_hasCustomProjectionTransform(v110, v119, v120, v121) & 1) != 0 || (objc_msgSend_hasCustomProjectionTransform(v118, v122, v123, v124))
     {
@@ -995,7 +995,7 @@ LABEL_63:
               v318 = v316;
               if ((objc_msgSend_isEqual_(v313, v52, v316, v54) & 1) == 0)
               {
-                v319 = v4;
+                v319 = viewCopy;
                 v320 = MEMORY[0x1E6979318];
                 v321 = objc_msgSend_stringByAppendingString_(@"camera.", v52, v312, v54);
                 v324 = objc_msgSend_animationWithKeyPath_(v320, v322, v321, v323);
@@ -1021,7 +1021,7 @@ LABEL_63:
                   objc_msgSend_setToValue_(v324, v355, v318, v356);
                 }
 
-                v4 = v319;
+                viewCopy = v319;
                 objc_msgSend_addAnimation_forKey_(v319, v354, v324, 0);
               }
             }
@@ -1117,7 +1117,7 @@ LABEL_46:
               v167 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v164, v165, v166, 0.0);
               objc_msgSend_setToValue_(v152, v168, v167, v169);
               objc_msgSend_setAdditive_(v152, v170, 1, v171);
-              objc_msgSend_addAnimation_forKey_(v4, v172, v152, 0);
+              objc_msgSend_addAnimation_forKey_(viewCopy, v172, v152, 0);
             }
 
             if (objc_msgSend_usesOrthographicProjection(v110, v143, v144, v145))
@@ -1142,7 +1142,7 @@ LABEL_46:
                   v208 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v205, v206, v207, 0.0);
                   objc_msgSend_setToValue_(v182, v209, v208, v210);
                   objc_msgSend_setAdditive_(v182, v211, 1, v212);
-                  objc_msgSend_addAnimation_forKey_(v4, v213, v182, 0);
+                  objc_msgSend_addAnimation_forKey_(viewCopy, v213, v182, 0);
                 }
               }
             }
@@ -1165,7 +1165,7 @@ LABEL_46:
               v248 = objc_msgSend_VFX_valueWithCGPoint_(MEMORY[0x1E696AD98], v245, v246, v247, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8));
               objc_msgSend_setToValue_(v233, v249, v248, v250);
               objc_msgSend_setAdditive_(v233, v251, 1, v252);
-              objc_msgSend_addAnimation_forKey_(v4, v253, v233, 0);
+              objc_msgSend_addAnimation_forKey_(viewCopy, v253, v233, 0);
             }
 
             v254 = 0uLL;
@@ -1202,7 +1202,7 @@ LABEL_46:
                 v275 = objc_msgSend_VFX_valueWithCGPoint_(MEMORY[0x1E696AD98], v272, v273, v274, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8));
                 objc_msgSend_setToValue_(v260, v276, v275, v277);
                 objc_msgSend_setAdditive_(v260, v278, 1, v279);
-                objc_msgSend_addAnimation_forKey_(v4, v280, v260, 0);
+                objc_msgSend_addAnimation_forKey_(viewCopy, v280, v260, 0);
               }
 
               v281.f64[0] = v378.a;
@@ -1223,7 +1223,7 @@ LABEL_46:
                 v302 = objc_msgSend_VFX_valueWithCGPoint_(MEMORY[0x1E696AD98], v299, v300, v301, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8));
                 objc_msgSend_setToValue_(v287, v303, v302, v304);
                 objc_msgSend_setAdditive_(v287, v305, 1, v306);
-                objc_msgSend_addAnimation_forKey_(v4, v307, v287, 0);
+                objc_msgSend_addAnimation_forKey_(viewCopy, v307, v287, 0);
               }
             }
 
@@ -1269,30 +1269,30 @@ LABEL_40:
   }
 }
 
-- (void)setPointOfCulling:(id)a3
+- (void)setPointOfCulling:(id)culling
 {
   pointOfCulling = self->_pointOfCulling;
-  if (pointOfCulling != a3)
+  if (pointOfCulling != culling)
   {
     v6 = pointOfCulling;
-    self->_pointOfCulling = a3;
+    self->_pointOfCulling = culling;
     world = self->_world;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1AF31DD10;
     v9[3] = &unk_1E7A7E220;
-    v9[4] = a3;
+    v9[4] = culling;
     v9[5] = self;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v8, world, v9);
   }
 }
 
-- (void)_projectPoints:(VFXRenderer *)self count:(SEL)a2 viewport:
+- (void)_projectPoints:(VFXRenderer *)self count:(SEL)count viewport:
 {
   v27 = v4;
   v5 = v3;
   v6 = v2;
-  v8 = objc_msgSend__engineContext(self, a2, v2, v3);
+  v8 = objc_msgSend__engineContext(self, count, v2, v3);
   if (v8)
   {
     v9 = sub_1AF12F10C(v8);
@@ -1320,9 +1320,9 @@ LABEL_40:
   }
 }
 
-- (__n128)_projectPoint:(uint64_t)a3 viewport:(uint64_t)a4
+- (__n128)_projectPoint:(uint64_t)point viewport:(uint64_t)viewport
 {
-  v7 = objc_msgSend__engineContext(a1, a2, a3, a4);
+  v7 = objc_msgSend__engineContext(self, a2, point, viewport);
   if (v7)
   {
     v8 = sub_1AF12F10C(v7);
@@ -1330,7 +1330,7 @@ LABEL_40:
     {
       v12 = v8;
       v21 = a5;
-      v13 = objc_msgSend_world(a1, v9, v10, v11);
+      v13 = objc_msgSend_world(self, v9, v10, v11);
       v17 = objc_msgSend_worldRef(v13, v14, v15, v16);
       sub_1AF1CEA20(v17);
       LOBYTE(v12) = sub_1AF281920(&v21, 1, v12, v17, &v21, a6);
@@ -1345,12 +1345,12 @@ LABEL_40:
   return a5;
 }
 
-- (void)_unprojectPoints:(VFXRenderer *)self count:(SEL)a2 viewport:
+- (void)_unprojectPoints:(VFXRenderer *)self count:(SEL)count viewport:
 {
   v19 = v4;
   v5 = v3;
   v6 = v2;
-  v8 = objc_msgSend__engineContext(self, a2, v2, v3);
+  v8 = objc_msgSend__engineContext(self, count, v2, v3);
   if (v8)
   {
     v9 = sub_1AF12F10C(v8);
@@ -1376,30 +1376,30 @@ LABEL_40:
   }
 }
 
-- (double)_unprojectPoint:(__n128)a3 viewport:(double)a4
+- (double)_unprojectPoint:(__n128)point viewport:(double)viewport
 {
-  v5 = a3;
-  objc_msgSend__unprojectPoints_count_viewport_(a1, a2, &v5, 1, a4);
-  return v5.n128_f64[0];
+  pointCopy = point;
+  objc_msgSend__unprojectPoints_count_viewport_(self, a2, &pointCopy, 1, viewport);
+  return pointCopy.n128_f64[0];
 }
 
-- (void)projectPoint:(uint64_t)a3
+- (void)projectPoint:(uint64_t)point
 {
-  v5.f64[0] = *(a1 + 24);
+  v5.f64[0] = *(self + 24);
   if (v5.f64[0] != 0.0)
   {
-    v5.f64[1] = *(a1 + 25);
-    return objc_msgSend__projectPoint_viewport_(a1, a2, a3, a4, a5, *vcvt_hight_f32_f64(0, v5).i64);
+    v5.f64[1] = *(self + 25);
+    return objc_msgSend__projectPoint_viewport_(self, a2, point, a4, a5, *vcvt_hight_f32_f64(0, v5).i64);
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)unprojectPoint:(uint64_t)a3
+- (uint64_t)unprojectPoint:(uint64_t)point
 {
   if (*(result + 192) != 0.0)
   {
-    return MEMORY[0x1EEE66B58](result, sel__unprojectPoint_viewport_, a3, a4);
+    return MEMORY[0x1EEE66B58](result, sel__unprojectPoint_viewport_, point, a4);
   }
 
   return result;
@@ -1420,7 +1420,7 @@ LABEL_40:
   return v2;
 }
 
-- (void)_didPresentAtTime:(double)a3
+- (void)_didPresentAtTime:(double)time
 {
   if ((*&self->_delegationConformance & 0x400) != 0)
   {
@@ -1432,7 +1432,7 @@ LABEL_40:
 
     v8 = objc_msgSend_delegate(self, a2, v3, v4);
     v12 = objc_msgSend_world(self, v9, v10, v11);
-    objc_msgSend__renderer_didPresentWorld_atTime_(v8, v13, privateRendererOwner, v12, a3);
+    objc_msgSend__renderer_didPresentWorld_atTime_(v8, v13, privateRendererOwner, v12, time);
     if ((*&self->_selfDelegationConformance & 0x400) == 0)
     {
       goto LABEL_9;
@@ -1450,23 +1450,23 @@ LABEL_40:
   }
 
   v14 = objc_msgSend_world(self, a2, v3, v4);
-  objc_msgSend__renderer_didPresentWorld_atTime_(self, v15, self, v14, a3);
+  objc_msgSend__renderer_didPresentWorld_atTime_(self, v15, self, v14, time);
 LABEL_9:
   if ((*&self->_privateRendererOwnerDelegationConformance & 0x400) != 0)
   {
     v16 = self->_privateRendererOwner;
     v18 = objc_msgSend_world(self, a2, v3, v4);
 
-    objc_msgSend__renderer_didPresentWorld_atTime_(v16, v17, v16, v18, a3);
+    objc_msgSend__renderer_didPresentWorld_atTime_(v16, v17, v16, v18, time);
   }
 }
 
-- (void)_didRenderWorld:(id)a3
+- (void)_didRenderWorld:(id)world
 {
   if ((*&self->_delegationConformance & 0x20) != 0 || (*&self->_selfDelegationConformance & 0x20) != 0 || (*&self->_privateRendererOwnerDelegationConformance & 0x20) != 0)
   {
     objc_msgSend_setImmediateMode_(VFXTransaction, a2, 1, v3);
-    v9 = objc_msgSend_worldRef(a3, v6, v7, v8);
+    v9 = objc_msgSend_worldRef(world, v6, v7, v8);
     objc_msgSend_setImmediateModeRestrictedContext_(VFXTransaction, v10, v9, v11);
     v12 = sub_1AF12DE14(self->_engineContext);
     v13 = CACurrentMediaTime();
@@ -1492,17 +1492,17 @@ LABEL_9:
       }
 
       v21 = objc_msgSend_delegate(self, v16, v17, v18);
-      objc_msgSend_renderer_didRenderWorld_atTime_(v21, v22, privateRendererOwner, a3, self->_time);
+      objc_msgSend_renderer_didRenderWorld_atTime_(v21, v22, privateRendererOwner, world, self->_time);
     }
 
     if ((*&self->_selfDelegationConformance & 0x20) != 0)
     {
-      objc_msgSend__renderer_didRenderWorld_atTime_(self, v16, self, a3, self->_time);
+      objc_msgSend__renderer_didRenderWorld_atTime_(self, v16, self, world, self->_time);
     }
 
     if ((*&self->_privateRendererOwnerDelegationConformance & 0x20) != 0)
     {
-      objc_msgSend__renderer_didRenderWorld_atTime_(self->_privateRendererOwner, v16, self->_privateRendererOwner, a3, self->_time);
+      objc_msgSend__renderer_didRenderWorld_atTime_(self->_privateRendererOwner, v16, self->_privateRendererOwner, world, self->_time);
     }
 
     v23 = sub_1AF0D5194();
@@ -1523,12 +1523,12 @@ LABEL_9:
   }
 }
 
-- (void)_willRenderWorld:(id)a3
+- (void)_willRenderWorld:(id)world
 {
   if ((*&self->_delegationConformance & 0x10) != 0 || (*&self->_selfDelegationConformance & 0x10) != 0 || (*&self->_privateRendererOwnerDelegationConformance & 0x10) != 0)
   {
     objc_msgSend_setImmediateMode_(VFXTransaction, a2, 1, v3);
-    v9 = objc_msgSend_worldRef(a3, v6, v7, v8);
+    v9 = objc_msgSend_worldRef(world, v6, v7, v8);
     objc_msgSend_setImmediateModeRestrictedContext_(VFXTransaction, v10, v9, v11);
     v12 = sub_1AF12DE14(self->_engineContext);
     v13 = CACurrentMediaTime();
@@ -1548,12 +1548,12 @@ LABEL_9:
     time = self->_time;
     if ((*&self->_privateRendererOwnerDelegationConformance & 0x10) != 0)
     {
-      objc_msgSend__renderer_willRenderWorld_atTime_(self->_privateRendererOwner, v16, self->_privateRendererOwner, a3, self->_time);
+      objc_msgSend__renderer_willRenderWorld_atTime_(self->_privateRendererOwner, v16, self->_privateRendererOwner, world, self->_time);
     }
 
     if ((*&self->_selfDelegationConformance & 0x10) != 0)
     {
-      objc_msgSend__renderer_willRenderWorld_atTime_(self, v16, self, a3, time);
+      objc_msgSend__renderer_willRenderWorld_atTime_(self, v16, self, world, time);
     }
 
     if ((*&self->_delegationConformance & 0x10) != 0)
@@ -1565,7 +1565,7 @@ LABEL_9:
       }
 
       v22 = objc_msgSend_delegate(self, v16, v17, v18);
-      objc_msgSend_renderer_willRenderWorld_atTime_(v22, v23, privateRendererOwner, a3, time);
+      objc_msgSend_renderer_willRenderWorld_atTime_(v22, v23, privateRendererOwner, world, time);
     }
 
     v24 = sub_1AF0D5194();
@@ -1586,9 +1586,9 @@ LABEL_9:
   }
 }
 
-- (id)_readSubdivCacheForHash:(id)a3
+- (id)_readSubdivCacheForHash:(id)hash
 {
-  if (((*&self->_privateRendererOwnerDelegationConformance & 0x80) == 0 || (result = objc_msgSend__renderer_subdivDataForHash_(self->_privateRendererOwner, a2, self->_privateRendererOwner, a3)) == 0) && ((*&self->_selfDelegationConformance & 0x80) == 0 || (result = objc_msgSend__renderer_subdivDataForHash_(self, a2, self, a3)) == 0))
+  if (((*&self->_privateRendererOwnerDelegationConformance & 0x80) == 0 || (result = objc_msgSend__renderer_subdivDataForHash_(self->_privateRendererOwner, a2, self->_privateRendererOwner, hash)) == 0) && ((*&self->_selfDelegationConformance & 0x80) == 0 || (result = objc_msgSend__renderer_subdivDataForHash_(self, a2, self, hash)) == 0))
   {
     if ((*&self->_delegationConformance & 0x80) == 0)
     {
@@ -1601,8 +1601,8 @@ LABEL_9:
       privateRendererOwner = self->_privateRendererOwner;
     }
 
-    v8 = objc_msgSend_delegate(self, a2, a3, v3);
-    result = objc_msgSend__renderer_subdivDataForHash_(v8, v9, privateRendererOwner, a3);
+    v8 = objc_msgSend_delegate(self, a2, hash, v3);
+    result = objc_msgSend__renderer_subdivDataForHash_(v8, v9, privateRendererOwner, hash);
     if (!result)
     {
       return 0;
@@ -1612,16 +1612,16 @@ LABEL_9:
   return result;
 }
 
-- (void)_writeSubdivCacheForHash:(id)a3 dataProvider:(id)a4
+- (void)_writeSubdivCacheForHash:(id)hash dataProvider:(id)provider
 {
   if ((*&self->_privateRendererOwnerDelegationConformance & 0x100) != 0)
   {
-    objc_msgSend__renderer_didBuildSubdivDataForHash_dataProvider_(self->_privateRendererOwner, a2, self->_privateRendererOwner, a3, a4);
+    objc_msgSend__renderer_didBuildSubdivDataForHash_dataProvider_(self->_privateRendererOwner, a2, self->_privateRendererOwner, hash, provider);
   }
 
   if ((*&self->_selfDelegationConformance & 0x100) != 0)
   {
-    objc_msgSend__renderer_didBuildSubdivDataForHash_dataProvider_(self, a2, self, a3, a4);
+    objc_msgSend__renderer_didBuildSubdivDataForHash_dataProvider_(self, a2, self, hash, provider);
   }
 
   if ((*&self->_delegationConformance & 0x100) != 0)
@@ -1632,20 +1632,20 @@ LABEL_9:
       privateRendererOwner = self->_privateRendererOwner;
     }
 
-    v8 = objc_msgSend_delegate(self, a2, a3, a4);
+    v8 = objc_msgSend_delegate(self, a2, hash, provider);
 
-    objc_msgSend__renderer_didBuildSubdivDataForHash_dataProvider_(v8, v9, privateRendererOwner, a3, a4);
+    objc_msgSend__renderer_didBuildSubdivDataForHash_dataProvider_(v8, v9, privateRendererOwner, hash, provider);
   }
 }
 
-- (void)setAutoAdjustCamera:(BOOL)a3
+- (void)setAutoAdjustCamera:(BOOL)camera
 {
-  v4 = a3;
-  v5 = objc_msgSend__engineContext(self, a2, a3, v3);
+  cameraCopy = camera;
+  v5 = objc_msgSend__engineContext(self, a2, camera, v3);
   if (v5)
   {
 
-    sub_1AF12FE28(v5, v4);
+    sub_1AF12FE28(v5, cameraCopy);
   }
 }
 
@@ -1660,12 +1660,12 @@ LABEL_9:
   return v4;
 }
 
-- (id)_defaultPOVForWorld:(id)a3
+- (id)_defaultPOVForWorld:(id)world
 {
-  result = objc_msgSend_defaultPointOfView(a3, a2, a3, v3);
+  result = objc_msgSend_defaultPointOfView(world, a2, world, v3);
   if (!result)
   {
-    v9 = objc_msgSend_rootNode(a3, v6, v7, v8);
+    v9 = objc_msgSend_rootNode(world, v6, v7, v8);
     v12 = objc_msgSend_childNodesPassingTest_(v9, v10, &unk_1F24EC268, v11);
     result = objc_msgSend_count(v12, v13, v14, v15);
     if (result)
@@ -1701,25 +1701,25 @@ LABEL_9:
   }
 }
 
-- (void)setWorld:(id)a3 completionHandler:(id)a4
+- (void)setWorld:(id)world completionHandler:(id)handler
 {
-  objc_msgSend_lock(self, a2, a3, a4);
+  objc_msgSend_lock(self, a2, world, handler);
 
-  self->_world = a3;
+  self->_world = world;
   sub_1AF12EA28(self->_engineContext, 0);
   engineContext = self->_engineContext;
   v11 = objc_msgSend_worldRef(self->_world, v8, v9, v10);
   sub_1AF12FECC(engineContext, v11);
-  v15 = objc_msgSend_defaultRenderGraph(a3, v12, v13, v14);
+  v15 = objc_msgSend_defaultRenderGraph(world, v12, v13, v14);
   objc_msgSend_setRenderGraph_(self, v16, v15, v17);
   objc_msgSend__worldDidChange(self, v18, v19, v20);
-  if (a4)
+  if (handler)
   {
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = sub_1AF31EA1C;
     v26[3] = &unk_1E7A7EEF8;
-    v26[4] = a4;
+    v26[4] = handler;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v21, 0, v26);
   }
 
@@ -1729,29 +1729,29 @@ LABEL_9:
     v25 = sub_1AF12EE9C(v24, 0);
     if (v25)
     {
-      sub_1AF0FCE5C(v25, a3);
+      sub_1AF0FCE5C(v25, world);
     }
   }
 
   objc_msgSend_unlock(self, v21, v22, v23);
 }
 
-- (void)setWorld:(id)a3
+- (void)setWorld:(id)world
 {
-  if (self->_world != a3)
+  if (self->_world != world)
   {
-    objc_msgSend_lock(self, a2, a3, v3);
+    objc_msgSend_lock(self, a2, world, v3);
 
-    v7 = a3;
-    self->_world = v7;
+    worldCopy = world;
+    self->_world = worldCopy;
     engineContext = self->_engineContext;
     if (engineContext)
     {
-      v12 = objc_msgSend_worldRef(v7, v8, v9, v10);
+      v12 = objc_msgSend_worldRef(worldCopy, v8, v9, v10);
       sub_1AF12FECC(engineContext, v12);
     }
 
-    v13 = objc_msgSend_defaultRenderGraph(a3, v8, v9, v10);
+    v13 = objc_msgSend_defaultRenderGraph(world, v8, v9, v10);
     objc_msgSend_setRenderGraph_(self, v14, v13, v15);
     objc_msgSend__worldDidChange(self, v16, v17, v18);
 
@@ -1759,24 +1759,24 @@ LABEL_9:
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   legacyRenderer = self->_legacyRenderer;
   if (legacyRenderer)
   {
 
-    objc_msgSend_setBackgroundColor_(legacyRenderer, a2, a3, v3);
+    objc_msgSend_setBackgroundColor_(legacyRenderer, a2, color, v3);
   }
 
   else
   {
     backgroundColor = self->_backgroundColor;
-    if (backgroundColor != a3)
+    if (backgroundColor != color)
     {
 
-      v8 = a3;
-      self->_backgroundColor = v8;
-      v12.i64[0] = objc_msgSend_vfx_CFXColorIgnoringColorSpace_success_(v8, v9, 0, 0);
+      colorCopy = color;
+      self->_backgroundColor = colorCopy;
+      v12.i64[0] = objc_msgSend_vfx_CFXColorIgnoringColorSpace_success_(colorCopy, v9, 0, 0);
       v12.i64[1] = v13;
       v14 = vmulq_f32(vdupq_n_s32(HIDWORD(v13)), v12);
       v14.var0.var0[3] = *(&v13 + 1);
@@ -1867,9 +1867,9 @@ LABEL_9:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   *&self->_delegationConformance = *&self->_delegationConformance & 0xFFFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -1974,9 +1974,9 @@ LABEL_9:
   objc_msgSend__updateEngineCallbacks(self, v12, v13, v14);
 }
 
-- (void)set_wantsWorldRendererDelegationMessages:(BOOL)a3
+- (void)set_wantsWorldRendererDelegationMessages:(BOOL)messages
 {
-  if (a3)
+  if (messages)
   {
     v5 = 64;
   }
@@ -1987,7 +1987,7 @@ LABEL_9:
   }
 
   *(self + 224) = *(self + 224) & 0xBF | v5;
-  if (!a3 || (*(self + 81) & 4) != 0)
+  if (!messages || (*(self + 81) & 4) != 0)
   {
     v15 = 0;
     *&self->_selfDelegationConformance &= 0xFC00u;
@@ -2108,12 +2108,12 @@ LABEL_9:
 
   *&self->_delegationConformance = *&self->_delegationConformance & 0xFBFF | v15;
 
-  objc_msgSend__updateEngineCallbacks(self, a2, a3, v3);
+  objc_msgSend__updateEngineCallbacks(self, a2, messages, v3);
 }
 
-- (void)set_shouldForwardWorldRendererDelegationMessagesToPrivateRendererOwner:(BOOL)a3
+- (void)set_shouldForwardWorldRendererDelegationMessagesToPrivateRendererOwner:(BOOL)owner
 {
-  if (a3)
+  if (owner)
   {
     v5 = 0x80;
   }
@@ -2124,7 +2124,7 @@ LABEL_9:
   }
 
   *(self + 224) = v5 & 0x80 | *(self + 224) & 0x7F;
-  if (a3 && (*(self + 81) & 4) != 0)
+  if (owner && (*(self + 81) & 4) != 0)
   {
     *&self->_privateRendererOwnerDelegationConformance = *&self->_privateRendererOwnerDelegationConformance & 0xFFFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
@@ -2247,41 +2247,41 @@ LABEL_9:
 
   *&self->_privateRendererOwnerDelegationConformance = privateRendererOwnerDelegationConformance & 0xFBFF | v6;
 
-  objc_msgSend__updateEngineCallbacks(self, a2, a3, v3);
+  objc_msgSend__updateEngineCallbacks(self, a2, owner, v3);
 }
 
-- (void)set_resourceManagerMonitor:(id)a3
+- (void)set_resourceManagerMonitor:(id)monitor
 {
-  if (objc_loadWeak(&self->_resourceManagerMonitor) != a3)
+  if (objc_loadWeak(&self->_resourceManagerMonitor) != monitor)
   {
-    if (a3)
+    if (monitor)
     {
-      v5 = a3;
+      monitorCopy = monitor;
     }
 
     else
     {
-      v5 = 0;
+      monitorCopy = 0;
     }
 
-    if (a3)
+    if (monitor)
     {
-      v6 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v6 = 0;
+      selfCopy = 0;
     }
 
-    objc_storeWeak(&self->_resourceManagerMonitor, v5);
+    objc_storeWeak(&self->_resourceManagerMonitor, monitorCopy);
     renderContext = self->_renderContext;
 
-    MEMORY[0x1EEE66B58](renderContext, sel_setResourceManagerMonitor_, v6, v7);
+    MEMORY[0x1EEE66B58](renderContext, sel_setResourceManagerMonitor_, selfCopy, v7);
   }
 }
 
-- (void)renderContext:(id)a3 didFallbackToDefaultTextureForSource:(id)a4 message:(id)a5
+- (void)renderContext:(id)context didFallbackToDefaultTextureForSource:(id)source message:(id)message
 {
   privateRendererOwner = self;
   if ((*(self + 81) & 4) != 0)
@@ -2291,41 +2291,41 @@ LABEL_9:
 
   Weak = objc_loadWeak(&self->_resourceManagerMonitor);
 
-  MEMORY[0x1EEE66B58](Weak, sel_renderer_didFallbackToDefaultTextureForSource_message_, privateRendererOwner, a4);
+  MEMORY[0x1EEE66B58](Weak, sel_renderer_didFallbackToDefaultTextureForSource_message_, privateRendererOwner, source);
 }
 
-- (void)set_commandBufferStatusMonitor:(id)a3
+- (void)set_commandBufferStatusMonitor:(id)monitor
 {
-  if (objc_loadWeak(&self->_commandBufferStatusMonitor) != a3)
+  if (objc_loadWeak(&self->_commandBufferStatusMonitor) != monitor)
   {
-    if (a3)
+    if (monitor)
     {
-      v5 = a3;
+      monitorCopy = monitor;
     }
 
     else
     {
-      v5 = 0;
+      monitorCopy = 0;
     }
 
-    if (a3)
+    if (monitor)
     {
-      v6 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v6 = 0;
+      selfCopy = 0;
     }
 
-    objc_storeWeak(&self->_commandBufferStatusMonitor, v5);
+    objc_storeWeak(&self->_commandBufferStatusMonitor, monitorCopy);
     renderContext = self->_renderContext;
 
-    MEMORY[0x1EEE66B58](renderContext, sel_setCommandBufferStatusMonitor_, v6, v7);
+    MEMORY[0x1EEE66B58](renderContext, sel_setCommandBufferStatusMonitor_, selfCopy, v7);
   }
 }
 
-- (void)renderContext:(id)a3 commandBufferDidCompleteWithError:(id)a4
+- (void)renderContext:(id)context commandBufferDidCompleteWithError:(id)error
 {
   privateRendererOwner = self;
   if ((*(self + 81) & 4) != 0)
@@ -2335,7 +2335,7 @@ LABEL_9:
 
   Weak = objc_loadWeak(&self->_commandBufferStatusMonitor);
 
-  MEMORY[0x1EEE66B58](Weak, sel_renderer_commandBufferDidCompleteWithError_, privateRendererOwner, a4);
+  MEMORY[0x1EEE66B58](Weak, sel_renderer_commandBufferDidCompleteWithError_, privateRendererOwner, error);
 }
 
 - (BOOL)_needsRepetitiveRedraw
@@ -2353,7 +2353,7 @@ LABEL_9:
   return v2;
 }
 
-- (void)updateAtTime:(double)a3
+- (void)updateAtTime:(double)time
 {
   objc_msgSend_lock(self, a2, v3, v4);
   v10 = sub_1AF130770(self->_engineContext, v7, v8, v9);
@@ -2395,12 +2395,12 @@ LABEL_4:
   }
 
   self->_isAnimating = 0;
-  objc_msgSend_setImmediateModeWithAtomicTime_(VFXTransaction, v25, v26, v27, a3);
+  objc_msgSend_setImmediateModeWithAtomicTime_(VFXTransaction, v25, v26, v27, time);
   objc_msgSend_setImmediateModeRestrictedContext_(VFXTransaction, v32, v11, v33);
   v34 = sub_1AF12DE5C(self->_engineContext);
   context = objc_autoreleasePoolPush();
   sub_1AF12F8F0(self->_engineContext, v35, v36, v37);
-  self->_time = a3;
+  self->_time = time;
   v41 = objc_msgSend_delegate(self, v38, v39, v40);
   v42 = sub_1AF12DE14(self->_engineContext);
   v43 = CACurrentMediaTime();
@@ -2422,12 +2422,12 @@ LABEL_4:
 
     if (*&self->_privateRendererOwnerDelegationConformance)
     {
-      objc_msgSend__renderer_updateAtTime_(self->_privateRendererOwner, v49, self->_privateRendererOwner, v50, a3, context);
+      objc_msgSend__renderer_updateAtTime_(self->_privateRendererOwner, v49, self->_privateRendererOwner, v50, time, context);
     }
 
     if (*&self->_selfDelegationConformance)
     {
-      objc_msgSend__renderer_updateAtTime_(self, v49, self, v50, a3);
+      objc_msgSend__renderer_updateAtTime_(self, v49, self, v50, time);
     }
 
     if (*&self->_delegationConformance)
@@ -2438,7 +2438,7 @@ LABEL_4:
         privateRendererOwner = self->_privateRendererOwner;
       }
 
-      objc_msgSend_renderer_updateAtTime_(v41, v49, privateRendererOwner, v50, a3, context);
+      objc_msgSend_renderer_updateAtTime_(v41, v49, privateRendererOwner, v50, time, context);
     }
 
     v53 = sub_1AF0D5194();
@@ -2459,7 +2459,7 @@ LABEL_4:
   v55 = objc_msgSend_clock(v19, v44, v45, v46, context);
   objc_msgSend_lastUpdateTime(v19, v56, v57, v58);
   v60 = v59;
-  objc_msgSend_updateWithAbsoluteTime_(v55, v61, v62, v63, a3);
+  objc_msgSend_updateWithAbsoluteTime_(v55, v61, v62, v63, time);
   objc_msgSend_time(v55, v64, v65, v66);
   v68 = v67;
   objc_msgSend_setLastUpdateTime_(v19, v69, v70, v71);
@@ -2473,7 +2473,7 @@ LABEL_4:
     v72 = 0.0166666667;
   }
 
-  sub_1AF1302BC(self->_engineContext, a3);
+  sub_1AF1302BC(self->_engineContext, time);
   sub_1AF1302CC(self->_engineContext, v68);
   sub_1AF1302AC(self->_engineContext, v72);
   sub_1AF12ECCC(self->_engineContext);
@@ -2511,7 +2511,7 @@ LABEL_4:
       }
     }
 
-    sub_1AF116CA4(v80, a3);
+    sub_1AF116CA4(v80, time);
     sub_1AF116CF8(v80, v68);
     sub_1AF116E78(v80);
     v83 = sub_1AF0D5194();
@@ -2581,23 +2581,23 @@ LABEL_4:
 
     if ((*&self->_privateRendererOwnerDelegationConformance & 2) != 0)
     {
-      objc_msgSend__renderer_didApplyAnimationsAtTime_(self->_privateRendererOwner, v93, self->_privateRendererOwner, v94, a3);
+      objc_msgSend__renderer_didApplyAnimationsAtTime_(self->_privateRendererOwner, v93, self->_privateRendererOwner, v94, time);
     }
 
     if ((*&self->_selfDelegationConformance & 2) != 0)
     {
-      objc_msgSend__renderer_didApplyAnimationsAtTime_(self, v93, self, v94, a3);
+      objc_msgSend__renderer_didApplyAnimationsAtTime_(self, v93, self, v94, time);
     }
 
     if ((*&self->_delegationConformance & 2) != 0)
     {
-      v96 = self;
+      selfCopy = self;
       if ((*(self + 81) & 4) != 0)
       {
-        v96 = self->_privateRendererOwner;
+        selfCopy = self->_privateRendererOwner;
       }
 
-      objc_msgSend_renderer_didApplyAnimationsAtTime_(v41, v93, v96, v94, a3);
+      objc_msgSend_renderer_didApplyAnimationsAtTime_(v41, v93, selfCopy, v94, time);
     }
 
     v97 = sub_1AF0D5194();
@@ -2679,23 +2679,23 @@ LABEL_4:
 
     if ((*&self->_privateRendererOwnerDelegationConformance & 4) != 0)
     {
-      objc_msgSend__renderer_didSimulatePhysicsAtTime_(self->_privateRendererOwner, v122, self->_privateRendererOwner, v123, a3);
+      objc_msgSend__renderer_didSimulatePhysicsAtTime_(self->_privateRendererOwner, v122, self->_privateRendererOwner, v123, time);
     }
 
     if ((*&self->_selfDelegationConformance & 4) != 0)
     {
-      objc_msgSend__renderer_didSimulatePhysicsAtTime_(self, v122, self, v123, a3);
+      objc_msgSend__renderer_didSimulatePhysicsAtTime_(self, v122, self, v123, time);
     }
 
     if ((*&self->_delegationConformance & 4) != 0)
     {
-      v125 = self;
+      selfCopy2 = self;
       if ((*(self + 81) & 4) != 0)
       {
-        v125 = self->_privateRendererOwner;
+        selfCopy2 = self->_privateRendererOwner;
       }
 
-      objc_msgSend_renderer_didSimulatePhysicsAtTime_(v41, v122, v125, v123, a3);
+      objc_msgSend_renderer_didSimulatePhysicsAtTime_(v41, v122, selfCopy2, v123, time);
     }
 
     v126 = sub_1AF0D5194();
@@ -2762,23 +2762,23 @@ LABEL_4:
 
     if ((*&self->_privateRendererOwnerDelegationConformance & 8) != 0)
     {
-      objc_msgSend__renderer_didApplyConstraintsAtTime_(self->_privateRendererOwner, v139, self->_privateRendererOwner, v140, a3);
+      objc_msgSend__renderer_didApplyConstraintsAtTime_(self->_privateRendererOwner, v139, self->_privateRendererOwner, v140, time);
     }
 
     if ((*&self->_selfDelegationConformance & 8) != 0)
     {
-      objc_msgSend__renderer_didApplyConstraintsAtTime_(self, v139, self, v140, a3);
+      objc_msgSend__renderer_didApplyConstraintsAtTime_(self, v139, self, v140, time);
     }
 
     if ((*&self->_delegationConformance & 8) != 0)
     {
-      v142 = self;
+      selfCopy3 = self;
       if ((*(self + 81) & 4) != 0)
       {
-        v142 = self->_privateRendererOwner;
+        selfCopy3 = self->_privateRendererOwner;
       }
 
-      objc_msgSend_renderer_didApplyConstraintsAtTime_(v41, v139, v142, v140, a3);
+      objc_msgSend_renderer_didApplyConstraintsAtTime_(v41, v139, selfCopy3, v140, time);
     }
 
     v143 = sub_1AF0D5194();
@@ -2899,7 +2899,7 @@ LABEL_135:
   objc_msgSend_unlock(self, v5, v6, v7);
 }
 
-- (id)hitTest:(CGPoint)a3 options:(id)a4
+- (id)hitTest:(CGPoint)test options:(id)options
 {
   if (self->__drawableSize.width == 0.0)
   {
@@ -2908,28 +2908,28 @@ LABEL_135:
 
   else
   {
-    return (MEMORY[0x1EEE66B58])(self, sel__hitTest_viewport_options_, a4);
+    return (MEMORY[0x1EEE66B58])(self, sel__hitTest_viewport_options_, options);
   }
 }
 
-- (id)hitTestWithSegmentFromPoint:(VFXRenderer *)self toPoint:(SEL)a2 options:(id)a3
+- (id)hitTestWithSegmentFromPoint:(VFXRenderer *)self toPoint:(SEL)point options:(id)options
 {
   v15 = v4;
   v16 = v5;
-  v7 = objc_msgSend_world(self, a2, a3, v3);
+  v7 = objc_msgSend_world(self, point, options, v3);
   v11 = objc_msgSend_rootNode(v7, v8, v9, v10);
 
-  return objc_msgSend_hitTestWithSegmentFromPoint_toPoint_options_(v11, v12, a3, v13, v15, v16);
+  return objc_msgSend_hitTestWithSegmentFromPoint_toPoint_options_(v11, v12, options, v13, v15, v16);
 }
 
-- (id)_hitTest:(CGPoint)a3 viewport:(CGSize)a4 options:(id)a5
+- (id)_hitTest:(CGPoint)test viewport:(CGSize)viewport options:(id)options
 {
-  v6 = a5;
-  height = a4.height;
-  width = a4.width;
-  x = a3.x;
-  y = a3.y;
-  v8 = objc_msgSend_world(self, a2, a5, v5);
+  optionsCopy = options;
+  height = viewport.height;
+  width = viewport.width;
+  x = test.x;
+  y = test.y;
+  v8 = objc_msgSend_world(self, a2, options, v5);
   v12 = objc_msgSend_worldRef(v8, v9, v10, v11);
   if (v12 && (v13 = CFRetain(v12)) != 0)
   {
@@ -2949,15 +2949,15 @@ LABEL_135:
     }
 
     v23 = v20;
-    if (v6)
+    if (optionsCopy)
     {
-      if (!objc_msgSend_objectForKey_(v6, v21, @"kHitTestRootNode", v22) || (v26 = objc_msgSend_objectForKey_(v6, v24, @"kHitTestRootNode", v25), v30 = objc_msgSend_nodeRef(v26, v27, v28, v29), v6 = objc_msgSend_mutableCopy(v6, v31, v32, v33), objc_msgSend_setObject_forKey_(v6, v34, v30, @"kHitTestRootNode"), v6))
+      if (!objc_msgSend_objectForKey_(optionsCopy, v21, @"kHitTestRootNode", v22) || (v26 = objc_msgSend_objectForKey_(optionsCopy, v24, @"kHitTestRootNode", v25), v30 = objc_msgSend_nodeRef(v26, v27, v28, v29), optionsCopy = objc_msgSend_mutableCopy(optionsCopy, v31, v32, v33), objc_msgSend_setObject_forKey_(optionsCopy, v34, v30, @"kHitTestRootNode"), optionsCopy))
       {
-        if (objc_msgSend_objectForKey_(v6, v24, @"kHitTestShowDebugInfo", v25))
+        if (objc_msgSend_objectForKey_(optionsCopy, v24, @"kHitTestShowDebugInfo", v25))
         {
-          v6 = objc_msgSend_mutableCopy(v6, v35, v36, v37);
+          optionsCopy = objc_msgSend_mutableCopy(optionsCopy, v35, v36, v37);
           v38 = sub_1AF12EE9C(v19, 0);
-          objc_msgSend_setObject_forKey_(v6, v39, v38, @"auth");
+          objc_msgSend_setObject_forKey_(optionsCopy, v39, v38, @"auth");
         }
       }
     }
@@ -2966,7 +2966,7 @@ LABEL_135:
     v40.f64[1] = y;
     v41.f64[0] = width;
     v41.f64[1] = height;
-    v42 = sub_1AF286C78(v14, v23, v6, COERCE_DOUBLE(vcvt_f32_f64(v40)), vcvt_hight_f32_f64(0, v41), v41);
+    v42 = sub_1AF286C78(v14, v23, optionsCopy, COERCE_DOUBLE(vcvt_f32_f64(v40)), vcvt_hight_f32_f64(0, v41), v41);
     if (v42)
     {
       v45 = v42;
@@ -3000,25 +3000,25 @@ LABEL_13:
   }
 }
 
-- (BOOL)_isNodeInsideFrustum:(id)a3 withPointOfView:(id)a4 viewport:
+- (BOOL)_isNodeInsideFrustum:(id)frustum withPointOfView:(id)view viewport:
 {
-  if ((a4 || (a4 = objc_msgSend_pointOfView(self, a2, a3, 0)) != 0) && objc_msgSend_getFrustum_withViewport_(a4, a2, v43, a4))
+  if ((view || (view = objc_msgSend_pointOfView(self, a2, frustum, 0)) != 0) && objc_msgSend_getFrustum_withViewport_(view, a2, v43, view))
   {
-    if (objc_msgSend_isPresentationObject(a3, v5, v6, v7))
+    if (objc_msgSend_isPresentationObject(frustum, v5, v6, v7))
     {
-      v11 = objc_msgSend_nodeRef(a3, v8, v9, v10);
+      v11 = objc_msgSend_nodeRef(frustum, v8, v9, v10);
       v12 = sub_1AF1B9B04(v11);
       v35 = v12[1];
       v36 = *v12;
       v37 = v12[2];
       v38 = v12[3];
-      v16 = objc_msgSend_nodeRef(a3, v13, v14, v15);
+      v16 = objc_msgSend_nodeRef(frustum, v13, v14, v15);
       sub_1AF1B81E4(v16, 1, &v41);
     }
 
     else
     {
-      objc_msgSend_worldTransform(a3, v8, v9, v10);
+      objc_msgSend_worldTransform(frustum, v8, v9, v10);
       v35 = v19;
       v36 = v18;
       v37 = v20;
@@ -3027,7 +3027,7 @@ LABEL_13:
       *&v39[0] = 0;
       v40.i32[2] = 0;
       v40.i64[0] = 0;
-      objc_msgSend_getBoundingBoxMin_max_(a3, v22, v39, &v40);
+      objc_msgSend_getBoundingBoxMin_max_(frustum, v22, v39, &v40);
       v23 = v39[0];
       v24 = v40;
       v23.i32[3] = 1.0;
@@ -3083,7 +3083,7 @@ LABEL_13:
   return v17;
 }
 
-- (BOOL)isNodeInsideFrustum:(id)a3 withPointOfView:(id)a4
+- (BOOL)isNodeInsideFrustum:(id)frustum withPointOfView:(id)view
 {
   if (self->__drawableSize.width == 0.0)
   {
@@ -3092,15 +3092,15 @@ LABEL_13:
 
   else
   {
-    return MEMORY[0x1EEE66B58](self, sel__isNodeInsideFrustum_withPointOfView_viewport_, a3, a4);
+    return MEMORY[0x1EEE66B58](self, sel__isNodeInsideFrustum_withPointOfView_viewport_, frustum, view);
   }
 }
 
-- (id)_nodesInsideFrustumWithPointOfView:(id)a3 viewport:
+- (id)_nodesInsideFrustumWithPointOfView:(id)view viewport:
 {
-  v4 = a3;
-  v9 = objc_msgSend_array(MEMORY[0x1E695DF70], a2, a3, v3);
-  if ((v4 || (v4 = objc_msgSend_pointOfView(self, v6, v7, v8)) != 0) && objc_msgSend_world(self, v6, v7, v8) && objc_msgSend_getFrustum_withViewport_(v4, v10, v30, v11, 0.0))
+  viewCopy = view;
+  v9 = objc_msgSend_array(MEMORY[0x1E695DF70], a2, view, v3);
+  if ((viewCopy || (viewCopy = objc_msgSend_pointOfView(self, v6, v7, v8)) != 0) && objc_msgSend_world(self, v6, v7, v8) && objc_msgSend_getFrustum_withViewport_(viewCopy, v10, v30, v11, 0.0))
   {
     v15 = objc_msgSend_worldRef(self->_world, v12, v13, v14);
     sub_1AF1CEA20(v15);
@@ -3114,7 +3114,7 @@ LABEL_13:
     v26[3] = &unk_1E7A7EF20;
     v26[4] = v9;
     v17 = sub_1AF1271CC(v26, &v27);
-    v21 = objc_msgSend_camera(v4, v18, v19, v20, v17);
+    v21 = objc_msgSend_camera(viewCopy, v18, v19, v20, v17);
     v27 = objc_msgSend_categoryBitMask(v21, v22, v23, v24);
     DWORD1(v28) = 2;
     sub_1AF127B58(v16, v30);
@@ -3124,7 +3124,7 @@ LABEL_13:
   return v9;
 }
 
-- (id)nodesInsideFrustumWithPointOfView:(id)a3
+- (id)nodesInsideFrustumWithPointOfView:(id)view
 {
   if (self->__drawableSize.width == 0.0)
   {
@@ -3133,13 +3133,13 @@ LABEL_13:
 
   else
   {
-    return (MEMORY[0x1EEE66B58])(self, sel__nodesInsideFrustumWithPointOfView_viewport_, a3);
+    return (MEMORY[0x1EEE66B58])(self, sel__nodesInsideFrustumWithPointOfView_viewport_, view);
   }
 }
 
-- (void)setRendersContinuously:(BOOL)a3
+- (void)setRendersContinuously:(BOOL)continuously
 {
-  if (a3)
+  if (continuously)
   {
     v3 = 2;
   }
@@ -3152,9 +3152,9 @@ LABEL_13:
   *(self + 81) = *(self + 81) & 0xFD | v3;
 }
 
-- (void)setJitteringEnabled:(BOOL)a3
+- (void)setJitteringEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -3167,9 +3167,9 @@ LABEL_13:
   *(self + 224) = *(self + 224) & 0xFD | v3;
 }
 
-- (void)setTemporalAntialiasingEnabled:(BOOL)a3
+- (void)setTemporalAntialiasingEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -3195,39 +3195,39 @@ LABEL_13:
   }
 }
 
-- (void)setAdditiveWritesToAlpha:(BOOL)a3
+- (void)setAdditiveWritesToAlpha:(BOOL)alpha
 {
   if (self->_legacyRenderer)
   {
 
-    (MEMORY[0x1EEE66B58])(self, sel__setLegacyAdditiveWritesToAlpha_, a3);
+    (MEMORY[0x1EEE66B58])(self, sel__setLegacyAdditiveWritesToAlpha_, alpha);
   }
 
   else
   {
     v5 = *(self + 224);
-    if ((v5 & 1) != a3)
+    if ((v5 & 1) != alpha)
     {
       v9 = v3;
       v10 = v4;
-      *(self + 224) = v5 & 0xFE | a3;
+      *(self + 224) = v5 & 0xFE | alpha;
       renderingQueue = self->__renderingQueue;
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = sub_1AF320E74;
       v7[3] = &unk_1E7A7EF48;
       v7[4] = self;
-      v8 = a3;
+      alphaCopy = alpha;
       dispatch_async(renderingQueue, v7);
     }
   }
 }
 
-- (void)setFrozen:(BOOL)a3
+- (void)setFrozen:(BOOL)frozen
 {
-  v4 = a3;
-  objc_msgSend_lock(self, a2, a3, v3);
-  if (v4)
+  frozenCopy = frozen;
+  objc_msgSend_lock(self, a2, frozen, v3);
+  if (frozenCopy)
   {
     v9 = 8;
   }
@@ -3287,14 +3287,14 @@ LABEL_13:
   }
 }
 
-- (void)setShowsStatistics:(BOOL)a3
+- (void)setShowsStatistics:(BOOL)statistics
 {
-  if (a3)
+  if (statistics)
   {
-    objc_msgSend_setupAuthoringEnvironment(self, a2, a3, v3);
+    objc_msgSend_setupAuthoringEnvironment(self, a2, statistics, v3);
   }
 
-  self->_showStatistics = a3;
+  self->_showStatistics = statistics;
 }
 
 - (id)statistics
@@ -3318,78 +3318,78 @@ LABEL_13:
   return (self->_debugUIOptions & v7) != 0;
 }
 
-- (void)setRenderMode:(unint64_t)a3
+- (void)setRenderMode:(unint64_t)mode
 {
   engineContext = self->_engineContext;
-  self->_renderMode = a3;
-  v6 = objc_msgSend_world(self, a2, a3, v3);
+  self->_renderMode = mode;
+  v6 = objc_msgSend_world(self, a2, mode, v3);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1AF321138;
   v8[3] = &unk_1E7A7E6A0;
   v8[4] = engineContext;
-  v8[5] = a3;
+  v8[5] = mode;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, v6, v8);
 }
 
-- (void)setRendererKind:(unint64_t)a3
+- (void)setRendererKind:(unint64_t)kind
 {
-  objc_msgSend_lock(self, a2, a3, v3);
+  objc_msgSend_lock(self, a2, kind, v3);
   engineContext = self->_engineContext;
-  self->_rendererKind = a3;
-  sub_1AF12E7B4(engineContext, a3);
+  self->_rendererKind = kind;
+  sub_1AF12E7B4(engineContext, kind);
 
   objc_msgSend_unlock(self, v7, v8, v9);
 }
 
-- (void)setEmulateStereo:(BOOL)a3
+- (void)setEmulateStereo:(BOOL)stereo
 {
   engineContext = self->_engineContext;
-  self->_emulateStereo = a3;
-  v6 = objc_msgSend_world(self, a2, a3, v3);
+  self->_emulateStereo = stereo;
+  v6 = objc_msgSend_world(self, a2, stereo, v3);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1AF32124C;
   v8[3] = &unk_1E7A7EF68;
   v8[4] = engineContext;
-  v9 = a3;
+  stereoCopy = stereo;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, v6, v8);
 }
 
-- (void)setEmulateRRM:(BOOL)a3
+- (void)setEmulateRRM:(BOOL)m
 {
   engineContext = self->_engineContext;
-  self->_emulateRRM = a3;
-  v6 = objc_msgSend_world(self, a2, a3, v3);
+  self->_emulateRRM = m;
+  v6 = objc_msgSend_world(self, a2, m, v3);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1AF321304;
   v8[3] = &unk_1E7A7EF68;
   v8[4] = engineContext;
-  v9 = a3;
+  mCopy = m;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v7, v6, v8);
 }
 
-- (void)setSideBySideStereo:(BOOL)a3
+- (void)setSideBySideStereo:(BOOL)stereo
 {
-  objc_msgSend_lock(self, a2, a3, v3);
+  objc_msgSend_lock(self, a2, stereo, v3);
   engineContext = self->_engineContext;
-  self->_isSideBySideStereo = a3;
-  sub_1AF12F824(engineContext, a3);
+  self->_isSideBySideStereo = stereo;
+  sub_1AF12F824(engineContext, stereo);
 
   objc_msgSend_unlock(self, v7, v8, v9);
 }
 
-- (void)setDebugOptions:(unint64_t)a3
+- (void)setDebugOptions:(unint64_t)options
 {
-  if (self->_debugOptions != a3)
+  if (self->_debugOptions != options)
   {
-    objc_msgSend_setupAuthoringEnvironment(self, a2, a3, v3);
-    self->_debugOptions = a3;
+    objc_msgSend_setupAuthoringEnvironment(self, a2, options, v3);
+    self->_debugOptions = options;
     objc_msgSend_lock(self, v7, v8, v9);
-    objc_msgSend_debugOptionsDidChange_(self->_authoringEnvironment, v10, a3, v11);
-    sub_1AF12EE70(self->_engineContext, a3);
-    objc_msgSend_setDebugOptions_(self->_renderContext, v12, (a3 >> 5) & 2 | (a3 >> 3) & 4, v13);
+    objc_msgSend_debugOptionsDidChange_(self->_authoringEnvironment, v10, options, v11);
+    sub_1AF12EE70(self->_engineContext, options);
+    objc_msgSend_setDebugOptions_(self->_renderContext, v12, (options >> 5) & 2 | (options >> 3) & 4, v13);
     v17 = objc_msgSend__showsAuthoringEnvironment(self, v14, v15, v16);
     objc_msgSend_setShowsAuthoringEnvironment_(self->_renderContext, v18, v17, v19);
 
@@ -3405,11 +3405,11 @@ LABEL_13:
   return v5;
 }
 
-- (void)setDebugUIOptions:(unint64_t)a3
+- (void)setDebugUIOptions:(unint64_t)options
 {
-  objc_msgSend_lock(self, a2, a3, v3);
-  self->_debugUIOptions = a3;
-  sub_1AF12EE80(self->_engineContext, a3);
+  objc_msgSend_lock(self, a2, options, v3);
+  self->_debugUIOptions = options;
+  sub_1AF12EE80(self->_engineContext, options);
 
   objc_msgSend_unlock(self, v6, v7, v8);
 }
@@ -3425,12 +3425,12 @@ LABEL_13:
   return renderContext;
 }
 
-- (void)set_enableARMode:(BOOL)a3
+- (void)set_enableARMode:(BOOL)mode
 {
   renderContext = self->_renderContext;
   if (renderContext)
   {
-    (MEMORY[0x1EEE66B58])(renderContext, sel_setEnableARMode_, a3);
+    (MEMORY[0x1EEE66B58])(renderContext, sel_setEnableARMode_, mode);
   }
 }
 
@@ -3445,12 +3445,12 @@ LABEL_13:
   return renderContext;
 }
 
-- (void)set_shouldDelegateARCompositing:(BOOL)a3
+- (void)set_shouldDelegateARCompositing:(BOOL)compositing
 {
   renderContext = self->_renderContext;
   if (renderContext)
   {
-    (MEMORY[0x1EEE66B58])(renderContext, sel_setShouldDelegateARCompositing_, a3);
+    (MEMORY[0x1EEE66B58])(renderContext, sel_setShouldDelegateARCompositing_, compositing);
   }
 }
 
@@ -3555,7 +3555,7 @@ LABEL_13:
   return v6;
 }
 
-- (void)setAudioListener:(id)a3
+- (void)setAudioListener:(id)listener
 {
   world = self->_world;
   v4[0] = MEMORY[0x1E69E9820];
@@ -3563,7 +3563,7 @@ LABEL_13:
   v4[2] = sub_1AF321778;
   v4[3] = &unk_1E7A7E220;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = listener;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, world, v4);
 }
 
@@ -4091,44 +4091,44 @@ LABEL_6:
   objc_msgSend_unlock(self, v19, v20, v21);
 }
 
-- (void)renderWithTextureAttachmentProvider:(id)a3 options:(id)a4
+- (void)renderWithTextureAttachmentProvider:(id)provider options:(id)options
 {
-  objc_msgSend_lock(self, a2, a3, a4);
+  objc_msgSend_lock(self, a2, provider, options);
   objc_msgSend__startCaptureIfNeeded(self, v7, v8, v9);
   v143 = *self->__viewport;
   width = self->__drawableSize.width;
   height = self->__drawableSize.height;
   viewpointCoordinateSpace = self->_viewpointCoordinateSpace;
-  isSideBySideStereo = objc_msgSend_isSideBySideStereo(a4, v13, v14, v15);
+  isSideBySideStereo = objc_msgSend_isSideBySideStereo(options, v13, v14, v15);
   objc_msgSend_setSideBySideStereo_(self, v17, isSideBySideStereo, v18);
-  objc_msgSend_setAttachmentProvider_(self->_renderContext, v19, a3, v20);
-  v24 = objc_msgSend_commandBuffer(a4, v21, v22, v23);
+  objc_msgSend_setAttachmentProvider_(self->_renderContext, v19, provider, v20);
+  v24 = objc_msgSend_commandBuffer(options, v21, v22, v23);
   objc_msgSend_setClientCommandBuffer_(self->_renderContext, v25, v24, v26);
-  v30 = objc_msgSend_rayMap(a4, v27, v28, v29);
+  v30 = objc_msgSend_rayMap(options, v27, v28, v29);
   objc_msgSend_setRayMap_(self->_renderContext, v31, v30, v32);
-  v36 = objc_msgSend_rasterizationRateMap(a4, v33, v34, v35);
+  v36 = objc_msgSend_rasterizationRateMap(options, v33, v34, v35);
   objc_msgSend_setRasterizationRateMap_(self->_renderContext, v37, v36, v38);
   v42 = objc_msgSend_depthPixelFormat(self->_renderContext, v39, v40, v41);
   v46 = objc_msgSend_stencilPixelFormat(self->_renderContext, v43, v44, v45);
-  v50 = objc_msgSend_depthPixelFormat(a4, v47, v48, v49);
+  v50 = objc_msgSend_depthPixelFormat(options, v47, v48, v49);
   if (VFXMTLTexturePixelFormatIsDepth(v50))
   {
-    v54 = objc_msgSend_depthPixelFormat(a4, v51, v52, v53);
+    v54 = objc_msgSend_depthPixelFormat(options, v51, v52, v53);
     objc_msgSend_setDepthPixelFormat_(self->_renderContext, v55, v54, v56);
   }
 
-  v57 = objc_msgSend_stencilPixelFormat(a4, v51, v52, v53);
+  v57 = objc_msgSend_stencilPixelFormat(options, v51, v52, v53);
   if (VFXMTLTexturePixelFormatIsStencil(v57))
   {
-    v61 = objc_msgSend_stencilPixelFormat(a4, v58, v59, v60);
+    v61 = objc_msgSend_stencilPixelFormat(options, v58, v59, v60);
     objc_msgSend_setStencilPixelFormat_(self->_renderContext, v62, v61, v63);
   }
 
-  if (objc_msgSend_viewpoints(a4, v58, v59, v60))
+  if (objc_msgSend_viewpoints(options, v58, v59, v60))
   {
-    self->_viewpoints = objc_msgSend_viewpoints(a4, v64, v65, v66);
-    self->_viewpointCoordinateSpace = objc_msgSend_coordinateSpace(a4, v67, v68, v69);
-    v73 = objc_msgSend_finalColorDescriptor(a3, v70, v71, v72);
+    self->_viewpoints = objc_msgSend_viewpoints(options, v64, v65, v66);
+    self->_viewpointCoordinateSpace = objc_msgSend_coordinateSpace(options, v67, v68, v69);
+    v73 = objc_msgSend_finalColorDescriptor(provider, v70, v71, v72);
     v76 = objc_msgSend_objectAtIndexedSubscript_(self->_viewpoints, v74, 0, v75);
     if (v76)
     {
@@ -4174,7 +4174,7 @@ LABEL_6:
     goto LABEL_17;
   }
 
-  v81 = objc_msgSend_finalColorDescriptor(a3, v64, v65, v66);
+  v81 = objc_msgSend_finalColorDescriptor(provider, v64, v65, v66);
   *v85.i32 = objc_msgSend_width(v81, v82, v83, v84);
   v141 = v85;
   v89 = objc_msgSend_height(v81, v86, v87, v88);
@@ -4212,16 +4212,16 @@ LABEL_18:
   objc_msgSend__contentsScaleFactor(self, v101, v102, v103);
   sub_1AF130850(engineContext, v104);
   lastOptionsHash = self->_lastOptionsHash;
-  if (lastOptionsHash != objc_msgSend_hash(a4, v106, v107, v108))
+  if (lastOptionsHash != objc_msgSend_hash(options, v106, v107, v108))
   {
     sub_1AF12E8AC(self->_engineContext);
-    self->_lastOptionsHash = objc_msgSend_hash(a4, v111, v112, v113);
+    self->_lastOptionsHash = objc_msgSend_hash(options, v111, v112, v113);
   }
 
   objc_msgSend_beginFrame_(self->_renderContext, v109, 0, v110, *&v141);
   objc_msgSend__render(self, v114, v115, v116);
   renderContext = self->_renderContext;
-  v121 = objc_msgSend_waitUntilCompleted(a4, v118, v119, v120);
+  v121 = objc_msgSend_waitUntilCompleted(options, v118, v119, v120);
   objc_msgSend_endFrameWaitingUntilCompleted_status_error_(renderContext, v122, v121, 0, 0);
   objc_msgSend_setAttachmentProvider_(self->_renderContext, v123, 0, v124);
   self->_viewpointCoordinateSpace = viewpointCoordinateSpace;
@@ -4246,18 +4246,18 @@ LABEL_18:
   objc_msgSend_unlock(self, v138, v139, v140);
 }
 
-- (void)renderToTexture:(id)a3 options:(id)a4
+- (void)renderToTexture:(id)texture options:(id)options
 {
-  objc_msgSend_lock(self, a2, a3, a4);
+  objc_msgSend_lock(self, a2, texture, options);
   v26 = *self->__viewport;
   v7 = [VFXRenderToTextureFinalAttachmentProvider alloc];
-  v10 = objc_msgSend_initWithTexture_(v7, v8, a3, v9);
-  shouldLoadFinalColor = objc_msgSend_shouldLoadFinalColor(a4, v11, v12, v13);
+  v10 = objc_msgSend_initWithTexture_(v7, v8, texture, v9);
+  shouldLoadFinalColor = objc_msgSend_shouldLoadFinalColor(options, v11, v12, v13);
   objc_msgSend_setShouldLoad_(v10, v15, shouldLoadFinalColor, v16);
   engineContext = self->_engineContext;
-  v21 = objc_msgSend_disableCoreRendering(a4, v18, v19, v20);
+  v21 = objc_msgSend_disableCoreRendering(options, v18, v19, v20);
   sub_1AF131174(engineContext, v21);
-  objc_msgSend_renderWithTextureAttachmentProvider_options_(self, v22, v10, a4);
+  objc_msgSend_renderWithTextureAttachmentProvider_options_(self, v22, v10, options);
 
   *self->__viewport = v26;
   sub_1AF130550(self->_engineContext, v26);
@@ -4266,19 +4266,19 @@ LABEL_18:
   objc_msgSend_unlock(self, v23, v24, v25);
 }
 
-- (void)renderWithViewport:(CGRect)a3 commandBuffer:(id)a4 passDescriptor:(id)a5
+- (void)renderWithViewport:(CGRect)viewport commandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
-  objc_msgSend_commandQueue(a4, a2, a4, a5);
+  objc_msgSend_commandQueue(buffer, a2, buffer, descriptor);
 
-  MEMORY[0x1EEE66B58](self, sel__renderWithViewport_encoder_passDescriptor_commandQueue_commandBuffer_, 0, a5);
+  MEMORY[0x1EEE66B58](self, sel__renderWithViewport_encoder_passDescriptor_commandQueue_commandBuffer_, 0, descriptor);
 }
 
-- (void)_renderWithViewport:(CGRect)a3 encoder:(id)a4 passDescriptor:(id)a5 commandQueue:(id)a6 commandBuffer:(id)a7
+- (void)_renderWithViewport:(CGRect)viewport encoder:(id)encoder passDescriptor:(id)descriptor commandQueue:(id)queue commandBuffer:(id)buffer
 {
-  y = a3.origin.y;
-  width = a3.size.width;
-  v101 = *&a3.size.height;
-  x = a3.origin.x;
+  y = viewport.origin.y;
+  width = viewport.size.width;
+  v101 = *&viewport.size.height;
+  x = viewport.origin.x;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -4289,7 +4289,7 @@ LABEL_18:
     }
   }
 
-  v20 = objc_msgSend_colorAttachments(a5, v12, v13, v14, v101);
+  v20 = objc_msgSend_colorAttachments(descriptor, v12, v13, v14, v101);
   v23 = objc_msgSend_objectAtIndexedSubscript_(v20, v21, 0, v22);
   v27 = objc_msgSend_texture(v23, v24, v25, v26);
   v31 = objc_msgSend_sampleCount(v27, v28, v29, v30);
@@ -4303,14 +4303,14 @@ LABEL_18:
     objc_msgSend_setAntialiasingMode_(self, v32, 2 * (v31 == 4), v33);
   }
 
-  objc_msgSend_setClientRenderPassDescriptor_(self->_renderContext, v34, a5, v35);
-  v39 = objc_msgSend_depthAttachment(a5, v36, v37, v38);
+  objc_msgSend_setClientRenderPassDescriptor_(self->_renderContext, v34, descriptor, v35);
+  v39 = objc_msgSend_depthAttachment(descriptor, v36, v37, v38);
   v43 = objc_msgSend_texture(v39, v40, v41, v42);
-  if (a4)
+  if (encoder)
   {
     if (v43)
     {
-      v47 = objc_msgSend_depthAttachment(a5, v44, v45, v46);
+      v47 = objc_msgSend_depthAttachment(descriptor, v44, v45, v46);
       objc_msgSend_clearDepth(v47, v48, v49, v50);
       if (v51 == 1.0 && (byte_1EB658CD1 & 1) == 0)
       {
@@ -4324,15 +4324,15 @@ LABEL_18:
     }
   }
 
-  objc_msgSend_setClientCommandQueue_(self->_renderContext, v44, a6, v46);
-  objc_msgSend_setClientRenderCommandEncoder_(self->_renderContext, v53, a4, v54);
-  objc_msgSend_setClientCommandBuffer_(self->_renderContext, v55, a7, v56);
-  v60 = objc_msgSend_colorAttachments(a5, v57, v58, v59);
+  objc_msgSend_setClientCommandQueue_(self->_renderContext, v44, queue, v46);
+  objc_msgSend_setClientRenderCommandEncoder_(self->_renderContext, v53, encoder, v54);
+  objc_msgSend_setClientCommandBuffer_(self->_renderContext, v55, buffer, v56);
+  v60 = objc_msgSend_colorAttachments(descriptor, v57, v58, v59);
   v63 = objc_msgSend_objectAtIndexedSubscript_(v60, v61, 0, v62);
   v70 = objc_msgSend_resolveTexture(v63, v64, v65, v66);
   if (!v70)
   {
-    v71 = objc_msgSend_colorAttachments(a5, v67, v68, v69);
+    v71 = objc_msgSend_colorAttachments(descriptor, v67, v68, v69);
     v74 = objc_msgSend_objectAtIndexedSubscript_(v71, v72, 0, v73);
     v70 = objc_msgSend_texture(v74, v75, v76, v77);
   }
@@ -4400,16 +4400,16 @@ LABEL_22:
   objc_msgSend__stopCapture(self, v97, v98, v99);
 }
 
-- (void)renderWithCommandBuffer:(id)a3 viewPoints:(id)a4 mode:(unint64_t)a5
+- (void)renderWithCommandBuffer:(id)buffer viewPoints:(id)points mode:(unint64_t)mode
 {
-  self->_viewpoints = a4;
-  self->_viewpointCoordinateSpace = a5;
-  if (a4)
+  self->_viewpoints = points;
+  self->_viewpointCoordinateSpace = mode;
+  if (points)
   {
     v18 = 0u;
     v19 = 0u;
     v17 = 0u;
-    v7 = objc_msgSend_objectAtIndexedSubscript_(a4, a2, 0, a4);
+    v7 = objc_msgSend_objectAtIndexedSubscript_(points, a2, 0, points);
     if (v7)
     {
       objc_msgSend_viewport(v7, v8, v9, v10);
@@ -4424,7 +4424,7 @@ LABEL_22:
 
     v11 = objc_msgSend_objectAtIndexedSubscript_(self->_viewpoints, v8, 0, v10, v17, v18, v19);
     v15 = objc_msgSend_passDescriptor(v11, v12, v13, v14);
-    objc_msgSend_renderWithViewport_commandBuffer_passDescriptor_(self, v16, a3, v15, 0.0, 0.0, 0.0, 0.0);
+    objc_msgSend_renderWithViewport_commandBuffer_passDescriptor_(self, v16, buffer, v15, 0.0, 0.0, 0.0, 0.0);
     self->_viewpoints = 0;
   }
 }
@@ -4452,19 +4452,19 @@ LABEL_22:
   return v7;
 }
 
-- (void)transferRenderGraphResourcesFrom:(id)a3
+- (void)transferRenderGraphResourcesFrom:(id)from
 {
   v4 = sub_1AF12E8A4(self->_engineContext);
-  v8 = objc_msgSend__engineContext(a3, v5, v6, v7);
+  v8 = objc_msgSend__engineContext(from, v5, v6, v7);
   v9 = sub_1AF12E8A4(v8);
 
   sub_1AF270DD0(v4, v9);
 }
 
-- (id)_newRenderTargetWithSize:(CGSize)a3
+- (id)_newRenderTargetWithSize:(CGSize)size
 {
   memset(v8, 0, sizeof(v8));
-  CFXTextureDescriptorMake2D(a3.width, a3.height, self->_pixelFormat, v8);
+  CFXTextureDescriptorMake2D(size.width, size.height, self->_pixelFormat, v8);
   *&v8[12] = *&v8[12] & 0xFFFF8F00FFFFFFFFLL | 0x400000000;
   v4 = sub_1AF13099C(self->_engineContext);
   v6 = *v8;
@@ -4472,10 +4472,10 @@ LABEL_22:
   return CFXGPUDeviceCreateTexture(v4, &v6);
 }
 
-- (id)_newLayeredRenderTargetWithSize:(CGSize)a3 arrayLength:(unsigned int)a4
+- (id)_newLayeredRenderTargetWithSize:(CGSize)size arrayLength:(unsigned int)length
 {
   memset(v9, 0, sizeof(v9));
-  CFXTextureDescriptorMake2DArray(a3.width, a3.height, *&a4, self->_pixelFormat, v9);
+  CFXTextureDescriptorMake2DArray(size.width, size.height, *&length, self->_pixelFormat, v9);
   *&v9[12] = *&v9[12] & 0xFFFF8F00FFFFFFFFLL | 0x400000000;
   v5 = sub_1AF13099C(self->_engineContext);
   v7 = *v9;
@@ -4483,7 +4483,7 @@ LABEL_22:
   return CFXGPUDeviceCreateTexture(v5, &v7);
 }
 
-- (BOOL)prepareObject:(id)a3 shouldAbortBlock:(id)a4
+- (BOOL)prepareObject:(id)object shouldAbortBlock:(id)block
 {
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -4502,17 +4502,17 @@ LABEL_22:
     }
 
     objc_msgSend_flush(VFXTransaction, v10, v11, v12);
-    v17 = objc_msgSend_worldRef(a3, v14, v15, v16);
+    v17 = objc_msgSend_worldRef(object, v14, v15, v16);
     objc_msgSend_lock(self, v18, v19, v20);
     v24 = objc_msgSend_world(self, v21, v22, v23);
     v28 = objc_msgSend_pointOfView(self, v25, v26, v27);
-    objc_msgSend_setWorld_(self, v29, a3, v30);
+    objc_msgSend_setWorld_(self, v29, object, v30);
     sub_1AF1CEA20(v17);
     v34 = objc_msgSend__engineContext(self, v31, v32, v33);
-    sub_1AF130454(v34, a4);
+    sub_1AF130454(v34, block);
     v38 = objc_msgSend_immediateMode(VFXTransaction, v35, v36, v37);
     objc_msgSend_setImmediateMode_(VFXTransaction, v39, 1, v40);
-    v44 = objc_msgSend_presentationScene(a3, v41, v42, v43);
+    v44 = objc_msgSend_presentationScene(object, v41, v42, v43);
     v48 = sub_1AF130C80(self->_engineContext, v45, v46, v47);
     objc_msgSend_prepareWithRenderer_(v44, v49, v48, v50);
     objc_msgSend_updateAtTime_(self, v51, v52, v53, self->_time);
@@ -4578,7 +4578,7 @@ LABEL_22:
   return isKindOfClass & 1;
 }
 
-- (void)prepareObjects:(id)a3 withCompletionHandler:(id)a4
+- (void)prepareObjects:(id)objects withCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
   v7 = sub_1AF0D5194();
@@ -4591,7 +4591,7 @@ LABEL_22:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v8, &v14, v18, 16);
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(objects, v8, &v14, v18, 16);
   if (v9)
   {
     v11 = v9;
@@ -4603,33 +4603,33 @@ LABEL_22:
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(objects);
         }
 
         objc_msgSend_prepareObject_shouldAbortBlock_(self, v10, *(*(&v14 + 1) + 8 * v13++), 0);
       }
 
       while (v11 != v13);
-      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v10, &v14, v18, 16);
+      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(objects, v10, &v14, v18, 16);
     }
 
     while (v11);
   }
 
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, 1);
+    (*(handler + 2))(handler, 1);
   }
 }
 
-- (CGImage)_createBackgroundColorImageWithSize:(CGSize)a3
+- (CGImage)_createBackgroundColorImageWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a3.width;
-  v7 = a3.height;
-  v8 = 4 * (a3.width & 0x3FFFFFFF);
-  v9 = malloc_type_malloc(v8 * a3.height, 0x100004077774924uLL);
+  height = size.height;
+  width = size.width;
+  v6 = size.width;
+  v7 = size.height;
+  v8 = 4 * (size.width & 0x3FFFFFFF);
+  v9 = malloc_type_malloc(v8 * size.height, 0x100004077774924uLL);
   v10 = sub_1AF164420();
   v11 = CGBitmapContextCreate(v9, v6, v7, 8uLL, v8, v10, 0x4001u);
   v15 = objc_msgSend_backgroundColor(self, v12, v13, v14);
@@ -4646,10 +4646,10 @@ LABEL_22:
   return Image;
 }
 
-- (id)snapshotWithSize:(CGSize)a3
+- (id)snapshotWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   objc_msgSend_lock(self, a2, v3, v4);
   SnapshotWithSize_error = objc_msgSend__createSnapshotWithSize_error_(self, v8, 0, v9, width, height);
   if (!SnapshotWithSize_error)
@@ -4663,18 +4663,18 @@ LABEL_22:
   return v14;
 }
 
-- (CGImage)_createSnapshotWithSize:(CGSize)a3 error:(id *)a4
+- (CGImage)_createSnapshotWithSize:(CGSize)size error:(id *)error
 {
-  width = a3.width;
+  width = size.width;
   v7 = rintf(width);
-  height = a3.height;
+  height = size.height;
   v9 = rintf(height);
   if ((*(self + 81) & 4) == 0)
   {
-    objc_msgSend__setBackingSize_(self, a2, a4, v4, v7, v9);
+    objc_msgSend__setBackingSize_(self, a2, error, v4, v7, v9);
   }
 
-  v10 = objc_msgSend__newRenderTargetWithSize_(self, a2, a4, v4, v7, v9);
+  v10 = objc_msgSend__newRenderTargetWithSize_(self, a2, error, v4, v7, v9);
   v11 = objc_alloc_init(VFXRenderOptions);
   objc_msgSend_setWaitUntilCompleted_(v11, v12, 1, v13);
   objc_msgSend_renderToTexture_options_(self, v14, v10, v11);
@@ -4683,18 +4683,18 @@ LABEL_22:
   return v18;
 }
 
-- (void)_updateProbes:(id)a3 progress:(id)a4 completionHandler:(id)a5
+- (void)_updateProbes:(id)probes progress:(id)progress completionHandler:(id)handler
 {
-  objc_msgSend_becomeCurrentWithPendingUnitCount_(a4, a2, 1, a4);
+  objc_msgSend_becomeCurrentWithPendingUnitCount_(progress, a2, 1, progress);
   v9 = CACurrentMediaTime();
-  objc_msgSend_updateProbes_atTime_completionHandler_(self, v10, a3, a5, v9);
+  objc_msgSend_updateProbes_atTime_completionHandler_(self, v10, probes, handler, v9);
 
-  MEMORY[0x1EEE66B58](a4, sel_resignCurrent, v11, v12);
+  MEMORY[0x1EEE66B58](progress, sel_resignCurrent, v11, v12);
 }
 
-- (void)updateProbes:(id)a3 atTime:(double)a4 completionHandler:(id)a5
+- (void)updateProbes:(id)probes atTime:(double)time completionHandler:(id)handler
 {
-  if (!objc_msgSend_world(self, a2, a3, a5, a4))
+  if (!objc_msgSend_world(self, a2, probes, handler, time))
   {
     v11 = sub_1AF0D5194();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -4709,12 +4709,12 @@ LABEL_22:
   v18[2] = sub_1AF323510;
   v18[3] = &unk_1E7A7EFB8;
   v18[4] = self;
-  v18[5] = a3;
-  v18[6] = a5;
+  v18[5] = probes;
+  v18[6] = handler;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v17, v16, v18);
 }
 
-- (void)_jitterAtStep:(unint64_t)a3 updateMainFramebuffer:(BOOL)a4 redisplay:(BOOL)a5 jitterer:(id)a6
+- (void)_jitterAtStep:(unint64_t)step updateMainFramebuffer:(BOOL)framebuffer redisplay:(BOOL)redisplay jitterer:(id)jitterer
 {
   renderingQueue = self->__renderingQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -4722,36 +4722,36 @@ LABEL_22:
   v7[2] = sub_1AF323918;
   v7[3] = &unk_1E7A7EFE0;
   v7[4] = self;
-  v7[5] = a6;
-  v7[6] = a3;
-  v8 = a4;
-  v9 = a5;
+  v7[5] = jitterer;
+  v7[6] = step;
+  framebufferCopy = framebuffer;
+  redisplayCopy = redisplay;
   dispatch_sync(renderingQueue, v7);
 }
 
-- (void)_addGPUFrameScheduledHandler:(id)a3
+- (void)_addGPUFrameScheduledHandler:(id)handler
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF323AA4;
   v3[3] = &unk_1E7A7F008;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = handler;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, 0, v3);
 }
 
-- (void)_addGPUFrameCompletedHandler:(id)a3
+- (void)_addGPUFrameCompletedHandler:(id)handler
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF323B2C;
   v3[3] = &unk_1E7A7F008;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = handler;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, 0, v3);
 }
 
-- (void)_addGPUFramePresentedHandler:(id)a3
+- (void)_addGPUFramePresentedHandler:(id)handler
 {
   if ((*(self + 81) & 4) != 0)
   {
@@ -4760,7 +4760,7 @@ LABEL_22:
     v8[2] = sub_1AF323C00;
     v8[3] = &unk_1E7A7F008;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = handler;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, 0, v8);
   }
 
@@ -4772,7 +4772,7 @@ LABEL_22:
       sub_1AFDF819C();
     }
 
-    objc_msgSend__addGPUFrameCompletedHandler_(self, v6, a3, v7);
+    objc_msgSend__addGPUFrameCompletedHandler_(self, v6, handler, v7);
   }
 }
 
@@ -4848,11 +4848,11 @@ LABEL_22:
   MEMORY[0x1EEE66B58](self, sel__setInterfaceOrientation_, v9, v10);
 }
 
-- (void)_setInterfaceOrientation:(int64_t)a3
+- (void)_setInterfaceOrientation:(int64_t)orientation
 {
-  v4 = a3;
-  objc_msgSend_lock(self, a2, a3, v3);
-  sub_1AF1305E0(self->_engineContext, v4);
+  orientationCopy = orientation;
+  objc_msgSend_lock(self, a2, orientation, v3);
+  sub_1AF1305E0(self->_engineContext, orientationCopy);
 
   objc_msgSend_unlock(self, v6, v7, v8);
 }
@@ -4869,26 +4869,26 @@ LABEL_22:
   return v2;
 }
 
-- (void)setRenderGraph:(id)a3
+- (void)setRenderGraph:(id)graph
 {
-  if (self->_renderGraph != a3)
+  if (self->_renderGraph != graph)
   {
-    objc_msgSend_lock(self, a2, a3, v3);
+    objc_msgSend_lock(self, a2, graph, v3);
 
-    self->_renderGraph = a3;
-    objc_msgSend_invalidateCompiledGraph(a3, v7, v8, v9);
-    objc_msgSend_prepareForLoad(a3, v10, v11, v12);
+    self->_renderGraph = graph;
+    objc_msgSend_invalidateCompiledGraph(graph, v7, v8, v9);
+    objc_msgSend_prepareForLoad(graph, v10, v11, v12);
     sub_1AF12F878(self->_engineContext, self->_renderGraph);
 
     objc_msgSend_unlock(self, v13, v14, v15);
   }
 }
 
-- (void)set_triggersEnabled:(BOOL)a3
+- (void)set_triggersEnabled:(BOOL)enabled
 {
-  v4 = a3;
-  objc_msgSend_lock(self, a2, a3, v3);
-  if (v4)
+  enabledCopy = enabled;
+  objc_msgSend_lock(self, a2, enabled, v3);
+  if (enabledCopy)
   {
     v6 = 32;
   }
@@ -4899,14 +4899,14 @@ LABEL_22:
   }
 
   *(self + 224) = *(self + 224) & 0xDF | v6;
-  sub_1AF130D50(self->_engineContext, v4);
+  sub_1AF130D50(self->_engineContext, enabledCopy);
 
   objc_msgSend_unlock(self, v7, v8, v9);
 }
 
-- (void)setBinaryArchives:(id)a3
+- (void)setBinaryArchives:(id)archives
 {
-  v5 = objc_msgSend_copy(a3, a2, a3, v3);
+  v5 = objc_msgSend_copy(archives, a2, archives, v3);
   v9 = objc_msgSend_resourceManager(self->_renderContext, v6, v7, v8);
   sub_1AFDE79B4(v9);
   v13 = objc_msgSend_resourceManager(self->_renderContext, v10, v11, v12);
@@ -4931,7 +4931,7 @@ LABEL_22:
   sub_1AF20C174();
 }
 
-- (VFXRenderer)initWithCommandQueue:(id)a3
+- (VFXRenderer)initWithCommandQueue:(id)queue
 {
   v9.receiver = self;
   v9.super_class = VFXRenderer;
@@ -4939,16 +4939,16 @@ LABEL_22:
   v7 = v4;
   if (v4)
   {
-    objc_msgSend_setupLegacyRendererWithCommandQueue_(v4, v5, a3, v6);
+    objc_msgSend_setupLegacyRendererWithCommandQueue_(v4, v5, queue, v6);
   }
 
   return v7;
 }
 
-- (id)setupLegacyRendererWithCommandQueue:(id)a3
+- (id)setupLegacyRendererWithCommandQueue:(id)queue
 {
   v5 = [_TtC3VFX17VFXRendererLegacy alloc];
-  v8 = objc_msgSend_initWithCommandQueue_(v5, v6, a3, v7);
+  v8 = objc_msgSend_initWithCommandQueue_(v5, v6, queue, v7);
   v12 = objc_msgSend_backgroundColor(self, v9, v10, v11);
   objc_msgSend_setBackgroundColor_(v8, v13, v12, v14);
   v18 = objc_msgSend_world(self, v15, v16, v17);
@@ -4978,11 +4978,11 @@ LABEL_22:
   return objc_msgSend_scene(v4, v5, v6, v7);
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
-  v5 = objc_msgSend_legacyRenderer(self, a2, a3, v3);
+  v5 = objc_msgSend_legacyRenderer(self, a2, scene, v3);
 
-  objc_msgSend_setScene_(v5, v6, a3, v7);
+  objc_msgSend_setScene_(v5, v6, scene, v7);
 }
 
 - (_TtC3VFX9VFXEffect)effect
@@ -4992,11 +4992,11 @@ LABEL_22:
   return MEMORY[0x1EEE66B58](v4, sel_effect, v5, v6);
 }
 
-- (void)setEffect:(id)a3
+- (void)setEffect:(id)effect
 {
-  v5 = objc_msgSend_legacyRenderer(self, a2, a3, v3);
+  v5 = objc_msgSend_legacyRenderer(self, a2, effect, v3);
 
-  MEMORY[0x1EEE66B58](v5, sel_setEffect_, a3, v6);
+  MEMORY[0x1EEE66B58](v5, sel_setEffect_, effect, v6);
 }
 
 - (MTLTexture)texture
@@ -5006,11 +5006,11 @@ LABEL_22:
   return objc_msgSend_texture(v4, v5, v6, v7);
 }
 
-- (void)setTexture:(id)a3
+- (void)setTexture:(id)texture
 {
-  v5 = objc_msgSend_legacyRenderer(self, a2, a3, v3);
+  v5 = objc_msgSend_legacyRenderer(self, a2, texture, v3);
 
-  objc_msgSend_setTexture_(v5, v6, a3, v7);
+  objc_msgSend_setTexture_(v5, v6, texture, v7);
 }
 
 - (MTLTexture)depthTexture
@@ -5020,11 +5020,11 @@ LABEL_22:
   return MEMORY[0x1EEE66B58](v4, sel_depthTexture, v5, v6);
 }
 
-- (void)setDepthTexture:(id)a3
+- (void)setDepthTexture:(id)texture
 {
-  v5 = objc_msgSend_legacyRenderer(self, a2, a3, v3);
+  v5 = objc_msgSend_legacyRenderer(self, a2, texture, v3);
 
-  objc_msgSend_setDepthTexture_(v5, v6, a3, v7);
+  objc_msgSend_setDepthTexture_(v5, v6, texture, v7);
 }
 
 - (BOOL)hasRenderableObjects
@@ -5034,11 +5034,11 @@ LABEL_22:
   return MEMORY[0x1EEE66B58](v4, sel_hasRenderableObjects, v5, v6);
 }
 
-- (void)encodeWithCommandBuffer:(id)a3
+- (void)encodeWithCommandBuffer:(id)buffer
 {
-  v5 = objc_msgSend_legacyRenderer(self, a2, a3, v3);
+  v5 = objc_msgSend_legacyRenderer(self, a2, buffer, v3);
 
-  MEMORY[0x1EEE66B58](v5, sel_encodeWithCommandBuffer_, a3, v6);
+  MEMORY[0x1EEE66B58](v5, sel_encodeWithCommandBuffer_, buffer, v6);
 }
 
 - (void)finalizeEncoding
@@ -5055,12 +5055,12 @@ LABEL_22:
   return MEMORY[0x1EEE66B58](v4, sel_enableDeferredRendering, v5, v6);
 }
 
-- (void)setEnableDeferredRendering:(BOOL)a3
+- (void)setEnableDeferredRendering:(BOOL)rendering
 {
-  v4 = a3;
-  v5 = objc_msgSend_legacyRenderer(self, a2, a3, v3);
+  renderingCopy = rendering;
+  v5 = objc_msgSend_legacyRenderer(self, a2, rendering, v3);
 
-  MEMORY[0x1EEE66B58](v5, sel_setEnableDeferredRendering_, v4, v6);
+  MEMORY[0x1EEE66B58](v5, sel_setEnableDeferredRendering_, renderingCopy, v6);
 }
 
 - (BOOL)_legacyAdditiveWritesToAlpha
@@ -5070,22 +5070,22 @@ LABEL_22:
   return objc_msgSend_additiveWritesToAlpha(v4, v5, v6, v7);
 }
 
-- (void)_setLegacyAdditiveWritesToAlpha:(BOOL)a3
+- (void)_setLegacyAdditiveWritesToAlpha:(BOOL)alpha
 {
-  v4 = a3;
-  v5 = objc_msgSend_legacyRenderer(self, a2, a3, v3);
+  alphaCopy = alpha;
+  v5 = objc_msgSend_legacyRenderer(self, a2, alpha, v3);
 
-  objc_msgSend_setAdditiveWritesToAlpha_(v5, v6, v4, v7);
+  objc_msgSend_setAdditiveWritesToAlpha_(v5, v6, alphaCopy, v7);
 }
 
-- (id)snapshotWithSize:(CGSize)a3 deltaTime:(double)a4
+- (id)snapshotWithSize:(CGSize)size deltaTime:(double)time
 {
   v6 = objc_msgSend_legacyRenderer(self, a2, v4, v5);
 
   return MEMORY[0x1EEE66B58](v6, sel_snapshotWithSize_deltaTime_, v7, v8);
 }
 
-- (id)snapshotImageWithSize:(CGSize)a3 deltaTime:(double)a4
+- (id)snapshotImageWithSize:(CGSize)size deltaTime:(double)time
 {
   v6 = objc_msgSend_legacyRenderer(self, a2, v4, v5);
 
@@ -5099,26 +5099,26 @@ LABEL_22:
   return MEMORY[0x1EEE66B58](v4, sel_postRenderCallback, v5, v6);
 }
 
-- (void)setPostRenderCallback:(id)a3
+- (void)setPostRenderCallback:(id)callback
 {
-  v5 = objc_msgSend_legacyRenderer(self, a2, a3, v3);
+  v5 = objc_msgSend_legacyRenderer(self, a2, callback, v3);
 
-  MEMORY[0x1EEE66B58](v5, sel_setPostRenderCallback_, a3, v6);
+  MEMORY[0x1EEE66B58](v5, sel_setPostRenderCallback_, callback, v6);
 }
 
-- (BOOL)renderMovieToURL:(id)a3 size:(CGSize)a4 antialiasingMode:(unint64_t)a5 attributes:(id)a6 error:(id *)a7
+- (BOOL)renderMovieToURL:(id)l size:(CGSize)size antialiasingMode:(unint64_t)mode attributes:(id)attributes error:(id *)error
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v14 = [VFXMovieExportOperation alloc];
-  v16 = objc_msgSend_initWithRenderer_size_attributes_outputURL_(v14, v15, self, a6, a3, width, height);
-  objc_msgSend_setAntialiasingMode_(v16, v17, a5, v18);
+  v16 = objc_msgSend_initWithRenderer_size_attributes_outputURL_(v14, v15, self, attributes, l, width, height);
+  objc_msgSend_setAntialiasingMode_(v16, v17, mode, v18);
   objc_msgSend_main(v16, v19, v20, v21);
   v25 = objc_msgSend_error(v16, v22, v23, v24);
   v29 = v25;
-  if (a7 && v25)
+  if (error && v25)
   {
-    *a7 = objc_msgSend_error(v16, v26, v27, v28);
+    *error = objc_msgSend_error(v16, v26, v27, v28);
   }
 
   return v29 == 0;

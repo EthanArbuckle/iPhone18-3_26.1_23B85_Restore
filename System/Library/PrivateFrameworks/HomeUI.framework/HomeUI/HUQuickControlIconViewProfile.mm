@@ -1,25 +1,25 @@
 @interface HUQuickControlIconViewProfile
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUQuickControlIconViewProfile
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = HUQuickControlIconViewProfile;
-  v4 = [(HUQuickControlViewProfile *)&v10 copyWithZone:a3];
-  v5 = [(HUQuickControlIconViewProfile *)self statusString];
-  [v4 setStatusString:v5];
+  v4 = [(HUQuickControlViewProfile *)&v10 copyWithZone:zone];
+  statusString = [(HUQuickControlIconViewProfile *)self statusString];
+  [v4 setStatusString:statusString];
 
-  v6 = [(HUQuickControlIconViewProfile *)self statusTextColor];
-  [v4 setStatusTextColor:v6];
+  statusTextColor = [(HUQuickControlIconViewProfile *)self statusTextColor];
+  [v4 setStatusTextColor:statusTextColor];
 
-  v7 = [(HUQuickControlIconViewProfile *)self supplementaryString];
-  [v4 setSupplementaryString:v7];
+  supplementaryString = [(HUQuickControlIconViewProfile *)self supplementaryString];
+  [v4 setSupplementaryString:supplementaryString];
 
-  v8 = [(HUQuickControlIconViewProfile *)self iconDescriptor];
-  [v4 setIconDescriptor:v8];
+  iconDescriptor = [(HUQuickControlIconViewProfile *)self iconDescriptor];
+  [v4 setIconDescriptor:iconDescriptor];
 
   return v4;
 }

@@ -1,6 +1,6 @@
 @interface FCNotificationPayload
 - (FCNotificationPayload)init;
-- (FCNotificationPayload)initWithNotificationItem:(id)a3 headline:(id)a4 bodyText:(id)a5;
+- (FCNotificationPayload)initWithNotificationItem:(id)item headline:(id)headline bodyText:(id)text;
 - (id)description;
 @end
 
@@ -32,20 +32,20 @@
   objc_exception_throw(v6);
 }
 
-- (FCNotificationPayload)initWithNotificationItem:(id)a3 headline:(id)a4 bodyText:(id)a5
+- (FCNotificationPayload)initWithNotificationItem:(id)item headline:(id)headline bodyText:(id)text
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  headlineCopy = headline;
+  textCopy = text;
   v15.receiver = self;
   v15.super_class = FCNotificationPayload;
   v12 = [(FCNotificationPayload *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_notificationItem, a3);
-    objc_storeStrong(&v13->_headline, a4);
-    objc_storeStrong(&v13->_bodyText, a5);
+    objc_storeStrong(&v12->_notificationItem, item);
+    objc_storeStrong(&v13->_headline, headline);
+    objc_storeStrong(&v13->_bodyText, text);
   }
 
   return v13;
@@ -54,25 +54,25 @@
 - (id)description
 {
   v3 = [[FCDescription alloc] initWithObject:self];
-  v4 = [(FCNotificationPayload *)self notificationItem];
-  v5 = [v4 identifier];
-  [(FCDescription *)v3 addField:@"identifier" value:v5];
+  notificationItem = [(FCNotificationPayload *)self notificationItem];
+  identifier = [notificationItem identifier];
+  [(FCDescription *)v3 addField:@"identifier" value:identifier];
 
-  v6 = [(FCNotificationPayload *)self notificationItem];
-  v7 = [v6 canonicalID];
-  [(FCDescription *)v3 addField:@"canonicalID" value:v7];
+  notificationItem2 = [(FCNotificationPayload *)self notificationItem];
+  canonicalID = [notificationItem2 canonicalID];
+  [(FCDescription *)v3 addField:@"canonicalID" value:canonicalID];
 
-  v8 = [(FCNotificationPayload *)self notificationItem];
-  v9 = [v8 articleID];
-  [(FCDescription *)v3 addField:@"articleID" value:v9];
+  notificationItem3 = [(FCNotificationPayload *)self notificationItem];
+  articleID = [notificationItem3 articleID];
+  [(FCDescription *)v3 addField:@"articleID" value:articleID];
 
-  v10 = [(FCNotificationPayload *)self headline];
-  v11 = [v10 title];
-  [(FCDescription *)v3 addField:@"title" value:v11];
+  headline = [(FCNotificationPayload *)self headline];
+  title = [headline title];
+  [(FCDescription *)v3 addField:@"title" value:title];
 
-  v12 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v12;
+  return descriptionString;
 }
 
 @end

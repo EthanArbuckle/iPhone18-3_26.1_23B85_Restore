@@ -3,182 +3,182 @@
 + (OS_dispatch_queue)sharedPrefetchQueue;
 + (id)_curationSharedBackgroundQueue;
 + (void)waitForAllBackgroundFetchingToFinish;
-- (BOOL)_addResultTuple:(id)a3 forAssetCollection:(id)a4 preparedResultRecord:(id)a5 toMutableResultRecord:(id)a6;
+- (BOOL)_addResultTuple:(id)tuple forAssetCollection:(id)collection preparedResultRecord:(id)record toMutableResultRecord:(id)resultRecord;
 - (BOOL)_allSectionsConsideredAccurate;
-- (BOOL)_areFiltersDisabledForAssetCollection:(id)a3;
-- (BOOL)_forceAccurateSection:(int64_t)a3 andNumberOfSurroundingSectionsWithContent:(int64_t)a4;
+- (BOOL)_areFiltersDisabledForAssetCollection:(id)collection;
+- (BOOL)_forceAccurateSection:(int64_t)section andNumberOfSurroundingSectionsWithContent:(int64_t)content;
 - (BOOL)_isFiltering;
-- (BOOL)_isResultTupleApplicable:(id)a3 forAssetCollection:(id)a4;
-- (BOOL)_reverseSortOrderForAssetCollection:(id)a3;
+- (BOOL)_isResultTupleApplicable:(id)applicable forAssetCollection:(id)collection;
+- (BOOL)_reverseSortOrderForAssetCollection:(id)collection;
 - (BOOL)containsMultipleAssets;
 - (BOOL)forceAccurateAllSectionsIfNeeded;
-- (BOOL)forceAccurateAssetCollectionsIfNeeded:(id)a3 reloadChanges:(BOOL)a4;
-- (BOOL)forceAccurateIndexPath:(id)a3 andAssetsBeforeAndAfter:(int64_t)a4;
-- (BOOL)forceAccurateSection:(int64_t)a3 andSectionsBeforeAndAfter:(int64_t)a4;
-- (BOOL)forceAccurateSectionsIfNeeded:(id)a3 reloadChanges:(BOOL)a4;
+- (BOOL)forceAccurateAssetCollectionsIfNeeded:(id)needed reloadChanges:(BOOL)changes;
+- (BOOL)forceAccurateIndexPath:(id)path andAssetsBeforeAndAfter:(int64_t)after;
+- (BOOL)forceAccurateSection:(int64_t)section andSectionsBeforeAndAfter:(int64_t)after;
+- (BOOL)forceAccurateSectionsIfNeeded:(id)needed reloadChanges:(BOOL)changes;
 - (BOOL)hasAnyAllowedUUIDs;
-- (BOOL)hasCurationForAssetCollection:(id)a3;
-- (BOOL)isAssetAtIndexPathPartOfCuratedSet:(PXSimpleIndexPath *)a3;
-- (BOOL)isCuratedAssetsEmptyForAssetCollection:(id)a3;
-- (BOOL)isCuratedAssetsFutilelyForAssetCollection:(id)a3;
+- (BOOL)hasCurationForAssetCollection:(id)collection;
+- (BOOL)isAssetAtIndexPathPartOfCuratedSet:(PXSimpleIndexPath *)set;
+- (BOOL)isCuratedAssetsEmptyForAssetCollection:(id)collection;
+- (BOOL)isCuratedAssetsFutilelyForAssetCollection:(id)collection;
 - (BOOL)isEmpty;
-- (BOOL)isSectionConsideredAccurate:(int64_t)a3;
-- (BOOL)wantsCurationForAssetCollection:(id)a3;
+- (BOOL)isSectionConsideredAccurate:(int64_t)accurate;
+- (BOOL)wantsCurationForAssetCollection:(id)collection;
 - (BOOL)wantsCurationForFirstAssetCollection;
 - (NSString)description;
 - (OS_os_log)dataSourceLog;
 - (PHAssetCollection)containerAssetCollection;
 - (PHCollection)containerCollection;
 - (PXAssetsDataSourceContainer)container;
-- (PXPhotosDataSource)initWithPhotosDataSource:(id)a3 options:(unint64_t)a4;
-- (PXPhotosDataSource)initWithPhotosDataSourceConfiguration:(id)a3;
-- (double)weightForAsset:(id)a3;
-- (id)_allowedOIDsForAssetCollection:(id)a3;
-- (id)_allowedUUIDsForAssetCollection:(id)a3;
-- (id)_assetContainerForAssetCollection:(id)a3;
-- (id)_assetOidsByAssetCollectionForAssetsAtIndexPathsInSet:(id)a3;
-- (id)_assetsForAssetCollection:(id)a3;
-- (id)_closestIndexPathToIndexPath:(id)a3;
-- (id)_createDataSourceWithAssetsCollections:(id)a3 existingAssetCollectionFetchResults:(id)a4;
-- (id)_createResultRecordForAssetCollection:(id)a3;
-- (id)_fetchAssetsStartingAtIndexPath:(id)a3;
-- (id)_fetchTupleForAssetCollection:(id)a3 calledOnClientQueue:(BOOL)a4 isLimitedInitialFetch:(BOOL)a5;
-- (id)_fetcherConfigurationForAssetCollection:(id)a3 useCase:(int64_t)a4 isLimitedInitialFetch:(BOOL)a5;
-- (id)_filterPredicateForAssetCollection:(id)a3;
-- (id)_finalFilterPredicateForAssetCollection:(id)a3;
+- (PXPhotosDataSource)initWithPhotosDataSource:(id)source options:(unint64_t)options;
+- (PXPhotosDataSource)initWithPhotosDataSourceConfiguration:(id)configuration;
+- (double)weightForAsset:(id)asset;
+- (id)_allowedOIDsForAssetCollection:(id)collection;
+- (id)_allowedUUIDsForAssetCollection:(id)collection;
+- (id)_assetContainerForAssetCollection:(id)collection;
+- (id)_assetOidsByAssetCollectionForAssetsAtIndexPathsInSet:(id)set;
+- (id)_assetsForAssetCollection:(id)collection;
+- (id)_closestIndexPathToIndexPath:(id)path;
+- (id)_createDataSourceWithAssetsCollections:(id)collections existingAssetCollectionFetchResults:(id)results;
+- (id)_createResultRecordForAssetCollection:(id)collection;
+- (id)_fetchAssetsStartingAtIndexPath:(id)path;
+- (id)_fetchTupleForAssetCollection:(id)collection calledOnClientQueue:(BOOL)queue isLimitedInitialFetch:(BOOL)fetch;
+- (id)_fetcherConfigurationForAssetCollection:(id)collection useCase:(int64_t)case isLimitedInitialFetch:(BOOL)fetch;
+- (id)_filterPredicateForAssetCollection:(id)collection;
+- (id)_finalFilterPredicateForAssetCollection:(id)collection;
 - (id)_inaccurateAssetCollections;
-- (id)_inclusionPredicateForAssetCollection:(id)a3;
-- (id)_indexPathForAssetWithUUID:(id)a3 orBurstIdentifier:(id)a4 orSyndicationIdentifier:(id)a5 hintIndexPath:(id)a6 hintCollections:(id)a7;
-- (id)_keyAssetsForAssetCollection:(id)a3;
-- (id)_mutableResultRecordForAssetCollection:(id)a3;
+- (id)_inclusionPredicateForAssetCollection:(id)collection;
+- (id)_indexPathForAssetWithUUID:(id)d orBurstIdentifier:(id)identifier orSyndicationIdentifier:(id)syndicationIdentifier hintIndexPath:(id)path hintCollections:(id)collections;
+- (id)_keyAssetsForAssetCollection:(id)collection;
+- (id)_mutableResultRecordForAssetCollection:(id)collection;
 - (id)_observerInterestingAssetReferences;
-- (id)_resultRecordForAssetCollection:(id)a3;
+- (id)_resultRecordForAssetCollection:(id)collection;
 - (id)_sectionCache;
-- (id)approximateAssetsAtIndexPaths:(id)a3;
-- (id)assetAtIndexPath:(id)a3;
-- (id)assetAtSimpleIndexPath:(PXSimpleIndexPath *)a3;
-- (id)assetCollectionForSection:(int64_t)a3;
-- (id)assetReferenceAtIndexPath:(id)a3;
-- (id)assetReferenceForAsset:(id)a3 containedInAssetCollectionWithType:(int64_t)a4;
-- (id)assetsAtIndexPaths:(id)a3;
-- (id)assetsInSection:(int64_t)a3;
-- (id)assetsStartingAtIndexPath:(id)a3;
-- (id)createDataSourceWithAssetsAtIndexPaths:(id)a3;
-- (id)createDataSourceWithAssetsInSectionOfAsset:(id)a3 usingNewTransientAssetCollection:(BOOL)a4;
-- (id)curatedAssetsForAssetCollection:(id)a3;
-- (id)curatedAssetsInSection:(int64_t)a3;
-- (id)facesAtSimpleIndexPath:(PXSimpleIndexPath *)a3;
-- (id)fetchResultWithAssetsAtIndexPaths:(id)a3;
-- (id)fetchResultWithAssetsInSections:(id)a3;
+- (id)approximateAssetsAtIndexPaths:(id)paths;
+- (id)assetAtIndexPath:(id)path;
+- (id)assetAtSimpleIndexPath:(PXSimpleIndexPath *)path;
+- (id)assetCollectionForSection:(int64_t)section;
+- (id)assetReferenceAtIndexPath:(id)path;
+- (id)assetReferenceForAsset:(id)asset containedInAssetCollectionWithType:(int64_t)type;
+- (id)assetsAtIndexPaths:(id)paths;
+- (id)assetsInSection:(int64_t)section;
+- (id)assetsStartingAtIndexPath:(id)path;
+- (id)createDataSourceWithAssetsAtIndexPaths:(id)paths;
+- (id)createDataSourceWithAssetsInSectionOfAsset:(id)asset usingNewTransientAssetCollection:(BOOL)collection;
+- (id)curatedAssetsForAssetCollection:(id)collection;
+- (id)curatedAssetsInSection:(int64_t)section;
+- (id)facesAtSimpleIndexPath:(PXSimpleIndexPath *)path;
+- (id)fetchResultWithAssetsAtIndexPaths:(id)paths;
+- (id)fetchResultWithAssetsInSections:(id)sections;
 - (id)fetchResultsByAssetCollection;
 - (id)immutableCopy;
-- (id)indexPathForAsset:(id)a3 hintIndexPath:(id)a4 hintCollection:(id)a5;
-- (id)indexPathForAsset:(id)a3 hintIndexPath:(id)a4 hintCollections:(id)a5;
-- (id)indexPathForAsset:(id)a3 inCollection:(id)a4;
-- (id)indexPathForAssetReference:(id)a3;
-- (id)indexPathForAssetWithUUID:(id)a3 orBurstIdentifier:(id)a4 hintIndexPath:(id)a5 hintCollection:(id)a6;
-- (id)indexPathForAssetWithUUID:(id)a3 orSyndicationIdentifier:(id)a4 hintIndexPath:(id)a5 hintCollection:(id)a6;
+- (id)indexPathForAsset:(id)asset hintIndexPath:(id)path hintCollection:(id)collection;
+- (id)indexPathForAsset:(id)asset hintIndexPath:(id)path hintCollections:(id)collections;
+- (id)indexPathForAsset:(id)asset inCollection:(id)collection;
+- (id)indexPathForAssetReference:(id)reference;
+- (id)indexPathForAssetWithUUID:(id)d orBurstIdentifier:(id)identifier hintIndexPath:(id)path hintCollection:(id)collection;
+- (id)indexPathForAssetWithUUID:(id)d orSyndicationIdentifier:(id)identifier hintIndexPath:(id)path hintCollection:(id)collection;
 - (id)indexPathForFirstAsset;
 - (id)indexPathForLastAsset;
-- (id)infoForAssetCollection:(id)a3;
-- (id)keyAssetsInSection:(int64_t)a3;
-- (id)pauseChangeDeliveryAndBackgroundLoadingWithTimeout:(double)a3 identifier:(id)a4;
-- (id)prepareForPhotoLibraryChange:(id)a3;
+- (id)infoForAssetCollection:(id)collection;
+- (id)keyAssetsInSection:(int64_t)section;
+- (id)pauseChangeDeliveryAndBackgroundLoadingWithTimeout:(double)timeout identifier:(id)identifier;
+- (id)prepareForPhotoLibraryChange:(id)change;
 - (id)reversedCopy;
-- (id)sectionsForAssetCollections:(id)a3;
-- (id)uncuratedAssetsForAssetCollection:(id)a3;
-- (id)uncuratedAssetsInSection:(int64_t)a3;
-- (int64_t)estimatedAssetsCountWithEnrichmentState:(unsigned __int16)a3;
+- (id)sectionsForAssetCollections:(id)collections;
+- (id)uncuratedAssetsForAssetCollection:(id)collection;
+- (id)uncuratedAssetsInSection:(int64_t)section;
+- (int64_t)estimatedAssetsCountWithEnrichmentState:(unsigned __int16)state;
 - (int64_t)estimatedOtherCount;
 - (int64_t)estimatedPhotosCount;
 - (int64_t)estimatedVideosCount;
-- (int64_t)indexForAsset:(id)a3 inCollection:(id)a4 hintIndex:(int64_t)a5;
-- (int64_t)keyAssetIndexInSection:(int64_t)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
-- (int64_t)numberOfSectionsWithEnrichmentState:(unsigned __int16)a3;
-- (unint64_t)_assetCollectionFetchStatus:(id)a3;
-- (unint64_t)_cachedSectionForAssetCollection:(id)a3;
-- (void)_adoptExistingAssetCollectionFetchResults:(id)a3;
-- (void)_bringFetchResultsUpToDateWithFetcherCacheForAssetCollection:(id)a3;
+- (int64_t)indexForAsset:(id)asset inCollection:(id)collection hintIndex:(int64_t)index;
+- (int64_t)keyAssetIndexInSection:(int64_t)section;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsWithEnrichmentState:(unsigned __int16)state;
+- (unint64_t)_assetCollectionFetchStatus:(id)status;
+- (unint64_t)_cachedSectionForAssetCollection:(id)collection;
+- (void)_adoptExistingAssetCollectionFetchResults:(id)results;
+- (void)_bringFetchResultsUpToDateWithFetcherCacheForAssetCollection:(id)collection;
 - (void)_cancelBackgroundFetchIfNeeded;
-- (void)_childDataSourceDidUpdateFetchesForAssetCollection:(id)a3;
+- (void)_childDataSourceDidUpdateFetchesForAssetCollection:(id)collection;
 - (void)_commonInit;
-- (void)_didChange:(id)a3;
-- (void)_didFinishBackgroundFetchingForId:(int64_t)a3;
-- (void)_distributeChange:(id)a3;
-- (void)_endFilterPredicateChangedForCollection:(id)a3;
-- (void)_endLibraryFilterChangedSignpostForCollection:(id)a3;
-- (void)_enumerateChangeObserversWithBlock:(id)a3;
-- (void)_fetchRemainingCollectionsBackgroundLoopWithId:(int64_t)a3;
-- (void)_getFetchLimit:(unint64_t *)a3 fetchWithReverseSortOrder:(BOOL *)a4 forAssetCollection:(id)a5 isLimitedInitialFetch:(BOOL)a6;
-- (void)_initResultRecordsWithOldOptions:(unint64_t)a3 newOptions:(unint64_t)a4;
-- (void)_internalSetLibraryFilter:(int64_t)a3;
+- (void)_didChange:(id)change;
+- (void)_didFinishBackgroundFetchingForId:(int64_t)id;
+- (void)_distributeChange:(id)change;
+- (void)_endFilterPredicateChangedForCollection:(id)collection;
+- (void)_endLibraryFilterChangedSignpostForCollection:(id)collection;
+- (void)_enumerateChangeObserversWithBlock:(id)block;
+- (void)_fetchRemainingCollectionsBackgroundLoopWithId:(int64_t)id;
+- (void)_getFetchLimit:(unint64_t *)limit fetchWithReverseSortOrder:(BOOL *)order forAssetCollection:(id)collection isLimitedInitialFetch:(BOOL)fetch;
+- (void)_initResultRecordsWithOldOptions:(unint64_t)options newOptions:(unint64_t)newOptions;
+- (void)_internalSetLibraryFilter:(int64_t)filter;
 - (void)_interruptBackgroundFetch;
 - (void)_observersQueue_copyChangeObserversForWriteIfNeeded;
-- (void)_performManualChangesForAssetCollections:(id)a3 collectionsToDiff:(id)a4 collectionsToChange:(id)a5 changeBlock:(id)a6;
-- (void)_performManualReloadWithChangeBlock:(id)a3;
+- (void)_performManualChangesForAssetCollections:(id)collections collectionsToDiff:(id)diff collectionsToChange:(id)change changeBlock:(id)block;
+- (void)_performManualReloadWithChangeBlock:(id)block;
 - (void)_performProcessAndPublishSelectorInDefaultRunLoopMode;
-- (void)_prefetchIndexesByFetchResult:(id)a3 onlyThumbnails:(BOOL)a4;
-- (void)_prepareDiffsForPendingResultsWithCompletion:(id)a3;
+- (void)_prefetchIndexesByFetchResult:(id)result onlyThumbnails:(BOOL)thumbnails;
+- (void)_prepareDiffsForPendingResultsWithCompletion:(id)completion;
 - (void)_processAndPublishPendingCollectionFetchResults;
 - (void)_processAndPublishPendingCollectionFetchResultsWhenAppropriate;
-- (void)_publishDidReceivePhotoLibraryChange:(id)a3;
+- (void)_publishDidReceivePhotoLibraryChange:(id)change;
 - (void)_publishReloadChange;
-- (void)_restartBackgroundFetchWithAssetCollectionsToDiff:(id)a3;
-- (void)_startFilterPredicateChangedSignpostForCollection:(id)a3;
-- (void)_startLibraryFilterChangedSignpostForCollection:(id)a3;
+- (void)_restartBackgroundFetchWithAssetCollectionsToDiff:(id)diff;
+- (void)_startFilterPredicateChangedSignpostForCollection:(id)collection;
+- (void)_startLibraryFilterChangedSignpostForCollection:(id)collection;
 - (void)_updateInaccurateAssetCollectionsIfNeeded;
 - (void)_willChange;
-- (void)clearResultsForAssetCollection:(id)a3;
-- (void)clearResultsForAssetCollections:(id)a3;
+- (void)clearResultsForAssetCollection:(id)collection;
+- (void)clearResultsForAssetCollections:(id)collections;
 - (void)dealloc;
-- (void)enumerateStartingAtIndexPath:(id)a3 reverseDirection:(BOOL)a4 usingBlock:(id)a5;
-- (void)forceExcludeAssetsAtIndexPaths:(id)a3;
-- (void)forceExcludeAssetsAtIndexes:(id)a3;
-- (void)forceIncludeAssetsAtIndexPaths:(id)a3;
-- (void)forceIncludeAssetsAtIndexes:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)pauseChangeDeliveryFor:(double)a3 identifier:(id)a4;
-- (void)performChanges:(id)a3;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
-- (void)prefetchApproximateAssetsAtIndexPaths:(id)a3 reverseOrder:(BOOL)a4;
-- (void)prefetchAssetsAtIndexPaths:(id)a3 onlyThumbnailAssets:(BOOL)a4;
-- (void)prefetchAssetsInSections:(id)a3;
-- (void)refetchResultsForAssetCollection:(id)a3;
-- (void)registerChangeObserver:(id)a3;
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3;
-- (void)setAllowedOIDs:(id)a3;
-- (void)setAllowedUUIDs:(id)a3 manualOrderUUIDs:(id)a4 forAssetCollections:(id)a5;
-- (void)setAllowedUUIDs:(id)a3 provideIncrementalChangeDetailsForAssetCollections:(id)a4;
-- (void)setBackgroundFetchOriginSection:(int64_t)a3;
-- (void)setCanIncludeUnsavedSyndicatedAssets:(BOOL)a3;
-- (void)setCollectionListFetchResult:(id)a3;
-- (void)setCurationLength:(int64_t)a3;
-- (void)setDisableFilters:(BOOL)a3 forAssetCollection:(id)a4;
-- (void)setFetchLimit:(unint64_t)a3;
-- (void)setFilterPredicate:(id)a3 provideIncrementalChangeDetailsForAssetCollections:(id)a4;
-- (void)setIncludeAllBurstAssets:(BOOL)a3;
-- (void)setIncludeOthersInSocialGroupAssets:(BOOL)a3 provideIncrementalChangeDetailsForAssetCollections:(id)a4;
-- (void)setIncludeSharedCollectionAssets:(BOOL)a3;
-- (void)setIsBackgroundFetching:(BOOL)a3;
-- (void)setKeyAsset:(id)a3 forAssetCollection:(id)a4;
-- (void)setLibraryFilter:(int64_t)a3;
-- (void)setReverseSortOrder:(BOOL)a3;
-- (void)setSortDescriptors:(id)a3;
-- (void)setWantsCuration:(BOOL)a3 forAssetCollection:(id)a4;
-- (void)setWantsCurationForAllCollections:(BOOL)a3 collectionsToDiff:(id)a4;
+- (void)enumerateStartingAtIndexPath:(id)path reverseDirection:(BOOL)direction usingBlock:(id)block;
+- (void)forceExcludeAssetsAtIndexPaths:(id)paths;
+- (void)forceExcludeAssetsAtIndexes:(id)indexes;
+- (void)forceIncludeAssetsAtIndexPaths:(id)paths;
+- (void)forceIncludeAssetsAtIndexes:(id)indexes;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)pauseChangeDeliveryFor:(double)for identifier:(id)identifier;
+- (void)performChanges:(id)changes;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
+- (void)prefetchApproximateAssetsAtIndexPaths:(id)paths reverseOrder:(BOOL)order;
+- (void)prefetchAssetsAtIndexPaths:(id)paths onlyThumbnailAssets:(BOOL)assets;
+- (void)prefetchAssetsInSections:(id)sections;
+- (void)refetchResultsForAssetCollection:(id)collection;
+- (void)registerChangeObserver:(id)observer;
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading;
+- (void)setAllowedOIDs:(id)ds;
+- (void)setAllowedUUIDs:(id)ds manualOrderUUIDs:(id)iDs forAssetCollections:(id)collections;
+- (void)setAllowedUUIDs:(id)ds provideIncrementalChangeDetailsForAssetCollections:(id)collections;
+- (void)setBackgroundFetchOriginSection:(int64_t)section;
+- (void)setCanIncludeUnsavedSyndicatedAssets:(BOOL)assets;
+- (void)setCollectionListFetchResult:(id)result;
+- (void)setCurationLength:(int64_t)length;
+- (void)setDisableFilters:(BOOL)filters forAssetCollection:(id)collection;
+- (void)setFetchLimit:(unint64_t)limit;
+- (void)setFilterPredicate:(id)predicate provideIncrementalChangeDetailsForAssetCollections:(id)collections;
+- (void)setIncludeAllBurstAssets:(BOOL)assets;
+- (void)setIncludeOthersInSocialGroupAssets:(BOOL)assets provideIncrementalChangeDetailsForAssetCollections:(id)collections;
+- (void)setIncludeSharedCollectionAssets:(BOOL)assets;
+- (void)setIsBackgroundFetching:(BOOL)fetching;
+- (void)setKeyAsset:(id)asset forAssetCollection:(id)collection;
+- (void)setLibraryFilter:(int64_t)filter;
+- (void)setReverseSortOrder:(BOOL)order;
+- (void)setSortDescriptors:(id)descriptors;
+- (void)setWantsCuration:(BOOL)curation forAssetCollection:(id)collection;
+- (void)setWantsCurationForAllCollections:(BOOL)collections collectionsToDiff:(id)diff;
 - (void)startBackgroundFetchIfNeeded;
-- (void)stopExcludingAssets:(id)a3;
+- (void)stopExcludingAssets:(id)assets;
 - (void)stopForceIncludingAllAssets;
-- (void)unregisterChangeObserver:(id)a3;
+- (void)unregisterChangeObserver:(id)observer;
 @end
 
 @implementation PXPhotosDataSource
 
 - (void)_commonInit
 {
-  v3 = [(PXPhotosDataSource *)self _areSecondaryFetchesEnabled];
-  if (v3)
+  _areSecondaryFetchesEnabled = [(PXPhotosDataSource *)self _areSecondaryFetchesEnabled];
+  if (_areSecondaryFetchesEnabled)
   {
     v4 = +[PXPhotosDataSource _curationSharedBackgroundQueue];
   }
@@ -204,9 +204,9 @@
   }
 
   objc_storeStrong(&self->_backgroundLIFOQueue, v4);
-  v10 = [(PXLIFOQueue *)v4 targetQueue];
+  targetQueue = [(PXLIFOQueue *)v4 targetQueue];
   backgroundQueue = self->_backgroundQueue;
-  self->_backgroundQueue = v10;
+  self->_backgroundQueue = targetQueue;
 
   v12 = +[PXPhotosDataSource sharedPrefetchQueue];
   prefetchQueue = self->_prefetchQueue;
@@ -223,13 +223,13 @@
 
   v18 = objc_alloc(MEMORY[0x1E69788E0]);
   photoLibrary = self->_photoLibrary;
-  v20 = [MEMORY[0x1E6978630] fetchType];
-  v21 = [v18 initWithOids:MEMORY[0x1E695E0F0] photoLibrary:photoLibrary fetchType:v20 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  fetchType = [MEMORY[0x1E6978630] fetchType];
+  v21 = [v18 initWithOids:MEMORY[0x1E695E0F0] photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:0 identifier:0 registerIfNeeded:0];
   emptyAssetsFetchResult = self->_emptyAssetsFetchResult;
   self->_emptyAssetsFetchResult = v21;
 
   options = self->_options;
-  if (options & 4) == 0 && ((v3 | options))
+  if (options & 4) == 0 && ((_areSecondaryFetchesEnabled | options))
   {
     v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
     pendingResultsByAssetCollection = self->_pendingResultsByAssetCollection;
@@ -244,22 +244,22 @@
     pendingResultsIsolationQueue = self->_pendingResultsIsolationQueue;
     self->_pendingResultsIsolationQueue = v29;
 
-    v31 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     queuedAssetCollectionsToFetch = self->_queuedAssetCollectionsToFetch;
-    self->_queuedAssetCollectionsToFetch = v31;
+    self->_queuedAssetCollectionsToFetch = orderedSet;
 
     self->_needToStartBackgroundFetch = 1;
     self->_isBackgroundFetching = 1;
     self->_inaccurateAssetCollectionsNeedsUpdate = 1;
     v33 = objc_alloc_init(PXBackgroundFetchToken);
-    v34 = [off_1E7721858 sharedScheduler];
+    sharedScheduler = [off_1E7721858 sharedScheduler];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __33__PXPhotosDataSource__commonInit__block_invoke;
     v38[3] = &unk_1E774C648;
     v39 = v33;
     v35 = v33;
-    [v34 scheduleDeferredTaskWithQoS:1 block:v38];
+    [sharedScheduler scheduleDeferredTaskWithQoS:1 block:v38];
 
     if ((self->_options & 4) != 0)
     {
@@ -275,9 +275,9 @@
   {
 LABEL_12:
     [(PHPhotoLibrary *)self->_photoLibrary px_registerChangeObserver:self];
-    v36 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observersQueue_observers = self->_observersQueue_observers;
-    self->_observersQueue_observers = v36;
+    self->_observersQueue_observers = weakObjectsHashTable;
   }
 
 LABEL_13:
@@ -435,9 +435,9 @@ void __45__PXPhotosDataSource_backgroundFetchingGroup__block_invoke()
           }
         }
 
-        v13 = [v11 fetchResult];
+        fetchResult = [v11 fetchResult];
 
-        if (!v13)
+        if (!fetchResult)
         {
           [(NSMutableOrderedSet *)self->_queuedAssetCollectionsToFetch addObject:v10];
           inaccurateAssetCollections = self->__inaccurateAssetCollections;
@@ -448,9 +448,9 @@ LABEL_27:
 
         if ((options & 0x10) != 0)
         {
-          v15 = [v11 curatedFetchResult];
-          v2 = v15;
-          if (!v15)
+          curatedFetchResult = [v11 curatedFetchResult];
+          v2 = curatedFetchResult;
+          if (!curatedFetchResult)
           {
             goto LABEL_26;
           }
@@ -467,13 +467,13 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        v16 = [v11 keyAssetsFetchResult];
+        keyAssetsFetchResult = [v11 keyAssetsFetchResult];
 
         if ((options & 0x10) != 0)
         {
         }
 
-        if (!v16)
+        if (!keyAssetsFetchResult)
         {
 LABEL_26:
           inaccurateAssetCollections = self->_queuedAssetCollectionsToFetch;
@@ -506,20 +506,20 @@ LABEL_30:
   containerCollection = self->_containerCollection;
   if (containerCollection)
   {
-    v3 = containerCollection;
+    firstAssetCollection = containerCollection;
   }
 
   else if ([(PXPhotosDataSource *)self numberOfSections]== 1)
   {
-    v3 = [(PXPhotosDataSource *)self firstAssetCollection];
+    firstAssetCollection = [(PXPhotosDataSource *)self firstAssetCollection];
   }
 
   else
   {
-    v3 = 0;
+    firstAssetCollection = 0;
   }
 
-  return v3;
+  return firstAssetCollection;
 }
 
 + (id)_curationSharedBackgroundQueue
@@ -555,11 +555,11 @@ void __52__PXPhotosDataSource__curationSharedBackgroundQueue__block_invoke()
 
   else
   {
-    v5 = [(PXPhotosDataSource *)self numberOfSections];
+    numberOfSections = [(PXPhotosDataSource *)self numberOfSections];
     v6 = 1;
-    if (v5)
+    if (numberOfSections)
     {
-      v7 = v5;
+      v7 = numberOfSections;
       v16 = 0;
       v17 = &v16;
       v18 = 0x2020000000;
@@ -572,15 +572,15 @@ void __52__PXPhotosDataSource__curationSharedBackgroundQueue__block_invoke()
       v8 = v17;
       if (*(v17 + 24) == 1)
       {
-        v9 = [(PXPhotosDataSource *)self backgroundFetchOriginSection];
-        if (v9 < 0 || v9 >= v7)
+        backgroundFetchOriginSection = [(PXPhotosDataSource *)self backgroundFetchOriginSection];
+        if (backgroundFetchOriginSection < 0 || backgroundFetchOriginSection >= v7)
         {
           v8 = v17;
         }
 
         else
         {
-          v10 = [(PXPhotosDataSource *)self numberOfItemsInSection:v9];
+          v10 = [(PXPhotosDataSource *)self numberOfItemsInSection:backgroundFetchOriginSection];
           v8 = v17;
           if (v10 >= 1)
           {
@@ -631,8 +631,8 @@ LABEL_25:
 
 - (BOOL)_allSectionsConsideredAccurate
 {
-  v2 = [(PXPhotosDataSource *)self _inaccurateAssetCollections];
-  v3 = [v2 count] == 0;
+  _inaccurateAssetCollections = [(PXPhotosDataSource *)self _inaccurateAssetCollections];
+  v3 = [_inaccurateAssetCollections count] == 0;
 
   return v3;
 }
@@ -650,16 +650,16 @@ LABEL_25:
     }
 
     [(PXPhotosDataSource *)self _updateInaccurateAssetCollectionsIfNeeded];
-    v5 = [(PXPhotosDataSource *)self _nextBackgroundFetchId];
+    _nextBackgroundFetchId = [(PXPhotosDataSource *)self _nextBackgroundFetchId];
     objc_initWeak(&location, self);
-    v6 = [(PXPhotosDataSource *)self clientQueue];
+    clientQueue = [(PXPhotosDataSource *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__PXPhotosDataSource_startBackgroundFetchIfNeeded__block_invoke;
     block[3] = &unk_1E7749808;
     objc_copyWeak(v8, &location);
-    v8[1] = v5;
-    dispatch_async(v6, block);
+    v8[1] = _nextBackgroundFetchId;
+    dispatch_async(clientQueue, block);
 
     objc_destroyWeak(v8);
     objc_destroyWeak(&location);
@@ -709,22 +709,22 @@ void __35__PXPhotosDataSource_dataSourceLog__block_invoke()
   dataSourceLog_dataSourceLog = v0;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXSharedLibraryStatusProviderObservationContext_205840 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXSharedLibraryStatusProviderObservationContext_205840 == context)
   {
-    if ((v6 & 3) == 0)
+    if ((changeCopy & 3) == 0)
     {
       goto LABEL_11;
     }
 
-    v15 = v9;
-    v11 = [(PXPhotosDataSource *)self sharedLibraryStatusProvider];
-    v12 = [v11 hasPreview];
+    v15 = observableCopy;
+    sharedLibraryStatusProvider = [(PXPhotosDataSource *)self sharedLibraryStatusProvider];
+    hasPreview = [sharedLibraryStatusProvider hasPreview];
 
-    if (v12)
+    if (hasPreview)
     {
       v13 = 2;
     }
@@ -738,31 +738,31 @@ void __35__PXPhotosDataSource_dataSourceLog__block_invoke()
     goto LABEL_10;
   }
 
-  if (PXLibraryFilterStateObservationContext_205841 != a5)
+  if (PXLibraryFilterStateObservationContext_205841 != context)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:4178 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:4178 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v15 = v9;
-    v10 = [(PXPhotosDataSource *)self libraryFilterState];
-    -[PXPhotosDataSource _internalSetLibraryFilter:](self, "_internalSetLibraryFilter:", [v10 viewMode]);
+    v15 = observableCopy;
+    libraryFilterState = [(PXPhotosDataSource *)self libraryFilterState];
+    -[PXPhotosDataSource _internalSetLibraryFilter:](self, "_internalSetLibraryFilter:", [libraryFilterState viewMode]);
 
 LABEL_10:
-    v9 = v15;
+    observableCopy = v15;
   }
 
 LABEL_11:
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
   v94 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  queueCopy = queue;
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
@@ -791,7 +791,7 @@ LABEL_11:
   }
 
   objc_storeStrong(&self->_hintIndexPathByAssetReferenceCache, self->_preparedIndexPathByAssetReferenceCache);
-  v10 = [v5 changeDetailsForFetchResult:self->_collectionListFetchResult];
+  v10 = [queueCopy changeDetailsForFetchResult:self->_collectionListFetchResult];
   v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSMutableDictionary count](self->_resultRecordByAssetCollection, "count")}];
   resultRecordByAssetCollection = self->_resultRecordByAssetCollection;
   v85[0] = MEMORY[0x1E69E9820];
@@ -799,7 +799,7 @@ LABEL_11:
   v85[2] = __55__PXPhotosDataSource_photoLibraryDidChangeOnMainQueue___block_invoke;
   v85[3] = &unk_1E7744698;
   v85[4] = self;
-  v86 = v5;
+  v86 = queueCopy;
   v13 = v11;
   v14 = v86;
   v15 = v13;
@@ -813,23 +813,23 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v18 = [(PXPhotosDataSource *)self container];
-  v19 = [(PHObjectChangeDetails *)v69 objectBeforeChanges];
-  v20 = v19 == v18;
+  container = [(PXPhotosDataSource *)self container];
+  objectBeforeChanges = [(PHObjectChangeDetails *)v69 objectBeforeChanges];
+  v20 = objectBeforeChanges == container;
 
   if (v20)
   {
 
 LABEL_13:
-    v22 = [(PHObjectChangeDetails *)self->_preparedContainerChangeDetails objectAfterChanges];
-    v23 = v22;
+    objectAfterChanges = [(PHObjectChangeDetails *)self->_preparedContainerChangeDetails objectAfterChanges];
+    v23 = objectAfterChanges;
     if (self->_assetContainerProvider)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __55__PXPhotosDataSource_photoLibraryDidChangeOnMainQueue___block_invoke_2;
       aBlock[3] = &unk_1E77446C0;
-      v84 = v22;
+      v84 = objectAfterChanges;
       v24 = _Block_copy(aBlock);
       assetContainerProvider = self->_assetContainerProvider;
       self->_assetContainerProvider = v24;
@@ -861,25 +861,25 @@ LABEL_20:
         goto LABEL_15;
       }
 
-      v68 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v62 = objc_opt_class();
       v61 = NSStringFromClass(v62);
-      v63 = [(PHCollection *)v27 px_descriptionForAssertionMessage];
-      [v68 handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:4049 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"containerAfterChange", v61, v63}];
+      px_descriptionForAssertionMessage = [(PHCollection *)v27 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:4049 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"containerAfterChange", v61, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v68 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v60 = objc_opt_class();
       v61 = NSStringFromClass(v60);
-      [v68 handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:4049 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"containerAfterChange", v61}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:4049 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"containerAfterChange", v61}];
     }
 
     goto LABEL_20;
   }
 
-  v21 = [v14 changeDetailsForObject:v18];
+  v21 = [v14 changeDetailsForObject:container];
 
   v69 = v21;
   if (v21)
@@ -897,7 +897,7 @@ LABEL_23:
     goto LABEL_47;
   }
 
-  v66 = [(PXPhotosDataSource *)self versionIdentifier];
+  versionIdentifier = [(PXPhotosDataSource *)self versionIdentifier];
   v79 = 0;
   v80 = &v79;
   v81 = 0x2020000000;
@@ -916,12 +916,12 @@ LABEL_23:
     if ([v10 hasIncrementalChanges])
     {
       v30 = self->_resultRecordByAssetCollection;
-      v31 = [v10 removedObjects];
-      [(NSMutableDictionary *)v30 removeObjectsForKeys:v31];
+      removedObjects = [v10 removedObjects];
+      [(NSMutableDictionary *)v30 removeObjectsForKeys:removedObjects];
 
       infoForAssetCollection = self->_infoForAssetCollection;
-      v33 = [v10 removedObjects];
-      [(NSMutableDictionary *)infoForAssetCollection removeObjectsForKeys:v33];
+      removedObjects2 = [v10 removedObjects];
+      [(NSMutableDictionary *)infoForAssetCollection removeObjectsForKeys:removedObjects2];
     }
 
     else
@@ -929,9 +929,9 @@ LABEL_23:
       if (!self->_collectionListFetchResult)
       {
 LABEL_40:
-        v42 = [v10 fetchResultAfterChanges];
+        fetchResultAfterChanges = [v10 fetchResultAfterChanges];
         collectionListFetchResult = self->_collectionListFetchResult;
-        self->_collectionListFetchResult = v42;
+        self->_collectionListFetchResult = fetchResultAfterChanges;
 
         os_unfair_lock_lock(&self->_sectionCacheLock);
         objc_storeStrong(&self->__sectionCache, self->__preparedSectionCache);
@@ -939,10 +939,10 @@ LABEL_40:
         goto LABEL_41;
       }
 
-      v33 = [v10 fetchResultAfterChanges];
+      removedObjects2 = [v10 fetchResultAfterChanges];
       v34 = MEMORY[0x1E695DFD8];
-      v35 = [v33 fetchedObjects];
-      v36 = [v34 setWithArray:v35];
+      fetchedObjects = [removedObjects2 fetchedObjects];
+      v36 = [v34 setWithArray:fetchedObjects];
 
       v64 = v17;
       v65 = v14;
@@ -986,7 +986,7 @@ LABEL_40:
   }
 
 LABEL_41:
-  v44 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v45 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v17, "count")}];
   v70[0] = MEMORY[0x1E69E9820];
   v70[1] = 3221225472;
@@ -997,7 +997,7 @@ LABEL_41:
   v73 = v46;
   v47 = v45;
   v71 = v47;
-  v48 = v44;
+  v48 = indexSet;
   v72 = v48;
   [v17 enumerateKeysAndObjectsUsingBlock:v70];
   if (v67)
@@ -1006,19 +1006,19 @@ LABEL_41:
     if (!v10)
     {
       v49 = objc_alloc(MEMORY[0x1E6978848]);
-      v50 = [(PXPhotosDataSource *)self collectionListFetchResult];
-      v51 = [(PXPhotosDataSource *)self collectionListFetchResult];
-      v10 = [v49 initWithFetchResult:v50 currentFetchResult:v51 changedIdentifiers:MEMORY[0x1E695E0F0] unknownMergeEvent:0];
+      collectionListFetchResult = [(PXPhotosDataSource *)self collectionListFetchResult];
+      collectionListFetchResult2 = [(PXPhotosDataSource *)self collectionListFetchResult];
+      v10 = [v49 initWithFetchResult:collectionListFetchResult currentFetchResult:collectionListFetchResult2 changedIdentifiers:MEMORY[0x1E695E0F0] unknownMergeEvent:0];
     }
   }
 
   if (*(v80 + 24) == 1)
   {
-    v52 = [(PXPhotosDataSource *)self versionIdentifier];
-    v53 = [(PXPhotosDataSource *)self _sectionCache];
-    v54 = [v53 assetCollectionToSection];
+    versionIdentifier2 = [(PXPhotosDataSource *)self versionIdentifier];
+    _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+    assetCollectionToSection = [_sectionCache assetCollectionToSection];
 
-    v55 = [[PXPhotosDataSourceChange alloc] initWithIncrementalChanges:v10 assetCollectionChangeDetails:v47 sectionsWithKeyAssetChanges:v48 previousCollectionsCount:[(PXPhotosDataSource *)self _previousCollectionsCount] assetCollectionToSectionCache:v54 originatingPhotoLibraryChange:v14 fromIdentifier:v66 toIdentifier:v52];
+    v55 = [[PXPhotosDataSourceChange alloc] initWithIncrementalChanges:v10 assetCollectionChangeDetails:v47 sectionsWithKeyAssetChanges:v48 previousCollectionsCount:[(PXPhotosDataSource *)self _previousCollectionsCount] assetCollectionToSectionCache:assetCollectionToSection originatingPhotoLibraryChange:v14 fromIdentifier:versionIdentifier toIdentifier:versionIdentifier2];
     [(PXPhotosDataSource *)self _didChange:v55];
   }
 
@@ -1106,12 +1106,12 @@ void __55__PXPhotosDataSource_photoLibraryDidChangeOnMainQueue___block_invoke_4(
   }
 }
 
-- (void)_bringFetchResultsUpToDateWithFetcherCacheForAssetCollection:(id)a3
+- (void)_bringFetchResultsUpToDateWithFetcherCacheForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:v4];
-  v6 = [(PXPhotosDataSource *)self _inaccurateAssetCollections];
-  v7 = [v6 containsObject:v4];
+  collectionCopy = collection;
+  v5 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:collectionCopy];
+  _inaccurateAssetCollections = [(PXPhotosDataSource *)self _inaccurateAssetCollections];
+  v7 = [_inaccurateAssetCollections containsObject:collectionCopy];
 
   if (v7)
   {
@@ -1123,19 +1123,19 @@ void __55__PXPhotosDataSource_photoLibraryDidChangeOnMainQueue___block_invoke_4(
     v8 = 0;
   }
 
-  v9 = [(PXPhotosDataSource *)self fetcher];
-  v10 = [(PXPhotosDataSource *)self _assetContainerForAssetCollection:v4];
+  fetcher = [(PXPhotosDataSource *)self fetcher];
+  v10 = [(PXPhotosDataSource *)self _assetContainerForAssetCollection:collectionCopy];
   if (v7 && !v8)
   {
     goto LABEL_38;
   }
 
-  v11 = [v5 fetchResult];
-  if (!v11)
+  fetchResult = [v5 fetchResult];
+  if (!fetchResult)
   {
     v29 = 0;
     v28 = 0;
-    [(PXPhotosDataSource *)self _getFetchLimit:&v29 fetchWithReverseSortOrder:&v28 forAssetCollection:v4 isLimitedInitialFetch:v8];
+    [(PXPhotosDataSource *)self _getFetchLimit:&v29 fetchWithReverseSortOrder:&v28 forAssetCollection:collectionCopy isLimitedInitialFetch:v8];
     options = self->_options;
     if ((options & 0x40) != 0)
     {
@@ -1151,10 +1151,10 @@ void __55__PXPhotosDataSource_photoLibraryDidChangeOnMainQueue___block_invoke_4(
 
     if (v14)
     {
-      v15 = [(PXPhotosDataSource *)self _fetcherConfigurationForAssetCollection:v4 useCase:0 isLimitedInitialFetch:v8];
-      v11 = [v9 existingAssetsFetchResultForContainer:v10 configuration:v15];
+      v15 = [(PXPhotosDataSource *)self _fetcherConfigurationForAssetCollection:collectionCopy useCase:0 isLimitedInitialFetch:v8];
+      fetchResult = [fetcher existingAssetsFetchResultForContainer:v10 configuration:v15];
 
-      if (!v11)
+      if (!fetchResult)
       {
         goto LABEL_19;
       }
@@ -1163,14 +1163,14 @@ void __55__PXPhotosDataSource_photoLibraryDidChangeOnMainQueue___block_invoke_4(
     else
     {
 LABEL_12:
-      v11 = self->_emptyAssetsFetchResult;
-      if (!v11)
+      fetchResult = self->_emptyAssetsFetchResult;
+      if (!fetchResult)
       {
         goto LABEL_19;
       }
     }
 
-    v16 = [(PXPhotosDataSource *)self _mutableResultRecordForAssetCollection:v4];
+    v16 = [(PXPhotosDataSource *)self _mutableResultRecordForAssetCollection:collectionCopy];
     if (v28 == 1)
     {
       v17 = [(PXPhotosDataSource *)self reverseSortOrder]^ 1;
@@ -1181,23 +1181,23 @@ LABEL_12:
       v17 = 0;
     }
 
-    [v16 setFetchResult:v11 reverseSortOrder:v17];
+    [v16 setFetchResult:fetchResult reverseSortOrder:v17];
   }
 
 LABEL_19:
   v18 = self->_options;
-  if ((v18 & 0x10) != 0 && [v4 px_supportsFastCuration])
+  if ((v18 & 0x10) != 0 && [collectionCopy px_supportsFastCuration])
   {
-    v19 = [v5 curatedFetchResult];
-    if (!v19)
+    curatedFetchResult = [v5 curatedFetchResult];
+    if (!curatedFetchResult)
     {
-      v20 = [(PXPhotosDataSource *)self _fetcherConfigurationForAssetCollection:v4 useCase:1 isLimitedInitialFetch:v8];
-      v19 = [v9 existingAssetsFetchResultForContainer:v10 configuration:v20];
-      if (v19)
+      v20 = [(PXPhotosDataSource *)self _fetcherConfigurationForAssetCollection:collectionCopy useCase:1 isLimitedInitialFetch:v8];
+      curatedFetchResult = [fetcher existingAssetsFetchResultForContainer:v10 configuration:v20];
+      if (curatedFetchResult)
       {
-        [(PXPhotosDataSource *)self _mutableResultRecordForAssetCollection:v4];
+        [(PXPhotosDataSource *)self _mutableResultRecordForAssetCollection:collectionCopy];
         v21 = v27 = v20;
-        [v21 setCuratedFetchResult:v19];
+        [v21 setCuratedFetchResult:curatedFetchResult];
 
         v20 = v27;
       }
@@ -1206,11 +1206,11 @@ LABEL_19:
 
   if ((self->_options & 0x20) != 0)
   {
-    v22 = [v4 px_supportsFastCuration];
-    if ((v18 & 0x10) == 0 || v22)
+    px_supportsFastCuration = [collectionCopy px_supportsFastCuration];
+    if ((v18 & 0x10) == 0 || px_supportsFastCuration)
     {
-      v23 = [v5 keyAssetsFetchResult];
-      if (!v23)
+      keyAssetsFetchResult = [v5 keyAssetsFetchResult];
+      if (!keyAssetsFetchResult)
       {
         if ((v18 & 0x10) != 0)
         {
@@ -1222,12 +1222,12 @@ LABEL_19:
           v24 = 2;
         }
 
-        v25 = [(PXPhotosDataSource *)self _fetcherConfigurationForAssetCollection:v4 useCase:v24 isLimitedInitialFetch:v8];
-        v23 = [v9 existingAssetsFetchResultForContainer:v10 configuration:v25];
-        if (v23)
+        v25 = [(PXPhotosDataSource *)self _fetcherConfigurationForAssetCollection:collectionCopy useCase:v24 isLimitedInitialFetch:v8];
+        keyAssetsFetchResult = [fetcher existingAssetsFetchResultForContainer:v10 configuration:v25];
+        if (keyAssetsFetchResult)
         {
-          v26 = [(PXPhotosDataSource *)self _mutableResultRecordForAssetCollection:v4];
-          [v26 setKeyAssetsFetchResult:v23];
+          v26 = [(PXPhotosDataSource *)self _mutableResultRecordForAssetCollection:collectionCopy];
+          [v26 setKeyAssetsFetchResult:keyAssetsFetchResult];
         }
       }
     }
@@ -1236,13 +1236,13 @@ LABEL_19:
 LABEL_38:
 }
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
   v97 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  changeCopy = change;
+  v5 = changeCopy;
   pendingResultsIsolationQueue = self->_pendingResultsIsolationQueue;
-  v51 = self;
+  selfCopy = self;
   if (pendingResultsIsolationQueue)
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -1250,7 +1250,7 @@ LABEL_38:
     block[2] = __51__PXPhotosDataSource_prepareForPhotoLibraryChange___block_invoke;
     block[3] = &unk_1E774C620;
     block[4] = self;
-    v95 = v4;
+    v95 = changeCopy;
     dispatch_sync(pendingResultsIsolationQueue, block);
   }
 
@@ -1272,7 +1272,7 @@ LABEL_38:
   v79 = __Block_byref_object_copy__205867;
   v80 = __Block_byref_object_dispose__205868;
   v81 = 0;
-  v7 = [(PXPhotosDataSource *)self clientQueue];
+  clientQueue = [(PXPhotosDataSource *)self clientQueue];
   v75[0] = MEMORY[0x1E69E9820];
   v75[1] = 3221225472;
   v75[2] = __51__PXPhotosDataSource_prepareForPhotoLibraryChange___block_invoke_4;
@@ -1281,22 +1281,22 @@ LABEL_38:
   v75[5] = &v82;
   v75[6] = &v88;
   v75[7] = &v76;
-  dispatch_sync(v7, v75);
+  dispatch_sync(clientQueue, v75);
 
   v8 = [v5 changeDetailsForFetchResult:v89[5]];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 fetchResultAfterChanges];
-    v11 = [[PXPhotosDataSourceSectionCache alloc] initWithCollectionListFetchResult:v10];
+    fetchResultAfterChanges = [v8 fetchResultAfterChanges];
+    v11 = [[PXPhotosDataSourceSectionCache alloc] initWithCollectionListFetchResult:fetchResultAfterChanges];
     preparedSectionCache = self->__preparedSectionCache;
     self->__preparedSectionCache = v11;
 
     v13 = v89[5];
-    v89[5] = v10;
+    v89[5] = fetchResultAfterChanges;
   }
 
-  v14 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = v83[5];
   v71[0] = MEMORY[0x1E69E9820];
   v71[1] = 3221225472;
@@ -1304,8 +1304,8 @@ LABEL_38:
   v71[3] = &unk_1E7744698;
   v50 = v5;
   v72 = v50;
-  v73 = self;
-  v16 = v14;
+  selfCopy2 = self;
+  v16 = dictionary;
   v74 = v16;
   [v15 enumerateKeysAndObjectsUsingBlock:v71];
   v17 = [v16 copy];
@@ -1334,11 +1334,11 @@ LABEL_38:
         }
 
         v22 = *(*(&v67 + 1) + 8 * i);
-        v23 = [v22 assetCollection];
+        assetCollection = [v22 assetCollection];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v24 = [v22 asset];
+          asset = [v22 asset];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1347,7 +1347,7 @@ LABEL_38:
             continue;
           }
 
-          v23 = [v22 assetCollection];
+          assetCollection = [v22 assetCollection];
           if (v22)
           {
             [v22 simpleIndexPath];
@@ -1361,20 +1361,20 @@ LABEL_38:
             v66 = 0u;
           }
 
-          if (v26 >= [v89[5] count] || (objc_msgSend(v89[5], "objectAtIndexedSubscript:", v26), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "isEqual:", v23), v27, (v28 & 1) == 0))
+          if (v26 >= [v89[5] count] || (objc_msgSend(v89[5], "objectAtIndexedSubscript:", v26), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "isEqual:", assetCollection), v27, (v28 & 1) == 0))
           {
-            v26 = [v89[5] indexOfObject:v23];
+            v26 = [v89[5] indexOfObject:assetCollection];
           }
 
           if (v26 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v29 = [v54 objectForKeyedSubscript:v23];
-            v30 = [v29 resultRecordAfterChanges];
-            v31 = [v30 exposedFetchResult];
+            v29 = [v54 objectForKeyedSubscript:assetCollection];
+            resultRecordAfterChanges = [v29 resultRecordAfterChanges];
+            exposedFetchResult = [resultRecordAfterChanges exposedFetchResult];
 
-            if (v31)
+            if (exposedFetchResult)
             {
-              v32 = [v22 asset];
+              asset2 = [v22 asset];
               if (v22)
               {
                 [v22 simpleIndexPath];
@@ -1388,9 +1388,9 @@ LABEL_38:
                 v64 = 0u;
               }
 
-              if (v33 < [v31 count] && (v34 = objc_msgSend(v31, "indexOfObject:inRange:", v32, v33, 1), v34 != 0x7FFFFFFFFFFFFFFFLL) || (v34 = objc_msgSend(v31, "indexOfObject:", v32), v34 != 0x7FFFFFFFFFFFFFFFLL))
+              if (v33 < [exposedFetchResult count] && (v34 = objc_msgSend(exposedFetchResult, "indexOfObject:inRange:", asset2, v33, 1), v34 != 0x7FFFFFFFFFFFFFFFLL) || (v34 = objc_msgSend(exposedFetchResult, "indexOfObject:", asset2), v34 != 0x7FFFFFFFFFFFFFFFLL))
               {
-                v35 = [v31 objectAtIndex:v34];
+                v35 = [exposedFetchResult objectAtIndex:v34];
                 v36 = [MEMORY[0x1E696AC88] indexPathForItem:v34 inSection:v26];
                 [v52 setObject:v36 forKeyedSubscript:v22];
               }
@@ -1408,8 +1408,8 @@ LABEL_38:
   }
 
   v37 = [v52 copy];
-  preparedIndexPathByAssetReferenceCache = v51->_preparedIndexPathByAssetReferenceCache;
-  v51->_preparedIndexPathByAssetReferenceCache = v37;
+  preparedIndexPathByAssetReferenceCache = selfCopy->_preparedIndexPathByAssetReferenceCache;
+  selfCopy->_preparedIndexPathByAssetReferenceCache = v37;
 
   v57 = 0;
   v58 = &v57;
@@ -1417,14 +1417,14 @@ LABEL_38:
   v60 = __Block_byref_object_copy__205867;
   v61 = __Block_byref_object_dispose__205868;
   v62 = 0;
-  v39 = [(PXPhotosDataSource *)v51 clientQueue];
+  clientQueue2 = [(PXPhotosDataSource *)selfCopy clientQueue];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __51__PXPhotosDataSource_prepareForPhotoLibraryChange___block_invoke_6;
   v56[3] = &unk_1E7749A28;
-  v56[4] = v51;
+  v56[4] = selfCopy;
   v56[5] = &v57;
-  dispatch_sync(v39, v56);
+  dispatch_sync(clientQueue2, v56);
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1436,10 +1436,10 @@ LABEL_38:
   v40 = v58[5];
   if (!v40)
   {
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v45 = objc_opt_class();
     v46 = NSStringFromClass(v45);
-    [v44 handleFailureInMethod:a2 object:v51 file:@"PXPhotosDataSource.m" lineNumber:3931 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"container", v46}];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PXPhotosDataSource.m" lineNumber:3931 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"container", v46}];
 LABEL_40:
 
     goto LABEL_35;
@@ -1448,11 +1448,11 @@ LABEL_40:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v47 = objc_opt_class();
     v46 = NSStringFromClass(v47);
-    v48 = [v40 px_descriptionForAssertionMessage];
-    [v44 handleFailureInMethod:a2 object:v51 file:@"PXPhotosDataSource.m" lineNumber:3931 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"container", v46, v48}];
+    px_descriptionForAssertionMessage = [v40 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PXPhotosDataSource.m" lineNumber:3931 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"container", v46, px_descriptionForAssertionMessage}];
 
     goto LABEL_40;
   }
@@ -1461,8 +1461,8 @@ LABEL_35:
   v41 = [v50 changeDetailsForObject:v40];
 
 LABEL_37:
-  preparedContainerChangeDetails = v51->_preparedContainerChangeDetails;
-  v51->_preparedContainerChangeDetails = v41;
+  preparedContainerChangeDetails = selfCopy->_preparedContainerChangeDetails;
+  selfCopy->_preparedContainerChangeDetails = v41;
 
   _Block_object_dispose(&v57, 8);
   _Block_object_dispose(&v76, 8);
@@ -1569,19 +1569,19 @@ void __51__PXPhotosDataSource_prepareForPhotoLibraryChange___block_invoke_3(uint
   }
 }
 
-- (void)_restartBackgroundFetchWithAssetCollectionsToDiff:(id)a3
+- (void)_restartBackgroundFetchWithAssetCollectionsToDiff:(id)diff
 {
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self _sectionCache];
-  v6 = [v5 assetCollections];
+  diffCopy = diff;
+  _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+  assetCollections = [_sectionCache assetCollections];
 
-  v7 = [(PXPhotosDataSource *)self supportsDynamicBackgroundFetching];
+  supportsDynamicBackgroundFetching = [(PXPhotosDataSource *)self supportsDynamicBackgroundFetching];
   if (self->_needToStartBackgroundFetch)
   {
-    [(NSMutableOrderedSet *)self->_queuedAssetCollectionsToFetch addObjectsFromArray:v6];
+    [(NSMutableOrderedSet *)self->_queuedAssetCollectionsToFetch addObjectsFromArray:assetCollections];
   }
 
-  else if (v7)
+  else if (supportsDynamicBackgroundFetching)
   {
     self->_needToStartBackgroundFetch = 1;
     self->_isBackgroundFetching = 1;
@@ -1591,34 +1591,34 @@ void __51__PXPhotosDataSource_prepareForPhotoLibraryChange___block_invoke_3(uint
     v19 = 3221225472;
     v20 = __72__PXPhotosDataSource__restartBackgroundFetchWithAssetCollectionsToDiff___block_invoke;
     v21 = &unk_1E774C620;
-    v22 = self;
-    v9 = v6;
+    selfCopy = self;
+    v9 = assetCollections;
     v23 = v9;
     dispatch_async(backgroundQueue, &v18);
-    [(NSMutableSet *)self->__inaccurateAssetCollections addObjectsFromArray:v9, v18, v19, v20, v21, v22];
-    if ([v4 count])
+    [(NSMutableSet *)self->__inaccurateAssetCollections addObjectsFromArray:v9, v18, v19, v20, v21, selfCopy];
+    if ([diffCopy count])
     {
-      v10 = [v4 allObjects];
-      [(PXPhotosDataSource *)self forceAccurateAssetCollectionsIfNeeded:v10 reloadChanges:0];
+      allObjects = [diffCopy allObjects];
+      [(PXPhotosDataSource *)self forceAccurateAssetCollectionsIfNeeded:allObjects reloadChanges:0];
     }
 
-    v11 = [v4 allObjects];
-    v12 = [(PXPhotosDataSource *)self sectionsForAssetCollections:v11];
+    allObjects2 = [diffCopy allObjects];
+    v12 = [(PXPhotosDataSource *)self sectionsForAssetCollections:allObjects2];
 
-    v13 = [v12 px_coveringRange];
-    if (!v14 || v13 == 0x7FFFFFFFFFFFFFFFLL || (v15 = v13 + (v14 >> 1), v15 == 0x7FFFFFFFFFFFFFFFLL))
+    px_coveringRange = [v12 px_coveringRange];
+    if (!v14 || px_coveringRange == 0x7FFFFFFFFFFFFFFFLL || (backgroundFetchOriginSection = px_coveringRange + (v14 >> 1), backgroundFetchOriginSection == 0x7FFFFFFFFFFFFFFFLL))
     {
-      v15 = [(PXPhotosDataSource *)self backgroundFetchOriginSection];
+      backgroundFetchOriginSection = [(PXPhotosDataSource *)self backgroundFetchOriginSection];
     }
 
-    if (v15 == 0x7FFFFFFFFFFFFFFFLL)
+    if (backgroundFetchOriginSection == 0x7FFFFFFFFFFFFFFFLL)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = v15;
+      v16 = backgroundFetchOriginSection;
     }
 
     [(PXPhotosDataSource *)self _forceAccurateSection:v16 andNumberOfSurroundingSectionsWithContent:10];
@@ -1627,46 +1627,46 @@ void __51__PXPhotosDataSource_prepareForPhotoLibraryChange___block_invoke_3(uint
   else
   {
     [(PXPhotosDataSource *)self _cancelBackgroundFetchIfNeeded];
-    v17 = [(PXPhotosDataSource *)self _inaccurateAssetCollections];
-    [v17 removeAllObjects];
+    _inaccurateAssetCollections = [(PXPhotosDataSource *)self _inaccurateAssetCollections];
+    [_inaccurateAssetCollections removeAllObjects];
 
     [(NSMutableDictionary *)self->_resultRecordByAssetCollection removeAllObjects];
   }
 }
 
-- (void)_didFinishBackgroundFetchingForId:(int64_t)a3
+- (void)_didFinishBackgroundFetchingForId:(int64_t)id
 {
   v3 = atomic_load(&self->_backgroundFetchId);
-  if (v3 == a3)
+  if (v3 == id)
   {
     self->_didFinishBackgroundFetch = 1;
   }
 }
 
-- (void)_childDataSourceDidUpdateFetchesForAssetCollection:(id)a3
+- (void)_childDataSourceDidUpdateFetchesForAssetCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   if ([(PXPhotosDataSource *)self sectionForAssetCollection:?]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(PXPhotosDataSource *)self _bringFetchResultsUpToDateWithFetcherCacheForAssetCollection:v5];
+    [(PXPhotosDataSource *)self _bringFetchResultsUpToDateWithFetcherCacheForAssetCollection:collectionCopy];
     WeakRetained = objc_loadWeakRetained(&self->_parentDataSource);
-    [WeakRetained _childDataSourceDidUpdateFetchesForAssetCollection:v5];
+    [WeakRetained _childDataSourceDidUpdateFetchesForAssetCollection:collectionCopy];
   }
 }
 
-- (BOOL)_addResultTuple:(id)a3 forAssetCollection:(id)a4 preparedResultRecord:(id)a5 toMutableResultRecord:(id)a6
+- (BOOL)_addResultTuple:(id)tuple forAssetCollection:(id)collection preparedResultRecord:(id)record toMutableResultRecord:(id)resultRecord
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PXPhotosDataSource *)self _isResultTupleApplicable:v10 forAssetCollection:v11];
+  tupleCopy = tuple;
+  collectionCopy = collection;
+  recordCopy = record;
+  resultRecordCopy = resultRecord;
+  v14 = [(PXPhotosDataSource *)self _isResultTupleApplicable:tupleCopy forAssetCollection:collectionCopy];
   if (v14)
   {
-    v15 = [v13 fetchResult];
-    if (!v15 || (v16 = self->_options & 0x800400, v15, v16))
+    fetchResult = [resultRecordCopy fetchResult];
+    if (!fetchResult || (v16 = self->_options & 0x800400, fetchResult, v16))
     {
-      if ([v10 fetchedWithReverseSortOrder])
+      if ([tupleCopy fetchedWithReverseSortOrder])
       {
         v17 = [(PXPhotosDataSource *)self reverseSortOrder]^ 1;
       }
@@ -1676,36 +1676,36 @@ void __51__PXPhotosDataSource_prepareForPhotoLibraryChange___block_invoke_3(uint
         v17 = 0;
       }
 
-      v18 = [v10 fetchResult];
-      [v13 setFetchResult:v18 reverseSortOrder:v17];
+      fetchResult2 = [tupleCopy fetchResult];
+      [resultRecordCopy setFetchResult:fetchResult2 reverseSortOrder:v17];
     }
 
-    v19 = [v13 keyAssetsFetchResult];
+    keyAssetsFetchResult = [resultRecordCopy keyAssetsFetchResult];
 
-    if (!v19)
+    if (!keyAssetsFetchResult)
     {
-      v20 = [v10 keyAssetsFetchResult];
-      [v13 setKeyAssetsFetchResult:v20];
+      keyAssetsFetchResult2 = [tupleCopy keyAssetsFetchResult];
+      [resultRecordCopy setKeyAssetsFetchResult:keyAssetsFetchResult2];
     }
 
-    v21 = [v13 curatedFetchResult];
+    curatedFetchResult = [resultRecordCopy curatedFetchResult];
 
-    if (!v21)
+    if (!curatedFetchResult)
     {
-      v22 = [v10 curatedFetchResult];
-      [v13 setCuratedFetchResult:v22];
+      curatedFetchResult2 = [tupleCopy curatedFetchResult];
+      [resultRecordCopy setCuratedFetchResult:curatedFetchResult2];
 
-      v23 = [v10 curatedRefetchCondition];
-      [v13 setCuratedRefetchCondition:v23];
+      curatedRefetchCondition = [tupleCopy curatedRefetchCondition];
+      [resultRecordCopy setCuratedRefetchCondition:curatedRefetchCondition];
     }
 
-    if (v12)
+    if (recordCopy)
     {
-      [v13 adoptPreparedFilteredFetchResultFromRecord:v12];
+      [resultRecordCopy adoptPreparedFilteredFetchResultFromRecord:recordCopy];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_parentDataSource);
-    [WeakRetained _childDataSourceDidUpdateFetchesForAssetCollection:v11];
+    [WeakRetained _childDataSourceDidUpdateFetchesForAssetCollection:collectionCopy];
   }
 
   return v14;
@@ -1737,7 +1737,7 @@ void __51__PXPhotosDataSource_prepareForPhotoLibraryChange___block_invoke_3(uint
   dispatch_sync(pendingResultsIsolationQueue, block);
   if (![(PXPhotosDataSource *)self _allSectionsConsideredAccurate]|| (self->_options & 0x800000) != 0 || [(PXPhotosDataSource *)self _areSecondaryFetchesEnabled])
   {
-    v4 = [v11[5] allKeys];
+    allKeys = [v11[5] allKeys];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __69__PXPhotosDataSource__processAndPublishPendingCollectionFetchResults__block_invoke_2;
@@ -1745,7 +1745,7 @@ void __51__PXPhotosDataSource_prepareForPhotoLibraryChange___block_invoke_3(uint
     v6[4] = self;
     v6[5] = &v10;
     v6[6] = v8;
-    [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v4 changeBlock:v6];
+    [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:allKeys changeBlock:v6];
 
     [(NSMutableDictionary *)self->_preparedChangeDetailsByAssetCollection removeAllObjects];
   }
@@ -1835,9 +1835,9 @@ void __69__PXPhotosDataSource__processAndPublishPendingCollectionFetchResults__b
   [(PXPhotosDataSource *)self performSelectorOnMainThread:sel__processAndPublishPendingCollectionFetchResults withObject:0 waitUntilDone:0 modes:v3];
 }
 
-- (void)_prepareDiffsForPendingResultsWithCompletion:(id)a3
+- (void)_prepareDiffsForPendingResultsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1860,21 +1860,21 @@ void __69__PXPhotosDataSource__processAndPublishPendingCollectionFetchResults__b
   v20[3] = &unk_1E77445D0;
   v8 = v6;
   v21 = v8;
-  v22 = self;
+  selfCopy = self;
   [v7 enumerateKeysAndObjectsUsingBlock:v20];
-  v9 = [(PXPhotosDataSource *)self clientQueue];
+  clientQueue = [(PXPhotosDataSource *)self clientQueue];
   backgroundQueue = self->_backgroundQueue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__PXPhotosDataSource__prepareDiffsForPendingResultsWithCompletion___block_invoke_3;
   v14[3] = &unk_1E7744620;
-  v18 = v4;
+  v18 = completionCopy;
   v19 = &v24;
   v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v11 = v4;
-  v12 = v9;
+  v16 = clientQueue;
+  selfCopy2 = self;
+  v11 = completionCopy;
+  v12 = clientQueue;
   v13 = v8;
   dispatch_async(backgroundQueue, v14);
 
@@ -1974,10 +1974,10 @@ uint64_t __67__PXPhotosDataSource__prepareDiffsForPendingResultsWithCompletion__
   }
 }
 
-- (void)_fetchRemainingCollectionsBackgroundLoopWithId:(int64_t)a3
+- (void)_fetchRemainingCollectionsBackgroundLoopWithId:(int64_t)id
 {
   v3 = atomic_load(&self->_backgroundFetchId);
-  if (v3 == a3)
+  if (v3 == id)
   {
     objc_initWeak(location, self);
     if (self->_backgroundFetchOriginSectionChanged)
@@ -1986,13 +1986,13 @@ uint64_t __67__PXPhotosDataSource__prepareDiffsForPendingResultsWithCompletion__
       v6 = self->_collectionListFetchResult;
       if (v6)
       {
-        v7 = [(PXPhotosDataSource *)self backgroundFetchOriginSection];
+        backgroundFetchOriginSection = [(PXPhotosDataSource *)self backgroundFetchOriginSection];
         v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[PHFetchResult count](v6, "count")}];
         v9 = [(PHFetchResult *)v6 count];
         if (v9 >= 1)
         {
           v10 = 0;
-          v11 = -v7;
+          v11 = -backgroundFetchOriginSection;
           do
           {
             v12 = [(PHFetchResult *)v6 objectAtIndexedSubscript:v10];
@@ -2017,7 +2017,7 @@ uint64_t __67__PXPhotosDataSource__prepareDiffsForPendingResultsWithCompletion__
           while (v9);
         }
 
-        v15 = [MEMORY[0x1E696AD50] indexSet];
+        indexSet = [MEMORY[0x1E696AD50] indexSet];
         queuedAssetCollectionsToFetch = self->_queuedAssetCollectionsToFetch;
         v66[0] = MEMORY[0x1E69E9820];
         v66[1] = 3221225472;
@@ -2025,7 +2025,7 @@ uint64_t __67__PXPhotosDataSource__prepareDiffsForPendingResultsWithCompletion__
         v66[3] = &unk_1E7744558;
         v17 = v8;
         v67 = v17;
-        v18 = v15;
+        v18 = indexSet;
         v68 = v18;
         [(NSMutableOrderedSet *)queuedAssetCollectionsToFetch enumerateObjectsUsingBlock:v66];
         [(NSMutableOrderedSet *)self->_queuedAssetCollectionsToFetch removeObjectsAtIndexes:v18];
@@ -2040,22 +2040,22 @@ uint64_t __67__PXPhotosDataSource__prepareDiffsForPendingResultsWithCompletion__
       }
     }
 
-    v21 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     if (!self->_interruptBackgroundFetch)
     {
       v22 = 0;
       do
       {
         v23 = atomic_load(&self->_backgroundFetchId);
-        if (v23 != a3)
+        if (v23 != id)
         {
           break;
         }
 
         if (v22)
         {
-          v24 = [MEMORY[0x1E695DF00] date];
-          [v24 timeIntervalSinceDate:v21];
+          date2 = [MEMORY[0x1E695DF00] date];
+          [date2 timeIntervalSinceDate:date];
           v26 = v25;
 
           if (v26 >= 1.0)
@@ -2073,20 +2073,20 @@ uint64_t __67__PXPhotosDataSource__prepareDiffsForPendingResultsWithCompletion__
         v27 = [(NSMutableOrderedSet *)self->_queuedAssetCollectionsToFetch objectAtIndex:0];
         [(NSMutableOrderedSet *)self->_queuedAssetCollectionsToFetch removeObjectAtIndex:0];
         v28 = [(PXPhotosDataSource *)self _fetchTupleForAssetCollection:v27 calledOnClientQueue:0 isLimitedInitialFetch:0];
-        v29 = [v28 fetchResult];
-        [v29 count];
+        fetchResult = [v28 fetchResult];
+        [fetchResult count];
 
         if ((self->_options & 0x400) != 0)
         {
-          v30 = [v28 fetchResult];
-          v31 = [v30 count];
+          fetchResult2 = [v28 fetchResult];
+          v31 = [fetchResult2 count];
 
           if (v31)
           {
             if ([v27 keyAssetsAtEnd])
             {
-              v32 = [v28 fetchResult];
-              v33 = [v32 count] - 1;
+              fetchResult3 = [v28 fetchResult];
+              v33 = [fetchResult3 count] - 1;
             }
 
             else
@@ -2095,40 +2095,40 @@ uint64_t __67__PXPhotosDataSource__prepareDiffsForPendingResultsWithCompletion__
             }
 
             v34 = [MEMORY[0x1E696AC90] indexSetWithIndex:v33];
-            v35 = [v28 fetchResult];
-            [v35 prefetchObjectsAtIndexes:v34];
+            fetchResult4 = [v28 fetchResult];
+            [fetchResult4 prefetchObjectsAtIndexes:v34];
 
-            v36 = [v28 fetchResult];
-            [v36 prefetchThumbnailAssetsAtIndexes:v34];
+            fetchResult5 = [v28 fetchResult];
+            [fetchResult5 prefetchThumbnailAssetsAtIndexes:v34];
           }
         }
 
         if ((self->_options & 0x8000) != 0)
         {
           v37 = [(PXPhotosDataSource *)self _createResultRecordForAssetCollection:v27];
-          v38 = [v28 fetchResult];
-          [v37 setFetchResult:v38 reverseSortOrder:{objc_msgSend(v28, "fetchedWithReverseSortOrder")}];
+          fetchResult6 = [v28 fetchResult];
+          [v37 setFetchResult:fetchResult6 reverseSortOrder:{objc_msgSend(v28, "fetchedWithReverseSortOrder")}];
 
-          v39 = [v28 keyAssetsFetchResult];
-          [v37 setKeyAssetsFetchResult:v39];
+          keyAssetsFetchResult = [v28 keyAssetsFetchResult];
+          [v37 setKeyAssetsFetchResult:keyAssetsFetchResult];
 
-          v40 = [v28 curatedFetchResult];
-          [v37 setCuratedFetchResult:v40];
+          curatedFetchResult = [v28 curatedFetchResult];
+          [v37 setCuratedFetchResult:curatedFetchResult];
 
-          v41 = [v28 curatedRefetchCondition];
-          [v37 setCuratedRefetchCondition:v41];
+          curatedRefetchCondition = [v28 curatedRefetchCondition];
+          [v37 setCuratedRefetchCondition:curatedRefetchCondition];
 
-          v42 = [v37 exposedFetchResult];
-          [v42 px_safelyPrefetchObjectAtIndex:0];
+          exposedFetchResult = [v37 exposedFetchResult];
+          [exposedFetchResult px_safelyPrefetchObjectAtIndex:0];
 
-          v43 = [v37 fetchResult];
-          [v43 px_safelyPrefetchObjectAtIndex:0];
+          fetchResult7 = [v37 fetchResult];
+          [fetchResult7 px_safelyPrefetchObjectAtIndex:0];
 
-          v44 = [v37 keyAssetsFetchResult];
-          [v44 px_safelyPrefetchObjectAtIndex:0];
+          keyAssetsFetchResult2 = [v37 keyAssetsFetchResult];
+          [keyAssetsFetchResult2 px_safelyPrefetchObjectAtIndex:0];
 
-          v45 = [v37 curatedFetchResult];
-          [v45 px_safelyPrefetchObjectAtIndex:0];
+          curatedFetchResult2 = [v37 curatedFetchResult];
+          [curatedFetchResult2 px_safelyPrefetchObjectAtIndex:0];
         }
 
         else
@@ -2150,9 +2150,9 @@ uint64_t __67__PXPhotosDataSource__prepareDiffsForPendingResultsWithCompletion__
         v63 = v49;
         dispatch_sync(pendingResultsIsolationQueue, block);
         v50 = +[PXPhotosDataSourceSettings sharedInstance];
-        v51 = [v50 slowBackgroundFetch];
+        slowBackgroundFetch = [v50 slowBackgroundFetch];
 
-        if (v51)
+        if (slowBackgroundFetch)
         {
           sleep(3u);
         }
@@ -2165,15 +2165,15 @@ uint64_t __67__PXPhotosDataSource__prepareDiffsForPendingResultsWithCompletion__
 
     self->_interruptBackgroundFetch = 0;
     v52 = [(NSMutableOrderedSet *)self->_queuedAssetCollectionsToFetch count];
-    v53 = [(PXPhotosDataSource *)self clientQueue];
+    clientQueue = [(PXPhotosDataSource *)self clientQueue];
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
     v57[2] = __69__PXPhotosDataSource__fetchRemainingCollectionsBackgroundLoopWithId___block_invoke_4;
     v57[3] = &unk_1E77445A8;
     v59 = v52 != 0;
     objc_copyWeak(v58, location);
-    v58[1] = a3;
-    dispatch_async(v53, v57);
+    v58[1] = id;
+    dispatch_async(clientQueue, v57);
 
     if (v52)
     {
@@ -2183,7 +2183,7 @@ uint64_t __67__PXPhotosDataSource__prepareDiffsForPendingResultsWithCompletion__
       v55[2] = __69__PXPhotosDataSource__fetchRemainingCollectionsBackgroundLoopWithId___block_invoke_5;
       v55[3] = &unk_1E7749808;
       objc_copyWeak(v56, location);
-      v56[1] = a3;
+      v56[1] = id;
       dispatch_async(backgroundQueue, v55);
       objc_destroyWeak(v56);
     }
@@ -2260,12 +2260,12 @@ void __69__PXPhotosDataSource__fetchRemainingCollectionsBackgroundLoopWithId___b
   }
 }
 
-- (void)setIsBackgroundFetching:(BOOL)a3
+- (void)setIsBackgroundFetching:(BOOL)fetching
 {
-  if (self->_isBackgroundFetching != a3)
+  if (self->_isBackgroundFetching != fetching)
   {
-    self->_isBackgroundFetching = a3;
-    if (a3)
+    self->_isBackgroundFetching = fetching;
+    if (fetching)
     {
       self->_didFinishBackgroundFetch = 0;
     }
@@ -2279,18 +2279,18 @@ void __69__PXPhotosDataSource__fetchRemainingCollectionsBackgroundLoopWithId___b
   }
 }
 
-- (void)_prefetchIndexesByFetchResult:(id)a3 onlyThumbnails:(BOOL)a4
+- (void)_prefetchIndexesByFetchResult:(id)result onlyThumbnails:(BOOL)thumbnails
 {
-  v6 = a3;
-  if ([v6 count])
+  resultCopy = result;
+  if ([resultCopy count])
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __67__PXPhotosDataSource__prefetchIndexesByFetchResult_onlyThumbnails___block_invoke;
     v7[3] = &unk_1E7744530;
-    v8 = a4;
+    thumbnailsCopy = thumbnails;
     v7[4] = self;
-    [v6 enumerateKeysAndObjectsUsingBlock:v7];
+    [resultCopy enumerateKeysAndObjectsUsingBlock:v7];
   }
 }
 
@@ -2325,21 +2325,21 @@ uint64_t __67__PXPhotosDataSource__prefetchIndexesByFetchResult_onlyThumbnails__
   return result;
 }
 
-- (void)prefetchAssetsInSections:(id)a3
+- (void)prefetchAssetsInSections:(id)sections
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
+  sectionsCopy = sections;
+  dictionary = [v4 dictionary];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __47__PXPhotosDataSource_prefetchAssetsInSections___block_invoke;
   v11 = &unk_1E7744508;
-  v12 = self;
-  v13 = v6;
-  v7 = v6;
-  [v5 enumerateSectionIndexPathsUsingBlock:&v8];
+  selfCopy = self;
+  v13 = dictionary;
+  v7 = dictionary;
+  [sectionsCopy enumerateSectionIndexPathsUsingBlock:&v8];
 
-  [(PXPhotosDataSource *)self _prefetchIndexesByFetchResult:v7 onlyThumbnails:0, v8, v9, v10, v11, v12];
+  [(PXPhotosDataSource *)self _prefetchIndexesByFetchResult:v7 onlyThumbnails:0, v8, v9, v10, v11, selfCopy];
 }
 
 void __47__PXPhotosDataSource_prefetchAssetsInSections___block_invoke(uint64_t a1, uint64_t a2)
@@ -2360,23 +2360,23 @@ void __47__PXPhotosDataSource_prefetchAssetsInSections___block_invoke(uint64_t a
   }
 }
 
-- (void)prefetchAssetsAtIndexPaths:(id)a3 onlyThumbnailAssets:(BOOL)a4
+- (void)prefetchAssetsAtIndexPaths:(id)paths onlyThumbnailAssets:(BOOL)assets
 {
-  v4 = a4;
+  assetsCopy = assets;
   v7 = MEMORY[0x1E695DF90];
-  v8 = a3;
-  v9 = [v7 dictionary];
+  pathsCopy = paths;
+  dictionary = [v7 dictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__PXPhotosDataSource_prefetchAssetsAtIndexPaths_onlyThumbnailAssets___block_invoke;
   v11[3] = &unk_1E77444E0;
-  v12 = v9;
+  v12 = dictionary;
   v13 = a2;
   v11[4] = self;
-  v10 = v9;
-  [v8 enumerateItemIndexSetsUsingBlock:v11];
+  v10 = dictionary;
+  [pathsCopy enumerateItemIndexSetsUsingBlock:v11];
 
-  [(PXPhotosDataSource *)self _prefetchIndexesByFetchResult:v10 onlyThumbnails:v4];
+  [(PXPhotosDataSource *)self _prefetchIndexesByFetchResult:v10 onlyThumbnails:assetsCopy];
 }
 
 void __69__PXPhotosDataSource_prefetchAssetsAtIndexPaths_onlyThumbnailAssets___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -2387,17 +2387,17 @@ void __69__PXPhotosDataSource_prefetchAssetsAtIndexPaths_onlyThumbnailAssets___b
   [*(a1 + 40) setObject:v7 forKeyedSubscript:v8];
 }
 
-- (void)prefetchApproximateAssetsAtIndexPaths:(id)a3 reverseOrder:(BOOL)a4
+- (void)prefetchApproximateAssetsAtIndexPaths:(id)paths reverseOrder:(BOOL)order
 {
-  v4 = a4;
+  orderCopy = order;
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 count])
+  pathsCopy = paths;
+  v7 = pathsCopy;
+  if (pathsCopy && [pathsCopy count])
   {
-    v26 = v4;
-    v27 = self;
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    v26 = orderCopy;
+    selfCopy = self;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -2419,7 +2419,7 @@ void __69__PXPhotosDataSource_prefetchAssetsAtIndexPaths_onlyThumbnailAssets___b
 
           v14 = *(*(&v38 + 1) + 8 * i);
           v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v14, "section")}];
-          v16 = [v8 objectForKeyedSubscript:v15];
+          v16 = [dictionary objectForKeyedSubscript:v15];
 
           if (v16)
           {
@@ -2430,7 +2430,7 @@ void __69__PXPhotosDataSource_prefetchAssetsAtIndexPaths_onlyThumbnailAssets___b
           {
             v16 = [MEMORY[0x1E696AD50] indexSetWithIndex:{objc_msgSend(v14, "item")}];
             v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v14, "section")}];
-            [v8 setObject:v16 forKeyedSubscript:v17];
+            [dictionary setObject:v16 forKeyedSubscript:v17];
           }
         }
 
@@ -2440,21 +2440,21 @@ void __69__PXPhotosDataSource_prefetchAssetsAtIndexPaths_onlyThumbnailAssets___b
       while (v11);
     }
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
-    v19 = [MEMORY[0x1E695DF90] dictionary];
-    v20 = [MEMORY[0x1E696AD50] indexSet];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __73__PXPhotosDataSource_prefetchApproximateAssetsAtIndexPaths_reverseOrder___block_invoke;
     v34[3] = &unk_1E77444B8;
-    v34[4] = v27;
-    v21 = v18;
+    v34[4] = selfCopy;
+    v21 = dictionary2;
     v35 = v21;
-    v22 = v19;
+    v22 = dictionary3;
     v36 = v22;
-    v23 = v20;
+    v23 = indexSet;
     v37 = v23;
-    [v8 enumerateKeysAndObjectsUsingBlock:v34];
+    [dictionary enumerateKeysAndObjectsUsingBlock:v34];
     if ([v21 count])
     {
       if (v26)
@@ -2467,7 +2467,7 @@ void __69__PXPhotosDataSource_prefetchAssetsAtIndexPaths_onlyThumbnailAssets___b
         v24 = 0;
       }
 
-      prefetchQueue = v27->_prefetchQueue;
+      prefetchQueue = selfCopy->_prefetchQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __73__PXPhotosDataSource_prefetchApproximateAssetsAtIndexPaths_reverseOrder___block_invoke_2;
@@ -2476,7 +2476,7 @@ void __69__PXPhotosDataSource_prefetchAssetsAtIndexPaths_onlyThumbnailAssets___b
       v33 = v24;
       v30 = v22;
       v31 = v21;
-      v32 = v27;
+      v32 = selfCopy;
       dispatch_async(prefetchQueue, block);
     }
   }
@@ -2551,9 +2551,9 @@ void __73__PXPhotosDataSource_prefetchApproximateAssetsAtIndexPaths_reverseOrder
   }
 }
 
-- (BOOL)forceAccurateIndexPath:(id)a3 andAssetsBeforeAndAfter:(int64_t)a4
+- (BOOL)forceAccurateIndexPath:(id)path andAssetsBeforeAndAfter:(int64_t)after
 {
-  v6 = a3;
+  pathCopy = path;
   if ([(PXPhotosDataSource *)self _allSectionsConsideredAccurate]&& ![(PXPhotosDataSource *)self _areSecondaryFetchesEnabled])
   {
     v22 = 0;
@@ -2561,17 +2561,17 @@ void __73__PXPhotosDataSource_prefetchApproximateAssetsAtIndexPaths_reverseOrder
 
   else
   {
-    v7 = [v6 section];
-    v8 = [MEMORY[0x1E696AD50] indexSetWithIndex:v7];
-    v24 = [(PXPhotosDataSource *)self assetCollectionForSection:v7];
-    v9 = [v24 estimatedAssetCount];
-    v10 = [v6 item];
-    v11 = (v9 + ~v10) & ~((v9 + ~v10) >> 63);
-    v12 = [(PXPhotosDataSource *)self numberOfSections];
-    if (v11 < a4 && v7 + 1 < v12)
+    section = [pathCopy section];
+    v8 = [MEMORY[0x1E696AD50] indexSetWithIndex:section];
+    v24 = [(PXPhotosDataSource *)self assetCollectionForSection:section];
+    estimatedAssetCount = [v24 estimatedAssetCount];
+    item = [pathCopy item];
+    v11 = (estimatedAssetCount + ~item) & ~((estimatedAssetCount + ~item) >> 63);
+    numberOfSections = [(PXPhotosDataSource *)self numberOfSections];
+    if (v11 < after && section + 1 < numberOfSections)
     {
-      v14 = v12;
-      v15 = v7 + 2;
+      v14 = numberOfSections;
+      v15 = section + 2;
       do
       {
         v16 = [(PXPhotosDataSource *)self assetCollectionForSection:v15 - 1];
@@ -2579,21 +2579,21 @@ void __73__PXPhotosDataSource_prefetchApproximateAssetsAtIndexPaths_reverseOrder
         [v8 addIndex:v15 - 1];
       }
 
-      while (v11 < a4 && v15++ < v14);
+      while (v11 < after && v15++ < v14);
     }
 
-    v18 = [v6 item];
-    v19 = v18 & ~(v18 >> 63);
-    if (v19 < a4 && v7 >= 1)
+    item2 = [pathCopy item];
+    v19 = item2 & ~(item2 >> 63);
+    if (v19 < after && section >= 1)
     {
       do
       {
-        v20 = [(PXPhotosDataSource *)self assetCollectionForSection:v7 - 1];
+        v20 = [(PXPhotosDataSource *)self assetCollectionForSection:section - 1];
         v19 += [v20 estimatedAssetCount];
-        [v8 addIndex:v7 - 1];
+        [v8 addIndex:section - 1];
       }
 
-      while (v19 < a4 && v7-- > 1);
+      while (v19 < after && section-- > 1);
     }
 
     v22 = [(PXPhotosDataSource *)self forceAccurateSectionsIfNeeded:v8];
@@ -2602,11 +2602,11 @@ void __73__PXPhotosDataSource_prefetchApproximateAssetsAtIndexPaths_reverseOrder
   return v22;
 }
 
-- (BOOL)forceAccurateAssetCollectionsIfNeeded:(id)a3 reloadChanges:(BOOL)a4
+- (BOOL)forceAccurateAssetCollectionsIfNeeded:(id)needed reloadChanges:(BOOL)changes
 {
-  v33 = a4;
+  changesCopy = changes;
   v63 = *MEMORY[0x1E69E9840];
-  v35 = a3;
+  neededCopy = needed;
   if ([(PXPhotosDataSource *)self _allSectionsConsideredAccurate]&& ![(PXPhotosDataSource *)self _areSecondaryFetchesEnabled])
   {
     v23 = 0;
@@ -2632,12 +2632,12 @@ void __73__PXPhotosDataSource_prefetchApproximateAssetsAtIndexPaths_reverseOrder
       dispatch_sync(pendingResultsIsolationQueue, block);
     }
 
-    v36 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v49 = 0u;
     v50 = 0u;
     v48 = 0u;
     v47 = 0u;
-    obj = v35;
+    obj = neededCopy;
     v6 = [obj countByEnumeratingWithState:&v47 objects:v62 count:16];
     if (v6)
     {
@@ -2653,9 +2653,9 @@ void __73__PXPhotosDataSource_prefetchApproximateAssetsAtIndexPaths_reverseOrder
 
           v9 = *(*(&v47 + 1) + 8 * i);
           v10 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:v9];
-          v11 = [v10 fetchResult];
+          fetchResult = [v10 fetchResult];
 
-          if (!v11)
+          if (!fetchResult)
           {
             v12 = [v53[5] objectForKeyedSubscript:v9];
             if ([(PXPhotosDataSource *)self _isResultTupleApplicable:v12 forAssetCollection:v9])
@@ -2672,8 +2672,8 @@ void __73__PXPhotosDataSource_prefetchApproximateAssetsAtIndexPaths_reverseOrder
 
             else
             {
-              v15 = [MEMORY[0x1E695DF00] date];
-              [v15 timeIntervalSinceReferenceDate];
+              date = [MEMORY[0x1E695DF00] date];
+              [date timeIntervalSinceReferenceDate];
               v17 = v16;
 
               v18 = [(PXPhotosDataSource *)self _fetchTupleForAssetCollection:v9 calledOnClientQueue:1 isLimitedInitialFetch:0];
@@ -2682,8 +2682,8 @@ void __73__PXPhotosDataSource_prefetchApproximateAssetsAtIndexPaths_reverseOrder
               if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
               {
                 v19 = [(PXPhotosDataSource *)self sectionForAssetCollection:v9];
-                v20 = [MEMORY[0x1E695DF00] date];
-                [v20 timeIntervalSinceReferenceDate];
+                date2 = [MEMORY[0x1E695DF00] date];
+                [date2 timeIntervalSinceReferenceDate];
                 *buf = 134218240;
                 v59 = v19;
                 v60 = 2048;
@@ -2694,7 +2694,7 @@ void __73__PXPhotosDataSource_prefetchApproximateAssetsAtIndexPaths_reverseOrder
               v12 = v18;
             }
 
-            [v36 setObject:v12 forKeyedSubscript:v9];
+            [dictionary setObject:v12 forKeyedSubscript:v9];
           }
         }
 
@@ -2704,29 +2704,29 @@ void __73__PXPhotosDataSource_prefetchApproximateAssetsAtIndexPaths_reverseOrder
       while (v6);
     }
 
-    v22 = [v36 count];
+    v22 = [dictionary count];
     v23 = v22 != 0;
     if (v22)
     {
       options = self->_options;
-      v25 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __74__PXPhotosDataSource_forceAccurateAssetCollectionsIfNeeded_reloadChanges___block_invoke_530;
       aBlock[3] = &unk_1E7744490;
-      v26 = v36;
+      v26 = dictionary;
       v41 = v26;
       v45 = (options & 0x20) != 0;
       v46 = (options & 0x10) != 0;
-      v27 = v25;
+      v27 = array;
       v42 = v27;
-      v43 = self;
+      selfCopy = self;
       v44 = a2;
       v28 = _Block_copy(aBlock);
       v29 = v28;
       if (self->_nestedChanges < 1)
       {
-        if (v33)
+        if (changesCopy)
         {
           [(PXPhotosDataSource *)self _willChange];
           v29[2](v29);
@@ -2735,8 +2735,8 @@ void __73__PXPhotosDataSource_prefetchApproximateAssetsAtIndexPaths_reverseOrder
 
         else
         {
-          v30 = [v26 allKeys];
-          [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v30 changeBlock:v29];
+          allKeys = [v26 allKeys];
+          [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:allKeys changeBlock:v29];
         }
       }
 
@@ -2843,10 +2843,10 @@ LABEL_14:
   [v14 removeObject:v6];
 }
 
-- (BOOL)forceAccurateSectionsIfNeeded:(id)a3 reloadChanges:(BOOL)a4
+- (BOOL)forceAccurateSectionsIfNeeded:(id)needed reloadChanges:(BOOL)changes
 {
-  v4 = a4;
-  v7 = a3;
+  changesCopy = changes;
+  neededCopy = needed;
   if ([(PXPhotosDataSource *)self _allSectionsConsideredAccurate]&& ![(PXPhotosDataSource *)self _areSecondaryFetchesEnabled])
   {
     v10 = 0;
@@ -2854,7 +2854,7 @@ LABEL_14:
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
+    v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(neededCopy, "count")}];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __66__PXPhotosDataSource_forceAccurateSectionsIfNeeded_reloadChanges___block_invoke;
@@ -2863,8 +2863,8 @@ LABEL_14:
     v14 = a2;
     v12[4] = self;
     v9 = v8;
-    [v7 enumerateIndexesUsingBlock:v12];
-    v10 = [(PXPhotosDataSource *)self forceAccurateAssetCollectionsIfNeeded:v9 reloadChanges:v4];
+    [neededCopy enumerateIndexesUsingBlock:v12];
+    v10 = [(PXPhotosDataSource *)self forceAccurateAssetCollectionsIfNeeded:v9 reloadChanges:changesCopy];
   }
 
   return v10;
@@ -2877,7 +2877,7 @@ void __66__PXPhotosDataSource_forceAccurateSectionsIfNeeded_reloadChanges___bloc
   [v2 addObject:v3];
 }
 
-- (BOOL)_forceAccurateSection:(int64_t)a3 andNumberOfSurroundingSectionsWithContent:(int64_t)a4
+- (BOOL)_forceAccurateSection:(int64_t)section andNumberOfSurroundingSectionsWithContent:(int64_t)content
 {
   v46 = *MEMORY[0x1E69E9840];
   if ([(PXPhotosDataSource *)self _allSectionsConsideredAccurate]&& ![(PXPhotosDataSource *)self _areSecondaryFetchesEnabled])
@@ -2891,8 +2891,8 @@ void __66__PXPhotosDataSource_forceAccurateSectionsIfNeeded_reloadChanges___bloc
     v39 = &v38;
     v40 = 0x2020000000;
     v41 = 0;
-    v7 = [(PXPhotosDataSource *)self numberOfSections];
-    v8 = [(PXPhotosDataSource *)self filterPredicate];
+    numberOfSections = [(PXPhotosDataSource *)self numberOfSections];
+    filterPredicate = [(PXPhotosDataSource *)self filterPredicate];
     v9 = objc_alloc_init(MEMORY[0x1E696AD50]);
     v10 = objc_alloc_init(MEMORY[0x1E696AD50]);
     v26 = MEMORY[0x1E69E9820];
@@ -2900,29 +2900,29 @@ void __66__PXPhotosDataSource_forceAccurateSectionsIfNeeded_reloadChanges___bloc
     v28 = __86__PXPhotosDataSource__forceAccurateSection_andNumberOfSurroundingSectionsWithContent___block_invoke;
     v29 = &unk_1E7744418;
     v11 = v10;
-    v35 = a3;
+    sectionCopy = section;
     v36 = 0;
-    v37 = v7;
+    v37 = numberOfSections;
     v30 = v11;
-    v31 = self;
+    selfCopy = self;
     v33 = &v38;
-    v34 = a4;
+    contentCopy = content;
     v12 = v9;
     v32 = v12;
     v13 = _Block_copy(&v26);
     v13[2](v13, 50, 0);
-    if ([v11 count] < a4 && objc_msgSend(v12, "count") != v7)
+    if ([v11 count] < content && objc_msgSend(v12, "count") != numberOfSections)
     {
-      v14 = v8;
+      v14 = filterPredicate;
       if (_predicateByStrippingNoIndex_onceToken != -1)
       {
         dispatch_once(&_predicateByStrippingNoIndex_onceToken, &__block_literal_global_1190);
       }
 
-      v15 = [v14 predicateFormat];
-      if ([v15 containsString:@"noindex:"])
+      predicateFormat = [v14 predicateFormat];
+      if ([predicateFormat containsString:@"noindex:"])
       {
-        v16 = [_predicateByStrippingNoIndex_regexp stringByReplacingMatchesInString:v15 options:0 range:0 withTemplate:{objc_msgSend(v15, "length"), @"$1"}];
+        v16 = [_predicateByStrippingNoIndex_regexp stringByReplacingMatchesInString:predicateFormat options:0 range:0 withTemplate:{objc_msgSend(predicateFormat, "length"), @"$1"}];
         v17 = [MEMORY[0x1E696AE18] predicateWithFormat:v16];
       }
 
@@ -2935,8 +2935,8 @@ void __66__PXPhotosDataSource_forceAccurateSectionsIfNeeded_reloadChanges___bloc
       {
         if ([v19 count])
         {
-          v21 = [v20 fetchedObjects];
-          v22 = [(PXPhotosDataSource *)self sectionsForAssetCollections:v21];
+          fetchedObjects = [v20 fetchedObjects];
+          v22 = [(PXPhotosDataSource *)self sectionsForAssetCollections:fetchedObjects];
 
           (v13)[2](v13, 0x7FFFFFFFFFFFFFFFLL, v22);
         }
@@ -2947,11 +2947,11 @@ void __66__PXPhotosDataSource_forceAccurateSectionsIfNeeded_reloadChanges___bloc
         v23 = PLUIGetLog();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(PXPhotosDataSource *)self firstAssetCollection];
+          firstAssetCollection = [(PXPhotosDataSource *)self firstAssetCollection];
           *buf = 138412546;
-          v43 = self;
+          selfCopy2 = self;
           v44 = 2112;
-          v45 = v24;
+          v45 = firstAssetCollection;
           _os_log_impl(&dword_1A3C1C000, v23, OS_LOG_TYPE_DEFAULT, "%@ forcing everything to find non-empty sections, this is slow, firstAssetCollection:%@", buf, 0x16u);
         }
 
@@ -3055,7 +3055,7 @@ uint64_t __86__PXPhotosDataSource__forceAccurateSection_andNumberOfSurroundingSe
   return result;
 }
 
-- (BOOL)forceAccurateSection:(int64_t)a3 andSectionsBeforeAndAfter:(int64_t)a4
+- (BOOL)forceAccurateSection:(int64_t)section andSectionsBeforeAndAfter:(int64_t)after
 {
   if ([(PXPhotosDataSource *)self _allSectionsConsideredAccurate]&& ![(PXPhotosDataSource *)self _areSecondaryFetchesEnabled]|| [(PXPhotosDataSource *)self numberOfSections]< 1)
   {
@@ -3077,8 +3077,8 @@ uint64_t __86__PXPhotosDataSource__forceAccurateSection_andNumberOfSurroundingSe
       [(PXPhotosDataSource *)self _cancelBackgroundFetchIfNeeded];
     }
 
-    v4 = [(PXPhotosDataSource *)self numberOfSections];
-    v5 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, v4}];
+    numberOfSections = [(PXPhotosDataSource *)self numberOfSections];
+    v5 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, numberOfSections}];
     v6 = [(PXPhotosDataSource *)self forceAccurateSectionsIfNeeded:v5];
 
     LOBYTE(v3) = v6;
@@ -3087,33 +3087,33 @@ uint64_t __86__PXPhotosDataSource__forceAccurateSection_andNumberOfSurroundingSe
   return v3;
 }
 
-- (BOOL)_areFiltersDisabledForAssetCollection:(id)a3
+- (BOOL)_areFiltersDisabledForAssetCollection:(id)collection
 {
-  v3 = [(PXPhotosDataSource *)self infoForAssetCollection:a3];
-  v4 = [v3 explicitlyDisableFilters];
+  v3 = [(PXPhotosDataSource *)self infoForAssetCollection:collection];
+  explicitlyDisableFilters = [v3 explicitlyDisableFilters];
 
-  return v4;
+  return explicitlyDisableFilters;
 }
 
-- (void)setDisableFilters:(BOOL)a3 forAssetCollection:(id)a4
+- (void)setDisableFilters:(BOOL)filters forAssetCollection:(id)collection
 {
-  v4 = a3;
+  filtersCopy = filters;
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ([(PXPhotosDataSource *)self _areFiltersDisabledForAssetCollection:v6]!= v4)
+  collectionCopy = collection;
+  if ([(PXPhotosDataSource *)self _areFiltersDisabledForAssetCollection:collectionCopy]!= filtersCopy)
   {
-    v14[0] = v6;
+    v14[0] = collectionCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
     v8 = [MEMORY[0x1E695DFD8] setWithArray:v7];
-    v13 = v6;
+    v13 = collectionCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __59__PXPhotosDataSource_setDisableFilters_forAssetCollection___block_invoke;
     v10[3] = &unk_1E774B368;
     v10[4] = self;
-    v11 = v6;
-    v12 = v4;
+    v11 = collectionCopy;
+    v12 = filtersCopy;
     [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v9 collectionsToDiff:0 collectionsToChange:v8 changeBlock:v10];
   }
 }
@@ -3125,9 +3125,9 @@ void __59__PXPhotosDataSource_setDisableFilters_forAssetCollection___block_invok
   [*(a1 + 32) clearResultsForAssetCollection:*(a1 + 40)];
 }
 
-- (void)setIncludeAllBurstAssets:(BOOL)a3
+- (void)setIncludeAllBurstAssets:(BOOL)assets
 {
-  if (self->_includeAllBurstAssets != a3)
+  if (self->_includeAllBurstAssets != assets)
   {
     v7 = v3;
     v8 = v4;
@@ -3136,14 +3136,14 @@ void __59__PXPhotosDataSource_setDisableFilters_forAssetCollection___block_invok
     v5[2] = __47__PXPhotosDataSource_setIncludeAllBurstAssets___block_invoke;
     v5[3] = &unk_1E7749428;
     v5[4] = self;
-    v6 = a3;
+    assetsCopy = assets;
     [(PXPhotosDataSource *)self _performManualReloadWithChangeBlock:v5];
   }
 }
 
-- (void)setIncludeSharedCollectionAssets:(BOOL)a3
+- (void)setIncludeSharedCollectionAssets:(BOOL)assets
 {
-  if (self->_includeSharedCollectionAssets != a3)
+  if (self->_includeSharedCollectionAssets != assets)
   {
     v7 = v3;
     v8 = v4;
@@ -3152,14 +3152,14 @@ void __59__PXPhotosDataSource_setDisableFilters_forAssetCollection___block_invok
     v5[2] = __55__PXPhotosDataSource_setIncludeSharedCollectionAssets___block_invoke;
     v5[3] = &unk_1E7749428;
     v5[4] = self;
-    v6 = a3;
+    assetsCopy = assets;
     [(PXPhotosDataSource *)self _performManualReloadWithChangeBlock:v5];
   }
 }
 
-- (void)setCanIncludeUnsavedSyndicatedAssets:(BOOL)a3
+- (void)setCanIncludeUnsavedSyndicatedAssets:(BOOL)assets
 {
-  if (self->_canIncludeUnsavedSyndicatedAssets != a3)
+  if (self->_canIncludeUnsavedSyndicatedAssets != assets)
   {
     v7 = v3;
     v8 = v4;
@@ -3168,23 +3168,23 @@ void __59__PXPhotosDataSource_setDisableFilters_forAssetCollection___block_invok
     v5[2] = __59__PXPhotosDataSource_setCanIncludeUnsavedSyndicatedAssets___block_invoke;
     v5[3] = &unk_1E7749428;
     v5[4] = self;
-    v6 = a3;
+    assetsCopy = assets;
     [(PXPhotosDataSource *)self _performManualReloadWithChangeBlock:v5];
   }
 }
 
-- (void)_internalSetLibraryFilter:(int64_t)a3
+- (void)_internalSetLibraryFilter:(int64_t)filter
 {
-  if (self->_libraryFilter != a3)
+  if (self->_libraryFilter != filter)
   {
     v10[10] = v3;
     v10[11] = v4;
-    v7 = [(PXPhotosDataSource *)self _sectionCache];
-    v8 = [v7 assetCollections];
+    _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+    assetCollections = [_sectionCache assetCollections];
 
-    if ([v8 count])
+    if ([assetCollections count])
     {
-      v9 = [v8 objectAtIndexedSubscript:0];
+      v9 = [assetCollections objectAtIndexedSubscript:0];
       [(PXPhotosDataSource *)self _startLibraryFilterChangedSignpostForCollection:v9];
     }
 
@@ -3198,7 +3198,7 @@ void __59__PXPhotosDataSource_setDisableFilters_forAssetCollection___block_invok
     v10[2] = __48__PXPhotosDataSource__internalSetLibraryFilter___block_invoke;
     v10[3] = &unk_1E77498A0;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = filter;
     [(PXPhotosDataSource *)self _performManualReloadWithChangeBlock:v10];
     if (v9)
     {
@@ -3207,38 +3207,38 @@ void __59__PXPhotosDataSource_setDisableFilters_forAssetCollection___block_invok
   }
 }
 
-- (void)setLibraryFilter:(int64_t)a3
+- (void)setLibraryFilter:(int64_t)filter
 {
-  v5 = [(PXPhotosDataSource *)self libraryFilterState];
+  libraryFilterState = [(PXPhotosDataSource *)self libraryFilterState];
 
-  if (v5)
+  if (libraryFilterState)
   {
     PXAssertGetLog();
   }
 
-  v6 = [(PXPhotosDataSource *)self libraryFilterState];
+  libraryFilterState2 = [(PXPhotosDataSource *)self libraryFilterState];
 
-  if (!v6)
+  if (!libraryFilterState2)
   {
-    [(PXPhotosDataSource *)self _internalSetLibraryFilter:a3];
+    [(PXPhotosDataSource *)self _internalSetLibraryFilter:filter];
   }
 }
 
-- (void)_endLibraryFilterChangedSignpostForCollection:(id)a3
+- (void)_endLibraryFilterChangedSignpostForCollection:(id)collection
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self signpostIntervalId];
-  if (v5)
+  collectionCopy = collection;
+  signpostIntervalId = [(PXPhotosDataSource *)self signpostIntervalId];
+  if (signpostIntervalId)
   {
-    v6 = v5;
-    v7 = [(PXPhotosDataSource *)self dataSourceLog];
-    v8 = v7;
-    if (v6 != -1 && os_signpost_enabled(v7))
+    v6 = signpostIntervalId;
+    dataSourceLog = [(PXPhotosDataSource *)self dataSourceLog];
+    v8 = dataSourceLog;
+    if (v6 != -1 && os_signpost_enabled(dataSourceLog))
     {
-      v9 = [v4 localizedTitle];
+      localizedTitle = [collectionCopy localizedTitle];
       v10 = 138543362;
-      v11 = v9;
+      v11 = localizedTitle;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_INTERVAL_END, v6, "End Set Library Filter", "%{public}@", &v10, 0xCu);
     }
 
@@ -3246,21 +3246,21 @@ void __59__PXPhotosDataSource_setDisableFilters_forAssetCollection___block_invok
   }
 }
 
-- (void)_startLibraryFilterChangedSignpostForCollection:(id)a3
+- (void)_startLibraryFilterChangedSignpostForCollection:(id)collection
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionCopy = collection;
   if (![(PXPhotosDataSource *)self signpostIntervalId])
   {
-    v5 = [(PXPhotosDataSource *)self dataSourceLog];
-    v6 = os_signpost_id_make_with_pointer(v5, v4);
-    v7 = v5;
+    dataSourceLog = [(PXPhotosDataSource *)self dataSourceLog];
+    v6 = os_signpost_id_make_with_pointer(dataSourceLog, collectionCopy);
+    v7 = dataSourceLog;
     v8 = v7;
     if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
     {
-      v9 = [v4 localizedTitle];
+      localizedTitle = [collectionCopy localizedTitle];
       v10 = 138543362;
-      v11 = v9;
+      v11 = localizedTitle;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "Begin Set Library Filter", "%{public}@", &v10, 0xCu);
     }
 
@@ -3268,24 +3268,24 @@ void __59__PXPhotosDataSource_setDisableFilters_forAssetCollection___block_invok
   }
 }
 
-- (void)setIncludeOthersInSocialGroupAssets:(BOOL)a3 provideIncrementalChangeDetailsForAssetCollections:(id)a4
+- (void)setIncludeOthersInSocialGroupAssets:(BOOL)assets provideIncrementalChangeDetailsForAssetCollections:(id)collections
 {
-  v4 = a3;
-  v6 = a4;
-  if (self->_includeOthersInSocialGroupAssets != v4)
+  assetsCopy = assets;
+  collectionsCopy = collections;
+  if (self->_includeOthersInSocialGroupAssets != assetsCopy)
   {
-    v7 = [(PXPhotosDataSource *)self _sectionCache];
-    v8 = [v7 assetCollections];
+    _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+    assetCollections = [_sectionCache assetCollections];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __109__PXPhotosDataSource_setIncludeOthersInSocialGroupAssets_provideIncrementalChangeDetailsForAssetCollections___block_invoke;
     v10[3] = &unk_1E77443F0;
     v10[4] = self;
-    v11 = v8;
-    v13 = v4;
-    v12 = v6;
-    v9 = v8;
+    v11 = assetCollections;
+    v13 = assetsCopy;
+    v12 = collectionsCopy;
+    v9 = assetCollections;
     [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v9 collectionsToDiff:v12 changeBlock:v10];
   }
 }
@@ -3305,29 +3305,29 @@ void *__109__PXPhotosDataSource_setIncludeOthersInSocialGroupAssets_provideIncre
   return result;
 }
 
-- (void)setFilterPredicate:(id)a3 provideIncrementalChangeDetailsForAssetCollections:(id)a4
+- (void)setFilterPredicate:(id)predicate provideIncrementalChangeDetailsForAssetCollections:(id)collections
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  collectionsCopy = collections;
   v8 = self->_filterPredicate;
   v9 = v8;
-  if (v8 == v6)
+  if (v8 == predicateCopy)
   {
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v10 = [(NSPredicate *)v8 isEqual:v6];
+  v10 = [(NSPredicate *)v8 isEqual:predicateCopy];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(PXPhotosDataSource *)self _sectionCache];
-    v12 = [v11 assetCollections];
+    _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+    assetCollections = [_sectionCache assetCollections];
 
-    if ([v12 count])
+    if ([assetCollections count])
     {
-      v9 = [v12 objectAtIndexedSubscript:0];
+      v9 = [assetCollections objectAtIndexedSubscript:0];
       [(PXPhotosDataSource *)self _startFilterPredicateChangedSignpostForCollection:v9];
     }
 
@@ -3340,15 +3340,15 @@ LABEL_9:
     v15 = 3221225472;
     v16 = __92__PXPhotosDataSource_setFilterPredicate_provideIncrementalChangeDetailsForAssetCollections___block_invoke;
     v17 = &unk_1E7744F50;
-    v18 = self;
-    v19 = v12;
-    v20 = v6;
-    v21 = v7;
-    v13 = v12;
+    selfCopy = self;
+    v19 = assetCollections;
+    v20 = predicateCopy;
+    v21 = collectionsCopy;
+    v13 = assetCollections;
     [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v13 collectionsToDiff:v21 changeBlock:&v14];
     if (v9)
     {
-      [(PXPhotosDataSource *)self _endFilterPredicateChangedForCollection:v9, v14, v15, v16, v17, v18, v19, v20, v21];
+      [(PXPhotosDataSource *)self _endFilterPredicateChangedForCollection:v9, v14, v15, v16, v17, selfCopy, v19, v20, v21];
     }
 
     goto LABEL_9;
@@ -3372,21 +3372,21 @@ void *__92__PXPhotosDataSource_setFilterPredicate_provideIncrementalChangeDetail
   return result;
 }
 
-- (void)_endFilterPredicateChangedForCollection:(id)a3
+- (void)_endFilterPredicateChangedForCollection:(id)collection
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self signpostIntervalId];
-  if (v5)
+  collectionCopy = collection;
+  signpostIntervalId = [(PXPhotosDataSource *)self signpostIntervalId];
+  if (signpostIntervalId)
   {
-    v6 = v5;
-    v7 = [(PXPhotosDataSource *)self dataSourceLog];
-    v8 = v7;
-    if (v6 != -1 && os_signpost_enabled(v7))
+    v6 = signpostIntervalId;
+    dataSourceLog = [(PXPhotosDataSource *)self dataSourceLog];
+    v8 = dataSourceLog;
+    if (v6 != -1 && os_signpost_enabled(dataSourceLog))
     {
-      v9 = [v4 localIdentifier];
+      localIdentifier = [collectionCopy localIdentifier];
       v10 = 138543362;
-      v11 = v9;
+      v11 = localIdentifier;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_INTERVAL_END, v6, "End Set Filter Predicate", "%{public}@", &v10, 0xCu);
     }
 
@@ -3394,21 +3394,21 @@ void *__92__PXPhotosDataSource_setFilterPredicate_provideIncrementalChangeDetail
   }
 }
 
-- (void)_startFilterPredicateChangedSignpostForCollection:(id)a3
+- (void)_startFilterPredicateChangedSignpostForCollection:(id)collection
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionCopy = collection;
   if (![(PXPhotosDataSource *)self signpostIntervalId])
   {
-    v5 = [(PXPhotosDataSource *)self dataSourceLog];
-    v6 = os_signpost_id_make_with_pointer(v5, v4);
-    v7 = v5;
+    dataSourceLog = [(PXPhotosDataSource *)self dataSourceLog];
+    v6 = os_signpost_id_make_with_pointer(dataSourceLog, collectionCopy);
+    v7 = dataSourceLog;
     v8 = v7;
     if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
     {
-      v9 = [v4 localIdentifier];
+      localIdentifier = [collectionCopy localIdentifier];
       v10 = 138543362;
-      v11 = v9;
+      v11 = localIdentifier;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "Begin Set Filter Predicate", "%{public}@", &v10, 0xCu);
     }
 
@@ -3422,15 +3422,15 @@ void *__92__PXPhotosDataSource_setFilterPredicate_provideIncrementalChangeDetail
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    firstAssetCollection = v3;
 LABEL_5:
-    v5 = v4;
+    v5 = firstAssetCollection;
     goto LABEL_7;
   }
 
   if ([(PXPhotosDataSource *)self numberOfSections]== 1)
   {
-    v4 = [(PXPhotosDataSource *)self firstAssetCollection];
+    firstAssetCollection = [(PXPhotosDataSource *)self firstAssetCollection];
     goto LABEL_5;
   }
 
@@ -3442,30 +3442,30 @@ LABEL_7:
 
 - (PXAssetsDataSourceContainer)container
 {
-  if (!self->_assetContainerProvider || ([(PXPhotosDataSource *)self containerAssetCollection], (v3 = objc_claimAutoreleasedReturnValue()) == 0) || (v4 = v3, (*(self->_assetContainerProvider + 2))(), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  if (!self->_assetContainerProvider || ([(PXPhotosDataSource *)self containerAssetCollection], (v3 = objc_claimAutoreleasedReturnValue()) == 0) || (v4 = v3, (*(self->_assetContainerProvider + 2))(), containerCollection = objc_claimAutoreleasedReturnValue(), v4, !containerCollection))
   {
-    v5 = [(PXPhotosDataSource *)self containerCollection];
+    containerCollection = [(PXPhotosDataSource *)self containerCollection];
   }
 
-  return v5;
+  return containerCollection;
 }
 
-- (id)assetsAtIndexPaths:(id)a3
+- (id)assetsAtIndexPaths:(id)paths
 {
   v5 = MEMORY[0x1E695DF70];
-  v6 = a3;
-  v7 = [v5 array];
-  v8 = [(PXPhotosDataSource *)self versionIdentifier];
+  pathsCopy = paths;
+  array = [v5 array];
+  versionIdentifier = [(PXPhotosDataSource *)self versionIdentifier];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __41__PXPhotosDataSource_assetsAtIndexPaths___block_invoke;
   v13[3] = &unk_1E77443C8;
-  v15 = v8;
+  v15 = versionIdentifier;
   v16 = a2;
   v13[4] = self;
-  v9 = v7;
+  v9 = array;
   v14 = v9;
-  [v6 enumerateItemIndexSetsUsingBlock:v13];
+  [pathsCopy enumerateItemIndexSetsUsingBlock:v13];
 
   v10 = v14;
   v11 = v9;
@@ -3499,27 +3499,27 @@ void __41__PXPhotosDataSource_assetsAtIndexPaths___block_invoke_2(uint64_t a1, u
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)fetchResultWithAssetsAtIndexPaths:(id)a3
+- (id)fetchResultWithAssetsAtIndexPaths:(id)paths
 {
   v5 = MEMORY[0x1E695DF70];
-  v6 = a3;
-  v7 = [v5 array];
-  v8 = [(PXPhotosDataSource *)self versionIdentifier];
+  pathsCopy = paths;
+  array = [v5 array];
+  versionIdentifier = [(PXPhotosDataSource *)self versionIdentifier];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __56__PXPhotosDataSource_fetchResultWithAssetsAtIndexPaths___block_invoke;
   v18 = &unk_1E77443C8;
-  v21 = v8;
+  v21 = versionIdentifier;
   v22 = a2;
-  v19 = self;
-  v20 = v7;
-  v9 = v7;
-  [v6 enumerateItemIndexSetsUsingBlock:&v15];
+  selfCopy = self;
+  v20 = array;
+  v9 = array;
+  [pathsCopy enumerateItemIndexSetsUsingBlock:&v15];
 
   v10 = objc_alloc(MEMORY[0x1E69788E0]);
   photoLibrary = self->_photoLibrary;
-  v12 = [MEMORY[0x1E6978630] fetchType];
-  v13 = [v10 initWithOids:v9 photoLibrary:photoLibrary fetchType:v12 fetchPropertySets:0 identifier:0 registerIfNeeded:1];
+  fetchType = [MEMORY[0x1E6978630] fetchType];
+  v13 = [v10 initWithOids:v9 photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:0 identifier:0 registerIfNeeded:1];
 
   return v13;
 }
@@ -3547,24 +3547,24 @@ void __56__PXPhotosDataSource_fetchResultWithAssetsAtIndexPaths___block_invoke(u
   }
 }
 
-- (id)fetchResultWithAssetsInSections:(id)a3
+- (id)fetchResultWithAssetsInSections:(id)sections
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 array];
+  sectionsCopy = sections;
+  array = [v4 array];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __54__PXPhotosDataSource_fetchResultWithAssetsInSections___block_invoke;
   v16 = &unk_1E774A7B8;
-  v17 = self;
-  v18 = v6;
-  v7 = v6;
-  [v5 enumerateIndexesUsingBlock:&v13];
+  selfCopy = self;
+  v18 = array;
+  v7 = array;
+  [sectionsCopy enumerateIndexesUsingBlock:&v13];
 
   v8 = objc_alloc(MEMORY[0x1E69788E0]);
   photoLibrary = self->_photoLibrary;
-  v10 = [MEMORY[0x1E6978630] fetchType];
-  v11 = [v8 initWithOids:v7 photoLibrary:photoLibrary fetchType:v10 fetchPropertySets:0 identifier:0 registerIfNeeded:1];
+  fetchType = [MEMORY[0x1E6978630] fetchType];
+  v11 = [v8 initWithOids:v7 photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:0 identifier:0 registerIfNeeded:1];
 
   return v11;
 }
@@ -3585,28 +3585,28 @@ void __54__PXPhotosDataSource_fetchResultWithAssetsInSections___block_invoke(uin
   }
 }
 
-- (id)_fetchAssetsStartingAtIndexPath:(id)a3
+- (id)_fetchAssetsStartingAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self numberOfSections];
-  v6 = [v4 section];
-  v22 = v4;
-  v7 = [v4 item];
-  v8 = [MEMORY[0x1E695DF70] array];
-  if (v6 < v5)
+  pathCopy = path;
+  numberOfSections = [(PXPhotosDataSource *)self numberOfSections];
+  section = [pathCopy section];
+  v22 = pathCopy;
+  item = [pathCopy item];
+  array = [MEMORY[0x1E695DF70] array];
+  if (section < numberOfSections)
   {
     v9 = 0;
     do
     {
-      v10 = [(PXPhotosDataSource *)self assetsInSection:v6];
+      v10 = [(PXPhotosDataSource *)self assetsInSection:section];
       v11 = v10;
       if (v10)
       {
         v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
         v13 = [v11 count];
-        if (v9 == 0 && v7 > 0)
+        if (v9 == 0 && item > 0)
         {
-          v14 = v7;
+          v14 = item;
         }
 
         else
@@ -3618,22 +3618,22 @@ void __54__PXPhotosDataSource_fetchResultWithAssetsInSections___block_invoke(uin
         v16 = [v11 objectsAtIndexes:v15];
         [v12 addObjectsFromArray:v16];
 
-        [v8 addObjectsFromArray:v12];
+        [array addObjectsFromArray:v12];
       }
 
-      ++v6;
+      ++section;
       --v9;
     }
 
-    while (v5 != v6);
+    while (numberOfSections != section);
   }
 
-  if ([v8 count])
+  if ([array count])
   {
     v17 = objc_alloc(MEMORY[0x1E69788E0]);
     photoLibrary = self->_photoLibrary;
-    v19 = [MEMORY[0x1E6978630] fetchType];
-    v20 = [v17 initWithObjects:v8 photoLibrary:photoLibrary fetchType:v19 fetchPropertySets:0 identifier:0 registerIfNeeded:1];
+    fetchType = [MEMORY[0x1E6978630] fetchType];
+    v20 = [v17 initWithObjects:array photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:0 identifier:0 registerIfNeeded:1];
   }
 
   else
@@ -3644,21 +3644,21 @@ void __54__PXPhotosDataSource_fetchResultWithAssetsInSections___block_invoke(uin
   return v20;
 }
 
-- (id)assetsStartingAtIndexPath:(id)a3
+- (id)assetsStartingAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self numberOfSections];
-  v6 = [v4 section];
-  v23 = v4;
-  v7 = [v4 item];
-  v8 = [MEMORY[0x1E695DF70] array];
-  if (v6 >= v5)
+  pathCopy = path;
+  numberOfSections = [(PXPhotosDataSource *)self numberOfSections];
+  section = [pathCopy section];
+  v23 = pathCopy;
+  item = [pathCopy item];
+  array = [MEMORY[0x1E695DF70] array];
+  if (section >= numberOfSections)
   {
 LABEL_10:
     v18 = objc_alloc(MEMORY[0x1E69788E0]);
     photoLibrary = self->_photoLibrary;
-    v20 = [MEMORY[0x1E6978630] fetchType];
-    v21 = [v18 initWithOids:v8 photoLibrary:photoLibrary fetchType:v20 fetchPropertySets:0 identifier:0 registerIfNeeded:1];
+    fetchType = [MEMORY[0x1E6978630] fetchType];
+    v21 = [v18 initWithOids:array photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:0 identifier:0 registerIfNeeded:1];
 
     goto LABEL_11;
   }
@@ -3666,7 +3666,7 @@ LABEL_10:
   v9 = 0;
   while (1)
   {
-    v10 = [(PXPhotosDataSource *)self assetsInSection:v6];
+    v10 = [(PXPhotosDataSource *)self assetsInSection:section];
     v11 = v10;
     if (v10)
     {
@@ -3675,37 +3675,37 @@ LABEL_10:
 
 LABEL_9:
 
-    ++v6;
+    ++section;
     --v9;
-    if (v5 == v6)
+    if (numberOfSections == section)
     {
       goto LABEL_10;
     }
   }
 
-  v12 = [v10 fetchedObjectIDs];
-  if ([v12 count])
+  fetchedObjectIDs = [v10 fetchedObjectIDs];
+  if ([fetchedObjectIDs count])
   {
-    v13 = v12;
+    v13 = fetchedObjectIDs;
     v14 = v13;
     v15 = v13;
     if (!v9)
     {
       v15 = v13;
-      if (v7 >= 1)
+      if (item >= 1)
       {
         v16 = [v13 count];
-        v17 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v7, v16 - v7}];
+        v17 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{item, v16 - item}];
         v15 = [v14 objectsAtIndexes:v17];
       }
     }
 
-    [v8 addObjectsFromArray:v15];
+    [array addObjectsFromArray:v15];
 
     goto LABEL_9;
   }
 
-  [v8 removeAllObjects];
+  [array removeAllObjects];
   v21 = [(PXPhotosDataSource *)self _fetchAssetsStartingAtIndexPath:v23];
 
   if (!v21)
@@ -3725,11 +3725,11 @@ LABEL_11:
     return 0;
   }
 
-  v4 = [(PXPhotosDataSource *)self numberOfSections];
+  numberOfSections = [(PXPhotosDataSource *)self numberOfSections];
   v5 = [(PXPhotosDataSource *)self numberOfItemsInSection:0];
-  if (v4 >= 2)
+  if (numberOfSections >= 2)
   {
-    v5 += [(PXPhotosDataSource *)self numberOfItemsInSection:v4 - 1];
+    v5 += [(PXPhotosDataSource *)self numberOfItemsInSection:numberOfSections - 1];
   }
 
   if (v5 > 1)
@@ -3737,19 +3737,19 @@ LABEL_11:
     return 1;
   }
 
-  v6 = [(PXPhotosDataSource *)self backgroundFetchOriginSection];
-  if (v6 >= v4 - 1)
+  backgroundFetchOriginSection = [(PXPhotosDataSource *)self backgroundFetchOriginSection];
+  if (backgroundFetchOriginSection >= numberOfSections - 1)
   {
-    v7 = v4 - 1;
+    v7 = numberOfSections - 1;
   }
 
   else
   {
-    v7 = v6;
+    v7 = backgroundFetchOriginSection;
   }
 
   v8 = v7 & ~(v7 >> 63);
-  if (v8 >= v4)
+  if (v8 >= numberOfSections)
   {
     v9 = 0;
   }
@@ -3763,7 +3763,7 @@ LABEL_11:
       v9 += [(PXPhotosDataSource *)self numberOfItemsInSection:v10++];
     }
 
-    while (v10 < v4 && v9 < 2);
+    while (v10 < numberOfSections && v9 < 2);
   }
 
   if (v7 >= 1)
@@ -3771,7 +3771,7 @@ LABEL_11:
     v11 = v8 + 1;
     do
     {
-      if (v8 > v4)
+      if (v8 > numberOfSections)
       {
         break;
       }
@@ -3803,9 +3803,9 @@ void __29__PXPhotosDataSource_isEmpty__block_invoke(uint64_t a1, uint64_t a2, vo
   }
 }
 
-- (id)uncuratedAssetsInSection:(int64_t)a3
+- (id)uncuratedAssetsInSection:(int64_t)section
 {
-  v4 = [(PXPhotosDataSource *)self assetCollectionForSection:a3];
+  v4 = [(PXPhotosDataSource *)self assetCollectionForSection:section];
   if (v4)
   {
     v5 = [(PXPhotosDataSource *)self uncuratedAssetsForAssetCollection:v4];
@@ -3819,9 +3819,9 @@ void __29__PXPhotosDataSource_isEmpty__block_invoke(uint64_t a1, uint64_t a2, vo
   return v5;
 }
 
-- (id)curatedAssetsInSection:(int64_t)a3
+- (id)curatedAssetsInSection:(int64_t)section
 {
-  v4 = [(PXPhotosDataSource *)self assetCollectionForSection:a3];
+  v4 = [(PXPhotosDataSource *)self assetCollectionForSection:section];
   if (v4)
   {
     v5 = [(PXPhotosDataSource *)self curatedAssetsForAssetCollection:v4];
@@ -3835,35 +3835,35 @@ void __29__PXPhotosDataSource_isEmpty__block_invoke(uint64_t a1, uint64_t a2, vo
   return v5;
 }
 
-- (id)uncuratedAssetsForAssetCollection:(id)a3
+- (id)uncuratedAssetsForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self _assetsForAssetCollection:v4];
-  v6 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:v4];
+  collectionCopy = collection;
+  v5 = [(PXPhotosDataSource *)self _assetsForAssetCollection:collectionCopy];
+  v6 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:collectionCopy];
 
-  v7 = [v6 fetchResult];
+  fetchResult = [v6 fetchResult];
 
-  return v7;
+  return fetchResult;
 }
 
-- (id)curatedAssetsForAssetCollection:(id)a3
+- (id)curatedAssetsForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self _assetsForAssetCollection:v4];
-  v6 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:v4];
+  collectionCopy = collection;
+  v5 = [(PXPhotosDataSource *)self _assetsForAssetCollection:collectionCopy];
+  v6 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:collectionCopy];
 
-  v7 = [v6 curatedFetchResult];
+  curatedFetchResult = [v6 curatedFetchResult];
 
-  return v7;
+  return curatedFetchResult;
 }
 
-- (BOOL)isCuratedAssetsFutilelyForAssetCollection:(id)a3
+- (BOOL)isCuratedAssetsFutilelyForAssetCollection:(id)collection
 {
-  v4 = a3;
-  if ([(PXPhotosDataSource *)self wantsCurationForAssetCollection:v4])
+  collectionCopy = collection;
+  if ([(PXPhotosDataSource *)self wantsCurationForAssetCollection:collectionCopy])
   {
-    v5 = [(PXPhotosDataSource *)self curatedAssetsForAssetCollection:v4];
-    v6 = [(PXPhotosDataSource *)self uncuratedAssetsForAssetCollection:v4];
+    v5 = [(PXPhotosDataSource *)self curatedAssetsForAssetCollection:collectionCopy];
+    v6 = [(PXPhotosDataSource *)self uncuratedAssetsForAssetCollection:collectionCopy];
     v7 = [v6 count];
     v8 = v7 <= [v5 count];
   }
@@ -3876,9 +3876,9 @@ void __29__PXPhotosDataSource_isEmpty__block_invoke(uint64_t a1, uint64_t a2, vo
   return v8;
 }
 
-- (BOOL)isCuratedAssetsEmptyForAssetCollection:(id)a3
+- (BOOL)isCuratedAssetsEmptyForAssetCollection:(id)collection
 {
-  if (!a3)
+  if (!collection)
   {
     return 1;
   }
@@ -3898,51 +3898,51 @@ void __29__PXPhotosDataSource_isEmpty__block_invoke(uint64_t a1, uint64_t a2, vo
   return v5;
 }
 
-- (BOOL)hasCurationForAssetCollection:(id)a3
+- (BOOL)hasCurationForAssetCollection:(id)collection
 {
-  if (!a3)
+  if (!collection)
   {
     return 0;
   }
 
   v3 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:?];
-  v4 = [v3 isCurated];
+  isCurated = [v3 isCurated];
 
-  return v4;
+  return isCurated;
 }
 
-- (BOOL)wantsCurationForAssetCollection:(id)a3
+- (BOOL)wantsCurationForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self wantsCurationByDefault];
-  if (v4)
+  collectionCopy = collection;
+  wantsCurationByDefault = [(PXPhotosDataSource *)self wantsCurationByDefault];
+  if (collectionCopy)
   {
-    v6 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:v4];
-    v7 = [v6 wantsCuration];
+    v6 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:collectionCopy];
+    wantsCuration = [v6 wantsCuration];
   }
 
   else
   {
-    v7 = v5;
+    wantsCuration = wantsCurationByDefault;
   }
 
-  return v7;
+  return wantsCuration;
 }
 
 - (BOOL)wantsCurationForFirstAssetCollection
 {
-  v2 = self;
-  v3 = [(PXPhotosDataSource *)self firstAssetCollection];
-  LOBYTE(v2) = [(PXPhotosDataSource *)v2 wantsCurationForAssetCollection:v3];
+  selfCopy = self;
+  firstAssetCollection = [(PXPhotosDataSource *)self firstAssetCollection];
+  LOBYTE(selfCopy) = [(PXPhotosDataSource *)selfCopy wantsCurationForAssetCollection:firstAssetCollection];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)refetchResultsForAssetCollection:(id)a3
+- (void)refetchResultsForAssetCollection:(id)collection
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self sectionForAssetCollection:v4];
+  collectionCopy = collection;
+  v5 = [(PXPhotosDataSource *)self sectionForAssetCollection:collectionCopy];
   if (![(PXPhotosDataSource *)self isImmutable]&& v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = [(PHFetchResult *)self->_collectionListFetchResult copyWithOptions:&unk_1F190F710];
@@ -3958,8 +3958,8 @@ void __29__PXPhotosDataSource_isEmpty__block_invoke(uint64_t a1, uint64_t a2, vo
     v10[2] = __55__PXPhotosDataSource_refetchResultsForAssetCollection___block_invoke;
     v10[3] = &unk_1E774C620;
     v10[4] = self;
-    v4 = v8;
-    v11 = v4;
+    collectionCopy = v8;
+    v11 = collectionCopy;
     [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v9 changeBlock:v10];
   }
 }
@@ -3974,18 +3974,18 @@ void __55__PXPhotosDataSource_refetchResultsForAssetCollection___block_invoke(ui
   [v2 clearFetchResultsForAssetCollection:*(a1 + 40)];
 }
 
-- (void)clearResultsForAssetCollections:(id)a3
+- (void)clearResultsForAssetCollections:(id)collections
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self fetcher];
-  [v5 clearFetchResultsForAssetCollections:v4];
+  collectionsCopy = collections;
+  fetcher = [(PXPhotosDataSource *)self fetcher];
+  [fetcher clearFetchResultsForAssetCollections:collectionsCopy];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = collectionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -4022,14 +4022,14 @@ void __55__PXPhotosDataSource_refetchResultsForAssetCollection___block_invoke(ui
     v16 = 3221225472;
     v17 = __54__PXPhotosDataSource_clearResultsForAssetCollections___block_invoke;
     v18 = &unk_1E774C620;
-    v19 = self;
+    selfCopy = self;
     v20 = v6;
     dispatch_sync(pendingResultsIsolationQueue, &v15);
   }
 
-  v13 = [(PHFetchResult *)self->_collectionListFetchResult copyWithOptions:&unk_1F190F6E8, v15, v16, v17, v18, v19];
+  selfCopy = [(PHFetchResult *)self->_collectionListFetchResult copyWithOptions:&unk_1F190F6E8, v15, v16, v17, v18, selfCopy];
   collectionListFetchResult = self->_collectionListFetchResult;
-  self->_collectionListFetchResult = v13;
+  self->_collectionListFetchResult = selfCopy;
 }
 
 uint64_t __54__PXPhotosDataSource_clearResultsForAssetCollections___block_invoke(uint64_t a1)
@@ -4041,15 +4041,15 @@ uint64_t __54__PXPhotosDataSource_clearResultsForAssetCollections___block_invoke
   return [v3 removeObjectsForKeys:v2];
 }
 
-- (void)clearResultsForAssetCollection:(id)a3
+- (void)clearResultsForAssetCollection:(id)collection
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (collection)
   {
-    v7 = a3;
+    collectionCopy = collection;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v7 count:1];
+    collectionCopy2 = collection;
+    v6 = [v4 arrayWithObjects:&collectionCopy count:1];
   }
 
   else
@@ -4057,21 +4057,21 @@ uint64_t __54__PXPhotosDataSource_clearResultsForAssetCollections___block_invoke
     v6 = MEMORY[0x1E695E0F0];
   }
 
-  [(PXPhotosDataSource *)self clearResultsForAssetCollections:v6, v7, v8];
+  [(PXPhotosDataSource *)self clearResultsForAssetCollections:v6, collectionCopy, v8];
 }
 
-- (void)stopExcludingAssets:(id)a3
+- (void)stopExcludingAssets:(id)assets
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] && !-[PXPhotosDataSource isImmutable](self, "isImmutable"))
+  assetsCopy = assets;
+  if ([assetsCopy count] && !-[PXPhotosDataSource isImmutable](self, "isImmutable"))
   {
-    v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(assetsCopy, "count")}];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v6 = v4;
+    v6 = assetsCopy;
     v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v7)
     {
@@ -4087,8 +4087,8 @@ uint64_t __54__PXPhotosDataSource_clearResultsForAssetCollections___block_invoke
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v23 + 1) + 8 * v10) objectID];
-          [v5 addObject:v11];
+          objectID = [*(*(&v23 + 1) + 8 * v10) objectID];
+          [v5 addObject:objectID];
 
           ++v10;
         }
@@ -4100,7 +4100,7 @@ uint64_t __54__PXPhotosDataSource_clearResultsForAssetCollections___block_invoke
       while (v8);
     }
 
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     resultRecordByAssetCollection = self->_resultRecordByAssetCollection;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -4108,7 +4108,7 @@ uint64_t __54__PXPhotosDataSource_clearResultsForAssetCollections___block_invoke
     v20[3] = &unk_1E7744378;
     v14 = v5;
     v21 = v14;
-    v15 = v12;
+    v15 = array;
     v22 = v15;
     [(NSMutableDictionary *)resultRecordByAssetCollection enumerateKeysAndObjectsUsingBlock:v20];
     if ([v15 count])
@@ -4118,7 +4118,7 @@ uint64_t __54__PXPhotosDataSource_clearResultsForAssetCollections___block_invoke
       v16[2] = __42__PXPhotosDataSource_stopExcludingAssets___block_invoke_2;
       v16[3] = &unk_1E774A1B8;
       v17 = v15;
-      v18 = self;
+      selfCopy = self;
       v19 = v14;
       [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v17 changeBlock:v16];
     }
@@ -4174,49 +4174,49 @@ void __42__PXPhotosDataSource_stopExcludingAssets___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)forceExcludeAssetsAtIndexPaths:(id)a3
+- (void)forceExcludeAssetsAtIndexPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [off_1E7721768 indexPathSetWithItemIndexPaths:v4 dataSourceIdentifier:{-[PXPhotosDataSource versionIdentifier](self, "versionIdentifier")}];
+  pathsCopy = paths;
+  v5 = [off_1E7721768 indexPathSetWithItemIndexPaths:pathsCopy dataSourceIdentifier:{-[PXPhotosDataSource versionIdentifier](self, "versionIdentifier")}];
 
   [(PXPhotosDataSource *)self forceExcludeAssetsAtIndexes:v5];
 }
 
-- (void)forceExcludeAssetsAtIndexes:(id)a3
+- (void)forceExcludeAssetsAtIndexes:(id)indexes
 {
-  v5 = a3;
-  if ([v5 count] && !-[PXPhotosDataSource isImmutable](self, "isImmutable"))
+  indexesCopy = indexes;
+  if ([indexesCopy count] && !-[PXPhotosDataSource isImmutable](self, "isImmutable"))
   {
-    v6 = [(PXPhotosDataSource *)self versionIdentifier];
+    versionIdentifier = [(PXPhotosDataSource *)self versionIdentifier];
     v7 = objc_alloc_init(off_1E77217C8);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __50__PXPhotosDataSource_forceExcludeAssetsAtIndexes___block_invoke;
     v16[3] = &unk_1E77441F0;
-    v18 = v6;
+    v18 = versionIdentifier;
     v19 = a2;
     v16[4] = self;
     v8 = v7;
     v17 = v8;
-    [v5 enumerateItemIndexPathsUsingBlock:v16];
+    [indexesCopy enumerateItemIndexPathsUsingBlock:v16];
     if ([v8 count] >= 1)
     {
-      v9 = [v5 mutableCopy];
+      v9 = [indexesCopy mutableCopy];
       [v9 minusIndexPathSet:v8];
 
-      v5 = v9;
+      indexesCopy = v9;
     }
 
-    v10 = [(PXPhotosDataSource *)self _assetOidsByAssetCollectionForAssetsAtIndexPathsInSet:v5];
-    v11 = [v10 allKeys];
+    v10 = [(PXPhotosDataSource *)self _assetOidsByAssetCollectionForAssetsAtIndexPathsInSet:indexesCopy];
+    allKeys = [v10 allKeys];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __50__PXPhotosDataSource_forceExcludeAssetsAtIndexes___block_invoke_2;
     v13[3] = &unk_1E774C620;
     v14 = v10;
-    v15 = self;
+    selfCopy = self;
     v12 = v10;
-    [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v11 changeBlock:v13];
+    [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:allKeys changeBlock:v13];
   }
 }
 
@@ -4273,25 +4273,25 @@ void __50__PXPhotosDataSource_forceExcludeAssetsAtIndexes___block_invoke_3(uint6
 {
   if (![(PXPhotosDataSource *)self isImmutable])
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     resultRecordByAssetCollection = self->_resultRecordByAssetCollection;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __49__PXPhotosDataSource_stopForceIncludingAllAssets__block_invoke;
     v10[3] = &unk_1E77441C8;
-    v5 = v3;
+    v5 = dictionary;
     v11 = v5;
     [(NSMutableDictionary *)resultRecordByAssetCollection enumerateKeysAndObjectsUsingBlock:v10];
     if ([v5 count])
     {
-      v6 = [v5 allKeys];
+      allKeys = [v5 allKeys];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __49__PXPhotosDataSource_stopForceIncludingAllAssets__block_invoke_2;
       v7[3] = &unk_1E774C620;
       v8 = v5;
-      v9 = self;
-      [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v6 changeBlock:v7];
+      selfCopy = self;
+      [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:allKeys changeBlock:v7];
     }
   }
 }
@@ -4326,29 +4326,29 @@ void __49__PXPhotosDataSource_stopForceIncludingAllAssets__block_invoke_3(uint64
   [v2 stopIncludingAllOids];
 }
 
-- (void)forceIncludeAssetsAtIndexPaths:(id)a3
+- (void)forceIncludeAssetsAtIndexPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [off_1E7721768 indexPathSetWithItemIndexPaths:v4 dataSourceIdentifier:{-[PXPhotosDataSource versionIdentifier](self, "versionIdentifier")}];
+  pathsCopy = paths;
+  v5 = [off_1E7721768 indexPathSetWithItemIndexPaths:pathsCopy dataSourceIdentifier:{-[PXPhotosDataSource versionIdentifier](self, "versionIdentifier")}];
 
   [(PXPhotosDataSource *)self forceIncludeAssetsAtIndexes:v5];
 }
 
-- (void)forceIncludeAssetsAtIndexes:(id)a3
+- (void)forceIncludeAssetsAtIndexes:(id)indexes
 {
-  v4 = a3;
-  if ([v4 count] && !-[PXPhotosDataSource isImmutable](self, "isImmutable"))
+  indexesCopy = indexes;
+  if ([indexesCopy count] && !-[PXPhotosDataSource isImmutable](self, "isImmutable"))
   {
-    v5 = [(PXPhotosDataSource *)self _assetOidsByAssetCollectionForAssetsAtIndexPathsInSet:v4];
-    v6 = [v5 allKeys];
+    v5 = [(PXPhotosDataSource *)self _assetOidsByAssetCollectionForAssetsAtIndexPathsInSet:indexesCopy];
+    allKeys = [v5 allKeys];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __50__PXPhotosDataSource_forceIncludeAssetsAtIndexes___block_invoke;
     v8[3] = &unk_1E774C620;
     v9 = v5;
-    v10 = self;
+    selfCopy = self;
     v7 = v5;
-    [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v6 changeBlock:v8];
+    [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:allKeys changeBlock:v8];
   }
 }
 
@@ -4379,8 +4379,8 @@ void __50__PXPhotosDataSource_forceIncludeAssetsAtIndexes___block_invoke_2(uint6
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PXPhotosDataSource *)self collectionListFetchResult];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  collectionListFetchResult = [(PXPhotosDataSource *)self collectionListFetchResult];
+  v5 = [collectionListFetchResult countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4391,7 +4391,7 @@ void __50__PXPhotosDataSource_forceIncludeAssetsAtIndexes___block_invoke_2(uint6
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(collectionListFetchResult);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -4399,7 +4399,7 @@ void __50__PXPhotosDataSource_forceIncludeAssetsAtIndexes___block_invoke_2(uint6
         [v3 setObject:v10 forKeyedSubscript:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [collectionListFetchResult countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -4408,18 +4408,18 @@ void __50__PXPhotosDataSource_forceIncludeAssetsAtIndexes___block_invoke_2(uint6
   return v3;
 }
 
-- (void)enumerateStartingAtIndexPath:(id)a3 reverseDirection:(BOOL)a4 usingBlock:(id)a5
+- (void)enumerateStartingAtIndexPath:(id)path reverseDirection:(BOOL)direction usingBlock:(id)block
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  if (!v10)
+  directionCopy = direction;
+  pathCopy = path;
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:2380 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:2380 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
   }
 
-  if (v6)
+  if (directionCopy)
   {
     v11 = -1;
   }
@@ -4429,30 +4429,30 @@ void __50__PXPhotosDataSource_forceIncludeAssetsAtIndexes___block_invoke_2(uint6
     v11 = 1;
   }
 
-  v22 = [(PXPhotosDataSource *)self numberOfSections];
-  v12 = [v9 section];
-  v13 = [v9 item];
+  numberOfSections = [(PXPhotosDataSource *)self numberOfSections];
+  section = [pathCopy section];
+  item = [pathCopy item];
   v23 = 0;
-  if ((v12 & 0x8000000000000000) == 0)
+  if ((section & 0x8000000000000000) == 0)
   {
-    v14 = v13;
-    v15 = v12;
+    v14 = item;
+    v15 = section;
     do
     {
-      if (v15 >= v22 || (v23 & 1) != 0)
+      if (v15 >= numberOfSections || (v23 & 1) != 0)
       {
         break;
       }
 
-      v16 = self;
+      selfCopy = self;
       v17 = [(PXPhotosDataSource *)self numberOfItemsInSection:v15];
       v18 = v17 - 1;
-      if (!v6)
+      if (!directionCopy)
       {
         v18 = 0;
       }
 
-      if (v15 != v12)
+      if (v15 != section)
       {
         v14 = v18;
       }
@@ -4463,7 +4463,7 @@ void __50__PXPhotosDataSource_forceIncludeAssetsAtIndexes___block_invoke_2(uint6
         while (v14 < v19 && (v23 & 1) == 0)
         {
           v20 = [MEMORY[0x1E696AC88] indexPathForItem:v14 inSection:v15];
-          v10[2](v10, v20, &v23);
+          blockCopy[2](blockCopy, v20, &v23);
 
           v14 += v11;
           if (v14 < 0)
@@ -4475,7 +4475,7 @@ void __50__PXPhotosDataSource_forceIncludeAssetsAtIndexes___block_invoke_2(uint6
       }
 
       v15 += v11;
-      self = v16;
+      self = selfCopy;
     }
 
     while (v15 >= 0);
@@ -4486,13 +4486,13 @@ void __50__PXPhotosDataSource_forceIncludeAssetsAtIndexes___block_invoke_2(uint6
 {
   if (![(PXPhotosDataSource *)self isEmpty])
   {
-    v4 = [(PXPhotosDataSource *)self numberOfSections];
-    while (v4-- >= 1)
+    numberOfSections = [(PXPhotosDataSource *)self numberOfSections];
+    while (numberOfSections-- >= 1)
     {
-      v6 = [(PXPhotosDataSource *)self numberOfItemsInSection:v4];
+      v6 = [(PXPhotosDataSource *)self numberOfItemsInSection:numberOfSections];
       if (v6 >= 1)
       {
-        v3 = [MEMORY[0x1E696AC88] indexPathForItem:v6 - 1 inSection:v4];
+        v3 = [MEMORY[0x1E696AC88] indexPathForItem:v6 - 1 inSection:numberOfSections];
         goto LABEL_7;
       }
     }
@@ -4529,14 +4529,14 @@ LABEL_6:
   return v4;
 }
 
-- (id)assetReferenceAtIndexPath:(id)a3
+- (id)assetReferenceAtIndexPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v4 = a3;
-    [(PXPhotosDataSource *)self assetAtIndexPath:v4];
+    pathCopy = path;
+    [(PXPhotosDataSource *)self assetAtIndexPath:pathCopy];
     objc_claimAutoreleasedReturnValue();
-    -[PXPhotosDataSource assetCollectionForSection:](self, "assetCollectionForSection:", [v4 section]);
+    -[PXPhotosDataSource assetCollectionForSection:](self, "assetCollectionForSection:", [pathCopy section]);
     objc_claimAutoreleasedReturnValue();
     v5 = [off_1E7721490 alloc];
     [(PXPhotosDataSource *)self versionIdentifier];
@@ -4546,11 +4546,11 @@ LABEL_6:
   return 0;
 }
 
-- (id)assetReferenceForAsset:(id)a3 containedInAssetCollectionWithType:(int64_t)a4
+- (id)assetReferenceForAsset:(id)asset containedInAssetCollectionWithType:(int64_t)type
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [MEMORY[0x1E6978650] fetchAssetCollectionsContainingAsset:v6 withType:a4 options:0];
+  assetCopy = asset;
+  [MEMORY[0x1E6978650] fetchAssetCollectionsContainingAsset:assetCopy withType:type options:0];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -4576,13 +4576,13 @@ LABEL_6:
           v14 = v13;
           [(PXPhotosDataSource *)self forceAccurateSection:v13 andSectionsBeforeAndAfter:0];
           v15 = [(PXPhotosDataSource *)self uncuratedAssetsInSection:v14];
-          if ([v15 containsObject:v6])
+          if ([v15 containsObject:assetCopy])
           {
             v17 = [off_1E7721490 alloc];
             v18 = *(off_1E7722228 + 1);
             v20[0] = *off_1E7722228;
             v20[1] = v18;
-            v16 = [v17 initWithSectionObject:v12 itemObject:v6 subitemObject:0 indexPath:v20];
+            v16 = [v17 initWithSectionObject:v12 itemObject:assetCopy subitemObject:0 indexPath:v20];
 
             goto LABEL_13;
           }
@@ -4605,13 +4605,13 @@ LABEL_13:
   return v16;
 }
 
-- (id)indexPathForAssetReference:(id)a3
+- (id)indexPathForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  referenceCopy = reference;
+  v5 = referenceCopy;
+  if (referenceCopy)
   {
-    [v4 simpleIndexPath];
+    [referenceCopy simpleIndexPath];
     if (v15 == [(PXPhotosDataSource *)self versionIdentifier])
     {
       [v5 simpleIndexPath];
@@ -4625,28 +4625,28 @@ LABEL_10:
     PXIndexPathFromSimpleIndexPath();
   }
 
-  v6 = [v5 asset];
+  asset = [v5 asset];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 asset];
+    asset2 = [v5 asset];
 
-    if (!v7)
+    if (!asset2)
     {
       v10 = 0;
       goto LABEL_19;
     }
 
-    v8 = [v5 assetCollection];
+    assetCollection = [v5 assetCollection];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v5 assetCollection];
+      assetCollection2 = [v5 assetCollection];
     }
 
     else
     {
-      v9 = 0;
+      assetCollection2 = 0;
     }
 
     v11 = [(NSDictionary *)self->_hintIndexPathByAssetReferenceCache objectForKeyedSubscript:v5];
@@ -4662,13 +4662,13 @@ LABEL_10:
     }
 
     v13 = v11;
-    v10 = [(PXPhotosDataSource *)self indexPathForAsset:v7 hintIndexPath:v13 hintCollection:v9];
+    v10 = [(PXPhotosDataSource *)self indexPathForAsset:asset2 hintIndexPath:v13 hintCollection:assetCollection2];
   }
 
   else
   {
     v10 = 0;
-    v7 = v6;
+    asset2 = asset;
   }
 
 LABEL_19:
@@ -4676,16 +4676,16 @@ LABEL_19:
   return v10;
 }
 
-- (id)_indexPathForAssetWithUUID:(id)a3 orBurstIdentifier:(id)a4 orSyndicationIdentifier:(id)a5 hintIndexPath:(id)a6 hintCollections:(id)a7
+- (id)_indexPathForAssetWithUUID:(id)d orBurstIdentifier:(id)identifier orSyndicationIdentifier:(id)syndicationIdentifier hintIndexPath:(id)path hintCollections:(id)collections
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 length];
-  if (v14 || v17)
+  dCopy = d;
+  identifierCopy = identifier;
+  syndicationIdentifierCopy = syndicationIdentifier;
+  pathCopy = path;
+  collectionsCopy = collections;
+  v17 = [dCopy length];
+  if (syndicationIdentifierCopy || v17)
   {
     v45 = 0;
     v46 = &v45;
@@ -4693,7 +4693,7 @@ LABEL_19:
     v48 = __Block_byref_object_copy__205867;
     v49 = __Block_byref_object_dispose__205868;
     v50 = 0;
-    v19 = [(PXPhotosDataSource *)self _closestIndexPathToIndexPath:v15];
+    v19 = [(PXPhotosDataSource *)self _closestIndexPathToIndexPath:pathCopy];
     v41 = 0;
     v42 = &v41;
     v43 = 0x2020000000;
@@ -4708,10 +4708,10 @@ LABEL_19:
     aBlock[3] = &unk_1E7744308;
     v37 = &v41;
     aBlock[4] = self;
-    v34 = v14;
-    v20 = v12;
+    v34 = syndicationIdentifierCopy;
+    v20 = dCopy;
     v35 = v20;
-    v36 = v13;
+    v36 = identifierCopy;
     v38 = &v45;
     v39 = v40;
     v21 = _Block_copy(aBlock);
@@ -4725,18 +4725,18 @@ LABEL_19:
       if (!v22)
       {
         v32 = [MEMORY[0x1E6978630] localIdentifierWithUUID:v20];
-        v23 = [(PXPhotosDataSource *)self photoLibrary];
-        v31 = [v23 px_standardLibrarySpecificFetchOptions];
+        photoLibrary = [(PXPhotosDataSource *)self photoLibrary];
+        px_standardLibrarySpecificFetchOptions = [photoLibrary px_standardLibrarySpecificFetchOptions];
 
         v24 = MEMORY[0x1E6978630];
         v51[0] = v32;
         v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:1];
-        v26 = [v24 fetchAssetsWithLocalIdentifiers:v25 options:v31];
+        v26 = [v24 fetchAssetsWithLocalIdentifiers:v25 options:px_standardLibrarySpecificFetchOptions];
 
-        v27 = [v26 lastObject];
-        if (v27)
+        lastObject = [v26 lastObject];
+        if (lastObject)
         {
-          v28 = [(PXPhotosDataSource *)self indexPathForAsset:v27 hintIndexPath:v15 hintCollections:v16];
+          v28 = [(PXPhotosDataSource *)self indexPathForAsset:lastObject hintIndexPath:pathCopy hintCollections:collectionsCopy];
           v29 = v46[5];
           v46[5] = v28;
         }
@@ -4837,136 +4837,136 @@ LABEL_10:
   }
 }
 
-- (id)indexPathForAssetWithUUID:(id)a3 orSyndicationIdentifier:(id)a4 hintIndexPath:(id)a5 hintCollection:(id)a6
+- (id)indexPathForAssetWithUUID:(id)d orSyndicationIdentifier:(id)identifier hintIndexPath:(id)path hintCollection:(id)collection
 {
   v18 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6)
+  dCopy = d;
+  identifierCopy = identifier;
+  pathCopy = path;
+  if (collection)
   {
-    v17 = a6;
+    collectionCopy = collection;
     v13 = MEMORY[0x1E695DEC8];
-    v14 = a6;
-    a6 = [v13 arrayWithObjects:&v17 count:1];
+    collectionCopy2 = collection;
+    collection = [v13 arrayWithObjects:&collectionCopy count:1];
   }
 
-  v15 = [(PXPhotosDataSource *)self _indexPathForAssetWithUUID:v10 orBurstIdentifier:0 orSyndicationIdentifier:v11 hintIndexPath:v12 hintCollections:a6, v17, v18];
+  v15 = [(PXPhotosDataSource *)self _indexPathForAssetWithUUID:dCopy orBurstIdentifier:0 orSyndicationIdentifier:identifierCopy hintIndexPath:pathCopy hintCollections:collection, collectionCopy, v18];
 
   return v15;
 }
 
-- (id)indexPathForAssetWithUUID:(id)a3 orBurstIdentifier:(id)a4 hintIndexPath:(id)a5 hintCollection:(id)a6
+- (id)indexPathForAssetWithUUID:(id)d orBurstIdentifier:(id)identifier hintIndexPath:(id)path hintCollection:(id)collection
 {
   v18 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6)
+  dCopy = d;
+  identifierCopy = identifier;
+  pathCopy = path;
+  if (collection)
   {
-    v17 = a6;
+    collectionCopy = collection;
     v13 = MEMORY[0x1E695DEC8];
-    v14 = a6;
-    a6 = [v13 arrayWithObjects:&v17 count:1];
+    collectionCopy2 = collection;
+    collection = [v13 arrayWithObjects:&collectionCopy count:1];
   }
 
-  v15 = [(PXPhotosDataSource *)self _indexPathForAssetWithUUID:v10 orBurstIdentifier:v11 orSyndicationIdentifier:0 hintIndexPath:v12 hintCollections:a6, v17, v18];
+  v15 = [(PXPhotosDataSource *)self _indexPathForAssetWithUUID:dCopy orBurstIdentifier:identifierCopy orSyndicationIdentifier:0 hintIndexPath:pathCopy hintCollections:collection, collectionCopy, v18];
 
   return v15;
 }
 
-- (int64_t)indexForAsset:(id)a3 inCollection:(id)a4 hintIndex:(int64_t)a5
+- (int64_t)indexForAsset:(id)asset inCollection:(id)collection hintIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PXPhotosDataSource *)self numberOfSections];
-  v11 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v8)
+  assetCopy = asset;
+  collectionCopy = collection;
+  numberOfSections = [(PXPhotosDataSource *)self numberOfSections];
+  indexCopy = 0x7FFFFFFFFFFFFFFFLL;
+  if (assetCopy)
   {
-    v12 = v10;
-    if (v10)
+    v12 = numberOfSections;
+    if (numberOfSections)
     {
-      v13 = [(PXPhotosDataSource *)self sectionForAssetCollection:v9];
+      v13 = [(PXPhotosDataSource *)self sectionForAssetCollection:collectionCopy];
       if (v13 < v12)
       {
         v14 = [(PXPhotosDataSource *)self assetsInSection:v13];
-        if ([v14 count] > a5)
+        if ([v14 count] > index)
         {
-          v15 = [v14 objectAtIndex:a5];
-          if ([v15 isEqual:v8])
+          v15 = [v14 objectAtIndex:index];
+          if ([v15 isEqual:assetCopy])
           {
-            v11 = a5;
+            indexCopy = index;
           }
         }
       }
 
-      if (v9 && v11 == 0x7FFFFFFFFFFFFFFFLL)
+      if (collectionCopy && indexCopy == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v16 = [(PXPhotosDataSource *)self indexPathForAsset:v8 inCollection:v9];
+        v16 = [(PXPhotosDataSource *)self indexPathForAsset:assetCopy inCollection:collectionCopy];
         v17 = v16;
         if (v16)
         {
-          v11 = [v16 item];
+          indexCopy = [v16 item];
         }
 
         else
         {
-          v11 = 0x7FFFFFFFFFFFFFFFLL;
+          indexCopy = 0x7FFFFFFFFFFFFFFFLL;
         }
       }
     }
   }
 
-  return v11;
+  return indexCopy;
 }
 
-- (id)indexPathForAsset:(id)a3 hintIndexPath:(id)a4 hintCollections:(id)a5
+- (id)indexPathForAsset:(id)asset hintIndexPath:(id)path hintCollections:(id)collections
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PXPhotosDataSource *)self numberOfSections];
+  assetCopy = asset;
+  pathCopy = path;
+  collectionsCopy = collections;
+  numberOfSections = [(PXPhotosDataSource *)self numberOfSections];
   v12 = 0;
-  if (v8)
+  if (assetCopy)
   {
-    v13 = v11;
-    if (v11)
+    v13 = numberOfSections;
+    if (numberOfSections)
     {
-      if (!v9 || v11 <= [v9 section])
+      if (!pathCopy || numberOfSections <= [pathCopy section])
       {
         goto LABEL_18;
       }
 
-      v14 = -[PXPhotosDataSource assetsInSection:](self, "assetsInSection:", [v9 section]);
-      v15 = [v9 item];
-      if (v15 < [v14 count])
+      v14 = -[PXPhotosDataSource assetsInSection:](self, "assetsInSection:", [pathCopy section]);
+      item = [pathCopy item];
+      if (item < [v14 count])
       {
-        v16 = [v14 indexOfObject:v8 inRange:{objc_msgSend(v9, "item"), 1}];
+        v16 = [v14 indexOfObject:assetCopy inRange:{objc_msgSend(pathCopy, "item"), 1}];
         if (v16 != 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_13;
         }
 
-        v17 = [v9 item];
+        item2 = [pathCopy item];
         v18 = 250;
-        if (v17 > 250)
+        if (item2 > 250)
         {
-          v18 = v17;
+          v18 = item2;
         }
 
         v19 = v18 - 250;
         v20 = [v14 count];
         v21 = v20 - v19 >= 500 ? 500 : v20 - v19;
-        v16 = [v14 indexOfObject:v8 inRange:{v19, v21}];
+        v16 = [v14 indexOfObject:assetCopy inRange:{v19, v21}];
         if (v16 != 0x7FFFFFFFFFFFFFFFLL)
         {
 LABEL_13:
           v22 = v16;
           v23 = [v14 objectAtIndex:v16];
-          if ([v23 isEqual:v8])
+          if ([v23 isEqual:assetCopy])
           {
-            v12 = [MEMORY[0x1E696AC88] indexPathForItem:v22 inSection:{objc_msgSend(v9, "section")}];
+            v12 = [MEMORY[0x1E696AC88] indexPathForItem:v22 inSection:{objc_msgSend(pathCopy, "section")}];
 
             if (v12)
             {
@@ -4974,13 +4974,13 @@ LABEL_13:
             }
 
 LABEL_18:
-            if ([v10 count])
+            if ([collectionsCopy count])
             {
               v45 = 0u;
               v46 = 0u;
               v43 = 0u;
               v44 = 0u;
-              v24 = v10;
+              v24 = collectionsCopy;
               v25 = [v24 countByEnumeratingWithState:&v43 objects:v47 count:16];
               if (v25)
               {
@@ -4995,7 +4995,7 @@ LABEL_18:
                       objc_enumerationMutation(v24);
                     }
 
-                    v29 = [(PXPhotosDataSource *)self indexPathForAsset:v8 inCollection:*(*(&v43 + 1) + 8 * i)];
+                    v29 = [(PXPhotosDataSource *)self indexPathForAsset:assetCopy inCollection:*(*(&v43 + 1) + 8 * i)];
                     if (v29)
                     {
                       v12 = v29;
@@ -5021,12 +5021,12 @@ LABEL_18:
             aBlock[3] = &unk_1E77442E0;
             v42 = v13;
             aBlock[4] = self;
-            v41 = v8;
+            v41 = assetCopy;
             v30 = _Block_copy(aBlock);
-            v31 = [v9 section];
-            if (v13 - 1 >= (v31 & ~(v31 >> 63)))
+            section = [pathCopy section];
+            if (v13 - 1 >= (section & ~(section >> 63)))
             {
-              v32 = v31 & ~(v31 >> 63);
+              v32 = section & ~(section >> 63);
             }
 
             else
@@ -5113,28 +5113,28 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
   return v7;
 }
 
-- (id)indexPathForAsset:(id)a3 hintIndexPath:(id)a4 hintCollection:(id)a5
+- (id)indexPathForAsset:(id)asset hintIndexPath:(id)path hintCollection:(id)collection
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  assetCopy = asset;
+  pathCopy = path;
+  if (collection)
   {
-    v14 = a5;
+    collectionCopy = collection;
     v10 = MEMORY[0x1E695DEC8];
-    v11 = a5;
-    a5 = [v10 arrayWithObjects:&v14 count:1];
+    collectionCopy2 = collection;
+    collection = [v10 arrayWithObjects:&collectionCopy count:1];
   }
 
-  v12 = [(PXPhotosDataSource *)self indexPathForAsset:v8 hintIndexPath:v9 hintCollections:a5, v14, v15];
+  v12 = [(PXPhotosDataSource *)self indexPathForAsset:assetCopy hintIndexPath:pathCopy hintCollections:collection, collectionCopy, v15];
 
   return v12;
 }
 
-- (id)indexPathForAsset:(id)a3 inCollection:(id)a4
+- (id)indexPathForAsset:(id)asset inCollection:(id)collection
 {
-  v6 = a3;
-  v7 = [(PXPhotosDataSource *)self sectionForAssetCollection:a4];
+  assetCopy = asset;
+  v7 = [(PXPhotosDataSource *)self sectionForAssetCollection:collection];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -5145,7 +5145,7 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
     v9 = v7;
     v10 = [(PXPhotosDataSource *)self assetsInSection:v7];
     v11 = v10;
-    if (v10 && (v12 = [v10 indexOfObject:v6], v12 != 0x7FFFFFFFFFFFFFFFLL))
+    if (v10 && (v12 = [v10 indexOfObject:assetCopy], v12 != 0x7FFFFFFFFFFFFFFFLL))
     {
       v8 = [MEMORY[0x1E696AC88] indexPathForItem:v12 inSection:v9];
     }
@@ -5159,26 +5159,26 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
   return v8;
 }
 
-- (id)approximateAssetsAtIndexPaths:(id)a3
+- (id)approximateAssetsAtIndexPaths:(id)paths
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
+  pathsCopy = paths;
+  v5 = [pathsCopy count];
   if (v5)
   {
     v24 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5];
-    v6 = [(PXPhotosDataSource *)self collectionListFetchResult];
+    collectionListFetchResult = [(PXPhotosDataSource *)self collectionListFetchResult];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v22 = v4;
-    obj = v4;
+    v22 = pathsCopy;
+    obj = pathsCopy;
     v7 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v7)
     {
       v8 = v7;
-      v23 = self;
+      selfCopy = self;
       v9 = 0;
       v10 = 0;
       v11 = *v27;
@@ -5193,16 +5193,16 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
           }
 
           v14 = *(*(&v26 + 1) + 8 * i);
-          v15 = [v14 section];
-          if (v15 < [v6 count])
+          section = [v14 section];
+          if (section < [collectionListFetchResult count])
           {
-            if (v15 != v12 || v10 == 0)
+            if (section != v12 || v10 == 0)
             {
-              v17 = [(PXPhotosDataSource *)v23 assetsInSection:v15];
+              v17 = [(PXPhotosDataSource *)selfCopy assetsInSection:section];
               v9 = [v17 count];
               v18 = v17;
 
-              v12 = v15;
+              v12 = section;
               v10 = v18;
             }
 
@@ -5213,8 +5213,8 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
 
             if ([v14 item] < v9)
             {
-              v19 = [v10 fetchedObjects];
-              v20 = [v19 objectAtIndex:{objc_msgSend(v14, "item")}];
+              fetchedObjects = [v10 fetchedObjects];
+              v20 = [fetchedObjects objectAtIndex:{objc_msgSend(v14, "item")}];
               [v24 addObject:v20];
             }
           }
@@ -5231,7 +5231,7 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
       v10 = 0;
     }
 
-    v4 = v22;
+    pathsCopy = v22;
   }
 
   else
@@ -5242,18 +5242,18 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
   return v24;
 }
 
-- (BOOL)isAssetAtIndexPathPartOfCuratedSet:(PXSimpleIndexPath *)a3
+- (BOOL)isAssetAtIndexPathPartOfCuratedSet:(PXSimpleIndexPath *)set
 {
-  v5 = [(PXPhotosDataSource *)self assetsInSection:a3->section];
-  v6 = [v5 fetchedObjectIDs];
-  v7 = [v6 objectAtIndexedSubscript:a3->item];
+  v5 = [(PXPhotosDataSource *)self assetsInSection:set->section];
+  fetchedObjectIDs = [v5 fetchedObjectIDs];
+  v7 = [fetchedObjectIDs objectAtIndexedSubscript:set->item];
 
-  if (v7 || ([v5 objectAtIndex:a3->item], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectID"), v7 = objc_claimAutoreleasedReturnValue(), v8, v7))
+  if (v7 || ([v5 objectAtIndex:set->item], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectID"), v7 = objc_claimAutoreleasedReturnValue(), v8, v7))
   {
-    v9 = [(PXPhotosDataSource *)self assetCollectionForSection:a3->section];
+    v9 = [(PXPhotosDataSource *)self assetCollectionForSection:set->section];
     v10 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:v9];
-    v11 = [v10 curatedOids];
-    v12 = [v11 containsObject:v7];
+    curatedOids = [v10 curatedOids];
+    v12 = [curatedOids containsObject:v7];
   }
 
   else
@@ -5264,77 +5264,77 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
   return v12;
 }
 
-- (id)assetAtIndexPath:(id)a3
+- (id)assetAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [v5 item];
-  v7 = -[PXPhotosDataSource assetsInSection:](self, "assetsInSection:", [v5 section]);
-  v8 = [v7 objectAtIndexedSubscript:v6];
+  pathCopy = path;
+  item = [pathCopy item];
+  v7 = -[PXPhotosDataSource assetsInSection:](self, "assetsInSection:", [pathCopy section]);
+  v8 = [v7 objectAtIndexedSubscript:item];
   if (!v8)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:2019 description:{@"%@ nil asset at indexPath:%@. The indexPath is probably invalid.", self, v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:2019 description:{@"%@ nil asset at indexPath:%@. The indexPath is probably invalid.", self, pathCopy}];
   }
 
   return v8;
 }
 
-- (id)facesAtSimpleIndexPath:(PXSimpleIndexPath *)a3
+- (id)facesAtSimpleIndexPath:(PXSimpleIndexPath *)path
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  dataSourceIdentifier = a3->dataSourceIdentifier;
+  dataSourceIdentifier = path->dataSourceIdentifier;
   if (dataSourceIdentifier != [(PXPhotosDataSource *)self versionIdentifier])
   {
     [MEMORY[0x1E696AAA8] currentHandler];
     objc_claimAutoreleasedReturnValue();
-    v25 = *&a3->item;
-    v27 = *&a3->dataSourceIdentifier;
+    v25 = *&path->item;
+    v27 = *&path->dataSourceIdentifier;
     v28 = v25;
     PXSimpleIndexPathDescription();
   }
 
-  v6 = [(PXPhotosDataSource *)self assetsInSection:a3->section];
-  v7 = [v6 fetchedObjectIDs];
-  v8 = [v7 objectAtIndex:a3->item];
+  v6 = [(PXPhotosDataSource *)self assetsInSection:path->section];
+  fetchedObjectIDs = [v6 fetchedObjectIDs];
+  objectID = [fetchedObjectIDs objectAtIndex:path->item];
 
-  if (!v8)
+  if (!objectID)
   {
-    v9 = *&a3->item;
-    v27 = *&a3->dataSourceIdentifier;
+    v9 = *&path->item;
+    v27 = *&path->dataSourceIdentifier;
     v28 = v9;
     v10 = [(PXPhotosDataSource *)self assetAtSimpleIndexPath:&v27];
-    v8 = [v10 objectID];
+    objectID = [v10 objectID];
 
-    if (!v8)
+    if (!objectID)
     {
       [MEMORY[0x1E696AAA8] currentHandler];
       objc_claimAutoreleasedReturnValue();
-      v26 = *&a3->item;
-      v27 = *&a3->dataSourceIdentifier;
+      v26 = *&path->item;
+      v27 = *&path->dataSourceIdentifier;
       v28 = v26;
       PXSimpleIndexPathDescription();
     }
   }
 
-  v11 = [(NSMutableDictionary *)self->_facesByAssetCache objectForKey:v8];
+  v11 = [(NSMutableDictionary *)self->_facesByAssetCache objectForKey:objectID];
   if (!v11)
   {
-    v12 = [(PXPhotosDataSource *)self photoLibrary];
-    v13 = [v12 px_standardLibrarySpecificFetchOptions];
+    photoLibrary = [(PXPhotosDataSource *)self photoLibrary];
+    px_standardLibrarySpecificFetchOptions = [photoLibrary px_standardLibrarySpecificFetchOptions];
 
-    [v13 setWantsIncrementalChangeDetails:0];
-    [v13 setIncludeTorsoAndFaceDetectionData:1];
-    v14 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-    [v13 setIncludedDetectionTypes:v14];
+    [px_standardLibrarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+    [px_standardLibrarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+    px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+    [px_standardLibrarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-    v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"assetForFace", v8];
-    v16 = [(NSArray *)self->_filterPersons firstObject];
-    v17 = v16;
-    if (v16)
+    v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"assetForFace", objectID];
+    firstObject = [(NSArray *)self->_filterPersons firstObject];
+    v17 = firstObject;
+    if (firstObject)
     {
       v18 = MEMORY[0x1E696AE18];
-      v19 = [v16 objectID];
-      v20 = [v18 predicateWithFormat:@"noindex:(%K) = %@", @"personForFace", v19];
+      objectID2 = [firstObject objectID];
+      v20 = [v18 predicateWithFormat:@"noindex:(%K) = %@", @"personForFace", objectID2];
 
       v21 = MEMORY[0x1E696AB28];
       v29[0] = v15;
@@ -5342,38 +5342,38 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
       v23 = [v21 andPredicateWithSubpredicates:v22];
 
-      [v13 setInternalPredicate:v23];
+      [px_standardLibrarySpecificFetchOptions setInternalPredicate:v23];
     }
 
     else
     {
-      [v13 setInternalPredicate:v15];
+      [px_standardLibrarySpecificFetchOptions setInternalPredicate:v15];
     }
 
-    v11 = [MEMORY[0x1E69787C8] fetchFacesWithOptions:v13];
+    v11 = [MEMORY[0x1E69787C8] fetchFacesWithOptions:px_standardLibrarySpecificFetchOptions];
     if (v11)
     {
-      [(NSMutableDictionary *)self->_facesByAssetCache setObject:v11 forKey:v8];
+      [(NSMutableDictionary *)self->_facesByAssetCache setObject:v11 forKey:objectID];
     }
   }
 
   return v11;
 }
 
-- (double)weightForAsset:(id)a3
+- (double)weightForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assetCopy = asset;
+  v5 = assetCopy;
+  if (assetCopy)
   {
-    v6 = [v4 objectID];
-    v7 = [(NSMutableDictionary *)self->_weightByAssetCache objectForKey:v6];
+    objectID = [assetCopy objectID];
+    v7 = [(NSMutableDictionary *)self->_weightByAssetCache objectForKey:objectID];
     if (!v7)
     {
       v8 = MEMORY[0x1E696AD98];
       [v5 weight];
       v7 = [v8 numberWithDouble:?];
-      [(NSMutableDictionary *)self->_weightByAssetCache setObject:v7 forKey:v6];
+      [(NSMutableDictionary *)self->_weightByAssetCache setObject:v7 forKey:objectID];
     }
 
     [v7 floatValue];
@@ -5388,9 +5388,9 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
   return v10;
 }
 
-- (id)assetAtSimpleIndexPath:(PXSimpleIndexPath *)a3
+- (id)assetAtSimpleIndexPath:(PXSimpleIndexPath *)path
 {
-  dataSourceIdentifier = a3->dataSourceIdentifier;
+  dataSourceIdentifier = path->dataSourceIdentifier;
   if (dataSourceIdentifier != [(PXPhotosDataSource *)self versionIdentifier])
   {
     [MEMORY[0x1E696AAA8] currentHandler];
@@ -5398,7 +5398,7 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
     PXSimpleIndexPathDescription();
   }
 
-  v6 = [(PXPhotosDataSource *)self assetsInSection:a3->section];
+  v6 = [(PXPhotosDataSource *)self assetsInSection:path->section];
   if (!v6)
   {
     [MEMORY[0x1E696AAA8] currentHandler];
@@ -5406,94 +5406,94 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
     PXSimpleIndexPathDescription();
   }
 
-  v7 = [v6 objectAtIndexedSubscript:a3->item];
+  v7 = [v6 objectAtIndexedSubscript:path->item];
 
   return v7;
 }
 
-- (id)_assetsForAssetCollection:(id)a3
+- (id)_assetsForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:v4];
-  v6 = [(PXPhotosDataSource *)self _assetCollectionFetchStatus:v4];
+  collectionCopy = collection;
+  v5 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:collectionCopy];
+  v6 = [(PXPhotosDataSource *)self _assetCollectionFetchStatus:collectionCopy];
   if (v6 - 1 > 2)
   {
-    v9 = 0;
+    exposedFetchResult2 = 0;
   }
 
   else
   {
     v7 = v6;
-    v8 = [v5 exposedFetchResult];
-    v9 = v8;
-    if (v7 != 2 && !v8)
+    exposedFetchResult = [v5 exposedFetchResult];
+    exposedFetchResult2 = exposedFetchResult;
+    if (v7 != 2 && !exposedFetchResult)
     {
-      v10 = [(PXPhotosDataSource *)self _fetchTupleForAssetCollection:v4 calledOnClientQueue:1 isLimitedInitialFetch:v7 == 1];
-      v11 = [(PXPhotosDataSource *)self _mutableResultRecordForAssetCollection:v4];
-      [(PXPhotosDataSource *)self _addResultTuple:v10 forAssetCollection:v4 preparedResultRecord:0 toMutableResultRecord:v11];
-      v9 = [v11 exposedFetchResult];
+      v10 = [(PXPhotosDataSource *)self _fetchTupleForAssetCollection:collectionCopy calledOnClientQueue:1 isLimitedInitialFetch:v7 == 1];
+      v11 = [(PXPhotosDataSource *)self _mutableResultRecordForAssetCollection:collectionCopy];
+      [(PXPhotosDataSource *)self _addResultTuple:v10 forAssetCollection:collectionCopy preparedResultRecord:0 toMutableResultRecord:v11];
+      exposedFetchResult2 = [v11 exposedFetchResult];
     }
   }
 
-  return v9;
+  return exposedFetchResult2;
 }
 
-- (id)assetsInSection:(int64_t)a3
+- (id)assetsInSection:(int64_t)section
 {
-  v4 = [(PXPhotosDataSource *)self assetCollectionForSection:a3];
+  v4 = [(PXPhotosDataSource *)self assetCollectionForSection:section];
   v5 = [(PXPhotosDataSource *)self _assetsForAssetCollection:v4];
 
   return v5;
 }
 
-- (int64_t)keyAssetIndexInSection:(int64_t)a3
+- (int64_t)keyAssetIndexInSection:(int64_t)section
 {
-  v4 = [(PXPhotosDataSource *)self assetCollectionForSection:a3];
+  v4 = [(PXPhotosDataSource *)self assetCollectionForSection:section];
   v5 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:v4];
-  v6 = [v5 keyAssetIndex];
+  keyAssetIndex = [v5 keyAssetIndex];
 
-  return v6;
+  return keyAssetIndex;
 }
 
-- (id)_keyAssetsForAssetCollection:(id)a3
+- (id)_keyAssetsForAssetCollection:(id)collection
 {
-  v3 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:a3];
-  v4 = [v3 keyAssetsFetchResult];
+  v3 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:collection];
+  keyAssetsFetchResult = [v3 keyAssetsFetchResult];
 
-  return v4;
+  return keyAssetsFetchResult;
 }
 
-- (id)keyAssetsInSection:(int64_t)a3
+- (id)keyAssetsInSection:(int64_t)section
 {
-  v4 = [(PXPhotosDataSource *)self assetCollectionForSection:a3];
+  v4 = [(PXPhotosDataSource *)self assetCollectionForSection:section];
   v5 = [(PXPhotosDataSource *)self _keyAssetsForAssetCollection:v4];
 
   return v5;
 }
 
-- (id)infoForAssetCollection:(id)a3
+- (id)infoForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_infoForAssetCollection objectForKeyedSubscript:v4];
+  collectionCopy = collection;
+  v5 = [(NSMutableDictionary *)self->_infoForAssetCollection objectForKeyedSubscript:collectionCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(PXAssetCollectionDataSourceInfo);
-    [(NSMutableDictionary *)self->_infoForAssetCollection setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_infoForAssetCollection setObject:v5 forKeyedSubscript:collectionCopy];
   }
 
   return v5;
 }
 
-- (id)sectionsForAssetCollections:(id)a3
+- (id)sectionsForAssetCollections:(id)collections
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionsCopy = collections;
   v5 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = collectionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -5524,37 +5524,37 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
   return v5;
 }
 
-- (id)assetCollectionForSection:(int64_t)a3
+- (id)assetCollectionForSection:(int64_t)section
 {
-  v4 = [(PXPhotosDataSource *)self _sectionCache];
-  v5 = [v4 assetCollections];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+  assetCollections = [_sectionCache assetCollections];
+  v6 = [assetCollections objectAtIndexedSubscript:section];
 
   return v6;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v3 = [(PXPhotosDataSource *)self assetsInSection:a3];
+  v3 = [(PXPhotosDataSource *)self assetsInSection:section];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (void)setWantsCurationForAllCollections:(BOOL)a3 collectionsToDiff:(id)a4
+- (void)setWantsCurationForAllCollections:(BOOL)collections collectionsToDiff:(id)diff
 {
-  v4 = a3;
+  collectionsCopy = collections;
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PXPhotosDataSource *)self _sectionCache];
-  v8 = [v7 assetCollectionToSection];
-  v9 = [v8 allKeys];
+  diffCopy = diff;
+  _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+  assetCollectionToSection = [_sectionCache assetCollectionToSection];
+  allKeys = [assetCollectionToSection allKeys];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v9;
+  v10 = allKeys;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
   v12 = v10;
   if (v11)
@@ -5571,7 +5571,7 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
         }
 
         v16 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:*(*(&v21 + 1) + 8 * i)];
-        if ([v16 isCurated] != v4 || objc_msgSend(v16, "wantsCuration") != v4)
+        if ([v16 isCurated] != collectionsCopy || objc_msgSend(v16, "wantsCuration") != collectionsCopy)
         {
 
           v17[0] = MEMORY[0x1E69E9820];
@@ -5579,9 +5579,9 @@ id __70__PXPhotosDataSource_indexPathForAsset_hintIndexPath_hintCollections___bl
           v17[2] = __74__PXPhotosDataSource_setWantsCurationForAllCollections_collectionsToDiff___block_invoke;
           v17[3] = &unk_1E774B368;
           v18 = v10;
-          v19 = self;
-          v20 = v4;
-          [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v18 collectionsToDiff:v6 changeBlock:v17];
+          selfCopy = self;
+          v20 = collectionsCopy;
+          [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v18 collectionsToDiff:diffCopy changeBlock:v17];
           v12 = v18;
           goto LABEL_12;
         }
@@ -5639,22 +5639,22 @@ void __74__PXPhotosDataSource_setWantsCurationForAllCollections_collectionsToDif
   }
 }
 
-- (void)setWantsCuration:(BOOL)a3 forAssetCollection:(id)a4
+- (void)setWantsCuration:(BOOL)curation forAssetCollection:(id)collection
 {
-  v4 = a3;
+  curationCopy = curation;
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ([(PXPhotosDataSource *)self wantsCurationForAssetCollection:v6]!= v4)
+  collectionCopy = collection;
+  if ([(PXPhotosDataSource *)self wantsCurationForAssetCollection:collectionCopy]!= curationCopy)
   {
-    v11[0] = v6;
+    v11[0] = collectionCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __58__PXPhotosDataSource_setWantsCuration_forAssetCollection___block_invoke;
     v8[3] = &unk_1E774B368;
     v8[4] = self;
-    v9 = v6;
-    v10 = v4;
+    v9 = collectionCopy;
+    v10 = curationCopy;
     [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v7 changeBlock:v8];
   }
 }
@@ -5665,25 +5665,25 @@ void __58__PXPhotosDataSource_setWantsCuration_forAssetCollection___block_invoke
   [v2 setWantsCuration:*(a1 + 48)];
 }
 
-- (void)setCurationLength:(int64_t)a3
+- (void)setCurationLength:(int64_t)length
 {
-  if (self->_curationLength != a3)
+  if (self->_curationLength != length)
   {
     v15 = v3;
     v16 = v4;
-    self->_curationLength = a3;
-    v7 = [(PXPhotosDataSource *)self _sectionCache];
-    v8 = [v7 assetCollectionToSection];
-    v9 = [v8 allKeys];
+    self->_curationLength = length;
+    _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+    assetCollectionToSection = [_sectionCache assetCollectionToSection];
+    allKeys = [assetCollectionToSection allKeys];
 
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __40__PXPhotosDataSource_setCurationLength___block_invoke;
     v11[3] = &unk_1E7749FF8;
-    v12 = v9;
-    v13 = self;
-    v14 = a3;
-    v10 = v9;
+    v12 = allKeys;
+    selfCopy = self;
+    lengthCopy = length;
+    v10 = allKeys;
     [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v10 changeBlock:v11];
   }
 }
@@ -5727,22 +5727,22 @@ uint64_t __40__PXPhotosDataSource_setCurationLength___block_invoke(uint64_t a1)
   return [*(a1 + 40) _restartBackgroundFetchWithAssetCollectionsToDiff:0];
 }
 
-- (void)setKeyAsset:(id)a3 forAssetCollection:(id)a4
+- (void)setKeyAsset:(id)asset forAssetCollection:(id)collection
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v14[0] = v7;
+  assetCopy = asset;
+  collectionCopy = collection;
+  v14[0] = collectionCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__PXPhotosDataSource_setKeyAsset_forAssetCollection___block_invoke;
   v11[3] = &unk_1E774A1B8;
   v11[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = collectionCopy;
+  v13 = assetCopy;
+  v9 = assetCopy;
+  v10 = collectionCopy;
   [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v8 changeBlock:v11];
 }
 
@@ -5767,62 +5767,62 @@ void __53__PXPhotosDataSource_setKeyAsset_forAssetCollection___block_invoke(uint
   }
 }
 
-- (void)setBackgroundFetchOriginSection:(int64_t)a3
+- (void)setBackgroundFetchOriginSection:(int64_t)section
 {
-  if (self->_backgroundFetchOriginSection != a3)
+  if (self->_backgroundFetchOriginSection != section)
   {
-    self->_backgroundFetchOriginSection = a3;
+    self->_backgroundFetchOriginSection = section;
     self->_backgroundFetchOriginSectionChanged = 1;
     [(PXPhotosDataSource *)self _interruptBackgroundFetch];
   }
 }
 
-- (void)setReverseSortOrder:(BOOL)a3
+- (void)setReverseSortOrder:(BOOL)order
 {
-  if (self->_reverseSortOrder != a3)
+  if (self->_reverseSortOrder != order)
   {
     v14 = v3;
     v15 = v4;
-    v7 = [(PXPhotosDataSource *)self _sectionCache];
-    v8 = [v7 assetCollectionToSection];
-    v9 = [v8 allKeys];
+    _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+    assetCollectionToSection = [_sectionCache assetCollectionToSection];
+    allKeys = [assetCollectionToSection allKeys];
 
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __42__PXPhotosDataSource_setReverseSortOrder___block_invoke;
     v11[3] = &unk_1E774B368;
-    v13 = a3;
+    orderCopy = order;
     v11[4] = self;
-    v12 = v9;
-    v10 = v9;
+    v12 = allKeys;
+    v10 = allKeys;
     [(PXPhotosDataSource *)self _performManualReloadWithChangeBlock:v11];
   }
 }
 
-- (void)setSortDescriptors:(id)a3
+- (void)setSortDescriptors:(id)descriptors
 {
-  v5 = a3;
-  if (self->_sortDescriptors != v5)
+  descriptorsCopy = descriptors;
+  if (self->_sortDescriptors != descriptorsCopy)
   {
     if (self->_isBackgroundFetching && self->_needToStartBackgroundFetch && ![(NSMutableDictionary *)self->_resultRecordByAssetCollection count])
     {
-      objc_storeStrong(&self->_sortDescriptors, a3);
+      objc_storeStrong(&self->_sortDescriptors, descriptors);
     }
 
     else
     {
-      v6 = [(PXPhotosDataSource *)self _sectionCache];
-      v7 = [v6 assetCollectionToSection];
-      v8 = [v7 allKeys];
+      _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+      assetCollectionToSection = [_sectionCache assetCollectionToSection];
+      allKeys = [assetCollectionToSection allKeys];
 
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __41__PXPhotosDataSource_setSortDescriptors___block_invoke;
       v10[3] = &unk_1E774A1B8;
       v10[4] = self;
-      v11 = v5;
-      v12 = v8;
-      v9 = v8;
+      v11 = descriptorsCopy;
+      v12 = allKeys;
+      v9 = allKeys;
       [(PXPhotosDataSource *)self _performManualReloadWithChangeBlock:v10];
       [(PXPhotosDataSource *)self _restartBackgroundFetchWithAssetCollectionsToDiff:0];
     }
@@ -5867,9 +5867,9 @@ void __41__PXPhotosDataSource_setSortDescriptors___block_invoke(id *a1)
   }
 }
 
-- (void)setFetchLimit:(unint64_t)a3
+- (void)setFetchLimit:(unint64_t)limit
 {
-  if (self->_fetchLimit != a3)
+  if (self->_fetchLimit != limit)
   {
     v5[6] = v3;
     v5[7] = v4;
@@ -5878,29 +5878,29 @@ void __41__PXPhotosDataSource_setSortDescriptors___block_invoke(id *a1)
     v5[2] = __36__PXPhotosDataSource_setFetchLimit___block_invoke;
     v5[3] = &unk_1E77498A0;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = limit;
     [(PXPhotosDataSource *)self _performManualReloadWithChangeBlock:v5];
   }
 }
 
-- (void)setAllowedUUIDs:(id)a3 provideIncrementalChangeDetailsForAssetCollections:(id)a4
+- (void)setAllowedUUIDs:(id)ds provideIncrementalChangeDetailsForAssetCollections:(id)collections
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  collectionsCopy = collections;
   allowedUUIDs = self->_allowedUUIDs;
-  if (allowedUUIDs != v6 && ([(NSSet *)allowedUUIDs isEqual:v6]& 1) == 0)
+  if (allowedUUIDs != dsCopy && ([(NSSet *)allowedUUIDs isEqual:dsCopy]& 1) == 0)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __89__PXPhotosDataSource_setAllowedUUIDs_provideIncrementalChangeDetailsForAssetCollections___block_invoke;
     aBlock[3] = &unk_1E774C620;
     aBlock[4] = self;
-    v9 = v6;
+    v9 = dsCopy;
     v15 = v9;
     v10 = _Block_copy(aBlock);
     if ([(NSSet *)v9 count]&& self->_allowedUUIDs)
     {
-      v11 = [(PHFetchResult *)self->_collectionListFetchResult fetchedObjects];
+      fetchedObjects = [(PHFetchResult *)self->_collectionListFetchResult fetchedObjects];
       [(PXPhotosDataSource *)self _cancelBackgroundFetchIfNeeded];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
@@ -5908,7 +5908,7 @@ void __41__PXPhotosDataSource_setSortDescriptors___block_invoke(id *a1)
       v12[3] = &unk_1E774C2F0;
       v12[4] = self;
       v13 = v10;
-      [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:v11 collectionsToDiff:v7 changeBlock:v12];
+      [(PXPhotosDataSource *)self _performManualChangesForAssetCollections:fetchedObjects collectionsToDiff:collectionsCopy changeBlock:v12];
     }
 
     else
@@ -5938,18 +5938,18 @@ uint64_t __89__PXPhotosDataSource_setAllowedUUIDs_provideIncrementalChangeDetail
   return [v3 removeAllObjects];
 }
 
-- (void)setAllowedOIDs:(id)a3
+- (void)setAllowedOIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = self->_allowedOIDs;
   v6 = v5;
-  if (v5 == v4)
+  if (v5 == dsCopy)
   {
   }
 
   else
   {
-    v7 = [(NSSet *)v5 isEqual:v4];
+    v7 = [(NSSet *)v5 isEqual:dsCopy];
 
     if ((v7 & 1) == 0)
     {
@@ -5958,37 +5958,37 @@ uint64_t __89__PXPhotosDataSource_setAllowedUUIDs_provideIncrementalChangeDetail
       v8[2] = __37__PXPhotosDataSource_setAllowedOIDs___block_invoke;
       v8[3] = &unk_1E774C620;
       v8[4] = self;
-      v9 = v4;
+      v9 = dsCopy;
       [(PXPhotosDataSource *)self _performManualReloadWithChangeBlock:v8];
     }
   }
 }
 
-- (void)setCollectionListFetchResult:(id)a3
+- (void)setCollectionListFetchResult:(id)result
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_collectionListFetchResult != v4)
+  resultCopy = result;
+  v5 = resultCopy;
+  if (self->_collectionListFetchResult != resultCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __51__PXPhotosDataSource_setCollectionListFetchResult___block_invoke;
     v6[3] = &unk_1E774C620;
     v6[4] = self;
-    v7 = v4;
+    v7 = resultCopy;
     [(PXPhotosDataSource *)self _performManualReloadWithChangeBlock:v6];
   }
 }
 
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading
 {
-  v4 = a3;
-  if ([(NSMutableSet *)self->_pauseLibraryChangeDeliveryTokens containsObject:v4])
+  loadingCopy = loading;
+  if ([(NSMutableSet *)self->_pauseLibraryChangeDeliveryTokens containsObject:loadingCopy])
   {
-    v5 = [(PXPhotosDataSource *)self photoLibrary];
-    [v5 px_endPausingChanges:v4];
+    photoLibrary = [(PXPhotosDataSource *)self photoLibrary];
+    [photoLibrary px_endPausingChanges:loadingCopy];
 
-    [(NSMutableSet *)self->_pauseLibraryChangeDeliveryTokens removeObject:v4];
+    [(NSMutableSet *)self->_pauseLibraryChangeDeliveryTokens removeObject:loadingCopy];
     if (![(NSMutableSet *)self->_pauseLibraryChangeDeliveryTokens count])
     {
       self->_pauseBackgroundFetchResultsDelivery = 0;
@@ -6039,17 +6039,17 @@ void __63__PXPhotosDataSource_resumeChangeDeliveryAndBackgroundLoading___block_i
   [WeakRetained _processAndPublishPendingCollectionFetchResultsWhenAppropriate];
 }
 
-- (id)pauseChangeDeliveryAndBackgroundLoadingWithTimeout:(double)a3 identifier:(id)a4
+- (id)pauseChangeDeliveryAndBackgroundLoadingWithTimeout:(double)timeout identifier:(id)identifier
 {
-  v6 = fmax(a3 + a3, 0.1);
-  v7 = a4;
-  v8 = [(PXPhotosDataSource *)self photoLibrary];
-  v9 = [v8 px_beginPausingChangesWithTimeout:v7 identifier:v6];
+  v6 = fmax(timeout + timeout, 0.1);
+  identifierCopy = identifier;
+  photoLibrary = [(PXPhotosDataSource *)self photoLibrary];
+  v9 = [photoLibrary px_beginPausingChangesWithTimeout:identifierCopy identifier:v6];
 
   [(NSMutableSet *)self->_pauseLibraryChangeDeliveryTokens addObject:v9];
   self->_pauseBackgroundFetchResultsDelivery = 1;
   objc_initWeak(&location, self);
-  v10 = dispatch_time(0, (a3 * 1000000000.0));
+  v10 = dispatch_time(0, (timeout * 1000000000.0));
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __84__PXPhotosDataSource_pauseChangeDeliveryAndBackgroundLoadingWithTimeout_identifier___block_invoke;
@@ -6057,8 +6057,8 @@ void __63__PXPhotosDataSource_resumeChangeDeliveryAndBackgroundLoading___block_i
   objc_copyWeak(&v19, &location);
   v11 = v9;
   v17 = v11;
-  v18 = v8;
-  v12 = v8;
+  v18 = photoLibrary;
+  v12 = photoLibrary;
   dispatch_after(v10, MEMORY[0x1E69E96A0], v16);
   v13 = v18;
   v14 = v11;
@@ -6084,35 +6084,35 @@ void __84__PXPhotosDataSource_pauseChangeDeliveryAndBackgroundLoadingWithTimeout
   }
 }
 
-- (void)pauseChangeDeliveryFor:(double)a3 identifier:(id)a4
+- (void)pauseChangeDeliveryFor:(double)for identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(PXPhotosDataSource *)self photoLibrary];
-  v8 = [v7 px_beginPausingChangesWithTimeout:v6 identifier:{fmax(a3 + a3, 1.0)}];
+  identifierCopy = identifier;
+  photoLibrary = [(PXPhotosDataSource *)self photoLibrary];
+  v8 = [photoLibrary px_beginPausingChangesWithTimeout:identifierCopy identifier:{fmax(for + for, 1.0)}];
 
-  v9 = dispatch_time(0, (a3 * 1000000000.0));
+  v9 = dispatch_time(0, (for * 1000000000.0));
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __56__PXPhotosDataSource_pauseChangeDeliveryFor_identifier___block_invoke;
   v12[3] = &unk_1E774C620;
-  v13 = v7;
+  v13 = photoLibrary;
   v14 = v8;
   v10 = v8;
-  v11 = v7;
+  v11 = photoLibrary;
   dispatch_after(v9, MEMORY[0x1E69E96A0], v12);
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observersQueue = self->_observersQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__PXPhotosDataSource_unregisterChangeObserver___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observersQueue, v7);
 }
 
@@ -6125,17 +6125,17 @@ uint64_t __47__PXPhotosDataSource_unregisterChangeObserver___block_invoke(uint64
   return [v3 removeObject:v2];
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observersQueue = self->_observersQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__PXPhotosDataSource_registerChangeObserver___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(observersQueue, v7);
 }
 
@@ -6148,123 +6148,123 @@ uint64_t __45__PXPhotosDataSource_registerChangeObserver___block_invoke(uint64_t
   return [v3 addObject:v2];
 }
 
-- (unint64_t)_cachedSectionForAssetCollection:(id)a3
+- (unint64_t)_cachedSectionForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self _sectionCache];
-  v6 = [v5 assetCollectionToSection];
+  collectionCopy = collection;
+  _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+  assetCollectionToSection = [_sectionCache assetCollectionToSection];
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [assetCollectionToSection objectForKeyedSubscript:collectionCopy];
 
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
-- (int64_t)estimatedAssetsCountWithEnrichmentState:(unsigned __int16)a3
+- (int64_t)estimatedAssetsCountWithEnrichmentState:(unsigned __int16)state
 {
-  v3 = a3;
-  v6 = [(PXPhotosDataSource *)self _sectionCache];
-  v7 = v6;
-  if (v3 <= 1)
+  stateCopy = state;
+  _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+  v7 = _sectionCache;
+  if (stateCopy <= 1)
   {
-    if (!v3)
+    if (!stateCopy)
     {
-      v8 = [v6 estimatedAssetCountWithEnrichmentStateNotEnriched];
+      estimatedAssetCountWithEnrichmentStateNotEnriched = [_sectionCache estimatedAssetCountWithEnrichmentStateNotEnriched];
       goto LABEL_12;
     }
 
-    if (v3 == 1)
+    if (stateCopy == 1)
     {
-      v8 = [v6 estimatedAssetCountWithEnrichmentStateAssetMetadataOnly];
+      estimatedAssetCountWithEnrichmentStateNotEnriched = [_sectionCache estimatedAssetCountWithEnrichmentStateAssetMetadataOnly];
       goto LABEL_12;
     }
 
 LABEL_13:
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:1562 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:1562 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v3 == 2)
+  if (stateCopy == 2)
   {
-    v8 = [v6 estimatedAssetCountWithEnrichmentStateAssetMetadataAndScore];
+    estimatedAssetCountWithEnrichmentStateNotEnriched = [_sectionCache estimatedAssetCountWithEnrichmentStateAssetMetadataAndScore];
     goto LABEL_12;
   }
 
-  if (v3 == 3)
+  if (stateCopy == 3)
   {
-    v8 = [v6 estimatedAssetCountWithEnrichmentStateAssetMetadataAndScenesProcessed];
+    estimatedAssetCountWithEnrichmentStateNotEnriched = [_sectionCache estimatedAssetCountWithEnrichmentStateAssetMetadataAndScenesProcessed];
     goto LABEL_12;
   }
 
-  if (v3 != 4)
+  if (stateCopy != 4)
   {
     goto LABEL_13;
   }
 
-  v8 = [v6 estimatedAssetCountWithEnrichmentStateComplete];
+  estimatedAssetCountWithEnrichmentStateNotEnriched = [_sectionCache estimatedAssetCountWithEnrichmentStateComplete];
 LABEL_12:
-  v9 = v8;
+  v9 = estimatedAssetCountWithEnrichmentStateNotEnriched;
 
   return v9;
 }
 
-- (int64_t)numberOfSectionsWithEnrichmentState:(unsigned __int16)a3
+- (int64_t)numberOfSectionsWithEnrichmentState:(unsigned __int16)state
 {
-  v3 = a3;
-  v6 = [(PXPhotosDataSource *)self _sectionCache];
-  v7 = v6;
-  if (v3 <= 1)
+  stateCopy = state;
+  _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+  v7 = _sectionCache;
+  if (stateCopy <= 1)
   {
-    if (!v3)
+    if (!stateCopy)
     {
-      v8 = [v6 numberOfEnrichmentStateNotEnrichedAssetCollections];
+      numberOfEnrichmentStateNotEnrichedAssetCollections = [_sectionCache numberOfEnrichmentStateNotEnrichedAssetCollections];
       goto LABEL_12;
     }
 
-    if (v3 == 1)
+    if (stateCopy == 1)
     {
-      v8 = [v6 numberOfEnrichmentStateAssetMetadataOnlyAssetCollections];
+      numberOfEnrichmentStateNotEnrichedAssetCollections = [_sectionCache numberOfEnrichmentStateAssetMetadataOnlyAssetCollections];
       goto LABEL_12;
     }
 
 LABEL_13:
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:1545 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:1545 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v3 == 2)
+  if (stateCopy == 2)
   {
-    v8 = [v6 numberOfEnrichmentStateAssetMetadataAndScoreAssetCollections];
+    numberOfEnrichmentStateNotEnrichedAssetCollections = [_sectionCache numberOfEnrichmentStateAssetMetadataAndScoreAssetCollections];
     goto LABEL_12;
   }
 
-  if (v3 == 3)
+  if (stateCopy == 3)
   {
-    v8 = [v6 numberOfEnrichmentStateAssetMetadataAndScenesProcessedAssetCollections];
+    numberOfEnrichmentStateNotEnrichedAssetCollections = [_sectionCache numberOfEnrichmentStateAssetMetadataAndScenesProcessedAssetCollections];
     goto LABEL_12;
   }
 
-  if (v3 != 4)
+  if (stateCopy != 4)
   {
     goto LABEL_13;
   }
 
-  v8 = [v6 numberOfEnrichmentStateCompleteAssetCollections];
+  numberOfEnrichmentStateNotEnrichedAssetCollections = [_sectionCache numberOfEnrichmentStateCompleteAssetCollections];
 LABEL_12:
-  v9 = v8;
+  v9 = numberOfEnrichmentStateNotEnrichedAssetCollections;
 
   return v9;
 }
@@ -6276,10 +6276,10 @@ LABEL_12:
     return 0;
   }
 
-  v4 = [(PXPhotosDataSource *)self _sectionCache];
-  v5 = [v4 estimatedOtherCount];
+  _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+  estimatedOtherCount = [_sectionCache estimatedOtherCount];
 
-  return v5;
+  return estimatedOtherCount;
 }
 
 - (int64_t)estimatedVideosCount
@@ -6289,10 +6289,10 @@ LABEL_12:
     return 0;
   }
 
-  v4 = [(PXPhotosDataSource *)self _sectionCache];
-  v5 = [v4 estimatedVideosCount];
+  _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+  estimatedVideosCount = [_sectionCache estimatedVideosCount];
 
-  return v5;
+  return estimatedVideosCount;
 }
 
 - (int64_t)estimatedPhotosCount
@@ -6302,27 +6302,27 @@ LABEL_12:
     return 0;
   }
 
-  v4 = [(PXPhotosDataSource *)self _sectionCache];
-  v5 = [v4 estimatedPhotosCount];
+  _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+  estimatedPhotosCount = [_sectionCache estimatedPhotosCount];
 
-  return v5;
+  return estimatedPhotosCount;
 }
 
 - (BOOL)_isFiltering
 {
-  v3 = [(PXPhotosDataSource *)self filterPredicate];
+  filterPredicate = [(PXPhotosDataSource *)self filterPredicate];
 
-  return v3 || [(PXPhotosDataSource *)self libraryFilter]!= 0;
+  return filterPredicate || [(PXPhotosDataSource *)self libraryFilter]!= 0;
 }
 
-- (void)_adoptExistingAssetCollectionFetchResults:(id)a3
+- (void)_adoptExistingAssetCollectionFetchResults:(id)results
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __64__PXPhotosDataSource__adoptExistingAssetCollectionFetchResults___block_invoke;
   v3[3] = &unk_1E7744170;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [results enumerateKeysAndObjectsUsingBlock:v3];
 }
 
 void __64__PXPhotosDataSource__adoptExistingAssetCollectionFetchResults___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -6346,47 +6346,47 @@ void __64__PXPhotosDataSource__adoptExistingAssetCollectionFetchResults___block_
   }
 }
 
-- (BOOL)_isResultTupleApplicable:(id)a3 forAssetCollection:(id)a4
+- (BOOL)_isResultTupleApplicable:(id)applicable forAssetCollection:(id)collection
 {
-  if (!a3)
+  if (!applicable)
   {
     return 0;
   }
 
-  v6 = a3;
-  v7 = [(PXPhotosDataSource *)self _finalFilterPredicateForAssetCollection:a4];
-  v8 = [v6 filterPredicate];
+  applicableCopy = applicable;
+  v7 = [(PXPhotosDataSource *)self _finalFilterPredicateForAssetCollection:collection];
+  filterPredicate = [applicableCopy filterPredicate];
 
-  if (v7 == v8)
+  if (v7 == filterPredicate)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = [v7 isEqual:v8];
+    v9 = [v7 isEqual:filterPredicate];
   }
 
   return v9;
 }
 
-- (id)_closestIndexPathToIndexPath:(id)a3
+- (id)_closestIndexPathToIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self numberOfSections];
-  if (!v5)
+  pathCopy = path;
+  numberOfSections = [(PXPhotosDataSource *)self numberOfSections];
+  if (!numberOfSections)
   {
     v9 = 0;
     goto LABEL_20;
   }
 
-  v6 = v5;
-  if ([v4 section] < v5)
+  v6 = numberOfSections;
+  if ([pathCopy section] < numberOfSections)
   {
-    v7 = -[PXPhotosDataSource numberOfItemsInSection:](self, "numberOfItemsInSection:", [v4 section]);
-    if ([v4 item] < v7)
+    v7 = -[PXPhotosDataSource numberOfItemsInSection:](self, "numberOfItemsInSection:", [pathCopy section]);
+    if ([pathCopy item] < v7)
     {
-      v8 = v4;
+      v8 = pathCopy;
       goto LABEL_8;
     }
 
@@ -6394,7 +6394,7 @@ void __64__PXPhotosDataSource__adoptExistingAssetCollectionFetchResults___block_
     v11 = v7 - 1;
     if (!v10)
     {
-      v8 = [MEMORY[0x1E696AC88] indexPathForItem:v11 inSection:{objc_msgSend(v4, "section")}];
+      v8 = [MEMORY[0x1E696AC88] indexPathForItem:v11 inSection:{objc_msgSend(pathCopy, "section")}];
 LABEL_8:
       v9 = v8;
       if (v8)
@@ -6410,12 +6410,12 @@ LABEL_8:
   aBlock[3] = &unk_1E77442B8;
   aBlock[4] = self;
   v12 = _Block_copy(aBlock);
-  v13 = [v4 section];
+  section = [pathCopy section];
   v14 = v6 - 1;
   if (v6 > 1)
   {
-    v15 = v13 - 1;
-    v16 = v13 + 1;
+    v15 = section - 1;
+    v16 = section + 1;
     while (v16 < v6 || (v15 & 0x8000000000000000) == 0)
     {
       if (v16 < v6 && (v12[2](v12, v16, 0), (v17 = objc_claimAutoreleasedReturnValue()) != 0) || v15 < v6 && (v12[2](v12, v15, 1), (v17 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -6469,13 +6469,13 @@ id __51__PXPhotosDataSource__closestIndexPathToIndexPath___block_invoke(uint64_t
 
 - (id)_observerInterestingAssetReferences
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__PXPhotosDataSource__observerInterestingAssetReferences__block_invoke;
   v8[3] = &unk_1E7744290;
   v8[4] = self;
-  v4 = v3;
+  v4 = array;
   v9 = v4;
   [(PXPhotosDataSource *)self _enumerateChangeObserversWithBlock:v8];
   v5 = v9;
@@ -6501,16 +6501,16 @@ void __57__PXPhotosDataSource__observerInterestingAssetReferences__block_invoke(
   }
 }
 
-- (void)_publishDidReceivePhotoLibraryChange:(id)a3
+- (void)_publishDidReceivePhotoLibraryChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__PXPhotosDataSource__publishDidReceivePhotoLibraryChange___block_invoke;
   v6[3] = &unk_1E7744290;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   [(PXPhotosDataSource *)self _enumerateChangeObserversWithBlock:v6];
 }
 
@@ -6523,16 +6523,16 @@ void __59__PXPhotosDataSource__publishDidReceivePhotoLibraryChange___block_invok
   }
 }
 
-- (void)_distributeChange:(id)a3
+- (void)_distributeChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
   v8 = __40__PXPhotosDataSource__distributeChange___block_invoke;
   v9 = &unk_1E7744290;
-  v10 = self;
-  v11 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v11 = changeCopy;
+  v5 = changeCopy;
   [(PXPhotosDataSource *)self _enumerateChangeObserversWithBlock:&v6];
   [(PXPhotosDataSource *)self _setPreviousCollectionsCount:[(PHFetchResult *)self->_collectionListFetchResult count:v6]];
 }
@@ -6546,16 +6546,16 @@ void __40__PXPhotosDataSource__distributeChange___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)_didChange:(id)a3
+- (void)_didChange:(id)change
 {
   if (self->_nestedCoalesceChanges < 1)
   {
-    [(PXPhotosDataSource *)self _distributeChange:a3];
+    [(PXPhotosDataSource *)self _distributeChange:change];
   }
 
   else
   {
-    [(NSMutableArray *)self->_coalescedChanges addObject:a3];
+    [(NSMutableArray *)self->_coalescedChanges addObject:change];
   }
 
   --self->_nestedChanges;
@@ -6595,12 +6595,12 @@ void __33__PXPhotosDataSource__willChange__block_invoke(uint64_t a1, void *a2)
   [(PXPhotosDataSource *)self _didChange:v3];
 }
 
-- (id)_fetchTupleForAssetCollection:(id)a3 calledOnClientQueue:(BOOL)a4 isLimitedInitialFetch:(BOOL)a5
+- (id)_fetchTupleForAssetCollection:(id)collection calledOnClientQueue:(BOOL)queue isLimitedInitialFetch:(BOOL)fetch
 {
-  v78 = a5;
-  v81 = a4;
+  fetchCopy = fetch;
+  queueCopy = queue;
   v169 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  collectionCopy = collection;
   options = self->_options;
   v155 = 0;
   v156 = &v155;
@@ -6665,9 +6665,9 @@ void __33__PXPhotosDataSource__willChange__block_invoke(uint64_t a1, void *a2)
   aBlock[2] = __94__PXPhotosDataSource__fetchTupleForAssetCollection_calledOnClientQueue_isLimitedInitialFetch___block_invoke;
   aBlock[3] = &unk_1E7744218;
   v97 = &v155;
-  v80 = self;
+  selfCopy = self;
   aBlock[4] = self;
-  v96 = v6;
+  v96 = collectionCopy;
   v98 = &v149;
   v99 = &v143;
   v100 = &v139;
@@ -6675,26 +6675,26 @@ void __33__PXPhotosDataSource__willChange__block_invoke(uint64_t a1, void *a2)
   v107 = (options & 0x20) != 0;
   v102 = &v127;
   v103 = &v121;
-  v108 = v78;
+  v108 = fetchCopy;
   v104 = &v115;
   v105 = &v112;
   v7 = v96;
   v106 = &v109;
   block = _Block_copy(aBlock);
-  if (v81)
+  if (queueCopy)
   {
     block[2]();
   }
 
   else
   {
-    v9 = [(PXPhotosDataSource *)self clientQueue];
-    dispatch_sync(v9, block);
+    clientQueue = [(PXPhotosDataSource *)self clientQueue];
+    dispatch_sync(clientQueue, block);
   }
 
-  v8 = self;
+  selfCopy2 = self;
   v82 = v134[5];
-  v75 = [(PXPhotosDataSource *)self fetcher];
+  fetcher = [(PXPhotosDataSource *)self fetcher];
   v76 = [(PXPhotosDataSource *)self _assetContainerForAssetCollection:v7];
   if ((self->_options & 0x40) != 0)
   {
@@ -6710,7 +6710,7 @@ void __33__PXPhotosDataSource__willChange__block_invoke(uint64_t a1, void *a2)
   }
 
   v12 = self->_options;
-  if (v78 && (v12 & 0x10000) != 0)
+  if (fetchCopy && (v12 & 0x10000) != 0)
   {
 LABEL_11:
     v79 = self->_emptyAssetsFetchResult;
@@ -6721,22 +6721,22 @@ LABEL_12:
 
   if ((v12 & 8) != 0)
   {
-    v79 = [v75 fetchAssetsInContainer:v76 configuration:v122[5]];
+    v79 = [fetcher fetchAssetsInContainer:v76 configuration:v122[5]];
     goto LABEL_12;
   }
 
   v13 = [v122[5] copy];
   [v13 setFilterPredicate:v128[5]];
-  v79 = [v75 fetchAssetsInContainer:v76 configuration:v13];
+  v79 = [fetcher fetchAssetsInContainer:v76 configuration:v13];
   if (v150[5])
   {
-    v14 = [(PHFetchResult *)v79 fetchedObjectIDs];
+    fetchedObjectIDs = [(PHFetchResult *)v79 fetchedObjectIDs];
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v93 = 0u;
     v94 = 0u;
     v92 = 0u;
     v91 = 0u;
-    v16 = v14;
+    v16 = fetchedObjectIDs;
     v17 = [v16 countByEnumeratingWithState:&v91 objects:v168 count:16];
     if (v17)
     {
@@ -6764,10 +6764,10 @@ LABEL_12:
     }
 
     v21 = objc_alloc(MEMORY[0x1E69788E0]);
-    photoLibrary = v80->_photoLibrary;
-    v23 = [(PHFetchResult *)v79 fetchType];
-    v24 = [(PHFetchResult *)v79 fetchPropertySets];
-    v25 = [v21 initWithOids:v15 photoLibrary:photoLibrary fetchType:v23 fetchPropertySets:v24 identifier:0 registerIfNeeded:1];
+    photoLibrary = selfCopy->_photoLibrary;
+    fetchType = [(PHFetchResult *)v79 fetchType];
+    fetchPropertySets = [(PHFetchResult *)v79 fetchPropertySets];
+    v25 = [v21 initWithOids:v15 photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:fetchPropertySets identifier:0 registerIfNeeded:1];
 
     v26 = [(PHFetchResult *)v25 count];
     v73 = v26 < [(PHFetchResult *)v79 count];
@@ -6789,10 +6789,10 @@ LABEL_43:
         {
           v30 = objc_autoreleasePoolPush();
           v31 = [(PHFetchResult *)v79 objectAtIndexedSubscript:j];
-          v32 = [v31 uuid];
-          if ([v156[5] containsObject:v32])
+          uuid = [v31 uuid];
+          if ([v156[5] containsObject:uuid])
           {
-            [v27 addObject:v32];
+            [v27 addObject:uuid];
           }
 
           objc_autoreleasePoolPop(v30);
@@ -6823,7 +6823,7 @@ LABEL_43:
 
     v35 = [v122[5] copy];
     [(PHFetchResult *)v35 setFilterPredicate:v15];
-    v25 = [v75 fetchAssetsInContainer:v76 configuration:v35];
+    v25 = [fetcher fetchAssetsInContainer:v76 configuration:v35];
     v36 = [(PHFetchResult *)v25 count];
     v73 = v36 < [(PHFetchResult *)v79 count];
     if (v144[5])
@@ -6832,10 +6832,10 @@ LABEL_43:
       v38 = [(PHFetchResult *)v25 px_fetchedObjectIDsSortedByUUIDs:v37];
 
       v39 = objc_alloc(MEMORY[0x1E69788E0]);
-      v72 = v80->_photoLibrary;
-      v40 = [(PHFetchResult *)v25 fetchType];
-      v41 = [(PHFetchResult *)v25 fetchPropertySets];
-      v42 = [v39 initWithOids:v38 photoLibrary:v72 fetchType:v40 fetchPropertySets:v41 identifier:0 registerIfNeeded:1];
+      v72 = selfCopy->_photoLibrary;
+      fetchType2 = [(PHFetchResult *)v25 fetchType];
+      fetchPropertySets2 = [(PHFetchResult *)v25 fetchPropertySets];
+      v42 = [v39 initWithOids:v38 photoLibrary:v72 fetchType:fetchType2 fetchPropertySets:fetchPropertySets2 identifier:0 registerIfNeeded:1];
 
       v25 = v42;
     }
@@ -6847,11 +6847,11 @@ LABEL_43:
   v73 = 0;
 LABEL_44:
 
-  v8 = v80;
+  selfCopy2 = selfCopy;
 LABEL_45:
   v43 = ([v7 px_supportsFastCuration] & 1) != 0 || objc_msgSend(v116[5], "curationKind") == 3;
-  v44 = !v81 || ((*(v140 + 24) | v43) & 1) != 0 || !v8->_isBackgroundFetching;
-  v45 = v8->_options;
+  v44 = !queueCopy || ((*(v140 + 24) | v43) & 1) != 0 || !selfCopy2->_isBackgroundFetching;
+  v45 = selfCopy2->_options;
   if ((v45 & 0x10) == 0)
   {
     v46 = 0;
@@ -6869,22 +6869,22 @@ LABEL_78:
 
     if (v44)
     {
-      if (v81 && ((*(v140 + 24) | v43) & 1) == 0)
+      if (queueCopy && ((*(v140 + 24) | v43) & 1) == 0)
       {
         v52 = PLUIGetLog();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v162 = v8;
+          v162 = selfCopy2;
           v163 = 2112;
           v164 = v7;
           _os_log_impl(&dword_1A3C1C000, v52, OS_LOG_TYPE_DEFAULT, "%@ fetching key assets for %@ on the main queue. This can block for a long time and should never happen.", buf, 0x16u);
         }
 
-        v8 = v80;
+        selfCopy2 = selfCopy;
       }
 
-      if ((v8->_options & 0x200000) != 0)
+      if ((selfCopy2->_options & 0x200000) != 0)
       {
         v82 = +[PXPhotoKitFetcher fetchAssetsWithCurationKind:container:libraryFilter:curationContext:](_TtC12PhotosUICore17PXPhotoKitFetcher, "fetchAssetsWithCurationKind:container:libraryFilter:curationContext:", 4, v76, [v116[5] libraryFilter], 1);
       }
@@ -6897,7 +6897,7 @@ LABEL_78:
           v53 = v110;
         }
 
-        v82 = [v75 fetchAssetsInContainer:v76 configuration:*(*v53 + 40)];
+        v82 = [fetcher fetchAssetsInContainer:v76 configuration:*(*v53 + 40)];
       }
 
       if (v82)
@@ -6908,9 +6908,9 @@ LABEL_78:
       v54 = PLUIGetLog();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
       {
-        v71 = v8->_options;
+        v71 = selfCopy2->_options;
         *buf = 138412802;
-        v162 = v8;
+        v162 = selfCopy2;
         v163 = 2112;
         v164 = v76;
         v165 = 2048;
@@ -6930,7 +6930,7 @@ LABEL_89:
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v162 = v8;
+      v162 = selfCopy2;
       v163 = 2112;
       v164 = v7;
       v55 = "%@ not allowed to fetch key assets for %@ on the main queue.";
@@ -6944,7 +6944,7 @@ LABEL_91:
 LABEL_92:
 
     v82 = 0;
-    v8 = v80;
+    selfCopy2 = selfCopy;
     goto LABEL_95;
   }
 
@@ -6954,7 +6954,7 @@ LABEL_92:
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v162 = v8;
+      v162 = selfCopy2;
       v163 = 2112;
       v164 = v7;
       _os_log_impl(&dword_1A3C1C000, v50, OS_LOG_TYPE_DEBUG, "%@ not allowed to fetch curated assets for %@ on the main queue.", buf, 0x16u);
@@ -6972,7 +6972,7 @@ LABEL_92:
       v51 = (options & 0x20) != 0;
     }
 
-    v8 = v80;
+    selfCopy2 = selfCopy;
     if (v51)
     {
       goto LABEL_89;
@@ -6981,23 +6981,23 @@ LABEL_92:
     goto LABEL_95;
   }
 
-  if (v81)
+  if (queueCopy)
   {
-    v48 = v8->_options;
+    v48 = selfCopy2->_options;
     if (((*(v140 + 24) | v43) & 1) == 0)
     {
       v49 = PLUIGetLog();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v162 = v8;
+        v162 = selfCopy2;
         v163 = 2112;
         v164 = v7;
         _os_log_impl(&dword_1A3C1C000, v49, OS_LOG_TYPE_DEFAULT, "%@ fetching curated assets for %@ on the main queue. This can block for a long time and should never happen.", buf, 0x16u);
       }
 
-      v8 = v80;
-      v48 = v80->_options;
+      selfCopy2 = selfCopy;
+      v48 = selfCopy->_options;
     }
 
     if ((v48 & 0x2000) == 0)
@@ -7013,7 +7013,7 @@ LABEL_92:
 
   if ([v7 assetCollectionType] == 4)
   {
-    v47 = [v75 fetchAssetsInContainer:v76 configuration:v116[5]];
+    v47 = [fetcher fetchAssetsInContainer:v76 configuration:v116[5]];
     if ([v47 count])
     {
       v46 = 0;
@@ -7026,12 +7026,12 @@ LABEL_92:
       v86[2] = __94__PXPhotosDataSource__fetchTupleForAssetCollection_calledOnClientQueue_isLimitedInitialFetch___block_invoke_452;
       v86[3] = &unk_1E7744240;
       v87 = v7;
-      v88 = v75;
+      v88 = fetcher;
       v89 = v76;
       v90 = &v115;
       v46 = _Block_copy(v86);
 
-      v8 = v80;
+      selfCopy2 = selfCopy;
     }
 
     goto LABEL_75;
@@ -7053,10 +7053,10 @@ LABEL_75:
   {
     v68 = [v116[5] copy];
     [v68 setOptions:{objc_msgSend(v68, "options") & 0xFFFFFFFFFFFFFFFDLL}];
-    v69 = [v75 fetchAssetsInContainer:v76 configuration:v68];
+    v69 = [fetcher fetchAssetsInContainer:v76 configuration:v68];
 
     v47 = v69;
-    v8 = v80;
+    selfCopy2 = selfCopy;
     if (v69)
     {
 LABEL_77:
@@ -7073,7 +7073,7 @@ LABEL_77:
   if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    v162 = v8;
+    v162 = selfCopy2;
     v163 = 2112;
     v164 = v7;
     v165 = 2112;
@@ -7082,7 +7082,7 @@ LABEL_77:
   }
 
   v47 = 0;
-  v8 = v80;
+  selfCopy2 = selfCopy;
   if ((options & 0x20) != 0)
   {
     goto LABEL_78;
@@ -7093,27 +7093,27 @@ LABEL_95:
   v83[1] = 3221225472;
   v83[2] = __94__PXPhotosDataSource__fetchTupleForAssetCollection_calledOnClientQueue_isLimitedInitialFetch___block_invoke_455;
   v83[3] = &unk_1E774B368;
-  v83[4] = v8;
+  v83[4] = selfCopy2;
   v59 = v7;
   v84 = v59;
   v85 = v73;
   v60 = _Block_copy(v83);
   v61 = v60;
-  if (v81)
+  if (queueCopy)
   {
     (*(v60 + 2))(v60);
   }
 
   else
   {
-    v62 = [(PXPhotosDataSource *)v80 clientQueue];
-    dispatch_sync(v62, v61);
+    clientQueue2 = [(PXPhotosDataSource *)selfCopy clientQueue];
+    dispatch_sync(clientQueue2, v61);
   }
 
   v63 = [PXPhotosResultTuple alloc];
-  v64 = [v122[5] reverseSortOrder];
-  v65 = [v122[5] filterPredicate];
-  v66 = [(PXPhotosResultTuple *)v63 initWithFetchResult:v79 fetchedWithReverseSortOrder:v64 curatedFetchResult:v47 curatedRefetchCondition:v46 keyAssetsFetchResult:v82 filterPredicate:v65];
+  reverseSortOrder = [v122[5] reverseSortOrder];
+  filterPredicate = [v122[5] filterPredicate];
+  v66 = [(PXPhotosResultTuple *)v63 initWithFetchResult:v79 fetchedWithReverseSortOrder:reverseSortOrder curatedFetchResult:v47 curatedRefetchCondition:v46 keyAssetsFetchResult:v82 filterPredicate:filterPredicate];
 
   _Block_object_dispose(&v109, 8);
   _Block_object_dispose(&v112, 8);
@@ -7236,29 +7236,29 @@ void __94__PXPhotosDataSource__fetchTupleForAssetCollection_calledOnClientQueue_
   [v2 _setUUIDFilterHidesSomeAssets:*(a1 + 48)];
 }
 
-- (id)_assetContainerForAssetCollection:(id)a3
+- (id)_assetContainerForAssetCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   assetContainerProvider = self->_assetContainerProvider;
-  if (!assetContainerProvider || (assetContainerProvider[2](assetContainerProvider, v4), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!assetContainerProvider || (assetContainerProvider[2](assetContainerProvider, collectionCopy), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = v4;
+    v6 = collectionCopy;
   }
 
   return v6;
 }
 
-- (id)_fetcherConfigurationForAssetCollection:(id)a3 useCase:(int64_t)a4 isLimitedInitialFetch:(BOOL)a5
+- (id)_fetcherConfigurationForAssetCollection:(id)collection useCase:(int64_t)case isLimitedInitialFetch:(BOOL)fetch
 {
-  v5 = a5;
-  v8 = a3;
-  switch(a4)
+  fetchCopy = fetch;
+  collectionCopy = collection;
+  switch(case)
   {
     case 3:
       v10 = +[PXPhotosDataSourceSettings sharedInstance];
-      v11 = [v10 disableKeyAssetCuration];
+      disableKeyAssetCuration = [v10 disableKeyAssetCuration];
 
-      if (v11)
+      if (disableKeyAssetCuration)
       {
         curationKind = 4;
       }
@@ -7298,21 +7298,21 @@ void __94__PXPhotosDataSource__fetchTupleForAssetCollection_calledOnClientQueue_
 
   v21 = 0;
   v20 = 0;
-  [(PXPhotosDataSource *)self _getFetchLimit:&v21 fetchWithReverseSortOrder:&v20 forAssetCollection:v8 isLimitedInitialFetch:v5];
+  [(PXPhotosDataSource *)self _getFetchLimit:&v21 fetchWithReverseSortOrder:&v20 forAssetCollection:collectionCopy isLimitedInitialFetch:fetchCopy];
   v14 = objc_alloc_init(PXPhotosAssetsFetcherConfiguration);
   [(PXPhotosAssetsFetcherConfiguration *)v14 setCurationKind:curationKind];
   [(PXPhotosAssetsFetcherConfiguration *)v14 setCurationLength:self->_curationLength];
   [(PXPhotosAssetsFetcherConfiguration *)v14 setOptions:v13];
   [(PXPhotosAssetsFetcherConfiguration *)v14 setLibraryFilter:self->_libraryFilter];
   [(PXPhotosAssetsFetcherConfiguration *)v14 setFetchLimit:v21];
-  v15 = [(PXPhotosDataSource *)self _finalFilterPredicateForAssetCollection:v8];
+  v15 = [(PXPhotosDataSource *)self _finalFilterPredicateForAssetCollection:collectionCopy];
   [(PXPhotosAssetsFetcherConfiguration *)v14 setFilterPredicate:v15];
 
-  v16 = [(PXPhotosDataSource *)self _inclusionPredicateForAssetCollection:v8];
+  v16 = [(PXPhotosDataSource *)self _inclusionPredicateForAssetCollection:collectionCopy];
   [(PXPhotosAssetsFetcherConfiguration *)v14 setInclusionPredicate:v16];
 
-  v17 = [(PXPhotosDataSource *)self sortDescriptors];
-  [(PXPhotosAssetsFetcherConfiguration *)v14 setSortDescriptors:v17];
+  sortDescriptors = [(PXPhotosDataSource *)self sortDescriptors];
+  [(PXPhotosAssetsFetcherConfiguration *)v14 setSortDescriptors:sortDescriptors];
 
   [(PXPhotosAssetsFetcherConfiguration *)v14 setIncludeUnsavedSyndicatedAssets:self->_canIncludeUnsavedSyndicatedAssets];
   [(PXPhotosAssetsFetcherConfiguration *)v14 setIncludeSharedCollectionAssets:self->_includeSharedCollectionAssets];
@@ -7322,83 +7322,83 @@ void __94__PXPhotosDataSource__fetchTupleForAssetCollection_calledOnClientQueue_
   [(PXPhotosAssetsFetcherConfiguration *)v14 setFetchPropertySets:self->_fetchPropertySets];
   [(PXPhotosAssetsFetcherConfiguration *)v14 setReferencePersons:self->_filterPersons];
   [(PXPhotosAssetsFetcherConfiguration *)v14 setCurationType:self->_curationType];
-  v18 = [(PXPhotosDataSource *)self referenceAsset];
-  [(PXPhotosAssetsFetcherConfiguration *)v14 setReferenceAsset:v18];
+  referenceAsset = [(PXPhotosDataSource *)self referenceAsset];
+  [(PXPhotosAssetsFetcherConfiguration *)v14 setReferenceAsset:referenceAsset];
 
   [(PXPhotosAssetsFetcherConfiguration *)v14 setIncludeOthersInSocialGroupAssets:self->_includeOthersInSocialGroupAssets];
 
   return v14;
 }
 
-- (void)_getFetchLimit:(unint64_t *)a3 fetchWithReverseSortOrder:(BOOL *)a4 forAssetCollection:(id)a5 isLimitedInitialFetch:(BOOL)a6
+- (void)_getFetchLimit:(unint64_t *)limit fetchWithReverseSortOrder:(BOOL *)order forAssetCollection:(id)collection isLimitedInitialFetch:(BOOL)fetch
 {
-  v6 = a6;
-  v17 = a5;
-  v10 = [(PXPhotosDataSource *)self fetchLimit];
-  if (![(PXPhotosDataSource *)self _reverseSortOrderForAssetCollection:v17])
+  fetchCopy = fetch;
+  collectionCopy = collection;
+  fetchLimit = [(PXPhotosDataSource *)self fetchLimit];
+  if (![(PXPhotosDataSource *)self _reverseSortOrderForAssetCollection:collectionCopy])
   {
-    v11 = [(PXPhotosDataSource *)self reverseSortOrder];
-    if (!v6)
+    reverseSortOrder = [(PXPhotosDataSource *)self reverseSortOrder];
+    if (!fetchCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
     v13 = +[PXPhotosDataSource limitedInitialFetchCountLimit];
-    if (v10 >= v13)
+    if (fetchLimit >= v13)
     {
       v14 = v13;
     }
 
     else
     {
-      v14 = v10;
+      v14 = fetchLimit;
     }
 
-    if (v10)
+    if (fetchLimit)
     {
-      v10 = v14;
+      fetchLimit = v14;
     }
 
     else
     {
-      v10 = v13;
+      fetchLimit = v13;
     }
 
-    if (v11)
+    if (reverseSortOrder)
     {
-      v15 = 1;
+      keyAssetsAtEnd = 1;
     }
 
     else
     {
-      v15 = [v17 keyAssetsAtEnd];
+      keyAssetsAtEnd = [collectionCopy keyAssetsAtEnd];
     }
 
-    v16 = [PXPhotosAssetsFetcher _adjustedReverseSortOrderForCollection:v17 reverseSortOrder:v15 fetcherOptions:(self->_options >> 15) & 0x10 | (self->_options >> 12) & 2 | (self->_options >> 8) & 1 | (self->_options >> 15) & 0x28 | (self->_options >> 16) & 0x40];
-    v12 = v17;
-    v11 = v16;
+    0x40 = [PXPhotosAssetsFetcher _adjustedReverseSortOrderForCollection:collectionCopy reverseSortOrder:keyAssetsAtEnd fetcherOptions:(self->_options >> 15) & 0x10 | (self->_options >> 12) & 2 | (self->_options >> 8) & 1 | (self->_options >> 15) & 0x28 | (self->_options >> 16) & 0x40];
+    v12 = collectionCopy;
+    reverseSortOrder = 0x40;
     goto LABEL_15;
   }
 
-  v11 = 1;
-  if (v6)
+  reverseSortOrder = 1;
+  if (fetchCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v12 = v17;
+  v12 = collectionCopy;
 LABEL_15:
-  *a3 = v10;
-  *a4 = v11;
+  *limit = fetchLimit;
+  *order = reverseSortOrder;
 }
 
-- (void)_performManualReloadWithChangeBlock:(id)a3
+- (void)_performManualReloadWithChangeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(PXPhotosDataSource *)self _willChange];
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 
   os_unfair_lock_lock(&self->_sectionCacheLock);
   sectionCache = self->__sectionCache;
@@ -7417,8 +7417,8 @@ LABEL_15:
   else
   {
     [(PXPhotosDataSource *)self _cancelBackgroundFetchIfNeeded];
-    v6 = [(PXPhotosDataSource *)self _inaccurateAssetCollections];
-    [v6 removeAllObjects];
+    _inaccurateAssetCollections = [(PXPhotosDataSource *)self _inaccurateAssetCollections];
+    [_inaccurateAssetCollections removeAllObjects];
 
     [(NSMutableDictionary *)self->_resultRecordByAssetCollection removeAllObjects];
   }
@@ -7426,32 +7426,32 @@ LABEL_15:
   [(PXPhotosDataSource *)self _publishReloadChange];
 }
 
-- (void)_performManualChangesForAssetCollections:(id)a3 collectionsToDiff:(id)a4 collectionsToChange:(id)a5 changeBlock:(id)a6
+- (void)_performManualChangesForAssetCollections:(id)collections collectionsToDiff:(id)diff collectionsToChange:(id)change changeBlock:(id)block
 {
   v92 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 count])
+  collectionsCopy = collections;
+  diffCopy = diff;
+  changeCopy = change;
+  blockCopy = block;
+  if ([collectionsCopy count])
   {
     if (self->_nestedCoalesceChanges >= 1 && [(NSMutableArray *)self->_coalescedChanges count])
     {
-      [(PXPhotosDataSource *)self _performManualReloadWithChangeBlock:v13];
+      [(PXPhotosDataSource *)self _performManualReloadWithChangeBlock:blockCopy];
       goto LABEL_72;
     }
 
-    v63 = v13;
-    v67 = v12;
+    v63 = blockCopy;
+    v67 = changeCopy;
     options = self->_options;
-    v75 = self;
-    v61 = [(PXPhotosDataSource *)self versionIdentifier];
-    v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+    selfCopy = self;
+    versionIdentifier = [(PXPhotosDataSource *)self versionIdentifier];
+    v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(collectionsCopy, "count")}];
     v85 = 0u;
     v86 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v15 = v10;
+    v15 = collectionsCopy;
     v16 = [v15 countByEnumeratingWithState:&v85 objects:v91 count:16];
     if (v16)
     {
@@ -7467,7 +7467,7 @@ LABEL_15:
           }
 
           v20 = *(*(&v85 + 1) + 8 * i);
-          if ([(PXPhotosDataSource *)v75 sectionForAssetCollection:v20]!= 0x7FFFFFFFFFFFFFFFLL)
+          if ([(PXPhotosDataSource *)selfCopy sectionForAssetCollection:v20]!= 0x7FFFFFFFFFFFFFFFLL)
           {
             [v14 addObject:v20];
           }
@@ -7480,7 +7480,7 @@ LABEL_15:
     }
 
     v76 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v14, "count")}];
-    v62 = v10;
+    v62 = collectionsCopy;
     if ((options & 0x20) != 0)
     {
       v72 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v14, "count")}];
@@ -7491,7 +7491,7 @@ LABEL_15:
       v72 = 0;
     }
 
-    v60 = [(PXPhotosDataSource *)v75 collectionListFetchResult];
+    collectionListFetchResult = [(PXPhotosDataSource *)selfCopy collectionListFetchResult];
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
@@ -7512,11 +7512,11 @@ LABEL_15:
           }
 
           v26 = *(*(&v81 + 1) + 8 * j);
-          v27 = [(PXPhotosDataSource *)v75 _assetsForAssetCollection:v26];
+          v27 = [(PXPhotosDataSource *)selfCopy _assetsForAssetCollection:v26];
           [v76 setObject:v27 forKeyedSubscript:v26];
           if ((options & 0x20) != 0)
           {
-            v28 = [(PXPhotosDataSource *)v75 _keyAssetsForAssetCollection:v26];
+            v28 = [(PXPhotosDataSource *)selfCopy _keyAssetsForAssetCollection:v26];
             [v72 setObject:v28 forKeyedSubscript:v26];
           }
         }
@@ -7527,23 +7527,23 @@ LABEL_15:
       while (v23);
     }
 
-    p_isa = &v75->super.isa;
-    [(PXPhotosDataSource *)v75 _willChange];
+    p_isa = &selfCopy->super.isa;
+    [(PXPhotosDataSource *)selfCopy _willChange];
     v63[2]();
-    v69 = [MEMORY[0x1E695DF90] dictionary];
-    v64 = [MEMORY[0x1E696AD50] indexSet];
-    v65 = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
+    array = [MEMORY[0x1E695DF70] array];
     v77 = 0u;
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
     obj = v21;
-    v12 = v67;
+    changeCopy = v67;
     v73 = [obj countByEnumeratingWithState:&v77 objects:v89 count:16];
     if (v73)
     {
       v71 = *v78;
-      v66 = v11;
+      v66 = diffCopy;
       do
       {
         for (k = 0; k != v73; ++k)
@@ -7568,54 +7568,54 @@ LABEL_15:
 
 LABEL_37:
               v34 = p_isa[65];
-              if (v11)
+              if (diffCopy)
               {
                 goto LABEL_38;
               }
 
 LABEL_39:
               v35 = [p_isa[13] objectForKeyedSubscript:v31];
-              v36 = [v35 fetchResultBeforeChanges];
-              if (v36 == v34)
+              fetchResultBeforeChanges = [v35 fetchResultBeforeChanges];
+              if (fetchResultBeforeChanges == v34)
               {
                 v70 = 0;
               }
 
               else
               {
-                v37 = [v35 fetchResultBeforeChanges];
-                v38 = [v37 fetchedObjectIDs];
-                v39 = [v34 fetchedObjectIDs];
-                if (v38 == v39)
+                fetchResultBeforeChanges2 = [v35 fetchResultBeforeChanges];
+                fetchedObjectIDs = [fetchResultBeforeChanges2 fetchedObjectIDs];
+                fetchedObjectIDs2 = [v34 fetchedObjectIDs];
+                if (fetchedObjectIDs == fetchedObjectIDs2)
                 {
                   v70 = 0;
                 }
 
                 else
                 {
-                  v70 = [v38 isEqual:v39] ^ 1;
+                  v70 = [fetchedObjectIDs isEqual:fetchedObjectIDs2] ^ 1;
                 }
               }
 
-              v42 = [v35 fetchResultAfterChanges];
-              if (v42 == v32)
+              fetchResultAfterChanges = [v35 fetchResultAfterChanges];
+              if (fetchResultAfterChanges == v32)
               {
                 v46 = 0;
               }
 
               else
               {
-                v43 = [v35 fetchResultAfterChanges];
-                v44 = [v43 fetchedObjectIDs];
-                v45 = [v32 fetchedObjectIDs];
-                if (v44 == v45)
+                fetchResultAfterChanges2 = [v35 fetchResultAfterChanges];
+                fetchedObjectIDs3 = [fetchResultAfterChanges2 fetchedObjectIDs];
+                fetchedObjectIDs4 = [v32 fetchedObjectIDs];
+                if (fetchedObjectIDs3 == fetchedObjectIDs4)
                 {
                   v46 = 0;
                 }
 
                 else
                 {
-                  v46 = [v44 isEqual:v45] ^ 1;
+                  v46 = [fetchedObjectIDs3 isEqual:fetchedObjectIDs4] ^ 1;
                 }
               }
 
@@ -7630,15 +7630,15 @@ LABEL_39:
               }
 
               v41 = v47;
-              v12 = v67;
-              p_isa = &v75->super.isa;
+              changeCopy = v67;
+              p_isa = &selfCopy->super.isa;
               if (([v47 hasAnyChanges] & 1) == 0)
               {
 
                 v41 = 0;
               }
 
-              v11 = v66;
+              diffCopy = v66;
             }
 
             else
@@ -7650,13 +7650,13 @@ LABEL_39:
               }
 
 LABEL_34:
-              if (!v11)
+              if (!diffCopy)
               {
                 goto LABEL_39;
               }
 
 LABEL_38:
-              if ([v11 containsObject:v31])
+              if ([diffCopy containsObject:v31])
               {
                 goto LABEL_39;
               }
@@ -7665,7 +7665,7 @@ LABEL_38:
               v41 = [v40 initWithFetchResult:v34 currentFetchResult:v32 changedIdentifiers:MEMORY[0x1E695E0F0] unknownMergeEvent:1];
             }
 
-            [v69 setObject:v41 forKeyedSubscript:v31];
+            [dictionary setObject:v41 forKeyedSubscript:v31];
           }
 
           [v76 setObject:v32 forKeyedSubscript:v31];
@@ -7675,18 +7675,18 @@ LABEL_38:
             v49 = [v72 objectForKeyedSubscript:v31];
             if (v48 != v49)
             {
-              [v64 addIndex:{objc_msgSend(p_isa, "sectionForAssetCollection:", v31)}];
+              [indexSet addIndex:{objc_msgSend(p_isa, "sectionForAssetCollection:", v31)}];
             }
           }
 
-          if ([v12 containsObject:v31])
+          if ([changeCopy containsObject:v31])
           {
-            v50 = [v31 objectID];
+            objectID = [v31 objectID];
 
-            if (v50)
+            if (objectID)
             {
-              v51 = [v31 objectID];
-              [v65 addObject:v51];
+              objectID2 = [v31 objectID];
+              [array addObject:objectID2];
             }
           }
         }
@@ -7697,40 +7697,40 @@ LABEL_38:
       while (v73);
     }
 
-    if ([v65 count])
+    if ([array count])
     {
-      v52 = [p_isa collectionListFetchResult];
-      v53 = v60;
-      v54 = [objc_alloc(MEMORY[0x1E6978848]) initWithFetchResult:v60 currentFetchResult:v52 changedIdentifiers:v65 unknownMergeEvent:0];
+      collectionListFetchResult2 = [p_isa collectionListFetchResult];
+      v53 = collectionListFetchResult;
+      v54 = [objc_alloc(MEMORY[0x1E6978848]) initWithFetchResult:collectionListFetchResult currentFetchResult:collectionListFetchResult2 changedIdentifiers:array unknownMergeEvent:0];
 
-      v10 = v62;
+      collectionsCopy = v62;
     }
 
     else
     {
       v54 = 0;
-      v10 = v62;
-      v53 = v60;
+      collectionsCopy = v62;
+      v53 = collectionListFetchResult;
     }
 
-    v55 = [p_isa versionIdentifier];
+    versionIdentifier2 = [p_isa versionIdentifier];
     [p_isa _sectionCache];
     v57 = v56 = p_isa;
-    v58 = [v57 assetCollectionToSection];
+    assetCollectionToSection = [v57 assetCollectionToSection];
 
-    v59 = -[PXPhotosDataSourceChange initWithIncrementalChanges:assetCollectionChangeDetails:sectionsWithKeyAssetChanges:previousCollectionsCount:assetCollectionToSectionCache:originatingPhotoLibraryChange:fromIdentifier:toIdentifier:]([PXPhotosDataSourceChange alloc], "initWithIncrementalChanges:assetCollectionChangeDetails:sectionsWithKeyAssetChanges:previousCollectionsCount:assetCollectionToSectionCache:originatingPhotoLibraryChange:fromIdentifier:toIdentifier:", v54, v69, v64, [v56 _previousCollectionsCount], v58, 0, v61, v55);
+    v59 = -[PXPhotosDataSourceChange initWithIncrementalChanges:assetCollectionChangeDetails:sectionsWithKeyAssetChanges:previousCollectionsCount:assetCollectionToSectionCache:originatingPhotoLibraryChange:fromIdentifier:toIdentifier:]([PXPhotosDataSourceChange alloc], "initWithIncrementalChanges:assetCollectionChangeDetails:sectionsWithKeyAssetChanges:previousCollectionsCount:assetCollectionToSectionCache:originatingPhotoLibraryChange:fromIdentifier:toIdentifier:", v54, dictionary, indexSet, [v56 _previousCollectionsCount], assetCollectionToSection, 0, versionIdentifier, versionIdentifier2);
     [v56 _didChange:v59];
 
-    v13 = v63;
+    blockCopy = v63;
   }
 
 LABEL_72:
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   ++self->_nestedCoalesceChanges;
-  (*(a3 + 2))(a3, a2);
+  (*(changes + 2))(changes, a2);
   if (self->_nestedCoalesceChanges == 1 && [(NSMutableArray *)self->_coalescedChanges count])
   {
     [(PXPhotosDataSource *)self _restartBackgroundFetchWithAssetCollectionsToDiff:0];
@@ -7742,35 +7742,35 @@ LABEL_72:
   {
     if ([(NSMutableArray *)self->_coalescedChanges count]== 1)
     {
-      v5 = [(NSMutableArray *)self->_coalescedChanges firstObject];
+      firstObject = [(NSMutableArray *)self->_coalescedChanges firstObject];
     }
 
     else
     {
-      v5 = objc_alloc_init(PXPhotosDataSourceChange);
+      firstObject = objc_alloc_init(PXPhotosDataSourceChange);
     }
 
-    v6 = v5;
+    v6 = firstObject;
     [(NSMutableArray *)self->_coalescedChanges removeAllObjects];
     [(PXPhotosDataSource *)self _distributeChange:v6];
   }
 }
 
-- (id)_assetOidsByAssetCollectionForAssetsAtIndexPathsInSet:(id)a3
+- (id)_assetOidsByAssetCollectionForAssetsAtIndexPathsInSet:(id)set
 {
-  v5 = a3;
-  v6 = [(PXPhotosDataSource *)self versionIdentifier];
+  setCopy = set;
+  versionIdentifier = [(PXPhotosDataSource *)self versionIdentifier];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __76__PXPhotosDataSource__assetOidsByAssetCollectionForAssetsAtIndexPathsInSet___block_invoke;
   v12[3] = &unk_1E77441F0;
-  v14 = v6;
+  v14 = versionIdentifier;
   v15 = a2;
   v12[4] = self;
   v8 = v7;
   v13 = v8;
-  [v5 enumerateItemIndexPathsUsingBlock:v12];
+  [setCopy enumerateItemIndexPathsUsingBlock:v12];
 
   v9 = v13;
   v10 = v8;
@@ -7802,64 +7802,64 @@ void __76__PXPhotosDataSource__assetOidsByAssetCollectionForAssetsAtIndexPathsIn
   [v8 addObject:v9];
 }
 
-- (id)_mutableResultRecordForAssetCollection:(id)a3
+- (id)_mutableResultRecordForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_resultRecordByAssetCollection objectForKeyedSubscript:v4];
+  collectionCopy = collection;
+  v5 = [(NSMutableDictionary *)self->_resultRecordByAssetCollection objectForKeyedSubscript:collectionCopy];
   v6 = [v5 copy];
 
   if (!v6)
   {
-    v6 = [(PXPhotosDataSource *)self _createResultRecordForAssetCollection:v4];
+    v6 = [(PXPhotosDataSource *)self _createResultRecordForAssetCollection:collectionCopy];
   }
 
-  [(NSMutableDictionary *)self->_resultRecordByAssetCollection setObject:v6 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)self->_resultRecordByAssetCollection setObject:v6 forKeyedSubscript:collectionCopy];
 
   return v6;
 }
 
-- (id)_resultRecordForAssetCollection:(id)a3
+- (id)_resultRecordForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_resultRecordByAssetCollection objectForKeyedSubscript:v4];
+  collectionCopy = collection;
+  v5 = [(NSMutableDictionary *)self->_resultRecordByAssetCollection objectForKeyedSubscript:collectionCopy];
   if (!v5)
   {
-    v5 = [(PXPhotosDataSource *)self _createResultRecordForAssetCollection:v4];
-    [(NSMutableDictionary *)self->_resultRecordByAssetCollection setObject:v5 forKeyedSubscript:v4];
+    v5 = [(PXPhotosDataSource *)self _createResultRecordForAssetCollection:collectionCopy];
+    [(NSMutableDictionary *)self->_resultRecordByAssetCollection setObject:v5 forKeyedSubscript:collectionCopy];
   }
 
   return v5;
 }
 
-- (id)_createResultRecordForAssetCollection:(id)a3
+- (id)_createResultRecordForAssetCollection:(id)collection
 {
   v4 = objc_alloc_init(PXPhotosMutableResultRecord);
   [(PXPhotosMutableResultRecord *)v4 setWantsCuration:[(PXPhotosDataSource *)self wantsCurationByDefault]];
   [(PXPhotosMutableResultRecord *)v4 setPreloadAssetTypeCounts:(self->_options >> 1) & 1];
   [(PXPhotosMutableResultRecord *)v4 setEnsureKeyAssetAtBeginning:(self->_options >> 14) & 1];
   [(PXPhotosMutableResultRecord *)v4 setCurationLength:[(PXPhotosDataSource *)self curationLength]];
-  v5 = [(PXPhotosDataSource *)self sortDescriptors];
-  [(PXPhotosMutableResultRecord *)v4 setSortDescriptors:v5];
+  sortDescriptors = [(PXPhotosDataSource *)self sortDescriptors];
+  [(PXPhotosMutableResultRecord *)v4 setSortDescriptors:sortDescriptors];
 
   return v4;
 }
 
-- (id)_inclusionPredicateForAssetCollection:(id)a3
+- (id)_inclusionPredicateForAssetCollection:(id)collection
 {
-  v3 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:a3];
-  v4 = [v3 inclusionPredicate];
+  v3 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:collection];
+  inclusionPredicate = [v3 inclusionPredicate];
 
-  return v4;
+  return inclusionPredicate;
 }
 
-- (id)_finalFilterPredicateForAssetCollection:(id)a3
+- (id)_finalFilterPredicateForAssetCollection:(id)collection
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v4 = [(PXPhotosDataSource *)self _filterPredicateForAssetCollection:a3];
-  v5 = [(PXPhotosDataSource *)self allowedUUIDs];
-  if (v5)
+  v4 = [(PXPhotosDataSource *)self _filterPredicateForAssetCollection:collection];
+  allowedUUIDs = [(PXPhotosDataSource *)self allowedUUIDs];
+  if (allowedUUIDs)
   {
-    v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid in %@", v5];
+    v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid in %@", allowedUUIDs];
     v7 = v6;
     if (v4)
     {
@@ -7878,10 +7878,10 @@ void __76__PXPhotosDataSource__assetOidsByAssetCollectionForAssetsAtIndexPathsIn
     }
   }
 
-  v11 = [(PXPhotosDataSource *)self allowedOIDs];
-  if (v11)
+  allowedOIDs = [(PXPhotosDataSource *)self allowedOIDs];
+  if (allowedOIDs)
   {
-    v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", v11];
+    v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", allowedOIDs];
     v13 = v12;
     if (v4)
     {
@@ -7903,45 +7903,45 @@ void __76__PXPhotosDataSource__assetOidsByAssetCollectionForAssetsAtIndexPathsIn
   return v4;
 }
 
-- (id)_allowedOIDsForAssetCollection:(id)a3
+- (id)_allowedOIDsForAssetCollection:(id)collection
 {
-  if ([(PXPhotosDataSource *)self _areFiltersDisabledForAssetCollection:a3])
+  if ([(PXPhotosDataSource *)self _areFiltersDisabledForAssetCollection:collection])
   {
-    v4 = 0;
+    allowedOIDs = 0;
   }
 
   else
   {
-    v4 = [(PXPhotosDataSource *)self allowedOIDs];
+    allowedOIDs = [(PXPhotosDataSource *)self allowedOIDs];
   }
 
-  return v4;
+  return allowedOIDs;
 }
 
-- (id)_allowedUUIDsForAssetCollection:(id)a3
+- (id)_allowedUUIDsForAssetCollection:(id)collection
 {
-  v4 = a3;
-  if ([(PXPhotosDataSource *)self _areFiltersDisabledForAssetCollection:v4])
+  collectionCopy = collection;
+  if ([(PXPhotosDataSource *)self _areFiltersDisabledForAssetCollection:collectionCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(PXPhotosDataSource *)self infoForAssetCollection:v4];
-    v7 = [v6 allowedUUIDs];
-    v8 = v7;
-    if (v7)
+    v6 = [(PXPhotosDataSource *)self infoForAssetCollection:collectionCopy];
+    allowedUUIDs = [v6 allowedUUIDs];
+    v8 = allowedUUIDs;
+    if (allowedUUIDs)
     {
-      v9 = v7;
+      allowedUUIDs2 = allowedUUIDs;
     }
 
     else
     {
-      v9 = [(PXPhotosDataSource *)self allowedUUIDs];
+      allowedUUIDs2 = [(PXPhotosDataSource *)self allowedUUIDs];
     }
 
-    v5 = v9;
+    v5 = allowedUUIDs2;
   }
 
   return v5;
@@ -7959,8 +7959,8 @@ void __76__PXPhotosDataSource__assetOidsByAssetCollectionForAssetsAtIndexPathsIn
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->_infoForAssetCollection allValues];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_infoForAssetCollection allValues];
+  v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -7971,15 +7971,15 @@ void __76__PXPhotosDataSource__assetOidsByAssetCollectionForAssetsAtIndexPathsIn
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         if (([v8 UUIDFilterHidesSomeAssets] & 1) == 0)
         {
-          v9 = [v8 allowedUUIDs];
+          allowedUUIDs = [v8 allowedUUIDs];
 
-          if (!v9)
+          if (!allowedUUIDs)
           {
             continue;
           }
@@ -7989,7 +7989,7 @@ void __76__PXPhotosDataSource__assetOidsByAssetCollectionForAssetsAtIndexPathsIn
         goto LABEL_15;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       v2 = 0;
       if (v5)
       {
@@ -8010,23 +8010,23 @@ LABEL_15:
   return v2;
 }
 
-- (void)setAllowedUUIDs:(id)a3 manualOrderUUIDs:(id)a4 forAssetCollections:(id)a5
+- (void)setAllowedUUIDs:(id)ds manualOrderUUIDs:(id)iDs forAssetCollections:(id)collections
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  collectionsCopy = collections;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:746 description:{@"%s must be called on the main thread", "-[PXPhotosDataSource setAllowedUUIDs:manualOrderUUIDs:forAssetCollections:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDataSource.m" lineNumber:746 description:{@"%s must be called on the main thread", "-[PXPhotosDataSource setAllowedUUIDs:manualOrderUUIDs:forAssetCollections:]"}];
   }
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = v11;
+  v12 = collectionsCopy;
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
@@ -8043,10 +8043,10 @@ LABEL_15:
 
         v17 = *(*(&v22 + 1) + 8 * i);
         v18 = [(PXPhotosDataSource *)self infoForAssetCollection:v17];
-        v19 = [v9 objectForKeyedSubscript:v17];
+        v19 = [dsCopy objectForKeyedSubscript:v17];
         [v18 setAllowedUUIDs:v19];
 
-        v20 = [v10 objectForKeyedSubscript:v17];
+        v20 = [iDsCopy objectForKeyedSubscript:v17];
         [v18 setManualOrderUUIDs:v20];
       }
 
@@ -8059,22 +8059,22 @@ LABEL_15:
   [(PXPhotosDataSource *)self _restartBackgroundFetchWithAssetCollectionsToDiff:0];
 }
 
-- (id)_filterPredicateForAssetCollection:(id)a3
+- (id)_filterPredicateForAssetCollection:(id)collection
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  if ([(PXPhotosDataSource *)self _areFiltersDisabledForAssetCollection:a3])
+  if ([(PXPhotosDataSource *)self _areFiltersDisabledForAssetCollection:collection])
   {
     v4 = 0;
     goto LABEL_12;
   }
 
-  v5 = [(PXPhotosDataSource *)self basePredicate];
-  v6 = [(PXPhotosDataSource *)self filterPredicate];
-  v7 = v6;
-  if (v5 && v6)
+  basePredicate = [(PXPhotosDataSource *)self basePredicate];
+  filterPredicate = [(PXPhotosDataSource *)self filterPredicate];
+  v7 = filterPredicate;
+  if (basePredicate && filterPredicate)
   {
     v8 = objc_alloc(MEMORY[0x1E696AB28]);
-    v12[0] = v5;
+    v12[0] = basePredicate;
     v12[1] = v7;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
     v4 = [v8 initWithType:1 subpredicates:v9];
@@ -8082,20 +8082,20 @@ LABEL_15:
 
   else
   {
-    if (v5)
+    if (basePredicate)
     {
-      v10 = v5;
+      v10 = basePredicate;
     }
 
     else
     {
-      if (!v6)
+      if (!filterPredicate)
       {
         v4 = 0;
         goto LABEL_11;
       }
 
-      v10 = v6;
+      v10 = filterPredicate;
     }
 
     v4 = v10;
@@ -8108,43 +8108,43 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)_reverseSortOrderForAssetCollection:(id)a3
+- (BOOL)_reverseSortOrderForAssetCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if ([(PXPhotosDataSource *)self fetchLimit])
   {
-    v5 = [v4 keyAssetsAtEnd];
+    keyAssetsAtEnd = [collectionCopy keyAssetsAtEnd];
   }
 
   else
   {
-    v5 = 0;
+    keyAssetsAtEnd = 0;
   }
 
-  return v5;
+  return keyAssetsAtEnd;
 }
 
-- (unint64_t)_assetCollectionFetchStatus:(id)a3
+- (unint64_t)_assetCollectionFetchStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(PXPhotosDataSource *)self _inaccurateAssetCollections];
-  if (![v5 count])
+  statusCopy = status;
+  _inaccurateAssetCollections = [(PXPhotosDataSource *)self _inaccurateAssetCollections];
+  if (![_inaccurateAssetCollections count])
   {
 
     goto LABEL_7;
   }
 
-  v6 = [(PXPhotosDataSource *)self _inaccurateAssetCollections];
-  v7 = [v6 containsObject:v4];
+  _inaccurateAssetCollections2 = [(PXPhotosDataSource *)self _inaccurateAssetCollections];
+  v7 = [_inaccurateAssetCollections2 containsObject:statusCopy];
 
   if (!v7)
   {
 LABEL_7:
-    v10 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:v4];
-    if ([v10 wantsCuration] && (objc_msgSend(v4, "px_supportsFastCuration") & 1) == 0)
+    v10 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:statusCopy];
+    if ([v10 wantsCuration] && (objc_msgSend(statusCopy, "px_supportsFastCuration") & 1) == 0)
     {
-      v11 = [v10 exposedFetchResult];
-      if (v11)
+      exposedFetchResult = [v10 exposedFetchResult];
+      if (exposedFetchResult)
       {
       }
 
@@ -8177,15 +8177,15 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)isSectionConsideredAccurate:(int64_t)a3
+- (BOOL)isSectionConsideredAccurate:(int64_t)accurate
 {
-  v4 = [(PHFetchResult *)self->_collectionListFetchResult objectAtIndexedSubscript:a3];
+  v4 = [(PHFetchResult *)self->_collectionListFetchResult objectAtIndexedSubscript:accurate];
   v5 = [(PXPhotosDataSource *)self _assetCollectionFetchStatus:v4];
   if (v5 == 2)
   {
     v6 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:v4];
-    v7 = [v6 exposedFetchResult];
-    v8 = v7 != 0;
+    exposedFetchResult = [v6 exposedFetchResult];
+    v8 = exposedFetchResult != 0;
   }
 
   else
@@ -8196,10 +8196,10 @@ LABEL_14:
   return v8;
 }
 
-- (void)_enumerateChangeObserversWithBlock:(id)a3
+- (void)_enumerateChangeObserversWithBlock:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -8238,7 +8238,7 @@ LABEL_14:
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v12 + 1) + 8 * v9++));
+        blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
@@ -8289,9 +8289,9 @@ void *__57__PXPhotosDataSource__enumerateChangeObserversWithBlock___block_invoke
 
 - (NSString)description
 {
-  v3 = [(PXPhotosDataSource *)self numberOfSections];
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:v3];
-  if (v3 >= 1)
+  numberOfSections = [(PXPhotosDataSource *)self numberOfSections];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:numberOfSections];
+  if (numberOfSections >= 1)
   {
     v5 = 0;
     while (1)
@@ -8315,11 +8315,11 @@ void *__57__PXPhotosDataSource__enumerateChangeObserversWithBlock___block_invoke
       }
 
       v9 = [(PXPhotosDataSource *)self _resultRecordForAssetCollection:v6];
-      v10 = [v9 exposedFetchResult];
-      v11 = v10;
-      if (v10)
+      exposedFetchResult = [v9 exposedFetchResult];
+      v11 = exposedFetchResult;
+      if (exposedFetchResult)
       {
-        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(exposedFetchResult, "count")}];
       }
 
       else
@@ -8344,7 +8344,7 @@ LABEL_14:
 LABEL_16:
       [v4 addObject:v12];
 
-      if (v3 == ++v5)
+      if (numberOfSections == ++v5)
       {
         goto LABEL_17;
       }
@@ -8360,7 +8360,7 @@ LABEL_17:
   v20.receiver = self;
   v20.super_class = PXPhotosDataSource;
   v17 = [(PXPhotosDataSource *)&v20 description];
-  v18 = [v16 stringWithFormat:@"<%@ sections:%ld sectionCounts:[%@]>", v17, v3, v15];
+  v18 = [v16 stringWithFormat:@"<%@ sections:%ld sectionCounts:[%@]>", v17, numberOfSections, v15];
 
   return v18;
 }
@@ -8373,9 +8373,9 @@ LABEL_17:
   [(PXPhotosDataSource *)&v3 dealloc];
 }
 
-- (void)_initResultRecordsWithOldOptions:(unint64_t)a3 newOptions:(unint64_t)a4
+- (void)_initResultRecordsWithOldOptions:(unint64_t)options newOptions:(unint64_t)newOptions
 {
-  if ((a3 & a4 & 0x20) != 0 && ((a3 >> 4) & 1) != ((a4 >> 4) & 1))
+  if ((options & newOptions & 0x20) != 0 && ((options >> 4) & 1) != ((newOptions >> 4) & 1))
   {
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -8409,51 +8409,51 @@ void __66__PXPhotosDataSource__initResultRecordsWithOldOptions_newOptions___bloc
   }
 }
 
-- (id)_createDataSourceWithAssetsCollections:(id)a3 existingAssetCollectionFetchResults:(id)a4
+- (id)_createDataSourceWithAssetsCollections:(id)collections existingAssetCollectionFetchResults:(id)results
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AEB0];
-  v7 = a4;
-  v8 = a3;
+  resultsCopy = results;
+  collectionsCopy = collections;
   v9 = [v6 sortDescriptorWithKey:@"transientIdentifier" ascending:1];
   v18[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  [v8 sortUsingDescriptors:v10];
+  [collectionsCopy sortUsingDescriptors:v10];
 
-  v11 = [MEMORY[0x1E6978760] transientCollectionListWithCollections:v8 title:0];
+  v11 = [MEMORY[0x1E6978760] transientCollectionListWithCollections:collectionsCopy title:0];
 
   v12 = MEMORY[0x1E6978650];
-  v13 = [(PXPhotosDataSource *)self collectionListFetchResult];
-  v14 = [v13 fetchOptions];
-  v15 = [v12 fetchCollectionsInCollectionList:v11 options:v14];
+  collectionListFetchResult = [(PXPhotosDataSource *)self collectionListFetchResult];
+  fetchOptions = [collectionListFetchResult fetchOptions];
+  v15 = [v12 fetchCollectionsInCollectionList:v11 options:fetchOptions];
 
   v16 = [[PXPhotosDataSource alloc] initWithPhotosDataSource:self options:0];
   [(PXPhotosDataSource *)v16 setCollectionListFetchResult:v15];
-  [(PXPhotosDataSource *)v16 _adoptExistingAssetCollectionFetchResults:v7];
+  [(PXPhotosDataSource *)v16 _adoptExistingAssetCollectionFetchResults:resultsCopy];
 
   [(PXPhotosDataSource *)v16 setWantsCurationByDefault:0];
 
   return v16;
 }
 
-- (id)createDataSourceWithAssetsAtIndexPaths:(id)a3
+- (id)createDataSourceWithAssetsAtIndexPaths:(id)paths
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  pathsCopy = paths;
   v6 = objc_alloc_init(v4);
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [v7 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__PXPhotosDataSource_createDataSourceWithAssetsAtIndexPaths___block_invoke;
   v13[3] = &unk_1E77441A0;
   v13[4] = self;
-  v14 = v8;
+  v14 = uUIDString;
   v15 = v6;
   v9 = v6;
-  v10 = v8;
-  [v5 enumerateItemIndexSetsUsingBlock:v13];
+  v10 = uUIDString;
+  [pathsCopy enumerateItemIndexSetsUsingBlock:v13];
 
   v11 = [(PXPhotosDataSource *)self _createDataSourceWithAssetsCollections:v9 existingAssetCollectionFetchResults:0];
 
@@ -8479,38 +8479,38 @@ void __61__PXPhotosDataSource_createDataSourceWithAssetsAtIndexPaths___block_inv
   }
 }
 
-- (id)createDataSourceWithAssetsInSectionOfAsset:(id)a3 usingNewTransientAssetCollection:(BOOL)a4
+- (id)createDataSourceWithAssetsInSectionOfAsset:(id)asset usingNewTransientAssetCollection:(BOOL)collection
 {
-  v4 = a4;
-  v6 = a3;
+  collectionCopy = collection;
+  assetCopy = asset;
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v4)
+  if (collectionCopy)
   {
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v10 = [v6 assetCollection];
-    v11 = [v10 px_isRecentlyViewedCollection];
+    assetCollection = [assetCopy assetCollection];
+    px_isRecentlyViewedCollection = [assetCollection px_isRecentlyViewedCollection];
 
-    v12 = [(PXPhotosDataSource *)self _sectionCache];
-    v13 = [v12 assetCollections];
-    v14 = [v13 count];
+    _sectionCache = [(PXPhotosDataSource *)self _sectionCache];
+    assetCollections = [_sectionCache assetCollections];
+    v14 = [assetCollections count];
 
     if (v14)
     {
       v15 = 0;
       do
       {
-        if (v6)
+        if (assetCopy)
         {
-          [v6 indexPath];
+          [assetCopy indexPath];
           if (v15 != *(&v35 + 1))
           {
             goto LABEL_13;
           }
 
-          [v6 indexPath];
+          [assetCopy indexPath];
           v16 = v34;
         }
 
@@ -8532,11 +8532,11 @@ void __61__PXPhotosDataSource_createDataSourceWithAssetsAtIndexPaths___block_inv
 
 LABEL_13:
           v23 = MEMORY[0x1E6978650];
-          v24 = __98__PXPhotosDataSource_createDataSourceWithAssetsInSectionOfAsset_usingNewTransientAssetCollection___block_invoke(v9, v15, v11);
+          v24 = __98__PXPhotosDataSource_createDataSourceWithAssetsInSectionOfAsset_usingNewTransientAssetCollection___block_invoke(uUIDString, v15, px_isRecentlyViewedCollection);
           v17 = [v23 transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:0 identifier:v24 photoLibrary:self->_photoLibrary];
 
-          v25 = [(PXPhotosDataSource *)self emptyAssetsFetchResult];
-          [v7 setObject:v25 forKeyedSubscript:v17];
+          emptyAssetsFetchResult = [(PXPhotosDataSource *)self emptyAssetsFetchResult];
+          [v7 setObject:emptyAssetsFetchResult forKeyedSubscript:v17];
 
           [v32 addObject:v17];
           goto LABEL_14;
@@ -8544,7 +8544,7 @@ LABEL_13:
 
         v19 = v18;
         v20 = MEMORY[0x1E6978650];
-        v21 = __98__PXPhotosDataSource_createDataSourceWithAssetsInSectionOfAsset_usingNewTransientAssetCollection___block_invoke(v9, v15, v11);
+        v21 = __98__PXPhotosDataSource_createDataSourceWithAssetsInSectionOfAsset_usingNewTransientAssetCollection___block_invoke(uUIDString, v15, px_isRecentlyViewedCollection);
         v22 = [v20 transientAssetCollectionWithAssetFetchResult:v19 title:0 identifier:v21];
 
         [v32 addObject:v22];
@@ -8552,9 +8552,9 @@ LABEL_13:
 
 LABEL_14:
         ++v15;
-        v26 = [(PXPhotosDataSource *)self _sectionCache];
-        v27 = [v26 assetCollections];
-        v28 = [v27 count];
+        _sectionCache2 = [(PXPhotosDataSource *)self _sectionCache];
+        assetCollections2 = [_sectionCache2 assetCollections];
+        v28 = [assetCollections2 count];
       }
 
       while (v15 < v28);
@@ -8563,9 +8563,9 @@ LABEL_14:
 
   else
   {
-    if (v6)
+    if (assetCopy)
     {
-      [v6 indexPath];
+      [assetCopy indexPath];
       v29 = v33;
     }
 
@@ -8574,10 +8574,10 @@ LABEL_14:
       v29 = 0;
     }
 
-    v9 = [(PXPhotosDataSource *)self assetCollectionForSection:v29];
-    if (v9)
+    uUIDString = [(PXPhotosDataSource *)self assetCollectionForSection:v29];
+    if (uUIDString)
     {
-      [v32 addObject:v9];
+      [v32 addObject:uUIDString];
     }
   }
 
@@ -8602,162 +8602,162 @@ __CFString *__98__PXPhotosDataSource_createDataSourceWithAssetsInSectionOfAsset_
   return v3;
 }
 
-- (PXPhotosDataSource)initWithPhotosDataSource:(id)a3 options:(unint64_t)a4
+- (PXPhotosDataSource)initWithPhotosDataSource:(id)source options:(unint64_t)options
 {
-  v6 = a3;
+  sourceCopy = source;
   v42.receiver = self;
   v42.super_class = PXPhotosDataSource;
   v7 = [(PXPhotosDataSource *)&v42 init];
   if (v7)
   {
-    v8 = [v6 photoLibrary];
+    photoLibrary = [sourceCopy photoLibrary];
     photoLibrary = v7->_photoLibrary;
-    v7->_photoLibrary = v8;
+    v7->_photoLibrary = photoLibrary;
 
-    v10 = [v6 collectionListFetchResult];
+    collectionListFetchResult = [sourceCopy collectionListFetchResult];
     collectionListFetchResult = v7->_collectionListFetchResult;
-    v7->_collectionListFetchResult = v10;
+    v7->_collectionListFetchResult = collectionListFetchResult;
 
-    v12 = [v6 containerCollection];
+    containerCollection = [sourceCopy containerCollection];
     containerCollection = v7->_containerCollection;
-    v7->_containerCollection = v12;
+    v7->_containerCollection = containerCollection;
 
-    v14 = [v6 basePredicate];
+    basePredicate = [sourceCopy basePredicate];
     basePredicate = v7->_basePredicate;
-    v7->_basePredicate = v14;
+    v7->_basePredicate = basePredicate;
 
-    v16 = [v6 filterPredicate];
+    filterPredicate = [sourceCopy filterPredicate];
     filterPredicate = v7->_filterPredicate;
-    v7->_filterPredicate = v16;
+    v7->_filterPredicate = filterPredicate;
 
-    v7->_canIncludeUnsavedSyndicatedAssets = [v6 canIncludeUnsavedSyndicatedAssets];
-    v7->_includeSharedCollectionAssets = [v6 includeSharedCollectionAssets];
-    v7->_includeAllBurstAssets = [v6 includeAllBurstAssets];
-    v7->_includeOthersInSocialGroupAssets = [v6 includeOthersInSocialGroupAssets];
-    v7->_ignoreSharedLibraryFilters = [v6 ignoreSharedLibraryFilters];
-    v18 = [v6 sharedLibraryStatusProvider];
+    v7->_canIncludeUnsavedSyndicatedAssets = [sourceCopy canIncludeUnsavedSyndicatedAssets];
+    v7->_includeSharedCollectionAssets = [sourceCopy includeSharedCollectionAssets];
+    v7->_includeAllBurstAssets = [sourceCopy includeAllBurstAssets];
+    v7->_includeOthersInSocialGroupAssets = [sourceCopy includeOthersInSocialGroupAssets];
+    v7->_ignoreSharedLibraryFilters = [sourceCopy ignoreSharedLibraryFilters];
+    sharedLibraryStatusProvider = [sourceCopy sharedLibraryStatusProvider];
     sharedLibraryStatusProvider = v7->_sharedLibraryStatusProvider;
-    v7->_sharedLibraryStatusProvider = v18;
+    v7->_sharedLibraryStatusProvider = sharedLibraryStatusProvider;
 
-    v20 = [v6 libraryFilterState];
+    libraryFilterState = [sourceCopy libraryFilterState];
     libraryFilterState = v7->_libraryFilterState;
-    v7->_libraryFilterState = v20;
+    v7->_libraryFilterState = libraryFilterState;
 
-    v7->_libraryFilter = [v6 libraryFilter];
-    v22 = [v6 allowedUUIDs];
+    v7->_libraryFilter = [sourceCopy libraryFilter];
+    allowedUUIDs = [sourceCopy allowedUUIDs];
     allowedUUIDs = v7->_allowedUUIDs;
-    v7->_allowedUUIDs = v22;
+    v7->_allowedUUIDs = allowedUUIDs;
 
-    v24 = [v6 allowedOIDs];
+    allowedOIDs = [sourceCopy allowedOIDs];
     allowedOIDs = v7->_allowedOIDs;
-    v7->_allowedOIDs = v24;
+    v7->_allowedOIDs = allowedOIDs;
 
-    v26 = [*(v6 + 10) mutableCopy];
+    v26 = [*(sourceCopy + 10) mutableCopy];
     resultRecordByAssetCollection = v7->_resultRecordByAssetCollection;
     v7->_resultRecordByAssetCollection = v26;
 
-    v28 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     preparedChangeDetailsByAssetCollection = v7->_preparedChangeDetailsByAssetCollection;
-    v7->_preparedChangeDetailsByAssetCollection = v28;
+    v7->_preparedChangeDetailsByAssetCollection = dictionary;
 
-    v30 = [*(v6 + 7) copy];
+    v30 = [*(sourceCopy + 7) copy];
     hintIndexPathByAssetReferenceCache = v7->_hintIndexPathByAssetReferenceCache;
     v7->_hintIndexPathByAssetReferenceCache = v30;
 
-    v32 = [v6 _inaccurateAssetCollections];
-    v33 = [v32 mutableCopy];
+    _inaccurateAssetCollections = [sourceCopy _inaccurateAssetCollections];
+    v33 = [_inaccurateAssetCollections mutableCopy];
     inaccurateAssetCollections = v7->__inaccurateAssetCollections;
     v7->__inaccurateAssetCollections = v33;
 
-    v35 = [*(v6 + 15) mutableCopy];
+    v35 = [*(sourceCopy + 15) mutableCopy];
     infoForAssetCollection = v7->_infoForAssetCollection;
     v7->_infoForAssetCollection = v35;
 
     v7->__previousCollectionsCount = [(PHFetchResult *)v7->_collectionListFetchResult count];
-    v7->_fetchLimit = *(v6 + 57);
-    v37 = [*(v6 + 58) copy];
+    v7->_fetchLimit = *(sourceCopy + 57);
+    v37 = [*(sourceCopy + 58) copy];
     sortDescriptors = v7->_sortDescriptors;
     v7->_sortDescriptors = v37;
 
-    v7->_reverseSortOrder = *(v6 + 334);
-    v7->_versionIdentifier = *(v6 + 46);
-    objc_storeStrong(&v7->_facesByAssetCache, *(v6 + 29));
-    objc_storeStrong(&v7->_weightByAssetCache, *(v6 + 30));
-    objc_storeStrong(&v7->_filterPersons, *(v6 + 49));
-    v7->_hideHiddenAssets = *(v6 + 248);
-    v7->_wantsCurationByDefault = *(v6 + 335);
-    objc_storeStrong(&v7->_fetchPropertySets, *(v6 + 32));
-    v7->_curationType = *(v6 + 33);
-    v7->_curationKind = *(v6 + 34);
-    v7->_curationLength = *(v6 + 35);
-    v7->_allowSlowFetchesOnClientQueue = *(v6 + 338);
-    objc_storeStrong(&v7->_clientQueue, *(v6 + 60));
-    v39 = [*(v6 + 64) copy];
+    v7->_reverseSortOrder = *(sourceCopy + 334);
+    v7->_versionIdentifier = *(sourceCopy + 46);
+    objc_storeStrong(&v7->_facesByAssetCache, *(sourceCopy + 29));
+    objc_storeStrong(&v7->_weightByAssetCache, *(sourceCopy + 30));
+    objc_storeStrong(&v7->_filterPersons, *(sourceCopy + 49));
+    v7->_hideHiddenAssets = *(sourceCopy + 248);
+    v7->_wantsCurationByDefault = *(sourceCopy + 335);
+    objc_storeStrong(&v7->_fetchPropertySets, *(sourceCopy + 32));
+    v7->_curationType = *(sourceCopy + 33);
+    v7->_curationKind = *(sourceCopy + 34);
+    v7->_curationLength = *(sourceCopy + 35);
+    v7->_allowSlowFetchesOnClientQueue = *(sourceCopy + 338);
+    objc_storeStrong(&v7->_clientQueue, *(sourceCopy + 60));
+    v39 = [*(sourceCopy + 64) copy];
     assetContainerProvider = v7->_assetContainerProvider;
     v7->_assetContainerProvider = v39;
 
-    objc_storeWeak(&v7->_parentDataSource, v6);
-    v7->_options = a4;
-    -[PXPhotosDataSource _initResultRecordsWithOldOptions:newOptions:](v7, "_initResultRecordsWithOldOptions:newOptions:", [v6 options], a4);
+    objc_storeWeak(&v7->_parentDataSource, sourceCopy);
+    v7->_options = options;
+    -[PXPhotosDataSource _initResultRecordsWithOldOptions:newOptions:](v7, "_initResultRecordsWithOldOptions:newOptions:", [sourceCopy options], options);
     [(PXPhotosDataSource *)v7 _commonInit];
   }
 
   return v7;
 }
 
-- (PXPhotosDataSource)initWithPhotosDataSourceConfiguration:(id)a3
+- (PXPhotosDataSource)initWithPhotosDataSourceConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v70.receiver = self;
   v70.super_class = PXPhotosDataSource;
   v6 = [(PXPhotosDataSource *)&v70 init];
   if (v6)
   {
-    v7 = [v5 collectionListFetchResult];
-    v8 = [v5 containerCollection];
-    v63 = [v5 existingAssetCollectionFetchResults];
-    v62 = [v5 existingKeyAssetsFetchResults];
-    v61 = [v5 referenceAsset];
-    obj = [v5 filterPredicate];
-    v54 = [v5 includeOthersInSocialGroupAssets];
-    v66 = [v5 sortDescriptors];
-    v9 = [v5 canIncludeUnsavedSyndicatedAssets];
-    v10 = [v5 includeSharedCollectionAssets];
-    v67 = [v5 allowedUUIDs];
-    v11 = [v5 allowedOIDs];
-    v59 = [v5 options];
-    v65 = [v5 filterPersons];
-    v64 = [v5 filterSocialGroup];
-    v58 = [v5 hideHiddenAssets];
-    v12 = [v5 photoLibrary];
-    v13 = v12;
-    if (v12)
+    collectionListFetchResult = [configurationCopy collectionListFetchResult];
+    containerCollection = [configurationCopy containerCollection];
+    existingAssetCollectionFetchResults = [configurationCopy existingAssetCollectionFetchResults];
+    existingKeyAssetsFetchResults = [configurationCopy existingKeyAssetsFetchResults];
+    referenceAsset = [configurationCopy referenceAsset];
+    obj = [configurationCopy filterPredicate];
+    includeOthersInSocialGroupAssets = [configurationCopy includeOthersInSocialGroupAssets];
+    sortDescriptors = [configurationCopy sortDescriptors];
+    canIncludeUnsavedSyndicatedAssets = [configurationCopy canIncludeUnsavedSyndicatedAssets];
+    includeSharedCollectionAssets = [configurationCopy includeSharedCollectionAssets];
+    allowedUUIDs = [configurationCopy allowedUUIDs];
+    allowedOIDs = [configurationCopy allowedOIDs];
+    options = [configurationCopy options];
+    filterPersons = [configurationCopy filterPersons];
+    filterSocialGroup = [configurationCopy filterSocialGroup];
+    hideHiddenAssets = [configurationCopy hideHiddenAssets];
+    photoLibrary = [configurationCopy photoLibrary];
+    v13 = photoLibrary;
+    if (photoLibrary)
     {
-      v14 = v12;
+      px_deprecated_appPhotoLibrary = photoLibrary;
     }
 
     else
     {
-      v14 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+      px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
     }
 
-    v15 = v14;
+    v15 = px_deprecated_appPhotoLibrary;
 
-    v56 = [v5 curationType];
-    v57 = [v5 reverseSortOrder];
-    v55 = [v5 includeAllBurstAssets];
-    if (v67 && v11)
+    curationType = [configurationCopy curationType];
+    reverseSortOrder = [configurationCopy reverseSortOrder];
+    includeAllBurstAssets = [configurationCopy includeAllBurstAssets];
+    if (allowedUUIDs && allowedOIDs)
     {
-      v53 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v53 handleFailureInMethod:a2 object:v6 file:@"PXPhotosDataSource.m" lineNumber:302 description:{@"It is invalid to combine allowedUUIDs with allowedOIDs, pick one."}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"PXPhotosDataSource.m" lineNumber:302 description:{@"It is invalid to combine allowedUUIDs with allowedOIDs, pick one."}];
     }
 
-    v16 = [v5 clientQueue];
-    v17 = v16;
-    if (v16)
+    clientQueue = [configurationCopy clientQueue];
+    v17 = clientQueue;
+    if (clientQueue)
     {
-      v18 = v8;
-      v19 = v16;
+      v18 = containerCollection;
+      v19 = clientQueue;
       clientQueue = v6->_clientQueue;
       v6->_clientQueue = v19;
     }
@@ -8768,82 +8768,82 @@ __CFString *__98__PXPhotosDataSource_createDataSourceWithAssetsInSectionOfAsset_
       v22 = MEMORY[0x1E69E96A0];
       clientQueue = v6->_clientQueue;
       v6->_clientQueue = v21;
-      v18 = v8;
+      v18 = containerCollection;
     }
 
     objc_storeStrong(&v6->_photoLibrary, v15);
-    objc_storeStrong(&v6->_collectionListFetchResult, v7);
+    objc_storeStrong(&v6->_collectionListFetchResult, collectionListFetchResult);
     objc_storeStrong(&v6->_containerCollection, v18);
-    v23 = [v5 basePredicate];
+    basePredicate = [configurationCopy basePredicate];
     basePredicate = v6->_basePredicate;
-    v6->_basePredicate = v23;
+    v6->_basePredicate = basePredicate;
 
     objc_storeStrong(&v6->_filterPredicate, obj);
-    v6->_includeOthersInSocialGroupAssets = v54;
-    objc_storeStrong(&v6->_sortDescriptors, v66);
-    v6->_canIncludeUnsavedSyndicatedAssets = v9;
-    v6->_includeSharedCollectionAssets = v10;
-    v6->_ignoreSharedLibraryFilters = [v5 ignoreSharedLibraryFilters];
+    v6->_includeOthersInSocialGroupAssets = includeOthersInSocialGroupAssets;
+    objc_storeStrong(&v6->_sortDescriptors, sortDescriptors);
+    v6->_canIncludeUnsavedSyndicatedAssets = canIncludeUnsavedSyndicatedAssets;
+    v6->_includeSharedCollectionAssets = includeSharedCollectionAssets;
+    v6->_ignoreSharedLibraryFilters = [configurationCopy ignoreSharedLibraryFilters];
     v25 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v15];
     sharedLibraryStatusProvider = v6->_sharedLibraryStatusProvider;
     v6->_sharedLibraryStatusProvider = v25;
 
-    v27 = [v5 libraryFilterState];
+    libraryFilterState = [configurationCopy libraryFilterState];
     libraryFilterState = v6->_libraryFilterState;
-    v6->_libraryFilterState = v27;
+    v6->_libraryFilterState = libraryFilterState;
 
     v29 = v6->_libraryFilterState;
     if (v29)
     {
-      v30 = [(PXLibraryFilterState *)v29 viewMode];
+      viewMode = [(PXLibraryFilterState *)v29 viewMode];
     }
 
     else
     {
-      v30 = [v5 libraryFilter];
+      viewMode = [configurationCopy libraryFilter];
     }
 
-    v6->_libraryFilter = v30;
-    objc_storeStrong(&v6->_allowedUUIDs, v67);
-    objc_storeStrong(&v6->_allowedOIDs, v11);
-    objc_storeStrong(&v6->_referenceAsset, v61);
-    objc_storeStrong(&v6->_filterPersons, v65);
-    objc_storeStrong(&v6->_filterSocialGroup, v64);
-    v6->_hideHiddenAssets = v58;
-    v31 = [v5 fetchPropertySets];
+    v6->_libraryFilter = viewMode;
+    objc_storeStrong(&v6->_allowedUUIDs, allowedUUIDs);
+    objc_storeStrong(&v6->_allowedOIDs, allowedOIDs);
+    objc_storeStrong(&v6->_referenceAsset, referenceAsset);
+    objc_storeStrong(&v6->_filterPersons, filterPersons);
+    objc_storeStrong(&v6->_filterSocialGroup, filterSocialGroup);
+    v6->_hideHiddenAssets = hideHiddenAssets;
+    fetchPropertySets = [configurationCopy fetchPropertySets];
     fetchPropertySets = v6->_fetchPropertySets;
-    v6->_fetchPropertySets = v31;
+    v6->_fetchPropertySets = fetchPropertySets;
 
-    v6->_wantsCurationByDefault = [v5 wantsCurationByDefault];
-    v6->_curationType = v56;
-    v6->_curationKind = [v5 curationKind];
+    v6->_wantsCurationByDefault = [configurationCopy wantsCurationByDefault];
+    v6->_curationType = curationType;
+    v6->_curationKind = [configurationCopy curationKind];
     v6->_curationLength = 0;
-    v6->_reverseSortOrder = v57;
-    v6->_includeAllBurstAssets = v55;
-    v33 = [v5 assetContainerProvider];
-    v34 = [v33 copy];
+    v6->_reverseSortOrder = reverseSortOrder;
+    v6->_includeAllBurstAssets = includeAllBurstAssets;
+    assetContainerProvider = [configurationCopy assetContainerProvider];
+    v34 = [assetContainerProvider copy];
     assetContainerProvider = v6->_assetContainerProvider;
     v6->_assetContainerProvider = v34;
 
-    v36 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     resultRecordByAssetCollection = v6->_resultRecordByAssetCollection;
-    v6->_resultRecordByAssetCollection = v36;
+    v6->_resultRecordByAssetCollection = dictionary;
 
-    v38 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     preparedChangeDetailsByAssetCollection = v6->_preparedChangeDetailsByAssetCollection;
-    v6->_preparedChangeDetailsByAssetCollection = v38;
+    v6->_preparedChangeDetailsByAssetCollection = dictionary2;
 
-    v40 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     hintIndexPathByAssetReferenceCache = v6->_hintIndexPathByAssetReferenceCache;
-    v6->_hintIndexPathByAssetReferenceCache = v40;
+    v6->_hintIndexPathByAssetReferenceCache = dictionary3;
 
-    v42 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     facesByAssetCache = v6->_facesByAssetCache;
-    v6->_facesByAssetCache = v42;
+    v6->_facesByAssetCache = dictionary4;
 
-    v44 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
     weightByAssetCache = v6->_weightByAssetCache;
-    v6->_weightByAssetCache = v44;
+    v6->_weightByAssetCache = dictionary5;
 
     v46 = [MEMORY[0x1E695DFA8] set];
     inaccurateAssetCollections = v6->__inaccurateAssetCollections;
@@ -8853,25 +8853,25 @@ __CFString *__98__PXPhotosDataSource_createDataSourceWithAssetsInSectionOfAsset_
     pauseLibraryChangeDeliveryTokens = v6->_pauseLibraryChangeDeliveryTokens;
     v6->_pauseLibraryChangeDeliveryTokens = v48;
 
-    v50 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary6 = [MEMORY[0x1E695DF90] dictionary];
     infoForAssetCollection = v6->_infoForAssetCollection;
-    v6->_infoForAssetCollection = v50;
+    v6->_infoForAssetCollection = dictionary6;
 
-    v6->_options = v59;
+    v6->_options = options;
     [(PXPhotosDataSource *)v6 _incrementVersionIdentifier];
-    if (v63)
+    if (existingAssetCollectionFetchResults)
     {
-      [(PXPhotosDataSource *)v6 _adoptExistingAssetCollectionFetchResults:v63];
+      [(PXPhotosDataSource *)v6 _adoptExistingAssetCollectionFetchResults:existingAssetCollectionFetchResults];
     }
 
-    if (v62)
+    if (existingKeyAssetsFetchResults)
     {
       v68[0] = MEMORY[0x1E69E9820];
       v68[1] = 3221225472;
       v68[2] = __60__PXPhotosDataSource_initWithPhotosDataSourceConfiguration___block_invoke;
       v68[3] = &unk_1E7744170;
       v69 = v6;
-      [v62 enumerateKeysAndObjectsUsingBlock:v68];
+      [existingKeyAssetsFetchResults enumerateKeysAndObjectsUsingBlock:v68];
     }
 
     [(PXPhotosDataSource *)v6 _commonInit];
@@ -8894,9 +8894,9 @@ void __60__PXPhotosDataSource_initWithPhotosDataSourceConfiguration___block_invo
 + (void)waitForAllBackgroundFetchingToFinish
 {
   kdebug_trace();
-  v3 = [a1 backgroundFetchingGroup];
+  backgroundFetchingGroup = [self backgroundFetchingGroup];
   v4 = dispatch_time(0, 120000000000);
-  dispatch_group_wait(v3, v4);
+  dispatch_group_wait(backgroundFetchingGroup, v4);
 
   kdebug_trace();
 }

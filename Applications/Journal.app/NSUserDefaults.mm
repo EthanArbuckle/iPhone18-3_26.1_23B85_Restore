@@ -1,24 +1,24 @@
 @interface NSUserDefaults
 - (BOOL)hasSeenBothHealthTCCs;
 - (NSData)journalingScheduleData;
-- (void)setHasSeenBothHealthTCCs:(BOOL)a3;
-- (void)setIsJournalingScheduleEnabled:(BOOL)a3;
-- (void)setIsStreakReminderEnabled:(BOOL)a3;
-- (void)setJournalingScheduleData:(id)a3;
+- (void)setHasSeenBothHealthTCCs:(BOOL)cs;
+- (void)setIsJournalingScheduleEnabled:(BOOL)enabled;
+- (void)setIsStreakReminderEnabled:(BOOL)enabled;
+- (void)setJournalingScheduleData:(id)data;
 @end
 
 @implementation NSUserDefaults
 
 - (BOOL)hasSeenBothHealthTCCs
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
-  v4 = [(NSUserDefaults *)v2 BOOLForKey:v3];
+  v4 = [(NSUserDefaults *)selfCopy BOOLForKey:v3];
 
   if (v4)
   {
     v5 = String._bridgeToObjectiveC()();
-    v6 = [(NSUserDefaults *)v2 BOOLForKey:v5];
+    v6 = [(NSUserDefaults *)selfCopy BOOLForKey:v5];
   }
 
   else
@@ -29,27 +29,27 @@
   return v6;
 }
 
-- (void)setHasSeenBothHealthTCCs:(BOOL)a3
+- (void)setHasSeenBothHealthTCCs:(BOOL)cs
 {
-  v3 = a3;
-  v6 = self;
+  csCopy = cs;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
-  [(NSUserDefaults *)v6 setBool:v3 forKey:v4];
+  [(NSUserDefaults *)selfCopy setBool:csCopy forKey:v4];
 
   v5 = String._bridgeToObjectiveC()();
-  [(NSUserDefaults *)v6 setBool:v3 forKey:v5];
+  [(NSUserDefaults *)selfCopy setBool:csCopy forKey:v5];
 }
 
-- (void)setIsStreakReminderEnabled:(BOOL)a3
+- (void)setIsStreakReminderEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_100554398(a3, &enum case for SettingsKey.isStreakReminderEnabled(_:), &enum case for SettingsKey.streakReminderHour(_:), &enum case for SettingsKey.streakReminderMinute(_:));
+  selfCopy = self;
+  sub_100554398(enabled, &enum case for SettingsKey.isStreakReminderEnabled(_:), &enum case for SettingsKey.streakReminderHour(_:), &enum case for SettingsKey.streakReminderMinute(_:));
 }
 
-- (void)setIsJournalingScheduleEnabled:(BOOL)a3
+- (void)setIsJournalingScheduleEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_100554398(a3, &enum case for SettingsKey.isJournalingScheduleEnabled(_:), &enum case for SettingsKey.journalingScheduleData(_:), &enum case for SettingsKey.journalingScheduleDataLegacy(_:));
+  selfCopy = self;
+  sub_100554398(enabled, &enum case for SettingsKey.isJournalingScheduleEnabled(_:), &enum case for SettingsKey.journalingScheduleData(_:), &enum case for SettingsKey.journalingScheduleDataLegacy(_:));
 }
 
 - (NSData)journalingScheduleData
@@ -59,12 +59,12 @@
   v5 = __chkstk_darwin(v3);
   v7 = &v16 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   (*(v4 + 104))(v7, enum case for SettingsKey.journalingScheduleData(_:), v3, v5);
-  v8 = self;
+  selfCopy = self;
   SettingsKey.rawValue.getter();
   (*(v4 + 8))(v7, v3);
   v9 = String._bridgeToObjectiveC()();
 
-  v10 = [(NSUserDefaults *)v8 dataForKey:v9];
+  v10 = [(NSUserDefaults *)selfCopy dataForKey:v9];
 
   if (v10)
   {
@@ -84,25 +84,25 @@
   return v14.super.isa;
 }
 
-- (void)setJournalingScheduleData:(id)a3
+- (void)setJournalingScheduleData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    selfCopy = self;
+    v5 = dataCopy;
+    dataCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
   sub_100554E20();
-  sub_10003A5C8(v3, v7);
+  sub_10003A5C8(dataCopy, v7);
 }
 
 @end

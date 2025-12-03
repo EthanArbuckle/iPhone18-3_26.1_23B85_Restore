@@ -4,9 +4,9 @@
 - (CGRect)targetRect;
 - (CGSize)scaledIntersectingAppLayoutSize;
 - (CGSize)unscaledIntersectingAppLayoutSize;
-- (SBSwitcherDropRegionContext)initWithDraggingLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBSwitcherDropRegionContext)initWithDraggingLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)displayItemsToReloadSnapshots;
 - (id)droppedLeafAppLayout;
 - (id)finalTargetAppLayout;
@@ -18,17 +18,17 @@
 
 @implementation SBSwitcherDropRegionContext
 
-- (SBSwitcherDropRegionContext)initWithDraggingLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (SBSwitcherDropRegionContext)initWithDraggingLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v7 = a4;
+  layoutCopy = layout;
   v11.receiver = self;
   v11.super_class = SBSwitcherDropRegionContext;
   v8 = [(SBSwitcherDropRegionContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_draggingLayoutRole = a3;
-    objc_storeStrong(&v8->_draggingAppLayout, a4);
+    v8->_draggingLayoutRole = role;
+    objc_storeStrong(&v8->_draggingAppLayout, layout);
     v9->_currentDropRegion = 0;
     v9->_scaledIntersectingAppLayoutSize = SBInvalidSize;
     v9->_unscaledIntersectingAppLayoutSize = SBInvalidSize;
@@ -41,9 +41,9 @@
 
 - (unint64_t)currentDropAction
 {
-  v3 = [(SBAppLayout *)self->_draggingAppLayout environment];
+  environment = [(SBAppLayout *)self->_draggingAppLayout environment];
   currentDropRegion = self->_currentDropRegion;
-  if (v3 != 2)
+  if (environment != 2)
   {
     if (currentDropRegion == 6)
     {
@@ -105,14 +105,14 @@
   v5 = [(SBAppLayout *)self->_intersectingAppLayout itemForLayoutRole:1];
   v6 = [(SBAppLayout *)self->_intersectingAppLayout itemForLayoutRole:2];
   currentDropRegion = self->_currentDropRegion;
-  v8 = [(SBSwitcherDropRegionContext *)self currentDropAction];
+  currentDropAction = [(SBSwitcherDropRegionContext *)self currentDropAction];
   v9 = self->_currentDropRegion;
   switch(v9)
   {
     case 6uLL:
       v12 = [SBAppLayout alloc];
-      v13 = [MEMORY[0x277CCABB0] numberWithInteger:1];
-      v46 = v13;
+      flippedAppLayout = [MEMORY[0x277CCABB0] numberWithInteger:1];
+      v46 = flippedAppLayout;
       v47[0] = v4;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:&v46 count:1];
       v11 = [(SBAppLayout *)v12 initWithItemsForLayoutRoles:v14 configuration:1 environment:2 preferredDisplayOrdinal:[(SBAppLayout *)self->_intersectingAppLayout preferredDisplayOrdinal]];
@@ -120,7 +120,7 @@
 LABEL_16:
       goto LABEL_34;
     case 3uLL:
-      if (v8 == 3)
+      if (currentDropAction == 3)
       {
         v30 = [MEMORY[0x277CCABB0] numberWithInteger:1];
         v44 = v30;
@@ -131,7 +131,7 @@ LABEL_16:
         goto LABEL_34;
       }
 
-      if (v8 == 5)
+      if (currentDropAction == 5)
       {
         if (![(SBAppLayout *)self->_draggingAppLayout isSplitConfiguration])
         {
@@ -147,8 +147,8 @@ LABEL_16:
         goto LABEL_12;
       }
 
-      v32 = [MEMORY[0x277CCA890] currentHandler];
-      [v32 handleFailureInMethod:a2 object:self file:@"SBSwitcherDropRegionContext.m" lineNumber:104 description:@"Invalid drop region"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBSwitcherDropRegionContext.m" lineNumber:104 description:@"Invalid drop region"];
 
       break;
     case 1uLL:
@@ -159,14 +159,14 @@ LABEL_12:
     default:
       if ([(SBSwitcherDropRegionContext *)self isSwap])
       {
-        v13 = [(SBAppLayout *)self->_draggingAppLayout flippedAppLayout];
-        v11 = [v13 appLayoutByModifyingConfiguration:{-[SBSwitcherDropRegionContext effectiveDroppingAppLayoutConfiguration](self, "effectiveDroppingAppLayoutConfiguration")}];
+        flippedAppLayout = [(SBAppLayout *)self->_draggingAppLayout flippedAppLayout];
+        v11 = [flippedAppLayout appLayoutByModifyingConfiguration:{-[SBSwitcherDropRegionContext effectiveDroppingAppLayoutConfiguration](self, "effectiveDroppingAppLayoutConfiguration")}];
         goto LABEL_16;
       }
 
       if ((currentDropRegion & 0xFFFFFFFFFFFFFFFELL) == 4)
       {
-        v15 = [(SBAppLayout *)self->_intersectingAppLayout isSplitConfiguration];
+        isSplitConfiguration = [(SBAppLayout *)self->_intersectingAppLayout isSplitConfiguration];
         if (currentDropRegion == 4)
         {
           v16 = v4;
@@ -178,7 +178,7 @@ LABEL_12:
         }
 
         v17 = MEMORY[0x277CCABB0];
-        if (v15)
+        if (isSplitConfiguration)
         {
           if (currentDropRegion == 4)
           {
@@ -202,7 +202,7 @@ LABEL_12:
 
           v24 = [SBAppLayout alloc];
           intersectingAppLayoutConfiguration = self->_intersectingAppLayoutConfiguration;
-          v26 = [(SBAppLayout *)self->_intersectingAppLayout preferredDisplayOrdinal];
+          preferredDisplayOrdinal = [(SBAppLayout *)self->_intersectingAppLayout preferredDisplayOrdinal];
 
           v27 = v24;
           v28 = v23;
@@ -232,14 +232,14 @@ LABEL_12:
           v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:2];
 
           v38 = [SBAppLayout alloc];
-          v26 = [(SBAppLayout *)self->_intersectingAppLayout preferredDisplayOrdinal];
+          preferredDisplayOrdinal = [(SBAppLayout *)self->_intersectingAppLayout preferredDisplayOrdinal];
 
           v27 = v38;
           v28 = v23;
           v29 = 3;
         }
 
-        v11 = [(SBAppLayout *)v27 initWithItemsForLayoutRoles:v28 configuration:v29 environment:1 preferredDisplayOrdinal:v26];
+        v11 = [(SBAppLayout *)v27 initWithItemsForLayoutRoles:v28 configuration:v29 environment:1 preferredDisplayOrdinal:preferredDisplayOrdinal];
 
         goto LABEL_34;
       }
@@ -279,11 +279,11 @@ LABEL_34:
 
 - (id)droppedLeafAppLayout
 {
-  v3 = [(SBSwitcherDropRegionContext *)self draggingLeafAppLayout];
-  v4 = [v3 itemForLayoutRole:1];
+  draggingLeafAppLayout = [(SBSwitcherDropRegionContext *)self draggingLeafAppLayout];
+  v4 = [draggingLeafAppLayout itemForLayoutRole:1];
 
-  v5 = [(SBSwitcherDropRegionContext *)self finalTargetAppLayout];
-  v6 = [v5 leafAppLayoutForItem:v4];
+  finalTargetAppLayout = [(SBSwitcherDropRegionContext *)self finalTargetAppLayout];
+  v6 = [finalTargetAppLayout leafAppLayoutForItem:v4];
 
   return v6;
 }
@@ -291,33 +291,33 @@ LABEL_34:
 - (id)displayItemsToReloadSnapshots
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v4 = [(SBSwitcherDropRegionContext *)self finalTargetAppLayout];
-  v5 = [v4 allItems];
-  [v3 addObjectsFromArray:v5];
+  finalTargetAppLayout = [(SBSwitcherDropRegionContext *)self finalTargetAppLayout];
+  allItems = [finalTargetAppLayout allItems];
+  [v3 addObjectsFromArray:allItems];
 
   remainingAppLayout = self->_remainingAppLayout;
   if (remainingAppLayout)
   {
-    v7 = [(SBAppLayout *)remainingAppLayout allItems];
-    [v3 addObjectsFromArray:v7];
+    allItems2 = [(SBAppLayout *)remainingAppLayout allItems];
+    [v3 addObjectsFromArray:allItems2];
   }
 
   evictedAppLayout = self->_evictedAppLayout;
   if (evictedAppLayout)
   {
-    v9 = [(SBAppLayout *)evictedAppLayout allItems];
-    [v3 addObjectsFromArray:v9];
+    allItems3 = [(SBAppLayout *)evictedAppLayout allItems];
+    [v3 addObjectsFromArray:allItems3];
   }
 
-  v10 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v10;
+  return allObjects;
 }
 
 - (int64_t)effectiveDroppingAppLayoutConfiguration
 {
   intersectingAppLayoutConfiguration = self->_intersectingAppLayoutConfiguration;
-  v3 = [(SBSwitcherDropRegionContext *)self isSwap];
+  isSwap = [(SBSwitcherDropRegionContext *)self isSwap];
   v4 = 2;
   v5 = 4;
   if (intersectingAppLayoutConfiguration != 2)
@@ -330,7 +330,7 @@ LABEL_34:
     v4 = v5;
   }
 
-  if (v3)
+  if (isSwap)
   {
     return v4;
   }
@@ -343,32 +343,32 @@ LABEL_34:
 
 - (id)succinctDescription
 {
-  v2 = [(SBSwitcherDropRegionContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSwitcherDropRegionContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSwitcherDropRegionContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSwitcherDropRegionContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBSwitcherDropRegionContext *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBSwitcherDropRegionContext *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__SBSwitcherDropRegionContext_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -481,8 +481,8 @@ id __69__SBSwitcherDropRegionContext_descriptionBuilderWithMultilinePrefix___blo
 
 - (void)finalTargetAppLayout
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBSwitcherDropRegionContext.m" lineNumber:92 description:{@"Unsplit should result in a new full app layout, not a split one"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSwitcherDropRegionContext.m" lineNumber:92 description:{@"Unsplit should result in a new full app layout, not a split one"}];
 }
 
 @end

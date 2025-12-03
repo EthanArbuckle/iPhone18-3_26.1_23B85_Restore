@@ -2,7 +2,7 @@
 + (id)settingsControllerModule;
 - (_UIButtonSettings)initWithDefaultValues;
 - (void)setDefaultValues;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation _UIButtonSettings
@@ -11,11 +11,11 @@
 {
   v5.receiver = self;
   v5.super_class = _UIButtonSettings;
-  v2 = [(PTSettings *)&v5 initWithDefaultValues];
-  v3 = v2;
-  if (v2)
+  initWithDefaultValues = [(PTSettings *)&v5 initWithDefaultValues];
+  v3 = initWithDefaultValues;
+  if (initWithDefaultValues)
   {
-    [(PTSettings *)v2 addKeyObserver:v2];
+    [(PTSettings *)initWithDefaultValues addKeyObserver:initWithDefaultValues];
   }
 
   return v3;
@@ -33,7 +33,7 @@
   [(_UIButtonSettings *)self setHighlightAlternateColor:0];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;

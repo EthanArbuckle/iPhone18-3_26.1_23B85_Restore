@@ -1,26 +1,26 @@
 @interface HKCodableQuantitySeriesEnumerationResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDataTypeCode:(BOOL)a3;
-- (void)setHasEndTime:(BOOL)a3;
-- (void)setHasPersistentID:(BOOL)a3;
-- (void)setHasSeriesIndex:(BOOL)a3;
-- (void)setHasSourceID:(BOOL)a3;
-- (void)setHasStartTime:(BOOL)a3;
-- (void)setHasValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDataTypeCode:(BOOL)code;
+- (void)setHasEndTime:(BOOL)time;
+- (void)setHasPersistentID:(BOOL)d;
+- (void)setHasSeriesIndex:(BOOL)index;
+- (void)setHasSourceID:(BOOL)d;
+- (void)setHasStartTime:(BOOL)time;
+- (void)setHasValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableQuantitySeriesEnumerationResult
 
-- (void)setHasPersistentID:(BOOL)a3
+- (void)setHasPersistentID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 8;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDataTypeCode:(BOOL)a3
+- (void)setHasDataTypeCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasValue:(BOOL)a3
+- (void)setHasValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 0x80;
   }
@@ -63,9 +63,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasStartTime:(BOOL)a3
+- (void)setHasStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 64;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasEndTime:(BOOL)a3
+- (void)setHasEndTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 4;
   }
@@ -93,9 +93,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSourceID:(BOOL)a3
+- (void)setHasSourceID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 32;
   }
@@ -108,9 +108,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasSeriesIndex:(BOOL)a3
+- (void)setHasSeriesIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 16;
   }
@@ -129,20 +129,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableQuantitySeriesEnumerationResult;
   v4 = [(HKCodableQuantitySeriesEnumerationResult *)&v8 description];
-  v5 = [(HKCodableQuantitySeriesEnumerationResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableQuantitySeriesEnumerationResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_persistentID];
-    [v3 setObject:v5 forKey:@"persistentID"];
+    [dictionary setObject:v5 forKey:@"persistentID"];
 
     has = self->_has;
   }
@@ -150,13 +150,13 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_dataTypeCode];
-    [v3 setObject:v6 forKey:@"dataTypeCode"];
+    [dictionary setObject:v6 forKey:@"dataTypeCode"];
   }
 
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   v8 = self->_has;
@@ -171,14 +171,14 @@
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithDouble:self->_value];
-  [v3 setObject:v16 forKey:@"value"];
+  [dictionary setObject:v16 forKey:@"value"];
 
   *&v8 = self->_has;
   if (*&v8)
   {
 LABEL_9:
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_count];
-    [v3 setObject:v9 forKey:@"count"];
+    [dictionary setObject:v9 forKey:@"count"];
 
     *&v8 = self->_has;
   }
@@ -187,7 +187,7 @@ LABEL_10:
   if ((*&v8 & 0x40) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startTime];
-    [v3 setObject:v13 forKey:@"startTime"];
+    [dictionary setObject:v13 forKey:@"startTime"];
 
     *&v8 = self->_has;
     if ((*&v8 & 4) == 0)
@@ -208,7 +208,7 @@ LABEL_12:
   }
 
   v14 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endTime];
-  [v3 setObject:v14 forKey:@"endTime"];
+  [dictionary setObject:v14 forKey:@"endTime"];
 
   *&v8 = self->_has;
   if ((*&v8 & 0x20) == 0)
@@ -224,35 +224,35 @@ LABEL_13:
 
 LABEL_22:
   v15 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sourceID];
-  [v3 setObject:v15 forKey:@"sourceID"];
+  [dictionary setObject:v15 forKey:@"sourceID"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_14:
     v10 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_seriesIndex];
-    [v3 setObject:v10 forKey:@"seriesIndex"];
+    [dictionary setObject:v10 forKey:@"seriesIndex"];
   }
 
 LABEL_15:
   quantitySample = self->_quantitySample;
   if (quantitySample)
   {
-    [v3 setObject:quantitySample forKey:@"quantitySample"];
+    [dictionary setObject:quantitySample forKey:@"quantitySample"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v15 = v4;
+  v15 = toCopy;
   if ((has & 8) != 0)
   {
     persistentID = self->_persistentID;
     PBDataWriterWriteInt64Field();
-    v4 = v15;
+    toCopy = v15;
     has = self->_has;
   }
 
@@ -260,13 +260,13 @@ LABEL_15:
   {
     dataTypeCode = self->_dataTypeCode;
     PBDataWriterWriteInt64Field();
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_uuid)
   {
     PBDataWriterWriteDataField();
-    v4 = v15;
+    toCopy = v15;
   }
 
   v8 = self->_has;
@@ -282,14 +282,14 @@ LABEL_15:
 
   value = self->_value;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   *&v8 = self->_has;
   if (*&v8)
   {
 LABEL_9:
     count = self->_count;
     PBDataWriterWriteInt64Field();
-    v4 = v15;
+    toCopy = v15;
     *&v8 = self->_has;
   }
 
@@ -298,7 +298,7 @@ LABEL_10:
   {
     startTime = self->_startTime;
     PBDataWriterWriteDoubleField();
-    v4 = v15;
+    toCopy = v15;
     *&v8 = self->_has;
     if ((*&v8 & 4) == 0)
     {
@@ -319,7 +319,7 @@ LABEL_12:
 
   endTime = self->_endTime;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   *&v8 = self->_has;
   if ((*&v8 & 0x20) == 0)
   {
@@ -335,45 +335,45 @@ LABEL_13:
 LABEL_22:
   sourceID = self->_sourceID;
   PBDataWriterWriteInt64Field();
-  v4 = v15;
+  toCopy = v15;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_14:
     seriesIndex = self->_seriesIndex;
     PBDataWriterWriteInt64Field();
-    v4 = v15;
+    toCopy = v15;
   }
 
 LABEL_15:
   if (self->_quantitySample)
   {
     PBDataWriterWriteDataField();
-    v4 = v15;
+    toCopy = v15;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[4] = self->_persistentID;
-    *(v4 + 88) |= 8u;
+    toCopy[4] = self->_persistentID;
+    *(toCopy + 88) |= 8u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[2] = self->_dataTypeCode;
-    *(v4 + 88) |= 2u;
+    toCopy[2] = self->_dataTypeCode;
+    *(toCopy + 88) |= 2u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v7;
+    [toCopy setUuid:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
@@ -387,22 +387,22 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  v4[8] = *&self->_value;
-  *(v4 + 88) |= 0x80u;
+  toCopy[8] = *&self->_value;
+  *(toCopy + 88) |= 0x80u;
   *&v6 = self->_has;
   if (*&v6)
   {
 LABEL_9:
-    v4[1] = self->_count;
-    *(v4 + 88) |= 1u;
+    toCopy[1] = self->_count;
+    *(toCopy + 88) |= 1u;
     *&v6 = self->_has;
   }
 
 LABEL_10:
   if ((*&v6 & 0x40) != 0)
   {
-    v4[7] = *&self->_startTime;
-    *(v4 + 88) |= 0x40u;
+    toCopy[7] = *&self->_startTime;
+    *(toCopy + 88) |= 0x40u;
     *&v6 = self->_has;
     if ((*&v6 & 4) == 0)
     {
@@ -421,8 +421,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v4[3] = *&self->_endTime;
-  *(v4 + 88) |= 4u;
+  toCopy[3] = *&self->_endTime;
+  *(toCopy + 88) |= 4u;
   *&v6 = self->_has;
   if ((*&v6 & 0x20) == 0)
   {
@@ -436,26 +436,26 @@ LABEL_13:
   }
 
 LABEL_22:
-  v4[6] = self->_sourceID;
-  *(v4 + 88) |= 0x20u;
+  toCopy[6] = self->_sourceID;
+  *(toCopy + 88) |= 0x20u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_14:
-    v4[5] = self->_seriesIndex;
-    *(v4 + 88) |= 0x10u;
+    toCopy[5] = self->_seriesIndex;
+    *(toCopy + 88) |= 0x10u;
   }
 
 LABEL_15:
   if (self->_quantitySample)
   {
     [v7 setQuantitySample:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -471,7 +471,7 @@ LABEL_15:
     *(v5 + 88) |= 2u;
   }
 
-  v8 = [(NSData *)self->_uuid copyWithZone:a3];
+  v8 = [(NSData *)self->_uuid copyWithZone:zone];
   v9 = *(v6 + 80);
   *(v6 + 80) = v8;
 
@@ -545,51 +545,51 @@ LABEL_12:
   }
 
 LABEL_13:
-  v11 = [(NSData *)self->_quantitySample copyWithZone:a3];
+  v11 = [(NSData *)self->_quantitySample copyWithZone:zone];
   v12 = *(v6 + 72);
   *(v6 + 72) = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
   has = self->_has;
-  v6 = *(v4 + 88);
+  v6 = *(equalCopy + 88);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 88) & 8) == 0 || self->_persistentID != *(v4 + 4))
+    if ((*(equalCopy + 88) & 8) == 0 || self->_persistentID != *(equalCopy + 4))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 88) & 8) != 0)
+  else if ((*(equalCopy + 88) & 8) != 0)
   {
     goto LABEL_47;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 88) & 2) == 0 || self->_dataTypeCode != *(v4 + 2))
+    if ((*(equalCopy + 88) & 2) == 0 || self->_dataTypeCode != *(equalCopy + 2))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 88) & 2) != 0)
+  else if ((*(equalCopy + 88) & 2) != 0)
   {
     goto LABEL_47;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 10))
+  if (uuid | *(equalCopy + 10))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -599,10 +599,10 @@ LABEL_13:
     has = self->_has;
   }
 
-  v8 = *(v4 + 88);
+  v8 = *(equalCopy + 88);
   if ((has & 0x80) == 0)
   {
-    if ((*(v4 + 88) & 0x80) == 0)
+    if ((*(equalCopy + 88) & 0x80) == 0)
     {
       goto LABEL_17;
     }
@@ -612,7 +612,7 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  if ((*(v4 + 88) & 0x80) == 0 || self->_value != *(v4 + 8))
+  if ((*(equalCopy + 88) & 0x80) == 0 || self->_value != *(equalCopy + 8))
   {
     goto LABEL_47;
   }
@@ -620,71 +620,71 @@ LABEL_47:
 LABEL_17:
   if (has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_count != *(v4 + 1))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_count != *(equalCopy + 1))
     {
       goto LABEL_47;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
     goto LABEL_47;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((*(v4 + 88) & 0x40) == 0 || self->_startTime != *(v4 + 7))
+    if ((*(equalCopy + 88) & 0x40) == 0 || self->_startTime != *(equalCopy + 7))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 88) & 0x40) != 0)
+  else if ((*(equalCopy + 88) & 0x40) != 0)
   {
     goto LABEL_47;
   }
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 88) & 4) == 0 || self->_endTime != *(v4 + 3))
+    if ((*(equalCopy + 88) & 4) == 0 || self->_endTime != *(equalCopy + 3))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 88) & 4) != 0)
+  else if ((*(equalCopy + 88) & 4) != 0)
   {
     goto LABEL_47;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 88) & 0x20) == 0 || self->_sourceID != *(v4 + 6))
+    if ((*(equalCopy + 88) & 0x20) == 0 || self->_sourceID != *(equalCopy + 6))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 88) & 0x20) != 0)
+  else if ((*(equalCopy + 88) & 0x20) != 0)
   {
     goto LABEL_47;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 88) & 0x10) == 0 || self->_seriesIndex != *(v4 + 5))
+    if ((*(equalCopy + 88) & 0x10) == 0 || self->_seriesIndex != *(equalCopy + 5))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 88) & 0x10) != 0)
+  else if ((*(equalCopy + 88) & 0x10) != 0)
   {
     goto LABEL_47;
   }
 
   quantitySample = self->_quantitySample;
-  if (quantitySample | *(v4 + 9))
+  if (quantitySample | *(equalCopy + 9))
   {
     v10 = [(NSData *)quantitySample isEqual:?];
   }
@@ -862,31 +862,31 @@ LABEL_34:
   return v4 ^ v3 ^ v8 ^ v12 ^ v16 ^ v17 ^ v21 ^ v22 ^ v5 ^ [(NSData *)self->_quantitySample hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[88];
+  fromCopy = from;
+  v5 = fromCopy[88];
   if ((v5 & 8) != 0)
   {
-    self->_persistentID = *(v4 + 4);
+    self->_persistentID = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v5 = v4[88];
+    v5 = fromCopy[88];
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_dataTypeCode = *(v4 + 2);
+    self->_dataTypeCode = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  v7 = v4;
-  if (*(v4 + 10))
+  v7 = fromCopy;
+  if (*(fromCopy + 10))
   {
     [(HKCodableQuantitySeriesEnumerationResult *)self setUuid:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = v4[88];
+  v6 = fromCopy[88];
   if ((v6 & 0x80000000) == 0)
   {
     if ((v6 & 1) == 0)
@@ -897,23 +897,23 @@ LABEL_34:
     goto LABEL_9;
   }
 
-  self->_value = *(v4 + 8);
+  self->_value = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  LOBYTE(v6) = v4[88];
+  LOBYTE(v6) = fromCopy[88];
   if (v6)
   {
 LABEL_9:
-    self->_count = *(v4 + 1);
+    self->_count = *(fromCopy + 1);
     *&self->_has |= 1u;
-    LOBYTE(v6) = v4[88];
+    LOBYTE(v6) = fromCopy[88];
   }
 
 LABEL_10:
   if ((v6 & 0x40) != 0)
   {
-    self->_startTime = *(v4 + 7);
+    self->_startTime = *(fromCopy + 7);
     *&self->_has |= 0x40u;
-    LOBYTE(v6) = v4[88];
+    LOBYTE(v6) = fromCopy[88];
     if ((v6 & 4) == 0)
     {
 LABEL_12:
@@ -931,9 +931,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  self->_endTime = *(v4 + 3);
+  self->_endTime = *(fromCopy + 3);
   *&self->_has |= 4u;
-  LOBYTE(v6) = v4[88];
+  LOBYTE(v6) = fromCopy[88];
   if ((v6 & 0x20) == 0)
   {
 LABEL_13:
@@ -946,20 +946,20 @@ LABEL_13:
   }
 
 LABEL_22:
-  self->_sourceID = *(v4 + 6);
+  self->_sourceID = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  if ((v4[88] & 0x10) != 0)
+  if ((fromCopy[88] & 0x10) != 0)
   {
 LABEL_14:
-    self->_seriesIndex = *(v4 + 5);
+    self->_seriesIndex = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
 LABEL_15:
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(HKCodableQuantitySeriesEnumerationResult *)self setQuantitySample:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

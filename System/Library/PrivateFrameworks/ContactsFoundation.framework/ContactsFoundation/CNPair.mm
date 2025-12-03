@@ -1,31 +1,31 @@
 @interface CNPair
-+ (CNPair)pairWithFirst:(id)a3 second:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CNPair)initWithCoder:(id)a3;
-- (CNPair)initWithFirst:(id)a3 second:(id)a4;
++ (CNPair)pairWithFirst:(id)first second:(id)second;
+- (BOOL)isEqual:(id)equal;
+- (CNPair)initWithCoder:(id)coder;
+- (CNPair)initWithFirst:(id)first second:(id)second;
 - (id)description;
-- (id)initNonMemoizedWithFirst:(id)a3 second:(id)a4;
+- (id)initNonMemoizedWithFirst:(id)first second:(id)second;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNPair
 
-+ (CNPair)pairWithFirst:(id)a3 second:(id)a4
++ (CNPair)pairWithFirst:(id)first second:(id)second
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithFirst:v7 second:v6];
+  secondCopy = second;
+  firstCopy = first;
+  v8 = [[self alloc] initWithFirst:firstCopy second:secondCopy];
 
   return v8;
 }
 
-- (CNPair)initWithFirst:(id)a3 second:(id)a4
+- (CNPair)initWithFirst:(id)first second:(id)second
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 == MEMORY[0x1E695E118] && v7 == 0)
+  firstCopy = first;
+  secondCopy = second;
+  v8 = secondCopy;
+  if (firstCopy == MEMORY[0x1E695E118] && secondCopy == 0)
   {
     if (initWithFirst_second__cn_once_token_1 != -1)
     {
@@ -35,7 +35,7 @@
     v11 = initWithFirst_second__cn_once_object_1;
   }
 
-  else if (v6 == MEMORY[0x1E695E110] && v7 == 0)
+  else if (firstCopy == MEMORY[0x1E695E110] && secondCopy == 0)
   {
     if (initWithFirst_second__cn_once_token_2 != -1)
     {
@@ -47,7 +47,7 @@
 
   else
   {
-    v11 = [(CNPair *)self initNonMemoizedWithFirst:v6 second:v7];
+    v11 = [(CNPair *)self initNonMemoizedWithFirst:firstCopy second:secondCopy];
     self = v11;
   }
 
@@ -72,18 +72,18 @@ uint64_t __31__CNPair_initWithFirst_second___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)initNonMemoizedWithFirst:(id)a3 second:(id)a4
+- (id)initNonMemoizedWithFirst:(id)first second:(id)second
 {
-  v7 = a3;
-  v8 = a4;
+  firstCopy = first;
+  secondCopy = second;
   v13.receiver = self;
   v13.super_class = CNPair;
   v9 = [(CNPair *)&v13 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_first, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_first, first);
+    objc_storeStrong(p_isa + 2, second);
     v11 = p_isa;
   }
 
@@ -93,24 +93,24 @@ uint64_t __31__CNPair_initWithFirst_second___block_invoke_2()
 - (id)description
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
-  v4 = [(CNPair *)self first];
-  v5 = [v3 appendName:@"first" object:v4];
+  first = [(CNPair *)self first];
+  v5 = [v3 appendName:@"first" object:first];
 
-  v6 = [(CNPair *)self second];
-  v7 = [v3 appendName:@"second" object:v6];
+  second = [(CNPair *)self second];
+  v7 = [v3 appendName:@"second" object:second];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (first = self->_first, first | v4->_first) && ![first isEqual:?] || (second = self->_second, second | v4->_second) && !objc_msgSend(second, "isEqual:"))
+    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (first = self->_first, first | equalCopy->_first) && ![first isEqual:?] || (second = self->_second, second | equalCopy->_second) && !objc_msgSend(second, "isEqual:"))
     {
       v7 = 0;
     }
@@ -153,24 +153,24 @@ unint64_t __14__CNPair_hash__block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (CNPair)initWithCoder:(id)a3
+- (CNPair)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"first"];
-  v6 = [v4 decodeObjectForKey:@"second"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"first"];
+  v6 = [coderCopy decodeObjectForKey:@"second"];
 
   v7 = [(CNPair *)self initWithFirst:v5 second:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CNPair *)self first];
-  [v4 encodeObject:v5 forKey:@"first"];
+  coderCopy = coder;
+  first = [(CNPair *)self first];
+  [coderCopy encodeObject:first forKey:@"first"];
 
-  v6 = [(CNPair *)self second];
-  [v4 encodeObject:v6 forKey:@"second"];
+  second = [(CNPair *)self second];
+  [coderCopy encodeObject:second forKey:@"second"];
 }
 
 @end

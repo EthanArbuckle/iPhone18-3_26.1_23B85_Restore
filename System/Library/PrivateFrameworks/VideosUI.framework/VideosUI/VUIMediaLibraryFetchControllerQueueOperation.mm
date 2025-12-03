@@ -1,6 +1,6 @@
 @interface VUIMediaLibraryFetchControllerQueueOperation
 - (VUIMediaLibraryFetchControllerQueueOperation)init;
-- (VUIMediaLibraryFetchControllerQueueOperation)initWithFetchControllers:(id)a3 mediaLibraryRevision:(unint64_t)a4;
+- (VUIMediaLibraryFetchControllerQueueOperation)initWithFetchControllers:(id)controllers mediaLibraryRevision:(unint64_t)revision;
 - (void)executionDidBegin;
 @end
 
@@ -16,10 +16,10 @@
   return 0;
 }
 
-- (VUIMediaLibraryFetchControllerQueueOperation)initWithFetchControllers:(id)a3 mediaLibraryRevision:(unint64_t)a4
+- (VUIMediaLibraryFetchControllerQueueOperation)initWithFetchControllers:(id)controllers mediaLibraryRevision:(unint64_t)revision
 {
-  v6 = a3;
-  if (!v6)
+  controllersCopy = controllers;
+  if (!controllersCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"fetchControllers"}];
   }
@@ -29,11 +29,11 @@
   v7 = [(VUIMediaLibraryFetchControllerQueueOperation *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [controllersCopy copy];
     fetchControllers = v7->_fetchControllers;
     v7->_fetchControllers = v8;
 
-    v7->_mediaLibraryRevision = a4;
+    v7->_mediaLibraryRevision = revision;
   }
 
   return v7;
@@ -42,24 +42,24 @@
 - (void)executionDidBegin
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIMediaLibraryFetchControllerQueueOperation *)self fetchControllers];
+  fetchControllers = [(VUIMediaLibraryFetchControllerQueueOperation *)self fetchControllers];
   v4 = VUIDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [VUIMediaLibraryFetchController _logStringWithFetchControllers:v3];
+    v5 = [VUIMediaLibraryFetchController _logStringWithFetchControllers:fetchControllers];
     *buf = 134218242;
-    v27 = self;
+    selfCopy3 = self;
     v28 = 2112;
     v29 = v5;
     _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_INFO, "[%p] - Begining VUIMediaLibraryFetchControllerQueueOperation for controllers: %@", buf, 0x16u);
   }
 
-  v6 = [(VUIMediaLibraryFetchControllerQueueOperation *)self mediaLibraryRevision];
+  mediaLibraryRevision = [(VUIMediaLibraryFetchControllerQueueOperation *)self mediaLibraryRevision];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = fetchControllers;
   v7 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -79,11 +79,11 @@
         v13 = VUIDefaultLogObject();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
-          v14 = [v11 logName];
+          logName = [v11 logName];
           *buf = 134218242;
-          v27 = self;
+          selfCopy3 = self;
           v28 = 2112;
-          v29 = v14;
+          v29 = logName;
           _os_log_impl(&dword_1E323F000, v13, OS_LOG_TYPE_INFO, "[%p] - Starting fetch controller %@", buf, 0x16u);
         }
 
@@ -96,7 +96,7 @@
         v20 = v12;
         v15 = dispatch_get_global_queue(0, 0);
         v16 = v12;
-        [v11 beginFetchWithMediaLibraryRevision:v6 completionHandler:v19 completionQueue:v15];
+        [v11 beginFetchWithMediaLibraryRevision:mediaLibraryRevision completionHandler:v19 completionQueue:v15];
 
         dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
       }
@@ -111,7 +111,7 @@
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v27 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1E323F000, v17, OS_LOG_TYPE_INFO, "[%p] - All fetches finished. Finishing VUIMediaLibraryFetchControllerQueueOperation operation", buf, 0xCu);
   }
 

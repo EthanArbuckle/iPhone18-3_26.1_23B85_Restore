@@ -1,5 +1,5 @@
 @interface AVTAvatarAttributeEditorMulticolorPickerSection
-- (AVTAvatarAttributeEditorMulticolorPickerSection)initWithIdentifier:(id)a3 localizedName:(id)a4 items:(id)a5;
+- (AVTAvatarAttributeEditorMulticolorPickerSection)initWithIdentifier:(id)identifier localizedName:(id)name items:(id)items;
 - (BOOL)shouldDisplayTitle;
 - (NSArray)sections;
 - (UIEdgeInsets)separatorInsets;
@@ -7,21 +7,21 @@
 
 @implementation AVTAvatarAttributeEditorMulticolorPickerSection
 
-- (AVTAvatarAttributeEditorMulticolorPickerSection)initWithIdentifier:(id)a3 localizedName:(id)a4 items:(id)a5
+- (AVTAvatarAttributeEditorMulticolorPickerSection)initWithIdentifier:(id)identifier localizedName:(id)name items:(id)items
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  itemsCopy = items;
   v15.receiver = self;
   v15.super_class = AVTAvatarAttributeEditorMulticolorPickerSection;
   v12 = [(AVTAvatarAttributeEditorMulticolorPickerSection *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_items, a5);
-    objc_storeStrong(&v13->_localizedName, a4);
-    objc_storeStrong(&v13->_sectionItems, a5);
-    objc_storeStrong(&v13->_identifier, a3);
+    objc_storeStrong(&v12->_items, items);
+    objc_storeStrong(&v13->_localizedName, name);
+    objc_storeStrong(&v13->_sectionItems, items);
+    objc_storeStrong(&v13->_identifier, identifier);
     v13->_intendedDestination = 0;
   }
 
@@ -30,11 +30,11 @@
 
 - (BOOL)shouldDisplayTitle
 {
-  v3 = [(AVTAvatarAttributeEditorMulticolorPickerSection *)self localizedName];
-  if (v3)
+  localizedName = [(AVTAvatarAttributeEditorMulticolorPickerSection *)self localizedName];
+  if (localizedName)
   {
-    v4 = [(AVTAvatarAttributeEditorMulticolorPickerSection *)self localizedName];
-    v5 = [v4 length] != 0;
+    localizedName2 = [(AVTAvatarAttributeEditorMulticolorPickerSection *)self localizedName];
+    v5 = [localizedName2 length] != 0;
   }
 
   else

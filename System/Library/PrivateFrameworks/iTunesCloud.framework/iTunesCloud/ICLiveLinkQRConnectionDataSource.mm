@@ -1,18 +1,18 @@
 @interface ICLiveLinkQRConnectionDataSource
-+ (id)dataSourceForExistingSharedListeningSession:(id)a3 identity:(id)a4;
-+ (id)dataSourceForNewSharedListeningSessionWithIdentity:(id)a3;
-- (ICLiveLinkQRConnectionDataSource)initWithSharedListeningSessionIdentifier:(id)a3 identity:(id)a4;
++ (id)dataSourceForExistingSharedListeningSession:(id)session identity:(id)identity;
++ (id)dataSourceForNewSharedListeningSessionWithIdentity:(id)identity;
+- (ICLiveLinkQRConnectionDataSource)initWithSharedListeningSessionIdentifier:(id)identifier identity:(id)identity;
 - (ICSharedListeningConnectionReport)report;
 - (IDSAccount)account;
-- (id)sessionURLForBag:(id)a3 error:(id *)a4;
+- (id)sessionURLForBag:(id)bag error:(id *)error;
 - (id)trustHandler;
 - (void)_beginPseudonymAutoRenewal;
-- (void)_joinSharedListeningSessionWithCompletion:(id)a3;
-- (void)_provisionUserPseudonymWithCompletion:(id)a3;
+- (void)_joinSharedListeningSessionWithCompletion:(id)completion;
+- (void)_provisionUserPseudonymWithCompletion:(id)completion;
 - (void)_renewUserPseudonym;
-- (void)_revokeUserPseudonymWithCompletion:(id)a3;
+- (void)_revokeUserPseudonymWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)populateWithCompletion:(id)a3;
+- (void)populateWithCompletion:(id)completion;
 @end
 
 @implementation ICLiveLinkQRConnectionDataSource
@@ -168,10 +168,10 @@ LABEL_30:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(ICLiveLinkQRConnectionDataSource *)self service];
-    v5 = [v4 accounts];
+    service = [(ICLiveLinkQRConnectionDataSource *)self service];
+    accounts = [service accounts];
 
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -182,7 +182,7 @@ LABEL_30:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(accounts);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
@@ -193,7 +193,7 @@ LABEL_30:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           continue;
@@ -211,29 +211,29 @@ LABEL_13:
   return account;
 }
 
-- (id)sessionURLForBag:(id)a3 error:(id *)a4
+- (id)sessionURLForBag:(id)bag error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 dictionaryForBagKey:@"ampMusicAPIDomains"];
+  bagCopy = bag;
+  v7 = [bagCopy dictionaryForBagKey:@"ampMusicAPIDomains"];
   if ((_NSIsNSDictionary() & 1) == 0)
   {
     v17 = os_log_create("com.apple.amp.iTunesCloud", "QuickRelay");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v26 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1B4491000, v17, OS_LOG_TYPE_ERROR, "[ICQRConnectionLLDS] <%p> Missing music API domains.", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v18 = MEMORY[0x1E696ABC0];
       v19 = *MEMORY[0x1E69B1378];
       v20 = @"Missing music API domains.";
 LABEL_11:
       [v18 msv_errorWithDomain:v19 code:102 debugDescription:v20];
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_24;
     }
 
@@ -252,11 +252,11 @@ LABEL_21:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v26 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1B4491000, v23, OS_LOG_TYPE_ERROR, "[ICQRConnectionLLDS] <%p> Missing default music API domain.", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v18 = MEMORY[0x1E696ABC0];
         v19 = *MEMORY[0x1E69B1378];
@@ -269,17 +269,17 @@ LABEL_21:
   }
 
   v9 = v8;
-  v10 = [v6 stringForBagKey:@"countryCode"];
+  v10 = [bagCopy stringForBagKey:@"countryCode"];
   if (v10)
   {
-    v11 = [(ICLiveLinkQRConnectionDataSource *)self sharedListeningSessionIdentifier];
+    sharedListeningSessionIdentifier = [(ICLiveLinkQRConnectionDataSource *)self sharedListeningSessionIdentifier];
 
     v12 = MEMORY[0x1E695DFF8];
     v13 = MEMORY[0x1E696AEC0];
-    if (v11)
+    if (sharedListeningSessionIdentifier)
     {
-      v14 = [(ICLiveLinkQRConnectionDataSource *)self sharedListeningSessionIdentifier];
-      v15 = [v13 stringWithFormat:@"https://%@/v1/shared-media/%@/join/media-sessions/%@", v9, v10, v14];
+      sharedListeningSessionIdentifier2 = [(ICLiveLinkQRConnectionDataSource *)self sharedListeningSessionIdentifier];
+      v15 = [v13 stringWithFormat:@"https://%@/v1/shared-media/%@/join/media-sessions/%@", v9, v10, sharedListeningSessionIdentifier2];
       v16 = [v12 URLWithString:v15];
     }
 
@@ -296,14 +296,14 @@ LABEL_21:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v26 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1B4491000, v21, OS_LOG_TYPE_ERROR, "[ICQRConnectionLLDS] <%p> bag is missing country code", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] msv_errorWithDomain:*MEMORY[0x1E69B1378] code:102 debugDescription:@"Bag is missing country code."];
-      *a4 = v16 = 0;
+      *error = v16 = 0;
     }
 
     else
@@ -317,28 +317,28 @@ LABEL_24:
   return v16;
 }
 
-- (void)_joinSharedListeningSessionWithCompletion:(id)a3
+- (void)_joinSharedListeningSessionWithCompletion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICLiveLinkQRConnectionDataSource *)self sharedListeningSessionIdentifier];
+  completionCopy = completion;
+  sharedListeningSessionIdentifier = [(ICLiveLinkQRConnectionDataSource *)self sharedListeningSessionIdentifier];
 
   v6 = os_log_create("com.apple.amp.iTunesCloud", "QuickRelay");
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (sharedListeningSessionIdentifier)
   {
     if (v7)
     {
-      v8 = [(ICLiveLinkQRConnectionDataSource *)self sharedListeningSessionIdentifier];
-      v9 = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
-      v10 = [v9 URI];
-      v11 = [v10 prefixedURI];
+      sharedListeningSessionIdentifier2 = [(ICLiveLinkQRConnectionDataSource *)self sharedListeningSessionIdentifier];
+      pseudonym = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
+      v10 = [pseudonym URI];
+      prefixedURI = [v10 prefixedURI];
       *buf = 134218498;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2114;
-      v31 = v8;
+      v31 = sharedListeningSessionIdentifier2;
       v32 = 2114;
-      v33 = v11;
+      v33 = prefixedURI;
       _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "[ICQRConnectionLLDS] <%p> Joining shared listening session %{public}@ with handle %{public}@", buf, 0x20u);
     }
 
@@ -349,13 +349,13 @@ LABEL_24:
   {
     if (v7)
     {
-      v13 = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
-      v14 = [v13 URI];
-      v15 = [v14 prefixedURI];
+      pseudonym2 = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
+      v14 = [pseudonym2 URI];
+      prefixedURI2 = [v14 prefixedURI];
       *buf = 134218242;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2114;
-      v31 = v15;
+      v31 = prefixedURI2;
       _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "[ICQRConnectionLLDS] <%p> Creating shared listening session with handle %{public}@", buf, 0x16u);
     }
 
@@ -366,19 +366,19 @@ LABEL_24:
   v17 = +[ICUserIdentity activeAccount];
   v18 = [(ICStoreRequestContext *)v16 initWithIdentity:v17];
 
-  v19 = [(ICLiveLinkQRConnectionDataSource *)self report];
-  [v19 startEvent:@"Get Bag" withParentEvent:@"Session Discovery"];
+  report = [(ICLiveLinkQRConnectionDataSource *)self report];
+  [report startEvent:@"Get Bag" withParentEvent:@"Session Discovery"];
   v20 = +[ICURLBagProvider sharedBagProvider];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __78__ICLiveLinkQRConnectionDataSource__joinSharedListeningSessionWithCompletion___block_invoke;
   v23[3] = &unk_1E7BF9768;
-  v24 = v19;
-  v25 = self;
+  v24 = report;
+  selfCopy3 = self;
   v26 = v12;
-  v27 = v4;
-  v21 = v4;
-  v22 = v19;
+  v27 = completionCopy;
+  v21 = completionCopy;
+  v22 = report;
   [v20 getBagForRequestContext:v18 withCompletionHandler:v23];
 }
 
@@ -809,30 +809,30 @@ void __78__ICLiveLinkQRConnectionDataSource__joinSharedListeningSessionWithCompl
   [v2 setIdentity:v5];
 }
 
-- (void)_revokeUserPseudonymWithCompletion:(id)a3
+- (void)_revokeUserPseudonymWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICLiveLinkQRConnectionDataSource *)self pseudonymRenewalTimer];
-  [v5 invalidate];
+  completionCopy = completion;
+  pseudonymRenewalTimer = [(ICLiveLinkQRConnectionDataSource *)self pseudonymRenewalTimer];
+  [pseudonymRenewalTimer invalidate];
 
   [(ICLiveLinkQRConnectionDataSource *)self setPseudonymRenewalTimer:0];
-  v6 = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
+  pseudonym = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
 
-  if (v6)
+  if (pseudonym)
   {
-    v7 = [(ICLiveLinkQRConnectionDataSource *)self service];
-    v8 = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
+    service = [(ICLiveLinkQRConnectionDataSource *)self service];
+    pseudonym2 = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __71__ICLiveLinkQRConnectionDataSource__revokeUserPseudonymWithCompletion___block_invoke;
     v9[3] = &unk_1E7BF8450;
-    v10 = v4;
-    [v7 revokePseudonym:v8 completion:v9];
+    v10 = completionCopy;
+    [service revokePseudonym:pseudonym2 completion:v9];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
@@ -842,24 +842,24 @@ void __78__ICLiveLinkQRConnectionDataSource__joinSharedListeningSessionWithCompl
   v3 = os_log_create("com.apple.amp.iTunesCloud", "QuickRelay");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
-    v5 = [v4 URI];
-    v6 = [v5 prefixedURI];
+    pseudonym = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
+    v5 = [pseudonym URI];
+    prefixedURI = [v5 prefixedURI];
     *buf = 134218242;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v6;
+    v13 = prefixedURI;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "[ICQRConnectionLLDS] <%p> Will renew pseudonym %{public}@", buf, 0x16u);
   }
 
-  v7 = [(ICLiveLinkQRConnectionDataSource *)self service];
-  v8 = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
+  service = [(ICLiveLinkQRConnectionDataSource *)self service];
+  pseudonym2 = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__ICLiveLinkQRConnectionDataSource__renewUserPseudonym__block_invoke;
   v9[3] = &unk_1E7BF8428;
   v9[4] = self;
-  [v7 renewPseudonym:v8 forUpdatedDuration:v9 completion:43200.0];
+  [service renewPseudonym:pseudonym2 forUpdatedDuration:v9 completion:43200.0];
 }
 
 void __55__ICLiveLinkQRConnectionDataSource__renewUserPseudonym__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -967,10 +967,10 @@ LABEL_9:
 
 - (void)_beginPseudonymAutoRenewal
 {
-  v3 = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
-  v4 = [v3 properties];
-  v5 = [v4 expirationDate];
-  [v5 timeIntervalSinceNow];
+  pseudonym = [(ICLiveLinkQRConnectionDataSource *)self pseudonym];
+  properties = [pseudonym properties];
+  expirationDate = [properties expirationDate];
+  [expirationDate timeIntervalSinceNow];
   v7 = v6 + -120.0;
 
   if (v7 < 0.0)
@@ -980,13 +980,13 @@ LABEL_9:
 
   objc_initWeak(&location, self);
   v8 = objc_alloc(MEMORY[0x1E69B14D8]);
-  v9 = [(ICLiveLinkQRConnectionDataSource *)self queue];
+  queue = [(ICLiveLinkQRConnectionDataSource *)self queue];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __62__ICLiveLinkQRConnectionDataSource__beginPseudonymAutoRenewal__block_invoke;
   v14 = &unk_1E7BFA328;
   objc_copyWeak(&v15, &location);
-  v10 = [v8 initWithInterval:v9 queue:&v11 block:v7];
+  v10 = [v8 initWithInterval:queue queue:&v11 block:v7];
   [(ICLiveLinkQRConnectionDataSource *)self setPseudonymRenewalTimer:v10, v11, v12, v13, v14];
 
   objc_destroyWeak(&v15);
@@ -1002,25 +1002,25 @@ void __62__ICLiveLinkQRConnectionDataSource__beginPseudonymAutoRenewal__block_in
   [WeakRetained _renewUserPseudonym];
 }
 
-- (void)_provisionUserPseudonymWithCompletion:(id)a3
+- (void)_provisionUserPseudonymWithCompletion:(id)completion
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICLiveLinkQRConnectionDataSource *)self account];
+  completionCopy = completion;
+  account = [(ICLiveLinkQRConnectionDataSource *)self account];
 
-  if (v5)
+  if (account)
   {
-    v6 = [(ICLiveLinkQRConnectionDataSource *)self account];
-    v7 = [v6 accountRegisteredURIs];
-    v8 = [v7 firstObject];
+    account2 = [(ICLiveLinkQRConnectionDataSource *)self account];
+    accountRegisteredURIs = [account2 accountRegisteredURIs];
+    firstObject = [accountRegisteredURIs firstObject];
 
-    if (v8)
+    if (firstObject)
     {
-      v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v10 = [v9 stringForKey:@"ICLiveLinkQRConnectionDataSourcePseudonymURI"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v10 = [standardUserDefaults stringForKey:@"ICLiveLinkQRConnectionDataSourcePseudonymURI"];
 
-      v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-      [v11 doubleForKey:@"ICLiveLinkQRConnectionDataSourcePseudonymURIExpirationTimestamp"];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      [standardUserDefaults2 doubleForKey:@"ICLiveLinkQRConnectionDataSourcePseudonymURIExpirationTimestamp"];
       v13 = v12;
 
       v14 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v13];
@@ -1031,16 +1031,16 @@ void __62__ICLiveLinkQRConnectionDataSource__beginPseudonymAutoRenewal__block_in
         [v14 timeIntervalSinceNow];
         if (v16 >= 120.0)
         {
-          v47 = self;
-          v17 = [(ICLiveLinkQRConnectionDataSource *)self service];
-          v18 = [v17 pseudonymURIMap];
-          v19 = [v18 objectForKeyedSubscript:v8];
+          selfCopy = self;
+          service = [(ICLiveLinkQRConnectionDataSource *)self service];
+          pseudonymURIMap = [service pseudonymURIMap];
+          v19 = [pseudonymURIMap objectForKeyedSubscript:firstObject];
 
           if ([v19 count])
           {
             v44 = v15;
-            v45 = v8;
-            v46 = v4;
+            v45 = firstObject;
+            v46 = completionCopy;
             v53 = 0u;
             v54 = 0u;
             v51 = 0u;
@@ -1062,15 +1062,15 @@ void __62__ICLiveLinkQRConnectionDataSource__beginPseudonymAutoRenewal__block_in
                   }
 
                   v25 = *(*(&v51 + 1) + 8 * i);
-                  v26 = [v25 properties];
-                  v27 = [v26 expirationDate];
-                  [v27 timeIntervalSinceNow];
+                  properties = [v25 properties];
+                  expirationDate = [properties expirationDate];
+                  [expirationDate timeIntervalSinceNow];
                   if (v28 >= 120.0)
                   {
                     [v25 URI];
                     v30 = v29 = v20;
-                    v31 = [v30 prefixedURI];
-                    v32 = [v31 isEqualToString:v48];
+                    prefixedURI = [v30 prefixedURI];
+                    v32 = [prefixedURI isEqualToString:v48];
 
                     v20 = v29;
                     if (v32)
@@ -1079,25 +1079,25 @@ void __62__ICLiveLinkQRConnectionDataSource__beginPseudonymAutoRenewal__block_in
                       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
                       {
                         v39 = [v25 URI];
-                        v40 = [v39 prefixedURI];
-                        v41 = [v25 properties];
-                        v42 = [v41 expirationDate];
+                        prefixedURI2 = [v39 prefixedURI];
+                        properties2 = [v25 properties];
+                        expirationDate2 = [properties2 expirationDate];
                         *buf = 134218498;
-                        v56 = v47;
+                        selfCopy2 = selfCopy;
                         v57 = 2114;
-                        v58 = v40;
+                        v58 = prefixedURI2;
                         v59 = 2114;
-                        v60 = v42;
+                        v60 = expirationDate2;
                         _os_log_impl(&dword_1B4491000, v38, OS_LOG_TYPE_DEFAULT, "[ICQRConnectionLLDS] <%p> Using existing pseudonym: %{public}@ with expiry: %{public}@", buf, 0x20u);
 
                         v20 = v29;
                       }
 
-                      v4 = v46;
+                      completionCopy = v46;
                       (*(v46 + 2))(v46, v25, 0);
 
                       v15 = v44;
-                      v8 = v45;
+                      firstObject = v45;
                       goto LABEL_21;
                     }
                   }
@@ -1117,37 +1117,37 @@ void __62__ICLiveLinkQRConnectionDataSource__beginPseudonymAutoRenewal__block_in
               }
             }
 
-            v8 = v45;
-            v4 = v46;
+            firstObject = v45;
+            completionCopy = v46;
             v19 = v43;
             v15 = v44;
           }
 
-          self = v47;
+          self = selfCopy;
         }
       }
 
-      v33 = [(ICLiveLinkQRConnectionDataSource *)self service];
-      v20 = [v33 pseudonymPropertiesWithFeatureID:@"SharedListening" scopeID:0 expiryDurationInSeconds:43200.0];
+      service2 = [(ICLiveLinkQRConnectionDataSource *)self service];
+      v20 = [service2 pseudonymPropertiesWithFeatureID:@"SharedListening" scopeID:0 expiryDurationInSeconds:43200.0];
 
       v34 = os_log_create("com.apple.amp.iTunesCloud", "QuickRelay");
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218243;
-        v56 = self;
+        selfCopy2 = self;
         v57 = 2113;
-        v58 = v8;
+        v58 = firstObject;
         _os_log_impl(&dword_1B4491000, v34, OS_LOG_TYPE_DEFAULT, "[ICQRConnectionLLDS] <%p> Provisioning pseudonym for uri: %{private}@.", buf, 0x16u);
       }
 
-      v35 = [(ICLiveLinkQRConnectionDataSource *)self service];
+      service3 = [(ICLiveLinkQRConnectionDataSource *)self service];
       v49[0] = MEMORY[0x1E69E9820];
       v49[1] = 3221225472;
       v49[2] = __74__ICLiveLinkQRConnectionDataSource__provisionUserPseudonymWithCompletion___block_invoke;
       v49[3] = &unk_1E7BF8400;
       v49[4] = self;
-      v50 = v4;
-      [v35 provisionPseudonymForURI:v8 withProperties:v20 completion:v49];
+      v50 = completionCopy;
+      [service3 provisionPseudonymForURI:firstObject withProperties:v20 completion:v49];
 
 LABEL_21:
     }
@@ -1155,14 +1155,14 @@ LABEL_21:
     else
     {
       v37 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:*MEMORY[0x1E69B1378] code:101 debugDescription:@"User account has no registered URIs."];
-      (*(v4 + 2))(v4, 0, v37);
+      (*(completionCopy + 2))(completionCopy, 0, v37);
     }
   }
 
   else
   {
     v36 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:*MEMORY[0x1E69B1378] code:100 debugDescription:@"No account found on service."];
-    (*(v4 + 2))(v4, 0, v36);
+    (*(completionCopy + 2))(completionCopy, 0, v36);
   }
 }
 
@@ -1213,18 +1213,18 @@ void __74__ICLiveLinkQRConnectionDataSource__provisionUserPseudonymWithCompletio
   }
 }
 
-- (void)populateWithCompletion:(id)a3
+- (void)populateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICLiveLinkQRConnectionDataSource *)self queue];
+  completionCopy = completion;
+  queue = [(ICLiveLinkQRConnectionDataSource *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__ICLiveLinkQRConnectionDataSource_populateWithCompletion___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __59__ICLiveLinkQRConnectionDataSource_populateWithCompletion___block_invoke(uint64_t a1)
@@ -1377,7 +1377,7 @@ uint64_t __59__ICLiveLinkQRConnectionDataSource_populateWithCompletion___block_i
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "[ICQRConnectionLLDS] <%p> Deallocating.", buf, 0xCu);
   }
 
@@ -1386,20 +1386,20 @@ uint64_t __59__ICLiveLinkQRConnectionDataSource_populateWithCompletion___block_i
   [(ICLiveLinkQRConnectionDataSource *)&v4 dealloc];
 }
 
-- (ICLiveLinkQRConnectionDataSource)initWithSharedListeningSessionIdentifier:(id)a3 identity:(id)a4
+- (ICLiveLinkQRConnectionDataSource)initWithSharedListeningSessionIdentifier:(id)identifier identity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  identityCopy = identity;
   v17.receiver = self;
   v17.super_class = ICLiveLinkQRConnectionDataSource;
   v8 = [(ICLiveLinkQRConnectionDataSource *)&v17 init];
   if (v8)
   {
-    v9 = [v7 externalIdentifier];
+    externalIdentifier = [identityCopy externalIdentifier];
     externalIdentifier = v8->_externalIdentifier;
-    v8->_externalIdentifier = v9;
+    v8->_externalIdentifier = externalIdentifier;
 
-    v11 = [v6 copy];
+    v11 = [identifierCopy copy];
     sharedListeningSessionIdentifier = v8->_sharedListeningSessionIdentifier;
     v8->_sharedListeningSessionIdentifier = v11;
 
@@ -1412,19 +1412,19 @@ uint64_t __59__ICLiveLinkQRConnectionDataSource_populateWithCompletion___block_i
   return v8;
 }
 
-+ (id)dataSourceForExistingSharedListeningSession:(id)a3 identity:(id)a4
++ (id)dataSourceForExistingSharedListeningSession:(id)session identity:(id)identity
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ICLiveLinkQRConnectionDataSource alloc] initWithSharedListeningSessionIdentifier:v6 identity:v5];
+  identityCopy = identity;
+  sessionCopy = session;
+  v7 = [[ICLiveLinkQRConnectionDataSource alloc] initWithSharedListeningSessionIdentifier:sessionCopy identity:identityCopy];
 
   return v7;
 }
 
-+ (id)dataSourceForNewSharedListeningSessionWithIdentity:(id)a3
++ (id)dataSourceForNewSharedListeningSessionWithIdentity:(id)identity
 {
-  v3 = a3;
-  v4 = [[ICLiveLinkQRConnectionDataSource alloc] initWithSharedListeningSessionIdentifier:0 identity:v3];
+  identityCopy = identity;
+  v4 = [[ICLiveLinkQRConnectionDataSource alloc] initWithSharedListeningSessionIdentifier:0 identity:identityCopy];
 
   return v4;
 }

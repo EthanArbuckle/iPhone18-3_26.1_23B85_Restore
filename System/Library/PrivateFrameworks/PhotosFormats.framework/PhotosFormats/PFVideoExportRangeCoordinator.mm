@@ -1,9 +1,9 @@
 @interface PFVideoExportRangeCoordinator
-- (BOOL)waitForAvailabilityOfRange:(_NSRange)a3 timeout:(unint64_t)a4 error:(id *)a5;
+- (BOOL)waitForAvailabilityOfRange:(_NSRange)range timeout:(unint64_t)timeout error:(id *)error;
 - (PFVideoExportRangeCoordinator)init;
 - (_NSRange)availableRange;
 - (void)cancel;
-- (void)updateAvailableRange:(_NSRange)a3;
+- (void)updateAvailableRange:(_NSRange)range;
 @end
 
 @implementation PFVideoExportRangeCoordinator
@@ -45,10 +45,10 @@ void __39__PFVideoExportRangeCoordinator_cancel__block_invoke_2(uint64_t a1, voi
   [v2 resume];
 }
 
-- (BOOL)waitForAvailabilityOfRange:(_NSRange)a3 timeout:(unint64_t)a4 error:(id *)a5
+- (BOOL)waitForAvailabilityOfRange:(_NSRange)range timeout:(unint64_t)timeout error:(id *)error
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v46 = *MEMORY[0x1E69E9840];
   v34 = 0;
   v35 = &v34;
@@ -65,7 +65,7 @@ void __39__PFVideoExportRangeCoordinator_cancel__block_invoke_2(uint64_t a1, voi
   block[1] = 3221225472;
   block[2] = __74__PFVideoExportRangeCoordinator_waitForAvailabilityOfRange_timeout_error___block_invoke;
   block[3] = &unk_1E7B66748;
-  v29 = a3;
+  rangeCopy = range;
   block[4] = self;
   block[5] = &v30;
   block[6] = &v34;
@@ -84,12 +84,12 @@ void __39__PFVideoExportRangeCoordinator_cancel__block_invoke_2(uint64_t a1, voi
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Request for range %{public}@ rejected in cancelled state", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PFVideoExportErrorDomain" code:5 userInfo:0];
 LABEL_21:
       v21 = 0;
-      *a5 = v13;
+      *error = v13;
       goto LABEL_23;
     }
 
@@ -99,7 +99,7 @@ LABEL_21:
   if (v35[5])
   {
     v14 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-    [v35[5] waitWithTimeout:a4];
+    [v35[5] waitWithTimeout:timeout];
     v15 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
     v16 = self->_rangeCoordinatorStateQueue;
     v27[0] = MEMORY[0x1E69E9820];
@@ -125,7 +125,7 @@ LABEL_21:
         _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Request for range %{public}@ cancelled after %.3fs", buf, 0x16u);
       }
 
-      if (a5)
+      if (error)
       {
         v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PFVideoExportErrorDomain" code:5 userInfo:0];
         goto LABEL_21;
@@ -136,9 +136,9 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v19 = [v35[5] requestedRangeIsAvailable];
+    requestedRangeIsAvailable = [v35[5] requestedRangeIsAvailable];
     v20 = MEMORY[0x1E69E9C10];
-    if ((v19 & 1) == 0)
+    if ((requestedRangeIsAvailable & 1) == 0)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -154,7 +154,7 @@ LABEL_22:
         _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Video export range coordinator: request for range %{public}@ (= file size %lu) timed out after %.3fs", buf, 0x20u);
       }
 
-      if (a5)
+      if (error)
       {
         v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PFVideoExportErrorDomain" code:4 userInfo:0];
         goto LABEL_21;
@@ -245,7 +245,7 @@ uint64_t __74__PFVideoExportRangeCoordinator_waitForAvailabilityOfRange_timeout_
   return result;
 }
 
-- (void)updateAvailableRange:(_NSRange)a3
+- (void)updateAvailableRange:(_NSRange)range
 {
   rangeCoordinatorStateQueue = self->_rangeCoordinatorStateQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -253,7 +253,7 @@ uint64_t __74__PFVideoExportRangeCoordinator_waitForAvailabilityOfRange_timeout_
   block[2] = __54__PFVideoExportRangeCoordinator_updateAvailableRange___block_invoke;
   block[3] = &unk_1E7B66720;
   block[4] = self;
-  v5 = a3;
+  rangeCopy = range;
   dispatch_sync(rangeCoordinatorStateQueue, block);
 }
 
@@ -335,9 +335,9 @@ void __54__PFVideoExportRangeCoordinator_updateAvailableRange___block_invoke_229
     rangeCoordinatorStateQueue = v2->_rangeCoordinatorStateQueue;
     v2->_rangeCoordinatorStateQueue = v4;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     waitingCallers = v2->_waitingCallers;
-    v2->_waitingCallers = v6;
+    v2->_waitingCallers = array;
 
     v2->_availableRange.location = 0;
     v2->_availableRange.length = 0;

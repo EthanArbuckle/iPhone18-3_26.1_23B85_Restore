@@ -1,12 +1,12 @@
 @interface FPRemoteResolver
-+ (BOOL)canResolveURL:(id)a3;
-- (void)URLForItemID:(id)a3 reply:(id)a4;
-- (void)connectionInfoWithReply:(id)a3;
++ (BOOL)canResolveURL:(id)l;
+- (void)URLForItemID:(id)d reply:(id)reply;
+- (void)connectionInfoWithReply:(id)reply;
 @end
 
 @implementation FPRemoteResolver
 
-+ (BOOL)canResolveURL:(id)a3
++ (BOOL)canResolveURL:(id)l
 {
   v3 = sub_24ABC92F8();
   v4 = *(v3 - 8);
@@ -19,12 +19,12 @@
   return v8 & 1;
 }
 
-- (void)connectionInfoWithReply:(id)a3
+- (void)connectionInfoWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   v7 = sub_24ABC0A20();
   v9[4] = sub_24ABC14A8;
   v9[5] = v5;
@@ -40,13 +40,13 @@
   swift_unknownObjectRelease();
 }
 
-- (void)URLForItemID:(id)a3 reply:(id)a4
+- (void)URLForItemID:(id)d reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
+  dCopy = d;
+  selfCopy = self;
   v10 = sub_24ABC0A20();
   v12[4] = sub_24ABC14A0;
   v12[5] = v7;
@@ -56,7 +56,7 @@
   v12[3] = &block_descriptor_17;
   v11 = _Block_copy(v12);
 
-  [v10 URLForItemID:v8 reply:v11];
+  [v10 URLForItemID:dCopy reply:v11];
 
   _Block_release(v11);
   swift_unknownObjectRelease();

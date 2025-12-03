@@ -1,31 +1,31 @@
 @interface IRCandidateDO
-+ (IRCandidateDO)candidateDOWithLastSeenDate:(id)a3 lastUsedDate:(id)a4 firstSeenDate:(id)a5 candidateIdentifier:(id)a6 nodes:(id)a7;
-+ (id)candidateDOFromCandidate:(id)a3;
-+ (id)candidateForIdentifier:(id)a3 within:(id)a4;
-+ (id)candidateFromCandidateDO:(id)a3;
++ (IRCandidateDO)candidateDOWithLastSeenDate:(id)date lastUsedDate:(id)usedDate firstSeenDate:(id)seenDate candidateIdentifier:(id)identifier nodes:(id)nodes;
++ (id)candidateDOFromCandidate:(id)candidate;
++ (id)candidateForIdentifier:(id)identifier within:(id)within;
++ (id)candidateFromCandidateDO:(id)o;
 + (id)mediaRemoteSpeakerCandidate;
 - (BOOL)containsAirPlayOrUnknownAVODTarget;
 - (BOOL)containsAirplayTarget;
 - (BOOL)containsUnknownAVODTarget;
 - (BOOL)isBrokeredDevice;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCandidateDO:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCandidateDO:(id)o;
 - (BOOL)isFirstPartyDevice;
 - (BOOL)isMac;
 - (BOOL)isMediaRemoteLocal;
-- (BOOL)isSameICloudWithSystemState:(id)a3;
+- (BOOL)isSameICloudWithSystemState:(id)state;
 - (BOOL)isSameWiFi;
-- (IRCandidateDO)initWithCoder:(id)a3;
-- (IRCandidateDO)initWithLastSeenDate:(id)a3 lastUsedDate:(id)a4 firstSeenDate:(id)a5 candidateIdentifier:(id)a6 nodes:(id)a7;
-- (id)copyWithReplacementCandidateIdentifier:(id)a3;
-- (id)copyWithReplacementFirstSeenDate:(id)a3;
-- (id)copyWithReplacementLastSeenDate:(id)a3;
-- (id)copyWithReplacementLastUsedDate:(id)a3;
-- (id)copyWithReplacementNodes:(id)a3;
+- (IRCandidateDO)initWithCoder:(id)coder;
+- (IRCandidateDO)initWithLastSeenDate:(id)date lastUsedDate:(id)usedDate firstSeenDate:(id)seenDate candidateIdentifier:(id)identifier nodes:(id)nodes;
+- (id)copyWithReplacementCandidateIdentifier:(id)identifier;
+- (id)copyWithReplacementFirstSeenDate:(id)date;
+- (id)copyWithReplacementLastSeenDate:(id)date;
+- (id)copyWithReplacementLastUsedDate:(id)date;
+- (id)copyWithReplacementNodes:(id)nodes;
 - (id)description;
 - (id)exportAsDictionary;
 - (id)name;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IRCandidateDO
@@ -43,17 +43,17 @@
 - (BOOL)containsAirplayTarget
 {
   v3 = +[IRPreferences shared];
-  v4 = [v3 overrideIsAirplayForCandidateIDArray];
-  v5 = [(IRCandidateDO *)self candidateIdentifier];
-  v6 = [v4 containsObject:v5];
+  overrideIsAirplayForCandidateIDArray = [v3 overrideIsAirplayForCandidateIDArray];
+  candidateIdentifier = [(IRCandidateDO *)self candidateIdentifier];
+  v6 = [overrideIsAirplayForCandidateIDArray containsObject:candidateIdentifier];
 
   if (v6)
   {
     return 1;
   }
 
-  v8 = [(IRCandidateDO *)self nodes];
-  v9 = [v8 firstWhere:&__block_literal_global_57];
+  nodes = [(IRCandidateDO *)self nodes];
+  v9 = [nodes firstWhere:&__block_literal_global_57];
   v7 = v9 != 0;
 
   return v7;
@@ -61,16 +61,16 @@
 
 - (BOOL)containsUnknownAVODTarget
 {
-  v3 = [(IRCandidateDO *)self nodes];
-  v4 = [v3 count];
+  nodes = [(IRCandidateDO *)self nodes];
+  v4 = [nodes count];
 
   if (!v4)
   {
     return 1;
   }
 
-  v5 = [(IRCandidateDO *)self nodes];
-  v6 = [v5 firstWhere:&__block_literal_global_59];
+  nodes2 = [(IRCandidateDO *)self nodes];
+  v6 = [nodes2 firstWhere:&__block_literal_global_59];
   v7 = v6 != 0;
 
   return v7;
@@ -79,17 +79,17 @@
 - (BOOL)isBrokeredDevice
 {
   v3 = +[IRPreferences shared];
-  v4 = [v3 loiSameSpaceOverrideBrokerForCandidateIDArray];
-  v5 = [(IRCandidateDO *)self candidateIdentifier];
-  v6 = [v4 containsObject:v5];
+  loiSameSpaceOverrideBrokerForCandidateIDArray = [v3 loiSameSpaceOverrideBrokerForCandidateIDArray];
+  candidateIdentifier = [(IRCandidateDO *)self candidateIdentifier];
+  v6 = [loiSameSpaceOverrideBrokerForCandidateIDArray containsObject:candidateIdentifier];
 
   if (v6)
   {
     return 1;
   }
 
-  v8 = [(IRCandidateDO *)self nodes];
-  v9 = [v8 firstWhere:&__block_literal_global_55];
+  nodes = [(IRCandidateDO *)self nodes];
+  v9 = [nodes firstWhere:&__block_literal_global_55];
   v7 = v9 != 0;
 
   return v7;
@@ -97,28 +97,28 @@
 
 - (BOOL)isMac
 {
-  v3 = [(IRCandidateDO *)self nodes];
-  if ([v3 count] == 1)
+  nodes = [(IRCandidateDO *)self nodes];
+  if ([nodes count] == 1)
   {
-    v4 = [(IRCandidateDO *)self nodes];
-    v5 = [v4 anyObject];
-    v6 = [v5 avOutputDevice];
-    if (v6)
+    nodes2 = [(IRCandidateDO *)self nodes];
+    anyObject = [nodes2 anyObject];
+    avOutputDevice = [anyObject avOutputDevice];
+    if (avOutputDevice)
     {
-      v7 = [(IRCandidateDO *)self nodes];
-      v8 = [v7 anyObject];
-      v9 = [v8 avOutputDevice];
-      if ([v9 deviceType])
+      nodes3 = [(IRCandidateDO *)self nodes];
+      anyObject2 = [nodes3 anyObject];
+      avOutputDevice2 = [anyObject2 avOutputDevice];
+      if ([avOutputDevice2 deviceType])
       {
         v10 = 0;
       }
 
       else
       {
-        v14 = [(IRCandidateDO *)self nodes];
-        v11 = [v14 anyObject];
-        v12 = [v11 avOutputDevice];
-        v10 = [v12 deviceSubType] == 18;
+        nodes4 = [(IRCandidateDO *)self nodes];
+        anyObject3 = [nodes4 anyObject];
+        avOutputDevice3 = [anyObject3 avOutputDevice];
+        v10 = [avOutputDevice3 deviceSubType] == 18;
       }
     }
 
@@ -138,8 +138,8 @@
 
 - (BOOL)isSameWiFi
 {
-  v2 = [(IRCandidateDO *)self nodes];
-  v3 = [v2 firstWhere:&__block_literal_global_0];
+  nodes = [(IRCandidateDO *)self nodes];
+  v3 = [nodes firstWhere:&__block_literal_global_0];
   v4 = v3 != 0;
 
   return v4;
@@ -211,13 +211,13 @@ uint64_t __39__IRCandidateDO_Extensions__isSameWiFi__block_invoke(uint64_t a1, v
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = &stru_286755D18;
-  v2 = [(IRCandidateDO *)self nodes];
+  nodes = [(IRCandidateDO *)self nodes];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__IRCandidateDO_Extensions__name__block_invoke;
   v7[3] = &unk_2797E0CF8;
   v7[4] = &v8;
-  [v2 enumerateObjectsUsingBlock:v7];
+  [nodes enumerateObjectsUsingBlock:v7];
 
   if ([v9[5] hasSuffix:@"|"])
   {
@@ -232,46 +232,46 @@ uint64_t __39__IRCandidateDO_Extensions__isSameWiFi__block_invoke(uint64_t a1, v
   return v5;
 }
 
-+ (id)candidateDOFromCandidate:(id)a3
++ (id)candidateDOFromCandidate:(id)candidate
 {
-  v3 = a3;
+  candidateCopy = candidate;
   v4 = objc_opt_new();
-  v5 = [v3 nodes];
+  nodes = [candidateCopy nodes];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __54__IRCandidateDO_Extensions__candidateDOFromCandidate___block_invoke;
   v19[3] = &unk_2797E0C80;
   v6 = v4;
   v20 = v6;
-  [v5 enumerateObjectsUsingBlock:v19];
+  [nodes enumerateObjectsUsingBlock:v19];
 
-  v7 = [v3 avOutpuDeviceIdentifier];
-  if (v7 || ([v3 rapportIdentifier], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  avOutpuDeviceIdentifier = [candidateCopy avOutpuDeviceIdentifier];
+  if (avOutpuDeviceIdentifier || ([candidateCopy rapportIdentifier], (avOutpuDeviceIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_4:
     v8 = [IRNodeDO alloc];
-    v9 = [v3 avOutpuDeviceIdentifier];
-    v10 = [v3 rapportIdentifier];
-    v11 = [v3 idsIdentifier];
-    v12 = [(IRNodeDO *)v8 initWithAvOutpuDeviceIdentifier:v9 rapportIdentifier:v10 idsIdentifier:v11 avOutputDevice:0 rapportDevice:0 isLocal:0];
+    avOutpuDeviceIdentifier2 = [candidateCopy avOutpuDeviceIdentifier];
+    rapportIdentifier = [candidateCopy rapportIdentifier];
+    idsIdentifier = [candidateCopy idsIdentifier];
+    v12 = [(IRNodeDO *)v8 initWithAvOutpuDeviceIdentifier:avOutpuDeviceIdentifier2 rapportIdentifier:rapportIdentifier idsIdentifier:idsIdentifier avOutputDevice:0 rapportDevice:0 isLocal:0];
     [v6 addObject:v12];
 
     goto LABEL_5;
   }
 
-  v18 = [v3 idsIdentifier];
+  idsIdentifier2 = [candidateCopy idsIdentifier];
 
-  if (v18)
+  if (idsIdentifier2)
   {
     goto LABEL_4;
   }
 
 LABEL_5:
   v13 = [MEMORY[0x277CBEAA8] now];
-  v14 = [v3 candidateIdentifier];
+  candidateIdentifier = [candidateCopy candidateIdentifier];
   v15 = [v6 copy];
-  v16 = [IRCandidateDO candidateDOWithLastSeenDate:v13 lastUsedDate:0 firstSeenDate:0 candidateIdentifier:v14 nodes:v15];
+  v16 = [IRCandidateDO candidateDOWithLastSeenDate:v13 lastUsedDate:0 firstSeenDate:0 candidateIdentifier:candidateIdentifier nodes:v15];
 
   return v16;
 }
@@ -283,16 +283,16 @@ void __54__IRCandidateDO_Extensions__candidateDOFromCandidate___block_invoke(uin
   [v2 addObject:v3];
 }
 
-+ (id)candidateFromCandidateDO:(id)a3
++ (id)candidateFromCandidateDO:(id)o
 {
   v3 = MEMORY[0x277D21290];
-  v4 = a3;
+  oCopy = o;
   v5 = [v3 alloc];
-  v6 = [v4 candidateIdentifier];
-  v7 = [v5 initWithCandidateIdentifier:v6];
+  candidateIdentifier = [oCopy candidateIdentifier];
+  v7 = [v5 initWithCandidateIdentifier:candidateIdentifier];
 
   v8 = objc_opt_new();
-  v9 = [v4 nodes];
+  nodes = [oCopy nodes];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -300,7 +300,7 @@ void __54__IRCandidateDO_Extensions__candidateDOFromCandidate___block_invoke(uin
   v13[3] = &unk_2797E0CA8;
   v14 = v8;
   v10 = v8;
-  [v9 enumerateObjectsUsingBlock:v13];
+  [nodes enumerateObjectsUsingBlock:v13];
 
   v11 = [v10 copy];
   [v7 updateNodes:v11];
@@ -315,16 +315,16 @@ void __54__IRCandidateDO_Extensions__candidateFromCandidateDO___block_invoke(uin
   [v2 addObject:v3];
 }
 
-+ (id)candidateForIdentifier:(id)a3 within:(id)a4
++ (id)candidateForIdentifier:(id)identifier within:(id)within
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__IRCandidateDO_Extensions__candidateForIdentifier_within___block_invoke;
   v9[3] = &unk_2797E0CD0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a4 firstWhere:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [within firstWhere:v9];
 
   return v7;
 }
@@ -341,10 +341,10 @@ uint64_t __59__IRCandidateDO_Extensions__candidateForIdentifier_within___block_i
 {
   v2 = [IRAVOutputDeviceDO aVOutputDeviceDOWithDeviceID:@"Speaker" modelID:0 deviceName:@"Speaker" hasAirplayProperties:0 discoveredOverInfra:0 discoveredWithBroker:0 deviceType:3 deviceSubType:1];
   v3 = [IRNodeDO nodeDOWithAvOutpuDeviceIdentifier:@"Speaker" rapportIdentifier:0 idsIdentifier:0 avOutputDevice:v2 rapportDevice:0 isLocal:1];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
   v6 = [MEMORY[0x277CBEB98] setWithObject:v3];
-  v7 = [IRCandidateDO candidateDOWithLastSeenDate:v4 lastUsedDate:0 firstSeenDate:v5 candidateIdentifier:@"Speaker" nodes:v6];
+  v7 = [IRCandidateDO candidateDOWithLastSeenDate:date lastUsedDate:0 firstSeenDate:date2 candidateIdentifier:@"Speaker" nodes:v6];
 
   return v7;
 }
@@ -356,19 +356,19 @@ uint64_t __59__IRCandidateDO_Extensions__candidateForIdentifier_within___block_i
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v4 setDateFormat:@"yyyy-MMM-dd HH:mm:ss.SSSSSS"];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(IRCandidateDO *)self lastSeenDate];
-  v7 = [v4 stringFromDate:v6];
+  lastSeenDate = [(IRCandidateDO *)self lastSeenDate];
+  v7 = [v4 stringFromDate:lastSeenDate];
   [v3 setObject:v7 forKeyedSubscript:@"lastSeenDate"];
 
-  v8 = [(IRCandidateDO *)self candidateIdentifier];
-  [v3 setObject:v8 forKeyedSubscript:@"candidateIdentifier"];
+  candidateIdentifier = [(IRCandidateDO *)self candidateIdentifier];
+  [v3 setObject:candidateIdentifier forKeyedSubscript:@"candidateIdentifier"];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(IRCandidateDO *)self nodes];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  nodes = [(IRCandidateDO *)self nodes];
+  v10 = [nodes countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -379,14 +379,14 @@ uint64_t __59__IRCandidateDO_Extensions__candidateForIdentifier_within___block_i
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(nodes);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) exportAsDictionary];
-        [v5 addObject:v14];
+        exportAsDictionary = [*(*(&v17 + 1) + 8 * i) exportAsDictionary];
+        [v5 addObject:exportAsDictionary];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [nodes countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
@@ -406,17 +406,17 @@ uint64_t __45__IRCandidateDO_Extensions__isBrokeredDevice__block_invoke(uint64_t
   return v3;
 }
 
-- (BOOL)isSameICloudWithSystemState:(id)a3
+- (BOOL)isSameICloudWithSystemState:(id)state
 {
-  v4 = a3;
-  v5 = [(IRCandidateDO *)self nodes];
+  stateCopy = state;
+  nodes = [(IRCandidateDO *)self nodes];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__IRCandidateDO_Extensions__isSameICloudWithSystemState___block_invoke;
   v10[3] = &unk_2797E0D40;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 firstWhere:v10];
+  v11 = stateCopy;
+  v6 = stateCopy;
+  v7 = [nodes firstWhere:v10];
   v8 = v7 != 0;
 
   return v8;
@@ -439,8 +439,8 @@ uint64_t __57__IRCandidateDO_Extensions__isSameICloudWithSystemState___block_inv
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(IRCandidateDO *)self nodes];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  nodes = [(IRCandidateDO *)self nodes];
+  v3 = [nodes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -451,12 +451,12 @@ uint64_t __57__IRCandidateDO_Extensions__isSameICloudWithSystemState___block_inv
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(nodes);
         }
 
-        v7 = [*(*(&v12 + 1) + 8 * i) avOutputDevice];
-        v8 = v7;
-        if (v7 && ([v7 deviceSubType] == 13 || objc_msgSend(v8, "deviceSubType") == 18 || objc_msgSend(v8, "deviceSubType") == 19 || objc_msgSend(v8, "deviceSubType") == 12))
+        avOutputDevice = [*(*(&v12 + 1) + 8 * i) avOutputDevice];
+        v8 = avOutputDevice;
+        if (avOutputDevice && ([avOutputDevice deviceSubType] == 13 || objc_msgSend(v8, "deviceSubType") == 18 || objc_msgSend(v8, "deviceSubType") == 19 || objc_msgSend(v8, "deviceSubType") == 12))
         {
 
           v9 = 1;
@@ -464,7 +464,7 @@ uint64_t __57__IRCandidateDO_Extensions__isSameICloudWithSystemState___block_inv
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [nodes countByEnumeratingWithState:&v12 objects:v16 count:16];
       v9 = 0;
       if (v4)
       {
@@ -496,32 +496,32 @@ BOOL __54__IRCandidateDO_Extensions__containsUnknownAVODTarget__block_invoke(uin
 
 - (BOOL)isMediaRemoteLocal
 {
-  v3 = [(IRCandidateDO *)self candidateIdentifier];
-  v4 = [v3 isEqual:@"Speaker"];
+  candidateIdentifier = [(IRCandidateDO *)self candidateIdentifier];
+  v4 = [candidateIdentifier isEqual:@"Speaker"];
 
   if (v4)
   {
     return 1;
   }
 
-  v6 = [(IRCandidateDO *)self nodes];
-  v7 = [v6 count];
+  nodes = [(IRCandidateDO *)self nodes];
+  v7 = [nodes count];
 
   if (v7 != 1)
   {
     return 0;
   }
 
-  v8 = [(IRCandidateDO *)self nodes];
-  v9 = [v8 anyObject];
-  v10 = [v9 deviceTypeAndSubType];
+  nodes2 = [(IRCandidateDO *)self nodes];
+  anyObject = [nodes2 anyObject];
+  deviceTypeAndSubType = [anyObject deviceTypeAndSubType];
 
-  v11 = [v10 first];
-  v12 = [v11 unsignedIntegerValue];
+  first = [deviceTypeAndSubType first];
+  unsignedIntegerValue = [first unsignedIntegerValue];
 
-  if (v10)
+  if (deviceTypeAndSubType)
   {
-    v13 = v12 == 3;
+    v13 = unsignedIntegerValue == 3;
   }
 
   else
@@ -534,93 +534,93 @@ BOOL __54__IRCandidateDO_Extensions__containsUnknownAVODTarget__block_invoke(uin
   return v5;
 }
 
-- (IRCandidateDO)initWithLastSeenDate:(id)a3 lastUsedDate:(id)a4 firstSeenDate:(id)a5 candidateIdentifier:(id)a6 nodes:(id)a7
+- (IRCandidateDO)initWithLastSeenDate:(id)date lastUsedDate:(id)usedDate firstSeenDate:(id)seenDate candidateIdentifier:(id)identifier nodes:(id)nodes
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dateCopy = date;
+  usedDateCopy = usedDate;
+  seenDateCopy = seenDate;
+  identifierCopy = identifier;
+  nodesCopy = nodes;
   v21.receiver = self;
   v21.super_class = IRCandidateDO;
   v17 = [(IRCandidateDO *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_lastSeenDate, a3);
-    objc_storeStrong(&v18->_lastUsedDate, a4);
-    objc_storeStrong(&v18->_firstSeenDate, a5);
-    objc_storeStrong(&v18->_candidateIdentifier, a6);
-    objc_storeStrong(&v18->_nodes, a7);
+    objc_storeStrong(&v17->_lastSeenDate, date);
+    objc_storeStrong(&v18->_lastUsedDate, usedDate);
+    objc_storeStrong(&v18->_firstSeenDate, seenDate);
+    objc_storeStrong(&v18->_candidateIdentifier, identifier);
+    objc_storeStrong(&v18->_nodes, nodes);
   }
 
   return v18;
 }
 
-+ (IRCandidateDO)candidateDOWithLastSeenDate:(id)a3 lastUsedDate:(id)a4 firstSeenDate:(id)a5 candidateIdentifier:(id)a6 nodes:(id)a7
++ (IRCandidateDO)candidateDOWithLastSeenDate:(id)date lastUsedDate:(id)usedDate firstSeenDate:(id)seenDate candidateIdentifier:(id)identifier nodes:(id)nodes
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[a1 alloc] initWithLastSeenDate:v16 lastUsedDate:v15 firstSeenDate:v14 candidateIdentifier:v13 nodes:v12];
+  nodesCopy = nodes;
+  identifierCopy = identifier;
+  seenDateCopy = seenDate;
+  usedDateCopy = usedDate;
+  dateCopy = date;
+  v17 = [[self alloc] initWithLastSeenDate:dateCopy lastUsedDate:usedDateCopy firstSeenDate:seenDateCopy candidateIdentifier:identifierCopy nodes:nodesCopy];
 
   return v17;
 }
 
-- (id)copyWithReplacementLastSeenDate:(id)a3
+- (id)copyWithReplacementLastSeenDate:(id)date
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:v4 lastUsedDate:self->_lastUsedDate firstSeenDate:self->_firstSeenDate candidateIdentifier:self->_candidateIdentifier nodes:self->_nodes];
+  dateCopy = date;
+  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:dateCopy lastUsedDate:self->_lastUsedDate firstSeenDate:self->_firstSeenDate candidateIdentifier:self->_candidateIdentifier nodes:self->_nodes];
 
   return v5;
 }
 
-- (id)copyWithReplacementLastUsedDate:(id)a3
+- (id)copyWithReplacementLastUsedDate:(id)date
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:self->_lastSeenDate lastUsedDate:v4 firstSeenDate:self->_firstSeenDate candidateIdentifier:self->_candidateIdentifier nodes:self->_nodes];
+  dateCopy = date;
+  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:self->_lastSeenDate lastUsedDate:dateCopy firstSeenDate:self->_firstSeenDate candidateIdentifier:self->_candidateIdentifier nodes:self->_nodes];
 
   return v5;
 }
 
-- (id)copyWithReplacementFirstSeenDate:(id)a3
+- (id)copyWithReplacementFirstSeenDate:(id)date
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:self->_lastSeenDate lastUsedDate:self->_lastUsedDate firstSeenDate:v4 candidateIdentifier:self->_candidateIdentifier nodes:self->_nodes];
+  dateCopy = date;
+  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:self->_lastSeenDate lastUsedDate:self->_lastUsedDate firstSeenDate:dateCopy candidateIdentifier:self->_candidateIdentifier nodes:self->_nodes];
 
   return v5;
 }
 
-- (id)copyWithReplacementCandidateIdentifier:(id)a3
+- (id)copyWithReplacementCandidateIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:self->_lastSeenDate lastUsedDate:self->_lastUsedDate firstSeenDate:self->_firstSeenDate candidateIdentifier:v4 nodes:self->_nodes];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:self->_lastSeenDate lastUsedDate:self->_lastUsedDate firstSeenDate:self->_firstSeenDate candidateIdentifier:identifierCopy nodes:self->_nodes];
 
   return v5;
 }
 
-- (id)copyWithReplacementNodes:(id)a3
+- (id)copyWithReplacementNodes:(id)nodes
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:self->_lastSeenDate lastUsedDate:self->_lastUsedDate firstSeenDate:self->_firstSeenDate candidateIdentifier:self->_candidateIdentifier nodes:v4];
+  nodesCopy = nodes;
+  v5 = [objc_alloc(objc_opt_class()) initWithLastSeenDate:self->_lastSeenDate lastUsedDate:self->_lastUsedDate firstSeenDate:self->_firstSeenDate candidateIdentifier:self->_candidateIdentifier nodes:nodesCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToCandidateDO:(id)a3
+- (BOOL)isEqualToCandidateDO:(id)o
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  oCopy = o;
+  v5 = oCopy;
+  if (!oCopy)
   {
     goto LABEL_8;
   }
 
   v6 = self->_candidateIdentifier == 0;
-  v7 = [v4 candidateIdentifier];
-  v8 = v7 != 0;
+  candidateIdentifier = [oCopy candidateIdentifier];
+  v8 = candidateIdentifier != 0;
 
   if (v6 == v8)
   {
@@ -630,8 +630,8 @@ BOOL __54__IRCandidateDO_Extensions__containsUnknownAVODTarget__block_invoke(uin
   candidateIdentifier = self->_candidateIdentifier;
   if (candidateIdentifier)
   {
-    v10 = [v5 candidateIdentifier];
-    v11 = [(NSString *)candidateIdentifier isEqual:v10];
+    candidateIdentifier2 = [v5 candidateIdentifier];
+    v11 = [(NSString *)candidateIdentifier isEqual:candidateIdentifier2];
 
     if (!v11)
     {
@@ -640,8 +640,8 @@ BOOL __54__IRCandidateDO_Extensions__containsUnknownAVODTarget__block_invoke(uin
   }
 
   v12 = self->_nodes == 0;
-  v13 = [v5 nodes];
-  v14 = v13 != 0;
+  nodes = [v5 nodes];
+  v14 = nodes != 0;
 
   if (v12 == v14)
   {
@@ -654,8 +654,8 @@ LABEL_8:
     nodes = self->_nodes;
     if (nodes)
     {
-      v16 = [v5 nodes];
-      v17 = [(NSSet *)nodes isEqual:v16];
+      nodes2 = [v5 nodes];
+      v17 = [(NSSet *)nodes isEqual:nodes2];
     }
 
     else
@@ -667,28 +667,28 @@ LABEL_8:
   return v17 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IRCandidateDO *)self isEqualToCandidateDO:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(IRCandidateDO *)self isEqualToCandidateDO:v5];
   }
 
   return v6;
 }
 
-- (IRCandidateDO)initWithCoder:(id)a3
+- (IRCandidateDO)initWithCoder:(id)coder
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastSeenDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastSeenDate"];
   if (v5)
   {
     objc_opt_class();
@@ -703,11 +703,11 @@ LABEL_8:
       v45[0] = v10;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:&v44 count:1];
       v12 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRCandidateDOOCNTErrorDomain" code:3 userInfo:v11];
-      [v4 failWithError:v12];
+      [coderCopy failWithError:v12];
 LABEL_15:
 
 LABEL_16:
-      v14 = 0;
+      selfCopy = 0;
 LABEL_17:
 
 LABEL_18:
@@ -715,7 +715,7 @@ LABEL_18:
     }
 
 LABEL_6:
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUsedDate"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUsedDate"];
     if (v7)
     {
       objc_opt_class();
@@ -730,7 +730,7 @@ LABEL_6:
         v43 = v11;
         v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
         v17 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRCandidateDOOCNTErrorDomain" code:3 userInfo:v12];
-        [v4 failWithError:v17];
+        [coderCopy failWithError:v17];
 LABEL_14:
 
         goto LABEL_15;
@@ -739,18 +739,18 @@ LABEL_14:
 
     else
     {
-      v18 = [v4 error];
+      error = [coderCopy error];
 
-      if (v18)
+      if (error)
       {
-        v14 = 0;
+        selfCopy = 0;
 LABEL_19:
 
         goto LABEL_20;
       }
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstSeenDate"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstSeenDate"];
     if (v9)
     {
       objc_opt_class();
@@ -765,7 +765,7 @@ LABEL_19:
         v41 = v12;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
         v21 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRCandidateDOOCNTErrorDomain" code:3 userInfo:v17];
-        [v4 failWithError:v21];
+        [coderCopy failWithError:v21];
 
         goto LABEL_14;
       }
@@ -773,16 +773,16 @@ LABEL_19:
 
     else
     {
-      v24 = [v4 error];
+      error2 = [coderCopy error];
 
-      if (v24)
+      if (error2)
       {
-        v14 = 0;
+        selfCopy = 0;
         goto LABEL_18;
       }
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"candidateIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"candidateIdentifier"];
     if (v10)
     {
       objc_opt_class();
@@ -797,7 +797,7 @@ LABEL_19:
         v39 = v28;
         v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
         v30 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"IRCandidateDOOCNTErrorDomain" code:3 userInfo:v29];
-        [v4 failWithError:v30];
+        [coderCopy failWithError:v30];
 
         goto LABEL_16;
       }
@@ -805,9 +805,9 @@ LABEL_19:
 
     else
     {
-      v31 = [v4 error];
+      error3 = [coderCopy error];
 
-      if (v31)
+      if (error3)
       {
         goto LABEL_16;
       }
@@ -816,73 +816,73 @@ LABEL_19:
     v32 = objc_alloc(MEMORY[0x277CBEB98]);
     v33 = objc_opt_class();
     v34 = [v32 initWithObjects:{v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"nodes"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"nodes"];
 
-    if (v35 || ([v4 error], v36 = objc_claimAutoreleasedReturnValue(), v36, !v36))
+    if (v35 || ([coderCopy error], v36 = objc_claimAutoreleasedReturnValue(), v36, !v36))
     {
       self = [(IRCandidateDO *)self initWithLastSeenDate:v5 lastUsedDate:v7 firstSeenDate:v9 candidateIdentifier:v10 nodes:v35];
-      v14 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v14 = 0;
+      selfCopy = 0;
     }
 
     goto LABEL_17;
   }
 
-  v13 = [v4 error];
+  error4 = [coderCopy error];
 
-  if (!v13)
+  if (!error4)
   {
     goto LABEL_6;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_20:
 
   v22 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   lastSeenDate = self->_lastSeenDate;
-  v10 = v4;
+  v10 = coderCopy;
   if (lastSeenDate)
   {
-    [v4 encodeObject:lastSeenDate forKey:@"lastSeenDate"];
-    v4 = v10;
+    [coderCopy encodeObject:lastSeenDate forKey:@"lastSeenDate"];
+    coderCopy = v10;
   }
 
   lastUsedDate = self->_lastUsedDate;
   if (lastUsedDate)
   {
     [v10 encodeObject:lastUsedDate forKey:@"lastUsedDate"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   firstSeenDate = self->_firstSeenDate;
   if (firstSeenDate)
   {
     [v10 encodeObject:firstSeenDate forKey:@"firstSeenDate"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   candidateIdentifier = self->_candidateIdentifier;
   if (candidateIdentifier)
   {
     [v10 encodeObject:candidateIdentifier forKey:@"candidateIdentifier"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   nodes = self->_nodes;
   if (nodes)
   {
     [v10 encodeObject:nodes forKey:@"nodes"];
-    v4 = v10;
+    coderCopy = v10;
   }
 }
 

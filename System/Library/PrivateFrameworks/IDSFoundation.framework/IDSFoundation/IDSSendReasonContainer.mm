@@ -1,15 +1,15 @@
 @interface IDSSendReasonContainer
-+ (id)createWithReason:(id)a3;
-+ (id)createWithReasonString:(id)a3;
-+ (id)createWithReasons:(id)a3;
++ (id)createWithReason:(id)reason;
++ (id)createWithReasonString:(id)string;
++ (id)createWithReasons:(id)reasons;
 + (id)defaultReasonString;
 - (IDSSendReasonContainer)init;
-- (IDSSendReasonContainer)initWithReasons:(id)a3;
+- (IDSSendReasonContainer)initWithReasons:(id)reasons;
 - (NSArray)reasons;
 - (NSString)reasonString;
-- (id)addReason:(id)a3;
-- (id)stringFromReasons:(id)a3;
-- (void)setReasons:(id)a3;
+- (id)addReason:(id)reason;
+- (id)stringFromReasons:(id)reasons;
+- (void)setReasons:(id)reasons;
 @end
 
 @implementation IDSSendReasonContainer
@@ -24,7 +24,7 @@
   return v3;
 }
 
-- (void)setReasons:(id)a3
+- (void)setReasons:(id)reasons
 {
   type metadata accessor for IDSSendReason(self);
   v4 = sub_1A7E22530();
@@ -33,7 +33,7 @@
   *(self + v5) = v4;
 }
 
-- (IDSSendReasonContainer)initWithReasons:(id)a3
+- (IDSSendReasonContainer)initWithReasons:(id)reasons
 {
   type metadata accessor for IDSSendReason(self);
   *(self + OBJC_IVAR___IDSSendReasonContainer_reasons) = sub_1A7E22530();
@@ -42,39 +42,39 @@
   return [(IDSSendReasonContainer *)&v5 init];
 }
 
-+ (id)createWithReason:(id)a3
++ (id)createWithReason:(id)reason
 {
   sub_1A7CC7FFC(&qword_1EB2B4A98);
   v4 = swift_allocObject();
   *(v4 + 16) = xmmword_1A7E418E0;
-  *(v4 + 32) = a3;
+  *(v4 + 32) = reason;
   v5 = objc_allocWithZone(IDSSendReasonContainer);
   type metadata accessor for IDSSendReason(v5);
-  v6 = a3;
+  reasonCopy = reason;
   v7 = sub_1A7E22520();
 
-  v8 = [v5 initWithReasons_];
+  initWithReasons_ = [v5 initWithReasons_];
 
-  return v8;
+  return initWithReasons_;
 }
 
-+ (id)createWithReasons:(id)a3
++ (id)createWithReasons:(id)reasons
 {
-  v3 = [objc_allocWithZone(IDSSendReasonContainer) initWithReasons_];
+  initWithReasons_ = [objc_allocWithZone(IDSSendReasonContainer) initWithReasons_];
 
-  return v3;
+  return initWithReasons_;
 }
 
-- (id)addReason:(id)a3
+- (id)addReason:(id)reason
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1A7CD5004(v4);
+  reasonCopy = reason;
+  selfCopy = self;
+  v6 = sub_1A7CD5004(reasonCopy);
 
   return v6;
 }
 
-+ (id)createWithReasonString:(id)a3
++ (id)createWithReasonString:(id)string
 {
   sub_1A7E22290();
   v3 = sub_1A7CD6D24();
@@ -84,7 +84,7 @@
 
 - (NSString)reasonString
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A7CD5308();
 
   v3 = sub_1A7E22260();
@@ -101,11 +101,11 @@
   return v2;
 }
 
-- (id)stringFromReasons:(id)a3
+- (id)stringFromReasons:(id)reasons
 {
   type metadata accessor for IDSSendReason(self);
   v4 = sub_1A7E22530();
-  v5 = self;
+  selfCopy = self;
   sub_1A7CD6F0C(v4);
 
   v6 = sub_1A7E22260();

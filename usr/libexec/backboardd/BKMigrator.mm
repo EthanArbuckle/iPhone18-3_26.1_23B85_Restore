@@ -1,5 +1,5 @@
 @interface BKMigrator
-- (BOOL)_moveRestoredFileAtPath:(id)a3;
+- (BOOL)_moveRestoredFileAtPath:(id)path;
 - (void)_migrateBackBoard;
 - (void)_removeUnusedFiles;
 - (void)migrateIfNecessary;
@@ -7,26 +7,26 @@
 
 @implementation BKMigrator
 
-- (BOOL)_moveRestoredFileAtPath:(id)a3
+- (BOOL)_moveRestoredFileAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 stringByDeletingPathExtension];
-  if ([v4 fileExistsAtPath:v3])
+  stringByDeletingPathExtension = [pathCopy stringByDeletingPathExtension];
+  if ([v4 fileExistsAtPath:pathCopy])
   {
     v6 = BKLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v13 = v3;
+      v13 = pathCopy;
       v14 = 2114;
-      v15 = v5;
+      v15 = stringByDeletingPathExtension;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Moving restored file into place from %{public}@ to %{public}@", buf, 0x16u);
     }
 
-    [v4 removeItemAtPath:v5 error:0];
+    [v4 removeItemAtPath:stringByDeletingPathExtension error:0];
     v11 = 0;
-    v7 = [v4 moveItemAtPath:v3 toPath:v5 error:&v11];
+    v7 = [v4 moveItemAtPath:pathCopy toPath:stringByDeletingPathExtension error:&v11];
     v8 = v11;
     if ((v7 & 1) == 0)
     {
@@ -34,9 +34,9 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v13 = v3;
+        v13 = pathCopy;
         v14 = 2114;
-        v15 = v5;
+        v15 = stringByDeletingPathExtension;
         v16 = 2114;
         v17 = v8;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Unable to move file at path %{public}@ to %{public}@: %{public}@", buf, 0x20u);
@@ -83,8 +83,8 @@ LABEL_6:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v10 + 1) + 8 * i) stringByExpandingTildeInPath];
-          [(BKMigrator *)self _moveRestoredFileAtPath:v9];
+          stringByExpandingTildeInPath = [*(*(&v10 + 1) + 8 * i) stringByExpandingTildeInPath];
+          [(BKMigrator *)self _moveRestoredFileAtPath:stringByExpandingTildeInPath];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];

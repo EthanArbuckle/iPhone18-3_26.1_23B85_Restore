@@ -1,30 +1,30 @@
 @interface NCNotificationContentView
 - (BOOL)adjustForContentSizeCategoryChange;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
 - (BSUIFontProvider)fontProvider;
-- (CGRect)_frameForThumbnailInRect:(CGRect)a3 withContentViewInsets:(UIEdgeInsets)a4;
-- (CGRect)_primaryLabelBoundsForSize:(CGSize)a3 withContentInsets:(UIEdgeInsets)a4 andNumberOfLines:(unint64_t)a5;
-- (CGRect)_primarySubtitleLabelBoundsForSize:(CGSize)a3 withContentInsets:(UIEdgeInsets)a4 andNumberOfLines:(unint64_t)a5;
-- (CGRect)_secondaryTextViewBoundsForSize:(CGSize)a3 withContentInsets:(UIEdgeInsets)a4 andNumberOfLines:(unint64_t)a5;
-- (CGRect)_summaryLabelBoundsForSize:(CGSize)a3 withContentInsets:(UIEdgeInsets)a4 andNumberOfLines:(unint64_t)a5;
-- (CGSize)_sizeThatFits:(CGSize)a3 withContentInsets:(UIEdgeInsets)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NCNotificationContentView)initWithStyle:(int64_t)a3;
+- (CGRect)_frameForThumbnailInRect:(CGRect)rect withContentViewInsets:(UIEdgeInsets)insets;
+- (CGRect)_primaryLabelBoundsForSize:(CGSize)size withContentInsets:(UIEdgeInsets)insets andNumberOfLines:(unint64_t)lines;
+- (CGRect)_primarySubtitleLabelBoundsForSize:(CGSize)size withContentInsets:(UIEdgeInsets)insets andNumberOfLines:(unint64_t)lines;
+- (CGRect)_secondaryTextViewBoundsForSize:(CGSize)size withContentInsets:(UIEdgeInsets)insets andNumberOfLines:(unint64_t)lines;
+- (CGRect)_summaryLabelBoundsForSize:(CGSize)size withContentInsets:(UIEdgeInsets)insets andNumberOfLines:(unint64_t)lines;
+- (CGSize)_sizeThatFits:(CGSize)fits withContentInsets:(UIEdgeInsets)insets;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NCNotificationContentView)initWithStyle:(int64_t)style;
 - (NCNotificationContentViewDelegate)delegate;
 - (NSAttributedString)secondaryText;
 - (NSString)preferredContentSizeCategory;
 - (UIEdgeInsets)_contentInsets;
 - (UIEdgeInsets)_contentInsetsForLongLook;
 - (UIEdgeInsets)_contentInsetsForShortLook;
-- (UIEdgeInsets)_contentInsetsForStyle:(int64_t)a3;
+- (UIEdgeInsets)_contentInsetsForStyle:(int64_t)style;
 - (double)_primarySubtitleTextBaselineOffsetForCurrentStyle;
 - (double)_primaryTextBaselineOffsetForCurrentStyle;
-- (double)_primaryTextBaselineOffsetWithBaseValue:(double)a3;
+- (double)_primaryTextBaselineOffsetWithBaseValue:(double)value;
 - (double)_secondaryTextBaselineOffsetForCurrentStyle;
-- (double)_secondaryTextBaselineOffsetFromBottomWithBaseValue:(double)a3;
-- (double)_secondaryTextBaselineOffsetWithBaseValue:(double)a3;
+- (double)_secondaryTextBaselineOffsetFromBottomWithBaseValue:(double)value;
+- (double)_secondaryTextBaselineOffsetWithBaseValue:(double)value;
 - (double)_summaryTextBaselineOffsetForCurrentStyle;
-- (double)_summaryTextBaselineOffsetWithBaseValue:(double)a3;
+- (double)_summaryTextBaselineOffsetWithBaseValue:(double)value;
 - (double)topMarginToPrimaryLabelForCurrentStyle;
 - (id)_lazyPrimaryLabel;
 - (id)_lazyPrimarySubtitleLabel;
@@ -38,57 +38,57 @@
 - (id)_newSecondaryTextView;
 - (id)_newSummaryLabel;
 - (id)_secondaryTextSupportingView;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)textView:(id)a3 writingToolsIgnoredRangesInEnclosingRange:(_NSRange)a4;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
-- (unint64_t)_cachedNumberOfMeasuredLinesForText:(id)a3 withFont:(id)a4 forWidth:(double)a5 scale:(double)a6;
-- (unint64_t)_numberOfMeasuredLinesForText:(id)a3 withFont:(id)a4 forSize:(CGSize)a5;
-- (unint64_t)_primarySubtitleTextMeasuredNumberOfLinesForWidth:(double)a3 scale:(double)a4;
-- (unint64_t)_primarySubtitleTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)a3;
-- (unint64_t)_primaryTextMeasuredNumberOfLinesForWidth:(double)a3 scale:(double)a4;
-- (unint64_t)_primaryTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)a3;
-- (unint64_t)_secondaryTextMeasuredNumberOfLinesForWidth:(double)a3 scale:(double)a4;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)textView:(id)view writingToolsIgnoredRangesInEnclosingRange:(_NSRange)range;
+- (id)visualStylingProviderForCategory:(int64_t)category;
+- (unint64_t)_cachedNumberOfMeasuredLinesForText:(id)text withFont:(id)font forWidth:(double)width scale:(double)scale;
+- (unint64_t)_numberOfMeasuredLinesForText:(id)text withFont:(id)font forSize:(CGSize)size;
+- (unint64_t)_primarySubtitleTextMeasuredNumberOfLinesForWidth:(double)width scale:(double)scale;
+- (unint64_t)_primarySubtitleTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)lines;
+- (unint64_t)_primaryTextMeasuredNumberOfLinesForWidth:(double)width scale:(double)scale;
+- (unint64_t)_primaryTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)lines;
+- (unint64_t)_secondaryTextMeasuredNumberOfLinesForWidth:(double)width scale:(double)scale;
 - (unint64_t)_secondaryTextNumberOfLines;
-- (unint64_t)_secondaryTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)a3;
-- (unint64_t)_summaryTextMeasuredNumberOfLinesForWidth:(double)a3 scale:(double)a4;
-- (unint64_t)_summaryTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)a3;
-- (void)_clearCacheForFont:(id)a3;
-- (void)_configureTextSupportingView:(id)a3;
-- (void)_configureThumbnailAsContactImage:(BOOL)a3;
+- (unint64_t)_secondaryTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)lines;
+- (unint64_t)_summaryTextMeasuredNumberOfLinesForWidth:(double)width scale:(double)scale;
+- (unint64_t)_summaryTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)lines;
+- (void)_clearCacheForFont:(id)font;
+- (void)_configureTextSupportingView:(id)view;
+- (void)_configureThumbnailAsContactImage:(BOOL)image;
 - (void)_layoutSubviews;
 - (void)_updateContentInsets;
-- (void)_updateContentModeForThumbnailImage:(id)a3;
-- (void)_updateStyleForPrimaryLabel:(id)a3 withStyle:(int64_t)a4;
-- (void)_updateStyleForSecondaryTextSupportingView:(id)a3 withStyle:(int64_t)a4;
-- (void)_updateStyleForSummaryLabel:(id)a3 withStyle:(int64_t)a4;
-- (void)_updateStyleForThumbnailImage:(id)a3 withStyle:(int64_t)a4;
-- (void)_updateTextAttributesForPrimaryLabel:(id)a3 withStyle:(int64_t)a4;
-- (void)_updateTextAttributesForSecondaryTextSupportingView:(id)a3 withStyle:(int64_t)a4;
-- (void)_updateTextAttributesForSummaryLabel:(id)a3 withStyle:(int64_t)a4;
+- (void)_updateContentModeForThumbnailImage:(id)image;
+- (void)_updateStyleForPrimaryLabel:(id)label withStyle:(int64_t)style;
+- (void)_updateStyleForSecondaryTextSupportingView:(id)view withStyle:(int64_t)style;
+- (void)_updateStyleForSummaryLabel:(id)label withStyle:(int64_t)style;
+- (void)_updateStyleForThumbnailImage:(id)image withStyle:(int64_t)style;
+- (void)_updateTextAttributesForPrimaryLabel:(id)label withStyle:(int64_t)style;
+- (void)_updateTextAttributesForSecondaryTextSupportingView:(id)view withStyle:(int64_t)style;
+- (void)_updateTextAttributesForSummaryLabel:(id)label withStyle:(int64_t)style;
 - (void)layoutSubviews;
-- (void)setAccessoryView:(id)a3;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setFontProvider:(id)a3;
-- (void)setMaximumNumberOfPrimaryLargeTextLines:(unint64_t)a3;
-- (void)setMaximumNumberOfPrimaryTextLines:(unint64_t)a3;
-- (void)setMaximumNumberOfSecondaryLargeTextLines:(unint64_t)a3;
-- (void)setMaximumNumberOfSecondaryTextLines:(unint64_t)a3;
-- (void)setPrimarySubtitleText:(id)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setScreenCaptureProhibited:(BOOL)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setSummaryText:(id)a3;
-- (void)setThumbnail:(id)a3;
-- (void)setThumbnailIsContactImage:(BOOL)a3;
-- (void)setUseSmallTopMargin:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessoryView:(id)view;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setFontProvider:(id)provider;
+- (void)setMaximumNumberOfPrimaryLargeTextLines:(unint64_t)lines;
+- (void)setMaximumNumberOfPrimaryTextLines:(unint64_t)lines;
+- (void)setMaximumNumberOfSecondaryLargeTextLines:(unint64_t)lines;
+- (void)setMaximumNumberOfSecondaryTextLines:(unint64_t)lines;
+- (void)setPrimarySubtitleText:(id)text;
+- (void)setPrimaryText:(id)text;
+- (void)setScreenCaptureProhibited:(BOOL)prohibited;
+- (void)setSecondaryText:(id)text;
+- (void)setSummaryText:(id)text;
+- (void)setThumbnail:(id)thumbnail;
+- (void)setThumbnailIsContactImage:(BOOL)image;
+- (void)setUseSmallTopMargin:(BOOL)margin;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NCNotificationContentView
 
-- (NCNotificationContentView)initWithStyle:(int64_t)a3
+- (NCNotificationContentView)initWithStyle:(int64_t)style
 {
   v16.receiver = self;
   v16.super_class = NCNotificationContentView;
@@ -96,9 +96,9 @@
   v5 = v4;
   if (v4)
   {
-    v4->_lookStyle = a3;
+    v4->_lookStyle = style;
     p_contentInsets = &v4->_contentInsets;
-    [(NCNotificationContentView *)v4 _contentInsetsForStyle:a3];
+    [(NCNotificationContentView *)v4 _contentInsetsForStyle:style];
     *&p_contentInsets->top = v7;
     v5->_contentInsets.left = v8;
     v5->_contentInsets.bottom = v9;
@@ -117,50 +117,50 @@
   return v5;
 }
 
-- (double)_primaryTextBaselineOffsetWithBaseValue:(double)a3
+- (double)_primaryTextBaselineOffsetWithBaseValue:(double)value
 {
-  v5 = [(NCNotificationContentView *)self _lazyPrimaryLabel];
-  v6 = [v5 font];
+  _lazyPrimaryLabel = [(NCNotificationContentView *)self _lazyPrimaryLabel];
+  font = [_lazyPrimaryLabel font];
 
-  v7 = [(NCNotificationContentView *)self primaryText];
-  [v6 unui_effectiveScaledValueForValue:objc_msgSend(v6 hasExuberatedLineHeight:{"unui_hasExuberatedLineHeightForText:", v7), a3}];
+  primaryText = [(NCNotificationContentView *)self primaryText];
+  [font unui_effectiveScaledValueForValue:objc_msgSend(font hasExuberatedLineHeight:{"unui_hasExuberatedLineHeightForText:", primaryText), value}];
   v9 = v8;
 
   return v9;
 }
 
-- (double)_secondaryTextBaselineOffsetWithBaseValue:(double)a3
+- (double)_secondaryTextBaselineOffsetWithBaseValue:(double)value
 {
-  v5 = [(NCNotificationContentView *)self _lazySecondaryTextSupportingView];
-  v6 = [v5 font];
+  _lazySecondaryTextSupportingView = [(NCNotificationContentView *)self _lazySecondaryTextSupportingView];
+  font = [_lazySecondaryTextSupportingView font];
 
-  v7 = [(NCNotificationContentView *)self secondaryText];
-  v8 = [v7 string];
-  [v6 unui_effectiveScaledValueForValue:objc_msgSend(v6 hasExuberatedLineHeight:{"unui_hasExuberatedLineHeightForText:", v8), a3}];
+  secondaryText = [(NCNotificationContentView *)self secondaryText];
+  string = [secondaryText string];
+  [font unui_effectiveScaledValueForValue:objc_msgSend(font hasExuberatedLineHeight:{"unui_hasExuberatedLineHeightForText:", string), value}];
   v10 = v9;
 
   return v10;
 }
 
-- (double)_secondaryTextBaselineOffsetFromBottomWithBaseValue:(double)a3
+- (double)_secondaryTextBaselineOffsetFromBottomWithBaseValue:(double)value
 {
-  v5 = [(NCNotificationContentView *)self _lazyPrimaryLabel];
-  v6 = [v5 font];
+  _lazyPrimaryLabel = [(NCNotificationContentView *)self _lazyPrimaryLabel];
+  font = [_lazyPrimaryLabel font];
 
-  v7 = [(NCNotificationContentView *)self primaryText];
-  [v6 unui_effectiveScaledValueForValue:objc_msgSend(v6 hasExuberatedLineHeight:{"unui_hasExuberatedLineHeightForText:", v7), a3}];
+  primaryText = [(NCNotificationContentView *)self primaryText];
+  [font unui_effectiveScaledValueForValue:objc_msgSend(font hasExuberatedLineHeight:{"unui_hasExuberatedLineHeightForText:", primaryText), value}];
   v9 = v8;
 
   return v9;
 }
 
-- (double)_summaryTextBaselineOffsetWithBaseValue:(double)a3
+- (double)_summaryTextBaselineOffsetWithBaseValue:(double)value
 {
-  v5 = [(NCNotificationContentView *)self _lazySummaryLabel];
-  v6 = [v5 font];
+  _lazySummaryLabel = [(NCNotificationContentView *)self _lazySummaryLabel];
+  font = [_lazySummaryLabel font];
 
-  v7 = [(NCNotificationContentView *)self summaryText];
-  [v6 unui_effectiveScaledValueForValue:objc_msgSend(v6 hasExuberatedLineHeight:{"unui_hasExuberatedLineHeightForText:", v7), a3}];
+  summaryText = [(NCNotificationContentView *)self summaryText];
+  [font unui_effectiveScaledValueForValue:objc_msgSend(font hasExuberatedLineHeight:{"unui_hasExuberatedLineHeightForText:", summaryText), value}];
   v9 = v8;
 
   return v9;
@@ -202,9 +202,9 @@
     v5 = 5.0;
   }
 
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  v7 = [v6 preferredContentSizeCategory];
-  IsAX = _NCSizeCategoryIsAX(v7);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
   v9 = 0.0;
   if (IsAX)
@@ -275,9 +275,9 @@
   return result;
 }
 
-- (UIEdgeInsets)_contentInsetsForStyle:(int64_t)a3
+- (UIEdgeInsets)_contentInsetsForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [(NCNotificationContentView *)self _contentInsetsForLongLook];
   }
@@ -315,9 +315,9 @@
   v2 = 23.0;
   if (self->_lookStyle == 1)
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [v3 preferredContentSizeCategory];
-    if (_NCSizeCategoryIsAX(v4))
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+    if (_NCSizeCategoryIsAX(preferredContentSizeCategory))
     {
       v2 = 22.0;
     }
@@ -334,9 +334,9 @@
 - (double)_primarySubtitleTextBaselineOffsetForCurrentStyle
 {
   lookStyle = self->_lookStyle;
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAX = _NCSizeCategoryIsAX(v4);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
   result = 19.0;
   if (IsAX)
@@ -361,9 +361,9 @@
 - (double)_secondaryTextBaselineOffsetForCurrentStyle
 {
   lookStyle = self->_lookStyle;
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAX = _NCSizeCategoryIsAX(v4);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
   result = 19.0;
   if (IsAX)
@@ -390,9 +390,9 @@
   v2 = 0.0;
   if (self->_lookStyle != 1)
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [v3 preferredContentSizeCategory];
-    if (_NCSizeCategoryIsAX(v4))
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+    if (_NCSizeCategoryIsAX(preferredContentSizeCategory))
     {
       v2 = 20.0;
     }
@@ -406,43 +406,43 @@
   return v2;
 }
 
-- (unint64_t)_primaryTextMeasuredNumberOfLinesForWidth:(double)a3 scale:(double)a4
+- (unint64_t)_primaryTextMeasuredNumberOfLinesForWidth:(double)width scale:(double)scale
 {
-  v7 = [(NCNotificationContentView *)self primaryText];
-  v8 = [v7 length] != 0;
+  primaryText = [(NCNotificationContentView *)self primaryText];
+  v8 = [primaryText length] != 0;
 
-  v9 = [MEMORY[0x277D75128] sharedApplication];
-  v10 = [v9 preferredContentSizeCategory];
-  if (_NCSizeCategoryIsAX(v10))
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  if (_NCSizeCategoryIsAX(preferredContentSizeCategory))
   {
-    v11 = [(NCNotificationContentView *)self maximumNumberOfPrimaryLargeTextLines];
+    maximumNumberOfPrimaryLargeTextLines = [(NCNotificationContentView *)self maximumNumberOfPrimaryLargeTextLines];
   }
 
   else
   {
-    v11 = [(NCNotificationContentView *)self maximumNumberOfPrimaryTextLines];
+    maximumNumberOfPrimaryLargeTextLines = [(NCNotificationContentView *)self maximumNumberOfPrimaryTextLines];
   }
 
-  v12 = v11;
+  v12 = maximumNumberOfPrimaryLargeTextLines;
 
   if (v12 == 1)
   {
     return v8;
   }
 
-  v14 = [(NCNotificationContentView *)self _lazyPrimaryLabel];
-  v15 = [v14 text];
-  v16 = [v14 font];
-  v17 = [(NCNotificationContentView *)self _cachedNumberOfMeasuredLinesForText:v15 withFont:v16 forWidth:a3 scale:a4];
+  _lazyPrimaryLabel = [(NCNotificationContentView *)self _lazyPrimaryLabel];
+  text = [_lazyPrimaryLabel text];
+  font = [_lazyPrimaryLabel font];
+  v17 = [(NCNotificationContentView *)self _cachedNumberOfMeasuredLinesForText:text withFont:font forWidth:width scale:scale];
 
   return v17;
 }
 
-- (unint64_t)_primaryTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)a3
+- (unint64_t)_primaryTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)lines
 {
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  v6 = [v5 preferredContentSizeCategory];
-  if (_NCSizeCategoryIsAX(v6))
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  if (_NCSizeCategoryIsAX(preferredContentSizeCategory))
   {
     if (![(NCNotificationContentView *)self maximumNumberOfPrimaryLargeTextLines])
     {
@@ -455,34 +455,34 @@
     goto LABEL_10;
   }
 
-  v7 = [MEMORY[0x277D75128] sharedApplication];
-  v8 = [v7 preferredContentSizeCategory];
-  if (_NCSizeCategoryIsAX(v8))
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory2 = [mEMORY[0x277D75128]2 preferredContentSizeCategory];
+  if (_NCSizeCategoryIsAX(preferredContentSizeCategory2))
   {
-    v9 = [(NCNotificationContentView *)self maximumNumberOfPrimaryLargeTextLines];
+    maximumNumberOfPrimaryLargeTextLines = [(NCNotificationContentView *)self maximumNumberOfPrimaryLargeTextLines];
   }
 
   else
   {
-    v9 = [(NCNotificationContentView *)self maximumNumberOfPrimaryTextLines];
+    maximumNumberOfPrimaryLargeTextLines = [(NCNotificationContentView *)self maximumNumberOfPrimaryTextLines];
   }
 
-  v10 = v9;
+  v10 = maximumNumberOfPrimaryLargeTextLines;
 
-  if (a3 >= v10)
+  if (lines >= v10)
   {
-    a3 = v10;
+    lines = v10;
   }
 
 LABEL_10:
 
-  return a3;
+  return lines;
 }
 
-- (CGRect)_primaryLabelBoundsForSize:(CGSize)a3 withContentInsets:(UIEdgeInsets)a4 andNumberOfLines:(unint64_t)a5
+- (CGRect)_primaryLabelBoundsForSize:(CGSize)size withContentInsets:(UIEdgeInsets)insets andNumberOfLines:(unint64_t)lines
 {
-  v6 = [(NCNotificationContentView *)self primaryText];
-  v7 = [v6 length];
+  primaryText = [(NCNotificationContentView *)self primaryText];
+  v7 = [primaryText length];
 
   if (v7)
   {
@@ -506,43 +506,43 @@ LABEL_10:
   return result;
 }
 
-- (unint64_t)_primarySubtitleTextMeasuredNumberOfLinesForWidth:(double)a3 scale:(double)a4
+- (unint64_t)_primarySubtitleTextMeasuredNumberOfLinesForWidth:(double)width scale:(double)scale
 {
-  v7 = [(NCNotificationContentView *)self primarySubtitleText];
-  v8 = [v7 length] != 0;
+  primarySubtitleText = [(NCNotificationContentView *)self primarySubtitleText];
+  v8 = [primarySubtitleText length] != 0;
 
-  v9 = [MEMORY[0x277D75128] sharedApplication];
-  v10 = [v9 preferredContentSizeCategory];
-  if (_NCSizeCategoryIsAX(v10))
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  if (_NCSizeCategoryIsAX(preferredContentSizeCategory))
   {
-    v11 = [(NCNotificationContentView *)self maximumNumberOfPrimaryLargeTextLines];
+    maximumNumberOfPrimaryLargeTextLines = [(NCNotificationContentView *)self maximumNumberOfPrimaryLargeTextLines];
   }
 
   else
   {
-    v11 = [(NCNotificationContentView *)self maximumNumberOfPrimaryTextLines];
+    maximumNumberOfPrimaryLargeTextLines = [(NCNotificationContentView *)self maximumNumberOfPrimaryTextLines];
   }
 
-  v12 = v11;
+  v12 = maximumNumberOfPrimaryLargeTextLines;
 
   if (v12 == 1)
   {
     return v8;
   }
 
-  v14 = [(NCNotificationContentView *)self _lazyPrimarySubtitleLabel];
-  v15 = [v14 text];
-  v16 = [v14 font];
-  v17 = [(NCNotificationContentView *)self _cachedNumberOfMeasuredLinesForText:v15 withFont:v16 forWidth:a3 scale:a4];
+  _lazyPrimarySubtitleLabel = [(NCNotificationContentView *)self _lazyPrimarySubtitleLabel];
+  text = [_lazyPrimarySubtitleLabel text];
+  font = [_lazyPrimarySubtitleLabel font];
+  v17 = [(NCNotificationContentView *)self _cachedNumberOfMeasuredLinesForText:text withFont:font forWidth:width scale:scale];
 
   return v17;
 }
 
-- (unint64_t)_primarySubtitleTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)a3
+- (unint64_t)_primarySubtitleTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)lines
 {
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  v6 = [v5 preferredContentSizeCategory];
-  if (_NCSizeCategoryIsAX(v6))
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  if (_NCSizeCategoryIsAX(preferredContentSizeCategory))
   {
     if (![(NCNotificationContentView *)self maximumNumberOfPrimaryLargeTextLines])
     {
@@ -555,41 +555,41 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v7 = [MEMORY[0x277D75128] sharedApplication];
-  v8 = [v7 preferredContentSizeCategory];
-  if (_NCSizeCategoryIsAX(v8))
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory2 = [mEMORY[0x277D75128]2 preferredContentSizeCategory];
+  if (_NCSizeCategoryIsAX(preferredContentSizeCategory2))
   {
-    v9 = [(NCNotificationContentView *)self maximumNumberOfPrimaryLargeTextLines];
+    maximumNumberOfPrimaryLargeTextLines = [(NCNotificationContentView *)self maximumNumberOfPrimaryLargeTextLines];
   }
 
   else
   {
-    v9 = [(NCNotificationContentView *)self maximumNumberOfPrimaryTextLines];
+    maximumNumberOfPrimaryLargeTextLines = [(NCNotificationContentView *)self maximumNumberOfPrimaryTextLines];
   }
 
-  v10 = v9;
+  v10 = maximumNumberOfPrimaryLargeTextLines;
 
-  if (a3 >= v10)
+  if (lines >= v10)
   {
-    a3 = v10;
+    lines = v10;
   }
 
 LABEL_10:
 
-  return a3;
+  return lines;
 }
 
-- (CGRect)_primarySubtitleLabelBoundsForSize:(CGSize)a3 withContentInsets:(UIEdgeInsets)a4 andNumberOfLines:(unint64_t)a5
+- (CGRect)_primarySubtitleLabelBoundsForSize:(CGSize)size withContentInsets:(UIEdgeInsets)insets andNumberOfLines:(unint64_t)lines
 {
-  v6 = [(NCNotificationContentView *)self primarySubtitleText];
-  v7 = [v6 length];
+  primarySubtitleText = [(NCNotificationContentView *)self primarySubtitleText];
+  v7 = [primarySubtitleText length];
 
   if (v7)
   {
     [(NCNotificationContentView *)self _primarySubtitleTextBaselineOffsetForCurrentStyle];
     [(NCNotificationContentView *)self _primaryTextBaselineOffsetWithBaseValue:?];
-    v8 = [(NCNotificationContentView *)self primaryText];
-    v9 = [v8 length];
+    primaryText = [(NCNotificationContentView *)self primaryText];
+    v9 = [primaryText length];
 
     if (!v9)
     {
@@ -615,71 +615,71 @@ LABEL_10:
   return result;
 }
 
-- (unint64_t)_secondaryTextMeasuredNumberOfLinesForWidth:(double)a3 scale:(double)a4
+- (unint64_t)_secondaryTextMeasuredNumberOfLinesForWidth:(double)width scale:(double)scale
 {
-  v7 = [(NCNotificationContentView *)self _lazySecondaryTextSupportingView];
-  v8 = [(NCNotificationContentView *)self secondaryText];
-  v9 = [v8 length];
+  _lazySecondaryTextSupportingView = [(NCNotificationContentView *)self _lazySecondaryTextSupportingView];
+  secondaryText = [(NCNotificationContentView *)self secondaryText];
+  v9 = [secondaryText length];
 
-  if (a3 <= 0.0 || v9 == 0)
+  if (width <= 0.0 || v9 == 0)
   {
     v14 = 0;
   }
 
   else
   {
-    v11 = [(NCNotificationContentView *)self secondaryText];
-    v12 = [v11 string];
-    v13 = [v7 font];
-    v14 = [(NCNotificationContentView *)self _cachedNumberOfMeasuredLinesForText:v12 withFont:v13 forWidth:a3 scale:a4];
+    secondaryText2 = [(NCNotificationContentView *)self secondaryText];
+    string = [secondaryText2 string];
+    font = [_lazySecondaryTextSupportingView font];
+    v14 = [(NCNotificationContentView *)self _cachedNumberOfMeasuredLinesForText:string withFont:font forWidth:width scale:scale];
   }
 
   return v14;
 }
 
-- (unint64_t)_secondaryTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)a3
+- (unint64_t)_secondaryTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)lines
 {
-  v5 = [(NCNotificationContentView *)self _lazySecondaryTextSupportingView];
-  v6 = [(NCNotificationContentView *)self _secondaryTextNumberOfLines];
-  if (a3 >= v6)
+  _lazySecondaryTextSupportingView = [(NCNotificationContentView *)self _lazySecondaryTextSupportingView];
+  _secondaryTextNumberOfLines = [(NCNotificationContentView *)self _secondaryTextNumberOfLines];
+  if (lines >= _secondaryTextNumberOfLines)
   {
-    v7 = v6;
+    linesCopy = _secondaryTextNumberOfLines;
   }
 
   else
   {
-    v7 = a3;
+    linesCopy = lines;
   }
 
-  if (v6 <= 0)
+  if (_secondaryTextNumberOfLines <= 0)
   {
-    return a3;
+    return lines;
   }
 
   else
   {
-    return v7;
+    return linesCopy;
   }
 }
 
-- (CGRect)_secondaryTextViewBoundsForSize:(CGSize)a3 withContentInsets:(UIEdgeInsets)a4 andNumberOfLines:(unint64_t)a5
+- (CGRect)_secondaryTextViewBoundsForSize:(CGSize)size withContentInsets:(UIEdgeInsets)insets andNumberOfLines:(unint64_t)lines
 {
-  bottom = a4.bottom;
-  v7 = [(NCNotificationContentView *)self secondaryText];
-  v8 = [v7 length];
+  bottom = insets.bottom;
+  secondaryText = [(NCNotificationContentView *)self secondaryText];
+  v8 = [secondaryText length];
 
   if (v8)
   {
     [(NCNotificationContentView *)self _secondaryTextBaselineOffsetForCurrentStyle];
     [(NCNotificationContentView *)self _secondaryTextBaselineOffsetWithBaseValue:?];
-    v9 = [(NCNotificationContentView *)self _lazySecondaryTextSupportingView];
-    v10 = [v9 font];
-    v11 = [(NCNotificationContentView *)self secondaryText];
-    v12 = [v11 string];
-    [v10 unui_effectiveLineHeightForText:v12];
+    _lazySecondaryTextSupportingView = [(NCNotificationContentView *)self _lazySecondaryTextSupportingView];
+    font = [_lazySecondaryTextSupportingView font];
+    secondaryText2 = [(NCNotificationContentView *)self secondaryText];
+    string = [secondaryText2 string];
+    [font unui_effectiveLineHeightForText:string];
 
-    v13 = [(NCNotificationContentView *)self primaryText];
-    v14 = [v13 length];
+    primaryText = [(NCNotificationContentView *)self primaryText];
+    v14 = [primaryText length];
 
     if (!v14)
     {
@@ -706,53 +706,53 @@ LABEL_10:
   return result;
 }
 
-- (unint64_t)_summaryTextMeasuredNumberOfLinesForWidth:(double)a3 scale:(double)a4
+- (unint64_t)_summaryTextMeasuredNumberOfLinesForWidth:(double)width scale:(double)scale
 {
-  v7 = [(NCNotificationContentView *)self _lazySummaryLabel];
-  v8 = [v7 text];
-  v9 = [v8 length];
+  _lazySummaryLabel = [(NCNotificationContentView *)self _lazySummaryLabel];
+  text = [_lazySummaryLabel text];
+  v9 = [text length];
 
-  if (a3 <= 0.0 || v9 == 0)
+  if (width <= 0.0 || v9 == 0)
   {
     v13 = 0;
   }
 
   else
   {
-    v11 = [v7 text];
-    v12 = [v7 font];
-    v13 = [(NCNotificationContentView *)self _cachedNumberOfMeasuredLinesForText:v11 withFont:v12 forWidth:a3 scale:a4];
+    text2 = [_lazySummaryLabel text];
+    font = [_lazySummaryLabel font];
+    v13 = [(NCNotificationContentView *)self _cachedNumberOfMeasuredLinesForText:text2 withFont:font forWidth:width scale:scale];
   }
 
   return v13;
 }
 
-- (unint64_t)_summaryTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)a3
+- (unint64_t)_summaryTextNumberOfLinesWithMeasuredNumberOfLines:(unint64_t)lines
 {
-  if (a3 >= 2)
+  if (lines >= 2)
   {
     return 2;
   }
 
   else
   {
-    return a3;
+    return lines;
   }
 }
 
-- (CGRect)_summaryLabelBoundsForSize:(CGSize)a3 withContentInsets:(UIEdgeInsets)a4 andNumberOfLines:(unint64_t)a5
+- (CGRect)_summaryLabelBoundsForSize:(CGSize)size withContentInsets:(UIEdgeInsets)insets andNumberOfLines:(unint64_t)lines
 {
-  v6 = [(NCNotificationContentView *)self summaryText];
-  v7 = [v6 length];
+  summaryText = [(NCNotificationContentView *)self summaryText];
+  v7 = [summaryText length];
 
   if (v7)
   {
     [(NCNotificationContentView *)self _summaryTextBaselineOffsetForCurrentStyle];
     [(NCNotificationContentView *)self _summaryTextBaselineOffsetWithBaseValue:?];
-    v8 = [(NCNotificationContentView *)self _lazySummaryLabel];
-    v9 = [v8 font];
-    v10 = [(NCNotificationContentView *)self summaryText];
-    [v9 unui_effectiveLineHeightForText:v10];
+    _lazySummaryLabel = [(NCNotificationContentView *)self _lazySummaryLabel];
+    font = [_lazySummaryLabel font];
+    summaryText2 = [(NCNotificationContentView *)self summaryText];
+    [font unui_effectiveLineHeightForText:summaryText2];
 
     v11 = NCRectWithSize();
   }
@@ -772,27 +772,27 @@ LABEL_10:
   return result;
 }
 
-- (void)_clearCacheForFont:(id)a3
+- (void)_clearCacheForFont:(id)font
 {
-  v8 = a3;
-  v4 = [(NSMutableDictionary *)self->_widthToFontToStringToMeasuredNumLines allKeys];
-  v5 = [v4 firstObject];
+  fontCopy = font;
+  allKeys = [(NSMutableDictionary *)self->_widthToFontToStringToMeasuredNumLines allKeys];
+  firstObject = [allKeys firstObject];
 
-  if (v8 && v5)
+  if (fontCopy && firstObject)
   {
-    v6 = [(NSMutableDictionary *)self->_widthToFontToStringToMeasuredNumLines objectForKey:v5];
-    v7 = [v6 objectForKey:v8];
+    v6 = [(NSMutableDictionary *)self->_widthToFontToStringToMeasuredNumLines objectForKey:firstObject];
+    v7 = [v6 objectForKey:fontCopy];
     [v7 removeAllObjects];
   }
 }
 
-- (unint64_t)_cachedNumberOfMeasuredLinesForText:(id)a3 withFont:(id)a4 forWidth:(double)a5 scale:(double)a6
+- (unint64_t)_cachedNumberOfMeasuredLinesForText:(id)text withFont:(id)font forWidth:(double)width scale:(double)scale
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 length];
-  v12 = v11 != 0;
-  if (a5 > 0.0 && v11 != 0)
+  textCopy = text;
+  fontCopy = font;
+  v11 = [textCopy length];
+  unsignedIntegerValue = v11 != 0;
+  if (width > 0.0 && v11 != 0)
   {
     UIFloorToScale();
     v15 = v14;
@@ -805,38 +805,38 @@ LABEL_10:
       [(NSMutableDictionary *)self->_widthToFontToStringToMeasuredNumLines setObject:v17 forKey:v16];
     }
 
-    v18 = [v17 objectForKey:v10];
+    v18 = [v17 objectForKey:fontCopy];
     if (!v18)
     {
       v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      [v17 setObject:v18 forKey:v10];
+      [v17 setObject:v18 forKey:fontCopy];
     }
 
-    v19 = [v18 objectForKey:v9];
+    v19 = [v18 objectForKey:textCopy];
     v20 = v19;
     if (v19)
     {
-      v12 = [v19 unsignedIntegerValue];
+      unsignedIntegerValue = [v19 unsignedIntegerValue];
     }
 
     else
     {
-      v12 = [(NCNotificationContentView *)self _numberOfMeasuredLinesForText:v9 withFont:v10 forSize:v15, 1.79769313e308];
-      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
-      [v18 setObject:v21 forKey:v9];
+      unsignedIntegerValue = [(NCNotificationContentView *)self _numberOfMeasuredLinesForText:textCopy withFont:fontCopy forSize:v15, 1.79769313e308];
+      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+      [v18 setObject:v21 forKey:textCopy];
     }
   }
 
-  return v12;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)_numberOfMeasuredLinesForText:(id)a3 withFont:(id)a4 forSize:(CGSize)a5
+- (unint64_t)_numberOfMeasuredLinesForText:(id)text withFont:(id)font forSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v17[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  textCopy = text;
+  fontCopy = font;
   if (!self->_drawingContext)
   {
     v11 = objc_alloc_init(MEMORY[0x277D74260]);
@@ -847,27 +847,27 @@ LABEL_10:
   }
 
   v16 = *MEMORY[0x277D740A8];
-  v17[0] = v10;
+  v17[0] = fontCopy;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  [v9 boundingRectWithSize:1 options:v13 attributes:self->_drawingContext context:{width, height}];
+  [textCopy boundingRectWithSize:1 options:v13 attributes:self->_drawingContext context:{width, height}];
 
-  v14 = [(NSStringDrawingContext *)self->_drawingContext numberOfLineFragments];
-  return v14;
+  numberOfLineFragments = [(NSStringDrawingContext *)self->_drawingContext numberOfLineFragments];
+  return numberOfLineFragments;
 }
 
-- (CGSize)_sizeThatFits:(CGSize)a3 withContentInsets:(UIEdgeInsets)a4
+- (CGSize)_sizeThatFits:(CGSize)fits withContentInsets:(UIEdgeInsets)insets
 {
-  if (a3.width <= 0.0)
+  if (fits.width <= 0.0)
   {
     v13 = *MEMORY[0x277CBF3A8];
     v14 = *(MEMORY[0x277CBF3A8] + 8);
     goto LABEL_23;
   }
 
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   if (self->_lookStyle)
   {
     v9 = *MEMORY[0x277D768C8];
@@ -885,11 +885,11 @@ LABEL_10:
   }
 
   v40 = v9;
-  width = a3.width;
-  v15 = NCSizeApplyInsets(a3.width, a3.height, v9, v10, v12, v11);
+  width = fits.width;
+  v15 = NCSizeApplyInsets(fits.width, fits.height, v9, v10, v12, v11);
   v17 = NCSizeApplyInsets(v15, v16, top, left, bottom, right);
-  v18 = [(NCNotificationContentView *)self thumbnail];
-  if (v18)
+  thumbnail = [(NCNotificationContentView *)self thumbnail];
+  if (thumbnail)
   {
 
 LABEL_9:
@@ -903,9 +903,9 @@ LABEL_9:
       v20 = 35.0;
     }
 
-    v21 = [(NCNotificationContentView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(NCNotificationContentView *)self _shouldReverseLayoutDirection];
     v22 = 15.0;
-    if (v21)
+    if (_shouldReverseLayoutDirection)
     {
       v22 = 0.0;
     }
@@ -914,28 +914,28 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  v19 = [(NCNotificationContentView *)self accessoryView];
+  accessoryView = [(NCNotificationContentView *)self accessoryView];
 
-  if (v19)
+  if (accessoryView)
   {
     goto LABEL_9;
   }
 
 LABEL_15:
-  v23 = [(NCNotificationContentView *)self window];
+  window = [(NCNotificationContentView *)self window];
   v39 = v12;
-  if (v23)
+  if (window)
   {
-    v24 = [(NCNotificationContentView *)self window];
-    v25 = [v24 screen];
-    [v25 scale];
+    window2 = [(NCNotificationContentView *)self window];
+    screen = [window2 screen];
+    [screen scale];
     v27 = v26;
   }
 
   else
   {
-    v24 = [MEMORY[0x277D759A0] mainScreen];
-    [v24 scale];
+    window2 = [MEMORY[0x277D759A0] mainScreen];
+    [window2 scale];
     v27 = v28;
   }
 
@@ -961,8 +961,8 @@ LABEL_15:
     [(NCNotificationContentView *)self _secondaryTextBaselineOffsetFromBottomWithBaseValue:v35];
   }
 
-  v37 = [(NCNotificationContentView *)self thumbnail];
-  if (!v37)
+  thumbnail2 = [(NCNotificationContentView *)self thumbnail];
+  if (!thumbnail2)
   {
     [(NCNotificationContentView *)self accessoryView];
   }
@@ -976,9 +976,9 @@ LABEL_23:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(NCNotificationContentView *)self _sizeThatFits:a3.width withContentInsets:a3.height, self->_contentInsets.top, self->_contentInsets.left, self->_contentInsets.bottom, self->_contentInsets.right];
+  [(NCNotificationContentView *)self _sizeThatFits:fits.width withContentInsets:fits.height, self->_contentInsets.top, self->_contentInsets.left, self->_contentInsets.bottom, self->_contentInsets.right];
   result.height = v4;
   result.width = v3;
   return result;
@@ -994,13 +994,13 @@ LABEL_23:
   p_contentInsets->right = v6;
 }
 
-- (void)_updateTextAttributesForPrimaryLabel:(id)a3 withStyle:(int64_t)a4
+- (void)_updateTextAttributesForPrimaryLabel:(id)label withStyle:(int64_t)style
 {
-  v6 = a3;
-  if (v6)
+  labelCopy = label;
+  if (labelCopy)
   {
-    v18 = v6;
-    if (a4 == 1)
+    v18 = labelCopy;
+    if (style == 1)
     {
       v7 = *MEMORY[0x277D76988];
       v8 = 8;
@@ -1008,9 +1008,9 @@ LABEL_23:
 
     else
     {
-      v9 = [MEMORY[0x277D75128] sharedApplication];
-      v10 = [v9 preferredContentSizeCategory];
-      IsAX = _NCSizeCategoryIsAX(v10);
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+      IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
       v12 = MEMORY[0x277D76918];
       if (!IsAX)
       {
@@ -1022,41 +1022,41 @@ LABEL_23:
       v8 = 12;
     }
 
-    v13 = [(NCNotificationContentView *)self fontProvider];
-    v14 = [v13 preferredFontForTextStyle:v7 hiFontStyle:v8];
+    fontProvider = [(NCNotificationContentView *)self fontProvider];
+    v14 = [fontProvider preferredFontForTextStyle:v7 hiFontStyle:v8];
     [v18 setFont:v14];
 
-    v15 = [MEMORY[0x277D75128] sharedApplication];
-    v16 = [v15 preferredContentSizeCategory];
-    if (_NCSizeCategoryIsAX(v16))
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory2 = [mEMORY[0x277D75128]2 preferredContentSizeCategory];
+    if (_NCSizeCategoryIsAX(preferredContentSizeCategory2))
     {
-      v17 = [(NCNotificationContentView *)self maximumNumberOfPrimaryLargeTextLines];
+      maximumNumberOfPrimaryLargeTextLines = [(NCNotificationContentView *)self maximumNumberOfPrimaryLargeTextLines];
     }
 
     else
     {
-      v17 = [(NCNotificationContentView *)self maximumNumberOfPrimaryTextLines];
+      maximumNumberOfPrimaryLargeTextLines = [(NCNotificationContentView *)self maximumNumberOfPrimaryTextLines];
     }
 
-    [v18 setNumberOfLines:v17];
+    [v18 setNumberOfLines:maximumNumberOfPrimaryLargeTextLines];
 
-    v6 = v18;
+    labelCopy = v18;
   }
 }
 
-- (void)_updateStyleForPrimaryLabel:(id)a3 withStyle:(int64_t)a4
+- (void)_updateStyleForPrimaryLabel:(id)label withStyle:(int64_t)style
 {
-  v7 = a3;
-  [v7 mt_removeAllVisualStyling];
-  if (a4 == 1)
+  labelCopy = label;
+  [labelCopy mt_removeAllVisualStyling];
+  if (style == 1)
   {
-    v6 = [MEMORY[0x277D75348] labelColor];
-    [v7 setTextColor:v6];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [labelCopy setTextColor:labelColor];
   }
 
   else
   {
-    [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:v7 withStyle:0];
+    [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:labelCopy withStyle:0];
   }
 }
 
@@ -1072,9 +1072,9 @@ LABEL_23:
   primaryLabel = self->_primaryLabel;
   if (!primaryLabel)
   {
-    v4 = [(NCNotificationContentView *)self _newPrimaryLabel];
+    _newPrimaryLabel = [(NCNotificationContentView *)self _newPrimaryLabel];
     v5 = self->_primaryLabel;
-    self->_primaryLabel = v4;
+    self->_primaryLabel = _newPrimaryLabel;
 
     [(UIView *)self->_contentView addSubview:self->_primaryLabel];
     [(NCNotificationContentView *)self _updateStyleForPrimaryLabel:self->_primaryLabel withStyle:self->_lookStyle];
@@ -1084,19 +1084,19 @@ LABEL_23:
   return primaryLabel;
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v8 = a3;
-  v4 = [(NCNotificationContentView *)self primaryText];
+  textCopy = text;
+  primaryText = [(NCNotificationContentView *)self primaryText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(NCNotificationContentView *)self _lazyPrimaryLabel];
-    v7 = [v6 font];
-    [(NCNotificationContentView *)self _clearCacheForFont:v7];
+    _lazyPrimaryLabel = [(NCNotificationContentView *)self _lazyPrimaryLabel];
+    font = [_lazyPrimaryLabel font];
+    [(NCNotificationContentView *)self _clearCacheForFont:font];
 
-    [v6 setText:v8];
+    [_lazyPrimaryLabel setText:textCopy];
     self->_hasUpdatedContent = 1;
     [(NCNotificationContentView *)self setNeedsLayout];
   }
@@ -1107,9 +1107,9 @@ LABEL_23:
   primarySubtitleLabel = self->_primarySubtitleLabel;
   if (!primarySubtitleLabel)
   {
-    v4 = [(NCNotificationContentView *)self _newPrimaryLabel];
+    _newPrimaryLabel = [(NCNotificationContentView *)self _newPrimaryLabel];
     v5 = self->_primarySubtitleLabel;
-    self->_primarySubtitleLabel = v4;
+    self->_primarySubtitleLabel = _newPrimaryLabel;
 
     [(UIView *)self->_contentView addSubview:self->_primarySubtitleLabel];
     [(NCNotificationContentView *)self _updateStyleForPrimaryLabel:self->_primarySubtitleLabel withStyle:self->_lookStyle];
@@ -1119,19 +1119,19 @@ LABEL_23:
   return primarySubtitleLabel;
 }
 
-- (void)setPrimarySubtitleText:(id)a3
+- (void)setPrimarySubtitleText:(id)text
 {
-  v8 = a3;
-  v4 = [(NCNotificationContentView *)self primarySubtitleText];
+  textCopy = text;
+  primarySubtitleText = [(NCNotificationContentView *)self primarySubtitleText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(NCNotificationContentView *)self _lazyPrimarySubtitleLabel];
-    v7 = [v6 font];
-    [(NCNotificationContentView *)self _clearCacheForFont:v7];
+    _lazyPrimarySubtitleLabel = [(NCNotificationContentView *)self _lazyPrimarySubtitleLabel];
+    font = [_lazyPrimarySubtitleLabel font];
+    [(NCNotificationContentView *)self _clearCacheForFont:font];
 
-    [v6 setText:v8];
+    [_lazyPrimarySubtitleLabel setText:textCopy];
     self->_hasUpdatedContent = 1;
     [(NCNotificationContentView *)self setNeedsLayout];
   }
@@ -1157,12 +1157,12 @@ LABEL_23:
   return thumbnailImageView;
 }
 
-- (void)_updateTextAttributesForSecondaryTextSupportingView:(id)a3 withStyle:(int64_t)a4
+- (void)_updateTextAttributesForSecondaryTextSupportingView:(id)view withStyle:(int64_t)style
 {
-  v5 = a3;
-  if (v5)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v16 = v5;
+    v16 = viewCopy;
     if (self->_lookStyle == 1)
     {
       v6 = *MEMORY[0x277D76918];
@@ -1170,9 +1170,9 @@ LABEL_23:
 
     else
     {
-      v7 = [MEMORY[0x277D75128] sharedApplication];
-      v8 = [v7 preferredContentSizeCategory];
-      IsAX = _NCSizeCategoryIsAX(v8);
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+      IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
       v10 = MEMORY[0x277D76918];
       if (!IsAX)
       {
@@ -1182,25 +1182,25 @@ LABEL_23:
       v6 = *v10;
     }
 
-    v11 = [(NCNotificationContentView *)self fontProvider];
-    v12 = [v11 preferredFontForTextStyle:v6 hiFontStyle:8];
+    fontProvider = [(NCNotificationContentView *)self fontProvider];
+    v12 = [fontProvider preferredFontForTextStyle:v6 hiFontStyle:8];
     [v16 setFont:v12];
 
-    v13 = [MEMORY[0x277D75128] sharedApplication];
-    v14 = [v13 preferredContentSizeCategory];
-    if (_NCSizeCategoryIsAX(v14))
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory2 = [mEMORY[0x277D75128]2 preferredContentSizeCategory];
+    if (_NCSizeCategoryIsAX(preferredContentSizeCategory2))
     {
-      v15 = [(NCNotificationContentView *)self maximumNumberOfSecondaryLargeTextLines];
+      maximumNumberOfSecondaryLargeTextLines = [(NCNotificationContentView *)self maximumNumberOfSecondaryLargeTextLines];
     }
 
     else
     {
-      v15 = [(NCNotificationContentView *)self maximumNumberOfSecondaryTextLines];
+      maximumNumberOfSecondaryLargeTextLines = [(NCNotificationContentView *)self maximumNumberOfSecondaryTextLines];
     }
 
-    [v16 nc_setNumberOfLines:v15];
+    [v16 nc_setNumberOfLines:maximumNumberOfSecondaryLargeTextLines];
 
-    v5 = v16;
+    viewCopy = v16;
   }
 }
 
@@ -1208,10 +1208,10 @@ LABEL_23:
 {
   if (self->_lookStyle == 1)
   {
-    v3 = [(UITextView *)self->_secondaryTextView textContainer];
-    v4 = [v3 maximumNumberOfLines];
+    textContainer = [(UITextView *)self->_secondaryTextView textContainer];
+    maximumNumberOfLines = [textContainer maximumNumberOfLines];
 
-    return v4;
+    return maximumNumberOfLines;
   }
 
   else
@@ -1222,14 +1222,14 @@ LABEL_23:
   }
 }
 
-- (void)setMaximumNumberOfPrimaryTextLines:(unint64_t)a3
+- (void)setMaximumNumberOfPrimaryTextLines:(unint64_t)lines
 {
-  if (self->_maximumNumberOfPrimaryTextLines != a3)
+  if (self->_maximumNumberOfPrimaryTextLines != lines)
   {
-    self->_maximumNumberOfPrimaryTextLines = a3;
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 preferredContentSizeCategory];
-    IsAX = _NCSizeCategoryIsAX(v5);
+    self->_maximumNumberOfPrimaryTextLines = lines;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+    IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
     if (!IsAX)
     {
@@ -1242,14 +1242,14 @@ LABEL_23:
   }
 }
 
-- (void)setMaximumNumberOfPrimaryLargeTextLines:(unint64_t)a3
+- (void)setMaximumNumberOfPrimaryLargeTextLines:(unint64_t)lines
 {
-  if (self->_maximumNumberOfPrimaryLargeTextLines != a3)
+  if (self->_maximumNumberOfPrimaryLargeTextLines != lines)
   {
-    self->_maximumNumberOfPrimaryLargeTextLines = a3;
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 preferredContentSizeCategory];
-    IsAX = _NCSizeCategoryIsAX(v5);
+    self->_maximumNumberOfPrimaryLargeTextLines = lines;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+    IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
     if (IsAX)
     {
@@ -1262,51 +1262,51 @@ LABEL_23:
   }
 }
 
-- (void)setMaximumNumberOfSecondaryTextLines:(unint64_t)a3
+- (void)setMaximumNumberOfSecondaryTextLines:(unint64_t)lines
 {
-  if (self->_maximumNumberOfSecondaryTextLines != a3)
+  if (self->_maximumNumberOfSecondaryTextLines != lines)
   {
-    self->_maximumNumberOfSecondaryTextLines = a3;
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 preferredContentSizeCategory];
-    IsAX = _NCSizeCategoryIsAX(v5);
+    self->_maximumNumberOfSecondaryTextLines = lines;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+    IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
     if (!IsAX)
     {
-      v7 = [(NCNotificationContentView *)self _secondaryTextSupportingView];
-      [(NCNotificationContentView *)self _updateTextAttributesForSecondaryTextSupportingView:v7 withStyle:self->_lookStyle];
+      _secondaryTextSupportingView = [(NCNotificationContentView *)self _secondaryTextSupportingView];
+      [(NCNotificationContentView *)self _updateTextAttributesForSecondaryTextSupportingView:_secondaryTextSupportingView withStyle:self->_lookStyle];
     }
   }
 }
 
-- (void)setMaximumNumberOfSecondaryLargeTextLines:(unint64_t)a3
+- (void)setMaximumNumberOfSecondaryLargeTextLines:(unint64_t)lines
 {
-  if (self->_maximumNumberOfSecondaryLargeTextLines != a3)
+  if (self->_maximumNumberOfSecondaryLargeTextLines != lines)
   {
-    self->_maximumNumberOfSecondaryLargeTextLines = a3;
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 preferredContentSizeCategory];
-    IsAX = _NCSizeCategoryIsAX(v5);
+    self->_maximumNumberOfSecondaryLargeTextLines = lines;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+    IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
     if (IsAX)
     {
-      v7 = [(NCNotificationContentView *)self _secondaryTextSupportingView];
-      [(NCNotificationContentView *)self _updateTextAttributesForSecondaryTextSupportingView:v7 withStyle:self->_lookStyle];
+      _secondaryTextSupportingView = [(NCNotificationContentView *)self _secondaryTextSupportingView];
+      [(NCNotificationContentView *)self _updateTextAttributesForSecondaryTextSupportingView:_secondaryTextSupportingView withStyle:self->_lookStyle];
     }
   }
 }
 
-- (void)_updateStyleForSecondaryTextSupportingView:(id)a3 withStyle:(int64_t)a4
+- (void)_updateStyleForSecondaryTextSupportingView:(id)view withStyle:(int64_t)style
 {
-  v5 = a3;
-  if (v5)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v7 = v5;
-    [v5 mt_removeAllVisualStyling];
+    v7 = viewCopy;
+    [viewCopy mt_removeAllVisualStyling];
     if (self->_lookStyle == 1)
     {
-      v6 = [MEMORY[0x277D75348] labelColor];
-      [v7 setTextColor:v6];
+      labelColor = [MEMORY[0x277D75348] labelColor];
+      [v7 setTextColor:labelColor];
     }
 
     else
@@ -1314,16 +1314,16 @@ LABEL_23:
       [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:v7 withStyle:0];
     }
 
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)_configureTextSupportingView:(id)a3
+- (void)_configureTextSupportingView:(id)view
 {
-  v3 = a3;
-  [v3 setContentMode:4];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  viewCopy = view;
+  [viewCopy setContentMode:4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [viewCopy setBackgroundColor:clearColor];
 }
 
 - (id)_newSecondaryLabel
@@ -1347,15 +1347,15 @@ LABEL_23:
   [v3 _setInteractiveTextSelectionDisabled:1];
   [v3 setScrollEnabled:0];
   [(NCNotificationContentView *)self _configureTextSupportingView:v3];
-  v4 = [v3 textContainer];
-  [v4 setLineFragmentPadding:0.0];
+  textContainer = [v3 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
-  v5 = [v3 textContainer];
-  [v5 setLineBreakMode:4];
+  textContainer2 = [v3 textContainer];
+  [textContainer2 setLineBreakMode:4];
 
   [(NCNotificationContentView *)self _updateTextAttributesForSecondaryTextSupportingView:v3 withStyle:self->_lookStyle];
-  v6 = [v3 textLayoutManager];
-  [v6 setLimitsLayoutForSuspiciousContents:1];
+  textLayoutManager = [v3 textLayoutManager];
+  [textLayoutManager setLimitsLayoutForSuspiciousContents:1];
 
   if (self->_lookStyle == 1)
   {
@@ -1392,9 +1392,9 @@ LABEL_23:
 
     else
     {
-      v4 = [(NCNotificationContentView *)self _newSecondaryLabel];
+      _newSecondaryLabel = [(NCNotificationContentView *)self _newSecondaryLabel];
       v5 = self->_secondaryLabel;
-      self->_secondaryLabel = v4;
+      self->_secondaryLabel = _newSecondaryLabel;
 
       [(UIView *)self->_contentView addSubview:self->_secondaryLabel];
       [(NCNotificationContentView *)self _updateStyleForSecondaryTextSupportingView:self->_secondaryLabel withStyle:self->_lookStyle];
@@ -1412,9 +1412,9 @@ LABEL_23:
   {
     if (self->_lookStyle == 1)
     {
-      v4 = [(NCNotificationContentView *)self _newSecondaryTextView];
+      _newSecondaryTextView = [(NCNotificationContentView *)self _newSecondaryTextView];
       v5 = self->_secondaryTextView;
-      self->_secondaryTextView = v4;
+      self->_secondaryTextView = _newSecondaryTextView;
 
       [(UIView *)self->_contentView addSubview:self->_secondaryTextView];
       [(NCNotificationContentView *)self _updateStyleForSecondaryTextSupportingView:self->_secondaryTextView withStyle:self->_lookStyle];
@@ -1432,8 +1432,8 @@ LABEL_23:
 
 - (id)_lazySecondaryTextSupportingView
 {
-  v3 = [(NCNotificationContentView *)self _secondaryTextSupportingView];
-  if (!v3)
+  _secondaryTextSupportingView = [(NCNotificationContentView *)self _secondaryTextSupportingView];
+  if (!_secondaryTextSupportingView)
   {
     if (self->_lookStyle == 1)
     {
@@ -1444,60 +1444,60 @@ LABEL_23:
     {
       [(NCNotificationContentView *)self _lazySecondaryLabel];
     }
-    v3 = ;
+    _secondaryTextSupportingView = ;
   }
 
-  return v3;
+  return _secondaryTextSupportingView;
 }
 
 - (NSAttributedString)secondaryText
 {
-  v2 = [(NCNotificationContentView *)self _secondaryTextSupportingView];
-  v3 = [v2 attributedText];
+  _secondaryTextSupportingView = [(NCNotificationContentView *)self _secondaryTextSupportingView];
+  attributedText = [_secondaryTextSupportingView attributedText];
 
-  return v3;
+  return attributedText;
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v10 = a3;
-  v4 = [(NCNotificationContentView *)self secondaryText];
+  textCopy = text;
+  secondaryText = [(NCNotificationContentView *)self secondaryText];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(NCNotificationContentView *)self _lazySecondaryTextSupportingView];
-    v7 = [v6 font];
-    [(NCNotificationContentView *)self _clearCacheForFont:v7];
+    _lazySecondaryTextSupportingView = [(NCNotificationContentView *)self _lazySecondaryTextSupportingView];
+    font = [_lazySecondaryTextSupportingView font];
+    [(NCNotificationContentView *)self _clearCacheForFont:font];
 
-    v8 = [(NCNotificationContentView *)self _lazySecondaryTextSupportingView];
-    v9 = [v8 textColor];
-    [v8 setAttributedText:v10];
-    [v8 setTextColor:v9];
-    [(NCNotificationContentView *)self _updateTextAttributesForSecondaryTextSupportingView:v8 withStyle:self->_lookStyle];
+    _lazySecondaryTextSupportingView2 = [(NCNotificationContentView *)self _lazySecondaryTextSupportingView];
+    textColor = [_lazySecondaryTextSupportingView2 textColor];
+    [_lazySecondaryTextSupportingView2 setAttributedText:textCopy];
+    [_lazySecondaryTextSupportingView2 setTextColor:textColor];
+    [(NCNotificationContentView *)self _updateTextAttributesForSecondaryTextSupportingView:_lazySecondaryTextSupportingView2 withStyle:self->_lookStyle];
     self->_hasUpdatedContent = 1;
     [(NCNotificationContentView *)self setNeedsLayout];
   }
 }
 
-- (void)_updateTextAttributesForSummaryLabel:(id)a3 withStyle:(int64_t)a4
+- (void)_updateTextAttributesForSummaryLabel:(id)label withStyle:(int64_t)style
 {
-  if (a3)
+  if (label)
   {
-    v7 = a3;
-    v5 = [(NCNotificationContentView *)self fontProvider];
-    v6 = [v5 preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:8];
-    [v7 setFont:v6];
+    labelCopy = label;
+    fontProvider = [(NCNotificationContentView *)self fontProvider];
+    v6 = [fontProvider preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:8];
+    [labelCopy setFont:v6];
 
-    [v7 setNumberOfLines:2];
+    [labelCopy setNumberOfLines:2];
   }
 }
 
-- (void)_updateStyleForSummaryLabel:(id)a3 withStyle:(int64_t)a4
+- (void)_updateStyleForSummaryLabel:(id)label withStyle:(int64_t)style
 {
-  v5 = a3;
-  [v5 mt_removeAllVisualStyling];
-  [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:v5 withStyle:1];
+  labelCopy = label;
+  [labelCopy mt_removeAllVisualStyling];
+  [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:labelCopy withStyle:1];
 }
 
 - (id)_newSummaryLabel
@@ -1512,9 +1512,9 @@ LABEL_23:
   summaryLabel = self->_summaryLabel;
   if (!summaryLabel)
   {
-    v4 = [(NCNotificationContentView *)self _newSummaryLabel];
+    _newSummaryLabel = [(NCNotificationContentView *)self _newSummaryLabel];
     v5 = self->_summaryLabel;
-    self->_summaryLabel = v4;
+    self->_summaryLabel = _newSummaryLabel;
 
     [(NCNotificationContentView *)self _updateStyleForSummaryLabel:self->_summaryLabel withStyle:self->_lookStyle];
     [(UIView *)self->_contentView addSubview:self->_summaryLabel];
@@ -1525,34 +1525,34 @@ LABEL_23:
   return summaryLabel;
 }
 
-- (void)setSummaryText:(id)a3
+- (void)setSummaryText:(id)text
 {
-  v8 = a3;
-  v4 = [(NCNotificationContentView *)self summaryText];
+  textCopy = text;
+  summaryText = [(NCNotificationContentView *)self summaryText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(NCNotificationContentView *)self _lazySummaryLabel];
-    v7 = [v6 font];
-    [(NCNotificationContentView *)self _clearCacheForFont:v7];
+    _lazySummaryLabel = [(NCNotificationContentView *)self _lazySummaryLabel];
+    font = [_lazySummaryLabel font];
+    [(NCNotificationContentView *)self _clearCacheForFont:font];
 
-    [v6 setText:v8];
+    [_lazySummaryLabel setText:textCopy];
     self->_hasUpdatedContent = 1;
     [(NCNotificationContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setThumbnail:(id)a3
+- (void)setThumbnail:(id)thumbnail
 {
-  v7 = a3;
-  v4 = [(NCNotificationContentView *)self thumbnail];
+  thumbnailCopy = thumbnail;
+  thumbnail = [(NCNotificationContentView *)self thumbnail];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(NCNotificationContentView *)self _lazyThumbnailImageView];
-    [v6 setImage:v7];
+    _lazyThumbnailImageView = [(NCNotificationContentView *)self _lazyThumbnailImageView];
+    [_lazyThumbnailImageView setImage:thumbnailCopy];
     [(NCNotificationContentView *)self _updateContentModeForThumbnailImage:self->_thumbnailImageView];
     [(NCNotificationContentView *)self _updateStyleForThumbnailImage:self->_thumbnailImageView withStyle:self->_lookStyle];
     self->_hasUpdatedContent = 1;
@@ -1560,29 +1560,29 @@ LABEL_23:
   }
 }
 
-- (void)setThumbnailIsContactImage:(BOOL)a3
+- (void)setThumbnailIsContactImage:(BOOL)image
 {
-  if (self->_thumbnailIsContactImage != a3)
+  if (self->_thumbnailIsContactImage != image)
   {
-    self->_thumbnailIsContactImage = a3;
+    self->_thumbnailIsContactImage = image;
     [(NCNotificationContentView *)self _configureThumbnailAsContactImage:?];
   }
 }
 
-- (void)setScreenCaptureProhibited:(BOOL)a3
+- (void)setScreenCaptureProhibited:(BOOL)prohibited
 {
-  if (self->_screenCaptureProhibited != a3)
+  if (self->_screenCaptureProhibited != prohibited)
   {
-    self->_screenCaptureProhibited = a3;
+    self->_screenCaptureProhibited = prohibited;
     [(NCNotificationContentView *)self nc_setScreenCaptureProhibited:?];
   }
 }
 
-- (void)_updateContentModeForThumbnailImage:(id)a3
+- (void)_updateContentModeForThumbnailImage:(id)image
 {
   thumbnailImageView = self->_thumbnailImageView;
-  v5 = [a3 image];
-  if ([v5 isSymbolImage])
+  image = [image image];
+  if ([image isSymbolImage])
   {
     v4 = 4;
   }
@@ -1595,39 +1595,39 @@ LABEL_23:
   [(UIImageView *)thumbnailImageView setContentMode:v4];
 }
 
-- (void)_updateStyleForThumbnailImage:(id)a3 withStyle:(int64_t)a4
+- (void)_updateStyleForThumbnailImage:(id)image withStyle:(int64_t)style
 {
-  v8 = a3;
-  [v8 mt_removeAllVisualStyling];
-  v6 = [v8 image];
-  v7 = [v6 isSymbolImage];
+  imageCopy = image;
+  [imageCopy mt_removeAllVisualStyling];
+  image = [imageCopy image];
+  isSymbolImage = [image isSymbolImage];
 
-  if (a4 != 1 && v7)
+  if (style != 1 && isSymbolImage)
   {
-    [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:v8 withStyle:0];
+    [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:imageCopy withStyle:0];
   }
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   accessoryView = self->_accessoryView;
-  if (accessoryView != v5)
+  if (accessoryView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)accessoryView removeFromSuperview];
-    objc_storeStrong(&self->_accessoryView, a3);
+    objc_storeStrong(&self->_accessoryView, view);
     accessoryView = [(UIView *)self->_contentView addSubview:v7];
   }
 
   MEMORY[0x2821F96F8](accessoryView);
 }
 
-- (void)setUseSmallTopMargin:(BOOL)a3
+- (void)setUseSmallTopMargin:(BOOL)margin
 {
-  if (self->_useSmallTopMargin != a3)
+  if (self->_useSmallTopMargin != margin)
   {
-    self->_useSmallTopMargin = a3;
+    self->_useSmallTopMargin = margin;
     [(NCNotificationContentView *)self setNeedsLayout];
   }
 }
@@ -1655,35 +1655,35 @@ LABEL_23:
   return v5;
 }
 
-- (void)setFontProvider:(id)a3
+- (void)setFontProvider:(id)provider
 {
-  v6 = a3;
+  providerCopy = provider;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_fontProvider, a3);
+    objc_storeStrong(&self->_fontProvider, provider);
     [(NCNotificationContentView *)self _updateTextAttributesForPrimaryLabel:self->_primaryLabel withStyle:self->_lookStyle];
     [(NCNotificationContentView *)self _updateTextAttributesForPrimaryLabel:self->_primarySubtitleLabel withStyle:self->_lookStyle];
-    v5 = [(NCNotificationContentView *)self _secondaryTextSupportingView];
-    [(NCNotificationContentView *)self _updateTextAttributesForSecondaryTextSupportingView:v5 withStyle:self->_lookStyle];
+    _secondaryTextSupportingView = [(NCNotificationContentView *)self _secondaryTextSupportingView];
+    [(NCNotificationContentView *)self _updateTextAttributesForSecondaryTextSupportingView:_secondaryTextSupportingView withStyle:self->_lookStyle];
 
     [(NCNotificationContentView *)self _updateTextAttributesForSummaryLabel:self->_summaryLabel withStyle:self->_lookStyle];
     [(NCNotificationContentView *)self setNeedsLayout];
   }
 }
 
-- (CGRect)_frameForThumbnailInRect:(CGRect)a3 withContentViewInsets:(UIEdgeInsets)a4
+- (CGRect)_frameForThumbnailInRect:(CGRect)rect withContentViewInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  left = a4.left;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if ([(NCNotificationContentView *)self _shouldReverseLayoutDirection:a3.origin.x])
+  right = insets.right;
+  left = insets.left;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if ([(NCNotificationContentView *)self _shouldReverseLayoutDirection:rect.origin.x])
   {
-    v11 = [(NCNotificationContentView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(NCNotificationContentView *)self _shouldReverseLayoutDirection];
     v12 = 0.0;
-    if (v11)
+    if (_shouldReverseLayoutDirection)
     {
       v12 = 15.0;
     }
@@ -1732,13 +1732,13 @@ LABEL_23:
   return result;
 }
 
-- (void)_configureThumbnailAsContactImage:(BOOL)a3
+- (void)_configureThumbnailAsContactImage:(BOOL)image
 {
-  v3 = a3;
-  v5 = [(UIImageView *)self->_thumbnailImageView layer];
-  v6 = v5;
+  imageCopy = image;
+  layer = [(UIImageView *)self->_thumbnailImageView layer];
+  v6 = layer;
   v7 = 17.5;
-  if (v3)
+  if (imageCopy)
   {
     v8 = MEMORY[0x277CDA130];
   }
@@ -1749,10 +1749,10 @@ LABEL_23:
     v8 = MEMORY[0x277CDA138];
   }
 
-  [v5 setCornerRadius:v7];
+  [layer setCornerRadius:v7];
 
-  v9 = [(UIImageView *)self->_thumbnailImageView layer];
-  [v9 setCornerCurve:*v8];
+  layer2 = [(UIImageView *)self->_thumbnailImageView layer];
+  [layer2 setCornerCurve:*v8];
 }
 
 - (void)layoutSubviews
@@ -1781,19 +1781,19 @@ LABEL_23:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NCNotificationContentView *)self window];
-  if (v11)
+  window = [(NCNotificationContentView *)self window];
+  if (window)
   {
-    v12 = [(NCNotificationContentView *)self window];
-    v13 = [v12 screen];
-    [v13 scale];
+    window2 = [(NCNotificationContentView *)self window];
+    screen = [window2 screen];
+    [screen scale];
     v159 = v14;
   }
 
   else
   {
-    v12 = [MEMORY[0x277D759A0] mainScreen];
-    [v12 scale];
+    window2 = [MEMORY[0x277D759A0] mainScreen];
+    [window2 scale];
     v159 = v15;
   }
 
@@ -1819,16 +1819,16 @@ LABEL_23:
   v151 = v20;
   v161 = v23;
   v162 = v22;
-  v24 = [(NCNotificationContentView *)self thumbnail];
-  if (v24)
+  thumbnail = [(NCNotificationContentView *)self thumbnail];
+  if (thumbnail)
   {
   }
 
   else
   {
-    v25 = [(NCNotificationContentView *)self accessoryView];
+    accessoryView = [(NCNotificationContentView *)self accessoryView];
 
-    if (!v25)
+    if (!accessoryView)
     {
       v41 = 0;
       v136 = *MEMORY[0x277CBF3A0];
@@ -1852,7 +1852,7 @@ LABEL_23:
   top = self->_contentInsets.top;
   right = self->_contentInsets.right;
   bottom = self->_contentInsets.bottom;
-  v36 = [(NCNotificationContentView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(NCNotificationContentView *)self _shouldReverseLayoutDirection];
   if ([(NCNotificationContentView *)self _shouldReverseLayoutDirection])
   {
     v37 = 50.0;
@@ -1863,9 +1863,9 @@ LABEL_23:
     v37 = 35.0;
   }
 
-  v38 = [(NCNotificationContentView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection2 = [(NCNotificationContentView *)self _shouldReverseLayoutDirection];
   v39 = 15.0;
-  if (v38)
+  if (_shouldReverseLayoutDirection2)
   {
     v39 = 0.0;
   }
@@ -1875,7 +1875,7 @@ LABEL_23:
   v149 = v31;
   v155 = v33;
   rect = v29;
-  if (v36)
+  if (_shouldReverseLayoutDirection)
   {
     left = left + v40;
   }
@@ -1932,16 +1932,16 @@ LABEL_19:
   if (v56 == 1)
   {
     v57 = v160;
-    v58 = [(UILabel *)self->_primaryLabel font];
-    [v58 capHeight];
+    font = [(UILabel *)self->_primaryLabel font];
+    [font capHeight];
     UICeilToScale();
     rect = v59;
 
 LABEL_26:
     v60 = v154;
-    v61 = [(UILabel *)self->_primaryLabel font];
-    v62 = [(NCNotificationContentView *)self primaryText];
-    [v61 unui_effectiveLineHeightForText:v62];
+    font2 = [(UILabel *)self->_primaryLabel font];
+    primaryText = [(NCNotificationContentView *)self primaryText];
+    [font2 unui_effectiveLineHeightForText:primaryText];
 
     v51 = v57;
     goto LABEL_27;
@@ -2005,8 +2005,8 @@ LABEL_27:
 
   else
   {
-    v77 = [(UILabel *)self->_primarySubtitleLabel font];
-    [v77 capHeight];
+    font3 = [(UILabel *)self->_primarySubtitleLabel font];
+    [font3 capHeight];
     UICeilToScale();
     rect = v78;
 
@@ -2014,9 +2014,9 @@ LABEL_27:
     v79 = v154;
   }
 
-  v80 = [(UILabel *)self->_primarySubtitleLabel font];
-  v81 = [(NCNotificationContentView *)self primarySubtitleText];
-  [v80 unui_effectiveLineHeightForText:v81];
+  font4 = [(UILabel *)self->_primarySubtitleLabel font];
+  primarySubtitleText = [(NCNotificationContentView *)self primarySubtitleText];
+  [font4 unui_effectiveLineHeightForText:primarySubtitleText];
 
 LABEL_37:
   v82 = [(NCNotificationContentView *)self _secondaryTextNumberOfLinesWithMeasuredNumberOfLines:[(NCNotificationContentView *)self _secondaryTextMeasuredNumberOfLinesForWidth:Width scale:v159]];
@@ -2025,8 +2025,8 @@ LABEL_37:
   v86 = v85;
   v88 = v87;
   v90 = v89;
-  v152 = [(NCNotificationContentView *)self _secondaryTextSupportingView];
-  [v152 setBounds:{v84, v86, v88, v90}];
+  _secondaryTextSupportingView = [(NCNotificationContentView *)self _secondaryTextSupportingView];
+  [_secondaryTextSupportingView setBounds:{v84, v86, v88, v90}];
   if (v42 | v63)
   {
     [(NCNotificationContentView *)self _secondaryTextBaselineOffsetForCurrentStyle];
@@ -2070,16 +2070,16 @@ LABEL_37:
 
   else
   {
-    v102 = [(NCNotificationContentView *)self secondaryText];
-    v103 = [v102 length];
+    secondaryText = [(NCNotificationContentView *)self secondaryText];
+    v103 = [secondaryText length];
 
     v99 = v136;
     v100 = v149;
     v101 = v155;
     if (v103)
     {
-      v104 = [v152 font];
-      [v104 capHeight];
+      font5 = [_secondaryTextSupportingView font];
+      [font5 capHeight];
       UICeilToScale();
       rect = v105;
     }
@@ -2087,10 +2087,10 @@ LABEL_37:
 
   if (v82)
   {
-    v106 = [v152 font];
-    v107 = [(NCNotificationContentView *)self secondaryText];
-    v108 = [v107 string];
-    [v106 unui_effectiveLineHeightForText:v108];
+    font6 = [_secondaryTextSupportingView font];
+    secondaryText2 = [(NCNotificationContentView *)self secondaryText];
+    string = [secondaryText2 string];
+    [font6 unui_effectiveLineHeightForText:string];
   }
 
   v109 = v63 + v42 + v82;
@@ -2160,15 +2160,15 @@ LABEL_37:
   [(UIView *)self->_contentView setFrame:v151, v150, v162, v161];
   [(UILabel *)self->_primaryLabel setFrame:v148, v147, v146, v145];
   [(UILabel *)self->_primarySubtitleLabel setFrame:v144, v143, v142, v141];
-  [v152 setFrame:{v140, v139, v138, v137}];
+  [_secondaryTextSupportingView setFrame:{v140, v139, v138, v137}];
   [(BSUIEmojiLabelView *)self->_summaryLabel setFrame:v128, v130, v132, v134];
   [(UIImageView *)self->_thumbnailImageView setFrame:v114, rect, v115, v101];
   [(UIView *)self->_accessoryView setFrame:v114, rect, v115, v101];
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
-  if (a3 == 1)
+  if (category == 1)
   {
     return self->_visualStylingProvider;
   }
@@ -2179,11 +2179,11 @@ LABEL_37:
   }
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  visualStylingProvider = a3;
+  visualStylingProvider = provider;
   v8 = visualStylingProvider;
-  if (a4 == 1)
+  if (category == 1)
   {
     visualStylingProvider = self->_visualStylingProvider;
     if (visualStylingProvider != v8)
@@ -2191,16 +2191,16 @@ LABEL_37:
       [(MTVisualStylingProvider *)visualStylingProvider stopAutomaticallyUpdatingView:self->_primaryLabel];
       [(MTVisualStylingProvider *)self->_visualStylingProvider stopAutomaticallyUpdatingView:self->_primarySubtitleLabel];
       v9 = self->_visualStylingProvider;
-      v10 = [(NCNotificationContentView *)self _secondaryTextSupportingView];
-      [(MTVisualStylingProvider *)v9 stopAutomaticallyUpdatingView:v10];
+      _secondaryTextSupportingView = [(NCNotificationContentView *)self _secondaryTextSupportingView];
+      [(MTVisualStylingProvider *)v9 stopAutomaticallyUpdatingView:_secondaryTextSupportingView];
 
       [(MTVisualStylingProvider *)self->_visualStylingProvider stopAutomaticallyUpdatingView:self->_summaryLabel];
       [(MTVisualStylingProvider *)self->_visualStylingProvider stopAutomaticallyUpdatingView:self->_thumbnailImageView];
-      objc_storeStrong(&self->_visualStylingProvider, a3);
+      objc_storeStrong(&self->_visualStylingProvider, provider);
       [(NCNotificationContentView *)self _updateStyleForPrimaryLabel:self->_primaryLabel withStyle:self->_lookStyle];
       [(NCNotificationContentView *)self _updateStyleForPrimaryLabel:self->_primarySubtitleLabel withStyle:self->_lookStyle];
-      v11 = [(NCNotificationContentView *)self _secondaryTextSupportingView];
-      [(NCNotificationContentView *)self _updateStyleForSecondaryTextSupportingView:v11 withStyle:self->_lookStyle];
+      _secondaryTextSupportingView2 = [(NCNotificationContentView *)self _secondaryTextSupportingView];
+      [(NCNotificationContentView *)self _updateStyleForSecondaryTextSupportingView:_secondaryTextSupportingView2 withStyle:self->_lookStyle];
 
       [(NCNotificationContentView *)self _updateStyleForSummaryLabel:self->_summaryLabel withStyle:self->_lookStyle];
       [(NCNotificationContentView *)self _updateStyleForThumbnailImage:self->_thumbnailImageView withStyle:self->_lookStyle];
@@ -2211,16 +2211,16 @@ LABEL_37:
   MEMORY[0x2821F96F8](visualStylingProvider);
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
-    if (a3)
+    self->_adjustsFontForContentSizeCategory = category;
+    if (category)
     {
-      v5 = [MEMORY[0x277D75128] sharedApplication];
-      v6 = [v5 preferredContentSizeCategory];
-      [(NCNotificationContentView *)self setPreferredContentSizeCategory:v6];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+      [(NCNotificationContentView *)self setPreferredContentSizeCategory:preferredContentSizeCategory];
     }
 
     [(NCNotificationContentView *)self adjustForContentSizeCategoryChange];
@@ -2241,15 +2241,15 @@ LABEL_37:
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-  v5 = [(NCNotificationContentView *)self preferredContentSizeCategory];
-  v6 = [v4 isEqualToString:v5];
+  preferredContentSizeCategory2 = [(NCNotificationContentView *)self preferredContentSizeCategory];
+  v6 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v6 & 1) == 0)
   {
-    [(NCNotificationContentView *)self setPreferredContentSizeCategory:v4];
+    [(NCNotificationContentView *)self setPreferredContentSizeCategory:preferredContentSizeCategory];
     fontProvider = self->_fontProvider;
     self->_fontProvider = 0;
 
@@ -2257,8 +2257,8 @@ LABEL_37:
     [(NCNotificationContentView *)self _invalidateNumberOfLinesCache];
     [(NCNotificationContentView *)self _updateTextAttributesForPrimaryLabel:self->_primaryLabel withStyle:self->_lookStyle];
     [(NCNotificationContentView *)self _updateTextAttributesForPrimaryLabel:self->_primarySubtitleLabel withStyle:self->_lookStyle];
-    v8 = [(NCNotificationContentView *)self _secondaryTextSupportingView];
-    [(NCNotificationContentView *)self _updateTextAttributesForSecondaryTextSupportingView:v8 withStyle:self->_lookStyle];
+    _secondaryTextSupportingView = [(NCNotificationContentView *)self _secondaryTextSupportingView];
+    [(NCNotificationContentView *)self _updateTextAttributesForSecondaryTextSupportingView:_secondaryTextSupportingView withStyle:self->_lookStyle];
 
     [(NCNotificationContentView *)self _updateTextAttributesForSummaryLabel:self->_summaryLabel withStyle:self->_lookStyle];
   }
@@ -2266,26 +2266,26 @@ LABEL_37:
   return v6 ^ 1;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = NCNotificationContentView;
-  [(NCNotificationContentView *)&v4 traitCollectionDidChange:a3];
+  [(NCNotificationContentView *)&v4 traitCollectionDidChange:change];
   if ([(NCNotificationContentView *)self adjustsFontForContentSizeCategory])
   {
     [(NCNotificationContentView *)self adjustForContentSizeCategoryChange];
   }
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v9 = a4;
-  if (!a6 && self->_secondaryTextView == a3)
+  lCopy = l;
+  if (!interaction && self->_secondaryTextView == view)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained notificationContentView:self willInteractWithURL:v9];
+      [WeakRetained notificationContentView:self willInteractWithURL:lCopy];
     }
 
     v11 = dispatch_get_global_queue(25, 0);
@@ -2293,7 +2293,7 @@ LABEL_37:
     block[1] = 3221225472;
     block[2] = __80__NCNotificationContentView_textView_shouldInteractWithURL_inRange_interaction___block_invoke;
     block[3] = &unk_27836F6A8;
-    v14 = v9;
+    v14 = lCopy;
     dispatch_async(v11, block);
   }
 
@@ -2323,28 +2323,28 @@ void __80__NCNotificationContentView_textView_shouldInteractWithURL_inRange_inte
   [v5 openSensitiveURL:v2 withOptions:v7 error:0];
 }
 
-- (id)textView:(id)a3 writingToolsIgnoredRangesInEnclosingRange:(_NSRange)a4
+- (id)textView:(id)view writingToolsIgnoredRangesInEnclosingRange:(_NSRange)range
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCAE60] valueWithRange:{a4.location, a4.length}];
+  v4 = [MEMORY[0x277CCAE60] valueWithRange:{range.location, range.length}];
   v7[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
 
   return v5;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(NCNotificationContentView *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(NCNotificationContentView *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -2352,8 +2352,8 @@ void __80__NCNotificationContentView_textView_shouldInteractWithURL_inRange_inte
   v10[3] = &unk_27836F560;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;

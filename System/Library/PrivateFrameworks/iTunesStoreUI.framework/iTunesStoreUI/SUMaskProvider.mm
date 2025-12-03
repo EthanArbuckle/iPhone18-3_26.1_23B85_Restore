@@ -1,13 +1,13 @@
 @interface SUMaskProvider
-- (id)copyMaskImageWithSize:(CGSize)a3;
+- (id)copyMaskImageWithSize:(CGSize)size;
 @end
 
 @implementation SUMaskProvider
 
-- (id)copyMaskImageWithSize:(CGSize)a3
+- (id)copyMaskImageWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   result = [(SUMaskProvider *)self copyPathForMaskWithSize:?];
   if (result)
   {

@@ -1,14 +1,14 @@
 @interface ANSTVideoMaskRefinerHQ
 + (id)new;
 - (ANSTVideoMaskRefinerHQ)init;
-- (ANSTVideoMaskRefinerHQ)initWithConfiguration:(id)a3;
-- (ANSTVideoMaskRefinerHQ)initWithConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)bindInputCoarseMaskBuffer:(__CVBuffer *)a3 error:(id *)a4;
-- (BOOL)bindInputImageBuffer:(__CVBuffer *)a3 error:(id *)a4;
-- (BOOL)bindOutputRefinedMaskBuffer:(__CVBuffer *)a3 error:(id *)a4;
-- (BOOL)commitIOBindingWithError:(id *)a3;
-- (BOOL)executeInferenceWithError:(id *)a3;
-- (BOOL)prepareWithError:(id *)a3;
+- (ANSTVideoMaskRefinerHQ)initWithConfiguration:(id)configuration;
+- (ANSTVideoMaskRefinerHQ)initWithConfiguration:(id)configuration error:(id *)error;
+- (BOOL)bindInputCoarseMaskBuffer:(__CVBuffer *)buffer error:(id *)error;
+- (BOOL)bindInputImageBuffer:(__CVBuffer *)buffer error:(id *)error;
+- (BOOL)bindOutputRefinedMaskBuffer:(__CVBuffer *)buffer error:(id *)error;
+- (BOOL)commitIOBindingWithError:(id *)error;
+- (BOOL)executeInferenceWithError:(id *)error;
+- (BOOL)prepareWithError:(id *)error;
 - (void)dealloc;
 @end
 
@@ -23,34 +23,34 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTVideoMaskRefinerHQ)initWithConfiguration:(id)a3
+- (ANSTVideoMaskRefinerHQ)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   result = objc_msgSend_doesNotRecognizeSelector_(self, v6, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTVideoMaskRefinerHQ)initWithConfiguration:(id)a3 error:(id *)a4
+- (ANSTVideoMaskRefinerHQ)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v7 = a3;
+  configurationCopy = configuration;
   v24.receiver = self;
   v24.super_class = ANSTVideoMaskRefinerHQ;
-  v8 = [(ANSTAlgorithm *)&v24 initWithConfiguration:v7];
+  v8 = [(ANSTAlgorithm *)&v24 initWithConfiguration:configurationCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_config, a3);
+    objc_storeStrong(&v8->_config, configuration);
     v9->_prepared = 0;
     v9->_ioCommitted = 0;
     v9->_mode = 0;
     v10 = [ANSTPixelBufferDescriptor alloc];
-    v12 = objc_msgSend_initWithName_width_height_pixelFormatType_pixelBufferAttributes_error_(v10, v11, @"input_image", 448, 576, 1111970369, 0, a4);
+    v12 = objc_msgSend_initWithName_width_height_pixelFormatType_pixelBufferAttributes_error_(v10, v11, @"input_image", 448, 576, 1111970369, 0, error);
     inputImageDescriptor = v9->_inputImageDescriptor;
     v9->_inputImageDescriptor = v12;
 
@@ -60,11 +60,11 @@
     }
 
     v14 = [ANSTPixelBufferDescriptor alloc];
-    v16 = objc_msgSend_initWithName_width_height_pixelFormatType_pixelBufferAttributes_error_(v14, v15, @"input_coarse_mask", 448, 576, 1278226536, 0, a4);
+    v16 = objc_msgSend_initWithName_width_height_pixelFormatType_pixelBufferAttributes_error_(v14, v15, @"input_coarse_mask", 448, 576, 1278226536, 0, error);
     inputCoarseMaskDescriptor = v9->_inputCoarseMaskDescriptor;
     v9->_inputCoarseMaskDescriptor = v16;
 
-    if (!v9->_inputCoarseMaskDescriptor || (v18 = [ANSTPixelBufferDescriptor alloc], v20 = objc_msgSend_initWithName_width_height_pixelFormatType_pixelBufferAttributes_error_(v18, v19, @"matting", 448, 576, 1278226536, 0, a4), outputRefinedMaskDescriptor = v9->_outputRefinedMaskDescriptor, v9->_outputRefinedMaskDescriptor = v20, outputRefinedMaskDescriptor, !v9->_outputRefinedMaskDescriptor))
+    if (!v9->_inputCoarseMaskDescriptor || (v18 = [ANSTPixelBufferDescriptor alloc], v20 = objc_msgSend_initWithName_width_height_pixelFormatType_pixelBufferAttributes_error_(v18, v19, @"matting", 448, 576, 1278226536, 0, error), outputRefinedMaskDescriptor = v9->_outputRefinedMaskDescriptor, v9->_outputRefinedMaskDescriptor = v20, outputRefinedMaskDescriptor, !v9->_outputRefinedMaskDescriptor))
     {
 LABEL_7:
       v22 = 0;
@@ -101,7 +101,7 @@ LABEL_8:
   [(ANSTVideoMaskRefinerHQ *)&v5 dealloc];
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   v44[1] = *MEMORY[0x277D85DE8];
   if (!self->_prepared)
@@ -114,23 +114,23 @@ LABEL_8:
     network = self->_network;
     self->_network = v11;
 
-    if (objc_msgSend_loadNetworkWithError_(self->_network, v13, a3))
+    if (objc_msgSend_loadNetworkWithError_(self->_network, v13, error))
     {
-      if (objc_msgSend_allocateAndBindNetworkIOExceptInputsNamed_outputsNamed_error_(self->_network, v14, &unk_28432B880, &unk_28432B898, a3))
+      if (objc_msgSend_allocateAndBindNetworkIOExceptInputsNamed_outputsNamed_error_(self->_network, v14, &unk_28432B880, &unk_28432B898, error))
       {
-        v16 = objc_msgSend_pixelBufferForNetworkInputNamed_error_(self->_network, v15, @"input_hard_mask", a3);
+        v16 = objc_msgSend_pixelBufferForNetworkInputNamed_error_(self->_network, v15, @"input_hard_mask", error);
         inputHardMask = self->_inputHardMask;
         self->_inputHardMask = v16;
 
         if (self->_inputHardMask)
         {
-          v19 = objc_msgSend_pixelBufferForNetworkInputNamed_error_(self->_network, v18, @"input_last_alpha", a3);
+          v19 = objc_msgSend_pixelBufferForNetworkInputNamed_error_(self->_network, v18, @"input_last_alpha", error);
           inputLastAlpha = self->_inputLastAlpha;
           self->_inputLastAlpha = v19;
 
           if (self->_inputLastAlpha)
           {
-            v22 = objc_msgSend_pixelBufferForNetworkInputNamed_error_(self->_network, v21, @"input_last_alpha2", a3);
+            v22 = objc_msgSend_pixelBufferForNetworkInputNamed_error_(self->_network, v21, @"input_last_alpha2", error);
             inputLastAlpha2 = self->_inputLastAlpha2;
             self->_inputLastAlpha2 = v22;
 
@@ -164,13 +164,13 @@ LABEL_18:
                 sub_22E6571B0();
               }
 
-              if (a3)
+              if (error)
               {
                 v38 = MEMORY[0x277CCA9B8];
                 v43 = *MEMORY[0x277CCA068];
                 v44[0] = v35;
                 v39 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v37, v44, &v43, 1);
-                *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v38, v40, @"ANSTErrorDomain", 3, v39);
+                *error = objc_msgSend_errorWithDomain_code_userInfo_(v38, v40, @"ANSTErrorDomain", 3, v39);
               }
             }
           }
@@ -188,11 +188,11 @@ LABEL_19:
   return v3;
 }
 
-- (BOOL)bindInputImageBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)bindInputImageBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v7 = [ANSTPixelBuffer alloc];
-  v10 = objc_msgSend_initWithDescriptor_pixelBuffer_orientation_error_(v7, v8, self->_inputImageDescriptor, a3, 1, a4);
+  v10 = objc_msgSend_initWithDescriptor_pixelBuffer_orientation_error_(v7, v8, self->_inputImageDescriptor, buffer, 1, error);
   if (!v10)
   {
     v12 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v9, @"Failed to create ANSTPixelBuffer from given input pixel buffer.");
@@ -202,19 +202,19 @@ LABEL_19:
       sub_22E657224();
     }
 
-    if (a4)
+    if (error)
     {
       v15 = MEMORY[0x277CCA9B8];
       v20 = *MEMORY[0x277CCA068];
       v21[0] = v12;
       v16 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v14, v21, &v20, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v15, v17, @"ANSTErrorDomain", 13, v16);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v15, v17, @"ANSTErrorDomain", 13, v16);
     }
 
     goto LABEL_9;
   }
 
-  if (!objc_msgSend_bindNetworkInputNamed_toPixelBuffer_error_(self->_network, v9, @"input_image", v10, a4))
+  if (!objc_msgSend_bindNetworkInputNamed_toPixelBuffer_error_(self->_network, v9, @"input_image", v10, error))
   {
 LABEL_9:
     v11 = 0;
@@ -229,10 +229,10 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)bindInputCoarseMaskBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)bindInputCoarseMaskBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!buffer)
   {
     v12 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"Input pixel buffer is NULL.");
     v13 = _ANSTLoggingGetOSLogForCategoryANSTKit();
@@ -241,7 +241,7 @@ LABEL_10:
       sub_22E657298();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -253,7 +253,7 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  if ((objc_msgSend_validatePixelBuffer_(self->_inputCoarseMaskDescriptor, a2, a3) & 1) == 0)
+  if ((objc_msgSend_validatePixelBuffer_(self->_inputCoarseMaskDescriptor, a2, buffer) & 1) == 0)
   {
     v12 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v7, @"Input pixel buffer does not match requirement of inputCoarseMaskDescriptor.");
     v16 = _ANSTLoggingGetOSLogForCategoryANSTKit();
@@ -262,7 +262,7 @@ LABEL_10:
       sub_22E657298();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -274,8 +274,8 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  if (CVPixelBufferGetHeight(a3) * BytesPerRow != self->_expectedMaskSizeInBytes)
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+  if (CVPixelBufferGetHeight(buffer) * BytesPerRow != self->_expectedMaskSizeInBytes)
   {
     v12 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v9, @"Unexpected mask buffer size in bytes. Please ensure rowBytes is tight.");
     v18 = _ANSTLoggingGetOSLogForCategoryANSTKit();
@@ -284,7 +284,7 @@ LABEL_10:
       sub_22E657298();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_20;
     }
@@ -294,7 +294,7 @@ LABEL_10:
     v24 = v12;
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v19, &v24, &v23, 1);
     v20 = LABEL_19:;
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v15, v21, @"ANSTErrorDomain", 13, v20);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v15, v21, @"ANSTErrorDomain", 13, v20);
 
 LABEL_20:
     result = 0;
@@ -307,8 +307,8 @@ LABEL_20:
     CVPixelBufferRelease(inputCoarseMaskBuffer);
   }
 
-  self->_inputCoarseMaskBuffer = a3;
-  CVPixelBufferRetain(a3);
+  self->_inputCoarseMaskBuffer = buffer;
+  CVPixelBufferRetain(buffer);
   result = 1;
   self->_inputCoarseMaskBound = 1;
 LABEL_21:
@@ -316,11 +316,11 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)bindOutputRefinedMaskBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)bindOutputRefinedMaskBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  Width = CVPixelBufferGetWidth(a3);
-  if (Width != objc_msgSend_width(self->_outputRefinedMaskDescriptor, v8, v9) || (Height = CVPixelBufferGetHeight(a3), Height != objc_msgSend_height(self->_outputRefinedMaskDescriptor, v12, v13)))
+  Width = CVPixelBufferGetWidth(buffer);
+  if (Width != objc_msgSend_width(self->_outputRefinedMaskDescriptor, v8, v9) || (Height = CVPixelBufferGetHeight(buffer), Height != objc_msgSend_height(self->_outputRefinedMaskDescriptor, v12, v13)))
   {
     v31 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v10, @"Unexpected pixel buffer width or height.");
     v32 = _ANSTLoggingGetOSLogForCategoryANSTKit();
@@ -329,7 +329,7 @@ LABEL_21:
       sub_22E65730C();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -341,8 +341,8 @@ LABEL_21:
     goto LABEL_15;
   }
 
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  if (CVPixelBufferGetHeight(a3) * BytesPerRow != self->_expectedMaskSizeInBytes)
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+  if (CVPixelBufferGetHeight(buffer) * BytesPerRow != self->_expectedMaskSizeInBytes)
   {
     v31 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v15, @"Unexpected pixel buffer size in bytes.");
     v39 = _ANSTLoggingGetOSLogForCategoryANSTKit();
@@ -351,7 +351,7 @@ LABEL_21:
       sub_22E65730C();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -363,7 +363,7 @@ LABEL_21:
     goto LABEL_15;
   }
 
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  IOSurface = CVPixelBufferGetIOSurface(buffer);
   if (!IOSurface)
   {
     v31 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v17, @"OutputRefinedMaskBuffer must be backed by IOSurface.");
@@ -373,7 +373,7 @@ LABEL_21:
       sub_22E65730C();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -383,7 +383,7 @@ LABEL_21:
     v45 = v31;
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v42, &v45, &v44, 1);
     v35 = LABEL_15:;
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v34, v36, @"ANSTErrorDomain", 13, v35);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v34, v36, @"ANSTErrorDomain", 13, v35);
 
 LABEL_16:
     v30 = 0;
@@ -394,12 +394,12 @@ LABEL_16:
   v43[0] = objc_msgSend_height(self->_outputRefinedMaskDescriptor, v17, v18);
   v43[1] = objc_msgSend_width(self->_outputRefinedMaskDescriptor, v20, v21);
   v22 = [ANSTTensorDescriptor alloc];
-  v24 = objc_msgSend_initWithName_dataType_numberOfDimensions_lengths_alignment_error_(v22, v23, @"matting", 104, 2, v43, 1, a4);
+  v24 = objc_msgSend_initWithName_dataType_numberOfDimensions_lengths_alignment_error_(v22, v23, @"matting", 104, 2, v43, 1, error);
   if (v24)
   {
     v25 = [ANSTTensorSurface alloc];
-    v28 = objc_msgSend_initWithDescriptor_ioSurface_error_(v25, v26, v24, v19, a4);
-    if (v28 && objc_msgSend_bindNetworkOutputNamed_toTensor_error_(self->_network, v27, @"matting", v28, a4))
+    v28 = objc_msgSend_initWithDescriptor_ioSurface_error_(v25, v26, v24, v19, error);
+    if (v28 && objc_msgSend_bindNetworkOutputNamed_toTensor_error_(self->_network, v27, @"matting", v28, error))
     {
       outputRefinedMaskBuffer = self->_outputRefinedMaskBuffer;
       if (outputRefinedMaskBuffer)
@@ -407,8 +407,8 @@ LABEL_16:
         CVPixelBufferRelease(outputRefinedMaskBuffer);
       }
 
-      self->_outputRefinedMaskBuffer = a3;
-      CVPixelBufferRetain(a3);
+      self->_outputRefinedMaskBuffer = buffer;
+      CVPixelBufferRetain(buffer);
       v30 = 1;
       self->_outputRefinedMaskBound = 1;
     }
@@ -429,7 +429,7 @@ LABEL_17:
   return v30;
 }
 
-- (BOOL)commitIOBindingWithError:(id *)a3
+- (BOOL)commitIOBindingWithError:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
   if (!self->_prepared)
@@ -441,7 +441,7 @@ LABEL_17:
       sub_22E657380();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -462,7 +462,7 @@ LABEL_17:
       sub_22E657380();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -483,7 +483,7 @@ LABEL_17:
       sub_22E657380();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -504,7 +504,7 @@ LABEL_17:
       sub_22E657380();
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -514,14 +514,14 @@ LABEL_17:
     v21 = v6;
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v15, &v21, &v20, 1);
     v16 = LABEL_23:;
-    *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v9, v17, @"ANSTErrorDomain", 3, v16);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v9, v17, @"ANSTErrorDomain", 3, v16);
 
 LABEL_24:
     LOBYTE(v5) = 0;
     goto LABEL_25;
   }
 
-  v5 = objc_msgSend_commitNetworkIOBindingsWithError_(self->_network, a2, a3);
+  v5 = objc_msgSend_commitNetworkIOBindingsWithError_(self->_network, a2, error);
   if (v5)
   {
     LOBYTE(v5) = 1;
@@ -533,7 +533,7 @@ LABEL_25:
   return v5;
 }
 
-- (BOOL)executeInferenceWithError:(id *)a3
+- (BOOL)executeInferenceWithError:(id *)error
 {
   v92[1] = *MEMORY[0x277D85DE8];
   if (!self->_ioCommitted)
@@ -545,13 +545,13 @@ LABEL_25:
       sub_22E6573F4();
     }
 
-    if (a3)
+    if (error)
     {
       v29 = MEMORY[0x277CCA9B8];
       v91 = *MEMORY[0x277CCA068];
       v92[0] = v26;
       v30 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v28, v92, &v91, 1);
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v29, v31, @"ANSTErrorDomain", 3, v30);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v29, v31, @"ANSTErrorDomain", 3, v30);
     }
 
     goto LABEL_26;
@@ -670,7 +670,7 @@ LABEL_13:
   CVPixelBufferUnlockBaseAddress(*(&self->super.super.isa + v66), 1uLL);
   v86 = objc_msgSend_pixelBuffer(self->_inputHardMask, v84, v85);
   CVPixelBufferUnlockBaseAddress(v86, 0);
-  if ((objc_msgSend_executeInferenceWithError_(self->_network, v87, a3) & 1) == 0)
+  if ((objc_msgSend_executeInferenceWithError_(self->_network, v87, error) & 1) == 0)
   {
 LABEL_26:
     result = 0;

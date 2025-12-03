@@ -1,21 +1,21 @@
 @interface BYODSpinner
-- (BYODSpinner)initWithViewController:(id)a3;
+- (BYODSpinner)initWithViewController:(id)controller;
 - (void)startSpinner;
 - (void)stopSpinner;
 @end
 
 @implementation BYODSpinner
 
-- (BYODSpinner)initWithViewController:(id)a3
+- (BYODSpinner)initWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = BYODSpinner;
   v5 = [(BYODSpinner *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_viewController, v4);
+    objc_storeWeak(&v5->_viewController, controllerCopy);
     v7 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     spinner = v6->_spinner;
     v6->_spinner = v7;
@@ -29,13 +29,13 @@
   dispatch_assert_queue_V2(&_dispatch_main_q);
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
   v3 = [[UIBarButtonItem alloc] initWithCustomView:self->_spinner];
-  v4 = [WeakRetained navigationItem];
-  v5 = [v4 rightBarButtonItem];
+  navigationItem = [WeakRetained navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
   prevButtonItem = self->_prevButtonItem;
-  self->_prevButtonItem = v5;
+  self->_prevButtonItem = rightBarButtonItem;
 
-  v7 = [WeakRetained navigationItem];
-  [v7 setRightBarButtonItem:v3 animated:1];
+  navigationItem2 = [WeakRetained navigationItem];
+  [navigationItem2 setRightBarButtonItem:v3 animated:1];
 
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
 }
@@ -50,8 +50,8 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v4 = [WeakRetained navigationItem];
-  [v4 setRightBarButtonItem:self->_prevButtonItem animated:1];
+  navigationItem = [WeakRetained navigationItem];
+  [navigationItem setRightBarButtonItem:self->_prevButtonItem animated:1];
 }
 
 @end

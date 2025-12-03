@@ -1,9 +1,9 @@
 @interface VUIShelfViewLayout
-- (BOOL)_bumpHeaderForLayoutSection:(id)a3 forIndexPath:(id)a4;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
-- (CGRect)boundingSelectionFrameForFrame:(CGRect)a3;
+- (BOOL)_bumpHeaderForLayoutSection:(id)section forIndexPath:(id)path;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
+- (CGRect)boundingSelectionFrameForFrame:(CGRect)frame;
 - (CGSize)collectionViewContentSize;
 - (CGSize)headerReferenceSize;
 - (CGSize)itemSize;
@@ -11,17 +11,17 @@
 - (VUIShelfViewLayout)init;
 - (VUIShelfViewLayoutDelegate)delegate;
 - (double)computedContentHeight;
-- (id)_indexPathForItemAtProposedContentOffset:(CGPoint)a3;
+- (id)_indexPathForItemAtProposedContentOffset:(CGPoint)offset;
 - (id)indexPathForSnappedContent;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (int64_t)computedRowCount;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
-- (void)setRowCount:(int64_t)a3;
-- (void)setShouldSnapContent:(BOOL)a3;
-- (void)snapContentToIndexPath:(id)a3;
+- (void)setRowCount:(int64_t)count;
+- (void)setShouldSnapContent:(BOOL)content;
+- (void)snapContentToIndexPath:(id)path;
 @end
 
 @implementation VUIShelfViewLayout
@@ -47,23 +47,23 @@
   return v3;
 }
 
-- (void)setShouldSnapContent:(BOOL)a3
+- (void)setShouldSnapContent:(BOOL)content
 {
-  if (self->_shouldSnapContent != a3)
+  if (self->_shouldSnapContent != content)
   {
-    self->_shouldSnapContent = a3;
-    if (a3)
+    self->_shouldSnapContent = content;
+    if (content)
     {
       [(VUIShelfViewLayout *)self snapContent];
     }
   }
 }
 
-- (void)setRowCount:(int64_t)a3
+- (void)setRowCount:(int64_t)count
 {
-  if (a3 >= 1)
+  if (count >= 1)
   {
-    self->_rowCount = a3;
+    self->_rowCount = count;
   }
 }
 
@@ -72,21 +72,21 @@
   v79.receiver = self;
   v79.super_class = VUIShelfViewLayout;
   [(VUIShelfViewLayout *)&v79 prepareLayout];
-  v3 = [(VUIShelfViewLayout *)self collectionView];
-  v4 = [v3 numberOfSections];
-  v5 = [(VUIShelfViewLayout *)self shelfLayoutSections];
+  collectionView = [(VUIShelfViewLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
+  shelfLayoutSections = [(VUIShelfViewLayout *)self shelfLayoutSections];
 
-  if (!v5)
+  if (!shelfLayoutSections)
   {
-    v6 = [(VUIShelfViewLayout *)self layoutHelper];
-    if (!v6)
+    layoutHelper = [(VUIShelfViewLayout *)self layoutHelper];
+    if (!layoutHelper)
     {
-      v6 = [[VUIShelfLayoutHelper alloc] initWithShelfViewLayout:self];
-      [(VUIShelfViewLayout *)self setLayoutHelper:v6];
+      layoutHelper = [[VUIShelfLayoutHelper alloc] initWithShelfViewLayout:self];
+      [(VUIShelfViewLayout *)self setLayoutHelper:layoutHelper];
     }
 
-    v70 = [MEMORY[0x1E695DF70] arrayWithCapacity:v4];
-    if (v4 >= 1)
+    v70 = [MEMORY[0x1E695DF70] arrayWithCapacity:numberOfSections];
+    if (numberOfSections >= 1)
     {
       v7 = 0;
       v75 = *(MEMORY[0x1E695F058] + 8);
@@ -96,12 +96,12 @@
       do
       {
         v8 = objc_alloc_init(VUIShelfLayoutSection);
-        [(VUIShelfLayoutHelper *)v6 frameForHeaderInSection:v7];
+        [(VUIShelfLayoutHelper *)layoutHelper frameForHeaderInSection:v7];
         [(VUIShelfLayoutSection *)v8 setSectionHeaderFrame:?];
-        [(VUIShelfLayoutHelper *)v6 insetForSection:v7];
+        [(VUIShelfLayoutHelper *)layoutHelper insetForSection:v7];
         [(VUIShelfLayoutSection *)v8 setSectionInset:?];
-        v9 = v3;
-        v10 = [v3 numberOfItemsInSection:v7];
+        v9 = collectionView;
+        v10 = [collectionView numberOfItemsInSection:v7];
         [(VUIShelfLayoutSection *)v8 setNumberOfItems:v10];
         height = v72;
         width = rect;
@@ -117,7 +117,7 @@
           do
           {
             v16 = [MEMORY[0x1E696AC88] indexPathForItem:v15 inSection:v7];
-            [(VUIShelfLayoutHelper *)v6 frameForItemAtIndexPath:v16];
+            [(VUIShelfLayoutHelper *)layoutHelper frameForItemAtIndexPath:v16];
             v18 = v17;
             v20 = v19;
             v22 = v21;
@@ -147,22 +147,22 @@
         [v70 addObject:v8];
 
         ++v7;
-        v3 = v9;
+        collectionView = v9;
       }
 
-      while (v7 != v4);
+      while (v7 != numberOfSections);
     }
 
     v25 = [v70 copy];
     [(VUIShelfViewLayout *)self setShelfLayoutSections:v25];
 
-    v5 = 0;
+    shelfLayoutSections = 0;
   }
 
-  [v3 vuiContentOffset];
+  [collectionView vuiContentOffset];
   v27 = v26;
-  [v3 vuiContentInsets];
-  if (v4 >= 1)
+  [collectionView vuiContentInsets];
+  if (numberOfSections >= 1)
   {
     v29 = 0;
     v30 = *MEMORY[0x1E695F058];
@@ -175,8 +175,8 @@
     v71 = *MEMORY[0x1E695F058];
     do
     {
-      v33 = [(VUIShelfViewLayout *)self shelfLayoutSections];
-      v34 = [v33 objectAtIndex:v29];
+      shelfLayoutSections2 = [(VUIShelfViewLayout *)self shelfLayoutSections];
+      v34 = [shelfLayoutSections2 objectAtIndex:v29];
 
       [v34 sectionHeaderFrame];
       v36 = v35;
@@ -217,7 +217,7 @@
         v84.size.width = v56;
         v84.size.height = v58;
         v62 = fmin(v61, CGRectGetMinX(v84));
-        if (v4 == 1)
+        if (numberOfSections == 1)
         {
           v63 = v76;
         }
@@ -257,13 +257,13 @@
       }
 
       ++v29;
-      --v4;
+      --numberOfSections;
     }
 
-    while (v4);
+    while (numberOfSections);
   }
 
-  if (!v5)
+  if (!shelfLayoutSections)
   {
     [(VUIShelfViewLayout *)self snapContent];
   }
@@ -271,15 +271,15 @@
 
 - (CGSize)collectionViewContentSize
 {
-  v3 = [(VUIShelfViewLayout *)self shelfLayoutSections];
-  v4 = [v3 lastObject];
+  shelfLayoutSections = [(VUIShelfViewLayout *)self shelfLayoutSections];
+  lastObject = [shelfLayoutSections lastObject];
 
-  [v4 lastItemFrame];
+  [lastObject lastItemFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 sectionInset];
+  [lastObject sectionInset];
   v14 = v13;
   v21.origin.x = v6;
   v21.origin.y = v8;
@@ -296,19 +296,19 @@
   return result;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 invalidateVerticalBumps])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [contextCopy invalidateVerticalBumps])
   {
-    v5 = v4;
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = [v5 focusedItemIndexPath];
-    v8 = v7;
-    if (v7)
+    v5 = contextCopy;
+    array = [MEMORY[0x1E695DF70] array];
+    focusedItemIndexPath = [v5 focusedItemIndexPath];
+    v8 = focusedItemIndexPath;
+    if (focusedItemIndexPath)
     {
-      v9 = v7;
+      v9 = focusedItemIndexPath;
     }
 
     else
@@ -318,26 +318,26 @@
 
     v10 = v9;
 
-    v11 = [v10 item];
-    v12 = v11 % [(VUIShelfViewLayout *)self rowCount]== 0;
-    v13 = [(VUIShelfViewLayout *)self shelfLayoutSections];
+    item = [v10 item];
+    v12 = item % [(VUIShelfViewLayout *)self rowCount]== 0;
+    shelfLayoutSections = [(VUIShelfViewLayout *)self shelfLayoutSections];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __50__VUIShelfViewLayout_invalidateLayoutWithContext___block_invoke;
     v17[3] = &unk_1E872F628;
     v21 = v12;
     v18 = v10;
-    v19 = self;
-    v20 = v6;
-    v14 = v6;
+    selfCopy = self;
+    v20 = array;
+    v14 = array;
     v15 = v10;
-    [v13 enumerateObjectsUsingBlock:v17];
+    [shelfLayoutSections enumerateObjectsUsingBlock:v17];
 
     [v5 invalidateSupplementaryElementsOfKind:@"VUIShelfLayoutElementKindHeader" atIndexPaths:v14];
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 invalidateLayout] & 1) != 0 || (objc_msgSend(v4, "invalidateEverything") & 1) != 0 || objc_msgSend(v4, "invalidateDataSourceCounts"))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([contextCopy invalidateLayout] & 1) != 0 || (objc_msgSend(contextCopy, "invalidateEverything") & 1) != 0 || objc_msgSend(contextCopy, "invalidateDataSourceCounts"))
   {
     [(VUIShelfViewLayout *)self setLayoutHelper:0];
     [(VUIShelfViewLayout *)self setShelfLayoutSections:0];
@@ -345,7 +345,7 @@
 
   v16.receiver = self;
   v16.super_class = VUIShelfViewLayout;
-  [(VUIShelfViewLayout *)&v16 invalidateLayoutWithContext:v4];
+  [(VUIShelfViewLayout *)&v16 invalidateLayoutWithContext:contextCopy];
 }
 
 void __50__VUIShelfViewLayout_invalidateLayoutWithContext___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -371,15 +371,15 @@ void __50__VUIShelfViewLayout_invalidateLayoutWithContext___block_invoke(uint64_
 LABEL_7:
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [(VUIShelfViewLayout *)self shelfLayoutSections];
-  v10 = [v9 count];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  array = [MEMORY[0x1E695DF70] array];
+  shelfLayoutSections = [(VUIShelfViewLayout *)self shelfLayoutSections];
+  v10 = [shelfLayoutSections count];
 
   if (v10)
   {
@@ -392,8 +392,8 @@ LABEL_7:
     v40 = *(MEMORY[0x1E695F058] + 16);
     do
     {
-      v12 = [(VUIShelfViewLayout *)self shelfLayoutSections];
-      v13 = [v12 objectAtIndex:v11];
+      shelfLayoutSections2 = [(VUIShelfViewLayout *)self shelfLayoutSections];
+      v13 = [shelfLayoutSections2 objectAtIndex:v11];
 
       [v13 sectionHeaderFrame];
       v15 = v14;
@@ -415,14 +415,14 @@ LABEL_7:
         {
           v24 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:v11];
           v25 = [(VUIShelfViewLayout *)self layoutAttributesForSupplementaryViewOfKind:@"VUIShelfLayoutElementKindHeader" atIndexPath:v24];
-          [v8 addObject:v25];
+          [array addObject:v25];
         }
       }
 
-      v26 = [v13 numberOfItems];
-      if (v26)
+      numberOfItems = [v13 numberOfItems];
+      if (numberOfItems)
       {
-        v27 = v26;
+        v27 = numberOfItems;
         for (i = 0; i != v27; ++i)
         {
           [v13 itemFrameAtIndex:i];
@@ -448,7 +448,7 @@ LABEL_7:
             {
               v33 = [MEMORY[0x1E696AC88] indexPathForItem:i inSection:v11];
               v34 = [(VUIShelfViewLayout *)self layoutAttributesForItemAtIndexPath:v33];
-              [v8 addObject:v34];
+              [array addObject:v34];
             }
           }
         }
@@ -460,28 +460,28 @@ LABEL_7:
     while (v11 != v10);
   }
 
-  v35 = [MEMORY[0x1E695DEC8] arrayWithArray:v8];
+  v35 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   return v35;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DC858] layoutAttributesForCellWithIndexPath:v4];
-  v6 = [v4 section];
-  v7 = [(VUIShelfViewLayout *)self shelfLayoutSections];
-  v8 = [v7 count];
+  pathCopy = path;
+  v5 = [MEMORY[0x1E69DC858] layoutAttributesForCellWithIndexPath:pathCopy];
+  section = [pathCopy section];
+  shelfLayoutSections = [(VUIShelfViewLayout *)self shelfLayoutSections];
+  v8 = [shelfLayoutSections count];
 
-  if (v6 < v8)
+  if (section < v8)
   {
-    v9 = [(VUIShelfViewLayout *)self shelfLayoutSections];
-    v10 = [v9 objectAtIndex:{objc_msgSend(v4, "section")}];
+    shelfLayoutSections2 = [(VUIShelfViewLayout *)self shelfLayoutSections];
+    v10 = [shelfLayoutSections2 objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-    v11 = [v4 item];
-    if (v11 < [v10 numberOfItems])
+    item = [pathCopy item];
+    if (item < [v10 numberOfItems])
     {
-      [v10 itemFrameAtIndex:{objc_msgSend(v4, "item")}];
+      [v10 itemFrameAtIndex:{objc_msgSend(pathCopy, "item")}];
       [v5 setFrame:?];
     }
   }
@@ -489,18 +489,18 @@ LABEL_7:
   return v5;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E69DC858] layoutAttributesForSupplementaryViewOfKind:a3 withIndexPath:v6];
-  v8 = [v6 section];
-  v9 = [(VUIShelfViewLayout *)self shelfLayoutSections];
-  v10 = [v9 count];
+  pathCopy = path;
+  v7 = [MEMORY[0x1E69DC858] layoutAttributesForSupplementaryViewOfKind:kind withIndexPath:pathCopy];
+  section = [pathCopy section];
+  shelfLayoutSections = [(VUIShelfViewLayout *)self shelfLayoutSections];
+  v10 = [shelfLayoutSections count];
 
-  if (v8 < v10)
+  if (section < v10)
   {
-    v11 = [(VUIShelfViewLayout *)self shelfLayoutSections];
-    v12 = [v11 objectAtIndex:{objc_msgSend(v6, "section")}];
+    shelfLayoutSections2 = [(VUIShelfViewLayout *)self shelfLayoutSections];
+    v12 = [shelfLayoutSections2 objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
     [v12 sectionHeaderFrame];
     v14 = v13;
@@ -509,12 +509,12 @@ LABEL_7:
     v20 = v19;
     [v12 sectionHeaderVerticalBump];
     v22 = v16 - v21;
-    if (![v6 section])
+    if (![pathCopy section])
     {
-      v23 = [(VUIShelfViewLayout *)self collectionView];
-      [v23 vuiContentOffset];
+      collectionView = [(VUIShelfViewLayout *)self collectionView];
+      [collectionView vuiContentOffset];
       v25 = v24;
-      [v23 vuiContentInsets];
+      [collectionView vuiContentInsets];
       v27 = 0.0 - v26;
       v28 = v25 + v26;
       if (v25 < v27)
@@ -536,36 +536,36 @@ LABEL_7:
 
 - (int64_t)computedRowCount
 {
-  v3 = [(VUIShelfViewLayout *)self layoutHelper];
-  v4 = [(VUIShelfViewLayout *)self layoutHelper];
+  layoutHelper = [(VUIShelfViewLayout *)self layoutHelper];
+  layoutHelper2 = [(VUIShelfViewLayout *)self layoutHelper];
 
-  if (!v4)
+  if (!layoutHelper2)
   {
     v5 = [[VUIShelfLayoutHelper alloc] initWithShelfViewLayout:self];
 
     [(VUIShelfViewLayout *)self setLayoutHelper:v5];
-    v3 = v5;
+    layoutHelper = v5;
   }
 
-  v6 = [v3 actualRowCount];
+  actualRowCount = [layoutHelper actualRowCount];
 
-  return v6;
+  return actualRowCount;
 }
 
 - (double)computedContentHeight
 {
-  v3 = [(VUIShelfViewLayout *)self layoutHelper];
-  v4 = [(VUIShelfViewLayout *)self layoutHelper];
+  layoutHelper = [(VUIShelfViewLayout *)self layoutHelper];
+  layoutHelper2 = [(VUIShelfViewLayout *)self layoutHelper];
 
-  if (!v4)
+  if (!layoutHelper2)
   {
     v5 = [[VUIShelfLayoutHelper alloc] initWithShelfViewLayout:self];
 
     [(VUIShelfViewLayout *)self setLayoutHelper:v5];
-    v3 = v5;
+    layoutHelper = v5;
   }
 
-  [v3 tallestHeaderHeight];
+  [layoutHelper tallestHeaderHeight];
   v6 = 0.0;
   if (v7 > 0.0)
   {
@@ -573,26 +573,26 @@ LABEL_7:
     v6 = v8;
   }
 
-  [v3 tallestInsetTop];
+  [layoutHelper tallestInsetTop];
   v10 = v9;
-  [v3 tallestHeaderHeight];
+  [layoutHelper tallestHeaderHeight];
   v12 = v6 + v10 + v11;
-  [v3 tallestColumnHeight];
+  [layoutHelper tallestColumnHeight];
   v14 = v13 + v12;
-  [v3 tallestInsetBottom];
+  [layoutHelper tallestInsetBottom];
   v16 = v15 + v14;
 
   return v16;
 }
 
-- (CGRect)boundingSelectionFrameForFrame:(CGRect)a3
+- (CGRect)boundingSelectionFrameForFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v49 = *MEMORY[0x1E69E9840];
-  MidX = CGRectGetMidX(a3);
+  MidX = CGRectGetMidX(frame);
   v51.origin.x = x;
   v51.origin.y = y;
   v43 = width;
@@ -607,8 +607,8 @@ LABEL_7:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v13 = [(VUIShelfViewLayout *)self shelfLayoutSections];
-  v14 = [v13 countByEnumeratingWithState:&v44 objects:v48 count:16];
+  shelfLayoutSections = [(VUIShelfViewLayout *)self shelfLayoutSections];
+  v14 = [shelfLayoutSections countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v14)
   {
     v15 = v14;
@@ -623,7 +623,7 @@ LABEL_7:
       {
         if (*v45 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(shelfLayoutSections);
         }
 
         v18 = *(*(&v44 + 1) + 8 * i);
@@ -668,7 +668,7 @@ LABEL_7:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      v15 = [shelfLayoutSections countByEnumeratingWithState:&v44 objects:v48 count:16];
       if (v15)
       {
         continue;
@@ -696,20 +696,20 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  v3 = [(VUIShelfViewLayout *)self layoutHelper:a3.origin.x];
+  v3 = [(VUIShelfViewLayout *)self layoutHelper:change.origin.x];
   [v3 tallestHeaderHeight];
   v5 = v4 > 0.0;
 
   return v5;
 }
 
-- (BOOL)_bumpHeaderForLayoutSection:(id)a3 forIndexPath:(id)a4
+- (BOOL)_bumpHeaderForLayoutSection:(id)section forIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 sectionHeaderFrame];
+  sectionCopy = section;
+  pathCopy = path;
+  [sectionCopy sectionHeaderFrame];
   if (v9 <= 0.0)
   {
     LOBYTE(v22) = 0;
@@ -718,14 +718,14 @@ LABEL_13:
   else
   {
     v10 = v8;
-    v11 = [(VUIShelfViewLayout *)self collectionView];
-    [v11 vuiContentInsets];
+    collectionView = [(VUIShelfViewLayout *)self collectionView];
+    [collectionView vuiContentInsets];
     v13 = v12;
-    v14 = [(VUIShelfViewLayout *)self delegate];
+    delegate = [(VUIShelfViewLayout *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v11 collectionViewLayout];
-      [v14 collectionView:v11 layout:v15 selectionMarginsForItemAtIndexPath:v7];
+      collectionViewLayout = [collectionView collectionViewLayout];
+      [delegate collectionView:collectionView layout:collectionViewLayout selectionMarginsForItemAtIndexPath:pathCopy];
       v17 = v16;
       v19 = v18;
       v21 = v20;
@@ -738,14 +738,14 @@ LABEL_13:
       v21 = *(MEMORY[0x1E69DDCE0] + 24);
     }
 
-    [v11 vuiContentOffset];
+    [collectionView vuiContentOffset];
     v24 = v23;
-    [v6 itemFrameAtIndex:{objc_msgSend(v7, "item")}];
+    [sectionCopy itemFrameAtIndex:{objc_msgSend(pathCopy, "item")}];
     v26 = v25;
     v28 = v27;
-    [v6 sectionInset];
+    [sectionCopy sectionInset];
     v30 = fmax(v10 - v24, v29);
-    [v6 sectionHeaderFrame];
+    [sectionCopy sectionHeaderFrame];
     if (v26 - v19 - v24 >= v13)
     {
       v33 = v26 - v19 - v24;
@@ -768,17 +768,17 @@ LABEL_13:
       [(VUIShelfViewLayout *)self headerSelectionMargin];
       v40 = v39;
       [(VUIShelfViewLayout *)self headerBottomMargin];
-      [v6 setSectionHeaderVerticalBump:{fmax(v40 - (v41 - v17), 0.0)}];
+      [sectionCopy setSectionHeaderVerticalBump:{fmax(v40 - (v41 - v17), 0.0)}];
     }
   }
 
   return v22;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   if ([(VUIShelfViewLayout *)self shouldSnapContent])
   {
     v6 = *MEMORY[0x1E695EFF8];
@@ -799,23 +799,23 @@ LABEL_13:
   return result;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = velocity.y;
+  x = velocity.x;
+  v6 = offset.y;
+  v7 = offset.x;
   if ([(VUIShelfViewLayout *)self shouldSnapContent])
   {
-    v9 = [(VUIShelfViewLayout *)self collectionView];
-    [v9 vuiBounds];
+    collectionView = [(VUIShelfViewLayout *)self collectionView];
+    [collectionView vuiBounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    [v9 vuiContentSize];
+    [collectionView vuiContentSize];
     v19 = v18;
-    [v9 vuiContentInsets];
+    [collectionView vuiContentInsets];
     v21 = v20;
     v23 = v22 + v19 + v20;
     v51.origin.x = v11;
@@ -829,8 +829,8 @@ LABEL_13:
 
     else
     {
-      v24 = [(VUIShelfViewLayout *)self shelfLayoutSections];
-      v25 = [v24 copy];
+      shelfLayoutSections = [(VUIShelfViewLayout *)self shelfLayoutSections];
+      v25 = [shelfLayoutSections copy];
 
       v48 = v7 + v21;
       v52.origin.x = v11;
@@ -913,18 +913,18 @@ LABEL_13:
   return result;
 }
 
-- (id)_indexPathForItemAtProposedContentOffset:(CGPoint)a3
+- (id)_indexPathForItemAtProposedContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v43 = *MEMORY[0x1E69E9840];
-  v6 = [(VUIShelfViewLayout *)self collectionView];
-  [v6 vuiContentInsets];
+  collectionView = [(VUIShelfViewLayout *)self collectionView];
+  [collectionView vuiContentInsets];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(VUIShelfViewLayout *)self shelfLayoutSections];
-  v12 = [v11 copy];
+  shelfLayoutSections = [(VUIShelfViewLayout *)self shelfLayoutSections];
+  v12 = [shelfLayoutSections copy];
 
   v40 = 0u;
   v41 = 0u;
@@ -1021,39 +1021,39 @@ LABEL_19:
   return v37;
 }
 
-- (void)snapContentToIndexPath:(id)a3
+- (void)snapContentToIndexPath:(id)path
 {
-  v17 = a3;
+  pathCopy = path;
   if ([(VUIShelfViewLayout *)self shouldSnapContent])
   {
-    v4 = [(VUIShelfViewLayout *)self collectionView];
-    [v4 vuiContentOffset];
+    collectionView = [(VUIShelfViewLayout *)self collectionView];
+    [collectionView vuiContentOffset];
     [(VUIShelfViewLayout *)self targetContentOffsetForProposedContentOffset:?];
     v6 = v5;
     v8 = v7;
-    if (v17)
+    if (pathCopy)
     {
-      v9 = [v17 section];
-      v10 = [(VUIShelfViewLayout *)self shelfLayoutSections];
-      v11 = [v10 count];
+      section = [pathCopy section];
+      shelfLayoutSections = [(VUIShelfViewLayout *)self shelfLayoutSections];
+      v11 = [shelfLayoutSections count];
 
-      if (v9 < v11)
+      if (section < v11)
       {
-        [v4 vuiContentInsets];
+        [collectionView vuiContentInsets];
         v13 = v12;
-        v14 = [(VUIShelfViewLayout *)self shelfLayoutSections];
-        v15 = [v14 objectAtIndex:{objc_msgSend(v17, "section")}];
+        shelfLayoutSections2 = [(VUIShelfViewLayout *)self shelfLayoutSections];
+        v15 = [shelfLayoutSections2 objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-        v16 = [v17 item];
-        if (v16 < [v15 numberOfItems])
+        item = [pathCopy item];
+        if (item < [v15 numberOfItems])
         {
-          [v15 itemFrameAtIndex:{objc_msgSend(v17, "item")}];
+          [v15 itemFrameAtIndex:{objc_msgSend(pathCopy, "item")}];
           v6 = CGRectGetMinX(v19) - v13;
         }
       }
     }
 
-    [v4 setVuiContentOffset:{v6, v8}];
+    [collectionView setVuiContentOffset:{v6, v8}];
   }
 }
 
@@ -1061,8 +1061,8 @@ LABEL_19:
 {
   if ([(VUIShelfViewLayout *)self shouldSnapContent])
   {
-    v3 = [(VUIShelfViewLayout *)self collectionView];
-    [v3 vuiContentOffset];
+    collectionView = [(VUIShelfViewLayout *)self collectionView];
+    [collectionView vuiContentOffset];
     v4 = [(VUIShelfViewLayout *)self _indexPathForItemAtProposedContentOffset:?];
   }
 

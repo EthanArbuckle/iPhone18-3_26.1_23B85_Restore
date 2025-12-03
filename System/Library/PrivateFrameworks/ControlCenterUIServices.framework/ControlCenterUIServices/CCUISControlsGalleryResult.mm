@@ -1,24 +1,24 @@
 @interface CCUISControlsGalleryResult
 - (CCUISControlsGalleryResult)init;
-- (CCUISControlsGalleryResult)initWithControl:(id)a3 promptsForUserConfiguration:(BOOL)a4;
+- (CCUISControlsGalleryResult)initWithControl:(id)control promptsForUserConfiguration:(BOOL)configuration;
 - (NSString)description;
 @end
 
 @implementation CCUISControlsGalleryResult
 
-- (CCUISControlsGalleryResult)initWithControl:(id)a3 promptsForUserConfiguration:(BOOL)a4
+- (CCUISControlsGalleryResult)initWithControl:(id)control promptsForUserConfiguration:(BOOL)configuration
 {
-  *(&self->super.isa + OBJC_IVAR___CCUISControlsGalleryResult_control) = a3;
-  *(&self->super.isa + OBJC_IVAR___CCUISControlsGalleryResult_promptsForUserConfiguration) = a4;
+  *(&self->super.isa + OBJC_IVAR___CCUISControlsGalleryResult_control) = control;
+  *(&self->super.isa + OBJC_IVAR___CCUISControlsGalleryResult_promptsForUserConfiguration) = configuration;
   v6.receiver = self;
   v6.super_class = CCUISControlsGalleryResult;
-  v4 = a3;
+  controlCopy = control;
   return [(CCUISControlsGalleryResult *)&v6 init];
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CCUISControlsGalleryResult.description.getter();
 
   v3 = sub_2442B4878();

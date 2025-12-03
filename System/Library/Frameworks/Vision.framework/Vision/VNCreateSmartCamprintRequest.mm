@@ -1,23 +1,23 @@
 @interface VNCreateSmartCamprintRequest
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (BOOL)returnAllResults;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)setReturnAllResults:(BOOL)a3;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)setReturnAllResults:(BOOL)results;
 @end
 
 @implementation VNCreateSmartCamprintRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 imageBufferAndReturnError:a5];
+  contextCopy = context;
+  v9 = [contextCopy imageBufferAndReturnError:error];
   if (v9)
   {
-    v10 = [v8 session];
+    session = [contextCopy session];
     v19 = 0;
-    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v19 forRevision:a3 loadedInSession:v10 error:a5];
+    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v19 forRevision:revision loadedInSession:session error:error];
     v12 = v19;
     if (v11)
     {
@@ -28,9 +28,9 @@
       v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNCreateSmartCamprintRequest returnAllResults](self, "returnAllResults")}];
       [v12 setObject:v14 forKeyedSubscript:@"VNSmartCamClassifierProcessOption_ReturnAllResults"];
 
-      v15 = [v8 qosClass];
+      qosClass = [contextCopy qosClass];
       [(VNImageBasedRequest *)self regionOfInterest];
-      v16 = [v11 processUsingQualityOfServiceClass:v15 options:v12 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+      v16 = [v11 processUsingQualityOfServiceClass:qosClass options:v12 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
       v17 = v16 != 0;
       if (v16)
       {
@@ -52,31 +52,31 @@
   return v17;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v5.receiver = self;
     v5.super_class = VNCreateSmartCamprintRequest;
-    [(VNImageBasedRequest *)&v5 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v5 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(VNCreateSmartCamprintRequest *)self setReturnAllResults:[(VNCreateSmartCamprintRequest *)v4 returnAllResults]];
+      [(VNCreateSmartCamprintRequest *)self setReturnAllResults:[(VNCreateSmartCamprintRequest *)requestCopy returnAllResults]];
     }
   }
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNCreateSmartCamprintRequest *)self returnAllResults];
-  if (v5 == [v4 returnAllResults])
+  configurationCopy = configuration;
+  returnAllResults = [(VNCreateSmartCamprintRequest *)self returnAllResults];
+  if (returnAllResults == [configurationCopy returnAllResults])
   {
     v8.receiver = self;
     v8.super_class = VNCreateSmartCamprintRequest;
-    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -87,19 +87,19 @@
   return v6;
 }
 
-- (void)setReturnAllResults:(BOOL)a3
+- (void)setReturnAllResults:(BOOL)results
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setReturnAllResults:v3];
+  resultsCopy = results;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setReturnAllResults:resultsCopy];
 }
 
 - (BOOL)returnAllResults
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 returnAllResults];
+  configuration = [(VNRequest *)self configuration];
+  returnAllResults = [configuration returnAllResults];
 
-  return v3;
+  return returnAllResults;
 }
 
 @end

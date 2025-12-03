@@ -1,6 +1,6 @@
 @interface TintColorObservingView
-- (_TtC12NowPlayingUI22TintColorObservingView)initWithCoder:(id)a3;
-- (_TtC12NowPlayingUI22TintColorObservingView)initWithFrame:(CGRect)a3;
+- (_TtC12NowPlayingUI22TintColorObservingView)initWithCoder:(id)coder;
+- (_TtC12NowPlayingUI22TintColorObservingView)initWithFrame:(CGRect)frame;
 - (void)tintColorDidChange;
 @end
 
@@ -16,10 +16,10 @@
   if (v3)
   {
 
-    v4 = [v2 tintColor];
-    if (v4)
+    tintColor = [v2 tintColor];
+    if (tintColor)
     {
-      v5 = v4;
+      v5 = tintColor;
       v3();
 
       sub_2173C(v3);
@@ -36,12 +36,12 @@
   }
 }
 
-- (_TtC12NowPlayingUI22TintColorObservingView)initWithFrame:(CGRect)a3
+- (_TtC12NowPlayingUI22TintColorObservingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = (&self->super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI22TintColorObservingView_tintColorDidChangeCallback);
   v9 = type metadata accessor for TintColorObservingView();
   *v8 = 0;
@@ -51,15 +51,15 @@
   return [(TintColorObservingView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC12NowPlayingUI22TintColorObservingView)initWithCoder:(id)a3
+- (_TtC12NowPlayingUI22TintColorObservingView)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI22TintColorObservingView_tintColorDidChangeCallback);
   *v4 = 0;
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for TintColorObservingView();
-  v5 = a3;
-  v6 = [(TintColorObservingView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(TintColorObservingView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

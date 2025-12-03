@@ -1,23 +1,23 @@
 @interface ASCLockupFeatureDeveloperName
-- (ASCLockupFeatureDeveloperName)initWithCoder:(id)a3;
-- (ASCLockupFeatureDeveloperName)initWithDeveloperName:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCLockupFeatureDeveloperName)initWithCoder:(id)coder;
+- (ASCLockupFeatureDeveloperName)initWithDeveloperName:(id)name;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCLockupFeatureDeveloperName
 
-- (ASCLockupFeatureDeveloperName)initWithDeveloperName:(id)a3
+- (ASCLockupFeatureDeveloperName)initWithDeveloperName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = ASCLockupFeatureDeveloperName;
   v5 = [(ASCLockupFeatureDeveloperName *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     developerName = v5->_developerName;
     v5->_developerName = v6;
   }
@@ -25,36 +25,36 @@
   return v5;
 }
 
-- (ASCLockupFeatureDeveloperName)initWithCoder:(id)a3
+- (ASCLockupFeatureDeveloperName)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"developerName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"developerName"];
 
   v6 = [(ASCLockupFeatureDeveloperName *)self initWithDeveloperName:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCLockupFeatureDeveloperName *)self developerName];
-  [v4 encodeObject:v5 forKey:@"developerName"];
+  coderCopy = coder;
+  developerName = [(ASCLockupFeatureDeveloperName *)self developerName];
+  [coderCopy encodeObject:developerName forKey:@"developerName"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCLockupFeatureDeveloperName *)self developerName];
-  [(ASCHasher *)v3 combineObject:v4];
+  developerName = [(ASCLockupFeatureDeveloperName *)self developerName];
+  [(ASCHasher *)v3 combineObject:developerName];
 
-  v5 = [(ASCHasher *)v3 finalizeHash];
-  return v5;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -62,7 +62,7 @@
   else
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -85,17 +85,17 @@
 
     if (v8)
     {
-      v9 = [(ASCLockupFeatureDeveloperName *)self developerName];
-      v10 = [(ASCLockupFeatureDeveloperName *)v8 developerName];
-      v11 = v10;
-      if (v9 && v10)
+      developerName = [(ASCLockupFeatureDeveloperName *)self developerName];
+      developerName2 = [(ASCLockupFeatureDeveloperName *)v8 developerName];
+      v11 = developerName2;
+      if (developerName && developerName2)
       {
-        v7 = [v9 isEqual:v10];
+        v7 = [developerName isEqual:developerName2];
       }
 
       else
       {
-        v7 = v9 == v10;
+        v7 = developerName == developerName2;
       }
     }
 
@@ -111,12 +111,12 @@
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupFeatureDeveloperName *)self developerName];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"developerName"];
+  developerName = [(ASCLockupFeatureDeveloperName *)self developerName];
+  [(ASCDescriber *)v3 addObject:developerName withName:@"developerName"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface SBFAuthenticationAssertion
 - (BOOL)isValid;
-- (SBFAuthenticationAssertion)initWithIdentifier:(id)a3 type:(int64_t)a4 withController:(id)a5;
+- (SBFAuthenticationAssertion)initWithIdentifier:(id)identifier type:(int64_t)type withController:(id)controller;
 - (SBFUserAuthenticationController)controller;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)activate;
@@ -30,9 +30,9 @@
   if (!self->_activated && !self->_invalidated)
   {
     self->_activated = 1;
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     activationDate = self->_activationDate;
-    self->_activationDate = v3;
+    self->_activationDate = date;
 
     WeakRetained = objc_loadWeakRetained(&self->_controller);
     [WeakRetained _addAuthenticationAssertion:self];
@@ -41,10 +41,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBFAuthenticationAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFAuthenticationAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -68,8 +68,8 @@
     v7 = [v3 appendBool:-[SBFAuthenticationAssertion isValid](self withName:{"isValid"), @"valid"}];
     if (self->_activationDate)
     {
-      v8 = [MEMORY[0x1E698E670] sharedInstance];
-      v9 = [v8 formatDateAsLongYMDHMSZPosixLocaleWithDate:self->_activationDate];
+      mEMORY[0x1E698E670] = [MEMORY[0x1E698E670] sharedInstance];
+      v9 = [mEMORY[0x1E698E670] formatDateAsLongYMDHMSZPosixLocaleWithDate:self->_activationDate];
       [v3 appendString:v9 withName:@"activationDate"];
     }
   }
@@ -92,20 +92,20 @@
   }
 }
 
-- (SBFAuthenticationAssertion)initWithIdentifier:(id)a3 type:(int64_t)a4 withController:(id)a5
+- (SBFAuthenticationAssertion)initWithIdentifier:(id)identifier type:(int64_t)type withController:(id)controller
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4)
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  if (type)
   {
-    if (v8)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [SBFAuthenticationAssertion initWithIdentifier:type:withController:];
-    if (v9)
+    if (controllerCopy)
     {
       goto LABEL_4;
     }
@@ -114,13 +114,13 @@ LABEL_8:
   }
 
   [SBFAuthenticationAssertion initWithIdentifier:type:withController:];
-  if (!v8)
+  if (!identifierCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v9)
+  if (controllerCopy)
   {
     goto LABEL_4;
   }
@@ -133,12 +133,12 @@ LABEL_4:
   v10 = [(SBFAuthenticationAssertion *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    v10->_type = a4;
-    objc_storeWeak(&v10->_controller, v9);
+    v10->_type = type;
+    objc_storeWeak(&v10->_controller, controllerCopy);
   }
 
   return v10;
@@ -146,8 +146,8 @@ LABEL_4:
 
 - (void)dealloc
 {
-  v2 = [MEMORY[0x1E696AAA8] currentHandler];
-  v3 = *(a1 + 24);
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  v3 = *(self + 24);
   if (v3 > 2)
   {
     v4 = @"(unknown)";
@@ -159,18 +159,18 @@ LABEL_4:
   }
 
   v6 = v4;
-  v7 = *(a1 + 32);
-  v8 = v2;
+  v7 = *(self + 32);
+  v8 = currentHandler;
   OUTLINED_FUNCTION_1_0();
   [v5 handleFailureInMethod:v6 object:v7 file:? lineNumber:? description:?];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFAuthenticationAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFAuthenticationAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (SBFUserAuthenticationController)controller

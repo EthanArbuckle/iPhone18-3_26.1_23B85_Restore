@@ -1,75 +1,75 @@
 @interface CKDMMCSItemGroupContext
-+ (MMCSItemReaderWriter)getMMCSItemReaderForItemID:(unint64_t)a3 MMCS:(id)a4 itemGroupContext:(id)a5 downloadChunkContext:(id)a6 error:(id *)a7;
-- (BOOL)_setupGetMMCSItemsWithError:(id *)a3;
-- (BOOL)_setupMMCSItemsWithError:(id *)a3;
-- (BOOL)_setupPutMMCSItemsWithError:(id *)a3;
-- (BOOL)_setupRegisterMMCSItemsWithError:(id *)a3;
++ (MMCSItemReaderWriter)getMMCSItemReaderForItemID:(unint64_t)d MMCS:(id)s itemGroupContext:(id)context downloadChunkContext:(id)chunkContext error:(id *)error;
+- (BOOL)_setupGetMMCSItemsWithError:(id *)error;
+- (BOOL)_setupMMCSItemsWithError:(id *)error;
+- (BOOL)_setupPutMMCSItemsWithError:(id *)error;
+- (BOOL)_setupRegisterMMCSItemsWithError:(id *)error;
 - (BOOL)shouldFetchAssetContentInMemory;
 - (BOOL)shouldFetchAssetContentUsingAssetDownloadStagingManager;
 - (BOOL)shouldFetchAssetContentWithReaderWriter;
-- (BOOL)willOpenItemReaderWriter:(id)a3 error:(id *)a4;
-- (CKDMMCSItemGroupContext)initWithMMCS:(id)a3 itemGroup:(id)a4 operation:(id)a5 progress:(id)a6 command:(id)a7 start:(id)a8 groupCompletion:(id)a9;
-- (id)findTrackedMMCSItemByItemID:(unint64_t)a3;
-- (id)getCKDMMCSItemReaderByPathForMMCSItem:(id)a3 error:(id *)a4;
+- (BOOL)willOpenItemReaderWriter:(id)writer error:(id *)error;
+- (CKDMMCSItemGroupContext)initWithMMCS:(id)s itemGroup:(id)group operation:(id)operation progress:(id)progress command:(id)command start:(id)start groupCompletion:(id)completion;
+- (id)findTrackedMMCSItemByItemID:(unint64_t)d;
+- (id)getCKDMMCSItemReaderByPathForMMCSItem:(id)item error:(id *)error;
 - (void)_cleanupMMCSItems;
 - (void)_cleanupMMCSRegisterItems;
-- (void)_startTrackingMMCSItems:(id)a3;
-- (void)_stopTrackingMMCSItems:(id)a3;
+- (void)_startTrackingMMCSItems:(id)items;
+- (void)_stopTrackingMMCSItems:(id)items;
 - (void)cancel;
-- (void)didCompleteRequestWithError:(id)a3;
-- (void)didGetItemID:(unint64_t)a3 signature:(id)a4 path:(id)a5 error:(id)a6 results:(id)a7;
-- (void)didGetMetricsForRequest:(id)a3;
-- (void)didPutItemID:(unint64_t)a3 signature:(id)a4 results:(id)a5;
-- (void)didPutSectionWithSignature:(id)a3 results:(id)a4;
-- (void)handleCommand:(id)a3 forItem:(id)a4;
+- (void)didCompleteRequestWithError:(id)error;
+- (void)didGetItemID:(unint64_t)d signature:(id)signature path:(id)path error:(id)error results:(id)results;
+- (void)didGetMetricsForRequest:(id)request;
+- (void)didPutItemID:(unint64_t)d signature:(id)signature results:(id)results;
+- (void)didPutSectionWithSignature:(id)signature results:(id)results;
+- (void)handleCommand:(id)command forItem:(id)item;
 - (void)start;
-- (void)updateProgressForItemID:(unint64_t)a3 state:(int)a4 progress:(double)a5 error:(id)a6;
-- (void)updateProgressForItemID:(unint64_t)a3 state:(int)a4 progress:(double)a5 results:(id)a6;
-- (void)updateProgressForPackageSectionState:(int)a3 progress:(double)a4 results:(id)a5;
+- (void)updateProgressForItemID:(unint64_t)d state:(int)state progress:(double)progress error:(id)error;
+- (void)updateProgressForItemID:(unint64_t)d state:(int)state progress:(double)progress results:(id)results;
+- (void)updateProgressForPackageSectionState:(int)state progress:(double)progress results:(id)results;
 @end
 
 @implementation CKDMMCSItemGroupContext
 
-- (CKDMMCSItemGroupContext)initWithMMCS:(id)a3 itemGroup:(id)a4 operation:(id)a5 progress:(id)a6 command:(id)a7 start:(id)a8 groupCompletion:(id)a9
+- (CKDMMCSItemGroupContext)initWithMMCS:(id)s itemGroup:(id)group operation:(id)operation progress:(id)progress command:(id)command start:(id)start groupCompletion:(id)completion
 {
-  v46 = a3;
-  v45 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  sCopy = s;
+  groupCopy = group;
+  operationCopy = operation;
+  progressCopy = progress;
+  commandCopy = command;
+  startCopy = start;
+  completionCopy = completion;
   v47.receiver = self;
   v47.super_class = CKDMMCSItemGroupContext;
   v21 = [(CKDMMCSItemGroupContext *)&v47 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_MMCS, a3);
-    objc_storeStrong(&v22->_itemGroup, a4);
-    if (objc_msgSend_conformsToProtocol_(v16, v23, &unk_283936550, v45, v46))
+    objc_storeStrong(&v21->_MMCS, s);
+    objc_storeStrong(&v22->_itemGroup, group);
+    if (objc_msgSend_conformsToProtocol_(operationCopy, v23, &unk_283936550, groupCopy, sCopy))
     {
-      objc_storeStrong(&v22->_conformingOperation, a5);
+      objc_storeStrong(&v22->_conformingOperation, operation);
     }
 
     v24 = [CKDConcreteMMCSOperation alloc];
-    v26 = objc_msgSend_initWithOperation_(v24, v25, v16);
+    v26 = objc_msgSend_initWithOperation_(v24, v25, operationCopy);
     operation = v22->_operation;
     v22->_operation = v26;
 
-    v28 = _Block_copy(v17);
+    v28 = _Block_copy(progressCopy);
     progressBlock = v22->_progressBlock;
     v22->_progressBlock = v28;
 
-    v30 = _Block_copy(v19);
+    v30 = _Block_copy(startCopy);
     startBlock = v22->_startBlock;
     v22->_startBlock = v30;
 
-    v32 = _Block_copy(v20);
+    v32 = _Block_copy(completionCopy);
     completionBlock = v22->_completionBlock;
     v22->_completionBlock = v32;
 
-    v34 = _Block_copy(v18);
+    v34 = _Block_copy(commandCopy);
     commandBlock = v22->_commandBlock;
     v22->_commandBlock = v34;
 
@@ -181,17 +181,17 @@
   return v10;
 }
 
-- (void)_startTrackingMMCSItems:(id)a3
+- (void)_startTrackingMMCSItems:(id)items
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemsCopy = items;
   v8 = objc_msgSend_MMCSItemsByItemID(self, v6, v7);
   objc_sync_enter(v8);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v9 = v5;
+  v9 = itemsCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v31, v35, 16);
   if (v13)
   {
@@ -231,12 +231,12 @@
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopTrackingMMCSItems:(id)a3
+- (void)_stopTrackingMMCSItems:(id)items
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v7 = objc_msgSend_MMCS(self, v5, v6);
-  objc_msgSend_stopTrackingItemIDsForMMCSItems_(v7, v8, v4);
+  objc_msgSend_stopTrackingItemIDsForMMCSItems_(v7, v8, itemsCopy);
 
   v11 = objc_msgSend_MMCSItemsByItemID(self, v9, v10);
   objc_sync_enter(v11);
@@ -244,7 +244,7 @@
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v12 = v4;
+  v12 = itemsCopy;
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v33, v39, 16);
   if (v16)
   {
@@ -302,11 +302,11 @@
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findTrackedMMCSItemByItemID:(unint64_t)a3
+- (id)findTrackedMMCSItemByItemID:(unint64_t)d
 {
-  v4 = objc_msgSend_MMCSItemsByItemID(self, a2, a3);
+  v4 = objc_msgSend_MMCSItemsByItemID(self, a2, d);
   objc_sync_enter(v4);
-  v6 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v5, a3);
+  v6 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v5, d);
   v8 = objc_msgSend_objectForKey_(v4, v7, v6);
 
   objc_sync_exit(v4);
@@ -314,15 +314,15 @@
   return v8;
 }
 
-- (BOOL)_setupRegisterMMCSItemsWithError:(id *)a3
+- (BOOL)_setupRegisterMMCSItemsWithError:(id *)error
 {
-  v5 = self;
+  selfCopy = self;
   v316 = *MEMORY[0x277D85DE8];
-  v8 = objc_msgSend_MMCS(self, a2, a3);
+  v8 = objc_msgSend_MMCS(self, a2, error);
   if (!v8)
   {
     v286 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v6, v7);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v286, v287, a2, v5, @"CKDMMCSItemGroupContext.m", 159, @"Expected non-nil MMCS engine wrapper for %@", v5);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v286, v287, a2, selfCopy, @"CKDMMCSItemGroupContext.m", 159, @"Expected non-nil MMCS engine wrapper for %@", selfCopy);
   }
 
   v9 = objc_msgSend_assetCache(v8, v6, v7);
@@ -330,10 +330,10 @@
   if (!v9)
   {
     v288 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v10, v11);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v288, v289, a2, v5, @"CKDMMCSItemGroupContext.m", 160, @"Expected non-nil asset cache for %@", v8);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v288, v289, a2, selfCopy, @"CKDMMCSItemGroupContext.m", 160, @"Expected non-nil asset cache for %@", v8);
   }
 
-  v12 = objc_msgSend_itemGroup(v5, v10, v11);
+  v12 = objc_msgSend_itemGroup(selfCopy, v10, v11);
   v15 = objc_msgSend_items(v12, v13, v14);
   v18 = objc_msgSend_count(v15, v16, v17);
 
@@ -342,24 +342,24 @@
   v21 = objc_msgSend_initWithCapacity_(v19, v20, v18);
   v22 = objc_alloc(MEMORY[0x277CBEB18]);
   v24 = objc_msgSend_initWithCapacity_(v22, v23, v18);
-  if (objc_msgSend_mmcsOperationType(v5, v25, v26) != 5 && objc_msgSend_mmcsOperationType(v5, v27, v28) != 6)
+  if (objc_msgSend_mmcsOperationType(selfCopy, v25, v26) != 5 && objc_msgSend_mmcsOperationType(selfCopy, v27, v28) != 6)
   {
     __assert_rtn("[CKDMMCSItemGroupContext _setupRegisterMMCSItemsWithError:]", "CKDMMCSItemGroupContext.m", 169, "isRegister && isRegister");
   }
 
-  v290 = a3;
+  errorCopy = error;
   v296 = v24;
   v291 = v8;
   v308 = 0u;
   v309 = 0u;
   v306 = 0u;
   v307 = 0u;
-  v29 = objc_msgSend_itemGroup(v5, v27, v28);
+  v29 = objc_msgSend_itemGroup(selfCopy, v27, v28);
   v32 = objc_msgSend_items(v29, v30, v31);
 
   obj = v32;
   v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(v32, v33, &v306, v315, 16);
-  v294 = v5;
+  v294 = selfCopy;
   v297 = v21;
   if (v34)
   {
@@ -407,7 +407,7 @@
         objc_msgSend_setSignature_(v41, v51, 0);
         v52 = objc_autoreleasePoolPush();
         v305 = v38;
-        v54 = objc_msgSend_getCKDMMCSItemReaderByPathForMMCSItem_error_(v5, v53, v41, &v305);
+        v54 = objc_msgSend_getCKDMMCSItemReaderByPathForMMCSItem_error_(selfCopy, v53, v41, &v305);
         v55 = v305;
 
         if (v54)
@@ -469,7 +469,7 @@
             if (v90)
             {
               v39 = v293;
-              v5 = v294;
+              selfCopy = v294;
               v21 = v297;
               goto LABEL_46;
             }
@@ -479,7 +479,7 @@
               dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
             }
 
-            v5 = v294;
+            selfCopy = v294;
             v91 = *MEMORY[0x277CBC830];
             v21 = v297;
             if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
@@ -664,7 +664,7 @@ LABEL_55:
           objc_msgSend_addObject_(v296, v207, v123);
           objc_msgSend_addObject_(v292, v208, v41);
 
-          v5 = v294;
+          selfCopy = v294;
           v21 = v297;
           goto LABEL_68;
         }
@@ -693,7 +693,7 @@ LABEL_69:
 LABEL_73:
 
   v209 = v296;
-  if (objc_msgSend_count(v296, v210, v211) && (objc_msgSend_assetCache(v291, v212, v213), v214 = objc_claimAutoreleasedReturnValue(), v217 = objc_msgSend_mmcsOperationType(v5, v215, v216), started = objc_msgSend_startTrackingRegisterOrPutAssetHandles_operationType_error_(v214, v218, v296, v217, v290), v214, !started))
+  if (objc_msgSend_count(v296, v210, v211) && (objc_msgSend_assetCache(v291, v212, v213), v214 = objc_claimAutoreleasedReturnValue(), v217 = objc_msgSend_mmcsOperationType(selfCopy, v215, v216), started = objc_msgSend_startTrackingRegisterOrPutAssetHandles_operationType_error_(v214, v218, v296, v217, errorCopy), v214, !started))
   {
     v283 = 0;
   }
@@ -787,10 +787,10 @@ LABEL_73:
   return v283;
 }
 
-- (BOOL)_setupPutMMCSItemsWithError:(id *)a3
+- (BOOL)_setupPutMMCSItemsWithError:(id *)error
 {
   v244 = *MEMORY[0x277D85DE8];
-  v8 = objc_msgSend_MMCS(self, a2, a3);
+  v8 = objc_msgSend_MMCS(self, a2, error);
   if (!v8)
   {
     v222 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v6, v7);
@@ -819,12 +819,12 @@ LABEL_73:
     __assert_rtn("[CKDMMCSItemGroupContext _setupPutMMCSItemsWithError:]", "CKDMMCSItemGroupContext.m", 320, "!isGet && isGet");
   }
 
-  v226 = a3;
+  errorCopy = error;
   v238 = 0u;
   v239 = 0u;
   v236 = 0u;
   v237 = 0u;
-  v228 = self;
+  selfCopy = self;
   v31 = objc_msgSend_itemGroup(self, v29, v30);
   v34 = objc_msgSend_items(v31, v32, v33);
 
@@ -900,7 +900,7 @@ LABEL_28:
               objc_msgSend_setPath_(v61, v81, v80);
             }
 
-            v82 = objc_msgSend_MMCS(v228, v75, v76);
+            v82 = objc_msgSend_MMCS(selfCopy, v75, v76);
             v85 = objc_msgSend_assetCache(v82, v83, v84);
             v88 = objc_msgSend_deviceID(v42, v86, v87);
             v90 = objc_msgSend_volumeIndexForDeviceID_(v85, v89, v88);
@@ -994,7 +994,7 @@ LABEL_21:
     while (v147);
   }
 
-  if (!objc_msgSend_count(v24, v148, v149) || (objc_msgSend_assetCache(v8, v150, v151), v152 = objc_claimAutoreleasedReturnValue(), v155 = objc_msgSend_mmcsOperationType(v228, v153, v154), started = objc_msgSend_startTrackingRegisterOrPutAssetHandles_operationType_error_(v152, v156, v24, v155, v226), v152, started))
+  if (!objc_msgSend_count(v24, v148, v149) || (objc_msgSend_assetCache(v8, v150, v151), v152 = objc_claimAutoreleasedReturnValue(), v155 = objc_msgSend_mmcsOperationType(selfCopy, v153, v154), started = objc_msgSend_startTrackingRegisterOrPutAssetHandles_operationType_error_(v152, v156, v24, v155, errorCopy), v152, started))
   {
     v234 = 0u;
     v235 = 0u;
@@ -1068,7 +1068,7 @@ LABEL_21:
       while (v162);
     }
 
-    objc_msgSend__startTrackingMMCSItems_(v228, v219, v21);
+    objc_msgSend__startTrackingMMCSItems_(selfCopy, v219, v21);
     LOBYTE(started) = 1;
     v8 = v227;
     v24 = v231;
@@ -1078,10 +1078,10 @@ LABEL_21:
   return started;
 }
 
-- (BOOL)_setupGetMMCSItemsWithError:(id *)a3
+- (BOOL)_setupGetMMCSItemsWithError:(id *)error
 {
   v261 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_MMCS(self, a2, a3);
+  v6 = objc_msgSend_MMCS(self, a2, error);
   v9 = objc_msgSend_itemGroup(self, v7, v8);
   v12 = objc_msgSend_items(v9, v10, v11);
   v15 = objc_msgSend_count(v12, v13, v14);
@@ -1140,7 +1140,7 @@ LABEL_21:
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v234, v235, a2, self, @"CKDMMCSItemGroupContext.m", 410, @"Expected non-nil MMCS engine wrapper for %@", self);
   }
 
-  v238 = a3;
+  errorCopy = error;
   v49 = objc_msgSend_assetCache(v6, v18, v19);
 
   if (!v49)
@@ -1158,7 +1158,7 @@ LABEL_21:
   v249 = 0u;
   v250 = 0u;
   v251 = 0u;
-  v241 = self;
+  selfCopy = self;
   v60 = objc_msgSend_itemGroup(self, v58, v59);
   v63 = objc_msgSend_items(v60, v61, v62);
 
@@ -1241,7 +1241,7 @@ LABEL_37:
               objc_msgSend_setPath_(v96, v116, v115);
             }
 
-            v117 = objc_msgSend_MMCS(v241, v110, v111);
+            v117 = objc_msgSend_MMCS(selfCopy, v110, v111);
             v120 = objc_msgSend_assetCache(v117, v118, v119);
             v123 = objc_msgSend_deviceID(v71, v121, v122);
             v125 = objc_msgSend_volumeIndexForDeviceID_(v120, v124, v123);
@@ -1290,7 +1290,7 @@ LABEL_25:
     while (v153);
   }
 
-  if (!objc_msgSend_count(v57, v154, v155) || (objc_msgSend_assetCache(v6, v156, v157), v158 = objc_claimAutoreleasedReturnValue(), v161 = objc_msgSend_mmcsOperationType(v241, v159, v160), AssetHandles_operationType_error = objc_msgSend_startTrackingGetAssetHandles_operationType_error_(v158, v162, v243, v161, v238), v158, v57 = v243, AssetHandles_operationType_error))
+  if (!objc_msgSend_count(v57, v154, v155) || (objc_msgSend_assetCache(v6, v156, v157), v158 = objc_claimAutoreleasedReturnValue(), v161 = objc_msgSend_mmcsOperationType(selfCopy, v159, v160), AssetHandles_operationType_error = objc_msgSend_startTrackingGetAssetHandles_operationType_error_(v158, v162, v243, v161, errorCopy), v158, v57 = v243, AssetHandles_operationType_error))
   {
     v246 = 0u;
     v247 = 0u;
@@ -1369,7 +1369,7 @@ LABEL_25:
       while (v167);
     }
 
-    objc_msgSend__startTrackingMMCSItems_(v241, v231, v54);
+    objc_msgSend__startTrackingMMCSItems_(selfCopy, v231, v54);
     LOBYTE(AssetHandles_operationType_error) = 1;
     v46 = v239;
     v6 = v240;
@@ -1380,10 +1380,10 @@ LABEL_57:
   return AssetHandles_operationType_error;
 }
 
-- (BOOL)_setupMMCSItemsWithError:(id *)a3
+- (BOOL)_setupMMCSItemsWithError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_MMCS(self, a2, a3);
+  v7 = objc_msgSend_MMCS(self, a2, error);
   if (!v7)
   {
     v21 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v5, v6);
@@ -1638,10 +1638,10 @@ LABEL_32:
   v71 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didCompleteRequestWithError:(id)a3
+- (void)didCompleteRequestWithError:(id)error
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_hash(self, v5, v6);
   kdebug_trace();
   v9 = objc_msgSend_itemGroup(self, v7, v8);
@@ -1658,7 +1658,7 @@ LABEL_32:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v61 = self;
+      selfCopy = self;
       _os_log_debug_impl(&dword_22506F000, v15, OS_LOG_TYPE_DEBUG, "The group is already complete: %@", buf, 0xCu);
     }
   }
@@ -1668,10 +1668,10 @@ LABEL_32:
     v16 = objc_msgSend_itemGroup(self, v13, v14);
     objc_msgSend_setComplete_(v16, v17, 1);
 
-    if (v4)
+    if (errorCopy)
     {
       v20 = objc_msgSend_itemGroup(self, v18, v19);
-      objc_msgSend_setError_(v20, v21, v4);
+      objc_msgSend_setError_(v20, v21, errorCopy);
 
       if (*MEMORY[0x277CBC880] != -1)
       {
@@ -1684,9 +1684,9 @@ LABEL_32:
         v23 = v22;
         v26 = objc_msgSend_itemGroup(self, v24, v25);
         *buf = 138412546;
-        v61 = v26;
+        selfCopy = v26;
         v62 = 2112;
-        v63 = v4;
+        v63 = errorCopy;
         _os_log_debug_impl(&dword_22506F000, v23, OS_LOG_TYPE_DEBUG, "Completed MMCS item group %@ with error: %@", buf, 0x16u);
       }
     }
@@ -1704,24 +1704,24 @@ LABEL_32:
         v49 = v27;
         v52 = objc_msgSend_itemGroup(self, v50, v51);
         *buf = 138412290;
-        v61 = v52;
+        selfCopy = v52;
         _os_log_debug_impl(&dword_22506F000, v49, OS_LOG_TYPE_DEBUG, "Completed MMCS item group %@", buf, 0xCu);
       }
     }
 
-    v28 = self;
-    objc_sync_enter(v28);
-    v31 = objc_msgSend_progressBlock(v28, v29, v30);
-    objc_msgSend_setProgressBlock_(v28, v32, 0);
-    objc_sync_exit(v28);
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    v31 = objc_msgSend_progressBlock(selfCopy2, v29, v30);
+    objc_msgSend_setProgressBlock_(selfCopy2, v32, 0);
+    objc_sync_exit(selfCopy2);
 
-    if (v4)
+    if (errorCopy)
     {
       v57 = 0u;
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v35 = objc_msgSend_itemGroup(v28, v33, v34);
+      v35 = objc_msgSend_itemGroup(selfCopy2, v33, v34);
       v38 = objc_msgSend_items(v35, v36, v37);
 
       v42 = objc_msgSend_countByEnumeratingWithState_objects_count_(v38, v39, &v55, v59, 16);
@@ -1740,7 +1740,7 @@ LABEL_32:
             v45 = *(*(&v55 + 1) + 8 * i);
             if ((objc_msgSend_finished(v45, v40, v41) & 1) == 0)
             {
-              objc_msgSend_setError_(v45, v40, v4);
+              objc_msgSend_setError_(v45, v40, errorCopy);
               objc_msgSend_setFinished_(v45, v46, 1);
               if (v31)
               {
@@ -1756,30 +1756,30 @@ LABEL_32:
       }
     }
 
-    objc_msgSend__cleanupMMCSItems(v28, v33, v34);
+    objc_msgSend__cleanupMMCSItems(selfCopy2, v33, v34);
     v47 = CKGetGlobalQueue();
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = sub_22513B060;
     v53[3] = &unk_278545898;
-    v53[4] = v28;
-    v54 = v4;
+    v53[4] = selfCopy2;
+    v54 = errorCopy;
     dispatch_async(v47, v53);
   }
 
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateProgressForItemID:(unint64_t)a3 state:(int)a4 progress:(double)a5 results:(id)a6
+- (void)updateProgressForItemID:(unint64_t)d state:(int)state progress:(double)progress results:(id)results
 {
   v49 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v13 = objc_msgSend_findTrackedMMCSItemByItemID_(self, v11, a3);
+  resultsCopy = results;
+  v13 = objc_msgSend_findTrackedMMCSItemByItemID_(self, v11, d);
   if (v13)
   {
-    v14 = objc_msgSend_objectForKeyedSubscript_(v10, v12, *MEMORY[0x277D25640]);
-    v16 = objc_msgSend_objectForKeyedSubscript_(v10, v15, *MEMORY[0x277D25420]);
-    v20 = objc_msgSend_objectForKeyedSubscript_(v10, v17, *MEMORY[0x277D25480]);
+    v14 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v12, *MEMORY[0x277D25640]);
+    v16 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v15, *MEMORY[0x277D25420]);
+    v20 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v17, *MEMORY[0x277D25480]);
     if (v16)
     {
       v21 = objc_msgSend_unsignedIntValue(v16, v18, v19);
@@ -1815,17 +1815,17 @@ LABEL_26:
               if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
               {
                 v43 = 134218496;
-                v44 = a3;
+                dCopy3 = d;
                 v45 = 1024;
-                *v46 = a4;
+                *v46 = state;
                 *&v46[4] = 2048;
-                *&v46[6] = a5;
+                *&v46[6] = progress;
                 _os_log_debug_impl(&dword_22506F000, v36, OS_LOG_TYPE_DEBUG, "Progress of MMCS item %llu: s:%d p:%0.4f", &v43, 0x1Cu);
               }
 
-              if (a5 >= 0.0)
+              if (progress >= 0.0)
               {
-                objc_msgSend_setProgress_(v13, v37, v38, a5);
+                objc_msgSend_setProgress_(v13, v37, v38, progress);
                 v41 = objc_msgSend_progressBlock(self, v39, v40);
                 (v41)[2](v41, v13);
               }
@@ -1839,7 +1839,7 @@ LABEL_30:
           }
 
           v43 = 138543618;
-          v44 = v16;
+          dCopy3 = v16;
           v45 = 2114;
           *v46 = v20;
           _os_log_error_impl(&dword_22506F000, v31, OS_LOG_TYPE_ERROR, "Chunk count %{public}@ and file size %{public}@ inconsistent", &v43, 0x16u);
@@ -1869,11 +1869,11 @@ LABEL_22:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       v43 = 134218754;
-      v44 = a3;
+      dCopy3 = d;
       v45 = 1024;
-      *v46 = a4;
+      *v46 = state;
       *&v46[4] = 2048;
-      *&v46[6] = a5;
+      *&v46[6] = progress;
       v47 = 2112;
       v48 = v14;
       _os_log_error_impl(&dword_22506F000, v35, OS_LOG_TYPE_ERROR, "Progress of MMCS item %llu: s:%d p:%0.4f error:%@", &v43, 0x26u);
@@ -1891,7 +1891,7 @@ LABEL_22:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
     v43 = 134217984;
-    v44 = a3;
+    dCopy3 = d;
     _os_log_error_impl(&dword_22506F000, v32, OS_LOG_TYPE_ERROR, "Can't find MMCS item for itemID %llu", &v43, 0xCu);
   }
 
@@ -1900,10 +1900,10 @@ LABEL_31:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateProgressForPackageSectionState:(int)a3 progress:(double)a4 results:(id)a5
+- (void)updateProgressForPackageSectionState:(int)state progress:(double)progress results:(id)results
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  resultsCopy = results;
   v11 = objc_msgSend_MMCSPackageSectionItem(self, v9, v10);
   if (!v11)
   {
@@ -1911,7 +1911,7 @@ LABEL_31:
   }
 
   v13 = v11;
-  v14 = objc_msgSend_objectForKeyedSubscript_(v8, v12, *MEMORY[0x277D25640]);
+  v14 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v12, *MEMORY[0x277D25640]);
   v15 = *MEMORY[0x277CBC878];
   v16 = *MEMORY[0x277CBC880];
   if (v14)
@@ -1929,9 +1929,9 @@ LABEL_31:
       v33 = 138544130;
       v34 = v21;
       v35 = 1024;
-      v36 = a3;
+      stateCopy2 = state;
       v37 = 2048;
-      v38 = a4;
+      progressCopy2 = progress;
       v39 = 2112;
       v40 = v14;
       _os_log_error_impl(&dword_22506F000, v18, OS_LOG_TYPE_ERROR, "Progress of MMCS package section %{public}@: s:%d p:%0.2f error:%@", &v33, 0x26u);
@@ -1953,15 +1953,15 @@ LABEL_31:
       v33 = 138543874;
       v34 = v32;
       v35 = 1024;
-      v36 = a3;
+      stateCopy2 = state;
       v37 = 2048;
-      v38 = a4;
+      progressCopy2 = progress;
       _os_log_debug_impl(&dword_22506F000, v29, OS_LOG_TYPE_DEBUG, "Progress of MMCS package section %{public}@: s:%d p:%0.2f", &v33, 0x1Cu);
     }
 
-    if (a4 >= 0.0)
+    if (progress >= 0.0)
     {
-      objc_msgSend_setProgress_(v13, v23, v24, a4);
+      objc_msgSend_setProgress_(v13, v23, v24, progress);
       v27 = objc_msgSend_progressBlock(self, v25, v26);
       (v27)[2](v27, v13);
     }
@@ -1970,16 +1970,16 @@ LABEL_31:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateProgressForItemID:(unint64_t)a3 state:(int)a4 progress:(double)a5 error:(id)a6
+- (void)updateProgressForItemID:(unint64_t)d state:(int)state progress:(double)progress error:(id)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v12 = objc_msgSend_findTrackedMMCSItemByItemID_(self, v11, a3);
+  errorCopy = error;
+  v12 = objc_msgSend_findTrackedMMCSItemByItemID_(self, v11, d);
   if (v12)
   {
     v13 = *MEMORY[0x277CBC878];
     v14 = *MEMORY[0x277CBC880];
-    if (v10)
+    if (errorCopy)
     {
       if (*MEMORY[0x277CBC880] != -1)
       {
@@ -1990,13 +1990,13 @@ LABEL_31:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
       {
         v27 = 134218754;
-        v28 = a3;
+        dCopy3 = d;
         v29 = 1024;
-        v30 = a4;
+        stateCopy2 = state;
         v31 = 2048;
-        v32 = a5;
+        progressCopy2 = progress;
         v33 = 2112;
-        v34 = v10;
+        v34 = errorCopy;
         v16 = "Progress of MMCS item %llu: s:%d p:%0.4f error:%@";
         v17 = v15;
         v18 = 38;
@@ -2016,17 +2016,17 @@ LABEL_11:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
       {
         v27 = 134218496;
-        v28 = a3;
+        dCopy3 = d;
         v29 = 1024;
-        v30 = a4;
+        stateCopy2 = state;
         v31 = 2048;
-        v32 = a5;
+        progressCopy2 = progress;
         _os_log_debug_impl(&dword_22506F000, v20, OS_LOG_TYPE_DEBUG, "Progress of MMCS item %llu: s:%d p:%0.4f", &v27, 0x1Cu);
       }
 
-      if (a5 >= 0.0)
+      if (progress >= 0.0)
       {
-        objc_msgSend_setProgress_(v12, v21, v22, a5);
+        objc_msgSend_setProgress_(v12, v21, v22, progress);
         v25 = objc_msgSend_progressBlock(self, v23, v24);
         (v25)[2](v25, v12);
       }
@@ -2044,7 +2044,7 @@ LABEL_11:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       v27 = 134217984;
-      v28 = a3;
+      dCopy3 = d;
       v16 = "Can't find MMCS item for itemID %llu";
       v17 = v19;
       v18 = 12;
@@ -2055,49 +2055,49 @@ LABEL_11:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCommand:(id)a3 forItem:(id)a4
+- (void)handleCommand:(id)command forItem:(id)item
 {
-  v13 = a3;
-  v6 = a4;
+  commandCopy = command;
+  itemCopy = item;
   v9 = objc_msgSend_commandBlock(self, v7, v8);
 
   if (v9)
   {
     v12 = objc_msgSend_commandBlock(self, v10, v11);
-    (v12)[2](v12, v6, v13);
+    (v12)[2](v12, itemCopy, commandCopy);
   }
 }
 
-- (void)didGetItemID:(unint64_t)a3 signature:(id)a4 path:(id)a5 error:(id)a6 results:(id)a7
+- (void)didGetItemID:(unint64_t)d signature:(id)signature path:(id)path error:(id)error results:(id)results
 {
   v278 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  signatureCopy = signature;
+  pathCopy = path;
+  errorCopy = error;
+  resultsCopy = results;
   v16 = objc_autoreleasePoolPush();
   v19 = objc_msgSend_operation(self, v17, v18);
-  v22 = objc_msgSend_findTrackedMMCSItemByItemID_(self, v20, a3);
+  v22 = objc_msgSend_findTrackedMMCSItemByItemID_(self, v20, d);
   if (v22)
   {
-    v23 = v13;
+    v23 = pathCopy;
     v262 = v16;
-    v263 = v12;
-    v24 = objc_msgSend_objectForKeyedSubscript_(v15, v21, *MEMORY[0x277D25480]);
-    v26 = objc_msgSend_objectForKeyedSubscript_(v15, v25, *MEMORY[0x277D254D8]);
-    v28 = objc_msgSend_objectForKeyedSubscript_(v15, v27, *MEMORY[0x277D25668]);
-    v260 = v15;
-    v30 = objc_msgSend_objectForKeyedSubscript_(v15, v29, *MEMORY[0x277D25420]);
+    v263 = signatureCopy;
+    v24 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v21, *MEMORY[0x277D25480]);
+    v26 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v25, *MEMORY[0x277D254D8]);
+    v28 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v27, *MEMORY[0x277D25668]);
+    v260 = resultsCopy;
+    v30 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v29, *MEMORY[0x277D25420]);
     v264 = v19;
     v33 = objc_msgSend_operationInfo(v19, v31, v32);
     v36 = objc_msgSend_fetchingAssetsForRereference(v33, v34, v35);
 
     v265 = v24;
-    v261 = v14;
-    if (v14)
+    v261 = errorCopy;
+    if (errorCopy)
     {
       v39 = objc_msgSend_mmcsOperationType(self, v37, v38);
-      v41 = objc_msgSend__errorWithMMCSError_description_operationType_(CKDMMCS, v40, v14, @"Fetching asset failed", v39);
+      v41 = objc_msgSend__errorWithMMCSError_description_operationType_(CKDMMCS, v40, errorCopy, @"Fetching asset failed", v39);
 LABEL_14:
       v53 = v41;
       v44 = v26;
@@ -2105,7 +2105,7 @@ LABEL_15:
       v47 = v28;
       objc_msgSend_setError_(v22, v42, v53);
 
-      v13 = v23;
+      pathCopy = v23;
       v52 = v30;
 LABEL_16:
       if (*MEMORY[0x277CBC880] != -1)
@@ -2113,15 +2113,15 @@ LABEL_16:
         dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
       }
 
-      v15 = v260;
-      v14 = v261;
+      resultsCopy = v260;
+      errorCopy = v261;
       v54 = *MEMORY[0x277CBC830];
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
       {
         v135 = v54;
         v138 = objc_msgSend_error(v22, v136, v137);
         *buf = 138412546;
-        v275 = v22;
+        dCopy = v22;
         v276 = 2112;
         v277 = v138;
         _os_log_error_impl(&dword_22506F000, v135, OS_LOG_TYPE_ERROR, "Error completing MMCS item %@ : %@", buf, 0x16u);
@@ -2175,7 +2175,7 @@ LABEL_25:
       (v93)[2](v93, v22);
 
       v16 = v262;
-      v12 = v263;
+      signatureCopy = v263;
       v19 = v264;
       goto LABEL_29;
     }
@@ -2199,7 +2199,7 @@ LABEL_25:
       v48 = objc_msgSend_writer(v22, v45, v46);
       isContiguous = objc_msgSend_isContiguous(v48, v49, v50);
 
-      v13 = v23;
+      pathCopy = v23;
       v52 = v30;
       if (isContiguous)
       {
@@ -2209,7 +2209,7 @@ LABEL_25:
       goto LABEL_66;
     }
 
-    v13 = v23;
+    pathCopy = v23;
     if (v23)
     {
       v95 = 0;
@@ -2235,8 +2235,8 @@ LABEL_66:
         objc_msgSend_setChunkCount_(v22, v211, v210);
       }
 
-      v15 = v260;
-      v14 = 0;
+      resultsCopy = v260;
+      errorCopy = 0;
       if (*MEMORY[0x277CBC880] != -1)
       {
         dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -2246,7 +2246,7 @@ LABEL_66:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v275 = v22;
+        dCopy = v22;
         _os_log_debug_impl(&dword_22506F000, v212, OS_LOG_TYPE_DEBUG, "Finished getting MMCS item %@", buf, 0xCu);
       }
 
@@ -2469,7 +2469,7 @@ LABEL_61:
       v165 = objc_msgSend_stringByAppendingPathComponent_(v163, v164, v154);
 
       v267 = 0;
-      LODWORD(v163) = objc_msgSend_moveItemAtPath_toPath_error_(v255, v166, v13, v165, &v267);
+      LODWORD(v163) = objc_msgSend_moveItemAtPath_toPath_error_(v255, v166, pathCopy, v165, &v267);
       v168 = v267;
       if (v163)
       {
@@ -2504,7 +2504,7 @@ LABEL_64:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v275 = a3;
+    dCopy = d;
     _os_log_error_impl(&dword_22506F000, v43, OS_LOG_TYPE_ERROR, "Can't find MMCS item for itemID %llu", buf, 0xCu);
   }
 
@@ -2514,18 +2514,18 @@ LABEL_29:
   v94 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didPutItemID:(unint64_t)a3 signature:(id)a4 results:(id)a5
+- (void)didPutItemID:(unint64_t)d signature:(id)signature results:(id)results
 {
   v66 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v10 = objc_msgSend_findTrackedMMCSItemByItemID_(self, v8, a3);
+  resultsCopy = results;
+  v10 = objc_msgSend_findTrackedMMCSItemByItemID_(self, v8, d);
   if (v10)
   {
-    v11 = objc_msgSend_objectForKeyedSubscript_(v7, v9, *MEMORY[0x277D25640]);
-    v13 = objc_msgSend_objectForKeyedSubscript_(v7, v12, *MEMORY[0x277D254E0]);
-    v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, *MEMORY[0x277D254E8]);
-    v17 = objc_msgSend_objectForKeyedSubscript_(v7, v16, *MEMORY[0x277D25420]);
-    v21 = objc_msgSend_objectForKeyedSubscript_(v7, v18, *MEMORY[0x277D25480]);
+    v11 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v9, *MEMORY[0x277D25640]);
+    v13 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v12, *MEMORY[0x277D254E0]);
+    v15 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v14, *MEMORY[0x277D254E8]);
+    v17 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v16, *MEMORY[0x277D25420]);
+    v21 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v18, *MEMORY[0x277D25480]);
     if (v17 && objc_msgSend_unsignedIntValue(v17, v19, v20))
     {
       v22 = objc_msgSend_unsignedIntValue(v17, v19, v20);
@@ -2562,7 +2562,7 @@ LABEL_29:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v63 = v10;
+        dCopy = v10;
         _os_log_debug_impl(&dword_22506F000, v41, OS_LOG_TYPE_DEBUG, "Error putting MMCS item %@", buf, 0xCu);
       }
     }
@@ -2591,7 +2591,7 @@ LABEL_29:
         v54 = v53;
         v57 = objc_msgSend_asset(v10, v55, v56);
         *buf = 138412546;
-        v63 = v10;
+        dCopy = v10;
         v64 = 2112;
         v65 = v57;
         _os_log_debug_impl(&dword_22506F000, v54, OS_LOG_TYPE_DEBUG, "Finished putting MMCS item %@ and asset %@", buf, 0x16u);
@@ -2620,7 +2620,7 @@ LABEL_24:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v63 = a3;
+    dCopy = d;
     _os_log_error_impl(&dword_22506F000, v44, OS_LOG_TYPE_ERROR, "Can't find MMCS item for itemID %llu", buf, 0xCu);
   }
 
@@ -2629,11 +2629,11 @@ LABEL_25:
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didPutSectionWithSignature:(id)a3 results:(id)a4
+- (void)didPutSectionWithSignature:(id)signature results:(id)results
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  signatureCopy = signature;
+  resultsCopy = results;
   v10 = objc_msgSend_MMCSPackageSectionItem(self, v8, v9);
   if (!v10)
   {
@@ -2641,9 +2641,9 @@ LABEL_25:
   }
 
   v12 = v10;
-  v13 = objc_msgSend_objectForKeyedSubscript_(v7, v11, *MEMORY[0x277D25640]);
-  v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, *MEMORY[0x277D254E0]);
-  v17 = objc_msgSend_objectForKeyedSubscript_(v7, v16, *MEMORY[0x277D254E8]);
+  v13 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v11, *MEMORY[0x277D25640]);
+  v15 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v14, *MEMORY[0x277D254E0]);
+  v17 = objc_msgSend_objectForKeyedSubscript_(resultsCopy, v16, *MEMORY[0x277D254E8]);
   objc_msgSend_setFinished_(v12, v18, 1);
   if (v13)
   {
@@ -2697,45 +2697,45 @@ LABEL_12:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didGetMetricsForRequest:(id)a3
+- (void)didGetMetricsForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v8 = objc_msgSend_itemGroup(self, v5, v6);
-  objc_msgSend_setMetrics_(v8, v7, v4);
+  objc_msgSend_setMetrics_(v8, v7, requestCopy);
 }
 
-+ (MMCSItemReaderWriter)getMMCSItemReaderForItemID:(unint64_t)a3 MMCS:(id)a4 itemGroupContext:(id)a5 downloadChunkContext:(id)a6 error:(id *)a7
++ (MMCSItemReaderWriter)getMMCSItemReaderForItemID:(unint64_t)d MMCS:(id)s itemGroupContext:(id)context downloadChunkContext:(id)chunkContext error:(id *)error
 {
   v187[1] = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a5;
-  v17 = a6;
-  if (!v13)
+  sCopy = s;
+  contextCopy = context;
+  chunkContextCopy = chunkContext;
+  if (!sCopy)
   {
     v161 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v15, v16);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v161, v162, a2, a1, @"CKDMMCSItemGroupContext.m", 1015, @"Expected non-nil MMCS for %@", a1);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v161, v162, a2, self, @"CKDMMCSItemGroupContext.m", 1015, @"Expected non-nil MMCS for %@", self);
   }
 
-  v20 = objc_msgSend_assetCache(v13, v15, v16);
+  v20 = objc_msgSend_assetCache(sCopy, v15, v16);
   if (!v20)
   {
     v163 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v18, v19);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v163, v164, a2, a1, @"CKDMMCSItemGroupContext.m", 1017, @"Expected non-nil asset cache for %@", v13);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v163, v164, a2, self, @"CKDMMCSItemGroupContext.m", 1017, @"Expected non-nil asset cache for %@", sCopy);
   }
 
-  v21 = objc_msgSend_conformingOperation(v14, v18, v19);
+  v21 = objc_msgSend_conformingOperation(contextCopy, v18, v19);
   v23 = v21;
-  if (!v21 || (objc_msgSend_itemGroupContext_willGetMMCSItemReaderForItemID_(v21, v22, v14, a3) & 1) != 0)
+  if (!v21 || (objc_msgSend_itemGroupContext_willGetMMCSItemReaderForItemID_(v21, v22, contextCopy, d) & 1) != 0)
   {
-    v24 = objc_msgSend_findTrackedMMCSItemByItemID_(v14, v22, a3);
+    v24 = objc_msgSend_findTrackedMMCSItemByItemID_(contextCopy, v22, d);
     if (v24)
     {
       v27 = v24;
-      if (objc_msgSend_shouldFetchAssetContentInMemory(v14, v25, v26))
+      if (objc_msgSend_shouldFetchAssetContentInMemory(contextCopy, v25, v26))
       {
         v30 = [CKDMMCSItemCommandWriter alloc];
         *&buf = 3;
-        v32 = objc_msgSend_initWithMMCSItem_MMCSRequest_(v30, v31, v27, v14);
+        v32 = objc_msgSend_initWithMMCSItem_MMCSRequest_(v30, v31, v27, contextCopy);
         *(&buf + 1) = v32;
         v171 = @"not an itemTypeHint";
         v173 = 0;
@@ -2756,23 +2756,23 @@ LABEL_12:
           objc_msgSend_setWriter_(v27, v33, v32);
         }
 
-        else if (a7)
+        else if (error)
         {
-          *a7 = objc_msgSend_errorWithDomain_code_path_format_(MEMORY[0x277CBC560], v33, *MEMORY[0x277CBC120], 3001, 0, @"nil reader");
+          *error = objc_msgSend_errorWithDomain_code_path_format_(MEMORY[0x277CBC560], v33, *MEMORY[0x277CBC120], 3001, 0, @"nil reader");
         }
 
         goto LABEL_45;
       }
 
-      v166 = v17;
-      v167 = a7;
+      v166 = chunkContextCopy;
+      errorCopy2 = error;
 LABEL_31:
       v95 = objc_msgSend_fileURL(v27, v28, v29);
       v98 = objc_msgSend_path(v95, v96, v97);
 
       v101 = objc_msgSend_CKSanitizedPath(v98, v99, v100);
       v106 = objc_msgSend_itemTypeHint(v27, v102, v103);
-      v165 = v14;
+      v165 = contextCopy;
       v168 = v101;
       if (v106)
       {
@@ -2790,24 +2790,24 @@ LABEL_31:
         if (objc_msgSend_shouldReadRawEncryptedData(v27, v108, v109))
         {
           v113 = [CKDMMCSEncryptedItemReader alloc];
-          v115 = objc_msgSend_initWithMMCSItem_MMCSRequest_(v113, v114, v27, v14);
+          v115 = objc_msgSend_initWithMMCSItem_MMCSRequest_(v113, v114, v27, contextCopy);
         }
 
         else if (objc_msgSend_shouldReadAssetContentUsingClientProxy(v27, v111, v112))
         {
           v133 = [CKDMMCSClientProxyItemReader alloc];
-          v115 = objc_msgSend_initWithMMCSItem_MMCSRequest_(v133, v134, v27, v14);
+          v115 = objc_msgSend_initWithMMCSItem_MMCSRequest_(v133, v134, v27, contextCopy);
         }
 
         else
         {
           v152 = [CKDMMCSItemReaderWriter alloc];
-          v115 = objc_msgSend_initWithMMCSItem_MMCSRequest_downloadChunkContext_(v152, v153, v27, v14, v166);
+          v115 = objc_msgSend_initWithMMCSItem_MMCSRequest_downloadChunkContext_(v152, v153, v27, contextCopy, v166);
         }
 
         v154 = v115;
         v155 = v20;
-        if (!v23 || (objc_msgSend_itemGroupContext_didGetItemReader_itemID_(v23, v116, v14, v115, a3), v156 = objc_claimAutoreleasedReturnValue(), v154, (v154 = v156) != 0))
+        if (!v23 || (objc_msgSend_itemGroupContext_didGetItemReader_itemID_(v23, v116, contextCopy, v115, d), v156 = objc_claimAutoreleasedReturnValue(), v154, (v154 = v156) != 0))
         {
           *&buf = 5;
           v158 = v154;
@@ -2830,9 +2830,9 @@ LABEL_31:
           v186 = sub_22513E4A0;
           v159 = MMCSItemReaderWriterCreate();
           v34 = v159;
-          if (v167 && !v159)
+          if (errorCopy2 && !v159)
           {
-            *v167 = objc_msgSend_errorWithDomain_code_path_format_(MEMORY[0x277CBC560], v160, *MEMORY[0x277CBC120], 3001, v168, @"nil reader");
+            *errorCopy2 = objc_msgSend_errorWithDomain_code_path_format_(MEMORY[0x277CBC560], v160, *MEMORY[0x277CBC120], 3001, v168, @"nil reader");
           }
 
           v32 = 0;
@@ -2841,11 +2841,11 @@ LABEL_31:
           goto LABEL_44;
         }
 
-        if (v167)
+        if (errorCopy2)
         {
           objc_msgSend_errorWithDomain_code_path_format_(MEMORY[0x277CBC560], v157, *MEMORY[0x277CBC120], 3001, 0, @"delegate said no");
           v32 = 0;
-          *v167 = v34 = 0;
+          *errorCopy2 = v34 = 0;
         }
 
         else
@@ -2872,11 +2872,11 @@ LABEL_31:
         v128 = v168;
         v32 = objc_msgSend_errorWithDomain_code_path_format_(v127, v129, v122, 3001, v168, @"Invalid arguments, MMCSItem:%@, itemID:%llu, UUID:%@", v27, v123, v126);
 
-        if (v167)
+        if (errorCopy2)
         {
           v130 = v32;
           v34 = 0;
-          *v167 = v32;
+          *errorCopy2 = v32;
         }
 
         else
@@ -2890,18 +2890,18 @@ LABEL_31:
         v23 = v117;
       }
 
-      v14 = v165;
+      contextCopy = v165;
 LABEL_44:
 
-      v17 = v166;
+      chunkContextCopy = v166;
       goto LABEL_45;
     }
 
-    v32 = objc_msgSend_findAssetHandleForItemID_error_(v20, v25, a3, a7);
+    v32 = objc_msgSend_findAssetHandleForItemID_error_(v20, v25, d, error);
     if (v32)
     {
-      v166 = v17;
-      v167 = a7;
+      v166 = chunkContextCopy;
+      errorCopy2 = error;
       v35 = [CKDMMCSItem alloc];
       v38 = objc_msgSend_path(v32, v36, v37);
       v27 = objc_msgSend_init_(v35, v39, v38 == 0);
@@ -2928,7 +2928,7 @@ LABEL_44:
         objc_msgSend_setFileURL_(v27, v56, 0);
       }
 
-      v73 = objc_msgSend_assetCache(v13, v71, v72);
+      v73 = objc_msgSend_assetCache(sCopy, v71, v72);
       v76 = objc_msgSend_volumeIndex(v32, v74, v75);
       v78 = objc_msgSend_deviceIDForVolumeIndex_(v73, v77, v76);
       objc_msgSend_setDeviceID_(v27, v79, v78);
@@ -2978,13 +2978,13 @@ LABEL_30:
       v149 = objc_msgSend_volumeIndex(v32, v147, v148);
       v69 = objc_msgSend_errorWithDomain_code_format_(v169, v150, v143, 3002, @"Unable to open file for MMCSItem:%@ itemID:%llu on unmounted volume with volumeIndex=%@", v27, v146, v149);
 
-      if (v167)
+      if (errorCopy2)
       {
         v151 = v69;
-        *v167 = v69;
+        *errorCopy2 = v69;
       }
 
-      v17 = v166;
+      chunkContextCopy = v166;
     }
 
     else
@@ -2998,14 +2998,14 @@ LABEL_30:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 134217984;
-        *(&buf + 4) = a3;
+        *(&buf + 4) = d;
         _os_log_error_impl(&dword_22506F000, v65, OS_LOG_TYPE_ERROR, "Unregistering item without an asset handle for itemID=%llu", &buf, 0xCu);
       }
 
-      v67 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v66, a3);
+      v67 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v66, d);
       v187[0] = v67;
       v69 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v68, v187, 1);
-      objc_msgSend_unregisterItemIDs_(v13, v70, v69);
+      objc_msgSend_unregisterItemIDs_(sCopy, v70, v69);
       v27 = 0;
     }
 
@@ -3015,10 +3015,10 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if (a7)
+  if (error)
   {
     objc_msgSend_errorWithDomain_code_path_format_(MEMORY[0x277CBC560], v22, *MEMORY[0x277CBC120], 3001, 0, @"delegate said no");
-    *a7 = v34 = 0;
+    *error = v34 = 0;
   }
 
   else
@@ -3032,9 +3032,9 @@ LABEL_46:
   return v34;
 }
 
-- (id)getCKDMMCSItemReaderByPathForMMCSItem:(id)a3 error:(id *)a4
+- (id)getCKDMMCSItemReaderByPathForMMCSItem:(id)item error:(id *)error
 {
-  v6 = a3;
+  itemCopy = item;
   v11 = objc_msgSend_MMCS(self, v7, v8);
   if (!v11)
   {
@@ -3049,37 +3049,37 @@ LABEL_46:
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v27, v28, a2, self, @"CKDMMCSItemGroupContext.m", 1163, @"Expected non-nil asset cache for %@", v11);
   }
 
-  if (objc_msgSend_shouldReadRawEncryptedData(v6, v12, v13))
+  if (objc_msgSend_shouldReadRawEncryptedData(itemCopy, v12, v13))
   {
     v17 = CKDMMCSEncryptedItemReader;
 LABEL_9:
     v18 = [v17 alloc];
-    v20 = objc_msgSend_initWithMMCSItem_MMCSRequest_(v18, v19, v6, self);
+    v20 = objc_msgSend_initWithMMCSItem_MMCSRequest_(v18, v19, itemCopy, self);
     goto LABEL_11;
   }
 
-  if (objc_msgSend_shouldReadAssetContentUsingClientProxy(v6, v15, v16))
+  if (objc_msgSend_shouldReadAssetContentUsingClientProxy(itemCopy, v15, v16))
   {
     v17 = CKDMMCSClientProxyItemReader;
     goto LABEL_9;
   }
 
   v21 = [CKDMMCSItemReaderWriter alloc];
-  v20 = objc_msgSend_initWithMMCSItem_MMCSRequest_downloadChunkContext_(v21, v22, v6, self, 0);
+  v20 = objc_msgSend_initWithMMCSItem_MMCSRequest_downloadChunkContext_(v21, v22, itemCopy, self, 0);
 LABEL_11:
   v23 = v20;
 
   return v23;
 }
 
-- (BOOL)willOpenItemReaderWriter:(id)a3 error:(id *)a4
+- (BOOL)willOpenItemReaderWriter:(id)writer error:(id *)error
 {
-  v6 = a3;
+  writerCopy = writer;
   v9 = objc_msgSend_conformingOperation(self, v7, v8);
   v11 = v9;
   if (v9)
   {
-    v12 = objc_msgSend_itemGroupContext_willOpenItemReaderWriter_error_(v9, v10, self, v6, a4);
+    v12 = objc_msgSend_itemGroupContext_willOpenItemReaderWriter_error_(v9, v10, self, writerCopy, error);
   }
 
   else

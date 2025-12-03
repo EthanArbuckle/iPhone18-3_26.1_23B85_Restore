@@ -1,12 +1,12 @@
 @interface ICTableAccessibilityController
-- (BOOL)cellIsEditingAtColumnID:(id)a3 rowID:(id)a4;
+- (BOOL)cellIsEditingAtColumnID:(id)d rowID:(id)iD;
 - (BOOL)isEditable;
-- (BOOL)isHeaderCellAtColumnID:(id)a3 rowID:(id)a4;
+- (BOOL)isHeaderCellAtColumnID:(id)d rowID:(id)iD;
 - (BOOL)isTableRightToLeft;
 - (BOOL)isTableTextRangeSelected;
-- (CGRect)boundingRectForCellWithColumnID:(id)a3 rowID:(id)a4;
-- (CGRect)frameInScreenSpaceForCellWithColumnID:(id)a3 rowID:(id)a4;
-- (ICTableAccessibilityController)initWithTableAttachmentViewController:(id)a3;
+- (CGRect)boundingRectForCellWithColumnID:(id)d rowID:(id)iD;
+- (CGRect)frameInScreenSpaceForCellWithColumnID:(id)d rowID:(id)iD;
+- (ICTableAccessibilityController)initWithTableAttachmentViewController:(id)controller;
 - (ICTableAttachmentView)hostingTableAttachmentView;
 - (ICTableAttachmentViewController)tableAttachmentViewController;
 - (ICTableSelectionKnob)endSelectionKnob;
@@ -15,66 +15,66 @@
 - (UIScrollView)tableScrollView;
 - (UIView)dragProviderView;
 - (_NSRange)attachmentRangeInNote;
-- (id)attributedContentStringForColumnID:(id)a3 rowID:(id)a4;
-- (id)cellElementForColumnIndex:(unint64_t)a3 rowIndex:(unint64_t)a4;
-- (id)cellElementsForColumnID:(id)a3;
-- (id)cellElementsForRowID:(id)a3;
-- (id)columnIDForColumnIndex:(unint64_t)a3;
-- (id)rowIDForRowIndex:(unint64_t)a3;
+- (id)attributedContentStringForColumnID:(id)d rowID:(id)iD;
+- (id)cellElementForColumnIndex:(unint64_t)index rowIndex:(unint64_t)rowIndex;
+- (id)cellElementsForColumnID:(id)d;
+- (id)cellElementsForRowID:(id)d;
+- (id)columnIDForColumnIndex:(unint64_t)index;
+- (id)rowIDForRowIndex:(unint64_t)index;
 - (id)selectedCells;
 - (id)selectedColumnIDs;
 - (id)selectedRowIDs;
 - (id)table;
-- (id)textViewForColumnID:(id)a3;
-- (id)titleForColumnID:(id)a3;
-- (id)titleForRowID:(id)a3;
+- (id)textViewForColumnID:(id)d;
+- (id)titleForColumnID:(id)d;
+- (id)titleForRowID:(id)d;
 - (unint64_t)columnCount;
-- (unint64_t)columnIndexForColumnID:(id)a3;
+- (unint64_t)columnIndexForColumnID:(id)d;
 - (unint64_t)rowCount;
-- (unint64_t)rowIndexForRowID:(id)a3;
+- (unint64_t)rowIndexForRowID:(id)d;
 - (void)addColumnAfter;
 - (void)addColumnBefore;
 - (void)addRowAbove;
 - (void)addRowBelow;
-- (void)beginEditingCellWithColumnID:(id)a3 rowID:(id)a4;
+- (void)beginEditingCellWithColumnID:(id)d rowID:(id)iD;
 - (void)convertTableToText;
 - (void)deleteSelectedColumns;
 - (void)deleteSelectedRows;
-- (void)invalidateAXElementsForColumnID:(id)a3;
-- (void)invalidateAXElementsForRowID:(id)a3;
-- (void)moveCurrentColumnOrRow:(BOOL)a3 toIndex:(unint64_t)a4;
+- (void)invalidateAXElementsForColumnID:(id)d;
+- (void)invalidateAXElementsForRowID:(id)d;
+- (void)moveCurrentColumnOrRow:(BOOL)row toIndex:(unint64_t)index;
 - (void)reverseTableDirection;
-- (void)scrollColumnIDToVisible:(id)a3 rowID:(id)a4;
-- (void)selectCellForColumnID:(id)a3 rowID:(id)a4;
+- (void)scrollColumnIDToVisible:(id)visible rowID:(id)d;
+- (void)selectCellForColumnID:(id)d rowID:(id)iD;
 - (void)selectCellRangeForCurrentCell;
-- (void)selectColumnWithID:(id)a3;
+- (void)selectColumnWithID:(id)d;
 - (void)selectCurrentColumn;
 - (void)selectCurrentRow;
-- (void)selectRowWithID:(id)a3;
-- (void)selectTableTextRange:(BOOL)a3;
-- (void)speakCellRangeSelection:(id)a3;
+- (void)selectRowWithID:(id)d;
+- (void)selectTableTextRange:(BOOL)range;
+- (void)speakCellRangeSelection:(id)selection;
 - (void)tableRowOrColumnSelectionDidChange;
 @end
 
 @implementation ICTableAccessibilityController
 
-- (ICTableAccessibilityController)initWithTableAttachmentViewController:(id)a3
+- (ICTableAccessibilityController)initWithTableAttachmentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = ICTableAccessibilityController;
   v5 = [(ICTableAccessibilityController *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_tableAttachmentViewController, v4);
+    objc_storeWeak(&v5->_tableAttachmentViewController, controllerCopy);
     v7 = [[ICTableAccessibilityElementProvider alloc] initWithTableAccessibilityController:v6];
     elementProvider = v6->_elementProvider;
     v6->_elementProvider = v7;
 
     objc_opt_class();
-    v9 = [(ICTableAccessibilityController *)v6 tableAttachmentViewController];
-    v10 = [v9 view];
+    tableAttachmentViewController = [(ICTableAccessibilityController *)v6 tableAttachmentViewController];
+    view = [tableAttachmentViewController view];
     v11 = ICDynamicCast();
 
     if (v11)
@@ -88,43 +88,43 @@
   return v6;
 }
 
-- (void)beginEditingCellWithColumnID:(id)a3 rowID:(id)a4
+- (void)beginEditingCellWithColumnID:(id)d rowID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  [v8 beginEditingCellWithColumnID:v7 andRowID:v6 location:2];
+  iDCopy = iD;
+  dCopy = d;
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  [tableAttachmentViewController beginEditingCellWithColumnID:dCopy andRowID:iDCopy location:2];
 }
 
 - (unint64_t)rowCount
 {
-  v2 = [(ICTableAccessibilityController *)self table];
-  v3 = [v2 rowCount];
+  table = [(ICTableAccessibilityController *)self table];
+  rowCount = [table rowCount];
 
-  return v3;
+  return rowCount;
 }
 
 - (unint64_t)columnCount
 {
-  v2 = [(ICTableAccessibilityController *)self table];
-  v3 = [v2 columnCount];
+  table = [(ICTableAccessibilityController *)self table];
+  columnCount = [table columnCount];
 
-  return v3;
+  return columnCount;
 }
 
 - (UIView)dragProviderView
 {
-  v2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v3 = [v2 noteTextView];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  noteTextView = [tableAttachmentViewController noteTextView];
 
-  return v3;
+  return noteTextView;
 }
 
 - (ICTableAttachmentView)hostingTableAttachmentView
 {
   objc_opt_class();
-  v3 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v4 = [v3 view];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  view = [tableAttachmentViewController view];
   v5 = ICDynamicCast();
 
   return v5;
@@ -132,36 +132,36 @@
 
 - (UIScrollView)tableScrollView
 {
-  v2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v3 = [v2 scrollView];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  scrollView = [tableAttachmentViewController scrollView];
 
-  return v3;
+  return scrollView;
 }
 
 - (UIScrollView)noteScrollView
 {
-  v2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v3 = [v2 noteScrollView];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  noteScrollView = [tableAttachmentViewController noteScrollView];
 
-  return v3;
+  return noteScrollView;
 }
 
 - (BOOL)isTableRightToLeft
 {
-  v2 = [(ICTableAccessibilityController *)self table];
-  v3 = [v2 isRightToLeft];
+  table = [(ICTableAccessibilityController *)self table];
+  isRightToLeft = [table isRightToLeft];
 
-  return v3;
+  return isRightToLeft;
 }
 
 - (_NSRange)attachmentRangeInNote
 {
-  v2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v3 = [v2 attachment];
-  v4 = [v3 rangeInNote];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  attachment = [tableAttachmentViewController attachment];
+  rangeInNote = [attachment rangeInNote];
   v6 = v5;
 
-  v7 = v4;
+  v7 = rangeInNote;
   v8 = v6;
   result.length = v8;
   result.location = v7;
@@ -170,109 +170,109 @@
 
 - (ICTableSelectionKnob)startSelectionKnob
 {
-  v2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v3 = [v2 startKnob];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  startKnob = [tableAttachmentViewController startKnob];
 
-  return v3;
+  return startKnob;
 }
 
 - (ICTableSelectionKnob)endSelectionKnob
 {
-  v2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v3 = [v2 endKnob];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  endKnob = [tableAttachmentViewController endKnob];
 
-  return v3;
+  return endKnob;
 }
 
-- (id)cellElementForColumnIndex:(unint64_t)a3 rowIndex:(unint64_t)a4
+- (id)cellElementForColumnIndex:(unint64_t)index rowIndex:(unint64_t)rowIndex
 {
-  v6 = [(ICTableAccessibilityController *)self columnIDForColumnIndex:a3];
-  v7 = [(ICTableAccessibilityController *)self rowIDForRowIndex:a4];
-  v8 = [(ICTableAccessibilityController *)self elementProvider];
-  v9 = [v8 cellElementForColumnID:v6 rowID:v7];
+  v6 = [(ICTableAccessibilityController *)self columnIDForColumnIndex:index];
+  v7 = [(ICTableAccessibilityController *)self rowIDForRowIndex:rowIndex];
+  elementProvider = [(ICTableAccessibilityController *)self elementProvider];
+  v9 = [elementProvider cellElementForColumnID:v6 rowID:v7];
 
   return v9;
 }
 
-- (id)cellElementsForColumnID:(id)a3
+- (id)cellElementsForColumnID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICTableAccessibilityController *)self elementProvider];
-  v6 = [v5 cellElementsForColumnID:v4];
+  dCopy = d;
+  elementProvider = [(ICTableAccessibilityController *)self elementProvider];
+  v6 = [elementProvider cellElementsForColumnID:dCopy];
 
   return v6;
 }
 
-- (id)cellElementsForRowID:(id)a3
+- (id)cellElementsForRowID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICTableAccessibilityController *)self elementProvider];
-  v6 = [v5 cellElementsForRowID:v4];
+  dCopy = d;
+  elementProvider = [(ICTableAccessibilityController *)self elementProvider];
+  v6 = [elementProvider cellElementsForRowID:dCopy];
 
   return v6;
 }
 
-- (id)textViewForColumnID:(id)a3
+- (id)textViewForColumnID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v6 = [v5 textViewManager];
-  v7 = [v6 textViewForColumn:v4];
+  dCopy = d;
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  textViewManager = [tableAttachmentViewController textViewManager];
+  v7 = [textViewManager textViewForColumn:dCopy];
 
   return v7;
 }
 
-- (unint64_t)rowIndexForRowID:(id)a3
+- (unint64_t)rowIndexForRowID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICTableAccessibilityController *)self table];
-  v6 = [v5 rowIndexForIdentifier:v4];
+  dCopy = d;
+  table = [(ICTableAccessibilityController *)self table];
+  v6 = [table rowIndexForIdentifier:dCopy];
 
   return v6;
 }
 
-- (unint64_t)columnIndexForColumnID:(id)a3
+- (unint64_t)columnIndexForColumnID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICTableAccessibilityController *)self table];
-  v6 = [v5 columnIndexForIdentifier:v4];
+  dCopy = d;
+  table = [(ICTableAccessibilityController *)self table];
+  v6 = [table columnIndexForIdentifier:dCopy];
 
   return v6;
 }
 
-- (id)columnIDForColumnIndex:(unint64_t)a3
+- (id)columnIDForColumnIndex:(unint64_t)index
 {
-  v4 = [(ICTableAccessibilityController *)self table];
-  v5 = [v4 identifierForColumnAtIndex:a3];
+  table = [(ICTableAccessibilityController *)self table];
+  v5 = [table identifierForColumnAtIndex:index];
 
   return v5;
 }
 
-- (id)rowIDForRowIndex:(unint64_t)a3
+- (id)rowIDForRowIndex:(unint64_t)index
 {
-  v4 = [(ICTableAccessibilityController *)self table];
-  v5 = [v4 identifierForRowAtIndex:a3];
+  table = [(ICTableAccessibilityController *)self table];
+  v5 = [table identifierForRowAtIndex:index];
 
   return v5;
 }
 
-- (id)attributedContentStringForColumnID:(id)a3 rowID:(id)a4
+- (id)attributedContentStringForColumnID:(id)d rowID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICTableAccessibilityController *)self table];
-  v9 = [v8 stringForColumnID:v7 rowID:v6];
+  iDCopy = iD;
+  dCopy = d;
+  table = [(ICTableAccessibilityController *)self table];
+  v9 = [table stringForColumnID:dCopy rowID:iDCopy];
 
   return v9;
 }
 
-- (CGRect)boundingRectForCellWithColumnID:(id)a3 rowID:(id)a4
+- (CGRect)boundingRectForCellWithColumnID:(id)d rowID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v9 = [v8 textViewManager];
-  [v9 frameOfCellAtColumn:v7 row:v6];
+  iDCopy = iD;
+  dCopy = d;
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  textViewManager = [tableAttachmentViewController textViewManager];
+  [textViewManager frameOfCellAtColumn:dCopy row:iDCopy];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -289,24 +289,24 @@
   return result;
 }
 
-- (CGRect)frameInScreenSpaceForCellWithColumnID:(id)a3 rowID:(id)a4
+- (CGRect)frameInScreenSpaceForCellWithColumnID:(id)d rowID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = *MEMORY[0x277CBF3A0];
   v9 = *(MEMORY[0x277CBF3A0] + 8);
   v10 = *(MEMORY[0x277CBF3A0] + 16);
   v11 = *(MEMORY[0x277CBF3A0] + 24);
-  if ([(ICTableAccessibilityController *)self columnIndexForColumnID:v6]!= 0x7FFFFFFFFFFFFFFFLL && [(ICTableAccessibilityController *)self rowIndexForRowID:v7]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(ICTableAccessibilityController *)self columnIndexForColumnID:dCopy]!= 0x7FFFFFFFFFFFFFFFLL && [(ICTableAccessibilityController *)self rowIndexForRowID:iDCopy]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(ICTableAccessibilityController *)self boundingRectForCellWithColumnID:v6 rowID:v7];
+    [(ICTableAccessibilityController *)self boundingRectForCellWithColumnID:dCopy rowID:iDCopy];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-    v21 = [v20 scrollView];
-    [v21 convertRect:0 toView:{v13, v15, v17, v19}];
+    tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+    scrollView = [tableAttachmentViewController scrollView];
+    [scrollView convertRect:0 toView:{v13, v15, v17, v19}];
     v8 = v22;
     v9 = v23;
     v10 = v24;
@@ -324,23 +324,23 @@
   return result;
 }
 
-- (id)titleForColumnID:(id)a3
+- (id)titleForColumnID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(ICTableAccessibilityController *)self rowIDForRowIndex:0];
-  if ([(ICTableAccessibilityController *)self isHeaderCellAtColumnID:v4 rowID:v5])
+  if ([(ICTableAccessibilityController *)self isHeaderCellAtColumnID:dCopy rowID:v5])
   {
-    v6 = [(ICTableAccessibilityController *)self attributedContentStringForColumnID:v4 rowID:v5];
+    v6 = [(ICTableAccessibilityController *)self attributedContentStringForColumnID:dCopy rowID:v5];
 
     [v6 string];
   }
 
   else
   {
-    v7 = [(ICTableAccessibilityController *)self columnIndexForColumnID:v4];
+    v7 = [(ICTableAccessibilityController *)self columnIndexForColumnID:dCopy];
 
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v8 localizedStringForKey:@"column %lu" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"column %lu" value:&stru_282757698 table:0];
 
     [MEMORY[0x277CCACA8] localizedStringWithFormat:v6, v7 + 1];
   }
@@ -349,23 +349,23 @@
   return v9;
 }
 
-- (id)titleForRowID:(id)a3
+- (id)titleForRowID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [(ICTableAccessibilityController *)self columnIDForColumnIndex:0];
-  if ([(ICTableAccessibilityController *)self isHeaderCellAtColumnID:v5 rowID:v4])
+  if ([(ICTableAccessibilityController *)self isHeaderCellAtColumnID:v5 rowID:dCopy])
   {
-    v6 = [(ICTableAccessibilityController *)self attributedContentStringForColumnID:v5 rowID:v4];
+    v6 = [(ICTableAccessibilityController *)self attributedContentStringForColumnID:v5 rowID:dCopy];
 
     [v6 string];
   }
 
   else
   {
-    v7 = [(ICTableAccessibilityController *)self rowIndexForRowID:v4];
+    v7 = [(ICTableAccessibilityController *)self rowIndexForRowID:dCopy];
 
-    v8 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v8 localizedStringForKey:@"row %lu" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"row %lu" value:&stru_282757698 table:0];
 
     [MEMORY[0x277CCACA8] localizedStringWithFormat:v6, v7 + 1];
   }
@@ -376,31 +376,31 @@
 
 - (BOOL)isEditable
 {
-  v2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v3 = [v2 attachment];
-  v4 = [v3 note];
-  v5 = [v4 isEditable];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  attachment = [tableAttachmentViewController attachment];
+  note = [attachment note];
+  isEditable = [note isEditable];
 
-  return v5;
+  return isEditable;
 }
 
-- (BOOL)cellIsEditingAtColumnID:(id)a3 rowID:(id)a4
+- (BOOL)cellIsEditingAtColumnID:(id)d rowID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v9 = [v8 tableSelection];
+  dCopy = d;
+  iDCopy = iD;
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  tableSelection = [tableAttachmentViewController tableSelection];
 
-  v10 = [v9 type];
-  v11 = [v9 columns];
-  v12 = [v11 firstObject];
+  type = [tableSelection type];
+  columns = [tableSelection columns];
+  firstObject = [columns firstObject];
 
-  v13 = [v9 rows];
-  v14 = [v13 firstObject];
+  rows = [tableSelection rows];
+  firstObject2 = [rows firstObject];
 
-  if (v10 == 1 && [v6 isEqual:v12])
+  if (type == 1 && [dCopy isEqual:firstObject])
   {
-    v15 = [v7 isEqual:v14];
+    v15 = [iDCopy isEqual:firstObject2];
   }
 
   else
@@ -411,9 +411,9 @@
   return v15;
 }
 
-- (BOOL)isHeaderCellAtColumnID:(id)a3 rowID:(id)a4
+- (BOOL)isHeaderCellAtColumnID:(id)d rowID:(id)iD
 {
-  v4 = [(ICTableAccessibilityController *)self attributedContentStringForColumnID:a3 rowID:a4];
+  v4 = [(ICTableAccessibilityController *)self attributedContentStringForColumnID:d rowID:iD];
   v12 = 0;
   if ([v4 length])
   {
@@ -447,62 +447,62 @@
   return v7;
 }
 
-- (void)scrollColumnIDToVisible:(id)a3 rowID:(id)a4
+- (void)scrollColumnIDToVisible:(id)visible rowID:(id)d
 {
-  [(ICTableAccessibilityController *)self frameInScreenSpaceForCellWithColumnID:a3 rowID:a4];
+  [(ICTableAccessibilityController *)self frameInScreenSpaceForCellWithColumnID:visible rowID:d];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v14 = [v13 tableContentView];
-  [v14 convertRect:0 fromView:{v6, v8, v10, v12}];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  tableContentView = [tableAttachmentViewController tableContentView];
+  [tableContentView convertRect:0 fromView:{v6, v8, v10, v12}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  v23 = [(ICTableAccessibilityController *)self noteScrollView];
-  [v23 convertRect:0 fromView:{v6, v8, v10, v12}];
+  noteScrollView = [(ICTableAccessibilityController *)self noteScrollView];
+  [noteScrollView convertRect:0 fromView:{v6, v8, v10, v12}];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
 
-  v32 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v33 = [v32 scrollView];
-  [v33 scrollRectToVisible:1 animated:{v16, v18, v20, v22}];
+  tableAttachmentViewController2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  scrollView = [tableAttachmentViewController2 scrollView];
+  [scrollView scrollRectToVisible:1 animated:{v16, v18, v20, v22}];
 
-  v34 = [(ICTableAccessibilityController *)self noteScrollView];
-  [v34 scrollRectToVisible:1 animated:{v25, v27, v29, v31}];
+  noteScrollView2 = [(ICTableAccessibilityController *)self noteScrollView];
+  [noteScrollView2 scrollRectToVisible:1 animated:{v25, v27, v29, v31}];
 }
 
-- (void)moveCurrentColumnOrRow:(BOOL)a3 toIndex:(unint64_t)a4
+- (void)moveCurrentColumnOrRow:(BOOL)row toIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  [v6 moveCurrentColumnOrRow:v5 toIndex:a4];
+  rowCopy = row;
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  [tableAttachmentViewController moveCurrentColumnOrRow:rowCopy toIndex:index];
 }
 
 - (id)selectedCells
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v4 = [v3 tableSelection];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  tableSelection = [tableAttachmentViewController tableSelection];
 
-  if ([v4 type] == 1 || objc_msgSend(v4, "type") == 4)
+  if ([tableSelection type] == 1 || objc_msgSend(tableSelection, "type") == 4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    obj = [v4 columns];
+    obj = [tableSelection columns];
     v18 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v18)
     {
       v16 = *v24;
-      v17 = v4;
+      v17 = tableSelection;
       do
       {
         for (i = 0; i != v18; ++i)
@@ -517,8 +517,8 @@
           v20 = 0u;
           v21 = 0u;
           v22 = 0u;
-          v8 = [v4 rows];
-          v9 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          rows = [tableSelection rows];
+          v9 = [rows countByEnumeratingWithState:&v19 objects:v27 count:16];
           if (v9)
           {
             v10 = v9;
@@ -529,20 +529,20 @@
               {
                 if (*v20 != v11)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(rows);
                 }
 
                 v13 = [(ICTableAccessibilityController *)self cellElementForColumnIndex:[(ICTableAccessibilityController *)self columnIndexForColumnID:v7] rowIndex:[(ICTableAccessibilityController *)self rowIndexForRowID:*(*(&v19 + 1) + 8 * j)]];
-                [v5 ic_addNonNilObject:v13];
+                [array ic_addNonNilObject:v13];
               }
 
-              v10 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
+              v10 = [rows countByEnumeratingWithState:&v19 objects:v27 count:16];
             }
 
             while (v10);
           }
 
-          v4 = v17;
+          tableSelection = v17;
         }
 
         v18 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -554,161 +554,161 @@
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return v5;
+  return array;
 }
 
 - (id)selectedColumnIDs
 {
-  v2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v3 = [v2 tableSelection];
-  v4 = [v3 columns];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  tableSelection = [tableAttachmentViewController tableSelection];
+  columns = [tableSelection columns];
 
-  return v4;
+  return columns;
 }
 
 - (id)selectedRowIDs
 {
-  v2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v3 = [v2 tableSelection];
-  v4 = [v3 rows];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  tableSelection = [tableAttachmentViewController tableSelection];
+  rows = [tableSelection rows];
 
-  return v4;
+  return rows;
 }
 
 - (void)selectCurrentColumn
 {
-  v2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  [v2 selectCurrentColumnForAccessibility];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  [tableAttachmentViewController selectCurrentColumnForAccessibility];
 }
 
 - (void)selectCurrentRow
 {
-  v2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  [v2 selectCurrentRowForAccessibility];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  [tableAttachmentViewController selectCurrentRowForAccessibility];
 }
 
-- (void)selectColumnWithID:(id)a3
+- (void)selectColumnWithID:(id)d
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-    v6 = [v5 tableSelection];
-    v8[0] = v4;
+    dCopy = d;
+    tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+    tableSelection = [tableAttachmentViewController tableSelection];
+    v8[0] = dCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
-    [v6 selectColumns:v7];
+    [tableSelection selectColumns:v7];
   }
 }
 
-- (void)selectRowWithID:(id)a3
+- (void)selectRowWithID:(id)d
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-    v6 = [v5 tableSelection];
-    v8[0] = v4;
+    dCopy = d;
+    tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+    tableSelection = [tableAttachmentViewController tableSelection];
+    v8[0] = dCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
-    [v6 selectRows:v7];
+    [tableSelection selectRows:v7];
   }
 }
 
-- (void)selectCellForColumnID:(id)a3 rowID:(id)a4
+- (void)selectCellForColumnID:(id)d rowID:(id)iD
 {
-  if (a3 && a4)
+  if (d && iD)
   {
-    v6 = a4;
-    v7 = a3;
-    v9 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-    v8 = [v9 tableSelection];
-    [v8 selectCellAtColumn:v7 row:v6];
+    iDCopy = iD;
+    dCopy = d;
+    tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+    tableSelection = [tableAttachmentViewController tableSelection];
+    [tableSelection selectCellAtColumn:dCopy row:iDCopy];
   }
 }
 
 - (void)selectCellRangeForCurrentCell
 {
-  v2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  [v2 selectCell];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  [tableAttachmentViewController selectCell];
 }
 
 - (BOOL)isTableTextRangeSelected
 {
-  v3 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v4 = [v3 noteTextView];
-  v5 = [v4 selectedRange];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  noteTextView = [tableAttachmentViewController noteTextView];
+  selectedRange = [noteTextView selectedRange];
   v7 = v6;
-  v8 = [(ICTableAccessibilityController *)self hostingTableAttachmentView];
-  v11 = v5 == [v8 textRangeInNote] && v7 == v9;
+  hostingTableAttachmentView = [(ICTableAccessibilityController *)self hostingTableAttachmentView];
+  v11 = selectedRange == [hostingTableAttachmentView textRangeInNote] && v7 == v9;
 
   return v11;
 }
 
-- (void)selectTableTextRange:(BOOL)a3
+- (void)selectTableTextRange:(BOOL)range
 {
-  v3 = a3;
-  v5 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v16 = [v5 noteTextView];
+  rangeCopy = range;
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  noteTextView = [tableAttachmentViewController noteTextView];
 
-  v6 = [(ICTableAccessibilityController *)self hostingTableAttachmentView];
-  v7 = [v6 textRangeInNote];
+  hostingTableAttachmentView = [(ICTableAccessibilityController *)self hostingTableAttachmentView];
+  textRangeInNote = [hostingTableAttachmentView textRangeInNote];
   v9 = v8;
 
   _UIAccessibilityBlockPostingOfAllNotifications();
-  [v16 select:v16];
-  [v16 setSelectedRange:{v7, v9}];
-  [v16 scrollRangeToVisible:{v7, v9}];
+  [noteTextView select:noteTextView];
+  [noteTextView setSelectedRange:{textRangeInNote, v9}];
+  [noteTextView scrollRangeToVisible:{textRangeInNote, v9}];
   _UIAccessibilityUnblockPostingOfAllNotifications();
-  if (v3)
+  if (rangeCopy)
   {
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:@"Selected %@. Use the actions rotor to start dragging." value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:@"Selected %@. Use the actions rotor to start dragging." value:&stru_282757698 table:0];
 
     v12 = MEMORY[0x277CCACA8];
-    v13 = [(ICTableAccessibilityController *)self hostingTableAttachmentView];
-    v14 = [v13 accessibilityLabel];
-    v15 = [v12 localizedStringWithFormat:v11, v14];
+    hostingTableAttachmentView2 = [(ICTableAccessibilityController *)self hostingTableAttachmentView];
+    accessibilityLabel = [hostingTableAttachmentView2 accessibilityLabel];
+    v15 = [v12 localizedStringWithFormat:v11, accessibilityLabel];
 
     UIAccessibilityPostNotification(*MEMORY[0x277D76438], v15);
   }
 }
 
-- (void)speakCellRangeSelection:(id)a3
+- (void)speakCellRangeSelection:(id)selection
 {
-  v30 = a3;
-  if ([v30 type] == 4)
+  selectionCopy = selection;
+  if ([selectionCopy type] == 4)
   {
-    v4 = [(ICTableAccessibilityController *)self table];
-    v5 = [v30 columns];
-    v6 = [v5 firstObject];
-    v7 = [v4 columnIndexForIdentifier:v6];
+    table = [(ICTableAccessibilityController *)self table];
+    columns = [selectionCopy columns];
+    firstObject = [columns firstObject];
+    v7 = [table columnIndexForIdentifier:firstObject];
 
-    v8 = [(ICTableAccessibilityController *)self table];
-    v9 = [v30 rows];
-    v10 = [v9 firstObject];
-    v11 = [v8 rowIndexForIdentifier:v10];
+    table2 = [(ICTableAccessibilityController *)self table];
+    rows = [selectionCopy rows];
+    firstObject2 = [rows firstObject];
+    v11 = [table2 rowIndexForIdentifier:firstObject2];
 
-    v12 = [(ICTableAccessibilityController *)self table];
-    v13 = [v30 columns];
-    v14 = [v13 lastObject];
-    v15 = [v12 columnIndexForIdentifier:v14];
+    table3 = [(ICTableAccessibilityController *)self table];
+    columns2 = [selectionCopy columns];
+    lastObject = [columns2 lastObject];
+    v15 = [table3 columnIndexForIdentifier:lastObject];
 
-    v16 = [(ICTableAccessibilityController *)self table];
-    v17 = [v30 rows];
-    v18 = [v17 lastObject];
-    v19 = [v16 rowIndexForIdentifier:v18];
+    table4 = [(ICTableAccessibilityController *)self table];
+    rows2 = [selectionCopy rows];
+    lastObject2 = [rows2 lastObject];
+    v19 = [table4 rowIndexForIdentifier:lastObject2];
 
-    v20 = [MEMORY[0x277CCA8D8] mainBundle];
-    v21 = v20;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v21 = mainBundle;
     if (v7 == v15 && v11 == v19)
     {
-      v22 = [v20 localizedStringForKey:@"Selected column %lu value:row %lu" table:{&stru_282757698, 0}];
+      v22 = [mainBundle localizedStringForKey:@"Selected column %lu value:row %lu" table:{&stru_282757698, 0}];
 
       v23 = MEMORY[0x277CCACA8];
       v24 = v7 + 1;
@@ -719,7 +719,7 @@
     {
       if (v7 == v15)
       {
-        v22 = [v20 localizedStringForKey:@"Selected column %lu value:rows %lu to %lu" table:{&stru_282757698, 0}];
+        v22 = [mainBundle localizedStringForKey:@"Selected column %lu value:rows %lu to %lu" table:{&stru_282757698, 0}];
 
         [MEMORY[0x277CCACA8] localizedStringWithFormat:v22, v7 + 1, v11 + 1, v19 + 1, v29];
         v27 = LABEL_12:;
@@ -733,7 +733,7 @@
       v26 = v15 + 1;
       if (v11 == v19)
       {
-        v22 = [v20 localizedStringForKey:@"Selected row %lu value:columns %lu to %lu" table:{&stru_282757698, 0}];
+        v22 = [mainBundle localizedStringForKey:@"Selected row %lu value:columns %lu to %lu" table:{&stru_282757698, 0}];
 
         v23 = MEMORY[0x277CCACA8];
         v24 = v11 + 1;
@@ -742,7 +742,7 @@
 
       else
       {
-        v22 = [v20 localizedStringForKey:@"Selected column %lu value:row %lu table:{to column %lu, row %lu", &stru_282757698, 0}];
+        v22 = [mainBundle localizedStringForKey:@"Selected column %lu value:row %lu table:{to column %lu, row %lu", &stru_282757698, 0}];
 
         v23 = MEMORY[0x277CCACA8];
         v24 = v7 + 1;
@@ -762,79 +762,79 @@ LABEL_13:
 
 - (void)tableRowOrColumnSelectionDidChange
 {
-  v3 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v2 = [v3 noteTextView];
-  [v2 icaxClearCachedChildrenForReparenting];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  noteTextView = [tableAttachmentViewController noteTextView];
+  [noteTextView icaxClearCachedChildrenForReparenting];
 }
 
 - (void)addColumnBefore
 {
-  v3 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  [v3 addColumnBeforeSelection:self];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  [tableAttachmentViewController addColumnBeforeSelection:self];
 }
 
 - (void)addColumnAfter
 {
-  v3 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  [v3 addColumnAfterSelection:self];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  [tableAttachmentViewController addColumnAfterSelection:self];
 }
 
 - (void)deleteSelectedColumns
 {
-  v3 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  [v3 deleteSelectedColumns:self];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  [tableAttachmentViewController deleteSelectedColumns:self];
 }
 
 - (void)addRowAbove
 {
-  v3 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  [v3 addRowAboveSelection:self];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  [tableAttachmentViewController addRowAboveSelection:self];
 }
 
 - (void)addRowBelow
 {
-  v3 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  [v3 addRowBelowSelection:self];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  [tableAttachmentViewController addRowBelowSelection:self];
 }
 
 - (void)deleteSelectedRows
 {
-  v3 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  [v3 deleteSelectedRows:self];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  [tableAttachmentViewController deleteSelectedRows:self];
 }
 
 - (void)reverseTableDirection
 {
-  v3 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  [v3 reverseTableColumnDirection:self];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  [tableAttachmentViewController reverseTableColumnDirection:self];
 }
 
 - (void)convertTableToText
 {
-  v3 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  [v3 convertTableToText:self];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  [tableAttachmentViewController convertTableToText:self];
 }
 
-- (void)invalidateAXElementsForColumnID:(id)a3
+- (void)invalidateAXElementsForColumnID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICTableAccessibilityController *)self elementProvider];
-  [v5 removeElementsForColumnID:v4];
+  dCopy = d;
+  elementProvider = [(ICTableAccessibilityController *)self elementProvider];
+  [elementProvider removeElementsForColumnID:dCopy];
 }
 
-- (void)invalidateAXElementsForRowID:(id)a3
+- (void)invalidateAXElementsForRowID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICTableAccessibilityController *)self elementProvider];
-  [v5 removeElementsForRowID:v4];
+  dCopy = d;
+  elementProvider = [(ICTableAccessibilityController *)self elementProvider];
+  [elementProvider removeElementsForRowID:dCopy];
 }
 
 - (id)table
 {
-  v2 = [(ICTableAccessibilityController *)self tableAttachmentViewController];
-  v3 = [v2 table];
+  tableAttachmentViewController = [(ICTableAccessibilityController *)self tableAttachmentViewController];
+  table = [tableAttachmentViewController table];
 
-  return v3;
+  return table;
 }
 
 - (ICTableAttachmentViewController)tableAttachmentViewController

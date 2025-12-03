@@ -1,8 +1,8 @@
 @interface PFTranscriptProviderBridge
 + (PFTranscriptProviderBridge)shared;
 - (PFTranscriptProviderBridge)init;
-- (void)invalidateTranscriptAssetForAdamID:(int64_t)a3;
-- (void)updateTTMLIDFrom:(id)a3 toNewID:(id)a4 hasDownloadedContent:(BOOL)a5 forEpisodeAdamID:(int64_t)a6;
+- (void)invalidateTranscriptAssetForAdamID:(int64_t)d;
+- (void)updateTTMLIDFrom:(id)from toNewID:(id)d hasDownloadedContent:(BOOL)content forEpisodeAdamID:(int64_t)iD;
 @end
 
 @implementation PFTranscriptProviderBridge
@@ -19,14 +19,14 @@
   return v3;
 }
 
-- (void)invalidateTranscriptAssetForAdamID:(int64_t)a3
+- (void)invalidateTranscriptAssetForAdamID:(int64_t)d
 {
   v5 = *(&self->super.isa + OBJC_IVAR___PFTranscriptProviderBridge_managedObjectContext);
   v6 = swift_allocObject();
   swift_unknownObjectWeakInit();
   v7 = swift_allocObject();
   v7[2] = v5;
-  v7[3] = a3;
+  v7[3] = d;
   v7[4] = v6;
   v11[4] = sub_21B4286A8;
   v11[5] = v7;
@@ -35,26 +35,26 @@
   v11[2] = sub_21B36CDB8;
   v11[3] = &block_descriptor_30;
   v8 = _Block_copy(v11);
-  v9 = self;
+  selfCopy = self;
   v10 = v5;
 
   [v10 performBlock_];
   _Block_release(v8);
 }
 
-- (void)updateTTMLIDFrom:(id)a3 toNewID:(id)a4 hasDownloadedContent:(BOOL)a5 forEpisodeAdamID:(int64_t)a6
+- (void)updateTTMLIDFrom:(id)from toNewID:(id)d hasDownloadedContent:(BOOL)content forEpisodeAdamID:(int64_t)iD
 {
-  v7 = a5;
-  v8 = a4;
-  if (a3)
+  contentCopy = content;
+  dCopy = d;
+  if (from)
   {
     v10 = sub_21B4C9708();
     v12 = v11;
-    if (v8)
+    if (dCopy)
     {
 LABEL_3:
       v13 = sub_21B4C9708();
-      v8 = v14;
+      dCopy = v14;
       goto LABEL_6;
     }
   }
@@ -63,7 +63,7 @@ LABEL_3:
   {
     v10 = 0;
     v12 = 0;
-    if (a4)
+    if (d)
     {
       goto LABEL_3;
     }
@@ -71,8 +71,8 @@ LABEL_3:
 
   v13 = 0;
 LABEL_6:
-  v15 = self;
-  sub_21B4267DC(v10, v12, v13, v8, v7, a6);
+  selfCopy = self;
+  sub_21B4267DC(v10, v12, v13, dCopy, contentCopy, iD);
 }
 
 - (PFTranscriptProviderBridge)init

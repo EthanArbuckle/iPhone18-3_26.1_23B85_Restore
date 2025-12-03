@@ -1,7 +1,7 @@
 @interface RedEyeChannel
-- (id)filterNameForChannel:(int)a3;
+- (id)filterNameForChannel:(int)channel;
 - (id)outputImage;
-- (id)parameterNamesForChannel:(int)a3;
+- (id)parameterNamesForChannel:(int)channel;
 @end
 
 @implementation RedEyeChannel
@@ -14,13 +14,13 @@
     [RedEyeChannel outputImage];
   }
 
-  v3 = [(NSNumber *)self->inputChannel intValue];
+  intValue = [(NSNumber *)self->inputChannel intValue];
   inputParam1 = self->inputParam1;
   if (inputParam1)
   {
     [(NSNumber *)inputParam1 floatValue];
     v6 = v5;
-    if (v3 <= 0x18 && ((1 << v3) & 0x1A08000) != 0)
+    if (intValue <= 0x18 && ((1 << intValue) & 0x1A08000) != 0)
     {
       v6 = 1.0 / (1.0 - v5);
     }
@@ -29,9 +29,9 @@
   else
   {
     v6 = 1.0;
-    if ((v3 - 15) < 0xA)
+    if ((intValue - 15) < 0xA)
     {
-      v6 = flt_19CF2B740[v3 - 15];
+      v6 = flt_19CF2B740[intValue - 15];
     }
   }
 
@@ -40,7 +40,7 @@
   {
     [(NSNumber *)inputParam2 floatValue];
     v10 = v9;
-    if (v3 == 21 || v3 == 15)
+    if (intValue == 21 || intValue == 15)
     {
       v10 = 1.0 / (1.0 - v9);
     }
@@ -49,9 +49,9 @@
   else
   {
     v10 = 1.0;
-    if ((v3 - 15) < 0xA)
+    if ((intValue - 15) < 0xA)
     {
-      v10 = flt_19CF2B768[v3 - 15];
+      v10 = flt_19CF2B768[intValue - 15];
     }
   }
 
@@ -60,7 +60,7 @@
   {
     [(NSNumber *)inputParam3 floatValue];
     v14 = v13;
-    if ((v3 & 0xFFFFFFFD) == 0x15)
+    if ((intValue & 0xFFFFFFFD) == 0x15)
     {
       v14 = 1.0 / (1.0 - v13);
     }
@@ -69,12 +69,12 @@
   else
   {
     v15 = 1.0;
-    if (v3 == 21)
+    if (intValue == 21)
     {
       v15 = 5.0;
     }
 
-    if (v3 == 23)
+    if (intValue == 23)
     {
       v14 = 2.0;
     }
@@ -96,7 +96,7 @@
     v17 = 1.0;
   }
 
-  v18 = [outputImage_kernels_1 objectAtIndexedSubscript:v3];
+  v18 = [outputImage_kernels_1 objectAtIndexedSubscript:intValue];
   [(CIImage *)self->inputImage extent];
   v20 = v19;
   v22 = v21;
@@ -114,29 +114,29 @@ NSArray *__28__RedEyeChannel_outputImage__block_invoke()
   return result;
 }
 
-- (id)filterNameForChannel:(int)a3
+- (id)filterNameForChannel:(int)channel
 {
-  if ((a3 - 1) > 0x17)
+  if ((channel - 1) > 0x17)
   {
     return @"Original";
   }
 
   else
   {
-    return off_1E75C41B8[a3 - 1];
+    return off_1E75C41B8[channel - 1];
   }
 }
 
-- (id)parameterNamesForChannel:(int)a3
+- (id)parameterNamesForChannel:(int)channel
 {
-  if ((a3 - 15) > 9)
+  if ((channel - 15) > 9)
   {
     return MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    return qword_1E75C4278[a3 - 15];
+    return qword_1E75C4278[channel - 15];
   }
 }
 

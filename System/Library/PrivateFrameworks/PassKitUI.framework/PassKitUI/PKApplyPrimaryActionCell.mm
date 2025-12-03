@@ -1,24 +1,24 @@
 @interface PKApplyPrimaryActionCell
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKApplyPrimaryActionCell)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKApplyPrimaryActionCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setLoading:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setLoading:(BOOL)loading;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PKApplyPrimaryActionCell
 
-- (PKApplyPrimaryActionCell)initWithFrame:(CGRect)a3
+- (PKApplyPrimaryActionCell)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = PKApplyPrimaryActionCell;
-  v3 = [(PKApplyPrimaryActionCell *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKApplyPrimaryActionCell *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKApplyPrimaryActionCell *)v3 contentView];
+    contentView = [(PKApplyPrimaryActionCell *)v3 contentView];
     objc_initWeak(&location, v4);
     v6 = MEMORY[0x1E69DC628];
     v18[0] = MEMORY[0x1E69E9820];
@@ -38,20 +38,20 @@
 
     [v7[81] setExclusiveTouch:1];
     [v7[81] setAccessibilityIdentifier:*MEMORY[0x1E69B9AE0]];
-    v11 = [v7[81] titleLabel];
-    [v11 setNumberOfLines:1];
-    [v11 setAdjustsFontSizeToFitWidth:1];
-    [v11 setTextAlignment:1];
+    titleLabel = [v7[81] titleLabel];
+    [titleLabel setNumberOfLines:1];
+    [titleLabel setAdjustsFontSizeToFitWidth:1];
+    [titleLabel setTextAlignment:1];
     v12 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD40], *MEMORY[0x1E69DDC38]);
-    [v11 setFont:v12];
+    [titleLabel setFont:v12];
 
-    [v11 setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
+    [titleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
     [v7[81] addAction:v8 forControlEvents:64];
-    [v5 addSubview:v7[81]];
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [v5 setBackgroundColor:v13];
+    [contentView addSubview:v7[81]];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [contentView setBackgroundColor:clearColor];
 
-    [v5 setDirectionalLayoutMargins:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+    [contentView setDirectionalLayoutMargins:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
   }
@@ -71,30 +71,30 @@ void __42__PKApplyPrimaryActionCell_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   title = self->_title;
-  v9 = v5;
-  v7 = title;
-  if (v7 == v9)
+  v9 = titleCopy;
+  titleCopy2 = title;
+  if (titleCopy2 == v9)
   {
 
     goto LABEL_9;
   }
 
-  if (!v9 || !v7)
+  if (!v9 || !titleCopy2)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [(NSString *)v9 isEqualToString:v7];
+  v8 = [(NSString *)v9 isEqualToString:titleCopy2];
 
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     [(PKContinuousButton *)self->_button setTitle:v9 forState:0];
     [(PKApplyPrimaryActionCell *)self setNeedsLayout];
   }
@@ -102,11 +102,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (self->_loading == !a3)
+  if (self->_loading == !loading)
   {
-    self->_loading = a3;
+    self->_loading = loading;
     [(PKContinuousButton *)self->_button setShowSpinner:?];
     button = self->_button;
     v5 = !self->_loading;
@@ -124,20 +124,20 @@ LABEL_9:
   [(PKApplyPrimaryActionCell *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKApplyPrimaryActionCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKApplyPrimaryActionCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  [(PKContinuousButton *)self->_button sizeThatFits:a3.size.width, a3.size.height];
+  width = bounds.size.width;
+  [(PKContinuousButton *)self->_button sizeThatFits:bounds.size.width, bounds.size.height];
   if (v5 >= 50.0)
   {
     v6 = v5;

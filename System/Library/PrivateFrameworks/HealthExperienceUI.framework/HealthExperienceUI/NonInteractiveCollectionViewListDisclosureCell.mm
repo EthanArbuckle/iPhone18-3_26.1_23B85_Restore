@@ -1,29 +1,29 @@
 @interface NonInteractiveCollectionViewListDisclosureCell
-- (_TtC18HealthExperienceUI46NonInteractiveCollectionViewListDisclosureCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI46NonInteractiveCollectionViewListDisclosureCell)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI46NonInteractiveCollectionViewListDisclosureCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI46NonInteractiveCollectionViewListDisclosureCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation NonInteractiveCollectionViewListDisclosureCell
 
-- (_TtC18HealthExperienceUI46NonInteractiveCollectionViewListDisclosureCell)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI46NonInteractiveCollectionViewListDisclosureCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for NonInteractiveCollectionViewListDisclosureCell();
-  v7 = [(CollectionViewListDisclosureCell *)&v9 initWithFrame:x, y, width, height];
-  [(NonInteractiveCollectionViewListDisclosureCell *)v7 setUserInteractionEnabled:0];
-  return v7;
+  height = [(CollectionViewListDisclosureCell *)&v9 initWithFrame:x, y, width, height];
+  [(NonInteractiveCollectionViewListDisclosureCell *)height setUserInteractionEnabled:0];
+  return height;
 }
 
-- (_TtC18HealthExperienceUI46NonInteractiveCollectionViewListDisclosureCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI46NonInteractiveCollectionViewListDisclosureCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for NonInteractiveCollectionViewListDisclosureCell();
-  v4 = a3;
-  v5 = [(CollectionViewListDisclosureCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CollectionViewListDisclosureCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

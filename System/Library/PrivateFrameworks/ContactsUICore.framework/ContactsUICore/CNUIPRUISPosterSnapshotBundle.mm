@@ -1,21 +1,21 @@
 @interface CNUIPRUISPosterSnapshotBundle
-- (CNUIPRUISPosterSnapshotBundle)initWithWrappedBundle:(id)a3;
+- (CNUIPRUISPosterSnapshotBundle)initWithWrappedBundle:(id)bundle;
 - (NSArray)snapshotLevelSets;
-- (id)snapshotForLevelSet:(id)a3;
+- (id)snapshotForLevelSet:(id)set;
 @end
 
 @implementation CNUIPRUISPosterSnapshotBundle
 
-- (CNUIPRUISPosterSnapshotBundle)initWithWrappedBundle:(id)a3
+- (CNUIPRUISPosterSnapshotBundle)initWithWrappedBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v9.receiver = self;
   v9.super_class = CNUIPRUISPosterSnapshotBundle;
   v6 = [(CNUIPRUISPosterSnapshotBundle *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedSnapshotBundle, a3);
+    objc_storeStrong(&v6->_wrappedSnapshotBundle, bundle);
   }
 
   return v7;
@@ -23,8 +23,8 @@
 
 - (NSArray)snapshotLevelSets
 {
-  v2 = [(PRUISPosterSnapshotBundle *)self->_wrappedSnapshotBundle snapshotLevelSets];
-  v3 = [v2 _cn_map:&__block_literal_global_54];
+  snapshotLevelSets = [(PRUISPosterSnapshotBundle *)self->_wrappedSnapshotBundle snapshotLevelSets];
+  v3 = [snapshotLevelSets _cn_map:&__block_literal_global_54];
 
   return v3;
 }
@@ -37,11 +37,11 @@ CNUIPRUISPosterLevelSet *__50__CNUIPRUISPosterSnapshotBundle_snapshotLevelSets__
   return v3;
 }
 
-- (id)snapshotForLevelSet:(id)a3
+- (id)snapshotForLevelSet:(id)set
 {
   wrappedSnapshotBundle = self->_wrappedSnapshotBundle;
-  v4 = [a3 wrappedLevelSet];
-  v5 = [(PRUISPosterSnapshotBundle *)wrappedSnapshotBundle snapshotForLevelSet:v4];
+  wrappedLevelSet = [set wrappedLevelSet];
+  v5 = [(PRUISPosterSnapshotBundle *)wrappedSnapshotBundle snapshotForLevelSet:wrappedLevelSet];
 
   return v5;
 }

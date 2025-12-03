@@ -1,7 +1,7 @@
 @interface PSUICoreTelephonyRadioCache
 + (id)sharedInstance;
 - (PSUICoreTelephonyRadioCache)init;
-- (PSUICoreTelephonyRadioCache)initWithCoreTelephonyClient:(id)a3;
+- (PSUICoreTelephonyRadioCache)initWithCoreTelephonyClient:(id)client;
 - (id)checkBasebandConfigUpdateInfo;
 - (id)initPrivate;
 - (int)checkCellularHealthStatus;
@@ -42,8 +42,8 @@ uint64_t __45__PSUICoreTelephonyRadioCache_sharedInstance__block_invoke()
     v5 = [v3 initWithQueue:v4];
 
     v2 = [(PSUICoreTelephonyRadioCache *)v2 initWithCoreTelephonyClient:v5];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
   }
 
   return v2;
@@ -51,26 +51,26 @@ uint64_t __45__PSUICoreTelephonyRadioCache_sharedInstance__block_invoke()
 
 - (PSUICoreTelephonyRadioCache)init
 {
-  v2 = [(PSUICoreTelephonyRadioCache *)self getLogger];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+  getLogger = [(PSUICoreTelephonyRadioCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
   {
     *v3 = 0;
-    _os_log_error_impl(&dword_2658DE000, v2, OS_LOG_TYPE_ERROR, "Unsupported initializer called", v3, 2u);
+    _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Unsupported initializer called", v3, 2u);
   }
 
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer" reason:@"Unsupported initializer called" userInfo:0]);
 }
 
-- (PSUICoreTelephonyRadioCache)initWithCoreTelephonyClient:(id)a3
+- (PSUICoreTelephonyRadioCache)initWithCoreTelephonyClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = PSUICoreTelephonyRadioCache;
   v6 = [(PSUICoreTelephonyRadioCache *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coreTelephonyClient, a3);
+    objc_storeStrong(&v6->_coreTelephonyClient, client);
     [(CoreTelephonyClient *)v7->_coreTelephonyClient setDelegate:v7];
     [(PSUICoreTelephonyRadioCache *)v7 setHealthStatusFetched:0];
     [(PSUICoreTelephonyRadioCache *)v7 setHealthStatus:0];
@@ -91,8 +91,8 @@ uint64_t __45__PSUICoreTelephonyRadioCache_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSUICoreTelephonyRadioCache;
@@ -102,43 +102,43 @@ uint64_t __45__PSUICoreTelephonyRadioCache_sharedInstance__block_invoke()
 - (int)checkCellularHealthStatus
 {
   v32 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(PSUICoreTelephonyRadioCache *)v2 healthStatusFetched])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(PSUICoreTelephonyRadioCache *)selfCopy healthStatusFetched])
   {
-    v3 = [(PSUICoreTelephonyRadioCache *)v2 getLogger];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICoreTelephonyRadioCache *)selfCopy getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v21) = [(PSUICoreTelephonyRadioCache *)v2 healthStatus];
-      _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "skip query and return healthStatus %d", buf, 8u);
+      LODWORD(v21) = [(PSUICoreTelephonyRadioCache *)selfCopy healthStatus];
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "skip query and return healthStatus %d", buf, 8u);
     }
 
-    v4 = [(PSUICoreTelephonyRadioCache *)v2 healthStatus];
-    objc_sync_exit(v2);
+    healthStatus = [(PSUICoreTelephonyRadioCache *)selfCopy healthStatus];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
-    coreTelephonyClient = v2->_coreTelephonyClient;
+    coreTelephonyClient = selfCopy->_coreTelephonyClient;
     v19 = 0;
     v6 = [(CoreTelephonyClient *)coreTelephonyClient checkCellularDiagnosticsStatusDetails:&v19];
     v8 = v7;
     v9 = v19;
     if (v9)
     {
-      v10 = [(PSUICoreTelephonyRadioCache *)v2 getLogger];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      getLogger2 = [(PSUICoreTelephonyRadioCache *)selfCopy getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v21 = v9;
-        _os_log_error_impl(&dword_2658DE000, v10, OS_LOG_TYPE_ERROR, "checking cellular health status error: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "checking cellular health status error: %@", buf, 0xCu);
       }
     }
 
-    v11 = v2;
+    v11 = selfCopy;
     objc_sync_enter(v11);
     [(PSUICoreTelephonyRadioCache *)v11 setHealthStatusFetched:1];
     if (v8 < 0)
@@ -157,112 +157,112 @@ uint64_t __45__PSUICoreTelephonyRadioCache_sharedInstance__block_invoke()
     [(PSUICoreTelephonyRadioCache *)v11 setHealthStatus:(v6 - 2) < 3];
     objc_sync_exit(v11);
 
-    v13 = [(PSUICoreTelephonyRadioCache *)v11 getLogger];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    getLogger3 = [(PSUICoreTelephonyRadioCache *)v11 getLogger];
+    if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(PSUICoreTelephonyRadioCache *)v11 healthStatus];
-      v15 = [(PSUICoreTelephonyRadioCache *)v11 healthDiagCode];
-      v16 = [(PSUICoreTelephonyRadioCache *)v11 healthDiagSubCode];
+      healthStatus2 = [(PSUICoreTelephonyRadioCache *)v11 healthStatus];
+      healthDiagCode = [(PSUICoreTelephonyRadioCache *)v11 healthDiagCode];
+      healthDiagSubCode = [(PSUICoreTelephonyRadioCache *)v11 healthDiagSubCode];
       *buf = 136316418;
       v21 = "[PSUICoreTelephonyRadioCache checkCellularHealthStatus]";
       v22 = 1024;
-      v23 = v14;
+      v23 = healthStatus2;
       v24 = 2048;
-      v25 = v15;
+      v25 = healthDiagCode;
       v26 = 2048;
-      v27 = v16;
+      v27 = healthDiagSubCode;
       v28 = 2048;
       v29 = v6;
       v30 = 2048;
       v31 = v8;
-      _os_log_impl(&dword_2658DE000, v13, OS_LOG_TYPE_DEFAULT, "%s Cellular health status updated to %d (diagCode=%ld, subCode=%ld) [Reported value: status=%ld, code=%ld]", buf, 0x3Au);
+      _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "%s Cellular health status updated to %d (diagCode=%ld, subCode=%ld) [Reported value: status=%ld, code=%ld]", buf, 0x3Au);
     }
 
-    v4 = [(PSUICoreTelephonyRadioCache *)v11 healthStatus];
-    v2 = v9;
+    healthStatus = [(PSUICoreTelephonyRadioCache *)v11 healthStatus];
+    selfCopy = v9;
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return v4;
+  return healthStatus;
 }
 
 - (id)checkBasebandConfigUpdateInfo
 {
   v26 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(PSUICoreTelephonyRadioCache *)v2 bbConfigUpdateStatusFetched])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(PSUICoreTelephonyRadioCache *)selfCopy bbConfigUpdateStatusFetched])
   {
-    v3 = [(PSUICoreTelephonyRadioCache *)v2 getLogger];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICoreTelephonyRadioCache *)selfCopy getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(PSUICoreTelephonyRadioCache *)v2 basebandConfigUpdateTime];
+      basebandConfigUpdateTime = [(PSUICoreTelephonyRadioCache *)selfCopy basebandConfigUpdateTime];
       *buf = 138412290;
-      v21 = v4;
-      _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Skip query and return baseband config update time %@", buf, 0xCu);
+      v21 = basebandConfigUpdateTime;
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Skip query and return baseband config update time %@", buf, 0xCu);
     }
 
-    v5 = [(PSUICoreTelephonyRadioCache *)v2 basebandConfigUpdateTime];
-    objc_sync_exit(v2);
+    basebandConfigUpdateTime2 = [(PSUICoreTelephonyRadioCache *)selfCopy basebandConfigUpdateTime];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
-    coreTelephonyClient = v2->_coreTelephonyClient;
+    coreTelephonyClient = selfCopy->_coreTelephonyClient;
     v19 = 0;
     v7 = [(CoreTelephonyClient *)coreTelephonyClient checkBasebandConfigUpdateInfo:&v19];
     v8 = v19;
     if (v7)
     {
-      v9 = [(PSUICoreTelephonyRadioCache *)v2 getLogger];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      getLogger2 = [(PSUICoreTelephonyRadioCache *)selfCopy getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v21 = v7;
-        _os_log_error_impl(&dword_2658DE000, v9, OS_LOG_TYPE_ERROR, "Checking baseband config update info error: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "Checking baseband config update info error: %@", buf, 0xCu);
       }
 
-      v5 = 0;
+      basebandConfigUpdateTime2 = 0;
     }
 
     else
     {
-      v10 = v2;
+      v10 = selfCopy;
       objc_sync_enter(v10);
       [(PSUICoreTelephonyRadioCache *)v10 setBbConfigUpdateStatusFetched:1];
-      v11 = [(PSUICoreTelephonyRadioCache *)v10 getLogger];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      getLogger3 = [(PSUICoreTelephonyRadioCache *)v10 getLogger];
+      if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(PSUICoreTelephonyRadioCache *)v8 configType];
-        v13 = [(PSUICoreTelephonyRadioCache *)v8 updatedTime];
-        v14 = [(PSUICoreTelephonyRadioCache *)v8 updatedDetails];
+        configType = [(PSUICoreTelephonyRadioCache *)v8 configType];
+        updatedTime = [(PSUICoreTelephonyRadioCache *)v8 updatedTime];
+        updatedDetails = [(PSUICoreTelephonyRadioCache *)v8 updatedDetails];
         *buf = 138412802;
-        v21 = v12;
+        v21 = configType;
         v22 = 2112;
-        v23 = v13;
+        v23 = updatedTime;
         v24 = 2112;
-        v25 = v14;
-        _os_log_impl(&dword_2658DE000, v11, OS_LOG_TYPE_DEFAULT, "Baseband config update info: type=%@, time=%@ details=%@", buf, 0x20u);
+        v25 = updatedDetails;
+        _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "Baseband config update info: type=%@, time=%@ details=%@", buf, 0x20u);
       }
 
-      v15 = [(PSUICoreTelephonyRadioCache *)v8 updatedTime];
-      [(PSUICoreTelephonyRadioCache *)v10 setBasebandConfigUpdateTime:v15];
+      updatedTime2 = [(PSUICoreTelephonyRadioCache *)v8 updatedTime];
+      [(PSUICoreTelephonyRadioCache *)v10 setBasebandConfigUpdateTime:updatedTime2];
 
-      v16 = [(PSUICoreTelephonyRadioCache *)v8 updatedDetails];
-      [(PSUICoreTelephonyRadioCache *)v10 setBasebandConfigUpdateDetails:v16];
+      updatedDetails2 = [(PSUICoreTelephonyRadioCache *)v8 updatedDetails];
+      [(PSUICoreTelephonyRadioCache *)v10 setBasebandConfigUpdateDetails:updatedDetails2];
 
       objc_sync_exit(v10);
-      v5 = [(PSUICoreTelephonyRadioCache *)v8 updatedTime];
+      basebandConfigUpdateTime2 = [(PSUICoreTelephonyRadioCache *)v8 updatedTime];
     }
 
-    v2 = v8;
+    selfCopy = v8;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return basebandConfigUpdateTime2;
 }
 
 @end

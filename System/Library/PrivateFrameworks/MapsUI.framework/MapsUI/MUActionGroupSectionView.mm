@@ -1,8 +1,8 @@
 @interface MUActionGroupSectionView
-- (MUActionGroupSectionView)initWithConfiguration:(id)a3;
-- (MUActionGroupSectionView)initWithFrame:(CGRect)a3;
+- (MUActionGroupSectionView)initWithConfiguration:(id)configuration;
+- (MUActionGroupSectionView)initWithFrame:(CGRect)frame;
 - (void)_updateAppearance;
-- (void)setViewModels:(id)a3;
+- (void)setViewModels:(id)models;
 @end
 
 @implementation MUActionGroupSectionView
@@ -57,12 +57,12 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setViewModels:(id)a3
+- (void)setViewModels:(id)models
 {
-  v6 = a3;
+  modelsCopy = models;
   if (([(NSArray *)self->_viewModels isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [modelsCopy copy];
     viewModels = self->_viewModels;
     self->_viewModels = v4;
 
@@ -70,16 +70,16 @@
   }
 }
 
-- (MUActionGroupSectionView)initWithConfiguration:(id)a3
+- (MUActionGroupSectionView)initWithConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = MUActionGroupSectionView;
-  return [(MUPlaceVerticalCardContainerView *)&v4 initWithConfiguration:a3];
+  return [(MUPlaceVerticalCardContainerView *)&v4 initWithConfiguration:configuration];
 }
 
-- (MUActionGroupSectionView)initWithFrame:(CGRect)a3
+- (MUActionGroupSectionView)initWithFrame:(CGRect)frame
 {
-  v4 = [MUPlaceVerticalCardConfiguration plainConfiguration:a3.origin.x];
+  v4 = [MUPlaceVerticalCardConfiguration plainConfiguration:frame.origin.x];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [v6 stringByReplacingOccurrencesOfString:@"MU" withString:&stru_1F44CA030];

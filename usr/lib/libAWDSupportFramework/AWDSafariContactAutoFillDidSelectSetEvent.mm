@@ -1,16 +1,16 @@
 @interface AWDSafariContactAutoFillDidSelectSetEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSelectedSet:(id)a3;
+- (int)StringAsSelectedSet:(id)set;
 - (int)selectedSet;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHadPreviouslyCustomizedSet:(BOOL)a3;
-- (void)setHasSelectedSet:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHadPreviouslyCustomizedSet:(BOOL)set;
+- (void)setHasSelectedSet:(BOOL)set;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSafariContactAutoFillDidSelectSetEvent
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasSelectedSet:(BOOL)a3
+- (void)setHasSelectedSet:(BOOL)set
 {
-  if (a3)
+  if (set)
   {
     v3 = 2;
   }
@@ -43,34 +43,34 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsSelectedSet:(id)a3
+- (int)StringAsSelectedSet:(id)set
 {
-  if ([a3 isEqualToString:@"HOME_CONTACT"])
+  if ([set isEqualToString:@"HOME_CONTACT"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"WORK_CONTACT"])
+  if ([set isEqualToString:@"WORK_CONTACT"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"PREVIOUSLY_CUSTOMIZED_CONTACT"])
+  if ([set isEqualToString:@"PREVIOUSLY_CUSTOMIZED_CONTACT"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NEW_CUSTOMIZED_CONTACT"])
+  if ([set isEqualToString:@"NEW_CUSTOMIZED_CONTACT"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"OTHER_CONTACT"])
+  if ([set isEqualToString:@"OTHER_CONTACT"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"SINGLE_VALUE_SET"])
+  if ([set isEqualToString:@"SINGLE_VALUE_SET"])
   {
     return 5;
   }
@@ -78,9 +78,9 @@
   return 0;
 }
 
-- (void)setHasHadPreviouslyCustomizedSet:(BOOL)a3
+- (void)setHasHadPreviouslyCustomizedSet:(BOOL)set
 {
-  if (a3)
+  if (set)
   {
     v3 = 4;
   }
@@ -102,7 +102,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -123,16 +123,16 @@ LABEL_7:
       v7 = off_29EE32CC8[selectedSet];
     }
 
-    [v3 setObject:v7 forKey:@"selectedSet"];
+    [dictionary setObject:v7 forKey:@"selectedSet"];
     if ((*&self->_has & 4) != 0)
     {
       goto LABEL_4;
     }
 
-    return v3;
+    return dictionary;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -143,13 +143,13 @@ LABEL_3:
   if ((has & 4) != 0)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_hadPreviouslyCustomizedSet), @"hadPreviouslyCustomizedSet"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_hadPreviouslyCustomizedSet), @"hadPreviouslyCustomizedSet"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 1) == 0)
@@ -190,13 +190,13 @@ LABEL_7:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 24) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 24) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -207,8 +207,8 @@ LABEL_3:
       }
 
 LABEL_7:
-      *(a3 + 20) = self->_hadPreviouslyCustomizedSet;
-      *(a3 + 24) |= 4u;
+      *(to + 20) = self->_hadPreviouslyCustomizedSet;
+      *(to + 24) |= 4u;
       return;
     }
   }
@@ -218,17 +218,17 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_selectedSet;
-  *(a3 + 24) |= 2u;
+  *(to + 4) = self->_selectedSet;
+  *(to + 24) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -265,41 +265,41 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 24) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 24) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(a3 + 24))
+    else if (*(equal + 24))
     {
       goto LABEL_14;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 24) & 2) == 0 || self->_selectedSet != *(a3 + 4))
+      if ((*(equal + 24) & 2) == 0 || self->_selectedSet != *(equal + 4))
       {
         goto LABEL_14;
       }
     }
 
-    else if ((*(a3 + 24) & 2) != 0)
+    else if ((*(equal + 24) & 2) != 0)
     {
       goto LABEL_14;
     }
 
-    LOBYTE(v5) = (*(a3 + 24) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 24) & 4) == 0;
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 24) & 4) == 0)
+      if ((*(equal + 24) & 4) == 0)
       {
 LABEL_14:
         LOBYTE(v5) = 0;
@@ -308,13 +308,13 @@ LABEL_14:
 
       if (self->_hadPreviouslyCustomizedSet)
       {
-        if ((*(a3 + 20) & 1) == 0)
+        if ((*(equal + 20) & 1) == 0)
         {
           goto LABEL_14;
         }
       }
 
-      else if (*(a3 + 20))
+      else if (*(equal + 20))
       {
         goto LABEL_14;
       }
@@ -366,14 +366,14 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 24);
+    v3 = *(from + 24);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -383,20 +383,20 @@ LABEL_3:
       }
 
 LABEL_7:
-      self->_hadPreviouslyCustomizedSet = *(a3 + 20);
+      self->_hadPreviouslyCustomizedSet = *(from + 20);
       *&self->_has |= 4u;
       return;
     }
   }
 
-  else if ((*(a3 + 24) & 2) == 0)
+  else if ((*(from + 24) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_selectedSet = *(a3 + 4);
+  self->_selectedSet = *(from + 4);
   *&self->_has |= 2u;
-  if ((*(a3 + 24) & 4) != 0)
+  if ((*(from + 24) & 4) != 0)
   {
     goto LABEL_7;
   }

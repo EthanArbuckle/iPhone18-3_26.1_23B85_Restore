@@ -2,8 +2,8 @@
 + (BOOL)_isAssistantRequired;
 + (BOOL)_isDevicePowerConstrained;
 + (BOOL)_isDictationRequired;
-+ (BOOL)_isSupportedAppIntentsIndexedEntityPartition:(id)a3 speechProfileConfig:(id)a4;
-+ (BOOL)_shouldUpdateOnM11WatchForSets:(id)a3;
++ (BOOL)_isSupportedAppIntentsIndexedEntityPartition:(id)partition speechProfileConfig:(id)config;
++ (BOOL)_shouldUpdateOnM11WatchForSets:(id)sets;
 + (BOOL)deviceHasFavorablePowerConditions;
 + (id)_requiredAssistantLocale;
 + (id)_requiredDictationLocales;
@@ -11,9 +11,9 @@
 + (id)itemTypesRequiringImmediateUpdate;
 + (void)disableOverrideAcceptAllSets;
 + (void)enableOverrideAcceptAllSets;
-- (id)_initWithAssistantLocale:(id)a3 dictationLocales:(id)a4;
+- (id)_initWithAssistantLocale:(id)locale dictationLocales:(id)locales;
 - (id)speechProfileConfig;
-- (void)enumerateRequiredInstances:(id)a3;
+- (void)enumerateRequiredInstances:(id)instances;
 - (void)updateRequiredLocales;
 @end
 
@@ -34,10 +34,10 @@
   return speechProfileConfig;
 }
 
-- (void)enumerateRequiredInstances:(id)a3
+- (void)enumerateRequiredInstances:(id)instances
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  instancesCopy = instances;
   if (self->_assistantLocale)
   {
     if ([(NSSet *)self->_dictationLocales containsObject:?])
@@ -50,15 +50,15 @@
       v5 = 1;
     }
 
-    v4[2](v4, self->_assistantLocale, v5);
+    instancesCopy[2](instancesCopy, self->_assistantLocale, v5);
   }
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSSet *)self->_dictationLocales allObjects];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObjects = [(NSSet *)self->_dictationLocales allObjects];
+  v7 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -69,17 +69,17 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
         if (([(NSLocale *)v11 isEqual:self->_assistantLocale]& 1) == 0)
         {
-          v4[2](v4, v11, 2);
+          instancesCopy[2](instancesCopy, v11, 2);
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -100,9 +100,9 @@
     _os_log_impl(&dword_225EEB000, v4, OS_LOG_TYPE_DEFAULT, "%s Updating required locales...", buf, 0xCu);
   }
 
-  v5 = [objc_opt_class() _requiredAssistantLocale];
+  _requiredAssistantLocale = [objc_opt_class() _requiredAssistantLocale];
   assistantLocale = self->_assistantLocale;
-  self->_assistantLocale = v5;
+  self->_assistantLocale = _requiredAssistantLocale;
 
   v7 = self->_assistantLocale;
   v8 = *v3;
@@ -112,11 +112,11 @@
     if (v9)
     {
       v10 = v8;
-      v11 = [(NSLocale *)v7 localeIdentifier];
+      localeIdentifier = [(NSLocale *)v7 localeIdentifier];
       *buf = 136315394;
       v30 = "[CESRSpeechProfileSettings updateRequiredLocales]";
       v31 = 2112;
-      v32 = v11;
+      v32 = localeIdentifier;
       _os_log_impl(&dword_225EEB000, v10, OS_LOG_TYPE_DEFAULT, "%s Required Assistant locale: %@", buf, 0x16u);
     }
   }
@@ -128,13 +128,13 @@
     _os_log_impl(&dword_225EEB000, v8, OS_LOG_TYPE_DEFAULT, "%s No required Assistant locale.", buf, 0xCu);
   }
 
-  v12 = [objc_opt_class() _requiredDictationLocales];
+  _requiredDictationLocales = [objc_opt_class() _requiredDictationLocales];
   dictationLocales = self->_dictationLocales;
-  self->_dictationLocales = v12;
+  self->_dictationLocales = _requiredDictationLocales;
 
   if (self->_dictationLocales)
   {
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -155,8 +155,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v24 + 1) + 8 * v19) localeIdentifier];
-          [v14 addObject:v20];
+          localeIdentifier2 = [*(*(&v24 + 1) + 8 * v19) localeIdentifier];
+          [array addObject:localeIdentifier2];
 
           ++v19;
         }
@@ -168,14 +168,14 @@
       while (v17);
     }
 
-    [v14 sortUsingSelector:sel_compare_];
+    [array sortUsingSelector:sel_compare_];
     v21 = *v3;
     if (os_log_type_enabled(*v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v30 = "[CESRSpeechProfileSettings updateRequiredLocales]";
       v31 = 2112;
-      v32 = v14;
+      v32 = array;
       _os_log_impl(&dword_225EEB000, v21, OS_LOG_TYPE_DEFAULT, "%s Required Dictation locales: %@", buf, 0x16u);
     }
   }
@@ -194,18 +194,18 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_initWithAssistantLocale:(id)a3 dictationLocales:(id)a4
+- (id)_initWithAssistantLocale:(id)locale dictationLocales:(id)locales
 {
-  v7 = a3;
-  v8 = a4;
+  localeCopy = locale;
+  localesCopy = locales;
   v13.receiver = self;
   v13.super_class = CESRSpeechProfileSettings;
   v9 = [(CESRSpeechProfileSettings *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assistantLocale, a3);
-    objc_storeStrong(&v10->_dictationLocales, a4);
+    objc_storeStrong(&v9->_assistantLocale, locale);
+    objc_storeStrong(&v10->_dictationLocales, locales);
     speechProfileConfig = v10->_speechProfileConfig;
     v10->_speechProfileConfig = 0;
   }
@@ -213,17 +213,17 @@
   return v10;
 }
 
-+ (BOOL)_isSupportedAppIntentsIndexedEntityPartition:(id)a3 speechProfileConfig:(id)a4
++ (BOOL)_isSupportedAppIntentsIndexedEntityPartition:(id)partition speechProfileConfig:(id)config
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CF9498];
-  v6 = a4;
-  v7 = [a3 descriptorWithKey:v5];
-  v8 = [v7 value];
+  configCopy = config;
+  v7 = [partition descriptorWithKey:v5];
+  value = [v7 value];
 
-  v9 = [v6 appEntityConfig];
+  appEntityConfig = [configCopy appEntityConfig];
 
-  if (![v9 overallAppEntityLimit])
+  if (![appEntityConfig overallAppEntityLimit])
   {
     v11 = *MEMORY[0x277CEF0E8];
     if (!os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
@@ -243,7 +243,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (([v9 isBundleIdSupported:v8] & 1) == 0)
+  if (([appEntityConfig isBundleIdSupported:value] & 1) == 0)
   {
     v15 = *MEMORY[0x277CEF0E8];
     if (!os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
@@ -254,7 +254,7 @@ LABEL_10:
     v18 = 136315394;
     v19 = "+[CESRSpeechProfileSettings _isSupportedAppIntentsIndexedEntityPartition:speechProfileConfig:]";
     v20 = 2112;
-    v21 = v8;
+    v21 = value;
     v12 = "%s AppIntentsIndexedEntity partition from app=%@ is either not supported or explicitly deny-listed";
     v13 = v15;
     v14 = 22;
@@ -285,7 +285,7 @@ LABEL_8:
 
 + (id)_requiredDictationLocales
 {
-  if ([a1 _isDictationRequired])
+  if ([self _isDictationRequired])
   {
     v2 = +[CESRUtilities installedDictationLocales];
   }
@@ -300,7 +300,7 @@ LABEL_8:
 
 + (id)_requiredAssistantLocale
 {
-  if ([a1 _isAssistantRequired])
+  if ([self _isAssistantRequired])
   {
     v2 = +[CESRUtilities installedAssistantLocale];
   }
@@ -434,29 +434,29 @@ uint64_t __62__CESRSpeechProfileSettings_itemTypesRequiringImmediateUpdate__bloc
 + (BOOL)_isDevicePowerConstrained
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 thermalState];
-  v4 = [v2 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  thermalState = [processInfo thermalState];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
   v5 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEBUG))
   {
     v8 = @"NO";
     v10 = "+[CESRSpeechProfileSettings _isDevicePowerConstrained]";
     v9 = 136315650;
-    if (v4)
+    if (isLowPowerModeEnabled)
     {
       v8 = @"YES";
     }
 
     v11 = 2048;
-    v12 = v3;
+    v12 = thermalState;
     v13 = 2112;
     v14 = v8;
     _os_log_debug_impl(&dword_225EEB000, v5, OS_LOG_TYPE_DEBUG, "%s thermalState=%ld, isLowPowerModeEnabled=%@", &v9, 0x20u);
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return (v3 > 1) | v4 & 1;
+  return (thermalState > 1) | isLowPowerModeEnabled & 1;
 }
 
 + (BOOL)deviceHasFavorablePowerConditions
@@ -469,10 +469,10 @@ uint64_t __62__CESRSpeechProfileSettings_itemTypesRequiringImmediateUpdate__bloc
   return +[CESRSpeechProfileSettings _isDeviceChargingAboveThreshold];
 }
 
-+ (BOOL)_shouldUpdateOnM11WatchForSets:(id)a3
++ (BOOL)_shouldUpdateOnM11WatchForSets:(id)sets
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  setsCopy = sets;
   if (_shouldUpdateOnM11WatchForSets__onceToken != -1)
   {
     dispatch_once(&_shouldUpdateOnM11WatchForSets__onceToken, &__block_literal_global_369);
@@ -482,7 +482,7 @@ uint64_t __62__CESRSpeechProfileSettings_itemTypesRequiringImmediateUpdate__bloc
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v3;
+  v4 = setsCopy;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -532,10 +532,10 @@ uint64_t __60__CESRSpeechProfileSettings__shouldUpdateOnM11WatchForSets___block_
 
 + (id)defaultSettings
 {
-  v3 = [a1 alloc];
-  v4 = [a1 _requiredAssistantLocale];
-  v5 = [a1 _requiredDictationLocales];
-  v6 = [v3 _initWithAssistantLocale:v4 dictationLocales:v5];
+  v3 = [self alloc];
+  _requiredAssistantLocale = [self _requiredAssistantLocale];
+  _requiredDictationLocales = [self _requiredDictationLocales];
+  v6 = [v3 _initWithAssistantLocale:_requiredAssistantLocale dictationLocales:_requiredDictationLocales];
 
   return v6;
 }

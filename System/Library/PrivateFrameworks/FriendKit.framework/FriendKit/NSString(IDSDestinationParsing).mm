@@ -10,38 +10,38 @@
 
 - (uint64_t)fkMessageDestinationType
 {
-  if ([a1 containsString:@"@"] & 1) != 0 || (objc_msgSend(a1, "containsString:", @"mailto:"))
+  if ([self containsString:@"@"] & 1) != 0 || (objc_msgSend(self, "containsString:", @"mailto:"))
   {
     return 2;
   }
 
-  if ([a1 containsString:@"tel:"])
+  if ([self containsString:@"tel:"])
   {
     return 1;
   }
 
-  v3 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v4 = [a1 rangeOfCharacterFromSet:v3];
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  v4 = [self rangeOfCharacterFromSet:decimalDigitCharacterSet];
 
   return v4 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
 - (id)fkMessageIDSIdentifier
 {
-  if ([a1 fkMessageIsIDSIdentifier])
+  if ([self fkMessageIsIDSIdentifier])
   {
-    v2 = [a1 copy];
+    v2 = [self copy];
   }
 
   else
   {
-    v3 = [a1 fkMessageDestinationType];
-    if (v3 == 2)
+    fkMessageDestinationType = [self fkMessageDestinationType];
+    if (fkMessageDestinationType == 2)
     {
-      v2 = MEMORY[0x24C252990](a1);
+      v2 = MEMORY[0x24C252990](self);
     }
 
-    else if (v3 == 1)
+    else if (fkMessageDestinationType == 1)
     {
       v2 = IDSCopyIDForPhoneNumber();
     }
@@ -57,9 +57,9 @@
 
 - (id)fkMessageRawAddress
 {
-  if ([a1 fkMessageIsRawAddress])
+  if ([self fkMessageIsRawAddress])
   {
-    v2 = [a1 copy];
+    v2 = [self copy];
   }
 
   else
@@ -72,28 +72,28 @@
 
 - (uint64_t)fkMessageIsIDSIdentifier
 {
-  if ([a1 containsString:@"tel:"])
+  if ([self containsString:@"tel:"])
   {
     return 1;
   }
 
-  return [a1 containsString:@"mailto:"];
+  return [self containsString:@"mailto:"];
 }
 
 - (id)fkMessageCanonicalRawAddress
 {
-  v2 = [a1 fkMessageRawAddress];
-  if ([a1 fkMessageDestinationType] == 1)
+  fkMessageRawAddress = [self fkMessageRawAddress];
+  if ([self fkMessageDestinationType] == 1)
   {
-    v4 = MEMORY[0x24C2529B0](v2, 0, 1);
-    v5 = [v4 fkMessageRawAddress];
+    v4 = MEMORY[0x24C2529B0](fkMessageRawAddress, 0, 1);
+    fkMessageRawAddress2 = [v4 fkMessageRawAddress];
 
-    v3 = v5;
+    v3 = fkMessageRawAddress2;
   }
 
   else
   {
-    v3 = v2;
+    v3 = fkMessageRawAddress;
   }
 
   return v3;

@@ -16,7 +16,7 @@
 
 - (id)_vui_lookupValueForKey:()VideosUICore expectedClass:
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1 && (objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -29,7 +29,7 @@
 - (id)vui_numberForKey:()VideosUICore
 {
   v4 = a3;
-  v5 = [a1 _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -37,7 +37,7 @@
 - (id)vui_stringForKey:()VideosUICore
 {
   v4 = a3;
-  v5 = [a1 _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -45,7 +45,7 @@
 - (id)vui_attrStringForKey:()VideosUICore
 {
   v4 = a3;
-  v5 = [a1 _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -53,10 +53,10 @@
 - (id)vui_URLForKey:()VideosUICore
 {
   v4 = a3;
-  v5 = [a1 _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
   if (!v5)
   {
-    v6 = [a1 _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+    v6 = [self _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
     v7 = v6;
     if (v6 && [v6 length])
     {
@@ -74,7 +74,7 @@
 
 - (uint64_t)vui_BOOLForKey:()VideosUICore defaultValue:
 {
-  v5 = [a1 vui_numberForKey:?];
+  v5 = [self vui_numberForKey:?];
   v6 = v5;
   if (v5)
   {
@@ -87,7 +87,7 @@
 - (id)vui_dateForKey:()VideosUICore
 {
   v4 = a3;
-  v5 = [a1 _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -95,7 +95,7 @@
 - (id)vui_dictionaryForKey:()VideosUICore
 {
   v4 = a3;
-  v5 = [a1 _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -103,7 +103,7 @@
 - (id)vui_arrayForKey:()VideosUICore
 {
   v4 = a3;
-  v5 = [a1 _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -111,7 +111,7 @@
 - (id)vui_dataForKey:()VideosUICore
 {
   v4 = a3;
-  v5 = [a1 _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -119,7 +119,7 @@
 - (id)vui_errorForKey:()VideosUICore
 {
   v4 = a3;
-  v5 = [a1 _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _vui_lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }

@@ -1,7 +1,7 @@
 @interface MultiChoiceTray.LegacyHeader
 - (RUIElement)parent;
 - (_TtCV8RemoteUI15MultiChoiceTray12LegacyHeader)init;
-- (_TtCV8RemoteUI15MultiChoiceTray12LegacyHeader)initWithAttributes:(id)a3 parent:(id)a4;
+- (_TtCV8RemoteUI15MultiChoiceTray12LegacyHeader)initWithAttributes:(id)attributes parent:(id)parent;
 - (id)staticFunctions;
 @end
 
@@ -10,7 +10,7 @@
 - (RUIElement)parent
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.isa) + 0x60);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;
@@ -25,7 +25,7 @@
   return v2;
 }
 
-- (_TtCV8RemoteUI15MultiChoiceTray12LegacyHeader)initWithAttributes:(id)a3 parent:(id)a4
+- (_TtCV8RemoteUI15MultiChoiceTray12LegacyHeader)initWithAttributes:(id)attributes parent:(id)parent
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

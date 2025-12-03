@@ -13,10 +13,10 @@
   [(LPiTunesMediaAlbumMetadata *)v3 setStoreIdentifier:self->_storeIdentifier];
   [(LPiTunesMediaAlbumMetadata *)v3 setName:self->_name];
   [(LPiTunesMediaAlbumMetadata *)v3 setArtist:self->_artist];
-  v4 = [(LPiTunesMediaAsset *)self->_artwork metadata];
-  [(LPiTunesMediaAlbumMetadata *)v3 setArtworkMetadata:v4];
+  metadata = [(LPiTunesMediaAsset *)self->_artwork metadata];
+  [(LPiTunesMediaAlbumMetadata *)v3 setArtworkMetadata:metadata];
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -35,8 +35,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) type];
-        [v5 addObject:v10];
+        type = [*(*(&v12 + 1) + 8 * i) type];
+        [array addObject:type];
       }
 
       v7 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -45,7 +45,7 @@
     while (v7);
   }
 
-  [(LPiTunesMediaAlbumMetadata *)v3 setOffers:v5];
+  [(LPiTunesMediaAlbumMetadata *)v3 setOffers:array];
 
   return v3;
 }

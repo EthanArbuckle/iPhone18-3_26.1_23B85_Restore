@@ -1,12 +1,12 @@
 @interface RatingRowView
 - (CGSize)intrinsicContentSize;
-- (_TtC23ShelfKitCollectionViews13RatingRowView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews13RatingRowView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews13RatingRowView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews13RatingRowView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation RatingRowView
 
-- (_TtC23ShelfKitCollectionViews13RatingRowView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews13RatingRowView)initWithCoder:(id)coder
 {
   result = sub_30D648();
   __break(1u);
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews13RatingRowView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews13RatingRowView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

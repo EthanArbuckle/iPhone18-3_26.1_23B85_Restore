@@ -1,7 +1,7 @@
 @interface HDConceptIndexEntry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDConceptIndexEntry)init;
-- (HDConceptIndexEntry)initWithSampleUUID:(id)a3 conceptIdentifier:(int64_t)a4 conceptVersion:(int64_t)a5 keyPath:(id)a6 compoundIndex:(unint64_t)a7 type:(unint64_t)a8 ontologyVersion:(id)a9;
+- (HDConceptIndexEntry)initWithSampleUUID:(id)d conceptIdentifier:(int64_t)identifier conceptVersion:(int64_t)version keyPath:(id)path compoundIndex:(unint64_t)index type:(unint64_t)type ontologyVersion:(id)ontologyVersion;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -18,23 +18,23 @@
   return 0;
 }
 
-- (HDConceptIndexEntry)initWithSampleUUID:(id)a3 conceptIdentifier:(int64_t)a4 conceptVersion:(int64_t)a5 keyPath:(id)a6 compoundIndex:(unint64_t)a7 type:(unint64_t)a8 ontologyVersion:(id)a9
+- (HDConceptIndexEntry)initWithSampleUUID:(id)d conceptIdentifier:(int64_t)identifier conceptVersion:(int64_t)version keyPath:(id)path compoundIndex:(unint64_t)index type:(unint64_t)type ontologyVersion:(id)ontologyVersion
 {
-  v16 = a3;
-  v17 = a6;
-  v18 = a9;
-  if (v16)
+  dCopy = d;
+  pathCopy = path;
+  ontologyVersionCopy = ontologyVersion;
+  if (dCopy)
   {
-    if (v17)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"HDConceptIndexEntry.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"keyPath != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDConceptIndexEntry.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"keyPath != nil"}];
 
-    if (v18)
+    if (ontologyVersionCopy)
     {
       goto LABEL_4;
     }
@@ -42,23 +42,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v27 = [MEMORY[0x277CCA890] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"HDConceptIndexEntry.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"sampleUUID != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDConceptIndexEntry.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"sampleUUID != nil"}];
 
-  if (!v17)
+  if (!pathCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v18)
+  if (ontologyVersionCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v29 = [MEMORY[0x277CCA890] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"HDConceptIndexEntry.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"ontologyVersion != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDConceptIndexEntry.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"ontologyVersion != nil"}];
 
 LABEL_4:
   v30.receiver = self;
@@ -66,19 +66,19 @@ LABEL_4:
   v19 = [(HDConceptIndexEntry *)&v30 init];
   if (v19)
   {
-    v20 = [v16 copy];
+    v20 = [dCopy copy];
     sampleUUID = v19->_sampleUUID;
     v19->_sampleUUID = v20;
 
-    v19->_conceptIdentifier = a4;
-    v19->_conceptVersion = a5;
-    v22 = [v17 copy];
+    v19->_conceptIdentifier = identifier;
+    v19->_conceptVersion = version;
+    v22 = [pathCopy copy];
     keyPath = v19->_keyPath;
     v19->_keyPath = v22;
 
-    v19->_compoundIndex = a7;
-    v19->_type = a8;
-    v24 = [v18 copy];
+    v19->_compoundIndex = index;
+    v19->_type = type;
+    v24 = [ontologyVersionCopy copy];
     ontologyVersion = v19->_ontologyVersion;
     v19->_ontologyVersion = v24;
   }
@@ -108,10 +108,10 @@ LABEL_4:
   return *&veor_s8(*v6.i8, *&vextq_s8(v6, v6, 8uLL)) ^ v5 ^ v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -121,26 +121,26 @@ LABEL_4:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       sampleUUID = self->_sampleUUID;
-      v7 = [(HDConceptIndexEntry *)v5 sampleUUID];
-      v8 = v7;
-      if (sampleUUID == v7)
+      sampleUUID = [(HDConceptIndexEntry *)v5 sampleUUID];
+      v8 = sampleUUID;
+      if (sampleUUID == sampleUUID)
       {
       }
 
       else
       {
-        v9 = [(HDConceptIndexEntry *)v5 sampleUUID];
-        if (!v9)
+        sampleUUID2 = [(HDConceptIndexEntry *)v5 sampleUUID];
+        if (!sampleUUID2)
         {
           goto LABEL_23;
         }
 
-        v10 = v9;
+        v10 = sampleUUID2;
         v11 = self->_sampleUUID;
-        v12 = [(HDConceptIndexEntry *)v5 sampleUUID];
-        LODWORD(v11) = [(NSUUID *)v11 isEqual:v12];
+        sampleUUID3 = [(HDConceptIndexEntry *)v5 sampleUUID];
+        LODWORD(v11) = [(NSUUID *)v11 isEqual:sampleUUID3];
 
         if (!v11)
         {
@@ -161,24 +161,24 @@ LABEL_4:
       }
 
       keyPath = self->_keyPath;
-      v17 = [(HDConceptIndexEntry *)v5 keyPath];
-      v8 = v17;
-      if (keyPath == v17)
+      keyPath = [(HDConceptIndexEntry *)v5 keyPath];
+      v8 = keyPath;
+      if (keyPath == keyPath)
       {
       }
 
       else
       {
-        v18 = [(HDConceptIndexEntry *)v5 keyPath];
-        if (!v18)
+        keyPath2 = [(HDConceptIndexEntry *)v5 keyPath];
+        if (!keyPath2)
         {
           goto LABEL_23;
         }
 
-        v19 = v18;
+        v19 = keyPath2;
         v20 = self->_keyPath;
-        v21 = [(HDConceptIndexEntry *)v5 keyPath];
-        LODWORD(v20) = [(NSString *)v20 isEqualToString:v21];
+        keyPath3 = [(HDConceptIndexEntry *)v5 keyPath];
+        LODWORD(v20) = [(NSString *)v20 isEqualToString:keyPath3];
 
         if (!v20)
         {
@@ -199,9 +199,9 @@ LABEL_4:
       }
 
       ontologyVersion = self->_ontologyVersion;
-      v25 = [(HDConceptIndexEntry *)v5 ontologyVersion];
-      v8 = v25;
-      if (ontologyVersion == v25)
+      ontologyVersion = [(HDConceptIndexEntry *)v5 ontologyVersion];
+      v8 = ontologyVersion;
+      if (ontologyVersion == ontologyVersion)
       {
 
 LABEL_28:
@@ -209,13 +209,13 @@ LABEL_28:
         goto LABEL_25;
       }
 
-      v26 = [(HDConceptIndexEntry *)v5 ontologyVersion];
-      if (v26)
+      ontologyVersion2 = [(HDConceptIndexEntry *)v5 ontologyVersion];
+      if (ontologyVersion2)
       {
-        v27 = v26;
+        v27 = ontologyVersion2;
         v28 = self->_ontologyVersion;
-        v29 = [(HDConceptIndexEntry *)v5 ontologyVersion];
-        LOBYTE(v28) = [(HKOntologyVersion *)v28 isEqual:v29];
+        ontologyVersion3 = [(HDConceptIndexEntry *)v5 ontologyVersion];
+        LOBYTE(v28) = [(HKOntologyVersion *)v28 isEqual:ontologyVersion3];
 
         if (v28)
         {

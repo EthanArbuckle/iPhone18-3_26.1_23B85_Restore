@@ -2,22 +2,22 @@
 - (BOOL)isHidden;
 - (RelatedSearchSuggestionViewController)init;
 - (RelatedSearchSuggestionViewControllerDelegate)delegate;
-- (id)_createMapsThemeButtonWithTitle:(id)a3;
-- (id)_createMapsThemeLabelWithTitle:(id)a3;
+- (id)_createMapsThemeButtonWithTitle:(id)title;
+- (id)_createMapsThemeLabelWithTitle:(id)title;
 - (void)_clearTimer;
-- (void)_componentButtonTapped:(id)a3;
-- (void)_hideSuggestionViewTimerFired:(id)a3;
+- (void)_componentButtonTapped:(id)tapped;
+- (void)_hideSuggestionViewTimerFired:(id)fired;
 - (void)_loadSuggestions;
 - (void)_resetTimer;
 - (void)dealloc;
-- (void)dismissWithReason:(unint64_t)a3;
+- (void)dismissWithReason:(unint64_t)reason;
 - (void)loadView;
-- (void)preferredContentSizeChanged:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSuggestion:(id)a3;
-- (void)updateSuggestionPositionWithOffset:(double)a3;
+- (void)preferredContentSizeChanged:(id)changed;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setSuggestion:(id)suggestion;
+- (void)updateSuggestionPositionWithOffset:(double)offset;
 - (void)viewDidLoad;
 @end
 
@@ -30,7 +30,7 @@
   return WeakRetained;
 }
 
-- (void)dismissWithReason:(unint64_t)a3
+- (void)dismissWithReason:(unint64_t)reason
 {
   [(NSDate *)self->_suggestionShownDate timeIntervalSinceNow];
   v6 = v5;
@@ -48,71 +48,71 @@
     {
       [(RelatedSearchSuggestionViewController *)self setHidden:1 animated:1];
       [(RelatedSearchSuggestionViewController *)self resetData];
-      v10 = [(RelatedSearchSuggestionViewController *)self delegate];
-      [v10 relatedSearchSuggestionViewController:self didDismissWithReason:a3];
+      delegate = [(RelatedSearchSuggestionViewController *)self delegate];
+      [delegate relatedSearchSuggestionViewController:self didDismissWithReason:reason];
     }
   }
 
   self->_forceDismiss = 1;
 }
 
-- (void)updateSuggestionPositionWithOffset:(double)a3
+- (void)updateSuggestionPositionWithOffset:(double)offset
 {
   lastSuggestionScrollOffset = self->_lastSuggestionScrollOffset;
-  if (lastSuggestionScrollOffset < a3 && !self->_suggestionScrollViewScrollingLeft)
+  if (lastSuggestionScrollOffset < offset && !self->_suggestionScrollViewScrollingLeft)
   {
     self->_suggestionScrollViewScrollingLeft = 1;
     self->_suggestionScrollViewScrollingRight = 0;
-    v6 = [(RelatedSearchSuggestionViewController *)self delegate];
-    [v6 relatedSearchSuggestionViewControllerDidScrollLeft:self];
+    delegate = [(RelatedSearchSuggestionViewController *)self delegate];
+    [delegate relatedSearchSuggestionViewControllerDidScrollLeft:self];
     goto LABEL_7;
   }
 
-  if (lastSuggestionScrollOffset > a3 && !self->_suggestionScrollViewScrollingRight)
+  if (lastSuggestionScrollOffset > offset && !self->_suggestionScrollViewScrollingRight)
   {
     self->_suggestionScrollViewScrollingLeft = 0;
     self->_suggestionScrollViewScrollingRight = 1;
-    v6 = [(RelatedSearchSuggestionViewController *)self delegate];
-    [v6 relatedSearchSuggestionViewControllerDidScrollRight:self];
+    delegate = [(RelatedSearchSuggestionViewController *)self delegate];
+    [delegate relatedSearchSuggestionViewControllerDidScrollRight:self];
 LABEL_7:
   }
 
-  self->_lastSuggestionScrollOffset = a3;
+  self->_lastSuggestionScrollOffset = offset;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v8 = a3;
-  [v8 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   v5 = v4;
   if (MKApplicationLayoutDirectionIsRightToLeft())
   {
-    [v8 contentSize];
+    [scrollCopy contentSize];
     v7 = v6;
-    [v8 frame];
+    [scrollCopy frame];
     v5 = v7 - (v5 + CGRectGetWidth(v10));
   }
 
   [(RelatedSearchSuggestionViewController *)self updateSuggestionPositionWithOffset:v5];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  [(RelatedSearchSuggestionViewController *)self _resetTimer:a3];
+  [(RelatedSearchSuggestionViewController *)self _resetTimer:dragging];
   self->_suggestionScrollViewScrollingLeft = 0;
   self->_suggestionScrollViewScrollingRight = 0;
 }
 
-- (void)setSuggestion:(id)a3
+- (void)setSuggestion:(id)suggestion
 {
-  v5 = a3;
-  if (self->_suggestion != v5)
+  suggestionCopy = suggestion;
+  if (self->_suggestion != suggestionCopy)
   {
-    objc_storeStrong(&self->_suggestion, a3);
+    objc_storeStrong(&self->_suggestion, suggestion);
     [(UIScrollView *)self->_scrollView setContentOffset:CGPointZero.x, CGPointZero.y];
-    [(RelatedSearchSuggestion *)v5 visibleTime];
+    [(RelatedSearchSuggestion *)suggestionCopy visibleTime];
     self->_hideSuggestionViewTimeoutInSeconds = v6;
-    if ([(RelatedSearchSuggestion *)v5 showCloseButton])
+    if ([(RelatedSearchSuggestion *)suggestionCopy showCloseButton])
     {
       v7 = !self->_accessibilityEnabled;
     }
@@ -122,8 +122,8 @@ LABEL_7:
       v7 = 0;
     }
 
-    v8 = [(RelatedSearchSuggestionViewController *)self suggestionView];
-    [v8 setShowCloseButton:v7];
+    suggestionView = [(RelatedSearchSuggestionViewController *)self suggestionView];
+    [suggestionView setShowCloseButton:v7];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -134,12 +134,12 @@ LABEL_7:
   }
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  if ([(RelatedSearchSuggestionViewController *)self isHidden]!= a3)
+  animatedCopy = animated;
+  if ([(RelatedSearchSuggestionViewController *)self isHidden]!= hidden)
   {
-    if (a3)
+    if (hidden)
     {
       [(RelatedSearchSuggestionViewController *)self _clearTimer];
       suggestionShownDate = self->_suggestionShownDate;
@@ -159,15 +159,15 @@ LABEL_7:
       v8 = 1.0;
     }
 
-    v11 = [(RelatedSearchSuggestionViewController *)self suggestionView];
-    [v11 setAlpha:v4 animated:v8];
+    suggestionView = [(RelatedSearchSuggestionViewController *)self suggestionView];
+    [suggestionView setAlpha:animatedCopy animated:v8];
   }
 }
 
 - (BOOL)isHidden
 {
-  v2 = [(RelatedSearchSuggestionViewController *)self view];
-  [v2 alpha];
+  view = [(RelatedSearchSuggestionViewController *)self view];
+  [view alpha];
   v4 = v3 == 0.0;
 
   return v4;
@@ -184,7 +184,7 @@ LABEL_7:
   }
 }
 
-- (void)_hideSuggestionViewTimerFired:(id)a3
+- (void)_hideSuggestionViewTimerFired:(id)fired
 {
   [(RelatedSearchSuggestionViewController *)self _clearTimer];
 
@@ -198,9 +198,9 @@ LABEL_7:
   self->_hideSuggestionViewTimer = 0;
 }
 
-- (id)_createMapsThemeLabelWithTitle:(id)a3
+- (id)_createMapsThemeLabelWithTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = [[MapsThemeLabel alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(MapsThemeLabel *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = +[UIColor labelColor];
@@ -211,24 +211,24 @@ LABEL_7:
   [(MapsThemeLabel *)v4 setContentHuggingPriority:0 forAxis:v6];
   LODWORD(v7) = 1148846080;
   [(MapsThemeLabel *)v4 setContentCompressionResistancePriority:0 forAxis:v7];
-  [(MapsThemeLabel *)v4 setText:v3];
+  [(MapsThemeLabel *)v4 setText:titleCopy];
 
   return v4;
 }
 
-- (id)_createMapsThemeButtonWithTitle:(id)a3
+- (id)_createMapsThemeButtonWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = [MapsThemeButton buttonWithType:1];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5 _setTouchInsets:{-7.0, -7.0, -7.0, -7.0}];
   [v5 setTitleColorProvider:&stru_1016309D0];
-  v6 = [v5 titleLabel];
-  [DynamicTypeWizard autorefreshLabel:v6 withFontProvider:&stru_101626928];
+  titleLabel = [v5 titleLabel];
+  [DynamicTypeWizard autorefreshLabel:titleLabel withFontProvider:&stru_101626928];
 
   [v5 addTarget:self action:"_componentButtonTapped:" forControlEvents:64];
-  v7 = [v5 titleLabel];
-  [v7 setLineBreakMode:4];
+  titleLabel2 = [v5 titleLabel];
+  [titleLabel2 setLineBreakMode:4];
 
   if (MKApplicationLayoutDirectionIsRightToLeft())
   {
@@ -241,18 +241,18 @@ LABEL_7:
   }
 
   [v5 setContentHorizontalAlignment:v8];
-  [v5 setTitle:v4 forState:0];
+  [v5 setTitle:titleCopy forState:0];
 
   return v5;
 }
 
-- (void)_componentButtonTapped:(id)a3
+- (void)_componentButtonTapped:(id)tapped
 {
-  v12 = a3;
+  tappedCopy = tapped;
   [(RelatedSearchSuggestionViewController *)self setHidden:1 animated:1];
-  v4 = [v12 tag];
-  v5 = [(RelatedSearchSuggestion *)self->_suggestion components];
-  v6 = [v5 count];
+  v4 = [tappedCopy tag];
+  components = [(RelatedSearchSuggestion *)self->_suggestion components];
+  v6 = [components count];
 
   if (v4 >= v6)
   {
@@ -261,23 +261,23 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v8 = [(RelatedSearchSuggestionViewController *)self delegate];
-    [v8 relatedSearchSuggestionViewController:self didDismissWithReason:0];
+    delegate = [(RelatedSearchSuggestionViewController *)self delegate];
+    [delegate relatedSearchSuggestionViewController:self didDismissWithReason:0];
   }
 
   else
   {
-    v7 = [(RelatedSearchSuggestion *)self->_suggestion components];
-    v8 = [v7 objectAtIndexedSubscript:v4];
+    components2 = [(RelatedSearchSuggestion *)self->_suggestion components];
+    delegate = [components2 objectAtIndexedSubscript:v4];
 
-    if ([v8 isRelatedSearchSuggestion])
+    if ([delegate isRelatedSearchSuggestion])
     {
-      v9 = [v8 suggestion];
+      suggestion = [delegate suggestion];
       pdSuggestion = self->_pdSuggestion;
-      self->_pdSuggestion = v9;
+      self->_pdSuggestion = suggestion;
 
-      v11 = [(RelatedSearchSuggestionViewController *)self delegate];
-      [v11 relatedSearchSuggestionViewControllerDidTapActionButton:self];
+      delegate2 = [(RelatedSearchSuggestionViewController *)self delegate];
+      [delegate2 relatedSearchSuggestionViewControllerDidTapActionButton:self];
     }
   }
 
@@ -300,17 +300,17 @@ LABEL_7:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [(RelatedSearchSuggestion *)self->_suggestion components];
-  v26 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  components = [(RelatedSearchSuggestion *)self->_suggestion components];
+  v26 = [components countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (!v26)
   {
-    v7 = v6;
+    v7 = components;
     goto LABEL_19;
   }
 
   v7 = 0;
   v8 = 0;
-  obj = v6;
+  obj = components;
   v25 = *v28;
   do
   {
@@ -324,37 +324,37 @@ LABEL_7:
       }
 
       v11 = *(*(&v27 + 1) + 8 * v9);
-      v12 = [v11 isRelatedSearchSuggestion];
-      v13 = [v11 displayText];
-      if (v12)
+      isRelatedSearchSuggestion = [v11 isRelatedSearchSuggestion];
+      displayText = [v11 displayText];
+      if (isRelatedSearchSuggestion)
       {
-        v14 = [(RelatedSearchSuggestionViewController *)self _createMapsThemeButtonWithTitle:v13];
+        v14 = [(RelatedSearchSuggestionViewController *)self _createMapsThemeButtonWithTitle:displayText];
 
         [v14 setTag:v8];
       }
 
       else
       {
-        v14 = [(RelatedSearchSuggestionViewController *)self _createMapsThemeLabelWithTitle:v13];
+        v14 = [(RelatedSearchSuggestionViewController *)self _createMapsThemeLabelWithTitle:displayText];
       }
 
       [(UIScrollView *)self->_scrollView addSubview:v14];
-      v15 = [v14 centerYAnchor];
-      v16 = [(UIScrollView *)self->_scrollView centerYAnchor];
-      v17 = [v15 constraintEqualToAnchor:v16];
+      centerYAnchor = [v14 centerYAnchor];
+      centerYAnchor2 = [(UIScrollView *)self->_scrollView centerYAnchor];
+      v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       [v5 addObject:v17];
 
-      v18 = [v14 leadingAnchor];
+      leadingAnchor = [v14 leadingAnchor];
       if (v10)
       {
-        v19 = [v10 trailingAnchor];
-        [v18 constraintEqualToAnchor:v19];
+        trailingAnchor = [v10 trailingAnchor];
+        [leadingAnchor constraintEqualToAnchor:trailingAnchor];
       }
 
       else
       {
-        v19 = [(UIScrollView *)self->_scrollView leadingAnchor];
-        [v18 constraintEqualToAnchor:v19 constant:16.0];
+        trailingAnchor = [(UIScrollView *)self->_scrollView leadingAnchor];
+        [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:16.0];
       }
       v20 = ;
       [v5 addObject:v20];
@@ -375,9 +375,9 @@ LABEL_7:
 
   if (v7)
   {
-    v21 = [v7 trailingAnchor];
-    v22 = [(UIScrollView *)self->_scrollView trailingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:-16.0];
+    trailingAnchor2 = [v7 trailingAnchor];
+    trailingAnchor3 = [(UIScrollView *)self->_scrollView trailingAnchor];
+    v23 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-16.0];
     [v5 addObject:v23];
 
 LABEL_19:
@@ -386,7 +386,7 @@ LABEL_19:
   [NSLayoutConstraint activateConstraints:v5];
 }
 
-- (void)preferredContentSizeChanged:(id)a3
+- (void)preferredContentSizeChanged:(id)changed
 {
   self->_accessibilityEnabled = +[UIFont accessibilityTextEnabled];
   if ([(RelatedSearchSuggestion *)self->_suggestion showCloseButton])
@@ -399,8 +399,8 @@ LABEL_19:
     v4 = 0;
   }
 
-  v5 = [(RelatedSearchSuggestionViewController *)self suggestionView];
-  [v5 setShowCloseButton:v4];
+  suggestionView = [(RelatedSearchSuggestionViewController *)self suggestionView];
+  [suggestionView setShowCloseButton:v4];
 }
 
 - (void)viewDidLoad
@@ -413,27 +413,27 @@ LABEL_19:
   self->_blurView = v3;
 
   v5 = self->_blurView;
-  v6 = [(RelatedSearchSuggestionViewController *)self suggestionView];
-  [v6 setBlurView:v5];
+  suggestionView = [(RelatedSearchSuggestionViewController *)self suggestionView];
+  [suggestionView setBlurView:v5];
 
-  v7 = [(RelatedSearchSuggestionViewController *)self view];
-  [v7 addSubview:self->_blurView];
+  view = [(RelatedSearchSuggestionViewController *)self view];
+  [view addSubview:self->_blurView];
 
   v8 = self->_blurView;
-  v9 = [(RelatedSearchSuggestionViewController *)self suggestionView];
-  [v9 setBlurView:v8];
+  suggestionView2 = [(RelatedSearchSuggestionViewController *)self suggestionView];
+  [suggestionView2 setBlurView:v8];
 
   v10 = [[UIScrollView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   scrollView = self->_scrollView;
   self->_scrollView = v10;
 
   [(UIScrollView *)self->_scrollView setDelegate:self];
-  v12 = [(RelatedSearchSuggestionViewController *)self view];
-  [v12 addSubview:self->_scrollView];
+  view2 = [(RelatedSearchSuggestionViewController *)self view];
+  [view2 addSubview:self->_scrollView];
 
   v13 = self->_scrollView;
-  v14 = [(RelatedSearchSuggestionViewController *)self suggestionView];
-  [v14 setScrollView:v13];
+  suggestionView3 = [(RelatedSearchSuggestionViewController *)self suggestionView];
+  [suggestionView3 setScrollView:v13];
 
   v15 = +[NSBundle mainBundle];
   v16 = [v15 localizedStringForKey:@"Close [DYM]" value:@"localized string not found" table:0];
@@ -442,15 +442,15 @@ LABEL_19:
   self->_closeButton = v17;
 
   [(MapsThemeButton *)self->_closeButton setTag:0x7FFFFFFFFFFFFFFFLL];
-  v19 = [(RelatedSearchSuggestionViewController *)self view];
-  [v19 addSubview:self->_closeButton];
+  view3 = [(RelatedSearchSuggestionViewController *)self view];
+  [view3 addSubview:self->_closeButton];
 
   v20 = self->_closeButton;
-  v21 = [(RelatedSearchSuggestionViewController *)self suggestionView];
-  [v21 setCloseButton:v20];
+  suggestionView4 = [(RelatedSearchSuggestionViewController *)self suggestionView];
+  [suggestionView4 setCloseButton:v20];
 
-  v22 = [(RelatedSearchSuggestionViewController *)self view];
-  v23 = [v22 _maps_addHairlineAtTopWithMargin:0.0];
+  view4 = [(RelatedSearchSuggestionViewController *)self view];
+  v23 = [view4 _maps_addHairlineAtTopWithMargin:0.0];
 }
 
 - (void)loadView

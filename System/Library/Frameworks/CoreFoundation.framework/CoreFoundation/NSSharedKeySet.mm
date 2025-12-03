@@ -1,17 +1,17 @@
 @interface NSSharedKeySet
-+ (NSSharedKeySet)keySetWithKeys:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NSSharedKeySet)initWithCoder:(id)a3;
-- (NSSharedKeySet)initWithKeys:(id *)a3 count:(unint64_t)a4;
++ (NSSharedKeySet)keySetWithKeys:(id)keys;
+- (BOOL)isEqual:(id)equal;
+- (NSSharedKeySet)initWithCoder:(id)coder;
+- (NSSharedKeySet)initWithKeys:(id *)keys count:(unint64_t)count;
 - (id)allKeys;
 - (id)debugDescription;
-- (id)keyAtIndex:(unint64_t)a3;
+- (id)keyAtIndex:(unint64_t)index;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)indexForKey:(id)a3;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)indexForKey:(id)key;
 - (unint64_t)keySetCount;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSSharedKeySet
@@ -82,19 +82,19 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (NSSharedKeySet)keySetWithKeys:(id)a3
++ (NSSharedKeySet)keySetWithKeys:(id)keys
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!keys)
   {
-    v21 = __CFExceptionProem(a1, a2);
+    v21 = __CFExceptionProem(self, a2);
     v16 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: keys cannot be nil", v21);
     goto LABEL_12;
   }
 
-  if ((_NSIsNSArray(a3) & 1) == 0)
+  if ((_NSIsNSArray(keys) & 1) == 0)
   {
-    v17 = __CFExceptionProem(a1, a2);
+    v17 = __CFExceptionProem(self, a2);
     v22 = objc_opt_class();
     v16 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: keys must be a kind of NSArray instead of '%@'", v17, v22);
 LABEL_12:
@@ -102,7 +102,7 @@ LABEL_12:
     objc_exception_throw(v18);
   }
 
-  v6 = [a3 count];
+  v6 = [keys count];
   v8 = v6;
   if (v6 >> 60)
   {
@@ -131,14 +131,14 @@ LABEL_12:
     v12 = 0;
   }
 
-  [a3 getObjects:v11 range:{0, v8, v23, v24}];
-  v13 = [[a1 alloc] initWithKeys:v11 count:v8];
+  [keys getObjects:v11 range:{0, v8, v23, v24}];
+  v13 = [[self alloc] initWithKeys:v11 count:v8];
   free(v12);
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (NSSharedKeySet)initWithKeys:(id *)a3 count:(unint64_t)a4
+- (NSSharedKeySet)initWithKeys:(id *)keys count:(unint64_t)count
 {
   v146 = *MEMORY[0x1E69E9840];
   v139.receiver = self;
@@ -150,7 +150,7 @@ LABEL_12:
     goto LABEL_135;
   }
 
-  if (!a4)
+  if (!count)
   {
     v6->_numKey = 0;
 LABEL_135:
@@ -158,9 +158,9 @@ LABEL_135:
     return v8;
   }
 
-  if (a4 >> 60)
+  if (count >> 60)
   {
-    v126 = CFStringCreateWithFormat(0, 0, @"*** attempt to create a temporary id buffer which is too large or with a negative count (%lu) -- possibly data is corrupt", a4);
+    v126 = CFStringCreateWithFormat(0, 0, @"*** attempt to create a temporary id buffer which is too large or with a negative count (%lu) -- possibly data is corrupt", count);
     v127 = [NSException exceptionWithName:@"NSGenericException" reason:v126 userInfo:0];
     CFRelease(v126);
     objc_exception_throw(v127);
@@ -170,27 +170,27 @@ LABEL_135:
   v12 = (&v129 - v11);
   v138 = 0;
   v132 = v13;
-  if (a4 > 0x100)
+  if (count > 0x100)
   {
-    v134 = _CFCreateArrayStorage(a4, 0, &v138);
+    v134 = _CFCreateArrayStorage(count, 0, &v138);
     MEMORY[0x1EEE9AC00](v134, v16);
     v14 = &v128;
     v137 = 0;
-    v15 = _CFCreateArrayStorage(a4, 0, &v137);
+    v15 = _CFCreateArrayStorage(count, 0, &v137);
     v12 = v134;
   }
 
   else
   {
     MEMORY[0x1EEE9AC00](v9, v10);
-    v14 = &v129 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0);
+    v14 = &v129 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0);
     v134 = 0;
     v15 = 0;
     v137 = 0;
   }
 
   v133 = v15;
-  if (a4 >= 0x101)
+  if (count >= 0x101)
   {
     v17 = v15;
   }
@@ -200,12 +200,12 @@ LABEL_135:
     v17 = v14;
   }
 
-  v136 = malloc_type_malloc(8 * a4, 0x100004000313F17uLL);
+  v136 = malloc_type_malloc(8 * count, 0x100004000313F17uLL);
   v131 = v17;
-  if (a4 == 1)
+  if (count == 1)
   {
-    v18 = *a3;
-    *v12 = *a3;
+    v18 = *keys;
+    *v12 = *keys;
     v19 = [v18 hash];
     v20 = 0;
     *v136 = v19;
@@ -214,7 +214,7 @@ LABEL_135:
 
   else
   {
-    v22 = [[NSSet alloc] initWithObjects:a3 count:a4];
+    v22 = [[NSSet alloc] initWithObjects:keys count:count];
     v23 = [(NSSet *)v22 count];
     v24 = malloc_type_malloc(16 * v23, 0x1080040FC6463CFuLL);
     v25 = v12;
@@ -472,13 +472,13 @@ LABEL_58:
       while (v61);
     }
 
-    v68 = [(__NSSKGraph *)v59 isAcyclic];
+    isAcyclic = [(__NSSKGraph *)v59 isAcyclic];
     if ([(__NSSKGraph *)v59 isEmpty])
     {
       break;
     }
 
-    free(v68);
+    free(isAcyclic);
 
     if (++v47 == 1000)
     {
@@ -487,7 +487,7 @@ LABEL_58:
     }
   }
 
-  if (!v68)
+  if (!isAcyclic)
   {
 LABEL_86:
 
@@ -501,14 +501,14 @@ LABEL_134:
     goto LABEL_135;
   }
 
-  v69 = [(__NSSKGraph *)v59 numOfEdges];
+  numOfEdges = [(__NSSKGraph *)v59 numOfEdges];
   v70 = v130;
-  v71 = v69;
+  v71 = numOfEdges;
   v72 = malloc_type_calloc(v8->_M, 1uLL, 0x100004077774924uLL);
   memset(v72, 2, v8->_M);
   for (; v71; --v71)
   {
-    v73 = v68[v71 - 1];
+    v73 = isAcyclic[v71 - 1];
     var2 = v73->var2;
     v75 = v73->var1[0];
     if (v75 == var2)
@@ -702,7 +702,7 @@ LABEL_129:
       }
     }
 
-    free(v68);
+    free(isAcyclic);
     goto LABEL_134;
   }
 
@@ -792,9 +792,9 @@ LABEL_128:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v10 = __CFExceptionProem(self, a2);
     v11 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: this object can only be encoded by a keyed coder", v10);
@@ -802,14 +802,14 @@ LABEL_128:
     objc_exception_throw(v12);
   }
 
-  [a3 encodeInt64:self->_numKey forKey:@"NS.numKey"];
+  [coder encodeInt64:self->_numKey forKey:@"NS.numKey"];
   if (self->_numKey)
   {
-    [a3 encodeInt32:self->_select forKey:@"NS.select"];
-    [a3 encodeInt64:self->_factor forKey:@"NS.factor"];
-    [a3 encodeInt64:*self->_seeds forKey:@"NS.seed0"];
-    [a3 encodeInt64:self->_seeds[1] forKey:@"NS.seed1"];
-    [a3 encodeInt64:self->_M forKey:@"NS.M"];
+    [coder encodeInt32:self->_select forKey:@"NS.select"];
+    [coder encodeInt64:self->_factor forKey:@"NS.factor"];
+    [coder encodeInt64:*self->_seeds forKey:@"NS.seed0"];
+    [coder encodeInt64:self->_seeds[1] forKey:@"NS.seed1"];
+    [coder encodeInt64:self->_M forKey:@"NS.M"];
     select = self->_select;
     if (select == 2)
     {
@@ -828,12 +828,12 @@ LABEL_128:
       if (self->_select)
       {
 LABEL_11:
-        [a3 encodeBytes:self->_g length:(self->_M >> 3) + 1 forKey:@"NS.g"];
-        [a3 encodeObject:self->_subSharedKeySet forKey:@"NS.subskset"];
-        [a3 encodeObject:+[NSArray arrayWithObjects:count:](NSArray forKey:{"arrayWithObjects:count:", self->_keys, self->_numKey), @"NS.keys"}];
+        [coder encodeBytes:self->_g length:(self->_M >> 3) + 1 forKey:@"NS.g"];
+        [coder encodeObject:self->_subSharedKeySet forKey:@"NS.subskset"];
+        [coder encodeObject:+[NSArray arrayWithObjects:count:](NSArray forKey:{"arrayWithObjects:count:", self->_keys, self->_numKey), @"NS.keys"}];
         v9 = self->_algorithmType & 1;
 
-        [a3 encodeInteger:v9 forKey:@"NS.algorithmType"];
+        [coder encodeInteger:v9 forKey:@"NS.algorithmType"];
         return;
       }
 
@@ -841,15 +841,15 @@ LABEL_11:
       M = self->_M;
     }
 
-    [a3 encodeBytes:rankTable length:M forKey:@"NS.rankTable"];
+    [coder encodeBytes:rankTable length:M forKey:@"NS.rankTable"];
     goto LABEL_11;
   }
 }
 
-- (NSSharedKeySet)initWithCoder:(id)a3
+- (NSSharedKeySet)initWithCoder:(id)coder
 {
   v57 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v50 = __CFExceptionProem(self, a2);
     v9 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: this object can only be decoded by a keyed coder", v50);
@@ -860,15 +860,15 @@ LABEL_11:
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v7 = a3;
+    coderCopy = coder;
   }
 
   else
   {
-    v7 = 0;
+    coderCopy = 0;
   }
 
-  v8 = [a3 decodeInt64ForKey:@"NS.numKey"];
+  v8 = [coder decodeInt64ForKey:@"NS.numKey"];
   if (v8 >= 0x7FFFFFFF)
   {
     v49 = __CFExceptionProem(self, a2);
@@ -876,7 +876,7 @@ LABEL_11:
 LABEL_8:
     v10 = _CFAutoreleasePoolAddObject(0, v9);
 
-    [a3 failWithError:__archiveIsCorrupt_0(v10)];
+    [coder failWithError:__archiveIsCorrupt_0(v10)];
 LABEL_9:
     self = 0;
     goto LABEL_10;
@@ -899,7 +899,7 @@ LABEL_9:
     }
 
     v15 = v14;
-    [a3 replaceObject:self withObject:v14];
+    [coder replaceObject:self withObject:v14];
   }
 
   else
@@ -907,7 +907,7 @@ LABEL_9:
     v15 = 0;
   }
 
-  v16 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.subskset"];
+  v16 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.subskset"];
   if (v16)
   {
     v17 = objc_opt_class();
@@ -918,7 +918,7 @@ LABEL_9:
       v20 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: unexpected shared key set class: %@", v18, v19);
       v21 = _CFAutoreleasePoolAddObject(0, v20);
 
-      [a3 failWithError:__archiveIsCorrupt_0(v21)];
+      [coder failWithError:__archiveIsCorrupt_0(v21)];
       goto LABEL_21;
     }
 
@@ -938,7 +938,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (![a3 error])
+  if (![coder error])
   {
     self->_subSharedKeySet = 0;
     goto LABEL_28;
@@ -948,13 +948,13 @@ LABEL_28:
   v23 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: unable to unarchive - invalid class", v22);
   v24 = _CFAutoreleasePoolAddObject(0, v23);
 
-  [a3 failWithError:__archiveIsCorrupt_0(v24)];
+  [coder failWithError:__archiveIsCorrupt_0(v24)];
 LABEL_21:
   v25 = 0;
   if (v15)
   {
 LABEL_29:
-    [v7 replaceObject:v15 withObject:self];
+    [coderCopy replaceObject:v15 withObject:self];
   }
 
 LABEL_30:
@@ -975,18 +975,18 @@ LABEL_30:
     dispatch_once(&initWithCoder__onceToken_0, &block);
   }
 
-  v28 = [a3 allowedClasses];
-  v29 = [objc_msgSend(v28 setByAddingObjectsFromSet:{initWithCoder__oPlistClasses_0), "mutableCopy"}];
+  allowedClasses = [coder allowedClasses];
+  v29 = [objc_msgSend(allowedClasses setByAddingObjectsFromSet:{initWithCoder__oPlistClasses_0), "mutableCopy"}];
   [v29 removeObject:objc_opt_class()];
-  v30 = [a3 decodeObjectOfClasses:v29 forKey:@"NS.keys"];
+  v30 = [coder decodeObjectOfClasses:v29 forKey:@"NS.keys"];
 
-  if (!v30 && [a3 error])
+  if (!v30 && [coder error])
   {
     v39 = __CFExceptionProem(self, a2);
     v40 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@: unable to unarchive - invalid class", v39);
     v41 = _CFAutoreleasePoolAddObject(0, v40);
 
-    [a3 failWithError:__archiveIsCorrupt_0(v41)];
+    [coder failWithError:__archiveIsCorrupt_0(v41)];
     goto LABEL_9;
   }
 
@@ -997,7 +997,7 @@ LABEL_30:
     v32 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"unexpected mutable keys (%@)", v31);
     v33 = _CFAutoreleasePoolAddObject(0, v32);
 
-    [a3 failWithError:__archiveIsCorrupt_0(v33)];
+    [coder failWithError:__archiveIsCorrupt_0(v33)];
     goto LABEL_9;
   }
 
@@ -1007,7 +1007,7 @@ LABEL_30:
     v43 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"unexpected keys (%@)", v42);
     v44 = _CFAutoreleasePoolAddObject(0, v43);
 
-    [a3 failWithError:__archiveIsCorrupt_0(v44)];
+    [coder failWithError:__archiveIsCorrupt_0(v44)];
     goto LABEL_9;
   }
 
@@ -1018,7 +1018,7 @@ LABEL_30:
     v46 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"key count mismatch %lu vs %u", v45, v13, block, v53, v54, v55, v56);
     v47 = _CFAutoreleasePoolAddObject(0, v46);
 
-    [a3 failWithError:__archiveIsCorrupt_0(v47)];
+    [coder failWithError:__archiveIsCorrupt_0(v47)];
     goto LABEL_9;
   }
 
@@ -1039,7 +1039,7 @@ LABEL_30:
     v37 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"unexpected recursive keys (%@)", v36);
     v38 = _CFAutoreleasePoolAddObject(0, v37);
 
-    [a3 failWithError:__archiveIsCorrupt_0(v38)];
+    [coder failWithError:__archiveIsCorrupt_0(v38)];
     goto LABEL_9;
   }
 
@@ -1069,7 +1069,7 @@ NSSet *__32__NSSharedKeySet_initWithCoder___block_invoke(uint64_t a1)
   v22[1] = *MEMORY[0x1E69E9840];
   if (self->_numKey)
   {
-    v2 = self;
+    selfCopy = self;
     v3 = [(NSSharedKeySet *)self count];
     if (v3 >> 60)
     {
@@ -1101,12 +1101,12 @@ NSSet *__32__NSSharedKeySet_initWithCoder___block_invoke(uint64_t a1)
     LODWORD(v12) = 0;
     do
     {
-      memmove(&v7[8 * v12], v2->_keys, 8 * v2->_numKey);
-      v12 = (v2->_numKey + v12);
-      v2 = v2->_subSharedKeySet;
+      memmove(&v7[8 * v12], selfCopy->_keys, 8 * selfCopy->_numKey);
+      v12 = (selfCopy->_numKey + v12);
+      selfCopy = selfCopy->_subSharedKeySet;
     }
 
-    while (v2);
+    while (selfCopy);
     if (v9)
     {
       if (v12)
@@ -1146,27 +1146,27 @@ NSSet *__32__NSSharedKeySet_initWithCoder___block_invoke(uint64_t a1)
   return result;
 }
 
-- (unint64_t)indexForKey:(id)a3
+- (unint64_t)indexForKey:(id)key
 {
   v33 = *MEMORY[0x1E69E9840];
   if (self->_numKey)
   {
-    v4 = self;
-    v5 = [a3 hash];
+    selfCopy = self;
+    v5 = [key hash];
     v6 = v5;
     v7 = 0;
     v8 = HIDWORD(v5);
     do
     {
-      numKey = v4->_numKey;
+      numKey = selfCopy->_numKey;
       if (!numKey)
       {
         goto LABEL_24;
       }
 
-      seeds = v4->_seeds;
-      factor = v4->_factor;
-      if (v4->_algorithmType == 1)
+      seeds = selfCopy->_seeds;
+      factor = selfCopy->_factor;
+      if (selfCopy->_algorithmType == 1)
       {
         v15 = *seeds - 559038729;
         v14 = v15 + seeds[1];
@@ -1175,7 +1175,7 @@ NSSet *__32__NSSharedKeySet_initWithCoder___block_invoke(uint64_t a1)
 
       else
       {
-        if (v4->_algorithmType)
+        if (selfCopy->_algorithmType)
         {
           __break(1u);
         }
@@ -1208,60 +1208,60 @@ NSSet *__32__NSSharedKeySet_initWithCoder___block_invoke(uint64_t a1)
       v22 = HIDWORD(v16) % factor;
       v23 = (2 * (HIDWORD(v16) % factor)) | 1;
       v32 = __PAIR64__(v23, v21);
-      M = v4->_M;
+      M = selfCopy->_M;
       if (v21 >= M || v23 >= M)
       {
         goto LABEL_24;
       }
 
-      v26 = *(&v32 + (((v4->_g[(2 * v22) >> 3] >> (v23 & 7)) ^ (v4->_g[v21 >> 3] >> (v21 & 6))) & 1));
+      v26 = *(&v32 + (((selfCopy->_g[(2 * v22) >> 3] >> (v23 & 7)) ^ (selfCopy->_g[v21 >> 3] >> (v21 & 6))) & 1));
       if (v26 >= M)
       {
         goto LABEL_24;
       }
 
-      select = v4->_select;
+      select = selfCopy->_select;
       if (select == 2)
       {
-        v28 = *(v4->_rankTable + v26);
+        v28 = *(selfCopy->_rankTable + v26);
       }
 
       else if (select == 1)
       {
-        v28 = *(v4->_rankTable + v26);
+        v28 = *(selfCopy->_rankTable + v26);
       }
 
       else
       {
-        if (v4->_select)
+        if (selfCopy->_select)
         {
           goto LABEL_24;
         }
 
-        v28 = *(v4->_rankTable + v26);
+        v28 = *(selfCopy->_rankTable + v26);
       }
 
       if (v28 < numKey)
       {
-        v29 = v4->_keys[v28];
+        v29 = selfCopy->_keys[v28];
         if (v29)
         {
-          if (v29 == a3 || ([a3 isEqual:{v32, v33}] & 1) != 0)
+          if (v29 == key || ([key isEqual:{v32, v33}] & 1) != 0)
           {
             result = v28 + v7;
             goto LABEL_26;
           }
 
-          LODWORD(numKey) = v4->_numKey;
+          LODWORD(numKey) = selfCopy->_numKey;
         }
       }
 
 LABEL_24:
       v7 += numKey;
-      v4 = v4->_subSharedKeySet;
+      selfCopy = selfCopy->_subSharedKeySet;
     }
 
-    while (v4);
+    while (selfCopy);
   }
 
   result = 0x7FFFFFFFFFFFFFFFLL;
@@ -1270,9 +1270,9 @@ LABEL_26:
   return result;
 }
 
-- (id)keyAtIndex:(unint64_t)a3
+- (id)keyAtIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL || *(self + 10) == 0 || self == 0)
+  if (index == 0x7FFFFFFFFFFFFFFFLL || *(self + 10) == 0 || self == 0)
   {
     return 0;
   }
@@ -1280,35 +1280,35 @@ LABEL_26:
   while (1)
   {
     v5 = *(self + 10);
-    v6 = a3 >= v5;
-    v7 = a3 - v5;
+    v6 = index >= v5;
+    v7 = index - v5;
     if (!v6)
     {
       break;
     }
 
     self = *(self + 8);
-    a3 = v7;
+    index = v7;
     if (!self)
     {
       return self;
     }
   }
 
-  return *(*(self + 7) + 8 * a3);
+  return *(*(self + 7) + 8 * index);
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v9 = [(NSSharedKeySet *)self count];
-  var0 = a3->var0;
-  if (a3->var0 == v9)
+  var0 = state->var0;
+  if (state->var0 == v9)
   {
     return 0;
   }
 
   v11 = 0;
-  if (a5)
+  if (count)
   {
     v12 = v9;
     if (var0 < v9)
@@ -1316,50 +1316,50 @@ LABEL_26:
       v11 = 0;
       do
       {
-        a4[v11++] = [(NSSharedKeySet *)self keyAtIndex:var0++];
+        objects[v11++] = [(NSSharedKeySet *)self keyAtIndex:var0++];
       }
 
-      while (v11 < a5 && var0 < v12);
+      while (v11 < count && var0 < v12);
     }
   }
 
-  a3->var0 = var0;
-  a3->var1 = a4;
-  a3->var2 = &countByEnumeratingWithState_objects_count__const_mu_8;
+  state->var0 = var0;
+  state->var1 = objects;
+  state->var2 = &countByEnumeratingWithState_objects_count__const_mu_8;
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (self == a3)
+  if (self == equal)
   {
     result = 1;
   }
 
   else
   {
-    if (a3)
+    if (equal)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v5 = [(NSSharedKeySet *)self count];
-        if (v5 == [a3 count])
+        if (v5 == [equal count])
         {
-          v6 = [(NSSharedKeySet *)self keySetCount];
-          if (v6 == [a3 keySetCount])
+          keySetCount = [(NSSharedKeySet *)self keySetCount];
+          if (keySetCount == [equal keySetCount])
           {
-            v7 = [(NSSharedKeySet *)self allKeys];
-            v8 = [a3 allKeys];
-            v9 = [v7 count];
-            if (v9 == [v8 count])
+            allKeys = [(NSSharedKeySet *)self allKeys];
+            allKeys2 = [equal allKeys];
+            v9 = [allKeys count];
+            if (v9 == [allKeys2 count])
             {
               v34 = 0u;
               v35 = 0u;
               v32 = 0u;
               v33 = 0u;
-              v10 = [v7 countByEnumeratingWithState:&v32 objects:v31 count:16];
+              v10 = [allKeys countByEnumeratingWithState:&v32 objects:v31 count:16];
               if (v10)
               {
                 v11 = v10;
@@ -1372,17 +1372,17 @@ LABEL_9:
                 {
                   if (*v33 != v13)
                   {
-                    objc_enumerationMutation(v7);
+                    objc_enumerationMutation(allKeys);
                   }
 
-                  if ([a3 indexForKey:*(*(&v32 + 1) + 8 * v14)] == 0x7FFFFFFFFFFFFFFFLL)
+                  if ([equal indexForKey:*(*(&v32 + 1) + 8 * v14)] == 0x7FFFFFFFFFFFFFFFLL)
                   {
                     break;
                   }
 
                   if (v11 == ++v14)
                   {
-                    v11 = [v7 countByEnumeratingWithState:&v32 objects:v31 count:16];
+                    v11 = [allKeys countByEnumeratingWithState:&v32 objects:v31 count:16];
                     if (v11)
                     {
                       goto LABEL_9;
@@ -1403,7 +1403,7 @@ LABEL_18:
                   v30 = 0u;
                   v27 = 0u;
                   v28 = 0u;
-                  v16 = [v8 countByEnumeratingWithState:&v27 objects:v26 count:16];
+                  v16 = [allKeys2 countByEnumeratingWithState:&v27 objects:v26 count:16];
                   if (v16)
                   {
                     v17 = v16;
@@ -1416,7 +1416,7 @@ LABEL_21:
                     {
                       if (*v28 != v19)
                       {
-                        objc_enumerationMutation(v8);
+                        objc_enumerationMutation(allKeys2);
                       }
 
                       if ([(NSSharedKeySet *)self indexForKey:*(*(&v27 + 1) + 8 * v20)]== 0x7FFFFFFFFFFFFFFFLL)
@@ -1426,7 +1426,7 @@ LABEL_21:
 
                       if (v17 == ++v20)
                       {
-                        v17 = [v8 countByEnumeratingWithState:&v27 objects:v26 count:16];
+                        v17 = [allKeys2 countByEnumeratingWithState:&v27 objects:v26 count:16];
                         if (v17)
                         {
                           goto LABEL_21;
@@ -1443,22 +1443,22 @@ LABEL_21:
 LABEL_29:
                     if (v18 == v5)
                     {
-                      v21 = [(NSSharedKeySet *)self maximumIndex];
-                      if (v21 == [a3 maximumIndex])
+                      maximumIndex = [(NSSharedKeySet *)self maximumIndex];
+                      if (maximumIndex == [equal maximumIndex])
                       {
                         v22 = 0;
                         while (1)
                         {
-                          v23 = [a3 keyAtIndex:v22];
+                          v23 = [equal keyAtIndex:v22];
                           if (([v23 isEqual:{-[NSSharedKeySet keyAtIndex:](self, "keyAtIndex:", -[NSSharedKeySet indexForKey:](self, "indexForKey:", v23))}] & 1) == 0)
                           {
                             break;
                           }
 
-                          if (++v22 > v21)
+                          if (++v22 > maximumIndex)
                           {
-                            v24 = [(NSSharedKeySet *)self isEmpty];
-                            result = v24 ^ [a3 isEmpty] ^ 1;
+                            isEmpty = [(NSSharedKeySet *)self isEmpty];
+                            result = isEmpty ^ [equal isEmpty] ^ 1;
                             goto LABEL_36;
                           }
                         }
@@ -1494,28 +1494,28 @@ LABEL_36:
 - (id)debugDescription
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(objc_class *)objc_lookUpClass("NSMutableString") string];
-  [v3 appendFormat:@"<%@: %p>\n", objc_opt_class(), self];
-  [v3 appendFormat:@"  numKey = %u\n", self->_numKey];
-  [v3 appendFormat:@"  M = %u (should always be even)\n", self->_M];
-  [v3 appendFormat:@"  factor = %u (should always be prime)\n", self->_factor];
-  [v3 appendFormat:@"  keys = [\n"];
+  string = [(objc_class *)objc_lookUpClass("NSMutableString") string];
+  [string appendFormat:@"<%@: %p>\n", objc_opt_class(), self];
+  [string appendFormat:@"  numKey = %u\n", self->_numKey];
+  [string appendFormat:@"  M = %u (should always be even)\n", self->_M];
+  [string appendFormat:@"  factor = %u (should always be prime)\n", self->_factor];
+  [string appendFormat:@"  keys = [\n"];
   if (self->_numKey)
   {
     v4 = 0;
     do
     {
       v5 = self->_keys[v4];
-      [v3 appendFormat:@"    <%@: %p>, 0x%lx\n", objc_opt_class(), v5, objc_msgSend(v5, "hash")];
+      [string appendFormat:@"    <%@: %p>, 0x%lx\n", objc_opt_class(), v5, objc_msgSend(v5, "hash")];
       ++v4;
     }
 
     while (v4 < self->_numKey);
   }
 
-  [v3 appendFormat:@"  ]\n"];
-  [v3 appendFormat:@"  seeds[0] = 0x%xu\n", *self->_seeds];
-  [v3 appendFormat:@"  seeds[1] = 0x%xu\n", self->_seeds[1]];
+  [string appendFormat:@"  ]\n"];
+  [string appendFormat:@"  seeds[0] = 0x%xu\n", *self->_seeds];
+  [string appendFormat:@"  seeds[1] = 0x%xu\n", self->_seeds[1]];
   select = self->_select;
   if (self->_select)
   {
@@ -1539,7 +1539,7 @@ LABEL_36:
     v7 = @"unsigned char";
   }
 
-  [v3 appendFormat:@"  ranktable = %p (select = %u (%@)) [\n", self->_rankTable, self->_select, v7];
+  [string appendFormat:@"  ranktable = %p (select = %u (%@)) [\n", self->_rankTable, self->_select, v7];
   v8 = self->_select;
   if (self->_select)
   {
@@ -1550,7 +1550,7 @@ LABEL_36:
         v10 = 0;
         do
         {
-          [v3 appendFormat:@"    %d - %u\n", v10, *(self->_rankTable + v10)];
+          [string appendFormat:@"    %d - %u\n", v10, *(self->_rankTable + v10)];
           ++v10;
         }
 
@@ -1563,7 +1563,7 @@ LABEL_36:
       v9 = 0;
       do
       {
-        [v3 appendFormat:@"    %d - %u\n", v9, *(self->_rankTable + v9)];
+        [string appendFormat:@"    %d - %u\n", v9, *(self->_rankTable + v9)];
         ++v9;
       }
 
@@ -1576,14 +1576,14 @@ LABEL_36:
     v11 = 0;
     do
     {
-      [v3 appendFormat:@"    %d - %u\n", v11, *(self->_rankTable + v11)];
+      [string appendFormat:@"    %d - %u\n", v11, *(self->_rankTable + v11)];
       ++v11;
     }
 
     while (v11 < self->_M);
   }
 
-  [v3 appendFormat:@"  ]\n"];
+  [string appendFormat:@"  ]\n"];
   if (self->_algorithmType)
   {
     v12 = @"use_full_hash_64";
@@ -1594,9 +1594,9 @@ LABEL_36:
     v12 = @"clamp_hash_to_32";
   }
 
-  [v3 appendFormat:@"  algorithmType: %@\n", v12];
-  [v3 appendFormat:@"  g = %p\n", self->_g];
-  [v3 appendFormat:@"    packed bits (binary):\n      "];
+  [string appendFormat:@"  algorithmType: %@\n", v12];
+  [string appendFormat:@"  g = %p\n", self->_g];
+  [string appendFormat:@"    packed bits (binary):\n      "];
   v13 = 0;
   do
   {
@@ -1606,25 +1606,25 @@ LABEL_36:
     v16.i64[0] = 0x30003000300030;
     v16.i64[1] = 0x30003000300030;
     v23 = vbslq_s8(vuzp1q_s16(vceqzq_s32(vandq_s8(v14, xmmword_183447FE0)), vceqzq_s32(vandq_s8(v14, xmmword_183447FF0))), v16, v15);
-    [v3 appendFormat:@"%@ ", -[objc_class stringWithCharacters:length:](objc_lookUpClass("NSString"), "stringWithCharacters:length:", &v23, 8)];
+    [string appendFormat:@"%@ ", -[objc_class stringWithCharacters:length:](objc_lookUpClass("NSString"), "stringWithCharacters:length:", &v23, 8)];
   }
 
   while (v13++ < self->_M >> 3);
-  [v3 appendFormat:@"\n"];
+  [string appendFormat:@"\n"];
   if (self->_subSharedKeySet)
   {
     v18 = objc_lookUpClass("NSMutableString");
     subSharedKeySet = self->_subSharedKeySet;
-    [v3 appendFormat:@"  subSharedKeySet = %@\n", -[objc_class stringWithFormat:](v18, "stringWithFormat:", @"<%@: %p>", objc_opt_class(), subSharedKeySet)];
+    [string appendFormat:@"  subSharedKeySet = %@\n", -[objc_class stringWithFormat:](v18, "stringWithFormat:", @"<%@: %p>", objc_opt_class(), subSharedKeySet)];
   }
 
   else
   {
-    [v3 appendFormat:@"  subSharedKeySet = nil\n", v22];
+    [string appendFormat:@"  subSharedKeySet = nil\n", v22];
   }
 
   v20 = *MEMORY[0x1E69E9840];
-  return v3;
+  return string;
 }
 
 @end

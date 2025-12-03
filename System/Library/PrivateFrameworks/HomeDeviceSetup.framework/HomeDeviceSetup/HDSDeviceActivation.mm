@@ -2,11 +2,11 @@
 + (OS_os_log)signpostLog;
 - (id)_setupUserAgent;
 - (unint64_t)signpostID;
-- (void)_mae_activateWithData:(id)a3 headers:(id)a4 completion:(id)a5;
-- (void)_mae_createActivationWithData:(id)a3 completion:(id)a4;
-- (void)_mae_createSessionWithCompletion:(id)a3;
-- (void)_mae_getActivationStateWithCompletion:(id)a3;
-- (void)performActivationStep:(id)a3 completion:(id)a4;
+- (void)_mae_activateWithData:(id)data headers:(id)headers completion:(id)completion;
+- (void)_mae_createActivationWithData:(id)data completion:(id)completion;
+- (void)_mae_createSessionWithCompletion:(id)completion;
+- (void)_mae_getActivationStateWithCompletion:(id)completion;
+- (void)performActivationStep:(id)step completion:(id)completion;
 @end
 
 @implementation HDSDeviceActivation
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __34__HDSDeviceActivation_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_169 != -1)
   {
     dispatch_once(&signpostLog_onceToken_169, block);
@@ -39,44 +39,44 @@ void __34__HDSDeviceActivation_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
 
-- (void)_mae_getActivationStateWithCompletion:(id)a3
+- (void)_mae_getActivationStateWithCompletion:(id)completion
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_HDSDeviceActivation <= 30 && (gLogCategory_HDSDeviceActivation != -1 || _LogCategory_Initialize()))
   {
     [HDSDeviceActivation _mae_getActivationStateWithCompletion:];
   }
 
-  v5 = [objc_opt_class() signpostLog];
-  v6 = [(HDSDeviceActivation *)self signpostID];
-  if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostLog = [objc_opt_class() signpostLog];
+  signpostID = [(HDSDeviceActivation *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
-    if (os_signpost_enabled(v5))
+    v7 = signpostID;
+    if (os_signpost_enabled(signpostLog))
     {
       *v16 = 0;
-      _os_signpost_emit_with_name_impl(&dword_252F78000, v5, OS_SIGNPOST_INTERVAL_BEGIN, v7, "DeviceActivationStepCheckState", "", v16, 2u);
+      _os_signpost_emit_with_name_impl(&dword_252F78000, signpostLog, OS_SIGNPOST_INTERVAL_BEGIN, v7, "DeviceActivationStepCheckState", "", v16, 2u);
     }
   }
 
   v8 = MAEGetActivationStateWithError();
   v9 = [v8 isEqualToString:*MEMORY[0x277D288C0]];
-  v10 = [objc_opt_class() signpostLog];
-  v11 = [(HDSDeviceActivation *)self signpostID];
-  if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostLog2 = [objc_opt_class() signpostLog];
+  signpostID2 = [(HDSDeviceActivation *)self signpostID];
+  if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v12 = v11;
-    if (os_signpost_enabled(v10))
+    v12 = signpostID2;
+    if (os_signpost_enabled(signpostLog2))
     {
       *v16 = 0;
-      _os_signpost_emit_with_name_impl(&dword_252F78000, v10, OS_SIGNPOST_INTERVAL_END, v12, "DeviceActivationStepCheckState", "", v16, 2u);
+      _os_signpost_emit_with_name_impl(&dword_252F78000, signpostLog2, OS_SIGNPOST_INTERVAL_END, v12, "DeviceActivationStepCheckState", "", v16, 2u);
     }
   }
 
@@ -84,74 +84,74 @@ void __34__HDSDeviceActivation_signpostLog__block_invoke(uint64_t a1)
   v13 = [MEMORY[0x277CCABB0] numberWithBool:v9 ^ 1u];
   v18[0] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-  v4[2](v4, 0, v14);
+  completionCopy[2](completionCopy, 0, v14);
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performActivationStep:(id)a3 completion:(id)a4
+- (void)performActivationStep:(id)step completion:(id)completion
 {
-  v13 = a3;
-  v7 = a4;
+  stepCopy = step;
+  completionCopy = completion;
   if (gLogCategory_HDSDeviceActivation <= 30 && (gLogCategory_HDSDeviceActivation != -1 || _LogCategory_Initialize()))
   {
     [HDSDeviceActivation performActivationStep:completion:];
   }
 
-  v8 = [v13 objectForKeyedSubscript:@"s"];
+  v8 = [stepCopy objectForKeyedSubscript:@"s"];
   if (!v8)
   {
     [HDSDeviceActivation performActivationStep:a2 completion:self];
   }
 
-  v9 = [v8 integerValue];
-  if (v9 > 1)
+  integerValue = [v8 integerValue];
+  if (integerValue > 1)
   {
-    if (v9 == 2)
+    if (integerValue == 2)
     {
-      v10 = [v13 objectForKeyedSubscript:@"d"];
-      [(HDSDeviceActivation *)self _mae_createActivationWithData:v10 completion:v7];
+      v10 = [stepCopy objectForKeyedSubscript:@"d"];
+      [(HDSDeviceActivation *)self _mae_createActivationWithData:v10 completion:completionCopy];
     }
 
     else
     {
-      if (v9 != 3)
+      if (integerValue != 3)
       {
 LABEL_13:
-        v12 = [MEMORY[0x277CCA890] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"HDSDeviceActivation.m" lineNumber:341 description:@"invalid activation step"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"HDSDeviceActivation.m" lineNumber:341 description:@"invalid activation step"];
 
         goto LABEL_17;
       }
 
-      v10 = [v13 objectForKeyedSubscript:@"d"];
-      v11 = [v13 objectForKeyedSubscript:@"h"];
-      [(HDSDeviceActivation *)self _mae_activateWithData:v10 headers:v11 completion:v7];
+      v10 = [stepCopy objectForKeyedSubscript:@"d"];
+      v11 = [stepCopy objectForKeyedSubscript:@"h"];
+      [(HDSDeviceActivation *)self _mae_activateWithData:v10 headers:v11 completion:completionCopy];
     }
   }
 
   else
   {
-    if (v9)
+    if (integerValue)
     {
-      if (v9 == 1)
+      if (integerValue == 1)
       {
-        [(HDSDeviceActivation *)self _mae_createSessionWithCompletion:v7];
+        [(HDSDeviceActivation *)self _mae_createSessionWithCompletion:completionCopy];
         goto LABEL_17;
       }
 
       goto LABEL_13;
     }
 
-    [(HDSDeviceActivation *)self _mae_getActivationStateWithCompletion:v7];
+    [(HDSDeviceActivation *)self _mae_getActivationStateWithCompletion:completionCopy];
   }
 
 LABEL_17:
 }
 
-- (void)_mae_createSessionWithCompletion:(id)a3
+- (void)_mae_createSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_HDSDeviceActivation <= 30 && (gLogCategory_HDSDeviceActivation != -1 || _LogCategory_Initialize()))
   {
     [HDSDeviceActivation _mae_createSessionWithCompletion:];
@@ -163,8 +163,8 @@ LABEL_17:
   v7[2] = __56__HDSDeviceActivation__mae_createSessionWithCompletion___block_invoke;
   v7[3] = &unk_279714210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
@@ -242,10 +242,10 @@ void __56__HDSDeviceActivation__mae_createSessionWithCompletion___block_invoke(u
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_mae_createActivationWithData:(id)a3 completion:(id)a4
+- (void)_mae_createActivationWithData:(id)data completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if (gLogCategory_HDSDeviceActivation <= 30 && (gLogCategory_HDSDeviceActivation != -1 || _LogCategory_Initialize()))
   {
     [HDSDeviceActivation _mae_createActivationWithData:completion:];
@@ -257,11 +257,11 @@ void __56__HDSDeviceActivation__mae_createSessionWithCompletion___block_invoke(u
   v12[2] = __64__HDSDeviceActivation__mae_createActivationWithData_completion___block_invoke;
   v12[3] = &unk_279714D88;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = dataCopy;
+  v14 = completionCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
+  v10 = completionCopy;
+  v11 = dataCopy;
   dispatch_async(v9, v12);
 }
 
@@ -402,11 +402,11 @@ void __64__HDSDeviceActivation__mae_createActivationWithData_completion___block_
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_mae_activateWithData:(id)a3 headers:(id)a4 completion:(id)a5
+- (void)_mae_activateWithData:(id)data headers:(id)headers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  headersCopy = headers;
+  completionCopy = completion;
   if (gLogCategory_HDSDeviceActivation <= 30 && (gLogCategory_HDSDeviceActivation != -1 || _LogCategory_Initialize()))
   {
     [HDSDeviceActivation _mae_activateWithData:headers:completion:];
@@ -417,13 +417,13 @@ void __64__HDSDeviceActivation__mae_createActivationWithData_completion___block_
   v15[1] = 3221225472;
   v15[2] = __64__HDSDeviceActivation__mae_activateWithData_headers_completion___block_invoke;
   v15[3] = &unk_279714DB0;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = headersCopy;
+  selfCopy = self;
+  v18 = dataCopy;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = dataCopy;
+  v14 = headersCopy;
   dispatch_async(v11, v15);
 }
 

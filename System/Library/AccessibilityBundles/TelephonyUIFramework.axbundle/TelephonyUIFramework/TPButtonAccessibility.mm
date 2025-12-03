@@ -6,25 +6,25 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(TPButtonAccessibility *)self accessibilityUserDefinedLabel];
-  v4 = v3;
-  if (v3)
+  accessibilityUserDefinedLabel = [(TPButtonAccessibility *)self accessibilityUserDefinedLabel];
+  v4 = accessibilityUserDefinedLabel;
+  if (accessibilityUserDefinedLabel)
   {
-    v5 = v3;
+    v5 = accessibilityUserDefinedLabel;
     goto LABEL_13;
   }
 
-  v6 = [(TPButtonAccessibility *)self accessibilityIdentification];
-  v7 = v6;
-  if (v6)
+  accessibilityIdentification = [(TPButtonAccessibility *)self accessibilityIdentification];
+  v7 = accessibilityIdentification;
+  if (accessibilityIdentification)
   {
-    if ([v6 isEqualToString:@"emergencyCallButton"])
+    if ([accessibilityIdentification isEqualToString:@"emergencyCallButton"])
     {
       v8 = @"emergencyCallButton.title";
 LABEL_8:
-      v9 = accessibilityLocalizedString(v8);
+      accessibilityLabel = accessibilityLocalizedString(v8);
 LABEL_11:
-      v5 = v9;
+      v5 = accessibilityLabel;
       goto LABEL_12;
     }
 
@@ -40,7 +40,7 @@ LABEL_11:
   {
     v11.receiver = self;
     v11.super_class = TPButtonAccessibility;
-    v9 = [(TPButtonAccessibility *)&v11 accessibilityLabel];
+    accessibilityLabel = [(TPButtonAccessibility *)&v11 accessibilityLabel];
     goto LABEL_11;
   }
 

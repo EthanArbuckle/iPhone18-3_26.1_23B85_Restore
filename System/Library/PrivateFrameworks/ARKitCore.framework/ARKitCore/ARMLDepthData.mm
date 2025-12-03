@@ -1,20 +1,20 @@
 @interface ARMLDepthData
-- (ARMLDepthData)initWithTimestamp:(double)a3 depthBuffer:(__CVBuffer *)a4 confidenceBuffer:(__CVBuffer *)a5 source:(int64_t)a6;
-- (ARMLDepthData)initWithTimestamp:(double)a3 depthBuffer:(__CVBuffer *)a4 source:(int64_t)a5;
+- (ARMLDepthData)initWithTimestamp:(double)timestamp depthBuffer:(__CVBuffer *)buffer confidenceBuffer:(__CVBuffer *)confidenceBuffer source:(int64_t)source;
+- (ARMLDepthData)initWithTimestamp:(double)timestamp depthBuffer:(__CVBuffer *)buffer source:(int64_t)source;
 - (CGSize)depthBufferSize;
 - (NSString)description;
 - (__CVBuffer)singleFrameConfidenceBuffer;
 - (__CVBuffer)singleFrameDepthBuffer;
 - (void)dealloc;
-- (void)setConfidenceMap:(__CVBuffer *)a3;
-- (void)setNormalsBuffer:(__CVBuffer *)a3;
-- (void)setSingleFrameConfidenceBuffer:(__CVBuffer *)a3;
-- (void)setSingleFrameDepthBuffer:(__CVBuffer *)a3;
+- (void)setConfidenceMap:(__CVBuffer *)map;
+- (void)setNormalsBuffer:(__CVBuffer *)buffer;
+- (void)setSingleFrameConfidenceBuffer:(__CVBuffer *)buffer;
+- (void)setSingleFrameDepthBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation ARMLDepthData
 
-- (ARMLDepthData)initWithTimestamp:(double)a3 depthBuffer:(__CVBuffer *)a4 source:(int64_t)a5
+- (ARMLDepthData)initWithTimestamp:(double)timestamp depthBuffer:(__CVBuffer *)buffer source:(int64_t)source
 {
   v12.receiver = self;
   v12.super_class = ARMLDepthData;
@@ -22,23 +22,23 @@
   v9 = v8;
   if (v8)
   {
-    v8->_timestamp = a3;
-    v10 = CVPixelBufferRetain(a4);
+    v8->_timestamp = timestamp;
+    v10 = CVPixelBufferRetain(buffer);
     v9->_singleFrameDepthBuffer = 0;
     v9->_singleFrameDepthBufferLock._os_unfair_lock_opaque = 0;
     v9->_depthBuffer = v10;
-    v9->_source = a5;
+    v9->_source = source;
   }
 
   return v9;
 }
 
-- (ARMLDepthData)initWithTimestamp:(double)a3 depthBuffer:(__CVBuffer *)a4 confidenceBuffer:(__CVBuffer *)a5 source:(int64_t)a6
+- (ARMLDepthData)initWithTimestamp:(double)timestamp depthBuffer:(__CVBuffer *)buffer confidenceBuffer:(__CVBuffer *)confidenceBuffer source:(int64_t)source
 {
-  v7 = [(ARMLDepthData *)self initWithTimestamp:a4 depthBuffer:a6 source:a3];
+  v7 = [(ARMLDepthData *)self initWithTimestamp:buffer depthBuffer:source source:timestamp];
   if (v7)
   {
-    v7->_confidenceBuffer = CVPixelBufferRetain(a5);
+    v7->_confidenceBuffer = CVPixelBufferRetain(confidenceBuffer);
   }
 
   return v7;
@@ -57,9 +57,9 @@
   return singleFrameDepthBuffer;
 }
 
-- (void)setSingleFrameDepthBuffer:(__CVBuffer *)a3
+- (void)setSingleFrameDepthBuffer:(__CVBuffer *)buffer
 {
-  if (a3)
+  if (buffer)
   {
     os_unfair_lock_lock(&self->_singleFrameDepthBufferLock);
     singleFrameDepthBuffer = self->_singleFrameDepthBuffer;
@@ -68,8 +68,8 @@
       CVPixelBufferRelease(singleFrameDepthBuffer);
     }
 
-    self->_singleFrameDepthBuffer = a3;
-    CVPixelBufferRetain(a3);
+    self->_singleFrameDepthBuffer = buffer;
+    CVPixelBufferRetain(buffer);
 
     os_unfair_lock_unlock(&self->_singleFrameDepthBufferLock);
   }
@@ -86,37 +86,37 @@
   return result;
 }
 
-- (void)setSingleFrameConfidenceBuffer:(__CVBuffer *)a3
+- (void)setSingleFrameConfidenceBuffer:(__CVBuffer *)buffer
 {
   singleFrameConfidenceBuffer = self->_singleFrameConfidenceBuffer;
-  if (singleFrameConfidenceBuffer != a3)
+  if (singleFrameConfidenceBuffer != buffer)
   {
     CVPixelBufferRelease(singleFrameConfidenceBuffer);
-    self->_singleFrameConfidenceBuffer = CVPixelBufferRetain(a3);
+    self->_singleFrameConfidenceBuffer = CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setNormalsBuffer:(__CVBuffer *)a3
+- (void)setNormalsBuffer:(__CVBuffer *)buffer
 {
   normalsBuffer = self->_normalsBuffer;
-  if (normalsBuffer != a3)
+  if (normalsBuffer != buffer)
   {
     CVPixelBufferRelease(normalsBuffer);
-    self->_normalsBuffer = a3;
+    self->_normalsBuffer = buffer;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(buffer);
   }
 }
 
-- (void)setConfidenceMap:(__CVBuffer *)a3
+- (void)setConfidenceMap:(__CVBuffer *)map
 {
   confidenceMap = self->_confidenceMap;
-  if (confidenceMap != a3)
+  if (confidenceMap != map)
   {
     CVPixelBufferRelease(confidenceMap);
-    self->_confidenceMap = a3;
+    self->_confidenceMap = map;
 
-    CVPixelBufferRetain(a3);
+    CVPixelBufferRetain(map);
   }
 }
 
@@ -150,11 +150,11 @@
 
 - (CGSize)depthBufferSize
 {
-  v2 = [(ARMLDepthData *)self depthBuffer];
-  if (v2)
+  depthBuffer = [(ARMLDepthData *)self depthBuffer];
+  if (depthBuffer)
   {
-    v3 = v2;
-    Width = CVPixelBufferGetWidth(v2);
+    v3 = depthBuffer;
+    Width = CVPixelBufferGetWidth(depthBuffer);
     Height = CVPixelBufferGetHeight(v3);
   }
 

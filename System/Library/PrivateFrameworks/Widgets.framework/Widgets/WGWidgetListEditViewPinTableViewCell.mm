@@ -1,20 +1,20 @@
 @interface WGWidgetListEditViewPinTableViewCell
-- (WGWidgetListEditViewPinTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WGWidgetListEditViewPinTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
 @implementation WGWidgetListEditViewPinTableViewCell
 
-- (WGWidgetListEditViewPinTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WGWidgetListEditViewPinTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v47[2] = *MEMORY[0x277D85DE8];
   v45.receiver = self;
   v45.super_class = WGWidgetListEditViewPinTableViewCell;
-  v4 = [(WGWidgetListEditViewPinTableViewCell *)&v45 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(WGWidgetListEditViewPinTableViewCell *)&v45 initWithStyle:3 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v44 = [(WGWidgetListEditViewPinTableViewCell *)v4 contentView];
+    contentView = [(WGWidgetListEditViewPinTableViewCell *)v4 contentView];
     v6 = objc_alloc_init(MEMORY[0x277D75AE8]);
     pinSwitch = v5->_pinSwitch;
     v5->_pinSwitch = v6;
@@ -67,34 +67,34 @@
     [v24 setAxis:0];
     [v24 setAlignment:3];
     [v24 setSpacing:30.0];
-    [v44 addSubview:v24];
+    [contentView addSubview:v24];
     v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v26 = [v24 leadingAnchor];
-    v27 = [v44 leadingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:30.0];
+    leadingAnchor = [v24 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:30.0];
     [v25 addObject:v28];
 
-    v29 = [v44 trailingAnchor];
-    v30 = [v24 trailingAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:23.0];
+    trailingAnchor = [contentView trailingAnchor];
+    trailingAnchor2 = [v24 trailingAnchor];
+    v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:23.0];
     [v25 addObject:v31];
 
-    v32 = [v24 topAnchor];
-    v33 = [v44 topAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33 constant:28.0];
+    topAnchor = [v24 topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v34 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:28.0];
     [v25 addObject:v34];
 
-    v35 = [v44 bottomAnchor];
-    v36 = [v24 bottomAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36 constant:28.0];
+    bottomAnchor = [contentView bottomAnchor];
+    bottomAnchor2 = [v24 bottomAnchor];
+    v37 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:28.0];
     [v25 addObject:v37];
 
-    v38 = [(WGWidgetPinningTeachingAnimationView *)v43 widthAnchor];
-    v39 = [v38 constraintEqualToConstant:61.0];
+    widthAnchor = [(WGWidgetPinningTeachingAnimationView *)v43 widthAnchor];
+    v39 = [widthAnchor constraintEqualToConstant:61.0];
     [v25 addObject:v39];
 
-    v40 = [(WGWidgetPinningTeachingAnimationView *)v43 heightAnchor];
-    v41 = [v40 constraintEqualToConstant:50.0];
+    heightAnchor = [(WGWidgetPinningTeachingAnimationView *)v43 heightAnchor];
+    v41 = [heightAnchor constraintEqualToConstant:50.0];
     [v25 addObject:v41];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v25];

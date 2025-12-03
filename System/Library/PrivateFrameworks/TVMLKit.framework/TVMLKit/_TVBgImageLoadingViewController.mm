@@ -1,30 +1,30 @@
 @interface _TVBgImageLoadingViewController
-+ (id)_decorateImage:(id)a3 decorator:(id)a4;
++ (id)_decorateImage:(id)image decorator:(id)decorator;
 - (BOOL)_isNewiOSTVApp;
 - (CGSize)_backgroundImageProxySize;
-- (_TVBgImageLoadingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_stackViewWithMinSpacing:(double)a3 layoutMargin:(UIEdgeInsets)a4;
-- (void)_dismissViewController:(id)a3;
-- (void)_reparentNavigationItem:(id)a3;
+- (_TVBgImageLoadingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_stackViewWithMinSpacing:(double)spacing layoutMargin:(UIEdgeInsets)margin;
+- (void)_dismissViewController:(id)controller;
+- (void)_reparentNavigationItem:(id)item;
 - (void)_updateNavigationBarPadding;
 - (void)_updateNavigationItem;
 - (void)configureAppearanceTransition;
 - (void)dealloc;
-- (void)loadFromViewController:(id)a3 completion:(id)a4;
-- (void)updateNavigationItem:(id)a3;
-- (void)updateWithViewElement:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)loadFromViewController:(id)controller completion:(id)completion;
+- (void)updateNavigationItem:(id)item;
+- (void)updateWithViewElement:(id)element;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _TVBgImageLoadingViewController
 
-- (_TVBgImageLoadingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TVBgImageLoadingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = _TVBgImageLoadingViewController;
-  v4 = [(_TVBgImageLoadingViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(_TVBgImageLoadingViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -59,16 +59,16 @@
   return result;
 }
 
-- (void)updateWithViewElement:(id)a3
+- (void)updateWithViewElement:(id)element
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementCopy = element;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 children];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  children = [elementCopy children];
+  v6 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -80,7 +80,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -92,7 +92,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -105,9 +105,9 @@
 
   if (self->_navigationItemElement)
   {
-    v13 = [v8 updateType];
+    updateType = [v8 updateType];
     objc_storeStrong(&self->_navigationItemElement, v8);
-    if (!v13)
+    if (!updateType)
     {
       goto LABEL_17;
     }
@@ -122,35 +122,35 @@
 LABEL_17:
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _TVBgImageLoadingViewController;
-  [(_TVBgImageLoadingViewController *)&v4 viewDidAppear:a3];
+  [(_TVBgImageLoadingViewController *)&v4 viewDidAppear:appear];
   self->_loaded = 1;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = _TVBgImageLoadingViewController;
-  [(_TVBgImageLoadingViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(_TVBgImageLoadingViewController *)self navigationController];
+  [(_TVBgImageLoadingViewController *)&v5 viewDidDisappear:disappear];
+  navigationController = [(_TVBgImageLoadingViewController *)self navigationController];
 
-  if (!v4)
+  if (!navigationController)
   {
     self->_loaded = 0;
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = _TVBgImageLoadingViewController;
-  [(_TVBgImageLoadingViewController *)&v5 viewWillAppear:a3];
+  [(_TVBgImageLoadingViewController *)&v5 viewWillAppear:appear];
   [(_TVBgImageLoadingViewController *)self _updateNavigationBarPadding];
-  v4 = [(_TVBgImageLoadingViewController *)self parentViewController];
-  [(_TVBgImageLoadingViewController *)self _reparentNavigationItem:v4];
+  parentViewController = [(_TVBgImageLoadingViewController *)self parentViewController];
+  [(_TVBgImageLoadingViewController *)self _reparentNavigationItem:parentViewController];
 
   [(_TVBgImageLoadingViewController *)self configureAppearanceTransition];
 }
@@ -163,18 +163,18 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [(_TVBgImageLoadingViewController *)self navigationItem];
-      v5 = [v4 title];
-      if (v5)
+      navigationItem = [(_TVBgImageLoadingViewController *)self navigationItem];
+      title = [navigationItem title];
+      if (title)
       {
       }
 
       else
       {
-        v6 = [(_TVBgImageLoadingViewController *)self navigationItem];
-        v7 = [v6 titleView];
+        navigationItem2 = [(_TVBgImageLoadingViewController *)self navigationItem];
+        titleView = [navigationItem2 titleView];
 
-        if (v7)
+        if (titleView)
         {
           v3 = 1.0;
         }
@@ -187,24 +187,24 @@ LABEL_17:
     }
   }
 
-  v8 = [(_TVBgImageLoadingViewController *)self transitionCoordinator];
+  transitionCoordinator = [(_TVBgImageLoadingViewController *)self transitionCoordinator];
 
-  if (v3 <= 0.0 || v8 == 0)
+  if (v3 <= 0.0 || transitionCoordinator == 0)
   {
-    v10 = [(_TVBgImageLoadingViewController *)self navigationController];
-    v13 = [v10 navigationBar];
+    navigationController = [(_TVBgImageLoadingViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
 
-    v11 = [MEMORY[0x277D75348] tvmlkit_keyColor];
-    [v13 setTintColor:v11];
+    tvmlkit_keyColor = [MEMORY[0x277D75348] tvmlkit_keyColor];
+    [navigationBar setTintColor:tvmlkit_keyColor];
 
-    [v13 _setBackgroundOpacity:v3];
-    [v13 _setTitleOpacity:v3];
+    [navigationBar _setBackgroundOpacity:v3];
+    [navigationBar _setTitleOpacity:v3];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v12 = [(_TVBgImageLoadingViewController *)self transitionCoordinator];
+    transitionCoordinator2 = [(_TVBgImageLoadingViewController *)self transitionCoordinator];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __64___TVBgImageLoadingViewController_configureAppearanceTransition__block_invoke;
@@ -217,7 +217,7 @@ LABEL_17:
     v14[3] = &unk_279D6F790;
     objc_copyWeak(v15, &location);
     v15[1] = *&v3;
-    [v12 animateAlongsideTransition:v16 completion:v14];
+    [transitionCoordinator2 animateAlongsideTransition:v16 completion:v14];
 
     objc_destroyWeak(v15);
     objc_destroyWeak(v17);
@@ -225,36 +225,36 @@ LABEL_17:
   }
 }
 
-- (void)loadFromViewController:(id)a3 completion:(id)a4
+- (void)loadFromViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   if (!self->_bgImageLoadingOptions.respondsToConfigureBgImageBackdropImage)
   {
     v12 = TVMLKitLogObject;
     if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEBUG))
     {
       [_TVBgImageLoadingViewController loadFromViewController:v12 completion:?];
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_16;
       }
     }
 
-    else if (!v7)
+    else if (!completionCopy)
     {
       goto LABEL_16;
     }
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
     goto LABEL_16;
   }
 
-  v8 = [(_TVBgImageLoadingViewController *)self _backgroundImageProxy];
+  _backgroundImageProxy = [(_TVBgImageLoadingViewController *)self _backgroundImageProxy];
   imageProxy = self->_imageProxy;
-  self->_imageProxy = v8;
+  self->_imageProxy = _backgroundImageProxy;
 
-  v10 = [self->_imageProxy isImageAvailable];
+  isImageAvailable = [self->_imageProxy isImageAvailable];
   v11 = self->_bgImageLoadingOptions.respondsToShouldLoadBackgroundImageAsynchronously && [(_TVBgImageLoadingViewController *)self _shouldLoadBackgroundImageAsynchronously];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -268,9 +268,9 @@ LABEL_17:
     v19 = &unk_279D6F7E0;
     objc_copyWeak(&v21, &location);
     v22 = v11;
-    v14 = v7;
+    v14 = completionCopy;
     v20 = v14;
-    v23 = v10;
+    v23 = isImageAvailable;
     [v13 setCompletionHandler:&v16];
     [v13 setCacheOnLoad:{+[TVMLUtilities canHandleDecodingOnRenderThread](TVMLUtilities, "canHandleDecodingOnRenderThread", v16, v17, v18, v19) ^ 1}];
     [v13 load];
@@ -292,27 +292,27 @@ LABEL_17:
   else
   {
     [(_TVBgImageLoadingViewController *)self _configureWithBgImage:0 backdropImage:0];
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
 LABEL_16:
 }
 
-+ (id)_decorateImage:(id)a3 decorator:(id)a4
++ (id)_decorateImage:(id)image decorator:(id)decorator
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  imageCopy = image;
+  decoratorCopy = decorator;
+  if (imageCopy)
   {
-    v7 = +[TVImage imageWithCGImageRef:preserveAlpha:](TVImage, "imageWithCGImageRef:preserveAlpha:", [v5 CGImage], 0);
+    v7 = +[TVImage imageWithCGImageRef:preserveAlpha:](TVImage, "imageWithCGImageRef:preserveAlpha:", [imageCopy CGImage], 0);
     v8 = v7;
-    if (v6 && v7)
+    if (decoratorCopy && v7)
     {
-      [v5 size];
-      v9 = [v6 decorate:v8 scaledWithSize:1 croppedToFit:?];
+      [imageCopy size];
+      v9 = [decoratorCopy decorate:v8 scaledWithSize:1 croppedToFit:?];
 
       v8 = v9;
     }
@@ -326,22 +326,22 @@ LABEL_16:
   return v8;
 }
 
-- (void)updateNavigationItem:(id)a3
+- (void)updateNavigationItem:(id)item
 {
-  v3 = a3;
-  [v3 setSearchController:0];
-  [v3 setHidesSearchBarWhenScrolling:0];
+  itemCopy = item;
+  [itemCopy setSearchController:0];
+  [itemCopy setHidesSearchBarWhenScrolling:0];
 }
 
-- (void)_dismissViewController:(id)a3
+- (void)_dismissViewController:(id)controller
 {
   v9 = +[_TVModalPresenter presenter];
-  v4 = [v9 modalRootViewController];
-  v5 = [(_TVBgImageLoadingViewController *)self navigationController];
-  v6 = v5;
-  if (v4)
+  modalRootViewController = [v9 modalRootViewController];
+  navigationController = [(_TVBgImageLoadingViewController *)self navigationController];
+  v6 = navigationController;
+  if (modalRootViewController)
   {
-    v7 = v5 == 0;
+    v7 = navigationController == 0;
   }
 
   else
@@ -349,7 +349,7 @@ LABEL_16:
     v7 = 1;
   }
 
-  if (!v7 && v4 == v5)
+  if (!v7 && modalRootViewController == navigationController)
   {
     [v9 hideAllAnimated:1 withCompletion:0];
   }
@@ -362,20 +362,20 @@ LABEL_16:
 
 - (BOOL)_isNewiOSTVApp
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 processName];
-  v4 = [v3 isEqualToString:@"AppleTV"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  v4 = [processName isEqualToString:@"AppleTV"];
 
   return v4;
 }
 
-- (void)_reparentNavigationItem:(id)a3
+- (void)_reparentNavigationItem:(id)item
 {
-  v31 = a3;
+  itemCopy = item;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ![(_TVBgImageLoadingViewController *)self appliedNavigationItem])
   {
-    v5 = [(_TVBgImageLoadingViewController *)self navigationItem];
+    navigationItem = [(_TVBgImageLoadingViewController *)self navigationItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
@@ -388,11 +388,11 @@ LABEL_16:
       v6 = &stru_287E12870;
     }
 
-    v7 = [v5 title];
-    v8 = v7;
-    if (v7)
+    title = [navigationItem title];
+    v8 = title;
+    if (title)
     {
-      v9 = v7;
+      v9 = title;
     }
 
     else
@@ -402,18 +402,18 @@ LABEL_16:
 
     v10 = v9;
 
-    v11 = [v5 leftBarButtonItems];
-    v30 = [v11 copy];
+    leftBarButtonItems = [navigationItem leftBarButtonItems];
+    v30 = [leftBarButtonItems copy];
 
-    v12 = [v5 rightBarButtonItems];
-    v13 = [v12 copy];
+    rightBarButtonItems = [navigationItem rightBarButtonItems];
+    v13 = [rightBarButtonItems copy];
 
-    v28 = [v5 titleView];
-    v14 = [(_TVBgImageLoadingViewController *)self _isNewiOSTVApp];
-    v15 = [(_TVBgImageLoadingViewController *)self presentingViewController];
+    titleView = [navigationItem titleView];
+    _isNewiOSTVApp = [(_TVBgImageLoadingViewController *)self _isNewiOSTVApp];
+    presentingViewController = [(_TVBgImageLoadingViewController *)self presentingViewController];
 
-    v27 = v14;
-    if (v15 && !v14)
+    v27 = _isNewiOSTVApp;
+    if (presentingViewController && !_isNewiOSTVApp)
     {
       v16 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__dismissViewController_];
       v17 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v13, "count") + 1}];
@@ -423,31 +423,31 @@ LABEL_16:
       v13 = v18;
     }
 
-    v26 = [v5 leftItemsSupplementBackButton];
-    v19 = [v5 largeTitleDisplayMode];
+    leftItemsSupplementBackButton = [navigationItem leftItemsSupplementBackButton];
+    largeTitleDisplayMode = [navigationItem largeTitleDisplayMode];
     if ([(_TVBgImageLoadingViewController *)self _overrideLargeTitleDisplayMode])
     {
-      v19 = [(_TVBgImageLoadingViewController *)self _overrideLargeTitleDisplayMode];
+      largeTitleDisplayMode = [(_TVBgImageLoadingViewController *)self _overrideLargeTitleDisplayMode];
     }
 
     v20 = v8 == 0;
-    v21 = [v5 _largeTitleAccessoryView];
-    v22 = [v5 _supportsTwoLineLargeTitles];
-    v23 = [v31 navigationItem];
-    [v23 setTitle:v10];
+    _largeTitleAccessoryView = [navigationItem _largeTitleAccessoryView];
+    _supportsTwoLineLargeTitles = [navigationItem _supportsTwoLineLargeTitles];
+    navigationItem2 = [itemCopy navigationItem];
+    [navigationItem2 setTitle:v10];
 
-    [v23 setTitleView:v28];
-    [v23 setLeftBarButtonItems:v30];
-    [v23 setRightBarButtonItems:v13];
-    [v23 setLeftItemsSupplementBackButton:v26];
-    if (v19 <= 1)
+    [navigationItem2 setTitleView:titleView];
+    [navigationItem2 setLeftBarButtonItems:v30];
+    [navigationItem2 setRightBarButtonItems:v13];
+    [navigationItem2 setLeftItemsSupplementBackButton:leftItemsSupplementBackButton];
+    if (largeTitleDisplayMode <= 1)
     {
       v24 = 1;
     }
 
     else
     {
-      v24 = v19;
+      v24 = largeTitleDisplayMode;
     }
 
     if ((v20 & isKindOfClass) != 0)
@@ -460,17 +460,17 @@ LABEL_16:
       v25 = v24;
     }
 
-    [v23 setLargeTitleDisplayMode:v25];
-    [v23 _setLargeTitleAccessoryView:v21 alignToBaseline:!v27];
-    [v23 _setSupportsTwoLineLargeTitles:v22];
-    [(_TVBgImageLoadingViewController *)self updateNavigationItem:v23];
+    [navigationItem2 setLargeTitleDisplayMode:v25];
+    [navigationItem2 _setLargeTitleAccessoryView:_largeTitleAccessoryView alignToBaseline:!v27];
+    [navigationItem2 _setSupportsTwoLineLargeTitles:_supportsTwoLineLargeTitles];
+    [(_TVBgImageLoadingViewController *)self updateNavigationItem:navigationItem2];
     [(_TVBgImageLoadingViewController *)self setAppliedNavigationItem:1];
   }
 
   else
   {
-    v4 = v31;
-    if (v31)
+    v4 = itemCopy;
+    if (itemCopy)
     {
       goto LABEL_24;
     }
@@ -478,7 +478,7 @@ LABEL_16:
     [(_TVBgImageLoadingViewController *)self setAppliedNavigationItem:0];
   }
 
-  v4 = v31;
+  v4 = itemCopy;
 LABEL_24:
 }
 
@@ -486,22 +486,22 @@ LABEL_24:
 {
   if (self->_navigationItemElement)
   {
-    v3 = [(_TVBgImageLoadingViewController *)self navigationController];
+    navigationController = [(_TVBgImageLoadingViewController *)self navigationController];
     v4 = +[_TVModalPresenter presenter];
-    v5 = [v4 modalRootViewController];
+    modalRootViewController = [v4 modalRootViewController];
 
-    if (v3 != v5)
+    if (navigationController != modalRootViewController)
     {
-      v6 = [(IKViewElement *)self->_navigationItemElement style];
-      [v6 tv_padding];
+      style = [(IKViewElement *)self->_navigationItemElement style];
+      [style tv_padding];
       v8 = v7;
       v10 = v9;
       v12 = v11;
       v14 = v13;
 
-      v15 = [(_TVBgImageLoadingViewController *)self navigationController];
-      v16 = [v15 navigationBar];
-      [v16 layoutMargins];
+      navigationController2 = [(_TVBgImageLoadingViewController *)self navigationController];
+      navigationBar = [navigationController2 navigationBar];
+      [navigationBar layoutMargins];
       if (v10 == v20 && v8 == v17 && v14 == v19)
       {
         v23 = v18;
@@ -516,13 +516,13 @@ LABEL_24:
       {
       }
 
-      v24 = [(_TVBgImageLoadingViewController *)self navigationController];
-      v25 = [v24 navigationBar];
-      [v25 setLayoutMargins:{v8, v10, v12, v14}];
+      navigationController3 = [(_TVBgImageLoadingViewController *)self navigationController];
+      navigationBar2 = [navigationController3 navigationBar];
+      [navigationBar2 setLayoutMargins:{v8, v10, v12, v14}];
 
-      v27 = [(_TVBgImageLoadingViewController *)self navigationController];
-      v26 = [v27 navigationBar];
-      [v26 setNeedsLayout];
+      navigationController4 = [(_TVBgImageLoadingViewController *)self navigationController];
+      navigationBar3 = [navigationController4 navigationBar];
+      [navigationBar3 setNeedsLayout];
     }
   }
 }
@@ -530,27 +530,27 @@ LABEL_24:
 - (void)_updateNavigationItem
 {
   v125 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v103 = [MEMORY[0x277CBEB18] array];
-  v4 = [(_TVBgImageLoadingViewController *)self navigationItem];
-  v100 = self;
-  v101 = v3;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  navigationItem = [(_TVBgImageLoadingViewController *)self navigationItem];
+  selfCopy = self;
+  v101 = array;
   navigationItemElement = self->_navigationItemElement;
-  v99 = v4;
+  v99 = navigationItem;
   if (!navigationItemElement)
   {
     v102 = 0;
     v104 = 1;
-    [v4 leftBarButtonItem];
+    [navigationItem leftBarButtonItem];
     goto LABEL_35;
   }
 
-  v6 = [(IKViewElement *)navigationItemElement children];
+  children = [(IKViewElement *)navigationItemElement children];
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v118 objects:v124 count:16];
+  v7 = [children countByEnumeratingWithState:&v118 objects:v124 count:16];
   if (!v7)
   {
     v102 = 0;
@@ -570,55 +570,55 @@ LABEL_24:
     {
       if (*v119 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(children);
       }
 
       v12 = *(*(&v118 + 1) + 8 * i);
-      v13 = [v12 tv_elementType];
-      if (v13 != 6)
+      tv_elementType = [v12 tv_elementType];
+      if (tv_elementType != 6)
       {
-        if (v13 == 16)
+        if (tv_elementType == 16)
         {
-          v22 = [v12 style];
-          v23 = [v22 tv_alignment];
+          style = [v12 style];
+          tv_alignment = [style tv_alignment];
 
-          if (v23 == 3)
+          if (tv_alignment == 3)
           {
             goto LABEL_24;
           }
 
-          if (v23 == 1)
+          if (tv_alignment == 1)
           {
-            v24 = v3;
+            v24 = array;
 LABEL_25:
             [v24 addObject:v12];
             continue;
           }
 
           v33 = +[TVInterfaceFactory sharedInterfaceFactory];
-          v34 = [v99 titleView];
-          v35 = [v33 _viewFromElement:v12 existingView:v34];
+          titleView = [v99 titleView];
+          v35 = [v33 _viewFromElement:v12 existingView:titleView];
 
           [v35 sizeToFit];
           v102 = v35;
         }
 
-        else if (v13 == 55)
+        else if (tv_elementType == 55)
         {
-          v14 = [v12 text];
-          v15 = [v14 string];
+          text = [v12 text];
+          string = [text string];
 
-          v16 = [v12 attributes];
-          v17 = [v16 objectForKey:@"showLargeTitle"];
+          attributes = [v12 attributes];
+          v17 = [attributes objectForKey:@"showLargeTitle"];
           if ([v17 length])
           {
-            v18 = [v12 attributes];
-            v19 = [v18 objectForKey:@"showLargeTitle"];
-            v20 = [v19 BOOLValue];
+            attributes2 = [v12 attributes];
+            v19 = [attributes2 objectForKey:@"showLargeTitle"];
+            bOOLValue = [v19 BOOLValue];
 
-            v3 = v101;
+            array = v101;
             v21 = v104;
-            if ((v20 & 1) == 0)
+            if ((bOOLValue & 1) == 0)
             {
               v21 = 2;
             }
@@ -630,97 +630,97 @@ LABEL_25:
           {
           }
 
-          v9 = v15;
+          v9 = string;
         }
 
         continue;
       }
 
-      v25 = [v12 style];
-      v26 = [v25 tv_alignment];
+      style2 = [v12 style];
+      tv_alignment2 = [style2 tv_alignment];
 
-      v27 = v3;
-      if (v26 != 1)
+      v27 = array;
+      if (tv_alignment2 != 1)
       {
-        if (v26 != 3)
+        if (tv_alignment2 != 3)
         {
           goto LABEL_21;
         }
 
-        v27 = v103;
+        v27 = array2;
       }
 
       [v27 addObject:v12];
 LABEL_21:
-      v28 = [v12 style];
-      v29 = [v28 tv_position];
+      style3 = [v12 style];
+      tv_position = [style3 tv_position];
 
-      if (v29 == 10)
+      if (tv_position == 10)
       {
         v30 = +[TVInterfaceFactory sharedInterfaceFactory];
         v31 = [v30 _viewFromElement:v12 existingView:0];
-        rightLargeTitleButton = v100->_rightLargeTitleButton;
-        v100->_rightLargeTitleButton = v31;
+        rightLargeTitleButton = selfCopy->_rightLargeTitleButton;
+        selfCopy->_rightLargeTitleButton = v31;
 
         continue;
       }
 
-      if (!(v29 | v26))
+      if (!(tv_position | tv_alignment2))
       {
 LABEL_24:
-        v24 = v103;
+        v24 = array2;
         goto LABEL_25;
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v118 objects:v124 count:16];
+    v8 = [children countByEnumeratingWithState:&v118 objects:v124 count:16];
   }
 
   while (v8);
 LABEL_34:
   v96 = v9;
 
-  v4 = v99;
+  navigationItem = v99;
   [v99 leftBarButtonItem];
   v36 = LABEL_35:;
-  v37 = [v36 view];
+  view = [v36 view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v38 = [v4 leftBarButtonItem];
-    v39 = [v38 view];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    view2 = [leftBarButtonItem view];
   }
 
   else
   {
-    v39 = [(_TVBgImageLoadingViewController *)v100 _stackViewWithMinSpacing:15.0 layoutMargin:0.0, 0.0, 0.0, 15.0];
+    view2 = [(_TVBgImageLoadingViewController *)selfCopy _stackViewWithMinSpacing:15.0 layoutMargin:0.0, 0.0, 0.0, 15.0];
   }
 
-  v40 = [v4 rightBarButtonItem];
-  v41 = [v40 view];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  view3 = [rightBarButtonItem view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v42 = [v4 rightBarButtonItem];
-    v43 = [v42 view];
+    rightBarButtonItem2 = [navigationItem rightBarButtonItem];
+    view4 = [rightBarButtonItem2 view];
   }
 
   else
   {
-    v43 = [(_TVBgImageLoadingViewController *)v100 _stackViewWithMinSpacing:15.0 layoutMargin:0.0, 15.0, 0.0, 0.0];
+    view4 = [(_TVBgImageLoadingViewController *)selfCopy _stackViewWithMinSpacing:15.0 layoutMargin:0.0, 15.0, 0.0, 0.0];
   }
 
-  v106 = v43;
-  v107 = v39;
-  if ([v3 count])
+  v106 = view4;
+  v107 = view2;
+  if ([array count])
   {
-    v97 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-    v44 = [v39 subviews];
+    v97 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(array, "count")}];
+    subviews = [view2 subviews];
     v114 = 0u;
     v115 = 0u;
     v116 = 0u;
     v117 = 0u;
-    obj = v3;
+    obj = array;
     v45 = [obj countByEnumeratingWithState:&v114 objects:v123 count:16];
     if (v45)
     {
@@ -737,14 +737,14 @@ LABEL_34:
           }
 
           v50 = *(*(&v114 + 1) + 8 * j);
-          if (v47 >= [v44 count])
+          if (v47 >= [subviews count])
           {
             v51 = 0;
           }
 
           else
           {
-            v51 = [v44 objectAtIndexedSubscript:v47];
+            v51 = [subviews objectAtIndexedSubscript:v47];
           }
 
           v52 = +[TVInterfaceFactory sharedInterfaceFactory];
@@ -756,12 +756,12 @@ LABEL_34:
             [v53 frame];
             v55 = v54;
             v57 = v56;
-            v58 = [v53 widthAnchor];
-            v59 = [v58 constraintEqualToConstant:v55];
+            widthAnchor = [v53 widthAnchor];
+            v59 = [widthAnchor constraintEqualToConstant:v55];
             [v59 setActive:1];
 
-            v60 = [v53 heightAnchor];
-            v61 = [v60 constraintEqualToConstant:v57];
+            heightAnchor = [v53 heightAnchor];
+            v61 = [heightAnchor constraintEqualToConstant:v57];
             [v61 setActive:1];
 
             [v107 insertArrangedSubview:v53 atIndex:0];
@@ -777,8 +777,8 @@ LABEL_34:
     }
 
     v62 = v97;
-    v4 = v99;
-    v39 = v107;
+    navigationItem = v99;
+    view2 = v107;
   }
 
   else
@@ -786,16 +786,16 @@ LABEL_34:
     v62 = 0;
   }
 
-  if ([v103 count])
+  if ([array2 count])
   {
     v98 = v62;
-    v63 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v103, "count")}];
-    v64 = [v43 subviews];
+    v63 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(array2, "count")}];
+    subviews2 = [view4 subviews];
     v110 = 0u;
     v111 = 0u;
     v112 = 0u;
     v113 = 0u;
-    obja = v103;
+    obja = array2;
     v65 = [obja countByEnumeratingWithState:&v110 objects:v122 count:16];
     if (v65)
     {
@@ -803,7 +803,7 @@ LABEL_34:
       v67 = 0;
       v68 = *v111;
       v69 = 0x279D6D000uLL;
-      v105 = v64;
+      v105 = subviews2;
       do
       {
         for (k = 0; k != v66; ++k)
@@ -814,18 +814,18 @@ LABEL_34:
           }
 
           v71 = *(*(&v110 + 1) + 8 * k);
-          if (v67 >= [v64 count])
+          if (v67 >= [subviews2 count])
           {
             v72 = 0;
           }
 
           else
           {
-            v72 = [v64 objectAtIndexedSubscript:v67];
+            v72 = [subviews2 objectAtIndexedSubscript:v67];
           }
 
-          v73 = [*(v69 + 1176) sharedInterfaceFactory];
-          v74 = [v73 _viewFromElement:v71 existingView:v72];
+          sharedInterfaceFactory = [*(v69 + 1176) sharedInterfaceFactory];
+          v74 = [sharedInterfaceFactory _viewFromElement:v71 existingView:v72];
 
           [v74 sizeToFit];
           if (!v72)
@@ -833,23 +833,23 @@ LABEL_34:
             [v74 frame];
             v76 = v75;
             v78 = v77;
-            v79 = [v74 widthAnchor];
-            [v79 constraintEqualToConstant:v76];
+            widthAnchor2 = [v74 widthAnchor];
+            [widthAnchor2 constraintEqualToConstant:v76];
             v80 = v66;
             v81 = v68;
             v82 = v69;
             v84 = v83 = v63;
             [v84 setActive:1];
 
-            v85 = [v74 heightAnchor];
-            v86 = [v85 constraintEqualToConstant:v78];
+            heightAnchor2 = [v74 heightAnchor];
+            v86 = [heightAnchor2 constraintEqualToConstant:v78];
             [v86 setActive:1];
 
             v63 = v83;
             v69 = v82;
             v68 = v81;
             v66 = v80;
-            v64 = v105;
+            subviews2 = v105;
 
             [v106 insertArrangedSubview:v74 atIndex:0];
           }
@@ -864,9 +864,9 @@ LABEL_34:
     }
 
     v62 = v98;
-    v4 = v99;
-    v43 = v106;
-    v39 = v107;
+    navigationItem = v99;
+    view4 = v106;
+    view2 = v107;
   }
 
   else
@@ -874,56 +874,56 @@ LABEL_34:
     v63 = 0;
   }
 
-  v87 = [v39 subviews];
-  v88 = [v87 count];
+  subviews3 = [view2 subviews];
+  v88 = [subviews3 count];
 
   if (v88)
   {
-    [v39 sizeToFit];
-    v89 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v39];
+    [view2 sizeToFit];
+    v89 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:view2];
     [v62 addObject:v89];
   }
 
-  v90 = [v43 subviews];
-  v91 = [v90 count];
+  subviews4 = [view4 subviews];
+  v91 = [subviews4 count];
 
   if (v91)
   {
-    [v43 sizeToFit];
-    v92 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v43];
+    [view4 sizeToFit];
+    v92 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:view4];
     [v63 addObject:v92];
   }
 
-  [v43 sizeToFit];
-  [v4 setTitleView:v102];
-  [v4 setTitle:v95];
-  [v4 setLeftBarButtonItems:v62];
-  [v4 setRightBarButtonItems:v63];
-  [v4 setLeftItemsSupplementBackButton:1];
-  [v4 setLargeTitleDisplayMode:v104];
-  [v4 _setLargeTitleAccessoryView:v100->_rightLargeTitleButton alignToBaseline:1];
-  [v4 _setSupportsTwoLineLargeTitles:1];
-  [(_TVBgImageLoadingViewController *)v100 updateNavigationItem:v4];
-  [(_TVBgImageLoadingViewController *)v100 setAppliedNavigationItem:0];
-  v93 = [(_TVBgImageLoadingViewController *)v100 parentViewController];
-  [(_TVBgImageLoadingViewController *)v100 _reparentNavigationItem:v93];
+  [view4 sizeToFit];
+  [navigationItem setTitleView:v102];
+  [navigationItem setTitle:v95];
+  [navigationItem setLeftBarButtonItems:v62];
+  [navigationItem setRightBarButtonItems:v63];
+  [navigationItem setLeftItemsSupplementBackButton:1];
+  [navigationItem setLargeTitleDisplayMode:v104];
+  [navigationItem _setLargeTitleAccessoryView:selfCopy->_rightLargeTitleButton alignToBaseline:1];
+  [navigationItem _setSupportsTwoLineLargeTitles:1];
+  [(_TVBgImageLoadingViewController *)selfCopy updateNavigationItem:navigationItem];
+  [(_TVBgImageLoadingViewController *)selfCopy setAppliedNavigationItem:0];
+  parentViewController = [(_TVBgImageLoadingViewController *)selfCopy parentViewController];
+  [(_TVBgImageLoadingViewController *)selfCopy _reparentNavigationItem:parentViewController];
 
-  [(_TVBgImageLoadingViewController *)v100 setNeedsStatusBarAppearanceUpdate];
-  v94 = [(_TVBgImageLoadingViewController *)v100 navigationController];
-  [v94 setNeedsStatusBarAppearanceUpdate];
+  [(_TVBgImageLoadingViewController *)selfCopy setNeedsStatusBarAppearanceUpdate];
+  navigationController = [(_TVBgImageLoadingViewController *)selfCopy navigationController];
+  [navigationController setNeedsStatusBarAppearanceUpdate];
 }
 
-- (id)_stackViewWithMinSpacing:(double)a3 layoutMargin:(UIEdgeInsets)a4
+- (id)_stackViewWithMinSpacing:(double)spacing layoutMargin:(UIEdgeInsets)margin
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = margin.right;
+  bottom = margin.bottom;
+  left = margin.left;
+  top = margin.top;
   v9 = objc_alloc_init(MEMORY[0x277D75A68]);
   [v9 setAxis:0];
   [v9 setDistribution:0];
   [v9 setAlignment:3];
-  [v9 setSpacing:a3];
+  [v9 setSpacing:spacing];
   [v9 setLayoutMargins:{top, left, bottom, right}];
   [v9 setLayoutMarginsRelativeArrangement:1];
 

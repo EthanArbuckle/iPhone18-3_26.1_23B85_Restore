@@ -1,17 +1,17 @@
 @interface EKDayPreviewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateDayView;
 @end
 
 @implementation EKDayPreviewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKDayPreviewController" hasInstanceVariable:@"_dayView" withType:"EKDayView"];
-  [v3 validateClass:@"EKDayView" hasInstanceVariable:@"_dayContent" withType:"EKDayViewContent"];
-  [v3 validateClass:@"EKDayViewContent" hasInstanceVariable:@"_grid" withType:"EKDayGridView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKDayPreviewController" hasInstanceVariable:@"_dayView" withType:"EKDayView"];
+  [validationsCopy validateClass:@"EKDayView" hasInstanceVariable:@"_dayContent" withType:"EKDayViewContent"];
+  [validationsCopy validateClass:@"EKDayViewContent" hasInstanceVariable:@"_grid" withType:"EKDayGridView"];
 }
 
 - (void)_axAnnotateDayView
@@ -21,7 +21,7 @@
   v4 = __UIAccessibilityCastAsSafeCategory();
 
   objc_opt_class();
-  v5 = [v4 accessibilityScrollView];
+  accessibilityScrollView = [v4 accessibilityScrollView];
   v6 = __UIAccessibilityCastAsSafeCategory();
 
   [v6 setAccessibilityIsPreviewDayGridScroller:1];

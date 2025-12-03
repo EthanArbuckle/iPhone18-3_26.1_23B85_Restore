@@ -1,16 +1,16 @@
 @interface WLKTopShelfRequestOperation
-- (WLKTopShelfRequestOperation)initWithQueryParameters:(id)a3 options:(int64_t)a4;
+- (WLKTopShelfRequestOperation)initWithQueryParameters:(id)parameters options:(int64_t)options;
 - (void)processResponse;
 @end
 
 @implementation WLKTopShelfRequestOperation
 
-- (WLKTopShelfRequestOperation)initWithQueryParameters:(id)a3 options:(int64_t)a4
+- (WLKTopShelfRequestOperation)initWithQueryParameters:(id)parameters options:(int64_t)options
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
+  parametersCopy = parameters;
   v8 = [v6 numberWithDouble:15.0];
-  v9 = [WLKURLRequestProperties requestPropertiesWithEndpoint:@"browse/topShelf" queryParameters:v7 httpMethod:0 headers:0 caller:0 timeout:v8 options:a4 clientProtocolVersion:&unk_288222C98];
+  v9 = [WLKURLRequestProperties requestPropertiesWithEndpoint:@"browse/topShelf" queryParameters:parametersCopy httpMethod:0 headers:0 caller:0 timeout:v8 options:options clientProtocolVersion:&unk_288222C98];
 
   v12.receiver = self;
   v12.super_class = WLKTopShelfRequestOperation;
@@ -22,9 +22,9 @@
 - (void)processResponse
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [(WLKUTSNetworkRequestOperation *)self responseDictionary];
-  v4 = [v3 wlk_arrayForKey:@"items"];
-  v5 = [WLKChannelsResponse parseChannelsFromPayload:v3];
+  responseDictionary = [(WLKUTSNetworkRequestOperation *)self responseDictionary];
+  v4 = [responseDictionary wlk_arrayForKey:@"items"];
+  v5 = [WLKChannelsResponse parseChannelsFromPayload:responseDictionary];
   v6 = v5;
   if (v5)
   {

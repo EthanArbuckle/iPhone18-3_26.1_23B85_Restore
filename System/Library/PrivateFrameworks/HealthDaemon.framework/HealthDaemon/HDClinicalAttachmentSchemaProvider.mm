@@ -1,23 +1,23 @@
 @interface HDClinicalAttachmentSchemaProvider
-- (BOOL)readAuthorizationForObjectIdentifier:(id)a3 client:(id)a4 profile:(id)a5 error:(id *)a6;
-- (BOOL)validateAttachment:(id)a3 forObjectWithIdentifier:(id)a4 metadata:(id)a5 profile:(id)a6 error:(id *)a7;
-- (BOOL)writeAuthorizationForObjectIdentifier:(id)a3 client:(id)a4 profile:(id)a5 error:(id *)a6;
-- (id)_objectWithIdentifier:(void *)a3 profile:(void *)a4 errorOut:;
-- (int64_t)schemaVersionForObjectIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
+- (BOOL)readAuthorizationForObjectIdentifier:(id)identifier client:(id)client profile:(id)profile error:(id *)error;
+- (BOOL)validateAttachment:(id)attachment forObjectWithIdentifier:(id)identifier metadata:(id)metadata profile:(id)profile error:(id *)error;
+- (BOOL)writeAuthorizationForObjectIdentifier:(id)identifier client:(id)client profile:(id)profile error:(id *)error;
+- (id)_objectWithIdentifier:(void *)identifier profile:(void *)profile errorOut:;
+- (int64_t)schemaVersionForObjectIdentifier:(id)identifier profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDClinicalAttachmentSchemaProvider
 
-- (int64_t)schemaVersionForObjectIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
+- (int64_t)schemaVersionForObjectIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
   v12 = 0;
-  v7 = [(HDClinicalAttachmentSchemaProvider *)self _objectWithIdentifier:a3 profile:a4 errorOut:&v12];
+  v7 = [(HDClinicalAttachmentSchemaProvider *)self _objectWithIdentifier:identifier profile:profile errorOut:&v12];
   v8 = v12;
-  v9 = [v7 hd_sampleType];
+  hd_sampleType = [v7 hd_sampleType];
 
-  if (!v9)
+  if (!hd_sampleType)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 description:@"Failed to fetch object" underlyingError:v8];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Failed to fetch object" underlyingError:v8];
     goto LABEL_7;
   }
 
@@ -28,7 +28,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (([v9 code] - 267) < 2)
+  if (([hd_sampleType code] - 267) < 2)
   {
     v10 = 1;
   }
@@ -43,15 +43,15 @@ LABEL_8:
   return v10;
 }
 
-- (id)_objectWithIdentifier:(void *)a3 profile:(void *)a4 errorOut:
+- (id)_objectWithIdentifier:(void *)identifier profile:(void *)profile errorOut:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
     if ([v7 hasPrefix:*MEMORY[0x277CCBB38]])
     {
-      v9 = [HDClinicalRecordEntity clinicalRecordWithAttachmentObjectIdentifier:v7 profile:v8 error:a4];
+      v9 = [HDClinicalRecordEntity clinicalRecordWithAttachmentObjectIdentifier:v7 profile:identifierCopy error:profile];
 LABEL_6:
       v10 = v9;
       goto LABEL_13;
@@ -59,17 +59,17 @@ LABEL_6:
 
     if ([v7 hasPrefix:*MEMORY[0x277CCBB30]])
     {
-      v9 = [HDMedicalRecordEntity medicalRecordWithAttachmentObjectIdentifier:v7 profile:v8 error:a4];
+      v9 = [HDMedicalRecordEntity medicalRecordWithAttachmentObjectIdentifier:v7 profile:identifierCopy error:profile];
       goto LABEL_6;
     }
 
     v11 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"identifier is not a clinical or medical record  %@", v7}];
     if (v11)
     {
-      if (a4)
+      if (profile)
       {
         v12 = v11;
-        *a4 = v11;
+        *profile = v11;
       }
 
       else
@@ -85,25 +85,25 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)validateAttachment:(id)a3 forObjectWithIdentifier:(id)a4 metadata:(id)a5 profile:(id)a6 error:(id *)a7
+- (BOOL)validateAttachment:(id)attachment forObjectWithIdentifier:(id)identifier metadata:(id)metadata profile:(id)profile error:(id *)error
 {
-  v8 = [a3 size];
+  v8 = [attachment size];
   if (v8 >= 26214401)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a7 code:3 format:@"File size is too large"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"File size is too large"];
   }
 
   return v8 < 26214401;
 }
 
-- (BOOL)readAuthorizationForObjectIdentifier:(id)a3 client:(id)a4 profile:(id)a5 error:(id *)a6
+- (BOOL)readAuthorizationForObjectIdentifier:(id)identifier client:(id)client profile:(id)profile error:(id *)error
 {
-  v10 = a4;
-  v11 = [(HDClinicalAttachmentSchemaProvider *)self _objectWithIdentifier:a3 profile:a5 errorOut:a6];
+  clientCopy = client;
+  v11 = [(HDClinicalAttachmentSchemaProvider *)self _objectWithIdentifier:identifier profile:profile errorOut:error];
   if (v11)
   {
-    v12 = [v10 authorizationOracle];
-    v13 = [v12 isAuthorizedToReadObject:v11 error:a6];
+    authorizationOracle = [clientCopy authorizationOracle];
+    v13 = [authorizationOracle isAuthorizedToReadObject:v11 error:error];
   }
 
   else
@@ -114,15 +114,15 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)writeAuthorizationForObjectIdentifier:(id)a3 client:(id)a4 profile:(id)a5 error:(id *)a6
+- (BOOL)writeAuthorizationForObjectIdentifier:(id)identifier client:(id)client profile:(id)profile error:(id *)error
 {
-  v7 = [MEMORY[0x277CCA9B8] hk_error:110 format:{@"Adding attachments is not supported", a5}];
+  v7 = [MEMORY[0x277CCA9B8] hk_error:110 format:{@"Adding attachments is not supported", profile}];
   if (v7)
   {
-    if (a6)
+    if (error)
     {
       v8 = v7;
-      *a6 = v7;
+      *error = v7;
     }
 
     else

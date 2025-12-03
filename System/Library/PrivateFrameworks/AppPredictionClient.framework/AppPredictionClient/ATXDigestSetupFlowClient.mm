@@ -1,8 +1,8 @@
 @interface ATXDigestSetupFlowClient
 - (ATXDigestSetupFlowClient)init;
-- (id)sortDigestResponseWithNoNotificationVolume:(id)a3;
-- (void)_helperAppsSortedByNotificationsReceivedInPreviousNumDays:(id)a3 completionHandler:(id)a4;
-- (void)appsSortedByNotificationsReceivedInPreviousNumDays:(id)a3 completionHandler:(id)a4;
+- (id)sortDigestResponseWithNoNotificationVolume:(id)volume;
+- (void)_helperAppsSortedByNotificationsReceivedInPreviousNumDays:(id)days completionHandler:(id)handler;
+- (void)appsSortedByNotificationsReceivedInPreviousNumDays:(id)days completionHandler:(id)handler;
 @end
 
 @implementation ATXDigestSetupFlowClient
@@ -27,26 +27,26 @@
   return v2;
 }
 
-- (void)appsSortedByNotificationsReceivedInPreviousNumDays:(id)a3 completionHandler:(id)a4
+- (void)appsSortedByNotificationsReceivedInPreviousNumDays:(id)days completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __97__ATXDigestSetupFlowClient_appsSortedByNotificationsReceivedInPreviousNumDays_completionHandler___block_invoke;
   v8[3] = &unk_1E80C5340;
-  v9 = v6;
-  v7 = v6;
-  [(ATXDigestSetupFlowClient *)self _helperAppsSortedByNotificationsReceivedInPreviousNumDays:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(ATXDigestSetupFlowClient *)self _helperAppsSortedByNotificationsReceivedInPreviousNumDays:days completionHandler:v8];
 }
 
-- (void)_helperAppsSortedByNotificationsReceivedInPreviousNumDays:(id)a3 completionHandler:(id)a4
+- (void)_helperAppsSortedByNotificationsReceivedInPreviousNumDays:(id)days completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  daysCopy = days;
+  handlerCopy = handler;
+  if (daysCopy)
   {
-    v9 = v7;
+    v9 = daysCopy;
   }
 
   else
@@ -57,7 +57,7 @@
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
-  v23 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
   v10 = __atxlog_handle_notification_management();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -75,7 +75,7 @@
   v18 = &v20;
   v19 = a2;
   v16[4] = self;
-  v15 = v8;
+  v15 = handlerCopy;
   v17 = v15;
   [(ATXNotificationDigestRankerClient *)xpcClient appsSortedByNotificationsReceivedInPreviousNumDays:v14 reply:v16];
 
@@ -176,17 +176,17 @@ ATXDigestSetupResponse *__104__ATXDigestSetupFlowClient__helperAppsSortedByNotif
   return v14;
 }
 
-- (id)sortDigestResponseWithNoNotificationVolume:(id)a3
+- (id)sortDigestResponseWithNoNotificationVolume:(id)volume
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  volumeCopy = volume;
   v28 = objc_opt_new();
   v4 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = v3;
+  v5 = volumeCopy;
   v6 = [v5 countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v6)
   {
@@ -212,8 +212,8 @@ ATXDigestSetupResponse *__104__ATXDigestSetupFlowClient__helperAppsSortedByNotif
         else
         {
           v12 = v9[37];
-          v13 = [v11 bundleId];
-          v14 = [(__objc2_class *)v12 localizedNameForBundle:v13];
+          bundleId = [v11 bundleId];
+          v14 = [(__objc2_class *)v12 localizedNameForBundle:bundleId];
           v15 = v14;
           if (v14)
           {
@@ -223,8 +223,8 @@ ATXDigestSetupResponse *__104__ATXDigestSetupFlowClient__helperAppsSortedByNotif
           else
           {
             v17 = v9[37];
-            v18 = [v11 bundleId];
-            v16 = [(__objc2_class *)v17 localizedShortnameForBundle:v18];
+            bundleId2 = [v11 bundleId];
+            v16 = [(__objc2_class *)v17 localizedShortnameForBundle:bundleId2];
           }
 
           v19 = [objc_alloc(MEMORY[0x1E69C5D98]) initWithFirst:v16 second:v11];
@@ -264,8 +264,8 @@ ATXDigestSetupResponse *__104__ATXDigestSetupFlowClient__helperAppsSortedByNotif
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v29 + 1) + 8 * i) second];
-        [v4 addObject:v26];
+        second = [*(*(&v29 + 1) + 8 * i) second];
+        [v4 addObject:second];
       }
 
       v23 = [v21 countByEnumeratingWithState:&v29 objects:v37 count:16];

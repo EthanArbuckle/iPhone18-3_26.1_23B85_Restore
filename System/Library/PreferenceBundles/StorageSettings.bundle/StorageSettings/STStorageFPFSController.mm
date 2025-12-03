@@ -1,12 +1,12 @@
 @interface STStorageFPFSController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (id)specifierAtIndexPath:(id)a3;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (id)specifierAtIndexPath:(id)path;
 - (id)specifiers;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (void)dataForCollectionShouldBeReloaded:(id)a3;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded;
 - (void)emptyTrash;
 - (void)reloadSpecs;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -17,8 +17,8 @@
   v4.receiver = self;
   v4.super_class = STStorageFPFSController;
   [(STStorageFPFSController *)&v4 viewDidLoad];
-  v3 = [(STStorageFPFSController *)self table];
-  [v3 setAllowsMultipleSelectionDuringEditing:0];
+  table = [(STStorageFPFSController *)self table];
+  [table setAllowsMultipleSelectionDuringEditing:0];
 }
 
 - (id)specifiers
@@ -29,8 +29,8 @@
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 childItemCount];
-      if (![v5 longValue] || (objc_msgSend(v4, "capabilities") & 1) == 0)
+      childItemCount = [v3 childItemCount];
+      if (![childItemCount longValue] || (objc_msgSend(v4, "capabilities") & 1) == 0)
       {
 
 LABEL_8:
@@ -47,9 +47,9 @@ LABEL_18:
 
     else
     {
-      v6 = [(STStorageFPFSController *)self createCollection];
+      createCollection = [(STStorageFPFSController *)self createCollection];
       v7 = self->_collection;
-      self->_collection = v6;
+      self->_collection = createCollection;
 
       if (!self->_collection)
       {
@@ -79,8 +79,8 @@ LABEL_18:
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 childItemCount];
-    if (![v15 longValue] || (objc_msgSend(v14, "capabilities") & 1) == 0)
+    childItemCount2 = [v13 childItemCount];
+    if (![childItemCount2 longValue] || (objc_msgSend(v14, "capabilities") & 1) == 0)
     {
 
       goto LABEL_18;
@@ -91,7 +91,7 @@ LABEL_18:
   v50 = v11;
   v17 = self->_fpItems;
   v18 = [(NSArray *)v17 count];
-  v51 = self;
+  selfCopy = self;
   v53 = self->_specsByItemID;
   v48 = [NSMutableArray arrayWithCapacity:v18 + 1];
   v54 = [NSMutableArray arrayWithCapacity:v18];
@@ -120,35 +120,35 @@ LABEL_18:
       }
 
       v25 = *(*(&v55 + 1) + 8 * i);
-      v26 = [v25 capabilities];
-      v27 = [v25 capabilities];
-      v28 = [v25 capabilities];
-      v29 = [v25 childItemCount];
-      v30 = v29;
-      if (v29)
+      capabilities = [v25 capabilities];
+      capabilities2 = [v25 capabilities];
+      capabilities3 = [v25 capabilities];
+      childItemCount3 = [v25 childItemCount];
+      v30 = childItemCount3;
+      if (childItemCount3)
       {
-        if (![v29 intValue])
+        if (![childItemCount3 intValue])
         {
           goto LABEL_40;
         }
 
-        if ((v27 & 0x40) == 0 && (v28 & 0x10) == 0 && (v26 & 1) == 0)
+        if ((capabilities2 & 0x40) == 0 && (capabilities3 & 0x10) == 0 && (capabilities & 1) == 0)
         {
           goto LABEL_40;
         }
       }
 
-      else if (!(v27 & 0x40 | (v28 & 0x10)))
+      else if (!(capabilities2 & 0x40 | (capabilities3 & 0x10)))
       {
         goto LABEL_40;
       }
 
-      v32 = [v25 itemID];
-      v33 = [(NSMutableDictionary *)v53 objectForKey:v32];
+      itemID = [v25 itemID];
+      v33 = [(NSMutableDictionary *)v53 objectForKey:itemID];
 
       if (!v33)
       {
-        v33 = [STStorageFPItemCell specifierForFPItem:v25 recurseIntoFolders:!v51->_pinnedOnly];
+        v33 = [STStorageFPItemCell specifierForFPItem:v25 recurseIntoFolders:!selfCopy->_pinnedOnly];
         [v33 setDetailControllerClass:objc_opt_class()];
       }
 
@@ -163,8 +163,8 @@ LABEL_18:
       }
 
       [v34 addObject:v33];
-      v35 = [v25 itemID];
-      [(NSMutableDictionary *)v52 setObject:v33 forKey:v35];
+      itemID2 = [v25 itemID];
+      [(NSMutableDictionary *)v52 setObject:v33 forKey:itemID2];
 
 LABEL_40:
     }
@@ -185,17 +185,17 @@ LABEL_42:
     v38 = STStorageLocStr(@"EMPTY_TRASH");
     [v37 setProperty:v38 forKey:@"stButtonTitle"];
 
-    [v37 setTarget:v51];
+    [v37 setTarget:selfCopy];
     [v37 setButtonAction:"emptyTrash"];
     [v48 addObject:v37];
     [v48 addObjectsFromArray:v19];
   }
 
-  v51->_hideEdit = [v48 count] == 0;
-  [STStorageFPFSController setEditingButtonHidden:v51 animated:"setEditingButtonHidden:animated:"];
+  selfCopy->_hideEdit = [v48 count] == 0;
+  [STStorageFPFSController setEditingButtonHidden:selfCopy animated:"setEditingButtonHidden:animated:"];
   if (![v48 count])
   {
-    if (v51->_areCollectionsLoaded)
+    if (selfCopy->_areCollectionsLoaded)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -205,9 +205,9 @@ LABEL_42:
 
       else
       {
-        v41 = [(STStorageFPFSController *)v51 pinnedOnly];
+        pinnedOnly = [(STStorageFPFSController *)selfCopy pinnedOnly];
         v42 = @"NO_UNSYNC_ITEMS";
-        if (v41)
+        if (pinnedOnly)
         {
           v42 = @"NO_PINNED_ITEMS";
         }
@@ -229,14 +229,14 @@ LABEL_42:
     [v48 addObject:v40];
   }
 
-  specsByItemID = v51->_specsByItemID;
-  v51->_specsByItemID = v52;
+  specsByItemID = selfCopy->_specsByItemID;
+  selfCopy->_specsByItemID = v52;
   v45 = v52;
 
-  v46 = *&v51->PSEditableListController_opaque[v50];
-  *&v51->PSEditableListController_opaque[v50] = v48;
+  v46 = *&selfCopy->PSEditableListController_opaque[v50];
+  *&selfCopy->PSEditableListController_opaque[v50] = v48;
 
-  v12 = *&v51->PSEditableListController_opaque[v50];
+  v12 = *&selfCopy->PSEditableListController_opaque[v50];
 LABEL_55:
   v16 = v12;
 LABEL_56:
@@ -244,25 +244,25 @@ LABEL_56:
   return v16;
 }
 
-- (id)specifierAtIndexPath:(id)a3
+- (id)specifierAtIndexPath:(id)path
 {
   v5.receiver = self;
   v5.super_class = STStorageFPFSController;
-  v3 = [(STStorageFPFSController *)&v5 specifierAtIndexPath:a3];
+  v3 = [(STStorageFPFSController *)&v5 specifierAtIndexPath:path];
 
   return v3;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(STStorageFPFSController *)self specifierAtIndexPath:a4];
+  v4 = [(STStorageFPFSController *)self specifierAtIndexPath:path];
 
   return v4 != 0;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  if ([(STStorageFPFSController *)self pinnedOnly:a3])
+  if ([(STStorageFPFSController *)self pinnedOnly:view])
   {
     v4 = @"UNPIN";
   }
@@ -277,11 +277,11 @@ LABEL_56:
   return v5;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v6 = [(STStorageFPFSController *)self specifierAtIndexPath:a5];
+    v6 = [(STStorageFPFSController *)self specifierAtIndexPath:path];
     v7 = [v6 propertyForKey:STStorageFPItemKey];
     v8 = v7;
     if (v7)
@@ -295,15 +295,15 @@ LABEL_56:
 
 - (void)emptyTrash
 {
-  v3 = [(FPItemCollection *)self->_collection items];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  items = [(FPItemCollection *)self->_collection items];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [items count]);
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(FPItemCollection *)self->_collection items];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  items2 = [(FPItemCollection *)self->_collection items];
+  v6 = [items2 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -314,7 +314,7 @@ LABEL_56:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items2);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
@@ -324,7 +324,7 @@ LABEL_56:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [items2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -343,10 +343,10 @@ LABEL_56:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)dataForCollectionShouldBeReloaded:(id)a3
+- (void)dataForCollectionShouldBeReloaded:(id)reloaded
 {
-  v4 = [a3 items];
-  v5 = [NSArray arrayWithArray:v4];
+  items = [reloaded items];
+  v5 = [NSArray arrayWithArray:items];
   [(STStorageFPFSController *)self setFpItems:v5];
 
   self->_areCollectionsLoaded = 1;

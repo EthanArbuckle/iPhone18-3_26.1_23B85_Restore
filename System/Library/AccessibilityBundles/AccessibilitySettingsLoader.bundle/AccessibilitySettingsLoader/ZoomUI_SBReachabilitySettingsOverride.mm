@@ -10,8 +10,8 @@
   v8.super_class = ZoomUI_SBReachabilitySettingsOverride;
   [(ZoomUI_SBReachabilitySettingsOverride *)&v8 yOffsetFactor];
   v3 = v2;
-  v4 = [getZoomServicesClass() sharedInstance];
-  [v4 reachabilityScaleFactor];
+  sharedInstance = [getZoomServicesClass() sharedInstance];
+  [sharedInstance reachabilityScaleFactor];
   v6 = v3 * v5;
 
   return v6;

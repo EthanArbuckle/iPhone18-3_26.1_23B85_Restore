@@ -1,32 +1,32 @@
 @interface UIArrowConsumingGestureRecognizer.GameControllerGestureRecognizer
-- (_TtCV12GameStoreKit33UIArrowConsumingGestureRecognizer31GameControllerGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)pressesChanged:(uint64_t)a3 withEvent:(void *)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (_TtCV12GameStoreKit33UIArrowConsumingGestureRecognizer31GameControllerGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)pressesChanged:(uint64_t)changed withEvent:(void *)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation UIArrowConsumingGestureRecognizer.GameControllerGestureRecognizer
 
-- (void)pressesChanged:(uint64_t)a3 withEvent:(void *)a4
+- (void)pressesChanged:(uint64_t)changed withEvent:(void *)event
 {
-  v5 = a4;
-  v6 = a1;
-  sub_24EFDCC94(v5);
+  eventCopy = event;
+  selfCopy = self;
+  sub_24EFDCC94(eventCopy);
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a4;
-  v6 = self;
-  sub_24EFDCC94(v5);
-  if ([(UIArrowConsumingGestureRecognizer.GameControllerGestureRecognizer *)v6 state]!= 4)
+  eventCopy = event;
+  selfCopy = self;
+  sub_24EFDCC94(eventCopy);
+  if ([(UIArrowConsumingGestureRecognizer.GameControllerGestureRecognizer *)selfCopy state]!= 4)
   {
-    [(UIArrowConsumingGestureRecognizer.GameControllerGestureRecognizer *)v6 setState:3];
+    [(UIArrowConsumingGestureRecognizer.GameControllerGestureRecognizer *)selfCopy setState:3];
   }
 }
 
-- (_TtCV12GameStoreKit33UIArrowConsumingGestureRecognizer31GameControllerGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtCV12GameStoreKit33UIArrowConsumingGestureRecognizer31GameControllerGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_24F92C648();
@@ -38,7 +38,7 @@
     memset(v6, 0, sizeof(v6));
   }
 
-  return sub_24EFDAF24(v6, a4);
+  return sub_24EFDAF24(v6, action);
 }
 
 @end

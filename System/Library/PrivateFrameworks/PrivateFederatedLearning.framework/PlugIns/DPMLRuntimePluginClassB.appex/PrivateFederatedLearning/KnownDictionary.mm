@@ -1,26 +1,26 @@
 @interface KnownDictionary
-+ (id)processTokens:(id)a3 knownTokensFile:(id)a4 unknownTokens:(id)a5 error:(id *)a6;
-+ (void)recordData:(id)a3 baseKey:(id)a4 metadata:(id)a5;
++ (id)processTokens:(id)tokens knownTokensFile:(id)file unknownTokens:(id)unknownTokens error:(id *)error;
++ (void)recordData:(id)data baseKey:(id)key metadata:(id)metadata;
 @end
 
 @implementation KnownDictionary
 
-+ (id)processTokens:(id)a3 knownTokensFile:(id)a4 unknownTokens:(id)a5 error:(id *)a6
++ (id)processTokens:(id)tokens knownTokensFile:(id)file unknownTokens:(id)unknownTokens error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v34 = a5;
-  v11 = [[SqliteClient alloc] initWithFile:v10 error:a6];
+  tokensCopy = tokens;
+  fileCopy = file;
+  unknownTokensCopy = unknownTokens;
+  v11 = [[SqliteClient alloc] initWithFile:fileCopy error:error];
   if (v11)
   {
-    v31 = v10;
+    v31 = fileCopy;
     v33 = +[NSMutableArray array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v32 = v9;
-    v12 = v9;
+    v32 = tokensCopy;
+    v12 = tokensCopy;
     v13 = [v12 countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v13)
     {
@@ -43,12 +43,12 @@
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) != 0 && [v19 length])
           {
-            v21 = [(SqliteClient *)v11 findWord:v19 error:a6];
+            v21 = [(SqliteClient *)v11 findWord:v19 error:error];
             if (v16 == v21)
             {
-              if (v34)
+              if (unknownTokensCopy)
               {
-                [v34 addObject:v19];
+                [unknownTokensCopy addObject:v19];
               }
             }
 
@@ -58,7 +58,7 @@
               v23 = v12;
               v24 = v16;
               v25 = v11;
-              v26 = a6;
+              errorCopy = error;
               v27 = +[_PFLLog extension];
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
               {
@@ -72,7 +72,7 @@
               v28 = [NSNumber numberWithInt:v22];
               [v33 addObject:v28];
 
-              a6 = v26;
+              error = errorCopy;
               v11 = v25;
               v16 = v24;
               v12 = v23;
@@ -90,8 +90,8 @@
       while (v14);
     }
 
-    v10 = v31;
-    v9 = v32;
+    fileCopy = v31;
+    tokensCopy = v32;
   }
 
   else
@@ -102,10 +102,10 @@
       sub_10001C788(v29);
     }
 
-    if (a6)
+    if (error)
     {
       [_DPMLRuntimeError errorWithCode:300 description:@"Failed to load sqlite DB."];
-      *a6 = v33 = 0;
+      *error = v33 = 0;
     }
 
     else
@@ -117,18 +117,18 @@
   return v33;
 }
 
-+ (void)recordData:(id)a3 baseKey:(id)a4 metadata:(id)a5
++ (void)recordData:(id)data baseKey:(id)key metadata:(id)metadata
 {
-  v7 = a4;
-  LODWORD(a3) = [FedStatsDataEncoder record:a3 metadata:a5 baseKey:v7];
+  keyCopy = key;
+  LODWORD(data) = [FedStatsDataEncoder record:data metadata:metadata baseKey:keyCopy];
   v8 = +[_PFLLog extension];
   v9 = v8;
-  if (a3)
+  if (data)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v7;
+      v11 = keyCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Record %@ data succeed.", &v10, 0xCu);
     }
   }

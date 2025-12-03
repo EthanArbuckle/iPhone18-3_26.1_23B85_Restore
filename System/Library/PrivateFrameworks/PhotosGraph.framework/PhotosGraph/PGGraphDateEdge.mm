@@ -1,15 +1,15 @@
 @interface PGGraphDateEdge
 + (id)filter;
-- (id)initFromMomentNode:(id)a3 toDateNode:(id)a4;
+- (id)initFromMomentNode:(id)node toDateNode:(id)dateNode;
 @end
 
 @implementation PGGraphDateEdge
 
-- (id)initFromMomentNode:(id)a3 toDateNode:(id)a4
+- (id)initFromMomentNode:(id)node toDateNode:(id)dateNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphDateEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:dateNode];
 }
 
 + (id)filter

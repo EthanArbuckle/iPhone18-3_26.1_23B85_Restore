@@ -1,18 +1,18 @@
 @interface HSCloudItemIDList
 - (HSCloudItemIDList)init;
-- (HSCloudItemIDList)initWithCoder:(id)a3;
-- (void)addCloudItemID:(unint64_t)a3 idType:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateCloudItemIDsUsingBlock:(id)a3;
-- (void)insertCloudItemID:(unint64_t)a3 idType:(int64_t)a4 atIndex:(unint64_t)a5;
+- (HSCloudItemIDList)initWithCoder:(id)coder;
+- (void)addCloudItemID:(unint64_t)d idType:(int64_t)type;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateCloudItemIDsUsingBlock:(id)block;
+- (void)insertCloudItemID:(unint64_t)d idType:(int64_t)type atIndex:(unint64_t)index;
 @end
 
 @implementation HSCloudItemIDList
 
-- (void)enumerateCloudItemIDsUsingBlock:(id)a3
+- (void)enumerateCloudItemIDsUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v13 = 0;
     v5 = [(NSMutableArray *)self->_itemIDs count];
@@ -23,12 +23,12 @@
       do
       {
         v8 = [(NSMutableArray *)self->_itemIDs objectAtIndex:v6];
-        v9 = [v8 unsignedLongLongValue];
+        unsignedLongLongValue = [v8 unsignedLongLongValue];
 
         v10 = [(NSMutableArray *)self->_idTypes objectAtIndex:v6];
-        v11 = [v10 integerValue];
+        integerValue = [v10 integerValue];
 
-        v4[2](v4, v9, v11, v6, &v13);
+        blockCopy[2](blockCopy, unsignedLongLongValue, integerValue, v6, &v13);
         if (v13)
         {
           break;
@@ -40,39 +40,39 @@
   }
 }
 
-- (void)insertCloudItemID:(unint64_t)a3 idType:(int64_t)a4 atIndex:(unint64_t)a5
+- (void)insertCloudItemID:(unint64_t)d idType:(int64_t)type atIndex:(unint64_t)index
 {
   itemIDs = self->_itemIDs;
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  [(NSMutableArray *)itemIDs insertObject:v9 atIndex:a5];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
+  [(NSMutableArray *)itemIDs insertObject:v9 atIndex:index];
 
   idTypes = self->_idTypes;
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [(NSMutableArray *)idTypes insertObject:v11 atIndex:a5];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  [(NSMutableArray *)idTypes insertObject:v11 atIndex:index];
 }
 
-- (void)addCloudItemID:(unint64_t)a3 idType:(int64_t)a4
+- (void)addCloudItemID:(unint64_t)d idType:(int64_t)type
 {
   itemIDs = self->_itemIDs;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
   [(NSMutableArray *)itemIDs addObject:v7];
 
   idTypes = self->_idTypes;
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   [(NSMutableArray *)idTypes addObject:v9];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemIDs = self->_itemIDs;
-  v5 = a3;
-  [v5 encodeObject:itemIDs forKey:@"HSCloudItemIDListItemIDs"];
-  [v5 encodeObject:self->_idTypes forKey:@"HSCloudItemIDListIDTypes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:itemIDs forKey:@"HSCloudItemIDListItemIDs"];
+  [coderCopy encodeObject:self->_idTypes forKey:@"HSCloudItemIDListIDTypes"];
 }
 
-- (HSCloudItemIDList)initWithCoder:(id)a3
+- (HSCloudItemIDList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = HSCloudItemIDList;
   v5 = [(HSCloudItemIDList *)&v17 init];
@@ -81,14 +81,14 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"HSCloudItemIDListItemIDs"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"HSCloudItemIDListItemIDs"];
     itemIDs = v5->_itemIDs;
     v5->_itemIDs = v9;
 
     v11 = MEMORY[0x277CBEB98];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"HSCloudItemIDListIDTypes"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"HSCloudItemIDListIDTypes"];
     idTypes = v5->_idTypes;
     v5->_idTypes = v14;
   }

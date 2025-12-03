@@ -1,11 +1,11 @@
 @interface PhotosDetailsViewHeaderContainerView
 - (CGRect)clippingRect;
 - (NSCopying)userData;
-- (_TtC12PhotosUICore36PhotosDetailsViewHeaderContainerView)initWithFrame:(CGRect)a3;
+- (_TtC12PhotosUICore36PhotosDetailsViewHeaderContainerView)initWithFrame:(CGRect)frame;
 - (void)becomeReusable;
 - (void)layoutSubviews;
-- (void)setClippingRect:(CGRect)a3;
-- (void)setUserData:(id)a3;
+- (void)setClippingRect:(CGRect)rect;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PhotosDetailsViewHeaderContainerView
@@ -18,13 +18,13 @@
   return v2;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
   v5 = OBJC_IVAR____TtC12PhotosUICore36PhotosDetailsViewHeaderContainerView_userData;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = data;
   swift_unknownObjectRetain_n();
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
   sub_1A48425F0();
   swift_unknownObjectRelease();
@@ -45,12 +45,12 @@
   return result;
 }
 
-- (void)setClippingRect:(CGRect)a3
+- (void)setClippingRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = (self + OBJC_IVAR____TtC12PhotosUICore36PhotosDetailsViewHeaderContainerView_clippingRect);
   swift_beginAccess();
   *v7 = x;
@@ -62,7 +62,7 @@
 - (void)becomeReusable
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0x78);
-  v3 = self;
+  selfCopy = self;
   v2(0);
 }
 
@@ -81,12 +81,12 @@
   }
 }
 
-- (_TtC12PhotosUICore36PhotosDetailsViewHeaderContainerView)initWithFrame:(CGRect)a3
+- (_TtC12PhotosUICore36PhotosDetailsViewHeaderContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore36PhotosDetailsViewHeaderContainerView_userData) = 0;
   v8 = (self + OBJC_IVAR____TtC12PhotosUICore36PhotosDetailsViewHeaderContainerView_clippingRect);
   *v8 = 0u;

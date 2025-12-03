@@ -1,21 +1,21 @@
 @interface MFMessageCriterionConverter
 + (OS_os_log)log;
 - (MFMessageCriterionConverterDelegate)delegate;
-- (id)_defaultKeysForCriterionType:(int64_t)a3;
-- (id)_messageCriterionForComparisonPredicate:(id)a3;
-- (id)_messageCriterionForCompoundPredicate:(id)a3;
-- (id)_orPredicateForAttributes:(id)a3 matchingValue:(id)a4 qualifier:(int64_t)a5;
-- (id)_predicateForKey:(id)a3 value:(id)a4 qualifier:(int64_t)a5;
-- (id)_predicateKeysForCriterion:(int64_t)a3;
-- (id)_searchPredicateForCriterion:(id)a3;
-- (id)_simplifiedCompoundPredicateOfType:(unint64_t)a3 forSubqueries:(id)a4;
-- (id)messageCriterionFromPredicate:(id)a3;
-- (id)messageCriterionFromPredicateFormatString:(id)a3;
-- (id)predicateFromMessageCriterion:(id)a3;
-- (int64_t)_criterionTypeForKey:(id)a3;
-- (int64_t)_criterionTypeFromExpression:(id)a3;
-- (int64_t)_defaultCriterionTypeForKey:(id)a3;
-- (unint64_t)_proposedPredicateOperatorType:(unint64_t)a3 forKey:(id)a4;
+- (id)_defaultKeysForCriterionType:(int64_t)type;
+- (id)_messageCriterionForComparisonPredicate:(id)predicate;
+- (id)_messageCriterionForCompoundPredicate:(id)predicate;
+- (id)_orPredicateForAttributes:(id)attributes matchingValue:(id)value qualifier:(int64_t)qualifier;
+- (id)_predicateForKey:(id)key value:(id)value qualifier:(int64_t)qualifier;
+- (id)_predicateKeysForCriterion:(int64_t)criterion;
+- (id)_searchPredicateForCriterion:(id)criterion;
+- (id)_simplifiedCompoundPredicateOfType:(unint64_t)type forSubqueries:(id)subqueries;
+- (id)messageCriterionFromPredicate:(id)predicate;
+- (id)messageCriterionFromPredicateFormatString:(id)string;
+- (id)predicateFromMessageCriterion:(id)criterion;
+- (int64_t)_criterionTypeForKey:(id)key;
+- (int64_t)_criterionTypeFromExpression:(id)expression;
+- (int64_t)_defaultCriterionTypeForKey:(id)key;
+- (unint64_t)_proposedPredicateOperatorType:(unint64_t)type forKey:(id)key;
 @end
 
 @implementation MFMessageCriterionConverter
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __34__MFMessageCriterionConverter_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_21 != -1)
   {
     dispatch_once(&log_onceToken_21, block);
@@ -45,16 +45,16 @@ void __34__MFMessageCriterionConverter_log__block_invoke(uint64_t a1)
   log_log_21 = v1;
 }
 
-- (id)_simplifiedCompoundPredicateOfType:(unint64_t)a3 forSubqueries:(id)a4
+- (id)_simplifiedCompoundPredicateOfType:(unint64_t)type forSubqueries:(id)subqueries
 {
   v23 = *MEMORY[0x1E69E9840];
-  v17 = a4;
-  v5 = [MEMORY[0x1E695DEC8] array];
+  subqueriesCopy = subqueries;
+  array = [MEMORY[0x1E695DEC8] array];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v17;
+  v6 = subqueriesCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v7)
   {
@@ -65,7 +65,7 @@ void __34__MFMessageCriterionConverter_log__block_invoke(uint64_t a1)
   while (2)
   {
     v9 = 0;
-    v10 = v5;
+    v10 = array;
     do
     {
       if (*v19 != v8)
@@ -84,17 +84,17 @@ LABEL_14:
       }
 
       v12 = v11;
-      if ([v12 compoundPredicateType] != a3)
+      if ([v12 compoundPredicateType] != type)
       {
 
         goto LABEL_14;
       }
 
-      v13 = [v12 subpredicates];
-      v5 = [v10 arrayByAddingObjectsFromArray:v13];
+      subpredicates = [v12 subpredicates];
+      array = [v10 arrayByAddingObjectsFromArray:subpredicates];
 
       ++v9;
-      v10 = v5;
+      v10 = array;
     }
 
     while (v7 != v9);
@@ -109,15 +109,15 @@ LABEL_14:
 
 LABEL_10:
 
-  if (!v5)
+  if (!array)
   {
 LABEL_15:
-    v5 = v6;
+    array = v6;
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    v14 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:a3 subpredicates:v5];
+    v14 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:type subpredicates:array];
   }
 
   else
@@ -130,28 +130,28 @@ LABEL_15:
   return v14;
 }
 
-- (unint64_t)_proposedPredicateOperatorType:(unint64_t)a3 forKey:(id)a4
+- (unint64_t)_proposedPredicateOperatorType:(unint64_t)type forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(MFMessageCriterionConverter *)self delegate];
+  keyCopy = key;
+  delegate = [(MFMessageCriterionConverter *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(MFMessageCriterionConverter *)self delegate];
-    a3 = [v9 messageCriterionConverter:self willUsePredicateOperatorType:a3 forKey:v6];
+    delegate2 = [(MFMessageCriterionConverter *)self delegate];
+    type = [delegate2 messageCriterionConverter:self willUsePredicateOperatorType:type forKey:keyCopy];
   }
 
-  return a3;
+  return type;
 }
 
-- (id)_predicateForKey:(id)a3 value:(id)a4 qualifier:(int64_t)a5
+- (id)_predicateForKey:(id)key value:(id)value qualifier:(int64_t)qualifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E696ABC8] expressionForConstantValue:v8];
-  v11 = [MEMORY[0x1E696ABC8] expressionForConstantValue:v9];
-  if (a5 >= 9)
+  keyCopy = key;
+  valueCopy = value;
+  v10 = [MEMORY[0x1E696ABC8] expressionForConstantValue:keyCopy];
+  v11 = [MEMORY[0x1E696ABC8] expressionForConstantValue:valueCopy];
+  if (qualifier >= 9)
   {
     v13 = +[MFMessageCriterionConverter log];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -164,27 +164,27 @@ LABEL_15:
 
   else
   {
-    v12 = qword_1B0E97760[a5];
+    v12 = qword_1B0E97760[qualifier];
   }
 
-  v14 = [(MFMessageCriterionConverter *)self _proposedPredicateOperatorType:v12 forKey:v8];
+  v14 = [(MFMessageCriterionConverter *)self _proposedPredicateOperatorType:v12 forKey:keyCopy];
   v15 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v10 rightExpression:v11 modifier:0 type:v14 options:0];
 
   return v15;
 }
 
-- (id)_orPredicateForAttributes:(id)a3 matchingValue:(id)a4 qualifier:(int64_t)a5
+- (id)_orPredicateForAttributes:(id)attributes matchingValue:(id)value qualifier:(int64_t)qualifier
 {
-  v8 = a4;
+  valueCopy = value;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __81__MFMessageCriterionConverter__orPredicateForAttributes_matchingValue_qualifier___block_invoke;
   v14[3] = &unk_1E7AA6F58;
   v14[4] = self;
-  v9 = v8;
+  v9 = valueCopy;
   v15 = v9;
-  v16 = a5;
-  v10 = [a3 ef_map:v14];
+  qualifierCopy = qualifier;
+  v10 = [attributes ef_map:v14];
   if ([v10 count] == 1)
   {
     v11 = [v10 objectAtIndexedSubscript:0];
@@ -212,7 +212,7 @@ id __81__MFMessageCriterionConverter__orPredicateForAttributes_matchingValue_qua
   return v2;
 }
 
-- (id)_defaultKeysForCriterionType:(int64_t)a3
+- (id)_defaultKeysForCriterionType:(int64_t)type
 {
   if (_defaultKeysForCriterionType__onceToken != -1)
   {
@@ -220,7 +220,7 @@ id __81__MFMessageCriterionConverter__orPredicateForAttributes_matchingValue_qua
   }
 
   v4 = _defaultKeysForCriterionType__converterKeyDictionary;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   return v6;
@@ -340,34 +340,34 @@ void __60__MFMessageCriterionConverter__defaultKeysForCriterionType___block_invo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_predicateKeysForCriterion:(int64_t)a3
+- (id)_predicateKeysForCriterion:(int64_t)criterion
 {
-  v5 = [(MFMessageCriterionConverter *)self delegate];
+  delegate = [(MFMessageCriterionConverter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 messageCriterionConverter:self predicateKeysForCriterionType:a3];
+    [delegate messageCriterionConverter:self predicateKeysForCriterionType:criterion];
   }
 
   else
   {
-    [(MFMessageCriterionConverter *)self _defaultKeysForCriterionType:a3];
+    [(MFMessageCriterionConverter *)self _defaultKeysForCriterionType:criterion];
   }
   v6 = ;
 
   return v6;
 }
 
-- (id)_searchPredicateForCriterion:(id)a3
+- (id)_searchPredicateForCriterion:(id)criterion
 {
-  v5 = a3;
-  v6 = [v5 qualifier];
-  v7 = [v5 expression];
-  v8 = v5;
-  v9 = [v8 criterionType];
-  if (v9 > 10)
+  criterionCopy = criterion;
+  qualifier = [criterionCopy qualifier];
+  expression = [criterionCopy expression];
+  v8 = criterionCopy;
+  criterionType = [v8 criterionType];
+  if (criterionType > 10)
   {
     v10 = 0;
-    switch(v9)
+    switch(criterionType)
     {
       case 23:
         v10 = 11;
@@ -392,26 +392,26 @@ void __60__MFMessageCriterionConverter__defaultKeysForCriterionType___block_invo
         v10 = 1;
         goto LABEL_48;
       case 27:
-        v14 = [v8 expression];
-        if ([v14 isEqualToString:@"MessageSenderIsVIP"])
+        expression2 = [v8 expression];
+        if ([expression2 isEqualToString:@"MessageSenderIsVIP"])
         {
           v10 = 16;
           goto LABEL_47;
         }
 
-        if ([v14 isEqualToString:@"MessageIsRead"])
+        if ([expression2 isEqualToString:@"MessageIsRead"])
         {
           v10 = 17;
           goto LABEL_47;
         }
 
-        if ([v14 isEqualToString:@"MFMessageHasAttachments"])
+        if ([expression2 isEqualToString:@"MFMessageHasAttachments"])
         {
           v10 = 18;
           goto LABEL_47;
         }
 
-        v15 = [v14 isEqualToString:@"MessageIsFlagged"] == 0;
+        v15 = [expression2 isEqualToString:@"MessageIsFlagged"] == 0;
         v16 = 19;
         break;
       case 28:
@@ -450,23 +450,23 @@ void __60__MFMessageCriterionConverter__defaultKeysForCriterionType___block_invo
       default:
         v11 = 12;
         v12 = 14;
-        if (v9 != 12)
+        if (criterionType != 12)
         {
           v12 = 0;
         }
 
-        v13 = v9 == 11;
+        v13 = criterionType == 11;
         goto LABEL_15;
     }
 
     goto LABEL_44;
   }
 
-  if (v9 <= 8)
+  if (criterionType <= 8)
   {
-    if (v9 != 1)
+    if (criterionType != 1)
     {
-      if (v9 == 2)
+      if (criterionType == 2)
       {
         v10 = 10;
       }
@@ -479,22 +479,22 @@ void __60__MFMessageCriterionConverter__defaultKeysForCriterionType___block_invo
       goto LABEL_48;
     }
 
-    v14 = [v8 criterionIdentifier];
-    if ([*MEMORY[0x1E699B178] isEqual:v14])
+    expression2 = [v8 criterionIdentifier];
+    if ([*MEMORY[0x1E699B178] isEqual:expression2])
     {
       v10 = 15;
     }
 
-    else if ([*MEMORY[0x1E699B180] isEqual:v14])
+    else if ([*MEMORY[0x1E699B180] isEqual:expression2])
     {
       v10 = 3;
     }
 
     else
     {
-      if (([*MEMORY[0x1E699B098] isEqual:v14] & 1) == 0)
+      if (([*MEMORY[0x1E699B098] isEqual:expression2] & 1) == 0)
       {
-        v15 = [*MEMORY[0x1E699B088] isEqual:v14] == 0;
+        v15 = [*MEMORY[0x1E699B088] isEqual:expression2] == 0;
         v16 = 5;
 LABEL_44:
         if (v15)
@@ -520,12 +520,12 @@ LABEL_47:
 
   v11 = 2;
   v12 = 13;
-  if (v9 != 10)
+  if (criterionType != 10)
   {
     v12 = 0;
   }
 
-  v13 = v9 == 9;
+  v13 = criterionType == 9;
 LABEL_15:
   if (v13)
   {
@@ -552,13 +552,13 @@ LABEL_48:
 
       goto LABEL_64;
     case 1:
-      v29 = [v8 criteria];
+      criteria = [v8 criteria];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __60__MFMessageCriterionConverter__searchPredicateForCriterion___block_invoke;
       v34[3] = &unk_1E7AA6F80;
       v34[4] = self;
-      v30 = [v29 ef_compactMap:v34];
+      v30 = [criteria ef_compactMap:v34];
 
       if ([v8 allCriteriaMustBeSatisfied])
       {
@@ -590,27 +590,27 @@ LABEL_48:
     case 33:
     case 34:
     case 35:
-      v19 = [(MFMessageCriterionConverter *)self _orPredicateForAttributes:v17 matchingValue:v7 qualifier:v6];
+      v19 = [(MFMessageCriterionConverter *)self _orPredicateForAttributes:v17 matchingValue:expression qualifier:qualifier];
       goto LABEL_52;
     case 12:
     case 13:
     case 14:
     case 31:
-      v23 = [v8 dateFromExpression];
-      v20 = [(MFMessageCriterionConverter *)self _orPredicateForAttributes:v17 matchingValue:v23 qualifier:v6];
+      dateFromExpression = [v8 dateFromExpression];
+      v20 = [(MFMessageCriterionConverter *)self _orPredicateForAttributes:v17 matchingValue:dateFromExpression qualifier:qualifier];
 
       goto LABEL_53;
     case 16:
       goto LABEL_51;
     case 17:
-      if (v6 == 3)
+      if (qualifier == 3)
       {
         v32 = MEMORY[0x1E695E118];
       }
 
       else
       {
-        if (v6 != 7)
+        if (qualifier != 7)
         {
           v33 = +[MFMessageCriterionConverter log];
           if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -625,12 +625,12 @@ LABEL_48:
         v32 = MEMORY[0x1E695E110];
       }
 
-      v6 = 3;
+      qualifier = 3;
       v19 = [(MFMessageCriterionConverter *)self _orPredicateForAttributes:v17 matchingValue:v32 qualifier:3];
 LABEL_52:
       v20 = v19;
 LABEL_53:
-      if (v20 && v6 == 4)
+      if (v20 && qualifier == 4)
       {
         v21 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v20];
 
@@ -653,7 +653,7 @@ LABEL_66:
     case 19:
     case 20:
     case 22:
-      v18 = v6;
+      v18 = qualifier;
 LABEL_51:
       v19 = [(MFMessageCriterionConverter *)self _orPredicateForAttributes:v17 matchingValue:MEMORY[0x1E695E118] qualifier:v18];
       goto LABEL_52;
@@ -665,25 +665,25 @@ LABEL_51:
     case 28:
       goto LABEL_62;
     case 25:
-      if (v6 == 8)
+      if (qualifier == 8)
       {
-        v26 = [v7 componentsSeparatedByString:{@", "}];
+        v26 = [expression componentsSeparatedByString:{@", "}];
         v27 = [v26 ef_map:&__block_literal_global_136];
 
-        v7 = v27;
+        expression = v27;
       }
 
       else
       {
-        [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "integerValue")}];
-        v7 = v26 = v7;
+        [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(expression, "integerValue")}];
+        expression = v26 = expression;
       }
 
-      v19 = [(MFMessageCriterionConverter *)self _orPredicateForAttributes:v17 matchingValue:v7 qualifier:v6];
+      v19 = [(MFMessageCriterionConverter *)self _orPredicateForAttributes:v17 matchingValue:expression qualifier:qualifier];
       goto LABEL_52;
     case 36:
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:a2 object:self file:@"MFMessageCriterionConverter.m" lineNumber:507 description:@"Criterion code is no longer supported"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MFMessageCriterionConverter.m" lineNumber:507 description:@"Criterion code is no longer supported"];
 
       goto LABEL_65;
     default:
@@ -720,26 +720,26 @@ id __60__MFMessageCriterionConverter__searchPredicateForCriterion___block_invoke
   return v3;
 }
 
-- (id)predicateFromMessageCriterion:(id)a3
+- (id)predicateFromMessageCriterion:(id)criterion
 {
-  v4 = [a3 criterionForSQL];
-  v5 = [(MFMessageCriterionConverter *)self _searchPredicateForCriterion:v4];
+  criterionForSQL = [criterion criterionForSQL];
+  v5 = [(MFMessageCriterionConverter *)self _searchPredicateForCriterion:criterionForSQL];
 
   return v5;
 }
 
-- (int64_t)_defaultCriterionTypeForKey:(id)a3
+- (int64_t)_defaultCriterionTypeForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (_defaultCriterionTypeForKey__onceToken != -1)
   {
     [MFMessageCriterionConverter _defaultCriterionTypeForKey:];
   }
 
-  v4 = [_defaultCriterionTypeForKey__converterKeyDictionary objectForKeyedSubscript:v3];
-  v5 = [v4 integerValue];
+  v4 = [_defaultCriterionTypeForKey__converterKeyDictionary objectForKeyedSubscript:keyCopy];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 void __59__MFMessageCriterionConverter__defaultCriterionTypeForKey___block_invoke()
@@ -803,32 +803,32 @@ void __59__MFMessageCriterionConverter__defaultCriterionTypeForKey___block_invok
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)_criterionTypeForKey:(id)a3
+- (int64_t)_criterionTypeForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MFMessageCriterionConverter *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v6 = [v5 messageCriterionConverter:self criterionTypeForKey:v4]) == 0)
+  keyCopy = key;
+  delegate = [(MFMessageCriterionConverter *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (v6 = [delegate messageCriterionConverter:self criterionTypeForKey:keyCopy]) == 0)
   {
-    v6 = [(MFMessageCriterionConverter *)self _defaultCriterionTypeForKey:v4];
+    v6 = [(MFMessageCriterionConverter *)self _defaultCriterionTypeForKey:keyCopy];
   }
 
   return v6;
 }
 
-- (int64_t)_criterionTypeFromExpression:(id)a3
+- (int64_t)_criterionTypeFromExpression:(id)expression
 {
-  v4 = a3;
-  if (![v4 expressionType])
+  expressionCopy = expression;
+  if (![expressionCopy expressionType])
   {
-    v5 = [v4 constantValue];
+    constantValue = [expressionCopy constantValue];
     goto LABEL_5;
   }
 
-  if ([v4 expressionType] == 3)
+  if ([expressionCopy expressionType] == 3)
   {
-    v5 = [v4 keyPath];
+    constantValue = [expressionCopy keyPath];
 LABEL_5:
-    v6 = v5;
+    v6 = constantValue;
     goto LABEL_7;
   }
 
@@ -848,18 +848,18 @@ LABEL_7:
   return v7;
 }
 
-- (id)_messageCriterionForComparisonPredicate:(id)a3
+- (id)_messageCriterionForComparisonPredicate:(id)predicate
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 predicateOperatorType];
-  if (v5 <= 5)
+  predicateCopy = predicate;
+  predicateOperatorType = [predicateCopy predicateOperatorType];
+  if (predicateOperatorType <= 5)
   {
-    if (v5 > 2)
+    if (predicateOperatorType > 2)
     {
-      if (v5 != 3)
+      if (predicateOperatorType != 3)
       {
-        if (v5 == 4)
+        if (predicateOperatorType == 4)
         {
           v7 = 3;
           v6 = 7;
@@ -877,16 +877,16 @@ LABEL_7:
 
     else
     {
-      if (!v5)
+      if (!predicateOperatorType)
       {
         v6 = 5;
         v7 = 5;
         goto LABEL_26;
       }
 
-      if (v5 != 1)
+      if (predicateOperatorType != 1)
       {
-        if (v5 == 2)
+        if (predicateOperatorType == 2)
         {
           v6 = 6;
         }
@@ -896,7 +896,7 @@ LABEL_7:
           v6 = 0;
         }
 
-        if (v5 == 2)
+        if (predicateOperatorType == 2)
         {
           v7 = 6;
         }
@@ -913,11 +913,11 @@ LABEL_7:
     goto LABEL_23;
   }
 
-  if (v5 <= 9)
+  if (predicateOperatorType <= 9)
   {
-    if ((v5 - 6) >= 2)
+    if ((predicateOperatorType - 6) >= 2)
     {
-      if (v5 == 8)
+      if (predicateOperatorType == 8)
       {
         v6 = 1;
         v7 = 1;
@@ -927,7 +927,7 @@ LABEL_7:
       {
         v6 = 0;
         v7 = 0;
-        if (v5 == 9)
+        if (predicateOperatorType == 9)
         {
           v6 = 2;
           v7 = 2;
@@ -940,14 +940,14 @@ LABEL_7:
     goto LABEL_23;
   }
 
-  if (v5 == 10)
+  if (predicateOperatorType == 10)
   {
     v6 = 8;
     v7 = 8;
     goto LABEL_26;
   }
 
-  if (v5 == 11 || (v6 = 0, v7 = 0, v5 == 100))
+  if (predicateOperatorType == 11 || (v6 = 0, v7 = 0, predicateOperatorType == 100))
   {
 LABEL_23:
     v8 = +[MFMessageCriterionConverter log];
@@ -961,23 +961,23 @@ LABEL_23:
   }
 
 LABEL_26:
-  v9 = [v4 leftExpression];
+  leftExpression = [predicateCopy leftExpression];
   v46 = v7;
-  v10 = [(MFMessageCriterionConverter *)self _criterionTypeFromExpression:v9];
+  v10 = [(MFMessageCriterionConverter *)self _criterionTypeFromExpression:leftExpression];
 
-  v11 = [v4 rightExpression];
-  if (![v11 expressionType])
+  rightExpression = [predicateCopy rightExpression];
+  if (![rightExpression expressionType])
   {
-    v15 = [v11 constantValue];
-    v16 = [(MFMessageCriterionConverter *)self delegate];
+    constantValue = [rightExpression constantValue];
+    delegate = [(MFMessageCriterionConverter *)self delegate];
     v17 = objc_opt_respondsToSelector();
 
-    if ((v17 & 1) == 0 || (-[MFMessageCriterionConverter delegate](self, "delegate"), v18 = objc_claimAutoreleasedReturnValue(), [v18 messageCriterionConverter:self expressionForConstantValue:v15 withCriterionType:v10], v12 = objc_claimAutoreleasedReturnValue(), v18, !v12))
+    if ((v17 & 1) == 0 || (-[MFMessageCriterionConverter delegate](self, "delegate"), v18 = objc_claimAutoreleasedReturnValue(), [v18 messageCriterionConverter:self expressionForConstantValue:constantValue withCriterionType:v10], keyPath = objc_claimAutoreleasedReturnValue(), v18, !keyPath))
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = v15;
+        v19 = constantValue;
       }
 
       else
@@ -985,7 +985,7 @@ LABEL_26:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = v15;
+          v14 = constantValue;
           v13 = 0;
           goto LABEL_39;
         }
@@ -996,7 +996,7 @@ LABEL_26:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = v15;
+            v13 = constantValue;
             goto LABEL_38;
           }
 
@@ -1005,14 +1005,14 @@ LABEL_37:
 LABEL_38:
           v14 = 0;
 LABEL_39:
-          v12 = 0;
+          keyPath = 0;
           goto LABEL_40;
         }
 
-        v19 = MFCriterionExpressionForDate(v15);
+        v19 = MFCriterionExpressionForDate(constantValue);
       }
 
-      v12 = v19;
+      keyPath = v19;
     }
 
     v13 = 0;
@@ -1022,18 +1022,18 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  if ([v11 expressionType] != 3)
+  if ([rightExpression expressionType] != 3)
   {
-    v15 = +[MFMessageCriterionConverter log];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    constantValue = +[MFMessageCriterionConverter log];
+    if (os_log_type_enabled(constantValue, OS_LOG_TYPE_ERROR))
     {
-      -[MFMessageCriterionConverter _messageCriterionForComparisonPredicate:].cold.2(buf, [v11 expressionType], v15);
+      -[MFMessageCriterionConverter _messageCriterionForComparisonPredicate:].cold.2(buf, [rightExpression expressionType], constantValue);
     }
 
     goto LABEL_37;
   }
 
-  v12 = [v11 keyPath];
+  keyPath = [rightExpression keyPath];
   v13 = 0;
   v14 = 0;
 LABEL_41:
@@ -1045,8 +1045,8 @@ LABEL_41:
       p_super = MFLogGeneral();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
       {
-        v36 = [v4 ef_publicDescription];
-        [(MFMessageCriterionConverter *)v36 _messageCriterionForComparisonPredicate:v47, p_super];
+        ef_publicDescription = [predicateCopy ef_publicDescription];
+        [(MFMessageCriterionConverter *)ef_publicDescription _messageCriterionForComparisonPredicate:v47, p_super];
       }
 
       goto LABEL_129;
@@ -1111,7 +1111,7 @@ LABEL_41:
       v33 = MEMORY[0x1E699B178];
       goto LABEL_114;
     case 16:
-      v32 = [v14 BOOLValue];
+      bOOLValue = [v14 BOOLValue];
       if (v46 == 3)
       {
         goto LABEL_125;
@@ -1128,9 +1128,9 @@ LABEL_41:
         goto LABEL_129;
       }
 
-      v32 = v32 ^ 1;
+      bOOLValue = bOOLValue ^ 1;
 LABEL_125:
-      p_super = [MFMessageCriterion senderIsVIPCriterion:v32];
+      p_super = [MFMessageCriterion senderIsVIPCriterion:bOOLValue];
 LABEL_126:
       v20 = 0;
       goto LABEL_131;
@@ -1142,14 +1142,14 @@ LABEL_126:
         v22 = MFMessageIsFlagged;
       }
 
-      v23 = *v22;
+      stringValue = *v22;
 
       if (v14)
       {
-        v24 = [v14 integerValue];
+        integerValue = [v14 integerValue];
         v20 = 0;
         v25 = v46;
-        if (!v24)
+        if (!integerValue)
         {
           v25 = v6;
         }
@@ -1191,21 +1191,21 @@ LABEL_126:
       v27 = [MFMessageCriterion messageIsDeletedCriterion:[v14 BOOLValue]];
       goto LABEL_104;
     case 23:
-      v40 = [v4 predicateOperatorType];
+      predicateOperatorType2 = [predicateCopy predicateOperatorType];
       v20 = 0;
       v41 = v46;
-      if (v40 == 10)
+      if (predicateOperatorType2 == 10)
       {
         v41 = 3;
       }
 
       v46 = v41;
       v21 = 24;
-      if (!v12 && v14)
+      if (!keyPath && v14)
       {
         v20 = 0;
         [v14 stringValue];
-        v12 = v21 = 24;
+        keyPath = v21 = 24;
       }
 
       goto LABEL_118;
@@ -1243,17 +1243,17 @@ LABEL_131:
         v20 = 0;
         v21 = 51;
 LABEL_99:
-        v12 = v35;
+        keyPath = v35;
       }
 
       else if (v14)
       {
-        v23 = [v14 stringValue];
+        stringValue = [v14 stringValue];
 
         v20 = 0;
         v21 = 51;
 LABEL_117:
-        v12 = v23;
+        keyPath = stringValue;
       }
 
       else
@@ -1263,7 +1263,7 @@ LABEL_117:
       }
 
 LABEL_118:
-      v43 = [[MFMessageCriterion alloc] initWithType:v21 qualifier:v46 expression:v12];
+      v43 = [[MFMessageCriterion alloc] initWithType:v21 qualifier:v46 expression:keyPath];
       p_super = &v43->super;
       if (v20)
       {
@@ -1280,13 +1280,13 @@ LABEL_114:
     case 27:
       p_super = [objc_alloc(MEMORY[0x1E699B200]) initWithHash:{-[NSObject longLongValue](v14, "longLongValue")}];
       v28 = [MFMessageCriterion alloc];
-      v29 = [p_super stringValue];
-      v30 = [(MFMessageCriterion *)v28 initWithType:38 qualifier:v46 expression:v29];
+      stringValue2 = [p_super stringValue];
+      v30 = [(MFMessageCriterion *)v28 initWithType:38 qualifier:v46 expression:stringValue2];
 
       goto LABEL_130;
     case 28:
-      v42 = [(MFMessageCriterionConverter *)self delegate];
-      p_super = [v42 mailAccountForIdentifier:v12];
+      delegate2 = [(MFMessageCriterionConverter *)self delegate];
+      p_super = [delegate2 mailAccountForIdentifier:keyPath];
 
       v31 = [MFMessageCriterion criterionForAccount:p_super];
       goto LABEL_111;
@@ -1295,9 +1295,9 @@ LABEL_114:
       v21 = 46;
       goto LABEL_118;
     case 30:
-      v37 = [v14 BOOLValue];
+      bOOLValue2 = [v14 BOOLValue];
       v38 = 5;
-      if (!v37)
+      if (!bOOLValue2)
       {
         v38 = 6;
       }
@@ -1368,43 +1368,43 @@ LABEL_130:
   }
 }
 
-- (id)_messageCriterionForCompoundPredicate:(id)a3
+- (id)_messageCriterionForCompoundPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [v4 subpredicates];
+  predicateCopy = predicate;
+  subpredicates = [predicateCopy subpredicates];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __69__MFMessageCriterionConverter__messageCriterionForCompoundPredicate___block_invoke;
   v14[3] = &unk_1E7AA6FC8;
   v14[4] = self;
-  v6 = [v5 ef_compactMap:v14];
+  v6 = [subpredicates ef_compactMap:v14];
 
-  v7 = [v4 compoundPredicateType];
-  if (v7)
+  compoundPredicateType = [predicateCopy compoundPredicateType];
+  if (compoundPredicateType)
   {
-    if (v7 == 1)
+    if (compoundPredicateType == 1)
     {
       v8 = [MFMessageCriterion andCompoundCriterionWithCriteria:v6];
       goto LABEL_6;
     }
 
-    if (v7 == 2)
+    if (compoundPredicateType == 2)
     {
       v8 = [MFMessageCriterion orCompoundCriterionWithCriteria:v6];
 LABEL_6:
-      v9 = v8;
+      firstObject = v8;
       goto LABEL_17;
     }
 
-    v9 = 0;
+    firstObject = 0;
   }
 
   else
   {
     if ([v6 count] > 1)
     {
-      v9 = MFLogGeneral();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      firstObject = MFLogGeneral();
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
       {
         [MFMessageCriterionConverter _messageCriterionForCompoundPredicate:];
       }
@@ -1414,28 +1414,28 @@ LABEL_6:
 
     else
     {
-      v9 = [v6 firstObject];
-      if (![v9 qualifier])
+      firstObject = [v6 firstObject];
+      if (![firstObject qualifier])
       {
-        v10 = [v9 criteria];
-        v11 = [v10 count];
+        criteria = [firstObject criteria];
+        v11 = [criteria count];
 
         if (v11 <= 1)
         {
-          [v9 setQualifier:4];
+          [firstObject setQualifier:4];
           goto LABEL_17;
         }
       }
 
-      v12 = [MFMessageCriterion notCriterionWithCriterion:v9];
+      v12 = [MFMessageCriterion notCriterionWithCriterion:firstObject];
     }
 
-    v9 = v12;
+    firstObject = v12;
   }
 
 LABEL_17:
 
-  return v9;
+  return firstObject;
 }
 
 id __69__MFMessageCriterionConverter__messageCriterionForCompoundPredicate___block_invoke(uint64_t a1, uint64_t a2)
@@ -1445,10 +1445,10 @@ id __69__MFMessageCriterionConverter__messageCriterionForCompoundPredicate___blo
   return v2;
 }
 
-- (id)messageCriterionFromPredicate:(id)a3
+- (id)messageCriterionFromPredicate:(id)predicate
 {
-  v4 = a3;
-  if ([v4 ef_matchesEverything])
+  predicateCopy = predicate;
+  if ([predicateCopy ef_matchesEverything])
   {
     v5 = +[MFMessageCriterion matchEverythingCriterion];
 LABEL_9:
@@ -1456,7 +1456,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v4 ef_matchesNothing])
+  if ([predicateCopy ef_matchesNothing])
   {
     v5 = +[MFMessageCriterion matchNothingCriterion];
     goto LABEL_9;
@@ -1465,14 +1465,14 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MFMessageCriterionConverter *)self _messageCriterionForCompoundPredicate:v4];
+    v5 = [(MFMessageCriterionConverter *)self _messageCriterionForCompoundPredicate:predicateCopy];
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MFMessageCriterionConverter *)self _messageCriterionForComparisonPredicate:v4];
+    v5 = [(MFMessageCriterionConverter *)self _messageCriterionForComparisonPredicate:predicateCopy];
     goto LABEL_9;
   }
 
@@ -1488,9 +1488,9 @@ LABEL_10:
   return v6;
 }
 
-- (id)messageCriterionFromPredicateFormatString:(id)a3
+- (id)messageCriterionFromPredicateFormatString:(id)string
 {
-  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:a3];
+  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:string];
   if (v4)
   {
     v5 = [(MFMessageCriterionConverter *)self messageCriterionFromPredicate:v4];

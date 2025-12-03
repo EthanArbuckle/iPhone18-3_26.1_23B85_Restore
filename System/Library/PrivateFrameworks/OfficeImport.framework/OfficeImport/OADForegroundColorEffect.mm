@@ -1,9 +1,9 @@
 @interface OADForegroundColorEffect
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADForegroundColorEffect)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)setStyleColor:(id)a3;
+- (void)setStyleColor:(id)color;
 @end
 
 @implementation OADForegroundColorEffect
@@ -23,34 +23,34 @@
   return [(OADBlipEffect *)&v5 hash]^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(OADColor *)self->mForegroundColor copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(OADColor *)self->mForegroundColor copyWithZone:zone];
   [v5 setForegroundColor:v6];
 
   return v5;
 }
 
-- (void)setStyleColor:(id)a3
+- (void)setStyleColor:(id)color
 {
-  v4 = [(OADColor *)self->mForegroundColor colorForStyleColor:a3];
+  v4 = [(OADColor *)self->mForegroundColor colorForStyleColor:color];
   [(OADForegroundColorEffect *)self setForegroundColor:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     mForegroundColor = self->mForegroundColor;
-    v6 = [v4 foregroundColor];
-    if ([(OADColor *)mForegroundColor isEqual:v6])
+    foregroundColor = [equalCopy foregroundColor];
+    if ([(OADColor *)mForegroundColor isEqual:foregroundColor])
     {
       v9.receiver = self;
       v9.super_class = OADForegroundColorEffect;
-      v7 = [(OADBlipEffect *)&v9 isEqual:v4];
+      v7 = [(OADBlipEffect *)&v9 isEqual:equalCopy];
     }
 
     else

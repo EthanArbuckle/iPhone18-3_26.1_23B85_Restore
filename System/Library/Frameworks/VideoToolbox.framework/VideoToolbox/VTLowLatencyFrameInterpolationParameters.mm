@@ -1,11 +1,11 @@
 @interface VTLowLatencyFrameInterpolationParameters
-- (VTLowLatencyFrameInterpolationParameters)initWithSourceFrame:(id)a3 previousFrame:(id)a4 interpolationPhase:(id)a5 destinationFrames:(id)a6;
+- (VTLowLatencyFrameInterpolationParameters)initWithSourceFrame:(id)frame previousFrame:(id)previousFrame interpolationPhase:(id)phase destinationFrames:(id)frames;
 - (void)dealloc;
 @end
 
 @implementation VTLowLatencyFrameInterpolationParameters
 
-- (VTLowLatencyFrameInterpolationParameters)initWithSourceFrame:(id)a3 previousFrame:(id)a4 interpolationPhase:(id)a5 destinationFrames:(id)a6
+- (VTLowLatencyFrameInterpolationParameters)initWithSourceFrame:(id)frame previousFrame:(id)previousFrame interpolationPhase:(id)phase destinationFrames:(id)frames
 {
   v12.receiver = self;
   v12.super_class = VTLowLatencyFrameInterpolationParameters;
@@ -16,22 +16,22 @@
     return v10;
   }
 
-  if (!a3)
+  if (!frame)
   {
     NSLog(&cfstr_SourceframeIsN.isa);
     return 0;
   }
 
-  if (!a6)
+  if (!frames)
   {
     NSLog(&cfstr_Destinationfra.isa);
     return 0;
   }
 
-  v10->_sourceFrame = a3;
-  v10->_previousFrame = a4;
-  v10->_destinationFrames = a6;
-  v10->_interpolationPhase = a5;
+  v10->_sourceFrame = frame;
+  v10->_previousFrame = previousFrame;
+  v10->_destinationFrames = frames;
+  v10->_interpolationPhase = phase;
   v10->_parameterDispatchGroup = dispatch_group_create();
   return v10;
 }

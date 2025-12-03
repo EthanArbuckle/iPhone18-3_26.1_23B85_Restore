@@ -1,6 +1,6 @@
 @interface TUCallCenter
 - (BOOL)ics_hasTooManyCallsForCallWaitingBanner;
-- (BOOL)shouldActivateProviderInBackgroundForCall:(id)a3;
+- (BOOL)shouldActivateProviderInBackgroundForCall:(id)call;
 - (TUCall)emergencyCall;
 - (int64_t)bottomBarCallState;
 @end
@@ -9,7 +9,7 @@
 
 - (BOOL)ics_hasTooManyCallsForCallWaitingBanner
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000CB48();
 
   return v3 & 1;
@@ -41,11 +41,11 @@
   v24[3] = &unk_100358E48;
   v25 = &stru_100358E20;
   v6 = [(TUCallCenter *)self callPassingTest:v24];
-  v7 = [(TUCallCenter *)self incomingCall];
-  v8 = v7;
-  if (v7)
+  incomingCall = [(TUCallCenter *)self incomingCall];
+  v8 = incomingCall;
+  if (incomingCall)
   {
-    v9 = v7;
+    v9 = incomingCall;
   }
 
   else
@@ -74,15 +74,15 @@
 
   if (v10 && v12)
   {
-    v13 = [v10 provider];
-    v14 = [v13 isSystemProvider];
+    provider = [v10 provider];
+    isSystemProvider = [provider isSystemProvider];
 
-    v15 = [v12 provider];
-    v16 = [v15 isSystemProvider];
+    provider2 = [v12 provider];
+    isSystemProvider2 = [provider2 isSystemProvider];
 
-    if (v14)
+    if (isSystemProvider)
     {
-      if (v16)
+      if (isSystemProvider2)
       {
         v17 = 2;
       }
@@ -93,7 +93,7 @@
       }
     }
 
-    else if (v16)
+    else if (isSystemProvider2)
     {
       v17 = 3;
     }
@@ -118,18 +118,18 @@
         v18 = v10;
       }
 
-      v19 = v18;
+      mostRecentlyDisconnectedAudioCall = v18;
     }
 
     else
     {
       v20 = +[UIApplication sharedApplication];
-      v21 = [v20 delegate];
-      v19 = [v21 mostRecentlyDisconnectedAudioCall];
+      delegate = [v20 delegate];
+      mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
     }
 
-    v22 = [v19 provider];
-    if ([v22 isSystemProvider])
+    provider3 = [mostRecentlyDisconnectedAudioCall provider];
+    if ([provider3 isSystemProvider])
     {
       v17 = 2;
     }
@@ -145,20 +145,20 @@
 
 - (TUCall)emergencyCall
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10002B42C();
 
   return v3;
 }
 
-- (BOOL)shouldActivateProviderInBackgroundForCall:(id)a3
+- (BOOL)shouldActivateProviderInBackgroundForCall:(id)call
 {
-  v4 = a3;
-  v5 = [v4 provider];
-  if ([v5 isSuperboxProvider])
+  callCopy = call;
+  provider = [callCopy provider];
+  if ([provider isSuperboxProvider])
   {
-    v6 = [v4 provider];
-    if ([v6 isSystemProvider])
+    provider2 = [callCopy provider];
+    if ([provider2 isSystemProvider])
     {
       v7 = [(TUCallCenter *)self audioOrVideoCallWithStatus:4];
       v8 = v7 == 0;

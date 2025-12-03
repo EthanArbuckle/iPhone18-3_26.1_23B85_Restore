@@ -1,11 +1,11 @@
 @interface VFXMTLMorphDeformer
-- (unint64_t)morphIncrementallyWithComputeContext:(id)a3 positions:(id)a4 normals:(id)a5;
-- (unint64_t)morphSparseWithComputeContext:(id)a3 positions:(id)a4 normals:(id)a5;
-- (unint64_t)updateWithComputeContext:(id)a3 buffers:(id *)a4;
-- (void)createSparseIndicesBufferForMorphTarget:(id *)a3 withSetupTarget:(id *)a4 indicesBuffer:(char *)a5 indicesBufferOffset:(unint64_t)a6 indexSize:(unint64_t)a7 originalToFirstDeindexedTable:(unsigned int *)a8 computeContext:(id)a9;
-- (void)createVertexBufferForMorphTarget:(id *)a3 withSetupTarget:(id *)a4 vertexBuffer:(char *)a5 vertexBufferOffset:(unint64_t)a6 indicesBuffer:(char *)a7 indicesBufferOffset:(unint64_t)a8 indexSize:(unint64_t)a9 originalToFirstDeindexedTable:(unsigned int *)a10 computeContext:(id)a11;
+- (unint64_t)morphIncrementallyWithComputeContext:(id)context positions:(id)positions normals:(id)normals;
+- (unint64_t)morphSparseWithComputeContext:(id)context positions:(id)positions normals:(id)normals;
+- (unint64_t)updateWithComputeContext:(id)context buffers:(id *)buffers;
+- (void)createSparseIndicesBufferForMorphTarget:(id *)target withSetupTarget:(id *)setupTarget indicesBuffer:(char *)buffer indicesBufferOffset:(unint64_t)offset indexSize:(unint64_t)size originalToFirstDeindexedTable:(unsigned int *)table computeContext:(id)context;
+- (void)createVertexBufferForMorphTarget:(id *)target withSetupTarget:(id *)setupTarget vertexBuffer:(char *)buffer vertexBufferOffset:(unint64_t)offset indicesBuffer:(char *)indicesBuffer indicesBufferOffset:(unint64_t)bufferOffset indexSize:(unint64_t)size originalToFirstDeindexedTable:(unsigned int *)self0 computeContext:(id)self1;
 - (void)dealloc;
-- (void)setupMorphTargetsWithComputeContext:(id)a3;
+- (void)setupMorphTargetsWithComputeContext:(id)context;
 @end
 
 @implementation VFXMTLMorphDeformer
@@ -25,13 +25,13 @@
   [(VFXMTLMorphDeformer *)&v4 dealloc];
 }
 
-- (void)setupMorphTargetsWithComputeContext:(id)a3
+- (void)setupMorphTargetsWithComputeContext:(id)context
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1AF1B669C(self->_morpher);
   v6 = sub_1AF170774(v5);
   v7 = v6;
-  v311 = a3;
+  contextCopy = context;
   if (v6)
   {
     v8 = sub_1AF170784(v5);
@@ -69,7 +69,7 @@ LABEL_10:
   v10 = v9;
   cf = 0;
 LABEL_12:
-  v27 = sub_1AF15B294(v4->_morpher);
+  v27 = sub_1AF15B294(selfCopy->_morpher);
   if (!v27)
   {
     v28 = sub_1AF0D5194();
@@ -92,23 +92,23 @@ LABEL_12:
   else
   {
     v40 = 0;
-    finalMeshDataKind = v4->_finalMeshDataKind;
+    finalMeshDataKind = selfCopy->_finalMeshDataKind;
     v39 = 8;
     v38 = 8;
   }
 
-  if (!v4->_morphNormals)
+  if (!selfCopy->_morphNormals)
   {
     v39 = 0;
   }
 
-  v4->_morphKind = v40;
-  v4->_dataKindForComputeKernel = finalMeshDataKind;
-  v4->_basePositionDataType = 8;
-  v4->_baseNormalDataType = v39;
-  v4->_morphTargetPositionDataType = v38;
-  v312 = v4;
-  v4->_morphTargetNormalDataType = v39;
+  selfCopy->_morphKind = v40;
+  selfCopy->_dataKindForComputeKernel = finalMeshDataKind;
+  selfCopy->_basePositionDataType = 8;
+  selfCopy->_baseNormalDataType = v39;
+  selfCopy->_morphTargetPositionDataType = v38;
+  v312 = selfCopy;
+  selfCopy->_morphTargetNormalDataType = v39;
   v305 = sub_1AF15B294(v27);
   Count = CFArrayGetCount(v305);
   v42 = Count;
@@ -134,10 +134,10 @@ LABEL_12:
 
   else
   {
-    v53 = sub_1AF1A4604(v10, 0, 0, v4->_finalMeshDataKind);
+    v53 = sub_1AF1A4604(v10, 0, 0, selfCopy->_finalMeshDataKind);
     v51 = sub_1AF1A4F94(v10, v325);
     v308 = sub_1AF1A4FA8(v10);
-    v55 = sub_1AF1A4604(v10, 0, 0, v4->_dataKindForComputeKernel);
+    v55 = sub_1AF1A4604(v10, 0, 0, selfCopy->_dataKindForComputeKernel);
     if (!v55)
     {
       v56 = sub_1AF0D5194();
@@ -147,9 +147,9 @@ LABEL_12:
       }
     }
 
-    if (v4->_morphNormals)
+    if (selfCopy->_morphNormals)
     {
-      v64 = sub_1AF1A4604(v10, 1, 0, v4->_dataKindForComputeKernel);
+      v64 = sub_1AF1A4604(v10, 1, 0, selfCopy->_dataKindForComputeKernel);
       if (v64)
       {
         v54 = v55;
@@ -158,7 +158,7 @@ LABEL_12:
 
       else
       {
-        v65 = sub_1AF27D340(v10, v4->_dataKindForComputeKernel, 0);
+        v65 = sub_1AF27D340(v10, selfCopy->_dataKindForComputeKernel, 0);
         if (!v65)
         {
           v66 = sub_1AF0D5194();
@@ -181,15 +181,15 @@ LABEL_12:
     }
   }
 
-  v4->_vertexCountForComputeKernel = sub_1AF1AE6EC(v54);
-  v4->_finalMeshVertexCount = sub_1AF1AE6EC(v53);
+  selfCopy->_vertexCountForComputeKernel = sub_1AF1AE6EC(v54);
+  selfCopy->_finalMeshVertexCount = sub_1AF1AE6EC(v53);
   v74 = malloc_type_malloc(40 * v42, 0x10600401818AB88uLL);
   v321[0] = MEMORY[0x1E69E9820];
   v321[1] = 3221225472;
   v321[2] = sub_1AF1E8B4C;
   v321[3] = &unk_1E7A7C338;
   v323 = v36;
-  v321[4] = v4;
+  v321[4] = selfCopy;
   v321[5] = v10;
   v321[6] = v54;
   v321[7] = v52;
@@ -199,13 +199,13 @@ LABEL_12:
   v321[9] = v5;
   v321[10] = v74;
   sub_1AF28A5FC(v305, v321);
-  runtimeMorphTargetCount = v4->_runtimeMorphTargetCount;
+  runtimeMorphTargetCount = selfCopy->_runtimeMorphTargetCount;
   if (runtimeMorphTargetCount)
   {
-    v4->_runtimeMorphTargets = malloc_type_malloc(32 * runtimeMorphTargetCount, 0x100004017768742uLL);
-    v76 = sub_1AF288070(v4->_morphTargetPositionDataType);
-    v77 = sub_1AF288070(v4->_morphTargetNormalDataType);
-    v78 = sub_1AFDE78C8(&v4->_resourceManager->super.isa);
+    selfCopy->_runtimeMorphTargets = malloc_type_malloc(32 * runtimeMorphTargetCount, 0x100004017768742uLL);
+    v76 = sub_1AF288070(selfCopy->_morphTargetPositionDataType);
+    v77 = sub_1AF288070(selfCopy->_morphTargetNormalDataType);
+    v78 = sub_1AFDE78C8(&selfCopy->_resourceManager->super.isa);
     v304 = v74;
     if (sub_1AF1F32D4(v78, v79, v80, v81))
     {
@@ -218,7 +218,7 @@ LABEL_12:
     }
 
     v314 = v82;
-    v85 = v4->_vertexCountForComputeKernel - 1;
+    v85 = selfCopy->_vertexCountForComputeKernel - 1;
     v86 = 1;
     if (v85 > 0xFF)
     {
@@ -232,10 +232,10 @@ LABEL_12:
     }
 
     v307 = v86;
-    sub_1AF1F19D4(v4->_morphTargetPositionDataType);
+    sub_1AF1F19D4(selfCopy->_morphTargetPositionDataType);
     v301 = v52;
     v302 = v54;
-    if (v4->_runtimeMorphTargetCount)
+    if (selfCopy->_runtimeMorphTargetCount)
     {
       v88 = 0;
       v89 = 0;
@@ -255,7 +255,7 @@ LABEL_12:
       {
         Alignment = MTLDataTypeGetAlignment();
         v94 = *v92;
-        if (*v92 != v4->_vertexCountForComputeKernel)
+        if (*v92 != selfCopy->_vertexCountForComputeKernel)
         {
           v95 = MTLDataTypeGetAlignment();
           v90 = ((v90 + v95 - 1) & -v95) + (*v92 << v91);
@@ -266,7 +266,7 @@ LABEL_12:
         v92 += 5;
       }
 
-      while (v88 < v4->_runtimeMorphTargetCount);
+      while (v88 < selfCopy->_runtimeMorphTargetCount);
       v309 = malloc_type_malloc(v89, 0x100004077774924uLL);
       if (v90)
       {
@@ -291,7 +291,7 @@ LABEL_12:
 
     v310 = v96;
     v300 = v90;
-    if (v4->_runtimeMorphTargetCount)
+    if (selfCopy->_runtimeMorphTargetCount)
     {
       v97 = 0;
       v98 = 0;
@@ -310,15 +310,15 @@ LABEL_12:
       v102 = v304;
       do
       {
-        v103 = (&v4->_runtimeMorphTargets->var0 + v101);
+        v103 = (&selfCopy->_runtimeMorphTargets->var0 + v101);
         *v103 = *v102;
         v104 = MTLDataTypeGetAlignment();
         v105 = (v98 + v104 - 1) & -v104;
         v106 = MTLDataTypeGetAlignment();
         v107 = (v99 + v106 - 1) & -v106;
-        objc_msgSend_createVertexBufferForMorphTarget_withSetupTarget_vertexBuffer_vertexBufferOffset_indicesBuffer_indicesBufferOffset_indexSize_originalToFirstDeindexedTable_computeContext_(v4, v108, (v103 - 1), v102, v309, v105, v310, v107, v307, v308, v311);
+        objc_msgSend_createVertexBufferForMorphTarget_withSetupTarget_vertexBuffer_vertexBufferOffset_indicesBuffer_indicesBufferOffset_indexSize_originalToFirstDeindexedTable_computeContext_(selfCopy, v108, (v103 - 1), v102, v309, v105, v310, v107, v307, v308, contextCopy);
         v109 = *(v102 + 32);
-        if (v109 == v4->_vertexCountForComputeKernel)
+        if (v109 == selfCopy->_vertexCountForComputeKernel)
         {
           v110 = 0;
         }
@@ -339,7 +339,7 @@ LABEL_12:
         v98 = (v105 + v109 * v314);
         v99 = (v110 + v107);
         ++v97;
-        v4 = v312;
+        selfCopy = v312;
         v101 += 32;
         v102 += 40;
       }
@@ -354,19 +354,19 @@ LABEL_12:
     }
 
     free(v304);
-    v84 = v311;
+    v84 = contextCopy;
     resourceManager = v312->_resourceManager;
-    v116 = objc_msgSend_currentBlitEncoder(v311, v113, v114, v115);
+    v116 = objc_msgSend_currentBlitEncoder(contextCopy, v113, v114, v115);
     v117 = resourceManager;
-    v4 = v312;
+    selfCopy = v312;
     v312->_morphTargetsVertexBuffer = sub_1AFDE847C(v117, v309, v89, v116);
     free(v309);
     if (v310)
     {
       v120 = v312->_resourceManager;
-      v121 = objc_msgSend_currentBlitEncoder(v311, v83, v118, v119);
+      v121 = objc_msgSend_currentBlitEncoder(contextCopy, v83, v118, v119);
       v122 = v120;
-      v4 = v312;
+      selfCopy = v312;
       v312->_morphTargetsSparseIndicesBuffer = sub_1AFDE847C(v122, v310, v300, v121);
       free(v310);
     }
@@ -396,17 +396,17 @@ LABEL_12:
   else
   {
     free(v74);
-    v84 = v311;
+    v84 = contextCopy;
   }
 
   v319 = 0;
   v320 = 0;
   v318 = 0;
   LOBYTE(v299) = 1;
-  v4->_baseBufferForComputeKernel = objc_msgSend_newBufferForDataKind_positionSource_normalSource_positionDataType_normalDataType_forStageInputOutputDescriptor_usePrivateStorageMode_outStride_outPositionOffset_outNormalOffset_(v84, v83, v4->_dataKindForComputeKernel, v54, v52, v4->_basePositionDataType, v4->_baseNormalDataType, 1, v299, &v320, &v319, &v318);
-  v138 = sub_1AF288070(v4->_morphTargetPositionDataType);
-  v139 = sub_1AF288070(v4->_morphTargetNormalDataType);
-  v140 = sub_1AFDE78C8(&v4->_resourceManager->super.isa);
+  selfCopy->_baseBufferForComputeKernel = objc_msgSend_newBufferForDataKind_positionSource_normalSource_positionDataType_normalDataType_forStageInputOutputDescriptor_usePrivateStorageMode_outStride_outPositionOffset_outNormalOffset_(v84, v83, selfCopy->_dataKindForComputeKernel, v54, v52, selfCopy->_basePositionDataType, selfCopy->_baseNormalDataType, 1, v299, &v320, &v319, &v318);
+  v138 = sub_1AF288070(selfCopy->_morphTargetPositionDataType);
+  v139 = sub_1AF288070(selfCopy->_morphTargetNormalDataType);
+  v140 = sub_1AFDE78C8(&selfCopy->_resourceManager->super.isa);
   if (sub_1AF1F32D4(v140, v141, v142, v143))
   {
     v138 = (v138 + 3) & 0xFFFFFFFFFFFFFFFCLL;
@@ -428,14 +428,14 @@ LABEL_12:
     sub_1AF28A5FC(v305, &unk_1F24E86C0);
   }
 
-  morphKind = v4->_morphKind;
+  morphKind = selfCopy->_morphKind;
   if (!morphKind)
   {
-    LOBYTE(v317) = v4->_morphNormals;
+    LOBYTE(v317) = selfCopy->_morphNormals;
     v152 = objc_alloc_init(MEMORY[0x1E6974060]);
     objc_msgSend_setConstantValue_type_withName_(v152, v161, &v317, 53, @"morphNormal");
     v164 = 45;
-    if (v4->_morphNormals)
+    if (selfCopy->_morphNormals)
     {
       v164 = 78;
     }
@@ -452,7 +452,7 @@ LABEL_12:
       objc_msgSend_setStride_(v175, v178, v144, v179);
       v183 = objc_msgSend_attributes(v169, v180, v181, v182);
       v186 = objc_msgSend_objectAtIndexedSubscript_(v183, v184, v170, v185);
-      v187 = sub_1AF1F1A28(v4->_morphTargetPositionDataType);
+      v187 = sub_1AF1F1A28(selfCopy->_morphTargetPositionDataType);
       objc_msgSend_setFormat_(v186, v188, v187, v189);
       objc_msgSend_setOffset_(v186, v190, 0, v191);
       objc_msgSend_setBufferIndex_(v186, v192, v170 + 1, v193);
@@ -460,7 +460,7 @@ LABEL_12:
       {
         v194 = objc_msgSend_attributes(v169, v166, v167, v168);
         v197 = objc_msgSend_objectAtIndexedSubscript_(v194, v195, v170 + 16, v196);
-        v198 = sub_1AF1F1A28(v4->_morphTargetNormalDataType);
+        v198 = sub_1AF1F1A28(selfCopy->_morphTargetNormalDataType);
         objc_msgSend_setFormat_(v197, v199, v198, v200);
         objc_msgSend_setOffset_(v197, v201, v138, v202);
         objc_msgSend_setBufferIndex_(v197, v203, v172, v204);
@@ -470,8 +470,8 @@ LABEL_12:
     }
 
     while (v172 != 8);
-    v4->_incrementalInitPipeline = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(v4->_resourceManager, v166, @"blend_inc_init_8x_generic", v169, 0, v152, v165);
-    v4->_incrementalAddPipeline = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(v4->_resourceManager, v205, @"blend_inc_add_8x_generic", v169, 0, v152, v165);
+    selfCopy->_incrementalInitPipeline = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(selfCopy->_resourceManager, v166, @"blend_inc_init_8x_generic", v169, 0, v152, v165);
+    selfCopy->_incrementalAddPipeline = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(selfCopy->_resourceManager, v205, @"blend_inc_add_8x_generic", v169, 0, v152, v165);
 
     goto LABEL_140;
   }
@@ -480,24 +480,24 @@ LABEL_12:
   {
     v316 = 0;
     v317 = 0;
-    if (!v4->_dataKindForComputeKernel && v4->_finalMeshDataKind == 1 && v308)
+    if (!selfCopy->_dataKindForComputeKernel && selfCopy->_finalMeshDataKind == 1 && v308)
     {
       v149 = objc_msgSend_currentBlitEncoder(v84, v145, v146, v147);
-      v4->_originalToFirstDeindexedTableBuffer = objc_msgSend_originalToFirstDeindexedTableBufferWithBlitEncoder_indexSizeOut_(v84, v150, v149, &v317);
-      v4->_deindexedToFirstDeindexedTableBuffer = objc_msgSend_deindexedToFirstDeindexedTableBufferWithBlitEncoder_indexSizeOut_(v84, v151, v149, &v316);
+      selfCopy->_originalToFirstDeindexedTableBuffer = objc_msgSend_originalToFirstDeindexedTableBufferWithBlitEncoder_indexSizeOut_(v84, v150, v149, &v317);
+      selfCopy->_deindexedToFirstDeindexedTableBuffer = objc_msgSend_deindexedToFirstDeindexedTableBufferWithBlitEncoder_indexSizeOut_(v84, v151, v149, &v316);
     }
 
-    morphNormals = v4->_morphNormals;
+    morphNormals = selfCopy->_morphNormals;
     v152 = objc_alloc_init(MEMORY[0x1E6974060]);
     objc_msgSend_setConstantValue_type_withName_(v152, v153, &morphNormals, 53, @"morphNormal");
     v156 = 45;
-    if (v4->_morphNormals)
+    if (selfCopy->_morphNormals)
     {
       v156 = 78;
     }
 
     v157 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v154, @"%c", v155, v156);
-    if (v4->_originalToFirstDeindexedTableBuffer)
+    if (selfCopy->_originalToFirstDeindexedTableBuffer)
     {
       switch(v317)
       {
@@ -523,21 +523,21 @@ LABEL_113:
           objc_msgSend_setStride_(v215, v218, v320, v219);
           v223 = objc_msgSend_attributes(v208, v220, v221, v222);
           v226 = objc_msgSend_objectAtIndexedSubscript_(v223, v224, 0, v225);
-          v227 = sub_1AF1F1A28(v4->_basePositionDataType);
+          v227 = sub_1AF1F1A28(selfCopy->_basePositionDataType);
           objc_msgSend_setFormat_(v226, v228, v227, v229);
           objc_msgSend_setOffset_(v226, v230, v319, v231);
           objc_msgSend_setBufferIndex_(v226, v232, 1, v233);
-          if (v4->_morphNormals)
+          if (selfCopy->_morphNormals)
           {
             v237 = objc_msgSend_attributes(v208, v234, v235, v236);
             v240 = objc_msgSend_objectAtIndexedSubscript_(v237, v238, 1, v239);
-            v241 = sub_1AF1F1A28(v4->_baseNormalDataType);
+            v241 = sub_1AF1F1A28(selfCopy->_baseNormalDataType);
             objc_msgSend_setFormat_(v240, v242, v241, v243);
             objc_msgSend_setOffset_(v240, v244, v318, v245);
             objc_msgSend_setBufferIndex_(v240, v246, 1, v247);
           }
 
-          v4->_copyBaseBufferPipeline = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(v4->_resourceManager, v234, v159, v208, 0, v152, v157);
+          selfCopy->_copyBaseBufferPipeline = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(selfCopy->_resourceManager, v234, v159, v208, 0, v152, v157);
           objc_msgSend_reset(v208, v248, v249, v250);
           v254 = objc_msgSend_layouts(v208, v251, v252, v253);
           v257 = objc_msgSend_objectAtIndexedSubscript_(v254, v255, 1, v256);
@@ -545,7 +545,7 @@ LABEL_113:
           objc_msgSend_setStride_(v257, v260, v144, v261);
           v265 = objc_msgSend_attributes(v208, v262, v263, v264);
           v268 = objc_msgSend_objectAtIndexedSubscript_(v265, v266, 0, v267);
-          v269 = sub_1AF1F1A28(v4->_morphTargetPositionDataType);
+          v269 = sub_1AF1F1A28(selfCopy->_morphTargetPositionDataType);
           objc_msgSend_setFormat_(v268, v270, v269, v271);
           objc_msgSend_setOffset_(v268, v272, 0, v273);
           objc_msgSend_setBufferIndex_(v268, v274, 1, v275);
@@ -553,19 +553,19 @@ LABEL_113:
           {
             v279 = objc_msgSend_attributes(v208, v276, v277, v278);
             v282 = objc_msgSend_objectAtIndexedSubscript_(v279, v280, 1, v281);
-            v283 = sub_1AF1F1A28(v4->_morphTargetNormalDataType);
+            v283 = sub_1AF1F1A28(selfCopy->_morphTargetNormalDataType);
             objc_msgSend_setFormat_(v282, v284, v283, v285);
             objc_msgSend_setOffset_(v282, v286, v138, v287);
             objc_msgSend_setBufferIndex_(v282, v288, 1, v289);
           }
 
-          v4->_blendDensePipeline = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(v4->_resourceManager, v276, @"blend_generic", v208, 0, v152, v157);
+          selfCopy->_blendDensePipeline = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(selfCopy->_resourceManager, v276, @"blend_generic", v208, 0, v152, v157);
           if ((v158 & 1) == 0)
           {
-            v4->_blendDenseIndexedPipeline = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(v4->_resourceManager, v290, v160, v208, 0, v152, v157);
+            selfCopy->_blendDenseIndexedPipeline = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(selfCopy->_resourceManager, v290, v160, v208, 0, v152, v157);
           }
 
-          v291 = v4->_vertexCountForComputeKernel - 1;
+          v291 = selfCopy->_vertexCountForComputeKernel - 1;
           v292 = 1;
           if (v291 > 0xFF)
           {
@@ -581,33 +581,33 @@ LABEL_113:
 
           if (v293 == 1)
           {
-            updated = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(v4->_resourceManager, v290, @"blend_indexed_u8_generic", v208, 0, v152, v157);
+            updated = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(selfCopy->_resourceManager, v290, @"blend_indexed_u8_generic", v208, 0, v152, v157);
           }
 
           else if (v293 == 4)
           {
-            updated = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(v4->_resourceManager, v290, @"blend_indexed_u32_generic", v208, 0, v152, v157);
+            updated = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(selfCopy->_resourceManager, v290, @"blend_indexed_u32_generic", v208, 0, v152, v157);
           }
 
           else
           {
-            updated = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(v4->_resourceManager, v290, @"blend_indexed_u16_generic", v208, 0, v152, v157);
+            updated = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(selfCopy->_resourceManager, v290, @"blend_indexed_u16_generic", v208, 0, v152, v157);
           }
 
-          v4->_blendSparsePipeline = updated;
+          selfCopy->_blendSparsePipeline = updated;
 
-          if (v4->_deindexedToFirstDeindexedTableBuffer)
+          if (selfCopy->_deindexedToFirstDeindexedTableBuffer)
           {
             switch(v316)
             {
               case 1:
-                v296 = objc_msgSend_computePipelineStateForKernel_constants_constantsHash_(v4->_resourceManager, v295, @"splat_indexed_s8_vertices", v152, v157);
+                v296 = objc_msgSend_computePipelineStateForKernel_constants_constantsHash_(selfCopy->_resourceManager, v295, @"splat_indexed_s8_vertices", v152, v157);
                 break;
               case 4:
-                v296 = objc_msgSend_computePipelineStateForKernel_constants_constantsHash_(v4->_resourceManager, v295, @"splat_indexed_s32_vertices", v152, v157);
+                v296 = objc_msgSend_computePipelineStateForKernel_constants_constantsHash_(selfCopy->_resourceManager, v295, @"splat_indexed_s32_vertices", v152, v157);
                 break;
               case 2:
-                v296 = objc_msgSend_computePipelineStateForKernel_constants_constantsHash_(v4->_resourceManager, v295, @"splat_indexed_s16_vertices", v152, v157);
+                v296 = objc_msgSend_computePipelineStateForKernel_constants_constantsHash_(selfCopy->_resourceManager, v295, @"splat_indexed_s16_vertices", v152, v157);
                 break;
               default:
                 v297 = sub_1AF0D5194();
@@ -616,11 +616,11 @@ LABEL_113:
                   sub_1AFDE3528();
                 }
 
-                v296 = objc_msgSend_computePipelineStateForKernel_constants_constantsHash_(v4->_resourceManager, v298, 0, v152, v157);
+                v296 = objc_msgSend_computePipelineStateForKernel_constants_constantsHash_(selfCopy->_resourceManager, v298, 0, v152, v157);
                 break;
             }
 
-            v4->_splatPipeline = v296;
+            selfCopy->_splatPipeline = v296;
           }
 
 LABEL_140:
@@ -648,28 +648,28 @@ LABEL_140:
   }
 }
 
-- (void)createVertexBufferForMorphTarget:(id *)a3 withSetupTarget:(id *)a4 vertexBuffer:(char *)a5 vertexBufferOffset:(unint64_t)a6 indicesBuffer:(char *)a7 indicesBufferOffset:(unint64_t)a8 indexSize:(unint64_t)a9 originalToFirstDeindexedTable:(unsigned int *)a10 computeContext:(id)a11
+- (void)createVertexBufferForMorphTarget:(id *)target withSetupTarget:(id *)setupTarget vertexBuffer:(char *)buffer vertexBufferOffset:(unint64_t)offset indicesBuffer:(char *)indicesBuffer indicesBufferOffset:(unint64_t)bufferOffset indexSize:(unint64_t)size originalToFirstDeindexedTable:(unsigned int *)self0 computeContext:(id)self1
 {
   v67 = 0u;
   v68 = 0u;
-  sub_1AF1AE1A8(a4->var2, &v67);
+  sub_1AF1AE1A8(setupTarget->var2, &v67);
   v65 = 0u;
   v66 = 0u;
   if (self->_morphNormals)
   {
-    sub_1AF1AE1A8(a4->var3, &v65);
+    sub_1AF1AE1A8(setupTarget->var3, &v65);
   }
 
   v19 = v68;
-  a3->var2 = a4->var4;
+  target->var2 = setupTarget->var4;
   if (self->_morphKind == 1)
   {
-    objc_msgSend_createSparseIndicesBufferForMorphTarget_withSetupTarget_indicesBuffer_indicesBufferOffset_indexSize_originalToFirstDeindexedTable_computeContext_(self, v18, a3, a4, a7, a8, a9, a10, a11);
+    objc_msgSend_createSparseIndicesBufferForMorphTarget_withSetupTarget_indicesBuffer_indicesBufferOffset_indexSize_originalToFirstDeindexedTable_computeContext_(self, v18, target, setupTarget, indicesBuffer, bufferOffset, size, table, context);
   }
 
   else
   {
-    a3->var4 = 0;
+    target->var4 = 0;
   }
 
   morphTargetPositionDataType = self->_morphTargetPositionDataType;
@@ -684,7 +684,7 @@ LABEL_140:
       }
     }
 
-    v29 = vmaxvq_f32(sub_1AF1AEB70(a4->var2));
+    v29 = vmaxvq_f32(sub_1AF1AEB70(setupTarget->var2));
     LOWORD(morphTargetPositionDataType) = self->_morphTargetPositionDataType;
     v64 = 1.0 / v29;
   }
@@ -695,7 +695,7 @@ LABEL_140:
     v29 = 1.0;
   }
 
-  a3->var0 = v29;
+  target->var0 = v29;
   v30 = sub_1AF288070(morphTargetPositionDataType);
   v31 = sub_1AF288070(self->_morphTargetNormalDataType);
   v32 = v31 + v30;
@@ -711,8 +711,8 @@ LABEL_140:
     v40 = v30;
   }
 
-  v41 = v32 * a3->var2;
-  v42 = &a5[a6];
+  v41 = v32 * target->var2;
+  v42 = &buffer[offset];
   if (self->_morphKind == 1)
   {
     if (self->_morphNormals)
@@ -720,7 +720,7 @@ LABEL_140:
       if (v19)
       {
         v43 = 0;
-        v44 = &a5[a6];
+        v44 = &buffer[offset];
         do
         {
           *v45.i64 = sub_1AF279750(BYTE4(v68), (v67 + v43 * BYTE6(v68)), v37, v38.f32[0], v39.f32[0]);
@@ -746,7 +746,7 @@ LABEL_140:
       }
 
 LABEL_36:
-      v44 = &a5[a6];
+      v44 = &buffer[offset];
       goto LABEL_37;
     }
 
@@ -756,7 +756,7 @@ LABEL_36:
     }
 
     v53 = 0;
-    v44 = &a5[a6];
+    v44 = &buffer[offset];
     do
     {
       *v37.i64 = sub_1AF279750(BYTE4(v68), (v67 + v53 * BYTE6(v68)), v37, v38.f32[0], v39.f32[0]);
@@ -783,7 +783,7 @@ LABEL_36:
     }
 
     v50 = 0;
-    v44 = &a5[a6];
+    v44 = &buffer[offset];
     do
     {
       *v51.i64 = sub_1AF279750(BYTE4(v68), (v67 + v50 * BYTE6(v68)), v37, v38.f32[0], v39.f32[0]);
@@ -811,20 +811,20 @@ LABEL_37:
     }
   }
 
-  a3->var3 = a6;
+  target->var3 = offset;
 }
 
-- (void)createSparseIndicesBufferForMorphTarget:(id *)a3 withSetupTarget:(id *)a4 indicesBuffer:(char *)a5 indicesBufferOffset:(unint64_t)a6 indexSize:(unint64_t)a7 originalToFirstDeindexedTable:(unsigned int *)a8 computeContext:(id)a9
+- (void)createSparseIndicesBufferForMorphTarget:(id *)target withSetupTarget:(id *)setupTarget indicesBuffer:(char *)buffer indicesBufferOffset:(unint64_t)offset indexSize:(unint64_t)size originalToFirstDeindexedTable:(unsigned int *)table computeContext:(id)context
 {
-  v9 = a3;
-  if (a3->var2 == self->_vertexCountForComputeKernel)
+  targetCopy = target;
+  if (target->var2 == self->_vertexCountForComputeKernel)
   {
-    a3->var3 = 0;
-    a3->var4 = 0;
+    target->var3 = 0;
+    target->var4 = 0;
     return;
   }
 
-  var3 = a4->var3;
+  var3 = setupTarget->var3;
   if (self->_dataKindForComputeKernel)
   {
     v16 = 0;
@@ -832,7 +832,7 @@ LABEL_37:
 
   else
   {
-    if (a8)
+    if (table)
     {
       v17 = self->_finalMeshDataKind == 1;
     }
@@ -847,18 +847,18 @@ LABEL_37:
 
   v92 = 0u;
   v93 = 0u;
-  sub_1AF1AE1A8(a4->var2, &v92);
+  sub_1AF1AE1A8(setupTarget->var2, &v92);
   v90 = 0u;
   v91 = 0u;
   if (var3)
   {
-    sub_1AF1AE1A8(a4->var3, &v90);
+    sub_1AF1AE1A8(setupTarget->var3, &v90);
   }
 
-  v18 = &a5[a6];
-  if (a7 == 1)
+  v18 = &buffer[offset];
+  if (size == 1)
   {
-    v19 = &a5[a6];
+    v19 = &buffer[offset];
   }
 
   else
@@ -866,9 +866,9 @@ LABEL_37:
     v19 = 0;
   }
 
-  if (a7 == 2)
+  if (size == 2)
   {
-    v20 = &a5[a6];
+    v20 = &buffer[offset];
   }
 
   else
@@ -876,7 +876,7 @@ LABEL_37:
     v20 = 0;
   }
 
-  if (a7 == 4)
+  if (size == 4)
   {
     v21 = v18;
   }
@@ -886,7 +886,7 @@ LABEL_37:
     v21 = 0;
   }
 
-  var1 = a4->var1;
+  var1 = setupTarget->var1;
   if (sub_1AF1A3CCC(var1) >= 1)
   {
     v26 = sub_1AF1A3D1C(var1, 0, 0);
@@ -895,8 +895,8 @@ LABEL_37:
     v86 = 0u;
     v87 = 0u;
     sub_1AF1A767C(v26, 0, &v86);
-    v77 = a6;
-    v78 = v9;
+    offsetCopy = offset;
+    v78 = targetCopy;
     if (var3)
     {
       if (v87)
@@ -925,7 +925,7 @@ LABEL_37:
             {
               if (v16)
               {
-                v38 = a8[i];
+                v38 = table[i];
                 if (v19)
                 {
                   goto LABEL_31;
@@ -973,7 +973,7 @@ LABEL_31:
 
       v29 = 0;
 LABEL_73:
-      v9 = v78;
+      targetCopy = v78;
       if (v29 == v78->var2)
       {
         goto LABEL_97;
@@ -988,7 +988,7 @@ LABEL_73:
 LABEL_96:
       sub_1AFDE3770(v57, v58, v59, v60, v61, v62, v63, v64);
 LABEL_97:
-      v40 = v77;
+      offsetCopy3 = offsetCopy;
       goto LABEL_98;
     }
 
@@ -996,7 +996,7 @@ LABEL_97:
     {
       v49 = 0;
 LABEL_94:
-      v9 = v78;
+      targetCopy = v78;
       if (v49 == v78->var2)
       {
         goto LABEL_97;
@@ -1050,7 +1050,7 @@ LABEL_69:
 
     if (v16)
     {
-      v56 = a8[j];
+      v56 = table[j];
       if (v19)
       {
 LABEL_63:
@@ -1089,12 +1089,12 @@ LABEL_68:
   v39 = v93;
   if (!var3)
   {
-    v40 = a6;
+    offsetCopy3 = offset;
     if (!v93)
     {
       v66 = 0;
 LABEL_100:
-      if (v66 == v9->var2)
+      if (v66 == targetCopy->var2)
       {
         goto LABEL_98;
       }
@@ -1131,7 +1131,7 @@ LABEL_87:
 
     if (v16)
     {
-      v68 = a8[v65];
+      v68 = table[v65];
       if (v19)
       {
 LABEL_81:
@@ -1166,7 +1166,7 @@ LABEL_86:
     goto LABEL_86;
   }
 
-  v40 = a6;
+  offsetCopy3 = offset;
   if (v93)
   {
     v41 = 0;
@@ -1193,7 +1193,7 @@ LABEL_86:
 
       if (v16)
       {
-        v46 = a8[v41];
+        v46 = table[v41];
         if (!v19)
         {
           goto LABEL_50;
@@ -1235,7 +1235,7 @@ LABEL_54:
 
   v42 = 0;
 LABEL_90:
-  if (v42 == v9->var2)
+  if (v42 == targetCopy->var2)
   {
     goto LABEL_98;
   }
@@ -1249,33 +1249,33 @@ LABEL_90:
 LABEL_92:
   sub_1AFDE3770(v69, v70, v71, v72, v73, v74, v75, v76);
 LABEL_98:
-  v9->var4 = v40;
+  targetCopy->var4 = offsetCopy3;
 }
 
-- (unint64_t)updateWithComputeContext:(id)a3 buffers:(id *)a4
+- (unint64_t)updateWithComputeContext:(id)context buffers:(id *)buffers
 {
-  v7 = objc_msgSend_currentFrameHash(a3, a2, a3, a4);
+  v7 = objc_msgSend_currentFrameHash(context, a2, context, buffers);
   if (self->_currentFrameHash == v7)
   {
     return 0;
   }
 
   self->_currentFrameHash = v7;
-  var1 = a4->var1;
+  var1 = buffers->var1;
   if (self->_morphKind == 1)
   {
 
-    return MEMORY[0x1EEE66B58](self, sel_morphSparseWithComputeContext_positions_normals_, a3, var1);
+    return MEMORY[0x1EEE66B58](self, sel_morphSparseWithComputeContext_positions_normals_, context, var1);
   }
 
   else
   {
 
-    return MEMORY[0x1EEE66B58](self, sel_morphIncrementallyWithComputeContext_positions_normals_, a3, var1);
+    return MEMORY[0x1EEE66B58](self, sel_morphIncrementallyWithComputeContext_positions_normals_, context, var1);
   }
 }
 
-- (unint64_t)morphSparseWithComputeContext:(id)a3 positions:(id)a4 normals:(id)a5
+- (unint64_t)morphSparseWithComputeContext:(id)context positions:(id)positions normals:(id)normals
 {
   v61 = 0;
   v60 = 0;
@@ -1288,12 +1288,12 @@ LABEL_98:
   }
 
   v13 = v9;
-  v14 = objc_msgSend_currentComputeEncoder(a3, v10, v11, v12);
+  v14 = objc_msgSend_currentComputeEncoder(context, v10, v11, v12);
   objc_msgSend_resetCache(v14, v15, v16, v17);
-  objc_msgSend_setBuffer_offset_atIndex_(v14, v18, a4, 0, 0);
-  if (a5)
+  objc_msgSend_setBuffer_offset_atIndex_(v14, v18, positions, 0, 0);
+  if (normals)
   {
-    objc_msgSend_setBuffer_offset_atIndex_(v14, v19, a5, 0, 4);
+    objc_msgSend_setBuffer_offset_atIndex_(v14, v19, normals, 0, 4);
   }
 
   if (v13 == 2)
@@ -1389,10 +1389,10 @@ LABEL_98:
   return 1;
 }
 
-- (unint64_t)morphIncrementallyWithComputeContext:(id)a3 positions:(id)a4 normals:(id)a5
+- (unint64_t)morphIncrementallyWithComputeContext:(id)context positions:(id)positions normals:(id)normals
 {
-  v72 = a4;
-  v73 = a5;
+  positionsCopy = positions;
+  normalsCopy = normals;
   v90 = *MEMORY[0x1E69E9840];
   v87 = 0;
   v85 = 0;
@@ -1405,7 +1405,7 @@ LABEL_98:
   }
 
   v11 = v7;
-  v12 = objc_msgSend_currentComputeEncoder(a3, v8, v9, v10);
+  v12 = objc_msgSend_currentComputeEncoder(context, v8, v9, v10);
   v16 = objc_msgSend_resetCache(v12, v13, v14, v15);
   v67[1] = v67;
   MEMORY[0x1EEE9AC00](v16, v17);
@@ -1490,7 +1490,7 @@ LABEL_98:
   }
 
   memset(v88, 0, 32);
-  v68 = self;
+  selfCopy = self;
   v74 = sub_1AFDE323C(*(&self->super.isa + v47));
   v71 = v29 + 7;
   if (v29 + 7 >= 8)
@@ -1499,7 +1499,7 @@ LABEL_98:
     v50 = 0;
     v51 = 0;
     v69 = v71 >> 3;
-    p_baseBufferForComputeKernel = &v68->_baseBufferForComputeKernel;
+    p_baseBufferForComputeKernel = &selfCopy->_baseBufferForComputeKernel;
     do
     {
       v77 = v51;
@@ -1532,10 +1532,10 @@ LABEL_98:
       v78 = v49;
       v59 = v70;
       objc_msgSend_setBuffers_offsets_withRange_(v70, v48, v89, v88, 1, 8);
-      objc_msgSend_setBuffer_offset_atIndex_(v59, v60, v72, 0, 10);
-      if (v73)
+      objc_msgSend_setBuffer_offset_atIndex_(v59, v60, positionsCopy, 0, 10);
+      if (normalsCopy)
       {
-        objc_msgSend_setBuffer_offset_atIndex_(v59, v61, v73, 0, 11);
+        objc_msgSend_setBuffer_offset_atIndex_(v59, v61, normalsCopy, 0, 11);
       }
 
       v76 = v71 < 0x10;
@@ -1548,7 +1548,7 @@ LABEL_98:
       v65 = v77;
       if (!v76 && v75)
       {
-        v74 = sub_1AFDE323C(v68->_incrementalAddPipeline);
+        v74 = sub_1AFDE323C(selfCopy->_incrementalAddPipeline);
         v75 = 0;
       }
 
@@ -1562,8 +1562,8 @@ LABEL_98:
     while (v65 + 1 != v69);
   }
 
-  v66 = v68;
-  v66->_lastMorpherIncrementalPassState = sub_1AF1B6618(v68->_morpher);
+  v66 = selfCopy;
+  v66->_lastMorpherIncrementalPassState = sub_1AF1B6618(selfCopy->_morpher);
   return 1;
 }
 

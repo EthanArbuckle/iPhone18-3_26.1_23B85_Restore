@@ -1,11 +1,11 @@
 @interface APPCPolicyAdProcessor
 - (APPCPolicyAdProcessor)init;
-- (BOOL)isValidPolicy:(id)a3;
-- (id)aliasTransformedPolicies:(id)a3 alias:(id)a4;
-- (id)buildFinalPolicies:(id)a3 policyValue:(id)a4 policyType:(int64_t)a5 expression:(id)a6;
-- (id)cartesianProduct:(id)a3;
-- (id)flattenPolicy:(id)a3 policyType:(int64_t)a4;
-- (void)generatePolicyDataObjects:(id)a3;
+- (BOOL)isValidPolicy:(id)policy;
+- (id)aliasTransformedPolicies:(id)policies alias:(id)alias;
+- (id)buildFinalPolicies:(id)policies policyValue:(id)value policyType:(int64_t)type expression:(id)expression;
+- (id)cartesianProduct:(id)product;
+- (id)flattenPolicy:(id)policy policyType:(int64_t)type;
+- (void)generatePolicyDataObjects:(id)objects;
 - (void)processAdPolicyData;
 @end
 
@@ -40,14 +40,14 @@
   return v2;
 }
 
-- (BOOL)isValidPolicy:(id)a3
+- (BOOL)isValidPolicy:(id)policy
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  policyCopy = policy;
+  v4 = [policyCopy countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v4)
   {
     v6 = v4;
@@ -61,13 +61,13 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(policyCopy);
         }
 
         v9 = *(*(&v19 + 1) + 8 * v8);
         if (([v9 isEqualToString:{@"timer", v18}] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"spacing") & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"adsAllowed") & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"timerOrSpacing") || (objc_msgSend(v9, "isEqualToString:", @"adSessionBefore") & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"adSessionAfter"))
         {
-          v10 = [v3 objectForKey:v9];
+          v10 = [policyCopy objectForKey:v9];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -97,7 +97,7 @@
       }
 
       while (v6 != v8);
-      v15 = [v3 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v15 = [policyCopy countByEnumeratingWithState:&v19 objects:v27 count:16];
       v6 = v15;
     }
 
@@ -121,13 +121,13 @@ LABEL_22:
   dispatch_async(v3, block);
 }
 
-- (void)generatePolicyDataObjects:(id)a3
+- (void)generatePolicyDataObjects:(id)objects
 {
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = a3;
+  obj = objects;
   v21 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v21)
   {
@@ -147,11 +147,11 @@ LABEL_22:
         v5 = [v4 objectForKey:@"value"];
         v6 = [v4 objectForKey:@"isXLFormat"];
         v7 = [v4 valueForKey:@"policyType"];
-        v8 = [v7 intValue];
+        intValue = [v7 intValue];
 
         v22 = v6;
         v23 = v5;
-        v9 = [[APPCPolicyData alloc] initWithPolicyType:v8 policyValue:v5 isXLFormat:v6];
+        v9 = [[APPCPolicyData alloc] initWithPolicyType:intValue policyValue:v5 isXLFormat:v6];
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
@@ -235,8 +235,8 @@ LABEL_22:
           while (v12);
         }
 
-        v17 = [(APPCPolicyAdProcessor *)self adPolicies];
-        [v17 addObject:v9];
+        adPolicies = [(APPCPolicyAdProcessor *)self adPolicies];
+        [adPolicies addObject:v9];
 
         v3 = v24 + 1;
       }
@@ -249,20 +249,20 @@ LABEL_22:
   }
 }
 
-- (id)flattenPolicy:(id)a3 policyType:(int64_t)a4
+- (id)flattenPolicy:(id)policy policyType:(int64_t)type
 {
-  v5 = a3;
+  policyCopy = policy;
   v40 = objc_alloc_init(NSMutableArray);
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v5;
+  obj = policyCopy;
   v41 = [obj countByEnumeratingWithState:&v54 objects:v61 count:16];
   if (v41)
   {
     v37 = *v55;
-    v38 = a4;
+    typeCopy = type;
     do
     {
       v6 = 0;
@@ -282,7 +282,7 @@ LABEL_22:
 
         v44 = v8;
         v45 = v6;
-        if (a4 == 7)
+        if (type == 7)
         {
           v43 = [v7 objectForKey:@"expression"];
         }
@@ -400,8 +400,8 @@ LABEL_22:
           while (v24);
         }
 
-        a4 = v38;
-        v33 = [(APPCPolicyAdProcessor *)self buildFinalPolicies:v21 policyValue:v44 policyType:v38 expression:v43];
+        type = typeCopy;
+        v33 = [(APPCPolicyAdProcessor *)self buildFinalPolicies:v21 policyValue:v44 policyType:typeCopy expression:v43];
         [v40 addObjectsFromArray:v33];
 
         v6 = v45 + 1;
@@ -419,15 +419,15 @@ LABEL_22:
   return v34;
 }
 
-- (id)cartesianProduct:(id)a3
+- (id)cartesianProduct:(id)product
 {
-  v3 = a3;
+  productCopy = product;
   v4 = objc_alloc_init(NSMutableArray);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v5 = v3;
+  v5 = productCopy;
   v6 = [v5 countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v6)
   {
@@ -443,8 +443,8 @@ LABEL_22:
         }
 
         v10 = [NSSet setWithArray:*(*(&v39 + 1) + 8 * i)];
-        v11 = [v10 allObjects];
-        [v4 addObject:v11];
+        allObjects = [v10 allObjects];
+        [v4 addObject:allObjects];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v39 objects:v45 count:16];
@@ -537,11 +537,11 @@ LABEL_22:
   return v29;
 }
 
-- (id)buildFinalPolicies:(id)a3 policyValue:(id)a4 policyType:(int64_t)a5 expression:(id)a6
+- (id)buildFinalPolicies:(id)policies policyValue:(id)value policyType:(int64_t)type expression:(id)expression
 {
-  v10 = a3;
-  v35 = a4;
-  v33 = a6;
+  policiesCopy = policies;
+  valueCopy = value;
+  expressionCopy = expression;
   v36 = objc_alloc_init(NSMutableArray);
   v11 = +[NSMutableArray array];
   v12 = +[NSMutableArray array];
@@ -549,7 +549,7 @@ LABEL_22:
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v13 = v10;
+  v13 = policiesCopy;
   v14 = [v13 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v14)
   {
@@ -600,13 +600,13 @@ LABEL_22:
 
         v24 = *(*(&v37 + 1) + 8 * j);
         v25 = objc_alloc_init(NSMutableDictionary);
-        [v25 setObject:v35 forKey:@"value"];
-        v26 = [NSNumber numberWithInteger:a5];
+        [v25 setObject:valueCopy forKey:@"value"];
+        v26 = [NSNumber numberWithInteger:type];
         [v25 setObject:v26 forKey:@"policyType"];
 
-        if (a5 == 7)
+        if (type == 7)
         {
-          [v25 setObject:v33 forKey:@"expression"];
+          [v25 setObject:expressionCopy forKey:@"expression"];
         }
 
         if ([v24 count])
@@ -636,18 +636,18 @@ LABEL_22:
   return v36;
 }
 
-- (id)aliasTransformedPolicies:(id)a3 alias:(id)a4
+- (id)aliasTransformedPolicies:(id)policies alias:(id)alias
 {
-  v54 = self;
-  v5 = a3;
-  v6 = a4;
-  v60 = v5;
-  v7 = [v5 mutableCopy];
+  selfCopy = self;
+  policiesCopy = policies;
+  aliasCopy = alias;
+  v60 = policiesCopy;
+  v7 = [policiesCopy mutableCopy];
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v8 = v6;
+  v8 = aliasCopy;
   v57 = [v8 countByEnumeratingWithState:&v94 objects:v101 count:16];
   obj = v8;
   if (!v57)
@@ -672,7 +672,7 @@ LABEL_22:
 
       v59 = v10;
       v12 = *(*(&v94 + 1) + 8 * v10);
-      v13 = [obj objectForKey:{v12, v54}];
+      v13 = [obj objectForKey:{v12, selfCopy}];
       if (v13)
       {
         v14 = v13;
@@ -756,13 +756,13 @@ LABEL_22:
                             [v79 addObjectsFromArray:v19];
                             [v79 removeObject:v17];
                             v27 = [NSOrderedSet orderedSetWithArray:v79];
-                            v28 = [v27 array];
+                            array = [v27 array];
 
                             v29 = [v7 objectForKey:v81];
                             v30 = [v29 objectAtIndex:v24];
                             v31 = [v30 mutableCopy];
 
-                            [v31 setObject:v28 forKey:v12];
+                            [v31 setObject:array forKey:v12];
                             v32 = [v7 objectForKey:v81];
                             v33 = [v32 mutableCopy];
 
@@ -825,7 +825,7 @@ LABEL_29:
                                   [v39 addObjectsFromArray:v19];
                                   [v39 removeObject:v17];
                                   v40 = [NSOrderedSet orderedSetWithArray:v39];
-                                  v78 = [v40 array];
+                                  array2 = [v40 array];
 
                                   v41 = [v7 objectForKey:v22];
                                   v80 = [v41 mutableCopy];
@@ -835,7 +835,7 @@ LABEL_29:
                                   v44 = v43 = v7;
                                   v45 = [v44 mutableCopy];
 
-                                  [v45 setObject:v78 forKey:v12];
+                                  [v45 setObject:array2 forKey:v12];
                                   v46 = [NSArray arrayWithObject:v45];
                                   v47 = [v43 objectForKey:v81];
                                   v48 = v12;
@@ -922,7 +922,7 @@ LABEL_53:
   if (v9)
   {
     v51 = obj;
-    v52 = [(APPCPolicyAdProcessor *)v54 aliasTransformedPolicies:v7 alias:obj];
+    v52 = [(APPCPolicyAdProcessor *)selfCopy aliasTransformedPolicies:v7 alias:obj];
     goto LABEL_59;
   }
 

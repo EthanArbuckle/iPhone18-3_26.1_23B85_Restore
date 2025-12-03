@@ -1,25 +1,25 @@
 @interface TSCH3DChartBoundsLayoutSceneDelegate
 + (id)sceneDelegate;
-- (BOOL)willSubmitLabelForSceneObject:(id)a3 labelRenderInfo:(id)a4;
-- (BOOL)willSubmitLabelType:(int)a3 boundsIndex:(int64_t)a4 alignment:(unint64_t)a5 elementIndex:(unint64_t)a6 forSceneObject:(id)a7;
-- (BOOL)willSubmitSceneObject:(id)a3 pipeline:(id)a4;
+- (BOOL)willSubmitLabelForSceneObject:(id)object labelRenderInfo:(id)info;
+- (BOOL)willSubmitLabelType:(int)type boundsIndex:(int64_t)index alignment:(unint64_t)alignment elementIndex:(unint64_t)elementIndex forSceneObject:(id)object;
+- (BOOL)willSubmitSceneObject:(id)object pipeline:(id)pipeline;
 - (TSCH3DChartBoundsLayoutSceneDelegate)init;
 - (id)interestedClasses;
-- (id)makeDelegateWithSceneObject:(id)a3 scene:(id)a4;
+- (id)makeDelegateWithSceneObject:(id)object scene:(id)scene;
 - (void)dealloc;
-- (void)didRunForScene:(id)a3 pipeline:(id)a4;
-- (void)invalidateLabelsBoundsForSceneObjectClass:(Class)a3 boundsIndex:(int64_t)a4;
+- (void)didRunForScene:(id)scene pipeline:(id)pipeline;
+- (void)invalidateLabelsBoundsForSceneObjectClass:(Class)class boundsIndex:(int64_t)index;
 - (void)p_addAllActiveLabelsBounds;
-- (void)p_extendProjectedBoundsForCachedLabelBounds:(id)a3 offset:(void *)a4;
-- (void)setOffset:(void *)a3 labelType:(int)a4 boundsIndex:(int64_t)a5 forSceneObject:(id)a6;
-- (void)willRunForScene:(id)a3 pipeline:(id)a4;
+- (void)p_extendProjectedBoundsForCachedLabelBounds:(id)bounds offset:(void *)offset;
+- (void)setOffset:(void *)offset labelType:(int)type boundsIndex:(int64_t)index forSceneObject:(id)object;
+- (void)willRunForScene:(id)scene pipeline:(id)pipeline;
 @end
 
 @implementation TSCH3DChartBoundsLayoutSceneDelegate
 
 + (id)sceneDelegate
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -83,10 +83,10 @@
   return v6;
 }
 
-- (id)makeDelegateWithSceneObject:(id)a3 scene:(id)a4
+- (id)makeDelegateWithSceneObject:(id)object scene:(id)scene
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  objectCopy = object;
   objc_msgSend_interestedClasses(self, v6, v7, v8, v9);
   v26 = 0u;
   v27 = 0u;
@@ -107,7 +107,7 @@
 
         if (objc_opt_isKindOfClass())
         {
-          v22 = self;
+          selfCopy = self;
           goto LABEL_11;
         }
       }
@@ -122,13 +122,13 @@
     }
   }
 
-  v22 = 0;
+  selfCopy = 0;
 LABEL_11:
 
-  return v22;
+  return selfCopy;
 }
 
-- (void)invalidateLabelsBoundsForSceneObjectClass:(Class)a3 boundsIndex:(int64_t)a4
+- (void)invalidateLabelsBoundsForSceneObjectClass:(Class)class boundsIndex:(int64_t)index
 {
   v33 = *MEMORY[0x277D85DE8];
   v28 = 0u;
@@ -154,7 +154,7 @@ LABEL_11:
         if (objc_opt_isKindOfClass())
         {
           v22 = objc_msgSend_objectForKeyedSubscript_(self->_sceneObjectLabelsBounds, v18, v19, v20, v21, v17);
-          v27 = objc_msgSend_resetIndex_(v22, v23, v24, v25, v26, a4);
+          v27 = objc_msgSend_resetIndex_(v22, v23, v24, v25, v26, index);
 
           v14 |= v27;
         }
@@ -176,10 +176,10 @@ LABEL_11:
   }
 }
 
-- (void)p_extendProjectedBoundsForCachedLabelBounds:(id)a3 offset:(void *)a4
+- (void)p_extendProjectedBoundsForCachedLabelBounds:(id)bounds offset:(void *)offset
 {
-  v8 = a3;
-  if (!v8)
+  boundsCopy = bounds;
+  if (!boundsCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCH3DChartBoundsLayoutSceneDelegate p_extendProjectedBoundsForCachedLabelBounds:offset:]");
@@ -199,10 +199,10 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v38, v39, v40, v41);
   }
 
-  if (v8)
+  if (boundsCopy)
   {
-    *&v111 = *a4;
-    DWORD2(v111) = *(a4 + 2);
+    *&v111 = *offset;
+    DWORD2(v111) = *(offset + 2);
     transforms = self->_transforms;
     v43 = objc_msgSend_camera(self->_pipeline, v7, COERCE_DOUBLE(__PAIR64__(DWORD1(v111), DWORD2(v111))), v10, v11);
     v48 = v43;
@@ -217,15 +217,15 @@ LABEL_11:
       v113[1] = 0;
     }
 
-    objc_msgSend_normalizedBoundsWithOffset_transforms_viewport_(v8, v44, v45, v46, v47, &v111, transforms, v113);
+    objc_msgSend_normalizedBoundsWithOffset_transforms_viewport_(boundsCopy, v44, v45, v46, v47, &v111, transforms, v113);
 
     if (byte_280A46430 == 1)
     {
       v53 = objc_opt_class();
       v54 = NSStringFromSelector(a2);
-      v59 = objc_msgSend_string(v8, v55, v56, v57, v58);
+      v59 = objc_msgSend_string(boundsCopy, v55, v56, v57, v58);
       v60 = MEMORY[0x277CCACA8];
-      v61 = *a4;
+      v61 = *offset;
       sub_276152FD4("vec3(%f, %f, %f)", v62, v63, v64, v65, v66, v67, v68, SLOBYTE(v61));
       if (v114 >= 0)
       {
@@ -299,10 +299,10 @@ LABEL_11:
   }
 }
 
-- (void)willRunForScene:(id)a3 pipeline:(id)a4
+- (void)willRunForScene:(id)scene pipeline:(id)pipeline
 {
-  v37 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  pipelineCopy = pipeline;
   pipeline = self->_pipeline;
   self->_labelsDidOverride = 0;
   if (pipeline)
@@ -315,10 +315,10 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  objc_storeStrong(&self->_pipeline, a4);
+  objc_storeStrong(&self->_pipeline, pipeline);
   transforms = self->_transforms;
-  v32 = objc_msgSend_camera(v7, v28, v29, v30, v31);
-  objc_msgSend_resetWithScene_camera_(transforms, v33, v34, v35, v36, v37, v32);
+  v32 = objc_msgSend_camera(pipelineCopy, v28, v29, v30, v31);
+  objc_msgSend_resetWithScene_camera_(transforms, v33, v34, v35, v36, sceneCopy, v32);
 }
 
 - (void)p_addAllActiveLabelsBounds
@@ -377,9 +377,9 @@ LABEL_11:
   }
 }
 
-- (void)didRunForScene:(id)a3 pipeline:(id)a4
+- (void)didRunForScene:(id)scene pipeline:(id)pipeline
 {
-  v30 = a4;
+  pipelineCopy = pipeline;
   activeBounds = self->_activeBounds;
   self->_activeBounds = 0;
 
@@ -390,12 +390,12 @@ LABEL_11:
   }
 
   pipeline = self->_pipeline;
-  if (pipeline != v30)
+  if (pipeline != pipelineCopy)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v7, v8, v9, "[TSCH3DChartBoundsLayoutSceneDelegate didRunForScene:pipeline:]");
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, v14, v15, v16, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartResizer.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v18, v19, v20, v21, v12, v17, 375, 0, "pipeline mismatch %@ %@", self->_pipeline, v30);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v18, v19, v20, v21, v12, v17, 375, 0, "pipeline mismatch %@ %@", self->_pipeline, pipelineCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
     pipeline = self->_pipeline;
@@ -406,47 +406,47 @@ LABEL_11:
   objc_msgSend_resetWithScene_camera_(self->_transforms, v26, v27, v28, v29, 0, 0);
 }
 
-- (BOOL)willSubmitSceneObject:(id)a3 pipeline:(id)a4
+- (BOOL)willSubmitSceneObject:(id)object pipeline:(id)pipeline
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v7, v8, v9, "[TSCH3DChartBoundsLayoutSceneDelegate willSubmitSceneObject:pipeline:]");
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartResizer.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v17, v18, v19, v20, v11, v16, 389, 0, "non-label class passed through %@", v5);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v17, v18, v19, v20, v11, v16, 389, 0, "non-label class passed through %@", objectCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
 
-  if (self->_labelsHaveCache && (objc_msgSend_containsObject_(self->_debugCachedSceneObjects, v6, v7, v8, v9, v5) & 1) == 0)
+  if (self->_labelsHaveCache && (objc_msgSend_containsObject_(self->_debugCachedSceneObjects, v6, v7, v8, v9, objectCopy) & 1) == 0)
   {
     v25 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v7, v8, v9, "[TSCH3DChartBoundsLayoutSceneDelegate willSubmitSceneObject:pipeline:]");
     v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, v28, v29, v30, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartResizer.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v32, v33, v34, v35, v26, v31, 392, 0, "%@ labels not cached in previous runs, layout item probably needs to be invalidated", v5);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v32, v33, v34, v35, v26, v31, 392, 0, "%@ labels not cached in previous runs, layout item probably needs to be invalidated", objectCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37, v38, v39);
   }
 
-  v40 = objc_msgSend_objectForKeyedSubscript_(self->_sceneObjectLabelsBounds, v6, v7, v8, v9, v5);
+  v40 = objc_msgSend_objectForKeyedSubscript_(self->_sceneObjectLabelsBounds, v6, v7, v8, v9, objectCopy);
 
   if (!v40)
   {
     sceneObjectLabelsBounds = self->_sceneObjectLabelsBounds;
     v46 = objc_alloc_init(TSCH3DActiveLabelsTypeBounds);
-    objc_msgSend_setObject_forUncopiedKey_(sceneObjectLabelsBounds, v47, v48, v49, v50, v46, v5);
+    objc_msgSend_setObject_forUncopiedKey_(sceneObjectLabelsBounds, v47, v48, v49, v50, v46, objectCopy);
   }
 
-  v51 = objc_msgSend_objectForKeyedSubscript_(self->_sceneObjectLabelsBounds, v41, v42, v43, v44, v5);
+  v51 = objc_msgSend_objectForKeyedSubscript_(self->_sceneObjectLabelsBounds, v41, v42, v43, v44, objectCopy);
   activeBounds = self->_activeBounds;
   self->_activeBounds = v51;
 
   labelsHaveCache = self->_labelsHaveCache;
   if (!labelsHaveCache)
   {
-    objc_msgSend_addObject_(self->_debugCachedSceneObjects, v53, v54, v55, v56, v5);
+    objc_msgSend_addObject_(self->_debugCachedSceneObjects, v53, v54, v55, v56, objectCopy);
     labelsHaveCache = self->_labelsHaveCache;
   }
 
@@ -455,15 +455,15 @@ LABEL_11:
   return labelsHaveCache;
 }
 
-- (void)setOffset:(void *)a3 labelType:(int)a4 boundsIndex:(int64_t)a5 forSceneObject:(id)a6
+- (void)setOffset:(void *)offset labelType:(int)type boundsIndex:(int64_t)index forSceneObject:(id)object
 {
-  v11 = a6;
+  objectCopy = object;
   if (byte_280A46430 == 1)
   {
     v15 = objc_opt_class();
     v16 = NSStringFromSelector(a2);
     v17 = MEMORY[0x277CCACA8];
-    v18 = *a3;
+    v18 = *offset;
     sub_276152FD4("vec3(%f, %f, %f)", v19, v20, v21, v22, v23, v24, v25, SLOBYTE(v18));
     if (v42 >= 0)
     {
@@ -480,19 +480,19 @@ LABEL_11:
       operator delete(__p);
     }
 
-    NSLog(&cfstr_POffsetBoundsi.isa, v15, self, v16, v30, a5, v11);
+    NSLog(&cfstr_POffsetBoundsi.isa, v15, self, v16, v30, index, objectCopy);
   }
 
-  v31 = objc_msgSend_objectForKeyedSubscript_(self->_sceneObjectLabelsBounds, v10, v12, v13, v14, v11);
-  v36 = objc_msgSend_arrayAtIndex_(v31, v32, v33, v34, v35, a5);
-  __p = *a3;
-  v41 = *(a3 + 2);
+  v31 = objc_msgSend_objectForKeyedSubscript_(self->_sceneObjectLabelsBounds, v10, v12, v13, v14, objectCopy);
+  v36 = objc_msgSend_arrayAtIndex_(v31, v32, v33, v34, v35, index);
+  __p = *offset;
+  v41 = *(offset + 2);
   objc_msgSend_setOffset_(v36, v37, COERCE_DOUBLE(__PAIR64__(HIDWORD(__p), v41)), v38, v39, &__p);
 }
 
-- (BOOL)willSubmitLabelType:(int)a3 boundsIndex:(int64_t)a4 alignment:(unint64_t)a5 elementIndex:(unint64_t)a6 forSceneObject:(id)a7
+- (BOOL)willSubmitLabelType:(int)type boundsIndex:(int64_t)index alignment:(unint64_t)alignment elementIndex:(unint64_t)elementIndex forSceneObject:(id)object
 {
-  v10 = a7;
+  objectCopy = object;
   activeBounds = self->_activeBounds;
   if (!activeBounds)
   {
@@ -505,17 +505,17 @@ LABEL_11:
     activeBounds = self->_activeBounds;
   }
 
-  active = objc_msgSend_setActiveType_(activeBounds, v9, v11, v12, v13, a4);
+  active = objc_msgSend_setActiveType_(activeBounds, v9, v11, v12, v13, index);
 
   return active ^ 1;
 }
 
-- (BOOL)willSubmitLabelForSceneObject:(id)a3 labelRenderInfo:(id)a4
+- (BOOL)willSubmitLabelForSceneObject:(id)object labelRenderInfo:(id)info
 {
-  v132 = a3;
-  v7 = a4;
+  objectCopy = object;
+  infoCopy = info;
   pipeline = self->_pipeline;
-  v13 = objc_msgSend_pipeline(v7, v9, v10, v11, v12);
+  v13 = objc_msgSend_pipeline(infoCopy, v9, v10, v11, v12);
 
   if (pipeline != v13)
   {
@@ -523,13 +523,13 @@ LABEL_11:
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "[TSCH3DChartBoundsLayoutSceneDelegate willSubmitLabelForSceneObject:labelRenderInfo:]");
     v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, v21, v22, v23, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartResizer.mm");
     v25 = self->_pipeline;
-    v30 = objc_msgSend_pipeline(v7, v26, v27, v28, v29);
+    v30 = objc_msgSend_pipeline(infoCopy, v26, v27, v28, v29);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v18, v31, v32, v33, v34, v19, v24, 439, 0, "pipeline mismatch %@ %@", v25, v30);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v35, v36, v37, v38);
   }
 
-  v39 = objc_msgSend_labelsRenderer(v132, v14, v15, v16, v17);
+  v39 = objc_msgSend_labelsRenderer(objectCopy, v14, v15, v16, v17);
   v44 = v39;
   if (v39)
   {
@@ -541,7 +541,7 @@ LABEL_11:
     memset(v138, 0, sizeof(v138));
   }
 
-  v49 = objc_msgSend_alignment(v7, v45, v46, v47, v48);
+  v49 = objc_msgSend_alignment(infoCopy, v45, v46, v47, v48);
   *&v139 = vmul_f32(*&v138[0], 0xBF000000BF000000);
   sub_276205CDC(v138, v49, &v139, &v137);
   v131 = *(v138 + 1);
@@ -565,10 +565,10 @@ LABEL_11:
   }
 
   v136 = v58;
-  objc_msgSend_rotation(v7, v55, *v58.i64, *v56.i64, v131);
+  objc_msgSend_rotation(infoCopy, v55, *v58.i64, *v56.i64, v131);
   if (*&v60 != 0.0)
   {
-    objc_msgSend_rotation(v7, v59, *&v60, v61, v62);
+    objc_msgSend_rotation(infoCopy, v59, *&v60, v61, v62);
     v64 = v63 * 3.14159265 / 180.0;
     v67 = __sincosf_stret(v64);
     cosval = v67.__cosval;
@@ -597,11 +597,11 @@ LABEL_11:
     v136 = v60;
   }
 
-  if (v7)
+  if (infoCopy)
   {
-    objc_msgSend_offset2D(v7, v59, *&v60, v61, v62);
+    objc_msgSend_offset2D(infoCopy, v59, *&v60, v61, v62);
     v70 = v139;
-    objc_msgSend_position(v7, v71, v72, v73, v74);
+    objc_msgSend_position(infoCopy, v71, v72, v73, v74);
   }
 
   else
@@ -613,7 +613,7 @@ LABEL_11:
 
   v139 = v136;
   v135 = COERCE_DOUBLE(vmul_n_f32(v70, v130));
-  v75 = objc_msgSend_renderString(v7, v59, v135, *&v136, v62);
+  v75 = objc_msgSend_renderString(infoCopy, v59, v135, *&v136, v62);
   v80 = objc_msgSend_boundsWithPosition_labelBox_offset2D_string_(TSCH3DCachedLabelBounds, v76, v77, v78, v79, &v133, &v139, &v135, v75);
 
   activeBounds = self->_activeBounds;
@@ -629,9 +629,9 @@ LABEL_11:
   }
 
   objc_msgSend_addBounds_(activeBounds, v81, v82, v83, v84, v80);
-  if (v7)
+  if (infoCopy)
   {
-    objc_msgSend_offset(v7, v101, v102, v103, v104);
+    objc_msgSend_offset(infoCopy, v101, v102, v103, v104);
   }
 
   else
@@ -645,10 +645,10 @@ LABEL_11:
   {
     v105 = objc_opt_class();
     v106 = NSStringFromSelector(a2);
-    v118 = objc_msgSend_renderString(v7, v107, v108, v109, v110);
-    if (v7)
+    v118 = objc_msgSend_renderString(infoCopy, v107, v108, v109, v110);
+    if (infoCopy)
     {
-      objc_msgSend_position(v7, v111, v119, v120, v121);
+      objc_msgSend_position(infoCopy, v111, v119, v120, v121);
       v122 = v133.f32[0];
     }
 

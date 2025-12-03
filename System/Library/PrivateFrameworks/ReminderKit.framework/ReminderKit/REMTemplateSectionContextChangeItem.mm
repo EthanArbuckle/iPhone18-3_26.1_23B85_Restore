@@ -2,18 +2,18 @@
 - (BOOL)shouldUpdateSectionsOrdering;
 - (NSArray)unsavedSectionIDsOrdering;
 - (REMMemberships)unsavedMembershipsOfRemindersInSections;
-- (REMTemplateSectionContextChangeItem)initWithTemplateChangeItem:(id)a3;
-- (void)setUnsavedMembershipsOfRemindersInSections:(id)a3;
-- (void)setUnsavedSectionIDsOrdering:(id)a3;
-- (void)undeleteSectionWithID:(id)a3;
+- (REMTemplateSectionContextChangeItem)initWithTemplateChangeItem:(id)item;
+- (void)setUnsavedMembershipsOfRemindersInSections:(id)sections;
+- (void)setUnsavedSectionIDsOrdering:(id)ordering;
+- (void)undeleteSectionWithID:(id)d;
 @end
 
 @implementation REMTemplateSectionContextChangeItem
 
-- (REMTemplateSectionContextChangeItem)initWithTemplateChangeItem:(id)a3
+- (REMTemplateSectionContextChangeItem)initWithTemplateChangeItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "templateChangeItem");
   }
@@ -24,7 +24,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templateChangeItem, a3);
+    objc_storeStrong(&v6->_templateChangeItem, item);
   }
 
   return v7;
@@ -32,55 +32,55 @@
 
 - (BOOL)shouldUpdateSectionsOrdering
 {
-  v2 = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
-  v3 = [v2 shouldUpdateSectionsOrdering];
+  templateChangeItem = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
+  shouldUpdateSectionsOrdering = [templateChangeItem shouldUpdateSectionsOrdering];
 
-  return v3;
+  return shouldUpdateSectionsOrdering;
 }
 
 - (NSArray)unsavedSectionIDsOrdering
 {
-  v2 = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
-  v3 = [v2 unsavedSectionIDsOrdering];
+  templateChangeItem = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
+  unsavedSectionIDsOrdering = [templateChangeItem unsavedSectionIDsOrdering];
 
-  return v3;
+  return unsavedSectionIDsOrdering;
 }
 
-- (void)setUnsavedSectionIDsOrdering:(id)a3
+- (void)setUnsavedSectionIDsOrdering:(id)ordering
 {
-  v4 = a3;
-  v5 = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
-  [v5 setUnsavedSectionIDsOrdering:v4];
+  orderingCopy = ordering;
+  templateChangeItem = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
+  [templateChangeItem setUnsavedSectionIDsOrdering:orderingCopy];
 }
 
 - (REMMemberships)unsavedMembershipsOfRemindersInSections
 {
-  v2 = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
-  v3 = [v2 unsavedMembershipsOfRemindersInSections];
+  templateChangeItem = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
+  unsavedMembershipsOfRemindersInSections = [templateChangeItem unsavedMembershipsOfRemindersInSections];
 
-  return v3;
+  return unsavedMembershipsOfRemindersInSections;
 }
 
-- (void)setUnsavedMembershipsOfRemindersInSections:(id)a3
+- (void)setUnsavedMembershipsOfRemindersInSections:(id)sections
 {
-  v4 = a3;
-  v5 = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
-  [v5 setUnsavedMembershipsOfRemindersInSections:v4];
+  sectionsCopy = sections;
+  templateChangeItem = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
+  [templateChangeItem setUnsavedMembershipsOfRemindersInSections:sectionsCopy];
 }
 
-- (void)undeleteSectionWithID:(id)a3
+- (void)undeleteSectionWithID:(id)d
 {
-  v8 = a3;
-  if (!v8)
+  dCopy = d;
+  if (!dCopy)
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "sectionID");
   }
 
-  v4 = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
-  v5 = [v4 sectionIDsToUndelete];
-  v6 = [v5 setByAddingObject:v8];
-  v7 = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
-  [v7 setSectionIDsToUndelete:v6];
+  templateChangeItem = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
+  sectionIDsToUndelete = [templateChangeItem sectionIDsToUndelete];
+  v6 = [sectionIDsToUndelete setByAddingObject:dCopy];
+  templateChangeItem2 = [(REMTemplateSectionContextChangeItem *)self templateChangeItem];
+  [templateChangeItem2 setSectionIDsToUndelete:v6];
 }
 
 @end

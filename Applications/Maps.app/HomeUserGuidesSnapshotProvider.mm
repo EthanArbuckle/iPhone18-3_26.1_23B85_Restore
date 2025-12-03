@@ -1,50 +1,50 @@
 @interface HomeUserGuidesSnapshotProvider
 - (_TtC4Maps30HomeUserGuidesSnapshotProvider)init;
 - (id)observers;
-- (void)homeDataProvidingObjectDidUpdate:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setHasInitialData:(BOOL)a3;
-- (void)setObservers:(id)a3;
+- (void)homeDataProvidingObjectDidUpdate:(id)update;
+- (void)setActive:(BOOL)active;
+- (void)setHasInitialData:(BOOL)data;
+- (void)setObservers:(id)observers;
 @end
 
 @implementation HomeUserGuidesSnapshotProvider
 
-- (void)setHasInitialData:(BOOL)a3
+- (void)setHasInitialData:(BOOL)data
 {
-  v3 = a3;
-  v4 = self;
-  sub_100486B4C(v3);
+  dataCopy = data;
+  selfCopy = self;
+  sub_100486B4C(dataCopy);
 }
 
 - (id)observers
 {
   swift_getKeyPath();
   sub_100487C14();
-  v3 = self;
+  selfCopy = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
-  v4 = *(&v3->super.isa + OBJC_IVAR____TtC4Maps30HomeUserGuidesSnapshotProvider__observers);
+  v4 = *(&selfCopy->super.isa + OBJC_IVAR____TtC4Maps30HomeUserGuidesSnapshotProvider__observers);
   v5 = v4;
 
   return v4;
 }
 
-- (void)setObservers:(id)a3
+- (void)setObservers:(id)observers
 {
-  v4 = a3;
-  v5 = self;
-  sub_100486EE0(v4);
+  observersCopy = observers;
+  selfCopy = self;
+  sub_100486EE0(observersCopy);
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v4 = self;
-  sub_100487214(a3);
+  selfCopy = self;
+  sub_100487214(active);
 }
 
-- (void)homeDataProvidingObjectDidUpdate:(id)a3
+- (void)homeDataProvidingObjectDidUpdate:(id)update
 {
-  v3 = self;
+  selfCopy = self;
   sub_10048735C();
 }
 

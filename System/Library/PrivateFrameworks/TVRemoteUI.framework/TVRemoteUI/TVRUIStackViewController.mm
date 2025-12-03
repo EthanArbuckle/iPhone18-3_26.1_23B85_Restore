@@ -1,46 +1,46 @@
 @interface TVRUIStackViewController
-- (BOOL)_hostingViewIndexIsValid:(unint64_t)a3;
-- (BOOL)_isIndex:(unint64_t)a3 directlyAboveIndex:(unint64_t)a4;
-- (BOOL)_isIndex:(unint64_t)a3 directlyBelowIndex:(unint64_t)a4;
-- (CGAffineTransform)_transformWithMultiplier:(SEL)a3;
-- (TVRUIStackViewController)initWithViewControllers:(id)a3;
-- (double)_multiplierForTranslation:(CGPoint)a3;
-- (id)_hostingViewAboveIndex:(unint64_t)a3;
-- (id)_hostingViewBelowIndex:(unint64_t)a3;
-- (id)_hostingViewForIndex:(unint64_t)a3;
-- (id)_titleForHostingViewIndex:(unint64_t)a3;
-- (unint64_t)_finalIndexForIndex:(unint64_t)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5;
-- (unint64_t)_indexAboveIndex:(unint64_t)a3;
-- (unint64_t)_indexBelowIndex:(unint64_t)a3;
-- (unint64_t)_indexForViewController:(id)a3;
-- (void)_animateToFinalIndex:(unint64_t)a3 fromIndex:(unint64_t)a4 duration:(double)a5;
-- (void)_commitSelectedViewControllerIndex:(unint64_t)a3;
-- (void)_commitToFinalPositionForIndex:(unint64_t)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5;
+- (BOOL)_hostingViewIndexIsValid:(unint64_t)valid;
+- (BOOL)_isIndex:(unint64_t)index directlyAboveIndex:(unint64_t)aboveIndex;
+- (BOOL)_isIndex:(unint64_t)index directlyBelowIndex:(unint64_t)belowIndex;
+- (CGAffineTransform)_transformWithMultiplier:(SEL)multiplier;
+- (TVRUIStackViewController)initWithViewControllers:(id)controllers;
+- (double)_multiplierForTranslation:(CGPoint)translation;
+- (id)_hostingViewAboveIndex:(unint64_t)index;
+- (id)_hostingViewBelowIndex:(unint64_t)index;
+- (id)_hostingViewForIndex:(unint64_t)index;
+- (id)_titleForHostingViewIndex:(unint64_t)index;
+- (unint64_t)_finalIndexForIndex:(unint64_t)index translation:(CGPoint)translation velocity:(CGPoint)velocity;
+- (unint64_t)_indexAboveIndex:(unint64_t)index;
+- (unint64_t)_indexBelowIndex:(unint64_t)index;
+- (unint64_t)_indexForViewController:(id)controller;
+- (void)_animateToFinalIndex:(unint64_t)index fromIndex:(unint64_t)fromIndex duration:(double)duration;
+- (void)_commitSelectedViewControllerIndex:(unint64_t)index;
+- (void)_commitToFinalPositionForIndex:(unint64_t)index translation:(CGPoint)translation velocity:(CGPoint)velocity;
 - (void)_configureHierarchy;
 - (void)_configurePanGesture;
-- (void)_panRecognizerDidFire:(id)a3;
-- (void)_prepareHostingViewTransformsForIndex:(unint64_t)a3;
-- (void)_transitionToFinalIndex:(unint64_t)a3 duration:(double)a4;
-- (void)_updateHostingViewTransformsForIndex:(unint64_t)a3 translation:(CGPoint)a4;
-- (void)_updateViewControllerAppearanceForSelectedViewControllerIndex:(unint64_t)a3;
-- (void)selectViewControllerIndex:(unint64_t)a3 animated:(BOOL)a4;
+- (void)_panRecognizerDidFire:(id)fire;
+- (void)_prepareHostingViewTransformsForIndex:(unint64_t)index;
+- (void)_transitionToFinalIndex:(unint64_t)index duration:(double)duration;
+- (void)_updateHostingViewTransformsForIndex:(unint64_t)index translation:(CGPoint)translation;
+- (void)_updateViewControllerAppearanceForSelectedViewControllerIndex:(unint64_t)index;
+- (void)selectViewControllerIndex:(unint64_t)index animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation TVRUIStackViewController
 
-- (TVRUIStackViewController)initWithViewControllers:(id)a3
+- (TVRUIStackViewController)initWithViewControllers:(id)controllers
 {
-  v4 = a3;
+  controllersCopy = controllers;
   v11.receiver = self;
   v11.super_class = TVRUIStackViewController;
   v5 = [(TVRUIStackViewController *)&v11 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (controllersCopy)
     {
-      v7 = v4;
+      v7 = controllersCopy;
     }
 
     else
@@ -49,7 +49,7 @@
     }
 
     objc_storeStrong(&v5->_viewControllers, v7);
-    v8 = [v4 count];
+    v8 = [controllersCopy count];
     v9 = 0x7FFFFFFFFFFFFFFFLL;
     if (v8)
     {
@@ -72,36 +72,36 @@
   [(TVRUIStackViewController *)self _configurePanGesture];
 }
 
-- (void)selectViewControllerIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)selectViewControllerIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if ([(TVRUIStackViewController *)self _hostingViewIndexIsValid:?])
   {
     v7 = 0.0;
-    if (v4)
+    if (animatedCopy)
     {
       v7 = 0.25;
     }
 
-    [(TVRUIStackViewController *)self _transitionToFinalIndex:a3 duration:v7];
+    [(TVRUIStackViewController *)self _transitionToFinalIndex:index duration:v7];
   }
 }
 
 - (void)_configureHierarchy
 {
-  v2 = self;
+  selfCopy = self;
   v149 = *MEMORY[0x277D85DE8];
-  v3 = [(TVRUIStackViewController *)self viewControllers];
-  v4 = [v3 count];
+  viewControllers = [(TVRUIStackViewController *)self viewControllers];
+  v4 = [viewControllers count];
 
   if (v4)
   {
-    v5 = [(TVRUIStackViewController *)v2 hasNoTitle];
+    hasNoTitle = [(TVRUIStackViewController *)selfCopy hasNoTitle];
     v6 = objc_alloc_init(MEMORY[0x277D75D18]);
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v6 setClipsToBounds:1];
-    v7 = [(TVRUIStackViewController *)v2 view];
-    [v7 addSubview:v6];
+    view = [(TVRUIStackViewController *)selfCopy view];
+    [view addSubview:v6];
 
     v8 = objc_alloc_init(MEMORY[0x277D75D18]);
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -115,21 +115,21 @@
     [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v10 setDirection:3];
     [v6 addSubview:v10];
-    v11 = [(TVRUIStackViewController *)v2 viewControllers];
+    viewControllers2 = [(TVRUIStackViewController *)selfCopy viewControllers];
     v76 = v10;
-    [v10 setNumberOfPages:{objc_msgSend(v11, "count")}];
+    [v10 setNumberOfPages:{objc_msgSend(viewControllers2, "count")}];
 
     v12 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
     v13 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
     [v12 setFont:v13];
 
-    v14 = [MEMORY[0x277D75348] lightTextColor];
-    [v12 setTextColor:v14];
+    lightTextColor = [MEMORY[0x277D75348] lightTextColor];
+    [v12 setTextColor:lightTextColor];
 
     LODWORD(v15) = 1148846080;
     [v12 setContentHuggingPriority:1 forAxis:v15];
-    if ([(TVRUIStackViewController *)v2 titleOnTop])
+    if ([(TVRUIStackViewController *)selfCopy titleOnTop])
     {
       v16 = 4;
     }
@@ -140,8 +140,8 @@
     }
 
     [v12 setTextAlignment:v16];
-    v73 = v5;
-    if (!v5)
+    v73 = hasNoTitle;
+    if (!hasNoTitle)
     {
       [v6 addSubview:v12];
     }
@@ -154,9 +154,9 @@
     v140 = 0u;
     v141 = 0u;
     v142 = 0u;
-    obj = [(TVRUIStackViewController *)v2 viewControllers];
+    obj = [(TVRUIStackViewController *)selfCopy viewControllers];
     v83 = [obj countByEnumeratingWithState:&v139 objects:v148 count:16];
-    v81 = v2;
+    v81 = selfCopy;
     if (v83)
     {
       v79 = *v140;
@@ -172,67 +172,67 @@
 
           v137 = v17;
           v18 = *(*(&v139 + 1) + 8 * v17);
-          [v18 willMoveToParentViewController:v2];
+          [v18 willMoveToParentViewController:selfCopy];
           v19 = objc_alloc_init(MEMORY[0x277D75D18]);
           [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
           [v19 setClipsToBounds:1];
           [v19 _setContinuousCornerRadius:22.0];
-          v20 = [v19 layer];
-          [v20 setBorderWidth:1.0];
+          layer = [v19 layer];
+          [layer setBorderWidth:1.0];
 
           v21 = [MEMORY[0x277D75348] colorWithWhite:0.175 alpha:1.0];
-          v22 = [v21 CGColor];
-          v23 = [v19 layer];
-          [v23 setBorderColor:v22];
+          cGColor = [v21 CGColor];
+          layer2 = [v19 layer];
+          [layer2 setBorderColor:cGColor];
 
-          v24 = [(TVRUIStackViewController *)v2 stackBackgroundColor];
-          [v19 setBackgroundColor:v24];
+          stackBackgroundColor = [(TVRUIStackViewController *)selfCopy stackBackgroundColor];
+          [v19 setBackgroundColor:stackBackgroundColor];
 
-          v25 = [v18 view];
-          [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
-          [v19 addSubview:v25];
+          view2 = [v18 view];
+          [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+          [v19 addSubview:view2];
           [v8 addSubview:v19];
-          [(TVRUIStackViewController *)v2 addChildViewController:v18];
-          [v18 didMoveToParentViewController:v2];
-          v134 = [v25 leadingAnchor];
-          v131 = [v19 leadingAnchor];
-          v128 = [v134 constraintEqualToAnchor:v131];
+          [(TVRUIStackViewController *)selfCopy addChildViewController:v18];
+          [v18 didMoveToParentViewController:selfCopy];
+          leadingAnchor = [view2 leadingAnchor];
+          leadingAnchor2 = [v19 leadingAnchor];
+          v128 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
           v147[0] = v128;
-          v122 = [v25 trailingAnchor];
-          v119 = [v19 trailingAnchor];
-          v116 = [v122 constraintEqualToAnchor:v119];
+          trailingAnchor = [view2 trailingAnchor];
+          trailingAnchor2 = [v19 trailingAnchor];
+          v116 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
           v147[1] = v116;
-          v125 = v25;
-          v112 = [v25 topAnchor];
-          v108 = [v19 topAnchor];
-          v104 = [v112 constraintEqualToAnchor:v108];
+          v125 = view2;
+          topAnchor = [view2 topAnchor];
+          topAnchor2 = [v19 topAnchor];
+          v104 = [topAnchor constraintEqualToAnchor:topAnchor2];
           v147[2] = v104;
-          v100 = [v25 bottomAnchor];
-          v96 = [v19 bottomAnchor];
-          v94 = [v100 constraintEqualToAnchor:v96];
+          bottomAnchor = [view2 bottomAnchor];
+          bottomAnchor2 = [v19 bottomAnchor];
+          v94 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
           v147[3] = v94;
-          v92 = [v19 leadingAnchor];
-          v90 = [v8 leadingAnchor];
-          v88 = [v92 constraintEqualToAnchor:v90];
+          leadingAnchor3 = [v19 leadingAnchor];
+          leadingAnchor4 = [v8 leadingAnchor];
+          v88 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
           v147[4] = v88;
-          v86 = [v19 trailingAnchor];
-          v84 = [v8 trailingAnchor];
-          v26 = [v86 constraintEqualToAnchor:v84];
+          trailingAnchor3 = [v19 trailingAnchor];
+          trailingAnchor4 = [v8 trailingAnchor];
+          v26 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
           v147[5] = v26;
-          v27 = [v19 topAnchor];
+          topAnchor3 = [v19 topAnchor];
           [v8 topAnchor];
           v29 = v28 = v8;
-          v30 = [v27 constraintEqualToAnchor:v29];
+          v30 = [topAnchor3 constraintEqualToAnchor:v29];
           v147[6] = v30;
-          v31 = [v19 bottomAnchor];
-          v32 = [v28 bottomAnchor];
-          v33 = [v31 constraintEqualToAnchor:v32];
+          bottomAnchor3 = [v19 bottomAnchor];
+          bottomAnchor4 = [v28 bottomAnchor];
+          v33 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
           v147[7] = v33;
           v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v147 count:8];
           [v82 addObjectsFromArray:v34];
 
           v8 = v28;
-          v2 = v81;
+          selfCopy = v81;
 
           [v80 addObject:v19];
           [v8 sendSubviewToBack:v19];
@@ -249,63 +249,63 @@
 
     v75 = v8;
 
-    v35 = [(TVRUIStackViewController *)v2 view];
-    v135 = [v77 leadingAnchor];
-    v132 = [v35 leadingAnchor];
-    v129 = [v135 constraintEqualToAnchor:v132];
+    view3 = [(TVRUIStackViewController *)selfCopy view];
+    leadingAnchor5 = [v77 leadingAnchor];
+    leadingAnchor6 = [view3 leadingAnchor];
+    v129 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v146[0] = v129;
-    v126 = [v77 trailingAnchor];
-    v123 = [v35 trailingAnchor];
-    v120 = [v126 constraintEqualToAnchor:v123];
+    trailingAnchor5 = [v77 trailingAnchor];
+    trailingAnchor6 = [view3 trailingAnchor];
+    v120 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v146[1] = v120;
-    v117 = [v77 topAnchor];
-    v113 = [v35 topAnchor];
-    v109 = [v117 constraintEqualToAnchor:v113];
+    topAnchor4 = [v77 topAnchor];
+    topAnchor5 = [view3 topAnchor];
+    v109 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v146[2] = v109;
-    v105 = [v77 bottomAnchor];
-    v138 = v35;
-    v101 = [v35 bottomAnchor];
-    v97 = [v105 constraintEqualToAnchor:v101];
+    bottomAnchor5 = [v77 bottomAnchor];
+    v138 = view3;
+    bottomAnchor6 = [view3 bottomAnchor];
+    v97 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v146[3] = v97;
-    v36 = [v76 leadingAnchor];
-    v37 = [v8 trailingAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    leadingAnchor7 = [v76 leadingAnchor];
+    trailingAnchor7 = [v8 trailingAnchor];
+    v38 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor7];
     v146[4] = v38;
-    v39 = [v76 centerYAnchor];
-    v40 = [v8 centerYAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    centerYAnchor = [v76 centerYAnchor];
+    centerYAnchor2 = [v8 centerYAnchor];
+    v41 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v146[5] = v41;
-    v42 = [v76 trailingAnchor];
-    v43 = [v77 trailingAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    trailingAnchor8 = [v76 trailingAnchor];
+    trailingAnchor9 = [v77 trailingAnchor];
+    v44 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
     v146[6] = v44;
     v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v146 count:7];
     [v82 addObjectsFromArray:v45];
 
     if (v73)
     {
-      v46 = [v75 leadingAnchor];
+      leadingAnchor8 = [v75 leadingAnchor];
       v47 = v77;
-      v48 = [v77 leadingAnchor];
-      v49 = [v46 constraintEqualToAnchor:v48 constant:20.0];
+      leadingAnchor9 = [v77 leadingAnchor];
+      v49 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9 constant:20.0];
       v143[0] = v49;
-      v50 = [v75 topAnchor];
-      v51 = [v77 topAnchor];
-      v136 = [v50 constraintEqualToAnchor:v51];
+      topAnchor6 = [v75 topAnchor];
+      topAnchor7 = [v77 topAnchor];
+      v136 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
       v143[1] = v136;
-      v52 = [v75 bottomAnchor];
-      v130 = [v77 bottomAnchor];
-      v133 = v52;
-      v127 = [v52 constraintEqualToAnchor:?];
+      bottomAnchor7 = [v75 bottomAnchor];
+      bottomAnchor8 = [v77 bottomAnchor];
+      v133 = bottomAnchor7;
+      v127 = [bottomAnchor7 constraintEqualToAnchor:?];
       v143[2] = v127;
-      v53 = [v75 trailingAnchor];
-      v121 = [v77 trailingAnchor];
-      v124 = v53;
-      v118 = [v53 constraintEqualToAnchor:-20.0 constant:?];
+      trailingAnchor10 = [v75 trailingAnchor];
+      trailingAnchor11 = [v77 trailingAnchor];
+      heightAnchor = trailingAnchor10;
+      v118 = [trailingAnchor10 constraintEqualToAnchor:-20.0 constant:?];
       v143[3] = v118;
-      v54 = [MEMORY[0x277CBEA60] arrayWithObjects:v143 count:4];
+      topAnchor10 = [MEMORY[0x277CBEA60] arrayWithObjects:v143 count:4];
       v55 = v82;
-      [v82 addObjectsFromArray:v54];
+      [v82 addObjectsFromArray:topAnchor10];
       v56 = v75;
       v57 = v74;
     }
@@ -315,102 +315,102 @@
       if ([(TVRUIStackViewController *)v81 titleOnTop])
       {
         v57 = v74;
-        v114 = [v74 topAnchor];
-        v106 = [v77 topAnchor];
-        v110 = [v114 constraintEqualToAnchor:v106];
+        topAnchor8 = [v74 topAnchor];
+        topAnchor9 = [v77 topAnchor];
+        v110 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
         v145[0] = v110;
-        v102 = [v74 leadingAnchor];
-        v98 = [v75 leadingAnchor];
-        v136 = [v102 constraintEqualToAnchor:v98 constant:10.0];
+        leadingAnchor10 = [v74 leadingAnchor];
+        leadingAnchor11 = [v75 leadingAnchor];
+        v136 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11 constant:10.0];
         v145[1] = v136;
-        v58 = [v74 trailingAnchor];
-        v130 = [v75 trailingAnchor];
-        v133 = v58;
-        v127 = [v58 constraintEqualToAnchor:?];
+        trailingAnchor12 = [v74 trailingAnchor];
+        bottomAnchor8 = [v75 trailingAnchor];
+        v133 = trailingAnchor12;
+        v127 = [trailingAnchor12 constraintEqualToAnchor:?];
         v145[2] = v127;
-        v124 = [v74 heightAnchor];
-        v121 = [v124 constraintGreaterThanOrEqualToConstant:15.0];
-        v145[3] = v121;
-        v59 = [v74 bottomAnchor];
-        v54 = [v75 topAnchor];
-        v118 = v59;
-        v95 = [v59 constraintEqualToAnchor:v54 constant:-5.0];
-        v145[4] = v95;
-        v93 = [v75 leadingAnchor];
-        v91 = [v77 leadingAnchor];
-        v89 = [v93 constraintEqualToAnchor:v91 constant:20.0];
-        v145[5] = v89;
-        v87 = [v75 bottomAnchor];
-        v85 = [v77 bottomAnchor];
-        v60 = [v87 constraintEqualToAnchor:v85];
+        heightAnchor = [v74 heightAnchor];
+        trailingAnchor11 = [heightAnchor constraintGreaterThanOrEqualToConstant:15.0];
+        v145[3] = trailingAnchor11;
+        bottomAnchor9 = [v74 bottomAnchor];
+        topAnchor10 = [v75 topAnchor];
+        v118 = bottomAnchor9;
+        leadingAnchor16 = [bottomAnchor9 constraintEqualToAnchor:topAnchor10 constant:-5.0];
+        v145[4] = leadingAnchor16;
+        leadingAnchor12 = [v75 leadingAnchor];
+        leadingAnchor13 = [v77 leadingAnchor];
+        trailingAnchor16 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13 constant:20.0];
+        v145[5] = trailingAnchor16;
+        bottomAnchor10 = [v75 bottomAnchor];
+        bottomAnchor11 = [v77 bottomAnchor];
+        v60 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11];
         v145[6] = v60;
-        v61 = [v75 trailingAnchor];
-        v62 = [v77 trailingAnchor];
-        v63 = [v61 constraintEqualToAnchor:v62 constant:-20.0];
+        trailingAnchor13 = [v75 trailingAnchor];
+        trailingAnchor14 = [v77 trailingAnchor];
+        v63 = [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14 constant:-20.0];
         v145[7] = v63;
         v64 = [MEMORY[0x277CBEA60] arrayWithObjects:v145 count:8];
         v55 = v82;
         [v82 addObjectsFromArray:v64];
 
         v47 = v77;
-        v51 = v98;
+        topAnchor7 = leadingAnchor11;
 
-        v48 = v106;
-        v46 = v114;
+        leadingAnchor9 = topAnchor9;
+        leadingAnchor8 = topAnchor8;
 
-        v50 = v102;
+        topAnchor6 = leadingAnchor10;
         v56 = v75;
         v49 = v110;
       }
 
       else
       {
-        v115 = [v75 leadingAnchor];
-        v107 = [v77 leadingAnchor];
-        v111 = [v115 constraintEqualToAnchor:v107 constant:20.0];
+        leadingAnchor14 = [v75 leadingAnchor];
+        leadingAnchor15 = [v77 leadingAnchor];
+        v111 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15 constant:20.0];
         v144[0] = v111;
-        v103 = [v75 topAnchor];
-        v99 = [v77 topAnchor];
-        v136 = [v103 constraintEqualToAnchor:v99];
+        topAnchor11 = [v75 topAnchor];
+        topAnchor12 = [v77 topAnchor];
+        v136 = [topAnchor11 constraintEqualToAnchor:topAnchor12];
         v144[1] = v136;
-        v65 = [v75 trailingAnchor];
-        v130 = [v77 trailingAnchor];
-        v133 = v65;
-        v127 = [v65 constraintEqualToAnchor:-20.0 constant:?];
+        trailingAnchor15 = [v75 trailingAnchor];
+        bottomAnchor8 = [v77 trailingAnchor];
+        v133 = trailingAnchor15;
+        v127 = [trailingAnchor15 constraintEqualToAnchor:-20.0 constant:?];
         v144[2] = v127;
         v57 = v74;
-        v66 = [v74 topAnchor];
-        v121 = [v75 bottomAnchor];
-        v124 = v66;
-        v118 = [v66 constraintEqualToAnchor:5.0 constant:?];
+        topAnchor13 = [v74 topAnchor];
+        trailingAnchor11 = [v75 bottomAnchor];
+        heightAnchor = topAnchor13;
+        v118 = [topAnchor13 constraintEqualToAnchor:5.0 constant:?];
         v144[3] = v118;
-        v54 = [v74 leadingAnchor];
-        v95 = [v77 leadingAnchor];
-        v93 = [v54 constraintEqualToAnchor:v95];
-        v144[4] = v93;
-        v91 = [v74 trailingAnchor];
-        v89 = [v77 trailingAnchor];
-        v87 = [v91 constraintEqualToAnchor:v89];
-        v144[5] = v87;
-        v67 = [v74 bottomAnchor];
-        v68 = [v77 bottomAnchor];
-        v69 = [v67 constraintEqualToAnchor:v68];
+        topAnchor10 = [v74 leadingAnchor];
+        leadingAnchor16 = [v77 leadingAnchor];
+        leadingAnchor12 = [topAnchor10 constraintEqualToAnchor:leadingAnchor16];
+        v144[4] = leadingAnchor12;
+        leadingAnchor13 = [v74 trailingAnchor];
+        trailingAnchor16 = [v77 trailingAnchor];
+        bottomAnchor10 = [leadingAnchor13 constraintEqualToAnchor:trailingAnchor16];
+        v144[5] = bottomAnchor10;
+        bottomAnchor12 = [v74 bottomAnchor];
+        bottomAnchor13 = [v77 bottomAnchor];
+        v69 = [bottomAnchor12 constraintEqualToAnchor:bottomAnchor13];
         v144[6] = v69;
-        v70 = [v74 heightAnchor];
-        v71 = [v70 constraintGreaterThanOrEqualToConstant:15.0];
+        heightAnchor2 = [v74 heightAnchor];
+        v71 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:15.0];
         v144[7] = v71;
         v72 = [MEMORY[0x277CBEA60] arrayWithObjects:v144 count:8];
         v55 = v82;
         [v82 addObjectsFromArray:v72];
 
         v49 = v111;
-        v48 = v107;
+        leadingAnchor9 = leadingAnchor15;
 
         v47 = v77;
-        v51 = v99;
+        topAnchor7 = topAnchor12;
 
-        v46 = v115;
-        v50 = v103;
+        leadingAnchor8 = leadingAnchor14;
+        topAnchor6 = topAnchor11;
         v56 = v75;
       }
     }
@@ -430,34 +430,34 @@
   v4 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel__panRecognizerDidFire_];
   [v4 _setCanPanVertically:1];
   [v4 _setCanPanHorizontally:0];
-  v3 = [(TVRUIStackViewController *)self view];
-  [v3 addGestureRecognizer:v4];
+  view = [(TVRUIStackViewController *)self view];
+  [view addGestureRecognizer:v4];
 }
 
-- (void)_panRecognizerDidFire:(id)a3
+- (void)_panRecognizerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [v4 state];
-  v6 = [(TVRUIStackViewController *)self view];
-  [v4 translationInView:v6];
+  fireCopy = fire;
+  state = [fireCopy state];
+  view = [(TVRUIStackViewController *)self view];
+  [fireCopy translationInView:view];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(TVRUIStackViewController *)self view];
-  [v4 velocityInView:v11];
+  view2 = [(TVRUIStackViewController *)self view];
+  [fireCopy velocityInView:view2];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(TVRUIStackViewController *)self selectedViewControllerIndex];
-  if (v5 == 2)
+  selectedViewControllerIndex = [(TVRUIStackViewController *)self selectedViewControllerIndex];
+  if (state == 2)
   {
     if (_panRecognizerDidFire____recognizerCommitted)
     {
       return;
     }
 
-    [(TVRUIStackViewController *)self _updateHostingViewTransformsForIndex:v16 translation:v8, v10];
-    v17 = [(TVRUIStackViewController *)self _shouldCommitToFinalPositionForIndex:v16 translation:v8, v10];
+    [(TVRUIStackViewController *)self _updateHostingViewTransformsForIndex:selectedViewControllerIndex translation:v8, v10];
+    v17 = [(TVRUIStackViewController *)self _shouldCommitToFinalPositionForIndex:selectedViewControllerIndex translation:v8, v10];
     _panRecognizerDidFire____recognizerCommitted = v17;
     if (!v17)
     {
@@ -467,11 +467,11 @@
 
   else
   {
-    if (v5 == 1)
+    if (state == 1)
     {
       _panRecognizerDidFire____recognizerCommitted = 0;
 
-      [(TVRUIStackViewController *)self _prepareHostingViewTransformsForIndex:v16];
+      [(TVRUIStackViewController *)self _prepareHostingViewTransformsForIndex:selectedViewControllerIndex];
       return;
     }
 
@@ -481,71 +481,71 @@
     }
   }
 
-  v18 = [(TVRUIStackViewController *)self selectedViewControllerIndex];
+  selectedViewControllerIndex2 = [(TVRUIStackViewController *)self selectedViewControllerIndex];
 
-  [(TVRUIStackViewController *)self _commitToFinalPositionForIndex:v18 translation:v8 velocity:v10, v13, v15];
+  [(TVRUIStackViewController *)self _commitToFinalPositionForIndex:selectedViewControllerIndex2 translation:v8 velocity:v10, v13, v15];
 }
 
-- (unint64_t)_indexAboveIndex:(unint64_t)a3
+- (unint64_t)_indexAboveIndex:(unint64_t)index
 {
-  v5 = [(TVRUIStackViewController *)self hostingViews];
-  if ([v5 count] < 2)
+  hostingViews = [(TVRUIStackViewController *)self hostingViews];
+  if ([hostingViews count] < 2)
   {
 
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = [(TVRUIStackViewController *)self _hostingViewIndexIsValid:a3];
+  v6 = [(TVRUIStackViewController *)self _hostingViewIndexIsValid:index];
 
   if (!v6)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a3)
+  if (index)
   {
-    return a3 - 1;
+    return index - 1;
   }
 
-  v9 = [(TVRUIStackViewController *)self hostingViews];
-  v7 = [v9 count] - 1;
+  hostingViews2 = [(TVRUIStackViewController *)self hostingViews];
+  v7 = [hostingViews2 count] - 1;
 
   return v7;
 }
 
-- (unint64_t)_indexBelowIndex:(unint64_t)a3
+- (unint64_t)_indexBelowIndex:(unint64_t)index
 {
-  v5 = [(TVRUIStackViewController *)self hostingViews];
-  if ([v5 count] < 2)
+  hostingViews = [(TVRUIStackViewController *)self hostingViews];
+  if ([hostingViews count] < 2)
   {
 
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = [(TVRUIStackViewController *)self _hostingViewIndexIsValid:a3];
+  v6 = [(TVRUIStackViewController *)self _hostingViewIndexIsValid:index];
 
   if (!v6)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v7 = [(TVRUIStackViewController *)self hostingViews];
-  v8 = [v7 count];
+  hostingViews2 = [(TVRUIStackViewController *)self hostingViews];
+  v8 = [hostingViews2 count];
 
-  if (a3 + 1 == v8)
+  if (index + 1 == v8)
   {
     return 0;
   }
 
   else
   {
-    return a3 + 1;
+    return index + 1;
   }
 }
 
-- (id)_hostingViewAboveIndex:(unint64_t)a3
+- (id)_hostingViewAboveIndex:(unint64_t)index
 {
-  v4 = [(TVRUIStackViewController *)self _indexAboveIndex:a3];
+  v4 = [(TVRUIStackViewController *)self _indexAboveIndex:index];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -554,16 +554,16 @@
   else
   {
     v6 = v4;
-    v7 = [(TVRUIStackViewController *)self hostingViews];
-    v5 = [v7 objectAtIndexedSubscript:v6];
+    hostingViews = [(TVRUIStackViewController *)self hostingViews];
+    v5 = [hostingViews objectAtIndexedSubscript:v6];
   }
 
   return v5;
 }
 
-- (id)_hostingViewBelowIndex:(unint64_t)a3
+- (id)_hostingViewBelowIndex:(unint64_t)index
 {
-  v4 = [(TVRUIStackViewController *)self _indexBelowIndex:a3];
+  v4 = [(TVRUIStackViewController *)self _indexBelowIndex:index];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -572,26 +572,26 @@
   else
   {
     v6 = v4;
-    v7 = [(TVRUIStackViewController *)self hostingViews];
-    v5 = [v7 objectAtIndexedSubscript:v6];
+    hostingViews = [(TVRUIStackViewController *)self hostingViews];
+    v5 = [hostingViews objectAtIndexedSubscript:v6];
   }
 
   return v5;
 }
 
-- (unint64_t)_indexForViewController:(id)a3
+- (unint64_t)_indexForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(TVRUIStackViewController *)self viewControllers];
-  v6 = [v5 indexOfObjectIdenticalTo:v4];
+  controllerCopy = controller;
+  viewControllers = [(TVRUIStackViewController *)self viewControllers];
+  v6 = [viewControllers indexOfObjectIdenticalTo:controllerCopy];
 
   return v6;
 }
 
-- (CGAffineTransform)_transformWithMultiplier:(SEL)a3
+- (CGAffineTransform)_transformWithMultiplier:(SEL)multiplier
 {
-  v6 = [(TVRUIStackViewController *)self view];
-  [v6 bounds];
+  view = [(TVRUIStackViewController *)self view];
+  [view bounds];
   Height = CGRectGetHeight(v13);
 
   v8 = Height * a4;
@@ -605,38 +605,38 @@
   return CGAffineTransformScale(retstr, &v11, v9 * -0.15 + 1.0, v9 * -0.15 + 1.0);
 }
 
-- (void)_prepareHostingViewTransformsForIndex:(unint64_t)a3
+- (void)_prepareHostingViewTransformsForIndex:(unint64_t)index
 {
   if ([(TVRUIStackViewController *)self _hostingViewIndexIsValid:?])
   {
-    v5 = [(TVRUIStackViewController *)self _hostingViewAboveIndex:a3];
+    v5 = [(TVRUIStackViewController *)self _hostingViewAboveIndex:index];
     [(TVRUIStackViewController *)self _transformWithMultiplier:-1.0];
     v12 = v15;
     v13 = v16;
     v14 = v17;
     [v5 setTransform:&v12];
-    v6 = [(TVRUIStackViewController *)self view];
-    [v6 bringSubviewToFront:v5];
+    view = [(TVRUIStackViewController *)self view];
+    [view bringSubviewToFront:v5];
 
-    v7 = [(TVRUIStackViewController *)self _hostingViewBelowIndex:a3];
+    v7 = [(TVRUIStackViewController *)self _hostingViewBelowIndex:index];
     [(TVRUIStackViewController *)self _transformWithMultiplier:1.0];
     v12 = v9;
     v13 = v10;
     v14 = v11;
     [v7 setTransform:&v12];
-    v8 = [(TVRUIStackViewController *)self view];
-    [v8 bringSubviewToFront:v7];
+    view2 = [(TVRUIStackViewController *)self view];
+    [view2 bringSubviewToFront:v7];
   }
 }
 
-- (void)_updateHostingViewTransformsForIndex:(unint64_t)a3 translation:(CGPoint)a4
+- (void)_updateHostingViewTransformsForIndex:(unint64_t)index translation:(CGPoint)translation
 {
-  y = a4.y;
-  x = a4.x;
+  y = translation.y;
+  x = translation.x;
   if ([(TVRUIStackViewController *)self _hostingViewIndexIsValid:?])
   {
-    v8 = [(TVRUIStackViewController *)self hostingViews];
-    v9 = [v8 objectAtIndexedSubscript:a3];
+    hostingViews = [(TVRUIStackViewController *)self hostingViews];
+    v9 = [hostingViews objectAtIndexedSubscript:index];
 
     [(TVRUIStackViewController *)self _multiplierForTranslation:x, y];
     v11 = v10;
@@ -647,7 +647,7 @@
     [v9 setTransform:&v20];
     if (y <= 0.0)
     {
-      v12 = [(TVRUIStackViewController *)self _hostingViewBelowIndex:a3];
+      v12 = [(TVRUIStackViewController *)self _hostingViewBelowIndex:index];
       [(TVRUIStackViewController *)self _transformWithMultiplier:v11 + 1.0];
       v20 = v14;
       v21 = v15;
@@ -656,7 +656,7 @@
 
     else
     {
-      v12 = [(TVRUIStackViewController *)self _hostingViewAboveIndex:a3];
+      v12 = [(TVRUIStackViewController *)self _hostingViewAboveIndex:index];
       [(TVRUIStackViewController *)self _transformWithMultiplier:v11 + -1.0];
       v20 = v17;
       v21 = v18;
@@ -668,21 +668,21 @@
   }
 }
 
-- (BOOL)_hostingViewIndexIsValid:(unint64_t)a3
+- (BOOL)_hostingViewIndexIsValid:(unint64_t)valid
 {
-  v4 = [(TVRUIStackViewController *)self hostingViews];
-  v5 = [v4 count];
-  v7 = a3 == 0x7FFFFFFFFFFFFFFFLL || v5 > a3;
+  hostingViews = [(TVRUIStackViewController *)self hostingViews];
+  v5 = [hostingViews count];
+  v7 = valid == 0x7FFFFFFFFFFFFFFFLL || v5 > valid;
 
   return v7;
 }
 
-- (id)_hostingViewForIndex:(unint64_t)a3
+- (id)_hostingViewForIndex:(unint64_t)index
 {
   if ([(TVRUIStackViewController *)self _hostingViewIndexIsValid:?])
   {
-    v5 = [(TVRUIStackViewController *)self hostingViews];
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    hostingViews = [(TVRUIStackViewController *)self hostingViews];
+    v6 = [hostingViews objectAtIndexedSubscript:index];
   }
 
   else
@@ -693,15 +693,15 @@
   return v6;
 }
 
-- (void)_commitToFinalPositionForIndex:(unint64_t)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5
+- (void)_commitToFinalPositionForIndex:(unint64_t)index translation:(CGPoint)translation velocity:(CGPoint)velocity
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
+  y = velocity.y;
+  x = velocity.x;
+  v7 = translation.y;
+  v8 = translation.x;
   if ([(TVRUIStackViewController *)self _hostingViewIndexIsValid:?])
   {
-    v11 = [(TVRUIStackViewController *)self _finalIndexForIndex:a3 translation:v8 velocity:v7, x, y];
+    v11 = [(TVRUIStackViewController *)self _finalIndexForIndex:index translation:v8 velocity:v7, x, y];
     v12 = fabs(y);
     if (v12 > 1000.0)
     {
@@ -710,28 +710,28 @@
 
     v13 = v12 / 1000.0 * -0.2 + 0.3;
 
-    [(TVRUIStackViewController *)self _animateToFinalIndex:v11 fromIndex:a3 duration:v13];
+    [(TVRUIStackViewController *)self _animateToFinalIndex:v11 fromIndex:index duration:v13];
   }
 }
 
-- (void)_animateToFinalIndex:(unint64_t)a3 fromIndex:(unint64_t)a4 duration:(double)a5
+- (void)_animateToFinalIndex:(unint64_t)index fromIndex:(unint64_t)fromIndex duration:(double)duration
 {
-  v9 = a3 == a4;
-  v10 = [(TVRUIStackViewController *)self _isIndex:a4 directlyAboveIndex:a3];
+  v9 = index == fromIndex;
+  v10 = [(TVRUIStackViewController *)self _isIndex:fromIndex directlyAboveIndex:index];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__TVRUIStackViewController__animateToFinalIndex_fromIndex_duration___block_invoke;
   aBlock[3] = &unk_279D89050;
   aBlock[4] = self;
-  aBlock[5] = a3;
+  aBlock[5] = index;
   v15 = v10;
   v16 = v9;
   v11 = _Block_copy(aBlock);
   v12 = v11;
-  if (a3 == a4 || a5 <= 0.0)
+  if (index == fromIndex || duration <= 0.0)
   {
     (*(v11 + 2))(v11);
-    [(TVRUIStackViewController *)self _commitSelectedViewControllerIndex:a3];
+    [(TVRUIStackViewController *)self _commitSelectedViewControllerIndex:index];
   }
 
   else
@@ -741,8 +741,8 @@
     v13[2] = __68__TVRUIStackViewController__animateToFinalIndex_fromIndex_duration___block_invoke_2;
     v13[3] = &unk_279D89078;
     v13[4] = self;
-    v13[5] = a3;
-    [MEMORY[0x277D75D18] animateWithDuration:v11 animations:v13 completion:a5];
+    v13[5] = index;
+    [MEMORY[0x277D75D18] animateWithDuration:v11 animations:v13 completion:duration];
   }
 }
 
@@ -804,13 +804,13 @@ LABEL_8:
   }
 }
 
-- (void)_transitionToFinalIndex:(unint64_t)a3 duration:(double)a4
+- (void)_transitionToFinalIndex:(unint64_t)index duration:(double)duration
 {
-  v7 = [(TVRUIStackViewController *)self selectedViewControllerIndex];
-  if (v7 != a3)
+  selectedViewControllerIndex = [(TVRUIStackViewController *)self selectedViewControllerIndex];
+  if (selectedViewControllerIndex != index)
   {
-    v8 = v7;
-    v9 = [(TVRUIStackViewController *)self _hostingViewForIndex:a3];
+    v8 = selectedViewControllerIndex;
+    v9 = [(TVRUIStackViewController *)self _hostingViewForIndex:index];
     if (v9)
     {
       v10 = [(TVRUIStackViewController *)self _hostingViewForIndex:v8];
@@ -822,9 +822,9 @@ LABEL_8:
         aBlock[3] = &unk_279D890A0;
         aBlock[4] = self;
         aBlock[5] = v8;
-        aBlock[6] = a3;
+        aBlock[6] = index;
         v11 = _Block_copy(aBlock);
-        if (v8 >= a3)
+        if (v8 >= index)
         {
           v12 = -1.0;
         }
@@ -834,7 +834,7 @@ LABEL_8:
           v12 = 1.0;
         }
 
-        if (v8 >= a3)
+        if (v8 >= index)
         {
           v13 = 1.0;
         }
@@ -855,7 +855,7 @@ LABEL_8:
         v20[2] = __61__TVRUIStackViewController__transitionToFinalIndex_duration___block_invoke_2;
         v20[3] = &unk_279D890C8;
         v21 = v10;
-        v22 = self;
+        selfCopy = self;
         v24 = v13;
         v23 = v9;
         v14 = _Block_copy(v20);
@@ -866,9 +866,9 @@ LABEL_8:
         v15 = v11;
         v17[4] = self;
         v18 = v15;
-        v19 = a3;
+        indexCopy = index;
         v16 = _Block_copy(v17);
-        if (a4 <= 0.0)
+        if (duration <= 0.0)
         {
           v14[2](v14);
           v16[2](v16, 1);
@@ -876,7 +876,7 @@ LABEL_8:
 
         else
         {
-          [MEMORY[0x277D75D18] animateWithDuration:v14 animations:v16 completion:a4];
+          [MEMORY[0x277D75D18] animateWithDuration:v14 animations:v16 completion:duration];
         }
       }
     }
@@ -945,24 +945,24 @@ uint64_t __61__TVRUIStackViewController__transitionToFinalIndex_duration___block
   return [v2 _commitSelectedViewControllerIndex:v3];
 }
 
-- (void)_commitSelectedViewControllerIndex:(unint64_t)a3
+- (void)_commitSelectedViewControllerIndex:(unint64_t)index
 {
   [(TVRUIStackViewController *)self setSelectedViewControllerIndex:?];
-  v5 = [(TVRUIStackViewController *)self pageControl];
-  [v5 setCurrentPage:a3];
+  pageControl = [(TVRUIStackViewController *)self pageControl];
+  [pageControl setCurrentPage:index];
 
-  v6 = [(TVRUIStackViewController *)self hostingViews];
-  v7 = [v6 count];
+  hostingViews = [(TVRUIStackViewController *)self hostingViews];
+  v7 = [hostingViews count];
 
   if (v7)
   {
     v8 = 0;
     do
     {
-      if (a3 != v8)
+      if (index != v8)
       {
-        v9 = [(TVRUIStackViewController *)self hostingViews];
-        v10 = [v9 objectAtIndexedSubscript:v8];
+        hostingViews2 = [(TVRUIStackViewController *)self hostingViews];
+        v10 = [hostingViews2 objectAtIndexedSubscript:v8];
 
         [(TVRUIStackViewController *)self _transformWithMultiplier:-1.0];
         v15[0] = v15[3];
@@ -972,147 +972,147 @@ uint64_t __61__TVRUIStackViewController__transitionToFinalIndex_duration___block
       }
 
       ++v8;
-      v11 = [(TVRUIStackViewController *)self hostingViews];
-      v12 = [v11 count];
+      hostingViews3 = [(TVRUIStackViewController *)self hostingViews];
+      v12 = [hostingViews3 count];
     }
 
     while (v8 < v12);
   }
 
-  v13 = [(TVRUIStackViewController *)self _titleForHostingViewIndex:a3];
-  v14 = [(TVRUIStackViewController *)self titleLabel];
-  [v14 setText:v13];
+  v13 = [(TVRUIStackViewController *)self _titleForHostingViewIndex:index];
+  titleLabel = [(TVRUIStackViewController *)self titleLabel];
+  [titleLabel setText:v13];
 
-  [(TVRUIStackViewController *)self _updateViewControllerAppearanceForSelectedViewControllerIndex:a3];
+  [(TVRUIStackViewController *)self _updateViewControllerAppearanceForSelectedViewControllerIndex:index];
 }
 
-- (void)_updateViewControllerAppearanceForSelectedViewControllerIndex:(unint64_t)a3
+- (void)_updateViewControllerAppearanceForSelectedViewControllerIndex:(unint64_t)index
 {
-  v5 = [(TVRUIStackViewController *)self viewControllers];
-  v6 = [v5 count];
+  viewControllers = [(TVRUIStackViewController *)self viewControllers];
+  v6 = [viewControllers count];
 
   if (v6)
   {
     v7 = 0;
     do
     {
-      v8 = [(TVRUIStackViewController *)self viewControllers];
-      v9 = [v8 objectAtIndexedSubscript:v7];
+      viewControllers2 = [(TVRUIStackViewController *)self viewControllers];
+      v9 = [viewControllers2 objectAtIndexedSubscript:v7];
 
-      v10 = [v9 _appearState];
-      if ((v10 - 1) > 1)
+      _appearState = [v9 _appearState];
+      if ((_appearState - 1) > 1)
       {
-        if (v10 != 3 && v10 || a3 != v7)
+        if (_appearState != 3 && _appearState || index != v7)
         {
           goto LABEL_10;
         }
       }
 
-      else if (a3 == v7)
+      else if (index == v7)
       {
         goto LABEL_10;
       }
 
-      [v9 beginAppearanceTransition:a3 == v7 animated:0];
+      [v9 beginAppearanceTransition:index == v7 animated:0];
       [v9 endAppearanceTransition];
 LABEL_10:
 
       ++v7;
-      v11 = [(TVRUIStackViewController *)self viewControllers];
-      v12 = [v11 count];
+      viewControllers3 = [(TVRUIStackViewController *)self viewControllers];
+      v12 = [viewControllers3 count];
     }
 
     while (v7 < v12);
   }
 }
 
-- (double)_multiplierForTranslation:(CGPoint)a3
+- (double)_multiplierForTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  v4 = [(TVRUIStackViewController *)self view];
-  [v4 bounds];
+  y = translation.y;
+  view = [(TVRUIStackViewController *)self view];
+  [view bounds];
   Height = CGRectGetHeight(v7);
 
   return y / Height;
 }
 
-- (unint64_t)_finalIndexForIndex:(unint64_t)a3 translation:(CGPoint)a4 velocity:(CGPoint)a5
+- (unint64_t)_finalIndexForIndex:(unint64_t)index translation:(CGPoint)translation velocity:(CGPoint)velocity
 {
-  y = a5.y;
-  [(TVRUIStackViewController *)self _multiplierForTranslation:a4.x, a4.y, a5.x];
+  y = velocity.y;
+  [(TVRUIStackViewController *)self _multiplierForTranslation:translation.x, translation.y, velocity.x];
   if (fabs(y) <= 100.0 && fabs(v8) <= 0.4)
   {
-    return a3;
+    return index;
   }
 
   if (v8 >= 0.0)
   {
 
-    return [(TVRUIStackViewController *)self _indexAboveIndex:a3];
+    return [(TVRUIStackViewController *)self _indexAboveIndex:index];
   }
 
   else
   {
 
-    return [(TVRUIStackViewController *)self _indexBelowIndex:a3];
+    return [(TVRUIStackViewController *)self _indexBelowIndex:index];
   }
 }
 
-- (BOOL)_isIndex:(unint64_t)a3 directlyAboveIndex:(unint64_t)a4
+- (BOOL)_isIndex:(unint64_t)index directlyAboveIndex:(unint64_t)aboveIndex
 {
-  if (a3 == a4)
+  if (index == aboveIndex)
   {
     return 0;
   }
 
-  if (a3)
+  if (index)
   {
-    return a3 - 1 == a4;
+    return index - 1 == aboveIndex;
   }
 
-  v6 = [(TVRUIStackViewController *)self hostingViews];
-  v4 = [v6 count] - 1 == a4;
+  hostingViews = [(TVRUIStackViewController *)self hostingViews];
+  v4 = [hostingViews count] - 1 == aboveIndex;
 
   return v4;
 }
 
-- (BOOL)_isIndex:(unint64_t)a3 directlyBelowIndex:(unint64_t)a4
+- (BOOL)_isIndex:(unint64_t)index directlyBelowIndex:(unint64_t)belowIndex
 {
-  if (a3 == a4)
+  if (index == belowIndex)
   {
     return 0;
   }
 
-  v8 = [(TVRUIStackViewController *)self hostingViews];
-  v9 = [v8 count] - 1;
+  hostingViews = [(TVRUIStackViewController *)self hostingViews];
+  v9 = [hostingViews count] - 1;
 
-  if (v9 != a3)
+  if (v9 != index)
   {
-    return a3 + 1 == a4;
+    return index + 1 == belowIndex;
   }
 
-  v10 = [(TVRUIStackViewController *)self hostingViews];
-  v4 = [v10 count] - 1 == a4;
+  hostingViews2 = [(TVRUIStackViewController *)self hostingViews];
+  v4 = [hostingViews2 count] - 1 == belowIndex;
 
   return v4;
 }
 
-- (id)_titleForHostingViewIndex:(unint64_t)a3
+- (id)_titleForHostingViewIndex:(unint64_t)index
 {
   if ([(TVRUIStackViewController *)self _hostingViewIndexIsValid:?])
   {
-    v5 = [(TVRUIStackViewController *)self viewControllers];
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    viewControllers = [(TVRUIStackViewController *)self viewControllers];
+    v6 = [viewControllers objectAtIndexedSubscript:index];
 
-    v7 = [v6 title];
+    title = [v6 title];
   }
 
   else
   {
-    v7 = 0;
+    title = 0;
   }
 
-  return v7;
+  return title;
 }
 
 @end

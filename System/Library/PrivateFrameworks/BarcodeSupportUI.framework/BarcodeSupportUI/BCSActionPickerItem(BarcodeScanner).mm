@@ -6,21 +6,21 @@
 
 - (void)performActionInExternalApp
 {
-  v6 = [a1 actionURL];
-  v2 = [a1 serviceApplicationBundleIdentifier];
-  if (v2)
+  actionURL = [self actionURL];
+  serviceApplicationBundleIdentifier = [self serviceApplicationBundleIdentifier];
+  if (serviceApplicationBundleIdentifier)
   {
-    v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v4 = _bcs_frontBoardUnlockOptions();
-    v5 = [v3 operationToOpenResource:v6 usingApplication:v2 uniqueDocumentIdentifier:0 isContentManaged:0 sourceAuditToken:0 userInfo:0 options:v4 delegate:0];
+    mEMORY[0x277D75128] = [defaultWorkspace operationToOpenResource:actionURL usingApplication:serviceApplicationBundleIdentifier uniqueDocumentIdentifier:0 isContentManaged:0 sourceAuditToken:0 userInfo:0 options:v4 delegate:0];
 
-    [v5 start];
+    [mEMORY[0x277D75128] start];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75128] sharedApplication];
-    [v5 openURL:v6 options:MEMORY[0x277CBEC10] completionHandler:0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] openURL:actionURL options:MEMORY[0x277CBEC10] completionHandler:0];
   }
 }
 

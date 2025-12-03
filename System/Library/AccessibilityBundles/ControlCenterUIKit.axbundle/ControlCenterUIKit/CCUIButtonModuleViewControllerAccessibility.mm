@@ -1,5 +1,5 @@
 @interface CCUIButtonModuleViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)_accessibilityControlCenterButtonFrame;
 - (id)_accessibilityControlCenterButtonLabel;
 - (id)_accessibilityControlCenterRoundButtonIdentifier;
@@ -9,23 +9,23 @@
 
 @implementation CCUIButtonModuleViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIButtonModuleViewController" hasInstanceVariable:@"_buttonModuleView" withType:"CCUIControlTemplateView"];
-  [v3 validateClass:@"CCUIButtonModuleViewController" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CCUIButtonModuleViewAccessibility" hasInstanceMethod:@"_accesibilityRawTraits" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CCUIButtonModuleViewController" hasInstanceMethod:@"buttonView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIButtonModuleViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CCUIButtonModuleViewController" hasInstanceMethod:@"appearsSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CCUIButtonModuleViewController" hasInstanceMethod:@"selectedValueText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIMenuModuleViewController" isKindOfClass:@"CCUIButtonModuleViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIButtonModuleViewController" hasInstanceVariable:@"_buttonModuleView" withType:"CCUIControlTemplateView"];
+  [validationsCopy validateClass:@"CCUIButtonModuleViewController" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CCUIButtonModuleViewAccessibility" hasInstanceMethod:@"_accesibilityRawTraits" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CCUIButtonModuleViewController" hasInstanceMethod:@"buttonView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIButtonModuleViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CCUIButtonModuleViewController" hasInstanceMethod:@"appearsSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CCUIButtonModuleViewController" hasInstanceMethod:@"selectedValueText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIMenuModuleViewController" isKindOfClass:@"CCUIButtonModuleViewController"];
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateProtocol:@"CCUIConnectivityModuleViewProviding" hasRequiredInstanceMethod:@"templateViewForExpandedConnectivityModule"];
+    [validationsCopy validateProtocol:@"CCUIConnectivityModuleViewProviding" hasRequiredInstanceMethod:@"templateViewForExpandedConnectivityModule"];
   }
 
-  [v3 validateClass:@"CCUIControlTemplateView" hasInstanceMethod:@"customGlyphView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIControlTemplateView" hasInstanceMethod:@"customGlyphView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -40,8 +40,8 @@
   v4 = __UIAccessibilityCastAsClass();
 
   objc_initWeak(&from, v4);
-  v5 = [v4 accessibilityLabel];
-  if (!v5 || ([(CCUIButtonModuleViewControllerAccessibility *)self _accessibilityControlCenterButtonLabel], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  accessibilityLabel = [v4 accessibilityLabel];
+  if (!accessibilityLabel || ([(CCUIButtonModuleViewControllerAccessibility *)self _accessibilityControlCenterButtonLabel], v6 = objc_claimAutoreleasedReturnValue(), v6, accessibilityLabel, v6))
   {
     v34[0] = MEMORY[0x29EDCA5F8];
     v34[1] = 3221225472;
@@ -73,8 +73,8 @@
   objc_copyWeak(&v26, &location);
   objc_copyWeak(&v27, &from);
   [v4 _setAccessibilityTraitsBlock:v25];
-  v7 = [v4 accessibilityIdentifier];
-  if (!v7 || ([(CCUIButtonModuleViewControllerAccessibility *)self _accessibilityControlCenterButtonIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  accessibilityIdentifier = [v4 accessibilityIdentifier];
+  if (!accessibilityIdentifier || ([(CCUIButtonModuleViewControllerAccessibility *)self _accessibilityControlCenterButtonIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v8, accessibilityIdentifier, v8))
   {
     v23[0] = MEMORY[0x29EDCA5F8];
     v23[1] = 3221225472;
@@ -372,21 +372,21 @@ id __89__CCUIButtonModuleViewControllerAccessibility__accessibilityLoadAccessibi
 
 - (id)_accessibilityControlCenterButtonLabel
 {
-  v2 = [(CCUIButtonModuleViewControllerAccessibility *)self accessibilityLabel];
-  v3 = v2;
-  if (v2)
+  accessibilityLabel = [(CCUIButtonModuleViewControllerAccessibility *)self accessibilityLabel];
+  v3 = accessibilityLabel;
+  if (accessibilityLabel)
   {
-    v4 = v2;
+    title = accessibilityLabel;
   }
 
   else
   {
     objc_opt_class();
     v5 = __UIAccessibilityCastAsClass();
-    v4 = [v5 title];
+    title = [v5 title];
   }
 
-  return v4;
+  return title;
 }
 
 - (void)viewDidLoad

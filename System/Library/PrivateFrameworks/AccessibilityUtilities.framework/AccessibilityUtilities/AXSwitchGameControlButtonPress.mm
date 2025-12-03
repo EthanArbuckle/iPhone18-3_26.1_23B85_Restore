@@ -1,57 +1,57 @@
 @interface AXSwitchGameControlButtonPress
-- (AXSwitchGameControlButtonPress)initWithCoder:(id)a3;
-- (AXSwitchGameControlButtonPress)initWithDictionaryRepresentation:(id)a3;
+- (AXSwitchGameControlButtonPress)initWithCoder:(id)coder;
+- (AXSwitchGameControlButtonPress)initWithDictionaryRepresentation:(id)representation;
 - (NSDictionary)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXSwitchGameControlButtonPress
 
-- (AXSwitchGameControlButtonPress)initWithCoder:(id)a3
+- (AXSwitchGameControlButtonPress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = AXSwitchGameControlButtonPress;
   v5 = [(AXSwitchGameControlButtonPress *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AXSwitchGameControlButtonPressButton"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AXSwitchGameControlButtonPressButton"];
     v5->_button = [v6 unsignedIntegerValue];
 
-    v5->_toggle = [v4 decodeBoolForKey:@"AXSwitchGameControlButtonPressToggle"];
-    [v4 decodeFloatForKey:@"AXSwitchGameControlButtonPressXMagnitude"];
+    v5->_toggle = [coderCopy decodeBoolForKey:@"AXSwitchGameControlButtonPressToggle"];
+    [coderCopy decodeFloatForKey:@"AXSwitchGameControlButtonPressXMagnitude"];
     v5->_xMagnitude = v7;
-    [v4 decodeFloatForKey:@"AXSwitchGameControlButtonPressYMagnitude"];
+    [coderCopy decodeFloatForKey:@"AXSwitchGameControlButtonPressYMagnitude"];
     v5->_yMagnitude = v8;
-    v5->_joystickPress = [v4 decodeBoolForKey:@"AXSwitchGameControlButtonPressJoystickPress"];
+    v5->_joystickPress = [coderCopy decodeBoolForKey:@"AXSwitchGameControlButtonPressJoystickPress"];
   }
 
   return v5;
 }
 
-- (AXSwitchGameControlButtonPress)initWithDictionaryRepresentation:(id)a3
+- (AXSwitchGameControlButtonPress)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v14.receiver = self;
   v14.super_class = AXSwitchGameControlButtonPress;
   v5 = [(AXSwitchGameControlButtonPress *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"AXSwitchGameControlButtonPressButton"];
+    v6 = [representationCopy objectForKeyedSubscript:@"AXSwitchGameControlButtonPressButton"];
     v5->_button = [v6 unsignedIntegerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"AXSwitchGameControlButtonPressToggle"];
+    v7 = [representationCopy objectForKeyedSubscript:@"AXSwitchGameControlButtonPressToggle"];
     v5->_toggle = [v7 BOOLValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"AXSwitchGameControlButtonPressXMagnitude"];
+    v8 = [representationCopy objectForKeyedSubscript:@"AXSwitchGameControlButtonPressXMagnitude"];
     [v8 floatValue];
     v5->_xMagnitude = v9;
 
-    v10 = [v4 objectForKeyedSubscript:@"AXSwitchGameControlButtonPressYMagnitude"];
+    v10 = [representationCopy objectForKeyedSubscript:@"AXSwitchGameControlButtonPressYMagnitude"];
     [v10 floatValue];
     v5->_yMagnitude = v11;
 
-    v12 = [v4 objectForKeyedSubscript:@"AXSwitchGameControlButtonPressJoystickPress"];
+    v12 = [representationCopy objectForKeyedSubscript:@"AXSwitchGameControlButtonPressJoystickPress"];
     v5->_joystickPress = [v12 BOOLValue];
   }
 
@@ -85,19 +85,19 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v6 = a3;
+  coderCopy = coder;
   v5 = [v4 numberWithUnsignedInteger:{-[AXSwitchGameControlButtonPress button](self, "button")}];
-  [v6 encodeObject:v5 forKey:@"AXSwitchGameControlButtonPressButton"];
+  [coderCopy encodeObject:v5 forKey:@"AXSwitchGameControlButtonPressButton"];
 
-  [v6 encodeBool:-[AXSwitchGameControlButtonPress isToggle](self forKey:{"isToggle"), @"AXSwitchGameControlButtonPressToggle"}];
+  [coderCopy encodeBool:-[AXSwitchGameControlButtonPress isToggle](self forKey:{"isToggle"), @"AXSwitchGameControlButtonPressToggle"}];
   [(AXSwitchGameControlButtonPress *)self xMagnitude];
-  [v6 encodeFloat:@"AXSwitchGameControlButtonPressXMagnitude" forKey:?];
+  [coderCopy encodeFloat:@"AXSwitchGameControlButtonPressXMagnitude" forKey:?];
   [(AXSwitchGameControlButtonPress *)self yMagnitude];
-  [v6 encodeFloat:@"AXSwitchGameControlButtonPressYMagnitude" forKey:?];
-  [v6 encodeBool:-[AXSwitchGameControlButtonPress isJoystickPress](self forKey:{"isJoystickPress"), @"AXSwitchGameControlButtonPressJoystickPress"}];
+  [coderCopy encodeFloat:@"AXSwitchGameControlButtonPressYMagnitude" forKey:?];
+  [coderCopy encodeBool:-[AXSwitchGameControlButtonPress isJoystickPress](self forKey:{"isJoystickPress"), @"AXSwitchGameControlButtonPressJoystickPress"}];
 }
 
 @end

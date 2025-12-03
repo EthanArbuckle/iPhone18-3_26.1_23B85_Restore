@@ -5,7 +5,7 @@
 - (double)preferredMinimumHeight;
 - (double)preferredMinimumWidth;
 - (int64_t)secondsUntilPrerollSkippable;
-- (unint64_t)recommendedUpdateCadenceForProgressBarWithWidthInPixels:(double)a3;
+- (unint64_t)recommendedUpdateCadenceForProgressBarWithWidthInPixels:(double)pixels;
 - (void)_updateViewModelValues;
 - (void)handleActionButtonTapped;
 - (void)handleCancelButtonTapped;
@@ -16,9 +16,9 @@
 - (void)handleSkipBackButtonTapped;
 - (void)handleSkipForwardButtonTapped;
 - (void)handleSkipPrerollButtonTapped;
-- (void)setInActivitySession:(BOOL)a3;
-- (void)setInterrupted:(BOOL)a3;
-- (void)updatePlaybackStateWithDiff:(id)a3;
+- (void)setInActivitySession:(BOOL)session;
+- (void)setInterrupted:(BOOL)interrupted;
+- (void)updatePlaybackStateWithDiff:(id)diff;
 @end
 
 @implementation PGControlsViewModel
@@ -44,17 +44,17 @@
   return v2;
 }
 
-- (void)updatePlaybackStateWithDiff:(id)a3
+- (void)updatePlaybackStateWithDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   v5 = PGLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(PGControlsViewModel *)v4 updatePlaybackStateWithDiff:v5];
+    [(PGControlsViewModel *)diffCopy updatePlaybackStateWithDiff:v5];
   }
 
-  v6 = [(PGControlsViewModel *)self playbackState];
-  [v6 updatePlaybackStateWithDiff:v4];
+  playbackState = [(PGControlsViewModel *)self playbackState];
+  [playbackState updatePlaybackStateWithDiff:diffCopy];
 
   v7 = PGLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -65,56 +65,56 @@
   [(PGControlsViewModel *)self _updateViewModelValues];
 }
 
-- (void)setInterrupted:(BOOL)a3
+- (void)setInterrupted:(BOOL)interrupted
 {
-  if (self->_interrupted != a3)
+  if (self->_interrupted != interrupted)
   {
-    self->_interrupted = a3;
+    self->_interrupted = interrupted;
     [(PGControlsViewModel *)self _updateViewModelValues];
   }
 }
 
-- (void)setInActivitySession:(BOOL)a3
+- (void)setInActivitySession:(BOOL)session
 {
-  if (self->_inActivitySession != a3)
+  if (self->_inActivitySession != session)
   {
-    self->_inActivitySession = a3;
+    self->_inActivitySession = session;
     [(PGControlsViewModel *)self _updateViewModelValues];
   }
 }
 
-- (unint64_t)recommendedUpdateCadenceForProgressBarWithWidthInPixels:(double)a3
+- (unint64_t)recommendedUpdateCadenceForProgressBarWithWidthInPixels:(double)pixels
 {
-  v5 = [(PGControlsViewModel *)self values];
-  v6 = [v5 progressBarShouldUpdate];
+  values = [(PGControlsViewModel *)self values];
+  progressBarShouldUpdate = [values progressBarShouldUpdate];
 
-  if (!v6)
+  if (!progressBarShouldUpdate)
   {
     return 0;
   }
 
-  v7 = [(PGControlsViewModel *)self playbackState];
-  [v7 contentDuration];
-  v9 = a3 / v8;
+  playbackState = [(PGControlsViewModel *)self playbackState];
+  [playbackState contentDuration];
+  v9 = pixels / v8;
 
   return vcvtpd_u64_f64(v9);
 }
 
 - (void)handleActionButtonTapped
 {
-  v8 = [(PGControlsViewModel *)self playbackState];
-  v3 = [v8 contentType];
-  if ((v3 - 1) < 2)
+  playbackState = [(PGControlsViewModel *)self playbackState];
+  contentType = [playbackState contentType];
+  if ((contentType - 1) < 2)
   {
-    v5 = [(PGControlsViewModel *)self playbackState];
-    v6 = +[PGCommand commandForSetPlaying:](PGCommand, "commandForSetPlaying:", [v5 timeControlStatus] == 0);
+    playbackState2 = [(PGControlsViewModel *)self playbackState];
+    v6 = +[PGCommand commandForSetPlaying:](PGCommand, "commandForSetPlaying:", [playbackState2 timeControlStatus] == 0);
     goto LABEL_8;
   }
 
-  if (v3 == 3)
+  if (contentType == 3)
   {
-    v5 = [(PGControlsViewModel *)self playbackState];
-    v6 = +[PGCommand commandForSetMuted:](PGCommand, "commandForSetMuted:", [v5 isMuted] ^ 1);
+    playbackState2 = [(PGControlsViewModel *)self playbackState];
+    v6 = +[PGCommand commandForSetMuted:](PGCommand, "commandForSetMuted:", [playbackState2 isMuted] ^ 1);
 LABEL_8:
     v4 = v6;
 
@@ -126,14 +126,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v3 == 4)
+  if (contentType == 4)
   {
     v4 = +[PGCommand commandForSendActionButtonTapped];
     if (v4)
     {
 LABEL_9:
-      v7 = [(PGControlsViewModel *)self delegate];
-      [v7 controlsViewModel:self didIssueCommand:v4];
+      delegate = [(PGControlsViewModel *)self delegate];
+      [delegate controlsViewModel:self didIssueCommand:v4];
     }
   }
 
@@ -152,30 +152,30 @@ LABEL_10:
     +[PGCommand commandForCancelPIP];
   }
   v4 = ;
-  v3 = [(PGControlsViewModel *)self delegate];
-  [v3 controlsViewModel:self didIssueCommand:v4];
+  delegate = [(PGControlsViewModel *)self delegate];
+  [delegate controlsViewModel:self didIssueCommand:v4];
 }
 
 - (void)handleDoubleTap
 {
-  v3 = [(PGControlsViewModel *)self values];
-  v4 = [v3 includesDoubleTapGestureRecognizer];
+  values = [(PGControlsViewModel *)self values];
+  includesDoubleTapGestureRecognizer = [values includesDoubleTapGestureRecognizer];
 
-  if (v4)
+  if (includesDoubleTapGestureRecognizer)
   {
-    v6 = [(PGControlsViewModel *)self delegate];
+    delegate = [(PGControlsViewModel *)self delegate];
     v5 = +[PGCommand commandForToggleZoom];
-    [v6 controlsViewModel:self didIssueCommand:v5];
+    [delegate controlsViewModel:self didIssueCommand:v5];
   }
 }
 
 - (void)handleSingleTap
 {
-  v7 = [(PGControlsViewModel *)self playbackState];
-  v3 = [v7 contentType];
-  if (v3 <= 6)
+  playbackState = [(PGControlsViewModel *)self playbackState];
+  contentType = [playbackState contentType];
+  if (contentType <= 6)
   {
-    if (((1 << v3) & 0xE) != 0)
+    if (((1 << contentType) & 0xE) != 0)
     {
       if ([(PGControlsViewModel *)self isInterrupted])
       {
@@ -187,7 +187,7 @@ LABEL_10:
 
     else
     {
-      if (((1 << v3) & 0x31) != 0)
+      if (((1 << contentType) & 0x31) != 0)
       {
         +[PGCommand commandForRestoreFromPIP];
       }
@@ -202,8 +202,8 @@ LABEL_10:
     v5 = v4;
     if (v4)
     {
-      v6 = [(PGControlsViewModel *)self delegate];
-      [v6 controlsViewModel:self didIssueCommand:v5];
+      delegate = [(PGControlsViewModel *)self delegate];
+      [delegate controlsViewModel:self didIssueCommand:v5];
     }
   }
 
@@ -212,41 +212,41 @@ LABEL_11:
 
 - (void)handleDoubleDoubleTap
 {
-  v3 = [(PGControlsViewModel *)self values];
-  v4 = [v3 includesDoubleDoubleTapGestureRecognizer];
+  values = [(PGControlsViewModel *)self values];
+  includesDoubleDoubleTapGestureRecognizer = [values includesDoubleDoubleTapGestureRecognizer];
 
-  if (v4)
+  if (includesDoubleDoubleTapGestureRecognizer)
   {
-    v6 = [(PGControlsViewModel *)self delegate];
+    delegate = [(PGControlsViewModel *)self delegate];
     v5 = +[PGCommand commandForRestoreFromPIP];
-    [v6 controlsViewModel:self didIssueCommand:v5];
+    [delegate controlsViewModel:self didIssueCommand:v5];
   }
 }
 
 - (void)handleRestoreButtonTapped
 {
-  v4 = [(PGControlsViewModel *)self delegate];
+  delegate = [(PGControlsViewModel *)self delegate];
   v3 = +[PGCommand commandForRestoreFromPIP];
-  [v4 controlsViewModel:self didIssueCommand:v3];
+  [delegate controlsViewModel:self didIssueCommand:v3];
 }
 
 - (void)handleSkipBackButtonTapped
 {
-  v3 = [(PGControlsViewModel *)self playbackState];
-  v4 = [v3 contentType];
+  playbackState = [(PGControlsViewModel *)self playbackState];
+  contentType = [playbackState contentType];
 
-  if (v4 == 4)
+  if (contentType == 4)
   {
-    v11 = [(PGControlsViewModel *)self playbackState];
-    v12 = [v11 supportsFaceTimeActions];
+    playbackState2 = [(PGControlsViewModel *)self playbackState];
+    supportsFaceTimeActions = [playbackState2 supportsFaceTimeActions];
 
-    if (!v12)
+    if (!supportsFaceTimeActions)
     {
       return;
     }
 
-    v13 = [(PGControlsViewModel *)self playbackState];
-    v16 = +[PGCommand commandForSetMicrophoneMuted:](PGCommand, "commandForSetMicrophoneMuted:", [v13 isMicrophoneMuted] ^ 1);
+    playbackState3 = [(PGControlsViewModel *)self playbackState];
+    v16 = +[PGCommand commandForSetMicrophoneMuted:](PGCommand, "commandForSetMicrophoneMuted:", [playbackState3 isMicrophoneMuted] ^ 1);
 
     v10 = v16;
     if (!v16)
@@ -257,17 +257,17 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v4 != 2)
+  if (contentType != 2)
   {
-    if (v4 != 1)
+    if (contentType != 1)
     {
       return;
     }
 
-    v5 = [(PGControlsViewModel *)self playbackState];
-    v6 = [v5 requiresLinearPlayback];
+    playbackState4 = [(PGControlsViewModel *)self playbackState];
+    requiresLinearPlayback = [playbackState4 requiresLinearPlayback];
 
-    if (v6)
+    if (requiresLinearPlayback)
     {
       return;
     }
@@ -275,11 +275,11 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  v15 = [(PGControlsViewModel *)self playbackState];
-  if (([v15 requiresLinearPlayback] & 1) == 0)
+  playbackState5 = [(PGControlsViewModel *)self playbackState];
+  if (([playbackState5 requiresLinearPlayback] & 1) == 0)
   {
-    v7 = [(PGControlsViewModel *)self playbackState];
-    [v7 contentDuration];
+    playbackState6 = [(PGControlsViewModel *)self playbackState];
+    [playbackState6 contentDuration];
     v9 = v8;
 
     if (v9 <= 30.0)
@@ -295,30 +295,30 @@ LABEL_8:
     }
 
 LABEL_12:
-    v15 = v10;
-    v14 = [(PGControlsViewModel *)self delegate];
-    [v14 controlsViewModel:self didIssueCommand:v15];
+    playbackState5 = v10;
+    delegate = [(PGControlsViewModel *)self delegate];
+    [delegate controlsViewModel:self didIssueCommand:playbackState5];
   }
 }
 
 - (void)handleSkipForwardButtonTapped
 {
-  v3 = [(PGControlsViewModel *)self playbackState];
-  v4 = [v3 contentType];
+  playbackState = [(PGControlsViewModel *)self playbackState];
+  contentType = [playbackState contentType];
 
-  if (v4 != 4)
+  if (contentType != 4)
   {
-    if (v4 != 2)
+    if (contentType != 2)
     {
-      if (v4 != 1)
+      if (contentType != 1)
       {
         return;
       }
 
-      v5 = [(PGControlsViewModel *)self playbackState];
-      v6 = [v5 requiresLinearPlayback];
+      playbackState2 = [(PGControlsViewModel *)self playbackState];
+      requiresLinearPlayback = [playbackState2 requiresLinearPlayback];
 
-      if (v6)
+      if (requiresLinearPlayback)
       {
         return;
       }
@@ -326,15 +326,15 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v7 = [(PGControlsViewModel *)self playbackState];
-    if ([v7 requiresLinearPlayback])
+    playbackState3 = [(PGControlsViewModel *)self playbackState];
+    if ([playbackState3 requiresLinearPlayback])
     {
     }
 
     else
     {
-      v10 = [(PGControlsViewModel *)self playbackState];
-      [v10 contentDuration];
+      playbackState4 = [(PGControlsViewModel *)self playbackState];
+      [playbackState4 contentDuration];
       v12 = v11;
 
       if (v12 > 30.0)
@@ -357,22 +357,22 @@ LABEL_13:
     }
 
 LABEL_16:
-    v16 = v13;
-    v14 = [(PGControlsViewModel *)self delegate];
-    [v14 controlsViewModel:self didIssueCommand:v16];
+    playbackState5 = v13;
+    delegate = [(PGControlsViewModel *)self delegate];
+    [delegate controlsViewModel:self didIssueCommand:playbackState5];
 
     goto LABEL_17;
   }
 
-  v16 = [(PGControlsViewModel *)self playbackState];
-  if ([v16 supportsFaceTimeActions])
+  playbackState5 = [(PGControlsViewModel *)self playbackState];
+  if ([playbackState5 supportsFaceTimeActions])
   {
     if ([(PGControlsViewModel *)self isInterrupted])
     {
-      v8 = [(PGControlsViewModel *)self playbackState];
-      v9 = [v8 isCameraActive];
+      playbackState6 = [(PGControlsViewModel *)self playbackState];
+      isCameraActive = [playbackState6 isCameraActive];
 
-      if (!v9)
+      if (!isCameraActive)
       {
         return;
       }
@@ -382,8 +382,8 @@ LABEL_16:
     {
     }
 
-    v15 = [(PGControlsViewModel *)self playbackState];
-    v17 = +[PGCommand commandForSetCameraEnabled:](PGCommand, "commandForSetCameraEnabled:", [v15 isCameraActive] ^ 1);
+    playbackState7 = [(PGControlsViewModel *)self playbackState];
+    v17 = +[PGCommand commandForSetCameraEnabled:](PGCommand, "commandForSetCameraEnabled:", [playbackState7 isCameraActive] ^ 1);
 
     v13 = v17;
     if (!v17)
@@ -401,31 +401,31 @@ LABEL_17:
 {
   if ([(PGControlsViewModel *)self isPrerollSkippable])
   {
-    v4 = [(PGControlsViewModel *)self delegate];
+    delegate = [(PGControlsViewModel *)self delegate];
     v3 = +[PGCommand commandForSkipPreroll];
-    [v4 controlsViewModel:self didIssueCommand:v3];
+    [delegate controlsViewModel:self didIssueCommand:v3];
   }
 }
 
 - (int64_t)secondsUntilPrerollSkippable
 {
-  v3 = [(PGControlsViewModel *)self values];
-  v4 = [v3 prerollAttributes];
-  [v4 requiredLinearPlaybackEndTime];
+  values = [(PGControlsViewModel *)self values];
+  prerollAttributes = [values prerollAttributes];
+  [prerollAttributes requiredLinearPlaybackEndTime];
   v6 = v5;
   v7 = v5;
 
   v8 = (*&v7 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000;
-  v9 = [(PGControlsViewModel *)self values];
-  LODWORD(v4) = [v9 isPrerollActive];
+  values2 = [(PGControlsViewModel *)self values];
+  LODWORD(prerollAttributes) = [values2 isPrerollActive];
 
-  if (!v4 || !v8)
+  if (!prerollAttributes || !v8)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v10 = [(PGControlsViewModel *)self playbackState];
-  [v10 elapsedTime];
+  playbackState = [(PGControlsViewModel *)self playbackState];
+  [playbackState elapsedTime];
   v12 = v6 - v11;
 
   v13 = vcvtpd_s64_f64(v12);
@@ -434,8 +434,8 @@ LABEL_17:
 
 - (BOOL)isPrerollSkippable
 {
-  v3 = [(PGControlsViewModel *)self values];
-  if ([v3 isPrerollActive])
+  values = [(PGControlsViewModel *)self values];
+  if ([values isPrerollActive])
   {
     v4 = [(PGControlsViewModel *)self secondsUntilPrerollSkippable]== 0;
   }
@@ -450,24 +450,24 @@ LABEL_17:
 
 - (double)preferredMinimumWidth
 {
-  v2 = [(PGControlsViewModel *)self playbackState];
-  v3 = [v2 contentType];
+  playbackState = [(PGControlsViewModel *)self playbackState];
+  contentType = [playbackState contentType];
 
-  if ((v3 - 1) > 3)
+  if ((contentType - 1) > 3)
   {
     return 128.0;
   }
 
   else
   {
-    return dbl_1BB2CC5C8[v3 - 1];
+    return dbl_1BB2CC5C8[contentType - 1];
   }
 }
 
 - (double)preferredMinimumHeight
 {
-  v2 = [(PGControlsViewModel *)self values];
-  if ([v2 controlsViewWantsGlassBackground])
+  values = [(PGControlsViewModel *)self values];
+  if ([values controlsViewWantsGlassBackground])
   {
     v3 = 247.0;
   }
@@ -482,28 +482,28 @@ LABEL_17:
 
 - (void)_updateViewModelValues
 {
-  v171 = [(PGControlsViewModel *)self playbackState];
-  v3 = [(PGControlsViewModel *)self values];
-  v4 = [v3 copy];
+  playbackState = [(PGControlsViewModel *)self playbackState];
+  values = [(PGControlsViewModel *)self values];
+  v4 = [values copy];
 
-  [v171 contentDuration];
+  [playbackState contentDuration];
   v6 = v5;
-  [v171 elapsedTime];
+  [playbackState elapsedTime];
   v8 = v7;
-  v9 = [v171 requiresLinearPlayback];
-  v10 = [v171 isMuted];
-  v11 = [(PGControlsViewModel *)self isInterrupted];
-  v12 = [v171 contentType];
-  v13 = [v171 timeControlStatus];
+  requiresLinearPlayback = [playbackState requiresLinearPlayback];
+  isMuted = [playbackState isMuted];
+  isInterrupted = [(PGControlsViewModel *)self isInterrupted];
+  contentType = [playbackState contentType];
+  timeControlStatus = [playbackState timeControlStatus];
   v170 = PGLocalizedString(@"RESTORE_FULLSCREEN");
   v169 = PGLocalizedString(@"CLOSE_PIP");
-  v14 = v12;
+  v14 = contentType;
   v15 = 0;
-  v149 = v12;
+  v149 = contentType;
   v151 = v4;
-  if (v12 > 2)
+  if (contentType > 2)
   {
-    if (v12 == 6)
+    if (contentType == 6)
     {
       v20 = 0;
       v15 = 0;
@@ -560,24 +560,24 @@ LABEL_17:
       v37 = 0;
       if (v14 == 3)
       {
-        if (v10)
+        if (isMuted)
         {
-          v41 = [MEMORY[0x1E69DC888] whiteColor];
-          v42 = 0;
+          whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+          systemYellowColor = 0;
         }
 
         else
         {
-          v41 = [MEMORY[0x1E69DC888] blackColor];
-          v42 = [MEMORY[0x1E69DC888] systemYellowColor];
+          whiteColor = [MEMORY[0x1E69DC888] blackColor];
+          systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
         }
 
-        v50 = v42;
-        v51 = v41;
-        v52 = [(PGControlsViewModel *)self playbackState];
-        v53 = [v52 cameraHasMicrophone];
+        v50 = systemYellowColor;
+        v51 = whiteColor;
+        playbackState2 = [(PGControlsViewModel *)self playbackState];
+        cameraHasMicrophone = [playbackState2 cameraHasMicrophone];
 
-        if ([v171 isMuted])
+        if ([playbackState isMuted])
         {
           v54 = @"UNMUTE";
         }
@@ -611,26 +611,26 @@ LABEL_17:
         v31 = @"mic.fill";
         v27 = v51;
         v26 = v50;
-        v23 = v53;
+        v23 = cameraHasMicrophone;
       }
     }
   }
 
   else
   {
-    if (v12 == 1)
+    if (contentType == 1)
     {
       v43 = v6 == 0.0 && !self->_hasBegun;
-      v44 = [(PGControlsViewModel *)self isInterrupted];
-      v45 = [v171 prerollAttributes];
-      v46 = (v6 > 0.0) & ~(v43 | v9);
-      if (v45)
+      isInterrupted2 = [(PGControlsViewModel *)self isInterrupted];
+      prerollAttributes = [playbackState prerollAttributes];
+      v46 = (v6 > 0.0) & ~(v43 | requiresLinearPlayback);
+      if (prerollAttributes)
       {
         v46 = 0;
       }
 
       v167 = v46;
-      v47 = v46 & ~v11;
+      v47 = v46 & ~isInterrupted;
       if (v8 > 0.0)
       {
         v48 = v47;
@@ -652,8 +652,8 @@ LABEL_17:
         v49 = 0;
       }
 
-      [v171 hasInvalidTiming];
-      if (v11)
+      [playbackState hasInvalidTiming];
+      if (isInterrupted)
       {
         v40 = @"play.slash.fill";
       }
@@ -661,7 +661,7 @@ LABEL_17:
       else
       {
         v55 = @"pause.fill";
-        if (!v13)
+        if (!timeControlStatus)
         {
           v55 = @"play.fill";
         }
@@ -670,19 +670,19 @@ LABEL_17:
       }
 
       v158 = !v43;
-      v153 = (v11 | v43) ^ 1;
+      v153 = (isInterrupted | v43) ^ 1;
       v56 = v43;
-      v57 = (v13 == 1) & ~v44;
+      v57 = (timeControlStatus == 1) & ~isInterrupted2;
       v58 = PGLocalizedString(@"SKIP_FORWARD_10_SECONDS");
       v18 = PGLocalizedString(@"SKIP_BACK_10_SECONDS");
       v162 = v56;
       v164 = v57;
       v59 = v49;
-      if (v13)
+      if (timeControlStatus)
       {
         v166 = PGLocalizedString(@"PAUSE");
         v60 = (v56 | v57) ^ 1;
-        if (v13 != 2)
+        if (timeControlStatus != 2)
         {
           v60 = 0;
         }
@@ -697,15 +697,15 @@ LABEL_17:
       }
 
       v17 = v58;
-      v61 = [(PGControlsViewModel *)self isInterrupted];
+      isInterrupted3 = [(PGControlsViewModel *)self isInterrupted];
       v15 = 0;
-      v16 = !v61;
+      v16 = !isInterrupted3;
       if (v6 <= 0.0)
       {
         v26 = 0;
         v27 = 0;
         v30 = @"gobackward.10";
-        v20 = v45;
+        v20 = prerollAttributes;
         v21 = 1;
         v31 = v40;
         v22 = 1;
@@ -724,7 +724,7 @@ LABEL_17:
         goto LABEL_50;
       }
 
-      v154 = !v61;
+      v154 = !isInterrupted3;
       v147 = 0;
       v39 = v59;
     }
@@ -760,22 +760,22 @@ LABEL_17:
         goto LABEL_50;
       }
 
-      v164 = (v13 == 1) & ~[(PGControlsViewModel *)self isInterrupted:1];
+      v164 = (timeControlStatus == 1) & ~[(PGControlsViewModel *)self isInterrupted:1];
       v38 = PGLocalizedString(@"SKIP_FORWARD_10_SECONDS");
       PGLocalizedString(@"SKIP_BACK_10_SECONDS");
-      v39 = ((v11 | v9) & 1) == 0;
-      v153 = v11 ^ 1;
-      v18 = v152 = v13 == 2;
+      v39 = ((isInterrupted | requiresLinearPlayback) & 1) == 0;
+      v153 = isInterrupted ^ 1;
+      v18 = v152 = timeControlStatus == 2;
       v17 = v38;
-      if (v11)
+      if (isInterrupted)
       {
         v166 = 0;
         v40 = @"play.slash.fill";
       }
 
-      else if (v13)
+      else if (timeControlStatus)
       {
-        if (v9)
+        if (requiresLinearPlayback)
         {
           v166 = PGLocalizedString(@"STOP");
           v40 = @"stop.fill";
@@ -794,20 +794,20 @@ LABEL_17:
         v40 = @"play.fill";
       }
 
-      v45 = 0;
+      prerollAttributes = 0;
       v162 = 0;
       v154 = ![(PGControlsViewModel *)self isInterrupted];
       v158 = 1;
       v167 = 1;
-      v160 = ((v11 | v9) & 1) == 0;
+      v160 = ((isInterrupted | requiresLinearPlayback) & 1) == 0;
       v147 = 1;
     }
 
     v156 = v39;
-    v62 = [(PGControlsViewModel *)self playbackState];
-    v63 = [v62 hasInvalidTiming];
+    playbackState3 = [(PGControlsViewModel *)self playbackState];
+    hasInvalidTiming = [playbackState3 hasInvalidTiming];
 
-    if (v63)
+    if (hasInvalidTiming)
     {
       v15 = 0;
       v26 = 0;
@@ -817,8 +817,8 @@ LABEL_17:
 
     else
     {
-      v64 = [(PGControlsViewModel *)self playbackState];
-      v65 = [v64 timeControlStatus] == 2;
+      playbackState4 = [(PGControlsViewModel *)self playbackState];
+      v65 = [playbackState4 timeControlStatus] == 2;
 
       v37 = v65;
       v15 = 0;
@@ -832,7 +832,7 @@ LABEL_17:
     v34 = 1;
     v36 = 1;
     v29 = @"goforward.10";
-    v20 = v45;
+    v20 = prerollAttributes;
     v19 = v166;
     v31 = v40;
     v32 = v156;
@@ -865,168 +865,168 @@ LABEL_50:
   v140 = v21 | v22 | v23 | v24 | v35 | v36;
   v66 = v24;
   v144 = _UISolariumEnabled();
-  v67 = [(PGControlsViewModel *)self values];
+  values2 = [(PGControlsViewModel *)self values];
   v68 = [MEMORY[0x1E696AD98] numberWithInteger:v149];
-  [v67 setValue:v68 forKey:@"contentType"];
+  [values2 setValue:v68 forKey:@"contentType"];
 
-  v69 = [(PGControlsViewModel *)self values];
+  values3 = [(PGControlsViewModel *)self values];
   v70 = [MEMORY[0x1E696AD98] numberWithBool:v152];
-  [v69 setValue:v70 forKey:@"controlsShouldAutoHide"];
+  [values3 setValue:v70 forKey:@"controlsShouldAutoHide"];
 
-  v71 = [(PGControlsViewModel *)self values];
-  [v71 setValue:v170 forKey:@"restoreButtonAccessibilityIdentifier"];
+  values4 = [(PGControlsViewModel *)self values];
+  [values4 setValue:v170 forKey:@"restoreButtonAccessibilityIdentifier"];
 
-  v72 = [(PGControlsViewModel *)self values];
-  [v72 setValue:v169 forKey:@"cancelButtonAccessibilityIdentifier"];
+  values5 = [(PGControlsViewModel *)self values];
+  [values5 setValue:v169 forKey:@"cancelButtonAccessibilityIdentifier"];
 
-  v73 = [(PGControlsViewModel *)self values];
-  [v73 setValue:v19 forKey:@"actionButtonAccessibilityIdentifier"];
+  values6 = [(PGControlsViewModel *)self values];
+  [values6 setValue:v19 forKey:@"actionButtonAccessibilityIdentifier"];
 
-  v74 = [(PGControlsViewModel *)self values];
+  values7 = [(PGControlsViewModel *)self values];
   v150 = v18;
-  [v74 setValue:v18 forKey:@"skipBackButtonAccessibilityIdentifier"];
+  [values7 setValue:v18 forKey:@"skipBackButtonAccessibilityIdentifier"];
 
-  v75 = [(PGControlsViewModel *)self values];
-  [v75 setValue:v17 forKey:@"skipForwardButtonAccessibilityIdentifier"];
+  values8 = [(PGControlsViewModel *)self values];
+  [values8 setValue:v17 forKey:@"skipForwardButtonAccessibilityIdentifier"];
 
-  v76 = [(PGControlsViewModel *)self values];
+  values9 = [(PGControlsViewModel *)self values];
   v77 = [MEMORY[0x1E696AD98] numberWithBool:v35];
-  [v76 setValue:v77 forKey:@"includesLiveIndicatorBadge"];
+  [values9 setValue:v77 forKey:@"includesLiveIndicatorBadge"];
 
-  v78 = [(PGControlsViewModel *)self values];
+  values10 = [(PGControlsViewModel *)self values];
   v79 = [MEMORY[0x1E696AD98] numberWithBool:v22];
-  [v78 setValue:v79 forKey:@"includesRestoreButton"];
+  [values10 setValue:v79 forKey:@"includesRestoreButton"];
 
-  v80 = [(PGControlsViewModel *)self values];
+  values11 = [(PGControlsViewModel *)self values];
   v81 = [MEMORY[0x1E696AD98] numberWithBool:v21];
-  [v80 setValue:v81 forKey:@"includesCancelButton"];
+  [values11 setValue:v81 forKey:@"includesCancelButton"];
 
-  v82 = [(PGControlsViewModel *)self values];
+  values12 = [(PGControlsViewModel *)self values];
   v83 = [MEMORY[0x1E696AD98] numberWithBool:v159 & 1];
-  [v82 setValue:v83 forKey:@"includesActionButton"];
+  [values12 setValue:v83 forKey:@"includesActionButton"];
 
-  v84 = [(PGControlsViewModel *)self values];
+  values13 = [(PGControlsViewModel *)self values];
   v85 = [MEMORY[0x1E696AD98] numberWithBool:v66];
-  [v84 setValue:v85 forKey:@"includesSkipBackButton"];
+  [values13 setValue:v85 forKey:@"includesSkipBackButton"];
 
-  v86 = [(PGControlsViewModel *)self values];
+  values14 = [(PGControlsViewModel *)self values];
   v87 = [MEMORY[0x1E696AD98] numberWithBool:v66];
-  [v86 setValue:v87 forKey:@"includesSkipForwardButton"];
+  [values14 setValue:v87 forKey:@"includesSkipForwardButton"];
 
-  v88 = [(PGControlsViewModel *)self values];
+  values15 = [(PGControlsViewModel *)self values];
   v89 = [MEMORY[0x1E696AD98] numberWithBool:v163];
-  [v88 setValue:v89 forKey:@"includesContentLoadingIndicator"];
+  [values15 setValue:v89 forKey:@"includesContentLoadingIndicator"];
 
-  v90 = [(PGControlsViewModel *)self values];
+  values16 = [(PGControlsViewModel *)self values];
   v91 = [MEMORY[0x1E696AD98] numberWithBool:v165];
-  [v90 setValue:v91 forKey:@"includesWaitingToPlayIndicator"];
+  [values16 setValue:v91 forKey:@"includesWaitingToPlayIndicator"];
 
-  v92 = [(PGControlsViewModel *)self values];
+  values17 = [(PGControlsViewModel *)self values];
   v93 = [MEMORY[0x1E696AD98] numberWithBool:v161];
-  [v92 setValue:v93 forKey:@"isSkipBackButtonEnabled"];
+  [values17 setValue:v93 forKey:@"isSkipBackButtonEnabled"];
 
-  v94 = [(PGControlsViewModel *)self values];
+  values18 = [(PGControlsViewModel *)self values];
   v95 = [MEMORY[0x1E696AD98] numberWithBool:v153 & 1];
-  [v94 setValue:v95 forKey:@"isActionButtonEnabled"];
+  [values18 setValue:v95 forKey:@"isActionButtonEnabled"];
 
-  v96 = [(PGControlsViewModel *)self values];
+  values19 = [(PGControlsViewModel *)self values];
   v97 = [MEMORY[0x1E696AD98] numberWithBool:v157];
-  [v96 setValue:v97 forKey:@"isSkipForwardButtonEnabled"];
+  [values19 setValue:v97 forKey:@"isSkipForwardButtonEnabled"];
 
-  v98 = [(PGControlsViewModel *)self values];
+  values20 = [(PGControlsViewModel *)self values];
   v99 = [MEMORY[0x1E696AD98] numberWithBool:v155];
-  [v98 setValue:v99 forKey:@"includesSingleTapGestureRecognizer"];
+  [values20 setValue:v99 forKey:@"includesSingleTapGestureRecognizer"];
 
-  v100 = [(PGControlsViewModel *)self values];
+  values21 = [(PGControlsViewModel *)self values];
   v101 = [MEMORY[0x1E696AD98] numberWithBool:v138];
-  [v100 setValue:v101 forKey:@"includesDoubleTapGestureRecognizer"];
+  [values21 setValue:v101 forKey:@"includesDoubleTapGestureRecognizer"];
 
-  v102 = [(PGControlsViewModel *)self values];
+  values22 = [(PGControlsViewModel *)self values];
   v103 = [MEMORY[0x1E696AD98] numberWithBool:v138];
-  [v102 setValue:v103 forKey:@"includesDoubleDoubleTapGestureRecognizer"];
+  [values22 setValue:v103 forKey:@"includesDoubleDoubleTapGestureRecognizer"];
 
-  v104 = [(PGControlsViewModel *)self values];
+  values23 = [(PGControlsViewModel *)self values];
   v105 = [MEMORY[0x1E696AD98] numberWithBool:v139];
-  [v104 setValue:v105 forKey:@"includesProgressBar"];
+  [values23 setValue:v105 forKey:@"includesProgressBar"];
 
-  v106 = [(PGControlsViewModel *)self values];
+  values24 = [(PGControlsViewModel *)self values];
   v107 = [MEMORY[0x1E696AD98] numberWithBool:v140 & 1];
-  [v106 setValue:v107 forKey:@"includesDimmingView"];
+  [values24 setValue:v107 forKey:@"includesDimmingView"];
 
-  v108 = [(PGControlsViewModel *)self values];
+  values25 = [(PGControlsViewModel *)self values];
   v109 = [MEMORY[0x1E696AD98] numberWithBool:v168];
-  [v108 setValue:v109 forKey:@"progressBarShouldUpdate"];
+  [values25 setValue:v109 forKey:@"progressBarShouldUpdate"];
 
-  v110 = [(PGControlsViewModel *)self values];
-  [v110 setValue:v141 forKey:@"actionButtonSystemImageName"];
+  values26 = [(PGControlsViewModel *)self values];
+  [values26 setValue:v141 forKey:@"actionButtonSystemImageName"];
 
-  v111 = [(PGControlsViewModel *)self values];
-  [v111 setValue:v142 forKey:@"skipForwardButtonSystemImageName"];
+  values27 = [(PGControlsViewModel *)self values];
+  [values27 setValue:v142 forKey:@"skipForwardButtonSystemImageName"];
 
-  v112 = [(PGControlsViewModel *)self values];
-  [v112 setValue:v143 forKey:@"skipBackButtonSystemImageName"];
+  values28 = [(PGControlsViewModel *)self values];
+  [values28 setValue:v143 forKey:@"skipBackButtonSystemImageName"];
 
-  v113 = [(PGControlsViewModel *)self values];
-  [v113 setValue:@"xmark" forKey:@"cancelButtonSystemImageName"];
+  values29 = [(PGControlsViewModel *)self values];
+  [values29 setValue:@"xmark" forKey:@"cancelButtonSystemImageName"];
 
-  v114 = [(PGControlsViewModel *)self values];
+  values30 = [(PGControlsViewModel *)self values];
   v115 = [MEMORY[0x1E696AD98] numberWithBool:v144];
-  [v114 setValue:v115 forKey:@"controlsViewWantsGlassBackground"];
+  [values30 setValue:v115 forKey:@"controlsViewWantsGlassBackground"];
 
-  v116 = [(PGControlsViewModel *)self values];
-  [v116 setValue:v145 forKey:@"actionButtonImageTintColor"];
+  values31 = [(PGControlsViewModel *)self values];
+  [values31 setValue:v145 forKey:@"actionButtonImageTintColor"];
 
-  v117 = [(PGControlsViewModel *)self values];
-  [v117 setValue:v146 forKey:@"actionButtonBackgroundTintColor"];
+  values32 = [(PGControlsViewModel *)self values];
+  [values32 setValue:v146 forKey:@"actionButtonBackgroundTintColor"];
 
-  v118 = [(PGControlsViewModel *)self values];
-  [v118 setValue:0 forKey:@"skipBackButtonImageTintColor"];
+  values33 = [(PGControlsViewModel *)self values];
+  [values33 setValue:0 forKey:@"skipBackButtonImageTintColor"];
 
-  v119 = [(PGControlsViewModel *)self values];
-  [v119 setValue:0 forKey:@"skipBackButtonBackgroundTintColor"];
+  values34 = [(PGControlsViewModel *)self values];
+  [values34 setValue:0 forKey:@"skipBackButtonBackgroundTintColor"];
 
-  v120 = [(PGControlsViewModel *)self values];
-  [v120 setValue:0 forKey:@"skipForwardButtonImageTintColor"];
+  values35 = [(PGControlsViewModel *)self values];
+  [values35 setValue:0 forKey:@"skipForwardButtonImageTintColor"];
 
-  v121 = [(PGControlsViewModel *)self values];
-  [v121 setValue:0 forKey:@"skipForwardButtonBackgroundTintColor"];
+  values36 = [(PGControlsViewModel *)self values];
+  [values36 setValue:0 forKey:@"skipForwardButtonBackgroundTintColor"];
 
-  v122 = [(PGControlsViewModel *)self values];
-  [v122 setValue:0 forKey:@"cancelButtonImageTintColor"];
+  values37 = [(PGControlsViewModel *)self values];
+  [values37 setValue:0 forKey:@"cancelButtonImageTintColor"];
 
-  v123 = [(PGControlsViewModel *)self values];
-  [v123 setValue:0 forKey:@"cancelButtonBackgroundTintColor"];
+  values38 = [(PGControlsViewModel *)self values];
+  [values38 setValue:0 forKey:@"cancelButtonBackgroundTintColor"];
 
-  v124 = [(PGControlsViewModel *)self values];
-  [v124 setValue:v148 forKey:@"prerollAttributes"];
+  values39 = [(PGControlsViewModel *)self values];
+  [values39 setValue:v148 forKey:@"prerollAttributes"];
 
-  v125 = [(PGControlsViewModel *)self values];
+  values40 = [(PGControlsViewModel *)self values];
   v126 = [MEMORY[0x1E696AD98] numberWithBool:v144];
-  [v125 setValue:v126 forKey:@"cancelButtonWantsBackground"];
+  [values40 setValue:v126 forKey:@"cancelButtonWantsBackground"];
 
-  v127 = [(PGControlsViewModel *)self values];
+  values41 = [(PGControlsViewModel *)self values];
   v128 = [MEMORY[0x1E696AD98] numberWithBool:v144];
-  [v127 setValue:v128 forKey:@"restoreButtonWantsBackground"];
+  [values41 setValue:v128 forKey:@"restoreButtonWantsBackground"];
 
-  v129 = [(PGControlsViewModel *)self values];
-  v130 = [MEMORY[0x1E696AD98] numberWithBool:v137 | v144];
-  [v129 setValue:v130 forKey:@"actionButtonsWantBackground"];
+  values42 = [(PGControlsViewModel *)self values];
+  v144 = [MEMORY[0x1E696AD98] numberWithBool:v137 | v144];
+  [values42 setValue:v144 forKey:@"actionButtonsWantBackground"];
 
-  v131 = [(PGControlsViewModel *)self values];
-  [v131 setValue:0 forKey:@"cancelButtonCustomText"];
+  values43 = [(PGControlsViewModel *)self values];
+  [values43 setValue:0 forKey:@"cancelButtonCustomText"];
 
-  v132 = [(PGControlsViewModel *)self values];
-  [v132 setValue:0 forKey:@"cancelButtonCustomImage"];
+  values44 = [(PGControlsViewModel *)self values];
+  [values44 setValue:0 forKey:@"cancelButtonCustomImage"];
 
   v133 = !v168 && self->_lastKnownElapsedTime != v8;
   self->_lastKnownElapsedTime = v8;
-  v134 = [(PGControlsViewModel *)self values];
-  v135 = [v151 isEqual:v134];
+  values45 = [(PGControlsViewModel *)self values];
+  v135 = [v151 isEqual:values45];
 
   if (!v135 || v133)
   {
-    v136 = [(PGControlsViewModel *)self delegate];
-    [v136 controlsViewModel:self valuesChangedFromOldValue:v151];
+    delegate = [(PGControlsViewModel *)self delegate];
+    [delegate controlsViewModel:self valuesChangedFromOldValue:v151];
   }
 }
 

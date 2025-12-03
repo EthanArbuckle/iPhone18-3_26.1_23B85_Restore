@@ -1,88 +1,88 @@
 @interface ICQUIEnableiCloudSyncHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
-- (ICQUIEnableiCloudSyncHook)initWithAccount:(id)a3 dataclasses:(id)a4;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
+- (ICQUIEnableiCloudSyncHook)initWithAccount:(id)account dataclasses:(id)dataclasses;
 - (RUIServerHookDelegate)delegate;
-- (void)_turnOniCloudSyncWithCompletion:(id)a3;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
-- (void)signInOperationManager:(id)a3 didSaveAccount:(id)a4 error:(id)a5;
+- (void)_turnOniCloudSyncWithCompletion:(id)completion;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
+- (void)signInOperationManager:(id)manager didSaveAccount:(id)account error:(id)error;
 @end
 
 @implementation ICQUIEnableiCloudSyncHook
 
-- (ICQUIEnableiCloudSyncHook)initWithAccount:(id)a3 dataclasses:(id)a4
+- (ICQUIEnableiCloudSyncHook)initWithAccount:(id)account dataclasses:(id)dataclasses
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  dataclassesCopy = dataclasses;
   v12.receiver = self;
   v12.super_class = ICQUIEnableiCloudSyncHook;
   v9 = [(ICQUIEnableiCloudSyncHook *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_dataclasses, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_dataclasses, dataclasses);
   }
 
   return v10;
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"TURN_ON_ICLOUD_SYNC"];
+  name = [element name];
+  v4 = [name isEqualToString:@"TURN_ON_ICLOUD_SYNC"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D46250]];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277D46250]];
   v5 = [v4 isEqualToString:@"TURN_ON_ICLOUD_SYNC"];
 
   return v5;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a6;
+  elementCopy = element;
+  completionCopy = completion;
   v10 = _ICQGetLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 name];
+    name = [elementCopy name];
     v12 = 138412290;
-    v13 = v11;
+    v13 = name;
     _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "Processing iCloudSync RUI hook with element %@", &v12, 0xCu);
   }
 
-  [(ICQUIEnableiCloudSyncHook *)self _turnOniCloudSyncWithCompletion:v9];
+  [(ICQUIEnableiCloudSyncHook *)self _turnOniCloudSyncWithCompletion:completionCopy];
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 clientInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D46250]];
+    clientInfo = [modelCopy clientInfo];
+    v10 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277D46250]];
     v11 = 138412290;
     v12 = v10;
     _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "Processing iCloudSync RUI hook with object model action %@", &v11, 0xCu);
   }
 
-  [(ICQUIEnableiCloudSyncHook *)self _turnOniCloudSyncWithCompletion:v7];
+  [(ICQUIEnableiCloudSyncHook *)self _turnOniCloudSyncWithCompletion:completionCopy];
 }
 
-- (void)_turnOniCloudSyncWithCompletion:(id)a3
+- (void)_turnOniCloudSyncWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   hookCompletion = self->_hookCompletion;
   self->_hookCompletion = v4;
 
@@ -97,18 +97,18 @@
   [(AAUISignInOperationManager *)self->_dataclassOperationManager enableDataclasses:self->_dataclasses forAccount:self->_account];
 }
 
-- (void)signInOperationManager:(id)a3 didSaveAccount:(id)a4 error:(id)a5
+- (void)signInOperationManager:(id)manager didSaveAccount:(id)account error:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  accountCopy = account;
+  errorCopy = error;
   v9 = _ICQGetLogSystem();
   v10 = v9;
-  if (v8)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [ICQUIEnableiCloudSyncHook signInOperationManager:v8 didSaveAccount:v10 error:?];
+      [ICQUIEnableiCloudSyncHook signInOperationManager:errorCopy didSaveAccount:v10 error:?];
     }
 
     v11 = *(self->_hookCompletion + 2);
@@ -118,7 +118,7 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v7;
+    v14 = accountCopy;
     _os_log_impl(&dword_275623000, v10, OS_LOG_TYPE_DEFAULT, "Successfully enabled iCloud sync for account (%@)", &v13, 0xCu);
   }
 

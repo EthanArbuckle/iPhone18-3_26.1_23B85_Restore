@@ -1,16 +1,16 @@
 @interface KmlCancelMessage
-- (KmlCancelMessage)initWithCCCErrorCode:(unsigned __int8)a3;
-- (KmlCancelMessage)initWithData:(id)a3;
-- (KmlCancelMessage)initWithKmlErrorCode:(unsigned int)a3;
+- (KmlCancelMessage)initWithCCCErrorCode:(unsigned __int8)code;
+- (KmlCancelMessage)initWithData:(id)data;
+- (KmlCancelMessage)initWithKmlErrorCode:(unsigned int)code;
 - (id)asData;
 @end
 
 @implementation KmlCancelMessage
 
-- (KmlCancelMessage)initWithData:(id)a3
+- (KmlCancelMessage)initWithData:(id)data
 {
   v43 = *MEMORY[0x277D85DE8];
-  [KmlTlv TLVsWithData:a3];
+  [KmlTlv TLVsWithData:data];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -54,8 +54,8 @@ LABEL_3:
       goto LABEL_21;
     }
 
-    v11 = [v10 value];
-    v12 = [KmlTlv TLVsWithData:v11];
+    value = [v10 value];
+    v12 = [KmlTlv TLVsWithData:value];
 
     v31 = 0u;
     v32 = 0u;
@@ -122,11 +122,11 @@ LABEL_13:
     v19 = [(KmlCancelMessage *)&v28 init];
     if (v19)
     {
-      v20 = [v18 valueAsUnsignedShort];
-      v19->_cccCode = v20;
+      valueAsUnsignedShort = [v18 valueAsUnsignedShort];
+      v19->_cccCode = valueAsUnsignedShort;
       v21 = &byte_248C29D6C;
       v22 = 4;
-      while (*v21 != v20)
+      while (*v21 != valueAsUnsignedShort)
       {
         v21 += 8;
         if (!--v22)
@@ -143,7 +143,7 @@ LABEL_35:
 
     self = v19;
 
-    v25 = self;
+    selfCopy = self;
   }
 
   else
@@ -162,25 +162,25 @@ LABEL_21:
     }
 
 LABEL_32:
-    v25 = 0;
+    selfCopy = 0;
   }
 
   v26 = *MEMORY[0x277D85DE8];
-  return v25;
+  return selfCopy;
 }
 
-- (KmlCancelMessage)initWithCCCErrorCode:(unsigned __int8)a3
+- (KmlCancelMessage)initWithCCCErrorCode:(unsigned __int8)code
 {
-  v3 = a3;
+  codeCopy = code;
   v8.receiver = self;
   v8.super_class = KmlCancelMessage;
   result = [(KmlCancelMessage *)&v8 init];
   if (result)
   {
-    result->_cccCode = v3;
+    result->_cccCode = codeCopy;
     v5 = &byte_248C29D6C;
     v6 = 4;
-    while (*v5 != v3)
+    while (*v5 != codeCopy)
     {
       v5 += 8;
       if (!--v6)
@@ -198,17 +198,17 @@ LABEL_7:
   return result;
 }
 
-- (KmlCancelMessage)initWithKmlErrorCode:(unsigned int)a3
+- (KmlCancelMessage)initWithKmlErrorCode:(unsigned int)code
 {
   v8.receiver = self;
   v8.super_class = KmlCancelMessage;
   result = [(KmlCancelMessage *)&v8 init];
   if (result)
   {
-    result->_kmlCode = a3;
+    result->_kmlCode = code;
     v5 = &byte_248C29D6C;
     v6 = 4;
-    while (*(v5 - 1) != a3)
+    while (*(v5 - 1) != code)
     {
       v5 += 8;
       if (!--v6)
@@ -229,12 +229,12 @@ LABEL_7:
 - (id)asData
 {
   v2 = [KmlTlv TLVWithTag:109 unsignedChar:self->_cccCode];
-  v3 = [v2 asData];
-  v4 = [KmlTlv TLVWithTag:32620 value:v3];
+  asData = [v2 asData];
+  v4 = [KmlTlv TLVWithTag:32620 value:asData];
 
-  v5 = [v4 asData];
+  asData2 = [v4 asData];
 
-  return v5;
+  return asData2;
 }
 
 @end

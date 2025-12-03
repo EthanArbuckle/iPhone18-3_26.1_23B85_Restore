@@ -1,16 +1,16 @@
 @interface PKPeerPaymentAddAssociatedAccountRequest
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentAddAssociatedAccountRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (!lCopy)
   {
     v18 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -30,7 +30,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v7)
+  if (!informationCopy)
   {
     v18 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -67,15 +67,15 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v9 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:&unk_1F23B4850 queryParameters:0 appleAccountInformation:v7];
+  v9 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B4850 queryParameters:0 appleAccountInformation:informationCopy];
   [v9 setHTTPMethod:@"POST"];
   [v9 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v10 = [MEMORY[0x1E695DF90] dictionary];
-  v11 = v10;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v11 = dictionary;
   altDSID = self->_altDSID;
   if (altDSID)
   {
-    [v10 setObject:altDSID forKey:@"altDSID"];
+    [dictionary setObject:altDSID forKey:@"altDSID"];
   }
 
   firstName = self->_firstName;

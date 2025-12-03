@@ -1,88 +1,88 @@
 @interface PLWarningHelper
-+ (id)_sharedAlbumWarningMessageForAssetCount:(unint64_t)a3 assetType:(signed __int16)a4 albumTitle:(id)a5;
-+ (id)sharedAlbumWarningMessageForAssets:(id)a3 albumTitle:(id)a4;
++ (id)_sharedAlbumWarningMessageForAssetCount:(unint64_t)count assetType:(signed __int16)type albumTitle:(id)title;
++ (id)sharedAlbumWarningMessageForAssets:(id)assets albumTitle:(id)title;
 - (BOOL)_isExitingSharedLibrary;
-- (PLWarningHelper)initWithPhotoLibrary:(id)a3;
-- (id)_avalancheDeleteWarningForAvalancheStacksCount:(int64_t)a3 nonAvalancheItemsToDeleteCount:(int64_t)a4 nonAvalancheItemsToDeleteType:(signed __int16)a5 avalanchePhotosToDeleteCount:(int64_t)a6 survivingAvalancheFavoritesCount:(int64_t)a7 avalancheUnrelatedFavoritesCount:(int64_t)a8 assetCount:(int64_t)a9;
-- (id)_contributorsForAssets:(id)a3;
-- (id)_myAssetsFromAssets:(id)a3;
-- (id)_usedElsewhereWarningTextForAssetCount:(int64_t)a3 inLibraryScopeCount:(int64_t)a4 myAssets:(id)a5 contributors:(id)a6 inSomeAlbumCount:(int64_t)a7 affectedLocalAlbumsCount:(int64_t)a8 assetType:(signed __int16)a9 actualDeletionCount:(int64_t)a10 syndicationAssetCount:(int64_t)a11;
-- (id)_usedElsewhereWarningTextForAssets:(id)a3 actualDeletionCount:(int64_t)a4;
+- (PLWarningHelper)initWithPhotoLibrary:(id)library;
+- (id)_avalancheDeleteWarningForAvalancheStacksCount:(int64_t)count nonAvalancheItemsToDeleteCount:(int64_t)deleteCount nonAvalancheItemsToDeleteType:(signed __int16)type avalanchePhotosToDeleteCount:(int64_t)toDeleteCount survivingAvalancheFavoritesCount:(int64_t)favoritesCount avalancheUnrelatedFavoritesCount:(int64_t)unrelatedFavoritesCount assetCount:(int64_t)assetCount;
+- (id)_contributorsForAssets:(id)assets;
+- (id)_myAssetsFromAssets:(id)assets;
+- (id)_usedElsewhereWarningTextForAssetCount:(int64_t)count inLibraryScopeCount:(int64_t)scopeCount myAssets:(id)assets contributors:(id)contributors inSomeAlbumCount:(int64_t)albumCount affectedLocalAlbumsCount:(int64_t)albumsCount assetType:(signed __int16)type actualDeletionCount:(int64_t)self0 syndicationAssetCount:(int64_t)self1;
+- (id)_usedElsewhereWarningTextForAssets:(id)assets actualDeletionCount:(int64_t)count;
 - (id)allWarningMessageCombinations;
-- (unint64_t)_assetsInLibraryScopeCountFromAssets:(id)a3;
-- (void)_enumerateTestAssetTypesUsingBlock:(id)a3;
-- (void)_enumerateTestBooleansUsingBlock:(id)a3;
-- (void)_enumerateTestDeviceModelNamesUsingBlock:(id)a3;
-- (void)_enumerateTestItemCountsUsingBlock:(id)a3;
-- (void)_enumerateTestOtherItemCountsUsingBlock:(id)a3;
-- (void)_enumerateWarningMessagesUsingBlock:(id)a3 sectionBlock:(id)a4;
-- (void)_getDeletionWarningTitle:(id *)a3 message:(id *)a4 buttonTitle:(id *)a5;
-- (void)_getExpungeWarningMessage:(id *)a3 buttonTitle:(id *)a4 forAssetCount:(int64_t)a5 assetType:(signed __int16)a6 iCPLEnabled:(BOOL)a7 contributors:(id)a8 deviceModelName:(id)a9;
-- (void)_getWarningTitle:(id *)a3 message:(id *)a4 buttonTitle:(id *)a5 forItemSuffix:(id)a6 count:(unint64_t)a7 operation:(int64_t)a8 clientName:(id)a9;
-- (void)enumerateWarningMessagesUsingBlock:(id)a3;
-- (void)getAvalancheDeleteWarning:(id *)a3 actualDeletionCount:(int64_t *)a4 forAssets:(id)a5;
-- (void)getDeletionWarningTitle:(id *)a3 message:(id *)a4 buttonTitle:(id *)a5 forAlbums:(id)a6 folders:(id)a7 clientName:(id)a8 style:(int64_t)a9;
-- (void)getDeletionWarningTitle:(id *)a3 message:(id *)a4 buttonTitle:(id *)a5 forAssets:(id)a6 syndicationAssetCount:(int64_t)a7 clientName:(id)a8 style:(int64_t)a9;
-- (void)getExpungeWarningMessage:(id *)a3 buttonTitle:(id *)a4 forAssets:(id)a5;
-- (void)getWarningTitle:(id *)a3 message:(id *)a4 buttonTitle:(id *)a5 forAssets:(id)a6 operation:(int64_t)a7 clientName:(id)a8;
+- (unint64_t)_assetsInLibraryScopeCountFromAssets:(id)assets;
+- (void)_enumerateTestAssetTypesUsingBlock:(id)block;
+- (void)_enumerateTestBooleansUsingBlock:(id)block;
+- (void)_enumerateTestDeviceModelNamesUsingBlock:(id)block;
+- (void)_enumerateTestItemCountsUsingBlock:(id)block;
+- (void)_enumerateTestOtherItemCountsUsingBlock:(id)block;
+- (void)_enumerateWarningMessagesUsingBlock:(id)block sectionBlock:(id)sectionBlock;
+- (void)_getDeletionWarningTitle:(id *)title message:(id *)message buttonTitle:(id *)buttonTitle;
+- (void)_getExpungeWarningMessage:(id *)message buttonTitle:(id *)title forAssetCount:(int64_t)count assetType:(signed __int16)type iCPLEnabled:(BOOL)enabled contributors:(id)contributors deviceModelName:(id)name;
+- (void)_getWarningTitle:(id *)title message:(id *)message buttonTitle:(id *)buttonTitle forItemSuffix:(id)suffix count:(unint64_t)count operation:(int64_t)operation clientName:(id)name;
+- (void)enumerateWarningMessagesUsingBlock:(id)block;
+- (void)getAvalancheDeleteWarning:(id *)warning actualDeletionCount:(int64_t *)count forAssets:(id)assets;
+- (void)getDeletionWarningTitle:(id *)title message:(id *)message buttonTitle:(id *)buttonTitle forAlbums:(id)albums folders:(id)folders clientName:(id)name style:(int64_t)style;
+- (void)getDeletionWarningTitle:(id *)title message:(id *)message buttonTitle:(id *)buttonTitle forAssets:(id)assets syndicationAssetCount:(int64_t)count clientName:(id)name style:(int64_t)style;
+- (void)getExpungeWarningMessage:(id *)message buttonTitle:(id *)title forAssets:(id)assets;
+- (void)getWarningTitle:(id *)title message:(id *)message buttonTitle:(id *)buttonTitle forAssets:(id)assets operation:(int64_t)operation clientName:(id)name;
 @end
 
 @implementation PLWarningHelper
 
-- (void)_enumerateTestDeviceModelNamesUsingBlock:(id)a3
+- (void)_enumerateTestDeviceModelNamesUsingBlock:(id)block
 {
-  v3 = (a3 + 16);
-  v4 = *(a3 + 2);
-  v5 = a3;
+  v3 = (block + 16);
+  v4 = *(block + 2);
+  blockCopy = block;
   v4();
-  (*v3)(v5, @"iPad");
-  (*v3)(v5, @"iPod touch");
-  (*v3)(v5, @"other");
+  (*v3)(blockCopy, @"iPad");
+  (*v3)(blockCopy, @"iPod touch");
+  (*v3)(blockCopy, @"other");
 }
 
-- (void)_enumerateTestAssetTypesUsingBlock:(id)a3
+- (void)_enumerateTestAssetTypesUsingBlock:(id)block
 {
-  v3 = (a3 + 16);
-  v4 = *(a3 + 2);
-  v5 = a3;
+  v3 = (block + 16);
+  v4 = *(block + 2);
+  blockCopy = block;
   v4();
-  (*v3)(v5, 1);
-  (*v3)(v5, 3);
+  (*v3)(blockCopy, 1);
+  (*v3)(blockCopy, 3);
 }
 
-- (void)_enumerateTestOtherItemCountsUsingBlock:(id)a3
+- (void)_enumerateTestOtherItemCountsUsingBlock:(id)block
 {
-  v4 = *(a3 + 2);
-  v5 = a3;
+  v4 = *(block + 2);
+  blockCopy = block;
   v4();
-  [(PLWarningHelper *)self _enumerateTestItemCountsUsingBlock:v5];
+  [(PLWarningHelper *)self _enumerateTestItemCountsUsingBlock:blockCopy];
 }
 
-- (void)_enumerateTestItemCountsUsingBlock:(id)a3
+- (void)_enumerateTestItemCountsUsingBlock:(id)block
 {
-  v3 = (a3 + 16);
-  v4 = *(a3 + 2);
-  v5 = a3;
+  v3 = (block + 16);
+  v4 = *(block + 2);
+  blockCopy = block;
   v4();
-  (*v3)(v5, 2);
-  (*v3)(v5, 1000);
+  (*v3)(blockCopy, 2);
+  (*v3)(blockCopy, 1000);
 }
 
-- (void)_enumerateTestBooleansUsingBlock:(id)a3
+- (void)_enumerateTestBooleansUsingBlock:(id)block
 {
-  v3 = (a3 + 16);
-  v4 = *(a3 + 2);
-  v5 = a3;
+  v3 = (block + 16);
+  v4 = *(block + 2);
+  blockCopy = block;
   v4();
-  (*v3)(v5, 1);
+  (*v3)(blockCopy, 1);
 }
 
-- (void)_enumerateWarningMessagesUsingBlock:(id)a3 sectionBlock:(id)a4
+- (void)_enumerateWarningMessagesUsingBlock:(id)block sectionBlock:(id)sectionBlock
 {
-  v6 = a3;
-  v7 = (a4 + 16);
-  v8 = *(a4 + 2);
-  v9 = a4;
+  blockCopy = block;
+  v7 = (sectionBlock + 16);
+  v8 = *(sectionBlock + 2);
+  sectionBlockCopy = sectionBlock;
   v8();
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -90,11 +90,11 @@
   v23[3] = &unk_1E7568910;
   v23[4] = self;
   v25 = 0;
-  v10 = v6;
+  v10 = blockCopy;
   v24 = v10;
   [(PLWarningHelper *)self _enumerateTestItemCountsUsingBlock:v23];
 
-  (*v7)(v9, @"Expunge");
+  (*v7)(sectionBlockCopy, @"Expunge");
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __68__PLWarningHelper__enumerateWarningMessagesUsingBlock_sectionBlock___block_invoke_3;
@@ -103,7 +103,7 @@
   v11 = v10;
   v22 = v11;
   [(PLWarningHelper *)self _enumerateTestItemCountsUsingBlock:v21];
-  (*v7)(v9, @"Avalanche");
+  (*v7)(sectionBlockCopy, @"Avalanche");
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __68__PLWarningHelper__enumerateWarningMessagesUsingBlock_sectionBlock___block_invoke_7;
@@ -112,7 +112,7 @@
   v12 = v11;
   v20 = v12;
   [(PLWarningHelper *)self _enumerateTestItemCountsUsingBlock:v19];
-  (*v7)(v9, @"Cloud Shared");
+  (*v7)(sectionBlockCopy, @"Cloud Shared");
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __68__PLWarningHelper__enumerateWarningMessagesUsingBlock_sectionBlock___block_invoke_14;
@@ -121,7 +121,7 @@
   v13 = v12;
   v18 = v13;
   [(PLWarningHelper *)self _enumerateTestItemCountsUsingBlock:v17];
-  (*v7)(v9, @"Deletion");
+  (*v7)(sectionBlockCopy, @"Deletion");
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -472,9 +472,9 @@ void __68__PLWarningHelper__enumerateWarningMessagesUsingBlock_sectionBlock___bl
   (*(a1[5] + 16))();
 }
 
-- (void)enumerateWarningMessagesUsingBlock:(id)a3
+- (void)enumerateWarningMessagesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -484,7 +484,7 @@ void __68__PLWarningHelper__enumerateWarningMessagesUsingBlock_sectionBlock___bl
   v6[2] = __54__PLWarningHelper_enumerateWarningMessagesUsingBlock___block_invoke;
   v6[3] = &unk_1E75688A0;
   v8 = v9;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   [(PLWarningHelper *)self _enumerateWarningMessagesUsingBlock:v6 sectionBlock:&__block_literal_global_21091];
 
@@ -533,23 +533,23 @@ void __48__PLWarningHelper_allWarningMessageCombinations__block_invoke(uint64_t 
   [*(a1 + 32) appendFormat:@"%@\n", v6];
 }
 
-- (void)getDeletionWarningTitle:(id *)a3 message:(id *)a4 buttonTitle:(id *)a5 forAlbums:(id)a6 folders:(id)a7 clientName:(id)a8 style:(int64_t)a9
+- (void)getDeletionWarningTitle:(id *)title message:(id *)message buttonTitle:(id *)buttonTitle forAlbums:(id)albums folders:(id)folders clientName:(id)name style:(int64_t)style
 {
   v81 = *MEMORY[0x1E69E9840];
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
-  v16 = [v13 count];
-  v17 = [v14 count];
+  albumsCopy = albums;
+  foldersCopy = folders;
+  nameCopy = name;
+  v16 = [albumsCopy count];
+  v17 = [foldersCopy count];
   if (!(v17 + v16))
   {
-    v56 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v56 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:794 description:{@"Invalid parameter not satisfying: %@", @"totalCount > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:794 description:{@"Invalid parameter not satisfying: %@", @"totalCount > 0"}];
   }
 
-  v70 = v15;
-  v65 = a4;
-  v66 = a5;
+  v70 = nameCopy;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
   if (!v17)
   {
     if (v16 != 1)
@@ -561,8 +561,8 @@ void __48__PLWarningHelper_allWarningMessageCombinations__block_invoke(uint64_t 
       goto LABEL_17;
     }
 
-    v21 = [v13 firstObject];
-    v69 = [v21 title];
+    firstObject = [albumsCopy firstObject];
+    title = [firstObject title];
 
     v63 = 0;
     v18 = 0x7FFFFFFFFFFFFFFFLL;
@@ -584,8 +584,8 @@ LABEL_12:
       goto LABEL_17;
     }
 
-    v23 = [v14 firstObject];
-    v69 = [v23 title];
+    firstObject2 = [foldersCopy firstObject];
+    title = [firstObject2 title];
 
     v63 = 0;
     v18 = 0x7FFFFFFFFFFFFFFFLL;
@@ -602,7 +602,7 @@ LABEL_12:
     v20 = @"ALBUM_FOLDER";
 LABEL_17:
     v68 = v20;
-    v69 = 0;
+    title = 0;
     goto LABEL_18;
   }
 
@@ -627,7 +627,7 @@ LABEL_17:
   }
 
   v68 = v49;
-  v69 = 0;
+  title = 0;
   v63 = 1;
   v18 = v16;
 LABEL_18:
@@ -635,9 +635,9 @@ LABEL_18:
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v24 = v13;
+  v24 = albumsCopy;
   v25 = [v24 countByEnumeratingWithState:&v75 objects:v80 count:16];
-  v67 = v14;
+  v67 = foldersCopy;
   if (v25)
   {
     v26 = v25;
@@ -673,7 +673,7 @@ LABEL_18:
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v29 = v14;
+  v29 = foldersCopy;
   v30 = [v29 countByEnumeratingWithState:&v71 objects:v79 count:16];
   if (v30)
   {
@@ -724,7 +724,7 @@ LABEL_38:
       v38 = PFStringWithValidatedFormat();
 LABEL_66:
       v45 = v38;
-      v46 = v66;
+      v46 = buttonTitleCopy;
       if (v34)
       {
         v42 = 0;
@@ -754,7 +754,7 @@ LABEL_66:
     v45 = PFStringWithValidatedFormat();
 
     v35 = 0;
-    v46 = v66;
+    v46 = buttonTitleCopy;
   }
 
   else
@@ -768,8 +768,8 @@ LABEL_66:
       {
         if (v18 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v60 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v60 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:885 description:{@"invalid number of albums and folders: %lu, %lu", 1, 1}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:885 description:{@"invalid number of albums and folders: %lu, %lu", 1, 1}];
         }
 
         v35 = v70;
@@ -779,8 +779,8 @@ LABEL_66:
       {
         if (v18 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v59 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v59 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:888 description:{@"invalid number of items: %lu", 0x7FFFFFFFFFFFFFFFLL}];
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:888 description:{@"invalid number of items: %lu", 0x7FFFFFFFFFFFFFFFLL}];
         }
 
         v35 = v70;
@@ -792,14 +792,14 @@ LABEL_66:
 
     if (v18 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v57 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v57 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:873 description:{@"Invalid parameter not satisfying: %@", @"itemCount != NSNotFound"}];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:873 description:{@"Invalid parameter not satisfying: %@", @"itemCount != NSNotFound"}];
     }
 
     if (v19 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v58 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v58 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:874 description:{@"Invalid parameter not satisfying: %@", @"secondItemCount == NSNotFound"}];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler5 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:874 description:{@"Invalid parameter not satisfying: %@", @"secondItemCount == NSNotFound"}];
     }
 
     if (v34)
@@ -817,14 +817,14 @@ LABEL_66:
 
     v42 = PFLocalizedStringWithValidatedFormat();
     v45 = 0;
-    v46 = v66;
+    v46 = buttonTitleCopy;
     v35 = 0;
   }
 
 LABEL_69:
 
   v50 = v63 ^ 1;
-  if (a9 == 1)
+  if (style == 1)
   {
     v50 = 0;
   }
@@ -842,16 +842,16 @@ LABEL_69:
     v51 = PLServicesLocalizedFrameworkString();
   }
 
-  if (a3)
+  if (title)
   {
     v53 = v45;
-    *a3 = v45;
+    *title = v45;
   }
 
-  if (v65)
+  if (messageCopy)
   {
     v54 = v42;
-    *v65 = v42;
+    *messageCopy = v42;
   }
 
   if (v46)
@@ -861,18 +861,18 @@ LABEL_69:
   }
 }
 
-- (id)_usedElsewhereWarningTextForAssetCount:(int64_t)a3 inLibraryScopeCount:(int64_t)a4 myAssets:(id)a5 contributors:(id)a6 inSomeAlbumCount:(int64_t)a7 affectedLocalAlbumsCount:(int64_t)a8 assetType:(signed __int16)a9 actualDeletionCount:(int64_t)a10 syndicationAssetCount:(int64_t)a11
+- (id)_usedElsewhereWarningTextForAssetCount:(int64_t)count inLibraryScopeCount:(int64_t)scopeCount myAssets:(id)assets contributors:(id)contributors inSomeAlbumCount:(int64_t)albumCount affectedLocalAlbumsCount:(int64_t)albumsCount assetType:(signed __int16)type actualDeletionCount:(int64_t)self0 syndicationAssetCount:(int64_t)self1
 {
   v74 = *MEMORY[0x1E69E9840];
-  v16 = a5;
-  v17 = a6;
+  assetsCopy = assets;
+  contributorsCopy = contributors;
   v18 = PLLocalizedKeyForAssetType();
-  LODWORD(a6) = [(PLPhotoLibrary *)self->_photoLibrary isCloudPhotoLibraryEnabled];
-  v65 = [v17 count];
-  v19 = a6;
-  if (a6)
+  LODWORD(contributors) = [(PLPhotoLibrary *)self->_photoLibrary isCloudPhotoLibraryEnabled];
+  v65 = [contributorsCopy count];
+  contributorsCopy2 = contributors;
+  if (contributors)
   {
-    if (a10 <= 1)
+    if (deletionCount <= 1)
     {
       v20 = &stru_1F0F06D80;
     }
@@ -883,9 +883,9 @@ LABEL_69:
     }
 
     v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE_WARNING_ICLOUDPHOTO_%@%@", v18, v20];
-    if (a4 == a3)
+    if (scopeCount == count)
     {
-      if (a4 <= 1)
+      if (scopeCount <= 1)
       {
         v22 = &stru_1F0F06D80;
       }
@@ -896,7 +896,7 @@ LABEL_69:
       }
 
       v23 = v22;
-      if ([v16 count] == a4)
+      if ([assetsCopy count] == scopeCount)
       {
         if (v65 >= 3)
         {
@@ -905,7 +905,7 @@ LABEL_30:
           [v24 stringWithFormat:@"SHAREDLIBRARY_DELETE_MC_WARNING_%@%@", v18, v23];
           v35 = LABEL_43:;
 
-          v68 = 0;
+          shortName = 0;
 LABEL_44:
           v21 = v35;
 
@@ -919,13 +919,13 @@ LABEL_44:
           v72 = 0u;
           v69 = 0u;
           v70 = 0u;
-          obj = v17;
+          obj = contributorsCopy;
           v30 = [obj countByEnumeratingWithState:&v69 objects:v73 count:16];
           if (v30)
           {
             v31 = v30;
             v63 = v18;
-            v60 = v16;
+            v60 = assetsCopy;
             v32 = *v70;
             while (2)
             {
@@ -939,7 +939,7 @@ LABEL_44:
                 v34 = *(*(&v69 + 1) + 8 * i);
                 if (([v34 isCurrentUser] & 1) == 0)
                 {
-                  v68 = [v34 shortName];
+                  shortName = [v34 shortName];
                   goto LABEL_83;
                 }
               }
@@ -953,15 +953,15 @@ LABEL_44:
               break;
             }
 
-            v68 = 0;
+            shortName = 0;
 LABEL_83:
-            v16 = v60;
+            assetsCopy = v60;
             v18 = v63;
           }
 
           else
           {
-            v68 = 0;
+            shortName = 0;
           }
 
           v23 = v61;
@@ -986,27 +986,27 @@ LABEL_83:
       goto LABEL_43;
     }
 
-    if (a4 >= 1)
+    if (scopeCount >= 1)
     {
       v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SHAREDLIBRARY_DELETE_WARNING_ICLOUD_MIXED_%@S", v18];
 
-      v68 = 0;
+      shortName = 0;
       v28 = 1;
       v21 = v27;
       goto LABEL_46;
     }
 
 LABEL_28:
-    v68 = 0;
+    shortName = 0;
 LABEL_45:
     v28 = 1;
     goto LABEL_46;
   }
 
-  if (a7 >= 1)
+  if (albumCount >= 1)
   {
     v25 = @"S";
-    if (a8 == 1)
+    if (albumsCount == 1)
     {
       v26 = &stru_1F0F06D80;
     }
@@ -1016,14 +1016,14 @@ LABEL_45:
       v26 = @"S";
     }
 
-    if (a7 < a3 || a10 > a3)
+    if (albumCount < count || deletionCount > count)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE_WARNING_ALBUM%@_SOME_%@S", v26, v18, v59];
     }
 
     else
     {
-      if (a3 == 1)
+      if (count == 1)
       {
         v25 = &stru_1F0F06D80;
       }
@@ -1035,24 +1035,24 @@ LABEL_45:
   }
 
   v29 = &stru_1F0F06D80;
-  if (a10 > 1)
+  if (deletionCount > 1)
   {
     v29 = @"S";
   }
 
   v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE_WARNING_NO_ICLOUDPHOTO_%@%@", v18, v29];
-  v68 = 0;
+  shortName = 0;
   v28 = 0;
 LABEL_46:
   if (!v21)
   {
     v42 = 0;
-    v39 = v19;
+    v39 = contributorsCopy2;
     v43 = 0;
     goto LABEL_69;
   }
 
-  if (a11 > 0)
+  if (assetCount > 0)
   {
     v36 = v28;
   }
@@ -1069,11 +1069,11 @@ LABEL_46:
     v21 = v37;
   }
 
-  v38 = a4 == a3;
-  v39 = v19;
+  v38 = scopeCount == count;
+  v39 = contributorsCopy2;
   if (v38)
   {
-    v40 = v19 ^ 1;
+    v40 = contributorsCopy2 ^ 1;
   }
 
   else
@@ -1097,7 +1097,7 @@ LABEL_65:
     goto LABEL_66;
   }
 
-  if (a4 < 1 || ((v19 ^ 1) & 1) != 0)
+  if (scopeCount < 1 || ((contributorsCopy2 ^ 1) & 1) != 0)
   {
     v41 = PLServicesLocalizedFrameworkString();
     goto LABEL_64;
@@ -1115,7 +1115,7 @@ LABEL_65:
 LABEL_66:
   v42 = v44;
 LABEL_67:
-  if (a8 != 1)
+  if (albumsCount != 1)
   {
     v45 = PFLocalizedStringWithValidatedFormat();
 
@@ -1123,11 +1123,11 @@ LABEL_67:
   }
 
 LABEL_69:
-  if (a11 >= 1)
+  if (assetCount >= 1)
   {
     v67 = v43;
     v46 = @"S";
-    if (a11 == 1)
+    if (assetCount == 1)
     {
       v46 = &stru_1F0F06D80;
     }
@@ -1148,18 +1148,18 @@ LABEL_69:
       v50 = v48;
     }
 
-    if (a4 >= 1 && ((v39 ^ 1) & 1) == 0)
+    if (scopeCount >= 1 && ((v39 ^ 1) & 1) == 0)
     {
       v51 = PLServicesLocalizedFrameworkString();
       v52 = PLServicesSharedLibraryLocalizedFrameworkString();
       v58 = PFLocalizedStringWithValidatedFormat();
       PFStringWithValidatedFormat();
-      v53 = v17;
-      v55 = v54 = v16;
+      v53 = contributorsCopy;
+      v55 = v54 = assetsCopy;
 
       v50 = v55;
-      v16 = v54;
-      v17 = v53;
+      assetsCopy = v54;
+      contributorsCopy = v53;
     }
 
     v42 = v50;
@@ -1172,67 +1172,67 @@ LABEL_69:
   return v42;
 }
 
-- (id)_usedElsewhereWarningTextForAssets:(id)a3 actualDeletionCount:(int64_t)a4
+- (id)_usedElsewhereWarningTextForAssets:(id)assets actualDeletionCount:(int64_t)count
 {
-  v6 = a3;
-  v7 = [(PLWarningHelper *)self _assetsInLibraryScopeCountFromAssets:v6];
-  v8 = [v6 count];
+  assetsCopy = assets;
+  v7 = [(PLWarningHelper *)self _assetsInLibraryScopeCountFromAssets:assetsCopy];
+  v8 = [assetsCopy count];
   v24 = 0;
-  v9 = [(PLWarningHelper *)self photoLibrary];
-  v10 = [v9 countOfLocalAlbumsContainingAssets:v6 assetsInSomeAlbumCount:&v24];
+  photoLibrary = [(PLWarningHelper *)self photoLibrary];
+  v10 = [photoLibrary countOfLocalAlbumsContainingAssets:assetsCopy assetsInSomeAlbumCount:&v24];
 
-  v11 = [(PLWarningHelper *)self _syndicationAssetCount];
-  v12 = v11;
-  if (v11 >= v8)
+  _syndicationAssetCount = [(PLWarningHelper *)self _syndicationAssetCount];
+  v12 = _syndicationAssetCount;
+  if (_syndicationAssetCount >= v8)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = v11;
+    v13 = _syndicationAssetCount;
   }
 
   v14 = v8 - v13;
-  if (v11 >= a4)
+  if (_syndicationAssetCount >= count)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = v11;
+    v15 = _syndicationAssetCount;
   }
 
-  v16 = a4 - v15;
-  if (v11 < 1)
+  v16 = count - v15;
+  if (_syndicationAssetCount < 1)
   {
-    v17 = a4;
+    countCopy = count;
   }
 
   else
   {
     v8 = v14;
-    v17 = v16;
+    countCopy = v16;
   }
 
   v18 = PLAssetTypeForItems();
-  v19 = [(PLWarningHelper *)self _myAssetsFromAssets:v6];
-  v20 = [(PLWarningHelper *)self _contributorsForAssets:v6];
+  v19 = [(PLWarningHelper *)self _myAssetsFromAssets:assetsCopy];
+  v20 = [(PLWarningHelper *)self _contributorsForAssets:assetsCopy];
   LOWORD(v23) = v18;
-  v21 = [(PLWarningHelper *)self _usedElsewhereWarningTextForAssetCount:v8 inLibraryScopeCount:v7 myAssets:v19 contributors:v20 inSomeAlbumCount:v24 affectedLocalAlbumsCount:v10 assetType:v23 actualDeletionCount:v17 syndicationAssetCount:v12];
+  v21 = [(PLWarningHelper *)self _usedElsewhereWarningTextForAssetCount:v8 inLibraryScopeCount:v7 myAssets:v19 contributors:v20 inSomeAlbumCount:v24 affectedLocalAlbumsCount:v10 assetType:v23 actualDeletionCount:countCopy syndicationAssetCount:v12];
 
   return v21;
 }
 
-- (id)_avalancheDeleteWarningForAvalancheStacksCount:(int64_t)a3 nonAvalancheItemsToDeleteCount:(int64_t)a4 nonAvalancheItemsToDeleteType:(signed __int16)a5 avalanchePhotosToDeleteCount:(int64_t)a6 survivingAvalancheFavoritesCount:(int64_t)a7 avalancheUnrelatedFavoritesCount:(int64_t)a8 assetCount:(int64_t)a9
+- (id)_avalancheDeleteWarningForAvalancheStacksCount:(int64_t)count nonAvalancheItemsToDeleteCount:(int64_t)deleteCount nonAvalancheItemsToDeleteType:(signed __int16)type avalanchePhotosToDeleteCount:(int64_t)toDeleteCount survivingAvalancheFavoritesCount:(int64_t)favoritesCount avalancheUnrelatedFavoritesCount:(int64_t)unrelatedFavoritesCount assetCount:(int64_t)assetCount
 {
-  if (a3 >= 1 && !a4)
+  if (count >= 1 && !deleteCount)
   {
     v14 = @"N";
-    if (a7 < 1)
+    if (favoritesCount < 1)
     {
-      if (a6 == 1)
+      if (toDeleteCount == 1)
       {
         v23 = @"1";
       }
@@ -1242,14 +1242,14 @@ LABEL_69:
         v23 = @"N";
       }
 
-      if (a3 == 1)
+      if (count == 1)
       {
         v14 = @"1";
       }
 
       v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE_CONF_AVALANCHE_STACKS_ONLY_%@_%@", v23, v14];
       v19 = PLServicesLocalizedFrameworkString();
-      if ((a3 < 2 || a6 < 2) && a3 < 2 && a6 < 2)
+      if ((count < 2 || toDeleteCount < 2) && count < 2 && toDeleteCount < 2)
       {
         goto LABEL_141;
       }
@@ -1257,7 +1257,7 @@ LABEL_69:
 
     else
     {
-      if (a3 == 1)
+      if (count == 1)
       {
         v15 = @"1";
       }
@@ -1267,7 +1267,7 @@ LABEL_69:
         v15 = @"N";
       }
 
-      if (a6 == 1)
+      if (toDeleteCount == 1)
       {
         v16 = @"1";
       }
@@ -1277,7 +1277,7 @@ LABEL_69:
         v16 = @"N";
       }
 
-      if (a7 == 1)
+      if (favoritesCount == 1)
       {
         v14 = @"1";
         v17 = 0;
@@ -1285,44 +1285,44 @@ LABEL_69:
 
       else
       {
-        v17 = a6 > 1;
+        v17 = toDeleteCount > 1;
       }
 
       v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE_CONF_AVALANCHE_STACKS_ONLY_KEEP_FAVORITES_%@_%@_%@", v14, v16, v15];
       v19 = PLServicesLocalizedFrameworkString();
-      if (a3 < 2 || !v17)
+      if (count < 2 || !v17)
       {
         v24 = !v17;
-        if (a3 != 1)
+        if (count != 1)
         {
           v24 = 1;
         }
 
         if (v24)
         {
-          v37 = a6 != 1 || a7 == 1;
+          v37 = toDeleteCount != 1 || favoritesCount == 1;
           v38 = !v37;
-          if (a3 < 2 || !v38)
+          if (count < 2 || !v38)
           {
             v41 = !v38;
-            if (a3 != 1)
+            if (count != 1)
             {
               v41 = 1;
             }
 
             if (v41)
             {
-              v49 = a6 > 1 && a7 == 1;
+              v49 = toDeleteCount > 1 && favoritesCount == 1;
               v50 = v49;
-              if (a3 < 2 || !v50)
+              if (count < 2 || !v50)
               {
                 v51 = !v50;
-                if (a3 != 1)
+                if (count != 1)
                 {
                   v51 = 1;
                 }
 
-                if ((v51 & 1) != 0 && (a3 < 2 || a6 != 1 || a7 != 1))
+                if ((v51 & 1) != 0 && (count < 2 || toDeleteCount != 1 || favoritesCount != 1))
                 {
 LABEL_141:
                   v42 = v19;
@@ -1343,22 +1343,22 @@ LABEL_123:
     goto LABEL_124;
   }
 
-  if (a3 >= 1 && a4 >= 1)
+  if (count >= 1 && deleteCount >= 1)
   {
-    if (a5 > 3)
+    if (type > 3)
     {
       v20 = 0;
     }
 
     else
     {
-      v20 = off_1E7568B38[a5];
+      v20 = off_1E7568B38[type];
     }
 
     v25 = @"N";
-    if (a7 < 1)
+    if (favoritesCount < 1)
     {
-      if (a4 == 1)
+      if (deleteCount == 1)
       {
         v33 = @"1";
       }
@@ -1368,7 +1368,7 @@ LABEL_123:
         v33 = @"N";
       }
 
-      if (a3 == 1)
+      if (count == 1)
       {
         v34 = @"1";
       }
@@ -1378,47 +1378,47 @@ LABEL_123:
         v34 = @"N";
       }
 
-      if (a6 == 1)
+      if (toDeleteCount == 1)
       {
         v25 = @"1";
       }
 
-      v35 = a6 > 1 && a3 > 1;
+      v35 = toDeleteCount > 1 && count > 1;
       v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE_CONF_AVALANCHE_STACKS_AND_OTHERS_%@_%@_%@%@", v25, v34, v33, v20];
       v32 = PLServicesLocalizedFrameworkString();
-      if (a4 < 2 || !v35)
+      if (deleteCount < 2 || !v35)
       {
         v39 = !v35;
-        if (a4 != 1)
+        if (deleteCount != 1)
         {
           v39 = 1;
         }
 
         if (v39)
         {
-          v43 = a3 != 1 || a6 <= 1;
+          v43 = count != 1 || toDeleteCount <= 1;
           v44 = !v43;
-          if (a4 < 2 || !v44)
+          if (deleteCount < 2 || !v44)
           {
             v52 = !v44;
-            if (a4 != 1)
+            if (deleteCount != 1)
             {
               v52 = 1;
             }
 
             if (v52)
             {
-              v56 = a3 > 1 && a6 == 1;
+              v56 = count > 1 && toDeleteCount == 1;
               v57 = v56;
-              if (a4 < 2 || !v57)
+              if (deleteCount < 2 || !v57)
               {
                 v59 = !v57;
-                if (a4 != 1)
+                if (deleteCount != 1)
                 {
                   v59 = 1;
                 }
 
-                if ((v59 & 1) != 0 && (a4 < 2 || a3 != 1 || a6 != 1))
+                if ((v59 & 1) != 0 && (deleteCount < 2 || count != 1 || toDeleteCount != 1))
                 {
                   goto LABEL_223;
                 }
@@ -1431,7 +1431,7 @@ LABEL_123:
 
     else
     {
-      if (a4 == 1)
+      if (deleteCount == 1)
       {
         v26 = @"1";
       }
@@ -1441,7 +1441,7 @@ LABEL_123:
         v26 = @"N";
       }
 
-      if (a6 == 1)
+      if (toDeleteCount == 1)
       {
         v27 = @"1";
       }
@@ -1451,7 +1451,7 @@ LABEL_123:
         v27 = @"N";
       }
 
-      if (a7 == 1)
+      if (favoritesCount == 1)
       {
         v28 = @"1";
       }
@@ -1461,126 +1461,126 @@ LABEL_123:
         v28 = @"N";
       }
 
-      v29 = a7 != 1 && a6 > 1;
-      if (a3 == 1)
+      v29 = favoritesCount != 1 && toDeleteCount > 1;
+      if (count == 1)
       {
         v25 = @"1";
       }
 
-      v30 = a3 > 1 && v29;
+      v30 = count > 1 && v29;
       v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE_CONF_AVALANCHE_STACKS_AND_OTHERS_KEEP_FAVORITES_%@_%@_%@_%@%@", v28, v27, v25, v26, v20];
       v32 = PLServicesLocalizedFrameworkString();
-      if (a4 < 2 || !v30)
+      if (deleteCount < 2 || !v30)
       {
         v36 = !v30;
-        if (a4 != 1)
+        if (deleteCount != 1)
         {
           v36 = 1;
         }
 
         if (v36)
         {
-          v40 = a3 == 1 && v29;
-          if (a4 < 2 || !v40)
+          v40 = count == 1 && v29;
+          if (deleteCount < 2 || !v40)
           {
             v45 = !v40;
-            if (a4 != 1)
+            if (deleteCount != 1)
             {
               v45 = 1;
             }
 
             if (v45)
             {
-              v53 = a3 > 1;
-              v54 = a6 != 1 || a7 == 1;
+              v53 = count > 1;
+              v54 = toDeleteCount != 1 || favoritesCount == 1;
               v55 = !v54;
               if (v54)
               {
                 v53 = 0;
               }
 
-              if (a4 < 2 || !v53)
+              if (deleteCount < 2 || !v53)
               {
                 v58 = !v53;
-                if (a4 != 1)
+                if (deleteCount != 1)
                 {
                   v58 = 1;
                 }
 
                 if (v58)
                 {
-                  if (a3 != 1)
+                  if (count != 1)
                   {
                     v55 = 0;
                   }
 
-                  if (a4 < 2 || !v55)
+                  if (deleteCount < 2 || !v55)
                   {
                     v60 = v55 ^ 1;
-                    if (a4 != 1)
+                    if (deleteCount != 1)
                     {
                       v60 = 1;
                     }
 
                     if (v60)
                     {
-                      v61 = a3 > 1;
-                      v62 = a6 > 1 && a7 == 1;
+                      v61 = count > 1;
+                      v62 = toDeleteCount > 1 && favoritesCount == 1;
                       v63 = v62;
                       if (!v62)
                       {
                         v61 = 0;
                       }
 
-                      if (a4 < 2 || !v61)
+                      if (deleteCount < 2 || !v61)
                       {
                         v64 = !v61;
-                        if (a4 != 1)
+                        if (deleteCount != 1)
                         {
                           v64 = 1;
                         }
 
                         if (v64)
                         {
-                          if (a3 != 1)
+                          if (count != 1)
                           {
                             v63 = 0;
                           }
 
-                          if (a4 < 2 || !v63)
+                          if (deleteCount < 2 || !v63)
                           {
                             v65 = v63 ^ 1;
-                            if (a4 != 1)
+                            if (deleteCount != 1)
                             {
                               v65 = 1;
                             }
 
                             if (v65)
                             {
-                              v66 = a3 > 1;
-                              v67 = a6 == 1 && a7 == 1;
+                              v66 = count > 1;
+                              v67 = toDeleteCount == 1 && favoritesCount == 1;
                               v68 = v67;
                               if (!v67)
                               {
                                 v66 = 0;
                               }
 
-                              if (a4 < 2 || !v66)
+                              if (deleteCount < 2 || !v66)
                               {
                                 v69 = !v66;
-                                if (a4 != 1)
+                                if (deleteCount != 1)
                                 {
                                   v69 = 1;
                                 }
 
                                 if (v69)
                                 {
-                                  if (a3 != 1)
+                                  if (count != 1)
                                   {
                                     v68 = 0;
                                   }
 
-                                  if (a4 < 2 || !v68)
+                                  if (deleteCount < 2 || !v68)
                                   {
 LABEL_223:
                                     v46 = v32;
@@ -1607,7 +1607,7 @@ LABEL_223:
 LABEL_121:
     v21 = v46;
 
-    if (a8 < 1)
+    if (unrelatedFavoritesCount < 1)
     {
       goto LABEL_124;
     }
@@ -1620,12 +1620,12 @@ LABEL_121:
   }
 
   v21 = 0;
-  if (!a3 && a8 >= 1)
+  if (!count && unrelatedFavoritesCount >= 1)
   {
-    if (a8 == a9)
+    if (unrelatedFavoritesCount == assetCount)
     {
       v22 = @"N";
-      if (a8 == 1)
+      if (unrelatedFavoritesCount == 1)
       {
         v22 = @"1";
       }
@@ -1647,15 +1647,15 @@ LABEL_124:
   return v21;
 }
 
-- (void)getAvalancheDeleteWarning:(id *)a3 actualDeletionCount:(int64_t *)a4 forAssets:(id)a5
+- (void)getAvalancheDeleteWarning:(id *)warning actualDeletionCount:(int64_t *)count forAssets:(id)assets
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a5;
+  assetsCopy = assets;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v51 objects:v56 count:16];
+  v6 = [assetsCopy countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1671,45 +1671,45 @@ LABEL_124:
       {
         if (*v52 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(assetsCopy);
         }
 
         v11 = *(*(&v51 + 1) + 8 * i);
         if ([v11 isAvalancheStackPhoto] && objc_msgSend(v11, "isPartOfBurst") && (objc_msgSend(v11, "isFinderSyncedAsset") & 1) == 0)
         {
-          v12 = [v11 avalancheUUID];
-          if (v12 && (v13 = [PLAvalanche alloc], [v11 photoLibrary], v14 = objc_claimAutoreleasedReturnValue(), v15 = -[PLAvalanche initWithUUID:sourceType:photoLibrary:](v13, "initWithUUID:sourceType:photoLibrary:", v12, 1, v14), v14, v15))
+          avalancheUUID = [v11 avalancheUUID];
+          if (avalancheUUID && (v13 = [PLAvalanche alloc], [v11 photoLibrary], v14 = objc_claimAutoreleasedReturnValue(), v15 = -[PLAvalanche initWithUUID:sourceType:photoLibrary:](v13, "initWithUUID:sourceType:photoLibrary:", avalancheUUID, 1, v14), v14, v15))
           {
             v16 = v42;
             if (!v42)
             {
               v17 = v9;
               v18 = MEMORY[0x1E695DF90];
-              v19 = [v5 count];
+              v19 = [assetsCopy count];
               v20 = v18;
               v9 = v17;
               v16 = [v20 dictionaryWithCapacity:v19];
             }
 
             v42 = v16;
-            [v16 setObject:v15 forKey:v12];
+            [v16 setObject:v15 forKey:avalancheUUID];
             ++v41;
-            v21 = [(PLAvalanche *)v15 assetsCount];
-            v22 = [(PLAvalanche *)v15 userFavorites];
-            v23 = [v22 count];
+            assetsCount = [(PLAvalanche *)v15 assetsCount];
+            userFavorites = [(PLAvalanche *)v15 userFavorites];
+            v23 = [userFavorites count];
 
             v45 += v23;
-            v46 = v21 + v46 - v23;
+            v46 = assetsCount + v46 - v23;
           }
 
           else
           {
-            NSLog(&v9->isa, v12, v11);
+            NSLog(&v9->isa, avalancheUUID, v11);
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v51 objects:v56 count:16];
+      v7 = [assetsCopy countByEnumeratingWithState:&v51 objects:v56 count:16];
     }
 
     while (v7);
@@ -1727,7 +1727,7 @@ LABEL_124:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v5;
+  obj = assetsCopy;
   v24 = [obj countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (!v24)
   {
@@ -1756,11 +1756,11 @@ LABEL_124:
       v31 = *(*(&v47 + 1) + 8 * j);
       if (![v31 isAvalancheStackPhoto] || (objc_msgSend(v31, "isPartOfBurst") & 1) == 0)
       {
-        v32 = [v31 avalanchePickType];
-        if ((v32 & 8) != 0)
+        avalanchePickType = [v31 avalanchePickType];
+        if ((avalanchePickType & 8) != 0)
         {
-          v33 = [v31 avalancheUUID];
-          v34 = [v42 objectForKey:v33];
+          avalancheUUID2 = [v31 avalancheUUID];
+          v34 = [v42 objectForKey:avalancheUUID2];
 
           if (v34)
           {
@@ -1784,7 +1784,7 @@ LABEL_35:
         }
 
         ++v27;
-        if ((v32 & 8) != 0)
+        if ((avalanchePickType & 8) != 0)
         {
           v35 = 1;
           goto LABEL_35;
@@ -1798,12 +1798,12 @@ LABEL_35:
   while (v25);
 LABEL_40:
 
-  if (a4)
+  if (count)
   {
-    *a4 = v46 + v27;
+    *count = v46 + v27;
   }
 
-  if (a3)
+  if (warning)
   {
     v36 = 3;
     if (v27 >= 1 && (v26 < 1 || v43 <= 0))
@@ -1834,42 +1834,42 @@ LABEL_40:
       }
     }
 
-    *a3 = -[PLWarningHelper _avalancheDeleteWarningForAvalancheStacksCount:nonAvalancheItemsToDeleteCount:nonAvalancheItemsToDeleteType:avalanchePhotosToDeleteCount:survivingAvalancheFavoritesCount:avalancheUnrelatedFavoritesCount:assetCount:](self, "_avalancheDeleteWarningForAvalancheStacksCount:nonAvalancheItemsToDeleteCount:nonAvalancheItemsToDeleteType:avalanchePhotosToDeleteCount:survivingAvalancheFavoritesCount:avalancheUnrelatedFavoritesCount:assetCount:", v41, v27, v36, v46, v45, v28, [obj count]);
+    *warning = -[PLWarningHelper _avalancheDeleteWarningForAvalancheStacksCount:nonAvalancheItemsToDeleteCount:nonAvalancheItemsToDeleteType:avalanchePhotosToDeleteCount:survivingAvalancheFavoritesCount:avalancheUnrelatedFavoritesCount:assetCount:](self, "_avalancheDeleteWarningForAvalancheStacksCount:nonAvalancheItemsToDeleteCount:nonAvalancheItemsToDeleteType:avalanchePhotosToDeleteCount:survivingAvalancheFavoritesCount:avalancheUnrelatedFavoritesCount:assetCount:", v41, v27, v36, v46, v45, v28, [obj count]);
   }
 }
 
-- (void)_getExpungeWarningMessage:(id *)a3 buttonTitle:(id *)a4 forAssetCount:(int64_t)a5 assetType:(signed __int16)a6 iCPLEnabled:(BOOL)a7 contributors:(id)a8 deviceModelName:(id)a9
+- (void)_getExpungeWarningMessage:(id *)message buttonTitle:(id *)title forAssetCount:(int64_t)count assetType:(signed __int16)type iCPLEnabled:(BOOL)enabled contributors:(id)contributors deviceModelName:(id)name
 {
-  v9 = a7;
+  enabledCopy = enabled;
   v49 = *MEMORY[0x1E69E9840];
-  v13 = a8;
-  v14 = a9;
+  contributorsCopy = contributors;
+  nameCopy = name;
   v15 = PLLocalizedKeyForAssetType();
   v16 = &stru_1F0F06D80;
-  if (a5 > 1)
+  if (count > 1)
   {
     v16 = @"S";
   }
 
   v17 = v16;
-  v18 = [v13 count];
-  if (v9)
+  v18 = [contributorsCopy count];
+  if (enabledCopy)
   {
     if (v18 < 3)
     {
       if (v18 == 2)
       {
-        v28 = v14;
+        v28 = nameCopy;
         v46 = 0u;
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v29 = v13;
+        v29 = contributorsCopy;
         v30 = [v29 countByEnumeratingWithState:&v44 objects:v48 count:16];
         if (v30)
         {
           v31 = v30;
-          v43 = a4;
+          titleCopy = title;
           v32 = *v45;
           while (2)
           {
@@ -1883,7 +1883,7 @@ LABEL_40:
               v34 = *(*(&v44 + 1) + 8 * i);
               if (([v34 isCurrentUser] & 1) == 0)
               {
-                v35 = [v34 shortName];
+                shortName = [v34 shortName];
                 goto LABEL_27;
               }
             }
@@ -1897,21 +1897,21 @@ LABEL_40:
             break;
           }
 
-          v35 = 0;
+          shortName = 0;
 LABEL_27:
-          a4 = v43;
+          title = titleCopy;
         }
 
         else
         {
-          v35 = 0;
+          shortName = 0;
         }
 
         v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SHAREDLIBRARY_EXPUNGE_MC_WARNING_FOR_CONTRIBUTOR_%%@_%@%@", v15, v17];
         v38 = PLServicesSharedLibraryLocalizedFrameworkString();
         v23 = PFLocalizedStringWithValidatedFormat();
 
-        v14 = v28;
+        nameCopy = v28;
         goto LABEL_30;
       }
 
@@ -1931,33 +1931,33 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v42 = a3;
+  messageCopy = message;
   v21 = v17;
   v41 = v17;
   v22 = v15;
   v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"EXPUNGE_%@%@_WARNING_MESSAGE_WITH_ICLOUD_OFF", v15, v41];
   v23 = PLServicesLocalizedFrameworkString();
-  v24 = v13;
-  if ([v14 isEqualToString:@"iPhone"])
+  v24 = contributorsCopy;
+  if ([nameCopy isEqualToString:@"iPhone"])
   {
-    v25 = v14;
-    v26 = a4;
+    v25 = nameCopy;
+    titleCopy3 = title;
     v27 = @"IPHONE";
   }
 
   else
   {
-    v26 = a4;
-    if ([v14 isEqualToString:@"iPad"])
+    titleCopy3 = title;
+    if ([nameCopy isEqualToString:@"iPad"])
     {
-      v25 = v14;
+      v25 = nameCopy;
       v27 = @"IPAD";
     }
 
     else
     {
-      v25 = v14;
-      if ([v14 isEqualToString:@"iPod touch"])
+      v25 = nameCopy;
+      if ([nameCopy isEqualToString:@"iPod touch"])
       {
         v27 = @"IPOD_TOUCH";
       }
@@ -1972,29 +1972,29 @@ LABEL_30:
   v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"EXPUNGE_BUTTON_TITLE_VIDEO_WITH_ICLOUD_OFF_%@", v27];
   v37 = PLServicesLocalizedFrameworkString();
 
-  a4 = v26;
-  a3 = v42;
-  v14 = v25;
-  v13 = v24;
+  title = titleCopy3;
+  message = messageCopy;
+  nameCopy = v25;
+  contributorsCopy = v24;
   v15 = v22;
   v17 = v21;
 LABEL_31:
   v39 = v23;
-  *a3 = v23;
+  *message = v23;
   v40 = v37;
-  *a4 = v37;
+  *title = v37;
 }
 
-- (id)_contributorsForAssets:(id)a3
+- (id)_contributorsForAssets:(id)assets
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -2012,8 +2012,8 @@ LABEL_31:
         v10 = *(*(&v13 + 1) + 8 * i);
         if ([v10 hasLibraryScope])
         {
-          v11 = [v10 libraryScopeContributors];
-          [v4 unionSet:v11];
+          libraryScopeContributors = [v10 libraryScopeContributors];
+          [v4 unionSet:libraryScopeContributors];
         }
       }
 
@@ -2026,16 +2026,16 @@ LABEL_31:
   return v4;
 }
 
-- (id)_myAssetsFromAssets:(id)a3
+- (id)_myAssetsFromAssets:(id)assets
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -2066,13 +2066,13 @@ LABEL_31:
   return v4;
 }
 
-- (void)getExpungeWarningMessage:(id *)a3 buttonTitle:(id *)a4 forAssets:(id)a5
+- (void)getExpungeWarningMessage:(id *)message buttonTitle:(id *)title forAssets:(id)assets
 {
-  v9 = a5;
-  v10 = [v9 count];
-  if (a3)
+  assetsCopy = assets;
+  v10 = [assetsCopy count];
+  if (message)
   {
-    if (a4)
+    if (title)
     {
       goto LABEL_3;
     }
@@ -2080,49 +2080,49 @@ LABEL_31:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:242 description:{@"Invalid parameter not satisfying: %@", @"outMessage"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:242 description:{@"Invalid parameter not satisfying: %@", @"outMessage"}];
 
-    if (a4)
+    if (title)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"outButtonTitle"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"outButtonTitle"}];
 
 LABEL_3:
   if (v10 <= 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:244 description:{@"Invalid parameter not satisfying: %@", @"assetCount > 0"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLWarningHelper.m" lineNumber:244 description:{@"Invalid parameter not satisfying: %@", @"assetCount > 0"}];
   }
 
   v11 = PLAssetTypeForItems();
-  v12 = [(PLPhotoLibrary *)self->_photoLibrary isCloudPhotoLibraryEnabled];
-  v17 = [(PLWarningHelper *)self _contributorsForAssets:v9];
+  isCloudPhotoLibraryEnabled = [(PLPhotoLibrary *)self->_photoLibrary isCloudPhotoLibraryEnabled];
+  v17 = [(PLWarningHelper *)self _contributorsForAssets:assetsCopy];
 
   v13 = DCIM_currentDeviceModelName();
-  [(PLWarningHelper *)self _getExpungeWarningMessage:a3 buttonTitle:a4 forAssetCount:v10 assetType:v11 iCPLEnabled:v12 contributors:v17 deviceModelName:v13];
+  [(PLWarningHelper *)self _getExpungeWarningMessage:message buttonTitle:title forAssetCount:v10 assetType:v11 iCPLEnabled:isCloudPhotoLibraryEnabled contributors:v17 deviceModelName:v13];
 }
 
-- (void)_getDeletionWarningTitle:(id *)a3 message:(id *)a4 buttonTitle:(id *)a5
+- (void)_getDeletionWarningTitle:(id *)title message:(id *)message buttonTitle:(id *)buttonTitle
 {
-  v8 = [(PLWarningHelper *)self _assets];
-  v9 = [(PLWarningHelper *)self _style];
-  v54 = [v8 count];
+  _assets = [(PLWarningHelper *)self _assets];
+  _style = [(PLWarningHelper *)self _style];
+  v54 = [_assets count];
   v10 = PLSuffixForItems();
-  v11 = [v8 lastObject];
-  v12 = [v11 collectionShare];
-  v13 = [v12 title];
+  lastObject = [_assets lastObject];
+  collectionShare = [lastObject collectionShare];
+  title = [collectionShare title];
 
-  v14 = [PLWarningHelper sharedAlbumWarningMessageForAssets:v8 albumTitle:v13];
+  v14 = [PLWarningHelper sharedAlbumWarningMessageForAssets:_assets albumTitle:title];
   v15 = v14;
   if (v14)
   {
     v51 = v14;
-    if (v9 > 1)
+    if (_style > 1)
     {
       v23 = 0;
     }
@@ -2136,17 +2136,17 @@ LABEL_3:
   else
   {
     v53 = 0;
-    [(PLWarningHelper *)self getAvalancheDeleteWarning:&v53 actualDeletionCount:&v54 forAssets:v8];
+    [(PLWarningHelper *)self getAvalancheDeleteWarning:&v53 actualDeletionCount:&v54 forAssets:_assets];
     v16 = v53;
-    v17 = [(PLWarningHelper *)self _usedElsewhereWarningTextForAssets:v8 actualDeletionCount:v54];
+    v17 = [(PLWarningHelper *)self _usedElsewhereWarningTextForAssets:_assets actualDeletionCount:v54];
     v18 = v17;
     if (v16 && v17)
     {
-      v19 = v13;
-      v20 = a3;
-      v21 = a4;
+      v19 = title;
+      titleCopy = title;
+      messageCopy = message;
       v22 = v10;
-      if (v9 > 1)
+      if (_style > 1)
       {
         v25 = 0;
       }
@@ -2161,9 +2161,9 @@ LABEL_3:
       v51 = PFLocalizedStringWithValidatedFormat();
 
       v10 = v22;
-      a4 = v21;
-      a3 = v20;
-      v13 = v19;
+      message = messageCopy;
+      title = titleCopy;
+      title = v19;
       v15 = 0;
     }
 
@@ -2182,22 +2182,22 @@ LABEL_3:
       v51 = v24;
     }
 
-    if ([(PLWarningHelper *)self _hasAssetsInLibraryScope:v8, v46, v47])
+    if ([(PLWarningHelper *)self _hasAssetsInLibraryScope:_assets, v46, v47])
     {
       v23 = PLServicesSharedLibraryLocalizedFrameworkString();
     }
 
     else
     {
-      v48 = a3;
-      v49 = a4;
+      titleCopy2 = title;
+      messageCopy2 = message;
       v26 = @"DELETE_BUTTON_TITLE_";
-      if (v9)
+      if (_style)
       {
         v26 = 0;
       }
 
-      if (v9 == 1)
+      if (_style == 1)
       {
         v27 = @"DELETE_BUTTON_COMPACT_TITLE_";
       }
@@ -2207,7 +2207,7 @@ LABEL_3:
         v27 = v26;
       }
 
-      v28 = v9 == 1;
+      v28 = _style == 1;
       if (v54 == 1)
       {
         v29 = &stru_1F0F06D80;
@@ -2236,18 +2236,18 @@ LABEL_3:
       v23 = v33;
 
       v10 = v30;
-      a3 = v48;
-      a4 = v49;
+      title = titleCopy2;
+      message = messageCopy2;
     }
   }
 
-  v34 = [(PLWarningHelper *)self _clientName];
-  if ([v34 length])
+  _clientName = [(PLWarningHelper *)self _clientName];
+  if ([_clientName length])
   {
     v50 = v15;
-    v35 = v13;
-    v36 = a3;
-    v37 = a4;
+    v35 = title;
+    titleCopy3 = title;
+    messageCopy3 = message;
     if (v54 == 1)
     {
       v38 = &stru_1F0F06D80;
@@ -2265,9 +2265,9 @@ LABEL_3:
     v42 = PFLocalizedStringWithValidatedFormat();
 
     v10 = v39;
-    a4 = v37;
-    a3 = v36;
-    v13 = v35;
+    message = messageCopy3;
+    title = titleCopy3;
+    title = v35;
     v15 = v50;
   }
 
@@ -2276,41 +2276,41 @@ LABEL_3:
     v42 = 0;
   }
 
-  if (a3)
+  if (title)
   {
     v43 = v42;
-    *a3 = v42;
+    *title = v42;
   }
 
-  if (a4)
+  if (message)
   {
     v44 = v51;
-    *a4 = v51;
+    *message = v51;
   }
 
-  if (a5)
+  if (buttonTitle)
   {
     v45 = v23;
-    *a5 = v23;
+    *buttonTitle = v23;
   }
 }
 
-- (void)getDeletionWarningTitle:(id *)a3 message:(id *)a4 buttonTitle:(id *)a5 forAssets:(id)a6 syndicationAssetCount:(int64_t)a7 clientName:(id)a8 style:(int64_t)a9
+- (void)getDeletionWarningTitle:(id *)title message:(id *)message buttonTitle:(id *)buttonTitle forAssets:(id)assets syndicationAssetCount:(int64_t)count clientName:(id)name style:(int64_t)style
 {
-  v15 = a8;
-  [(PLWarningHelper *)self set_assets:a6];
-  [(PLWarningHelper *)self set_syndicationAssetCount:a7];
-  [(PLWarningHelper *)self set_clientName:v15];
+  nameCopy = name;
+  [(PLWarningHelper *)self set_assets:assets];
+  [(PLWarningHelper *)self set_syndicationAssetCount:count];
+  [(PLWarningHelper *)self set_clientName:nameCopy];
 
-  [(PLWarningHelper *)self set_style:a9];
+  [(PLWarningHelper *)self set_style:style];
 
-  [(PLWarningHelper *)self _getDeletionWarningTitle:a3 message:a4 buttonTitle:a5];
+  [(PLWarningHelper *)self _getDeletionWarningTitle:title message:message buttonTitle:buttonTitle];
 }
 
-- (unint64_t)_assetsInLibraryScopeCountFromAssets:(id)a3
+- (unint64_t)_assetsInLibraryScopeCountFromAssets:(id)assets
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   if ([(PLWarningHelper *)self _isExitingSharedLibrary])
   {
     v5 = 0;
@@ -2322,7 +2322,7 @@ LABEL_3:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = assetsCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -2338,9 +2338,9 @@ LABEL_3:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) libraryScope];
+          libraryScope = [*(*(&v13 + 1) + 8 * i) libraryScope];
 
-          if (v11)
+          if (libraryScope)
           {
             ++v5;
           }
@@ -2363,9 +2363,9 @@ LABEL_3:
 
 - (BOOL)_isExitingSharedLibrary
 {
-  v2 = [(PLWarningHelper *)self photoLibrary];
-  v3 = [v2 managedObjectContext];
-  v4 = [PLLibraryScope activeLibraryScopeInManagedObjectContext:v3];
+  photoLibrary = [(PLWarningHelper *)self photoLibrary];
+  managedObjectContext = [photoLibrary managedObjectContext];
+  v4 = [PLLibraryScope activeLibraryScopeInManagedObjectContext:managedObjectContext];
 
   if (v4)
   {
@@ -2380,10 +2380,10 @@ LABEL_3:
   return v5;
 }
 
-- (void)_getWarningTitle:(id *)a3 message:(id *)a4 buttonTitle:(id *)a5 forItemSuffix:(id)a6 count:(unint64_t)a7 operation:(int64_t)a8 clientName:(id)a9
+- (void)_getWarningTitle:(id *)title message:(id *)message buttonTitle:(id *)buttonTitle forItemSuffix:(id)suffix count:(unint64_t)count operation:(int64_t)operation clientName:(id)name
 {
-  v24 = a9;
-  if (a8)
+  nameCopy = name;
+  if (operation)
   {
     v14 = 0;
   }
@@ -2394,38 +2394,38 @@ LABEL_3:
   }
 
   v15 = MEMORY[0x1E696AEC0];
-  v16 = a6;
-  v17 = [v15 stringWithFormat:@"WARNING_TITLE_%@_%@_CLIENT", v14, v16];
+  suffixCopy = suffix;
+  suffixCopy = [v15 stringWithFormat:@"WARNING_TITLE_%@_%@_CLIENT", v14, suffixCopy];
   v18 = PLServicesLocalizedFrameworkString();
 
   v19 = PFStringWithValidatedFormat();
-  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"WARNING_BUTTON_%@_%@", v14, v16];
+  suffixCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"WARNING_BUTTON_%@_%@", v14, suffixCopy];
 
   v21 = PLServicesLocalizedFrameworkString();
-  if (a3)
+  if (title)
   {
     v22 = v19;
-    *a3 = v19;
+    *title = v19;
   }
 
-  if (a4)
+  if (message)
   {
-    *a4 = 0;
+    *message = 0;
   }
 
-  if (a5)
+  if (buttonTitle)
   {
     v23 = v21;
-    *a5 = v21;
+    *buttonTitle = v21;
   }
 }
 
-- (void)getWarningTitle:(id *)a3 message:(id *)a4 buttonTitle:(id *)a5 forAssets:(id)a6 operation:(int64_t)a7 clientName:(id)a8
+- (void)getWarningTitle:(id *)title message:(id *)message buttonTitle:(id *)buttonTitle forAssets:(id)assets operation:(int64_t)operation clientName:(id)name
 {
-  v18 = a8;
-  v14 = a6;
+  nameCopy = name;
+  assetsCopy = assets;
   v15 = PLSuffixForItems();
-  v16 = [v14 count];
+  v16 = [assetsCopy count];
 
   if (v16 != 1)
   {
@@ -2434,30 +2434,30 @@ LABEL_3:
     v15 = v17;
   }
 
-  [(PLWarningHelper *)self _getWarningTitle:a3 message:a4 buttonTitle:a5 forItemSuffix:v15 count:v16 operation:a7 clientName:v18];
+  [(PLWarningHelper *)self _getWarningTitle:title message:message buttonTitle:buttonTitle forItemSuffix:v15 count:v16 operation:operation clientName:nameCopy];
 }
 
-- (PLWarningHelper)initWithPhotoLibrary:(id)a3
+- (PLWarningHelper)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = PLWarningHelper;
   v6 = [(PLWarningHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
   }
 
   return v7;
 }
 
-+ (id)_sharedAlbumWarningMessageForAssetCount:(unint64_t)a3 assetType:(signed __int16)a4 albumTitle:(id)a5
++ (id)_sharedAlbumWarningMessageForAssetCount:(unint64_t)count assetType:(signed __int16)type albumTitle:(id)title
 {
-  v6 = a5;
+  titleCopy = title;
   v7 = PLLocalizedKeyForAssetType();
   v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-  if (a3 == 1)
+  if (count == 1)
   {
     v9 = @"DELETE_SHARED_STREAM_WARNING_%@";
   }
@@ -2474,16 +2474,16 @@ LABEL_3:
   return v12;
 }
 
-+ (id)sharedAlbumWarningMessageForAssets:(id)a3 albumTitle:(id)a4
++ (id)sharedAlbumWarningMessageForAssets:(id)assets albumTitle:(id)title
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 firstObject];
-  v8 = [v7 isCloudSharedAsset];
+  assetsCopy = assets;
+  titleCopy = title;
+  firstObject = [assetsCopy firstObject];
+  isCloudSharedAsset = [firstObject isCloudSharedAsset];
 
-  if (v8)
+  if (isCloudSharedAsset)
   {
-    v9 = +[PLWarningHelper _sharedAlbumWarningMessageForAssetCount:assetType:albumTitle:](PLWarningHelper, "_sharedAlbumWarningMessageForAssetCount:assetType:albumTitle:", [v5 count], PLAssetTypeForItems(), v6);
+    v9 = +[PLWarningHelper _sharedAlbumWarningMessageForAssetCount:assetType:albumTitle:](PLWarningHelper, "_sharedAlbumWarningMessageForAssetCount:assetType:albumTitle:", [assetsCopy count], PLAssetTypeForItems(), titleCopy);
   }
 
   else

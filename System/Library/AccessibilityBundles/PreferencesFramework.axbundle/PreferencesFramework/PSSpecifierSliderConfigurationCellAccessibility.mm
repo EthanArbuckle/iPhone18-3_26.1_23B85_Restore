@@ -1,10 +1,10 @@
 @interface PSSpecifierSliderConfigurationCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsLockingSegmentedSlider;
 - (BOOL)_axIsSegmented;
 - (BOOL)_axLocksToSegment;
 - (CGPoint)accessibilityActivationPoint;
-- (double)_axSliderIncreaseAmount:(BOOL)a3;
+- (double)_axSliderIncreaseAmount:(BOOL)amount;
 - (float)_axMaximumValue;
 - (float)_axMinimumValue;
 - (id)_accessibilityAbsoluteValue;
@@ -12,7 +12,7 @@
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (int64_t)_axOffsetBetweenTicksForNumberOfTicks:(unint64_t)a3;
+- (int64_t)_axOffsetBetweenTicksForNumberOfTicks:(unint64_t)ticks;
 - (unint64_t)_axNumberOfTicks;
 - (unint64_t)_axSegmentCount;
 - (unint64_t)accessibilityTraits;
@@ -22,31 +22,31 @@
 
 @implementation PSSpecifierSliderConfigurationCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PSSpecifierSliderConfigurationCell" isKindOfClass:@"PSControlTableCell"];
-  [v3 validateClass:@"PSSpecifierSliderConfigurationCell" hasInstanceMethod:@"slider" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PSSpecifierSliderConfigurationCell" isKindOfClass:@"PSControlTableCell"];
+  [validationsCopy validateClass:@"PSSpecifierSliderConfigurationCell" hasInstanceMethod:@"slider" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axSpecifier];
-  v4 = [v3 name];
+  _axSpecifier = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axSpecifier];
+  name = [_axSpecifier name];
 
-  if ([v4 length])
+  if ([name length])
   {
-    v5 = v4;
+    accessibilityLabel = name;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PSSpecifierSliderConfigurationCellAccessibility;
-    v5 = [(PSSpecifierSliderConfigurationCellAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(PSSpecifierSliderConfigurationCellAccessibility *)&v8 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }
@@ -54,23 +54,23 @@
 - (id)accessibilityHint
 {
   v2 = [(PSSpecifierSliderConfigurationCellAccessibility *)self safeValueForKey:@"slider"];
-  v3 = [v2 accessibilityHint];
+  accessibilityHint = [v2 accessibilityHint];
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v3 = [(PSSpecifierSliderConfigurationCellAccessibility *)self safeValueForKey:@"slider"];
-  v4 = [v3 accessibilityTraits];
+  accessibilityTraits = [v3 accessibilityTraits];
 
   v5 = *MEMORY[0x29EDC7F70];
-  if ((*MEMORY[0x29EDC7F70] & v4) == 0)
+  if ((*MEMORY[0x29EDC7F70] & accessibilityTraits) == 0)
   {
     v5 = 0;
   }
 
-  v6 = v5 ^ v4;
+  v6 = v5 ^ accessibilityTraits;
   v7 = [(PSSpecifierSliderConfigurationCellAccessibility *)self safeBoolForKey:@"isUserInteractionEnabled"];
   v8 = *MEMORY[0x29EDC7FA8];
   if (v7)
@@ -86,17 +86,17 @@
   v3 = [(PSSpecifierSliderConfigurationCellAccessibility *)self safeValueForKey:@"slider"];
   if ([v3 _accessibilityViewIsVisible])
   {
-    v4 = [v3 accessibilityValue];
+    accessibilityValue = [v3 accessibilityValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PSSpecifierSliderConfigurationCellAccessibility;
-    v4 = [(PSSpecifierSliderConfigurationCellAccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(PSSpecifierSliderConfigurationCellAccessibility *)&v7 accessibilityValue];
   }
 
-  v5 = v4;
+  v5 = accessibilityValue;
 
   return v5;
 }
@@ -104,9 +104,9 @@
 - (id)_accessibilityAbsoluteValue
 {
   v2 = [(PSSpecifierSliderConfigurationCellAccessibility *)self safeValueForKey:@"slider"];
-  v3 = [v2 _accessibilityAbsoluteValue];
+  _accessibilityAbsoluteValue = [v2 _accessibilityAbsoluteValue];
 
-  return v3;
+  return _accessibilityAbsoluteValue;
 }
 
 - (void)accessibilityIncrement
@@ -163,40 +163,40 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 specifier];
+  specifier = [v2 specifier];
 
-  return v3;
+  return specifier;
 }
 
 - (BOOL)_axIsLockingSegmentedSlider
 {
-  v3 = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axIsSegmented];
-  if (v3)
+  _axIsSegmented = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axIsSegmented];
+  if (_axIsSegmented)
   {
 
-    LOBYTE(v3) = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axLocksToSegment];
+    LOBYTE(_axIsSegmented) = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axLocksToSegment];
   }
 
-  return v3;
+  return _axIsSegmented;
 }
 
-- (double)_axSliderIncreaseAmount:(BOOL)a3
+- (double)_axSliderIncreaseAmount:(BOOL)amount
 {
-  v3 = a3;
+  amountCopy = amount;
   v5 = [(PSSpecifierSliderConfigurationCellAccessibility *)self safeValueForKey:@"slider"];
   [v5 safeFloatForKey:@"value"];
   v7 = v6;
 
-  v8 = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axNumberOfTicks];
+  _axNumberOfTicks = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axNumberOfTicks];
   [(PSSpecifierSliderConfigurationCellAccessibility *)self _axMinimumValue];
   v10 = v9;
-  v11 = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axOffsetBetweenTicksForNumberOfTicks:v8];
+  v11 = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axOffsetBetweenTicksForNumberOfTicks:_axNumberOfTicks];
   v12 = v11;
   if (v11 <= 0)
   {
     _AXAssert();
     v16 = -0.1;
-    if (v3)
+    if (amountCopy)
     {
       v16 = 0.1;
     }
@@ -207,7 +207,7 @@
   else
   {
     v13 = llroundf((v7 - v10) / v12);
-    if (v3)
+    if (amountCopy)
     {
       v14 = v13 + 1;
     }
@@ -217,9 +217,9 @@
       v14 = v13 - 1;
     }
 
-    if ((v8 - 1) < v14)
+    if ((_axNumberOfTicks - 1) < v14)
     {
-      v14 = v8 - 1;
+      v14 = _axNumberOfTicks - 1;
     }
 
     return (v10 + (v12 * (v14 & ~(v14 >> 63))));
@@ -228,8 +228,8 @@
 
 - (float)_axMinimumValue
 {
-  v2 = [(PSSpecifierSliderConfigurationCellAccessibility *)self specifier];
-  v3 = [v2 propertyForKey:*MEMORY[0x29EDC62C0]];
+  specifier = [(PSSpecifierSliderConfigurationCellAccessibility *)self specifier];
+  v3 = [specifier propertyForKey:*MEMORY[0x29EDC62C0]];
   [v3 floatValue];
   v5 = v4;
 
@@ -238,8 +238,8 @@
 
 - (float)_axMaximumValue
 {
-  v2 = [(PSSpecifierSliderConfigurationCellAccessibility *)self specifier];
-  v3 = [v2 propertyForKey:*MEMORY[0x29EDC62B8]];
+  specifier = [(PSSpecifierSliderConfigurationCellAccessibility *)self specifier];
+  v3 = [specifier propertyForKey:*MEMORY[0x29EDC62B8]];
   v4 = v3;
   if (v3)
   {
@@ -257,46 +257,46 @@
 
 - (BOOL)_axIsSegmented
 {
-  v2 = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axSpecifier];
-  v3 = [v2 propertyForKey:*MEMORY[0x29EDC6338]];
-  v4 = [v3 BOOLValue];
+  _axSpecifier = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axSpecifier];
+  v3 = [_axSpecifier propertyForKey:*MEMORY[0x29EDC6338]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)_axLocksToSegment
 {
-  v2 = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axSpecifier];
-  v3 = [v2 propertyForKey:*MEMORY[0x29EDC6340]];
+  _axSpecifier = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axSpecifier];
+  v3 = [_axSpecifier propertyForKey:*MEMORY[0x29EDC6340]];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)_axSegmentCount
 {
-  v2 = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axSpecifier];
-  v3 = [v2 propertyForKey:*MEMORY[0x29EDC6348]];
-  v4 = [v3 integerValue];
+  _axSpecifier = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axSpecifier];
+  v3 = [_axSpecifier propertyForKey:*MEMORY[0x29EDC6348]];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (unint64_t)_axNumberOfTicks
 {
-  v3 = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axSegmentCount];
-  if (v3)
+  _axSegmentCount = [(PSSpecifierSliderConfigurationCellAccessibility *)self _axSegmentCount];
+  if (_axSegmentCount)
   {
-    return (v3 + 1);
+    return (_axSegmentCount + 1);
   }
 
   else
@@ -308,20 +308,20 @@
   }
 }
 
-- (int64_t)_axOffsetBetweenTicksForNumberOfTicks:(unint64_t)a3
+- (int64_t)_axOffsetBetweenTicksForNumberOfTicks:(unint64_t)ticks
 {
-  v3 = a3;
-  if (a3 <= 1)
+  ticksCopy = ticks;
+  if (ticks <= 1)
   {
-    v9 = a3;
+    ticksCopy2 = ticks;
     _AXAssert();
-    v3 = 2;
+    ticksCopy = 2;
   }
 
   [(PSSpecifierSliderConfigurationCellAccessibility *)self _axMaximumValue];
   v6 = v5;
   [(PSSpecifierSliderConfigurationCellAccessibility *)self _axMinimumValue];
-  return ((v6 - v7) / (v3 - 1));
+  return ((v6 - v7) / (ticksCopy - 1));
 }
 
 @end

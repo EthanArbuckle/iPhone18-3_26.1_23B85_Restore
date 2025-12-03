@@ -1,31 +1,31 @@
 @interface HUCCDashboardContainerViewController
 - (CGRect)expandedContentFrame;
 - (CGSize)preferredExpandedSize;
-- (HUCCDashboardContainerViewController)initWithDelegate:(id)a3;
+- (HUCCDashboardContainerViewController)initWithDelegate:(id)delegate;
 - (HUCCDashboardContainerViewControllerDelegate)delegate;
 - (id)serviceViewControllerProxy;
-- (void)_addNewRemoteViewController:(id)a3;
-- (void)_configureAndAddRemoteViewController:(id)a3 forHome:(id)a4;
-- (void)_requestRemoteViewControllerForHome:(id)a3;
+- (void)_addNewRemoteViewController:(id)controller;
+- (void)_configureAndAddRemoteViewController:(id)controller forHome:(id)home;
+- (void)_requestRemoteViewControllerForHome:(id)home;
 - (void)_stopAndRemoveRemoteViewController;
 - (void)loadView;
-- (void)remoteDashboard:(id)a3 viewServiceDidTerminateWithError:(id)a4;
+- (void)remoteDashboard:(id)dashboard viewServiceDidTerminateWithError:(id)error;
 - (void)requestDismissal;
-- (void)requestLockAuthenticationForRemoteDashboard:(id)a3;
+- (void)requestLockAuthenticationForRemoteDashboard:(id)dashboard;
 @end
 
 @implementation HUCCDashboardContainerViewController
 
-- (HUCCDashboardContainerViewController)initWithDelegate:(id)a3
+- (HUCCDashboardContainerViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = HUCCDashboardContainerViewController;
   v5 = [(HUCCDashboardContainerViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -112,9 +112,9 @@
   return result;
 }
 
-- (void)_requestRemoteViewControllerForHome:(id)a3
+- (void)_requestRemoteViewControllerForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   objc_msgSend__beginDelayingPresentation_cancellationHandler_(self, v5, &unk_2A23EA6C8, 5.0);
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x29EDCA5F8];
@@ -122,7 +122,7 @@
   v10[2] = sub_29C99DD34;
   v10[3] = &unk_29F33AB80;
   objc_copyWeak(&v12, &location);
-  v6 = v4;
+  v6 = homeCopy;
   v11 = v6;
   v8 = objc_msgSend_requestViewControllerWithConnectionHandler_(HUCCRemoteDashboardViewController, v7, v10);
   objc_msgSend_setCancelServiceInvocation_(self, v9, v8);
@@ -131,12 +131,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_configureAndAddRemoteViewController:(id)a3 forHome:(id)a4
+- (void)_configureAndAddRemoteViewController:(id)controller forHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  homeCopy = home;
   objc_opt_class();
-  v8 = v6;
+  v8 = controllerCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -153,7 +153,7 @@
   {
     objc_msgSend__addNewRemoteViewController_(self, v11, v10);
     v14 = objc_msgSend_serviceViewControllerProxy(self, v12, v13);
-    v17 = objc_msgSend_uniqueIdentifier(v7, v15, v16);
+    v17 = objc_msgSend_uniqueIdentifier(homeCopy, v15, v16);
     v20 = objc_msgSend_UUIDString(v17, v18, v19);
     objc_msgSend_configureHomeControlServiceWithHomeUUID_(v14, v21, v20);
 
@@ -205,11 +205,11 @@
   }
 }
 
-- (void)_addNewRemoteViewController:(id)a3
+- (void)_addNewRemoteViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_msgSend__stopAndRemoveRemoteViewController(self, v5, v6);
-  objc_msgSend_setRemoteDashboardViewController_(self, v7, v4);
+  objc_msgSend_setRemoteDashboardViewController_(self, v7, controllerCopy);
 
   v10 = objc_msgSend_remoteDashboardViewController(self, v8, v9);
   objc_msgSend_setDelegate_(v10, v11, self);
@@ -241,13 +241,13 @@
   objc_msgSend_endAppearanceTransition(v56, v54, v55);
 }
 
-- (void)remoteDashboard:(id)a3 viewServiceDidTerminateWithError:(id)a4
+- (void)remoteDashboard:(id)dashboard viewServiceDidTerminateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_29C9ABFE0(v5, v6);
+    sub_29C9ABFE0(errorCopy, v6);
   }
 
   objc_msgSend_setRemoteDashboardViewController_(self, v7, 0);
@@ -259,9 +259,9 @@
   objc_msgSend_requestDismissal(v5, v3, v4);
 }
 
-- (void)requestLockAuthenticationForRemoteDashboard:(id)a3
+- (void)requestLockAuthenticationForRemoteDashboard:(id)dashboard
 {
-  v4 = objc_msgSend_delegate(self, a2, a3);
+  v4 = objc_msgSend_delegate(self, a2, dashboard);
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
   v6[2] = sub_29C99E3BC;

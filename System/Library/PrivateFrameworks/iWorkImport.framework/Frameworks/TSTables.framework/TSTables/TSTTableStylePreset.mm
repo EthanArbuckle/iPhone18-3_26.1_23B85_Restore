@@ -1,27 +1,27 @@
 @interface TSTTableStylePreset
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)referencedStyles;
 - (TSTTableStyleNetwork)styleNetwork;
-- (TSTTableStylePreset)initWithContext:(id)a3;
-- (TSTTableStylePreset)initWithStyleNetwork:(id)a3;
+- (TSTTableStylePreset)initWithContext:(id)context;
+- (TSTTableStylePreset)initWithStyleNetwork:(id)network;
 - (id)p_documentRoot;
 - (unint64_t)hash;
 - (unint64_t)presetID;
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)replaceReferencedStylesUsingBlock:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setStyleNetwork:(id)a3;
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)replaceReferencedStylesUsingBlock:(id)block;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setStyleNetwork:(id)network;
 @end
 
 @implementation TSTTableStylePreset
 
-- (void)setStyleNetwork:(id)a3
+- (void)setStyleNetwork:(id)network
 {
-  v25 = a3;
+  networkCopy = network;
   objc_msgSend_willModify(self, v4, v5, v6, v7);
-  if (!v25)
+  if (!networkCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSTTableStylePreset setStyleNetwork:]", v10, v11);
@@ -31,7 +31,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  v23 = objc_msgSend_copy(v25, v8, v9, v10, v11);
+  v23 = objc_msgSend_copy(networkCopy, v8, v9, v10, v11);
   styleNetwork = self->_styleNetwork;
   self->_styleNetwork = v23;
 
@@ -80,17 +80,17 @@
   return v10;
 }
 
-- (TSTTableStylePreset)initWithStyleNetwork:(id)a3
+- (TSTTableStylePreset)initWithStyleNetwork:(id)network
 {
-  v4 = a3;
-  v9 = objc_msgSend_context(v4, v5, v6, v7, v8);
+  networkCopy = network;
+  v9 = objc_msgSend_context(networkCopy, v5, v6, v7, v8);
   v29.receiver = self;
   v29.super_class = TSTTableStylePreset;
   v10 = [(TSTTableStylePreset *)&v29 initWithContext:v9];
 
   if (v10)
   {
-    if (!v4)
+    if (!networkCopy)
     {
       v15 = MEMORY[0x277D81150];
       v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSTTableStylePreset initWithStyleNetwork:]", v13, v14);
@@ -100,7 +100,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
     }
 
-    v26 = objc_msgSend_copy(v4, v11, v12, v13, v14);
+    v26 = objc_msgSend_copy(networkCopy, v11, v12, v13, v14);
     styleNetwork = v10->_styleNetwork;
     v10->_styleNetwork = v26;
   }
@@ -108,7 +108,7 @@
   return v10;
 }
 
-- (TSTTableStylePreset)initWithContext:(id)a3
+- (TSTTableStylePreset)initWithContext:(id)context
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableStylePreset initWithContext:]", v3, v4);
@@ -119,10 +119,10 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
     v5 = TSUDynamicCast();
@@ -171,12 +171,12 @@ LABEL_10:
   return v14 + v9;
 }
 
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   styleNetwork = self->_styleNetwork;
   if (!styleNetwork)
   {
@@ -189,16 +189,16 @@ LABEL_10:
     styleNetwork = self->_styleNetwork;
   }
 
-  v31 = objc_msgSend_headerRowCellStyle(styleNetwork, a2, a4, v4, v5);
+  v31 = objc_msgSend_headerRowCellStyle(styleNetwork, a2, context, v4, v5);
   v26 = objc_msgSend_valueForProperty_(v31, v23, 898, v24, v25);
-  objc_msgSend_drawSwatchInRect_inContext_(v26, v27, a4, v28, v29, x, y, width, height);
+  objc_msgSend_drawSwatchInRect_inContext_(v26, v27, context, v28, v29, x, y, width, height);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E4660[12], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E4660[12], v6, v7);
 
   self->_tempUpgradePresetID = 0x7FFFFFFFFFFFFFFFLL;
   v9 = *(v8 + 16);
@@ -216,43 +216,43 @@ LABEL_10:
     v14[3] = &unk_278461658;
     v14[4] = self;
     v15 = (v9 & 4) >> 2;
-    v11 = v4;
+    v11 = unarchiverCopy;
     v12 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v11, v13, v10, v12, 0, v14);
   }
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v23 = a4;
+  archiverCopy = archiver;
   styleNetwork = self->_styleNetwork;
   if (styleNetwork || (v10 = MEMORY[0x277D81150], objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSTTableStylePreset saveToArchive:archiver:]", v7, v8), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableStylePreset.mm", v13, v14), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v16, v11, v15, 176, 0, "invalid nil value for '%{public}s'", "_styleNetwork"), v15, v11, objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18, v19, v20), (styleNetwork = self->_styleNetwork) != 0))
   {
-    *(a3 + 4) |= 2u;
-    v21 = *(a3 + 4);
+    *(archive + 4) |= 2u;
+    v21 = *(archive + 4);
     if (!v21)
     {
-      v22 = *(a3 + 1);
+      v22 = *(archive + 1);
       if (v22)
       {
         v22 = *(v22 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v21 = MEMORY[0x223DA0390](v22);
-      *(a3 + 4) = v21;
+      *(archive + 4) = v21;
     }
 
-    objc_msgSend_setStrongReference_message_(v23, v6, styleNetwork, v21, v8);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v6, styleNetwork, v21, v8);
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v9 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v9, v4, sub_221219038, off_2812E4660[12], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_221219038, off_2812E4660[12], v5);
 
-  objc_msgSend_saveToArchive_archiver_(self, v7, v6, v9, v8);
+  objc_msgSend_saveToArchive_archiver_(self, v7, v6, archiverCopy, v8);
 }
 
 - (NSSet)referencedStyles
@@ -270,9 +270,9 @@ LABEL_10:
   return v12;
 }
 
-- (void)replaceReferencedStylesUsingBlock:(id)a3
+- (void)replaceReferencedStylesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9 = objc_msgSend_context(self, v5, v6, v7, v8);
   v14 = objc_msgSend_presetID(self, v10, v11, v12, v13);
   v19 = objc_msgSend_styleNetwork(self, v15, v16, v17, v18);
@@ -280,7 +280,7 @@ LABEL_10:
   v26[1] = 3221225472;
   v26[2] = sub_221218FAC;
   v26[3] = &unk_278461680;
-  v20 = v4;
+  v20 = blockCopy;
   v27 = v20;
   v22 = objc_msgSend_networkWithContext_presetID_styleProvider_styleMorphingBlock_(TSTTableStyleNetwork, v21, v9, v14, v19, v26);
 

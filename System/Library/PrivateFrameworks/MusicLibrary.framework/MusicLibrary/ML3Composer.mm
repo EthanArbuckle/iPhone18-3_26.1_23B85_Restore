@@ -1,13 +1,13 @@
 @interface ML3Composer
-+ (id)countingQueryForBaseQuery:(id)a3 countProperty:(id)a4 forIdentifier:(int64_t)a5;
-+ (id)foreignPropertyForProperty:(id)a3 entityClass:(Class)a4;
-+ (id)joinClausesForProperty:(id)a3;
++ (id)countingQueryForBaseQuery:(id)query countProperty:(id)property forIdentifier:(int64_t)identifier;
++ (id)foreignPropertyForProperty:(id)property entityClass:(Class)class;
++ (id)joinClausesForProperty:(id)property;
 + (id)propertiesForGroupingKey;
-+ (id)protocolItemWithProperties:(id)a3 inLibrary:(id)a4;
++ (id)protocolItemWithProperties:(id)properties inLibrary:(id)library;
 + (void)initialize;
 - (id)multiverseIdentifier;
 - (id)protocolItem;
-- (void)updateTrackValues:(id)a3;
+- (void)updateTrackValues:(id)values;
 @end
 
 @implementation ML3Composer
@@ -15,7 +15,7 @@
 + (void)initialize
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = [ML3OrderingTerm orderingTermWithProperty:@"composer"];
     v17[0] = v3;
@@ -28,7 +28,7 @@
     ML3ComposerAllProperties = v6;
 
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [a1 predisambiguateProperties:ML3ComposerAllProperties toDictionary:v8];
+    [self predisambiguateProperties:ML3ComposerAllProperties toDictionary:v8];
     v9 = ML3ComposerPredisambiguatedPropertyForProperties;
     ML3ComposerPredisambiguatedPropertyForProperties = v8;
     v10 = v8;
@@ -45,10 +45,10 @@
   }
 }
 
-- (void)updateTrackValues:(id)a3
+- (void)updateTrackValues:(id)values
 {
   v26[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valuesCopy = values;
   v5 = @"ROWID";
   v26[0] = @"ROWID";
   v26[1] = @"composer";
@@ -62,40 +62,40 @@
   v25 = 0u;
   v23 = 0u;
   [(ML3Entity *)self getValues:&v23 forProperties:v26 count:6];
-  [v4 setValue:v23 forKey:@"composer_pid"];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [ML3Track trackValueAreInTheCloud:v4];
-  v10 = [*(&v25 + 1) integerValue];
-  v11 = [v4 objectForKey:@"ROWID"];
-  v12 = [*(&v24 + 1) longLongValue];
-  if (v12)
+  [valuesCopy setValue:v23 forKey:@"composer_pid"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v9 = [ML3Track trackValueAreInTheCloud:valuesCopy];
+  integerValue = [*(&v25 + 1) integerValue];
+  v11 = [valuesCopy objectForKey:@"ROWID"];
+  longLongValue = [*(&v24 + 1) longLongValue];
+  if (longLongValue)
   {
-    v13 = v12;
-    [v4 setValue:*(&v23 + 1) forKey:@"composer.composer"];
-    [v4 setValue:v24 forKey:@"composer.sort_composer"];
+    v13 = longLongValue;
+    [valuesCopy setValue:*(&v23 + 1) forKey:@"composer.composer"];
+    [valuesCopy setValue:v24 forKey:@"composer.sort_composer"];
     if (v9)
     {
-      if (v10)
+      if (integerValue)
       {
         goto LABEL_9;
       }
     }
 
-    else if (v10 != 2)
+    else if (integerValue != 2)
     {
       goto LABEL_9;
     }
 
     v18 = [MEMORY[0x277CCABB0] numberWithInteger:1];
-    [v8 setValue:v18 forKey:@"cloud_status"];
+    [dictionary setValue:v18 forKey:@"cloud_status"];
 
 LABEL_9:
-    [(ML3Collection *)self updateRepresentativeCollectionValues:v8 existingRepresentativePersistentID:v13 forUpdateTrackValues:v4];
-    v16 = [v8 objectForKey:@"representative_item_pid"];
-    v19 = [v16 longLongValue];
-    if (v19)
+    [(ML3Collection *)self updateRepresentativeCollectionValues:dictionary existingRepresentativePersistentID:v13 forUpdateTrackValues:valuesCopy];
+    v16 = [dictionary objectForKey:@"representative_item_pid"];
+    longLongValue2 = [v16 longLongValue];
+    if (longLongValue2)
     {
-      v17 = v19;
+      v17 = longLongValue2;
     }
 
     else
@@ -106,11 +106,11 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v14 = [v4 objectForKey:@"composer.composer"];
-  [v8 setValue:v14 forKey:@"composer"];
+  v14 = [valuesCopy objectForKey:@"composer.composer"];
+  [dictionary setValue:v14 forKey:@"composer"];
 
-  v15 = [v4 objectForKey:@"composer.sort_composer"];
-  [v8 setValue:v15 forKey:@"sort_composer"];
+  v15 = [valuesCopy objectForKey:@"composer.sort_composer"];
+  [dictionary setValue:v15 forKey:@"sort_composer"];
 
   if (!v9)
   {
@@ -119,7 +119,7 @@ LABEL_9:
   }
 
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:2];
-  [v8 setValue:v16 forKey:@"cloud_status"];
+  [dictionary setValue:v16 forKey:@"cloud_status"];
   v17 = 0;
 LABEL_12:
 
@@ -131,11 +131,11 @@ LABEL_13:
 
     if ((v21 & 1) == 0)
     {
-      [v8 setValue:v11 forKey:@"representative_item_pid"];
+      [dictionary setValue:v11 forKey:@"representative_item_pid"];
     }
   }
 
-  [(ML3Entity *)self setValuesForPropertiesWithDictionary:v8];
+  [(ML3Entity *)self setValuesForPropertiesWithDictionary:dictionary];
 
   for (i = 5; i != -1; --i)
   {
@@ -163,18 +163,18 @@ uint64_t __39__ML3Composer_propertiesForGroupingKey__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)countingQueryForBaseQuery:(id)a3 countProperty:(id)a4 forIdentifier:(int64_t)a5
++ (id)countingQueryForBaseQuery:(id)query countProperty:(id)property forIdentifier:(int64_t)identifier
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 predicateIncludingSystemwidePredicates];
+  queryCopy = query;
+  propertyCopy = property;
+  predicateIncludingSystemwidePredicates = [queryCopy predicateIncludingSystemwidePredicates];
 
-  if (v10)
+  if (predicateIncludingSystemwidePredicates)
   {
-    v11 = [v8 predicateIncludingSystemwidePredicates];
-    v22[0] = v11;
-    v12 = [ML3ComparisonPredicate predicateWithProperty:@"composer_pid" equalToInt64:a5];
+    predicateIncludingSystemwidePredicates2 = [queryCopy predicateIncludingSystemwidePredicates];
+    v22[0] = predicateIncludingSystemwidePredicates2;
+    v12 = [ML3ComparisonPredicate predicateWithProperty:@"composer_pid" equalToInt64:identifier];
     v22[1] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
     v14 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v13];
@@ -182,40 +182,40 @@ uint64_t __39__ML3Composer_propertiesForGroupingKey__block_invoke()
 
   else
   {
-    v14 = [ML3ComparisonPredicate predicateWithProperty:@"composer_pid" equalToInt64:a5];
+    v14 = [ML3ComparisonPredicate predicateWithProperty:@"composer_pid" equalToInt64:identifier];
   }
 
-  if (v9 == @"item_pid")
+  if (propertyCopy == @"item_pid")
   {
-    v16 = [v8 library];
-    v17 = +[ML3Entity queryWithLibrary:predicate:options:](ML3Track, "queryWithLibrary:predicate:options:", v16, v14, [v8 options]);
+    library = [queryCopy library];
+    v17 = +[ML3Entity queryWithLibrary:predicate:options:](ML3Track, "queryWithLibrary:predicate:options:", library, v14, [queryCopy options]);
   }
 
   else
   {
-    if (v9 == @"album_pid")
+    if (propertyCopy == @"album_pid")
     {
-      v16 = [v8 library];
-      v18 = [v8 options];
+      library = [queryCopy library];
+      options = [queryCopy options];
       v19 = @"album_pid";
     }
 
     else
     {
-      if (v9 != @"item_artist_pid")
+      if (propertyCopy != @"item_artist_pid")
       {
-        v21.receiver = a1;
+        v21.receiver = self;
         v21.super_class = &OBJC_METACLASS___ML3Composer;
-        v15 = objc_msgSendSuper2(&v21, sel_countingQueryForBaseQuery_countProperty_forIdentifier_, v8, v9, a5);
+        v15 = objc_msgSendSuper2(&v21, sel_countingQueryForBaseQuery_countProperty_forIdentifier_, queryCopy, propertyCopy, identifier);
         goto LABEL_13;
       }
 
-      v16 = [v8 library];
-      v18 = [v8 options];
+      library = [queryCopy library];
+      options = [queryCopy options];
       v19 = @"item_artist_pid";
     }
 
-    v17 = [(ML3Entity *)ML3Track queryWithLibrary:v16 predicate:v14 orderingTerms:0 propertyToCount:v19 options:v18];
+    v17 = [(ML3Entity *)ML3Track queryWithLibrary:library predicate:v14 orderingTerms:0 propertyToCount:v19 options:options];
   }
 
   v15 = v17;
@@ -225,17 +225,17 @@ LABEL_13:
   return v15;
 }
 
-+ (id)foreignPropertyForProperty:(id)a3 entityClass:(Class)a4
++ (id)foreignPropertyForProperty:(id)property entityClass:(Class)class
 {
-  v6 = a3;
-  v9.receiver = a1;
+  propertyCopy = property;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___ML3Composer;
-  v7 = objc_msgSendSuper2(&v9, sel_foreignPropertyForProperty_entityClass_, v6, a4);
+  v7 = objc_msgSendSuper2(&v9, sel_foreignPropertyForProperty_entityClass_, propertyCopy, class);
   if (!v7)
   {
-    if (objc_opt_class() == a4)
+    if (objc_opt_class() == class)
     {
-      v7 = [ML3TrackForeignPropertyForML3ComposerProperties objectForKey:v6];
+      v7 = [ML3TrackForeignPropertyForML3ComposerProperties objectForKey:propertyCopy];
     }
 
     else
@@ -247,10 +247,10 @@ LABEL_13:
   return v7;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [ML3ComposerJoinsForProperties objectForKey:v4];
+  propertyCopy = property;
+  v5 = [ML3ComposerJoinsForProperties objectForKey:propertyCopy];
   v6 = v5;
   if (v5)
   {
@@ -259,9 +259,9 @@ LABEL_13:
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___ML3Composer;
-    v7 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, v4);
+    v7 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, propertyCopy);
   }
 
   v8 = v7;
@@ -291,8 +291,8 @@ LABEL_13:
   v4 = objc_alloc_init(MIPLibraryIdentifier);
   [(MIPLibraryIdentifier *)v4 setLibraryId:self->super.super._persistentID];
   WeakRetained = objc_loadWeakRetained(&self->super.super._library);
-  v6 = [WeakRetained libraryUID];
-  [(MIPLibraryIdentifier *)v4 setLibraryName:v6];
+  libraryUID = [WeakRetained libraryUID];
+  [(MIPLibraryIdentifier *)v4 setLibraryName:libraryUID];
 
   [(MIPMultiverseIdentifier *)v3 addLibraryIdentifiers:v4];
   v11[0] = @"composer";
@@ -304,12 +304,12 @@ LABEL_13:
   return v3;
 }
 
-+ (id)protocolItemWithProperties:(id)a3 inLibrary:(id)a4
++ (id)protocolItemWithProperties:(id)properties inLibrary:(id)library
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = objc_alloc_init(MIPArtist);
-  v6 = [v4 objectForKey:@"composer"];
-  v7 = [v4 objectForKey:@"sort_composer"];
+  v6 = [propertiesCopy objectForKey:@"composer"];
+  v7 = [propertiesCopy objectForKey:@"sort_composer"];
 
   if ([v6 length])
   {

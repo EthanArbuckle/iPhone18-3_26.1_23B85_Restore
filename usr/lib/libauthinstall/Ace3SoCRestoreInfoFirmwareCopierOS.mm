@@ -1,20 +1,20 @@
 @interface Ace3SoCRestoreInfoFirmwareCopierOS
-- (Ace3SoCRestoreInfoFirmwareCopierOS)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5;
-- (BOOL)copyFirmwareToDestinationBundleWithError:(id *)a3;
-- (BOOL)parseOptions:(id)a3;
-- (id)readFirmwareFileDataWithError:(id *)a3;
+- (Ace3SoCRestoreInfoFirmwareCopierOS)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context;
+- (BOOL)copyFirmwareToDestinationBundleWithError:(id *)error;
+- (BOOL)parseOptions:(id)options;
+- (id)readFirmwareFileDataWithError:(id *)error;
 @end
 
 @implementation Ace3SoCRestoreInfoFirmwareCopierOS
 
-- (Ace3SoCRestoreInfoFirmwareCopierOS)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5
+- (Ace3SoCRestoreInfoFirmwareCopierOS)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context
 {
-  v8 = a3;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = Ace3SoCRestoreInfoFirmwareCopierOS;
-  v9 = [(Ace3SoCRestoreInfoHelperOS *)&v13 initWithOptions:v8 logFunction:a4 logContext:a5];
+  v9 = [(Ace3SoCRestoreInfoHelperOS *)&v13 initWithOptions:optionsCopy logFunction:function logContext:context];
   v10 = v9;
-  if (v9 && ([(Ace3SoCRestoreInfoHelperOS *)v9 log:@"%s: input options: %@", "[Ace3SoCRestoreInfoFirmwareCopierOS initWithOptions:logFunction:logContext:]", v8], ![(Ace3SoCRestoreInfoFirmwareCopierOS *)v10 parseOptions:v8]))
+  if (v9 && ([(Ace3SoCRestoreInfoHelperOS *)v9 log:@"%s: input options: %@", "[Ace3SoCRestoreInfoFirmwareCopierOS initWithOptions:logFunction:logContext:]", optionsCopy], ![(Ace3SoCRestoreInfoFirmwareCopierOS *)v10 parseOptions:optionsCopy]))
   {
     v11 = 0;
   }
@@ -27,13 +27,13 @@
   return v11;
 }
 
-- (BOOL)parseOptions:(id)a3
+- (BOOL)parseOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"BuildIdentity"];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"BuildIdentity"];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"DeviceInfo"];
+    v6 = [optionsCopy objectForKeyedSubscript:@"DeviceInfo"];
     if (!v6)
     {
       [(Ace3SoCRestoreInfoHelperOS *)self log:@"Warning: Could not find device info dictionary"];
@@ -65,7 +65,7 @@ LABEL_26:
           self->_firmwarePathSuffix = v14;
 
 LABEL_11:
-          v17 = [v4 objectForKeyedSubscript:@"FirmwareData"];
+          v17 = [optionsCopy objectForKeyedSubscript:@"FirmwareData"];
           firmwareOverrideData = self->_firmwareOverrideData;
           self->_firmwareOverrideData = v17;
 
@@ -78,7 +78,7 @@ LABEL_11:
 
           if (!v19 && v8)
           {
-            v20 = [v4 objectForKeyedSubscript:@"BundleDataDict"];
+            v20 = [optionsCopy objectForKeyedSubscript:@"BundleDataDict"];
             v21 = v20;
             if (v20)
             {
@@ -99,7 +99,7 @@ LABEL_11:
 
           if (self->_firmwarePathSuffix)
           {
-            v27 = [v4 objectForKeyedSubscript:@"BundlePath"];
+            v27 = [optionsCopy objectForKeyedSubscript:@"BundlePath"];
             if (v27)
             {
               v28 = v27;
@@ -108,7 +108,7 @@ LABEL_11:
               self->_firmwareBundleURL = v29;
 
 LABEL_20:
-              v24 = [v4 objectForKeyedSubscript:@"DestBundlePath"];
+              v24 = [optionsCopy objectForKeyedSubscript:@"DestBundlePath"];
               destBundlePathURL = self->_destBundlePathURL;
               self->_destBundlePathURL = v24;
 
@@ -154,53 +154,53 @@ LABEL_28:
   return v16;
 }
 
-- (BOOL)copyFirmwareToDestinationBundleWithError:(id *)a3
+- (BOOL)copyFirmwareToDestinationBundleWithError:(id *)error
 {
   destBundlePathURL = self->_destBundlePathURL;
   if (destBundlePathURL && self->_firmwarePathSuffix)
   {
     v6 = MEMORY[0x29EDBA0F8];
-    v7 = [(NSURL *)destBundlePathURL path];
-    v8 = [v6 stringWithFormat:@"%@/%@", v7, self->_firmwarePathSuffix];
+    path = [(NSURL *)destBundlePathURL path];
+    v8 = [v6 stringWithFormat:@"%@/%@", path, self->_firmwarePathSuffix];
 
     v9 = [MEMORY[0x29EDB8E70] fileURLWithPath:v8];
-    v10 = [MEMORY[0x29EDB9FB8] defaultManager];
-    v11 = [v9 URLByDeletingLastPathComponent];
-    v12 = [MEMORY[0x29EDB9FB8] defaultManager];
-    v13 = [v11 path];
+    defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+    uRLByDeletingLastPathComponent = [v9 URLByDeletingLastPathComponent];
+    defaultManager2 = [MEMORY[0x29EDB9FB8] defaultManager];
+    path2 = [uRLByDeletingLastPathComponent path];
     v35 = 0;
-    v14 = [v12 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:&v35];
+    v14 = [defaultManager2 createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:&v35];
     v15 = v35;
 
     if ((v14 & 1) == 0 && ([v15 isFileExistsError] & 1) == 0)
     {
-      v24 = [v11 path];
-      [(Ace3SoCRestoreInfoHelperOS *)self log:@"Failed to create directory at '%@' (%@)", v24, v15];
+      path3 = [uRLByDeletingLastPathComponent path];
+      [(Ace3SoCRestoreInfoHelperOS *)self log:@"Failed to create directory at '%@' (%@)", path3, v15];
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_21;
       }
 
       v25 = v15;
       v22 = 0;
-      *a3 = v15;
+      *error = v15;
       goto LABEL_22;
     }
 
-    v16 = [v9 path];
-    v17 = [v10 fileExistsAtPath:v16];
+    path4 = [v9 path];
+    v17 = [defaultManager fileExistsAtPath:path4];
 
     if (v17)
     {
       v34 = 0;
-      v18 = [v10 removeItemAtURL:v9 error:&v34];
+      v18 = [defaultManager removeItemAtURL:v9 error:&v34];
       v19 = v34;
       v20 = v19;
       if ((v18 & 1) == 0)
       {
-        v29 = [v9 path];
-        [(Ace3SoCRestoreInfoHelperOS *)self log:@"Failed to remove file at '%@' (%@)", v29, v20];
+        path5 = [v9 path];
+        [(Ace3SoCRestoreInfoHelperOS *)self log:@"Failed to remove file at '%@' (%@)", path5, v20];
         goto LABEL_18;
       }
     }
@@ -211,8 +211,8 @@ LABEL_28:
       v22 = 1;
       if (![(NSData *)firmwareOverrideData writeToURL:v9 atomically:1])
       {
-        v23 = [v9 path];
-        [(Ace3SoCRestoreInfoHelperOS *)self log:@"Failed to write firmware file data to '%@'", v23];
+        path6 = [v9 path];
+        [(Ace3SoCRestoreInfoHelperOS *)self log:@"Failed to write firmware file data to '%@'", path6];
 
 LABEL_21:
         v22 = 0;
@@ -223,10 +223,10 @@ LABEL_22:
       return v22;
     }
 
-    v26 = [MEMORY[0x29EDB9FB8] defaultManager];
+    defaultManager3 = [MEMORY[0x29EDB9FB8] defaultManager];
     firmwareBundleURL = self->_firmwareBundleURL;
     v33 = 0;
-    v28 = [v26 copyItemAtURL:firmwareBundleURL toURL:v9 error:&v33];
+    v28 = [defaultManager3 copyItemAtURL:firmwareBundleURL toURL:v9 error:&v33];
     v20 = v33;
 
     if (v28)
@@ -236,15 +236,15 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    v29 = [(NSURL *)self->_firmwareBundleURL path];
-    v30 = [v9 path];
-    [(Ace3SoCRestoreInfoHelperOS *)self log:@"Failed to copy firmware from '%@' to '%@' (%@)", v29, v30, v20];
+    path5 = [(NSURL *)self->_firmwareBundleURL path];
+    path7 = [v9 path];
+    [(Ace3SoCRestoreInfoHelperOS *)self log:@"Failed to copy firmware from '%@' to '%@' (%@)", path5, path7, v20];
 
 LABEL_18:
-    if (a3)
+    if (error)
     {
       v31 = v20;
-      *a3 = v20;
+      *error = v20;
     }
 
     goto LABEL_21;
@@ -254,7 +254,7 @@ LABEL_18:
   return 1;
 }
 
-- (id)readFirmwareFileDataWithError:(id *)a3
+- (id)readFirmwareFileDataWithError:(id *)error
 {
   firmwareOverrideData = self->_firmwareOverrideData;
   if (firmwareOverrideData || (firmwareOverrideData = self->_firmwareInBundleDataDict) != 0)
@@ -270,13 +270,13 @@ LABEL_18:
     v9 = v12;
     if (!v5)
     {
-      v10 = [(NSURL *)self->_firmwareBundleURL path];
-      [(Ace3SoCRestoreInfoHelperOS *)self log:@"Failed to read firmware file at '%@' (%@)", v10, v9];
+      path = [(NSURL *)self->_firmwareBundleURL path];
+      [(Ace3SoCRestoreInfoHelperOS *)self log:@"Failed to read firmware file at '%@' (%@)", path, v9];
 
-      if (a3)
+      if (error)
       {
         v11 = v9;
-        *a3 = v9;
+        *error = v9;
       }
     }
   }

@@ -1,57 +1,57 @@
 @interface TTSSchemaTTSVoiceContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (TTSSchemaTTSVoiceContext)initWithDictionary:(id)a3;
-- (TTSSchemaTTSVoiceContext)initWithJSON:(id)a3;
+- (TTSSchemaTTSVoiceContext)initWithDictionary:(id)dictionary;
+- (TTSSchemaTTSVoiceContext)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasResourceVersion:(BOOL)a3;
-- (void)setHasVoiceFootprint:(BOOL)a3;
-- (void)setHasVoiceName:(BOOL)a3;
-- (void)setHasVoiceVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasResourceVersion:(BOOL)version;
+- (void)setHasVoiceFootprint:(BOOL)footprint;
+- (void)setHasVoiceName:(BOOL)name;
+- (void)setHasVoiceVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TTSSchemaTTSVoiceContext
 
-- (TTSSchemaTTSVoiceContext)initWithDictionary:(id)a3
+- (TTSSchemaTTSVoiceContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = TTSSchemaTTSVoiceContext;
   v5 = [(TTSSchemaTTSVoiceContext *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"voiceType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"voiceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSVoiceContext setVoiceType:](v5, "setVoiceType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"voiceFootprint"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"voiceFootprint"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSVoiceContext setVoiceFootprint:](v5, "setVoiceFootprint:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"voiceVersion"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"voiceVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSVoiceContext setVoiceVersion:](v5, "setVoiceVersion:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"resourceVersion"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"resourceVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSVoiceContext setResourceVersion:](v5, "setResourceVersion:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"voiceName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"voiceName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (TTSSchemaTTSVoiceContext)initWithJSON:(id)a3
+- (TTSSchemaTTSVoiceContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TTSSchemaTTSVoiceContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(TTSSchemaTTSVoiceContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(TTSSchemaTTSVoiceContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,12 +100,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[TTSSchemaTTSVoiceContext resourceVersion](self, "resourceVersion")}];
-    [v3 setObject:v7 forKeyedSubscript:@"resourceVersion"];
+    [dictionary setObject:v7 forKeyedSubscript:@"resourceVersion"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -136,7 +136,7 @@ LABEL_3:
     v9 = off_1E78E8260[v8];
   }
 
-  [v3 setObject:v9 forKeyedSubscript:@"voiceFootprint"];
+  [dictionary setObject:v9 forKeyedSubscript:@"voiceFootprint"];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -161,7 +161,7 @@ LABEL_15:
     v11 = off_1E78E8280[v10];
   }
 
-  [v3 setObject:v11 forKeyedSubscript:@"voiceName"];
+  [dictionary setObject:v11 forKeyedSubscript:@"voiceName"];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -186,7 +186,7 @@ LABEL_19:
     v13 = off_1E78E85C8[v12];
   }
 
-  [v3 setObject:v13 forKeyedSubscript:@"voiceType"];
+  [dictionary setObject:v13 forKeyedSubscript:@"voiceType"];
   if ((*&self->_has & 4) == 0)
   {
     goto LABEL_7;
@@ -194,12 +194,12 @@ LABEL_19:
 
 LABEL_6:
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[TTSSchemaTTSVoiceContext voiceVersion](self, "voiceVersion")}];
-  [v3 setObject:v5 forKeyedSubscript:@"voiceVersion"];
+  [dictionary setObject:v5 forKeyedSubscript:@"voiceVersion"];
 
 LABEL_7:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -270,16 +270,16 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = v4[28];
+  v6 = equalCopy[28];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -288,13 +288,13 @@ LABEL_6:
   if (*&has)
   {
     voiceType = self->_voiceType;
-    if (voiceType != [v4 voiceType])
+    if (voiceType != [equalCopy voiceType])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -306,13 +306,13 @@ LABEL_6:
   if (v8)
   {
     voiceFootprint = self->_voiceFootprint;
-    if (voiceFootprint != [v4 voiceFootprint])
+    if (voiceFootprint != [equalCopy voiceFootprint])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -324,13 +324,13 @@ LABEL_6:
   if (v10)
   {
     voiceVersion = self->_voiceVersion;
-    if (voiceVersion != [v4 voiceVersion])
+    if (voiceVersion != [equalCopy voiceVersion])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -342,10 +342,10 @@ LABEL_6:
   if (v12)
   {
     resourceVersion = self->_resourceVersion;
-    if (resourceVersion == [v4 resourceVersion])
+    if (resourceVersion == [equalCopy resourceVersion])
     {
       has = self->_has;
-      v6 = v4[28];
+      v6 = equalCopy[28];
       goto LABEL_18;
     }
 
@@ -364,7 +364,7 @@ LABEL_18:
   if (v14)
   {
     voiceName = self->_voiceName;
-    if (voiceName != [v4 voiceName])
+    if (voiceName != [equalCopy voiceName])
     {
       goto LABEL_22;
     }
@@ -376,9 +376,9 @@ LABEL_23:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -439,9 +439,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setHasVoiceName:(BOOL)a3
+- (void)setHasVoiceName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     v3 = 16;
   }
@@ -454,9 +454,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasResourceVersion:(BOOL)a3
+- (void)setHasResourceVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -469,9 +469,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasVoiceVersion:(BOOL)a3
+- (void)setHasVoiceVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -484,9 +484,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasVoiceFootprint:(BOOL)a3
+- (void)setHasVoiceFootprint:(BOOL)footprint
 {
-  if (a3)
+  if (footprint)
   {
     v3 = 2;
   }

@@ -1,18 +1,18 @@
 @interface App
-- (App)initWithBundleID:(id)a3;
+- (App)initWithBundleID:(id)d;
 @end
 
 @implementation App
 
-- (App)initWithBundleID:(id)a3
+- (App)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = App;
   v5 = [(App *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 

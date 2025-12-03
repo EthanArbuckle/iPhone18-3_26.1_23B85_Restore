@@ -2,13 +2,13 @@
 + (id)activeInstance;
 + (id)sharedInstance;
 - (CGSize)preferredSize;
-- (UIKeyboardSplitControlMenu)initWithFrame:(CGRect)a3;
-- (id)titleForItemAtIndex:(unint64_t)a3;
-- (int)visibleItemForIndex:(unint64_t)a3;
-- (void)actionForItem:(id)a3;
+- (UIKeyboardSplitControlMenu)initWithFrame:(CGRect)frame;
+- (id)titleForItemAtIndex:(unint64_t)index;
+- (int)visibleItemForIndex:(unint64_t)index;
+- (void)actionForItem:(id)item;
 - (void)didFinishSplitTransition;
-- (void)didSelectItemAtIndex:(unint64_t)a3;
-- (void)setSplitAndUndocked:(BOOL)a3;
+- (void)didSelectItemAtIndex:(unint64_t)index;
+- (void)setSplitAndUndocked:(BOOL)undocked;
 @end
 
 @implementation UIKeyboardSplitControlMenu
@@ -28,12 +28,12 @@
   return v2;
 }
 
-- (UIKeyboardSplitControlMenu)initWithFrame:(CGRect)a3
+- (UIKeyboardSplitControlMenu)initWithFrame:(CGRect)frame
 {
   v29[6] = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = UIKeyboardSplitControlMenu;
-  v3 = [(UIKeyboardMenuView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIKeyboardMenuView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v29[0] = objc_opt_class();
@@ -78,9 +78,9 @@
             objc_enumerationMutation(v9);
           }
 
-          v15 = [*(*(&v22 + 1) + 8 * i) label];
-          v16 = [(UIKeyboardMenuView *)v3 font];
-          [v15 _legacy_sizeWithFont:v16];
+          label = [*(*(&v22 + 1) + 8 * i) label];
+          font = [(UIKeyboardMenuView *)v3 font];
+          [label _legacy_sizeWithFont:font];
           v18 = v17;
 
           if (v18 + 48.0 > v13)
@@ -137,10 +137,10 @@
   return v6;
 }
 
-- (void)actionForItem:(id)a3
+- (void)actionForItem:(id)item
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -161,8 +161,8 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 label];
-        v12 = [v4 isEqualToString:v11];
+        label = [v10 label];
+        v12 = [itemCopy isEqualToString:label];
 
         if (v12)
         {
@@ -194,7 +194,7 @@ LABEL_11:
   return result;
 }
 
-- (int)visibleItemForIndex:(unint64_t)a3
+- (int)visibleItemForIndex:(unint64_t)index
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -223,7 +223,7 @@ LABEL_11:
 
         if ([*(*(&v13 + 1) + 8 * v10) visible])
         {
-          if (v7 == a3)
+          if (v7 == index)
           {
             LODWORD(v7) = v11;
             goto LABEL_14;
@@ -257,31 +257,31 @@ LABEL_14:
   return v7;
 }
 
-- (id)titleForItemAtIndex:(unint64_t)a3
+- (id)titleForItemAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_items objectAtIndexedSubscript:[(UIKeyboardSplitControlMenu *)self visibleItemForIndex:a3]];
-  v4 = [v3 label];
+  v3 = [(NSArray *)self->_items objectAtIndexedSubscript:[(UIKeyboardSplitControlMenu *)self visibleItemForIndex:index]];
+  label = [v3 label];
 
-  return v4;
+  return label;
 }
 
-- (void)setSplitAndUndocked:(BOOL)a3
+- (void)setSplitAndUndocked:(BOOL)undocked
 {
-  v3 = a3;
-  if (+[UIKeyboardImpl isSplit]!= a3)
+  undockedCopy = undocked;
+  if (+[UIKeyboardImpl isSplit]!= undocked)
   {
-    UIKeyboardSetSplit(v3);
+    UIKeyboardSetSplit(undockedCopy);
   }
 
   v5 = +[UIPeripheralHost sharedInstance];
-  v6 = [v5 isUndocked];
+  isUndocked = [v5 isUndocked];
 
-  if (v6 != v3)
+  if (isUndocked != undockedCopy)
   {
-    if (+[UIKeyboardImpl isSplit]== v3)
+    if (+[UIKeyboardImpl isSplit]== undockedCopy)
     {
 
-      UIKeyboardSetUndocked(v3);
+      UIKeyboardSetUndocked(undockedCopy);
     }
 
     else
@@ -290,27 +290,27 @@ LABEL_14:
       v7[1] = 3221225472;
       v7[2] = __50__UIKeyboardSplitControlMenu_setSplitAndUndocked___block_invoke;
       v7[3] = &__block_descriptor_33_e5_v8__0l;
-      v8 = v3;
+      v8 = undockedCopy;
       [(UIKeyboardSplitControlMenu *)self setFinishSplitTransitionBlock:v7];
     }
   }
 }
 
-- (void)didSelectItemAtIndex:(unint64_t)a3
+- (void)didSelectItemAtIndex:(unint64_t)index
 {
   [(UIKeyboardMenuView *)self hide];
-  v5 = [(NSArray *)self->_items objectAtIndexedSubscript:[(UIKeyboardSplitControlMenu *)self visibleItemForIndex:a3]];
+  v5 = [(NSArray *)self->_items objectAtIndexedSubscript:[(UIKeyboardSplitControlMenu *)self visibleItemForIndex:index]];
   [v5 actionForMenu:self];
 }
 
 - (void)didFinishSplitTransition
 {
-  v3 = [(UIKeyboardSplitControlMenu *)self finishSplitTransitionBlock];
+  finishSplitTransitionBlock = [(UIKeyboardSplitControlMenu *)self finishSplitTransitionBlock];
 
-  if (v3)
+  if (finishSplitTransitionBlock)
   {
-    v4 = [(UIKeyboardSplitControlMenu *)self finishSplitTransitionBlock];
-    v4[2]();
+    finishSplitTransitionBlock2 = [(UIKeyboardSplitControlMenu *)self finishSplitTransitionBlock];
+    finishSplitTransitionBlock2[2]();
 
     [(UIKeyboardSplitControlMenu *)self setFinishSplitTransitionBlock:0];
   }

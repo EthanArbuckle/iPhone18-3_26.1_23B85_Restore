@@ -1,35 +1,35 @@
 @interface MNTraceNetworkConditionHelper
 + (BOOL)disableNLC;
-+ (BOOL)enableNLC:(id)a3;
++ (BOOL)enableNLC:(id)c;
 + (BOOL)hasActiveNetworkConditionInducer;
 + (BOOL)isCellDataEnabled;
 + (BOOL)isWiFiEnabled;
-+ (BOOL)setCellDataEnabled:(BOOL)a3;
-+ (BOOL)setWiFiEnabled:(BOOL)a3;
++ (BOOL)setCellDataEnabled:(BOOL)enabled;
++ (BOOL)setWiFiEnabled:(BOOL)enabled;
 + (id)activeNLCProfile;
 + (id)availableNLCProfiles;
 + (id)getCurrentState;
-+ (id)getNLCProfile:(id)a3;
++ (id)getNLCProfile:(id)profile;
 + (id)nlcProfiles;
-+ (void)setCurrentState:(id)a3;
++ (void)setCurrentState:(id)state;
 @end
 
 @implementation MNTraceNetworkConditionHelper
 
-+ (id)getNLCProfile:(id)a3
++ (id)getNLCProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [a1 nlcProfiles];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  profileCopy = profile;
+  nlcProfiles = [self nlcProfiles];
+  v6 = [nlcProfiles objectForKeyedSubscript:profileCopy];
 
   return v6;
 }
 
 + (id)availableNLCProfiles
 {
-  v2 = [a1 nlcProfiles];
-  v3 = [v2 allKeys];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  nlcProfiles = [self nlcProfiles];
+  allKeys = [nlcProfiles allKeys];
+  v4 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   return v4;
 }
@@ -55,20 +55,20 @@
   v2 = *MEMORY[0x1E695E898];
   v3 = _CFPreferencesCopyValueWithContainer();
   v4 = _CFPreferencesCopyValueWithContainer();
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = _CFPreferencesCopyValueWithContainer();
-  v7 = [v6 longValue];
+  longValue = [v6 longValue];
 
-  v8 = [MEMORY[0x1E696AE30] processInfo];
-  [v8 systemUptime];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo systemUptime];
   v10 = v9;
 
-  v11 = [MEMORY[0x1E695DF00] date];
-  [v11 timeIntervalSince1970];
-  v13 = v12 - v7 <= v10;
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
+  v13 = v12 - longValue <= v10;
 
-  if ((v13 & v5) != 0)
+  if ((v13 & bOOLValue) != 0)
   {
     v14 = v3;
   }
@@ -161,13 +161,13 @@ LABEL_17:
   return v3;
 }
 
-+ (BOOL)enableNLC:(id)a3
++ (BOOL)enableNLC:(id)c
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([a1 hasActiveNetworkConditionInducer] & 1) == 0)
+  cCopy = c;
+  if (([self hasActiveNetworkConditionInducer] & 1) == 0)
   {
-    v6 = [a1 getNLCProfile:v4];
+    v6 = [self getNLCProfile:cCopy];
     v7 = v6;
     if (!v6)
     {
@@ -192,19 +192,19 @@ LABEL_44:
     v63 = 0u;
     v64 = 0u;
     v8 = [v6 objectForKeyedSubscript:@"DownlinkBandwidth"];
-    v9 = [v8 unsignedIntValue];
+    unsignedIntValue = [v8 unsignedIntValue];
 
     v10 = [v7 objectForKeyedSubscript:@"DownlinkBandwidthUnit"];
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
 
     v12 = [v7 objectForKeyedSubscript:@"DownlinkPacketLossRatio"];
     [v12 floatValue];
     v14 = v13 * 0.01;
 
     v15 = [v7 objectForKeyedSubscript:@"DownlinkDelay"];
-    v16 = [v15 unsignedIntValue];
+    unsignedIntValue2 = [v15 unsignedIntValue];
 
-    if (!v9 && (v14 == 0.0 ? (v17 = v16 == 0) : (v17 = 0), v17))
+    if (!unsignedIntValue && (v14 == 0.0 ? (v17 = unsignedIntValue2 == 0) : (v17 = 0), v17))
     {
       v18 = 5;
     }
@@ -212,33 +212,33 @@ LABEL_44:
     else
     {
       LODWORD(v63) = 9;
-      *&v66 = __PAIR64__(v11, v9);
-      *(&v66 + 1) = __PAIR64__(v16, LODWORD(v14));
+      *&v66 = __PAIR64__(bOOLValue, unsignedIntValue);
+      *(&v66 + 1) = __PAIR64__(unsignedIntValue2, LODWORD(v14));
       v67 = 0uLL;
       v18 = 13;
       v68 = 0;
     }
 
     v19 = [v7 objectForKeyedSubscript:@"UplinkBandwidth"];
-    v20 = [v19 unsignedIntValue];
+    unsignedIntValue3 = [v19 unsignedIntValue];
 
     v21 = [v7 objectForKeyedSubscript:@"UplinkBandwidthUnit"];
-    v22 = [v21 BOOLValue];
+    bOOLValue2 = [v21 BOOLValue];
 
     v23 = [v7 objectForKeyedSubscript:@"UplinkPacketLossRatio"];
     [v23 floatValue];
     v25 = v24 * 0.01;
 
     v26 = [v7 objectForKeyedSubscript:@"UplinkDelay"];
-    v27 = [v26 unsignedIntValue];
+    unsignedIntValue4 = [v26 unsignedIntValue];
 
-    if (v20 || v25 != 0.0 || v27)
+    if (unsignedIntValue3 || v25 != 0.0 || unsignedIntValue4)
     {
       LODWORD(v63) = v18;
-      HIDWORD(v64) = v20;
-      *&v65[0] = __PAIR64__(LODWORD(v25), v22);
+      HIDWORD(v64) = unsignedIntValue3;
+      *&v65[0] = __PAIR64__(LODWORD(v25), bOOLValue2);
       memset(v65 + 12, 0, 20);
-      DWORD2(v65[0]) = v27;
+      DWORD2(v65[0]) = unsignedIntValue4;
     }
 
     v28 = [v7 objectForKeyedSubscript:@"RunOnInterface"];
@@ -272,19 +272,19 @@ LABEL_44:
     }
 
     v31 = [v7 objectForKeyedSubscript:@"DNSDelayValue"];
-    v32 = [v31 unsignedIntValue];
+    unsignedIntValue5 = [v31 unsignedIntValue];
 
-    if (v32)
+    if (unsignedIntValue5)
     {
       v33 = [v7 objectForKeyedSubscript:@"ExcludeLoopback"];
-      v34 = [v33 unsignedIntValue];
+      unsignedIntValue6 = [v33 unsignedIntValue];
 
       *(&v54 + 4) = 6;
-      HIDWORD(v54) = v34;
+      HIDWORD(v54) = unsignedIntValue6;
       v55 = 0uLL;
       *&v56 = 0;
       DWORD2(v56) = 0;
-      HIDWORD(v56) = v32;
+      HIDWORD(v56) = unsignedIntValue5;
       *&v57 = 0;
       *(&v57 + 1) = 0x3500000011;
       v58 = 0u;
@@ -328,8 +328,8 @@ LABEL_44:
       _CFPreferencesSetValueWithContainer();
       v40 = *MEMORY[0x1E695E4D0];
       _CFPreferencesSetValueWithContainer();
-      v41 = [MEMORY[0x1E695DF00] date];
-      [v41 timeIntervalSince1970];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSince1970];
       v43 = v42;
 
       [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v43];
@@ -345,7 +345,7 @@ LABEL_43:
       }
 
       *buf = 138412290;
-      v62 = v4;
+      v62 = cCopy;
       v44 = "Network Link Conditioner set to %@";
       v45 = v48;
       v46 = OS_LOG_TYPE_INFO;
@@ -400,13 +400,13 @@ LABEL_45:
 
   v3 = v2;
   _Block_object_dispose(&v17, 8);
-  v4 = [v3 getActiveConditions];
+  getActiveConditions = [v3 getActiveConditions];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v21 count:16];
+  allKeys = [getActiveConditions allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v12 objects:v21 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -416,7 +416,7 @@ LABEL_45:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         if ([*(*(&v12 + 1) + 8 * i) containsString:@"SlowNetwork"])
@@ -426,7 +426,7 @@ LABEL_45:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v21 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v12 objects:v21 count:16];
       if (v6)
       {
         continue;
@@ -464,9 +464,9 @@ LABEL_13:
   return 0;
 }
 
-+ (BOOL)setCellDataEnabled:(BOOL)a3
++ (BOOL)setCellDataEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v16 = *MEMORY[0x1E69E9840];
   ctConnection();
   IsEnabled = _CTServerConnectionSetCellularDataIsEnabled();
@@ -490,7 +490,7 @@ LABEL_8:
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v11 = "dis";
-    if (v3)
+    if (enabledCopy)
     {
       v11 = "en";
     }
@@ -530,15 +530,15 @@ LABEL_8:
   _Block_object_dispose(&v8, 8);
   v4 = objc_alloc_init(v3);
   [v4 activate];
-  v5 = [v4 powerOn];
+  powerOn = [v4 powerOn];
   [v4 invalidate];
 
-  return v5;
+  return powerOn;
 }
 
-+ (BOOL)setWiFiEnabled:(BOOL)a3
++ (BOOL)setWiFiEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v26 = *MEMORY[0x1E69E9840];
   v18 = 0;
   if (!ATKLoggerLibraryCore_frameworkLibrary)
@@ -589,33 +589,33 @@ LABEL_4:
 
   v6 = v5;
   _Block_object_dispose(&v23, 8);
-  v7 = [[v6 alloc] initAsMobile];
-  [v7 setDirectInvocations:0];
-  [v7 start];
-  v8 = [v7 WiFi];
-  v9 = v8;
-  if (v3)
+  initAsMobile = [[v6 alloc] initAsMobile];
+  [initAsMobile setDirectInvocations:0];
+  [initAsMobile start];
+  wiFi = [initAsMobile WiFi];
+  v9 = wiFi;
+  if (enabledCopy)
   {
-    [v8 on];
+    [wiFi on];
   }
 
   else
   {
-    [v8 off];
+    [wiFi off];
   }
   v10 = ;
 
-  v11 = [v10 error];
+  error = [v10 error];
 
   v12 = GEOFindOrCreateLog();
   v13 = v12;
-  if (v11)
+  if (error)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v10 error];
+      error2 = [v10 error];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v14;
+      *(&buf + 4) = error2;
       _os_log_impl(&dword_1D311E000, v13, OS_LOG_TYPE_ERROR, "Unable to change WiFi state: %@", &buf, 0xCu);
     }
   }
@@ -623,7 +623,7 @@ LABEL_4:
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v15 = "OFF";
-    if (v3)
+    if (enabledCopy)
     {
       v15 = "ON";
     }
@@ -634,21 +634,21 @@ LABEL_4:
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v11 == 0;
+  return error == 0;
 }
 
-+ (void)setCurrentState:(id)a3
++ (void)setCurrentState:(id)state
 {
-  v4 = a3;
-  if (v4)
+  stateCopy = state;
+  if (stateCopy)
   {
     global_queue = geo_get_global_queue();
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __49__MNTraceNetworkConditionHelper_setCurrentState___block_invoke;
     v6[3] = &unk_1E8430A10;
-    v8 = a1;
-    v7 = v4;
+    selfCopy = self;
+    v7 = stateCopy;
     dispatch_async(global_queue, v6);
   }
 }
@@ -675,13 +675,13 @@ void __49__MNTraceNetworkConditionHelper_setCurrentState___block_invoke(uint64_t
 + (id)getCurrentState
 {
   v3 = objc_alloc_init(MNTraceNetworkEvent);
-  -[MNTraceNetworkEvent setWifiEnabled:](v3, "setWifiEnabled:", [a1 isWiFiEnabled]);
-  -[MNTraceNetworkEvent setCellEnabled:](v3, "setCellEnabled:", [a1 isCellDataEnabled]);
-  v4 = [a1 activeNLCProfile];
-  [(MNTraceNetworkEvent *)v3 setNlcProfile:v4];
+  -[MNTraceNetworkEvent setWifiEnabled:](v3, "setWifiEnabled:", [self isWiFiEnabled]);
+  -[MNTraceNetworkEvent setCellEnabled:](v3, "setCellEnabled:", [self isCellDataEnabled]);
+  activeNLCProfile = [self activeNLCProfile];
+  [(MNTraceNetworkEvent *)v3 setNlcProfile:activeNLCProfile];
 
-  v5 = [(MNTraceNetworkEvent *)v3 nlcProfile];
-  -[MNTraceNetworkEvent setNlcEnabled:](v3, "setNlcEnabled:", [v5 length] != 0);
+  nlcProfile = [(MNTraceNetworkEvent *)v3 nlcProfile];
+  -[MNTraceNetworkEvent setNlcEnabled:](v3, "setNlcEnabled:", [nlcProfile length] != 0);
 
   return v3;
 }

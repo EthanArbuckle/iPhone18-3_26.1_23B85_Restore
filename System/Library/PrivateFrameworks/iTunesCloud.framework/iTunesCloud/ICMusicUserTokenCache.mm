@@ -1,15 +1,15 @@
 @interface ICMusicUserTokenCache
 + (ICMusicUserTokenCache)sharedCache;
-+ (id)_decodeDeveloperTokenPart:(id)a3;
-+ (void)_getCacheKeyForDeveloperToken:(id)a3 requestContext:(id)a4 completion:(id)a5;
++ (id)_decodeDeveloperTokenPart:(id)part;
++ (void)_getCacheKeyForDeveloperToken:(id)token requestContext:(id)context completion:(id)completion;
 - (id)_init;
-- (void)_handleMusicUserTokensDidChangeDistributedNotification:(id)a3;
-- (void)_loadPersistedCacheWithCompletion:(id)a3;
+- (void)_handleMusicUserTokensDidChangeDistributedNotification:(id)notification;
+- (void)_loadPersistedCacheWithCompletion:(id)completion;
 - (void)_persistCache;
 - (void)_postLocalChangeNotification;
 - (void)dealloc;
-- (void)getCachedUserTokenForDeveloperToken:(id)a3 requestContext:(id)a4 completion:(id)a5;
-- (void)setCachedUserToken:(id)a3 forDeveloperToken:(id)a4 requestContext:(id)a5 completion:(id)a6;
+- (void)getCachedUserTokenForDeveloperToken:(id)token requestContext:(id)context completion:(id)completion;
+- (void)setCachedUserToken:(id)token forDeveloperToken:(id)developerToken requestContext:(id)context completion:(id)completion;
 @end
 
 @implementation ICMusicUserTokenCache
@@ -17,8 +17,8 @@
 - (void)_postLocalChangeNotification
 {
   dispatch_assert_queue_V2(self->_calloutQueue);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"ICMusicUserTokenCacheDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICMusicUserTokenCacheDidChangeNotification" object:self];
 }
 
 - (void)_persistCache
@@ -29,9 +29,9 @@
   [v3 synchronize];
 }
 
-- (void)_loadPersistedCacheWithCompletion:(id)a3
+- (void)_loadPersistedCacheWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_barrier(self->_accessQueue);
   v5 = [(NSMutableDictionary *)self->_cachedUserTokens copy];
   cachedUserTokens = self->_cachedUserTokens;
@@ -39,18 +39,18 @@
 
   v7 = +[ICDefaults standardDefaults];
   [v7 synchronize];
-  v8 = [v7 cachedMusicUserTokens];
+  cachedMusicUserTokens = [v7 cachedMusicUserTokens];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __59__ICMusicUserTokenCache__loadPersistedCacheWithCompletion___block_invoke;
   v15[3] = &unk_1E7BF7900;
   v15[4] = self;
-  [v8 enumerateKeysAndObjectsUsingBlock:v15];
+  [cachedMusicUserTokens enumerateKeysAndObjectsUsingBlock:v15];
   v9 = self->_cachedUserTokens;
   if (v5 == v9)
   {
     v10 = 0;
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_7;
     }
@@ -64,7 +64,7 @@
     v10 = [(NSMutableDictionary *)v5 isEqualToDictionary:?]^ 1;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_6:
     calloutQueue = self->_calloutQueue;
@@ -72,7 +72,7 @@ LABEL_6:
     block[1] = 3221225472;
     block[2] = __59__ICMusicUserTokenCache__loadPersistedCacheWithCompletion___block_invoke_2;
     block[3] = &unk_1E7BF8C60;
-    v13 = v4;
+    v13 = completionCopy;
     v14 = v10;
     dispatch_async(calloutQueue, block);
   }
@@ -101,14 +101,14 @@ void __59__ICMusicUserTokenCache__loadPersistedCacheWithCompletion___block_invok
   }
 }
 
-- (void)_handleMusicUserTokensDidChangeDistributedNotification:(id)a3
+- (void)_handleMusicUserTokensDidChangeDistributedNotification:(id)notification
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_INFO, "%{public}@: Reloading Music User Token due to external change notification.", buf, 0xCu);
   }
 
@@ -152,23 +152,23 @@ void __80__ICMusicUserTokenCache__handleMusicUserTokensDidChangeDistributedNotif
   }
 }
 
-- (void)setCachedUserToken:(id)a3 forDeveloperToken:(id)a4 requestContext:(id)a5 completion:(id)a6
+- (void)setCachedUserToken:(id)token forDeveloperToken:(id)developerToken requestContext:(id)context completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
+  contextCopy = context;
+  developerTokenCopy = developerToken;
   v14 = objc_opt_class();
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __88__ICMusicUserTokenCache_setCachedUserToken_forDeveloperToken_requestContext_completion___block_invoke;
   v17[3] = &unk_1E7BF9C10;
-  v18 = v10;
-  v19 = v11;
+  v18 = tokenCopy;
+  v19 = completionCopy;
   v17[4] = self;
-  v15 = v10;
-  v16 = v11;
-  [v14 _getCacheKeyForDeveloperToken:v13 requestContext:v12 completion:v17];
+  v15 = tokenCopy;
+  v16 = completionCopy;
+  [v14 _getCacheKeyForDeveloperToken:developerTokenCopy requestContext:contextCopy completion:v17];
 }
 
 void __88__ICMusicUserTokenCache_setCachedUserToken_forDeveloperToken_requestContext_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -301,20 +301,20 @@ uint64_t __88__ICMusicUserTokenCache_setCachedUserToken_forDeveloperToken_reques
   return result;
 }
 
-- (void)getCachedUserTokenForDeveloperToken:(id)a3 requestContext:(id)a4 completion:(id)a5
+- (void)getCachedUserTokenForDeveloperToken:(id)token requestContext:(id)context completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  contextCopy = context;
+  tokenCopy = token;
   v11 = objc_opt_class();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __87__ICMusicUserTokenCache_getCachedUserTokenForDeveloperToken_requestContext_completion___block_invoke;
   v13[3] = &unk_1E7BF9C58;
   v13[4] = self;
-  v14 = v8;
-  v12 = v8;
-  [v11 _getCacheKeyForDeveloperToken:v10 requestContext:v9 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [v11 _getCacheKeyForDeveloperToken:tokenCopy requestContext:contextCopy completion:v13];
 }
 
 void __87__ICMusicUserTokenCache_getCachedUserTokenForDeveloperToken_requestContext_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -376,8 +376,8 @@ void __87__ICMusicUserTokenCache_getCachedUserTokenForDeveloperToken_requestCont
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self name:@"com.apple.iTunesCloud.ICMusicUserTokensDidChangeDistributedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.iTunesCloud.ICMusicUserTokensDidChangeDistributedNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = ICMusicUserTokenCache;
@@ -399,8 +399,8 @@ void __87__ICMusicUserTokenCache_getCachedUserTokenForDeveloperToken_requestCont
     calloutQueue = v2->_calloutQueue;
     v2->_calloutQueue = v5;
 
-    v7 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v7 addObserver:v2 selector:sel__handleMusicUserTokensDidChangeDistributedNotification_ name:@"com.apple.iTunesCloud.ICMusicUserTokensDidChangeDistributedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleMusicUserTokensDidChangeDistributedNotification_ name:@"com.apple.iTunesCloud.ICMusicUserTokensDidChangeDistributedNotification" object:0];
 
     v8 = v2->_accessQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -414,20 +414,20 @@ void __87__ICMusicUserTokenCache_getCachedUserTokenForDeveloperToken_requestCont
   return v2;
 }
 
-+ (void)_getCacheKeyForDeveloperToken:(id)a3 requestContext:(id)a4 completion:(id)a5
++ (void)_getCacheKeyForDeveloperToken:(id)token requestContext:(id)context completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 componentsSeparatedByString:@"."];
-  v27 = a1;
+  tokenCopy = token;
+  contextCopy = context;
+  completionCopy = completion;
+  v11 = [tokenCopy componentsSeparatedByString:@"."];
+  selfCopy = self;
   if ([v11 count] == 3)
   {
-    v25 = v10;
-    v26 = v9;
+    v25 = completionCopy;
+    v26 = contextCopy;
     v12 = [v11 objectAtIndex:0];
-    v13 = [a1 _decodeDeveloperTokenPart:v12];
+    v13 = [self _decodeDeveloperTokenPart:v12];
     v14 = [v13 objectForKey:@"kid"];
     v15 = 0;
     if (_NSIsNSString())
@@ -436,7 +436,7 @@ void __87__ICMusicUserTokenCache_getCachedUserTokenForDeveloperToken_requestCont
     }
 
     v16 = [v11 objectAtIndex:1];
-    v17 = [a1 _decodeDeveloperTokenPart:v16];
+    v17 = [self _decodeDeveloperTokenPart:v16];
     v18 = [v17 objectForKey:@"iss"];
     if (_NSIsNSString())
     {
@@ -450,23 +450,23 @@ void __87__ICMusicUserTokenCache_getCachedUserTokenForDeveloperToken_requestCont
 
     if (v15)
     {
-      v10 = v25;
-      v9 = v26;
+      completionCopy = v25;
+      contextCopy = v26;
       if (v19)
       {
-        v21 = [v26 identity];
-        v24 = [v26 identityStore];
+        identity = [v26 identity];
+        identityStore = [v26 identityStore];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __81__ICMusicUserTokenCache__getCacheKeyForDeveloperToken_requestContext_completion___block_invoke;
         v28[3] = &unk_1E7BF78D8;
-        v32 = v27;
+        v32 = selfCopy;
         v31 = v25;
         v15 = v15;
         v29 = v15;
         v19 = v19;
         v30 = v19;
-        [v24 getPropertiesForUserIdentity:v21 completionHandler:v28];
+        [identityStore getPropertiesForUserIdentity:identity completionHandler:v28];
 
         goto LABEL_16;
       }
@@ -474,8 +474,8 @@ void __87__ICMusicUserTokenCache_getCachedUserTokenForDeveloperToken_requestCont
 
     else
     {
-      v10 = v25;
-      v9 = v26;
+      completionCopy = v25;
+      contextCopy = v26;
     }
   }
 
@@ -485,9 +485,9 @@ void __87__ICMusicUserTokenCache_getCachedUserTokenForDeveloperToken_requestCont
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v34 = a1;
+      selfCopy2 = self;
       v35 = 2112;
-      v36 = v8;
+      v36 = tokenCopy;
       v37 = 2048;
       v38 = [v11 count];
       _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_ERROR, "%{public}@: Failed to extract key identifier and team identifier from developer token %@ because it has an unexpected number of parts: %lu.", buf, 0x20u);
@@ -497,19 +497,19 @@ void __87__ICMusicUserTokenCache_getCachedUserTokenForDeveloperToken_requestCont
     v19 = 0;
   }
 
-  v21 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICError" code:-8202 debugDescription:{@"Failed to create a key for the Music User Token Cache because the key identifier and/or the team identifier could not be derived from developer token %@.", v8}];
+  identity = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICError" code:-8202 debugDescription:{@"Failed to create a key for the Music User Token Cache because the key identifier and/or the team identifier could not be derived from developer token %@.", tokenCopy}];
   v22 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
-    v23 = [v21 msv_description];
+    msv_description = [identity msv_description];
     *buf = 138543618;
-    v34 = v27;
+    selfCopy2 = selfCopy;
     v35 = 2114;
-    v36 = v23;
+    v36 = msv_description;
     _os_log_impl(&dword_1B4491000, v22, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@", buf, 0x16u);
   }
 
-  (*(v10 + 2))(v10, 0, v21);
+  (*(completionCopy + 2))(completionCopy, 0, identity);
 LABEL_16:
 }
 
@@ -546,11 +546,11 @@ void __81__ICMusicUserTokenCache__getCacheKeyForDeveloperToken_requestContext_co
   v9();
 }
 
-+ (id)_decodeDeveloperTokenPart:(id)a3
++ (id)_decodeDeveloperTokenPart:(id)part
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 length]& 3;
+  partCopy = part;
+  v5 = [partCopy length]& 3;
   if (v5 > 1)
   {
     if (v5 == 2)
@@ -563,7 +563,7 @@ void __81__ICMusicUserTokenCache__getCacheKeyForDeveloperToken_requestContext_co
       v7 = @"=";
     }
 
-    v6 = [v4 stringByAppendingString:v7];
+    v6 = [partCopy stringByAppendingString:v7];
 
 LABEL_8:
     if (!v6)
@@ -578,7 +578,7 @@ LABEL_8:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v18 = a1;
+        selfCopy4 = self;
         v19 = 2112;
         v20 = v6;
         _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Failed to convert base 64 encoded string with developer token encoded part to data: %@.", buf, 0x16u);
@@ -608,7 +608,7 @@ LABEL_25:
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
         *buf = 138543618;
-        v18 = a1;
+        selfCopy4 = self;
         v19 = 2114;
         v20 = v14;
         _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_ERROR, "%{public}@: Failed to decode developer token encoded part because resulting object is of unexpected type: %{public}@.", buf, 0x16u);
@@ -621,7 +621,7 @@ LABEL_25:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v18 = a1;
+        selfCopy4 = self;
         v19 = 2114;
         v20 = v10;
         _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_ERROR, "%{public}@: Failed to deserialize developer token encoded part data with error: %{public}@.", buf, 0x16u);
@@ -632,7 +632,7 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  v6 = v4;
+  v6 = partCopy;
   if (!v5)
   {
     goto LABEL_8;
@@ -643,9 +643,9 @@ LABEL_13:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v18 = a1;
+    selfCopy4 = self;
     v19 = 2112;
-    v20 = v4;
+    v20 = partCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Failed to correct developer token encoded part: %@.", buf, 0x16u);
   }
 

@@ -1,10 +1,10 @@
 @interface ContextManager
-- (void)updateContext:(id)a3;
+- (void)updateContext:(id)context;
 @end
 
 @implementation ContextManager
 
-- (void)updateContext:(id)a3
+- (void)updateContext:(id)context
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

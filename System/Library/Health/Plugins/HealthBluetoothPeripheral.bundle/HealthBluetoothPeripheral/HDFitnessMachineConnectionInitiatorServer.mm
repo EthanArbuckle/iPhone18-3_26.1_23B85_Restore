@@ -1,29 +1,29 @@
 @interface HDFitnessMachineConnectionInitiatorServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 + (id)requiredEntitlements;
-- (void)remote_forbidConnectionForFitnessMachineSessionUUID:(id)a3;
-- (void)remote_permitConnectionForFitnessMachineSessionUUID:(id)a3 activityType:(unint64_t)a4;
-- (void)remote_registerConnectionInitiatorClient:(id)a3;
+- (void)remote_forbidConnectionForFitnessMachineSessionUUID:(id)d;
+- (void)remote_permitConnectionForFitnessMachineSessionUUID:(id)d activityType:(unint64_t)type;
+- (void)remote_registerConnectionInitiatorClient:(id)client;
 - (void)remote_simulateAccept;
-- (void)remote_simulateTapWithFitnessMachineType:(unint64_t)a3;
+- (void)remote_simulateTapWithFitnessMachineType:(unint64_t)type;
 @end
 
 @implementation HDFitnessMachineConnectionInitiatorServer
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 fitnessMachineManager];
-  v17 = [v16 connectionInitiatorServer];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  fitnessMachineManager = [profile fitnessMachineManager];
+  connectionInitiatorServer = [fitnessMachineManager connectionInitiatorServer];
 
-  if (v17)
+  if (connectionInitiatorServer)
   {
-    v18 = [[HDFitnessMachineConnectionInitiatorServer alloc] initWithUUID:v11 configuration:v12 client:v13 delegate:v14];
-    v19 = v17;
+    v18 = [[HDFitnessMachineConnectionInitiatorServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
+    v19 = connectionInitiatorServer;
     connectionInitiatorServer = v18->_connectionInitiatorServer;
     v18->_connectionInitiatorServer = v19;
   }
@@ -33,10 +33,10 @@
     connectionInitiatorServer = +[NSError hk_featureUnavailableForProfileError];
     if (connectionInitiatorServer)
     {
-      if (a7)
+      if (error)
       {
         v21 = connectionInitiatorServer;
-        *a7 = connectionInitiatorServer;
+        *error = connectionInitiatorServer;
       }
 
       else
@@ -59,7 +59,7 @@
   return v2;
 }
 
-- (void)remote_forbidConnectionForFitnessMachineSessionUUID:(id)a3
+- (void)remote_forbidConnectionForFitnessMachineSessionUUID:(id)d
 {
   if (self)
   {
@@ -72,13 +72,13 @@
   }
 
   v6 = connectionInitiatorServer;
-  v7 = a3;
+  dCopy = d;
   [(HDFitnessMachineConnectionInitiatorServer *)self taskUUID];
   objc_claimAutoreleasedReturnValue();
   [sub_51E0() forbidConnectionForFitnessMachineSessionUUID:? withConnectionUUID:?];
 }
 
-- (void)remote_permitConnectionForFitnessMachineSessionUUID:(id)a3 activityType:(unint64_t)a4
+- (void)remote_permitConnectionForFitnessMachineSessionUUID:(id)d activityType:(unint64_t)type
 {
   if (self)
   {
@@ -91,12 +91,12 @@
   }
 
   v8 = connectionInitiatorServer;
-  v9 = a3;
-  v10 = [(HDFitnessMachineConnectionInitiatorServer *)self taskUUID];
-  [(HDFitnessMachineConnectionInitiatorProtocol *)v8 permitConnectionForFitnessMachineSessionUUID:v9 activityType:a4 withConnectionUUID:v10];
+  dCopy = d;
+  taskUUID = [(HDFitnessMachineConnectionInitiatorServer *)self taskUUID];
+  [(HDFitnessMachineConnectionInitiatorProtocol *)v8 permitConnectionForFitnessMachineSessionUUID:dCopy activityType:type withConnectionUUID:taskUUID];
 }
 
-- (void)remote_registerConnectionInitiatorClient:(id)a3
+- (void)remote_registerConnectionInitiatorClient:(id)client
 {
   if (self)
   {
@@ -109,7 +109,7 @@
   }
 
   v6 = connectionInitiatorServer;
-  v7 = a3;
+  clientCopy = client;
   [(HDFitnessMachineConnectionInitiatorServer *)self taskUUID];
   objc_claimAutoreleasedReturnValue();
   [sub_51E0() registerConnectionInitiatorClient:? withConnectionUUID:?];
@@ -125,14 +125,14 @@
   [(HDFitnessMachineConnectionInitiatorServer *)self simulateAccept];
 }
 
-- (void)remote_simulateTapWithFitnessMachineType:(unint64_t)a3
+- (void)remote_simulateTapWithFitnessMachineType:(unint64_t)type
 {
   if (self)
   {
     self = self->_connectionInitiatorServer;
   }
 
-  [(HDFitnessMachineConnectionInitiatorServer *)self simulateTapWithFitnessMachineType:a3];
+  [(HDFitnessMachineConnectionInitiatorServer *)self simulateTapWithFitnessMachineType:type];
 }
 
 @end

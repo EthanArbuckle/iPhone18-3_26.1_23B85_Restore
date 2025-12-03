@@ -16,18 +16,18 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 accessories];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
-  if (v5)
+  accessories = [v3 accessories];
+  text = [accessories countByEnumeratingWithState:&v14 objects:v19 count:16];
+  if (text)
   {
     v6 = *v15;
     while (2)
     {
-      for (i = 0; i != v5; i = i + 1)
+      for (i = 0; i != text; i = i + 1)
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accessories);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -43,14 +43,14 @@
           }
 
           v10 = v9;
-          v5 = [v9 text];
+          text = [v9 text];
 
           goto LABEL_12;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
-      if (v5)
+      text = [accessories countByEnumeratingWithState:&v14 objects:v19 count:16];
+      if (text)
       {
         continue;
       }

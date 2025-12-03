@@ -10,8 +10,8 @@
   v4.receiver = self;
   v4.super_class = CRLiOSPresetCollectionViewCell;
   [(CRLiOSPresetCollectionViewCell *)&v4 prepareForReuse];
-  v3 = [(CRLiOSPresetCollectionViewCell *)self presetButton];
-  [v3 setImage:0 forState:0];
+  presetButton = [(CRLiOSPresetCollectionViewCell *)self presetButton];
+  [presetButton setImage:0 forState:0];
 }
 
 - (UIButton)presetButton

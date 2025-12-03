@@ -1,34 +1,34 @@
 @interface NMSModelEditorialRecommendationsRequestOperation
-- (id)configurationForLoadingModelDataWithStoreURLBag:(id)a3 error:(id *)a4;
+- (id)configurationForLoadingModelDataWithStoreURLBag:(id)bag error:(id *)error;
 - (void)execute;
-- (void)produceResponseWithLoadedOutput:(id)a3 completion:(id)a4;
+- (void)produceResponseWithLoadedOutput:(id)output completion:(id)completion;
 @end
 
 @implementation NMSModelEditorialRecommendationsRequestOperation
 
 - (void)execute
 {
-  v3 = [(MPStoreModelRequestOperation *)self request];
-  if ([v3 nms_useCachedDataOnly])
+  request = [(MPStoreModelRequestOperation *)self request];
+  if ([request nms_useCachedDataOnly])
   {
-    v4 = [v3 nms_cachedLoadedOutput];
+    nms_cachedLoadedOutput = [request nms_cachedLoadedOutput];
 
-    if (v4)
+    if (nms_cachedLoadedOutput)
     {
-      v5 = [v3 nms_cachedLoadedOutput];
+      nms_cachedLoadedOutput2 = [request nms_cachedLoadedOutput];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __59__NMSModelEditorialRecommendationsRequestOperation_execute__block_invoke;
       v10[3] = &unk_27993EAB0;
       v10[4] = self;
-      [(NMSModelEditorialRecommendationsRequestOperation *)self produceResponseWithLoadedOutput:v5 completion:v10];
+      [(NMSModelEditorialRecommendationsRequestOperation *)self produceResponseWithLoadedOutput:nms_cachedLoadedOutput2 completion:v10];
     }
 
     else
     {
       v6 = objc_alloc(MEMORY[0x277CD5F78]);
-      v7 = [(MPStoreModelRequestOperation *)self request];
-      v8 = [v6 initWithRequest:v7];
+      request2 = [(MPStoreModelRequestOperation *)self request];
+      v8 = [v6 initWithRequest:request2];
       [(MPStoreModelRequestOperation *)self _finishWithResponse:v8 error:0];
     }
   }
@@ -41,13 +41,13 @@
   }
 }
 
-- (id)configurationForLoadingModelDataWithStoreURLBag:(id)a3 error:(id *)a4
+- (id)configurationForLoadingModelDataWithStoreURLBag:(id)bag error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 dictionaryForBagKey:@"musicSubscription"];
-  v8 = [MEMORY[0x277CF0130] sharedInstance];
-  v9 = [v8 primaryAuthKitAccount];
-  v10 = [v8 userUnderAgeForAccount:v9];
+  bagCopy = bag;
+  v7 = [bagCopy dictionaryForBagKey:@"musicSubscription"];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  primaryAuthKitAccount = [mEMORY[0x277CF0130] primaryAuthKitAccount];
+  v10 = [mEMORY[0x277CF0130] userUnderAgeForAccount:primaryAuthKitAccount];
 
   v11 = @"musicStarterPackOver13";
   if (v10)
@@ -60,8 +60,8 @@
   if (v13)
   {
     v14 = [MEMORY[0x277CBEBC0] URLWithString:v13];
-    v15 = [(MPStoreModelRequestOperation *)self request];
-    [v15 setLoadAdditionalContentURL:v14];
+    request = [(MPStoreModelRequestOperation *)self request];
+    [request setLoadAdditionalContentURL:v14];
   }
 
   else
@@ -72,36 +72,36 @@
       [NMSModelEditorialRecommendationsRequestOperation configurationForLoadingModelDataWithStoreURLBag:v12 error:v16];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7201 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7201 userInfo:0];
     }
   }
 
   v19.receiver = self;
   v19.super_class = NMSModelEditorialRecommendationsRequestOperation;
-  v17 = [(MPModelStoreBrowseRequestOperation *)&v19 configurationForLoadingModelDataWithStoreURLBag:v6 error:a4];
+  v17 = [(MPModelStoreBrowseRequestOperation *)&v19 configurationForLoadingModelDataWithStoreURLBag:bagCopy error:error];
 
   return v17;
 }
 
-- (void)produceResponseWithLoadedOutput:(id)a3 completion:(id)a4
+- (void)produceResponseWithLoadedOutput:(id)output completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPStoreModelRequestOperation *)self request];
+  outputCopy = output;
+  completionCopy = completion;
+  request = [(MPStoreModelRequestOperation *)self request];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __95__NMSModelEditorialRecommendationsRequestOperation_produceResponseWithLoadedOutput_completion___block_invoke;
   v13[3] = &unk_27993DF50;
-  v14 = v8;
-  v15 = v6;
-  v16 = v7;
+  v14 = request;
+  v15 = outputCopy;
+  v16 = completionCopy;
   v12.receiver = self;
   v12.super_class = NMSModelEditorialRecommendationsRequestOperation;
-  v9 = v7;
-  v10 = v6;
-  v11 = v8;
+  v9 = completionCopy;
+  v10 = outputCopy;
+  v11 = request;
   [(MPModelStoreBrowseRequestOperation *)&v12 produceResponseWithLoadedOutput:v10 completion:v13];
 }
 

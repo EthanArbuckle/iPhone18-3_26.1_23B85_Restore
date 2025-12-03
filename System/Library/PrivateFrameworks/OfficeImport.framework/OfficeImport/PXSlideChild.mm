@@ -1,63 +1,63 @@
 @interface PXSlideChild
-+ (void)readFromPackagePart:(id)a3 toSlideChild:(id)a4 presentationState:(id)a5;
++ (void)readFromPackagePart:(id)part toSlideChild:(id)child presentationState:(id)state;
 @end
 
 @implementation PXSlideChild
 
-+ (void)readFromPackagePart:(id)a3 toSlideChild:(id)a4 presentationState:(id)a5
++ (void)readFromPackagePart:(id)part toSlideChild:(id)child presentationState:(id)state
 {
-  v23 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 officeArtState];
-  v10 = [v9 styleMatrix];
-  v11 = [v8 OCXThemeOverrideRelationshipType];
-  v12 = [v23 firstPartWithRelationshipOfType:v11];
+  partCopy = part;
+  childCopy = child;
+  stateCopy = state;
+  officeArtState = [stateCopy officeArtState];
+  styleMatrix = [officeArtState styleMatrix];
+  oCXThemeOverrideRelationshipType = [stateCopy OCXThemeOverrideRelationshipType];
+  v12 = [partCopy firstPartWithRelationshipOfType:oCXThemeOverrideRelationshipType];
 
   if (v12)
   {
-    v13 = [v7 themeOverrides];
-    [OAXThemeOverrides readFromPackagePart:v12 toThemeOverrides:v13 drawingState:v9];
-    v14 = [v13 styleMatrix];
-    if (v14)
+    themeOverrides = [childCopy themeOverrides];
+    [OAXThemeOverrides readFromPackagePart:v12 toThemeOverrides:themeOverrides drawingState:officeArtState];
+    styleMatrix2 = [themeOverrides styleMatrix];
+    if (styleMatrix2)
     {
-      [v9 setStyleMatrix:v14];
+      [officeArtState setStyleMatrix:styleMatrix2];
     }
   }
 
-  v15 = [v23 xmlDocument];
-  if (!v15)
+  xmlDocument = [partCopy xmlDocument];
+  if (!xmlDocument)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  v16 = OCXGetRootElement(v15);
+  v16 = OCXGetRootElement(xmlDocument);
   if (!v16)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  [v7 setShowMasterShapes:{CXDefaultBoolAttribute(v16, CXNoNamespace, "showMasterSp", 1)}];
-  [v7 setShowMasterPlaceholderAnimations:{CXDefaultBoolAttribute(v16, CXNoNamespace, "showMasterPhAnim", 1)}];
-  v17 = [v8 PXPresentationMLNamespace];
-  v18 = OCXFindChild(v16, v17, "clrMapOvr");
+  [childCopy setShowMasterShapes:{CXDefaultBoolAttribute(v16, CXNoNamespace, "showMasterSp", 1)}];
+  [childCopy setShowMasterPlaceholderAnimations:{CXDefaultBoolAttribute(v16, CXNoNamespace, "showMasterPhAnim", 1)}];
+  pXPresentationMLNamespace = [stateCopy PXPresentationMLNamespace];
+  v18 = OCXFindChild(v16, pXPresentationMLNamespace, "clrMapOvr");
 
   if (v18)
   {
-    v19 = [v8 officeArtState];
-    v20 = [v19 OAXMainNamespace];
-    v21 = OCXFindChild(v18, v20, "overrideClrMapping");
+    officeArtState2 = [stateCopy officeArtState];
+    oAXMainNamespace = [officeArtState2 OAXMainNamespace];
+    v21 = OCXFindChild(v18, oAXMainNamespace, "overrideClrMapping");
 
     if (v21)
     {
       v22 = objc_alloc_init(OADColorMap);
-      [v7 setColorMapOverride:v22];
+      [childCopy setColorMapOverride:v22];
       [OAXColorMap readFromXmlNode:v21 toColorMap:v22];
     }
   }
 
-  [PXSlideBase readFromPackagePart:v23 toSlideBase:v7 presentationState:v8];
-  [v9 setStyleMatrix:v10];
+  [PXSlideBase readFromPackagePart:partCopy toSlideBase:childCopy presentationState:stateCopy];
+  [officeArtState setStyleMatrix:styleMatrix];
 }
 
 @end

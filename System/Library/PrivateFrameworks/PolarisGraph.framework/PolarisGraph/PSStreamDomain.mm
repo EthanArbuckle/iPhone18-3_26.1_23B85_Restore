@@ -1,13 +1,13 @@
 @interface PSStreamDomain
-+ (id)customDomain:(id)a3;
++ (id)customDomain:(id)domain;
 + (id)mixedDomain;
 + (id)msgDomain;
-- (BOOL)isEqual:(id)a3;
-- (PSStreamDomain)initWithCoder:(id)a3;
-- (PSStreamDomain)initWithKey:(id)a3 isGroupable:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PSStreamDomain)initWithCoder:(id)coder;
+- (PSStreamDomain)initWithKey:(id)key isGroupable:(BOOL)groupable;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSStreamDomain
@@ -31,10 +31,10 @@ uint64_t __27__PSStreamDomain_msgDomain__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)customDomain:(id)a3
++ (id)customDomain:(id)domain
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"custom-%@", a3];
-  v4 = [[PSStreamDomain alloc] initWithKey:v3 isGroupable:1];
+  domain = [MEMORY[0x277CCACA8] stringWithFormat:@"custom-%@", domain];
+  v4 = [[PSStreamDomain alloc] initWithKey:domain isGroupable:1];
 
   return v4;
 }
@@ -58,51 +58,51 @@ uint64_t __29__PSStreamDomain_mixedDomain__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   key = self->_key;
-  v5 = a3;
-  [v5 encodeObject:key forKey:@"key"];
-  [v5 encodeBool:self->_isGroupable forKey:@"isGroupable"];
+  coderCopy = coder;
+  [coderCopy encodeObject:key forKey:@"key"];
+  [coderCopy encodeBool:self->_isGroupable forKey:@"isGroupable"];
 }
 
-- (PSStreamDomain)initWithCoder:(id)a3
+- (PSStreamDomain)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
-  v6 = [v4 decodeBoolForKey:@"isGroupable"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+  v6 = [coderCopy decodeBoolForKey:@"isGroupable"];
 
   v7 = [[PSStreamDomain alloc] initWithKey:v5 isGroupable:v6];
   return v7;
 }
 
-- (PSStreamDomain)initWithKey:(id)a3 isGroupable:(BOOL)a4
+- (PSStreamDomain)initWithKey:(id)key isGroupable:(BOOL)groupable
 {
-  v6 = a3;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = PSStreamDomain;
   v7 = [(PSStreamDomain *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [keyCopy copy];
     key = v7->_key;
     v7->_key = v8;
 
-    v7->_isGroupable = a4;
+    v7->_isGroupable = groupable;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [(PSStreamDomain *)self key];
-  v6 = [v4 key];
+  v6 = [equalCopy key];
   if ([v5 isEqual:v6])
   {
-    v7 = [(PSStreamDomain *)self isGroupable];
-    v8 = v7 ^ [v4 isGroupable] ^ 1;
+    isGroupable = [(PSStreamDomain *)self isGroupable];
+    v8 = isGroupable ^ [equalCopy isGroupable] ^ 1;
   }
 
   else
@@ -117,14 +117,14 @@ uint64_t __29__PSStreamDomain_mixedDomain__block_invoke()
 {
   v3 = [(PSStreamDomain *)self key];
   v4 = [v3 hash];
-  v5 = [(PSStreamDomain *)self isGroupable];
+  isGroupable = [(PSStreamDomain *)self isGroupable];
 
-  return v4 ^ v5;
+  return v4 ^ isGroupable;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   objc_storeStrong((v4 + 16), self->_key);
   *(v4 + 8) = self->_isGroupable;
   return v4;

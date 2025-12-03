@@ -1,61 +1,61 @@
 @interface HDAttachmentReferenceEntity
-+ (BOOL)deleteReferences:(id)a3 cloudStatus:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)enumerateReferencesForAttachmentIdentifier:(id)a3 type:(int64_t)a4 transaction:(id)a5 error:(id *)a6 enumerationHandler:(id)a7;
-+ (BOOL)enumerateReferencesForObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 transaction:(id)a5 error:(id *)a6 enumerationHandler:(id)a7;
-+ (BOOL)enumerateReferencesWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (BOOL)filteredNonTombstoneReferences:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (BOOL)insertReference:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)insertTombstones:(id)a3 cloudStatus:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)setCloudStatus:(int64_t)a3 references:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)setCloudStatus:(int64_t)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)_insertIfDoesNotExistReference:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)_insertReference:(id)a3 databaseTransaction:(id)a4 error:(id *)a5;
++ (BOOL)deleteReferences:(id)references cloudStatus:(int64_t)status transaction:(id)transaction error:(id *)error;
++ (BOOL)enumerateReferencesForAttachmentIdentifier:(id)identifier type:(int64_t)type transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)enumerateReferencesForObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)enumerateReferencesWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)filteredNonTombstoneReferences:(id)references transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)insertReference:(id)reference profile:(id)profile error:(id *)error;
++ (BOOL)insertTombstones:(id)tombstones cloudStatus:(int64_t)status transaction:(id)transaction error:(id *)error;
++ (BOOL)setCloudStatus:(int64_t)status references:(id)references transaction:(id)transaction error:(id *)error;
++ (BOOL)setCloudStatus:(int64_t)status transaction:(id)transaction error:(id *)error;
++ (id)_insertIfDoesNotExistReference:(id)reference transaction:(id)transaction error:(id *)error;
++ (id)_insertReference:(id)reference databaseTransaction:(id)transaction error:(id *)error;
 + (id)_propertiesForEntity;
-+ (id)anyReferenceWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)referenceWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
++ (id)anyReferenceWithPredicate:(id)predicate profile:(id)profile error:(id *)error;
++ (id)referenceWithIdentifier:(id)identifier profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDAttachmentReferenceEntity
 
-+ (BOOL)insertReference:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)insertReference:(id)reference profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 metadata];
-  if (v9 && (v10 = v9, [v7 metadata], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "hk_validateAttachmentMetadataKeysAndValuesWithError:", a5), v11, v10, !v12))
+  referenceCopy = reference;
+  profileCopy = profile;
+  metadata = [referenceCopy metadata];
+  if (metadata && (v10 = metadata, [referenceCopy metadata], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "hk_validateAttachmentMetadataKeysAndValuesWithError:", error), v11, v10, !v12))
   {
     v14 = 0;
   }
 
   else
   {
-    v13 = [[HDInsertAttachmentReferenceOperation alloc] initWithReference:v7];
-    v14 = [(HDJournalableOperation *)v13 performOrJournalWithProfile:v8 error:a5];
+    v13 = [[HDInsertAttachmentReferenceOperation alloc] initWithReference:referenceCopy];
+    v14 = [(HDJournalableOperation *)v13 performOrJournalWithProfile:profileCopy error:error];
   }
 
   return v14;
 }
 
-+ (id)anyReferenceWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)anyReferenceWithPredicate:(id)predicate profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  predicateCopy = predicate;
+  profileCopy = profile;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__198;
   v22 = __Block_byref_object_dispose__198;
   v23 = 0;
-  v10 = [v9 database];
+  database = [profileCopy database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__HDAttachmentReferenceEntity_anyReferenceWithPredicate_profile_error___block_invoke;
   v14[3] = &unk_278616AA0;
-  v17 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = predicateCopy;
   v15 = v11;
   v16 = &v18;
-  [a1 performReadTransactionWithHealthDatabase:v10 error:a5 block:v14];
+  [self performReadTransactionWithHealthDatabase:database error:error block:v14];
 
   v12 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -132,33 +132,33 @@ void __71__HDAttachmentReferenceEntity_anyReferenceWithPredicate_profile_error__
   *(v15 + 40) = v14;
 }
 
-+ (id)referenceWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)referenceWithIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
   v8 = MEMORY[0x277D10B18];
-  v9 = a4;
-  v10 = [v8 predicateWithProperty:@"identifier" equalToValue:a3];
-  v11 = [a1 anyReferenceWithPredicate:v10 profile:v9 error:a5];
+  profileCopy = profile;
+  v10 = [v8 predicateWithProperty:@"identifier" equalToValue:identifier];
+  v11 = [self anyReferenceWithPredicate:v10 profile:profileCopy error:error];
 
   return v11;
 }
 
-+ (BOOL)enumerateReferencesWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)enumerateReferencesWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [a4 databaseForEntityClass:a1];
-  v13 = [a1 queryWithDatabase:v12 predicate:v11];
+  handlerCopy = handler;
+  predicateCopy = predicate;
+  v12 = [transaction databaseForEntityClass:self];
+  v13 = [self queryWithDatabase:v12 predicate:predicateCopy];
 
   v14 = +[HDAttachmentReferenceEntity _propertiesForEntity];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __101__HDAttachmentReferenceEntity_enumerateReferencesWithPredicate_transaction_error_enumerationHandler___block_invoke;
   v17[3] = &unk_2786145A8;
-  v18 = v10;
-  v15 = v10;
-  LOBYTE(a5) = [v13 enumerateProperties:v14 error:a5 enumerationHandler:v17];
+  v18 = handlerCopy;
+  v15 = handlerCopy;
+  LOBYTE(error) = [v13 enumerateProperties:v14 error:error enumerationHandler:v17];
 
-  return a5;
+  return error;
 }
 
 uint64_t __101__HDAttachmentReferenceEntity_enumerateReferencesWithPredicate_transaction_error_enumerationHandler___block_invoke(uint64_t a1)
@@ -183,35 +183,35 @@ uint64_t __101__HDAttachmentReferenceEntity_enumerateReferencesWithPredicate_tra
   return v16;
 }
 
-+ (BOOL)enumerateReferencesForObjectIdentifier:(id)a3 schemaIdentifier:(id)a4 transaction:(id)a5 error:(id *)a6 enumerationHandler:(id)a7
++ (BOOL)enumerateReferencesForObjectIdentifier:(id)identifier schemaIdentifier:(id)schemaIdentifier transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  identifierCopy = identifier;
+  schemaIdentifierCopy = schemaIdentifier;
+  handlerCopy = handler;
   v15 = MEMORY[0x277CCACA8];
-  v16 = a5;
-  v17 = [a1 disambiguatedDatabaseTable];
-  v18 = [v15 stringWithFormat:@"SELECT %@, %@, %@, %@, %@, %@, %@, %@, %@, %@ FROM %@ WHERE %@ = ? AND %@ = ?", @"identifier", @"schema_identifier", @"schema_version", @"object_identifier", @"attachment_identifier", @"creation_date", @"options", @"metadata", @"type", @"cloud_status", v17, @"object_identifier", @"schema_identifier"];
+  transactionCopy = transaction;
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v18 = [v15 stringWithFormat:@"SELECT %@, %@, %@, %@, %@, %@, %@, %@, %@, %@ FROM %@ WHERE %@ = ? AND %@ = ?", @"identifier", @"schema_identifier", @"schema_version", @"object_identifier", @"attachment_identifier", @"creation_date", @"options", @"metadata", @"type", @"cloud_status", disambiguatedDatabaseTable, @"object_identifier", @"schema_identifier"];
 
-  v19 = [v16 databaseForEntityClass:a1];
+  v19 = [transactionCopy databaseForEntityClass:self];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __124__HDAttachmentReferenceEntity_enumerateReferencesForObjectIdentifier_schemaIdentifier_transaction_error_enumerationHandler___block_invoke;
   v26[3] = &unk_278613038;
-  v27 = v12;
-  v28 = v13;
+  v27 = identifierCopy;
+  v28 = schemaIdentifierCopy;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __124__HDAttachmentReferenceEntity_enumerateReferencesForObjectIdentifier_schemaIdentifier_transaction_error_enumerationHandler___block_invoke_2;
   v24[3] = &unk_278613B30;
-  v25 = v14;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
-  LOBYTE(a6) = [v19 executeSQL:v18 error:a6 bindingHandler:v26 enumerationHandler:v24];
+  v25 = handlerCopy;
+  v20 = handlerCopy;
+  v21 = schemaIdentifierCopy;
+  v22 = identifierCopy;
+  LOBYTE(error) = [v19 executeSQL:v18 error:error bindingHandler:v26 enumerationHandler:v24];
 
-  return a6;
+  return error;
 }
 
 uint64_t __124__HDAttachmentReferenceEntity_enumerateReferencesForObjectIdentifier_schemaIdentifier_transaction_error_enumerationHandler___block_invoke(uint64_t a1)
@@ -245,39 +245,39 @@ uint64_t __124__HDAttachmentReferenceEntity_enumerateReferencesForObjectIdentifi
   return v16;
 }
 
-+ (BOOL)enumerateReferencesForAttachmentIdentifier:(id)a3 type:(int64_t)a4 transaction:(id)a5 error:(id *)a6 enumerationHandler:(id)a7
++ (BOOL)enumerateReferencesForAttachmentIdentifier:(id)identifier type:(int64_t)type transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a7;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v14 = MEMORY[0x277CCACA8];
-  v15 = a5;
-  v16 = [a1 disambiguatedDatabaseTable];
-  v17 = [v14 stringWithFormat:@"SELECT %@, %@, %@, %@, %@, %@, %@, %@, %@, %@ FROM %@ WHERE %@ = ? AND %@ = ?", @"identifier", @"schema_identifier", @"schema_version", @"object_identifier", @"attachment_identifier", @"creation_date", @"options", @"metadata", @"type", @"cloud_status", v16, @"attachment_identifier", @"type"];
+  transactionCopy = transaction;
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v17 = [v14 stringWithFormat:@"SELECT %@, %@, %@, %@, %@, %@, %@, %@, %@, %@ FROM %@ WHERE %@ = ? AND %@ = ?", @"identifier", @"schema_identifier", @"schema_version", @"object_identifier", @"attachment_identifier", @"creation_date", @"options", @"metadata", @"type", @"cloud_status", disambiguatedDatabaseTable, @"attachment_identifier", @"type"];
 
-  v18 = [v15 databaseForEntityClass:a1];
+  v18 = [transactionCopy databaseForEntityClass:self];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __116__HDAttachmentReferenceEntity_enumerateReferencesForAttachmentIdentifier_type_transaction_error_enumerationHandler___block_invoke;
   v28[3] = &unk_278615C80;
   v29 = v17;
-  v24 = v13;
+  v24 = handlerCopy;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __116__HDAttachmentReferenceEntity_enumerateReferencesForAttachmentIdentifier_type_transaction_error_enumerationHandler___block_invoke_2;
   v25[3] = &unk_278613B58;
-  v26 = v12;
-  v27 = a4;
+  v26 = identifierCopy;
+  typeCopy = type;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __116__HDAttachmentReferenceEntity_enumerateReferencesForAttachmentIdentifier_type_transaction_error_enumerationHandler___block_invoke_3;
   v23[3] = &unk_278613B30;
-  v19 = v13;
-  v20 = v12;
+  v19 = handlerCopy;
+  v20 = identifierCopy;
   v21 = v17;
-  LOBYTE(a6) = [v18 executeCachedStatementForKey:&enumerateReferencesForAttachmentIdentifier_type_transaction_error_enumerationHandler__lookupKey error:a6 SQLGenerator:v28 bindingHandler:v25 enumerationHandler:v23];
+  LOBYTE(error) = [v18 executeCachedStatementForKey:&enumerateReferencesForAttachmentIdentifier_type_transaction_error_enumerationHandler__lookupKey error:error SQLGenerator:v28 bindingHandler:v25 enumerationHandler:v23];
 
-  return a6;
+  return error;
 }
 
 uint64_t __116__HDAttachmentReferenceEntity_enumerateReferencesForAttachmentIdentifier_type_transaction_error_enumerationHandler___block_invoke_2(uint64_t a1, sqlite3_stmt *a2)
@@ -311,13 +311,13 @@ uint64_t __116__HDAttachmentReferenceEntity_enumerateReferencesForAttachmentIden
   return v16;
 }
 
-+ (BOOL)setCloudStatus:(int64_t)a3 references:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)setCloudStatus:(int64_t)status references:(id)references transaction:(id)transaction error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = [a5 databaseForEntityClass:a1];
+  referencesCopy = references;
+  v11 = [transaction databaseForEntityClass:self];
   v12 = MEMORY[0x277D10B28];
-  v13 = [v10 hk_map:&__block_literal_global_238];
+  v13 = [referencesCopy hk_map:&__block_literal_global_238];
 
   v14 = [v12 containsPredicateWithProperty:@"identifier" values:v13];
 
@@ -327,24 +327,24 @@ uint64_t __116__HDAttachmentReferenceEntity_enumerateReferencesForAttachmentIden
   v18[1] = 3221225472;
   v18[2] = __75__HDAttachmentReferenceEntity_setCloudStatus_references_transaction_error___block_invoke_2;
   v18[3] = &__block_descriptor_40_e34_v16__0__HDSQLiteStatementBinder__8l;
-  v18[4] = a3;
-  LOBYTE(a6) = [(HDSQLiteEntity *)HDAttachmentReferenceEntity updateProperties:v15 predicate:v14 database:v11 error:a6 bindingHandler:v18];
+  v18[4] = status;
+  LOBYTE(error) = [(HDSQLiteEntity *)HDAttachmentReferenceEntity updateProperties:v15 predicate:v14 database:v11 error:error bindingHandler:v18];
 
   v16 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
-+ (BOOL)setCloudStatus:(int64_t)a3 transaction:(id)a4 error:(id *)a5
++ (BOOL)setCloudStatus:(int64_t)status transaction:(id)transaction error:(id *)error
 {
-  v7 = [a4 protectedDatabase];
+  protectedDatabase = [transaction protectedDatabase];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__HDAttachmentReferenceEntity_setCloudStatus_transaction_error___block_invoke_2;
   v9[3] = &__block_descriptor_40_e23_v16__0__sqlite3_stmt__8l;
-  v9[4] = a3;
-  LOBYTE(a5) = [v7 executeCachedStatementForKey:&setCloudStatus_transaction_error__lookupKey error:a5 SQLGenerator:&__block_literal_global_375_0 bindingHandler:v9 enumerationHandler:0];
+  v9[4] = status;
+  LOBYTE(error) = [protectedDatabase executeCachedStatementForKey:&setCloudStatus_transaction_error__lookupKey error:error SQLGenerator:&__block_literal_global_375_0 bindingHandler:v9 enumerationHandler:0];
 
-  return a5;
+  return error;
 }
 
 id __64__HDAttachmentReferenceEntity_setCloudStatus_transaction_error___block_invoke()
@@ -356,33 +356,33 @@ id __64__HDAttachmentReferenceEntity_setCloudStatus_transaction_error___block_in
   return v2;
 }
 
-+ (BOOL)filteredNonTombstoneReferences:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)filteredNonTombstoneReferences:(id)references transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [a4 databaseForEntityClass:a1];
-  v13 = [v10 hk_map:&__block_literal_global_381_0];
+  referencesCopy = references;
+  handlerCopy = handler;
+  v12 = [transaction databaseForEntityClass:self];
+  v13 = [referencesCopy hk_map:&__block_literal_global_381_0];
   v14 = [v13 componentsJoinedByString:{@", "}];
 
   v15 = MEMORY[0x277CCACA8];
-  v16 = [a1 disambiguatedDatabaseTable];
-  v17 = [v15 stringWithFormat:@"SELECT %@, %@, %@, %@, %@, %@, %@, %@, %@, %@ FROM %@ WHERE %@ = ? AND %@ IN (%@)", @"identifier", @"schema_identifier", @"schema_version", @"object_identifier", @"attachment_identifier", @"creation_date", @"options", @"metadata", @"type", @"cloud_status", v16, @"type", @"identifier", v14, 0];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v17 = [v15 stringWithFormat:@"SELECT %@, %@, %@, %@, %@, %@, %@, %@, %@, %@ FROM %@ WHERE %@ = ? AND %@ IN (%@)", @"identifier", @"schema_identifier", @"schema_version", @"object_identifier", @"attachment_identifier", @"creation_date", @"options", @"metadata", @"type", @"cloud_status", disambiguatedDatabaseTable, @"type", @"identifier", v14, 0];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __99__HDAttachmentReferenceEntity_filteredNonTombstoneReferences_transaction_error_enumerationHandler___block_invoke_2;
   v23[3] = &unk_278614860;
-  v24 = v10;
+  v24 = referencesCopy;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __99__HDAttachmentReferenceEntity_filteredNonTombstoneReferences_transaction_error_enumerationHandler___block_invoke_4;
   v21[3] = &unk_278613B30;
-  v22 = v11;
-  v18 = v11;
-  v19 = v10;
-  LOBYTE(a5) = [v12 executeSQL:v17 error:a5 bindingHandler:v23 enumerationHandler:v21];
+  v22 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = referencesCopy;
+  LOBYTE(error) = [v12 executeSQL:v17 error:error bindingHandler:v23 enumerationHandler:v21];
 
-  return a5;
+  return error;
 }
 
 void __99__HDAttachmentReferenceEntity_filteredNonTombstoneReferences_transaction_error_enumerationHandler___block_invoke_2(uint64_t a1, sqlite3_stmt *a2)
@@ -414,19 +414,19 @@ uint64_t __99__HDAttachmentReferenceEntity_filteredNonTombstoneReferences_transa
   return v16;
 }
 
-+ (BOOL)insertTombstones:(id)a3 cloudStatus:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)insertTombstones:(id)tombstones cloudStatus:(int64_t)status transaction:(id)transaction error:(id *)error
 {
   v69 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = [v10 databaseForEntityClass:a1];
-  v12 = [v9 hk_map:&__block_literal_global_394];
+  tombstonesCopy = tombstones;
+  transactionCopy = transaction;
+  v11 = [transactionCopy databaseForEntityClass:self];
+  v12 = [tombstonesCopy hk_map:&__block_literal_global_394];
   v13 = [v12 componentsJoinedByString:{@", "}];
 
   v14 = MEMORY[0x277CCACA8];
-  v49 = a1;
-  v15 = [a1 disambiguatedDatabaseTable];
-  v16 = [v14 stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ = ? AND %@ IN (%@)", @"identifier", v15, @"type", @"identifier", v13, 0];
+  selfCopy = self;
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v16 = [v14 stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ = ? AND %@ IN (%@)", @"identifier", disambiguatedDatabaseTable, @"type", @"identifier", v13, 0];
 
   v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v67 = 0;
@@ -434,7 +434,7 @@ uint64_t __99__HDAttachmentReferenceEntity_filteredNonTombstoneReferences_transa
   v65[1] = 3221225472;
   v65[2] = __78__HDAttachmentReferenceEntity_insertTombstones_cloudStatus_transaction_error___block_invoke_2;
   v65[3] = &unk_278614860;
-  v18 = v9;
+  v18 = tombstonesCopy;
   v66 = v18;
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
@@ -443,15 +443,15 @@ uint64_t __99__HDAttachmentReferenceEntity_filteredNonTombstoneReferences_transa
   v19 = v17;
   v64 = v19;
   v51 = v11;
-  LOBYTE(v9) = [v11 executeSQL:v16 error:&v67 bindingHandler:v65 enumerationHandler:v63];
+  LOBYTE(tombstonesCopy) = [v11 executeSQL:v16 error:&v67 bindingHandler:v65 enumerationHandler:v63];
   v20 = v67;
   v21 = v20;
-  if (v9)
+  if (tombstonesCopy)
   {
-    v43 = a6;
+    errorCopy = error;
     v44 = v20;
     v46 = v16;
-    v48 = v10;
+    v48 = transactionCopy;
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __78__HDAttachmentReferenceEntity_insertTombstones_cloudStatus_transaction_error___block_invoke_5;
@@ -490,14 +490,14 @@ LABEL_4:
         v53[1] = 3221225472;
         v53[2] = __78__HDAttachmentReferenceEntity_insertTombstones_cloudStatus_transaction_error___block_invoke_7;
         v53[3] = &__block_descriptor_40_e15___NSString_8__0l;
-        v53[4] = v49;
+        v53[4] = selfCopy;
         v54 = 0;
         v52[0] = MEMORY[0x277D85DD0];
         v52[1] = 3221225472;
         v52[2] = __78__HDAttachmentReferenceEntity_insertTombstones_cloudStatus_transaction_error___block_invoke_8;
         v52[3] = &unk_278613B58;
         v52[4] = v29;
-        v52[5] = a4;
+        v52[5] = status;
         v30 = [v51 executeCachedStatementForKey:&insertTombstones_cloudStatus_transaction_error__insertKey error:&v54 SQLGenerator:v53 bindingHandler:v52 enumerationHandler:0];
         v31 = v54;
         v32 = v31;
@@ -522,7 +522,7 @@ LABEL_28:
 LABEL_29:
 
             v33 = v47;
-            v10 = v48;
+            transactionCopy = v48;
             goto LABEL_30;
           }
 
@@ -531,10 +531,10 @@ LABEL_29:
             v38 = v32;
 LABEL_24:
             v21 = v44;
-            if (v43)
+            if (errorCopy)
             {
               v40 = v38;
-              *v43 = v38;
+              *errorCopy = v38;
             }
 
             else
@@ -570,8 +570,8 @@ LABEL_24:
     }
 
     v33 = v47;
-    v10 = v48;
-    v34 = [HDAttachmentReferenceEntity setCloudStatus:a4 references:v47 transaction:v48 error:v43];
+    transactionCopy = v48;
+    v34 = [HDAttachmentReferenceEntity setCloudStatus:status references:v47 transaction:v48 error:errorCopy];
     v16 = v46;
     v18 = v45;
     v21 = v44;
@@ -599,10 +599,10 @@ LABEL_31:
     }
   }
 
-  if (a6)
+  if (error)
   {
     v36 = v35;
-    *a6 = v35;
+    *error = v35;
   }
 
   else
@@ -688,24 +688,24 @@ uint64_t __78__HDAttachmentReferenceEntity_insertTombstones_cloudStatus_transact
   return sqlite3_bind_int64(a2, 10, v7);
 }
 
-+ (BOOL)deleteReferences:(id)a3 cloudStatus:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)deleteReferences:(id)references cloudStatus:(int64_t)status transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = [a5 databaseForEntityClass:a1];
-  v12 = [v10 hk_map:&__block_literal_global_415_0];
+  referencesCopy = references;
+  v11 = [transaction databaseForEntityClass:self];
+  v12 = [referencesCopy hk_map:&__block_literal_global_415_0];
   v13 = [v12 componentsJoinedByString:{@", "}];
 
   v14 = MEMORY[0x277CCACA8];
-  v15 = [a1 disambiguatedDatabaseTable];
-  v16 = [v14 stringWithFormat:@"UPDATE %@ SET %@ = ?, %@ = ?, %@ = ?, %@ = ?, %@ = ?, %@ = ?, %@ = ?, %@ = ?, %@ = ? WHERE %@ IN (%@)", v15, @"schema_identifier", @"schema_version", @"object_identifier", @"attachment_identifier", @"creation_date", @"options", @"metadata", @"type", @"cloud_status", @"identifier", v13, 0];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v16 = [v14 stringWithFormat:@"UPDATE %@ SET %@ = ?, %@ = ?, %@ = ?, %@ = ?, %@ = ?, %@ = ?, %@ = ?, %@ = ?, %@ = ? WHERE %@ IN (%@)", disambiguatedDatabaseTable, @"schema_identifier", @"schema_version", @"object_identifier", @"attachment_identifier", @"creation_date", @"options", @"metadata", @"type", @"cloud_status", @"identifier", v13, 0];
 
   v28 = 0;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __78__HDAttachmentReferenceEntity_deleteReferences_cloudStatus_transaction_error___block_invoke_2;
   v25[3] = &unk_278613B58;
-  v27 = a4;
-  v17 = v10;
+  statusCopy = status;
+  v17 = referencesCopy;
   v26 = v17;
   LOBYTE(v14) = [v11 executeSQL:v16 error:&v28 bindingHandler:v25 enumerationHandler:0];
   v18 = v28;
@@ -734,10 +734,10 @@ LABEL_12:
     }
   }
 
-  if (a6)
+  if (error)
   {
     v22 = v21;
-    *a6 = v21;
+    *error = v21;
   }
 
   else
@@ -776,16 +776,16 @@ void __78__HDAttachmentReferenceEntity_deleteReferences_cloudStatus_transaction_
   HDSQLiteBindFoundationValuesToStatement();
 }
 
-+ (id)_insertReference:(id)a3 databaseTransaction:(id)a4 error:(id *)a5
++ (id)_insertReference:(id)reference databaseTransaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 metadata];
-  if (v10)
+  referenceCopy = reference;
+  transactionCopy = transaction;
+  metadata = [referenceCopy metadata];
+  if (metadata)
   {
-    v11 = v10;
-    v12 = [v8 metadata];
-    v13 = [v12 hk_validateAttachmentMetadataKeysAndValuesWithError:a5];
+    v11 = metadata;
+    metadata2 = [referenceCopy metadata];
+    v13 = [metadata2 hk_validateAttachmentMetadataKeysAndValuesWithError:error];
 
     if (!v13)
     {
@@ -794,21 +794,21 @@ void __78__HDAttachmentReferenceEntity_deleteReferences_cloudStatus_transaction_
     }
   }
 
-  v14 = [v9 databaseForEntityClass:a1];
-  v15 = [v8 attachmentIdentifier];
+  v14 = [transactionCopy databaseForEntityClass:self];
+  attachmentIdentifier = [referenceCopy attachmentIdentifier];
   v25 = 0;
-  v16 = [HDAttachmentEntity attachmentWithIdentifier:v15 transaction:v9 error:&v25];
+  v16 = [HDAttachmentEntity attachmentWithIdentifier:attachmentIdentifier transaction:transactionCopy error:&v25];
   v17 = v25;
 
-  if ([v8 type] || v16)
+  if ([referenceCopy type] || v16)
   {
     v18 = +[HDAttachmentReferenceEntity _propertiesForEntity];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __74__HDAttachmentReferenceEntity__insertReference_databaseTransaction_error___block_invoke;
     v23[3] = &unk_278614508;
-    v24 = v8;
-    v19 = [a1 insertOrReplaceEntity:0 database:v14 properties:v18 error:a5 bindingHandler:v23];
+    v24 = referenceCopy;
+    v19 = [self insertOrReplaceEntity:0 database:v14 properties:v18 error:error bindingHandler:v23];
   }
 
   else
@@ -819,14 +819,14 @@ void __78__HDAttachmentReferenceEntity_deleteReferences_cloudStatus_transaction_
       goto LABEL_10;
     }
 
-    v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Attachment does not exist for reference: %@", v8}];
+    v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Attachment does not exist for reference: %@", referenceCopy}];
     if (v18)
     {
 LABEL_10:
-      if (a5)
+      if (error)
       {
         v21 = v18;
-        *a5 = v18;
+        *error = v18;
       }
 
       else
@@ -898,19 +898,19 @@ void __74__HDAttachmentReferenceEntity__insertReference_databaseTransaction_erro
   JUMPOUT(0x22AAC6B90);
 }
 
-+ (id)_insertIfDoesNotExistReference:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)_insertIfDoesNotExistReference:(id)reference transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 metadata];
-  if (!v10 || (v11 = v10, [v8 metadata], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hk_validateAttachmentMetadataKeysAndValuesWithError:", a5), v12, v11, v13))
+  referenceCopy = reference;
+  transactionCopy = transaction;
+  metadata = [referenceCopy metadata];
+  if (!metadata || (v11 = metadata, [referenceCopy metadata], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hk_validateAttachmentMetadataKeysAndValuesWithError:", error), v12, v11, v13))
   {
-    v14 = [v8 identifier];
-    v15 = [MEMORY[0x277D10B18] predicateWithProperty:@"identifier" equalToValue:v14];
+    identifier = [referenceCopy identifier];
+    v15 = [MEMORY[0x277D10B18] predicateWithProperty:@"identifier" equalToValue:identifier];
 
-    v16 = [v9 databaseForEntityClass:objc_opt_class()];
+    v16 = [transactionCopy databaseForEntityClass:objc_opt_class()];
     v24 = 0;
-    v17 = [a1 anyInDatabase:v16 predicate:v15 error:&v24];
+    v17 = [self anyInDatabase:v16 predicate:v15 error:&v24];
     v18 = v24;
     v19 = v18;
     if (v17)
@@ -922,11 +922,11 @@ void __74__HDAttachmentReferenceEntity__insertReference_databaseTransaction_erro
     {
       if (v18)
       {
-        if (a5)
+        if (error)
         {
           v23 = v18;
           v21 = 0;
-          *a5 = v19;
+          *error = v19;
         }
 
         else
@@ -938,7 +938,7 @@ void __74__HDAttachmentReferenceEntity__insertReference_databaseTransaction_erro
         goto LABEL_6;
       }
 
-      v20 = [a1 _insertReference:v8 databaseTransaction:v9 error:a5];
+      v20 = [self _insertReference:referenceCopy databaseTransaction:transactionCopy error:error];
     }
 
     v21 = v20;

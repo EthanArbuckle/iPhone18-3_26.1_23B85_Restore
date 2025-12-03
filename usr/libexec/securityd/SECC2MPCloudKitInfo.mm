@@ -1,48 +1,48 @@
 @interface SECC2MPCloudKitInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addClientOperation:(id)a3;
-- (void)addOperationGroup:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAnonymous:(BOOL)a3;
-- (void)setHasReportClientOperationFrequencyBase:(BOOL)a3;
-- (void)setHasReportOperationGroupFrequency:(BOOL)a3;
-- (void)setHasReportOperationGroupFrequencyBase:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addClientOperation:(id)operation;
+- (void)addOperationGroup:(id)group;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAnonymous:(BOOL)anonymous;
+- (void)setHasReportClientOperationFrequencyBase:(BOOL)base;
+- (void)setHasReportOperationGroupFrequency:(BOOL)frequency;
+- (void)setHasReportOperationGroupFrequencyBase:(BOOL)base;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SECC2MPCloudKitInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 7))
+  fromCopy = from;
+  if (*(fromCopy + 7))
   {
     [(SECC2MPCloudKitInfo *)self setClientProcessVersion:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SECC2MPCloudKitInfo *)self setClientBundleId:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(SECC2MPCloudKitInfo *)self setContainer:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(SECC2MPCloudKitInfo *)self setEnvironment:?];
   }
 
-  if ((*(v4 + 92) & 0x10) != 0)
+  if ((*(fromCopy + 92) & 0x10) != 0)
   {
-    self->_anonymous = *(v4 + 88);
+    self->_anonymous = *(fromCopy + 88);
     *&self->_has |= 0x10u;
   }
 
@@ -50,7 +50,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = *(v4 + 10);
+  v5 = *(fromCopy + 10);
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
   {
@@ -74,17 +74,17 @@
     while (v7);
   }
 
-  v10 = *(v4 + 92);
+  v10 = *(fromCopy + 92);
   if ((v10 & 4) != 0)
   {
-    self->_reportOperationGroupFrequency = *(v4 + 3);
+    self->_reportOperationGroupFrequency = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v10 = *(v4 + 92);
+    v10 = *(fromCopy + 92);
   }
 
   if ((v10 & 8) != 0)
   {
-    self->_reportOperationGroupFrequencyBase = *(v4 + 4);
+    self->_reportOperationGroupFrequencyBase = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
@@ -92,7 +92,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = *(v4 + 6);
+  v11 = *(fromCopy + 6);
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v12)
   {
@@ -116,17 +116,17 @@
     while (v13);
   }
 
-  v16 = *(v4 + 92);
+  v16 = *(fromCopy + 92);
   if (v16)
   {
-    self->_reportClientOperationFrequency = *(v4 + 1);
+    self->_reportClientOperationFrequency = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v16 = *(v4 + 92);
+    v16 = *(fromCopy + 92);
   }
 
   if ((v16 & 2) != 0)
   {
-    self->_reportClientOperationFrequencyBase = *(v4 + 2);
+    self->_reportClientOperationFrequencyBase = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 }
@@ -195,16 +195,16 @@ LABEL_11:
   return v3 ^ v14 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
   clientProcessVersion = self->_clientProcessVersion;
-  if (clientProcessVersion | *(v4 + 7))
+  if (clientProcessVersion | *(equalCopy + 7))
   {
     if (![(NSString *)clientProcessVersion isEqual:?])
     {
@@ -213,7 +213,7 @@ LABEL_11:
   }
 
   clientBundleId = self->_clientBundleId;
-  if (clientBundleId | *(v4 + 5))
+  if (clientBundleId | *(equalCopy + 5))
   {
     if (![(NSString *)clientBundleId isEqual:?])
     {
@@ -222,7 +222,7 @@ LABEL_11:
   }
 
   container = self->_container;
-  if (container | *(v4 + 8))
+  if (container | *(equalCopy + 8))
   {
     if (![(NSString *)container isEqual:?])
     {
@@ -231,7 +231,7 @@ LABEL_11:
   }
 
   environment = self->_environment;
-  if (environment | *(v4 + 9))
+  if (environment | *(equalCopy + 9))
   {
     if (![(NSString *)environment isEqual:?])
     {
@@ -240,36 +240,36 @@ LABEL_11:
   }
 
   has = self->_has;
-  v10 = *(v4 + 92);
+  v10 = *(equalCopy + 92);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 92) & 0x10) == 0)
+    if ((*(equalCopy + 92) & 0x10) == 0)
     {
       goto LABEL_43;
     }
 
-    v12 = *(v4 + 88);
+    v12 = *(equalCopy + 88);
     if (self->_anonymous)
     {
-      if ((*(v4 + 88) & 1) == 0)
+      if ((*(equalCopy + 88) & 1) == 0)
       {
         goto LABEL_43;
       }
     }
 
-    else if (*(v4 + 88))
+    else if (*(equalCopy + 88))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 92) & 0x10) != 0)
+  else if ((*(equalCopy + 92) & 0x10) != 0)
   {
     goto LABEL_43;
   }
 
   operationGroups = self->_operationGroups;
-  if (operationGroups | *(v4 + 10))
+  if (operationGroups | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)operationGroups isEqual:?])
     {
@@ -277,12 +277,12 @@ LABEL_11:
     }
 
     has = self->_has;
-    v10 = *(v4 + 92);
+    v10 = *(equalCopy + 92);
   }
 
   if ((has & 4) != 0)
   {
-    if ((v10 & 4) == 0 || self->_reportOperationGroupFrequency != *(v4 + 3))
+    if ((v10 & 4) == 0 || self->_reportOperationGroupFrequency != *(equalCopy + 3))
     {
       goto LABEL_43;
     }
@@ -295,7 +295,7 @@ LABEL_11:
 
   if ((has & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_reportOperationGroupFrequencyBase != *(v4 + 4))
+    if ((v10 & 8) == 0 || self->_reportOperationGroupFrequencyBase != *(equalCopy + 4))
     {
       goto LABEL_43;
     }
@@ -307,12 +307,12 @@ LABEL_11:
   }
 
   clientOperations = self->_clientOperations;
-  if (clientOperations | *(v4 + 6))
+  if (clientOperations | *(equalCopy + 6))
   {
     if ([(NSMutableArray *)clientOperations isEqual:?])
     {
       has = self->_has;
-      v10 = *(v4 + 92);
+      v10 = *(equalCopy + 92);
       goto LABEL_34;
     }
 
@@ -324,7 +324,7 @@ LABEL_43:
 LABEL_34:
   if (has)
   {
-    if ((v10 & 1) == 0 || self->_reportClientOperationFrequency != *(v4 + 1))
+    if ((v10 & 1) == 0 || self->_reportClientOperationFrequency != *(equalCopy + 1))
     {
       goto LABEL_43;
     }
@@ -338,7 +338,7 @@ LABEL_34:
   v14 = (v10 & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_reportClientOperationFrequencyBase != *(v4 + 2))
+    if ((v10 & 2) == 0 || self->_reportClientOperationFrequencyBase != *(equalCopy + 2))
     {
       goto LABEL_43;
     }
@@ -351,22 +351,22 @@ LABEL_44:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_clientProcessVersion copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_clientProcessVersion copyWithZone:zone];
   v7 = v5[7];
   v5[7] = v6;
 
-  v8 = [(NSString *)self->_clientBundleId copyWithZone:a3];
+  v8 = [(NSString *)self->_clientBundleId copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
-  v10 = [(NSString *)self->_container copyWithZone:a3];
+  v10 = [(NSString *)self->_container copyWithZone:zone];
   v11 = v5[8];
   v5[8] = v10;
 
-  v12 = [(NSString *)self->_environment copyWithZone:a3];
+  v12 = [(NSString *)self->_environment copyWithZone:zone];
   v13 = v5[9];
   v5[9] = v12;
 
@@ -395,7 +395,7 @@ LABEL_44:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v33 + 1) + 8 * i) copyWithZone:a3];
+        v19 = [*(*(&v33 + 1) + 8 * i) copyWithZone:zone];
         [v5 addOperationGroup:v19];
       }
 
@@ -438,7 +438,7 @@ LABEL_44:
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v29 + 1) + 8 * j) copyWithZone:{a3, v29}];
+        v26 = [*(*(&v29 + 1) + 8 * j) copyWithZone:{zone, v29}];
         [v5 addClientOperation:v26];
       }
 
@@ -465,47 +465,47 @@ LABEL_44:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v15 = v4;
+  toCopy = to;
+  v15 = toCopy;
   if (self->_clientProcessVersion)
   {
-    [v4 setClientProcessVersion:?];
-    v4 = v15;
+    [toCopy setClientProcessVersion:?];
+    toCopy = v15;
   }
 
   if (self->_clientBundleId)
   {
     [v15 setClientBundleId:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_container)
   {
     [v15 setContainer:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_environment)
   {
     [v15 setEnvironment:?];
-    v4 = v15;
+    toCopy = v15;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    v4[88] = self->_anonymous;
-    v4[92] |= 0x10u;
+    toCopy[88] = self->_anonymous;
+    toCopy[92] |= 0x10u;
   }
 
   if ([(SECC2MPCloudKitInfo *)self operationGroupsCount])
   {
     [v15 clearOperationGroups];
-    v5 = [(SECC2MPCloudKitInfo *)self operationGroupsCount];
-    if (v5)
+    operationGroupsCount = [(SECC2MPCloudKitInfo *)self operationGroupsCount];
+    if (operationGroupsCount)
     {
-      v6 = v5;
+      v6 = operationGroupsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(SECC2MPCloudKitInfo *)self operationGroupAtIndex:i];
@@ -531,10 +531,10 @@ LABEL_44:
   if ([(SECC2MPCloudKitInfo *)self clientOperationsCount])
   {
     [v15 clearClientOperations];
-    v10 = [(SECC2MPCloudKitInfo *)self clientOperationsCount];
-    if (v10)
+    clientOperationsCount = [(SECC2MPCloudKitInfo *)self clientOperationsCount];
+    if (clientOperationsCount)
     {
-      v11 = v10;
+      v11 = clientOperationsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(SECC2MPCloudKitInfo *)self clientOperationAtIndex:j];
@@ -558,9 +558,9 @@ LABEL_44:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_clientProcessVersion)
   {
     PBDataWriterWriteStringField();
@@ -730,8 +730,8 @@ LABEL_44:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -780,8 +780,8 @@ LABEL_44:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation2 = [*(*(&v31 + 1) + 8 * j) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation2];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v31 objects:v39 count:16];
@@ -816,15 +816,15 @@ LABEL_44:
   v7.receiver = self;
   v7.super_class = SECC2MPCloudKitInfo;
   v3 = [(SECC2MPCloudKitInfo *)&v7 description];
-  v4 = [(SECC2MPCloudKitInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SECC2MPCloudKitInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasReportClientOperationFrequencyBase:(BOOL)a3
+- (void)setHasReportClientOperationFrequencyBase:(BOOL)base
 {
-  if (a3)
+  if (base)
   {
     v3 = 2;
   }
@@ -837,27 +837,27 @@ LABEL_44:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addClientOperation:(id)a3
+- (void)addClientOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   clientOperations = self->_clientOperations;
-  v8 = v4;
+  v8 = operationCopy;
   if (!clientOperations)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_clientOperations;
     self->_clientOperations = v6;
 
-    v4 = v8;
+    operationCopy = v8;
     clientOperations = self->_clientOperations;
   }
 
-  [(NSMutableArray *)clientOperations addObject:v4];
+  [(NSMutableArray *)clientOperations addObject:operationCopy];
 }
 
-- (void)setHasReportOperationGroupFrequencyBase:(BOOL)a3
+- (void)setHasReportOperationGroupFrequencyBase:(BOOL)base
 {
-  if (a3)
+  if (base)
   {
     v3 = 8;
   }
@@ -870,9 +870,9 @@ LABEL_44:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasReportOperationGroupFrequency:(BOOL)a3
+- (void)setHasReportOperationGroupFrequency:(BOOL)frequency
 {
-  if (a3)
+  if (frequency)
   {
     v3 = 4;
   }
@@ -885,27 +885,27 @@ LABEL_44:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addOperationGroup:(id)a3
+- (void)addOperationGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   operationGroups = self->_operationGroups;
-  v8 = v4;
+  v8 = groupCopy;
   if (!operationGroups)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_operationGroups;
     self->_operationGroups = v6;
 
-    v4 = v8;
+    groupCopy = v8;
     operationGroups = self->_operationGroups;
   }
 
-  [(NSMutableArray *)operationGroups addObject:v4];
+  [(NSMutableArray *)operationGroups addObject:groupCopy];
 }
 
-- (void)setHasAnonymous:(BOOL)a3
+- (void)setHasAnonymous:(BOOL)anonymous
 {
-  if (a3)
+  if (anonymous)
   {
     v3 = 16;
   }

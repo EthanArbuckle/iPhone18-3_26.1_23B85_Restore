@@ -1,11 +1,11 @@
 @interface RMModelStatusPackageList
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3;
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 declarationIdentifier:(id)a5 name:(id)a6 version:(id)a7 state:(id)a8 reasons:(id)a9;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier;
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed declarationIdentifier:(id)declarationIdentifier name:(id)name version:(id)version state:(id)state reasons:(id)reasons;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusPackageList
@@ -29,21 +29,21 @@
   return v4;
 }
 
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 declarationIdentifier:(id)a5 name:(id)a6 version:(id)a7 state:(id)a8 reasons:(id)a9
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed declarationIdentifier:(id)declarationIdentifier name:(id)name version:(id)version state:(id)state reasons:(id)reasons
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
+  reasonsCopy = reasons;
+  stateCopy = state;
+  versionCopy = version;
+  nameCopy = name;
+  declarationIdentifierCopy = declarationIdentifier;
+  removedCopy = removed;
+  identifierCopy = identifier;
   v22 = objc_opt_new();
-  [v22 setStatusIdentifier:v21];
+  [v22 setStatusIdentifier:identifierCopy];
 
-  if (v20)
+  if (removedCopy)
   {
-    v23 = v20;
+    v23 = removedCopy;
   }
 
   else
@@ -53,22 +53,22 @@
 
   [v22 setStatusRemoved:v23];
 
-  [v22 setStatusDeclarationIdentifier:v19];
-  [v22 setStatusName:v18];
+  [v22 setStatusDeclarationIdentifier:declarationIdentifierCopy];
+  [v22 setStatusName:nameCopy];
 
-  [v22 setStatusVersion:v17];
-  [v22 setStatusState:v16];
+  [v22 setStatusVersion:versionCopy];
+  [v22 setStatusState:stateCopy];
 
-  [v22 setStatusReasons:v15];
+  [v22 setStatusReasons:reasonsCopy];
 
   return v22;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
-  [v4 setStatusIdentifier:v3];
+  [v4 setStatusIdentifier:identifierCopy];
 
   return v4;
 }
@@ -90,12 +90,12 @@
   return v5;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelStatusPackageList allowedStatusKeys];
   [v11 minusSet:v12];
@@ -103,10 +103,10 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"identifier" forKeyPath:@"statusIdentifier" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"_removed" forKeyPath:@"statusRemoved" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"declaration-identifier" forKeyPath:@"statusDeclarationIdentifier" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"name" forKeyPath:@"statusName" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"version" forKeyPath:@"statusVersion" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"state" forKeyPath:@"statusState" isRequired:0 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"identifier" forKeyPath:@"statusIdentifier" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"_removed" forKeyPath:@"statusRemoved" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"declaration-identifier" forKeyPath:@"statusDeclarationIdentifier" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"name" forKeyPath:@"statusName" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"version" forKeyPath:@"statusVersion" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"state" forKeyPath:@"statusState" isRequired:0 defaultValue:0 error:error])
   {
-    LOWORD(v16) = a4;
-    v14 = [(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"reasons" forKeyPath:@"statusReasons" classType:objc_opt_class() nested:0 isRequired:0 defaultValue:0 serializationType:v16 error:a5];
+    LOWORD(v16) = type;
+    v14 = [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"reasons" forKeyPath:@"statusReasons" classType:objc_opt_class() nested:0 isRequired:0 defaultValue:0 serializationType:v16 error:error];
   }
 
   else
@@ -117,45 +117,45 @@
   return v14;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelStatusPackageList *)self statusIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"identifier" value:v6 isRequired:1 defaultValue:0];
+  statusIdentifier = [(RMModelStatusPackageList *)self statusIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"identifier" value:statusIdentifier isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelStatusPackageList *)self statusRemoved];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"_removed" value:v7 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  statusRemoved = [(RMModelStatusPackageList *)self statusRemoved];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"_removed" value:statusRemoved isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v8 = [(RMModelStatusPackageList *)self statusDeclarationIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"declaration-identifier" value:v8 isRequired:0 defaultValue:0];
+  statusDeclarationIdentifier = [(RMModelStatusPackageList *)self statusDeclarationIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"declaration-identifier" value:statusDeclarationIdentifier isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelStatusPackageList *)self statusName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"name" value:v9 isRequired:0 defaultValue:0];
+  statusName = [(RMModelStatusPackageList *)self statusName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"name" value:statusName isRequired:0 defaultValue:0];
 
-  v10 = [(RMModelStatusPackageList *)self statusVersion];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"version" value:v10 isRequired:0 defaultValue:0];
+  statusVersion = [(RMModelStatusPackageList *)self statusVersion];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"version" value:statusVersion isRequired:0 defaultValue:0];
 
-  v11 = [(RMModelStatusPackageList *)self statusState];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"state" value:v11 isRequired:0 defaultValue:0];
+  statusState = [(RMModelStatusPackageList *)self statusState];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"state" value:statusState isRequired:0 defaultValue:0];
 
-  v12 = [(RMModelStatusPackageList *)self statusReasons];
+  statusReasons = [(RMModelStatusPackageList *)self statusReasons];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __53__RMModelStatusPackageList_serializePayloadWithType___block_invoke;
   v15[3] = &__block_descriptor_34_e43___NSDictionary_16__0__RMModelStatusReason_8l;
-  v16 = a3;
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"reasons" value:v12 itemSerializer:v15 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"reasons" value:statusReasons itemSerializer:v15 isRequired:0 defaultValue:0];
 
   v13 = [v5 copy];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20.receiver = self;
   v20.super_class = RMModelStatusPackageList;
-  v4 = [(RMModelPayloadBase *)&v20 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v20 copyWithZone:zone];
   v5 = [(NSString *)self->_statusIdentifier copy];
   v6 = v4[2];
   v4[2] = v5;

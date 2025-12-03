@@ -1,12 +1,12 @@
 @interface CACTouchEventObserver
-- (BOOL)_isLiftEvent:(id)a3;
-- (BOOL)_isTouchEvent:(id)a3;
+- (BOOL)_isLiftEvent:(id)event;
+- (BOOL)_isTouchEvent:(id)event;
 - (BOOL)isRecording;
 - (CACTouchEventObserver)init;
 - (CACTouchEventObserverDelegate)delegate;
 - (id)stopRecordingGesture;
-- (void)_didReceiveEvent:(id)a3;
-- (void)_recordEvent:(id)a3;
+- (void)_didReceiveEvent:(id)event;
+- (void)_recordEvent:(id)event;
 - (void)beginObserving;
 - (void)endObserving;
 - (void)startRecordingGesture;
@@ -78,8 +78,8 @@ uint64_t __29__CACTouchEventObserver_init__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)isRecording
 {
-  v2 = [(CACTouchEventObserver *)self gestureBeingRecorded];
-  v3 = v2 != 0;
+  gestureBeingRecorded = [(CACTouchEventObserver *)self gestureBeingRecorded];
+  v3 = gestureBeingRecorded != 0;
 
   return v3;
 }
@@ -96,44 +96,44 @@ uint64_t __29__CACTouchEventObserver_init__block_invoke(uint64_t a1, void *a2)
 
 - (id)stopRecordingGesture
 {
-  v3 = [(CACTouchEventObserver *)self gestureBeingRecorded];
+  gestureBeingRecorded = [(CACTouchEventObserver *)self gestureBeingRecorded];
   [(CACTouchEventObserver *)self setGestureBeingRecorded:0];
   v4 = +[CACDisplayManager sharedManager];
   [v4 hideLiveRecordingGesturePreview];
 
-  return v3;
+  return gestureBeingRecorded;
 }
 
-- (BOOL)_isTouchEvent:(id)a3
+- (BOOL)_isTouchEvent:(id)event
 {
-  v3 = [a3 handInfo];
-  v4 = [v3 eventType];
+  handInfo = [event handInfo];
+  eventType = [handInfo eventType];
 
-  return (v4 - 1) < 2;
+  return (eventType - 1) < 2;
 }
 
-- (BOOL)_isLiftEvent:(id)a3
+- (BOOL)_isLiftEvent:(id)event
 {
-  v3 = [a3 handInfo];
-  v4 = [v3 eventType];
+  handInfo = [event handInfo];
+  eventType = [handInfo eventType];
 
-  return (v4 < 0xB) & (0x740u >> v4);
+  return (eventType < 0xB) & (0x740u >> eventType);
 }
 
-- (void)_recordEvent:(id)a3
+- (void)_recordEvent:(id)event
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v37 = [MEMORY[0x277CBEB38] dictionary];
-  v36 = [MEMORY[0x277CBEB38] dictionary];
+  eventCopy = event;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v5 = [v4 handInfo];
-  v6 = [v5 paths];
+  handInfo = [eventCopy handInfo];
+  paths = [handInfo paths];
 
-  v7 = [v6 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  v7 = [paths countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v7)
   {
     v8 = v7;
@@ -144,12 +144,12 @@ uint64_t __29__CACTouchEventObserver_init__block_invoke(uint64_t a1, void *a2)
       {
         if (*v39 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(paths);
         }
 
         v11 = *(*(&v38 + 1) + 8 * i);
         v12 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v11, "pathIdentity")}];
-        if ([(CACTouchEventObserver *)self _isLiftEvent:v4])
+        if ([(CACTouchEventObserver *)self _isLiftEvent:eventCopy])
         {
           v13 = +[CACDisplayManager sharedManager];
           [v13 removeTrackingForFingerIdentifier:v12];
@@ -160,23 +160,23 @@ uint64_t __29__CACTouchEventObserver_init__block_invoke(uint64_t a1, void *a2)
           [v11 pathLocation];
           v15 = v14;
           v17 = v16;
-          v18 = [MEMORY[0x277D759A0] mainScreen];
-          [v18 bounds];
+          mainScreen = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen bounds];
           CACPortraitUpRectFromViewRect(0, v19, v20, v21, v22);
           v24 = v23;
           v26 = v25;
 
           v27 = [MEMORY[0x277CCAE60] axValueWithCGPoint:{CACViewPointFromPortraitUpPoint(0, v15 * v24, v17 * v26)}];
-          [v37 setObject:v27 forKeyedSubscript:v12];
+          [dictionary setObject:v27 forKeyedSubscript:v12];
 
           v28 = MEMORY[0x277CCABB0];
           [v11 orbValue];
           v13 = [v28 numberWithFloat:?];
-          [v36 setObject:v13 forKeyedSubscript:v12];
+          [dictionary2 setObject:v13 forKeyedSubscript:v12];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v8 = [paths countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v8);
@@ -187,8 +187,8 @@ uint64_t __29__CACTouchEventObserver_init__block_invoke(uint64_t a1, void *a2)
     mach_timebase_info(&_recordEvent___TimebaseInfo);
   }
 
-  v29 = [v4 HIDTime];
-  v30 = (v29 * _recordEvent___TimebaseInfo / dword_2803FEF1C) / 1000000000.0;
+  hIDTime = [eventCopy HIDTime];
+  v30 = (hIDTime * _recordEvent___TimebaseInfo / dword_2803FEF1C) / 1000000000.0;
   [(CACTouchEventObserver *)self startTimeForGestureBeingRecorded];
   if (v31 == 0.0)
   {
@@ -202,26 +202,26 @@ uint64_t __29__CACTouchEventObserver_init__block_invoke(uint64_t a1, void *a2)
     v32 = v30 - v33;
   }
 
-  v34 = [(CACTouchEventObserver *)self gestureBeingRecorded];
-  [v34 addPointsByFingerIdentifier:v37 forces:v36 atTime:v32];
+  gestureBeingRecorded = [(CACTouchEventObserver *)self gestureBeingRecorded];
+  [gestureBeingRecorded addPointsByFingerIdentifier:dictionary forces:dictionary2 atTime:v32];
 
   v35 = +[CACDisplayManager sharedManager];
-  [v35 addPointsToLiveRecordingGesturePreviewByFingerIdentifier:v37 forces:v36 atTime:v32];
+  [v35 addPointsToLiveRecordingGesturePreviewByFingerIdentifier:dictionary forces:dictionary2 atTime:v32];
 }
 
-- (void)_didReceiveEvent:(id)a3
+- (void)_didReceiveEvent:(id)event
 {
-  v6 = a3;
-  v4 = [(CACTouchEventObserver *)self gestureBeingRecorded];
+  eventCopy = event;
+  gestureBeingRecorded = [(CACTouchEventObserver *)self gestureBeingRecorded];
 
-  if (v4)
+  if (gestureBeingRecorded)
   {
-    [(CACTouchEventObserver *)self _recordEvent:v6];
+    [(CACTouchEventObserver *)self _recordEvent:eventCopy];
   }
 
-  if ([v6 senderID] != 0x8000000817319372)
+  if ([eventCopy senderID] != 0x8000000817319372)
   {
-    if ([(CACTouchEventObserver *)self _isTouchEvent:v6])
+    if ([(CACTouchEventObserver *)self _isTouchEvent:eventCopy])
     {
       if (self->_areTouchesDown)
       {
@@ -229,16 +229,16 @@ uint64_t __29__CACTouchEventObserver_init__block_invoke(uint64_t a1, void *a2)
       }
 
       self->_areTouchesDown = 1;
-      v5 = [(CACTouchEventObserver *)self delegate];
-      [v5 didObserveFirstTouchDownForObserver:self];
+      delegate = [(CACTouchEventObserver *)self delegate];
+      [delegate didObserveFirstTouchDownForObserver:self];
       goto LABEL_10;
     }
 
-    if ([(CACTouchEventObserver *)self _isLiftEvent:v6]&& self->_areTouchesDown)
+    if ([(CACTouchEventObserver *)self _isLiftEvent:eventCopy]&& self->_areTouchesDown)
     {
       self->_areTouchesDown = 0;
-      v5 = [(CACTouchEventObserver *)self delegate];
-      [v5 didObserveLastTouchUpForObserver:self];
+      delegate = [(CACTouchEventObserver *)self delegate];
+      [delegate didObserveLastTouchUpForObserver:self];
 LABEL_10:
     }
   }

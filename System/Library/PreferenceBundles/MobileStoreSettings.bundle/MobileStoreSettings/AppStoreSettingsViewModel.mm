@@ -1,6 +1,6 @@
 @interface AppStoreSettingsViewModel
 - (_TtC19MobileStoreSettings25AppStoreSettingsViewModel)init;
-- (void)appDataUsagePolicyChange:(id)a3;
+- (void)appDataUsagePolicyChange:(id)change;
 @end
 
 @implementation AppStoreSettingsViewModel
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (void)appDataUsagePolicyChange:(id)a3
+- (void)appDataUsagePolicyChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_177D4(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_177D4(changeCopy);
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface VisualEffectContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC20ProductPageExtension25VisualEffectContainerView)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension25VisualEffectContainerView)initWithEffect:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC20ProductPageExtension25VisualEffectContainerView)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension25VisualEffectContainerView)initWithEffect:(id)effect;
 - (void)layoutSubviews;
 @end
 
 @implementation VisualEffectContainerView
 
-- (_TtC20ProductPageExtension25VisualEffectContainerView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension25VisualEffectContainerView)initWithCoder:(id)coder
 {
   result = sub_10077156C();
   __break(1u);
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension25VisualEffectContainerView_embeddedView);
-  v5 = self;
+  selfCopy = self;
   [v4 sizeThatFits:{width, 1.79769313e308}];
   v7 = v6;
   v9 = v8;
-  [(VisualEffectContainerView *)v5 bounds];
+  [(VisualEffectContainerView *)selfCopy bounds];
   v10 = CGRectGetWidth(v14);
 
   if (v10 >= v7)
@@ -44,13 +44,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100392964();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension25VisualEffectContainerView_embeddedView) measurementsWithFitting:a4 in:{a3.width, a3.height}];
+  [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension25VisualEffectContainerView_embeddedView) measurementsWithFitting:in in:{fitting.width, fitting.height}];
   result.var3 = v7;
   result.var2 = v6;
   result.var1 = v5;
@@ -58,7 +58,7 @@
   return result;
 }
 
-- (_TtC20ProductPageExtension25VisualEffectContainerView)initWithEffect:(id)a3
+- (_TtC20ProductPageExtension25VisualEffectContainerView)initWithEffect:(id)effect
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

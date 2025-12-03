@@ -1,41 +1,41 @@
 @interface MatterAccessoryLikeItem
-+ (id)itemWithAccessoryRepresentableObject:(id)a3 valueSource:(id)a4;
++ (id)itemWithAccessoryRepresentableObject:(id)object valueSource:(id)source;
 - (HFHomeKitObject)homeKitObject;
 - (HMHome)home;
 - (NSSet)services;
 - (_TtC4Home23MatterAccessoryLikeItem)init;
 - (id)accessories;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (id)currentStateActionBuildersForHome:(id)a3;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(void *)zone;
+- (id)currentStateActionBuildersForHome:(id)home;
 - (id)namingComponentForHomeKitObject;
-- (id)serviceLikeBuilderInHome:(id)a3;
+- (id)serviceLikeBuilderInHome:(id)home;
 @end
 
 @implementation MatterAccessoryLikeItem
 
 - (HFHomeKitObject)homeKitObject
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC4Home23MatterAccessoryLikeItem_matterAccessoryRepresentable) hf_homeKitObject];
+  hf_homeKitObject = [*(&self->super.super.super.isa + OBJC_IVAR____TtC4Home23MatterAccessoryLikeItem_matterAccessoryRepresentable) hf_homeKitObject];
 
-  return v2;
+  return hf_homeKitObject;
 }
 
-+ (id)itemWithAccessoryRepresentableObject:(id)a3 valueSource:(id)a4
++ (id)itemWithAccessoryRepresentableObject:(id)object valueSource:(id)source
 {
   swift_getObjCClassMetadata();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v5 = _s4Home23MatterAccessoryLikeItemC04withC19RepresentableObject_11valueSourceACXDSgSo011HFAccessoryG0_p_So021HFCharacteristicValueJ0_ptFZ_0(a3);
+  v5 = _s4Home23MatterAccessoryLikeItemC04withC19RepresentableObject_11valueSourceACXDSgSo011HFAccessoryG0_p_So021HFCharacteristicValueJ0_ptFZ_0(object);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 
   return v5;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_20D9FD61C(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -51,10 +51,10 @@
   return result;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = MatterAccessoryLikeItem.copy(with:)();
   swift_unknownObjectRelease();
 
@@ -63,9 +63,9 @@
 
 - (HMHome)home
 {
-  v2 = [*(*(&self->super.super.super.isa + OBJC_IVAR____TtC4Home23MatterAccessoryLikeItem_matterAccessoryRepresentable) + OBJC_IVAR___HFMatterAccessoryRepresentable_accessory) home];
+  home = [*(*(&self->super.super.super.isa + OBJC_IVAR____TtC4Home23MatterAccessoryLikeItem_matterAccessoryRepresentable) + OBJC_IVAR___HFMatterAccessoryRepresentable_accessory) home];
 
-  return v2;
+  return home;
 }
 
 - (NSSet)services
@@ -85,8 +85,8 @@
 - (id)accessories
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC4Home23MatterAccessoryLikeItem_matterAccessoryRepresentable);
-  v3 = self;
-  v4 = [v2 hf_associatedAccessories];
+  selfCopy = self;
+  hf_associatedAccessories = [v2 hf_associatedAccessories];
   sub_20D9D7510(0, &qword_27C844290, 0x277CD1650);
   sub_20D9EC18C(&qword_27C843840, &qword_27C844290, 0x277CD1650);
   sub_20DD651E4();
@@ -98,28 +98,28 @@
 
 - (id)namingComponentForHomeKitObject
 {
-  v2 = [objc_allocWithZone(HFNamingComponents) initWithHomeKitObject_];
+  initWithHomeKitObject_ = [objc_allocWithZone(HFNamingComponents) initWithHomeKitObject_];
 
-  return v2;
+  return initWithHomeKitObject_;
 }
 
-- (id)serviceLikeBuilderInHome:(id)a3
+- (id)serviceLikeBuilderInHome:(id)home
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC4Home23MatterAccessoryLikeItem_matterAccessoryRepresentable);
-  v4 = self;
-  v5 = [v3 hf_homeKitObject];
-  v6 = [(MatterAccessoryLikeItem *)v4 home];
-  v7 = [objc_allocWithZone(HFAccessoryBuilder) initWithExistingObject:v5 inHome:v6];
+  selfCopy = self;
+  hf_homeKitObject = [v3 hf_homeKitObject];
+  home = [(MatterAccessoryLikeItem *)selfCopy home];
+  v7 = [objc_allocWithZone(HFAccessoryBuilder) initWithExistingObject:hf_homeKitObject inHome:home];
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (id)currentStateActionBuildersForHome:(id)a3
+- (id)currentStateActionBuildersForHome:(id)home
 {
-  v4 = a3;
-  v5 = self;
-  v6 = MatterAccessoryLikeItem.currentStateActionBuilders(for:)(v4);
+  homeCopy = home;
+  selfCopy = self;
+  v6 = MatterAccessoryLikeItem.currentStateActionBuilders(for:)(homeCopy);
 
   return v6;
 }

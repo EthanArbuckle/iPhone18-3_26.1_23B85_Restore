@@ -1,35 +1,35 @@
 @interface SWTodayTableViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 @end
 
 @implementation SWTodayTableViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SWTodayTableViewCell"];
-  [v3 validateClass:@"SWTodayTableViewController" hasInstanceMethod:@"tableView: cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"Stock"];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"companyName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"marketcap" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"formattedPrice" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Stock" hasClassMethod:@"BlankValueString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"changeIsNegative" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"isIndex" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"changeIsZero" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"Stock" hasClassMethod:@"formattedStringForString: fractionDigits: percentStyle:" withFullSignature:{"@", "@", "I", "B", 0}];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"formattedChangePercent:" withFullSignature:{"@", "B", 0}];
-  [v3 validateClass:@"Stock" hasInstanceMethod:@"change" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SWTodayTableViewCell"];
+  [validationsCopy validateClass:@"SWTodayTableViewController" hasInstanceMethod:@"tableView: cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"Stock"];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"companyName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"marketcap" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"formattedPrice" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Stock" hasClassMethod:@"BlankValueString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"changeIsNegative" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"isIndex" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"changeIsZero" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"Stock" hasClassMethod:@"formattedStringForString: fractionDigits: percentStyle:" withFullSignature:{"@", "@", "I", "B", 0}];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"formattedChangePercent:" withFullSignature:{"@", "B", 0}];
+  [validationsCopy validateClass:@"Stock" hasInstanceMethod:@"change" withFullSignature:{"@", 0}];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v45.receiver = self;
   v45.super_class = SWTodayTableViewControllerAccessibility;
-  v8 = [(SWTodayTableViewControllerAccessibility *)&v45 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(SWTodayTableViewControllerAccessibility *)&v45 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   MEMORY[0x29ED39940](@"SWTodayTableViewCell");
   if (objc_opt_isKindOfClass())
   {
@@ -39,7 +39,7 @@
     v42 = __Block_byref_object_copy_;
     v43 = __Block_byref_object_dispose_;
     v44 = 0;
-    v38 = v7;
+    v38 = pathCopy;
     AXPerformSafeBlock();
     v9 = v40[5];
 

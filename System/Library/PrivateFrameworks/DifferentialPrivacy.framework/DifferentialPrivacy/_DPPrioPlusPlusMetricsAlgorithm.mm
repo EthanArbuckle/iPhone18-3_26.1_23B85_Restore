@@ -1,50 +1,50 @@
 @interface _DPPrioPlusPlusMetricsAlgorithm
-+ (id)initializeWithSecretSharingSigma:(double)a3 dimensionality:(unint64_t)a4;
-- (_DPPrioPlusPlusMetricsAlgorithm)initWithSecretSharingSigma:(double)a3 dimensionality:(unint64_t)a4;
-- (id)randomize:(id)a3;
++ (id)initializeWithSecretSharingSigma:(double)sigma dimensionality:(unint64_t)dimensionality;
+- (_DPPrioPlusPlusMetricsAlgorithm)initWithSecretSharingSigma:(double)sigma dimensionality:(unint64_t)dimensionality;
+- (id)randomize:(id)randomize;
 @end
 
 @implementation _DPPrioPlusPlusMetricsAlgorithm
 
-+ (id)initializeWithSecretSharingSigma:(double)a3 dimensionality:(unint64_t)a4
++ (id)initializeWithSecretSharingSigma:(double)sigma dimensionality:(unint64_t)dimensionality
 {
-  v4 = [[a1 alloc] initWithSecretSharingSigma:a4 dimensionality:a3];
+  v4 = [[self alloc] initWithSecretSharingSigma:dimensionality dimensionality:sigma];
 
   return v4;
 }
 
-- (_DPPrioPlusPlusMetricsAlgorithm)initWithSecretSharingSigma:(double)a3 dimensionality:(unint64_t)a4
+- (_DPPrioPlusPlusMetricsAlgorithm)initWithSecretSharingSigma:(double)sigma dimensionality:(unint64_t)dimensionality
 {
-  if ([_DPPrioPlusPlusNoiseGenerator isValidSigma:?]&& [_DPPrioPlusPlusNoiseGenerator isValidDimension:a4])
+  if ([_DPPrioPlusPlusNoiseGenerator isValidSigma:?]&& [_DPPrioPlusPlusNoiseGenerator isValidDimension:dimensionality])
   {
     v10.receiver = self;
     v10.super_class = _DPPrioPlusPlusMetricsAlgorithm;
     v7 = [(_DPPrioPlusPlusMetricsAlgorithm *)&v10 init];
     if (v7)
     {
-      v7->_secretSharingSigma = a3;
-      v7->_dimension = a4;
+      v7->_secretSharingSigma = sigma;
+      v7->_dimension = dimensionality;
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)randomize:(id)a3
+- (id)randomize:(id)randomize
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB28] dataWithData:a3];
-  v5 = [(_DPPrioPlusPlusMetricsAlgorithm *)self dimension];
+  v4 = [MEMORY[0x277CBEB28] dataWithData:randomize];
+  dimension = [(_DPPrioPlusPlusMetricsAlgorithm *)self dimension];
   [(_DPPrioPlusPlusMetricsAlgorithm *)self secretSharingSigma];
-  v6 = [_DPPrioPlusPlusNoiseGenerator randomize:v4 dimension:v5 stddev:?];
+  v6 = [_DPPrioPlusPlusNoiseGenerator randomize:v4 dimension:dimension stddev:?];
   v11[0] = @"share1";
   v11[1] = @"share2";
   v12[0] = v4;

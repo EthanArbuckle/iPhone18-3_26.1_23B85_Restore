@@ -1,6 +1,6 @@
 @interface APMetricListener
 - (APMetricListener)init;
-- (id)actionReceiverForConnection:(id)a3;
+- (id)actionReceiverForConnection:(id)connection;
 @end
 
 @implementation APMetricListener
@@ -28,23 +28,23 @@
   return v2;
 }
 
-- (id)actionReceiverForConnection:(id)a3
+- (id)actionReceiverForConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = APLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [v3 bundleID];
+    bundleID = [connectionCopy bundleID];
     v10 = 138478083;
     v11 = v5;
     v12 = 2114;
-    v13 = v7;
+    v13 = bundleID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{private}@] Opening new connection from %{public}@", &v10, 0x16u);
   }
 
-  v8 = [[APMetricReceiver alloc] initWithConnection:v3];
+  v8 = [[APMetricReceiver alloc] initWithConnection:connectionCopy];
 
   return v8;
 }

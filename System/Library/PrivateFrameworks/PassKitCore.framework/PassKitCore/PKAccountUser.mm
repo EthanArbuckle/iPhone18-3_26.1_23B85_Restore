@@ -1,69 +1,69 @@
 @interface PKAccountUser
-+ (BOOL)currentUser:(id)a3 canShareZone:(id)a4 withAccountUser:(id)a5;
-+ (BOOL)currentUser:(id)a3 shouldRequestZoneShareForZone:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccountUser:(id)a3;
++ (BOOL)currentUser:(id)user canShareZone:(id)zone withAccountUser:(id)accountUser;
++ (BOOL)currentUser:(id)user shouldRequestZoneShareForZone:(id)zone;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccountUser:(id)user;
 - (BOOL)supportsMonthlySpendLimit;
 - (BOOL)supportsPhysicalCardActivation;
 - (BOOL)supportsRequestPhysicalCard;
 - (NSPersonNameComponents)nameComponents;
-- (PKAccountUser)initWithCoder:(id)a3;
-- (PKAccountUser)initWithDictionary:(id)a3;
-- (id)_featureWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKAccountUser)initWithCoder:(id)coder;
+- (PKAccountUser)initWithDictionary:(id)dictionary;
+- (id)_featureWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountUser
 
-- (PKAccountUser)initWithDictionary:(id)a3
+- (PKAccountUser)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v39.receiver = self;
   v39.super_class = PKAccountUser;
   v5 = [(PKAccountUser *)&v39 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"accessLevel"];
+    v6 = [dictionaryCopy PKStringForKey:@"accessLevel"];
     v5->_accessLevel = PKAccountAccessLevelFromString(v6);
 
-    v7 = [v4 PKStringForKey:@"altDSID"];
+    v7 = [dictionaryCopy PKStringForKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v7;
 
-    v9 = [v4 PKStringForKey:@"state"];
+    v9 = [dictionaryCopy PKStringForKey:@"state"];
     v5->_accountState = PKAccountStateFromString(v9);
 
-    v10 = [v4 PKStringForKey:@"firstName"];
+    v10 = [dictionaryCopy PKStringForKey:@"firstName"];
     firstName = v5->_firstName;
     v5->_firstName = v10;
 
-    v12 = [v4 PKStringForKey:@"lastName"];
+    v12 = [dictionaryCopy PKStringForKey:@"lastName"];
     lastName = v5->_lastName;
     v5->_lastName = v12;
 
-    v14 = [v4 PKStringForKey:@"appleID"];
+    v14 = [dictionaryCopy PKStringForKey:@"appleID"];
     appleID = v5->_appleID;
     v5->_appleID = v14;
 
-    v16 = [v4 PKSetContaining:objc_opt_class() forKey:@"addressableHandles"];
+    v16 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"addressableHandles"];
     addressableHandles = v5->_addressableHandles;
     v5->_addressableHandles = v16;
 
-    v18 = [v4 PKSetContaining:objc_opt_class() forKey:@"supportedFeatures"];
+    v18 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"supportedFeatures"];
     v19 = [v18 pk_setByApplyingBlock:&__block_literal_global_93];
     supportedFeatures = v5->_supportedFeatures;
     v5->_supportedFeatures = v19;
 
     v21 = [PKAccountUserPreferences alloc];
-    v22 = [v4 PKDictionaryForKey:@"preferences"];
+    v22 = [dictionaryCopy PKDictionaryForKey:@"preferences"];
     v23 = [(PKAccountUserPreferences *)v21 initWithDictionary:v22];
     preferences = v5->_preferences;
     v5->_preferences = v23;
 
-    v25 = [v4 PKStringForKey:@"identityStatus"];
+    v25 = [dictionaryCopy PKStringForKey:@"identityStatus"];
     v26 = v25;
     if (v25 != @"verified")
     {
@@ -137,20 +137,20 @@ PKCreditAccountFeatureDescriptor *__36__PKAccountUser_initWithDictionary___block
   return v3;
 }
 
-+ (BOOL)currentUser:(id)a3 canShareZone:(id)a4 withAccountUser:(id)a5
++ (BOOL)currentUser:(id)user canShareZone:(id)zone withAccountUser:(id)accountUser
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 accountState] == 4 || !objc_msgSend(v7, "accountState") || objc_msgSend(v9, "accountState") == 4 || !objc_msgSend(v9, "accountState"))
+  userCopy = user;
+  zoneCopy = zone;
+  accountUserCopy = accountUser;
+  if ([userCopy accountState] == 4 || !objc_msgSend(userCopy, "accountState") || objc_msgSend(accountUserCopy, "accountState") == 4 || !objc_msgSend(accountUserCopy, "accountState"))
   {
     goto LABEL_29;
   }
 
-  v10 = [v8 accountIdentifier];
-  v11 = [v9 accountIdentifier];
-  v12 = v10;
-  v13 = v11;
+  accountIdentifier = [zoneCopy accountIdentifier];
+  accountIdentifier2 = [accountUserCopy accountIdentifier];
+  v12 = accountIdentifier;
+  v13 = accountIdentifier2;
   v14 = v13;
   if (v12 == v13)
   {
@@ -171,10 +171,10 @@ PKCreditAccountFeatureDescriptor *__36__PKAccountUser_initWithDictionary___block
     }
   }
 
-  v16 = [v7 accountIdentifier];
-  v17 = [v9 accountIdentifier];
-  v12 = v16;
-  v18 = v17;
+  accountIdentifier3 = [userCopy accountIdentifier];
+  accountIdentifier4 = [accountUserCopy accountIdentifier];
+  v12 = accountIdentifier3;
+  v18 = accountIdentifier4;
   v14 = v18;
   if (v12 == v18)
   {
@@ -195,10 +195,10 @@ PKCreditAccountFeatureDescriptor *__36__PKAccountUser_initWithDictionary___block
     }
   }
 
-  v20 = [v8 accountIdentifier];
-  v21 = [v7 accountIdentifier];
-  v12 = v20;
-  v22 = v21;
+  accountIdentifier5 = [zoneCopy accountIdentifier];
+  accountIdentifier6 = [userCopy accountIdentifier];
+  v12 = accountIdentifier5;
+  v22 = accountIdentifier6;
   v14 = v22;
   if (v12 == v22)
   {
@@ -219,10 +219,10 @@ PKCreditAccountFeatureDescriptor *__36__PKAccountUser_initWithDictionary___block
     }
   }
 
-  v24 = [v8 originatorAltDSID];
-  v25 = [v7 altDSID];
-  v12 = v24;
-  v26 = v25;
+  originatorAltDSID = [zoneCopy originatorAltDSID];
+  altDSID = [userCopy altDSID];
+  v12 = originatorAltDSID;
+  v26 = altDSID;
   v14 = v26;
   if (v12 != v26)
   {
@@ -244,13 +244,13 @@ LABEL_28:
   }
 
 LABEL_32:
-  v30 = [v8 sharedUsersAltDSIDs];
-  v31 = [v9 altDSID];
-  v32 = [v30 containsObject:v31];
+  sharedUsersAltDSIDs = [zoneCopy sharedUsersAltDSIDs];
+  altDSID2 = [accountUserCopy altDSID];
+  v32 = [sharedUsersAltDSIDs containsObject:altDSID2];
 
   if (v32)
   {
-    v28 = [v8 access] == 1;
+    v28 = [zoneCopy access] == 1;
     goto LABEL_30;
   }
 
@@ -261,19 +261,19 @@ LABEL_30:
   return v28;
 }
 
-+ (BOOL)currentUser:(id)a3 shouldRequestZoneShareForZone:(id)a4
++ (BOOL)currentUser:(id)user shouldRequestZoneShareForZone:(id)zone
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 accountState] == 4 || !objc_msgSend(v5, "accountState"))
+  userCopy = user;
+  zoneCopy = zone;
+  if ([userCopy accountState] == 4 || !objc_msgSend(userCopy, "accountState"))
   {
     goto LABEL_13;
   }
 
-  v7 = [v6 accountIdentifier];
-  v8 = [v5 accountIdentifier];
-  v9 = v7;
-  v10 = v8;
+  accountIdentifier = [zoneCopy accountIdentifier];
+  accountIdentifier2 = [userCopy accountIdentifier];
+  v9 = accountIdentifier;
+  v10 = accountIdentifier2;
   v11 = v10;
   if (v9 == v10)
   {
@@ -295,7 +295,7 @@ LABEL_30:
     }
   }
 
-  if ([v6 access] != 2)
+  if ([zoneCopy access] != 2)
   {
 LABEL_13:
     v14 = 0;
@@ -303,49 +303,49 @@ LABEL_13:
   }
 
   v17 = 0;
-  v13 = [v6 zoneName];
+  zoneName = [zoneCopy zoneName];
   v16 = 0;
-  [PKCloudStoreZone zoneValueForZoneName:v13 outZoneType:&v17 outAccountIdentifier:&v16 altDSID:0];
+  [PKCloudStoreZone zoneValueForZoneName:zoneName outZoneType:&v17 outAccountIdentifier:&v16 altDSID:0];
 
   if ((v17 - 5) >= 2)
   {
     if (v17 == 4)
     {
-      v14 = [v5 accessLevel] == 1;
+      v14 = [userCopy accessLevel] == 1;
       goto LABEL_14;
     }
 
     goto LABEL_13;
   }
 
-  v14 = ([v5 accessLevel] - 1) < 2;
+  v14 = ([userCopy accessLevel] - 1) < 2;
 LABEL_14:
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountUser *)self isEqualToAccountUser:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountUser *)self isEqualToAccountUser:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAccountUser:(id)a3
+- (BOOL)isEqualToAccountUser:(id)user
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_accessLevel != *(v4 + 2))
+  userCopy = user;
+  v5 = userCopy;
+  if (!userCopy || self->_accessLevel != *(userCopy + 2))
   {
     goto LABEL_48;
   }
@@ -564,132 +564,132 @@ LABEL_49:
   return v3;
 }
 
-- (PKAccountUser)initWithCoder:(id)a3
+- (PKAccountUser)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = PKAccountUser;
   v5 = [(PKAccountUser *)&v36 init];
   if (v5)
   {
-    v5->_accessLevel = [v4 decodeIntegerForKey:@"accessLevel"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v5->_accessLevel = [coderCopy decodeIntegerForKey:@"accessLevel"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v6;
 
-    v5->_accountState = [v4 decodeIntegerForKey:@"state"];
-    v5->_currentUser = [v4 decodeIntegerForKey:@"currentUser"] != 0;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
+    v5->_accountState = [coderCopy decodeIntegerForKey:@"state"];
+    v5->_currentUser = [coderCopy decodeIntegerForKey:@"currentUser"] != 0;
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
     firstName = v5->_firstName;
     v5->_firstName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
     lastName = v5->_lastName;
     v5->_lastName = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"supportedFeatures"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"supportedFeatures"];
     supportedFeatures = v5->_supportedFeatures;
     v5->_supportedFeatures = v15;
 
     v17 = MEMORY[0x1E695DFD8];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"transactionSourceIdentifier"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"transactionSourceIdentifier"];
     transactionSourceIdentifiers = v5->_transactionSourceIdentifiers;
     v5->_transactionSourceIdentifiers = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appleID"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleID"];
     appleID = v5->_appleID;
     v5->_appleID = v24;
 
     v26 = MEMORY[0x1E695DFD8];
     v27 = objc_opt_class();
     v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"addressableHandles"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"addressableHandles"];
     addressableHandles = v5->_addressableHandles;
     v5->_addressableHandles = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferences"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferences"];
     preferences = v5->_preferences;
     v5->_preferences = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"notificationSettings"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notificationSettings"];
     notificationSettings = v5->_notificationSettings;
     v5->_notificationSettings = v33;
 
-    v5->_identityStatus = [v4 decodeIntegerForKey:@"identityStatus"];
+    v5->_identityStatus = [coderCopy decodeIntegerForKey:@"identityStatus"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accessLevel = self->_accessLevel;
-  v5 = a3;
-  [v5 encodeInteger:accessLevel forKey:@"accessLevel"];
-  [v5 encodeObject:self->_altDSID forKey:@"altDSID"];
-  [v5 encodeInteger:self->_accountState forKey:@"state"];
-  [v5 encodeInteger:self->_currentUser forKey:@"currentUser"];
-  [v5 encodeObject:self->_firstName forKey:@"firstName"];
-  [v5 encodeObject:self->_lastName forKey:@"lastName"];
-  [v5 encodeObject:self->_supportedFeatures forKey:@"supportedFeatures"];
-  [v5 encodeObject:self->_transactionSourceIdentifiers forKey:@"transactionSourceIdentifier"];
-  [v5 encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
-  [v5 encodeObject:self->_appleID forKey:@"appleID"];
-  [v5 encodeObject:self->_addressableHandles forKey:@"addressableHandles"];
-  [v5 encodeObject:self->_preferences forKey:@"preferences"];
-  [v5 encodeObject:self->_notificationSettings forKey:@"notificationSettings"];
-  [v5 encodeInteger:self->_identityStatus forKey:@"identityStatus"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:accessLevel forKey:@"accessLevel"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"altDSID"];
+  [coderCopy encodeInteger:self->_accountState forKey:@"state"];
+  [coderCopy encodeInteger:self->_currentUser forKey:@"currentUser"];
+  [coderCopy encodeObject:self->_firstName forKey:@"firstName"];
+  [coderCopy encodeObject:self->_lastName forKey:@"lastName"];
+  [coderCopy encodeObject:self->_supportedFeatures forKey:@"supportedFeatures"];
+  [coderCopy encodeObject:self->_transactionSourceIdentifiers forKey:@"transactionSourceIdentifier"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeObject:self->_appleID forKey:@"appleID"];
+  [coderCopy encodeObject:self->_addressableHandles forKey:@"addressableHandles"];
+  [coderCopy encodeObject:self->_preferences forKey:@"preferences"];
+  [coderCopy encodeObject:self->_notificationSettings forKey:@"notificationSettings"];
+  [coderCopy encodeInteger:self->_identityStatus forKey:@"identityStatus"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKAccountUser allocWithZone:](PKAccountUser init];
   v5->_accessLevel = self->_accessLevel;
-  v6 = [(NSString *)self->_altDSID copyWithZone:a3];
+  v6 = [(NSString *)self->_altDSID copyWithZone:zone];
   altDSID = v5->_altDSID;
   v5->_altDSID = v6;
 
   v5->_accountState = self->_accountState;
   v5->_currentUser = self->_currentUser;
   v5->_identityStatus = self->_identityStatus;
-  v8 = [(NSString *)self->_firstName copyWithZone:a3];
+  v8 = [(NSString *)self->_firstName copyWithZone:zone];
   firstName = v5->_firstName;
   v5->_firstName = v8;
 
-  v10 = [(NSString *)self->_lastName copyWithZone:a3];
+  v10 = [(NSString *)self->_lastName copyWithZone:zone];
   lastName = v5->_lastName;
   v5->_lastName = v10;
 
-  v12 = [(NSSet *)self->_supportedFeatures copyWithZone:a3];
+  v12 = [(NSSet *)self->_supportedFeatures copyWithZone:zone];
   supportedFeatures = v5->_supportedFeatures;
   v5->_supportedFeatures = v12;
 
-  v14 = [(NSSet *)self->_transactionSourceIdentifiers copyWithZone:a3];
+  v14 = [(NSSet *)self->_transactionSourceIdentifiers copyWithZone:zone];
   transactionSourceIdentifiers = v5->_transactionSourceIdentifiers;
   v5->_transactionSourceIdentifiers = v14;
 
-  v16 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   accountIdentifier = v5->_accountIdentifier;
   v5->_accountIdentifier = v16;
 
-  v18 = [(NSString *)self->_appleID copyWithZone:a3];
+  v18 = [(NSString *)self->_appleID copyWithZone:zone];
   appleID = v5->_appleID;
   v5->_appleID = v18;
 
-  v20 = [(NSSet *)self->_addressableHandles copyWithZone:a3];
+  v20 = [(NSSet *)self->_addressableHandles copyWithZone:zone];
   addressableHandles = v5->_addressableHandles;
   v5->_addressableHandles = v20;
 
-  v22 = [(PKAccountUserPreferences *)self->_preferences copyWithZone:a3];
+  v22 = [(PKAccountUserPreferences *)self->_preferences copyWithZone:zone];
   preferences = v5->_preferences;
   v5->_preferences = v22;
 
@@ -698,38 +698,38 @@ LABEL_49:
 
 - (BOOL)supportsRequestPhysicalCard
 {
-  v2 = [(PKAccountUser *)self requestPhysicalCardFeatureDescriptor];
-  v3 = v2 != 0;
+  requestPhysicalCardFeatureDescriptor = [(PKAccountUser *)self requestPhysicalCardFeatureDescriptor];
+  v3 = requestPhysicalCardFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsMonthlySpendLimit
 {
-  v2 = [(PKAccountUser *)self monthlySpendLimitFeatureDescriptor];
-  v3 = v2 != 0;
+  monthlySpendLimitFeatureDescriptor = [(PKAccountUser *)self monthlySpendLimitFeatureDescriptor];
+  v3 = monthlySpendLimitFeatureDescriptor != 0;
 
   return v3;
 }
 
 - (BOOL)supportsPhysicalCardActivation
 {
-  v2 = [(PKAccountUser *)self physicalCardActivationFeatureDescriptor];
-  v3 = v2 != 0;
+  physicalCardActivationFeatureDescriptor = [(PKAccountUser *)self physicalCardActivationFeatureDescriptor];
+  v3 = physicalCardActivationFeatureDescriptor != 0;
 
   return v3;
 }
 
-- (id)_featureWithIdentifier:(id)a3
+- (id)_featureWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(PKAccountUser *)self supportedFeatures];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  supportedFeatures = [(PKAccountUser *)self supportedFeatures];
+  v6 = [supportedFeatures countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -739,12 +739,12 @@ LABEL_49:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(supportedFeatures);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -753,7 +753,7 @@ LABEL_49:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [supportedFeatures countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;

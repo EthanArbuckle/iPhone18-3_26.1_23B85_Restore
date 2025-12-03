@@ -1,30 +1,30 @@
 @interface HDSimpleGraphDatabase
-+ (id)_createIndexStatementsForEntityClasses:(uint64_t)a1;
-+ (id)_createSchemaStatementsWithBehavior:(uint64_t)a1;
-+ (id)_createTableStatementsForEntityClasses:(uint64_t)a1;
++ (id)_createIndexStatementsForEntityClasses:(uint64_t)classes;
++ (id)_createSchemaStatementsWithBehavior:(uint64_t)behavior;
++ (id)_createTableStatementsForEntityClasses:(uint64_t)classes;
 + (id)_entityClasses;
 + (id)unitTesting_didInitGraphDatabaseHandler;
-+ (uint64_t)_createSchemaForDatabase:(void *)a3 behavior:(uint64_t)a4 error:;
-+ (uint64_t)_migrateDatabase:(uint64_t *)a3 fromVersion:(void *)a4 behavior:(uint64_t)a5 error:;
-+ (uint64_t)_migrateDatabase:(uint64_t)a3 toVersion:(uint64_t)a4 function:(uint64_t)a5 error:;
-+ (uint64_t)_openDatabase:(uint64_t)a3 error:;
-+ (uint64_t)_readSchemaVersionForDatabase:(uint64_t)a3 error:;
-+ (uint64_t)_removeExistingAndCreateDatabase:(uint64_t)a3 error:;
-+ (uint64_t)_removeExistingDatabaseAtURL:(uint64_t)a3 error:;
-+ (uint64_t)_validateOrCreateSchemaForDatabase:(uint64_t)a3 error:;
-+ (void)_graphDatabaseWithURL:(uint64_t)a3 error:;
-+ (void)setUnitTesting_didInitGraphDatabaseHandler:(id)a3;
-- (BOOL)deleteWithError:(id *)a3;
-- (BOOL)enumerateAttributesForNodeWithID:(int64_t)a3 includeDeleted:(BOOL)a4 error:(id *)a5 enumerationHandler:(id)a6;
-- (BOOL)foreignKeysEnable:(BOOL)a3 error:(id *)a4;
++ (uint64_t)_createSchemaForDatabase:(void *)database behavior:(uint64_t)behavior error:;
++ (uint64_t)_migrateDatabase:(uint64_t *)database fromVersion:(void *)version behavior:(uint64_t)behavior error:;
++ (uint64_t)_migrateDatabase:(uint64_t)database toVersion:(uint64_t)version function:(uint64_t)function error:;
++ (uint64_t)_openDatabase:(uint64_t)database error:;
++ (uint64_t)_readSchemaVersionForDatabase:(uint64_t)database error:;
++ (uint64_t)_removeExistingAndCreateDatabase:(uint64_t)database error:;
++ (uint64_t)_removeExistingDatabaseAtURL:(uint64_t)l error:;
++ (uint64_t)_validateOrCreateSchemaForDatabase:(uint64_t)database error:;
++ (void)_graphDatabaseWithURL:(uint64_t)l error:;
++ (void)setUnitTesting_didInitGraphDatabaseHandler:(id)handler;
+- (BOOL)deleteWithError:(id *)error;
+- (BOOL)enumerateAttributesForNodeWithID:(int64_t)d includeDeleted:(BOOL)deleted error:(id *)error enumerationHandler:(id)handler;
+- (BOOL)foreignKeysEnable:(BOOL)enable error:(id *)error;
 - (HDSimpleGraphDatabase)init;
 - (id)description;
-- (id)schemaVersionWithError:(id *)a3;
-- (id)unitTesting_countOfNodesWithRelationshipType:(int64_t)a3 error:(id *)a4;
-- (id)unitTesting_insertNodeWithID:(int64_t)a3 error:(id *)a4;
+- (id)schemaVersionWithError:(id *)error;
+- (id)unitTesting_countOfNodesWithRelationshipType:(int64_t)type error:(id *)error;
+- (id)unitTesting_insertNodeWithID:(int64_t)d error:(id *)error;
 - (uint64_t)_openAndCreateDatabaseIfNeededWithError:(uint64_t)result;
-- (void)_createDatabaseConnectionWithURL:(uint64_t)a1;
-- (void)_initWithURL:(void *)a1;
+- (void)_createDatabaseConnectionWithURL:(uint64_t)l;
+- (void)_initWithURL:(void *)l;
 - (void)close;
 - (void)dealloc;
 @end
@@ -41,7 +41,7 @@
   return 0;
 }
 
-+ (void)_graphDatabaseWithURL:(uint64_t)a3 error:
++ (void)_graphDatabaseWithURL:(uint64_t)l error:
 {
   v4 = a2;
   objc_opt_self();
@@ -53,7 +53,7 @@
     (*(unitTesting_didInitGraphDatabaseHandler + 16))(unitTesting_didInitGraphDatabaseHandler, v5);
   }
 
-  if ([(HDSimpleGraphDatabase *)v5 _openAndCreateDatabaseIfNeededWithError:a3])
+  if ([(HDSimpleGraphDatabase *)v5 _openAndCreateDatabaseIfNeededWithError:l])
   {
     v7 = v5;
   }
@@ -81,8 +81,8 @@
   URL = self->_URL;
   if (URL)
   {
-    v6 = [(NSURL *)URL path];
-    v7 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, v6];
+    path = [(NSURL *)URL path];
+    v7 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, path];
   }
 
   else
@@ -93,9 +93,9 @@
   return v7;
 }
 
-- (id)schemaVersionWithError:(id *)a3
+- (id)schemaVersionWithError:(id *)error
 {
-  v3 = [HDSimpleGraphDatabase _readSchemaVersionForDatabase:a3 error:?];
+  v3 = [HDSimpleGraphDatabase _readSchemaVersionForDatabase:error error:?];
   if (v3 < 0)
   {
     v4 = 0;
@@ -109,42 +109,42 @@
   return v4;
 }
 
-+ (uint64_t)_readSchemaVersionForDatabase:(uint64_t)a3 error:
++ (uint64_t)_readSchemaVersionForDatabase:(uint64_t)database error:
 {
   v4 = a2;
   objc_opt_self();
-  v5 = [v4 userVersionWithDatabaseName:0 error:a3];
+  v5 = [v4 userVersionWithDatabaseName:0 error:database];
 
   return v5;
 }
 
-+ (uint64_t)_openDatabase:(uint64_t)a3 error:
++ (uint64_t)_openDatabase:(uint64_t)database error:
 {
   v4 = a2;
   v5 = objc_opt_self();
-  if ([v4 openWithError:a3])
+  if ([v4 openWithError:database])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(HDSimpleGraphDatabase *)v5 _validateOrCreateSchemaForDatabase:v4 error:a3];
+    v6 = [(HDSimpleGraphDatabase *)v5 _validateOrCreateSchemaForDatabase:v4 error:database];
   }
 
   return v6;
 }
 
-+ (uint64_t)_validateOrCreateSchemaForDatabase:(uint64_t)a3 error:
++ (uint64_t)_validateOrCreateSchemaForDatabase:(uint64_t)database error:
 {
   v31 = *MEMORY[0x277D85DE8];
   v4 = a2;
   v5 = objc_opt_self();
-  v6 = [MEMORY[0x277CCDD30] sharedBehavior];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
   v22 = 0;
   v7 = [(HDSimpleGraphDatabase *)v5 _readSchemaVersionForDatabase:v4 error:&v22];
   v8 = v22;
-  if ([v6 supportsOntologyDatabaseFutureMigrations])
+  if ([mEMORY[0x277CCDD30] supportsOntologyDatabaseFutureMigrations])
   {
     v9 = 10002;
   }
@@ -161,7 +161,7 @@
 
   if ((v7 & 0x8000000000000000) != 0)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 description:@"Unable to read schema version" underlyingError:v8];
+    [MEMORY[0x277CCA9B8] hk_assignError:database code:100 description:@"Unable to read schema version" underlyingError:v8];
     goto LABEL_19;
   }
 
@@ -174,7 +174,7 @@
       [(HDSimpleGraphDatabase *)v5 _validateOrCreateSchemaForDatabase:v7 error:v11];
     }
 
-    if (![(HDSimpleGraphDatabase *)v5 _removeExistingAndCreateDatabase:v4 error:a3])
+    if (![(HDSimpleGraphDatabase *)v5 _removeExistingAndCreateDatabase:v4 error:database])
     {
       goto LABEL_19;
     }
@@ -186,7 +186,7 @@
     {
       v20 = 0;
       v21 = v7;
-      v12 = [(HDSimpleGraphDatabase *)v5 _migrateDatabase:v4 fromVersion:&v21 behavior:v6 error:&v20];
+      v12 = [(HDSimpleGraphDatabase *)v5 _migrateDatabase:v4 fromVersion:&v21 behavior:mEMORY[0x277CCDD30] error:&v20];
       v13 = v20;
       _HKInitializeLogging();
       v14 = HKLogHealthOntology();
@@ -206,7 +206,7 @@
           _os_log_error_impl(&dword_2514A1000, v15, OS_LOG_TYPE_ERROR, "%{public}@: Unable to migrate from schema version %ld (current for OS is %ld) %@", buf, 0x2Au);
         }
 
-        if (([(HDSimpleGraphDatabase *)v5 _removeExistingAndCreateDatabase:v4 error:a3]& 1) == 0)
+        if (([(HDSimpleGraphDatabase *)v5 _removeExistingAndCreateDatabase:v4 error:database]& 1) == 0)
         {
 
 LABEL_19:
@@ -236,7 +236,7 @@ LABEL_19:
       }
     }
 
-    else if (([(HDSimpleGraphDatabase *)v5 _createSchemaForDatabase:v4 behavior:v6 error:a3]& 1) == 0)
+    else if (([(HDSimpleGraphDatabase *)v5 _createSchemaForDatabase:v4 behavior:mEMORY[0x277CCDD30] error:database]& 1) == 0)
     {
       goto LABEL_19;
     }
@@ -250,17 +250,17 @@ LABEL_20:
   return v10;
 }
 
-+ (uint64_t)_removeExistingAndCreateDatabase:(uint64_t)a3 error:
++ (uint64_t)_removeExistingAndCreateDatabase:(uint64_t)database error:
 {
   v4 = a2;
   v5 = objc_opt_self();
   [v4 close];
-  v6 = [v4 fileURL];
-  v7 = [(HDSimpleGraphDatabase *)v5 _removeExistingDatabaseAtURL:v6 error:a3];
+  fileURL = [v4 fileURL];
+  v7 = [(HDSimpleGraphDatabase *)v5 _removeExistingDatabaseAtURL:fileURL error:database];
 
   if (v7)
   {
-    v8 = [(HDSimpleGraphDatabase *)v5 _openDatabase:v4 error:a3];
+    v8 = [(HDSimpleGraphDatabase *)v5 _openDatabase:v4 error:database];
   }
 
   else
@@ -271,39 +271,39 @@ LABEL_20:
   return v8;
 }
 
-+ (uint64_t)_createSchemaForDatabase:(void *)a3 behavior:(uint64_t)a4 error:
++ (uint64_t)_createSchemaForDatabase:(void *)database behavior:(uint64_t)behavior error:
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = a2;
   v8 = objc_opt_self();
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__HDSimpleGraphDatabase__createSchemaForDatabase_behavior_error___block_invoke;
   v12[3] = &unk_2796B8DE0;
-  v13 = v6;
+  v13 = databaseCopy;
   v14 = v8;
-  v9 = v6;
-  v10 = [v7 performTransactionWithType:1 error:a4 usingBlock:v12];
+  v9 = databaseCopy;
+  v10 = [v7 performTransactionWithType:1 error:behavior usingBlock:v12];
 
   return v10;
 }
 
-+ (uint64_t)_migrateDatabase:(uint64_t *)a3 fromVersion:(void *)a4 behavior:(uint64_t)a5 error:
++ (uint64_t)_migrateDatabase:(uint64_t *)database fromVersion:(void *)version behavior:(uint64_t)behavior error:
 {
   v37 = *MEMORY[0x277D85DE8];
   v25 = a2;
-  v8 = a4;
+  versionCopy = version;
   v9 = objc_opt_self();
-  v10 = *a3;
-  if (*a3 > 3)
+  toVersion2 = *database;
+  if (*database > 3)
   {
     v12 = v9;
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v24 = v8;
-    v13 = [HDSimpleGraphDatabaseMigrator migrationStepsWithBehavior:v8];
+    v24 = versionCopy;
+    v13 = [HDSimpleGraphDatabaseMigrator migrationStepsWithBehavior:versionCopy];
     v14 = [v13 countByEnumeratingWithState:&v26 objects:v36 count:16];
     if (v14)
     {
@@ -319,23 +319,23 @@ LABEL_20:
           }
 
           v18 = *(*(&v26 + 1) + 8 * i);
-          if (v10 < [v18 toVersion])
+          if (toVersion2 < [v18 toVersion])
           {
             _HKInitializeLogging();
             v19 = HKLogHealthOntology();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
-              v20 = [v18 toVersion];
+              toVersion = [v18 toVersion];
               *buf = 138543874;
               v31 = v12;
               v32 = 2048;
-              v33 = v10;
+              v33 = toVersion2;
               v34 = 2048;
-              v35 = v20;
+              v35 = toVersion;
               _os_log_impl(&dword_2514A1000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: Migrate ontology database from schema %ld -> %ld", buf, 0x20u);
             }
 
-            v21 = +[HDSimpleGraphDatabase _migrateDatabase:toVersion:function:error:](v12, v25, [v18 toVersion], objc_msgSend(v18, "function"), a5);
+            v21 = +[HDSimpleGraphDatabase _migrateDatabase:toVersion:function:error:](v12, v25, [v18 toVersion], objc_msgSend(v18, "function"), behavior);
             if (v21)
             {
               v11 = v21;
@@ -343,8 +343,8 @@ LABEL_20:
               goto LABEL_17;
             }
 
-            v10 = [v18 toVersion];
-            *a3 = v10;
+            toVersion2 = [v18 toVersion];
+            *database = toVersion2;
           }
         }
 
@@ -360,12 +360,12 @@ LABEL_20:
 
     v11 = 0;
 LABEL_17:
-    v8 = v24;
+    versionCopy = v24;
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 format:{@"No migrations were written for schema < %ld", 5}];
+    [MEMORY[0x277CCA9B8] hk_assignError:behavior code:100 format:{@"No migrations were written for schema < %ld", 5}];
     v11 = 1;
   }
 
@@ -373,7 +373,7 @@ LABEL_17:
   return v11;
 }
 
-+ (uint64_t)_removeExistingDatabaseAtURL:(uint64_t)a3 error:
++ (uint64_t)_removeExistingDatabaseAtURL:(uint64_t)l error:
 {
   v4 = a2;
   objc_opt_self();
@@ -382,8 +382,8 @@ LABEL_17:
   if ((v6 & 1) == 0)
   {
     v7 = MEMORY[0x277CCA9B8];
-    v8 = [v4 path];
-    [v7 hk_assignError:a3 code:102 format:{@"Unable to remove existing database '%@'", v8}];
+    path = [v4 path];
+    [v7 hk_assignError:l code:102 format:{@"Unable to remove existing database '%@'", path}];
   }
 
   return v6;
@@ -418,14 +418,14 @@ uint64_t __65__HDSimpleGraphDatabase__createSchemaForDatabase_behavior_error___b
   return v9;
 }
 
-+ (id)_createSchemaStatementsWithBehavior:(uint64_t)a1
++ (id)_createSchemaStatementsWithBehavior:(uint64_t)behavior
 {
   v2 = a2;
   v3 = objc_opt_self();
   v4 = +[HDSimpleGraphDatabase _entityClasses];
-  v5 = [v2 supportsOntologyDatabaseFutureMigrations];
+  supportsOntologyDatabaseFutureMigrations = [v2 supportsOntologyDatabaseFutureMigrations];
 
-  if (v5)
+  if (supportsOntologyDatabaseFutureMigrations)
   {
     objc_opt_self();
     v6 = [v4 arrayByAddingObjectsFromArray:MEMORY[0x277CBEBF8]];
@@ -461,7 +461,7 @@ uint64_t __65__HDSimpleGraphDatabase__createSchemaForDatabase_behavior_error___b
   return v0;
 }
 
-+ (id)_createTableStatementsForEntityClasses:(uint64_t)a1
++ (id)_createTableStatementsForEntityClasses:(uint64_t)classes
 {
   v17 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -486,8 +486,8 @@ uint64_t __65__HDSimpleGraphDatabase__createSchemaForDatabase_behavior_error___b
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) createTableSQL];
-        [v3 addObject:v9];
+        createTableSQL = [*(*(&v12 + 1) + 8 * i) createTableSQL];
+        [v3 addObject:createTableSQL];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -501,7 +501,7 @@ uint64_t __65__HDSimpleGraphDatabase__createSchemaForDatabase_behavior_error___b
   return v3;
 }
 
-+ (id)_createIndexStatementsForEntityClasses:(uint64_t)a1
++ (id)_createIndexStatementsForEntityClasses:(uint64_t)classes
 {
   v28 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -531,8 +531,8 @@ uint64_t __65__HDSimpleGraphDatabase__createSchemaForDatabase_behavior_error___b
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [v9 indices];
-        v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        indices = [v9 indices];
+        v11 = [indices countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v11)
         {
           v12 = v11;
@@ -543,14 +543,14 @@ uint64_t __65__HDSimpleGraphDatabase__createSchemaForDatabase_behavior_error___b
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(indices);
               }
 
-              v15 = [*(*(&v18 + 1) + 8 * j) creationSQL];
-              [v3 addObject:v15];
+              creationSQL = [*(*(&v18 + 1) + 8 * j) creationSQL];
+              [v3 addObject:creationSQL];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v12 = [indices countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v12);
@@ -568,7 +568,7 @@ uint64_t __65__HDSimpleGraphDatabase__createSchemaForDatabase_behavior_error___b
   return v3;
 }
 
-+ (uint64_t)_migrateDatabase:(uint64_t)a3 toVersion:(uint64_t)a4 function:(uint64_t)a5 error:
++ (uint64_t)_migrateDatabase:(uint64_t)database toVersion:(uint64_t)version function:(uint64_t)function error:
 {
   v8 = a2;
   objc_opt_self();
@@ -581,9 +581,9 @@ uint64_t __65__HDSimpleGraphDatabase__createSchemaForDatabase_behavior_error___b
   v11[2] = __67__HDSimpleGraphDatabase__migrateDatabase_toVersion_function_error___block_invoke;
   v11[3] = &unk_2796B8E08;
   v11[4] = &v12;
-  v11[5] = a4;
-  v11[6] = a3;
-  if ([v8 performTransactionWithType:1 error:a5 usingBlock:v11])
+  v11[5] = version;
+  v11[6] = database;
+  if ([v8 performTransactionWithType:1 error:function usingBlock:v11])
   {
     v9 = v13[3];
   }
@@ -622,31 +622,31 @@ uint64_t __67__HDSimpleGraphDatabase__migrateDatabase_toVersion_function_error__
   self->_database = 0;
 }
 
-- (BOOL)deleteWithError:(id *)a3
+- (BOOL)deleteWithError:(id *)error
 {
   [(HDSimpleGraphDatabase *)self close];
   URL = self->_URL;
 
-  return [HDSimpleGraphDatabase _removeExistingDatabaseAtURL:a3 error:?];
+  return [HDSimpleGraphDatabase _removeExistingDatabaseAtURL:error error:?];
 }
 
-- (BOOL)enumerateAttributesForNodeWithID:(int64_t)a3 includeDeleted:(BOOL)a4 error:(id *)a5 enumerationHandler:(id)a6
+- (BOOL)enumerateAttributesForNodeWithID:(int64_t)d includeDeleted:(BOOL)deleted error:(id *)error enumerationHandler:(id)handler
 {
-  v6 = a4;
-  v10 = a6;
+  deletedCopy = deleted;
+  handlerCopy = handler;
   if (!self->_database)
   {
     [HDSimpleGraphDatabase enumerateAttributesForNodeWithID:a2 includeDeleted:self error:&self->_database enumerationHandler:&v13];
   }
 
-  v11 = [HDSimpleGraphDatabaseAttributeEntity enumerateAttributesForNodeWithID:"enumerateAttributesForNodeWithID:skipDeleted:database:error:enumerationHandler:" skipDeleted:a3 database:!v6 error:? enumerationHandler:?];
+  v11 = [HDSimpleGraphDatabaseAttributeEntity enumerateAttributesForNodeWithID:"enumerateAttributesForNodeWithID:skipDeleted:database:error:enumerationHandler:" skipDeleted:d database:!deletedCopy error:? enumerationHandler:?];
 
   return v11;
 }
 
-- (BOOL)foreignKeysEnable:(BOOL)a3 error:(id *)a4
+- (BOOL)foreignKeysEnable:(BOOL)enable error:(id *)error
 {
-  if (a3)
+  if (enable)
   {
     v4 = @"PRAGMA foreign_keys = ON";
   }
@@ -656,12 +656,12 @@ uint64_t __67__HDSimpleGraphDatabase__migrateDatabase_toVersion_function_error__
     v4 = @"PRAGMA foreign_keys = OFF";
   }
 
-  return [(HDSQLiteDatabase *)self->_database executeUncachedSQL:v4 error:a4];
+  return [(HDSQLiteDatabase *)self->_database executeUncachedSQL:v4 error:error];
 }
 
-+ (void)setUnitTesting_didInitGraphDatabaseHandler:(id)a3
++ (void)setUnitTesting_didInitGraphDatabaseHandler:(id)handler
 {
-  unitTesting_didInitGraphDatabaseHandler = [a3 copy];
+  unitTesting_didInitGraphDatabaseHandler = [handler copy];
 
   MEMORY[0x2821F96F8]();
 }
@@ -673,13 +673,13 @@ uint64_t __67__HDSimpleGraphDatabase__migrateDatabase_toVersion_function_error__
   return v2;
 }
 
-- (id)unitTesting_insertNodeWithID:(int64_t)a3 error:(id *)a4
+- (id)unitTesting_insertNodeWithID:(int64_t)d error:(id *)error
 {
-  if ([(HDSimpleGraphDatabase *)self insertNodeWithID:a3 version:0 slots:0 deleted:0 error:a4])
+  if ([(HDSimpleGraphDatabase *)self insertNodeWithID:d version:0 slots:0 deleted:0 error:error])
   {
     v5 = [HDSimpleGraphNode alloc];
-    v6 = [(HDSQLiteDatabase *)self->_database lastInsertRowID];
-    v7 = -[HDSimpleGraphNode initWithRowID:attributes:relationships:](v5, "initWithRowID:attributes:relationships:", [v6 longLongValue], 0, 0);
+    lastInsertRowID = [(HDSQLiteDatabase *)self->_database lastInsertRowID];
+    v7 = -[HDSimpleGraphNode initWithRowID:attributes:relationships:](v5, "initWithRowID:attributes:relationships:", [lastInsertRowID longLongValue], 0, 0);
   }
 
   else
@@ -690,31 +690,31 @@ uint64_t __67__HDSimpleGraphDatabase__migrateDatabase_toVersion_function_error__
   return v7;
 }
 
-- (id)unitTesting_countOfNodesWithRelationshipType:(int64_t)a3 error:(id *)a4
+- (id)unitTesting_countOfNodesWithRelationshipType:(int64_t)type error:(id *)error
 {
-  v6 = HDSimpleGraphRelationshipEntityPredicateForRelationshipType(a3);
-  v7 = [(HDSQLiteEntity *)HDSimpleGraphDatabaseRelationshipEntity countDistinctForProperty:@"subject_id" predicate:v6 database:self->_database error:a4];
+  v6 = HDSimpleGraphRelationshipEntityPredicateForRelationshipType(type);
+  v7 = [(HDSQLiteEntity *)HDSimpleGraphDatabaseRelationshipEntity countDistinctForProperty:@"subject_id" predicate:v6 database:self->_database error:error];
 
   return v7;
 }
 
-- (void)_initWithURL:(void *)a1
+- (void)_initWithURL:(void *)l
 {
   v3 = a2;
-  if (a1)
+  if (l)
   {
-    v7.receiver = a1;
+    v7.receiver = l;
     v7.super_class = HDSimpleGraphDatabase;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    l = objc_msgSendSuper2(&v7, sel_init);
+    if (l)
     {
       v4 = [v3 copy];
-      v5 = a1[2];
-      a1[2] = v4;
+      v5 = l[2];
+      l[2] = v4;
     }
   }
 
-  return a1;
+  return l;
 }
 
 - (uint64_t)_openAndCreateDatabaseIfNeededWithError:(uint64_t)result
@@ -725,8 +725,8 @@ uint64_t __67__HDSimpleGraphDatabase__migrateDatabase_toVersion_function_error__
     if (*(result + 16))
     {
       v4 = objc_alloc_init(MEMORY[0x277CCAA00]);
-      v5 = [v3[2] URLByDeletingLastPathComponent];
-      v6 = [v4 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:a2];
+      uRLByDeletingLastPathComponent = [v3[2] URLByDeletingLastPathComponent];
+      v6 = [v4 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:a2];
 
       if (!v6)
       {
@@ -754,27 +754,27 @@ uint64_t __67__HDSimpleGraphDatabase__migrateDatabase_toVersion_function_error__
   return result;
 }
 
-- (void)_createDatabaseConnectionWithURL:(uint64_t)a1
+- (void)_createDatabaseConnectionWithURL:(uint64_t)l
 {
-  if (a1)
+  if (l)
   {
     v3 = MEMORY[0x277D10B30];
     v4 = a2;
     v5 = [[v3 alloc] initWithDatabaseURL:v4];
 
-    v6 = *(a1 + 8);
-    *(a1 + 8) = v5;
+    v6 = *(l + 8);
+    *(l + 8) = v5;
 
     if (v4)
     {
-      [*(a1 + 8) setFileProtectionType:*MEMORY[0x277CCA198]];
+      [*(l + 8) setFileProtectionType:*MEMORY[0x277CCA198]];
     }
 
-    v7 = MEMORY[0x253078050](*(a1 + 24));
+    v7 = MEMORY[0x253078050](*(l + 24));
     if (v7)
     {
       v8 = v7;
-      v7[2](v7, a1);
+      v7[2](v7, l);
       v7 = v8;
     }
   }

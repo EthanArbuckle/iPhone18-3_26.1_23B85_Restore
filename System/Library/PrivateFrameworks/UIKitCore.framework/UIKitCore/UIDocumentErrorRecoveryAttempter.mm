@@ -1,49 +1,49 @@
 @interface UIDocumentErrorRecoveryAttempter
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4;
-- (BOOL)attemptSilentRecoveryFromError:(id)a3 error:(id *)a4;
-- (UIDocumentErrorRecoveryAttempter)initWithDocument:(id)a3 silentRecoveryOptionIndex:(unint64_t)a4 appModalRecoveryAttempter:(id)a5 recoveryCanceler:(id)a6;
-- (UIDocumentErrorRecoveryAttempter)initWithDocument:(id)a3 wrappedRecoveryAttempter:(id)a4;
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index;
+- (BOOL)attemptSilentRecoveryFromError:(id)error error:(id *)a4;
+- (UIDocumentErrorRecoveryAttempter)initWithDocument:(id)document silentRecoveryOptionIndex:(unint64_t)index appModalRecoveryAttempter:(id)attempter recoveryCanceler:(id)canceler;
+- (UIDocumentErrorRecoveryAttempter)initWithDocument:(id)document wrappedRecoveryAttempter:(id)attempter;
 - (void)cancelRecovery;
 - (void)dealloc;
 @end
 
 @implementation UIDocumentErrorRecoveryAttempter
 
-- (UIDocumentErrorRecoveryAttempter)initWithDocument:(id)a3 wrappedRecoveryAttempter:(id)a4
+- (UIDocumentErrorRecoveryAttempter)initWithDocument:(id)document wrappedRecoveryAttempter:(id)attempter
 {
-  v7 = a3;
-  v8 = a4;
+  documentCopy = document;
+  attempterCopy = attempter;
   v12.receiver = self;
   v12.super_class = UIDocumentErrorRecoveryAttempter;
   v9 = [(UIDocumentErrorRecoveryAttempter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_document, a3);
-    objc_storeStrong(&v10->_wrappedRecoveryAttempter, a4);
+    objc_storeStrong(&v9->_document, document);
+    objc_storeStrong(&v10->_wrappedRecoveryAttempter, attempter);
   }
 
   return v10;
 }
 
-- (UIDocumentErrorRecoveryAttempter)initWithDocument:(id)a3 silentRecoveryOptionIndex:(unint64_t)a4 appModalRecoveryAttempter:(id)a5 recoveryCanceler:(id)a6
+- (UIDocumentErrorRecoveryAttempter)initWithDocument:(id)document silentRecoveryOptionIndex:(unint64_t)index appModalRecoveryAttempter:(id)attempter recoveryCanceler:(id)canceler
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  documentCopy = document;
+  attempterCopy = attempter;
+  cancelerCopy = canceler;
   v21.receiver = self;
   v21.super_class = UIDocumentErrorRecoveryAttempter;
   v14 = [(UIDocumentErrorRecoveryAttempter *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_document, a3);
-    v15->_silentRecoveryOptionIndex = a4;
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_document, document);
+    v15->_silentRecoveryOptionIndex = index;
+    v16 = [attempterCopy copy];
     appModalRecoveryAttempter = v15->_appModalRecoveryAttempter;
     v15->_appModalRecoveryAttempter = v16;
 
-    v18 = [v13 copy];
+    v18 = [cancelerCopy copy];
     recoveryCancelerOrNil = v15->_recoveryCancelerOrNil;
     v15->_recoveryCancelerOrNil = v18;
   }
@@ -63,14 +63,14 @@
   [(UIDocumentErrorRecoveryAttempter *)&v3 dealloc];
 }
 
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index
 {
-  v6 = a3;
+  errorCopy = error;
   *&self->_errorRecoveryAttempterFlags |= 1u;
   wrappedRecoveryAttempter = self->_wrappedRecoveryAttempter;
   if (wrappedRecoveryAttempter)
   {
-    if ([wrappedRecoveryAttempter attemptRecoveryFromError:v6 optionIndex:a4])
+    if ([wrappedRecoveryAttempter attemptRecoveryFromError:errorCopy optionIndex:index])
     {
       continuerOrNil = self->_continuerOrNil;
       if (continuerOrNil)
@@ -95,10 +95,10 @@
   return v9;
 }
 
-- (BOOL)attemptSilentRecoveryFromError:(id)a3 error:(id *)a4
+- (BOOL)attemptSilentRecoveryFromError:(id)error error:(id *)a4
 {
-  v6 = a3;
-  v7 = v6;
+  errorCopy = error;
+  v7 = errorCopy;
   *&self->_errorRecoveryAttempterFlags |= 1u;
   if (self->_wrappedRecoveryAttempter)
   {
@@ -127,7 +127,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v9 = v6;
+  v9 = errorCopy;
   v10 = 0;
   *a4 = v7;
 LABEL_10:

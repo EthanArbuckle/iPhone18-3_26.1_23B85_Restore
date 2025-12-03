@@ -1,15 +1,15 @@
 @interface TPSSharedTipViewController
-- (_TtC4Tips26TPSSharedTipViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)doneTapped:(id)a3;
+- (_TtC4Tips26TPSSharedTipViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)doneTapped:(id)tapped;
 @end
 
 @implementation TPSSharedTipViewController
 
-- (void)doneTapped:(id)a3
+- (void)doneTapped:(id)tapped
 {
-  if (a3)
+  if (tapped)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -19,7 +19,7 @@
   {
     v6 = 0u;
     v7 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   [(TPSSharedTipViewController *)self dismissViewControllerAnimated:1 completion:0, v6, v7];
@@ -27,15 +27,15 @@
   sub_1000243B4(&v6);
 }
 
-- (_TtC4Tips26TPSSharedTipViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Tips26TPSSharedTipViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC4Tips26TPSSharedTipViewController_onDismissed);
     *v6 = 0;
     v6[1] = 0;
-    v7 = a4;
+    bundleCopy = bundle;
     v8 = String._bridgeToObjectiveC()();
   }
 
@@ -44,13 +44,13 @@
     v9 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC4Tips26TPSSharedTipViewController_onDismissed);
     *v9 = 0;
     v9[1] = 0;
-    v10 = a4;
+    bundleCopy2 = bundle;
     v8 = 0;
   }
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for TPSSharedTipViewController();
-  v11 = [(TPSViewController *)&v13 initWithNibName:v8 bundle:a4];
+  v11 = [(TPSViewController *)&v13 initWithNibName:v8 bundle:bundle];
 
   return v11;
 }

@@ -1,10 +1,10 @@
 @interface ROI
 - (ROI)initWithBbox:(ROI *)self;
-- (ROI)initWithBbox:(id *)a3 descriptor:;
-- (double)getReflectedBboxAroundCenter:(void *)a1;
-- (float)getLocationMatchCostWith:(id)a3;
-- (float)getPixelFeatureMatchCostWith:(id)a3;
-- (float32x2_t)getReflectedBboxCenterAroundCenter:(void *)a1;
+- (ROI)initWithBbox:(id *)bbox descriptor:;
+- (double)getReflectedBboxAroundCenter:(void *)center;
+- (float)getLocationMatchCostWith:(id)with;
+- (float)getPixelFeatureMatchCostWith:(id)with;
+- (float32x2_t)getReflectedBboxCenterAroundCenter:(void *)center;
 - (void)generateLocationFromBBox;
 - (void)reflectAroundCenter:(ROI *)self;
 - (void)setLumaFeatureVector:(ROI *)self;
@@ -35,26 +35,26 @@
   return v4;
 }
 
-- (ROI)initWithBbox:(id *)a3 descriptor:
+- (ROI)initWithBbox:(id *)bbox descriptor:
 {
   v4 = [(ROI *)self initWithBbox:?];
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3[4].var4;
-    v13[6] = *&a3[4].var0;
+    v6 = *&bbox[4].var4;
+    v13[6] = *&bbox[4].var0;
     v13[7] = v6;
-    v7 = *&a3[6].var0;
-    v13[8] = *&a3[5].var2;
+    v7 = *&bbox[6].var0;
+    v13[8] = *&bbox[5].var2;
     v13[9] = v7;
-    v8 = *&a3[2].var0;
-    v13[2] = *&a3[1].var2;
+    v8 = *&bbox[2].var0;
+    v13[2] = *&bbox[1].var2;
     v13[3] = v8;
-    v9 = *&a3[3].var2;
-    v13[4] = *&a3[2].var4;
+    v9 = *&bbox[3].var2;
+    v13[4] = *&bbox[2].var4;
     v13[5] = v9;
-    v10 = *&a3->var4;
-    v13[0] = *&a3->var0;
+    v10 = *&bbox->var4;
+    v13[0] = *&bbox->var0;
     v13[1] = v10;
     [(ROI *)v4 setDescriptor:v13];
     v11 = v5;
@@ -68,13 +68,13 @@
   return v5;
 }
 
-- (float)getLocationMatchCostWith:(id)a3
+- (float)getLocationMatchCostWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   [(ROI *)self descriptor];
-  if (v4)
+  if (withCopy)
   {
-    [v4 descriptor];
+    [withCopy descriptor];
     v5 = v9;
   }
 
@@ -124,13 +124,13 @@
   [(ROI *)self setDescriptor:v9];
 }
 
-- (double)getReflectedBboxAroundCenter:(void *)a1
+- (double)getReflectedBboxAroundCenter:(void *)center
 {
-  [a1 bbox];
+  [center bbox];
   v7 = v4;
-  [a1 bbox];
+  [center bbox];
   v8 = COERCE_DOUBLE(vadd_f32(vsub_f32(a2, vadd_f32(v7, *&vextq_s8(v5, v5, 8uLL))), a2));
-  [a1 bbox];
+  [center bbox];
   return v8;
 }
 
@@ -142,11 +142,11 @@
   self[1].super.isa = vadd_f32(v5, vmul_f32(*&vextq_s8(v4, v4, 8uLL), 0x3F0000003F000000));
 }
 
-- (float32x2_t)getReflectedBboxCenterAroundCenter:(void *)a1
+- (float32x2_t)getReflectedBboxCenterAroundCenter:(void *)center
 {
-  [a1 bbox];
+  [center bbox];
   v7 = v4;
-  [a1 bbox];
+  [center bbox];
   return vmla_f32(vneg_f32(vmla_f32(v7, 0x3F0000003F000000, *&vextq_s8(v5, v5, 8uLL))), 0x4000000040000000, a2);
 }
 
@@ -186,11 +186,11 @@
   objc_copyStruct(self->_lumaFeatureVectorPredictedLocation, v6, 64, 1, 0);
 }
 
-- (float)getPixelFeatureMatchCostWith:(id)a3
+- (float)getPixelFeatureMatchCostWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   [(ROI *)self descriptor];
-  if (!v4)
+  if (!withCopy)
   {
     bzero(v26, 0xA0uLL);
 LABEL_10:
@@ -198,7 +198,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  [v4 descriptor];
+  [withCopy descriptor];
   v5 = v27;
   if (v28 < v27)
   {
@@ -210,7 +210,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [v4 descriptor];
+  [withCopy descriptor];
   v6 = sub_DD68(v24, v25, v22, v23);
   [(ROI *)self descriptor];
   v7 = sub_DD68(v20, v21, v18, v19);
@@ -224,7 +224,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [v4 descriptor];
+  [withCopy descriptor];
   [(ROI *)self descriptor];
   v8 = sub_DD68(vabsq_s16(vsubq_s16(v14, v10)), vabsq_s16(vsubq_s16(v15, v11)), vabsq_s16(vsubq_s16(v16, v12)), vabsq_s16(vsubq_s16(v17, v13))) / 8160.0;
 LABEL_11:

@@ -1,26 +1,26 @@
 @interface Coordinator
-- (BOOL)shouldHandleCardSectionEngagement:(id)a3;
+- (BOOL)shouldHandleCardSectionEngagement:(id)engagement;
 - (_TtC26ResponseGenerationUIPlugin11Coordinator)init;
-- (void)cardViewController:(id)a3 preferredContentSizeDidChange:(CGSize)a4 animated:(BOOL)a5;
+- (void)cardViewController:(id)controller preferredContentSizeDidChange:(CGSize)change animated:(BOOL)animated;
 @end
 
 @implementation Coordinator
 
-- (void)cardViewController:(id)a3 preferredContentSizeDidChange:(CGSize)a4 animated:(BOOL)a5
+- (void)cardViewController:(id)controller preferredContentSizeDidChange:(CGSize)change animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = self;
-  sub_BE04(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_BE04(controller);
 }
 
-- (BOOL)shouldHandleCardSectionEngagement:(id)a3
+- (BOOL)shouldHandleCardSectionEngagement:(id)engagement
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_7FDC(v3);
+  engagementCopy = engagement;
+  engagementCopy2 = engagement;
+  selfCopy = self;
+  LOBYTE(engagementCopy) = sub_7FDC(engagementCopy);
 
-  return v3 & 1;
+  return engagementCopy & 1;
 }
 
 - (_TtC26ResponseGenerationUIPlugin11Coordinator)init

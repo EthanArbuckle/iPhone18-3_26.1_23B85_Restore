@@ -1,16 +1,16 @@
 @interface TSPArchivingUtility
-+ (int)tagNumberForLastExtensionFieldInMessage:(const Message *)a3;
++ (int)tagNumberForLastExtensionFieldInMessage:(const Message *)message;
 @end
 
 @implementation TSPArchivingUtility
 
-+ (int)tagNumberForLastExtensionFieldInMessage:(const Message *)a3
++ (int)tagNumberForLastExtensionFieldInMessage:(const Message *)message
 {
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  (*(a3->var0 + 19))(a3, a2);
-  google::protobuf::Reflection::ListFields(v4, a3, &v10);
+  (*(message->var0 + 19))(message, a2);
+  google::protobuf::Reflection::ListFields(v4, message, &v10);
   v5 = v11;
   while (v5 != v10)
   {

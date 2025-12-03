@@ -2,16 +2,16 @@
 - (NSString)selectedVehicleIdentifier;
 - (VGVirtualGaragePersistingDelegate)delegate;
 - (VirtualGaragePersister)init;
-- (id)_processUpdatedSyncVehicles:(id)a3;
-- (id)persistedVehicleForVehicle:(id)a3;
-- (void)_addOrEditVehicle:(id)a3;
-- (void)_removeSyncVehicle:(id)a3;
-- (void)addVehicle:(id)a3;
-- (void)loadVehiclesWithCompletion:(id)a3;
-- (void)removeVehicle:(id)a3;
-- (void)saveVehicle:(id)a3 syncAcrossDevices:(BOOL)a4;
-- (void)setSelectedVehicleIdentifier:(id)a3;
-- (void)storeDidChange:(id)a3;
+- (id)_processUpdatedSyncVehicles:(id)vehicles;
+- (id)persistedVehicleForVehicle:(id)vehicle;
+- (void)_addOrEditVehicle:(id)vehicle;
+- (void)_removeSyncVehicle:(id)vehicle;
+- (void)addVehicle:(id)vehicle;
+- (void)loadVehiclesWithCompletion:(id)completion;
+- (void)removeVehicle:(id)vehicle;
+- (void)saveVehicle:(id)vehicle syncAcrossDevices:(BOOL)devices;
+- (void)setSelectedVehicleIdentifier:(id)identifier;
+- (void)storeDidChange:(id)change;
 @end
 
 @implementation VirtualGaragePersister
@@ -23,9 +23,9 @@
   return WeakRetained;
 }
 
-- (void)storeDidChange:(id)a3
+- (void)storeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -37,16 +37,16 @@
   objc_destroyWeak(&location);
 }
 
-- (id)_processUpdatedSyncVehicles:(id)a3
+- (id)_processUpdatedSyncVehicles:(id)vehicles
 {
-  v4 = a3;
+  vehiclesCopy = vehicles;
   v17 = objc_opt_new();
   v5 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = vehiclesCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v7)
   {
@@ -62,10 +62,10 @@
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 vehicleIdentifier];
-        if (v12 && ([v5 containsObject:v12] & 1) == 0)
+        vehicleIdentifier = [v11 vehicleIdentifier];
+        if (vehicleIdentifier && ([v5 containsObject:vehicleIdentifier] & 1) == 0)
         {
-          [v5 addObject:v12];
+          [v5 addObject:vehicleIdentifier];
           v14 = [[VGVehicle alloc] initWithMapsSyncVehicle:v11];
           [v17 addObject:v14];
         }
@@ -101,21 +101,21 @@
   return v17;
 }
 
-- (void)_addOrEditVehicle:(id)a3
+- (void)_addOrEditVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = vehicleCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Trying to add or edit vehicle: %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  objc_initWeak(&location, v4);
-  v6 = [v4 identifier];
-  v17 = v6;
+  objc_initWeak(&location, vehicleCopy);
+  identifier = [vehicleCopy identifier];
+  v17 = identifier;
   v7 = [NSArray arrayWithObjects:&v17 count:1];
   v8 = [_TtC8MapsSync22MapsSyncQueryPredicate queryPredicateWithFormat:@"vehicleIdentifier == %@" argumentArray:v7];
 
@@ -127,7 +127,7 @@
   v12[3] = &unk_101625C60;
   objc_copyWeak(&v14, buf);
   objc_copyWeak(&v15, &location);
-  v11 = v4;
+  v11 = vehicleCopy;
   v13 = v11;
   [v10 fetchWithOptions:v9 completionHandler:v12];
 
@@ -146,16 +146,16 @@
   return v3;
 }
 
-- (void)setSelectedVehicleIdentifier:(id)a3
+- (void)setSelectedVehicleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setObject:v3 forKey:@"VGVirtualGarageSelectedVehicleStorageKey"];
+  [v4 setObject:identifierCopy forKey:@"VGVirtualGarageSelectedVehicleStorageKey"];
 }
 
-- (id)persistedVehicleForVehicle:(id)a3
+- (id)persistedVehicleForVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -175,9 +175,9 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v4 identifier];
-        v12 = [v10 isEqual:v11];
+        identifier = [v9 identifier];
+        identifier2 = [vehicleCopy identifier];
+        v12 = [identifier isEqual:identifier2];
 
         if (v12)
         {
@@ -201,21 +201,21 @@ LABEL_11:
   return v6;
 }
 
-- (void)saveVehicle:(id)a3 syncAcrossDevices:(BOOL)a4
+- (void)saveVehicle:(id)vehicle syncAcrossDevices:(BOOL)devices
 {
-  v6 = a3;
+  vehicleCopy = vehicle;
   v7 = GEOFindOrCreateLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (a4)
+  if (devices)
   {
     if (v8)
     {
       *buf = 138412290;
-      v15 = v6;
+      v15 = vehicleCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Trying to save vehicle: %@", buf, 0xCu);
     }
 
-    v9 = [v6 copy];
+    v9 = [vehicleCopy copy];
     objc_initWeak(buf, self);
     queue = self->_queue;
     v11[0] = _NSConcreteStackBlock;
@@ -223,8 +223,8 @@ LABEL_11:
     v11[2] = sub_100691A90;
     v11[3] = &unk_101661340;
     objc_copyWeak(&v13, buf);
-    v6 = v9;
-    v12 = v6;
+    vehicleCopy = v9;
+    v12 = vehicleCopy;
     dispatch_async(queue, v11);
 
     objc_destroyWeak(&v13);
@@ -236,24 +236,24 @@ LABEL_11:
     if (v8)
     {
       *buf = 138412290;
-      v15 = v6;
+      v15 = vehicleCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Persister won't save vehicle, as we don't want it to sync: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)_removeSyncVehicle:(id)a3
+- (void)_removeSyncVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  vehicleCopy = vehicle;
+  v5 = vehicleCopy;
+  if (vehicleCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100691C28;
     block[3] = &unk_101661B18;
-    v10 = v4;
+    v10 = vehicleCopy;
     dispatch_async(queue, block);
     v7 = v10;
   }
@@ -263,26 +263,26 @@ LABEL_11:
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [0 identifier];
+      identifier = [0 identifier];
       *buf = 138412290;
-      v12 = v8;
+      v12 = identifier;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Vehicle: %@ not found in MapsSync storage. Ignoring the call.", buf, 0xCu);
     }
   }
 }
 
-- (void)removeVehicle:(id)a3
+- (void)removeVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = vehicleCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Trying to remove vehicle: %@", buf, 0xCu);
   }
 
-  v6 = [v4 copy];
+  v6 = [vehicleCopy copy];
   objc_initWeak(buf, self);
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
@@ -298,18 +298,18 @@ LABEL_11:
   objc_destroyWeak(buf);
 }
 
-- (void)addVehicle:(id)a3
+- (void)addVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = vehicleCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Trying to add vehicle: %@", buf, 0xCu);
   }
 
-  v6 = [v4 copy];
+  v6 = [vehicleCopy copy];
   objc_initWeak(buf, self);
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
@@ -325,9 +325,9 @@ LABEL_11:
   objc_destroyWeak(buf);
 }
 
-- (void)loadVehiclesWithCompletion:(id)a3
+- (void)loadVehiclesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(MSVehicleRequest);
   v7[0] = _NSConcreteStackBlock;
@@ -335,7 +335,7 @@ LABEL_11:
   v7[2] = sub_100692524;
   v7[3] = &unk_10165E308;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [v5 fetchWithCompletionHandler:v7];
 
@@ -351,9 +351,9 @@ LABEL_11:
   if (v2)
   {
     v3 = [NSString stringWithFormat:@"com.apple.Navigation.persister.%@.%p", objc_opt_class(), v2];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = v2->_queue;
     v2->_queue = v6;
 

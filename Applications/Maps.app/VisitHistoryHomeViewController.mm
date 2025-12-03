@@ -1,14 +1,14 @@
 @interface VisitHistoryHomeViewController
-- (_TtC4Maps30VisitHistoryHomeViewController)initWithCoder:(id)a3;
-- (_TtC4Maps30VisitHistoryHomeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps30VisitHistoryHomeViewController)initWithCoder:(id)coder;
+- (_TtC4Maps30VisitHistoryHomeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didResignCurrent;
 - (void)viewDidLoad;
-- (void)willBecomeCurrent:(BOOL)a3;
+- (void)willBecomeCurrent:(BOOL)current;
 @end
 
 @implementation VisitHistoryHomeViewController
 
-- (_TtC4Maps30VisitHistoryHomeViewController)initWithCoder:(id)a3
+- (_TtC4Maps30VisitHistoryHomeViewController)initWithCoder:(id)coder
 {
   *(&self->super.super._cardPresentationController + OBJC_IVAR____TtC4Maps30VisitHistoryHomeViewController_actionDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -20,19 +20,19 @@
   return result;
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
-  v3 = a3;
+  currentCopy = current;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(ContaineeViewController *)&v5 willBecomeCurrent:v3];
+  [(ContaineeViewController *)&v5 willBecomeCurrent:currentCopy];
   sub_10040EAA8();
 }
 
 - (void)didResignCurrent
 {
-  v2 = self;
+  selfCopy = self;
   sub_10018304C();
 }
 
@@ -43,11 +43,11 @@
   v2 = v5.receiver;
   [(MapsHostingContaineeViewController *)&v5 viewDidLoad];
   sub_10018318C();
-  v3 = [objc_opt_self() sharedService];
-  if (v3)
+  sharedService = [objc_opt_self() sharedService];
+  if (sharedService)
   {
-    v4 = v3;
-    [v3 captureUserAction:21 onTarget:147 eventValue:0];
+    v4 = sharedService;
+    [sharedService captureUserAction:21 onTarget:147 eventValue:0];
   }
 
   else
@@ -56,7 +56,7 @@
   }
 }
 
-- (_TtC4Maps30VisitHistoryHomeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps30VisitHistoryHomeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

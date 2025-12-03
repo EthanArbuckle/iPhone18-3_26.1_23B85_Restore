@@ -7,40 +7,40 @@
 - (NSString)description;
 - (WFCompactPlatterView)outgoingPlatterViewAwaitingSizeTransition;
 - (WFSystemOverlayViewController)init;
-- (double)maximumExpectedHeightForPlatterPresentation:(id)a3;
+- (double)maximumExpectedHeightForPlatterPresentation:(id)presentation;
 - (double)platterOffsetFromPresentationEdge;
 - (double)sashViewHeight;
-- (void)bannerGestureDidEndWithDismissal:(BOOL)a3;
+- (void)bannerGestureDidEndWithDismissal:(BOOL)dismissal;
 - (void)beginObservingForPresentation;
 - (void)beginObservingKeyboard;
 - (void)dealloc;
-- (void)dismissEmbeddedPlatterWithCompletion:(id)a3 interruptible:(BOOL)a4;
-- (void)handleTapGesture:(id)a3;
-- (void)keyboardDidChange:(id)a3;
+- (void)dismissEmbeddedPlatterWithCompletion:(id)completion interruptible:(BOOL)interruptible;
+- (void)handleTapGesture:(id)gesture;
+- (void)keyboardDidChange:(id)change;
 - (void)layoutDimmingLayer;
 - (void)layoutEmbeddedPlatter;
 - (void)loadView;
 - (void)performBumpAnimation;
 - (void)performLayoutUpdate;
-- (void)platterPresentationDidInvalidateSize:(id)a3;
-- (void)presentationTransitionWillOccur:(id)a3;
+- (void)platterPresentationDidInvalidateSize:(id)size;
+- (void)presentationTransitionWillOccur:(id)occur;
 - (void)resetLocalIdleTimer;
-- (void)setAttributionTitle:(id)a3 icon:(id)a4 previouslyHidden:(BOOL)a5;
-- (void)setContainerViewColorMatrixOpacity:(double)a3;
-- (void)setDismissalPhase:(unint64_t)a3;
-- (void)setEmbeddedPlatter:(id)a3;
-- (void)setPlatterCornerRadius:(double)a3;
-- (void)setQueuedStatusPlatter:(id)a3;
-- (void)setRootModalViewController:(id)a3;
+- (void)setAttributionTitle:(id)title icon:(id)icon previouslyHidden:(BOOL)hidden;
+- (void)setContainerViewColorMatrixOpacity:(double)opacity;
+- (void)setDismissalPhase:(unint64_t)phase;
+- (void)setEmbeddedPlatter:(id)platter;
+- (void)setPlatterCornerRadius:(double)radius;
+- (void)setQueuedStatusPlatter:(id)platter;
+- (void)setRootModalViewController:(id)controller;
 - (void)stopObservingForPresentation;
 - (void)stopObservingKeyboard;
-- (void)transitionFromPlatter:(id)a3 toPlatter:(id)a4;
-- (void)updateContainerViewFrameAnimated:(BOOL)a3;
+- (void)transitionFromPlatter:(id)platter toPlatter:(id)toPlatter;
+- (void)updateContainerViewFrameAnimated:(BOOL)animated;
 - (void)updateDimmingLayerVisibility;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -60,14 +60,14 @@
     return 1;
   }
 
-  v3 = [(WFSystemOverlayViewController *)self embeddedPlatter];
+  embeddedPlatter = [(WFSystemOverlayViewController *)self embeddedPlatter];
 
-  if (!v3)
+  if (!embeddedPlatter)
   {
     return 1;
   }
 
-  v4 = [(WFSystemOverlayViewController *)self embeddedPlatter];
+  embeddedPlatter2 = [(WFSystemOverlayViewController *)self embeddedPlatter];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -76,66 +76,66 @@
     return 0;
   }
 
-  v6 = [(WFSystemOverlayViewController *)self embeddedPlatter];
-  v7 = [v6 hasCustomHomeGestureBehavior];
+  embeddedPlatter3 = [(WFSystemOverlayViewController *)self embeddedPlatter];
+  hasCustomHomeGestureBehavior = [embeddedPlatter3 hasCustomHomeGestureBehavior];
 
-  return v7;
+  return hasCustomHomeGestureBehavior;
 }
 
-- (void)presentationTransitionWillOccur:(id)a3
+- (void)presentationTransitionWillOccur:(id)occur
 {
-  v19 = a3;
-  v4 = [v19 object];
+  occurCopy = occur;
+  object = [occurCopy object];
   NSClassFromString(&cfstr_Uidatepickerco.isa);
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_2;
   }
 
-  v5 = [v19 object];
+  object2 = [occurCopy object];
   NSClassFromString(&cfstr_Uicontextmenua.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v7 = [v19 name];
-    v8 = [v7 isEqualToString:*MEMORY[0x277D76E38]];
+    name = [occurCopy name];
+    v8 = [name isEqualToString:*MEMORY[0x277D76E38]];
 
     if (v8)
     {
-      v9 = [(WFSystemOverlayViewController *)self rootModalViewController];
+      rootModalViewController = [(WFSystemOverlayViewController *)self rootModalViewController];
 
-      if (!v9)
+      if (!rootModalViewController)
       {
-        v10 = [(WFSystemOverlayViewController *)self view];
-        v11 = [v10 _screen];
-        [v11 bounds];
+        view = [(WFSystemOverlayViewController *)self view];
+        _screen = [view _screen];
+        [_screen bounds];
         [(WFSystemOverlayViewController *)self setPreferredContentSize:v12, v13];
 
-        v4 = [v19 object];
-        [(WFSystemOverlayViewController *)self setRootModalViewController:v4];
+        object = [occurCopy object];
+        [(WFSystemOverlayViewController *)self setRootModalViewController:object];
 LABEL_2:
       }
     }
 
     else
     {
-      v14 = [v19 name];
-      v15 = [v14 isEqualToString:*MEMORY[0x277D76E30]];
+      name2 = [occurCopy name];
+      v15 = [name2 isEqualToString:*MEMORY[0x277D76E30]];
 
       if (v15)
       {
-        v16 = [v19 object];
-        v17 = [(WFSystemOverlayViewController *)self rootModalViewController];
-        v18 = [v16 isEqual:v17];
+        object3 = [occurCopy object];
+        rootModalViewController2 = [(WFSystemOverlayViewController *)self rootModalViewController];
+        v18 = [object3 isEqual:rootModalViewController2];
 
         if (v18)
         {
           [(WFSystemOverlayViewController *)self setRootModalViewController:0];
           [(WFSystemOverlayViewController *)self bannerSize];
           [(WFSystemOverlayViewController *)self setPreferredContentSize:?];
-          v4 = [(WFSystemOverlayViewController *)self presentableHomeGestureContext];
-          [v4 setWantsHomeGesture:0];
+          object = [(WFSystemOverlayViewController *)self presentableHomeGestureContext];
+          [object setWantsHomeGesture:0];
           goto LABEL_2;
         }
       }
@@ -145,28 +145,28 @@ LABEL_2:
 
 - (void)stopObservingForPresentation
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)beginObservingForPresentation
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_presentationTransitionWillOccur_ name:*MEMORY[0x277D76E38] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_presentationTransitionWillOccur_ name:*MEMORY[0x277D76E38] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_presentationTransitionWillOccur_ name:*MEMORY[0x277D76E30] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_presentationTransitionWillOccur_ name:*MEMORY[0x277D76E30] object:0];
 }
 
 - (BOOL)shouldDisplaySash
 {
-  v3 = [MEMORY[0x277D79F18] currentDevice];
-  if ([v3 hasSystemAperture])
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
+  if ([currentDevice hasSystemAperture])
   {
     v4 = +[WFBannerPrototypeSettings sharedSettings];
-    v5 = [v4 simulateStatusBannerDevice];
+    simulateStatusBannerDevice = [v4 simulateStatusBannerDevice];
 
-    if (!v5)
+    if (!simulateStatusBannerDevice)
     {
       isKindOfClass = 0;
       return isKindOfClass & 1;
@@ -177,7 +177,7 @@ LABEL_2:
   {
   }
 
-  v7 = [(WFSystemOverlayViewController *)self embeddedPlatter];
+  embeddedPlatter = [(WFSystemOverlayViewController *)self embeddedPlatter];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -186,7 +186,7 @@ LABEL_2:
 
   else
   {
-    v8 = [(WFSystemOverlayViewController *)self embeddedPlatter];
+    embeddedPlatter2 = [(WFSystemOverlayViewController *)self embeddedPlatter];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -196,26 +196,26 @@ LABEL_2:
 
 - (double)sashViewHeight
 {
-  v3 = [(WFSystemOverlayViewController *)self embeddedPlatter];
-  if (![v3 shouldHideSashView])
+  embeddedPlatter = [(WFSystemOverlayViewController *)self embeddedPlatter];
+  if (![embeddedPlatter shouldHideSashView])
   {
     goto LABEL_4;
   }
 
-  v4 = [(WFSystemOverlayViewController *)self embeddedPlatter];
-  v5 = [v4 platterView];
-  v6 = [v5 primaryText];
-  if ([v6 length])
+  embeddedPlatter2 = [(WFSystemOverlayViewController *)self embeddedPlatter];
+  platterView = [embeddedPlatter2 platterView];
+  primaryText = [platterView primaryText];
+  if ([primaryText length])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v9 = [(WFSystemOverlayViewController *)self embeddedPlatter];
-  v10 = [v9 platterView];
-  v11 = [v10 secondaryText];
-  v12 = [v11 length];
+  embeddedPlatter3 = [(WFSystemOverlayViewController *)self embeddedPlatter];
+  platterView2 = [embeddedPlatter3 platterView];
+  secondaryText = [platterView2 secondaryText];
+  v12 = [secondaryText length];
 
   if (!v12)
   {
@@ -223,9 +223,9 @@ LABEL_4:
   }
 
 LABEL_5:
-  v7 = [(WFSystemOverlayViewController *)self shouldDisplaySash];
+  shouldDisplaySash = [(WFSystemOverlayViewController *)self shouldDisplaySash];
   result = 47.0;
-  if (!v7)
+  if (!shouldDisplaySash)
   {
     return 15.0;
   }
@@ -237,9 +237,9 @@ LABEL_5:
 {
   if ([(WFSystemOverlayViewController *)self contentIsFullScreen])
   {
-    v3 = [(WFSystemOverlayViewController *)self view];
-    v4 = [v3 _screen];
-    [v4 bounds];
+    view = [(WFSystemOverlayViewController *)self view];
+    _screen = [view _screen];
+    [_screen bounds];
     v6 = v5;
     v8 = v7;
   }
@@ -260,8 +260,8 @@ LABEL_5:
 
 - (double)platterOffsetFromPresentationEdge
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 _peripheryInsets];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _peripheryInsets];
   v4 = v3 + 14.0;
 
   return v4;
@@ -269,15 +269,15 @@ LABEL_5:
 
 - (CGSize)platterContentSize
 {
-  v3 = [(WFSystemOverlayViewController *)self view];
-  v4 = [v3 _window];
-  v5 = [(WFSystemOverlayViewController *)self view];
-  v6 = [v5 _screen];
-  [v6 bounds];
+  view = [(WFSystemOverlayViewController *)self view];
+  _window = [view _window];
+  view2 = [(WFSystemOverlayViewController *)self view];
+  _screen = [view2 _screen];
+  [_screen bounds];
   v8 = v7;
   v10 = v9;
-  v11 = [(WFSystemOverlayViewController *)self embeddedPlatter];
-  [WFCompactPlatterPresentationController presentedViewFrameInContainerView:v4 containerViewSize:1 withSizeCalculation:v11 ofPresentedPlatter:v8, v10];
+  embeddedPlatter = [(WFSystemOverlayViewController *)self embeddedPlatter];
+  [WFCompactPlatterPresentationController presentedViewFrameInContainerView:_window containerViewSize:1 withSizeCalculation:embeddedPlatter ofPresentedPlatter:v8, v10];
   v13 = v12;
   v15 = v14;
 
@@ -288,21 +288,21 @@ LABEL_5:
   return result;
 }
 
-- (double)maximumExpectedHeightForPlatterPresentation:(id)a3
+- (double)maximumExpectedHeightForPlatterPresentation:(id)presentation
 {
-  v4 = [(WFSystemOverlayViewController *)self view];
-  v5 = [(WFSystemOverlayViewController *)self view];
-  [v5 bounds];
+  view = [(WFSystemOverlayViewController *)self view];
+  view2 = [(WFSystemOverlayViewController *)self view];
+  [view2 bounds];
   v7 = v6;
   v9 = v8;
-  v10 = [(WFSystemOverlayViewController *)self embeddedPlatter];
-  [WFCompactPlatterPresentationController presentedViewFrameInContainerView:v4 containerViewSize:0 withSizeCalculation:v10 ofPresentedPlatter:v7, v9];
+  embeddedPlatter = [(WFSystemOverlayViewController *)self embeddedPlatter];
+  [WFCompactPlatterPresentationController presentedViewFrameInContainerView:view containerViewSize:0 withSizeCalculation:embeddedPlatter ofPresentedPlatter:v7, v9];
   v12 = v11;
 
   return v12;
 }
 
-- (void)platterPresentationDidInvalidateSize:(id)a3
+- (void)platterPresentationDidInvalidateSize:(id)size
 {
   [(WFSystemOverlayViewController *)self updateContainerViewFrameAnimated:1];
   [(WFSystemOverlayViewController *)self bannerSize];
@@ -310,20 +310,20 @@ LABEL_5:
   [(WFSystemOverlayViewController *)self setPreferredContentSize:?];
 }
 
-- (void)keyboardDidChange:(id)a3
+- (void)keyboardDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D76BD8]];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D76BD8]];
 
   if (!v6 || [v6 BOOLValue])
   {
-    v7 = [(WFSystemOverlayViewController *)self embeddedPlatter];
+    embeddedPlatter = [(WFSystemOverlayViewController *)self embeddedPlatter];
 
-    if (v7)
+    if (embeddedPlatter)
     {
-      v8 = [v4 name];
-      -[WFSystemOverlayViewController setKeyboardIsVisible:](self, "setKeyboardIsVisible:", [v8 isEqualToString:*MEMORY[0x277D76C60]]);
+      name = [changeCopy name];
+      -[WFSystemOverlayViewController setKeyboardIsVisible:](self, "setKeyboardIsVisible:", [name isEqualToString:*MEMORY[0x277D76C60]]);
 
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -347,21 +347,21 @@ uint64_t __51__WFSystemOverlayViewController_keyboardDidChange___block_invoke(ui
 
 - (void)stopObservingKeyboard
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C50] object:0];
 }
 
 - (void)beginObservingKeyboard
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_keyboardDidChange_ name:*MEMORY[0x277D76C60] object:0];
-  [v3 addObserver:self selector:sel_keyboardDidChange_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardDidChange_ name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardDidChange_ name:*MEMORY[0x277D76C50] object:0];
 }
 
-- (void)bannerGestureDidEndWithDismissal:(BOOL)a3
+- (void)bannerGestureDidEndWithDismissal:(BOOL)dismissal
 {
-  if (a3)
+  if (dismissal)
   {
     [(WFSystemOverlayViewController *)self setDismissalPhase:2];
     v7[0] = MEMORY[0x277D85DD0];
@@ -370,8 +370,8 @@ uint64_t __51__WFSystemOverlayViewController_keyboardDidChange___block_invoke(ui
     v7[3] = &unk_279EE8A78;
     v7[4] = self;
     [MEMORY[0x277D75D18] animateWithDuration:2 delay:v7 options:0 animations:0.3 completion:0.0];
-    v4 = [(WFSystemOverlayViewController *)self dismissalHandler];
-    (v4)[2](v4, @"Banner was swiped away.");
+    dismissalHandler = [(WFSystemOverlayViewController *)self dismissalHandler];
+    (dismissalHandler)[2](dismissalHandler, @"Banner was swiped away.");
 
     v5 = dispatch_time(0, 100000000);
     v6[0] = MEMORY[0x277D85DD0];
@@ -402,18 +402,18 @@ void __66__WFSystemOverlayViewController_bannerGestureDidEndWithDismissal___bloc
   [v1 endEditing:1];
 }
 
-- (void)handleTapGesture:(id)a3
+- (void)handleTapGesture:(id)gesture
 {
   if ([(WFSystemOverlayViewController *)self keyboardIsVisible])
   {
-    v5 = [(WFSystemOverlayViewController *)self view];
-    [v5 endEditing:1];
+    view = [(WFSystemOverlayViewController *)self view];
+    [view endEditing:1];
   }
 
   else
   {
-    v4 = [(WFSystemOverlayViewController *)self dismissalHandler];
-    (v4)[2](v4, @"Disambiguation dimming layer was tapped.");
+    dismissalHandler = [(WFSystemOverlayViewController *)self dismissalHandler];
+    (dismissalHandler)[2](dismissalHandler, @"Disambiguation dimming layer was tapped.");
 
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -444,9 +444,9 @@ void __50__WFSystemOverlayViewController_handleTapGesture___block_invoke_2(uint6
 
 - (void)layoutDimmingLayer
 {
-  v3 = [(WFSystemOverlayViewController *)self dimmingView];
+  dimmingView = [(WFSystemOverlayViewController *)self dimmingView];
 
-  if (v3)
+  if (dimmingView)
   {
     [(WFSystemOverlayViewController *)self bannerSize];
     v5 = v4;
@@ -454,26 +454,26 @@ void __50__WFSystemOverlayViewController_handleTapGesture___block_invoke_2(uint6
     v7 = v6;
     v9 = -v8;
     v11 = v10 + v5 + v8;
-    v12 = [(WFSystemOverlayViewController *)self view];
-    v13 = [v12 _screen];
-    [v13 bounds];
+    view = [(WFSystemOverlayViewController *)self view];
+    _screen = [view _screen];
+    [_screen bounds];
     v15 = v14;
     [(WFSystemOverlayViewController *)self platterOffsetFromPresentationEdge];
     v17 = v16 + v15;
 
-    v18 = [(WFSystemOverlayViewController *)self dimmingView];
-    [v18 setFrame:{v9, -100.0 - v7, v11, v17 + 100.0}];
+    dimmingView2 = [(WFSystemOverlayViewController *)self dimmingView];
+    [dimmingView2 setFrame:{v9, -100.0 - v7, v11, v17 + 100.0}];
   }
 }
 
 - (void)updateDimmingLayerVisibility
 {
-  v3 = [(WFSystemOverlayViewController *)self shouldShowDimmingLayer];
-  if (v3)
+  shouldShowDimmingLayer = [(WFSystemOverlayViewController *)self shouldShowDimmingLayer];
+  if (shouldShowDimmingLayer)
   {
-    v4 = [(WFSystemOverlayViewController *)self dimmingView];
+    dimmingView = [(WFSystemOverlayViewController *)self dimmingView];
 
-    if (!v4)
+    if (!dimmingView)
     {
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
@@ -484,36 +484,36 @@ void __50__WFSystemOverlayViewController_handleTapGesture___block_invoke_2(uint6
     }
   }
 
-  v5 = [(WFSystemOverlayViewController *)self dimmingView];
+  dimmingView2 = [(WFSystemOverlayViewController *)self dimmingView];
 
-  if (v5)
+  if (dimmingView2)
   {
-    if (v3)
+    if (shouldShowDimmingLayer)
     {
-      v6 = [(WFSystemOverlayViewController *)self dimmingView];
+      dimmingView3 = [(WFSystemOverlayViewController *)self dimmingView];
     }
 
     else
     {
-      v6 = 0;
+      dimmingView3 = 0;
     }
 
-    v7 = [(WFSystemOverlayViewController *)self bannerGesture];
-    [v7 setDimmingView:v6];
+    bannerGesture = [(WFSystemOverlayViewController *)self bannerGesture];
+    [bannerGesture setDimmingView:dimmingView3];
 
-    if (v3)
+    if (shouldShowDimmingLayer)
     {
     }
 
-    v8 = [(WFSystemOverlayViewController *)self dimmingView];
-    [v8 setCaptureTouches:v3];
+    dimmingView4 = [(WFSystemOverlayViewController *)self dimmingView];
+    [dimmingView4 setCaptureTouches:shouldShowDimmingLayer];
 
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __61__WFSystemOverlayViewController_updateDimmingLayerVisibility__block_invoke_2;
     v9[3] = &unk_279EE8AA0;
     v9[4] = self;
-    v10 = v3;
+    v10 = shouldShowDimmingLayer;
     [MEMORY[0x277D75D18] _animateUsingSpringWithDampingRatio:0 response:v9 tracking:0 dampingRatioSmoothing:1.0 responseSmoothing:0.37 targetSmoothing:0.0 projectionDeceleration:0.0 retargetImpulse:0.0 animations:0.0 completion:0.0];
   }
 }
@@ -580,7 +580,7 @@ void __61__WFSystemOverlayViewController_updateDimmingLayerVisibility__block_inv
     return 0;
   }
 
-  v4 = [(WFSystemOverlayViewController *)self embeddedPlatter];
+  embeddedPlatter = [(WFSystemOverlayViewController *)self embeddedPlatter];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -589,8 +589,8 @@ void __61__WFSystemOverlayViewController_updateDimmingLayerVisibility__block_inv
 
   else if ([(WFSystemOverlayViewController *)self keyboardIsVisible])
   {
-    v5 = [(WFSystemOverlayViewController *)self traitCollection];
-    v3 = [v5 userInterfaceIdiom] == 0;
+    traitCollection = [(WFSystemOverlayViewController *)self traitCollection];
+    v3 = [traitCollection userInterfaceIdiom] == 0;
   }
 
   else
@@ -601,18 +601,18 @@ void __61__WFSystemOverlayViewController_updateDimmingLayerVisibility__block_inv
   return v3;
 }
 
-- (void)dismissEmbeddedPlatterWithCompletion:(id)a3 interruptible:(BOOL)a4
+- (void)dismissEmbeddedPlatterWithCompletion:(id)completion interruptible:(BOOL)interruptible
 {
-  v4 = a4;
-  v6 = a3;
+  interruptibleCopy = interruptible;
+  completionCopy = completion;
   v7 = +[WFBannerPrototypeSettings sharedSettings];
-  v8 = [v7 transitionSettings];
+  transitionSettings = [v7 transitionSettings];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__WFSystemOverlayViewController_dismissEmbeddedPlatterWithCompletion_interruptible___block_invoke;
   aBlock[3] = &unk_279EE8C58;
   aBlock[4] = self;
-  v9 = v8;
+  v9 = transitionSettings;
   v36 = v9;
   v10 = _Block_copy(aBlock);
   v32[0] = MEMORY[0x277D85DD0];
@@ -631,7 +631,7 @@ void __61__WFSystemOverlayViewController_updateDimmingLayerVisibility__block_inv
   block[3] = &unk_279EE8A78;
   block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  if (v4)
+  if (interruptibleCopy)
   {
     [(WFSystemOverlayViewController *)self setDismissalPhase:1];
     v10[2](v10);
@@ -663,7 +663,7 @@ void __61__WFSystemOverlayViewController_updateDimmingLayerVisibility__block_inv
 
   objc_initWeak(&location, self);
   v19 = objc_alloc(MEMORY[0x277D79F48]);
-  if (v4)
+  if (interruptibleCopy)
   {
     v20 = 1.0;
   }
@@ -678,13 +678,13 @@ void __61__WFSystemOverlayViewController_updateDimmingLayerVisibility__block_inv
   v24[2] = __84__WFSystemOverlayViewController_dismissEmbeddedPlatterWithCompletion_interruptible___block_invoke_19;
   v24[3] = &unk_279EE84F0;
   objc_copyWeak(&v26, &location);
-  v21 = v6;
+  v21 = completionCopy;
   v25 = v21;
   v22 = [v19 initWithInterval:MEMORY[0x277D85CD0] queue:v24 handler:v20];
   [(WFSystemOverlayViewController *)self setDismissalCompletionTimer:v22];
 
-  v23 = [(WFSystemOverlayViewController *)self dismissalCompletionTimer];
-  [v23 start];
+  dismissalCompletionTimer = [(WFSystemOverlayViewController *)self dismissalCompletionTimer];
+  [dismissalCompletionTimer start];
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(&location);
@@ -1001,10 +1001,10 @@ void __84__WFSystemOverlayViewController_dismissEmbeddedPlatterWithCompletion_in
   [v1 setTransform:&v2];
 }
 
-- (void)setDismissalPhase:(unint64_t)a3
+- (void)setDismissalPhase:(unint64_t)phase
 {
-  self->_dismissalPhase = a3;
-  if (a3)
+  self->_dismissalPhase = phase;
+  if (phase)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1016,11 +1016,11 @@ void __84__WFSystemOverlayViewController_dismissEmbeddedPlatterWithCompletion_in
 
   else
   {
-    v4 = [(WFSystemOverlayViewController *)self dismissalCompletionTimer];
-    [v4 cancel];
+    dismissalCompletionTimer = [(WFSystemOverlayViewController *)self dismissalCompletionTimer];
+    [dismissalCompletionTimer cancel];
 
-    v5 = [(WFSystemOverlayViewController *)self dismissalAlphaOutAnimationTimer];
-    [v5 cancel];
+    dismissalAlphaOutAnimationTimer = [(WFSystemOverlayViewController *)self dismissalAlphaOutAnimationTimer];
+    [dismissalAlphaOutAnimationTimer cancel];
 
     [(WFSystemOverlayViewController *)self setDismissalCompletionTimer:0];
 
@@ -1034,18 +1034,18 @@ void __51__WFSystemOverlayViewController_setDismissalPhase___block_invoke(uint64
   [v1 setCaptureTouches:0];
 }
 
-- (void)setQueuedStatusPlatter:(id)a3
+- (void)setQueuedStatusPlatter:(id)platter
 {
-  v5 = a3;
-  objc_storeStrong(&self->_queuedStatusPlatter, a3);
-  v6 = [(WFSystemOverlayViewController *)self queuedStatusPlatterTimer];
-  [v6 cancel];
+  platterCopy = platter;
+  objc_storeStrong(&self->_queuedStatusPlatter, platter);
+  queuedStatusPlatterTimer = [(WFSystemOverlayViewController *)self queuedStatusPlatterTimer];
+  [queuedStatusPlatterTimer cancel];
 
   [(WFSystemOverlayViewController *)self setQueuedStatusPlatterTimer:0];
-  if (v5)
+  if (platterCopy)
   {
-    v7 = [(WFSystemOverlayViewController *)self embeddedPlatter];
-    if (v7)
+    embeddedPlatter = [(WFSystemOverlayViewController *)self embeddedPlatter];
+    if (embeddedPlatter)
     {
       objc_initWeak(&location, self);
       v8 = objc_alloc(MEMORY[0x277D79F48]);
@@ -1056,12 +1056,12 @@ void __51__WFSystemOverlayViewController_setDismissalPhase___block_invoke(uint64
       v13[2] = __56__WFSystemOverlayViewController_setQueuedStatusPlatter___block_invoke;
       v13[3] = &unk_279EE8630;
       objc_copyWeak(&v15, &location);
-      v14 = v5;
+      v14 = platterCopy;
       v11 = [v8 initWithInterval:v9 queue:v13 handler:0.2];
       [(WFSystemOverlayViewController *)self setQueuedStatusPlatterTimer:v11];
 
-      v12 = [(WFSystemOverlayViewController *)self queuedStatusPlatterTimer];
-      [v12 start];
+      queuedStatusPlatterTimer2 = [(WFSystemOverlayViewController *)self queuedStatusPlatterTimer];
+      [queuedStatusPlatterTimer2 start];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
@@ -1069,7 +1069,7 @@ void __51__WFSystemOverlayViewController_setDismissalPhase___block_invoke(uint64
 
     else
     {
-      [(WFSystemOverlayViewController *)self setEmbeddedPlatter:v5];
+      [(WFSystemOverlayViewController *)self setEmbeddedPlatter:platterCopy];
     }
   }
 }
@@ -1080,11 +1080,11 @@ void __56__WFSystemOverlayViewController_setQueuedStatusPlatter___block_invoke(u
   [WeakRetained setEmbeddedPlatter:*(a1 + 32)];
 }
 
-- (void)setAttributionTitle:(id)a3 icon:(id)a4 previouslyHidden:(BOOL)a5
+- (void)setAttributionTitle:(id)title icon:(id)icon previouslyHidden:(BOOL)hidden
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  hiddenCopy = hidden;
+  titleCopy = title;
+  iconCopy = icon;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __75__WFSystemOverlayViewController_setAttributionTitle_icon_previouslyHidden___block_invoke;
@@ -1099,13 +1099,13 @@ void __56__WFSystemOverlayViewController_setQueuedStatusPlatter___block_invoke(u
     v36[3] = &unk_279EE8A78;
     v36[4] = self;
     v11 = _Block_copy(v36);
-    v12 = [(WFSystemOverlayViewController *)self sashView];
+    sashView = [(WFSystemOverlayViewController *)self sashView];
 
-    if (v12)
+    if (sashView)
     {
-      v13 = [(WFSystemOverlayViewController *)self sashView];
-      v14 = [v13 title];
-      v15 = [v14 isEqualToString:v8];
+      sashView2 = [(WFSystemOverlayViewController *)self sashView];
+      title = [sashView2 title];
+      v15 = [title isEqualToString:titleCopy];
 
       if ((v15 & 1) == 0)
       {
@@ -1120,15 +1120,15 @@ void __56__WFSystemOverlayViewController_setQueuedStatusPlatter___block_invoke(u
         v28[2] = __75__WFSystemOverlayViewController_setAttributionTitle_icon_previouslyHidden___block_invoke_5;
         v28[3] = &unk_279EE8608;
         v28[4] = self;
-        v29 = v9;
-        v30 = v8;
+        v29 = iconCopy;
+        v30 = titleCopy;
         v31 = v11;
         v33 = 0x3FC0000000000000;
         v32 = v35;
         [v16 animateWithDuration:0x10000 delay:v34 options:v28 animations:0.125 completion:0.0];
       }
 
-      if (!v5)
+      if (!hiddenCopy)
       {
         goto LABEL_11;
       }
@@ -1140,21 +1140,21 @@ void __56__WFSystemOverlayViewController_setQueuedStatusPlatter___block_invoke(u
       v19 = [(WFCompactPlatterSashView *)v18 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
       [(WFSystemOverlayViewController *)self setSashView:v19];
 
-      v20 = [(WFSystemOverlayViewController *)self sashView];
-      [v20 setAutoresizesSubviews:1];
+      sashView3 = [(WFSystemOverlayViewController *)self sashView];
+      [sashView3 setAutoresizesSubviews:1];
 
-      v21 = [(WFSystemOverlayViewController *)self sashView];
-      [v21 setIcon:v9];
+      sashView4 = [(WFSystemOverlayViewController *)self sashView];
+      [sashView4 setIcon:iconCopy];
 
-      v22 = [(WFSystemOverlayViewController *)self sashView];
-      [v22 setTitle:v8];
+      sashView5 = [(WFSystemOverlayViewController *)self sashView];
+      [sashView5 setTitle:titleCopy];
 
-      v23 = [(WFSystemOverlayViewController *)self materialView];
-      v24 = [(WFSystemOverlayViewController *)self sashView];
-      [v23 addSubview:v24];
+      materialView = [(WFSystemOverlayViewController *)self materialView];
+      sashView6 = [(WFSystemOverlayViewController *)self sashView];
+      [materialView addSubview:sashView6];
 
       v11[2](v11);
-      if (!v5)
+      if (!hiddenCopy)
       {
 LABEL_11:
 
@@ -1261,20 +1261,20 @@ void __75__WFSystemOverlayViewController_setAttributionTitle_icon_previouslyHidd
   [v4 animateWithDuration:0x20000 delay:v6 options:0 animations:v5 completion:0.0];
 }
 
-- (void)setPlatterCornerRadius:(double)a3
+- (void)setPlatterCornerRadius:(double)radius
 {
   [(WFSystemOverlayViewController *)self platterCornerRadius];
-  if (v5 != a3)
+  if (v5 != radius)
   {
     [(WFSystemOverlayViewController *)self platterCornerRadius];
     v7 = v6;
-    self->_platterCornerRadius = a3;
+    self->_platterCornerRadius = radius;
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __56__WFSystemOverlayViewController_setPlatterCornerRadius___block_invoke;
     aBlock[3] = &unk_279EE89D8;
     aBlock[4] = self;
-    *&aBlock[5] = a3;
+    *&aBlock[5] = radius;
     v8 = _Block_copy(aBlock);
     v9 = v8;
     if (v7 == 0.0)
@@ -1312,9 +1312,9 @@ void __56__WFSystemOverlayViewController_setPlatterCornerRadius___block_invoke(u
 
 - (void)layoutEmbeddedPlatter
 {
-  v3 = [(WFSystemOverlayViewController *)self embeddedPlatter];
+  embeddedPlatter = [(WFSystemOverlayViewController *)self embeddedPlatter];
 
-  if (v3)
+  if (embeddedPlatter)
   {
     [(WFSystemOverlayViewController *)self platterContentSize];
     v5 = v4;
@@ -1339,11 +1339,11 @@ void __54__WFSystemOverlayViewController_layoutEmbeddedPlatter__block_invoke(uin
   [v2 setFrame:{0.0, *(a1 + 40), *(a1 + 48), *(a1 + 56)}];
 }
 
-- (void)setContainerViewColorMatrixOpacity:(double)a3
+- (void)setContainerViewColorMatrixOpacity:(double)opacity
 {
-  v3 = a3;
-  v4 = [(WFSystemOverlayViewController *)self containerView];
-  v5 = [v4 layer];
+  opacityCopy = opacity;
+  containerView = [(WFSystemOverlayViewController *)self containerView];
+  layer = [containerView layer];
   v7 = 1065353216;
   v9 = 0;
   v8 = 0;
@@ -1354,15 +1354,15 @@ void __54__WFSystemOverlayViewController_layoutEmbeddedPlatter__block_invoke(uin
   v15 = 0;
   v14 = 0;
   v16 = 0;
-  v17 = v3;
+  v17 = opacityCopy;
   v18 = 0;
   v6 = [MEMORY[0x277CCAE60] valueWithCAColorMatrix:&v7];
-  [v5 setValue:v6 forKeyPath:@"filters.colorMatrix.inputColorMatrix"];
+  [layer setValue:v6 forKeyPath:@"filters.colorMatrix.inputColorMatrix"];
 }
 
-- (void)updateContainerViewFrameAnimated:(BOOL)a3
+- (void)updateContainerViewFrameAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(WFSystemOverlayViewController *)self shouldFreezePlatterLayout])
   {
     return;
@@ -1377,9 +1377,9 @@ void __54__WFSystemOverlayViewController_layoutEmbeddedPlatter__block_invoke(uin
   v11 = 0.0;
   if ([(WFSystemOverlayViewController *)self contentIsFullScreen])
   {
-    v12 = [(WFSystemOverlayViewController *)self view];
-    v13 = [v12 _screen];
-    [v13 bounds];
+    view = [(WFSystemOverlayViewController *)self view];
+    _screen = [view _screen];
+    [_screen bounds];
     v11 = (v14 - v6) * 0.5;
   }
 
@@ -1391,10 +1391,10 @@ void __54__WFSystemOverlayViewController_layoutEmbeddedPlatter__block_invoke(uin
   }
 
   v17 = v8 + v10;
-  if (v3)
+  if (animatedCopy)
   {
-    v18 = [(WFSystemOverlayViewController *)self containerView];
-    [v18 bounds];
+    containerView = [(WFSystemOverlayViewController *)self containerView];
+    [containerView bounds];
     v19 = CGRectEqualToRect(v160, *MEMORY[0x277CBF3A0]);
 
     if (!v19)
@@ -1409,29 +1409,29 @@ void __54__WFSystemOverlayViewController_layoutEmbeddedPlatter__block_invoke(uin
       *&v158[7] = v6;
       *&v158[8] = v8 + v10;
       [MEMORY[0x277D75D18] _animateUsingSpringWithDampingRatio:0 response:v158 tracking:0 dampingRatioSmoothing:1.0 responseSmoothing:0.3 targetSmoothing:0.0 projectionDeceleration:0.0 retargetImpulse:0.0 animations:0.0 completion:0.0];
-      v20 = [(WFSystemOverlayViewController *)self outgoingPlatterViewAwaitingSizeTransition];
-      v21 = [(WFSystemOverlayViewController *)self embeddedPlatter];
-      v22 = [v21 platterView];
+      outgoingPlatterViewAwaitingSizeTransition = [(WFSystemOverlayViewController *)self outgoingPlatterViewAwaitingSizeTransition];
+      embeddedPlatter = [(WFSystemOverlayViewController *)self embeddedPlatter];
+      platterView = [embeddedPlatter platterView];
 
-      v23 = [v20 actionGroupView];
-      v24 = [v22 actionGroupView];
-      [v20 setSuppressContentViewLayout:1];
-      if (v23 == v24)
+      actionGroupView = [outgoingPlatterViewAwaitingSizeTransition actionGroupView];
+      actionGroupView2 = [platterView actionGroupView];
+      [outgoingPlatterViewAwaitingSizeTransition setSuppressContentViewLayout:1];
+      if (actionGroupView == actionGroupView2)
       {
         v34 = 0;
       }
 
       else
       {
-        v25 = [v23 actions];
-        v26 = [v25 count];
-        v27 = [v24 actions];
-        if (v26 == [v27 count])
+        actions = [actionGroupView actions];
+        v26 = [actions count];
+        actions2 = [actionGroupView2 actions];
+        if (v26 == [actions2 count])
         {
-          [v23 bounds];
+          [actionGroupView bounds];
           v29 = v28;
           v31 = v30;
-          [v24 bounds];
+          [actionGroupView2 bounds];
           v34 = v31 == v33 && v29 == v32;
         }
 
@@ -1441,33 +1441,33 @@ void __54__WFSystemOverlayViewController_layoutEmbeddedPlatter__block_invoke(uin
         }
       }
 
-      v35 = [v20 clippingContentView];
-      [v35 frame];
+      clippingContentView = [outgoingPlatterViewAwaitingSizeTransition clippingContentView];
+      [clippingContentView frame];
       v37 = v36;
 
-      v38 = [v22 clippingContentView];
-      [v38 frame];
+      clippingContentView2 = [platterView clippingContentView];
+      [clippingContentView2 frame];
       v40 = v39;
 
       if ([MEMORY[0x277CBEBD0] universalPreviewsEnabled] && v37 > 0.0 && v40 > 0.0)
       {
         if (!v34)
         {
-          v58 = [v20 actionGroupView];
-          if (v58)
+          actionGroupView3 = [outgoingPlatterViewAwaitingSizeTransition actionGroupView];
+          if (actionGroupView3)
           {
 
             goto LABEL_45;
           }
 
-          v116 = [v22 actionGroupView];
+          actionGroupView4 = [platterView actionGroupView];
 
-          if (v116)
+          if (actionGroupView4)
           {
 LABEL_45:
-            v117 = [(WFSystemOverlayViewController *)self activeTransitioningActionGroupViewPortal];
+            activeTransitioningActionGroupViewPortal = [(WFSystemOverlayViewController *)self activeTransitioningActionGroupViewPortal];
 
-            if (v117)
+            if (activeTransitioningActionGroupViewPortal)
             {
               v130[0] = MEMORY[0x277D85DD0];
               v130[1] = 3221225472;
@@ -1488,23 +1488,23 @@ LABEL_45:
         [(WFSystemOverlayViewController *)self setOutgoingPlatterViewAwaitingSizeTransition:0];
         if (v40 > v37)
         {
-          v41 = [v20 backdropView];
-          [v41 frame];
+          backdropView = [outgoingPlatterViewAwaitingSizeTransition backdropView];
+          [backdropView frame];
           v124 = v42;
           v126 = v8 + v10;
           v44 = v43;
           v122 = v45;
           v47 = v46;
 
-          v48 = [v20 backdropView];
+          backdropView2 = [outgoingPlatterViewAwaitingSizeTransition backdropView];
           v49 = v44;
           v17 = v126;
-          [v48 setFrame:{v49, v124, v122, v40 - v37 + v47}];
+          [backdropView2 setFrame:{v49, v124, v122, v40 - v37 + v47}];
         }
 
-        [v22 frame];
+        [platterView frame];
         v51 = v50;
-        [v20 frame];
+        [outgoingPlatterViewAwaitingSizeTransition frame];
         v53 = v51 - v52;
         memset(&v157, 0, sizeof(v157));
         CGAffineTransformMakeScale(&t1, 1.0, (v37 + v53) / v37);
@@ -1514,121 +1514,121 @@ LABEL_45:
         CGAffineTransformMakeScale(&t2, 1.0, (v40 - v53) / v40);
         CGAffineTransformMakeTranslation(&v154, 0.0, v53 * -0.5);
         CGAffineTransformConcat(&t1, &t2, &v154);
-        v54 = [v22 clippingContentView];
+        clippingContentView3 = [platterView clippingContentView];
         t2 = t1;
-        [v54 setTransform:&t2];
+        [clippingContentView3 setTransform:&t2];
 
         v55 = MEMORY[0x277D75D18];
         v150[0] = MEMORY[0x277D85DD0];
         v150[1] = 3221225472;
         v150[2] = __66__WFSystemOverlayViewController_updateContainerViewFrameAnimated___block_invoke_3;
         v150[3] = &unk_279EE8568;
-        v151 = v20;
+        v151 = outgoingPlatterViewAwaitingSizeTransition;
         v153 = v157;
-        v152 = v22;
+        v152 = platterView;
         [v55 _animateUsingSpringWithDampingRatio:0 response:v150 tracking:0 dampingRatioSmoothing:1.0 responseSmoothing:0.3 targetSmoothing:0.0 projectionDeceleration:0.0 retargetImpulse:0.0 animations:0.0 completion:0.0];
       }
 
       if (v34)
       {
-        v56 = [(WFSystemOverlayViewController *)self activeTransitioningActionGroupViewPortal];
+        activeTransitioningActionGroupViewPortal2 = [(WFSystemOverlayViewController *)self activeTransitioningActionGroupViewPortal];
 
-        v121 = self;
-        if (v56)
+        selfCopy = self;
+        if (activeTransitioningActionGroupViewPortal2)
         {
-          v57 = [(WFSystemOverlayViewController *)self activeTransitioningActionGroupViewPortal];
+          activeTransitioningActionGroupViewPortal3 = [(WFSystemOverlayViewController *)self activeTransitioningActionGroupViewPortal];
         }
 
         else
         {
           v127 = v17;
-          [v23 bounds];
+          [actionGroupView bounds];
           v60 = v59;
           v62 = v61;
           v64 = v63;
           v66 = v65;
-          v67 = [(WFSystemOverlayViewController *)self containerView];
-          [v23 convertRect:v67 toView:{v60, v62, v64, v66}];
+          containerView2 = [(WFSystemOverlayViewController *)self containerView];
+          [actionGroupView convertRect:containerView2 toView:{v60, v62, v64, v66}];
           v123 = v69;
           v125 = v68;
           v71 = v70;
           v73 = v72;
 
-          [v24 frame];
+          [actionGroupView2 frame];
           v75 = v74;
           v77 = v76;
-          [v23 bounds];
-          [v24 setFrame:{v75, v77}];
-          v57 = [objc_alloc(MEMORY[0x277D76180]) initWithFrame:{v125, v123, v71, v73}];
-          [v57 setHidesSourceView:1];
-          [v57 setAllowsHitTesting:1];
-          [v57 setForwardsClientHitTestingToSourceView:1];
-          v78 = [(WFSystemOverlayViewController *)self containerView];
-          [v78 addSubview:v57];
+          [actionGroupView bounds];
+          [actionGroupView2 setFrame:{v75, v77}];
+          activeTransitioningActionGroupViewPortal3 = [objc_alloc(MEMORY[0x277D76180]) initWithFrame:{v125, v123, v71, v73}];
+          [activeTransitioningActionGroupViewPortal3 setHidesSourceView:1];
+          [activeTransitioningActionGroupViewPortal3 setAllowsHitTesting:1];
+          [activeTransitioningActionGroupViewPortal3 setForwardsClientHitTestingToSourceView:1];
+          containerView3 = [(WFSystemOverlayViewController *)self containerView];
+          [containerView3 addSubview:activeTransitioningActionGroupViewPortal3];
 
-          [(WFSystemOverlayViewController *)self setActiveTransitioningActionGroupViewPortal:v57];
+          [(WFSystemOverlayViewController *)self setActiveTransitioningActionGroupViewPortal:activeTransitioningActionGroupViewPortal3];
           v79 = +[WFBannerPrototypeSettings sharedSettings];
-          v80 = [v79 debugMorphTransitions];
+          debugMorphTransitions = [v79 debugMorphTransitions];
 
-          if (v80)
+          if (debugMorphTransitions)
           {
-            v81 = [MEMORY[0x277D75348] systemGreenColor];
-            v82 = [v81 CGColor];
-            v83 = [v57 layer];
-            [v83 setBorderColor:v82];
+            systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+            cGColor = [systemGreenColor CGColor];
+            layer = [activeTransitioningActionGroupViewPortal3 layer];
+            [layer setBorderColor:cGColor];
 
-            v84 = [v57 layer];
-            [v84 setBorderWidth:1.0];
+            layer2 = [activeTransitioningActionGroupViewPortal3 layer];
+            [layer2 setBorderWidth:1.0];
 
-            [v57 setHidesSourceView:0];
+            [activeTransitioningActionGroupViewPortal3 setHidesSourceView:0];
           }
 
           v17 = v127;
         }
 
-        v120 = v57;
-        [v57 setSourceView:{v24, v22, v20}];
-        [v23 removeFromSuperview];
-        v85 = [v24 actions];
-        v86 = [v85 count];
+        v120 = activeTransitioningActionGroupViewPortal3;
+        [activeTransitioningActionGroupViewPortal3 setSourceView:{actionGroupView2, platterView, outgoingPlatterViewAwaitingSizeTransition}];
+        [actionGroupView removeFromSuperview];
+        actions3 = [actionGroupView2 actions];
+        v86 = [actions3 count];
 
         if (v86)
         {
           v87 = 0;
-          v129 = v23;
+          v129 = actionGroupView;
           do
           {
-            v88 = [v23 arrangedSubviews];
-            v89 = [v88 objectAtIndexedSubscript:v87];
+            arrangedSubviews = [actionGroupView arrangedSubviews];
+            v89 = [arrangedSubviews objectAtIndexedSubscript:v87];
 
-            v90 = v24;
-            v91 = [v24 arrangedSubviews];
-            v92 = [v91 objectAtIndexedSubscript:v87];
+            v90 = actionGroupView2;
+            arrangedSubviews2 = [actionGroupView2 arrangedSubviews];
+            v92 = [arrangedSubviews2 objectAtIndexedSubscript:v87];
 
-            v93 = [v89 backgroundColor];
-            v94 = [v92 backgroundColor];
-            if (([v94 isEqual:v93] & 1) == 0)
+            backgroundColor = [v89 backgroundColor];
+            backgroundColor2 = [v92 backgroundColor];
+            if (([backgroundColor2 isEqual:backgroundColor] & 1) == 0)
             {
-              [v92 setBackgroundColor:v93];
+              [v92 setBackgroundColor:backgroundColor];
               v95 = MEMORY[0x277D75D18];
               v147[0] = MEMORY[0x277D85DD0];
               v147[1] = 3221225472;
               v147[2] = __66__WFSystemOverlayViewController_updateContainerViewFrameAnimated___block_invoke_5;
               v147[3] = &unk_279EE8C58;
               v148 = v92;
-              v149 = v94;
+              v149 = backgroundColor2;
               [v95 animateWithDuration:0x10000 delay:v147 options:0 animations:0.2 completion:0.0];
             }
 
-            v96 = [v89 titleLabel];
-            v97 = [v96 text];
+            titleLabel = [v89 titleLabel];
+            text = [titleLabel text];
 
-            v98 = [v92 titleLabel];
-            v99 = [v98 text];
+            titleLabel2 = [v92 titleLabel];
+            text2 = [titleLabel2 text];
 
-            if (([v99 isEqualToString:v97] & 1) == 0)
+            if (([text2 isEqualToString:text] & 1) == 0)
             {
-              [v92 setTitle:v97 forState:0];
+              [v92 setTitle:text forState:0];
               v100 = MEMORY[0x277D75D18];
               v145[0] = MEMORY[0x277D85DD0];
               v145[1] = 3221225472;
@@ -1640,13 +1640,13 @@ LABEL_45:
               v142[2] = __66__WFSystemOverlayViewController_updateContainerViewFrameAnimated___block_invoke_7;
               v142[3] = &unk_279EE8590;
               v143 = v146;
-              v144 = v99;
+              v144 = text2;
               [v100 animateWithDuration:0x10000 delay:v145 options:v142 animations:0.125 completion:0.0];
             }
 
-            v101 = [v89 layer];
-            v102 = [v101 presentationLayer];
-            [v102 opacity];
+            layer3 = [v89 layer];
+            presentationLayer = [layer3 presentationLayer];
+            [presentationLayer opacity];
             v104 = v103;
 
             if (v104 < 1.0)
@@ -1662,11 +1662,11 @@ LABEL_45:
             }
 
             ++v87;
-            v24 = v90;
-            v106 = [v90 actions];
-            v107 = [v106 count];
+            actionGroupView2 = v90;
+            actions4 = [v90 actions];
+            v107 = [actions4 count];
 
-            v23 = v129;
+            actionGroupView = v129;
           }
 
           while (v87 < v107);
@@ -1683,12 +1683,12 @@ LABEL_45:
         v137 = v15;
         v138 = v6;
         v139 = v17;
-        v135 = v23;
+        v135 = actionGroupView;
         [v108 _animateUsingSpringWithDampingRatio:0 response:v133 tracking:0 dampingRatioSmoothing:1.0 responseSmoothing:0.3 targetSmoothing:0.0 projectionDeceleration:0.0 retargetImpulse:0.0 animations:0.0 completion:0.0];
-        v110 = [(WFSystemOverlayViewController *)v121 actionGroupViewTransitionCompletionTimer];
-        [v110 cancel];
+        actionGroupViewTransitionCompletionTimer = [(WFSystemOverlayViewController *)selfCopy actionGroupViewTransitionCompletionTimer];
+        [actionGroupViewTransitionCompletionTimer cancel];
 
-        objc_initWeak(&v157, v121);
+        objc_initWeak(&v157, selfCopy);
         v111 = objc_alloc(MEMORY[0x277D79F48]);
         v112 = MEMORY[0x277D85CD0];
         v113 = MEMORY[0x277D85CD0];
@@ -1697,13 +1697,13 @@ LABEL_45:
         v131[2] = __66__WFSystemOverlayViewController_updateContainerViewFrameAnimated___block_invoke_12;
         v131[3] = &unk_279EE8908;
         objc_copyWeak(&v132, &v157);
-        v22 = v118;
-        v20 = v119;
+        platterView = v118;
+        outgoingPlatterViewAwaitingSizeTransition = v119;
         v114 = [v111 initWithInterval:v112 queue:v131 handler:0.55];
-        [(WFSystemOverlayViewController *)v121 setActionGroupViewTransitionCompletionTimer:v114];
+        [(WFSystemOverlayViewController *)selfCopy setActionGroupViewTransitionCompletionTimer:v114];
 
-        v115 = [(WFSystemOverlayViewController *)v121 actionGroupViewTransitionCompletionTimer];
-        [v115 start];
+        actionGroupViewTransitionCompletionTimer2 = [(WFSystemOverlayViewController *)selfCopy actionGroupViewTransitionCompletionTimer];
+        [actionGroupViewTransitionCompletionTimer2 start];
 
         objc_destroyWeak(&v132);
         objc_destroyWeak(&v157);
@@ -1716,8 +1716,8 @@ LABEL_47:
     }
   }
 
-  v128 = [(WFSystemOverlayViewController *)self containerView];
-  [v128 setFrame:{v11, v15, v6, v8 + v10}];
+  containerView4 = [(WFSystemOverlayViewController *)self containerView];
+  [containerView4 setFrame:{v11, v15, v6, v8 + v10}];
 }
 
 uint64_t __66__WFSystemOverlayViewController_updateContainerViewFrameAnimated___block_invoke(uint64_t a1)
@@ -1882,24 +1882,24 @@ void __66__WFSystemOverlayViewController_updateContainerViewFrameAnimated___bloc
   [v5 setFrame:{v1, v2, v3, v4}];
 }
 
-- (void)transitionFromPlatter:(id)a3 toPlatter:(id)a4
+- (void)transitionFromPlatter:(id)platter toPlatter:(id)toPlatter
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  platterCopy = platter;
+  toPlatterCopy = toPlatter;
   v8 = +[WFBannerPrototypeSettings sharedSettings];
-  v9 = [v8 debugMorphTransitions];
+  debugMorphTransitions = [v8 debugMorphTransitions];
 
-  v10 = [v7 platterView];
-  v11 = v10;
-  if (v9)
+  platterView = [toPlatterCopy platterView];
+  v11 = platterView;
+  if (debugMorphTransitions)
   {
-    [v10 setAlpha:0.5];
+    [platterView setAlpha:0.5];
   }
 
   else
   {
-    [v10 setAlpha:0.0];
+    [platterView setAlpha:0.0];
 
     if (![MEMORY[0x277CBEBD0] universalPreviewsEnabled])
     {
@@ -1914,11 +1914,11 @@ void __66__WFSystemOverlayViewController_updateContainerViewFrameAnimated___bloc
     [v11 setValue:v12 forKey:*MEMORY[0x277CDA4A0]];
     [v11 setValue:@"default" forKey:*MEMORY[0x277CDA4E8]];
     [v11 setValue:@"default" forKey:*MEMORY[0x277CDA4B8]];
-    v13 = [v6 platterView];
-    v14 = [v13 layer];
+    platterView2 = [platterCopy platterView];
+    layer = [platterView2 layer];
     v30[0] = v11;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
-    [v14 setFilters:v15];
+    [layer setFilters:v15];
   }
 
 LABEL_6:
@@ -1938,7 +1938,7 @@ LABEL_6:
   v28[1] = 3221225472;
   v28[2] = __65__WFSystemOverlayViewController_transitionFromPlatter_toPlatter___block_invoke;
   v28[3] = &unk_279EE8A78;
-  v29 = v6;
+  v29 = platterCopy;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __65__WFSystemOverlayViewController_transitionFromPlatter_toPlatter___block_invoke_269;
@@ -1951,7 +1951,7 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __65__WFSystemOverlayViewController_transitionFromPlatter_toPlatter___block_invoke_2_271;
   block[3] = &unk_279EE8A78;
-  v20 = v7;
+  v20 = toPlatterCopy;
   v25 = v20;
   dispatch_after(v19, MEMORY[0x277D85CD0], block);
   if (UIAccessibilityIsReduceMotionEnabled())
@@ -2152,12 +2152,12 @@ void __65__WFSystemOverlayViewController_transitionFromPlatter_toPlatter___block
   v9[4] = self;
   v10 = v11;
   [MEMORY[0x277D75D18] _animateUsingSpringWithDampingRatio:0 response:v9 tracking:0 dampingRatioSmoothing:1.0 responseSmoothing:0.3 targetSmoothing:0.0 projectionDeceleration:0.0 retargetImpulse:0.0 animations:0.0 completion:0.0];
-  v3 = [(WFSystemOverlayViewController *)self containerView];
+  containerView = [(WFSystemOverlayViewController *)self containerView];
   v4 = *(MEMORY[0x277CBF2C0] + 16);
   v8[0] = *MEMORY[0x277CBF2C0];
   v8[1] = v4;
   v8[2] = *(MEMORY[0x277CBF2C0] + 32);
-  [v3 setTransform:v8];
+  [containerView setTransform:v8];
 
   v5 = dispatch_time(0, 125000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -2202,23 +2202,23 @@ void __53__WFSystemOverlayViewController_performBumpAnimation__block_invoke_3(ui
   [v1 setTransform:v3];
 }
 
-- (void)setEmbeddedPlatter:(id)a3
+- (void)setEmbeddedPlatter:(id)platter
 {
   v105[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  platterCopy = platter;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v6 = [(WFSystemOverlayViewController *)self embeddedPlatter];
+  embeddedPlatter = [(WFSystemOverlayViewController *)self embeddedPlatter];
 
-  if (v6 != v5)
+  if (embeddedPlatter != platterCopy)
   {
     [(WFSystemOverlayViewController *)self setQueuedStatusPlatter:0];
-    v7 = [(WFSystemOverlayViewController *)self embeddedPlatter];
-    objc_storeStrong(&self->_embeddedPlatter, a3);
-    [v5 setPlatterContentContainer:self];
-    [v7 setPlatterContentContainer:0];
-    v8 = [(WFSystemOverlayViewController *)self containerView];
+    embeddedPlatter2 = [(WFSystemOverlayViewController *)self embeddedPlatter];
+    objc_storeStrong(&self->_embeddedPlatter, platter);
+    [platterCopy setPlatterContentContainer:self];
+    [embeddedPlatter2 setPlatterContentContainer:0];
+    containerView = [(WFSystemOverlayViewController *)self containerView];
 
-    if (v8)
+    if (containerView)
     {
       [(WFSystemOverlayViewController *)self updateDimmingLayerVisibility];
     }
@@ -2226,8 +2226,8 @@ void __53__WFSystemOverlayViewController_performBumpAnimation__block_invoke_3(ui
     else
     {
       v9 = objc_opt_new();
-      v10 = [(WFSystemOverlayViewController *)self view];
-      [v10 addSubview:v9];
+      view = [(WFSystemOverlayViewController *)self view];
+      [view addSubview:v9];
 
       [(WFSystemOverlayViewController *)self setContainerView:v9];
       v11 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA2C0]];
@@ -2250,24 +2250,24 @@ void __53__WFSystemOverlayViewController_performBumpAnimation__block_invoke_3(ui
       [v13 setValue:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CDA4A0]];
       [v13 setValue:@"default" forKey:*MEMORY[0x277CDA4E8]];
       [v13 setValue:@"default" forKey:*MEMORY[0x277CDA4B8]];
-      v14 = [(WFSystemOverlayViewController *)self containerView];
-      v15 = [v14 layer];
+      containerView2 = [(WFSystemOverlayViewController *)self containerView];
+      layer = [containerView2 layer];
       v105[0] = v13;
       v105[1] = v11;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v105 count:2];
-      [v15 setFilters:v16];
+      [layer setFilters:v16];
 
       v17 = objc_opt_new();
       [v17 setAutoresizingMask:18];
       if ((_UISolariumEnabled() & 1) == 0)
       {
         v18 = +[WFBannerPrototypeSettings sharedSettings];
-        v19 = [v18 debugShadowsEnabled];
+        debugShadowsEnabled = [v18 debugShadowsEnabled];
 
-        v20 = [v17 layer];
-        v21 = v20;
+        layer2 = [v17 layer];
+        v21 = layer2;
         v22 = 45.0;
-        if (v19)
+        if (debugShadowsEnabled)
         {
           v22 = 2.0;
           v23 = 1.0;
@@ -2278,17 +2278,17 @@ void __53__WFSystemOverlayViewController_performBumpAnimation__block_invoke_3(ui
           v23 = *"\nף>";
         }
 
-        [v20 setShadowRadius:v22];
+        [layer2 setShadowRadius:v22];
 
-        v24 = [v17 layer];
+        layer3 = [v17 layer];
         *&v25 = v23;
-        [v24 setShadowOpacity:v25];
+        [layer3 setShadowOpacity:v25];
 
-        v26 = [v17 layer];
-        [v26 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+        layer4 = [v17 layer];
+        [layer4 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
 
-        v27 = [v17 layer];
-        [v27 setPunchoutShadow:1];
+        layer5 = [v17 layer];
+        [layer5 setPunchoutShadow:1];
       }
 
       [v9 addSubview:v17];
@@ -2316,8 +2316,8 @@ void __53__WFSystemOverlayViewController_performBumpAnimation__block_invoke_3(ui
       v31 = [[WFBannerGesture alloc] initWithView:v9];
       [(WFSystemOverlayViewController *)self setBannerGesture:v31];
 
-      v32 = [(WFSystemOverlayViewController *)self bannerGesture];
-      [v32 setDelegate:self];
+      bannerGesture = [(WFSystemOverlayViewController *)self bannerGesture];
+      [bannerGesture setDelegate:self];
 
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
@@ -2348,32 +2348,32 @@ void __53__WFSystemOverlayViewController_performBumpAnimation__block_invoke_3(ui
     }
 
     [(WFSystemOverlayViewController *)self setDismissalPhase:0];
-    v34 = [v7 view];
-    [v34 setAutoresizingMask:0];
+    view2 = [embeddedPlatter2 view];
+    [view2 setAutoresizingMask:0];
 
-    v35 = [v5 view];
+    view3 = [platterCopy view];
     v36 = MEMORY[0x277CCACA8];
-    v37 = [v5 platterView];
-    v38 = [v37 attribution];
-    v39 = [v38 title];
-    v40 = [v36 stringWithFormat:@"junior_attribution: %@", v39];
-    [v35 setAccessibilityIdentifier:v40];
+    platterView = [platterCopy platterView];
+    attribution = [platterView attribution];
+    title = [attribution title];
+    v40 = [v36 stringWithFormat:@"junior_attribution: %@", title];
+    [view3 setAccessibilityIdentifier:v40];
 
-    v41 = [(WFSystemOverlayViewController *)self materialView];
-    v42 = [v5 view];
-    [v41 addSubview:v42];
+    materialView = [(WFSystemOverlayViewController *)self materialView];
+    view4 = [platterCopy view];
+    [materialView addSubview:view4];
 
     [(WFSystemOverlayViewController *)self setFreezePlatterLayout:1];
     [(WFSystemOverlayViewController *)self layoutEmbeddedPlatter];
-    v43 = [(WFSystemOverlayViewController *)self view];
-    [v43 layoutIfNeeded];
+    view5 = [(WFSystemOverlayViewController *)self view];
+    [view5 layoutIfNeeded];
 
     [(WFSystemOverlayViewController *)self setFreezePlatterLayout:0];
-    if (v7)
+    if (embeddedPlatter2)
     {
-      [(WFSystemOverlayViewController *)self transitionFromPlatter:v7 toPlatter:v5];
-      v44 = [v7 platterView];
-      [(WFSystemOverlayViewController *)self setOutgoingPlatterViewAwaitingSizeTransition:v44];
+      [(WFSystemOverlayViewController *)self transitionFromPlatter:embeddedPlatter2 toPlatter:platterCopy];
+      platterView2 = [embeddedPlatter2 platterView];
+      [(WFSystemOverlayViewController *)self setOutgoingPlatterViewAwaitingSizeTransition:platterView2];
 
       [(WFSystemOverlayViewController *)self updateContainerViewFrameAnimated:1];
       [(WFSystemOverlayViewController *)self updateDimmingLayerVisibility];
@@ -2385,21 +2385,21 @@ void __53__WFSystemOverlayViewController_performBumpAnimation__block_invoke_3(ui
       [(WFSystemOverlayViewController *)self updateContainerViewFrameAnimated:0];
     }
 
-    v45 = [v5 nestedScrollView];
-    v46 = [(WFSystemOverlayViewController *)self bannerGesture];
-    v47 = v46;
-    if (v45)
+    nestedScrollView = [platterCopy nestedScrollView];
+    bannerGesture2 = [(WFSystemOverlayViewController *)self bannerGesture];
+    scrollView = bannerGesture2;
+    if (nestedScrollView)
     {
-      [v46 setEmbeddedScrollView:v45];
+      [bannerGesture2 setEmbeddedScrollView:nestedScrollView];
 
-      v47 = [v5 scrollView];
-      [v47 setScrollEnabled:0];
+      scrollView = [platterCopy scrollView];
+      [scrollView setScrollEnabled:0];
     }
 
     else
     {
-      v48 = [v5 scrollView];
-      [v47 setEmbeddedScrollView:v48];
+      scrollView2 = [platterCopy scrollView];
+      [scrollView setEmbeddedScrollView:scrollView2];
     }
 
     objc_opt_class();
@@ -2410,108 +2410,108 @@ void __53__WFSystemOverlayViewController_performBumpAnimation__block_invoke_3(ui
 
     else
     {
-      v50 = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
+      universalPreviewsEnabled = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
       v49 = 39.0;
-      if (v50)
+      if (universalPreviewsEnabled)
       {
         v49 = 42.0;
       }
     }
 
     [(WFSystemOverlayViewController *)self setPlatterCornerRadius:v49];
-    v51 = [v5 platterView];
-    v52 = [v51 attribution];
-    v53 = [v52 title];
-    v54 = [v5 platterView];
-    v55 = [v54 attribution];
-    v56 = [v55 icon];
-    -[WFSystemOverlayViewController setAttributionTitle:icon:previouslyHidden:](self, "setAttributionTitle:icon:previouslyHidden:", v53, v56, [v7 shouldHideSashView]);
+    platterView3 = [platterCopy platterView];
+    attribution2 = [platterView3 attribution];
+    title2 = [attribution2 title];
+    platterView4 = [platterCopy platterView];
+    attribution3 = [platterView4 attribution];
+    icon = [attribution3 icon];
+    -[WFSystemOverlayViewController setAttributionTitle:icon:previouslyHidden:](self, "setAttributionTitle:icon:previouslyHidden:", title2, icon, [embeddedPlatter2 shouldHideSashView]);
 
     v57 = +[WFBannerPrototypeSettings sharedSettings];
-    LODWORD(v52) = [v57 debugMorphTransitions];
+    LODWORD(attribution2) = [v57 debugMorphTransitions];
 
-    if (v52)
+    if (attribution2)
     {
-      v58 = [MEMORY[0x277D75348] systemBlueColor];
-      v59 = v58;
-      v60 = [v58 CGColor];
-      v61 = [v5 view];
-      v62 = [v61 layer];
-      [v62 setBorderColor:v60];
+      systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+      v59 = systemBlueColor;
+      cGColor = [systemBlueColor CGColor];
+      view6 = [platterCopy view];
+      layer6 = [view6 layer];
+      [layer6 setBorderColor:cGColor];
 
-      v63 = [v5 view];
-      v64 = [v63 layer];
-      [v64 setBorderWidth:1.0];
+      view7 = [platterCopy view];
+      layer7 = [view7 layer];
+      [layer7 setBorderWidth:1.0];
 
-      v65 = [MEMORY[0x277D75348] systemRedColor];
-      v66 = v65;
-      v67 = [v65 CGColor];
-      v68 = [v5 platterView];
-      v69 = [v68 actionGroupView];
-      v70 = [v69 layer];
-      [v70 setBorderColor:v67];
+      systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+      v66 = systemRedColor;
+      cGColor2 = [systemRedColor CGColor];
+      platterView5 = [platterCopy platterView];
+      actionGroupView = [platterView5 actionGroupView];
+      layer8 = [actionGroupView layer];
+      [layer8 setBorderColor:cGColor2];
 
-      v71 = [v5 platterView];
-      v72 = [v71 actionGroupView];
-      v73 = [v72 layer];
-      [v73 setBorderWidth:1.0];
+      platterView6 = [platterCopy platterView];
+      actionGroupView2 = [platterView6 actionGroupView];
+      layer9 = [actionGroupView2 layer];
+      [layer9 setBorderWidth:1.0];
 
-      v74 = [MEMORY[0x277D75348] systemYellowColor];
-      v75 = v74;
-      v76 = [v74 CGColor];
-      v77 = [v5 platterView];
-      v78 = [v77 clippingContentView];
-      v79 = [v78 layer];
-      [v79 setBorderColor:v76];
+      systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+      v75 = systemYellowColor;
+      cGColor3 = [systemYellowColor CGColor];
+      platterView7 = [platterCopy platterView];
+      clippingContentView = [platterView7 clippingContentView];
+      layer10 = [clippingContentView layer];
+      [layer10 setBorderColor:cGColor3];
 
-      v80 = [v5 platterView];
-      v81 = [v80 clippingContentView];
-      v82 = [v81 layer];
-      [v82 setBorderWidth:1.0];
+      platterView8 = [platterCopy platterView];
+      clippingContentView2 = [platterView8 clippingContentView];
+      layer11 = [clippingContentView2 layer];
+      [layer11 setBorderWidth:1.0];
     }
 
     v83 = +[WFBannerPrototypeSettings sharedSettings];
-    v84 = [v83 bannerFramesEnabled];
+    bannerFramesEnabled = [v83 bannerFramesEnabled];
 
-    if (v84)
+    if (bannerFramesEnabled)
     {
-      v85 = [(WFSystemOverlayViewController *)self dialogDescriptionLabel];
+      dialogDescriptionLabel = [(WFSystemOverlayViewController *)self dialogDescriptionLabel];
 
-      if (v85)
+      if (dialogDescriptionLabel)
       {
         dialogDescriptionLabel = [(WFSystemOverlayViewController *)self materialView];
-        v87 = [(WFSystemOverlayViewController *)self dialogDescriptionLabel];
-        [dialogDescriptionLabel bringSubviewToFront:v87];
+        dialogDescriptionLabel2 = [(WFSystemOverlayViewController *)self dialogDescriptionLabel];
+        [dialogDescriptionLabel bringSubviewToFront:dialogDescriptionLabel2];
       }
 
       else
       {
         v88 = objc_alloc(MEMORY[0x277D756B8]);
-        v89 = [(WFSystemOverlayViewController *)self materialView];
-        [v89 frame];
+        materialView2 = [(WFSystemOverlayViewController *)self materialView];
+        [materialView2 frame];
         v91 = [v88 initWithFrame:{40.0, 0.0, v90 + -80.0, 14.0}];
 
         [(UILabel *)v91 setAutoresizingMask:2];
-        v92 = [MEMORY[0x277D75348] labelColor];
-        [(UILabel *)v91 setTextColor:v92];
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        [(UILabel *)v91 setTextColor:labelColor];
 
         v93 = [MEMORY[0x277D74300] systemFontOfSize:8.0 weight:*MEMORY[0x277D74420]];
         [(UILabel *)v91 setFont:v93];
 
         [(UILabel *)v91 setTextAlignment:1];
-        v94 = [(WFSystemOverlayViewController *)self materialView];
-        [v94 addSubview:v91];
+        materialView3 = [(WFSystemOverlayViewController *)self materialView];
+        [materialView3 addSubview:v91];
 
         dialogDescriptionLabel = self->_dialogDescriptionLabel;
         self->_dialogDescriptionLabel = v91;
       }
 
-      v95 = [(WFSystemOverlayViewController *)self dialogDescriptionLabel];
-      v96 = [v5 description];
-      [v95 setText:v96];
+      dialogDescriptionLabel3 = [(WFSystemOverlayViewController *)self dialogDescriptionLabel];
+      v96 = [platterCopy description];
+      [dialogDescriptionLabel3 setText:v96];
     }
 
-    v97 = v5;
+    v97 = platterCopy;
     if (v97)
     {
       objc_opt_class();
@@ -2661,11 +2661,11 @@ void __52__WFSystemOverlayViewController_setEmbeddedPlatter___block_invoke_3(uin
   [v1 setTransform:v3];
 }
 
-- (void)setRootModalViewController:(id)a3
+- (void)setRootModalViewController:(id)controller
 {
-  v5 = a3;
-  objc_storeStrong(&self->_rootModalViewController, a3);
-  if (!v5)
+  controllerCopy = controller;
+  objc_storeStrong(&self->_rootModalViewController, controller);
+  if (!controllerCopy)
   {
     v6 = dispatch_time(0, 300000000);
     block[0] = MEMORY[0x277D85DD0];
@@ -2687,19 +2687,19 @@ uint64_t __60__WFSystemOverlayViewController_setRootModalViewController___block_
 
 - (void)resetLocalIdleTimer
 {
-  v3 = [(WFSystemOverlayViewController *)self systemIdleTimerOverrideAssertion];
+  systemIdleTimerOverrideAssertion = [(WFSystemOverlayViewController *)self systemIdleTimerOverrideAssertion];
 
-  if (!v3)
+  if (!systemIdleTimerOverrideAssertion)
   {
-    v4 = [MEMORY[0x277D1B260] sharedInstance];
+    mEMORY[0x277D1B260] = [MEMORY[0x277D1B260] sharedInstance];
     v15 = 0;
-    v5 = [v4 newAssertionToDisableIdleTimerForReason:@"Shortcut is running error:{overriding lock screen idle timer.", &v15}];
+    v5 = [mEMORY[0x277D1B260] newAssertionToDisableIdleTimerForReason:@"Shortcut is running error:{overriding lock screen idle timer.", &v15}];
 
     [(WFSystemOverlayViewController *)self setSystemIdleTimerOverrideAssertion:v5];
   }
 
-  v6 = [(WFSystemOverlayViewController *)self localIdleTimer];
-  [v6 cancel];
+  localIdleTimer = [(WFSystemOverlayViewController *)self localIdleTimer];
+  [localIdleTimer cancel];
 
   objc_initWeak(&location, self);
   v7 = objc_alloc(MEMORY[0x277D79F48]);
@@ -2713,8 +2713,8 @@ uint64_t __60__WFSystemOverlayViewController_setRootModalViewController___block_
   v10 = [v7 initWithInterval:v8 queue:v12 handler:30.0];
   [(WFSystemOverlayViewController *)self setLocalIdleTimer:v10];
 
-  v11 = [(WFSystemOverlayViewController *)self localIdleTimer];
-  [v11 start];
+  localIdleTimer2 = [(WFSystemOverlayViewController *)self localIdleTimer];
+  [localIdleTimer2 start];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -2735,33 +2735,33 @@ void __52__WFSystemOverlayViewController_resetLocalIdleTimer__block_invoke(uint6
 
 - (NSString)description
 {
-  v3 = [(WFSystemOverlayViewController *)self dismissalPhase];
-  if (v3 > 2)
+  dismissalPhase = [(WFSystemOverlayViewController *)self dismissalPhase];
+  if (dismissalPhase > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_279EE8650[v3];
+    v4 = off_279EE8650[dismissalPhase];
   }
 
   v5 = MEMORY[0x277CCACA8];
   v12.receiver = self;
   v12.super_class = WFSystemOverlayViewController;
   v6 = [(WFSystemOverlayViewController *)&v12 description];
-  v7 = [(WFSystemOverlayViewController *)self embeddedPlatter];
-  v8 = [(WFSystemOverlayViewController *)self presentedViewController];
-  v9 = [(WFSystemOverlayViewController *)self queuedStatusPlatter];
-  v10 = [v5 stringWithFormat:@"<%@, embedded platter: %@, presented VC: %@, queuedStatusPlatter: %@, dismissalPhase: %@>", v6, v7, v8, v9, v4];
+  embeddedPlatter = [(WFSystemOverlayViewController *)self embeddedPlatter];
+  presentedViewController = [(WFSystemOverlayViewController *)self presentedViewController];
+  queuedStatusPlatter = [(WFSystemOverlayViewController *)self queuedStatusPlatter];
+  v10 = [v5 stringWithFormat:@"<%@, embedded platter: %@, presented VC: %@, queuedStatusPlatter: %@, dismissalPhase: %@>", v6, embeddedPlatter, presentedViewController, queuedStatusPlatter, v4];
 
   return v10;
 }
 
 - (void)dealloc
 {
-  v3 = [(WFSystemOverlayViewController *)self systemIdleTimerOverrideAssertion];
-  [v3 invalidate];
+  systemIdleTimerOverrideAssertion = [(WFSystemOverlayViewController *)self systemIdleTimerOverrideAssertion];
+  [systemIdleTimerOverrideAssertion invalidate];
 
   [(WFSystemOverlayViewController *)self stopObservingKeyboard];
   v4.receiver = self;
@@ -2774,17 +2774,17 @@ void __52__WFSystemOverlayViewController_resetLocalIdleTimer__block_invoke(uint6
   v13.receiver = self;
   v13.super_class = WFSystemOverlayViewController;
   [(WFSystemOverlayViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(WFSystemOverlayViewController *)self containerView];
-  [v3 frame];
+  containerView = [(WFSystemOverlayViewController *)self containerView];
+  [containerView frame];
   v6 = v5 == *(MEMORY[0x277CBF348] + 8) && v4 == *MEMORY[0x277CBF348];
 
   if (v6 == [(WFSystemOverlayViewController *)self contentIsFullScreen])
   {
-    v7 = [(WFSystemOverlayViewController *)self containerView];
-    v8 = v7;
-    if (v7)
+    containerView2 = [(WFSystemOverlayViewController *)self containerView];
+    v8 = containerView2;
+    if (containerView2)
     {
-      [v7 transform];
+      [containerView2 transform];
     }
 
     else
@@ -2809,27 +2809,27 @@ void __52__WFSystemOverlayViewController_resetLocalIdleTimer__block_invoke(uint6
   [(WFSystemOverlayViewController *)self layoutEmbeddedPlatter];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = [(WFSystemOverlayViewController *)self localIdleTimer];
-  [v4 cancel];
+  localIdleTimer = [(WFSystemOverlayViewController *)self localIdleTimer];
+  [localIdleTimer cancel];
 
-  v5 = [(WFSystemOverlayViewController *)self systemIdleTimerOverrideAssertion];
-  [v5 invalidate];
+  systemIdleTimerOverrideAssertion = [(WFSystemOverlayViewController *)self systemIdleTimerOverrideAssertion];
+  [systemIdleTimerOverrideAssertion invalidate];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v7.receiver = self;
   v7.super_class = WFSystemOverlayViewController;
-  [(WFSystemOverlayViewController *)&v7 viewIsAppearing:a3];
+  [(WFSystemOverlayViewController *)&v7 viewIsAppearing:appearing];
   [(WFSystemOverlayViewController *)self setViewIsAppearingCalled:1];
-  v4 = [(WFSystemOverlayViewController *)self viewIsAppearingHandler];
+  viewIsAppearingHandler = [(WFSystemOverlayViewController *)self viewIsAppearingHandler];
 
-  if (v4)
+  if (viewIsAppearingHandler)
   {
-    v5 = [(WFSystemOverlayViewController *)self viewIsAppearingHandler];
-    v5[2]();
+    viewIsAppearingHandler2 = [(WFSystemOverlayViewController *)self viewIsAppearingHandler];
+    viewIsAppearingHandler2[2]();
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -2840,9 +2840,9 @@ void __52__WFSystemOverlayViewController_resetLocalIdleTimer__block_invoke(uint6
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v25.receiver = self;
   v25.super_class = WFSystemOverlayViewController;
   [(WFSystemOverlayViewController *)&v25 viewWillAppear:?];
@@ -2850,42 +2850,42 @@ void __52__WFSystemOverlayViewController_resetLocalIdleTimer__block_invoke(uint6
   [(WFSystemOverlayViewController *)self bannerSize];
   [(WFSystemOverlayViewController *)self setPreferredContentSize:?];
   v5 = +[WFBannerPrototypeSettings sharedSettings];
-  v6 = [v5 bannerFramesEnabled];
+  bannerFramesEnabled = [v5 bannerFramesEnabled];
 
-  if (v6)
+  if (bannerFramesEnabled)
   {
-    v7 = [(WFSystemOverlayViewController *)self view];
-    v8 = [v7 window];
-    v9 = [v8 layer];
-    v10 = [MEMORY[0x277D75348] systemGreenColor];
-    v11 = [v10 colorWithAlphaComponent:0.9];
-    [v9 setBorderColor:{objc_msgSend(v11, "CGColor")}];
+    view = [(WFSystemOverlayViewController *)self view];
+    window = [view window];
+    layer = [window layer];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+    v11 = [systemGreenColor colorWithAlphaComponent:0.9];
+    [layer setBorderColor:{objc_msgSend(v11, "CGColor")}];
 
-    v12 = [(WFSystemOverlayViewController *)self view];
-    v13 = [v12 window];
-    v14 = [v13 layer];
-    [v14 setBorderWidth:2.0];
+    view2 = [(WFSystemOverlayViewController *)self view];
+    window2 = [view2 window];
+    layer2 = [window2 layer];
+    [layer2 setBorderWidth:2.0];
 
-    v15 = [(WFSystemOverlayViewController *)self view];
-    v16 = [v15 window];
-    v17 = [MEMORY[0x277D79F18] currentDevice];
-    [v17 screenCornerRadius];
-    [v16 _setContinuousCornerRadius:?];
+    view3 = [(WFSystemOverlayViewController *)self view];
+    window3 = [view3 window];
+    currentDevice = [MEMORY[0x277D79F18] currentDevice];
+    [currentDevice screenCornerRadius];
+    [window3 _setContinuousCornerRadius:?];
 
-    v18 = [(WFSystemOverlayViewController *)self containerView];
-    v19 = [v18 layer];
-    v20 = [MEMORY[0x277D75348] systemOrangeColor];
-    v21 = [v20 colorWithAlphaComponent:0.9];
-    [v19 setBorderColor:{objc_msgSend(v21, "CGColor")}];
+    containerView = [(WFSystemOverlayViewController *)self containerView];
+    layer3 = [containerView layer];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    v21 = [systemOrangeColor colorWithAlphaComponent:0.9];
+    [layer3 setBorderColor:{objc_msgSend(v21, "CGColor")}];
 
-    v22 = [(WFSystemOverlayViewController *)self containerView];
-    v23 = [v22 layer];
-    [v23 setBorderWidth:1.0];
+    containerView2 = [(WFSystemOverlayViewController *)self containerView];
+    layer4 = [containerView2 layer];
+    [layer4 setBorderWidth:1.0];
   }
 
   v24.receiver = self;
   v24.super_class = WFSystemOverlayViewController;
-  [(WFSystemOverlayViewController *)&v24 viewWillAppear:v3];
+  [(WFSystemOverlayViewController *)&v24 viewWillAppear:appearCopy];
   [(WFSystemOverlayViewController *)self resetLocalIdleTimer];
 }
 

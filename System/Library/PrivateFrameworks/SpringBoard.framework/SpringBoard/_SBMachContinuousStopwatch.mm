@@ -48,12 +48,12 @@
 
 - (double)activeTime
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if (*(a1 + 8) == 1)
+  if (*(self + 8) == 1)
   {
     mach_continuous_time();
   }

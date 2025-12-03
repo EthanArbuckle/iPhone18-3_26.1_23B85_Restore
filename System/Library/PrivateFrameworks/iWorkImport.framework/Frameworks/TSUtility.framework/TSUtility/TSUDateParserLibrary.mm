@@ -1,22 +1,22 @@
 @interface TSUDateParserLibrary
-- (TSUDateParserLibrary)initWithLocale:(id)a3;
+- (TSUDateParserLibrary)initWithLocale:(id)locale;
 - (id)checkoutDateParser;
 - (void)prepareDateParserInBackground;
-- (void)returnDateParser:(id)a3;
+- (void)returnDateParser:(id)parser;
 @end
 
 @implementation TSUDateParserLibrary
 
-- (TSUDateParserLibrary)initWithLocale:(id)a3
+- (TSUDateParserLibrary)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v12.receiver = self;
   v12.super_class = TSUDateParserLibrary;
   v5 = [(TSUDateParserLibrary *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    v5->mLocale = v4;
+    v5->mLocale = localeCopy;
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mAvailableDateParsers = v6->mAvailableDateParsers;
     v6->mAvailableDateParsers = v7;
@@ -50,8 +50,8 @@
   {
     self->mNumberOfUses = mNumberOfUses + 1;
     mMaxPermittedParsers = self->mMaxPermittedParsers;
-    v7 = [MEMORY[0x277CCAC38] processInfo];
-    if (mMaxPermittedParsers >= [v7 processorCount])
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    if (mMaxPermittedParsers >= [processInfo processorCount])
     {
     }
 
@@ -95,19 +95,19 @@
     }
   }
 
-  v14 = [(NSMutableArray *)self->mAvailableDateParsers lastObject];
+  lastObject = [(NSMutableArray *)self->mAvailableDateParsers lastObject];
   [(NSMutableArray *)self->mAvailableDateParsers removeLastObject];
   [(NSCondition *)self->mParserLibraryConditionVariable unlock];
 
-  return v14;
+  return lastObject;
 }
 
-- (void)returnDateParser:(id)a3
+- (void)returnDateParser:(id)parser
 {
   mParserLibraryConditionVariable = self->mParserLibraryConditionVariable;
-  v5 = a3;
+  parserCopy = parser;
   [(NSCondition *)mParserLibraryConditionVariable lock];
-  [(NSMutableArray *)self->mAvailableDateParsers addObject:v5];
+  [(NSMutableArray *)self->mAvailableDateParsers addObject:parserCopy];
 
   [(NSCondition *)self->mParserLibraryConditionVariable signal];
   v6 = self->mParserLibraryConditionVariable;

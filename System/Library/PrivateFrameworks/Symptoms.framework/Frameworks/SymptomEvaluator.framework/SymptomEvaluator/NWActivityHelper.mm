@@ -2,28 +2,28 @@
 - (BOOL)_uploadNWActivityDatabaseStats;
 - (BOOL)shouldSendMetricStream;
 - (NWActivityHelper)init;
-- (NWActivityHelper)initWithQueue:(id)a3;
+- (NWActivityHelper)initWithQueue:(id)queue;
 - (id)_NWActivityFragmentSpace;
-- (id)_createDictionarySupermetricForActivity:(id)a3 withContext:(id)a4;
-- (id)_createSupermetricFromFragments:(id)a3 forMetricUUID:(id)a4;
-- (id)_fetchActivitiesWithPredicate:(id)a3 batch:(BOOL)a4;
-- (id)_fetchChildrenForUUID:(id)a3 fromContext:(id)a4 withError:(id *)a5;
-- (id)_fetchFragmentsForUUID:(id)a3 fromContext:(id)a4 withError:(id *)a5;
-- (id)_fetchMetricsForUUID:(id)a3;
+- (id)_createDictionarySupermetricForActivity:(id)activity withContext:(id)context;
+- (id)_createSupermetricFromFragments:(id)fragments forMetricUUID:(id)d;
+- (id)_fetchActivitiesWithPredicate:(id)predicate batch:(BOOL)batch;
+- (id)_fetchChildrenForUUID:(id)d fromContext:(id)context withError:(id *)error;
+- (id)_fetchFragmentsForUUID:(id)d fromContext:(id)context withError:(id *)error;
+- (id)_fetchMetricsForUUID:(id)d;
 - (id)_findNWActivityMetricsForUploading;
-- (id)_getNWActivitySummaryReport:(id)a3;
+- (id)_getNWActivitySummaryReport:(id)report;
 - (id)_statsForNWActivityFragmentTypes;
 - (id)analyticsWorkspace;
-- (void)_deleteAllFragmentsMatchingPredicate:(id)a3;
-- (void)_deleteNWActivityFragment:(id)a3 fromContext:(id)a4;
+- (void)_deleteAllFragmentsMatchingPredicate:(id)predicate;
+- (void)_deleteNWActivityFragment:(id)fragment fromContext:(id)context;
 - (void)_deleteOldMetrics;
-- (void)_fetchMetricsForActivity:(id)a3 maxChildDepth:(unsigned __int8)a4 destinationArray:(id)a5;
+- (void)_fetchMetricsForActivity:(id)activity maxChildDepth:(unsigned __int8)depth destinationArray:(id)array;
 - (void)_garbageCollectNWActivityMetrics;
 - (void)_uploadCompleteNWActivityMetrics;
 - (void)cleanOutNWActivityMetrics;
 - (void)purgeOldNWActivityMetrics;
-- (void)retrieveNWActivityMetricsForActivity:(id)a3 completion:(id)a4;
-- (void)sendReportToMetricStream:(id)a3;
+- (void)retrieveNWActivityMetricsForActivity:(id)activity completion:(id)completion;
+- (void)sendReportToMetricStream:(id)stream;
 - (void)startNWActivitySuperMetricProcessing;
 @end
 
@@ -47,10 +47,10 @@
   return v2;
 }
 
-- (NWActivityHelper)initWithQueue:(id)a3
+- (NWActivityHelper)initWithQueue:(id)queue
 {
-  v5 = a3;
-  if (v5)
+  queueCopy = queue;
+  if (queueCopy)
   {
     v11.receiver = self;
     v11.super_class = NWActivityHelper;
@@ -58,11 +58,11 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_queue, a3);
+      objc_storeStrong(&v6->_queue, queue);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -74,10 +74,10 @@
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_ERROR, "initWithQueue: queue is required", buf, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)analyticsWorkspace
@@ -87,8 +87,8 @@
   {
     v4 = MEMORY[0x277D6B500];
     v5 = +[SystemSettingsRelay defaultRelay];
-    v6 = [v5 symptomEvaluatorDatabaseContainerPath];
-    v7 = [v4 workspaceWithName:@"netusage" atPath:v6 objectModelName:*MEMORY[0x277D6B618] objectModelBundle:0 useReadOnly:0];
+    symptomEvaluatorDatabaseContainerPath = [v5 symptomEvaluatorDatabaseContainerPath];
+    v7 = [v4 workspaceWithName:@"netusage" atPath:symptomEvaluatorDatabaseContainerPath objectModelName:*MEMORY[0x277D6B618] objectModelBundle:0 useReadOnly:0];
 
     v8 = [v7 copy];
     v9 = self->_workspace;
@@ -106,9 +106,9 @@
   if (!nwfspace)
   {
     v4 = objc_alloc(MEMORY[0x277D6B540]);
-    v5 = [(NWActivityHelper *)self analyticsWorkspace];
-    v6 = [MEMORY[0x277D6B528] entityName];
-    v7 = [v4 initWithWorkspace:v5 entityName:v6 withCache:0];
+    analyticsWorkspace = [(NWActivityHelper *)self analyticsWorkspace];
+    entityName = [MEMORY[0x277D6B528] entityName];
+    v7 = [v4 initWithWorkspace:analyticsWorkspace entityName:entityName withCache:0];
     v8 = self->_nwfspace;
     self->_nwfspace = v7;
 
@@ -209,16 +209,16 @@ id __50__NWActivityHelper__uploadNWActivityDatabaseStats__block_invoke(uint64_t 
 - (id)_statsForNWActivityFragmentTypes
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(NWActivityHelper *)self analyticsWorkspace];
-  v4 = [v3 mainObjectContext];
+  analyticsWorkspace = [(NWActivityHelper *)self analyticsWorkspace];
+  mainObjectContext = [analyticsWorkspace mainObjectContext];
 
-  if (!v4)
+  if (!mainObjectContext)
   {
-    v4 = activityLogHandle();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    mainObjectContext = activityLogHandle();
+    if (os_log_type_enabled(mainObjectContext, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_ERROR, "Failed to fetch context when uploading NWActivity DB stats to CA, skipping upload", buf, 2u);
+      _os_log_impl(&dword_23255B000, mainObjectContext, OS_LOG_TYPE_ERROR, "Failed to fetch context when uploading NWActivity DB stats to CA, skipping upload", buf, 2u);
     }
 
     goto LABEL_10;
@@ -228,9 +228,9 @@ id __50__NWActivityHelper__uploadNWActivityDatabaseStats__block_invoke(uint64_t 
   v6 = countOfKeyDescriptor();
   [v5 addGroupByProperty:@"type"];
   [v5 addAggregateProperty:v6];
-  v7 = [(NWActivityHelper *)self _NWActivityFragmentSpace];
+  _NWActivityFragmentSpace = [(NWActivityHelper *)self _NWActivityFragmentSpace];
   LOBYTE(v15) = 0;
-  v8 = [v7 fetchEntityDictionariesWithProperties:&unk_2847EEBF8 fetchRequestProperties:v5 predicate:0 sortDescriptors:0 limit:0 offset:0 includeObjectID:v15];
+  v8 = [_NWActivityFragmentSpace fetchEntityDictionariesWithProperties:&unk_2847EEBF8 fetchRequestProperties:v5 predicate:0 sortDescriptors:0 limit:0 offset:0 includeObjectID:v15];
 
   if (!v8)
   {
@@ -412,19 +412,19 @@ void __45__NWActivityHelper_purgeOldNWActivityMetrics__block_invoke(uint64_t a1)
   }
 }
 
-- (void)retrieveNWActivityMetricsForActivity:(id)a3 completion:(id)a4
+- (void)retrieveNWActivityMetricsForActivity:(id)activity completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  activityCopy = activity;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (activityCopy && completionCopy)
   {
     v9 = activityLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v6;
+      v16 = activityCopy;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEFAULT, "Retrieving metrics for activity %@", buf, 0xCu);
     }
 
@@ -434,7 +434,7 @@ void __45__NWActivityHelper_purgeOldNWActivityMetrics__block_invoke(uint64_t a1)
     block[2] = __68__NWActivityHelper_retrieveNWActivityMetricsForActivity_completion___block_invoke;
     block[3] = &unk_27898C710;
     block[4] = self;
-    v13 = v6;
+    v13 = activityCopy;
     v14 = v8;
     dispatch_async(queue, block);
   }
@@ -480,12 +480,12 @@ void __68__NWActivityHelper_retrieveNWActivityMetricsForActivity_completion___bl
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createDictionarySupermetricForActivity:(id)a3 withContext:(id)a4
+- (id)_createDictionarySupermetricForActivity:(id)activity withContext:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  activityCopy = activity;
+  contextCopy = context;
+  if (!activityCopy)
   {
     v9 = activityLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -497,13 +497,13 @@ LABEL_18:
     }
 
 LABEL_19:
-    v20 = 0;
+    dictionaryRepresentation = 0;
     goto LABEL_30;
   }
 
   v8 = activityLogHandle();
   v9 = v8;
-  if (!v7)
+  if (!contextCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -518,17 +518,17 @@ LABEL_19:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v35[0] = v6;
+    v35[0] = activityCopy;
     _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEBUG, "Fetching metrics for activity %@", buf, 0xCu);
   }
 
   v33 = 0;
-  v10 = [(NWActivityHelper *)self _fetchFragmentsForUUID:v6 fromContext:v7 withError:&v33];
+  v10 = [(NWActivityHelper *)self _fetchFragmentsForUUID:activityCopy fromContext:contextCopy withError:&v33];
   v11 = v33;
   v12 = v11;
   if (v10)
   {
-    v27 = [(NWActivityHelper *)self _createSupermetricFromFragments:v10 forMetricUUID:v6];
+    v27 = [(NWActivityHelper *)self _createSupermetricFromFragments:v10 forMetricUUID:activityCopy];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -549,7 +549,7 @@ LABEL_19:
             objc_enumerationMutation(v13);
           }
 
-          [(NWActivityHelper *)self _deleteNWActivityFragment:*(*(&v29 + 1) + 8 * i) fromContext:v7, v27];
+          [(NWActivityHelper *)self _deleteNWActivityFragment:*(*(&v29 + 1) + 8 * i) fromContext:contextCopy, v27];
         }
 
         v16 += v15;
@@ -570,12 +570,12 @@ LABEL_19:
       *buf = 67109378;
       LODWORD(v35[0]) = v16;
       WORD2(v35[0]) = 2112;
-      *(v35 + 6) = v6;
+      *(v35 + 6) = activityCopy;
       _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_INFO, "Deleted %u fragments for activity %@", buf, 0x12u);
     }
 
     v28 = v12;
-    v22 = [v7 save:&v28];
+    v22 = [contextCopy save:&v28];
     v9 = v28;
 
     if ((v22 & 1) == 0)
@@ -590,29 +590,29 @@ LABEL_19:
     }
 
     v24 = v27;
-    v20 = [v27 dictionaryRepresentation];
+    dictionaryRepresentation = [v27 dictionaryRepresentation];
   }
 
   else
   {
-    v20 = 0;
+    dictionaryRepresentation = 0;
     v9 = v11;
   }
 
 LABEL_30:
   v25 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return dictionaryRepresentation;
 }
 
-- (void)_fetchMetricsForActivity:(id)a3 maxChildDepth:(unsigned __int8)a4 destinationArray:(id)a5
+- (void)_fetchMetricsForActivity:(id)activity maxChildDepth:(unsigned __int8)depth destinationArray:(id)array
 {
-  v6 = a4;
+  depthCopy = depth;
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8 || !v9)
+  activityCopy = activity;
+  arrayCopy = array;
+  v10 = arrayCopy;
+  if (!activityCopy || !arrayCopy)
   {
     v29 = activityLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -630,7 +630,7 @@ LABEL_30:
     goto LABEL_36;
   }
 
-  if (!v6)
+  if (!depthCopy)
   {
     v29 = activityLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -646,10 +646,10 @@ LABEL_30:
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = [(NWActivityHelper *)self analyticsWorkspace];
-  v13 = [v12 mainObjectContext];
+  analyticsWorkspace = [(NWActivityHelper *)self analyticsWorkspace];
+  mainObjectContext = [analyticsWorkspace mainObjectContext];
 
-  if (!v13)
+  if (!mainObjectContext)
   {
     v33 = activityLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -661,14 +661,14 @@ LABEL_30:
     goto LABEL_35;
   }
 
-  v14 = [(NWActivityHelper *)self _createDictionarySupermetricForActivity:v8 withContext:v13];
+  v14 = [(NWActivityHelper *)self _createDictionarySupermetricForActivity:activityCopy withContext:mainObjectContext];
   if (v14)
   {
     [v10 addObject:v14];
   }
 
   v41 = 0;
-  v15 = [(NWActivityHelper *)self _fetchChildrenForUUID:v8 fromContext:v13 withError:&v41];
+  v15 = [(NWActivityHelper *)self _fetchChildrenForUUID:activityCopy fromContext:mainObjectContext withError:&v41];
   if (!v15)
   {
 
@@ -679,7 +679,7 @@ LABEL_35:
 
   v16 = v15;
   v36 = v10;
-  [v13 reset];
+  [mainObjectContext reset];
 
   objc_autoreleasePoolPop(v11);
   v39 = 0u;
@@ -692,7 +692,7 @@ LABEL_35:
   {
     v20 = v18;
     v21 = *v38;
-    v22 = v6 - 1;
+    v22 = depthCopy - 1;
     *&v19 = 138412546;
     v35 = v19;
     do
@@ -705,7 +705,7 @@ LABEL_35:
         }
 
         v24 = *(*(&v37 + 1) + 8 * i);
-        v25 = [v24 isEqual:{v8, v35}];
+        v25 = [v24 isEqual:{activityCopy, v35}];
         v26 = activityLogHandle();
         v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG);
         if (v25)
@@ -713,7 +713,7 @@ LABEL_35:
           if (v27)
           {
             *buf = 138412290;
-            v43 = v8;
+            v43 = activityCopy;
             _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_DEBUG, "Skipping metric for child identical to activity %@", buf, 0xCu);
           }
         }
@@ -725,7 +725,7 @@ LABEL_35:
             *buf = v35;
             v43 = v24;
             v44 = 2112;
-            v45 = v8;
+            v45 = activityCopy;
             _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_DEBUG, "Fetching metric for child %@ of activity %@", buf, 0x16u);
           }
 
@@ -743,7 +743,7 @@ LABEL_35:
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v43 = v8;
+    v43 = activityCopy;
     _os_log_impl(&dword_23255B000, v28, OS_LOG_TYPE_DEBUG, "Finished with activity %@", buf, 0xCu);
   }
 
@@ -753,23 +753,23 @@ LABEL_36:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchMetricsForUUID:(id)a3
+- (id)_fetchMetricsForUUID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = activityLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "Fetching metrics for activity %@", &v11, 0xCu);
   }
 
-  if (v4)
+  if (dCopy)
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [(NWActivityHelper *)self _fetchMetricsForActivity:v4 maxChildDepth:30 destinationArray:v7];
+    [(NWActivityHelper *)self _fetchMetricsForActivity:dCopy maxChildDepth:30 destinationArray:v7];
     objc_autoreleasePoolPop(v6);
   }
 
@@ -797,16 +797,16 @@ LABEL_36:
   [(NWActivityHelper *)self _deleteAllFragmentsMatchingPredicate:v3];
 }
 
-- (void)_deleteAllFragmentsMatchingPredicate:(id)a3
+- (void)_deleteAllFragmentsMatchingPredicate:(id)predicate
 {
   v40 = *MEMORY[0x277D85DE8];
-  v29 = a3;
+  predicateCopy = predicate;
   v26 = objc_autoreleasePoolPush();
   v4 = activityLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v39 = v29;
+    v39 = predicateCopy;
     _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_DEFAULT, "_deleteAllFragmentsMatchingPredicate %@ for NWActivityMetrics", buf, 0xCu);
   }
 
@@ -816,7 +816,7 @@ LABEL_36:
   {
     v30 = v5;
     context = objc_autoreleasePoolPush();
-    v6 = [(NWActivityHelper *)self _fetchActivitiesWithPredicate:v29 batch:1];
+    v6 = [(NWActivityHelper *)self _fetchActivitiesWithPredicate:predicateCopy batch:1];
     v7 = v6;
     if (v6 && [v6 count])
     {
@@ -829,10 +829,10 @@ LABEL_36:
         _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEBUG, "Found %lu activities to delete: ", buf, 0xCu);
       }
 
-      v10 = [(NWActivityHelper *)self analyticsWorkspace];
-      v11 = [v10 mainObjectContext];
+      analyticsWorkspace = [(NWActivityHelper *)self analyticsWorkspace];
+      mainObjectContext = [analyticsWorkspace mainObjectContext];
 
-      if (v11)
+      if (mainObjectContext)
       {
         v28 = [v7 count];
         v35 = 0u;
@@ -862,7 +862,7 @@ LABEL_36:
                 _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_DEBUG, "Deleting activity %@", buf, 0xCu);
               }
 
-              [(NWActivityHelper *)self _deleteNWActivityFragment:v16 fromContext:v11];
+              [(NWActivityHelper *)self _deleteNWActivityFragment:v16 fromContext:mainObjectContext];
             }
 
             v13 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -872,7 +872,7 @@ LABEL_36:
         }
 
         v32 = 0;
-        v18 = [v11 save:&v32];
+        v18 = [mainObjectContext save:&v32];
         v19 = v32;
         if ((v18 & 1) == 0)
         {
@@ -885,7 +885,7 @@ LABEL_36:
           }
         }
 
-        [v11 reset];
+        [mainObjectContext reset];
         v21 = activityLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
@@ -931,11 +931,11 @@ LABEL_36:
 
     else
     {
-      v11 = activityLogHandle();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+      mainObjectContext = activityLogHandle();
+      if (os_log_type_enabled(mainObjectContext, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_INFO, "Did not find any more activities, stopping...", buf, 2u);
+        _os_log_impl(&dword_23255B000, mainObjectContext, OS_LOG_TYPE_INFO, "Did not find any more activities, stopping...", buf, 2u);
       }
 
       v23 = 3;
@@ -974,34 +974,34 @@ LABEL_43:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteNWActivityFragment:(id)a3 fromContext:(id)a4
+- (void)_deleteNWActivityFragment:(id)fragment fromContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  fragmentCopy = fragment;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (fragmentCopy && contextCopy)
   {
-    v8 = [v5 metricData];
-    v9 = [v8 fragment];
-    v10 = [v9 count];
+    metricData = [fragmentCopy metricData];
+    fragment = [metricData fragment];
+    v10 = [fragment count];
 
     if (v10 >= 2)
     {
       v11 = activityLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [v5 metricData];
-        v13 = [v12 fragment];
+        metricData2 = [fragmentCopy metricData];
+        fragment2 = [metricData2 fragment];
         v16 = 134217984;
-        v17 = [v13 count];
+        v17 = [fragment2 count];
         _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "Severing NWActivityFragment relationship with metricData as relationship count is %ld", &v16, 0xCu);
       }
 
-      [v5 setMetricData:0];
+      [fragmentCopy setMetricData:0];
     }
 
-    [v7 deleteObject:v5];
+    [v7 deleteObject:fragmentCopy];
   }
 
   else
@@ -1031,39 +1031,39 @@ LABEL_43:
   [(NWActivityHelper *)self _deleteAllFragmentsMatchingPredicate:v5];
 }
 
-- (id)_fetchActivitiesWithPredicate:(id)a3 batch:(BOOL)a4
+- (id)_fetchActivitiesWithPredicate:(id)predicate batch:(BOOL)batch
 {
-  v4 = a4;
+  batchCopy = batch;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NWActivityHelper *)self analyticsWorkspace];
-  v8 = [v7 mainObjectContext];
+  predicateCopy = predicate;
+  analyticsWorkspace = [(NWActivityHelper *)self analyticsWorkspace];
+  mainObjectContext = [analyticsWorkspace mainObjectContext];
 
-  if (!v8)
+  if (!mainObjectContext)
   {
-    v8 = activityLogHandle();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    mainObjectContext = activityLogHandle();
+    if (os_log_type_enabled(mainObjectContext, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v23 = v6;
-      _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_ERROR, "Failed to fetch context when fetching metrics, skipping predicate %@", buf, 0xCu);
+      v23 = predicateCopy;
+      _os_log_impl(&dword_23255B000, mainObjectContext, OS_LOG_TYPE_ERROR, "Failed to fetch context when fetching metrics, skipping predicate %@", buf, 0xCu);
     }
 
     goto LABEL_25;
   }
 
   v9 = MEMORY[0x277CBE428];
-  v10 = [MEMORY[0x277D6B528] entityName];
-  v11 = [v9 fetchRequestWithEntityName:v10];
+  entityName = [MEMORY[0x277D6B528] entityName];
+  v11 = [v9 fetchRequestWithEntityName:entityName];
 
   if (!v11)
   {
     v17 = activityLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [MEMORY[0x277D6B528] entityName];
+      entityName2 = [MEMORY[0x277D6B528] entityName];
       *buf = 138412290;
-      v23 = v18;
+      v23 = entityName2;
       _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_ERROR, "Failed to create fetch request for entity name: %@", buf, 0xCu);
     }
 
@@ -1072,18 +1072,18 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v6)
+  if (predicateCopy)
   {
-    [v11 setPredicate:v6];
+    [v11 setPredicate:predicateCopy];
   }
 
-  if (v4)
+  if (batchCopy)
   {
     [v11 setFetchLimit:100];
   }
 
   v21 = 0;
-  v12 = [v8 executeFetchRequest:v11 error:&v21];
+  v12 = [mainObjectContext executeFetchRequest:v11 error:&v21];
   v13 = v21;
   if (!v12)
   {
@@ -1091,7 +1091,7 @@ LABEL_25:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v23 = v6;
+      v23 = predicateCopy;
       v24 = 2112;
       v25 = v13;
       _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_ERROR, "Failed to fetch activity entries from the database for predicate %@. Error: %@", buf, 0x16u);
@@ -1106,7 +1106,7 @@ LABEL_25:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v23 = v6;
+      v23 = predicateCopy;
       _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_INFO, "Did not find any activity metrics in the database for predicate %@", buf, 0xCu);
     }
   }
@@ -1117,7 +1117,7 @@ LABEL_25:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v23 = v6;
+      v23 = predicateCopy;
       v24 = 2112;
       v25 = v12;
       v26 = 2112;
@@ -1126,7 +1126,7 @@ LABEL_25:
     }
   }
 
-  v8 = v13;
+  mainObjectContext = v13;
 LABEL_26:
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1192,30 +1192,30 @@ LABEL_26:
   return v3;
 }
 
-- (id)_fetchFragmentsForUUID:(id)a3 fromContext:(id)a4 withError:(id *)a5
+- (id)_fetchFragmentsForUUID:(id)d fromContext:(id)context withError:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  dCopy = d;
+  contextCopy = context;
+  v9 = contextCopy;
   v10 = 0;
-  if (v7 && v8 && a5)
+  if (dCopy && contextCopy && error)
   {
     v11 = MEMORY[0x277CBE428];
-    v12 = [MEMORY[0x277D6B528] entityName];
-    v13 = [v11 fetchRequestWithEntityName:v12];
+    entityName = [MEMORY[0x277D6B528] entityName];
+    v13 = [v11 fetchRequestWithEntityName:entityName];
 
     [v13 setRelationshipKeyPathsForPrefetching:&unk_2847EEC10];
-    v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid == %@", v7];
-    [v13 setPredicate:v14];
+    dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid == %@", dCopy];
+    [v13 setPredicate:dCopy];
 
-    v10 = [v9 executeFetchRequest:v13 error:a5];
+    v10 = [v9 executeFetchRequest:v13 error:error];
 
     if (v10)
     {
       if ([v10 count])
       {
-        if (!*a5)
+        if (!*error)
         {
           goto LABEL_17;
         }
@@ -1223,7 +1223,7 @@ LABEL_26:
         v15 = activityLogHandle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v16 = *a5;
+          v16 = *error;
           *buf = 138412546;
           v23 = v10;
           v24 = 2112;
@@ -1238,7 +1238,7 @@ LABEL_26:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v23 = v7;
+          v23 = dCopy;
           _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_ERROR, "Activity %@ has no corresponding fragments", buf, 0xCu);
         }
       }
@@ -1249,9 +1249,9 @@ LABEL_26:
       v17 = activityLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = *a5;
+        v18 = *error;
         *buf = 138412546;
-        v23 = v7;
+        v23 = dCopy;
         v24 = 2112;
         v25 = v18;
         _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_ERROR, "Failed to get all the metrics with UUID %@. Error: %@", buf, 0x16u);
@@ -1268,22 +1268,22 @@ LABEL_17:
   return v10;
 }
 
-- (id)_fetchChildrenForUUID:(id)a3 fromContext:(id)a4 withError:(id *)a5
+- (id)_fetchChildrenForUUID:(id)d fromContext:(id)context withError:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v10 = 0;
-  if (v7 && v8 && a5)
+  dCopy = d;
+  contextCopy = context;
+  v9 = contextCopy;
+  allObjects = 0;
+  if (dCopy && contextCopy && error)
   {
     v11 = objc_autoreleasePoolPush();
     v12 = MEMORY[0x277CBE428];
-    v13 = [MEMORY[0x277D6B528] entityName];
-    v14 = [v12 fetchRequestWithEntityName:v13];
+    entityName = [MEMORY[0x277D6B528] entityName];
+    v14 = [v12 fetchRequestWithEntityName:entityName];
 
-    v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"parentUUID == %@", v7];
-    [v14 setPredicate:v15];
+    dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"parentUUID == %@", dCopy];
+    [v14 setPredicate:dCopy];
 
     v32 = 0;
     v16 = [v9 executeFetchRequest:v14 error:&v32];
@@ -1314,8 +1314,8 @@ LABEL_17:
                   objc_enumerationMutation(v16);
                 }
 
-                v23 = [*(*(&v28 + 1) + 8 * i) uuid];
-                [v19 addObject:v23];
+                uuid = [*(*(&v28 + 1) + 8 * i) uuid];
+                [v19 addObject:uuid];
               }
 
               v20 = [v16 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -1324,14 +1324,14 @@ LABEL_17:
             while (v20);
           }
 
-          v10 = [v19 allObjects];
+          allObjects = [v19 allObjects];
           v24 = activityLogHandle();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v35 = v7;
+            v35 = dCopy;
             v36 = 2112;
-            v37 = v10;
+            v37 = allObjects;
             _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEBUG, "Activity %@ has child UUIDs: %@", buf, 0x16u);
           }
 
@@ -1356,7 +1356,7 @@ LABEL_17:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v35 = v7;
+          v35 = dCopy;
           _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_INFO, "Activity %@ has no corresponding child fragments", buf, 0xCu);
         }
       }
@@ -1368,45 +1368,45 @@ LABEL_17:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v35 = v7;
+        v35 = dCopy;
         v36 = 2112;
         v37 = v17;
         _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_ERROR, "Failed to get all the child metrics with UUID %@. Error: %@", buf, 0x16u);
       }
     }
 
-    v10 = 0;
+    allObjects = 0;
 LABEL_26:
 
     objc_autoreleasePoolPop(v11);
     v25 = v17;
-    *a5 = v17;
+    *error = v17;
   }
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return allObjects;
 }
 
-- (id)_createSupermetricFromFragments:(id)a3 forMetricUUID:(id)a4
+- (id)_createSupermetricFromFragments:(id)fragments forMetricUUID:(id)d
 {
   v78 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v62 = v5;
-  if (!v5)
+  fragmentsCopy = fragments;
+  dCopy = d;
+  v62 = fragmentsCopy;
+  if (!fragmentsCopy)
   {
     v66 = 0;
     goto LABEL_133;
   }
 
-  v61 = v6;
+  v61 = dCopy;
   v66 = objc_alloc_init(NWActivitySuperMetric);
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v7 = v5;
+  v7 = fragmentsCopy;
   v8 = [v7 countByEnumeratingWithState:&v69 objects:v77 count:16];
   if (!v8)
   {
@@ -1433,18 +1433,18 @@ LABEL_26:
       }
 
       v14 = *(*(&v69 + 1) + 8 * i);
-      v15 = [v14 type];
-      v16 = [v15 integerValue];
+      type = [v14 type];
+      integerValue = [type integerValue];
 
       v17 = activityLogHandle();
       v18 = v17;
-      if (v16 > 4)
+      if (integerValue > 4)
       {
-        if (v16 > 6)
+        if (integerValue > 6)
         {
-          if (v16 != 7)
+          if (integerValue != 7)
           {
-            if (v16 == 8)
+            if (integerValue == 8)
             {
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
               {
@@ -1452,11 +1452,11 @@ LABEL_26:
                 _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_DEBUG, "Found Terminus fragment", buf, 2u);
               }
 
-              v20 = activityLogHandle();
-              if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+              data3 = activityLogHandle();
+              if (os_log_type_enabled(data3, OS_LOG_TYPE_INFO))
               {
                 *buf = 0;
-                _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_INFO, "Unexpected terminus fragment type on this platform. Skipping.", buf, 2u);
+                _os_log_impl(&dword_23255B000, data3, OS_LOG_TYPE_INFO, "Unexpected terminus fragment type on this platform. Skipping.", buf, 2u);
               }
 
               goto LABEL_51;
@@ -1483,12 +1483,12 @@ LABEL_26:
             goto LABEL_94;
           }
 
-          v45 = [v14 metricData];
-          v24 = [v45 data];
+          metricData = [v14 metricData];
+          data = [metricData data];
 
           v46 = activityLogHandle();
           v26 = v46;
-          if (v24)
+          if (data)
           {
             if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
             {
@@ -1497,12 +1497,12 @@ LABEL_26:
             }
 
             v67 = 0;
-            v47 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v24 options:0 error:&v67];
+            v47 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v67];
             v26 = v67;
             if (v47 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
-              v48 = [(NWActivitySuperMetric *)v66 clientFragments];
-              [v48 addObject:v47];
+              clientFragments = [(NWActivitySuperMetric *)v66 clientFragments];
+              [clientFragments addObject:v47];
 
               LODWORD(v64) = v64 + 1;
             }
@@ -1530,7 +1530,7 @@ LABEL_123:
           goto LABEL_124;
         }
 
-        if (v16 != 5)
+        if (integerValue != 5)
         {
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
@@ -1550,12 +1550,12 @@ LABEL_123:
             goto LABEL_94;
           }
 
-          v23 = [v14 metricData];
-          v24 = [v23 data];
+          metricData2 = [v14 metricData];
+          data = [metricData2 data];
 
           v25 = activityLogHandle();
           v26 = v25;
-          if (v24)
+          if (data)
           {
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
             {
@@ -1564,12 +1564,12 @@ LABEL_123:
             }
 
             v68 = 0;
-            v27 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v24 options:0 error:&v68];
+            v27 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v68];
             v26 = v68;
             if (v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
-              v28 = [(NWActivitySuperMetric *)v66 cellularFragments];
-              [v28 addObject:v27];
+              cellularFragments = [(NWActivitySuperMetric *)v66 cellularFragments];
+              [cellularFragments addObject:v27];
 
               ++v63;
             }
@@ -1613,10 +1613,10 @@ LABEL_123:
           goto LABEL_94;
         }
 
-        v37 = [v14 metricData];
-        v30 = [v37 data];
+        metricData3 = [v14 metricData];
+        data2 = [metricData3 data];
 
-        if (v30)
+        if (data2)
         {
           v38 = activityLogHandle();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -1625,11 +1625,11 @@ LABEL_123:
             _os_log_impl(&dword_23255B000, v38, OS_LOG_TYPE_DEBUG, "got data for a Wi-Fi fragment", buf, 2u);
           }
 
-          v39 = [objc_alloc(MEMORY[0x277D7B950]) initWithPBCodableData:v30];
+          v39 = [objc_alloc(MEMORY[0x277D7B950]) initWithPBCodableData:data2];
           if (v39)
           {
-            v40 = [(NWActivitySuperMetric *)v66 wifiFragments];
-            [v40 addObject:v39];
+            wifiFragments = [(NWActivitySuperMetric *)v66 wifiFragments];
+            [wifiFragments addObject:v39];
 
             ++HIDWORD(v65);
           }
@@ -1650,9 +1650,9 @@ LABEL_113:
         goto LABEL_124;
       }
 
-      if (v16 > 2)
+      if (integerValue > 2)
       {
-        if (v16 == 3)
+        if (integerValue == 3)
         {
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
@@ -1672,10 +1672,10 @@ LABEL_113:
             goto LABEL_94;
           }
 
-          v41 = [v14 metricData];
-          v30 = [v41 data];
+          metricData4 = [v14 metricData];
+          data2 = [metricData4 data];
 
-          if (v30)
+          if (data2)
           {
             v42 = activityLogHandle();
             if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -1684,11 +1684,11 @@ LABEL_113:
               _os_log_impl(&dword_23255B000, v42, OS_LOG_TYPE_DEBUG, "got data for a CFNetwork fragment", buf, 2u);
             }
 
-            v43 = [objc_alloc(MEMORY[0x277CBABD8]) initWithJSONData:v30];
+            v43 = [objc_alloc(MEMORY[0x277CBABD8]) initWithJSONData:data2];
             if (v43)
             {
-              v44 = [(NWActivitySuperMetric *)v66 taskMetrics];
-              [v44 addObject:v43];
+              taskMetrics = [(NWActivitySuperMetric *)v66 taskMetrics];
+              [taskMetrics addObject:v43];
 
               LODWORD(v65) = v65 + 1;
             }
@@ -1728,10 +1728,10 @@ LABEL_94:
             continue;
           }
 
-          v29 = [v14 metricData];
-          v30 = [v29 data];
+          metricData5 = [v14 metricData];
+          data2 = [metricData5 data];
 
-          if (v30)
+          if (data2)
           {
             v31 = activityLogHandle();
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -1740,11 +1740,11 @@ LABEL_94:
               _os_log_impl(&dword_23255B000, v31, OS_LOG_TYPE_DEBUG, "got data for a libnetcore fragment", buf, 2u);
             }
 
-            v32 = [objc_alloc(MEMORY[0x277CD91C0]) initWithJSONData:v30];
+            v32 = [objc_alloc(MEMORY[0x277CD91C0]) initWithJSONData:data2];
             if (v32)
             {
-              v33 = [(NWActivitySuperMetric *)v66 connectionReports];
-              [v33 addObject:v32];
+              connectionReports = [(NWActivitySuperMetric *)v66 connectionReports];
+              [connectionReports addObject:v32];
 
               ++HIDWORD(v64);
             }
@@ -1764,7 +1764,7 @@ LABEL_94:
         goto LABEL_113;
       }
 
-      if (v16 == 1)
+      if (integerValue == 1)
       {
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
@@ -1772,10 +1772,10 @@ LABEL_94:
           _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_DEBUG, "Found activity fragment", buf, 2u);
         }
 
-        v34 = [v14 metricData];
-        v20 = [v34 data];
+        metricData6 = [v14 metricData];
+        data3 = [metricData6 data];
 
-        if (v20)
+        if (data3)
         {
           v35 = activityLogHandle();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -1784,14 +1784,14 @@ LABEL_94:
             _os_log_impl(&dword_23255B000, v35, OS_LOG_TYPE_DEBUG, "got data for an activity fragment", buf, 2u);
           }
 
-          v36 = [objc_alloc(MEMORY[0x277CD91B0]) initWithJSONData:v20];
+          v36 = [objc_alloc(MEMORY[0x277CD91B0]) initWithJSONData:data3];
           [(NWActivitySuperMetric *)v66 setActivity:v36];
         }
 
         goto LABEL_51;
       }
 
-      if (v16 == 2)
+      if (integerValue == 2)
       {
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
@@ -1799,10 +1799,10 @@ LABEL_94:
           _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_DEBUG, "Found activity epilogue fragment", buf, 2u);
         }
 
-        v19 = [v14 metricData];
-        v20 = [v19 data];
+        metricData7 = [v14 metricData];
+        data3 = [metricData7 data];
 
-        if (v20)
+        if (data3)
         {
           v21 = activityLogHandle();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -1811,7 +1811,7 @@ LABEL_94:
             _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEBUG, "got data for an activity epilogue fragment", buf, 2u);
           }
 
-          v22 = [objc_alloc(MEMORY[0x277CD91A8]) initWithJSONData:v20];
+          v22 = [objc_alloc(MEMORY[0x277CD91A8]) initWithJSONData:data3];
           [(NWActivitySuperMetric *)v66 setActivityEpilogue:v22];
         }
 
@@ -1825,10 +1825,10 @@ LABEL_124:
 LABEL_77:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v49 = [v14 type];
-        v50 = [v49 integerValue];
+        type2 = [v14 type];
+        integerValue2 = [type2 integerValue];
         *buf = 134217984;
-        *v74 = v50;
+        *v74 = integerValue2;
         _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_ERROR, "unknown fragment type: %ld", buf, 0xCu);
       }
     }
@@ -1851,37 +1851,37 @@ LABEL_130:
     _os_log_impl(&dword_23255B000, v57, OS_LOG_TYPE_INFO, "Processed %u fragments for activity %@, skipped %u fragments", buf, 0x18u);
   }
 
-  v6 = v61;
+  dCopy = v61;
 LABEL_133:
 
   v58 = *MEMORY[0x277D85DE8];
   return v66;
 }
 
-- (id)_getNWActivitySummaryReport:(id)a3
+- (id)_getNWActivitySummaryReport:(id)report
 {
-  v3 = a3;
+  reportCopy = report;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [v3 objectForKeyedSubscript:@"a_deviceReport_batteryIsCharging"];
+  v5 = [reportCopy objectForKeyedSubscript:@"a_deviceReport_batteryIsCharging"];
   [v4 setObject:v5 forKeyedSubscript:@"aBatteryIsCharging"];
 
-  v6 = [v3 objectForKeyedSubscript:@"a_l2Report_cellularLqm"];
+  v6 = [reportCopy objectForKeyedSubscript:@"a_l2Report_cellularLqm"];
   [v4 setObject:v6 forKeyedSubscript:@"aCellularLQM"];
 
-  v7 = [v3 objectForKeyedSubscript:@"a_l2Report_cellularBand"];
+  v7 = [reportCopy objectForKeyedSubscript:@"a_l2Report_cellularBand"];
   [v4 setObject:v7 forKeyedSubscript:@"aCellularNrBand"];
 
-  v8 = [v3 objectForKeyedSubscript:@"a_l2Report_cellularRadioTechnology"];
+  v8 = [reportCopy objectForKeyedSubscript:@"a_l2Report_cellularRadioTechnology"];
   [v4 setObject:v8 forKeyedSubscript:@"aCellularRAT"];
 
-  v9 = [v3 objectForKeyedSubscript:@"connectionReportsCount"];
+  v9 = [reportCopy objectForKeyedSubscript:@"connectionReportsCount"];
   if ([v9 intValue] <= 0)
   {
   }
 
   else
   {
-    v10 = [v3 objectForKeyedSubscript:@"connectionReports"];
+    v10 = [reportCopy objectForKeyedSubscript:@"connectionReports"];
     v11 = [v10 count];
 
     if (v11)
@@ -1898,7 +1898,7 @@ LABEL_133:
       v103 = __Block_byref_object_copy__6;
       v104 = __Block_byref_object_dispose__6;
       v105 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v12 = [v3 objectForKeyedSubscript:@"connectionReports"];
+      v12 = [reportCopy objectForKeyedSubscript:@"connectionReports"];
       v99[0] = MEMORY[0x277D85DD0];
       v99[1] = 3221225472;
       v99[2] = __48__NWActivityHelper__getNWActivitySummaryReport___block_invoke;
@@ -1924,68 +1924,68 @@ LABEL_133:
     }
   }
 
-  v17 = [v3 objectForKeyedSubscript:@"a_activityDomain"];
+  v17 = [reportCopy objectForKeyedSubscript:@"a_activityDomain"];
   [v4 setObject:v17 forKeyedSubscript:@"activityDomain"];
 
-  v18 = [v3 objectForKeyedSubscript:@"a_activityLabel"];
+  v18 = [reportCopy objectForKeyedSubscript:@"a_activityLabel"];
   [v4 setObject:v18 forKeyedSubscript:@"activityLabel"];
 
-  v19 = [v3 objectForKeyedSubscript:@"a_deviceReport_deviceOrientation"];
+  v19 = [reportCopy objectForKeyedSubscript:@"a_deviceReport_deviceOrientation"];
   [v4 setObject:v19 forKeyedSubscript:@"aDeviceOrientation"];
 
-  v20 = [v3 objectForKeyedSubscript:@"a_deviceReport_deviceScreenOn"];
+  v20 = [reportCopy objectForKeyedSubscript:@"a_deviceReport_deviceScreenOn"];
   [v4 setObject:v20 forKeyedSubscript:@"aDeviceScreenOn"];
 
-  v21 = [v3 objectForKeyedSubscript:@"a_l2Report_wifiIsApplePersonalHotspot"];
+  v21 = [reportCopy objectForKeyedSubscript:@"a_l2Report_wifiIsApplePersonalHotspot"];
   [v4 setObject:v21 forKeyedSubscript:@"aIsApplePersonalHotspot"];
 
-  v22 = [v3 objectForKeyedSubscript:@"a_l2Report_cellularSliceActive"];
+  v22 = [reportCopy objectForKeyedSubscript:@"a_l2Report_cellularSliceActive"];
   [v4 setObject:v22 forKeyedSubscript:@"aIsCellularSlice"];
 
-  v23 = [v3 objectForKeyedSubscript:@"a_l2Report_cellularBandInfo"];
+  v23 = [reportCopy objectForKeyedSubscript:@"a_l2Report_cellularBandInfo"];
   [v4 setObject:v23 forKeyedSubscript:@"cellularBandInfo"];
 
-  v24 = [v3 objectForKeyedSubscript:@"a_l2Report_cellularBandwidth"];
+  v24 = [reportCopy objectForKeyedSubscript:@"a_l2Report_cellularBandwidth"];
   [v4 setObject:v24 forKeyedSubscript:@"cellularBandwidth"];
 
-  v25 = [v3 objectForKeyedSubscript:@"a_l2Report_cellularBars"];
+  v25 = [reportCopy objectForKeyedSubscript:@"a_l2Report_cellularBars"];
   [v4 setObject:v25 forKeyedSubscript:@"cellularBars"];
 
-  v26 = [v3 objectForKeyedSubscript:@"a_l2Report_cellularDualSimStatus"];
+  v26 = [reportCopy objectForKeyedSubscript:@"a_l2Report_cellularDualSimStatus"];
   [v4 setObject:v26 forKeyedSubscript:@"cellularDualSimStatus"];
 
-  v27 = [v3 objectForKeyedSubscript:@"a_l2Report_cellularLqm"];
+  v27 = [reportCopy objectForKeyedSubscript:@"a_l2Report_cellularLqm"];
   [v4 setObject:v27 forKeyedSubscript:@"cellularLQMValue"];
 
-  v28 = [v3 objectForKeyedSubscript:@"a_deviceReport_motionState"];
+  v28 = [reportCopy objectForKeyedSubscript:@"a_deviceReport_motionState"];
   [v4 setObject:v28 forKeyedSubscript:@"aMotionState"];
 
-  v29 = [v3 objectForKeyedSubscript:@"a_deviceReport_thermalPressure"];
+  v29 = [reportCopy objectForKeyedSubscript:@"a_deviceReport_thermalPressure"];
   [v4 setObject:v29 forKeyedSubscript:@"aThermalPressure"];
 
-  v30 = [v3 objectForKeyedSubscript:@"a_l2Report_wifiLqm"];
+  v30 = [reportCopy objectForKeyedSubscript:@"a_l2Report_wifiLqm"];
   [v4 setObject:v30 forKeyedSubscript:@"aWifiLQM"];
 
-  v31 = [v3 objectForKeyedSubscript:@"e_l2Report_wifiLqm"];
+  v31 = [reportCopy objectForKeyedSubscript:@"e_l2Report_wifiLqm"];
   [v4 setObject:v31 forKeyedSubscript:@"eWifiLQM"];
 
-  v32 = [v3 objectForKeyedSubscript:@"a_l2Report_wifiRadioTechnology"];
+  v32 = [reportCopy objectForKeyedSubscript:@"a_l2Report_wifiRadioTechnology"];
   [v4 setObject:v32 forKeyedSubscript:@"aWifiTechnology"];
 
-  v33 = [v3 objectForKeyedSubscript:@"a_l2Report_cellularOutranksWifi"];
+  v33 = [reportCopy objectForKeyedSubscript:@"a_l2Report_cellularOutranksWifi"];
   [v4 setObject:v33 forKeyedSubscript:@"aCellularOutrank"];
 
-  v34 = [v3 objectForKeyedSubscript:@"a_l2Report_cellularOutrankPrimaryReason"];
+  v34 = [reportCopy objectForKeyedSubscript:@"a_l2Report_cellularOutrankPrimaryReason"];
   [v4 setObject:v34 forKeyedSubscript:@"aCellularOutrankPrimaryReason"];
 
-  v35 = [v3 objectForKeyedSubscript:@"taskMetricsCount"];
+  v35 = [reportCopy objectForKeyedSubscript:@"taskMetricsCount"];
   if ([v35 intValue] <= 0)
   {
   }
 
   else
   {
-    v36 = [v3 objectForKeyedSubscript:@"taskMetrics"];
+    v36 = [reportCopy objectForKeyedSubscript:@"taskMetrics"];
     v37 = [v36 count];
 
     if (v37)
@@ -2002,7 +2002,7 @@ LABEL_133:
       v96 = &v95;
       v97 = 0x2020000000;
       v98 = 0;
-      v38 = [v3 objectForKeyedSubscript:@"taskMetrics"];
+      v38 = [reportCopy objectForKeyedSubscript:@"taskMetrics"];
       v94[0] = MEMORY[0x277D85DD0];
       v94[1] = 3221225472;
       v94[2] = __48__NWActivityHelper__getNWActivitySummaryReport___block_invoke_2;
@@ -2018,7 +2018,7 @@ LABEL_133:
       v40 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v101[3]];
       [v4 setObject:v40 forKeyedSubscript:@"bytesUl"];
 
-      v41 = [v3 objectForKeyedSubscript:@"taskMetrics"];
+      v41 = [reportCopy objectForKeyedSubscript:@"taskMetrics"];
       v42 = [v41 objectAtIndexedSubscript:0];
       v43 = [v42 objectForKeyedSubscript:@"error"];
       [v4 setObject:v43 forKeyedSubscript:@"error"];
@@ -2170,74 +2170,74 @@ LABEL_133:
 
   [v4 setObject:&unk_2847EF710 forKeyedSubscript:@"cellIfBytesDl"];
   [v4 setObject:&unk_2847EF710 forKeyedSubscript:@"cellIfBytesUl"];
-  v49 = [v3 objectForKeyedSubscript:@"e_completionReason"];
+  v49 = [reportCopy objectForKeyedSubscript:@"e_completionReason"];
   [v4 setObject:v49 forKeyedSubscript:@"completionReason"];
 
-  v50 = [v3 objectForKeyedSubscript:@"a_deviceReport_devicePluggedIn"];
+  v50 = [reportCopy objectForKeyedSubscript:@"a_deviceReport_devicePluggedIn"];
   [v4 setObject:v50 forKeyedSubscript:@"eBatteryIsCharging"];
 
-  v51 = [v3 objectForKeyedSubscript:@"e_l2Report_cellularLqm"];
+  v51 = [reportCopy objectForKeyedSubscript:@"e_l2Report_cellularLqm"];
   [v4 setObject:v51 forKeyedSubscript:@"eCellularLQM"];
 
-  v52 = [v3 objectForKeyedSubscript:@"e_l2Report_cellularBand"];
+  v52 = [reportCopy objectForKeyedSubscript:@"e_l2Report_cellularBand"];
   [v4 setObject:v52 forKeyedSubscript:@"eCellularNrBand"];
 
-  v53 = [v3 objectForKeyedSubscript:@"e_l2Report_cellularRadioTechnology"];
+  v53 = [reportCopy objectForKeyedSubscript:@"e_l2Report_cellularRadioTechnology"];
   [v4 setObject:v53 forKeyedSubscript:@"eCellularRAT"];
 
-  v54 = [v3 objectForKeyedSubscript:@"e_l2Report_cellularMcc"];
+  v54 = [reportCopy objectForKeyedSubscript:@"e_l2Report_cellularMcc"];
   [v4 setObject:v54 forKeyedSubscript:@"MCC"];
 
-  v55 = [v3 objectForKeyedSubscript:@"e_l2Report_cellularMnc"];
+  v55 = [reportCopy objectForKeyedSubscript:@"e_l2Report_cellularMnc"];
   [v4 setObject:v55 forKeyedSubscript:@"MNC"];
 
-  v56 = [v3 objectForKeyedSubscript:@"e_deviceReport_deviceOrientation"];
+  v56 = [reportCopy objectForKeyedSubscript:@"e_deviceReport_deviceOrientation"];
   [v4 setObject:v56 forKeyedSubscript:@"eDeviceOrientation"];
 
-  v57 = [v3 objectForKeyedSubscript:@"e_deviceReport_deviceScreenOn"];
+  v57 = [reportCopy objectForKeyedSubscript:@"e_deviceReport_deviceScreenOn"];
   [v4 setObject:v57 forKeyedSubscript:@"eDeviceScreenOn"];
 
-  v58 = [v3 objectForKeyedSubscript:@"e_activity_bundleID"];
+  v58 = [reportCopy objectForKeyedSubscript:@"e_activity_bundleID"];
   [v4 setObject:v58 forKeyedSubscript:@"effectiveBundleID"];
 
-  v59 = [v3 objectForKeyedSubscript:@"e_l2Report_wifiIsApplePersonalHotspot"];
+  v59 = [reportCopy objectForKeyedSubscript:@"e_l2Report_wifiIsApplePersonalHotspot"];
   [v4 setObject:v59 forKeyedSubscript:@"eIsApplePersonalHotspot"];
 
-  v60 = [v3 objectForKeyedSubscript:@"e_l2Report_cellularSliceActive"];
+  v60 = [reportCopy objectForKeyedSubscript:@"e_l2Report_cellularSliceActive"];
   [v4 setObject:v60 forKeyedSubscript:@"eIsCellularSlice"];
 
-  v61 = [v3 objectForKeyedSubscript:@"e_deviceReport_motionState"];
+  v61 = [reportCopy objectForKeyedSubscript:@"e_deviceReport_motionState"];
   [v4 setObject:v61 forKeyedSubscript:@"eMotionState"];
 
-  v62 = [v3 objectForKeyedSubscript:@"e_deviceReport_thermalPressure"];
+  v62 = [reportCopy objectForKeyedSubscript:@"e_deviceReport_thermalPressure"];
   [v4 setObject:v62 forKeyedSubscript:@"eThermalPressure"];
 
-  v63 = [v3 objectForKeyedSubscript:@"e_l2Report_wifiRadioTechnology"];
+  v63 = [reportCopy objectForKeyedSubscript:@"e_l2Report_wifiRadioTechnology"];
   [v4 setObject:v63 forKeyedSubscript:@"eWifiTechnology"];
 
-  v64 = [v3 objectForKeyedSubscript:@"e_l2Report_cellularOutranksWifi"];
+  v64 = [reportCopy objectForKeyedSubscript:@"e_l2Report_cellularOutranksWifi"];
   [v4 setObject:v64 forKeyedSubscript:@"eCellularOutrank"];
 
-  v65 = [v3 objectForKeyedSubscript:@"e_l2Report_cellularOutrankPrimaryReason"];
+  v65 = [reportCopy objectForKeyedSubscript:@"e_l2Report_cellularOutrankPrimaryReason"];
   [v4 setObject:v65 forKeyedSubscript:@"eCellularOutrankPrimaryReason"];
 
-  v66 = [v3 objectForKeyedSubscript:@"a_deviceReport_batteryAbsoluteCapacity"];
+  v66 = [reportCopy objectForKeyedSubscript:@"a_deviceReport_batteryAbsoluteCapacity"];
   [v66 doubleValue];
   v68 = v67;
 
-  v69 = [v3 objectForKeyedSubscript:@"e_deviceReport_batteryAbsoluteCapacity"];
+  v69 = [reportCopy objectForKeyedSubscript:@"e_deviceReport_batteryAbsoluteCapacity"];
   [v69 doubleValue];
   v71 = v70;
 
-  v72 = [v3 objectForKeyedSubscript:@"a_deviceReport_batteryVoltage"];
+  v72 = [reportCopy objectForKeyedSubscript:@"a_deviceReport_batteryVoltage"];
   [v72 doubleValue];
   v74 = v73;
 
-  v75 = [v3 objectForKeyedSubscript:@"e_deviceReport_batteryVoltage"];
+  v75 = [reportCopy objectForKeyedSubscript:@"e_deviceReport_batteryVoltage"];
   [v75 doubleValue];
   v77 = v76;
 
-  v78 = [v3 objectForKeyedSubscript:@"e_durationMsecs"];
+  v78 = [reportCopy objectForKeyedSubscript:@"e_durationMsecs"];
   [v78 doubleValue];
   v80 = v79;
 
@@ -2334,7 +2334,7 @@ LABEL_63:
   v109 = __Block_byref_object_copy__6;
   v110 = __Block_byref_object_dispose__6;
   v111 = 0;
-  v90 = [v3 objectForKeyedSubscript:@"e_deviceReport_batteryAccumulator_durations"];
+  v90 = [reportCopy objectForKeyedSubscript:@"e_deviceReport_batteryAccumulator_durations"];
   v93[0] = MEMORY[0x277D85DD0];
   v93[1] = 3221225472;
   v93[2] = __48__NWActivityHelper__getNWActivitySummaryReport___block_invoke_455;
@@ -2343,7 +2343,7 @@ LABEL_63:
   [v90 enumerateObjectsUsingBlock:v93];
 
   [v4 setObject:v107[5] forKeyedSubscript:@"sdmState"];
-  v91 = [v3 objectForKeyedSubscript:@"e_l2Report_activeRadio"];
+  v91 = [reportCopy objectForKeyedSubscript:@"e_l2Report_activeRadio"];
   [v4 setObject:v91 forKeyedSubscript:@"activeRadio"];
 
   _Block_object_dispose(&v106, 8);
@@ -2447,9 +2447,9 @@ LABEL_6:
 - (void)_uploadCompleteNWActivityMetrics
 {
   v70 = *MEMORY[0x277D85DE8];
-  v3 = [(NWActivityHelper *)self _findNWActivityMetricsForUploading];
-  v4 = v3;
-  if (v3 && [v3 count])
+  _findNWActivityMetricsForUploading = [(NWActivityHelper *)self _findNWActivityMetricsForUploading];
+  v4 = _findNWActivityMetricsForUploading;
+  if (_findNWActivityMetricsForUploading && [_findNWActivityMetricsForUploading count])
   {
     v5 = activityLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2459,10 +2459,10 @@ LABEL_6:
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "Found %ld metrics to upload", buf, 0xCu);
     }
 
-    v6 = [(NWActivityHelper *)self analyticsWorkspace];
-    v7 = [v6 mainObjectContext];
+    analyticsWorkspace = [(NWActivityHelper *)self analyticsWorkspace];
+    mainObjectContext = [analyticsWorkspace mainObjectContext];
 
-    if (v7)
+    if (mainObjectContext)
     {
       v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v61 = 0u;
@@ -2486,12 +2486,12 @@ LABEL_6:
             }
 
             v14 = *(*(&v61 + 1) + 8 * i);
-            v15 = [v14 uuid];
+            uuid = [v14 uuid];
 
-            if (v15)
+            if (uuid)
             {
-              v16 = [v14 uuid];
-              [v8 addObject:v16];
+              uuid2 = [v14 uuid];
+              [v8 addObject:uuid2];
             }
           }
 
@@ -2532,7 +2532,7 @@ LABEL_6:
             }
 
             v56 = v18;
-            v23 = [(NWActivityHelper *)self _fetchFragmentsForUUID:v20 fromContext:v7 withError:&v56];
+            v23 = [(NWActivityHelper *)self _fetchFragmentsForUUID:v20 fromContext:mainObjectContext withError:&v56];
             v24 = v56;
 
             if (v23)
@@ -2543,16 +2543,16 @@ LABEL_6:
               {
                 [NWActivityAlgosScore processNWActivitySuperMetric:v25];
                 v47 = v25;
-                v26 = [v25 dictionaryRepresentation];
+                dictionaryRepresentation = [v25 dictionaryRepresentation];
                 v27 = activityLogHandle();
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138412290;
-                  v69 = v26;
+                  v69 = dictionaryRepresentation;
                   _os_log_impl(&dword_23255B000, v27, OS_LOG_TYPE_DEBUG, "Generated report: \n%@", buf, 0xCu);
                 }
 
-                [(NWActivityHelper *)self sendReportToMetricStream:v26];
+                [(NWActivityHelper *)self sendReportToMetricStream:dictionaryRepresentation];
                 if (nw_activity_should_report_to_destination())
                 {
                   v28 = metricsLogHandle;
@@ -2563,7 +2563,7 @@ LABEL_6:
                   }
 
                   v29 = objc_alloc_init(MEMORY[0x277CBEB38]);
-                  [NWActivitySuperMetric flattenObject:v26 intoDictionary:v29 atPath:&stru_2847966D8];
+                  [NWActivitySuperMetric flattenObject:dictionaryRepresentation intoDictionary:v29 atPath:&stru_2847966D8];
                   AnalyticsSendEvent();
                 }
 
@@ -2613,7 +2613,7 @@ LABEL_6:
                     _os_log_impl(&dword_23255B000, v34, OS_LOG_TYPE_DEBUG, "Sending NWActivity summary report to destination four", buf, 2u);
                   }
 
-                  v35 = [(NWActivityHelper *)self _getNWActivitySummaryReport:v26];
+                  v35 = [(NWActivityHelper *)self _getNWActivitySummaryReport:dictionaryRepresentation];
                   v36 = metricsLogHandle;
                   if (os_log_type_enabled(metricsLogHandle, OS_LOG_TYPE_DEBUG))
                   {
@@ -2644,7 +2644,7 @@ LABEL_6:
                         objc_enumerationMutation(v37);
                       }
 
-                      [(NWActivityHelper *)self _deleteNWActivityFragment:*(*(&v52 + 1) + 8 * k) fromContext:v7];
+                      [(NWActivityHelper *)self _deleteNWActivityFragment:*(*(&v52 + 1) + 8 * k) fromContext:mainObjectContext];
                     }
 
                     v39 = [v37 countByEnumeratingWithState:&v52 objects:v65 count:16];
@@ -2654,7 +2654,7 @@ LABEL_6:
                 }
 
                 v51 = v24;
-                v42 = [v7 save:&v51];
+                v42 = [mainObjectContext save:&v51];
                 v18 = v51;
 
                 if ((v42 & 1) == 0)
@@ -2710,24 +2710,24 @@ LABEL_6:
 
   else
   {
-    v7 = activityLogHandle();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    mainObjectContext = activityLogHandle();
+    if (os_log_type_enabled(mainObjectContext, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEFAULT, "Did not find any metrics to upload", buf, 2u);
+      _os_log_impl(&dword_23255B000, mainObjectContext, OS_LOG_TYPE_DEFAULT, "Did not find any metrics to upload", buf, 2u);
     }
   }
 
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendReportToMetricStream:(id)a3
+- (void)sendReportToMetricStream:(id)stream
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  streamCopy = stream;
+  if (streamCopy)
   {
-    if (![MEMORY[0x277CCAAA0] isValidJSONObject:v4])
+    if (![MEMORY[0x277CCAAA0] isValidJSONObject:streamCopy])
     {
       v6 = activityLogHandle();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2740,7 +2740,7 @@ LABEL_6:
     }
 
     v10 = 0;
-    v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v4 options:0 error:&v10];
+    v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:streamCopy options:0 error:&v10];
     v6 = v10;
     if (v6 || !v5)
     {

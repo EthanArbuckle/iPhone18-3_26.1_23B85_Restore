@@ -1,19 +1,19 @@
 @interface SPCorrectionHandler
 + (id)sharedHandler;
-- (BOOL)sanityCheckFile:(__sFILE *)a3;
+- (BOOL)sanityCheckFile:(__sFILE *)file;
 - (SPCorrectionHandler)init;
-- (id)getCorrections:(id)a3 forLanguage:(id)a4 version:(id *)a5;
+- (id)getCorrections:(id)corrections forLanguage:(id)language version:(id *)version;
 - (id)readCommittedVersions;
-- (id)versionForLanguage:(id)a3;
-- (void)commitDictionary:(void *)a3 language:(id)a4 version:(id)a5;
+- (id)versionForLanguage:(id)language;
+- (void)commitDictionary:(void *)dictionary language:(id)language version:(id)version;
 - (void)dealloc;
-- (void)openCorrectionRef:(id)a3 language:(id)a4 create:(BOOL)a5;
-- (void)processCorrectionsWithHandle:(id)a3;
+- (void)openCorrectionRef:(id)ref language:(id)language create:(BOOL)create;
+- (void)processCorrectionsWithHandle:(id)handle;
 - (void)readCommittedVersions;
 - (void)revokeUnusedFiles;
-- (void)updateWithFileHandle:(id)a3;
-- (void)updateWithFilePath:(id)a3;
-- (void)writeCommittedVersions:(id)a3;
+- (void)updateWithFileHandle:(id)handle;
+- (void)updateWithFilePath:(id)path;
+- (void)writeCommittedVersions:(id)versions;
 @end
 
 @implementation SPCorrectionHandler
@@ -86,8 +86,8 @@ uint64_t __36__SPCorrectionHandler_sharedHandler__block_invoke()
     v10 = objc_opt_new();
     [(SPCorrectionHandler *)v2 setCorrectionRefsLock:v10];
 
-    v11 = [(SPCorrectionHandler *)v2 readCommittedVersions];
-    [(SPCorrectionHandler *)v2 setLastCommittedVersions:v11];
+    readCommittedVersions = [(SPCorrectionHandler *)v2 readCommittedVersions];
+    [(SPCorrectionHandler *)v2 setLastCommittedVersions:readCommittedVersions];
 
     CFRelease(v4);
     CFRelease(v3);
@@ -106,37 +106,37 @@ uint64_t __36__SPCorrectionHandler_sharedHandler__block_invoke()
   [(SPCorrectionHandler *)&v3 dealloc];
 }
 
-- (id)versionForLanguage:(id)a3
+- (id)versionForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(SPCorrectionHandler *)self lastCommittedVersions];
-  v6 = [v5 valueForKey:v4];
+  languageCopy = language;
+  lastCommittedVersions = [(SPCorrectionHandler *)self lastCommittedVersions];
+  v6 = [lastCommittedVersions valueForKey:languageCopy];
 
   return v6;
 }
 
-- (id)getCorrections:(id)a3 forLanguage:(id)a4 version:(id *)a5
+- (id)getCorrections:(id)corrections forLanguage:(id)language version:(id *)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SPCorrectionHandler *)self lastCommittedVersions];
+  correctionsCopy = corrections;
+  languageCopy = language;
+  lastCommittedVersions = [(SPCorrectionHandler *)self lastCommittedVersions];
 
-  if (v10)
+  if (lastCommittedVersions)
   {
-    v11 = [(SPCorrectionHandler *)self lastCommittedVersions];
-    v12 = [v11 valueForKey:v9];
+    lastCommittedVersions2 = [(SPCorrectionHandler *)self lastCommittedVersions];
+    v12 = [lastCommittedVersions2 valueForKey:languageCopy];
 
     if (v12)
     {
-      v13 = [(SPCorrectionHandler *)self correctionRefsLock];
-      [v13 lock];
+      correctionRefsLock = [(SPCorrectionHandler *)self correctionRefsLock];
+      [correctionRefsLock lock];
 
-      [(SPCorrectionHandler *)self openCorrectionRef:v12 language:v9 create:0];
+      [(SPCorrectionHandler *)self openCorrectionRef:v12 language:languageCopy create:0];
       v14 = SICopyCorrections();
       v15 = v12;
-      *a5 = v12;
-      v16 = [(SPCorrectionHandler *)self correctionRefsLock];
-      [v16 unlock];
+      *version = v12;
+      correctionRefsLock2 = [(SPCorrectionHandler *)self correctionRefsLock];
+      [correctionRefsLock2 unlock];
     }
 
     else
@@ -153,17 +153,17 @@ uint64_t __36__SPCorrectionHandler_sharedHandler__block_invoke()
   return v14;
 }
 
-- (void)updateWithFilePath:(id)a3
+- (void)updateWithFilePath:(id)path
 {
-  v4 = [MEMORY[0x277CCA9F8] fileHandleForReadingAtPath:a3];
+  v4 = [MEMORY[0x277CCA9F8] fileHandleForReadingAtPath:path];
   [(SPCorrectionHandler *)self updateWithFileHandle:v4];
 }
 
-- (void)updateWithFileHandle:(id)a3
+- (void)updateWithFileHandle:(id)handle
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  handleCopy = handle;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -171,7 +171,7 @@ uint64_t __36__SPCorrectionHandler_sharedHandler__block_invoke()
     _os_log_impl(&dword_231A35000, v6, OS_LOG_TYPE_INFO, "Processing corrections begin", buf, 2u);
   }
 
-  [(SPCorrectionHandler *)v5 processCorrectionsWithHandle:v4];
+  [(SPCorrectionHandler *)selfCopy processCorrectionsWithHandle:handleCopy];
   v7 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -179,19 +179,19 @@ uint64_t __36__SPCorrectionHandler_sharedHandler__block_invoke()
     _os_log_impl(&dword_231A35000, v7, OS_LOG_TYPE_INFO, "Processing corrections complete", v8, 2u);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)sanityCheckFile:(__sFILE *)a3
+- (BOOL)sanityCheckFile:(__sFILE *)file
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (file)
   {
     bzero(__ptr, 0x400uLL);
-    if (fread(__ptr, 1uLL, 0x400uLL, a3))
+    if (fread(__ptr, 1uLL, 0x400uLL, file))
     {
       v4 = [MEMORY[0x277CCACA8] stringWithCString:__ptr encoding:1];
-      rewind(a3);
+      rewind(file);
       v5 = [v4 containsString:@"\n"];
     }
 
@@ -222,9 +222,9 @@ uint64_t __36__SPCorrectionHandler_sharedHandler__block_invoke()
   return v5;
 }
 
-- (void)processCorrectionsWithHandle:(id)a3
+- (void)processCorrectionsWithHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v41[0] = 0;
   v41[1] = v41;
   v41[2] = 0x2020000000;
@@ -245,27 +245,27 @@ uint64_t __36__SPCorrectionHandler_sharedHandler__block_invoke()
   v28 = __Block_byref_object_copy__3;
   v29 = __Block_byref_object_dispose__3;
   v30 = 0;
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [v5 languageCode];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
 
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __52__SPCorrectionHandler_processCorrectionsWithHandle___block_invoke;
   v18 = &unk_278937CD8;
   v21 = &v31;
-  v19 = self;
+  selfCopy = self;
   v22 = &v37;
   v23 = &v25;
-  v7 = v6;
+  v7 = languageCode;
   v20 = v7;
   v24 = v41;
   v8 = &v15;
-  v9 = [v4 fileDescriptor];
-  v10 = v9;
-  if (v9 != -1)
+  fileDescriptor = [handleCopy fileDescriptor];
+  v10 = fileDescriptor;
+  if (fileDescriptor != -1)
   {
     memset(&v43, 0, sizeof(v43));
-    fstat(v9, &v43);
+    fstat(fileDescriptor, &v43);
     st_size = v43.st_size;
     v12 = mmap(0, v43.st_size, 1, 1, v10, 0);
     v13 = v12;
@@ -508,18 +508,18 @@ void __52__SPCorrectionHandler_processCorrectionsWithHandle___block_invoke_4(uin
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openCorrectionRef:(id)a3 language:(id)a4 create:(BOOL)a5
+- (void)openCorrectionRef:(id)ref language:(id)language create:(BOOL)create
 {
-  v8 = a3;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:", v8, a4];
-  Value = CFDictionaryGetValue([(SPCorrectionHandler *)self correctionRefs], v9);
+  refCopy = ref;
+  language = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:", refCopy, language];
+  Value = CFDictionaryGetValue([(SPCorrectionHandler *)self correctionRefs], language);
   if (Value || ([(SPCorrectionHandler *)self dictDirFd], (Value = SICorrectionCreate()) != 0))
   {
     v11 = Value;
-    if (!a5)
+    if (!create)
     {
 LABEL_4:
-      CFDictionaryAddValue([(SPCorrectionHandler *)self correctionRefs], v9, v11);
+      CFDictionaryAddValue([(SPCorrectionHandler *)self correctionRefs], language, v11);
     }
   }
 
@@ -532,7 +532,7 @@ LABEL_4:
     }
 
     v11 = 0;
-    if (!a5)
+    if (!create)
     {
       goto LABEL_4;
     }
@@ -546,10 +546,10 @@ LABEL_4:
   v28 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(SPCorrectionHandler *)self versionInfoLocation];
-  v6 = [v5 path];
+  versionInfoLocation = [(SPCorrectionHandler *)self versionInfoLocation];
+  path = [versionInfoLocation path];
   v26 = 0;
-  v7 = [v4 stringWithContentsOfFile:v6 encoding:1 error:&v26];
+  v7 = [v4 stringWithContentsOfFile:path encoding:1 error:&v26];
   v8 = v26;
 
   if (v8)
@@ -589,9 +589,9 @@ LABEL_4:
           if ([v15 length])
           {
             v16 = [v15 componentsSeparatedByString:@":"];
-            v17 = [v16 lastObject];
-            v18 = [v16 firstObject];
-            [v3 setValue:v17 forKey:v18];
+            lastObject = [v16 lastObject];
+            firstObject = [v16 firstObject];
+            [v3 setValue:lastObject forKey:firstObject];
           }
         }
 
@@ -610,23 +610,23 @@ LABEL_4:
   return v10;
 }
 
-- (void)writeCommittedVersions:(id)a3
+- (void)writeCommittedVersions:(id)versions
 {
   v4 = MEMORY[0x277CCAB68];
-  v5 = a3;
-  v6 = [v4 string];
+  versionsCopy = versions;
+  string = [v4 string];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__SPCorrectionHandler_writeCommittedVersions___block_invoke;
   v13[3] = &unk_278936E60;
-  v7 = v6;
+  v7 = string;
   v14 = v7;
-  [v5 enumerateKeysAndObjectsUsingBlock:v13];
+  [versionsCopy enumerateKeysAndObjectsUsingBlock:v13];
 
-  v8 = [(SPCorrectionHandler *)self versionInfoLocation];
-  v9 = [v8 path];
+  versionInfoLocation = [(SPCorrectionHandler *)self versionInfoLocation];
+  path = [versionInfoLocation path];
   v12 = 0;
-  [v7 writeToFile:v9 atomically:1 encoding:1 error:&v12];
+  [v7 writeToFile:path atomically:1 encoding:1 error:&v12];
   v10 = v12;
 
   if (v10)
@@ -639,39 +639,39 @@ LABEL_4:
   }
 }
 
-- (void)commitDictionary:(void *)a3 language:(id)a4 version:(id)a5
+- (void)commitDictionary:(void *)dictionary language:(id)language version:(id)version
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(SPCorrectionHandler *)self readCommittedVersions];
-  if (!v8)
+  languageCopy = language;
+  versionCopy = version;
+  readCommittedVersions = [(SPCorrectionHandler *)self readCommittedVersions];
+  if (!readCommittedVersions)
   {
-    v8 = objc_opt_new();
+    readCommittedVersions = objc_opt_new();
   }
 
-  [v8 setValue:v7 forKey:v9];
+  [readCommittedVersions setValue:versionCopy forKey:languageCopy];
   SICorrectionCommit();
-  [(SPCorrectionHandler *)self writeCommittedVersions:v8];
+  [(SPCorrectionHandler *)self writeCommittedVersions:readCommittedVersions];
 }
 
 - (void)revokeUnusedFiles
 {
-  v2 = self;
+  selfCopy = self;
   v42 = *MEMORY[0x277D85DE8];
-  v30 = [(SPCorrectionHandler *)self readCommittedVersions];
-  v3 = [(SPCorrectionHandler *)v2 correctionRefsLock];
-  [v3 lock];
+  readCommittedVersions = [(SPCorrectionHandler *)self readCommittedVersions];
+  correctionRefsLock = [(SPCorrectionHandler *)selfCopy correctionRefsLock];
+  [correctionRefsLock lock];
 
   memset(buffer, 0, sizeof(buffer));
-  fcntl([(SPCorrectionHandler *)v2 dictDirFd], 50, buffer);
+  fcntl([(SPCorrectionHandler *)selfCopy dictDirFd], 50, buffer);
   v4 = CFStringCreateWithFileSystemRepresentation(0, buffer);
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = [MEMORY[0x277CBEBC0] URLWithString:v4];
   v7 = *MEMORY[0x277CBE8E8];
   v40 = *MEMORY[0x277CBE8E8];
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
-  v31 = v5;
-  v9 = [v5 contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:v8 options:0 error:0];
+  v31 = defaultManager;
+  v9 = [defaultManager contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:v8 options:0 error:0];
 
   v37 = 0u;
   v38 = 0u;
@@ -701,10 +701,10 @@ LABEL_4:
         [v14 getResourceValue:&v34 forKey:v7 error:0];
         v11 = v34;
 
-        v15 = [(SPCorrectionHandler *)v2 versionInfoLocation];
-        v16 = [v15 path];
-        v17 = [v16 lastPathComponent];
-        v18 = [v11 isEqualToString:v17];
+        versionInfoLocation = [(SPCorrectionHandler *)selfCopy versionInfoLocation];
+        path = [versionInfoLocation path];
+        lastPathComponent = [path lastPathComponent];
+        v18 = [v11 isEqualToString:lastPathComponent];
 
         if ((v18 & 1) == 0)
         {
@@ -712,18 +712,18 @@ LABEL_4:
           if ([v19 count] > 2)
           {
             v20 = v10;
-            v21 = v2;
-            v22 = [v19 firstObject];
+            v21 = selfCopy;
+            firstObject = [v19 firstObject];
             v23 = [v19 objectAtIndex:1];
-            v24 = [v30 valueForKey:v23];
-            v25 = [v22 isEqualToString:v24];
+            v24 = [readCommittedVersions valueForKey:v23];
+            v25 = [firstObject isEqualToString:v24];
 
             if ((v25 & 1) == 0)
             {
               [v31 removeItemAtURL:v14 error:0];
             }
 
-            v2 = v21;
+            selfCopy = v21;
             v10 = v20;
             v7 = v29;
           }
@@ -748,10 +748,10 @@ LABEL_4:
   }
 
   CFRelease(v4);
-  CFDictionaryRemoveAllValues([(SPCorrectionHandler *)v2 correctionRefs]);
-  [(SPCorrectionHandler *)v2 setLastCommittedVersions:v30];
-  v26 = [(SPCorrectionHandler *)v2 correctionRefsLock];
-  [v26 unlock];
+  CFDictionaryRemoveAllValues([(SPCorrectionHandler *)selfCopy correctionRefs]);
+  [(SPCorrectionHandler *)selfCopy setLastCommittedVersions:readCommittedVersions];
+  correctionRefsLock2 = [(SPCorrectionHandler *)selfCopy correctionRefsLock];
+  [correctionRefsLock2 unlock];
 
   v27 = *MEMORY[0x277D85DE8];
 }
@@ -767,10 +767,10 @@ LABEL_4:
 - (void)readCommittedVersions
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [a1 versionInfoLocation];
-  v4 = [v3 path];
+  versionInfoLocation = [self versionInfoLocation];
+  path = [versionInfoLocation path];
   v6 = 138412290;
-  v7 = v4;
+  v7 = path;
   _os_log_error_impl(&dword_231A35000, a2, OS_LOG_TYPE_ERROR, "could not read version info %@", &v6, 0xCu);
 
   v5 = *MEMORY[0x277D85DE8];

@@ -1,30 +1,30 @@
 @interface PKPassOwnershipToken
-+ (void)queryKeychainForOwnershipTokens:(id)a3;
-- (PKPassOwnershipToken)initWithIdentifier:(id)a3;
-- (PKPassOwnershipToken)initWithOwnershipToken:(id)a3 identifier:(id)a4;
-- (id)_wrapperWithType:(unint64_t)a3 identifier:(id)a4;
++ (void)queryKeychainForOwnershipTokens:(id)tokens;
+- (PKPassOwnershipToken)initWithIdentifier:(id)identifier;
+- (PKPassOwnershipToken)initWithOwnershipToken:(id)token identifier:(id)identifier;
+- (id)_wrapperWithType:(unint64_t)type identifier:(id)identifier;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (void)_readFromKeychain;
 - (void)_writeToKeychain;
 - (void)deleteTokenFromKeychain;
 - (void)deleteTokenFromLocalKeychain;
-- (void)setOwnershipToken:(id)a3;
+- (void)setOwnershipToken:(id)token;
 @end
 
 @implementation PKPassOwnershipToken
 
-- (PKPassOwnershipToken)initWithIdentifier:(id)a3
+- (PKPassOwnershipToken)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v10.receiver = self;
     v10.super_class = PKPassOwnershipToken;
     v5 = [(PKPassOwnershipToken *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [identifierCopy copy];
       ownershipTokenIdentifier = v5->_ownershipTokenIdentifier;
       v5->_ownershipTokenIdentifier = v6;
 
@@ -32,24 +32,24 @@
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PKPassOwnershipToken)initWithOwnershipToken:(id)a3 identifier:(id)a4
+- (PKPassOwnershipToken)initWithOwnershipToken:(id)token identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = 0;
-  if (v6 && v7)
+  tokenCopy = token;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  selfCopy = 0;
+  if (tokenCopy && identifierCopy)
   {
     v16.receiver = self;
     v16.super_class = PKPassOwnershipToken;
@@ -60,7 +60,7 @@
       ownershipTokenIdentifier = v10->_ownershipTokenIdentifier;
       v10->_ownershipTokenIdentifier = v11;
 
-      v13 = [v6 copy];
+      v13 = [tokenCopy copy];
       ownershipToken = v10->_ownershipToken;
       v10->_ownershipToken = v13;
 
@@ -68,17 +68,17 @@
     }
 
     self = v10;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)setOwnershipToken:(id)a3
+- (void)setOwnershipToken:(id)token
 {
-  if (self->_ownershipToken != a3)
+  if (self->_ownershipToken != token)
   {
-    v5 = [a3 copy];
+    v5 = [token copy];
     ownershipToken = self->_ownershipToken;
     self->_ownershipToken = v5;
 
@@ -86,10 +86,10 @@
   }
 }
 
-+ (void)queryKeychainForOwnershipTokens:(id)a3
++ (void)queryKeychainForOwnershipTokens:(id)tokens
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  tokensCopy = tokens;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v4 setObject:*MEMORY[0x1E697B008] forKey:*MEMORY[0x1E697AFF8]];
   [v4 setObject:@"com.apple.passd.pass-ownership-token" forKey:*MEMORY[0x1E697AE88]];
@@ -106,7 +106,7 @@
   {
     v28 = v6;
     v29 = v4;
-    v30 = v3;
+    v30 = tokensCopy;
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v31 = 0u;
     v32 = 0u;
@@ -159,7 +159,7 @@
       CFRelease(result);
     }
 
-    v3 = v30;
+    tokensCopy = v30;
     if (v30)
     {
       v25 = [v8 copy];
@@ -179,11 +179,11 @@
     _os_log_impl(&dword_1AD337000, v26, OS_LOG_TYPE_DEFAULT, "Error fetching pass ownership tokens from Keychain: %d", buf, 8u);
   }
 
-  if (v3)
+  if (tokensCopy)
   {
     v27 = objc_alloc(MEMORY[0x1E696ABC0]);
     v8 = [v27 initWithDomain:*MEMORY[0x1E696A768] code:v7 userInfo:0];
-    v3[2](v3, 0, v8);
+    tokensCopy[2](tokensCopy, 0, v8);
 LABEL_22:
   }
 }
@@ -296,10 +296,10 @@ void __61__PKPassOwnershipToken_deleteAllLocalKeychainOwnershipTokens__block_inv
   self->_ownershipToken = v4;
 }
 
-- (id)_wrapperWithType:(unint64_t)a3 identifier:(id)a4
+- (id)_wrapperWithType:(unint64_t)type identifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [[PKKeychainItemWrapper alloc] initWithIdentifier:v5 accessGroup:@"com.apple.passd" serviceName:@"com.apple.passd.pass-ownership-token" type:a3 invisible:1];
+  identifierCopy = identifier;
+  v6 = [[PKKeychainItemWrapper alloc] initWithIdentifier:identifierCopy accessGroup:@"com.apple.passd" serviceName:@"com.apple.passd.pass-ownership-token" type:type invisible:1];
 
   [(PKKeychainItemWrapper *)v6 setLabel:@"com.apple.passd.pass-ownership-token"];
 

@@ -1,22 +1,22 @@
 @interface UIColorWell
-+ (id)styleForColorWell:(id)a3;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (UIColorWell)initWithCoder:(id)a3;
-- (UIColorWell)initWithFrame:(CGRect)a3;
++ (id)styleForColorWell:(id)well;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (UIColorWell)initWithCoder:(id)coder;
+- (UIColorWell)initWithFrame:(CGRect)frame;
 - (_UIColorWellDelegate)_delegate;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (void)_colorPickerViewControllerDidHideEyedropper:(id)a3;
-- (void)_colorPickerViewControllerDidShowEyedropper:(id)a3;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (void)_colorPickerViewControllerDidHideEyedropper:(id)eyedropper;
+- (void)_colorPickerViewControllerDidShowEyedropper:(id)eyedropper;
 - (void)_commonInit;
-- (void)_populateArchivedSubviews:(id)a3;
-- (void)_setSelectedColor:(id)a3 notifyingStyle:(BOOL)a4 notifyingUIPicker:(BOOL)a5 sendingAction:(BOOL)a6;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_populateArchivedSubviews:(id)subviews;
+- (void)_setSelectedColor:(id)color notifyingStyle:(BOOL)style notifyingUIPicker:(BOOL)picker sendingAction:(BOOL)action;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setPickerTitle:(id)a3;
+- (void)setPickerTitle:(id)title;
 - (void)styleRequestedColorPickerPresentation;
 @end
 
@@ -52,11 +52,11 @@
   }
 }
 
-- (UIColorWell)initWithFrame:(CGRect)a3
+- (UIColorWell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIColorWell;
-  v3 = [(UIControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -66,64 +66,64 @@
   return v4;
 }
 
-- (UIColorWell)initWithCoder:(id)a3
+- (UIColorWell)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = UIColorWell;
-  v5 = [(UIControl *)&v10 initWithCoder:v4];
+  v5 = [(UIControl *)&v10 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(UIColorWell *)v5 _commonInit];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIColorWellColor"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIColorWellColor"];
     [(UIColorWell *)v6 setSelectedColor:v7];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIColorWellTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIColorWellTitle"];
     [(UIColorWell *)v6 setPickerTitle:v8];
-    -[UIColorWell setSupportsAlpha:](v6, "setSupportsAlpha:", [v4 decodeBoolForKey:@"UIColorWellSupportsAlpha"]);
+    -[UIColorWell setSupportsAlpha:](v6, "setSupportsAlpha:", [coderCopy decodeBoolForKey:@"UIColorWellSupportsAlpha"]);
   }
 
   return v6;
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v5.receiver = self;
   v5.super_class = UIColorWell;
-  [(UIView *)&v5 _populateArchivedSubviews:v4];
+  [(UIView *)&v5 _populateArchivedSubviews:subviewsCopy];
   if (self->_style)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UIColorWell;
-  v4 = a3;
-  [(UIControl *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_selectedColor forKey:{@"UIColorWellColor", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_title forKey:@"UIColorWellTitle"];
-  [v4 encodeBool:self->_supportsAlpha forKey:@"UIColorWellSupportsAlpha"];
+  coderCopy = coder;
+  [(UIControl *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_selectedColor forKey:{@"UIColorWellColor", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_title forKey:@"UIColorWellTitle"];
+  [coderCopy encodeBool:self->_supportsAlpha forKey:@"UIColorWellSupportsAlpha"];
 }
 
-- (void)setPickerTitle:(id)a3
+- (void)setPickerTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  [(_UIColorWellVisualStyle *)self->_style setPickerTitle:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  [(_UIColorWellVisualStyle *)self->_style setPickerTitle:titleCopy];
 }
 
-- (void)_setSelectedColor:(id)a3 notifyingStyle:(BOOL)a4 notifyingUIPicker:(BOOL)a5 sendingAction:(BOOL)a6
+- (void)_setSelectedColor:(id)color notifyingStyle:(BOOL)style notifyingUIPicker:(BOOL)picker sendingAction:(BOOL)action
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
+  actionCopy = action;
+  pickerCopy = picker;
+  styleCopy = style;
+  colorCopy = color;
   selectedColor = self->_selectedColor;
-  v12 = v10;
+  v12 = colorCopy;
   v13 = selectedColor;
   v14 = v12;
   v15 = v13;
@@ -181,16 +181,16 @@ LABEL_12:
   {
     if (v16)
     {
-      v20 = [(UIColor *)v14 CGColor];
-      v21 = [(UIColor *)v16 CGColor];
-      ColorSpace = CGColorGetColorSpace(v20);
-      if (ColorSpace == CGColorGetColorSpace(v21))
+      cGColor = [(UIColor *)v14 CGColor];
+      cGColor2 = [(UIColor *)v16 CGColor];
+      ColorSpace = CGColorGetColorSpace(cGColor);
+      if (ColorSpace == CGColorGetColorSpace(cGColor2))
       {
-        NumberOfComponents = CGColorGetNumberOfComponents(v20);
-        if (NumberOfComponents == CGColorGetNumberOfComponents(v21))
+        NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
+        if (NumberOfComponents == CGColorGetNumberOfComponents(cGColor2))
         {
-          Components = CGColorGetComponents(v20);
-          v25 = CGColorGetComponents(v21);
+          Components = CGColorGetComponents(cGColor);
+          v25 = CGColorGetComponents(cGColor2);
           if (NumberOfComponents)
           {
             while (vabdd_f64(*Components, *v25) <= 0.0009765625)
@@ -225,26 +225,26 @@ LABEL_26:
   [(UIColorWell *)self willChangeValueForKey:@"selectedColor"];
   objc_storeStrong(&self->_selectedColor, obj);
   [(UIColorWell *)self didChangeValueForKey:@"selectedColor"];
-  if (v8)
+  if (styleCopy)
   {
     [(_UIColorWellVisualStyle *)self->_style setSelectedColor:obj];
   }
 
-  if (v7)
+  if (pickerCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_colorPicker);
     [WeakRetained _setSelectedColor:obj];
   }
 
-  if ((v18 & v6) == 1)
+  if ((v18 & actionCopy) == 1)
   {
     [(UIControl *)self sendActionsForControlEvents:4096];
   }
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  [(_UIColorWellVisualStyle *)self->_style intrinsicSizeWithinSize:a3.width, a3.height];
+  [(_UIColorWellVisualStyle *)self->_style intrinsicSizeWithinSize:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -295,54 +295,54 @@ LABEL_26:
   [(UIColorPickerViewController *)obj setTitle:self->_title];
   [(UIColorPickerViewController *)obj setDelegate:self];
   [(UIViewController *)obj setModalPresentationStyle:7];
-  v3 = [(UIViewController *)obj popoverPresentationController];
-  [v3 setSourceView:self];
+  popoverPresentationController = [(UIViewController *)obj popoverPresentationController];
+  [popoverPresentationController setSourceView:self];
 
-  v4 = [(UIColorWell *)self _delegate];
+  _delegate = [(UIColorWell *)self _delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIColorWell *)self _delegate];
-    [v6 _colorWell:self willPresentColorPickerViewController:obj];
+    _delegate2 = [(UIColorWell *)self _delegate];
+    [_delegate2 _colorWell:self willPresentColorPickerViewController:obj];
   }
 
-  v7 = [(UIView *)self _viewControllerForAncestor];
-  [v7 presentViewController:obj animated:1 completion:0];
+  _viewControllerForAncestor = [(UIView *)self _viewControllerForAncestor];
+  [_viewControllerForAncestor presentViewController:obj animated:1 completion:0];
 
   objc_storeWeak(&self->_colorPicker, obj);
 }
 
-- (void)_colorPickerViewControllerDidShowEyedropper:(id)a3
+- (void)_colorPickerViewControllerDidShowEyedropper:(id)eyedropper
 {
-  v4 = [(UIColorWell *)self _delegate];
+  _delegate = [(UIColorWell *)self _delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIColorWell *)self _delegate];
-    [v6 _colorWellDidShowEyedropper:self];
+    _delegate2 = [(UIColorWell *)self _delegate];
+    [_delegate2 _colorWellDidShowEyedropper:self];
   }
 }
 
-- (void)_colorPickerViewControllerDidHideEyedropper:(id)a3
+- (void)_colorPickerViewControllerDidHideEyedropper:(id)eyedropper
 {
-  v4 = [(UIColorWell *)self _delegate];
+  _delegate = [(UIColorWell *)self _delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIColorWell *)self _delegate];
-    [v6 _colorWellDidHideEyedropper:self];
+    _delegate2 = [(UIColorWell *)self _delegate];
+    [_delegate2 _colorWellDidHideEyedropper:self];
   }
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E696ACA0]);
-  v6 = [(UIColorWell *)self selectedColor];
-  v7 = [v5 initWithObject:v6];
+  selectedColor = [(UIColorWell *)self selectedColor];
+  v7 = [v5 initWithObject:selectedColor];
 
   v8 = [[UIDragItem alloc] initWithItemProvider:v7];
   v11[0] = v8;
@@ -351,42 +351,42 @@ LABEL_26:
   return v9;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
   v6 = [UITargetedDragPreview alloc];
   style = self->_style;
-  v8 = [(_UIColorWellVisualStyle *)style dragPreviewParameters];
-  v9 = [(UITargetedPreview *)v6 initWithView:style parameters:v8];
+  dragPreviewParameters = [(_UIColorWellVisualStyle *)style dragPreviewParameters];
+  v9 = [(UITargetedPreview *)v6 initWithView:style parameters:dragPreviewParameters];
 
   return v9;
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
-  v4 = a4;
+  sessionCopy = session;
   v5 = objc_opt_self();
-  v6 = [v4 canLoadObjectsOfClass:v5];
+  v6 = [sessionCopy canLoadObjectsOfClass:v5];
 
   return v6;
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
   v4 = [[UIDropProposal alloc] initWithDropOperation:2];
 
   return v4;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
-  v5 = a4;
+  dropCopy = drop;
   v6 = objc_opt_class();
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__UIColorWell_dropInteraction_performDrop___block_invoke;
   v8[3] = &unk_1E70F2FC8;
   v8[4] = self;
-  v7 = [v5 loadObjectsOfClass:v6 completion:v8];
+  v7 = [dropCopy loadObjectsOfClass:v6 completion:v8];
 }
 
 void __43__UIColorWell_dropInteraction_performDrop___block_invoke(uint64_t a1, void *a2)
@@ -396,13 +396,13 @@ void __43__UIColorWell_dropInteraction_performDrop___block_invoke(uint64_t a1, v
   [v2 _setSelectedColor:v3 notifyingStyle:1 notifyingUIPicker:1 sendingAction:1];
 }
 
-+ (id)styleForColorWell:(id)a3
++ (id)styleForColorWell:(id)well
 {
-  v3 = a3;
-  v4 = [v3 traitCollection];
-  [v4 userInterfaceIdiom];
+  wellCopy = well;
+  traitCollection = [wellCopy traitCollection];
+  [traitCollection userInterfaceIdiom];
 
-  v5 = [[_UIColorWelliOSVisualStyle alloc] initWithColorWell:v3];
+  v5 = [[_UIColorWelliOSVisualStyle alloc] initWithColorWell:wellCopy];
 
   return v5;
 }

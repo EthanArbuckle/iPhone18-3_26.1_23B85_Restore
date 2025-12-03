@@ -1,7 +1,7 @@
 @interface HKDisplayTypeBehavior
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKDisplayTypeBehavior)init;
-- (HKDisplayTypeBehavior)initWithStatisticsMergeStrategy:(unint64_t)a3 preferredCalendaryDayAlignment:(int64_t)a4 allowEditView:(BOOL)a5 allowsSourceReordering:(BOOL)a6 unitPreferenceChangeConfirmation:(BOOL)a7 chartsRelativeData:(BOOL)a8 appearsInDataTypeSearch:(BOOL)a9 supportsAssociatedSamples:(BOOL)a10 canBecomeFavorite:(BOOL)a11 hidden:(BOOL)a12;
+- (HKDisplayTypeBehavior)initWithStatisticsMergeStrategy:(unint64_t)strategy preferredCalendaryDayAlignment:(int64_t)alignment allowEditView:(BOOL)view allowsSourceReordering:(BOOL)reordering unitPreferenceChangeConfirmation:(BOOL)confirmation chartsRelativeData:(BOOL)data appearsInDataTypeSearch:(BOOL)search supportsAssociatedSamples:(BOOL)self0 canBecomeFavorite:(BOOL)self1 hidden:(BOOL)self2;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -18,23 +18,23 @@
   return 0;
 }
 
-- (HKDisplayTypeBehavior)initWithStatisticsMergeStrategy:(unint64_t)a3 preferredCalendaryDayAlignment:(int64_t)a4 allowEditView:(BOOL)a5 allowsSourceReordering:(BOOL)a6 unitPreferenceChangeConfirmation:(BOOL)a7 chartsRelativeData:(BOOL)a8 appearsInDataTypeSearch:(BOOL)a9 supportsAssociatedSamples:(BOOL)a10 canBecomeFavorite:(BOOL)a11 hidden:(BOOL)a12
+- (HKDisplayTypeBehavior)initWithStatisticsMergeStrategy:(unint64_t)strategy preferredCalendaryDayAlignment:(int64_t)alignment allowEditView:(BOOL)view allowsSourceReordering:(BOOL)reordering unitPreferenceChangeConfirmation:(BOOL)confirmation chartsRelativeData:(BOOL)data appearsInDataTypeSearch:(BOOL)search supportsAssociatedSamples:(BOOL)self0 canBecomeFavorite:(BOOL)self1 hidden:(BOOL)self2
 {
   v19.receiver = self;
   v19.super_class = HKDisplayTypeBehavior;
   result = [(HKDisplayTypeBehavior *)&v19 init];
   if (result)
   {
-    result->_statisticsMergeStrategy = a3;
-    result->_preferredCalendarDayAlignment = a4;
-    result->_allowEditView = a5;
-    result->_allowsSourceReordering = a6;
-    result->_unitPreferencesRequireChangeConfirmation = a7;
-    result->_chartsRelativeData = a8;
-    result->_appearsInDataTypeSearch = a9;
-    result->_supportsAssociatedSamples = a10;
-    result->_canBecomeFavorite = a11;
-    result->_hidden = a12;
+    result->_statisticsMergeStrategy = strategy;
+    result->_preferredCalendarDayAlignment = alignment;
+    result->_allowEditView = view;
+    result->_allowsSourceReordering = reordering;
+    result->_unitPreferencesRequireChangeConfirmation = confirmation;
+    result->_chartsRelativeData = data;
+    result->_appearsInDataTypeSearch = search;
+    result->_supportsAssociatedSamples = samples;
+    result->_canBecomeFavorite = favorite;
+    result->_hidden = hidden;
   }
 
   return result;
@@ -133,11 +133,11 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"<HKDisplayTypeBehavior: Statistics: %s, Day: %s, Edit view enabled: %s Source reorderable: %s, Unit change: %s, Chart: %s, Search: %s, Associated Samples: %s, Favoritable: %s%s>", v2, v3, v5, v6, v7, v8, v9, v10, v4, v11];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_statisticsMergeStrategy == v4[2] && self->_preferredCalendarDayAlignment == v4[3] && self->_allowEditView == *(v4 + 8) && self->_allowsSourceReordering == *(v4 + 9) && self->_unitPreferencesRequireChangeConfirmation == *(v4 + 10) && self->_chartsRelativeData == *(v4 + 11) && self->_appearsInDataTypeSearch == *(v4 + 12) && self->_supportsAssociatedSamples == *(v4 + 13) && self->_canBecomeFavorite == *(v4 + 14) && self->_hidden == *(v4 + 15);
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_statisticsMergeStrategy == equalCopy[2] && self->_preferredCalendarDayAlignment == equalCopy[3] && self->_allowEditView == *(equalCopy + 8) && self->_allowsSourceReordering == *(equalCopy + 9) && self->_unitPreferencesRequireChangeConfirmation == *(equalCopy + 10) && self->_chartsRelativeData == *(equalCopy + 11) && self->_appearsInDataTypeSearch == *(equalCopy + 12) && self->_supportsAssociatedSamples == *(equalCopy + 13) && self->_canBecomeFavorite == *(equalCopy + 14) && self->_hidden == *(equalCopy + 15);
 
   return v5;
 }

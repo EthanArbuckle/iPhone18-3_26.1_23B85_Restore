@@ -2,7 +2,7 @@
 - (GKDashboardPlayerPhotoView)playerAvatarView;
 - (UILabel)actionLabel;
 - (UIVisualEffectView)effectsView;
-- (_TtC26GameCenterMessageExtension10ActionCell)initWithFrame:(CGRect)a3;
+- (_TtC26GameCenterMessageExtension10ActionCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ActionCell
@@ -28,12 +28,12 @@
   return Strong;
 }
 
-- (_TtC26GameCenterMessageExtension10ActionCell)initWithFrame:(CGRect)a3
+- (_TtC26GameCenterMessageExtension10ActionCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();

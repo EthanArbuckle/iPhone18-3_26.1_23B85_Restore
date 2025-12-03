@@ -1,13 +1,13 @@
 @interface ATAudioSessionPropertyManager
-- (ATAudioSessionPropertyManager)initWithATAudioSessionClientImpl:(id)a3;
+- (ATAudioSessionPropertyManager)initWithATAudioSessionClientImpl:(id)impl;
 @end
 
 @implementation ATAudioSessionPropertyManager
 
-- (ATAudioSessionPropertyManager)initWithATAudioSessionClientImpl:(id)a3
+- (ATAudioSessionPropertyManager)initWithATAudioSessionClientImpl:(id)impl
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  implCopy = impl;
   if (kAudioSessionClientLogSubsystem)
   {
     v5 = *kAudioSessionClientLogSubsystem;
@@ -44,7 +44,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v4)
+  if (!implCopy)
   {
     if (kAudioSessionClientLogSubsystem)
     {
@@ -73,7 +73,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  objc_storeWeak(&v7->mAsClientImpl, v4);
+  objc_storeWeak(&v7->mAsClientImpl, implCopy);
   v9 = v8;
 LABEL_19:
 

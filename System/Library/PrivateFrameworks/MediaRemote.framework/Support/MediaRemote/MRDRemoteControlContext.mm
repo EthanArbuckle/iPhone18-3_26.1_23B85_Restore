@@ -1,26 +1,26 @@
 @interface MRDRemoteControlContext
-- (MRDRemoteControlContext)initWithContextID:(id)a3 originatingAppDisplayID:(id)a4;
+- (MRDRemoteControlContext)initWithContextID:(id)d originatingAppDisplayID:(id)iD;
 - (NSArray)routedCommands;
-- (void)addRoutedCommand:(id)a3;
+- (void)addRoutedCommand:(id)command;
 - (void)clearRoutedCommands;
 @end
 
 @implementation MRDRemoteControlContext
 
-- (MRDRemoteControlContext)initWithContextID:(id)a3 originatingAppDisplayID:(id)a4
+- (MRDRemoteControlContext)initWithContextID:(id)d originatingAppDisplayID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v19.receiver = self;
   v19.super_class = MRDRemoteControlContext;
   v8 = [(MRDRemoteControlContext *)&v19 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     contextID = v8->_contextID;
     v8->_contextID = v9;
 
-    v11 = [v7 copy];
+    v11 = [iDCopy copy];
     originatingAppDisplayID = v8->_originatingAppDisplayID;
     v8->_originatingAppDisplayID = v11;
 
@@ -59,17 +59,17 @@
   return v3;
 }
 
-- (void)addRoutedCommand:(id)a3
+- (void)addRoutedCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   commandQueue = self->_commandQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006722C;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = commandCopy;
+  v6 = commandCopy;
   dispatch_sync(commandQueue, v7);
 }
 

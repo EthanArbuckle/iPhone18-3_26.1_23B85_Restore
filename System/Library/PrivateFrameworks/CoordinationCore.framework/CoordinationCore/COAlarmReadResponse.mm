@@ -1,12 +1,12 @@
 @interface COAlarmReadResponse
 - (COAlarmReadResponse)init;
-- (COAlarmReadResponse)initWithAlarms:(id)a3;
-- (COAlarmReadResponse)initWithAlarms:(id)a3 deletes:(id)a4;
-- (COAlarmReadResponse)initWithCoder:(id)a3;
-- (COAlarmReadResponse)initWithFilteredAlarms:(id)a3;
+- (COAlarmReadResponse)initWithAlarms:(id)alarms;
+- (COAlarmReadResponse)initWithAlarms:(id)alarms deletes:(id)deletes;
+- (COAlarmReadResponse)initWithCoder:(id)coder;
+- (COAlarmReadResponse)initWithFilteredAlarms:(id)alarms;
 - (COAlarmReadResponse)initWithSkipInMerge;
-- (id)initNotModifiedWithDeletes:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initNotModifiedWithDeletes:(id)deletes;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COAlarmReadResponse
@@ -26,13 +26,13 @@
   return v2;
 }
 
-- (COAlarmReadResponse)initWithAlarms:(id)a3
+- (COAlarmReadResponse)initWithAlarms:(id)alarms
 {
-  v4 = a3;
+  alarmsCopy = alarms;
   v5 = [(COAlarmReadResponse *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [alarmsCopy copy];
     alarms = v5->_alarms;
     v5->_alarms = v6;
   }
@@ -40,9 +40,9 @@
   return v5;
 }
 
-- (COAlarmReadResponse)initWithFilteredAlarms:(id)a3
+- (COAlarmReadResponse)initWithFilteredAlarms:(id)alarms
 {
-  result = [(COAlarmReadResponse *)self initWithAlarms:a3];
+  result = [(COAlarmReadResponse *)self initWithAlarms:alarms];
   if (result)
   {
     result->_filtered = 1;
@@ -51,13 +51,13 @@
   return result;
 }
 
-- (COAlarmReadResponse)initWithAlarms:(id)a3 deletes:(id)a4
+- (COAlarmReadResponse)initWithAlarms:(id)alarms deletes:(id)deletes
 {
-  v6 = a4;
-  v7 = [(COAlarmReadResponse *)self initWithAlarms:a3];
+  deletesCopy = deletes;
+  v7 = [(COAlarmReadResponse *)self initWithAlarms:alarms];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [deletesCopy copy];
     deletes = v7->_deletes;
     v7->_deletes = v8;
   }
@@ -65,9 +65,9 @@
   return v7;
 }
 
-- (id)initNotModifiedWithDeletes:(id)a3
+- (id)initNotModifiedWithDeletes:(id)deletes
 {
-  result = [(COAlarmReadResponse *)self initWithAlarms:MEMORY[0x277CBEBF8] deletes:a3];
+  result = [(COAlarmReadResponse *)self initWithAlarms:MEMORY[0x277CBEBF8] deletes:deletes];
   if (result)
   {
     *(result + 18) = 1;
@@ -91,22 +91,22 @@
   return v3;
 }
 
-- (COAlarmReadResponse)initWithCoder:(id)a3
+- (COAlarmReadResponse)initWithCoder:(id)coder
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = COAlarmReadResponse;
-  v5 = [(COMeshResponse *)&v28 initWithCoder:v4];
+  v5 = [(COMeshResponse *)&v28 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = v5;
-    v5->_skipInMerge = [v4 containsValueForKey:@"skip"];
-    v6->_notModified = [v4 containsValueForKey:@"unmodified"];
-    v6->_filtered = [v4 containsValueForKey:@"filtered"];
-    if ([v4 containsValueForKey:@"deletes"])
+    v5->_skipInMerge = [coderCopy containsValueForKey:@"skip"];
+    v6->_notModified = [coderCopy containsValueForKey:@"unmodified"];
+    v6->_filtered = [coderCopy containsValueForKey:@"filtered"];
+    if ([coderCopy containsValueForKey:@"deletes"])
     {
-      v7 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"deletes"];
+      v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"deletes"];
       deletes = v6->_deletes;
       v6->_deletes = v7;
     }
@@ -114,7 +114,7 @@
     v9 = MEMORY[0x277CBEB98];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"alarms"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"alarms"];
     alarms = v6->_alarms;
     v6->_alarms = v12;
 
@@ -186,34 +186,34 @@ LABEL_17:
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = COAlarmReadResponse;
-  [(COMeshResponse *)&v7 encodeWithCoder:v4];
-  v5 = [(COAlarmReadResponse *)self alarms];
-  [v4 encodeObject:v5 forKey:@"alarms"];
+  [(COMeshResponse *)&v7 encodeWithCoder:coderCopy];
+  alarms = [(COAlarmReadResponse *)self alarms];
+  [coderCopy encodeObject:alarms forKey:@"alarms"];
 
   if ([(COAlarmReadResponse *)self isFiltered])
   {
-    [v4 encodeObject:MEMORY[0x277CBEC38] forKey:@"filtered"];
+    [coderCopy encodeObject:MEMORY[0x277CBEC38] forKey:@"filtered"];
   }
 
-  v6 = [(COAlarmReadResponse *)self deletes];
-  if (v6)
+  deletes = [(COAlarmReadResponse *)self deletes];
+  if (deletes)
   {
-    [v4 encodeObject:v6 forKey:@"deletes"];
+    [coderCopy encodeObject:deletes forKey:@"deletes"];
   }
 
   if ([(COAlarmReadResponse *)self skipInMerge])
   {
-    [v4 encodeObject:MEMORY[0x277CBEC38] forKey:@"skip"];
+    [coderCopy encodeObject:MEMORY[0x277CBEC38] forKey:@"skip"];
   }
 
   if ([(COAlarmReadResponse *)self notModified])
   {
-    [v4 encodeObject:MEMORY[0x277CBEC38] forKey:@"unmodified"];
+    [coderCopy encodeObject:MEMORY[0x277CBEC38] forKey:@"unmodified"];
   }
 }
 

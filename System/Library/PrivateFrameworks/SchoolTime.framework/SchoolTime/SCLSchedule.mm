@@ -1,49 +1,49 @@
 @interface SCLSchedule
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isScheduledForDay:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isScheduledForDay:(int64_t)day;
 - (BOOL)isValid;
 - (NSArray)uniformTimeIntervals;
-- (SCLSchedule)initWithCoder:(id)a3;
-- (id)endTimeForDay:(int64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)recurrencesForDay:(int64_t)a3;
-- (id)startTimeForDay:(int64_t)a3;
-- (id)timeIntervalsForDay:(int64_t)a3;
+- (SCLSchedule)initWithCoder:(id)coder;
+- (id)endTimeForDay:(int64_t)day;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)recurrencesForDay:(int64_t)day;
+- (id)startTimeForDay:(int64_t)day;
+- (id)timeIntervalsForDay:(int64_t)day;
 - (int64_t)scheduledDays;
 - (unint64_t)hash;
 @end
 
 @implementation SCLSchedule
 
-- (SCLSchedule)initWithCoder:(id)a3
+- (SCLSchedule)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SCLSchedule;
   return [(SCLSchedule *)&v4 init];
 }
 
-- (id)startTimeForDay:(int64_t)a3
+- (id)startTimeForDay:(int64_t)day
 {
-  v3 = [(SCLSchedule *)self recurrencesForDay:a3];
-  v4 = [v3 firstObject];
-  v5 = [v4 timeInterval];
-  v6 = [v5 startTime];
+  v3 = [(SCLSchedule *)self recurrencesForDay:day];
+  firstObject = [v3 firstObject];
+  timeInterval = [firstObject timeInterval];
+  startTime = [timeInterval startTime];
 
-  return v6;
+  return startTime;
 }
 
-- (id)endTimeForDay:(int64_t)a3
+- (id)endTimeForDay:(int64_t)day
 {
-  v3 = [(SCLSchedule *)self recurrencesForDay:a3];
-  v4 = [v3 lastObject];
-  v5 = [v4 timeInterval];
-  v6 = [v5 endTime];
+  v3 = [(SCLSchedule *)self recurrencesForDay:day];
+  lastObject = [v3 lastObject];
+  timeInterval = [lastObject timeInterval];
+  endTime = [timeInterval endTime];
 
-  return v6;
+  return endTime;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE648];
@@ -55,29 +55,29 @@
 
 - (BOOL)isEmpty
 {
-  v2 = [(SCLSchedule *)self recurrences];
-  v3 = [v2 count] == 0;
+  recurrences = [(SCLSchedule *)self recurrences];
+  v3 = [recurrences count] == 0;
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(SCLSchedule *)self recurrences];
-  v3 = [v2 hash];
+  recurrences = [(SCLSchedule *)self recurrences];
+  v3 = [recurrences hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
@@ -89,8 +89,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(SCLSchedule *)self recurrences];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  recurrences = [(SCLSchedule *)self recurrences];
+  v3 = [recurrences countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -102,13 +102,13 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(recurrences);
         }
 
         v5 |= SCLRepeatScheduleForDay([*(*(&v10 + 1) + 8 * i) day]);
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [recurrences countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -123,67 +123,67 @@
   return v5;
 }
 
-- (BOOL)isScheduledForDay:(int64_t)a3
+- (BOOL)isScheduledForDay:(int64_t)day
 {
-  v4 = [(SCLSchedule *)self scheduledDays];
+  scheduledDays = [(SCLSchedule *)self scheduledDays];
 
-  return SCLRepeatScheduleContainsDay(v4, a3);
+  return SCLRepeatScheduleContainsDay(scheduledDays, day);
 }
 
 - (BOOL)isValid
 {
   v2 = [[SCLScheduleAttributes alloc] initWithSchedule:self];
-  v3 = [(SCLScheduleAttributes *)v2 isValid];
+  isValid = [(SCLScheduleAttributes *)v2 isValid];
 
-  return v3;
+  return isValid;
 }
 
-- (id)recurrencesForDay:(int64_t)a3
+- (id)recurrencesForDay:(int64_t)day
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __33__SCLSchedule_recurrencesForDay___block_invoke;
   v8[3] = &__block_descriptor_40_e48_B24__0__SCLScheduleRecurrence_8__NSDictionary_16l;
-  v8[4] = a3;
+  v8[4] = day;
   v4 = [MEMORY[0x277CCAC30] predicateWithBlock:v8];
-  v5 = [(SCLSchedule *)self recurrences];
-  v6 = [v5 filteredArrayUsingPredicate:v4];
+  recurrences = [(SCLSchedule *)self recurrences];
+  v6 = [recurrences filteredArrayUsingPredicate:v4];
 
   return v6;
 }
 
 - (NSArray)uniformTimeIntervals
 {
-  v3 = [(SCLSchedule *)self scheduledDays];
-  if (v3)
+  scheduledDays = [(SCLSchedule *)self scheduledDays];
+  if (scheduledDays)
   {
-    v4 = v3;
+    v4 = scheduledDays;
     v5 = [MEMORY[0x277CBEB58] set];
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
     v11 = __48__SCLSchedule_Convenience__uniformTimeIntervals__block_invoke;
     v12 = &unk_279B6C200;
-    v13 = self;
+    selfCopy = self;
     v6 = v5;
     v14 = v6;
     SCLEnumerateDaysInRepeatSchedule(v4, &v9);
     if ([v6 count] == 1)
     {
-      v7 = [v6 anyObject];
+      anyObject = [v6 anyObject];
     }
 
     else
     {
-      v7 = 0;
+      anyObject = 0;
     }
   }
 
   else
   {
-    v7 = MEMORY[0x277CBEBF8];
+    anyObject = MEMORY[0x277CBEBF8];
   }
 
-  return v7;
+  return anyObject;
 }
 
 void __48__SCLSchedule_Convenience__uniformTimeIntervals__block_invoke(uint64_t a1, uint64_t a2)
@@ -192,11 +192,11 @@ void __48__SCLSchedule_Convenience__uniformTimeIntervals__block_invoke(uint64_t 
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)timeIntervalsForDay:(int64_t)a3
+- (id)timeIntervalsForDay:(int64_t)day
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(SCLSchedule *)self recurrencesForDay:a3];
+  v6 = [(SCLSchedule *)self recurrencesForDay:day];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -215,8 +215,8 @@ void __48__SCLSchedule_Convenience__uniformTimeIntervals__block_invoke(uint64_t 
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) timeInterval];
-        [v5 addObject:v11];
+        timeInterval = [*(*(&v14 + 1) + 8 * i) timeInterval];
+        [v5 addObject:timeInterval];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];

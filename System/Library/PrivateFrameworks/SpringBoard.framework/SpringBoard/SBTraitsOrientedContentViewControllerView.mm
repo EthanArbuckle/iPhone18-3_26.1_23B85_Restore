@@ -2,18 +2,18 @@
 - (BOOL)_counterTransformedToIdentityForContainerChange;
 - (CGRect)contentViewBoundsInReferenceSpace;
 - (NSString)description;
-- (SBTraitsOrientedContentViewControllerView)initWithFrame:(CGRect)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBTraitsOrientedContentViewControllerView)initWithFrame:(CGRect)frame;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_setDebugColorsEnabled:(BOOL)a3;
-- (void)addOverlayView:(id)a3;
+- (void)_setDebugColorsEnabled:(BOOL)enabled;
+- (void)addOverlayView:(id)view;
 - (void)layoutSubviews;
-- (void)setBackgroundView:(id)a3;
-- (void)setContainerOrientation:(int64_t)a3;
-- (void)setContentOrientation:(int64_t)a3;
-- (void)setContentView:(id)a3;
-- (void)setContentViewBoundsInReferenceSpace:(CGRect)a3;
+- (void)setBackgroundView:(id)view;
+- (void)setContainerOrientation:(int64_t)orientation;
+- (void)setContentOrientation:(int64_t)orientation;
+- (void)setContentView:(id)view;
+- (void)setContentViewBoundsInReferenceSpace:(CGRect)space;
 @end
 
 @implementation SBTraitsOrientedContentViewControllerView
@@ -23,9 +23,9 @@
   v31.receiver = self;
   v31.super_class = SBTraitsOrientedContentViewControllerView;
   [(SBTraitsOrientedContentViewControllerView *)&v31 layoutSubviews];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  v4 = [v3 fixedCoordinateSpace];
-  v5 = [SBSceneLayoutCoordinateSpace coordinateSpaceForInterfaceOrientation:1 withReferenceCoordinateSpace:v4 inOrientation:1];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
+  v5 = [SBSceneLayoutCoordinateSpace coordinateSpaceForInterfaceOrientation:1 withReferenceCoordinateSpace:fixedCoordinateSpace inOrientation:1];
 
   v6 = [SBSceneLayoutCoordinateSpace coordinateSpaceForFrame:v5 withinCoordinateSpace:self->_contentViewBoundsInReferenceSpace.origin.x, self->_contentViewBoundsInReferenceSpace.origin.y, self->_contentViewBoundsInReferenceSpace.size.width, self->_contentViewBoundsInReferenceSpace.size.height];
   v7 = [SBSceneLayoutCoordinateSpace coordinateSpaceForInterfaceOrientation:self->_contentOrientation withReferenceCoordinateSpace:v6 inOrientation:1];
@@ -126,20 +126,20 @@
   return previousContentLayoutOrientation == containerOrientation && v7;
 }
 
-- (SBTraitsOrientedContentViewControllerView)initWithFrame:(CGRect)a3
+- (SBTraitsOrientedContentViewControllerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = SBTraitsOrientedContentViewControllerView;
   v7 = [(SBTraitsOrientedContentViewControllerView *)&v11 initWithFrame:?];
   if (v7)
   {
-    v8 = [[SBTraitsDirectionalRotationView alloc] initWithFrame:x, y, width, height];
+    height = [[SBTraitsDirectionalRotationView alloc] initWithFrame:x, y, width, height];
     contentRotationView = v7->_contentRotationView;
-    v7->_contentRotationView = v8;
+    v7->_contentRotationView = height;
 
     [(SBTraitsOrientedContentViewControllerView *)v7 addSubview:v7->_contentRotationView];
     [(SBTraitsOrientedContentViewControllerView *)v7 setContentView:0];
@@ -149,17 +149,17 @@
   return v7;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v4 = a3;
-  if (!v4 || self->_contentView != v4)
+  viewCopy = view;
+  if (!viewCopy || self->_contentView != viewCopy)
   {
-    v23 = v4;
-    if (v4)
+    v23 = viewCopy;
+    if (viewCopy)
     {
       [(SBTraitsOrientedContentViewControllerView *)self bs_setHitTestingDisabled:0];
-      v5 = [(SBTraitsOrientedContentViewControllerView *)self window];
-      [v5 bs_setHitTestingDisabled:0];
+      window = [(SBTraitsOrientedContentViewControllerView *)self window];
+      [window bs_setHitTestingDisabled:0];
 
       [(UIView *)self->_contentView removeFromSuperview];
       [(UILabel *)self->_placeholderLabel removeFromSuperview];
@@ -170,7 +170,7 @@
       self->_contentView = 0;
 
       v8 = v23;
-      v9 = self->_contentView;
+      window2 = self->_contentView;
       self->_contentView = v8;
     }
 
@@ -190,8 +190,8 @@
       self->_placeholderLabel = v17;
 
       v19 = self->_placeholderLabel;
-      v20 = [MEMORY[0x277D75348] whiteColor];
-      [(UILabel *)v19 setTextColor:v20];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(UILabel *)v19 setTextColor:whiteColor];
 
       v21 = self->_placeholderLabel;
       v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%p>", self];
@@ -201,24 +201,24 @@
       [(UILabel *)self->_placeholderLabel sizeToFit];
       [(UIView *)self->_contentView addSubview:self->_placeholderLabel];
       [(SBTraitsOrientedContentViewControllerView *)self bs_setHitTestingDisabled:1];
-      v9 = [(SBTraitsOrientedContentViewControllerView *)self window];
-      [v9 bs_setHitTestingDisabled:1];
+      window2 = [(SBTraitsOrientedContentViewControllerView *)self window];
+      [window2 bs_setHitTestingDisabled:1];
     }
 
     [(SBTraitsOrientedContentViewControllerView *)self _setDebugColorsEnabled:v23 == 0];
     [(SBTraitsDirectionalRotationView *)self->_contentRotationView addSubview:self->_contentView];
     [(SBTraitsOrientedContentViewControllerView *)self setNeedsLayout];
-    v4 = v23;
+    viewCopy = v23;
   }
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundView = self->_backgroundView;
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     if (backgroundView)
     {
       [(UIView *)backgroundView removeFromSuperview];
@@ -226,20 +226,20 @@
       self->_backgroundView = 0;
     }
 
-    objc_storeStrong(&self->_backgroundView, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_backgroundView, view);
+    viewCopy = v8;
     if (v8)
     {
       [(SBTraitsOrientedContentViewControllerView *)self insertSubview:self->_backgroundView atIndex:0];
-      v5 = v8;
+      viewCopy = v8;
     }
   }
 }
 
-- (void)addOverlayView:(id)a3
+- (void)addOverlayView:(id)view
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   if (!self->_overlayView)
   {
     v5 = objc_alloc(MEMORY[0x277D75D18]);
@@ -251,37 +251,37 @@
     [(SBTraitsOrientedContentViewControllerView *)self bringSubviewToFront:self->_overlayView];
   }
 
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIView *)self->_overlayView addSubview:v4];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UIView *)self->_overlayView addSubview:viewCopy];
   v17 = MEMORY[0x277CCAAD0];
-  v21 = [(UIView *)self->_overlayView leadingAnchor];
-  v20 = [v4 leadingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  leadingAnchor = [(UIView *)self->_overlayView leadingAnchor];
+  leadingAnchor2 = [viewCopy leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v22[0] = v19;
-  v18 = [(UIView *)self->_overlayView trailingAnchor];
-  v8 = [v4 trailingAnchor];
-  v9 = [v18 constraintEqualToAnchor:v8];
+  trailingAnchor = [(UIView *)self->_overlayView trailingAnchor];
+  trailingAnchor2 = [viewCopy trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v22[1] = v9;
-  v10 = [(UIView *)self->_overlayView topAnchor];
-  v11 = [v4 topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  topAnchor = [(UIView *)self->_overlayView topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v22[2] = v12;
-  v13 = [(UIView *)self->_overlayView bottomAnchor];
-  v14 = [v4 bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  bottomAnchor = [(UIView *)self->_overlayView bottomAnchor];
+  bottomAnchor2 = [viewCopy bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v22[3] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
   [v17 activateConstraints:v16];
 }
 
-- (void)setContentViewBoundsInReferenceSpace:(CGRect)a3
+- (void)setContentViewBoundsInReferenceSpace:(CGRect)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
   p_contentViewBoundsInReferenceSpace = &self->_contentViewBoundsInReferenceSpace;
-  if (CGRectEqualToRect(*MEMORY[0x277CBF3A0], a3))
+  if (CGRectEqualToRect(*MEMORY[0x277CBF3A0], space))
   {
     p_contentViewBoundsInReferenceSpace->origin.x = 0.0;
     self->_contentViewBoundsInReferenceSpace.origin.y = 0.0;
@@ -310,49 +310,49 @@
   [(SBTraitsOrientedContentViewControllerView *)self setNeedsLayout];
 }
 
-- (void)setContentOrientation:(int64_t)a3
+- (void)setContentOrientation:(int64_t)orientation
 {
-  if (self->_contentOrientation != a3)
+  if (self->_contentOrientation != orientation)
   {
-    self->_contentOrientation = a3;
+    self->_contentOrientation = orientation;
     [(SBTraitsOrientedContentViewControllerView *)self setNeedsLayout];
   }
 }
 
-- (void)setContainerOrientation:(int64_t)a3
+- (void)setContainerOrientation:(int64_t)orientation
 {
-  if (self->_containerOrientation != a3)
+  if (self->_containerOrientation != orientation)
   {
-    self->_containerOrientation = a3;
+    self->_containerOrientation = orientation;
     [(SBTraitsOrientedContentViewControllerView *)self setNeedsLayout];
   }
 }
 
-- (void)_setDebugColorsEnabled:(BOOL)a3
+- (void)_setDebugColorsEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(SBTraitsOrientedContentViewControllerView *)self layer];
-  if (v3)
+  enabledCopy = enabled;
+  layer = [(SBTraitsOrientedContentViewControllerView *)self layer];
+  if (enabledCopy)
   {
-    v6 = [MEMORY[0x277D75348] blueColor];
-    [v5 setBorderColor:{objc_msgSend(v6, "CGColor")}];
+    blueColor = [MEMORY[0x277D75348] blueColor];
+    [layer setBorderColor:{objc_msgSend(blueColor, "CGColor")}];
 
-    v7 = [(SBTraitsDirectionalRotationView *)self->_contentRotationView layer];
-    v8 = [MEMORY[0x277D75348] greenColor];
-    [v7 setBorderColor:{objc_msgSend(v8, "CGColor")}];
+    layer2 = [(SBTraitsDirectionalRotationView *)self->_contentRotationView layer];
+    greenColor = [MEMORY[0x277D75348] greenColor];
+    [layer2 setBorderColor:{objc_msgSend(greenColor, "CGColor")}];
 
-    v9 = [(UIView *)self->_contentView layer];
-    v10 = [MEMORY[0x277D75348] magentaColor];
-    [v9 setBorderColor:{objc_msgSend(v10, "CGColor")}];
+    layer3 = [(UIView *)self->_contentView layer];
+    magentaColor = [MEMORY[0x277D75348] magentaColor];
+    [layer3 setBorderColor:{objc_msgSend(magentaColor, "CGColor")}];
 
-    v11 = [(SBTraitsOrientedContentViewControllerView *)self layer];
-    [v11 setBorderWidth:2.0];
+    layer4 = [(SBTraitsOrientedContentViewControllerView *)self layer];
+    [layer4 setBorderWidth:2.0];
 
-    v12 = [(SBTraitsDirectionalRotationView *)self->_contentRotationView layer];
-    [v12 setBorderWidth:3.0];
+    layer5 = [(SBTraitsDirectionalRotationView *)self->_contentRotationView layer];
+    [layer5 setBorderWidth:3.0];
 
-    v13 = [(UIView *)self->_contentView layer];
-    [v13 setBorderWidth:1.0];
+    layer6 = [(UIView *)self->_contentView layer];
+    [layer6 setBorderWidth:1.0];
 
     contentView = self->_contentView;
     v15 = [MEMORY[0x277D75348] colorWithRed:0.0392156863 green:0.784313725 blue:0.0784313725 alpha:0.6];
@@ -363,25 +363,25 @@
 
   else
   {
-    v16 = [MEMORY[0x277D75348] clearColor];
-    [v5 setBorderColor:{objc_msgSend(v16, "CGColor")}];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [layer setBorderColor:{objc_msgSend(clearColor, "CGColor")}];
 
-    v17 = [(SBTraitsDirectionalRotationView *)self->_contentRotationView layer];
-    v18 = [MEMORY[0x277D75348] clearColor];
-    [v17 setBorderColor:{objc_msgSend(v18, "CGColor")}];
+    layer7 = [(SBTraitsDirectionalRotationView *)self->_contentRotationView layer];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [layer7 setBorderColor:{objc_msgSend(clearColor2, "CGColor")}];
 
-    v19 = [(UIView *)self->_contentView layer];
-    v20 = [MEMORY[0x277D75348] clearColor];
-    [v19 setBorderColor:{objc_msgSend(v20, "CGColor")}];
+    layer8 = [(UIView *)self->_contentView layer];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [layer8 setBorderColor:{objc_msgSend(clearColor3, "CGColor")}];
 
-    v21 = [(SBTraitsOrientedContentViewControllerView *)self layer];
-    [v21 setBorderWidth:0.0];
+    layer9 = [(SBTraitsOrientedContentViewControllerView *)self layer];
+    [layer9 setBorderWidth:0.0];
 
-    v22 = [(UIView *)self->_contentView layer];
-    [v22 setBorderWidth:0.0];
+    layer10 = [(UIView *)self->_contentView layer];
+    [layer10 setBorderWidth:0.0];
 
-    v23 = [(SBTraitsDirectionalRotationView *)self->_contentRotationView layer];
-    [v23 setBorderWidth:0.0];
+    layer11 = [(SBTraitsDirectionalRotationView *)self->_contentRotationView layer];
+    [layer11 setBorderWidth:0.0];
 
     [MEMORY[0x277D75348] clearColor];
   }
@@ -391,10 +391,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBTraitsOrientedContentViewControllerView *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBTraitsOrientedContentViewControllerView *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (NSString)description
@@ -424,12 +424,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBTraitsOrientedContentViewControllerView *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBTraitsOrientedContentViewControllerView *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (CGRect)contentViewBoundsInReferenceSpace

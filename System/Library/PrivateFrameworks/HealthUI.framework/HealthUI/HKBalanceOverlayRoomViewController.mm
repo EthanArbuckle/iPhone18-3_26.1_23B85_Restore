@@ -1,23 +1,23 @@
 @interface HKBalanceOverlayRoomViewController
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11;
-- (BOOL)infographicSupportedForDisplayType:(id)a3 healthStore:(id)a4;
-- (HKBalanceOverlayRoomViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 factorDisplayTypes:(id)a5 mode:(int64_t)a6;
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)controllerTitleWithApplicationItems:(id)a3;
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1;
+- (BOOL)infographicSupportedForDisplayType:(id)type healthStore:(id)store;
+- (HKBalanceOverlayRoomViewController)initWithDisplayDate:(id)date applicationItems:(id)items factorDisplayTypes:(id)types mode:(int64_t)mode;
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)controllerTitleWithApplicationItems:(id)items;
 - (id)createChartOverlayViewController;
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5;
-- (id)infographicViewControllerForDisplayType:(id)a3 healthStore:(id)a4;
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3;
-- (id)stringForValueRange:(id)a3 timeScope:(int64_t)a4;
-- (void)contextView:(id)a3 didTapOnInfoButtonAtIndex:(int64_t)a4;
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items;
+- (id)infographicViewControllerForDisplayType:(id)type healthStore:(id)store;
+- (id)primaryDisplayTypeWithApplicationItems:(id)items;
+- (id)stringForValueRange:(id)range timeScope:(int64_t)scope;
+- (void)contextView:(id)view didTapOnInfoButtonAtIndex:(int64_t)index;
 @end
 
 @implementation HKBalanceOverlayRoomViewController
 
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1
 {
-  v15 = a10;
-  v28 = a11;
+  typesCopy = types;
+  optionsCopy = options;
   sub_1C3CCDA10(0, &qword_1EC085770, MEMORY[0x1E6969530], MEMORY[0x1E69E6720]);
   MEMORY[0x1EEE9AC00](v16 - 8);
   v18 = &v27 - v17;
@@ -29,7 +29,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a6)
+  if (date)
   {
     sub_1C3D1E1A4();
     v19 = sub_1C3D1E1E4();
@@ -42,24 +42,24 @@
     (*(*(v20 - 8) + 56))(v18, 1, 1, v20);
   }
 
-  if (a10)
+  if (types)
   {
     sub_1C3C27CB4(0, &unk_1EC085700);
-    v15 = sub_1C3D202B4();
+    typesCopy = sub_1C3D202B4();
   }
 
-  v21 = a4;
-  v22 = a5;
-  v23 = a8;
-  v24 = a9;
-  v25 = sub_1C3CCBD2C(v22, v18, a8, v15, v28);
+  factoryCopy = factory;
+  itemsCopy = items;
+  activityCopy = activity;
+  modelCopy = model;
+  v25 = sub_1C3CCBD2C(itemsCopy, v18, activity, typesCopy, optionsCopy);
 
   sub_1C3CCDA74(v18, &qword_1EC085770, MEMORY[0x1E6969530]);
 
   return v25;
 }
 
-- (HKBalanceOverlayRoomViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 factorDisplayTypes:(id)a5 mode:(int64_t)a6
+- (HKBalanceOverlayRoomViewController)initWithDisplayDate:(id)date applicationItems:(id)items factorDisplayTypes:(id)types mode:(int64_t)mode
 {
   sub_1C3CCDA10(0, &qword_1EC085770, MEMORY[0x1E6969530], MEMORY[0x1E69E6720]);
   MEMORY[0x1EEE9AC00](v10 - 8);
@@ -72,7 +72,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (date)
   {
     sub_1C3D1E1A4();
     v13 = sub_1C3D1E1E4();
@@ -85,7 +85,7 @@
     (*(*(v14 - 8) + 56))(v12, 1, 1, v14);
   }
 
-  if (a5)
+  if (types)
   {
     sub_1C3C27CB4(0, &unk_1EC085700);
     v15 = sub_1C3D202B4();
@@ -96,13 +96,13 @@
     v15 = 0;
   }
 
-  v16 = a4;
-  v17 = sub_1C3CCBF20(v12, v16, v15, a6);
+  itemsCopy = items;
+  v17 = sub_1C3CCBF20(v12, itemsCopy, v15, mode);
 
   return v17;
 }
 
-- (id)controllerTitleWithApplicationItems:(id)a3
+- (id)controllerTitleWithApplicationItems:(id)items
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -113,24 +113,24 @@
   }
 
   v4 = *(&self->super.super.super.super.super.isa + OBJC_IVAR___HKBalanceOverlayRoomViewController_balanceDisplayType);
-  v5 = self;
-  v6 = [v4 localization];
-  v7 = [v6 displayName];
+  selfCopy = self;
+  localization = [v4 localization];
+  displayName = [localization displayName];
 
-  if (v7)
+  if (displayName)
   {
   }
 
   else
   {
     sub_1C3D20104();
-    v7 = sub_1C3D200C4();
+    displayName = sub_1C3D200C4();
   }
 
-  return v7;
+  return displayName;
 }
 
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3
+- (id)primaryDisplayTypeWithApplicationItems:(id)items
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -145,7 +145,7 @@
   return v4;
 }
 
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -155,10 +155,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1C3CCC7A8(a3, v9);
+  itemsCopy = items;
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1C3CCC7A8(mode, itemsCopy);
 
   sub_1C3C27CB4(0, &qword_1EC085778);
   v12 = sub_1C3D202A4();
@@ -166,7 +166,7 @@
   return v12;
 }
 
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items
 {
   sub_1C3CCDA10(0, &qword_1EC085770, MEMORY[0x1E6969530], MEMORY[0x1E69E6720]);
   MEMORY[0x1EEE9AC00](v9 - 8);
@@ -179,7 +179,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (date)
   {
     sub_1C3D1E1A4();
     v12 = sub_1C3D1E1E4();
@@ -192,9 +192,9 @@
     (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   }
 
-  v14 = a5;
-  v15 = self;
-  v16 = sub_1C3CC93BC(a3, v11, v14);
+  itemsCopy = items;
+  selfCopy = self;
+  v16 = sub_1C3CC93BC(mode, v11, itemsCopy);
 
   sub_1C3CCDA74(v11, &qword_1EC085770, MEMORY[0x1E6969530]);
 
@@ -211,13 +211,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1C3CC9A04();
 
   return v4;
 }
 
-- (id)stringForValueRange:(id)a3 timeScope:(int64_t)a4
+- (id)stringForValueRange:(id)range timeScope:(int64_t)scope
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -227,10 +227,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = [(HKOverlayRoomViewController *)v8 chartController];
-  if (v9 && (v10 = v9, v11 = [(HKInteractiveChartViewController *)v9 stringForValueRange:v7 timeScope:a4], v10, v11))
+  rangeCopy = range;
+  selfCopy = self;
+  chartController = [(HKOverlayRoomViewController *)selfCopy chartController];
+  if (chartController && (v10 = chartController, v11 = [(HKInteractiveChartViewController *)chartController stringForValueRange:rangeCopy timeScope:scope], v10, v11))
   {
     sub_1C3D20104();
 
@@ -248,7 +248,7 @@
   return v13;
 }
 
-- (BOOL)infographicSupportedForDisplayType:(id)a3 healthStore:(id)a4
+- (BOOL)infographicSupportedForDisplayType:(id)type healthStore:(id)store
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -261,7 +261,7 @@
   return 1;
 }
 
-- (id)infographicViewControllerForDisplayType:(id)a3 healthStore:(id)a4
+- (id)infographicViewControllerForDisplayType:(id)type healthStore:(id)store
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -271,15 +271,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  typeCopy = type;
+  storeCopy = store;
+  selfCopy = self;
   v10 = sub_1C3CCCA34();
 
   return v10;
 }
 
-- (void)contextView:(id)a3 didTapOnInfoButtonAtIndex:(int64_t)a4
+- (void)contextView:(id)view didTapOnInfoButtonAtIndex:(int64_t)index
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -289,9 +289,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_1C3CCD168(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1C3CCD168(index);
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface SBLinkSystemActionExecutor
-- (SBLinkSystemActionExecutor)initWithSystemAction:(id)a3;
-- (id)_beginInteractiveExecutionWithContext:(id)a3 executionHandler:(id)a4 error:(id *)a5;
-- (id)_previewWithCoordinator:(id)a3;
+- (SBLinkSystemActionExecutor)initWithSystemAction:(id)action;
+- (id)_beginInteractiveExecutionWithContext:(id)context executionHandler:(id)handler error:(id *)error;
+- (id)_previewWithCoordinator:(id)coordinator;
 - (void)_cancelPreviewing;
-- (void)_finishExecutingWithResult:(id)a3;
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6;
+- (void)_finishExecutingWithResult:(id)result;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
 @end
 
 @implementation SBLinkSystemActionExecutor
 
-- (SBLinkSystemActionExecutor)initWithSystemAction:(id)a3
+- (SBLinkSystemActionExecutor)initWithSystemAction:(id)action
 {
   v7.receiver = self;
   v7.super_class = SBLinkSystemActionExecutor;
-  v3 = [(SBAbstractSystemActionExecutor *)&v7 initWithSystemAction:a3];
+  v3 = [(SBAbstractSystemActionExecutor *)&v7 initWithSystemAction:action];
   if (v3)
   {
     SerialWithQoS = BSDispatchQueueCreateSerialWithQoS();
@@ -24,22 +24,22 @@
   return v3;
 }
 
-- (id)_previewWithCoordinator:(id)a3
+- (id)_previewWithCoordinator:(id)coordinator
 {
-  v5 = a3;
-  v6 = [(SBAbstractSystemActionExecutor *)self systemAction];
-  v7 = [v6 configuredAction];
+  coordinatorCopy = coordinator;
+  systemAction = [(SBAbstractSystemActionExecutor *)self systemAction];
+  configuredAction = [systemAction configuredAction];
   v8 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = v7;
-    v11 = [v10 intent];
-    v12 = [(SBSystemActionPreviewContext *)v11 linkAction];
-    if (!v12)
+    associatedBundleIdentifier = configuredAction;
+    intent = [associatedBundleIdentifier intent];
+    linkAction = [(SBSystemActionPreviewContext *)intent linkAction];
+    if (!linkAction)
     {
-      v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@) Cannot execute action without link action app intent: %@, configured action: %@", self, v11, v10];;
+      v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@) Cannot execute action without link action app intent: %@, configured action: %@", self, intent, associatedBundleIdentifier];;
       v32 = SBLogSystemActionExecution();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
       {
@@ -52,17 +52,17 @@
     }
   }
 
-  v10 = [v7 associatedBundleIdentifier];
-  if (v10)
+  associatedBundleIdentifier = [configuredAction associatedBundleIdentifier];
+  if (associatedBundleIdentifier)
   {
-    v13 = [v7 sectionIdentifier];
-    v14 = [v13 isEqualToString:@"Shortcuts"];
+    sectionIdentifier = [configuredAction sectionIdentifier];
+    v14 = [sectionIdentifier isEqualToString:@"Shortcuts"];
 
     v15 = self->_runnerClient;
     if (v15)
     {
       v16 = v15;
-      v11 = 0;
+      intent = 0;
 LABEL_20:
       prewarmQueue = self->_prewarmQueue;
       block[0] = MEMORY[0x277D85DD0];
@@ -71,7 +71,7 @@ LABEL_20:
       block[3] = &unk_2783A8C18;
       block[4] = self;
       dispatch_async(prewarmQueue, block);
-      if (v11)
+      if (intent)
       {
         v25 = 0;
       }
@@ -83,18 +83,18 @@ LABEL_20:
 
       if (v25 == 1)
       {
-        v11 = objc_alloc_init(SBSystemActionPreviewContext);
-        v26 = [v16 presentableRequester];
-        [(SBSystemActionPreviewContext *)v11 setClientIdentifier:v26];
+        intent = objc_alloc_init(SBSystemActionPreviewContext);
+        presentableRequester = [v16 presentableRequester];
+        [(SBSystemActionPreviewContext *)intent setClientIdentifier:presentableRequester];
 
-        v27 = [v16 presentableIdentifier];
-        [(SBSystemActionPreviewContext *)v11 setElementIdentifier:v27];
+        presentableIdentifier = [v16 presentableIdentifier];
+        [(SBSystemActionPreviewContext *)intent setElementIdentifier:presentableIdentifier];
 
-        v28 = [(SBSystemActionPreviewContext *)v11 userInfo];
-        [v28 setObject:v16 forKey:@"SBLinkSystemActionRunnerClient"];
+        userInfo = [(SBSystemActionPreviewContext *)intent userInfo];
+        [userInfo setObject:v16 forKey:@"SBLinkSystemActionRunnerClient"];
       }
 
-      v29 = [v5 showPreviewForAction:v6 withContext:v11];
+      v29 = [coordinatorCopy showPreviewForAction:systemAction withContext:intent];
       previewAssertion = self->_previewAssertion;
       self->_previewAssertion = v29;
 
@@ -103,7 +103,7 @@ LABEL_20:
     }
 
     v35 = a2;
-    v19 = [v5 previewContextForAction:v6];
+    v19 = [coordinatorCopy previewContextForAction:systemAction];
     v20 = v19;
     if (v19)
     {
@@ -117,13 +117,13 @@ LABEL_20:
 
     if (v21 == 1)
     {
-      v22 = [v19 userInfo];
-      v16 = [v22 objectForKey:@"SBLinkSystemActionRunnerClient"];
+      userInfo2 = [v19 userInfo];
+      v16 = [userInfo2 objectForKey:@"SBLinkSystemActionRunnerClient"];
 
       if (v16)
       {
-        v23 = [v16 action];
-        v34 = [v23 isEqual:v7];
+        action = [v16 action];
+        v34 = [action isEqual:configuredAction];
 
         if ((v34 & 1) == 0)
         {
@@ -132,14 +132,14 @@ LABEL_20:
 
         if (![v16 hasCompletedRun])
         {
-          v11 = v20;
+          intent = v20;
           goto LABEL_19;
         }
       }
     }
 
-    v16 = [objc_alloc(MEMORY[0x277D7A138]) initWithStaccatoAction:v7];
-    v11 = 0;
+    v16 = [objc_alloc(MEMORY[0x277D7A138]) initWithStaccatoAction:configuredAction];
+    intent = 0;
 LABEL_19:
     [v16 setDelegate:self];
     objc_storeStrong(&self->_runnerClient, v16);
@@ -147,14 +147,14 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@) Cannot execute action without bundle ID configured action: %@", self, v7];;
+  intent = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@) Cannot execute action without bundle ID configured action: %@", self, configuredAction];;
   v17 = SBLogSystemActionExecution();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
   {
-    [(SBLinkSystemActionExecutor *)v11 _previewWithCoordinator:v17];
+    [(SBLinkSystemActionExecutor *)intent _previewWithCoordinator:v17];
   }
 
-  v18 = SBSystemActionExecutionErrorCreate(1, v11);
+  v18 = SBSystemActionExecutionErrorCreate(1, intent);
 LABEL_29:
 
   return v18;
@@ -167,17 +167,17 @@ LABEL_29:
   self->_previewAssertion = 0;
 }
 
-- (id)_beginInteractiveExecutionWithContext:(id)a3 executionHandler:(id)a4 error:(id *)a5
+- (id)_beginInteractiveExecutionWithContext:(id)context executionHandler:(id)handler error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(SBCameraActivationManager *)v8 workspace];
+  handlerCopy = handler;
+  contextCopy = context;
+  workspace = [(SBCameraActivationManager *)contextCopy workspace];
   v10 = *MEMORY[0x277D7A5A0];
-  v11 = [(SBHomeScreenConfigurationServer *)v8 listener];
+  listener = [(SBHomeScreenConfigurationServer *)contextCopy listener];
 
-  if (v11)
+  if (listener)
   {
-    if (v11 != 1)
+    if (listener != 1)
     {
       goto LABEL_6;
     }
@@ -194,25 +194,25 @@ LABEL_29:
 
   v10 = v13;
 LABEL_6:
-  v14 = [(SBSystemActionPreviewInvalidatable *)self->_previewAssertion acquireAssertionForInvalidatingAfterDefaultTimeoutForActionPerformed];
+  acquireAssertionForInvalidatingAfterDefaultTimeoutForActionPerformed = [(SBSystemActionPreviewInvalidatable *)self->_previewAssertion acquireAssertionForInvalidatingAfterDefaultTimeoutForActionPerformed];
   previewAssertion = self->_previewAssertion;
   self->_previewAssertion = 0;
 
-  v16 = [(SBAbstractSystemActionExecutor *)self executionGeneration];
+  executionGeneration = [(SBAbstractSystemActionExecutor *)self executionGeneration];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __91__SBLinkSystemActionExecutor__beginInteractiveExecutionWithContext_executionHandler_error___block_invoke;
   v21[3] = &unk_2783BE778;
   v21[4] = self;
   v22 = v10;
-  v23 = v9;
-  v24 = v16;
-  v17 = v9;
+  v23 = workspace;
+  v24 = executionGeneration;
+  v17 = workspace;
   v18 = v10;
   v19 = MEMORY[0x223D6F7F0](v21);
-  v7[2](v7, v19);
+  handlerCopy[2](handlerCopy, v19);
 
-  return v14;
+  return acquireAssertionForInvalidatingAfterDefaultTimeoutForActionPerformed;
 }
 
 void __91__SBLinkSystemActionExecutor__beginInteractiveExecutionWithContext_executionHandler_error___block_invoke(uint64_t a1, int a2, void *a3)
@@ -234,31 +234,31 @@ void __91__SBLinkSystemActionExecutor__beginInteractiveExecutionWithContext_exec
   }
 }
 
-- (void)_finishExecutingWithResult:(id)a3
+- (void)_finishExecutingWithResult:(id)result
 {
   runnerClient = self->_runnerClient;
   self->_runnerClient = 0;
-  v5 = a3;
+  resultCopy = result;
 
   v6.receiver = self;
   v6.super_class = SBLinkSystemActionExecutor;
-  [(SBAbstractSystemActionExecutor *)&v6 _finishExecutingWithResult:v5];
+  [(SBAbstractSystemActionExecutor *)&v6 _finishExecutingWithResult:resultCopy];
 }
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
-  v6 = a6;
-  v8 = a5;
-  if (v6)
+  cancelledCopy = cancelled;
+  errorCopy = error;
+  if (cancelledCopy)
   {
-    v10 = v8;
-    v9 = SBSystemActionExecutionErrorCreateWithError(2, v8);
+    v10 = errorCopy;
+    v9 = SBSystemActionExecutionErrorCreateWithError(2, errorCopy);
 
-    v8 = v9;
+    errorCopy = v9;
   }
 
-  v11 = v8;
-  [(SBLinkSystemActionExecutor *)self _finishExecutingWithResult:v8];
+  v11 = errorCopy;
+  [(SBLinkSystemActionExecutor *)self _finishExecutingWithResult:errorCopy];
 }
 
 - (void)_previewWithCoordinator:(uint64_t)a3 .cold.1(void *a1, const char *a2, uint64_t a3)

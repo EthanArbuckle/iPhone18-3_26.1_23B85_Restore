@@ -1,20 +1,20 @@
 @interface AnalyticsRecordingOperation
-- (AnalyticsRecordingOperation)initWithMetricsEvents:(id)a3;
+- (AnalyticsRecordingOperation)initWithMetricsEvents:(id)events;
 - (void)run;
 @end
 
 @implementation AnalyticsRecordingOperation
 
-- (AnalyticsRecordingOperation)initWithMetricsEvents:(id)a3
+- (AnalyticsRecordingOperation)initWithMetricsEvents:(id)events
 {
-  v5 = a3;
+  eventsCopy = events;
   v9.receiver = self;
   v9.super_class = AnalyticsRecordingOperation;
   v6 = [(AnalyticsRecordingOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_events, a3);
+    objc_storeStrong(&v6->_events, events);
   }
 
   return v7;
@@ -30,19 +30,19 @@
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
+    shouldLog = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    v7 = [v4 OSLogObject];
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v4 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v6 &= 2u;
     }
@@ -63,7 +63,7 @@ LABEL_15:
         return;
       }
 
-      v7 = [NSString stringWithCString:v9 encoding:4, &v108, v80];
+      oSLogObject = [NSString stringWithCString:v9 encoding:4, &v108, v80];
       free(v9);
       SSFileLog();
     }
@@ -83,24 +83,24 @@ LABEL_15:
 
   v84 = eventTopicOverride;
   v10 = +[SSAccountStore defaultStore];
-  v11 = [v10 activeAccount];
+  activeAccount = [v10 activeAccount];
 
   v12 = +[SSVCookieStorage sharedStorage];
-  v82 = v11;
-  v13 = [v12 allCookiesForAccount:v11];
+  v82 = activeAccount;
+  v13 = [v12 allCookiesForAccount:activeAccount];
 
   v102 = 0u;
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
   v14 = v13;
-  v15 = [v14 countByEnumeratingWithState:&v100 objects:v107 count:16];
-  if (v15)
+  value = [v14 countByEnumeratingWithState:&v100 objects:v107 count:16];
+  if (value)
   {
     v16 = *v101;
     while (2)
     {
-      for (i = 0; i != v15; i = i + 1)
+      for (i = 0; i != value; i = i + 1)
       {
         if (*v101 != v16)
         {
@@ -108,18 +108,18 @@ LABEL_15:
         }
 
         v18 = *(*(&v100 + 1) + 8 * i);
-        v19 = [v18 name];
-        v20 = [v19 isEqualToString:@"xp_ci"];
+        name = [v18 name];
+        v20 = [name isEqualToString:@"xp_ci"];
 
         if (v20)
         {
-          v15 = [v18 value];
+          value = [v18 value];
           goto LABEL_27;
         }
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v100 objects:v107 count:16];
-      if (v15)
+      value = [v14 countByEnumeratingWithState:&v100 objects:v107 count:16];
+      if (value)
       {
         continue;
       }
@@ -130,7 +130,7 @@ LABEL_15:
 
 LABEL_27:
 
-  if ([v15 length])
+  if ([value length])
   {
     v81 = v14;
   }
@@ -160,14 +160,14 @@ LABEL_27:
           }
 
           v28 = *(*(&v96 + 1) + 8 * j);
-          v29 = [v28 name];
-          v30 = [v29 isEqualToString:@"xp_ci"];
+          name2 = [v28 name];
+          v30 = [name2 isEqualToString:@"xp_ci"];
 
           if (v30)
           {
-            v31 = [v28 value];
+            value2 = [v28 value];
 
-            v15 = v31;
+            value = value2;
             goto LABEL_39;
           }
         }
@@ -210,9 +210,9 @@ LABEL_39:
         if (objc_opt_isKindOfClass())
         {
           [v37 setTopic:v84];
-          if (v15)
+          if (value)
           {
-            [v37 setProperty:v15 forBodyKey:@"clientId"];
+            [v37 setProperty:value forBodyKey:@"clientId"];
           }
 
           if (self->_appBundleId)
@@ -259,8 +259,8 @@ LABEL_39:
           if (objc_opt_isKindOfClass())
           {
             v48 = [AMSMetricsEvent alloc];
-            v49 = [v47 bodyDictionary];
-            v50 = [v48 initWithUnderlyingDictionary:v49];
+            bodyDictionary = [v47 bodyDictionary];
+            v50 = [v48 initWithUnderlyingDictionary:bodyDictionary];
 
             [v41 enqueueEvent:v50];
           }
@@ -287,12 +287,12 @@ LABEL_39:
   v87 = 0;
   [(AnalyticsRecordingOperation *)self runSubOperation:v53 returningError:&v87];
   v42 = v87;
-  v54 = [v53 URLBag];
-  v55 = v54;
-  if (!v42 && v54)
+  uRLBag = [v53 URLBag];
+  v55 = uRLBag;
+  if (!v42 && uRLBag)
   {
     v51 = v53;
-    v56 = [v54 valueForKey:SSMetricsURLBagKey];
+    v56 = [uRLBag valueForKey:SSMetricsURLBagKey];
     if ([v56 count])
     {
       v57 = [[SSMetricsConfiguration alloc] initWithGlobalConfiguration:v56];
@@ -330,19 +330,19 @@ LABEL_94:
       v71 = +[SSLogConfig sharedConfig];
     }
 
-    v72 = [v71 shouldLog];
+    shouldLog2 = [v71 shouldLog];
     if ([v71 shouldLogToDisk])
     {
-      v73 = v72 | 2;
+      v73 = shouldLog2 | 2;
     }
 
     else
     {
-      v73 = v72;
+      v73 = shouldLog2;
     }
 
-    v74 = [v71 OSLogObject];
-    if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v71 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v75 = v73;
     }
@@ -373,7 +373,7 @@ LABEL_93:
         goto LABEL_94;
       }
 
-      v74 = [NSString stringWithCString:v79 encoding:4, &v108, v80];
+      oSLogObject2 = [NSString stringWithCString:v79 encoding:4, &v108, v80];
       free(v79);
       SSFileLog();
     }
@@ -388,19 +388,19 @@ LABEL_93:
     v62 = +[SSLogConfig sharedConfig];
   }
 
-  v63 = [v62 shouldLog];
+  shouldLog3 = [v62 shouldLog];
   if ([v62 shouldLogToDisk])
   {
-    v64 = v63 | 2;
+    v64 = shouldLog3 | 2;
   }
 
   else
   {
-    v64 = v63;
+    v64 = shouldLog3;
   }
 
-  v65 = [v62 OSLogObject];
-  if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
+  oSLogObject3 = [v62 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
   {
     v66 = v64;
   }
@@ -426,7 +426,7 @@ LABEL_93:
   v55 = v68;
   if (v70)
   {
-    v65 = [NSString stringWithCString:v70 encoding:4, &v108, v80];
+    oSLogObject3 = [NSString stringWithCString:v70 encoding:4, &v108, v80];
     free(v70);
     SSFileLog();
 LABEL_79:

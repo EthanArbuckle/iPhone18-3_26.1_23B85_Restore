@@ -3,21 +3,21 @@
 + (MAEdgeFilter)inferredRelationshipFilter;
 + (id)familyRelationshipLabels;
 + (id)filter;
-+ (id)filterWithRelationship:(id)a3;
-+ (id)filterWithRelationship:(id)a3 status:(unint64_t)a4;
-+ (id)relationshipSourceToString:(unsigned __int8)a3;
++ (id)filterWithRelationship:(id)relationship;
++ (id)filterWithRelationship:(id)relationship status:(unint64_t)status;
++ (id)relationshipSourceToString:(unsigned __int8)string;
 + (id)supportedRelationshipLabels;
-- (BOOL)hasProperties:(id)a3;
-- (PGGraphRelationshipEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7;
-- (PGGraphRelationshipEdge)initWithRelationship:(id)a3 fromPersonNode:(id)a4 toPersonNode:(id)a5 confidence:(double)a6 status:(unint64_t)a7 familyHolidayAttendanceRate:(double)a8 hasParentContactName:(BOOL)a9 hasSameFamilyNameAsMePerson:(BOOL)a10 numberOfMomentsAtHome:(unint64_t)a11 hasAnniversaryDate:(BOOL)a12 isTopTwoPersonsSocialGroup:(BOOL)a13 numberOfLoveEmojisExchanged:(unint64_t)a14 isTopPerson:(BOOL)a15 friendNightOutAttendanceRate:(double)a16 partnerTripAttendanceRate:(double)a17 friendsAndFamilyTripAttendanceRate:(double)a18 weekendAppearanceRatio:(double)a19 momentsAtWorkAppearanceRate:(double)a20 calendarAttendanceRatio:(double)a21 isPersonAgeDifferentThanMeNode:(BOOL)a22 isPersonOldEnoughToBeParentOrGrandparent:(BOOL)a23 isPersonYoungEnoughToBeMeNodeChild:(BOOL)a24 source:(unsigned __int8)a25;
-- (id)_readableStringForProperty:(id)a3;
+- (BOOL)hasProperties:(id)properties;
+- (PGGraphRelationshipEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphRelationshipEdge)initWithRelationship:(id)relationship fromPersonNode:(id)node toPersonNode:(id)personNode confidence:(double)confidence status:(unint64_t)status familyHolidayAttendanceRate:(double)rate hasParentContactName:(BOOL)name hasSameFamilyNameAsMePerson:(BOOL)self0 numberOfMomentsAtHome:(unint64_t)self1 hasAnniversaryDate:(BOOL)self2 isTopTwoPersonsSocialGroup:(BOOL)self3 numberOfLoveEmojisExchanged:(unint64_t)self4 isTopPerson:(BOOL)self5 friendNightOutAttendanceRate:(double)self6 partnerTripAttendanceRate:(double)self7 friendsAndFamilyTripAttendanceRate:(double)self8 weekendAppearanceRatio:(double)self9 momentsAtWorkAppearanceRate:(double)appearanceRate calendarAttendanceRatio:(double)attendanceRatio isPersonAgeDifferentThanMeNode:(BOOL)meNode isPersonOldEnoughToBeParentOrGrandparent:(BOOL)grandparent isPersonYoungEnoughToBeMeNodeChild:(BOOL)child source:(unsigned __int8)source;
+- (id)_readableStringForProperty:(id)property;
 - (id)edgeDescription;
 - (id)propertyDictionary;
 @end
 
 @implementation PGGraphRelationshipEdge
 
-- (id)_readableStringForProperty:(id)a3
+- (id)_readableStringForProperty:(id)property
 {
   v13[20] = *MEMORY[0x277D85DE8];
   v12[0] = @"confidence";
@@ -61,9 +61,9 @@
   v13[18] = @"RelationshipStatus";
   v13[19] = @"RelationshipSource";
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  propertyCopy = property;
   v5 = [v3 dictionaryWithObjects:v13 forKeys:v12 count:20];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:propertyCopy];
   v7 = v6;
   if (v6)
   {
@@ -72,7 +72,7 @@
 
   else
   {
-    v8 = v4;
+    v8 = propertyCopy;
   }
 
   v9 = v8;
@@ -84,13 +84,13 @@
 - (id)edgeDescription
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(PGGraphRelationshipEdge *)self propertyDictionary];
-  v4 = [MEMORY[0x277CBEB18] array];
+  propertyDictionary = [(PGGraphRelationshipEdge *)self propertyDictionary];
+  array = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = v3;
+  v5 = propertyDictionary;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
@@ -112,7 +112,7 @@
         v14 = [v12 stringWithFormat:@"%@", v13];
 
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %@", v11, v14];
-        [v4 addObject:v15];
+        [array addObject:v15];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -121,16 +121,16 @@
     while (v7);
   }
 
-  v16 = [v4 sortedArrayUsingSelector:sel_compare_];
+  v16 = [array sortedArrayUsingSelector:sel_compare_];
   v17 = MEMORY[0x277CCACA8];
   v26.receiver = self;
   v26.super_class = PGGraphRelationshipEdge;
-  v18 = [(PGGraphOptimizedEdge *)&v26 edgeDescription];
+  edgeDescription = [(PGGraphOptimizedEdge *)&v26 edgeDescription];
   relationship = self->_relationship;
   [(PGGraphRelationshipEdge *)self confidence];
   v21 = v20;
   v22 = [v16 componentsJoinedByString:{@", "}];
-  v23 = [v17 stringWithFormat:@"%@ (%@, confidence = %f, %@)", v18, relationship, v21, v22];
+  v23 = [v17 stringWithFormat:@"%@ (%@, confidence = %f, %@)", edgeDescription, relationship, v21, v22];
 
   v24 = *MEMORY[0x277D85DE8];
 
@@ -207,11 +207,11 @@
   return v12;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"confidence"];
     v7 = v6;
@@ -433,110 +433,110 @@ LABEL_45:
   return v35;
 }
 
-- (PGGraphRelationshipEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7
+- (PGGraphRelationshipEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain properties:(id)properties
 {
-  v10 = a7;
-  v61 = a5;
-  v59 = a4;
-  v11 = a3;
-  v12 = [v10 objectForKeyedSubscript:@"confidence"];
+  propertiesCopy = properties;
+  targetNodeCopy = targetNode;
+  nodeCopy = node;
+  labelCopy = label;
+  v12 = [propertiesCopy objectForKeyedSubscript:@"confidence"];
   [v12 doubleValue];
   v14 = v13;
 
-  v15 = [v10 objectForKeyedSubscript:@"rfamhol"];
+  v15 = [propertiesCopy objectForKeyedSubscript:@"rfamhol"];
   [v15 doubleValue];
   v17 = v16;
 
-  v18 = [v10 objectForKeyedSubscript:@"rparnam"];
-  v58 = [v18 BOOLValue];
+  v18 = [propertiesCopy objectForKeyedSubscript:@"rparnam"];
+  bOOLValue = [v18 BOOLValue];
 
-  v19 = [v10 objectForKeyedSubscript:@"rfamnam"];
-  v57 = [v19 BOOLValue];
+  v19 = [propertiesCopy objectForKeyedSubscript:@"rfamnam"];
+  bOOLValue2 = [v19 BOOLValue];
 
-  v20 = [v10 objectForKeyedSubscript:@"gwnummmtshome"];
-  v56 = [v20 unsignedIntegerValue];
+  v20 = [propertiesCopy objectForKeyedSubscript:@"gwnummmtshome"];
+  unsignedIntegerValue = [v20 unsignedIntegerValue];
 
-  v21 = [v10 objectForKeyedSubscript:@"rhasanniv"];
-  v55 = [v21 BOOLValue];
+  v21 = [propertiesCopy objectForKeyedSubscript:@"rhasanniv"];
+  bOOLValue3 = [v21 BOOLValue];
 
-  v22 = [v10 objectForKeyedSubscript:@"rtop2sg"];
-  v23 = [v22 BOOLValue];
+  v22 = [propertiesCopy objectForKeyedSubscript:@"rtop2sg"];
+  bOOLValue4 = [v22 BOOLValue];
 
-  v24 = [v10 objectForKeyedSubscript:@"rlovexch"];
-  v25 = [v24 unsignedIntegerValue];
+  v24 = [propertiesCopy objectForKeyedSubscript:@"rlovexch"];
+  unsignedIntegerValue2 = [v24 unsignedIntegerValue];
 
-  v26 = [v10 objectForKeyedSubscript:@"rtop"];
+  v26 = [propertiesCopy objectForKeyedSubscript:@"rtop"];
   LOBYTE(v24) = [v26 BOOLValue];
 
-  v27 = [v10 objectForKeyedSubscript:@"rfrndnghtout"];
+  v27 = [propertiesCopy objectForKeyedSubscript:@"rfrndnghtout"];
   [v27 doubleValue];
   v29 = v28;
 
-  v30 = [v10 objectForKeyedSubscript:@"rprtnrtrip"];
+  v30 = [propertiesCopy objectForKeyedSubscript:@"rprtnrtrip"];
   [v30 doubleValue];
   v32 = v31;
 
-  v33 = [v10 objectForKeyedSubscript:@"rfrfamtrip"];
+  v33 = [propertiesCopy objectForKeyedSubscript:@"rfrfamtrip"];
   [v33 doubleValue];
   v35 = v34;
 
-  v36 = [v10 objectForKeyedSubscript:@"rwkend"];
+  v36 = [propertiesCopy objectForKeyedSubscript:@"rwkend"];
   [v36 doubleValue];
   v38 = v37;
 
-  v39 = [v10 objectForKeyedSubscript:@"rwork"];
+  v39 = [propertiesCopy objectForKeyedSubscript:@"rwork"];
   [v39 doubleValue];
   v41 = v40;
 
-  v42 = [v10 objectForKeyedSubscript:@"rcal"];
+  v42 = [propertiesCopy objectForKeyedSubscript:@"rcal"];
   [v42 doubleValue];
   v44 = v43;
 
-  v45 = [v10 objectForKeyedSubscript:@"ragediff"];
+  v45 = [propertiesCopy objectForKeyedSubscript:@"ragediff"];
   LOBYTE(v42) = [v45 BOOLValue];
 
-  v46 = [v10 objectForKeyedSubscript:@"rold"];
+  v46 = [propertiesCopy objectForKeyedSubscript:@"rold"];
   LOBYTE(v45) = [v46 BOOLValue];
 
-  v47 = [v10 objectForKeyedSubscript:@"rchild"];
-  LOBYTE(a5) = [v47 BOOLValue];
+  v47 = [propertiesCopy objectForKeyedSubscript:@"rchild"];
+  LOBYTE(targetNode) = [v47 BOOLValue];
 
-  v48 = [v10 objectForKeyedSubscript:@"relstatus"];
-  v49 = [v48 unsignedIntegerValue];
+  v48 = [propertiesCopy objectForKeyedSubscript:@"relstatus"];
+  unsignedIntegerValue3 = [v48 unsignedIntegerValue];
 
-  v50 = [v10 objectForKeyedSubscript:@"relsource"];
+  v50 = [propertiesCopy objectForKeyedSubscript:@"relsource"];
 
-  LOBYTE(v10) = [v50 unsignedIntValue];
-  BYTE4(v54) = v10;
-  BYTE3(v54) = a5;
+  LOBYTE(propertiesCopy) = [v50 unsignedIntValue];
+  BYTE4(v54) = propertiesCopy;
+  BYTE3(v54) = targetNode;
   BYTE2(v54) = v45;
   BYTE1(v54) = v42;
   LOBYTE(v54) = v24;
-  BYTE1(v53) = v23;
-  LOBYTE(v53) = v55;
-  v51 = [PGGraphRelationshipEdge initWithRelationship:"initWithRelationship:fromPersonNode:toPersonNode:confidence:status:familyHolidayAttendanceRate:hasParentContactName:hasSameFamilyNameAsMePerson:numberOfMomentsAtHome:hasAnniversaryDate:isTopTwoPersonsSocialGroup:numberOfLoveEmojisExchanged:isTopPerson:friendNightOutAttendanceRate:partnerTripAttendanceRate:friendsAndFamilyTripAttendanceRate:weekendAppearanceRatio:momentsAtWorkAppearanceRate:calendarAttendanceRatio:isPersonAgeDifferentThanMeNode:isPersonOldEnoughToBeParentOrGrandparent:isPersonYoungEnoughToBeMeNodeChild:source:" fromPersonNode:v11 toPersonNode:v59 confidence:v61 status:v49 familyHolidayAttendanceRate:v58 hasParentContactName:v57 hasSameFamilyNameAsMePerson:v14 numberOfMomentsAtHome:v17 hasAnniversaryDate:v29 isTopTwoPersonsSocialGroup:v32 numberOfLoveEmojisExchanged:v35 isTopPerson:v38 friendNightOutAttendanceRate:v41 partnerTripAttendanceRate:v44 friendsAndFamilyTripAttendanceRate:v56 weekendAppearanceRatio:v53 momentsAtWorkAppearanceRate:v25 calendarAttendanceRatio:v54 isPersonAgeDifferentThanMeNode:? isPersonOldEnoughToBeParentOrGrandparent:? isPersonYoungEnoughToBeMeNodeChild:? source:?];
+  BYTE1(v53) = bOOLValue4;
+  LOBYTE(v53) = bOOLValue3;
+  v51 = [PGGraphRelationshipEdge initWithRelationship:"initWithRelationship:fromPersonNode:toPersonNode:confidence:status:familyHolidayAttendanceRate:hasParentContactName:hasSameFamilyNameAsMePerson:numberOfMomentsAtHome:hasAnniversaryDate:isTopTwoPersonsSocialGroup:numberOfLoveEmojisExchanged:isTopPerson:friendNightOutAttendanceRate:partnerTripAttendanceRate:friendsAndFamilyTripAttendanceRate:weekendAppearanceRatio:momentsAtWorkAppearanceRate:calendarAttendanceRatio:isPersonAgeDifferentThanMeNode:isPersonOldEnoughToBeParentOrGrandparent:isPersonYoungEnoughToBeMeNodeChild:source:" fromPersonNode:labelCopy toPersonNode:nodeCopy confidence:targetNodeCopy status:unsignedIntegerValue3 familyHolidayAttendanceRate:bOOLValue hasParentContactName:bOOLValue2 hasSameFamilyNameAsMePerson:v14 numberOfMomentsAtHome:v17 hasAnniversaryDate:v29 isTopTwoPersonsSocialGroup:v32 numberOfLoveEmojisExchanged:v35 isTopPerson:v38 friendNightOutAttendanceRate:v41 partnerTripAttendanceRate:v44 friendsAndFamilyTripAttendanceRate:unsignedIntegerValue weekendAppearanceRatio:v53 momentsAtWorkAppearanceRate:unsignedIntegerValue2 calendarAttendanceRatio:v54 isPersonAgeDifferentThanMeNode:? isPersonOldEnoughToBeParentOrGrandparent:? isPersonYoungEnoughToBeMeNodeChild:? source:?];
 
   return v51;
 }
 
-- (PGGraphRelationshipEdge)initWithRelationship:(id)a3 fromPersonNode:(id)a4 toPersonNode:(id)a5 confidence:(double)a6 status:(unint64_t)a7 familyHolidayAttendanceRate:(double)a8 hasParentContactName:(BOOL)a9 hasSameFamilyNameAsMePerson:(BOOL)a10 numberOfMomentsAtHome:(unint64_t)a11 hasAnniversaryDate:(BOOL)a12 isTopTwoPersonsSocialGroup:(BOOL)a13 numberOfLoveEmojisExchanged:(unint64_t)a14 isTopPerson:(BOOL)a15 friendNightOutAttendanceRate:(double)a16 partnerTripAttendanceRate:(double)a17 friendsAndFamilyTripAttendanceRate:(double)a18 weekendAppearanceRatio:(double)a19 momentsAtWorkAppearanceRate:(double)a20 calendarAttendanceRatio:(double)a21 isPersonAgeDifferentThanMeNode:(BOOL)a22 isPersonOldEnoughToBeParentOrGrandparent:(BOOL)a23 isPersonYoungEnoughToBeMeNodeChild:(BOOL)a24 source:(unsigned __int8)a25
+- (PGGraphRelationshipEdge)initWithRelationship:(id)relationship fromPersonNode:(id)node toPersonNode:(id)personNode confidence:(double)confidence status:(unint64_t)status familyHolidayAttendanceRate:(double)rate hasParentContactName:(BOOL)name hasSameFamilyNameAsMePerson:(BOOL)self0 numberOfMomentsAtHome:(unint64_t)self1 hasAnniversaryDate:(BOOL)self2 isTopTwoPersonsSocialGroup:(BOOL)self3 numberOfLoveEmojisExchanged:(unint64_t)self4 isTopPerson:(BOOL)self5 friendNightOutAttendanceRate:(double)self6 partnerTripAttendanceRate:(double)self7 friendsAndFamilyTripAttendanceRate:(double)self8 weekendAppearanceRatio:(double)self9 momentsAtWorkAppearanceRate:(double)appearanceRate calendarAttendanceRatio:(double)attendanceRatio isPersonAgeDifferentThanMeNode:(BOOL)meNode isPersonOldEnoughToBeParentOrGrandparent:(BOOL)grandparent isPersonYoungEnoughToBeMeNodeChild:(BOOL)child source:(unsigned __int8)source
 {
-  v25 = a10;
-  v39 = a3;
+  personCopy = person;
+  relationshipCopy = relationship;
   v50.receiver = self;
   v50.super_class = PGGraphRelationshipEdge;
-  v40 = [(PGGraphEdge *)&v50 initWithSourceNode:a4 targetNode:a5];
+  v40 = [(PGGraphEdge *)&v50 initWithSourceNode:node targetNode:personNode];
   if (v40)
   {
-    v41 = [v39 copy];
+    v41 = [relationshipCopy copy];
     relationship = v40->_relationship;
     v40->_relationship = v41;
 
-    v40->_confidence = a6;
-    v40->_status = a7;
-    v40->_familyHolidayAttendanceRate = a8;
-    *(v40 + 48) = *(v40 + 48) & 0xFE | a9;
-    if (v25)
+    v40->_confidence = confidence;
+    v40->_status = status;
+    v40->_familyHolidayAttendanceRate = rate;
+    *(v40 + 48) = *(v40 + 48) & 0xFE | name;
+    if (personCopy)
     {
       v43 = 2;
     }
@@ -547,8 +547,8 @@ LABEL_45:
     }
 
     *(v40 + 48) = *(v40 + 48) & 0xFD | v43;
-    *(v40 + 10) = a11;
-    if (a12)
+    *(v40 + 10) = home;
+    if (date)
     {
       v44 = 4;
     }
@@ -559,7 +559,7 @@ LABEL_45:
     }
 
     *(v40 + 48) = *(v40 + 48) & 0xFB | v44;
-    if (a13)
+    if (group)
     {
       v45 = 8;
     }
@@ -570,8 +570,8 @@ LABEL_45:
     }
 
     *(v40 + 48) = *(v40 + 48) & 0xF7 | v45;
-    *(v40 + 11) = a14;
-    if (a15)
+    *(v40 + 11) = exchanged;
+    if (topPerson)
     {
       v46 = 16;
     }
@@ -582,13 +582,13 @@ LABEL_45:
     }
 
     *(v40 + 48) = *(v40 + 48) & 0xEF | v46;
-    v40->_friendNightOutAttendanceRate = a16;
-    v40->_partnerTripAttendanceRate = a17;
-    v40->_friendsAndFamilyTripAttendanceRate = a18;
-    v40->_weekendAppearanceRatio = a19;
-    v40->_momentsAtWorkAppearanceRate = a20;
-    v40->_calendarAttendanceRatio = a21;
-    if (a22)
+    v40->_friendNightOutAttendanceRate = attendanceRate;
+    v40->_partnerTripAttendanceRate = tripAttendanceRate;
+    v40->_friendsAndFamilyTripAttendanceRate = familyTripAttendanceRate;
+    v40->_weekendAppearanceRatio = ratio;
+    v40->_momentsAtWorkAppearanceRate = appearanceRate;
+    v40->_calendarAttendanceRatio = attendanceRatio;
+    if (meNode)
     {
       v47 = 32;
     }
@@ -599,7 +599,7 @@ LABEL_45:
     }
 
     *(v40 + 48) = *(v40 + 48) & 0xDF | v47;
-    if (a23)
+    if (grandparent)
     {
       v48 = 64;
     }
@@ -610,8 +610,8 @@ LABEL_45:
     }
 
     *(v40 + 48) = *(v40 + 48) & 0xBF | v48;
-    v40->_isPersonYoungEnoughToBeMeNodeChild = a24;
-    v40->_source = a25;
+    v40->_isPersonYoungEnoughToBeMeNodeChild = child;
+    v40->_source = source;
   }
 
   return v40;
@@ -638,12 +638,12 @@ LABEL_45:
   return v4;
 }
 
-+ (id)filterWithRelationship:(id)a3 status:(unint64_t)a4
++ (id)filterWithRelationship:(id)relationship status:(unint64_t)status
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = [a1 filterWithRelationship:a3];
+  v5 = [self filterWithRelationship:relationship];
   v11 = @"relstatus";
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:status];
   v12[0] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v5 filterBySettingProperties:v7];
@@ -653,11 +653,11 @@ LABEL_45:
   return v8;
 }
 
-+ (id)filterWithRelationship:(id)a3
++ (id)filterWithRelationship:(id)relationship
 {
   v3 = MEMORY[0x277D22C20];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithLabel:v4 domain:300];
+  relationshipCopy = relationship;
+  v5 = [[v3 alloc] initWithLabel:relationshipCopy domain:300];
 
   return v5;
 }
@@ -693,15 +693,15 @@ LABEL_45:
 + (id)filter
 {
   v3 = objc_alloc(MEMORY[0x277D22C20]);
-  v4 = [a1 supportedRelationshipLabels];
-  v5 = [v3 initWithLabels:v4 domain:300 properties:MEMORY[0x277CBEC10]];
+  supportedRelationshipLabels = [self supportedRelationshipLabels];
+  v5 = [v3 initWithLabels:supportedRelationshipLabels domain:300 properties:MEMORY[0x277CBEC10]];
 
   return v5;
 }
 
-+ (id)relationshipSourceToString:(unsigned __int8)a3
++ (id)relationshipSourceToString:(unsigned __int8)string
 {
-  if (a3)
+  if (string)
   {
     return @"Megadome";
   }

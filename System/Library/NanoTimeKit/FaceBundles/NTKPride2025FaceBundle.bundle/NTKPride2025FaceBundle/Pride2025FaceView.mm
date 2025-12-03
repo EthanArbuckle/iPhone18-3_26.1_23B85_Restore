@@ -1,20 +1,20 @@
 @interface Pride2025FaceView
 + (Class)_timeViewClass;
-- (_TtC22NTKPride2025FaceBundle17Pride2025FaceView)initWithCoder:(id)a3;
-- (_TtC22NTKPride2025FaceBundle17Pride2025FaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (_TtC22NTKPride2025FaceBundle17Pride2025FaceView)initWithCoder:(id)coder;
+- (_TtC22NTKPride2025FaceBundle17Pride2025FaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadSnapshotContentViews;
 - (void)_unloadSnapshotContentViews;
 - (void)dealloc;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation Pride2025FaceView
 
-- (_TtC22NTKPride2025FaceBundle17Pride2025FaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (_TtC22NTKPride2025FaceBundle17Pride2025FaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  if (a5)
+  if (identifier)
   {
     v7 = sub_12784();
     v9 = v8;
@@ -26,12 +26,12 @@
     v9 = 0;
   }
 
-  v10 = a4;
-  sub_5034(a3, a4, v7, v9);
+  deviceCopy = device;
+  sub_5034(style, device, v7, v9);
   return result;
 }
 
-- (_TtC22NTKPride2025FaceBundle17Pride2025FaceView)initWithCoder:(id)a3
+- (_TtC22NTKPride2025FaceBundle17Pride2025FaceView)initWithCoder:(id)coder
 {
   *&self->NTKAnalogFaceView_opaque[OBJC_IVAR____TtC22NTKPride2025FaceBundle17Pride2025FaceView_layerController] = 0;
   *&self->NTKAnalogFaceView_opaque[OBJC_IVAR____TtC22NTKPride2025FaceBundle17Pride2025FaceView_token] = 0;
@@ -51,15 +51,15 @@
   if (v4)
   {
     v5 = objc_opt_self();
-    v6 = self;
+    selfCopy = self;
     v7 = v4;
-    v8 = [v5 sharedInstance];
-    [v8 stopUpdatesForToken:v7];
+    sharedInstance = [v5 sharedInstance];
+    [sharedInstance stopUpdatesForToken:v7];
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
   }
 
   v10.receiver = self;
@@ -69,7 +69,7 @@
 
 - (void)_loadSnapshotContentViews
 {
-  v2 = self;
+  selfCopy = self;
   sub_58FC();
 }
 
@@ -96,9 +96,9 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  if (a4)
+  if (slot)
   {
     v6 = sub_12784();
     v8 = v7;
@@ -110,24 +110,24 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
-  sub_5E10(a3, v6, v8);
+  viewCopy = view;
+  selfCopy = self;
+  sub_5E10(view, v6, v8);
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  v8 = self;
-  sub_6004(a4, a5, a3);
+  selfCopy = self;
+  sub_6004(mode, editMode, fraction);
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7 = sub_3EA8(&qword_1E5C0, qword_146F0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v14 - v9;
-  if (a3)
+  if (date)
   {
     sub_12684();
     v11 = sub_126A4();
@@ -140,8 +140,8 @@
     (*(*(v12 - 8) + 56))(v10, 1, 1, v12);
   }
 
-  v13 = self;
-  sub_61CC(v10, a4);
+  selfCopy = self;
+  sub_61CC(v10, duration);
 
   sub_4508(v10, &qword_1E5C0, qword_146F0);
 }

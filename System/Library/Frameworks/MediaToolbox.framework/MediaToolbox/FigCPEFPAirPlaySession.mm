@@ -1,42 +1,42 @@
 @interface FigCPEFPAirPlaySession
-- (FigCPEFPAirPlaySession)initWithFairPlayContext:(unsigned int)a3 contentInfo:(id)a4 routeInfo:(id)a5 playbackSession:(OpaqueFigEndpointPlaybackSession *)a6 mediaControlUUID:(id)a7;
-- (FigCPEFPAirPlaySession)initWithFairPlayContext:(unsigned int)a3 protectionInfo:(id)a4 routeInfo:(id)a5 playbackSession:(OpaqueFigEndpointPlaybackSession *)a6 mediaControlUUID:(id)a7;
-- (FigCPEFPAirPlaySession)initWithFairPlayContext:(unsigned int)a3 routeInfo:(id)a4 playbackSession:(OpaqueFigEndpointPlaybackSession *)a5 mediaControlUUID:(id)a6;
-- (id)createPicRequestWithError:(id *)a3;
+- (FigCPEFPAirPlaySession)initWithFairPlayContext:(unsigned int)context contentInfo:(id)info routeInfo:(id)routeInfo playbackSession:(OpaqueFigEndpointPlaybackSession *)session mediaControlUUID:(id)d;
+- (FigCPEFPAirPlaySession)initWithFairPlayContext:(unsigned int)context protectionInfo:(id)info routeInfo:(id)routeInfo playbackSession:(OpaqueFigEndpointPlaybackSession *)session mediaControlUUID:(id)d;
+- (FigCPEFPAirPlaySession)initWithFairPlayContext:(unsigned int)context routeInfo:(id)info playbackSession:(OpaqueFigEndpointPlaybackSession *)session mediaControlUUID:(id)d;
+- (id)createPicRequestWithError:(id *)error;
 - (id)legacySinfs;
-- (id)mediaControlParamsWithStoreResponse:(id)a3;
-- (id)sicWithPic:(id)a3;
-- (void)authorizeItemCompletionHandler_objc:(id *)a3 picData:(__CFData *)a4 playerGUID:(__CFString *)a5 error:(int)a6;
-- (void)beginSessionWithCompletionQueue:(id)a3 completionHandler:(id)a4;
+- (id)mediaControlParamsWithStoreResponse:(id)response;
+- (id)sicWithPic:(id)pic;
+- (void)authorizeItemCompletionHandler_objc:(id *)handler_objc picData:(__CFData *)data playerGUID:(__CFString *)d error:(int)error;
+- (void)beginSessionWithCompletionQueue:(id)queue completionHandler:(id)handler;
 - (void)dealloc;
 - (void)endSession;
 @end
 
 @implementation FigCPEFPAirPlaySession
 
-- (FigCPEFPAirPlaySession)initWithFairPlayContext:(unsigned int)a3 protectionInfo:(id)a4 routeInfo:(id)a5 playbackSession:(OpaqueFigEndpointPlaybackSession *)a6 mediaControlUUID:(id)a7
+- (FigCPEFPAirPlaySession)initWithFairPlayContext:(unsigned int)context protectionInfo:(id)info routeInfo:(id)routeInfo playbackSession:(OpaqueFigEndpointPlaybackSession *)session mediaControlUUID:(id)d
 {
-  v8 = [(FigCPEFPAirPlaySession *)self initWithFairPlayContext:*&a3 routeInfo:a5 playbackSession:a6 mediaControlUUID:a7];
+  v8 = [(FigCPEFPAirPlaySession *)self initWithFairPlayContext:*&context routeInfo:routeInfo playbackSession:session mediaControlUUID:d];
   if (v8)
   {
-    v8->_protectionInfo = a4;
+    v8->_protectionInfo = info;
   }
 
   return v8;
 }
 
-- (FigCPEFPAirPlaySession)initWithFairPlayContext:(unsigned int)a3 contentInfo:(id)a4 routeInfo:(id)a5 playbackSession:(OpaqueFigEndpointPlaybackSession *)a6 mediaControlUUID:(id)a7
+- (FigCPEFPAirPlaySession)initWithFairPlayContext:(unsigned int)context contentInfo:(id)info routeInfo:(id)routeInfo playbackSession:(OpaqueFigEndpointPlaybackSession *)session mediaControlUUID:(id)d
 {
-  v8 = [(FigCPEFPAirPlaySession *)self initWithFairPlayContext:*&a3 routeInfo:a5 playbackSession:a6 mediaControlUUID:a7];
+  v8 = [(FigCPEFPAirPlaySession *)self initWithFairPlayContext:*&context routeInfo:routeInfo playbackSession:session mediaControlUUID:d];
   if (v8)
   {
-    v8->_contentInfo = a4;
+    v8->_contentInfo = info;
   }
 
   return v8;
 }
 
-- (FigCPEFPAirPlaySession)initWithFairPlayContext:(unsigned int)a3 routeInfo:(id)a4 playbackSession:(OpaqueFigEndpointPlaybackSession *)a5 mediaControlUUID:(id)a6
+- (FigCPEFPAirPlaySession)initWithFairPlayContext:(unsigned int)context routeInfo:(id)info playbackSession:(OpaqueFigEndpointPlaybackSession *)session mediaControlUUID:(id)d
 {
   v14.receiver = self;
   v14.super_class = FigCPEFPAirPlaySession;
@@ -45,16 +45,16 @@
   if (v10)
   {
     v10->_invalid = 0;
-    v10->_fairPlayContext = a3;
+    v10->_fairPlayContext = context;
     v10->_protectionInfo = 0;
     v10->_contentInfo = 0;
-    v10->_playbackSession = CFRetain(a5);
-    v11->_mediaControlUUID = a6;
+    v10->_playbackSession = CFRetain(session);
+    v11->_mediaControlUUID = d;
     v11->_fairPlayDeallocator = FigFairPlayCopyDisposeStorageAllocator();
     v11->_vodkaVersion = 0;
-    if (a4)
+    if (info)
     {
-      v12 = [a4 objectForKey:@"AirPlayVodkaVersion"];
+      v12 = [info objectForKey:@"AirPlayVodkaVersion"];
       if (v12)
       {
         v11->_vodkaVersion = [v12 unsignedIntValue];
@@ -138,10 +138,10 @@ void *__93__FigCPEFPAirPlaySession_initWithFairPlayContext_routeInfo_playbackSes
   return v3;
 }
 
-- (void)authorizeItemCompletionHandler_objc:(id *)a3 picData:(__CFData *)a4 playerGUID:(__CFString *)a5 error:(int)a6
+- (void)authorizeItemCompletionHandler_objc:(id *)handler_objc picData:(__CFData *)data playerGUID:(__CFString *)d error:(int)error
 {
-  var2 = a3->var2;
-  var3 = a3->var3;
+  var2 = handler_objc->var2;
+  var3 = handler_objc->var3;
   if (self->_invalid)
   {
     v16[0] = MEMORY[0x1E69E9820];
@@ -155,19 +155,19 @@ LABEL_14:
     return;
   }
 
-  if (a6)
+  if (error)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __87__FigCPEFPAirPlaySession_authorizeItemCompletionHandler_objc_picData_playerGUID_error___block_invoke;
     v21[3] = &unk_1E74998D0;
-    v22 = a6;
+    errorCopy = error;
     v21[4] = var3;
     v8 = v21;
     goto LABEL_14;
   }
 
-  if (![(__CFString *)a5 length]|| ![(__CFData *)a4 length])
+  if (![(__CFString *)d length]|| ![(__CFData *)data length])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -178,7 +178,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v12 = [(FigCPEFPAirPlaySession *)self sicWithPic:a4];
+  v12 = [(FigCPEFPAirPlaySession *)self sicWithPic:data];
   if (!v12)
   {
     v18[0] = MEMORY[0x1E69E9820];
@@ -202,7 +202,7 @@ LABEL_14:
   }
 
   v14 = objc_alloc_init(sSSPlayInfoRequestContext);
-  [v14 setPlayerGUID:a5];
+  [v14 setPlayerGUID:d];
   [v14 setSICData:v13];
   if (self->_protectionInfo)
   {
@@ -346,15 +346,15 @@ uint64_t __87__FigCPEFPAirPlaySession_authorizeItemCompletionHandler_objc_picDat
   return v3(v1, v2);
 }
 
-- (void)beginSessionWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (void)beginSessionWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
   serializationQueue = self->_serializationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__FigCPEFPAirPlaySession_beginSessionWithCompletionQueue_completionHandler___block_invoke;
   block[3] = &unk_1E7499998;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = queue;
+  block[6] = handler;
   block[4] = self;
   dispatch_async(serializationQueue, block);
 }
@@ -473,11 +473,11 @@ uint64_t __76__FigCPEFPAirPlaySession_beginSessionWithCompletionQueue_completion
   dispatch_sync(serializationQueue, block);
 }
 
-- (id)createPicRequestWithError:(id *)a3
+- (id)createPicRequestWithError:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
   v39 = 0;
-  v40 = 0;
+  unsignedLongValue = 0;
   v41 = 0;
   FigNote_AllowInternalDefaultLogs();
   OUTLINED_FUNCTION_18_7();
@@ -491,13 +491,13 @@ uint64_t __76__FigCPEFPAirPlaySession_beginSessionWithCompletionQueue_completion
     goto LABEL_30;
   }
 
-  v38 = a3;
+  errorCopy = error;
   if (protectionInfo)
   {
     LODWORD(v39) = 1;
     LODWORD(v41) = [(NSDictionary *)protectionInfo count];
     v7 = malloc_type_calloc(v41, 0x20uLL, 0x1050040E8CD93FDuLL);
-    v40 = v7;
+    unsignedLongValue = v7;
     v8 = self->_protectionInfo;
     v14 = OUTLINED_FUNCTION_1_202(v7, v9, v10, v11, v12, v13);
     if (v14)
@@ -522,16 +522,16 @@ uint64_t __76__FigCPEFPAirPlaySession_beginSessionWithCompletionQueue_completion
           {
             *(v7 + 8 * v16) = [LegacySinfFromSinfExtensions length];
             ExtendedSinfFromSinfExtensions = [LegacySinfFromSinfExtensions bytes];
-            v7 = v40;
-            *(v40 + 4 * v16 + 1) = ExtendedSinfFromSinfExtensions;
+            v7 = unsignedLongValue;
+            *(unsignedLongValue + 4 * v16 + 1) = ExtendedSinfFromSinfExtensions;
           }
 
           if (v27)
           {
             *(v7 + 8 * v16 + 4) = [v27 length];
             ExtendedSinfFromSinfExtensions = [v27 bytes];
-            v7 = v40;
-            *(v40 + 4 * v16 + 3) = ExtendedSinfFromSinfExtensions;
+            v7 = unsignedLongValue;
+            *(unsignedLongValue + 4 * v16 + 3) = ExtendedSinfFromSinfExtensions;
           }
 
           ++v16;
@@ -550,7 +550,7 @@ uint64_t __76__FigCPEFPAirPlaySession_beginSessionWithCompletionQueue_completion
   v28 = [(NSDictionary *)contentInfo objectForKey:0x1F0B529D8];
   if (v28)
   {
-    v40 = [v28 unsignedLongValue];
+    unsignedLongValue = [v28 unsignedLongValue];
   }
 
   v29 = [(NSDictionary *)self->_contentInfo objectForKey:0x1F0B52A18];
@@ -582,13 +582,13 @@ LABEL_27:
   {
     v35 = v33;
     v34 = 0;
-    a3 = v38;
+    error = errorCopy;
   }
 
   else
   {
     v34 = CFDataCreateWithBytesNoCopy(*MEMORY[0x1E695E480], 0, 0, self->_fairPlayDeallocator);
-    a3 = v38;
+    error = errorCopy;
     if (v34)
     {
       v35 = 0;
@@ -603,10 +603,10 @@ LABEL_27:
 LABEL_30:
   if (v39 == 1)
   {
-    free(v40);
+    free(unsignedLongValue);
   }
 
-  if (a3 && v35)
+  if (error && v35)
   {
     if (dword_1EAF176B0)
     {
@@ -615,23 +615,23 @@ LABEL_30:
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:FigFairPlayMapFairPlayErrorToCPEError(v35) userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:FigFairPlayMapFairPlayErrorToCPEError(v35) userInfo:0];
   }
 
   return v34;
 }
 
-- (id)sicWithPic:(id)a3
+- (id)sicWithPic:(id)pic
 {
   *&length[1] = 0;
-  if (!a3 || (fairPlaySession = self->_fairPlaySession) == 0 || !self->_fairPlayDeallocator)
+  if (!pic || (fairPlaySession = self->_fairPlaySession) == 0 || !self->_fairPlayDeallocator)
   {
 LABEL_11:
     v8 = 0;
     return v8;
   }
 
-  OflR7BMjGok3A7mYQFt9(fairPlaySession, [a3 bytes], objc_msgSend(a3, "length"), 0, 0, &length[1]);
+  OflR7BMjGok3A7mYQFt9(fairPlaySession, [pic bytes], objc_msgSend(pic, "length"), 0, 0, &length[1]);
   v6 = FAIRPLAY_CALL_LOG(v5);
   v7 = *&length[1];
   if (v6)
@@ -657,13 +657,13 @@ LABEL_9:
   return v8;
 }
 
-- (id)mediaControlParamsWithStoreResponse:(id)a3
+- (id)mediaControlParamsWithStoreResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   *&length[1] = 0;
-  if (!a3)
+  if (!response)
   {
-    v6 = 0;
+    responseCopy2 = 0;
     fairPlaySession = 0;
     goto LABEL_12;
   }
@@ -679,14 +679,14 @@ LABEL_9:
     if (self->_protectionInfo)
     {
       fairPlaySession = *MEMORY[0x1E6961A40];
-      v6 = a3;
+      responseCopy2 = response;
 LABEL_9:
-      v3 = [MEMORY[0x1E695DF20] dictionaryWithObject:v6 forKey:fairPlaySession];
+      responseCopy = [MEMORY[0x1E695DF20] dictionaryWithObject:responseCopy2 forKey:fairPlaySession];
       goto LABEL_10;
     }
 
     length[0] = 0;
-    TBGzuU3p5n1n(fairPlaySession, [a3 bytes], objc_msgSend(a3, "length"), &length[1], length);
+    TBGzuU3p5n1n(fairPlaySession, [response bytes], objc_msgSend(response, "length"), &length[1], length);
     if (FAIRPLAY_CALL_LOG(v7))
     {
 LABEL_13:
@@ -699,15 +699,15 @@ LABEL_13:
       v8 = CFDataCreateWithBytesNoCopy(*MEMORY[0x1E695E480], *&length[1], length[0], self->_fairPlayDeallocator);
       if (v8)
       {
-        v6 = v8;
+        responseCopy2 = v8;
         *&length[1] = 0;
         goto LABEL_9;
       }
     }
   }
 
-  v6 = 0;
-  v3 = 0;
+  responseCopy2 = 0;
+  responseCopy = 0;
 LABEL_10:
   if (*&length[1])
   {
@@ -717,7 +717,7 @@ LABEL_10:
 
 LABEL_12:
 
-  return v3;
+  return responseCopy;
 }
 
 @end

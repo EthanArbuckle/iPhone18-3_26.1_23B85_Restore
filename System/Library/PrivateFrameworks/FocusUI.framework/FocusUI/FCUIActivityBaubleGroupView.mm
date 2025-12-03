@@ -1,35 +1,35 @@
 @interface FCUIActivityBaubleGroupView
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (FCUIActivityBaubleGroupView)initWithBaubleDescriptions:(id)a3 baubleGroupType:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (FCUIActivityBaubleGroupView)initWithBaubleDescriptions:(id)descriptions baubleGroupType:(int64_t)type;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setContentMode:(int64_t)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setContentMode:(int64_t)mode;
 @end
 
 @implementation FCUIActivityBaubleGroupView
 
-- (FCUIActivityBaubleGroupView)initWithBaubleDescriptions:(id)a3 baubleGroupType:(int64_t)a4
+- (FCUIActivityBaubleGroupView)initWithBaubleDescriptions:(id)descriptions baubleGroupType:(int64_t)type
 {
-  v6 = a3;
+  descriptionsCopy = descriptions;
   v25.receiver = self;
   v25.super_class = FCUIActivityBaubleGroupView;
   v7 = [(FCUIActivityBaubleGroupView *)&v25 init];
   v8 = v7;
   if (v7)
   {
-    v7->_baubleGroupType = a4;
+    v7->_baubleGroupType = type;
     v7->_adjustsFontForContentSizeCategory = 1;
-    v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
-    if ([v6 count])
+    v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(descriptionsCopy, "count")}];
+    if ([descriptionsCopy count])
     {
       v10 = 0;
       v21 = xmmword_24BB4EF90;
       do
       {
-        v11 = [v6 objectAtIndexedSubscript:{v10, v21}];
+        v11 = [descriptionsCopy objectAtIndexedSubscript:{v10, v21}];
         v12 = [FCUIActivityBaubleView alloc];
-        if (a4 == 1)
+        if (type == 1)
         {
           v13 = [v11 completeDescriptionWithReferencePointSize:15.0 maximumPointSize:24.0 referenceDimension:35.0];
           v14 = xmmword_24BB4EFA0;
@@ -89,7 +89,7 @@
         ++v10;
       }
 
-      while (v10 < [v6 count]);
+      while (v10 < [descriptionsCopy count]);
     }
 
     baubleViews = v8->_baubleViews;
@@ -99,14 +99,14 @@
   return v8;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   BSRectWithSize();
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(FCUIActivityBaubleGroupView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(FCUIActivityBaubleGroupView *)self _shouldReverseLayoutDirection];
   v13 = 0;
   v36 = 0;
   v37 = &v36;
@@ -128,8 +128,8 @@
     v33 = v9;
     v34 = v11;
     v27 = v16;
-    v28 = self;
-    v35 = v12;
+    selfCopy = self;
+    v35 = _shouldReverseLayoutDirection;
     v29 = &v36;
     v30 = v13;
     [v16 performWithoutAdditionalScaling:v26];
@@ -195,15 +195,15 @@ double __44__FCUIActivityBaubleGroupView_sizeThatFits___block_invoke_2(uint64_t 
   return result;
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v7.receiver = self;
   v7.super_class = FCUIActivityBaubleGroupView;
-  v5 = [(FCUIActivityBaubleGroupView *)&v7 contentMode];
+  contentMode = [(FCUIActivityBaubleGroupView *)&v7 contentMode];
   v6.receiver = self;
   v6.super_class = FCUIActivityBaubleGroupView;
-  [(FCUIActivityBaubleGroupView *)&v6 setContentMode:a3];
-  if (v5 != a3)
+  [(FCUIActivityBaubleGroupView *)&v6 setContentMode:mode];
+  if (contentMode != mode)
   {
     [(FCUIActivityBaubleGroupView *)self setNeedsLayout];
   }
@@ -219,10 +219,10 @@ double __44__FCUIActivityBaubleGroupView_sizeThatFits___block_invoke_2(uint64_t 
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(FCUIActivityBaubleGroupView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(FCUIActivityBaubleGroupView *)self traitCollection];
+  [traitCollection displayScale];
 
-  v12 = [(FCUIActivityBaubleGroupView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(FCUIActivityBaubleGroupView *)self _shouldReverseLayoutDirection];
   v13 = 1.0;
   if ([(FCUIActivityBaubleGroupView *)self _shouldScaleAspectFitBaubleViews])
   {
@@ -250,7 +250,7 @@ double __44__FCUIActivityBaubleGroupView_sizeThatFits___block_invoke_2(uint64_t 
     {
       v19 = [(NSArray *)self->_baubleViews objectAtIndexedSubscript:v18];
       [v19 setAdditionalScaleFactor:v13];
-      FrameForBaubleAtIndex(v19, v18, self->_baubleGroupType, v12, v4, v6, v8, v10);
+      FrameForBaubleAtIndex(v19, v18, self->_baubleGroupType, _shouldReverseLayoutDirection, v4, v6, v8, v10);
       UIRectIntegralWithScale();
       [v19 setFrame:?];
 
@@ -261,12 +261,12 @@ double __44__FCUIActivityBaubleGroupView_sizeThatFits___block_invoke_2(uint64_t 
   }
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -302,15 +302,15 @@ double __44__FCUIActivityBaubleGroupView_sizeThatFits___block_invoke_2(uint64_t 
 - (BOOL)adjustForContentSizeCategoryChange
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(FCUIActivityBaubleGroupView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(FCUIActivityBaubleGroupView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryCompareToCategory(v4, self->_preferredContentSizeCategory) == NSOrderedSame)
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, self->_preferredContentSizeCategory) == NSOrderedSame)
   {
     goto LABEL_12;
   }
 
-  objc_storeStrong(&self->_preferredContentSizeCategory, v4);
+  objc_storeStrong(&self->_preferredContentSizeCategory, preferredContentSizeCategory);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;

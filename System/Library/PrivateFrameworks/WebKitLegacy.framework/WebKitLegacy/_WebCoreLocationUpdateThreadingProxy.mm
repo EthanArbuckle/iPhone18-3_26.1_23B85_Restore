@@ -1,26 +1,26 @@
 @interface _WebCoreLocationUpdateThreadingProxy
-- (_WebCoreLocationUpdateThreadingProxy)initWithProvider:(id)a3;
-- (void)positionChanged:(void *)a3;
+- (_WebCoreLocationUpdateThreadingProxy)initWithProvider:(id)provider;
+- (void)positionChanged:(void *)changed;
 @end
 
 @implementation _WebCoreLocationUpdateThreadingProxy
 
-- (_WebCoreLocationUpdateThreadingProxy)initWithProvider:(id)a3
+- (_WebCoreLocationUpdateThreadingProxy)initWithProvider:(id)provider
 {
   v5.receiver = self;
   v5.super_class = _WebCoreLocationUpdateThreadingProxy;
   result = [(_WebCoreLocationUpdateThreadingProxy *)&v5 init];
   if (result)
   {
-    result->_provider = a3;
+    result->_provider = provider;
   }
 
   return result;
 }
 
-- (void)positionChanged:(void *)a3
+- (void)positionChanged:(void *)changed
 {
-  v3 = [[WebGeolocationPosition alloc] initWithGeolocationPosition:a3];
+  v3 = [[WebGeolocationPosition alloc] initWithGeolocationPosition:changed];
   v4 = v3;
   v6 = v3;
   if (v3)

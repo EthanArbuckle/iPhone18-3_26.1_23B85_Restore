@@ -1,10 +1,10 @@
 @interface MSCameraFolder
-- (BOOL)validAVAsset:(id)a3;
-- (MSCameraFolder)initWithFSURL:(id)a3 name:(id)a4 parent:(id)a5 device:(id)a6;
-- (id)folderMatchingPath:(id)a3;
+- (BOOL)validAVAsset:(id)asset;
+- (MSCameraFolder)initWithFSURL:(id)l name:(id)name parent:(id)parent device:(id)device;
+- (id)folderMatchingPath:(id)path;
 - (void)cancelReflight;
 - (void)dealloc;
-- (void)enumerateContentWithOptions:(id)a3;
+- (void)enumerateContentWithOptions:(id)options;
 - (void)issueReflight;
 - (void)reflightSync;
 @end
@@ -13,29 +13,29 @@
 
 - (void)issueReflight
 {
-  v3 = [(MSCameraItem *)self device];
-  v4 = [v3 reflightPaused];
+  device = [(MSCameraItem *)self device];
+  reflightPaused = [device reflightPaused];
 
-  if (v4)
+  if (reflightPaused)
   {
     __ICOSLogCreate();
-    v5 = [(MSCameraItem *)self name];
-    if ([v5 length]>= 0x15)
+    name = [(MSCameraItem *)self name];
+    if ([name length]>= 0x15)
     {
-      v6 = [v5 substringWithRange:0, 18];
+      v6 = [name substringWithRange:0, 18];
       v7 = [v6 stringByAppendingString:@".."];
 
-      v5 = v7;
+      name = v7;
     }
 
     v8 = [NSString stringWithFormat:@"Device Paused Reflight"];
     v9 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = v5;
+      v10 = name;
       v11 = v9;
       *buf = 136446466;
-      v31 = [v5 UTF8String];
+      uTF8String = [name UTF8String];
       v32 = 2114;
       v33 = v8;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -45,67 +45,67 @@ LABEL_16:
     return;
   }
 
-  v12 = [(MSCameraFolder *)self reflightTimer];
+  reflightTimer = [(MSCameraFolder *)self reflightTimer];
 
-  if (!v12)
+  if (!reflightTimer)
   {
     __ICOSLogCreate();
-    v13 = [(MSCameraItem *)self name];
-    if ([v13 length] >= 0x15)
+    name2 = [(MSCameraItem *)self name];
+    if ([name2 length] >= 0x15)
     {
-      v14 = [v13 substringWithRange:{0, 18}];
+      v14 = [name2 substringWithRange:{0, 18}];
       v15 = [v14 stringByAppendingString:@".."];
 
-      v13 = v15;
+      name2 = v15;
     }
 
     v16 = [NSString stringWithFormat:@"Reflight Timer Started"];
     v17 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = v13;
+      v18 = name2;
       v19 = v17;
       *buf = 136446466;
-      v31 = [v13 UTF8String];
+      uTF8String = [name2 UTF8String];
       v32 = 2114;
       v33 = v16;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    v20 = [(MSCameraFolder *)self reflightQueue];
-    v21 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v20);
+    reflightQueue = [(MSCameraFolder *)self reflightQueue];
+    v21 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, reflightQueue);
     [(MSCameraFolder *)self setReflightTimer:v21];
 
-    v22 = [(MSCameraFolder *)self reflightQueue];
+    reflightQueue2 = [(MSCameraFolder *)self reflightQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __31__MSCameraFolder_issueReflight__block_invoke;
     block[3] = &unk_100024778;
     block[4] = self;
-    dispatch_async(v22, block);
+    dispatch_async(reflightQueue2, block);
 
-    v23 = [(MSCameraFolder *)self reflightTimer];
+    reflightTimer2 = [(MSCameraFolder *)self reflightTimer];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = __31__MSCameraFolder_issueReflight__block_invoke_26;
     handler[3] = &unk_100024778;
     handler[4] = self;
-    dispatch_source_set_event_handler(v23, handler);
+    dispatch_source_set_event_handler(reflightTimer2, handler);
 
-    v24 = [(MSCameraFolder *)self reflightTimer];
+    reflightTimer3 = [(MSCameraFolder *)self reflightTimer];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = __31__MSCameraFolder_issueReflight__block_invoke_30;
     v27[3] = &unk_100024778;
     v27[4] = self;
-    dispatch_source_set_cancel_handler(v24, v27);
+    dispatch_source_set_cancel_handler(reflightTimer3, v27);
 
-    v25 = [(MSCameraFolder *)self reflightTimer];
+    reflightTimer4 = [(MSCameraFolder *)self reflightTimer];
     v26 = dispatch_time(0, 2000000000);
-    dispatch_source_set_timer(v25, v26, 0x77359400uLL, 0x5F5E100uLL);
+    dispatch_source_set_timer(reflightTimer4, v26, 0x77359400uLL, 0x5F5E100uLL);
 
-    v5 = [(MSCameraFolder *)self reflightTimer];
-    dispatch_activate(v5);
+    name = [(MSCameraFolder *)self reflightTimer];
+    dispatch_activate(name);
     goto LABEL_16;
   }
 
@@ -231,51 +231,51 @@ id __31__MSCameraFolder_issueReflight__block_invoke_30(uint64_t a1)
 
 - (void)reflightSync
 {
-  v3 = [(MSCameraFolder *)self reflightTimer];
+  reflightTimer = [(MSCameraFolder *)self reflightTimer];
 
-  if (!v3)
+  if (!reflightTimer)
   {
     __ICOSLogCreate();
-    v4 = [(MSCameraItem *)self name];
-    if ([v4 length] >= 0x15)
+    name = [(MSCameraItem *)self name];
+    if ([name length] >= 0x15)
     {
-      v5 = [v4 substringWithRange:{0, 18}];
+      v5 = [name substringWithRange:{0, 18}];
       v6 = [v5 stringByAppendingString:@".."];
 
-      v4 = v6;
+      name = v6;
     }
 
     v7 = [NSString stringWithFormat:@"Reflight Timer Started"];
     v8 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = v4;
+      v9 = name;
       v10 = v8;
       *buf = 136446466;
-      v19 = [v4 UTF8String];
+      uTF8String = [name UTF8String];
       v20 = 2114;
       v21 = v7;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    v11 = [(MSCameraFolder *)self reflightQueue];
-    v12 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v11);
+    reflightQueue = [(MSCameraFolder *)self reflightQueue];
+    v12 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, reflightQueue);
     [(MSCameraFolder *)self setReflightTimer:v12];
 
-    v13 = [(MSCameraFolder *)self reflightTimer];
+    reflightTimer2 = [(MSCameraFolder *)self reflightTimer];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = __30__MSCameraFolder_reflightSync__block_invoke;
     handler[3] = &unk_100024778;
     handler[4] = self;
-    dispatch_source_set_event_handler(v13, handler);
+    dispatch_source_set_event_handler(reflightTimer2, handler);
 
-    v14 = [(MSCameraFolder *)self reflightTimer];
+    reflightTimer3 = [(MSCameraFolder *)self reflightTimer];
     v15 = dispatch_time(0, 0);
-    dispatch_source_set_timer(v14, v15, 0x77359400uLL, 0x5F5E100uLL);
+    dispatch_source_set_timer(reflightTimer3, v15, 0x77359400uLL, 0x5F5E100uLL);
 
-    v16 = [(MSCameraFolder *)self reflightTimer];
-    dispatch_activate(v16);
+    reflightTimer4 = [(MSCameraFolder *)self reflightTimer];
+    dispatch_activate(reflightTimer4);
   }
 }
 
@@ -322,35 +322,35 @@ void __30__MSCameraFolder_reflightSync__block_invoke_2(uint64_t a1)
   [v11 reflight];
 }
 
-- (MSCameraFolder)initWithFSURL:(id)a3 name:(id)a4 parent:(id)a5 device:(id)a6
+- (MSCameraFolder)initWithFSURL:(id)l name:(id)name parent:(id)parent device:(id)device
 {
-  v10 = a3;
-  v11 = a4;
+  lCopy = l;
+  nameCopy = name;
   v32.receiver = self;
   v32.super_class = MSCameraFolder;
-  v12 = [(MSCameraItem *)&v32 initWithFSURL:v10 name:v11 parent:a5 device:a6];
+  v12 = [(MSCameraItem *)&v32 initWithFSURL:lCopy name:nameCopy parent:parent device:device];
   if (v12)
   {
     v13 = v12;
     v14 = ICCameraItemProxyTypeFolder;
-    v15 = [(MSCameraItem *)v12 cameraItemProxy];
-    [v15 setType:v14];
+    cameraItemProxy = [(MSCameraItem *)v12 cameraItemProxy];
+    [cameraItemProxy setType:v14];
 
-    if (!a5)
+    if (!parent)
     {
-      v16 = [(MSCameraItem *)v13 cameraItemProxy];
-      [v16 setParentObjectHandle:4294967294];
+      cameraItemProxy2 = [(MSCameraItem *)v13 cameraItemProxy];
+      [cameraItemProxy2 setParentObjectHandle:4294967294];
 
-      v17 = [(MSCameraItem *)v13 cameraItemProxy];
-      [v17 setTopLevel:1];
+      cameraItemProxy3 = [(MSCameraItem *)v13 cameraItemProxy];
+      [cameraItemProxy3 setTopLevel:1];
     }
 
-    v18 = [NSString stringWithFormat:@"%@-reflightQueue", v11];
-    v19 = dispatch_queue_create([v18 UTF8String], 0);
+    nameCopy = [NSString stringWithFormat:@"%@-reflightQueue", nameCopy];
+    v19 = dispatch_queue_create([nameCopy UTF8String], 0);
     [(MSCameraFolder *)v13 setReflightQueue:v19];
 
-    v20 = [v10 path];
-    -[MSCameraItem setFilesystemChangeDescriptor:](v13, "setFilesystemChangeDescriptor:", open([v20 UTF8String], 0x8000));
+    path = [lCopy path];
+    -[MSCameraItem setFilesystemChangeDescriptor:](v13, "setFilesystemChangeDescriptor:", open([path UTF8String], 0x8000));
     if ([(MSCameraItem *)v13 filesystemChangeDescriptor]== -1)
     {
       v25 = 0;
@@ -360,26 +360,26 @@ void __30__MSCameraFolder_reflightSync__block_invoke_2(uint64_t a1)
     {
       v21 = dispatch_source_create(&_dispatch_source_type_vnode, [(MSCameraItem *)v13 filesystemChangeDescriptor], 0x17FuLL, &_dispatch_main_q);
       [(MSCameraItem *)v13 setFilesystemChangeSource:v21];
-      v22 = [(MSCameraItem *)v13 filesystemChangeSource];
+      filesystemChangeSource = [(MSCameraItem *)v13 filesystemChangeSource];
       handler[0] = _NSConcreteStackBlock;
       handler[1] = 3221225472;
       handler[2] = __51__MSCameraFolder_initWithFSURL_name_parent_device___block_invoke;
       handler[3] = &unk_100024778;
       v23 = v13;
       v31 = v23;
-      dispatch_source_set_event_handler(v22, handler);
+      dispatch_source_set_event_handler(filesystemChangeSource, handler);
 
-      v24 = [(MSCameraItem *)v23 filesystemChangeSource];
+      filesystemChangeSource2 = [(MSCameraItem *)v23 filesystemChangeSource];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = __51__MSCameraFolder_initWithFSURL_name_parent_device___block_invoke_2;
       v28[3] = &unk_100024778;
       v25 = v23;
       v29 = v25;
-      dispatch_source_set_cancel_handler(v24, v28);
+      dispatch_source_set_cancel_handler(filesystemChangeSource2, v28);
 
-      v26 = [(MSCameraItem *)v25 filesystemChangeSource];
-      dispatch_resume(v26);
+      filesystemChangeSource3 = [(MSCameraItem *)v25 filesystemChangeSource];
+      dispatch_resume(filesystemChangeSource3);
 
       v13 = v21;
     }
@@ -415,12 +415,12 @@ uint64_t __51__MSCameraFolder_initWithFSURL_name_parent_device___block_invoke_2(
 
 - (void)cancelReflight
 {
-  v3 = [(MSCameraFolder *)self reflightTimer];
+  reflightTimer = [(MSCameraFolder *)self reflightTimer];
 
-  if (v3)
+  if (reflightTimer)
   {
-    v4 = [(MSCameraFolder *)self reflightTimer];
-    dispatch_source_cancel(v4);
+    reflightTimer2 = [(MSCameraFolder *)self reflightTimer];
+    dispatch_source_cancel(reflightTimer2);
   }
 }
 
@@ -434,17 +434,17 @@ uint64_t __51__MSCameraFolder_initWithFSURL_name_parent_device___block_invoke_2(
   [(MSCameraItem *)&v3 dealloc];
 }
 
-- (void)enumerateContentWithOptions:(id)a3
+- (void)enumerateContentWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = dispatch_get_global_queue(33, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __46__MSCameraFolder_enumerateContentWithOptions___block_invoke;
   v7[3] = &unk_100024750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = optionsCopy;
+  selfCopy = self;
+  v6 = optionsCopy;
   dispatch_async(v5, v7);
 }
 
@@ -843,24 +843,24 @@ void __72__MSCameraFolder_createValidAssetFromURL_attemptCount_notify_preflight_
   [v3 addInitiatedOperation:{v6, v7, v8, v9, v10, v11}];
 }
 
-- (BOOL)validAVAsset:(id)a3
+- (BOOL)validAVAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
   memset(&v18, 0, sizeof(v18));
-  v4 = [v3 path];
-  v5 = lstat([v4 UTF8String], &v18);
+  path = [assetCopy path];
+  v5 = lstat([path UTF8String], &v18);
   st_size = v18.st_size;
 
   if (!v5 && st_size >= 1)
   {
-    v7 = [v3 lastPathComponent];
+    lastPathComponent = [assetCopy lastPathComponent];
     v8 = dispatch_semaphore_create(0);
     v9 = +[NSMutableArray array];
-    v10 = [[AVURLAsset alloc] initWithURL:v3 options:0];
+    v10 = [[AVURLAsset alloc] initWithURL:assetCopy options:0];
     [v9 addObject:@"tracks"];
     if (v10)
     {
@@ -869,7 +869,7 @@ void __72__MSCameraFolder_createValidAssetFromURL_attemptCount_notify_preflight_
       v13[2] = __31__MSCameraFolder_validAVAsset___block_invoke;
       v13[3] = &unk_100024A08;
       v14 = v10;
-      v15 = v7;
+      v15 = lastPathComponent;
       v17 = &v19;
       v16 = v8;
       [v14 loadValuesAsynchronouslyForKeys:v9 completionHandler:v13];
@@ -957,21 +957,21 @@ void __31__MSCameraFolder_validAVAsset___block_invoke(uint64_t a1)
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (id)folderMatchingPath:(id)a3
+- (id)folderMatchingPath:(id)path
 {
-  v4 = [a3 pathComponents];
-  v5 = [NSMutableArray arrayWithArray:v4];
+  pathComponents = [path pathComponents];
+  v5 = [NSMutableArray arrayWithArray:pathComponents];
 
   if ([v5 count] == 1)
   {
-    v6 = [(MSCameraItem *)self name];
+    name = [(MSCameraItem *)self name];
     v7 = [v5 objectAtIndexedSubscript:0];
-    v8 = [v6 isEqualToString:v7];
+    v8 = [name isEqualToString:v7];
 
-    v9 = 0;
+    selfCopy = 0;
     if (v8)
     {
-      v9 = self;
+      selfCopy = self;
     }
   }
 
@@ -979,10 +979,10 @@ void __31__MSCameraFolder_validAVAsset___block_invoke(uint64_t a1)
   {
     [v5 removeObjectAtIndex:0];
     v10 = [NSString pathWithComponents:v5];
-    v9 = [(MSCameraFolder *)self folderMatchingPath:v10];
+    selfCopy = [(MSCameraFolder *)self folderMatchingPath:v10];
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

@@ -6,11 +6,11 @@
 
 - (id)hm_description
 {
-  v1 = a1;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = selfCopy;
   }
 
   else
@@ -33,22 +33,22 @@
   }
 
   v7 = MEMORY[0x1E696AEC0];
-  [v1 notifyOnEntry];
+  [selfCopy notifyOnEntry];
   v8 = HMFBooleanToString();
-  [v1 notifyOnExit];
+  [selfCopy notifyOnExit];
   v9 = HMFBooleanToString();
-  v10 = [v1 referenceFrame];
-  if (v10 >= 3)
+  referenceFrame = [selfCopy referenceFrame];
+  if (referenceFrame >= 3)
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown reference frame: %ld", v10];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown reference frame: %ld", referenceFrame];
   }
 
   else
   {
-    v11 = off_1E754CA78[v10];
+    v11 = off_1E754CA78[referenceFrame];
   }
 
-  v12 = [v7 stringWithFormat:@"%@-(notifyOnEntry:%@)-(notifyOnExit:%@)-(Ref:%@)-%@", v1, v8, v9, v11, v6];
+  v12 = [v7 stringWithFormat:@"%@-(notifyOnEntry:%@)-(notifyOnExit:%@)-(Ref:%@)-%@", selfCopy, v8, v9, v11, v6];
 
   return v12;
 }

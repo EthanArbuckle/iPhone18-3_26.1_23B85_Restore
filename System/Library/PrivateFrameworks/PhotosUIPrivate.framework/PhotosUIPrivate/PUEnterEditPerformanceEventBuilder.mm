@@ -16,11 +16,11 @@
   [(PUEnterEditPerformanceEventBuilder *)self autoCalcDuration];
   v10 = v8 + v9;
   v56[0] = @"assetAge";
-  v55 = [(PUEnterEditPerformanceEventBuilder *)self asset];
-  v11 = [v55 creationDate];
-  v12 = [MEMORY[0x1E695DF00] date];
-  v54 = v11;
-  [v12 timeIntervalSinceDate:v11];
+  asset = [(PUEnterEditPerformanceEventBuilder *)self asset];
+  creationDate = [asset creationDate];
+  date = [MEMORY[0x1E695DF00] date];
+  v54 = creationDate;
+  [date timeIntervalSinceDate:creationDate];
   if (v13 <= 0.0)
   {
     v14 = @"future";
@@ -66,20 +66,20 @@
   v57[0] = v53;
   v56[1] = @"assetDuration";
   v16 = MEMORY[0x1E696AD98];
-  v52 = [(PUEnterEditPerformanceEventBuilder *)self asset];
-  [v52 duration];
+  asset2 = [(PUEnterEditPerformanceEventBuilder *)self asset];
+  [asset2 duration];
   v51 = [v16 numberWithDouble:?];
   v57[1] = v51;
   v56[2] = @"assetPixelCount";
   v17 = MEMORY[0x1E696AD98];
-  v50 = [(PUEnterEditPerformanceEventBuilder *)self asset];
-  v18 = [v50 pixelWidth];
-  v49 = [(PUEnterEditPerformanceEventBuilder *)self asset];
-  v48 = [v17 numberWithUnsignedInteger:{objc_msgSend(v49, "pixelHeight") * v18}];
+  asset3 = [(PUEnterEditPerformanceEventBuilder *)self asset];
+  pixelWidth = [asset3 pixelWidth];
+  asset4 = [(PUEnterEditPerformanceEventBuilder *)self asset];
+  v48 = [v17 numberWithUnsignedInteger:{objc_msgSend(asset4, "pixelHeight") * pixelWidth}];
   v57[2] = v48;
   v56[3] = @"assetSubtypes";
-  v47 = [(PUEnterEditPerformanceEventBuilder *)self isEditingWithRaw];
-  if (v47)
+  isEditingWithRaw = [(PUEnterEditPerformanceEventBuilder *)self isEditingWithRaw];
+  if (isEditingWithRaw)
   {
     v19 = @"raw";
   }
@@ -87,16 +87,16 @@
   else
   {
     v20 = MEMORY[0x1E6978630];
-    v40 = [(PUEnterEditPerformanceEventBuilder *)self asset];
-    v19 = [v20 descriptionForMediaSubtypes:{objc_msgSend(v40, "mediaSubtypes")}];
+    asset5 = [(PUEnterEditPerformanceEventBuilder *)self asset];
+    v19 = [v20 descriptionForMediaSubtypes:{objc_msgSend(asset5, "mediaSubtypes")}];
   }
 
   v41 = v19;
   v57[3] = v19;
   v56[4] = @"assetType";
   v21 = MEMORY[0x1E6978630];
-  v46 = [(PUEnterEditPerformanceEventBuilder *)self asset];
-  v45 = [v21 descriptionForMediaType:{objc_msgSend(v46, "mediaType")}];
+  asset6 = [(PUEnterEditPerformanceEventBuilder *)self asset];
+  v45 = [v21 descriptionForMediaType:{objc_msgSend(asset6, "mediaType")}];
   v57[4] = v45;
   v56[5] = @"autoCalcDuration";
   v22 = MEMORY[0x1E696AD98];
@@ -104,13 +104,13 @@
   v44 = [v22 numberWithDouble:?];
   v57[5] = v44;
   v56[6] = @"bundleIdentifier";
-  v43 = [MEMORY[0x1E696AAE8] mainBundle];
-  v42 = [v43 bundleIdentifier];
-  v57[6] = v42;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v57[6] = bundleIdentifier;
   v56[7] = @"iCPLEnabled";
   v23 = MEMORY[0x1E696AD98];
-  v24 = [(PUEnterEditPerformanceEventBuilder *)self asset];
-  v25 = [v23 numberWithBool:{objc_msgSend(v24, "isCloudPhotoLibraryEnabled")}];
+  asset7 = [(PUEnterEditPerformanceEventBuilder *)self asset];
+  v25 = [v23 numberWithBool:{objc_msgSend(asset7, "isCloudPhotoLibraryEnabled")}];
   v57[7] = v25;
   v56[8] = @"isFirstSinceBoot";
   v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[PUEnterEditPerformanceEventBuilder isFirstSinceBoot](self, "isFirstSinceBoot")}];
@@ -143,7 +143,7 @@
   v57[14] = v37;
   v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:15];
 
-  if (!v47)
+  if (!isEditingWithRaw)
   {
   }
 

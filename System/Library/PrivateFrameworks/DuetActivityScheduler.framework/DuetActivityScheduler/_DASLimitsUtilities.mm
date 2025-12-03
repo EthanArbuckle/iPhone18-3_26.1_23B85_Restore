@@ -1,10 +1,10 @@
 @interface _DASLimitsUtilities
-+ (int64_t)bitmaskForLimitationName:(id)a3;
++ (int64_t)bitmaskForLimitationName:(id)name;
 @end
 
 @implementation _DASLimitsUtilities
 
-+ (int64_t)bitmaskForLimitationName:(id)a3
++ (int64_t)bitmaskForLimitationName:(id)name
 {
   v11[4] = *MEMORY[0x1E69E9840];
   v10[0] = @"Configuration";
@@ -16,9 +16,9 @@
   v11[2] = &unk_1F2ED49B8;
   v11[3] = &unk_1F2ED49D0;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 dictionaryWithObjects:v11 forKeys:v10 count:4];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:nameCopy];
 
   if (v6)
   {

@@ -38,7 +38,7 @@
           v28 = 1024;
           v29 = 30;
           v30 = 2080;
-          v31 = [(NSString *)v3 UTF8String];
+          uTF8String = [(NSString *)v3 UTF8String];
           _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Cannot open libAccessibility.dylib (%s)", &v24, 0x26u);
         }
       }
@@ -81,9 +81,9 @@ LABEL_18:
     v9 = [MEMORY[0x1E696AAE8] bundleWithPath:v8];
     if (([v9 isLoaded] & 1) == 0)
     {
-      v18 = [v9 load];
+      load = [v9 load];
       ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
-      if (v18)
+      if (load)
       {
         if (ErrorLogLevelForModule < 7)
         {
@@ -134,7 +134,7 @@ LABEL_18:
   }
 
 LABEL_12:
-  v10 = [NSClassFromString(&cfstr_Axvisualalertm.isa) sharedVisualAlertManager];
+  nSClassFromString(&cfstr_Axvisualalertm.isa) = [NSClassFromString(&cfstr_Axvisualalertm.isa) sharedVisualAlertManager];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v11 = VRTraceErrorLogLevelToCSTR();
@@ -148,13 +148,13 @@ LABEL_12:
       v28 = 1024;
       v29 = 50;
       v30 = 2112;
-      v31 = v10;
+      uTF8String = nSClassFromString(&cfstr_Axvisualalertm.isa);
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d visualAlertManager=%@", &v24, 0x26u);
     }
   }
 
   v13 = objc_alloc_init(VCCameraTorchManager);
-  [v10 startForAlertTypes:2 cameraTorchManager:v13];
+  [nSClassFromString(&cfstr_Axvisualalertm.isa) startForAlertTypes:2 cameraTorchManager:v13];
 
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {

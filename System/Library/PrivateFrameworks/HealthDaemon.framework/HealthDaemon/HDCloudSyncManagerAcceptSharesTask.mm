@@ -1,49 +1,49 @@
 @interface HDCloudSyncManagerAcceptSharesTask
-- (HDCloudSyncManagerAcceptSharesTask)initWithManager:(id)a3 context:(id)a4 shareSetupMetadata:(id)a5 accessibilityAssertion:(id)a6 completion:(id)a7;
-- (id)pipelineForRepository:(id)a3;
+- (HDCloudSyncManagerAcceptSharesTask)initWithManager:(id)manager context:(id)context shareSetupMetadata:(id)metadata accessibilityAssertion:(id)assertion completion:(id)completion;
+- (id)pipelineForRepository:(id)repository;
 @end
 
 @implementation HDCloudSyncManagerAcceptSharesTask
 
-- (HDCloudSyncManagerAcceptSharesTask)initWithManager:(id)a3 context:(id)a4 shareSetupMetadata:(id)a5 accessibilityAssertion:(id)a6 completion:(id)a7
+- (HDCloudSyncManagerAcceptSharesTask)initWithManager:(id)manager context:(id)context shareSetupMetadata:(id)metadata accessibilityAssertion:(id)assertion completion:(id)completion
 {
-  v13 = a5;
+  metadataCopy = metadata;
   v17.receiver = self;
   v17.super_class = HDCloudSyncManagerAcceptSharesTask;
-  v14 = [(HDCloudSyncManagerPipelineTask *)&v17 initWithManager:a3 context:a4 accessibilityAssertion:a6 completion:a7];
+  v14 = [(HDCloudSyncManagerPipelineTask *)&v17 initWithManager:manager context:context accessibilityAssertion:assertion completion:completion];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_shareSetupMetadata, a5);
+    objc_storeStrong(&v14->_shareSetupMetadata, metadata);
   }
 
   return v15;
 }
 
-- (id)pipelineForRepository:(id)a3
+- (id)pipelineForRepository:(id)repository
 {
-  v4 = a3;
+  repositoryCopy = repository;
   v5 = [HDCloudSyncPipeline alloc];
-  v6 = [(HDCloudSyncManagerRepositoryTask *)self context];
-  v7 = [(HDCloudSyncManagerPipelineTask *)self accessibilityAssertion];
-  v8 = [(HDCloudSyncManagerRepositoryTask *)self manager];
-  v9 = [v8 queue];
-  v10 = [(HDCloudSyncPipeline *)v5 initForContext:v6 repository:v4 accessibilityAssertion:v7 queue:v9];
+  context = [(HDCloudSyncManagerRepositoryTask *)self context];
+  accessibilityAssertion = [(HDCloudSyncManagerPipelineTask *)self accessibilityAssertion];
+  manager = [(HDCloudSyncManagerRepositoryTask *)self manager];
+  queue = [manager queue];
+  v10 = [(HDCloudSyncPipeline *)v5 initForContext:context repository:repositoryCopy accessibilityAssertion:accessibilityAssertion queue:queue];
 
-  v11 = [v10 operationGroup];
-  v12 = [v11 defaultConfiguration];
-  [v12 setQualityOfService:17];
+  operationGroup = [v10 operationGroup];
+  defaultConfiguration = [operationGroup defaultConfiguration];
+  [defaultConfiguration setQualityOfService:17];
 
   v13 = [HDCloudSyncAcceptSharesOperation alloc];
-  v14 = [v10 operationConfiguration];
-  v15 = [(HDCloudSyncShareSetupMetadata *)self->_shareSetupMetadata shareURLs];
-  v16 = [(HDCloudSyncShareSetupMetadata *)self->_shareSetupMetadata invitationTokensByShareURL];
-  v17 = [(HDCloudSyncAcceptSharesOperation *)v13 initWithConfiguration:v14 cloudState:0 shareURLs:v15 invitationTokensByShareURL:v16];
+  operationConfiguration = [v10 operationConfiguration];
+  shareURLs = [(HDCloudSyncShareSetupMetadata *)self->_shareSetupMetadata shareURLs];
+  invitationTokensByShareURL = [(HDCloudSyncShareSetupMetadata *)self->_shareSetupMetadata invitationTokensByShareURL];
+  v17 = [(HDCloudSyncAcceptSharesOperation *)v13 initWithConfiguration:operationConfiguration cloudState:0 shareURLs:shareURLs invitationTokensByShareURL:invitationTokensByShareURL];
   acceptSharesOperation = self->_acceptSharesOperation;
   self->_acceptSharesOperation = v17;
 
-  v19 = [(HDCloudSyncOperation *)self->_acceptSharesOperation asPipelineStage];
-  [v10 addStage:v19];
+  asPipelineStage = [(HDCloudSyncOperation *)self->_acceptSharesOperation asPipelineStage];
+  [v10 addStage:asPipelineStage];
 
   return v10;
 }

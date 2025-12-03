@@ -1,27 +1,27 @@
 @interface SCATModernMenuBackgroundView
-- (BOOL)scatPerformAction:(int)a3;
-- (CGPath)_copyMenuPathWithNoTipForRect:(CGRect)a3;
-- (CGPath)_copyMenuPathWithTipForRect:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 includeTip:(BOOL)a4;
-- (SCATModernMenuBackgroundView)initWithFrame:(CGRect)a3;
-- (double)_adjustedXAnchorPositionToClearCornersOfRect:(CGRect)a3;
-- (double)_menuCornerRadiusForRect:(CGRect)a3;
-- (void)_updateBackdropWithPath:(CGPath *)a3;
+- (BOOL)scatPerformAction:(int)action;
+- (CGPath)_copyMenuPathWithNoTipForRect:(CGRect)rect;
+- (CGPath)_copyMenuPathWithTipForRect:(CGRect)rect;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits includeTip:(BOOL)tip;
+- (SCATModernMenuBackgroundView)initWithFrame:(CGRect)frame;
+- (double)_adjustedXAnchorPositionToClearCornersOfRect:(CGRect)rect;
+- (double)_menuCornerRadiusForRect:(CGRect)rect;
+- (void)_updateBackdropWithPath:(CGPath *)path;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setMenuBorderPath:(CGPath *)a3;
-- (void)setNormalizedHorizontalTipCenter:(double)a3;
-- (void)setTip:(int64_t)a3;
+- (void)setMenuBorderPath:(CGPath *)path;
+- (void)setNormalizedHorizontalTipCenter:(double)center;
+- (void)setTip:(int64_t)tip;
 @end
 
 @implementation SCATModernMenuBackgroundView
 
-- (SCATModernMenuBackgroundView)initWithFrame:(CGRect)a3
+- (SCATModernMenuBackgroundView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SCATModernMenuBackgroundView;
-  v3 = [(SCATModernMenuBackgroundView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SCATModernMenuBackgroundView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if ([objc_opt_class() _solariumGlassEnabled])
@@ -58,29 +58,29 @@
   [(SCATModernMenuBackgroundView *)&v3 dealloc];
 }
 
-- (void)setTip:(int64_t)a3
+- (void)setTip:(int64_t)tip
 {
-  if (self->_tip != a3)
+  if (self->_tip != tip)
   {
-    self->_tip = a3;
+    self->_tip = tip;
     [(SCATModernMenuBackgroundView *)self setNeedsLayout];
   }
 }
 
-- (void)setNormalizedHorizontalTipCenter:(double)a3
+- (void)setNormalizedHorizontalTipCenter:(double)center
 {
-  if (self->_normalizedHorizontalTipCenter != a3)
+  if (self->_normalizedHorizontalTipCenter != center)
   {
     [(SCATModernMenuBackgroundView *)self setNeedsLayout];
-    self->_normalizedHorizontalTipCenter = a3;
+    self->_normalizedHorizontalTipCenter = center;
   }
 }
 
-- (void)setMenuBorderPath:(CGPath *)a3
+- (void)setMenuBorderPath:(CGPath *)path
 {
-  if (a3)
+  if (path)
   {
-    CGPathRetain(a3);
+    CGPathRetain(path);
   }
 
   menuBorderPath = self->_menuBorderPath;
@@ -89,18 +89,18 @@
     CGPathRelease(menuBorderPath);
   }
 
-  self->_menuBorderPath = a3;
+  self->_menuBorderPath = path;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 includeTip:(BOOL)a4
+- (CGSize)sizeThatFits:(CGSize)fits includeTip:(BOOL)tip
 {
-  v4 = a4;
-  v6 = [(SCATModernMenuBackgroundView *)self containerView:a3.width];
+  tipCopy = tip;
+  v6 = [(SCATModernMenuBackgroundView *)self containerView:fits.width];
   [v6 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   v8 = v7;
   v10 = v9;
 
-  if (v4)
+  if (tipCopy)
   {
     [(SCATModernMenuBackgroundView *)self _menuTipHeight];
     v10 = v10 + v11;
@@ -113,10 +113,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = [(SCATModernMenuBackgroundView *)self tip]!= 0;
 
   [(SCATModernMenuBackgroundView *)self sizeThatFits:v6 includeTip:width, height];
@@ -162,16 +162,16 @@
   [(SCATModernMenuBackgroundView *)self _menuTipHeight];
   v13 = v13 - v15;
 LABEL_8:
-  v16 = [(SCATModernMenuBackgroundView *)self containerView];
-  [v16 setFrame:{v7, v9, v11, v13}];
+  containerView = [(SCATModernMenuBackgroundView *)self containerView];
+  [containerView setFrame:{v7, v9, v11, v13}];
 }
 
-- (double)_menuCornerRadiusForRect:(CGRect)a3
+- (double)_menuCornerRadiusForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v5 = 0.0;
-  if (![(SCATModernMenuBackgroundView *)self shouldRoundMenuCorners:a3.origin.x])
+  if (![(SCATModernMenuBackgroundView *)self shouldRoundMenuCorners:rect.origin.x])
   {
     return v5;
   }
@@ -189,25 +189,25 @@ LABEL_8:
   return v8;
 }
 
-- (void)_updateBackdropWithPath:(CGPath *)a3
+- (void)_updateBackdropWithPath:(CGPath *)path
 {
   v7 = objc_opt_new();
   [(SCATModernMenuBackgroundView *)self bounds];
   [v7 setFrame:?];
-  [v7 setPath:a3];
-  v5 = [(UIVisualEffectView *)self->_backdropView layer];
-  [v5 setMask:v7];
+  [v7 setPath:path];
+  layer = [(UIVisualEffectView *)self->_backdropView layer];
+  [layer setMask:v7];
 
-  v6 = [(SCATModernMenuBackgroundView *)self glassBackgroundView];
-  [v6 _updateGlassWithPath:a3];
+  glassBackgroundView = [(SCATModernMenuBackgroundView *)self glassBackgroundView];
+  [glassBackgroundView _updateGlassWithPath:path];
 }
 
-- (double)_adjustedXAnchorPositionToClearCornersOfRect:(CGRect)a3
+- (double)_adjustedXAnchorPositionToClearCornersOfRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(SCATModernMenuBackgroundView *)self normalizedHorizontalTipCenter];
   v9 = width * v8;
   [(SCATModernMenuBackgroundView *)self _menuCornerRadiusForRect:x, y, width, height];
@@ -229,13 +229,13 @@ LABEL_8:
   return v15;
 }
 
-- (CGPath)_copyMenuPathWithTipForRect:(CGRect)a3
+- (CGPath)_copyMenuPathWithTipForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsEmpty(rect))
   {
     _AXLogWithFacility();
 
@@ -293,13 +293,13 @@ LABEL_8:
   }
 }
 
-- (CGPath)_copyMenuPathWithNoTipForRect:(CGRect)a3
+- (CGPath)_copyMenuPathWithNoTipForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsEmpty(rect))
   {
     _AXLogWithFacility();
 
@@ -318,19 +318,19 @@ LABEL_8:
   }
 }
 
-- (BOOL)scatPerformAction:(int)a3
+- (BOOL)scatPerformAction:(int)action
 {
-  if (a3 == 2010)
+  if (action == 2010)
   {
     v4 = +[SCATScannerManager sharedManager];
-    v5 = [v4 menu];
+    menu = [v4 menu];
 
-    [v5 handleMenuWasActivatedByScanner];
+    [menu handleMenuWasActivatedByScanner];
     v6 = +[HNDAccessibilityManager sharedManager];
     [v6 refreshElements];
   }
 
-  return a3 == 2010;
+  return action == 2010;
 }
 
 @end

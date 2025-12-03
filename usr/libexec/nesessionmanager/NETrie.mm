@@ -1,17 +1,17 @@
 @interface NETrie
-- (BOOL)search:(const char *)a3 length:(int)a4;
-- (BOOL)searchWithString:(id)a3;
-- (NETrie)initWithDomains:(id)a3 prefixCount:(int)a4 reverse:(BOOL)a5 partialSearchAllowed:(BOOL)a6 partialSearchTerminator:(char)a7 extra_bytes:(unint64_t)a8;
+- (BOOL)search:(const char *)search length:(int)length;
+- (BOOL)searchWithString:(id)string;
+- (NETrie)initWithDomains:(id)domains prefixCount:(int)count reverse:(BOOL)reverse partialSearchAllowed:(BOOL)allowed partialSearchTerminator:(char)terminator extra_bytes:(unint64_t)extra_bytes;
 - (void)dealloc;
 @end
 
 @implementation NETrie
 
-- (BOOL)searchWithString:(id)a3
+- (BOOL)searchWithString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy && [stringCopy length])
   {
     [v5 UTF8String];
     [v5 length];
@@ -33,10 +33,10 @@
   return v9;
 }
 
-- (BOOL)search:(const char *)a3 length:(int)a4
+- (BOOL)search:(const char *)search length:(int)length
 {
   v4 = 0;
-  if (a3 && a4)
+  if (search && length)
   {
     if (self)
     {
@@ -84,9 +84,9 @@
   [(NETrie *)&v5 dealloc];
 }
 
-- (NETrie)initWithDomains:(id)a3 prefixCount:(int)a4 reverse:(BOOL)a5 partialSearchAllowed:(BOOL)a6 partialSearchTerminator:(char)a7 extra_bytes:(unint64_t)a8
+- (NETrie)initWithDomains:(id)domains prefixCount:(int)count reverse:(BOOL)reverse partialSearchAllowed:(BOOL)allowed partialSearchTerminator:(char)terminator extra_bytes:(unint64_t)extra_bytes
 {
-  v13 = a3;
+  domainsCopy = domains;
   v48.receiver = self;
   v48.super_class = NETrie;
   v14 = [(NETrie *)&v48 init];
@@ -97,18 +97,18 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (v13 && [v13 count])
+  if (domainsCopy && [domainsCopy count])
   {
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v38 = v13;
-    v15 = v13;
+    v38 = domainsCopy;
+    v15 = domainsCopy;
     v16 = [v15 countByEnumeratingWithState:&v44 objects:v58 count:16];
     if (v16)
     {
-      v39 = a7;
+      terminatorCopy = terminator;
       v17 = 0;
       v18 = *v45;
       do
@@ -127,10 +127,10 @@ LABEL_33:
       }
 
       while (v16);
-      a7 = v39;
+      terminator = terminatorCopy;
     }
 
-    if (!a4)
+    if (!count)
     {
       [v15 count];
     }
@@ -138,9 +138,9 @@ LABEL_33:
     [v15 count];
     if (ne_trie_init())
     {
-      v14->_reverse = a5;
-      v14->_partialSearchAllowed = a6;
-      v14->_partialSearchTerminator = a7;
+      v14->_reverse = reverse;
+      v14->_partialSearchAllowed = allowed;
+      v14->_partialSearchTerminator = terminator;
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
@@ -203,7 +203,7 @@ LABEL_33:
         _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "NETrie - initialized with %d domains (Nodes used = %d, child maps used = %d, bytes used = %d, root = %d)", buf, 0x20u);
       }
 
-      v13 = v38;
+      domainsCopy = v38;
       goto LABEL_33;
     }
 
@@ -215,7 +215,7 @@ LABEL_33:
     }
 
     v21 = 0;
-    v13 = v38;
+    domainsCopy = v38;
   }
 
   else

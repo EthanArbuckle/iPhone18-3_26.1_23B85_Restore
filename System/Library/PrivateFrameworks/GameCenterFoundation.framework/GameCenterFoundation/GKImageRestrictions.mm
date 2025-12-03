@@ -1,13 +1,13 @@
 @interface GKImageRestrictions
-+ (BOOL)isAuthorizedForGamesWithImageData:(id)a3;
-+ (CGImage)cgImageForGamesWithData:(id)a3;
++ (BOOL)isAuthorizedForGamesWithImageData:(id)data;
++ (CGImage)cgImageForGamesWithData:(id)data;
 @end
 
 @implementation GKImageRestrictions
 
-+ (BOOL)isAuthorizedForGamesWithImageData:(id)a3
++ (BOOL)isAuthorizedForGamesWithImageData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_227A71B9C();
   v6 = v5;
 
@@ -17,9 +17,9 @@
   return v7;
 }
 
-+ (CGImage)cgImageForGamesWithData:(id)a3
++ (CGImage)cgImageForGamesWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_227A71B9C();
   v6 = v5;
 

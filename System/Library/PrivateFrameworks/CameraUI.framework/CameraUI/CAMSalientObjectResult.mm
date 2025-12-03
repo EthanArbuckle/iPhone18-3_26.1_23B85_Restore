@@ -1,5 +1,5 @@
 @interface CAMSalientObjectResult
-- (CAMSalientObjectResult)initWithSalientObject:(id)a3;
+- (CAMSalientObjectResult)initWithSalientObject:(id)object;
 - (NSString)description;
 - (NSString)metadataType;
 - (unint64_t)syntheticFocusMode;
@@ -7,19 +7,19 @@
 
 @implementation CAMSalientObjectResult
 
-- (CAMSalientObjectResult)initWithSalientObject:(id)a3
+- (CAMSalientObjectResult)initWithSalientObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = CAMSalientObjectResult;
   v6 = [(CAMSalientObjectResult *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__salientObject, a3);
+    objc_storeStrong(&v6->__salientObject, object);
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [v5 type];
-    v10 = [v8 stringWithFormat:@"%@ %ld", v9, objc_msgSend(v5, "objectID")];
+    type = [objectCopy type];
+    v10 = [v8 stringWithFormat:@"%@ %ld", type, objc_msgSend(objectCopy, "objectID")];
     uniqueIdentifier = v7->_uniqueIdentifier;
     v7->_uniqueIdentifier = v10;
 
@@ -34,26 +34,26 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CAMSalientObjectResult *)self _salientObject];
-  v7 = [v6 type];
-  v8 = [(CAMSalientObjectResult *)self _salientObject];
-  v9 = [v3 stringWithFormat:@"<%@: %p type: %@ identifier: %ld>", v5, self, v7, objc_msgSend(v8, "objectID")];
+  _salientObject = [(CAMSalientObjectResult *)self _salientObject];
+  type = [_salientObject type];
+  _salientObject2 = [(CAMSalientObjectResult *)self _salientObject];
+  v9 = [v3 stringWithFormat:@"<%@: %p type: %@ identifier: %ld>", v5, self, type, objc_msgSend(_salientObject2, "objectID")];
 
   return v9;
 }
 
 - (NSString)metadataType
 {
-  v2 = [(CAMSalientObjectResult *)self _salientObject];
-  v3 = [v2 type];
+  _salientObject = [(CAMSalientObjectResult *)self _salientObject];
+  type = [_salientObject type];
 
-  return v3;
+  return type;
 }
 
 - (unint64_t)syntheticFocusMode
 {
-  v2 = [(CAMSalientObjectResult *)self underlyingMetadataObject];
-  v3 = +[CAMCaptureConversions CAMMetadataObjectSyntheticFocusModeForAVCaptureMetadataObjectSyntheticFocusMode:](CAMCaptureConversions, "CAMMetadataObjectSyntheticFocusModeForAVCaptureMetadataObjectSyntheticFocusMode:", [v2 syntheticFocusMode]);
+  underlyingMetadataObject = [(CAMSalientObjectResult *)self underlyingMetadataObject];
+  v3 = +[CAMCaptureConversions CAMMetadataObjectSyntheticFocusModeForAVCaptureMetadataObjectSyntheticFocusMode:](CAMCaptureConversions, "CAMMetadataObjectSyntheticFocusModeForAVCaptureMetadataObjectSyntheticFocusMode:", [underlyingMetadataObject syntheticFocusMode]);
 
   return v3;
 }

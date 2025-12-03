@@ -1,28 +1,28 @@
 @interface SBUIPopoverExtensionHostViewController
 - (_SBUIPopoverExtensionHostDelegate)delegate;
 - (void)_extensionRequestsDismiss;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation SBUIPopoverExtensionHostViewController
 
 - (void)_extensionRequestsDismiss
 {
-  v3 = [(SBUIPopoverExtensionHostViewController *)self delegate];
-  [v3 popoverHostExtensionRequestsDismiss:self];
+  delegate = [(SBUIPopoverExtensionHostViewController *)self delegate];
+  [delegate popoverHostExtensionRequestsDismiss:self];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(SBUIPopoverExtensionHostViewController *)v4 viewServiceDidTerminateWithError:v5];
+    [(SBUIPopoverExtensionHostViewController *)errorCopy viewServiceDidTerminateWithError:v5];
   }
 
-  v6 = [(SBUIPopoverExtensionHostViewController *)self delegate];
-  [v6 popoverHostExtensionDidExit:self];
+  delegate = [(SBUIPopoverExtensionHostViewController *)self delegate];
+  [delegate popoverHostExtensionDidExit:self];
 }
 
 - (_SBUIPopoverExtensionHostDelegate)delegate

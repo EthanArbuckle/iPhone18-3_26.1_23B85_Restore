@@ -1,33 +1,33 @@
 @interface RMManagedTrustStoreController
-+ (id)newManagedTrustStoreControllerProtocolForScope:(int64_t)a3 personaID:(id)a4;
-- (RMManagedTrustStoreController)initWithScope:(int64_t)a3 personaID:(id)a4;
++ (id)newManagedTrustStoreControllerProtocolForScope:(int64_t)scope personaID:(id)d;
+- (RMManagedTrustStoreController)initWithScope:(int64_t)scope personaID:(id)d;
 @end
 
 @implementation RMManagedTrustStoreController
 
-+ (id)newManagedTrustStoreControllerProtocolForScope:(int64_t)a3 personaID:(id)a4
++ (id)newManagedTrustStoreControllerProtocolForScope:(int64_t)scope personaID:(id)d
 {
-  v5 = a4;
-  v6 = [[RMManagedTrustStoreController alloc] initWithScope:a3 personaID:v5];
+  dCopy = d;
+  v6 = [[RMManagedTrustStoreController alloc] initWithScope:scope personaID:dCopy];
 
   return v6;
 }
 
-- (RMManagedTrustStoreController)initWithScope:(int64_t)a3 personaID:(id)a4
+- (RMManagedTrustStoreController)initWithScope:(int64_t)scope personaID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = RMManagedTrustStoreController;
   v8 = [(RMManagedTrustStoreController *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v8->_scope = a3 == 1;
-    objc_storeStrong(&v8->_personaID, a4);
+    v8->_scope = scope == 1;
+    objc_storeStrong(&v8->_personaID, d);
     v10 = +[RMLog managedTrustStoreController];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [(RMManagedTrustStoreController *)v7 initWithScope:a3 personaID:v10];
+      [(RMManagedTrustStoreController *)dCopy initWithScope:scope personaID:v10];
     }
   }
 

@@ -6,8 +6,8 @@
 
 - (uint64_t)Any
 {
-  v9 = *(a1 + 32);
-  v8 = *(a1 + 40);
+  v9 = *(self + 32);
+  v8 = *(self + 40);
   if (a5)
   {
     v10 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();

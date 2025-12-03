@@ -1,21 +1,21 @@
 @interface _AABasicGetRequest
-- (_AABasicGetRequest)initWithAccount:(id)a3;
+- (_AABasicGetRequest)initWithAccount:(id)account;
 - (id)urlRequest;
 - (void)urlRequest;
 @end
 
 @implementation _AABasicGetRequest
 
-- (_AABasicGetRequest)initWithAccount:(id)a3
+- (_AABasicGetRequest)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = _AABasicGetRequest;
   v6 = [(_AABasicGetRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -33,8 +33,8 @@
 
   v12.receiver = self;
   v12.super_class = _AABasicGetRequest;
-  v6 = [(AARequest *)&v12 urlRequest];
-  v7 = [v6 mutableCopy];
+  urlRequest = [(AARequest *)&v12 urlRequest];
+  v7 = [urlRequest mutableCopy];
 
   [v7 setHTTPMethod:@"GET"];
   v8 = _AALogSystem();
@@ -54,8 +54,8 @@
 
 - (void)urlRequest
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a1 object:a2 file:@"AARequest.m" lineNumber:1537 description:{@"%@ cannot run without an ACAccount.", a3}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"AARequest.m" lineNumber:1537 description:{@"%@ cannot run without an ACAccount.", a3}];
 }
 
 @end

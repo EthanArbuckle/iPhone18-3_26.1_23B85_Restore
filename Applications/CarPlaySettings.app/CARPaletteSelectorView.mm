@@ -1,15 +1,15 @@
 @interface CARPaletteSelectorView
-- (_TtC15CarPlaySettings22CARPaletteSelectorView)initWithCoder:(id)a3;
-- (_TtC15CarPlaySettings22CARPaletteSelectorView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
+- (_TtC15CarPlaySettings22CARPaletteSelectorView)initWithCoder:(id)coder;
+- (_TtC15CarPlaySettings22CARPaletteSelectorView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation CARPaletteSelectorView
 
-- (_TtC15CarPlaySettings22CARPaletteSelectorView)initWithCoder:(id)a3
+- (_TtC15CarPlaySettings22CARPaletteSelectorView)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC15CarPlaySettings22CARPaletteSelectorView_delegate;
   *v4 = 0u;
@@ -24,40 +24,40 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_10006DC78(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_10006DC78(event, x, y);
 
   return v10;
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   v4 = *((swift_isaMask & self->super.super.super.isa) + 0xE8);
-  v5 = a3;
-  v6 = self;
-  v4(v5);
+  animationCopy = animation;
+  selfCopy = self;
+  v4(animationCopy);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
-  sub_10006E04C(v4);
+  deceleratingCopy = decelerating;
+  selfCopy = self;
+  sub_10006E04C(deceleratingCopy);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_10006E32C(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_10006E32C(scrollCopy);
 }
 
-- (_TtC15CarPlaySettings22CARPaletteSelectorView)initWithFrame:(CGRect)a3
+- (_TtC15CarPlaySettings22CARPaletteSelectorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

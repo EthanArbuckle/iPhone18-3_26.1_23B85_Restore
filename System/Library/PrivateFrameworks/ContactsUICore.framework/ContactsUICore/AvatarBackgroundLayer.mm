@@ -1,13 +1,13 @@
 @interface AvatarBackgroundLayer
 - (_TtC14ContactsUICore21AvatarBackgroundLayer)init;
-- (_TtC14ContactsUICore21AvatarBackgroundLayer)initWithCoder:(id)a3;
-- (_TtC14ContactsUICore21AvatarBackgroundLayer)initWithLayer:(id)a3;
+- (_TtC14ContactsUICore21AvatarBackgroundLayer)initWithCoder:(id)coder;
+- (_TtC14ContactsUICore21AvatarBackgroundLayer)initWithLayer:(id)layer;
 - (void)display;
 @end
 
 @implementation AvatarBackgroundLayer
 
-- (_TtC14ContactsUICore21AvatarBackgroundLayer)initWithLayer:(id)a3
+- (_TtC14ContactsUICore21AvatarBackgroundLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1A34CD920();
@@ -15,7 +15,7 @@
   return sub_1A32A7E08(v4);
 }
 
-- (_TtC14ContactsUICore21AvatarBackgroundLayer)initWithCoder:(id)a3
+- (_TtC14ContactsUICore21AvatarBackgroundLayer)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC14ContactsUICore21AvatarBackgroundLayer_spec;
   v5 = type metadata accessor for AvatarBackgroundLayer.RenderSpec(0);
@@ -29,7 +29,7 @@
 
 - (void)display
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A32A8254();
 }
 

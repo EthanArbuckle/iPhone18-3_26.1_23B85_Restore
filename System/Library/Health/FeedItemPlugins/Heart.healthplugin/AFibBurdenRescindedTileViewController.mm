@@ -1,5 +1,5 @@
 @interface AFibBurdenRescindedTileViewController
-- (_TtC5Heart37AFibBurdenRescindedTileViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5Heart37AFibBurdenRescindedTileViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D71641C();
 }
 
-- (_TtC5Heart37AFibBurdenRescindedTileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Heart37AFibBurdenRescindedTileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_29D939D68();
     v7 = v6;
@@ -25,8 +25,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_29D717880(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_29D717880(v5, v7, bundle);
 }
 
 @end

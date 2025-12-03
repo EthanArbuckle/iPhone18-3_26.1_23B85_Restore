@@ -1,24 +1,24 @@
 @interface PFFileSystemSchemaManager
-- (BOOL)deleteEndpoint:(id)a3 error:(id *)a4;
-- (BOOL)prepareFileSystemForEndpoints:(id)a3 error:(id *)a4;
+- (BOOL)deleteEndpoint:(id)endpoint error:(id *)error;
+- (BOOL)prepareFileSystemForEndpoints:(id)endpoints error:(id *)error;
 - (PFFileSystemSchemaManager)init;
-- (PFFileSystemSchemaManager)initWithBaseURL:(id)a3 fileManager:(id)a4;
-- (id)enumeratorForEndpoint:(id)a3 includingPropertiesForKeys:(id)a4 options:(unint64_t)a5 errorHandler:(id)a6;
-- (id)resolveEndpoint:(id)a3;
+- (PFFileSystemSchemaManager)initWithBaseURL:(id)l fileManager:(id)manager;
+- (id)enumeratorForEndpoint:(id)endpoint includingPropertiesForKeys:(id)keys options:(unint64_t)options errorHandler:(id)handler;
+- (id)resolveEndpoint:(id)endpoint;
 @end
 
 @implementation PFFileSystemSchemaManager
 
-- (PFFileSystemSchemaManager)initWithBaseURL:(id)a3 fileManager:(id)a4
+- (PFFileSystemSchemaManager)initWithBaseURL:(id)l fileManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  lCopy = l;
+  managerCopy = manager;
+  if (!lCopy)
   {
     [PFFileSystemSchemaManager initWithBaseURL:a2 fileManager:?];
   }
 
-  v9 = v8;
+  v9 = managerCopy;
   v16.receiver = self;
   v16.super_class = PFFileSystemSchemaManager;
   v10 = [(PFFileSystemSchemaManager *)&v16 init];
@@ -26,20 +26,20 @@
   {
     if (v9)
     {
-      v11 = v9;
+      defaultManager = v9;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     }
 
     fileManager = v10->_fileManager;
-    v10->_fileManager = v11;
+    v10->_fileManager = defaultManager;
 
-    v13 = [v7 URLByStandardizingPath];
+    uRLByStandardizingPath = [lCopy URLByStandardizingPath];
     baseURL = v10->_baseURL;
-    v10->_baseURL = v13;
+    v10->_baseURL = uRLByStandardizingPath;
   }
 
   return v10;
@@ -52,55 +52,55 @@
   return 0;
 }
 
-- (id)enumeratorForEndpoint:(id)a3 includingPropertiesForKeys:(id)a4 options:(unint64_t)a5 errorHandler:(id)a6
+- (id)enumeratorForEndpoint:(id)endpoint includingPropertiesForKeys:(id)keys options:(unint64_t)options errorHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v11)
+  endpointCopy = endpoint;
+  keysCopy = keys;
+  handlerCopy = handler;
+  if (!endpointCopy)
   {
     [PFFileSystemSchemaManager enumeratorForEndpoint:a2 includingPropertiesForKeys:? options:? errorHandler:?];
   }
 
-  v14 = v13;
-  v15 = [(PFFileSystemSchemaManager *)self resolveEndpoint:v11];
-  v16 = [(NSFileManager *)self->_fileManager enumeratorAtURL:v15 includingPropertiesForKeys:v12 options:a5 errorHandler:v14];
+  v14 = handlerCopy;
+  v15 = [(PFFileSystemSchemaManager *)self resolveEndpoint:endpointCopy];
+  v16 = [(NSFileManager *)self->_fileManager enumeratorAtURL:v15 includingPropertiesForKeys:keysCopy options:options errorHandler:v14];
 
   return v16;
 }
 
-- (id)resolveEndpoint:(id)a3
+- (id)resolveEndpoint:(id)endpoint
 {
-  v5 = a3;
-  if (!v5)
+  endpointCopy = endpoint;
+  if (!endpointCopy)
   {
     [PFFileSystemSchemaManager resolveEndpoint:a2];
   }
 
-  v6 = v5;
-  v7 = [v5 resolveWithBaseURL:self->_baseURL];
+  v6 = endpointCopy;
+  v7 = [endpointCopy resolveWithBaseURL:self->_baseURL];
 
   return v7;
 }
 
-- (BOOL)prepareFileSystemForEndpoints:(id)a3 error:(id *)a4
+- (BOOL)prepareFileSystemForEndpoints:(id)endpoints error:(id *)error
 {
   v73 = *MEMORY[0x1E69E9840];
-  v51 = a3;
-  v52 = self;
-  v5 = [(PFFileSystemSchemaManager *)self baseURL];
-  v55 = [v5 absoluteString];
-  v56 = [(PFFileSystemSchemaManager *)self fileManager];
-  if (![v5 checkResourceIsReachableAndReturnError:a4])
+  endpointsCopy = endpoints;
+  selfCopy = self;
+  baseURL = [(PFFileSystemSchemaManager *)self baseURL];
+  absoluteString = [baseURL absoluteString];
+  fileManager = [(PFFileSystemSchemaManager *)self fileManager];
+  if (![baseURL checkResourceIsReachableAndReturnError:error])
   {
 LABEL_27:
     v28 = 0;
     goto LABEL_53;
   }
 
-  if (([v5 pf_isWritable] & 1) == 0)
+  if (([baseURL pf_isWritable] & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v23 = PFFunctionNameForAddress(v50);
       v26 = v23;
@@ -114,7 +114,7 @@ LABEL_27:
         v27 = @"(Unknown Location)";
       }
 
-      *a4 = PFGeneralErrorFromObjectWithLocalizedFailureReason(v52, v27, 0, 0, 0, @"baseURL is not writable", v24, v25, 0);
+      *error = PFGeneralErrorFromObjectWithLocalizedFailureReason(selfCopy, v27, 0, 0, 0, @"baseURL is not writable", v24, v25, 0);
     }
 
     goto LABEL_27;
@@ -125,7 +125,7 @@ LABEL_27:
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v6 = v51;
+  v6 = endpointsCopy;
   v7 = [v6 countByEnumeratingWithState:&v66 objects:v72 count:16];
   if (v7)
   {
@@ -140,15 +140,15 @@ LABEL_27:
         }
 
         v10 = *(*(&v66 + 1) + 8 * i);
-        v11 = [v10 components];
-        v12 = [v11 URLRelativeToURL:v5];
+        components = [v10 components];
+        v12 = [components URLRelativeToURL:baseURL];
 
-        v13 = [v12 filePathURL];
-        v14 = [v13 absoluteString];
+        filePathURL = [v12 filePathURL];
+        absoluteString2 = [filePathURL absoluteString];
 
-        if (([v14 hasPrefix:v55] & 1) == 0)
+        if (([absoluteString2 hasPrefix:absoluteString] & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v29 = PFFunctionNameForAddress(v50);
             v32 = v29;
@@ -162,13 +162,13 @@ LABEL_27:
               v33 = @"(Unknown Location)";
             }
 
-            *a4 = PFGeneralErrorFromObjectWithLocalizedFailureReason(v52, v33, 0, 0, 0, @"endpoint URL escapes the baseURL please don't write outside the base url.  We trusted you.", v30, v31, 0);;
+            *error = PFGeneralErrorFromObjectWithLocalizedFailureReason(selfCopy, v33, 0, 0, 0, @"endpoint URL escapes the baseURL please don't write outside the base url.  We trusted you.", v30, v31, 0);;
           }
 
           goto LABEL_51;
         }
 
-        if (([v56 fileExistsAtPath:v14] & 1) == 0)
+        if (([fileManager fileExistsAtPath:absoluteString2] & 1) == 0)
         {
           [v54 addObject:v10];
         }
@@ -209,7 +209,7 @@ LABEL_27:
 
         v21 = *(*(&v62 + 1) + 8 * v19);
         v61 = 0;
-        v22 = [v21 prepareEndpointForBaseURL:v5 fileManager:v56 error:&v61];
+        v22 = [v21 prepareEndpointForBaseURL:baseURL fileManager:fileManager error:&v61];
         v12 = v61;
 
         if (!v22)
@@ -228,7 +228,7 @@ LABEL_27:
               v38 = @"(Unknown Location)";
             }
 
-            v12 = PFGeneralErrorFromObjectWithLocalizedFailureReason(v52, v38, 0, 0, 1, @"Unable to setup endpoint %@", v35, v36, v21);
+            v12 = PFGeneralErrorFromObjectWithLocalizedFailureReason(selfCopy, v38, 0, 0, 1, @"Unable to setup endpoint %@", v35, v36, v21);
           }
 
           goto LABEL_38;
@@ -255,18 +255,18 @@ LABEL_38:
   objc_autoreleasePoolPop(context);
   if (v12)
   {
-    if (a4)
+    if (error)
     {
       v39 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v14 = v54;
-    v40 = [v14 countByEnumeratingWithState:&v57 objects:v70 count:16];
+    absoluteString2 = v54;
+    v40 = [absoluteString2 countByEnumeratingWithState:&v57 objects:v70 count:16];
     if (v40)
     {
       v41 = *v58;
@@ -276,21 +276,21 @@ LABEL_38:
         {
           if (*v58 != v41)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(absoluteString2);
           }
 
           v43 = *(*(&v57 + 1) + 8 * j);
           if ([v15 containsObject:v43])
           {
-            v44 = [v43 components];
-            v45 = [v44 URLRelativeToURL:v5];
-            v46 = [v45 filePathURL];
+            components2 = [v43 components];
+            v45 = [components2 URLRelativeToURL:baseURL];
+            filePathURL2 = [v45 filePathURL];
 
-            [v56 removeItemAtURL:v46 error:0];
+            [fileManager removeItemAtURL:filePathURL2 error:0];
           }
         }
 
-        v40 = [v14 countByEnumeratingWithState:&v57 objects:v70 count:16];
+        v40 = [absoluteString2 countByEnumeratingWithState:&v57 objects:v70 count:16];
       }
 
       while (v40);
@@ -313,14 +313,14 @@ LABEL_53:
   return v28;
 }
 
-- (BOOL)deleteEndpoint:(id)a3 error:(id *)a4
+- (BOOL)deleteEndpoint:(id)endpoint error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PFFileSystemSchemaManager *)self fileManager];
-  v8 = [(PFFileSystemSchemaManager *)self resolveEndpoint:v6];
+  endpointCopy = endpoint;
+  fileManager = [(PFFileSystemSchemaManager *)self fileManager];
+  v8 = [(PFFileSystemSchemaManager *)self resolveEndpoint:endpointCopy];
 
-  LOBYTE(a4) = [v7 removeItemAtURL:v8 error:a4];
-  return a4;
+  LOBYTE(error) = [fileManager removeItemAtURL:v8 error:error];
+  return error;
 }
 
 - (void)initWithBaseURL:(char *)a1 fileManager:.cold.1(char *a1)

@@ -1,36 +1,36 @@
 @interface AVSpeechSynthesisProviderRequest
 + (void)initialize;
-- (AVSpeechSynthesisProviderRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AVSpeechSynthesisProviderRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVSpeechSynthesisProviderRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(AVSpeechSynthesisProviderRequest *)self voice];
-  [v4 setVoice:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  voice = [(AVSpeechSynthesisProviderRequest *)self voice];
+  [v4 setVoice:voice];
 
-  v6 = [(AVSpeechSynthesisProviderRequest *)self ssmlRepresentation];
-  [v4 setSsmlRepresentation:v6];
+  ssmlRepresentation = [(AVSpeechSynthesisProviderRequest *)self ssmlRepresentation];
+  [v4 setSsmlRepresentation:ssmlRepresentation];
 
   return v4;
 }
 
-- (AVSpeechSynthesisProviderRequest)initWithCoder:(id)a3
+- (AVSpeechSynthesisProviderRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = AVSpeechSynthesisProviderRequest;
   v5 = [(AVSpeechSynthesisProviderRequest *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"voice"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"voice"];
     [(AVSpeechSynthesisProviderRequest *)v5 setVoice:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ssmlRepresentation"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ssmlRepresentation"];
     [(AVSpeechSynthesisProviderRequest *)v5 setSsmlRepresentation:v7];
 
     v8 = v5;
@@ -39,14 +39,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(AVSpeechSynthesisProviderRequest *)self voice];
-  [v6 encodeObject:v4 forKey:@"voice"];
+  coderCopy = coder;
+  voice = [(AVSpeechSynthesisProviderRequest *)self voice];
+  [coderCopy encodeObject:voice forKey:@"voice"];
 
-  v5 = [(AVSpeechSynthesisProviderRequest *)self ssmlRepresentation];
-  [v6 encodeObject:v5 forKey:@"ssmlRepresentation"];
+  ssmlRepresentation = [(AVSpeechSynthesisProviderRequest *)self ssmlRepresentation];
+  [coderCopy encodeObject:ssmlRepresentation forKey:@"ssmlRepresentation"];
 }
 
 + (void)initialize

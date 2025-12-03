@@ -1,29 +1,29 @@
 @interface SPCBPeripheralManagerSessionKey
-- (BOOL)isEqual:(id)a3;
-- (SPCBPeripheralManagerSessionKey)initWithCoder:(id)a3;
-- (SPCBPeripheralManagerSessionKey)initWithUserIdentifier:(id)a3 bundleIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SPCBPeripheralManagerSessionKey)initWithCoder:(id)coder;
+- (SPCBPeripheralManagerSessionKey)initWithUserIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPCBPeripheralManagerSessionKey
 
-- (SPCBPeripheralManagerSessionKey)initWithUserIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (SPCBPeripheralManagerSessionKey)initWithUserIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v14.receiver = self;
   v14.super_class = SPCBPeripheralManagerSessionKey;
   v8 = [(SPCBPeripheralManagerSessionKey *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     userIdentifier = v8->_userIdentifier;
     v8->_userIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [bundleIdentifierCopy copy];
     bundleId = v8->_bundleId;
     v8->_bundleId = v11;
   }
@@ -31,10 +31,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -44,14 +44,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SPCBPeripheralManagerSessionKey *)self userIdentifier];
-      v7 = [(SPCBPeripheralManagerSessionKey *)v5 userIdentifier];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      userIdentifier = [(SPCBPeripheralManagerSessionKey *)self userIdentifier];
+      userIdentifier2 = [(SPCBPeripheralManagerSessionKey *)v5 userIdentifier];
+      if ([userIdentifier isEqual:userIdentifier2])
       {
-        v8 = [(SPCBPeripheralManagerSessionKey *)self bundleId];
-        v9 = [(SPCBPeripheralManagerSessionKey *)v5 bundleId];
-        v10 = [v8 isEqualToString:v9];
+        bundleId = [(SPCBPeripheralManagerSessionKey *)self bundleId];
+        bundleId2 = [(SPCBPeripheralManagerSessionKey *)v5 bundleId];
+        v10 = [bundleId isEqualToString:bundleId2];
       }
 
       else
@@ -71,10 +71,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SPCBPeripheralManagerSessionKey *)self userIdentifier];
-  v4 = [v3 hash];
-  v5 = [(SPCBPeripheralManagerSessionKey *)self bundleId];
-  v6 = [v5 hash];
+  userIdentifier = [(SPCBPeripheralManagerSessionKey *)self userIdentifier];
+  v4 = [userIdentifier hash];
+  bundleId = [(SPCBPeripheralManagerSessionKey *)self bundleId];
+  v6 = [bundleId hash];
 
   return v6 ^ v4;
 }
@@ -82,14 +82,14 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SPCBPeripheralManagerSessionKey *)self userIdentifier];
-  v5 = [(SPCBPeripheralManagerSessionKey *)self bundleId];
-  v6 = [v3 stringWithFormat:@"<%@:%@>", v4, v5];
+  userIdentifier = [(SPCBPeripheralManagerSessionKey *)self userIdentifier];
+  bundleId = [(SPCBPeripheralManagerSessionKey *)self bundleId];
+  v6 = [v3 stringWithFormat:@"<%@:%@>", userIdentifier, bundleId];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPCBPeripheralManagerSessionKey alloc];
   userIdentifier = self->_userIdentifier;
@@ -98,24 +98,24 @@
   return [(SPCBPeripheralManagerSessionKey *)v4 initWithUserIdentifier:userIdentifier bundleIdentifier:bundleId];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SPCBPeripheralManagerSessionKey *)self userIdentifier];
-  [v4 encodeObject:v5 forKey:@"userIdentifier"];
+  coderCopy = coder;
+  userIdentifier = [(SPCBPeripheralManagerSessionKey *)self userIdentifier];
+  [coderCopy encodeObject:userIdentifier forKey:@"userIdentifier"];
 
-  v6 = [(SPCBPeripheralManagerSessionKey *)self bundleId];
-  [v4 encodeObject:v6 forKey:@"bundleId"];
+  bundleId = [(SPCBPeripheralManagerSessionKey *)self bundleId];
+  [coderCopy encodeObject:bundleId forKey:@"bundleId"];
 }
 
-- (SPCBPeripheralManagerSessionKey)initWithCoder:(id)a3
+- (SPCBPeripheralManagerSessionKey)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userIdentifier"];
   userIdentifier = self->_userIdentifier;
   self->_userIdentifier = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleId"];
 
   bundleId = self->_bundleId;
   self->_bundleId = v7;

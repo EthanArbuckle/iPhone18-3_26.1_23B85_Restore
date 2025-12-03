@@ -1,11 +1,11 @@
 @interface TransparencyGossip
-+ (id)retrieveCurrentVerifiedTLTSTH:(id *)a3;
-+ (void)sthsReceivedFromPeers:(id)a3 error:(id *)a4;
++ (id)retrieveCurrentVerifiedTLTSTH:(id *)h;
++ (void)sthsReceivedFromPeers:(id)peers error:(id *)error;
 @end
 
 @implementation TransparencyGossip
 
-+ (id)retrieveCurrentVerifiedTLTSTH:(id *)a3
++ (id)retrieveCurrentVerifiedTLTSTH:(id *)h
 {
   v15 = 0;
   v16 = &v15;
@@ -31,12 +31,12 @@
   v7[3] = &unk_1E8701788;
   v7[4] = &v9;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v8 errorHandler:v7];
-  if (a3)
+  if (h)
   {
     v4 = v10[5];
     if (v4)
     {
-      *a3 = v4;
+      *h = v4;
     }
   }
 
@@ -114,12 +114,6 @@ uint64_t __52__TransparencyGossip_retrieveCurrentVerifiedTLTSTH___block_invoke_3
   return MEMORY[0x1EEE66BB8]();
 }
 
-{
-  TRANSPARENCY_DEFAULT_LOG_INTERNAL_12 = os_log_create("com.apple.Transparency", "default");
-
-  return MEMORY[0x1EEE66BB8]();
-}
-
 void __52__TransparencyGossip_retrieveCurrentVerifiedTLTSTH___block_invoke_6(uint64_t a1, void *a2, void *a3)
 {
   v5 = a2;
@@ -158,9 +152,9 @@ void __52__TransparencyGossip_retrieveCurrentVerifiedTLTSTH___block_invoke_2_9(u
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)sthsReceivedFromPeers:(id)a3 error:(id *)a4
++ (void)sthsReceivedFromPeers:(id)peers error:(id *)error
 {
-  v5 = a3;
+  peersCopy = peers;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -172,7 +166,7 @@ void __52__TransparencyGossip_retrieveCurrentVerifiedTLTSTH___block_invoke_2_9(u
   v9[2] = __50__TransparencyGossip_sthsReceivedFromPeers_error___block_invoke;
   v9[3] = &unk_1E87018C0;
   v11 = &v12;
-  v6 = v5;
+  v6 = peersCopy;
   v10 = v6;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -180,12 +174,12 @@ void __52__TransparencyGossip_retrieveCurrentVerifiedTLTSTH___block_invoke_2_9(u
   v8[3] = &unk_1E8701788;
   v8[4] = &v12;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v9 errorHandler:v8];
-  if (a4)
+  if (error)
   {
     v7 = v13[5];
     if (v7)
     {
-      *a4 = v7;
+      *error = v7;
     }
   }
 

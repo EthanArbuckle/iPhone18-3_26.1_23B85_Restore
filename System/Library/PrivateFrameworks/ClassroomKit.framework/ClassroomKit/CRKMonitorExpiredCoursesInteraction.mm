@@ -1,30 +1,30 @@
 @interface CRKMonitorExpiredCoursesInteraction
-- (CRKMonitorExpiredCoursesInteraction)initWithStudentDaemonProxy:(id)a3 enrollmentController:(id)a4 expiredCoursesInteractionDelegate:(id)a5;
-- (void)beginInteractionWithExpiredCourses:(id)a3;
+- (CRKMonitorExpiredCoursesInteraction)initWithStudentDaemonProxy:(id)proxy enrollmentController:(id)controller expiredCoursesInteractionDelegate:(id)delegate;
+- (void)beginInteractionWithExpiredCourses:(id)courses;
 - (void)cancel;
-- (void)expiredCoursesInteractionDidFinish:(id)a3;
+- (void)expiredCoursesInteractionDidFinish:(id)finish;
 - (void)main;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updateWithCourses:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updateWithCourses:(id)courses;
 @end
 
 @implementation CRKMonitorExpiredCoursesInteraction
 
-- (CRKMonitorExpiredCoursesInteraction)initWithStudentDaemonProxy:(id)a3 enrollmentController:(id)a4 expiredCoursesInteractionDelegate:(id)a5
+- (CRKMonitorExpiredCoursesInteraction)initWithStudentDaemonProxy:(id)proxy enrollmentController:(id)controller expiredCoursesInteractionDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  proxyCopy = proxy;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  if (proxyCopy)
   {
-    if (v10)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [CRKMonitorExpiredCoursesInteraction initWithStudentDaemonProxy:enrollmentController:expiredCoursesInteractionDelegate:];
-    if (v11)
+    if (delegateCopy)
     {
       goto LABEL_4;
     }
@@ -33,13 +33,13 @@ LABEL_8:
   }
 
   [CRKMonitorExpiredCoursesInteraction initWithStudentDaemonProxy:enrollmentController:expiredCoursesInteractionDelegate:];
-  if (!v10)
+  if (!controllerCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (delegateCopy)
   {
     goto LABEL_4;
   }
@@ -53,9 +53,9 @@ LABEL_4:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_studentDaemonProxy, a3);
-    objc_storeStrong(&v13->_enrollmentController, a4);
-    objc_storeStrong(&v13->_expiredCoursesInteractionDelegate, a5);
+    objc_storeStrong(&v12->_studentDaemonProxy, proxy);
+    objc_storeStrong(&v13->_enrollmentController, controller);
+    objc_storeStrong(&v13->_expiredCoursesInteractionDelegate, delegate);
     v14 = objc_opt_new();
     expiredCoursesToPresent = v13->_expiredCoursesToPresent;
     v13->_expiredCoursesToPresent = v14;
@@ -120,23 +120,23 @@ void __43__CRKMonitorExpiredCoursesInteraction_main__block_invoke(uint64_t a1)
   [v2 addObserver:*(a1 + 32) forKeyPath:@"courses" options:4 context:@"MonitorExpirationsIt"];
 }
 
-- (void)updateWithCourses:(id)a3
+- (void)updateWithCourses:(id)courses
 {
-  v4 = a3;
-  v10 = v4;
-  if (!v4)
+  coursesCopy = courses;
+  v10 = coursesCopy;
+  if (!coursesCopy)
   {
     [CRKMonitorExpiredCoursesInteraction updateWithCourses:];
-    v4 = 0;
+    coursesCopy = 0;
   }
 
-  v5 = [MEMORY[0x277CBEB98] setWithArray:v4];
+  v5 = [MEMORY[0x277CBEB98] setWithArray:coursesCopy];
   v6 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_99];
   v7 = [v5 filteredSetUsingPredicate:v6];
   v8 = [v7 mutableCopy];
 
-  v9 = [(CRKMonitorExpiredCoursesInteraction *)self expiredCoursesToPresent];
-  [v8 minusSet:v9];
+  expiredCoursesToPresent = [(CRKMonitorExpiredCoursesInteraction *)self expiredCoursesToPresent];
+  [v8 minusSet:expiredCoursesToPresent];
 
   if ([v8 count])
   {
@@ -160,40 +160,40 @@ uint64_t __57__CRKMonitorExpiredCoursesInteraction_updateWithCourses___block_inv
   return v3;
 }
 
-- (void)beginInteractionWithExpiredCourses:(id)a3
+- (void)beginInteractionWithExpiredCourses:(id)courses
 {
-  v10 = a3;
-  if (!v10)
+  coursesCopy = courses;
+  if (!coursesCopy)
   {
     [CRKMonitorExpiredCoursesInteraction beginInteractionWithExpiredCourses:];
   }
 
   v4 = [CRKExpiredCoursesInteraction alloc];
-  v5 = [(CRKMonitorExpiredCoursesInteraction *)self studentDaemonProxy];
-  v6 = [(CRKMonitorExpiredCoursesInteraction *)self expiredCoursesInteractionDelegate];
-  v7 = [(CRKExpiredCoursesInteraction *)v4 initWithStudentDaemonProxy:v5 delegate:v6 courses:v10];
+  studentDaemonProxy = [(CRKMonitorExpiredCoursesInteraction *)self studentDaemonProxy];
+  expiredCoursesInteractionDelegate = [(CRKMonitorExpiredCoursesInteraction *)self expiredCoursesInteractionDelegate];
+  v7 = [(CRKExpiredCoursesInteraction *)v4 initWithStudentDaemonProxy:studentDaemonProxy delegate:expiredCoursesInteractionDelegate courses:coursesCopy];
 
   [(CRKExpiredCoursesInteraction *)v7 addTarget:self selector:sel_expiredCoursesInteractionDidFinish_ forOperationEvents:6];
-  v8 = [(CRKMonitorExpiredCoursesInteraction *)self expiredCoursesToPresent];
-  [v8 unionSet:v10];
+  expiredCoursesToPresent = [(CRKMonitorExpiredCoursesInteraction *)self expiredCoursesToPresent];
+  [expiredCoursesToPresent unionSet:coursesCopy];
 
-  v9 = [(CRKMonitorExpiredCoursesInteraction *)self serialOperationQueue];
-  [v9 addOperation:v7];
+  serialOperationQueue = [(CRKMonitorExpiredCoursesInteraction *)self serialOperationQueue];
+  [serialOperationQueue addOperation:v7];
 }
 
-- (void)expiredCoursesInteractionDidFinish:(id)a3
+- (void)expiredCoursesInteractionDidFinish:(id)finish
 {
-  v4 = a3;
-  if (!v4)
+  finishCopy = finish;
+  if (!finishCopy)
   {
     [CRKMonitorExpiredCoursesInteraction expiredCoursesInteractionDidFinish:];
   }
 
   if ([(CRKMonitorExpiredCoursesInteraction *)self isExecuting])
   {
-    v5 = [v4 error];
+    error = [finishCopy error];
 
-    if (v5)
+    if (error)
     {
       if (_CRKLogGeneral_onceToken_31 != -1)
       {
@@ -203,53 +203,53 @@ uint64_t __57__CRKMonitorExpiredCoursesInteraction_updateWithCourses___block_inv
       v6 = _CRKLogGeneral_logObj_31;
       if (os_log_type_enabled(_CRKLogGeneral_logObj_31, OS_LOG_TYPE_ERROR))
       {
-        [(CRKMonitorExpiredCoursesInteraction *)v6 expiredCoursesInteractionDidFinish:v4];
+        [(CRKMonitorExpiredCoursesInteraction *)v6 expiredCoursesInteractionDidFinish:finishCopy];
       }
     }
 
-    v7 = [(CRKMonitorExpiredCoursesInteraction *)self expiredCoursesToPresent];
-    v8 = [v4 courses];
-    [v7 minusSet:v8];
+    expiredCoursesToPresent = [(CRKMonitorExpiredCoursesInteraction *)self expiredCoursesToPresent];
+    courses = [finishCopy courses];
+    [expiredCoursesToPresent minusSet:courses];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  if (a6 != @"MonitorExpirationsIt")
+  pathCopy = path;
+  if (context != @"MonitorExpirationsIt")
   {
     v18.receiver = self;
     v18.super_class = CRKMonitorExpiredCoursesInteraction;
-    v11 = a4;
-    [(CRKMonitorExpiredCoursesInteraction *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:a5 context:a6];
+    objectCopy = object;
+    [(CRKMonitorExpiredCoursesInteraction *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:change context:context];
 
     goto LABEL_9;
   }
 
-  v12 = a4;
-  v13 = [(CRKMonitorExpiredCoursesInteraction *)self enrollmentController];
+  objectCopy2 = object;
+  enrollmentController = [(CRKMonitorExpiredCoursesInteraction *)self enrollmentController];
 
-  if (v13 != v12)
+  if (enrollmentController != objectCopy2)
   {
 LABEL_4:
 
     goto LABEL_9;
   }
 
-  v14 = [v10 isEqualToString:@"courses"];
+  v14 = [pathCopy isEqualToString:@"courses"];
 
   if (v14)
   {
     if ([(CRKMonitorExpiredCoursesInteraction *)self isExecuting])
     {
-      v15 = [(CRKMonitorExpiredCoursesInteraction *)self enrollmentController];
-      v16 = [v15 courses];
+      enrollmentController2 = [(CRKMonitorExpiredCoursesInteraction *)self enrollmentController];
+      courses = [enrollmentController2 courses];
 
-      if (v16)
+      if (courses)
       {
-        v13 = [(CRKMonitorExpiredCoursesInteraction *)self enrollmentController];
-        v17 = [v13 courses];
-        [(CRKMonitorExpiredCoursesInteraction *)self updateWithCourses:v17];
+        enrollmentController = [(CRKMonitorExpiredCoursesInteraction *)self enrollmentController];
+        courses2 = [enrollmentController courses];
+        [(CRKMonitorExpiredCoursesInteraction *)self updateWithCourses:courses2];
 
         goto LABEL_4;
       }

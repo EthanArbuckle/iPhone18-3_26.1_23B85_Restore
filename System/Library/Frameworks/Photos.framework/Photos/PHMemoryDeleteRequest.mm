@@ -1,29 +1,29 @@
 @interface PHMemoryDeleteRequest
-- (BOOL)validateForDeleteManagedObject:(id)a3 error:(id *)a4;
-- (PHMemoryDeleteRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
-- (void)deleteManagedObject:(id)a3 photoLibrary:(id)a4;
+- (BOOL)validateForDeleteManagedObject:(id)object error:(id *)error;
+- (PHMemoryDeleteRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
+- (void)deleteManagedObject:(id)object photoLibrary:(id)library;
 @end
 
 @implementation PHMemoryDeleteRequest
 
-- (void)deleteManagedObject:(id)a3 photoLibrary:(id)a4
+- (void)deleteManagedObject:(id)object photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = [a4 managedObjectContext];
-  [v6 deleteObject:v5];
+  objectCopy = object;
+  managedObjectContext = [library managedObjectContext];
+  [managedObjectContext deleteObject:objectCopy];
 }
 
-- (BOOL)validateForDeleteManagedObject:(id)a3 error:(id *)a4
+- (BOOL)validateForDeleteManagedObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   if ([(PHMemoryDeleteRequest *)self clientEntitledToMemoryMutation])
   {
     v10.receiver = self;
     v10.super_class = PHMemoryDeleteRequest;
     v11 = 0;
-    v7 = [(PHObjectDeleteRequest *)&v10 validateForDeleteManagedObject:v6 error:&v11];
-    v8 = v11;
-    if (!a4)
+    v7 = [(PHObjectDeleteRequest *)&v10 validateForDeleteManagedObject:objectCopy error:&v11];
+    ph_genericEntitlementError = v11;
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -31,9 +31,9 @@
 
   else
   {
-    v8 = [MEMORY[0x1E696ABC0] ph_genericEntitlementError];
+    ph_genericEntitlementError = [MEMORY[0x1E696ABC0] ph_genericEntitlementError];
     v7 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -41,8 +41,8 @@
 
   if (!v7)
   {
-    v8 = v8;
-    *a4 = v8;
+    ph_genericEntitlementError = ph_genericEntitlementError;
+    *error = ph_genericEntitlementError;
   }
 
 LABEL_7:
@@ -50,15 +50,15 @@ LABEL_7:
   return v7;
 }
 
-- (PHMemoryDeleteRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHMemoryDeleteRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a5;
+  authorizationCopy = authorization;
   v11.receiver = self;
   v11.super_class = PHMemoryDeleteRequest;
-  v9 = [(PHObjectDeleteRequest *)&v11 initWithXPCDict:a3 request:a4 clientAuthorization:v8];
+  v9 = [(PHObjectDeleteRequest *)&v11 initWithXPCDict:dict request:request clientAuthorization:authorizationCopy];
   if (v9)
   {
-    v9->_clientEntitledToMemoryMutation = [v8 photoKitEntitledFor:*MEMORY[0x1E69C0058]];
+    v9->_clientEntitledToMemoryMutation = [authorizationCopy photoKitEntitledFor:*MEMORY[0x1E69C0058]];
   }
 
   return v9;

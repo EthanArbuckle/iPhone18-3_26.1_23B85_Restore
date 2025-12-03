@@ -8,8 +8,8 @@
 
 - (BOOL)vui_ppt_isLoading
 {
-  v1 = [a1 view];
-  v2 = [v1 subviews];
+  view = [self view];
+  subviews = [view subviews];
 
   v8 = 0;
   v9 = &v8;
@@ -22,7 +22,7 @@
   v7[2] = __47__UIViewController_VideosUI__vui_ppt_isLoading__block_invoke;
   v7[3] = &unk_1E8732150;
   v7[4] = &v8;
-  [v2 enumerateObjectsUsingBlock:v7];
+  [subviews enumerateObjectsUsingBlock:v7];
   v3 = v9[5];
   v5 = 0;
   if (v3)
@@ -59,18 +59,18 @@
   v16 = 3221225472;
   v17 = __76__UIViewController_VideosUI__vui_presentViewController_animated_completion___block_invoke;
   v18 = &unk_1E8732178;
-  v19 = a1;
+  selfCopy = self;
   v20 = v8;
   v22 = a4;
   v21 = v9;
   v10 = v9;
   v11 = v8;
   v12 = _Block_copy(&v15);
-  v13 = [a1 presentedViewController];
-  v14 = v13;
-  if (v13)
+  presentedViewController = [self presentedViewController];
+  v14 = presentedViewController;
+  if (presentedViewController)
   {
-    [v13 dismissViewControllerAnimated:a4 completion:v12];
+    [presentedViewController dismissViewControllerAnimated:a4 completion:v12];
   }
 
   else

@@ -1,13 +1,13 @@
 @interface DBDashboardStartupScaleAnimator
 - (_TtC9DashBoard31DBDashboardStartupScaleAnimator)init;
-- (_TtC9DashBoard31DBDashboardStartupScaleAnimator)initWithWindows:(id)a3;
-- (void)performAnimationWithCompletion:(id)a3;
+- (_TtC9DashBoard31DBDashboardStartupScaleAnimator)initWithWindows:(id)windows;
+- (void)performAnimationWithCompletion:(id)completion;
 - (void)prepareForAnimation;
 @end
 
 @implementation DBDashboardStartupScaleAnimator
 
-- (_TtC9DashBoard31DBDashboardStartupScaleAnimator)initWithWindows:(id)a3
+- (_TtC9DashBoard31DBDashboardStartupScaleAnimator)initWithWindows:(id)windows
 {
   sub_248271824();
   sub_248271870();
@@ -19,13 +19,13 @@
 
 - (void)prepareForAnimation
 {
-  v2 = self;
+  selfCopy = self;
   DBDashboardStartupScaleAnimator.prepareForAnimation()();
 }
 
-- (void)performAnimationWithCompletion:(id)a3
+- (void)performAnimationWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -40,7 +40,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   DBDashboardStartupScaleAnimator.performAnimation(completion:)(v7, v6);
   sub_248167864(v7);
 }

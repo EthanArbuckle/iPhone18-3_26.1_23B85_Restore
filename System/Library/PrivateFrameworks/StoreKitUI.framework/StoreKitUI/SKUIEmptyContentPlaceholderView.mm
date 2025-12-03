@@ -1,25 +1,25 @@
 @interface SKUIEmptyContentPlaceholderView
 - (BOOL)showsSignInButton;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)placeholderMessage;
 - (UIButton)signInButton;
 - (UIEdgeInsets)placeholderImageInsets;
 - (UIImage)placeholderImage;
 - (UILabel)placeholderMessageLabel;
 - (void)layoutSubviews;
-- (void)maskPlaceholdersInBackdropView:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setPlaceholderImage:(id)a3;
-- (void)setPlaceholderImageInsets:(UIEdgeInsets)a3;
-- (void)setPlaceholderMessage:(id)a3;
-- (void)setShowsSignInButton:(BOOL)a3;
+- (void)maskPlaceholdersInBackdropView:(id)view;
+- (void)setBackgroundColor:(id)color;
+- (void)setPlaceholderImage:(id)image;
+- (void)setPlaceholderImageInsets:(UIEdgeInsets)insets;
+- (void)setPlaceholderMessage:(id)message;
+- (void)setShowsSignInButton:(BOOL)button;
 @end
 
 @implementation SKUIEmptyContentPlaceholderView
 
-- (void)maskPlaceholdersInBackdropView:(id)a3
+- (void)maskPlaceholdersInBackdropView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -28,7 +28,7 @@
       if (v5)
       {
         [(SKUIEmptyContentPlaceholderView *)v5 maskPlaceholdersInBackdropView:v6, v7, v8, v9, v10, v11, v12];
-        if (!v4)
+        if (!viewCopy)
         {
           goto LABEL_6;
         }
@@ -38,13 +38,13 @@
     }
   }
 
-  if (v4)
+  if (viewCopy)
   {
 LABEL_5:
-    [v4 removeMaskViews];
+    [viewCopy removeMaskViews];
     label = self->_label;
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)label setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)label setBackgroundColor:clearColor];
 
     [(UILabel *)self->_label setOpaque:0];
     v15 = self->_label;
@@ -52,15 +52,15 @@ LABEL_5:
     [(UILabel *)v15 setTextColor:v16];
 
     [(UILabel *)self->_label _setBackdropMaskViewFlags:2];
-    [v4 updateMaskViewsForView:self->_label];
+    [viewCopy updateMaskViewsForView:self->_label];
     [(UIImageView *)self->_imageView setAlpha:0.2];
     imageView = self->_imageView;
-    v18 = [MEMORY[0x277D75348] clearColor];
-    [(UIImageView *)imageView setBackgroundColor:v18];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UIImageView *)imageView setBackgroundColor:clearColor2];
 
     [(UIImageView *)self->_imageView setOpaque:0];
     [(UIImageView *)self->_imageView _setBackdropMaskViewFlags:2];
-    [v4 updateMaskViewsForView:self->_imageView];
+    [viewCopy updateMaskViewsForView:self->_imageView];
   }
 
 LABEL_6:
@@ -80,9 +80,9 @@ LABEL_6:
     }
   }
 
-  v11 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
 
-  return v11;
+  return image;
 }
 
 - (NSString)placeholderMessage
@@ -99,9 +99,9 @@ LABEL_6:
     }
   }
 
-  v11 = [(UILabel *)self->_label text];
+  text = [(UILabel *)self->_label text];
 
-  return v11;
+  return text;
 }
 
 - (UILabel)placeholderMessageLabel
@@ -126,8 +126,8 @@ LABEL_6:
     self->_label = v12;
 
     v14 = self->_label;
-    v15 = [(SKUIEmptyContentPlaceholderView *)self backgroundColor];
-    [(UILabel *)v14 setBackgroundColor:v15];
+    backgroundColor = [(SKUIEmptyContentPlaceholderView *)self backgroundColor];
+    [(UILabel *)v14 setBackgroundColor:backgroundColor];
 
     v16 = self->_label;
     v17 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
@@ -147,9 +147,9 @@ LABEL_6:
   return label;
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -163,7 +163,7 @@ LABEL_6:
   }
 
   imageView = self->_imageView;
-  if (v4)
+  if (imageCopy)
   {
     if (!imageView)
     {
@@ -175,7 +175,7 @@ LABEL_6:
       imageView = self->_imageView;
     }
 
-    [(UIImageView *)imageView setImage:v4];
+    [(UIImageView *)imageView setImage:imageCopy];
     [(UIImageView *)self->_imageView sizeToFit];
     [(SKUIEmptyContentPlaceholderView *)self setNeedsLayout];
   }
@@ -188,12 +188,12 @@ LABEL_6:
   }
 }
 
-- (void)setPlaceholderImageInsets:(UIEdgeInsets)a3
+- (void)setPlaceholderImageInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -213,9 +213,9 @@ LABEL_6:
   [(SKUIEmptyContentPlaceholderView *)self setNeedsLayout];
 }
 
-- (void)setPlaceholderMessage:(id)a3
+- (void)setPlaceholderMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -224,7 +224,7 @@ LABEL_6:
       if (v5)
       {
         [(SKUIEmptyContentPlaceholderView *)v5 setPlaceholderMessage:v6, v7, v8, v9, v10, v11, v12];
-        if (v4)
+        if (messageCopy)
         {
           goto LABEL_5;
         }
@@ -237,23 +237,23 @@ LABEL_7:
     }
   }
 
-  if (!v4)
+  if (!messageCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  v13 = [(SKUIEmptyContentPlaceholderView *)self placeholderMessageLabel];
-  [v13 setHidden:0];
-  [v13 setText:v4];
+  placeholderMessageLabel = [(SKUIEmptyContentPlaceholderView *)self placeholderMessageLabel];
+  [placeholderMessageLabel setHidden:0];
+  [placeholderMessageLabel setText:messageCopy];
   [(SKUIEmptyContentPlaceholderView *)self setNeedsLayout];
 
 LABEL_8:
 }
 
-- (void)setShowsSignInButton:(BOOL)a3
+- (void)setShowsSignInButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -266,8 +266,8 @@ LABEL_8:
     }
   }
 
-  v13 = [(SKUIEmptyContentPlaceholderView *)self signInButton];
-  [v13 setHidden:!v3];
+  signInButton = [(SKUIEmptyContentPlaceholderView *)self signInButton];
+  [signInButton setHidden:!buttonCopy];
 }
 
 - (UIButton)signInButton
@@ -292,9 +292,9 @@ LABEL_8:
     self->_signInButton = v12;
 
     [(UIButton *)self->_signInButton setHidden:1];
-    v14 = [(UIButton *)self->_signInButton titleLabel];
+    titleLabel = [(UIButton *)self->_signInButton titleLabel];
     v15 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-    [v14 setFont:v15];
+    [titleLabel setFont:v15];
 
     [(SKUIEmptyContentPlaceholderView *)self addSubview:self->_signInButton];
     signInButton = self->_signInButton;
@@ -396,9 +396,9 @@ LABEL_8:
   [(UIButton *)self->_signInButton setFrame:v37, v35, v38, v36];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -411,16 +411,16 @@ LABEL_8:
     }
   }
 
-  [(UIImageView *)self->_imageView setBackgroundColor:v4];
-  [(UILabel *)self->_label setBackgroundColor:v4];
+  [(UIImageView *)self->_imageView setBackgroundColor:colorCopy];
+  [(UILabel *)self->_label setBackgroundColor:colorCopy];
   v13.receiver = self;
   v13.super_class = SKUIEmptyContentPlaceholderView;
-  [(SKUIEmptyContentPlaceholderView *)&v13 setBackgroundColor:v4];
+  [(SKUIEmptyContentPlaceholderView *)&v13 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())

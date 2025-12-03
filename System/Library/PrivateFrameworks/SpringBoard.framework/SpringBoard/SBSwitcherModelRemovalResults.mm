@@ -1,9 +1,9 @@
 @interface SBSwitcherModelRemovalResults
-- (BOOL)willHideDisplayItem:(id)a3;
+- (BOOL)willHideDisplayItem:(id)item;
 - (SBSwitcherModelRemovalResults)init;
-- (void)executeActionForAppLayout:(id)a3;
-- (void)setAction:(id)a3 forAppLayout:(id)a4;
-- (void)setHide:(BOOL)a3 forDisplayItem:(id)a4;
+- (void)executeActionForAppLayout:(id)layout;
+- (void)setAction:(id)action forAppLayout:(id)layout;
+- (void)setHide:(BOOL)hide forDisplayItem:(id)item;
 @end
 
 @implementation SBSwitcherModelRemovalResults
@@ -35,49 +35,49 @@
   return v2;
 }
 
-- (void)setAction:(id)a3 forAppLayout:(id)a4
+- (void)setAction:(id)action forAppLayout:(id)layout
 {
-  v10 = a3;
-  v7 = a4;
-  if (!v10)
+  actionCopy = action;
+  layoutCopy = layout;
+  if (!actionCopy)
   {
     [SBSwitcherModelRemovalResults setAction:a2 forAppLayout:self];
   }
 
   appLayoutToAction = self->_appLayoutToAction;
   v9 = MEMORY[0x223D6F7F0]();
-  [(NSMutableDictionary *)appLayoutToAction setObject:v9 forKey:v7];
+  [(NSMutableDictionary *)appLayoutToAction setObject:v9 forKey:layoutCopy];
 
-  [(NSMutableSet *)self->_appLayouts addObject:v7];
+  [(NSMutableSet *)self->_appLayouts addObject:layoutCopy];
 }
 
-- (void)setHide:(BOOL)a3 forDisplayItem:(id)a4
+- (void)setHide:(BOOL)hide forDisplayItem:(id)item
 {
-  v4 = a3;
+  hideCopy = hide;
   displayItemToHide = self->_displayItemToHide;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithBool:v4];
-  [(NSMutableDictionary *)displayItemToHide setObject:v8 forKey:v7];
+  itemCopy = item;
+  v8 = [v6 numberWithBool:hideCopy];
+  [(NSMutableDictionary *)displayItemToHide setObject:v8 forKey:itemCopy];
 }
 
-- (void)executeActionForAppLayout:(id)a3
+- (void)executeActionForAppLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v4 = [(NSMutableDictionary *)self->_appLayoutToAction objectForKey:?];
   if (v4)
   {
-    [(NSMutableDictionary *)self->_appLayoutToAction removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_appLayoutToAction removeObjectForKey:layoutCopy];
     v4[2](v4);
   }
 }
 
-- (BOOL)willHideDisplayItem:(id)a3
+- (BOOL)willHideDisplayItem:(id)item
 {
-  v3 = [(NSMutableDictionary *)self->_displayItemToHide objectForKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSMutableDictionary *)self->_displayItemToHide objectForKey:item];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)setAction:(uint64_t)a1 forAppLayout:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

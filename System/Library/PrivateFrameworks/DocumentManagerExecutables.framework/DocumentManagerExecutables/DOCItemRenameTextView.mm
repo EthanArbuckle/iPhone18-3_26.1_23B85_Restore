@@ -1,37 +1,37 @@
 @interface DOCItemRenameTextView
 - (BOOL)becomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (NSArray)keyCommands;
 - (NSString)text;
 - (UIButton)accessibilityClearButton;
-- (_TtC26DocumentManagerExecutables21DOCItemRenameTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (id)textView:(id)a3 editMenuForTextInRange:(_NSRange)a4 suggestedActions:(id)a5;
+- (_TtC26DocumentManagerExecutables21DOCItemRenameTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (id)textView:(id)view editMenuForTextInRange:(_NSRange)range suggestedActions:(id)actions;
 - (void)clearText;
 - (void)didMoveToSuperview;
-- (void)editExtension:(id)a3;
+- (void)editExtension:(id)extension;
 - (void)endEdtingCell;
 - (void)installClearButton;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setText:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)undoClearTextWithPreviousText:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setText:(id)text;
+- (void)textViewDidChange:(id)change;
+- (void)undoClearTextWithPreviousText:(id)text;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation DOCItemRenameTextView
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(DOCItemRenameTextView *)&v4 setBackgroundColor:a3];
+  [(DOCItemRenameTextView *)&v4 setBackgroundColor:color];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DOCItemRenameTextView.layoutSubviews()();
 }
 
@@ -43,25 +43,25 @@
   *(&self->super.super.super.super.super.isa + v4) = 1;
   v7.receiver = self;
   v7.super_class = ObjectType;
-  v5 = self;
+  selfCopy = self;
   LOBYTE(ObjectType) = [(DOCItemRenameTextView *)&v7 becomeFirstResponder];
   *(&self->super.super.super.super.super.isa + v4) = 0;
 
   return ObjectType;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v5 = a3;
-  v6 = self;
-  DOCItemRenameTextView.willMove(toSuperview:)(a3);
+  superviewCopy = superview;
+  selfCopy = self;
+  DOCItemRenameTextView.willMove(toSuperview:)(superview);
 }
 
-- (void)editExtension:(id)a3
+- (void)editExtension:(id)extension
 {
-  if (a3)
+  if (extension)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -70,7 +70,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   DOCItemRenameTextView.editExtension(_:)();
@@ -99,11 +99,11 @@
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -112,10 +112,10 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = DOCItemRenameTextView.canPerformAction(_:withSender:)(a3, v10);
+  v8 = DOCItemRenameTextView.canPerformAction(_:withSender:)(action, v10);
 
   outlined destroy of Any?(v10);
   return v8 & 1;
@@ -123,19 +123,19 @@
 
 - (void)installClearButton
 {
-  v2 = self;
+  selfCopy = self;
   DOCItemRenameTextView.installClearButton()();
 }
 
 - (void)endEdtingCell
 {
-  v2 = self;
+  selfCopy = self;
   DOCItemRenameTextView.sendEndEditingToCell(saveChanges:)(1);
 }
 
 - (NSArray)keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCItemRenameTextView.keyCommands.getter();
 
   if (v3)
@@ -152,14 +152,14 @@
   return v4.super.isa;
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
-  v10 = a3;
-  v11 = self;
-  v12 = [v10 markedTextRange];
-  if (v12)
+  viewCopy = view;
+  selfCopy = self;
+  markedTextRange = [viewCopy markedTextRange];
+  if (markedTextRange)
   {
 
     return 1;
@@ -185,19 +185,19 @@
   return 0;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  DOCItemRenameTextView.textViewDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  DOCItemRenameTextView.textViewDidChange(_:)(changeCopy);
 }
 
-- (id)textView:(id)a3 editMenuForTextInRange:(_NSRange)a4 suggestedActions:(id)a5
+- (id)textView:(id)view editMenuForTextInRange:(_NSRange)range suggestedActions:(id)actions
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for UIMenuElement);
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = a3;
-  v9 = self;
+  viewCopy = view;
+  selfCopy = self;
   specialized DOCItemRenameTextView.textView(_:editMenuForTextIn:suggestedActions:)(v7);
   v11 = v10;
 
@@ -206,36 +206,36 @@
 
 - (void)clearText
 {
-  v2 = self;
+  selfCopy = self;
   DOCItemRenameTextView.clearText()();
 }
 
-- (void)undoClearTextWithPreviousText:(id)a3
+- (void)undoClearTextWithPreviousText:(id)text
 {
   ObjectType = swift_getObjectType();
-  v6 = a3;
-  v7 = self;
-  v8 = [(DOCItemRenameTextView *)v7 undoManager];
-  if (v8)
+  textCopy = text;
+  selfCopy = self;
+  undoManager = [(DOCItemRenameTextView *)selfCopy undoManager];
+  if (undoManager)
   {
-    v9 = v8;
-    [v8 registerUndoWithTarget:v7 selector:sel_clearText object:0];
+    v9 = undoManager;
+    [undoManager registerUndoWithTarget:selfCopy selector:sel_clearText object:0];
   }
 
-  v10.receiver = v7;
+  v10.receiver = selfCopy;
   v10.super_class = ObjectType;
-  [(DOCItemRenameTextView *)&v10 setText:v6];
+  [(DOCItemRenameTextView *)&v10 setText:textCopy];
 }
 
 - (UIButton)accessibilityClearButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCItemRenameTextView.clearButton.getter();
 
   return v3;
 }
 
-- (_TtC26DocumentManagerExecutables21DOCItemRenameTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC26DocumentManagerExecutables21DOCItemRenameTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -247,10 +247,10 @@
   v10.receiver = self;
   v10.super_class = swift_getObjectType();
   v2 = v10.receiver;
-  v3 = [(DOCItemRenameTextView *)&v10 text];
-  if (v3)
+  text = [(DOCItemRenameTextView *)&v10 text];
+  if (text)
   {
-    v4 = v3;
+    v4 = text;
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
 
@@ -266,25 +266,25 @@
   return v8;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (text)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
-    v9 = self;
-    a3 = MEMORY[0x24C1FAD20](v6, v8);
+    selfCopy = self;
+    text = MEMORY[0x24C1FAD20](v6, v8);
   }
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
   }
 
   v11.receiver = self;
   v11.super_class = ObjectType;
-  [(DOCItemRenameTextView *)&v11 setText:a3];
+  [(DOCItemRenameTextView *)&v11 setText:text];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface CMContinuityCaptureProximityMonitor
-- (BOOL)isDeviceKnown:(id)a3;
-- (BOOL)isDeviceNearby:(id)a3;
-- (CMContinuityCaptureProximityMonitor)initWithQueue:(id)a3 delegate:(id)a4;
+- (BOOL)isDeviceKnown:(id)known;
+- (BOOL)isDeviceNearby:(id)nearby;
+- (CMContinuityCaptureProximityMonitor)initWithQueue:(id)queue delegate:(id)delegate;
 - (void)_invalidate;
 - (void)_startNearbyInteractionSession;
-- (void)beginTracking:(id)a3;
+- (void)beginTracking:(id)tracking;
 - (void)dealloc;
-- (void)endTracking:(id)a3;
+- (void)endTracking:(id)tracking;
 - (void)invalidate;
-- (void)session:(id)a3 didInvalidateWithError:(id)a4;
-- (void)session:(id)a3 object:(id)a4 didUpdateRegion:(id)a5 previousRegion:(id)a6;
-- (void)sessionSuspensionEnded:(id)a3;
-- (void)sessionWasSuspended:(id)a3;
+- (void)session:(id)session didInvalidateWithError:(id)error;
+- (void)session:(id)session object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion;
+- (void)sessionSuspensionEnded:(id)ended;
+- (void)sessionWasSuspended:(id)suspended;
 @end
 
 @implementation CMContinuityCaptureProximityMonitor
 
-- (CMContinuityCaptureProximityMonitor)initWithQueue:(id)a3 delegate:(id)a4
+- (CMContinuityCaptureProximityMonitor)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v31.receiver = self;
   v31.super_class = CMContinuityCaptureProximityMonitor;
   v9 = [(CMContinuityCaptureProximityMonitor *)&v31 init];
@@ -27,12 +27,12 @@
   if (v9)
   {
     v9->_havePendingUpdates = 0;
-    objc_storeWeak(&v9->_delegate, v8);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v11 = dispatch_queue_create("continuity-capture-proximity-monitor", 0);
     internalQueue = v10->_internalQueue;
     v10->_internalQueue = v11;
 
-    objc_storeStrong(&v10->_callbackQueue, a3);
+    objc_storeStrong(&v10->_callbackQueue, queue);
     v13 = objc_opt_new();
     niSession = v10->_niSession;
     v10->_niSession = v13;
@@ -71,16 +71,16 @@
   return v10;
 }
 
-- (void)beginTracking:(id)a3
+- (void)beginTracking:(id)tracking
 {
-  v4 = a3;
+  trackingCopy = tracking;
   v5 = CMContinuityCaptureLog(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = trackingCopy;
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "%@ begin tracking %@", buf, 0x16u);
   }
 
@@ -90,8 +90,8 @@
   v8[2] = __53__CMContinuityCaptureProximityMonitor_beginTracking___block_invoke;
   v8[3] = &unk_278D5C008;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = trackingCopy;
+  v7 = trackingCopy;
   dispatch_sync(internalQueue, v8);
 }
 
@@ -131,16 +131,16 @@ void __53__CMContinuityCaptureProximityMonitor_beginTracking___block_invoke_2(ui
   }
 }
 
-- (void)endTracking:(id)a3
+- (void)endTracking:(id)tracking
 {
-  v4 = a3;
+  trackingCopy = tracking;
   v5 = CMContinuityCaptureLog(1);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = trackingCopy;
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "%@ end tracking %@", buf, 0x16u);
   }
 
@@ -150,14 +150,14 @@ void __53__CMContinuityCaptureProximityMonitor_beginTracking___block_invoke_2(ui
   v8[2] = __51__CMContinuityCaptureProximityMonitor_endTracking___block_invoke;
   v8[3] = &unk_278D5C008;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = trackingCopy;
+  v7 = trackingCopy;
   dispatch_sync(internalQueue, v8);
 }
 
-- (BOOL)isDeviceNearby:(id)a3
+- (BOOL)isDeviceNearby:(id)nearby
 {
-  v4 = a3;
+  nearbyCopy = nearby;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -167,10 +167,10 @@ void __53__CMContinuityCaptureProximityMonitor_beginTracking___block_invoke_2(ui
   block[1] = 3221225472;
   block[2] = __54__CMContinuityCaptureProximityMonitor_isDeviceNearby___block_invoke;
   block[3] = &unk_278D5C4E0;
-  v9 = v4;
+  v9 = nearbyCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = nearbyCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -185,9 +185,9 @@ uint64_t __54__CMContinuityCaptureProximityMonitor_isDeviceNearby___block_invoke
   return result;
 }
 
-- (BOOL)isDeviceKnown:(id)a3
+- (BOOL)isDeviceKnown:(id)known
 {
-  v4 = a3;
+  knownCopy = known;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -197,10 +197,10 @@ uint64_t __54__CMContinuityCaptureProximityMonitor_isDeviceNearby___block_invoke
   block[1] = 3221225472;
   block[2] = __53__CMContinuityCaptureProximityMonitor_isDeviceKnown___block_invoke;
   block[3] = &unk_278D5C4E0;
-  v9 = v4;
+  v9 = knownCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = knownCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -241,7 +241,7 @@ uint64_t __53__CMContinuityCaptureProximityMonitor_isDeviceKnown___block_invoke(
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "%@ : monitoring nearby interaction", &v10, 0xCu);
   }
 
@@ -259,7 +259,7 @@ uint64_t __53__CMContinuityCaptureProximityMonitor_isDeviceKnown___block_invoke(
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2112;
       v13 = v8;
       _os_log_impl(&dword_242545000, v9, OS_LOG_TYPE_DEFAULT, "%@ ERROR in NIDevicePresenceConfiguration: %@", &v10, 0x16u);
@@ -282,7 +282,7 @@ uint64_t __53__CMContinuityCaptureProximityMonitor_isDeviceKnown___block_invoke(
     v4 = [(NSMutableSet *)self->_tracking count];
     v5 = [(NSMutableSet *)self->_nearby count];
     v7 = 138412802;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
     v10 = v4;
     v11 = 1024;
@@ -298,33 +298,33 @@ uint64_t __53__CMContinuityCaptureProximityMonitor_isDeviceKnown___block_invoke(
   [(NSMutableSet *)self->_tracking removeAllObjects];
 }
 
-- (void)session:(id)a3 object:(id)a4 didUpdateRegion:(id)a5 previousRegion:(id)a6
+- (void)session:(id)session object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sessionCopy = session;
+  objectCopy = object;
+  regionCopy = region;
+  previousRegionCopy = previousRegion;
   dispatch_assert_queue_V2(self->_callbackQueue);
   v14 = CMContinuityCaptureLog(1);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [v11 deviceIdentifier];
-    [v11 distance];
+    deviceIdentifier = [objectCopy deviceIdentifier];
+    [objectCopy distance];
     *buf = 138413314;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v15;
+    *&buf[14] = deviceIdentifier;
     *&buf[22] = 2048;
     v30 = v16;
     *v31 = 2112;
-    *&v31[2] = v13;
+    *&v31[2] = previousRegionCopy;
     *&v31[10] = 2112;
-    *&v31[12] = v12;
+    *&v31[12] = regionCopy;
     _os_log_impl(&dword_242545000, v14, OS_LOG_TYPE_INFO, "%@ : device %@ (%f) moved from %@ to %@", buf, 0x34u);
   }
 
-  v17 = [v11 deviceIdentifier];
-  v18 = [v12 isEqual:self->_innerPredicate];
+  deviceIdentifier2 = [objectCopy deviceIdentifier];
+  v18 = [regionCopy isEqual:self->_innerPredicate];
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x2020000000;
@@ -341,7 +341,7 @@ uint64_t __53__CMContinuityCaptureProximityMonitor_isDeviceKnown___block_invoke(
   block[2] = __85__CMContinuityCaptureProximityMonitor_session_object_didUpdateRegion_previousRegion___block_invoke;
   block[3] = &unk_278D5DBB0;
   block[4] = self;
-  v20 = v17;
+  v20 = deviceIdentifier2;
   v23 = v20;
   v24 = v27;
   v26 = v18;
@@ -417,9 +417,9 @@ void __85__CMContinuityCaptureProximityMonitor_session_object_didUpdateRegion_pr
   }
 }
 
-- (void)session:(id)a3 didInvalidateWithError:(id)a4
+- (void)session:(id)session didInvalidateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_callbackQueue);
   objc_initWeak(&location, self);
   internalQueue = self->_internalQueue;
@@ -428,8 +428,8 @@ void __85__CMContinuityCaptureProximityMonitor_session_object_didUpdateRegion_pr
   v8[2] = __70__CMContinuityCaptureProximityMonitor_session_didInvalidateWithError___block_invoke;
   v8[3] = &unk_278D5CA78;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = errorCopy;
+  v7 = errorCopy;
   objc_copyWeak(&v10, &location);
   dispatch_async(internalQueue, v8);
   objc_destroyWeak(&v10);
@@ -521,26 +521,26 @@ void __70__CMContinuityCaptureProximityMonitor_session_didInvalidateWithError___
   }
 }
 
-- (void)sessionWasSuspended:(id)a3
+- (void)sessionWasSuspended:(id)suspended
 {
   dispatch_assert_queue_V2(self->_callbackQueue);
   v4 = CMContinuityCaptureLog(1);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "%@ NISession was suspended", &v5, 0xCu);
   }
 }
 
-- (void)sessionSuspensionEnded:(id)a3
+- (void)sessionSuspensionEnded:(id)ended
 {
   dispatch_assert_queue_V2(self->_callbackQueue);
   v4 = CMContinuityCaptureLog(1);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "%@ NISession resuming", buf, 0xCu);
   }
 

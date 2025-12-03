@@ -1,41 +1,41 @@
 @interface NOIAnalyticsEngine
 + (id)queue;
-+ (void)getQueryStatistics:(id *)a3;
++ (void)getQueryStatistics:(id *)statistics;
 + (void)resetQueryStatistics;
 - (BOOL)_initializeAllManagedNOIs;
-- (NOIAnalyticsEngine)initWithWorkspace:(id)a3 params:(id)a4;
-- (id)_clientNOIEvent:(id)a3 forNOIs:(id)a4 isAddEvent:(BOOL)a5;
-- (id)_validatedNOIs:(id)a3 orPredicate:(id)a4;
-- (void)_bottomUpNOIEvent:(id)a3 withInfo:(id)a4;
-- (void)_collectBasicFieldsForRRCMetric:(id)a3 durationUsecs:(unint64_t)a4;
-- (void)_collectDataUsageFieldsForRRCMetric:(id)a3 layer2EgressMetric:(id)a4 underrun:(BOOL *)a5;
+- (NOIAnalyticsEngine)initWithWorkspace:(id)workspace params:(id)params;
+- (id)_clientNOIEvent:(id)event forNOIs:(id)is isAddEvent:(BOOL)addEvent;
+- (id)_validatedNOIs:(id)is orPredicate:(id)predicate;
+- (void)_bottomUpNOIEvent:(id)event withInfo:(id)info;
+- (void)_collectBasicFieldsForRRCMetric:(id)metric durationUsecs:(unint64_t)usecs;
+- (void)_collectDataUsageFieldsForRRCMetric:(id)metric layer2EgressMetric:(id)egressMetric underrun:(BOOL *)underrun;
 - (void)_dumpClientStructure;
-- (void)_evalPostingNotificationForNOI:(id)a3 forEvent:(id)a4 withInfo:(id)a5;
-- (void)_getQueryStatistics:(id *)a3;
+- (void)_evalPostingNotificationForNOI:(id)i forEvent:(id)event withInfo:(id)info;
+- (void)_getQueryStatistics:(id *)statistics;
 - (void)_observeStateRelays;
 - (void)_resetQueryStatistics;
 - (void)_resetRRCMetricCounters;
-- (void)auditableLinkQuality:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)canUseOnAlternate:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)clientEvent:(id)a3 isAddEvent:(BOOL)a4;
+- (void)auditableLinkQuality:(id)quality options:(id)options reply:(id)reply;
+- (void)canUseOnAlternate:(id)alternate options:(id)options reply:(id)reply;
+- (void)clientEvent:(id)event isAddEvent:(BOOL)addEvent;
 - (void)clientTransactionsRelease;
 - (void)dealloc;
-- (void)estTransferTime:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)inquireNOIFor:(id)a3 orPredicate:(id)a4 requestedKeys:(id)a5 options:(id)a6 connection:(id)a7 reply:(id)a8;
-- (void)l2ThroughputMetrics:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)networkAttachmentInfo:(id)a3 options:(id)a4 reply:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)subscribeToNOIsFor:(id)a3 orPredicate:(id)a4 options:(id)a5 connection:(id)a6;
-- (void)unsubscribeToNOIs:(id)a3 connection:(id)a4;
+- (void)estTransferTime:(id)time options:(id)options reply:(id)reply;
+- (void)inquireNOIFor:(id)for orPredicate:(id)predicate requestedKeys:(id)keys options:(id)options connection:(id)connection reply:(id)reply;
+- (void)l2ThroughputMetrics:(id)metrics options:(id)options reply:(id)reply;
+- (void)networkAttachmentInfo:(id)info options:(id)options reply:(id)reply;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)subscribeToNOIsFor:(id)for orPredicate:(id)predicate options:(id)options connection:(id)connection;
+- (void)unsubscribeToNOIs:(id)is connection:(id)connection;
 @end
 
 @implementation NOIAnalyticsEngine
 
-- (NOIAnalyticsEngine)initWithWorkspace:(id)a3 params:(id)a4
+- (NOIAnalyticsEngine)initWithWorkspace:(id)workspace params:(id)params
 {
   v85 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  workspaceCopy = workspace;
+  paramsCopy = params;
   v8 = SFGetStandardQueue(2);
   if (!v8)
   {
@@ -51,14 +51,14 @@
 
   v80.receiver = self;
   v80.super_class = NOIAnalyticsEngine;
-  self = [(AnalyticsEngineCore *)&v80 initWithWorkspace:v6 params:v7 queue:v8];
+  self = [(AnalyticsEngineCore *)&v80 initWithWorkspace:workspaceCopy params:paramsCopy queue:v8];
   if (self)
   {
     v9 = noiLogHandle;
     if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v82 = self;
+      selfCopy = self;
       v83 = 2080;
       v84 = "[NOIAnalyticsEngine initWithWorkspace:params:]";
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEFAULT, "NOI Analytics Engine: %p %s", buf, 0x16u);
@@ -83,24 +83,24 @@
 
         if (self->_predictionQueryClients)
         {
-          v16 = [MEMORY[0x277CCAB98] defaultCenter];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
           v78[0] = MEMORY[0x277D85DD0];
           v78[1] = 3221225472;
           v78[2] = __47__NOIAnalyticsEngine_initWithWorkspace_params___block_invoke;
           v78[3] = &unk_27898A690;
-          v17 = self;
-          v79 = v17;
-          v18 = [v16 addObserverForName:@"kNotificationNewConnectivityEpochCell" object:0 queue:0 usingBlock:v78];
-          cellEpochObserver = v17->_cellEpochObserver;
-          v17->_cellEpochObserver = v18;
+          selfCopy2 = self;
+          v79 = selfCopy2;
+          v18 = [defaultCenter addObserverForName:@"kNotificationNewConnectivityEpochCell" object:0 queue:0 usingBlock:v78];
+          cellEpochObserver = selfCopy2->_cellEpochObserver;
+          selfCopy2->_cellEpochObserver = v18;
 
           v76[0] = MEMORY[0x277D85DD0];
           v76[1] = 3221225472;
           v76[2] = __47__NOIAnalyticsEngine_initWithWorkspace_params___block_invoke_44;
           v76[3] = &unk_27898A690;
-          v20 = v17;
+          v20 = selfCopy2;
           v77 = v20;
-          v21 = [v16 addObserverForName:@"kNotificationNewConnectivityEpochWiFi" object:0 queue:0 usingBlock:v76];
+          v21 = [defaultCenter addObserverForName:@"kNotificationNewConnectivityEpochWiFi" object:0 queue:0 usingBlock:v76];
           wifiEpochObserver = v20->_wifiEpochObserver;
           v20->_wifiEpochObserver = v21;
 
@@ -110,7 +110,7 @@
           v74[3] = &unk_27898A690;
           v23 = v20;
           v75 = v23;
-          v24 = [v16 addObserverForName:@"kNotificationNewConnectivityEpochWired" object:0 queue:0 usingBlock:v74];
+          v24 = [defaultCenter addObserverForName:@"kNotificationNewConnectivityEpochWired" object:0 queue:0 usingBlock:v74];
           wiredEpochObserver = v23->_wiredEpochObserver;
           v23->_wiredEpochObserver = v24;
 
@@ -120,7 +120,7 @@
           v72[3] = &unk_27898A690;
           v26 = v23;
           v73 = v26;
-          v27 = [v16 addObserverForName:@"notificationNewModelGenerated" object:0 queue:0 usingBlock:v72];
+          v27 = [defaultCenter addObserverForName:@"notificationNewModelGenerated" object:0 queue:0 usingBlock:v72];
           modelTurndownObserver = v26->_modelTurndownObserver;
           v26->_modelTurndownObserver = v27;
 
@@ -130,7 +130,7 @@
           v70[3] = &unk_27898A690;
           v29 = v26;
           v71 = v29;
-          v30 = [v16 addObserverForName:@"kNotificationCellLinkStateReportCapable" object:0 queue:0 usingBlock:v70];
+          v30 = [defaultCenter addObserverForName:@"kNotificationCellLinkStateReportCapable" object:0 queue:0 usingBlock:v70];
           cellStateCapabilityObserver = v29->_cellStateCapabilityObserver;
           v29->_cellStateCapabilityObserver = v30;
 
@@ -140,7 +140,7 @@
           v68[3] = &unk_27898A690;
           v32 = v29;
           v69 = v32;
-          v33 = [v16 addObserverForName:@"kNotificationCellLinkStateChange" object:0 queue:0 usingBlock:v68];
+          v33 = [defaultCenter addObserverForName:@"kNotificationCellLinkStateChange" object:0 queue:0 usingBlock:v68];
           cellStateChangeObserver = v32->_cellStateChangeObserver;
           v32->_cellStateChangeObserver = v33;
 
@@ -150,7 +150,7 @@
           v66[3] = &unk_27898A690;
           v35 = v32;
           v67 = v35;
-          v36 = [v16 addObserverForName:@"fallbackRecommendation" object:0 queue:0 usingBlock:v66];
+          v36 = [defaultCenter addObserverForName:@"fallbackRecommendation" object:0 queue:0 usingBlock:v66];
           cellFallbackObserver = v35->_cellFallbackObserver;
           v35->_cellFallbackObserver = v36;
 
@@ -160,7 +160,7 @@
           v64[3] = &unk_27898A690;
           v38 = v35;
           v65 = v38;
-          v39 = [v16 addObserverForName:@"considerAlternateUpdate" object:0 queue:0 usingBlock:v64];
+          v39 = [defaultCenter addObserverForName:@"considerAlternateUpdate" object:0 queue:0 usingBlock:v64];
           considerAlternateUpdateObserver = v38->_considerAlternateUpdateObserver;
           v38->_considerAlternateUpdateObserver = v39;
 
@@ -170,7 +170,7 @@
           v62[3] = &unk_27898A690;
           v41 = v38;
           v63 = v41;
-          v42 = [v16 addObserverForName:@"kNotificationNewPrimaryInterface" object:0 queue:0 usingBlock:v62];
+          v42 = [defaultCenter addObserverForName:@"kNotificationNewPrimaryInterface" object:0 queue:0 usingBlock:v62];
           primaryObserver = v41->_primaryObserver;
           v41->_primaryObserver = v42;
 
@@ -193,8 +193,8 @@
           v59 = v45;
           dispatch_sync(v8, block);
           signal(31, 1);
-          v46 = [v45 queue];
-          v47 = dispatch_source_create(MEMORY[0x277D85D30], 0x1FuLL, 0, v46);
+          queue = [v45 queue];
+          v47 = dispatch_source_create(MEMORY[0x277D85D30], 0x1FuLL, 0, queue);
           v48 = initWithWorkspace_params__sigusr2;
           initWithWorkspace_params__sigusr2 = v47;
 
@@ -206,7 +206,7 @@
             handler[2] = __47__NOIAnalyticsEngine_initWithWorkspace_params___block_invoke_3;
             handler[3] = &unk_27898A7D0;
             v56 = v45;
-            v57 = v16;
+            v57 = defaultCenter;
             dispatch_source_set_event_handler(v49, handler);
             dispatch_resume(initWithWorkspace_params__sigusr2);
           }
@@ -225,17 +225,17 @@
     }
 
 LABEL_18:
-    v51 = 0;
+    selfCopy3 = 0;
     goto LABEL_19;
   }
 
 LABEL_15:
   self = self;
-  v51 = self;
+  selfCopy3 = self;
 LABEL_19:
 
   v53 = *MEMORY[0x277D85DE8];
-  return v51;
+  return selfCopy3;
 }
 
 void __47__NOIAnalyticsEngine_initWithWorkspace_params___block_invoke(uint64_t a1, void *a2)
@@ -674,15 +674,15 @@ void __47__NOIAnalyticsEngine_initWithWorkspace_params___block_invoke_66(uint64_
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_cellEpochObserver];
-  [v3 removeObserver:self->_wifiEpochObserver];
-  [v3 removeObserver:self->_wiredEpochObserver];
-  [v3 removeObserver:self->_modelTurndownObserver];
-  [v3 removeObserver:self->_cellStateCapabilityObserver];
-  [v3 removeObserver:self->_cellStateChangeObserver];
-  [v3 removeObserver:self->_cellFallbackObserver];
-  [v3 removeObserver:self->_primaryObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_cellEpochObserver];
+  [defaultCenter removeObserver:self->_wifiEpochObserver];
+  [defaultCenter removeObserver:self->_wiredEpochObserver];
+  [defaultCenter removeObserver:self->_modelTurndownObserver];
+  [defaultCenter removeObserver:self->_cellStateCapabilityObserver];
+  [defaultCenter removeObserver:self->_cellStateChangeObserver];
+  [defaultCenter removeObserver:self->_cellFallbackObserver];
+  [defaultCenter removeObserver:self->_primaryObserver];
   wifiRelay = self->_wifiRelay;
   if (wifiRelay)
   {
@@ -746,39 +746,39 @@ void __42__NOIAnalyticsEngine__dumpClientStructure__block_invoke(uint64_t a1, vo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientEvent:(id)a3 isAddEvent:(BOOL)a4
+- (void)clientEvent:(id)event isAddEvent:(BOOL)addEvent
 {
-  v4 = a4;
+  addEventCopy = addEvent;
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  eventCopy = event;
   v7 = noiLogHandle;
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v6 processIdentifier];
+    processIdentifier = [eventCopy processIdentifier];
     *buf = 134218496;
-    v36 = self;
+    selfCopy4 = self;
     v37 = 1024;
-    v38 = v9;
+    v38 = processIdentifier;
     v39 = 1024;
-    v40 = v4;
+    v40 = addEventCopy;
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEFAULT, "%p for pid: %d, client event: %d", buf, 0x18u);
   }
 
   v10 = self->liveClients;
   objc_sync_enter(v10);
   v11 = [(NSMutableDictionary *)self->liveClients count];
-  v29 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v6];
-  if (v4)
+  v29 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:eventCopy];
+  if (addEventCopy)
   {
-    v12 = [[Client alloc] initWithConn:v6];
+    v12 = [[Client alloc] initWithConn:eventCopy];
     [(NSMutableDictionary *)self->liveClients setObject:v12 forKeyedSubscript:v29];
     v13 = noiLogHandle;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = [(NSMutableDictionary *)self->liveClients count];
       *buf = 134217984;
-      v36 = v14;
+      selfCopy4 = v14;
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEFAULT, "Total number of NOI clients: %ld", buf, 0xCu);
     }
   }
@@ -789,13 +789,13 @@ void __42__NOIAnalyticsEngine__dumpClientStructure__block_invoke(uint64_t a1, vo
     v12 = v15;
     if (v15)
     {
-      v28 = v6;
+      v28 = eventCopy;
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v16 = [(Client *)v15 subscribedNOIs];
-      v17 = [v16 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      subscribedNOIs = [(Client *)v15 subscribedNOIs];
+      v17 = [subscribedNOIs countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v17)
       {
         v18 = *v31;
@@ -805,21 +805,21 @@ void __42__NOIAnalyticsEngine__dumpClientStructure__block_invoke(uint64_t a1, vo
           {
             if (*v31 != v18)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(subscribedNOIs);
             }
 
             [*(*(&v30 + 1) + 8 * i) removeObserverForAllKeyPaths:v12];
           }
 
-          v17 = [v16 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          v17 = [subscribedNOIs countByEnumeratingWithState:&v30 objects:v34 count:16];
         }
 
         while (v17);
       }
 
-      v6 = v28;
-      v20 = [(Client *)v12 subscribedNOIs];
-      [v20 removeAllObjects];
+      eventCopy = v28;
+      subscribedNOIs2 = [(Client *)v12 subscribedNOIs];
+      [subscribedNOIs2 removeAllObjects];
 
       [(NSMutableDictionary *)self->liveClients removeObjectForKey:v29];
     }
@@ -830,7 +830,7 @@ void __42__NOIAnalyticsEngine__dumpClientStructure__block_invoke(uint64_t a1, vo
       if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v36 = self;
+        selfCopy4 = self;
         v37 = 1024;
         v38 = 0;
         _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEFAULT, "%p event: %d, client unknown", buf, 0x12u);
@@ -840,9 +840,9 @@ void __42__NOIAnalyticsEngine__dumpClientStructure__block_invoke(uint64_t a1, vo
 
   if (v11 != [(NSMutableDictionary *)self->liveClients count])
   {
-    if (!v4 || v11)
+    if (!addEventCopy || v11)
     {
-      if (v4)
+      if (addEventCopy)
       {
         goto LABEL_19;
       }
@@ -867,7 +867,7 @@ void __42__NOIAnalyticsEngine__dumpClientStructure__block_invoke(uint64_t a1, vo
       }
 
       *buf = 134217984;
-      v36 = self;
+      selfCopy4 = self;
       v26 = "%p now not holding os_transaction for noi_live_clients";
     }
 
@@ -894,7 +894,7 @@ void __42__NOIAnalyticsEngine__dumpClientStructure__block_invoke(uint64_t a1, vo
       }
 
       *buf = 134217984;
-      v36 = self;
+      selfCopy4 = self;
       v26 = "%p now holding os_transaction for noi_live_clients";
     }
 
@@ -907,29 +907,29 @@ LABEL_19:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_clientNOIEvent:(id)a3 forNOIs:(id)a4 isAddEvent:(BOOL)a5
+- (id)_clientNOIEvent:(id)event forNOIs:(id)is isAddEvent:(BOOL)addEvent
 {
-  v5 = a5;
+  addEventCopy = addEvent;
   v72 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v52 = a4;
+  eventCopy = event;
+  isCopy = is;
   v53 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:3];
   v9 = noiLogHandle;
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v8 processIdentifier];
-    v12 = [v52 count];
+    processIdentifier = [eventCopy processIdentifier];
+    v12 = [isCopy count];
     v13 = "remove";
     *buf = 134218754;
     v66 = 1024;
-    v65 = self;
-    if (v5)
+    selfCopy = self;
+    if (addEventCopy)
     {
       v13 = "add";
     }
 
-    v67 = v11;
+    v67 = processIdentifier;
     v68 = 2048;
     v69 = v12;
     v70 = 2080;
@@ -939,21 +939,21 @@ LABEL_19:
 
   obj = self->liveClients;
   objc_sync_enter(obj);
-  v14 = self;
+  selfCopy2 = self;
   liveClients = self->liveClients;
-  v50 = v8;
-  v16 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v8];
+  v50 = eventCopy;
+  v16 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:eventCopy];
   v17 = [(NSMutableDictionary *)liveClients objectForKeyedSubscript:v16];
 
   if (v17)
   {
-    if (v5)
+    if (addEventCopy)
     {
       v60 = 0uLL;
       v61 = 0uLL;
       v58 = 0uLL;
       v59 = 0uLL;
-      v18 = v52;
+      v18 = isCopy;
       v19 = [v18 countByEnumeratingWithState:&v58 objects:v63 count:16];
       if (v19)
       {
@@ -968,27 +968,27 @@ LABEL_19:
             }
 
             v22 = *(*(&v58 + 1) + 8 * i);
-            v23 = [v17 subscribedNOIs];
-            v24 = [v23 member:v22];
+            subscribedNOIs = [v17 subscribedNOIs];
+            v24 = [subscribedNOIs member:v22];
             v25 = v24 == 0;
 
             if (v25)
             {
               [v22 addObserverForAllKeyPaths:v17];
-              v29 = [v17 subscribedNOIs];
-              [v29 addObject:v22];
+              subscribedNOIs2 = [v17 subscribedNOIs];
+              [subscribedNOIs2 addObject:v22];
 
               v26 = [v22 copy];
               [v53 addObject:v26];
               v30 = noiLogHandle;
               if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
               {
-                v31 = [v17 connection];
-                v32 = [v31 processIdentifier];
+                connection = [v17 connection];
+                processIdentifier2 = [connection processIdentifier];
                 *buf = 134218498;
-                v65 = v14;
+                selfCopy = selfCopy2;
                 v66 = 1024;
-                v67 = v32;
+                v67 = processIdentifier2;
                 v68 = 2112;
                 v69 = v26;
                 _os_log_impl(&dword_23255B000, v30, OS_LOG_TYPE_INFO, "%p NOI client[%d] subscribed to noi %@", buf, 0x1Cu);
@@ -1000,12 +1000,12 @@ LABEL_19:
               v26 = noiLogHandle;
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
               {
-                v27 = [v17 connection];
-                v28 = [v27 processIdentifier];
+                connection2 = [v17 connection];
+                processIdentifier3 = [connection2 processIdentifier];
                 *buf = 134218498;
-                v65 = v14;
+                selfCopy = selfCopy2;
                 v66 = 1024;
-                v67 = v28;
+                v67 = processIdentifier3;
                 v68 = 2112;
                 v69 = v22;
                 _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_DEFAULT, "%p NOI client[%d] already has noi %@", buf, 0x1Cu);
@@ -1026,7 +1026,7 @@ LABEL_19:
       v57 = 0uLL;
       v54 = 0uLL;
       v55 = 0uLL;
-      v18 = v52;
+      v18 = isCopy;
       v35 = [v18 countByEnumeratingWithState:&v54 objects:v62 count:16];
       if (v35)
       {
@@ -1041,26 +1041,26 @@ LABEL_19:
             }
 
             v38 = *(*(&v54 + 1) + 8 * j);
-            v39 = [v17 subscribedNOIs];
-            v40 = [v39 member:v38];
+            subscribedNOIs3 = [v17 subscribedNOIs];
+            v40 = [subscribedNOIs3 member:v38];
 
             if (v40)
             {
               [v38 removeObserverForAllKeyPaths:v17];
-              v41 = [v17 subscribedNOIs];
-              [v41 removeObject:v38];
+              subscribedNOIs4 = [v17 subscribedNOIs];
+              [subscribedNOIs4 removeObject:v38];
 
               v42 = [v38 copy];
               [v53 addObject:v42];
               v43 = noiLogHandle;
               if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
               {
-                v44 = [v17 connection];
-                v45 = [v44 processIdentifier];
+                connection3 = [v17 connection];
+                processIdentifier4 = [connection3 processIdentifier];
                 *buf = 134218498;
-                v65 = v14;
+                selfCopy = selfCopy2;
                 v66 = 1024;
-                v67 = v45;
+                v67 = processIdentifier4;
                 v68 = 2112;
                 v69 = v42;
                 _os_log_impl(&dword_23255B000, v43, OS_LOG_TYPE_DEBUG, "%p NOI client[%d] unsubscribed from noi %@", buf, 0x1Cu);
@@ -1072,12 +1072,12 @@ LABEL_19:
               v42 = noiLogHandle;
               if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
               {
-                v46 = [v17 connection];
-                v47 = [v46 processIdentifier];
+                connection4 = [v17 connection];
+                processIdentifier5 = [connection4 processIdentifier];
                 *buf = 134218498;
-                v65 = v14;
+                selfCopy = selfCopy2;
                 v66 = 1024;
-                v67 = v47;
+                v67 = processIdentifier5;
                 v68 = 2112;
                 v69 = v38;
                 _os_log_impl(&dword_23255B000, v42, OS_LOG_TYPE_DEFAULT, "%p NOI client[%d] cannot remove this noi because it does not have one: %@", buf, 0x1Cu);
@@ -1098,14 +1098,14 @@ LABEL_19:
     v18 = noiLogHandle;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [0 connection];
-      v34 = [v33 processIdentifier];
+      connection5 = [0 connection];
+      processIdentifier6 = [connection5 processIdentifier];
       *buf = 134218496;
-      v65 = v14;
+      selfCopy = selfCopy2;
       v66 = 1024;
-      v67 = v5;
+      v67 = addEventCopy;
       v68 = 1024;
-      LODWORD(v69) = v34;
+      LODWORD(v69) = processIdentifier6;
       _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_DEFAULT, "%p event: %d: NOI client[%d] unknown", buf, 0x18u);
     }
   }
@@ -1116,12 +1116,12 @@ LABEL_19:
   return v53;
 }
 
-- (void)_bottomUpNOIEvent:(id)a3 withInfo:(id)a4
+- (void)_bottomUpNOIEvent:(id)event withInfo:(id)info
 {
   v103 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v82 = self;
-  v83 = a4;
+  eventCopy = event;
+  selfCopy = self;
+  infoCopy = info;
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
@@ -1132,7 +1132,7 @@ LABEL_19:
   {
     v8 = v7;
     v9 = *v95;
-    v80 = v6;
+    v80 = eventCopy;
     do
     {
       v10 = 0;
@@ -1144,86 +1144,86 @@ LABEL_19:
         }
 
         v11 = *(*(&v94 + 1) + 8 * v10);
-        if ([v11 functionalInterfaceType] == 5 && (objc_msgSend(v6, "isEqualToString:", @"kNotificationNewConnectivityEpochCell") & 1) != 0 || objc_msgSend(v11, "functionalInterfaceType") == 3 && (objc_msgSend(v6, "isEqualToString:", @"kNotificationNewConnectivityEpochWiFi") & 1) != 0 || objc_msgSend(v11, "functionalInterfaceType") == 2 && (objc_msgSend(v6, "isEqualToString:", @"kNotificationNewConnectivityEpochWired") & 1) != 0 || objc_msgSend(v11, "functionalInterfaceType") == 7 && objc_msgSend(v6, "isEqualToString:", @"kNotificationNewConnectivityEpochCompanionLink"))
+        if ([v11 functionalInterfaceType] == 5 && (objc_msgSend(eventCopy, "isEqualToString:", @"kNotificationNewConnectivityEpochCell") & 1) != 0 || objc_msgSend(v11, "functionalInterfaceType") == 3 && (objc_msgSend(eventCopy, "isEqualToString:", @"kNotificationNewConnectivityEpochWiFi") & 1) != 0 || objc_msgSend(v11, "functionalInterfaceType") == 2 && (objc_msgSend(eventCopy, "isEqualToString:", @"kNotificationNewConnectivityEpochWired") & 1) != 0 || objc_msgSend(v11, "functionalInterfaceType") == 7 && objc_msgSend(eventCopy, "isEqualToString:", @"kNotificationNewConnectivityEpochCompanionLink"))
         {
           if ([v11 isAny])
           {
-            v12 = [v83 objectForKeyedSubscript:@"State"];
-            v13 = [v12 BOOLValue];
+            v12 = [infoCopy objectForKeyedSubscript:@"State"];
+            bOOLValue = [v12 BOOLValue];
 
             v14 = noiLogHandle;
             if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
             {
               v15 = v14;
-              v16 = [v11 isTrafficEligible];
+              isTrafficEligible = [v11 isTrafficEligible];
               *buf = 134219010;
-              *v99 = v82;
+              *v99 = selfCopy;
               *&v99[8] = 2112;
-              *&v99[10] = v6;
+              *&v99[10] = eventCopy;
               *&v99[18] = 2112;
               *v100 = v11;
               *&v100[8] = 1024;
-              *v101 = v16;
+              *v101 = isTrafficEligible;
               *&v101[4] = 1024;
-              *&v101[6] = v13;
+              *&v101[6] = bOOLValue;
               _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_DEFAULT, "%p event: %@, noi: %@, fastpath, current elig: %d, new elig: %d", buf, 0x2Cu);
             }
 
-            [v11 setIsTrafficEligible:v13];
+            [v11 setIsTrafficEligible:bOOLValue];
           }
 
           else
           {
-            v85 = [v11 functionalInterfaceType];
-            v84 = [v11 isAny];
-            v17 = [v11 isBuiltin];
+            functionalInterfaceType = [v11 functionalInterfaceType];
+            isAny = [v11 isAny];
+            isBuiltin = [v11 isBuiltin];
             v18 = v10;
             v19 = v9;
             v20 = v8;
-            v21 = [v11 scopedToLOI];
-            v22 = [v11 customSignature];
-            v23 = [(AnalyticsEngineCore *)v82 queue];
+            scopedToLOI = [v11 scopedToLOI];
+            customSignature = [v11 customSignature];
+            queue = [(AnalyticsEngineCore *)selfCopy queue];
             v91[0] = MEMORY[0x277D85DD0];
             v91[1] = 3221225472;
             v91[2] = __49__NOIAnalyticsEngine__bottomUpNOIEvent_withInfo___block_invoke;
             v91[3] = &unk_27898BAD0;
-            v91[4] = v82;
-            v6 = v80;
+            v91[4] = selfCopy;
+            eventCopy = v80;
             v92 = v80;
             v93 = v11;
-            v24 = v21;
+            v24 = scopedToLOI;
             v8 = v20;
             v9 = v19;
             v10 = v18;
-            [NetworkAnalyticsEngine hasNetworkAttachmentOn:v85 isAny:v84 isBuiltin:v17 scopedToLOI:v24 hasCustomSignature:v22 queue:v23 reply:v91];
+            [NetworkAnalyticsEngine hasNetworkAttachmentOn:functionalInterfaceType isAny:isAny isBuiltin:isBuiltin scopedToLOI:v24 hasCustomSignature:customSignature queue:queue reply:v91];
           }
 
           goto LABEL_55;
         }
 
-        if ([v11 functionalInterfaceType] == 5 && objc_msgSend(v6, "isEqualToString:", @"kNotificationCellLinkStateReportCapable"))
+        if ([v11 functionalInterfaceType] == 5 && objc_msgSend(eventCopy, "isEqualToString:", @"kNotificationCellLinkStateReportCapable"))
         {
-          v25 = [v83 objectForKeyedSubscript:@"State"];
+          v25 = [infoCopy objectForKeyedSubscript:@"State"];
           [v11 setWillGetDiscretionaryTrafficInvites:{objc_msgSend(v25, "BOOLValue")}];
 LABEL_54:
 
           goto LABEL_55;
         }
 
-        if ([v11 functionalInterfaceType] != 5 || !objc_msgSend(v6, "isEqualToString:", @"kNotificationCellLinkStateChange"))
+        if ([v11 functionalInterfaceType] != 5 || !objc_msgSend(eventCopy, "isEqualToString:", @"kNotificationCellLinkStateChange"))
         {
-          if ([v11 functionalInterfaceType] == 3 && objc_msgSend(v6, "isEqualToString:", @"fallbackRecommendation"))
+          if ([v11 functionalInterfaceType] == 3 && objc_msgSend(eventCopy, "isEqualToString:", @"fallbackRecommendation"))
           {
-            v38 = [v83 objectForKeyedSubscript:@"detail"];
-            v39 = [v38 integerValue];
+            v38 = [infoCopy objectForKeyedSubscript:@"detail"];
+            integerValue = [v38 integerValue];
 
-            [v11 setConsiderAlternate:v39];
+            [v11 setConsiderAlternate:integerValue];
             goto LABEL_55;
           }
 
-          if ([v11 functionalInterfaceType] == 3 && objc_msgSend(v6, "isEqualToString:", @"considerAlternateUpdate"))
+          if ([v11 functionalInterfaceType] == 3 && objc_msgSend(eventCopy, "isEqualToString:", @"considerAlternateUpdate"))
           {
-            v40 = [v83 objectForKeyedSubscript:@"updateDetail"];
+            v40 = [infoCopy objectForKeyedSubscript:@"updateDetail"];
             v41 = [objc_alloc(MEMORY[0x277D6B3E8]) initWithDictionary:v40];
             [v11 setConsiderAlternateUpdate:v41];
 
@@ -1231,9 +1231,9 @@ LABEL_54:
             if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
             {
               v43 = v42;
-              v44 = [v11 considerAlternateUpdate];
+              considerAlternateUpdate = [v11 considerAlternateUpdate];
               *buf = 138412290;
-              *v99 = v44;
+              *v99 = considerAlternateUpdate;
               _os_log_impl(&dword_23255B000, v43, OS_LOG_TYPE_DEFAULT, "Consider alternate update: %@", buf, 0xCu);
             }
           }
@@ -1244,16 +1244,16 @@ LABEL_54:
             {
               if (![v11 flags])
               {
-                if ([v6 isEqualToString:@"kNotificationNewPrimaryInterface"])
+                if ([eventCopy isEqualToString:@"kNotificationNewPrimaryInterface"])
                 {
-                  v45 = [v83 objectForKeyedSubscript:@"Detail"];
-                  v46 = [v45 integerValue];
+                  v45 = [infoCopy objectForKeyedSubscript:@"Detail"];
+                  integerValue2 = [v45 integerValue];
 
-                  if ([v11 interface] == v46)
+                  if ([v11 interface] == integerValue2)
                   {
-                    if ([v11 functionalInterfaceType] != 7 || (objc_msgSend(v83, "objectForKeyedSubscript:", @"kNotificationNewConnectivityEpochCompanionLink"), v47 = objc_claimAutoreleasedReturnValue(), v48 = objc_msgSend(v47, "BOOLValue"), v47, v48))
+                    if ([v11 functionalInterfaceType] != 7 || (objc_msgSend(infoCopy, "objectForKeyedSubscript:", @"kNotificationNewConnectivityEpochCompanionLink"), v47 = objc_claimAutoreleasedReturnValue(), v48 = objc_msgSend(v47, "BOOLValue"), v47, v48))
                     {
-                      [(NOIAnalyticsEngine *)v82 _evalPostingNotificationForNOI:v11 forEvent:@"kNotificationNewPrimaryInterface" withInfo:v83];
+                      [(NOIAnalyticsEngine *)selfCopy _evalPostingNotificationForNOI:v11 forEvent:@"kNotificationNewPrimaryInterface" withInfo:infoCopy];
                       goto LABEL_92;
                     }
                   }
@@ -1261,7 +1261,7 @@ LABEL_54:
               }
             }
 
-            if ([v6 isEqualToString:@"notificationNewModelGenerated"])
+            if ([eventCopy isEqualToString:@"notificationNewModelGenerated"])
             {
               v25 = +[NetworkAnalyticsModel modelGeneratedAt];
               [v11 setPredictionsGeneratedAt:v25];
@@ -1272,25 +1272,25 @@ LABEL_54:
           goto LABEL_55;
         }
 
-        v26 = [v83 objectForKeyedSubscript:@"Detail"];
-        v86 = [v26 BOOLValue];
+        v26 = [infoCopy objectForKeyedSubscript:@"Detail"];
+        bOOLValue2 = [v26 BOOLValue];
 
-        v27 = [v83 objectForKeyedSubscript:@"State"];
-        v28 = [v27 BOOLValue];
+        v27 = [infoCopy objectForKeyedSubscript:@"State"];
+        bOOLValue3 = [v27 BOOLValue];
 
-        v29 = [v83 objectForKeyedSubscript:@"StateChangeTimestamp"];
+        v29 = [infoCopy objectForKeyedSubscript:@"StateChangeTimestamp"];
         [v29 doubleValue];
         v31 = v30;
 
-        if (v28 && ([v11 willGetDiscretionaryTrafficInvites] & 1) == 0)
+        if (bOOLValue3 && ([v11 willGetDiscretionaryTrafficInvites] & 1) == 0)
         {
           [v11 setWillGetDiscretionaryTrafficInvites:1];
         }
 
-        [v11 setDiscretionaryTrafficInvited:v28];
+        [v11 setDiscretionaryTrafficInvited:bOOLValue3];
         if (rrcStateChangeTimestamp < (v31 * 1000.0))
         {
-          [(NOIAnalyticsEngine *)v82 _updateRrcStateChangeTimestamp:(v31 * 1000.0) forRrcState:v28];
+          [(NOIAnalyticsEngine *)selfCopy _updateRrcStateChangeTimestamp:(v31 * 1000.0) forRrcState:bOOLValue3];
         }
 
         if (![v11 isAny] || (objc_msgSend(v11, "flags") & 1) != 0)
@@ -1303,11 +1303,11 @@ LABEL_54:
         if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67110146;
-          *v99 = v28;
+          *v99 = bOOLValue3;
           *&v99[4] = 2048;
           *&v99[6] = v32;
           *&v99[14] = 1024;
-          *&v99[16] = v86;
+          *&v99[16] = bOOLValue2;
           *v100 = 2048;
           *&v100[2] = v11;
           *v101 = 2112;
@@ -1315,18 +1315,18 @@ LABEL_54:
           _os_log_impl(&dword_23255B000, v33, OS_LOG_TYPE_DEFAULT, "RRC Metric: RRC state %d, mach time %llu, isBBUpdate %d <%p> (%@)", buf, 0x2Cu);
         }
 
-        if (v28)
+        if (bOOLValue3)
         {
-          if (v86 && v82->_startConnectionTimestamp)
+          if (bOOLValue2 && selfCopy->_startConnectionTimestamp)
           {
             goto LABEL_69;
           }
 
-          v82->_startConnectionTimestamp = v32;
+          selfCopy->_startConnectionTimestamp = v32;
           v34 = noiLogHandle;
           if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
           {
-            startConnectionTimestamp = v82->_startConnectionTimestamp;
+            startConnectionTimestamp = selfCopy->_startConnectionTimestamp;
             *buf = 134217984;
             *v99 = startConnectionTimestamp;
             v36 = v34;
@@ -1338,26 +1338,26 @@ LABEL_67:
 
         else
         {
-          v49 = v82;
-          if (v86)
+          v49 = selfCopy;
+          if (bOOLValue2)
           {
-            if (!v82->_startConnectionTimestamp)
+            if (!selfCopy->_startConnectionTimestamp)
             {
               goto LABEL_68;
             }
 
             v50 = +[IOKitHandler sharedInstance];
-            v51 = [v50 mostRecentAPSleepMachTime];
+            mostRecentAPSleepMachTime = [v50 mostRecentAPSleepMachTime];
 
-            if (v51 <= v82->_startConnectionTimestamp)
+            if (mostRecentAPSleepMachTime <= selfCopy->_startConnectionTimestamp)
             {
               v54 = noiLogHandle;
-              v49 = v82;
+              v49 = selfCopy;
               if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
               {
-                v55 = v82->_startConnectionTimestamp;
+                v55 = selfCopy->_startConnectionTimestamp;
                 *buf = 134218240;
-                *v99 = v51;
+                *v99 = mostRecentAPSleepMachTime;
                 *&v99[8] = 2048;
                 *&v99[10] = v55;
                 _os_log_impl(&dword_23255B000, v54, OS_LOG_TYPE_DEFAULT, "RRC Metric: BB update apSleepTime (%llu) is less than startConnectionTime (%llu)!! Setting _lastDisconnectTime to now", buf, 0x16u);
@@ -1366,7 +1366,7 @@ LABEL_67:
 
             else
             {
-              v32 = v51;
+              v32 = mostRecentAPSleepMachTime;
             }
 
             v49->_lastDisconnectTimestamp = v32;
@@ -1385,12 +1385,12 @@ LABEL_67:
             goto LABEL_67;
           }
 
-          v82->_lastDisconnectTimestamp = v32;
-          v82->_startConnectionTimestamp = 0;
+          selfCopy->_lastDisconnectTimestamp = v32;
+          selfCopy->_startConnectionTimestamp = 0;
           v52 = noiLogHandle;
           if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
           {
-            v53 = v82->_lastDisconnectTimestamp;
+            v53 = selfCopy->_lastDisconnectTimestamp;
             *buf = 134217984;
             *v99 = v53;
             v36 = v52;
@@ -1400,57 +1400,57 @@ LABEL_67:
         }
 
 LABEL_68:
-        v6 = v80;
+        eventCopy = v80;
 LABEL_69:
-        v58 = [v11 hasForegroundActivity];
-        v59 = [v58 BOOLValue];
+        hasForegroundActivity = [v11 hasForegroundActivity];
+        bOOLValue4 = [hasForegroundActivity BOOLValue];
 
-        if (v59)
+        if (bOOLValue4)
         {
           goto LABEL_55;
         }
 
         v60 = +[PowerStateRelay defaultRelay];
-        v61 = [v60 pluggedIn];
+        pluggedIn = [v60 pluggedIn];
 
         v62 = noiLogHandle;
         if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109376;
-          *v99 = v28;
+          *v99 = bOOLValue3;
           *&v99[4] = 1024;
-          *&v99[6] = v61;
+          *&v99[6] = pluggedIn;
           _os_log_impl(&dword_23255B000, v62, OS_LOG_TYPE_DEFAULT, "RRC Metric: no foregroundActivity, RRC state %d, pluggedIn %d", buf, 0xEu);
         }
 
-        if (!(v61 & 1 | ((v28 & 1) == 0)) && (!v86 || !v82->_startBackgroundConnectionTimestamp))
+        if (!(pluggedIn & 1 | ((bOOLValue3 & 1) == 0)) && (!bOOLValue2 || !selfCopy->_startBackgroundConnectionTimestamp))
         {
-          v82->_startBackgroundConnectionTimestamp = v82->_startConnectionTimestamp;
+          selfCopy->_startBackgroundConnectionTimestamp = selfCopy->_startConnectionTimestamp;
           v70 = noiLogHandle;
           if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
           {
-            startBackgroundConnectionTimestamp = v82->_startBackgroundConnectionTimestamp;
+            startBackgroundConnectionTimestamp = selfCopy->_startBackgroundConnectionTimestamp;
             *buf = 134217984;
             *v99 = startBackgroundConnectionTimestamp;
             _os_log_impl(&dword_23255B000, v70, OS_LOG_TYPE_DEFAULT, "RRC Metric: _startBackgroundConnectionTimestamp %llu", buf, 0xCu);
           }
 
           +[AppTracker beginTrafficClassFlowSnapshot];
-          v72 = v82->_lastDisconnectTimestamp;
+          v72 = selfCopy->_lastDisconnectTimestamp;
           if (v72)
           {
-            v82->_lastDisconnectedSecs = secondsFromMachAbsoluteTime(v82->_startBackgroundConnectionTimestamp - v72);
+            selfCopy->_lastDisconnectedSecs = secondsFromMachAbsoluteTime(selfCopy->_startBackgroundConnectionTimestamp - v72);
             v73 = noiLogHandle;
             if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
             {
-              lastDisconnectedSecs = v82->_lastDisconnectedSecs;
+              lastDisconnectedSecs = selfCopy->_lastDisconnectedSecs;
               *buf = 134217984;
               *v99 = lastDisconnectedSecs;
               _os_log_impl(&dword_23255B000, v73, OS_LOG_TYPE_DEFAULT, "RRC Metric: updated _lastDisconnectedSecs to %llu", buf, 0xCu);
             }
           }
 
-          v82->_ingressLQM = [NetworkAnalyticsEngine getLoadedLQMOn:5];
+          selfCopy->_ingressLQM = [NetworkAnalyticsEngine getLoadedLQMOn:5];
           v75 = noiLogHandle;
           if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
           {
@@ -1458,26 +1458,26 @@ LABEL_69:
             _os_log_impl(&dword_23255B000, v75, OS_LOG_TYPE_DEFAULT, "RRC Metric: query layer2 ingressMetric", buf, 2u);
           }
 
-          v76 = [v11 functionalInterfaceType];
-          v77 = [(AnalyticsEngineCore *)v82 queue];
+          functionalInterfaceType2 = [v11 functionalInterfaceType];
+          queue2 = [(AnalyticsEngineCore *)selfCopy queue];
           v90[0] = MEMORY[0x277D85DD0];
           v90[1] = 3221225472;
           v90[2] = __49__NOIAnalyticsEngine__bottomUpNOIEvent_withInfo___block_invoke_92;
           v90[3] = &unk_27898BAF8;
-          v90[4] = v82;
-          [NetworkAnalyticsEngine layer2MetricsOn:v76 queue:v77 reply:v90];
+          v90[4] = selfCopy;
+          [NetworkAnalyticsEngine layer2MetricsOn:functionalInterfaceType2 queue:queue2 reply:v90];
 
           goto LABEL_88;
         }
 
-        if ((v28 & 1) == 0)
+        if ((bOOLValue3 & 1) == 0)
         {
-          v63 = v82->_startBackgroundConnectionTimestamp;
+          v63 = selfCopy->_startBackgroundConnectionTimestamp;
           if (v63)
           {
-            v64 = nanosecondsFromMachAbsoluteTime(v82->_lastDisconnectTimestamp - v63) / 0x3E8;
+            v64 = nanosecondsFromMachAbsoluteTime(selfCopy->_lastDisconnectTimestamp - v63) / 0x3E8;
             v65 = [[SymptomsNetworkAnalyticsRRCConnectedPeriodMetric alloc] initWithPeriodType:2];
-            [(NOIAnalyticsEngine *)v82 _collectBasicFieldsForRRCMetric:v65 durationUsecs:v64];
+            [(NOIAnalyticsEngine *)selfCopy _collectBasicFieldsForRRCMetric:v65 durationUsecs:v64];
             v66 = noiLogHandle;
             if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
             {
@@ -1485,20 +1485,20 @@ LABEL_69:
               _os_log_impl(&dword_23255B000, v66, OS_LOG_TYPE_DEFAULT, "RRC Metric: query layer2 egressMetric", buf, 2u);
             }
 
-            v67 = [v11 functionalInterfaceType];
-            v68 = [(AnalyticsEngineCore *)v82 queue];
+            functionalInterfaceType3 = [v11 functionalInterfaceType];
+            queue3 = [(AnalyticsEngineCore *)selfCopy queue];
             v87[0] = MEMORY[0x277D85DD0];
             v87[1] = 3221225472;
             v87[2] = __49__NOIAnalyticsEngine__bottomUpNOIEvent_withInfo___block_invoke_95;
             v87[3] = &unk_27898BB68;
-            v87[4] = v82;
+            v87[4] = selfCopy;
             v88 = v65;
             v89 = v64;
             v69 = v65;
-            [NetworkAnalyticsEngine layer2MetricsOn:v67 queue:v68 reply:v87];
+            [NetworkAnalyticsEngine layer2MetricsOn:functionalInterfaceType3 queue:queue3 reply:v87];
 
 LABEL_88:
-            v6 = v80;
+            eventCopy = v80;
           }
         }
 
@@ -1850,21 +1850,21 @@ void __49__NOIAnalyticsEngine__bottomUpNOIEvent_withInfo___block_invoke_2(uint64
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(AnalyticsEngineCore *)self queue];
+  pathCopy = path;
+  objectCopy = object;
+  queue = [(AnalyticsEngineCore *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__NOIAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___block_invoke;
   block[3] = &unk_27898A328;
-  v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v11 = v8;
-  v12 = v9;
-  dispatch_async(v10, block);
+  v14 = objectCopy;
+  selfCopy = self;
+  v16 = pathCopy;
+  v11 = pathCopy;
+  v12 = objectCopy;
+  dispatch_async(queue, block);
 }
 
 void __69__NOIAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___block_invoke(id *a1)
@@ -2034,12 +2034,12 @@ void __69__NOIAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___b
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_evalPostingNotificationForNOI:(id)a3 forEvent:(id)a4 withInfo:(id)a5
+- (void)_evalPostingNotificationForNOI:(id)i forEvent:(id)event withInfo:(id)info
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iCopy = i;
+  eventCopy = event;
+  infoCopy = info;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __71__NOIAnalyticsEngine__evalPostingNotificationForNOI_forEvent_withInfo___block_invoke;
@@ -2050,10 +2050,10 @@ void __69__NOIAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___b
     dispatch_once(&_evalPostingNotificationForNOI_forEvent_withInfo__onceToken, v29);
   }
 
-  if (([v9 isEqualToString:@"linkQuality"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"kNotificationNewPrimaryInterface"))
+  if (([eventCopy isEqualToString:@"linkQuality"] & 1) != 0 || objc_msgSend(eventCopy, "isEqualToString:", @"kNotificationNewPrimaryInterface"))
   {
-    v11 = +[NetworkStateRelay getStateRelayFor:](NetworkStateRelay, "getStateRelayFor:", [v8 functionalInterfaceType]);
-    v12 = +[NetworkAnalyticsEngine getLoadedLQMOn:](NetworkAnalyticsEngine, "getLoadedLQMOn:", [v8 functionalInterfaceType]);
+    v11 = +[NetworkStateRelay getStateRelayFor:](NetworkStateRelay, "getStateRelayFor:", [iCopy functionalInterfaceType]);
+    v12 = +[NetworkAnalyticsEngine getLoadedLQMOn:](NetworkAnalyticsEngine, "getLoadedLQMOn:", [iCopy functionalInterfaceType]);
     if ([v11 primary] && v12 >= 1)
     {
       v13 = _evalPostingNotificationForNOI_forEvent_withInfo__lastPrimaryQuality;
@@ -2066,13 +2066,13 @@ void __69__NOIAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___b
         v21 = "not ";
         *buf = 138413570;
         v32 = 2112;
-        v31 = v8;
+        v31 = iCopy;
         if (v16)
         {
           v21 = "";
         }
 
-        v33 = v9;
+        v33 = eventCopy;
         v34 = 2048;
         v35 = v13;
         v36 = 1024;
@@ -2087,14 +2087,14 @@ void __69__NOIAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___b
       if (v16 && !_evalPostingNotificationForNOI_forEvent_withInfo__debouncing++)
       {
         v23 = dispatch_time(0, 1000000000);
-        v24 = [(AnalyticsEngineCore *)self queue];
+        queue = [(AnalyticsEngineCore *)self queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __71__NOIAnalyticsEngine__evalPostingNotificationForNOI_forEvent_withInfo___block_invoke_107;
         block[3] = &unk_27898A7D0;
-        v27 = v9;
-        v28 = self;
-        dispatch_after(v23, v24, block);
+        v27 = eventCopy;
+        selfCopy = self;
+        dispatch_after(v23, queue, block);
       }
 
       _evalPostingNotificationForNOI_forEvent_withInfo__lastPrimaryQuality = v15;
@@ -2106,9 +2106,9 @@ void __69__NOIAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___b
       if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v31 = v8;
+        v31 = iCopy;
         v32 = 2112;
-        v33 = v9;
+        v33 = eventCopy;
         v34 = 1024;
         LODWORD(v35) = v12;
         _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_DEFAULT, "noi: %@, event: %@, rawLoadedLqm: %d, don't qualify", buf, 0x1Cu);
@@ -2122,9 +2122,9 @@ void __69__NOIAnalyticsEngine_observeValueForKeyPath_ofObject_change_context___b
     if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v31 = v8;
+      v31 = iCopy;
       v32 = 2112;
-      v33 = v9;
+      v33 = eventCopy;
       _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_DEBUG, "noi: %@, event: %@, not a change in linkQuality or primary interface", buf, 0x16u);
     }
   }
@@ -2260,14 +2260,14 @@ uint64_t __71__NOIAnalyticsEngine__evalPostingNotificationForNOI_forEvent_withIn
   v22 = __Block_byref_object_copy__3;
   v23 = __Block_byref_object_dispose__3;
   v24 = 0;
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __47__NOIAnalyticsEngine__initializeAllManagedNOIs__block_invoke;
   v18[3] = &unk_27898BBE0;
   v18[4] = self;
   v18[5] = &v19;
-  v15 = [v14 addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v18];
+  v15 = [defaultCenter addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v18];
   v16 = v20[5];
   v20[5] = v15;
 
@@ -2312,19 +2312,19 @@ void __47__NOIAnalyticsEngine__initializeAllManagedNOIs__block_invoke_2(uint64_t
   [NetworkAnalyticsEngine hasNetworkAttachmentOn:v4 isAny:v5 isBuiltin:v6 scopedToLOI:v7 hasCustomSignature:v8 queue:v9 reply:v11];
 }
 
-- (id)_validatedNOIs:(id)a3 orPredicate:(id)a4
+- (id)_validatedNOIs:(id)is orPredicate:(id)predicate
 {
-  v5 = a3;
+  isCopy = is;
   v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:4];
   managedNOIs = self->managedNOIs;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __49__NOIAnalyticsEngine__validatedNOIs_orPredicate___block_invoke;
   v13[3] = &unk_27898BC08;
-  v14 = v5;
+  v14 = isCopy;
   v8 = v6;
   v15 = v8;
-  v9 = v5;
+  v9 = isCopy;
   [(NSMutableSet *)managedNOIs enumerateObjectsUsingBlock:v13];
   v10 = v15;
   v11 = v8;
@@ -2341,51 +2341,51 @@ void __49__NOIAnalyticsEngine__validatedNOIs_orPredicate___block_invoke(uint64_t
   }
 }
 
-- (void)subscribeToNOIsFor:(id)a3 orPredicate:(id)a4 options:(id)a5 connection:(id)a6
+- (void)subscribeToNOIsFor:(id)for orPredicate:(id)predicate options:(id)options connection:(id)connection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = [(NOIAnalyticsEngine *)self _validatedNOIs:v9 orPredicate:a4];
+  forCopy = for;
+  connectionCopy = connection;
+  v11 = [(NOIAnalyticsEngine *)self _validatedNOIs:forCopy orPredicate:predicate];
   v12 = noiLogHandle;
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
     v15 = 134218498;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v9;
+    v18 = forCopy;
     v19 = 2048;
     v20 = [v11 count];
     _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEFAULT, "%p subscribe to NOI: %@, found %lu", &v15, 0x20u);
   }
 
-  [(NOIAnalyticsEngine *)self _coreNOIMembershipChangeOn:v10 forNOIs:v11 isAddEvent:1];
+  [(NOIAnalyticsEngine *)self _coreNOIMembershipChangeOn:connectionCopy forNOIs:v11 isAddEvent:1];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inquireNOIFor:(id)a3 orPredicate:(id)a4 requestedKeys:(id)a5 options:(id)a6 connection:(id)a7 reply:(id)a8
+- (void)inquireNOIFor:(id)for orPredicate:(id)predicate requestedKeys:(id)keys options:(id)options connection:(id)connection reply:(id)reply
 {
   v71 = *MEMORY[0x277D85DE8];
-  *&v56 = a3;
-  *(&v56 + 1) = a4;
-  v14 = a5;
-  v15 = a6;
-  v63 = v15;
-  v16 = a7;
-  v17 = a8;
-  v62 = v17;
+  *&v56 = for;
+  *(&v56 + 1) = predicate;
+  keysCopy = keys;
+  optionsCopy = options;
+  v63 = optionsCopy;
+  connectionCopy = connection;
+  replyCopy = reply;
+  v62 = replyCopy;
   context = objc_autoreleasePoolPush();
   v18 = noiLogHandle;
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v66 = self;
+    selfCopy = self;
     v67 = 2112;
-    v68 = v14;
+    v68 = keysCopy;
     v69 = 2112;
-    v70 = v15;
+    v70 = optionsCopy;
     _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_DEFAULT, "%p keys: %@, opt: %@", buf, 0x20u);
   }
 
@@ -2397,10 +2397,10 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v54 = self;
+  selfCopy2 = self;
   v19 = MEMORY[0x277CBEB98];
-  v20 = [v14 allKeys];
-  v51 = [v19 setWithArray:v20];
+  allKeys = [keysCopy allKeys];
+  v51 = [v19 setWithArray:allKeys];
 
   if (([v51 isSubsetOfSet:supportedKeys] & 1) == 0)
   {
@@ -2417,13 +2417,13 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v61 = [v48 anyObject];
+  anyObject = [v48 anyObject];
   v55 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = [v14 allKeys];
+  obj = [keysCopy allKeys];
   v21 = [obj countByEnumeratingWithState:&v57 objects:v64 count:16];
   if (v21)
   {
@@ -2444,25 +2444,25 @@ LABEL_8:
       v25 = *(*(&v57 + 1) + 8 * v24);
       if ([v23[95] containsObject:v25])
       {
-        v26 = [v16 processIdentifier];
-        if (v26 >= 1)
+        processIdentifier = [connectionCopy processIdentifier];
+        if (processIdentifier >= 1)
         {
-          v27 = pid_to_process_name(v26);
-          v28 = v54->_predictionQueryClients;
+          v27 = pid_to_process_name(processIdentifier);
+          v28 = selfCopy2->_predictionQueryClients;
           objc_sync_enter(v28);
           if (v27)
           {
-            v29 = v27;
+            null = v27;
           }
 
           else
           {
-            v29 = [MEMORY[0x277CBEB68] null];
+            null = [MEMORY[0x277CBEB68] null];
           }
 
-          v30 = v29;
-          [(NSMutableSet *)v54->_predictionQueryClients addObject:v29];
-          ++v54->_predictionQueryCount;
+          v30 = null;
+          [(NSMutableSet *)selfCopy2->_predictionQueryClients addObject:null];
+          ++selfCopy2->_predictionQueryCount;
 
           v21 = v49;
           v23 = &realTimeLqm;
@@ -2475,7 +2475,7 @@ LABEL_8:
         break;
       }
 
-      v31 = v61;
+      v31 = anyObject;
       NSSelectorFromString(v25);
       if (objc_opt_respondsToSelector())
       {
@@ -2511,12 +2511,12 @@ LABEL_8:
     if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v66 = v25;
+      selfCopy = v25;
       _os_log_impl(&dword_23255B000, v37, OS_LOG_TYPE_DEFAULT, "Operating on async key: %@", buf, 0xCu);
     }
 
-    v38 = [v14 allKeys];
-    v39 = [v38 count] > 1;
+    allKeys2 = [keysCopy allKeys];
+    v39 = [allKeys2 count] > 1;
 
     if (v39)
     {
@@ -2527,7 +2527,7 @@ LABEL_8:
       if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v66 = v25;
+        selfCopy = v25;
         _os_log_impl(&dword_23255B000, v40, OS_LOG_TYPE_DEFAULT, "Unable to operate on async key when multiple keys provided: %@", buf, 0xCu);
       }
     }
@@ -2542,9 +2542,9 @@ LABEL_8:
         v44 = [objc_opt_class() instanceMethodSignatureForSelector:v42];
         v45 = [v43 invocationWithMethodSignature:v44];
 
-        [v45 setTarget:v54];
+        [v45 setTarget:selfCopy2];
         [v45 setSelector:v42];
-        [v45 setArgument:&v61 atIndex:2];
+        [v45 setArgument:&anyObject atIndex:2];
         [v45 setArgument:&v63 atIndex:3];
         [v45 setArgument:&v62 atIndex:4];
         [v45 invoke];
@@ -2557,7 +2557,7 @@ LABEL_8:
       if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v66 = v25;
+        selfCopy = v25;
         _os_log_impl(&dword_23255B000, v46, OS_LOG_TYPE_DEFAULT, "Unable to operate on async key because object doesn't implement it: %@", buf, 0xCu);
       }
 
@@ -2574,28 +2574,28 @@ LABEL_8:
 
 LABEL_44:
 
-  v17 = v62;
+  replyCopy = v62;
   v35 = v55;
 LABEL_30:
   v55 = v35;
-  v17[2](v17);
+  replyCopy[2](replyCopy);
 LABEL_31:
 
   objc_autoreleasePoolPop(context);
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unsubscribeToNOIs:(id)a3 connection:(id)a4
+- (void)unsubscribeToNOIs:(id)is connection:(id)connection
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  isCopy = is;
+  connectionCopy = connection;
   v8 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:4];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v6;
+  v9 = isCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v29 count:16];
   if (v10)
   {
@@ -2633,7 +2633,7 @@ LABEL_31:
     v16 = v15;
     v17 = [v8 count];
     *buf = 134218498;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
     v26 = v9;
     v27 = 2048;
@@ -2641,23 +2641,23 @@ LABEL_31:
     _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_DEFAULT, "%p unsubscribe to NOI: %@, found %lu", buf, 0x20u);
   }
 
-  [(NOIAnalyticsEngine *)self _coreNOIMembershipChangeOn:v7 forNOIs:v8 isAddEvent:0, v19];
+  [(NOIAnalyticsEngine *)self _coreNOIMembershipChangeOn:connectionCopy forNOIs:v8 isAddEvent:0, v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)auditableLinkQuality:(id)a3 options:(id)a4 reply:(id)a5
+- (void)auditableLinkQuality:(id)quality options:(id)options reply:(id)reply
 {
-  v7 = a5;
-  v8 = [a3 functionalInterfaceType];
-  v9 = [(AnalyticsEngineCore *)self queue];
+  replyCopy = reply;
+  functionalInterfaceType = [quality functionalInterfaceType];
+  queue = [(AnalyticsEngineCore *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__NOIAnalyticsEngine_auditableLinkQuality_options_reply___block_invoke;
   v11[3] = &unk_27898BC30;
-  v12 = v7;
-  v10 = v7;
-  [NetworkAnalyticsEngine getAuditableLoadedLQMOn:v8 queue:v9 reply:v11];
+  v12 = replyCopy;
+  v10 = replyCopy;
+  [NetworkAnalyticsEngine getAuditableLoadedLQMOn:functionalInterfaceType queue:queue reply:v11];
 }
 
 void __57__NOIAnalyticsEngine_auditableLinkQuality_options_reply___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -2705,21 +2705,21 @@ void __57__NOIAnalyticsEngine_auditableLinkQuality_options_reply___block_invoke(
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkAttachmentInfo:(id)a3 options:(id)a4 reply:(id)a5
+- (void)networkAttachmentInfo:(id)info options:(id)options reply:(id)reply
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v8 functionalInterfaceType];
-  v10 = [v8 scopedToLOI];
+  replyCopy = reply;
+  infoCopy = info;
+  functionalInterfaceType = [infoCopy functionalInterfaceType];
+  scopedToLOI = [infoCopy scopedToLOI];
 
-  v11 = [(AnalyticsEngineCore *)self queue];
+  queue = [(AnalyticsEngineCore *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__NOIAnalyticsEngine_networkAttachmentInfo_options_reply___block_invoke;
   v13[3] = &unk_27898BC58;
-  v14 = v7;
-  v12 = v7;
-  [NetworkAnalyticsEngine usageToLOICorrelationFor:v9 scopedToLOI:v10 queue:v11 reply:v13];
+  v14 = replyCopy;
+  v12 = replyCopy;
+  [NetworkAnalyticsEngine usageToLOICorrelationFor:functionalInterfaceType scopedToLOI:scopedToLOI queue:queue reply:v13];
 }
 
 void __58__NOIAnalyticsEngine_networkAttachmentInfo_options_reply___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2760,18 +2760,18 @@ void __58__NOIAnalyticsEngine_networkAttachmentInfo_options_reply___block_invoke
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)l2ThroughputMetrics:(id)a3 options:(id)a4 reply:(id)a5
+- (void)l2ThroughputMetrics:(id)metrics options:(id)options reply:(id)reply
 {
-  v7 = a5;
-  v8 = [a3 functionalInterfaceType];
-  v9 = [(AnalyticsEngineCore *)self queue];
+  replyCopy = reply;
+  functionalInterfaceType = [metrics functionalInterfaceType];
+  queue = [(AnalyticsEngineCore *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__NOIAnalyticsEngine_l2ThroughputMetrics_options_reply___block_invoke;
   v11[3] = &unk_27898BC58;
-  v12 = v7;
-  v10 = v7;
-  [NetworkAnalyticsEngine layer2MetricsOn:v8 queue:v9 reply:v11];
+  v12 = replyCopy;
+  v10 = replyCopy;
+  [NetworkAnalyticsEngine layer2MetricsOn:functionalInterfaceType queue:queue reply:v11];
 }
 
 void __56__NOIAnalyticsEngine_l2ThroughputMetrics_options_reply___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2893,19 +2893,19 @@ void __56__NOIAnalyticsEngine_l2ThroughputMetrics_options_reply___block_invoke(u
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)estTransferTime:(id)a3 options:(id)a4 reply:(id)a5
+- (void)estTransferTime:(id)time options:(id)options reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 functionalInterfaceType];
-  v11 = [(AnalyticsEngineCore *)self queue];
+  replyCopy = reply;
+  optionsCopy = options;
+  functionalInterfaceType = [time functionalInterfaceType];
+  queue = [(AnalyticsEngineCore *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __52__NOIAnalyticsEngine_estTransferTime_options_reply___block_invoke;
   v13[3] = &unk_27898BC58;
-  v14 = v8;
-  v12 = v8;
-  [NetworkAnalyticsEngine estimatedTransferTimeOn:v10 forPayloadInfo:v9 queue:v11 reply:v13];
+  v14 = replyCopy;
+  v12 = replyCopy;
+  [NetworkAnalyticsEngine estimatedTransferTimeOn:functionalInterfaceType forPayloadInfo:optionsCopy queue:queue reply:v13];
 }
 
 void __52__NOIAnalyticsEngine_estTransferTime_options_reply___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2992,14 +2992,14 @@ void __52__NOIAnalyticsEngine_estTransferTime_options_reply___block_invoke(uint6
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)canUseOnAlternate:(id)a3 options:(id)a4 reply:(id)a5
+- (void)canUseOnAlternate:(id)alternate options:(id)options reply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 interface];
-  v12 = [v9 objectForKeyedSubscript:@"arg1"];
+  alternateCopy = alternate;
+  optionsCopy = options;
+  replyCopy = reply;
+  interface = [alternateCopy interface];
+  v12 = [optionsCopy objectForKeyedSubscript:@"arg1"];
   v13 = &v24;
   v24 = 0;
   v25 = &v24;
@@ -3039,22 +3039,22 @@ void __52__NOIAnalyticsEngine_estTransferTime_options_reply___block_invoke(uint6
   }
 
   v16 = *(v25 + 24);
-  if (v11 == 1 && (v25[3] & 1) != 0)
+  if (interface == 1 && (v25[3] & 1) != 0)
   {
-    v17 = [(AnalyticsEngineCore *)self queue];
+    queue = [(AnalyticsEngineCore *)self queue];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __54__NOIAnalyticsEngine_canUseOnAlternate_options_reply___block_invoke_120;
     v21[3] = &unk_27898BCA8;
-    v22 = v10;
-    [CellFallbackHandler canUseApps:v12 replyQueue:v17 reply:v21];
+    v22 = replyCopy;
+    [CellFallbackHandler canUseApps:v12 replyQueue:queue reply:v21];
 
     v18 = v22;
   }
 
   else
   {
-    if (((v11 != 1) & v25[3]) != 0)
+    if (((interface != 1) & v25[3]) != 0)
     {
       v19 = 45;
     }
@@ -3065,7 +3065,7 @@ void __52__NOIAnalyticsEngine_estTransferTime_options_reply___block_invoke(uint6
     }
 
     v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v19 userInfo:0];
-    (*(v10 + 2))(v10, 0, v18);
+    (*(replyCopy + 2))(replyCopy, 0, v18);
   }
 
   _Block_object_dispose(&v24, 8);
@@ -3137,7 +3137,7 @@ void __54__NOIAnalyticsEngine_canUseOnAlternate_options_reply___block_invoke_120
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getQueryStatistics:(id *)a3
+- (void)_getQueryStatistics:(id *)statistics
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = self->_predictionQueryClients;
@@ -3154,8 +3154,8 @@ void __54__NOIAnalyticsEngine_canUseOnAlternate_options_reply___block_invoke_120
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "AWD Prediction Metrics: predictionQueryClients:%lu predictionQueryCount:%lu", &v10, 0x16u);
   }
 
-  a3->var0 = [(NSMutableSet *)self->_predictionQueryClients count];
-  a3->var1 = self->_predictionQueryCount;
+  statistics->var0 = [(NSMutableSet *)self->_predictionQueryClients count];
+  statistics->var1 = self->_predictionQueryCount;
   objc_sync_exit(v5);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -3179,14 +3179,14 @@ void __54__NOIAnalyticsEngine_canUseOnAlternate_options_reply___block_invoke_120
 
 + (id)queue
 {
-  v3 = sharedInstance_0;
+  queue = sharedInstance_0;
   if (sharedInstance_0)
   {
-    v3 = [sharedInstance_0 queue];
+    queue = [sharedInstance_0 queue];
     v2 = vars8;
   }
 
-  return v3;
+  return queue;
 }
 
 + (void)resetQueryStatistics
@@ -3197,17 +3197,17 @@ void __54__NOIAnalyticsEngine_canUseOnAlternate_options_reply___block_invoke_120
   }
 }
 
-+ (void)getQueryStatistics:(id *)a3
++ (void)getQueryStatistics:(id *)statistics
 {
   if (sharedInstance_0)
   {
-    [sharedInstance_0 _getQueryStatistics:a3];
+    [sharedInstance_0 _getQueryStatistics:statistics];
   }
 
   else
   {
-    a3->var0 = 0;
-    a3->var1 = 0;
+    statistics->var0 = 0;
+    statistics->var1 = 0;
   }
 }
 
@@ -3235,7 +3235,7 @@ void __54__NOIAnalyticsEngine_canUseOnAlternate_options_reply___block_invoke_120
       if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 134217984;
-        v9 = self;
+        selfCopy = self;
         _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "%p now not holding os_transaction for noi_live_clients", &v8, 0xCu);
       }
     }
@@ -3246,13 +3246,13 @@ void __54__NOIAnalyticsEngine_canUseOnAlternate_options_reply___block_invoke_120
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_collectBasicFieldsForRRCMetric:(id)a3 durationUsecs:(unint64_t)a4
+- (void)_collectBasicFieldsForRRCMetric:(id)metric durationUsecs:(unint64_t)usecs
 {
-  v6 = a3;
-  [v6 setPeriodDurationSecs:a4 / 0xF4240];
-  [v6 setLastDisconnectedSecs:self->_lastDisconnectedSecs];
-  [v6 setIngressLQM:self->_ingressLQM];
-  [v6 setEgressLQM:{+[NetworkAnalyticsEngine getLoadedLQMOn:](NetworkAnalyticsEngine, "getLoadedLQMOn:", 5)}];
+  metricCopy = metric;
+  [metricCopy setPeriodDurationSecs:usecs / 0xF4240];
+  [metricCopy setLastDisconnectedSecs:self->_lastDisconnectedSecs];
+  [metricCopy setIngressLQM:self->_ingressLQM];
+  [metricCopy setEgressLQM:{+[NetworkAnalyticsEngine getLoadedLQMOn:](NetworkAnalyticsEngine, "getLoadedLQMOn:", 5)}];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -3273,8 +3273,8 @@ void __54__NOIAnalyticsEngine_canUseOnAlternate_options_reply___block_invoke_120
   [(NSMutableDictionary *)liveClients enumerateKeysAndObjectsUsingBlock:v9];
   objc_sync_exit(v7);
 
-  [v6 setAnyListenerCount:*(v11 + 6)];
-  [v6 setBackgroundListenerCount:*(v15 + 6)];
+  [metricCopy setAnyListenerCount:*(v11 + 6)];
+  [metricCopy setBackgroundListenerCount:*(v15 + 6)];
   _Block_object_dispose(&v10, 8);
   _Block_object_dispose(&v14, 8);
 }
@@ -3325,22 +3325,22 @@ void __68__NOIAnalyticsEngine__collectBasicFieldsForRRCMetric_durationUsecs___bl
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_collectDataUsageFieldsForRRCMetric:(id)a3 layer2EgressMetric:(id)a4 underrun:(BOOL *)a5
+- (void)_collectDataUsageFieldsForRRCMetric:(id)metric layer2EgressMetric:(id)egressMetric underrun:(BOOL *)underrun
 {
-  v29 = a3;
-  *a5 = 0;
+  metricCopy = metric;
+  *underrun = 0;
   v8 = *MEMORY[0x277D2CB28];
-  v9 = a4;
-  v10 = [v9 objectForKeyedSubscript:v8];
-  v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277D2CB58]];
-  v12 = [v9 objectForKeyedSubscript:*MEMORY[0x277D2CB38]];
-  v13 = [v9 objectForKeyedSubscript:*MEMORY[0x277D2CB68]];
-  v14 = [v9 objectForKeyedSubscript:*MEMORY[0x277D2CAF0]];
-  v15 = [v9 objectForKeyedSubscript:*MEMORY[0x277D2CAD0]];
+  egressMetricCopy = egressMetric;
+  v10 = [egressMetricCopy objectForKeyedSubscript:v8];
+  v11 = [egressMetricCopy objectForKeyedSubscript:*MEMORY[0x277D2CB58]];
+  v12 = [egressMetricCopy objectForKeyedSubscript:*MEMORY[0x277D2CB38]];
+  v13 = [egressMetricCopy objectForKeyedSubscript:*MEMORY[0x277D2CB68]];
+  v14 = [egressMetricCopy objectForKeyedSubscript:*MEMORY[0x277D2CAF0]];
+  v15 = [egressMetricCopy objectForKeyedSubscript:*MEMORY[0x277D2CAD0]];
 
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v16 = [v10 unsignedLongValue];
+    unsignedLongValue = [v10 unsignedLongValue];
     if (!v11)
     {
       goto LABEL_9;
@@ -3349,7 +3349,7 @@ void __68__NOIAnalyticsEngine__collectBasicFieldsForRRCMetric_durationUsecs___bl
 
   else
   {
-    v16 = 0;
+    unsignedLongValue = 0;
     if (!v11)
     {
       goto LABEL_9;
@@ -3359,7 +3359,7 @@ void __68__NOIAnalyticsEngine__collectBasicFieldsForRRCMetric_durationUsecs___bl
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v28 = [v11 unsignedLongValue];
+    unsignedLongValue2 = [v11 unsignedLongValue];
     if (!v12)
     {
       goto LABEL_13;
@@ -3369,7 +3369,7 @@ void __68__NOIAnalyticsEngine__collectBasicFieldsForRRCMetric_durationUsecs___bl
   }
 
 LABEL_9:
-  v28 = 0;
+  unsignedLongValue2 = 0;
   if (!v12)
   {
     goto LABEL_13;
@@ -3379,7 +3379,7 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v27 = [v12 unsignedLongValue];
+    unsignedLongValue3 = [v12 unsignedLongValue];
     if (!v13)
     {
       goto LABEL_17;
@@ -3389,7 +3389,7 @@ LABEL_10:
   }
 
 LABEL_13:
-  v27 = 0;
+  unsignedLongValue3 = 0;
   if (!v13)
   {
     goto LABEL_17;
@@ -3399,7 +3399,7 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = [v13 unsignedLongValue];
+    unsignedLongValue4 = [v13 unsignedLongValue];
     if (!v14)
     {
       goto LABEL_20;
@@ -3409,11 +3409,11 @@ LABEL_14:
   }
 
 LABEL_17:
-  v26 = 0;
+  unsignedLongValue4 = 0;
   if (!v14)
   {
 LABEL_20:
-    v17 = 0;
+    unsignedLongValue5 = 0;
     goto LABEL_21;
   }
 
@@ -3424,52 +3424,52 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  v17 = [v14 unsignedLongValue];
+  unsignedLongValue5 = [v14 unsignedLongValue];
 LABEL_21:
-  v25 = v17;
+  v25 = unsignedLongValue5;
   if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v18 = [v15 unsignedLongValue];
+    unsignedLongValue6 = [v15 unsignedLongValue];
   }
 
   else
   {
-    v18 = 0;
+    unsignedLongValue6 = 0;
   }
 
   ingressBytesIn = self->_ingressBytesIn;
-  if (v16 >= ingressBytesIn && ([v29 setBytesIn:v16 - ingressBytesIn], ingressBytesOut = self->_ingressBytesOut, v28 >= ingressBytesOut) && (objc_msgSend(v29, "setBytesOut:", v28 - ingressBytesOut), ingressPacketsIn = self->_ingressPacketsIn, v27 >= ingressPacketsIn) && (objc_msgSend(v29, "setPacketsIn:", v27 - ingressPacketsIn), ingressPacketsOut = self->_ingressPacketsOut, v26 >= ingressPacketsOut))
+  if (unsignedLongValue >= ingressBytesIn && ([metricCopy setBytesIn:unsignedLongValue - ingressBytesIn], ingressBytesOut = self->_ingressBytesOut, unsignedLongValue2 >= ingressBytesOut) && (objc_msgSend(metricCopy, "setBytesOut:", unsignedLongValue2 - ingressBytesOut), ingressPacketsIn = self->_ingressPacketsIn, unsignedLongValue3 >= ingressPacketsIn) && (objc_msgSend(metricCopy, "setPacketsIn:", unsignedLongValue3 - ingressPacketsIn), ingressPacketsOut = self->_ingressPacketsOut, unsignedLongValue4 >= ingressPacketsOut))
   {
-    [v29 setPacketsOut:v26 - ingressPacketsOut];
-    [v29 setIngressUlThroughputBps:self->_ingressUlThroughput];
-    [v29 setIngressDlThroughputBps:self->_ingressDlThroughput];
-    v23 = [v29 periodDurationSecs];
-    v24 = v23;
-    if (!v18)
+    [metricCopy setPacketsOut:unsignedLongValue4 - ingressPacketsOut];
+    [metricCopy setIngressUlThroughputBps:self->_ingressUlThroughput];
+    [metricCopy setIngressDlThroughputBps:self->_ingressDlThroughput];
+    periodDurationSecs = [metricCopy periodDurationSecs];
+    v24 = periodDurationSecs;
+    if (!unsignedLongValue6)
     {
-      if (v23)
+      if (periodDurationSecs)
       {
-        v18 = 8 * [v29 bytesIn] / v23;
+        unsignedLongValue6 = 8 * [metricCopy bytesIn] / periodDurationSecs;
       }
 
       else
       {
-        v18 = 0;
+        unsignedLongValue6 = 0;
       }
     }
 
-    [v29 setEgressDlThroughputBps:v18];
+    [metricCopy setEgressDlThroughputBps:unsignedLongValue6];
     if (!v25 && v24)
     {
-      [v29 bytesOut];
+      [metricCopy bytesOut];
     }
 
-    [v29 setEgressUlThroughputBps:?];
+    [metricCopy setEgressUlThroughputBps:?];
   }
 
   else
   {
-    *a5 = 1;
+    *underrun = 1;
   }
 }
 

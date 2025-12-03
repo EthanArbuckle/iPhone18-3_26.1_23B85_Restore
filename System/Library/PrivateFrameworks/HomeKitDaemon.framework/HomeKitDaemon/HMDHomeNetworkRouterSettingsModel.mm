@@ -1,10 +1,10 @@
 @interface HMDHomeNetworkRouterSettingsModel
-+ (id)defaultModelForHomeUUID:(id)a3;
-+ (id)modelIDForHomeUUID:(id)a3;
++ (id)defaultModelForHomeUUID:(id)d;
++ (id)modelIDForHomeUUID:(id)d;
 + (id)modelNamespace;
 + (id)properties;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 - (id)dependentUUIDs;
 @end
 
@@ -13,21 +13,21 @@
 - (id)dependentUUIDs
 {
   v3 = [MEMORY[0x277CBEB58] setWithCapacity:2];
-  v4 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v4)
+  if (parentUUID)
   {
-    v5 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v3 addObject:v5];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v3 addObject:parentUUID2];
   }
 
-  v6 = [(HMDHomeNetworkRouterSettingsModel *)self activeNetworkRouterAccessoryUUID];
+  activeNetworkRouterAccessoryUUID = [(HMDHomeNetworkRouterSettingsModel *)self activeNetworkRouterAccessoryUUID];
 
-  if (v6)
+  if (activeNetworkRouterAccessoryUUID)
   {
     v7 = objc_alloc(MEMORY[0x277CCAD78]);
-    v8 = [(HMDHomeNetworkRouterSettingsModel *)self activeNetworkRouterAccessoryUUID];
-    v9 = [v7 initWithUUIDString:v8];
+    activeNetworkRouterAccessoryUUID2 = [(HMDHomeNetworkRouterSettingsModel *)self activeNetworkRouterAccessoryUUID];
+    v9 = [v7 initWithUUIDString:activeNetworkRouterAccessoryUUID2];
     [v3 addObject:v9];
   }
 
@@ -70,26 +70,26 @@ void __47__HMDHomeNetworkRouterSettingsModel_properties__block_invoke()
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)defaultModelForHomeUUID:(id)a3
++ (id)defaultModelForHomeUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [HMDHomeNetworkRouterSettingsModel alloc];
-  v6 = [a1 modelIDForHomeUUID:v4];
-  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:v4];
+  v6 = [self modelIDForHomeUUID:dCopy];
+  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:dCopy];
 
   return v7;
 }
 
-+ (id)modelIDForHomeUUID:(id)a3
++ (id)modelIDForHomeUUID:(id)d
 {
   v3 = MEMORY[0x277CBEB28];
-  v4 = a3;
+  dCopy = d;
   v5 = [v3 dataWithLength:16];
-  [v4 getUUIDBytes:{objc_msgSend(v5, "mutableBytes")}];
+  [dCopy getUUIDBytes:{objc_msgSend(v5, "mutableBytes")}];
 
   v6 = MEMORY[0x277CCAD78];
-  v7 = [objc_opt_class() modelNamespace];
-  v8 = [v6 hmf_UUIDWithNamespace:v7 data:v5];
+  modelNamespace = [objc_opt_class() modelNamespace];
+  v8 = [v6 hmf_UUIDWithNamespace:modelNamespace data:v5];
 
   return v8;
 }
@@ -101,12 +101,12 @@ void __47__HMDHomeNetworkRouterSettingsModel_properties__block_invoke()
   return v2;
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"networkAccessory"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"networkAccessory"])
   {
     if (![(HMDBackingStoreModelObject *)self propertyWasSet:@"activeNetworkRouterAccessoryUUID"])
     {
@@ -114,58 +114,58 @@ void __47__HMDHomeNetworkRouterSettingsModel_properties__block_invoke()
       goto LABEL_12;
     }
 
-    v11 = [(HMDHomeNetworkRouterSettingsModel *)self activeNetworkRouterAccessoryUUID];
+    activeNetworkRouterAccessoryUUID = [(HMDHomeNetworkRouterSettingsModel *)self activeNetworkRouterAccessoryUUID];
 
-    if (v11)
+    if (activeNetworkRouterAccessoryUUID)
     {
-      v12 = [(HMDHomeNetworkRouterSettingsModel *)self activeNetworkRouterAccessoryUUID];
-      v13 = [HMDAccessoryTransaction cd_getMKFAccessoryFromAccessoryUUID:v12];
+      activeNetworkRouterAccessoryUUID2 = [(HMDHomeNetworkRouterSettingsModel *)self activeNetworkRouterAccessoryUUID];
+      v13 = [HMDAccessoryTransaction cd_getMKFAccessoryFromAccessoryUUID:activeNetworkRouterAccessoryUUID2];
 LABEL_7:
       v15 = v13;
 
       goto LABEL_12;
     }
 
-    v16 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
   else
   {
-    if ([v9 isEqualToString:@"home"])
+    if ([fieldCopy isEqualToString:@"home"])
     {
       v14 = objc_opt_class();
-      v12 = [(HMDBackingStoreModelObject *)self parentUUID];
-      v13 = [v14 cd_getHomeFromUUID:v12];
+      activeNetworkRouterAccessoryUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+      v13 = [v14 cd_getHomeFromUUID:activeNetworkRouterAccessoryUUID2];
       goto LABEL_7;
     }
 
     v18.receiver = self;
     v18.super_class = HMDHomeNetworkRouterSettingsModel;
-    v16 = [(HMDBackingStoreModelObject *)&v18 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    null = [(HMDBackingStoreModelObject *)&v18 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
   }
 
-  v15 = v16;
+  v15 = null;
 LABEL_12:
 
   return v15;
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v8 isEqualToString:@"activeNetworkRouterAccessoryUUID"])
+  fieldCopy = field;
+  infoCopy = info;
+  objectCopy = object;
+  if ([fieldCopy isEqualToString:@"activeNetworkRouterAccessoryUUID"])
   {
-    v11 = [v10 networkAccessory];
+    networkAccessory = [objectCopy networkAccessory];
 
-    v12 = [v11 modelID];
-    v13 = [v12 UUIDString];
-    v14 = v13;
+    modelID = [networkAccessory modelID];
+    uUIDString = [modelID UUIDString];
+    v14 = uUIDString;
     v15 = *MEMORY[0x277CBEEE8];
-    if (v13)
+    if (uUIDString)
     {
-      v15 = v13;
+      v15 = uUIDString;
     }
 
     v16 = v15;
@@ -175,7 +175,7 @@ LABEL_12:
   {
     v18.receiver = self;
     v18.super_class = HMDHomeNetworkRouterSettingsModel;
-    v16 = [(HMDBackingStoreModelObject *)&v18 cd_generateValueForModelObjectFromManagedObject:v10 modelObjectField:v8 modelFieldInfo:v9];
+    v16 = [(HMDBackingStoreModelObject *)&v18 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
   }
 
   return v16;

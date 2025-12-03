@@ -8,30 +8,30 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(VOTImageExplorerElement *)self feature];
-  v4 = [v3 faceDetectionResult];
-  v5 = [v4 name];
+  feature = [(VOTImageExplorerElement *)self feature];
+  faceDetectionResult = [feature faceDetectionResult];
+  name = [faceDetectionResult name];
 
-  v6 = [(VOTImageExplorerElement *)self feature];
-  v7 = [v6 faceDetectionResult];
-  v8 = [v7 attributes];
+  feature2 = [(VOTImageExplorerElement *)self feature];
+  faceDetectionResult2 = [feature2 faceDetectionResult];
+  attributes = [faceDetectionResult2 attributes];
 
   if (AXRuntimeCheck_MediaAnalysisSupport())
   {
-    v9 = [(VOTImageExplorerElement *)self feature];
-    v10 = [v9 mediaAnalysisFaceDetectionResult];
-    v11 = [v10 name];
+    feature3 = [(VOTImageExplorerElement *)self feature];
+    mediaAnalysisFaceDetectionResult = [feature3 mediaAnalysisFaceDetectionResult];
+    name2 = [mediaAnalysisFaceDetectionResult name];
 
-    v12 = [(VOTImageExplorerElement *)self feature];
-    v13 = [v12 mediaAnalysisFaceDetectionResult];
-    v14 = [v13 attributes];
+    feature4 = [(VOTImageExplorerElement *)self feature];
+    mediaAnalysisFaceDetectionResult2 = [feature4 mediaAnalysisFaceDetectionResult];
+    attributes2 = [mediaAnalysisFaceDetectionResult2 attributes];
 
-    v5 = v11;
-    v8 = v14;
+    name = name2;
+    attributes = attributes2;
   }
 
-  [v8 setExcludeOptions:{+[AXMVisionFeatureFaceAttributes defaultExcludeOptions](AXMVisionFeatureFaceAttributes, "defaultExcludeOptions")}];
-  v17 = [v8 accessibilityLabelForAttributes];
+  [attributes setExcludeOptions:{+[AXMVisionFeatureFaceAttributes defaultExcludeOptions](AXMVisionFeatureFaceAttributes, "defaultExcludeOptions")}];
+  accessibilityLabelForAttributes = [attributes accessibilityLabelForAttributes];
   v15 = __UIAXStringForVariables();
 
   return v15;
@@ -39,18 +39,18 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(VOTImageExplorerElement *)self feature];
-  v4 = +[AXMVisionFeature localizedStringForLocation:isSubjectImplicit:](AXMVisionFeature, "localizedStringForLocation:isSubjectImplicit:", [v3 locationUsingThirds:0 withFlippedYAxis:{-[VOTImageExplorerElement flippedYAxis](self, "flippedYAxis")}], 1);
+  feature = [(VOTImageExplorerElement *)self feature];
+  v4 = +[AXMVisionFeature localizedStringForLocation:isSubjectImplicit:](AXMVisionFeature, "localizedStringForLocation:isSubjectImplicit:", [feature locationUsingThirds:0 withFlippedYAxis:{-[VOTImageExplorerElement flippedYAxis](self, "flippedYAxis")}], 1);
 
   return v4;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(VOTImageExplorerFaceElement *)self accessibilityContainer];
-  v4 = [(VOTImageExplorerElement *)self feature];
-  [v4 normalizedFrame];
-  [v3 frame];
+  accessibilityContainer = [(VOTImageExplorerFaceElement *)self accessibilityContainer];
+  feature = [(VOTImageExplorerElement *)self feature];
+  [feature normalizedFrame];
+  [accessibilityContainer frame];
   [(VOTImageExplorerElement *)self flippedYAxis];
   UIAccessibilityFrameForBounds();
   v6 = v5;
@@ -58,13 +58,13 @@
   v10 = v9;
   v12 = v11;
 
-  v13 = [(VOTImageExplorerFaceElement *)self peopleFeature];
+  peopleFeature = [(VOTImageExplorerFaceElement *)self peopleFeature];
 
-  if (v13)
+  if (peopleFeature)
   {
-    v14 = [(VOTImageExplorerFaceElement *)self peopleFeature];
-    [v14 normalizedFrame];
-    [v3 frame];
+    peopleFeature2 = [(VOTImageExplorerFaceElement *)self peopleFeature];
+    [peopleFeature2 normalizedFrame];
+    [accessibilityContainer frame];
     UIAccessibilityFrameForBounds();
     v16 = v15;
     v18 = v17;

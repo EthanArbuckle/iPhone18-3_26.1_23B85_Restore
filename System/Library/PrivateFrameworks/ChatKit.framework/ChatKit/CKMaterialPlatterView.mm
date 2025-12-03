@@ -1,30 +1,30 @@
 @interface CKMaterialPlatterView
-+ (_TtC7ChatKit21CKMaterialPlatterView)materialPlatterViewWithColor:(id)a3;
++ (_TtC7ChatKit21CKMaterialPlatterView)materialPlatterViewWithColor:(id)color;
 + (_TtC7ChatKit21CKMaterialPlatterView)materialPlatterViewWithGrayMaterial;
-- (_TtC7ChatKit21CKMaterialPlatterView)initWithCoder:(id)a3;
-- (_TtC7ChatKit21CKMaterialPlatterView)initWithFrame:(CGRect)a3;
-- (void)configureMaterialForColor:(id)a3;
+- (_TtC7ChatKit21CKMaterialPlatterView)initWithCoder:(id)coder;
+- (_TtC7ChatKit21CKMaterialPlatterView)initWithFrame:(CGRect)frame;
+- (void)configureMaterialForColor:(id)color;
 - (void)configureWithGrayMaterial;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 @end
 
 @implementation CKMaterialPlatterView
 
-- (_TtC7ChatKit21CKMaterialPlatterView)initWithCoder:(id)a3
+- (_TtC7ChatKit21CKMaterialPlatterView)initWithCoder:(id)coder
 {
   result = sub_190D58510();
   __break(1u);
   return result;
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
-  sub_190A1A880(v4);
+  layerCopy = layer;
+  selfCopy = self;
+  sub_190A1A880(layerCopy);
 }
 
-- (_TtC7ChatKit21CKMaterialPlatterView)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit21CKMaterialPlatterView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -40,12 +40,12 @@
   return v3;
 }
 
-+ (_TtC7ChatKit21CKMaterialPlatterView)materialPlatterViewWithColor:(id)a3
++ (_TtC7ChatKit21CKMaterialPlatterView)materialPlatterViewWithColor:(id)color
 {
-  v8 = a3;
+  colorCopy = color;
   v4 = objc_allocWithZone(type metadata accessor for CKMaterialPlatterView());
-  v5 = a3;
-  v6 = CKMaterialPlatterView.init(materialConfiguration:)(&v8);
+  colorCopy2 = color;
+  v6 = CKMaterialPlatterView.init(materialConfiguration:)(&colorCopy);
 
   return v6;
 }
@@ -53,16 +53,16 @@
 - (void)configureWithGrayMaterial
 {
   v3 = 2;
-  v2 = self;
+  selfCopy = self;
   sub_190A1A3FC(&v3);
 }
 
-- (void)configureMaterialForColor:(id)a3
+- (void)configureMaterialForColor:(id)color
 {
-  v6 = a3;
-  v4 = a3;
-  v5 = self;
-  sub_190A1A3FC(&v6);
+  colorCopy = color;
+  colorCopy2 = color;
+  selfCopy = self;
+  sub_190A1A3FC(&colorCopy);
 }
 
 @end

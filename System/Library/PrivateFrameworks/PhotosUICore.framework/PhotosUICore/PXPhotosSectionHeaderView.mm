@@ -1,11 +1,11 @@
 @interface PXPhotosSectionHeaderView
 + (BOOL)_hasAccessibilityLargeText;
-+ (BOOL)shouldUseAccessibilityLargeTextLayoutWithTraitCollecton:(id)a3;
-+ (BOOL)shouldUsePhoneLayoutWithTraitCollection:(id)a3;
-- (BOOL)allowLocationTapForTouch:(id)a3;
++ (BOOL)shouldUseAccessibilityLargeTextLayoutWithTraitCollecton:(id)collecton;
++ (BOOL)shouldUsePhoneLayoutWithTraitCollection:(id)collection;
+- (BOOL)allowLocationTapForTouch:(id)touch;
 - (CGRect)clippingRect;
 - (NSString)synthesizedSectionTitle;
-- (PXPhotosSectionHeaderView)initWithFrame:(CGRect)a3;
+- (PXPhotosSectionHeaderView)initWithFrame:(CGRect)frame;
 - (PXPhotosSectionHeaderViewDelegate)delegate;
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)highlightInsets;
@@ -13,13 +13,13 @@
 - (id)_dateRangeCompactFormatter;
 - (id)_dateRangeLongFormatter;
 - (id)_dateRangeYearFormatter;
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3;
-- (void)_handleActionButton:(id)a3;
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification;
+- (void)_handleActionButton:(id)button;
 - (void)_layoutSubviewsForCurentStyle;
-- (void)_setHighlightViewVisible:(BOOL)a3;
+- (void)_setHighlightViewVisible:(BOOL)visible;
 - (void)_updateActionButton;
 - (void)_updateBackdropViewGroupName;
-- (void)_updateBackgroundAnimated:(BOOL)a3;
+- (void)_updateBackgroundAnimated:(BOOL)animated;
 - (void)_updateDateDependentLabels;
 - (void)_updateDateLabel;
 - (void)_updateDisclosureIcon;
@@ -27,30 +27,30 @@
 - (void)_updateLabelsForTextStyle;
 - (void)_updateLocationsLabelVisibility;
 - (void)_updateTitleLabel;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)performBatchUpdateOfDateDependentPropertiesWithBlock:(id)a3;
+- (void)performBatchUpdateOfDateDependentPropertiesWithBlock:(id)block;
 - (void)prepareForReuse;
-- (void)setActionButtonTitle:(id)a3;
-- (void)setAllowsPhotosDetailsInteraction:(BOOL)a3;
-- (void)setBackdropViewGroupName:(id)a3;
-- (void)setBackgroundImage:(id)a3;
-- (void)setBackgroundImageAlpha:(double)a3;
-- (void)setBackgroundImageOverhang:(double)a3;
-- (void)setBackgroundStyle:(unint64_t)a3;
-- (void)setButtonSpec:(id)a3;
-- (void)setClippingRect:(CGRect)a3;
-- (void)setSectionLocations:(id)a3;
-- (void)setSectionStartDate:(id)a3 endDate:(id)a4;
-- (void)setSectionTitle:(id)a3;
-- (void)setShowsActionButton:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setUseYearOnlyForDefaultTitle:(BOOL)a3;
-- (void)setUserData:(id)a3;
-- (void)setWantsBackground:(BOOL)a3 animated:(BOOL)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setActionButtonTitle:(id)title;
+- (void)setAllowsPhotosDetailsInteraction:(BOOL)interaction;
+- (void)setBackdropViewGroupName:(id)name;
+- (void)setBackgroundImage:(id)image;
+- (void)setBackgroundImageAlpha:(double)alpha;
+- (void)setBackgroundImageOverhang:(double)overhang;
+- (void)setBackgroundStyle:(unint64_t)style;
+- (void)setButtonSpec:(id)spec;
+- (void)setClippingRect:(CGRect)rect;
+- (void)setSectionLocations:(id)locations;
+- (void)setSectionStartDate:(id)date endDate:(id)endDate;
+- (void)setSectionTitle:(id)title;
+- (void)setShowsActionButton:(BOOL)button;
+- (void)setStyle:(int64_t)style;
+- (void)setUseYearOnlyForDefaultTitle:(BOOL)title;
+- (void)setUserData:(id)data;
+- (void)setWantsBackground:(BOOL)background animated:(BOOL)animated;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PXPhotosSectionHeaderView
@@ -138,18 +138,18 @@ LABEL_10:
   [(PXPhotosSectionHeaderView *)self setNeedsLayout];
 }
 
-- (void)_setHighlightViewVisible:(BOOL)a3
+- (void)_setHighlightViewVisible:(BOOL)visible
 {
-  if (self->_highlightViewVisible != a3)
+  if (self->_highlightViewVisible != visible)
   {
-    self->_highlightViewVisible = a3;
+    self->_highlightViewVisible = visible;
     [(PXPhotosSectionHeaderView *)self _updateHighlightView];
   }
 }
 
-- (BOOL)allowLocationTapForTouch:(id)a3
+- (BOOL)allowLocationTapForTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   if ([(PXPhotosSectionHeaderView *)self allowsPhotosDetailsInteraction]&& (WeakRetained = objc_loadWeakRetained(&self->_delegate), v6 = objc_opt_respondsToSelector(), WeakRetained, (v6 & 1) != 0))
   {
     if ((-[PXCuratedLibraryOverlayButton isHidden](self->_actionButton, "isHidden") & 1) != 0 || (-[PXCuratedLibraryOverlayButton frame](self->_actionButton, "frame"), CGRectIsEmpty(v20)) || ([*MEMORY[0x1E69DDA98] preferredContentSizeCategory], v7 = objc_claimAutoreleasedReturnValue(), IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7), v7, IsAccessibilityCategory))
@@ -159,9 +159,9 @@ LABEL_10:
 
     else
     {
-      v11 = [(PXPhotosSectionHeaderView *)self _shouldReverseLayoutDirection];
+      _shouldReverseLayoutDirection = [(PXPhotosSectionHeaderView *)self _shouldReverseLayoutDirection];
       [(PXCuratedLibraryOverlayButton *)self->_actionButton frame];
-      if (v11)
+      if (_shouldReverseLayoutDirection)
       {
         MaxX = CGRectGetMaxX(*&v12);
         v17 = 16.0;
@@ -174,8 +174,8 @@ LABEL_10:
       }
 
       v18 = MaxX + v17;
-      [v4 locationInView:self];
-      if (v11)
+      [touchCopy locationInView:self];
+      if (_shouldReverseLayoutDirection)
       {
         v9 = v19 >= v18;
       }
@@ -236,7 +236,7 @@ LABEL_10:
 
   [objc_opt_class() _hasAccessibilityLargeText];
   [(PXPhotosSectionHeaderView *)self _updateLabelsForTextStyle];
-  v7 = [(PXPhotosSectionHeaderView *)self style];
+  style = [(PXPhotosSectionHeaderView *)self style];
   [(PXPhotosSectionHeaderView *)self contentInsets];
   [(PXPhotosSectionHeaderView *)self safeAreaInsets];
   UIEdgeInsetsMax();
@@ -245,7 +245,7 @@ LABEL_10:
   [(PXPhotosSectionHeaderView *)self bounds];
   [(PXPhotosSectionHeaderView *)self bounds];
   [(PXPhotosSectionHeaderView *)self backgroundImageOverhang];
-  v10 = [(UILabel *)self->_titleLabel font];
+  font = [(UILabel *)self->_titleLabel font];
   v8 = self->_dateLabel;
   if (!v8)
   {
@@ -255,12 +255,12 @@ LABEL_10:
   [(UILabel *)v8 font];
   objc_claimAutoreleasedReturnValue();
   v9 = 26.0;
-  if (v7 == 1)
+  if (style == 1)
   {
     v9 = 30.0;
   }
 
-  [v10 _scaledValueForValue:v9];
+  [font _scaledValueForValue:v9];
   PXFloatRoundToPixel();
 }
 
@@ -300,18 +300,18 @@ uint64_t __58__PXPhotosSectionHeaderView__layoutSubviewsForCurentStyle__block_in
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v13 = a3;
-  v5 = [v13 anyObject];
-  [v5 locationInView:self];
+  endedCopy = ended;
+  anyObject = [endedCopy anyObject];
+  [anyObject locationInView:self];
   v7 = v6;
   v9 = v8;
 
   [(PXPhotosSectionHeaderView *)self bounds];
   v15.x = v7;
   v15.y = v9;
-  if (CGRectContainsPoint(v16, v15) && ([v13 anyObject], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[PXPhotosSectionHeaderView allowLocationTapForTouch:](self, "allowLocationTapForTouch:", v10), v10, v11))
+  if (CGRectContainsPoint(v16, v15) && ([endedCopy anyObject], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[PXPhotosSectionHeaderView allowLocationTapForTouch:](self, "allowLocationTapForTouch:", v10), v10, v11))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained didTapHeaderView:self];
@@ -325,10 +325,10 @@ uint64_t __58__PXPhotosSectionHeaderView__layoutSubviewsForCurentStyle__block_in
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [a3 anyObject];
-  v6 = [(PXPhotosSectionHeaderView *)self allowLocationTapForTouch:v5];
+  anyObject = [began anyObject];
+  v6 = [(PXPhotosSectionHeaderView *)self allowLocationTapForTouch:anyObject];
 
   if (v6)
   {
@@ -337,18 +337,18 @@ uint64_t __58__PXPhotosSectionHeaderView__layoutSubviewsForCurentStyle__block_in
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PXPhotosSectionHeaderView;
-  v4 = a3;
-  [(PXPhotosSectionHeaderView *)&v8 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(PXPhotosSectionHeaderView *)&v8 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(PXPhotosSectionHeaderView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(PXPhotosSectionHeaderView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7 && [(PXPhotosSectionHeaderView *)self style]!= -1)
+  if (userInterfaceStyle != userInterfaceStyle2 && [(PXPhotosSectionHeaderView *)self style]!= -1)
   {
     [(PXPhotosSectionHeaderView *)self _updateDisclosureIcon];
     [(PXPhotosSectionHeaderView *)self _updateLocationsLabelVisibility];
@@ -357,11 +357,11 @@ uint64_t __58__PXPhotosSectionHeaderView__layoutSubviewsForCurentStyle__block_in
   }
 }
 
-- (void)_contentSizeCategoryDidChangeNotification:(id)a3
+- (void)_contentSizeCategoryDidChangeNotification:(id)notification
 {
-  v4 = [(PXPhotosSectionHeaderView *)self style];
-  v25 = _PXPhotoCollectionHeaderTitleLabelFontForStyle(v4);
-  v5 = _PXPhotoCollectionHeaderSubtitleFontForStyle(v4);
+  style = [(PXPhotosSectionHeaderView *)self style];
+  v25 = _PXPhotoCollectionHeaderTitleLabelFontForStyle(style);
+  v5 = _PXPhotoCollectionHeaderSubtitleFontForStyle(style);
   titleLabel = self->_titleLabel;
   if (titleLabel && (-[UILabel font](titleLabel, "font"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqual:v25], v7, (v8 & 1) == 0))
   {
@@ -377,8 +377,8 @@ uint64_t __58__PXPhotosSectionHeaderView__layoutSubviewsForCurentStyle__block_in
   dateLabel = self->_dateLabel;
   if (dateLabel)
   {
-    v11 = [(UILabel *)dateLabel font];
-    v12 = [v11 isEqual:v5];
+    font = [(UILabel *)dateLabel font];
+    v12 = [font isEqual:v5];
 
     if ((v12 & 1) == 0)
     {
@@ -390,8 +390,8 @@ uint64_t __58__PXPhotosSectionHeaderView__layoutSubviewsForCurentStyle__block_in
   locationsLabel = self->_locationsLabel;
   if (locationsLabel)
   {
-    v14 = [(UILabel *)locationsLabel font];
-    v15 = [v14 isEqual:v5];
+    font2 = [(UILabel *)locationsLabel font];
+    v15 = [font2 isEqual:v5];
 
     if ((v15 & 1) == 0)
     {
@@ -403,8 +403,8 @@ uint64_t __58__PXPhotosSectionHeaderView__layoutSubviewsForCurentStyle__block_in
   separatorLabel = self->_separatorLabel;
   if (separatorLabel)
   {
-    v17 = [(UILabel *)separatorLabel font];
-    v18 = [v17 isEqual:v5];
+    font3 = [(UILabel *)separatorLabel font];
+    v18 = [font3 isEqual:v5];
 
     if ((v18 & 1) == 0)
     {
@@ -445,13 +445,13 @@ LABEL_18:
 
 LABEL_19:
   [(PXPhotosSectionHeaderView *)self setNeedsLayout];
-  v22 = [(PXPhotosSectionHeaderView *)self delegate];
+  delegate = [(PXPhotosSectionHeaderView *)self delegate];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
-    v24 = [(PXPhotosSectionHeaderView *)self delegate];
-    [v24 textSizeDidChangeForHeaderView:self];
+    delegate2 = [(PXPhotosSectionHeaderView *)self delegate];
+    [delegate2 textSizeDidChangeForHeaderView:self];
   }
 
 LABEL_21:
@@ -466,8 +466,8 @@ LABEL_21:
     v5 = _dateRangeYearFormatter_yearDateFormatter;
     _dateRangeYearFormatter_yearDateFormatter = v4;
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:self selector:sel__dateRangeFormatterChanged_ name:*MEMORY[0x1E69BE978] object:_dateRangeYearFormatter_yearDateFormatter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__dateRangeFormatterChanged_ name:*MEMORY[0x1E69BE978] object:_dateRangeYearFormatter_yearDateFormatter];
 
     v3 = _dateRangeYearFormatter_yearDateFormatter;
   }
@@ -484,8 +484,8 @@ LABEL_21:
     v5 = _dateRangeLongFormatter_dateRangeFormatter;
     _dateRangeLongFormatter_dateRangeFormatter = v4;
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:self selector:sel__dateRangeFormatterChanged_ name:*MEMORY[0x1E69BE978] object:_dateRangeLongFormatter_dateRangeFormatter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__dateRangeFormatterChanged_ name:*MEMORY[0x1E69BE978] object:_dateRangeLongFormatter_dateRangeFormatter];
 
     v3 = _dateRangeLongFormatter_dateRangeFormatter;
   }
@@ -502,8 +502,8 @@ LABEL_21:
     v5 = _dateRangeCompactFormatter_dateRangeFormatter;
     _dateRangeCompactFormatter_dateRangeFormatter = v4;
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:self selector:sel__dateRangeFormatterChanged_ name:*MEMORY[0x1E69BE978] object:_dateRangeCompactFormatter_dateRangeFormatter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__dateRangeFormatterChanged_ name:*MEMORY[0x1E69BE978] object:_dateRangeCompactFormatter_dateRangeFormatter];
 
     v3 = _dateRangeCompactFormatter_dateRangeFormatter;
   }
@@ -515,53 +515,53 @@ LABEL_21:
 {
   if (self->_inLayoutTransition || ![(PXPhotosSectionHeaderView *)self wantsBackground])
   {
-    v3 = 0;
+    backdropViewGroupName = 0;
   }
 
   else
   {
-    v3 = [(PXPhotosSectionHeaderView *)self backdropViewGroupName];
+    backdropViewGroupName = [(PXPhotosSectionHeaderView *)self backdropViewGroupName];
   }
 
-  v4 = v3;
-  [(UIVisualEffectView *)self->_visualEffectView _setGroupName:v3];
+  v4 = backdropViewGroupName;
+  [(UIVisualEffectView *)self->_visualEffectView _setGroupName:backdropViewGroupName];
 }
 
-- (void)_updateBackgroundAnimated:(BOOL)a3
+- (void)_updateBackgroundAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(PXPhotosSectionHeaderView *)self backgroundStyle])
   {
-    v5 = 0;
+    wantsBackground = 0;
   }
 
   else
   {
-    v5 = [(PXPhotosSectionHeaderView *)self wantsBackground];
+    wantsBackground = [(PXPhotosSectionHeaderView *)self wantsBackground];
   }
 
   if ([(PXPhotosSectionHeaderView *)self backgroundStyle]== 1)
   {
-    v6 = [(PXPhotosSectionHeaderView *)self backgroundImage];
-    if (v6)
+    backgroundImage = [(PXPhotosSectionHeaderView *)self backgroundImage];
+    if (backgroundImage)
     {
-      v7 = [(PXPhotosSectionHeaderView *)self wantsBackground];
+      wantsBackground2 = [(PXPhotosSectionHeaderView *)self wantsBackground];
     }
 
     else
     {
-      v7 = 0;
+      wantsBackground2 = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    wantsBackground2 = 0;
   }
 
   v8 = 552;
   visualEffectView = self->_visualEffectView;
-  if (v5)
+  if (wantsBackground)
   {
     if (!visualEffectView)
     {
@@ -573,9 +573,9 @@ LABEL_21:
       visualEffectView = self->_visualEffectView;
     }
 
-    v13 = [(UIVisualEffectView *)visualEffectView superview];
+    superview = [(UIVisualEffectView *)visualEffectView superview];
 
-    if (v13 != self)
+    if (superview != self)
     {
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
@@ -595,7 +595,7 @@ LABEL_21:
   }
 
   backgroundImageView = self->_backgroundImageView;
-  if (v7)
+  if (wantsBackground2)
   {
     if (!backgroundImageView)
     {
@@ -607,9 +607,9 @@ LABEL_21:
       backgroundImageView = self->_backgroundImageView;
     }
 
-    v18 = [(UIImageView *)backgroundImageView superview];
+    superview2 = [(UIImageView *)backgroundImageView superview];
 
-    if (v18 != self)
+    if (superview2 != self)
     {
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
@@ -620,10 +620,10 @@ LABEL_21:
     }
 
     [(UIImageView *)self->_backgroundImageView setHidden:0];
-    v19 = [(PXPhotosSectionHeaderView *)self backgroundImage];
-    [(UIImageView *)self->_backgroundImageView setImage:v19];
+    backgroundImage2 = [(PXPhotosSectionHeaderView *)self backgroundImage];
+    [(UIImageView *)self->_backgroundImageView setImage:backgroundImage2];
 
-    if (v3)
+    if (animatedCopy)
     {
       [(UIImageView *)self->_backgroundImageView setAlpha:0.0];
       v23[0] = MEMORY[0x1E69E9820];
@@ -646,8 +646,8 @@ LABEL_21:
     [(UIImageView *)backgroundImageView setHidden:1];
   }
 
-  v20 = [(PXPhotosSectionHeaderView *)self backgroundStyle];
-  switch(v20)
+  backgroundStyle = [(PXPhotosSectionHeaderView *)self backgroundStyle];
+  switch(backgroundStyle)
   {
     case 0uLL:
       goto LABEL_31;
@@ -709,8 +709,8 @@ LABEL_15:
 
   if ([(PXPhotosSectionHeaderView *)self style]== -1)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionHeaderView.m" lineNumber:619 description:@"Invalid header style."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSectionHeaderView.m" lineNumber:619 description:@"Invalid header style."];
   }
 
   if (!self->_actionButton)
@@ -723,39 +723,39 @@ LABEL_15:
     [(PXPhotosSectionHeaderView *)self addSubview:self->_actionButton];
   }
 
-  v6 = [(PXPhotosSectionHeaderView *)self actionButtonTitle];
-  if (v6)
+  actionButtonTitle = [(PXPhotosSectionHeaderView *)self actionButtonTitle];
+  if (actionButtonTitle)
   {
-    v7 = v6;
-    v8 = [(PXPhotosSectionHeaderView *)self buttonSpec];
+    v7 = actionButtonTitle;
+    buttonSpec = [(PXPhotosSectionHeaderView *)self buttonSpec];
 
-    if (v8)
+    if (buttonSpec)
     {
-      v9 = [(PXPhotosSectionHeaderView *)self actionButtonTitle];
-      v10 = [(PXPhotosSectionHeaderView *)self buttonSpec];
-      actionButton = [PXCuratedLibraryOverlayButtonConfiguration configurationWithTitle:v9 spec:v10];
+      actionButtonTitle2 = [(PXPhotosSectionHeaderView *)self actionButtonTitle];
+      buttonSpec2 = [(PXPhotosSectionHeaderView *)self buttonSpec];
+      actionButton = [PXCuratedLibraryOverlayButtonConfiguration configurationWithTitle:actionButtonTitle2 spec:buttonSpec2];
 
       [actionButton setActionHandler:&__block_literal_global_94564];
-      v12 = [(PXPhotosSectionHeaderView *)self traitCollection];
-      v13 = [v12 userInterfaceStyle];
+      traitCollection = [(PXPhotosSectionHeaderView *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      if (([(PXPhotosSectionHeaderView *)self wantsBackground]|| v13 == 2) && [(PXPhotosSectionHeaderView *)self backgroundStyle])
+      if (([(PXPhotosSectionHeaderView *)self wantsBackground]|| userInterfaceStyle == 2) && [(PXPhotosSectionHeaderView *)self backgroundStyle])
       {
-        v14 = [MEMORY[0x1E69DC888] systemWhiteColor];
+        systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
         v15 = 0;
       }
 
       else
       {
-        v14 = [(PXPhotosSectionHeaderView *)self tintColor];
+        systemWhiteColor = [(PXPhotosSectionHeaderView *)self tintColor];
         v15 = 14;
       }
 
-      [actionButton setTintColor:v14];
+      [actionButton setTintColor:systemWhiteColor];
 
       [actionButton setStyle:v15];
-      v16 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-      [actionButton setBackgroundColor:v16];
+      tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+      [actionButton setBackgroundColor:tertiarySystemFillColor];
 
       [(PXCuratedLibraryOverlayButton *)self->_actionButton setUserData:actionButton];
       goto LABEL_15;
@@ -773,8 +773,8 @@ LABEL_16:
   {
     if ([(PXPhotosSectionHeaderView *)self style]== -1)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionHeaderView.m" lineNumber:584 description:@"Invalid header style."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSectionHeaderView.m" lineNumber:584 description:@"Invalid header style."];
     }
 
     if (!self->_dateLabel)
@@ -799,24 +799,24 @@ LABEL_16:
       [(PXPhotosSectionHeaderView *)self addSubview:self->_dateLabel];
     }
 
-    v7 = [(PXPhotosSectionHeaderView *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(PXPhotosSectionHeaderView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (([(PXPhotosSectionHeaderView *)self wantsBackground]|| v8 == 2) && [(PXPhotosSectionHeaderView *)self backgroundStyle])
+    if (([(PXPhotosSectionHeaderView *)self wantsBackground]|| userInterfaceStyle == 2) && [(PXPhotosSectionHeaderView *)self backgroundStyle])
     {
-      v9 = [MEMORY[0x1E69DC888] systemWhiteColor];
+      systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69DC888] systemGrayColor];
+      systemWhiteColor = [MEMORY[0x1E69DC888] systemGrayColor];
     }
 
-    v10 = v9;
-    [(UILabel *)self->_dateLabel setTextColor:v9];
+    v10 = systemWhiteColor;
+    [(UILabel *)self->_dateLabel setTextColor:systemWhiteColor];
 
-    v11 = [(PXPhotosSectionHeaderView *)self _dateRangeCompactFormatter];
-    v12 = [v11 stringFromDate:self->_sectionStartDate toDate:self->_sectionEndDate];
+    _dateRangeCompactFormatter = [(PXPhotosSectionHeaderView *)self _dateRangeCompactFormatter];
+    v12 = [_dateRangeCompactFormatter stringFromDate:self->_sectionStartDate toDate:self->_sectionEndDate];
 
     [(UILabel *)self->_dateLabel setHidden:0];
     [(UILabel *)self->_dateLabel setText:v12];
@@ -838,8 +838,8 @@ LABEL_16:
   {
     if ([(PXPhotosSectionHeaderView *)self style]== -1)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionHeaderView.m" lineNumber:540 description:@"Invalid header style."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSectionHeaderView.m" lineNumber:540 description:@"Invalid header style."];
     }
 
     p_locationsLabel = &self->_locationsLabel;
@@ -866,27 +866,27 @@ LABEL_16:
       _PXConfigurePhotoCollectionHeaderLocationsLabel(self->_separatorLabel, [(PXPhotosSectionHeaderView *)self style]);
     }
 
-    v10 = [(PXPhotosSectionHeaderView *)self traitCollection];
-    v11 = [v10 userInterfaceStyle];
+    traitCollection = [(PXPhotosSectionHeaderView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (([(PXPhotosSectionHeaderView *)self wantsBackground]|| v11 == 2) && [(PXPhotosSectionHeaderView *)self backgroundStyle])
+    if (([(PXPhotosSectionHeaderView *)self wantsBackground]|| userInterfaceStyle == 2) && [(PXPhotosSectionHeaderView *)self backgroundStyle])
     {
-      v12 = [MEMORY[0x1E69DC888] systemWhiteColor];
-      [(UILabel *)*p_locationsLabel setTextColor:v12];
+      systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+      [(UILabel *)*p_locationsLabel setTextColor:systemWhiteColor];
 
-      v13 = [MEMORY[0x1E69DC888] systemWhiteColor];
+      systemWhiteColor2 = [MEMORY[0x1E69DC888] systemWhiteColor];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E69DC888] systemGrayColor];
-      [(UILabel *)*p_locationsLabel setTextColor:v14];
+      systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+      [(UILabel *)*p_locationsLabel setTextColor:systemGrayColor];
 
-      v13 = [MEMORY[0x1E69DC888] systemGrayColor];
+      systemWhiteColor2 = [MEMORY[0x1E69DC888] systemGrayColor];
     }
 
-    v15 = v13;
-    [(UILabel *)self->_separatorLabel setTextColor:v13];
+    v15 = systemWhiteColor2;
+    [(UILabel *)self->_separatorLabel setTextColor:systemWhiteColor2];
   }
 
   else
@@ -903,9 +903,9 @@ LABEL_16:
 
 - (void)_updateDisclosureIcon
 {
-  v3 = [(PXPhotosSectionHeaderView *)self allowsPhotosDetailsInteraction];
+  allowsPhotosDetailsInteraction = [(PXPhotosSectionHeaderView *)self allowsPhotosDetailsInteraction];
   disclosureIconView = self->_disclosureIconView;
-  if (v3)
+  if (allowsPhotosDetailsInteraction)
   {
     if (!disclosureIconView)
     {
@@ -923,21 +923,21 @@ LABEL_16:
     }
 
     [(UIImageView *)disclosureIconView setHidden:0];
-    v8 = [(PXPhotosSectionHeaderView *)self traitCollection];
-    v9 = [v8 userInterfaceStyle];
+    traitCollection = [(PXPhotosSectionHeaderView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (([(PXPhotosSectionHeaderView *)self wantsBackground]|| v9 == 2) && [(PXPhotosSectionHeaderView *)self backgroundStyle])
+    if (([(PXPhotosSectionHeaderView *)self wantsBackground]|| userInterfaceStyle == 2) && [(PXPhotosSectionHeaderView *)self backgroundStyle])
     {
-      v10 = [MEMORY[0x1E69DC888] systemWhiteColor];
+      systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E69DC888] systemGrayColor];
+      systemWhiteColor = [MEMORY[0x1E69DC888] systemGrayColor];
     }
 
-    v11 = v10;
-    [(UIImageView *)self->_disclosureIconView setTintColor:v10];
+    v11 = systemWhiteColor;
+    [(UIImageView *)self->_disclosureIconView setTintColor:systemWhiteColor];
   }
 
   else
@@ -950,13 +950,13 @@ LABEL_16:
 
 - (void)_updateTitleLabel
 {
-  v12 = [(PXPhotosSectionHeaderView *)self synthesizedSectionTitle];
-  if (v12)
+  synthesizedSectionTitle = [(PXPhotosSectionHeaderView *)self synthesizedSectionTitle];
+  if (synthesizedSectionTitle)
   {
     if ([(PXPhotosSectionHeaderView *)self style]== -1)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionHeaderView.m" lineNumber:482 description:@"Invalid header style."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSectionHeaderView.m" lineNumber:482 description:@"Invalid header style."];
     }
 
     p_titleLabel = &self->_titleLabel;
@@ -973,19 +973,19 @@ LABEL_16:
 
     if ([(PXPhotosSectionHeaderView *)self wantsBackground]&& [(PXPhotosSectionHeaderView *)self backgroundStyle])
     {
-      v7 = [MEMORY[0x1E69DC888] systemWhiteColor];
+      systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E69DC888] labelColor];
+      systemWhiteColor = [MEMORY[0x1E69DC888] labelColor];
     }
 
-    v8 = v7;
-    [*p_titleLabel setTextColor:v7];
+    v8 = systemWhiteColor;
+    [*p_titleLabel setTextColor:systemWhiteColor];
 
     titleLabel = *p_titleLabel;
-    v10 = v12;
+    v10 = synthesizedSectionTitle;
   }
 
   else
@@ -996,7 +996,7 @@ LABEL_16:
   }
 
   [titleLabel setText:v10];
-  [*p_titleLabel setHidden:v12 == 0];
+  [*p_titleLabel setHidden:synthesizedSectionTitle == 0];
   [(PXPhotosSectionHeaderView *)self setNeedsLayout];
 }
 
@@ -1007,33 +1007,33 @@ LABEL_16:
   [(PXPhotosSectionHeaderView *)self _updateDateLabel];
 }
 
-- (void)_handleActionButton:(id)a3
+- (void)_handleActionButton:(id)button
 {
-  v7 = a3;
+  buttonCopy = button;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 headerView:self actionButtonPressed:v7];
+    [v6 headerView:self actionButtonPressed:buttonCopy];
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   if (objc_opt_respondsToSelector())
   {
-    -[PXPhotosSectionHeaderView setWantsBackground:](self, "setWantsBackground:", [v4 floating]);
+    -[PXPhotosSectionHeaderView setWantsBackground:](self, "setWantsBackground:", [attributesCopy floating]);
   }
 }
 
 - (void)_updateLabelsForTextStyle
 {
-  v3 = [objc_opt_class() _hasAccessibilityLargeText];
+  _hasAccessibilityLargeText = [objc_opt_class() _hasAccessibilityLargeText];
   titleLabel = self->_titleLabel;
-  if (v3)
+  if (_hasAccessibilityLargeText)
   {
     [(UILabel *)titleLabel setNumberOfLines:2];
     [(UILabel *)self->_dateLabel setNumberOfLines:2];
@@ -1070,8 +1070,8 @@ LABEL_16:
 
 - (double)baselineToBottomSpacing
 {
-  v3 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v3))
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v4 = 8.0;
   }
@@ -1093,12 +1093,12 @@ LABEL_16:
   return v4;
 }
 
-- (void)setBackdropViewGroupName:(id)a3
+- (void)setBackdropViewGroupName:(id)name
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_backdropViewGroupName] & 1) == 0)
+  nameCopy = name;
+  if (([nameCopy isEqualToString:self->_backdropViewGroupName] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     backdropViewGroupName = self->_backdropViewGroupName;
     self->_backdropViewGroupName = v4;
 
@@ -1106,23 +1106,23 @@ LABEL_16:
   }
 }
 
-- (void)setAllowsPhotosDetailsInteraction:(BOOL)a3
+- (void)setAllowsPhotosDetailsInteraction:(BOOL)interaction
 {
-  if (self->_allowsPhotosDetailsInteraction != a3)
+  if (self->_allowsPhotosDetailsInteraction != interaction)
   {
-    self->_allowsPhotosDetailsInteraction = a3;
+    self->_allowsPhotosDetailsInteraction = interaction;
     [(PXPhotosSectionHeaderView *)self _updateDisclosureIcon];
   }
 }
 
-- (void)setActionButtonTitle:(id)a3
+- (void)setActionButtonTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_actionButtonTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_actionButtonTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -1136,28 +1136,28 @@ LABEL_16:
   }
 }
 
-- (void)setShowsActionButton:(BOOL)a3
+- (void)setShowsActionButton:(BOOL)button
 {
-  if (self->_showsActionButton != a3)
+  if (self->_showsActionButton != button)
   {
-    self->_showsActionButton = a3;
+    self->_showsActionButton = button;
     [(PXPhotosSectionHeaderView *)self _updateActionButton];
   }
 }
 
-- (void)setSectionStartDate:(id)a3 endDate:(id)a4
+- (void)setSectionStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_sectionStartDate != v6 && ![(NSDate *)v6 isEqual:?]|| self->_sectionEndDate != v7 && ([(NSDate *)v7 isEqual:?]& 1) == 0)
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (self->_sectionStartDate != dateCopy && ![(NSDate *)dateCopy isEqual:?]|| self->_sectionEndDate != endDateCopy && ([(NSDate *)endDateCopy isEqual:?]& 1) == 0)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __57__PXPhotosSectionHeaderView_setSectionStartDate_endDate___block_invoke;
     v8[3] = &unk_1E774A1B8;
     v8[4] = self;
-    v9 = v6;
-    v10 = v7;
+    v9 = dateCopy;
+    v10 = endDateCopy;
     [(PXPhotosSectionHeaderView *)self performBatchUpdateOfDateDependentPropertiesWithBlock:v8];
   }
 }
@@ -1172,25 +1172,25 @@ void __57__PXPhotosSectionHeaderView_setSectionStartDate_endDate___block_invoke(
   objc_storeStrong(v3, v2);
 }
 
-- (void)setSectionLocations:(id)a3
+- (void)setSectionLocations:(id)locations
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationsCopy = locations;
   v5 = +[PXGridSettings sharedInstance];
-  v6 = [v5 simulatedNumberOfLocations];
+  simulatedNumberOfLocations = [v5 simulatedNumberOfLocations];
 
-  if (v6 < 1)
+  if (simulatedNumberOfLocations < 1)
   {
-    v7 = v4;
+    v7 = locationsCopy;
   }
 
   else
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8 = +[PXGridSettings sharedInstance];
-    v9 = [v8 simulatedNumberOfLocations];
+    simulatedNumberOfLocations2 = [v8 simulatedNumberOfLocations];
 
-    if (v9 >= 1)
+    if (simulatedNumberOfLocations2 >= 1)
     {
       v10 = 1;
       do
@@ -1199,19 +1199,19 @@ void __57__PXPhotosSectionHeaderView_setSectionStartDate_endDate___block_invoke(
         [(NSArray *)v7 addObject:v11];
 
         ++v10;
-        --v9;
+        --simulatedNumberOfLocations2;
       }
 
-      while (v9);
+      while (simulatedNumberOfLocations2);
     }
   }
 
   v12 = +[PXGridSettings sharedInstance];
-  v13 = [v12 simulateLongTitles];
+  simulateLongTitles = [v12 simulateLongTitles];
 
-  if (v13)
+  if (simulateLongTitles)
   {
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -1235,7 +1235,7 @@ void __57__PXPhotosSectionHeaderView_setSectionStartDate_endDate___block_invoke(
           v21 = 10;
           do
           {
-            [(NSArray *)v14 addObject:v20];
+            [(NSArray *)array addObject:v20];
             --v21;
           }
 
@@ -1251,20 +1251,20 @@ void __57__PXPhotosSectionHeaderView_setSectionStartDate_endDate___block_invoke(
 
   else
   {
-    v14 = v7;
+    array = v7;
   }
 
-  if (v14 != self->_sectionLocations)
+  if (array != self->_sectionLocations)
   {
-    objc_storeStrong(&self->_sectionLocations, v14);
+    objc_storeStrong(&self->_sectionLocations, array);
   }
 
   [(PXPhotosSectionHeaderView *)self _updateLocationsLabelVisibility];
 }
 
-- (void)setUseYearOnlyForDefaultTitle:(BOOL)a3
+- (void)setUseYearOnlyForDefaultTitle:(BOOL)title
 {
-  if (self->_useYearOnlyForDefaultTitle != a3)
+  if (self->_useYearOnlyForDefaultTitle != title)
   {
     v7 = v3;
     v8 = v4;
@@ -1273,20 +1273,20 @@ void __57__PXPhotosSectionHeaderView_setSectionStartDate_endDate___block_invoke(
     v5[2] = __59__PXPhotosSectionHeaderView_setUseYearOnlyForDefaultTitle___block_invoke;
     v5[3] = &unk_1E7749428;
     v5[4] = self;
-    v6 = a3;
+    titleCopy = title;
     [(PXPhotosSectionHeaderView *)self performBatchUpdateOfDateDependentPropertiesWithBlock:v5];
   }
 }
 
-- (void)performBatchUpdateOfDateDependentPropertiesWithBlock:(id)a3
+- (void)performBatchUpdateOfDateDependentPropertiesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   performingBatchDateDependentUpdate = self->_performingBatchDateDependentUpdate;
-  v6 = v4;
+  v6 = blockCopy;
   if (performingBatchDateDependentUpdate)
   {
     self->_performingBatchDateDependentUpdate = 1;
-    (*(v4 + 2))();
+    (*(blockCopy + 2))();
     self->_performingBatchDateDependentUpdate = performingBatchDateDependentUpdate;
   }
 
@@ -1294,7 +1294,7 @@ void __57__PXPhotosSectionHeaderView_setSectionStartDate_endDate___block_invoke(
   {
     self->_dateDependentPropertiesDidChange = 0;
     self->_performingBatchDateDependentUpdate = 1;
-    (*(v4 + 2))();
+    (*(blockCopy + 2))();
     self->_performingBatchDateDependentUpdate = performingBatchDateDependentUpdate;
     if (self->_dateDependentPropertiesDidChange)
     {
@@ -1318,11 +1318,11 @@ void __57__PXPhotosSectionHeaderView_setSectionStartDate_endDate___block_invoke(
       [(PXPhotosSectionHeaderView *)self _dateRangeLongFormatter];
     }
     v4 = ;
-    v5 = [(PXPhotosSectionHeaderView *)self sectionStartDate];
-    if (v5)
+    sectionStartDate = [(PXPhotosSectionHeaderView *)self sectionStartDate];
+    if (sectionStartDate)
     {
-      v6 = [(PXPhotosSectionHeaderView *)self sectionEndDate];
-      v7 = [v4 stringFromDate:v5 toDate:v6];
+      sectionEndDate = [(PXPhotosSectionHeaderView *)self sectionEndDate];
+      v7 = [v4 stringFromDate:sectionStartDate toDate:sectionEndDate];
 
       v3 = v7;
     }
@@ -1331,21 +1331,21 @@ void __57__PXPhotosSectionHeaderView_setSectionStartDate_endDate___block_invoke(
   return v3;
 }
 
-- (void)setSectionTitle:(id)a3
+- (void)setSectionTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = +[PXGridSettings sharedInstance];
-  v6 = [v5 simulateLongTitles];
+  simulateLongTitles = [v5 simulateLongTitles];
 
-  if (v6)
+  if (simulateLongTitles)
   {
-    v7 = [v4 px_stringByRepeating:10];
+    v7 = [titleCopy px_stringByRepeating:10];
 
-    v4 = v7;
+    titleCopy = v7;
   }
 
   sectionTitle = self->_sectionTitle;
-  v9 = v4;
+  v9 = titleCopy;
   v10 = v9;
   if (v9 == sectionTitle)
   {
@@ -1377,12 +1377,12 @@ void __45__PXPhotosSectionHeaderView_setSectionTitle___block_invoke(uint64_t a1)
   *(v3 + 648) = v2;
 }
 
-- (void)setWantsBackground:(BOOL)a3 animated:(BOOL)a4
+- (void)setWantsBackground:(BOOL)background animated:(BOOL)animated
 {
-  if (self->_wantsBackground != a3)
+  if (self->_wantsBackground != background)
   {
-    self->_wantsBackground = a3;
-    [(PXPhotosSectionHeaderView *)self _updateBackgroundAnimated:a4];
+    self->_wantsBackground = background;
+    [(PXPhotosSectionHeaderView *)self _updateBackgroundAnimated:animated];
     [(PXPhotosSectionHeaderView *)self _updateTitleLabel];
     [(PXPhotosSectionHeaderView *)self _updateLocationsLabelVisibility];
     [(PXPhotosSectionHeaderView *)self _updateDateLabel];
@@ -1392,53 +1392,53 @@ void __45__PXPhotosSectionHeaderView_setSectionTitle___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setButtonSpec:(id)a3
+- (void)setButtonSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_buttonSpec != v5)
+  specCopy = spec;
+  if (self->_buttonSpec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_buttonSpec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->_buttonSpec, spec);
     [(PXPhotosSectionHeaderView *)self _updateActionButton];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 
-- (void)setBackgroundImageAlpha:(double)a3
+- (void)setBackgroundImageAlpha:(double)alpha
 {
-  if (self->_backgroundImageAlpha != a3)
+  if (self->_backgroundImageAlpha != alpha)
   {
-    self->_backgroundImageAlpha = a3;
+    self->_backgroundImageAlpha = alpha;
     [(PXPhotosSectionHeaderView *)self _updateBackgroundAnimated:0];
   }
 }
 
-- (void)setBackgroundImageOverhang:(double)a3
+- (void)setBackgroundImageOverhang:(double)overhang
 {
-  if (self->_backgroundImageOverhang != a3)
+  if (self->_backgroundImageOverhang != overhang)
   {
-    self->_backgroundImageOverhang = a3;
+    self->_backgroundImageOverhang = overhang;
     [(PXPhotosSectionHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
-  v5 = a3;
-  if (self->_backgroundImage != v5)
+  imageCopy = image;
+  if (self->_backgroundImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backgroundImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_backgroundImage, image);
     [(PXPhotosSectionHeaderView *)self _updateBackgroundAnimated:0];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setBackgroundStyle:(unint64_t)a3
+- (void)setBackgroundStyle:(unint64_t)style
 {
-  if (self->_backgroundStyle != a3)
+  if (self->_backgroundStyle != style)
   {
-    self->_backgroundStyle = a3;
+    self->_backgroundStyle = style;
     [(PXPhotosSectionHeaderView *)self _updateBackgroundAnimated:0];
     [(PXPhotosSectionHeaderView *)self _updateTitleLabel];
     [(PXPhotosSectionHeaderView *)self _updateLocationsLabelVisibility];
@@ -1449,11 +1449,11 @@ void __45__PXPhotosSectionHeaderView_setSectionTitle___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(UILabel *)self->_titleLabel removeFromSuperview];
     titleLabel = self->_titleLabel;
     self->_titleLabel = 0;
@@ -1472,11 +1472,11 @@ void __45__PXPhotosSectionHeaderView_setSectionTitle___block_invoke(uint64_t a1)
   }
 }
 
-- (PXPhotosSectionHeaderView)initWithFrame:(CGRect)a3
+- (PXPhotosSectionHeaderView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PXPhotosSectionHeaderView;
-  v3 = [(PXPhotosSectionHeaderView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXPhotosSectionHeaderView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -1484,15 +1484,15 @@ void __45__PXPhotosSectionHeaderView_setSectionTitle___block_invoke(uint64_t a1)
     v3->_allowsPhotosDetailsInteraction = 1;
     v3->_backgroundStyle = 0;
     [(PXPhotosSectionHeaderView *)v3 _updateBackgroundAnimated:0];
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(PXPhotosSectionHeaderView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PXPhotosSectionHeaderView *)v4 setBackgroundColor:clearColor];
 
     [(PXPhotosSectionHeaderView *)v4 setOpaque:0];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v4 selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
 
-    v7 = [(PXPhotosSectionHeaderView *)v4 layer];
-    [v7 setAllowsGroupOpacity:0];
+    layer = [(PXPhotosSectionHeaderView *)v4 layer];
+    [layer setAllowsGroupOpacity:0];
   }
 
   return v4;
@@ -1500,71 +1500,71 @@ void __45__PXPhotosSectionHeaderView_setSectionTitle___block_invoke(uint64_t a1)
 
 + (BOOL)_hasAccessibilityLargeText
 {
-  v3 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  LOBYTE(a1) = [a1 shouldUseAccessibilityLargeTextLayoutWithTraitCollecton:v3];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  LOBYTE(self) = [self shouldUseAccessibilityLargeTextLayoutWithTraitCollecton:currentTraitCollection];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)shouldUseAccessibilityLargeTextLayoutWithTraitCollecton:(id)a3
++ (BOOL)shouldUseAccessibilityLargeTextLayoutWithTraitCollecton:(id)collecton
 {
   v4 = *MEMORY[0x1E69DDA98];
-  v5 = a3;
-  v6 = [v4 preferredContentSizeCategory];
-  v7 = [a1 shouldUsePhoneLayoutWithTraitCollection:v5];
+  collectonCopy = collecton;
+  preferredContentSizeCategory = [v4 preferredContentSizeCategory];
+  v7 = [self shouldUsePhoneLayoutWithTraitCollection:collectonCopy];
 
   if (v7)
   {
-    LOBYTE(v7) = UIContentSizeCategoryIsAccessibilityCategory(v6);
+    LOBYTE(v7) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   }
 
   return v7;
 }
 
-+ (BOOL)shouldUsePhoneLayoutWithTraitCollection:(id)a3
++ (BOOL)shouldUsePhoneLayoutWithTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 horizontalSizeClass] == 1 || objc_msgSend(v3, "verticalSizeClass") == 1;
+  collectionCopy = collection;
+  v4 = [collectionCopy horizontalSizeClass] == 1 || objc_msgSend(collectionCopy, "verticalSizeClass") == 1;
 
   return v4;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v5 = a3;
-  if (v5)
+  dataCopy = data;
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
-      v19 = [v5 px_descriptionForAssertionMessage];
-      [v16 handleFailureInMethod:a2 object:self file:@"PXAlbumSectionHeaderLayoutProvider+iOS.m" lineNumber:435 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"userData", v18, v19}];
+      px_descriptionForAssertionMessage = [dataCopy px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXAlbumSectionHeaderLayoutProvider+iOS.m" lineNumber:435 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"userData", v18, px_descriptionForAssertionMessage}];
     }
   }
 
   v6 = objc_getAssociatedObject(self, UserDataAssociationKey_236924);
-  if (v6 != v5)
+  if (v6 != dataCopy)
   {
-    objc_setAssociatedObject(self, UserDataAssociationKey_236924, v5, 3);
-    v7 = [v5 weakLayout];
-    [(PXPhotosSectionHeaderView *)self setDelegate:v7];
-    -[PXPhotosSectionHeaderView setStyle:](self, "setStyle:", [v5 headerStyle]);
-    v8 = [off_1E7721810 sharedInstance];
-    -[PXPhotosSectionHeaderView setBackgroundStyle:](self, "setBackgroundStyle:", [v8 useGradientSectionHeaders]);
+    objc_setAssociatedObject(self, UserDataAssociationKey_236924, dataCopy, 3);
+    weakLayout = [dataCopy weakLayout];
+    [(PXPhotosSectionHeaderView *)self setDelegate:weakLayout];
+    -[PXPhotosSectionHeaderView setStyle:](self, "setStyle:", [dataCopy headerStyle]);
+    sharedInstance = [off_1E7721810 sharedInstance];
+    -[PXPhotosSectionHeaderView setBackgroundStyle:](self, "setBackgroundStyle:", [sharedInstance useGradientSectionHeaders]);
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __58__PXPhotosSectionHeaderView_PXGReusableView__setUserData___block_invoke;
     v20[3] = &unk_1E774C620;
     v20[4] = self;
-    v9 = v5;
+    v9 = dataCopy;
     v21 = v9;
     [(PXPhotosSectionHeaderView *)self performBatchUpdateOfDateDependentPropertiesWithBlock:v20];
-    v10 = [v9 locationNames];
-    [(PXPhotosSectionHeaderView *)self setSectionLocations:v10];
+    locationNames = [v9 locationNames];
+    [(PXPhotosSectionHeaderView *)self setSectionLocations:locationNames];
 
     [(PXPhotosSectionHeaderView *)self setContentInsets:0.0, 20.0, 0.0, 20.0];
     [(PXPhotosSectionHeaderView *)self setHighlightInsets:-7.5, 0.0, 2.0, 0.0];
@@ -1582,21 +1582,21 @@ void __45__PXPhotosSectionHeaderView_setSectionTitle___block_invoke(uint64_t a1)
     [(PXPhotosSectionHeaderView *)self setShowsActionButton:v12 != 0];
     [(PXPhotosSectionHeaderView *)self setActionButtonTitle:v12];
     -[PXPhotosSectionHeaderView setAllowsPhotosDetailsInteraction:](self, "setAllowsPhotosDetailsInteraction:", [v9 allowsPhotosDetailsInteraction]);
-    v13 = [v9 backdropViewGroupName];
-    [(PXPhotosSectionHeaderView *)self setBackdropViewGroupName:v13];
+    backdropViewGroupName = [v9 backdropViewGroupName];
+    [(PXPhotosSectionHeaderView *)self setBackdropViewGroupName:backdropViewGroupName];
 
-    v14 = [v9 gradientImage];
-    [(PXPhotosSectionHeaderView *)self setBackgroundImage:v14];
+    gradientImage = [v9 gradientImage];
+    [(PXPhotosSectionHeaderView *)self setBackgroundImage:gradientImage];
 
     [v9 gradientAlpha];
     [(PXPhotosSectionHeaderView *)self setBackgroundImageAlpha:?];
     [v9 gradientOverhang];
     [(PXPhotosSectionHeaderView *)self setBackgroundImageOverhang:?];
-    v15 = [v9 buttonSpec];
-    [(PXPhotosSectionHeaderView *)self setButtonSpec:v15];
+    buttonSpec = [v9 buttonSpec];
+    [(PXPhotosSectionHeaderView *)self setButtonSpec:buttonSpec];
 
     -[PXPhotosSectionHeaderView setBackgroundStyle:](self, "setBackgroundStyle:", [v9 backgroundStyle]);
-    -[PXPhotosSectionHeaderView setWantsBackground:animated:](self, "setWantsBackground:animated:", [v7 wantsBackground], objc_msgSend(v7, "scrollSpeedRegime") < 2);
+    -[PXPhotosSectionHeaderView setWantsBackground:animated:](self, "setWantsBackground:animated:", [weakLayout wantsBackground], objc_msgSend(weakLayout, "scrollSpeedRegime") < 2);
   }
 }
 
@@ -1624,12 +1624,12 @@ void __58__PXPhotosSectionHeaderView_PXGReusableView__setUserData___block_invoke
   return result;
 }
 
-- (void)setClippingRect:(CGRect)a3
+- (void)setClippingRect:(CGRect)rect
 {
-  if (!CGRectEqualToRect(a3, *MEMORY[0x1E695F040]))
+  if (!CGRectEqualToRect(rect, *MEMORY[0x1E695F040]))
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXAlbumSectionHeaderLayoutProvider+iOS.m" lineNumber:427 description:@"Clipping isn't supported"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAlbumSectionHeaderLayoutProvider+iOS.m" lineNumber:427 description:@"Clipping isn't supported"];
   }
 }
 

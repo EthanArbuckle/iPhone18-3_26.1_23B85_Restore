@@ -1,50 +1,50 @@
 @interface PCSUserRegistry
-- (BOOL)checkRegistry:(id)a3;
-- (BOOL)ensureUserRegistryDbLoaded:(id *)a3;
-- (BOOL)errorIsSAThrottle:(id)a3;
-- (BOOL)errorShouldCauseReset:(id)a3;
-- (BOOL)saveEscrowChange:(id)a3;
+- (BOOL)checkRegistry:(id)registry;
+- (BOOL)ensureUserRegistryDbLoaded:(id *)loaded;
+- (BOOL)errorIsSAThrottle:(id)throttle;
+- (BOOL)errorShouldCauseReset:(id)reset;
+- (BOOL)saveEscrowChange:(id)change;
 - (BOOL)setupCloudKitSyncing;
-- (BOOL)updateEscrowData:(id)a3 escrowIdentity:(_PCSIdentityData *)a4 identity:(_PCSIdentityData *)a5;
-- (PCSUserRegistry)initWithBackup:(id)a3;
+- (BOOL)updateEscrowData:(id)data escrowIdentity:(_PCSIdentityData *)identity identity:(_PCSIdentityData *)a5;
+- (PCSUserRegistry)initWithBackup:(id)backup;
 - (_PCSIdentitySetData)identityCopySet;
 - (id)allMobileBackupKeys;
 - (id)allMobileBackupPublicKeys;
-- (id)ckRecordListToRecordIDs:(id)a3;
-- (id)createPendingSyncOperation:(id)a3;
-- (id)createZone:(id)a3 withName:(id)a4;
+- (id)ckRecordListToRecordIDs:(id)ds;
+- (id)createPendingSyncOperation:(id)operation;
+- (id)createZone:(id)zone withName:(id)name;
 - (id)defaultCKConfiguration;
 - (id)deleteMobileBackupZone;
-- (id)extractMobilebackupKeyEscrow:(id)a3;
-- (id)fetchAllChanges:(id)a3;
-- (id)fetchMobileBackupRecordIDsWithError:(id *)a3;
-- (id)getServerChangeToken:(id)a3;
-- (id)keyRecord:(_PCSIdentityData *)a3 withName:(id)a4 zone:(id)a5;
-- (id)keyRecordIdentity:(_PCSIdentityData *)a3 device:(id)a4 version:(id)a5;
+- (id)extractMobilebackupKeyEscrow:(id)escrow;
+- (id)fetchAllChanges:(id)changes;
+- (id)fetchMobileBackupRecordIDsWithError:(id *)error;
+- (id)getServerChangeToken:(id)token;
+- (id)keyRecord:(_PCSIdentityData *)record withName:(id)name zone:(id)zone;
+- (id)keyRecordIdentity:(_PCSIdentityData *)identity device:(id)device version:(id)version;
 - (id)loadMobileBackupKeysFromDB;
 - (id)privateDatabase;
-- (id)pushMobileBackupRecordsToCloudKit:(id)a3 removeObjects:(id)a4;
-- (id)queryEscrowID:(id)a3;
-- (id)queryEscrowName:(id)a3;
-- (id)queryMobileBackupKeysFromCloudKit:(id *)a3;
+- (id)pushMobileBackupRecordsToCloudKit:(id)kit removeObjects:(id)objects;
+- (id)queryEscrowID:(id)d;
+- (id)queryEscrowName:(id)name;
+- (id)queryMobileBackupKeysFromCloudKit:(id *)kit;
 - (id)scanPCSIdentitiesForNewMobileBackupRecords;
 - (id)startBackupOfNewMobileBackupIdentities;
 - (id)syncUserRegistry;
-- (id)userDBBackupRecordIDsWithError:(id *)a3;
-- (void)_onqueueDeleteServerChangeToken:(id)a3;
+- (id)userDBBackupRecordIDsWithError:(id *)error;
+- (void)_onqueueDeleteServerChangeToken:(id)token;
 - (void)_onqueueSaveUserRegistryStats;
-- (void)addDatabaseOperation:(id)a3;
+- (void)addDatabaseOperation:(id)operation;
 - (void)cacheUserRegistryStats;
-- (void)checkAccountStatus:(id)a3;
-- (void)checkErrorForRetryPause:(id)a3;
+- (void)checkAccountStatus:(id)status;
+- (void)checkErrorForRetryPause:(id)pause;
 - (void)clearCloudKitCache;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
-- (void)deleteEscrowID:(id)a3;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
+- (void)deleteEscrowID:(id)d;
 - (void)flushStats;
 - (void)registerCloudKitNotifications;
-- (void)resyncDatabase:(id)a3;
-- (void)saveRecord:(id)a3;
-- (void)saveServerChangeToken:(id)a3 forKey:(id)a4;
+- (void)resyncDatabase:(id)database;
+- (void)saveRecord:(id)record;
+- (void)saveServerChangeToken:(id)token forKey:(id)key;
 - (void)setupSubscriptions;
 - (void)statFetch;
 - (void)statModify;
@@ -52,9 +52,9 @@
 
 @implementation PCSUserRegistry
 
-- (PCSUserRegistry)initWithBackup:(id)a3
+- (PCSUserRegistry)initWithBackup:(id)backup
 {
-  v5 = a3;
+  backupCopy = backup;
   v39.receiver = self;
   v39.super_class = PCSUserRegistry;
   v6 = [(PCSUserRegistry *)&v39 init];
@@ -92,7 +92,7 @@
     queue = v6->_queue;
     v6->_queue = v21;
 
-    objc_storeStrong(&v6->_mobileBackup, a3);
+    objc_storeStrong(&v6->_mobileBackup, backup);
     v23 = [[PCSDelayedAction alloc] initWithLabel:@"resyncRegistryAction" delay:300 operationQueue:v6->_mainOperationQueue];
     resyncRegistryAction = v6->_resyncRegistryAction;
     v6->_resyncRegistryAction = v23;
@@ -124,12 +124,12 @@
     v30 = v33;
     if ((v29 & 1) == 0)
     {
-      v31 = [(PCSUserRegistry *)v6 oslog];
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+      oslog = [(PCSUserRegistry *)v6 oslog];
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v41 = v30;
-        _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Failed to initalize UserRegistryDB: %@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Failed to initalize UserRegistryDB: %@", buf, 0xCu);
       }
     }
 
@@ -142,41 +142,41 @@
   return v6;
 }
 
-- (BOOL)ensureUserRegistryDbLoaded:(id *)a3
+- (BOOL)ensureUserRegistryDbLoaded:(id *)loaded
 {
-  v5 = [(PCSUserRegistry *)self userdb];
+  userdb = [(PCSUserRegistry *)self userdb];
 
-  if (v5)
+  if (userdb)
   {
     return 1;
   }
 
   v6 = [UserRegistryDB alloc];
-  v7 = [(PCSAccountsModel *)self->_accounts dsid];
-  v8 = [v6 initWithDSID:v7];
+  dsid = [(PCSAccountsModel *)self->_accounts dsid];
+  v8 = [v6 initWithDSID:dsid];
   [(PCSUserRegistry *)self setUserdb:v8];
 
-  v9 = [(PCSUserRegistry *)self userdb];
+  userdb2 = [(PCSUserRegistry *)self userdb];
 
-  if (v9)
+  if (userdb2)
   {
     return 1;
   }
 
-  v11 = [(PCSUserRegistry *)self oslog];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oslog = [(PCSUserRegistry *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *v14 = 0;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Failed to initalize UserRegistryDB", v14, 2u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Failed to initalize UserRegistryDB", v14, 2u);
   }
 
-  if (a3)
+  if (loaded)
   {
     v12 = kPCSErrorDomain;
     v15 = NSLocalizedDescriptionKey;
     v16 = @"Failed to initalize UserRegistryDB";
     v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-    *a3 = [NSError errorWithDomain:v12 code:138 userInfo:v13];
+    *loaded = [NSError errorWithDomain:v12 code:138 userInfo:v13];
   }
 
   return 0;
@@ -184,15 +184,15 @@
 
 - (void)flushStats
 {
-  v3 = [(PCSUserRegistry *)self stats];
+  stats = [(PCSUserRegistry *)self stats];
 
-  if (v3)
+  if (stats)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    if (![(PCSUserRegistry *)v4 stats_dirty])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (![(PCSUserRegistry *)selfCopy stats_dirty])
     {
-      [(PCSUserRegistry *)v4 setStats_dirty:1];
+      [(PCSUserRegistry *)selfCopy setStats_dirty:1];
       v8[0] = 0;
       v8[1] = v8;
       v8[2] = 0x3032000000;
@@ -200,19 +200,19 @@
       v8[4] = sub_100004E60;
       v9 = os_transaction_create();
       v5 = dispatch_time(0, 10000000000);
-      v6 = [(PCSUserRegistry *)v4 queue];
+      queue = [(PCSUserRegistry *)selfCopy queue];
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
       v7[2] = sub_100004E68;
       v7[3] = &unk_1000189C0;
-      v7[4] = v4;
+      v7[4] = selfCopy;
       v7[5] = v8;
-      dispatch_after(v5, v6, v7);
+      dispatch_after(v5, queue, v7);
 
       _Block_object_dispose(v8, 8);
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -228,15 +228,15 @@
   return v3;
 }
 
-- (void)checkAccountStatus:(id)a3
+- (void)checkAccountStatus:(id)status
 {
-  v4 = [(PCSUserRegistry *)self container];
+  container = [(PCSUserRegistry *)self container];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100004FE8;
   v5[3] = &unk_100018A28;
   v5[4] = self;
-  [v4 accountInfoWithCompletionHandler:v5];
+  [container accountInfoWithCompletionHandler:v5];
 }
 
 - (BOOL)setupCloudKitSyncing
@@ -246,19 +246,19 @@
   v4 = v7;
   if (v3)
   {
-    v5 = +[NSNotificationCenter defaultCenter];
-    [v5 addObserver:self selector:"checkAccountStatus:" name:NSUbiquityIdentityDidChangeNotification object:0];
+    oslog = +[NSNotificationCenter defaultCenter];
+    [oslog addObserver:self selector:"checkAccountStatus:" name:NSUbiquityIdentityDidChangeNotification object:0];
     [(PCSUserRegistry *)self checkAccountStatus:0];
   }
 
   else
   {
-    v5 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    oslog = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v9 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setupCloudKitSyncing: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "setupCloudKitSyncing: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
     }
   }
 
@@ -279,8 +279,8 @@
     dispatch_once(&qword_10001D770, block);
   }
 
-  v3 = [(PCSUserRegistry *)self subscribeAction];
-  [v3 trigger];
+  subscribeAction = [(PCSUserRegistry *)self subscribeAction];
+  [subscribeAction trigger];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -293,10 +293,10 @@
   v4 = v28;
   if (v3)
   {
-    v5 = [(PCSUserRegistry *)self accounts];
-    v6 = [v5 dsid];
+    accounts = [(PCSUserRegistry *)self accounts];
+    dsid = [accounts dsid];
     v27 = v4;
-    v7 = [PCSAccountsModel accountEligibleForMBRestoreForDSID:v6 error:&v27];
+    v7 = [PCSAccountsModel accountEligibleForMBRestoreForDSID:dsid error:&v27];
     v8 = v27;
 
     if (v7)
@@ -308,22 +308,22 @@
       v32 = sub_100004E50;
       v33 = sub_100004E60;
       v34 = 0;
-      v9 = [(PCSUserRegistry *)self queue];
+      queue = [(PCSUserRegistry *)self queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100005A94;
       block[3] = &unk_100018AA0;
       block[4] = self;
       block[5] = &v30;
-      dispatch_sync(v9, block);
+      dispatch_sync(queue, block);
 
       if (!*(*(&v30 + 1) + 40))
       {
-        v10 = [(PCSUserRegistry *)self oslog];
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+        oslog = [(PCSUserRegistry *)self oslog];
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "attempting to subscribe to CK zone changes", buf, 2u);
+          _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "attempting to subscribe to CK zone changes", buf, 2u);
         }
 
         v11 = [[CKDatabaseSubscription alloc] initWithSubscriptionID:@"PCSUserRegistrySubscription"];
@@ -334,19 +334,19 @@
         v14 = [NSArray arrayWithObjects:&v29 count:1];
         v15 = [v13 initWithSubscriptionsToSave:v14 subscriptionIDsToDelete:0];
 
-        v16 = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
+        cloudKitRateLimitedOp = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
 
-        if (v16)
+        if (cloudKitRateLimitedOp)
         {
-          v17 = [(PCSUserRegistry *)self oslog];
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+          oslog2 = [(PCSUserRegistry *)self oslog];
+          if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "setupSubscriptions: rate-limited by CloudKit", buf, 2u);
+            _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "setupSubscriptions: rate-limited by CloudKit", buf, 2u);
           }
 
-          v18 = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
-          [v15 addDependency:v18];
+          cloudKitRateLimitedOp2 = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
+          [v15 addDependency:cloudKitRateLimitedOp2];
         }
 
         v22[0] = _NSConcreteStackBlock;
@@ -355,8 +355,8 @@
         v22[3] = &unk_100018AC8;
         objc_copyWeak(&v23, &location);
         [v15 setModifySubscriptionsCompletionBlock:v22];
-        v19 = [(PCSUserRegistry *)self defaultCKConfiguration];
-        [v15 setConfiguration:v19];
+        defaultCKConfiguration = [(PCSUserRegistry *)self defaultCKConfiguration];
+        [v15 setConfiguration:defaultCKConfiguration];
 
         [(PCSUserRegistry *)self addDatabaseOperation:v15];
         objc_destroyWeak(&v23);
@@ -369,12 +369,12 @@
 
     else
     {
-      v21 = [(PCSUserRegistry *)self oslog];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      oslog3 = [(PCSUserRegistry *)self oslog];
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(v30) = 138412290;
         *(&v30 + 4) = v8;
-        _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "setupSubscriptions: Account ineligible for MB restore: %@", &v30, 0xCu);
+        _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "setupSubscriptions: Account ineligible for MB restore: %@", &v30, 0xCu);
       }
     }
 
@@ -383,86 +383,86 @@
 
   else
   {
-    v20 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    oslog4 = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(v30) = 138412290;
       *(&v30 + 4) = v4;
-      _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "setupSubscriptions: Failed to initalize UserRegistryDB: %@", &v30, 0xCu);
+      _os_log_impl(&_mh_execute_header, oslog4, OS_LOG_TYPE_DEFAULT, "setupSubscriptions: Failed to initalize UserRegistryDB: %@", &v30, 0xCu);
     }
   }
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v7 = a5;
-  v8 = [(PCSUserRegistry *)self oslog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  topicCopy = topic;
+  oslog = [(PCSUserRegistry *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v7;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "didReceiveToken: %@, triggering syncing", &v11, 0xCu);
+    v12 = topicCopy;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "didReceiveToken: %@, triggering syncing", &v11, 0xCu);
   }
 
-  v9 = [(PCSUserRegistry *)self stats];
-  [v9 setPushNotifications:{objc_msgSend(v9, "pushNotifications") + 1}];
+  stats = [(PCSUserRegistry *)self stats];
+  [stats setPushNotifications:{objc_msgSend(stats, "pushNotifications") + 1}];
 
   [(PCSUserRegistry *)self flushStats];
-  v10 = [(PCSUserRegistry *)self syncUserRegistry];
+  syncUserRegistry = [(PCSUserRegistry *)self syncUserRegistry];
 }
 
-- (void)resyncDatabase:(id)a3
+- (void)resyncDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(PCSUserRegistry *)self queue];
+  databaseCopy = database;
+  queue = [(PCSUserRegistry *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100006000;
   block[3] = &unk_100018970;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   [(PCSUserRegistry *)self clearCloudKitCache];
-  v6 = [(PCSUserRegistry *)self stats];
-  [v6 setZoneReset:{objc_msgSend(v6, "zoneReset") + 1}];
+  stats = [(PCSUserRegistry *)self stats];
+  [stats setZoneReset:{objc_msgSend(stats, "zoneReset") + 1}];
 
   [(PCSUserRegistry *)self flushStats];
-  v7 = [(PCSUserRegistry *)self queue];
+  queue2 = [(PCSUserRegistry *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100006078;
   v9[3] = &unk_100018AF0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  dispatch_sync(v7, v9);
+  v10 = databaseCopy;
+  v8 = databaseCopy;
+  dispatch_sync(queue2, v9);
 }
 
-- (id)fetchAllChanges:(id)a3
+- (id)fetchAllChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v31 = 0;
   v5 = [(PCSUserRegistry *)self ensureUserRegistryDbLoaded:&v31];
   v21 = v31;
   if (v5)
   {
     v6 = objc_alloc_init(PCSRegistryOperation);
-    v7 = objc_alloc_init(CKFetchRecordZoneChangesConfiguration);
+    mainOperationQueue = objc_alloc_init(CKFetchRecordZoneChangesConfiguration);
     v8 = [(PCSUserRegistry *)self getServerChangeToken:@"MBserverChangeToken"];
-    [v7 setPreviousServerChangeToken:v8];
+    [mainOperationQueue setPreviousServerChangeToken:v8];
 
-    v9 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oslog = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v7 previousServerChangeToken];
+      previousServerChangeToken = [mainOperationQueue previousServerChangeToken];
       *buf = 138412290;
-      v36 = v10;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Fetching changes after change token %@", buf, 0xCu);
+      v36 = previousServerChangeToken;
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Fetching changes after change token %@", buf, 0xCu);
     }
 
     v11 = [[CKRecordZoneID alloc] initWithZoneName:@"PCSUserRegistryMobileBackup" ownerName:CKCurrentUserDefaultName];
     v33 = v11;
-    v34 = v7;
+    v34 = mainOperationQueue;
     v20 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
     v12 = [CKFetchRecordZoneChangesOperation alloc];
     v32 = v11;
@@ -470,12 +470,12 @@
     v14 = [v12 initWithRecordZoneIDs:v13 configurationsByRecordZoneID:v20];
 
     [v14 setFetchAllChanges:1];
-    v15 = [(PCSUserRegistry *)self defaultCKConfiguration];
-    [v14 setConfiguration:v15];
+    defaultCKConfiguration = [(PCSUserRegistry *)self defaultCKConfiguration];
+    [v14 setConfiguration:defaultCKConfiguration];
 
-    if (v4)
+    if (changesCopy)
     {
-      [v14 addDependency:v4];
+      [v14 addDependency:changesCopy];
     }
 
     objc_initWeak(buf, self);
@@ -505,8 +505,8 @@
     v16 = v6;
     v23 = v16;
     [v14 setFetchRecordZoneChangesCompletionBlock:v22];
-    v17 = [(PCSUserRegistry *)self privateDatabase];
-    [v17 addOperation:v14];
+    privateDatabase = [(PCSUserRegistry *)self privateDatabase];
+    [privateDatabase addOperation:v14];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&v26);
@@ -517,23 +517,23 @@
 
   else
   {
-    v18 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oslog2 = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v36 = v21;
-      _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "fetchAllChanges: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "fetchAllChanges: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
     }
 
     v16 = objc_alloc_init(PCSRegistryOperation);
     [(PCSRegistryOperation *)v16 setError:v21];
-    if (v4)
+    if (changesCopy)
     {
-      [(PCSRegistryOperation *)v16 addDependency:v4];
+      [(PCSRegistryOperation *)v16 addDependency:changesCopy];
     }
 
-    v7 = [(PCSUserRegistry *)self mainOperationQueue];
-    [v7 addOperation:v16];
+    mainOperationQueue = [(PCSUserRegistry *)self mainOperationQueue];
+    [mainOperationQueue addOperation:v16];
   }
 
   return v16;
@@ -552,22 +552,22 @@
     v18 = sub_100004E50;
     v19 = sub_100004E60;
     v20 = 0;
-    v5 = [(PCSUserRegistry *)self queue];
+    queue = [(PCSUserRegistry *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100007120;
     block[3] = &unk_1000189C0;
     block[4] = self;
     block[5] = &v16;
-    dispatch_sync(v5, block);
+    dispatch_sync(queue, block);
 
-    v6 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    oslog = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v7 = *(*(&v16 + 1) + 40);
       *buf = 138412290;
       v15 = v7;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Returning pending syncing operation: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Returning pending syncing operation: %@", buf, 0xCu);
     }
 
     v8 = *(*(&v16 + 1) + 40);
@@ -576,26 +576,26 @@
 
   else
   {
-    v9 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oslog2 = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(v16) = 138412290;
       *(&v16 + 4) = v4;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "syncUserRegistry: Failed to initalize UserRegistryDB: %@", &v16, 0xCu);
+      _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "syncUserRegistry: Failed to initalize UserRegistryDB: %@", &v16, 0xCu);
     }
 
     v8 = objc_alloc_init(PCSRegistryOperation);
     [(PCSRegistryOperation *)v8 setError:v4];
-    v10 = [(PCSUserRegistry *)self mainOperationQueue];
-    [v10 addOperation:v8];
+    mainOperationQueue = [(PCSUserRegistry *)self mainOperationQueue];
+    [mainOperationQueue addOperation:v8];
   }
 
   return v8;
 }
 
-- (id)createPendingSyncOperation:(id)a3
+- (id)createPendingSyncOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   v25 = 0;
   v26 = &v25;
@@ -603,7 +603,7 @@
   v28 = sub_100004E50;
   v29 = sub_100004E60;
   v30 = 0;
-  if (!v4)
+  if (!operationCopy)
   {
     v5 = os_transaction_create();
     v6 = v26[5];
@@ -611,9 +611,9 @@
   }
 
   v7 = objc_alloc_init(PCSRegistryOperation);
-  if (v4)
+  if (operationCopy)
   {
-    v8 = v4;
+    v8 = operationCopy;
   }
 
   else
@@ -624,19 +624,19 @@
   v9 = v8;
   v10 = [[PCSRegistryOperationPair alloc] init:v7 finish:v8];
   objc_initWeak(&from, v7);
-  v11 = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
+  cloudKitRateLimitedOp = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
 
-  if (v11)
+  if (cloudKitRateLimitedOp)
   {
-    v12 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oslog = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "rate-limited by CloudKit", buf, 2u);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "rate-limited by CloudKit", buf, 2u);
     }
 
-    v13 = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
-    [(PCSRegistryOperation *)v7 addDependency:v13];
+    cloudKitRateLimitedOp2 = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
+    [(PCSRegistryOperation *)v7 addDependency:cloudKitRateLimitedOp2];
   }
 
   v18[0] = _NSConcreteStackBlock;
@@ -647,15 +647,15 @@
   v19 = v14;
   objc_copyWeak(&v21, &from);
   objc_copyWeak(&v22, &location);
-  v23 = v4 == 0;
+  v23 = operationCopy == 0;
   v20 = &v25;
   [(PCSRegistryOperation *)v7 addExecutionBlock:v18];
-  v15 = [(PCSUserRegistry *)self oslog];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  oslog2 = [(PCSUserRegistry *)self oslog];
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
     v33 = v10;
-    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Created new pending syncing operation: %@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "Created new pending syncing operation: %@", buf, 0xCu);
   }
 
   v16 = v10;
@@ -670,22 +670,22 @@
   return v16;
 }
 
-- (void)saveRecord:(id)a3
+- (void)saveRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v18 = 0;
   v5 = [(PCSUserRegistry *)self ensureUserRegistryDbLoaded:&v18];
   v6 = v18;
   if (v5)
   {
     v7 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-    [v7 encodeObject:v4 forKey:@"record"];
-    v8 = [v4 recordType];
-    v9 = [v8 isEqualToString:@"URKey"];
+    [v7 encodeObject:recordCopy forKey:@"record"];
+    recordType = [recordCopy recordType];
+    v9 = [recordType isEqualToString:@"URKey"];
 
     if (v9)
     {
-      v10 = [v4 objectForKeyedSubscript:@"publicKey"];
+      v10 = [recordCopy objectForKeyedSubscript:@"publicKey"];
     }
 
     else
@@ -693,80 +693,80 @@
       v10 = &stru_100019048;
     }
 
-    v12 = [(PCSUserRegistry *)self queue];
+    queue = [(PCSUserRegistry *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100008DD8;
     block[3] = &unk_100018C58;
     block[4] = self;
-    v15 = v4;
+    v15 = recordCopy;
     v16 = v7;
     v17 = v10;
     v13 = v10;
-    v11 = v7;
-    dispatch_sync(v12, block);
+    oslog = v7;
+    dispatch_sync(queue, block);
   }
 
   else
   {
-    v11 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oslog = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v20 = v6;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "saveRecord: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "saveRecord: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)saveServerChangeToken:(id)a3 forKey:(id)a4
+- (void)saveServerChangeToken:(id)token forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  keyCopy = key;
   v16 = 0;
   v8 = [(PCSUserRegistry *)self ensureUserRegistryDbLoaded:&v16];
   v9 = v16;
   if (v8)
   {
     v10 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-    [v10 encodeObject:v6 forKey:v7];
-    v11 = [(PCSUserRegistry *)self queue];
+    [v10 encodeObject:tokenCopy forKey:keyCopy];
+    queue = [(PCSUserRegistry *)self queue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100009024;
     v13[3] = &unk_100018C80;
     v13[4] = self;
-    v14 = v7;
+    v14 = keyCopy;
     v15 = v10;
-    v12 = v10;
-    dispatch_sync(v11, v13);
+    oslog = v10;
+    dispatch_sync(queue, v13);
   }
 
   else
   {
-    v12 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oslog = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v18 = v9;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "saveRecord: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "saveRecord: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)_onqueueDeleteServerChangeToken:(id)a3
+- (void)_onqueueDeleteServerChangeToken:(id)token
 {
-  v4 = a3;
-  v5 = [(PCSUserRegistry *)self queue];
-  dispatch_assert_queue_V2(v5);
+  tokenCopy = token;
+  queue = [(PCSUserRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(PCSUserRegistry *)self userdb];
-  [v6 deleteRecordID:v4];
+  userdb = [(PCSUserRegistry *)self userdb];
+  [userdb deleteRecordID:tokenCopy];
 }
 
-- (id)getServerChangeToken:(id)a3
+- (id)getServerChangeToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v21 = 0;
   v5 = [(PCSUserRegistry *)self ensureUserRegistryDbLoaded:&v21];
   v6 = v21;
@@ -778,21 +778,21 @@
     v24 = sub_100004E50;
     v25 = sub_100004E60;
     v26 = 0;
-    v7 = [(PCSUserRegistry *)self queue];
+    queue = [(PCSUserRegistry *)self queue];
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_10000936C;
     v17 = &unk_100018CA8;
     p_buf = &buf;
-    v18 = self;
-    v8 = v4;
+    selfCopy = self;
+    v8 = tokenCopy;
     v19 = v8;
-    dispatch_sync(v7, &v14);
+    dispatch_sync(queue, &v14);
 
     if (*(*(&buf + 1) + 40))
     {
       v9 = [NSKeyedUnarchiver alloc];
-      v10 = [v9 initForReadingFromData:*(*(&buf + 1) + 40) error:{0, v14, v15, v16, v17, v18}];
+      v10 = [v9 initForReadingFromData:*(*(&buf + 1) + 40) error:{0, v14, v15, v16, v17, selfCopy}];
       v11 = [v10 decodeObjectOfClass:objc_opt_class() forKey:v8];
     }
 
@@ -806,12 +806,12 @@
 
   else
   {
-    v12 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oslog = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v6;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "saveRecord: Failed to initalize UserRegistryDB: %@", &buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "saveRecord: Failed to initalize UserRegistryDB: %@", &buf, 0xCu);
     }
 
     v11 = 0;
@@ -828,14 +828,14 @@
   v11 = sub_100004E50;
   v12 = sub_100004E60;
   v13 = 0;
-  v3 = [(PCSUserRegistry *)self queue];
+  queue = [(PCSUserRegistry *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000955C;
   v7[3] = &unk_100018AA0;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v3, v7);
+  dispatch_sync(queue, v7);
 
   if (v9[5])
   {
@@ -856,69 +856,69 @@
 
 - (void)_onqueueSaveUserRegistryStats
 {
-  v3 = [(PCSUserRegistry *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(PCSUserRegistry *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  v4 = [(PCSUserRegistry *)self stats];
-  [v7 encodeObject:v4 forKey:@"UserRegistryStats"];
+  stats = [(PCSUserRegistry *)self stats];
+  [v7 encodeObject:stats forKey:@"UserRegistryStats"];
 
-  v5 = [(PCSUserRegistry *)self userdb];
-  v6 = [v7 encodedData];
-  [v5 replaceConfigRecord:@"UserRegistryStats" data:v6];
+  userdb = [(PCSUserRegistry *)self userdb];
+  encodedData = [v7 encodedData];
+  [userdb replaceConfigRecord:@"UserRegistryStats" data:encodedData];
 }
 
 - (void)statFetch
 {
-  v3 = [(PCSUserRegistry *)self stats];
-  [v3 setRecordFetch:{objc_msgSend(v3, "recordFetch") + 1}];
+  stats = [(PCSUserRegistry *)self stats];
+  [stats setRecordFetch:{objc_msgSend(stats, "recordFetch") + 1}];
 
   [(PCSUserRegistry *)self flushStats];
 }
 
 - (void)statModify
 {
-  v3 = [(PCSUserRegistry *)self stats];
-  [v3 setRecordModify:{objc_msgSend(v3, "recordModify") + 1}];
+  stats = [(PCSUserRegistry *)self stats];
+  [stats setRecordModify:{objc_msgSend(stats, "recordModify") + 1}];
 
   [(PCSUserRegistry *)self flushStats];
 }
 
 - (void)clearCloudKitCache
 {
-  v3 = [(PCSUserRegistry *)self queue];
+  queue = [(PCSUserRegistry *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000097D0;
   block[3] = &unk_100018970;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 - (id)privateDatabase
 {
-  v2 = [(PCSUserRegistry *)self container];
-  v3 = [v2 privateCloudDatabase];
+  container = [(PCSUserRegistry *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
 
-  return v3;
+  return privateCloudDatabase;
 }
 
-- (void)addDatabaseOperation:(id)a3
+- (void)addDatabaseOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(PCSUserRegistry *)self privateDatabase];
-  [v5 addOperation:v4];
+  operationCopy = operation;
+  privateDatabase = [(PCSUserRegistry *)self privateDatabase];
+  [privateDatabase addOperation:operationCopy];
 }
 
-- (BOOL)errorShouldCauseReset:(id)a3
+- (BOOL)errorShouldCauseReset:(id)reset
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:CKErrorDomain])
+  resetCopy = reset;
+  domain = [resetCopy domain];
+  if ([domain isEqualToString:CKErrorDomain])
   {
-    v5 = [v3 code];
+    code = [resetCopy code];
 
-    if (v5 == 21)
+    if (code == 21)
     {
 LABEL_43:
       v19 = 1;
@@ -930,27 +930,27 @@ LABEL_43:
   {
   }
 
-  v6 = [v3 domain];
-  if (![v6 isEqualToString:CKErrorDomain])
+  domain2 = [resetCopy domain];
+  if (![domain2 isEqualToString:CKErrorDomain])
   {
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  v7 = [v3 code];
+  code2 = [resetCopy code];
 
-  if (v7 == 2)
+  if (code2 == 2)
   {
-    v8 = [v3 userInfo];
-    v6 = [v8 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+    userInfo = [resetCopy userInfo];
+    domain2 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v9 = [v6 allValues];
-    v10 = [v9 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    allValues = [domain2 allValues];
+    v10 = [allValues countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v10)
     {
       v11 = v10;
@@ -962,12 +962,12 @@ LABEL_20:
         {
           if (*v37 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
           v15 = *(*(&v36 + 1) + 8 * i);
-          v16 = [v15 domain];
-          if ([v16 isEqualToString:CKErrorDomain])
+          domain3 = [v15 domain];
+          if ([domain3 isEqualToString:CKErrorDomain])
           {
             v17 = [v15 code] == 21;
 
@@ -979,7 +979,7 @@ LABEL_20:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v36 objects:v41 count:16];
+        v11 = [allValues countByEnumeratingWithState:&v36 objects:v41 count:16];
       }
 
       while (v11);
@@ -996,18 +996,18 @@ LABEL_20:
   }
 
 LABEL_21:
-  v18 = [v3 domain];
-  if ([v18 isEqualToString:CKErrorDomain])
+  domain4 = [resetCopy domain];
+  if ([domain4 isEqualToString:CKErrorDomain])
   {
-    if ([v3 code] == 28)
+    if ([resetCopy code] == 28)
     {
       v19 = 1;
       goto LABEL_47;
     }
 
-    v30 = [v3 code];
+    code3 = [resetCopy code];
 
-    if (v30 == 26)
+    if (code3 == 26)
     {
       goto LABEL_43;
     }
@@ -1017,30 +1017,30 @@ LABEL_21:
   {
   }
 
-  v18 = [v3 domain];
-  if (![v18 isEqualToString:CKErrorDomain])
+  domain4 = [resetCopy domain];
+  if (![domain4 isEqualToString:CKErrorDomain])
   {
     v19 = 0;
     goto LABEL_47;
   }
 
-  v20 = [v3 code];
+  code4 = [resetCopy code];
 
-  if (v20 != 2)
+  if (code4 != 2)
   {
     v19 = 0;
     goto LABEL_48;
   }
 
-  v21 = [v3 userInfo];
-  v18 = [v21 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+  userInfo2 = [resetCopy userInfo];
+  domain4 = [userInfo2 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v22 = [v18 allValues];
-  v23 = [v22 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  allValues2 = [domain4 allValues];
+  v23 = [allValues2 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (!v23)
   {
     v19 = 0;
@@ -1056,12 +1056,12 @@ LABEL_21:
     {
       if (*v33 != v25)
       {
-        objc_enumerationMutation(v22);
+        objc_enumerationMutation(allValues2);
       }
 
       v27 = *(*(&v32 + 1) + 8 * j);
-      v28 = [v27 domain];
-      if (![v28 isEqualToString:CKErrorDomain])
+      domain5 = [v27 domain];
+      if (![domain5 isEqualToString:CKErrorDomain])
       {
 
         continue;
@@ -1073,9 +1073,9 @@ LABEL_21:
 
       else
       {
-        v29 = [v27 code];
+        code5 = [v27 code];
 
-        if (v29 != 26)
+        if (code5 != 26)
         {
           continue;
         }
@@ -1084,7 +1084,7 @@ LABEL_21:
       v19 = 1;
     }
 
-    v24 = [v22 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    v24 = [allValues2 countByEnumeratingWithState:&v32 objects:v40 count:16];
   }
 
   while (v24);
@@ -1096,29 +1096,29 @@ LABEL_48:
   return v19 & 1;
 }
 
-- (void)checkErrorForRetryPause:(id)a3
+- (void)checkErrorForRetryPause:(id)pause
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  pauseCopy = pause;
+  v4 = pauseCopy;
+  if (pauseCopy)
   {
-    v5 = [v3 domain];
-    v6 = [v5 isEqualToString:CKErrorDomain];
+    domain = [pauseCopy domain];
+    v6 = [domain isEqualToString:CKErrorDomain];
 
     if (v6)
     {
-      v7 = [v4 userInfo];
-      v8 = [v7 objectForKeyedSubscript:CKErrorRetryAfterKey];
+      userInfo = [v4 userInfo];
+      v8 = [userInfo objectForKeyedSubscript:CKErrorRetryAfterKey];
 
-      v9 = [v4 userInfo];
-      v33 = [v9 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+      userInfo2 = [v4 userInfo];
+      v33 = [userInfo2 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v10 = [v33 allValues];
-      v11 = [v10 countByEnumeratingWithState:&v40 objects:v46 count:16];
+      allValues = [v33 allValues];
+      v11 = [allValues countByEnumeratingWithState:&v40 objects:v46 count:16];
       if (v11)
       {
         v12 = *v41;
@@ -1129,16 +1129,16 @@ LABEL_48:
           {
             if (*v41 != v12)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(allValues);
             }
 
-            v14 = [*(*(&v40 + 1) + 8 * v13) domain];
-            v15 = [v14 isEqualToString:CKErrorDomain];
+            domain2 = [*(*(&v40 + 1) + 8 * v13) domain];
+            v15 = [domain2 isEqualToString:CKErrorDomain];
 
             if (v15)
             {
-              v16 = [v4 userInfo];
-              v17 = [v16 objectForKeyedSubscript:CKErrorRetryAfterKey];
+              userInfo3 = [v4 userInfo];
+              v17 = [userInfo3 objectForKeyedSubscript:CKErrorRetryAfterKey];
 
               if (!v8 || ([v8 doubleValue], v19 = v18, objc_msgSend(v17, "doubleValue"), v19 < v20))
               {
@@ -1152,7 +1152,7 @@ LABEL_48:
           }
 
           while (v11 != v13);
-          v11 = [v10 countByEnumeratingWithState:&v40 objects:v46 count:16];
+          v11 = [allValues countByEnumeratingWithState:&v40 objects:v46 count:16];
         }
 
         while (v11);
@@ -1162,17 +1162,17 @@ LABEL_48:
       {
         if ([(PCSUserRegistry *)self errorIsSAThrottle:v4])
         {
-          v22 = [(PCSUserRegistry *)self accounts];
-          v23 = [v22 dsid];
-          v24 = [PCSAccountsModel accountEligibleForMBRestoreForDSID:v23 error:0];
+          accounts = [(PCSUserRegistry *)self accounts];
+          dsid = [accounts dsid];
+          v24 = [PCSAccountsModel accountEligibleForMBRestoreForDSID:dsid error:0];
 
           if (v24)
           {
-            v25 = [(PCSUserRegistry *)self oslog];
-            if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+            oslog = [(PCSUserRegistry *)self oslog];
+            if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Received unexpected server throttle response, clamping to 10 seconds", buf, 2u);
+              _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Received unexpected server throttle response, clamping to 10 seconds", buf, 2u);
             }
 
             v8 = &off_10001A0B8;
@@ -1190,15 +1190,15 @@ LABEL_48:
         [v8 doubleValue];
         v28 = v27 + 0.5;
         v29 = dispatch_time(0, ((v27 + 0.5) * 1000000000.0));
-        v30 = [(PCSUserRegistry *)self oslog];
-        if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+        oslog2 = [(PCSUserRegistry *)self oslog];
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
           v45 = v28;
-          _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Delaying %.1f seconds for CK operations", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "Delaying %.1f seconds for CK operations", buf, 0xCu);
         }
 
-        v31 = [(PCSUserRegistry *)self queue];
+        queue = [(PCSUserRegistry *)self queue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_10000A198;
@@ -1206,7 +1206,7 @@ LABEL_48:
         block[4] = self;
         v36 = v26;
         v32 = v26;
-        dispatch_after(v29, v31, block);
+        dispatch_after(v29, queue, block);
 
         objc_destroyWeak(&v38);
         objc_destroyWeak(&location);
@@ -1220,42 +1220,42 @@ LABEL_48:
   }
 }
 
-- (BOOL)errorIsSAThrottle:(id)a3
+- (BOOL)errorIsSAThrottle:(id)throttle
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  throttleCopy = throttle;
+  userInfo = [throttleCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  v6 = [v3 userInfo];
-  v7 = [v6 objectForKeyedSubscript:CKErrorRetryAfterKey];
+  userInfo2 = [throttleCopy userInfo];
+  v7 = [userInfo2 objectForKeyedSubscript:CKErrorRetryAfterKey];
 
-  v8 = [v3 code];
-  v9 = v8 == 6 && [v5 code] == 2009 && objc_msgSend(v7, "intValue") > 43199;
+  code = [throttleCopy code];
+  v9 = code == 6 && [v5 code] == 2009 && objc_msgSend(v7, "intValue") > 43199;
 
   return v9;
 }
 
-- (id)createZone:(id)a3 withName:(id)a4
+- (id)createZone:(id)zone withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  zoneCopy = zone;
+  nameCopy = name;
   objc_initWeak(&location, self);
-  v8 = [[CKRecordZone alloc] initWithZoneName:v7];
+  v8 = [[CKRecordZone alloc] initWithZoneName:nameCopy];
   v9 = objc_alloc_init(PCSRegistryOperation);
   v10 = [CKModifyRecordZonesOperation alloc];
   v29 = v8;
   v11 = [NSArray arrayWithObjects:&v29 count:1];
   v12 = [v10 initWithRecordZonesToSave:v11 recordZoneIDsToDelete:0];
 
-  v13 = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
+  cloudKitRateLimitedOp = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
 
-  if (v13)
+  if (cloudKitRateLimitedOp)
   {
-    v14 = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
-    [v12 addDependency:v14];
+    cloudKitRateLimitedOp2 = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
+    [v12 addDependency:cloudKitRateLimitedOp2];
   }
 
-  [v12 setConfiguration:v6];
+  [v12 setConfiguration:zoneCopy];
   v21 = _NSConcreteStackBlock;
   v22 = 3221225472;
   v23 = sub_10000A520;
@@ -1283,13 +1283,13 @@ LABEL_48:
   objc_initWeak(&location, self);
   v3 = objc_alloc_init(PCSRegistryOperation);
   v4 = [CKModifyRecordZonesOperation alloc];
-  v5 = [(PCSUserRegistry *)self mobileBackupRecordZoneID];
-  v16 = v5;
+  mobileBackupRecordZoneID = [(PCSUserRegistry *)self mobileBackupRecordZoneID];
+  v16 = mobileBackupRecordZoneID;
   v6 = [NSArray arrayWithObjects:&v16 count:1];
   v7 = [v4 initWithRecordZonesToSave:&__NSArray0__struct recordZoneIDsToDelete:v6];
 
-  v8 = [(PCSUserRegistry *)self defaultCKConfiguration];
-  [v7 setConfiguration:v8];
+  defaultCKConfiguration = [(PCSUserRegistry *)self defaultCKConfiguration];
+  [v7 setConfiguration:defaultCKConfiguration];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -1299,8 +1299,8 @@ LABEL_48:
   v9 = v3;
   v13 = v9;
   [v7 setModifyRecordZonesCompletionBlock:v12];
-  v10 = [(PCSUserRegistry *)self privateDatabase];
-  [v10 addOperation:v7];
+  privateDatabase = [(PCSUserRegistry *)self privateDatabase];
+  [privateDatabase addOperation:v7];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1308,52 +1308,52 @@ LABEL_48:
   return v9;
 }
 
-- (BOOL)saveEscrowChange:(id)a3
+- (BOOL)saveEscrowChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 recordID];
-  v6 = [v5 recordName];
+  changeCopy = change;
+  recordID = [changeCopy recordID];
+  recordName = [recordID recordName];
 
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v7 = [(PCSUserRegistry *)self queue];
+  queue = [(PCSUserRegistry *)self queue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000AB34;
   v11[3] = &unk_100018D20;
   v11[4] = self;
-  v12 = v6;
-  v13 = v4;
+  v12 = recordName;
+  v13 = changeCopy;
   v14 = &v15;
-  v8 = v4;
-  v9 = v6;
-  dispatch_sync(v7, v11);
+  v8 = changeCopy;
+  v9 = recordName;
+  dispatch_sync(queue, v11);
 
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(recordName) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
-  return v6;
+  return recordName;
 }
 
-- (void)deleteEscrowID:(id)a3
+- (void)deleteEscrowID:(id)d
 {
-  v4 = a3;
-  v5 = [(PCSUserRegistry *)self queue];
+  dCopy = d;
+  queue = [(PCSUserRegistry *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000ACC0;
   v7[3] = &unk_100018AF0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (id)queryEscrowName:(id)a3
+- (id)queryEscrowName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -1361,15 +1361,15 @@ LABEL_48:
     v15 = sub_100004E50;
     v16 = sub_100004E60;
     v17 = 0;
-    v5 = [(PCSUserRegistry *)self queue];
+    queue = [(PCSUserRegistry *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000AE8C;
     block[3] = &unk_100018CA8;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
-    dispatch_sync(v5, block);
+    v10 = nameCopy;
+    dispatch_sync(queue, block);
 
     v6 = v13[5];
     if (v6)
@@ -1393,43 +1393,43 @@ LABEL_48:
   return v7;
 }
 
-- (id)queryEscrowID:(id)a3
+- (id)queryEscrowID:(id)d
 {
-  v4 = [a3 recordName];
-  v5 = [(PCSUserRegistry *)self queryEscrowName:v4];
+  recordName = [d recordName];
+  v5 = [(PCSUserRegistry *)self queryEscrowName:recordName];
 
   return v5;
 }
 
-- (id)pushMobileBackupRecordsToCloudKit:(id)a3 removeObjects:(id)a4
+- (id)pushMobileBackupRecordsToCloudKit:(id)kit removeObjects:(id)objects
 {
-  v6 = a3;
-  v7 = a4;
+  kitCopy = kit;
+  objectsCopy = objects;
   objc_initWeak(&location, self);
   v8 = objc_alloc_init(PCSRegistryOperation);
   objc_initWeak(&from, v8);
-  v9 = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
+  cloudKitRateLimitedOp = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
 
-  if (v9)
+  if (cloudKitRateLimitedOp)
   {
-    v10 = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
-    [(PCSRegistryOperation *)v8 addDependency:v10];
+    cloudKitRateLimitedOp2 = [(PCSUserRegistry *)self cloudKitRateLimitedOp];
+    [(PCSRegistryOperation *)v8 addDependency:cloudKitRateLimitedOp2];
   }
 
-  v11 = [(PCSUserRegistry *)self oslog];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oslog = [(PCSUserRegistry *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "pushMobileBackupRecordsToCloudKit Starting", buf, 2u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "pushMobileBackupRecordsToCloudKit Starting", buf, 2u);
   }
 
-  v12 = [(PCSUserRegistry *)self defaultCKConfiguration];
+  defaultCKConfiguration = [(PCSUserRegistry *)self defaultCKConfiguration];
   v13 = [(PCSUserRegistry *)self getServerChangeToken:@"MBserverChangeToken"];
   v14 = v13 == 0;
 
   if (v14)
   {
-    v15 = [(PCSUserRegistry *)self createZone:v12 withName:@"PCSUserRegistryMobileBackup"];
+    v15 = [(PCSUserRegistry *)self createZone:defaultCKConfiguration withName:@"PCSUserRegistryMobileBackup"];
   }
 
   else
@@ -1438,9 +1438,9 @@ LABEL_48:
   }
 
   v16 = &__NSArray0__struct;
-  if (v7)
+  if (objectsCopy)
   {
-    v16 = v7;
+    v16 = objectsCopy;
   }
 
   v17 = v16;
@@ -1457,7 +1457,7 @@ LABEL_48:
     [v19 removeObjectsInRange:{100, v18 - 100}];
   }
 
-  v20 = [NSMutableArray arrayWithArray:v6];
+  v20 = [NSMutableArray arrayWithArray:kitCopy];
   v21 = [v20 count];
   if (v21 < 0x65)
   {
@@ -1471,8 +1471,8 @@ LABEL_48:
     [v20 removeObjectsInRange:{100, v22}];
   }
 
-  v24 = [(PCSUserRegistry *)self oslog];
-  if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+  oslog2 = [(PCSUserRegistry *)self oslog];
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
     v25 = [v20 count];
     v26 = [v19 count];
@@ -1480,7 +1480,7 @@ LABEL_48:
     v40 = v25;
     v41 = 1024;
     v42 = v26;
-    _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "updating %u records, removing %u records", buf, 0xEu);
+    _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "updating %u records, removing %u records", buf, 0xEu);
   }
 
   [(PCSUserRegistry *)self statModify];
@@ -1492,8 +1492,8 @@ LABEL_48:
   }
 
   [v28 setSavePolicy:1];
-  v29 = [(PCSUserRegistry *)self defaultCKConfiguration];
-  [v28 setConfiguration:v29];
+  defaultCKConfiguration2 = [(PCSUserRegistry *)self defaultCKConfiguration];
+  [v28 setConfiguration:defaultCKConfiguration2];
 
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
@@ -1504,8 +1504,8 @@ LABEL_48:
   v30 = v23;
   v34 = v30;
   [v28 setModifyRecordsCompletionBlock:v33];
-  v31 = [(PCSUserRegistry *)self privateDatabase];
-  [v31 addOperation:v28];
+  privateDatabase = [(PCSUserRegistry *)self privateDatabase];
+  [privateDatabase addOperation:v28];
 
   objc_destroyWeak(&v36);
   objc_destroyWeak(&v35);
@@ -1516,34 +1516,34 @@ LABEL_48:
   return v8;
 }
 
-- (BOOL)updateEscrowData:(id)a3 escrowIdentity:(_PCSIdentityData *)a4 identity:(_PCSIdentityData *)a5
+- (BOOL)updateEscrowData:(id)data escrowIdentity:(_PCSIdentityData *)identity identity:(_PCSIdentityData *)a5
 {
-  v5 = a3;
+  dataCopy = data;
   EscrowedKeyWithIdentity = PCSBackupCreateEscrowedKeyWithIdentity();
   if (EscrowedKeyWithIdentity)
   {
-    [v5 setObject:EscrowedKeyWithIdentity forKeyedSubscript:@"escrow"];
+    [dataCopy setObject:EscrowedKeyWithIdentity forKeyedSubscript:@"escrow"];
   }
 
   return EscrowedKeyWithIdentity != 0;
 }
 
-- (id)keyRecordIdentity:(_PCSIdentityData *)a3 device:(id)a4 version:(id)a5
+- (id)keyRecordIdentity:(_PCSIdentityData *)identity device:(id)device version:(id)version
 {
-  v7 = a5;
-  v8 = [a4 recordID];
-  v9 = [v8 recordName];
-  v10 = sub_10000BB30(a3, v9, v7);
+  versionCopy = version;
+  recordID = [device recordID];
+  recordName = [recordID recordName];
+  v10 = sub_10000BB30(identity, recordName, versionCopy);
 
   return v10;
 }
 
-- (id)keyRecord:(_PCSIdentityData *)a3 withName:(id)a4 zone:(id)a5
+- (id)keyRecord:(_PCSIdentityData *)record withName:(id)name zone:(id)zone
 {
-  v6 = a5;
-  v7 = a4;
+  zoneCopy = zone;
+  nameCopy = name;
   v8 = PCSIdentityGetPublicKey();
-  v9 = [[CKRecordID alloc] initWithRecordName:v7 zoneID:v6];
+  v9 = [[CKRecordID alloc] initWithRecordName:nameCopy zoneID:zoneCopy];
 
   v10 = [[CKRecord alloc] initWithRecordType:@"URKey" recordID:v9];
   v11 = +[NSDate date];
@@ -1556,18 +1556,18 @@ LABEL_48:
   return v10;
 }
 
-- (BOOL)checkRegistry:(id)a3
+- (BOOL)checkRegistry:(id)registry
 {
-  v4 = a3;
+  registryCopy = registry;
   v25 = 0;
   v5 = [(PCSUserRegistry *)self ensureUserRegistryDbLoaded:&v25];
   v6 = v25;
   if (v5)
   {
-    v7 = [(PCSUserRegistry *)self accounts];
-    v8 = [v7 dsid];
+    accounts = [(PCSUserRegistry *)self accounts];
+    dsid = [accounts dsid];
     v24 = v6;
-    v9 = [PCSAccountsModel accountEligibleForMBRestoreForDSID:v8 error:&v24];
+    v9 = [PCSAccountsModel accountEligibleForMBRestoreForDSID:dsid error:&v24];
     v10 = v24;
 
     if (v9)
@@ -1577,27 +1577,27 @@ LABEL_48:
       v19 = 3221225472;
       v20 = sub_10000C010;
       v22 = v21 = &unk_100018D98;
-      v23 = v4;
+      v23 = registryCopy;
       v11 = v22;
       v12 = [NSBlockOperation blockOperationWithBlock:&v18];
       [v12 addDependency:{v11, v18, v19, v20, v21}];
-      v13 = [(PCSUserRegistry *)self mainOperationQueue];
-      [v13 addOperation:v12];
+      mainOperationQueue = [(PCSUserRegistry *)self mainOperationQueue];
+      [mainOperationQueue addOperation:v12];
 
       v14 = 1;
     }
 
     else
     {
-      v16 = [(PCSUserRegistry *)self oslog];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      oslog = [(PCSUserRegistry *)self oslog];
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v27 = v10;
-        _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "checkRegistry: Account ineligible for MB restore: %@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "checkRegistry: Account ineligible for MB restore: %@", buf, 0xCu);
       }
 
-      (*(v4 + 2))(v4, v10);
+      (*(registryCopy + 2))(registryCopy, v10);
       v14 = 0;
     }
 
@@ -1606,15 +1606,15 @@ LABEL_48:
 
   else
   {
-    v15 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oslog2 = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v27 = v6;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "checkRegistry: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "checkRegistry: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
     }
 
-    (*(v4 + 2))(v4, v6);
+    (*(registryCopy + 2))(registryCopy, v6);
     v14 = 0;
   }
 
@@ -1623,24 +1623,24 @@ LABEL_48:
 
 - (id)scanPCSIdentitiesForNewMobileBackupRecords
 {
-  v3 = [(PCSUserRegistry *)self mobileBackup];
-  v4 = [v3 isBackupEnabled];
+  mobileBackup = [(PCSUserRegistry *)self mobileBackup];
+  isBackupEnabled = [mobileBackup isBackupEnabled];
 
-  if (v4)
+  if (isBackupEnabled)
   {
-    v5 = objc_alloc_init(NSMutableArray);
-    v6 = [(PCSUserRegistry *)self identityCopySet];
-    if (v6)
+    oslog4 = objc_alloc_init(NSMutableArray);
+    identityCopySet = [(PCSUserRegistry *)self identityCopySet];
+    if (identityCopySet)
     {
-      v7 = v6;
+      v7 = identityCopySet;
       if (PCSIdentitySetIsWalrusWithForceFetch())
       {
-        v14 = [(PCSUserRegistry *)self oslog];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        oslog = [(PCSUserRegistry *)self oslog];
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
           v17 = 0;
-          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Skipping MobileBackup Escrow: %@", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Skipping MobileBackup Escrow: %@", buf, 0xCu);
         }
       }
 
@@ -1650,14 +1650,14 @@ LABEL_48:
         if (v8)
         {
           v9 = v8;
-          v10 = v5;
+          v10 = oslog4;
           PCSServiceItemsGetEachName();
-          v11 = [(PCSUserRegistry *)self oslog];
-          if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+          oslog2 = [(PCSUserRegistry *)self oslog];
+          if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134217984;
             v17 = [v10 count];
-            _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Harvested %lu records for MobileBackup escrow from Local PCS", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "Harvested %lu records for MobileBackup escrow from Local PCS", buf, 0xCu);
           }
 
           CFRelease(v7);
@@ -1667,11 +1667,11 @@ LABEL_48:
           goto LABEL_21;
         }
 
-        v14 = [(PCSUserRegistry *)self oslog];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        oslog = [(PCSUserRegistry *)self oslog];
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "No escrow identity", buf, 2u);
+          _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "No escrow identity", buf, 2u);
         }
       }
 
@@ -1680,11 +1680,11 @@ LABEL_48:
 
     else
     {
-      v13 = [(PCSUserRegistry *)self oslog];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      oslog3 = [(PCSUserRegistry *)self oslog];
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "No PCSIdentities to Escrow to MobileBackup", buf, 2u);
+        _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "No PCSIdentities to Escrow to MobileBackup", buf, 2u);
       }
     }
 
@@ -1692,11 +1692,11 @@ LABEL_48:
     goto LABEL_21;
   }
 
-  v5 = [(PCSUserRegistry *)self oslog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oslog4 = [(PCSUserRegistry *)self oslog];
+  if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MobileBackup is off; no new records!", buf, 2u);
+    _os_log_impl(&_mh_execute_header, oslog4, OS_LOG_TYPE_DEFAULT, "MobileBackup is off; no new records!", buf, 2u);
   }
 
   v12 = &__NSArray0__struct;
@@ -1707,34 +1707,34 @@ LABEL_21:
 
 - (id)startBackupOfNewMobileBackupIdentities
 {
-  v3 = [(PCSUserRegistry *)self oslog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  oslog = [(PCSUserRegistry *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Starting startBackupOfNewMobileBackupIdentities", buf, 2u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Starting startBackupOfNewMobileBackupIdentities", buf, 2u);
   }
 
-  v4 = [(PCSUserRegistry *)self scanPCSIdentitiesForNewMobileBackupRecords];
-  if ([v4 count])
+  scanPCSIdentitiesForNewMobileBackupRecords = [(PCSUserRegistry *)self scanPCSIdentitiesForNewMobileBackupRecords];
+  if ([scanPCSIdentitiesForNewMobileBackupRecords count])
   {
-    v5 = +[NSMutableArray array];
-    v6 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    oslog3 = +[NSMutableArray array];
+    oslog2 = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       *v10 = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "startBackupOfNewMobileBackupIdentities - pushing new keys to cloudKit", v10, 2u);
+      _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "startBackupOfNewMobileBackupIdentities - pushing new keys to cloudKit", v10, 2u);
     }
 
-    v7 = [(PCSUserRegistry *)self pushMobileBackupRecordsToCloudKit:v4 removeObjects:v5];
+    v7 = [(PCSUserRegistry *)self pushMobileBackupRecordsToCloudKit:scanPCSIdentitiesForNewMobileBackupRecords removeObjects:oslog3];
   }
 
   else
   {
-    v5 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    oslog3 = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
     {
       *v9 = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "No local mobile backup key changes", v9, 2u);
+      _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "No local mobile backup key changes", v9, 2u);
     }
 
     v7 = 0;
@@ -1745,19 +1745,19 @@ LABEL_21:
 
 - (_PCSIdentitySetData)identityCopySet
 {
-  v3 = [(PCSUserRegistry *)self accounts];
-  v4 = [v3 dsid];
+  accounts = [(PCSUserRegistry *)self accounts];
+  dsid = [accounts dsid];
 
-  if (!v4)
+  if (!dsid)
   {
-    v8 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oslog = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PCSUserRegistry *)self accounts];
-      v10 = [v9 lastError];
+      accounts2 = [(PCSUserRegistry *)self accounts];
+      lastError = [accounts2 lastError];
       *buf = 138412290;
-      v15 = v10;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Fail getting dsid: %@", buf, 0xCu);
+      v15 = lastError;
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Fail getting dsid: %@", buf, 0xCu);
     }
 
     v5 = 0;
@@ -1765,7 +1765,7 @@ LABEL_21:
   }
 
   v12 = kPCSSetupDSID;
-  v13 = v4;
+  v13 = dsid;
   v5 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   v6 = PCSIdentitySetCreate();
   if (!v6)
@@ -1781,23 +1781,23 @@ LABEL_8:
   return v7;
 }
 
-- (id)extractMobilebackupKeyEscrow:(id)a3
+- (id)extractMobilebackupKeyEscrow:(id)escrow
 {
-  v4 = a3;
+  escrowCopy = escrow;
   +[NSMutableArray array];
   v23 = v22 = self;
-  v5 = [(PCSUserRegistry *)self oslog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oslog = [(PCSUserRegistry *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Converting CKRecords to PCSKeybagKeys", buf, 2u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Converting CKRecords to PCSKeybagKeys", buf, 2u);
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = escrowCopy;
   v6 = [obj countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v6)
   {
@@ -1842,13 +1842,13 @@ LABEL_8:
     while (v7);
   }
 
-  v19 = [(PCSUserRegistry *)v22 oslog];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  oslog2 = [(PCSUserRegistry *)v22 oslog];
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
     v20 = [v23 count];
     *buf = 134217984;
     v30 = v20;
-    _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Converted %lu CKRecords to PCSKeybagKeys", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "Converted %lu CKRecords to PCSKeybagKeys", buf, 0xCu);
   }
 
   return v23;
@@ -1863,14 +1863,14 @@ LABEL_8:
   v23 = sub_100004E50;
   v24 = sub_100004E60;
   v25 = 0;
-  v4 = [(PCSUserRegistry *)self queue];
+  queue = [(PCSUserRegistry *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000D000;
   block[3] = &unk_100018AA0;
   block[4] = self;
   block[5] = &v20;
-  dispatch_sync(v4, block);
+  dispatch_sync(queue, block);
 
   v17 = 0u;
   v18 = 0u;
@@ -1901,13 +1901,13 @@ LABEL_8:
     while (v6);
   }
 
-  v11 = [(PCSUserRegistry *)self oslog];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oslog = [(PCSUserRegistry *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v12 = [v3 count];
     *buf = 134217984;
     v27 = v12;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "loadMobileBackupKeysFromDB returning (count %lu)", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "loadMobileBackupKeysFromDB returning (count %lu)", buf, 0xCu);
   }
 
   v13 = v3;
@@ -1923,18 +1923,18 @@ LABEL_8:
   v4 = v8;
   if (v3)
   {
-    v5 = [(PCSUserRegistry *)self loadMobileBackupKeysFromDB];
-    v6 = [(PCSUserRegistry *)self extractMobilebackupKeyEscrow:v5];
+    loadMobileBackupKeysFromDB = [(PCSUserRegistry *)self loadMobileBackupKeysFromDB];
+    v6 = [(PCSUserRegistry *)self extractMobilebackupKeyEscrow:loadMobileBackupKeysFromDB];
   }
 
   else
   {
-    v5 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    loadMobileBackupKeysFromDB = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(loadMobileBackupKeysFromDB, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v10 = v4;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "allMobileBackupKeys: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, loadMobileBackupKeysFromDB, OS_LOG_TYPE_DEFAULT, "allMobileBackupKeys: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
     }
 
     v6 = 0;
@@ -1953,12 +1953,12 @@ LABEL_8:
   if (v4)
   {
     v25 = v5;
-    v7 = [(PCSUserRegistry *)self loadMobileBackupKeysFromDB];
+    loadMobileBackupKeysFromDB = [(PCSUserRegistry *)self loadMobileBackupKeysFromDB];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    v8 = [loadMobileBackupKeysFromDB countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1972,7 +1972,7 @@ LABEL_8:
         {
           if (*v28 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(loadMobileBackupKeysFromDB);
           }
 
           v13 = *(*(&v27 + 1) + 8 * v12);
@@ -1984,22 +1984,22 @@ LABEL_8:
 
           else
           {
-            v15 = [(PCSUserRegistry *)self oslog];
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+            oslog = [(PCSUserRegistry *)self oslog];
+            if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
             {
-              v16 = [v13 recordID];
-              [v16 recordName];
+              recordID = [v13 recordID];
+              [recordID recordName];
               v17 = v10;
               v18 = v11;
               v19 = v3;
-              v20 = v7;
+              v20 = loadMobileBackupKeysFromDB;
               v22 = v21 = self;
               *buf = 138412290;
               v34 = v22;
-              _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Record %@ missing public key", buf, 0xCu);
+              _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Record %@ missing public key", buf, 0xCu);
 
               self = v21;
-              v7 = v20;
+              loadMobileBackupKeysFromDB = v20;
               v3 = v19;
               v11 = v18;
               v10 = v17;
@@ -2011,7 +2011,7 @@ LABEL_8:
         }
 
         while (v9 != v12);
-        v9 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v9 = [loadMobileBackupKeysFromDB countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v9);
@@ -2023,12 +2023,12 @@ LABEL_8:
 
   else
   {
-    v7 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    loadMobileBackupKeysFromDB = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(loadMobileBackupKeysFromDB, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v34 = v6;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "allMobileBackupKeys: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, loadMobileBackupKeysFromDB, OS_LOG_TYPE_DEFAULT, "allMobileBackupKeys: Failed to initalize UserRegistryDB: %@", buf, 0xCu);
     }
 
     v23 = 0;
@@ -2037,7 +2037,7 @@ LABEL_8:
   return v23;
 }
 
-- (id)queryMobileBackupKeysFromCloudKit:(id *)a3
+- (id)queryMobileBackupKeysFromCloudKit:(id *)kit
 {
   v35 = 0;
   v36 = &v35;
@@ -2052,29 +2052,29 @@ LABEL_8:
   v32 = sub_100004E50;
   v33 = sub_100004E60;
   v34 = 0;
-  v6 = [(PCSUserRegistry *)self oslog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oslog = [(PCSUserRegistry *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "queryMobileBackupKeysFromCloudKit", buf, 2u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "queryMobileBackupKeysFromCloudKit", buf, 2u);
   }
 
   v7 = [CKQuery alloc];
   v8 = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
   v9 = [v7 initWithRecordType:@"URKey" predicate:v8];
 
-  v10 = [(PCSUserRegistry *)self privateDatabase];
-  v11 = [(PCSUserRegistry *)self mobileBackupRecordZoneID];
+  privateDatabase = [(PCSUserRegistry *)self privateDatabase];
+  mobileBackupRecordZoneID = [(PCSUserRegistry *)self mobileBackupRecordZoneID];
   v21 = _NSConcreteStackBlock;
   v22 = 3221225472;
   v23 = sub_10000D79C;
   v24 = &unk_100018E10;
-  v25 = self;
+  selfCopy = self;
   v27 = &v29;
   v28 = &v35;
   v12 = v5;
   v26 = v12;
-  [v10 performQuery:v9 inZoneWithID:v11 completionHandler:&v21];
+  [privateDatabase performQuery:v9 inZoneWithID:mobileBackupRecordZoneID completionHandler:&v21];
 
   v13 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v12, v13);
@@ -2094,12 +2094,12 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "queryMobileBackupKeysFromCloudKit returning (count %lu)", buf, 0xCu);
   }
 
-  if (a3)
+  if (kit)
   {
     v18 = v30[5];
     if (v18)
     {
-      *a3 = [v18 copy];
+      *kit = [v18 copy];
     }
   }
 
@@ -2111,15 +2111,15 @@ LABEL_8:
   return v19;
 }
 
-- (id)ckRecordListToRecordIDs:(id)a3
+- (id)ckRecordListToRecordIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -2134,9 +2134,9 @@ LABEL_8:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) recordID];
-        v11 = [v10 recordName];
-        v12 = [v11 copy];
+        recordID = [*(*(&v14 + 1) + 8 * i) recordID];
+        recordName = [recordID recordName];
+        v12 = [recordName copy];
 
         [v4 addObject:v12];
       }
@@ -2150,22 +2150,22 @@ LABEL_8:
   return v4;
 }
 
-- (id)fetchMobileBackupRecordIDsWithError:(id *)a3
+- (id)fetchMobileBackupRecordIDsWithError:(id *)error
 {
   if ([(PCSUserRegistry *)self ensureUserRegistryDbLoaded:?])
   {
-    v5 = [(PCSUserRegistry *)self queryMobileBackupKeysFromCloudKit:a3];
+    v5 = [(PCSUserRegistry *)self queryMobileBackupKeysFromCloudKit:error];
     v6 = [(PCSUserRegistry *)self ckRecordListToRecordIDs:v5];
   }
 
   else
   {
-    v7 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oslog = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v8 = *a3;
+        v8 = *error;
       }
 
       else
@@ -2175,7 +2175,7 @@ LABEL_8:
 
       v10 = 138412290;
       v11 = v8;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "fetchMobileBackupRecordIDsWithError: Failed to initalize UserRegistryDB: %@", &v10, 0xCu);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "fetchMobileBackupRecordIDsWithError: Failed to initalize UserRegistryDB: %@", &v10, 0xCu);
     }
 
     v6 = 0;
@@ -2184,7 +2184,7 @@ LABEL_8:
   return v6;
 }
 
-- (id)userDBBackupRecordIDsWithError:(id *)a3
+- (id)userDBBackupRecordIDsWithError:(id *)error
 {
   if ([(PCSUserRegistry *)self ensureUserRegistryDbLoaded:?])
   {
@@ -2194,38 +2194,38 @@ LABEL_8:
     v15 = sub_100004E50;
     v16 = sub_100004E60;
     v17 = 0;
-    v5 = [(PCSUserRegistry *)self queue];
+    queue = [(PCSUserRegistry *)self queue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10000DD58;
     v12[3] = &unk_100018AA0;
     v12[4] = self;
     v12[5] = &buf;
-    dispatch_sync(v5, v12);
+    dispatch_sync(queue, v12);
 
     v6 = *(*(&buf + 1) + 40);
     if (v6)
     {
-      v7 = [v6 allKeys];
+      allKeys = [v6 allKeys];
     }
 
     else
     {
-      v7 = objc_alloc_init(NSArray);
+      allKeys = objc_alloc_init(NSArray);
     }
 
-    v10 = v7;
+    v10 = allKeys;
     _Block_object_dispose(&buf, 8);
   }
 
   else
   {
-    v8 = [(PCSUserRegistry *)self oslog];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oslog = [(PCSUserRegistry *)self oslog];
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v9 = *a3;
+        v9 = *error;
       }
 
       else
@@ -2235,7 +2235,7 @@ LABEL_8:
 
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v9;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "userDBBackupRecordIDsWithError: Failed to initalize UserRegistryDB: %@", &buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "userDBBackupRecordIDsWithError: Failed to initalize UserRegistryDB: %@", &buf, 0xCu);
     }
 
     v10 = 0;

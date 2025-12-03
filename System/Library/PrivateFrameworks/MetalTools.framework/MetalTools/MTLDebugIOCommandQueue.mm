@@ -27,16 +27,16 @@
 
 - (void)barrier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 barrier];
+  [baseObject barrier];
 }
 
 - (unint64_t)globalTraceObjectID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 globalTraceObjectID];
+  return [baseObject globalTraceObjectID];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface TSCH3DChartPlatformSettings
-+ (BOOL)isMetalExcludedWithCapabilities:(id)a3;
++ (BOOL)isMetalExcludedWithCapabilities:(id)capabilities;
 + (BOOL)p_isMetalEnabled;
 + (id)p_defaultSettingsDictionary;
 + (id)p_platformSettingsDictionary;
@@ -21,11 +21,11 @@
 - (BOOL)useLayoutInwardForInsertionIcons;
 - (BOOL)useMetal;
 - (BOOL)useTiledFullSizeInteractiveLayer;
-- (TSCH3DChartPlatformSettings)initWithDictionary:(id)a3;
+- (TSCH3DChartPlatformSettings)initWithDictionary:(id)dictionary;
 - (double)backgroundLayoutContentsScaleFactor;
 - (double)buildTargetFPS;
 - (double)printingDPI;
-- (float)normalizedLabelPickingSlackForViewScale:(double)a3 viewport:(void *)a4;
+- (float)normalizedLabelPickingSlackForViewScale:(double)scale viewport:(void *)viewport;
 - (float)p_labelPickingSlack;
 - (float)prefilteredLinesFilterRadius;
 - (float)rotationTrackerSpeed;
@@ -44,10 +44,10 @@
 
 @implementation TSCH3DChartPlatformSettings
 
-+ (BOOL)isMetalExcludedWithCapabilities:(id)a3
++ (BOOL)isMetalExcludedWithCapabilities:(id)capabilities
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  capabilitiesCopy = capabilities;
   if (qword_280A46B68 != -1)
   {
     sub_2764A6EA4();
@@ -72,7 +72,7 @@
         }
 
         v16 = *(*(&v23 + 1) + 8 * i);
-        v17 = objc_msgSend_device(v3, v9, v11, v12, v13, v23);
+        v17 = objc_msgSend_device(capabilitiesCopy, v9, v11, v12, v13, v23);
         if (v17 == objc_msgSend_integerValue(v16, v18, v19, v20, v21))
         {
           LOBYTE(v10) = 1;
@@ -100,7 +100,7 @@ LABEL_13:
   v3 = objc_alloc_init(MEMORY[0x277D801F0]);
   if (objc_msgSend_isMetalCapable(v3, v4, v5, v6, v7))
   {
-    v12 = objc_msgSend_isMetalExcludedWithCapabilities_(a1, v8, v9, v10, v11, v3) ^ 1;
+    v12 = objc_msgSend_isMetalExcludedWithCapabilities_(self, v8, v9, v10, v11, v3) ^ 1;
   }
 
   else
@@ -119,7 +119,7 @@ LABEL_13:
 + (id)p_defaultSettingsDictionary
 {
   v18[33] = *MEMORY[0x277D85DE8];
-  isMetalEnabled = objc_msgSend_p_isMetalEnabled(a1, a2, v2, v3, v4);
+  isMetalEnabled = objc_msgSend_p_isMetalEnabled(self, a2, v2, v3, v4);
   v17[0] = @"kTSCH3DChartPlatformSettingsSkipFirstMipmapLevel";
   v17[1] = @"kTSCH3DChartPlatformSettingsBuildImageTileSize";
   v18[0] = MEMORY[0x277CBEC38];
@@ -194,7 +194,7 @@ LABEL_13:
 
 + (id)p_platformSettingsDictionary
 {
-  v5 = objc_msgSend_p_defaultSettingsDictionary(a1, a2, v2, v3, v4);
+  v5 = objc_msgSend_p_defaultSettingsDictionary(self, a2, v2, v3, v4);
   v10 = objc_msgSend_objectForKeyedSubscript_(v5, v6, v7, v8, v9, @"kTSCH3DChartPlatformSettingsSkipFirstMipmapLevel");
   v11 = MEMORY[0x277CBEC38];
   isEqual = objc_msgSend_isEqual_(v10, v12, v13, v14, v15, MEMORY[0x277CBEC38]);
@@ -219,7 +219,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_276224644;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A46B78 != -1)
   {
     dispatch_once(&qword_280A46B78, block);
@@ -230,15 +230,15 @@ LABEL_13:
   return v2;
 }
 
-- (TSCH3DChartPlatformSettings)initWithDictionary:(id)a3
+- (TSCH3DChartPlatformSettings)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = TSCH3DChartPlatformSettings;
   v6 = [(TSCH3DChartPlatformSettings *)&v13 init];
   if (v6)
   {
-    v10 = objc_msgSend_mutableCopy(v4, v5, v7, v8, v9);
+    v10 = objc_msgSend_mutableCopy(dictionaryCopy, v5, v7, v8, v9);
     settings = v6->_settings;
     v6->_settings = v10;
   }
@@ -786,29 +786,29 @@ LABEL_13:
   return v37;
 }
 
-- (float)normalizedLabelPickingSlackForViewScale:(double)a3 viewport:(void *)a4
+- (float)normalizedLabelPickingSlackForViewScale:(double)scale viewport:(void *)viewport
 {
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
     v9 = MEMORY[0x277D81150];
-    v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a3, v4, v5, "[TSCH3DChartPlatformSettings normalizedLabelPickingSlackForViewScale:viewport:]");
+    v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, scale, v4, v5, "[TSCH3DChartPlatformSettings normalizedLabelPickingSlackForViewScale:viewport:]");
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartPlatformSettings.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v16, v17, v18, v19, v10, v15, 615, 0, "invalid view scale %f", *&a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v16, v17, v18, v19, v10, v15, 615, 0, "invalid view scale %f", *&scale);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v24 = objc_msgSend_p_labelPickingSlackMethod(self, a2, a3, v4, v5);
+  v24 = objc_msgSend_p_labelPickingSlackMethod(self, a2, scale, v4, v5);
   if (v24 == 1)
   {
-    if (*a4 <= *(a4 + 1))
+    if (*viewport <= *(viewport + 1))
     {
-      v30 = *(a4 + 1);
+      v30 = *(viewport + 1);
     }
 
     else
     {
-      v30 = *a4;
+      v30 = *viewport;
     }
 
     if (v30 <= 0)
@@ -817,8 +817,8 @@ LABEL_13:
       v32 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, v26, v27, v28, "[TSCH3DChartPlatformSettings normalizedLabelPickingSlackForViewScale:viewport:]");
       v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v33, v34, v35, v36, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartPlatformSettings.mm");
       v38 = MEMORY[0x277CCACA8];
-      v60 = *(a4 + 1);
-      sub_276152FD4("ivec2(%d, %d)", v39, v40, v41, v42, v43, v44, v45, *a4);
+      v60 = *(viewport + 1);
+      sub_276152FD4("ivec2(%d, %d)", v39, v40, v41, v42, v43, v44, v45, *viewport);
       if (v62 >= 0)
       {
         objc_msgSend_stringWithUTF8String_(v38, v46, v47, v48, v49, &__p);
@@ -851,7 +851,7 @@ LABEL_13:
     }
   }
 
-  return v29 / a3;
+  return v29 / scale;
 }
 
 - (float)rotationTrackerSpeed

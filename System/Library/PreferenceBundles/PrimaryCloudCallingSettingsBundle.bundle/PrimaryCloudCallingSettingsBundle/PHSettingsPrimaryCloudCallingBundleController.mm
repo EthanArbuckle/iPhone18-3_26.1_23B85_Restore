@@ -1,21 +1,21 @@
 @interface PHSettingsPrimaryCloudCallingBundleController
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3;
-- (PHSettingsPrimaryCloudCallingBundleController)initWithParentListController:(id)a3;
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller;
+- (PHSettingsPrimaryCloudCallingBundleController)initWithParentListController:(id)controller;
 - (id)labelValue;
 - (id)parentListController;
-- (id)specifiersWithSpecifier:(id)a3;
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4;
-- (void)performButtonActionForSpecifier:(id)a3;
-- (void)statusChanged:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller;
+- (void)performButtonActionForSpecifier:(id)specifier;
+- (void)statusChanged:(id)changed;
 @end
 
 @implementation PHSettingsPrimaryCloudCallingBundleController
 
-- (PHSettingsPrimaryCloudCallingBundleController)initWithParentListController:(id)a3
+- (PHSettingsPrimaryCloudCallingBundleController)initWithParentListController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = PHSettingsPrimaryCloudCallingBundleController;
-  v3 = [(PHSettingsPrimaryCloudCallingBundleController *)&v6 initWithParentListController:a3];
+  v3 = [(PHSettingsPrimaryCloudCallingBundleController *)&v6 initWithParentListController:controller];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -26,11 +26,11 @@
   return v3;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
-  v4 = [(PHSettingsPrimaryCloudCallingBundleController *)self specifiersArray];
+  specifiersArray = [(PHSettingsPrimaryCloudCallingBundleController *)self specifiersArray];
 
-  if (!v4)
+  if (!specifiersArray)
   {
     if (((+[TUCallCapabilities supportsThumperCalling](TUCallCapabilities, "supportsThumperCalling") & 1) != 0 || +[TUCallCapabilities supportsRelayCalling](TUCallCapabilities, "supportsRelayCalling")) && +[TUCallCapabilities supportsPrimaryCalling])
     {
@@ -43,16 +43,16 @@
     }
 
     v6 = +[PHCallNotificationDevicesMonitor sharedInstance];
-    v7 = [v6 callNotificationEligibleDevices];
-    v8 = [v7 count];
+    callNotificationEligibleDevices = [v6 callNotificationEligibleDevices];
+    v8 = [callNotificationEligibleDevices count];
 
     if (!v5 || v8)
     {
       v14 = [NSBundle bundleForClass:objc_opt_class()];
       v9 = [v14 localizedStringForKey:@"PRIMARY_CLOUD_CALLING_CELL_TITLE" value:&stru_C920 table:@"PrimaryCloudCallingSettings"];
 
-      v15 = [(PHSettingsPrimaryCloudCallingBundleController *)self parentListController];
-      v16 = [(PHSettingsPrimaryCloudCallingBundleController *)self isStateDrivenNavigationPossibleWithParentController:v15];
+      parentListController = [(PHSettingsPrimaryCloudCallingBundleController *)self parentListController];
+      v16 = [(PHSettingsPrimaryCloudCallingBundleController *)self isStateDrivenNavigationPossibleWithParentController:parentListController];
 
       if (v16)
       {
@@ -135,9 +135,9 @@
     }
   }
 
-  v20 = [(PHSettingsPrimaryCloudCallingBundleController *)self specifiersArray];
+  specifiersArray2 = [(PHSettingsPrimaryCloudCallingBundleController *)self specifiersArray];
 
-  return v20;
+  return specifiersArray2;
 }
 
 - (id)labelValue
@@ -184,25 +184,25 @@
   return WeakRetained;
 }
 
-- (void)performButtonActionForSpecifier:(id)a3
+- (void)performButtonActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(PHSettingsPrimaryCloudCallingBundleController *)self parentListController];
-  [(PHSettingsPrimaryCloudCallingBundleController *)self handleUserDidTapOnMainSpecifier:v4 parentController:v5];
+  specifierCopy = specifier;
+  parentListController = [(PHSettingsPrimaryCloudCallingBundleController *)self parentListController];
+  [(PHSettingsPrimaryCloudCallingBundleController *)self handleUserDidTapOnMainSpecifier:specifierCopy parentController:parentListController];
 }
 
-- (void)statusChanged:(id)a3
+- (void)statusChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(PHSettingsPrimaryCloudCallingBundleController *)self specifiersArray];
+  changedCopy = changed;
+  specifiersArray = [(PHSettingsPrimaryCloudCallingBundleController *)self specifiersArray];
 
-  if (!v5)
+  if (!specifiersArray)
   {
     v6 = PHDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v9 = v4;
+      v9 = changedCopy;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Received capability changed notification: %@. Reloading specifiers", buf, 0xCu);
     }
 
@@ -215,7 +215,7 @@
   }
 }
 
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller
 {
   v4 = sub_6CD8();
   v5 = *(v4 - 8);
@@ -230,17 +230,17 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = [v9 traitCollection];
+  controllerCopy = controller;
+  traitCollection = [controllerCopy traitCollection];
   sub_6D28();
 
-  LOBYTE(v10) = sub_6CB8();
+  LOBYTE(traitCollection) = sub_6CB8();
   (*(v5 + 8))(v8, v4);
 
-  return v10 & 1;
+  return traitCollection & 1;
 }
 
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller
 {
   v18 = sub_6CD8();
   v5 = *(v18 - 8);
@@ -262,10 +262,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v15 = a4;
+  controllerCopy = controller;
   sub_6D38();
   sub_6C98();
-  v16 = [v15 traitCollection];
+  traitCollection = [controllerCopy traitCollection];
   sub_6D28();
 
   sub_66C8();

@@ -1,25 +1,25 @@
 @interface CyclingPowerService
-- (BOOL)matchesDistributedService:(id)a3;
-- (BOOL)supportsHKQuantityType:(id)a3;
-- (double)powerBalanceForValue:(double)a3 otherService:(id)a4 otherValue:(double)a5;
+- (BOOL)matchesDistributedService:(id)service;
+- (BOOL)supportsHKQuantityType:(id)type;
+- (double)powerBalanceForValue:(double)value otherService:(id)service otherValue:(double)otherValue;
 - (id)getDeviceInformationService;
 - (id)originatingHKDevice;
 - (id)sensorLocationSideString;
 - (id)sensorLocationString;
-- (id)updateComboString:(id)a3 withValue:(id)a4;
-- (void)createDistributedHKDeviceWithSecondary:(id)a3;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
+- (id)updateComboString:(id)string withValue:(id)value;
+- (void)createDistributedHKDeviceWithSecondary:(id)secondary;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)readWheelSize;
-- (void)receiveDeviceInfoUpdateNotification:(id)a3;
+- (void)receiveDeviceInfoUpdateNotification:(id)notification;
 - (void)start;
 - (void)updateForSensorLocation;
-- (void)updatedCadenceMeasurementValueForRevolutions:(unsigned __int16)a3 andCrankEventTime:(unsigned __int16)a4 timeStamp:(id)a5;
+- (void)updatedCadenceMeasurementValueForRevolutions:(unsigned __int16)revolutions andCrankEventTime:(unsigned __int16)time timeStamp:(id)stamp;
 - (void)updatedFeatureCharacteristicValue;
-- (void)updatedMeasurementCharacteristicValue:(id)a3 at:(id)a4;
-- (void)updatedPowerMeasurementValue:(id *)a3 timeStamp:(id)a4;
+- (void)updatedMeasurementCharacteristicValue:(id)value at:(id)at;
+- (void)updatedPowerMeasurementValue:(id *)value timeStamp:(id)stamp;
 - (void)updatedSensorLocationCharacteristicValue;
-- (void)updatedSpeedMeasurementValueForRevolutions:(unsigned int)a3 andWheelEventTime:(unsigned __int16)a4 timeStamp:(id)a5;
+- (void)updatedSpeedMeasurementValueForRevolutions:(unsigned int)revolutions andWheelEventTime:(unsigned __int16)time timeStamp:(id)stamp;
 - (void)updatedVectorCharacteristicValue;
 @end
 
@@ -27,8 +27,8 @@
 
 - (void)readWheelSize
 {
-  v3 = [(ClientService *)self peripheral];
-  v4 = [v3 customProperty:@"wheelCircumferenceMM"];
+  peripheral = [(ClientService *)self peripheral];
+  v4 = [peripheral customProperty:@"wheelCircumferenceMM"];
 
   if (v4)
   {
@@ -72,33 +72,33 @@
   v12[4] = v7;
   v8 = [NSArray arrayWithObjects:v12 count:5];
 
-  v9 = [(ClientService *)self peripheral];
-  v10 = [(ClientService *)self service];
-  [v9 discoverCharacteristics:v8 forService:v10];
+  peripheral = [(ClientService *)self peripheral];
+  service = [(ClientService *)self service];
+  [peripheral discoverCharacteristics:v8 forService:service];
 }
 
-- (BOOL)supportsHKQuantityType:(id)a3
+- (BOOL)supportsHKQuantityType:(id)type
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:HKQuantityTypeIdentifierCyclingPower];
+  typeCopy = type;
+  identifier = [typeCopy identifier];
+  v6 = [identifier isEqualToString:HKQuantityTypeIdentifierCyclingPower];
 
   if ((v6 & 1) == 0)
   {
-    v8 = [v4 identifier];
-    if ([v8 isEqualToString:HKQuantityTypeIdentifierCyclingSpeed])
+    identifier2 = [typeCopy identifier];
+    if ([identifier2 isEqualToString:HKQuantityTypeIdentifierCyclingSpeed])
     {
     }
 
     else
     {
-      v9 = [v4 identifier];
-      v10 = [v9 isEqualToString:HKQuantityTypeIdentifierDistanceCycling];
+      identifier3 = [typeCopy identifier];
+      v10 = [identifier3 isEqualToString:HKQuantityTypeIdentifierDistanceCycling];
 
       if ((v10 & 1) == 0)
       {
-        v13 = [v4 identifier];
-        v14 = [v13 isEqualToString:HKQuantityTypeIdentifierCyclingCadence];
+        identifier4 = [typeCopy identifier];
+        v14 = [identifier4 isEqualToString:HKQuantityTypeIdentifierCyclingCadence];
 
         if (!v14)
         {
@@ -125,16 +125,16 @@ LABEL_8:
 
 - (id)getDeviceInformationService
 {
-  v2 = [(ClientService *)self manager];
+  manager = [(ClientService *)self manager];
   v3 = [CBUUID UUIDWithString:CBUUIDDeviceInformationServiceString];
-  v4 = [v2 clientServiceForUUID:v3];
+  v4 = [manager clientServiceForUUID:v3];
 
   return v4;
 }
 
-- (void)createDistributedHKDeviceWithSecondary:(id)a3
+- (void)createDistributedHKDeviceWithSecondary:(id)secondary
 {
-  v63 = a3;
+  secondaryCopy = secondary;
   v65 = 0;
   v66 = &v65;
   v67 = 0x2050000000;
@@ -153,132 +153,132 @@ LABEL_8:
 
   v5 = v4;
   _Block_object_dispose(&v65, 8);
-  v62 = self;
-  v6 = [(CyclingPowerService *)self isSensorLocationLeft];
-  v7 = v63;
-  if (v6)
+  selfCopy = self;
+  isSensorLocationLeft = [(CyclingPowerService *)self isSensorLocationLeft];
+  selfCopy2 = secondaryCopy;
+  if (isSensorLocationLeft)
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = v7;
-  v9 = [(CyclingPowerService *)self isSensorLocationLeft];
-  v10 = v63;
-  if (!v9)
+  v8 = selfCopy2;
+  isSensorLocationLeft2 = [(CyclingPowerService *)self isSensorLocationLeft];
+  selfCopy3 = secondaryCopy;
+  if (!isSensorLocationLeft2)
   {
-    v10 = self;
+    selfCopy3 = self;
   }
 
-  v64 = v10;
-  v11 = [(ClientService *)v8 peripheral];
-  v12 = [v11 name];
-  v13 = [(ClientService *)v64 peripheral];
-  v14 = [v13 name];
-  v61 = [NSString stringWithFormat:@"%@/%@", v12, v14];
+  v64 = selfCopy3;
+  peripheral = [(ClientService *)v8 peripheral];
+  name = [peripheral name];
+  peripheral2 = [(ClientService *)v64 peripheral];
+  name2 = [peripheral2 name];
+  v61 = [NSString stringWithFormat:@"%@/%@", name, name2];
 
-  v15 = [(ClientService *)v8 peripheral];
-  v16 = [v15 hkDevice];
-  v17 = [v16 manufacturer];
-  v18 = v17;
-  if (v17)
+  peripheral3 = [(ClientService *)v8 peripheral];
+  hkDevice = [peripheral3 hkDevice];
+  manufacturer = [hkDevice manufacturer];
+  v18 = manufacturer;
+  if (manufacturer)
   {
-    v60 = v17;
-  }
-
-  else
-  {
-    v19 = [(ClientService *)v64 peripheral];
-    v20 = [v19 hkDevice];
-    v60 = [v20 manufacturer];
-  }
-
-  v21 = [(ClientService *)v8 peripheral];
-  v22 = [v21 hkDevice];
-  v23 = [v22 model];
-  v24 = v23;
-  if (v23)
-  {
-    v59 = v23;
+    manufacturer2 = manufacturer;
   }
 
   else
   {
-    v25 = [(ClientService *)v64 peripheral];
-    v26 = [v25 hkDevice];
-    v59 = [v26 model];
+    peripheral4 = [(ClientService *)v64 peripheral];
+    hkDevice2 = [peripheral4 hkDevice];
+    manufacturer2 = [hkDevice2 manufacturer];
   }
 
-  v27 = [(ClientService *)v8 peripheral];
-  v28 = [v27 hkDevice];
-  v29 = [v28 hardwareVersion];
-  v30 = v29;
-  if (v29)
+  peripheral5 = [(ClientService *)v8 peripheral];
+  hkDevice3 = [peripheral5 hkDevice];
+  model = [hkDevice3 model];
+  v24 = model;
+  if (model)
   {
-    v58 = v29;
-  }
-
-  else
-  {
-    v31 = [(ClientService *)v64 peripheral];
-    v32 = [v31 hkDevice];
-    v58 = [v32 hardwareVersion];
-  }
-
-  v33 = [(ClientService *)v8 peripheral];
-  v34 = [v33 hkDevice];
-  v35 = [v34 firmwareVersion];
-  v36 = v35;
-  if (v35)
-  {
-    v37 = v35;
+    model2 = model;
   }
 
   else
   {
-    v38 = [(ClientService *)v64 peripheral];
-    v39 = [v38 hkDevice];
-    v37 = [v39 firmwareVersion];
+    peripheral6 = [(ClientService *)v64 peripheral];
+    hkDevice4 = [peripheral6 hkDevice];
+    model2 = [hkDevice4 model];
+  }
+
+  peripheral7 = [(ClientService *)v8 peripheral];
+  hkDevice5 = [peripheral7 hkDevice];
+  hardwareVersion = [hkDevice5 hardwareVersion];
+  v30 = hardwareVersion;
+  if (hardwareVersion)
+  {
+    hardwareVersion2 = hardwareVersion;
+  }
+
+  else
+  {
+    peripheral8 = [(ClientService *)v64 peripheral];
+    hkDevice6 = [peripheral8 hkDevice];
+    hardwareVersion2 = [hkDevice6 hardwareVersion];
+  }
+
+  peripheral9 = [(ClientService *)v8 peripheral];
+  hkDevice7 = [peripheral9 hkDevice];
+  firmwareVersion = [hkDevice7 firmwareVersion];
+  v36 = firmwareVersion;
+  if (firmwareVersion)
+  {
+    firmwareVersion2 = firmwareVersion;
+  }
+
+  else
+  {
+    peripheral10 = [(ClientService *)v64 peripheral];
+    hkDevice8 = [peripheral10 hkDevice];
+    firmwareVersion2 = [hkDevice8 firmwareVersion];
   }
 
   if (v4)
   {
     v40 = [v4 alloc];
-    v41 = [(ClientService *)v8 peripheral];
-    v42 = [v41 identifier];
-    v43 = [v42 UUIDString];
-    v44 = [(ClientService *)v64 peripheral];
-    v45 = [v44 identifier];
-    v46 = [v45 UUIDString];
-    v47 = [NSString stringWithFormat:@"%@/%@", v43, v46];
-    v48 = [v40 initWithName:v61 manufacturer:v60 model:v59 hardwareVersion:v58 firmwareVersion:v37 softwareVersion:0 localIdentifier:v47 UDIDeviceIdentifier:0];
+    peripheral11 = [(ClientService *)v8 peripheral];
+    identifier = [peripheral11 identifier];
+    uUIDString = [identifier UUIDString];
+    peripheral12 = [(ClientService *)v64 peripheral];
+    identifier2 = [peripheral12 identifier];
+    uUIDString2 = [identifier2 UUIDString];
+    v47 = [NSString stringWithFormat:@"%@/%@", uUIDString, uUIDString2];
+    v48 = [v40 initWithName:v61 manufacturer:manufacturer2 model:model2 hardwareVersion:hardwareVersion2 firmwareVersion:firmwareVersion2 softwareVersion:0 localIdentifier:v47 UDIDeviceIdentifier:0];
 
     v49 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v50 = v49;
-      v51 = [v48 name];
-      v52 = [v48 manufacturer];
-      v53 = [v48 model];
-      v54 = [v48 hardwareVersion];
-      v55 = [v48 firmwareVersion];
-      v56 = [v48 localIdentifier];
+      name3 = [v48 name];
+      manufacturer3 = [v48 manufacturer];
+      model3 = [v48 model];
+      hardwareVersion3 = [v48 hardwareVersion];
+      firmwareVersion3 = [v48 firmwareVersion];
+      localIdentifier = [v48 localIdentifier];
       *buf = 138413570;
-      *&buf[4] = v51;
+      *&buf[4] = name3;
       *&buf[12] = 2112;
-      *&buf[14] = v52;
+      *&buf[14] = manufacturer3;
       *&buf[22] = 2112;
-      v70 = v53;
+      v70 = model3;
       *v71 = 2112;
-      *&v71[2] = v54;
+      *&v71[2] = hardwareVersion3;
       v72 = 2112;
-      v73 = v55;
+      v73 = firmwareVersion3;
       v74 = 2112;
-      v75 = v56;
+      v75 = localIdentifier;
       _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "Created distributed HKDevice name:“%@” manufacturer:“%@” model:“%@” HW:“%@” FW:“%@” localID:“%@”", buf, 0x3Eu);
     }
 
-    [(CyclingPowerService *)v62 setComboHKDevice:v48];
-    [(CyclingPowerService *)v63 setComboHKDevice:v48];
+    [(CyclingPowerService *)selfCopy setComboHKDevice:v48];
+    [(CyclingPowerService *)secondaryCopy setComboHKDevice:v48];
   }
 
   else
@@ -291,37 +291,37 @@ LABEL_8:
   }
 }
 
-- (id)updateComboString:(id)a3 withValue:(id)a4
+- (id)updateComboString:(id)string withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 length])
+  stringCopy = string;
+  valueCopy = value;
+  if (stringCopy && [stringCopy length])
   {
-    if ([v6 containsString:@"/"] || objc_msgSend(v7, "isEqualToString:", v6))
+    if ([stringCopy containsString:@"/"] || objc_msgSend(valueCopy, "isEqualToString:", stringCopy))
     {
-      v8 = v6;
+      v8 = stringCopy;
     }
 
     else
     {
       if ([(CyclingPowerService *)self isSensorLocationLeft])
       {
-        v11 = v7;
+        v11 = valueCopy;
       }
 
       else
       {
-        v11 = v6;
+        v11 = stringCopy;
       }
 
       if ([(CyclingPowerService *)self isSensorLocationLeft])
       {
-        v12 = v6;
+        v12 = stringCopy;
       }
 
       else
       {
-        v12 = v7;
+        v12 = valueCopy;
       }
 
       v8 = [NSString stringWithFormat:@"%@/%@", v11, v12];
@@ -330,7 +330,7 @@ LABEL_8:
 
   else
   {
-    v8 = v7;
+    v8 = valueCopy;
   }
 
   v9 = v8;
@@ -338,113 +338,113 @@ LABEL_8:
   return v9;
 }
 
-- (void)receiveDeviceInfoUpdateNotification:(id)a3
+- (void)receiveDeviceInfoUpdateNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v52.receiver = self;
   v52.super_class = CyclingPowerService;
-  [(FitnessService *)&v52 receiveDeviceInfoUpdateNotification:v4];
+  [(FitnessService *)&v52 receiveDeviceInfoUpdateNotification:notificationCopy];
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100072DEC(v5, v4, self);
+    sub_100072DEC(v5, notificationCopy, self);
   }
 
-  v6 = [v4 name];
-  if (![v6 isEqualToString:@"DeviceInformationUpdate"])
+  name = [notificationCopy name];
+  if (![name isEqualToString:@"DeviceInformationUpdate"])
   {
     goto LABEL_29;
   }
 
-  v7 = [(ClientService *)self peripheral];
-  v8 = [v7 identifier];
-  v9 = [v8 UUIDString];
-  v10 = [v4 userInfo];
-  v11 = [v10 valueForKey:@"UUID"];
-  v12 = [v9 isEqualToString:v11];
+  peripheral = [(ClientService *)self peripheral];
+  identifier = [peripheral identifier];
+  uUIDString = [identifier UUIDString];
+  userInfo = [notificationCopy userInfo];
+  v11 = [userInfo valueForKey:@"UUID"];
+  v12 = [uUIDString isEqualToString:v11];
 
   if (v12)
   {
-    v13 = [v4 userInfo];
-    v14 = [v13 valueForKey:@"PnP"];
+    userInfo2 = [notificationCopy userInfo];
+    v14 = [userInfo2 valueForKey:@"PnP"];
 
     if (v14)
     {
       [(CyclingPowerService *)self updateZeroDuplicateValues];
     }
 
-    v15 = [v4 userInfo];
-    v16 = [v15 valueForKey:@"ModelNumber"];
+    userInfo3 = [notificationCopy userInfo];
+    v16 = [userInfo3 valueForKey:@"ModelNumber"];
 
     if (v16)
     {
       [(CyclingPowerService *)self updateZeroDuplicateValues];
       if (self->fDistributedPower)
       {
-        v17 = [(CyclingPowerService *)self comboHKDevice];
+        comboHKDevice = [(CyclingPowerService *)self comboHKDevice];
 
-        if (v17)
+        if (comboHKDevice)
         {
-          v18 = [(CyclingPowerService *)self comboHKDevice];
-          [v18 _setModel:v16];
+          comboHKDevice2 = [(CyclingPowerService *)self comboHKDevice];
+          [comboHKDevice2 _setModel:v16];
         }
       }
     }
 
-    v19 = [v4 userInfo];
-    v20 = [v19 valueForKey:@"FirmwareRevision"];
+    userInfo4 = [notificationCopy userInfo];
+    v20 = [userInfo4 valueForKey:@"FirmwareRevision"];
 
     if (v20)
     {
       if (self->fDistributedPower)
       {
-        v21 = [(CyclingPowerService *)self comboHKDevice];
+        comboHKDevice3 = [(CyclingPowerService *)self comboHKDevice];
 
-        if (v21)
+        if (comboHKDevice3)
         {
-          v22 = [(CyclingPowerService *)self comboHKDevice];
-          v23 = [(CyclingPowerService *)self comboHKDevice];
-          v24 = [v23 firmwareVersion];
-          v25 = [(CyclingPowerService *)self updateComboString:v24 withValue:v20];
-          [v22 _setFirmwareVersion:v25];
+          comboHKDevice4 = [(CyclingPowerService *)self comboHKDevice];
+          comboHKDevice5 = [(CyclingPowerService *)self comboHKDevice];
+          firmwareVersion = [comboHKDevice5 firmwareVersion];
+          v25 = [(CyclingPowerService *)self updateComboString:firmwareVersion withValue:v20];
+          [comboHKDevice4 _setFirmwareVersion:v25];
         }
       }
     }
 
-    v26 = [v4 userInfo];
-    v27 = [v26 valueForKey:@"HardwareRevision"];
+    userInfo5 = [notificationCopy userInfo];
+    v27 = [userInfo5 valueForKey:@"HardwareRevision"];
 
     if (v27)
     {
       if (self->fDistributedPower)
       {
-        v28 = [(CyclingPowerService *)self comboHKDevice];
+        comboHKDevice6 = [(CyclingPowerService *)self comboHKDevice];
 
-        if (v28)
+        if (comboHKDevice6)
         {
-          v29 = [(CyclingPowerService *)self comboHKDevice];
-          v30 = [(CyclingPowerService *)self comboHKDevice];
-          v31 = [v30 hardwareVersion];
-          v32 = [(CyclingPowerService *)self updateComboString:v31 withValue:v27];
-          [v29 _setHardwareVersion:v32];
+          comboHKDevice7 = [(CyclingPowerService *)self comboHKDevice];
+          comboHKDevice8 = [(CyclingPowerService *)self comboHKDevice];
+          hardwareVersion = [comboHKDevice8 hardwareVersion];
+          v32 = [(CyclingPowerService *)self updateComboString:hardwareVersion withValue:v27];
+          [comboHKDevice7 _setHardwareVersion:v32];
         }
       }
     }
 
-    v33 = [v4 userInfo];
-    v6 = [v33 valueForKey:@"ManufacturerName"];
+    userInfo6 = [notificationCopy userInfo];
+    name = [userInfo6 valueForKey:@"ManufacturerName"];
 
-    if (v6)
+    if (name)
     {
       [(CyclingPowerService *)self updateZeroDuplicateValues];
       if (self->fDistributedPower)
       {
-        v34 = [(CyclingPowerService *)self comboHKDevice];
+        comboHKDevice9 = [(CyclingPowerService *)self comboHKDevice];
 
-        if (v34)
+        if (comboHKDevice9)
         {
-          v35 = [(CyclingPowerService *)self comboHKDevice];
-          [v35 _setManufacturer:v6];
+          comboHKDevice10 = [(CyclingPowerService *)self comboHKDevice];
+          [comboHKDevice10 _setManufacturer:name];
         }
       }
     }
@@ -455,30 +455,30 @@ LABEL_8:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         log = v37;
-        v51 = [(CyclingPowerService *)self comboHKDevice];
-        v46 = [v51 name];
-        v50 = [(CyclingPowerService *)self comboHKDevice];
-        v38 = [v50 manufacturer];
-        v49 = [(CyclingPowerService *)self comboHKDevice];
-        v39 = [v49 model];
-        v47 = [(CyclingPowerService *)self comboHKDevice];
-        v40 = [v47 hardwareVersion];
-        v41 = [(CyclingPowerService *)self comboHKDevice];
-        v42 = [v41 firmwareVersion];
-        v43 = [(CyclingPowerService *)self comboHKDevice];
-        v44 = [v43 localIdentifier];
+        comboHKDevice11 = [(CyclingPowerService *)self comboHKDevice];
+        name2 = [comboHKDevice11 name];
+        comboHKDevice12 = [(CyclingPowerService *)self comboHKDevice];
+        manufacturer = [comboHKDevice12 manufacturer];
+        comboHKDevice13 = [(CyclingPowerService *)self comboHKDevice];
+        model = [comboHKDevice13 model];
+        comboHKDevice14 = [(CyclingPowerService *)self comboHKDevice];
+        hardwareVersion2 = [comboHKDevice14 hardwareVersion];
+        comboHKDevice15 = [(CyclingPowerService *)self comboHKDevice];
+        firmwareVersion2 = [comboHKDevice15 firmwareVersion];
+        comboHKDevice16 = [(CyclingPowerService *)self comboHKDevice];
+        localIdentifier = [comboHKDevice16 localIdentifier];
         *buf = 138413570;
-        v54 = v46;
+        v54 = name2;
         v55 = 2112;
-        v56 = v38;
+        v56 = manufacturer;
         v57 = 2112;
-        v58 = v39;
+        v58 = model;
         v59 = 2112;
-        v60 = v40;
+        v60 = hardwareVersion2;
         v61 = 2112;
-        v62 = v42;
+        v62 = firmwareVersion2;
         v63 = 2112;
-        v64 = v44;
+        v64 = localIdentifier;
         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Updated distributed HKDevice name:“%@” manufacturer:“%@” model:“%@” HW:“%@” FW:“%@” localID:“%@”", buf, 0x3Eu);
       }
     }
@@ -500,9 +500,9 @@ LABEL_29:
 {
   if (self->fFeatureCharacteristicRead && self->fSensorLocationCharacteristicRead && self->fDistributedPower)
   {
-    v3 = [(CyclingPowerService *)self comboHKDevice];
+    comboHKDevice = [(CyclingPowerService *)self comboHKDevice];
 
-    if (!v3)
+    if (!comboHKDevice)
     {
       v4 = +[FitnessDeviceManager instance];
       v7 = [v4 findMatchingDistributedFitnessService:self];
@@ -513,16 +513,16 @@ LABEL_29:
         if ([(CyclingPowerService *)self isSensorLocationLeft])
         {
           v7->fIsSecondary = 1;
-          v6 = self;
+          selfCopy = self;
         }
 
         else
         {
           self->fIsSecondary = 1;
-          v6 = v7;
+          selfCopy = v7;
         }
 
-        [(CyclingPowerService *)v6 createDistributedHKDeviceWithSecondary:?];
+        [(CyclingPowerService *)selfCopy createDistributedHKDeviceWithSecondary:?];
         v5 = v7;
       }
     }
@@ -544,27 +544,27 @@ LABEL_29:
 
 - (void)updatedSensorLocationCharacteristicValue
 {
-  v3 = [(CyclingPowerService *)self cyclingPowerSensorLocationCharacteristic];
-  v4 = [v3 value];
-  v5 = [v4 length];
+  cyclingPowerSensorLocationCharacteristic = [(CyclingPowerService *)self cyclingPowerSensorLocationCharacteristic];
+  value = [cyclingPowerSensorLocationCharacteristic value];
+  v5 = [value length];
 
   if (v5)
   {
-    v6 = [(CyclingPowerService *)self cyclingPowerSensorLocationCharacteristic];
-    v7 = [v6 value];
-    [(FitnessService *)self readBytesFromNSData:v7 into:&self->fSensorLocation startingAt:0 length:1 info:@"Cycling Power Sensor Location Characteristic Value"];
+    cyclingPowerSensorLocationCharacteristic2 = [(CyclingPowerService *)self cyclingPowerSensorLocationCharacteristic];
+    value2 = [cyclingPowerSensorLocationCharacteristic2 value];
+    [(FitnessService *)self readBytesFromNSData:value2 into:&self->fSensorLocation startingAt:0 length:1 info:@"Cycling Power Sensor Location Characteristic Value"];
 
     v8 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(CyclingPowerService *)self sensorLocationString];
-      v11 = [(ClientService *)self peripheral];
-      v12 = [v11 name];
+      sensorLocationString = [(CyclingPowerService *)self sensorLocationString];
+      peripheral = [(ClientService *)self peripheral];
+      name = [peripheral name];
       v14 = 138412546;
-      v15 = v10;
+      v15 = sensorLocationString;
       v16 = 2112;
-      v17 = v12;
+      v17 = name;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "updatedSensorLocationCharacteristicValue:%@ for “%@”", &v14, 0x16u);
     }
   }
@@ -584,9 +584,9 @@ LABEL_29:
 
 - (void)updatedFeatureCharacteristicValue
 {
-  v3 = [(CyclingPowerService *)self cyclingPowerFeatureCharacteristic];
-  v4 = [v3 value];
-  v5 = [v4 length];
+  cyclingPowerFeatureCharacteristic = [(CyclingPowerService *)self cyclingPowerFeatureCharacteristic];
+  value = [cyclingPowerFeatureCharacteristic value];
+  v5 = [value length];
 
   if (v5 > 3)
   {
@@ -595,9 +595,9 @@ LABEL_29:
 
   else
   {
-    v6 = [(CyclingPowerService *)self cyclingPowerFeatureCharacteristic];
-    v7 = [v6 value];
-    v8 = [v7 length];
+    cyclingPowerFeatureCharacteristic2 = [(CyclingPowerService *)self cyclingPowerFeatureCharacteristic];
+    value2 = [cyclingPowerFeatureCharacteristic2 value];
+    v8 = [value2 length];
 
     if (v8 <= 2)
     {
@@ -609,18 +609,18 @@ LABEL_29:
     }
   }
 
-  v10 = [(CyclingPowerService *)self cyclingPowerFeatureCharacteristic];
-  v11 = [v10 value];
-  [(FitnessService *)self readBytesFromNSData:v11 into:&self->_sendZeroForDuplicates startingAt:0 length:v8 info:@"Cycling Power Feature Characteristic Value"];
+  cyclingPowerFeatureCharacteristic3 = [(CyclingPowerService *)self cyclingPowerFeatureCharacteristic];
+  value3 = [cyclingPowerFeatureCharacteristic3 value];
+  [(FitnessService *)self readBytesFromNSData:value3 into:&self->_sendZeroForDuplicates startingAt:0 length:v8 info:@"Cycling Power Feature Characteristic Value"];
 
   self->fDistributedPower = (*&self->_sendZeroForDuplicates & 0x200000) != 0;
   v12 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [(ClientService *)self peripheral];
-    v15 = [v14 name];
-    v16 = v15;
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
+    v16 = name;
     v17 = @"NON-";
     v18 = *&self->_sendZeroForDuplicates;
     if (self->fDistributedPower)
@@ -629,7 +629,7 @@ LABEL_29:
     }
 
     *v21 = 138413058;
-    *&v21[4] = v15;
+    *&v21[4] = name;
     if ((v18 & 4) != 0)
     {
       v19 = @"YES";
@@ -664,32 +664,32 @@ LABEL_29:
   [(FitnessService *)self featuresReadComplete];
 }
 
-- (BOOL)matchesDistributedService:(id)a3
+- (BOOL)matchesDistributedService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = serviceCopy;
     if ([v5 isDistributed])
     {
       if ([(CyclingPowerService *)self isDistributed])
       {
-        v6 = [v5 peripheral];
-        v7 = [v6 identifier];
-        v8 = [v7 UUIDString];
-        v9 = [(ClientService *)self peripheral];
-        v10 = [v9 identifier];
-        v11 = [v10 UUIDString];
-        v12 = [v8 isEqualToString:v11];
+        peripheral = [v5 peripheral];
+        identifier = [peripheral identifier];
+        uUIDString = [identifier UUIDString];
+        peripheral2 = [(ClientService *)self peripheral];
+        identifier2 = [peripheral2 identifier];
+        uUIDString2 = [identifier2 UUIDString];
+        v12 = [uUIDString isEqualToString:uUIDString2];
 
         if ((v12 & 1) == 0)
         {
-          v13 = [(FitnessService *)self vendorID];
-          if (v13 == [v5 vendorID])
+          vendorID = [(FitnessService *)self vendorID];
+          if (vendorID == [v5 vendorID])
           {
-            v14 = [(FitnessService *)self productID];
-            if (v14 == [v5 productID])
+            productID = [(FitnessService *)self productID];
+            if (productID == [v5 productID])
             {
               v15 = 0;
               fSensorLocation = self->fSensorLocation;
@@ -751,28 +751,28 @@ LABEL_21:
   return v15;
 }
 
-- (void)updatedSpeedMeasurementValueForRevolutions:(unsigned int)a3 andWheelEventTime:(unsigned __int16)a4 timeStamp:(id)a5
+- (void)updatedSpeedMeasurementValueForRevolutions:(unsigned int)revolutions andWheelEventTime:(unsigned __int16)time timeStamp:(id)stamp
 {
-  v5 = a4;
-  v8 = a5;
+  timeCopy = time;
+  stampCopy = stamp;
   v9 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
     v25 = v9;
-    v26 = [(ClientService *)self peripheral];
-    v27 = [v26 name];
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
     v28 = 138413570;
-    v29 = v27;
+    v29 = name;
     v30 = 1024;
-    *v31 = a3;
+    *v31 = revolutions;
     *&v31[4] = 1024;
-    *&v31[6] = a3;
+    *&v31[6] = revolutions;
     *v32 = 1024;
-    *&v32[2] = v5;
+    *&v32[2] = timeCopy;
     *v33 = 1024;
-    *&v33[2] = v5;
+    *&v33[2] = timeCopy;
     LOWORD(v34[0]) = 2048;
-    *(v34 + 2) = vcvtd_n_f64_u32(v5, 0xBuLL);
+    *(v34 + 2) = vcvtd_n_f64_u32(timeCopy, 0xBuLL);
     _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "“%@” READ CP Measurement SPEED, CumWheelRev:%d (0x%08X) last Wheel Event Time:%d (0x%04X) (%f in sec)", &v28, 0x2Eu);
   }
 
@@ -783,24 +783,24 @@ LABEL_21:
     v12 = [FitnessService hkQuantityTypeForIdentifier:HKQuantityTypeIdentifierDistanceCycling];
     if (v11 | v12)
     {
-      v13 = v5 - LOWORD(self->lastPowerMeasurementReading.wheel_revolution_data) + ((v5 - LOWORD(self->lastPowerMeasurementReading.wheel_revolution_data)) >> 31 << 16);
+      v13 = timeCopy - LOWORD(self->lastPowerMeasurementReading.wheel_revolution_data) + ((timeCopy - LOWORD(self->lastPowerMeasurementReading.wheel_revolution_data)) >> 31 << 16);
       if (v13)
       {
         v14 = vcvtd_n_f64_u32(v13, 0xBuLL);
-        v15 = self->_wheelDiameterInInches * ((a3 - *&self->lastPowerMeasurementReading.accumulated_torque) * 3.14159265);
+        v15 = self->_wheelDiameterInInches * ((revolutions - *&self->lastPowerMeasurementReading.accumulated_torque) * 3.14159265);
         v16 = v15 / v14 * 0.0568181818;
         if (v16 >= 0.0 && v16 < 200.0)
         {
-          v24 = [NSDate dateWithTimeInterval:v8 sinceDate:-v14];
+          v24 = [NSDate dateWithTimeInterval:stampCopy sinceDate:-v14];
           if (v11 && [(FitnessService *)self isCollectingHKQuantityType:v11])
           {
-            [(FitnessService *)self recordDatum:v24 start:v8 end:v11 quantityType:v16];
+            [(FitnessService *)self recordDatum:v24 start:stampCopy end:v11 quantityType:v16];
             [(FitnessService *)self storeDatumsForQuantityType:v11];
           }
 
           if (v12 && [(FitnessService *)self isCollectingHKQuantityType:v12])
           {
-            [(FitnessService *)self recordDatum:v24 start:v8 end:v12 quantityType:v15 * 0.0254];
+            [(FitnessService *)self recordDatum:v24 start:stampCopy end:v12 quantityType:v15 * 0.0254];
             [(FitnessService *)self storeDatumsForQuantityType:v12];
           }
         }
@@ -811,18 +811,18 @@ LABEL_21:
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
           {
             v19 = v18;
-            v20 = [(ClientService *)self peripheral];
-            v21 = [v20 name];
+            peripheral2 = [(ClientService *)self peripheral];
+            name2 = [peripheral2 name];
             v22 = *&p_lastPowerMeasurementReading->accumulated_torque;
             wheel_revolution_data_low = LOWORD(p_lastPowerMeasurementReading->wheel_revolution_data);
             v28 = 138413570;
-            v29 = v21;
+            v29 = name2;
             v30 = 2048;
             *v31 = v16;
             *&v31[8] = 1024;
-            *v32 = a3;
+            *v32 = revolutions;
             *&v32[4] = 1024;
-            *v33 = v5;
+            *v33 = timeCopy;
             *&v33[4] = 1024;
             v34[0] = v22;
             LOWORD(v34[1]) = 1024;
@@ -836,13 +836,13 @@ LABEL_21:
       {
         if ([(FitnessService *)self isCollectingHKQuantityType:v11])
         {
-          [(FitnessService *)self recordDatum:v8 start:v8 end:v11 quantityType:0.0];
+          [(FitnessService *)self recordDatum:stampCopy start:stampCopy end:v11 quantityType:0.0];
           [(FitnessService *)self storeDatumsForQuantityType:v11];
         }
 
         if (v12 && [(FitnessService *)self isCollectingHKQuantityType:v12])
         {
-          [(FitnessService *)self recordDatum:v8 start:v8 end:v12 quantityType:0.0];
+          [(FitnessService *)self recordDatum:stampCopy start:stampCopy end:v12 quantityType:0.0];
           [(FitnessService *)self storeDatumsForQuantityType:v12];
         }
       }
@@ -855,29 +855,29 @@ LABEL_21:
   }
 }
 
-- (void)updatedCadenceMeasurementValueForRevolutions:(unsigned __int16)a3 andCrankEventTime:(unsigned __int16)a4 timeStamp:(id)a5
+- (void)updatedCadenceMeasurementValueForRevolutions:(unsigned __int16)revolutions andCrankEventTime:(unsigned __int16)time timeStamp:(id)stamp
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  timeCopy = time;
+  revolutionsCopy = revolutions;
+  stampCopy = stamp;
   v9 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
     v17 = v9;
-    v18 = [(ClientService *)self peripheral];
-    v19 = [v18 name];
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
     v26 = 138413570;
-    v27 = v19;
+    v27 = name;
     v28 = 1024;
-    *v29 = v6;
+    *v29 = revolutionsCopy;
     *&v29[4] = 1024;
-    *&v29[6] = v6;
+    *&v29[6] = revolutionsCopy;
     *v30 = 1024;
-    *&v30[2] = v5;
+    *&v30[2] = timeCopy;
     *v31 = 1024;
-    *&v31[2] = v5;
+    *&v31[2] = timeCopy;
     *v32 = 2048;
-    *&v32[2] = vcvtd_n_f64_u32(v5, 0xAuLL);
+    *&v32[2] = vcvtd_n_f64_u32(timeCopy, 0xAuLL);
     _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "“%@” READ CP Measurement CADENCE, CrankRev:%d (0x%04X) last Crank Event Time:%d (0x%04X) (%f in sec)", &v26, 0x2Eu);
   }
 
@@ -889,10 +889,10 @@ LABEL_21:
     {
       if ([(FitnessService *)self isCollectingHKQuantityType:v11])
       {
-        v12 = v5 - self->lastPowerMeasurementReading.last_wheel_event_time + ((v5 - self->lastPowerMeasurementReading.last_wheel_event_time) >> 31 << 16);
+        v12 = timeCopy - self->lastPowerMeasurementReading.last_wheel_event_time + ((timeCopy - self->lastPowerMeasurementReading.last_wheel_event_time) >> 31 << 16);
         if (v12)
         {
-          v13 = v6 - HIWORD(self->lastPowerMeasurementReading.wheel_revolution_data);
+          v13 = revolutionsCopy - HIWORD(self->lastPowerMeasurementReading.wheel_revolution_data);
           if (v13 >= 1)
           {
             v14 = vcvtd_n_f64_u32(v12, 0xAuLL);
@@ -903,18 +903,18 @@ LABEL_21:
               if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
               {
                 v21 = v20;
-                v22 = [(ClientService *)self peripheral];
-                v23 = [v22 name];
+                peripheral2 = [(ClientService *)self peripheral];
+                name2 = [peripheral2 name];
                 wheel_revolution_data_high = HIWORD(p_lastPowerMeasurementReading->wheel_revolution_data);
                 last_wheel_event_time = p_lastPowerMeasurementReading->last_wheel_event_time;
                 v26 = 138413570;
-                v27 = v23;
+                v27 = name2;
                 v28 = 2048;
                 *v29 = v15;
                 *&v29[8] = 1024;
-                *v30 = v6;
+                *v30 = revolutionsCopy;
                 *&v30[4] = 1024;
-                *v31 = v5;
+                *v31 = timeCopy;
                 *&v31[4] = 1024;
                 *v32 = wheel_revolution_data_high;
                 *&v32[4] = 1024;
@@ -925,8 +925,8 @@ LABEL_21:
 
             else
             {
-              v16 = [NSDate dateWithTimeInterval:v8 sinceDate:-v14];
-              [(FitnessService *)self recordDatum:v16 start:v8 end:v11 quantityType:v15];
+              v16 = [NSDate dateWithTimeInterval:stampCopy sinceDate:-v14];
+              [(FitnessService *)self recordDatum:v16 start:stampCopy end:v11 quantityType:v15];
               [(FitnessService *)self storeDatumsForQuantityType:v11];
             }
           }
@@ -934,7 +934,7 @@ LABEL_21:
 
         else if (self->fCurrentDataIsDuplicate && [(CyclingPowerService *)self sendDuplicateReadingsAsZero])
         {
-          [(FitnessService *)self recordDatum:v8 start:v8 end:v11 quantityType:0.0];
+          [(FitnessService *)self recordDatum:stampCopy start:stampCopy end:v11 quantityType:0.0];
           [(FitnessService *)self storeDatumsForQuantityType:v11];
         }
       }
@@ -967,19 +967,19 @@ LABEL_21:
   return @"-";
 }
 
-- (double)powerBalanceForValue:(double)a3 otherService:(id)a4 otherValue:(double)a5
+- (double)powerBalanceForValue:(double)value otherService:(id)service otherValue:(double)otherValue
 {
-  v8 = a4;
-  if (a3 + a5 <= 0.0)
+  serviceCopy = service;
+  if (value + otherValue <= 0.0)
   {
     goto LABEL_9;
   }
 
-  if (!-[CyclingPowerService isSensorLocationLeft](self, "isSensorLocationLeft") || ![v8 isSensorLocationRight])
+  if (!-[CyclingPowerService isSensorLocationLeft](self, "isSensorLocationLeft") || ![serviceCopy isSensorLocationRight])
   {
-    if (-[CyclingPowerService isSensorLocationRight](self, "isSensorLocationRight") && [v8 isSensorLocationLeft])
+    if (-[CyclingPowerService isSensorLocationRight](self, "isSensorLocationRight") && [serviceCopy isSensorLocationLeft])
     {
-      v9 = a5 * 100.0;
+      v9 = otherValue * 100.0;
       goto LABEL_8;
     }
 
@@ -988,9 +988,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = a3 * 100.0;
+  v9 = value * 100.0;
 LABEL_8:
-  v10 = v9 / (a3 + a5);
+  v10 = v9 / (value + otherValue);
 LABEL_10:
 
   return v10;
@@ -1000,21 +1000,21 @@ LABEL_10:
 {
   if ([(CyclingPowerService *)self isDistributed]&& ([(CyclingPowerService *)self comboHKDevice], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(CyclingPowerService *)self comboHKDevice];
+    comboHKDevice = [(CyclingPowerService *)self comboHKDevice];
   }
 
   else
   {
-    v5 = [(ClientService *)self peripheral];
-    v4 = [v5 hkDevice];
+    peripheral = [(ClientService *)self peripheral];
+    comboHKDevice = [peripheral hkDevice];
   }
 
-  return v4;
+  return comboHKDevice;
 }
 
-- (void)updatedPowerMeasurementValue:(id *)a3 timeStamp:(id)a4
+- (void)updatedPowerMeasurementValue:(id *)value timeStamp:(id)stamp
 {
-  v6 = a4;
+  stampCopy = stamp;
   v7 = [FitnessService hkQuantityTypeForIdentifier:HKQuantityTypeIdentifierCyclingPower];
   if (v7 && [(FitnessService *)self isCollectingHKQuantityType:v7])
   {
@@ -1025,33 +1025,33 @@ LABEL_10:
     {
       if (v9)
       {
-        v10 = [(CyclingPowerService *)self comboHKDevice];
+        comboHKDevice = [(CyclingPowerService *)self comboHKDevice];
 
-        if (v10)
+        if (comboHKDevice)
         {
           if (!self->_lastDistributedDatum)
           {
             goto LABEL_40;
           }
 
-          v11 = [v9 lastDistributedDatum];
-          if (!v11)
+          lastDistributedDatum = [v9 lastDistributedDatum];
+          if (!lastDistributedDatum)
           {
             goto LABEL_31;
           }
 
-          v12 = v11;
-          v13 = [v9 lastDistributedDatum];
-          v14 = [v13 dateInterval];
-          v15 = [v14 startDate];
-          [v6 timeIntervalSinceDate:v15];
+          v12 = lastDistributedDatum;
+          lastDistributedDatum2 = [v9 lastDistributedDatum];
+          dateInterval = [lastDistributedDatum2 dateInterval];
+          startDate = [dateInterval startDate];
+          [stampCopy timeIntervalSinceDate:startDate];
           v17 = fabs(v16);
 
           if (v17 >= 1.5)
           {
 LABEL_31:
-            v54 = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
-            [v54 _value];
+            quantity = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
+            [quantity _value];
             v56 = v55 + v55;
 
             if (v56 < 0.0 || v56 >= 5000.0)
@@ -1060,18 +1060,18 @@ LABEL_31:
               if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
               {
                 v65 = v64;
-                v66 = [(ClientService *)self peripheral];
-                v67 = [v66 name];
-                v68 = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
-                [v68 _value];
+                peripheral = [(ClientService *)self peripheral];
+                name = [peripheral name];
+                quantity2 = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
+                [quantity2 _value];
                 v70 = v69;
-                v71 = [(CyclingPowerService *)self sensorLocationSideString];
+                sensorLocationSideString = [(CyclingPowerService *)self sensorLocationSideString];
                 *buf = 138413314;
-                v172 = v67;
+                v172 = name;
                 v173 = 2048;
                 *v174 = v70;
                 *&v174[8] = 2114;
-                *&v174[10] = v71;
+                *&v174[10] = sensorLocationSideString;
                 *&v174[18] = 2048;
                 *&v174[20] = v56;
                 v175 = 2048;
@@ -1082,30 +1082,30 @@ LABEL_31:
 
             else
             {
-              v57 = [(HKQuantityDatum *)self->_lastDistributedDatum dateInterval];
-              v58 = [v57 startDate];
-              v59 = [(HKQuantityDatum *)self->_lastDistributedDatum dateInterval];
-              v60 = [v59 endDate];
-              v61 = [(FitnessService *)self createDatum:v58 start:v60 end:v7 quantityType:v56];
+              dateInterval2 = [(HKQuantityDatum *)self->_lastDistributedDatum dateInterval];
+              startDate2 = [dateInterval2 startDate];
+              dateInterval3 = [(HKQuantityDatum *)self->_lastDistributedDatum dateInterval];
+              endDate = [dateInterval3 endDate];
+              v61 = [(FitnessService *)self createDatum:startDate2 start:endDate end:v7 quantityType:v56];
 
               v62 = qword_1000DDBC8;
               if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
               {
                 loga = v62;
-                v166 = [(ClientService *)self peripheral];
-                v156 = [v166 name];
-                v106 = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
-                [v106 _value];
+                peripheral2 = [(ClientService *)self peripheral];
+                name2 = [peripheral2 name];
+                quantity3 = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
+                [quantity3 _value];
                 v108 = v107;
-                v109 = [(CyclingPowerService *)self sensorLocationSideString];
-                v110 = [v61 quantity];
-                [v110 _value];
+                sensorLocationSideString2 = [(CyclingPowerService *)self sensorLocationSideString];
+                quantity4 = [v61 quantity];
+                [quantity4 _value];
                 *buf = 138413314;
-                v172 = v156;
+                v172 = name2;
                 v173 = 2048;
                 *v174 = v108;
                 *&v174[8] = 2114;
-                *&v174[10] = v109;
+                *&v174[10] = sensorLocationSideString2;
                 *&v174[18] = 2048;
                 *&v174[20] = v111;
                 v175 = 2048;
@@ -1114,28 +1114,28 @@ LABEL_31:
               }
 
               [(FitnessService *)self recordDatum:v61 forType:v7];
-              v63 = [(CyclingPowerService *)self comboHKDevice];
-              [(FitnessService *)self storeDatumsForQuantityType:v7 usingHKDevice:v63];
+              comboHKDevice2 = [(CyclingPowerService *)self comboHKDevice];
+              [(FitnessService *)self storeDatumsForQuantityType:v7 usingHKDevice:comboHKDevice2];
             }
 
             goto LABEL_40;
           }
 
-          v18 = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
-          [v18 _value];
+          quantity5 = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
+          [quantity5 _value];
           v20 = v19;
-          v21 = [v9 lastDistributedDatum];
-          v22 = [v21 quantity];
-          [v22 _value];
+          lastDistributedDatum3 = [v9 lastDistributedDatum];
+          quantity6 = [lastDistributedDatum3 quantity];
+          [quantity6 _value];
           [(CyclingPowerService *)self powerBalanceForValue:v9 otherService:v20 otherValue:v23];
           v25 = v24;
 
-          v26 = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
-          [v26 _value];
+          quantity7 = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
+          [quantity7 _value];
           v28 = v27;
-          v29 = [v9 lastDistributedDatum];
-          v30 = [v29 quantity];
-          [v30 _value];
+          lastDistributedDatum4 = [v9 lastDistributedDatum];
+          quantity8 = [lastDistributedDatum4 quantity];
+          [quantity8 _value];
           v32 = v28 + v31;
 
           if (v32 < 0.0 || v32 >= 5000.0)
@@ -1147,31 +1147,31 @@ LABEL_31:
             }
 
             v159 = v72;
-            v169 = [(ClientService *)self peripheral];
-            v146 = [v169 name];
+            peripheral3 = [(ClientService *)self peripheral];
+            name3 = [peripheral3 name];
             logd = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
             [logd _value];
             v130 = v129;
-            v131 = [(CyclingPowerService *)self sensorLocationSideString];
-            v154 = [v9 lastDistributedDatum];
-            v150 = [v154 quantity];
-            [v150 _value];
+            sensorLocationSideString3 = [(CyclingPowerService *)self sensorLocationSideString];
+            lastDistributedDatum5 = [v9 lastDistributedDatum];
+            quantity9 = [lastDistributedDatum5 quantity];
+            [quantity9 _value];
             v133 = v132;
-            v134 = [v9 peripheral];
-            v135 = [v134 name];
-            v136 = [v9 sensorLocationSideString];
+            peripheral4 = [v9 peripheral];
+            name4 = [peripheral4 name];
+            sensorLocationSideString4 = [v9 sensorLocationSideString];
             *buf = 138414082;
-            v172 = v146;
+            v172 = name3;
             v173 = 2048;
             *v174 = v130;
             *&v174[8] = 2114;
-            *&v174[10] = v131;
+            *&v174[10] = sensorLocationSideString3;
             *&v174[18] = 2048;
             *&v174[20] = v133;
             v175 = 2112;
-            v176 = v135;
+            v176 = name4;
             v177 = 2114;
-            v178 = v136;
+            v178 = sensorLocationSideString4;
             v179 = 2048;
             v180 = v32;
             v181 = 2048;
@@ -1182,44 +1182,44 @@ LABEL_31:
 
           else
           {
-            v33 = [v9 lastDistributedDatum];
-            v34 = [v33 dateInterval];
-            v35 = [v34 startDate];
-            v36 = [(FitnessService *)self createDatum:v35 start:v6 end:v7 quantityType:v32];
+            lastDistributedDatum6 = [v9 lastDistributedDatum];
+            dateInterval4 = [lastDistributedDatum6 dateInterval];
+            startDate3 = [dateInterval4 startDate];
+            v36 = [(FitnessService *)self createDatum:startDate3 start:stampCopy end:v7 quantityType:v32];
 
             [(FitnessService *)self recordDatum:v36 forType:v7];
-            v37 = [(CyclingPowerService *)self comboHKDevice];
-            [(FitnessService *)self storeDatumsForQuantityType:v7 usingHKDevice:v37];
+            comboHKDevice3 = [(CyclingPowerService *)self comboHKDevice];
+            [(FitnessService *)self storeDatumsForQuantityType:v7 usingHKDevice:comboHKDevice3];
 
             v38 = qword_1000DDBC8;
             if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
             {
               v160 = v38;
-              v170 = [(ClientService *)self peripheral];
-              v147 = [v170 name];
+              peripheral5 = [(ClientService *)self peripheral];
+              name5 = [peripheral5 name];
               log = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
               [log _value];
               v138 = v137;
-              v139 = [(CyclingPowerService *)self sensorLocationSideString];
-              v155 = [v9 lastDistributedDatum];
-              v151 = [v155 quantity];
-              [v151 _value];
+              sensorLocationSideString5 = [(CyclingPowerService *)self sensorLocationSideString];
+              lastDistributedDatum7 = [v9 lastDistributedDatum];
+              quantity10 = [lastDistributedDatum7 quantity];
+              [quantity10 _value];
               v141 = v140;
-              v144 = [v9 peripheral];
-              v142 = [v144 name];
-              v143 = [v9 sensorLocationSideString];
+              peripheral6 = [v9 peripheral];
+              name6 = [peripheral6 name];
+              sensorLocationSideString6 = [v9 sensorLocationSideString];
               *buf = 138414082;
-              v172 = v147;
+              v172 = name5;
               v173 = 2048;
               *v174 = v138;
               *&v174[8] = 2114;
-              *&v174[10] = v139;
+              *&v174[10] = sensorLocationSideString5;
               *&v174[18] = 2048;
               *&v174[20] = v141;
               v175 = 2112;
-              v176 = v142;
+              v176 = name6;
               v177 = 2114;
-              v178 = v143;
+              v178 = sensorLocationSideString6;
               v179 = 2048;
               v180 = v32;
               v181 = 2048;
@@ -1231,18 +1231,18 @@ LABEL_31:
 LABEL_39:
           [v9 setLastDistributedDatum:0];
 LABEL_40:
-          v73 = [(FitnessService *)self createDatum:v6 start:v6 end:v7 quantityType:*(&a3->var0 + 1)];
+          v73 = [(FitnessService *)self createDatum:stampCopy start:stampCopy end:v7 quantityType:*(&value->var0 + 1)];
           lastDistributedDatum = self->_lastDistributedDatum;
           self->_lastDistributedDatum = v73;
 
-          v75 = [v9 lastDistributedDatum];
+          lastDistributedDatum8 = [v9 lastDistributedDatum];
 
-          if (v75)
+          if (lastDistributedDatum8)
           {
-            v76 = [v9 lastDistributedDatum];
-            v77 = [v76 dateInterval];
-            v78 = [v77 startDate];
-            [v6 timeIntervalSinceDate:v78];
+            lastDistributedDatum9 = [v9 lastDistributedDatum];
+            dateInterval5 = [lastDistributedDatum9 dateInterval];
+            startDate4 = [dateInterval5 startDate];
+            [stampCopy timeIntervalSinceDate:startDate4];
             v80 = fabs(v79);
 
             if (v80 >= 1.5)
@@ -1256,21 +1256,21 @@ LABEL_40:
 
             else
             {
-              v81 = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
-              [v81 _value];
+              quantity11 = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
+              [quantity11 _value];
               v83 = v82;
-              v84 = [v9 lastDistributedDatum];
-              v85 = [v84 quantity];
-              [v85 _value];
+              lastDistributedDatum10 = [v9 lastDistributedDatum];
+              quantity12 = [lastDistributedDatum10 quantity];
+              [quantity12 _value];
               [(CyclingPowerService *)self powerBalanceForValue:v9 otherService:v83 otherValue:v86];
               v88 = v87;
 
-              v89 = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
-              [v89 _value];
+              quantity13 = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
+              [quantity13 _value];
               v91 = v90;
-              v92 = [v9 lastDistributedDatum];
-              v93 = [v92 quantity];
-              [v93 _value];
+              lastDistributedDatum11 = [v9 lastDistributedDatum];
+              quantity14 = [lastDistributedDatum11 quantity];
+              [quantity14 _value];
               v95 = v91 + v94;
 
               if (v95 < 0.0 || v95 >= 5000.0)
@@ -1279,31 +1279,31 @@ LABEL_40:
                 if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
                 {
                   v157 = v104;
-                  v167 = [(ClientService *)self peripheral];
-                  v148 = [v167 name];
+                  peripheral7 = [(ClientService *)self peripheral];
+                  name7 = [peripheral7 name];
                   logc = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
                   [logc _value];
                   v113 = v112;
-                  v114 = [(CyclingPowerService *)self sensorLocationSideString];
-                  v152 = [v9 lastDistributedDatum];
-                  v115 = [v152 quantity];
-                  [v115 _value];
+                  sensorLocationSideString7 = [(CyclingPowerService *)self sensorLocationSideString];
+                  lastDistributedDatum12 = [v9 lastDistributedDatum];
+                  quantity15 = [lastDistributedDatum12 quantity];
+                  [quantity15 _value];
                   v117 = v116;
-                  v118 = [v9 peripheral];
-                  v119 = [v118 name];
-                  v120 = [v9 sensorLocationSideString];
+                  peripheral8 = [v9 peripheral];
+                  name8 = [peripheral8 name];
+                  sensorLocationSideString8 = [v9 sensorLocationSideString];
                   *buf = 138414082;
-                  v172 = v148;
+                  v172 = name7;
                   v173 = 2048;
                   *v174 = v113;
                   *&v174[8] = 2114;
-                  *&v174[10] = v114;
+                  *&v174[10] = sensorLocationSideString7;
                   *&v174[18] = 2048;
                   *&v174[20] = v117;
                   v175 = 2112;
-                  v176 = v119;
+                  v176 = name8;
                   v177 = 2114;
-                  v178 = v120;
+                  v178 = sensorLocationSideString8;
                   v179 = 2048;
                   v180 = v95;
                   v181 = 2048;
@@ -1314,44 +1314,44 @@ LABEL_40:
 
               else
               {
-                v96 = [v9 lastDistributedDatum];
-                v97 = [v96 dateInterval];
-                v98 = [v97 startDate];
-                v99 = [(FitnessService *)self createDatum:v98 start:v6 end:v7 quantityType:v95];
+                lastDistributedDatum13 = [v9 lastDistributedDatum];
+                dateInterval6 = [lastDistributedDatum13 dateInterval];
+                startDate5 = [dateInterval6 startDate];
+                v99 = [(FitnessService *)self createDatum:startDate5 start:stampCopy end:v7 quantityType:v95];
 
                 [(FitnessService *)self recordDatum:v99 forType:v7];
-                v100 = [(CyclingPowerService *)self comboHKDevice];
-                [(FitnessService *)self storeDatumsForQuantityType:v7 usingHKDevice:v100];
+                comboHKDevice4 = [(CyclingPowerService *)self comboHKDevice];
+                [(FitnessService *)self storeDatumsForQuantityType:v7 usingHKDevice:comboHKDevice4];
 
                 v101 = qword_1000DDBC8;
                 if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
                 {
                   v158 = v101;
-                  v168 = [(ClientService *)self peripheral];
-                  v145 = [v168 name];
+                  peripheral9 = [(ClientService *)self peripheral];
+                  name9 = [peripheral9 name];
                   logb = [(HKQuantityDatum *)self->_lastDistributedDatum quantity];
                   [logb _value];
                   v122 = v121;
-                  v123 = [(CyclingPowerService *)self sensorLocationSideString];
-                  v153 = [v9 lastDistributedDatum];
-                  v149 = [v153 quantity];
-                  [v149 _value];
+                  sensorLocationSideString9 = [(CyclingPowerService *)self sensorLocationSideString];
+                  lastDistributedDatum14 = [v9 lastDistributedDatum];
+                  quantity16 = [lastDistributedDatum14 quantity];
+                  [quantity16 _value];
                   v125 = v124;
-                  v126 = [v9 peripheral];
-                  v127 = [v126 name];
-                  v128 = [v9 sensorLocationSideString];
+                  peripheral10 = [v9 peripheral];
+                  name10 = [peripheral10 name];
+                  sensorLocationSideString10 = [v9 sensorLocationSideString];
                   *buf = 138414082;
-                  v172 = v145;
+                  v172 = name9;
                   v173 = 2048;
                   *v174 = v122;
                   *&v174[8] = 2114;
-                  *&v174[10] = v123;
+                  *&v174[10] = sensorLocationSideString9;
                   *&v174[18] = 2048;
                   *&v174[20] = v125;
                   v175 = 2112;
-                  v176 = v127;
+                  v176 = name10;
                   v177 = 2114;
-                  v178 = v128;
+                  v178 = sensorLocationSideString10;
                   v179 = 2048;
                   v180 = v95;
                   v181 = 2048;
@@ -1389,8 +1389,8 @@ LABEL_40:
 
     else
     {
-      v39 = *(&a3->var0 + 1);
-      if ((*(&a3->var0 + 1) >> 3) > 0x270u)
+      v39 = *(&value->var0 + 1);
+      if ((*(&value->var0 + 1) >> 3) > 0x270u)
       {
         v51 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -1404,23 +1404,23 @@ LABEL_40:
       v40 = 0;
     }
 
-    [(FitnessService *)self recordDatum:v6 start:v6 end:v7 quantityType:v39];
+    [(FitnessService *)self recordDatum:stampCopy start:stampCopy end:v7 quantityType:v39];
     [(FitnessService *)self storeDatumsForQuantityType:v7];
-    var0 = a3->var0;
+    var0 = value->var0;
     v42 = qword_1000DDBC8;
     v43 = os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG);
     if (var0)
     {
       if (v43)
       {
-        v52 = vcvtd_n_f64_u32(LOBYTE(a3->var1), 1uLL);
+        v52 = vcvtd_n_f64_u32(LOBYTE(value->var1), 1uLL);
         v44 = v42;
-        v45 = [(ClientService *)self peripheral];
-        v46 = [v45 name];
+        peripheral11 = [(ClientService *)self peripheral];
+        name11 = [peripheral11 name];
         v53 = &stru_1000BEA00;
         *buf = 138413058;
         v173 = 1024;
-        v172 = v46;
+        v172 = name11;
         if (v40)
         {
           v53 = @"DUPLICATE";
@@ -1441,11 +1441,11 @@ LABEL_40:
     else if (v43)
     {
       v44 = v42;
-      v45 = [(ClientService *)self peripheral];
-      v46 = [v45 name];
+      peripheral11 = [(ClientService *)self peripheral];
+      name11 = [peripheral11 name];
       v47 = &stru_1000BEA00;
       *buf = 138412802;
-      v172 = v46;
+      v172 = name11;
       if (v40)
       {
         v47 = @"DUPLICATE";
@@ -1466,26 +1466,26 @@ LABEL_54:
   }
 }
 
-- (void)updatedMeasurementCharacteristicValue:(id)a3 at:(id)a4
+- (void)updatedMeasurementCharacteristicValue:(id)value at:(id)at
 {
-  v5 = a4;
+  atCopy = at;
   v67[0] = 0;
   v65 = 0u;
   v66 = 0u;
-  v6 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-  v7 = [v6 value];
-  v8 = [(FitnessService *)self readBytesFromNSData:v7 into:&v65 startingAt:0 length:2 info:@"CPM - status flags"];
+  cyclingPowerMeasurementCharacteristic = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+  value = [cyclingPowerMeasurementCharacteristic value];
+  v8 = [(FitnessService *)self readBytesFromNSData:value into:&v65 startingAt:0 length:2 info:@"CPM - status flags"];
 
-  v9 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-  v10 = [v9 value];
-  v11 = [(FitnessService *)self readBytesFromNSData:v10 into:&v65 + 2 startingAt:v8 length:2 info:@"CPM - instantaneous power"]+ v8;
+  cyclingPowerMeasurementCharacteristic2 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+  value2 = [cyclingPowerMeasurementCharacteristic2 value];
+  v11 = [(FitnessService *)self readBytesFromNSData:value2 into:&v65 + 2 startingAt:v8 length:2 info:@"CPM - instantaneous power"]+ v8;
 
   v12 = v65;
   if (v65)
   {
-    v20 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-    v21 = [v20 value];
-    v11 = &v11[[(FitnessService *)self readBytesFromNSData:v21 into:&v65 + 4 startingAt:v11 length:1 info:@"CPM - power balance"]];
+    cyclingPowerMeasurementCharacteristic3 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+    value3 = [cyclingPowerMeasurementCharacteristic3 value];
+    v11 = &v11[[(FitnessService *)self readBytesFromNSData:value3 into:&v65 + 4 startingAt:v11 length:1 info:@"CPM - power balance"]];
 
     v12 = v65;
     if ((v65 & 4) == 0)
@@ -1505,9 +1505,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v22 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-  v23 = [v22 value];
-  v11 = &v11[[(FitnessService *)self readBytesFromNSData:v23 into:&v65 + 6 startingAt:v11 length:2 info:@"CPM - accumulated torque"]];
+  cyclingPowerMeasurementCharacteristic4 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+  value4 = [cyclingPowerMeasurementCharacteristic4 value];
+  v11 = &v11[[(FitnessService *)self readBytesFromNSData:value4 into:&v65 + 6 startingAt:v11 length:2 info:@"CPM - accumulated torque"]];
 
   v12 = v65;
   if ((v65 & 0x10) == 0)
@@ -1530,13 +1530,13 @@ LABEL_10:
   }
 
 LABEL_9:
-  v24 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-  v25 = [v24 value];
-  v26 = &v11[[(FitnessService *)self readBytesFromNSData:v25 into:&v65 + 8 startingAt:v11 length:4 info:@"CPM - wheel revolutions"]];
+  cyclingPowerMeasurementCharacteristic5 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+  value5 = [cyclingPowerMeasurementCharacteristic5 value];
+  v26 = &v11[[(FitnessService *)self readBytesFromNSData:value5 into:&v65 + 8 startingAt:v11 length:4 info:@"CPM - wheel revolutions"]];
 
-  v27 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-  v28 = [v27 value];
-  v11 = &v26[[(FitnessService *)self readBytesFromNSData:v28 into:&v65 | 0xC startingAt:v26 length:2 info:@"CPM - wheel event time"]];
+  cyclingPowerMeasurementCharacteristic6 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+  value6 = [cyclingPowerMeasurementCharacteristic6 value];
+  v11 = &v26[[(FitnessService *)self readBytesFromNSData:value6 into:&v65 | 0xC startingAt:v26 length:2 info:@"CPM - wheel event time"]];
 
   v13 = v65;
   if ((v65 & 0x20) == 0)
@@ -1545,25 +1545,25 @@ LABEL_9:
   }
 
 LABEL_5:
-  v14 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-  v15 = [v14 value];
-  v16 = &v11[[(FitnessService *)self readBytesFromNSData:v15 into:&v65 | 0xE startingAt:v11 length:2 info:@"CPM - crank revolutions"]];
+  cyclingPowerMeasurementCharacteristic7 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+  value7 = [cyclingPowerMeasurementCharacteristic7 value];
+  v16 = &v11[[(FitnessService *)self readBytesFromNSData:value7 into:&v65 | 0xE startingAt:v11 length:2 info:@"CPM - crank revolutions"]];
 
-  v17 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-  v18 = [v17 value];
-  v11 = &v16[[(FitnessService *)self readBytesFromNSData:v18 into:&v66 startingAt:v16 length:2 info:@"CPM - crank event time"]];
+  cyclingPowerMeasurementCharacteristic8 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+  value8 = [cyclingPowerMeasurementCharacteristic8 value];
+  v11 = &v16[[(FitnessService *)self readBytesFromNSData:value8 into:&v66 startingAt:v16 length:2 info:@"CPM - crank event time"]];
 
   v19 = v65;
   if ((v65 & 0x40) != 0)
   {
 LABEL_11:
-    v29 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-    v30 = [v29 value];
-    v31 = &v11[[(FitnessService *)self readBytesFromNSData:v30 into:&v66 + 2 startingAt:v11 length:2 info:@"CPM - extreme force magnitude max"]];
+    cyclingPowerMeasurementCharacteristic9 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+    value9 = [cyclingPowerMeasurementCharacteristic9 value];
+    v31 = &v11[[(FitnessService *)self readBytesFromNSData:value9 into:&v66 + 2 startingAt:v11 length:2 info:@"CPM - extreme force magnitude max"]];
 
-    v32 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-    v33 = [v32 value];
-    v11 = &v31[[(FitnessService *)self readBytesFromNSData:v33 into:&v66 + 4 startingAt:v31 length:2 info:@"CPM - extreme force magnitude min"]];
+    cyclingPowerMeasurementCharacteristic10 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+    value10 = [cyclingPowerMeasurementCharacteristic10 value];
+    v11 = &v31[[(FitnessService *)self readBytesFromNSData:value10 into:&v66 + 4 startingAt:v31 length:2 info:@"CPM - extreme force magnitude min"]];
 
     v19 = v65;
   }
@@ -1571,13 +1571,13 @@ LABEL_11:
 LABEL_12:
   if ((v19 & 0x80) != 0)
   {
-    v39 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-    v40 = [v39 value];
-    v41 = &v11[[(FitnessService *)self readBytesFromNSData:v40 into:&v66 + 6 startingAt:v11 length:2 info:@"CPM - extreme torque magnitude max"]];
+    cyclingPowerMeasurementCharacteristic11 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+    value11 = [cyclingPowerMeasurementCharacteristic11 value];
+    v41 = &v11[[(FitnessService *)self readBytesFromNSData:value11 into:&v66 + 6 startingAt:v11 length:2 info:@"CPM - extreme torque magnitude max"]];
 
-    v42 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-    v43 = [v42 value];
-    v11 = &v41[[(FitnessService *)self readBytesFromNSData:v43 into:&v66 + 8 startingAt:v41 length:2 info:@"CPM - extreme torque magnitude min"]];
+    cyclingPowerMeasurementCharacteristic12 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+    value12 = [cyclingPowerMeasurementCharacteristic12 value];
+    v11 = &v41[[(FitnessService *)self readBytesFromNSData:value12 into:&v66 + 8 startingAt:v41 length:2 info:@"CPM - extreme torque magnitude min"]];
 
     v19 = v65;
     if ((v65 & 0x100) == 0)
@@ -1598,9 +1598,9 @@ LABEL_14:
   }
 
   *buf = 0;
-  v44 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-  v45 = [v44 value];
-  v11 = &v11[[(FitnessService *)self readBytesFromNSData:v45 into:buf startingAt:v11 length:4 info:@"CPM - extreme angles"]];
+  cyclingPowerMeasurementCharacteristic13 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+  value13 = [cyclingPowerMeasurementCharacteristic13 value];
+  v11 = &v11[[(FitnessService *)self readBytesFromNSData:value13 into:buf startingAt:v11 length:4 info:@"CPM - extreme angles"]];
 
   WORD5(v66) = *buf & 0xFFF;
   WORD6(v66) = (*buf >> 12) & 0xFFF;
@@ -1617,9 +1617,9 @@ LABEL_15:
   }
 
 LABEL_25:
-  v46 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-  v47 = [v46 value];
-  v11 = &v11[[(FitnessService *)self readBytesFromNSData:v47 into:&v66 + 14 startingAt:v11 length:2 info:@"CPM - top dead spot angle"]];
+  cyclingPowerMeasurementCharacteristic14 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+  value14 = [cyclingPowerMeasurementCharacteristic14 value];
+  v11 = &v11[[(FitnessService *)self readBytesFromNSData:value14 into:&v66 + 14 startingAt:v11 length:2 info:@"CPM - top dead spot angle"]];
 
   v19 = v65;
   if ((v65 & 0x400) == 0)
@@ -1634,16 +1634,16 @@ LABEL_16:
   }
 
 LABEL_26:
-  v48 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-  v49 = [v48 value];
-  v11 = &v11[[(FitnessService *)self readBytesFromNSData:v49 into:v67 startingAt:v11 length:2 info:@"CPM - bottom dead spot angle"]];
+  cyclingPowerMeasurementCharacteristic15 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+  value15 = [cyclingPowerMeasurementCharacteristic15 value];
+  v11 = &v11[[(FitnessService *)self readBytesFromNSData:value15 into:v67 startingAt:v11 length:2 info:@"CPM - bottom dead spot angle"]];
 
   if ((v65 & 0x800) != 0)
   {
 LABEL_17:
-    v34 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-    v35 = [v34 value];
-    [(FitnessService *)self readBytesFromNSData:v35 into:v67 + 2 startingAt:v11 length:2 info:@"CPM - accumulated energy"];
+    cyclingPowerMeasurementCharacteristic16 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+    value16 = [cyclingPowerMeasurementCharacteristic16 value];
+    [(FitnessService *)self readBytesFromNSData:value16 into:v67 + 2 startingAt:v11 length:2 info:@"CPM - accumulated energy"];
   }
 
 LABEL_18:
@@ -1714,13 +1714,13 @@ LABEL_41:
 LABEL_35:
   if (!self->firstDuplicateEventTimeStamp)
   {
-    v50 = v5;
+    v50 = atCopy;
     firstDuplicateEventTimeStamp = self->firstDuplicateEventTimeStamp;
     self->firstDuplicateEventTimeStamp = v50;
 LABEL_43:
   }
 
-  if (*p_fCurrentDataIsDuplicate && -[CyclingPowerService sendZeroForDuplicates](self, "sendZeroForDuplicates") && ([v5 timeIntervalSinceDate:self->firstDuplicateEventTimeStamp], v53 < 1.5))
+  if (*p_fCurrentDataIsDuplicate && -[CyclingPowerService sendZeroForDuplicates](self, "sendZeroForDuplicates") && ([atCopy timeIntervalSinceDate:self->firstDuplicateEventTimeStamp], v53 < 1.5))
   {
     v54 = 0;
   }
@@ -1729,15 +1729,15 @@ LABEL_43:
   {
     if ((v12 & 0x10) != 0)
     {
-      [(CyclingPowerService *)self updatedSpeedMeasurementValueForRevolutions:DWORD2(v65) andWheelEventTime:WORD6(v65) timeStamp:v5];
+      [(CyclingPowerService *)self updatedSpeedMeasurementValueForRevolutions:DWORD2(v65) andWheelEventTime:WORD6(v65) timeStamp:atCopy];
     }
 
     if ((v13 & 0x20) != 0)
     {
-      [(CyclingPowerService *)self updatedCadenceMeasurementValueForRevolutions:HIWORD(v65) andCrankEventTime:v66 timeStamp:v5];
+      [(CyclingPowerService *)self updatedCadenceMeasurementValueForRevolutions:HIWORD(v65) andCrankEventTime:v66 timeStamp:atCopy];
     }
 
-    [(CyclingPowerService *)self updatedPowerMeasurementValue:&v65 timeStamp:v5];
+    [(CyclingPowerService *)self updatedPowerMeasurementValue:&v65 timeStamp:atCopy];
     v54 = 1;
   }
 
@@ -1745,8 +1745,8 @@ LABEL_43:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
     log = v55;
-    v64 = [(ClientService *)self peripheral];
-    v57 = [v64 name];
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
     v58 = SWORD1(v65);
     if ((v12 & 0x10) != 0)
     {
@@ -1769,9 +1769,9 @@ LABEL_43:
     }
 
     v61 = *p_fCurrentDataIsDuplicate;
-    [v5 timeIntervalSinceDate:self->firstDuplicateEventTimeStamp];
+    [atCopy timeIntervalSinceDate:self->firstDuplicateEventTimeStamp];
     *buf = 138413826;
-    v69 = v57;
+    v69 = name;
     v70 = 1024;
     v71 = v58;
     v72 = 2112;
@@ -1797,20 +1797,20 @@ LABEL_43:
 {
   v19 = 0;
   v18 = 0;
-  v3 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
-  v4 = [v3 value];
-  v5 = [(FitnessService *)self readBytesFromNSData:v4 into:&v18 startingAt:0 length:1 info:@"CPV - status flags"];
+  cyclingPowerVectorCharacteristic = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
+  value = [cyclingPowerVectorCharacteristic value];
+  v5 = [(FitnessService *)self readBytesFromNSData:value into:&v18 startingAt:0 length:1 info:@"CPV - status flags"];
 
   v6 = v18;
   if (v18)
   {
-    v9 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
-    v10 = [v9 value];
-    v11 = &v5[[(FitnessService *)self readBytesFromNSData:v10 into:&v18 + 2 startingAt:v5 length:2 info:@"CPV - crank revolutions"]];
+    cyclingPowerVectorCharacteristic2 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
+    value2 = [cyclingPowerVectorCharacteristic2 value];
+    v11 = &v5[[(FitnessService *)self readBytesFromNSData:value2 into:&v18 + 2 startingAt:v5 length:2 info:@"CPV - crank revolutions"]];
 
-    v12 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
-    v13 = [v12 value];
-    v5 = &v11[[(FitnessService *)self readBytesFromNSData:v13 into:&v18 + 4 startingAt:v11 length:2 info:@"CPV - crank time"]];
+    cyclingPowerVectorCharacteristic3 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
+    value3 = [cyclingPowerVectorCharacteristic3 value];
+    v5 = &v11[[(FitnessService *)self readBytesFromNSData:value3 into:&v18 + 4 startingAt:v11 length:2 info:@"CPV - crank time"]];
 
     v6 = v18;
     if ((v18 & 2) == 0)
@@ -1830,9 +1830,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v14 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
-  v15 = [v14 value];
-  v5 = &v5[[(FitnessService *)self readBytesFromNSData:v15 into:&v18 + 6 startingAt:v5 length:2 info:@"CPV - first crank measurement angle"]];
+  cyclingPowerVectorCharacteristic4 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
+  value4 = [cyclingPowerVectorCharacteristic4 value];
+  v5 = &v5[[(FitnessService *)self readBytesFromNSData:value4 into:&v18 + 6 startingAt:v5 length:2 info:@"CPV - first crank measurement angle"]];
 
   v6 = v18;
   if ((v18 & 4) == 0)
@@ -1847,9 +1847,9 @@ LABEL_4:
   }
 
 LABEL_9:
-  v16 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
-  v17 = [v16 value];
-  v5 = &v5[[(FitnessService *)self readBytesFromNSData:v17 into:&v19 startingAt:v5 length:2 info:@"CPV - instantaneous force magnitude array"]];
+  cyclingPowerVectorCharacteristic5 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
+  value5 = [cyclingPowerVectorCharacteristic5 value];
+  v5 = &v5[[(FitnessService *)self readBytesFromNSData:value5 into:&v19 startingAt:v5 length:2 info:@"CPV - instantaneous force magnitude array"]];
 
   if ((v18 & 8) == 0)
   {
@@ -1857,22 +1857,22 @@ LABEL_9:
   }
 
 LABEL_5:
-  v7 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
-  v8 = [v7 value];
-  [(FitnessService *)self readBytesFromNSData:v8 into:&v19 + 2 startingAt:v5 length:2 info:@"CPV - instantaneous torque magnitude array"];
+  cyclingPowerVectorCharacteristic6 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
+  value6 = [cyclingPowerVectorCharacteristic6 value];
+  [(FitnessService *)self readBytesFromNSData:value6 into:&v19 + 2 startingAt:v5 length:2 info:@"CPV - instantaneous torque magnitude array"];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v38 = a3;
-  if (!a5)
+  peripheralCopy = peripheral;
+  if (!error)
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v8 = [a4 characteristics];
-    v9 = [v8 countByEnumeratingWithState:&v40 objects:v44 count:16];
+    characteristics = [service characteristics];
+    v9 = [characteristics countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1885,41 +1885,41 @@ LABEL_5:
         {
           if (*v41 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(characteristics);
           }
 
           v13 = *(*(&v40 + 1) + 8 * v12);
-          v14 = [(CyclingPowerService *)self cyclingPowerSensorLocationCharacteristic];
-          if (v14)
+          cyclingPowerSensorLocationCharacteristic = [(CyclingPowerService *)self cyclingPowerSensorLocationCharacteristic];
+          if (cyclingPowerSensorLocationCharacteristic)
           {
           }
 
           else
           {
-            v15 = [v13 UUID];
+            uUID = [v13 UUID];
             v16 = [CBUUID UUIDWithString:v39];
-            v17 = [v15 isEqual:v16];
+            v17 = [uUID isEqual:v16];
 
             if (v17)
             {
               [(CyclingPowerService *)self setCyclingPowerSensorLocationCharacteristic:v13];
 LABEL_15:
               [(FitnessService *)self setNotify:1 forCharacteristic:v13];
-              [v38 readValueForCharacteristic:v13];
+              [peripheralCopy readValueForCharacteristic:v13];
               goto LABEL_29;
             }
           }
 
-          v18 = [(CyclingPowerService *)self cyclingPowerFeatureCharacteristic];
-          if (v18)
+          cyclingPowerFeatureCharacteristic = [(CyclingPowerService *)self cyclingPowerFeatureCharacteristic];
+          if (cyclingPowerFeatureCharacteristic)
           {
           }
 
           else
           {
-            v19 = [v13 UUID];
+            uUID2 = [v13 UUID];
             v20 = [CBUUID UUIDWithString:@"0x2A65"];
-            v21 = [v19 isEqual:v20];
+            v21 = [uUID2 isEqual:v20];
 
             if (v21)
             {
@@ -1928,16 +1928,16 @@ LABEL_15:
             }
           }
 
-          v22 = [(CyclingPowerService *)self cyclingPowerControlPointCharacteristic];
-          if (v22)
+          cyclingPowerControlPointCharacteristic = [(CyclingPowerService *)self cyclingPowerControlPointCharacteristic];
+          if (cyclingPowerControlPointCharacteristic)
           {
           }
 
           else
           {
-            v23 = [v13 UUID];
+            uUID3 = [v13 UUID];
             v24 = [CBUUID UUIDWithString:@"0x2A66"];
-            v25 = [v23 isEqual:v24];
+            v25 = [uUID3 isEqual:v24];
 
             if (v25)
             {
@@ -1948,16 +1948,16 @@ LABEL_28:
             }
           }
 
-          v26 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
-          if (v26)
+          cyclingPowerMeasurementCharacteristic = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+          if (cyclingPowerMeasurementCharacteristic)
           {
           }
 
           else
           {
-            v27 = [v13 UUID];
+            uUID4 = [v13 UUID];
             v28 = [CBUUID UUIDWithString:@"0x2A63"];
-            v29 = [v27 isEqual:v28];
+            v29 = [uUID4 isEqual:v28];
 
             if (v29)
             {
@@ -1966,16 +1966,16 @@ LABEL_28:
             }
           }
 
-          v30 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
-          if (v30)
+          cyclingPowerVectorCharacteristic = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
+          if (cyclingPowerVectorCharacteristic)
           {
 
             goto LABEL_29;
           }
 
-          v31 = [v13 UUID];
+          uUID5 = [v13 UUID];
           v32 = [CBUUID UUIDWithString:@"0x2A64"];
-          v33 = [v31 isEqual:v32];
+          v33 = [uUID5 isEqual:v32];
 
           if (v33)
           {
@@ -1988,91 +1988,91 @@ LABEL_29:
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v40 objects:v44 count:16];
+        v10 = [characteristics countByEnumeratingWithState:&v40 objects:v44 count:16];
       }
 
       while (v10);
     }
 
     [(ClientService *)self notifyDidStart];
-    v34 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+    cyclingPowerMeasurementCharacteristic2 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
 
-    if (!v34 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
+    if (!cyclingPowerMeasurementCharacteristic2 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       sub_1000734F0();
     }
 
-    v35 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
+    cyclingPowerVectorCharacteristic2 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
 
-    if (!v35 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
+    if (!cyclingPowerVectorCharacteristic2 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       sub_100073524();
     }
 
-    v36 = [(CyclingPowerService *)self cyclingPowerFeatureCharacteristic];
+    cyclingPowerFeatureCharacteristic2 = [(CyclingPowerService *)self cyclingPowerFeatureCharacteristic];
 
-    if (!v36 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
+    if (!cyclingPowerFeatureCharacteristic2 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       sub_100073558();
     }
 
-    v37 = [(CyclingPowerService *)self cyclingPowerControlPointCharacteristic];
+    cyclingPowerControlPointCharacteristic2 = [(CyclingPowerService *)self cyclingPowerControlPointCharacteristic];
 
-    if (!v37 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
+    if (!cyclingPowerControlPointCharacteristic2 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       sub_10007358C();
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a4;
-  if (!a5)
+  characteristicCopy = characteristic;
+  if (!error)
   {
-    v15 = v7;
-    v8 = [(CyclingPowerService *)self cyclingPowerSensorLocationCharacteristic];
+    v15 = characteristicCopy;
+    cyclingPowerSensorLocationCharacteristic = [(CyclingPowerService *)self cyclingPowerSensorLocationCharacteristic];
 
-    if (v8 == v15)
+    if (cyclingPowerSensorLocationCharacteristic == v15)
     {
       [(CyclingPowerService *)self updatedSensorLocationCharacteristicValue];
     }
 
     else
     {
-      v9 = [(CyclingPowerService *)self cyclingPowerFeatureCharacteristic];
+      cyclingPowerFeatureCharacteristic = [(CyclingPowerService *)self cyclingPowerFeatureCharacteristic];
 
-      if (v9 == v15)
+      if (cyclingPowerFeatureCharacteristic == v15)
       {
         [(CyclingPowerService *)self updatedFeatureCharacteristicValue];
       }
 
       else
       {
-        v10 = [(CyclingPowerService *)self cyclingPowerControlPointCharacteristic];
+        cyclingPowerControlPointCharacteristic = [(CyclingPowerService *)self cyclingPowerControlPointCharacteristic];
 
-        if (v10 == v15)
+        if (cyclingPowerControlPointCharacteristic == v15)
         {
           [(CyclingPowerService *)self updatedControlPointCharacteristicValue];
         }
 
         else
         {
-          v11 = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
+          cyclingPowerMeasurementCharacteristic = [(CyclingPowerService *)self cyclingPowerMeasurementCharacteristic];
 
-          if (v11 == v15)
+          if (cyclingPowerMeasurementCharacteristic == v15)
           {
-            v13 = [v15 value];
+            value = [v15 value];
             v14 = +[NSDate now];
-            [(CyclingPowerService *)self updatedMeasurementCharacteristicValue:v13 at:v14];
+            [(CyclingPowerService *)self updatedMeasurementCharacteristicValue:value at:v14];
           }
 
           else
           {
-            v12 = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
+            cyclingPowerVectorCharacteristic = [(CyclingPowerService *)self cyclingPowerVectorCharacteristic];
 
-            v7 = v15;
-            if (v12 != v15)
+            characteristicCopy = v15;
+            if (cyclingPowerVectorCharacteristic != v15)
             {
               goto LABEL_13;
             }
@@ -2083,7 +2083,7 @@ LABEL_29:
       }
     }
 
-    v7 = v15;
+    characteristicCopy = v15;
   }
 
 LABEL_13:

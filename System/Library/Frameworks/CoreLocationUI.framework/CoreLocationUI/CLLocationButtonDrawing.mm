@@ -3,26 +3,26 @@
 - (CGSize)drawingSize;
 - (CGSize)engravedSize;
 - (CGSize)neededSize;
-- (CLLocationButtonDrawing)initWithStyle:(id)a3 tag:(id)a4 remote:(BOOL)a5;
+- (CLLocationButtonDrawing)initWithStyle:(id)style tag:(id)tag remote:(BOOL)remote;
 - (void)_computeImageMetrics;
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4;
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point;
 @end
 
 @implementation CLLocationButtonDrawing
 
-- (CLLocationButtonDrawing)initWithStyle:(id)a3 tag:(id)a4 remote:(BOOL)a5
+- (CLLocationButtonDrawing)initWithStyle:(id)style tag:(id)tag remote:(BOOL)remote
 {
-  v9 = a3;
-  v10 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v17.receiver = self;
   v17.super_class = CLLocationButtonDrawing;
   v11 = [(CLLocationButtonDrawing *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_style, a3);
-    objc_storeStrong(&v12->_currentTag, a4);
-    v12->_remote = a5;
+    objc_storeStrong(&v11->_style, style);
+    objc_storeStrong(&v12->_currentTag, tag);
+    v12->_remote = remote;
     objc_msgSend__computeImageMetrics(v12, v13, v14, v15);
   }
 
@@ -53,16 +53,16 @@
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point
 {
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   objc_msgSend_drawingSize(self, v6, v7, v8);
   v10 = v9.n128_f64[0];
   v12 = v11.n128_f64[0];
   v14 = objc_msgSend_backgroundColor(self->_currentTag, v13, v9, v11);
   v15 = v14;
   v19 = objc_msgSend_CGColor(v15, v16, v17, v18);
-  CGContextSetFillColorWithColor(a3, v19);
+  CGContextSetFillColorWithColor(context, v19);
 
   objc_msgSend_cornerRadius(self->_currentTag, v20, v21, v22);
   v24 = v23.n128_f64[0];
@@ -73,9 +73,9 @@
   v108.size.width = v10;
   v108.size.height = v12;
   v29 = CGPathCreateWithRoundedRect(v108, v24, v28, 0);
-  CGContextAddPath(a3, v29);
+  CGContextAddPath(context, v29);
   CGPathRelease(v29);
-  CGContextFillPath(a3);
+  CGContextFillPath(context);
   v30 = v10 * 0.5;
   objc_msgSend_engravedSize(self, v31, v32, v33);
   v35 = v34.n128_f64[0];
@@ -115,7 +115,7 @@
 
   if (!self->_remote)
   {
-    CGContextSetAlpha(a3, 0.5);
+    CGContextSetAlpha(context, 0.5);
   }
 
   v87 = v12 * 0.5;
@@ -125,13 +125,13 @@
     v91 = objc_msgSend_glyphDrawing(self, v88, v89, v90);
     v92.n128_f64[0] = v86;
     v93.n128_f64[0] = v87 - v56 * 0.5;
-    objc_msgSend_drawInContext_atPoint_(v91, v94, v92, v93, a3);
+    objc_msgSend_drawInContext_atPoint_(v91, v94, v92, v93, context);
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
   if (!self->_remote)
   {
-    CGContextSetAlpha(a3, 0.5);
+    CGContextSetAlpha(context, 0.5);
   }
 
   if (objc_msgSend_label(self->_currentTag, v95, v96, v97) || !objc_msgSend_icon(self->_currentTag, v98, v99, v100))
@@ -141,7 +141,7 @@
     v106 = objc_msgSend_textDrawing(self, v98, v99, v100);
     v102.n128_f64[0] = v73;
     v103.n128_f64[0] = v101;
-    objc_msgSend_drawInContext_atPoint_(v106, v104, v102, v103, a3);
+    objc_msgSend_drawInContext_atPoint_(v106, v104, v102, v103, context);
   }
 }
 

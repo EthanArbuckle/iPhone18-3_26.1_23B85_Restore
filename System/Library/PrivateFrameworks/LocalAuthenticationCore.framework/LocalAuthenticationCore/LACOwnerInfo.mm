@@ -1,5 +1,5 @@
 @interface LACOwnerInfo
-- (LACOwnerInfo)initWithProcessId:(int)a3 proxy:(id)a4 invalidationBlock:(id)a5;
+- (LACOwnerInfo)initWithProcessId:(int)id proxy:(id)proxy invalidationBlock:(id)block;
 - (id)proxy;
 @end
 
@@ -12,19 +12,19 @@
   return WeakRetained;
 }
 
-- (LACOwnerInfo)initWithProcessId:(int)a3 proxy:(id)a4 invalidationBlock:(id)a5
+- (LACOwnerInfo)initWithProcessId:(int)id proxy:(id)proxy invalidationBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
+  proxyCopy = proxy;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = LACOwnerInfo;
   v10 = [(LACOwnerInfo *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    v10->_pid = a3;
-    objc_storeWeak(&v10->_proxy, v8);
-    v12 = _Block_copy(v9);
+    v10->_pid = id;
+    objc_storeWeak(&v10->_proxy, proxyCopy);
+    v12 = _Block_copy(blockCopy);
     invalidationBlock = v11->_invalidationBlock;
     v11->_invalidationBlock = v12;
   }

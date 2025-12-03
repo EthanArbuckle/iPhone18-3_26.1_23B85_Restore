@@ -1,22 +1,22 @@
 @interface HUFadeInButton
 + (id)button;
 - (void)layoutSubviews;
-- (void)setShouldFadeRightToLeft:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setShouldFadeRightToLeft:(BOOL)left;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HUFadeInButton
 
 + (id)button
 {
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___HUFadeInButton;
   v2 = objc_msgSendSuper2(&v14, sel_buttonWithType_, 1);
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 traitCollection];
-    v5 = _backgroundColorWithTraitCollection(v4);
+    traitCollection = [v2 traitCollection];
+    v5 = _backgroundColorWithTraitCollection(traitCollection);
 
     [v3 setBackgroundColor:v5];
     v6 = MEMORY[0x277CD9EB0];
@@ -30,50 +30,50 @@
     [v8 setEndPoint:{1.0, 0.5}];
     [v3 setFadeLayer:v8];
 
-    v10 = [v3 layer];
-    v11 = [v3 fadeLayer];
-    [v10 addSublayer:v11];
+    layer = [v3 layer];
+    fadeLayer = [v3 fadeLayer];
+    [layer addSublayer:fadeLayer];
 
-    v12 = [v3 layer];
-    [v12 setMasksToBounds:0];
+    layer2 = [v3 layer];
+    [layer2 setMasksToBounds:0];
   }
 
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = HUFadeInButton;
-  [(HUFadeInButton *)&v8 traitCollectionDidChange:a3];
-  v4 = [(HUFadeInButton *)self traitCollection];
-  v5 = _backgroundColorWithTraitCollection(v4);
+  [(HUFadeInButton *)&v8 traitCollectionDidChange:change];
+  traitCollection = [(HUFadeInButton *)self traitCollection];
+  v5 = _backgroundColorWithTraitCollection(traitCollection);
 
   [(HUFadeInButton *)self setBackgroundColor:v5];
   v6 = _fadeInGradientWithColor(v5);
-  v7 = [(HUFadeInButton *)self fadeLayer];
-  [v7 setColors:v6];
+  fadeLayer = [(HUFadeInButton *)self fadeLayer];
+  [fadeLayer setColors:v6];
 }
 
-- (void)setShouldFadeRightToLeft:(BOOL)a3
+- (void)setShouldFadeRightToLeft:(BOOL)left
 {
-  if (self->_shouldFadeRightToLeft != a3)
+  if (self->_shouldFadeRightToLeft != left)
   {
-    self->_shouldFadeRightToLeft = a3;
-    v5 = [(HUFadeInButton *)self fadeLayer];
-    [v5 startPoint];
+    self->_shouldFadeRightToLeft = left;
+    fadeLayer = [(HUFadeInButton *)self fadeLayer];
+    [fadeLayer startPoint];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(HUFadeInButton *)self fadeLayer];
-    [v10 endPoint];
+    fadeLayer2 = [(HUFadeInButton *)self fadeLayer];
+    [fadeLayer2 endPoint];
     v12 = v11;
     v14 = v13;
-    v15 = [(HUFadeInButton *)self fadeLayer];
-    [v15 setStartPoint:{v12, v14}];
+    fadeLayer3 = [(HUFadeInButton *)self fadeLayer];
+    [fadeLayer3 setStartPoint:{v12, v14}];
 
-    v16 = [(HUFadeInButton *)self fadeLayer];
-    [v16 setEndPoint:{v7, v9}];
+    fadeLayer4 = [(HUFadeInButton *)self fadeLayer];
+    [fadeLayer4 setEndPoint:{v7, v9}];
 
     [(HUFadeInButton *)self setNeedsLayout];
   }
@@ -84,20 +84,20 @@
   v20.receiver = self;
   v20.super_class = HUFadeInButton;
   [(HUFadeInButton *)&v20 layoutSubviews];
-  v3 = [(HUFadeInButton *)self titleLabel];
-  v4 = [v3 font];
-  [v4 lineHeight];
+  titleLabel = [(HUFadeInButton *)self titleLabel];
+  font = [titleLabel font];
+  [font lineHeight];
   v6 = v5;
 
   width = fmin(v6 + v6, 100.0);
-  v8 = [(HUFadeInButton *)self titleLabel];
-  [v8 frame];
+  titleLabel2 = [(HUFadeInButton *)self titleLabel];
+  [titleLabel2 frame];
   x = CGRectGetMinX(v21) - width;
-  v10 = [(HUFadeInButton *)self titleLabel];
-  [v10 frame];
+  titleLabel3 = [(HUFadeInButton *)self titleLabel];
+  [titleLabel3 frame];
   MinY = CGRectGetMinY(v22);
-  v12 = [(HUFadeInButton *)self titleLabel];
-  [v12 frame];
+  titleLabel4 = [(HUFadeInButton *)self titleLabel];
+  [titleLabel4 frame];
   Height = CGRectGetHeight(v23);
 
   if ([(HUFadeInButton *)self shouldFadeRightToLeft])
@@ -122,8 +122,8 @@
     Height = v27.size.height;
   }
 
-  v16 = [(HUFadeInButton *)self fadeLayer];
-  [v16 setFrame:{x, MinY, width, Height}];
+  fadeLayer = [(HUFadeInButton *)self fadeLayer];
+  [fadeLayer setFrame:{x, MinY, width, Height}];
 }
 
 @end

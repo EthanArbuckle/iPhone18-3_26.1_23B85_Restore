@@ -1,25 +1,25 @@
 @interface HKNanoRegistryDeviceUtility
-+ (BOOL)isDeviceSeries4:(id)a3;
++ (BOOL)isDeviceSeries4:(id)series4;
 + (NSString)activePairedDeviceHousingColor;
 + (NSString)activePairedDeviceModelNumber;
 + (NSString)activePairedDeviceRegionInfo;
 + (id)activeNonFamilySetupDevice;
 + (id)activePairedDeviceProductType;
 + (id)activePairedDeviceSystemBuildVersion;
-+ (id)deviceHousingColor:(id)a3;
-+ (id)electrocardiogramV2AvailableRegionsForDevice:(id)a3;
-+ (id)modelNumberForDevice:(id)a3;
-+ (id)productTypeForDevice:(id)a3;
-+ (id)regionInfoForDevice:(id)a3;
-+ (id)systemBuildVersionForDevice:(id)a3;
-+ (unsigned)systemVersionForDevice:(id)a3;
++ (id)deviceHousingColor:(id)color;
++ (id)electrocardiogramV2AvailableRegionsForDevice:(id)device;
++ (id)modelNumberForDevice:(id)device;
++ (id)productTypeForDevice:(id)device;
++ (id)regionInfoForDevice:(id)device;
++ (id)systemBuildVersionForDevice:(id)device;
++ (unsigned)systemVersionForDevice:(id)device;
 @end
 
 @implementation HKNanoRegistryDeviceUtility
 
-+ (unsigned)systemVersionForDevice:(id)a3
++ (unsigned)systemVersionForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -40,7 +40,7 @@
   }
 
   v6 = *v4;
-  v7 = [v3 valueForProperty:v6];
+  v7 = [deviceCopy valueForProperty:v6];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -65,9 +65,9 @@
   return v10;
 }
 
-+ (id)modelNumberForDevice:(id)a3
++ (id)modelNumberForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -87,23 +87,23 @@
     +[HKNanoRegistryDeviceUtility modelNumberForDevice:];
   }
 
-  v6 = [v3 valueForProperty:*v4];
+  v6 = [deviceCopy valueForProperty:*v4];
 
   return v6;
 }
 
-+ (id)productTypeForDevice:(id)a3
++ (id)productTypeForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = getNRDevicePropertyProductType();
-  v5 = [v3 valueForProperty:v4];
+  v5 = [deviceCopy valueForProperty:v4];
 
   return v5;
 }
 
-+ (id)regionInfoForDevice:(id)a3
++ (id)regionInfoForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -123,14 +123,14 @@
     +[HKNanoRegistryDeviceUtility regionInfoForDevice:];
   }
 
-  v6 = [v3 valueForProperty:*v4];
+  v6 = [deviceCopy valueForProperty:*v4];
 
   return v6;
 }
 
-+ (id)systemBuildVersionForDevice:(id)a3
++ (id)systemBuildVersionForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -150,14 +150,14 @@
     +[HKNanoRegistryDeviceUtility systemBuildVersionForDevice:];
   }
 
-  v6 = [v3 valueForProperty:*v4];
+  v6 = [deviceCopy valueForProperty:*v4];
 
   return v6;
 }
 
-+ (id)deviceHousingColor:(id)a3
++ (id)deviceHousingColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -177,54 +177,54 @@
     +[HKNanoRegistryDeviceUtility deviceHousingColor:];
   }
 
-  v6 = [v3 valueForProperty:*v4];
+  v6 = [colorCopy valueForProperty:*v4];
 
   return v6;
 }
 
 + (NSString)activePairedDeviceModelNumber
 {
-  v3 = [a1 activeNonFamilySetupDevice];
-  v4 = [a1 modelNumberForDevice:v3];
+  activeNonFamilySetupDevice = [self activeNonFamilySetupDevice];
+  v4 = [self modelNumberForDevice:activeNonFamilySetupDevice];
 
   return v4;
 }
 
 + (id)activePairedDeviceSystemBuildVersion
 {
-  v3 = [a1 activeNonFamilySetupDevice];
-  v4 = [a1 systemBuildVersionForDevice:v3];
+  activeNonFamilySetupDevice = [self activeNonFamilySetupDevice];
+  v4 = [self systemBuildVersionForDevice:activeNonFamilySetupDevice];
 
   return v4;
 }
 
 + (id)activePairedDeviceProductType
 {
-  v3 = [a1 activeNonFamilySetupDevice];
-  v4 = [a1 productTypeForDevice:v3];
+  activeNonFamilySetupDevice = [self activeNonFamilySetupDevice];
+  v4 = [self productTypeForDevice:activeNonFamilySetupDevice];
 
   return v4;
 }
 
 + (NSString)activePairedDeviceRegionInfo
 {
-  v3 = [a1 activeNonFamilySetupDevice];
-  v4 = [a1 regionInfoForDevice:v3];
+  activeNonFamilySetupDevice = [self activeNonFamilySetupDevice];
+  v4 = [self regionInfoForDevice:activeNonFamilySetupDevice];
 
   return v4;
 }
 
 + (NSString)activePairedDeviceHousingColor
 {
-  v3 = [a1 activeNonFamilySetupDevice];
-  v4 = [a1 deviceHousingColor:v3];
+  activeNonFamilySetupDevice = [self activeNonFamilySetupDevice];
+  v4 = [self deviceHousingColor:activeNonFamilySetupDevice];
 
   return v4;
 }
 
-+ (id)electrocardiogramV2AvailableRegionsForDevice:(id)a3
++ (id)electrocardiogramV2AvailableRegionsForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -244,29 +244,29 @@
     +[HKNanoRegistryDeviceUtility electrocardiogramV2AvailableRegionsForDevice:];
   }
 
-  v6 = [v3 valueForProperty:*v4];
+  v6 = [deviceCopy valueForProperty:*v4];
 
   return v6;
 }
 
-+ (BOOL)isDeviceSeries4:(id)a3
++ (BOOL)isDeviceSeries4:(id)series4
 {
-  v3 = a3;
+  series4Copy = series4;
   v4 = getNRDevicePropertyProductType();
-  v5 = [v3 valueForProperty:v4];
+  v5 = [series4Copy valueForProperty:v4];
 
-  LOBYTE(v3) = [v5 hasPrefix:{@"Watch4, "}];
-  return v3;
+  LOBYTE(series4Copy) = [v5 hasPrefix:{@"Watch4, "}];
+  return series4Copy;
 }
 
 + (id)activeNonFamilySetupDevice
 {
-  v2 = [getNRPairedDeviceRegistryClass() sharedInstance];
-  v3 = [getNRPairedDeviceRegistryClass() activeDeviceSelectorBlock];
-  v4 = [v2 getDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
+  activeDeviceSelectorBlock = [getNRPairedDeviceRegistryClass() activeDeviceSelectorBlock];
+  v4 = [sharedInstance getDevicesMatching:activeDeviceSelectorBlock];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 + (void)systemVersionForDevice:.cold.1()

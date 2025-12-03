@@ -1,30 +1,30 @@
 @interface SCWDatabase
-- (BOOL)t_flushChangesWithTimeout:(double)a3;
-- (SCWDatabase)initWithSchema:(id)a3 store:(id)a4 features:(int64_t)a5 mergeHandlers:(id)a6 containerProxy:(id)a7;
+- (BOOL)t_flushChangesWithTimeout:(double)timeout;
+- (SCWDatabase)initWithSchema:(id)schema store:(id)store features:(int64_t)features mergeHandlers:(id)handlers containerProxy:(id)proxy;
 - (id)_emptyZonesNeedingFirstSync;
-- (id)_sanitizeErrorForClients:(id)a3;
-- (id)_zoneWithSchema:(id)a3 zoneStore:(id)a4;
+- (id)_sanitizeErrorForClients:(id)clients;
+- (id)_zoneWithSchema:(id)schema zoneStore:(id)store;
 - (id)_zonesNeedingFetch;
 - (id)_zonesNeedingSave;
-- (void)_createZoneInContainerWithSchema:(id)a3 completion:(id)a4;
-- (void)_deleteAndRecreateAllZonesWithCompletion:(id)a3;
-- (void)_enqueueStartupSequenceWithFeatures:(int64_t)a3;
-- (void)_fetchDatabaseAndZoneChangesWithCompletion:(id)a3;
-- (void)_fetchDatabaseChangesWithCompletion:(id)a3;
-- (void)_fetchZoneChangesForZones:(id)a3 completion:(id)a4;
-- (void)_recoverFromIdentityLossWithCompletion:(id)a3;
-- (void)_reloadSnapshotOfZone:(id)a3 fromStore:(id)a4;
-- (void)_runCKOperation:(id)a3;
-- (void)_saveZoneToContainer:(id)a3 allowRecoveryAttempt:(BOOL)a4 completion:(id)a5;
-- (void)_squashZoneForMerge:(id)a3 zoneStore:(id)a4;
-- (void)addObserver:(id)a3 forZone:(id)a4;
-- (void)checkSyncingEnabledWithCompletion:(id)a3;
-- (void)handleRemoteNotification:(id)a3 completion:(id)a4;
-- (void)modifyContentsOfZone:(id)a3 withCommand:(id)a4;
-- (void)pollForChangesWithCondition:(id)a3 completion:(id)a4;
-- (void)readContentsOfZone:(id)a3 withBlock:(id)a4;
-- (void)removeObserver:(id)a3 forZone:(id)a4;
-- (void)savePendingChangesToServerWithCompletion:(id)a3;
+- (void)_createZoneInContainerWithSchema:(id)schema completion:(id)completion;
+- (void)_deleteAndRecreateAllZonesWithCompletion:(id)completion;
+- (void)_enqueueStartupSequenceWithFeatures:(int64_t)features;
+- (void)_fetchDatabaseAndZoneChangesWithCompletion:(id)completion;
+- (void)_fetchDatabaseChangesWithCompletion:(id)completion;
+- (void)_fetchZoneChangesForZones:(id)zones completion:(id)completion;
+- (void)_recoverFromIdentityLossWithCompletion:(id)completion;
+- (void)_reloadSnapshotOfZone:(id)zone fromStore:(id)store;
+- (void)_runCKOperation:(id)operation;
+- (void)_saveZoneToContainer:(id)container allowRecoveryAttempt:(BOOL)attempt completion:(id)completion;
+- (void)_squashZoneForMerge:(id)merge zoneStore:(id)store;
+- (void)addObserver:(id)observer forZone:(id)zone;
+- (void)checkSyncingEnabledWithCompletion:(id)completion;
+- (void)handleRemoteNotification:(id)notification completion:(id)completion;
+- (void)modifyContentsOfZone:(id)zone withCommand:(id)command;
+- (void)pollForChangesWithCondition:(id)condition completion:(id)completion;
+- (void)readContentsOfZone:(id)zone withBlock:(id)block;
+- (void)removeObserver:(id)observer forZone:(id)zone;
+- (void)savePendingChangesToServerWithCompletion:(id)completion;
 - (void)synchronize;
 @end
 
@@ -33,16 +33,16 @@
 - (id)_emptyZonesNeedingFirstSync
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(SCWDatabase *)self schema];
-  v5 = [v4 zoneSchemas];
+  schema = [(SCWDatabase *)self schema];
+  zoneSchemas = [schema zoneSchemas];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  obj = zoneSchemas;
+  v6 = [zoneSchemas countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -57,15 +57,15 @@
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [(SCWDatabase *)self storeCoordinator];
+        storeCoordinator = [(SCWDatabase *)self storeCoordinator];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __42__SCWDatabase__emptyZonesNeedingFirstSync__block_invoke;
         v15[3] = &unk_1E85E3668;
         v15[4] = self;
         v15[5] = v10;
-        v16 = v3;
-        [v11 readZone:v10 withAccessor:v15];
+        v16 = array;
+        [storeCoordinator readZone:v10 withAccessor:v15];
       }
 
       v7 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -76,7 +76,7 @@
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 void __42__SCWDatabase__emptyZonesNeedingFirstSync__block_invoke(uint64_t a1, uint64_t a2)
@@ -97,16 +97,16 @@ void __42__SCWDatabase__emptyZonesNeedingFirstSync__block_invoke(uint64_t a1, ui
 - (id)_zonesNeedingFetch
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(SCWDatabase *)self schema];
-  v5 = [v4 zoneSchemas];
+  schema = [(SCWDatabase *)self schema];
+  zoneSchemas = [schema zoneSchemas];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  obj = zoneSchemas;
+  v6 = [zoneSchemas countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -121,15 +121,15 @@ void __42__SCWDatabase__emptyZonesNeedingFirstSync__block_invoke(uint64_t a1, ui
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [(SCWDatabase *)self storeCoordinator];
+        storeCoordinator = [(SCWDatabase *)self storeCoordinator];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __33__SCWDatabase__zonesNeedingFetch__block_invoke;
         v15[3] = &unk_1E85E3668;
         v15[4] = self;
         v15[5] = v10;
-        v16 = v3;
-        [v11 readZone:v10 withAccessor:v15];
+        v16 = array;
+        [storeCoordinator readZone:v10 withAccessor:v15];
       }
 
       v7 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -140,7 +140,7 @@ void __42__SCWDatabase__emptyZonesNeedingFirstSync__block_invoke(uint64_t a1, ui
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 void __33__SCWDatabase__zonesNeedingFetch__block_invoke(uint64_t a1, uint64_t a2)
@@ -155,16 +155,16 @@ void __33__SCWDatabase__zonesNeedingFetch__block_invoke(uint64_t a1, uint64_t a2
 - (id)_zonesNeedingSave
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(SCWDatabase *)self schema];
-  v5 = [v4 zoneSchemas];
+  schema = [(SCWDatabase *)self schema];
+  zoneSchemas = [schema zoneSchemas];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  obj = zoneSchemas;
+  v6 = [zoneSchemas countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -179,14 +179,14 @@ void __33__SCWDatabase__zonesNeedingFetch__block_invoke(uint64_t a1, uint64_t a2
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [(SCWDatabase *)self storeCoordinator];
+        storeCoordinator = [(SCWDatabase *)self storeCoordinator];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __32__SCWDatabase__zonesNeedingSave__block_invoke;
         v15[3] = &unk_1E85E3CD0;
-        v16 = v3;
+        v16 = array;
         v17 = v10;
-        [v11 readZone:v10 withAccessor:v15];
+        [storeCoordinator readZone:v10 withAccessor:v15];
       }
 
       v7 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -197,7 +197,7 @@ void __33__SCWDatabase__zonesNeedingFetch__block_invoke(uint64_t a1, uint64_t a2
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 void __32__SCWDatabase__zonesNeedingSave__block_invoke(uint64_t a1, void *a2)
@@ -214,21 +214,21 @@ void __32__SCWDatabase__zonesNeedingSave__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (SCWDatabase)initWithSchema:(id)a3 store:(id)a4 features:(int64_t)a5 mergeHandlers:(id)a6 containerProxy:(id)a7
+- (SCWDatabase)initWithSchema:(id)schema store:(id)store features:(int64_t)features mergeHandlers:(id)handlers containerProxy:(id)proxy
 {
   v61 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  schemaCopy = schema;
+  storeCopy = store;
+  handlersCopy = handlers;
+  proxyCopy = proxy;
   v59.receiver = self;
   v59.super_class = SCWDatabase;
   v17 = [(SCWDatabase *)&v59 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_schema, a3);
-    v19 = [v15 copy];
+    objc_storeStrong(&v17->_schema, schema);
+    v19 = [handlersCopy copy];
     mergeHandlers = v18->_mergeHandlers;
     v18->_mergeHandlers = v19;
 
@@ -254,32 +254,32 @@ void __32__SCWDatabase__zonesNeedingSave__block_invoke(uint64_t a1, void *a2)
     zoneSnapshotsByZoneName = v18->_zoneSnapshotsByZoneName;
     v18->_zoneSnapshotsByZoneName = v30;
 
-    if ([v14 conformsToProtocol:&unk_1F56AB730])
+    if ([storeCopy conformsToProtocol:&unk_1F56AB730])
     {
-      v32 = v14;
+      v32 = storeCopy;
     }
 
     else
     {
-      v32 = [[SCWFauxDatabaseStoreCoordinator alloc] initWithDatabaseStore:v14];
+      v32 = [[SCWFauxDatabaseStoreCoordinator alloc] initWithDatabaseStore:storeCopy];
     }
 
     storeCoordinator = v18->_storeCoordinator;
     v18->_storeCoordinator = v32;
 
-    v53 = v15;
-    v54 = v14;
-    v52 = v16;
-    if (v16)
+    v53 = handlersCopy;
+    v54 = storeCopy;
+    v52 = proxyCopy;
+    if (proxyCopy)
     {
-      v34 = v16;
+      v34 = proxyCopy;
       container = v18->_container;
       v18->_container = v34;
     }
 
     else
     {
-      container = [v13 containerID];
+      container = [schemaCopy containerID];
       v36 = objc_alloc_init(MEMORY[0x1E695B8B0]);
       [v36 setCaptureResponseHTTPHeaders:1];
       [v36 setUseZoneWidePCS:1];
@@ -292,9 +292,9 @@ void __32__SCWDatabase__zonesNeedingSave__block_invoke(uint64_t a1, void *a2)
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v39 = v13;
-    v40 = [v13 zoneSchemas];
-    v41 = [v40 countByEnumeratingWithState:&v55 objects:v60 count:16];
+    v39 = schemaCopy;
+    zoneSchemas = [schemaCopy zoneSchemas];
+    v41 = [zoneSchemas countByEnumeratingWithState:&v55 objects:v60 count:16];
     if (v41)
     {
       v42 = v41;
@@ -305,42 +305,42 @@ void __32__SCWDatabase__zonesNeedingSave__block_invoke(uint64_t a1, void *a2)
         {
           if (*v56 != v43)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(zoneSchemas);
           }
 
           v45 = *(*(&v55 + 1) + 8 * i);
           v46 = [[SCWZoneSnapshot alloc] initWithZoneSchema:v45 records:0];
-          v47 = [(SCWDatabase *)v18 zoneSnapshotsByZoneName];
-          v48 = [v45 zoneName];
-          [v47 setObject:v46 forKeyedSubscript:v48];
+          zoneSnapshotsByZoneName = [(SCWDatabase *)v18 zoneSnapshotsByZoneName];
+          zoneName = [v45 zoneName];
+          [zoneSnapshotsByZoneName setObject:v46 forKeyedSubscript:zoneName];
         }
 
-        v42 = [v40 countByEnumeratingWithState:&v55 objects:v60 count:16];
+        v42 = [zoneSchemas countByEnumeratingWithState:&v55 objects:v60 count:16];
       }
 
       while (v42);
     }
 
-    v49 = [(SCWDatabase *)v18 storeCoordinator];
-    [v49 addObserver:v18];
+    storeCoordinator = [(SCWDatabase *)v18 storeCoordinator];
+    [storeCoordinator addObserver:v18];
 
-    [(SCWDatabase *)v18 _enqueueStartupSequenceWithFeatures:a5];
-    v13 = v39;
-    v15 = v53;
-    v14 = v54;
-    v16 = v52;
+    [(SCWDatabase *)v18 _enqueueStartupSequenceWithFeatures:features];
+    schemaCopy = v39;
+    handlersCopy = v53;
+    storeCopy = v54;
+    proxyCopy = v52;
   }
 
   v50 = *MEMORY[0x1E69E9840];
   return v18;
 }
 
-- (void)readContentsOfZone:(id)a3 withBlock:(id)a4
+- (void)readContentsOfZone:(id)zone withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCWDatabase *)self schema];
-  v9 = [v8 schemaForZoneName:v6];
+  zoneCopy = zone;
+  blockCopy = block;
+  schema = [(SCWDatabase *)self schema];
+  v9 = [schema schemaForZoneName:zoneCopy];
 
   if (v9)
   {
@@ -354,10 +354,10 @@ void __32__SCWDatabase__zonesNeedingSave__block_invoke(uint64_t a1, void *a2)
     block[1] = 3221225472;
     block[2] = __44__SCWDatabase_readContentsOfZone_withBlock___block_invoke_29;
     block[3] = &unk_1E85E35C8;
-    v20 = v7;
+    v20 = blockCopy;
     v21 = v22;
     v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-    v11 = [(SCWDatabase *)self startupQueue];
+    startupQueue = [(SCWDatabase *)self startupQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __44__SCWDatabase_readContentsOfZone_withBlock___block_invoke_2_30;
@@ -365,10 +365,10 @@ void __32__SCWDatabase__zonesNeedingSave__block_invoke(uint64_t a1, void *a2)
     v14[4] = self;
     v15 = v9;
     v18 = v22;
-    v16 = v6;
+    v16 = zoneCopy;
     v12 = v10;
     v17 = v12;
-    [v11 executeAfterStartup:v14];
+    [startupQueue executeAfterStartup:v14];
 
     _Block_object_dispose(v22, 8);
     v13 = v23;
@@ -381,7 +381,7 @@ void __32__SCWDatabase__zonesNeedingSave__block_invoke(uint64_t a1, void *a2)
     v24[2] = __44__SCWDatabase_readContentsOfZone_withBlock___block_invoke;
     v24[3] = &unk_1E85E35A0;
     v24[4] = self;
-    v25 = v7;
+    v25 = blockCopy;
     __44__SCWDatabase_readContentsOfZone_withBlock___block_invoke(v24);
     v13 = v25;
   }
@@ -436,24 +436,24 @@ void __44__SCWDatabase_readContentsOfZone_withBlock___block_invoke_3(uint64_t a1
   dispatch_async(v6, *(a1 + 48));
 }
 
-- (void)modifyContentsOfZone:(id)a3 withCommand:(id)a4
+- (void)modifyContentsOfZone:(id)zone withCommand:(id)command
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCWDatabase *)self schema];
-  v9 = [v8 schemaForZoneName:v6];
+  zoneCopy = zone;
+  commandCopy = command;
+  schema = [(SCWDatabase *)self schema];
+  v9 = [schema schemaForZoneName:zoneCopy];
 
   if (v9)
   {
-    v10 = [(SCWDatabase *)self startupQueue];
+    startupQueue = [(SCWDatabase *)self startupQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __48__SCWDatabase_modifyContentsOfZone_withCommand___block_invoke_32;
     v12[3] = &unk_1E85E36E0;
     v12[4] = self;
     v13 = v9;
-    v14 = v7;
-    [v10 executeAfterStartup:v12];
+    v14 = commandCopy;
+    [startupQueue executeAfterStartup:v12];
 
     v11 = v13;
   }
@@ -464,7 +464,7 @@ void __44__SCWDatabase_readContentsOfZone_withBlock___block_invoke_3(uint64_t a1
     v15[1] = 3221225472;
     v15[2] = __48__SCWDatabase_modifyContentsOfZone_withCommand___block_invoke;
     v15[3] = &unk_1E85E3640;
-    v16 = v6;
+    v16 = zoneCopy;
     __48__SCWDatabase_modifyContentsOfZone_withCommand___block_invoke(v15);
     v11 = v16;
   }
@@ -548,52 +548,52 @@ void __48__SCWDatabase_modifyContentsOfZone_withCommand___block_invoke_3(uint64_
   }
 }
 
-- (void)addObserver:(id)a3 forZone:(id)a4
+- (void)addObserver:(id)observer forZone:(id)zone
 {
-  v10 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  zoneCopy = zone;
   os_unfair_lock_lock(&self->_observersLock);
-  v7 = [(SCWDatabase *)self observersByZoneName];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  observersByZoneName = [(SCWDatabase *)self observersByZoneName];
+  v8 = [observersByZoneName objectForKeyedSubscript:zoneCopy];
 
   if (!v8)
   {
     v8 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:517 capacity:0];
-    v9 = [(SCWDatabase *)self observersByZoneName];
-    [v9 setObject:v8 forKeyedSubscript:v6];
+    observersByZoneName2 = [(SCWDatabase *)self observersByZoneName];
+    [observersByZoneName2 setObject:v8 forKeyedSubscript:zoneCopy];
   }
 
-  [v8 addObject:v10];
+  [v8 addObject:observerCopy];
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)removeObserver:(id)a3 forZone:(id)a4
+- (void)removeObserver:(id)observer forZone:(id)zone
 {
-  v6 = a4;
-  v7 = a3;
+  zoneCopy = zone;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
-  v8 = [(SCWDatabase *)self observersByZoneName];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  observersByZoneName = [(SCWDatabase *)self observersByZoneName];
+  v9 = [observersByZoneName objectForKeyedSubscript:zoneCopy];
 
-  [v9 removeObject:v7];
+  [v9 removeObject:observerCopy];
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)handleRemoteNotification:(id)a3 completion:(id)a4
+- (void)handleRemoteNotification:(id)notification completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCWDatabase *)self startupQueue];
+  notificationCopy = notification;
+  completionCopy = completion;
+  startupQueue = [(SCWDatabase *)self startupQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__SCWDatabase_handleRemoteNotification_completion___block_invoke;
   v11[3] = &unk_1E85E37A0;
-  v12 = v6;
-  v13 = v7;
+  v12 = notificationCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
-  [v8 executeAfterStartup:v11];
+  v9 = notificationCopy;
+  v10 = completionCopy;
+  [startupQueue executeAfterStartup:v11];
 }
 
 void __51__SCWDatabase_handleRemoteNotification_completion___block_invoke(id *a1)
@@ -724,21 +724,21 @@ void __51__SCWDatabase_handleRemoteNotification_completion___block_invoke_8(uint
   }
 }
 
-- (void)pollForChangesWithCondition:(id)a3 completion:(id)a4
+- (void)pollForChangesWithCondition:(id)condition completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCWDatabase *)self startupQueue];
+  conditionCopy = condition;
+  completionCopy = completion;
+  startupQueue = [(SCWDatabase *)self startupQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__SCWDatabase_pollForChangesWithCondition_completion___block_invoke;
   v11[3] = &unk_1E85E37A0;
-  v12 = v6;
-  v13 = v7;
+  v12 = conditionCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
-  [v8 executeAfterStartup:v11];
+  v9 = conditionCopy;
+  v10 = completionCopy;
+  [startupQueue executeAfterStartup:v11];
 }
 
 void __54__SCWDatabase_pollForChangesWithCondition_completion___block_invoke(id *a1)
@@ -883,18 +883,18 @@ void __54__SCWDatabase_pollForChangesWithCondition_completion___block_invoke_6(u
   }
 }
 
-- (void)checkSyncingEnabledWithCompletion:(id)a3
+- (void)checkSyncingEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SCWDatabase *)self startupQueue];
+  completionCopy = completion;
+  startupQueue = [(SCWDatabase *)self startupQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__SCWDatabase_checkSyncingEnabledWithCompletion___block_invoke;
   v7[3] = &unk_1E85E34E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 executeAfterStartup:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [startupQueue executeAfterStartup:v7];
 }
 
 void __49__SCWDatabase_checkSyncingEnabledWithCompletion___block_invoke(uint64_t a1)
@@ -936,18 +936,18 @@ uint64_t __49__SCWDatabase_checkSyncingEnabledWithCompletion___block_invoke_3(ui
   return v3(v1, v2);
 }
 
-- (void)savePendingChangesToServerWithCompletion:(id)a3
+- (void)savePendingChangesToServerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SCWDatabase *)self startupQueue];
+  completionCopy = completion;
+  startupQueue = [(SCWDatabase *)self startupQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__SCWDatabase_savePendingChangesToServerWithCompletion___block_invoke;
   v7[3] = &unk_1E85E34E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 executeAfterStartup:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [startupQueue executeAfterStartup:v7];
 }
 
 void __56__SCWDatabase_savePendingChangesToServerWithCompletion___block_invoke(uint64_t a1)
@@ -1045,13 +1045,13 @@ void __56__SCWDatabase_savePendingChangesToServerWithCompletion___block_invoke_5
 
 - (void)synchronize
 {
-  v3 = [(SCWDatabase *)self storeCoordinator];
+  storeCoordinator = [(SCWDatabase *)self storeCoordinator];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __26__SCWDatabase_synchronize__block_invoke;
   v4[3] = &unk_1E85E3818;
   v4[4] = self;
-  [v3 reloadWithAccessor:v4];
+  [storeCoordinator reloadWithAccessor:v4];
 }
 
 void __26__SCWDatabase_synchronize__block_invoke(uint64_t a1, void *a2, int a3)
@@ -1097,10 +1097,10 @@ void __26__SCWDatabase_synchronize__block_invoke(uint64_t a1, void *a2, int a3)
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)t_flushChangesWithTimeout:(double)a3
+- (BOOL)t_flushChangesWithTimeout:(double)timeout
 {
   v5 = dispatch_semaphore_create(0);
-  v6 = [(SCWDatabase *)self startupQueue];
+  startupQueue = [(SCWDatabase *)self startupQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__SCWDatabase_t_flushChangesWithTimeout___block_invoke;
@@ -1108,9 +1108,9 @@ void __26__SCWDatabase_synchronize__block_invoke(uint64_t a1, void *a2, int a3)
   v10[4] = self;
   v11 = v5;
   v7 = v5;
-  [v6 executeAfterStartup:v10];
+  [startupQueue executeAfterStartup:v10];
 
-  v8 = dispatch_time(0, (a3 * 1000000000.0));
+  v8 = dispatch_time(0, (timeout * 1000000000.0));
   LOBYTE(v5) = dispatch_semaphore_wait(v7, v8) == 0;
 
   return v5;
@@ -1135,69 +1135,69 @@ void __41__SCWDatabase_t_flushChangesWithTimeout___block_invoke_2(uint64_t a1, v
   v3[2]();
 }
 
-- (void)_enqueueStartupSequenceWithFeatures:(int64_t)a3
+- (void)_enqueueStartupSequenceWithFeatures:(int64_t)features
 {
-  v5 = [(SCWDatabase *)self startupQueue];
+  startupQueue = [(SCWDatabase *)self startupQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __51__SCWDatabase__enqueueStartupSequenceWithFeatures___block_invoke;
   v18[3] = &unk_1E85E38E0;
   v18[4] = self;
-  v18[5] = a3;
-  [v5 enqueueStartupBlock:v18];
+  v18[5] = features;
+  [startupQueue enqueueStartupBlock:v18];
 
-  v6 = [(SCWDatabase *)self startupQueue];
+  startupQueue2 = [(SCWDatabase *)self startupQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __51__SCWDatabase__enqueueStartupSequenceWithFeatures___block_invoke_55;
   v17[3] = &unk_1E85E3840;
   v17[4] = self;
-  [v6 enqueueStartupBlock:v17];
+  [startupQueue2 enqueueStartupBlock:v17];
 
-  if ((a3 & 4) != 0)
+  if ((features & 4) != 0)
   {
-    v7 = [(SCWDatabase *)self startupQueue];
+    startupQueue3 = [(SCWDatabase *)self startupQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __51__SCWDatabase__enqueueStartupSequenceWithFeatures___block_invoke_57;
     v16[3] = &unk_1E85E3840;
     v16[4] = self;
-    [v7 enqueueStartupBlock:v16];
+    [startupQueue3 enqueueStartupBlock:v16];
   }
 
-  v8 = [(SCWDatabase *)self startupQueue];
+  startupQueue4 = [(SCWDatabase *)self startupQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __51__SCWDatabase__enqueueStartupSequenceWithFeatures___block_invoke_3_59;
   v15[3] = &unk_1E85E3840;
   v15[4] = self;
-  [v8 enqueueStartupBlock:v15];
+  [startupQueue4 enqueueStartupBlock:v15];
 
-  v9 = [(SCWDatabase *)self startupQueue];
+  startupQueue5 = [(SCWDatabase *)self startupQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __51__SCWDatabase__enqueueStartupSequenceWithFeatures___block_invoke_8;
   v14[3] = &unk_1E85E3640;
   v14[4] = self;
-  [v9 executeAfterStartup:v14];
+  [startupQueue5 executeAfterStartup:v14];
 
-  v10 = [(SCWDatabase *)self startupQueue];
+  startupQueue6 = [(SCWDatabase *)self startupQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__SCWDatabase__enqueueStartupSequenceWithFeatures___block_invoke_13;
   v13[3] = &unk_1E85E3640;
   v13[4] = self;
-  [v10 executeAfterStartup:v13];
+  [startupQueue6 executeAfterStartup:v13];
 
-  if ((a3 & 2) != 0)
+  if ((features & 2) != 0)
   {
-    v11 = [(SCWDatabase *)self startupQueue];
+    startupQueue7 = [(SCWDatabase *)self startupQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __51__SCWDatabase__enqueueStartupSequenceWithFeatures___block_invoke_18;
     v12[3] = &unk_1E85E3640;
     v12[4] = self;
-    [v11 executeAfterStartup:v12];
+    [startupQueue7 executeAfterStartup:v12];
   }
 }
 
@@ -1732,16 +1732,16 @@ void __51__SCWDatabase__enqueueStartupSequenceWithFeatures___block_invoke_21(uin
   }
 }
 
-- (void)_fetchDatabaseAndZoneChangesWithCompletion:(id)a3
+- (void)_fetchDatabaseAndZoneChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__SCWDatabase__fetchDatabaseAndZoneChangesWithCompletion___block_invoke;
   v6[3] = &unk_1E85E39A0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(SCWDatabase *)self _fetchDatabaseChangesWithCompletion:v6];
 }
 
@@ -1775,9 +1775,9 @@ void __58__SCWDatabase__fetchDatabaseAndZoneChangesWithCompletion___block_invoke
   }
 }
 
-- (void)_fetchDatabaseChangesWithCompletion:(id)a3
+- (void)_fetchDatabaseChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = SCWDatabaseLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1791,24 +1791,24 @@ void __58__SCWDatabase__fetchDatabaseAndZoneChangesWithCompletion___block_invoke
   v22 = __Block_byref_object_copy_;
   v23 = __Block_byref_object_dispose_;
   v24 = 0;
-  v6 = [(SCWDatabase *)self storeCoordinator];
+  storeCoordinator = [(SCWDatabase *)self storeCoordinator];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __51__SCWDatabase__fetchDatabaseChangesWithCompletion___block_invoke;
   v18[3] = &unk_1E85E39C8;
   v18[4] = buf;
-  [v6 readWithAccessor:v18];
+  [storeCoordinator readWithAccessor:v18];
 
   v7 = objc_alloc_init(MEMORY[0x1E695B8F8]);
   [v7 setPreviousServerChangeToken:*(v20 + 5)];
   [v7 setFetchAllChanges:1];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __51__SCWDatabase__fetchDatabaseChangesWithCompletion___block_invoke_2;
   v16[3] = &unk_1E85E39F0;
   v16[4] = self;
-  v9 = v8;
+  v9 = array;
   v17 = v9;
   [v7 setRecordZoneWithIDChangedBlock:v16];
   [v7 setRecordZoneWithIDWasPurgedBlock:&__block_literal_global_76];
@@ -1820,7 +1820,7 @@ void __58__SCWDatabase__fetchDatabaseAndZoneChangesWithCompletion___block_invoke
   v15 = buf;
   v10 = v9;
   v13 = v10;
-  v11 = v4;
+  v11 = completionCopy;
   v14 = v11;
   [v7 setFetchDatabaseChangesCompletionBlock:v12];
   [(SCWDatabase *)self _runCKOperation:v7];
@@ -2034,30 +2034,30 @@ void __51__SCWDatabase__fetchDatabaseChangesWithCompletion___block_invoke_80(uin
   }
 }
 
-- (void)_fetchZoneChangesForZones:(id)a3 completion:(id)a4
+- (void)_fetchZoneChangesForZones:(id)zones completion:(id)completion
 {
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  zonesCopy = zones;
+  completionCopy = completion;
+  if ([zonesCopy count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [MEMORY[0x1E695DF70] array];
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    v11 = [(SCWDatabase *)self storeCoordinator];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    storeCoordinator = [(SCWDatabase *)self storeCoordinator];
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __52__SCWDatabase__fetchZoneChangesForZones_completion___block_invoke_2;
     v47[3] = &unk_1E85E3AB0;
-    v30 = v6;
-    v48 = v6;
-    v49 = v8;
-    v12 = v9;
+    v30 = zonesCopy;
+    v48 = zonesCopy;
+    v49 = array;
+    v12 = array2;
     v50 = v12;
-    v13 = v10;
+    v13 = dictionary;
     v51 = v13;
-    v14 = v8;
-    [v11 readWithAccessor:v47];
+    v14 = array;
+    [storeCoordinator readWithAccessor:v47];
 
     v15 = SCWDatabaseLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2071,36 +2071,36 @@ void __51__SCWDatabase__fetchDatabaseChangesWithCompletion___block_invoke_80(uin
     [v16 setRecordZoneIDs:v14];
     [v16 setConfigurationsByRecordZoneID:v13];
     [v16 setFetchAllChanges:1];
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __52__SCWDatabase__fetchZoneChangesForZones_completion___block_invoke_84;
     v45[3] = &unk_1E85E3AD8;
-    v18 = v17;
+    v18 = dictionary2;
     v46 = v18;
     [v16 setRecordWasChangedBlock:v45];
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __52__SCWDatabase__fetchZoneChangesForZones_completion___block_invoke_2_86;
     v43[3] = &unk_1E85E3B00;
-    v20 = v19;
+    v20 = dictionary3;
     v44 = v20;
     [v16 setRecordWithIDWasDeletedBlock:v43];
-    v21 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __52__SCWDatabase__fetchZoneChangesForZones_completion___block_invoke_3;
     v36[3] = &unk_1E85E3B78;
     v37 = v18;
     v38 = v20;
-    v39 = self;
+    selfCopy = self;
     v40 = v13;
-    v22 = v21;
+    v22 = array3;
     v41 = v22;
-    v23 = v7;
+    v23 = completionCopy;
     v42 = v23;
-    v7 = v13;
+    completionCopy = v13;
     v24 = v18;
     v25 = v20;
     [v16 setRecordZoneFetchCompletionBlock:v36];
@@ -2109,7 +2109,7 @@ void __51__SCWDatabase__fetchDatabaseChangesWithCompletion___block_invoke_80(uin
     v31[2] = __52__SCWDatabase__fetchZoneChangesForZones_completion___block_invoke_94;
     v31[3] = &unk_1E85E3BA0;
     v32 = v22;
-    v33 = self;
+    selfCopy2 = self;
     v34 = v12;
     v35 = v23;
     v26 = v22;
@@ -2118,7 +2118,7 @@ void __51__SCWDatabase__fetchDatabaseChangesWithCompletion___block_invoke_80(uin
     [v16 setFetchRecordZoneChangesCompletionBlock:v31];
     [(SCWDatabase *)self _runCKOperation:v16];
 
-    v6 = v30;
+    zonesCopy = v30;
   }
 
   else
@@ -2127,8 +2127,8 @@ void __51__SCWDatabase__fetchDatabaseChangesWithCompletion___block_invoke_80(uin
     v53 = 3221225472;
     v54 = __52__SCWDatabase__fetchZoneChangesForZones_completion___block_invoke;
     v55 = &unk_1E85E3578;
-    v56 = v7;
-    v14 = v7;
+    v56 = completionCopy;
+    v14 = completionCopy;
     v14[2](v14, 0);
   }
 
@@ -2559,11 +2559,11 @@ uint64_t __52__SCWDatabase__fetchZoneChangesForZones_completion___block_invoke_9
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)_saveZoneToContainer:(id)a3 allowRecoveryAttempt:(BOOL)a4 completion:(id)a5
+- (void)_saveZoneToContainer:(id)container allowRecoveryAttempt:(BOOL)attempt completion:(id)completion
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  containerCopy = container;
+  completionCopy = completion;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -2578,27 +2578,27 @@ uint64_t __52__SCWDatabase__fetchZoneChangesForZones_completion___block_invoke_9
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = 0;
-  v10 = [(SCWDatabase *)self storeCoordinator];
+  storeCoordinator = [(SCWDatabase *)self storeCoordinator];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __68__SCWDatabase__saveZoneToContainer_allowRecoveryAttempt_completion___block_invoke;
   v31[3] = &unk_1E85E3BE8;
   v31[4] = self;
-  v11 = v8;
+  v11 = containerCopy;
   v32 = v11;
   v33 = &v41;
   v34 = v40;
   v35 = &v36;
-  [v10 readZone:v11 withAccessor:v31];
+  [storeCoordinator readZone:v11 withAccessor:v31];
 
   if (*(v37 + 24) == 1 && ![v42[5] isEmpty])
   {
     v13 = SCWDatabaseLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v11 zoneName];
+      zoneName = [v11 zoneName];
       *buf = 138543362;
-      v48 = v14;
+      v48 = zoneName;
       _os_log_impl(&dword_1DAA3F000, v13, OS_LOG_TYPE_DEFAULT, "will save zone %{public}@", buf, 0xCu);
     }
 
@@ -2610,11 +2610,11 @@ uint64_t __52__SCWDatabase__fetchZoneChangesForZones_completion___block_invoke_9
     v19[1] = 3221225472;
     v19[2] = __68__SCWDatabase__saveZoneToContainer_allowRecoveryAttempt_completion___block_invoke_102;
     v19[3] = &unk_1E85E3CF8;
-    v25 = a4;
-    v22 = v9;
+    attemptCopy = attempt;
+    v22 = completionCopy;
     v15 = v11;
     v20 = v15;
-    v21 = self;
+    selfCopy = self;
     v23 = &v41;
     v24 = v40;
     [v12 setModifyRecordsCompletionBlock:v19];
@@ -2633,7 +2633,7 @@ uint64_t __52__SCWDatabase__fetchZoneChangesForZones_completion___block_invoke_9
     v27 = 3221225472;
     v28 = __68__SCWDatabase__saveZoneToContainer_allowRecoveryAttempt_completion___block_invoke_3;
     v29 = &unk_1E85E3578;
-    v30 = v9;
+    v30 = completionCopy;
     v30[2](v30, 0);
     v12 = v30;
   }
@@ -3045,18 +3045,18 @@ void __69__SCWDatabase__saveZonesToContainer_allowRecoveryAttempt_completion___b
   }
 }
 
-- (void)_squashZoneForMerge:(id)a3 zoneStore:(id)a4
+- (void)_squashZoneForMerge:(id)merge zoneStore:(id)store
 {
   v61 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v36 = a4;
-  [(SCWDatabase *)self _reloadSnapshotOfZone:v6 fromStore:?];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v39 = self;
-  v8 = [(SCWDatabase *)self zoneSnapshotsByZoneName];
-  v37 = v6;
-  v9 = [v6 zoneName];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  mergeCopy = merge;
+  storeCopy = store;
+  [(SCWDatabase *)self _reloadSnapshotOfZone:mergeCopy fromStore:?];
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  zoneSnapshotsByZoneName = [(SCWDatabase *)self zoneSnapshotsByZoneName];
+  v37 = mergeCopy;
+  zoneName = [mergeCopy zoneName];
+  v10 = [zoneSnapshotsByZoneName objectForKeyedSubscript:zoneName];
 
   v47 = 0u;
   v48 = 0u;
@@ -3083,8 +3083,8 @@ void __69__SCWDatabase__saveZonesToContainer_allowRecoveryAttempt_completion___b
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v16 = [(SCWDatabase *)v39 mergeHandlers];
-        v17 = [v16 countByEnumeratingWithState:&v41 objects:v59 count:16];
+        mergeHandlers = [(SCWDatabase *)selfCopy mergeHandlers];
+        v17 = [mergeHandlers countByEnumeratingWithState:&v41 objects:v59 count:16];
         if (v17)
         {
           v18 = v17;
@@ -3095,14 +3095,14 @@ void __69__SCWDatabase__saveZonesToContainer_allowRecoveryAttempt_completion___b
             {
               if (*v42 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(mergeHandlers);
               }
 
               v21 = [*(*(&v41 + 1) + 8 * j) commandsToMergeRecordWithServer:v15];
-              [v7 addObjectsFromArray:v21];
+              [array addObjectsFromArray:v21];
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v41 objects:v59 count:16];
+            v18 = [mergeHandlers countByEnumeratingWithState:&v41 objects:v59 count:16];
           }
 
           while (v18);
@@ -3115,57 +3115,57 @@ void __69__SCWDatabase__saveZonesToContainer_allowRecoveryAttempt_completion___b
     while (v12);
   }
 
-  v22 = v36;
-  [v36 setServerRecords:MEMORY[0x1E695E0F0]];
-  [v36 setServerChangeToken:0];
-  [v36 setLastSyncDate:0];
-  [v36 setLastDirtyDate:0];
-  [v36 setPendingCommands:v7];
+  v22 = storeCopy;
+  [storeCopy setServerRecords:MEMORY[0x1E695E0F0]];
+  [storeCopy setServerChangeToken:0];
+  [storeCopy setLastSyncDate:0];
+  [storeCopy setLastDirtyDate:0];
+  [storeCopy setPendingCommands:array];
   v23 = v37;
-  [(SCWDatabase *)v39 _reloadSnapshotOfZone:v37 fromStore:v36];
-  v24 = [(SCWDatabase *)v39 zoneSnapshotsByZoneName];
-  v25 = [v37 zoneName];
-  v26 = [v24 objectForKeyedSubscript:v25];
+  [(SCWDatabase *)selfCopy _reloadSnapshotOfZone:v37 fromStore:storeCopy];
+  zoneSnapshotsByZoneName2 = [(SCWDatabase *)selfCopy zoneSnapshotsByZoneName];
+  zoneName2 = [v37 zoneName];
+  v26 = [zoneSnapshotsByZoneName2 objectForKeyedSubscript:zoneName2];
 
   v27 = SCWDatabaseLog();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [v37 zoneName];
-    v40 = [v36 serverRecords];
-    v29 = [v40 count];
-    v30 = [v26 allRecords];
-    v31 = [v30 count];
-    v32 = [v36 pendingCommands];
-    v33 = [v26 descriptionOfContents];
+    zoneName3 = [v37 zoneName];
+    serverRecords = [storeCopy serverRecords];
+    v29 = [serverRecords count];
+    allRecords = [v26 allRecords];
+    v31 = [allRecords count];
+    pendingCommands = [storeCopy pendingCommands];
+    descriptionOfContents = [v26 descriptionOfContents];
     *buf = 138544386;
-    v50 = v28;
+    v50 = zoneName3;
     v51 = 2048;
     v52 = v29;
     v53 = 2048;
     v54 = v31;
     v55 = 2114;
-    v56 = v32;
+    v56 = pendingCommands;
     v57 = 2114;
-    v58 = v33;
+    v58 = descriptionOfContents;
     _os_log_impl(&dword_1DAA3F000, v27, OS_LOG_TYPE_DEFAULT, "finished staging zone %{public}@ for merge resulting in %lu server records, %lu client records, pending commands: %{public}@, and client contents: %{public}@", buf, 0x34u);
 
     v23 = v37;
-    v22 = v36;
+    v22 = storeCopy;
   }
 
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_createZoneInContainerWithSchema:(id)a3 completion:(id)a4
+- (void)_createZoneInContainerWithSchema:(id)schema completion:(id)completion
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E695BA80];
-  v8 = a3;
+  schemaCopy = schema;
   v9 = [v7 alloc];
-  v10 = [v8 zoneName];
+  zoneName = [schemaCopy zoneName];
 
-  v11 = [v9 initWithZoneName:v10];
+  v11 = [v9 initWithZoneName:zoneName];
   v12 = objc_alloc_init(MEMORY[0x1E695B9B0]);
   v18[0] = v11;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
@@ -3175,31 +3175,31 @@ void __69__SCWDatabase__saveZonesToContainer_allowRecoveryAttempt_completion___b
   v16[1] = 3221225472;
   v16[2] = __59__SCWDatabase__createZoneInContainerWithSchema_completion___block_invoke;
   v16[3] = &unk_1E85E3D70;
-  v17 = v6;
-  v14 = v6;
+  v17 = completionCopy;
+  v14 = completionCopy;
   [v12 setModifyRecordZonesCompletionBlock:v16];
   [(SCWDatabase *)self _runCKOperation:v12];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deleteAndRecreateAllZonesWithCompletion:(id)a3
+- (void)_deleteAndRecreateAllZonesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x1E695B9B0]);
-  v6 = [(SCWDatabase *)self schema];
-  v7 = [v6 zoneIDs];
-  [v5 setRecordZoneIDsToDelete:v7];
+  schema = [(SCWDatabase *)self schema];
+  zoneIDs = [schema zoneIDs];
+  [v5 setRecordZoneIDsToDelete:zoneIDs];
 
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __56__SCWDatabase__deleteAndRecreateAllZonesWithCompletion___block_invoke;
   v12 = &unk_1E85E3D98;
-  v13 = self;
-  v14 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v14 = completionCopy;
+  v8 = completionCopy;
   [v5 setModifyRecordZonesCompletionBlock:&v9];
-  [(SCWDatabase *)self _runCKOperation:v5, v9, v10, v11, v12, v13];
+  [(SCWDatabase *)self _runCKOperation:v5, v9, v10, v11, v12, selfCopy];
 }
 
 void __56__SCWDatabase__deleteAndRecreateAllZonesWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -3282,57 +3282,57 @@ void __56__SCWDatabase__deleteAndRecreateAllZonesWithCompletion___block_invoke(u
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_zoneWithSchema:(id)a3 zoneStore:(id)a4
+- (id)_zoneWithSchema:(id)schema zoneStore:(id)store
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SCWZone alloc] initWithSchema:v6 store:v5];
+  storeCopy = store;
+  schemaCopy = schema;
+  v7 = [[SCWZone alloc] initWithSchema:schemaCopy store:storeCopy];
 
   return v7;
 }
 
-- (void)_reloadSnapshotOfZone:(id)a3 fromStore:(id)a4
+- (void)_reloadSnapshotOfZone:(id)zone fromStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCWDatabase *)self zoneSnapshotsByZoneName];
-  v9 = [v6 zoneName];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  zoneCopy = zone;
+  storeCopy = store;
+  zoneSnapshotsByZoneName = [(SCWDatabase *)self zoneSnapshotsByZoneName];
+  zoneName = [zoneCopy zoneName];
+  v10 = [zoneSnapshotsByZoneName objectForKeyedSubscript:zoneName];
 
-  v11 = [(SCWDatabase *)self _zoneWithSchema:v6 zoneStore:v7];
+  v11 = [(SCWDatabase *)self _zoneWithSchema:zoneCopy zoneStore:storeCopy];
 
   v12 = [SCWZoneSnapshot alloc];
-  v13 = [v11 clientRecords];
-  v14 = [(SCWZoneSnapshot *)v12 initWithZoneSchema:v6 records:v13];
-  v15 = [(SCWDatabase *)self zoneSnapshotsByZoneName];
-  v16 = [v6 zoneName];
-  [v15 setObject:v14 forKeyedSubscript:v16];
+  clientRecords = [v11 clientRecords];
+  v14 = [(SCWZoneSnapshot *)v12 initWithZoneSchema:zoneCopy records:clientRecords];
+  zoneSnapshotsByZoneName2 = [(SCWDatabase *)self zoneSnapshotsByZoneName];
+  zoneName2 = [zoneCopy zoneName];
+  [zoneSnapshotsByZoneName2 setObject:v14 forKeyedSubscript:zoneName2];
 
-  v17 = [(SCWDatabase *)self zoneSnapshotsByZoneName];
-  v18 = [v6 zoneName];
-  v19 = [v17 objectForKeyedSubscript:v18];
+  zoneSnapshotsByZoneName3 = [(SCWDatabase *)self zoneSnapshotsByZoneName];
+  zoneName3 = [zoneCopy zoneName];
+  v19 = [zoneSnapshotsByZoneName3 objectForKeyedSubscript:zoneName3];
 
   if (([v10 isEqualToSnapshot:v19] & 1) == 0)
   {
     os_unfair_lock_lock(&self->_observersLock);
-    v20 = [(SCWDatabase *)self observersByZoneName];
-    v21 = [v6 zoneName];
-    v22 = [v20 objectForKeyedSubscript:v21];
+    observersByZoneName = [(SCWDatabase *)self observersByZoneName];
+    zoneName4 = [zoneCopy zoneName];
+    v22 = [observersByZoneName objectForKeyedSubscript:zoneName4];
     v23 = [v22 copy];
 
     os_unfair_lock_unlock(&self->_observersLock);
-    v24 = [(SCWDatabase *)self callbackQueue];
+    callbackQueue = [(SCWDatabase *)self callbackQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __47__SCWDatabase__reloadSnapshotOfZone_fromStore___block_invoke;
     block[3] = &unk_1E85E3DC0;
     v27 = v23;
-    v28 = self;
-    v29 = v6;
+    selfCopy = self;
+    v29 = zoneCopy;
     v30 = v10;
     v31 = v19;
     v25 = v23;
-    dispatch_async(v24, block);
+    dispatch_async(callbackQueue, block);
   }
 }
 
@@ -3377,24 +3377,24 @@ void __47__SCWDatabase__reloadSnapshotOfZone_fromStore___block_invoke(uint64_t a
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_recoverFromIdentityLossWithCompletion:(id)a3
+- (void)_recoverFromIdentityLossWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SCWDatabase *)self storeCoordinator];
+  completionCopy = completion;
+  storeCoordinator = [(SCWDatabase *)self storeCoordinator];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__SCWDatabase__recoverFromIdentityLossWithCompletion___block_invoke;
   v9[3] = &unk_1E85E3930;
   v9[4] = self;
-  [v5 writeWithAccessor:v9];
+  [storeCoordinator writeWithAccessor:v9];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__SCWDatabase__recoverFromIdentityLossWithCompletion___block_invoke_2;
   v7[3] = &unk_1E85E39A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(SCWDatabase *)self _deleteAndRecreateAllZonesWithCompletion:v7];
 }
 
@@ -3469,11 +3469,11 @@ void __54__SCWDatabase__recoverFromIdentityLossWithCompletion___block_invoke_2(u
   }
 }
 
-- (void)_runCKOperation:(id)a3
+- (void)_runCKOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [v4 configuration];
-  v6 = [v5 copy];
+  operationCopy = operation;
+  configuration = [operationCopy configuration];
+  v6 = [configuration copy];
   v7 = v6;
   if (v6)
   {
@@ -3489,19 +3489,19 @@ void __54__SCWDatabase__recoverFromIdentityLossWithCompletion___block_invoke_2(u
 
   [v10 setAutomaticallyRetryNetworkFailures:0];
   [v10 setDiscretionaryNetworkBehavior:0];
-  [v4 setConfiguration:v10];
-  v9 = [(SCWDatabase *)self container];
-  [v9 addDatabaseOperation:v4];
+  [operationCopy setConfiguration:v10];
+  container = [(SCWDatabase *)self container];
+  [container addDatabaseOperation:operationCopy];
 }
 
-- (id)_sanitizeErrorForClients:(id)a3
+- (id)_sanitizeErrorForClients:(id)clients
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ABC0];
   v10 = *MEMORY[0x1E696AA08];
-  v11[0] = a3;
+  v11[0] = clients;
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  clientsCopy = clients;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v7 = [v3 errorWithDomain:@"SCWErrorDomain" code:1 userInfo:v6];
 

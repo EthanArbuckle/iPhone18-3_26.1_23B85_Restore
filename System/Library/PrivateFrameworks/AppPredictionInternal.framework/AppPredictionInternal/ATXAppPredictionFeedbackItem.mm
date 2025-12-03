@@ -1,23 +1,23 @@
 @interface ATXAppPredictionFeedbackItem
-+ (id)feedbackItemsForCacheFileData:(id)a3;
-+ (id)feedbackItemsForChunks:(id)a3;
-+ (id)feedbackItemsForFeedbackChunk:(id)a3;
-+ (id)feedbackItemsForResponse:(id)a3;
-+ (vector<ATXPredictionItem,)predictionItemsForFeedbackChunk:(id)a2;
-+ (vector<ATXPredictionItem,)predictionItemsInFeedbackChunkFromCacheChunks:(id)a2;
-+ (vector<ATXPredictionItem,)predictionItemsInFeedbackChunkFromCacheFileData:(id)a2;
-- (ATXAppPredictionFeedbackItem)initWithBundleId:(id)a3 totalScore:(float)a4 scoreInputs:(const float *)a5;
++ (id)feedbackItemsForCacheFileData:(id)data;
++ (id)feedbackItemsForChunks:(id)chunks;
++ (id)feedbackItemsForFeedbackChunk:(id)chunk;
++ (id)feedbackItemsForResponse:(id)response;
++ (vector<ATXPredictionItem,)predictionItemsForFeedbackChunk:(id)chunk;
++ (vector<ATXPredictionItem,)predictionItemsInFeedbackChunkFromCacheChunks:(id)chunks;
++ (vector<ATXPredictionItem,)predictionItemsInFeedbackChunkFromCacheFileData:(id)data;
+- (ATXAppPredictionFeedbackItem)initWithBundleId:(id)id totalScore:(float)score scoreInputs:(const float *)inputs;
 - (id)description;
 @end
 
 @implementation ATXAppPredictionFeedbackItem
 
-- (ATXAppPredictionFeedbackItem)initWithBundleId:(id)a3 totalScore:(float)a4 scoreInputs:(const float *)a5
+- (ATXAppPredictionFeedbackItem)initWithBundleId:(id)id totalScore:(float)score scoreInputs:(const float *)inputs
 {
-  v9 = a3;
-  if (v9)
+  idCopy = id;
+  if (idCopy)
   {
-    if (a5)
+    if (inputs)
     {
       goto LABEL_3;
     }
@@ -25,17 +25,17 @@
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"ATXAppPredictionFeedbackItem.mm" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"bundleId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAppPredictionFeedbackItem.mm" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"bundleId"}];
 
-    if (a5)
+    if (inputs)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"ATXAppPredictionFeedbackItem.mm" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"scoreInputs"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"ATXAppPredictionFeedbackItem.mm" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"scoreInputs"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -43,12 +43,12 @@ LABEL_3:
   v10 = [(ATXAppPredictionFeedbackItem *)&v16 init];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [idCopy copy];
     bundleId = v10->_bundleId;
     v10->_bundleId = v11;
 
-    v10->_totalScore = a4;
-    memcpy(v10->_scoreInputs, a5, sizeof(v10->_scoreInputs));
+    v10->_totalScore = score;
+    memcpy(v10->_scoreInputs, inputs, sizeof(v10->_scoreInputs));
   }
 
   return v10;
@@ -74,20 +74,20 @@ LABEL_3:
   return v5;
 }
 
-+ (id)feedbackItemsForResponse:(id)a3
++ (id)feedbackItemsForResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = objc_opt_class();
-  v5 = [v3 cacheFileData];
-  v6 = [v4 feedbackItemsForCacheFileData:v5];
+  cacheFileData = [responseCopy cacheFileData];
+  v6 = [v4 feedbackItemsForCacheFileData:cacheFileData];
 
   return v6;
 }
 
-+ (id)feedbackItemsForCacheFileData:(id)a3
++ (id)feedbackItemsForCacheFileData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v4 = ATXCacheFileSplitChunks();
     v5 = [ATXAppPredictionFeedbackItem feedbackItemsForChunks:v4];
@@ -101,16 +101,16 @@ LABEL_3:
   return v5;
 }
 
-+ (id)feedbackItemsForChunks:(id)a3
++ (id)feedbackItemsForChunks:(id)chunks
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count] < 2)
+  chunksCopy = chunks;
+  if ([chunksCopy count] < 2)
   {
     v6 = __atxlog_handle_default();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      +[ATXAppPredictionFeedbackItem feedbackItemsForChunks:].cold.1(v9, [v3 count], v6);
+      +[ATXAppPredictionFeedbackItem feedbackItemsForChunks:].cold.1(v9, [chunksCopy count], v6);
     }
 
     v5 = MEMORY[0x277CBEBF8];
@@ -118,7 +118,7 @@ LABEL_3:
 
   else
   {
-    v4 = [v3 objectAtIndexedSubscript:1];
+    v4 = [chunksCopy objectAtIndexedSubscript:1];
     v5 = [ATXAppPredictionFeedbackItem feedbackItemsForFeedbackChunk:v4];
   }
 
@@ -127,9 +127,9 @@ LABEL_3:
   return v5;
 }
 
-+ (id)feedbackItemsForFeedbackChunk:(id)a3
++ (id)feedbackItemsForFeedbackChunk:(id)chunk
 {
-  v3 = [MEMORY[0x277CEB558] stringKeyWithData:a3];
+  v3 = [MEMORY[0x277CEB558] stringKeyWithData:chunk];
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -152,7 +152,7 @@ void __62__ATXAppPredictionFeedbackItem_feedbackItemsForFeedbackChunk___block_in
   [v9 addObject:v12];
 }
 
-+ (vector<ATXPredictionItem,)predictionItemsInFeedbackChunkFromCacheFileData:(id)a2
++ (vector<ATXPredictionItem,)predictionItemsInFeedbackChunkFromCacheFileData:(id)data
 {
   v5 = ATXCacheFileSplitChunks();
   [ATXAppPredictionFeedbackItem predictionItemsInFeedbackChunkFromCacheChunks:?];
@@ -160,7 +160,7 @@ void __62__ATXAppPredictionFeedbackItem_feedbackItemsForFeedbackChunk___block_in
   return result;
 }
 
-+ (vector<ATXPredictionItem,)predictionItemsInFeedbackChunkFromCacheChunks:(id)a2
++ (vector<ATXPredictionItem,)predictionItemsInFeedbackChunkFromCacheChunks:(id)chunks
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = a4;
@@ -193,7 +193,7 @@ void __62__ATXAppPredictionFeedbackItem_feedbackItemsForFeedbackChunk___block_in
   return result;
 }
 
-+ (vector<ATXPredictionItem,)predictionItemsForFeedbackChunk:(id)a2
++ (vector<ATXPredictionItem,)predictionItemsForFeedbackChunk:(id)chunk
 {
   v5 = [MEMORY[0x277CEB558] stringKeyWithData:a4];
   v9 = 0;

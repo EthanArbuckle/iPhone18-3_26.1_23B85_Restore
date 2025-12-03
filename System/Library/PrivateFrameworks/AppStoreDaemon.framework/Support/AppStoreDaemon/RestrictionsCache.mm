@@ -1,7 +1,7 @@
 @interface RestrictionsCache
 + (_TtC9appstored17RestrictionsCache)shared;
 - (BOOL)isDiagnosticsSubmissionAllowed;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation RestrictionsCache
@@ -21,7 +21,7 @@
 - (BOOL)isDiagnosticsSubmissionAllowed
 {
   v2 = (self + OBJC_IVAR____TtC9appstored17RestrictionsCache_lockedCachedValues);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   os_unfair_lock_opaque_low = LOBYTE(v2[2]._os_unfair_lock_opaque);
   if (os_unfair_lock_opaque_low == 2)
@@ -36,10 +36,10 @@
   return os_unfair_lock_opaque_low & 1;
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   v4 = (self + OBJC_IVAR____TtC9appstored17RestrictionsCache_lockedCachedValues);
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v4);
   LOBYTE(v4[2]._os_unfair_lock_opaque) = 2;
   *&v4[4]._os_unfair_lock_opaque = 0;

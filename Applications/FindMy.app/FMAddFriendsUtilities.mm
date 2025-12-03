@@ -3,18 +3,18 @@
 + (id)sharedInstance;
 + (void)showGenericErrorAlert;
 + (void)showNotifySelfError;
-+ (void)showOfferSuccessForHandles:(id)a3;
-+ (void)showOfferToSelfErrorInViewController:(id)a3 completion:(id)a4;
-+ (void)showSimpleAlertWithTitle:(id)a3 message:(id)a4;
-+ (void)showSimpleAlertWithTitle:(id)a3 message:(id)a4 handler:(id)a5;
-+ (void)showSimpleAlertWithTitle:(id)a3 message:(id)a4 okButtonTitle:(id)a5;
-+ (void)showSimpleAlertWithTitle:(id)a3 message:(id)a4 okButtonTitle:(id)a5 sender:(id)a6 handler:(id)a7;
-+ (void)showSimpleAlertWithTitle:(id)a3 message:(id)a4 sender:(id)a5;
++ (void)showOfferSuccessForHandles:(id)handles;
++ (void)showOfferToSelfErrorInViewController:(id)controller completion:(id)completion;
++ (void)showSimpleAlertWithTitle:(id)title message:(id)message;
++ (void)showSimpleAlertWithTitle:(id)title message:(id)message handler:(id)handler;
++ (void)showSimpleAlertWithTitle:(id)title message:(id)message okButtonTitle:(id)buttonTitle;
++ (void)showSimpleAlertWithTitle:(id)title message:(id)message okButtonTitle:(id)buttonTitle sender:(id)sender handler:(id)handler;
++ (void)showSimpleAlertWithTitle:(id)title message:(id)message sender:(id)sender;
 - (UIAlertController)shareActionsheet;
-- (id)showOfferActionSheetInViewController:(id)a3 popoverAnchoredAtView:(id)a4 orAnchoredOnBarButtonItem:(id)a5 fromEmail:(id)a6 withCompletion:(id)a7 cancelHandler:(id)a8 showAlert:(BOOL)a9;
-- (id)showOfferAlertInViewController:(id)a3 withTitle:(id)a4 message:(id)a5 popoverAnchoredAtView:(id)a6 orAnchoredOnBarButtonItem:(id)a7 withCompletion:(id)a8 cancelHandler:(id)a9 showAlert:(BOOL)a10;
-- (id)showOfferAlertStyleInViewController:(id)a3 withTitle:(id)a4 message:(id)a5 popoverAnchoredAtView:(id)a6 orAnchoredOnBarButtonItem:(id)a7 withCompletion:(id)a8 cancelButtonTitle:(id)a9 cancelHandler:(id)a10 withStyle:(int64_t)a11 showAlert:(BOOL)a12;
-- (id)showStopOfferActionSheetInViewController:(id)a3 popoverAnchoredAtView:(id)a4 orAnchoredOnBarButtonItem:(id)a5 completion:(id)a6;
+- (id)showOfferActionSheetInViewController:(id)controller popoverAnchoredAtView:(id)view orAnchoredOnBarButtonItem:(id)item fromEmail:(id)email withCompletion:(id)completion cancelHandler:(id)handler showAlert:(BOOL)alert;
+- (id)showOfferAlertInViewController:(id)controller withTitle:(id)title message:(id)message popoverAnchoredAtView:(id)view orAnchoredOnBarButtonItem:(id)item withCompletion:(id)completion cancelHandler:(id)handler showAlert:(BOOL)self0;
+- (id)showOfferAlertStyleInViewController:(id)controller withTitle:(id)title message:(id)message popoverAnchoredAtView:(id)view orAnchoredOnBarButtonItem:(id)item withCompletion:(id)completion cancelButtonTitle:(id)buttonTitle cancelHandler:(id)self0 withStyle:(int64_t)self1 showAlert:(BOOL)self2;
+- (id)showStopOfferActionSheetInViewController:(id)controller popoverAnchoredAtView:(id)view orAnchoredOnBarButtonItem:(id)item completion:(id)completion;
 - (void)dismissShareActionSheet;
 @end
 
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = sub_10007B024;
   block[3] = &unk_1006219D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006C4078 != -1)
   {
     dispatch_once(&qword_1006C4078, block);
@@ -37,55 +37,55 @@
   return v2;
 }
 
-- (id)showOfferAlertInViewController:(id)a3 withTitle:(id)a4 message:(id)a5 popoverAnchoredAtView:(id)a6 orAnchoredOnBarButtonItem:(id)a7 withCompletion:(id)a8 cancelHandler:(id)a9 showAlert:(BOOL)a10
+- (id)showOfferAlertInViewController:(id)controller withTitle:(id)title message:(id)message popoverAnchoredAtView:(id)view orAnchoredOnBarButtonItem:(id)item withCompletion:(id)completion cancelHandler:(id)handler showAlert:(BOOL)self0
 {
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
+  handlerCopy = handler;
+  completionCopy = completion;
+  itemCopy = item;
+  viewCopy = view;
+  messageCopy = message;
+  titleCopy = title;
+  controllerCopy = controller;
   v24 = sub_10007AF08(@"DONT_SHARE_BUTTON_TITLE");
-  LOBYTE(v27) = a10;
-  v25 = [(FMAddFriendsUtilities *)self showOfferAlertStyleInViewController:v23 withTitle:v22 message:v21 popoverAnchoredAtView:v20 orAnchoredOnBarButtonItem:v19 withCompletion:v18 cancelButtonTitle:v24 cancelHandler:v17 withStyle:1 showAlert:v27];
+  LOBYTE(v27) = alert;
+  v25 = [(FMAddFriendsUtilities *)self showOfferAlertStyleInViewController:controllerCopy withTitle:titleCopy message:messageCopy popoverAnchoredAtView:viewCopy orAnchoredOnBarButtonItem:itemCopy withCompletion:completionCopy cancelButtonTitle:v24 cancelHandler:handlerCopy withStyle:1 showAlert:v27];
 
   return v25;
 }
 
-- (id)showOfferActionSheetInViewController:(id)a3 popoverAnchoredAtView:(id)a4 orAnchoredOnBarButtonItem:(id)a5 fromEmail:(id)a6 withCompletion:(id)a7 cancelHandler:(id)a8 showAlert:(BOOL)a9
+- (id)showOfferActionSheetInViewController:(id)controller popoverAnchoredAtView:(id)view orAnchoredOnBarButtonItem:(id)item fromEmail:(id)email withCompletion:(id)completion cancelHandler:(id)handler showAlert:(BOOL)alert
 {
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  handlerCopy = handler;
+  completionCopy = completion;
+  emailCopy = email;
+  itemCopy = item;
+  viewCopy = view;
+  controllerCopy = controller;
   v21 = sub_10007AF08(@"SHARING_FROM");
-  v22 = [NSString stringWithFormat:v21, v17];
+  emailCopy = [NSString stringWithFormat:v21, emailCopy];
 
   v23 = sub_10007AF08(@"CANCEL_BUTTON_TITLE");
-  LOBYTE(v26) = a9;
-  v24 = [(FMAddFriendsUtilities *)self showOfferAlertStyleInViewController:v20 withTitle:0 message:v22 popoverAnchoredAtView:v19 orAnchoredOnBarButtonItem:v18 withCompletion:v16 cancelButtonTitle:v23 cancelHandler:v15 withStyle:0 showAlert:v26];
+  LOBYTE(v26) = alert;
+  v24 = [(FMAddFriendsUtilities *)self showOfferAlertStyleInViewController:controllerCopy withTitle:0 message:emailCopy popoverAnchoredAtView:viewCopy orAnchoredOnBarButtonItem:itemCopy withCompletion:completionCopy cancelButtonTitle:v23 cancelHandler:handlerCopy withStyle:0 showAlert:v26];
 
   return v24;
 }
 
-- (id)showOfferAlertStyleInViewController:(id)a3 withTitle:(id)a4 message:(id)a5 popoverAnchoredAtView:(id)a6 orAnchoredOnBarButtonItem:(id)a7 withCompletion:(id)a8 cancelButtonTitle:(id)a9 cancelHandler:(id)a10 withStyle:(int64_t)a11 showAlert:(BOOL)a12
+- (id)showOfferAlertStyleInViewController:(id)controller withTitle:(id)title message:(id)message popoverAnchoredAtView:(id)view orAnchoredOnBarButtonItem:(id)item withCompletion:(id)completion cancelButtonTitle:(id)buttonTitle cancelHandler:(id)self0 withStyle:(int64_t)self1 showAlert:(BOOL)self2
 {
-  v40 = a3;
-  *&v36 = a6;
-  *(&v36 + 1) = a7;
-  v17 = a8;
-  v18 = a10;
-  v38 = a9;
-  v19 = [UIAlertController alertControllerWithTitle:a4 message:a5 preferredStyle:a11];
+  controllerCopy = controller;
+  *&v36 = view;
+  *(&v36 + 1) = item;
+  completionCopy = completion;
+  handlerCopy = handler;
+  buttonTitleCopy = buttonTitle;
+  v19 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:style];
   v20 = sub_10007AF08(@"SHARE_ONE_HOUR_BUTTON_TITLE");
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = sub_10007B6B0;
   v47[3] = &unk_1006219F8;
-  v21 = v17;
+  v21 = completionCopy;
   v48 = v21;
   v22 = [UIAlertAction actionWithTitle:v20 style:0 handler:v47];
 
@@ -111,9 +111,9 @@
   v41[1] = 3221225472;
   v41[2] = sub_10007B704;
   v41[3] = &unk_1006219F8;
-  v42 = v18;
-  v29 = v18;
-  v30 = [UIAlertAction actionWithTitle:v38 style:1 handler:v41];
+  v42 = handlerCopy;
+  v29 = handlerCopy;
+  v30 = [UIAlertAction actionWithTitle:buttonTitleCopy style:1 handler:v41];
 
   v39 = v22;
   [v19 addAction:v22];
@@ -123,16 +123,16 @@
   if (v36 == 0)
   {
     [(FMAddFriendsUtilities *)self setShareActionsheet:0];
-    v33 = v40;
+    v33 = controllerCopy;
     goto LABEL_9;
   }
 
-  v31 = [v19 popoverPresentationController];
-  v32 = v31;
-  v33 = v40;
+  popoverPresentationController = [v19 popoverPresentationController];
+  v32 = popoverPresentationController;
+  v33 = controllerCopy;
   if (*(&v36 + 1))
   {
-    [v31 setBarButtonItem:*(&v36 + 1)];
+    [popoverPresentationController setBarButtonItem:*(&v36 + 1)];
     v34 = 1;
 LABEL_7:
     [v32 setPermittedArrowDirections:v34];
@@ -141,7 +141,7 @@ LABEL_7:
 
   if (v36)
   {
-    [v31 setSourceView:v36];
+    [popoverPresentationController setSourceView:v36];
     [v36 bounds];
     [v32 setSourceRect:?];
     v34 = 15;
@@ -152,7 +152,7 @@ LABEL_8:
   [(FMAddFriendsUtilities *)self setShareActionsheet:v19];
 
 LABEL_9:
-  if (a12)
+  if (alert)
   {
     [v33 presentViewController:v19 animated:1 completion:0];
   }
@@ -160,12 +160,12 @@ LABEL_9:
   return v19;
 }
 
-- (id)showStopOfferActionSheetInViewController:(id)a3 popoverAnchoredAtView:(id)a4 orAnchoredOnBarButtonItem:(id)a5 completion:(id)a6
+- (id)showStopOfferActionSheetInViewController:(id)controller popoverAnchoredAtView:(id)view orAnchoredOnBarButtonItem:(id)item completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  controllerCopy = controller;
+  viewCopy = view;
+  itemCopy = item;
+  completionCopy = completion;
   v13 = [UIAlertController alertControllerWithTitle:0 message:0 preferredStyle:0];
   v14 = sub_10007AF08(@"CANCEL_BUTTON_TITLE");
   v15 = [UIAlertAction actionWithTitle:v14 style:1 handler:0];
@@ -176,76 +176,76 @@ LABEL_9:
   v22[1] = 3221225472;
   v22[2] = sub_10007B930;
   v22[3] = &unk_1006219F8;
-  v23 = v12;
-  v17 = v12;
+  v23 = completionCopy;
+  v17 = completionCopy;
   v18 = [UIAlertAction actionWithTitle:v16 style:2 handler:v22];
   [v13 addAction:v18];
 
-  if (v10 | v11)
+  if (viewCopy | itemCopy)
   {
-    v19 = [v13 popoverPresentationController];
-    v20 = v19;
-    if (v11)
+    popoverPresentationController = [v13 popoverPresentationController];
+    v20 = popoverPresentationController;
+    if (itemCopy)
     {
-      [v19 setBarButtonItem:v11];
+      [popoverPresentationController setBarButtonItem:itemCopy];
       [v20 setPermittedArrowDirections:1];
     }
 
-    else if (v10)
+    else if (viewCopy)
     {
-      [v19 setSourceView:v10];
-      [v10 bounds];
+      [popoverPresentationController setSourceView:viewCopy];
+      [viewCopy bounds];
       [v20 setSourceRect:?];
     }
 
     [v20 setPermittedArrowDirections:2];
   }
 
-  [v9 presentViewController:v13 animated:1 completion:0];
+  [controllerCopy presentViewController:v13 animated:1 completion:0];
 
   return v13;
 }
 
 - (void)dismissShareActionSheet
 {
-  v2 = [(FMAddFriendsUtilities *)self shareActionsheet];
-  [v2 dismissViewControllerAnimated:0 completion:0];
+  shareActionsheet = [(FMAddFriendsUtilities *)self shareActionsheet];
+  [shareActionsheet dismissViewControllerAnimated:0 completion:0];
 }
 
 + (id)alertPresenterViewController
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 keyWindow];
-  v4 = [v3 rootViewController];
+  keyWindow = [v2 keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
-  v5 = [v4 presentedViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
     do
     {
-      v6 = [v4 presentedViewController];
+      presentedViewController2 = [rootViewController presentedViewController];
 
-      v7 = [v6 presentedViewController];
+      v6PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v4 = v6;
+      rootViewController = presentedViewController2;
     }
 
-    while (v7);
+    while (v6PresentedViewController);
   }
 
   else
   {
-    v6 = v4;
+    presentedViewController2 = rootViewController;
   }
 
-  return v6;
+  return presentedViewController2;
 }
 
-+ (void)showOfferToSelfErrorInViewController:(id)a3 completion:(id)a4
++ (void)showOfferToSelfErrorInViewController:(id)controller completion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v7 = sub_10007AF08(@"OFFER_TO_SELF_TITLE");
   v8 = sub_10007AF08(@"OFFER_TO_SELF_MESSAGE");
   v9 = [UIAlertController alertControllerWithTitle:v7 message:v8 preferredStyle:1];
@@ -254,15 +254,15 @@ LABEL_9:
   v11 = [UIAlertAction actionWithTitle:v10 style:0 handler:0];
   [v9 addAction:v11];
 
-  if (v13)
+  if (controllerCopy)
   {
-    [v13 presentViewController:v9 animated:1 completion:v6];
+    [controllerCopy presentViewController:v9 animated:1 completion:completionCopy];
   }
 
   else
   {
-    v12 = [a1 alertPresenterViewController];
-    [v12 presentViewController:v9 animated:1 completion:v6];
+    alertPresenterViewController = [self alertPresenterViewController];
+    [alertPresenterViewController presentViewController:v9 animated:1 completion:completionCopy];
   }
 }
 
@@ -276,8 +276,8 @@ LABEL_9:
   v6 = [UIAlertAction actionWithTitle:v5 style:0 handler:0];
   [v8 addAction:v6];
 
-  v7 = [a1 alertPresenterViewController];
-  [v7 presentViewController:v8 animated:1 completion:0];
+  alertPresenterViewController = [self alertPresenterViewController];
+  [alertPresenterViewController presentViewController:v8 animated:1 completion:0];
 }
 
 + (void)showGenericErrorAlert
@@ -290,114 +290,114 @@ LABEL_9:
   v6 = [UIAlertAction actionWithTitle:v5 style:0 handler:0];
   [v8 addAction:v6];
 
-  v7 = [a1 alertPresenterViewController];
-  [v7 presentViewController:v8 animated:1 completion:0];
+  alertPresenterViewController = [self alertPresenterViewController];
+  [alertPresenterViewController presentViewController:v8 animated:1 completion:0];
 }
 
-+ (void)showSimpleAlertWithTitle:(id)a3 message:(id)a4
++ (void)showSimpleAlertWithTitle:(id)title message:(id)message
 {
-  v6 = a4;
-  v7 = a3;
+  messageCopy = message;
+  titleCopy = title;
   v9 = sub_10007AF08(@"OK_BUTTON_TITLE");
-  v8 = [a1 alertPresenterViewController];
-  [a1 showSimpleAlertWithTitle:v7 message:v6 okButtonTitle:v9 sender:v8];
+  alertPresenterViewController = [self alertPresenterViewController];
+  [self showSimpleAlertWithTitle:titleCopy message:messageCopy okButtonTitle:v9 sender:alertPresenterViewController];
 }
 
-+ (void)showSimpleAlertWithTitle:(id)a3 message:(id)a4 handler:(id)a5
++ (void)showSimpleAlertWithTitle:(id)title message:(id)message handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  messageCopy = message;
+  titleCopy = title;
   v12 = sub_10007AF08(@"OK_BUTTON_TITLE");
-  v11 = [a1 alertPresenterViewController];
-  [a1 showSimpleAlertWithTitle:v10 message:v9 okButtonTitle:v12 sender:v11 handler:v8];
+  alertPresenterViewController = [self alertPresenterViewController];
+  [self showSimpleAlertWithTitle:titleCopy message:messageCopy okButtonTitle:v12 sender:alertPresenterViewController handler:handlerCopy];
 }
 
-+ (void)showSimpleAlertWithTitle:(id)a3 message:(id)a4 okButtonTitle:(id)a5
++ (void)showSimpleAlertWithTitle:(id)title message:(id)message okButtonTitle:(id)buttonTitle
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 alertPresenterViewController];
-  [a1 showSimpleAlertWithTitle:v10 message:v9 okButtonTitle:v8 sender:v11];
+  buttonTitleCopy = buttonTitle;
+  messageCopy = message;
+  titleCopy = title;
+  alertPresenterViewController = [self alertPresenterViewController];
+  [self showSimpleAlertWithTitle:titleCopy message:messageCopy okButtonTitle:buttonTitleCopy sender:alertPresenterViewController];
 }
 
-+ (void)showSimpleAlertWithTitle:(id)a3 message:(id)a4 sender:(id)a5
++ (void)showSimpleAlertWithTitle:(id)title message:(id)message sender:(id)sender
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  senderCopy = sender;
+  messageCopy = message;
+  titleCopy = title;
   v11 = sub_10007AF08(@"OK_BUTTON_TITLE");
-  [a1 showSimpleAlertWithTitle:v10 message:v9 okButtonTitle:v11 sender:v8];
+  [self showSimpleAlertWithTitle:titleCopy message:messageCopy okButtonTitle:v11 sender:senderCopy];
 }
 
-+ (void)showSimpleAlertWithTitle:(id)a3 message:(id)a4 okButtonTitle:(id)a5 sender:(id)a6 handler:(id)a7
++ (void)showSimpleAlertWithTitle:(id)title message:(id)message okButtonTitle:(id)buttonTitle sender:(id)sender handler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v14)
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  senderCopy = sender;
+  handlerCopy = handler;
+  if (senderCopy)
   {
-    if ([v14 isBeingDismissed])
+    if ([senderCopy isBeingDismissed])
     {
-      v16 = [v14 presentingViewController];
+      presentingViewController = [senderCopy presentingViewController];
 
-      v14 = v16;
+      senderCopy = presentingViewController;
     }
 
-    if ([v11 length] || objc_msgSend(v12, "length"))
+    if ([titleCopy length] || objc_msgSend(messageCopy, "length"))
     {
       v17 = +[UIApplication sharedApplication];
-      v18 = [v17 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v18);
+      preferredContentSizeCategory = [v17 preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
       if (IsAccessibilityCategory)
       {
-        v20 = [v11 stringByReplacingOccurrencesOfString:@" " withString:@" "];
+        v20 = [titleCopy stringByReplacingOccurrencesOfString:@" " withString:@" "];
 
-        v21 = [v12 stringByReplacingOccurrencesOfString:@" " withString:@" "];
+        v21 = [messageCopy stringByReplacingOccurrencesOfString:@" " withString:@" "];
 
-        v12 = v21;
-        v11 = v20;
+        messageCopy = v21;
+        titleCopy = v20;
       }
 
-      v22 = [UIAlertController alertControllerWithTitle:v11 message:v12 preferredStyle:1];
+      v22 = [UIAlertController alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_10007C254;
       v24[3] = &unk_1006219F8;
-      v25 = v15;
-      v23 = [UIAlertAction actionWithTitle:v13 style:0 handler:v24];
+      v25 = handlerCopy;
+      v23 = [UIAlertAction actionWithTitle:buttonTitleCopy style:0 handler:v24];
       [v22 addAction:v23];
 
-      [v14 presentViewController:v22 animated:1 completion:0];
+      [senderCopy presentViewController:v22 animated:1 completion:0];
     }
   }
 }
 
-+ (void)showOfferSuccessForHandles:(id)a3
++ (void)showOfferSuccessForHandles:(id)handles
 {
-  v12 = a3;
-  v4 = [v12 count];
-  v5 = v12;
+  handlesCopy = handles;
+  v4 = [handlesCopy count];
+  v5 = handlesCopy;
   if (v4)
   {
-    if ([v12 count] == 1)
+    if ([handlesCopy count] == 1)
     {
-      v6 = [v12 firstObject];
-      v7 = [_TtC6FindMy19FMContactsUtilities contactFor:v6];
+      firstObject = [handlesCopy firstObject];
+      v7 = [_TtC6FindMy19FMContactsUtilities contactFor:firstObject];
       if (!v7 || ([_TtC6FindMy12FMCoreBridge displayNameFor:v7], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        if ([_TtC6FindMy17FMPhoneNumberUtil isEmailValidWithEmail:v6]|| ![_TtC6FindMy17FMPhoneNumberUtil isPhoneNumberValidWithPhoneNumber:v6])
+        if ([_TtC6FindMy17FMPhoneNumberUtil isEmailValidWithEmail:firstObject]|| ![_TtC6FindMy17FMPhoneNumberUtil isPhoneNumberValidWithPhoneNumber:firstObject])
         {
-          v9 = v6;
+          v9 = firstObject;
         }
 
         else
         {
-          v9 = [_TtC6FindMy17FMPhoneNumberUtil formatWithPhoneNumber:v6];
+          v9 = [_TtC6FindMy17FMPhoneNumberUtil formatWithPhoneNumber:firstObject];
         }
 
         v8 = v9;
@@ -409,14 +409,14 @@ LABEL_9:
 
     else
     {
-      v6 = sub_10007AF08(@"OFFER_SUCCESS_MULTIPLE_FRIENDS");
-      v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 count]);
+      firstObject = sub_10007AF08(@"OFFER_SUCCESS_MULTIPLE_FRIENDS");
+      v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [handlesCopy count]);
       v8 = [NSNumberFormatter localizedStringFromNumber:v7 numberStyle:0];
-      v10 = [NSString stringWithFormat:v6, v8];
+      v10 = [NSString stringWithFormat:firstObject, v8];
     }
 
-    [a1 showSimpleAlertWithTitle:v10 message:0];
-    v5 = v12;
+    [self showSimpleAlertWithTitle:v10 message:0];
+    v5 = handlesCopy;
   }
 }
 

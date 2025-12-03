@@ -1,6 +1,6 @@
 @interface MapsBannerView
 - (BNBannerSource)target;
-- (MapsBannerView)initWithTarget:(id)a3 item:(id)a4 aperturePresentation:(BOOL)a5;
+- (MapsBannerView)initWithTarget:(id)target item:(id)item aperturePresentation:(BOOL)presentation;
 - (double)bannerAccessoryViewLeadingInset;
 - (double)bannerAccessoryViewTrailingInset;
 @end
@@ -34,55 +34,55 @@
   return *&qword_10195F200;
 }
 
-- (MapsBannerView)initWithTarget:(id)a3 item:(id)a4 aperturePresentation:(BOOL)a5
+- (MapsBannerView)initWithTarget:(id)target item:(id)item aperturePresentation:(BOOL)presentation
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  presentationCopy = presentation;
+  targetCopy = target;
+  itemCopy = item;
   v38.receiver = self;
   v38.super_class = MapsBannerView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v13 = [(MapsBannerView *)&v38 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v13)
+  height = [(MapsBannerView *)&v38 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
-    v36 = v9;
+    v36 = itemCopy;
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    [(MapsBannerView *)v13 setAccessibilityIdentifier:v15];
+    [(MapsBannerView *)height setAccessibilityIdentifier:v15];
 
-    v37 = v8;
-    objc_storeWeak(&v13->_target, v8);
-    objc_storeStrong(&v13->_item, a4);
-    v13->_aperturePresentation = v5;
-    v16 = [[MapsBannerContentView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-    contentView = v13->_contentView;
-    v13->_contentView = v16;
+    v37 = targetCopy;
+    objc_storeWeak(&height->_target, targetCopy);
+    objc_storeStrong(&height->_item, item);
+    height->_aperturePresentation = presentationCopy;
+    height2 = [[MapsBannerContentView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    contentView = height->_contentView;
+    height->_contentView = height2;
 
-    [(MapsBannerContentView *)v13->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(MapsBannerView *)v13 addSubview:v13->_contentView];
-    v34 = [(MapsBannerContentView *)v13->_contentView leadingAnchor];
-    v18 = [(MapsBannerView *)v13 leadingAnchor];
-    v19 = [v34 constraintEqualToAnchor:v18 constant:20.0];
+    [(MapsBannerContentView *)height->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(MapsBannerView *)height addSubview:height->_contentView];
+    leadingAnchor = [(MapsBannerContentView *)height->_contentView leadingAnchor];
+    leadingAnchor2 = [(MapsBannerView *)height leadingAnchor];
+    v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
     v41[0] = v19;
-    v20 = [(MapsBannerView *)v13 trailingAnchor];
-    v21 = [(MapsBannerContentView *)v13->_contentView trailingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:20.0];
+    trailingAnchor = [(MapsBannerView *)height trailingAnchor];
+    trailingAnchor2 = [(MapsBannerContentView *)height->_contentView trailingAnchor];
+    v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:20.0];
     v41[1] = v22;
-    v23 = [(MapsBannerView *)v13 bottomAnchor];
-    [(MapsBannerContentView *)v13->_contentView bottomAnchor];
-    v24 = v33 = v5;
-    v25 = [v23 constraintEqualToAnchor:v24 constant:17.0];
+    bottomAnchor = [(MapsBannerView *)height bottomAnchor];
+    [(MapsBannerContentView *)height->_contentView bottomAnchor];
+    v24 = v33 = presentationCopy;
+    v25 = [bottomAnchor constraintEqualToAnchor:v24 constant:17.0];
     v41[2] = v25;
     v35 = [NSArray arrayWithObjects:v41 count:3];
 
-    v26 = [(MapsBannerContentView *)v13->_contentView topAnchor];
+    topAnchor = [(MapsBannerContentView *)height->_contentView topAnchor];
     if (v33)
     {
-      v27 = [(MapsBannerView *)v13 SBUISA_systemApertureObstructedAreaLayoutGuide];
-      v28 = [v27 bottomAnchor];
-      v29 = [v26 constraintEqualToAnchor:v28];
+      sBUISA_systemApertureObstructedAreaLayoutGuide = [(MapsBannerView *)height SBUISA_systemApertureObstructedAreaLayoutGuide];
+      bottomAnchor2 = [sBUISA_systemApertureObstructedAreaLayoutGuide bottomAnchor];
+      v29 = [topAnchor constraintEqualToAnchor:bottomAnchor2];
       v40 = v29;
       v30 = [NSArray arrayWithObjects:&v40 count:1];
       v31 = [v35 arrayByAddingObjectsFromArray:v30];
@@ -90,20 +90,20 @@
 
     else
     {
-      v27 = [(MapsBannerView *)v13 topAnchor];
-      v28 = [v26 constraintEqualToAnchor:v27 constant:22.0];
-      v39 = v28;
+      sBUISA_systemApertureObstructedAreaLayoutGuide = [(MapsBannerView *)height topAnchor];
+      bottomAnchor2 = [topAnchor constraintEqualToAnchor:sBUISA_systemApertureObstructedAreaLayoutGuide constant:22.0];
+      v39 = bottomAnchor2;
       v29 = [NSArray arrayWithObjects:&v39 count:1];
       v30 = v35;
       v31 = [v35 arrayByAddingObjectsFromArray:v29];
     }
 
     [NSLayoutConstraint activateConstraints:v31];
-    v9 = v36;
-    v8 = v37;
+    itemCopy = v36;
+    targetCopy = v37;
   }
 
-  return v13;
+  return height;
 }
 
 @end

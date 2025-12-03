@@ -4,7 +4,7 @@
 - (WBSWebViewMetadataFetchOperationDelegate)delegate;
 - (WKWebViewConfiguration)webViewConfiguration;
 - (void)_setUpWebViewAndStartOffscreenFetching;
-- (void)_webViewWebProcessDidCrash:(id)a3;
+- (void)_webViewWebProcessDidCrash:(id)crash;
 - (void)cancel;
 - (void)clearWebView;
 - (void)dealloc;
@@ -23,8 +23,8 @@
 - (WKWebViewConfiguration)webViewConfiguration
 {
   v2 = objc_alloc_init(MEMORY[0x1E69853A8]);
-  v3 = [v2 preferences];
-  [v3 _setOfflineApplicationCacheIsEnabled:0];
+  preferences = [v2 preferences];
+  [preferences _setOfflineApplicationCacheIsEnabled:0];
 
   [v2 _setAllowsJavaScriptMarkup:0];
   [v2 _setNeedsStorageAccessFromFileURLsQuirk:0];
@@ -51,7 +51,7 @@
   [(WBSWebViewMetadataFetchOperation *)self webViewSize];
   v5 = v4;
   v7 = v6;
-  v8 = [(WBSWebViewMetadataFetchOperation *)self webViewConfiguration];
+  webViewConfiguration = [(WBSWebViewMetadataFetchOperation *)self webViewConfiguration];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__WBSWebViewMetadataFetchOperation__setUpWebViewAndStartOffscreenFetching__block_invoke;
@@ -59,7 +59,7 @@
   objc_copyWeak(&v12, &location);
   v9 = WeakRetained;
   v11 = v9;
-  [v9 webViewMetadataFetchOperation:self getWebViewOfSize:v8 withConfiguration:v10 completionHandler:{v5, v7}];
+  [v9 webViewMetadataFetchOperation:self getWebViewOfSize:webViewConfiguration withConfiguration:v10 completionHandler:{v5, v7}];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -117,7 +117,7 @@ void __74__WBSWebViewMetadataFetchOperation__setUpWebViewAndStartOffscreenFetchi
       *buf = 138543618;
       v7 = objc_opt_class();
       v8 = 2048;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C6968000, v4, OS_LOG_TYPE_INFO, "Aborted fetch operation <%{public}@ %p> due to cancellation", buf, 0x16u);
     }
   }
@@ -164,15 +164,15 @@ uint64_t __42__WBSWebViewMetadataFetchOperation_cancel__block_invoke(uint64_t a1
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(WBSSiteMetadataFetchOperation *)self request];
-  v6 = [v5 url];
-  v7 = [v6 absoluteURL];
-  v8 = [v3 stringWithFormat:@"<%p %@, Request URL: %@>", self, v4, v7];
+  request = [(WBSSiteMetadataFetchOperation *)self request];
+  v6 = [request url];
+  absoluteURL = [v6 absoluteURL];
+  v8 = [v3 stringWithFormat:@"<%p %@, Request URL: %@>", self, v4, absoluteURL];
 
   return v8;
 }
 
-- (void)_webViewWebProcessDidCrash:(id)a3
+- (void)_webViewWebProcessDidCrash:(id)crash
 {
   v4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.SafariSharedUI.WBSWebViewMetadataFetchOperation" code:0 userInfo:0];
   [(WBSWebViewMetadataFetchOperation *)self didFailFetchWithError:v4];

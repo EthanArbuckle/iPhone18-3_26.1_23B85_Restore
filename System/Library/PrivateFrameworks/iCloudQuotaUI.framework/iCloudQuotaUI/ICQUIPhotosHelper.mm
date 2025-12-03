@@ -1,14 +1,14 @@
 @interface ICQUIPhotosHelper
-+ (void)enableCloudPhotosLibraryWithCompletion:(id)a3;
-+ (void)enableCloudPhotosOptimizationWithCompletion:(id)a3;
++ (void)enableCloudPhotosLibraryWithCompletion:(id)completion;
++ (void)enableCloudPhotosOptimizationWithCompletion:(id)completion;
 @end
 
 @implementation ICQUIPhotosHelper
 
-+ (void)enableCloudPhotosLibraryWithCompletion:(id)a3
++ (void)enableCloudPhotosLibraryWithCompletion:(id)completion
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -17,7 +17,7 @@
     _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v5 = v3;
+  v5 = completionCopy;
   PLCanEnableCloudPhotoLibrary();
 }
 
@@ -88,9 +88,9 @@ void __60__ICQUIPhotosHelper_enableCloudPhotosLibraryWithCompletion___block_invo
   }
 }
 
-+ (void)enableCloudPhotosOptimizationWithCompletion:(id)a3
++ (void)enableCloudPhotosOptimizationWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if ((PLIsCPLDataclassEnabled() & 1) == 0)
   {
     v6 = _ICQGetLogSystem();
@@ -116,7 +116,7 @@ LABEL_14:
 
 LABEL_15:
 
-    v3[2](v3, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     goto LABEL_16;
   }
 
@@ -145,7 +145,7 @@ LABEL_15:
 LABEL_9:
 
   v7 = ICQCreateErrorWithMessage();
-  (v3)[2](v3, 0, v7);
+  (completionCopy)[2](completionCopy, 0, v7);
 
 LABEL_16:
 }

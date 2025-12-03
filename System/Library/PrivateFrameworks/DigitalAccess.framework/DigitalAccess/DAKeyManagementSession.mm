@@ -1,64 +1,64 @@
 @interface DAKeyManagementSession
-- (DAKeyManagementSession)initWithCoder:(id)a3;
-- (DAKeyManagementSession)initWithDelegate:(id)a3;
-- (id)sendTrackingReceipt:(void *)a3 otherJSONData:(void *)a4 forKeyWithIdentifier:;
-- (id)setTrackingReceipt:(id)a3 decryptedDeviceData:(id)a4 forKeyWithIdentifier:(id)a5;
-- (id)setTrackingReceipt:(id)a3 forKeyWithIdentifier:(id)a4;
-- (id)setTrackingReceipt:(id)a3 slotIdentifier:(id)a4 confidentialMailboxData:(id)a5 ephemeralPublicKey:(id)a6 forKeyWithIdentifier:(id)a7;
-- (id)setTrackingReceipt:(id)a3 vehicleMobilizationData:(id)a4 forKeyWithIdentifier:(id)a5;
-- (void)cancelAllFriendInvitationsWithCompletionHandler:(id)a3;
-- (void)cancelInvitationWithIdentifier:(id)a3 reason:(unint64_t)a4 callback:(id)a5;
-- (void)cancelInvitationsWithIdentifiers:(id)a3 sentByOwnerKeyWithIdentifier:(id)a4 callback:(id)a5;
-- (void)commitUpgradeForKeyWithIdentifier:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 completionHandler:(id)a6;
-- (void)countImmobilizerTokensForKeyWithIdentifier:(id)a3 callback:(id)a4;
-- (void)deleteKey:(id)a3 completionHandler:(id)a4;
-- (void)didEnd:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)endPointPrivacyDecryption:(id)a3 encryptedData:(id)a4 publicKey:(id)a5 callback:(id)a6;
-- (void)getPreTrackRequestForInvitationWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getPreTrackRequestForKeyWithIdentifier:(id)a3 callback:(id)a4;
-- (void)getSecondFactorRequestForConfigs:(id)a3 completionHandler:(id)a4;
-- (void)handleActivationForKeyWithIdentifier:(id)a3 callback:(id)a4;
-- (void)hasUpgradeAvailableForKeyWithIdentifier:(id)a3 versionType:(unint64_t)a4 versions:(id)a5 completionHandler:(id)a6;
-- (void)listKeysWithHandler:(id)a3;
-- (void)listKeysWithSession:(id)a3 seid:(id)a4 callback:(id)a5;
-- (void)listReceivedSharingInvitationsWithCallback:(id)a3;
-- (void)listSharingInvitationsForKeyIdentifier:(id)a3 callback:(id)a4;
-- (void)localDeleteKey:(id)a3 completionHandler:(id)a4;
-- (void)ppidRequestForInvitationWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)ppidRequestForInvitationWithIdentifier:(id)a3 fromMailboxIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)preWarmForManufacturer:(id)a3 callback:(id)a4;
-- (void)readerInformationForInvitationWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)readerInformationForInvitationWithIdentifier:(id)a3 fromMailboxIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)removeSharedKeysWithIdentifiers:(id)a3 ownerKeyWithIdentifier:(id)a4 callback:(id)a5;
-- (void)removeSharingInvitationWithId:(id)a3 completionHandler:(id)a4;
-- (void)requestBindingAttestationDataForKeyWithIdentifier:(id)a3 callback:(id)a4;
-- (void)requestBindingAttestationDataForManufacturer:(id)a3 callback:(id)a4;
-- (void)revertUpgradeForKeyWithIdentifier:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 completionHandler:(id)a6;
-- (void)revokeKeysWithIdentifiers:(id)a3 sharedByOwnerKeyWithIdentifier:(id)a4 callback:(id)a5;
-- (void)revokeNodesWithGroupIdentifiers:(id)a3 treesWithGroupIdentifier:(id)a4 authorizedByKeyWithIdentifier:(id)a5 callback:(id)a6;
-- (void)setBindingAttestation:(id)a3 forKeyWithIdentifier:(id)a4 callback:(id)a5;
-- (void)setProductPlanIdentifier:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5;
-- (void)signAppData:(id)a3 appBundleIdentifier:(id)a4 nonce:(id)a5 auth:(id)a6 keyIdentifier:(id)a7 callback:(id)a8;
-- (void)updateConfiguration:(id)a3 forKeyWithIdentifier:(id)a4 additionalConfigurationData:(id)a5 completionHandler:(id)a6;
-- (void)updateConfiguration:(id)a3 forKeyWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)upgradeKeyWithIdentifier:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 upgradeInformation:(id)a6 completionHandler:(id)a7;
+- (DAKeyManagementSession)initWithCoder:(id)coder;
+- (DAKeyManagementSession)initWithDelegate:(id)delegate;
+- (id)sendTrackingReceipt:(void *)receipt otherJSONData:(void *)data forKeyWithIdentifier:;
+- (id)setTrackingReceipt:(id)receipt decryptedDeviceData:(id)data forKeyWithIdentifier:(id)identifier;
+- (id)setTrackingReceipt:(id)receipt forKeyWithIdentifier:(id)identifier;
+- (id)setTrackingReceipt:(id)receipt slotIdentifier:(id)identifier confidentialMailboxData:(id)data ephemeralPublicKey:(id)key forKeyWithIdentifier:(id)withIdentifier;
+- (id)setTrackingReceipt:(id)receipt vehicleMobilizationData:(id)data forKeyWithIdentifier:(id)identifier;
+- (void)cancelAllFriendInvitationsWithCompletionHandler:(id)handler;
+- (void)cancelInvitationWithIdentifier:(id)identifier reason:(unint64_t)reason callback:(id)callback;
+- (void)cancelInvitationsWithIdentifiers:(id)identifiers sentByOwnerKeyWithIdentifier:(id)identifier callback:(id)callback;
+- (void)commitUpgradeForKeyWithIdentifier:(id)identifier versionType:(unint64_t)type version:(unint64_t)version completionHandler:(id)handler;
+- (void)countImmobilizerTokensForKeyWithIdentifier:(id)identifier callback:(id)callback;
+- (void)deleteKey:(id)key completionHandler:(id)handler;
+- (void)didEnd:(id)end;
+- (void)encodeWithCoder:(id)coder;
+- (void)endPointPrivacyDecryption:(id)decryption encryptedData:(id)data publicKey:(id)key callback:(id)callback;
+- (void)getPreTrackRequestForInvitationWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getPreTrackRequestForKeyWithIdentifier:(id)identifier callback:(id)callback;
+- (void)getSecondFactorRequestForConfigs:(id)configs completionHandler:(id)handler;
+- (void)handleActivationForKeyWithIdentifier:(id)identifier callback:(id)callback;
+- (void)hasUpgradeAvailableForKeyWithIdentifier:(id)identifier versionType:(unint64_t)type versions:(id)versions completionHandler:(id)handler;
+- (void)listKeysWithHandler:(id)handler;
+- (void)listKeysWithSession:(id)session seid:(id)seid callback:(id)callback;
+- (void)listReceivedSharingInvitationsWithCallback:(id)callback;
+- (void)listSharingInvitationsForKeyIdentifier:(id)identifier callback:(id)callback;
+- (void)localDeleteKey:(id)key completionHandler:(id)handler;
+- (void)ppidRequestForInvitationWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)ppidRequestForInvitationWithIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completionHandler:(id)handler;
+- (void)preWarmForManufacturer:(id)manufacturer callback:(id)callback;
+- (void)readerInformationForInvitationWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)readerInformationForInvitationWithIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completionHandler:(id)handler;
+- (void)removeSharedKeysWithIdentifiers:(id)identifiers ownerKeyWithIdentifier:(id)identifier callback:(id)callback;
+- (void)removeSharingInvitationWithId:(id)id completionHandler:(id)handler;
+- (void)requestBindingAttestationDataForKeyWithIdentifier:(id)identifier callback:(id)callback;
+- (void)requestBindingAttestationDataForManufacturer:(id)manufacturer callback:(id)callback;
+- (void)revertUpgradeForKeyWithIdentifier:(id)identifier versionType:(unint64_t)type version:(unint64_t)version completionHandler:(id)handler;
+- (void)revokeKeysWithIdentifiers:(id)identifiers sharedByOwnerKeyWithIdentifier:(id)identifier callback:(id)callback;
+- (void)revokeNodesWithGroupIdentifiers:(id)identifiers treesWithGroupIdentifier:(id)identifier authorizedByKeyWithIdentifier:(id)withIdentifier callback:(id)callback;
+- (void)setBindingAttestation:(id)attestation forKeyWithIdentifier:(id)identifier callback:(id)callback;
+- (void)setProductPlanIdentifier:(id)identifier forInvitationIdentifier:(id)invitationIdentifier completion:(id)completion;
+- (void)signAppData:(id)data appBundleIdentifier:(id)identifier nonce:(id)nonce auth:(id)auth keyIdentifier:(id)keyIdentifier callback:(id)callback;
+- (void)updateConfiguration:(id)configuration forKeyWithIdentifier:(id)identifier additionalConfigurationData:(id)data completionHandler:(id)handler;
+- (void)updateConfiguration:(id)configuration forKeyWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)upgradeKeyWithIdentifier:(id)identifier versionType:(unint64_t)type version:(unint64_t)version upgradeInformation:(id)information completionHandler:(id)handler;
 @end
 
 @implementation DAKeyManagementSession
 
-- (DAKeyManagementSession)initWithDelegate:(id)a3
+- (DAKeyManagementSession)initWithDelegate:(id)delegate
 {
   v4.receiver = self;
   v4.super_class = DAKeyManagementSession;
-  return [(DASession *)&v4 initWithDelegate:a3];
+  return [(DASession *)&v4 initWithDelegate:delegate];
 }
 
-- (void)preWarmForManufacturer:(id)a3 callback:(id)a4
+- (void)preWarmForManufacturer:(id)manufacturer callback:(id)callback
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  manufacturerCopy = manufacturer;
+  callbackCopy = callback;
   v7 = KmlLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -67,13 +67,13 @@
     v19 = 1024;
     v20 = 55;
     v21 = 2112;
-    v22 = v5;
+    v22 = manufacturerCopy;
     _os_log_impl(&dword_248BF3000, v7, OS_LOG_TYPE_DEBUG, "%s : %i : %@", buf, 0x1Cu);
   }
 
-  if ([v5 length])
+  if ([manufacturerCopy length])
   {
-    v14 = v6;
+    v14 = callbackCopy;
     SESEndPointPreWarmForAlisha();
     v8 = v14;
   }
@@ -96,7 +96,7 @@
     v16 = v8;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v12 = [v10 errorWithDomain:@"DigitalAccessError" code:206 userInfo:v11];
-    (*(v6 + 2))(v6, v12);
+    (*(callbackCopy + 2))(callbackCopy, v12);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -110,11 +110,11 @@ void __58__DAKeyManagementSession_preWarmForManufacturer_callback___block_invoke
   (*(v3 + 16))(v3, v4);
 }
 
-- (void)requestBindingAttestationDataForManufacturer:(id)a3 callback:(id)a4
+- (void)requestBindingAttestationDataForManufacturer:(id)manufacturer callback:(id)callback
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  manufacturerCopy = manufacturer;
+  callbackCopy = callback;
   v7 = KmlLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -123,7 +123,7 @@ void __58__DAKeyManagementSession_preWarmForManufacturer_callback___block_invoke
     v22 = 1024;
     v23 = 74;
     v24 = 2112;
-    v25 = v5;
+    v25 = manufacturerCopy;
     _os_log_impl(&dword_248BF3000, v7, OS_LOG_TYPE_INFO, "%s : %i : Manufacturer: %@", buf, 0x1Cu);
   }
 
@@ -133,32 +133,32 @@ void __58__DAKeyManagementSession_preWarmForManufacturer_callback___block_invoke
   if (v9)
   {
     v11 = MEMORY[0x277CCA9B8];
-    v12 = [v9 userInfo];
-    v13 = [v11 errorWithDomain:@"DigitalAccessError" code:224 userInfo:v12];
+    userInfo = [v9 userInfo];
+    v13 = [v11 errorWithDomain:@"DigitalAccessError" code:224 userInfo:userInfo];
     v14 = 0;
   }
 
   else
   {
     v15 = [DAKeyBindingAttestationRequestData alloc];
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v16 = [v8 subCAAttestation];
-    v17 = [v8 casdECDSACertificate];
-    v18 = [v8 casdRSACertificate];
-    v14 = [(DAKeyBindingAttestationRequestData *)v15 initWithSharingSessionIdentifier:v12 subCaAttestation:v16 casd:v17 rsaCertData:v18];
+    userInfo = [MEMORY[0x277CCAD78] UUID];
+    subCAAttestation = [v8 subCAAttestation];
+    casdECDSACertificate = [v8 casdECDSACertificate];
+    casdRSACertificate = [v8 casdRSACertificate];
+    v14 = [(DAKeyBindingAttestationRequestData *)v15 initWithSharingSessionIdentifier:userInfo subCaAttestation:subCAAttestation casd:casdECDSACertificate rsaCertData:casdRSACertificate];
 
     v13 = 0;
   }
 
-  v6[2](v6, v14, v13);
+  callbackCopy[2](callbackCopy, v14, v13);
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteKey:(id)a3 completionHandler:(id)a4
+- (void)deleteKey:(id)key completionHandler:(id)handler
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  handlerCopy = handler;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -167,11 +167,11 @@ void __58__DAKeyManagementSession_preWarmForManufacturer_callback___block_invoke
     *&buf[12] = 1024;
     *&buf[14] = 98;
     *&buf[18] = 2112;
-    *&buf[20] = v6;
+    *&buf[20] = keyCopy;
     _os_log_impl(&dword_248BF3000, v8, OS_LOG_TYPE_DEBUG, "%s : %i : %@", buf, 0x1Cu);
   }
 
-  if ([v6 length])
+  if ([keyCopy length])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -197,9 +197,9 @@ void __58__DAKeyManagementSession_preWarmForManufacturer_callback___block_invoke
     v16[3] = &unk_278F702E0;
     v16[4] = buf;
     v16[5] = &v18;
-    [v9 deleteKey:v6 callback:v16];
+    [v9 deleteKey:keyCopy callback:v16];
 
-    v7[2](v7, v19[5], *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, v19[5], *(*&buf[8] + 40));
     _Block_object_dispose(&v18, 8);
 
     _Block_object_dispose(buf, 8);
@@ -224,7 +224,7 @@ void __58__DAKeyManagementSession_preWarmForManufacturer_callback___block_invoke
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v14 = [v11 errorWithDomain:@"DigitalAccessError" code:206 userInfo:v13];
 
-    (v7)[2](v7, 0, v14);
+    (handlerCopy)[2](handlerCopy, 0, v14);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -272,10 +272,10 @@ void __54__DAKeyManagementSession_deleteKey_completionHandler___block_invoke_15(
   *(v9 + 40) = v5;
 }
 
-- (void)listKeysWithHandler:(id)a3
+- (void)listKeysWithHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handlerCopy = handler;
   v25 = 0;
   v4 = SESEndPointList();
   v5 = 0;
@@ -283,10 +283,10 @@ void __54__DAKeyManagementSession_deleteKey_completionHandler___block_invoke_15(
   if (v5)
   {
     v7 = MEMORY[0x277CCA9B8];
-    v8 = [v5 userInfo];
-    v9 = [v7 errorWithDomain:@"DigitalAccessError" code:209 userInfo:v8];
+    userInfo = [v5 userInfo];
+    v9 = [v7 errorWithDomain:@"DigitalAccessError" code:209 userInfo:userInfo];
 
-    v3[2](v3, 0, v9);
+    handlerCopy[2](handlerCopy, 0, v9);
   }
 
   else
@@ -315,13 +315,13 @@ void __54__DAKeyManagementSession_deleteKey_completionHandler___block_invoke_15(
           v16 = KmlLogger();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
-            v17 = [v15 publicKeyIdentifier];
+            publicKeyIdentifier = [v15 publicKeyIdentifier];
             *buf = 136315650;
             v27 = "[DAKeyManagementSession listKeysWithHandler:]";
             v28 = 1024;
             v29 = 128;
             v30 = 2112;
-            v31 = v17;
+            v31 = publicKeyIdentifier;
             _os_log_impl(&dword_248BF3000, v16, OS_LOG_TYPE_INFO, "%s : %i : Key id = %@", buf, 0x1Cu);
           }
 
@@ -335,19 +335,19 @@ void __54__DAKeyManagementSession_deleteKey_completionHandler___block_invoke_15(
       while (v12);
     }
 
-    (v3)[2](v3, v6, 0);
+    (handlerCopy)[2](handlerCopy, v6, 0);
     v4 = v20;
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)listKeysWithSession:(id)a3 seid:(id)a4 callback:(id)a5
+- (void)listKeysWithSession:(id)session seid:(id)seid callback:(id)callback
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  seidCopy = seid;
+  callbackCopy = callback;
   v10 = KmlLogger();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -358,7 +358,7 @@ void __54__DAKeyManagementSession_deleteKey_completionHandler___block_invoke_15(
     _os_log_impl(&dword_248BF3000, v10, OS_LOG_TYPE_ERROR, "%s : %i : This API is deprecated, please use DAManager version instead", buf, 0x12u);
   }
 
-  if (v7 && v8)
+  if (sessionCopy && seidCopy)
   {
     v39 = 0;
     v11 = SESEndPointListWithSession();
@@ -367,17 +367,17 @@ void __54__DAKeyManagementSession_deleteKey_completionHandler___block_invoke_15(
     if (v12)
     {
       v14 = MEMORY[0x277CCA9B8];
-      v15 = [v12 userInfo];
-      v16 = [v14 errorWithDomain:@"DigitalAccessError" code:209 userInfo:v15];
+      userInfo = [v12 userInfo];
+      v16 = [v14 errorWithDomain:@"DigitalAccessError" code:209 userInfo:userInfo];
 
-      v9[2](v9, 0, v16);
+      callbackCopy[2](callbackCopy, 0, v16);
     }
 
     else
     {
-      v32 = v9;
-      v33 = v8;
-      v34 = v7;
+      v32 = callbackCopy;
+      v33 = seidCopy;
+      v34 = sessionCopy;
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
@@ -401,13 +401,13 @@ void __54__DAKeyManagementSession_deleteKey_completionHandler___block_invoke_15(
             v26 = KmlLogger();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
             {
-              v27 = [v25 publicKeyIdentifier];
+              publicKeyIdentifier = [v25 publicKeyIdentifier];
               *buf = 136315650;
               v44 = "[DAKeyManagementSession listKeysWithSession:seid:callback:]";
               v45 = 1024;
               v46 = 154;
               v47 = 2112;
-              v48 = v27;
+              v48 = publicKeyIdentifier;
               _os_log_impl(&dword_248BF3000, v26, OS_LOG_TYPE_INFO, "%s : %i : Key id = %@", buf, 0x1Cu);
             }
 
@@ -436,10 +436,10 @@ void __54__DAKeyManagementSession_deleteKey_completionHandler___block_invoke_15(
         _os_log_impl(&dword_248BF3000, v29, OS_LOG_TYPE_INFO, "%s : %i : listKeysWithSession: key count = %lu", buf, 0x1Cu);
       }
 
-      v9 = v32;
+      callbackCopy = v32;
       (v32)[2](v32, v13, 0);
-      v8 = v33;
-      v7 = v34;
+      seidCopy = v33;
+      sessionCopy = v34;
     }
   }
 
@@ -453,9 +453,9 @@ void __54__DAKeyManagementSession_deleteKey_completionHandler___block_invoke_15(
       v45 = 1024;
       v46 = 143;
       v47 = 2112;
-      v48 = v7;
+      v48 = sessionCopy;
       v49 = 2112;
-      v50 = v8;
+      v50 = seidCopy;
       _os_log_impl(&dword_248BF3000, v17, OS_LOG_TYPE_ERROR, "%s : %i : Null arguments provided. Session : %@, seid : %@", buf, 0x26u);
     }
 
@@ -465,17 +465,17 @@ void __54__DAKeyManagementSession_deleteKey_completionHandler___block_invoke_15(
     v42 = v11;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
     v19 = [v18 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v13];
-    v9[2](v9, 0, v19);
+    callbackCopy[2](callbackCopy, 0, v19);
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)listSharingInvitationsForKeyIdentifier:(id)a3 callback:(id)a4
+- (void)listSharingInvitationsForKeyIdentifier:(id)identifier callback:(id)callback
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -484,11 +484,11 @@ void __54__DAKeyManagementSession_deleteKey_completionHandler___block_invoke_15(
     *&buf[12] = 1024;
     *&buf[14] = 168;
     *&buf[18] = 2112;
-    *&buf[20] = v6;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v8, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v6)
+  if (identifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -514,9 +514,9 @@ void __54__DAKeyManagementSession_deleteKey_completionHandler___block_invoke_15(
     v16[3] = &unk_278F70308;
     v16[4] = buf;
     v16[5] = &v18;
-    [v9 listSharingInvitationsForKeyIdentifier:v6 callback:v16];
+    [v9 listSharingInvitationsForKeyIdentifier:identifierCopy callback:v16];
 
-    v7[2](v7, v19[5], *(*&buf[8] + 40));
+    callbackCopy[2](callbackCopy, v19[5], *(*&buf[8] + 40));
     _Block_object_dispose(&v18, 8);
 
     _Block_object_dispose(buf, 8);
@@ -540,7 +540,7 @@ void __54__DAKeyManagementSession_deleteKey_completionHandler___block_invoke_15(
     v28[0] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v14 = [v11 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v13];
-    (v7)[2](v7, 0, v14);
+    (callbackCopy)[2](callbackCopy, 0, v14);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -630,11 +630,11 @@ void __69__DAKeyManagementSession_listReceivedSharingInvitationsWithCallback___b
   *(v9 + 40) = v5;
 }
 
-- (void)localDeleteKey:(id)a3 completionHandler:(id)a4
+- (void)localDeleteKey:(id)key completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  handlerCopy = handler;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -643,11 +643,11 @@ void __69__DAKeyManagementSession_listReceivedSharingInvitationsWithCallback___b
     *&buf[12] = 1024;
     *&buf[14] = 209;
     *&buf[18] = 2112;
-    *&buf[20] = v6;
+    *&buf[20] = keyCopy;
     _os_log_impl(&dword_248BF3000, v8, OS_LOG_TYPE_DEBUG, "%s : %i : %@", buf, 0x1Cu);
   }
 
-  if ([v6 length])
+  if ([keyCopy length])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -666,9 +666,9 @@ void __69__DAKeyManagementSession_listReceivedSharingInvitationsWithCallback___b
     v16[2] = __59__DAKeyManagementSession_localDeleteKey_completionHandler___block_invoke_22;
     v16[3] = &unk_278F6FB00;
     v16[4] = buf;
-    [v9 localDeleteKey:v6 callback:v16];
+    [v9 localDeleteKey:keyCopy callback:v16];
 
-    v7[2](v7, *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, *(*&buf[8] + 40));
     _Block_object_dispose(buf, 8);
   }
 
@@ -691,7 +691,7 @@ void __69__DAKeyManagementSession_listReceivedSharingInvitationsWithCallback___b
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v14 = [v11 errorWithDomain:@"DigitalAccessError" code:206 userInfo:v13];
 
-    (v7)[2](v7, v14);
+    (handlerCopy)[2](handlerCopy, v14);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -814,10 +814,10 @@ uint64_t __74__DAKeyManagementSession_removeSharingInvitationWithId_completionHa
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)signAppData:(id)a3 appBundleIdentifier:(id)a4 nonce:(id)a5 auth:(id)a6 keyIdentifier:(id)a7 callback:(id)a8
+- (void)signAppData:(id)data appBundleIdentifier:(id)identifier nonce:(id)nonce auth:(id)auth keyIdentifier:(id)keyIdentifier callback:(id)callback
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a8;
+  callbackCopy = callback;
   v9 = KmlLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -834,16 +834,16 @@ uint64_t __74__DAKeyManagementSession_removeSharingInvitationWithId_completionHa
   v16 = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
   v13 = [v10 errorWithDomain:@"DigitalAccessError" code:214 userInfo:v12];
-  (*(v8 + 2))(v8, 0, 0, v13);
+  (*(callbackCopy + 2))(callbackCopy, 0, 0, v13);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)countImmobilizerTokensForKeyWithIdentifier:(id)a3 callback:(id)a4
+- (void)countImmobilizerTokensForKeyWithIdentifier:(id)identifier callback:(id)callback
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -852,11 +852,11 @@ uint64_t __74__DAKeyManagementSession_removeSharingInvitationWithId_completionHa
     *&buf[12] = 1024;
     *&buf[14] = 270;
     *&buf[18] = 2112;
-    *&buf[20] = v6;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v8, OS_LOG_TYPE_DEBUG, "%s : %i : KeyIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v6)
+  if (identifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -873,9 +873,9 @@ uint64_t __74__DAKeyManagementSession_removeSharingInvitationWithId_completionHa
     v12[3] = &unk_278F70350;
     v12[4] = buf;
     v12[5] = &v13;
-    [v9 countImmobilizerTokensForKeyWithIdentifier:v6 callback:v12];
+    [v9 countImmobilizerTokensForKeyWithIdentifier:identifierCopy callback:v12];
 
-    v7[2](v7, *(*&buf[8] + 24), v14[3]);
+    callbackCopy[2](callbackCopy, *(*&buf[8] + 24), v14[3]);
     _Block_object_dispose(&v13, 8);
     _Block_object_dispose(buf, 8);
   }
@@ -892,7 +892,7 @@ uint64_t __74__DAKeyManagementSession_removeSharingInvitationWithId_completionHa
       _os_log_impl(&dword_248BF3000, v10, OS_LOG_TYPE_ERROR, "%s : %i : Null argument provided", buf, 0x12u);
     }
 
-    v7[2](v7, 0, 0);
+    callbackCopy[2](callbackCopy, 0, 0);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -924,12 +924,12 @@ uint64_t __78__DAKeyManagementSession_countImmobilizerTokensForKeyWithIdentifier
   return result;
 }
 
-- (void)cancelInvitationsWithIdentifiers:(id)a3 sentByOwnerKeyWithIdentifier:(id)a4 callback:(id)a5
+- (void)cancelInvitationsWithIdentifiers:(id)identifiers sentByOwnerKeyWithIdentifier:(id)identifier callback:(id)callback
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -938,11 +938,11 @@ uint64_t __78__DAKeyManagementSession_countImmobilizerTokensForKeyWithIdentifier
     *&buf[12] = 1024;
     *&buf[14] = 293;
     *&buf[18] = 2112;
-    *&buf[20] = v9;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v11, OS_LOG_TYPE_DEBUG, "%s : %i : OwnerKeyIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v8 && v9)
+  if (identifiersCopy && identifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -961,9 +961,9 @@ uint64_t __78__DAKeyManagementSession_countImmobilizerTokensForKeyWithIdentifier
     v19[2] = __97__DAKeyManagementSession_cancelInvitationsWithIdentifiers_sentByOwnerKeyWithIdentifier_callback___block_invoke_27;
     v19[3] = &unk_278F6FB00;
     v19[4] = buf;
-    [v12 cancelInvitationsWithIdentifiers:v8 sentByOwnerKeyWithIdentifier:v9 callback:v19];
+    [v12 cancelInvitationsWithIdentifiers:identifiersCopy sentByOwnerKeyWithIdentifier:identifierCopy callback:v19];
 
-    v10[2](v10, *(*&buf[8] + 40));
+    callbackCopy[2](callbackCopy, *(*&buf[8] + 40));
     _Block_object_dispose(buf, 8);
   }
 
@@ -985,7 +985,7 @@ uint64_t __78__DAKeyManagementSession_countImmobilizerTokensForKeyWithIdentifier
     v25[0] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v17 = [v14 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v16];
-    (v10)[2](v10, v17);
+    (callbackCopy)[2](callbackCopy, v17);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1030,11 +1030,11 @@ uint64_t __97__DAKeyManagementSession_cancelInvitationsWithIdentifiers_sentByOwn
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)cancelInvitationWithIdentifier:(id)a3 reason:(unint64_t)a4 callback:(id)a5
+- (void)cancelInvitationWithIdentifier:(id)identifier reason:(unint64_t)reason callback:(id)callback
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v10 = KmlLogger();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1043,11 +1043,11 @@ uint64_t __97__DAKeyManagementSession_cancelInvitationsWithIdentifiers_sentByOwn
     *&buf[12] = 1024;
     *&buf[14] = 316;
     *&buf[18] = 2112;
-    *&buf[20] = v8;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v10, OS_LOG_TYPE_DEBUG, "%s : %i : invitationIdentifier: %@", buf, 0x1Cu);
   }
 
-  if ([v8 length])
+  if ([identifierCopy length])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1073,9 +1073,9 @@ uint64_t __97__DAKeyManagementSession_cancelInvitationsWithIdentifiers_sentByOwn
     v18[3] = &unk_278F70378;
     v18[4] = &v20;
     v18[5] = buf;
-    [v11 cancelInvitationWithIdentifier:v8 reason:a4 callback:v18];
+    [v11 cancelInvitationWithIdentifier:identifierCopy reason:reason callback:v18];
 
-    v9[2](v9, v21[5], *(*&buf[8] + 40));
+    callbackCopy[2](callbackCopy, v21[5], *(*&buf[8] + 40));
     _Block_object_dispose(&v20, 8);
 
     _Block_object_dispose(buf, 8);
@@ -1099,7 +1099,7 @@ uint64_t __97__DAKeyManagementSession_cancelInvitationsWithIdentifiers_sentByOwn
     v30[0] = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v16 = [v13 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v15];
-    (v9)[2](v9, 0, v16);
+    (callbackCopy)[2](callbackCopy, 0, v16);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -1146,12 +1146,12 @@ void __73__DAKeyManagementSession_cancelInvitationWithIdentifier_reason_callback
   *(v8 + 40) = v7;
 }
 
-- (void)removeSharedKeysWithIdentifiers:(id)a3 ownerKeyWithIdentifier:(id)a4 callback:(id)a5
+- (void)removeSharedKeysWithIdentifiers:(id)identifiers ownerKeyWithIdentifier:(id)identifier callback:(id)callback
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -1160,11 +1160,11 @@ void __73__DAKeyManagementSession_cancelInvitationWithIdentifier_reason_callback
     *&buf[12] = 1024;
     *&buf[14] = 341;
     *&buf[18] = 2112;
-    *&buf[20] = v9;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v11, OS_LOG_TYPE_DEBUG, "%s : %i : OwnerKeyIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v8 && v9)
+  if (identifiersCopy && identifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1183,9 +1183,9 @@ void __73__DAKeyManagementSession_cancelInvitationWithIdentifier_reason_callback
     v19[2] = __90__DAKeyManagementSession_removeSharedKeysWithIdentifiers_ownerKeyWithIdentifier_callback___block_invoke_30;
     v19[3] = &unk_278F6FB00;
     v19[4] = buf;
-    [v12 removeSharedKeysWithIdentifiers:v8 ownerKeyWithIdentifier:v9 callback:v19];
+    [v12 removeSharedKeysWithIdentifiers:identifiersCopy ownerKeyWithIdentifier:identifierCopy callback:v19];
 
-    v10[2](v10, *(*&buf[8] + 40));
+    callbackCopy[2](callbackCopy, *(*&buf[8] + 40));
     _Block_object_dispose(buf, 8);
   }
 
@@ -1207,7 +1207,7 @@ void __73__DAKeyManagementSession_cancelInvitationWithIdentifier_reason_callback
     v25[0] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v17 = [v14 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v16];
-    (v10)[2](v10, v17);
+    (callbackCopy)[2](callbackCopy, v17);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1252,12 +1252,12 @@ uint64_t __90__DAKeyManagementSession_removeSharedKeysWithIdentifiers_ownerKeyWi
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)revokeKeysWithIdentifiers:(id)a3 sharedByOwnerKeyWithIdentifier:(id)a4 callback:(id)a5
+- (void)revokeKeysWithIdentifiers:(id)identifiers sharedByOwnerKeyWithIdentifier:(id)identifier callback:(id)callback
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -1266,12 +1266,12 @@ uint64_t __90__DAKeyManagementSession_removeSharedKeysWithIdentifiers_ownerKeyWi
     *&buf[12] = 1024;
     *&buf[14] = 363;
     *&buf[18] = 2112;
-    *&buf[20] = v8;
+    *&buf[20] = identifiersCopy;
     _os_log_impl(&dword_248BF3000, v11, OS_LOG_TYPE_INFO, "%s : %i : keyIdentifier List: %@", buf, 0x1Cu);
   }
 
-  v12 = [v8 count];
-  if (v9 && v12)
+  v12 = [identifiersCopy count];
+  if (identifierCopy && v12)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1297,9 +1297,9 @@ uint64_t __90__DAKeyManagementSession_removeSharedKeysWithIdentifiers_ownerKeyWi
     v20[3] = &unk_278F703A0;
     v20[4] = buf;
     v20[5] = &v22;
-    [v13 remoteTerminateKeys:v8 nodeGroupIdentifiers:0 treeGroupIdentifiers:0 adminKey:v9 callback:v20];
+    [v13 remoteTerminateKeys:identifiersCopy nodeGroupIdentifiers:0 treeGroupIdentifiers:0 adminKey:identifierCopy callback:v20];
 
-    v10[2](v10, v23[5], *(*&buf[8] + 40));
+    callbackCopy[2](callbackCopy, v23[5], *(*&buf[8] + 40));
     _Block_object_dispose(&v22, 8);
 
     _Block_object_dispose(buf, 8);
@@ -1323,7 +1323,7 @@ uint64_t __90__DAKeyManagementSession_removeSharedKeysWithIdentifiers_ownerKeyWi
     v32[0] = v16;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     v18 = [v15 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v17];
-    (v10)[2](v10, 0, v18);
+    (callbackCopy)[2](callbackCopy, 0, v18);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1371,13 +1371,13 @@ void __92__DAKeyManagementSession_revokeKeysWithIdentifiers_sharedByOwnerKeyWith
   *(v9 + 40) = v5;
 }
 
-- (void)revokeNodesWithGroupIdentifiers:(id)a3 treesWithGroupIdentifier:(id)a4 authorizedByKeyWithIdentifier:(id)a5 callback:(id)a6
+- (void)revokeNodesWithGroupIdentifiers:(id)identifiers treesWithGroupIdentifier:(id)identifier authorizedByKeyWithIdentifier:(id)withIdentifier callback:(id)callback
 {
   v70[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v43 = a4;
-  v10 = a5;
-  v11 = a6;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  callbackCopy = callback;
   v12 = KmlLogger();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -1386,7 +1386,7 @@ void __92__DAKeyManagementSession_revokeKeysWithIdentifiers_sharedByOwnerKeyWith
     *&buf[12] = 1024;
     *&buf[14] = 393;
     *&buf[18] = 2112;
-    *&buf[20] = v9;
+    *&buf[20] = identifiersCopy;
     _os_log_impl(&dword_248BF3000, v12, OS_LOG_TYPE_INFO, "%s : %i : keyGroupIdentifier List: %@", buf, 0x1Cu);
   }
 
@@ -1398,13 +1398,13 @@ void __92__DAKeyManagementSession_revokeKeysWithIdentifiers_sharedByOwnerKeyWith
     *&buf[12] = 1024;
     *&buf[14] = 394;
     *&buf[18] = 2112;
-    *&buf[20] = v43;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v13, OS_LOG_TYPE_INFO, "%s : %i : treeGroupIdentifier List: %@", buf, 0x1Cu);
   }
 
-  if ([v9 count])
+  if ([identifiersCopy count])
   {
-    if (!v10)
+    if (!withIdentifierCopy)
     {
 LABEL_27:
       v26 = KmlLogger();
@@ -1423,7 +1423,7 @@ LABEL_27:
       v70[0] = v28;
       v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v70 forKeys:&v69 count:1];
       v30 = [v27 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v29];
-      v11[2](v11, 0, v30);
+      callbackCopy[2](callbackCopy, 0, v30);
 
       goto LABEL_36;
     }
@@ -1431,8 +1431,8 @@ LABEL_27:
 
   else
   {
-    v14 = [v43 count];
-    if (!v10 || !v14)
+    v14 = [identifierCopy count];
+    if (!withIdentifierCopy || !v14)
     {
       goto LABEL_27;
     }
@@ -1442,7 +1442,7 @@ LABEL_27:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v15 = v9;
+  v15 = identifiersCopy;
   v16 = [v15 countByEnumeratingWithState:&v56 objects:v68 count:16];
   if (v16)
   {
@@ -1477,7 +1477,7 @@ LABEL_27:
           v67 = v33;
           v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
           v35 = [v32 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v34];
-          v11[2](v11, 0, v35);
+          callbackCopy[2](callbackCopy, 0, v35);
 
           goto LABEL_36;
         }
@@ -1497,7 +1497,7 @@ LABEL_27:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v20 = v43;
+  v20 = identifierCopy;
   v21 = [v20 countByEnumeratingWithState:&v52 objects:v65 count:16];
   if (v21)
   {
@@ -1532,7 +1532,7 @@ LABEL_27:
           v64 = v38;
           v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
           v40 = [v37 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v39];
-          v11[2](v11, 0, v40);
+          callbackCopy[2](callbackCopy, 0, v40);
 
           goto LABEL_36;
         }
@@ -1572,9 +1572,9 @@ LABEL_27:
   v44[3] = &unk_278F703A0;
   v44[4] = buf;
   v44[5] = &v46;
-  [v25 remoteTerminateKeys:0 nodeGroupIdentifiers:v15 treeGroupIdentifiers:v20 adminKey:v10 callback:v44];
+  [v25 remoteTerminateKeys:0 nodeGroupIdentifiers:v15 treeGroupIdentifiers:v20 adminKey:withIdentifierCopy callback:v44];
 
-  v11[2](v11, v47[5], *(*&buf[8] + 40));
+  callbackCopy[2](callbackCopy, v47[5], *(*&buf[8] + 40));
   _Block_object_dispose(&v46, 8);
 
   _Block_object_dispose(buf, 8);
@@ -1625,11 +1625,11 @@ void __122__DAKeyManagementSession_revokeNodesWithGroupIdentifiers_treesWithGrou
   *(v9 + 40) = v5;
 }
 
-- (void)handleActivationForKeyWithIdentifier:(id)a3 callback:(id)a4
+- (void)handleActivationForKeyWithIdentifier:(id)identifier callback:(id)callback
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v7 = KmlLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1638,28 +1638,28 @@ void __122__DAKeyManagementSession_revokeNodesWithGroupIdentifiers_treesWithGrou
     v13 = 1024;
     v14 = 441;
     v15 = 2112;
-    v16 = v5;
+    v16 = identifierCopy;
     _os_log_impl(&dword_248BF3000, v7, OS_LOG_TYPE_DEBUG, "%s : %i : %@", &v11, 0x1Cu);
   }
 
-  v8 = kmlUtilDataForHexString(v5);
+  v8 = kmlUtilDataForHexString(identifierCopy);
   v9 = SESEndpointNotifyPassAdded();
-  v6[2](v6, v9);
+  callbackCopy[2](callbackCopy, v9);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hasUpgradeAvailableForKeyWithIdentifier:(id)a3 versionType:(unint64_t)a4 versions:(id)a5 completionHandler:(id)a6
+- (void)hasUpgradeAvailableForKeyWithIdentifier:(id)identifier versionType:(unint64_t)type versions:(id)versions completionHandler:(id)handler
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  versionsCopy = versions;
+  handlerCopy = handler;
   v35 = 0;
   v36 = &v35;
   v37 = 0x4010000000;
   v38 = &unk_248C35099;
-  v39 = a4;
+  typeCopy = type;
   v41 = 0;
   v42 = 0;
   v40 = 0;
@@ -1677,11 +1677,11 @@ void __122__DAKeyManagementSession_revokeNodesWithGroupIdentifiers_treesWithGrou
     *&buf[12] = 1024;
     *&buf[14] = 458;
     *&buf[18] = 2112;
-    *&buf[20] = v10;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v13, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v10 && [v11 count])
+  if (identifierCopy && [versionsCopy count])
   {
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
@@ -1695,14 +1695,14 @@ void __122__DAKeyManagementSession_revokeNodesWithGroupIdentifiers_treesWithGrou
     v27[3] = &unk_278F703C8;
     v27[4] = &v29;
     v27[5] = &v35;
-    [v14 hasUpgradeAvailableForKeyWithIdentifier:v10 versionType:a4 versions:v11 completionHandler:v27];
+    [v14 hasUpgradeAvailableForKeyWithIdentifier:identifierCopy versionType:type versions:versionsCopy completionHandler:v27];
 
     v15 = v30[5];
-    v16 = v12[2];
+    v16 = handlerCopy[2];
     v17 = *(v36 + 3);
     *buf = *(v36 + 2);
     *&buf[16] = v17;
-    v16(v12, buf, v15);
+    v16(handlerCopy, buf, v15);
   }
 
   else
@@ -1724,11 +1724,11 @@ void __122__DAKeyManagementSession_revokeNodesWithGroupIdentifiers_treesWithGrou
     v45[0] = v21;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:&v44 count:1];
     v23 = [v20 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v22];
-    v24 = v12[2];
+    v24 = handlerCopy[2];
     v25 = *(v19 + 3);
     *buf = *(v19 + 2);
     *&buf[16] = v25;
-    v24(v12, buf, v23);
+    v24(handlerCopy, buf, v23);
   }
 
   _Block_object_dispose(&v29, 8);
@@ -1797,12 +1797,12 @@ void __105__DAKeyManagementSession_hasUpgradeAvailableForKeyWithIdentifier_versi
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)upgradeKeyWithIdentifier:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 upgradeInformation:(id)a6 completionHandler:(id)a7
+- (void)upgradeKeyWithIdentifier:(id)identifier versionType:(unint64_t)type version:(unint64_t)version upgradeInformation:(id)information completionHandler:(id)handler
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  identifierCopy = identifier;
+  informationCopy = information;
+  handlerCopy = handler;
   v15 = KmlLogger();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -1811,11 +1811,11 @@ void __105__DAKeyManagementSession_hasUpgradeAvailableForKeyWithIdentifier_versi
     *&buf[12] = 1024;
     *&buf[14] = 486;
     *&buf[18] = 2112;
-    *&buf[20] = v12;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v15, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v12)
+  if (identifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1834,9 +1834,9 @@ void __105__DAKeyManagementSession_hasUpgradeAvailableForKeyWithIdentifier_versi
     v23[2] = __108__DAKeyManagementSession_upgradeKeyWithIdentifier_versionType_version_upgradeInformation_completionHandler___block_invoke_36;
     v23[3] = &unk_278F6FB00;
     v23[4] = buf;
-    [v16 upgradeKeyWithIdentifier:v12 versionType:a4 version:a5 upgradeInformation:v13 completionHandler:v23];
+    [v16 upgradeKeyWithIdentifier:identifierCopy versionType:type version:version upgradeInformation:informationCopy completionHandler:v23];
 
-    v14[2](v14, *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, *(*&buf[8] + 40));
     _Block_object_dispose(buf, 8);
   }
 
@@ -1858,7 +1858,7 @@ void __105__DAKeyManagementSession_hasUpgradeAvailableForKeyWithIdentifier_versi
     v29[0] = v19;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v21 = [v18 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v20];
-    (v14)[2](v14, v21);
+    (handlerCopy)[2](handlerCopy, v21);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -1917,11 +1917,11 @@ void __108__DAKeyManagementSession_upgradeKeyWithIdentifier_versionType_version_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)commitUpgradeForKeyWithIdentifier:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 completionHandler:(id)a6
+- (void)commitUpgradeForKeyWithIdentifier:(id)identifier versionType:(unint64_t)type version:(unint64_t)version completionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v12 = KmlLogger();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -1930,11 +1930,11 @@ void __108__DAKeyManagementSession_upgradeKeyWithIdentifier_versionType_version_
     *&buf[12] = 1024;
     *&buf[14] = 515;
     *&buf[18] = 2112;
-    *&buf[20] = v10;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v12, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v10)
+  if (identifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1953,9 +1953,9 @@ void __108__DAKeyManagementSession_upgradeKeyWithIdentifier_versionType_version_
     v20[2] = __98__DAKeyManagementSession_commitUpgradeForKeyWithIdentifier_versionType_version_completionHandler___block_invoke_37;
     v20[3] = &unk_278F6FB00;
     v20[4] = buf;
-    [v13 finalizeUpgradeForKeyWithIdentifier:v10 versionType:a4 version:a5 revert:0 completionHandler:v20];
+    [v13 finalizeUpgradeForKeyWithIdentifier:identifierCopy versionType:type version:version revert:0 completionHandler:v20];
 
-    v11[2](v11, *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, *(*&buf[8] + 40));
     _Block_object_dispose(buf, 8);
   }
 
@@ -1977,7 +1977,7 @@ void __108__DAKeyManagementSession_upgradeKeyWithIdentifier_versionType_version_
     v26[0] = v16;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v18 = [v15 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v17];
-    (v11)[2](v11, v18);
+    (handlerCopy)[2](handlerCopy, v18);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -2036,11 +2036,11 @@ void __98__DAKeyManagementSession_commitUpgradeForKeyWithIdentifier_versionType_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)revertUpgradeForKeyWithIdentifier:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 completionHandler:(id)a6
+- (void)revertUpgradeForKeyWithIdentifier:(id)identifier versionType:(unint64_t)type version:(unint64_t)version completionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v12 = KmlLogger();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -2049,11 +2049,11 @@ void __98__DAKeyManagementSession_commitUpgradeForKeyWithIdentifier_versionType_
     *&buf[12] = 1024;
     *&buf[14] = 543;
     *&buf[18] = 2112;
-    *&buf[20] = v10;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v12, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v10)
+  if (identifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -2072,9 +2072,9 @@ void __98__DAKeyManagementSession_commitUpgradeForKeyWithIdentifier_versionType_
     v20[2] = __98__DAKeyManagementSession_revertUpgradeForKeyWithIdentifier_versionType_version_completionHandler___block_invoke_38;
     v20[3] = &unk_278F6FB00;
     v20[4] = buf;
-    [v13 finalizeUpgradeForKeyWithIdentifier:v10 versionType:a4 version:a5 revert:1 completionHandler:v20];
+    [v13 finalizeUpgradeForKeyWithIdentifier:identifierCopy versionType:type version:version revert:1 completionHandler:v20];
 
-    v11[2](v11, *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, *(*&buf[8] + 40));
     _Block_object_dispose(buf, 8);
   }
 
@@ -2096,7 +2096,7 @@ void __98__DAKeyManagementSession_commitUpgradeForKeyWithIdentifier_versionType_
     v26[0] = v16;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v18 = [v15 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v17];
-    (v11)[2](v11, v18);
+    (handlerCopy)[2](handlerCopy, v18);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -2155,13 +2155,13 @@ void __98__DAKeyManagementSession_revertUpgradeForKeyWithIdentifier_versionType_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateConfiguration:(id)a3 forKeyWithIdentifier:(id)a4 additionalConfigurationData:(id)a5 completionHandler:(id)a6
+- (void)updateConfiguration:(id)configuration forKeyWithIdentifier:(id)identifier additionalConfigurationData:(id)data completionHandler:(id)handler
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  dataCopy = data;
+  handlerCopy = handler;
   v14 = KmlLogger();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -2170,11 +2170,11 @@ void __98__DAKeyManagementSession_revertUpgradeForKeyWithIdentifier_versionType_
     *&buf[12] = 1024;
     *&buf[14] = 573;
     *&buf[18] = 2112;
-    *&buf[20] = v11;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v14, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v11)
+  if (identifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -2193,9 +2193,9 @@ void __98__DAKeyManagementSession_revertUpgradeForKeyWithIdentifier_versionType_
     v22[2] = __113__DAKeyManagementSession_updateConfiguration_forKeyWithIdentifier_additionalConfigurationData_completionHandler___block_invoke_39;
     v22[3] = &unk_278F6FB00;
     v22[4] = buf;
-    [v15 updateConfiguration:v10 forKeyWithIdentifier:v11 additionalConfigurationData:v12 completionHandler:v22];
+    [v15 updateConfiguration:configurationCopy forKeyWithIdentifier:identifierCopy additionalConfigurationData:dataCopy completionHandler:v22];
 
-    v13[2](v13, *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, *(*&buf[8] + 40));
     _Block_object_dispose(buf, 8);
   }
 
@@ -2217,7 +2217,7 @@ void __98__DAKeyManagementSession_revertUpgradeForKeyWithIdentifier_versionType_
     v28[0] = v18;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v20 = [v17 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v19];
-    (v13)[2](v13, v20);
+    (handlerCopy)[2](handlerCopy, v20);
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -2276,16 +2276,16 @@ void __113__DAKeyManagementSession_updateConfiguration_forKeyWithIdentifier_addi
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sendTrackingReceipt:(void *)a3 otherJSONData:(void *)a4 forKeyWithIdentifier:
+- (id)sendTrackingReceipt:(void *)receipt otherJSONData:(void *)data forKeyWithIdentifier:
 {
   v22[1] = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  receiptCopy = receipt;
+  dataCopy = data;
+  if (self)
   {
-    kmlUtilLogLargeData(@"Tracking Receipt Data", v8);
-    if (v9)
+    kmlUtilLogLargeData(@"Tracking Receipt Data", receiptCopy);
+    if (dataCopy)
     {
       v15 = 0;
       v16 = &v15;
@@ -2298,28 +2298,28 @@ void __113__DAKeyManagementSession_updateConfiguration_forKeyWithIdentifier_addi
       v14[2] = __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithIdentifier___block_invoke;
       v14[3] = &unk_278F6FB00;
       v14[4] = &v15;
-      v10 = [a1 getRemoteProxy:v14];
+      v10 = [self getRemoteProxy:v14];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithIdentifier___block_invoke_43;
       v13[3] = &unk_278F6FB00;
       v13[4] = &v15;
-      [v10 consumeTrackingReceipt:v7 otherJSONData:v8 forKeyWithIdentifier:v9 callback:v13];
+      [v10 consumeTrackingReceipt:v7 otherJSONData:receiptCopy forKeyWithIdentifier:dataCopy callback:v13];
 
-      a1 = v16[5];
+      self = v16[5];
       _Block_object_dispose(&v15, 8);
     }
 
     else
     {
       [DAKeyManagementSession sendTrackingReceipt:v22 otherJSONData:&v15 forKeyWithIdentifier:?];
-      a1 = v15;
+      self = v15;
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
 void __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -2375,11 +2375,11 @@ void __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithId
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)setTrackingReceipt:(id)a3 forKeyWithIdentifier:(id)a4
+- (id)setTrackingReceipt:(id)receipt forKeyWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  receiptCopy = receipt;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -2398,23 +2398,23 @@ void __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithId
     v15 = 1024;
     v16 = 629;
     v17 = 2112;
-    v18 = v6;
+    v18 = identifierCopy;
     _os_log_impl(&dword_248BF3000, v9, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", &v13, 0x1Cu);
   }
 
-  v10 = [(DAKeyManagementSession *)self sendTrackingReceipt:v7 otherJSONData:0 forKeyWithIdentifier:v6];
+  v10 = [(DAKeyManagementSession *)self sendTrackingReceipt:receiptCopy otherJSONData:0 forKeyWithIdentifier:identifierCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
 }
 
-- (id)setTrackingReceipt:(id)a3 vehicleMobilizationData:(id)a4 forKeyWithIdentifier:(id)a5
+- (id)setTrackingReceipt:(id)receipt vehicleMobilizationData:(id)data forKeyWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
+  receiptCopy = receipt;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -2433,24 +2433,24 @@ void __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithId
     v19 = 1024;
     v20 = 640;
     v21 = 2112;
-    v22 = v8;
+    v22 = identifierCopy;
     _os_log_impl(&dword_248BF3000, v12, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", &v17, 0x1Cu);
   }
 
-  v13 = [DAUtils decryptVehicleMobilizationData:v9 forKeyWithIdentifier:v8];
+  v13 = [DAUtils decryptVehicleMobilizationData:dataCopy forKeyWithIdentifier:identifierCopy];
 
-  v14 = [(DAKeyManagementSession *)self sendTrackingReceipt:v10 otherJSONData:v13 forKeyWithIdentifier:v8];
+  v14 = [(DAKeyManagementSession *)self sendTrackingReceipt:receiptCopy otherJSONData:v13 forKeyWithIdentifier:identifierCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-- (id)setTrackingReceipt:(id)a3 slotIdentifier:(id)a4 confidentialMailboxData:(id)a5 ephemeralPublicKey:(id)a6 forKeyWithIdentifier:(id)a7
+- (id)setTrackingReceipt:(id)receipt slotIdentifier:(id)identifier confidentialMailboxData:(id)data ephemeralPublicKey:(id)key forKeyWithIdentifier:(id)withIdentifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v9 = a7;
-  v10 = a3;
+  withIdentifierCopy = withIdentifier;
+  receiptCopy = receipt;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -2469,24 +2469,24 @@ void __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithId
     v18 = 1024;
     v19 = 656;
     v20 = 2112;
-    v21 = v9;
+    v21 = withIdentifierCopy;
     _os_log_impl(&dword_248BF3000, v12, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", &v16, 0x1Cu);
   }
 
-  v13 = [(DAKeyManagementSession *)self sendTrackingReceipt:v10 otherJSONData:0 forKeyWithIdentifier:v9];
+  v13 = [(DAKeyManagementSession *)self sendTrackingReceipt:receiptCopy otherJSONData:0 forKeyWithIdentifier:withIdentifierCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (void)endPointPrivacyDecryption:(id)a3 encryptedData:(id)a4 publicKey:(id)a5 callback:(id)a6
+- (void)endPointPrivacyDecryption:(id)decryption encryptedData:(id)data publicKey:(id)key callback:(id)callback
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  decryptionCopy = decryption;
+  dataCopy = data;
+  keyCopy = key;
+  callbackCopy = callback;
   v13 = KmlLogger();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -2497,17 +2497,17 @@ void __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithId
     _os_log_impl(&dword_248BF3000, v13, OS_LOG_TYPE_INFO, "%s : %i : API Deprecated, please stop use", buf, 0x12u);
   }
 
-  if (v9 && v10 && v11)
+  if (decryptionCopy && dataCopy && keyCopy)
   {
-    v14 = kmlUtilDataForHexString(v11);
-    v15 = kmlUtilDataForHexString(v10);
+    v14 = kmlUtilDataForHexString(keyCopy);
+    v15 = kmlUtilDataForHexString(dataCopy);
     v16 = SESEndPointPrivacyDecryption();
     v17 = 0;
     v18 = KmlLogger();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_INFO);
     if (v17)
     {
-      v26 = v11;
+      v26 = keyCopy;
       if (v19)
       {
         *buf = 136315650;
@@ -2520,11 +2520,11 @@ void __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithId
       }
 
       v20 = MEMORY[0x277CCA9B8];
-      v21 = [v17 userInfo];
-      v22 = [v20 errorWithDomain:@"DigitalAccessError" code:204 userInfo:v21];
+      userInfo = [v17 userInfo];
+      v22 = [v20 errorWithDomain:@"DigitalAccessError" code:204 userInfo:userInfo];
 
-      v12[2](v12, 0, v22);
-      v11 = v26;
+      callbackCopy[2](callbackCopy, 0, v22);
+      keyCopy = v26;
     }
 
     else
@@ -2540,7 +2540,7 @@ void __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithId
         _os_log_impl(&dword_248BF3000, v18, OS_LOG_TYPE_INFO, "%s : %i : endPointPrivacyDecryption: got decrypted data: %@", buf, 0x1Cu);
       }
 
-      (v12)[2](v12, v16, 0);
+      (callbackCopy)[2](callbackCopy, v16, 0);
     }
   }
 
@@ -2562,18 +2562,18 @@ void __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithId
     v34[0] = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
     v16 = [v24 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v15];
-    v12[2](v12, 0, v16);
+    callbackCopy[2](callbackCopy, 0, v16);
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateConfiguration:(id)a3 forKeyWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)updateConfiguration:(id)configuration forKeyWithIdentifier:(id)identifier completionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -2592,11 +2592,11 @@ void __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithId
     *&buf[12] = 1024;
     *&buf[14] = 693;
     *&buf[18] = 2112;
-    *&buf[20] = v9;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v12, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v8 && v9)
+  if (configurationCopy && identifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -2615,9 +2615,9 @@ void __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithId
     v20[2] = __85__DAKeyManagementSession_updateConfiguration_forKeyWithIdentifier_completionHandler___block_invoke_45;
     v20[3] = &unk_278F6FB00;
     v20[4] = buf;
-    [v13 updateConfiguration:v8 forKeyWithIdentifier:v9 additionalConfigurationData:0 completionHandler:v20];
+    [v13 updateConfiguration:configurationCopy forKeyWithIdentifier:identifierCopy additionalConfigurationData:0 completionHandler:v20];
 
-    v10[2](v10, *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, *(*&buf[8] + 40));
     _Block_object_dispose(buf, 8);
   }
 
@@ -2639,7 +2639,7 @@ void __81__DAKeyManagementSession_sendTrackingReceipt_otherJSONData_forKeyWithId
     v26[0] = v16;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v18 = [v15 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v17];
-    (v10)[2](v10, v18);
+    (handlerCopy)[2](handlerCopy, v18);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -2698,12 +2698,12 @@ void __85__DAKeyManagementSession_updateConfiguration_forKeyWithIdentifier_compl
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)setTrackingReceipt:(id)a3 decryptedDeviceData:(id)a4 forKeyWithIdentifier:(id)a5
+- (id)setTrackingReceipt:(id)receipt decryptedDeviceData:(id)data forKeyWithIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
+  receiptCopy = receipt;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -2712,22 +2712,22 @@ void __85__DAKeyManagementSession_updateConfiguration_forKeyWithIdentifier_compl
     v17 = 1024;
     v18 = 721;
     v19 = 2112;
-    v20 = v8;
+    v20 = identifierCopy;
     _os_log_impl(&dword_248BF3000, v11, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", &v15, 0x1Cu);
   }
 
-  v12 = [(DAKeyManagementSession *)self sendTrackingReceipt:v10 otherJSONData:v9 forKeyWithIdentifier:v8];
+  v12 = [(DAKeyManagementSession *)self sendTrackingReceipt:receiptCopy otherJSONData:dataCopy forKeyWithIdentifier:identifierCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (void)requestBindingAttestationDataForKeyWithIdentifier:(id)a3 callback:(id)a4
+- (void)requestBindingAttestationDataForKeyWithIdentifier:(id)identifier callback:(id)callback
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -2736,11 +2736,11 @@ void __85__DAKeyManagementSession_updateConfiguration_forKeyWithIdentifier_compl
     *&buf[12] = 1024;
     *&buf[14] = 732;
     *&buf[18] = 2112;
-    *&buf[20] = v6;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v8, OS_LOG_TYPE_INFO, "%s : %i : keyIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v6)
+  if (identifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -2766,9 +2766,9 @@ void __85__DAKeyManagementSession_updateConfiguration_forKeyWithIdentifier_compl
     v16[3] = &unk_278F703F0;
     v16[4] = buf;
     v16[5] = &v18;
-    [v9 requestBindingAttestationDataForKeyWithIdentifier:v6 callback:v16];
+    [v9 requestBindingAttestationDataForKeyWithIdentifier:identifierCopy callback:v16];
 
-    v7[2](v7, v19[5], *(*&buf[8] + 40));
+    callbackCopy[2](callbackCopy, v19[5], *(*&buf[8] + 40));
     _Block_object_dispose(&v18, 8);
 
     _Block_object_dispose(buf, 8);
@@ -2792,7 +2792,7 @@ void __85__DAKeyManagementSession_updateConfiguration_forKeyWithIdentifier_compl
     v28[0] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v14 = [v11 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v13];
-    (v7)[2](v7, 0, v14);
+    (callbackCopy)[2](callbackCopy, 0, v14);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -2840,12 +2840,12 @@ void __85__DAKeyManagementSession_requestBindingAttestationDataForKeyWithIdentif
   *(v9 + 40) = v5;
 }
 
-- (void)setBindingAttestation:(id)a3 forKeyWithIdentifier:(id)a4 callback:(id)a5
+- (void)setBindingAttestation:(id)attestation forKeyWithIdentifier:(id)identifier callback:(id)callback
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attestationCopy = attestation;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -2854,11 +2854,11 @@ void __85__DAKeyManagementSession_requestBindingAttestationDataForKeyWithIdentif
     *&buf[12] = 1024;
     *&buf[14] = 757;
     *&buf[18] = 2112;
-    *&buf[20] = v9;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v11, OS_LOG_TYPE_INFO, "%s : %i : keyIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v8 && v9)
+  if (attestationCopy && identifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -2877,9 +2877,9 @@ void __85__DAKeyManagementSession_requestBindingAttestationDataForKeyWithIdentif
     v19[2] = __78__DAKeyManagementSession_setBindingAttestation_forKeyWithIdentifier_callback___block_invoke_48;
     v19[3] = &unk_278F6FB00;
     v19[4] = buf;
-    [v12 setBindingAttestation:v8 forKeyWithIdentifier:v9 callback:v19];
+    [v12 setBindingAttestation:attestationCopy forKeyWithIdentifier:identifierCopy callback:v19];
 
-    v10[2](v10, *(*&buf[8] + 40));
+    callbackCopy[2](callbackCopy, *(*&buf[8] + 40));
     _Block_object_dispose(buf, 8);
   }
 
@@ -2901,7 +2901,7 @@ void __85__DAKeyManagementSession_requestBindingAttestationDataForKeyWithIdentif
     v25[0] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v17 = [v14 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v16];
-    (v10)[2](v10, v17);
+    (callbackCopy)[2](callbackCopy, v17);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -2946,11 +2946,11 @@ uint64_t __78__DAKeyManagementSession_setBindingAttestation_forKeyWithIdentifier
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)getPreTrackRequestForInvitationWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getPreTrackRequestForInvitationWithIdentifier:(id)identifier completionHandler:(id)handler
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -2959,11 +2959,11 @@ uint64_t __78__DAKeyManagementSession_setBindingAttestation_forKeyWithIdentifier
     *&buf[12] = 1024;
     *&buf[14] = 779;
     *&buf[18] = 2112;
-    *&buf[20] = v6;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v8, OS_LOG_TYPE_DEBUG, "%s : %i : invitationIdentifier: %@", buf, 0x1Cu);
   }
 
-  if ([v6 length])
+  if ([identifierCopy length])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -2989,9 +2989,9 @@ uint64_t __78__DAKeyManagementSession_setBindingAttestation_forKeyWithIdentifier
     v16[3] = &unk_278F703A0;
     v16[4] = &v18;
     v16[5] = buf;
-    [v9 getPreTrackRequestForInvitationWithIdentifier:v6 completionHandler:v16];
+    [v9 getPreTrackRequestForInvitationWithIdentifier:identifierCopy completionHandler:v16];
 
-    v7[2](v7, v19[5], *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, v19[5], *(*&buf[8] + 40));
     _Block_object_dispose(&v18, 8);
 
     _Block_object_dispose(buf, 8);
@@ -3015,7 +3015,7 @@ uint64_t __78__DAKeyManagementSession_setBindingAttestation_forKeyWithIdentifier
     v28[0] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v14 = [v11 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v13];
-    (v7)[2](v7, 0, v14);
+    (handlerCopy)[2](handlerCopy, 0, v14);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -3062,11 +3062,11 @@ void __90__DAKeyManagementSession_getPreTrackRequestForInvitationWithIdentifier_
   *(v8 + 40) = v7;
 }
 
-- (void)getPreTrackRequestForKeyWithIdentifier:(id)a3 callback:(id)a4
+- (void)getPreTrackRequestForKeyWithIdentifier:(id)identifier callback:(id)callback
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -3085,11 +3085,11 @@ void __90__DAKeyManagementSession_getPreTrackRequestForInvitationWithIdentifier_
     *&buf[12] = 1024;
     *&buf[14] = 810;
     *&buf[18] = 2112;
-    *&buf[20] = v6;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v9, OS_LOG_TYPE_DEBUG, "%s : %i : keyIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v6)
+  if (identifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -3115,9 +3115,9 @@ void __90__DAKeyManagementSession_getPreTrackRequestForInvitationWithIdentifier_
     v17[3] = &unk_278F703A0;
     v17[4] = &v19;
     v17[5] = buf;
-    [v10 getPreTrackRequestForKeyWithIdentifier:v6 callback:v17];
+    [v10 getPreTrackRequestForKeyWithIdentifier:identifierCopy callback:v17];
 
-    v7[2](v7, v20[5], *(*&buf[8] + 40));
+    callbackCopy[2](callbackCopy, v20[5], *(*&buf[8] + 40));
     _Block_object_dispose(&v19, 8);
 
     _Block_object_dispose(buf, 8);
@@ -3141,7 +3141,7 @@ void __90__DAKeyManagementSession_getPreTrackRequestForInvitationWithIdentifier_
     v29[0] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v15 = [v12 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v14];
-    (v7)[2](v7, 0, v15);
+    (callbackCopy)[2](callbackCopy, 0, v15);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -3188,12 +3188,12 @@ void __74__DAKeyManagementSession_getPreTrackRequestForKeyWithIdentifier_callbac
   *(v8 + 40) = v7;
 }
 
-- (void)ppidRequestForInvitationWithIdentifier:(id)a3 fromMailboxIdentifier:(id)a4 completionHandler:(id)a5
+- (void)ppidRequestForInvitationWithIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completionHandler:(id)handler
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  mailboxIdentifierCopy = mailboxIdentifier;
+  handlerCopy = handler;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -3212,11 +3212,11 @@ void __74__DAKeyManagementSession_getPreTrackRequestForKeyWithIdentifier_callbac
     *&buf[12] = 1024;
     *&buf[14] = 836;
     *&buf[18] = 2112;
-    *&buf[20] = v8;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v12, OS_LOG_TYPE_DEBUG, "%s : %i : invitationIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v8 | v9)
+  if (identifierCopy | mailboxIdentifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -3242,9 +3242,9 @@ void __74__DAKeyManagementSession_getPreTrackRequestForKeyWithIdentifier_callbac
     v20[3] = &unk_278F703A0;
     v20[4] = &v22;
     v20[5] = buf;
-    [v18 ppidRequestForInvitationWithIdentifier:v8 fromMailboxIdentifier:v9 completionHandler:v20];
+    [v18 ppidRequestForInvitationWithIdentifier:identifierCopy fromMailboxIdentifier:mailboxIdentifierCopy completionHandler:v20];
 
-    v10[2](v10, v23[5], *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, v23[5], *(*&buf[8] + 40));
     _Block_object_dispose(&v22, 8);
 
     _Block_object_dispose(buf, 8);
@@ -3268,7 +3268,7 @@ void __74__DAKeyManagementSession_getPreTrackRequestForKeyWithIdentifier_callbac
     v32[0] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     v17 = [v14 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v16];
-    (v10)[2](v10, 0, v17);
+    (handlerCopy)[2](handlerCopy, 0, v17);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3315,12 +3315,12 @@ void __105__DAKeyManagementSession_ppidRequestForInvitationWithIdentifier_fromMa
   *(v8 + 40) = v7;
 }
 
-- (void)readerInformationForInvitationWithIdentifier:(id)a3 fromMailboxIdentifier:(id)a4 completionHandler:(id)a5
+- (void)readerInformationForInvitationWithIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completionHandler:(id)handler
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  mailboxIdentifierCopy = mailboxIdentifier;
+  handlerCopy = handler;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -3339,11 +3339,11 @@ void __105__DAKeyManagementSession_ppidRequestForInvitationWithIdentifier_fromMa
     *&buf[12] = 1024;
     *&buf[14] = 862;
     *&buf[18] = 2112;
-    *&buf[20] = v8;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v12, OS_LOG_TYPE_DEBUG, "%s : %i : invitationIdentifier: %@", buf, 0x1Cu);
   }
 
-  if (v8 | v9)
+  if (identifierCopy | mailboxIdentifierCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -3369,9 +3369,9 @@ void __105__DAKeyManagementSession_ppidRequestForInvitationWithIdentifier_fromMa
     v20[3] = &unk_278F70418;
     v20[4] = &v22;
     v20[5] = buf;
-    [v18 readerInformationForInvitationWithIdentifier:v8 fromMailboxIdentifier:v9 completionHandler:v20];
+    [v18 readerInformationForInvitationWithIdentifier:identifierCopy fromMailboxIdentifier:mailboxIdentifierCopy completionHandler:v20];
 
-    v10[2](v10, v23[5], *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, v23[5], *(*&buf[8] + 40));
     _Block_object_dispose(&v22, 8);
 
     _Block_object_dispose(buf, 8);
@@ -3395,7 +3395,7 @@ void __105__DAKeyManagementSession_ppidRequestForInvitationWithIdentifier_fromMa
     v32[0] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     v17 = [v14 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v16];
-    (v10)[2](v10, 0, v17);
+    (handlerCopy)[2](handlerCopy, 0, v17);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3442,11 +3442,11 @@ void __111__DAKeyManagementSession_readerInformationForInvitationWithIdentifier_
   *(v8 + 40) = v7;
 }
 
-- (void)ppidRequestForInvitationWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)ppidRequestForInvitationWithIdentifier:(id)identifier completionHandler:(id)handler
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -3455,11 +3455,11 @@ void __111__DAKeyManagementSession_readerInformationForInvitationWithIdentifier_
     *&buf[12] = 1024;
     *&buf[14] = 888;
     *&buf[18] = 2112;
-    *&buf[20] = v6;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v8, OS_LOG_TYPE_DEBUG, "%s : %i : invitationIdentifier: %@", buf, 0x1Cu);
   }
 
-  if ([v6 length])
+  if ([identifierCopy length])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -3485,9 +3485,9 @@ void __111__DAKeyManagementSession_readerInformationForInvitationWithIdentifier_
     v16[3] = &unk_278F703A0;
     v16[4] = &v18;
     v16[5] = buf;
-    [v9 ppidRequestForInvitationWithIdentifier:v6 fromMailboxIdentifier:0 completionHandler:v16];
+    [v9 ppidRequestForInvitationWithIdentifier:identifierCopy fromMailboxIdentifier:0 completionHandler:v16];
 
-    v7[2](v7, v19[5], *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, v19[5], *(*&buf[8] + 40));
     _Block_object_dispose(&v18, 8);
 
     _Block_object_dispose(buf, 8);
@@ -3511,7 +3511,7 @@ void __111__DAKeyManagementSession_readerInformationForInvitationWithIdentifier_
     v28[0] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v14 = [v11 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v13];
-    (v7)[2](v7, 0, v14);
+    (handlerCopy)[2](handlerCopy, 0, v14);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -3558,12 +3558,12 @@ void __83__DAKeyManagementSession_ppidRequestForInvitationWithIdentifier_complet
   *(v8 + 40) = v7;
 }
 
-- (void)setProductPlanIdentifier:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5
+- (void)setProductPlanIdentifier:(id)identifier forInvitationIdentifier:(id)invitationIdentifier completion:(id)completion
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  invitationIdentifierCopy = invitationIdentifier;
+  completionCopy = completion;
   v11 = KmlLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -3572,11 +3572,11 @@ void __83__DAKeyManagementSession_ppidRequestForInvitationWithIdentifier_complet
     *&buf[12] = 1024;
     *&buf[14] = 915;
     *&buf[18] = 2112;
-    *&buf[20] = v9;
+    *&buf[20] = invitationIdentifierCopy;
     _os_log_impl(&dword_248BF3000, v11, OS_LOG_TYPE_DEBUG, "%s : %i : invitationIdentifier: %@", buf, 0x1Cu);
   }
 
-  if ([v9 length])
+  if ([invitationIdentifierCopy length])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -3595,9 +3595,9 @@ void __83__DAKeyManagementSession_ppidRequestForInvitationWithIdentifier_complet
     v19[2] = __86__DAKeyManagementSession_setProductPlanIdentifier_forInvitationIdentifier_completion___block_invoke_55;
     v19[3] = &unk_278F6FB00;
     v19[4] = buf;
-    [v12 setProductPlanIdentifier:v8 forInvitationIdentifier:v9 completion:v19];
+    [v12 setProductPlanIdentifier:identifierCopy forInvitationIdentifier:invitationIdentifierCopy completion:v19];
 
-    v10[2](v10, *(*&buf[8] + 40));
+    completionCopy[2](completionCopy, *(*&buf[8] + 40));
     _Block_object_dispose(buf, 8);
   }
 
@@ -3619,7 +3619,7 @@ void __83__DAKeyManagementSession_ppidRequestForInvitationWithIdentifier_complet
     v25[0] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v17 = [v14 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v16];
-    (v10)[2](v10, v17);
+    (completionCopy)[2](completionCopy, v17);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -3664,11 +3664,11 @@ uint64_t __86__DAKeyManagementSession_setProductPlanIdentifier_forInvitationIden
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)readerInformationForInvitationWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)readerInformationForInvitationWithIdentifier:(id)identifier completionHandler:(id)handler
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -3677,11 +3677,11 @@ uint64_t __86__DAKeyManagementSession_setProductPlanIdentifier_forInvitationIden
     *&buf[12] = 1024;
     *&buf[14] = 938;
     *&buf[18] = 2112;
-    *&buf[20] = v6;
+    *&buf[20] = identifierCopy;
     _os_log_impl(&dword_248BF3000, v8, OS_LOG_TYPE_DEBUG, "%s : %i : invitationIdentifier: %@", buf, 0x1Cu);
   }
 
-  if ([v6 length])
+  if ([identifierCopy length])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -3707,9 +3707,9 @@ uint64_t __86__DAKeyManagementSession_setProductPlanIdentifier_forInvitationIden
     v16[3] = &unk_278F70418;
     v16[4] = &v18;
     v16[5] = buf;
-    [v9 readerInformationForInvitationWithIdentifier:v6 fromMailboxIdentifier:0 completionHandler:v16];
+    [v9 readerInformationForInvitationWithIdentifier:identifierCopy fromMailboxIdentifier:0 completionHandler:v16];
 
-    v7[2](v7, v19[5], *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, v19[5], *(*&buf[8] + 40));
     _Block_object_dispose(&v18, 8);
 
     _Block_object_dispose(buf, 8);
@@ -3733,7 +3733,7 @@ uint64_t __86__DAKeyManagementSession_setProductPlanIdentifier_forInvitationIden
     v28[0] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v14 = [v11 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v13];
-    (v7)[2](v7, 0, v14);
+    (handlerCopy)[2](handlerCopy, 0, v14);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -3780,11 +3780,11 @@ void __89__DAKeyManagementSession_readerInformationForInvitationWithIdentifier_c
   *(v8 + 40) = v7;
 }
 
-- (void)getSecondFactorRequestForConfigs:(id)a3 completionHandler:(id)a4
+- (void)getSecondFactorRequestForConfigs:(id)configs completionHandler:(id)handler
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configsCopy = configs;
+  handlerCopy = handler;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -3795,7 +3795,7 @@ void __89__DAKeyManagementSession_readerInformationForInvitationWithIdentifier_c
     _os_log_impl(&dword_248BF3000, v8, OS_LOG_TYPE_DEBUG, "%s : %i : ", buf, 0x12u);
   }
 
-  if ([v6 count])
+  if ([configsCopy count])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -3821,9 +3821,9 @@ void __89__DAKeyManagementSession_readerInformationForInvitationWithIdentifier_c
     v16[3] = &unk_278F70308;
     v16[4] = buf;
     v16[5] = &v18;
-    [v9 getSecondFactorRequestForConfigs:v6 completionHandler:v16];
+    [v9 getSecondFactorRequestForConfigs:configsCopy completionHandler:v16];
 
-    v7[2](v7, v19[5], *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, v19[5], *(*&buf[8] + 40));
     _Block_object_dispose(&v18, 8);
 
     _Block_object_dispose(buf, 8);
@@ -3847,7 +3847,7 @@ void __89__DAKeyManagementSession_readerInformationForInvitationWithIdentifier_c
     v29[0] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v14 = [v11 errorWithDomain:@"DigitalAccessError" code:217 userInfo:v13];
-    (v7)[2](v7, 0, v14);
+    (handlerCopy)[2](handlerCopy, 0, v14);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -3895,10 +3895,10 @@ void __77__DAKeyManagementSession_getSecondFactorRequestForConfigs_completionHan
   *(v9 + 40) = v5;
 }
 
-- (void)didEnd:(id)a3
+- (void)didEnd:(id)end
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endCopy = end;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3911,29 +3911,29 @@ void __77__DAKeyManagementSession_getSecondFactorRequestForConfigs_completionHan
 
   v7.receiver = self;
   v7.super_class = DAKeyManagementSession;
-  [(DASession *)&v7 didEnd:v4];
+  [(DASession *)&v7 didEnd:endCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = DAKeyManagementSession;
-  [(DASession *)&v3 encodeWithCoder:a3];
+  [(DASession *)&v3 encodeWithCoder:coder];
 }
 
-- (DAKeyManagementSession)initWithCoder:(id)a3
+- (DAKeyManagementSession)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = DAKeyManagementSession;
-  return [(DASession *)&v4 initWithCoder:a3];
+  return [(DASession *)&v4 initWithCoder:coder];
 }
 
-- (void)listReceivedSharingInvitationsWithCallback:(id)a3
+- (void)listReceivedSharingInvitationsWithCallback:(id)callback
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callbackCopy = callback;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3972,17 +3972,17 @@ void __77__DAKeyManagementSession_getSecondFactorRequestForConfigs_completionHan
   v11[5] = &v13;
   [v9 listReceivedSharingInvitationsWithCallback:v11];
 
-  v4[2](v4, v14[5], *(*&buf[8] + 40));
+  callbackCopy[2](callbackCopy, v14[5], *(*&buf[8] + 40));
   _Block_object_dispose(&v13, 8);
 
   _Block_object_dispose(buf, 8);
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelAllFriendInvitationsWithCompletionHandler:(id)a3
+- (void)cancelAllFriendInvitationsWithCompletionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -4008,17 +4008,17 @@ void __77__DAKeyManagementSession_getSecondFactorRequestForConfigs_completionHan
   v18[4] = buf;
   [v8 cancelAllFriendInvitationsWithCompletionHandler:v18];
 
-  v9 = v4[2](v4, *(v25 + 40));
+  v9 = handlerCopy[2](handlerCopy, *(v25 + 40));
   OUTLINED_FUNCTION_5_1(v9, v10, v11, v12, v13, v14, v15, v16, v18[0], v18[1]);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSharingInvitationWithId:(id)a3 completionHandler:(id)a4
+- (void)removeSharingInvitationWithId:(id)id completionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  handlerCopy = handler;
   v8 = KmlLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -4042,9 +4042,9 @@ void __77__DAKeyManagementSession_getSecondFactorRequestForConfigs_completionHan
   v21[2] = __74__DAKeyManagementSession_removeSharingInvitationWithId_completionHandler___block_invoke_24;
   v21[3] = &unk_278F6FB00;
   v21[4] = buf;
-  [v11 removeSharingInvitationWithId:v6 completionHandler:v21];
+  [v11 removeSharingInvitationWithId:idCopy completionHandler:v21];
 
-  v12 = v7[2](v7, *(v28 + 40));
+  v12 = handlerCopy[2](handlerCopy, *(v28 + 40));
   OUTLINED_FUNCTION_5_1(v12, v13, v14, v15, v16, v17, v18, v19, v21[0], v21[1]);
 
   v20 = *MEMORY[0x277D85DE8];

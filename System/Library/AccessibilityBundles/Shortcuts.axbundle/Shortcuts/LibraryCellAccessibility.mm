@@ -1,5 +1,5 @@
 @interface LibraryCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axLibraryViewController;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -8,20 +8,20 @@
 
 @implementation LibraryCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Shortcuts.LibraryCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"Shortcuts.LibraryViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFWorkflowDescriptor" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFWorkflowReference" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Shortcuts.LibraryCell" hasInstanceMethod:@"workflowReference" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Shortcuts.LibraryViewController" hasInstanceMethod:@"axEditWorkflowAction:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"Shortcuts.LibraryViewController" hasInstanceMethod:@"axDeleteWorkflowAction:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"Shortcuts.LibraryViewController" hasInstanceMethod:@"axDuplicateWorkflowAction:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"Shortcuts.LibraryCell" hasInstanceMethod:@"autoShortcut" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFExecutableAppShortcut" hasInstanceMethod:@"phrase" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LNAutoShortcutLocalizedPhrase" hasInstanceMethod:@"localizedPhrase" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Shortcuts.LibraryCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"Shortcuts.LibraryViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFWorkflowDescriptor" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFWorkflowReference" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Shortcuts.LibraryCell" hasInstanceMethod:@"workflowReference" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Shortcuts.LibraryViewController" hasInstanceMethod:@"axEditWorkflowAction:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"Shortcuts.LibraryViewController" hasInstanceMethod:@"axDeleteWorkflowAction:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"Shortcuts.LibraryViewController" hasInstanceMethod:@"axDuplicateWorkflowAction:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"Shortcuts.LibraryCell" hasInstanceMethod:@"autoShortcut" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFExecutableAppShortcut" hasInstanceMethod:@"phrase" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LNAutoShortcutLocalizedPhrase" hasInstanceMethod:@"localizedPhrase" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -56,7 +56,7 @@
 - (id)accessibilityCustomActions
 {
   v3 = objc_opt_new();
-  v4 = [(LibraryCellAccessibility *)self _axLibraryViewController];
+  _axLibraryViewController = [(LibraryCellAccessibility *)self _axLibraryViewController];
   v5 = [(LibraryCellAccessibility *)self safeValueForKey:@"workflowReference"];
   if (objc_opt_respondsToSelector())
   {
@@ -66,7 +66,7 @@
     v25[1] = 3221225472;
     v25[2] = __54__LibraryCellAccessibility_accessibilityCustomActions__block_invoke;
     v25[3] = &unk_29F2F8598;
-    v26 = v4;
+    v26 = _axLibraryViewController;
     v27 = v5;
     v8 = [v6 initWithName:v7 actionHandler:v25];
     [v3 addObject:v8];
@@ -80,7 +80,7 @@
     v22[1] = 3221225472;
     v22[2] = __54__LibraryCellAccessibility_accessibilityCustomActions__block_invoke_3;
     v22[3] = &unk_29F2F8598;
-    v23 = v4;
+    v23 = _axLibraryViewController;
     v24 = v5;
     v11 = [v9 initWithName:v10 actionHandler:v22];
     [v3 addObject:v11];
@@ -94,7 +94,7 @@
     v17 = 3221225472;
     v18 = __54__LibraryCellAccessibility_accessibilityCustomActions__block_invoke_5;
     v19 = &unk_29F2F8598;
-    v20 = v4;
+    v20 = _axLibraryViewController;
     v21 = v5;
     v14 = [v12 initWithName:v13 actionHandler:&v16];
     [v3 addObject:{v14, v16, v17, v18, v19}];

@@ -1,12 +1,12 @@
 @interface PUProtoPasscodeState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PUProtoPasscodeState
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = PUProtoPasscodeState;
   v3 = [(PUProtoPasscodeState *)&v7 description];
-  v4 = [(PUProtoPasscodeState *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PUProtoPasscodeState *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -43,16 +43,16 @@
   policy = self->_policy;
   if (policy)
   {
-    v9 = [(PUProtoPasscodePolicy *)policy dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"policy"];
+    dictionaryRepresentation = [(PUProtoPasscodePolicy *)policy dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"policy"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   hasPasscode = self->_hasPasscode;
   PBDataWriterWriteBOOLField();
   isLocked = self->_isLocked;
@@ -65,37 +65,37 @@
     PBDataWriterWriteBOOLField();
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_policy)
   {
     PBDataWriterWriteSubmessage();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[16] = self->_hasPasscode;
-  v4[17] = self->_isLocked;
-  v4[18] = self->_isUnlockOnly;
+  toCopy = to;
+  toCopy[16] = self->_hasPasscode;
+  toCopy[17] = self->_isLocked;
+  toCopy[18] = self->_isUnlockOnly;
   if (*&self->_has)
   {
-    v4[19] = self->_isWristDetectionEnabled;
-    v4[20] |= 1u;
+    toCopy[19] = self->_isWristDetectionEnabled;
+    toCopy[20] |= 1u;
   }
 
   if (self->_policy)
   {
-    v5 = v4;
-    [v4 setPolicy:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setPolicy:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   v5[16] = self->_hasPasscode;
   v5[17] = self->_isLocked;
@@ -106,75 +106,75 @@
     v5[20] |= 1u;
   }
 
-  v7 = [(PUProtoPasscodePolicy *)self->_policy copyWithZone:a3];
+  v7 = [(PUProtoPasscodePolicy *)self->_policy copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 16);
+  v5 = *(equalCopy + 16);
   if (self->_hasPasscode)
   {
-    if ((*(v4 + 16) & 1) == 0)
+    if ((*(equalCopy + 16) & 1) == 0)
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 16))
+  else if (*(equalCopy + 16))
   {
     goto LABEL_19;
   }
 
-  v6 = *(v4 + 17);
+  v6 = *(equalCopy + 17);
   if (self->_isLocked)
   {
-    if ((*(v4 + 17) & 1) == 0)
+    if ((*(equalCopy + 17) & 1) == 0)
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 17))
+  else if (*(equalCopy + 17))
   {
     goto LABEL_19;
   }
 
-  v7 = *(v4 + 18);
+  v7 = *(equalCopy + 18);
   if (self->_isUnlockOnly)
   {
-    if ((*(v4 + 18) & 1) == 0)
+    if ((*(equalCopy + 18) & 1) == 0)
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 18))
+  else if (*(equalCopy + 18))
   {
     goto LABEL_19;
   }
 
-  v8 = *(v4 + 20);
+  v8 = *(equalCopy + 20);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_15;
   }
 
-  if ((*(v4 + 20) & 1) == 0)
+  if ((*(equalCopy + 20) & 1) == 0)
   {
     goto LABEL_19;
   }
 
-  v8 = *(v4 + 19);
+  v8 = *(equalCopy + 19);
   if (!self->_isWristDetectionEnabled)
   {
 LABEL_15:
@@ -188,14 +188,14 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ((*(v4 + 19) & 1) == 0)
+  if ((*(equalCopy + 19) & 1) == 0)
   {
     goto LABEL_19;
   }
 
 LABEL_16:
   policy = self->_policy;
-  if (policy | *(v4 + 1))
+  if (policy | *(equalCopy + 1))
   {
     v10 = [(PUProtoPasscodePolicy *)policy isEqual:?];
   }
@@ -228,16 +228,16 @@ LABEL_20:
   return (2654435761 * isLocked) ^ (2654435761 * hasPasscode) ^ (2654435761 * isUnlockOnly) ^ v9 ^ [(PUProtoPasscodePolicy *)self->_policy hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  self->_hasPasscode = v4[16];
-  self->_isLocked = v4[17];
-  self->_isUnlockOnly = v4[18];
-  if (v4[20])
+  fromCopy = from;
+  v5 = fromCopy;
+  self->_hasPasscode = fromCopy[16];
+  self->_isLocked = fromCopy[17];
+  self->_isUnlockOnly = fromCopy[18];
+  if (fromCopy[20])
   {
-    self->_isWristDetectionEnabled = v4[19];
+    self->_isWristDetectionEnabled = fromCopy[19];
     *&self->_has |= 1u;
   }
 

@@ -1,19 +1,19 @@
 @interface VCSessionMediaTypeSettings
 + (id)serializationClasses;
-+ (id)settingsWithMediaType:(unsigned int)a3;
++ (id)settingsWithMediaType:(unsigned int)type;
 - (NSSet)streamGroupIDs;
-- (VCSessionMediaTypeSettings)initWithCoder:(id)a3;
-- (VCSessionMediaTypeSettings)initWithMediaType:(unsigned int)a3;
-- (void)addStreamGroupID:(unsigned int)a3;
+- (VCSessionMediaTypeSettings)initWithCoder:(id)coder;
+- (VCSessionMediaTypeSettings)initWithMediaType:(unsigned int)type;
+- (void)addStreamGroupID:(unsigned int)d;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VCSessionMediaTypeSettings
 
-- (VCSessionMediaTypeSettings)initWithMediaType:(unsigned int)a3
+- (VCSessionMediaTypeSettings)initWithMediaType:(unsigned int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = VCSessionMediaTypeSettings;
@@ -44,16 +44,16 @@
   [(VCObject *)&v3 dealloc];
 }
 
-+ (id)settingsWithMediaType:(unsigned int)a3
++ (id)settingsWithMediaType:(unsigned int)type
 {
-  v3 = [[VCSessionMediaTypeSettings alloc] initWithMediaType:*&a3];
+  v3 = [[VCSessionMediaTypeSettings alloc] initWithMediaType:*&type];
 
   return v3;
 }
 
-- (void)addStreamGroupID:(unsigned int)a3
+- (void)addStreamGroupID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   [(VCObject *)self lock];
   -[NSMutableSet addObject:](self->_streamGroupIDs, "addObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3]);
 
@@ -75,22 +75,22 @@
   return [v2 setWithObjects:{v3, objc_opt_class(), 0}];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt32:self->_mediaType forKey:@"type"];
-  [a3 encodeInt32:self->_mediaState forKey:@"state"];
+  [coder encodeInt32:self->_mediaType forKey:@"type"];
+  [coder encodeInt32:self->_mediaState forKey:@"state"];
   streamGroupIDs = self->_streamGroupIDs;
 
-  [a3 encodeObject:streamGroupIDs forKey:@"streamGroupIDs"];
+  [coder encodeObject:streamGroupIDs forKey:@"streamGroupIDs"];
 }
 
-- (VCSessionMediaTypeSettings)initWithCoder:(id)a3
+- (VCSessionMediaTypeSettings)initWithCoder:(id)coder
 {
-  v4 = -[VCSessionMediaTypeSettings initWithMediaType:](self, "initWithMediaType:", [a3 decodeInt32ForKey:@"type"]);
+  v4 = -[VCSessionMediaTypeSettings initWithMediaType:](self, "initWithMediaType:", [coder decodeInt32ForKey:@"type"]);
   if (v4)
   {
-    v4->_mediaState = [a3 decodeInt32ForKey:@"state"];
-    -[NSMutableSet unionSet:](v4->_streamGroupIDs, "unionSet:", [a3 decodeObjectForKey:@"streamGroupIDs"]);
+    v4->_mediaState = [coder decodeInt32ForKey:@"state"];
+    -[NSMutableSet unionSet:](v4->_streamGroupIDs, "unionSet:", [coder decodeObjectForKey:@"streamGroupIDs"]);
   }
 
   return v4;

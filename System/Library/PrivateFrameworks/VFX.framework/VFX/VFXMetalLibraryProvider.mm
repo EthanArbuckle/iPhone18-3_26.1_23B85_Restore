@@ -1,8 +1,8 @@
 @interface VFXMetalLibraryProvider
-- (id)iniWithBlock:(id)a3;
-- (id)iniWithLibrary:(id)a3;
-- (id)iniWithLibraryURL:(id)a3;
-- (id)libraryForDevice:(id)a3;
+- (id)iniWithBlock:(id)block;
+- (id)iniWithLibrary:(id)library;
+- (id)iniWithLibraryURL:(id)l;
+- (id)libraryForDevice:(id)device;
 - (unint64_t)_libraryHash;
 - (void)dealloc;
 @end
@@ -17,62 +17,62 @@
   [(VFXMetalLibraryProvider *)&v3 dealloc];
 }
 
-- (id)iniWithLibrary:(id)a3
+- (id)iniWithLibrary:(id)library
 {
   v6.receiver = self;
   v6.super_class = VFXMetalLibraryProvider;
   v4 = [(VFXMetalLibraryProvider *)&v6 init];
   if (v4)
   {
-    v4->_library = a3;
+    v4->_library = library;
   }
 
   return v4;
 }
 
-- (id)iniWithLibraryURL:(id)a3
+- (id)iniWithLibraryURL:(id)l
 {
   v6.receiver = self;
   v6.super_class = VFXMetalLibraryProvider;
   v4 = [(VFXMetalLibraryProvider *)&v6 init];
   if (v4)
   {
-    v4->_libraryURL = a3;
+    v4->_libraryURL = l;
   }
 
   return v4;
 }
 
-- (id)iniWithBlock:(id)a3
+- (id)iniWithBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = VFXMetalLibraryProvider;
   v4 = [(VFXMetalLibraryProvider *)&v6 init];
   if (v4)
   {
-    v4->_block = _Block_copy(a3);
+    v4->_block = _Block_copy(block);
   }
 
   return v4;
 }
 
-- (id)libraryForDevice:(id)a3
+- (id)libraryForDevice:(id)device
 {
-  v6 = objc_msgSend_device(self->_library, a2, a3, v3);
+  v6 = objc_msgSend_device(self->_library, a2, device, v3);
   v10 = objc_msgSend_registryID(v6, v7, v8, v9);
-  if (v10 == objc_msgSend_registryID(a3, v11, v12, v13))
+  if (v10 == objc_msgSend_registryID(device, v11, v12, v13))
   {
     return self->_library;
   }
 
   block = self->_block;
-  if (!block || (result = block[2](block, a3)) == 0)
+  if (!block || (result = block[2](block, device)) == 0)
   {
     libraryURL = self->_libraryURL;
     if (libraryURL)
     {
       v21 = 0;
-      v18 = objc_msgSend_newLibraryWithURL_error_(a3, v14, libraryURL, &v21);
+      v18 = objc_msgSend_newLibraryWithURL_error_(device, v14, libraryURL, &v21);
       if (v18)
       {
         return v18;

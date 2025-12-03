@@ -1,20 +1,20 @@
 @interface CDMClient
 + (id)graphNameForEmbedding;
-- (BOOL)registerWithAssetsDelegate:(id)a3 withType:(int64_t)a4;
+- (BOOL)registerWithAssetsDelegate:(id)delegate withType:(int64_t)type;
 - (CDMClient)init;
-- (CDMClient)initWithDelegate:(id)a3;
+- (CDMClient)initWithDelegate:(id)delegate;
 - (void)dealloc;
-- (void)initProxyObject:(BOOL)a3 delegate:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)processEmbeddingRequest:(id)a3 requestId:(id)a4 completionHandler:(id)a5;
-- (void)processNLUPreprocessRequest:(id)a3 completionHandler:(id)a4;
-- (void)processSsuInferenceRequest:(id)a3 completionHandler:(id)a4;
-- (void)processText:(id)a3 requestConnectionId:(id)a4 completionHandler:(id)a5;
+- (void)initProxyObject:(BOOL)object delegate:(id)delegate;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)processEmbeddingRequest:(id)request requestId:(id)id completionHandler:(id)handler;
+- (void)processNLUPreprocessRequest:(id)request completionHandler:(id)handler;
+- (void)processSsuInferenceRequest:(id)request completionHandler:(id)handler;
+- (void)processText:(id)text requestConnectionId:(id)id completionHandler:(id)handler;
 - (void)setupKVOForwarding;
-- (void)setupNLUWithLocale:(id)a3 completionHandler:(id)a4;
-- (void)setupSsuInference:(id)a3 serviceStateDirectory:(id)a4 completionHandler:(id)a5;
-- (void)setupWithLocale:(id)a3 embeddingVersion:(id)a4 completionHandler:(id)a5;
-- (void)setupWithLocale:(id)a3 embeddingVersion:(id)a4 deallocationTime:(double)a5 completionHandler:(id)a6;
+- (void)setupNLUWithLocale:(id)locale completionHandler:(id)handler;
+- (void)setupSsuInference:(id)inference serviceStateDirectory:(id)directory completionHandler:(id)handler;
+- (void)setupWithLocale:(id)locale embeddingVersion:(id)version completionHandler:(id)handler;
+- (void)setupWithLocale:(id)locale embeddingVersion:(id)version deallocationTime:(double)time completionHandler:(id)handler;
 @end
 
 @implementation CDMClient
@@ -42,24 +42,24 @@
   [(CDMClient *)&v4 dealloc];
 }
 
-- (BOOL)registerWithAssetsDelegate:(id)a3 withType:(int64_t)a4
+- (BOOL)registerWithAssetsDelegate:(id)delegate withType:(int64_t)type
 {
   v7 = self->_client;
-  v8 = a3;
+  delegateCopy = delegate;
   objc_sync_enter(v7);
-  LOBYTE(a4) = [(CDMClientInterface *)self->_client registerWithAssetsDelegate:v8 withType:a4];
+  LOBYTE(type) = [(CDMClientInterface *)self->_client registerWithAssetsDelegate:delegateCopy withType:type];
 
   objc_sync_exit(v7);
-  return a4;
+  return type;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 objectForKey:*MEMORY[0x1E696A4F0]];
-  if ([v8 isEqualToString:@"successFromSetup"])
+  pathCopy = path;
+  changeCopy = change;
+  v10 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
+  if ([pathCopy isEqualToString:@"successFromSetup"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -72,9 +72,9 @@ LABEL_7:
 
   else
   {
-    if (![v8 isEqualToString:@"errorFromSetup"])
+    if (![pathCopy isEqualToString:@"errorFromSetup"])
     {
-      if ([v8 isEqualToString:@"daemonKilled"])
+      if ([pathCopy isEqualToString:@"daemonKilled"])
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -102,7 +102,7 @@ LABEL_7:
           v14 = 136315394;
           v15 = "[CDMClient observeValueForKeyPath:ofObject:change:context:]";
           v16 = 2112;
-          v17 = v8;
+          v17 = pathCopy;
           _os_log_error_impl(&dword_1DC287000, v12, OS_LOG_TYPE_ERROR, "%s [ERR]: Not expecting keyPath %@", &v14, 0x16u);
         }
       }
@@ -123,12 +123,12 @@ LABEL_15:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)initProxyObject:(BOOL)a3 delegate:(id)a4
+- (void)initProxyObject:(BOOL)object delegate:(id)delegate
 {
-  v4 = a3;
+  objectCopy = object;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v4)
+  delegateCopy = delegate;
+  if (objectCopy)
   {
     v7 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -138,7 +138,7 @@ LABEL_15:
       _os_log_debug_impl(&dword_1DC287000, v7, OS_LOG_TYPE_DEBUG, "%s Creating CDMXPCClient", &v16, 0xCu);
     }
 
-    v8 = [[CDMXPCClient alloc] initWithDelegate:v6];
+    v8 = [[CDMXPCClient alloc] initWithDelegate:delegateCopy];
     client = self->_client;
     self->_client = &v8->super;
   }
@@ -153,8 +153,8 @@ LABEL_15:
       _os_log_debug_impl(&dword_1DC287000, v10, OS_LOG_TYPE_DEBUG, "%s Creating CDMFoundationClient", &v16, 0xCu);
     }
 
-    v11 = [MEMORY[0x1E696AAE8] mainBundle];
-    client = [v11 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    client = [mainBundle bundleIdentifier];
 
     v12 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -166,7 +166,7 @@ LABEL_15:
       _os_log_debug_impl(&dword_1DC287000, v12, OS_LOG_TYPE_DEBUG, "%s Calling bundle ID %@", &v16, 0x16u);
     }
 
-    v13 = [[CDMFoundationClient alloc] initWithDelegate:v6 withCallingBundleId:client];
+    v13 = [[CDMFoundationClient alloc] initWithDelegate:delegateCopy withCallingBundleId:client];
     v14 = self->_client;
     self->_client = &v13->super;
   }
@@ -174,11 +174,11 @@ LABEL_15:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (CDMClient)initWithDelegate:(id)a3
+- (CDMClient)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   [(CDMClient *)self sharedInitTasks];
-  [(CDMClient *)self initProxyObject:+[CDMClient delegate:"useXPC"], v4];
+  [(CDMClient *)self initProxyObject:+[CDMClient delegate:"useXPC"], delegateCopy];
   [(CDMClient *)self setupKVOForwarding];
 
   return self;
@@ -192,21 +192,21 @@ LABEL_15:
   return self;
 }
 
-- (void)processNLUPreprocessRequest:(id)a3 completionHandler:(id)a4
+- (void)processNLUPreprocessRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CDMNLUPreprocessRequestCommand alloc] initWithNLURequest:v7];
+  handlerCopy = handler;
+  requestCopy = request;
+  v8 = [[CDMNLUPreprocessRequestCommand alloc] initWithNLURequest:requestCopy];
 
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __74__CDMClient_NLUPreprocess__processNLUPreprocessRequest_completionHandler___block_invoke;
   v14 = &unk_1E862F590;
-  v15 = self;
-  v16 = v6;
-  v9 = v6;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
   v10 = _Block_copy(&v11);
-  [(CDMClient *)self doHandleCommand:v8 forCallback:v10, v11, v12, v13, v14, v15];
+  [(CDMClient *)self doHandleCommand:v8 forCallback:v10, v11, v12, v13, v14, selfCopy];
 }
 
 void __74__CDMClient_NLUPreprocess__processNLUPreprocessRequest_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -254,14 +254,14 @@ void __74__CDMClient_NLUPreprocess__processNLUPreprocessRequest_completionHandle
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processText:(id)a3 requestConnectionId:(id)a4 completionHandler:(id)a5
+- (void)processText:(id)text requestConnectionId:(id)id completionHandler:(id)handler
 {
   v7 = MEMORY[0x1E69D1140];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  idCopy = id;
+  textCopy = text;
   v27 = objc_alloc_init(v7);
-  [v27 setUtterance:v10];
+  [v27 setUtterance:textCopy];
 
   [v27 setProbability:0.0];
   v11 = MEMORY[0x1E69D13F8];
@@ -269,18 +269,18 @@ void __74__CDMClient_NLUPreprocess__processNLUPreprocessRequest_completionHandle
   v13 = [v11 convertFromUUID:v12];
   [v27 setIdA:v13];
 
-  v14 = [MEMORY[0x1E695DF70] array];
-  [v14 addObject:v27];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:v27];
   v15 = objc_alloc_init(MEMORY[0x1E69D1228]);
-  [v15 setAsrOutputs:v14];
+  [v15 setAsrOutputs:array];
   v16 = objc_alloc_init(MEMORY[0x1E69D11C0]);
   v17 = MEMORY[0x1E696AEC0];
-  v18 = [MEMORY[0x1E696AFB0] UUID];
-  v19 = [v18 UUIDString];
-  v20 = [v17 stringWithFormat:@"%@:0", v19];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v20 = [v17 stringWithFormat:@"%@:0", uUIDString];
   [v16 setIdA:v20];
 
-  [v16 setConnectionId:v9];
+  [v16 setConnectionId:idCopy];
   v21 = MEMORY[0x1E69D13F8];
   v22 = objc_alloc_init(MEMORY[0x1E696AFB0]);
   v23 = [v21 convertFromUUID:v22];
@@ -290,38 +290,38 @@ void __74__CDMClient_NLUPreprocess__processNLUPreprocessRequest_completionHandle
   [v24 setRequestId:v16];
   [v24 setCurrentTurnInput:v15];
   v25 = [[CDMNluRequest alloc] initWithObjcProto:v24];
-  [(CDMClient *)self processCDMNluRequest:v25 completionHandler:v8];
+  [(CDMClient *)self processCDMNluRequest:v25 completionHandler:handlerCopy];
 }
 
-- (void)setupNLUWithLocale:(id)a3 completionHandler:(id)a4
+- (void)setupNLUWithLocale:(id)locale completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  localeCopy = locale;
+  handlerCopy = handler;
   v8 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v13 = 136315394;
     v14 = "[CDMClient(NLU) setupNLUWithLocale:completionHandler:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = localeCopy;
     _os_log_debug_impl(&dword_1DC287000, v8, OS_LOG_TYPE_DEBUG, "%s CDM NLU client graph setup, locale=%@", &v13, 0x16u);
   }
 
   v9 = [CDMClientSetup alloc];
   v10 = +[CDMClient graphNameForNLU];
-  v11 = [(CDMClientSetup *)v9 initWithLocaleIdentifier:v6 sandboxId:0 activeServiceGraph:v10];
+  v11 = [(CDMClientSetup *)v9 initWithLocaleIdentifier:localeCopy sandboxId:0 activeServiceGraph:v10];
 
-  [(CDMClient *)self setup:v11 completionHandler:v7];
+  [(CDMClient *)self setup:v11 completionHandler:handlerCopy];
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processEmbeddingRequest:(id)a3 requestId:(id)a4 completionHandler:(id)a5
+- (void)processEmbeddingRequest:(id)request requestId:(id)id completionHandler:(id)handler
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  idCopy = id;
+  handlerCopy = handler;
   if ([(CDMClient *)self daemonKilled])
   {
     v11 = MEMORY[0x1E696ABC0];
@@ -340,12 +340,12 @@ void __74__CDMClient_NLUPreprocess__processNLUPreprocessRequest_completionHandle
       _os_log_error_impl(&dword_1DC287000, v14, OS_LOG_TYPE_ERROR, "%s [ERR]: %@", buf, 0x16u);
     }
 
-    v10[2](v10, 0, v13);
+    handlerCopy[2](handlerCopy, 0, v13);
   }
 
   else
   {
-    v13 = [[CDMEmbeddingGraphRequestCommand alloc] initWithText:v8 requestId:v9];
+    v13 = [[CDMEmbeddingGraphRequestCommand alloc] initWithText:requestCopy requestId:idCopy];
     v15 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -360,8 +360,8 @@ void __74__CDMClient_NLUPreprocess__processNLUPreprocessRequest_completionHandle
     v19 = 3221225472;
     v20 = __76__CDMClient_Embedding__processEmbeddingRequest_requestId_completionHandler___block_invoke;
     v21 = &unk_1E862F590;
-    v22 = self;
-    v23 = v10;
+    selfCopy = self;
+    v23 = handlerCopy;
     v16 = _Block_copy(&v18);
     [(CDMClient *)self doHandleCommand:v13 forCallback:v16, v18, v19, v20, v21];
   }
@@ -477,13 +477,13 @@ void __76__CDMClient_Embedding__processEmbeddingRequest_requestId_completionHand
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupWithLocale:(id)a3 embeddingVersion:(id)a4 deallocationTime:(double)a5 completionHandler:(id)a6
+- (void)setupWithLocale:(id)locale embeddingVersion:(id)version deallocationTime:(double)time completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 length];
+  localeCopy = locale;
+  versionCopy = version;
+  handlerCopy = handler;
+  v13 = [versionCopy length];
   v14 = CDMOSLoggerForCategory(0);
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG);
   if (v13)
@@ -493,20 +493,20 @@ void __76__CDMClient_Embedding__processEmbeddingRequest_requestId_completionHand
       v22 = 136315906;
       v23 = "[CDMClient(Embedding) setupWithLocale:embeddingVersion:deallocationTime:completionHandler:]";
       v24 = 2112;
-      v25 = v10;
+      v25 = localeCopy;
       v26 = 2112;
-      v27 = v11;
+      v27 = versionCopy;
       v28 = 2048;
-      v29 = a5;
+      timeCopy = time;
       _os_log_debug_impl(&dword_1DC287000, v14, OS_LOG_TYPE_DEBUG, "%s CDM Embedding client graph setup, locale=%@, version=%@, deallocationTime=%.1f", &v22, 0x2Au);
     }
 
     v16 = [CDMClientSetup alloc];
     v17 = +[CDMClient graphNameForEmbedding];
-    v18 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:a5];
-    v19 = [(CDMClientSetup *)v16 initWithLocaleIdentifier:v10 embeddingVersion:v11 sandboxId:0 activeServiceGraph:v17 deallocationTimeout:v18];
+    v18 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:time];
+    v19 = [(CDMClientSetup *)v16 initWithLocaleIdentifier:localeCopy embeddingVersion:versionCopy sandboxId:0 activeServiceGraph:v17 deallocationTimeout:v18];
 
-    [(CDMClient *)self setup:v19 completionHandler:v12];
+    [(CDMClient *)self setup:v19 completionHandler:handlerCopy];
   }
 
   else
@@ -520,21 +520,21 @@ void __76__CDMClient_Embedding__processEmbeddingRequest_requestId_completionHand
 
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CDM Embedding client embedding version cannot be empty. Setup is failed."];
     v20 = [(CDMClientInterface *)self createNSError:v19 errorCode:1];
-    v12[2](v12, v20);
+    handlerCopy[2](handlerCopy, v20);
 
-    v12 = v20;
+    handlerCopy = v20;
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupWithLocale:(id)a3 embeddingVersion:(id)a4 completionHandler:(id)a5
+- (void)setupWithLocale:(id)locale embeddingVersion:(id)version completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  versionCopy = version;
+  localeCopy = locale;
   +[CDMClient defaultDeallocationTimeout];
-  [(CDMClient *)self setupWithLocale:v10 embeddingVersion:v9 deallocationTime:v8 completionHandler:?];
+  [(CDMClient *)self setupWithLocale:localeCopy embeddingVersion:versionCopy deallocationTime:handlerCopy completionHandler:?];
 }
 
 + (id)graphNameForEmbedding
@@ -544,12 +544,12 @@ void __76__CDMClient_Embedding__processEmbeddingRequest_requestId_completionHand
   return NSStringFromClass(v2);
 }
 
-- (void)processSsuInferenceRequest:(id)a3 completionHandler:(id)a4
+- (void)processSsuInferenceRequest:(id)request completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CDMSsuInferenceGraphRequestCommand alloc] initWithSsuRequest:v7];
+  handlerCopy = handler;
+  requestCopy = request;
+  v8 = [[CDMSsuInferenceGraphRequestCommand alloc] initWithSsuRequest:requestCopy];
 
   v9 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -565,11 +565,11 @@ void __76__CDMClient_Embedding__processEmbeddingRequest_requestId_completionHand
   v14 = 3221225472;
   v15 = __72__CDMClient_SsuInference__processSsuInferenceRequest_completionHandler___block_invoke;
   v16 = &unk_1E862F590;
-  v17 = self;
-  v18 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v10 = handlerCopy;
   v11 = _Block_copy(&v13);
-  [(CDMClient *)self doHandleCommand:v8 forCallback:v11, v13, v14, v15, v16, v17];
+  [(CDMClient *)self doHandleCommand:v8 forCallback:v11, v13, v14, v15, v16, selfCopy];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -650,19 +650,19 @@ void __72__CDMClient_SsuInference__processSsuInferenceRequest_completionHandler_
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupSsuInference:(id)a3 serviceStateDirectory:(id)a4 completionHandler:(id)a5
+- (void)setupSsuInference:(id)inference serviceStateDirectory:(id)directory completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  inferenceCopy = inference;
+  directoryCopy = directory;
+  handlerCopy = handler;
+  if (directoryCopy)
   {
-    v11 = [v9 stringByAppendingPathComponent:@"CDMSiriVocabularySpanMatchService"];
+    v11 = [directoryCopy stringByAppendingPathComponent:@"CDMSiriVocabularySpanMatchService"];
     v12 = [v11 stringByAppendingPathComponent:@"sandbox_id"];
 
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
-    v14 = [v13 fileExistsAtPath:v12];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v14 = [defaultManager fileExistsAtPath:v12];
 
     if (v14)
     {
@@ -672,7 +672,7 @@ void __72__CDMClient_SsuInference__processSsuInferenceRequest_completionHandler_
       if (v16)
       {
         v17 = v16;
-        v10[2](v10, v16);
+        handlerCopy[2](handlerCopy, v16);
         goto LABEL_11;
       }
     }
@@ -689,8 +689,8 @@ void __72__CDMClient_SsuInference__processSsuInferenceRequest_completionHandler_
   }
 
   v18 = objc_alloc(MEMORY[0x1E695DF58]);
-  v19 = [v8 locale];
-  v12 = [v18 initWithLocaleIdentifier:v19];
+  locale = [inferenceCopy locale];
+  v12 = [v18 initWithLocaleIdentifier:locale];
 
   v20 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -704,9 +704,9 @@ void __72__CDMClient_SsuInference__processSsuInferenceRequest_completionHandler_
 
   v21 = [CDMClientSetup alloc];
   v22 = +[CDMClient graphNameForSsuInference];
-  v17 = [(CDMClientSetup *)v21 initWithLocaleIdentifier:v12 sandboxId:v15 activeServiceGraph:v22 assetDirPath:0 overrideSiriVocabSpans:0 serviceStateDirectory:v9];
+  v17 = [(CDMClientSetup *)v21 initWithLocaleIdentifier:v12 sandboxId:v15 activeServiceGraph:v22 assetDirPath:0 overrideSiriVocabSpans:0 serviceStateDirectory:directoryCopy];
 
-  [(CDMClient *)self setup:v17 completionHandler:v10];
+  [(CDMClient *)self setup:v17 completionHandler:handlerCopy];
 LABEL_11:
 
   v23 = *MEMORY[0x1E69E9840];

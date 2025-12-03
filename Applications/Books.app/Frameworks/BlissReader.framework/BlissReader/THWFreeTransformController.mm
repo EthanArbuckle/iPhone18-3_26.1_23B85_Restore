@@ -1,10 +1,10 @@
 @interface THWFreeTransformController
 + (BOOL)isFreeTransformInProgress;
-- (BOOL)freeTransformGestureRecognizerShouldAllowPinchDown:(id)a3;
-- (BOOL)freeTransformGestureRecognizerShouldAllowPinchUp:(id)a3;
-- (BOOL)freeTransformGestureRecognizerShouldDelayRecognizeUntilScaleChange:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)freeTransformGestureRecognizerShouldAllowPinchDown:(id)down;
+- (BOOL)freeTransformGestureRecognizerShouldAllowPinchUp:(id)up;
+- (BOOL)freeTransformGestureRecognizerShouldDelayRecognizeUntilScaleChange:(id)change;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)p_wantsCurtainFadeOut;
 - (CALayer)freeTransformLayer;
 - (CALayer)superLayerForWrapper;
@@ -16,24 +16,24 @@
 - (CGRect)completionTargetRect;
 - (CGRect)originalTargetLayerFrame;
 - (THWFreeTransformController)init;
-- (THWFreeTransformController)initWithSharedGestureRecognizer:(BOOL)a3;
-- (double)p_clampedScaleWithOriginalScale:(double)result originalFrame:(CGRect)a4 targetFrame:(CGRect)a5;
-- (id)p_shadowFadeInAnimation:(id *)a3;
-- (id)p_shadowFadeOutAnimation:(double)a3;
-- (void)appendShadowTransform:(CGAffineTransform *)a3;
+- (THWFreeTransformController)initWithSharedGestureRecognizer:(BOOL)recognizer;
+- (double)p_clampedScaleWithOriginalScale:(double)result originalFrame:(CGRect)frame targetFrame:(CGRect)targetFrame;
+- (id)p_shadowFadeInAnimation:(id *)animation;
+- (id)p_shadowFadeOutAnimation:(double)animation;
+- (void)appendShadowTransform:(CGAffineTransform *)transform;
 - (void)cancelTransform;
 - (void)clearGestureRecognizer;
 - (void)dealloc;
-- (void)p_addOvershootAnimationWithOriginalFrame:(CGRect)a3 originalTransform:(CGAffineTransform *)a4 targetFrame:(CGRect)a5 targetTransform:(CGAffineTransform *)a6 completion:(id)a7;
+- (void)p_addOvershootAnimationWithOriginalFrame:(CGRect)frame originalTransform:(CGAffineTransform *)transform targetFrame:(CGRect)targetFrame targetTransform:(CGAffineTransform *)targetTransform completion:(id)completion;
 - (void)p_cleanupExtraLayers;
 - (void)p_fadeOutCurtain;
 - (void)p_setupCurtain;
-- (void)p_setupForTransformWithGesture:(id)a3;
+- (void)p_setupForTransformWithGesture:(id)gesture;
 - (void)p_setupShadow;
-- (void)p_updateUnmovingParentView:(id)a3;
-- (void)recreateGestureRecognizerOnView:(id)a3;
-- (void)setTargetLayer:(id)a3;
-- (void)transformGRChanged:(id)a3;
+- (void)p_updateUnmovingParentView:(id)view;
+- (void)recreateGestureRecognizerOnView:(id)view;
+- (void)setTargetLayer:(id)layer;
+- (void)transformGRChanged:(id)changed;
 - (void)updateUnmovingParentView;
 @end
 
@@ -92,12 +92,12 @@
   return v3;
 }
 
-- (THWFreeTransformController)initWithSharedGestureRecognizer:(BOOL)a3
+- (THWFreeTransformController)initWithSharedGestureRecognizer:(BOOL)recognizer
 {
   result = [(THWFreeTransformController *)self init];
   if (result)
   {
-    result->mSharedTransformGR = a3;
+    result->mSharedTransformGR = recognizer;
   }
 
   return result;
@@ -128,12 +128,12 @@
   }
 }
 
-- (void)setTargetLayer:(id)a3
+- (void)setTargetLayer:(id)layer
 {
-  if ([(THWFreeTransformController *)self targetLayer]!= a3)
+  if ([(THWFreeTransformController *)self targetLayer]!= layer)
   {
 
-    self->mTargetLayer = a3;
+    self->mTargetLayer = layer;
   }
 }
 
@@ -163,12 +163,12 @@
   {
     if (self->mTransformScale != 0.0)
     {
-      v4 = [(THWFreeTransformController *)self targetLayer];
+      targetLayer = [(THWFreeTransformController *)self targetLayer];
       v5 = *&CGAffineTransformIdentity.c;
       v6[0] = *&CGAffineTransformIdentity.a;
       v6[1] = v5;
       v6[2] = *&CGAffineTransformIdentity.tx;
-      [(CALayer *)v4 setAffineTransform:v6];
+      [(CALayer *)targetLayer setAffineTransform:v6];
     }
 
     [(TSULayerSaveRestore *)[(THWFreeTransformController *)self layerSaveRestore] restoreLayer:[(THWFreeTransformController *)self targetLayer]];
@@ -211,18 +211,18 @@
     [[(CALayer *)[(THWFreeTransformController *)self curtainLayer] superlayer] position];
     TSDRectWithCenterAndSize();
     [(CALayer *)[(THWFreeTransformController *)self curtainLayer] setFrame:v7, v8, v9, v10];
-    v11 = [v3 CGColor];
-    v12 = [(THWFreeTransformController *)self curtainLayer];
+    cGColor = [v3 CGColor];
+    curtainLayer = [(THWFreeTransformController *)self curtainLayer];
 
-    [(CALayer *)v12 setBackgroundColor:v11];
+    [(CALayer *)curtainLayer setBackgroundColor:cGColor];
   }
 }
 
 - (BOOL)p_wantsCurtainFadeOut
 {
-  v3 = [(THWFreeTransformController *)self delegate];
+  delegate = [(THWFreeTransformController *)self delegate];
 
-  return [(THWFreeTransformControllerDelegate *)v3 freeTransformControllerWantsCurtainFadeOut:self];
+  return [(THWFreeTransformControllerDelegate *)delegate freeTransformControllerWantsCurtainFadeOut:self];
 }
 
 - (void)p_fadeOutCurtain
@@ -294,28 +294,28 @@
   return result;
 }
 
-- (void)appendShadowTransform:(CGAffineTransform *)a3
+- (void)appendShadowTransform:(CGAffineTransform *)transform
 {
   v4 = *&self->mOriginalShadowTransform.c;
   *&t1.a = *&self->mOriginalShadowTransform.a;
   *&t1.c = v4;
   *&t1.tx = *&self->mOriginalShadowTransform.tx;
-  v5 = *&a3->c;
-  *&t2.a = *&a3->a;
+  v5 = *&transform->c;
+  *&t2.a = *&transform->a;
   *&t2.c = v5;
-  *&t2.tx = *&a3->tx;
+  *&t2.tx = *&transform->tx;
   CGAffineTransformConcat(&v11, &t1, &t2);
   v6 = *&v11.c;
   *&self->mOriginalShadowTransform.a = *&v11.a;
   *&self->mOriginalShadowTransform.c = v6;
   *&self->mOriginalShadowTransform.tx = *&v11.tx;
   mOriginalShadowTransform = self->mOriginalShadowTransform;
-  v7 = [(THWFreeTransformController *)self shadowLayer];
+  shadowLayer = [(THWFreeTransformController *)self shadowLayer];
   v11 = mOriginalShadowTransform;
-  [(CALayer *)v7 setAffineTransform:&v11];
+  [(CALayer *)shadowLayer setAffineTransform:&v11];
 }
 
-- (id)p_shadowFadeInAnimation:(id *)a3
+- (id)p_shadowFadeInAnimation:(id *)animation
 {
   v4 = v3;
   v5 = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
@@ -328,12 +328,12 @@
   return v5;
 }
 
-- (id)p_shadowFadeOutAnimation:(double)a3
+- (id)p_shadowFadeOutAnimation:(double)animation
 {
   v4 = [CABasicAnimation animationWithKeyPath:@"opacity"];
   [(CABasicAnimation *)v4 setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
   [(CABasicAnimation *)v4 setDuration:0.150000006];
-  *&v5 = a3;
+  *&v5 = animation;
   [(CABasicAnimation *)v4 setFromValue:[NSNumber numberWithFloat:v5]];
   [(CABasicAnimation *)v4 setToValue:[NSNumber numberWithFloat:0.0]];
   [(CABasicAnimation *)v4 setFillMode:kCAFillModeForwards];
@@ -343,8 +343,8 @@
 
 - (void)p_setupShadow
 {
-  v3 = [(THWFreeTransformController *)self targetLayer];
-  [(CALayer *)v3 shadowOpacity];
+  targetLayer = [(THWFreeTransformController *)self targetLayer];
+  [(CALayer *)targetLayer shadowOpacity];
   if (v4 == 0.0)
   {
     [(THWFreeTransformController *)self delegate];
@@ -354,31 +354,31 @@
       v6 = v15;
       v54 = v16;
       v10 = 0;
-      v9 = 0;
-      [(CALayer *)v3 bounds];
+      shadowColor = 0;
+      [(CALayer *)targetLayer bounds];
     }
 
     else
     {
       v10 = 0;
-      v9 = 0;
+      shadowColor = 0;
       v54 = 15.0;
       v6 = 0.667;
-      [(CALayer *)v3 bounds];
+      [(CALayer *)targetLayer bounds];
     }
   }
 
   else
   {
-    [(CALayer *)v3 shadowOpacity];
+    [(CALayer *)targetLayer shadowOpacity];
     v6 = v5;
-    [(CALayer *)v3 shadowOffset];
+    [(CALayer *)targetLayer shadowOffset];
     v53 = v7;
-    [(CALayer *)v3 shadowRadius];
+    [(CALayer *)targetLayer shadowRadius];
     v54 = v8;
-    v9 = [(CALayer *)v3 shadowColor];
-    v10 = [(CALayer *)v3 shadowPath]!= 0;
-    [(CALayer *)v3 bounds];
+    shadowColor = [(CALayer *)targetLayer shadowColor];
+    v10 = [(CALayer *)targetLayer shadowPath]!= 0;
+    [(CALayer *)targetLayer bounds];
   }
 
   v18 = v11;
@@ -407,15 +407,15 @@
   v30 = v29;
   v32 = v31;
   v33 = objc_alloc_init(CALayer);
-  [(CALayer *)v3 anchorPoint];
+  [(CALayer *)targetLayer anchorPoint];
   [v33 setAnchorPoint:?];
   TSDRectWithSize();
   [v33 setBounds:?];
-  [(CALayer *)v3 position];
+  [(CALayer *)targetLayer position];
   [v33 setPosition:?];
-  if (v3)
+  if (targetLayer)
   {
-    [(CALayer *)v3 transform];
+    [(CALayer *)targetLayer transform];
   }
 
   else
@@ -426,12 +426,12 @@
   transform[0] = transform[1];
   v34 = v54 / v28;
   [v33 setTransform:transform];
-  if (!v9)
+  if (!shadowColor)
   {
-    v9 = [+[TSUColor blackColor](TSUColor "blackColor")];
+    shadowColor = [+[TSUColor blackColor](TSUColor "blackColor")];
   }
 
-  [v33 setShadowColor:v9];
+  [v33 setShadowColor:shadowColor];
   *&v35 = v6;
   [v33 setShadowOpacity:v35];
   [v33 setShadowOffset:{v30, v32}];
@@ -440,7 +440,7 @@
   {
     memset(transform, 0, 48);
     CGAffineTransformMakeScale(transform, 1.0 / self->mShadowScale, 1.0 / self->mShadowScale);
-    CopyByTransformingPath = CGPathCreateCopyByTransformingPath([(CALayer *)v3 shadowPath], transform);
+    CopyByTransformingPath = CGPathCreateCopyByTransformingPath([(CALayer *)targetLayer shadowPath], transform);
     if (CopyByTransformingPath)
     {
       v37 = CopyByTransformingPath;
@@ -454,7 +454,7 @@
     [(THWFreeTransformController *)self delegate];
     if ((objc_opt_respondsToSelector() & 1) != 0 && [(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)self delegate] freeTransformControllerShouldUsedTracedShadowPath:self])
     {
-      v38 = [(CALayer *)v3 tracedShadowPathWithScale:1.0 / self->mShadowScale];
+      cGPath = [(CALayer *)targetLayer tracedShadowPathWithScale:1.0 / self->mShadowScale];
     }
 
     else
@@ -474,10 +474,10 @@
         v40 = [TSDBezierPath bezierPathWithRect:?];
       }
 
-      v38 = [(TSDBezierPath *)v40 CGPath];
+      cGPath = [(TSDBezierPath *)v40 CGPath];
     }
 
-    [v33 setShadowPath:v38];
+    [v33 setShadowPath:cGPath];
   }
 
   CGAffineTransformMakeScale(&t1, self->mShadowScale, self->mShadowScale);
@@ -502,47 +502,47 @@
   *&transform[0].m13 = v42;
   *&transform[0].m21 = *&self->mOriginalShadowTransform.tx;
   [v33 setAffineTransform:transform];
-  [[(CALayer *)v3 superlayer] insertSublayer:v33 below:v3];
+  [[(CALayer *)targetLayer superlayer] insertSublayer:v33 below:targetLayer];
   [v33 setName:@"THWFreeTransformShadowLayer"];
   [(THWFreeTransformController *)self setShadowLayer:v33];
 
-  [(CALayer *)v3 setShadowOpacity:0.0];
+  [(CALayer *)targetLayer setShadowOpacity:0.0];
   v43 = [(THWFreeTransformController *)self p_shadowFadeInAnimation:v6, v30, v32, v34];
   [v33 addAnimation:v43 forKey:kFadeInAnimationName];
   [(THWFreeTransformController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v44 = [(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)self delegate] freeTransformControllerStyledRep:self];
-    v45 = [v44 shadowLayer];
-    if (v45)
+    shadowLayer = [v44 shadowLayer];
+    if (shadowLayer)
     {
-      v46 = v45;
-      [v45 opacity];
+      v46 = shadowLayer;
+      [shadowLayer opacity];
       v48 = [(THWFreeTransformController *)self p_shadowFadeOutAnimation:v47];
       [v46 addAnimation:v48 forKey:kTHWFreeTransformControllerFadeOutAnimationName];
     }
 
-    v49 = [v44 reflectionLayer];
-    if (v49)
+    reflectionLayer = [v44 reflectionLayer];
+    if (reflectionLayer)
     {
-      v50 = v49;
-      [v49 opacity];
+      v50 = reflectionLayer;
+      [reflectionLayer opacity];
       v52 = [(THWFreeTransformController *)self p_shadowFadeOutAnimation:v51];
       [v50 addAnimation:v52 forKey:kTHWFreeTransformControllerFadeOutAnimationName];
     }
   }
 }
 
-- (void)p_addOvershootAnimationWithOriginalFrame:(CGRect)a3 originalTransform:(CGAffineTransform *)a4 targetFrame:(CGRect)a5 targetTransform:(CGAffineTransform *)a6 completion:(id)a7
+- (void)p_addOvershootAnimationWithOriginalFrame:(CGRect)frame originalTransform:(CGAffineTransform *)transform targetFrame:(CGRect)targetFrame targetTransform:(CGAffineTransform *)targetTransform completion:(id)completion
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  v72 = a3.size.width;
-  v73 = a3.size.height;
+  height = targetFrame.size.height;
+  width = targetFrame.size.width;
+  v72 = frame.size.width;
+  v73 = frame.size.height;
   v13 = 1055286886;
-  LODWORD(a3.size.height) = 1.0;
-  LODWORD(a3.size.width) = 1057803469;
-  v75 = [CAMediaTimingFunction functionWithControlPoints:a3.origin.x];
+  LODWORD(frame.size.height) = 1.0;
+  LODWORD(frame.size.width) = 1057803469;
+  v75 = [CAMediaTimingFunction functionWithControlPoints:frame.origin.x];
   LODWORD(v14) = 0.25;
   LODWORD(v15) = 0.25;
   LODWORD(v16) = 1.0;
@@ -555,10 +555,10 @@
   TSDSubtractPoints();
   v21 = v20;
   v23 = v22;
-  v24 = a4->a;
-  v25 = a4->b;
-  c = a4->c;
-  d = a4->d;
+  v24 = transform->a;
+  v25 = transform->b;
+  c = transform->c;
+  d = transform->d;
   TSDMultiplyPointScalar();
   TSDAddPoints();
   v28 = v18 / v72;
@@ -598,10 +598,10 @@
   b = v80;
   CATransform3DScale(&v79, &b, v35, v35, 1.0);
   v80 = v79;
-  v36 = *&a6->c;
-  *&v79.m11 = *&a6->a;
+  v36 = *&targetTransform->c;
+  *&v79.m11 = *&targetTransform->a;
   *&v79.m13 = v36;
-  *&v79.m21 = *&a6->tx;
+  *&v79.m21 = *&targetTransform->tx;
   CATransform3DMakeAffineTransform(&b, &v79);
   a = v80;
   CATransform3DConcat(&v79, &a, &b);
@@ -610,16 +610,16 @@
   TSDMultiplyPointScalar();
   v38 = v37;
   v40 = v39;
-  v41 = *&a4->c;
-  *&v79.m11 = *&a4->a;
+  v41 = *&transform->c;
+  *&v79.m11 = *&transform->a;
   *&v79.m13 = v41;
-  *&v79.m21 = *&a4->tx;
+  *&v79.m21 = *&transform->tx;
   [(THWFreeTransformController *)self p_rotationAngleFromTransform:&v79];
   v43 = v42;
-  v44 = *&a6->c;
-  *&v79.m11 = *&a6->a;
+  v44 = *&targetTransform->c;
+  *&v79.m11 = *&targetTransform->a;
   *&v79.m13 = v44;
-  *&v79.m21 = *&a6->tx;
+  *&v79.m21 = *&targetTransform->tx;
   [(THWFreeTransformController *)self p_rotationAngleFromTransform:&v79];
   v46 = v43 - v45;
   v47 = 3.14059265 / vabdd_f64(v43, v45) + -1.0;
@@ -658,7 +658,7 @@
   v76[1] = 3221225472;
   v76[2] = sub_6DF44;
   v76[3] = &unk_45B8B0;
-  v76[4] = a7;
+  v76[4] = completion;
   [CATransaction setCompletionBlock:v76];
   v55 = [CAKeyframeAnimation animationWithKeyPath:@"transform.translation"];
   [(CAKeyframeAnimation *)v55 setValues:[NSArray arrayWithObjects:[NSValue valueWithCGSize:CGSizeZero.width, CGSizeZero.height], [NSValue valueWithCGSize:v38, v40], [NSValue valueWithCGSize:CGSizeZero.width, CGSizeZero.height], 0]];
@@ -672,10 +672,10 @@
   [(CAKeyframeAnimation *)v55 setFillMode:kCAFillModeForwards];
   [(CAKeyframeAnimation *)v55 setRemovedOnCompletion:0];
   v60 = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-  v61 = *&a4->c;
-  *&a.m11 = *&a4->a;
+  v61 = *&transform->c;
+  *&a.m11 = *&transform->a;
   *&a.m13 = v61;
-  *&a.m21 = *&a4->tx;
+  *&a.m21 = *&transform->tx;
   CATransform3DMakeAffineTransform(&b, &a);
   v62 = [NSValue valueWithCATransform3D:&b];
   b = v79;
@@ -696,8 +696,8 @@
   [v68 setDuration:0.51];
   [v68 setFillMode:kCAFillModeForwards];
   [v68 setRemovedOnCompletion:0];
-  v69 = [(THWFreeTransformController *)self freeTransformLayer];
-  [(CALayer *)v69 addAnimation:v68 forKey:kSnapToSizeAnimationName];
+  freeTransformLayer = [(THWFreeTransformController *)self freeTransformLayer];
+  [(CALayer *)freeTransformLayer addAnimation:v68 forKey:kSnapToSizeAnimationName];
   [(THWFreeTransformController *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0 || [(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)self delegate] freeTransformControllerShouldFadeShadowOut:self])
   {
@@ -707,34 +707,34 @@
     [(CABasicAnimation *)v70 setToValue:[NSNumber numberWithFloat:0.0]];
     [(CABasicAnimation *)v70 setFillMode:kCAFillModeForwards];
     [(CABasicAnimation *)v70 setRemovedOnCompletion:0];
-    v71 = [(THWFreeTransformController *)self shadowLayer];
-    [(CALayer *)v71 addAnimation:v70 forKey:kTHWFreeTransformControllerFadeOutAnimationName];
+    shadowLayer = [(THWFreeTransformController *)self shadowLayer];
+    [(CALayer *)shadowLayer addAnimation:v70 forKey:kTHWFreeTransformControllerFadeOutAnimationName];
   }
 
   +[CATransaction commit];
 }
 
-- (double)p_clampedScaleWithOriginalScale:(double)result originalFrame:(CGRect)a4 targetFrame:(CGRect)a5
+- (double)p_clampedScaleWithOriginalScale:(double)result originalFrame:(CGRect)frame targetFrame:(CGRect)targetFrame
 {
-  v5 = a5.size.height / a4.size.height;
-  v6 = a5.size.width / a4.size.width < a5.size.height / a4.size.height;
-  if (a5.size.width / a4.size.width >= a5.size.height / a4.size.height)
+  v5 = targetFrame.size.height / frame.size.height;
+  v6 = targetFrame.size.width / frame.size.width < targetFrame.size.height / frame.size.height;
+  if (targetFrame.size.width / frame.size.width >= targetFrame.size.height / frame.size.height)
   {
-    v7 = a5.size.height / a4.size.height;
+    v7 = targetFrame.size.height / frame.size.height;
   }
 
   else
   {
-    v7 = a5.size.width / a4.size.width;
+    v7 = targetFrame.size.width / frame.size.width;
   }
 
   if (!v6)
   {
-    v5 = a5.size.width / a4.size.width;
+    v5 = targetFrame.size.width / frame.size.width;
   }
 
-  v8 = a5.size.width <= a4.size.width;
-  if (a5.size.width <= a4.size.width)
+  v8 = targetFrame.size.width <= frame.size.width;
+  if (targetFrame.size.width <= frame.size.width)
   {
     v9 = 1.0;
   }
@@ -762,20 +762,20 @@
   return result;
 }
 
-- (void)p_setupForTransformWithGesture:(id)a3
+- (void)p_setupForTransformWithGesture:(id)gesture
 {
   if (self->mStartedFreeTransform)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v40 = self;
+  selfCopy = self;
   self->mStartedFreeTransform = 1;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v4 = [+[UIApplication windows:a3]];
+  v4 = [+[UIApplication windows:gesture]];
   v5 = [(NSArray *)v4 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v5)
   {
@@ -807,22 +807,22 @@
 
   [+[UIWindow keyWindow](UIWindow "keyWindow")];
   ++dword_5677A0;
-  [(THWFreeTransformController *)v40 setIsFreeTransformInProgress:1];
-  [(THWFreeTransformController *)v40 setPassedThreshold:0];
-  [(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)v40 delegate] freeTransformControllerDidBegin:v40];
-  if (![(THWFreeTransformController *)v40 layerSaveRestore])
+  [(THWFreeTransformController *)selfCopy setIsFreeTransformInProgress:1];
+  [(THWFreeTransformController *)selfCopy setPassedThreshold:0];
+  [(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)selfCopy delegate] freeTransformControllerDidBegin:selfCopy];
+  if (![(THWFreeTransformController *)selfCopy layerSaveRestore])
   {
-    [(THWFreeTransformController *)v40 setLayerSaveRestore:objc_alloc_init(TSULayerSaveRestore)];
+    [(THWFreeTransformController *)selfCopy setLayerSaveRestore:objc_alloc_init(TSULayerSaveRestore)];
   }
 
-  [(TSULayerSaveRestore *)[(THWFreeTransformController *)v40 layerSaveRestore] saveLayer:[(THWFreeTransformController *)v40 targetLayer]];
-  v10 = [(THWFreeTransformController *)v40 superLayerForWrapper];
-  [(CALayer *)[(THWFreeTransformController *)v40 targetLayer] frame];
+  [(TSULayerSaveRestore *)[(THWFreeTransformController *)selfCopy layerSaveRestore] saveLayer:[(THWFreeTransformController *)selfCopy targetLayer]];
+  superLayerForWrapper = [(THWFreeTransformController *)selfCopy superLayerForWrapper];
+  [(CALayer *)[(THWFreeTransformController *)selfCopy targetLayer] frame];
   TSDCenterOfRect();
-  [(CALayer *)v10 convertPoint:[(CALayer *)[(THWFreeTransformController *)v40 targetLayer] superlayer] fromLayer:v11, v12];
-  if ([(THWFreeTransformController *)v40 targetLayer])
+  [(CALayer *)superLayerForWrapper convertPoint:[(CALayer *)[(THWFreeTransformController *)selfCopy targetLayer] superlayer] fromLayer:v11, v12];
+  if ([(THWFreeTransformController *)selfCopy targetLayer])
   {
-    [(CALayer *)[(THWFreeTransformController *)v40 targetLayer] frame];
+    [(CALayer *)[(THWFreeTransformController *)selfCopy targetLayer] frame];
     TSDRectWithCenterAndSize();
     x = v13;
     y = v15;
@@ -838,8 +838,8 @@
     height = CGRectZero.size.height;
   }
 
-  [(THWFreeTransformController *)v40 setOriginalTargetLayerFrame:x, y, width, height];
-  if (v40->mTransformScale != 0.0)
+  [(THWFreeTransformController *)selfCopy setOriginalTargetLayerFrame:x, y, width, height];
+  if (selfCopy->mTransformScale != 0.0)
   {
     TSDCenterOfRect();
     TSDMultiplySizeScalar();
@@ -855,62 +855,62 @@
   v49.size.width = width;
   v49.size.height = height;
   v50 = CGRectInset(v49, -0.0, -0.0);
-  -[THWFreeTransformController setWrapperView:](v40, "setWrapperView:", [[UIView alloc] initWithFrame:{v50.origin.x, v50.origin.y, v50.size.width, v50.size.height}]);
-  mTransformScale = v40->mTransformScale;
+  -[THWFreeTransformController setWrapperView:](selfCopy, "setWrapperView:", [[UIView alloc] initWithFrame:{v50.origin.x, v50.origin.y, v50.size.width, v50.size.height}]);
+  mTransformScale = selfCopy->mTransformScale;
   if (mTransformScale != 0.0)
   {
     CGAffineTransformMakeScale(&v43, 1.0 / mTransformScale, 1.0 / mTransformScale);
-    v26 = [(THWFreeTransformController *)v40 wrapperLayer];
+    wrapperLayer = [(THWFreeTransformController *)selfCopy wrapperLayer];
     v42 = v43;
-    [(CALayer *)v26 setAffineTransform:&v42];
-    CGAffineTransformMakeScale(&v41, v40->mTransformScale, v40->mTransformScale);
-    v27 = [(THWFreeTransformController *)v40 targetLayer];
+    [(CALayer *)wrapperLayer setAffineTransform:&v42];
+    CGAffineTransformMakeScale(&v41, selfCopy->mTransformScale, selfCopy->mTransformScale);
+    targetLayer = [(THWFreeTransformController *)selfCopy targetLayer];
     v42 = v41;
-    [(CALayer *)v27 setAffineTransform:&v42];
+    [(CALayer *)targetLayer setAffineTransform:&v42];
   }
 
-  -[CALayer setBackgroundColor:](-[THWFreeTransformController wrapperLayer](v40, "wrapperLayer"), "setBackgroundColor:", [+[TSUColor clearColor](TSUColor "clearColor")]);
-  [(CALayer *)[(THWFreeTransformController *)v40 wrapperLayer] setName:@"THWFreeTransformWrapperLayer"];
-  [(THWFreeTransformController *)v40 setCurtainLayer:objc_alloc_init(CALayer)];
-  [(CALayer *)[(THWFreeTransformController *)v40 curtainLayer] setName:@"THWFreeTransformCurtainLayer"];
-  [(CALayer *)[(THWFreeTransformController *)v40 superLayerForWrapper] insertSublayer:[(THWFreeTransformController *)v40 curtainLayer] below:[(THWFreeTransformController *)v40 targetLayer]];
-  [(CALayer *)[(THWFreeTransformController *)v40 superLayerForWrapper] insertSublayer:[(THWFreeTransformController *)v40 wrapperLayer] below:[(THWFreeTransformController *)v40 targetLayer]];
-  v28 = [(THWFreeTransformController *)v40 wrapperLayer];
-  [(CALayer *)[(THWFreeTransformController *)v40 targetLayer] position];
-  [(CALayer *)v28 convertPoint:[(CALayer *)[(THWFreeTransformController *)v40 targetLayer] superlayer] fromLayer:v29, v30];
+  -[CALayer setBackgroundColor:](-[THWFreeTransformController wrapperLayer](selfCopy, "wrapperLayer"), "setBackgroundColor:", [+[TSUColor clearColor](TSUColor "clearColor")]);
+  [(CALayer *)[(THWFreeTransformController *)selfCopy wrapperLayer] setName:@"THWFreeTransformWrapperLayer"];
+  [(THWFreeTransformController *)selfCopy setCurtainLayer:objc_alloc_init(CALayer)];
+  [(CALayer *)[(THWFreeTransformController *)selfCopy curtainLayer] setName:@"THWFreeTransformCurtainLayer"];
+  [(CALayer *)[(THWFreeTransformController *)selfCopy superLayerForWrapper] insertSublayer:[(THWFreeTransformController *)selfCopy curtainLayer] below:[(THWFreeTransformController *)selfCopy targetLayer]];
+  [(CALayer *)[(THWFreeTransformController *)selfCopy superLayerForWrapper] insertSublayer:[(THWFreeTransformController *)selfCopy wrapperLayer] below:[(THWFreeTransformController *)selfCopy targetLayer]];
+  wrapperLayer2 = [(THWFreeTransformController *)selfCopy wrapperLayer];
+  [(CALayer *)[(THWFreeTransformController *)selfCopy targetLayer] position];
+  [(CALayer *)wrapperLayer2 convertPoint:[(CALayer *)[(THWFreeTransformController *)selfCopy targetLayer] superlayer] fromLayer:v29, v30];
   v32 = v31;
   v34 = v33;
-  [(THWFreeTransformController *)v40 delegate];
+  [(THWFreeTransformController *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)v40 delegate] freeTransformControllerWillMoveTargetLayer:[(THWFreeTransformController *)v40 targetLayer]];
+    [(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)selfCopy delegate] freeTransformControllerWillMoveTargetLayer:[(THWFreeTransformController *)selfCopy targetLayer]];
   }
 
-  [(CALayer *)[(THWFreeTransformController *)v40 wrapperLayer] addSublayer:[(THWFreeTransformController *)v40 targetLayer]];
-  [(CALayer *)[(THWFreeTransformController *)v40 targetLayer] setPosition:v32, v34];
-  if ([(THWFreeTransformController *)v40 smoothEdges])
+  [(CALayer *)[(THWFreeTransformController *)selfCopy wrapperLayer] addSublayer:[(THWFreeTransformController *)selfCopy targetLayer]];
+  [(CALayer *)[(THWFreeTransformController *)selfCopy targetLayer] setPosition:v32, v34];
+  if ([(THWFreeTransformController *)selfCopy smoothEdges])
   {
-    [(CALayer *)[(THWFreeTransformController *)v40 wrapperLayer] setShouldRasterize:1];
+    [(CALayer *)[(THWFreeTransformController *)selfCopy wrapperLayer] setShouldRasterize:1];
     TSUScreenScale();
-    [(CALayer *)[(THWFreeTransformController *)v40 wrapperLayer] setRasterizationScale:v35];
+    [(CALayer *)[(THWFreeTransformController *)selfCopy wrapperLayer] setRasterizationScale:v35];
   }
 
-  [(THWFreeTransformController *)v40 delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)v40 delegate] freeTransformControllerShouldMoveFreeTransformViewAboveStatusBar:v40])
+  [(THWFreeTransformController *)selfCopy delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)selfCopy delegate] freeTransformControllerShouldMoveFreeTransformViewAboveStatusBar:selfCopy])
   {
-    [(CALayer *)[(THWFreeTransformController *)v40 freeTransformLayer] setZPosition:10000.0];
+    [(CALayer *)[(THWFreeTransformController *)selfCopy freeTransformLayer] setZPosition:10000.0];
   }
 
   else
   {
     objc_opt_class();
-    [(CALayer *)[(THWFreeTransformController *)v40 freeTransformLayer] delegate];
+    [(CALayer *)[(THWFreeTransformController *)selfCopy freeTransformLayer] delegate];
     v36 = TSUDynamicCast();
     objc_opt_class();
-    [(CALayer *)[(THWFreeTransformController *)v40 superLayerForWrapper] delegate];
+    [(CALayer *)[(THWFreeTransformController *)selfCopy superLayerForWrapper] delegate];
     v37 = TSUDynamicCast();
-    [(THWFreeTransformController *)v40 delegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ![(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)v40 delegate] freeTransformControllerShouldUseEffectsWindow:v40])
+    [(THWFreeTransformController *)selfCopy delegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ![(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)selfCopy delegate] freeTransformControllerShouldUseEffectsWindow:selfCopy])
     {
       [objc_msgSend(v36 "window")];
     }
@@ -921,24 +921,24 @@
     }
   }
 
-  [(CALayer *)[(THWFreeTransformController *)v40 freeTransformLayer] setZPosition:10000.0];
-  if ([(THWFreeTransformController *)v40 p_wantsCurtainFadeOut])
+  [(CALayer *)[(THWFreeTransformController *)selfCopy freeTransformLayer] setZPosition:10000.0];
+  if ([(THWFreeTransformController *)selfCopy p_wantsCurtainFadeOut])
   {
-    [(THWFreeTransformController *)v40 p_setupCurtain];
+    [(THWFreeTransformController *)selfCopy p_setupCurtain];
   }
 
-  [(THWFreeTransformController *)v40 delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || [(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)v40 delegate] freeTransformControllerWantsShadow:v40])
+  [(THWFreeTransformController *)selfCopy delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || [(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)selfCopy delegate] freeTransformControllerWantsShadow:selfCopy])
   {
-    [(THWFreeTransformController *)v40 p_setupShadow];
+    [(THWFreeTransformController *)selfCopy p_setupShadow];
   }
 
-  [(THWFreeTransformController *)v40 setLastVelocity:CGPointZero.x, CGPointZero.y];
+  [(THWFreeTransformController *)selfCopy setLastVelocity:CGPointZero.x, CGPointZero.y];
   [v39 centerPoint];
-  [(THWFreeTransformController *)v40 setLastDragCenter:?];
+  [(THWFreeTransformController *)selfCopy setLastDragCenter:?];
 }
 
-- (void)transformGRChanged:(id)a3
+- (void)transformGRChanged:(id)changed
 {
   if (!+[NSThread isMainThread])
   {
@@ -947,16 +947,16 @@
 
   if (!self->mStartedFreeTransform)
   {
-    [(THWFreeTransformController *)self p_setupForTransformWithGesture:a3];
+    [(THWFreeTransformController *)self p_setupForTransformWithGesture:changed];
   }
 
   memset(&v88, 0, sizeof(v88));
-  if (a3)
+  if (changed)
   {
-    [a3 transform];
+    [changed transform];
   }
 
-  [a3 scale];
+  [changed scale];
   v6 = v5;
   [(THWFreeTransformController *)self originalTargetLayerFrame];
   v8 = v7;
@@ -968,10 +968,10 @@
   if (v19 != v6)
   {
     v20 = v19;
-    [a3 angle];
-    if (a3)
+    [changed angle];
+    if (changed)
     {
-      [a3 transformWithScale:v20 angle:v21];
+      [changed transformWithScale:v20 angle:v21];
     }
 
     else
@@ -992,11 +992,11 @@
   }
 
   v84 = v88;
-  v23 = [(THWFreeTransformController *)self freeTransformLayer];
+  freeTransformLayer = [(THWFreeTransformController *)self freeTransformLayer];
   v87 = v84;
-  [(CALayer *)v23 setAffineTransform:&v87];
-  v24 = [(THWFreeTransformController *)self targetLayer];
-  if (v24 == [(THWFreeTransformController *)self freeTransformLayer])
+  [(CALayer *)freeTransformLayer setAffineTransform:&v87];
+  targetLayer = [(THWFreeTransformController *)self targetLayer];
+  if (targetLayer == [(THWFreeTransformController *)self freeTransformLayer])
   {
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
@@ -1006,9 +1006,9 @@
     *&v87.tx = *&self->mOriginalShadowTransform.tx;
     t1 = v88;
     CGAffineTransformConcat(&v83, &v87, &t1);
-    v26 = [(THWFreeTransformController *)self shadowLayer];
+    shadowLayer = [(THWFreeTransformController *)self shadowLayer];
     v87 = v83;
-    [(CALayer *)v26 setAffineTransform:&v87];
+    [(CALayer *)shadowLayer setAffineTransform:&v87];
     +[CATransaction commit];
   }
 
@@ -1017,7 +1017,7 @@
     [(THWFreeTransformController *)self p_fadeOutCurtain];
   }
 
-  [a3 centerPoint];
+  [changed centerPoint];
   [(THWFreeTransformController *)self lastDragCenter];
   TSDSubtractPoints();
   TSDMultiplyPointScalar();
@@ -1036,10 +1036,10 @@
     }
   }
 
-  [a3 centerPoint];
+  [changed centerPoint];
   [(THWFreeTransformController *)self setLastDragCenter:?];
   [(THWFreeTransformController *)self setLastVelocity:v28, v30];
-  if ([a3 isEnabled] && (objc_msgSend(a3, "state") == &dword_0 + 3 || objc_msgSend(a3, "state") == &dword_4))
+  if ([changed isEnabled] && (objc_msgSend(changed, "state") == &dword_0 + 3 || objc_msgSend(changed, "state") == &dword_4))
   {
     [(CALayer *)[(THWFreeTransformController *)self freeTransformLayer] removeMomentumTiltAnimation];
     [(CALayer *)[(THWFreeTransformController *)self freeTransformLayer] setZPosition:0.0];
@@ -1067,7 +1067,7 @@
       v39 = v6 < v38;
     }
 
-    v40 = [a3 state] != &dword_4 && (v36 || v39);
+    v40 = [changed state] != &dword_4 && (v36 || v39);
     v41 = v40;
     size = CGRectNull.size;
     self->mCompletionTargetRect.origin = CGRectNull.origin;
@@ -1142,7 +1142,7 @@
     v78[1] = 3221225472;
     v79 = sub_6EEDC;
     v80 = &unk_45B2C0;
-    v81 = self;
+    selfCopy = self;
     v82 = v41;
     if (!self->mStartedCurtainFadeOut && v41 && [(THWFreeTransformController *)self p_wantsCurtainFadeOut])
     {
@@ -1158,7 +1158,7 @@
     else
     {
       [(THWFreeTransformController *)self completionTargetRect];
-      if (CGRectIsEmpty(v90) || [a3 state] == &dword_4)
+      if (CGRectIsEmpty(v90) || [changed state] == &dword_4)
       {
         v79(v78);
       }
@@ -1187,7 +1187,7 @@
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   [(THWFreeTransformController *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -1195,12 +1195,12 @@
     return 1;
   }
 
-  v4 = [(THWFreeTransformController *)self delegate];
+  delegate = [(THWFreeTransformController *)self delegate];
 
-  return [(THWFreeTransformControllerDelegate *)v4 freeTransformControllerShouldBegin:self];
+  return [(THWFreeTransformControllerDelegate *)delegate freeTransformControllerShouldBegin:self];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
   if (!self->mDelegate || (objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -1209,10 +1209,10 @@
 
   mDelegate = self->mDelegate;
 
-  return [(THWFreeTransformControllerDelegate *)mDelegate freeTransformController:self shouldRecognizeSimultaneouslyWithGestureRecognizer:a4];
+  return [(THWFreeTransformControllerDelegate *)mDelegate freeTransformController:self shouldRecognizeSimultaneouslyWithGestureRecognizer:gestureRecognizer];
 }
 
-- (BOOL)freeTransformGestureRecognizerShouldDelayRecognizeUntilScaleChange:(id)a3
+- (BOOL)freeTransformGestureRecognizerShouldDelayRecognizeUntilScaleChange:(id)change
 {
   mDelegate = self->mDelegate;
   if (!mDelegate)
@@ -1233,7 +1233,7 @@
   return [(THWFreeTransformControllerDelegate *)mDelegate freeTransformControllerShouldDelayRecognizeUntilScaleChange:self];
 }
 
-- (BOOL)freeTransformGestureRecognizerShouldAllowPinchDown:(id)a3
+- (BOOL)freeTransformGestureRecognizerShouldAllowPinchDown:(id)down
 {
   mDelegate = self->mDelegate;
   if (!mDelegate)
@@ -1254,7 +1254,7 @@
   return [(THWFreeTransformControllerDelegate *)mDelegate freeTransformControllerShouldAllowPinchDown:self];
 }
 
-- (BOOL)freeTransformGestureRecognizerShouldAllowPinchUp:(id)a3
+- (BOOL)freeTransformGestureRecognizerShouldAllowPinchUp:(id)up
 {
   mDelegate = self->mDelegate;
   if (!mDelegate)
@@ -1319,18 +1319,18 @@
   return self;
 }
 
-- (void)recreateGestureRecognizerOnView:(id)a3
+- (void)recreateGestureRecognizerOnView:(id)view
 {
-  if ([(THWFreeTransformGestureRecognizer *)[(THWFreeTransformController *)self transformGR] view]!= a3)
+  if ([(THWFreeTransformGestureRecognizer *)[(THWFreeTransformController *)self transformGR] view]!= view)
   {
     [(THWFreeTransformController *)self clearGestureRecognizer];
-    if (a3)
+    if (view)
     {
       [(THWFreeTransformController *)self setTransformGR:[[THWFreeTransformGestureRecognizer alloc] initWithTarget:self action:"transformGRChanged:"]];
       [(THWFreeTransformGestureRecognizer *)[(THWFreeTransformController *)self transformGR] setFreeTransformDelegate:self];
-      [a3 addGestureRecognizer:{-[THWFreeTransformController transformGR](self, "transformGR")}];
+      [view addGestureRecognizer:{-[THWFreeTransformController transformGR](self, "transformGR")}];
 
-      [(THWFreeTransformController *)self p_updateUnmovingParentView:a3];
+      [(THWFreeTransformController *)self p_updateUnmovingParentView:view];
     }
   }
 }
@@ -1339,10 +1339,10 @@
 {
   if ([(THWFreeTransformController *)self transformGR])
   {
-    v3 = [(THWFreeTransformGestureRecognizer *)[(THWFreeTransformController *)self transformGR] view];
-    v4 = [(THWFreeTransformController *)self transformGR];
+    view = [(THWFreeTransformGestureRecognizer *)[(THWFreeTransformController *)self transformGR] view];
+    transformGR = [(THWFreeTransformController *)self transformGR];
 
-    [v3 removeGestureRecognizer:v4];
+    [view removeGestureRecognizer:transformGR];
   }
 }
 
@@ -1355,17 +1355,17 @@
   [(THWFreeTransformController *)self p_updateUnmovingParentView:v3];
 }
 
-- (void)p_updateUnmovingParentView:(id)a3
+- (void)p_updateUnmovingParentView:(id)view
 {
-  v5 = [(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)self delegate] unmovingParentViewForFreeTransformController:self];
-  if (!v5)
+  superview = [(THWFreeTransformControllerDelegate *)[(THWFreeTransformController *)self delegate] unmovingParentViewForFreeTransformController:self];
+  if (!superview)
   {
-    v5 = [a3 superview];
+    superview = [view superview];
   }
 
-  v6 = [(THWFreeTransformController *)self transformGR];
+  transformGR = [(THWFreeTransformController *)self transformGR];
 
-  [(THWFreeTransformGestureRecognizer *)v6 setUnmovingParentView:v5];
+  [(THWFreeTransformGestureRecognizer *)transformGR setUnmovingParentView:superview];
 }
 
 @end

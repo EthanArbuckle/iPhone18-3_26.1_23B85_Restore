@@ -1,13 +1,13 @@
 @interface DNDAuxiliaryStateService
-+ (id)serviceForClientIdentifier:(id)a3;
-- (id)_initWithClientIdentifier:(id)a3;
++ (id)serviceForClientIdentifier:(id)identifier;
+- (id)_initWithClientIdentifier:(id)identifier;
 @end
 
 @implementation DNDAuxiliaryStateService
 
-+ (id)serviceForClientIdentifier:(id)a3
++ (id)serviceForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (serviceForClientIdentifier__onceToken != -1)
   {
     +[DNDAuxiliaryStateService serviceForClientIdentifier:];
@@ -24,10 +24,10 @@
   block[1] = 3221225472;
   block[2] = __55__DNDAuxiliaryStateService_serviceForClientIdentifier___block_invoke_2;
   block[3] = &unk_27843A080;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -79,15 +79,15 @@ void __69__DNDAuxiliaryStateService_setScreenIsShared_screenIsMirrored_error___b
   *(v6 + 40) = v5;
 }
 
-- (id)_initWithClientIdentifier:(id)a3
+- (id)_initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = DNDAuxiliaryStateService;
   v5 = [(DNDAuxiliaryStateService *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v6;
 

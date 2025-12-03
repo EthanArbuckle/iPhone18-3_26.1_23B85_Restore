@@ -1,12 +1,12 @@
 @interface BuddyDeviceManagementSupport
 + (id)sharedSupport;
-- (BOOL)deviceManagementWantsToSkipControllerClass:(Class)a3;
+- (BOOL)deviceManagementWantsToSkipControllerClass:(Class)class;
 - (BOOL)shouldDisallowProximityAdvertisement;
 - (BuddyDeviceManagementSupport)init;
 - (NSArray)skipKeys;
-- (void)_loadSkipKeys:(id)a3;
-- (void)_loadSkipKeysWithCurrentTry:(int)a3 completion:(id)a4;
-- (void)loadSkipKeys:(id)a3;
+- (void)_loadSkipKeys:(id)keys;
+- (void)_loadSkipKeysWithCurrentTry:(int)try completion:(id)completion;
+- (void)loadSkipKeys:(id)keys;
 @end
 
 @implementation BuddyDeviceManagementSupport
@@ -52,7 +52,7 @@
 
 - (NSArray)skipKeys
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
   v12 = 0;
   v13 = &v12;
@@ -61,20 +61,20 @@
   v16 = sub_100231A58;
   v17 = sub_100231A9C;
   v18[0] = 0;
-  v2 = [(BuddyDeviceManagementSupport *)self skipKeysQueue];
+  skipKeysQueue = [(BuddyDeviceManagementSupport *)self skipKeysQueue];
   block = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_100231AA8;
   v10 = &unk_10032C290;
   v11[1] = &v12;
-  v11[0] = v19;
-  dispatch_sync(v2, &block);
+  v11[0] = selfCopy;
+  dispatch_sync(skipKeysQueue, &block);
 
   if (!v13[5])
   {
     v3 = [NSString alloc];
-    objc_exception_throw(+[NSException exceptionWithName:reason:userInfo:](NSException, "exceptionWithName:reason:userInfo:", @"Skip Keys Not Loaded", [v3 initWithFormat:@"Skip keys were attempted to be access before they were loaded. didAttemptToFetchSkipKeys: %d. didFetchSkipKeysSuccessfully: %d", v19->_didAttemptToFetchSkipKeys, v19->_didFetchSkipKeysSuccessfully], 0));
+    objc_exception_throw(+[NSException exceptionWithName:reason:userInfo:](NSException, "exceptionWithName:reason:userInfo:", @"Skip Keys Not Loaded", [v3 initWithFormat:@"Skip keys were attempted to be access before they were loaded. didAttemptToFetchSkipKeys: %d. didFetchSkipKeysSuccessfully: %d", selfCopy->_didAttemptToFetchSkipKeys, selfCopy->_didFetchSkipKeysSuccessfully], 0));
   }
 
   v4 = v13[5];
@@ -85,12 +85,12 @@
   return v4;
 }
 
-- (void)loadSkipKeys:(id)a3
+- (void)loadSkipKeys:(id)keys
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, keys);
   oslog = _BYLoggingFacility();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -102,17 +102,17 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BuddyDeviceManagementSupport *)v9 _loadSkipKeysWithCurrentTry:0 completion:location[0]];
+  [(BuddyDeviceManagementSupport *)selfCopy _loadSkipKeysWithCurrentTry:0 completion:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_loadSkipKeysWithCurrentTry:(int)a3 completion:(id)a4
+- (void)_loadSkipKeysWithCurrentTry:(int)try completion:(id)completion
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
+  tryCopy = try;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v17 = _NSConcreteStackBlock;
   v18 = -1073741824;
   v19 = 0;
@@ -121,16 +121,16 @@
   v22 = location;
   v23 = objc_retainBlock(&v17);
   v16 = 2;
-  objc_initWeak(&from, v27);
-  [(BuddyDeviceManagementSupport *)v27 setDidAttemptToFetchSkipKeys:1];
-  v4 = v27;
+  objc_initWeak(&from, selfCopy);
+  [(BuddyDeviceManagementSupport *)selfCopy setDidAttemptToFetchSkipKeys:1];
+  v4 = selfCopy;
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_100231DEC;
   v9 = &unk_10032F5D0;
-  v14 = v25;
-  v10 = v27;
+  v14 = tryCopy;
+  v10 = selfCopy;
   v11 = v23;
   objc_copyWeak(&v13, &from);
   v12 = location;
@@ -145,21 +145,21 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)_loadSkipKeys:(id)a3
+- (void)_loadSkipKeys:(id)keys
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyDeviceManagementSupport *)v12 deviceManagementProvider];
+  objc_storeStrong(location, keys);
+  deviceManagementProvider = [(BuddyDeviceManagementSupport *)selfCopy deviceManagementProvider];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1002322D8;
   v8 = &unk_10032F5F8;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
-  [(BuddyDeviceManagementProvider *)v3 loadSkipKeys:&v4];
+  [(BuddyDeviceManagementProvider *)deviceManagementProvider loadSkipKeys:&v4];
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);
@@ -168,7 +168,7 @@
 
 - (BOOL)shouldDisallowProximityAdvertisement
 {
-  v22 = self;
+  selfCopy = self;
   v21[1] = a2;
   v15 = 0;
   v16 = &v15;
@@ -177,15 +177,15 @@
   v19 = sub_100231A58;
   v20 = sub_100231A9C;
   v21[0] = 0;
-  v2 = [(BuddyDeviceManagementSupport *)self skipKeysQueue];
+  skipKeysQueue = [(BuddyDeviceManagementSupport *)self skipKeysQueue];
   block = _NSConcreteStackBlock;
   v10 = -1073741824;
   v11 = 0;
   v12 = sub_100232670;
   v13 = &unk_10032C290;
   v14[1] = &v15;
-  v14[0] = v22;
-  dispatch_sync(v2, &block);
+  v14[0] = selfCopy;
+  dispatch_sync(skipKeysQueue, &block);
 
   if (v16[5])
   {
@@ -214,24 +214,24 @@
   return v23 & 1;
 }
 
-- (BOOL)deviceManagementWantsToSkipControllerClass:(Class)a3
+- (BOOL)deviceManagementWantsToSkipControllerClass:(Class)class
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  classCopy = class;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  location = [(objc_class *)v9 cloudConfigSkipKey];
+  location = [(objc_class *)classCopy cloudConfigSkipKey];
   v6 = 0;
   v3 = 0;
   if (location)
   {
-    v7 = [(BuddyDeviceManagementSupport *)v11 skipKeys];
+    skipKeys = [(BuddyDeviceManagementSupport *)selfCopy skipKeys];
     v6 = 1;
-    v3 = [(NSArray *)v7 containsObject:location];
+    v3 = [(NSArray *)skipKeys containsObject:location];
   }
 
   if (v6)

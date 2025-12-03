@@ -1,7 +1,7 @@
 @interface HGConfiguration
 - (HGConfiguration)init;
-- (void)setAudioFeedbackConfig:(id)a3;
-- (void)setMlConfig:(id)a3;
+- (void)setAudioFeedbackConfig:(id)config;
+- (void)setMlConfig:(id)config;
 @end
 
 @implementation HGConfiguration
@@ -20,11 +20,11 @@
     [(HGConfiguration *)v2 setMlConfig:v4];
 
     v5 = [HGConfigurationInternal alloc];
-    v6 = [(HGConfiguration *)v2 mlConfig];
-    v7 = [v6 internal];
-    v8 = [(HGConfiguration *)v2 audioFeedbackConfig];
-    v9 = [v8 internal];
-    v10 = [(HGConfigurationInternal *)v5 initWithML:v7 audioFeedbackConfig:v9];
+    mlConfig = [(HGConfiguration *)v2 mlConfig];
+    internal = [mlConfig internal];
+    audioFeedbackConfig = [(HGConfiguration *)v2 audioFeedbackConfig];
+    internal2 = [audioFeedbackConfig internal];
+    v10 = [(HGConfigurationInternal *)v5 initWithML:internal audioFeedbackConfig:internal2];
     internal = v2->_internal;
     v2->_internal = v10;
   }
@@ -32,20 +32,20 @@
   return v2;
 }
 
-- (void)setAudioFeedbackConfig:(id)a3
+- (void)setAudioFeedbackConfig:(id)config
 {
-  objc_storeStrong(&self->_audioFeedbackConfig, a3);
-  v5 = a3;
-  v6 = [v5 internal];
-  [(HGConfigurationInternal *)self->_internal setAudioFeedbackConfig:v6];
+  objc_storeStrong(&self->_audioFeedbackConfig, config);
+  configCopy = config;
+  internal = [configCopy internal];
+  [(HGConfigurationInternal *)self->_internal setAudioFeedbackConfig:internal];
 }
 
-- (void)setMlConfig:(id)a3
+- (void)setMlConfig:(id)config
 {
-  objc_storeStrong(&self->_mlConfig, a3);
-  v5 = a3;
-  v6 = [v5 internal];
-  [(HGConfigurationInternal *)self->_internal setMlConfig:v6];
+  objc_storeStrong(&self->_mlConfig, config);
+  configCopy = config;
+  internal = [configCopy internal];
+  [(HGConfigurationInternal *)self->_internal setMlConfig:internal];
 }
 
 @end

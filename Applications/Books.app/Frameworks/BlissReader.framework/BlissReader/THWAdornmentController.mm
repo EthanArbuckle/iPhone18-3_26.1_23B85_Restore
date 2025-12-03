@@ -3,49 +3,49 @@
 - (BOOL)hasRoomForPanels;
 - (BOOL)p_combineBottomAndControlPanels;
 - (BOOL)p_forceButtonVisible;
-- (BOOL)p_panelVisible:(int)a3 default:(BOOL)a4 forced:(BOOL)a5;
-- (CGRect)adornmentPanel:(id)a3 frameForSize:(CGSize)a4;
+- (BOOL)p_panelVisible:(int)visible default:(BOOL)default forced:(BOOL)forced;
+- (CGRect)adornmentPanel:(id)panel frameForSize:(CGSize)size;
 - (CGRect)closeButtonFrame;
 - (CGRect)layoutFrame;
-- (THWAdornmentController)initWithExpandedRep:(id)a3 documentRoot:(id)a4;
-- (double)adornmentPanelFontSize:(id)a3;
-- (double)adornmentPanelMinHeight:(id)a3;
-- (double)heightForPanel:(int)a3 allowDefault:(BOOL)a4;
-- (id)adornmentPanelFontName:(id)a3;
+- (THWAdornmentController)initWithExpandedRep:(id)rep documentRoot:(id)root;
+- (double)adornmentPanelFontSize:(id)size;
+- (double)adornmentPanelMinHeight:(id)height;
+- (double)heightForPanel:(int)panel allowDefault:(BOOL)default;
+- (id)adornmentPanelFontName:(id)name;
 - (id)adornmentTrackingRects;
-- (id)p_panelForKind:(int)a3;
-- (void)addAdornmentViewsToView:(id)a3;
-- (void)adornmentPanelDidLayout:(id)a3;
-- (void)animatePanel:(int)a3 withCrossFadeContent:(BOOL)a4 backgroundLayout:(BOOL)a5 duration:(double)a6;
-- (void)controllerWillAnimateToSize:(CGSize)a3 duration:(double)a4 inFrame:(CGRect)a5;
+- (id)p_panelForKind:(int)kind;
+- (void)addAdornmentViewsToView:(id)view;
+- (void)adornmentPanelDidLayout:(id)layout;
+- (void)animatePanel:(int)panel withCrossFadeContent:(BOOL)content backgroundLayout:(BOOL)layout duration:(double)duration;
+- (void)controllerWillAnimateToSize:(CGSize)size duration:(double)duration inFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)invalidateChildrenInPanel:(int)a3;
+- (void)invalidateChildrenInPanel:(int)panel;
 - (void)invalidateLayouts;
-- (void)invalidateWPAutoInPanel:(int)a3;
-- (void)layoutInFrame:(CGRect)a3;
+- (void)invalidateWPAutoInPanel:(int)panel;
+- (void)layoutInFrame:(CGRect)frame;
 - (void)p_createViews;
-- (void)p_handleClose:(id)a3;
+- (void)p_handleClose:(id)close;
 - (void)p_layoutPanels;
-- (void)p_updateAdornmentVisibilityAnimated:(BOOL)a3 forced:(BOOL)a4 completionBlock:(id)a5;
+- (void)p_updateAdornmentVisibilityAnimated:(BOOL)animated forced:(BOOL)forced completionBlock:(id)block;
 - (void)p_updateCloseButton;
-- (void)setAdornmentsVisible:(BOOL)a3;
-- (void)setAdornmentsVisible:(BOOL)a3 animated:(BOOL)a4 completionBlock:(id)a5;
-- (void)setAdornmentsVisible:(BOOL)a3 buttonVisible:(BOOL)a4 controlsVisible:(BOOL)a5 forceVisibility:(BOOL)a6 animated:(BOOL)a7 completionBlock:(id)a8;
+- (void)setAdornmentsVisible:(BOOL)visible;
+- (void)setAdornmentsVisible:(BOOL)visible animated:(BOOL)animated completionBlock:(id)block;
+- (void)setAdornmentsVisible:(BOOL)visible buttonVisible:(BOOL)buttonVisible controlsVisible:(BOOL)controlsVisible forceVisibility:(BOOL)visibility animated:(BOOL)animated completionBlock:(id)block;
 - (void)teardown;
 - (void)toggleVisibility;
 @end
 
 @implementation THWAdornmentController
 
-- (THWAdornmentController)initWithExpandedRep:(id)a3 documentRoot:(id)a4
+- (THWAdornmentController)initWithExpandedRep:(id)rep documentRoot:(id)root
 {
   v8.receiver = self;
   v8.super_class = THWAdornmentController;
   v6 = [(THWAdornmentController *)&v8 init];
   if (v6)
   {
-    v6->_expandedRep = a3;
-    v6->_documentRoot = a4;
+    v6->_expandedRep = rep;
+    v6->_documentRoot = root;
   }
 
   return v6;
@@ -97,15 +97,15 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(THWExpandedRep *)self->_expandedRep expandedAppearance];
+    expandedAppearance = [(THWExpandedRep *)self->_expandedRep expandedAppearance];
   }
 
   else
   {
-    v3 = &dword_0 + 1;
+    expandedAppearance = &dword_0 + 1;
   }
 
-  [(THWAdornmentController *)self setAppearance:v3];
+  [(THWAdornmentController *)self setAppearance:expandedAppearance];
   if ([(THWExpandedRep *)self->_expandedRep expandedHasContentForPanel:0])
   {
     self->_topPanel = [[THWAdornmentPanel alloc] initWithDelegate:self kind:0 expandedRep:self->_expandedRep documentRoot:[(THWAdornmentController *)self documentRoot]];
@@ -124,10 +124,10 @@
     }
 
     [(THWAutosizedCanvasController *)[(THWAdornmentPanel *)self->_bottomPanel autosizedCanvasController] setupImmediatePressGesture];
-    v4 = [(THWAutosizedCanvasController *)[(THWAdornmentPanel *)self->_bottomPanel autosizedCanvasController] interactiveCanvasController];
+    interactiveCanvasController = [(THWAutosizedCanvasController *)[(THWAdornmentPanel *)self->_bottomPanel autosizedCanvasController] interactiveCanvasController];
     v5 = [THShortTapGestureRecognizer alloc];
-    v6 = [(TSDInteractiveCanvasController *)v4 gestureDispatcher];
-    v7 = [(THShortTapGestureRecognizer *)v5 initWithGestureDispatcher:v6 gestureKind:TSDShortTap];
+    gestureDispatcher = [(TSDInteractiveCanvasController *)interactiveCanvasController gestureDispatcher];
+    v7 = [(THShortTapGestureRecognizer *)v5 initWithGestureDispatcher:gestureDispatcher gestureKind:TSDShortTap];
     [-[TSDiOSCanvasViewController viewForGestureRecognizer:](-[THWAutosizedCanvasController canvasViewController](-[THWAdornmentPanel autosizedCanvasController](self->_bottomPanel "autosizedCanvasController")];
     [(THShortTapGestureRecognizer *)v7 requireGestureRecognizerToFail:[(THWAutosizedCanvasController *)[(THWAdornmentPanel *)self->_bottomPanel autosizedCanvasController] immediatePressGesture]];
   }
@@ -141,10 +141,10 @@
     }
 
     [(THWAutosizedCanvasController *)[(THWAdornmentPanel *)self->_controlPanel autosizedCanvasController] setupImmediatePressGesture];
-    v8 = [(THWAutosizedCanvasController *)[(THWAdornmentPanel *)self->_controlPanel autosizedCanvasController] interactiveCanvasController];
+    interactiveCanvasController2 = [(THWAutosizedCanvasController *)[(THWAdornmentPanel *)self->_controlPanel autosizedCanvasController] interactiveCanvasController];
     v9 = [THShortTapGestureRecognizer alloc];
-    v10 = [(TSDInteractiveCanvasController *)v8 gestureDispatcher];
-    v11 = [(THShortTapGestureRecognizer *)v9 initWithGestureDispatcher:v10 gestureKind:TSDShortTap];
+    gestureDispatcher2 = [(TSDInteractiveCanvasController *)interactiveCanvasController2 gestureDispatcher];
+    v11 = [(THShortTapGestureRecognizer *)v9 initWithGestureDispatcher:gestureDispatcher2 gestureKind:TSDShortTap];
     [-[TSDiOSCanvasViewController viewForGestureRecognizer:](-[THWAutosizedCanvasController canvasViewController](-[THWAdornmentPanel autosizedCanvasController](self->_controlPanel "autosizedCanvasController")];
     [(THShortTapGestureRecognizer *)v11 requireGestureRecognizerToFail:[(THWAutosizedCanvasController *)[(THWAdornmentPanel *)self->_controlPanel autosizedCanvasController] immediatePressGesture]];
   }
@@ -171,9 +171,9 @@
   [(THWAdornmentController *)self closeButtonFrame];
   [(THWAdornmentController *)self setCloseButton:[(THWAdornmentCloseButton *)v14 initWithFrame:v13 theme:?]];
   [(THWAdornmentCloseButton *)[(THWAdornmentController *)self closeButton] setTarget:self action:"p_handleClose:"];
-  v15 = [(THWAdornmentController *)self closeButton];
+  closeButton = [(THWAdornmentController *)self closeButton];
 
-  [(THWAdornmentCloseButton *)v15 setEnabled:1];
+  [(THWAdornmentCloseButton *)closeButton setEnabled:1];
 }
 
 - (CGRect)closeButtonFrame
@@ -199,64 +199,64 @@
   v6 = v5;
   [(THWAdornmentCloseButton *)[(THWAdornmentController *)self closeButton] frame];
   [(THWAdornmentCloseButton *)[(THWAdornmentController *)self closeButton] setFrame:v4, v6, v7, v8];
-  v9 = [(THWAdornmentController *)self closeButton];
+  closeButton = [(THWAdornmentController *)self closeButton];
 
-  [(THWAdornmentCloseButton *)v9 updateImage];
+  [(THWAdornmentCloseButton *)closeButton updateImage];
 }
 
 - (BOOL)attemptToPerformCloseButtonAction
 {
-  v3 = [(THWAdornmentController *)self closeButton];
-  if (v3)
+  closeButton = [(THWAdornmentController *)self closeButton];
+  if (closeButton)
   {
     if (([(THWAdornmentCloseButton *)[(THWAdornmentController *)self closeButton] isHidden]& 1) != 0 || [(THWAdornmentController *)self animatingVisibilityCount])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(closeButton) = 0;
     }
 
     else
     {
       [(THWAdornmentCloseButton *)[(THWAdornmentController *)self closeButton] sendActionsForControlEvents:64];
-      LOBYTE(v3) = 1;
+      LOBYTE(closeButton) = 1;
     }
   }
 
-  return v3;
+  return closeButton;
 }
 
-- (BOOL)p_panelVisible:(int)a3 default:(BOOL)a4 forced:(BOOL)a5
+- (BOOL)p_panelVisible:(int)visible default:(BOOL)default forced:(BOOL)forced
 {
-  v5 = a4;
-  if (a5)
+  defaultCopy = default;
+  if (forced)
   {
-    return v5;
+    return defaultCopy;
   }
 
-  v6 = *&a3;
+  v6 = *&visible;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return v5;
+    return defaultCopy;
   }
 
   expandedRep = self->_expandedRep;
 
-  return [(THWExpandedRep *)expandedRep expandedPanel:v6 isVisibleWithDefault:v5];
+  return [(THWExpandedRep *)expandedRep expandedPanel:v6 isVisibleWithDefault:defaultCopy];
 }
 
-- (void)p_updateAdornmentVisibilityAnimated:(BOOL)a3 forced:(BOOL)a4 completionBlock:(id)a5
+- (void)p_updateAdornmentVisibilityAnimated:(BOOL)animated forced:(BOOL)forced completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  forcedCopy = forced;
+  animatedCopy = animated;
   v9 = self->_adornmentsVisible && [(THWAdornmentController *)self hasRoomForPanels];
-  v10 = [(THWAdornmentController *)self p_panelVisible:0 default:v9 forced:v6];
-  v11 = 0;
+  v10 = [(THWAdornmentController *)self p_panelVisible:0 default:v9 forced:forcedCopy];
+  hasRoomForPanels = 0;
   if (self->_adornmentsVisible)
   {
-    v11 = [(THWAdornmentController *)self hasRoomForPanels];
+    hasRoomForPanels = [(THWAdornmentController *)self hasRoomForPanels];
   }
 
-  v12 = [(THWAdornmentController *)self p_panelVisible:1 default:v11 forced:v6];
-  v13 = [(THWAdornmentController *)self p_panelVisible:2 default:self->_controlsVisible forced:v6];
+  v12 = [(THWAdornmentController *)self p_panelVisible:1 default:hasRoomForPanels forced:forcedCopy];
+  v13 = [(THWAdornmentController *)self p_panelVisible:2 default:self->_controlsVisible forced:forcedCopy];
   v14 = v13;
   if (self->_buttonVisible)
   {
@@ -308,9 +308,9 @@
   v23[1] = 3221225472;
   v24 = sub_14B820;
   v25 = &unk_45B2C0;
-  v26 = self;
+  selfCopy = self;
   v27 = v10;
-  if (v7)
+  if (animatedCopy)
   {
     animatingVisibilityCount = self->_animatingVisibilityCount;
     if (!animatingVisibilityCount)
@@ -353,20 +353,20 @@
     *&v22[8] = v17;
     *&v22[9] = v18;
     v22[4] = self;
-    v22[5] = a5;
+    v22[5] = block;
     [CATransaction setCompletionBlock:v22];
     [(THWAdornmentCloseButton *)[(THWAdornmentController *)self closeButton] setHidden:0];
     [(TSWOverlayPanelView *)[(THWAdornmentPanel *)[(THWAdornmentController *)self topPanel] view] setHidden:0];
     [(TSWOverlayPanelView *)[(THWAdornmentPanel *)[(THWAdornmentController *)self bottomPanel] view] setHidden:0];
     [(TSWOverlayPanelView *)[(THWAdornmentPanel *)[(THWAdornmentController *)self controlPanel] view] setHidden:0];
-    v20 = [(THWAdornmentCloseButton *)[(THWAdornmentController *)self closeButton] layer];
+    layer = [(THWAdornmentCloseButton *)[(THWAdornmentController *)self closeButton] layer];
     v21 = 0.0;
     if (v15 == 0.0)
     {
       v21 = 0.3;
     }
 
-    [v20 addCABasicOpacityAnimationToValue:0 duration:v15 removedOnCompletion:v21];
+    [layer addCABasicOpacityAnimationToValue:0 duration:v15 removedOnCompletion:v21];
     [-[TSWOverlayPanelView layer](-[THWAdornmentPanel view](-[THWAdornmentController topPanel](self "topPanel")];
     [-[TSWOverlayPanelView layer](-[THWAdornmentPanel view](-[THWAdornmentController bottomPanel](self "bottomPanel")];
     [-[TSWOverlayPanelView layer](-[THWAdornmentPanel view](-[THWAdornmentController controlPanel](self "controlPanel")];
@@ -389,22 +389,22 @@
     [(TSWOverlayPanelView *)[(THWAdornmentPanel *)[(THWAdornmentController *)self topPanel] view] setHidden:v16 == 0.0];
     [(TSWOverlayPanelView *)[(THWAdornmentPanel *)[(THWAdornmentController *)self bottomPanel] view] setHidden:v17 == 0.0];
     [(TSWOverlayPanelView *)[(THWAdornmentPanel *)[(THWAdornmentController *)self controlPanel] view] setHidden:v18 == 0.0];
-    if (a5)
+    if (block)
     {
-      (*(a5 + 2))(a5);
+      (*(block + 2))(block);
     }
   }
 
   +[CATransaction commit];
 }
 
-- (void)p_handleClose:(id)a3
+- (void)p_handleClose:(id)close
 {
   if (![(THWAdornmentController *)self animatingVisibilityCount])
   {
-    v4 = [(THWAdornmentController *)self delegate];
+    delegate = [(THWAdornmentController *)self delegate];
 
-    [(THWAdornmentControllerDelegate *)v4 handleCloseForAdornmentController:self];
+    [(THWAdornmentControllerDelegate *)delegate handleCloseForAdornmentController:self];
   }
 }
 
@@ -432,18 +432,18 @@
   if (!self->_controlPanel)
   {
 LABEL_7:
-    v12 = [(THWAdornmentPanel *)bottomPanel view];
+    view = [(THWAdornmentPanel *)bottomPanel view];
     v14 = v7;
     v13 = v11;
     goto LABEL_8;
   }
 
   [(TSWOverlayPanelView *)[(THWAdornmentPanel *)self->_controlPanel view] setAdditionalBackgroundInset:0.0, v7, v11, v9];
-  v12 = [(THWAdornmentPanel *)self->_bottomPanel view];
+  view = [(THWAdornmentPanel *)self->_bottomPanel view];
   v13 = 0.0;
   v14 = v7;
 LABEL_8:
-  [(TSWOverlayPanelView *)v12 setAdditionalBackgroundInset:0.0, v14, v13, v9];
+  [(TSWOverlayPanelView *)view setAdditionalBackgroundInset:0.0, v14, v13, v9];
   [(THWAdornmentPanel *)self->_topPanel layoutPanel];
   [(THWAdornmentPanel *)self->_controlPanel layoutPanel];
   [(THWAdornmentPanel *)self->_bottomPanel layoutPanel];
@@ -452,15 +452,15 @@ LABEL_8:
     [(THWAdornmentPanel *)self->_controlPanel height];
     [(TSWOverlayPanelView *)[(THWAdornmentPanel *)self->_bottomPanel view] setAdditionalShadowInset:0.0, 0.0, -v15, 0.0];
     [(TSWOverlayPanelView *)[(THWAdornmentPanel *)self->_controlPanel view] setBackdropGroupName:@"THWAdornmentControllerSharedBackdrop"];
-    v16 = [(THWAdornmentPanel *)self->_bottomPanel view];
+    view2 = [(THWAdornmentPanel *)self->_bottomPanel view];
 
-    [(TSWOverlayPanelView *)v16 setBackdropGroupName:@"THWAdornmentControllerSharedBackdrop"];
+    [(TSWOverlayPanelView *)view2 setBackdropGroupName:@"THWAdornmentControllerSharedBackdrop"];
   }
 }
 
-- (void)layoutInFrame:(CGRect)a3
+- (void)layoutInFrame:(CGRect)frame
 {
-  self->_layoutFrame = a3;
+  self->_layoutFrame = frame;
   [(THWAdornmentController *)self p_layoutPanels];
   [(THWAdornmentController *)self p_updateCloseButton];
   [(THWAdornmentController *)self invalidateLayouts];
@@ -468,7 +468,7 @@ LABEL_8:
   [(THWAdornmentController *)self p_updateAdornmentVisibilityAnimated:0 forced:0 completionBlock:0];
 }
 
-- (void)addAdornmentViewsToView:(id)a3
+- (void)addAdornmentViewsToView:(id)view
 {
   +[CATransaction begin];
   if (![(THWAdornmentController *)self closeButton]|| [(THWExpandedRep *)self->_expandedRep expandedHasContentForPanel:0]&& !self->_topPanel || [(THWExpandedRep *)self->_expandedRep expandedHasContentForPanel:1]&& !self->_bottomPanel || [(THWExpandedRep *)self->_expandedRep expandedHasContentForPanel:2]&& !self->_controlPanel)
@@ -479,24 +479,24 @@ LABEL_8:
   topPanel = self->_topPanel;
   if (topPanel)
   {
-    [a3 addSubview:{-[THWAdornmentPanel view](topPanel, "view")}];
+    [view addSubview:{-[THWAdornmentPanel view](topPanel, "view")}];
   }
 
   bottomPanel = self->_bottomPanel;
   if (bottomPanel)
   {
-    [a3 addSubview:{-[THWAdornmentPanel view](bottomPanel, "view")}];
+    [view addSubview:{-[THWAdornmentPanel view](bottomPanel, "view")}];
   }
 
   controlPanel = self->_controlPanel;
   if (controlPanel)
   {
-    [a3 addSubview:{-[THWAdornmentPanel view](controlPanel, "view")}];
+    [view addSubview:{-[THWAdornmentPanel view](controlPanel, "view")}];
   }
 
   if (self->_closeButton)
   {
-    [a3 addSubview:?];
+    [view addSubview:?];
   }
 
   if (self->_bottomPanel && self->_controlPanel && [(THWAdornmentController *)self p_combineBottomAndControlPanels])
@@ -514,16 +514,16 @@ LABEL_8:
   v3 = +[NSMutableArray array];
   if (self->_topPanel)
   {
-    v4 = [(THWAdornmentPanel *)[(THWAdornmentController *)self topPanel] hasBeenSized];
-    v5 = [(THWAdornmentPanel *)[(THWAdornmentController *)self topPanel] view];
-    if (v4)
+    hasBeenSized = [(THWAdornmentPanel *)[(THWAdornmentController *)self topPanel] hasBeenSized];
+    view = [(THWAdornmentPanel *)[(THWAdornmentController *)self topPanel] view];
+    if (hasBeenSized)
     {
-      [(TSWOverlayPanelView *)v5 frame];
+      [(TSWOverlayPanelView *)view frame];
     }
 
     else
     {
-      [-[TSWOverlayPanelView superview](v5 "superview")];
+      [-[TSWOverlayPanelView superview](view "superview")];
       v6 = 0.0;
       v7 = 0.0;
     }
@@ -636,14 +636,14 @@ LABEL_23:
   return v3;
 }
 
-- (void)controllerWillAnimateToSize:(CGSize)a3 duration:(double)a4 inFrame:(CGRect)a5
+- (void)controllerWillAnimateToSize:(CGSize)size duration:(double)duration inFrame:(CGRect)frame
 {
-  self->_layoutFrame = a5;
+  self->_layoutFrame = frame;
   ++self->_panelLayoutDisabledCount;
   v7 = 1;
-  [(THWAdornmentPanel *)self->_topPanel animateWithCrossFadeContent:1 backgroundLayout:0 duration:a4, a3.height];
-  [(THWAdornmentPanel *)self->_bottomPanel animateWithCrossFadeContent:1 backgroundLayout:0 duration:a4];
-  [(THWAdornmentPanel *)self->_controlPanel animateWithCrossFadeContent:1 backgroundLayout:0 duration:a4];
+  [(THWAdornmentPanel *)self->_topPanel animateWithCrossFadeContent:1 backgroundLayout:0 duration:duration, size.height];
+  [(THWAdornmentPanel *)self->_bottomPanel animateWithCrossFadeContent:1 backgroundLayout:0 duration:duration];
+  [(THWAdornmentPanel *)self->_controlPanel animateWithCrossFadeContent:1 backgroundLayout:0 duration:duration];
   [(THWAdornmentController *)self invalidateLayouts];
   if (![(THWAdornmentController *)self adornmentsVisible])
   {
@@ -692,45 +692,45 @@ LABEL_23:
   return [(THWExpandedRep *)expandedRep expandedShouldCombineBottomAndControlPanels];
 }
 
-- (void)setAdornmentsVisible:(BOOL)a3
+- (void)setAdornmentsVisible:(BOOL)visible
 {
-  v3 = a3;
-  self->_adornmentsVisible = a3;
-  self->_buttonVisible = [(THWAdornmentController *)self p_forceButtonVisible]|| a3;
-  self->_controlsVisible = [(THWAdornmentController *)self p_controlsVisibleWithAdornmentsVisible:v3];
+  visibleCopy = visible;
+  self->_adornmentsVisible = visible;
+  self->_buttonVisible = [(THWAdornmentController *)self p_forceButtonVisible]|| visible;
+  self->_controlsVisible = [(THWAdornmentController *)self p_controlsVisibleWithAdornmentsVisible:visibleCopy];
 
   [(THWAdornmentController *)self p_updateAdornmentVisibilityAnimated:0 forced:0 completionBlock:0];
 }
 
-- (void)setAdornmentsVisible:(BOOL)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)setAdornmentsVisible:(BOOL)visible animated:(BOOL)animated completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  visibleCopy = visible;
   v9 = [(THWAdornmentController *)self p_controlsVisibleWithAdornmentsVisible:?];
 
-  [(THWAdornmentController *)self setAdornmentsVisible:v7 buttonVisible:v7 controlsVisible:v9 forceVisibility:0 animated:v6 completionBlock:a5];
+  [(THWAdornmentController *)self setAdornmentsVisible:visibleCopy buttonVisible:visibleCopy controlsVisible:v9 forceVisibility:0 animated:animatedCopy completionBlock:block];
 }
 
-- (void)setAdornmentsVisible:(BOOL)a3 buttonVisible:(BOOL)a4 controlsVisible:(BOOL)a5 forceVisibility:(BOOL)a6 animated:(BOOL)a7 completionBlock:(id)a8
+- (void)setAdornmentsVisible:(BOOL)visible buttonVisible:(BOOL)buttonVisible controlsVisible:(BOOL)controlsVisible forceVisibility:(BOOL)visibility animated:(BOOL)animated completionBlock:(id)block
 {
-  v9 = a7;
-  v10 = a6;
+  animatedCopy = animated;
+  visibilityCopy = visibility;
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  self->_adornmentsVisible = a3;
-  if (!v10)
+  self->_adornmentsVisible = visible;
+  if (!visibilityCopy)
   {
-    a4 |= [(THWAdornmentController *)self p_forceButtonVisible];
-    a5 |= a3;
+    buttonVisible |= [(THWAdornmentController *)self p_forceButtonVisible];
+    controlsVisible |= visible;
   }
 
-  self->_buttonVisible = a4;
-  self->_controlsVisible = a5;
+  self->_buttonVisible = buttonVisible;
+  self->_controlsVisible = controlsVisible;
 
-  [(THWAdornmentController *)self p_updateAdornmentVisibilityAnimated:v9 forced:v10 completionBlock:a8];
+  [(THWAdornmentController *)self p_updateAdornmentVisibilityAnimated:animatedCopy forced:visibilityCopy completionBlock:block];
 }
 
 - (BOOL)hasRoomForPanels
@@ -775,9 +775,9 @@ LABEL_23:
   return [(THWExpandedRep *)expandedRep expandedWantsButtonVisibleWhenNoPanels];
 }
 
-- (double)adornmentPanelMinHeight:(id)a3
+- (double)adornmentPanelMinHeight:(id)height
 {
-  if ([a3 kind] >= 3)
+  if ([height kind] >= 3)
   {
     v5 = 0.0;
   }
@@ -793,24 +793,24 @@ LABEL_23:
   }
 
   expandedRep = self->_expandedRep;
-  v7 = [a3 kind];
+  kind = [height kind];
 
-  [(THWExpandedRep *)expandedRep expandedMinHeightForPanel:v7 withDefault:v5];
+  [(THWExpandedRep *)expandedRep expandedMinHeightForPanel:kind withDefault:v5];
   return result;
 }
 
-- (CGRect)adornmentPanel:(id)a3 frameForSize:(CGSize)a4
+- (CGRect)adornmentPanel:(id)panel frameForSize:(CGSize)size
 {
   TSDRoundedSize();
   TSDRectWithSize();
   v7 = v6;
   v9 = v8;
-  [(THWAdornmentController *)self adornmentPanelMinHeight:a3];
+  [(THWAdornmentController *)self adornmentPanelMinHeight:panel];
   v11 = fmax(v9, v10);
   MinX = CGRectGetMinX(self->_layoutFrame);
   MinY = CGRectGetMinY(self->_layoutFrame);
-  v14 = [a3 kind];
-  if (v14 == 2)
+  kind = [panel kind];
+  if (kind == 2)
   {
     MaxY = CGRectGetMaxY(self->_layoutFrame);
     v24.origin.x = MinX;
@@ -820,7 +820,7 @@ LABEL_23:
     MinY = MaxY - CGRectGetHeight(v24);
   }
 
-  else if (v14 == 1)
+  else if (kind == 1)
   {
     v15 = CGRectGetMaxY(self->_layoutFrame);
     v23.origin.x = MinX;
@@ -843,23 +843,23 @@ LABEL_23:
   return result;
 }
 
-- (void)adornmentPanelDidLayout:(id)a3
+- (void)adornmentPanelDidLayout:(id)layout
 {
   [(THWAdornmentController *)self p_layoutPanels];
   [(THWAdornmentController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(THWAdornmentController *)self delegate];
+    delegate = [(THWAdornmentController *)self delegate];
 
-    [(THWAdornmentControllerDelegate *)v4 updateTrackingRectsForAdornmentController:self];
+    [(THWAdornmentControllerDelegate *)delegate updateTrackingRectsForAdornmentController:self];
   }
 }
 
-- (double)adornmentPanelFontSize:(id)a3
+- (double)adornmentPanelFontSize:(id)size
 {
-  v3 = [a3 kind];
+  kind = [size kind];
   result = 10.0;
-  if (v3 < 3)
+  if (kind < 3)
   {
     return 14.0;
   }
@@ -867,9 +867,9 @@ LABEL_23:
   return result;
 }
 
-- (id)adornmentPanelFontName:(id)a3
+- (id)adornmentPanelFontName:(id)name
 {
-  if ([a3 kind] || !TSUPhoneUI())
+  if ([name kind] || !TSUPhoneUI())
   {
     return 0;
   }
@@ -879,48 +879,48 @@ LABEL_23:
   return [v3 fontName];
 }
 
-- (id)p_panelForKind:(int)a3
+- (id)p_panelForKind:(int)kind
 {
-  if (a3 > 2)
+  if (kind > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&self->_topPanel + (8 * a3));
+    return *(&self->_topPanel + (8 * kind));
   }
 }
 
-- (void)invalidateChildrenInPanel:(int)a3
+- (void)invalidateChildrenInPanel:(int)panel
 {
-  v3 = [(THWAdornmentController *)self p_panelForKind:*&a3];
+  v3 = [(THWAdornmentController *)self p_panelForKind:*&panel];
 
   [v3 invalidateChildren];
 }
 
-- (void)invalidateWPAutoInPanel:(int)a3
+- (void)invalidateWPAutoInPanel:(int)panel
 {
-  v3 = [(THWAdornmentController *)self p_panelForKind:*&a3];
+  v3 = [(THWAdornmentController *)self p_panelForKind:*&panel];
 
   [v3 invalidateWPAuto];
 }
 
-- (double)heightForPanel:(int)a3 allowDefault:(BOOL)a4
+- (double)heightForPanel:(int)panel allowDefault:(BOOL)default
 {
   v6 = [(THWAdornmentController *)self p_panelForKind:?];
   [v6 height];
   if (v6)
   {
-    v8 = 0;
+    defaultCopy = 0;
   }
 
   else
   {
-    v8 = a4;
+    defaultCopy = default;
   }
 
-  if (v8 && a3 < 3)
+  if (defaultCopy && panel < 3)
   {
     return 44.0;
   }
@@ -928,13 +928,13 @@ LABEL_23:
   return result;
 }
 
-- (void)animatePanel:(int)a3 withCrossFadeContent:(BOOL)a4 backgroundLayout:(BOOL)a5 duration:(double)a6
+- (void)animatePanel:(int)panel withCrossFadeContent:(BOOL)content backgroundLayout:(BOOL)layout duration:(double)duration
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(THWAdornmentController *)self p_panelForKind:*&a3];
+  layoutCopy = layout;
+  contentCopy = content;
+  v9 = [(THWAdornmentController *)self p_panelForKind:*&panel];
 
-  [v9 animateWithCrossFadeContent:v8 backgroundLayout:v7 duration:a6];
+  [v9 animateWithCrossFadeContent:contentCopy backgroundLayout:layoutCopy duration:duration];
 }
 
 - (CGRect)layoutFrame

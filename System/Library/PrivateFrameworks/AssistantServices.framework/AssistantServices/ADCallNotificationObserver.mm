@@ -1,11 +1,11 @@
 @interface ADCallNotificationObserver
 - (ADCallNotificationObserver)init;
-- (BOOL)_answerAndHangUpIntentsSupportedByBundleID:(id)a3;
+- (BOOL)_answerAndHangUpIntentsSupportedByBundleID:(id)d;
 - (id)callNotificationsIdentifiers;
 - (void)_cancelCallNotificationTimer;
 - (void)_resetCallNotificationTimer;
-- (void)notificationManager:(id)a3 didAddBulletin:(id)a4;
-- (void)notificationManager:(id)a3 didRemoveBulletin:(id)a4;
+- (void)notificationManager:(id)manager didAddBulletin:(id)bulletin;
+- (void)notificationManager:(id)manager didRemoveBulletin:(id)bulletin;
 @end
 
 @implementation ADCallNotificationObserver
@@ -41,9 +41,9 @@
   }
 }
 
-- (BOOL)_answerAndHangUpIntentsSupportedByBundleID:(id)a3
+- (BOOL)_answerAndHangUpIntentsSupportedByBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2050000000;
@@ -63,7 +63,7 @@
   v5 = v4;
   _Block_object_dispose(&v27, 8);
   v26 = 0;
-  v6 = [[v4 alloc] initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v26];
+  v6 = [[v4 alloc] initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v26];
   v7 = v26;
   if (!v7)
   {
@@ -86,7 +86,7 @@
     v11 = v10;
     _Block_object_dispose(&v27, 8);
     v12 = [v10 appInfoWithApplicationRecord:v6];
-    v13 = [v12 supportedIntents];
+    supportedIntents = [v12 supportedIntents];
     v27 = 0;
     v28 = &v27;
     v29 = 0x2020000000;
@@ -110,7 +110,7 @@
     if (v14)
     {
       v17 = *v14;
-      if (![v13 containsObject:v17])
+      if (![supportedIntents containsObject:v17])
       {
         v9 = 0;
         goto LABEL_18;
@@ -138,7 +138,7 @@
       _Block_object_dispose(&v27, 8);
       if (v18)
       {
-        v9 = [v13 containsObject:*v18];
+        v9 = [supportedIntents containsObject:*v18];
 LABEL_18:
 
         goto LABEL_19;
@@ -165,7 +165,7 @@ LABEL_18:
     *buf = 136315650;
     *&buf[4] = "[ADCallNotificationObserver _answerAndHangUpIntentsSupportedByBundleID:]";
     *&buf[12] = 2112;
-    *&buf[14] = v3;
+    *&buf[14] = dCopy;
     *&buf[22] = 2112;
     v32 = v7;
     _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s Unable to retrieve LSApplicationRecord for bundle identifier %@: %@", buf, 0x20u);
@@ -177,31 +177,31 @@ LABEL_19:
   return v9;
 }
 
-- (void)notificationManager:(id)a3 didRemoveBulletin:(id)a4
+- (void)notificationManager:(id)manager didRemoveBulletin:(id)bulletin
 {
-  v5 = a4;
+  bulletinCopy = bulletin;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100250ED0;
   v8[3] = &unk_10051E010;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = bulletinCopy;
+  v7 = bulletinCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)notificationManager:(id)a3 didAddBulletin:(id)a4
+- (void)notificationManager:(id)manager didAddBulletin:(id)bulletin
 {
-  v5 = a4;
+  bulletinCopy = bulletin;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100251098;
   v8[3] = &unk_10051E010;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = bulletinCopy;
+  selfCopy = self;
+  v7 = bulletinCopy;
   dispatch_async(queue, v8);
 }
 

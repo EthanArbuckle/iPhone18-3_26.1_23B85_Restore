@@ -1,12 +1,12 @@
 @interface ShareFileActivityItemSource
 - (_TtC18HealthExperienceUI27ShareFileActivityItemSource)init;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation ShareFileActivityItemSource
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v4 = sub_1BA4A15D8();
   v5 = MEMORY[0x1EEE9AC00](v4);
@@ -16,7 +16,7 @@
   return v8;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
   v5 = sub_1BA4A15D8();
   v6 = MEMORY[0x1EEE9AC00](v5);

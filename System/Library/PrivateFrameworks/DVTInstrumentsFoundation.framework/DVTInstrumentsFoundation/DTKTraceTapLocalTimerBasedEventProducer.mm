@@ -1,8 +1,8 @@
 @interface DTKTraceTapLocalTimerBasedEventProducer
-+ (BOOL)supportsConfig:(id)a3;
++ (BOOL)supportsConfig:(id)config;
 - (DTKTraceTapLocalTimerBasedEventProducer)init;
-- (unint64_t)_processInfoThermalStateToCLTMPressureLevel:(int64_t)a3;
-- (void)_emitThermalState:(int64_t)a3 currentState:(int64_t)a4;
+- (unint64_t)_processInfoThermalStateToCLTMPressureLevel:(int64_t)level;
+- (void)_emitThermalState:(int64_t)state currentState:(int64_t)currentState;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
@@ -10,9 +10,9 @@
 
 @implementation DTKTraceTapLocalTimerBasedEventProducer
 
-+ (BOOL)supportsConfig:(id)a3
++ (BOOL)supportsConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -22,7 +22,7 @@
   v6[2] = sub_247FE5BC8;
   v6[3] = &unk_278EF26B0;
   v6[4] = &v7;
-  [v3 enumerateTriggerConfigs:v6];
+  [configCopy enumerateTriggerConfigs:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -36,8 +36,8 @@
   v2 = [(DTKTraceTapLocalTimerBasedEventProducer *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAC38] processInfo];
-    v2->_currentThermalState = [v3 thermalState];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v2->_currentThermalState = [processInfo thermalState];
 
     v4 = dispatch_queue_create("com.apple.dt.instruments.ktrace.localeventproducer", 0);
     workQueue = v2->_workQueue;
@@ -64,23 +64,23 @@
   [(DTKTraceTapLocalTimerBasedEventProducer *)&v5 dealloc];
 }
 
-- (unint64_t)_processInfoThermalStateToCLTMPressureLevel:(int64_t)a3
+- (unint64_t)_processInfoThermalStateToCLTMPressureLevel:(int64_t)level
 {
-  if ((a3 - 1) >= 3)
+  if ((level - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return 10 * a3;
+    return 10 * level;
   }
 }
 
-- (void)_emitThermalState:(int64_t)a3 currentState:(int64_t)a4
+- (void)_emitThermalState:(int64_t)state currentState:(int64_t)currentState
 {
-  [(DTKTraceTapLocalTimerBasedEventProducer *)self _processInfoThermalStateToCLTMPressureLevel:a3];
-  [(DTKTraceTapLocalTimerBasedEventProducer *)self _processInfoThermalStateToCLTMPressureLevel:a4];
+  [(DTKTraceTapLocalTimerBasedEventProducer *)self _processInfoThermalStateToCLTMPressureLevel:state];
+  [(DTKTraceTapLocalTimerBasedEventProducer *)self _processInfoThermalStateToCLTMPressureLevel:currentState];
   kdebug_trace();
   v6 = MEMORY[0x277CFBB68];
 
@@ -111,10 +111,10 @@
 
 - (void)stop
 {
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  v4 = [v3 thermalState];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  thermalState = [processInfo thermalState];
 
-  [(DTKTraceTapLocalTimerBasedEventProducer *)self _emitThermalState:v4 currentState:v4];
+  [(DTKTraceTapLocalTimerBasedEventProducer *)self _emitThermalState:thermalState currentState:thermalState];
   timer = self->_timer;
   if (timer)
   {

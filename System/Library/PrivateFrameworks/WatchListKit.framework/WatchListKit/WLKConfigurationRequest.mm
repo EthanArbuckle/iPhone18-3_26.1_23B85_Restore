@@ -1,29 +1,29 @@
 @interface WLKConfigurationRequest
-+ (id)_configURLString:(id *)a3;
-+ (void)_fetchV3WithOptions:(int64_t)a3 cachePolicy:(unint64_t)a4 sessionConfiguration:(id)a5 queryParameters:(id)a6 completion:(id)a7;
-+ (void)fetchWithOptions:(int64_t)a3 cachePolicy:(unint64_t)a4 wlkCachePolicy:(unint64_t)a5 extendedCacheExpireDuration:(double)a6 sessionConfiguration:(id)a7 queryParameters:(id)a8 fileStorage:(id)a9 completion:(id)a10;
++ (id)_configURLString:(id *)string;
++ (void)_fetchV3WithOptions:(int64_t)options cachePolicy:(unint64_t)policy sessionConfiguration:(id)configuration queryParameters:(id)parameters completion:(id)completion;
++ (void)fetchWithOptions:(int64_t)options cachePolicy:(unint64_t)policy wlkCachePolicy:(unint64_t)cachePolicy extendedCacheExpireDuration:(double)duration sessionConfiguration:(id)configuration queryParameters:(id)parameters fileStorage:(id)storage completion:(id)self0;
 @end
 
 @implementation WLKConfigurationRequest
 
-+ (void)fetchWithOptions:(int64_t)a3 cachePolicy:(unint64_t)a4 wlkCachePolicy:(unint64_t)a5 extendedCacheExpireDuration:(double)a6 sessionConfiguration:(id)a7 queryParameters:(id)a8 fileStorage:(id)a9 completion:(id)a10
++ (void)fetchWithOptions:(int64_t)options cachePolicy:(unint64_t)policy wlkCachePolicy:(unint64_t)cachePolicy extendedCacheExpireDuration:(double)duration sessionConfiguration:(id)configuration queryParameters:(id)parameters fileStorage:(id)storage completion:(id)self0
 {
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  configurationCopy = configuration;
+  parametersCopy = parameters;
+  storageCopy = storage;
+  completionCopy = completion;
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __159__WLKConfigurationRequest_fetchWithOptions_cachePolicy_wlkCachePolicy_extendedCacheExpireDuration_sessionConfiguration_queryParameters_fileStorage_completion___block_invoke;
   v36[3] = &unk_279E60080;
-  v21 = v20;
+  v21 = completionCopy;
   v38 = v21;
-  v22 = v19;
+  v22 = storageCopy;
   v37 = v22;
   v23 = MEMORY[0x2743D2DF0](v36);
-  if (a4 == 1 || !v22)
+  if (policy == 1 || !v22)
   {
-    [a1 _fetchV3WithOptions:a3 cachePolicy:a4 sessionConfiguration:v17 queryParameters:v18 completion:v23];
+    [self _fetchV3WithOptions:options cachePolicy:policy sessionConfiguration:configurationCopy queryParameters:parametersCopy completion:v23];
   }
 
   else
@@ -39,14 +39,14 @@
     v25[1] = 3221225472;
     v25[2] = __159__WLKConfigurationRequest_fetchWithOptions_cachePolicy_wlkCachePolicy_extendedCacheExpireDuration_sessionConfiguration_queryParameters_fileStorage_completion___block_invoke_7;
     v25[3] = &unk_279E600D0;
-    v30 = a5;
-    v31 = a6;
+    cachePolicyCopy = cachePolicy;
+    durationCopy = duration;
     v28 = v21;
-    v32 = a1;
-    v33 = a3;
-    v34 = a4;
-    v26 = v17;
-    v27 = v18;
+    selfCopy = self;
+    optionsCopy = options;
+    policyCopy = policy;
+    v26 = configurationCopy;
+    v27 = parametersCopy;
     v29 = v23;
     [v22 read:v25];
   }
@@ -217,23 +217,23 @@ LABEL_17:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_fetchV3WithOptions:(int64_t)a3 cachePolicy:(unint64_t)a4 sessionConfiguration:(id)a5 queryParameters:(id)a6 completion:(id)a7
++ (void)_fetchV3WithOptions:(int64_t)options cachePolicy:(unint64_t)policy sessionConfiguration:(id)configuration queryParameters:(id)parameters completion:(id)completion
 {
-  v40 = a5;
-  v12 = a6;
-  v13 = a7;
-  if (!v13)
+  configurationCopy = configuration;
+  parametersCopy = parameters;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     +[WLKConfigurationRequest _fetchV3WithOptions:cachePolicy:sessionConfiguration:queryParameters:completion:];
   }
 
-  v14 = v13;
+  v14 = completionCopy;
   v46 = 0;
-  v15 = [a1 _configURLString:&v46];
+  v15 = [self _configURLString:&v46];
   v16 = v46;
   if ([v15 length])
   {
-    v36 = a3;
+    optionsCopy = options;
     v37 = v16;
     v17 = WLKStartupSignpostLogObject();
     if (os_signpost_enabled(v17))
@@ -244,11 +244,11 @@ LABEL_17:
 
     v18 = +[WLKUserEnvironment currentEnvironment];
     v19 = objc_alloc(MEMORY[0x277CBEB38]);
-    v20 = [v18 _queryParametersV3];
-    v21 = [v19 initWithDictionary:v20];
+    _queryParametersV3 = [v18 _queryParametersV3];
+    v21 = [v19 initWithDictionary:_queryParametersV3];
 
-    v38 = v12;
-    [v21 addEntriesFromDictionary:v12];
+    v38 = parametersCopy;
+    [v21 addEntriesFromDictionary:parametersCopy];
     v22 = [v21 objectForKeyedSubscript:@"caller"];
 
     if (!v22)
@@ -261,11 +261,11 @@ LABEL_17:
     [v23 setQueryItems:?];
     v24 = objc_alloc(MEMORY[0x277CBAB50]);
     v25 = [v23 URL];
-    v26 = [v24 initWithURL:v25 cachePolicy:a4 timeoutInterval:10.0];
+    v26 = [v24 initWithURL:v25 cachePolicy:policy timeoutInterval:10.0];
 
-    v27 = [v18 _queryPostV3];
+    _queryPostV3 = [v18 _queryPostV3];
     v44 = 0;
-    v28 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v27 options:0 error:&v44];
+    v28 = [MEMORY[0x277CCAAA0] dataWithJSONObject:_queryPostV3 options:0 error:&v44];
     v39 = v44;
     if (!v28)
     {
@@ -301,18 +301,18 @@ LABEL_17:
     v42 = v18;
     v43 = v14;
     v33 = v18;
-    v34 = v40;
-    [WLKNetworkRequestUtilities startNetworkRequest:v32 account:0 sessionConfiguration:v40 options:v36 completion:v41];
+    v34 = configurationCopy;
+    [WLKNetworkRequestUtilities startNetworkRequest:v32 account:0 sessionConfiguration:configurationCopy options:optionsCopy completion:v41];
 
     v16 = v37;
-    v12 = v38;
+    parametersCopy = v38;
   }
 
   else
   {
     v21 = WLKError(100, v16, @"WLKConfigurationRequest: Error: UTS init/config (v3) not available in the URL bag.");
     (v14)[2](v14, 0, v21);
-    v34 = v40;
+    v34 = configurationCopy;
   }
 }
 
@@ -360,7 +360,7 @@ void __107__WLKConfigurationRequest__fetchV3WithOptions_cachePolicy_sessionConfi
   }
 }
 
-+ (id)_configURLString:(id *)a3
++ (id)_configURLString:(id *)string
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -393,9 +393,9 @@ void __107__WLKConfigurationRequest__fetchV3WithOptions_cachePolicy_sessionConfi
 
     else
     {
-      if (a3)
+      if (string)
       {
-        *a3 = 0;
+        *string = 0;
       }
 
       v11 = @"uts/v3/configurations";
@@ -406,11 +406,11 @@ void __107__WLKConfigurationRequest__fetchV3WithOptions_cachePolicy_sessionConfi
     v13 = [v4 wlk_stringByAppendingPathComponents:v14];
   }
 
-  else if (a3)
+  else if (string)
   {
     v12 = v5;
     v13 = 0;
-    *a3 = v5;
+    *string = v5;
   }
 
   else

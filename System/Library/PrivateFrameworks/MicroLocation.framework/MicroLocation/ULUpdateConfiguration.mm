@@ -1,14 +1,14 @@
 @interface ULUpdateConfiguration
-- (BOOL)isEqual:(id)a3;
-- (ULUpdateConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULUpdateConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULUpdateConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   isLowLatency = self->_isLowLatency;
@@ -16,30 +16,30 @@
   return [v4 initWithIsLowLatency:isLowLatency];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x277CCABB0];
   isLowLatency = self->_isLowLatency;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithBool:isLowLatency];
-  [v5 encodeObject:v6 forKey:@"isLowLatency"];
+  [coderCopy encodeObject:v6 forKey:@"isLowLatency"];
 }
 
-- (ULUpdateConfiguration)initWithCoder:(id)a3
+- (ULUpdateConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ULUpdateConfiguration;
   v5 = [(ULUpdateConfiguration *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isLowLatency"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isLowLatency"];
     v7 = v6;
     if (v6)
     {
-      v8 = [(ULUpdateConfiguration *)v6 BOOLValue];
+      bOOLValue = [(ULUpdateConfiguration *)v6 BOOLValue];
 
-      v5->_isLowLatency = v8;
+      v5->_isLowLatency = bOOLValue;
       v7 = v5;
     }
   }
@@ -67,17 +67,17 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ULUpdateConfiguration *)self isLowLatency];
-    v7 = [v5 isLowLatency];
+    v5 = equalCopy;
+    isLowLatency = [(ULUpdateConfiguration *)self isLowLatency];
+    isLowLatency2 = [v5 isLowLatency];
 
-    v8 = v6 ^ v7 ^ 1;
+    v8 = isLowLatency ^ isLowLatency2 ^ 1;
   }
 
   else

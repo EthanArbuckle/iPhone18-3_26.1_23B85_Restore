@@ -1,58 +1,58 @@
 @interface CalContactsProvider
-+ (BOOL)birthdayIsYearless:(id)a3;
-+ (BOOL)isCalendarIslamic:(id)a3;
-+ (BOOL)shouldPermitOrganizerEmailFromJunkChecks:(id)a3 inReputationStore:(id)a4;
-+ (BOOL)shouldPermitOrganizerPhoneNumberFromJunkChecks:(id)a3 inReputationStore:(id)a4;
-+ (id)birthdayStringForContactName:(id)a3 eventDate:(id)a4 birthDate:(id)a5 lunarCalendar:(id)a6;
++ (BOOL)birthdayIsYearless:(id)yearless;
++ (BOOL)isCalendarIslamic:(id)islamic;
++ (BOOL)shouldPermitOrganizerEmailFromJunkChecks:(id)checks inReputationStore:(id)store;
++ (BOOL)shouldPermitOrganizerPhoneNumberFromJunkChecks:(id)checks inReputationStore:(id)store;
++ (id)birthdayStringForContactName:(id)name eventDate:(id)date birthDate:(id)birthDate lunarCalendar:(id)calendar;
 + (id)defaultProvider;
-+ (id)reputationForHandle:(id)a3 inStore:(id)a4;
++ (id)reputationForHandle:(id)handle inStore:(id)store;
 - (BOOL)contactAccessResolved;
-- (BOOL)contactIdentifierIsMe:(id)a3;
-- (BOOL)matchesOneOfMyEmails:(id)a3;
-- (BOOL)matchesOneOfMyPhoneNumbers:(id)a3;
-- (BOOL)shouldPermitOrganizerEmailFromJunkChecks:(id)a3;
-- (BOOL)shouldPermitOrganizerPhoneNumberFromJunkChecks:(id)a3;
-- (BOOL)urlMatchesOneOfMyEmails:(id)a3;
+- (BOOL)contactIdentifierIsMe:(id)me;
+- (BOOL)matchesOneOfMyEmails:(id)emails;
+- (BOOL)matchesOneOfMyPhoneNumbers:(id)numbers;
+- (BOOL)shouldPermitOrganizerEmailFromJunkChecks:(id)checks;
+- (BOOL)shouldPermitOrganizerPhoneNumberFromJunkChecks:(id)checks;
+- (BOOL)urlMatchesOneOfMyEmails:(id)emails;
 - (CNContact)meContact;
 - (CalContactsProvider)init;
-- (CalContactsProvider)initWithStore:(id)a3;
+- (CalContactsProvider)initWithStore:(id)store;
 - (id)_fetchedUnifiedMeContact;
-- (id)_fullNameForFirstContactMatchingPredicate:(id)a3;
+- (id)_fullNameForFirstContactMatchingPredicate:(id)predicate;
 - (id)_lastHistoryToken;
-- (id)_meWithKeys:(id)a3;
+- (id)_meWithKeys:(id)keys;
 - (id)cachedEmailAddress;
 - (id)cachedEmailAddressArray;
 - (id)cachedEmailAddresses;
-- (id)contactsFromContactIdentifiers:(id)a3 withKeys:(id)a4;
-- (id)fullNameForFirstContactMatchingEmailAddress:(id)a3;
-- (id)fullNameForFirstContactMatchingPhoneNumber:(id)a3;
-- (id)myAddressForLabel:(id)a3;
+- (id)contactsFromContactIdentifiers:(id)identifiers withKeys:(id)keys;
+- (id)fullNameForFirstContactMatchingEmailAddress:(id)address;
+- (id)fullNameForFirstContactMatchingPhoneNumber:(id)number;
+- (id)myAddressForLabel:(id)label;
 - (id)myEmailAddress;
 - (id)myEmailAddresses;
-- (id)myNameWithStyle:(int64_t)a3;
+- (id)myNameWithStyle:(int64_t)style;
 - (id)myPhoneNumbers;
 - (id)myShortDisplayName;
 - (id)nullableContactStore;
-- (id)unifiedContactMatchingName:(id)a3 email:(id)a4 url:(id)a5 keysToFetch:(id)a6;
-- (id)unifiedContactMatchingString:(id)a3 keysToFetch:(id)a4 matchType:(int64_t *)a5;
-- (id)unifiedContactWithEmailAddress:(id)a3;
-- (id)unifiedContactWithIdentifier:(id)a3;
-- (id)unifiedContactWithIdentifier:(id)a3 keysToFetch:(id)a4;
-- (id)unifiedContactWithName:(id)a3;
-- (id)unifiedContactWithPhoneNumber:(id)a3;
-- (id)unifiedContactsDictionaryForHandleStrings:(id)a3 keysToFetch:(id)a4;
-- (id)unifiedContactsForHandleStrings:(id)a3 keysToFetch:(id)a4;
-- (id)unifiedContactsMatchingPredicate:(id)a3 keysToFetch:(id)a4;
-- (void)_setLastHistoryToken:(id)a3;
+- (id)unifiedContactMatchingName:(id)name email:(id)email url:(id)url keysToFetch:(id)fetch;
+- (id)unifiedContactMatchingString:(id)string keysToFetch:(id)fetch matchType:(int64_t *)type;
+- (id)unifiedContactWithEmailAddress:(id)address;
+- (id)unifiedContactWithIdentifier:(id)identifier;
+- (id)unifiedContactWithIdentifier:(id)identifier keysToFetch:(id)fetch;
+- (id)unifiedContactWithName:(id)name;
+- (id)unifiedContactWithPhoneNumber:(id)number;
+- (id)unifiedContactsDictionaryForHandleStrings:(id)strings keysToFetch:(id)fetch;
+- (id)unifiedContactsForHandleStrings:(id)strings keysToFetch:(id)fetch;
+- (id)unifiedContactsMatchingPredicate:(id)predicate keysToFetch:(id)fetch;
+- (void)_setLastHistoryToken:(id)token;
 - (void)_syncContacts;
 - (void)contactAccessResolved;
-- (void)contactsChanged:(id)a3;
-- (void)deregisterForContactChangeNotifications:(id)a3;
-- (void)meCardChanged:(id)a3;
-- (void)registerForContactChangeNotifications:(id)a3;
-- (void)setMeCardEmailsForUnitTesting:(id)a3;
-- (void)setMeContact:(id)a3;
-- (void)setTestMeContactIdentifier:(id)a3;
+- (void)contactsChanged:(id)changed;
+- (void)deregisterForContactChangeNotifications:(id)notifications;
+- (void)meCardChanged:(id)changed;
+- (void)registerForContactChangeNotifications:(id)notifications;
+- (void)setMeCardEmailsForUnitTesting:(id)testing;
+- (void)setMeContact:(id)contact;
+- (void)setTestMeContactIdentifier:(id)identifier;
 @end
 
 @implementation CalContactsProvider
@@ -87,15 +87,15 @@ uint64_t __38__CalContactsProvider_defaultProvider__block_invoke()
   block[1] = 3221225472;
   block[2] = __27__CalContactsProvider_init__block_invoke;
   block[3] = &unk_1E7EC66B0;
-  v6 = self;
-  v17 = v6;
+  selfCopy = self;
+  v17 = selfCopy;
   dispatch_async(v5, block);
   v7 = dispatch_get_global_queue(0, 0);
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __27__CalContactsProvider_init__block_invoke_13;
   v14 = &unk_1E7EC66B0;
-  v8 = v6;
+  v8 = selfCopy;
   v15 = v8;
   dispatch_async(v7, &v11);
 
@@ -152,18 +152,18 @@ void __27__CalContactsProvider_init__block_invoke_13(uint64_t a1)
   [*(a1 + 32) setMeContact:v2];
 }
 
-- (CalContactsProvider)initWithStore:(id)a3
+- (CalContactsProvider)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v18.receiver = self;
   v18.super_class = CalContactsProvider;
   v6 = [(CalContactsProvider *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (storeCopy)
     {
-      objc_storeStrong(&v6->_store, a3);
+      objc_storeStrong(&v6->_store, store);
       v8 = dispatch_queue_create("Contact Store Work", 0);
       contactStoreWorkQueue = v7->_contactStoreWorkQueue;
       v7->_contactStoreWorkQueue = v8;
@@ -181,32 +181,32 @@ void __27__CalContactsProvider_init__block_invoke_13(uint64_t a1)
     v15 = dispatch_queue_create("CalendarFoundation.contacts", v14);
     [(CalContactsProvider *)v7 setSyncQueue:v15];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v7 selector:sel_meCardChanged_ name:*MEMORY[0x1E695C3E0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_meCardChanged_ name:*MEMORY[0x1E695C3E0] object:0];
   }
 
   return v7;
 }
 
-- (void)registerForContactChangeNotifications:(id)a3
+- (void)registerForContactChangeNotifications:(id)notifications
 {
-  v5 = a3;
+  notificationsCopy = notifications;
   if (![(NSMutableSet *)self->_delegates count])
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel_contactsChanged_ name:*MEMORY[0x1E695C3D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_contactsChanged_ name:*MEMORY[0x1E695C3D8] object:0];
   }
 
-  [(NSMutableSet *)self->_delegates addObject:v5];
+  [(NSMutableSet *)self->_delegates addObject:notificationsCopy];
 }
 
-- (void)deregisterForContactChangeNotifications:(id)a3
+- (void)deregisterForContactChangeNotifications:(id)notifications
 {
-  [(NSMutableSet *)self->_delegates removeObject:a3];
+  [(NSMutableSet *)self->_delegates removeObject:notifications];
   if (![(NSMutableSet *)self->_delegates count])
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x1E695C3D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E695C3D8] object:0];
   }
 }
 
@@ -241,14 +241,14 @@ void __27__CalContactsProvider_init__block_invoke_13(uint64_t a1)
 {
   if ([(CalContactsProvider *)self contactAccessResolved])
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    v4 = v3->_meContact;
-    objc_sync_exit(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v4 = selfCopy->_meContact;
+    objc_sync_exit(selfCopy);
 
-    if (v4 || ([(CalContactsProvider *)v3 _fetchedUnifiedMeContact], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v4 || ([(CalContactsProvider *)selfCopy _fetchedUnifiedMeContact], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      [(CalContactsProvider *)v3 setMeContact:v4];
+      [(CalContactsProvider *)selfCopy setMeContact:v4];
     }
   }
 
@@ -260,37 +260,37 @@ void __27__CalContactsProvider_init__block_invoke_13(uint64_t a1)
   return v4;
 }
 
-- (void)setMeContact:(id)a3
+- (void)setMeContact:(id)contact
 {
-  v11 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  meContact = v5->_meContact;
-  v7 = [(CalContactsProvider *)v5 loadedMyEmailAddresses];
-  objc_storeStrong(&v5->_meContact, a3);
-  v8 = [(CNContact *)v5->_meContact CalEmailAddresses];
-  v9 = [v8 isEqualToArray:v7];
-  [(CalContactsProvider *)v5 setLoadedMyEmailAddresses:v8];
+  contactCopy = contact;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  meContact = selfCopy->_meContact;
+  loadedMyEmailAddresses = [(CalContactsProvider *)selfCopy loadedMyEmailAddresses];
+  objc_storeStrong(&selfCopy->_meContact, contact);
+  calEmailAddresses = [(CNContact *)selfCopy->_meContact CalEmailAddresses];
+  v9 = [calEmailAddresses isEqualToArray:loadedMyEmailAddresses];
+  [(CalContactsProvider *)selfCopy setLoadedMyEmailAddresses:calEmailAddresses];
   if (meContact)
   {
     v9 = 1;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   if ((v9 & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 postNotificationName:@"CalMeCardChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CalMeCardChangedNotification" object:0];
   }
 }
 
-- (void)setMeCardEmailsForUnitTesting:(id)a3
+- (void)setMeCardEmailsForUnitTesting:(id)testing
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(CalContactsProvider *)v4 setUnitTestEmails:v5];
-  objc_sync_exit(v4);
+  testingCopy = testing;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CalContactsProvider *)selfCopy setUnitTestEmails:testingCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (id)nullableContactStore
@@ -333,18 +333,18 @@ uint64_t __43__CalContactsProvider_nullableContactStore__block_invoke(uint64_t a
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)contactsChanged:(id)a3
+- (void)contactsChanged:(id)changed
 {
-  v4 = [(CalContactsProvider *)self syncQueue];
+  syncQueue = [(CalContactsProvider *)self syncQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__CalContactsProvider_contactsChanged___block_invoke;
   block[3] = &unk_1E7EC66B0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(syncQueue, block);
 }
 
-- (void)meCardChanged:(id)a3
+- (void)meCardChanged:(id)changed
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -381,16 +381,16 @@ void __37__CalContactsProvider_meCardChanged___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_setLastHistoryToken:(id)a3
+- (void)_setLastHistoryToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = +[CalDefaults thisProcess];
-  [v4 setObject:v3 forKey:@"CalContactsProviderHistoryToken"];
+  [v4 setObject:tokenCopy forKey:@"CalContactsProviderHistoryToken"];
 }
 
-- (id)_meWithKeys:(id)a3
+- (id)_meWithKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   if ([(CalContactsProvider *)self contactAccessResolved])
   {
     v11 = 0;
@@ -406,7 +406,7 @@ void __37__CalContactsProvider_meCardChanged___block_invoke(uint64_t a1)
     block[3] = &unk_1E7EC67F0;
     block[4] = self;
     v10 = &v11;
-    v9 = v4;
+    v9 = keysCopy;
     dispatch_sync(contactStoreWorkQueue, block);
     v6 = v12[5];
 
@@ -478,18 +478,18 @@ void __35__CalContactsProvider__meWithKeys___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)setTestMeContactIdentifier:(id)a3
+- (void)setTestMeContactIdentifier:(id)identifier
 {
-  [(CalContactsProvider *)self setTestMeContactIdentifer:a3];
-  v4 = [(CalContactsProvider *)self _fetchedUnifiedMeContact];
-  [(CalContactsProvider *)self setMeContact:v4];
+  [(CalContactsProvider *)self setTestMeContactIdentifer:identifier];
+  _fetchedUnifiedMeContact = [(CalContactsProvider *)self _fetchedUnifiedMeContact];
+  [(CalContactsProvider *)self setMeContact:_fetchedUnifiedMeContact];
 }
 
-- (id)unifiedContactsMatchingPredicate:(id)a3 keysToFetch:(id)a4
+- (id)unifiedContactsMatchingPredicate:(id)predicate keysToFetch:(id)fetch
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  predicateCopy = predicate;
+  fetchCopy = fetch;
+  if (predicateCopy)
   {
     if ([(CalContactsProvider *)self contactAccessResolved])
     {
@@ -506,8 +506,8 @@ void __35__CalContactsProvider__meWithKeys___block_invoke(uint64_t a1)
       v12[3] = &unk_1E7EC6B30;
       v15 = &v16;
       v12[4] = self;
-      v13 = v6;
-      v14 = v7;
+      v13 = predicateCopy;
+      v14 = fetchCopy;
       dispatch_sync(contactStoreWorkQueue, v12);
       v9 = v17[5];
 
@@ -554,10 +554,10 @@ void __68__CalContactsProvider_unifiedContactsMatchingPredicate_keysToFetch___bl
   }
 }
 
-- (id)unifiedContactsForHandleStrings:(id)a3 keysToFetch:(id)a4
+- (id)unifiedContactsForHandleStrings:(id)strings keysToFetch:(id)fetch
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  fetchCopy = fetch;
   if ([(CalContactsProvider *)self contactAccessResolved])
   {
     v16 = 0;
@@ -572,9 +572,9 @@ void __68__CalContactsProvider_unifiedContactsMatchingPredicate_keysToFetch___bl
     v11[2] = __67__CalContactsProvider_unifiedContactsForHandleStrings_keysToFetch___block_invoke;
     v11[3] = &unk_1E7EC6B58;
     v15 = &v16;
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
+    v12 = stringsCopy;
+    selfCopy = self;
+    v14 = fetchCopy;
     dispatch_sync(contactStoreWorkQueue, v11);
     v9 = v17[5];
 
@@ -611,10 +611,10 @@ void __67__CalContactsProvider_unifiedContactsForHandleStrings_keysToFetch___blo
   }
 }
 
-- (id)unifiedContactsDictionaryForHandleStrings:(id)a3 keysToFetch:(id)a4
+- (id)unifiedContactsDictionaryForHandleStrings:(id)strings keysToFetch:(id)fetch
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  fetchCopy = fetch;
   if ([(CalContactsProvider *)self contactAccessResolved])
   {
     v16 = 0;
@@ -628,9 +628,9 @@ void __67__CalContactsProvider_unifiedContactsForHandleStrings_keysToFetch___blo
     v11[1] = 3221225472;
     v11[2] = __77__CalContactsProvider_unifiedContactsDictionaryForHandleStrings_keysToFetch___block_invoke;
     v11[3] = &unk_1E7EC6B80;
-    v12 = v7;
-    v13 = v6;
-    v14 = self;
+    v12 = fetchCopy;
+    v13 = stringsCopy;
+    selfCopy = self;
     v15 = &v16;
     dispatch_sync(contactStoreWorkQueue, v11);
     v9 = v17[5];
@@ -675,13 +675,13 @@ void __77__CalContactsProvider_unifiedContactsDictionaryForHandleStrings_keysToF
   }
 }
 
-- (id)unifiedContactWithEmailAddress:(id)a3
+- (id)unifiedContactWithEmailAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   if ([(CalContactsProvider *)self contactAccessResolved])
   {
-    v5 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:v4];
-    v6 = [MEMORY[0x1E695CD58] CalKeys];
+    v5 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:addressCopy];
+    calKeys = [MEMORY[0x1E695CD58] CalKeys];
     v20 = 0;
     v21 = &v20;
     v22 = 0x3032000000;
@@ -694,23 +694,23 @@ void __77__CalContactsProvider_unifiedContactsDictionaryForHandleStrings_keysToF
     v14 = __54__CalContactsProvider_unifiedContactWithEmailAddress___block_invoke;
     v15 = &unk_1E7EC6B30;
     v19 = &v20;
-    v16 = self;
+    selfCopy = self;
     v8 = v5;
     v17 = v8;
-    v9 = v6;
+    v9 = calKeys;
     v18 = v9;
     dispatch_sync(contactStoreWorkQueue, &v12);
-    v10 = [v21[5] firstObject];
+    firstObject = [v21[5] firstObject];
 
     _Block_object_dispose(&v20, 8);
   }
 
   else
   {
-    v10 = 0;
+    firstObject = 0;
   }
 
-  return v10;
+  return firstObject;
 }
 
 void __54__CalContactsProvider_unifiedContactWithEmailAddress___block_invoke(uint64_t a1)
@@ -736,14 +736,14 @@ void __54__CalContactsProvider_unifiedContactWithEmailAddress___block_invoke(uin
   }
 }
 
-- (id)unifiedContactWithPhoneNumber:(id)a3
+- (id)unifiedContactWithPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   if ([(CalContactsProvider *)self contactAccessResolved])
   {
-    v5 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v4];
+    v5 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:numberCopy];
     v6 = [MEMORY[0x1E695CD58] predicateForContactsMatchingPhoneNumber:v5];
-    v7 = [MEMORY[0x1E695CD58] CalKeys];
+    calKeys = [MEMORY[0x1E695CD58] CalKeys];
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
@@ -756,23 +756,23 @@ void __54__CalContactsProvider_unifiedContactWithEmailAddress___block_invoke(uin
     v15 = __53__CalContactsProvider_unifiedContactWithPhoneNumber___block_invoke;
     v16 = &unk_1E7EC6B30;
     v20 = &v21;
-    v17 = self;
+    selfCopy = self;
     v9 = v6;
     v18 = v9;
-    v10 = v7;
+    v10 = calKeys;
     v19 = v10;
     dispatch_sync(contactStoreWorkQueue, &v13);
-    v11 = [v22[5] firstObject];
+    firstObject = [v22[5] firstObject];
 
     _Block_object_dispose(&v21, 8);
   }
 
   else
   {
-    v11 = 0;
+    firstObject = 0;
   }
 
-  return v11;
+  return firstObject;
 }
 
 void __53__CalContactsProvider_unifiedContactWithPhoneNumber___block_invoke(uint64_t a1)
@@ -798,13 +798,13 @@ void __53__CalContactsProvider_unifiedContactWithPhoneNumber___block_invoke(uint
   }
 }
 
-- (id)unifiedContactWithName:(id)a3
+- (id)unifiedContactWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if ([(CalContactsProvider *)self contactAccessResolved])
   {
-    v5 = [MEMORY[0x1E695CD58] predicateForContactsMatchingName:v4];
-    v6 = [MEMORY[0x1E695CD58] CalKeys];
+    v5 = [MEMORY[0x1E695CD58] predicateForContactsMatchingName:nameCopy];
+    calKeys = [MEMORY[0x1E695CD58] CalKeys];
     v20 = 0;
     v21 = &v20;
     v22 = 0x3032000000;
@@ -817,23 +817,23 @@ void __53__CalContactsProvider_unifiedContactWithPhoneNumber___block_invoke(uint
     v14 = __46__CalContactsProvider_unifiedContactWithName___block_invoke;
     v15 = &unk_1E7EC6B30;
     v19 = &v20;
-    v16 = self;
+    selfCopy = self;
     v8 = v5;
     v17 = v8;
-    v9 = v6;
+    v9 = calKeys;
     v18 = v9;
     dispatch_sync(contactStoreWorkQueue, &v12);
-    v10 = [v21[5] firstObject];
+    firstObject = [v21[5] firstObject];
 
     _Block_object_dispose(&v20, 8);
   }
 
   else
   {
-    v10 = 0;
+    firstObject = 0;
   }
 
-  return v10;
+  return firstObject;
 }
 
 void __46__CalContactsProvider_unifiedContactWithName___block_invoke(uint64_t a1)
@@ -859,11 +859,11 @@ void __46__CalContactsProvider_unifiedContactWithName___block_invoke(uint64_t a1
   }
 }
 
-- (id)unifiedContactWithIdentifier:(id)a3 keysToFetch:(id)a4
+- (id)unifiedContactWithIdentifier:(id)identifier keysToFetch:(id)fetch
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  fetchCopy = fetch;
+  if (identifierCopy)
   {
     if ([(CalContactsProvider *)self contactAccessResolved])
     {
@@ -880,8 +880,8 @@ void __46__CalContactsProvider_unifiedContactWithName___block_invoke(uint64_t a1
       v12[3] = &unk_1E7EC6B30;
       v15 = &v16;
       v12[4] = self;
-      v13 = v6;
-      v14 = v7;
+      v13 = identifierCopy;
+      v14 = fetchCopy;
       dispatch_sync(contactStoreWorkQueue, v12);
       v9 = v17[5];
 
@@ -928,24 +928,24 @@ void __64__CalContactsProvider_unifiedContactWithIdentifier_keysToFetch___block_
   }
 }
 
-- (id)unifiedContactWithIdentifier:(id)a3
+- (id)unifiedContactWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E695CD58];
-  v5 = a3;
-  v6 = [v4 CalKeys];
-  v7 = [(CalContactsProvider *)self unifiedContactWithIdentifier:v5 keysToFetch:v6];
+  identifierCopy = identifier;
+  calKeys = [v4 CalKeys];
+  v7 = [(CalContactsProvider *)self unifiedContactWithIdentifier:identifierCopy keysToFetch:calKeys];
 
   return v7;
 }
 
-- (id)unifiedContactMatchingString:(id)a3 keysToFetch:(id)a4 matchType:(int64_t *)a5
+- (id)unifiedContactMatchingString:(id)string keysToFetch:(id)fetch matchType:(int64_t *)type
 {
-  v7 = a3;
-  v8 = [(CalContactsProvider *)self unifiedContactWithEmailAddress:v7];
+  stringCopy = string;
+  v8 = [(CalContactsProvider *)self unifiedContactWithEmailAddress:stringCopy];
   if (v8)
   {
     v9 = v8;
-    if (!a5)
+    if (!type)
     {
       goto LABEL_9;
     }
@@ -955,11 +955,11 @@ void __64__CalContactsProvider_unifiedContactWithIdentifier_keysToFetch___block_
 
   else
   {
-    v11 = [(CalContactsProvider *)self unifiedContactWithPhoneNumber:v7];
+    v11 = [(CalContactsProvider *)self unifiedContactWithPhoneNumber:stringCopy];
     if (v11)
     {
       v9 = v11;
-      if (!a5)
+      if (!type)
       {
         goto LABEL_9;
       }
@@ -969,27 +969,27 @@ void __64__CalContactsProvider_unifiedContactWithIdentifier_keysToFetch___block_
 
     else
     {
-      v9 = [(CalContactsProvider *)self unifiedContactWithName:v7];
+      v9 = [(CalContactsProvider *)self unifiedContactWithName:stringCopy];
       v10 = v9 != 0;
-      if (!a5)
+      if (!type)
       {
         goto LABEL_9;
       }
     }
   }
 
-  *a5 = v10;
+  *type = v10;
 LABEL_9:
 
   return v9;
 }
 
-- (id)unifiedContactMatchingName:(id)a3 email:(id)a4 url:(id)a5 keysToFetch:(id)a6
+- (id)unifiedContactMatchingName:(id)name email:(id)email url:(id)url keysToFetch:(id)fetch
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  emailCopy = email;
+  urlCopy = url;
+  fetchCopy = fetch;
   if ([(CalContactsProvider *)self contactAccessResolved])
   {
     v53 = 0;
@@ -998,7 +998,7 @@ LABEL_9:
     v54[2] = __Block_byref_object_copy__5;
     v54[3] = __Block_byref_object_dispose__5;
     v55 = 0;
-    v14 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:v11];
+    v14 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:emailCopy];
     v47 = 0;
     v48 = &v47;
     v49 = 0x3032000000;
@@ -1014,13 +1014,13 @@ LABEL_9:
     block[4] = self;
     v16 = v14;
     v43 = v16;
-    v17 = v13;
+    v17 = fetchCopy;
     v44 = v17;
     v46 = &v53;
     dispatch_sync(contactStoreWorkQueue, block);
     if ([v48[5] count])
     {
-      v18 = [v48[5] firstObject];
+      firstObject = [v48[5] firstObject];
     }
 
     else
@@ -1034,7 +1034,7 @@ LABEL_9:
         }
       }
 
-      v20 = [MEMORY[0x1E695CD58] predicateForContactMatchingURLString:v12];
+      v20 = [MEMORY[0x1E695CD58] predicateForContactMatchingURLString:urlCopy];
 
       v21 = self->_contactStoreWorkQueue;
       v37[0] = MEMORY[0x1E69E9820];
@@ -1051,7 +1051,7 @@ LABEL_9:
       dispatch_sync(v21, v37);
       if ([v48[5] count])
       {
-        v18 = [v48[5] firstObject];
+        firstObject = [v48[5] firstObject];
       }
 
       else
@@ -1065,7 +1065,7 @@ LABEL_9:
           }
         }
 
-        v24 = [MEMORY[0x1E695CD58] predicateForContactsMatchingName:v10];
+        v24 = [MEMORY[0x1E695CD58] predicateForContactsMatchingName:nameCopy];
 
         v25 = self->_contactStoreWorkQueue;
         v28 = MEMORY[0x1E69E9820];
@@ -1073,7 +1073,7 @@ LABEL_9:
         v30 = __72__CalContactsProvider_unifiedContactMatchingName_email_url_keysToFetch___block_invoke_34;
         v31 = &unk_1E7EC6BA8;
         v35 = &v47;
-        v32 = self;
+        selfCopy = self;
         v16 = v24;
         v33 = v16;
         v34 = v22;
@@ -1081,7 +1081,7 @@ LABEL_9:
         dispatch_sync(v25, &v28);
         if ([v48[5] count])
         {
-          v18 = [v48[5] firstObject];
+          firstObject = [v48[5] firstObject];
         }
 
         else
@@ -1095,7 +1095,7 @@ LABEL_9:
             }
           }
 
-          v18 = 0;
+          firstObject = 0;
         }
       }
     }
@@ -1106,10 +1106,10 @@ LABEL_9:
 
   else
   {
-    v18 = 0;
+    firstObject = 0;
   }
 
-  return v18;
+  return firstObject;
 }
 
 void __72__CalContactsProvider_unifiedContactMatchingName_email_url_keysToFetch___block_invoke(uint64_t a1)
@@ -1154,28 +1154,28 @@ void __72__CalContactsProvider_unifiedContactMatchingName_email_url_keysToFetch_
   *(v7 + 40) = v6;
 }
 
-- (id)contactsFromContactIdentifiers:(id)a3 withKeys:(id)a4
+- (id)contactsFromContactIdentifiers:(id)identifiers withKeys:(id)keys
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695CD58] predicateForContactsWithIdentifiers:v5];
+  identifiersCopy = identifiers;
+  keysCopy = keys;
+  v7 = [MEMORY[0x1E695CD58] predicateForContactsWithIdentifiers:identifiersCopy];
   v8 = +[CalContactsProvider defaultProvider];
   v9 = v8;
   v25 = v7;
-  if (v6)
+  if (keysCopy)
   {
-    v10 = [v8 unifiedContactsMatchingPredicate:v7 keysToFetch:v6];
+    v10 = [v8 unifiedContactsMatchingPredicate:v7 keysToFetch:keysCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695CD58] CalKeys];
-    v10 = [v9 unifiedContactsMatchingPredicate:v7 keysToFetch:v11];
+    calKeys = [MEMORY[0x1E695CD58] CalKeys];
+    v10 = [v9 unifiedContactsMatchingPredicate:v7 keysToFetch:calKeys];
   }
 
   v12 = objc_opt_new();
-  v13 = [MEMORY[0x1E695DF70] arrayWithArray:v5];
+  v13 = [MEMORY[0x1E695DF70] arrayWithArray:identifiersCopy];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -1196,11 +1196,11 @@ void __72__CalContactsProvider_unifiedContactMatchingName_email_url_keysToFetch_
         }
 
         v19 = *(*(&v26 + 1) + 8 * i);
-        v20 = [v19 identifier];
-        [v12 setObject:v19 forKey:v20];
+        identifier = [v19 identifier];
+        [v12 setObject:v19 forKey:identifier];
 
-        v21 = [v19 identifier];
-        [v13 removeObject:v21];
+        identifier2 = [v19 identifier];
+        [v13 removeObject:identifier2];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -1223,19 +1223,19 @@ void __72__CalContactsProvider_unifiedContactMatchingName_email_url_keysToFetch_
   return v12;
 }
 
-- (id)fullNameForFirstContactMatchingEmailAddress:(id)a3
+- (id)fullNameForFirstContactMatchingEmailAddress:(id)address
 {
-  v4 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:a3];
+  v4 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:address];
   v5 = [(CalContactsProvider *)self _fullNameForFirstContactMatchingPredicate:v4];
 
   return v5;
 }
 
-- (id)fullNameForFirstContactMatchingPhoneNumber:(id)a3
+- (id)fullNameForFirstContactMatchingPhoneNumber:(id)number
 {
   v4 = MEMORY[0x1E695CF50];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithStringValue:v5];
+  numberCopy = number;
+  v6 = [[v4 alloc] initWithStringValue:numberCopy];
 
   v7 = [MEMORY[0x1E695CD58] predicateForContactsMatchingPhoneNumber:v6];
   v8 = [(CalContactsProvider *)self _fullNameForFirstContactMatchingPredicate:v7];
@@ -1243,20 +1243,20 @@ void __72__CalContactsProvider_unifiedContactMatchingName_email_url_keysToFetch_
   return v8;
 }
 
-- (id)_fullNameForFirstContactMatchingPredicate:(id)a3
+- (id)_fullNameForFirstContactMatchingPredicate:(id)predicate
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695CD80];
-  v5 = a3;
+  predicateCopy = predicate;
   v6 = [v4 descriptorForRequiredKeysForStyle:0];
   v13[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v8 = [(CalContactsProvider *)self unifiedContactsMatchingPredicate:v5 keysToFetch:v7];
+  v8 = [(CalContactsProvider *)self unifiedContactsMatchingPredicate:predicateCopy keysToFetch:v7];
 
   if (v8)
   {
-    v9 = [v8 firstObject];
-    v10 = [MEMORY[0x1E695CD80] stringFromContact:v9 style:0];
+    firstObject = [v8 firstObject];
+    v10 = [MEMORY[0x1E695CD80] stringFromContact:firstObject style:0];
   }
 
   else
@@ -1269,40 +1269,40 @@ void __72__CalContactsProvider_unifiedContactMatchingName_email_url_keysToFetch_
   return v10;
 }
 
-- (BOOL)contactIdentifierIsMe:(id)a3
+- (BOOL)contactIdentifierIsMe:(id)me
 {
-  v4 = a3;
-  v5 = [(CalContactsProvider *)self meContact];
-  v6 = [v5 identifier];
-  v7 = [v6 isEqualToString:v4];
+  meCopy = me;
+  meContact = [(CalContactsProvider *)self meContact];
+  identifier = [meContact identifier];
+  v7 = [identifier isEqualToString:meCopy];
 
   return v7;
 }
 
 - (id)myShortDisplayName
 {
-  v3 = [(CalContactsProvider *)self meContact];
-  v4 = [v3 givenName];
+  meContact = [(CalContactsProvider *)self meContact];
+  givenName = [meContact givenName];
 
-  if (![v4 length])
+  if (![givenName length])
   {
-    v5 = [(CalContactsProvider *)self meContact];
-    v6 = [v5 nickname];
+    meContact2 = [(CalContactsProvider *)self meContact];
+    nickname = [meContact2 nickname];
 
-    v4 = v6;
+    givenName = nickname;
   }
 
-  return v4;
+  return givenName;
 }
 
-- (id)myNameWithStyle:(int64_t)a3
+- (id)myNameWithStyle:(int64_t)style
 {
-  v5 = [(CalContactsProvider *)self meContact];
-  if (v5)
+  meContact = [(CalContactsProvider *)self meContact];
+  if (meContact)
   {
     v6 = MEMORY[0x1E695CD80];
-    v7 = [(CalContactsProvider *)self meContact];
-    v8 = [v6 stringFromContact:v7 style:a3];
+    meContact2 = [(CalContactsProvider *)self meContact];
+    v8 = [v6 stringFromContact:meContact2 style:style];
   }
 
   else
@@ -1313,25 +1313,25 @@ void __72__CalContactsProvider_unifiedContactMatchingName_email_url_keysToFetch_
   return v8;
 }
 
-- (id)myAddressForLabel:(id)a3
+- (id)myAddressForLabel:(id)label
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CalContactsProvider *)self meContact];
-  v6 = [v5 postalAddresses];
+  labelCopy = label;
+  meContact = [(CalContactsProvider *)self meContact];
+  postalAddresses = [meContact postalAddresses];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v6;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
-  if (v8)
+  v7 = postalAddresses;
+  value = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  if (value)
   {
     v9 = *v17;
     while (2)
     {
-      for (i = 0; i != v8; i = i + 1)
+      for (i = 0; i != value; i = i + 1)
       {
         if (*v17 != v9)
         {
@@ -1339,18 +1339,18 @@ void __72__CalContactsProvider_unifiedContactMatchingName_email_url_keysToFetch_
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 label];
-        v13 = [v12 isEqualToString:v4];
+        label = [v11 label];
+        v13 = [label isEqualToString:labelCopy];
 
         if (v13)
         {
-          v8 = [v11 value];
+          value = [v11 value];
           goto LABEL_11;
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
-      if (v8)
+      value = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      if (value)
       {
         continue;
       }
@@ -1363,109 +1363,109 @@ LABEL_11:
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return value;
 }
 
 - (id)myEmailAddress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CalContactsProvider *)v2 unitTestEmails];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  unitTestEmails = [(CalContactsProvider *)selfCopy unitTestEmails];
 
-  if (v3)
+  if (unitTestEmails)
   {
-    v4 = [(CalContactsProvider *)v2 unitTestEmails];
-    v5 = [v4 firstObject];
+    unitTestEmails2 = [(CalContactsProvider *)selfCopy unitTestEmails];
+    firstObject = [unitTestEmails2 firstObject];
 
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
-    v6 = [(CalContactsProvider *)v2 meContact];
-    v7 = [v6 emailAddresses];
-    v2 = [v7 firstObject];
+    meContact = [(CalContactsProvider *)selfCopy meContact];
+    emailAddresses = [meContact emailAddresses];
+    selfCopy = [emailAddresses firstObject];
 
-    v5 = [(CalContactsProvider *)v2 value];
+    firstObject = [(CalContactsProvider *)selfCopy value];
   }
 
-  return v5;
+  return firstObject;
 }
 
 - (id)cachedEmailAddressArray
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CalContactsProvider *)v2 unitTestEmails];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  unitTestEmails = [(CalContactsProvider *)selfCopy unitTestEmails];
 
-  if (v3)
+  if (unitTestEmails)
   {
-    v4 = [(CalContactsProvider *)v2 unitTestEmails];
+    unitTestEmails2 = [(CalContactsProvider *)selfCopy unitTestEmails];
 LABEL_5:
-    v6 = v4;
+    loadedMyEmailAddresses2 = unitTestEmails2;
     goto LABEL_6;
   }
 
-  v5 = [(CalContactsProvider *)v2 loadedMyEmailAddresses];
+  loadedMyEmailAddresses = [(CalContactsProvider *)selfCopy loadedMyEmailAddresses];
 
-  if (v5)
+  if (loadedMyEmailAddresses)
   {
-    v4 = [(CalContactsProvider *)v2 loadedMyEmailAddresses];
+    unitTestEmails2 = [(CalContactsProvider *)selfCopy loadedMyEmailAddresses];
     goto LABEL_5;
   }
 
-  v8 = [(CalContactsProvider *)v2 meContact];
-  v9 = [v8 CalEmailAddresses];
+  meContact = [(CalContactsProvider *)selfCopy meContact];
+  calEmailAddresses = [meContact CalEmailAddresses];
 
-  if (!v9)
+  if (!calEmailAddresses)
   {
-    v9 = objc_opt_new();
+    calEmailAddresses = objc_opt_new();
   }
 
-  [(CalContactsProvider *)v2 setLoadedMyEmailAddresses:v9];
-  v6 = [(CalContactsProvider *)v2 loadedMyEmailAddresses];
+  [(CalContactsProvider *)selfCopy setLoadedMyEmailAddresses:calEmailAddresses];
+  loadedMyEmailAddresses2 = [(CalContactsProvider *)selfCopy loadedMyEmailAddresses];
 
 LABEL_6:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v6;
+  return loadedMyEmailAddresses2;
 }
 
 - (id)cachedEmailAddress
 {
-  v2 = [(CalContactsProvider *)self cachedEmailAddressArray];
-  v3 = [v2 firstObject];
+  cachedEmailAddressArray = [(CalContactsProvider *)self cachedEmailAddressArray];
+  firstObject = [cachedEmailAddressArray firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)myEmailAddresses
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CalContactsProvider *)v2 unitTestEmails];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  unitTestEmails = [(CalContactsProvider *)selfCopy unitTestEmails];
 
-  if (v3)
+  if (unitTestEmails)
   {
     v4 = MEMORY[0x1E695DFD8];
-    v5 = [(CalContactsProvider *)v2 unitTestEmails];
-    v6 = [v4 setWithArray:v5];
+    unitTestEmails2 = [(CalContactsProvider *)selfCopy unitTestEmails];
+    v6 = [v4 setWithArray:unitTestEmails2];
 
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
-    v7 = [(CalContactsProvider *)v2 meContact];
-    v2 = [v7 CalEmailAddresses];
+    meContact = [(CalContactsProvider *)selfCopy meContact];
+    selfCopy = [meContact CalEmailAddresses];
 
-    if (v2)
+    if (selfCopy)
     {
-      v8 = [MEMORY[0x1E695DFD8] setWithArray:v2];
+      v8 = [MEMORY[0x1E695DFD8] setWithArray:selfCopy];
     }
 
     else
@@ -1482,18 +1482,18 @@ LABEL_6:
 - (id)cachedEmailAddresses
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(CalContactsProvider *)self cachedEmailAddressArray];
-  v4 = [v2 setWithArray:v3];
+  cachedEmailAddressArray = [(CalContactsProvider *)self cachedEmailAddressArray];
+  v4 = [v2 setWithArray:cachedEmailAddressArray];
 
   return v4;
 }
 
-- (BOOL)matchesOneOfMyEmails:(id)a3
+- (BOOL)matchesOneOfMyEmails:(id)emails
 {
-  v4 = a3;
-  if (v4)
+  emailsCopy = emails;
+  if (emailsCopy)
   {
-    v5 = [(CalContactsProvider *)self cachedEmailAddresses];
+    cachedEmailAddresses = [(CalContactsProvider *)self cachedEmailAddresses];
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
@@ -1502,9 +1502,9 @@ LABEL_6:
     v8[1] = 3221225472;
     v8[2] = __44__CalContactsProvider_matchesOneOfMyEmails___block_invoke;
     v8[3] = &unk_1E7EC6BD0;
-    v9 = v4;
+    v9 = emailsCopy;
     v10 = &v11;
-    [v5 enumerateObjectsUsingBlock:v8];
+    [cachedEmailAddresses enumerateObjectsUsingBlock:v8];
     v6 = *(v12 + 24);
 
     _Block_object_dispose(&v11, 8);
@@ -1530,23 +1530,23 @@ uint64_t __44__CalContactsProvider_matchesOneOfMyEmails___block_invoke(uint64_t 
   return result;
 }
 
-- (BOOL)urlMatchesOneOfMyEmails:(id)a3
+- (BOOL)urlMatchesOneOfMyEmails:(id)emails
 {
-  v4 = [a3 absoluteString];
-  v5 = [v4 stringRemovingMailto];
+  absoluteString = [emails absoluteString];
+  stringRemovingMailto = [absoluteString stringRemovingMailto];
 
-  LOBYTE(self) = [(CalContactsProvider *)self matchesOneOfMyEmails:v5];
+  LOBYTE(self) = [(CalContactsProvider *)self matchesOneOfMyEmails:stringRemovingMailto];
   return self;
 }
 
 - (id)myPhoneNumbers
 {
-  v2 = [(CalContactsProvider *)self meContact];
-  v3 = [v2 CalPhoneNumbers];
+  meContact = [(CalContactsProvider *)self meContact];
+  calPhoneNumbers = [meContact CalPhoneNumbers];
 
-  if (v3)
+  if (calPhoneNumbers)
   {
-    v4 = [MEMORY[0x1E695DFD8] setWithArray:v3];
+    v4 = [MEMORY[0x1E695DFD8] setWithArray:calPhoneNumbers];
   }
 
   else
@@ -1559,10 +1559,10 @@ uint64_t __44__CalContactsProvider_matchesOneOfMyEmails___block_invoke(uint64_t 
   return v5;
 }
 
-- (BOOL)matchesOneOfMyPhoneNumbers:(id)a3
+- (BOOL)matchesOneOfMyPhoneNumbers:(id)numbers
 {
-  v4 = a3;
-  v5 = [(CalContactsProvider *)self myPhoneNumbers];
+  numbersCopy = numbers;
+  myPhoneNumbers = [(CalContactsProvider *)self myPhoneNumbers];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -1571,10 +1571,10 @@ uint64_t __44__CalContactsProvider_matchesOneOfMyEmails___block_invoke(uint64_t 
   v9[1] = 3221225472;
   v9[2] = __50__CalContactsProvider_matchesOneOfMyPhoneNumbers___block_invoke;
   v9[3] = &unk_1E7EC6BD0;
-  v6 = v4;
+  v6 = numbersCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [myPhoneNumbers enumerateObjectsUsingBlock:v9];
   v7 = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
@@ -1593,12 +1593,12 @@ uint64_t __50__CalContactsProvider_matchesOneOfMyPhoneNumbers___block_invoke(uin
   return result;
 }
 
-+ (id)reputationForHandle:(id)a3 inStore:(id)a4
++ (id)reputationForHandle:(id)handle inStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  handleCopy = handle;
+  storeCopy = store;
+  v7 = storeCopy;
+  if (!handleCopy)
   {
     v11 = +[CalFoundationLogSubsystem junk];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1612,12 +1612,12 @@ uint64_t __50__CalContactsProvider_matchesOneOfMyPhoneNumbers___block_invoke(uin
   }
 
   v13 = 0;
-  v8 = [v6 reputationForHandle:v5 timeout:&v13 error:0.2];
+  v8 = [storeCopy reputationForHandle:handleCopy timeout:&v13 error:0.2];
   v9 = v13;
   v10 = +[CalFoundationLogSubsystem junk];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [(CalContactsProvider *)v5 reputationForHandle:v8 inStore:v10];
+    [(CalContactsProvider *)handleCopy reputationForHandle:v8 inStore:v10];
   }
 
   if (v9)
@@ -1634,92 +1634,92 @@ LABEL_10:
   return v8;
 }
 
-+ (BOOL)shouldPermitOrganizerEmailFromJunkChecks:(id)a3 inReputationStore:(id)a4
++ (BOOL)shouldPermitOrganizerEmailFromJunkChecks:(id)checks inReputationStore:(id)store
 {
   v6 = MEMORY[0x1E695CF78];
-  v7 = a4;
-  v8 = [v6 handleWithEmailAddress:a3];
-  v9 = [a1 reputationForHandle:v8 inStore:v7];
+  storeCopy = store;
+  v8 = [v6 handleWithEmailAddress:checks];
+  v9 = [self reputationForHandle:v8 inStore:storeCopy];
 
   v10 = v9 && [v9 score] == 1;
   return v10;
 }
 
-+ (BOOL)shouldPermitOrganizerPhoneNumberFromJunkChecks:(id)a3 inReputationStore:(id)a4
++ (BOOL)shouldPermitOrganizerPhoneNumberFromJunkChecks:(id)checks inReputationStore:(id)store
 {
   v6 = MEMORY[0x1E695CF78];
-  v7 = a4;
-  v8 = [v6 handleWithPhoneNumber:a3];
-  v9 = [a1 reputationForHandle:v8 inStore:v7];
+  storeCopy = store;
+  v8 = [v6 handleWithPhoneNumber:checks];
+  v9 = [self reputationForHandle:v8 inStore:storeCopy];
 
   v10 = v9 && [v9 score] == 1;
   return v10;
 }
 
-- (BOOL)shouldPermitOrganizerEmailFromJunkChecks:(id)a3
+- (BOOL)shouldPermitOrganizerEmailFromJunkChecks:(id)checks
 {
-  v4 = a3;
-  v5 = [(CalContactsProvider *)self reputationStore];
-  LOBYTE(self) = [objc_opt_class() shouldPermitOrganizerEmailFromJunkChecks:v4 inReputationStore:v5];
+  checksCopy = checks;
+  reputationStore = [(CalContactsProvider *)self reputationStore];
+  LOBYTE(self) = [objc_opt_class() shouldPermitOrganizerEmailFromJunkChecks:checksCopy inReputationStore:reputationStore];
 
   return self;
 }
 
-- (BOOL)shouldPermitOrganizerPhoneNumberFromJunkChecks:(id)a3
+- (BOOL)shouldPermitOrganizerPhoneNumberFromJunkChecks:(id)checks
 {
-  v4 = a3;
-  v5 = [(CalContactsProvider *)self reputationStore];
-  LOBYTE(self) = [objc_opt_class() shouldPermitOrganizerPhoneNumberFromJunkChecks:v4 inReputationStore:v5];
+  checksCopy = checks;
+  reputationStore = [(CalContactsProvider *)self reputationStore];
+  LOBYTE(self) = [objc_opt_class() shouldPermitOrganizerPhoneNumberFromJunkChecks:checksCopy inReputationStore:reputationStore];
 
   return self;
 }
 
-+ (BOOL)birthdayIsYearless:(id)a3
++ (BOOL)birthdayIsYearless:(id)yearless
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 CalYearlessDateThreshold];
-  v6 = [v4 CalIsBeforeDate:v5];
+  yearlessCopy = yearless;
+  calYearlessDateThreshold = [v3 CalYearlessDateThreshold];
+  v6 = [yearlessCopy CalIsBeforeDate:calYearlessDateThreshold];
 
   return v6;
 }
 
-+ (BOOL)isCalendarIslamic:(id)a3
++ (BOOL)isCalendarIslamic:(id)islamic
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E695D878]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695D880]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695D888]))
+  islamicCopy = islamic;
+  if ([islamicCopy isEqualToString:*MEMORY[0x1E695D878]] & 1) != 0 || (objc_msgSend(islamicCopy, "isEqualToString:", *MEMORY[0x1E695D880]) & 1) != 0 || (objc_msgSend(islamicCopy, "isEqualToString:", *MEMORY[0x1E695D888]))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x1E695D890]];
+    v4 = [islamicCopy isEqualToString:*MEMORY[0x1E695D890]];
   }
 
   return v4;
 }
 
-+ (id)birthdayStringForContactName:(id)a3 eventDate:(id)a4 birthDate:(id)a5 lunarCalendar:(id)a6
++ (id)birthdayStringForContactName:(id)name eventDate:(id)date birthDate:(id)birthDate lunarCalendar:(id)calendar
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  dateCopy = date;
+  birthDateCopy = birthDate;
+  calendarCopy = calendar;
   v13 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  if (!v11)
+  if (!birthDateCopy)
   {
-    v27 = 0;
+    nameCopy = 0;
     goto LABEL_68;
   }
 
-  if (!v10)
+  if (!dateCopy)
   {
     goto LABEL_15;
   }
 
-  v14 = [MEMORY[0x1E695DEE8] CalYearlessDateThreshold];
-  v15 = [v11 isBeforeDate:v14];
+  calYearlessDateThreshold = [MEMORY[0x1E695DEE8] CalYearlessDateThreshold];
+  v15 = [birthDateCopy isBeforeDate:calYearlessDateThreshold];
 
   if (v15)
   {
@@ -1727,9 +1727,9 @@ LABEL_10:
   }
 
   v16 = *MEMORY[0x1E695D850];
-  if (v12)
+  if (calendarCopy)
   {
-    v17 = v12;
+    v17 = calendarCopy;
   }
 
   else
@@ -1738,87 +1738,87 @@ LABEL_10:
   }
 
   v18 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:v17];
-  v19 = [v10 dateByAddingDays:7 inCalendar:v18];
-  v20 = [v18 components:4 fromDate:v11 toDate:v19 options:0];
-  v21 = [v20 year];
+  v19 = [dateCopy dateByAddingDays:7 inCalendar:v18];
+  v20 = [v18 components:4 fromDate:birthDateCopy toDate:v19 options:0];
+  year = [v20 year];
 
-  if (v21 <= 0)
+  if (year <= 0)
   {
 
 LABEL_15:
-    if ([v12 isEqualToString:*MEMORY[0x1E695D828]])
+    if ([calendarCopy isEqualToString:*MEMORY[0x1E695D828]])
     {
       v28 = MEMORY[0x1E696AEC0];
       v29 = @"%@’s Chinese Birthday";
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x1E695D860]])
+    else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D860]])
     {
       v28 = MEMORY[0x1E696AEC0];
       v29 = @"%@’s Hebrew Birthday";
     }
 
-    else if ([CalContactsProvider isCalendarIslamic:v12])
+    else if ([CalContactsProvider isCalendarIslamic:calendarCopy])
     {
       v28 = MEMORY[0x1E696AEC0];
       v29 = @"%@’s Hijri Birthday";
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x1E695D818]])
+    else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D818]])
     {
       v28 = MEMORY[0x1E696AEC0];
       v29 = @"%@’s Bangla Birthday";
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x1E695D858]])
+    else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D858]])
     {
       v28 = MEMORY[0x1E696AEC0];
       v29 = @"%@’s Gujarati Birthday";
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x1E695D8A0]])
+    else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8A0]])
     {
       v28 = MEMORY[0x1E696AEC0];
       v29 = @"%@’s Kannada Birthday";
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x1E695D8A8]])
+    else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8A8]])
     {
       v28 = MEMORY[0x1E696AEC0];
       v29 = @"%@’s Malayalam Birthday";
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x1E695D8B0]])
+    else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8B0]])
     {
       v28 = MEMORY[0x1E696AEC0];
       v29 = @"%@’s Marathi Birthday";
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x1E695D8B8]])
+    else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8B8]])
     {
       v28 = MEMORY[0x1E696AEC0];
       v29 = @"%@’s Odia Birthday";
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x1E695D8D0]])
+    else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8D0]])
     {
       v28 = MEMORY[0x1E696AEC0];
       v29 = @"%@’s Tamil Birthday";
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x1E695D8D8]])
+    else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8D8]])
     {
       v28 = MEMORY[0x1E696AEC0];
       v29 = @"%@’s Telugu Birthday";
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x1E695D8E8]])
+    else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8E8]])
     {
       v28 = MEMORY[0x1E696AEC0];
       v29 = @"%@’s Vikram Samvat Birthday";
     }
 
-    else if ([v12 isEqualToString:*MEMORY[0x1E695D838]])
+    else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D838]])
     {
       v28 = MEMORY[0x1E696AEC0];
       v29 = @"%@’s Korean Birthday";
@@ -1826,7 +1826,7 @@ LABEL_15:
 
     else
     {
-      v30 = [v12 isEqualToString:*MEMORY[0x1E695D8E0]];
+      v30 = [calendarCopy isEqualToString:*MEMORY[0x1E695D8E0]];
       v28 = MEMORY[0x1E696AEC0];
       if (v30)
       {
@@ -1840,7 +1840,7 @@ LABEL_15:
     }
 
     v18 = [v13 localizedStringForKey:v29 value:&stru_1F379FFA8 table:0];
-    v27 = [v28 localizedStringWithFormat:v18, v9];
+    nameCopy = [v28 localizedStringWithFormat:v18, nameCopy];
     goto LABEL_67;
   }
 
@@ -1857,75 +1857,75 @@ LABEL_15:
   }
 
   v23 = MEMORY[0x1E696ADA0];
-  v24 = [MEMORY[0x1E696AD98] numberWithLong:v21];
+  v24 = [MEMORY[0x1E696AD98] numberWithLong:year];
   v25 = [v23 localizedStringFromNumber:v24 numberStyle:v22];
 
-  if ([v12 isEqualToString:*MEMORY[0x1E695D828]])
+  if ([calendarCopy isEqualToString:*MEMORY[0x1E695D828]])
   {
     v26 = @"birthday_chinese_count";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x1E695D860]])
+  else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D860]])
   {
     v26 = @"birthday_hebrew_count";
   }
 
-  else if ([CalContactsProvider isCalendarIslamic:v12])
+  else if ([CalContactsProvider isCalendarIslamic:calendarCopy])
   {
     v26 = @"birthday_islamic_count";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x1E695D818]])
+  else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D818]])
   {
     v26 = @"birthday_bangla_count";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x1E695D858]])
+  else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D858]])
   {
     v26 = @"birthday_gujarati_count";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x1E695D8A0]])
+  else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8A0]])
   {
     v26 = @"birthday_kannada_count";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x1E695D8A8]])
+  else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8A8]])
   {
     v26 = @"birthday_malayalam_count";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x1E695D8B0]])
+  else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8B0]])
   {
     v26 = @"birthday_marathi_count";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x1E695D8B8]])
+  else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8B8]])
   {
     v26 = @"birthday_odia_count";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x1E695D8D0]])
+  else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8D0]])
   {
     v26 = @"birthday_tamil_count";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x1E695D8D8]])
+  else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8D8]])
   {
     v26 = @"birthday_telugu_count";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x1E695D8E8]])
+  else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8E8]])
   {
     v26 = @"birthday_vikram_count";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x1E695D838]])
+  else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D838]])
   {
     v26 = @"birthday_korean_count";
   }
 
-  else if ([v12 isEqualToString:*MEMORY[0x1E695D8E0]])
+  else if ([calendarCopy isEqualToString:*MEMORY[0x1E695D8E0]])
   {
     v26 = @"birthday_vietnamese_count";
   }
@@ -1937,12 +1937,12 @@ LABEL_15:
 
   v32 = MEMORY[0x1E696AEC0];
   v33 = [v13 localizedStringForKey:v26 value:&stru_1F379FFA8 table:0];
-  v27 = [v32 localizedStringWithFormat:v33, v21, v9, v25];
+  nameCopy = [v32 localizedStringWithFormat:v33, year, nameCopy, v25];
 
 LABEL_67:
 LABEL_68:
 
-  return v27;
+  return nameCopy;
 }
 
 void __27__CalContactsProvider_init__block_invoke_cold_1()
@@ -1963,9 +1963,9 @@ void __27__CalContactsProvider_init__block_invoke_2_cold_1()
 
 - (void)contactAccessResolved
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_Bool soft_MGGetBoolAnswer(CFStringRef)"];
-  [v0 handleFailureInFunction:v1 file:@"CalContactsProvider.m" lineNumber:39 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"CalContactsProvider.m" lineNumber:39 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

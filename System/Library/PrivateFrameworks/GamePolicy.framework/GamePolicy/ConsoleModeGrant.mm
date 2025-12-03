@@ -1,12 +1,12 @@
 @interface ConsoleModeGrant
 - (NSString)description;
 - (_TtC10GamePolicy16ConsoleModeGrant)init;
-- (_TtC10GamePolicy16ConsoleModeGrant)initWithCoder:(id)a3;
+- (_TtC10GamePolicy16ConsoleModeGrant)initWithCoder:(id)coder;
 @end
 
 @implementation ConsoleModeGrant
 
-- (_TtC10GamePolicy16ConsoleModeGrant)initWithCoder:(id)a3
+- (_TtC10GamePolicy16ConsoleModeGrant)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for GamePolicyAssertion.Attribute();

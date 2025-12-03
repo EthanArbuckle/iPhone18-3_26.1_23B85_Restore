@@ -1,25 +1,25 @@
 @interface VFXTransaction
 + (BOOL)immediateMode;
-+ (BOOL)setImmediateMode:(BOOL)a3;
++ (BOOL)setImmediateMode:(BOOL)mode;
 + (VFXTimingFunction)timingFunction;
-+ (_BYTE)setImmediateModeWithAtomicTime:(double)a1;
++ (_BYTE)setImmediateModeWithAtomicTime:(double)time;
 + (__CFXWorld)immediateModeRestrictedContext;
 + (id)animationTimingFunction;
 + (void)checkUncommittedTransactions;
-+ (void)enqueueCommandForObject:(id)a3 immediateTransactionBlock:(id)a4;
-+ (void)performPresentationObjectQueriesInWorld:(id)a3 usingBlock:(id)a4;
-+ (void)postCommandAvoidingImmediateModeWithWorldRef:(void *)a3 applyBlock:(id)a4;
-+ (void)postCommandWithObject:(id)a3 applyBlock:(id)a4;
-+ (void)postCommandWithObject:(id)a3 key:(id)a4 subscriptIndex:(unint64_t)a5 derivedKeyPath:(id)a6 applyBlock:(id)a7;
-+ (void)postCommandWithObject:(id)a3 key:(id)a4 subscriptKey:(id)a5 derivedKeyPath:(id)a6 applyBlock:(id)a7;
-+ (void)postCommandWithObject:(id)a3 keyPath:(id)a4 applyBlock:(id)a5;
-+ (void)postCommandWithWorldRef:(void *)a3 applyBlock:(id)a4;
-+ (void)postReleaseCommandWithCFXObject:(void *)a3;
-+ (void)setAnimationDuration:(double)a3;
-+ (void)setAnimationTimingFunction:(id)a3;
-+ (void)setBeginTime:(double)a3;
-+ (void)setTimingFunction:(id)a3;
-- (void)setAnimationTimingFunction:(id)a3;
++ (void)enqueueCommandForObject:(id)object immediateTransactionBlock:(id)block;
++ (void)performPresentationObjectQueriesInWorld:(id)world usingBlock:(id)block;
++ (void)postCommandAvoidingImmediateModeWithWorldRef:(void *)ref applyBlock:(id)block;
++ (void)postCommandWithObject:(id)object applyBlock:(id)block;
++ (void)postCommandWithObject:(id)object key:(id)key subscriptIndex:(unint64_t)index derivedKeyPath:(id)path applyBlock:(id)block;
++ (void)postCommandWithObject:(id)object key:(id)key subscriptKey:(id)subscriptKey derivedKeyPath:(id)path applyBlock:(id)block;
++ (void)postCommandWithObject:(id)object keyPath:(id)path applyBlock:(id)block;
++ (void)postCommandWithWorldRef:(void *)ref applyBlock:(id)block;
++ (void)postReleaseCommandWithCFXObject:(void *)object;
++ (void)setAnimationDuration:(double)duration;
++ (void)setAnimationTimingFunction:(id)function;
++ (void)setBeginTime:(double)time;
++ (void)setTimingFunction:(id)function;
+- (void)setAnimationTimingFunction:(id)function;
 @end
 
 @implementation VFXTransaction
@@ -62,34 +62,34 @@
   }
 }
 
-+ (_BYTE)setImmediateModeWithAtomicTime:(double)a1
++ (_BYTE)setImmediateModeWithAtomicTime:(double)time
 {
   result = sub_1AF276C70();
   result[52] |= 4u;
-  qword_1ED739AC0 = *&a1;
+  qword_1ED739AC0 = *&time;
   return result;
 }
 
-+ (void)setAnimationDuration:(double)a3
++ (void)setAnimationDuration:(double)duration
 {
-  if (a3 >= 3.40282347e38)
+  if (duration >= 3.40282347e38)
   {
-    a3 = 3.40282347e38;
+    duration = 3.40282347e38;
   }
 
-  v3 = a3;
-  sub_1AF277E5C(v3);
+  durationCopy = duration;
+  sub_1AF277E5C(durationCopy);
 }
 
-+ (void)setBeginTime:(double)a3
++ (void)setBeginTime:(double)time
 {
-  if (a3 >= 3.40282347e38)
+  if (time >= 3.40282347e38)
   {
-    a3 = 3.40282347e38;
+    time = 3.40282347e38;
   }
 
-  v3 = a3;
-  sub_1AF277F9C(v3);
+  timeCopy = time;
+  sub_1AF277F9C(timeCopy);
 }
 
 + (VFXTimingFunction)timingFunction
@@ -107,9 +107,9 @@
   return result;
 }
 
-+ (void)setTimingFunction:(id)a3
++ (void)setTimingFunction:(id)function
 {
-  v4 = objc_msgSend_cfxTimingFunction(a3, a2, a3, v3);
+  v4 = objc_msgSend_cfxTimingFunction(function, a2, function, v3);
 
   sub_1AF277EF8(v4);
 }
@@ -126,19 +126,19 @@
   return result;
 }
 
-+ (void)setAnimationTimingFunction:(id)a3
++ (void)setAnimationTimingFunction:(id)function
 {
-  v3 = sub_1AF36FC84(a3, a2);
+  v3 = sub_1AF36FC84(function, a2);
 
   sub_1AF277EF8(v3);
 }
 
-+ (BOOL)setImmediateMode:(BOOL)a3
++ (BOOL)setImmediateMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = sub_1AF276C70();
   v5 = sub_1AF2780E0(v4);
-  sub_1AF278058(v3);
+  sub_1AF278058(modeCopy);
   return v5;
 }
 
@@ -160,13 +160,13 @@
   return +[VFXRenderer allocatedTextureCount]_0();
 }
 
-+ (void)postReleaseCommandWithCFXObject:(void *)a3
++ (void)postReleaseCommandWithCFXObject:(void *)object
 {
   v4 = sub_1AF276C70();
   if (sub_1AF2780EC(v4))
   {
 
-    CFRelease(a3);
+    CFRelease(object);
   }
 
   else
@@ -175,120 +175,120 @@
     v5[1] = 3221225472;
     v5[2] = sub_1AF336380;
     v5[3] = &unk_1E7A7E6C0;
-    v5[4] = a3;
-    sub_1AF278390(v4, 0, a3, 0, 0, v5);
+    v5[4] = object;
+    sub_1AF278390(v4, 0, object, 0, 0, v5);
   }
 }
 
-+ (void)postCommandWithWorldRef:(void *)a3 applyBlock:(id)a4
++ (void)postCommandWithWorldRef:(void *)ref applyBlock:(id)block
 {
   v6 = sub_1AF276C70();
   if (sub_1AF2780EC(v6))
   {
 
-    sub_1AF336414(a4, a3, v7);
+    sub_1AF336414(block, ref, v7);
   }
 
   else
   {
 
-    sub_1AF278390(v6, 0, a3, 0, 1, a4);
+    sub_1AF278390(v6, 0, ref, 0, 1, block);
   }
 }
 
-+ (void)postCommandAvoidingImmediateModeWithWorldRef:(void *)a3 applyBlock:(id)a4
++ (void)postCommandAvoidingImmediateModeWithWorldRef:(void *)ref applyBlock:(id)block
 {
   v6 = sub_1AF276C70();
 
-  sub_1AF278390(v6, 0, a3, 0, 1, a4);
+  sub_1AF278390(v6, 0, ref, 0, 1, block);
 }
 
-+ (void)postCommandWithObject:(id)a3 applyBlock:(id)a4
++ (void)postCommandWithObject:(id)object applyBlock:(id)block
 {
   v6 = sub_1AF276C70();
   if (sub_1AF2780EC(v6))
   {
-    v10 = sub_1AF336580(a3, v7, v8, v9);
+    v10 = sub_1AF336580(object, v7, v8, v9);
 
-    sub_1AF336414(a4, v10, v11);
+    sub_1AF336414(block, v10, v11);
   }
 
   else
   {
-    v12 = objc_msgSend___CFObject(a3, v7, v8, v9);
+    v12 = objc_msgSend___CFObject(object, v7, v8, v9);
 
-    sub_1AF278390(v6, a3, v12, 0, 1, a4);
+    sub_1AF278390(v6, object, v12, 0, 1, block);
   }
 }
 
-+ (void)postCommandWithObject:(id)a3 keyPath:(id)a4 applyBlock:(id)a5
++ (void)postCommandWithObject:(id)object keyPath:(id)path applyBlock:(id)block
 {
   v8 = sub_1AF276C70();
   if (sub_1AF2780EC(v8))
   {
-    v12 = sub_1AF336580(a3, v9, v10, v11);
-    v16 = objc_msgSend___CFObject(a3, v13, v14, v15);
+    v12 = sub_1AF336580(object, v9, v10, v11);
+    v16 = objc_msgSend___CFObject(object, v13, v14, v15);
 
-    sub_1AF277660(v12, v16, a4, v8, a5);
+    sub_1AF277660(v12, v16, path, v8, block);
   }
 
   else
   {
-    v17 = objc_msgSend___CFObject(a3, v9, v10, v11);
+    v17 = objc_msgSend___CFObject(object, v9, v10, v11);
 
-    sub_1AF278390(v8, a3, v17, a4, 1, a5);
+    sub_1AF278390(v8, object, v17, path, 1, block);
   }
 }
 
-+ (void)postCommandWithObject:(id)a3 key:(id)a4 subscriptIndex:(unint64_t)a5 derivedKeyPath:(id)a6 applyBlock:(id)a7
++ (void)postCommandWithObject:(id)object key:(id)key subscriptIndex:(unint64_t)index derivedKeyPath:(id)path applyBlock:(id)block
 {
   v12 = sub_1AF276C70();
   if (sub_1AF2780EC(v12))
   {
-    v16 = sub_1AF336580(a3, v13, v14, v15);
-    v20 = objc_msgSend___CFObject(a3, v17, v18, v19);
+    v16 = sub_1AF336580(object, v13, v14, v15);
+    v20 = objc_msgSend___CFObject(object, v17, v18, v19);
 
-    sub_1AF27779C(v16, v20, a4, a5, v12, a7);
+    sub_1AF27779C(v16, v20, key, index, v12, block);
   }
 
   else
   {
-    v21 = objc_msgSend___CFObject(a3, v13, v14, v15);
+    v21 = objc_msgSend___CFObject(object, v13, v14, v15);
 
-    sub_1AF278390(v12, a3, v21, a6, 1, a7);
+    sub_1AF278390(v12, object, v21, path, 1, block);
   }
 }
 
-+ (void)postCommandWithObject:(id)a3 key:(id)a4 subscriptKey:(id)a5 derivedKeyPath:(id)a6 applyBlock:(id)a7
++ (void)postCommandWithObject:(id)object key:(id)key subscriptKey:(id)subscriptKey derivedKeyPath:(id)path applyBlock:(id)block
 {
   v12 = sub_1AF276C70();
   if (sub_1AF2780EC(v12))
   {
-    v16 = sub_1AF336580(a3, v13, v14, v15);
-    v20 = objc_msgSend___CFObject(a3, v17, v18, v19);
+    v16 = sub_1AF336580(object, v13, v14, v15);
+    v20 = objc_msgSend___CFObject(object, v17, v18, v19);
 
-    sub_1AF2778F4(v16, v20, a4, a5, v12, a7);
+    sub_1AF2778F4(v16, v20, key, subscriptKey, v12, block);
   }
 
   else
   {
-    v21 = objc_msgSend___CFObject(a3, v13, v14, v15);
+    v21 = objc_msgSend___CFObject(object, v13, v14, v15);
 
-    sub_1AF278390(v12, a3, v21, a6, 1, a7);
+    sub_1AF278390(v12, object, v21, path, 1, block);
   }
 }
 
-+ (void)enqueueCommandForObject:(id)a3 immediateTransactionBlock:(id)a4
++ (void)enqueueCommandForObject:(id)object immediateTransactionBlock:(id)block
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a3 = objc_msgSend_world(a3, v8, v9, v10);
+    object = objc_msgSend_world(object, v8, v9, v10);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    if (!objc_msgSend_worldRef(a3, v11, v12, v13))
+    if (!objc_msgSend_worldRef(object, v11, v12, v13))
     {
       v15 = sub_1AF0D5194();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -301,9 +301,9 @@
     v17[1] = 3221225472;
     v17[2] = sub_1AF336964;
     v17[3] = &unk_1E7A7F250;
-    v17[4] = a4;
+    v17[4] = block;
     v17[5] = a2;
-    objc_msgSend_postCommandWithObject_applyBlock_(a1, v14, a3, v17);
+    objc_msgSend_postCommandWithObject_applyBlock_(self, v14, object, v17);
   }
 
   else
@@ -316,33 +316,33 @@
   }
 }
 
-+ (void)performPresentationObjectQueriesInWorld:(id)a3 usingBlock:(id)a4
++ (void)performPresentationObjectQueriesInWorld:(id)world usingBlock:(id)block
 {
-  v5 = objc_msgSend_worldRef(a3, a2, a3, a4);
+  v5 = objc_msgSend_worldRef(world, a2, world, block);
   v7 = v5;
   if (v5)
   {
     v6 = v5;
     sub_1AF1CEA20(v5);
-    (*(a4 + 2))(a4, &v7);
+    (*(block + 2))(block, &v7);
     sub_1AF1CEA9C(v6);
   }
 
   else
   {
-    (*(a4 + 2))(a4, &v7);
+    (*(block + 2))(block, &v7);
   }
 }
 
-- (void)setAnimationTimingFunction:(id)a3
+- (void)setAnimationTimingFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a3 = objc_msgSend_functionWithName_(MEMORY[0x1E69793D0], v4, a3, v5);
+    function = objc_msgSend_functionWithName_(MEMORY[0x1E69793D0], v4, function, v5);
   }
 
-  MEMORY[0x1EEE66B58](VFXTransaction, sel_setAnimationTimingFunction_, a3, v5);
+  MEMORY[0x1EEE66B58](VFXTransaction, sel_setAnimationTimingFunction_, function, v5);
 }
 
 @end

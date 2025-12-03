@@ -1,9 +1,9 @@
 @interface VoiceOverSpeakSecondsDetailController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)_selectedEncoding;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateTableCheckedSelection:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateTableCheckedSelection:(id)selection;
 @end
 
 @implementation VoiceOverSpeakSecondsDetailController
@@ -15,7 +15,7 @@
   if (!v3)
   {
     v18 = *MEMORY[0x277D3FC48];
-    v19 = self;
+    selfCopy = self;
     [(VoiceOverSpeakSecondsDetailController *)self loadSpecifiersFromPlistName:@"SpeakSecondsSettings" target:?];
     v21 = 0u;
     v22 = 0u;
@@ -36,24 +36,24 @@
           }
 
           v8 = *(*(&v21 + 1) + 8 * i);
-          v9 = [v8 identifier];
-          v10 = [v9 isEqualToString:@"VOICEOVER_SPEAK_SECONDS_ALWAYS"];
+          identifier = [v8 identifier];
+          v10 = [identifier isEqualToString:@"VOICEOVER_SPEAK_SECONDS_ALWAYS"];
 
           if (v10)
           {
             [v8 setProperty:&unk_284E7E5D0 forKey:@"SpeakSecondsEncoding"];
           }
 
-          v11 = [v8 identifier];
-          v12 = [v11 isEqualToString:@"VOICEOVER_SPEAK_SECONDS_IF_DISPLAYED"];
+          identifier2 = [v8 identifier];
+          v12 = [identifier2 isEqualToString:@"VOICEOVER_SPEAK_SECONDS_IF_DISPLAYED"];
 
           if (v12)
           {
             [v8 setProperty:&unk_284E7E5E8 forKey:@"SpeakSecondsEncoding"];
           }
 
-          v13 = [v8 identifier];
-          v14 = [v13 isEqualToString:@"VOICEOVER_SPEAK_SECONDS_NEVER"];
+          identifier3 = [v8 identifier];
+          v14 = [identifier3 isEqualToString:@"VOICEOVER_SPEAK_SECONDS_NEVER"];
 
           if (v14)
           {
@@ -67,10 +67,10 @@
       while (v5);
     }
 
-    v15 = *(&v19->super.super.super.super.super.super.isa + v18);
-    *(&v19->super.super.super.super.super.super.isa + v18) = obj;
+    v15 = *(&selfCopy->super.super.super.super.super.super.isa + v18);
+    *(&selfCopy->super.super.super.super.super.super.isa + v18) = obj;
 
-    v3 = *(&v19->super.super.super.super.super.super.isa + v18);
+    v3 = *(&selfCopy->super.super.super.super.super.super.isa + v18);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -80,68 +80,68 @@
 
 - (int64_t)_selectedEncoding
 {
-  v2 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v3 = [v2 objectForKey:@"VoiceOverSpeakSecondsEncoding"];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v3 = [accessibilityDomainAccessor objectForKey:@"VoiceOverSpeakSecondsEncoding"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 1;
+    integerValue = 1;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = VoiceOverSpeakSecondsDetailController;
-  v5 = [(VoiceOverSpeakSecondsDetailController *)&v10 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [(VoiceOverSpeakSecondsDetailController *)self _selectedEncoding];
-  v7 = [v5 specifier];
-  v8 = [v7 propertyForKey:@"SpeakSecondsEncoding"];
+  v5 = [(VoiceOverSpeakSecondsDetailController *)&v10 tableView:view cellForRowAtIndexPath:path];
+  _selectedEncoding = [(VoiceOverSpeakSecondsDetailController *)self _selectedEncoding];
+  specifier = [v5 specifier];
+  v8 = [specifier propertyForKey:@"SpeakSecondsEncoding"];
 
   if (v8)
   {
-    [v5 setChecked:{v6 == objc_msgSend(v8, "intValue")}];
+    [v5 setChecked:{_selectedEncoding == objc_msgSend(v8, "intValue")}];
   }
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = VoiceOverSpeakSecondsDetailController;
-  [(VoiceOverSpeakSecondsDetailController *)&v13 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(VoiceOverSpeakSecondsDetailController *)&v13 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v12.receiver = self;
   v12.super_class = VoiceOverSpeakSecondsDetailController;
-  v8 = [(VoiceOverSpeakSecondsDetailController *)&v12 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:@"SpeakSecondsEncoding"];
+  v8 = [(VoiceOverSpeakSecondsDetailController *)&v12 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:@"SpeakSecondsEncoding"];
 
   if (v10)
   {
     [(AccessibilityBridgeBaseController *)self setGizmoAccessibilityPref:v10 forKey:@"VoiceOverSpeakSecondsEncoding"];
-    [v6 deselectRowAtIndexPath:v7 animated:1];
-    [(VoiceOverSpeakSecondsDetailController *)self updateTableCheckedSelection:v7];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 postNotificationName:@"AXVoiceOverReloadNotification" object:0];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    [(VoiceOverSpeakSecondsDetailController *)self updateTableCheckedSelection:pathCopy];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"AXVoiceOverReloadNotification" object:0];
   }
 }
 
-- (void)updateTableCheckedSelection:(id)a3
+- (void)updateTableCheckedSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v5 = *MEMORY[0x277D3FC60];
-  v11 = v4;
-  v6 = [*(&self->super.super.super.super.super.super.isa + v5) numberOfRowsInSection:{objc_msgSend(v4, "section")}];
+  v11 = selectionCopy;
+  v6 = [*(&self->super.super.super.super.super.super.isa + v5) numberOfRowsInSection:{objc_msgSend(selectionCopy, "section")}];
   if (v6 >= 1)
   {
     v7 = v6;

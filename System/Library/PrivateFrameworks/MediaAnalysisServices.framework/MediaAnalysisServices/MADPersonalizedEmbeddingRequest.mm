@@ -1,11 +1,11 @@
 @interface MADPersonalizedEmbeddingRequest
 - (CGRect)targetBounds;
 - (MADPersonalizedEmbeddingRequest)init;
-- (MADPersonalizedEmbeddingRequest)initWithCoder:(id)a3;
+- (MADPersonalizedEmbeddingRequest)initWithCoder:(id)coder;
 - (id)description;
 - (int64_t)type;
-- (void)encodeWithCoder:(id)a3;
-- (void)setType:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation MADPersonalizedEmbeddingRequest
@@ -30,17 +30,17 @@
   return v3;
 }
 
-- (MADPersonalizedEmbeddingRequest)initWithCoder:(id)a3
+- (MADPersonalizedEmbeddingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MADPersonalizedEmbeddingRequest;
-  v5 = [(MADMultiModalRequest *)&v15 initWithCoder:v4];
+  v5 = [(MADMultiModalRequest *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_revision = [v4 decodeIntegerForKey:@"Revision"];
-    v5->_bypassFaceDetection = [v4 decodeBoolForKey:@"BypassFaceDetection"];
-    [v4 decodeRectForKey:@"TargetBounds"];
+    v5->_revision = [coderCopy decodeIntegerForKey:@"Revision"];
+    v5->_bypassFaceDetection = [coderCopy decodeBoolForKey:@"BypassFaceDetection"];
+    [coderCopy decodeRectForKey:@"TargetBounds"];
     v5->_targetBounds.origin.x = v6;
     v5->_targetBounds.origin.y = v7;
     v5->_targetBounds.size.width = v8;
@@ -63,7 +63,7 @@
 
     v11 = v10;
     _Block_object_dispose(&v17, 8);
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PersonalizationOptions"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PersonalizationOptions"];
     personalizationOptions = v5->_personalizationOptions;
     v5->_personalizationOptions = v12;
   }
@@ -71,28 +71,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADPersonalizedEmbeddingRequest;
-  v4 = a3;
-  [(MADMultiModalRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_revision forKey:{@"Revision", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_bypassFaceDetection forKey:@"BypassFaceDetection"];
-  [v4 encodeRect:@"TargetBounds" forKey:{self->_targetBounds.origin.x, self->_targetBounds.origin.y, self->_targetBounds.size.width, self->_targetBounds.size.height}];
-  [v4 encodeObject:self->_personalizationOptions forKey:@"PersonalizationOptions"];
+  coderCopy = coder;
+  [(MADMultiModalRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_revision forKey:{@"Revision", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_bypassFaceDetection forKey:@"BypassFaceDetection"];
+  [coderCopy encodeRect:@"TargetBounds" forKey:{self->_targetBounds.origin.x, self->_targetBounds.origin.y, self->_targetBounds.size.width, self->_targetBounds.size.height}];
+  [coderCopy encodeObject:self->_personalizationOptions forKey:@"PersonalizationOptions"];
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = 3;
     goto LABEL_5;
   }
 
-  v3 = a3;
-  if (a3 == 1)
+  typeCopy = type;
+  if (type == 1)
   {
     v4 = 1;
 LABEL_5:
@@ -103,7 +103,7 @@ LABEL_5:
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    [MADPersonalizedEmbeddingRequest setType:v3];
+    [MADPersonalizedEmbeddingRequest setType:typeCopy];
   }
 }
 
@@ -123,30 +123,30 @@ LABEL_5:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"revision: %d, ", self->_revision];
-  [v3 appendFormat:@"bypassFaceDetection: %d, ", self->_bypassFaceDetection];
+  [string appendFormat:@"revision: %d, ", self->_revision];
+  [string appendFormat:@"bypassFaceDetection: %d, ", self->_bypassFaceDetection];
   if (!CGRectIsEmpty(self->_targetBounds))
   {
-    [v3 appendFormat:@"targetBounds: (%0.2f, %0.2f) %0.2fx%0.2f, ", *&self->_targetBounds.origin.x, *&self->_targetBounds.origin.y, *&self->_targetBounds.size.width, *&self->_targetBounds.size.height];
+    [string appendFormat:@"targetBounds: (%0.2f, %0.2f) %0.2fx%0.2f, ", *&self->_targetBounds.origin.x, *&self->_targetBounds.origin.y, *&self->_targetBounds.size.width, *&self->_targetBounds.size.height];
   }
 
   if (self->_personalizationOptions)
   {
-    [v3 appendFormat:@"personalization options: %@, ", self->_personalizationOptions];
+    [string appendFormat:@"personalization options: %@, ", self->_personalizationOptions];
   }
 
-  v6 = [(MADMultiModalRequest *)self results];
-  [v3 appendFormat:@"results: %@, ", v6];
+  results = [(MADMultiModalRequest *)self results];
+  [string appendFormat:@"results: %@, ", results];
 
-  v7 = [(MADMultiModalRequest *)self error];
-  [v3 appendFormat:@"error: %@>", v7];
+  error = [(MADMultiModalRequest *)self error];
+  [string appendFormat:@"error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 - (CGRect)targetBounds

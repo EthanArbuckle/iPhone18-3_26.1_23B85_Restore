@@ -1,21 +1,21 @@
 @interface VNMetalContext
-+ (void)metalContextForDevice:(void *)a3 error:;
-- (BOOL)upsampleTextures:(void *)a3 referenceTexture:(void *)a4 constraintsTextures:(void *)a5 upsampledTextures:(void *)a6 filter:(int)a7 waitForCompletion:(void *)a8 error:;
-- (id)bindIOSurfaceToMTL2DTexture:(uint64_t)a1 pixelFormat:(uint64_t)a2 width:(uint64_t)a3 height:(uint64_t)a4 plane:(uint64_t)a5 error:(void *)a6;
-- (id)bindPixelBufferToMTL2DTexture:(uint64_t)a3 pixelFormat:(void *)a4 textureSize:(double)a5 plane:(double)a6 error:;
-- (id)bindPixelBufferToMTL2DTexture:(void *)a1 pixelFormat:(CVPixelBufferRef)pixelBuffer plane:(uint64_t)a3 error:(void *)a4;
-- (id)bindPixelBufferToMTL2DTexture:(void *)a3 error:;
-- (id)bindPixelBuffersToTextures:(void *)a3 error:;
-- (id)commandQueueReturnError:(uint64_t)a1;
-- (id)computePipelineStateForFunctionWithName:(uint64_t)a3 error:;
-- (id)libraryReturnError:(uint64_t)a1;
-- (void)createGuidedFilterForTextures:(void *)a3 referenceTexture:(void *)a4 error:;
-- (void)encodeCommandsForBuffer:(void *)a3 state:(uint64_t)a4 label:(uint64_t)a5 width:(void *)a6 height:(void *)a7 textures:buffers:block:;
++ (void)metalContextForDevice:(void *)device error:;
+- (BOOL)upsampleTextures:(void *)textures referenceTexture:(void *)texture constraintsTextures:(void *)constraintsTextures upsampledTextures:(void *)upsampledTextures filter:(int)filter waitForCompletion:(void *)completion error:;
+- (id)bindIOSurfaceToMTL2DTexture:(uint64_t)texture pixelFormat:(uint64_t)format width:(uint64_t)width height:(uint64_t)height plane:(uint64_t)plane error:(void *)error;
+- (id)bindPixelBufferToMTL2DTexture:(uint64_t)texture pixelFormat:(void *)format textureSize:(double)size plane:(double)plane error:;
+- (id)bindPixelBufferToMTL2DTexture:(void *)texture error:;
+- (id)bindPixelBufferToMTL2DTexture:(void *)texture pixelFormat:(CVPixelBufferRef)pixelBuffer plane:(uint64_t)plane error:(void *)error;
+- (id)bindPixelBuffersToTextures:(void *)textures error:;
+- (id)commandQueueReturnError:(uint64_t)error;
+- (id)computePipelineStateForFunctionWithName:(uint64_t)name error:;
+- (id)libraryReturnError:(uint64_t)error;
+- (void)createGuidedFilterForTextures:(void *)textures referenceTexture:(void *)texture error:;
+- (void)encodeCommandsForBuffer:(void *)buffer state:(uint64_t)state label:(uint64_t)label width:(void *)width height:(void *)height textures:buffers:block:;
 @end
 
 @implementation VNMetalContext
 
-+ (void)metalContextForDevice:(void *)a3 error:
++ (void)metalContextForDevice:(void *)device error:
 {
   v4 = a2;
   v5 = objc_opt_self();
@@ -29,10 +29,10 @@
     v6 = MTLCreateSystemDefaultDevice();
     if (!v6)
     {
-      if (a3)
+      if (device)
       {
         [VNError errorForInternalErrorWithLocalizedDescription:@"Cannot create MTLDevice"];
-        *a3 = v16 = 0;
+        *device = v16 = 0;
       }
 
       else
@@ -64,10 +64,10 @@
   else
   {
 
-    if (a3)
+    if (device)
     {
       +[VNError errorForMemoryAllocationFailure];
-      *a3 = v16 = 0;
+      *device = v16 = 0;
     }
 
     else
@@ -81,19 +81,19 @@ LABEL_13:
   return v16;
 }
 
-- (id)commandQueueReturnError:(uint64_t)a1
+- (id)commandQueueReturnError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    os_unfair_lock_lock((a1 + 16));
-    v4 = *(a1 + 24);
+    os_unfair_lock_lock((error + 16));
+    v4 = *(error + 24);
     if (!v4)
     {
-      v5 = [*(a1 + 8) newCommandQueue];
-      v6 = *(a1 + 24);
-      *(a1 + 24) = v5;
+      newCommandQueue = [*(error + 8) newCommandQueue];
+      v6 = *(error + 24);
+      *(error + 24) = newCommandQueue;
 
-      v7 = *(a1 + 24);
+      v7 = *(error + 24);
       if (!v7)
       {
         if (a2)
@@ -111,12 +111,12 @@ LABEL_13:
       }
 
       [v7 setBackgroundGPUPriority:2];
-      v4 = *(a1 + 24);
+      v4 = *(error + 24);
     }
 
     v8 = v4;
 LABEL_6:
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((error + 16));
     goto LABEL_7;
   }
 
@@ -126,25 +126,25 @@ LABEL_7:
   return v8;
 }
 
-- (id)libraryReturnError:(uint64_t)a1
+- (id)libraryReturnError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    os_unfair_lock_lock((a1 + 16));
-    v4 = *(a1 + 32);
+    os_unfair_lock_lock((error + 16));
+    v4 = *(error + 32);
     if (!v4)
     {
-      v5 = *(a1 + 8);
+      v5 = *(error + 8);
       v6 = VNFrameworkBundle();
       v7 = [v5 newDefaultLibraryWithBundle:v6 error:a2];
-      v8 = *(a1 + 32);
-      *(a1 + 32) = v7;
+      v8 = *(error + 32);
+      *(error + 32) = v7;
 
-      v4 = *(a1 + 32);
+      v4 = *(error + 32);
     }
 
     v9 = v4;
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((error + 16));
   }
 
   else
@@ -155,11 +155,11 @@ LABEL_7:
   return v9;
 }
 
-- (id)bindPixelBufferToMTL2DTexture:(void *)a3 error:
+- (id)bindPixelBufferToMTL2DTexture:(void *)texture error:
 {
-  if (a1)
+  if (self)
   {
-    v6 = a1;
+    selfCopy = self;
     PixelFormatType = CVPixelBufferGetPixelFormatType(pixelBuffer);
     objc_opt_self();
     if (PixelFormatType > 1278226533)
@@ -189,24 +189,24 @@ LABEL_7:
       {
         v8 = 10;
 LABEL_13:
-        a1 = [VNMetalContext bindPixelBufferToMTL2DTexture:v6 pixelFormat:pixelBuffer plane:v8 error:a3];
+        self = [VNMetalContext bindPixelBufferToMTL2DTexture:selfCopy pixelFormat:pixelBuffer plane:v8 error:texture];
 LABEL_14:
         v3 = vars8;
         goto LABEL_15;
       }
     }
 
-    if (a3)
+    if (texture)
     {
       v9 = [VNError errorForInternalErrorWithLocalizedDescription:@"Unimplemented conversion"];
       v10 = v9;
-      a1 = 0;
-      *a3 = v9;
+      self = 0;
+      *texture = v9;
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
 
     goto LABEL_14;
@@ -214,66 +214,66 @@ LABEL_14:
 
 LABEL_15:
 
-  return a1;
+  return self;
 }
 
-- (id)bindPixelBufferToMTL2DTexture:(void *)a1 pixelFormat:(CVPixelBufferRef)pixelBuffer plane:(uint64_t)a3 error:(void *)a4
+- (id)bindPixelBufferToMTL2DTexture:(void *)texture pixelFormat:(CVPixelBufferRef)pixelBuffer plane:(uint64_t)plane error:(void *)error
 {
-  if (a1)
+  if (texture)
   {
-    v7 = a1;
+    textureCopy = texture;
     IOSurface = CVPixelBufferGetIOSurface(pixelBuffer);
     if (IOSurface)
     {
       v9 = IOSurface;
       WidthOfPlane = IOSurfaceGetWidthOfPlane(IOSurface, 0);
       HeightOfPlane = IOSurfaceGetHeightOfPlane(v9, 0);
-      a1 = [VNMetalContext bindIOSurfaceToMTL2DTexture:v7 pixelFormat:v9 width:a3 height:WidthOfPlane plane:HeightOfPlane error:a4];
+      texture = [VNMetalContext bindIOSurfaceToMTL2DTexture:textureCopy pixelFormat:v9 width:plane height:WidthOfPlane plane:HeightOfPlane error:error];
     }
 
-    else if (a4)
+    else if (error)
     {
       v12 = [VNError errorForInternalErrorWithLocalizedDescription:@"pixel buffer does not have an IOSurface"];
       v13 = v12;
-      a1 = 0;
-      *a4 = v12;
+      texture = 0;
+      *error = v12;
     }
 
     else
     {
-      a1 = 0;
+      texture = 0;
     }
 
     v4 = vars8;
   }
 
-  return a1;
+  return texture;
 }
 
-- (id)bindIOSurfaceToMTL2DTexture:(uint64_t)a1 pixelFormat:(uint64_t)a2 width:(uint64_t)a3 height:(uint64_t)a4 plane:(uint64_t)a5 error:(void *)a6
+- (id)bindIOSurfaceToMTL2DTexture:(uint64_t)texture pixelFormat:(uint64_t)format width:(uint64_t)width height:(uint64_t)height plane:(uint64_t)plane error:(void *)error
 {
-  v9 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:a3 width:a4 height:a5 mipmapped:0];
+  v9 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:width width:height height:plane mipmapped:0];
   v10 = v9;
   if (v9)
   {
     [v9 setUsage:23];
-    v11 = [*(a1 + 8) newTextureWithDescriptor:v10 iosurface:a2 plane:0];
+    v11 = [*(texture + 8) newTextureWithDescriptor:v10 iosurface:format plane:0];
     v12 = v11;
     if (v11)
     {
       v13 = v11;
     }
 
-    else if (a6)
+    else if (error)
     {
-      *a6 = [VNError errorForInternalErrorWithLocalizedDescription:@"Failed to create MTLTexture"];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:@"Failed to create MTLTexture"];
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     [VNError errorForInternalErrorWithLocalizedDescription:@"Failed to create MTLTextureDescriptor"];
-    *a6 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -284,64 +284,64 @@ LABEL_15:
   return v12;
 }
 
-- (id)bindPixelBufferToMTL2DTexture:(uint64_t)a3 pixelFormat:(void *)a4 textureSize:(double)a5 plane:(double)a6 error:
+- (id)bindPixelBufferToMTL2DTexture:(uint64_t)texture pixelFormat:(void *)format textureSize:(double)size plane:(double)plane error:
 {
-  if (a1)
+  if (self)
   {
-    v11 = a1;
+    selfCopy = self;
     IOSurface = CVPixelBufferGetIOSurface(pixelBuffer);
     if (IOSurface)
     {
       v13 = IOSurface;
-      if (IOSurfaceGetWidthOfPlane(IOSurface, 0) >= a5)
+      if (IOSurfaceGetWidthOfPlane(IOSurface, 0) >= size)
       {
-        if (IOSurfaceGetHeightOfPlane(v13, 0) >= a6)
+        if (IOSurfaceGetHeightOfPlane(v13, 0) >= plane)
         {
-          a1 = [VNMetalContext bindIOSurfaceToMTL2DTexture:v11 pixelFormat:v13 width:a3 height:a5 plane:a6 error:a4];
+          self = [VNMetalContext bindIOSurfaceToMTL2DTexture:selfCopy pixelFormat:v13 width:texture height:size plane:plane error:format];
           goto LABEL_14;
         }
 
-        if (a4)
+        if (format)
         {
           v14 = @"IOsurface height is smaller than texture height";
           goto LABEL_11;
         }
       }
 
-      else if (a4)
+      else if (format)
       {
         v14 = @"IOsurface width is smaller than texture width";
 LABEL_11:
         v15 = [VNError errorForInternalErrorWithLocalizedDescription:v14];
         v16 = v15;
-        a1 = 0;
-        *a4 = v15;
+        self = 0;
+        *format = v15;
 LABEL_14:
         v6 = vars8;
         goto LABEL_15;
       }
     }
 
-    else if (a4)
+    else if (format)
     {
       v14 = @"Pixel buffer does not have an IOSurface";
       goto LABEL_11;
     }
 
-    a1 = 0;
+    self = 0;
     goto LABEL_14;
   }
 
 LABEL_15:
 
-  return a1;
+  return self;
 }
 
-- (id)bindPixelBuffersToTextures:(void *)a3 error:
+- (id)bindPixelBuffersToTextures:(void *)textures error:
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
     v16 = 0u;
@@ -362,7 +362,7 @@ LABEL_15:
             objc_enumerationMutation(v7);
           }
 
-          v11 = [(VNMetalContext *)a1 bindPixelBufferToMTL2DTexture:a3 error:?];
+          v11 = [(VNMetalContext *)self bindPixelBufferToMTL2DTexture:textures error:?];
           if (!v11)
           {
 
@@ -395,17 +395,17 @@ LABEL_12:
   return v12;
 }
 
-- (id)computePipelineStateForFunctionWithName:(uint64_t)a3 error:
+- (id)computePipelineStateForFunctionWithName:(uint64_t)name error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [(VNMetalContext *)a1 libraryReturnError:a3];
+    v6 = [(VNMetalContext *)self libraryReturnError:name];
     v7 = v6;
     if (v6)
     {
       v8 = [v6 newFunctionWithName:v5];
-      v9 = [*(a1 + 8) newComputePipelineStateWithFunction:v8 error:a3];
+      v9 = [*(self + 8) newComputePipelineStateWithFunction:v8 error:name];
     }
 
     else
@@ -422,57 +422,57 @@ LABEL_12:
   return v9;
 }
 
-- (void)encodeCommandsForBuffer:(void *)a3 state:(uint64_t)a4 label:(uint64_t)a5 width:(void *)a6 height:(void *)a7 textures:buffers:block:
+- (void)encodeCommandsForBuffer:(void *)buffer state:(uint64_t)state label:(uint64_t)label width:(void *)width height:(void *)height textures:buffers:block:
 {
   v13 = a2;
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  if (a1)
+  bufferCopy = buffer;
+  widthCopy = width;
+  heightCopy = height;
+  if (self)
   {
-    v17 = [v13 computeCommandEncoder];
-    [v17 setComputePipelineState:v14];
-    if (v15)
+    computeCommandEncoder = [v13 computeCommandEncoder];
+    [computeCommandEncoder setComputePipelineState:bufferCopy];
+    if (widthCopy)
     {
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __90__VNMetalContext_encodeCommandsForBuffer_state_label_width_height_textures_buffers_block___block_invoke;
       v25[3] = &unk_1E77B3CC8;
-      v26 = v17;
-      [v15 enumerateObjectsUsingBlock:v25];
+      v26 = computeCommandEncoder;
+      [widthCopy enumerateObjectsUsingBlock:v25];
     }
 
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __90__VNMetalContext_encodeCommandsForBuffer_state_label_width_height_textures_buffers_block___block_invoke_2;
     v23[3] = &unk_1E77B3CF0;
-    v18 = v17;
+    v18 = computeCommandEncoder;
     v24 = v18;
     [0 enumerateObjectsUsingBlock:v23];
-    if (v16)
+    if (heightCopy)
     {
-      v16[2](v16, v18);
+      heightCopy[2](heightCopy, v18);
     }
 
-    v19 = [v14 threadExecutionWidth];
-    v20 = [v14 maxTotalThreadsPerThreadgroup];
-    v22[0] = (a4 + v19 - 1) / v19;
-    v22[1] = (a5 + v20 / v19 - 1) / (v20 / v19);
+    threadExecutionWidth = [bufferCopy threadExecutionWidth];
+    maxTotalThreadsPerThreadgroup = [bufferCopy maxTotalThreadsPerThreadgroup];
+    v22[0] = (state + threadExecutionWidth - 1) / threadExecutionWidth;
+    v22[1] = (label + maxTotalThreadsPerThreadgroup / threadExecutionWidth - 1) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth);
     v22[2] = 1;
-    v21[0] = v19;
-    v21[1] = v20 / v19;
+    v21[0] = threadExecutionWidth;
+    v21[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
     v21[2] = 1;
     [v18 dispatchThreadgroups:v22 threadsPerThreadgroup:v21];
     [v18 endEncoding];
   }
 }
 
-- (void)createGuidedFilterForTextures:(void *)a3 referenceTexture:(void *)a4 error:
+- (void)createGuidedFilterForTextures:(void *)textures referenceTexture:(void *)texture error:
 {
   v34 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v27 = a3;
-  if (!a1)
+  texturesCopy = textures;
+  if (!self)
   {
     goto LABEL_30;
   }
@@ -480,13 +480,13 @@ LABEL_12:
   if ([v6 count])
   {
     v7 = [v6 objectAtIndexedSubscript:0];
-    v8 = [v7 pixelFormat];
+    pixelFormat = [v7 pixelFormat];
 
     v9 = [v6 objectAtIndexedSubscript:0];
-    v10 = [v9 width];
+    width = [v9 width];
 
     v11 = [v6 objectAtIndexedSubscript:0];
-    v12 = [v11 height];
+    height = [v11 height];
 
     v31 = 0u;
     v32 = 0u;
@@ -510,18 +510,18 @@ LABEL_5:
       }
 
       v17 = *(*(&v29 + 1) + 8 * v16);
-      if (v10 != [v17 width] || v12 != objc_msgSend(v17, "height"))
+      if (width != [v17 width] || height != objc_msgSend(v17, "height"))
       {
         break;
       }
 
-      if (v8 != [v17 pixelFormat])
+      if (pixelFormat != [v17 pixelFormat])
       {
-        if (a4)
+        if (texture)
         {
           v20 = @"Texture pixel formats do not match";
 LABEL_23:
-          *a4 = [VNError errorForInternalErrorWithLocalizedDescription:v20];
+          *texture = [VNError errorForInternalErrorWithLocalizedDescription:v20];
         }
 
         goto LABEL_24;
@@ -537,10 +537,10 @@ LABEL_23:
 
 LABEL_13:
 
-        v18 = [v27 pixelFormat];
-        if (v18 > 69)
+        pixelFormat2 = [texturesCopy pixelFormat];
+        if (pixelFormat2 > 69)
         {
-          if (v18 != 80 && v18 != 70)
+          if (pixelFormat2 != 80 && pixelFormat2 != 70)
           {
             goto LABEL_33;
           }
@@ -551,17 +551,17 @@ LABEL_13:
         else
         {
           v19 = 1;
-          if (v18 != 10 && v18 != 55)
+          if (pixelFormat2 != 10 && pixelFormat2 != 55)
           {
 LABEL_33:
-            if (a4)
+            if (texture)
             {
               v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unimplemented format for guided upsampling"];
-              *a4 = [VNError errorForInternalErrorWithLocalizedDescription:v26];
+              *texture = [VNError errorForInternalErrorWithLocalizedDescription:v26];
             }
 
 LABEL_25:
-            a1 = 0;
+            self = 0;
             goto LABEL_30;
           }
         }
@@ -569,14 +569,14 @@ LABEL_25:
         v21 = MEMORY[0x1E6974620];
         v22 = [v13 count];
         LODWORD(v23) = 953267991;
-        v24 = [v21 filterDescriptorWithWidth:v10 height:v12 arrayLength:1 kernelSpatialDiameter:3 kernelTemporalDiameter:1 epsilon:v22 sourceChannels:v23 guideChannels:v19];
-        a1 = [objc_alloc(MEMORY[0x1E6974618]) initWithDevice:a1[1] filterDescriptor:v24];
+        v24 = [v21 filterDescriptorWithWidth:width height:height arrayLength:1 kernelSpatialDiameter:3 kernelTemporalDiameter:1 epsilon:v22 sourceChannels:v23 guideChannels:v19];
+        self = [objc_alloc(MEMORY[0x1E6974618]) initWithDevice:self[1] filterDescriptor:v24];
 
         goto LABEL_30;
       }
     }
 
-    if (a4)
+    if (texture)
     {
       v20 = @"Texture sizes do not match";
       goto LABEL_23;
@@ -587,26 +587,26 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (!a4)
+  if (!texture)
   {
     goto LABEL_25;
   }
 
   [VNError errorForInternalErrorWithLocalizedDescription:@"Texture array cannot be empty"];
-  *a4 = a1 = 0;
+  *texture = self = 0;
 LABEL_30:
 
-  return a1;
+  return self;
 }
 
-- (BOOL)upsampleTextures:(void *)a3 referenceTexture:(void *)a4 constraintsTextures:(void *)a5 upsampledTextures:(void *)a6 filter:(int)a7 waitForCompletion:(void *)a8 error:
+- (BOOL)upsampleTextures:(void *)textures referenceTexture:(void *)texture constraintsTextures:(void *)constraintsTextures upsampledTextures:(void *)upsampledTextures filter:(int)filter waitForCompletion:(void *)completion error:
 {
   v14 = a2;
-  v32 = a3;
-  v31 = a4;
-  v33 = a5;
-  v30 = a6;
-  if (!a1)
+  texturesCopy = textures;
+  textureCopy = texture;
+  constraintsTexturesCopy = constraintsTextures;
+  upsampledTexturesCopy = upsampledTextures;
+  if (!self)
   {
     goto LABEL_23;
   }
@@ -614,21 +614,21 @@ LABEL_30:
   v15 = [v14 count];
   if (!v15)
   {
-    if (!a8)
+    if (!completion)
     {
       goto LABEL_22;
     }
 
     v27 = [VNError errorForInternalErrorWithLocalizedDescription:@"Invalid texture count of 0"];
 LABEL_21:
-    a1 = 0;
-    *a8 = v27;
+    self = 0;
+    *completion = v27;
     goto LABEL_23;
   }
 
-  if (v15 != [v33 count])
+  if (v15 != [constraintsTexturesCopy count])
   {
-    if (!a8)
+    if (!completion)
     {
       goto LABEL_22;
     }
@@ -638,10 +638,10 @@ LABEL_21:
   }
 
   v16 = [v14 objectAtIndexedSubscript:0];
-  v17 = [v16 width];
+  width = [v16 width];
 
   v18 = [v14 objectAtIndexedSubscript:0];
-  v19 = [v18 height];
+  height = [v18 height];
 
   if (v15 != 1)
   {
@@ -649,15 +649,15 @@ LABEL_21:
     while (1)
     {
       v21 = [v14 objectAtIndexedSubscript:v20];
-      if ([v21 width] != v17)
+      if ([v21 width] != width)
       {
         break;
       }
 
       v22 = [v14 objectAtIndexedSubscript:v20];
-      v23 = [v22 height];
+      height2 = [v22 height];
 
-      if (v23 != v19)
+      if (height2 != height)
       {
         goto LABEL_19;
       }
@@ -669,34 +669,34 @@ LABEL_21:
     }
 
 LABEL_19:
-    if (a8)
+    if (completion)
     {
       v27 = [VNError errorForInternalErrorWithLocalizedDescription:@"Texture size mismatch"];
       goto LABEL_21;
     }
 
 LABEL_22:
-    a1 = 0;
+    self = 0;
     goto LABEL_23;
   }
 
 LABEL_9:
-  v24 = [(VNMetalContext *)a1 commandQueueReturnError:a8];
+  v24 = [(VNMetalContext *)self commandQueueReturnError:completion];
   v25 = v24;
-  a1 = v24 != 0;
+  self = v24 != 0;
   if (v24)
   {
-    v26 = [v24 commandBuffer];
-    [v30 encodeToCommandBuffer:v26 sourceTextureArray:v14 guidanceTexture:v32 constraintsTextureArray:v31 numberOfIterations:20 destinationTextureArray:v33];
-    [v26 commit];
-    if (a7)
+    commandBuffer = [v24 commandBuffer];
+    [upsampledTexturesCopy encodeToCommandBuffer:commandBuffer sourceTextureArray:v14 guidanceTexture:texturesCopy constraintsTextureArray:textureCopy numberOfIterations:20 destinationTextureArray:constraintsTexturesCopy];
+    [commandBuffer commit];
+    if (filter)
     {
-      [v26 waitUntilCompleted];
+      [commandBuffer waitUntilCompleted];
     }
   }
 
 LABEL_23:
-  return a1;
+  return self;
 }
 
 @end

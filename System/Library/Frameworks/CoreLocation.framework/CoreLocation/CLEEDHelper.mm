@@ -1,28 +1,28 @@
 @interface CLEEDHelper
-+ (int64_t)validateServerCertificateChallenge:(id)a3;
-- (CLEEDHelper)initWithDelegate:(id)a3 queue:(id)a4;
++ (int64_t)validateServerCertificateChallenge:(id)challenge;
+- (CLEEDHelper)initWithDelegate:(id)delegate queue:(id)queue;
 - (void)cleanup;
 - (void)dealloc;
-- (void)fetchAdrPreCachingStatusWithCompletion:(id)a3;
-- (void)fetchAllPendingRequestsWithCompletion:(id)a3;
-- (void)fetchCloakingKeyWithCompletion:(id)a3;
-- (void)fetchCurrentMediaUploadRequestWithCompletion:(id)a3;
-- (void)fetchCurrentStreamingRequestWithCompletion:(id)a3;
-- (void)fetchEmergencyContactNamesWithCompletion:(id)a3;
-- (void)fetchMitigationsWithCompletion:(id)a3;
-- (void)fetchPreCachedAdrEnablementStatusWithCompletion:(id)a3;
+- (void)fetchAdrPreCachingStatusWithCompletion:(id)completion;
+- (void)fetchAllPendingRequestsWithCompletion:(id)completion;
+- (void)fetchCloakingKeyWithCompletion:(id)completion;
+- (void)fetchCurrentMediaUploadRequestWithCompletion:(id)completion;
+- (void)fetchCurrentStreamingRequestWithCompletion:(id)completion;
+- (void)fetchEmergencyContactNamesWithCompletion:(id)completion;
+- (void)fetchMitigationsWithCompletion:(id)completion;
+- (void)fetchPreCachedAdrEnablementStatusWithCompletion:(id)completion;
 - (void)handleInterruption;
-- (void)handleRemoteProxyError:(id)a3 forProcessIdentifier:(int)a4;
-- (void)mediaUploadList:(id)a3 forRequestID:(id)a4 completion:(id)a5;
+- (void)handleRemoteProxyError:(id)error forProcessIdentifier:(int)identifier;
+- (void)mediaUploadList:(id)list forRequestID:(id)d completion:(id)completion;
 - (void)notifyHelperInvalidation;
-- (void)notifyMitigationNeeded:(id)a3;
+- (void)notifyMitigationNeeded:(id)needed;
 - (void)notifyNewRequestAvailable;
-- (void)streamingSessionEndedForRequestID:(id)a3 completion:(id)a4;
+- (void)streamingSessionEndedForRequestID:(id)d completion:(id)completion;
 @end
 
 @implementation CLEEDHelper
 
-- (CLEEDHelper)initWithDelegate:(id)a3 queue:(id)a4
+- (CLEEDHelper)initWithDelegate:(id)delegate queue:(id)queue
 {
   v54 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -36,9 +36,9 @@
     *buf = 136446722;
     v49 = "[CLEEDHelper initWithDelegate:queue:]";
     v50 = 2114;
-    v51 = a3;
+    delegateCopy = delegate;
     v52 = 2114;
-    v53 = a4;
+    queueCopy = queue;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s[Delegate:%{public}@,Queue:%{public}@]", buf, 0x20u);
   }
 
@@ -54,9 +54,9 @@
     v42 = 136446722;
     v43 = "[CLEEDHelper initWithDelegate:queue:]";
     v44 = 2114;
-    v45 = a3;
+    delegateCopy2 = delegate;
     v46 = 2114;
-    v47 = a4;
+    queueCopy2 = queue;
     v9 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDHelper initWithDelegate:queue:]", "CoreLocation: %s\n", v9);
     if (v9 != buf)
@@ -71,8 +71,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_helperDelegate, a3);
-    objc_storeWeak(&v11->_fClientQueue, a4);
+    objc_storeWeak(&v10->_helperDelegate, delegate);
+    objc_storeWeak(&v11->_fClientQueue, queue);
     v12 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.locationd.eedhelper" options:0];
     v11->_fConnection = v12;
     if (v12)
@@ -198,7 +198,7 @@
         *buf = 136446466;
         v49 = "[CLEEDHelper initWithDelegate:queue:]";
         v50 = 2082;
-        v51 = "com.apple.locationd.eedhelper";
+        delegateCopy = "com.apple.locationd.eedhelper";
         _os_log_impl(&dword_19B873000, v29, OS_LOG_TYPE_ERROR, "#EED2FWK,%{public}s, connection initialization failure to %{public}s", buf, 0x16u);
       }
 
@@ -214,7 +214,7 @@
         v42 = 136446466;
         v43 = "[CLEEDHelper initWithDelegate:queue:]";
         v44 = 2082;
-        v45 = "com.apple.locationd.eedhelper";
+        delegateCopy2 = "com.apple.locationd.eedhelper";
         v31 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 0, "[CLEEDHelper initWithDelegate:queue:]", "CoreLocation: %s\n", v31);
         if (v31 != buf)
@@ -354,17 +354,17 @@
     }
   }
 
-  v6 = [(CLEEDHelper *)self fConnection];
+  fConnection = [(CLEEDHelper *)self fConnection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_19B8BB9F4;
   v8[3] = &unk_1E753D138;
   v8[4] = self;
-  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](v6 remoteObjectProxyWithErrorHandler:{v8), "connectToEEDHelper"}];
+  [-[NSXPCConnection remoteObjectProxyWithErrorHandler:](fConnection remoteObjectProxyWithErrorHandler:{v8), "connectToEEDHelper"}];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleRemoteProxyError:(id)a3 forProcessIdentifier:(int)a4
+- (void)handleRemoteProxyError:(id)error forProcessIdentifier:(int)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -378,11 +378,11 @@
     *buf = 136446978;
     v12 = "[CLEEDHelper handleRemoteProxyError:forProcessIdentifier:]";
     v13 = 1026;
-    v14 = a4;
+    identifierCopy = identifier;
     v15 = 2114;
-    v16 = [a3 localizedDescription];
+    localizedDescription = [error localizedDescription];
     v17 = 2114;
-    v18 = [a3 localizedFailureReason];
+    localizedFailureReason = [error localizedFailureReason];
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_ERROR, "#EED2FWK,%{public}s[pid:%{public}d]: %{public}@ %{public}@\n", buf, 0x26u);
   }
 
@@ -395,8 +395,8 @@
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
     }
 
-    [a3 localizedDescription];
-    [a3 localizedFailureReason];
+    [error localizedDescription];
+    [error localizedFailureReason];
     v9 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 0, "[CLEEDHelper handleRemoteProxyError:forProcessIdentifier:]", "CoreLocation: %s\n", v9);
     if (v9 != buf)
@@ -425,9 +425,9 @@
       *buf = 136446722;
       v8 = "[CLEEDHelper notifyHelperInvalidation]";
       v9 = 2114;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
-      v12 = [(CLEEDHelper *)self helperDelegate];
+      helperDelegate = [(CLEEDHelper *)self helperDelegate];
       _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s [self:%{public}@, helperDelegate:%{public}@]", buf, 0x20u);
     }
 
@@ -472,9 +472,9 @@
       *buf = 136446722;
       v8 = "[CLEEDHelper notifyNewRequestAvailable]";
       v9 = 2114;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
-      v12 = [(CLEEDHelper *)self helperDelegate];
+      helperDelegate = [(CLEEDHelper *)self helperDelegate];
       _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s [self:%{public}@, helperDelegate:%{public}@]", buf, 0x20u);
     }
 
@@ -502,7 +502,7 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyMitigationNeeded:(id)a3
+- (void)notifyMitigationNeeded:(id)needed
 {
   v17 = *MEMORY[0x1E69E9840];
   if ([(CLEEDHelper *)self helperDelegate])
@@ -521,11 +521,11 @@
         *buf = 136446978;
         v10 = "[CLEEDHelper notifyMitigationNeeded:]";
         v11 = 2114;
-        v12 = self;
+        selfCopy = self;
         v13 = 2114;
-        v14 = [(CLEEDHelper *)self helperDelegate];
+        helperDelegate = [(CLEEDHelper *)self helperDelegate];
         v15 = 2114;
-        v16 = a3;
+        neededCopy = needed;
         _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s [self:%{public}@, helperDelegate:%{public}@, mitigation:%{public}@]", buf, 0x2Au);
       }
 
@@ -547,14 +547,14 @@
         }
       }
 
-      [(CLEEDRequestDelegate *)[(CLEEDHelper *)self helperDelegate] notifyMitigationNeeded:a3];
+      [(CLEEDRequestDelegate *)[(CLEEDHelper *)self helperDelegate] notifyMitigationNeeded:needed];
     }
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAllPendingRequestsWithCompletion:(id)a3
+- (void)fetchAllPendingRequestsWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -568,7 +568,7 @@
     *buf = 136446466;
     v21 = "[CLEEDHelper fetchAllPendingRequestsWithCompletion:]";
     v22 = 2114;
-    v23 = a3;
+    completionCopy = completion;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s[completion:%{public}@]", buf, 0x16u);
   }
 
@@ -584,7 +584,7 @@
     v16 = 136446466;
     v17 = "[CLEEDHelper fetchAllPendingRequestsWithCompletion:]";
     v18 = 2114;
-    v19 = a3;
+    completionCopy2 = completion;
     v7 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDHelper fetchAllPendingRequestsWithCompletion:]", "CoreLocation: %s\n", v7);
     if (v7 != buf)
@@ -595,20 +595,20 @@
 
   if ([(CLEEDHelper *)self fConnection])
   {
-    v8 = [(CLEEDHelper *)self fConnection];
+    fConnection = [(CLEEDHelper *)self fConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_19B8BC640;
     v13[3] = &unk_1E753D338;
     v13[4] = self;
-    v13[5] = a3;
-    v9 = [(NSXPCConnection *)v8 remoteObjectProxyWithErrorHandler:v13];
+    v13[5] = completion;
+    v9 = [(NSXPCConnection *)fConnection remoteObjectProxyWithErrorHandler:v13];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_19B8BC6B0;
     v12[3] = &unk_1E753D360;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = completion;
     [v9 fetchAllPendingRequestsWithCompletion:v12];
   }
 
@@ -617,13 +617,13 @@
     v10 = objc_alloc(MEMORY[0x1E696ABC0]);
     v14 = *MEMORY[0x1E696A578];
     v15 = @"Connection reset, caller needs to re-initialize";
-    (*(a3 + 2))(a3, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
+    (*(completion + 2))(completion, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCurrentMediaUploadRequestWithCompletion:(id)a3
+- (void)fetchCurrentMediaUploadRequestWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -637,7 +637,7 @@
     *buf = 136446466;
     v21 = "[CLEEDHelper fetchCurrentMediaUploadRequestWithCompletion:]";
     v22 = 2114;
-    v23 = a3;
+    completionCopy = completion;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s[completion:%{public}@]", buf, 0x16u);
   }
 
@@ -653,7 +653,7 @@
     v16 = 136446466;
     v17 = "[CLEEDHelper fetchCurrentMediaUploadRequestWithCompletion:]";
     v18 = 2114;
-    v19 = a3;
+    completionCopy2 = completion;
     v7 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDHelper fetchCurrentMediaUploadRequestWithCompletion:]", "CoreLocation: %s\n", v7);
     if (v7 != buf)
@@ -664,20 +664,20 @@
 
   if ([(CLEEDHelper *)self fConnection])
   {
-    v8 = [(CLEEDHelper *)self fConnection];
+    fConnection = [(CLEEDHelper *)self fConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_19B8BCBF4;
     v13[3] = &unk_1E753D338;
     v13[4] = self;
-    v13[5] = a3;
-    v9 = [(NSXPCConnection *)v8 remoteObjectProxyWithErrorHandler:v13];
+    v13[5] = completion;
+    v9 = [(NSXPCConnection *)fConnection remoteObjectProxyWithErrorHandler:v13];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_19B8BCC64;
     v12[3] = &unk_1E753D388;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = completion;
     [v9 fetchCurrentMediaUploadRequestWithCompletion:v12];
   }
 
@@ -686,13 +686,13 @@
     v10 = objc_alloc(MEMORY[0x1E696ABC0]);
     v14 = *MEMORY[0x1E696A578];
     v15 = @"Connection reset, caller needs to re-initialize";
-    (*(a3 + 2))(a3, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
+    (*(completion + 2))(completion, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCurrentStreamingRequestWithCompletion:(id)a3
+- (void)fetchCurrentStreamingRequestWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -706,7 +706,7 @@
     *buf = 136446466;
     v21 = "[CLEEDHelper fetchCurrentStreamingRequestWithCompletion:]";
     v22 = 2114;
-    v23 = a3;
+    completionCopy = completion;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s[completion:%{public}@]", buf, 0x16u);
   }
 
@@ -722,7 +722,7 @@
     v16 = 136446466;
     v17 = "[CLEEDHelper fetchCurrentStreamingRequestWithCompletion:]";
     v18 = 2114;
-    v19 = a3;
+    completionCopy2 = completion;
     v7 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDHelper fetchCurrentStreamingRequestWithCompletion:]", "CoreLocation: %s\n", v7);
     if (v7 != buf)
@@ -733,20 +733,20 @@
 
   if ([(CLEEDHelper *)self fConnection])
   {
-    v8 = [(CLEEDHelper *)self fConnection];
+    fConnection = [(CLEEDHelper *)self fConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_19B8BD1B0;
     v13[3] = &unk_1E753D338;
     v13[4] = self;
-    v13[5] = a3;
-    v9 = [(NSXPCConnection *)v8 remoteObjectProxyWithErrorHandler:v13];
+    v13[5] = completion;
+    v9 = [(NSXPCConnection *)fConnection remoteObjectProxyWithErrorHandler:v13];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_19B8BD220;
     v12[3] = &unk_1E753D3B0;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = completion;
     [v9 fetchCurrentStreamingRequestWithCompletion:v12];
   }
 
@@ -755,13 +755,13 @@
     v10 = objc_alloc(MEMORY[0x1E696ABC0]);
     v14 = *MEMORY[0x1E696A578];
     v15 = @"Connection reset, caller needs to re-initialize";
-    (*(a3 + 2))(a3, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
+    (*(completion + 2))(completion, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchMitigationsWithCompletion:(id)a3
+- (void)fetchMitigationsWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -775,7 +775,7 @@
     *buf = 136446466;
     v21 = "[CLEEDHelper fetchMitigationsWithCompletion:]";
     v22 = 2114;
-    v23 = a3;
+    completionCopy = completion;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s[completion:%{public}@]", buf, 0x16u);
   }
 
@@ -791,7 +791,7 @@
     v16 = 136446466;
     v17 = "[CLEEDHelper fetchMitigationsWithCompletion:]";
     v18 = 2114;
-    v19 = a3;
+    completionCopy2 = completion;
     v7 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDHelper fetchMitigationsWithCompletion:]", "CoreLocation: %s\n", v7);
     if (v7 != buf)
@@ -802,20 +802,20 @@
 
   if ([(CLEEDHelper *)self fConnection])
   {
-    v8 = [(CLEEDHelper *)self fConnection];
+    fConnection = [(CLEEDHelper *)self fConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_19B8BD764;
     v13[3] = &unk_1E753D338;
     v13[4] = self;
-    v13[5] = a3;
-    v9 = [(NSXPCConnection *)v8 remoteObjectProxyWithErrorHandler:v13];
+    v13[5] = completion;
+    v9 = [(NSXPCConnection *)fConnection remoteObjectProxyWithErrorHandler:v13];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_19B8BD7D4;
     v12[3] = &unk_1E753D3D8;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = completion;
     [v9 fetchMitigationsWithCompletion:v12];
   }
 
@@ -824,13 +824,13 @@
     v10 = objc_alloc(MEMORY[0x1E696ABC0]);
     v14 = *MEMORY[0x1E696A578];
     v15 = @"Connection reset, caller needs to re-initialize";
-    (*(a3 + 2))(a3, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
+    (*(completion + 2))(completion, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)mediaUploadList:(id)a3 forRequestID:(id)a4 completion:(id)a5
+- (void)mediaUploadList:(id)list forRequestID:(id)d completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -844,11 +844,11 @@
     *buf = 136446978;
     v29 = "[CLEEDHelper mediaUploadList:forRequestID:completion:]";
     v30 = 2114;
-    v31 = a3;
+    listCopy = list;
     v32 = 2114;
-    v33 = a4;
+    dCopy = d;
     v34 = 2114;
-    v35 = a5;
+    completionCopy = completion;
     _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s[mediaUploadList:%{public}@,requestID:%{public}@,completion:%{public}@]", buf, 0x2Au);
   }
 
@@ -864,11 +864,11 @@
     v20 = 136446978;
     v21 = "[CLEEDHelper mediaUploadList:forRequestID:completion:]";
     v22 = 2114;
-    v23 = a3;
+    listCopy2 = list;
     v24 = 2114;
-    v25 = a4;
+    dCopy2 = d;
     v26 = 2114;
-    v27 = a5;
+    completionCopy2 = completion;
     v11 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDHelper mediaUploadList:forRequestID:completion:]", "CoreLocation: %s\n", v11);
     if (v11 != buf)
@@ -879,21 +879,21 @@
 
   if ([(CLEEDHelper *)self fConnection])
   {
-    v12 = [(CLEEDHelper *)self fConnection];
+    fConnection = [(CLEEDHelper *)self fConnection];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = sub_19B8BDD44;
     v17[3] = &unk_1E753D338;
     v17[4] = self;
-    v17[5] = a5;
-    v13 = [(NSXPCConnection *)v12 remoteObjectProxyWithErrorHandler:v17];
+    v17[5] = completion;
+    v13 = [(NSXPCConnection *)fConnection remoteObjectProxyWithErrorHandler:v17];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = sub_19B8BDDB0;
     v16[3] = &unk_1E753D338;
     v16[4] = self;
-    v16[5] = a5;
-    [v13 mediaUploadList:a3 forRequestID:a4 completion:v16];
+    v16[5] = completion;
+    [v13 mediaUploadList:list forRequestID:d completion:v16];
   }
 
   else
@@ -901,13 +901,13 @@
     v14 = objc_alloc(MEMORY[0x1E696ABC0]);
     v18 = *MEMORY[0x1E696A578];
     v19 = @"Connection reset, caller needs to re-initialize";
-    (*(a5 + 2))(a5, [v14 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}]);
+    (*(completion + 2))(completion, [v14 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}]);
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)streamingSessionEndedForRequestID:(id)a3 completion:(id)a4
+- (void)streamingSessionEndedForRequestID:(id)d completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -921,9 +921,9 @@
     *buf = 136446722;
     v25 = "[CLEEDHelper streamingSessionEndedForRequestID:completion:]";
     v26 = 2114;
-    v27 = a3;
+    dCopy = d;
     v28 = 2114;
-    v29 = a4;
+    completionCopy = completion;
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s[request:%{public}@,completion:%{public}@]", buf, 0x20u);
   }
 
@@ -939,9 +939,9 @@
     v18 = 136446722;
     v19 = "[CLEEDHelper streamingSessionEndedForRequestID:completion:]";
     v20 = 2114;
-    v21 = a3;
+    dCopy2 = d;
     v22 = 2114;
-    v23 = a4;
+    completionCopy2 = completion;
     v9 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDHelper streamingSessionEndedForRequestID:completion:]", "CoreLocation: %s\n", v9);
     if (v9 != buf)
@@ -952,21 +952,21 @@
 
   if ([(CLEEDHelper *)self fConnection])
   {
-    v10 = [(CLEEDHelper *)self fConnection];
+    fConnection = [(CLEEDHelper *)self fConnection];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = sub_19B8BE2F0;
     v15[3] = &unk_1E753D338;
     v15[4] = self;
-    v15[5] = a4;
-    v11 = [(NSXPCConnection *)v10 remoteObjectProxyWithErrorHandler:v15];
+    v15[5] = completion;
+    v11 = [(NSXPCConnection *)fConnection remoteObjectProxyWithErrorHandler:v15];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_19B8BE35C;
     v14[3] = &unk_1E753D338;
     v14[4] = self;
-    v14[5] = a4;
-    [v11 streamingSessionEndedForRequestID:a3 completion:v14];
+    v14[5] = completion;
+    [v11 streamingSessionEndedForRequestID:d completion:v14];
   }
 
   else
@@ -974,13 +974,13 @@
     v12 = objc_alloc(MEMORY[0x1E696ABC0]);
     v16 = *MEMORY[0x1E696A578];
     v17 = @"Connection reset, caller needs to re-initialize";
-    (*(a4 + 2))(a4, [v12 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
+    (*(completion + 2))(completion, [v12 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (int64_t)validateServerCertificateChallenge:(id)a3
++ (int64_t)validateServerCertificateChallenge:(id)challenge
 {
   v46 = *MEMORY[0x1E69E9840];
   v4 = objc_autoreleasePoolPush();
@@ -995,7 +995,7 @@
     *buf = 136446467;
     v41 = "+[CLEEDHelper validateServerCertificateChallenge:]";
     v42 = 2113;
-    v43 = a3;
+    challengeCopy = challenge;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s, Challenge:%{private}@", buf, 0x16u);
   }
 
@@ -1011,7 +1011,7 @@
     v34 = 136446467;
     v35 = "+[CLEEDHelper validateServerCertificateChallenge:]";
     v36 = 2113;
-    v37 = a3;
+    challengeCopy2 = challenge;
     v7 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "+[CLEEDHelper validateServerCertificateChallenge:]", "CoreLocation: %s\n", v7);
     if (v7 != buf)
@@ -1020,7 +1020,7 @@
     }
   }
 
-  v8 = [objc_msgSend(a3 "protectionSpace")];
+  v8 = [objc_msgSend(challenge "protectionSpace")];
   if (([v8 isEqualToString:*MEMORY[0x1E696A968]] & 1) == 0)
   {
     if (qword_1EAFE46E0 != -1)
@@ -1031,11 +1031,11 @@
     v15 = qword_1EAFE4718;
     if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_INFO))
     {
-      v16 = [objc_msgSend(a3 "protectionSpace")];
+      v16 = [objc_msgSend(challenge "protectionSpace")];
       *buf = 136446466;
       v41 = "+[CLEEDHelper validateServerCertificateChallenge:]";
       v42 = 2114;
-      v43 = v16;
+      challengeCopy = v16;
       _os_log_impl(&dword_19B873000, v15, OS_LOG_TYPE_INFO, "#EED2FWK,%{public}s, Unsupported authenticationMethod:%{public}@, proceed with default handling", buf, 0x16u);
     }
 
@@ -1054,7 +1054,7 @@
     v34 = 136446466;
     v35 = "+[CLEEDHelper validateServerCertificateChallenge:]";
     v36 = 2114;
-    v37 = [objc_msgSend(a3 "protectionSpace")];
+    challengeCopy2 = [objc_msgSend(challenge "protectionSpace")];
     v18 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "+[CLEEDHelper validateServerCertificateChallenge:]", "CoreLocation: %s\n", v18);
     if (v18 == buf)
@@ -1066,7 +1066,7 @@
   }
 
   error = 0;
-  v9 = [objc_msgSend(a3 "protectionSpace")];
+  v9 = [objc_msgSend(challenge "protectionSpace")];
   if (!SecTrustEvaluateWithError(v9, &error))
   {
     if (qword_1EAFE46E0 != -1)
@@ -1080,7 +1080,7 @@
       *buf = 136446466;
       v41 = "+[CLEEDHelper validateServerCertificateChallenge:]";
       v42 = 2114;
-      v43 = error;
+      challengeCopy = error;
       _os_log_impl(&dword_19B873000, v19, OS_LOG_TYPE_ERROR, "#EED2FWK,%{public}s, SecTrustEvaluateWithError returned error:%{public}@", buf, 0x16u);
     }
 
@@ -1099,7 +1099,7 @@
     v34 = 136446466;
     v35 = "+[CLEEDHelper validateServerCertificateChallenge:]";
     v36 = 2114;
-    v37 = error;
+    challengeCopy2 = error;
     goto LABEL_86;
   }
 
@@ -1137,7 +1137,7 @@
   }
 
   v11 = v10;
-  v12 = [(__CFArray *)v10 lastObject];
+  lastObject = [(__CFArray *)v10 lastObject];
   SecTrustStoreForDomain();
   if (!SecTrustStoreContains())
   {
@@ -1156,7 +1156,7 @@
         *buf = 136446723;
         v41 = "+[CLEEDHelper validateServerCertificateChallenge:]";
         v42 = 2113;
-        v43 = v12;
+        challengeCopy = lastObject;
         v44 = 2113;
         v45 = v11;
         _os_log_impl(&dword_19B873000, v24, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s, Root:%{private}@ is not system trusted, but EEDOverrideServerChallenge set, overriding. Chain:%{private}@", buf, 0x20u);
@@ -1177,7 +1177,7 @@
       v34 = 136446723;
       v35 = "+[CLEEDHelper validateServerCertificateChallenge:]";
       v36 = 2113;
-      v37 = v12;
+      challengeCopy2 = lastObject;
       v38 = 2113;
       v39 = v11;
       goto LABEL_73;
@@ -1194,7 +1194,7 @@
       *buf = 136446723;
       v41 = "+[CLEEDHelper validateServerCertificateChallenge:]";
       v42 = 2113;
-      v43 = v12;
+      challengeCopy = lastObject;
       v44 = 2113;
       v45 = v11;
       _os_log_impl(&dword_19B873000, v27, OS_LOG_TYPE_ERROR, "#EED2FWK,%{public}s, Root:%{private}@ is not system trusted, not contained in SecurityTrustStore with system domain. Chain:%{private}@", buf, 0x20u);
@@ -1217,7 +1217,7 @@ LABEL_88:
     v34 = 136446723;
     v35 = "+[CLEEDHelper validateServerCertificateChallenge:]";
     v36 = 2113;
-    v37 = v12;
+    challengeCopy2 = lastObject;
     v38 = 2113;
     v39 = v11;
 LABEL_86:
@@ -1275,7 +1275,7 @@ LABEL_89:
   return v26;
 }
 
-- (void)fetchCloakingKeyWithCompletion:(id)a3
+- (void)fetchCloakingKeyWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -1289,7 +1289,7 @@ LABEL_89:
     *buf = 136446466;
     v21 = "[CLEEDHelper fetchCloakingKeyWithCompletion:]";
     v22 = 2114;
-    v23 = a3;
+    completionCopy = completion;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s[completion:%{public}@]", buf, 0x16u);
   }
 
@@ -1305,7 +1305,7 @@ LABEL_89:
     v16 = 136446466;
     v17 = "[CLEEDHelper fetchCloakingKeyWithCompletion:]";
     v18 = 2114;
-    v19 = a3;
+    completionCopy2 = completion;
     v7 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDHelper fetchCloakingKeyWithCompletion:]", "CoreLocation: %s\n", v7);
     if (v7 != buf)
@@ -1316,20 +1316,20 @@ LABEL_89:
 
   if ([(CLEEDHelper *)self fConnection])
   {
-    v8 = [(CLEEDHelper *)self fConnection];
+    fConnection = [(CLEEDHelper *)self fConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_19B8BF8B0;
     v13[3] = &unk_1E753D338;
     v13[4] = self;
-    v13[5] = a3;
-    v9 = [(NSXPCConnection *)v8 remoteObjectProxyWithErrorHandler:v13];
+    v13[5] = completion;
+    v9 = [(NSXPCConnection *)fConnection remoteObjectProxyWithErrorHandler:v13];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_19B8BF920;
     v12[3] = &unk_1E753D428;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = completion;
     [v9 fetchCloakingKeyWithCompletion:v12];
   }
 
@@ -1338,13 +1338,13 @@ LABEL_89:
     v10 = objc_alloc(MEMORY[0x1E696ABC0]);
     v14 = *MEMORY[0x1E696A578];
     v15 = @"Connection reset, caller needs to re-initialize";
-    (*(a3 + 2))(a3, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
+    (*(completion + 2))(completion, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchEmergencyContactNamesWithCompletion:(id)a3
+- (void)fetchEmergencyContactNamesWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -1358,7 +1358,7 @@ LABEL_89:
     *buf = 136446466;
     v21 = "[CLEEDHelper fetchEmergencyContactNamesWithCompletion:]";
     v22 = 2114;
-    v23 = a3;
+    completionCopy = completion;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s[completion:%{public}@]", buf, 0x16u);
   }
 
@@ -1374,7 +1374,7 @@ LABEL_89:
     v16 = 136446466;
     v17 = "[CLEEDHelper fetchEmergencyContactNamesWithCompletion:]";
     v18 = 2114;
-    v19 = a3;
+    completionCopy2 = completion;
     v7 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDHelper fetchEmergencyContactNamesWithCompletion:]", "CoreLocation: %s\n", v7);
     if (v7 != buf)
@@ -1385,20 +1385,20 @@ LABEL_89:
 
   if ([(CLEEDHelper *)self fConnection])
   {
-    v8 = [(CLEEDHelper *)self fConnection];
+    fConnection = [(CLEEDHelper *)self fConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_19B8BFE64;
     v13[3] = &unk_1E753D338;
     v13[4] = self;
-    v13[5] = a3;
-    v9 = [(NSXPCConnection *)v8 remoteObjectProxyWithErrorHandler:v13];
+    v13[5] = completion;
+    v9 = [(NSXPCConnection *)fConnection remoteObjectProxyWithErrorHandler:v13];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_19B8BFED4;
     v12[3] = &unk_1E753D450;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = completion;
     [v9 fetchEmergencyContactNamesWithCompletion:v12];
   }
 
@@ -1407,13 +1407,13 @@ LABEL_89:
     v10 = objc_alloc(MEMORY[0x1E696ABC0]);
     v14 = *MEMORY[0x1E696A578];
     v15 = @"Connection reset, caller needs to re-initialize";
-    (*(a3 + 2))(a3, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
+    (*(completion + 2))(completion, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchPreCachedAdrEnablementStatusWithCompletion:(id)a3
+- (void)fetchPreCachedAdrEnablementStatusWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -1427,7 +1427,7 @@ LABEL_89:
     *buf = 136446466;
     v18 = "[CLEEDHelper fetchPreCachedAdrEnablementStatusWithCompletion:]";
     v19 = 2114;
-    v20 = a3;
+    completionCopy = completion;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s[completion:%{public}@]", buf, 0x16u);
   }
 
@@ -1443,7 +1443,7 @@ LABEL_89:
     v13 = 136446466;
     v14 = "[CLEEDHelper fetchPreCachedAdrEnablementStatusWithCompletion:]";
     v15 = 2114;
-    v16 = a3;
+    completionCopy2 = completion;
     v7 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDHelper fetchPreCachedAdrEnablementStatusWithCompletion:]", "CoreLocation: %s\n", v7);
     if (v7 != buf)
@@ -1454,32 +1454,32 @@ LABEL_89:
 
   if ([(CLEEDHelper *)self fConnection])
   {
-    v8 = [(CLEEDHelper *)self fConnection];
+    fConnection = [(CLEEDHelper *)self fConnection];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_19B8C03C0;
     v12[3] = &unk_1E753D338;
     v12[4] = self;
-    v12[5] = a3;
-    v9 = [(NSXPCConnection *)v8 remoteObjectProxyWithErrorHandler:v12];
+    v12[5] = completion;
+    v9 = [(NSXPCConnection *)fConnection remoteObjectProxyWithErrorHandler:v12];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_19B8C0430;
     v11[3] = &unk_1E753D478;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = completion;
     [v9 fetchPreCachedAdrEnablementStatusWithCompletion:v11];
   }
 
   else
   {
-    (*(a3 + 2))(a3, @"Connection reset, caller needs to re-initialize");
+    (*(completion + 2))(completion, @"Connection reset, caller needs to re-initialize");
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAdrPreCachingStatusWithCompletion:(id)a3
+- (void)fetchAdrPreCachingStatusWithCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -1493,7 +1493,7 @@ LABEL_89:
     *buf = 136446466;
     v21 = "[CLEEDHelper fetchAdrPreCachingStatusWithCompletion:]";
     v22 = 2114;
-    v23 = a3;
+    completionCopy = completion;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s[completion:%{public}@]", buf, 0x16u);
   }
 
@@ -1509,7 +1509,7 @@ LABEL_89:
     v16 = 136446466;
     v17 = "[CLEEDHelper fetchAdrPreCachingStatusWithCompletion:]";
     v18 = 2114;
-    v19 = a3;
+    completionCopy2 = completion;
     v7 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDHelper fetchAdrPreCachingStatusWithCompletion:]", "CoreLocation: %s\n", v7);
     if (v7 != buf)
@@ -1520,20 +1520,20 @@ LABEL_89:
 
   if ([(CLEEDHelper *)self fConnection])
   {
-    v8 = [(CLEEDHelper *)self fConnection];
+    fConnection = [(CLEEDHelper *)self fConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_19B8C0960;
     v13[3] = &unk_1E753D338;
     v13[4] = self;
-    v13[5] = a3;
-    v9 = [(NSXPCConnection *)v8 remoteObjectProxyWithErrorHandler:v13];
+    v13[5] = completion;
+    v9 = [(NSXPCConnection *)fConnection remoteObjectProxyWithErrorHandler:v13];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_19B8C09D4;
     v12[3] = &unk_1E753D4A0;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = completion;
     [v9 fetchAdrPreCachingStatusWithCompletion:v12];
   }
 
@@ -1542,7 +1542,7 @@ LABEL_89:
     v10 = objc_alloc(MEMORY[0x1E696ABC0]);
     v14 = *MEMORY[0x1E696A578];
     v15 = @"Connection reset, caller needs to re-initialize";
-    (*(a3 + 2))(a3, 0, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
+    (*(completion + 2))(completion, 0, 0, [v10 initWithDomain:@"com.apple.CoreLocation.CLEEDHelperService" code:8 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
   }
 
   v11 = *MEMORY[0x1E69E9840];

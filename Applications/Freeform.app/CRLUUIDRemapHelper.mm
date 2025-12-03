@@ -7,7 +7,7 @@
 
 - (NSDictionary)invertedObjectUUIDMap
 {
-  v2 = self;
+  selfCopy = self;
   sub_100C03F20();
 
   type metadata accessor for UUID();

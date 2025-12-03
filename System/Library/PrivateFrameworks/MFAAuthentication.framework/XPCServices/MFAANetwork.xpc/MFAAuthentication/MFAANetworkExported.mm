@@ -1,100 +1,100 @@
 @interface MFAANetworkExported
-- (void)addPairingWithToken:(id)a3 withReply:(id)a4;
-- (void)confirmActivationForToken:(id)a3 withUUID:(id)a4 withReply:(id)a5;
-- (void)getCachedStatusForCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 withReply:(id)a6;
-- (void)removePairingWithToken:(id)a3 withReply:(id)a4;
-- (void)requestActivationForToken:(id)a3 withUUID:(id)a4 withReply:(id)a5;
-- (void)requestMetadataForCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 requestedLocale:(id)a6 requestInfo:(id)a7 withReply:(id)a8;
-- (void)requestMetadataForToken:(id)a3 withUUID:(id)a4 requestedLocale:(id)a5 requestInfo:(id)a6 withReply:(id)a7;
-- (void)validateCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 withReply:(id)a6;
-- (void)verifyPairingWithToken:(id)a3 withReply:(id)a4;
+- (void)addPairingWithToken:(id)token withReply:(id)reply;
+- (void)confirmActivationForToken:(id)token withUUID:(id)d withReply:(id)reply;
+- (void)getCachedStatusForCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid withReply:(id)reply;
+- (void)removePairingWithToken:(id)token withReply:(id)reply;
+- (void)requestActivationForToken:(id)token withUUID:(id)d withReply:(id)reply;
+- (void)requestMetadataForCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid requestedLocale:(id)locale requestInfo:(id)info withReply:(id)reply;
+- (void)requestMetadataForToken:(id)token withUUID:(id)d requestedLocale:(id)locale requestInfo:(id)info withReply:(id)reply;
+- (void)validateCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid withReply:(id)reply;
+- (void)verifyPairingWithToken:(id)token withReply:(id)reply;
 @end
 
 @implementation MFAANetworkExported
 
-- (void)requestMetadataForToken:(id)a3 withUUID:(id)a4 requestedLocale:(id)a5 requestInfo:(id)a6 withReply:(id)a7
+- (void)requestMetadataForToken:(id)token withUUID:(id)d requestedLocale:(id)locale requestInfo:(id)info withReply:(id)reply
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  replyCopy = reply;
+  infoCopy = info;
+  localeCopy = locale;
+  dCopy = d;
+  tokenCopy = token;
   v16 = +[MFAANetwork sharedInstance];
-  [v16 _requestMetadataForToken:v15 withUUID:v14 requestedLocale:v13 requestInfo:v12 withReply:v11];
+  [v16 _requestMetadataForToken:tokenCopy withUUID:dCopy requestedLocale:localeCopy requestInfo:infoCopy withReply:replyCopy];
 }
 
-- (void)requestActivationForToken:(id)a3 withUUID:(id)a4 withReply:(id)a5
+- (void)requestActivationForToken:(id)token withUUID:(id)d withReply:(id)reply
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  replyCopy = reply;
+  dCopy = d;
+  tokenCopy = token;
   v10 = +[MFAANetwork sharedInstance];
-  [v10 _requestActivationForToken:v9 withUUID:v8 withReply:v7];
+  [v10 _requestActivationForToken:tokenCopy withUUID:dCopy withReply:replyCopy];
 }
 
-- (void)confirmActivationForToken:(id)a3 withUUID:(id)a4 withReply:(id)a5
+- (void)confirmActivationForToken:(id)token withUUID:(id)d withReply:(id)reply
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  replyCopy = reply;
+  dCopy = d;
+  tokenCopy = token;
   v10 = +[MFAANetwork sharedInstance];
-  [v10 _confirmActivationForToken:v9 withUUID:v8 withReply:v7];
+  [v10 _confirmActivationForToken:tokenCopy withUUID:dCopy withReply:replyCopy];
 }
 
-- (void)requestMetadataForCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 requestedLocale:(id)a6 requestInfo:(id)a7 withReply:(id)a8
+- (void)requestMetadataForCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid requestedLocale:(id)locale requestInfo:(id)info withReply:(id)reply
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  replyCopy = reply;
+  infoCopy = info;
+  localeCopy = locale;
+  ppidCopy = ppid;
+  seqCopy = seq;
+  serialCopy = serial;
   v19 = +[MFAANetwork sharedInstance];
-  [v19 _requestMetadataForCertSerial:v18 issuerSeq:v17 ppid:v16 requestedLocale:v15 requestInfo:v14 withReply:v13];
+  [v19 _requestMetadataForCertSerial:serialCopy issuerSeq:seqCopy ppid:ppidCopy requestedLocale:localeCopy requestInfo:infoCopy withReply:replyCopy];
 }
 
-- (void)validateCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 withReply:(id)a6
+- (void)validateCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid withReply:(id)reply
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  replyCopy = reply;
+  ppidCopy = ppid;
+  seqCopy = seq;
+  serialCopy = serial;
   v13 = +[MFAANetwork sharedInstance];
-  [v13 _validateCertSerial:v12 issuerSeq:v11 ppid:v10 withReply:v9];
+  [v13 _validateCertSerial:serialCopy issuerSeq:seqCopy ppid:ppidCopy withReply:replyCopy];
 }
 
-- (void)getCachedStatusForCertSerial:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 withReply:(id)a6
+- (void)getCachedStatusForCertSerial:(id)serial issuerSeq:(id)seq ppid:(id)ppid withReply:(id)reply
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  replyCopy = reply;
+  ppidCopy = ppid;
+  seqCopy = seq;
+  serialCopy = serial;
   v13 = +[MFAANetwork sharedInstance];
-  [v13 _getCachedStatusForCertSerial:v12 issuerSeq:v11 ppid:v10 withReply:v9];
+  [v13 _getCachedStatusForCertSerial:serialCopy issuerSeq:seqCopy ppid:ppidCopy withReply:replyCopy];
 }
 
-- (void)addPairingWithToken:(id)a3 withReply:(id)a4
+- (void)addPairingWithToken:(id)token withReply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  tokenCopy = token;
   v7 = +[MFAANetwork sharedInstance];
-  [v7 _addPairingWithToken:v6 withReply:v5];
+  [v7 _addPairingWithToken:tokenCopy withReply:replyCopy];
 }
 
-- (void)removePairingWithToken:(id)a3 withReply:(id)a4
+- (void)removePairingWithToken:(id)token withReply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  tokenCopy = token;
   v7 = +[MFAANetwork sharedInstance];
-  [v7 _removePairingWithToken:v6 withReply:v5];
+  [v7 _removePairingWithToken:tokenCopy withReply:replyCopy];
 }
 
-- (void)verifyPairingWithToken:(id)a3 withReply:(id)a4
+- (void)verifyPairingWithToken:(id)token withReply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  tokenCopy = token;
   v7 = +[MFAANetwork sharedInstance];
-  [v7 _verifyPairingWithToken:v6 withReply:v5];
+  [v7 _verifyPairingWithToken:tokenCopy withReply:replyCopy];
 }
 
 @end

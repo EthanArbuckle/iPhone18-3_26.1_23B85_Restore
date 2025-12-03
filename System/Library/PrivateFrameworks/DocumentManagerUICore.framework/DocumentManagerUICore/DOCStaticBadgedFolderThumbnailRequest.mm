@@ -1,29 +1,29 @@
 @interface DOCStaticBadgedFolderThumbnailRequest
-- (DOCStaticBadgedFolderThumbnailRequest)initWithFolderType:(unint64_t)a3 descriptor:(id)a4;
-- (void)generateThumbnailWithCompletionHandler:(id)a3;
+- (DOCStaticBadgedFolderThumbnailRequest)initWithFolderType:(unint64_t)type descriptor:(id)descriptor;
+- (void)generateThumbnailWithCompletionHandler:(id)handler;
 @end
 
 @implementation DOCStaticBadgedFolderThumbnailRequest
 
-- (DOCStaticBadgedFolderThumbnailRequest)initWithFolderType:(unint64_t)a3 descriptor:(id)a4
+- (DOCStaticBadgedFolderThumbnailRequest)initWithFolderType:(unint64_t)type descriptor:(id)descriptor
 {
-  v7 = a4;
+  descriptorCopy = descriptor;
   v11.receiver = self;
   v11.super_class = DOCStaticBadgedFolderThumbnailRequest;
   v8 = [(DOCStaticBadgedFolderThumbnailRequest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_folderType = a3;
-    objc_storeStrong(&v8->_descriptor, a4);
+    v8->_folderType = type;
+    objc_storeStrong(&v8->_descriptor, descriptor);
   }
 
   return v9;
 }
 
-- (void)generateThumbnailWithCompletionHandler:(id)a3
+- (void)generateThumbnailWithCompletionHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   v4 = [DOCThumbnailFolderIcon folderIconForDescriptor:self->_descriptor];
   if (!v4)
   {
@@ -40,7 +40,7 @@
     [v4 badgedFolderIconForFolderType:self->_folderType style:{-[DOCThumbnailDescriptor style](self->_descriptor, "style")}];
   }
   v5 = ;
-  v6[2](v6, v5, 0);
+  handlerCopy[2](handlerCopy, v5, 0);
 }
 
 - (void)generateThumbnailWithCompletionHandler:.cold.1()

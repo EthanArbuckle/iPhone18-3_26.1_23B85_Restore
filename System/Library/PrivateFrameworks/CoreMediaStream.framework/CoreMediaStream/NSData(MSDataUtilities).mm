@@ -8,8 +8,8 @@
 
 - (id)MSHexString
 {
-  v2 = [a1 length];
-  v3 = [a1 bytes];
+  v2 = [self length];
+  bytes = [self bytes];
   v4 = 2 * v2;
   v5 = malloc_type_malloc((2 * v2) | 1, 0xC99B12AEuLL);
   if (!v5)
@@ -23,7 +23,7 @@
     v7 = v5;
     do
     {
-      v8 = *v3++;
+      v8 = *bytes++;
       *v7 = a0123456789abcd[v8 >> 4];
       v6 = v7 + 2;
       v7[1] = a0123456789abcd[v8 & 0xF];
@@ -43,7 +43,7 @@
 
 - (id)MSBase64Encoding
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = v2 % 3;
   v4 = 4 * (v2 / 3) + 4 * (v2 % 3 != 0);
   if (v4 < v2)
@@ -57,12 +57,12 @@
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE728] format:{@"unable to allocate memory for length (%lu)", v4}];
   }
 
-  v6 = [a1 bytes];
+  bytes = [self bytes];
   if (v2)
   {
     v7 = 0;
     v8 = 0;
-    v9 = (v6 - 1);
+    v9 = (bytes - 1);
     do
     {
       if (v8 % 3 == 2)
@@ -153,7 +153,7 @@ LABEL_19:
   }
 
   v25 = &v25;
-  v26 = a1;
+  selfCopy = self;
   v27 = v6;
   v9 = 0;
   v10 = 0;
@@ -196,7 +196,7 @@ LABEL_19:
         else if (v15)
         {
           v24 = v11 == v5;
-          a1 = v26;
+          self = selfCopy;
           v6 = v27;
           if (!v24 || (v14 & 3) != 0 || v15 > 2)
           {
@@ -243,7 +243,7 @@ LABEL_24:
   }
 
   while (v5 != v11);
-  a1 = v26;
+  self = selfCopy;
   v6 = v27;
   if ((v14 & 3) != 0 || v15 >= 3)
   {
@@ -254,7 +254,7 @@ LABEL_27:
   }
 
 LABEL_29:
-  v21 = [a1 initWithBytesNoCopy:v6 length:v9 freeWhenDone:1];
+  v21 = [self initWithBytesNoCopy:v6 length:v9 freeWhenDone:1];
 LABEL_30:
 
   v22 = *MEMORY[0x277D85DE8];

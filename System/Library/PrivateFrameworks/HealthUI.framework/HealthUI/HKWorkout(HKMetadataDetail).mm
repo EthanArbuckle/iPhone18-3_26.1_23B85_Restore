@@ -9,8 +9,8 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [[HKDataMetadataWorkoutEventSection alloc] initWithSample:a1];
-  v12 = [[HKDataMetadataWorkoutActivitySection alloc] initWithSample:a1 displayTypeController:v9 unitController:v8 healthStore:v10];
+  v11 = [[HKDataMetadataWorkoutEventSection alloc] initWithSample:self];
+  v12 = [[HKDataMetadataWorkoutActivitySection alloc] initWithSample:self displayTypeController:v9 unitController:v8 healthStore:v10];
 
   if (v11 | v12)
   {

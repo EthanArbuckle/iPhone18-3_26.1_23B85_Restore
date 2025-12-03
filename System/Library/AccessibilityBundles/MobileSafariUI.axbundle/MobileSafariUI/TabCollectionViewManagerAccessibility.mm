@@ -1,50 +1,50 @@
 @interface TabCollectionViewManagerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)movePlaceholder:(id)a3 overTabItem:(id)a4;
-- (void)tabCollectionView:(id)a3 closeItem:(id)a4;
-- (void)tabCollectionView:(id)a3 didSelectItem:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)movePlaceholder:(id)placeholder overTabItem:(id)item;
+- (void)tabCollectionView:(id)view closeItem:(id)item;
+- (void)tabCollectionView:(id)view didSelectItem:(id)item;
 @end
 
 @implementation TabCollectionViewManagerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TabCollectionViewManager" hasInstanceMethod:@"tabCollectionView:didSelectItem:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"TabCollectionViewManager" hasInstanceMethod:@"tabCollectionView:closeItem:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"TabCollectionViewManager" hasInstanceMethod:@"_indexToInsertPlaceholderAtTabItem:" withFullSignature:{"Q", "@", 0}];
-  [v3 validateClass:@"TabCollectionViewManager" hasInstanceMethod:@"movePlaceholder:overTabItem:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"TabCollectionViewManager" hasInstanceVariable:@"_dataSource" withType:"<TabCollectionViewManagerDataSource>"];
-  [v3 validateClass:@"TabCollectionViewManager" hasInstanceVariable:@"_placeholderItemIndex" withType:"Q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TabCollectionViewManager" hasInstanceMethod:@"tabCollectionView:didSelectItem:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"TabCollectionViewManager" hasInstanceMethod:@"tabCollectionView:closeItem:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"TabCollectionViewManager" hasInstanceMethod:@"_indexToInsertPlaceholderAtTabItem:" withFullSignature:{"Q", "@", 0}];
+  [validationsCopy validateClass:@"TabCollectionViewManager" hasInstanceMethod:@"movePlaceholder:overTabItem:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"TabCollectionViewManager" hasInstanceVariable:@"_dataSource" withType:"<TabCollectionViewManagerDataSource>"];
+  [validationsCopy validateClass:@"TabCollectionViewManager" hasInstanceVariable:@"_placeholderItemIndex" withType:"Q"];
 }
 
-- (void)tabCollectionView:(id)a3 didSelectItem:(id)a4
+- (void)tabCollectionView:(id)view didSelectItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
+  itemCopy = item;
+  viewCopy = view;
   v8 = [(TabCollectionViewManagerAccessibility *)self safeValueForKeyPath:@"_dataSource.activeTabDocument"];
   v9.receiver = self;
   v9.super_class = TabCollectionViewManagerAccessibility;
-  [(TabCollectionViewManagerAccessibility *)&v9 tabCollectionView:v7 didSelectItem:v6];
+  [(TabCollectionViewManagerAccessibility *)&v9 tabCollectionView:viewCopy didSelectItem:itemCopy];
 
-  if (v8 != v6)
+  if (v8 != itemCopy)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], *MEMORY[0x29EDBDAE8]);
   }
 }
 
-- (void)tabCollectionView:(id)a3 closeItem:(id)a4
+- (void)tabCollectionView:(id)view closeItem:(id)item
 {
   v4.receiver = self;
   v4.super_class = TabCollectionViewManagerAccessibility;
-  [(TabCollectionViewManagerAccessibility *)&v4 tabCollectionView:a3 closeItem:a4];
+  [(TabCollectionViewManagerAccessibility *)&v4 tabCollectionView:view closeItem:item];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], *MEMORY[0x29EDBDAE8]);
 }
 
-- (void)movePlaceholder:(id)a3 overTabItem:(id)a4
+- (void)movePlaceholder:(id)placeholder overTabItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  placeholderCopy = placeholder;
+  itemCopy = item;
   v8 = [(TabCollectionViewManagerAccessibility *)self safeUnsignedIntegerForKey:@"_placeholderItemIndex"];
   v28 = 0;
   v29 = &v28;
@@ -55,8 +55,8 @@
   v23 = __69__TabCollectionViewManagerAccessibility_movePlaceholder_overTabItem___block_invoke;
   v24 = &unk_29F2D7B70;
   v27 = &v28;
-  v25 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = itemCopy;
   v26 = v9;
   AXPerformSafeBlock();
   v10 = v29[3];
@@ -64,7 +64,7 @@
   _Block_object_dispose(&v28, 8);
   v20.receiver = self;
   v20.super_class = TabCollectionViewManagerAccessibility;
-  [(TabCollectionViewManagerAccessibility *)&v20 movePlaceholder:v6 overTabItem:v9];
+  [(TabCollectionViewManagerAccessibility *)&v20 movePlaceholder:placeholderCopy overTabItem:v9];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL && v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = [v9 safeStringForKey:@"title"];

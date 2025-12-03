@@ -1,23 +1,23 @@
 @interface AXRUITextView
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)becomeFirstResponder;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)resignFirstResponder;
 - (CGRect)frame;
-- (_TtC22AccessibilityReadingUI13AXRUITextView)initWithCoder:(id)a3;
-- (_TtC22AccessibilityReadingUI13AXRUITextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (void)accessibilityElementDidBecomeFocused:(id)a3;
-- (void)clearSelectionOnTap:(id)a3;
+- (_TtC22AccessibilityReadingUI13AXRUITextView)initWithCoder:(id)coder;
+- (_TtC22AccessibilityReadingUI13AXRUITextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (void)accessibilityElementDidBecomeFocused:(id)focused;
+- (void)clearSelectionOnTap:(id)tap;
 - (void)dealloc;
 - (void)handleOrientationChange;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation AXRUITextView
 
-- (_TtC22AccessibilityReadingUI13AXRUITextView)initWithCoder:(id)a3
+- (_TtC22AccessibilityReadingUI13AXRUITextView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -32,57 +32,57 @@
 
 - (void)handleOrientationChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D87550C();
 }
 
-- (void)clearSelectionOnTap:(id)a3
+- (void)clearSelectionOnTap:(id)tap
 {
-  v4 = self;
-  [(AXRUITextView *)v4 selectedRange];
+  selfCopy = self;
+  [(AXRUITextView *)selfCopy selectedRange];
   if (v3 >= 1)
   {
-    [(AXRUITextView *)v4 setSelectedRange:0, 0];
+    [(AXRUITextView *)selfCopy setSelectedRange:0, 0];
   }
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v4 = self;
-  LOBYTE(a3) = sub_23D87639C(a3);
+  selfCopy = self;
+  LOBYTE(scroll) = sub_23D87639C(scroll);
 
-  return a3 & 1;
+  return scroll & 1;
 }
 
 - (BOOL)becomeFirstResponder
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 addObserver:v4 selector:sel_accessibilityElementDidBecomeFocused_ name:*MEMORY[0x277D76468] object:0];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter addObserver:selfCopy selector:sel_accessibilityElementDidBecomeFocused_ name:*MEMORY[0x277D76468] object:0];
 
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for AXRUITextView();
-  LOBYTE(v5) = [(AXRUITextView *)&v7 becomeFirstResponder];
+  LOBYTE(defaultCenter) = [(AXRUITextView *)&v7 becomeFirstResponder];
 
-  return v5;
+  return defaultCenter;
 }
 
 - (BOOL)resignFirstResponder
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4 name:*MEMORY[0x277D76468] object:0];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:*MEMORY[0x277D76468] object:0];
 
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for AXRUITextView();
-  LOBYTE(v5) = [(AXRUITextView *)&v7 resignFirstResponder];
+  LOBYTE(defaultCenter) = [(AXRUITextView *)&v7 resignFirstResponder];
 
-  return v5;
+  return defaultCenter;
 }
 
-- (void)accessibilityElementDidBecomeFocused:(id)a3
+- (void)accessibilityElementDidBecomeFocused:(id)focused
 {
   v4 = sub_23D8DBE10();
   v5 = *(v4 - 8);
@@ -90,32 +90,32 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_23D8DBDF0();
-  v9 = self;
+  selfCopy = self;
   sub_23D8765DC();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for AXRUITextView();
-  return [(AXRUITextView *)&v8 pointInside:a4 withEvent:x, y];
+  return [(AXRUITextView *)&v8 pointInside:event withEvent:x, y];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_23D879198(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_23D879198(touchCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
   objc_opt_self();
   result = 0;
@@ -138,11 +138,11 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for AXRUITextView();
   [(AXRUITextView *)&v6 dealloc];
 }
@@ -159,27 +159,27 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = type metadata accessor for AXRUITextView();
   v17.receiver = self;
   v17.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(AXRUITextView *)&v17 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16.receiver = v9;
+  v16.receiver = selfCopy;
   v16.super_class = v8;
   [(AXRUITextView *)&v16 setFrame:x, y, width, height];
   sub_23D876CBC(v11, v13, v15);
 }
 
-- (_TtC22AccessibilityReadingUI13AXRUITextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC22AccessibilityReadingUI13AXRUITextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

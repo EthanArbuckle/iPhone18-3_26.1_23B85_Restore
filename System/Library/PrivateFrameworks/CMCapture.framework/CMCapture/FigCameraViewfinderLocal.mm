@@ -4,16 +4,16 @@
 - (FigCameraViewfinderLocal)init;
 - (float)photoThumbnailQuality;
 - (int)photoThumbnailMaxDimension;
-- (void)_updateActiveViewfinderSession:(int)a3 sessionStatus:;
-- (void)captureSession:(int64_t)a3 didCapturePhotoWithStatus:(int)a4 thumbnailData:(id)a5 timestamp:(id *)a6;
-- (void)captureSessionDidFinishMovieRecording:(int64_t)a3;
-- (void)captureSessionDidReconfigureWhileRunning:(id)a3;
-- (void)captureSessionDidStart:(id)a3;
-- (void)captureSessionDidStartMovieRecording:(int64_t)a3;
-- (void)captureSessionDidStop:(int64_t)a3;
-- (void)captureSessionWillStart:(id)a3;
+- (void)_updateActiveViewfinderSession:(int)session sessionStatus:;
+- (void)captureSession:(int64_t)session didCapturePhotoWithStatus:(int)status thumbnailData:(id)data timestamp:(id *)timestamp;
+- (void)captureSessionDidFinishMovieRecording:(int64_t)recording;
+- (void)captureSessionDidReconfigureWhileRunning:(id)running;
+- (void)captureSessionDidStart:(id)start;
+- (void)captureSessionDidStartMovieRecording:(int64_t)recording;
+- (void)captureSessionDidStop:(int64_t)stop;
+- (void)captureSessionWillStart:(id)start;
 - (void)dealloc;
-- (void)startWithOptions:(id)a3;
+- (void)startWithOptions:(id)options;
 - (void)stop;
 @end
 
@@ -35,7 +35,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -51,9 +51,9 @@
   [(FigCameraViewfinder *)&v3 dealloc];
 }
 
-- (void)startWithOptions:(id)a3
+- (void)startWithOptions:(id)options
 {
-  self->_options = [a3 copy];
+  self->_options = [options copy];
   [+[FigCaptureSessionObservatory sharedObservatory](FigCaptureSessionObservatory "sharedObservatory")];
   self->_observing = 1;
 }
@@ -71,20 +71,20 @@
   }
 }
 
-- (void)captureSessionWillStart:(id)a3
+- (void)captureSessionWillStart:(id)start
 {
-  if ([a3 containsVideoSource])
+  if ([start containsVideoSource])
   {
     objc_sync_enter(self);
     activeViewfinderSession = self->_activeViewfinderSession;
-    if (activeViewfinderSession && (v6 = -[FigCameraViewfinderSessionLocal identifier](activeViewfinderSession, "identifier"), v6 > [a3 identifier]))
+    if (activeViewfinderSession && (v6 = -[FigCameraViewfinderSessionLocal identifier](activeViewfinderSession, "identifier"), v6 > [start identifier]))
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = [[FigCameraViewfinderSessionLocal alloc] _initWithOwningViewfinder:self captureSessionProxy:a3 delegateStorage:self->super._delegateStorage];
+      v7 = [[FigCameraViewfinderSessionLocal alloc] _initWithOwningViewfinder:self captureSessionProxy:start delegateStorage:self->super._delegateStorage];
       [(FigCameraViewfinderLocal *)self _updateActiveViewfinderSession:v7 sessionStatus:1];
     }
 
@@ -92,15 +92,15 @@
   }
 }
 
-- (void)captureSessionDidStart:(id)a3
+- (void)captureSessionDidStart:(id)start
 {
-  if ([a3 containsVideoSource])
+  if ([start containsVideoSource])
   {
     objc_sync_enter(self);
-    v5 = [(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier];
-    v6 = [a3 identifier];
+    identifier = [(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier];
+    identifier2 = [start identifier];
     activeViewfinderSession = self->_activeViewfinderSession;
-    if (v5 == v6)
+    if (identifier == identifier2)
     {
       delegateStorage = self->super._delegateStorage;
       v11[0] = MEMORY[0x1E69E9820];
@@ -112,9 +112,9 @@
       [(FigDelegateStorage *)delegateStorage invokeDelegateCallbackWithBlock:v11];
     }
 
-    else if (!activeViewfinderSession || (v9 = -[FigCameraViewfinderSessionLocal identifier](activeViewfinderSession, "identifier"), v9 <= [a3 identifier]))
+    else if (!activeViewfinderSession || (v9 = -[FigCameraViewfinderSessionLocal identifier](activeViewfinderSession, "identifier"), v9 <= [start identifier]))
     {
-      v10 = [[FigCameraViewfinderSessionLocal alloc] _initWithOwningViewfinder:self captureSessionProxy:a3 delegateStorage:self->super._delegateStorage];
+      v10 = [[FigCameraViewfinderSessionLocal alloc] _initWithOwningViewfinder:self captureSessionProxy:start delegateStorage:self->super._delegateStorage];
       [(FigCameraViewfinderLocal *)self _updateActiveViewfinderSession:v10 sessionStatus:2];
       goto LABEL_8;
     }
@@ -125,13 +125,13 @@ LABEL_8:
   }
 }
 
-- (void)captureSessionDidReconfigureWhileRunning:(id)a3
+- (void)captureSessionDidReconfigureWhileRunning:(id)running
 {
   objc_sync_enter(self);
-  v5 = [(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier];
-  if (v5 == [a3 identifier])
+  identifier = [(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier];
+  if (identifier == [running identifier])
   {
-    if (([a3 containsVideoSource] & 1) == 0)
+    if (([running containsVideoSource] & 1) == 0)
     {
       [(FigCameraViewfinderLocal *)self _updateActiveViewfinderSession:0 sessionStatus:?];
     }
@@ -139,12 +139,12 @@ LABEL_8:
 
   else
   {
-    v6 = [(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier];
-    v7 = [a3 identifier];
-    v8 = [a3 containsVideoSource];
-    if (v6 <= v7)
+    identifier2 = [(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier];
+    identifier3 = [running identifier];
+    containsVideoSource = [running containsVideoSource];
+    if (identifier2 <= identifier3)
     {
-      v9 = v8;
+      v9 = containsVideoSource;
     }
 
     else
@@ -154,7 +154,7 @@ LABEL_8:
 
     if (v9 == 1)
     {
-      v10 = [[FigCameraViewfinderSessionLocal alloc] _initWithOwningViewfinder:self captureSessionProxy:a3 delegateStorage:self->super._delegateStorage];
+      v10 = [[FigCameraViewfinderSessionLocal alloc] _initWithOwningViewfinder:self captureSessionProxy:running delegateStorage:self->super._delegateStorage];
       [(FigCameraViewfinderLocal *)self _updateActiveViewfinderSession:v10 sessionStatus:2];
       goto LABEL_10;
     }
@@ -165,10 +165,10 @@ LABEL_10:
   objc_sync_exit(self);
 }
 
-- (void)captureSessionDidStop:(int64_t)a3
+- (void)captureSessionDidStop:(int64_t)stop
 {
   objc_sync_enter(self);
-  if ([(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier]== a3)
+  if ([(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier]== stop)
   {
     [(FigCameraViewfinderLocal *)self _updateActiveViewfinderSession:0 sessionStatus:?];
   }
@@ -176,18 +176,18 @@ LABEL_10:
   objc_sync_exit(self);
 }
 
-- (void)captureSession:(int64_t)a3 didCapturePhotoWithStatus:(int)a4 thumbnailData:(id)a5 timestamp:(id *)a6
+- (void)captureSession:(int64_t)session didCapturePhotoWithStatus:(int)status thumbnailData:(id)data timestamp:(id *)timestamp
 {
-  if (a3)
+  if (session)
   {
-    v8 = *&a4;
+    v8 = *&status;
     objc_sync_enter(self);
-    if ([(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier]== a3)
+    if ([(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier]== session)
     {
       activeViewfinderSession = self->_activeViewfinderSession;
-      v12 = *&a6->var0;
-      var3 = a6->var3;
-      [(FigCameraViewfinderSessionLocal *)activeViewfinderSession _captureSessionDidCapturePhotoWithStatus:v8 thumbnailData:a5 timestamp:&v12];
+      v12 = *&timestamp->var0;
+      var3 = timestamp->var3;
+      [(FigCameraViewfinderSessionLocal *)activeViewfinderSession _captureSessionDidCapturePhotoWithStatus:v8 thumbnailData:data timestamp:&v12];
     }
 
     objc_sync_exit(self);
@@ -218,10 +218,10 @@ LABEL_10:
   return result;
 }
 
-- (void)captureSessionDidStartMovieRecording:(int64_t)a3
+- (void)captureSessionDidStartMovieRecording:(int64_t)recording
 {
   objc_sync_enter(self);
-  if ([(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier]== a3)
+  if ([(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier]== recording)
   {
     [(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession _captureSessionDidStartMovieRecording];
   }
@@ -229,10 +229,10 @@ LABEL_10:
   objc_sync_exit(self);
 }
 
-- (void)captureSessionDidFinishMovieRecording:(int64_t)a3
+- (void)captureSessionDidFinishMovieRecording:(int64_t)recording
 {
   objc_sync_enter(self);
-  if ([(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier]== a3)
+  if ([(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession identifier]== recording)
   {
     [(FigCameraViewfinderSessionLocal *)self->_activeViewfinderSession _captureSessionDidFinishMovieRecording];
   }
@@ -274,38 +274,38 @@ uint64_t __73__FigCameraViewfinderLocal__updateActiveViewfinderSession_sessionSt
   return result;
 }
 
-- (void)_updateActiveViewfinderSession:(int)a3 sessionStatus:
+- (void)_updateActiveViewfinderSession:(int)session sessionStatus:
 {
-  if (a1)
+  if (self)
   {
-    v5 = *(a1 + 40);
+    v5 = *(self + 40);
     if (v5 != a2)
     {
       if (v5)
       {
-        *(a1 + 40) = 0;
+        *(self + 40) = 0;
         [v5 _captureSessionDidStop];
-        v7 = *(a1 + 8);
+        v7 = *(self + 8);
         v11[0] = MEMORY[0x1E69E9820];
         v11[1] = 3221225472;
         v11[2] = __73__FigCameraViewfinderLocal__updateActiveViewfinderSession_sessionStatus___block_invoke;
         v11[3] = &unk_1E7997528;
-        v11[4] = a1;
+        v11[4] = self;
         v11[5] = v5;
         [v7 invokeDelegateCallbackWithBlock:v11];
       }
 
       if (a2)
       {
-        *(a1 + 40) = a2;
-        v8 = *(a1 + 8);
+        *(self + 40) = a2;
+        v8 = *(self + 8);
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __73__FigCameraViewfinderLocal__updateActiveViewfinderSession_sessionStatus___block_invoke_2;
         v9[3] = &unk_1E7997550;
-        v9[4] = a1;
+        v9[4] = self;
         v9[5] = a2;
-        v10 = a3;
+        sessionCopy = session;
         [v8 invokeDelegateCallbackWithBlock:v9];
       }
     }

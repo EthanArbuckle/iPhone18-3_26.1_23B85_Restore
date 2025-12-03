@@ -1,54 +1,54 @@
 @interface MailboxTableCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityMailboxUsesUnreadCount;
 - (BOOL)accessibilityPerformEscape;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (int64_t)_accessibilityScannerActivateBehavior;
 - (unint64_t)accessibilityTraits;
-- (void)_setUnreadCount:(unint64_t)a3;
-- (void)setDetailsDisclosureButton:(id)a3;
+- (void)_setUnreadCount:(unint64_t)count;
+- (void)setDetailsDisclosureButton:(id)button;
 @end
 
 @implementation MailboxTableCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MailboxTableCell" hasInstanceMethod:@"_setUnreadCount:" withFullSignature:{"v", "Q", 0}];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"_accessibilityClearChildren" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MailboxTableCell" hasInstanceMethod:@"isExpandable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MailboxTableCell" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MailboxPickerOutlineController" hasInstanceMethod:@"scene" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailMainScene" hasInstanceMethod:@"splitViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIDimmingView"];
-  [v3 validateClass:@"MailSplitViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"MailboxTableCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"MailboxPickerOutlineController" hasInstanceMethod:@"favoritesManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailboxPickerOutlineController" hasInstanceMethod:@"collectionHelper" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailboxPickerOutlineController"];
-  [v3 validateClass:@"FavoriteItem" hasInstanceMethod:@"representingMailbox" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailboxPickerCollectionHelper" hasInstanceMethod:@"favoriteItemAtIndexPath:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MailboxTableCell" hasInstanceMethod:@"_setUnreadCount:" withFullSignature:{"v", "Q", 0}];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"_accessibilityClearChildren" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MailboxTableCell" hasInstanceMethod:@"isExpandable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MailboxTableCell" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MailboxPickerOutlineController" hasInstanceMethod:@"scene" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailMainScene" hasInstanceMethod:@"splitViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIDimmingView"];
+  [validationsCopy validateClass:@"MailSplitViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"MailboxTableCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"MailboxPickerOutlineController" hasInstanceMethod:@"favoritesManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailboxPickerOutlineController" hasInstanceMethod:@"collectionHelper" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailboxPickerOutlineController"];
+  [validationsCopy validateClass:@"FavoriteItem" hasInstanceMethod:@"representingMailbox" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailboxPickerCollectionHelper" hasInstanceMethod:@"favoriteItemAtIndexPath:" withFullSignature:{"@", "@", 0}];
 }
 
-- (void)setDetailsDisclosureButton:(id)a3
+- (void)setDetailsDisclosureButton:(id)button
 {
   v9.receiver = self;
   v9.super_class = MailboxTableCellAccessibility;
-  v4 = a3;
-  [(MailboxTableCellAccessibility *)&v9 setDetailsDisclosureButton:v4];
+  buttonCopy = button;
+  [(MailboxTableCellAccessibility *)&v9 setDetailsDisclosureButton:buttonCopy];
   v5 = MEMORY[0x29EDBA0F8];
   v6 = accessibilityLocalizedString(@"more.info.for.mail.cell");
-  v7 = [(MailboxTableCellAccessibility *)self accessibilityLabel];
-  v8 = [v5 stringWithFormat:v6, v7];
-  [v4 setAccessibilityLabel:v8];
+  accessibilityLabel = [(MailboxTableCellAccessibility *)self accessibilityLabel];
+  v8 = [v5 stringWithFormat:v6, accessibilityLabel];
+  [buttonCopy setAccessibilityLabel:v8];
 }
 
-- (void)_setUnreadCount:(unint64_t)a3
+- (void)_setUnreadCount:(unint64_t)count
 {
   v5.receiver = self;
   v5.super_class = MailboxTableCellAccessibility;
-  [(MailboxTableCellAccessibility *)&v5 _setUnreadCount:a3];
+  [(MailboxTableCellAccessibility *)&v5 _setUnreadCount:count];
   v4 = [(MailboxTableCellAccessibility *)self safeValueForKey:@"_accessibilityClearChildren"];
 }
 
@@ -67,9 +67,9 @@
   v10 = __Block_byref_object_dispose__2;
   v11 = 0;
   AXPerformSafeBlock();
-  v2 = [v7[5] type];
+  type = [v7[5] type];
   v3 = 0;
-  if ((v2 - 5) >= 2 && (v2 - 105) >= 2)
+  if ((type - 5) >= 2 && (type - 105) >= 2)
   {
     v4 = v13[5];
     NSClassFromString(&cfstr_FavoriteitemSh.isa);
@@ -119,9 +119,9 @@ uint64_t __69__MailboxTableCellAccessibility__accessibilityMailboxUsesUnreadCoun
 - (id)accessibilityLabel
 {
   v3 = [(MailboxTableCellAccessibility *)self safeValueForKey:@"_textLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(MailboxTableCellAccessibility *)self safeValueForKey:@"_detailTextLabel"];
-  v8 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;
@@ -130,11 +130,11 @@ uint64_t __69__MailboxTableCellAccessibility__accessibilityMailboxUsesUnreadCoun
 - (id)accessibilityValue
 {
   v3 = [(MailboxTableCellAccessibility *)self safeValueForKey:@"_unreadCountLabel"];
-  v4 = [v3 accessibilityLabel];
-  v5 = [v4 integerValue];
+  accessibilityLabel = [v3 accessibilityLabel];
+  integerValue = [accessibilityLabel integerValue];
 
-  v6 = [(MailboxTableCellAccessibility *)self _accessibilityMailboxUsesUnreadCount];
-  if (v5 < 1)
+  _accessibilityMailboxUsesUnreadCount = [(MailboxTableCellAccessibility *)self _accessibilityMailboxUsesUnreadCount];
+  if (integerValue < 1)
   {
     v10 = 0;
   }
@@ -142,7 +142,7 @@ uint64_t __69__MailboxTableCellAccessibility__accessibilityMailboxUsesUnreadCoun
   else
   {
     v7 = MEMORY[0x29EDBA0F8];
-    if (v6)
+    if (_accessibilityMailboxUsesUnreadCount)
     {
       v8 = @"unread.count";
     }
@@ -153,7 +153,7 @@ uint64_t __69__MailboxTableCellAccessibility__accessibilityMailboxUsesUnreadCoun
     }
 
     v9 = accessibilityLocalizedString(v8);
-    v10 = [v7 localizedStringWithFormat:v9, v5];
+    v10 = [v7 localizedStringWithFormat:v9, integerValue];
   }
 
   if ([(MailboxTableCellAccessibility *)self safeBoolForKey:@"isExpandable"])
@@ -185,17 +185,17 @@ uint64_t __69__MailboxTableCellAccessibility__accessibilityMailboxUsesUnreadCoun
 {
   v10.receiver = self;
   v10.super_class = MailboxTableCellAccessibility;
-  v3 = [(MailboxTableCellAccessibility *)&v10 accessibilityTraits];
+  accessibilityTraits = [(MailboxTableCellAccessibility *)&v10 accessibilityTraits];
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
-  v5 = [v4 tintAdjustmentMode];
+  tintAdjustmentMode = [v4 tintAdjustmentMode];
   v6 = *MEMORY[0x29EDC7FA8];
-  if (v5 != 2)
+  if (tintAdjustmentMode != 2)
   {
     v6 = 0;
   }
 
-  v7 = v6 | v3;
+  v7 = v6 | accessibilityTraits;
   if ([v4 isSelected] && objc_msgSend(v4, "isEditing"))
   {
     v7 |= *MEMORY[0x29EDC7FC0];
@@ -229,29 +229,29 @@ uint64_t __69__MailboxTableCellAccessibility__accessibilityMailboxUsesUnreadCoun
 - (BOOL)accessibilityPerformEscape
 {
   v2 = [(MailboxTableCellAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_388 startWithSelf:1];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
   objc_opt_class();
-  v4 = [v3 safeValueForKeyPath:@"scene.splitViewController"];
+  v4 = [_accessibilityViewController safeValueForKeyPath:@"scene.splitViewController"];
   v5 = __UIAccessibilityCastAsClass();
 
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v6 = [v5 view];
-  v7 = [v6 subviews];
+  view = [v5 view];
+  subviews = [view subviews];
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = __59__MailboxTableCellAccessibility_accessibilityPerformEscape__block_invoke_2;
   v9[3] = &unk_29F2D4238;
   v9[4] = &v10;
-  [v7 enumerateObjectsUsingBlock:v9];
+  [subviews enumerateObjectsUsingBlock:v9];
 
-  LOBYTE(v6) = *(v11 + 24);
+  LOBYTE(view) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return v6;
+  return view;
 }
 
 uint64_t __59__MailboxTableCellAccessibility_accessibilityPerformEscape__block_invoke(uint64_t a1, void *a2)

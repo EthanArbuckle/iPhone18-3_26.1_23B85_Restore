@@ -1,22 +1,22 @@
 @interface BKDisplayBootUIRenderOverlay
-- (BKDisplayBootUIRenderOverlay)initWithOverlayDescriptor:(id)a3 level:(float)a4;
-- (BOOL)_presentWithAnimationSettings:(id)a3;
+- (BKDisplayBootUIRenderOverlay)initWithOverlayDescriptor:(id)descriptor level:(float)level;
+- (BOOL)_presentWithAnimationSettings:(id)settings;
 - (CGRect)_bounds;
-- (id)_animationForBackgroundLayerCrossfading:(id)a3;
-- (id)_animationForContentLayerCrossfading:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)_animationForBackgroundLayerCrossfading:(id)crossfading;
+- (id)_animationForContentLayerCrossfading:(id)crossfading;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (void)_cleanup;
-- (void)_dismissWithAnimationSettings:(id)a3;
-- (void)_setBounds:(CGRect)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)_dismissWithAnimationSettings:(id)settings;
+- (void)_setBounds:(CGRect)bounds;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation BKDisplayBootUIRenderOverlay
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"bounds", a4, a5, a6}])
+  if ([path isEqualToString:{@"bounds", object, change, context}])
   {
     [(BKDisplayBootUIRenderOverlay *)self _bounds];
     v8 = v7;
@@ -26,7 +26,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v12 = 134218496;
-      v13 = self;
+      selfCopy = self;
       v14 = 2048;
       v15 = v10;
       v16 = 2048;
@@ -36,11 +36,11 @@
   }
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v9.receiver = self;
   v9.super_class = BKDisplayBootUIRenderOverlay;
-  v4 = [(BKDisplayRenderOverlay *)&v9 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(BKDisplayRenderOverlay *)&v9 descriptionBuilderWithMultilinePrefix:prefix];
   context = self->_context;
   if (context)
   {
@@ -51,9 +51,9 @@
   return v4;
 }
 
-- (id)_animationForBackgroundLayerCrossfading:(id)a3
+- (id)_animationForBackgroundLayerCrossfading:(id)crossfading
 {
-  v3 = [(BKDisplayBootUIRenderOverlay *)self _animationForContentLayerCrossfading:a3];
+  v3 = [(BKDisplayBootUIRenderOverlay *)self _animationForContentLayerCrossfading:crossfading];
   [v3 setBeginTimeMode:kCAAnimationRelative];
   [v3 duration];
   [v3 setBeginTime:?];
@@ -62,11 +62,11 @@
   return v3;
 }
 
-- (id)_animationForContentLayerCrossfading:(id)a3
+- (id)_animationForContentLayerCrossfading:(id)crossfading
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  [v4 duration];
+  crossfadingCopy = crossfading;
+  v5 = [crossfadingCopy mutableCopy];
+  [crossfadingCopy duration];
   v7 = v6;
 
   [v5 setDuration:v7 * 0.5];
@@ -79,9 +79,9 @@
   return v8;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = a3;
+  stopCopy = stop;
   outstandingAnimationsCount = self->_outstandingAnimationsCount;
   if (outstandingAnimationsCount)
   {
@@ -89,18 +89,18 @@
     self->_outstandingAnimationsCount = v7;
     if (!v7)
     {
-      v8 = v5;
+      v8 = stopCopy;
       [(BKDisplayBootUIRenderOverlay *)self _cleanup];
-      v5 = v8;
+      stopCopy = v8;
     }
   }
 }
 
 - (void)_cleanup
 {
-  v3 = [(BKDisplayRenderOverlay *)self descriptor];
-  v4 = [v3 display];
-  [v4 removeObserver:self forKeyPath:@"bounds"];
+  descriptor = [(BKDisplayRenderOverlay *)self descriptor];
+  display = [descriptor display];
+  [display removeObserver:self forKeyPath:@"bounds"];
 
   [(BKDisplayBootUIRenderOverlay *)self _cleanUpContentLayer];
   [(CALayer *)self->_backgroundLayer removeAllAnimations];
@@ -109,7 +109,7 @@
   {
     context = self->_context;
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = context;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Cleaning up %@ - Destroying context: %@", &v9, 0x16u);
@@ -124,30 +124,30 @@
   self->_backgroundLayer = 0;
 }
 
-- (void)_dismissWithAnimationSettings:(id)a3
+- (void)_dismissWithAnimationSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = sub_1000524BC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v12 = 134217984;
-    v13 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%p dismiss", &v12, 0xCu);
   }
 
-  if (v4)
+  if (settingsCopy)
   {
-    v6 = [(BKDisplayBootUIRenderOverlay *)self _animationForContentLayerCrossfading:v4];
+    v6 = [(BKDisplayBootUIRenderOverlay *)self _animationForContentLayerCrossfading:settingsCopy];
     [(CALayer *)self->_contentLayer setOpacity:0.0];
     contentLayer = self->_contentLayer;
-    v8 = [v6 keyPath];
-    [(CALayer *)contentLayer addAnimation:v6 forKey:v8];
+    keyPath = [v6 keyPath];
+    [(CALayer *)contentLayer addAnimation:v6 forKey:keyPath];
 
-    v9 = [(BKDisplayBootUIRenderOverlay *)self _animationForBackgroundLayerCrossfading:v4];
+    v9 = [(BKDisplayBootUIRenderOverlay *)self _animationForBackgroundLayerCrossfading:settingsCopy];
     [(CALayer *)self->_backgroundLayer setOpacity:0.0];
     backgroundLayer = self->_backgroundLayer;
-    v11 = [v9 keyPath];
-    [(CALayer *)backgroundLayer addAnimation:v9 forKey:v11];
+    keyPath2 = [v9 keyPath];
+    [(CALayer *)backgroundLayer addAnimation:v9 forKey:keyPath2];
 
     self->_outstandingAnimationsCount += 2;
   }
@@ -158,14 +158,14 @@
   }
 }
 
-- (BOOL)_presentWithAnimationSettings:(id)a3
+- (BOOL)_presentWithAnimationSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v6 = sub_1000524BC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v47 = 134217984;
-    v48 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%p present", &v47, 0xCu);
   }
 
@@ -178,11 +178,11 @@
       v37 = objc_opt_class();
       v38 = NSStringFromClass(v37);
       v47 = 138544642;
-      v48 = v36;
+      selfCopy = v36;
       v49 = 2114;
       v50 = v38;
       v51 = 2048;
-      v52 = self;
+      selfCopy4 = self;
       v53 = 2114;
       v54 = @"BKDisplayBootUIRenderOverlay.m";
       v55 = 1024;
@@ -198,11 +198,11 @@
     JUMPOUT(0x10002003CLL);
   }
 
-  v7 = [(BKDisplayRenderOverlay *)self descriptor];
-  v8 = [v7 display];
-  [v8 addObserver:self forKeyPath:@"bounds" options:0 context:0];
+  descriptor = [(BKDisplayRenderOverlay *)self descriptor];
+  display = [descriptor display];
+  [display addObserver:self forKeyPath:@"bounds" options:0 context:0];
 
-  v9 = [(BKDisplayBootUIRenderOverlay *)self _prepareContentLayerForPresentation:v5];
+  v9 = [(BKDisplayBootUIRenderOverlay *)self _prepareContentLayerForPresentation:settingsCopy];
   contentLayer = self->_contentLayer;
   self->_contentLayer = v9;
 
@@ -215,11 +215,11 @@
       v41 = objc_opt_class();
       v42 = NSStringFromClass(v41);
       v47 = 138544642;
-      v48 = v40;
+      selfCopy = v40;
       v49 = 2114;
       v50 = v42;
       v51 = 2048;
-      v52 = self;
+      selfCopy4 = self;
       v53 = 2114;
       v54 = @"BKDisplayBootUIRenderOverlay.m";
       v55 = 1024;
@@ -252,11 +252,11 @@
       v45 = objc_opt_class();
       v46 = NSStringFromClass(v45);
       v47 = 138544642;
-      v48 = v44;
+      selfCopy = v44;
       v49 = 2114;
       v50 = v46;
       v51 = 2048;
-      v52 = self;
+      selfCopy4 = self;
       v53 = 2114;
       v54 = @"BKDisplayBootUIRenderOverlay.m";
       v55 = 1024;
@@ -322,14 +322,14 @@
   return 1;
 }
 
-- (void)_setBounds:(CGRect)a3
+- (void)_setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a3.size.width * 0.5;
-  v9 = a3.size.height * 0.5;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = bounds.size.width * 0.5;
+  v9 = bounds.size.height * 0.5;
   v10 = sub_1000524BC();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -340,11 +340,11 @@
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "midBounds:%g,%g", &v13, 0x16u);
   }
 
-  v11 = [(CAContext *)self->_context layer];
-  [v11 setBounds:{x, y, width, height}];
+  layer = [(CAContext *)self->_context layer];
+  [layer setBounds:{x, y, width, height}];
 
-  v12 = [(CAContext *)self->_context layer];
-  [v12 setPosition:{v8, v9}];
+  layer2 = [(CAContext *)self->_context layer];
+  [layer2 setPosition:{v8, v9}];
 
   [(CALayer *)self->_backgroundLayer setBounds:x, y, width, height];
   [(CALayer *)self->_backgroundLayer setPosition:v8, v9];
@@ -353,18 +353,18 @@
 
 - (CGRect)_bounds
 {
-  v2 = [(BKDisplayRenderOverlay *)self descriptor];
-  v3 = [v2 display];
-  [v3 bounds];
+  descriptor = [(BKDisplayRenderOverlay *)self descriptor];
+  display = [descriptor display];
+  [display bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   v12 = +[BSPlatform sharedInstance];
-  LODWORD(v3) = [v12 deviceClass];
+  LODWORD(display) = [v12 deviceClass];
 
-  if (v3 == 3 && (v9 < 1920.0 || v11 < 1080.0))
+  if (display == 3 && (v9 < 1920.0 || v11 < 1080.0))
   {
     v5 = 0.0;
     v11 = 1080.0;
@@ -383,10 +383,10 @@
   return result;
 }
 
-- (BKDisplayBootUIRenderOverlay)initWithOverlayDescriptor:(id)a3 level:(float)a4
+- (BKDisplayBootUIRenderOverlay)initWithOverlayDescriptor:(id)descriptor level:(float)level
 {
-  v7 = a3;
-  if (!v7)
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
@@ -402,7 +402,7 @@
       v29 = 2114;
       v30 = v17;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = @"BKDisplayBootUIRenderOverlay.m";
       v35 = 1024;
@@ -418,17 +418,17 @@
     JUMPOUT(0x100020694);
   }
 
-  v8 = v7;
+  v8 = descriptorCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [v8 classForCoder];
-    if (!v18)
+    classForCoder = [v8 classForCoder];
+    if (!classForCoder)
     {
-      v18 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v19 = NSStringFromClass(v18);
+    v19 = NSStringFromClass(classForCoder);
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
     v22 = [NSString stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"descriptor", v19, v21];
@@ -443,7 +443,7 @@
       v29 = 2114;
       v30 = v25;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = @"BKDisplayBootUIRenderOverlay.m";
       v35 = 1024;
@@ -461,7 +461,7 @@
 
   v26.receiver = self;
   v26.super_class = BKDisplayBootUIRenderOverlay;
-  *&v9 = a4;
+  *&v9 = level;
   v10 = [(BKDisplayRenderOverlay *)&v26 initWithOverlayDescriptor:v8 level:v9];
   if (v10)
   {

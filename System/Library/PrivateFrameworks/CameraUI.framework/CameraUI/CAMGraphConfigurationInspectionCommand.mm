@@ -1,11 +1,11 @@
 @interface CAMGraphConfigurationInspectionCommand
-- (CAMGraphConfigurationInspectionCommand)initWithCoder:(id)a3;
-- (CAMGraphConfigurationInspectionCommand)initWithKnownGraphConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CAMGraphConfigurationInspectionCommand)initWithCoder:(id)coder;
+- (CAMGraphConfigurationInspectionCommand)initWithKnownGraphConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)userInfo;
-- (int64_t)_resolvedVideoConfigurationFromContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (int64_t)_resolvedVideoConfigurationFromContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMGraphConfigurationInspectionCommand
@@ -13,22 +13,22 @@
 - (id)userInfo
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(CAMGraphConfigurationInspectionCommand *)self _resolvedGraphConfiguration];
-  [v3 setObject:v4 forKey:@"CAMModeAndDeviceCommandResolvedConfiguration"];
+  _resolvedGraphConfiguration = [(CAMGraphConfigurationInspectionCommand *)self _resolvedGraphConfiguration];
+  [v3 setObject:_resolvedGraphConfiguration forKey:@"CAMModeAndDeviceCommandResolvedConfiguration"];
 
   return v3;
 }
 
-- (CAMGraphConfigurationInspectionCommand)initWithKnownGraphConfiguration:(id)a3
+- (CAMGraphConfigurationInspectionCommand)initWithKnownGraphConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = CAMGraphConfigurationInspectionCommand;
   v6 = [(CAMCaptureCommand *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__knownGraphConfiguration, a3);
+    objc_storeStrong(&v6->__knownGraphConfiguration, configuration);
     resolvedGraphConfiguration = v7->__resolvedGraphConfiguration;
     v7->__resolvedGraphConfiguration = 0;
 
@@ -38,19 +38,19 @@
   return v7;
 }
 
-- (CAMGraphConfigurationInspectionCommand)initWithCoder:(id)a3
+- (CAMGraphConfigurationInspectionCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CAMGraphConfigurationInspectionCommand;
-  v5 = [(CAMCaptureCommand *)&v12 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"CAMGraphConfigurationInspectionCommandKnownConfiguration"];
+    v6 = [coderCopy decodeObjectForKey:@"CAMGraphConfigurationInspectionCommandKnownConfiguration"];
     knownGraphConfiguration = v5->__knownGraphConfiguration;
     v5->__knownGraphConfiguration = v6;
 
-    v8 = [v4 decodeObjectForKey:@"CAMGraphConfigurationInspectionCommandResolvedConfiguration"];
+    v8 = [coderCopy decodeObjectForKey:@"CAMGraphConfigurationInspectionCommandResolvedConfiguration"];
     resolvedGraphConfiguration = v5->__resolvedGraphConfiguration;
     v5->__resolvedGraphConfiguration = v8;
 
@@ -60,121 +60,121 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CAMGraphConfigurationInspectionCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CAMGraphConfigurationInspectionCommand *)self _knownGraphConfiguration:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"CAMGraphConfigurationInspectionCommandKnownConfiguration"];
+  [coderCopy encodeObject:v5 forKey:@"CAMGraphConfigurationInspectionCommandKnownConfiguration"];
 
-  v6 = [(CAMGraphConfigurationInspectionCommand *)self _resolvedGraphConfiguration];
-  [v4 encodeObject:v6 forKey:@"CAMGraphConfigurationInspectionCommandResolvedConfiguration"];
+  _resolvedGraphConfiguration = [(CAMGraphConfigurationInspectionCommand *)self _resolvedGraphConfiguration];
+  [coderCopy encodeObject:_resolvedGraphConfiguration forKey:@"CAMGraphConfigurationInspectionCommandResolvedConfiguration"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = CAMGraphConfigurationInspectionCommand;
-  v4 = [(CAMCaptureCommand *)&v10 copyWithZone:a3];
-  v5 = [(CAMGraphConfigurationInspectionCommand *)self _knownGraphConfiguration];
+  v4 = [(CAMCaptureCommand *)&v10 copyWithZone:zone];
+  _knownGraphConfiguration = [(CAMGraphConfigurationInspectionCommand *)self _knownGraphConfiguration];
   v6 = v4[3];
-  v4[3] = v5;
+  v4[3] = _knownGraphConfiguration;
 
-  v7 = [(CAMGraphConfigurationInspectionCommand *)self _resolvedGraphConfiguration];
+  _resolvedGraphConfiguration = [(CAMGraphConfigurationInspectionCommand *)self _resolvedGraphConfiguration];
   v8 = v4[4];
-  v4[4] = v7;
+  v4[4] = _resolvedGraphConfiguration;
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v48 = a3;
-  v4 = [(CAMGraphConfigurationInspectionCommand *)self _knownGraphConfiguration];
-  v5 = [v4 mode];
-  if (v5 > 9)
+  contextCopy = context;
+  _knownGraphConfiguration = [(CAMGraphConfigurationInspectionCommand *)self _knownGraphConfiguration];
+  mode = [_knownGraphConfiguration mode];
+  if (mode > 9)
   {
     v6 = 0;
   }
 
-  else if (((1 << v5) & 0x279) != 0 || [v4 videoConfiguration])
+  else if (((1 << mode) & 0x279) != 0 || [_knownGraphConfiguration videoConfiguration])
   {
-    v6 = v4;
+    v6 = _knownGraphConfiguration;
   }
 
   else
   {
-    v47 = [(CAMGraphConfigurationInspectionCommand *)self _resolvedVideoConfigurationFromContext:v48];
+    v47 = [(CAMGraphConfigurationInspectionCommand *)self _resolvedVideoConfigurationFromContext:contextCopy];
     v46 = [CAMCaptureGraphConfiguration alloc];
-    v45 = [v4 mode];
-    v44 = [v4 device];
-    v43 = [v4 macroMode];
-    v42 = [v4 audioConfiguration];
-    v41 = [v4 mixAudioWithOthers];
-    v40 = [v4 windNoiseRemovalEnabled];
-    v39 = [v4 previewConfiguration];
-    v38 = [v4 previewSampleBufferVideoFormat];
-    v37 = [v4 previewFilters];
-    v36 = [v4 videoThumbnailOutputConfiguration];
-    v35 = [v4 photoEncodingBehavior];
-    v34 = [v4 videoEncodingBehavior];
-    v33 = [v4 enableAutoFPSVideo];
-    v32 = [v4 isVideoHDRSuspended];
-    v31 = [v4 aspectRatioCrop];
-    v30 = [v4 photoQualityPrioritization];
-    v29 = [v4 isCaptureMirrored];
-    v28 = [v4 enableRAWCaptureIfSupported];
-    v27 = [v4 semanticStyleSupport];
-    v26 = [v4 previewSemanticStyle];
-    v25 = [v4 smartStyles];
-    v24 = [v4 enableContentAwareDistortionCorrection];
-    v23 = [v4 enableResponsiveShutter];
-    v22 = [v4 suspendLivePhotoCapture];
-    v21 = [v4 videoStabilizationStrength];
-    v20 = [v4 maximumPhotoResolution];
-    v19 = [v4 colorSpace];
-    v7 = [v4 isVideoBinned];
-    v8 = [v4 enableDepthSuggestion];
-    v9 = [v4 enableZoomPIP];
-    v10 = [v4 customLensGroup];
-    v11 = [v4 trueVideoEnabled];
-    v12 = [v4 prefersHDR10BitVideo];
-    BYTE2(v18) = [v4 frontRearSimultaneousVideoEnabled];
-    BYTE1(v18) = v12;
-    LOBYTE(v18) = v11;
-    BYTE2(v17) = v9;
-    BYTE1(v17) = v8;
-    LOBYTE(v17) = v7;
-    BYTE2(v16) = v22;
-    BYTE1(v16) = v23;
-    LOBYTE(v16) = v24;
-    BYTE1(v15) = v28;
-    LOBYTE(v15) = v29;
-    BYTE1(v14) = v32;
-    LOBYTE(v14) = v33;
-    LOBYTE(v13) = v40;
-    v6 = -[CAMCaptureGraphConfiguration initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:](v46, "initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:", v45, v44, v43, v47, v42, v41, v13, v39, v38, v37, v36, v35, v34, v14, v31, v30, v15, v27, v26, v25, v16, v21, v20, v19, v17, v10, v18, [v4 videoDynamicAspectRatio], objc_msgSend(v4, "smartFramingFieldOfView"));
+    mode2 = [_knownGraphConfiguration mode];
+    device = [_knownGraphConfiguration device];
+    macroMode = [_knownGraphConfiguration macroMode];
+    audioConfiguration = [_knownGraphConfiguration audioConfiguration];
+    mixAudioWithOthers = [_knownGraphConfiguration mixAudioWithOthers];
+    windNoiseRemovalEnabled = [_knownGraphConfiguration windNoiseRemovalEnabled];
+    previewConfiguration = [_knownGraphConfiguration previewConfiguration];
+    previewSampleBufferVideoFormat = [_knownGraphConfiguration previewSampleBufferVideoFormat];
+    previewFilters = [_knownGraphConfiguration previewFilters];
+    videoThumbnailOutputConfiguration = [_knownGraphConfiguration videoThumbnailOutputConfiguration];
+    photoEncodingBehavior = [_knownGraphConfiguration photoEncodingBehavior];
+    videoEncodingBehavior = [_knownGraphConfiguration videoEncodingBehavior];
+    enableAutoFPSVideo = [_knownGraphConfiguration enableAutoFPSVideo];
+    isVideoHDRSuspended = [_knownGraphConfiguration isVideoHDRSuspended];
+    aspectRatioCrop = [_knownGraphConfiguration aspectRatioCrop];
+    photoQualityPrioritization = [_knownGraphConfiguration photoQualityPrioritization];
+    isCaptureMirrored = [_knownGraphConfiguration isCaptureMirrored];
+    enableRAWCaptureIfSupported = [_knownGraphConfiguration enableRAWCaptureIfSupported];
+    semanticStyleSupport = [_knownGraphConfiguration semanticStyleSupport];
+    previewSemanticStyle = [_knownGraphConfiguration previewSemanticStyle];
+    smartStyles = [_knownGraphConfiguration smartStyles];
+    enableContentAwareDistortionCorrection = [_knownGraphConfiguration enableContentAwareDistortionCorrection];
+    enableResponsiveShutter = [_knownGraphConfiguration enableResponsiveShutter];
+    suspendLivePhotoCapture = [_knownGraphConfiguration suspendLivePhotoCapture];
+    videoStabilizationStrength = [_knownGraphConfiguration videoStabilizationStrength];
+    maximumPhotoResolution = [_knownGraphConfiguration maximumPhotoResolution];
+    colorSpace = [_knownGraphConfiguration colorSpace];
+    isVideoBinned = [_knownGraphConfiguration isVideoBinned];
+    enableDepthSuggestion = [_knownGraphConfiguration enableDepthSuggestion];
+    enableZoomPIP = [_knownGraphConfiguration enableZoomPIP];
+    customLensGroup = [_knownGraphConfiguration customLensGroup];
+    trueVideoEnabled = [_knownGraphConfiguration trueVideoEnabled];
+    prefersHDR10BitVideo = [_knownGraphConfiguration prefersHDR10BitVideo];
+    BYTE2(v18) = [_knownGraphConfiguration frontRearSimultaneousVideoEnabled];
+    BYTE1(v18) = prefersHDR10BitVideo;
+    LOBYTE(v18) = trueVideoEnabled;
+    BYTE2(v17) = enableZoomPIP;
+    BYTE1(v17) = enableDepthSuggestion;
+    LOBYTE(v17) = isVideoBinned;
+    BYTE2(v16) = suspendLivePhotoCapture;
+    BYTE1(v16) = enableResponsiveShutter;
+    LOBYTE(v16) = enableContentAwareDistortionCorrection;
+    BYTE1(v15) = enableRAWCaptureIfSupported;
+    LOBYTE(v15) = isCaptureMirrored;
+    BYTE1(v14) = isVideoHDRSuspended;
+    LOBYTE(v14) = enableAutoFPSVideo;
+    LOBYTE(v13) = windNoiseRemovalEnabled;
+    v6 = -[CAMCaptureGraphConfiguration initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:](v46, "initWithCaptureMode:captureDevice:macroMode:videoConfiguration:audioConfiguration:mixAudioWithOthers:windNoiseRemovalEnabled:previewConfiguration:previewSampleBufferVideoFormat:previewFilters:videoThumbnailOutputConfiguration:photoEncodingBehavior:videoEncodingBehavior:enableAutoFPSVideo:videoHDRSuspended:aspectRatioCrop:photoQualityPrioritization:captureMirrored:enableRAWCaptureIfSupported:semanticStyleSupport:previewSemanticStyle:smartStyles:enableContentAwareDistortionCorrection:enableResponsiveShutter:suspendLivePhotoCapture:videoStabilizationStrength:maximumPhotoResolution:colorSpace:videoBinned:enableDepthSuggestion:enableZoomPIP:customLensGroup:trueVideoEnabled:prefersHDR10BitVideo:frontRearSimultaneousVideoEnabled:videoDynamicAspectRatio:smartFramingFieldOfView:", mode2, device, macroMode, v47, audioConfiguration, mixAudioWithOthers, v13, previewConfiguration, previewSampleBufferVideoFormat, previewFilters, videoThumbnailOutputConfiguration, photoEncodingBehavior, videoEncodingBehavior, v14, aspectRatioCrop, photoQualityPrioritization, v15, semanticStyleSupport, previewSemanticStyle, smartStyles, v16, videoStabilizationStrength, maximumPhotoResolution, colorSpace, v17, customLensGroup, v18, [_knownGraphConfiguration videoDynamicAspectRatio], objc_msgSend(_knownGraphConfiguration, "smartFramingFieldOfView"));
   }
 
   [(CAMGraphConfigurationInspectionCommand *)self _setResolvedGraphConfiguration:v6];
 }
 
-- (int64_t)_resolvedVideoConfigurationFromContext:(id)a3
+- (int64_t)_resolvedVideoConfigurationFromContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 currentVideoDevice];
-  v5 = [v3 currentVideoDeviceFormat];
+  contextCopy = context;
+  currentVideoDevice = [contextCopy currentVideoDevice];
+  currentVideoDeviceFormat = [contextCopy currentVideoDeviceFormat];
 
-  Dimensions = CMVideoFormatDescriptionGetDimensions([v5 formatDescription]);
+  Dimensions = CMVideoFormatDescriptionGetDimensions([currentVideoDeviceFormat formatDescription]);
   v7 = HIDWORD(Dimensions);
   v9 = Dimensions == 1280 && v7 == 720;
   v11 = Dimensions == 1920 && v7 == 1080;
   v13 = Dimensions == 3840 && v7 == 2160;
-  if (v4)
+  if (currentVideoDevice)
   {
-    [v4 activeVideoMinFrameDuration];
+    [currentVideoDevice activeVideoMinFrameDuration];
     v14 = 0 / 0;
     if (0 / 0 == 30 && v9)
     {

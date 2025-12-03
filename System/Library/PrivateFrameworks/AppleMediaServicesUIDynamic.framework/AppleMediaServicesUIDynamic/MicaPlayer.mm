@@ -1,55 +1,55 @@
 @interface MicaPlayer
-+ (BOOL)BOOLFromDictionary:(id)a3 key:(id)a4 defaultValue:(BOOL)a5;
-+ (id)rootDictForPath:(id)a3;
-+ (id)updatePublishedObjects:(id)a3 toReferenceLayersInTree:(id)a4 ratherThanLayersInTree:(id)a5;
++ (BOOL)BOOLFromDictionary:(id)dictionary key:(id)key defaultValue:(BOOL)value;
++ (id)rootDictForPath:(id)path;
++ (id)updatePublishedObjects:(id)objects toReferenceLayersInTree:(id)tree ratherThanLayersInTree:(id)inTree;
 - (BOOL)isPlaybackAtEnd;
 - (BOOL)isTimerNeeded;
-- (MicaPlayer)initWithData:(id)a3 url:(id)a4 retinaScale:(double)a5;
-- (MicaPlayer)initWithFileName:(id)a3 retinaScale:(double)a4;
-- (MicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4;
-- (MicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4 rootLayer:(id)a5 publishedObjects:(id)a6;
+- (MicaPlayer)initWithData:(id)data url:(id)url retinaScale:(double)scale;
+- (MicaPlayer)initWithFileName:(id)name retinaScale:(double)scale;
+- (MicaPlayer)initWithPath:(id)path retinaScale:(double)scale;
+- (MicaPlayer)initWithPath:(id)path retinaScale:(double)scale rootLayer:(id)layer publishedObjects:(id)objects;
 - (MicaPlayerDelegate)delegate;
 - (double)playbackTime;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)publishedLayerWithKey:(id)a3 required:(BOOL)a4;
-- (id)publishedObjectWithKey:(id)a3 required:(BOOL)a4;
-- (void)addToLayer:(id)a3 onTop:(BOOL)a4 gravity:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)publishedLayerWithKey:(id)key required:(BOOL)required;
+- (id)publishedObjectWithKey:(id)key required:(BOOL)required;
+- (void)addToLayer:(id)layer onTop:(BOOL)top gravity:(id)gravity;
 - (void)dealloc;
-- (void)moveAndResizeWithinParentLayer:(id)a3 usingGravity:(id)a4 animate:(BOOL)a5;
+- (void)moveAndResizeWithinParentLayer:(id)layer usingGravity:(id)gravity animate:(BOOL)animate;
 - (void)notifyDelegateDidChangePlaybackTime;
 - (void)notifyDelegateDidStartPlaying;
 - (void)notifyDelegateDidStopPlaying;
 - (void)pause;
 - (void)play;
 - (void)removeFromSuperlayer;
-- (void)runPlayTimer:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setPlaybackTime:(double)a3;
-- (void)setPreferredPlaybackSpeed:(float)a3;
+- (void)runPlayTimer:(id)timer;
+- (void)setDelegate:(id)delegate;
+- (void)setPlaybackTime:(double)time;
+- (void)setPreferredPlaybackSpeed:(float)speed;
 - (void)startPlayTimerIfNeeded;
 - (void)stopPlayTimer;
 @end
 
 @implementation MicaPlayer
 
-- (MicaPlayer)initWithData:(id)a3 url:(id)a4 retinaScale:(double)a5
+- (MicaPlayer)initWithData:(id)data url:(id)url retinaScale:(double)scale
 {
-  v8 = a4;
+  urlCopy = url;
   v9 = MEMORY[0x1E695DFD8];
-  v10 = a3;
+  dataCopy = data;
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v15 = [v9 setWithObjects:{v11, v12, v13, v14, objc_opt_class(), 0}];
   v26 = 0;
-  v16 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v15 fromData:v10 error:&v26];
+  v16 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v15 fromData:dataCopy error:&v26];
 
   v17 = v26;
   if (v17)
   {
-    v18 = [v8 absoluteString];
-    NSLog(&cfstr_UnableToOpenMi.isa, v18);
+    absoluteString = [urlCopy absoluteString];
+    NSLog(&cfstr_UnableToOpenMi.isa, absoluteString);
 
     v19 = [v17 description];
     NSLog(&cfstr_Error_0.isa, v19);
@@ -68,9 +68,9 @@ LABEL_8:
   [v20 setGeometryFlipped:{+[MicaPlayer BOOLFromDictionary:key:defaultValue:](MicaPlayer, "BOOLFromDictionary:key:defaultValue:", v16, @"geometryFlipped", 0) ^ 1}];
   [v21 setMasksToBounds:1];
   [v21 setRepeatCount:0.0];
-  v22 = [v8 absoluteString];
+  absoluteString2 = [urlCopy absoluteString];
   v23 = [v16 objectForKeyedSubscript:@"publishedObjects"];
-  v24 = [(MicaPlayer *)self initWithPath:v22 retinaScale:v21 rootLayer:v23 publishedObjects:a5];
+  v24 = [(MicaPlayer *)self initWithPath:absoluteString2 retinaScale:v21 rootLayer:v23 publishedObjects:scale];
 
   if (!v24)
   {
@@ -82,38 +82,38 @@ LABEL_9:
   return v24;
 }
 
-- (MicaPlayer)initWithFileName:(id)a3 retinaScale:(double)a4
+- (MicaPlayer)initWithFileName:(id)name retinaScale:(double)scale
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 URLForResource:v6 withExtension:@"caar"];
+  nameCopy = name;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v8 = [mainBundle URLForResource:nameCopy withExtension:@"caar"];
 
   if (v8)
   {
-    v9 = [v8 path];
-    v10 = [(MicaPlayer *)self initWithPath:v9 retinaScale:a4];
-    self = v9;
+    path = [v8 path];
+    v10 = [(MicaPlayer *)self initWithPath:path retinaScale:scale];
+    self = path;
   }
 
   else
   {
-    NSLog(&cfstr_UnableToFindMi.isa, v6);
+    NSLog(&cfstr_UnableToFindMi.isa, nameCopy);
     v10 = 0;
   }
 
   return v10;
 }
 
-- (MicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4
+- (MicaPlayer)initWithPath:(id)path retinaScale:(double)scale
 {
-  v6 = a3;
-  v7 = [MicaPlayer rootDictForPath:v6];
+  pathCopy = path;
+  v7 = [MicaPlayer rootDictForPath:pathCopy];
   v8 = v7;
   if (!v7 || ([v7 objectForKeyedSubscript:@"rootLayer"], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
 LABEL_6:
-    NSLog(&cfstr_UnableToLoadMi_0.isa, v6);
+    NSLog(&cfstr_UnableToLoadMi_0.isa, pathCopy);
     v12 = 0;
     goto LABEL_7;
   }
@@ -123,7 +123,7 @@ LABEL_6:
   [v10 setMasksToBounds:1];
   [v10 setRepeatCount:0.0];
   v11 = [v8 objectForKeyedSubscript:@"publishedObjects"];
-  v12 = [(MicaPlayer *)self initWithPath:v6 retinaScale:v10 rootLayer:v11 publishedObjects:a4];
+  v12 = [(MicaPlayer *)self initWithPath:pathCopy retinaScale:v10 rootLayer:v11 publishedObjects:scale];
 
   if (!v12)
   {
@@ -135,24 +135,24 @@ LABEL_7:
   return v12;
 }
 
-- (MicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4 rootLayer:(id)a5 publishedObjects:(id)a6
+- (MicaPlayer)initWithPath:(id)path retinaScale:(double)scale rootLayer:(id)layer publishedObjects:(id)objects
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  pathCopy = path;
+  layerCopy = layer;
+  objectsCopy = objects;
   v17.receiver = self;
   v17.super_class = MicaPlayer;
   v13 = [(MicaPlayer *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    [(MicaPlayer *)v13 setPath:v10];
-    [(MicaPlayer *)v14 setRootLayer:v11];
-    [(MicaPlayer *)v14 setPublishedObjects:v12];
+    [(MicaPlayer *)v13 setPath:pathCopy];
+    [(MicaPlayer *)v14 setRootLayer:layerCopy];
+    [(MicaPlayer *)v14 setPublishedObjects:objectsCopy];
     LODWORD(v15) = 1.0;
     [(MicaPlayer *)v14 setPreferredPlaybackSpeed:v15];
-    [(MicaPlayer *)v14 setRetinaScale:a4];
-    [v11 duration];
+    [(MicaPlayer *)v14 setRetinaScale:scale];
+    [layerCopy duration];
     [(MicaPlayer *)v14 setDocumentDuration:?];
     [(CALayer *)v14->_rootLayer setDuration:INFINITY];
   }
@@ -168,10 +168,10 @@ LABEL_7:
   [(MicaPlayer *)&v3 dealloc];
 }
 
-+ (id)rootDictForPath:(id)a3
++ (id)rootDictForPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3];
+  pathCopy = path;
+  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy];
   if (v4)
   {
     v21 = 0;
@@ -179,8 +179,8 @@ LABEL_7:
     v6 = v21;
     if (v6)
     {
-      v7 = [v3 lastPathComponent];
-      NSLog(&cfstr_UnableToOpenMi.isa, v7);
+      lastPathComponent = [pathCopy lastPathComponent];
+      NSLog(&cfstr_UnableToOpenMi.isa, lastPathComponent);
 
       v8 = [v6 description];
       NSLog(&cfstr_Error_0.isa, v8);
@@ -200,8 +200,8 @@ LABEL_7:
 
       if (v16)
       {
-        v17 = [v3 lastPathComponent];
-        NSLog(&cfstr_UnableToOpenMi.isa, v17);
+        lastPathComponent2 = [pathCopy lastPathComponent];
+        NSLog(&cfstr_UnableToOpenMi.isa, lastPathComponent2);
 
         v18 = [v16 description];
         NSLog(&cfstr_Error_0.isa, v18);
@@ -223,56 +223,56 @@ LABEL_7:
   return v15;
 }
 
-+ (BOOL)BOOLFromDictionary:(id)a3 key:(id)a4 defaultValue:(BOOL)a5
++ (BOOL)BOOLFromDictionary:(id)dictionary key:(id)key defaultValue:(BOOL)value
 {
-  v6 = [a3 objectForKeyedSubscript:a4];
+  v6 = [dictionary objectForKeyedSubscript:key];
   v7 = v6;
   if (v6)
   {
-    a5 = [v6 BOOLValue];
+    value = [v6 BOOLValue];
   }
 
-  return a5;
+  return value;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(MicaPlayer *)self path];
-  v6 = [v5 copy];
+  path = [(MicaPlayer *)self path];
+  v6 = [path copy];
 
-  v7 = [(MicaPlayer *)self rootLayer];
-  v8 = [v7 mp_deepCopyLayer];
+  rootLayer = [(MicaPlayer *)self rootLayer];
+  mp_deepCopyLayer = [rootLayer mp_deepCopyLayer];
 
-  v9 = [(MicaPlayer *)self publishedObjects];
-  v10 = [(MicaPlayer *)self rootLayer];
-  v11 = [MicaPlayer updatePublishedObjects:v9 toReferenceLayersInTree:v8 ratherThanLayersInTree:v10];
+  publishedObjects = [(MicaPlayer *)self publishedObjects];
+  rootLayer2 = [(MicaPlayer *)self rootLayer];
+  v11 = [MicaPlayer updatePublishedObjects:publishedObjects toReferenceLayersInTree:mp_deepCopyLayer ratherThanLayersInTree:rootLayer2];
 
-  v12 = [objc_opt_class() allocWithZone:a3];
+  v12 = [objc_opt_class() allocWithZone:zone];
   [(MicaPlayer *)self retinaScale];
-  v13 = [v12 initWithPath:v6 retinaScale:v8 rootLayer:v11 publishedObjects:?];
+  v13 = [v12 initWithPath:v6 retinaScale:mp_deepCopyLayer rootLayer:v11 publishedObjects:?];
 
   return v13;
 }
 
-+ (id)updatePublishedObjects:(id)a3 toReferenceLayersInTree:(id)a4 ratherThanLayersInTree:(id)a5
++ (id)updatePublishedObjects:(id)objects toReferenceLayersInTree:(id)tree ratherThanLayersInTree:(id)inTree
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v28 = [MEMORY[0x1E695DF90] dictionary];
-  if (v7 && [v7 count])
+  objectsCopy = objects;
+  treeCopy = tree;
+  inTreeCopy = inTree;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (objectsCopy && [objectsCopy count])
   {
-    v10 = [v9 mp_allLayersInTree];
-    v24 = v9;
-    v26 = [v9 mp_allAnimationsInTree];
-    v11 = [v8 mp_allLayersInTree];
-    v25 = [v8 mp_allAnimationsInTree];
+    mp_allLayersInTree = [inTreeCopy mp_allLayersInTree];
+    v24 = inTreeCopy;
+    mp_allAnimationsInTree = [inTreeCopy mp_allAnimationsInTree];
+    mp_allLayersInTree2 = [treeCopy mp_allLayersInTree];
+    mp_allAnimationsInTree2 = [treeCopy mp_allAnimationsInTree];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    obj = [v7 allKeys];
+    obj = [objectsCopy allKeys];
     v12 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v12)
     {
@@ -288,15 +288,15 @@ LABEL_7:
           }
 
           v16 = *(*(&v29 + 1) + 8 * i);
-          v17 = [v7 objectForKeyedSubscript:v16];
+          v17 = [objectsCopy objectForKeyedSubscript:v16];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
-          v19 = v10;
-          v20 = v11;
-          if (isKindOfClass & 1) != 0 || (objc_opt_class(), v21 = objc_opt_isKindOfClass(), v20 = v25, v19 = v26, (v21))
+          v19 = mp_allLayersInTree;
+          v20 = mp_allLayersInTree2;
+          if (isKindOfClass & 1) != 0 || (objc_opt_class(), v21 = objc_opt_isKindOfClass(), v20 = mp_allAnimationsInTree2, v19 = mp_allAnimationsInTree, (v21))
           {
             v22 = [v20 objectAtIndexedSubscript:{objc_msgSend(v19, "indexOfObjectIdenticalTo:", v17)}];
-            [v28 setObject:v22 forKeyedSubscript:v16];
+            [dictionary setObject:v22 forKeyedSubscript:v16];
           }
         }
 
@@ -306,42 +306,42 @@ LABEL_7:
       while (v13);
     }
 
-    v9 = v24;
+    inTreeCopy = v24;
   }
 
-  return v28;
+  return dictionary;
 }
 
-- (void)addToLayer:(id)a3 onTop:(BOOL)a4 gravity:(id)a5
+- (void)addToLayer:(id)layer onTop:(BOOL)top gravity:(id)gravity
 {
-  v6 = a4;
-  v11 = a3;
-  v8 = a5;
-  v9 = [(CALayer *)self->_rootLayer superlayer];
+  topCopy = top;
+  layerCopy = layer;
+  gravityCopy = gravity;
+  superlayer = [(CALayer *)self->_rootLayer superlayer];
 
-  if (!v9)
+  if (!superlayer)
   {
     [(MicaPlayer *)self pause];
     [(MicaPlayer *)self setPlaybackTime:0.0];
-    [(MicaPlayer *)self moveAndResizeWithinParentLayer:v11 usingGravity:v8 animate:0];
+    [(MicaPlayer *)self moveAndResizeWithinParentLayer:layerCopy usingGravity:gravityCopy animate:0];
     rootLayer = self->_rootLayer;
-    if (v6)
+    if (topCopy)
     {
-      [v11 addSublayer:rootLayer];
+      [layerCopy addSublayer:rootLayer];
     }
 
     else
     {
-      [v11 insertSublayer:rootLayer atIndex:0];
+      [layerCopy insertSublayer:rootLayer atIndex:0];
     }
   }
 }
 
 - (void)removeFromSuperlayer
 {
-  v3 = [(CALayer *)self->_rootLayer superlayer];
+  superlayer = [(CALayer *)self->_rootLayer superlayer];
 
-  if (v3)
+  if (superlayer)
   {
     [(MicaPlayer *)self pause];
     rootLayer = self->_rootLayer;
@@ -350,19 +350,19 @@ LABEL_7:
   }
 }
 
-- (void)moveAndResizeWithinParentLayer:(id)a3 usingGravity:(id)a4 animate:(BOOL)a5
+- (void)moveAndResizeWithinParentLayer:(id)layer usingGravity:(id)gravity animate:(BOOL)animate
 {
-  v5 = a5;
+  animateCopy = animate;
   rootLayer = self->_rootLayer;
-  v9 = a4;
-  v10 = a3;
+  gravityCopy = gravity;
+  layerCopy = layer;
   [(MicaPlayer *)self retinaScale];
-  [(CALayer *)rootLayer mp_moveAndResizeWithinParentLayer:v10 usingGravity:v9 geometryFlipped:1 retinaScale:v5 animate:?];
+  [(CALayer *)rootLayer mp_moveAndResizeWithinParentLayer:layerCopy usingGravity:gravityCopy geometryFlipped:1 retinaScale:animateCopy animate:?];
 }
 
-- (id)publishedLayerWithKey:(id)a3 required:(BOOL)a4
+- (id)publishedLayerWithKey:(id)key required:(BOOL)required
 {
-  v4 = [(MicaPlayer *)self publishedObjectWithKey:a3 required:a4];
+  v4 = [(MicaPlayer *)self publishedObjectWithKey:key required:required];
   if (v4)
   {
     objc_opt_class();
@@ -376,16 +376,16 @@ LABEL_7:
   return v4;
 }
 
-- (id)publishedObjectWithKey:(id)a3 required:(BOOL)a4
+- (id)publishedObjectWithKey:(id)key required:(BOOL)required
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_publishedObjects objectForKeyedSubscript:v6];
+  requiredCopy = required;
+  keyCopy = key;
+  v7 = [(NSDictionary *)self->_publishedObjects objectForKeyedSubscript:keyCopy];
   v8 = v7;
-  if (v4 && !v7)
+  if (requiredCopy && !v7)
   {
-    v9 = [(NSString *)self->_path lastPathComponent];
-    NSLog(&cfstr_MissingPublish.isa, v6, v9);
+    lastPathComponent = [(NSString *)self->_path lastPathComponent];
+    NSLog(&cfstr_MissingPublish.isa, keyCopy, lastPathComponent);
   }
 
   return v8;
@@ -421,23 +421,23 @@ LABEL_7:
   }
 }
 
-- (void)setPreferredPlaybackSpeed:(float)a3
+- (void)setPreferredPlaybackSpeed:(float)speed
 {
-  if (a3 <= 0.0)
+  if (speed <= 0.0)
   {
-    v4 = 1.0;
+    speedCopy = 1.0;
   }
 
   else
   {
-    v4 = a3;
+    speedCopy = speed;
   }
 
-  self->_preferredPlaybackSpeed = v4;
+  self->_preferredPlaybackSpeed = speedCopy;
   if ([(MicaPlayer *)self isPlaying])
   {
     rootLayer = self->_rootLayer;
-    *&v5 = v4;
+    *&v5 = speedCopy;
 
     [(CALayer *)rootLayer setSpeed:v5];
   }
@@ -464,18 +464,18 @@ LABEL_7:
   return result;
 }
 
-- (void)setPlaybackTime:(double)a3
+- (void)setPlaybackTime:(double)time
 {
-  v5 = [(MicaPlayer *)self isPlaying];
+  isPlaying = [(MicaPlayer *)self isPlaying];
   v6 = 0.0;
-  if (v5)
+  if (isPlaying)
   {
-    v6 = CACurrentMediaTime() - a3;
-    a3 = 0.0;
+    v6 = CACurrentMediaTime() - time;
+    time = 0.0;
   }
 
   [(CALayer *)self->_rootLayer setBeginTime:v6];
-  [(CALayer *)self->_rootLayer setTimeOffset:a3];
+  [(CALayer *)self->_rootLayer setTimeOffset:time];
 
   [(MicaPlayer *)self notifyDelegateDidChangePlaybackTime];
 }
@@ -488,9 +488,9 @@ LABEL_7:
   return v4 >= v5 + -0.001;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   if ([(MicaPlayer *)self isTimerNeeded])
   {
 
@@ -562,10 +562,10 @@ LABEL_7:
     [(MicaPlayer *)self documentDuration];
     if (v3 == INFINITY)
     {
-      v5 = [(MicaPlayer *)self delegate];
-      if (v5)
+      delegate = [(MicaPlayer *)self delegate];
+      if (delegate)
       {
-        v6 = [(MicaPlayer *)self delegate];
+        delegate2 = [(MicaPlayer *)self delegate];
         v4 = objc_opt_respondsToSelector();
       }
 
@@ -630,7 +630,7 @@ void __36__MicaPlayer_startPlayTimerIfNeeded__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)runPlayTimer:(id)a3
+- (void)runPlayTimer:(id)timer
 {
   if ([(MicaPlayer *)self isPlaybackAtEnd])
   {

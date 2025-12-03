@@ -1,8 +1,8 @@
 @interface CustomLayoutView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC5JetUI16CustomLayoutView)initWithCoder:(id)a3;
-- (_TtC5JetUI16CustomLayoutView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC5JetUI16CustomLayoutView)initWithCoder:(id)coder;
+- (_TtC5JetUI16CustomLayoutView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -10,13 +10,13 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  v3 = [(CustomLayoutView *)v2 traitCollection];
-  (*((*MEMORY[0x1E69E7D40] & v2->super.super.super.super.isa) + 0x50))(v11);
+  selfCopy = self;
+  traitCollection = [(CustomLayoutView *)selfCopy traitCollection];
+  (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.super.super.isa) + 0x50))(v11);
   v4 = v12;
   v5 = v13;
   __swift_project_boxed_opaque_existential_1(v11, v12);
-  v6 = (*(v5 + 8))(v3, v4, v5, 0.0, 0.0);
+  v6 = (*(v5 + 8))(traitCollection, v4, v5, 0.0, 0.0);
   v8 = v7;
 
   __swift_destroy_boxed_opaque_existential_1(v11);
@@ -27,17 +27,17 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
-  v6 = [(CustomLayoutView *)v5 traitCollection];
-  (*((*MEMORY[0x1E69E7D40] & v5->super.super.super.super.isa) + 0x50))(v14);
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  traitCollection = [(CustomLayoutView *)selfCopy traitCollection];
+  (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.super.super.isa) + 0x50))(v14);
   v7 = v15;
   v8 = v16;
   __swift_project_boxed_opaque_existential_1(v14, v15);
-  v9 = (*(v8 + 8))(v6, v7, v8, width, height);
+  v9 = (*(v8 + 8))(traitCollection, v7, v8, width, height);
   v11 = v10;
 
   __swift_destroy_boxed_opaque_existential_1(v14);
@@ -50,27 +50,27 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CustomLayoutView.layoutSubviews()();
 }
 
-- (_TtC5JetUI16CustomLayoutView)initWithFrame:(CGRect)a3
+- (_TtC5JetUI16CustomLayoutView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CustomLayoutView();
   return [(CustomLayoutView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC5JetUI16CustomLayoutView)initWithCoder:(id)a3
+- (_TtC5JetUI16CustomLayoutView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CustomLayoutView();
-  v4 = a3;
-  v5 = [(CustomLayoutView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CustomLayoutView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

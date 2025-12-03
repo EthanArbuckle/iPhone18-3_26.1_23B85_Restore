@@ -3,21 +3,21 @@
 - (BOOL)needToRunFaceMask;
 - (CGSize)originalShiftMapSize;
 - (float)intrinsicMatrixFocalLength;
-- (id)blurMapV2:(id)a3;
-- (id)blurMapV3:(id)a3 shiftmap:(id)a4 alphaImage:(id)a5;
-- (id)blurMapV4:(id)a3 shiftmap:(id)a4 alphaImage:(id)a5 hairImage:(id)a6;
+- (id)blurMapV2:(id)v2;
+- (id)blurMapV3:(id)v3 shiftmap:(id)shiftmap alphaImage:(id)image;
+- (id)blurMapV4:(id)v4 shiftmap:(id)shiftmap alphaImage:(id)image hairImage:(id)hairImage;
 - (id)calibrationData;
-- (id)faceMaskApply:(id)a3 blurMap:(id)a4;
-- (id)faceMaskDelta:(id)a3 extent:(CGRect)a4 parameters:(id)a5 distanceToAdd:(float *)a6;
-- (id)faceMaskParams:(id)a3 useNormalizedCoords:(BOOL)a4;
-- (id)lensModelApply:(id)a3 shiftMap:(id)a4;
-- (id)lensModelParams:(id)a3;
+- (id)faceMaskApply:(id)apply blurMap:(id)map;
+- (id)faceMaskDelta:(id)delta extent:(CGRect)extent parameters:(id)parameters distanceToAdd:(float *)add;
+- (id)faceMaskParams:(id)params useNormalizedCoords:(BOOL)coords;
+- (id)lensModelApply:(id)apply shiftMap:(id)map;
+- (id)lensModelParams:(id)params;
 - (id)outputImage;
-- (id)refineShiftMapV3WithMainImage:(id)a3 shiftmap:(id)a4 lensModel:(id)a5;
-- (id)smoothShiftMapV2:(id)a3;
-- (id)unifiedRenderingOutputImage:(CGImageMetadata *)a3;
-- (id)upsampledShiftMap:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (id)refineShiftMapV3WithMainImage:(id)image shiftmap:(id)shiftmap lensModel:(id)model;
+- (id)smoothShiftMapV2:(id)v2;
+- (id)unifiedRenderingOutputImage:(CGImageMetadata *)image;
+- (id)upsampledShiftMap:(id)map;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation CIDepthEffectMakeBlurMap
@@ -145,13 +145,13 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:13];
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  if (([a4 isEqualToString:@"inputOriginalSize"] & 1) == 0)
+  if (([key isEqualToString:@"inputOriginalSize"] & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = CIDepthEffectMakeBlurMap;
-    [(CIFilter *)&v7 setValue:a3 forUndefinedKey:a4];
+    [(CIFilter *)&v7 setValue:value forUndefinedKey:key];
   }
 }
 
@@ -162,20 +162,20 @@
     return self->inputCalibrationData;
   }
 
-  v5 = [(CIImage *)self->inputShiftmapImage depthData];
+  depthData = [(CIImage *)self->inputShiftmapImage depthData];
 
-  return AVFDepthCameraCalibrationData(v5, v6);
+  return AVFDepthCameraCalibrationData(depthData, v6);
 }
 
 - (CGSize)originalShiftMapSize
 {
-  v3 = [(CIDepthEffectMakeBlurMap *)self calibrationData];
-  if (!v3)
+  calibrationData = [(CIDepthEffectMakeBlurMap *)self calibrationData];
+  if (!calibrationData)
   {
     goto LABEL_10;
   }
 
-  v5 = AVCameraCalibrationDataIntrinsicMatrixReferenceDimensions(v3);
+  v5 = AVCameraCalibrationDataIntrinsicMatrixReferenceDimensions(calibrationData);
   v6 = *&v4;
   if (v5 == 4224.0 && v4 == 3024.0)
   {
@@ -187,12 +187,12 @@
   if (v5 == *MEMORY[0x1E695F060] && v4 == *(MEMORY[0x1E695F060] + 8))
   {
 LABEL_10:
-    v8 = [(CIImage *)self->inputShiftmapImage depthData];
+    depthData = [(CIImage *)self->inputShiftmapImage depthData];
     v5 = 4032.0;
     v6 = 0x40A7A00000000000;
-    if (v8)
+    if (depthData)
     {
-      v10 = AVFDepthCameraCalibrationData(v8, v9);
+      v10 = AVFDepthCameraCalibrationData(depthData, v9);
       if (v10)
       {
         v11 = AVCameraCalibrationDataIntrinsicMatrixReferenceDimensions(v10);
@@ -215,10 +215,10 @@ LABEL_17:
 
 - (float)intrinsicMatrixFocalLength
 {
-  v2 = [(CIDepthEffectMakeBlurMap *)self calibrationData];
-  if (v2)
+  calibrationData = [(CIDepthEffectMakeBlurMap *)self calibrationData];
+  if (calibrationData)
   {
-    v3 = AVCameraCalibrationDataIntrinsicMatrix(v2);
+    v3 = AVCameraCalibrationDataIntrinsicMatrix(calibrationData);
   }
 
   else
@@ -229,20 +229,20 @@ LABEL_17:
   return *&v3;
 }
 
-- (id)upsampledShiftMap:(id)a3
+- (id)upsampledShiftMap:(id)map
 {
   v20[4] = *MEMORY[0x1E69E9840];
   [(CIDepthEffectMakeBlurMap *)self originalShiftMapSize];
   v5 = v4;
   v7 = v6;
-  [a3 extent];
+  [map extent];
   v8 = v5 * 0.5;
   v9 = v7 * 0.5;
   v11 = v8 / v10;
   v13 = v9 / v12;
   if (v11 > 1.0 || v13 > 1.0)
   {
-    v15 = [a3 imageByClampingToExtent];
+    imageByClampingToExtent = [map imageByClampingToExtent];
     v19[0] = @"inputScale";
     *&v16 = v13;
     v20[0] = [MEMORY[0x1E696AD98] numberWithFloat:v16];
@@ -253,25 +253,25 @@ LABEL_17:
     v19[2] = @"inputB";
     v19[3] = @"inputC";
     v20[3] = &unk_1F1085178;
-    a3 = [v15 imageByApplyingFilter:@"CIBicubicScaleTransform" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v20, v19, 4)}];
+    map = [imageByClampingToExtent imageByApplyingFilter:@"CIBicubicScaleTransform" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v20, v19, 4)}];
   }
 
-  [a3 extent];
+  [map extent];
   if (CGRectIsInfinite(v21))
   {
-    return [a3 imageByCroppingToRect:{0.0, 0.0, v8, v9}];
+    return [map imageByCroppingToRect:{0.0, 0.0, v8, v9}];
   }
 
-  return a3;
+  return map;
 }
 
-- (id)lensModelParams:(id)a3
+- (id)lensModelParams:(id)params
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v18 = @"inputExtent";
-  [a3 extent];
+  [params extent];
   v19[0] = [CIVector vectorWithCGRect:?];
-  v5 = [a3 imageByApplyingFilter:@"CIAreaMinMaxRed" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v19, &v18, 1)}];
+  v5 = [params imageByApplyingFilter:@"CIAreaMinMaxRed" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v19, &v18, 1)}];
   [(CIDepthEffectMakeBlurMap *)self originalShiftMapSize];
   v6 = [CIVector vectorWithX:"vectorWithX:Y:" Y:?];
   inputFocusRect = self->inputFocusRect;
@@ -303,15 +303,15 @@ LABEL_17:
 
   v17[4] = v12;
   v17[5] = v14;
-  return [a3 imageByApplyingFilter:@"CILensModelCalculator" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v17, v16, 6)}];
+  return [params imageByApplyingFilter:@"CILensModelCalculator" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v17, v16, 6)}];
 }
 
-- (id)lensModelApply:(id)a3 shiftMap:(id)a4
+- (id)lensModelApply:(id)apply shiftMap:(id)map
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6 = @"inputLensModelParams";
-  v7[0] = [a3 imageByClampingToExtent];
-  return [a4 imageByApplyingFilter:@"CILensModelApply" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v7, &v6, 1)}];
+  v7[0] = [apply imageByClampingToExtent];
+  return [map imageByApplyingFilter:@"CILensModelApply" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v7, &v6, 1)}];
 }
 
 - (BOOL)needToRunFaceMask
@@ -357,7 +357,7 @@ LABEL_6:
   }
 }
 
-- (id)faceMaskParams:(id)a3 useNormalizedCoords:(BOOL)a4
+- (id)faceMaskParams:(id)params useNormalizedCoords:(BOOL)coords
 {
   v36[20] = *MEMORY[0x1E69E9840];
   SDOFSimpleLensModelValue(@"defaultSimulatedAperture", self->tuningParameters);
@@ -381,11 +381,11 @@ LABEL_6:
   }
 
   v13 = 1.0;
-  if (!a4)
+  if (!coords)
   {
-    [a3 extent];
+    [params extent];
     v8 = v14;
-    [a3 extent];
+    [params extent];
     v13 = v15;
   }
 
@@ -393,15 +393,15 @@ LABEL_6:
   v17 = MEMORY[0x1E696AD98];
   if (v16)
   {
-    v18 = [v16 unsignedIntegerValue];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
   }
 
   else
   {
-    v18 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  v19 = [v17 numberWithUnsignedInteger:v18];
+  v19 = [v17 numberWithUnsignedInteger:unsignedIntegerValue];
   v35[0] = @"inputFacesLeftEyeX";
   v36[0] = transformNormalizedMetalToCI(self->inputLeftEyePosition, 0, v8);
   v35[1] = @"inputFacesLeftEyeY";
@@ -481,23 +481,23 @@ LABEL_6:
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:20];
   if ([v19 integerValue] < 3)
   {
-    return [a3 imageByApplyingFilter:@"CIFaceMaskCalculator" withInputParameters:v33];
+    return [params imageByApplyingFilter:@"CIFaceMaskCalculator" withInputParameters:v33];
   }
 
   else
   {
-    return [a3 metalImageByApplyingFilter:@"CIFaceMaskCalculator" withInputParameters:v33];
+    return [params metalImageByApplyingFilter:@"CIFaceMaskCalculator" withInputParameters:v33];
   }
 }
 
-- (id)faceMaskApply:(id)a3 blurMap:(id)a4
+- (id)faceMaskApply:(id)apply blurMap:(id)map
 {
   v15[6] = *MEMORY[0x1E69E9840];
-  [a4 extent];
+  [map extent];
   v8 = v7;
-  [a4 extent];
+  [map extent];
   v10 = v9;
-  v15[0] = a3;
+  v15[0] = apply;
   v14[0] = @"inputParameterImage";
   v14[1] = @"inputFacesCenterX";
   v15[1] = transformNormalizedMetalToCI(self->inputFaceMidPoint, 0, v8);
@@ -516,16 +516,16 @@ LABEL_6:
 
   v15[4] = v11;
   v15[5] = tuningParameters;
-  return [a4 imageByApplyingFilter:@"CIFaceMaskApply" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v15, v14, 6)}];
+  return [map imageByApplyingFilter:@"CIFaceMaskApply" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v15, v14, 6)}];
 }
 
-- (id)faceMaskDelta:(id)a3 extent:(CGRect)a4 parameters:(id)a5 distanceToAdd:(float *)a6
+- (id)faceMaskDelta:(id)delta extent:(CGRect)extent parameters:(id)parameters distanceToAdd:(float *)add
 {
   v15[21] = *MEMORY[0x1E69E9840];
-  v15[0] = a3;
+  v15[0] = delta;
   v14[0] = @"inputParameterImage";
   v14[1] = @"inputImageSize";
-  v15[1] = [CIVector vectorWithX:a4.size.width Y:a4.size.height];
+  v15[1] = [CIVector vectorWithX:extent.size.width Y:extent.size.height];
   v14[2] = @"inputFacesCenterX";
   v15[2] = transformNormalizedMetalToCI(self->inputFaceMidPoint, 0, 1.0);
   v14[3] = @"inputFacesCenterY";
@@ -543,23 +543,23 @@ LABEL_6:
   v14[9] = @"inputFacesRightEyeY";
   v15[9] = transformNormalizedMetalToCI(self->inputRightEyePosition, 1u, 1.0);
   v14[10] = @"inputDistanceAdd";
-  v15[10] = [a5 objectForKeyedSubscript:?];
+  v15[10] = [parameters objectForKeyedSubscript:?];
   v14[11] = @"inputAdditiveMaxBlur";
-  v15[11] = [a5 objectForKeyedSubscript:@"inputFaceMaskAdditiveMaxBlur"];
+  v15[11] = [parameters objectForKeyedSubscript:@"inputFaceMaskAdditiveMaxBlur"];
   v14[12] = @"inputSubtractiveMaxBlur";
-  v15[12] = [a5 objectForKeyedSubscript:@"inputFaceMaskSubtractiveMaxBlur"];
+  v15[12] = [parameters objectForKeyedSubscript:@"inputFaceMaskSubtractiveMaxBlur"];
   v14[13] = @"inputApertureScaling";
-  v15[13] = [a5 objectForKeyedSubscript:?];
+  v15[13] = [parameters objectForKeyedSubscript:?];
   v14[14] = @"inputMaxBlur";
-  v15[14] = [a5 objectForKeyedSubscript:?];
+  v15[14] = [parameters objectForKeyedSubscript:?];
   v14[15] = @"inputSubjectDistanceMinimumFocusDistance";
-  v15[15] = [a5 objectForKeyedSubscript:?];
+  v15[15] = [parameters objectForKeyedSubscript:?];
   v14[16] = @"inputSubjectDistanceMaximumFocusDistance";
-  v15[16] = [a5 objectForKeyedSubscript:?];
+  v15[16] = [parameters objectForKeyedSubscript:?];
   v14[17] = @"inputSubjectDistanceScalingFactor";
-  v15[17] = [a5 objectForKeyedSubscript:?];
+  v15[17] = [parameters objectForKeyedSubscript:?];
   v14[18] = @"inputSubjectDistanceOffset";
-  v9 = [a5 objectForKeyedSubscript:?];
+  v9 = [parameters objectForKeyedSubscript:?];
   tuningParameters = self->tuningParameters;
   if (!tuningParameters)
   {
@@ -573,23 +573,23 @@ LABEL_6:
   v15[20] = self->inputFocusRect;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:21];
   [+[CIFilter filterWithName:withInputParameters:](CIFilter distanceToAdd:@"CIFaceMaskDelta"];
-  *a6 = v12;
+  *add = v12;
   return [+[CIFilter metalFilterWithName:withInputParameters:](CIFilter metalFilterWithName:@"CIFaceMaskDelta" withInputParameters:{v11), "outputImage"}];
 }
 
-- (id)smoothShiftMapV2:(id)a3
+- (id)smoothShiftMapV2:(id)v2
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = [(CIDepthEffectMakeBlurMap *)self upsampledShiftMap:a3];
+  v4 = [(CIDepthEffectMakeBlurMap *)self upsampledShiftMap:v2];
   SDOFDisparitySmoothingParameterValue(&cfstr_Niterations.isa, self->tuningParameters);
   v6 = @"inputNumIterations";
   v7[0] = [MEMORY[0x1E696AD98] numberWithFloat:?];
   return [v4 imageByApplyingFilter:@"CIDisparitySmoothing" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v7, &v6, 1)}];
 }
 
-- (id)blurMapV2:(id)a3
+- (id)blurMapV2:(id)v2
 {
-  v4 = [(CIDepthEffectMakeBlurMap *)self smoothShiftMapV2:a3];
+  v4 = [(CIDepthEffectMakeBlurMap *)self smoothShiftMapV2:v2];
   v5 = [(CIDepthEffectMakeBlurMap *)self lensModelApply:[(CIDepthEffectMakeBlurMap *)self lensModelParams:v4] shiftMap:v4];
   if (![(CIDepthEffectMakeBlurMap *)self needToRunFaceMask])
   {
@@ -601,7 +601,7 @@ LABEL_6:
   return [(CIDepthEffectMakeBlurMap *)self faceMaskApply:v6 blurMap:v5];
 }
 
-- (id)refineShiftMapV3WithMainImage:(id)a3 shiftmap:(id)a4 lensModel:(id)a5
+- (id)refineShiftMapV3WithMainImage:(id)image shiftmap:(id)shiftmap lensModel:(id)model
 {
   v51[9] = *MEMORY[0x1E69E9840];
   SDOFDisparityRefinementParameterValue(&cfstr_Version.isa, self->tuningParameters);
@@ -633,7 +633,7 @@ LABEL_6:
       v48[0] = @"inputMatteImage";
       v48[1] = @"inputLensModelCalculatorImage";
       v49[0] = inputMatteImage;
-      v49[1] = a5;
+      v49[1] = model;
       v48[2] = @"inputAlphaThreshold";
       LODWORD(v9) = *"fff?";
       v49[2] = [MEMORY[0x1E696AD98] numberWithFloat:v9];
@@ -652,7 +652,7 @@ LABEL_6:
       v48[7] = @"inputMaxFactor";
       LODWORD(v23) = 1.0;
       v49[7] = [MEMORY[0x1E696AD98] numberWithFloat:v23];
-      v24 = [a4 imageByApplyingFilter:@"CIFocalPlaneNative" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v49, v48, 8)}];
+      v24 = [shiftmap imageByApplyingFilter:@"CIFocalPlaneNative" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v49, v48, 8)}];
     }
 
     else
@@ -683,10 +683,10 @@ LABEL_6:
       v50[8] = @"inputMaxFactor";
       LODWORD(v36) = 1.0;
       v51[8] = [MEMORY[0x1E696AD98] numberWithFloat:v36];
-      v24 = [a4 metalImageByApplyingFilter:@"CIFocalPlane" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v51, v50, 9)}];
+      v24 = [shiftmap metalImageByApplyingFilter:@"CIFocalPlane" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v51, v50, 9)}];
     }
 
-    v37 = v24;
+    shiftmapCopy = v24;
     if (!v24)
     {
       v38 = ci_logger_api();
@@ -695,14 +695,14 @@ LABEL_6:
         [CIDepthEffectMakeBlurMap refineShiftMapV3WithMainImage:shiftmap:lensModel:];
       }
 
-      v37 = a4;
+      shiftmapCopy = shiftmap;
     }
 
     v39 = 0x32u >> ([CIDepthBlurEffect getDraftMode:[(CIDepthEffectMakeBlurMap *)self inputDraftMode]]== 1);
     v46[0] = @"inputMainImage";
     v46[1] = @"inputPredicateImage";
     v40 = self->inputMatteImage;
-    v47[0] = a3;
+    v47[0] = image;
     v47[1] = v40;
     v46[2] = @"inputRadius";
     LODWORD(v41) = 2.0;
@@ -715,7 +715,7 @@ LABEL_6:
     v47[4] = [MEMORY[0x1E696AD98] numberWithFloat:v43];
     v46[5] = @"inputNumIterations";
     v47[5] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v39];
-    return [v37 metalImageByApplyingFilter:@"CIMattingSolver" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v47, v46, 6)}];
+    return [shiftmapCopy metalImageByApplyingFilter:@"CIMattingSolver" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v47, v46, 6)}];
   }
 
   else
@@ -724,7 +724,7 @@ LABEL_10:
     v44[0] = @"inputScale";
     v44[1] = @"inputMainImage";
     v45[0] = self->inputScale;
-    v45[1] = a3;
+    v45[1] = image;
     v44[2] = @"inputImage";
     v44[3] = @"inputTuningParameters";
     tuningParameters = self->tuningParameters;
@@ -733,7 +733,7 @@ LABEL_10:
       tuningParameters = MEMORY[0x1E695E0F8];
     }
 
-    v45[2] = a4;
+    v45[2] = shiftmap;
     v45[3] = tuningParameters;
     v26 = +[CIFilter metalFilterWithName:withInputParameters:](CIFilter, "metalFilterWithName:withInputParameters:", @"CIDisparityRefinementV3", [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:4]);
     v27 = v26;
@@ -764,11 +764,11 @@ uint64_t __77__CIDepthEffectMakeBlurMap_refineShiftMapV3WithMainImage_shiftmap_l
   return result;
 }
 
-- (id)blurMapV3:(id)a3 shiftmap:(id)a4 alphaImage:(id)a5
+- (id)blurMapV3:(id)v3 shiftmap:(id)shiftmap alphaImage:(id)image
 {
   v30[5] = *MEMORY[0x1E69E9840];
-  v9 = [(CIDepthEffectMakeBlurMap *)self lensModelParams:a4];
-  v10 = [(CIDepthEffectMakeBlurMap *)self lensModelApply:v9 shiftMap:[(CIDepthEffectMakeBlurMap *)self refineShiftMapV3WithMainImage:a3 shiftmap:a4 lensModel:v9]];
+  v9 = [(CIDepthEffectMakeBlurMap *)self lensModelParams:shiftmap];
+  v10 = [(CIDepthEffectMakeBlurMap *)self lensModelApply:v9 shiftMap:[(CIDepthEffectMakeBlurMap *)self refineShiftMapV3WithMainImage:v3 shiftmap:shiftmap lensModel:v9]];
   if ([(CIDepthEffectMakeBlurMap *)self needToRunFaceMask])
   {
     v10 = [(CIDepthEffectMakeBlurMap *)self faceMaskApply:[(CIDepthEffectMakeBlurMap *)self faceMaskParams:v10 useNormalizedCoords:0] blurMap:v10];
@@ -776,7 +776,7 @@ uint64_t __77__CIDepthEffectMakeBlurMap_refineShiftMapV3WithMainImage_shiftmap_l
 
   if ([CIDepthEffectMakeBlurMap blurMapV3:shiftmap:alphaImage:]::onceToken == -1)
   {
-    if (!a5)
+    if (!image)
     {
       return v10;
     }
@@ -785,7 +785,7 @@ uint64_t __77__CIDepthEffectMakeBlurMap_refineShiftMapV3WithMainImage_shiftmap_l
   else
   {
     [CIDepthEffectMakeBlurMap blurMapV3:shiftmap:alphaImage:];
-    if (!a5)
+    if (!image)
     {
       return v10;
     }
@@ -817,7 +817,7 @@ uint64_t __77__CIDepthEffectMakeBlurMap_refineShiftMapV3WithMainImage_shiftmap_l
     v29[0] = @"inputMatteImage";
     v29[1] = @"inputTuningParameters";
     tuningParameters = self->tuningParameters;
-    v30[0] = a5;
+    v30[0] = image;
     v30[1] = tuningParameters;
     v29[2] = @"inputAddBlur";
     v29[3] = @"inputRemoveBlur";
@@ -848,17 +848,17 @@ uint64_t __58__CIDepthEffectMakeBlurMap_blurMapV3_shiftmap_alphaImage___block_in
   return result;
 }
 
-- (id)blurMapV4:(id)a3 shiftmap:(id)a4 alphaImage:(id)a5 hairImage:(id)a6
+- (id)blurMapV4:(id)v4 shiftmap:(id)shiftmap alphaImage:(id)image hairImage:(id)hairImage
 {
   v196[3] = *MEMORY[0x1E69E9840];
-  v11 = [(CIDepthEffectMakeBlurMap *)self lensModelParams:a4];
+  v11 = [(CIDepthEffectMakeBlurMap *)self lensModelParams:shiftmap];
   v195[0] = @"inputRVector";
   v196[0] = [CIVector vectorWithX:0.349999994 Y:0.0 Z:0.0 W:0.0];
   v195[1] = @"inputGVector";
   v196[1] = [CIVector vectorWithX:0.0 Y:0.349999994 Z:0.0 W:0.0];
   v195[2] = @"inputBVector";
   v196[2] = [CIVector vectorWithX:0.0 Y:0.0 Z:0.349999994 W:0.0];
-  v12 = -[CIDepthEffectMakeBlurMap lensModelApply:shiftMap:](self, "lensModelApply:shiftMap:", v11, -[CIDepthEffectMakeBlurMap refineShiftMapV3WithMainImage:shiftmap:lensModel:](self, "refineShiftMapV3WithMainImage:shiftmap:lensModel:", [a3 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v196, v195, 3)}], a4, v11));
+  v12 = -[CIDepthEffectMakeBlurMap lensModelApply:shiftMap:](self, "lensModelApply:shiftMap:", v11, -[CIDepthEffectMakeBlurMap refineShiftMapV3WithMainImage:shiftmap:lensModel:](self, "refineShiftMapV3WithMainImage:shiftmap:lensModel:", [v4 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v196, v195, 3)}], shiftmap, v11));
   SDOFSimpleLensModelValue(@"defaultSimulatedAperture", self->tuningParameters);
   simulatedAperture = self->simulatedAperture;
   v189 = 1.0;
@@ -869,7 +869,7 @@ uint64_t __58__CIDepthEffectMakeBlurMap_blurMapV3_shiftmap_alphaImage___block_in
 
   if ([(CIDepthEffectMakeBlurMap *)self needToRunFaceMask])
   {
-    v185 = a6;
+    hairImageCopy = hairImage;
     v182 = [(CIDepthEffectMakeBlurMap *)self faceMaskParams:v12 useNormalizedCoords:1];
     SDOFFusionValue(&cfstr_Additivelowera.isa, self->tuningParameters);
     v16 = v15;
@@ -963,7 +963,7 @@ uint64_t __58__CIDepthEffectMakeBlurMap_blurMapV3_shiftmap_alphaImage___block_in
     v77 = v46 * v76;
     [(NSNumber *)self->inputScale floatValue];
     v79 = v52 * v78;
-    v80 = a5;
+    imageCopy = image;
     v81 = MEMORY[0x1E695DF90];
     v193[0] = @"inputApertureScaling";
     v194[0] = [MEMORY[0x1E696AD98] numberWithDouble:v189];
@@ -1050,7 +1050,7 @@ uint64_t __58__CIDepthEffectMakeBlurMap_blurMapV3_shiftmap_alphaImage___block_in
     v194[26] = [MEMORY[0x1E696AD98] numberWithFloat:v103];
     v104 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v194 forKeys:v193 count:27];
     v105 = v81;
-    v106 = v80;
+    v106 = imageCopy;
     v107 = [v105 dictionaryWithDictionary:v104];
     v190 = 0;
     [v12 extent];
@@ -1196,9 +1196,9 @@ uint64_t __58__CIDepthEffectMakeBlurMap_blurMapV3_shiftmap_alphaImage___block_in
       [v152 setObject:v158 forKeyedSubscript:@"inputPersonAlpha"];
     }
 
-    if (v185)
+    if (hairImageCopy)
     {
-      [v153 setObject:v185 forKeyedSubscript:@"inputHairAlpha"];
+      [v153 setObject:hairImageCopy forKeyedSubscript:@"inputHairAlpha"];
     }
 
     return [v12 metalImageByApplyingFilter:@"CIModifyBlurmap" withInputParameters:v153];
@@ -1207,10 +1207,10 @@ uint64_t __58__CIDepthEffectMakeBlurMap_blurMapV3_shiftmap_alphaImage___block_in
   return v12;
 }
 
-- (id)unifiedRenderingOutputImage:(CGImageMetadata *)a3
+- (id)unifiedRenderingOutputImage:(CGImageMetadata *)image
 {
   v117[4] = *MEMORY[0x1E69E9840];
-  if (a3 && (TypeID = CGImageMetadataGetTypeID(), TypeID == CFGetTypeID(a3)) && (inputImage = self->inputImage, (RenderingParametersFromCGImageMetadata = getRenderingParametersFromCGImageMetadata(a3)) != 0))
+  if (image && (TypeID = CGImageMetadataGetTypeID(), TypeID == CFGetTypeID(image)) && (inputImage = self->inputImage, (RenderingParametersFromCGImageMetadata = getRenderingParametersFromCGImageMetadata(image)) != 0))
   {
     v90 = inputImage;
     [(CIVector *)self->inputFocusRect CGRectValue];
@@ -1224,7 +1224,7 @@ uint64_t __58__CIDepthEffectMakeBlurMap_blurMapV3_shiftmap_alphaImage___block_in
     v18 = [(CIVector *)self->inputChinPosition count];
     p_inputLeftEyePosition = &self->inputLeftEyePosition;
     v20 = [(CIVector *)self->inputLeftEyePosition count];
-    v91 = self;
+    selfCopy = self;
     p_inputRightEyePosition = &self->inputRightEyePosition;
     if (v20 >= [(CIVector *)self->inputRightEyePosition count])
     {
@@ -1236,7 +1236,7 @@ uint64_t __58__CIDepthEffectMakeBlurMap_blurMapV3_shiftmap_alphaImage___block_in
       v22 = 136;
     }
 
-    v23 = self;
+    selfCopy2 = self;
     v24 = [*(&self->super.super.isa + v22) count];
     v25 = &self->inputChinPosition;
     if (v18 >= v24)
@@ -1323,8 +1323,8 @@ uint64_t __58__CIDepthEffectMakeBlurMap_blurMapV3_shiftmap_alphaImage___block_in
       }
 
       while (v40 != v39);
-      v23 = v91;
-      [(CIDepthEffectMakeBlurMap *)v91 intrinsicMatrixFocalLength];
+      selfCopy2 = selfCopy;
+      [(CIDepthEffectMakeBlurMap *)selfCopy intrinsicMatrixFocalLength];
       v37 = v57;
       v59 = v89;
       v60 = [MEMORY[0x1E695DF70] arrayWithCapacity:v89];
@@ -1398,41 +1398,41 @@ uint64_t __58__CIDepthEffectMakeBlurMap_blurMapV3_shiftmap_alphaImage___block_in
       v58 = MEMORY[0x1E695E0F0];
     }
 
-    [(NSNumber *)v23->inputAperture floatValue];
+    [(NSNumber *)selfCopy2->inputAperture floatValue];
     v69 = v68;
-    [(NSNumber *)v23->inputScale floatValue];
+    [(NSNumber *)selfCopy2->inputScale floatValue];
     v71 = v70;
-    inputShiftmapImage = v23->inputShiftmapImage;
-    inputMatteImage = v23->inputMatteImage;
-    inputHairImage = v23->inputHairImage;
-    inputGlassesImage = v23->inputGlassesImage;
-    inputGainMap = v23->inputGainMap;
-    inputCaptureFolderMiscPath = v23->inputCaptureFolderMiscPath;
+    inputShiftmapImage = selfCopy2->inputShiftmapImage;
+    inputMatteImage = selfCopy2->inputMatteImage;
+    inputHairImage = selfCopy2->inputHairImage;
+    inputGlassesImage = selfCopy2->inputGlassesImage;
+    inputGainMap = selfCopy2->inputGainMap;
+    inputCaptureFolderMiscPath = selfCopy2->inputCaptureFolderMiscPath;
     v78 = +[CIImage emptyImage];
-    v79 = [MEMORY[0x1E695DF90] dictionary];
-    [v79 setObject:MEMORY[0x1E695E0F8] forKeyedSubscript:@"options"];
-    [v79 setObject:RenderingParametersFromCGImageMetadata forKeyedSubscript:@"metadata"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:MEMORY[0x1E695E0F8] forKeyedSubscript:@"options"];
+    [dictionary setObject:RenderingParametersFromCGImageMetadata forKeyedSubscript:@"metadata"];
     LODWORD(v80) = v69;
-    [v79 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v80), @"simulatedAperture"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v80), @"simulatedAperture"}];
     LODWORD(v81) = v37;
-    [v79 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v81), @"focalLengthInPixels"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v81), @"focalLengthInPixels"}];
     LODWORD(v82) = 1022739087;
-    [v79 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v82), @"maxBlur"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v82), @"maxBlur"}];
     LODWORD(v83) = v71;
-    [v79 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v83), @"inputScale"}];
-    [v79 setObject:+[CIVector vectorWithCGRect:](CIVector forKeyedSubscript:{"vectorWithCGRect:", v8, v10, v12, v14), @"focusWindow"}];
-    [v79 setObject:v58 forKeyedSubscript:@"facePoints"];
-    [v79 setObject:v90 forKeyedSubscript:@"inputImage"];
-    [v79 setObject:0 forKeyedSubscript:@"inputImageLuma"];
-    [v79 setObject:0 forKeyedSubscript:@"inputImageChroma"];
-    [v79 setObject:inputShiftmapImage forKeyedSubscript:@"inputShiftMap"];
-    [v79 setObject:inputMatteImage forKeyedSubscript:@"inputSegmentation"];
-    [v79 setObject:inputHairImage forKeyedSubscript:@"inputHair"];
-    [v79 setObject:inputGlassesImage forKeyedSubscript:@"inputGlasses"];
-    [v79 setObject:inputGainMap forKeyedSubscript:@"inputGainMap"];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v83), @"inputScale"}];
+    [dictionary setObject:+[CIVector vectorWithCGRect:](CIVector forKeyedSubscript:{"vectorWithCGRect:", v8, v10, v12, v14), @"focusWindow"}];
+    [dictionary setObject:v58 forKeyedSubscript:@"facePoints"];
+    [dictionary setObject:v90 forKeyedSubscript:@"inputImage"];
+    [dictionary setObject:0 forKeyedSubscript:@"inputImageLuma"];
+    [dictionary setObject:0 forKeyedSubscript:@"inputImageChroma"];
+    [dictionary setObject:inputShiftmapImage forKeyedSubscript:@"inputShiftMap"];
+    [dictionary setObject:inputMatteImage forKeyedSubscript:@"inputSegmentation"];
+    [dictionary setObject:inputHairImage forKeyedSubscript:@"inputHair"];
+    [dictionary setObject:inputGlassesImage forKeyedSubscript:@"inputGlasses"];
+    [dictionary setObject:inputGainMap forKeyedSubscript:@"inputGainMap"];
     if (inputCaptureFolderMiscPath)
     {
-      [v79 setObject:inputCaptureFolderMiscPath forKeyedSubscript:@"captureFolderMiscPath"];
+      [dictionary setObject:inputCaptureFolderMiscPath forKeyedSubscript:@"captureFolderMiscPath"];
     }
 
     if (CCPBundleEnvar(void)::onceToken != -1)
@@ -1465,7 +1465,7 @@ uint64_t __58__CIDepthEffectMakeBlurMap_blurMapV3_shiftmap_alphaImage___block_in
     }
 
     v85 = [v84 alloc];
-    v86 = [v85 initWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithDictionary:", v79)}];
+    v86 = [v85 initWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithDictionary:", dictionary)}];
     if (v86)
     {
       v87 = [objc_alloc(envCCMakeBlurMapClass()) initWithMetalQueue:0];
@@ -1537,17 +1537,17 @@ uint64_t __58__CIDepthEffectMakeBlurMap_blurMapV3_shiftmap_alphaImage___block_in
   v11 = MEMORY[0x1E696AD98];
   if (v10)
   {
-    v12 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
   }
 
   else
   {
-    v12 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  v13 = [v11 numberWithUnsignedInteger:v12];
-  v14 = [v13 intValue];
-  if (v14 < +[CIFilter minSDOFRenderingVersionSupported])
+  v13 = [v11 numberWithUnsignedInteger:unsignedIntegerValue];
+  intValue = [v13 intValue];
+  if (intValue < +[CIFilter minSDOFRenderingVersionSupported])
   {
     getSimulatedAperture(self->inputShiftmapImage, v4, self->inputAperture, self->tuningParameters);
     self->simulatedAperture = v15;
@@ -1583,8 +1583,8 @@ LABEL_32:
     return self->inputShiftmapImage;
   }
 
-  v20 = [v13 intValue];
-  if (v20 > +[CIFilter maxSDOFRenderingVersionSupported])
+  intValue2 = [v13 intValue];
+  if (intValue2 > +[CIFilter maxSDOFRenderingVersionSupported])
   {
     return self->inputShiftmapImage;
   }

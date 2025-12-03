@@ -1,27 +1,27 @@
 @interface AppleEthernetConfigurator
-- (AppleEthernetConfigurator)initWithInterface:(id)a3;
-- (BOOL)getPrivateRelayDisabledForService:(__SCNetworkService *)a3;
+- (AppleEthernetConfigurator)initWithInterface:(id)interface;
+- (BOOL)getPrivateRelayDisabledForService:(__SCNetworkService *)service;
 - (BOOL)setNotificationKeys;
-- (BOOL)setPrivateRelayDisabledForService:(__SCNetworkService *)a3 withPrivateRelayDisabled:(BOOL)a4;
-- (BOOL)updatePreferencesForService:(__SCNetworkService *)a3 withConfig:(id)a4;
+- (BOOL)setPrivateRelayDisabledForService:(__SCNetworkService *)service withPrivateRelayDisabled:(BOOL)disabled;
+- (BOOL)updatePreferencesForService:(__SCNetworkService *)service withConfig:(id)config;
 - (SettingsDelegate)settingsDelegate;
-- (__SCNetworkService)findServiceForInterface:(id)a3;
+- (__SCNetworkService)findServiceForInterface:(id)interface;
 - (id)currentConfig;
-- (id)getPersistentSettingsForKey:(__CFString *)a3 inService:(__SCNetworkService *)a4;
-- (id)getSettingsForKey:(__CFString *)a3 inService:(__SCNetworkService *)a4 withManualMode:(BOOL)a5;
+- (id)getPersistentSettingsForKey:(__CFString *)key inService:(__SCNetworkService *)service;
+- (id)getSettingsForKey:(__CFString *)key inService:(__SCNetworkService *)service withManualMode:(BOOL)mode;
 - (int)commitAndApplyChangesToPreferences;
 - (int)lockPreferences;
 - (int)unlockPreferences;
 - (void)dealloc;
 - (void)renewLease;
-- (void)saveConfig:(id)a3;
+- (void)saveConfig:(id)config;
 @end
 
 @implementation AppleEthernetConfigurator
 
-- (AppleEthernetConfigurator)initWithInterface:(id)a3
+- (AppleEthernetConfigurator)initWithInterface:(id)interface
 {
-  v5 = a3;
+  interfaceCopy = interface;
   v36.receiver = self;
   v36.super_class = AppleEthernetConfigurator;
   v6 = [(AppleEthernetConfigurator *)&v36 init];
@@ -70,12 +70,12 @@
     while (v16);
   }
 
-  objc_storeStrong(&v6->_interface, a3);
+  objc_storeStrong(&v6->_interface, interface);
   previousState = v6->_previousState;
   v6->_previousState = 0;
 
-  v20 = [v5 BSDName];
-  v21 = dispatch_queue_create([v20 UTF8String], 0);
+  bSDName = [interfaceCopy BSDName];
+  v21 = dispatch_queue_create([bSDName UTF8String], 0);
   queue = v6->_queue;
   v6->_queue = v21;
 
@@ -107,8 +107,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v28 = [(AppleEthernetInterface *)v6->_interface BSDName];
-  v23 = [NSString stringWithFormat:@"%@-%@", @"AppleEthernetConfigurator", v28];
+  bSDName2 = [(AppleEthernetInterface *)v6->_interface BSDName];
+  v23 = [NSString stringWithFormat:@"%@-%@", @"AppleEthernetConfigurator", bSDName2];
 
   if (!v23)
   {
@@ -163,17 +163,17 @@ LABEL_18:
   dispatch_async(queue, block);
 }
 
-- (void)saveConfig:(id)a3
+- (void)saveConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_57D8;
   v7[3] = &unk_10620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configCopy;
+  v6 = configCopy;
   dispatch_async(queue, v7);
 }
 
@@ -332,8 +332,8 @@ LABEL_14:
 - (id)currentConfig
 {
   v3 = objc_alloc_init(AppleEthernetSettingsConfig);
-  v4 = [(AppleEthernetInterface *)self->_interface displayName];
-  [(AppleEthernetSettingsConfig *)v3 setSsid:v4];
+  displayName = [(AppleEthernetInterface *)self->_interface displayName];
+  [(AppleEthernetSettingsConfig *)v3 setSsid:displayName];
 
   if (![(AppleEthernetConfigurator *)self lockPreferences])
   {
@@ -376,12 +376,12 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)updatePreferencesForService:(__SCNetworkService *)a3 withConfig:(id)a4
+- (BOOL)updatePreferencesForService:(__SCNetworkService *)service withConfig:(id)config
 {
-  v6 = a4;
-  v7 = v6;
+  configCopy = config;
+  v7 = configCopy;
   v8 = 0;
-  if (a3 && v6)
+  if (service && configCopy)
   {
     if (self->_previousState || (v9 = objc_alloc_init(AppleEthernetSettingsConfig), previousState = self->_previousState, self->_previousState = v9, previousState, self->_previousState))
     {
@@ -395,7 +395,7 @@ LABEL_14:
         {
           for (i = 0; i != v14; i = i + 1)
           {
-            [*(8 * i) updateSettingsFromCurrentConfig:self->_previousState toNewConfig:v7 forService:a3];
+            [*(8 * i) updateSettingsFromCurrentConfig:self->_previousState toNewConfig:v7 forService:service];
           }
 
           sub_2988();
@@ -417,9 +417,9 @@ LABEL_14:
   return v8;
 }
 
-- (id)getPersistentSettingsForKey:(__CFString *)a3 inService:(__SCNetworkService *)a4
+- (id)getPersistentSettingsForKey:(__CFString *)key inService:(__SCNetworkService *)service
 {
-  v4 = SCNetworkServiceCopyProtocol(a4, a3);
+  v4 = SCNetworkServiceCopyProtocol(service, key);
   if (v4)
   {
     v5 = v4;
@@ -435,26 +435,26 @@ LABEL_14:
   return v6;
 }
 
-- (id)getSettingsForKey:(__CFString *)a3 inService:(__SCNetworkService *)a4 withManualMode:(BOOL)a5
+- (id)getSettingsForKey:(__CFString *)key inService:(__SCNetworkService *)service withManualMode:(BOOL)mode
 {
-  v5 = a5;
-  v9 = SCNetworkServiceCopyProtocol(a4, a3);
+  modeCopy = mode;
+  v9 = SCNetworkServiceCopyProtocol(service, key);
   if (v9)
   {
     v10 = v9;
-    ServiceID = SCNetworkServiceGetServiceID(a4);
+    ServiceID = SCNetworkServiceGetServiceID(service);
     if (!ServiceID)
     {
       goto LABEL_11;
     }
 
     v12 = &kSCDynamicStoreDomainState;
-    if (v5)
+    if (modeCopy)
     {
       v12 = &kSCDynamicStoreDomainSetup;
     }
 
-    NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, *v12, ServiceID, a3);
+    NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, *v12, ServiceID, key);
     if (NetworkServiceEntity)
     {
       v14 = NetworkServiceEntity;
@@ -480,9 +480,9 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)getPrivateRelayDisabledForService:(__SCNetworkService *)a3
+- (BOOL)getPrivateRelayDisabledForService:(__SCNetworkService *)service
 {
-  Interface = SCNetworkServiceGetInterface(a3);
+  Interface = SCNetworkServiceGetInterface(service);
   if (Interface)
   {
     LOBYTE(Interface) = SCNetworkInterfaceGetDisablePrivateRelay() != 0;
@@ -491,9 +491,9 @@ LABEL_11:
   return Interface;
 }
 
-- (BOOL)setPrivateRelayDisabledForService:(__SCNetworkService *)a3 withPrivateRelayDisabled:(BOOL)a4
+- (BOOL)setPrivateRelayDisabledForService:(__SCNetworkService *)service withPrivateRelayDisabled:(BOOL)disabled
 {
-  Interface = SCNetworkServiceGetInterface(a3);
+  Interface = SCNetworkServiceGetInterface(service);
   if (Interface)
   {
     LOBYTE(Interface) = SCNetworkInterfaceSetDisablePrivateRelay() != 0;
@@ -502,10 +502,10 @@ LABEL_11:
   return Interface;
 }
 
-- (__SCNetworkService)findServiceForInterface:(id)a3
+- (__SCNetworkService)findServiceForInterface:(id)interface
 {
-  v4 = a3;
-  if (v4 && (v5 = SCNetworkSetCopyCurrent(self->_preferences)) != 0)
+  interfaceCopy = interface;
+  if (interfaceCopy && (v5 = SCNetworkSetCopyCurrent(self->_preferences)) != 0)
   {
     v6 = v5;
     v20 = 0u;
@@ -547,8 +547,8 @@ LABEL_12:
             goto LABEL_13;
           }
 
-          v16 = [v4 BSDName];
-          v17 = [v16 isEqualToString:v15];
+          bSDName = [interfaceCopy BSDName];
+          v17 = [bSDName isEqualToString:v15];
 
           v10 = v15;
           if (v17)

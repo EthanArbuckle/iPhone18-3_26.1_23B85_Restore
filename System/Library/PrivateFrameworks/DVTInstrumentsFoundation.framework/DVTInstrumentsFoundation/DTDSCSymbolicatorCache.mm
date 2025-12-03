@@ -1,6 +1,6 @@
 @interface DTDSCSymbolicatorCache
 - (DTDSCSymbolicatorCache)init;
-- (_CSTypeRef)symbolicatorForSharedCacheUUID:(id)a3;
+- (_CSTypeRef)symbolicatorForSharedCacheUUID:(id)d;
 - (void)dealloc;
 @end
 
@@ -27,11 +27,11 @@
   [(DTDSCSymbolicatorCache *)&v3 dealloc];
 }
 
-- (_CSTypeRef)symbolicatorForSharedCacheUUID:(id)a3
+- (_CSTypeRef)symbolicatorForSharedCacheUUID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  Value = CFDictionaryGetValue(self->_sharedCacheUUIDSymbolicators, v4);
+  dCopy = d;
+  Value = CFDictionaryGetValue(self->_sharedCacheUUIDSymbolicators, dCopy);
   if (Value)
   {
     v6 = *Value;
@@ -40,7 +40,7 @@
 
   else
   {
-    [v4 getUUIDBytes:v23];
+    [dCopy getUUIDBytes:v23];
     v17 = 0;
     v18 = &v17;
     v19 = 0x3010000000;
@@ -54,14 +54,14 @@
     sharedCacheUUIDSymbolicators = self->_sharedCacheUUIDSymbolicators;
     if (v10)
     {
-      CFDictionarySetValue(sharedCacheUUIDSymbolicators, v4, &unk_24803DCE0);
+      CFDictionarySetValue(sharedCacheUUIDSymbolicators, dCopy, &unk_24803DCE0);
       v6 = 0;
       v7 = 0;
     }
 
     else
     {
-      CFDictionarySetValue(sharedCacheUUIDSymbolicators, v4, v18 + 4);
+      CFDictionarySetValue(sharedCacheUUIDSymbolicators, dCopy, v18 + 4);
       v12 = v18[4];
       v13 = v18[5];
       CSRelease();

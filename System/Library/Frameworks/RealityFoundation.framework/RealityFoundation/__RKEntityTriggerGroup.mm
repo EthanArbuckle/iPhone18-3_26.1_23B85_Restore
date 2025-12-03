@@ -1,10 +1,10 @@
 @interface __RKEntityTriggerGroup
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityTriggerGroup
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   __RKEntityTriggerGroup.copy(with:)(v5);

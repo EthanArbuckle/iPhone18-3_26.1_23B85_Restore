@@ -1,23 +1,23 @@
 @interface CSIndexClientConnection
-- (CSIndexClientConnection)initWithConfiguration:(id)a3 indexer:(id)a4;
-- (CSIndexClientConnection)initWithConnection:(id)a3 indexer:(id)a4;
+- (CSIndexClientConnection)initWithConfiguration:(id)configuration indexer:(id)indexer;
+- (CSIndexClientConnection)initWithConnection:(id)connection indexer:(id)indexer;
 @end
 
 @implementation CSIndexClientConnection
 
-- (CSIndexClientConnection)initWithConfiguration:(id)a3 indexer:(id)a4
+- (CSIndexClientConnection)initWithConfiguration:(id)configuration indexer:(id)indexer
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  indexerCopy = indexer;
   v25.receiver = self;
   v25.super_class = CSIndexClientConnection;
   v9 = [(CSIndexClientConnection *)&v25 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    v11 = [(SDConnectionConfiguration *)v10->_configuration bundleID];
-    if (v11)
+    objc_storeStrong(&v9->_configuration, configuration);
+    bundleID = [(SDConnectionConfiguration *)v10->_configuration bundleID];
+    if (bundleID)
     {
     }
 
@@ -26,7 +26,7 @@
       v22 = logForCSLogCategoryDefault();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        [CSIndexClientConnection initWithConfiguration:v7 indexer:?];
+        [CSIndexClientConnection initWithConfiguration:configurationCopy indexer:?];
       }
 
       v20 = v10;
@@ -38,27 +38,27 @@
     service = v10->_service;
     v10->_service = v12;
 
-    [(MDSearchableIndexService *)v10->_service setIndexer:v8];
-    v14 = [(SDConnectionConfiguration *)v10->_configuration bundleID];
+    [(MDSearchableIndexService *)v10->_service setIndexer:indexerCopy];
+    bundleID2 = [(SDConnectionConfiguration *)v10->_configuration bundleID];
 
-    if (v14)
+    if (bundleID2)
     {
-      v15 = [(SDConnectionConfiguration *)v10->_configuration bundleID];
-      [(MDSearchableIndexService *)v10->_service setClientBundleID:v15];
+      bundleID3 = [(SDConnectionConfiguration *)v10->_configuration bundleID];
+      [(MDSearchableIndexService *)v10->_service setClientBundleID:bundleID3];
     }
 
-    v16 = [(SDConnectionConfiguration *)v10->_configuration personaID];
+    personaID = [(SDConnectionConfiguration *)v10->_configuration personaID];
 
-    if (v16)
+    if (personaID)
     {
-      v17 = [(SDConnectionConfiguration *)v10->_configuration personaID];
-      [(MDSearchableIndexService *)v10->_service setClientPersonaID:v17];
+      personaID2 = [(SDConnectionConfiguration *)v10->_configuration personaID];
+      [(MDSearchableIndexService *)v10->_service setClientPersonaID:personaID2];
     }
 
     [(MDSearchableIndexService *)v10->_service setIsInternal:[(SDConnectionConfiguration *)v10->_configuration internal]];
     [(MDSearchableIndexService *)v10->_service setIsPrivate:[(SDConnectionConfiguration *)v10->_configuration isPrivate]];
     [(MDSearchableIndexService *)v10->_service setSearchInternal:[(SDConnectionConfiguration *)v10->_configuration searchInternal]];
-    -[MDSearchableIndexService setIsExtension:](v10->_service, "setIsExtension:", [v7 isExtension]);
+    -[MDSearchableIndexService setIsExtension:](v10->_service, "setIsExtension:", [configurationCopy isExtension]);
     [(MDSearchableIndexService *)v10->_service setAllowMail:[(SDConnectionConfiguration *)v10->_configuration allowMail]];
     [(MDSearchableIndexService *)v10->_service setAllowPhotosLibraryDeletion:[(SDConnectionConfiguration *)v10->_configuration allowPhotosLibraryDeletion]];
     [(MDSearchableIndexService *)v10->_service setAllowOpenJournalFile:[(SDConnectionConfiguration *)v10->_configuration allowOpenJournalFile]];
@@ -66,17 +66,17 @@
     [(MDSearchableIndexService *)v10->_service setAllowMessagesContent:[(SDConnectionConfiguration *)v10->_configuration allowMessagesContent]];
     [(MDSearchableIndexService *)v10->_service setEntitledAttributes:[(SDConnectionConfiguration *)v10->_configuration entitledAttributes]];
     [(MDSearchableIndexService *)v10->_service setQuotaDisabled:[(SDConnectionConfiguration *)v10->_configuration quotaDisabled]];
-    v18 = [(SDConnectionConfiguration *)v10->_configuration protectionClass];
-    [(MDSearchableIndexService *)v10->_service setProtectionClass:v18];
+    protectionClass = [(SDConnectionConfiguration *)v10->_configuration protectionClass];
+    [(MDSearchableIndexService *)v10->_service setProtectionClass:protectionClass];
 
     [(MDSearchableIndexService *)v10->_service setClientUID:[(SDConnectionConfiguration *)v10->_configuration euid]];
-    v19 = [(SDConnectionConfiguration *)v10->_configuration connection];
-    [(MDSearchableIndexService *)v10->_service setClientConnection:v19];
+    connection = [(SDConnectionConfiguration *)v10->_configuration connection];
+    [(MDSearchableIndexService *)v10->_service setClientConnection:connection];
 
     v20 = [@"com.apple.spotlight.IndexAgent" stringByAppendingFormat:@".queue.client.%d", -[SDConnectionConfiguration pid](v10->_configuration, "pid")];
-    v21 = [v20 UTF8String];
+    uTF8String = [v20 UTF8String];
     v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v23 = dispatch_queue_create(v21, v22);
+    v23 = dispatch_queue_create(uTF8String, v22);
     [(MDSearchableIndexService *)v10->_service setClientQueue:v23];
 
 LABEL_10:
@@ -85,19 +85,19 @@ LABEL_10:
   return v10;
 }
 
-- (CSIndexClientConnection)initWithConnection:(id)a3 indexer:(id)a4
+- (CSIndexClientConnection)initWithConnection:(id)connection indexer:(id)indexer
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  indexerCopy = indexer;
   v21.receiver = self;
   v21.super_class = CSIndexClientConnection;
   v8 = [(CSIndexClientConnection *)&v21 init];
   if (v8)
   {
-    v9 = [[SDConnectionConfiguration alloc] initWithConnection:v6 isPrivate:0];
+    v9 = [[SDConnectionConfiguration alloc] initWithConnection:connectionCopy isPrivate:0];
     objc_storeStrong(&v8->_configuration, v9);
-    v10 = [(SDConnectionConfiguration *)v9 bundleID];
-    if (v10)
+    bundleID = [(SDConnectionConfiguration *)v9 bundleID];
+    if (bundleID)
     {
     }
 
@@ -106,7 +106,7 @@ LABEL_10:
       v18 = logForCSLogCategoryDefault();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        [SDConnectionConfiguration initWithConnection:v6 isPrivate:v18 isManaged:?];
+        [SDConnectionConfiguration initWithConnection:connectionCopy isPrivate:v18 isManaged:?];
       }
 
       v16 = v8;
@@ -118,13 +118,13 @@ LABEL_10:
     service = v8->_service;
     v8->_service = v11;
 
-    [(MDSearchableIndexService *)v8->_service setIndexer:v7];
-    v13 = [(SDConnectionConfiguration *)v9 bundleID];
+    [(MDSearchableIndexService *)v8->_service setIndexer:indexerCopy];
+    bundleID2 = [(SDConnectionConfiguration *)v9 bundleID];
 
-    if (v13)
+    if (bundleID2)
     {
-      v14 = [(SDConnectionConfiguration *)v9 bundleID];
-      [(MDSearchableIndexService *)v8->_service setClientBundleID:v14];
+      bundleID3 = [(SDConnectionConfiguration *)v9 bundleID];
+      [(MDSearchableIndexService *)v8->_service setClientBundleID:bundleID3];
     }
 
     [(MDSearchableIndexService *)v8->_service setIsInternal:[(SDConnectionConfiguration *)v9 internal]];
@@ -132,15 +132,15 @@ LABEL_10:
     [(MDSearchableIndexService *)v8->_service setSearchInternal:[(SDConnectionConfiguration *)v9 searchInternal]];
     [(MDSearchableIndexService *)v8->_service setIsExtension:[(SDConnectionConfiguration *)v9 isExtension]];
     [(MDSearchableIndexService *)v8->_service setQuotaDisabled:[(SDConnectionConfiguration *)v9 quotaDisabled]];
-    v15 = [(SDConnectionConfiguration *)v9 protectionClass];
-    [(MDSearchableIndexService *)v8->_service setProtectionClass:v15];
+    protectionClass = [(SDConnectionConfiguration *)v9 protectionClass];
+    [(MDSearchableIndexService *)v8->_service setProtectionClass:protectionClass];
 
     [(MDSearchableIndexService *)v8->_service setClientUID:[(SDConnectionConfiguration *)v9 euid]];
-    [(MDSearchableIndexService *)v8->_service setClientConnection:v6];
+    [(MDSearchableIndexService *)v8->_service setClientConnection:connectionCopy];
     v16 = [@"com.apple.spotlight.IndexAgent" stringByAppendingFormat:@".queue.client.%d", -[SDConnectionConfiguration pid](v9, "pid")];
-    v17 = [v16 UTF8String];
+    uTF8String = [v16 UTF8String];
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v19 = dispatch_queue_create(v17, v18);
+    v19 = dispatch_queue_create(uTF8String, v18);
     [(MDSearchableIndexService *)v8->_service setClientQueue:v19];
 
 LABEL_8:

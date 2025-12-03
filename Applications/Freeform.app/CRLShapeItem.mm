@@ -18,38 +18,38 @@
 - (Class)layoutClass;
 - (Class)repClass;
 - (double)strokePatternOffsetDistance;
-- (void)p_onBoard:(id)a3 setPositionerCalculatedSize:(CGSize)a4;
-- (void)setFill:(id)a3;
-- (void)setHeadLineEnd:(id)a3;
-- (void)setPathSource:(id)a3;
-- (void)setShadow:(id)a3;
-- (void)setStrokePatternOffsetDistance:(double)a3;
-- (void)setTailLineEnd:(id)a3;
+- (void)p_onBoard:(id)board setPositionerCalculatedSize:(CGSize)size;
+- (void)setFill:(id)fill;
+- (void)setHeadLineEnd:(id)end;
+- (void)setPathSource:(id)source;
+- (void)setShadow:(id)shadow;
+- (void)setStrokePatternOffsetDistance:(double)distance;
+- (void)setTailLineEnd:(id)end;
 @end
 
 @implementation CRLShapeItem
 
-- (void)p_onBoard:(id)a3 setPositionerCalculatedSize:(CGSize)a4
+- (void)p_onBoard:(id)board setPositionerCalculatedSize:(CGSize)size
 {
   v19.receiver = self;
   v19.super_class = _TtC8Freeform12CRLShapeItem;
-  [(CRLBoardItem *)&v19 p_onBoard:a3 setPositionerCalculatedSize:a4.width, a4.height];
-  v5 = [(CRLShapeItem *)self pathSource];
-  [v5 naturalSize];
+  [(CRLBoardItem *)&v19 p_onBoard:board setPositionerCalculatedSize:size.width, size.height];
+  pathSource = [(CRLShapeItem *)self pathSource];
+  [pathSource naturalSize];
   v7 = v6;
   v9 = v8;
-  v10 = [(CRLBoardItemBase *)self geometry];
-  [v10 size];
+  geometry = [(CRLBoardItemBase *)self geometry];
+  [geometry size];
   v12 = v11;
   v14 = v13;
 
   if (v7 != v12 || v9 != v14)
   {
-    v16 = [(CRLShapeItem *)self pathSource];
-    v17 = [v16 copy];
+    pathSource2 = [(CRLShapeItem *)self pathSource];
+    v17 = [pathSource2 copy];
 
-    v18 = [(CRLBoardItemBase *)self geometry];
-    [v18 size];
+    geometry2 = [(CRLBoardItemBase *)self geometry];
+    [geometry2 size];
     [v17 setNaturalSize:?];
 
     [(CRLShapeItem *)self setPathSource:v17];
@@ -80,7 +80,7 @@
 - (BOOL)allowedToBeDragAndDropped
 {
   v2 = *(**&self->super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 368);
-  v3 = self;
+  selfCopy = self;
 
   LOBYTE(v2) = v2(v4);
 
@@ -89,7 +89,7 @@
 
 - (BOOL)supportsResize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100C33EC8();
 
   return v3 & 1;
@@ -98,7 +98,7 @@
 - (CRLShadow)shadow
 {
   v2 = *((swift_isaMask & *self->super.super._TtC8Freeform12CRLBoardItem_opaque) + 0x578);
-  v3 = self;
+  selfCopy = self;
   if (v2())
   {
 
@@ -107,7 +107,7 @@
 
   else
   {
-    v5 = *(**&v3->super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 440);
+    v5 = *(**&selfCopy->super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 440);
 
     v7 = v5(v6);
 
@@ -117,11 +117,11 @@
   return v4;
 }
 
-- (void)setShadow:(id)a3
+- (void)setShadow:(id)shadow
 {
-  v5 = a3;
-  v6 = self;
-  sub_100C33968(a3);
+  shadowCopy = shadow;
+  selfCopy = self;
+  sub_100C33968(shadow);
 }
 
 - (CRLPathSource)pathSource
@@ -131,7 +131,7 @@
   if (result)
   {
     v5 = *(v3 + 840);
-    v6 = self;
+    selfCopy = self;
 
     v8 = v5(v7);
 
@@ -146,13 +146,13 @@
   return result;
 }
 
-- (void)setPathSource:(id)a3
+- (void)setPathSource:(id)source
 {
-  v4 = a3;
-  v7 = self;
-  if (sub_1011255D0(v7))
+  sourceCopy = source;
+  selfCopy = self;
+  if (sub_1011255D0(selfCopy))
   {
-    v5 = **&v7->super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData];
+    v5 = **&selfCopy->super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData];
     if (!swift_conformsToProtocol2())
     {
       __break(1u);
@@ -161,7 +161,7 @@
 
     v6 = *(v5 + 848);
 
-    v6(v4);
+    v6(sourceCopy);
   }
 
   else
@@ -172,7 +172,7 @@
 - (BOOL)isOpenPath
 {
   v2 = *((swift_isaMask & *self->super.super._TtC8Freeform12CRLBoardItem_opaque) + 0x548);
-  v3 = self;
+  selfCopy = self;
   if (v2())
   {
 
@@ -181,31 +181,31 @@
 
   else
   {
-    v5 = (*((swift_isaMask & *v3->super.super._TtC8Freeform12CRLBoardItem_opaque) + 0x530))();
-    v6 = [v5 isClosed];
+    v5 = (*((swift_isaMask & *selfCopy->super.super._TtC8Freeform12CRLBoardItem_opaque) + 0x530))();
+    isClosed = [v5 isClosed];
 
-    return v6 ^ 1;
+    return isClosed ^ 1;
   }
 }
 
 - (CRLFill)fill
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100C34488();
 
   return v3;
 }
 
-- (void)setFill:(id)a3
+- (void)setFill:(id)fill
 {
-  v5 = a3;
-  v6 = self;
-  sub_100C34730(a3);
+  fillCopy = fill;
+  selfCopy = self;
+  sub_100C34730(fill);
 }
 
 - (BOOL)isFreehandDrawingShape
 {
-  v2 = self;
+  selfCopy = self;
   sub_100C349A0();
 
   return 0;
@@ -213,7 +213,7 @@
 
 - (BOOL)isTreatedAsFillForFreehandDrawing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100C34D80();
 
   return v3 & 1;
@@ -221,39 +221,39 @@
 
 - (CRLLineEnd)headLineEnd
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100C35B0C();
 
   return v3;
 }
 
-- (void)setHeadLineEnd:(id)a3
+- (void)setHeadLineEnd:(id)end
 {
-  v5 = a3;
-  v6 = self;
-  sub_100C35D48(a3);
+  endCopy = end;
+  selfCopy = self;
+  sub_100C35D48(end);
 }
 
 - (CRLLineEnd)tailLineEnd
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100C3632C();
 
   return v3;
 }
 
-- (void)setTailLineEnd:(id)a3
+- (void)setTailLineEnd:(id)end
 {
-  v5 = a3;
-  v6 = self;
-  sub_100C36568(a3);
+  endCopy = end;
+  selfCopy = self;
+  sub_100C36568(end);
 }
 
 - (BOOL)isTailEndOnLeftBestGuess
 {
   v3 = swift_allocObject();
   *(v3 + 16) = 0;
-  v4 = self;
+  selfCopy = self;
 
   sub_1009B27C4(sub_100C3B2C4, v3);
 
@@ -265,7 +265,7 @@
 
 - (BOOL)canAspectRatioLockBeChangedByUser
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100C33F94();
 
   return v3 & 1;
@@ -273,7 +273,7 @@
 
 - (BOOL)allowsParentGroupToBeResizedWithoutAspectRatioLock
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100C340BC();
 
   return v3 & 1;
@@ -290,7 +290,7 @@
   {
     v9 = v7;
     v10 = *(v7 + 16);
-    v11 = self;
+    selfCopy = self;
 
     v10(v6, v9);
 
@@ -309,12 +309,12 @@
   return result;
 }
 
-- (void)setStrokePatternOffsetDistance:(double)a3
+- (void)setStrokePatternOffsetDistance:(double)distance
 {
-  v8 = self;
-  if (sub_1011255D0(v8))
+  selfCopy = self;
+  if (sub_1011255D0(selfCopy))
   {
-    v3 = **&v8->super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData];
+    v3 = **&selfCopy->super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData];
     v4 = swift_conformsToProtocol2();
     if (v4)
     {
@@ -342,7 +342,7 @@
 - (BOOL)canCopyStyle
 {
   v2 = *((swift_isaMask & *self->super.super._TtC8Freeform12CRLBoardItem_opaque) + 0x578);
-  v3 = self;
+  selfCopy = self;
   if (v2())
   {
 
@@ -351,7 +351,7 @@
 
   else
   {
-    v5 = (*((swift_isaMask & *v3->super.super._TtC8Freeform12CRLBoardItem_opaque) + 0x4F8))();
+    v5 = (*((swift_isaMask & *selfCopy->super.super._TtC8Freeform12CRLBoardItem_opaque) + 0x4F8))();
 
     return v5 != 6;
   }
@@ -360,7 +360,7 @@
 - (BOOL)allowsChangeShape
 {
   v2 = *((swift_isaMask & *self->super.super._TtC8Freeform12CRLBoardItem_opaque) + 0x548);
-  v3 = self;
+  selfCopy = self;
   if (v2())
   {
 
@@ -369,10 +369,10 @@
 
   else
   {
-    v5 = (*((swift_isaMask & *v3->super.super._TtC8Freeform12CRLBoardItem_opaque) + 0x530))();
-    v6 = [v5 bezierPath];
+    v5 = (*((swift_isaMask & *selfCopy->super.super._TtC8Freeform12CRLBoardItem_opaque) + 0x530))();
+    bezierPath = [v5 bezierPath];
 
-    LOBYTE(v5) = [v6 isLineSegment];
+    LOBYTE(v5) = [bezierPath isLineSegment];
     return v5 ^ 1;
   }
 }

@@ -1,16 +1,16 @@
 @interface BackgroundRefreshAlertXPCService
 - (void)cancelled;
-- (void)failedWith:(id)a3;
-- (void)updated:(id)a3;
+- (void)failedWith:(id)with;
+- (void)updated:(id)updated;
 @end
 
 @implementation BackgroundRefreshAlertXPCService
 
-- (void)updated:(id)a3
+- (void)updated:(id)updated
 {
-  v3 = a3;
+  updatedCopy = updated;
 
-  BackgroundRefreshAlertXPCService.updated(_:)(v3);
+  BackgroundRefreshAlertXPCService.updated(_:)(updatedCopy);
 }
 
 - (void)cancelled
@@ -24,12 +24,12 @@
   os_unfair_lock_unlock((v2 + v4));
 }
 
-- (void)failedWith:(id)a3
+- (void)failedWith:(id)with
 {
   v3 = *self->continuationState;
   v4 = *(*v3 + *MEMORY[0x1E69E6B68] + 16);
   v5 = (*(*v3 + 48) + 3) & 0x1FFFFFFFCLL;
-  v6 = a3;
+  withCopy = with;
 
   os_unfair_lock_lock((v3 + v5));
   sub_1B74B4DF4(v3 + v4);

@@ -1,38 +1,38 @@
 @interface SBAmbientWirelessChargingIdleTimer
-- (SBAmbientWirelessChargingIdleTimer)initWithAmbientPresentationController:(id)a3 screenSleepCoordinator:(id)a4 uiController:(id)a5;
+- (SBAmbientWirelessChargingIdleTimer)initWithAmbientPresentationController:(id)controller screenSleepCoordinator:(id)coordinator uiController:(id)uiController;
 - (id)_backlightController;
-- (void)_handleAttentionLost:(id)a3;
+- (void)_handleAttentionLost:(id)lost;
 - (void)_noteQiPowerStatusChanged;
 - (void)_noteSpringBoardBootComplete;
 - (void)_reconfigureAttentionClient;
-- (void)_setAmbientPresented:(BOOL)a3;
-- (void)_setAttentionClientActive:(BOOL)a3;
+- (void)_setAmbientPresented:(BOOL)presented;
+- (void)_setAttentionClientActive:(BOOL)active;
 - (void)_updateIdleTimerEnablement;
-- (void)backlightController:(id)a3 didTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5;
+- (void)backlightController:(id)controller didTransitionToBacklightState:(int64_t)state source:(int64_t)source;
 @end
 
 @implementation SBAmbientWirelessChargingIdleTimer
 
-- (SBAmbientWirelessChargingIdleTimer)initWithAmbientPresentationController:(id)a3 screenSleepCoordinator:(id)a4 uiController:(id)a5
+- (SBAmbientWirelessChargingIdleTimer)initWithAmbientPresentationController:(id)controller screenSleepCoordinator:(id)coordinator uiController:(id)uiController
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
+  uiControllerCopy = uiController;
   v30.receiver = self;
   v30.super_class = SBAmbientWirelessChargingIdleTimer;
   v11 = [(SBAmbientWirelessChargingIdleTimer *)&v30 init];
   if (v11)
   {
     v12 = +[SBDefaults localDefaults];
-    v13 = [v12 ambientDefaults];
+    ambientDefaults = [v12 ambientDefaults];
     ambientTestingDefaults = v11->_ambientTestingDefaults;
-    v11->_ambientTestingDefaults = v13;
+    v11->_ambientTestingDefaults = ambientDefaults;
 
-    [v8 addObserver:v11];
-    -[SBAmbientWirelessChargingIdleTimer _setAmbientPresented:](v11, "_setAmbientPresented:", [v8 isPresented]);
-    objc_storeStrong(&v11->_screenSleepCoordinator, a4);
-    objc_storeStrong(&v11->_uiController, a5);
+    [controllerCopy addObserver:v11];
+    -[SBAmbientWirelessChargingIdleTimer _setAmbientPresented:](v11, "_setAmbientPresented:", [controllerCopy isPresented]);
+    objc_storeStrong(&v11->_screenSleepCoordinator, coordinator);
+    objc_storeStrong(&v11->_uiController, uiController);
     v15 = objc_alloc_init(MEMORY[0x277CEF760]);
     attentionClient = v11->_attentionClient;
     v11->_attentionClient = v15;
@@ -59,9 +59,9 @@
     objc_copyWeak(&v26, &location);
     [(AWAttentionAwarenessClient *)v22 setEventHandlerWithQueue:MEMORY[0x277D85CD0] block:v25];
 
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v11 selector:sel__noteSpringBoardBootComplete name:@"SBBootCompleteNotification" object:0];
-    [v23 addObserver:v11 selector:sel__noteQiPowerStatusChanged name:@"SBUIQiPowerStatusChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__noteSpringBoardBootComplete name:@"SBBootCompleteNotification" object:0];
+    [defaultCenter addObserver:v11 selector:sel__noteQiPowerStatusChanged name:@"SBUIQiPowerStatusChangedNotification" object:0];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(&v28);
@@ -112,16 +112,16 @@ void __112__SBAmbientWirelessChargingIdleTimer_initWithAmbientPresentationContro
   }
 }
 
-- (void)backlightController:(id)a3 didTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5
+- (void)backlightController:(id)controller didTransitionToBacklightState:(int64_t)state source:(int64_t)source
 {
   v14 = *MEMORY[0x277D85DE8];
   v7 = SBLogAmbientDeviceState();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
-    v9 = SBBacklightStateDescription(a4);
+    succinctDescription = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
+    v9 = SBBacklightStateDescription(state);
     v10 = 138543618;
-    v11 = v8;
+    v11 = succinctDescription;
     v12 = 2114;
     v13 = v9;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: backlight state changed to %{public}@", &v10, 0x16u);
@@ -136,9 +136,9 @@ void __112__SBAmbientWirelessChargingIdleTimer_initWithAmbientPresentationContro
   v3 = SBLogAmbientDeviceState();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
+    succinctDescription = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
     v5 = 138543362;
-    v6 = v4;
+    v6 = succinctDescription;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: got notification that SpringBoard boot completed", &v5, 0xCu);
   }
 
@@ -151,9 +151,9 @@ void __112__SBAmbientWirelessChargingIdleTimer_initWithAmbientPresentationContro
   v3 = SBLogAmbientDeviceState();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
+    succinctDescription = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
     v5 = 138543362;
-    v6 = v4;
+    v6 = succinctDescription;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: got notification that Qi power status changed", &v5, 0xCu);
   }
 
@@ -176,9 +176,9 @@ void __112__SBAmbientWirelessChargingIdleTimer_initWithAmbientPresentationContro
       v6 = SBLogAmbientDeviceState();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
+        succinctDescription = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
         v9 = 138543362;
-        v10 = v7;
+        v10 = succinctDescription;
         _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: got backlight controller instance", &v9, 0xCu);
       }
 
@@ -194,21 +194,21 @@ void __112__SBAmbientWirelessChargingIdleTimer_initWithAmbientPresentationContro
   return lazy_backlightController;
 }
 
-- (void)_setAmbientPresented:(BOOL)a3
+- (void)_setAmbientPresented:(BOOL)presented
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_ambientPresented != a3)
+  if (self->_ambientPresented != presented)
   {
-    v3 = a3;
-    self->_ambientPresented = a3;
+    presentedCopy = presented;
+    self->_ambientPresented = presented;
     v5 = SBLogAmbientDeviceState();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
+      succinctDescription = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
       v7 = 138543618;
-      v8 = v6;
+      v8 = succinctDescription;
       v9 = 1024;
-      v10 = v3;
+      v10 = presentedCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: ambientPresented=%{BOOL}u", &v7, 0x12u);
     }
 
@@ -219,27 +219,27 @@ void __112__SBAmbientWirelessChargingIdleTimer_initWithAmbientPresentationContro
 - (void)_updateIdleTimerEnablement
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(SBUIController *)self->_uiController isConnectedToQiPower];
-  v4 = [(SBAmbientWirelessChargingIdleTimer *)self _backlightController];
-  v5 = [v4 screenIsOn];
+  isConnectedToQiPower = [(SBUIController *)self->_uiController isConnectedToQiPower];
+  _backlightController = [(SBAmbientWirelessChargingIdleTimer *)self _backlightController];
+  screenIsOn = [_backlightController screenIsOn];
 
-  v8 = self->_ambientPresented && v5 != 0 && v3 && self->_enabled;
+  v8 = self->_ambientPresented && screenIsOn != 0 && isConnectedToQiPower && self->_enabled;
   v9 = SBLogAmbientDeviceState();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
+    succinctDescription = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
     enabled = self->_enabled;
     ambientPresented = self->_ambientPresented;
     v13 = 138544642;
-    v14 = v10;
+    v14 = succinctDescription;
     v15 = 1024;
     v16 = v8;
     v17 = 1024;
     v18 = enabled;
     v19 = 1024;
-    v20 = v3;
+    v20 = isConnectedToQiPower;
     v21 = 1024;
-    v22 = v5;
+    v22 = screenIsOn;
     v23 = 1024;
     v24 = ambientPresented;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Wireless charging idle timer requested = %{BOOL}d [ enabled:%{BOOL}d ; isOnQiPower:%{BOOL}d ; screenIsOn:%{BOOL}d ; ambientPresented:%{BOOL}d ]", &v13, 0x2Au);
@@ -248,22 +248,22 @@ void __112__SBAmbientWirelessChargingIdleTimer_initWithAmbientPresentationContro
   [(SBAmbientWirelessChargingIdleTimer *)self _setAttentionClientActive:v8];
 }
 
-- (void)_setAttentionClientActive:(BOOL)a3
+- (void)_setAttentionClientActive:(BOOL)active
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_attentionClientActive != a3)
+  if (self->_attentionClientActive != active)
   {
-    v3 = a3;
-    self->_attentionClientActive = a3;
+    activeCopy = active;
+    self->_attentionClientActive = active;
     v5 = SBLogAmbientDeviceState();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (activeCopy)
     {
       if (v6)
       {
-        v7 = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
+        succinctDescription = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
         v9 = 138543362;
-        v10 = v7;
+        v10 = succinctDescription;
         _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Resuming attention client", &v9, 0xCu);
       }
 
@@ -274,9 +274,9 @@ void __112__SBAmbientWirelessChargingIdleTimer_initWithAmbientPresentationContro
     {
       if (v6)
       {
-        v8 = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
+        succinctDescription2 = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
         v9 = 138543362;
-        v10 = v8;
+        v10 = succinctDescription2;
         _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Suspending attention client", &v9, 0xCu);
       }
 
@@ -297,9 +297,9 @@ void __112__SBAmbientWirelessChargingIdleTimer_initWithAmbientPresentationContro
   v4 = SBLogAmbientDeviceState();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
+    succinctDescription = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
     v6 = 138543618;
-    v7 = v5;
+    v7 = succinctDescription;
     v8 = 2114;
     v9 = v3;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Updating attention client with configuration %{public}@", &v6, 0x16u);
@@ -308,16 +308,16 @@ void __112__SBAmbientWirelessChargingIdleTimer_initWithAmbientPresentationContro
   [(AWAttentionAwarenessClient *)self->_attentionClient setConfiguration:v3];
 }
 
-- (void)_handleAttentionLost:(id)a3
+- (void)_handleAttentionLost:(id)lost
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = SBLogAmbientDeviceState();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
+    succinctDescription = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
     attentionClientActive = self->_attentionClientActive;
     v9 = 138543618;
-    v10 = v5;
+    v10 = succinctDescription;
     v11 = 1024;
     v12 = attentionClientActive;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Attention lost. _attentionClientActive = %{BOOL}u", &v9, 0x12u);
@@ -328,9 +328,9 @@ void __112__SBAmbientWirelessChargingIdleTimer_initWithAmbientPresentationContro
     v7 = SBLogAmbientDeviceState();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
+      succinctDescription2 = [(SBAmbientWirelessChargingIdleTimer *)self succinctDescription];
       v9 = 138543362;
-      v10 = v8;
+      v10 = succinctDescription2;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Turning screen off for inactivity while on Qi charger", &v9, 0xCu);
     }
 

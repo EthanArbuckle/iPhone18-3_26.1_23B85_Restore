@@ -1,55 +1,55 @@
 @interface CHRecognizerConfiguration
-+ (BOOL)hasSupportForPrincipalPoints:(id)a3;
-+ (BOOL)isGroupingWithLocales:(id)a3 differentFromGroupingWithLocales:(id)a4;
-+ (BOOL)isLocaleReflowable:(id)a3;
-+ (BOOL)isLocaleSupported:(id)a3 withMode:(int)a4;
-+ (BOOL)isMatchingScriptAndLocale:(id)a3 scriptCode:(id)a4;
-+ (BOOL)isSupportedCyrillicScriptLocale:(id)a3 withMode:(int)a4;
-+ (BOOL)isSupportedLatinScriptLocale:(id)a3 withMode:(int)a4;
-+ (BOOL)shouldAddSpaceToNeutralQuotationMarks:(id)a3;
-+ (BOOL)shouldAdjustGroupingForLocale:(id)a3;
-+ (BOOL)shouldAdjustGroupingHeuristicsForVeryComplexCharacters:(id)a3;
-+ (BOOL)shouldAllowSpaceInsertionGestureForLocale:(id)a3;
-+ (BOOL)shouldAllowSubTokenDeletionForLocale:(id)a3;
-+ (BOOL)shouldApplyLatinSpacingForLocale:(id)a3;
-+ (BOOL)shouldApplyThaiSpacingForLocale:(id)a3;
-+ (BOOL)shouldDeformRenderedAscendersDescenders:(id)a3;
-+ (BOOL)shouldForceNoAlternativeRecognitionCandidates:(id)a3;
-+ (BOOL)shouldInsertSpaceBetweenPreviousChar:(id)a3 andNextChar:(id)a4 inLocale:(id)a5 inString:(id)a6 atRange:(_NSRange)a7 withQuoteCount:(id)a8;
-+ (BOOL)shouldPerformStrictCandidateFiltering:(id)a3;
-+ (BOOL)shouldRefinePrefixQueryMatchesForLocale:(id)a3;
-+ (BOOL)shouldRemoveSpaceBetweenPreviousChar:(id)a3 andNextChar:(id)a4 inLocale:(id)a5;
-+ (BOOL)shouldSwapCyrillicTopResult:(id)a3 topRange:(_NSRange)a4 englishResult:(id)a5 englishRange:(_NSRange)a6 prevousGroupTopString:(id)a7;
-+ (BOOL)shouldTryAlternativeStringRender:(id)a3;
-+ (BOOL)shouldUseFullWidthSpaceBasedOnContextForLocale:(id)a3;
-+ (BOOL)shouldUseOriginalTokensForLocale:(id)a3;
-+ (BOOL)shouldUseRefinablePathForReflowTokensForLocale:(id)a3;
++ (BOOL)hasSupportForPrincipalPoints:(id)points;
++ (BOOL)isGroupingWithLocales:(id)locales differentFromGroupingWithLocales:(id)withLocales;
++ (BOOL)isLocaleReflowable:(id)reflowable;
++ (BOOL)isLocaleSupported:(id)supported withMode:(int)mode;
++ (BOOL)isMatchingScriptAndLocale:(id)locale scriptCode:(id)code;
++ (BOOL)isSupportedCyrillicScriptLocale:(id)locale withMode:(int)mode;
++ (BOOL)isSupportedLatinScriptLocale:(id)locale withMode:(int)mode;
++ (BOOL)shouldAddSpaceToNeutralQuotationMarks:(id)marks;
++ (BOOL)shouldAdjustGroupingForLocale:(id)locale;
++ (BOOL)shouldAdjustGroupingHeuristicsForVeryComplexCharacters:(id)characters;
++ (BOOL)shouldAllowSpaceInsertionGestureForLocale:(id)locale;
++ (BOOL)shouldAllowSubTokenDeletionForLocale:(id)locale;
++ (BOOL)shouldApplyLatinSpacingForLocale:(id)locale;
++ (BOOL)shouldApplyThaiSpacingForLocale:(id)locale;
++ (BOOL)shouldDeformRenderedAscendersDescenders:(id)descenders;
++ (BOOL)shouldForceNoAlternativeRecognitionCandidates:(id)candidates;
++ (BOOL)shouldInsertSpaceBetweenPreviousChar:(id)char andNextChar:(id)nextChar inLocale:(id)locale inString:(id)string atRange:(_NSRange)range withQuoteCount:(id)count;
++ (BOOL)shouldPerformStrictCandidateFiltering:(id)filtering;
++ (BOOL)shouldRefinePrefixQueryMatchesForLocale:(id)locale;
++ (BOOL)shouldRemoveSpaceBetweenPreviousChar:(id)char andNextChar:(id)nextChar inLocale:(id)locale;
++ (BOOL)shouldSwapCyrillicTopResult:(id)result topRange:(_NSRange)range englishResult:(id)englishResult englishRange:(_NSRange)englishRange prevousGroupTopString:(id)string;
++ (BOOL)shouldTryAlternativeStringRender:(id)render;
++ (BOOL)shouldUseFullWidthSpaceBasedOnContextForLocale:(id)locale;
++ (BOOL)shouldUseOriginalTokensForLocale:(id)locale;
++ (BOOL)shouldUseRefinablePathForReflowTokensForLocale:(id)locale;
 + (CGSize)defaultMinimumDrawingSize;
 + (double)skipLatinActivationThreshold;
 + (id)allNonLatinModelNames;
-+ (id)cachingKeyFromRelevantLocales:(id)a3 forLocale:(id)a4;
-+ (id)defaultActiveCharacterSetForLocale:(id)a3;
-+ (id)defaultActiveCharacterSetForLocales:(id)a3;
-+ (id)defaultLocaleForRecognitionType:(int)a3 withMode:(int)a4;
-+ (id)effectiveRecognitionLocales:(id)a3 recognitionMode:(int)a4;
-+ (id)forcedGen2ModelLocaleForLocale:(id)a3;
-+ (id)localeForScriptClass:(id)a3;
-+ (id)localesByLanguageGroup:(id)a3;
-+ (id)recognitionEngineCachingKeyForRecognitionLocale:(id)a3;
-+ (id)spellCheckingLocaleForRecognitionLocale:(id)a3 string:(id)a4;
-+ (id)stringForAutoCapitalizationMode:(int)a3;
-+ (id)stringForAutoCorrectionMode:(int)a3;
-+ (id)stringForBaseWritingDirection:(int)a3;
-+ (id)stringForRecognitionContentType:(int)a3;
-+ (id)stringForRecognitionMode:(int)a3;
-+ (id)swappableColumnIndexesFromResults:(id)a3 locales:(id)a4;
-+ (id)swappableColumnIndexesFromResults:(id)a3 locales:(id)a4 topLocaleIndex:(int64_t)a5;
-+ (int64_t)drawingStrokeLimitForLocale:(id)a3;
-+ (int64_t)writingOrientationForLocale:(id)a3;
-+ (void)setParametersOverride:(id)a3;
-- (BOOL)hasSamePostProcessingAsConfiguration:(id)a3;
-- (BOOL)hasSameResourcesAsConfiguration:(id)a3;
-- (BOOL)isEqualToRecognizerConfiguration:(id)a3;
++ (id)cachingKeyFromRelevantLocales:(id)locales forLocale:(id)locale;
++ (id)defaultActiveCharacterSetForLocale:(id)locale;
++ (id)defaultActiveCharacterSetForLocales:(id)locales;
++ (id)defaultLocaleForRecognitionType:(int)type withMode:(int)mode;
++ (id)effectiveRecognitionLocales:(id)locales recognitionMode:(int)mode;
++ (id)forcedGen2ModelLocaleForLocale:(id)locale;
++ (id)localeForScriptClass:(id)class;
++ (id)localesByLanguageGroup:(id)group;
++ (id)recognitionEngineCachingKeyForRecognitionLocale:(id)locale;
++ (id)spellCheckingLocaleForRecognitionLocale:(id)locale string:(id)string;
++ (id)stringForAutoCapitalizationMode:(int)mode;
++ (id)stringForAutoCorrectionMode:(int)mode;
++ (id)stringForBaseWritingDirection:(int)direction;
++ (id)stringForRecognitionContentType:(int)type;
++ (id)stringForRecognitionMode:(int)mode;
++ (id)swappableColumnIndexesFromResults:(id)results locales:(id)locales;
++ (id)swappableColumnIndexesFromResults:(id)results locales:(id)locales topLocaleIndex:(int64_t)index;
++ (int64_t)drawingStrokeLimitForLocale:(id)locale;
++ (int64_t)writingOrientationForLocale:(id)locale;
++ (void)setParametersOverride:(id)override;
+- (BOOL)hasSamePostProcessingAsConfiguration:(id)configuration;
+- (BOOL)hasSameResourcesAsConfiguration:(id)configuration;
+- (BOOL)isEqualToRecognizerConfiguration:(id)configuration;
 - (BOOL)shouldApplySemanticTokenization;
 - (BOOL)shouldAutoCapitalize;
 - (BOOL)shouldAutoCorrect;
@@ -62,29 +62,29 @@
 - (BOOL)shouldUseCaching;
 - (CHNeuralNetwork)newFreeFormEngine;
 - (CHNeuralNetwork)newRecognitionEngine;
-- (CHRecognizerConfiguration)initWithMode:(int)a3 locale:(id)a4 contentType:(int)a5 autoCapitalizationMode:(int)a6 autoCorrectionMode:(int)a7 baseWritingDirection:(int)a8 enableCachingIfAvailable:(BOOL)a9 enableGen2ModelIfAvailable:(BOOL)a10 enableGen2CharacterLMIfAvailable:(BOOL)a11;
-- (CHRecognizerConfiguration)initWithMode:(int)a3 locale:(id)a4 contentType:(int)a5 enableCachingIfAvailable:(BOOL)a6 enableGen2ModelIfAvailable:(BOOL)a7 enableGen2CharacterLMIfAvailable:(BOOL)a8;
+- (CHRecognizerConfiguration)initWithMode:(int)mode locale:(id)locale contentType:(int)type autoCapitalizationMode:(int)capitalizationMode autoCorrectionMode:(int)correctionMode baseWritingDirection:(int)direction enableCachingIfAvailable:(BOOL)available enableGen2ModelIfAvailable:(BOOL)self0 enableGen2CharacterLMIfAvailable:(BOOL)self1;
+- (CHRecognizerConfiguration)initWithMode:(int)mode locale:(id)locale contentType:(int)type enableCachingIfAvailable:(BOOL)available enableGen2ModelIfAvailable:(BOOL)ifAvailable enableGen2CharacterLMIfAvailable:(BOOL)mIfAvailable;
 - (VariantMap)newTransliterationVariantMap;
-- (_LXLexicon)newPhraseLexicon:(id *)a3;
-- (_LXLexicon)newSecondaryStaticLexicon:(id *)a3;
-- (_LXLexicon)newStaticLexicon:(id *)a3;
-- (_LXLexicon)postProcessorLexiconWithStaticLexicon:(_LXLexicon *)a3 secondaryLexicon:(_LXLexicon *)a4;
+- (_LXLexicon)newPhraseLexicon:(id *)lexicon;
+- (_LXLexicon)newSecondaryStaticLexicon:(id *)lexicon;
+- (_LXLexicon)newStaticLexicon:(id *)lexicon;
+- (_LXLexicon)postProcessorLexiconWithStaticLexicon:(_LXLexicon *)lexicon secondaryLexicon:(_LXLexicon *)secondaryLexicon;
 - (id)configurationKey;
 - (id)decodingCommitActionBlock;
 - (id)description;
 - (id)forcedActiveCharacterSet;
-- (id)languageResourceBundleWithStaticLexicon:(_LXLexicon *)a3 customLexicon:(_LXLexicon *)a4 wordLanguageModel:(void *)a5;
+- (id)languageResourceBundleWithStaticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon wordLanguageModel:(void *)model;
 - (id)linguisticResourcesFallbackLocale;
 - (id)newCTCRecognitionModel;
-- (id)newCTCTextDecoderWithStaticLexicon:(_LXLexicon *)a3 customLexicon:(_LXLexicon *)a4 wordLanguageModel:(void *)a5;
+- (id)newCTCTextDecoderWithStaticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon wordLanguageModel:(void *)model;
 - (id)newCornerDetector;
 - (id)newMecabraWrapper;
-- (id)newMergedResultPostProcessorWithStaticLexicon:(_LXLexicon *)a3 customLexicon:(_LXLexicon *)a4 stringChecker:(id)a5;
-- (id)newOVSStringCheckerWithStaticLexicon:(_LXLexicon *)a3 customLexicon:(_LXLexicon *)a4;
+- (id)newMergedResultPostProcessorWithStaticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon stringChecker:(id)checker;
+- (id)newOVSStringCheckerWithStaticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon;
 - (id)newPatternFST;
-- (id)newPostProcessorWithStaticLexicon:(_LXLexicon *)a3 customLexicon:(_LXLexicon *)a4 phraseLexicon:(_LXLexicon *)a5 customPhraseLexicon:(_LXLexicon *)a6 textReplacements:(id)a7 postProcessingFST:(id)a8 wordLM:(void *)a9 mecabraWrapper:(id)a10 ovsStringChecker:(id)a11 spellChecker:(id)a12 lmVocabulary:(void *)a13 maxResultCount:(int64_t)a14;
+- (id)newPostProcessorWithStaticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon phraseLexicon:(_LXLexicon *)phraseLexicon customPhraseLexicon:(_LXLexicon *)customPhraseLexicon textReplacements:(id)replacements postProcessingFST:(id)t wordLM:(void *)m mecabraWrapper:(id)self0 ovsStringChecker:(id)self1 spellChecker:(id)self2 lmVocabulary:(void *)self3 maxResultCount:(int64_t)self4;
 - (id)newSpellChecker;
-- (id)pathScoringFunctionForLanguageResourceBundle:(id)a3;
+- (id)pathScoringFunctionForLanguageResourceBundle:(id)bundle;
 - (id)sharedPostProcessingFST;
 - (int)effectiveAutoCapitalizationMode;
 - (int)mecabraInputMethodType;
@@ -95,20 +95,20 @@
 - (unsigned)requiredInappropriateFilteringFlags;
 - (void)lexiconStringNormalizationFunction;
 - (void)newCJKStaticLexicon;
-- (void)newCharacterLanguageModelAndMap:(void *)a3 force:(BOOL)a4;
+- (void)newCharacterLanguageModelAndMap:(void *)map force:(BOOL)force;
 - (void)newGrammarFST;
 - (void)newRadicalClusterFST;
-- (void)newWordLanguageModelForRecognizer:(id)a3 async:(BOOL)a4 synchronizationQueue:(id)a5;
+- (void)newWordLanguageModelForRecognizer:(id)recognizer async:(BOOL)async synchronizationQueue:(id)queue;
 @end
 
 @implementation CHRecognizerConfiguration
 
-- (CHRecognizerConfiguration)initWithMode:(int)a3 locale:(id)a4 contentType:(int)a5 enableCachingIfAvailable:(BOOL)a6 enableGen2ModelIfAvailable:(BOOL)a7 enableGen2CharacterLMIfAvailable:(BOOL)a8
+- (CHRecognizerConfiguration)initWithMode:(int)mode locale:(id)locale contentType:(int)type enableCachingIfAvailable:(BOOL)available enableGen2ModelIfAvailable:(BOOL)ifAvailable enableGen2CharacterLMIfAvailable:(BOOL)mIfAvailable
 {
-  v11 = *&a5;
-  v12 = *&a3;
-  v15 = a4;
-  v16 = v12 == 2 || a8;
+  v11 = *&type;
+  v12 = *&mode;
+  localeCopy = locale;
+  v16 = v12 == 2 || mIfAvailable;
   if (v12 == 6)
   {
     v17 = 2;
@@ -121,140 +121,140 @@
 
   if (v12 == 6)
   {
-    v18 = a8;
+    mIfAvailableCopy = mIfAvailable;
   }
 
   else
   {
-    v18 = v16;
+    mIfAvailableCopy = v16;
   }
 
-  BYTE2(v21) = v18;
-  BYTE1(v21) = a7;
-  LOBYTE(v21) = a6;
-  v19 = objc_msgSend_initWithMode_locale_contentType_autoCapitalizationMode_autoCorrectionMode_baseWritingDirection_enableCachingIfAvailable_enableGen2ModelIfAvailable_enableGen2CharacterLMIfAvailable_(self, v14, v12, v15, v11, v12 != 6, v17, 0x7FFFFFFFFFFFFFFFLL, v21);
+  BYTE2(v21) = mIfAvailableCopy;
+  BYTE1(v21) = ifAvailable;
+  LOBYTE(v21) = available;
+  v19 = objc_msgSend_initWithMode_locale_contentType_autoCapitalizationMode_autoCorrectionMode_baseWritingDirection_enableCachingIfAvailable_enableGen2ModelIfAvailable_enableGen2CharacterLMIfAvailable_(self, v14, v12, localeCopy, v11, v12 != 6, v17, 0x7FFFFFFFFFFFFFFFLL, v21);
 
   return v19;
 }
 
-- (CHRecognizerConfiguration)initWithMode:(int)a3 locale:(id)a4 contentType:(int)a5 autoCapitalizationMode:(int)a6 autoCorrectionMode:(int)a7 baseWritingDirection:(int)a8 enableCachingIfAvailable:(BOOL)a9 enableGen2ModelIfAvailable:(BOOL)a10 enableGen2CharacterLMIfAvailable:(BOOL)a11
+- (CHRecognizerConfiguration)initWithMode:(int)mode locale:(id)locale contentType:(int)type autoCapitalizationMode:(int)capitalizationMode autoCorrectionMode:(int)correctionMode baseWritingDirection:(int)direction enableCachingIfAvailable:(BOOL)available enableGen2ModelIfAvailable:(BOOL)self0 enableGen2CharacterLMIfAvailable:(BOOL)self1
 {
-  v11 = *&a8;
-  v17 = a4;
+  v11 = *&direction;
+  localeCopy = locale;
   v31.receiver = self;
   v31.super_class = CHRecognizerConfiguration;
   v18 = [(CHRecognizerConfiguration *)&v31 init];
   v24 = v18;
   if (v18)
   {
-    v18->_mode = a3;
-    v25 = objc_msgSend_copy(v17, v19, v20, v21, v22, v23);
+    v18->_mode = mode;
+    v25 = objc_msgSend_copy(localeCopy, v19, v20, v21, v22, v23);
     locale = v24->_locale;
     v24->_locale = v25;
 
-    v24->_contentType = a5;
+    v24->_contentType = type;
     *&v24->_baseWritingDirection = v11;
     v29 = 0;
     v30 = 0;
-    sub_1838F084C(CHRecognizerConfiguration, v17, &v30, &v29);
+    sub_1838F084C(CHRecognizerConfiguration, localeCopy, &v30, &v29);
     v27 = v29;
     v24->_language = v30;
     v24->_script = v27;
-    v24->_autoCapitalizationMode = a6;
-    v24->_autoCorrectionMode = a7;
-    v24->_enableCachingIfAvailable = a9;
-    v24->_enableGen2ModelIfAvailable = a10;
-    v24->_enableGen2CharacterLMIfAvailable = a11;
+    v24->_autoCapitalizationMode = capitalizationMode;
+    v24->_autoCorrectionMode = correctionMode;
+    v24->_enableCachingIfAvailable = available;
+    v24->_enableGen2ModelIfAvailable = ifAvailable;
+    v24->_enableGen2CharacterLMIfAvailable = mIfAvailable;
   }
 
   return v24;
 }
 
-+ (id)stringForRecognitionMode:(int)a3
++ (id)stringForRecognitionMode:(int)mode
 {
-  if ((a3 - 1) > 5)
+  if ((mode - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E6DDFA50[a3 - 1];
+    return off_1E6DDFA50[mode - 1];
   }
 }
 
-+ (id)stringForRecognitionContentType:(int)a3
++ (id)stringForRecognitionContentType:(int)type
 {
-  if (a3 > 7)
+  if (type > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_1E6DDFA80[a3];
+    return off_1E6DDFA80[type];
   }
 }
 
-+ (id)stringForAutoCapitalizationMode:(int)a3
++ (id)stringForAutoCapitalizationMode:(int)mode
 {
-  if (a3 > 6)
+  if (mode > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1E6DDFAC0[a3];
+    return off_1E6DDFAC0[mode];
   }
 }
 
-+ (id)stringForAutoCorrectionMode:(int)a3
++ (id)stringForAutoCorrectionMode:(int)mode
 {
-  if (a3 > 2)
+  if (mode > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E6DDFAF8[a3];
+    return off_1E6DDFAF8[mode];
   }
 }
 
-+ (id)stringForBaseWritingDirection:(int)a3
++ (id)stringForBaseWritingDirection:(int)direction
 {
   v3 = @"default-ltr";
   v4 = @"default-rtl";
   v5 = @"none";
-  if (*&a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (*&direction != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
   }
 
-  if (*&a3 != 255)
+  if (*&direction != 255)
   {
     v4 = v5;
   }
 
-  if (*&a3 != 254)
+  if (*&direction != 254)
   {
     v3 = v4;
   }
 
   v6 = @"ltr";
   v7 = @"rtl";
-  if (*&a3 != 1)
+  if (*&direction != 1)
   {
     v7 = 0;
   }
 
-  if (*&a3)
+  if (*&direction)
   {
     v6 = v7;
   }
 
-  if (*&a3 <= 253)
+  if (*&direction <= 253)
   {
     return v6;
   }
@@ -305,12 +305,12 @@
   return v42;
 }
 
-+ (id)defaultLocaleForRecognitionType:(int)a3 withMode:(int)a4
++ (id)defaultLocaleForRecognitionType:(int)type withMode:(int)mode
 {
   v7 = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    switch(a3)
+    switch(type)
     {
       case 2:
         v8 = @"zh_Hans";
@@ -326,14 +326,14 @@
     }
 
 LABEL_18:
-    v7 = objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x1E695DF58], a2, v8, *&a4, v4, v5);
+    v7 = objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x1E695DF58], a2, v8, *&mode, v4, v5);
 
     return v7;
   }
 
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
 LABEL_8:
 
@@ -343,7 +343,7 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  if (a4 != 3)
+  if (mode != 3)
   {
 LABEL_17:
     v8 = @"en";
@@ -355,38 +355,38 @@ LABEL_17:
   return v7;
 }
 
-+ (BOOL)isLocaleSupported:(id)a3 withMode:(int)a4
++ (BOOL)isLocaleSupported:(id)supported withMode:(int)mode
 {
   v6 = 0;
   v7 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, &v7, &v6);
-  return sub_1838F1400(CHRecognizerConfiguration, v7, a4);
+  sub_1838F084C(CHRecognizerConfiguration, supported, &v7, &v6);
+  return sub_1838F1400(CHRecognizerConfiguration, v7, mode);
 }
 
-+ (BOOL)isSupportedLatinScriptLocale:(id)a3 withMode:(int)a4
++ (BOOL)isSupportedLatinScriptLocale:(id)locale withMode:(int)mode
 {
-  v5 = a3;
+  localeCopy = locale;
   v8 = 0;
   v9 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, v5, &v9, &v8);
+  sub_1838F084C(CHRecognizerConfiguration, localeCopy, &v9, &v8);
   v6 = 0;
-  if (v5 && v8 == 1)
+  if (localeCopy && v8 == 1)
   {
-    v6 = sub_1838F1400(CHRecognizerConfiguration, v9, a4);
+    v6 = sub_1838F1400(CHRecognizerConfiguration, v9, mode);
   }
 
   return v6;
 }
 
-+ (BOOL)isSupportedCyrillicScriptLocale:(id)a3 withMode:(int)a4
++ (BOOL)isSupportedCyrillicScriptLocale:(id)locale withMode:(int)mode
 {
-  v5 = a3;
+  localeCopy = locale;
   v8 = 0;
   v9 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, v5, &v9, &v8);
+  sub_1838F084C(CHRecognizerConfiguration, localeCopy, &v9, &v8);
   if (v8 == 7)
   {
-    v6 = sub_1838F1400(CHRecognizerConfiguration, v9, a4);
+    v6 = sub_1838F1400(CHRecognizerConfiguration, v9, mode);
   }
 
   else
@@ -397,13 +397,13 @@ LABEL_17:
   return v6;
 }
 
-+ (BOOL)isMatchingScriptAndLocale:(id)a3 scriptCode:(id)a4
++ (BOOL)isMatchingScriptAndLocale:(id)locale scriptCode:(id)code
 {
-  v5 = a4;
+  codeCopy = code;
   v10 = 0;
   v11 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, &v11, &v10);
-  v6 = sub_1838F11EC(CHRecognizerConfiguration, v5);
+  sub_1838F084C(CHRecognizerConfiguration, locale, &v11, &v10);
+  v6 = sub_1838F11EC(CHRecognizerConfiguration, codeCopy);
   if (v10)
   {
     v7 = v10 == v6;
@@ -419,11 +419,11 @@ LABEL_17:
   return v8;
 }
 
-+ (id)forcedGen2ModelLocaleForLocale:(id)a3
++ (id)forcedGen2ModelLocaleForLocale:(id)locale
 {
   v9 = 0;
   v10 = 0;
-  sub_1838F084C(a1, a3, &v9, &v10);
+  sub_1838F084C(self, locale, &v9, &v10);
   if (v9 == 20 && v10 <= 8)
   {
     v7 = objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x1E695DF58], v3, off_1E6DDFC38[v10], v4, v5, v6);
@@ -437,17 +437,17 @@ LABEL_17:
   return v7;
 }
 
-+ (id)effectiveRecognitionLocales:(id)a3 recognitionMode:(int)a4
++ (id)effectiveRecognitionLocales:(id)locales recognitionMode:(int)mode
 {
   v86 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v12 = objc_msgSend_array(MEMORY[0x1E695DF70], v7, v8, v9, v10, v11, v6);
+  localesCopy = locales;
+  v12 = objc_msgSend_array(MEMORY[0x1E695DF70], v7, v8, v9, v10, v11, localesCopy);
   v78 = objc_msgSend_set(MEMORY[0x1E695DFA8], v13, v14, v15, v16, v17);
   v83 = 0u;
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  obj = v6;
+  obj = localesCopy;
   v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v18, &v81, v85, 16, v19);
   if (!v20)
   {
@@ -470,7 +470,7 @@ LABEL_17:
       v23 = *(*(&v81 + 1) + 8 * v22);
       v79 = 0;
       v80 = 0;
-      sub_1838F084C(a1, v23, &v79, &v80);
+      sub_1838F084C(self, v23, &v79, &v80);
       v28 = v80;
       if (v80 > 8)
       {
@@ -518,7 +518,7 @@ LABEL_12:
       }
 
       v58 = objc_msgSend_count(v12, v43, v44, v45, v46, v47);
-      v60 = a4 == 6 || v58 < 2;
+      v60 = mode == 6 || v58 < 2;
 
       if (!v60)
       {
@@ -536,7 +536,7 @@ LABEL_12:
   while (v63);
 LABEL_31:
 
-  if (!((a4 == 6) | v76 & 1))
+  if (!((mode == 6) | v76 & 1))
   {
     v69 = objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x1E695DF58], v64, @"en_US", v66, v67, v68);
     objc_msgSend_addObject_(v12, v70, v69, v71, v72, v73);
@@ -547,9 +547,9 @@ LABEL_31:
   return v74;
 }
 
-+ (id)localeForScriptClass:(id)a3
++ (id)localeForScriptClass:(id)class
 {
-  v6 = objc_msgSend_integerValue(a3, a2, a3, v3, v4, v5);
+  v6 = objc_msgSend_integerValue(class, a2, class, v3, v4, v5);
   if (v6 > 0x10)
   {
     v11 = 0;
@@ -563,10 +563,10 @@ LABEL_31:
   return v11;
 }
 
-+ (id)recognitionEngineCachingKeyForRecognitionLocale:(id)a3
++ (id)recognitionEngineCachingKeyForRecognitionLocale:(id)locale
 {
   v4 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, &v4, 0);
+  sub_1838F084C(CHRecognizerConfiguration, locale, &v4, 0);
   result = 0;
   if ((v4 - 1) <= 0x1A)
   {
@@ -576,17 +576,17 @@ LABEL_31:
   return result;
 }
 
-+ (id)cachingKeyFromRelevantLocales:(id)a3 forLocale:(id)a4
++ (id)cachingKeyFromRelevantLocales:(id)locales forLocale:(id)locale
 {
   v65 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v10 = objc_msgSend_recognitionEngineCachingKeyForRecognitionLocale_(CHRecognizerConfiguration, v6, a4, v7, v8, v9);
+  localesCopy = locales;
+  v10 = objc_msgSend_recognitionEngineCachingKeyForRecognitionLocale_(CHRecognizerConfiguration, v6, locale, v7, v8, v9);
   v16 = objc_msgSend_set(MEMORY[0x1E695DFA8], v11, v12, v13, v14, v15);
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v17 = v5;
+  v17 = localesCopy;
   v25 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v60, v64, 16, v19);
   if (v25)
   {
@@ -623,16 +623,16 @@ LABEL_31:
   return v58;
 }
 
-+ (id)localesByLanguageGroup:(id)a3
++ (id)localesByLanguageGroup:(id)group
 {
   v79 = *MEMORY[0x1E69E9840];
-  v71 = a3;
+  groupCopy = group;
   v8 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v3, v4, v5, v6, v7);
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v9 = v71;
+  v9 = groupCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v72, v78, 16, v11);
   if (v12)
   {
@@ -713,10 +713,10 @@ LABEL_31:
   return v8;
 }
 
-+ (id)defaultActiveCharacterSetForLocale:(id)a3
++ (id)defaultActiveCharacterSetForLocale:(id)locale
 {
   v10 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, &v10, 0);
+  sub_1838F084C(CHRecognizerConfiguration, locale, &v10, 0);
   v8 = 0;
   if ((v10 - 1) <= 0x11)
   {
@@ -726,18 +726,18 @@ LABEL_31:
   return v8;
 }
 
-+ (id)defaultActiveCharacterSetForLocales:(id)a3
++ (id)defaultActiveCharacterSetForLocales:(id)locales
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  localesCopy = locales;
   v5 = MEMORY[0x1E695DF90];
-  v11 = objc_msgSend_count(v4, v6, v7, v8, v9, v10);
+  v11 = objc_msgSend_count(localesCopy, v6, v7, v8, v9, v10);
   v16 = objc_msgSend_dictionaryWithCapacity_(v5, v12, v11, v13, v14, v15);
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v17 = v4;
+  v17 = localesCopy;
   v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v33, v37, 16, v19);
   if (v24)
   {
@@ -752,7 +752,7 @@ LABEL_31:
         }
 
         v27 = *(*(&v33 + 1) + 8 * i);
-        v31 = objc_msgSend_defaultActiveCharacterSetForLocale_(a1, v20, v27, v21, v22, v23, v33);
+        v31 = objc_msgSend_defaultActiveCharacterSetForLocale_(self, v20, v27, v21, v22, v23, v33);
         if (v31)
         {
           objc_msgSend_setObject_forKeyedSubscript_(v16, v28, v31, v27, v29, v30);
@@ -768,62 +768,62 @@ LABEL_31:
   return v16;
 }
 
-+ (BOOL)shouldForceNoAlternativeRecognitionCandidates:(id)a3
++ (BOOL)shouldForceNoAlternativeRecognitionCandidates:(id)candidates
 {
   v4 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, &v4, 0);
+  sub_1838F084C(CHRecognizerConfiguration, candidates, &v4, 0);
   return (v4 - 19) < 8;
 }
 
-+ (BOOL)isLocaleReflowable:(id)a3
++ (BOOL)isLocaleReflowable:(id)reflowable
 {
   v5 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, &v5, 0);
+  sub_1838F084C(CHRecognizerConfiguration, reflowable, &v5, 0);
   return (v5 < 0x1C) & (0xBFFFFFEu >> v5);
 }
 
-+ (BOOL)shouldUseRefinablePathForReflowTokensForLocale:(id)a3
++ (BOOL)shouldUseRefinablePathForReflowTokensForLocale:(id)locale
 {
   v4 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, &v4, 0);
+  sub_1838F084C(CHRecognizerConfiguration, locale, &v4, 0);
   return (v4 - 19) < 3;
 }
 
-+ (BOOL)shouldDeformRenderedAscendersDescenders:(id)a3
++ (BOOL)shouldDeformRenderedAscendersDescenders:(id)descenders
 {
   v5 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, &v5, 0);
+  sub_1838F084C(CHRecognizerConfiguration, descenders, &v5, 0);
   return (v5 < 0x1C) & (0xB87FFFEu >> v5);
 }
 
-+ (BOOL)shouldTryAlternativeStringRender:(id)a3
++ (BOOL)shouldTryAlternativeStringRender:(id)render
 {
   v5 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, &v5, 0);
+  sub_1838F084C(CHRecognizerConfiguration, render, &v5, 0);
   return (v5 < 0x1C) & (0xB07FFFEu >> v5);
 }
 
-+ (BOOL)shouldUseOriginalTokensForLocale:(id)a3
++ (BOOL)shouldUseOriginalTokensForLocale:(id)locale
 {
   v4 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, 0, &v4);
+  sub_1838F084C(CHRecognizerConfiguration, locale, 0, &v4);
   return (v4 - 2) < 3;
 }
 
-+ (BOOL)shouldAllowSubTokenDeletionForLocale:(id)a3
++ (BOOL)shouldAllowSubTokenDeletionForLocale:(id)locale
 {
   v4 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, 0, &v4);
+  sub_1838F084C(CHRecognizerConfiguration, locale, 0, &v4);
   return (v4 - 2) < 3;
 }
 
-- (BOOL)isEqualToRecognizerConfiguration:(id)a3
+- (BOOL)isEqualToRecognizerConfiguration:(id)configuration
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  configurationCopy = configuration;
+  v10 = configurationCopy;
+  if (configurationCopy)
   {
-    if (self == v4)
+    if (self == configurationCopy)
     {
       LOBYTE(v105) = 1;
       goto LABEL_15;
@@ -927,10 +927,10 @@ LABEL_9:
   return v36;
 }
 
-- (BOOL)hasSameResourcesAsConfiguration:(id)a3
+- (BOOL)hasSameResourcesAsConfiguration:(id)configuration
 {
-  v9 = a3;
-  if (!v9)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -971,7 +971,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  if (objc_msgSend_mode(v9, v4, v5, v6, v7, v8) != self->_mode || self->_enableGen2ModelIfAvailable != objc_msgSend_enableGen2ModelIfAvailable(v9, v12, v13, v14, v15, v16) || self->_enableGen2CharacterLMIfAvailable != objc_msgSend_enableGen2CharacterLMIfAvailable(v9, v17, v18, v19, v20, v21))
+  if (objc_msgSend_mode(configurationCopy, v4, v5, v6, v7, v8) != self->_mode || self->_enableGen2ModelIfAvailable != objc_msgSend_enableGen2ModelIfAvailable(configurationCopy, v12, v13, v14, v15, v16) || self->_enableGen2CharacterLMIfAvailable != objc_msgSend_enableGen2CharacterLMIfAvailable(configurationCopy, v17, v18, v19, v20, v21))
   {
     v31 = 0;
     goto LABEL_23;
@@ -979,7 +979,7 @@ LABEL_10:
 
   v33 = 0;
   *buf = 0;
-  v27 = objc_msgSend_locale(v9, v22, v23, v24, v25, v26);
+  v27 = objc_msgSend_locale(configurationCopy, v22, v23, v24, v25, v26);
   sub_1838F084C(CHRecognizerConfiguration, v27, buf, &v33);
 
   language = self->_language;
@@ -993,7 +993,7 @@ LABEL_10:
     v29 = self->_language;
   }
 
-  if (!v9)
+  if (!configurationCopy)
   {
     v30 = 0;
     v31 = 0;
@@ -1005,8 +1005,8 @@ LABEL_10:
     goto LABEL_20;
   }
 
-  v30 = v9[1];
-  if (*(v9 + 8) == 6)
+  v30 = configurationCopy[1];
+  if (*(configurationCopy + 8) == 6)
   {
     v30 = 1;
   }
@@ -1026,10 +1026,10 @@ LABEL_23:
   return v31;
 }
 
-- (BOOL)hasSamePostProcessingAsConfiguration:(id)a3
+- (BOOL)hasSamePostProcessingAsConfiguration:(id)configuration
 {
-  v9 = a3;
-  if (!v9)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -1070,10 +1070,10 @@ LABEL_9:
   }
 
 LABEL_10:
-  v12 = objc_msgSend_effectiveAutoCapitalizationMode(v9, v4, v5, v6, v7, v8);
-  if (v12 == objc_msgSend_effectiveAutoCapitalizationMode(self, v13, v14, v15, v16, v17) && (v23 = objc_msgSend_autoCorrectionMode(v9, v18, v19, v20, v21, v22), v23 == objc_msgSend_autoCorrectionMode(self, v24, v25, v26, v27, v28)) && (v34 = objc_msgSend_baseWritingDirection(v9, v29, v30, v31, v32, v33), v34 == objc_msgSend_baseWritingDirection(self, v35, v36, v37, v38, v39)) && (shouldTransliterateHalfWidthPunctuations = objc_msgSend_shouldTransliterateHalfWidthPunctuations(v9, v40, v41, v42, v43, v44), shouldTransliterateHalfWidthPunctuations == objc_msgSend_shouldTransliterateHalfWidthPunctuations(self, v46, v47, v48, v49, v50)) && (shouldApplySemanticTokenization = objc_msgSend_shouldApplySemanticTokenization(v9, v51, v52, v53, v54, v55), shouldApplySemanticTokenization == objc_msgSend_shouldApplySemanticTokenization(self, v57, v58, v59, v60, v61)) && (shouldIdentifyChangeableColumns = objc_msgSend_shouldIdentifyChangeableColumns(v9, v62, v63, v64, v65, v66), shouldIdentifyChangeableColumns == objc_msgSend_shouldIdentifyChangeableColumns(self, v68, v69, v70, v71, v72)))
+  v12 = objc_msgSend_effectiveAutoCapitalizationMode(configurationCopy, v4, v5, v6, v7, v8);
+  if (v12 == objc_msgSend_effectiveAutoCapitalizationMode(self, v13, v14, v15, v16, v17) && (v23 = objc_msgSend_autoCorrectionMode(configurationCopy, v18, v19, v20, v21, v22), v23 == objc_msgSend_autoCorrectionMode(self, v24, v25, v26, v27, v28)) && (v34 = objc_msgSend_baseWritingDirection(configurationCopy, v29, v30, v31, v32, v33), v34 == objc_msgSend_baseWritingDirection(self, v35, v36, v37, v38, v39)) && (shouldTransliterateHalfWidthPunctuations = objc_msgSend_shouldTransliterateHalfWidthPunctuations(configurationCopy, v40, v41, v42, v43, v44), shouldTransliterateHalfWidthPunctuations == objc_msgSend_shouldTransliterateHalfWidthPunctuations(self, v46, v47, v48, v49, v50)) && (shouldApplySemanticTokenization = objc_msgSend_shouldApplySemanticTokenization(configurationCopy, v51, v52, v53, v54, v55), shouldApplySemanticTokenization == objc_msgSend_shouldApplySemanticTokenization(self, v57, v58, v59, v60, v61)) && (shouldIdentifyChangeableColumns = objc_msgSend_shouldIdentifyChangeableColumns(configurationCopy, v62, v63, v64, v65, v66), shouldIdentifyChangeableColumns == objc_msgSend_shouldIdentifyChangeableColumns(self, v68, v69, v70, v71, v72)))
   {
-    shouldMarkNoWhiteSpaceColumnsChangeable = objc_msgSend_shouldMarkNoWhiteSpaceColumnsChangeable(v9, v73, v74, v75, v76, v77);
+    shouldMarkNoWhiteSpaceColumnsChangeable = objc_msgSend_shouldMarkNoWhiteSpaceColumnsChangeable(configurationCopy, v73, v74, v75, v76, v77);
     v78 = shouldMarkNoWhiteSpaceColumnsChangeable ^ objc_msgSend_shouldMarkNoWhiteSpaceColumnsChangeable(self, v81, v82, v83, v84, v85) ^ 1;
   }
 
@@ -1439,7 +1439,7 @@ LABEL_9:
   return v6;
 }
 
-- (_LXLexicon)newStaticLexicon:(id *)a3
+- (_LXLexicon)newStaticLexicon:(id *)lexicon
 {
   v24[1] = *MEMORY[0x1E69E9840];
   if (!self)
@@ -1462,7 +1462,7 @@ LABEL_9:
     if (((1 << script) & 0x1A2) != 0)
     {
       v23 = *MEMORY[0x1E69ABFE8];
-      v13 = objc_msgSend_localeIdentifier(self->_locale, a2, a3, v3, v4, v5);
+      v13 = objc_msgSend_localeIdentifier(self->_locale, a2, lexicon, v3, v4, v5);
       v24[0] = v13;
       v16 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v14, v24, &v23, 1, v15);
 
@@ -1476,10 +1476,10 @@ LABEL_9:
         goto LABEL_13;
       }
 
-      if (!objc_msgSend_shouldRunNextGenRecognizer(self, a2, a3, v3, v4, v5))
+      if (!objc_msgSend_shouldRunNextGenRecognizer(self, a2, lexicon, v3, v4, v5))
       {
         v11 = 0;
-        if (!a3)
+        if (!lexicon)
         {
           return v11;
         }
@@ -1497,16 +1497,16 @@ LABEL_9:
   }
 
 LABEL_13:
-  if (a3)
+  if (lexicon)
   {
 LABEL_14:
-    *a3 = 0;
+    *lexicon = 0;
   }
 
   return v11;
 }
 
-- (_LXLexicon)newSecondaryStaticLexicon:(id *)a3
+- (_LXLexicon)newSecondaryStaticLexicon:(id *)lexicon
 {
   v13[1] = *MEMORY[0x1E69E9840];
   if (!self)
@@ -1531,28 +1531,28 @@ LABEL_14:
     v9 = LXLexiconCreate();
   }
 
-  if (a3)
+  if (lexicon)
   {
-    *a3 = 0;
+    *lexicon = 0;
   }
 
   return v9;
 }
 
-- (_LXLexicon)postProcessorLexiconWithStaticLexicon:(_LXLexicon *)a3 secondaryLexicon:(_LXLexicon *)a4
+- (_LXLexicon)postProcessorLexiconWithStaticLexicon:(_LXLexicon *)lexicon secondaryLexicon:(_LXLexicon *)secondaryLexicon
 {
   if (self->_script == 5)
   {
-    return a4;
+    return secondaryLexicon;
   }
 
   else
   {
-    return a3;
+    return lexicon;
   }
 }
 
-- (_LXLexicon)newPhraseLexicon:(id *)a3
+- (_LXLexicon)newPhraseLexicon:(id *)lexicon
 {
   v24[2] = *MEMORY[0x1E69E9840];
   if (!self)
@@ -1564,7 +1564,7 @@ LABEL_14:
   v8 = mode > 6;
   v9 = (1 << mode) & 0x76;
   v10 = v8 || v9 == 0;
-  if (v10 || !objc_msgSend_shouldRunNextGenRecognizer(self, a2, a3, v3, v4, v5) || self->_mode == 5)
+  if (v10 || !objc_msgSend_shouldRunNextGenRecognizer(self, a2, lexicon, v3, v4, v5) || self->_mode == 5)
   {
     return 0;
   }
@@ -1582,9 +1582,9 @@ LABEL_14:
     v17 = LXLexiconCreate();
   }
 
-  if (a3)
+  if (lexicon)
   {
-    *a3 = 0;
+    *lexicon = 0;
   }
 
   return v17;
@@ -1644,12 +1644,12 @@ LABEL_14:
   return v28;
 }
 
-- (void)newWordLanguageModelForRecognizer:(id)a3 async:(BOOL)a4 synchronizationQueue:(id)a5
+- (void)newWordLanguageModelForRecognizer:(id)recognizer async:(BOOL)async synchronizationQueue:(id)queue
 {
-  v6 = a4;
+  asyncCopy = async;
   v102 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v14 = a5;
+  recognizerCopy = recognizer;
+  queueCopy = queue;
   v15 = 0;
   mode = self->_mode;
   if (mode <= 3)
@@ -1736,14 +1736,14 @@ LABEL_16:
       {
 LABEL_20:
 
-        if (v6)
+        if (asyncCopy)
         {
           v75 = objc_msgSend_dictionaryWithDictionary_(MEMORY[0x1E695DF90], v70, v18, v72, v73, v74);
           objc_msgSend_setObject_forKeyedSubscript_(v75, v76, MEMORY[0x1E695E118], *MEMORY[0x1E69ABFA0], v77, v78);
           v84 = objc_msgSend_linguisticResourcesFallbackLocale(self, v79, v80, v81, v82, v83);
           v15 = sub_1838F3F1C(CHRecognizerConfiguration, v75, v84);
 
-          if (v14)
+          if (queueCopy)
           {
             goto LABEL_30;
           }
@@ -1768,7 +1768,7 @@ LABEL_20:
 LABEL_29:
 
 LABEL_30:
-              if (v8)
+              if (recognizerCopy)
               {
 LABEL_39:
                 if (qword_1EA84D1A0 != -1)
@@ -1782,10 +1782,10 @@ LABEL_39:
                 block[2] = sub_1838F4874;
                 block[3] = &unk_1E6DDD9E0;
                 v95 = v18;
-                v96 = self;
+                selfCopy = self;
                 v99 = v15;
-                v97 = v14;
-                v98 = v8;
+                v97 = queueCopy;
+                v98 = recognizerCopy;
                 dispatch_async(v89, block);
 
                 v90 = v95;
@@ -1932,7 +1932,7 @@ LABEL_48:
   return objc_alloc_init(CHSpellChecker);
 }
 
-- (void)newCharacterLanguageModelAndMap:(void *)a3 force:(BOOL)a4
+- (void)newCharacterLanguageModelAndMap:(void *)map force:(BOOL)force
 {
   v4 = MEMORY[0x1EEE9AC00](self);
   v167 = *MEMORY[0x1E69E9840];
@@ -2180,12 +2180,12 @@ LABEL_48:
   return 0;
 }
 
-- (id)newOVSStringCheckerWithStaticLexicon:(_LXLexicon *)a3 customLexicon:(_LXLexicon *)a4
+- (id)newOVSStringCheckerWithStaticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon
 {
   v34 = *MEMORY[0x1E69E9840];
   if (self)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = *(self + 7);
     v8 = v7 > 6;
     v9 = (1 << v7) & 0x76;
@@ -2196,8 +2196,8 @@ LABEL_48:
 
     else
     {
-      v13 = objc_msgSend_requiredInappropriateFilteringFlags(self, a2, a3, a4, v4, v5);
-      v14 = *(v6 + 1);
+      v13 = objc_msgSend_requiredInappropriateFilteringFlags(self, a2, lexicon, customLexicon, v4, v5);
+      v14 = *(selfCopy + 1);
       v8 = v14 > 0x17;
       v15 = (1 << v14) & 0xE80000;
       if (v8 || v15 == 0)
@@ -2208,7 +2208,7 @@ LABEL_48:
       else
       {
         bzero(v33, 0x400uLL);
-        v21 = sub_1837A3CB8(*(v6 + 6), &stru_1EF1C0318, @"odat", v33);
+        v21 = sub_1837A3CB8(*(selfCopy + 6), &stru_1EF1C0318, @"odat", v33);
         if (v21)
         {
           v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x1E696AEC0], v17, v33, v18, v19, v20);
@@ -2222,13 +2222,13 @@ LABEL_48:
       }
 
       v24 = [CHStringOVSChecker alloc];
-      v30 = objc_msgSend_lexiconStringNormalizationFunction(v6, v25, v26, v27, v28, v29);
-      self = objc_msgSend_initWithTrie_staticLexicon_customLexicon_flags_stringNormalizationFunction_(v24, v31, v23, a3, a4, v13, v30);
+      v30 = objc_msgSend_lexiconStringNormalizationFunction(selfCopy, v25, v26, v27, v28, v29);
+      self = objc_msgSend_initWithTrie_staticLexicon_customLexicon_flags_stringNormalizationFunction_(v24, v31, v23, lexicon, customLexicon, v13, v30);
       if (v23)
       {
-        v32 = self;
+        selfCopy2 = self;
         CFBurstTrieRelease();
-        return v32;
+        return selfCopy2;
       }
     }
   }
@@ -2667,7 +2667,7 @@ LABEL_33:
   return 0;
 }
 
-+ (void)setParametersOverride:(id)a3
++ (void)setParametersOverride:(id)override
 {
   if (qword_1EA84DC48 != -1)
   {
@@ -3185,23 +3185,23 @@ LABEL_25:
   return v63;
 }
 
-- (id)newPostProcessorWithStaticLexicon:(_LXLexicon *)a3 customLexicon:(_LXLexicon *)a4 phraseLexicon:(_LXLexicon *)a5 customPhraseLexicon:(_LXLexicon *)a6 textReplacements:(id)a7 postProcessingFST:(id)a8 wordLM:(void *)a9 mecabraWrapper:(id)a10 ovsStringChecker:(id)a11 spellChecker:(id)a12 lmVocabulary:(void *)a13 maxResultCount:(int64_t)a14
+- (id)newPostProcessorWithStaticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon phraseLexicon:(_LXLexicon *)phraseLexicon customPhraseLexicon:(_LXLexicon *)customPhraseLexicon textReplacements:(id)replacements postProcessingFST:(id)t wordLM:(void *)m mecabraWrapper:(id)self0 ovsStringChecker:(id)self1 spellChecker:(id)self2 lmVocabulary:(void *)self3 maxResultCount:(int64_t)self4
 {
-  v18 = a7;
-  v19 = a8;
-  v20 = a10;
-  v21 = a11;
-  v542 = a12;
+  replacementsCopy = replacements;
+  tCopy = t;
+  wrapperCopy = wrapper;
+  checkerCopy = checker;
+  spellCheckerCopy = spellChecker;
   if (!self || ((mode = self->_mode, v28 = mode > 6, v29 = (1 << mode) & 0x76, !v28) ? (v30 = v29 == 0) : (v30 = 1), v30 || (objc_msgSend_shouldRunNextGenRecognizer(self, v22, v23, v24, v25, v26) & 1) == 0))
   {
     v513 = 0;
     goto LABEL_53;
   }
 
-  v538 = v21;
-  v539 = v19;
-  v534 = v18;
-  v535 = v20;
+  v538 = checkerCopy;
+  v539 = tCopy;
+  v534 = replacementsCopy;
+  v535 = wrapperCopy;
   v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v545 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v541 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -3251,7 +3251,7 @@ LABEL_25:
   if (objc_msgSend_shouldReorderSCTCConfusion(self, v128, v129, v130, v131, v132))
   {
     v158 = [CHReorderSCTCConfusionStep alloc];
-    v163 = objc_msgSend_initWithMaxResultCount_(v158, v159, a14, v160, v161, v162);
+    v163 = objc_msgSend_initWithMaxResultCount_(v158, v159, count, v160, v161, v162);
     objc_msgSend_addObject_(v31, v164, v163, v165, v166, v167);
     objc_msgSend_addObject_(v545, v168, v163, v169, v170, v171);
   }
@@ -3266,7 +3266,7 @@ LABEL_25:
   if (objc_msgSend_shouldConvertKanaInPostProcessing(self, v172, v173, v174, v175, v176))
   {
     v191 = [CHJapaneseTokenizationAndConversionStep alloc];
-    v193 = objc_msgSend_initWithMecabra_wordLanguageModel_ovsStringChecker_promoteKanaConversion_(v191, v192, v535, a9, v21, 0);
+    v193 = objc_msgSend_initWithMecabra_wordLanguageModel_ovsStringChecker_promoteKanaConversion_(v191, v192, v535, m, checkerCopy, 0);
     objc_msgSend_addObject_(v31, v194, v193, v195, v196, v197);
     objc_msgSend_addObject_(v545, v198, v193, v199, v200, v201);
   }
@@ -3274,7 +3274,7 @@ LABEL_25:
   if (objc_msgSend_shouldApplySemanticTokenization(self, v186, v187, v188, v189, v190))
   {
     v207 = [CHSemanticTokenizerStep alloc];
-    v211 = objc_msgSend_initWithWordLanguageModel_ovsStringChecker_(v207, v208, a9, v21, v209, v210);
+    v211 = objc_msgSend_initWithWordLanguageModel_ovsStringChecker_(v207, v208, m, checkerCopy, v209, v210);
     objc_msgSend_addObject_(v31, v212, v211, v213, v214, v215);
     objc_msgSend_addObject_(v545, v216, v211, v217, v218, v219);
   }
@@ -3284,7 +3284,7 @@ LABEL_25:
   {
     v515 = [CHTransliterateConfusableCharactersStep alloc];
     v521 = objc_msgSend_locale(self, v516, v517, v518, v519, v520);
-    v524 = objc_msgSend_initWithStaticLexicon_customLexicon_locale_(v515, v522, a3, a4, v521, v523);
+    v524 = objc_msgSend_initWithStaticLexicon_customLexicon_locale_(v515, v522, lexicon, customLexicon, v521, v523);
 
     objc_msgSend_addObject_(v31, v525, v524, v526, v527, v528);
     if (self->_script != 5)
@@ -3306,7 +3306,7 @@ LABEL_27:
 LABEL_28:
   if (objc_msgSend_shouldRunLexiconCorrectionPostProcessingStep(self, v202, v203, v204, v205, v206))
   {
-    v235 = a3;
+    lexiconCopy = lexicon;
     PseudoTokens = objc_msgSend_shouldCreatePseudoTokens(self, v230, v231, v232, v233, v234);
     v237 = [CHLexiconCorrectionStep alloc];
     v243 = objc_msgSend_effectiveAutoCapitalizationMode(self, v238, v239, v240, v241, v242);
@@ -3314,13 +3314,13 @@ LABEL_28:
     shouldAutoCapitalize = objc_msgSend_shouldAutoCapitalize(self, v250, v251, v252, v253, v254);
     v261 = objc_msgSend_locale(self, v256, v257, v258, v259, v260);
     v262 = shouldAutoCapitalize;
-    a3 = v235;
-    PseudoTokens_locale_staticLexicon_customLexicon_phraseLexicon_customPhraseLexicon_spellChecker_lmVocabulary_ovsStringChecker_textReplacements = objc_msgSend_initWithAutoCapitalizationMode_shouldAutoCorrect_shouldAutoCapitalize_shouldCreatePseudoTokens_locale_staticLexicon_customLexicon_phraseLexicon_customPhraseLexicon_spellChecker_lmVocabulary_ovsStringChecker_textReplacements_(v237, v263, v243, shouldAutoCorrect, v262, PseudoTokens, v261, v235, a4, a5, a6, v542, a13, v538, v534);
+    lexicon = lexiconCopy;
+    PseudoTokens_locale_staticLexicon_customLexicon_phraseLexicon_customPhraseLexicon_spellChecker_lmVocabulary_ovsStringChecker_textReplacements = objc_msgSend_initWithAutoCapitalizationMode_shouldAutoCorrect_shouldAutoCapitalize_shouldCreatePseudoTokens_locale_staticLexicon_customLexicon_phraseLexicon_customPhraseLexicon_spellChecker_lmVocabulary_ovsStringChecker_textReplacements_(v237, v263, v243, shouldAutoCorrect, v262, PseudoTokens, v261, lexiconCopy, customLexicon, phraseLexicon, customPhraseLexicon, spellCheckerCopy, vocabulary, v538, v534);
 
     objc_msgSend_addObject_(v31, v265, PseudoTokens_locale_staticLexicon_customLexicon_phraseLexicon_customPhraseLexicon_spellChecker_lmVocabulary_ovsStringChecker_textReplacements, v266, v267, v268);
     v269 = [CHSpellCorrectionCandidatesStep alloc];
     v275 = objc_msgSend_locale(self, v270, v271, v272, v273, v274);
-    v277 = objc_msgSend_initWithLocale_spellChecker_staticLexicon_customLexicon_(v269, v276, v275, v542, v235, a4);
+    v277 = objc_msgSend_initWithLocale_spellChecker_staticLexicon_customLexicon_(v269, v276, v275, spellCheckerCopy, lexiconCopy, customLexicon);
 
     objc_msgSend_addObject_(v31, v278, v277, v279, v280, v281);
   }
@@ -3328,7 +3328,7 @@ LABEL_28:
   if (objc_msgSend_shouldPromoteInLexiconCandidates(self, v230, v231, v232, v233, v234))
   {
     v287 = [CHPromoteInLexiconCandidatesStep alloc];
-    v291 = objc_msgSend_initWithStaticLexicon_customLexicon_(v287, v288, a3, a4, v289, v290);
+    v291 = objc_msgSend_initWithStaticLexicon_customLexicon_(v287, v288, lexicon, customLexicon, v289, v290);
     objc_msgSend_addObject_(v31, v292, v291, v293, v294, v295);
   }
 
@@ -3400,7 +3400,7 @@ LABEL_28:
   if (objc_msgSend_shouldPerformTurkishPostProcessing(self, v413, v414, v415, v416, v417))
   {
     v427 = [CHTurkishOVSConfusableCharactersStep alloc];
-    v430 = objc_msgSend_initWithOVSStringChecker_staticLexicon_customLexicon_(v427, v428, v538, a3, a4, v429);
+    v430 = objc_msgSend_initWithOVSStringChecker_staticLexicon_customLexicon_(v427, v428, v538, lexicon, customLexicon, v429);
     objc_msgSend_addObject_(v31, v431, v430, v432, v433, v434);
     objc_msgSend_addObject_(v545, v435, v430, v436, v437, v438);
   }
@@ -3436,32 +3436,32 @@ LABEL_28:
   v508 = [CHPostProcessingManager alloc];
   v513 = objc_msgSend_initWithStep_(v508, v509, inited, v510, v511, v512);
 
-  v18 = v534;
-  v20 = v535;
-  v21 = v538;
-  v19 = v539;
+  replacementsCopy = v534;
+  wrapperCopy = v535;
+  checkerCopy = v538;
+  tCopy = v539;
 LABEL_53:
 
   return v513;
 }
 
-- (id)newMergedResultPostProcessorWithStaticLexicon:(_LXLexicon *)a3 customLexicon:(_LXLexicon *)a4 stringChecker:(id)a5
+- (id)newMergedResultPostProcessorWithStaticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon stringChecker:(id)checker
 {
-  v13 = a5;
+  checkerCopy = checker;
   if (self && ((mode = self->_mode, v15 = mode > 6, v16 = (1 << mode) & 0x76, !v15) ? (v17 = v16 == 0) : (v17 = 1), !v17 && (objc_msgSend_shouldRunNextGenRecognizer(self, v8, v9, v10, v11, v12) & 1) != 0))
   {
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (objc_msgSend_shouldRecoverCyrillicCandidates(self, v19, v20, v21, v22, v23))
     {
       v24 = [CHCyrillicAddAlternativeScriptCandidatesStep alloc];
-      v28 = objc_msgSend_initWithStaticLexicon_customLexicon_(v24, v25, a3, a4, v26, v27);
+      v28 = objc_msgSend_initWithStaticLexicon_customLexicon_(v24, v25, lexicon, customLexicon, v26, v27);
       objc_msgSend_addObject_(v18, v29, v28, v30, v31, v32);
       v33 = objc_alloc_init(CHCyrillicRecoverConfusableWordsStep);
       objc_msgSend_addObject_(v18, v34, v33, v35, v36, v37);
     }
 
     v38 = [CHMultiWordOVSFilteringStep alloc];
-    v43 = objc_msgSend_initWithOVSStringChecker_(v38, v39, v13, v40, v41, v42);
+    v43 = objc_msgSend_initWithOVSStringChecker_(v38, v39, checkerCopy, v40, v41, v42);
     objc_msgSend_addObject_(v18, v44, v43, v45, v46, v47);
     v48 = [CHCandidateRefinementStep alloc];
     shouldKeepOriginalSpelling = objc_msgSend_initWithShouldKeepOutOfPatternCandidates_shouldKeepDuplicateTokenIDs_shouldKeepOutOfLexiconAlternatives_shouldKeepAlternativeLengths_shouldKeepSubstrings_shouldKeepOriginalSpelling_(v48, v49, 1, 1, 1, 1, 1, 1);
@@ -3478,9 +3478,9 @@ LABEL_53:
   return v60;
 }
 
-- (id)newCTCTextDecoderWithStaticLexicon:(_LXLexicon *)a3 customLexicon:(_LXLexicon *)a4 wordLanguageModel:(void *)a5
+- (id)newCTCTextDecoderWithStaticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon wordLanguageModel:(void *)model
 {
-  if (!objc_msgSend_shouldRunNextGenRecognizer(self, a2, a3, a4, a5, v5))
+  if (!objc_msgSend_shouldRunNextGenRecognizer(self, a2, lexicon, customLexicon, model, v5))
   {
     return 0;
   }
@@ -3493,7 +3493,7 @@ LABEL_53:
     return 0;
   }
 
-  v16 = objc_msgSend_languageResourceBundleWithStaticLexicon_customLexicon_wordLanguageModel_(self, v10, a3, a4, a5, v11);
+  v16 = objc_msgSend_languageResourceBundleWithStaticLexicon_customLexicon_wordLanguageModel_(self, v10, lexicon, customLexicon, model, v11);
   v17 = objc_alloc(MEMORY[0x1E6991FD0]);
   v22 = objc_msgSend_initWithLanguageResourceBundle_(v17, v18, v16, v19, v20, v21);
 
@@ -3618,10 +3618,10 @@ LABEL_53:
   return v12;
 }
 
-- (id)pathScoringFunctionForLanguageResourceBundle:(id)a3
+- (id)pathScoringFunctionForLanguageResourceBundle:(id)bundle
 {
-  v4 = a3;
-  v9 = objc_msgSend_defaultPathScoringFunctionForLanguageResourceBundle_(MEMORY[0x1E6992010], v5, v4, v6, v7, v8);
+  bundleCopy = bundle;
+  v9 = objc_msgSend_defaultPathScoringFunctionForLanguageResourceBundle_(MEMORY[0x1E6992010], v5, bundleCopy, v6, v7, v8);
   v10 = v9;
   if (self->_mode == 1)
   {
@@ -3658,10 +3658,10 @@ LABEL_53:
   }
 }
 
-- (id)languageResourceBundleWithStaticLexicon:(_LXLexicon *)a3 customLexicon:(_LXLexicon *)a4 wordLanguageModel:(void *)a5
+- (id)languageResourceBundleWithStaticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon wordLanguageModel:(void *)model
 {
   v221[2] = *MEMORY[0x1E69E9840];
-  v217 = objc_msgSend_set(MEMORY[0x1E695DFA8], a2, a3, a4, a5, v5);
+  v217 = objc_msgSend_set(MEMORY[0x1E695DFA8], a2, lexicon, customLexicon, model, v5);
   if (!self)
   {
 LABEL_29:
@@ -3797,17 +3797,17 @@ LABEL_21:
     goto LABEL_29;
   }
 
-  if (a3)
+  if (lexicon)
   {
     v38 = objc_alloc(MEMORY[0x1E6991FE0]);
-    v42 = objc_msgSend_initWithLexicon_priority_(v38, v39, a3, 1, v40, v41);
+    v42 = objc_msgSend_initWithLexicon_priority_(v38, v39, lexicon, 1, v40, v41);
     objc_msgSend_addObject_(v217, v43, v42, v44, v45, v46);
   }
 
-  if (a4)
+  if (customLexicon)
   {
     v47 = objc_alloc(MEMORY[0x1E6991FE0]);
-    v51 = objc_msgSend_initWithLexicon_priority_(v47, v48, a4, 0, v49, v50);
+    v51 = objc_msgSend_initWithLexicon_priority_(v47, v48, customLexicon, 0, v49, v50);
     objc_msgSend_addObject_(v217, v52, v51, v53, v54, v55);
   }
 
@@ -4182,13 +4182,13 @@ LABEL_72:
 LABEL_74:
 
   v160 = 0;
-  if (a5 && v146 > 0.0)
+  if (model && v146 > 0.0)
   {
     v161 = objc_alloc(MEMORY[0x1E6991FD8]);
     v162 = self->_locale;
     v168 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v163, v164, v165, v166, v167, v146);
     v174 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v169, v170, v171, v172, v173, v159);
-    v160 = objc_msgSend_initWithLMLanguageModel_locale_decodingWeight_lowerBoundLogProbability_(v161, v175, a5, v162, v168, v174);
+    v160 = objc_msgSend_initWithLMLanguageModel_locale_decodingWeight_lowerBoundLogProbability_(v161, v175, model, v162, v168, v174);
   }
 
 LABEL_77:
@@ -4211,37 +4211,37 @@ LABEL_77:
   }
 }
 
-+ (BOOL)shouldApplyLatinSpacingForLocale:(id)a3
++ (BOOL)shouldApplyLatinSpacingForLocale:(id)locale
 {
   v5 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, 0, &v5);
+  sub_1838F084C(CHRecognizerConfiguration, locale, 0, &v5);
   return (v5 > 6) | (0x23u >> v5) & 1;
 }
 
-+ (BOOL)shouldUseFullWidthSpaceBasedOnContextForLocale:(id)a3
++ (BOOL)shouldUseFullWidthSpaceBasedOnContextForLocale:(id)locale
 {
   v4 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, 0, &v4);
+  sub_1838F084C(CHRecognizerConfiguration, locale, 0, &v4);
   return v4 == 4;
 }
 
-+ (id)swappableColumnIndexesFromResults:(id)a3 locales:(id)a4
++ (id)swappableColumnIndexesFromResults:(id)results locales:(id)locales
 {
-  v5 = objc_msgSend_swappableColumnIndexesFromResults_locales_topLocaleIndex_(CHRecognizerConfiguration, a2, a3, a4, 0, v4);
+  v5 = objc_msgSend_swappableColumnIndexesFromResults_locales_topLocaleIndex_(CHRecognizerConfiguration, a2, results, locales, 0, v4);
 
   return v5;
 }
 
-+ (id)swappableColumnIndexesFromResults:(id)a3 locales:(id)a4 topLocaleIndex:(int64_t)a5
++ (id)swappableColumnIndexesFromResults:(id)results locales:(id)locales topLocaleIndex:(int64_t)index
 {
   v148[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v13 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v9, a5, v10, v11, v12);
+  resultsCopy = results;
+  localesCopy = locales;
+  v13 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v9, index, v10, v11, v12);
   v147[0] = v13;
   v147[1] = &unk_1EF1EDA50;
   v14 = MEMORY[0x1E696AD98];
-  v19 = objc_msgSend_objectAtIndexedSubscript_(v7, v15, a5, v16, v17, v18);
+  v19 = objc_msgSend_objectAtIndexedSubscript_(resultsCopy, v15, index, v16, v17, v18);
   v25 = objc_msgSend_tokenColumns(v19, v20, v21, v22, v23, v24);
   v31 = objc_msgSend_count(v25, v26, v27, v28, v29, v30);
   v36 = objc_msgSend_numberWithUnsignedInteger_(v14, v32, v31, v33, v34, v35);
@@ -4252,26 +4252,26 @@ LABEL_77:
   v148[0] = v40;
   v44 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v41, v148, 1, v42, v43);
 
-  if (objc_msgSend_count(v7, v45, v46, v47, v48, v49) >= 2 && objc_msgSend_count(v8, v50, v51, v52, v53, v54) > 1)
+  if (objc_msgSend_count(resultsCopy, v45, v46, v47, v48, v49) >= 2 && objc_msgSend_count(localesCopy, v50, v51, v52, v53, v54) > 1)
   {
     v145 = 0;
     v146 = 0;
-    v61 = objc_msgSend_objectAtIndexedSubscript_(v8, v55, a5, v56, v57, v58);
+    v61 = objc_msgSend_objectAtIndexedSubscript_(localesCopy, v55, index, v56, v57, v58);
     sub_1838F084C(CHRecognizerConfiguration, v61, &v146, &v145);
 
-    v66 = objc_msgSend_indexOfObjectPassingTest_(v8, v62, &unk_1EF1BF2D0, v63, v64, v65);
+    v66 = objc_msgSend_indexOfObjectPassingTest_(localesCopy, v62, &unk_1EF1BF2D0, v63, v64, v65);
     if (v146 == 27 || v145 != 1)
     {
       v73 = v66;
       if (v66 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v74 = objc_msgSend_count(v7, v67, v68, v69, v70, v71);
-        if (v74 == objc_msgSend_count(v8, v75, v76, v77, v78, v79))
+        v74 = objc_msgSend_count(resultsCopy, v67, v68, v69, v70, v71);
+        if (v74 == objc_msgSend_count(localesCopy, v75, v76, v77, v78, v79))
         {
           if (v145 == 8)
           {
-            v144 = objc_msgSend_objectAtIndexedSubscript_(v7, v80, a5, v81, v82, v83);
-            v88 = objc_msgSend_objectAtIndexedSubscript_(v7, v84, v73, v85, v86, v87);
+            v144 = objc_msgSend_objectAtIndexedSubscript_(resultsCopy, v80, index, v81, v82, v83);
+            v88 = objc_msgSend_objectAtIndexedSubscript_(resultsCopy, v84, v73, v85, v86, v87);
             if (objc_msgSend_tokenColumnCount(v88, v89, v90, v91, v92, v93) < 2)
             {
               v138 = 0;
@@ -4289,12 +4289,12 @@ LABEL_77:
               v138 = Index == objc_msgSend_firstIndex(v132, v133, v134, v135, v136, v137);
             }
 
-            objc_msgSend_swappableColumnIndexesInResults_locales_topLocaleIndex_swappableIndex_shouldReverseSwappableColumns_(CHTokenizedTextResult, v139, v7, v8, a5, v73, v138);
+            objc_msgSend_swappableColumnIndexesInResults_locales_topLocaleIndex_swappableIndex_shouldReverseSwappableColumns_(CHTokenizedTextResult, v139, resultsCopy, localesCopy, index, v73, v138);
           }
 
           else
           {
-            objc_msgSend_swappableColumnIndexesInResults_locales_topLocaleIndex_swappableIndex_shouldReverseSwappableColumns_(CHTokenizedTextResult, v80, v7, v8, a5, v73, 0);
+            objc_msgSend_swappableColumnIndexesInResults_locales_topLocaleIndex_swappableIndex_shouldReverseSwappableColumns_(CHTokenizedTextResult, v80, resultsCopy, localesCopy, index, v73, 0);
           }
           v140 = ;
 
@@ -4309,24 +4309,24 @@ LABEL_77:
   return v59;
 }
 
-+ (BOOL)shouldPerformStrictCandidateFiltering:(id)a3
++ (BOOL)shouldPerformStrictCandidateFiltering:(id)filtering
 {
   v4 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, &v4, 0);
+  sub_1838F084C(CHRecognizerConfiguration, filtering, &v4, 0);
   return (v4 - 19) < 4;
 }
 
-+ (id)spellCheckingLocaleForRecognitionLocale:(id)a3 string:(id)a4
++ (id)spellCheckingLocaleForRecognitionLocale:(id)locale string:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  localeCopy = locale;
+  stringCopy = string;
+  v7 = localeCopy;
   v21 = 0;
   sub_1838F084C(CHRecognizerConfiguration, v7, 0, &v21);
   v13 = v7;
   if ((v21 - 2) < 4)
   {
-    v14 = objc_msgSend_firstComposedCharacter(v6, v8, v9, v10, v11, v12);
+    v14 = objc_msgSend_firstComposedCharacter(stringCopy, v8, v9, v10, v11, v12);
     v15 = sub_1837A93E8(v14);
 
     v13 = v7;
@@ -4339,23 +4339,23 @@ LABEL_77:
   return v13;
 }
 
-+ (BOOL)shouldAdjustGroupingForLocale:(id)a3
++ (BOOL)shouldAdjustGroupingForLocale:(id)locale
 {
   v5 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, 0, &v5);
+  sub_1838F084C(CHRecognizerConfiguration, locale, 0, &v5);
   return (v5 < 9) & (0x17Cu >> v5);
 }
 
-+ (BOOL)isGroupingWithLocales:(id)a3 differentFromGroupingWithLocales:(id)a4
++ (BOOL)isGroupingWithLocales:(id)locales differentFromGroupingWithLocales:(id)withLocales
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v34 = a4;
+  localesCopy = locales;
+  withLocalesCopy = withLocales;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v6 = v5;
+  v6 = localesCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v39, v44, 16, v8);
   v14 = 0;
   v15 = 0;
@@ -4386,7 +4386,7 @@ LABEL_77:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v19 = v34;
+  v19 = withLocalesCopy;
   v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(v19, v20, &v35, v43, 16, v21);
   if (v26)
   {
@@ -4436,17 +4436,17 @@ LABEL_21:
   return v32 & 1;
 }
 
-+ (BOOL)hasSupportForPrincipalPoints:(id)a3
++ (BOOL)hasSupportForPrincipalPoints:(id)points
 {
   v4 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, 0, &v4);
+  sub_1838F084C(CHRecognizerConfiguration, points, 0, &v4);
   return v4 < 8;
 }
 
-+ (int64_t)writingOrientationForLocale:(id)a3
++ (int64_t)writingOrientationForLocale:(id)locale
 {
   v4 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, 0, &v4);
+  sub_1838F084C(CHRecognizerConfiguration, locale, 0, &v4);
   if (v4 == 8)
   {
     return 2;
@@ -4458,10 +4458,10 @@ LABEL_21:
   }
 }
 
-+ (BOOL)shouldAdjustGroupingHeuristicsForVeryComplexCharacters:(id)a3
++ (BOOL)shouldAdjustGroupingHeuristicsForVeryComplexCharacters:(id)characters
 {
   v4 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, 0, &v4);
+  sub_1838F084C(CHRecognizerConfiguration, characters, 0, &v4);
   return (v4 - 3) < 3;
 }
 
@@ -4485,13 +4485,13 @@ LABEL_21:
   return v40;
 }
 
-+ (int64_t)drawingStrokeLimitForLocale:(id)a3
++ (int64_t)drawingStrokeLimitForLocale:(id)locale
 {
-  v3 = a3;
-  if (v3)
+  localeCopy = locale;
+  if (localeCopy)
   {
     v6 = 0;
-    sub_1838F084C(CHRecognizerConfiguration, v3, 0, &v6);
+    sub_1838F084C(CHRecognizerConfiguration, localeCopy, 0, &v6);
     if ((v6 - 2) >= 4)
     {
       v4 = 1000;
@@ -4512,25 +4512,25 @@ LABEL_21:
   }
 }
 
-+ (BOOL)shouldRemoveSpaceBetweenPreviousChar:(id)a3 andNextChar:(id)a4 inLocale:(id)a5
++ (BOOL)shouldRemoveSpaceBetweenPreviousChar:(id)char andNextChar:(id)nextChar inLocale:(id)locale
 {
-  v7 = a3;
-  v8 = a4;
-  v13 = a5;
+  charCopy = char;
+  nextCharCopy = nextChar;
+  localeCopy = locale;
   v14 = 0;
-  if (v7 && v8)
+  if (charCopy && nextCharCopy)
   {
-    v15 = objc_msgSend_characterTypeFromString_(CHCharacterSetRules, v9, v7, v10, v11, v12);
-    v20 = objc_msgSend_characterTypeFromString_(CHCharacterSetRules, v16, v8, v17, v18, v19);
+    v15 = objc_msgSend_characterTypeFromString_(CHCharacterSetRules, v9, charCopy, v10, v11, v12);
+    v20 = objc_msgSend_characterTypeFromString_(CHCharacterSetRules, v16, nextCharCopy, v17, v18, v19);
     v61 = 0;
-    sub_1838F084C(CHRecognizerConfiguration, v13, &v61, 0);
-    v26 = objc_msgSend_countryCode(v13, v21, v22, v23, v24, v25);
+    sub_1838F084C(CHRecognizerConfiguration, localeCopy, &v61, 0);
+    v26 = objc_msgSend_countryCode(localeCopy, v21, v22, v23, v24, v25);
     v32 = objc_msgSend_uppercaseString(v26, v27, v28, v29, v30, v31);
 
     v33 = objc_opt_class();
-    isCharacterEmoji = objc_msgSend_isCharacterEmoji_(v33, v34, v7, v35, v36, v37);
+    isCharacterEmoji = objc_msgSend_isCharacterEmoji_(v33, v34, charCopy, v35, v36, v37);
     v39 = objc_opt_class();
-    v44 = objc_msgSend_isCharacterEmoji_(v39, v40, v8, v41, v42, v43);
+    v44 = objc_msgSend_isCharacterEmoji_(v39, v40, nextCharCopy, v41, v42, v43);
     LOBYTE(v49) = 0;
     if (v61 <= 2)
     {
@@ -4544,7 +4544,7 @@ LABEL_21:
             {
               if ((v20 & 0x2000000) != 0)
               {
-                LOBYTE(v49) = objc_msgSend_isEqualToString_(v8, v56, @":", v57, v58, v59) ^ 1;
+                LOBYTE(v49) = objc_msgSend_isEqualToString_(nextCharCopy, v56, @":", v57, v58, v59) ^ 1;
               }
 
               else
@@ -4604,9 +4604,9 @@ LABEL_6:
           LODWORD(v49) = v54 | (v20 >> 25) | v55 | (isCharacterEmoji | v44) & 1;
           if (v61 != 22)
           {
-            if (sub_1837A93E8(v7))
+            if (sub_1837A93E8(charCopy))
             {
-              LOBYTE(v49) = !sub_1837A93E8(v8) | v49;
+              LOBYTE(v49) = !sub_1837A93E8(nextCharCopy) | v49;
             }
 
             else
@@ -4636,27 +4636,27 @@ LABEL_25:
   return v14;
 }
 
-+ (BOOL)shouldInsertSpaceBetweenPreviousChar:(id)a3 andNextChar:(id)a4 inLocale:(id)a5 inString:(id)a6 atRange:(_NSRange)a7 withQuoteCount:(id)a8
++ (BOOL)shouldInsertSpaceBetweenPreviousChar:(id)char andNextChar:(id)nextChar inLocale:(id)locale inString:(id)string atRange:(_NSRange)range withQuoteCount:(id)count
 {
-  length = a7.length;
-  location = a7.location;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v21 = a8;
+  length = range.length;
+  location = range.location;
+  charCopy = char;
+  nextCharCopy = nextChar;
+  localeCopy = locale;
+  stringCopy = string;
+  countCopy = count;
   LOBYTE(v22) = 0;
-  if (!v13 || !v14)
+  if (!charCopy || !nextCharCopy)
   {
     goto LABEL_87;
   }
 
-  v271 = objc_msgSend_characterTypeFromString_(CHCharacterSetRules, v17, v13, v18, v19, v20);
-  v27 = objc_msgSend_characterTypeFromString_(CHCharacterSetRules, v23, v14, v24, v25, v26);
-  v22 = sub_1837A51B0(location, v16, v27, 1);
+  v271 = objc_msgSend_characterTypeFromString_(CHCharacterSetRules, v17, charCopy, v18, v19, v20);
+  v27 = objc_msgSend_characterTypeFromString_(CHCharacterSetRules, v23, nextCharCopy, v24, v25, v26);
+  v22 = sub_1837A51B0(location, stringCopy, v27, 1);
   v273 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, v15, &v273, 0);
-  v33 = objc_msgSend_countryCode(v15, v28, v29, v30, v31, v32);
+  sub_1838F084C(CHRecognizerConfiguration, localeCopy, &v273, 0);
+  v33 = objc_msgSend_countryCode(localeCopy, v28, v29, v30, v31, v32);
   v272 = objc_msgSend_uppercaseString(v33, v34, v35, v36, v37, v38);
 
   switch(v273)
@@ -4672,14 +4672,14 @@ LABEL_25:
       }
 
       v43 = v272;
-      if (sub_1837A954C(v13))
+      if (sub_1837A954C(charCopy))
       {
         LOBYTE(v22) = 0;
       }
 
       else
       {
-        v22 = !sub_1837A93E8(v14);
+        v22 = !sub_1837A93E8(nextCharCopy);
       }
 
       goto LABEL_86;
@@ -4707,7 +4707,7 @@ LABEL_25:
       v43 = v272;
       if (objc_msgSend_containsString_(v272, v39, @"CA", v40, v41, v42))
       {
-        LOBYTE(v99) = objc_msgSend_isEqualToString_(v14, v95, @":", v96, v97, v98);
+        LOBYTE(v99) = objc_msgSend_isEqualToString_(nextCharCopy, v95, @":", v96, v97, v98);
       }
 
       else
@@ -4776,9 +4776,9 @@ LABEL_25:
       goto LABEL_86;
     case 23:
       v58 = objc_opt_class();
-      v269 = objc_msgSend_singleScriptCodeForString_(v58, v59, v13, v60, v61, v62);
+      v269 = objc_msgSend_singleScriptCodeForString_(v58, v59, charCopy, v60, v61, v62);
       v63 = objc_opt_class();
-      v68 = objc_msgSend_singleScriptCodeForString_(v63, v64, v14, v65, v66, v67);
+      v68 = objc_msgSend_singleScriptCodeForString_(v63, v64, nextCharCopy, v65, v66, v67);
       v270 = 0;
       v74 = (v271 >> 2) & 1;
       v75 = v68 != 38;
@@ -4820,7 +4820,7 @@ LABEL_25:
       if ((v27 & 0x2000000) == 0)
       {
         v80 = objc_msgSend_ch_basicClosingParenthesesSet(MEMORY[0x1E696AB08], v69, v70, v71, v72, v73);
-        v85 = objc_msgSend_characterAtIndex_(v14, v81, 0, v82, v83, v84);
+        v85 = objc_msgSend_characterAtIndex_(nextCharCopy, v81, 0, v82, v83, v84);
         if (objc_msgSend_characterIsMember_(v80, v86, v85, v87, v88, v89))
         {
           v270 = 0;
@@ -4830,7 +4830,7 @@ LABEL_25:
         {
           v103 = objc_msgSend_ch_thaiExtraSpaceAfterSymbolsSet(MEMORY[0x1E696AB08], v90, v91, v92, v93, v94);
           v262 = v80;
-          v108 = objc_msgSend_characterAtIndex_(v14, v104, 0, v105, v106, v107);
+          v108 = objc_msgSend_characterAtIndex_(nextCharCopy, v104, 0, v105, v106, v107);
           IsMember = objc_msgSend_characterIsMember_(v103, v109, v108, v110, v111, v112);
 
           v270 = IsMember ^ 1;
@@ -4841,7 +4841,7 @@ LABEL_25:
       if ((v271 & 0x2000000) == 0)
       {
         v114 = objc_msgSend_ch_thaiExtraSpaceAfterSymbolsSet(MEMORY[0x1E696AB08], v69, v70, v71, v72, v73);
-        v119 = objc_msgSend_characterAtIndex_(v13, v115, 0, v116, v117, v118);
+        v119 = objc_msgSend_characterAtIndex_(charCopy, v115, 0, v116, v117, v118);
         if (objc_msgSend_characterIsMember_(v114, v120, v119, v121, v122, v123))
         {
 
@@ -4864,7 +4864,7 @@ LABEL_61:
       }
 
 LABEL_58:
-      v124 = objc_msgSend_length(v16, v69, v70, v71, v72, v73);
+      v124 = objc_msgSend_length(stringCopy, v69, v70, v71, v72, v73);
       v70 = location + length;
       if (location + length >= v124)
       {
@@ -4873,23 +4873,23 @@ LABEL_58:
 
       else
       {
-        v125 = objc_msgSend_substringFromIndex_(v16, v69, v70, v71, v72, v73);
+        v125 = objc_msgSend_substringFromIndex_(stringCopy, v69, v70, v71, v72, v73);
         v130 = objc_msgSend_hasPrefix_(v125, v126, @".", v127, v128, v129) ^ 1;
       }
 
 LABEL_63:
       v131 = objc_msgSend_ch_basicOpeningParenthesesSet(MEMORY[0x1E696AB08], v69, v70, v71, v72, v73);
-      v136 = objc_msgSend_characterAtIndex_(v13, v132, 0, v133, v134, v135);
+      v136 = objc_msgSend_characterAtIndex_(charCopy, v132, 0, v133, v134, v135);
       v146 = v264 | v22 | (v266 || v265 && (v271 & 4) != 0) | v267 | v130;
       if ((objc_msgSend_characterIsMember_(v131, v137, v136, v138, v139, v140) & 1) == 0)
       {
         v147 = objc_msgSend_ch_basicOpeningParenthesesSet(MEMORY[0x1E696AB08], v141, v142, v143, v144, v145);
-        v152 = objc_msgSend_characterAtIndex_(v14, v148, 0, v149, v150, v151);
+        v152 = objc_msgSend_characterAtIndex_(nextCharCopy, v148, 0, v149, v150, v151);
         v146 |= objc_msgSend_characterIsMember_(v147, v153, v152, v154, v155, v156);
       }
 
       v162 = objc_msgSend_ch_basicClosingParenthesesSet(MEMORY[0x1E696AB08], v157, v158, v159, v160, v161);
-      v167 = objc_msgSend_characterAtIndex_(v13, v163, 0, v164, v165, v166);
+      v167 = objc_msgSend_characterAtIndex_(charCopy, v163, 0, v164, v165, v166);
       v172 = objc_msgSend_characterIsMember_(v162, v168, v167, v169, v170, v171) & v270;
       if (v146)
       {
@@ -4902,7 +4902,7 @@ LABEL_63:
       }
 
       v179 = objc_msgSend_ch_thaiMathSymbolsNeedingSpaceSet(MEMORY[0x1E696AB08], v174, v175, v176, v177, v178);
-      v184 = objc_msgSend_characterAtIndex_(v13, v180, 0, v181, v182, v183);
+      v184 = objc_msgSend_characterAtIndex_(charCopy, v180, 0, v181, v182, v183);
       v189 = objc_msgSend_characterIsMember_(v179, v185, v184, v186, v187, v188);
       if (v268)
       {
@@ -4924,24 +4924,24 @@ LABEL_63:
       if ((v271 & 4) == 0 && v269)
       {
         v196 = objc_msgSend_ch_thaiMathSymbolsNeedingSpaceSet(MEMORY[0x1E696AB08], v191, v192, v193, v194, v195);
-        v201 = objc_msgSend_characterAtIndex_(v14, v197, 0, v198, v199, v200);
+        v201 = objc_msgSend_characterAtIndex_(nextCharCopy, v197, 0, v198, v199, v200);
         v22 |= objc_msgSend_characterIsMember_(v196, v202, v201, v203, v204, v205);
       }
 
-      if (objc_msgSend_isEqualToString_(v13, v191, @"ฯ", v193, v194, v195))
+      if (objc_msgSend_isEqualToString_(charCopy, v191, @"ฯ", v193, v194, v195))
       {
-        v210 = objc_msgSend_substringFromIndex_(v16, v206, location, v207, v208, v209);
+        v210 = objc_msgSend_substringFromIndex_(stringCopy, v206, location, v207, v208, v209);
         v22 |= objc_msgSend_hasPrefix_(v210, v211, @"ลฯ", v212, v213, v214) ^ 1;
       }
 
-      v215 = objc_msgSend_substringFromIndex_(v16, v206, location, v207, v208, v209);
+      v215 = objc_msgSend_substringFromIndex_(stringCopy, v206, location, v207, v208, v209);
       hasPrefix = objc_msgSend_hasPrefix_(v215, v216, @"ฯลฯ", v217, v218, v219);
 
       v226 = objc_msgSend_ch_neutralQuotationMarkSet(MEMORY[0x1E696AB08], v221, v222, v223, v224, v225);
-      v231 = objc_msgSend_characterAtIndex_(v13, v227, 0, v228, v229, v230);
+      v231 = objc_msgSend_characterAtIndex_(charCopy, v227, 0, v228, v229, v230);
       if (objc_msgSend_characterIsMember_(v226, v232, v231, v233, v234, v235))
       {
-        v240 = ((objc_msgSend_countForObject_(v21, v236, v13, v237, v238, v239) & 1) == 0) & v270;
+        v240 = ((objc_msgSend_countForObject_(countCopy, v236, charCopy, v237, v238, v239) & 1) == 0) & v270;
       }
 
       else
@@ -4950,10 +4950,10 @@ LABEL_63:
       }
 
       v246 = objc_msgSend_ch_neutralQuotationMarkSet(MEMORY[0x1E696AB08], v241, v242, v243, v244, v245);
-      v251 = objc_msgSend_characterAtIndex_(v14, v247, 0, v248, v249, v250);
+      v251 = objc_msgSend_characterAtIndex_(nextCharCopy, v247, 0, v248, v249, v250);
       if (objc_msgSend_characterIsMember_(v246, v252, v251, v253, v254, v255))
       {
-        v260 = (objc_msgSend_countForObject_(v21, v256, v14, v257, v258, v259) & 1) == 0;
+        v260 = (objc_msgSend_countForObject_(countCopy, v256, nextCharCopy, v257, v258, v259) & 1) == 0;
       }
 
       else
@@ -4978,36 +4978,36 @@ LABEL_9:
   }
 }
 
-+ (BOOL)shouldRefinePrefixQueryMatchesForLocale:(id)a3
++ (BOOL)shouldRefinePrefixQueryMatchesForLocale:(id)locale
 {
   v4 = 0;
-  sub_1838F084C(a1, a3, &v4, 0);
+  sub_1838F084C(self, locale, &v4, 0);
   return (v4 - 19) < 4;
 }
 
-+ (BOOL)shouldAllowSpaceInsertionGestureForLocale:(id)a3
++ (BOOL)shouldAllowSpaceInsertionGestureForLocale:(id)locale
 {
   v4 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, 0, &v4);
+  sub_1838F084C(CHRecognizerConfiguration, locale, 0, &v4);
   return v4 == 6;
 }
 
-+ (BOOL)shouldApplyThaiSpacingForLocale:(id)a3
++ (BOOL)shouldApplyThaiSpacingForLocale:(id)locale
 {
   v4 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, 0, &v4);
+  sub_1838F084C(CHRecognizerConfiguration, locale, 0, &v4);
   return v4 == 6;
 }
 
-+ (BOOL)shouldSwapCyrillicTopResult:(id)a3 topRange:(_NSRange)a4 englishResult:(id)a5 englishRange:(_NSRange)a6 prevousGroupTopString:(id)a7
++ (BOOL)shouldSwapCyrillicTopResult:(id)result topRange:(_NSRange)range englishResult:(id)englishResult englishRange:(_NSRange)englishRange prevousGroupTopString:(id)string
 {
-  length = a6.length;
-  location = a6.location;
-  v10 = a4.length;
-  v11 = a4.location;
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  length = englishRange.length;
+  location = englishRange.location;
+  v10 = range.length;
+  v11 = range.location;
+  resultCopy = result;
+  englishResultCopy = englishResult;
+  stringCopy = string;
   objc_opt_self();
   objc_opt_self();
   objc_opt_self();
@@ -5016,21 +5016,21 @@ LABEL_9:
   objc_opt_self();
   objc_opt_self();
   objc_opt_self();
-  objc_msgSend_averageTokenRecognitionScoreForColumnRange_(v12, v15, v11, v10, v16, v17);
+  objc_msgSend_averageTokenRecognitionScoreForColumnRange_(resultCopy, v15, v11, v10, v16, v17);
   v19 = v18;
-  objc_msgSend_heuristicTextScoreForColumnRange_(v12, v20, v11, v10, v21, v22);
+  objc_msgSend_heuristicTextScoreForColumnRange_(resultCopy, v20, v11, v10, v21, v22);
   v24 = v23;
-  objc_msgSend_averageTokenRecognitionScoreForColumnRange_(v13, v25, location, length, v26, v27);
+  objc_msgSend_averageTokenRecognitionScoreForColumnRange_(englishResultCopy, v25, location, length, v26, v27);
   v29 = v28;
-  objc_msgSend_heuristicTextScoreForColumnRange_(v13, v30, location, length, v31, v32);
+  objc_msgSend_heuristicTextScoreForColumnRange_(englishResultCopy, v30, location, length, v31, v32);
   v34 = v33;
-  v40 = objc_msgSend_transcriptionPaths(v12, v35, v36, v37, v38, v39);
+  v40 = objc_msgSend_transcriptionPaths(resultCopy, v35, v36, v37, v38, v39);
   v45 = objc_msgSend_objectAtIndexedSubscript_(v40, v41, 0, v42, v43, v44);
-  v126 = objc_msgSend_transcriptionWithPath_columnRange_filterLowConfidence_(v12, v46, v45, v11, v10, 0);
+  v126 = objc_msgSend_transcriptionWithPath_columnRange_filterLowConfidence_(resultCopy, v46, v45, v11, v10, 0);
 
-  v52 = objc_msgSend_transcriptionPaths(v13, v47, v48, v49, v50, v51);
+  v52 = objc_msgSend_transcriptionPaths(englishResultCopy, v47, v48, v49, v50, v51);
   v57 = objc_msgSend_objectAtIndexedSubscript_(v52, v53, 0, v54, v55, v56);
-  v59 = objc_msgSend_transcriptionWithPath_columnRange_filterLowConfidence_(v13, v58, v57, location, length, 0);
+  v59 = objc_msgSend_transcriptionWithPath_columnRange_filterLowConfidence_(englishResultCopy, v58, v57, location, length, 0);
 
   v65 = objc_msgSend_ch_basicCyrillicCharacterSet(MEMORY[0x1E696AB08], v60, v61, v62, v63, v64);
   v69 = objc_msgSend_ch_occurrencesOfCharactersInSet_maxCount_(v126, v66, v65, 0, v67, v68);
@@ -5039,8 +5039,8 @@ LABEL_9:
   v79 = objc_msgSend_ch_occurrencesOfCharactersInSet_maxCount_(v59, v76, v75, 0, v77, v78);
 
   v85 = objc_msgSend_ch_basicCyrillicCharacterSet(MEMORY[0x1E696AB08], v80, v81, v82, v83, v84);
-  v86 = v14;
-  v90 = objc_msgSend_ch_occurrencesOfCharactersInSet_maxCount_(v14, v87, v85, 1, v88, v89);
+  v86 = stringCopy;
+  v90 = objc_msgSend_ch_occurrencesOfCharactersInSet_maxCount_(stringCopy, v87, v85, 1, v88, v89);
 
   v96 = objc_msgSend_ch_basicAlphabeticCharacterSet(MEMORY[0x1E696AB08], v91, v92, v93, v94, v95);
   v100 = objc_msgSend_ch_occurrencesOfCharactersInSet_maxCount_(v86, v97, v96, 1, v98, v99);
@@ -5114,10 +5114,10 @@ LABEL_9:
   return (v118 | v119) & v124;
 }
 
-+ (BOOL)shouldAddSpaceToNeutralQuotationMarks:(id)a3
++ (BOOL)shouldAddSpaceToNeutralQuotationMarks:(id)marks
 {
   v4 = 0;
-  sub_1838F084C(CHRecognizerConfiguration, a3, &v4, 0);
+  sub_1838F084C(CHRecognizerConfiguration, marks, &v4, 0);
   return v4 == 23;
 }
 

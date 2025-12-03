@@ -8,7 +8,7 @@
 {
   [a3 frame];
   v5 = v4;
-  [a1 frame];
+  [self frame];
   if (v5 > v6)
   {
     return -1;

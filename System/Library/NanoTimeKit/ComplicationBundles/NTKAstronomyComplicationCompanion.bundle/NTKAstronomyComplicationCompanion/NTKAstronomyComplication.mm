@@ -1,27 +1,27 @@
 @interface NTKAstronomyComplication
-+ (id)_allComplicationConfigurationsWithType:(unint64_t)a3;
-- (NTKAstronomyComplication)initWithCoder:(id)a3;
++ (id)_allComplicationConfigurationsWithType:(unint64_t)type;
+- (NTKAstronomyComplication)initWithCoder:(id)coder;
 - (id)_generateUniqueIdentifier;
-- (id)_initWithComplicationType:(unint64_t)a3 JSONDictionary:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithComplicationType:(unint64_t)type JSONDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localizedDetailText;
 - (id)localizedKeylineLabelText;
-- (void)_addKeysToJSONDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_addKeysToJSONDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKAstronomyComplication
 
-+ (id)_allComplicationConfigurationsWithType:(unint64_t)a3
++ (id)_allComplicationConfigurationsWithType:(unint64_t)type
 {
   v5 = +[NSMutableArray array];
-  v6 = a3 - 39;
-  if (a3 - 39 <= 2)
+  v6 = type - 39;
+  if (type - 39 <= 2)
   {
-    v7 = [[a1 alloc] initWithComplicationType:a3];
+    v7 = [[self alloc] initWithComplicationType:type];
     v7[1] = v6;
-    v8 = [v7 _generateUniqueIdentifier];
-    [v7 setUniqueIdentifier:v8];
+    _generateUniqueIdentifier = [v7 _generateUniqueIdentifier];
+    [v7 setUniqueIdentifier:_generateUniqueIdentifier];
 
     [v5 addObject:v7];
   }
@@ -54,31 +54,31 @@
 - (id)_generateUniqueIdentifier
 {
   v3 = [NSNumber numberWithUnsignedInteger:[(NTKAstronomyComplication *)self complicationType]];
-  v4 = [v3 stringValue];
+  stringValue = [v3 stringValue];
   v5 = [NSNumber numberWithUnsignedInteger:self->_vista];
-  v6 = [NSString stringWithFormat:@"%@-%@", v4, v5];
+  v6 = [NSString stringWithFormat:@"%@-%@", stringValue, v5];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = NTKAstronomyComplication;
-  result = [(NTKAstronomyComplication *)&v5 copyWithZone:a3];
+  result = [(NTKAstronomyComplication *)&v5 copyWithZone:zone];
   *(result + 1) = self->_vista;
   return result;
 }
 
-- (NTKAstronomyComplication)initWithCoder:(id)a3
+- (NTKAstronomyComplication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = NTKAstronomyComplication;
-  v5 = [(NTKAstronomyComplication *)&v10 initWithCoder:v4];
+  v5 = [(NTKAstronomyComplication *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kAstronomyComplicationVistaKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kAstronomyComplicationVistaKey"];
     if (!v6)
     {
       [NSException raise:NSInvalidUnarchiveOperationException format:@"%@ cannot have nil _vista", objc_opt_class()];
@@ -91,45 +91,45 @@
       [NSException raise:NSInvalidUnarchiveOperationException format:@"%@ cannot have invalid _vista '%@'", objc_opt_class(), v6];
     }
 
-    v8 = [(NTKAstronomyComplication *)v5 _generateUniqueIdentifier];
-    [(NTKAstronomyComplication *)v5 setUniqueIdentifier:v8];
+    _generateUniqueIdentifier = [(NTKAstronomyComplication *)v5 _generateUniqueIdentifier];
+    [(NTKAstronomyComplication *)v5 setUniqueIdentifier:_generateUniqueIdentifier];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = NTKAstronomyComplication;
-  v4 = a3;
-  [(NTKAstronomyComplication *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(NTKAstronomyComplication *)&v7 encodeWithCoder:coderCopy];
   vista = self->_vista;
   v6 = NUNIAstronomyVistaNameForValue();
-  [v4 encodeObject:v6 forKey:{@"kAstronomyComplicationVistaKey", v7.receiver, v7.super_class}];
+  [coderCopy encodeObject:v6 forKey:{@"kAstronomyComplicationVistaKey", v7.receiver, v7.super_class}];
 }
 
-- (void)_addKeysToJSONDictionary:(id)a3
+- (void)_addKeysToJSONDictionary:(id)dictionary
 {
   v7.receiver = self;
   v7.super_class = NTKAstronomyComplication;
-  v4 = a3;
-  [(NTKAstronomyComplication *)&v7 _addKeysToJSONDictionary:v4];
+  dictionaryCopy = dictionary;
+  [(NTKAstronomyComplication *)&v7 _addKeysToJSONDictionary:dictionaryCopy];
   vista = self->_vista;
   v6 = NUNIAstronomyVistaNameForValue();
-  [v4 setObject:v6 forKeyedSubscript:{NTKFaceBundleComplicationAstronomyVistaKey, v7.receiver, v7.super_class}];
+  [dictionaryCopy setObject:v6 forKeyedSubscript:{NTKFaceBundleComplicationAstronomyVistaKey, v7.receiver, v7.super_class}];
 }
 
-- (id)_initWithComplicationType:(unint64_t)a3 JSONDictionary:(id)a4
+- (id)_initWithComplicationType:(unint64_t)type JSONDictionary:(id)dictionary
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = NTKAstronomyComplication;
-  v7 = [(NTKAstronomyComplication *)&v13 _initWithComplicationType:a3 JSONDictionary:v6];
+  v7 = [(NTKAstronomyComplication *)&v13 _initWithComplicationType:type JSONDictionary:dictionaryCopy];
   if (v7)
   {
     v8 = NTKFaceBundleComplicationAstronomyVistaKey;
-    v9 = [v6 objectForKeyedSubscript:NTKFaceBundleComplicationAstronomyVistaKey];
+    v9 = [dictionaryCopy objectForKeyedSubscript:NTKFaceBundleComplicationAstronomyVistaKey];
     if (!v9)
     {
       [NSException raise:NTKFaceBundleException format:@"missing value for key '%@'", v8];
@@ -148,8 +148,8 @@
       [NSException raise:NTKFaceBundleException format:@"invalid value '%@' for key '%@'", v9, v8];
     }
 
-    v11 = [v7 _generateUniqueIdentifier];
-    [v7 setUniqueIdentifier:v11];
+    _generateUniqueIdentifier = [v7 _generateUniqueIdentifier];
+    [v7 setUniqueIdentifier:_generateUniqueIdentifier];
   }
 
   return v7;

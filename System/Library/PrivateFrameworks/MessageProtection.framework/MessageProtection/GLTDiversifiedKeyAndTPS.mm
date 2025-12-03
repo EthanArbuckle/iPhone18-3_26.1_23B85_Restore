@@ -1,20 +1,20 @@
 @interface GLTDiversifiedKeyAndTPS
-- (GLTDiversifiedKeyAndTPS)initWithKey:(__SecKey *)a3 trackingPreventionSalt:(id)a4;
+- (GLTDiversifiedKeyAndTPS)initWithKey:(__SecKey *)key trackingPreventionSalt:(id)salt;
 @end
 
 @implementation GLTDiversifiedKeyAndTPS
 
-- (GLTDiversifiedKeyAndTPS)initWithKey:(__SecKey *)a3 trackingPreventionSalt:(id)a4
+- (GLTDiversifiedKeyAndTPS)initWithKey:(__SecKey *)key trackingPreventionSalt:(id)salt
 {
-  v7 = a4;
+  saltCopy = salt;
   v11.receiver = self;
   v11.super_class = GLTDiversifiedKeyAndTPS;
   v8 = [(GLTDiversifiedKeyAndTPS *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_diversifiedKey = a3;
-    objc_storeStrong(&v8->_trackingPreventionSalt, a4);
+    v8->_diversifiedKey = key;
+    objc_storeStrong(&v8->_trackingPreventionSalt, salt);
   }
 
   return v9;

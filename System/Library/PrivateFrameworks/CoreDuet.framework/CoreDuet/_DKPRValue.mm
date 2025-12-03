@@ -1,8 +1,8 @@
 @interface _DKPRValue
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)dateValue;
 - (double)doubleValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)blobValue;
@@ -13,10 +13,10 @@
 - (uint64_t)stringValue;
 - (uint64_t)type;
 - (unint64_t)hash;
-- (void)setBlobValue:(uint64_t)a1;
-- (void)setStringValue:(uint64_t)a1;
-- (void)setType:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setBlobValue:(uint64_t)value;
+- (void)setStringValue:(uint64_t)value;
+- (void)setType:(uint64_t)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _DKPRValue
@@ -37,33 +37,33 @@
   v8.receiver = self;
   v8.super_class = _DKPRValue;
   v4 = [(_DKPRValue *)&v8 description];
-  v5 = [(_DKPRValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_DKPRValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   type = self->_type;
   if (type)
   {
-    v5 = [(_DKPRValueType *)type dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"type"];
+    dictionaryRepresentation = [(_DKPRValueType *)type dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"type"];
   }
 
   stringValue = self->_stringValue;
   if (stringValue)
   {
-    [v3 setObject:stringValue forKey:@"stringValue"];
+    [dictionary setObject:stringValue forKey:@"stringValue"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_integerValue];
-    [v3 setObject:v8 forKey:@"integerValue"];
+    [dictionary setObject:v8 forKey:@"integerValue"];
 
     has = self->_has;
   }
@@ -71,33 +71,33 @@
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_doubleValue];
-    [v3 setObject:v9 forKey:@"doubleValue"];
+    [dictionary setObject:v9 forKey:@"doubleValue"];
   }
 
   blobValue = self->_blobValue;
   if (blobValue)
   {
-    [v3 setObject:blobValue forKey:@"blobValue"];
+    [dictionary setObject:blobValue forKey:@"blobValue"];
   }
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_dateValue];
-    [v3 setObject:v11 forKey:@"dateValue"];
+    [dictionary setObject:v11 forKey:@"dateValue"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_type)
   {
     [_DKPRValue writeTo:];
   }
 
-  v10 = v4;
+  v10 = toCopy;
   PBDataWriterWriteSubmessage();
   if (self->_stringValue)
   {
@@ -134,14 +134,14 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_DKPRValueType *)self->_type copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_DKPRValueType *)self->_type copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v8 = [(NSString *)self->_stringValue copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
@@ -159,7 +159,7 @@
     *(v5 + 56) |= 2u;
   }
 
-  v11 = [(NSData *)self->_blobValue copyWithZone:a3];
+  v11 = [(NSData *)self->_blobValue copyWithZone:zone];
   v12 = *(v5 + 32);
   *(v5 + 32) = v11;
 
@@ -172,16 +172,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   type = self->_type;
-  if (type | *(v4 + 6))
+  if (type | *(equalCopy + 6))
   {
     if (![(_DKPRValueType *)type isEqual:?])
     {
@@ -190,7 +190,7 @@
   }
 
   stringValue = self->_stringValue;
-  if (stringValue | *(v4 + 5))
+  if (stringValue | *(equalCopy + 5))
   {
     if (![(NSString *)stringValue isEqual:?])
     {
@@ -199,35 +199,35 @@
   }
 
   has = self->_has;
-  v8 = *(v4 + 56);
+  v8 = *(equalCopy + 56);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_integerValue != *(v4 + 3))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_integerValue != *(equalCopy + 3))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_doubleValue != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_doubleValue != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   blobValue = self->_blobValue;
-  if (blobValue | *(v4 + 4))
+  if (blobValue | *(equalCopy + 4))
   {
     if (![(NSData *)blobValue isEqual:?])
     {
@@ -239,10 +239,10 @@ LABEL_23:
     has = self->_has;
   }
 
-  v10 = (*(v4 + 56) & 1) == 0;
+  v10 = (*(equalCopy + 56) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_dateValue != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_dateValue != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
@@ -375,27 +375,27 @@ LABEL_9:
   return result;
 }
 
-- (void)setType:(uint64_t)a1
+- (void)setType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 48);
+    OUTLINED_FUNCTION_0_8(type, a2, 48);
   }
 }
 
-- (void)setStringValue:(uint64_t)a1
+- (void)setStringValue:(uint64_t)value
 {
-  if (a1)
+  if (value)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 40);
+    OUTLINED_FUNCTION_0_8(value, a2, 40);
   }
 }
 
-- (void)setBlobValue:(uint64_t)a1
+- (void)setBlobValue:(uint64_t)value
 {
-  if (a1)
+  if (value)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 32);
+    OUTLINED_FUNCTION_0_8(value, a2, 32);
   }
 }
 
@@ -421,9 +421,9 @@ LABEL_9:
 
 - (double)doubleValue
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 16);
+    return *(self + 16);
   }
 
   else
@@ -444,9 +444,9 @@ LABEL_9:
 
 - (double)dateValue
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else

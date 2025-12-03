@@ -7,18 +7,18 @@
 - (id)_getShortcuts
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->super._hasLoadedShortcuts)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->super._hasLoadedShortcuts)
   {
-    v3 = [(NSArray *)v2->super._shortcuts copy];
+    v3 = [(NSArray *)selfCopy->super._shortcuts copy];
   }
 
   else
   {
     v4 = dispatch_group_create();
     dispatch_group_enter(v4);
-    objc_initWeak(&location, v2);
+    objc_initWeak(&location, selfCopy);
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -26,7 +26,7 @@
       _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "Calling out to MapsSync to fetch H/W/S", buf, 2u);
     }
 
-    mapsSync = v2->super._mapsSync;
+    mapsSync = selfCopy->super._mapsSync;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __62__MapsSuggestionsHomeWorkSchoolShortcutsMatcher__getShortcuts__block_invoke;
@@ -44,17 +44,17 @@
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [(NSArray *)v2->super._shortcuts count];
+      v9 = [(NSArray *)selfCopy->super._shortcuts count];
       *buf = 134217984;
       v16 = v9;
       _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "Finished loading %lu shortcuts", buf, 0xCu);
     }
 
-    v3 = [(NSArray *)v2->super._shortcuts copy];
+    v3 = [(NSArray *)selfCopy->super._shortcuts copy];
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

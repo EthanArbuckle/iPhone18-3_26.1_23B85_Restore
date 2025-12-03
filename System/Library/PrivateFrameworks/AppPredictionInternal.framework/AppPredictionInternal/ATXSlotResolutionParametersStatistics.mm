@@ -1,19 +1,19 @@
 @interface ATXSlotResolutionParametersStatistics
-+ (double)_smoothedBudgetForTimeOfDay:(int64_t)a3 currentTimeOfDay:(int64_t)a4;
-+ (double)_smoothedCountForCoarseTimeOfDay:(int64_t)a3 currentTimeOfDay:(int64_t)a4;
-+ (double)_smoothedCountForTimeOfDay:(int64_t)a3 currentTimeOfDay:(int64_t)a4;
-+ (double)smoothedRatio:(double)a3 over:(double)a4;
-- (ATXSlotResolutionParametersStatistics)initWithNumParameters:(int)a3;
++ (double)_smoothedBudgetForTimeOfDay:(int64_t)day currentTimeOfDay:(int64_t)ofDay;
++ (double)_smoothedCountForCoarseTimeOfDay:(int64_t)day currentTimeOfDay:(int64_t)ofDay;
++ (double)_smoothedCountForTimeOfDay:(int64_t)day currentTimeOfDay:(int64_t)ofDay;
++ (double)smoothedRatio:(double)ratio over:(double)over;
+- (ATXSlotResolutionParametersStatistics)initWithNumParameters:(int)parameters;
 - (double)_confirmRatio;
 - (double)_timeOfDayBudgetStandardDeviation;
 - (id)description;
 - (void)_confirmRatio;
-- (void)_updateTimeOfDayBudgetStatisticsForNewTimeOfDayBudget:(double)a3;
+- (void)_updateTimeOfDayBudgetStatisticsForNewTimeOfDayBudget:(double)budget;
 @end
 
 @implementation ATXSlotResolutionParametersStatistics
 
-- (ATXSlotResolutionParametersStatistics)initWithNumParameters:(int)a3
+- (ATXSlotResolutionParametersStatistics)initWithNumParameters:(int)parameters
 {
   v21.receiver = self;
   v21.super_class = ATXSlotResolutionParametersStatistics;
@@ -21,7 +21,7 @@
   v5 = v4;
   if (v4)
   {
-    *(v4 + 6) = a3;
+    *(v4 + 6) = parameters;
     *(v4 + 2) = 0;
     *(v4 + 2) = 0;
     *(v4 + 74) = 0;
@@ -34,9 +34,9 @@
     *(v4 + 312) = 0u;
     *(v4 + 328) = 0u;
     *(v4 + 344) = 0u;
-    v6 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     v7 = *(v5 + 4);
-    *(v5 + 4) = v6;
+    *(v5 + 4) = distantPast;
 
     v8 = vdupq_n_s64(0x41086A0000000000uLL);
     *(v5 + 88) = v8;
@@ -92,14 +92,14 @@
   return v5;
 }
 
-- (void)_updateTimeOfDayBudgetStatisticsForNewTimeOfDayBudget:(double)a3
+- (void)_updateTimeOfDayBudgetStatisticsForNewTimeOfDayBudget:(double)budget
 {
   v3 = self->_timeOfDayBudgetCount + 1.0;
   self->_timeOfDayBudgetCount = v3;
   timeOfDayBudgetMean = self->_timeOfDayBudgetMean;
-  v5 = timeOfDayBudgetMean + (a3 - timeOfDayBudgetMean) / v3;
+  v5 = timeOfDayBudgetMean + (budget - timeOfDayBudgetMean) / v3;
   self->_timeOfDayBudgetMean = v5;
-  self->_timeOfDayBudgetSumOfSquaresOfDifferencesFromMean = self->_timeOfDayBudgetSumOfSquaresOfDifferencesFromMean + (a3 - timeOfDayBudgetMean) * (a3 - v5);
+  self->_timeOfDayBudgetSumOfSquaresOfDifferencesFromMean = self->_timeOfDayBudgetSumOfSquaresOfDifferencesFromMean + (budget - timeOfDayBudgetMean) * (budget - v5);
 }
 
 - (double)_timeOfDayBudgetStandardDeviation
@@ -116,13 +116,13 @@
   }
 }
 
-+ (double)smoothedRatio:(double)a3 over:(double)a4
++ (double)smoothedRatio:(double)ratio over:(double)over
 {
   v6 = +[_ATXGlobals sharedInstance];
   [v6 slotResolutionRatioSmoothingThreshold];
   v8 = v7;
 
-  return a3 * a4 / ((v8 + a4) * (v8 + a4));
+  return ratio * over / ((v8 + over) * (v8 + over));
 }
 
 - (double)_confirmRatio
@@ -150,31 +150,31 @@
   return v5;
 }
 
-+ (double)_smoothedCountForTimeOfDay:(int64_t)a3 currentTimeOfDay:(int64_t)a4
++ (double)_smoothedCountForTimeOfDay:(int64_t)day currentTimeOfDay:(int64_t)ofDay
 {
   v6 = +[_ATXGlobals sharedInstance];
   [v6 smoothedCountForTimeOfDayStd];
   v8 = v7;
 
-  return ATXGaussianDistributionWithZeroMean(v8, (a3 - a4) * 0.0166666667);
+  return ATXGaussianDistributionWithZeroMean(v8, (day - ofDay) * 0.0166666667);
 }
 
-+ (double)_smoothedCountForCoarseTimeOfDay:(int64_t)a3 currentTimeOfDay:(int64_t)a4
++ (double)_smoothedCountForCoarseTimeOfDay:(int64_t)day currentTimeOfDay:(int64_t)ofDay
 {
   v6 = +[_ATXGlobals sharedInstance];
   [v6 smoothedCountForCoarseTimeOfDayStd];
   v8 = v7;
 
-  return ATXGaussianDistributionWithZeroMean(v8, (a3 - a4) * 0.0166666667);
+  return ATXGaussianDistributionWithZeroMean(v8, (day - ofDay) * 0.0166666667);
 }
 
-+ (double)_smoothedBudgetForTimeOfDay:(int64_t)a3 currentTimeOfDay:(int64_t)a4
++ (double)_smoothedBudgetForTimeOfDay:(int64_t)day currentTimeOfDay:(int64_t)ofDay
 {
   v6 = +[_ATXGlobals sharedInstance];
   [v6 smoothedBudgetForTimeOfDayStd];
   v8 = v7;
 
-  return ATXGaussianDistributionWithZeroMean(v8, (a3 - a4) * 0.0166666667);
+  return ATXGaussianDistributionWithZeroMean(v8, (day - ofDay) * 0.0166666667);
 }
 
 - (id)description
@@ -186,8 +186,8 @@
 
 - (void)_confirmRatio
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a1 object:a2 file:@"ATXActionStatistics.m" lineNumber:436 description:{@"Invalid probablity found: %f", *&a3}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"ATXActionStatistics.m" lineNumber:436 description:{@"Invalid probablity found: %f", *&a3}];
 }
 
 @end

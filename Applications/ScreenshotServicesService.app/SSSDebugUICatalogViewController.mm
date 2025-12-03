@@ -1,8 +1,8 @@
 @interface SSSDebugUICatalogViewController
 - (SSSDebugUICatalogViewController)init;
-- (id)_viewControllerAtIndex:(int64_t)a3;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
+- (id)_viewControllerAtIndex:(int64_t)index;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
 - (void)viewDidLoad;
 @end
 
@@ -39,8 +39,8 @@
   backgroundView = self->_backgroundView;
   self->_backgroundView = v5;
 
-  v7 = [(SSSDebugUICatalogViewController *)self view];
-  [v7 insertSubview:self->_backgroundView atIndex:0];
+  view = [(SSSDebugUICatalogViewController *)self view];
+  [view insertSubview:self->_backgroundView atIndex:0];
 
   [(UIVisualEffectView *)self->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
   v8 = objc_alloc_init(UIToolbar);
@@ -57,88 +57,88 @@
   v13 = [NSArray arrayWithObjects:v45 count:2];
   [(UIToolbar *)v12 setItems:v13];
 
-  v14 = [(SSSDebugUICatalogViewController *)self view];
-  [v14 addSubview:self->_toolbar];
+  view2 = [(SSSDebugUICatalogViewController *)self view];
+  [view2 addSubview:self->_toolbar];
 
   v15 = +[NSMutableArray array];
-  v16 = [(UIVisualEffectView *)self->_backgroundView leadingAnchor];
-  v17 = [(SSSDebugUICatalogViewController *)self view];
-  v18 = [v17 leadingAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  leadingAnchor = [(UIVisualEffectView *)self->_backgroundView leadingAnchor];
+  view3 = [(SSSDebugUICatalogViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v15 addObject:v19];
 
-  v20 = [(UIVisualEffectView *)self->_backgroundView trailingAnchor];
-  v21 = [(SSSDebugUICatalogViewController *)self view];
-  v22 = [v21 trailingAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  trailingAnchor = [(UIVisualEffectView *)self->_backgroundView trailingAnchor];
+  view4 = [(SSSDebugUICatalogViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v15 addObject:v23];
 
-  v24 = [(UIVisualEffectView *)self->_backgroundView topAnchor];
-  v25 = [(SSSDebugUICatalogViewController *)self view];
-  v26 = [v25 topAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  topAnchor = [(UIVisualEffectView *)self->_backgroundView topAnchor];
+  view5 = [(SSSDebugUICatalogViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v15 addObject:v27];
 
-  v28 = [(UIVisualEffectView *)self->_backgroundView bottomAnchor];
-  v29 = [(SSSDebugUICatalogViewController *)self view];
-  v30 = [v29 bottomAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  bottomAnchor = [(UIVisualEffectView *)self->_backgroundView bottomAnchor];
+  view6 = [(SSSDebugUICatalogViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v15 addObject:v31];
 
-  v32 = [(UIToolbar *)self->_toolbar leadingAnchor];
-  v33 = [(SSSDebugUICatalogViewController *)self view];
-  v34 = [v33 leadingAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  leadingAnchor3 = [(UIToolbar *)self->_toolbar leadingAnchor];
+  view7 = [(SSSDebugUICatalogViewController *)self view];
+  leadingAnchor4 = [view7 leadingAnchor];
+  v35 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v15 addObject:v35];
 
-  v36 = [(UIToolbar *)self->_toolbar trailingAnchor];
-  v37 = [(SSSDebugUICatalogViewController *)self view];
-  v38 = [v37 trailingAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38];
+  trailingAnchor3 = [(UIToolbar *)self->_toolbar trailingAnchor];
+  view8 = [(SSSDebugUICatalogViewController *)self view];
+  trailingAnchor4 = [view8 trailingAnchor];
+  v39 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v15 addObject:v39];
 
-  v40 = [(UIToolbar *)self->_toolbar topAnchor];
-  v41 = [(SSSDebugUICatalogViewController *)self view];
-  v42 = [v41 topAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42];
+  topAnchor3 = [(UIToolbar *)self->_toolbar topAnchor];
+  view9 = [(SSSDebugUICatalogViewController *)self view];
+  topAnchor4 = [view9 topAnchor];
+  v43 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v15 addObject:v43];
 
   [NSLayoutConstraint activateConstraints:v15];
 }
 
-- (id)_viewControllerAtIndex:(int64_t)a3
+- (id)_viewControllerAtIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     v6 = 0;
   }
 
   else
   {
-    if ([(NSMutableArray *)self->_allViewControllers count]<= a3)
+    if ([(NSMutableArray *)self->_allViewControllers count]<= index)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [(NSMutableArray *)self->_allViewControllers objectAtIndex:a3];
+      v6 = [(NSMutableArray *)self->_allViewControllers objectAtIndex:index];
     }
   }
 
   return v6;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v5 = [(NSMutableArray *)self->_allViewControllers indexOfObject:a4]+ 1;
+  v5 = [(NSMutableArray *)self->_allViewControllers indexOfObject:viewController]+ 1;
 
   return [(SSSDebugUICatalogViewController *)self _viewControllerAtIndex:v5];
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v5 = [(NSMutableArray *)self->_allViewControllers indexOfObject:a4]- 1;
+  v5 = [(NSMutableArray *)self->_allViewControllers indexOfObject:viewController]- 1;
 
   return [(SSSDebugUICatalogViewController *)self _viewControllerAtIndex:v5];
 }

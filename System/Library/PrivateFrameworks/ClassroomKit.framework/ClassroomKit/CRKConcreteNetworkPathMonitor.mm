@@ -1,9 +1,9 @@
 @interface CRKConcreteNetworkPathMonitor
-- (CRKConcreteNetworkPathMonitor)initWithUnderlyingPathMonitor:(id)a3;
+- (CRKConcreteNetworkPathMonitor)initWithUnderlyingPathMonitor:(id)monitor;
 - (void)cancel;
 - (void)dealloc;
 - (void)resume;
-- (void)updateWithPath:(id)a3;
+- (void)updateWithPath:(id)path;
 @end
 
 @implementation CRKConcreteNetworkPathMonitor
@@ -16,16 +16,16 @@
   [(CRKConcreteNetworkPathMonitor *)&v3 dealloc];
 }
 
-- (CRKConcreteNetworkPathMonitor)initWithUnderlyingPathMonitor:(id)a3
+- (CRKConcreteNetworkPathMonitor)initWithUnderlyingPathMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v9.receiver = self;
   v9.super_class = CRKConcreteNetworkPathMonitor;
   v6 = [(CRKConcreteNetworkPathMonitor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingPathMonitor, a3);
+    objc_storeStrong(&v6->_underlyingPathMonitor, monitor);
   }
 
   return v7;
@@ -33,8 +33,8 @@
 
 - (void)cancel
 {
-  v2 = [(CRKConcreteNetworkPathMonitor *)self underlyingPathMonitor];
-  nw_path_monitor_cancel(v2);
+  underlyingPathMonitor = [(CRKConcreteNetworkPathMonitor *)self underlyingPathMonitor];
+  nw_path_monitor_cancel(underlyingPathMonitor);
 }
 
 - (void)resume
@@ -66,10 +66,10 @@ void __39__CRKConcreteNetworkPathMonitor_resume__block_invoke(uint64_t a1, void 
   [WeakRetained updateWithPath:v3];
 }
 
-- (void)updateWithPath:(id)a3
+- (void)updateWithPath:(id)path
 {
-  v4 = a3;
-  v5 = [[CRKConcreteNetworkPath alloc] initWithUnderlyingPath:v4];
+  pathCopy = path;
+  v5 = [[CRKConcreteNetworkPath alloc] initWithUnderlyingPath:pathCopy];
 
   [(CRKConcreteNetworkPathMonitor *)self setPath:v5];
 }

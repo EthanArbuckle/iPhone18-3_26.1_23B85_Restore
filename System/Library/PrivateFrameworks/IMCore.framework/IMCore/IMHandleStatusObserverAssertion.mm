@@ -1,22 +1,22 @@
 @interface IMHandleStatusObserverAssertion
 - (IMHandle)handle;
-- (IMHandleStatusObserverAssertion)initWithHandle:(id)a3;
+- (IMHandleStatusObserverAssertion)initWithHandle:(id)handle;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation IMHandleStatusObserverAssertion
 
-- (IMHandleStatusObserverAssertion)initWithHandle:(id)a3
+- (IMHandleStatusObserverAssertion)initWithHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v8.receiver = self;
   v8.super_class = IMHandleStatusObserverAssertion;
   v5 = [(IMHandleStatusObserverAssertion *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_handle, v4);
+    objc_storeWeak(&v5->_handle, handleCopy);
     v6->_valid = 1;
   }
 
@@ -34,7 +34,7 @@
       v8 = objc_msgSend_handle(self, v6, v7);
       v11 = objc_msgSend_ID(v8, v9, v10);
       v15 = 134218242;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
       v18 = v11;
       _os_log_impl(&dword_1A823F000, v5, OS_LOG_TYPE_INFO, "Status observer %p for handle %@ is being invalidated", &v15, 0x16u);
@@ -59,7 +59,7 @@
       v6 = objc_msgSend_handle(self, v4, v5);
       v9 = objc_msgSend_ID(v6, v7, v8);
       *buf = 134218242;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
       v17 = v9;
       _os_log_impl(&dword_1A823F000, v3, OS_LOG_TYPE_INFO, "Status observer %p for handle %@ is being deallocated", buf, 0x16u);
@@ -74,7 +74,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v15 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1A823F000, v10, OS_LOG_TYPE_INFO, "Status observer %p being dealloced without having been invalidated, this is likely a bug", buf, 0xCu);
       }
     }

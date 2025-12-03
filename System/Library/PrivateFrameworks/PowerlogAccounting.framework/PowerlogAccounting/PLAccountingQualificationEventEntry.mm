@@ -1,11 +1,11 @@
 @interface PLAccountingQualificationEventEntry
 + (void)load;
 - (BOOL)isEmptyEvent;
-- (BOOL)isEqualContentsWithEvent:(id)a3;
+- (BOOL)isEqualContentsWithEvent:(id)event;
 - (NSSet)childNodeIDs;
 - (NSSet)childNodeNames;
-- (PLAccountingQualificationEventEntry)initWithQualificationID:(id)a3 withChildNodeIDs:(id)a4 withRange:(id)a5;
-- (PLAccountingQualificationEventEntry)initWithQualificationID:(id)a3 withChildNodeNames:(id)a4 withRange:(id)a5;
+- (PLAccountingQualificationEventEntry)initWithQualificationID:(id)d withChildNodeIDs:(id)ds withRange:(id)range;
+- (PLAccountingQualificationEventEntry)initWithQualificationID:(id)d withChildNodeNames:(id)names withRange:(id)range;
 - (int)instanceDirectionality;
 @end
 
@@ -20,17 +20,17 @@
     v3 = [MEMORY[0x277CBEB58] set];
     v4 = MEMORY[0x277CBEB98];
     v5 = MEMORY[0x277D3F198];
-    v6 = [(PLEntry *)self entryKey];
-    v7 = [v5 keyConfigsForEntryKey:v6];
-    v8 = [v7 allKeys];
-    v9 = [v4 setWithArray:v8];
+    entryKey = [(PLEntry *)self entryKey];
+    v7 = [v5 keyConfigsForEntryKey:entryKey];
+    allKeys = [v7 allKeys];
+    v9 = [v4 setWithArray:allKeys];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = [(PLEntry *)self keys];
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    keys = [(PLEntry *)self keys];
+    v11 = [keys countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
     {
       v12 = v11;
@@ -42,7 +42,7 @@
         {
           if (*v24 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(keys);
           }
 
           v16 = *(*(&v23 + 1) + 8 * i);
@@ -67,7 +67,7 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v12 = [keys countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v12);
@@ -85,84 +85,84 @@
 
 - (int)instanceDirectionality
 {
-  v2 = [(PLAccountingQualificationEventEntry *)self qualificationID];
-  v3 = [&unk_2870F8780 objectAtIndexedSubscript:{objc_msgSend(v2, "intValue")}];
-  v4 = [v3 intValue];
+  qualificationID = [(PLAccountingQualificationEventEntry *)self qualificationID];
+  v3 = [&unk_2870F8780 objectAtIndexedSubscript:{objc_msgSend(qualificationID, "intValue")}];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAccountingQualificationEventEntry;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (PLAccountingQualificationEventEntry)initWithQualificationID:(id)a3 withChildNodeNames:(id)a4 withRange:(id)a5
+- (PLAccountingQualificationEventEntry)initWithQualificationID:(id)d withChildNodeNames:(id)names withRange:(id)range
 {
   v8 = MEMORY[0x277CBEB98];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  rangeCopy = range;
+  namesCopy = names;
+  dCopy = d;
   v12 = +[PLAccountingNodeManager sharedInstance];
-  v13 = [v10 allObjects];
+  allObjects = [namesCopy allObjects];
 
-  v14 = [v12 childNodeIDsFromChildNodeNames:v13];
+  v14 = [v12 childNodeIDsFromChildNodeNames:allObjects];
   v15 = [v8 setWithArray:v14];
 
-  v16 = [(PLAccountingQualificationEventEntry *)self initWithQualificationID:v11 withChildNodeIDs:v15 withRange:v9];
+  v16 = [(PLAccountingQualificationEventEntry *)self initWithQualificationID:dCopy withChildNodeIDs:v15 withRange:rangeCopy];
   return v16;
 }
 
-- (PLAccountingQualificationEventEntry)initWithQualificationID:(id)a3 withChildNodeIDs:(id)a4 withRange:(id)a5
+- (PLAccountingQualificationEventEntry)initWithQualificationID:(id)d withChildNodeIDs:(id)ds withRange:(id)range
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 intValue] < 1)
+  dCopy = d;
+  dsCopy = ds;
+  rangeCopy = range;
+  if ([dCopy intValue] < 1)
   {
 LABEL_10:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
   v11 = +[PLAccountingEngine allQualificationIDs];
-  v12 = [v11 containsObject:v8];
+  v12 = [v11 containsObject:dCopy];
 
-  v13 = 0;
-  if (v9 && v12)
+  selfCopy = 0;
+  if (dsCopy && v12)
   {
     v38.receiver = self;
     v38.super_class = PLAccountingQualificationEventEntry;
-    v14 = [(PLAccountingEventEntry *)&v38 initWithRange:v10];
+    v14 = [(PLAccountingEventEntry *)&v38 initWithRange:rangeCopy];
     self = v14;
     if (v14)
     {
-      [(PLEntry *)v14 setObject:v8 forKeyedSubscript:*MEMORY[0x277D3F458]];
-      v15 = [(PLAccountingQualificationEventEntry *)self instanceDirectionality];
-      v16 = [objc_opt_class() classDirectionality];
-      if (v15 != v16 && v16 != 3)
+      [(PLEntry *)v14 setObject:dCopy forKeyedSubscript:*MEMORY[0x277D3F458]];
+      instanceDirectionality = [(PLAccountingQualificationEventEntry *)self instanceDirectionality];
+      classDirectionality = [objc_opt_class() classDirectionality];
+      if (instanceDirectionality != classDirectionality && classDirectionality != 3)
       {
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Directionality mismatch for qualificationID=%@", v8];
+        dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Directionality mismatch for qualificationID=%@", dCopy];
         v18 = MEMORY[0x277D3F178];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Entries/Qualification/PLAccountingQualificationEventEntry.m"];
-        v20 = [v19 lastPathComponent];
+        lastPathComponent = [v19 lastPathComponent];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingQualificationEventEntry initWithQualificationID:withChildNodeIDs:withRange:]"];
-        [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:45];
+        [v18 logMessage:dCopy fromFile:lastPathComponent fromFunction:v21 fromLineNumber:45];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
         {
-          [PLAccountingDistributionEventEntry initWithDistributionID:v17 withChildNodeIDToWeight:v22 withRange:?];
+          [PLAccountingDistributionEventEntry initWithDistributionID:dCopy withChildNodeIDToWeight:v22 withRange:?];
         }
 
         goto LABEL_10;
       }
 
-      v33 = v9;
-      objc_storeStrong(&self->_childNodeIDs, a4);
+      v33 = dsCopy;
+      objc_storeStrong(&self->_childNodeIDs, ds);
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
@@ -196,17 +196,17 @@ LABEL_10:
         while (v25);
       }
 
-      v9 = v33;
+      dsCopy = v33;
     }
 
     self = self;
-    v13 = self;
+    selfCopy = self;
   }
 
 LABEL_20:
 
   v31 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy;
 }
 
 - (NSSet)childNodeNames
@@ -217,8 +217,8 @@ LABEL_20:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(PLAccountingQualificationEventEntry *)self childNodeIDs];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  childNodeIDs = [(PLAccountingQualificationEventEntry *)self childNodeIDs];
+  v5 = [childNodeIDs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -229,7 +229,7 @@ LABEL_20:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childNodeIDs);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -242,7 +242,7 @@ LABEL_20:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [childNodeIDs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -253,20 +253,20 @@ LABEL_20:
   return v3;
 }
 
-- (BOOL)isEqualContentsWithEvent:(id)a3
+- (BOOL)isEqualContentsWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(PLAccountingQualificationEventEntry *)self childNodeIDs];
-  v6 = [v4 childNodeIDs];
+  eventCopy = event;
+  childNodeIDs = [(PLAccountingQualificationEventEntry *)self childNodeIDs];
+  childNodeIDs2 = [eventCopy childNodeIDs];
 
-  LOBYTE(v4) = [v5 isEqualToSet:v6];
-  return v4;
+  LOBYTE(eventCopy) = [childNodeIDs isEqualToSet:childNodeIDs2];
+  return eventCopy;
 }
 
 - (BOOL)isEmptyEvent
 {
-  v2 = [(PLAccountingQualificationEventEntry *)self childNodeIDs];
-  v3 = [v2 count] == 0;
+  childNodeIDs = [(PLAccountingQualificationEventEntry *)self childNodeIDs];
+  v3 = [childNodeIDs count] == 0;
 
   return v3;
 }

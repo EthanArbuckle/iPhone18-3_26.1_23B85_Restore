@@ -1,23 +1,23 @@
 @interface VNImageTranslationAlignmentObservation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)alignmentTransform;
-- (CGAffineTransform)alignmentTransformInTopLeftOrigin:(SEL)a3 orientation:(BOOL)a4;
+- (CGAffineTransform)alignmentTransformInTopLeftOrigin:(SEL)origin orientation:(BOOL)orientation;
 - (VNImageTranslationAlignmentObservation)init;
-- (VNImageTranslationAlignmentObservation)initWithCoder:(id)a3;
+- (VNImageTranslationAlignmentObservation)initWithCoder:(id)coder;
 - (id)description;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAlignmentTransform:(CGAffineTransform *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAlignmentTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation VNImageTranslationAlignmentObservation
 
-- (void)setAlignmentTransform:(CGAffineTransform *)a3
+- (void)setAlignmentTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_alignmentTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_alignmentTransform.a = *&transform->a;
   *&self->_alignmentTransform.c = v4;
   *&self->_alignmentTransform.tx = v3;
 }
@@ -44,10 +44,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -56,9 +56,9 @@
   {
     v10.receiver = self;
     v10.super_class = VNImageTranslationAlignmentObservation;
-    if ([(VNImageAlignmentObservation *)&v10 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNImageAlignmentObservation *)&v10 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(VNImageTranslationAlignmentObservation *)self alignmentTransform];
       if (v5)
       {
@@ -95,43 +95,43 @@
 {
   v7.receiver = self;
   v7.super_class = VNImageTranslationAlignmentObservation;
-  v3 = [(VNImageAlignmentObservation *)&v7 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNImageAlignmentObservation *)&v7 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v5 = *&self->_alignmentTransform.c;
     v4 = *&self->_alignmentTransform.tx;
-    v3[7] = *&self->_alignmentTransform.a;
-    v3[8] = v5;
-    v3[9] = v4;
+    vn_cloneObject[7] = *&self->_alignmentTransform.a;
+    vn_cloneObject[8] = v5;
+    vn_cloneObject[9] = v4;
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = VNImageTranslationAlignmentObservation;
-  [(VNImageAlignmentObservation *)&v7 encodeWithCoder:v4];
+  [(VNImageAlignmentObservation *)&v7 encodeWithCoder:coderCopy];
   v5 = *&self->_alignmentTransform.c;
   v6[0] = *&self->_alignmentTransform.a;
   v6[1] = v5;
   v6[2] = *&self->_alignmentTransform.tx;
-  [v4 vn_encodeCGAffineTransform:v6 forKey:@"alignmentTransform"];
+  [coderCopy vn_encodeCGAffineTransform:v6 forKey:@"alignmentTransform"];
 }
 
-- (VNImageTranslationAlignmentObservation)initWithCoder:(id)a3
+- (VNImageTranslationAlignmentObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = VNImageTranslationAlignmentObservation;
-  v5 = [(VNImageAlignmentObservation *)&v11 initWithCoder:v4];
+  v5 = [(VNImageAlignmentObservation *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    if (v4)
+    if (coderCopy)
     {
-      [v4 vn_decodeCGAffineTransformForKey:@"alignmentTransform"];
+      [coderCopy vn_decodeCGAffineTransformForKey:@"alignmentTransform"];
     }
 
     else
@@ -169,9 +169,9 @@
   return v3;
 }
 
-- (CGAffineTransform)alignmentTransformInTopLeftOrigin:(SEL)a3 orientation:(BOOL)a4
+- (CGAffineTransform)alignmentTransformInTopLeftOrigin:(SEL)origin orientation:(BOOL)orientation
 {
-  v6 = a4;
+  orientationCopy = orientation;
   v14 = 0u;
   v15 = 0u;
   v13 = 0u;
@@ -180,7 +180,7 @@
   v11 = 0u;
   v12 = 0u;
   v10 = 0u;
-  VNAffineTransformForVisionToTopLeftOriginOrientation(v6, a5, &v10);
+  VNAffineTransformForVisionToTopLeftOriginOrientation(orientationCopy, a5, &v10);
   return CGAffineTransformMakeTranslation(retstr, *&v12 + *(&v8 + 1) * *&v11 + *&v10 * *&v8, *(&v12 + 1) + *(&v8 + 1) * *(&v11 + 1) + *(&v10 + 1) * *&v8);
 }
 

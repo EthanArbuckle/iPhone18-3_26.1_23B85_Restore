@@ -1,6 +1,6 @@
 @interface CRKConcreteTrust
 - (CRKCertificate)leafCertificate;
-- (CRKConcreteTrust)initWithTrust:(__SecTrust *)a3;
+- (CRKConcreteTrust)initWithTrust:(__SecTrust *)trust;
 - (void)dealloc;
 @end
 
@@ -14,15 +14,15 @@
   [(CRKConcreteTrust *)&v3 dealloc];
 }
 
-- (CRKConcreteTrust)initWithTrust:(__SecTrust *)a3
+- (CRKConcreteTrust)initWithTrust:(__SecTrust *)trust
 {
   v6.receiver = self;
   v6.super_class = CRKConcreteTrust;
   v4 = [(CRKConcreteTrust *)&v6 init];
   if (v4)
   {
-    CFRetain(a3);
-    v4->_underlyingTrust = a3;
+    CFRetain(trust);
+    v4->_underlyingTrust = trust;
   }
 
   return v4;
@@ -33,8 +33,8 @@
   v2 = SecTrustCopyCertificateChain([(CRKConcreteTrust *)self underlyingTrust]);
   if ([(__CFArray *)v2 count])
   {
-    v3 = [(__CFArray *)v2 firstObject];
-    v4 = [[CRKConcreteCertificate alloc] initWithCertificate:v3];
+    firstObject = [(__CFArray *)v2 firstObject];
+    v4 = [[CRKConcreteCertificate alloc] initWithCertificate:firstObject];
   }
 
   else

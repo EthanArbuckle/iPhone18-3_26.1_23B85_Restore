@@ -1,20 +1,20 @@
 @interface MRDRoutedRemoteControlCommand
-- (MRDRoutedRemoteControlCommand)initWithCommand:(id)a3 routedApp:(id)a4;
+- (MRDRoutedRemoteControlCommand)initWithCommand:(id)command routedApp:(id)app;
 - (id)description;
 @end
 
 @implementation MRDRoutedRemoteControlCommand
 
-- (MRDRoutedRemoteControlCommand)initWithCommand:(id)a3 routedApp:(id)a4
+- (MRDRoutedRemoteControlCommand)initWithCommand:(id)command routedApp:(id)app
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 _copyWithZone:0 usingConcreteClass:objc_opt_class()];
+  appCopy = app;
+  commandCopy = command;
+  v8 = [commandCopy _copyWithZone:0 usingConcreteClass:objc_opt_class()];
 
   v9 = v8;
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [appCopy copy];
     routedAppDisplayID = v9->_routedAppDisplayID;
     v9->_routedAppDisplayID = v10;
 

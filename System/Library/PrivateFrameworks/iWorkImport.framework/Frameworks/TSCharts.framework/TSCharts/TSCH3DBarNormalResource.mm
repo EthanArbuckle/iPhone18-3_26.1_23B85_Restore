@@ -1,19 +1,19 @@
 @interface TSCH3DBarNormalResource
-- (TSCH3DBarNormalResource)initWithGeometry:(id)a3;
+- (TSCH3DBarNormalResource)initWithGeometry:(id)geometry;
 @end
 
 @implementation TSCH3DBarNormalResource
 
-- (TSCH3DBarNormalResource)initWithGeometry:(id)a3
+- (TSCH3DBarNormalResource)initWithGeometry:(id)geometry
 {
-  v5 = a3;
+  geometryCopy = geometry;
   v9.receiver = self;
   v9.super_class = TSCH3DBarNormalResource;
   v6 = [(TSCH3DAbstractBarNormalResource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_geometry, a3);
+    objc_storeStrong(&v6->_geometry, geometry);
   }
 
   return v7;

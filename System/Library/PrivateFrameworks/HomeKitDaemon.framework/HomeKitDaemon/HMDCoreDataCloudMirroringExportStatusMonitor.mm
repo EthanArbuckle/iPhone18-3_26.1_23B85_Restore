@@ -1,11 +1,11 @@
 @interface HMDCoreDataCloudMirroringExportStatusMonitor
 + (id)logCategory;
 - (BOOL)isComplete;
-- (HMDCoreDataCloudMirroringExportStatusMonitor)initWithCoreData:(id)a3 managedObjectContext:(id)a4;
+- (HMDCoreDataCloudMirroringExportStatusMonitor)initWithCoreData:(id)data managedObjectContext:(id)context;
 - (HMDCoreDataCloudMirroringExportStatusMonitorDelegate)delegate;
 - (void)_verifyModelsExportComplete;
-- (void)configureWithExpectedObjectIDToExportedToken:(id)a3;
-- (void)coreData:(id)a3 persistentStoreWithIdentifierDidChange:(id)a4;
+- (void)configureWithExpectedObjectIDToExportedToken:(id)token;
+- (void)coreData:(id)data persistentStoreWithIdentifierDidChange:(id)change;
 - (void)verifyModelsExportStatus;
 @end
 
@@ -18,7 +18,7 @@
   return WeakRetained;
 }
 
-- (void)coreData:(id)a3 persistentStoreWithIdentifierDidChange:(id)a4
+- (void)coreData:(id)data persistentStoreWithIdentifierDidChange:(id)change
 {
   if (self)
   {
@@ -30,32 +30,32 @@
     coreData = 0;
   }
 
-  v6 = a4;
-  v7 = [(HMDCoreData *)coreData cloudPrivateStore];
-  v8 = [v7 identifier];
+  changeCopy = change;
+  cloudPrivateStore = [(HMDCoreData *)coreData cloudPrivateStore];
+  identifier = [cloudPrivateStore identifier];
   v9 = HMFEqualObjects();
 
   if (v9)
   {
-    v10 = [(HMDCoreDataCloudMirroringExportStatusMonitor *)self managedObjectContext];
+    managedObjectContext = [(HMDCoreDataCloudMirroringExportStatusMonitor *)self managedObjectContext];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __96__HMDCoreDataCloudMirroringExportStatusMonitor_coreData_persistentStoreWithIdentifierDidChange___block_invoke;
     v11[3] = &unk_27868A728;
     v11[4] = self;
-    [v10 performBlock:v11];
+    [managedObjectContext performBlock:v11];
   }
 }
 
 - (void)_verifyModelsExportComplete
 {
   v45 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 8) == 1 && [*(a1 + 40) count])
+    if (*(self + 8) == 1 && [*(self + 40) count])
     {
       v2 = objc_autoreleasePoolPush();
-      v3 = a1;
+      selfCopy = self;
       v4 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
       {
@@ -66,10 +66,10 @@
       }
 
       objc_autoreleasePoolPop(v2);
-      v3[9] = 1;
+      selfCopy[9] = 1;
     }
 
-    else if ([*(a1 + 40) count])
+    else if ([*(self + 40) count])
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -83,34 +83,34 @@
       v30[1] = 3221225472;
       v30[2] = __75__HMDCoreDataCloudMirroringExportStatusMonitor__verifyModelsExportComplete__block_invoke;
       v30[3] = &unk_27867DA88;
-      v30[4] = a1;
+      v30[4] = self;
       v30[5] = &buf;
       v8 = [v7 initWithOptions:v6 completionBlock:v30];
-      v9 = [v8 requestIdentifier];
+      requestIdentifier = [v8 requestIdentifier];
       v10 = *(*(&buf + 1) + 40);
-      *(*(&buf + 1) + 40) = v9;
+      *(*(&buf + 1) + 40) = requestIdentifier;
 
       v11 = MEMORY[0x277CBEB98];
-      v12 = *(a1 + 40);
-      v13 = [v12 allKeys];
-      v14 = [v11 setWithArray:v13];
+      v12 = *(self + 40);
+      allKeys = [v12 allKeys];
+      v14 = [v11 setWithArray:allKeys];
       [v8 setObjectIDsToFetch:v14];
 
-      v15 = *(a1 + 32);
-      v16 = [v15 cloudPrivateStore];
-      v39 = v16;
+      v15 = *(self + 32);
+      cloudPrivateStore = [v15 cloudPrivateStore];
+      v39 = cloudPrivateStore;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
       [v8 setAffectedStores:v17];
 
-      v18 = [a1 managedObjectContext];
+      managedObjectContext = [self managedObjectContext];
       v29 = 0;
-      v19 = [v18 executeRequest:v8 error:&v29];
+      v19 = [managedObjectContext executeRequest:v8 error:&v29];
       v20 = v29;
 
       if (!v19 || v20)
       {
         v21 = objc_autoreleasePoolPush();
-        v26 = a1;
+        selfCopy2 = self;
         v23 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
@@ -125,9 +125,9 @@
 
       else
       {
-        *(a1 + 8) = 1;
+        *(self + 8) = 1;
         v21 = objc_autoreleasePoolPush();
-        v22 = a1;
+        selfCopy3 = self;
         v23 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
@@ -411,27 +411,27 @@ void __69__HMDCoreDataCloudMirroringExportStatusMonitor__processExportResult___b
 
 - (void)verifyModelsExportStatus
 {
-  v3 = [(HMDCoreDataCloudMirroringExportStatusMonitor *)self managedObjectContext];
+  managedObjectContext = [(HMDCoreDataCloudMirroringExportStatusMonitor *)self managedObjectContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __72__HMDCoreDataCloudMirroringExportStatusMonitor_verifyModelsExportStatus__block_invoke;
   v4[3] = &unk_27868A728;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [managedObjectContext performBlock:v4];
 }
 
-- (void)configureWithExpectedObjectIDToExportedToken:(id)a3
+- (void)configureWithExpectedObjectIDToExportedToken:(id)token
 {
-  v4 = a3;
-  v5 = [(HMDCoreDataCloudMirroringExportStatusMonitor *)self managedObjectContext];
+  tokenCopy = token;
+  managedObjectContext = [(HMDCoreDataCloudMirroringExportStatusMonitor *)self managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __93__HMDCoreDataCloudMirroringExportStatusMonitor_configureWithExpectedObjectIDToExportedToken___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = tokenCopy;
+  v6 = tokenCopy;
+  [managedObjectContext performBlock:v7];
 }
 
 void __93__HMDCoreDataCloudMirroringExportStatusMonitor_configureWithExpectedObjectIDToExportedToken___block_invoke(uint64_t a1)
@@ -462,23 +462,23 @@ void __93__HMDCoreDataCloudMirroringExportStatusMonitor_configureWithExpectedObj
 
 - (BOOL)isComplete
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(HMDCoreDataCloudMirroringExportStatusMonitor *)self managedObjectContext];
+  managedObjectContext = [(HMDCoreDataCloudMirroringExportStatusMonitor *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __58__HMDCoreDataCloudMirroringExportStatusMonitor_isComplete__block_invoke;
   v5[3] = &unk_27868A688;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __58__HMDCoreDataCloudMirroringExportStatusMonitor_isComplete__block_invoke(uint64_t result)
@@ -495,18 +495,18 @@ uint64_t __58__HMDCoreDataCloudMirroringExportStatusMonitor_isComplete__block_in
   return result;
 }
 
-- (HMDCoreDataCloudMirroringExportStatusMonitor)initWithCoreData:(id)a3 managedObjectContext:(id)a4
+- (HMDCoreDataCloudMirroringExportStatusMonitor)initWithCoreData:(id)data managedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = HMDCoreDataCloudMirroringExportStatusMonitor;
   v9 = [(HMDCoreDataCloudMirroringExportStatusMonitor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_coreData, a3);
-    objc_storeStrong(&v10->_managedObjectContext, a4);
+    objc_storeStrong(&v9->_coreData, data);
+    objc_storeStrong(&v10->_managedObjectContext, context);
   }
 
   return v10;

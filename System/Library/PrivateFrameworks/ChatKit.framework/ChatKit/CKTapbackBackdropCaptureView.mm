@@ -1,5 +1,5 @@
 @interface CKTapbackBackdropCaptureView
-- (_TtC7ChatKit28CKTapbackBackdropCaptureView)initWithCoder:(id)a3;
+- (_TtC7ChatKit28CKTapbackBackdropCaptureView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
@@ -16,7 +16,7 @@
   [v3 setFrame_];
 }
 
-- (_TtC7ChatKit28CKTapbackBackdropCaptureView)initWithCoder:(id)a3
+- (_TtC7ChatKit28CKTapbackBackdropCaptureView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC7ChatKit28CKTapbackBackdropCaptureView_backdropLayer;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(type metadata accessor for CKTapbackBackdropCaptureLayer()) init];

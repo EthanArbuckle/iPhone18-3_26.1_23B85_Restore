@@ -1,16 +1,16 @@
 @interface EFStringHash
-- (BOOL)isEqual:(id)a3;
-- (EFStringHash)initWithCoder:(id)a3;
-- (EFStringHash)initWithData:(id)a3;
-- (EFStringHash)initWithHash:(int64_t)a3;
-- (EFStringHash)initWithMD5Digest:(id)a3;
-- (EFStringHash)initWithString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EFStringHash)initWithCoder:(id)coder;
+- (EFStringHash)initWithData:(id)data;
+- (EFStringHash)initWithHash:(int64_t)hash;
+- (EFStringHash)initWithMD5Digest:(id)digest;
+- (EFStringHash)initWithString:(id)string;
 - (NSString)ef_publicDescription;
 - (NSString)hexStringValue;
 - (NSString)stringValue;
-- (id)_hexStringFromHash:(int64_t)a3;
+- (id)_hexStringFromHash:(int64_t)hash;
 - (id)redactedStringValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EFStringHash
@@ -29,9 +29,9 @@ void __35__EFStringHash_redactedStringValue__block_invoke()
 - (NSString)ef_publicDescription
 {
   v3 = +[EFDevice currentDevice];
-  v4 = [v3 isInternal];
+  isInternal = [v3 isInternal];
 
-  if (v4)
+  if (isInternal)
   {
     [(EFStringHash *)self debugDescription];
   }
@@ -106,13 +106,13 @@ void __35__EFStringHash_redactedStringValue__block_invoke()
   return &v4->isa;
 }
 
-- (EFStringHash)initWithString:(id)a3
+- (EFStringHash)initWithString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v5 = [v4 ef_md5Digest];
-    v6 = [(EFStringHash *)self initWithMD5Digest:v5];
+    ef_md5Digest = [stringCopy ef_md5Digest];
+    v6 = [(EFStringHash *)self initWithMD5Digest:ef_md5Digest];
   }
 
   else
@@ -123,13 +123,13 @@ void __35__EFStringHash_redactedStringValue__block_invoke()
   return v6;
 }
 
-- (EFStringHash)initWithData:(id)a3
+- (EFStringHash)initWithData:(id)data
 {
-  v4 = a3;
-  if ([v4 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    v5 = [v4 ef_md5Digest];
-    v6 = [(EFStringHash *)self initWithMD5Digest:v5];
+    ef_md5Digest = [dataCopy ef_md5Digest];
+    v6 = [(EFStringHash *)self initWithMD5Digest:ef_md5Digest];
   }
 
   else
@@ -140,30 +140,30 @@ void __35__EFStringHash_redactedStringValue__block_invoke()
   return v6;
 }
 
-- (EFStringHash)initWithHash:(int64_t)a3
+- (EFStringHash)initWithHash:(int64_t)hash
 {
   v5.receiver = self;
   v5.super_class = EFStringHash;
   result = [(EFStringHash *)&v5 init];
   if (result)
   {
-    result->_primitiveHash = a3;
+    result->_primitiveHash = hash;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[EFStringHash int64Value](self, "int64Value") && [v5 int64Value])
     {
-      v6 = [(EFStringHash *)self int64Value];
-      v7 = v6 == [v5 int64Value];
+      int64Value = [(EFStringHash *)self int64Value];
+      v7 = int64Value == [v5 int64Value];
     }
 
     else
@@ -182,40 +182,40 @@ void __35__EFStringHash_redactedStringValue__block_invoke()
 
 - (NSString)stringValue
 {
-  v2 = [(EFStringHash *)self int64Value];
-  if (v2)
+  int64Value = [(EFStringHash *)self int64Value];
+  if (int64Value)
   {
-    v2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lld", v2];
+    int64Value = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lld", int64Value];
   }
 
-  return v2;
+  return int64Value;
 }
 
-- (id)_hexStringFromHash:(int64_t)a3
+- (id)_hexStringFromHash:(int64_t)hash
 {
-  v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p", a3];
+  v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p", hash];
 
   return v3;
 }
 
-- (EFStringHash)initWithCoder:(id)a3
+- (EFStringHash)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[EFStringHash initWithHash:](self, "initWithHash:", [v4 decodeInt64ForKey:@"EFPropertyKey_primitiveHash"]);
+  coderCopy = coder;
+  v5 = -[EFStringHash initWithHash:](self, "initWithHash:", [coderCopy decodeInt64ForKey:@"EFPropertyKey_primitiveHash"]);
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[EFStringHash primitiveHash](self forKey:{"primitiveHash"), @"EFPropertyKey_primitiveHash"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[EFStringHash primitiveHash](self forKey:{"primitiveHash"), @"EFPropertyKey_primitiveHash"}];
 }
 
-- (EFStringHash)initWithMD5Digest:(id)a3
+- (EFStringHash)initWithMD5Digest:(id)digest
 {
-  v4 = a3;
-  if ([v4 length] >= 8)
+  digestCopy = digest;
+  if ([digestCopy length] >= 8)
   {
     v10 = 0;
     v11 = &v10;
@@ -231,7 +231,7 @@ void __35__EFStringHash_redactedStringValue__block_invoke()
     v8[3] = &unk_1E824A218;
     v8[4] = &v10;
     v8[5] = v9;
-    [v4 enumerateByteRangesUsingBlock:v8];
+    [digestCopy enumerateByteRangesUsingBlock:v8];
     v5 = v11[3];
     _Block_object_dispose(v9, 8);
     _Block_object_dispose(&v10, 8);

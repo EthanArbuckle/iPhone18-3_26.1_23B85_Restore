@@ -8,25 +8,25 @@
 - (id)replayAction
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = [(ECLocalActionReplayer *)self action];
+  action = [(ECLocalActionReplayer *)self action];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"ECIMAPFlagChangeActionReplayer.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"[self.action isKindOfClass:[ECFlagChangeMessageAction class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECIMAPFlagChangeActionReplayer.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"[self.action isKindOfClass:[ECFlagChangeMessageAction class]]"}];
   }
 
-  v6 = [(ECLocalActionReplayer *)self action];
-  v34 = [v6 remoteIDs];
-  v33 = [v6 messages];
+  action2 = [(ECLocalActionReplayer *)self action];
+  remoteIDs = [action2 remoteIDs];
+  messages = [action2 messages];
   v7 = objc_opt_new();
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v8 = v34;
+  v8 = remoteIDs;
   v9 = [v8 countByEnumeratingWithState:&v39 objects:v50 count:16];
   if (v9)
   {
@@ -53,7 +53,7 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v12 = v33;
+  v12 = messages;
   v13 = [v12 countByEnumeratingWithState:&v35 objects:v49 count:16];
   if (v13)
   {
@@ -67,10 +67,10 @@
           objc_enumerationMutation(v12);
         }
 
-        v16 = [*(*(&v35 + 1) + 8 * j) remoteID];
-        v17 = [v16 integerValue];
+        remoteID = [*(*(&v35 + 1) + 8 * j) remoteID];
+        integerValue = [remoteID integerValue];
 
-        if (v17)
+        if (integerValue)
         {
           [v7 addIndex:?];
         }
@@ -84,9 +84,9 @@
 
   if ([v7 count])
   {
-    v18 = [v6 flagChange];
-    v19 = [(ECIMAPFlagChangeActionReplayer *)self serverInterface];
-    v20 = [v19 storeFlagChange:v18 forUIDs:v7];
+    flagChange = [action2 flagChange];
+    serverInterface = [(ECIMAPFlagChangeActionReplayer *)self serverInterface];
+    v20 = [serverInterface storeFlagChange:flagChange forUIDs:v7];
   }
 
   else
@@ -97,11 +97,11 @@
   v21 = +[ECLocalActionReplayer log];
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(ECLocalActionReplayer *)self action];
+    action3 = [(ECLocalActionReplayer *)self action];
     v23 = [v7 count];
     v24 = @"didn't work";
     *buf = 138543874;
-    v44 = v22;
+    v44 = action3;
     if (v20)
     {
       v24 = @"worked";
@@ -121,10 +121,10 @@
 
   else
   {
-    v26 = [(ECIMAPFlagChangeActionReplayer *)self serverInterface];
-    v27 = [v26 hasValidConnection];
+    serverInterface2 = [(ECIMAPFlagChangeActionReplayer *)self serverInterface];
+    hasValidConnection = [serverInterface2 hasValidConnection];
 
-    if (v27)
+    if (hasValidConnection)
     {
       v28 = [ECLocalMessageActionResults alloc];
       v29 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ECLocalActionReplayErrorDomain" code:1 userInfo:0];

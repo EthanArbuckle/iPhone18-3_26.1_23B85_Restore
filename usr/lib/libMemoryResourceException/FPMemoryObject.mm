@@ -10,8 +10,8 @@
 - (NSString)detailedName;
 - (NSString)fullName;
 - (NSString)name;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)viewForProcess:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)viewForProcess:(id)process;
 - (unsigned)totalRegions;
 @end
 
@@ -39,8 +39,8 @@
   v3 = [(NSMutableArray *)self->_memoryRegions count];
   if (v3 == 1)
   {
-    v5 = [(NSMutableArray *)self->_memoryRegions firstObject];
-    [v5 setMemoryObject:v5];
+    firstObject = [(NSMutableArray *)self->_memoryRegions firstObject];
+    [firstObject setMemoryObject:firstObject];
     processMemoryRegions = self->_processMemoryRegions;
     self->_processMemoryRegions = 0;
 
@@ -78,15 +78,15 @@
     v3 = [(NSMutableArray *)self->_memoryRegions count];
     if (v3 == 1)
     {
-      v4 = [(NSMutableArray *)self->_memoryRegions firstObject];
-      LODWORD(v3) = [v4 totalRegions];
+      firstObject = [(NSMutableArray *)self->_memoryRegions firstObject];
+      LODWORD(v3) = [firstObject totalRegions];
     }
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (*(self + 8))
   {
@@ -117,15 +117,15 @@
   return result;
 }
 
-- (id)viewForProcess:(id)a3
+- (id)viewForProcess:(id)process
 {
   v24 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = self;
-  if ([(NSMutableDictionary *)v5->_processMemoryRegions count])
+  processCopy = process;
+  selfCopy = self;
+  if ([(NSMutableDictionary *)selfCopy->_processMemoryRegions count])
   {
-    processMemoryRegions = v5->_processMemoryRegions;
-    v7 = [MEMORY[0x29EDBA070] numberWithInt:{objc_msgSend(v4, "pid")}];
+    processMemoryRegions = selfCopy->_processMemoryRegions;
+    v7 = [MEMORY[0x29EDBA070] numberWithInt:{objc_msgSend(processCopy, "pid")}];
     v8 = [(NSMutableDictionary *)processMemoryRegions objectForKeyedSubscript:v7];
 
     if (!v8)
@@ -135,7 +135,7 @@
 
     v9 = objc_alloc_init(FPMemoryObject);
 
-    v9->_ownerPid = v5->_ownerPid;
+    v9->_ownerPid = selfCopy->_ownerPid;
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -164,23 +164,23 @@
       while (v12);
     }
 
-    sub_297E33BFC(v9, [v4 breakDownPhysFootprint]);
+    sub_297E33BFC(v9, [processCopy breakDownPhysFootprint]);
   }
 
   else
   {
-    v9 = v5;
-    if ((*(v5 + 8) & 2) != 0)
+    v9 = selfCopy;
+    if ((*(selfCopy + 8) & 2) != 0)
     {
-      v9 = [(FPMemoryObject *)v5 copy];
+      v9 = [(FPMemoryObject *)selfCopy copy];
 
       *(v9 + 8) |= 4u;
     }
   }
 
-  if (v5->_ownerPid != -1 && [v4 pid] != v5->_ownerPid)
+  if (selfCopy->_ownerPid != -1 && [processCopy pid] != selfCopy->_ownerPid)
   {
-    if (v9 == v5)
+    if (v9 == selfCopy)
     {
       v15 = [(FPMemoryObject *)v9 copy];
 
@@ -189,12 +189,12 @@
 
     v9->_dirtySize = 0;
     v9->_swappedSize = 0;
-    v9->_cleanSize += v5->_swappedSize + v5->_dirtySize;
+    v9->_cleanSize += selfCopy->_swappedSize + selfCopy->_dirtySize;
   }
 
-  v5 = v9;
+  selfCopy = v9;
 LABEL_19:
-  v16 = v5;
+  v16 = selfCopy;
 
   v17 = *MEMORY[0x29EDCA608];
 
@@ -248,65 +248,65 @@ LABEL_11:
 - (NSString)name
 {
   v2 = sub_297E342D0(self);
-  v3 = [v2 name];
+  name = [v2 name];
 
-  return v3;
+  return name;
 }
 
 - (NSString)detailedName
 {
   v2 = sub_297E342D0(self);
-  v3 = [v2 detailedName];
+  detailedName = [v2 detailedName];
 
-  return v3;
+  return detailedName;
 }
 
 - (NSString)fullName
 {
   v2 = sub_297E342D0(self);
-  v3 = [v2 fullName];
+  fullName = [v2 fullName];
 
-  return v3;
+  return fullName;
 }
 
 - (BOOL)verbose
 {
-  v2 = [(NSMutableArray *)self->_memoryRegions firstObject];
-  v3 = [v2 verbose];
+  firstObject = [(NSMutableArray *)self->_memoryRegions firstObject];
+  verbose = [firstObject verbose];
 
-  return v3;
+  return verbose;
 }
 
 - (NSDictionary)auxData
 {
-  v2 = [(NSMutableArray *)self->_memoryRegions firstObject];
-  v3 = [v2 auxData];
+  firstObject = [(NSMutableArray *)self->_memoryRegions firstObject];
+  auxData = [firstObject auxData];
 
-  return v3;
+  return auxData;
 }
 
 - (NSDictionary)detailedAuxData
 {
-  v2 = [(NSMutableArray *)self->_memoryRegions firstObject];
-  v3 = [v2 detailedAuxData];
+  firstObject = [(NSMutableArray *)self->_memoryRegions firstObject];
+  detailedAuxData = [firstObject detailedAuxData];
 
-  return v3;
+  return detailedAuxData;
 }
 
 - (NSString)auxDataName
 {
-  v2 = [(NSMutableArray *)self->_memoryRegions firstObject];
-  v3 = [v2 auxDataName];
+  firstObject = [(NSMutableArray *)self->_memoryRegions firstObject];
+  auxDataName = [firstObject auxDataName];
 
-  return v3;
+  return auxDataName;
 }
 
 - (NSString)detailedAuxDataName
 {
-  v2 = [(NSMutableArray *)self->_memoryRegions firstObject];
-  v3 = [v2 detailedAuxDataName];
+  firstObject = [(NSMutableArray *)self->_memoryRegions firstObject];
+  detailedAuxDataName = [firstObject detailedAuxDataName];
 
-  return v3;
+  return detailedAuxDataName;
 }
 
 @end

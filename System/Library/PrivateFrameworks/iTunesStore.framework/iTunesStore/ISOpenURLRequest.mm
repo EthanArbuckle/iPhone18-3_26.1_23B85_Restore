@@ -1,16 +1,16 @@
 @interface ISOpenURLRequest
-+ (ISOpenURLRequest)openURLRequestWithURL:(id)a3;
-- (ISOpenURLRequest)initWithURL:(id)a3;
-- (ISOpenURLRequest)initWithURLBagKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (ISOpenURLRequest)openURLRequestWithURL:(id)l;
+- (ISOpenURLRequest)initWithURL:(id)l;
+- (ISOpenURLRequest)initWithURLBagKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation ISOpenURLRequest
 
-- (ISOpenURLRequest)initWithURL:(id)a3
+- (ISOpenURLRequest)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = ISOpenURLRequest;
   v6 = [(ISOpenURLRequest *)&v9 init];
@@ -18,15 +18,15 @@
   if (v6)
   {
     v6->_isITunesStoreURL = 1;
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
   }
 
   return v7;
 }
 
-- (ISOpenURLRequest)initWithURLBagKey:(id)a3
+- (ISOpenURLRequest)initWithURLBagKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v10.receiver = self;
   v10.super_class = ISOpenURLRequest;
   v5 = [(ISOpenURLRequest *)&v10 init];
@@ -34,7 +34,7 @@
   if (v5)
   {
     v5->_isITunesStoreURL = 1;
-    v7 = [v4 copy];
+    v7 = [keyCopy copy];
     urlBagKey = v6->_urlBagKey;
     v6->_urlBagKey = v7;
   }
@@ -42,30 +42,30 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 40) = self->_interruptsKeybagRefresh;
   *(v5 + 8) = self->_isITunesStoreURL;
-  v6 = [(NSString *)self->_targetIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_targetIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSURL *)self->_url copyWithZone:a3];
+  v8 = [(NSURL *)self->_url copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_urlBagKey copyWithZone:a3];
+  v10 = [(NSString *)self->_urlBagKey copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
   return v5;
 }
 
-+ (ISOpenURLRequest)openURLRequestWithURL:(id)a3
++ (ISOpenURLRequest)openURLRequestWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[self alloc] initWithURL:lCopy];
 
   return v5;
 }

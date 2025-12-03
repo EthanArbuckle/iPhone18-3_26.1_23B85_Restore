@@ -1,14 +1,14 @@
 @interface WODownhillRun
 + (NSArray)metadataKeys;
-+ (double)calculateWorkoutTimeWithDateInterval:(id)a3 pauseResumeEvents:(id)a4;
-+ (id)makeDownhillRunWithDownhillRunEvent:(id)a3 workout:(id)a4 healthStore:(id)a5;
++ (double)calculateWorkoutTimeWithDateInterval:(id)interval pauseResumeEvents:(id)events;
++ (id)makeDownhillRunWithDownhillRunEvent:(id)event workout:(id)workout healthStore:(id)store;
 - (HKQuantity)averageHeartRate;
 - (HKQuantity)distance;
 - (NSString)description;
 - (WODownhillRun)init;
-- (WODownhillRun)initWithDownhillRunEvent:(id)a3 workoutTime:(double)a4 distance:(id)a5 averageHeartRate:(id)a6;
+- (WODownhillRun)initWithDownhillRunEvent:(id)event workoutTime:(double)time distance:(id)distance averageHeartRate:(id)rate;
 - (double)workoutTime;
-- (void)setWorkoutTime:(double)a3;
+- (void)setWorkoutTime:(double)time;
 @end
 
 @implementation WODownhillRun
@@ -20,11 +20,11 @@
   return *(self + v3);
 }
 
-- (void)setWorkoutTime:(double)a3
+- (void)setWorkoutTime:(double)time
 {
   v5 = OBJC_IVAR___WODownhillRun_workoutTime;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = time;
 }
 
 - (HKQuantity)distance
@@ -53,27 +53,27 @@
   return v2.super.isa;
 }
 
-- (WODownhillRun)initWithDownhillRunEvent:(id)a3 workoutTime:(double)a4 distance:(id)a5 averageHeartRate:(id)a6
+- (WODownhillRun)initWithDownhillRunEvent:(id)event workoutTime:(double)time distance:(id)distance averageHeartRate:(id)rate
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = specialized DownhillRun.init(downhillRunEvent:workoutTime:distance:averageHeartRate:)(v9, a5, a6, a4);
+  eventCopy = event;
+  distanceCopy = distance;
+  rateCopy = rate;
+  v12 = specialized DownhillRun.init(downhillRunEvent:workoutTime:distance:averageHeartRate:)(eventCopy, distance, rate, time);
 
   return v12;
 }
 
-+ (id)makeDownhillRunWithDownhillRunEvent:(id)a3 workout:(id)a4 healthStore:(id)a5
++ (id)makeDownhillRunWithDownhillRunEvent:(id)event workout:(id)workout healthStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = specialized static DownhillRun.makeDownhillRun(downhillRunEvent:workout:healthStore:)(v7, v8, v9);
+  eventCopy = event;
+  workoutCopy = workout;
+  storeCopy = store;
+  v10 = specialized static DownhillRun.makeDownhillRun(downhillRunEvent:workout:healthStore:)(eventCopy, workoutCopy, storeCopy);
 
   return v10;
 }
 
-+ (double)calculateWorkoutTimeWithDateInterval:(id)a3 pauseResumeEvents:(id)a4
++ (double)calculateWorkoutTimeWithDateInterval:(id)interval pauseResumeEvents:(id)events
 {
   v5 = type metadata accessor for DateInterval();
   v6 = *(v5 - 8);
@@ -81,13 +81,13 @@
   MEMORY[0x28223BE20](v5);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static DateInterval._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (events)
   {
     type metadata accessor for HKWorkoutEvent(0, &lazy cache variable for type metadata for HKWorkoutEvent, 0x277CCDC68);
-    a4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    events = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v10 = specialized static DownhillRun.calculateWorkoutTime(dateInterval:pauseResumeEvents:)(v9, a4);
+  v10 = specialized static DownhillRun.calculateWorkoutTime(dateInterval:pauseResumeEvents:)(v9, events);
 
   (*(v6 + 8))(v9, v5);
   return v10;
@@ -102,7 +102,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DownhillRun.description.getter();
   v5 = v4;
 

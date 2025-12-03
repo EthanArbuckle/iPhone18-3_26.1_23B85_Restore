@@ -7,7 +7,7 @@
 
 - (BOOL)isMomentsDisabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FTServerBag.isMomentsDisabled.getter();
 
   return v3 & 1;
@@ -15,7 +15,7 @@
 
 - (double)momentsRequestTimeout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FTServerBag.momentsRequestTimeout.getter();
 
   return v3;

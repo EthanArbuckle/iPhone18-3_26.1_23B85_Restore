@@ -1,16 +1,16 @@
 @interface VTKeywordAnalyzerQuasar
-- (VTKeywordAnalyzerQuasar)initWithConfigPath:(id)a3 triggerTokens:(id)a4 useKeywordSpotting:(BOOL)a5;
+- (VTKeywordAnalyzerQuasar)initWithConfigPath:(id)path triggerTokens:(id)tokens useKeywordSpotting:(BOOL)spotting;
 - (VTKeywordAnalyzerQuasarScoreDelegate)delegate;
-- (double)_getConfidence:(id)a3;
+- (double)_getConfidence:(id)confidence;
 - (id)_phIdToCtcScoreMap;
 - (void)dealloc;
 - (void)endAudio;
-- (void)processAudioBuffer:(id)a3 numSamples:(unint64_t)a4;
+- (void)processAudioBuffer:(id)buffer numSamples:(unint64_t)samples;
 - (void)reset;
 - (void)runRecognition;
-- (void)speechRecognizer:(id)a3 didFinishRecognitionWithError:(id)a4;
-- (void)speechRecognizer:(id)a3 didRecognizeFinalResults:(id)a4;
-- (void)speechRecognizer:(id)a3 didRecognizePartialResult:(id)a4;
+- (void)speechRecognizer:(id)recognizer didFinishRecognitionWithError:(id)error;
+- (void)speechRecognizer:(id)recognizer didRecognizeFinalResults:(id)results;
+- (void)speechRecognizer:(id)recognizer didRecognizePartialResult:(id)result;
 @end
 
 @implementation VTKeywordAnalyzerQuasar
@@ -22,12 +22,12 @@
   return WeakRetained;
 }
 
-- (double)_getConfidence:(id)a3
+- (double)_getConfidence:(id)confidence
 {
-  v4 = a3;
-  v5 = v4;
+  confidenceCopy = confidence;
+  v5 = confidenceCopy;
   v6 = 0.0;
-  if (v4 && self->_triggerTokenList)
+  if (confidenceCopy && self->_triggerTokenList)
   {
     v9 = 0;
     v10 = &v9;
@@ -39,7 +39,7 @@
     v8[3] = &unk_2784EC9A8;
     v8[4] = self;
     v8[5] = &v9;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [confidenceCopy enumerateObjectsUsingBlock:v8];
     v6 = v10[3];
     _Block_object_dispose(&v9, 8);
   }
@@ -79,17 +79,17 @@ void __42__VTKeywordAnalyzerQuasar__getConfidence___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)speechRecognizer:(id)a3 didFinishRecognitionWithError:(id)a4
+- (void)speechRecognizer:(id)recognizer didFinishRecognitionWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __74__VTKeywordAnalyzerQuasar_speechRecognizer_didFinishRecognitionWithError___block_invoke;
   v8[3] = &unk_2784ED118;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = errorCopy;
+  selfCopy = self;
+  v7 = errorCopy;
   dispatch_async(queue, v8);
 }
 
@@ -263,8 +263,8 @@ LABEL_22:
 
         v13 = *(*(&v29 + 1) + 8 * j);
         ctcKwdToPhIdMap = self->_ctcKwdToPhIdMap;
-        v15 = [v13 tokenName];
-        v16 = [(NSDictionary *)ctcKwdToPhIdMap objectForKeyedSubscript:v15];
+        tokenName = [v13 tokenName];
+        v16 = [(NSDictionary *)ctcKwdToPhIdMap objectForKeyedSubscript:tokenName];
 
         v17 = VTLogContextFacilityVoiceTrigger;
         if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -296,17 +296,17 @@ LABEL_22:
   return v4;
 }
 
-- (void)speechRecognizer:(id)a3 didRecognizeFinalResults:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognizeFinalResults:(id)results
 {
-  v5 = a4;
+  resultsCopy = results;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__VTKeywordAnalyzerQuasar_speechRecognizer_didRecognizeFinalResults___block_invoke;
   v8[3] = &unk_2784ED118;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = resultsCopy;
+  selfCopy = self;
+  v7 = resultsCopy;
   dispatch_async(queue, v8);
 }
 
@@ -380,17 +380,17 @@ LABEL_5:
   }
 }
 
-- (void)speechRecognizer:(id)a3 didRecognizePartialResult:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognizePartialResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__VTKeywordAnalyzerQuasar_speechRecognizer_didRecognizePartialResult___block_invoke;
   v8[3] = &unk_2784ED118;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = resultCopy;
+  v7 = resultCopy;
   dispatch_async(queue, v8);
 }
 
@@ -425,18 +425,18 @@ void __70__VTKeywordAnalyzerQuasar_speechRecognizer_didRecognizePartialResult___
   }
 }
 
-- (void)processAudioBuffer:(id)a3 numSamples:(unint64_t)a4
+- (void)processAudioBuffer:(id)buffer numSamples:(unint64_t)samples
 {
-  v6 = a3;
+  bufferCopy = buffer;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__VTKeywordAnalyzerQuasar_processAudioBuffer_numSamples___block_invoke;
   block[3] = &unk_2784EC980;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = bufferCopy;
+  samplesCopy = samples;
+  v8 = bufferCopy;
   dispatch_async(queue, block);
 }
 
@@ -537,11 +537,11 @@ uint64_t __32__VTKeywordAnalyzerQuasar_reset__block_invoke(uint64_t a1)
   return [*(*(a1 + 32) + 16) removeAllObjects];
 }
 
-- (VTKeywordAnalyzerQuasar)initWithConfigPath:(id)a3 triggerTokens:(id)a4 useKeywordSpotting:(BOOL)a5
+- (VTKeywordAnalyzerQuasar)initWithConfigPath:(id)path triggerTokens:(id)tokens useKeywordSpotting:(BOOL)spotting
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  tokensCopy = tokens;
   v27.receiver = self;
   v27.super_class = VTKeywordAnalyzerQuasar;
   v10 = [(VTKeywordAnalyzerQuasar *)&v27 init];
@@ -560,7 +560,7 @@ uint64_t __32__VTKeywordAnalyzerQuasar_reset__block_invoke(uint64_t a1)
     *(v10 + 2) = v15;
 
     *(v10 + 8) = 0;
-    v17 = [v9 componentsSeparatedByString:@"_"];
+    v17 = [tokensCopy componentsSeparatedByString:@"_"];
     v18 = *(v10 + 3);
     *(v10 + 3) = v17;
 
@@ -579,13 +579,13 @@ uint64_t __32__VTKeywordAnalyzerQuasar_reset__block_invoke(uint64_t a1)
     v21 = *(v10 + 5);
     *(v10 + 5) = 0;
 
-    *(v10 + 48) = a5;
+    *(v10 + 48) = spotting;
     v22 = *(v10 + 1);
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __79__VTKeywordAnalyzerQuasar_initWithConfigPath_triggerTokens_useKeywordSpotting___block_invoke;
     v24[3] = &unk_2784ED118;
-    v25 = v8;
+    v25 = pathCopy;
     v26 = v10;
     dispatch_async(v22, v24);
   }

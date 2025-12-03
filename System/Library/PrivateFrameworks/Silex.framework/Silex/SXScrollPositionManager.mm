@@ -1,16 +1,16 @@
 @interface SXScrollPositionManager
 - (SXScrollPositionRestoring)scrollPositionRestoring;
-- (void)updateScrollPosition:(id)a3 animated:(BOOL)a4;
+- (void)updateScrollPosition:(id)position animated:(BOOL)animated;
 @end
 
 @implementation SXScrollPositionManager
 
-- (void)updateScrollPosition:(id)a3 animated:(BOOL)a4
+- (void)updateScrollPosition:(id)position animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SXScrollPositionManager *)self scrollPositionRestoring];
-  [v7 updateScrollPosition:v6 animated:v4];
+  animatedCopy = animated;
+  positionCopy = position;
+  scrollPositionRestoring = [(SXScrollPositionManager *)self scrollPositionRestoring];
+  [scrollPositionRestoring updateScrollPosition:positionCopy animated:animatedCopy];
 }
 
 - (SXScrollPositionRestoring)scrollPositionRestoring

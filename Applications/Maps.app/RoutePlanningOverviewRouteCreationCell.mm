@@ -1,7 +1,7 @@
 @interface RoutePlanningOverviewRouteCreationCell
-+ (double)heightForWidth:(double)a3 traitCollection:(id)a4;
-- (RoutePlanningOverviewRouteCreationCell)initWithCoder:(id)a3;
-- (RoutePlanningOverviewRouteCreationCell)initWithFrame:(CGRect)a3;
++ (double)heightForWidth:(double)width traitCollection:(id)collection;
+- (RoutePlanningOverviewRouteCreationCell)initWithCoder:(id)coder;
+- (RoutePlanningOverviewRouteCreationCell)initWithFrame:(CGRect)frame;
 - (RoutePlanningOverviewRouteCreationCellDelegate)delegate;
 - (void)_createSubviews;
 - (void)_pressedCell;
@@ -19,8 +19,8 @@
 
 - (void)_pressedCell
 {
-  v3 = [(RoutePlanningOverviewRouteCreationCell *)self delegate];
-  [v3 didTapRouteCreationButtonForCell:self];
+  delegate = [(RoutePlanningOverviewRouteCreationCell *)self delegate];
+  [delegate didTapRouteCreationButtonForCell:self];
 }
 
 - (void)_createSubviews
@@ -35,8 +35,8 @@
   v5 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_pressedCell"];
   [v3 addGestureRecognizer:v5];
 
-  v6 = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
-  [v6 addSubview:v3];
+  contentView = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
+  [contentView addSubview:v3];
 
   v7 = objc_opt_new();
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -89,8 +89,8 @@
   v25 = +[UIColor secondarySystemFillColor];
   [v24 setBackgroundColor:v25];
 
-  v26 = [v24 layer];
-  [v26 setCornerRadius:10.0];
+  layer = [v24 layer];
+  [layer setCornerRadius:10.0];
 
   [v24 setClipsToBounds:1];
   [v3 addSubview:v24];
@@ -116,104 +116,104 @@
     v31 = 16.0;
   }
 
-  v109 = [(RoutePlanningOverviewRouteCreationCell *)self heightAnchor];
-  v108 = [v7 heightAnchor];
-  v107 = [v109 constraintEqualToAnchor:v108 constant:52.0];
+  heightAnchor = [(RoutePlanningOverviewRouteCreationCell *)self heightAnchor];
+  heightAnchor2 = [v7 heightAnchor];
+  v107 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:52.0];
   v111[0] = v107;
-  v106 = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
-  v105 = [v106 heightAnchor];
-  v104 = [v7 heightAnchor];
-  v103 = [v105 constraintEqualToAnchor:v104 constant:52.0];
+  contentView2 = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
+  heightAnchor3 = [contentView2 heightAnchor];
+  heightAnchor4 = [v7 heightAnchor];
+  v103 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4 constant:52.0];
   v111[1] = v103;
-  v101 = [v3 leadingAnchor];
-  v102 = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
-  v100 = [v102 leadingAnchor];
-  v99 = [v101 constraintEqualToAnchor:v100 constant:v31];
+  leadingAnchor = [v3 leadingAnchor];
+  contentView3 = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v99 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v31];
   v111[2] = v99;
-  v97 = [v3 trailingAnchor];
-  v98 = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
-  v96 = [v98 trailingAnchor];
-  v95 = [v97 constraintEqualToAnchor:v96 constant:-v31];
+  trailingAnchor = [v3 trailingAnchor];
+  contentView4 = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v95 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v31];
   v111[3] = v95;
-  v93 = [v3 topAnchor];
-  v94 = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
-  v92 = [v94 topAnchor];
-  v90 = [v93 constraintEqualToAnchor:v92];
+  topAnchor = [v3 topAnchor];
+  contentView5 = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
+  topAnchor2 = [contentView5 topAnchor];
+  v90 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v111[4] = v90;
-  v88 = [v3 bottomAnchor];
-  v89 = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
-  v86 = [v89 bottomAnchor];
-  v85 = [v88 constraintEqualToAnchor:v86];
+  bottomAnchor = [v3 bottomAnchor];
+  contentView6 = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
+  bottomAnchor2 = [contentView6 bottomAnchor];
+  v85 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v111[5] = v85;
-  v84 = [v24 trailingAnchor];
-  v82 = [v3 trailingAnchor];
-  v81 = [v84 constraintEqualToAnchor:v82 constant:-16.0];
+  trailingAnchor3 = [v24 trailingAnchor];
+  trailingAnchor4 = [v3 trailingAnchor];
+  v81 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
   v111[6] = v81;
-  v79 = [v24 centerYAnchor];
-  v78 = [v3 centerYAnchor];
-  v77 = [v79 constraintEqualToAnchor:v78];
+  centerYAnchor = [v24 centerYAnchor];
+  centerYAnchor2 = [v3 centerYAnchor];
+  v77 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v111[7] = v77;
-  v76 = [v24 widthAnchor];
-  v75 = [v76 constraintEqualToConstant:64.0];
+  widthAnchor = [v24 widthAnchor];
+  v75 = [widthAnchor constraintEqualToConstant:64.0];
   v111[8] = v75;
-  v74 = [v24 heightAnchor];
-  v73 = [v74 constraintEqualToConstant:64.0];
+  heightAnchor5 = [v24 heightAnchor];
+  v73 = [heightAnchor5 constraintEqualToConstant:64.0];
   v111[9] = v73;
   v87 = v28;
-  v72 = [v28 centerXAnchor];
-  v71 = [v24 centerXAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  centerXAnchor = [v28 centerXAnchor];
+  centerXAnchor2 = [v24 centerXAnchor];
+  v70 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v111[10] = v70;
-  v69 = [v28 centerYAnchor];
+  centerYAnchor3 = [v28 centerYAnchor];
   v83 = v24;
-  v68 = [v24 centerYAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68];
+  centerYAnchor4 = [v24 centerYAnchor];
+  v67 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v111[11] = v67;
-  v65 = [v7 leadingAnchor];
+  leadingAnchor3 = [v7 leadingAnchor];
   v80 = v3;
-  v64 = [v3 leadingAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64 constant:18.0];
+  leadingAnchor4 = [v3 leadingAnchor];
+  v63 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:18.0];
   v111[12] = v63;
-  v62 = [v7 trailingAnchor];
-  v61 = [v24 leadingAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61 constant:-16.0];
+  trailingAnchor5 = [v7 trailingAnchor];
+  leadingAnchor5 = [v24 leadingAnchor];
+  v60 = [trailingAnchor5 constraintEqualToAnchor:leadingAnchor5 constant:-16.0];
   v111[13] = v60;
-  v59 = [v7 centerYAnchor];
-  v58 = [v3 centerYAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  centerYAnchor5 = [v7 centerYAnchor];
+  centerYAnchor6 = [v3 centerYAnchor];
+  v57 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v111[14] = v57;
-  v56 = [v7 heightAnchor];
-  v55 = [v56 constraintGreaterThanOrEqualToConstant:68.0];
+  heightAnchor6 = [v7 heightAnchor];
+  v55 = [heightAnchor6 constraintGreaterThanOrEqualToConstant:68.0];
   v111[15] = v55;
-  v54 = [(UILabel *)v91 leadingAnchor];
-  v53 = [v7 leadingAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  leadingAnchor6 = [(UILabel *)v91 leadingAnchor];
+  leadingAnchor7 = [v7 leadingAnchor];
+  v52 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   v111[16] = v52;
-  v51 = [(UILabel *)v91 trailingAnchor];
-  v50 = [v7 trailingAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  trailingAnchor6 = [(UILabel *)v91 trailingAnchor];
+  trailingAnchor7 = [v7 trailingAnchor];
+  v49 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   v111[17] = v49;
-  v48 = [(UILabel *)v91 topAnchor];
-  v47 = [v7 topAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  topAnchor3 = [(UILabel *)v91 topAnchor];
+  topAnchor4 = [v7 topAnchor];
+  v46 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v111[18] = v46;
   v32 = v23;
-  v45 = [(UILabel *)v23 leadingAnchor];
-  v44 = [v7 leadingAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  leadingAnchor8 = [(UILabel *)v23 leadingAnchor];
+  leadingAnchor9 = [v7 leadingAnchor];
+  v43 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
   v111[19] = v43;
-  v42 = [(UILabel *)v23 trailingAnchor];
+  trailingAnchor8 = [(UILabel *)v23 trailingAnchor];
   v66 = v7;
-  v41 = [v7 trailingAnchor];
-  v33 = [v42 constraintEqualToAnchor:v41];
+  trailingAnchor9 = [v7 trailingAnchor];
+  v33 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
   v111[20] = v33;
-  v34 = [(UILabel *)v23 topAnchor];
-  v35 = [(UILabel *)v91 bottomAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35 constant:2.0];
+  topAnchor5 = [(UILabel *)v23 topAnchor];
+  bottomAnchor3 = [(UILabel *)v91 bottomAnchor];
+  v36 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:2.0];
   v111[21] = v36;
-  v37 = [(UILabel *)v23 bottomAnchor];
-  v38 = [v7 bottomAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38];
+  bottomAnchor4 = [(UILabel *)v23 bottomAnchor];
+  bottomAnchor5 = [v7 bottomAnchor];
+  v39 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v111[22] = v39;
   v40 = [NSArray arrayWithObjects:v111 count:23];
   [NSLayoutConstraint activateConstraints:v40];
@@ -225,8 +225,8 @@
   [(RoutePlanningOverviewRouteCreationCell *)self setBackgroundColor:v3];
 
   v4 = +[UIColor clearColor];
-  v5 = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
-  [v5 setBackgroundColor:v4];
+  contentView = [(RoutePlanningOverviewRouteCreationCell *)self contentView];
+  [contentView setBackgroundColor:v4];
 
   objc_initWeak(&location, self);
   v8 = _NSConcreteStackBlock;
@@ -245,11 +245,11 @@
   objc_destroyWeak(&location);
 }
 
-- (RoutePlanningOverviewRouteCreationCell)initWithCoder:(id)a3
+- (RoutePlanningOverviewRouteCreationCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RoutePlanningOverviewRouteCreationCell;
-  v3 = [(RoutePlanningOverviewRouteCreationCell *)&v6 initWithCoder:a3];
+  v3 = [(RoutePlanningOverviewRouteCreationCell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -259,11 +259,11 @@
   return v4;
 }
 
-- (RoutePlanningOverviewRouteCreationCell)initWithFrame:(CGRect)a3
+- (RoutePlanningOverviewRouteCreationCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = RoutePlanningOverviewRouteCreationCell;
-  v3 = [(RoutePlanningOverviewRouteCreationCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RoutePlanningOverviewRouteCreationCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -273,22 +273,22 @@
   return v4;
 }
 
-+ (double)heightForWidth:(double)a3 traitCollection:(id)a4
++ (double)heightForWidth:(double)width traitCollection:(id)collection
 {
-  v4 = a3 + -134.0;
-  if (a3 + -134.0 <= 0.0)
+  v4 = width + -134.0;
+  if (width + -134.0 <= 0.0)
   {
     return 68.0;
   }
 
-  v5 = [a4 preferredContentSizeCategory];
-  if (!qword_10195DD00 || UIContentSizeCategoryCompareToCategory(qword_10195DD08, v5))
+  preferredContentSizeCategory = [collection preferredContentSizeCategory];
+  if (!qword_10195DD00 || UIContentSizeCategoryCompareToCategory(qword_10195DD08, preferredContentSizeCategory))
   {
     v6 = [[RoutePlanningOverviewRouteCreationCell alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     v7 = qword_10195DD00;
     qword_10195DD00 = v6;
 
-    objc_storeStrong(&qword_10195DD08, v5);
+    objc_storeStrong(&qword_10195DD08, preferredContentSizeCategory);
   }
 
   [*(qword_10195DD00 + 8) sizeThatFits:{v4, 1.79769313e308}];

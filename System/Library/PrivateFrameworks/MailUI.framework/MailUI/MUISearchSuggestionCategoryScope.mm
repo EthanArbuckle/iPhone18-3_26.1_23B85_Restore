@@ -1,17 +1,17 @@
 @interface MUISearchSuggestionCategoryScope
-+ (MUISearchSuggestionCategoryScope)scopeWithTitle:(id)a3 identifier:(id)a4;
++ (MUISearchSuggestionCategoryScope)scopeWithTitle:(id)title identifier:(id)identifier;
 @end
 
 @implementation MUISearchSuggestionCategoryScope
 
-+ (MUISearchSuggestionCategoryScope)scopeWithTitle:(id)a3 identifier:(id)a4
++ (MUISearchSuggestionCategoryScope)scopeWithTitle:(id)title identifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  titleCopy = title;
   v7 = objc_alloc_init(MUISearchSuggestionCategoryScope);
-  [(MUISearchSuggestionCategoryScope *)v7 setTitle:v6];
+  [(MUISearchSuggestionCategoryScope *)v7 setTitle:titleCopy];
 
-  [(MUISearchSuggestionCategoryScope *)v7 setIdentifier:v5];
+  [(MUISearchSuggestionCategoryScope *)v7 setIdentifier:identifierCopy];
 
   return v7;
 }

@@ -1,50 +1,50 @@
 @interface TVApplicationController
-+ (id)_applicationControllerForElement:(id)a3;
-+ (id)_jsLaunchOptionsWithApplicationOptions:(id)a3;
++ (id)_applicationControllerForElement:(id)element;
++ (id)_jsLaunchOptionsWithApplicationOptions:(id)options;
 + (void)initialize;
 - (BOOL)_hasReloadOnResumeMinIntervalPassed;
 - (BOOL)_shouldReloadOnResume;
-- (BOOL)appContext:(id)a3 highlightViewForElement:(id)a4 contentColor:(id)a5 paddingColor:(id)a6 borderColor:(id)a7 marginColor:(id)a8;
-- (BOOL)appNavigationController:(id)a3 shouldDismissShroudForDocument:(id)a4;
-- (BOOL)appNavigationController:(id)a3 shouldIgnoreDismissalForViewController:(id)a4;
-- (BOOL)appNavigationController:(id)a3 shouldOverrideModalBehaviorForDocument:(id)a4 andExistingDocument:(id)a5;
+- (BOOL)appContext:(id)context highlightViewForElement:(id)element contentColor:(id)color paddingColor:(id)paddingColor borderColor:(id)borderColor marginColor:(id)marginColor;
+- (BOOL)appNavigationController:(id)controller shouldDismissShroudForDocument:(id)document;
+- (BOOL)appNavigationController:(id)controller shouldIgnoreDismissalForViewController:(id)viewController;
+- (BOOL)appNavigationController:(id)controller shouldOverrideModalBehaviorForDocument:(id)document andExistingDocument:(id)existingDocument;
 - (BOOL)isTimeZoneSet;
-- (BOOL)jsOpenURL:(id)a3 options:(id)a4;
-- (BOOL)openURL:(id)a3 options:(id)a4;
+- (BOOL)jsOpenURL:(id)l options:(id)options;
+- (BOOL)openURL:(id)l options:(id)options;
 - (CGSize)screenSize;
 - (TVApplicationController)init;
-- (TVApplicationController)initWithContext:(id)a3 window:(id)a4 delegate:(id)a5;
+- (TVApplicationController)initWithContext:(id)context window:(id)window delegate:(id)delegate;
 - (TVApplicationControllerDelegate)delegate;
 - (UITraitEnvironment)keyTraitEnvironment;
 - (UIView)viewServiceKeyView;
 - (id)_rootViewController;
-- (id)navigationControllerForContext:(id)a3;
+- (id)navigationControllerForContext:(id)context;
 - (id)systemLanguage;
-- (id)tabBarForContext:(id)a3;
+- (id)tabBarForContext:(id)context;
 - (id)timeZone;
 - (unint64_t)preferredVideoFormat;
-- (void)_applicationDidEnterBackgroundNotification:(id)a3;
+- (void)_applicationDidEnterBackgroundNotification:(id)notification;
 - (void)_launchApp;
-- (void)_openURLControllerHandler:(BOOL)a3;
-- (void)_openURLIfPossibleWithOptions:(id)a3;
-- (void)_reloadControllerDidDisplay:(id)a3;
+- (void)_openURLControllerHandler:(BOOL)handler;
+- (void)_openURLIfPossibleWithOptions:(id)options;
+- (void)_reloadControllerDidDisplay:(id)display;
 - (void)_resetControllerNotifications;
-- (void)_rootControllerDidDisplay:(id)a3;
-- (void)_statusBarOrientationDidChange:(id)a3;
-- (void)appContext:(id)a3 didFailWithError:(id)a4;
-- (void)appContext:(id)a3 didStartWithOptions:(id)a4;
-- (void)appContext:(id)a3 didStopWithOptions:(id)a4;
-- (void)appContext:(id)a3 evaluateAppJavaScriptInContext:(id)a4;
-- (void)appContext:(id)a3 needsReloadWithUrgency:(unint64_t)a4 options:(id)a5;
-- (void)appContext:(id)a3 openDynamicUIURL:(id)a4 metricsOverlay:(id)a5 completion:(id)a6;
-- (void)appContext:(id)a3 openMarketingItem:(id)a4 metricsOverlay:(id)a5 completion:(id)a6;
-- (void)applicationDidResume:(id)a3;
-- (void)applicationWillSuspend:(id)a3;
+- (void)_rootControllerDidDisplay:(id)display;
+- (void)_statusBarOrientationDidChange:(id)change;
+- (void)appContext:(id)context didFailWithError:(id)error;
+- (void)appContext:(id)context didStartWithOptions:(id)options;
+- (void)appContext:(id)context didStopWithOptions:(id)options;
+- (void)appContext:(id)context evaluateAppJavaScriptInContext:(id)inContext;
+- (void)appContext:(id)context needsReloadWithUrgency:(unint64_t)urgency options:(id)options;
+- (void)appContext:(id)context openDynamicUIURL:(id)l metricsOverlay:(id)overlay completion:(id)completion;
+- (void)appContext:(id)context openMarketingItem:(id)item metricsOverlay:(id)overlay completion:(id)completion;
+- (void)applicationDidResume:(id)resume;
+- (void)applicationWillSuspend:(id)suspend;
 - (void)dealloc;
-- (void)dynamicViewController:(id)a3 didFinishCarrierLinkingWithResult:(id)a4 error:(id)a5;
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5;
-- (void)evaluateInJavaScriptContext:(id)a3 completion:(id)a4;
-- (void)setKeyTraitEnvironment:(id)a3;
+- (void)dynamicViewController:(id)controller didFinishCarrierLinkingWithResult:(id)result error:(id)error;
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error;
+- (void)evaluateInJavaScriptContext:(id)context completion:(id)completion;
+- (void)setKeyTraitEnvironment:(id)environment;
 - (void)stop;
 @end
 
@@ -52,7 +52,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _TVSetupLoggingObjects();
     objc_opt_class();
@@ -62,20 +62,20 @@
   }
 }
 
-+ (id)_jsLaunchOptionsWithApplicationOptions:(id)a3
++ (id)_jsLaunchOptionsWithApplicationOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_opt_new();
-  if ([v3 count])
+  if ([optionsCopy count])
   {
-    v5 = [v3 mutableCopy];
+    v5 = [optionsCopy mutableCopy];
     v6 = *MEMORY[0x277D76698];
     v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D76698]];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 absoluteString];
-      [v4 setObject:v9 forKeyedSubscript:@"openURL"];
+      absoluteString = [v7 absoluteString];
+      [v4 setObject:absoluteString forKeyedSubscript:@"openURL"];
 
       v10 = *MEMORY[0x277D76690];
       v11 = [v5 objectForKeyedSubscript:*MEMORY[0x277D76690]];
@@ -113,11 +113,11 @@
   return 0;
 }
 
-- (TVApplicationController)initWithContext:(id)a3 window:(id)a4 delegate:(id)a5
+- (TVApplicationController)initWithContext:(id)context window:(id)window delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  windowCopy = window;
+  delegateCopy = delegate;
   v67.receiver = self;
   v67.super_class = TVApplicationController;
   v11 = [(TVApplicationController *)&v67 init];
@@ -128,24 +128,24 @@
     v13 = *(v11 + 6);
     *(v11 + 6) = 0;
 
-    objc_storeStrong(&v12->_window, a4);
-    objc_storeWeak(&v12->_delegate, v10);
-    v14 = [v8 copy];
+    objc_storeStrong(&v12->_window, window);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    v14 = [contextCopy copy];
     context = v12->_context;
     v12->_context = v14;
 
-    v16 = [MEMORY[0x277CCA8D8] mainBundle];
-    v17 = [v16 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
     v18 = 1;
     v19 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-    v20 = [v19 firstObject];
-    v21 = [v20 stringByAppendingPathComponent:v17];
+    firstObject = [v19 firstObject];
+    v21 = [firstObject stringByAppendingPathComponent:bundleIdentifier];
 
     v22 = +[_TVProcessInfo currentProcessInfo];
-    LODWORD(v20) = [v22 hasPrivateEntitlement];
+    LODWORD(firstObject) = [v22 hasPrivateEntitlement];
 
-    if (v20)
+    if (firstObject)
     {
       v23 = MGCopyAnswer();
       if (v23)
@@ -155,8 +155,8 @@
         if (v25 == CFStringGetTypeID())
         {
           v26 = [MEMORY[0x277CCACA8] stringWithString:v24];
-          v27 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-          v28 = [v27 stringForKey:@"TVMLKitImageCacheKey"];
+          standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          v28 = [standardUserDefaults stringForKey:@"TVMLKitImageCacheKey"];
 
           if (![v26 length] || objc_msgSend(v28, "length") && (objc_msgSend(v28, "isEqualToString:", v26) & 1) != 0)
           {
@@ -165,8 +165,8 @@
 
           else
           {
-            v29 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-            [v29 setObject:v26 forKey:@"TVMLKitImageCacheKey"];
+            standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+            [standardUserDefaults2 setObject:v26 forKey:@"TVMLKitImageCacheKey"];
 
             v18 = 1;
           }
@@ -187,9 +187,9 @@
     }
 
     [TVAssetLibrary initializeAssetLibraryWithCachePath:v21 purgeCacheOnLoad:v18];
-    v30 = [(TVApplicationController *)v12 _rootViewController];
+    _rootViewController = [(TVApplicationController *)v12 _rootViewController];
     appRootViewController = v12->_appRootViewController;
-    v12->_appRootViewController = v30;
+    v12->_appRootViewController = _rootViewController;
 
     window = v12->_window;
     if (window)
@@ -198,13 +198,13 @@
       [(UIWindow *)v12->_window makeKeyAndVisible];
     }
 
-    v33 = [(TVApplicationControllerContext *)v12->_context storageIdentifier];
-    v34 = [v33 length];
+    storageIdentifier = [(TVApplicationControllerContext *)v12->_context storageIdentifier];
+    v34 = [storageIdentifier length];
 
     if (v34)
     {
-      v35 = [(TVApplicationControllerContext *)v12->_context storageIdentifier];
-      v36 = [v35 stringByAppendingString:@".localStorage.plist"];
+      storageIdentifier2 = [(TVApplicationControllerContext *)v12->_context storageIdentifier];
+      v36 = [storageIdentifier2 stringByAppendingString:@".localStorage.plist"];
     }
 
     else
@@ -214,8 +214,8 @@
 
     v37 = objc_alloc(MEMORY[0x277D1B030]);
     v38 = [v21 stringByAppendingPathComponent:v36];
-    v66 = v17;
-    v39 = [v37 initWithFilePath:v38 identifier:v17];
+    v66 = bundleIdentifier;
+    v39 = [v37 initWithFilePath:v38 identifier:bundleIdentifier];
     appLocalStorage = v12->_appLocalStorage;
     v12->_appLocalStorage = v39;
 
@@ -227,14 +227,14 @@
     [(_TVMLKitApplication *)v12->_application setAppRootViewController:v12->_appRootViewController];
     v43 = v12->_application;
     v44 = objc_opt_class();
-    v45 = [(TVApplicationControllerContext *)v12->_context launchOptions];
-    v46 = [v44 _jsLaunchOptionsWithApplicationOptions:v45];
+    launchOptions = [(TVApplicationControllerContext *)v12->_context launchOptions];
+    v46 = [v44 _jsLaunchOptionsWithApplicationOptions:launchOptions];
     [(_TVMLKitApplication *)v43 setJavaScriptLaunchOptions:v46];
 
-    v47 = v9;
-    [(_TVMLKitApplication *)v12->_application setKeyWindow:v9];
-    v48 = [(TVApplicationControllerContext *)v12->_context launchOptions];
-    v49 = [v48 objectForKeyedSubscript:*MEMORY[0x277D76698]];
+    v47 = windowCopy;
+    [(_TVMLKitApplication *)v12->_application setKeyWindow:windowCopy];
+    launchOptions2 = [(TVApplicationControllerContext *)v12->_context launchOptions];
+    v49 = [launchOptions2 objectForKeyedSubscript:*MEMORY[0x277D76698]];
 
     if (v49)
     {
@@ -242,35 +242,35 @@
     }
 
     [(TVApplicationController *)v12 _launchApp];
-    v50 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v51 = *MEMORY[0x277D76648];
-    v52 = [MEMORY[0x277D75128] sharedApplication];
-    [v50 addObserver:v12 selector:sel__applicationDidBecomeActiveNotification_ name:v51 object:v52];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [defaultCenter addObserver:v12 selector:sel__applicationDidBecomeActiveNotification_ name:v51 object:mEMORY[0x277D75128]];
 
-    v53 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v54 = *MEMORY[0x277D76660];
-    v55 = [MEMORY[0x277D75128] sharedApplication];
-    [v53 addObserver:v12 selector:sel__applicationDidEnterBackgroundNotification_ name:v54 object:v55];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    [defaultCenter2 addObserver:v12 selector:sel__applicationDidEnterBackgroundNotification_ name:v54 object:mEMORY[0x277D75128]2];
 
-    v56 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
     v57 = *MEMORY[0x277D76768];
-    v58 = [MEMORY[0x277D75128] sharedApplication];
-    [v56 addObserver:v12 selector:sel__applicationWillResignActiveNotification_ name:v57 object:v58];
+    mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+    [defaultCenter3 addObserver:v12 selector:sel__applicationWillResignActiveNotification_ name:v57 object:mEMORY[0x277D75128]3];
 
-    v59 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
     v60 = *MEMORY[0x277D76770];
-    v61 = [MEMORY[0x277D75128] sharedApplication];
-    [v59 addObserver:v12 selector:sel__applicationWillTerminateNotification_ name:v60 object:v61];
+    mEMORY[0x277D75128]4 = [MEMORY[0x277D75128] sharedApplication];
+    [defaultCenter4 addObserver:v12 selector:sel__applicationWillTerminateNotification_ name:v60 object:mEMORY[0x277D75128]4];
 
     v12->_interfaceOrientation = [*MEMORY[0x277D76620] statusBarOrientation];
-    v62 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v62 addObserver:v12 selector:sel__statusBarOrientationDidChange_ name:*MEMORY[0x277D76658] object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:v12 selector:sel__statusBarOrientationDidChange_ name:*MEMORY[0x277D76658] object:0];
 
     v63 = [[_TVApplicationInspector alloc] initWithApplicationController:v12];
     applicationInspector = v12->_applicationInspector;
     v12->_applicationInspector = v63;
 
-    v9 = v47;
+    windowCopy = v47;
   }
 
   return v12;
@@ -279,8 +279,8 @@
 - (void)dealloc
 {
   [(TVApplicationController *)self stop];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TVApplicationController;
@@ -294,20 +294,20 @@
   self->_appContext = 0;
 }
 
-- (BOOL)openURL:(id)a3 options:(id)a4
+- (BOOL)openURL:(id)l options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  lCopy = l;
+  optionsCopy = options;
+  if (lCopy)
   {
     v8 = objc_opt_new();
-    v9 = [v6 absoluteString];
-    [v8 setObject:v9 forKeyedSubscript:@"openURL"];
+    absoluteString = [lCopy absoluteString];
+    [v8 setObject:absoluteString forKeyedSubscript:@"openURL"];
 
-    v10 = [v7 objectForKeyedSubscript:*MEMORY[0x277D76690]];
+    v10 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D76690]];
 
     v11 = *MEMORY[0x277D766D0];
-    v12 = [v7 objectForKeyedSubscript:*MEMORY[0x277D766D0]];
+    v12 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D766D0]];
     v13 = v12;
     if (!v10)
     {
@@ -317,7 +317,7 @@
         goto LABEL_6;
       }
 
-      v13 = [v7 objectForKeyedSubscript:v11];
+      v13 = [optionsCopy objectForKeyedSubscript:v11];
     }
 
     [v8 setObject:v13 forKeyedSubscript:@"sourceAppIdentifier"];
@@ -334,9 +334,9 @@ LABEL_6:
 
       else if ([v8 count])
       {
-        v24 = [(TVApplicationController *)self activeDocument];
+        activeDocument = [(TVApplicationController *)self activeDocument];
 
-        if (!v24)
+        if (!activeDocument)
         {
           v25 = TVMLKitLogObject;
           if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_INFO))
@@ -380,16 +380,16 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v14 = [(TVApplicationController *)self delegate];
-    if ([v14 conformsToProtocol:&unk_287EAD8E0])
+    delegate = [(TVApplicationController *)self delegate];
+    if ([delegate conformsToProtocol:&unk_287EAD8E0])
     {
-      v15 = [(TVApplicationController *)self delegate];
+      delegate2 = [(TVApplicationController *)self delegate];
       v16 = objc_opt_respondsToSelector();
 
       if (v16)
       {
-        v17 = [(TVApplicationController *)self delegate];
-        v18 = [v17 appController:self shouldDisplayShroudForURL:v6 withOptions:v7];
+        delegate3 = [(TVApplicationController *)self delegate];
+        v18 = [delegate3 appController:self shouldDisplayShroudForURL:lCopy withOptions:optionsCopy];
 
         if (!v18)
         {
@@ -403,33 +403,33 @@ LABEL_30:
           [v21 showOverKeyWindowWithSpinnerOnly:0];
 LABEL_21:
 
-          v26 = [(TVApplicationController *)self _currentNavigationController];
-          [v26 dismissModal];
+          _currentNavigationController = [(TVApplicationController *)self _currentNavigationController];
+          [_currentNavigationController dismissModal];
 
-          v27 = [(TVApplicationController *)self rootViewController];
-          v28 = [v27 presentedViewController];
+          rootViewController = [(TVApplicationController *)self rootViewController];
+          presentedViewController = [rootViewController presentedViewController];
 
-          if (v28)
+          if (presentedViewController)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v29 = [v28 popToRootViewControllerAnimated:0];
+              v29 = [presentedViewController popToRootViewControllerAnimated:0];
             }
 
-            v30 = [(TVApplicationController *)self rootViewController];
-            [v30 dismissViewControllerAnimated:0 completion:0];
+            rootViewController2 = [(TVApplicationController *)self rootViewController];
+            [rootViewController2 dismissViewControllerAnimated:0 completion:0];
           }
 
-          v31 = [(TVApplicationController *)self _currentNavigationController];
-          v32 = [v31 popToRootViewControllerAnimated:0];
+          _currentNavigationController2 = [(TVApplicationController *)self _currentNavigationController];
+          v32 = [_currentNavigationController2 popToRootViewControllerAnimated:0];
 
           [(TVApplicationController *)self _resetControllerNotifications];
-          v33 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v33 addObserver:self selector:sel__openURLControllerDidDisplay_ name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter addObserver:self selector:sel__openURLControllerDidDisplay_ name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
 
-          v34 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v34 addObserver:self selector:sel__openURLControllerDidUpdate_ name:@"_TVAppDocumentDidUpdateNotification" object:0];
+          defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter2 addObserver:self selector:sel__openURLControllerDidUpdate_ name:@"_TVAppDocumentDidUpdateNotification" object:0];
 
           goto LABEL_26;
         }
@@ -447,7 +447,7 @@ LABEL_21:
 
 LABEL_31:
 
-  return v6 != 0;
+  return lCopy != 0;
 }
 
 void __43__TVApplicationController_openURL_options___block_invoke(uint64_t a1, void *a2)
@@ -461,15 +461,15 @@ void __43__TVApplicationController_openURL_options___block_invoke(uint64_t a1, v
   v6 = [v4 invokeMethod:@"onPreloadOpenURL" withArguments:v5];
 }
 
-- (void)_openURLIfPossibleWithOptions:(id)a3
+- (void)_openURLIfPossibleWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(TVApplicationController *)self activeDocument];
-  if (v5)
+  optionsCopy = options;
+  activeDocument = [(TVApplicationController *)self activeDocument];
+  if (activeDocument)
   {
   }
 
-  else if ([v4 count])
+  else if ([optionsCopy count])
   {
     v9 = TVMLKitLogObject;
     if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_INFO))
@@ -479,16 +479,16 @@ void __43__TVApplicationController_openURL_options___block_invoke(uint64_t a1, v
     }
 
     [(TVApplicationController *)self _resetControllerNotifications];
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:self selector:sel__rootControllerDidDisplay_ name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__rootControllerDidDisplay_ name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
 
-    v11 = [v4 copy];
+    v11 = [optionsCopy copy];
     openURLPresentedOptions = self->_openURLPresentedOptions;
     self->_openURLPresentedOptions = v11;
     goto LABEL_11;
   }
 
-  if ([v4 count])
+  if ([optionsCopy count])
   {
     v6 = TVMLKitLogObject;
     if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_INFO))
@@ -498,58 +498,58 @@ void __43__TVApplicationController_openURL_options___block_invoke(uint64_t a1, v
     }
 
     appContext = self->_appContext;
-    openURLPresentedOptions = [v4 copy];
+    openURLPresentedOptions = [optionsCopy copy];
     [(IKAppContext *)appContext openURLWithOptions:openURLPresentedOptions];
 LABEL_11:
   }
 }
 
-- (BOOL)jsOpenURL:(id)a3 options:(id)a4
+- (BOOL)jsOpenURL:(id)l options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  lCopy = l;
   v8 = objc_opt_new();
-  v9 = [v7 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  [v8 setObject:v9 forKeyedSubscript:@"openURL"];
-  v10 = [v6 objectForKeyedSubscript:*MEMORY[0x277D76690]];
+  [v8 setObject:absoluteString forKeyedSubscript:@"openURL"];
+  v10 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D76690]];
 
   [v8 setObject:v10 forKeyedSubscript:@"sourceAppIdentifier"];
-  v11 = [(IKAppContext *)self->_appContext isValid];
-  if (v11)
+  isValid = [(IKAppContext *)self->_appContext isValid];
+  if (isValid)
   {
     appContext = self->_appContext;
     v13 = [v8 copy];
     [(IKAppContext *)appContext openURLWithOptions:v13];
   }
 
-  return v11;
+  return isValid;
 }
 
-- (void)evaluateInJavaScriptContext:(id)a3 completion:(id)a4
+- (void)evaluateInJavaScriptContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   appContext = self->_appContext;
   if (appContext)
   {
-    [(IKAppContext *)appContext evaluate:v8 completionBlock:v6];
+    [(IKAppContext *)appContext evaluate:contextCopy completionBlock:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_applicationDidEnterBackgroundNotification:(id)a3
+- (void)_applicationDidEnterBackgroundNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (self->_popViewControllerOnBackground)
   {
-    v5 = [(TVApplicationController *)self _currentNavigationController];
-    v6 = [v5 popViewControllerAnimated:0];
+    _currentNavigationController = [(TVApplicationController *)self _currentNavigationController];
+    v6 = [_currentNavigationController popViewControllerAnimated:0];
 
     self->_popViewControllerOnBackground = 0;
   }
@@ -558,10 +558,10 @@ LABEL_11:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(TVApplicationController *)self _currentNavigationController];
-  v8 = [v7 viewControllers];
+  _currentNavigationController2 = [(TVApplicationController *)self _currentNavigationController];
+  viewControllers = [_currentNavigationController2 viewControllers];
 
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v9 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -573,7 +573,7 @@ LABEL_11:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(viewControllers);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
@@ -587,76 +587,76 @@ LABEL_11:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_statusBarOrientationDidChange:(id)a3
+- (void)_statusBarOrientationDidChange:(id)change
 {
-  v4 = [*MEMORY[0x277D76620] statusBarOrientation];
-  if (v4 != self->_interfaceOrientation)
+  statusBarOrientation = [*MEMORY[0x277D76620] statusBarOrientation];
+  if (statusBarOrientation != self->_interfaceOrientation)
   {
-    self->_interfaceOrientation = v4;
+    self->_interfaceOrientation = statusBarOrientation;
     if ([(IKAppContext *)self->_appContext isValid])
     {
-      v5 = [(_TVMLKitApplication *)self->_application appTraitCollection];
-      [(IKAppContext *)self->_appContext appTraitCollectionChanged:v5];
+      appTraitCollection = [(_TVMLKitApplication *)self->_application appTraitCollection];
+      [(IKAppContext *)self->_appContext appTraitCollectionChanged:appTraitCollection];
     }
   }
 }
 
-- (BOOL)appContext:(id)a3 highlightViewForElement:(id)a4 contentColor:(id)a5 paddingColor:(id)a6 borderColor:(id)a7 marginColor:(id)a8
+- (BOOL)appContext:(id)context highlightViewForElement:(id)element contentColor:(id)color paddingColor:(id)paddingColor borderColor:(id)borderColor marginColor:(id)marginColor
 {
   v18 = *MEMORY[0x277D85DE8];
   applicationInspector = self->_applicationInspector;
-  v17 = a4;
+  elementCopy = element;
   v11 = MEMORY[0x277CBEA60];
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = [v11 arrayWithObjects:&v17 count:1];
-  [(_TVApplicationInspector *)applicationInspector highlightViewElements:v15 contentColor:v13 borderColor:v12, v17, v18];
+  borderColorCopy = borderColor;
+  colorCopy = color;
+  elementCopy2 = element;
+  v15 = [v11 arrayWithObjects:&elementCopy count:1];
+  [(_TVApplicationInspector *)applicationInspector highlightViewElements:v15 contentColor:colorCopy borderColor:borderColorCopy, elementCopy, v18];
 
   return 1;
 }
 
-- (id)navigationControllerForContext:(id)a3
+- (id)navigationControllerForContext:(id)context
 {
-  if (self->_appContext == a3)
+  if (self->_appContext == context)
   {
-    v5 = [(TVAppRootViewController *)self->_appRootViewController appNavigationController];
+    appNavigationController = [(TVAppRootViewController *)self->_appRootViewController appNavigationController];
   }
 
   else
   {
-    v5 = 0;
+    appNavigationController = 0;
   }
 
-  return v5;
+  return appNavigationController;
 }
 
-- (id)tabBarForContext:(id)a3
+- (id)tabBarForContext:(id)context
 {
-  if (self->_appContext == a3)
+  if (self->_appContext == context)
   {
-    v5 = [(TVAppRootViewController *)self->_appRootViewController appTabBar];
+    appTabBar = [(TVAppRootViewController *)self->_appRootViewController appTabBar];
   }
 
   else
   {
-    v5 = 0;
+    appTabBar = 0;
   }
 
-  return v5;
+  return appTabBar;
 }
 
-- (void)appContext:(id)a3 didStartWithOptions:(id)a4
+- (void)appContext:(id)context didStartWithOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  optionsCopy = options;
   v8 = TVMLKitLogObject;
   if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_INFO))
   {
@@ -664,15 +664,15 @@ LABEL_11:
     _os_log_impl(&dword_26CD9A000, v8, OS_LOG_TYPE_INFO, "App Controller did launch", buf, 2u);
   }
 
-  if (self->_appContext == v6 && !self->_reloadInProgress)
+  if (self->_appContext == contextCopy && !self->_reloadInProgress)
   {
-    v9 = [(TVApplicationController *)self delegate];
+    delegate = [(TVApplicationController *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(TVApplicationController *)self delegate];
-      [v11 appController:self didFinishLaunchingWithOptions:v7];
+      delegate2 = [(TVApplicationController *)self delegate];
+      [delegate2 appController:self didFinishLaunchingWithOptions:optionsCopy];
 
       _TVMLMetricsLogPublicAPIUsage(sel_appController_didFinishLaunchingWithOptions_);
     }
@@ -709,69 +709,69 @@ LABEL_11:
   }
 }
 
-- (void)appContext:(id)a3 didFailWithError:(id)a4
+- (void)appContext:(id)context didFailWithError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   appContext = self->_appContext;
-  if (appContext == a3)
+  if (appContext == context)
   {
     self->_appContext = 0;
 
     v8 = TVMLKitLogObject;
     if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_ERROR))
     {
-      [TVApplicationController appContext:v6 didFailWithError:v8];
+      [TVApplicationController appContext:errorCopy didFailWithError:v8];
     }
 
-    v9 = [(TVApplicationController *)self delegate];
+    delegate = [(TVApplicationController *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(TVApplicationController *)self delegate];
+      delegate2 = [(TVApplicationController *)self delegate];
       v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TVMLKitErrorDomain" code:3 userInfo:0];
-      [v11 appController:self didFailWithError:v12];
+      [delegate2 appController:self didFailWithError:v12];
 
       _TVMLMetricsLogPublicAPIUsage(sel_appController_didFailWithError_);
     }
   }
 }
 
-- (void)appContext:(id)a3 didStopWithOptions:(id)a4
+- (void)appContext:(id)context didStopWithOptions:(id)options
 {
-  v11 = a3;
-  v6 = a4;
+  contextCopy = context;
+  optionsCopy = options;
   if (!self->_reloadInProgress)
   {
-    v7 = [(TVApplicationController *)self delegate];
+    delegate = [(TVApplicationController *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(TVApplicationController *)self delegate];
-      [v9 appController:self didStopWithOptions:v6];
+      delegate2 = [(TVApplicationController *)self delegate];
+      [delegate2 appController:self didStopWithOptions:optionsCopy];
 
       _TVMLMetricsLogPublicAPIUsage(sel_appController_didStopWithOptions_);
     }
 
     appContext = self->_appContext;
-    if (appContext == v11)
+    if (appContext == contextCopy)
     {
       self->_appContext = 0;
     }
   }
 }
 
-- (void)appContext:(id)a3 evaluateAppJavaScriptInContext:(id)a4
+- (void)appContext:(id)context evaluateAppJavaScriptInContext:(id)inContext
 {
-  v16 = a3;
-  v6 = a4;
+  contextCopy = context;
+  inContextCopy = inContext;
   v7 = +[_TVProcessInfo currentProcessInfo];
-  v8 = [v7 hasPrivateEntitlement];
-  v9 = [(TVApplicationController *)self delegate];
+  hasPrivateEntitlement = [v7 hasPrivateEntitlement];
+  delegate = [(TVApplicationController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
-  v11 = v8 & [v7 hasiTunesAPIEntitlement];
+  v11 = hasPrivateEntitlement & [v7 hasiTunesAPIEntitlement];
   if ((v10 & 1) == 0)
   {
     if (!v11)
@@ -782,48 +782,48 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  v12 = [(TVApplicationController *)self delegate];
-  [v12 appController:self evaluateAppJavaScriptInContext:v6];
+  delegate2 = [(TVApplicationController *)self delegate];
+  [delegate2 appController:self evaluateAppJavaScriptInContext:inContextCopy];
 
   _TVMLMetricsLogPublicAPIUsage(sel_appController_evaluateAppJavaScriptInContext_);
   if (v11)
   {
-    v13 = [v6 objectForKeyedSubscript:@"itms"];
-    v14 = [v13 toBool];
+    v13 = [inContextCopy objectForKeyedSubscript:@"itms"];
+    toBool = [v13 toBool];
 
-    if ((v14 & 1) == 0)
+    if ((toBool & 1) == 0)
     {
 LABEL_6:
-      v15 = [objc_alloc(MEMORY[0x277D1B0B0]) initWithAppContext:v16];
-      [v6 setObject:v15 forKeyedSubscript:@"itms"];
+      v15 = [objc_alloc(MEMORY[0x277D1B0B0]) initWithAppContext:contextCopy];
+      [inContextCopy setObject:v15 forKeyedSubscript:@"itms"];
     }
   }
 
 LABEL_7:
 }
 
-- (void)appContext:(id)a3 needsReloadWithUrgency:(unint64_t)a4 options:(id)a5
+- (void)appContext:(id)context needsReloadWithUrgency:(unint64_t)urgency options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 == 1)
+  contextCopy = context;
+  optionsCopy = options;
+  v10 = optionsCopy;
+  if (urgency == 1)
   {
     self->_reloadOnResume = 1;
-    v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277D1AF08]];
+    v11 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D1AF08]];
     [v11 doubleValue];
     self->_reloadOnResumeMinInterval = v12;
 
     if (self->_reloadOnResumeMinInterval > 0.0)
     {
-      v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v13 floatForKey:@"override-minSuspensionTime"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults floatForKey:@"override-minSuspensionTime"];
       v15 = v14;
 
       if (v15 > 0.0)
       {
-        v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        [v16 floatForKey:@"override-minSuspensionTime"];
+        standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        [standardUserDefaults2 floatForKey:@"override-minSuspensionTime"];
         self->_reloadOnResumeMinInterval = v17;
       }
     }
@@ -847,9 +847,9 @@ LABEL_7:
       {
 LABEL_10:
         v18 = +[_TVProcessInfo currentProcessInfo];
-        v19 = [v18 hasPrivateEntitlement];
+        hasPrivateEntitlement = [v18 hasPrivateEntitlement];
 
-        if (v19)
+        if (hasPrivateEntitlement)
         {
           v20 = +[_TVAppLoadingView loadingScreen];
           [v20 setTimeout:60.0];
@@ -858,8 +858,8 @@ LABEL_10:
           [v21 showOverKeyWindowWithSpinnerOnly:0];
 
           [(TVApplicationController *)self _resetControllerNotifications];
-          v22 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v22 addObserver:self selector:sel__reloadControllerDidDisplay_ name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter addObserver:self selector:sel__reloadControllerDidDisplay_ name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
         }
       }
     }
@@ -877,13 +877,13 @@ LABEL_10:
       v30[2] = __69__TVApplicationController_appContext_needsReloadWithUrgency_options___block_invoke;
       v30[3] = &unk_279D6E770;
       objc_copyWeak(&v32, &location);
-      v31 = v8;
+      v31 = contextCopy;
       v24 = MEMORY[0x26D6AFBB0](v30);
-      v25 = [(TVAppRootViewController *)self->_appRootViewController currentNavigationController];
+      currentNavigationController = [(TVAppRootViewController *)self->_appRootViewController currentNavigationController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v26 = v25;
+        v26 = currentNavigationController;
       }
 
       else
@@ -951,12 +951,12 @@ void __69__TVApplicationController_appContext_needsReloadWithUrgency_options___b
   }
 }
 
-- (void)appContext:(id)a3 openDynamicUIURL:(id)a4 metricsOverlay:(id)a5 completion:(id)a6
+- (void)appContext:(id)context openDynamicUIURL:(id)l metricsOverlay:(id)overlay completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  lCopy = l;
+  overlayCopy = overlay;
+  completionCopy = completion;
   v14 = self->_appRootViewController;
   v28 = 0;
   v29 = &v28;
@@ -974,25 +974,25 @@ void __69__TVApplicationController_appContext_needsReloadWithUrgency_options___b
     v15 = v29[3];
   }
 
-  v25 = v13;
-  v26 = v10;
+  v25 = completionCopy;
+  v26 = contextCopy;
   v16 = v15;
   _Block_object_dispose(&v28, 8);
-  v17 = [MEMORY[0x277D1B110] sharedCache];
+  mEMORY[0x277D1B110] = [MEMORY[0x277D1B110] sharedCache];
   v18 = MEMORY[0x277CEE408];
-  v19 = [v15 bagKeySet];
-  v20 = [v17 profile];
-  v21 = [v17 profileVersion];
-  [v18 registerBagKeySet:v19 forProfile:v20 profileVersion:v21];
+  bagKeySet = [v15 bagKeySet];
+  profile = [mEMORY[0x277D1B110] profile];
+  profileVersion = [mEMORY[0x277D1B110] profileVersion];
+  [v18 registerBagKeySet:bagKeySet forProfile:profile profileVersion:profileVersion];
 
-  v22 = [[v15 alloc] initWithBag:v17 URL:v11];
-  v23 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v24 = [v23 ams_activeiTunesAccount];
-  [v22 setAccount:v24];
+  v22 = [[v15 alloc] initWithBag:mEMORY[0x277D1B110] URL:lCopy];
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+  [v22 setAccount:ams_activeiTunesAccount];
 
-  if ([v12 count])
+  if ([overlayCopy count])
   {
-    [v22 setMetricsOverlay:v12];
+    [v22 setMetricsOverlay:overlayCopy];
   }
 
   [v22 setDelegate:self];
@@ -1000,12 +1000,12 @@ void __69__TVApplicationController_appContext_needsReloadWithUrgency_options___b
   [(TVAppRootViewController *)v14 presentViewController:v22 animated:1 completion:0];
 }
 
-- (void)appContext:(id)a3 openMarketingItem:(id)a4 metricsOverlay:(id)a5 completion:(id)a6
+- (void)appContext:(id)context openMarketingItem:(id)item metricsOverlay:(id)overlay completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  itemCopy = item;
+  overlayCopy = overlay;
+  completionCopy = completion;
   v14 = self->_appRootViewController;
   v29 = 0;
   v30 = &v29;
@@ -1023,26 +1023,26 @@ void __69__TVApplicationController_appContext_needsReloadWithUrgency_options___b
     v15 = v30[3];
   }
 
-  v26 = v13;
-  v27 = v10;
+  v26 = completionCopy;
+  v27 = contextCopy;
   v16 = v15;
   _Block_object_dispose(&v29, 8);
-  v17 = [MEMORY[0x277D1B110] sharedCache];
+  mEMORY[0x277D1B110] = [MEMORY[0x277D1B110] sharedCache];
   v18 = MEMORY[0x277CEE408];
-  v19 = [v15 bagKeySet];
-  v20 = [v17 profile];
-  v21 = [v17 profileVersion];
-  [v18 registerBagKeySet:v19 forProfile:v20 profileVersion:v21];
+  bagKeySet = [v15 bagKeySet];
+  profile = [mEMORY[0x277D1B110] profile];
+  profileVersion = [mEMORY[0x277D1B110] profileVersion];
+  [v18 registerBagKeySet:bagKeySet forProfile:profile profileVersion:profileVersion];
 
-  v22 = [objc_alloc(MEMORY[0x277CEE528]) initWithDictionary:v11];
-  v23 = [[v15 alloc] initWithMarketingItem:v22 bag:v17];
-  v24 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v25 = [v24 ams_activeiTunesAccount];
-  [v23 setAccount:v25];
+  v22 = [objc_alloc(MEMORY[0x277CEE528]) initWithDictionary:itemCopy];
+  v23 = [[v15 alloc] initWithMarketingItem:v22 bag:mEMORY[0x277D1B110]];
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+  [v23 setAccount:ams_activeiTunesAccount];
 
-  if ([v12 count])
+  if ([overlayCopy count])
   {
-    [v23 setMetricsOverlay:v12];
+    [v23 setMetricsOverlay:overlayCopy];
   }
 
   [v23 setDelegate:self];
@@ -1050,28 +1050,28 @@ void __69__TVApplicationController_appContext_needsReloadWithUrgency_options___b
   [(TVAppRootViewController *)v14 presentViewController:v23 animated:1 completion:0];
 }
 
-- (void)dynamicViewController:(id)a3 didFinishCarrierLinkingWithResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didFinishCarrierLinkingWithResult:(id)result error:(id)error
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(TVApplicationController *)self dynamicUICompletion];
-  if (v8)
+  resultCopy = result;
+  errorCopy = error;
+  dynamicUICompletion = [(TVApplicationController *)self dynamicUICompletion];
+  if (dynamicUICompletion)
   {
-    v9 = [objc_alloc(MEMORY[0x277D1B040]) initWithCarrierLinkResult:v10];
-    (v8)[2](v8, v9, v7);
+    v9 = [objc_alloc(MEMORY[0x277D1B040]) initWithCarrierLinkResult:resultCopy];
+    (dynamicUICompletion)[2](dynamicUICompletion, v9, errorCopy);
     [(TVApplicationController *)self setDynamicUICompletion:0];
   }
 }
 
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(TVApplicationController *)self dynamicUICompletion];
-  if (v8)
+  resultCopy = result;
+  errorCopy = error;
+  dynamicUICompletion = [(TVApplicationController *)self dynamicUICompletion];
+  if (dynamicUICompletion)
   {
-    v9 = [objc_alloc(MEMORY[0x277D1B040]) initWithPurchaseResult:v10];
-    (v8)[2](v8, v9, v7);
+    v9 = [objc_alloc(MEMORY[0x277D1B040]) initWithPurchaseResult:resultCopy];
+    (dynamicUICompletion)[2](dynamicUICompletion, v9, errorCopy);
     [(TVApplicationController *)self setDynamicUICompletion:0];
   }
 }
@@ -1086,8 +1086,8 @@ void __69__TVApplicationController_appContext_needsReloadWithUrgency_options___b
 
 - (CGSize)screenSize
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -1100,39 +1100,39 @@ void __69__TVApplicationController_appContext_needsReloadWithUrgency_options___b
 
 - (BOOL)isTimeZoneSet
 {
-  v2 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  v3 = v2 != 0;
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  v3 = systemTimeZone != 0;
 
   return v3;
 }
 
 - (id)systemLanguage
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 arrayForKey:@"AppleLanguages"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults arrayForKey:@"AppleLanguages"];
 
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)timeZone
 {
-  v2 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBE678]];
-  v4 = [v3 timeZone];
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  v3 = [autoupdatingCurrentLocale objectForKey:*MEMORY[0x277CBE678]];
+  timeZone = [v3 timeZone];
 
-  return v4;
+  return timeZone;
 }
 
-- (BOOL)appNavigationController:(id)a3 shouldOverrideModalBehaviorForDocument:(id)a4 andExistingDocument:(id)a5
+- (BOOL)appNavigationController:(id)controller shouldOverrideModalBehaviorForDocument:(id)document andExistingDocument:(id)existingDocument
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(TVApplicationController *)self delegate];
-  if ([v9 conformsToProtocol:&unk_287EAD8E0])
+  documentCopy = document;
+  existingDocumentCopy = existingDocument;
+  delegate = [(TVApplicationController *)self delegate];
+  if ([delegate conformsToProtocol:&unk_287EAD8E0])
   {
-    v10 = [(TVApplicationController *)self delegate];
+    delegate2 = [(TVApplicationController *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if ((v11 & 1) == 0)
@@ -1141,8 +1141,8 @@ void __69__TVApplicationController_appContext_needsReloadWithUrgency_options___b
       goto LABEL_7;
     }
 
-    v9 = [(TVApplicationController *)self delegate];
-    v12 = [v9 appController:self shouldOverrideModalBehaviorForDocument:v7 andExistingModalDocument:v8];
+    delegate = [(TVApplicationController *)self delegate];
+    v12 = [delegate appController:self shouldOverrideModalBehaviorForDocument:documentCopy andExistingModalDocument:existingDocumentCopy];
   }
 
   else
@@ -1154,13 +1154,13 @@ LABEL_7:
   return v12;
 }
 
-- (BOOL)appNavigationController:(id)a3 shouldIgnoreDismissalForViewController:(id)a4
+- (BOOL)appNavigationController:(id)controller shouldIgnoreDismissalForViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(TVApplicationController *)self delegate];
-  if ([v6 conformsToProtocol:&unk_287EAD8E0])
+  viewControllerCopy = viewController;
+  delegate = [(TVApplicationController *)self delegate];
+  if ([delegate conformsToProtocol:&unk_287EAD8E0])
   {
-    v7 = [(TVApplicationController *)self delegate];
+    delegate2 = [(TVApplicationController *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if ((v8 & 1) == 0)
@@ -1169,8 +1169,8 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v6 = [(TVApplicationController *)self delegate];
-    v9 = [v6 appController:self shouldIgnoreDismissalForViewController:v5];
+    delegate = [(TVApplicationController *)self delegate];
+    v9 = [delegate appController:self shouldIgnoreDismissalForViewController:viewControllerCopy];
   }
 
   else
@@ -1182,13 +1182,13 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)appNavigationController:(id)a3 shouldDismissShroudForDocument:(id)a4
+- (BOOL)appNavigationController:(id)controller shouldDismissShroudForDocument:(id)document
 {
-  v5 = a4;
-  v6 = [(TVApplicationController *)self delegate];
-  if ([v6 conformsToProtocol:&unk_287EAD8E0])
+  documentCopy = document;
+  delegate = [(TVApplicationController *)self delegate];
+  if ([delegate conformsToProtocol:&unk_287EAD8E0])
   {
-    v7 = [(TVApplicationController *)self delegate];
+    delegate2 = [(TVApplicationController *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if ((v8 & 1) == 0)
@@ -1197,8 +1197,8 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v6 = [(TVApplicationController *)self delegate];
-    v9 = [v6 appController:self shouldDismissShroudForDocument:v5];
+    delegate = [(TVApplicationController *)self delegate];
+    v9 = [delegate appController:self shouldDismissShroudForDocument:documentCopy];
   }
 
   else
@@ -1210,31 +1210,31 @@ LABEL_7:
   return v9;
 }
 
-- (void)setKeyTraitEnvironment:(id)a3
+- (void)setKeyTraitEnvironment:(id)environment
 {
-  v4 = a3;
-  objc_storeWeak(&self->_keyTraitEnvironment, v4);
-  [(_TVMLKitApplication *)self->_application setKeyTraitEnvironment:v4];
+  environmentCopy = environment;
+  objc_storeWeak(&self->_keyTraitEnvironment, environmentCopy);
+  [(_TVMLKitApplication *)self->_application setKeyTraitEnvironment:environmentCopy];
 }
 
 - (UIView)viewServiceKeyView
 {
-  v3 = [(TVApplicationController *)self keyTraitEnvironment];
+  keyTraitEnvironment = [(TVApplicationController *)self keyTraitEnvironment];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(TVApplicationController *)self keyTraitEnvironment];
+    keyTraitEnvironment2 = [(TVApplicationController *)self keyTraitEnvironment];
   }
 
   else
   {
-    v4 = 0;
+    keyTraitEnvironment2 = 0;
   }
 
-  return v4;
+  return keyTraitEnvironment2;
 }
 
-- (void)applicationDidResume:(id)a3
+- (void)applicationDidResume:(id)resume
 {
   suspended = self->_suspended;
   self->_suspended = 0;
@@ -1267,8 +1267,8 @@ LABEL_7:
       }
 
       v12 = v11;
-      v13 = [(_TVMLKitApplication *)self->_application appTraitCollection];
-      [v12 setObject:v13 forKeyedSubscript:@"appTraitCollection"];
+      appTraitCollection = [(_TVMLKitApplication *)self->_application appTraitCollection];
+      [v12 setObject:appTraitCollection forKeyedSubscript:@"appTraitCollection"];
 
       v15 = [v12 copy];
       [(IKAppContext *)self->_appContext resumeWithOptions:v15];
@@ -1284,11 +1284,11 @@ LABEL_7:
   }
 }
 
-- (void)applicationWillSuspend:(id)a3
+- (void)applicationWillSuspend:(id)suspend
 {
-  v4 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   reloadOnResumeBackgroundedDate = self->_reloadOnResumeBackgroundedDate;
-  self->_reloadOnResumeBackgroundedDate = v4;
+  self->_reloadOnResumeBackgroundedDate = date;
 
   appContext = self->_appContext;
   if (appContext)
@@ -1298,37 +1298,37 @@ LABEL_7:
   }
 }
 
-+ (id)_applicationControllerForElement:(id)a3
++ (id)_applicationControllerForElement:(id)element
 {
-  v3 = [a3 appDocument];
-  v4 = [v3 appContext];
+  appDocument = [element appDocument];
+  appContext = [appDocument appContext];
 
-  v5 = [v4 delegate];
+  delegate = [appContext delegate];
   objc_opt_class();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 delegate];
+    delegate2 = [appContext delegate];
   }
 
   else
   {
-    v6 = 0;
+    delegate2 = 0;
   }
 
-  return v6;
+  return delegate2;
 }
 
-- (void)_rootControllerDidDisplay:(id)a3
+- (void)_rootControllerDidDisplay:(id)display
 {
   [(TVApplicationController *)self _resetControllerNotifications];
   if ([(NSDictionary *)self->_openURLPresentedOptions count])
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel__openURLControllerDidDisplay_ name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__openURLControllerDidDisplay_ name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel__openURLControllerDidUpdate_ name:@"_TVAppDocumentDidUpdateNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__openURLControllerDidUpdate_ name:@"_TVAppDocumentDidUpdateNotification" object:0];
 
     v6 = [(NSDictionary *)self->_openURLPresentedOptions copy];
     openURLPresentedOptions = self->_openURLPresentedOptions;
@@ -1344,9 +1344,9 @@ LABEL_7:
   }
 }
 
-- (void)_openURLControllerHandler:(BOOL)a3
+- (void)_openURLControllerHandler:(BOOL)handler
 {
-  if (a3)
+  if (handler)
   {
     v4 = +[_TVAppLoadingView loadingScreen];
     [v4 hide];
@@ -1355,7 +1355,7 @@ LABEL_7:
   [(TVApplicationController *)self _resetControllerNotifications];
 }
 
-- (void)_reloadControllerDidDisplay:(id)a3
+- (void)_reloadControllerDidDisplay:(id)display
 {
   v4 = +[_TVAppLoadingView loadingScreen];
   [v4 hide];
@@ -1365,21 +1365,21 @@ LABEL_7:
 
 - (void)_resetControllerNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"TVAppNavigationDidDisplayViewControllerNotification" object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:@"_TVAppDocumentDidUpdateNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"_TVAppDocumentDidUpdateNotification" object:0];
 }
 
 - (void)_launchApp
 {
   if (!self->_appContext)
   {
-    v4 = [(TVApplicationControllerContext *)self->_context javaScriptApplicationURL];
-    v5 = [v4 isFileURL];
+    javaScriptApplicationURL = [(TVApplicationControllerContext *)self->_context javaScriptApplicationURL];
+    isFileURL = [javaScriptApplicationURL isFileURL];
 
-    v6 = [objc_alloc(MEMORY[0x277D1B028]) initWithApplication:self->_application mode:v5 delegate:self];
+    v6 = [objc_alloc(MEMORY[0x277D1B028]) initWithApplication:self->_application mode:isFileURL delegate:self];
     appContext = self->_appContext;
     self->_appContext = v6;
 
@@ -1409,8 +1409,8 @@ LABEL_7:
   v3 = objc_alloc(MEMORY[0x277CBEA80]);
   v4 = [v3 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
   reloadOnResumeBackgroundedDate = self->_reloadOnResumeBackgroundedDate;
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v4 components:128 fromDate:reloadOnResumeBackgroundedDate toDate:v6 options:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [v4 components:128 fromDate:reloadOnResumeBackgroundedDate toDate:date options:0];
 
   LOBYTE(self) = self->_reloadOnResumeMinInterval <= [v7 second];
   return self;
@@ -1418,10 +1418,10 @@ LABEL_7:
 
 - (id)_rootViewController
 {
-  v3 = [(TVApplicationController *)self delegate];
-  if ([v3 conformsToProtocol:&unk_287EAD8E0])
+  delegate = [(TVApplicationController *)self delegate];
+  if ([delegate conformsToProtocol:&unk_287EAD8E0])
   {
-    v4 = v3;
+    v4 = delegate;
     if (objc_opt_respondsToSelector())
     {
       v5 = [v4 rootViewControllerForAppController:self];

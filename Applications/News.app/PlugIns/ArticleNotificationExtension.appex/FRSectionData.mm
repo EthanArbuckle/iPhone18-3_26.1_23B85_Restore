@@ -1,19 +1,19 @@
 @interface FRSectionData
-- (FRSectionData)initWithName:(id)a3;
+- (FRSectionData)initWithName:(id)name;
 @end
 
 @implementation FRSectionData
 
-- (FRSectionData)initWithName:(id)a3
+- (FRSectionData)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = FRSectionData;
   v6 = [(FRSectionData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sectionName, a3);
+    objc_storeStrong(&v6->_sectionName, name);
   }
 
   return v7;

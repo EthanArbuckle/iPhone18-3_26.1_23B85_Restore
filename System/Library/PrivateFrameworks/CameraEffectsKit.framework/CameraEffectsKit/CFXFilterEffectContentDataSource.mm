@@ -1,13 +1,13 @@
 @interface CFXFilterEffectContentDataSource
-- (CFXFilterEffectContentDataSource)initWithEffectID:(id)a3;
+- (CFXFilterEffectContentDataSource)initWithEffectID:(id)d;
 @end
 
 @implementation CFXFilterEffectContentDataSource
 
-- (CFXFilterEffectContentDataSource)initWithEffectID:(id)a3
+- (CFXFilterEffectContentDataSource)initWithEffectID:(id)d
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v52.receiver = self;
   v52.super_class = CFXFilterEffectContentDataSource;
   v5 = [(CFXFilterEffectContentDataSource *)&v52 init];
@@ -18,22 +18,22 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v6 = [MEMORY[0x277CCA8D8] jfxBundle];
+  jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
   v7 = MEMORY[0x277CBEAC0];
-  v8 = [v6 pathForResource:kJFXEffectPropertiesResourceFile ofType:kJFXEffectPropertiesPlistKey];
+  v8 = [jfxBundle pathForResource:kJFXEffectPropertiesResourceFile ofType:kJFXEffectPropertiesPlistKey];
   v9 = [v7 dictionaryWithContentsOfFile:v8];
 
   v10 = [v9 objectForKey:@"Filters"];
   v11 = v10;
   if (v10 && [v10 count])
   {
-    v12 = [v11 firstObject];
-    v13 = [v12 objectForKey:@"effects"];
+    firstObject = [v11 firstObject];
+    v13 = [firstObject objectForKey:@"effects"];
     if (v13)
     {
-      v45 = v12;
+      v45 = firstObject;
       v46 = v9;
-      v47 = v6;
+      v47 = jfxBundle;
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
@@ -55,7 +55,7 @@ LABEL_7:
 
           v19 = *(*(&v48 + 1) + 8 * v18);
           v20 = [v19 objectForKey:@"identifier"];
-          if ([v20 isEqualToString:v4])
+          if ([v20 isEqualToString:dCopy])
           {
             break;
           }
@@ -88,17 +88,17 @@ LABEL_7:
         v5->_requiredProVideoVersion = 0;
 
         v5->_isContentNew = 0;
-        v25 = [v4 stringByAppendingString:@"_Display Name"];
-        v26 = [MEMORY[0x277CCA8D8] jfxBundle];
+        v25 = [dCopy stringByAppendingString:@"_Display Name"];
+        jfxBundle2 = [MEMORY[0x277CCA8D8] jfxBundle];
         v44 = v25;
-        v27 = [v26 localizedStringForKey:v25 value:&stru_28553D028 table:0];
+        v27 = [jfxBundle2 localizedStringForKey:v25 value:&stru_28553D028 table:0];
 
         localizedDisplayName = v5->_localizedDisplayName;
         v5->_localizedDisplayName = v27;
 
-        v29 = [v4 stringByAppendingString:@"_Accessibility Name"];
-        v30 = [MEMORY[0x277CCA8D8] jfxBundle];
-        v31 = [v30 localizedStringForKey:v29 value:&stru_28553D028 table:0];
+        v29 = [dCopy stringByAppendingString:@"_Accessibility Name"];
+        jfxBundle3 = [MEMORY[0x277CCA8D8] jfxBundle];
+        v31 = [jfxBundle3 localizedStringForKey:v29 value:&stru_28553D028 table:0];
 
         v42 = v31;
         objc_storeStrong(&v5->_localizedAccessibilityName, v31);
@@ -122,15 +122,15 @@ LABEL_7:
         v39 = v38;
         if (v38)
         {
-          v40 = [v38 intValue];
+          intValue = [v38 intValue];
         }
 
         else
         {
-          v40 = 2;
+          intValue = 2;
         }
 
-        v5->_inverseToneMapOperator = v40;
+        v5->_inverseToneMapOperator = intValue;
 
         goto LABEL_25;
       }
@@ -140,8 +140,8 @@ LABEL_13:
       v21 = 0;
 LABEL_16:
       v9 = v46;
-      v6 = v47;
-      v12 = v45;
+      jfxBundle = v47;
+      firstObject = v45;
     }
   }
 

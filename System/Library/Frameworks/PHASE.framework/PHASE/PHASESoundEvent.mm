@@ -1,47 +1,47 @@
 @interface PHASESoundEvent
 - (BOOL)indefinite;
-- (BOOL)internalPrepareActionTreeWithCompletionBlock:(id)a3;
-- (BOOL)internalStartActionTree:(id)a3 completion:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)prepareAndReturnError:(id *)a3;
-- (BOOL)validateAudioSessionWithError:(id *)a3;
+- (BOOL)internalPrepareActionTreeWithCompletionBlock:(id)block;
+- (BOOL)internalStartActionTree:(id)tree completion:(id)completion;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)prepareAndReturnError:(id *)error;
+- (BOOL)validateAudioSessionWithError:(id *)error;
 - (PHASERenderingState)renderingState;
 - (PHASESoundEvent)init;
 - (PHASESoundEvent)initWithEngine:(PHASEEngine *)engine assetIdentifier:(NSString *)assetIdentifier error:(NSError *)error;
 - (PHASESoundEvent)initWithEngine:(PHASEEngine *)engine assetIdentifier:(NSString *)assetIdentifier mixerParameters:(PHASEMixerParameters *)mixerParameters error:(NSError *)error;
-- (PHASESoundEvent)initWithEngine:(id)a3 assetIdentifier:(id)a4 source:(id)a5 listener:(id)a6 error:(id *)a7;
-- (PHASESoundEvent)initWithEngine:(id)a3 rootNode:(id)a4 error:(id *)a5;
-- (PHASESoundEvent)initWithEngine:(id)a3 rootNode:(id)a4 mixerParameters:(id)a5 error:(id *)a6;
-- (PHASESoundEvent)initWithEngine:(id)a3 rootNode:(id)a4 source:(id)a5 listener:(id)a6 error:(id *)a7;
-- (PHASESoundEvent)initWithEngine:(id)a3 soundPrototype:(id)a4 error:(id *)a5;
-- (PHASESoundEvent)initWithEngine:(id)a3 soundPrototype:(id)a4 mixerParameters:(id)a5 error:(id *)a6;
-- (PHASESoundEvent)initWithEngine:(id)a3 soundPrototype:(id)a4 source:(id)a5 listener:(id)a6 error:(id *)a7;
+- (PHASESoundEvent)initWithEngine:(id)engine assetIdentifier:(id)identifier source:(id)source listener:(id)listener error:(id *)error;
+- (PHASESoundEvent)initWithEngine:(id)engine rootNode:(id)node error:(id *)error;
+- (PHASESoundEvent)initWithEngine:(id)engine rootNode:(id)node mixerParameters:(id)parameters error:(id *)error;
+- (PHASESoundEvent)initWithEngine:(id)engine rootNode:(id)node source:(id)source listener:(id)listener error:(id *)error;
+- (PHASESoundEvent)initWithEngine:(id)engine soundPrototype:(id)prototype error:(id *)error;
+- (PHASESoundEvent)initWithEngine:(id)engine soundPrototype:(id)prototype mixerParameters:(id)parameters error:(id *)error;
+- (PHASESoundEvent)initWithEngine:(id)engine soundPrototype:(id)prototype source:(id)source listener:(id)listener error:(id *)error;
 - (PHASESoundEventPrepareState)prepareState;
 - (id).cxx_construct;
 - (id)engine;
 - (id)getActionTreeMetaParameterNames;
 - (id)internalGetActionTreeMetaParameters;
-- (id)internalGetActionTreeMixersWithMixerParameters:(id)a3 actionTreeAsset:(const void *)a4 outError:(id *)a5;
-- (id)internalGetActionTreePullStreamNodes:(id)a3;
-- (id)internalGetActionTreePushStreamNodes:(id)a3;
+- (id)internalGetActionTreeMixersWithMixerParameters:(id)parameters actionTreeAsset:(const void *)asset outError:(id *)error;
+- (id)internalGetActionTreePullStreamNodes:(id)nodes;
+- (id)internalGetActionTreePushStreamNodes:(id)nodes;
 - (unint64_t)hash;
 - (void)internalCleanup;
-- (void)internalPrepareActionTreeWithCompletionBlock:(uint64_t)a3;
-- (void)internalStartActionTree:(uint64_t)a3 completion:(uint64_t)a4;
+- (void)internalPrepareActionTreeWithCompletionBlock:(uint64_t)block;
+- (void)internalStartActionTree:(uint64_t)tree completion:(uint64_t)completion;
 - (void)pause;
 - (void)prepareWithCompletion:(void *)handler;
-- (void)prepareWithSessionIOBinding:(id)a3 completion:(id)a4;
+- (void)prepareWithSessionIOBinding:(id)binding completion:(id)completion;
 - (void)registerTapSources;
-- (void)resumeAtTime:(id)a3;
-- (void)resumeAtTime:(uint64_t)a1;
-- (void)seekToTime:(double)a3 resumeAtEngineTime:(id)a4 completion:(id)a5;
+- (void)resumeAtTime:(id)time;
+- (void)resumeAtTime:(uint64_t)time;
 - (void)seekToTime:(double)time completion:(void *)handler;
-- (void)seekToTime:(uint64_t)a3 completion:(void *)(a4;
-- (void)setMetaParameter:(id)a3 value:(double)a4 withTimeInterval:(double)a5;
-- (void)setMetaParameter:(id)a3 value:(id)a4;
-- (void)setPrepareState:(int64_t)a3;
-- (void)setRenderingState:(int64_t)a3;
-- (void)startAtTime:(id)a3 completion:(id)a4;
+- (void)seekToTime:(double)time resumeAtEngineTime:(id)engineTime completion:(id)completion;
+- (void)seekToTime:(uint64_t)time completion:(void *)(a4;
+- (void)setMetaParameter:(id)parameter value:(double)value withTimeInterval:(double)interval;
+- (void)setMetaParameter:(id)parameter value:(id)value;
+- (void)setPrepareState:(int64_t)state;
+- (void)setRenderingState:(int64_t)state;
+- (void)startAtTime:(id)time completion:(id)completion;
 - (void)stopAndInvalidate;
 - (void)unregisterTapSources;
 @end
@@ -55,15 +55,15 @@
   return 0;
 }
 
-- (PHASESoundEvent)initWithEngine:(id)a3 soundPrototype:(id)a4 mixerParameters:(id)a5 error:(id *)a6
+- (PHASESoundEvent)initWithEngine:(id)engine soundPrototype:(id)prototype mixerParameters:(id)parameters error:(id *)error
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  obj = a3;
-  v39 = a4;
-  v38 = a5;
-  if (a6)
+  obj = engine;
+  prototypeCopy = prototype;
+  parametersCopy = parameters;
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   v42.receiver = self;
@@ -82,9 +82,9 @@
     if (obj)
     {
       v13 = Phase::Controller::TaskManager::GetService<Phase::ActionTreeManager>(([obj implementation] + 48), 7);
-      v14 = [obj assetRegistry];
-      v15 = [v39 assetIdentifier];
-      v40 = [v14 assetForIdentifier:v15];
+      assetRegistry = [obj assetRegistry];
+      assetIdentifier = [prototypeCopy assetIdentifier];
+      v40 = [assetRegistry assetForIdentifier:assetIdentifier];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -103,19 +103,19 @@
       {
         v34 = [v26 objectForKeyedSubscript:v30];
         v35 = v34;
-        v36 = [v34 UTF8String];
+        uTF8String = [v34 UTF8String];
         *buf = 136315650;
         *&buf[4] = "PHASESoundEvent.mm";
         *&buf[12] = 1024;
         *&buf[14] = 158;
         v46 = 2080;
-        v47 = v36;
+        v47 = uTF8String;
         _os_log_impl(&dword_23A302000, v33, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
       }
 
-      if (a6)
+      if (error)
       {
-        *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346925665 userInfo:v26];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346925665 userInfo:v26];
       }
     }
 
@@ -132,13 +132,13 @@
       {
         v27 = [(PHASESoundEventNodeAsset *)v40 objectForKeyedSubscript:v23];
         v28 = v27;
-        v29 = [v27 UTF8String];
+        uTF8String2 = [v27 UTF8String];
         *buf = 136315650;
         *&buf[4] = "PHASESoundEvent.mm";
         *&buf[12] = 1024;
         *&buf[14] = 144;
         v46 = 2080;
-        v47 = v29;
+        v47 = uTF8String2;
         _os_log_impl(&dword_23A302000, v26, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
       }
     }
@@ -157,45 +157,45 @@
     {
       v20 = [(PHASESoundEventNodeAsset *)v40 objectForKeyedSubscript:v16];
       v21 = v20;
-      v22 = [v20 UTF8String];
+      uTF8String3 = [v20 UTF8String];
       *buf = 136315650;
       *&buf[4] = "PHASESoundEvent.mm";
       *&buf[12] = 1024;
       *&buf[14] = 270;
       v46 = 2080;
-      v47 = v22;
+      v47 = uTF8String3;
       _os_log_impl(&dword_23A302000, v19, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346925665 userInfo:v40];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346925665 userInfo:v40];
     }
   }
 
   return 0;
 }
 
-- (PHASESoundEvent)initWithEngine:(id)a3 soundPrototype:(id)a4 error:(id *)a5
+- (PHASESoundEvent)initWithEngine:(id)engine soundPrototype:(id)prototype error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  engineCopy = engine;
+  prototypeCopy = prototype;
   v10 = objc_alloc_init(PHASEMixerParameters);
-  v11 = [(PHASESoundEvent *)self initWithEngine:v8 soundPrototype:v9 mixerParameters:v10 error:a5];
+  v11 = [(PHASESoundEvent *)self initWithEngine:engineCopy soundPrototype:prototypeCopy mixerParameters:v10 error:error];
 
   return v11;
 }
 
-- (PHASESoundEvent)initWithEngine:(id)a3 soundPrototype:(id)a4 source:(id)a5 listener:(id)a6 error:(id *)a7
+- (PHASESoundEvent)initWithEngine:(id)engine soundPrototype:(id)prototype source:(id)source listener:(id)listener error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v24 = self;
+  engineCopy = engine;
+  prototypeCopy = prototype;
+  sourceCopy = source;
+  listenerCopy = listener;
+  selfCopy = self;
   v15 = objc_alloc_init(PHASEMixerParameters);
-  [v12 mixerInformation];
+  [prototypeCopy mixerInformation];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -216,8 +216,8 @@
         v20 = *(*(&v26 + 1) + 8 * i);
         if ([v20 mixerType] == 1)
         {
-          v21 = [v20 identifier];
-          [(PHASEMixerParameters *)v15 addSpatialMixerParametersWithIdentifier:v21 source:v13 listener:v14];
+          identifier = [v20 identifier];
+          [(PHASEMixerParameters *)v15 addSpatialMixerParametersWithIdentifier:identifier source:sourceCopy listener:listenerCopy];
         }
 
         else
@@ -227,8 +227,8 @@
             continue;
           }
 
-          v21 = [v20 identifier];
-          [(PHASEMixerParameters *)v15 addAmbientMixerParametersWithIdentifier:v21 listener:v14];
+          identifier = [v20 identifier];
+          [(PHASEMixerParameters *)v15 addAmbientMixerParametersWithIdentifier:identifier listener:listenerCopy];
         }
       }
 
@@ -238,39 +238,39 @@
     while (v17);
   }
 
-  v22 = [(PHASESoundEvent *)v24 initWithEngine:v25 soundPrototype:v12 mixerParameters:v15 error:a7];
+  v22 = [(PHASESoundEvent *)selfCopy initWithEngine:engineCopy soundPrototype:prototypeCopy mixerParameters:v15 error:error];
   return v22;
 }
 
-- (PHASESoundEvent)initWithEngine:(id)a3 rootNode:(id)a4 mixerParameters:(id)a5 error:(id *)a6
+- (PHASESoundEvent)initWithEngine:(id)engine rootNode:(id)node mixerParameters:(id)parameters error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [[PHASESoundPrototype alloc] initWithEngine:v10 actionTreeRootNode:v11 error:a6];
-  v14 = [(PHASESoundEvent *)self initWithEngine:v10 soundPrototype:v13 mixerParameters:v12 error:a6];
+  engineCopy = engine;
+  nodeCopy = node;
+  parametersCopy = parameters;
+  v13 = [[PHASESoundPrototype alloc] initWithEngine:engineCopy actionTreeRootNode:nodeCopy error:error];
+  v14 = [(PHASESoundEvent *)self initWithEngine:engineCopy soundPrototype:v13 mixerParameters:parametersCopy error:error];
 
   return v14;
 }
 
-- (PHASESoundEvent)initWithEngine:(id)a3 rootNode:(id)a4 error:(id *)a5
+- (PHASESoundEvent)initWithEngine:(id)engine rootNode:(id)node error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[PHASESoundPrototype alloc] initWithEngine:v8 actionTreeRootNode:v9 error:a5];
-  v11 = [(PHASESoundEvent *)self initWithEngine:v8 soundPrototype:v10 error:a5];
+  engineCopy = engine;
+  nodeCopy = node;
+  v10 = [[PHASESoundPrototype alloc] initWithEngine:engineCopy actionTreeRootNode:nodeCopy error:error];
+  v11 = [(PHASESoundEvent *)self initWithEngine:engineCopy soundPrototype:v10 error:error];
 
   return v11;
 }
 
-- (PHASESoundEvent)initWithEngine:(id)a3 rootNode:(id)a4 source:(id)a5 listener:(id)a6 error:(id *)a7
+- (PHASESoundEvent)initWithEngine:(id)engine rootNode:(id)node source:(id)source listener:(id)listener error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [[PHASESoundPrototype alloc] initWithEngine:v12 actionTreeRootNode:v13 error:a7];
-  v17 = [(PHASESoundEvent *)self initWithEngine:v12 soundPrototype:v16 source:v14 listener:v15 error:a7];
+  engineCopy = engine;
+  nodeCopy = node;
+  sourceCopy = source;
+  listenerCopy = listener;
+  v16 = [[PHASESoundPrototype alloc] initWithEngine:engineCopy actionTreeRootNode:nodeCopy error:error];
+  v17 = [(PHASESoundEvent *)self initWithEngine:engineCopy soundPrototype:v16 source:sourceCopy listener:listenerCopy error:error];
 
   return v17;
 }
@@ -296,23 +296,23 @@
   return v11;
 }
 
-- (PHASESoundEvent)initWithEngine:(id)a3 assetIdentifier:(id)a4 source:(id)a5 listener:(id)a6 error:(id *)a7
+- (PHASESoundEvent)initWithEngine:(id)engine assetIdentifier:(id)identifier source:(id)source listener:(id)listener error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [[PHASESoundPrototype alloc] initWithEngine:v12 registeredActionTreeIdentifier:v13 error:a7];
-  v17 = [(PHASESoundEvent *)self initWithEngine:v12 soundPrototype:v16 source:v14 listener:v15 error:a7];
+  engineCopy = engine;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  listenerCopy = listener;
+  v16 = [[PHASESoundPrototype alloc] initWithEngine:engineCopy registeredActionTreeIdentifier:identifierCopy error:error];
+  v17 = [(PHASESoundEvent *)self initWithEngine:engineCopy soundPrototype:v16 source:sourceCopy listener:listenerCopy error:error];
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v7 = (objc_opt_isKindOfClass() & 1) != 0 && (ptr = self->_actionTreeObject.__ptr_, v6 = v4[4], *ptr == *v6) && *(ptr + 1) == v6[1];
+  v7 = (objc_opt_isKindOfClass() & 1) != 0 && (ptr = self->_actionTreeObject.__ptr_, v6 = equalCopy[4], *ptr == *v6) && *(ptr + 1) == v6[1];
 
   return v7;
 }
@@ -340,8 +340,8 @@
     v5 = *MEMORY[0x277CCA450];
     v27 = *MEMORY[0x277CCA450];
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(PHASESoundPrototype *)self->_protoType assetIdentifier];
-    v8 = [v6 stringWithFormat:@"prepare called multiple times on %@ asset %@:", self, v7];
+    assetIdentifier = [(PHASESoundPrototype *)self->_protoType assetIdentifier];
+    v8 = [v6 stringWithFormat:@"prepare called multiple times on %@ asset %@:", self, assetIdentifier];
     v28[0] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
 
@@ -351,7 +351,7 @@
       v12 = [v9 objectForKeyedSubscript:v5];
       v13 = v12;
       *buf = 136315650;
-      v24 = "PHASESoundEvent.mm";
+      selfCopy = "PHASESoundEvent.mm";
       v25 = 1024;
       *v26 = 387;
       *&v26[4] = 2080;
@@ -379,13 +379,13 @@
         if (os_signpost_enabled(v15))
         {
           v19 = *self->_actionTreeObject.__ptr_;
-          v20 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
+          opaqueSessionID = [(AVAudioSession *)self->_audioSession opaqueSessionID];
           *buf = 134218496;
-          v24 = self;
+          selfCopy = self;
           v25 = 2048;
           *v26 = v19;
           *&v26[8] = 1024;
-          *&v26[10] = v20;
+          *&v26[10] = opaqueSessionID;
           _os_signpost_emit_with_name_impl(&dword_23A302000, v15, OS_SIGNPOST_EVENT, v18, "Phase_SoundEvent_Prepare", "SoundEvent@%p: %llu Prepare Called on AudioSessionId 0x%x", buf, 0x1Cu);
         }
       }
@@ -446,22 +446,22 @@ void __41__PHASESoundEvent_prepareWithCompletion___block_invoke(uint64_t a1, uin
   }
 }
 
-- (BOOL)prepareAndReturnError:(id *)a3
+- (BOOL)prepareAndReturnError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   [(PHASESoundEvent *)self prepareWithCompletion:0];
   return 1;
 }
 
-- (BOOL)internalStartActionTree:(id)a3 completion:(id)a4
+- (BOOL)internalStartActionTree:(id)tree completion:(id)completion
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  treeCopy = tree;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
 
   if (WeakRetained)
@@ -471,7 +471,7 @@ void __41__PHASESoundEvent_prepareWithCompletion___block_invoke(uint64_t a1, uin
     *&v40[16] = 0x3032000000;
     *&v40[24] = __Block_byref_object_copy__0;
     v41 = __Block_byref_object_dispose__0;
-    v42 = [v7 copy];
+    v42 = [completionCopy copy];
     v37[0] = 0;
     v37[1] = v37;
     v37[2] = 0x2020000000;
@@ -488,7 +488,7 @@ void __41__PHASESoundEvent_prepareWithCompletion___block_invoke(uint64_t a1, uin
 
     v35 = *self->_actionTreeObject.__ptr_;
     v12 = _Block_copy(v9);
-    v13 = v6;
+    v13 = treeCopy;
     if (*(v11 + 16) <= 0)
     {
       v28 = **(v11 + 24);
@@ -587,33 +587,33 @@ void __41__PHASESoundEvent_prepareWithCompletion___block_invoke(uint64_t a1, uin
       _os_log_impl(&dword_23A302000, v24, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", v40, 0x1Cu);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
     v19 = 0;
   }
 
   return v19;
 }
 
-- (void)startAtTime:(id)a3 completion:(id)a4
+- (void)startAtTime:(id)time completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  timeCopy = time;
+  completionCopy = completion;
+  v8 = completionCopy;
   if (self->_startCalled)
   {
-    v9 = **(Phase::Logger::GetInstance(v7) + 448);
+    v9 = **(Phase::Logger::GetInstance(completionCopy) + 448);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(PHASESoundPrototype *)self->_protoType assetIdentifier];
+      assetIdentifier = [(PHASESoundPrototype *)self->_protoType assetIdentifier];
       *buf = 136315906;
-      v21 = "PHASESoundEvent.mm";
+      selfCopy = "PHASESoundEvent.mm";
       v22 = 1024;
       *v23 = 515;
       *&v23[4] = 2112;
       *&v23[6] = self;
       v24 = 2080;
-      v25 = [v10 UTF8String];
+      uTF8String = [assetIdentifier UTF8String];
       _os_log_impl(&dword_23A302000, v9, OS_LOG_TYPE_ERROR, "%25s:%-5d Start called multiple times for %@ with asset %s already", buf, 0x26u);
     }
 
@@ -643,13 +643,13 @@ void __41__PHASESoundEvent_prepareWithCompletion___block_invoke(uint64_t a1, uin
         if (os_signpost_enabled(v12))
         {
           v16 = *self->_actionTreeObject.__ptr_;
-          v17 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
+          opaqueSessionID = [(AVAudioSession *)self->_audioSession opaqueSessionID];
           *buf = 134218496;
-          v21 = self;
+          selfCopy = self;
           v22 = 2048;
           *v23 = v16;
           *&v23[8] = 1024;
-          *&v23[10] = v17;
+          *&v23[10] = opaqueSessionID;
           _os_signpost_emit_with_name_impl(&dword_23A302000, v12, OS_SIGNPOST_EVENT, v15, "Phase_SoundEvent_Start", "SoundEvent@%p: %llu Start Called on AudioSessionId 0x%x", buf, 0x1Cu);
         }
       }
@@ -661,7 +661,7 @@ void __41__PHASESoundEvent_prepareWithCompletion___block_invoke(uint64_t a1, uin
     v18[3] = &unk_278B4F8F8;
     v18[4] = self;
     v19 = v8;
-    [(PHASESoundEvent *)self internalStartActionTree:v6 completion:v18];
+    [(PHASESoundEvent *)self internalStartActionTree:timeCopy completion:v18];
   }
 }
 
@@ -691,51 +691,51 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
   }
 }
 
-- (void)prepareWithSessionIOBinding:(id)a3 completion:(id)a4
+- (void)prepareWithSessionIOBinding:(id)binding completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  bindingCopy = binding;
+  completionCopy = completion;
+  v8 = completionCopy;
   audioSession = self->_audioSession;
-  if (!audioSession || ([v6 session], v10 = objc_claimAutoreleasedReturnValue(), v10, audioSession == v10))
+  if (!audioSession || ([bindingCopy session], v10 = objc_claimAutoreleasedReturnValue(), v10, audioSession == v10))
   {
-    v13 = **(Phase::Logger::GetInstance(v7) + 448);
+    v13 = **(Phase::Logger::GetInstance(completionCopy) + 448);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v6 session];
+      session = [bindingCopy session];
       v17 = 136315906;
       v18 = "PHASESoundEvent.mm";
       v19 = 1024;
       v20 = 571;
       v21 = 2112;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 1024;
-      v24 = [v14 opaqueSessionID];
+      opaqueSessionID = [session opaqueSessionID];
       _os_log_impl(&dword_23A302000, v13, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Preparing %@, associated with audio sessionId 0x%x", &v17, 0x22u);
     }
 
-    v15 = [v6 session];
+    session2 = [bindingCopy session];
     v16 = self->_audioSession;
-    self->_audioSession = v15;
+    self->_audioSession = session2;
 
     [(PHASESoundEvent *)self prepareWithCompletion:v8];
   }
 
   else
   {
-    v11 = **(Phase::Logger::GetInstance(v7) + 448);
+    v11 = **(Phase::Logger::GetInstance(completionCopy) + 448);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
+      opaqueSessionID2 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
       v17 = 136315906;
       v18 = "PHASESoundEvent.mm";
       v19 = 1024;
       v20 = 562;
       v21 = 2112;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 1024;
-      v24 = v12;
+      opaqueSessionID = opaqueSessionID2;
       _os_log_impl(&dword_23A302000, v11, OS_LOG_TYPE_ERROR, "%25s:%-5d %@ already assigned an audio sessionId 0x%x", &v17, 0x22u);
     }
 
@@ -808,10 +808,10 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
   }
 }
 
-- (void)resumeAtTime:(id)a3
+- (void)resumeAtTime:(id)time
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timeCopy = time;
   if (*(self->_actionTreeObject.__ptr_ + 144))
   {
     WeakRetained = objc_loadWeakRetained(&self->_engine);
@@ -823,7 +823,7 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
       v7 = Phase::Controller::TaskManager::GetService<Phase::ActionTreeManager>(([v6 implementation] + 48), 7);
 
       v17 = *self->_actionTreeObject.__ptr_;
-      v8 = v4;
+      v8 = timeCopy;
       v9 = **(v7 + 8);
       v16 = 0;
       v15 = 1;
@@ -888,13 +888,13 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
       if (os_signpost_enabled(v4))
       {
         v8 = *self->_actionTreeObject.__ptr_;
-        v9 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
+        opaqueSessionID = [(AVAudioSession *)self->_audioSession opaqueSessionID];
         *buf = 134218496;
-        v24 = self;
+        selfCopy = self;
         v25 = 2048;
         *v26 = v8;
         *&v26[8] = 1024;
-        *&v26[10] = v9;
+        *&v26[10] = opaqueSessionID;
         _os_signpost_emit_with_name_impl(&dword_23A302000, v4, OS_SIGNPOST_EVENT, v7, "Phase_SoundEvent_Stop", "SoundEvent@%p: %llu Stop Called on AudioSessionId 0x%x", buf, 0x1Cu);
       }
     }
@@ -923,7 +923,7 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315394;
-          v24 = "CommandQueue.hpp";
+          selfCopy = "CommandQueue.hpp";
           v25 = 1024;
           *v26 = 100;
           _os_log_impl(&dword_23A302000, v18, OS_LOG_TYPE_ERROR, "%25s:%-5d EXCEPTION (std::runtime_error) [true is true]: CommandQueue unable to retrieve write buffer; buffer is full, unable to grow.", buf, 0x12u);
@@ -939,7 +939,7 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
           *buf = 136315906;
-          v24 = "CommandQueue.hpp";
+          selfCopy = "CommandQueue.hpp";
           v25 = 1024;
           *v26 = 89;
           *&v26[4] = 2048;
@@ -1003,8 +1003,8 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
           }
 
           v12 = objc_loadWeakRetained(&self->_engine);
-          v13 = [v12 implementation];
-          v14 = Phase::Controller::TaskManager::GetService<Phase::TapSourceRegistry>(*(v13 + 96), *(v13 + 104));
+          implementation = [v12 implementation];
+          v14 = Phase::Controller::TaskManager::GetService<Phase::TapSourceRegistry>(*(implementation + 96), *(implementation + 104));
 
           if (v14)
           {
@@ -1041,8 +1041,8 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
         if ((v7 & 1) == 0)
         {
           v11 = objc_loadWeakRetained(&self->_engine);
-          v8 = [v11 implementation];
-          v9 = Phase::Controller::TaskManager::GetService<Phase::TapSourceRegistry>(*(v8 + 96), *(v8 + 104));
+          implementation = [v11 implementation];
+          v9 = Phase::Controller::TaskManager::GetService<Phase::TapSourceRegistry>(*(implementation + 96), *(implementation + 104));
 
           if (v9)
           {
@@ -1060,10 +1060,10 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
   }
 }
 
-- (void)setMetaParameter:(id)a3 value:(double)a4 withTimeInterval:(double)a5
+- (void)setMetaParameter:(id)parameter value:(double)value withTimeInterval:(double)interval
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  parameterCopy = parameter;
   if (*(self->_actionTreeObject.__ptr_ + 144))
   {
     WeakRetained = objc_loadWeakRetained(&self->_engine);
@@ -1076,10 +1076,10 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
       ptr = self->_actionTreeObject.__ptr_;
       v13 = *ptr;
       v14 = *(ptr + 1);
-      v15 = [v8 UTF8String];
-      if (v15 && (v16 = *v15, *v15))
+      uTF8String = [parameterCopy UTF8String];
+      if (uTF8String && (v16 = *uTF8String, *uTF8String))
       {
-        v17 = v15 + 1;
+        v17 = uTF8String + 1;
         v18 = 0xCBF29CE484222325;
         do
         {
@@ -1096,7 +1096,7 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
         v18 = 0;
       }
 
-      v20 = Phase::Commandable<128,Phase::LockFreeQueueMPSC>::CallAsync<Phase::ActionTreeManager,BOOL,Phase::UniqueObjectId,unsigned long long,Phase::InputMetaParamType,Phase::MetaParamValue,double>(v11, v13, v14, v18, 1, *&a4, a5);
+      v20 = Phase::Commandable<128,Phase::LockFreeQueueMPSC>::CallAsync<Phase::ActionTreeManager,BOOL,Phase::UniqueObjectId,unsigned long long,Phase::InputMetaParamType,Phase::MetaParamValue,double>(v11, v13, v14, v18, 1, *&value, interval);
       if ((v20 & 1) == 0)
       {
         v21 = **(Phase::Logger::GetInstance(v20) + 448);
@@ -1107,7 +1107,7 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
           v24 = 1024;
           v25 = 730;
           v26 = 2112;
-          v27 = self;
+          selfCopy = self;
           _os_log_impl(&dword_23A302000, v21, OS_LOG_TYPE_ERROR, "%25s:%-5d %@ Command buffer full.  Unable to set MetaParameter.  Consider having fewer sound event API calls in a given frame", &v22, 0x1Cu);
         }
       }
@@ -1115,11 +1115,11 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
   }
 }
 
-- (void)setMetaParameter:(id)a3 value:(id)a4
+- (void)setMetaParameter:(id)parameter value:(id)value
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  parameterCopy = parameter;
+  valueCopy = value;
   if (*(self->_actionTreeObject.__ptr_ + 144))
   {
     WeakRetained = objc_loadWeakRetained(&self->_engine);
@@ -1129,11 +1129,11 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
       v9 = objc_loadWeakRetained(&self->_engine);
       v10 = Phase::Controller::TaskManager::GetService<Phase::ActionTreeManager>(([v9 implementation] + 48), 7);
 
-      v11 = [v7 UTF8String];
-      if (v11 && (v12 = *v11, *v11))
+      uTF8String = [valueCopy UTF8String];
+      if (uTF8String && (v12 = *uTF8String, *uTF8String))
       {
         v13 = 0xCBF29CE484222325;
-        v14 = v11 + 1;
+        v14 = uTF8String + 1;
         do
         {
           v13 = 0x100000001B3 * (v13 ^ v12);
@@ -1152,11 +1152,11 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
       ptr = self->_actionTreeObject.__ptr_;
       v17 = *ptr;
       v18 = *(ptr + 1);
-      v19 = [v6 UTF8String];
-      if (v19 && (v20 = *v19, *v19))
+      uTF8String2 = [parameterCopy UTF8String];
+      if (uTF8String2 && (v20 = *uTF8String2, *uTF8String2))
       {
         v21 = 0xCBF29CE484222325;
-        v22 = v19 + 1;
+        v22 = uTF8String2 + 1;
         do
         {
           v21 = 0x100000001B3 * (v21 ^ v20);
@@ -1183,7 +1183,7 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
           v28 = 1024;
           v29 = 751;
           v30 = 2112;
-          v31 = self;
+          selfCopy = self;
           _os_log_impl(&dword_23A302000, v25, OS_LOG_TYPE_ERROR, "%25s:%-5d %@ Command buffer full.  Unable to set MetaParameter.  Consider having fewer sound event API calls in a given frame", &v26, 0x1Cu);
         }
       }
@@ -1252,8 +1252,8 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = [(NSDictionary *)self->_mixers allValues];
-    v5 = [v4 countByEnumeratingWithState:&v18 objects:v30 count:16];
+    allValues = [(NSDictionary *)self->_mixers allValues];
+    v5 = [allValues countByEnumeratingWithState:&v18 objects:v30 count:16];
     if (v5)
     {
       v6 = *v19;
@@ -1264,7 +1264,7 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
         {
           if (*v19 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           v8 = *(*(&v18 + 1) + 8 * v7);
@@ -1295,28 +1295,28 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v18 objects:v30 count:16];
+        v5 = [allValues countByEnumeratingWithState:&v18 objects:v30 count:16];
       }
 
       while (v5);
     }
 
-    v13 = [(PHASESoundEvent *)self renderingState];
-    if (v13)
+    renderingState = [(PHASESoundEvent *)self renderingState];
+    if (renderingState)
     {
-      v14 = **(Phase::Logger::GetInstance(v13) + 448);
+      v14 = **(Phase::Logger::GetInstance(renderingState) + 448);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         v15 = *self->_actionTreeObject.__ptr_;
-        v16 = [(PHASESoundEvent *)self renderingState];
-        if (v16 > PHASERenderingStatePaused)
+        renderingState2 = [(PHASESoundEvent *)self renderingState];
+        if (renderingState2 > PHASERenderingStatePaused)
         {
           v17 = "<not found>";
         }
 
         else
         {
-          v17 = off_278B4F958[v16];
+          v17 = off_278B4F958[renderingState2];
         }
 
         *buf = 136315906;
@@ -1338,13 +1338,13 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
   }
 }
 
-- (BOOL)validateAudioSessionWithError:(id *)a3
+- (BOOL)validateAudioSessionWithError:(id *)error
 {
   v63 = *MEMORY[0x277D85DE8];
-  v5 = self->_audioSession;
-  if (a3)
+  mEMORY[0x277CB83F8] = self->_audioSession;
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   v50 = 0u;
@@ -1357,19 +1357,19 @@ void __42__PHASESoundEvent_startAtTime_completion___block_invoke(uint64_t a1, ui
   {
 LABEL_21:
 
-    if (!v5)
+    if (!mEMORY[0x277CB83F8])
     {
-      v5 = [MEMORY[0x277CB83F8] sharedInstance];
+      mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
     }
 
-    v5 = v5;
+    mEMORY[0x277CB83F8] = mEMORY[0x277CB83F8];
     audioSession = self->_audioSession;
-    self->_audioSession = v5;
+    self->_audioSession = mEMORY[0x277CB83F8];
     v22 = 1;
     goto LABEL_33;
   }
 
-  v46 = a3;
+  errorCopy = error;
   obj = v6;
   v8 = *v49;
 LABEL_5:
@@ -1385,10 +1385,10 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v10 source];
-      v12 = [v11 parent];
+      source = [v10 source];
+      parent = [source parent];
 
-      if (v12)
+      if (parent)
       {
         break;
       }
@@ -1417,25 +1417,25 @@ LABEL_19:
       goto LABEL_18;
     }
 
-    v13 = [v12 session];
-    v14 = v13 == 0;
+    session = [parent session];
+    v14 = session == 0;
 
     if (v14)
     {
       goto LABEL_18;
     }
 
-    if (v5)
+    if (mEMORY[0x277CB83F8])
     {
       break;
     }
 
-    v5 = [v12 session];
+    mEMORY[0x277CB83F8] = [parent session];
 LABEL_18:
-    v20 = [v12 parent];
+    v12Parent = [parent parent];
 
-    v12 = v20;
-    if (!v20)
+    parent = v12Parent;
+    if (!v12Parent)
     {
       goto LABEL_19;
     }
@@ -1444,17 +1444,17 @@ LABEL_18:
   v15 = self->_audioSession;
   if (v15)
   {
-    v16 = [v12 session];
-    v17 = v15 == v16;
+    session2 = [parent session];
+    v17 = v15 == session2;
 
     if (!v17)
     {
       v35 = *MEMORY[0x277CCA450];
       v60 = *MEMORY[0x277CCA450];
       v36 = MEMORY[0x277CCACA8];
-      v37 = [(AVAudioSession *)self->_audioSession opaqueSessionID];
-      v38 = [v12 session];
-      v39 = [v36 stringWithFormat:@"A PHASESoundEvent cannot prepare with a session IO binding (sessionID=%u) that disagrees with its PHASESource's root object's audio session (sessionID=%u)", v37, objc_msgSend(v38, "opaqueSessionID")];
+      opaqueSessionID = [(AVAudioSession *)self->_audioSession opaqueSessionID];
+      session3 = [parent session];
+      v39 = [v36 stringWithFormat:@"A PHASESoundEvent cannot prepare with a session IO binding (sessionID=%u) that disagrees with its PHASESource's root object's audio session (sessionID=%u)", opaqueSessionID, objc_msgSend(session3, "opaqueSessionID")];
       v61 = v39;
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
 
@@ -1463,17 +1463,17 @@ LABEL_18:
       {
         v42 = [v28 objectForKeyedSubscript:v35];
         v43 = v42;
-        v44 = [v42 UTF8String];
+        uTF8String = [v42 UTF8String];
         *buf = 136315650;
         v55 = "PHASESoundEvent.mm";
         v56 = 1024;
         v57 = 898;
         v58 = 2080;
-        v59 = v44;
+        v59 = uTF8String;
         _os_log_impl(&dword_23A302000, v41, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
       }
 
-      if (v46)
+      if (errorCopy)
       {
         goto LABEL_31;
       }
@@ -1482,8 +1482,8 @@ LABEL_18:
     }
   }
 
-  v18 = [v12 session];
-  v19 = v5 == v18;
+  session4 = [parent session];
+  v19 = mEMORY[0x277CB83F8] == session4;
 
   if (v19)
   {
@@ -1493,9 +1493,9 @@ LABEL_18:
   v23 = *MEMORY[0x277CCA450];
   v52 = *MEMORY[0x277CCA450];
   v24 = MEMORY[0x277CCACA8];
-  v25 = [(AVAudioSession *)v5 opaqueSessionID];
-  v26 = [v12 session];
-  v27 = [v24 stringWithFormat:@"A PHASESoundEvent cannot have multiple PHASESources with different session root objects (sessionIDs %u and %u)", v25, objc_msgSend(v26, "opaqueSessionID")];
+  opaqueSessionID2 = [(AVAudioSession *)mEMORY[0x277CB83F8] opaqueSessionID];
+  session5 = [parent session];
+  v27 = [v24 stringWithFormat:@"A PHASESoundEvent cannot have multiple PHASESources with different session root objects (sessionIDs %u and %u)", opaqueSessionID2, objc_msgSend(session5, "opaqueSessionID")];
   v53 = v27;
   v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
 
@@ -1504,20 +1504,20 @@ LABEL_18:
   {
     v32 = [v28 objectForKeyedSubscript:v23];
     v33 = v32;
-    v34 = [v32 UTF8String];
+    uTF8String2 = [v32 UTF8String];
     *buf = 136315650;
     v55 = "PHASESoundEvent.mm";
     v56 = 1024;
     v57 = 917;
     v58 = 2080;
-    v59 = v34;
+    v59 = uTF8String2;
     _os_log_impl(&dword_23A302000, v30, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
   }
 
-  if (v46)
+  if (errorCopy)
   {
 LABEL_31:
-    *v46 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346925668 userInfo:v28];
+    *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346925668 userInfo:v28];
   }
 
 LABEL_32:
@@ -1529,10 +1529,10 @@ LABEL_33:
   return v22;
 }
 
-- (BOOL)internalPrepareActionTreeWithCompletionBlock:(id)a3
+- (BOOL)internalPrepareActionTreeWithCompletionBlock:(id)block
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
 
   if (WeakRetained)
@@ -1549,7 +1549,7 @@ LABEL_33:
     *&v37[16] = 0x3032000000;
     *&v37[24] = __Block_byref_object_copy__0;
     v38 = __Block_byref_object_dispose__0;
-    v39 = [v4 copy];
+    v39 = [blockCopy copy];
     v34[0] = 0;
     v34[1] = v34;
     v34[2] = 0x2020000000;
@@ -1663,7 +1663,7 @@ LABEL_33:
       _os_log_impl(&dword_23A302000, v21, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", v37, 0x1Cu);
     }
 
-    (*(v4 + 2))(v4, 0, 1);
+    (*(blockCopy + 2))(blockCopy, 0, 1);
     v16 = 0;
   }
 
@@ -1737,8 +1737,8 @@ LABEL_33:
         v13 = [(PHASENumberMetaParameter *)v11 initWithUID:v12 value:self rangeMin:*(v9 + v6 + 48) rangeMax:*(v9 + v6 + 32) delegate:*(v9 + v6 + 40)];
 
         v14 = v13;
-        v15 = [(PHASEMetaParameter *)v14 identifier];
-        [v3 setObject:v14 forKeyedSubscript:v15];
+        identifier = [(PHASEMetaParameter *)v14 identifier];
+        [v3 setObject:v14 forKeyedSubscript:identifier];
 LABEL_15:
 
         ptr = self->_actionTreeObject.__ptr_;
@@ -1780,8 +1780,8 @@ LABEL_16:
     v21 = [(PHASEStringMetaParameter *)v18 initWithUID:v19 value:v20 delegate:self];
 
     v14 = v21;
-    v15 = [(PHASEMetaParameter *)v14 identifier];
-    [v3 setObject:v14 forKeyedSubscript:v15];
+    identifier = [(PHASEMetaParameter *)v14 identifier];
+    [v3 setObject:v14 forKeyedSubscript:identifier];
     goto LABEL_15;
   }
 
@@ -1791,27 +1791,27 @@ LABEL_17:
   return v22;
 }
 
-- (id)internalGetActionTreeMixersWithMixerParameters:(id)a3 actionTreeAsset:(const void *)a4 outError:(id *)a5
+- (id)internalGetActionTreeMixersWithMixerParameters:(id)parameters actionTreeAsset:(const void *)asset outError:(id *)error
 {
   v243[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v198 = v7;
-  v204 = [v7 parameterDictionary];
-  if (a5)
+  parametersCopy = parameters;
+  v198 = parametersCopy;
+  parameterDictionary = [parametersCopy parameterDictionary];
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v199 = a5;
-  if (v7 && [v204 count] || (v8 = *(a4 + 24), !v8))
+  errorCopy = error;
+  if (parametersCopy && [parameterDictionary count] || (v8 = *(asset + 24), !v8))
   {
 LABEL_9:
-    v203 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v204, "count")}];
+    v203 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(parameterDictionary, "count")}];
     v211 = 0u;
     v212 = 0u;
     v209 = 0u;
     v210 = 0u;
-    obj = [v204 allKeys];
+    obj = [parameterDictionary allKeys];
     v200 = [obj countByEnumeratingWithState:&v209 objects:v235 count:16];
     if (v200)
     {
@@ -1826,13 +1826,13 @@ LABEL_9:
           }
 
           v10 = *(*(&v209 + 1) + 8 * i);
-          v11 = [v204 objectForKeyedSubscript:v10];
+          v11 = [parameterDictionary objectForKeyedSubscript:v10];
           v207 = v11;
-          v12 = [v11 mixerType];
-          if (v12 == 1)
+          mixerType = [v11 mixerType];
+          if (mixerType == 1)
           {
-            v28 = [v11 source];
-            if (!v28 || ([v11 listener], v29 = objc_claimAutoreleasedReturnValue(), v30 = v29 == 0, v29, v28, v30))
+            source = [v11 source];
+            if (!source || ([v11 listener], v29 = objc_claimAutoreleasedReturnValue(), v30 = v29 == 0, v29, source, v30))
             {
               v98 = *MEMORY[0x277CCA450];
               v233 = *MEMORY[0x277CCA450];
@@ -1842,21 +1842,21 @@ LABEL_9:
 
               v102 = **(Phase::Logger::GetInstance(v101) + 448);
               v103 = os_log_type_enabled(v102, OS_LOG_TYPE_ERROR);
-              v104 = v199;
+              v104 = errorCopy;
               if (v103)
               {
                 v105 = [v100 objectForKeyedSubscript:v98];
                 v106 = v105;
-                v107 = [v105 UTF8String];
+                uTF8String = [v105 UTF8String];
                 *buf = 136315650;
                 v237 = "PHASESoundEvent.mm";
                 v238 = 1024;
                 v239 = 1136;
                 v240 = 2080;
-                v241 = v107;
+                uTF8String12 = uTF8String;
                 _os_log_impl(&dword_23A302000, v102, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
 
-                v104 = v199;
+                v104 = errorCopy;
               }
 
               v108 = v104 == 0;
@@ -1864,7 +1864,7 @@ LABEL_9:
               if (!v108)
               {
 LABEL_105:
-                *v199 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346925668 userInfo:v100];
+                *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346925668 userInfo:v100];
               }
 
 LABEL_106:
@@ -1874,10 +1874,10 @@ LABEL_106:
               goto LABEL_107;
             }
 
-            v31 = [v207 listener];
-            v32 = [v31 engine];
+            listener = [v207 listener];
+            engine = [listener engine];
             WeakRetained = objc_loadWeakRetained(&self->_engine);
-            v34 = v32 == WeakRetained;
+            v34 = engine == WeakRetained;
 
             if (!v34)
             {
@@ -1889,21 +1889,21 @@ LABEL_106:
 
               v142 = **(Phase::Logger::GetInstance(v141) + 448);
               v143 = os_log_type_enabled(v142, OS_LOG_TYPE_ERROR);
-              v144 = v199;
+              v144 = errorCopy;
               if (v143)
               {
                 v145 = [v100 objectForKeyedSubscript:v139];
                 v146 = v145;
-                v147 = [v145 UTF8String];
+                uTF8String2 = [v145 UTF8String];
                 *buf = 136315650;
                 v237 = "PHASESoundEvent.mm";
                 v238 = 1024;
                 v239 = 1151;
                 v240 = 2080;
-                v241 = v147;
+                uTF8String12 = uTF8String2;
                 _os_log_impl(&dword_23A302000, v142, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
 
-                v144 = v199;
+                v144 = errorCopy;
               }
 
               v148 = v144 == 0;
@@ -1916,10 +1916,10 @@ LABEL_106:
               goto LABEL_106;
             }
 
-            v35 = [v207 source];
-            v36 = [v35 engine];
+            source2 = [v207 source];
+            engine2 = [source2 engine];
             v37 = objc_loadWeakRetained(&self->_engine);
-            v38 = v36 == v37;
+            v38 = engine2 == v37;
 
             if (!v38)
             {
@@ -1931,21 +1931,21 @@ LABEL_106:
 
               v162 = **(Phase::Logger::GetInstance(v161) + 448);
               v163 = os_log_type_enabled(v162, OS_LOG_TYPE_ERROR);
-              v164 = v199;
+              v164 = errorCopy;
               if (v163)
               {
                 v165 = [v100 objectForKeyedSubscript:v159];
                 v166 = v165;
-                v167 = [v165 UTF8String];
+                uTF8String3 = [v165 UTF8String];
                 *buf = 136315650;
                 v237 = "PHASESoundEvent.mm";
                 v238 = 1024;
                 v239 = 1166;
                 v240 = 2080;
-                v241 = v167;
+                uTF8String12 = uTF8String3;
                 _os_log_impl(&dword_23A302000, v162, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
 
-                v164 = v199;
+                v164 = errorCopy;
               }
 
               v168 = v164 == 0;
@@ -1958,10 +1958,10 @@ LABEL_106:
               goto LABEL_106;
             }
 
-            v39 = [v207 source];
-            v40 = [v39 isConnectedToRoot];
+            source3 = [v207 source];
+            isConnectedToRoot = [source3 isConnectedToRoot];
 
-            if ((v40 & 1) == 0)
+            if ((isConnectedToRoot & 1) == 0)
             {
               v169 = *MEMORY[0x277CCA450];
               v227 = *MEMORY[0x277CCA450];
@@ -1971,21 +1971,21 @@ LABEL_106:
 
               v172 = **(Phase::Logger::GetInstance(v171) + 448);
               v173 = os_log_type_enabled(v172, OS_LOG_TYPE_ERROR);
-              v174 = v199;
+              v174 = errorCopy;
               if (v173)
               {
                 v175 = [v100 objectForKeyedSubscript:v169];
                 v176 = v175;
-                v177 = [v175 UTF8String];
+                uTF8String4 = [v175 UTF8String];
                 *buf = 136315650;
                 v237 = "PHASESoundEvent.mm";
                 v238 = 1024;
                 v239 = 1181;
                 v240 = 2080;
-                v241 = v177;
+                uTF8String12 = uTF8String4;
                 _os_log_impl(&dword_23A302000, v172, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
 
-                v174 = v199;
+                v174 = errorCopy;
               }
 
               v178 = v174 == 0;
@@ -1998,10 +1998,10 @@ LABEL_106:
               goto LABEL_106;
             }
 
-            v41 = [v207 listener];
-            v42 = [v41 isConnectedToRoot];
+            listener2 = [v207 listener];
+            isConnectedToRoot2 = [listener2 isConnectedToRoot];
 
-            if (!v42)
+            if (!isConnectedToRoot2)
             {
               v179 = *MEMORY[0x277CCA450];
               v225 = *MEMORY[0x277CCA450];
@@ -2011,21 +2011,21 @@ LABEL_106:
 
               v182 = **(Phase::Logger::GetInstance(v181) + 448);
               v183 = os_log_type_enabled(v182, OS_LOG_TYPE_ERROR);
-              v184 = v199;
+              v184 = errorCopy;
               if (v183)
               {
                 v185 = [v100 objectForKeyedSubscript:v179];
                 v186 = v185;
-                v187 = [v185 UTF8String];
+                uTF8String5 = [v185 UTF8String];
                 *buf = 136315650;
                 v237 = "PHASESoundEvent.mm";
                 v238 = 1024;
                 v239 = 1196;
                 v240 = 2080;
-                v241 = v187;
+                uTF8String12 = uTF8String5;
                 _os_log_impl(&dword_23A302000, v182, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
 
-                v184 = v199;
+                v184 = errorCopy;
               }
 
               v188 = v184 == 0;
@@ -2038,7 +2038,7 @@ LABEL_106:
               goto LABEL_106;
             }
 
-            if (*(a4 + 24))
+            if (*(asset + 24))
             {
               v44 = 0;
               v45 = 0;
@@ -2047,7 +2047,7 @@ LABEL_106:
               v48 = 1456;
               do
               {
-                v49 = *(a4 + 13);
+                v49 = *(asset + 13);
                 if (*(v49 + v48 - 1448) == 1)
                 {
                   v50 = *(v49 + v48 - 1456);
@@ -2057,23 +2057,23 @@ LABEL_106:
                     if (*(v49 + v48))
                     {
                       v52 = objc_loadWeakRetained(&self->_engine);
-                      v53 = [v52 implementation];
-                      v45 = (*(**(v53 + 368) + 48))(*(v53 + 368), v51, 0);
+                      implementation = [v52 implementation];
+                      v45 = (*(**(implementation + 368) + 48))(*(implementation + 368), v51, 0);
                     }
 
                     if (*(v51 - 1008))
                     {
                       v54 = objc_loadWeakRetained(&self->_engine);
-                      v55 = [v54 implementation];
-                      v47 = (*(**(v55 + 368) + 48))(*(v55 + 368), v51 - 1008, 1);
+                      implementation2 = [v54 implementation];
+                      v47 = (*(**(implementation2 + 368) + 48))(*(implementation2 + 368), v51 - 1008, 1);
                     }
 
                     v56 = (v51 - 1424);
                     if (*v56)
                     {
                       v57 = objc_loadWeakRetained(&self->_engine);
-                      v58 = [v57 implementation];
-                      v46 = (*(**(v58 + 368) + 56))(*(v58 + 368), v56);
+                      implementation3 = [v57 implementation];
+                      v46 = (*(**(implementation3 + 368) + 56))(*(implementation3 + 368), v56);
                     }
                   }
                 }
@@ -2082,7 +2082,7 @@ LABEL_106:
                 v48 += 5944;
               }
 
-              while (v44 < *(a4 + 24));
+              while (v44 < *(asset + 24));
             }
 
             else
@@ -2094,16 +2094,16 @@ LABEL_106:
 
             v63 = [PHASESpatialMixer alloc];
             v64 = objc_alloc_init(MEMORY[0x277CBEA60]);
-            v65 = [v207 source];
-            v66 = [v207 listener];
-            v24 = [(PHASESpatialMixer *)v63 initWithIdentifier:v10 spatialModelerSends:v64 source:v65 listener:v66 sourceDirectivityModel:v45 listenerDirectivityModel:v47 distanceModel:v46];
+            source4 = [v207 source];
+            listener3 = [v207 listener];
+            v24 = [(PHASESpatialMixer *)v63 initWithIdentifier:v10 spatialModelerSends:v64 source:source4 listener:listener3 sourceDirectivityModel:v45 listenerDirectivityModel:v47 distanceModel:v46];
 
             [v203 setObject:v24 forKey:v10];
           }
 
           else
           {
-            if (v12 != 2)
+            if (mixerType != 2)
             {
               v109 = *MEMORY[0x277CCA450];
               v217 = *MEMORY[0x277CCA450];
@@ -2113,21 +2113,21 @@ LABEL_106:
 
               v112 = **(Phase::Logger::GetInstance(v111) + 448);
               v113 = os_log_type_enabled(v112, OS_LOG_TYPE_ERROR);
-              v114 = v199;
+              v114 = errorCopy;
               if (v113)
               {
                 v115 = [v100 objectForKeyedSubscript:v109];
                 v116 = v115;
-                v117 = [v115 UTF8String];
+                uTF8String6 = [v115 UTF8String];
                 *buf = 136315650;
                 v237 = "PHASESoundEvent.mm";
                 v238 = 1024;
                 v239 = 1320;
                 v240 = 2080;
-                v241 = v117;
+                uTF8String12 = uTF8String6;
                 _os_log_impl(&dword_23A302000, v112, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
 
-                v114 = v199;
+                v114 = errorCopy;
               }
 
               v118 = v114 == 0;
@@ -2140,10 +2140,10 @@ LABEL_106:
               goto LABEL_106;
             }
 
-            v13 = [v11 listener];
-            v14 = [v13 engine];
+            listener4 = [v11 listener];
+            engine3 = [listener4 engine];
             v15 = objc_loadWeakRetained(&self->_engine);
-            v16 = v14 == v15;
+            v16 = engine3 == v15;
 
             if (!v16)
             {
@@ -2155,21 +2155,21 @@ LABEL_106:
 
               v122 = **(Phase::Logger::GetInstance(v121) + 448);
               v123 = os_log_type_enabled(v122, OS_LOG_TYPE_ERROR);
-              v124 = v199;
+              v124 = errorCopy;
               if (v123)
               {
                 v125 = [v100 objectForKeyedSubscript:v119];
                 v126 = v125;
-                v127 = [v125 UTF8String];
+                uTF8String7 = [v125 UTF8String];
                 *buf = 136315650;
                 v237 = "PHASESoundEvent.mm";
                 v238 = 1024;
                 v239 = 1252;
                 v240 = 2080;
-                v241 = v127;
+                uTF8String12 = uTF8String7;
                 _os_log_impl(&dword_23A302000, v122, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
 
-                v124 = v199;
+                v124 = errorCopy;
               }
 
               v128 = v124 == 0;
@@ -2182,8 +2182,8 @@ LABEL_106:
               goto LABEL_106;
             }
 
-            v17 = [v207 listener];
-            v18 = v17 == 0;
+            listener5 = [v207 listener];
+            v18 = listener5 == 0;
 
             if (v18)
             {
@@ -2195,21 +2195,21 @@ LABEL_106:
 
               v132 = **(Phase::Logger::GetInstance(v131) + 448);
               v133 = os_log_type_enabled(v132, OS_LOG_TYPE_ERROR);
-              v134 = v199;
+              v134 = errorCopy;
               if (v133)
               {
                 v135 = [v100 objectForKeyedSubscript:v129];
                 v136 = v135;
-                v137 = [v135 UTF8String];
+                uTF8String8 = [v135 UTF8String];
                 *buf = 136315650;
                 v237 = "PHASESoundEvent.mm";
                 v238 = 1024;
                 v239 = 1267;
                 v240 = 2080;
-                v241 = v137;
+                uTF8String12 = uTF8String8;
                 _os_log_impl(&dword_23A302000, v132, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
 
-                v134 = v199;
+                v134 = errorCopy;
               }
 
               v138 = v134 == 0;
@@ -2222,10 +2222,10 @@ LABEL_106:
               goto LABEL_106;
             }
 
-            v19 = [v207 listener];
-            v20 = [v19 isConnectedToRoot];
+            listener6 = [v207 listener];
+            isConnectedToRoot3 = [listener6 isConnectedToRoot];
 
-            if (!v20)
+            if (!isConnectedToRoot3)
             {
               v149 = *MEMORY[0x277CCA450];
               v219 = *MEMORY[0x277CCA450];
@@ -2235,21 +2235,21 @@ LABEL_106:
 
               v152 = **(Phase::Logger::GetInstance(v151) + 448);
               v153 = os_log_type_enabled(v152, OS_LOG_TYPE_ERROR);
-              v154 = v199;
+              v154 = errorCopy;
               if (v153)
               {
                 v155 = [v100 objectForKeyedSubscript:v149];
                 v156 = v155;
-                v157 = [v155 UTF8String];
+                uTF8String9 = [v155 UTF8String];
                 *buf = 136315650;
                 v237 = "PHASESoundEvent.mm";
                 v238 = 1024;
                 v239 = 1282;
                 v240 = 2080;
-                v241 = v157;
+                uTF8String12 = uTF8String9;
                 _os_log_impl(&dword_23A302000, v152, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
 
-                v154 = v199;
+                v154 = errorCopy;
               }
 
               v158 = v154 == 0;
@@ -2262,7 +2262,7 @@ LABEL_106:
               goto LABEL_106;
             }
 
-            if (*(a4 + 24))
+            if (*(asset + 24))
             {
               v22 = 0;
               v23 = 0;
@@ -2270,7 +2270,7 @@ LABEL_106:
               *&v206 = 0;
               do
               {
-                v25 = *(a4 + 13);
+                v25 = *(asset + 13);
                 if (*(v25 + v22 + 8) == 2)
                 {
                   v26 = *(v25 + v22);
@@ -2287,7 +2287,7 @@ LABEL_106:
                 v22 += 5944;
               }
 
-              while (v23 < *(a4 + 24));
+              while (v23 < *(asset + 24));
             }
 
             else
@@ -2297,9 +2297,9 @@ LABEL_106:
             }
 
             v59 = [PHASEAmbientMixer alloc];
-            v60 = [v207 listener];
+            listener7 = [v207 listener];
             v61 = objc_loadWeakRetained(&self->_engine);
-            v62 = [(PHASEAmbientMixer *)v59 initWithIdentifier:v10 listener:v60 inputChannelLayout:v24 orientation:v61 engine:*self->_actionTreeObject.__ptr_ actionTreeObjectId:*(self->_actionTreeObject.__ptr_ + 1), *&v206];
+            v62 = [(PHASEAmbientMixer *)v59 initWithIdentifier:v10 listener:listener7 inputChannelLayout:v24 orientation:v61 engine:*self->_actionTreeObject.__ptr_ actionTreeObjectId:*(self->_actionTreeObject.__ptr_ + 1), *&v206];
 
             [v203 setObject:v62 forKey:v10];
           }
@@ -2316,7 +2316,7 @@ LABEL_106:
 
     if (obj)
     {
-      v68 = *(a4 + 24);
+      v68 = *(asset + 24);
       if (!v68)
       {
         v74 = 0;
@@ -2330,7 +2330,7 @@ LABEL_73:
       v71 = 0;
       while (1)
       {
-        v72 = *(a4 + 13);
+        v72 = *(asset + 13);
         v73 = (v72 + v69);
         if (*(v72 + v69 + 8) == 3)
         {
@@ -2350,19 +2350,19 @@ LABEL_73:
             {
               v195 = [v192 objectForKeyedSubscript:v190];
               v196 = v195;
-              v197 = [v195 UTF8String];
+              uTF8String10 = [v195 UTF8String];
               *buf = 136315650;
               v237 = "PHASESoundEvent.mm";
               v238 = 1024;
               v239 = 1359;
               v240 = 2080;
-              v241 = v197;
+              uTF8String12 = uTF8String10;
               _os_log_impl(&dword_23A302000, v194, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
             }
 
-            if (v199)
+            if (errorCopy)
             {
-              *v199 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346925669 userInfo:v192];
+              *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346925669 userInfo:v192];
             }
 
 LABEL_117:
@@ -2374,7 +2374,7 @@ LABEL_117:
           v77 = [[PHASEChannelMixer alloc] initWithIdentifier:v76 inputChannelLayout:v74];
           [v203 setObject:v77 forKey:v76];
 
-          v68 = *(a4 + 24);
+          v68 = *(asset + 24);
           v71 = v74;
         }
 
@@ -2400,21 +2400,21 @@ LABEL_117:
 
     v91 = **(Phase::Logger::GetInstance(v90) + 448);
     v92 = os_log_type_enabled(v91, OS_LOG_TYPE_ERROR);
-    v93 = v199;
+    v93 = errorCopy;
     if (v92)
     {
       v94 = [v74 objectForKeyedSubscript:v88];
       v95 = v94;
-      v96 = [v94 UTF8String];
+      uTF8String11 = [v94 UTF8String];
       *buf = 136315650;
       v237 = "PHASESoundEvent.mm";
       v238 = 1024;
       v239 = 1335;
       v240 = 2080;
-      v241 = v96;
+      uTF8String12 = uTF8String11;
       _os_log_impl(&dword_23A302000, v91, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
 
-      v93 = v199;
+      v93 = errorCopy;
     }
 
     v97 = v93 == 0;
@@ -2427,13 +2427,13 @@ LABEL_117:
 
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346925669 userInfo:v74];
     obj = 0;
-    *v199 = v87 = 0;
+    *errorCopy = v87 = 0;
 LABEL_107:
   }
 
   else
   {
-    v9 = (*(a4 + 13) + 8);
+    v9 = (*(asset + 13) + 8);
     while ((*v9 - 1) > 1)
     {
       v9 += 743;
@@ -2451,7 +2451,7 @@ LABEL_107:
 
     v81 = **(Phase::Logger::GetInstance(v80) + 448);
     v82 = os_log_type_enabled(v81, OS_LOG_TYPE_ERROR);
-    v83 = a5;
+    errorCopy2 = error;
     if (v82)
     {
       v84 = [v203 objectForKeyedSubscript:v78];
@@ -2461,13 +2461,13 @@ LABEL_107:
       v238 = 1024;
       v239 = 1107;
       v240 = 2080;
-      v241 = [v84 UTF8String];
+      uTF8String12 = [v84 UTF8String];
       _os_log_impl(&dword_23A302000, v81, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", buf, 0x1Cu);
 
-      v83 = v199;
+      errorCopy2 = errorCopy;
     }
 
-    v86 = v83 == 0;
+    v86 = errorCopy2 == 0;
 
     if (v86)
     {
@@ -2477,16 +2477,16 @@ LABEL_107:
     else
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346925668 userInfo:v203];
-      *v199 = v87 = 0;
+      *errorCopy = v87 = 0;
     }
   }
 
   return v87;
 }
 
-- (id)internalGetActionTreePushStreamNodes:(id)a3
+- (id)internalGetActionTreePushStreamNodes:(id)nodes
 {
-  v35 = a3;
+  nodesCopy = nodes;
   v31 = objc_alloc_init(MEMORY[0x277CBEB38]);
   ptr = self->_actionTreeObject.__ptr_;
   v5 = *(ptr + 3);
@@ -2503,15 +2503,15 @@ LABEL_107:
         v9 = self->_actionTreeObject.__ptr_;
         v10 = *(*(v9 + 3) + 88) + v7;
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(*(v9 + 2), "getString:", *(v10 + 16))}];
-        v12 = [(PHASESoundEvent *)self mixers];
+        mixers = [(PHASESoundEvent *)self mixers];
         v36 = v8;
-        v13 = [v12 objectForKeyedSubscript:v11];
+        v13 = [mixers objectForKeyedSubscript:v11];
 
-        v14 = self;
+        selfCopy = self;
         WeakRetained = objc_loadWeakRetained(&self->_engine);
-        v16 = [WeakRetained assetRegistry];
-        v17 = [v35 assetIdentifier];
-        v18 = [v16 assetForIdentifier:v17];
+        assetRegistry = [WeakRetained assetRegistry];
+        assetIdentifier = [nodesCopy assetIdentifier];
+        v18 = [assetRegistry assetForIdentifier:assetIdentifier];
 
         if (v13)
         {
@@ -2520,8 +2520,8 @@ LABEL_107:
           {
             v33 = v13;
             v34 = v11;
-            v19 = [v18 streamNodeFormats];
-            v32 = [v19 objectForKeyedSubscript:v37];
+            streamNodeFormats = [v18 streamNodeFormats];
+            v32 = [streamNodeFormats objectForKeyedSubscript:v37];
 
             v20 = [PHASEPushStreamNode alloc];
             v21 = objc_loadWeakRetained(&self->_engine);
@@ -2536,7 +2536,7 @@ LABEL_107:
 
             [v31 setObject:v27 forKey:v37];
             v11 = v34;
-            self = v14;
+            self = selfCopy;
           }
         }
 
@@ -2555,9 +2555,9 @@ LABEL_107:
   return v28;
 }
 
-- (id)internalGetActionTreePullStreamNodes:(id)a3
+- (id)internalGetActionTreePullStreamNodes:(id)nodes
 {
-  v35 = a3;
+  nodesCopy = nodes;
   v31 = objc_alloc_init(MEMORY[0x277CBEB38]);
   ptr = self->_actionTreeObject.__ptr_;
   v5 = *(ptr + 3);
@@ -2574,15 +2574,15 @@ LABEL_107:
         v9 = self->_actionTreeObject.__ptr_;
         v10 = *(*(v9 + 3) + 88) + v7;
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:{objc_msgSend(*(v9 + 2), "getString:", *(v10 + 16))}];
-        v12 = [(PHASESoundEvent *)self mixers];
+        mixers = [(PHASESoundEvent *)self mixers];
         v36 = v8;
-        v13 = [v12 objectForKeyedSubscript:v11];
+        v13 = [mixers objectForKeyedSubscript:v11];
 
-        v14 = self;
+        selfCopy = self;
         WeakRetained = objc_loadWeakRetained(&self->_engine);
-        v16 = [WeakRetained assetRegistry];
-        v17 = [v35 assetIdentifier];
-        v18 = [v16 assetForIdentifier:v17];
+        assetRegistry = [WeakRetained assetRegistry];
+        assetIdentifier = [nodesCopy assetIdentifier];
+        v18 = [assetRegistry assetForIdentifier:assetIdentifier];
 
         if (v13)
         {
@@ -2591,8 +2591,8 @@ LABEL_107:
           {
             v33 = v13;
             v34 = v11;
-            v19 = [v18 streamNodeFormats];
-            v32 = [v19 objectForKeyedSubscript:v37];
+            streamNodeFormats = [v18 streamNodeFormats];
+            v32 = [streamNodeFormats objectForKeyedSubscript:v37];
 
             v20 = [PHASEPullStreamNode alloc];
             v21 = objc_loadWeakRetained(&self->_engine);
@@ -2607,7 +2607,7 @@ LABEL_107:
 
             [v31 setObject:v27 forKey:v37];
             v11 = v34;
-            self = v14;
+            self = selfCopy;
           }
         }
 
@@ -2639,7 +2639,7 @@ LABEL_107:
     v45 = 1024;
     v46 = 1477;
     v47 = 2112;
-    v48 = self;
+    selfCopy3 = self;
     v49 = 2048;
     v50 = *&time;
     _os_log_impl(&dword_23A302000, v8, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %@ seekToTime %f", buf, 0x26u);
@@ -2660,7 +2660,7 @@ LABEL_107:
       v45 = 1024;
       v46 = 1483;
       v47 = 2112;
-      v48 = self;
+      selfCopy3 = self;
       v33 = "%25s:%-5d seekToTime: %@ Invalid sound event instance";
 LABEL_19:
       _os_log_impl(&dword_23A302000, v32, OS_LOG_TYPE_ERROR, v33, buf, 0x1Cu);
@@ -2689,7 +2689,7 @@ LABEL_20:
       v45 = 1024;
       v46 = 1493;
       v47 = 2112;
-      v48 = self;
+      selfCopy3 = self;
       v33 = "%25s:%-5d seekToTime: %@ PHASE not initialized";
       goto LABEL_19;
     }
@@ -2771,7 +2771,7 @@ LABEL_20:
       v45 = 1024;
       v46 = 89;
       v47 = 2048;
-      v48 = v42;
+      selfCopy3 = v42;
       v49 = 2048;
       v50 = 72;
       _os_log_impl(&dword_23A302000, v30, OS_LOG_TYPE_DEBUG, "%25s:%-5d Warning: CommandQueue grew buffer to %zu bytes to accommodate extra %zu bytes - this usually means the system is under load or the command queue is too small.", buf, 0x26u);
@@ -2793,13 +2793,13 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)seekToTime:(double)a3 resumeAtEngineTime:(id)a4 completion:(id)a5
+- (void)seekToTime:(double)time resumeAtEngineTime:(id)engineTime completion:(id)completion
 {
-  v9 = a4;
-  v8 = a5;
+  engineTimeCopy = engineTime;
+  completionCopy = completion;
   [(PHASESoundEvent *)self pause];
-  [(PHASESoundEvent *)self seekToTime:v8 completion:a3];
-  [(PHASESoundEvent *)self resumeAtTime:v9];
+  [(PHASESoundEvent *)self seekToTime:completionCopy completion:time];
+  [(PHASESoundEvent *)self resumeAtTime:engineTimeCopy];
 }
 
 - (id)engine
@@ -2809,7 +2809,7 @@ LABEL_21:
   return WeakRetained;
 }
 
-- (void)setPrepareState:(int64_t)a3
+- (void)setPrepareState:(int64_t)state
 {
   v21 = *MEMORY[0x277D85DE8];
   Instance = Phase::Logger::GetInstance(self);
@@ -2830,14 +2830,14 @@ LABEL_21:
       }
 
       v9 = *self->_actionTreeObject.__ptr_;
-      if (a3 > 2)
+      if (state > 2)
       {
         v10 = "<not found>";
       }
 
       else
       {
-        v10 = off_278B4F940[a3];
+        v10 = off_278B4F940[state];
       }
 
       v11 = 136316162;
@@ -2854,21 +2854,21 @@ LABEL_21:
     }
   }
 
-  self->_prepareState = a3;
+  self->_prepareState = state;
 }
 
-- (void)setRenderingState:(int64_t)a3
+- (void)setRenderingState:(int64_t)state
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  v5 = objc_sync_enter(v4);
+  selfCopy = self;
+  v5 = objc_sync_enter(selfCopy);
   Instance = Phase::Logger::GetInstance(v5);
-  if (*(Instance + 1636) == 1 && v4->_renderingState != a3)
+  if (*(Instance + 1636) == 1 && selfCopy->_renderingState != state)
   {
     v7 = **(Phase::Logger::GetInstance(Instance) + 448);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      renderingState = v4->_renderingState;
+      renderingState = selfCopy->_renderingState;
       if (renderingState > 2)
       {
         v9 = "<not found>";
@@ -2879,15 +2879,15 @@ LABEL_21:
         v9 = off_278B4F958[renderingState];
       }
 
-      v10 = *v4->_actionTreeObject.__ptr_;
-      if (a3 > 2)
+      v10 = *selfCopy->_actionTreeObject.__ptr_;
+      if (state > 2)
       {
         v11 = "<not found>";
       }
 
       else
       {
-        v11 = off_278B4F958[a3];
+        v11 = off_278B4F958[state];
       }
 
       v12 = 136316162;
@@ -2904,8 +2904,8 @@ LABEL_21:
     }
   }
 
-  v4->_renderingState = a3;
-  objc_sync_exit(v4);
+  selfCopy->_renderingState = state;
+  objc_sync_exit(selfCopy);
 }
 
 - (id).cxx_construct
@@ -2917,31 +2917,31 @@ LABEL_21:
   return self;
 }
 
-- (void)internalStartActionTree:(uint64_t)a3 completion:(uint64_t)a4
+- (void)internalStartActionTree:(uint64_t)tree completion:(uint64_t)completion
 {
   if (a5)
   {
-    a5[2](a5, a3, a4);
+    a5[2](a5, tree, completion);
   }
 }
 
-- (void)internalPrepareActionTreeWithCompletionBlock:(uint64_t)a3
+- (void)internalPrepareActionTreeWithCompletionBlock:(uint64_t)block
 {
   if (a6)
   {
-    a6[2](a6, a3, a4, a5);
+    a6[2](a6, block, a4, a5);
   }
 }
 
-- (void)seekToTime:(uint64_t)a3 completion:(void *)(a4
+- (void)seekToTime:(uint64_t)time completion:(void *)(a4
 {
   v16 = *MEMORY[0x277D85DE8];
   if (a4)
   {
-    a4[2](a4, a3);
+    a4[2](a4, time);
   }
 
-  v7 = **(Phase::Logger::GetInstance(a1) + 448);
+  v7 = **(Phase::Logger::GetInstance(self) + 448);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315906;
@@ -2949,14 +2949,14 @@ LABEL_21:
     v10 = 1024;
     v11 = 1513;
     v12 = 2048;
-    v13 = a1;
+    selfCopy = self;
     v14 = 2048;
-    v15 = a3;
+    timeCopy = time;
     _os_log_impl(&dword_23A302000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d PHASESoundEvent %llu seekToTime completed with result %ld", &v8, 0x26u);
   }
 }
 
-- (void)resumeAtTime:(uint64_t)a1
+- (void)resumeAtTime:(uint64_t)time
 {
 
   JUMPOUT(0x23EE864A0);

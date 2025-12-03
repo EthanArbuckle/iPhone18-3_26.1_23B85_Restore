@@ -1,6 +1,6 @@
 @interface SummaryBurnBarView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI18SummaryBurnBarView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI18SummaryBurnBarView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SummaryBurnBarView
@@ -9,7 +9,7 @@
 {
   v3 = OBJC_IVAR____TtC9SeymourUI18SummaryBurnBarView_burnBarSummary;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI18SummaryBurnBarView_burnBarSummary);
-  v5 = self;
+  selfCopy = self;
   [v4 frame];
   MaxX = CGRectGetMaxX(v11);
   [*(&self->super.super.super.isa + v3) frame];
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI18SummaryBurnBarView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI18SummaryBurnBarView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

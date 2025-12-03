@@ -1,6 +1,6 @@
 @interface PLCacheMetricsCollectorServer
 - ($5E5F304956FB491AF6F034FDF0808287)getSharedImageRequestCacheMetrics;
-- (PLCacheMetricsCollectorServer)initWithXPCObject:(id)a3;
+- (PLCacheMetricsCollectorServer)initWithXPCObject:(id)object;
 - (void)dealloc;
 @end
 
@@ -33,18 +33,18 @@
   return result;
 }
 
-- (PLCacheMetricsCollectorServer)initWithXPCObject:(id)a3
+- (PLCacheMetricsCollectorServer)initWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = PLCacheMetricsCollectorServer;
   v5 = [(PLCacheMetricsCollectorServer *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (objectCopy)
     {
-      v7 = xpc_shmem_map(v4, &v5->_sharedRegion);
+      v7 = xpc_shmem_map(objectCopy, &v5->_sharedRegion);
       v6->_bufferSize = v7;
       v8 = PLCacheMetricsCollectorGetLog();
       v9 = v8;

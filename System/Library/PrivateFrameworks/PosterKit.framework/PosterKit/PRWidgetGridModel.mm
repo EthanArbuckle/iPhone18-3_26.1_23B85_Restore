@@ -1,47 +1,47 @@
 @interface PRWidgetGridModel
-+ (id)effectiveContainerBundleIdentifierForComplicationDescriptor:(id)a3;
-+ (id)effectiveContainerBundleIdentifierForContainerBundleIdentifier:(id)a3 extensionBundleIdentifier:(id)a4;
++ (id)effectiveContainerBundleIdentifierForComplicationDescriptor:(id)descriptor;
++ (id)effectiveContainerBundleIdentifierForContainerBundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier;
 - (APSubjectMonitorSubscription)appProtectionSubjectMonitorSubscription;
-- (BOOL)canAddComplicationDescriptor:(id)a3;
+- (BOOL)canAddComplicationDescriptor:(id)descriptor;
 - (NSArray)complicationDescriptors;
 - (NSDictionary)iconLayout;
 - (NSDictionary)intentsByDescriptorIdentifier;
 - (NSString)description;
 - (PRWidgetGridModel)init;
-- (PRWidgetGridModel)initWithComplicationDescriptors:(id)a3 iconLayout:(id)a4 type:(unint64_t)a5;
+- (PRWidgetGridModel)initWithComplicationDescriptors:(id)descriptors iconLayout:(id)layout type:(unint64_t)type;
 - (PRWidgetGridModelPresenting)presenter;
 - (SBIconListModel)listModel;
 - (SBRootFolder)rootFolder;
-- (id)_makeWidgetIconForComplicationDescriptor:(id)a3;
-- (id)_removeIconForDescriptor:(id)a3 animated:(BOOL)a4;
-- (id)complicationDescriptorForIdentifier:(id)a3;
-- (id)gridSizeClassSizesForIconModel:(id)a3;
-- (id)iconModel:(id)a3 allowedGridSizeClassesForFolderClass:(Class)a4;
-- (void)_addIconForDescriptor:(id)a3 withGridIndex:(id)a4 animated:(BOOL)a5;
-- (void)_fireDidUpdateIconLayout:(id)a3 observers:(id)a4;
-- (void)_fireDidUpdateLayoutInsetsMode:(unint64_t)a3 observers:(id)a4;
-- (void)_fireDidUpdateListModel:(id)a3 observers:(id)a4;
-- (void)_fireObserversForSelector:(SEL)a3 observers:(id)a4 withBlock:(id)a5;
-- (void)_fireWidgetGridModelDidUpdateContent:(id)a3;
-- (void)_fireWidgetGridModelDidUpdateIntents:(id)a3;
-- (void)_iconModelDidLayoutIconState:(id)a3;
+- (id)_makeWidgetIconForComplicationDescriptor:(id)descriptor;
+- (id)_removeIconForDescriptor:(id)descriptor animated:(BOOL)animated;
+- (id)complicationDescriptorForIdentifier:(id)identifier;
+- (id)gridSizeClassSizesForIconModel:(id)model;
+- (id)iconModel:(id)model allowedGridSizeClassesForFolderClass:(Class)class;
+- (void)_addIconForDescriptor:(id)descriptor withGridIndex:(id)index animated:(BOOL)animated;
+- (void)_fireDidUpdateIconLayout:(id)layout observers:(id)observers;
+- (void)_fireDidUpdateLayoutInsetsMode:(unint64_t)mode observers:(id)observers;
+- (void)_fireDidUpdateListModel:(id)model observers:(id)observers;
+- (void)_fireObserversForSelector:(SEL)selector observers:(id)observers withBlock:(id)block;
+- (void)_fireWidgetGridModelDidUpdateContent:(id)content;
+- (void)_fireWidgetGridModelDidUpdateIntents:(id)intents;
+- (void)_iconModelDidLayoutIconState:(id)state;
 - (void)_setupFixedPositionsForRowLayout;
 - (void)_updateLayoutInsetsMode;
-- (void)addWidgetGridModelObserver:(id)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)addWidgetGridModelObserver:(id)observer;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)dealloc;
-- (void)iconList:(id)a3 didAddIcon:(id)a4;
-- (void)iconList:(id)a3 didMoveIcon:(id)a4;
-- (void)iconList:(id)a3 didRemoveIcon:(id)a4;
-- (void)iconModel:(id)a3 didAddIcon:(id)a4;
-- (void)iconModel:(id)a3 launchIcon:(id)a4 fromLocation:(id)a5 context:(id)a6;
+- (void)iconList:(id)list didAddIcon:(id)icon;
+- (void)iconList:(id)list didMoveIcon:(id)icon;
+- (void)iconList:(id)list didRemoveIcon:(id)icon;
+- (void)iconModel:(id)model didAddIcon:(id)icon;
+- (void)iconModel:(id)model launchIcon:(id)icon fromLocation:(id)location context:(id)context;
 - (void)invalidate;
 - (void)saveIconStateIfNeeded;
-- (void)setComplicationDescriptors:(id)a3;
-- (void)setComplicationDescriptors:(id)a3 iconLayout:(id)a4;
-- (void)setIconLayout:(id)a3;
-- (void)setLayoutInsetsMode:(unint64_t)a3;
-- (void)updateIntent:(id)a3 forWidgetWithIdentifier:(id)a4;
+- (void)setComplicationDescriptors:(id)descriptors;
+- (void)setComplicationDescriptors:(id)descriptors iconLayout:(id)layout;
+- (void)setIconLayout:(id)layout;
+- (void)setLayoutInsetsMode:(unint64_t)mode;
+- (void)updateIntent:(id)intent forWidgetWithIdentifier:(id)identifier;
 - (void)validateIconsForAvailableWidgets;
 @end
 
@@ -50,11 +50,11 @@
 - (NSArray)complicationDescriptors
 {
   WeakRetained = objc_loadWeakRetained(&self->_store);
-  v3 = [WeakRetained complicationDescriptors];
-  v4 = v3;
-  if (v3)
+  complicationDescriptors = [WeakRetained complicationDescriptors];
+  v4 = complicationDescriptors;
+  if (complicationDescriptors)
   {
-    v5 = v3;
+    v5 = complicationDescriptors;
   }
 
   else
@@ -69,25 +69,25 @@
 
 - (SBIconListModel)listModel
 {
-  v2 = [(PRWidgetGridModel *)self rootFolder];
-  v3 = [v2 firstList];
+  rootFolder = [(PRWidgetGridModel *)self rootFolder];
+  firstList = [rootFolder firstList];
 
-  return v3;
+  return firstList;
 }
 
 - (SBRootFolder)rootFolder
 {
-  v2 = [(PRWidgetGridModel *)self iconModel];
-  v3 = [v2 rootFolder];
+  iconModel = [(PRWidgetGridModel *)self iconModel];
+  rootFolder = [iconModel rootFolder];
 
-  return v3;
+  return rootFolder;
 }
 
-- (PRWidgetGridModel)initWithComplicationDescriptors:(id)a3 iconLayout:(id)a4 type:(unint64_t)a5
+- (PRWidgetGridModel)initWithComplicationDescriptors:(id)descriptors iconLayout:(id)layout type:(unint64_t)type
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  descriptorsCopy = descriptors;
+  layoutCopy = layout;
   v32.receiver = self;
   v32.super_class = PRWidgetGridModel;
   v10 = [(PRWidgetGridModel *)&v32 init];
@@ -97,22 +97,22 @@
     goto LABEL_17;
   }
 
-  v10->_type = a5;
-  v12 = [[_PRWidgetGridModelStore alloc] initWithComplicationDescriptors:v8 iconLayout:v9];
+  v10->_type = type;
+  v12 = [[_PRWidgetGridModelStore alloc] initWithComplicationDescriptors:descriptorsCopy iconLayout:layoutCopy];
   [(_PRWidgetGridModelStore *)v12 setDelegate:v11];
-  if (a5 == 1)
+  if (type == 1)
   {
-    v13 = [MEMORY[0x1E6999618] sidebarGridHeight];
+    sidebarGridHeight = [MEMORY[0x1E6999618] sidebarGridHeight];
     v11->_gridSize.columns = 2;
     goto LABEL_6;
   }
 
-  if (!a5)
+  if (!type)
   {
     v11->_gridSize.columns = 4;
-    v13 = 1;
+    sidebarGridHeight = 1;
 LABEL_6:
-    v11->_gridSize.rows = v13;
+    v11->_gridSize.rows = sidebarGridHeight;
   }
 
   v14 = [objc_alloc(MEMORY[0x1E69D40A8]) initWithStore:v12];
@@ -122,21 +122,21 @@ LABEL_6:
   [(SBHIconModel *)v11->_iconModel setDelegate:v11];
   objc_storeWeak(&v11->_store, v12);
   v11->_layoutInsetsMode = 0;
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v16 addObserver:v11 selector:sel__iconModelDidLayoutIconState_ name:*MEMORY[0x1E69D4160] object:v11->_iconModel];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v11 selector:sel__iconModelDidLayoutIconState_ name:*MEMORY[0x1E69D4160] object:v11->_iconModel];
 
   [(SBHIconModel *)v11->_iconModel layoutIfNeeded];
   v17 = PRSharedWidgetExtensionProvider();
   [v17 registerObserver:v11];
 
   [(PRWidgetGridModel *)v11 _updateLayoutInsetsMode];
-  if (!v9)
+  if (!layoutCopy)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v18 = v8;
+    v18 = descriptorsCopy;
     v19 = [v18 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v19)
     {
@@ -163,13 +163,13 @@ LABEL_6:
     }
   }
 
-  v23 = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
-  v24 = [v23 addMonitor:v11 subjectMask:1 subscriptionOptions:1];
+  subjectMonitorRegistry = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
+  v24 = [subjectMonitorRegistry addMonitor:v11 subjectMask:1 subscriptionOptions:1];
   objc_storeWeak(&v11->_appProtectionSubjectMonitorSubscription, v24);
 
-  v25 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
   observers = v11->_observers;
-  v11->_observers = v25;
+  v11->_observers = weakObjectsHashTable;
 
 LABEL_17:
   return v11;
@@ -190,19 +190,19 @@ LABEL_17:
   [(PRWidgetGridModel *)&v3 dealloc];
 }
 
-- (void)addWidgetGridModelObserver:(id)a3
+- (void)addWidgetGridModelObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers addObject:?];
   }
 }
 
-- (void)setLayoutInsetsMode:(unint64_t)a3
+- (void)setLayoutInsetsMode:(unint64_t)mode
 {
-  if (self->_layoutInsetsMode != a3)
+  if (self->_layoutInsetsMode != mode)
   {
-    self->_layoutInsetsMode = a3;
+    self->_layoutInsetsMode = mode;
     [PRWidgetGridModel _fireDidUpdateLayoutInsetsMode:"_fireDidUpdateLayoutInsetsMode:observers:" observers:?];
   }
 }
@@ -210,26 +210,26 @@ LABEL_17:
 - (NSDictionary)iconLayout
 {
   WeakRetained = objc_loadWeakRetained(&self->_store);
-  v3 = [WeakRetained iconLayout];
+  iconLayout = [WeakRetained iconLayout];
 
-  return v3;
+  return iconLayout;
 }
 
-- (void)setIconLayout:(id)a3
+- (void)setIconLayout:(id)layout
 {
-  v4 = [(PRWidgetGridModel *)self iconModel];
-  v5 = [(PRWidgetGridModel *)self iconLayout];
-  [v4 importIconState:v5];
+  iconModel = [(PRWidgetGridModel *)self iconModel];
+  iconLayout = [(PRWidgetGridModel *)self iconLayout];
+  [iconModel importIconState:iconLayout];
 
-  v6 = [(PRWidgetGridModel *)self iconLayout];
-  [(PRWidgetGridModel *)self _fireDidUpdateIconLayout:v6 observers:0];
+  iconLayout2 = [(PRWidgetGridModel *)self iconLayout];
+  [(PRWidgetGridModel *)self _fireDidUpdateIconLayout:iconLayout2 observers:0];
 }
 
 - (NSString)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(PRWidgetGridModel *)self iconLayout];
-  [v3 appendDictionarySection:v4 withName:@"iconLayout" skipIfEmpty:1];
+  iconLayout = [(PRWidgetGridModel *)self iconLayout];
+  [v3 appendDictionarySection:iconLayout withName:@"iconLayout" skipIfEmpty:1];
 
   if (self->_type)
   {
@@ -245,45 +245,45 @@ LABEL_17:
   WeakRetained = objc_loadWeakRetained(&self->_store);
   v7 = [v3 appendObject:WeakRetained withName:@"iconStore" skipIfNil:0];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (id)complicationDescriptorForIdentifier:(id)a3
+- (id)complicationDescriptorForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_store);
-  v6 = [WeakRetained complicationDescriptorForIdentifier:v4];
+  v6 = [WeakRetained complicationDescriptorForIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)canAddComplicationDescriptor:(id)a3
+- (BOOL)canAddComplicationDescriptor:(id)descriptor
 {
-  v4 = [a3 widget];
-  v5 = PRIconGridSizeClassForWidgetFamily([v4 family]);
+  widget = [descriptor widget];
+  v5 = PRIconGridSizeClassForWidgetFamily([widget family]);
 
-  v6 = [(PRWidgetGridModel *)self listModel];
-  LOBYTE(v4) = [v6 firstFreeGridCellIndexOfRangeOfSizeClass:v5 gridCellInfoOptions:0] != 0x7FFFFFFFFFFFFFFFLL;
+  listModel = [(PRWidgetGridModel *)self listModel];
+  LOBYTE(widget) = [listModel firstFreeGridCellIndexOfRangeOfSizeClass:v5 gridCellInfoOptions:0] != 0x7FFFFFFFFFFFFFFFLL;
 
-  return v4;
+  return widget;
 }
 
-- (void)updateIntent:(id)a3 forWidgetWithIdentifier:(id)a4
+- (void)updateIntent:(id)intent forWidgetWithIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = [(PRWidgetGridModel *)self complicationDescriptorForIdentifier:a4];
+  intentCopy = intent;
+  v6 = [(PRWidgetGridModel *)self complicationDescriptorForIdentifier:identifier];
   if (v6)
   {
     WeakRetained = objc_loadWeakRetained(&self->_store);
-    v8 = [WeakRetained updateIntent:v10 forComplicationDescriptor:v6];
+    v8 = [WeakRetained updateIntent:intentCopy forComplicationDescriptor:v6];
 
     if (v8)
     {
       [(PRWidgetGridModel *)self _updateLayoutInsetsMode];
-      v9 = [(PRWidgetGridModel *)self iconModel];
-      [v9 saveIconStateIfNeeded];
+      iconModel = [(PRWidgetGridModel *)self iconModel];
+      [iconModel saveIconStateIfNeeded];
 
       [(PRWidgetGridModel *)self _fireWidgetGridModelDidUpdateContent:0];
       [(PRWidgetGridModel *)self _fireWidgetGridModelDidUpdateIntents:0];
@@ -293,26 +293,26 @@ LABEL_17:
 
 - (void)saveIconStateIfNeeded
 {
-  v2 = [(PRWidgetGridModel *)self iconModel];
-  [v2 saveIconStateIfNeeded];
+  iconModel = [(PRWidgetGridModel *)self iconModel];
+  [iconModel saveIconStateIfNeeded];
 }
 
-- (void)setComplicationDescriptors:(id)a3 iconLayout:(id)a4
+- (void)setComplicationDescriptors:(id)descriptors iconLayout:(id)layout
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [(PRWidgetGridModel *)self setComplicationDescriptors:v6];
-  v8 = [(PRWidgetGridModel *)self iconModel];
-  [v8 importIconState:v7];
+  descriptorsCopy = descriptors;
+  layoutCopy = layout;
+  [(PRWidgetGridModel *)self setComplicationDescriptors:descriptorsCopy];
+  iconModel = [(PRWidgetGridModel *)self iconModel];
+  [iconModel importIconState:layoutCopy];
 
-  if (!v7)
+  if (!layoutCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = v6;
+    v9 = descriptorsCopy;
     v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
@@ -340,17 +340,17 @@ LABEL_17:
   }
 
   [(PRWidgetGridModel *)self _fireWidgetGridModelDidUpdateIntents:0, v14];
-  [(PRWidgetGridModel *)self _fireDidUpdateIconLayout:v7 observers:0];
+  [(PRWidgetGridModel *)self _fireDidUpdateIconLayout:layoutCopy observers:0];
 }
 
 - (NSDictionary)intentsByDescriptorIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_store);
-  v3 = [WeakRetained intentsByDescriptorIdentifier];
-  v4 = v3;
-  if (v3)
+  intentsByDescriptorIdentifier = [WeakRetained intentsByDescriptorIdentifier];
+  v4 = intentsByDescriptorIdentifier;
+  if (intentsByDescriptorIdentifier)
   {
-    v5 = v3;
+    v5 = intentsByDescriptorIdentifier;
   }
 
   else
@@ -363,11 +363,11 @@ LABEL_17:
   return v5;
 }
 
-- (void)setComplicationDescriptors:(id)a3
+- (void)setComplicationDescriptors:(id)descriptors
 {
-  v4 = a3;
+  descriptorsCopy = descriptors;
   WeakRetained = objc_loadWeakRetained(&self->_store);
-  v6 = [WeakRetained updateComplicationsWithArray:v4];
+  v6 = [WeakRetained updateComplicationsWithArray:descriptorsCopy];
 
   if (v6)
   {
@@ -402,28 +402,28 @@ BOOL __44__PRWidgetGridModel__updateLayoutInsetsMode__block_invoke(uint64_t a1, 
   if (![(PRWidgetGridModel *)self type])
   {
     [(PRWidgetGridModel *)self setConfiguringFixedPositions:1];
-    v3 = [(PRWidgetGridModel *)self iconModel];
-    v4 = [v3 rootFolder];
-    v13 = [v4 firstList];
+    iconModel = [(PRWidgetGridModel *)self iconModel];
+    rootFolder = [iconModel rootFolder];
+    firstList = [rootFolder firstList];
 
-    [v13 removeAllFixedIconLocations];
-    v5 = [v13 icons];
-    v6 = [v5 bs_filter:&__block_literal_global_20];
+    [firstList removeAllFixedIconLocations];
+    icons = [firstList icons];
+    v6 = [icons bs_filter:&__block_literal_global_20];
 
-    v7 = [v13 icons];
-    v8 = [v7 bs_filter:&__block_literal_global_23];
+    icons2 = [firstList icons];
+    v8 = [icons2 bs_filter:&__block_literal_global_23];
 
     if ([v6 count] == 1 && objc_msgSend(v8, "count") == 1)
     {
-      v9 = [v13 gridSize] - 1;
-      v10 = [v8 firstObject];
-      v11 = [v13 moveContainedIcon:v10 toGridCellIndex:v9 gridCellInfoOptions:0 mutationOptions:128];
+      v9 = [firstList gridSize] - 1;
+      firstObject = [v8 firstObject];
+      v11 = [firstList moveContainedIcon:firstObject toGridCellIndex:v9 gridCellInfoOptions:0 mutationOptions:128];
     }
 
     if ([v6 count] == 1 && objc_msgSend(v8, "count") == 2)
     {
-      v12 = [v6 firstObject];
-      [v13 moveContainedIcon:v12 toIndex:0 options:0];
+      firstObject2 = [v6 firstObject];
+      [firstList moveContainedIcon:firstObject2 toIndex:0 options:0];
     }
 
     [(PRWidgetGridModel *)self setConfiguringFixedPositions:0];
@@ -492,31 +492,31 @@ BOOL __53__PRWidgetGridModel__setupFixedPositionsForRowLayout__block_invoke_2(ui
   return v8 == 10;
 }
 
-- (void)_iconModelDidLayoutIconState:(id)a3
+- (void)_iconModelDidLayoutIconState:(id)state
 {
-  v6 = [(PRWidgetGridModel *)self listModel];
+  listModel = [(PRWidgetGridModel *)self listModel];
   v4 = [MEMORY[0x1E695DFD8] setWithObjects:{@"PRIconGridSizeClassCircular", @"PRIconGridSizeClassRectangular", @"PRIconGridSizeClassSystemSmall", 0}];
   v5 = [objc_alloc(MEMORY[0x1E69D4090]) initWithGridSizeClasses:v4];
-  [v6 setAllowedGridSizeClasses:v5];
-  [v6 setIconLayoutBehavior:3];
-  [v6 setFixedIconLocationBehavior:1];
-  [v6 addListObserver:self];
+  [listModel setAllowedGridSizeClasses:v5];
+  [listModel setIconLayoutBehavior:3];
+  [listModel setFixedIconLocationBehavior:1];
+  [listModel addListObserver:self];
   [(PRWidgetGridModel *)self validateIconsForAvailableWidgets];
-  [(PRWidgetGridModel *)self _fireDidUpdateListModel:v6 observers:0];
+  [(PRWidgetGridModel *)self _fireDidUpdateListModel:listModel observers:0];
 }
 
 - (void)validateIconsForAvailableWidgets
 {
-  v2 = self;
+  selfCopy = self;
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [(PRWidgetGridModel *)self iconModel];
-  v4 = [v3 rootFolder];
+  iconModel = [(PRWidgetGridModel *)self iconModel];
+  rootFolder = [iconModel rootFolder];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = [v4 icons];
+  obj = [rootFolder icons];
   v5 = [obj countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v5)
   {
@@ -524,7 +524,7 @@ BOOL __53__PRWidgetGridModel__setupFixedPositionsForRowLayout__block_invoke_2(ui
     v8 = *v32;
     *&v6 = 138543618;
     v25 = v6;
-    v26 = v4;
+    v26 = rootFolder;
     v27 = *v32;
     do
     {
@@ -541,63 +541,63 @@ BOOL __53__PRWidgetGridModel__setupFixedPositionsForRowLayout__block_invoke_2(ui
         if ([v10 isLeafIcon])
         {
           v11 = v10;
-          v12 = [v11 leafIdentifier];
-          v13 = [(PRWidgetGridModel *)v2 complicationDescriptorForIdentifier:v12];
+          leafIdentifier = [v11 leafIdentifier];
+          v13 = [(PRWidgetGridModel *)selfCopy complicationDescriptorForIdentifier:leafIdentifier];
           if (([v13 hasMatchingDescriptor] & 1) == 0)
           {
-            v14 = [v4 firstList];
-            [v14 removeIcon:v11];
+            firstList = [rootFolder firstList];
+            [firstList removeIcon:v11];
           }
 
-          WeakRetained = objc_loadWeakRetained(&v2->_store);
+          WeakRetained = objc_loadWeakRetained(&selfCopy->_store);
           v30 = 0;
           v16 = [WeakRetained applicationRecordForComplication:v13 error:&v30];
           v17 = v30;
 
           if (v17)
           {
-            v18 = PRLogCommon();
-            if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+            firstList2 = PRLogCommon();
+            if (os_log_type_enabled(firstList2, OS_LOG_TYPE_ERROR))
             {
               *buf = v25;
-              v36 = v12;
+              v36 = leafIdentifier;
               v37 = 2112;
               v38 = v17;
-              _os_log_error_impl(&dword_1A8AA7000, v18, OS_LOG_TYPE_ERROR, "unable to lookup application record for complication %{public}@: %@", buf, 0x16u);
+              _os_log_error_impl(&dword_1A8AA7000, firstList2, OS_LOG_TYPE_ERROR, "unable to lookup application record for complication %{public}@: %@", buf, 0x16u);
             }
           }
 
           else
           {
-            v19 = [v16 applicationState];
-            v20 = [v19 isRestricted];
+            applicationState = [v16 applicationState];
+            isRestricted = [applicationState isRestricted];
 
-            if (v20)
+            if (isRestricted)
             {
               v21 = PRLogCommon();
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v36 = v12;
+                v36 = leafIdentifier;
                 _os_log_impl(&dword_1A8AA7000, v21, OS_LOG_TYPE_DEFAULT, "%@ is restricted. Removing widget icon.", buf, 0xCu);
               }
 
-              v18 = [v4 firstList];
-              [v18 removeIcon:v11];
+              firstList2 = [rootFolder firstList];
+              [firstList2 removeIcon:v11];
             }
 
             else
             {
-              v18 = [objc_opt_class() effectiveContainerBundleIdentifierForComplicationDescriptor:v13];
-              v22 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:v18];
+              firstList2 = [objc_opt_class() effectiveContainerBundleIdentifierForComplicationDescriptor:v13];
+              v22 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:firstList2];
               if (([v22 isLocked] & 1) != 0 || objc_msgSend(v22, "isHidden"))
               {
-                [v4 firstList];
-                v24 = v23 = v2;
+                [rootFolder firstList];
+                v24 = v23 = selfCopy;
                 [v24 removeIcon:v11];
 
-                v2 = v23;
-                v4 = v26;
+                selfCopy = v23;
+                rootFolder = v26;
               }
             }
           }
@@ -617,100 +617,100 @@ BOOL __53__PRWidgetGridModel__setupFixedPositionsForRowLayout__block_invoke_2(ui
   }
 }
 
-+ (id)effectiveContainerBundleIdentifierForContainerBundleIdentifier:(id)a3 extensionBundleIdentifier:(id)a4
++ (id)effectiveContainerBundleIdentifierForContainerBundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (-[__CFString isEqualToString:](v5, "isEqualToString:", @"com.apple.Health.Sleep") && [v6 isEqualToString:@"com.apple.Health.Sleep.SleepWidgetExtension"])
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  if (-[__CFString isEqualToString:](identifierCopy, "isEqualToString:", @"com.apple.Health.Sleep") && [bundleIdentifierCopy isEqualToString:@"com.apple.Health.Sleep.SleepWidgetExtension"])
   {
 
-    v5 = @"com.apple.Health";
+    identifierCopy = @"com.apple.Health";
   }
 
-  return v5;
+  return identifierCopy;
 }
 
-+ (id)effectiveContainerBundleIdentifierForComplicationDescriptor:(id)a3
++ (id)effectiveContainerBundleIdentifierForComplicationDescriptor:(id)descriptor
 {
-  v3 = [a3 widget];
-  v4 = [v3 extensionIdentity];
+  widget = [descriptor widget];
+  extensionIdentity = [widget extensionIdentity];
 
-  v5 = [v4 containerBundleIdentifier];
-  v6 = [v4 extensionBundleIdentifier];
-  v7 = [PRWidgetGridModel effectiveContainerBundleIdentifierForContainerBundleIdentifier:v5 extensionBundleIdentifier:v6];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  v7 = [PRWidgetGridModel effectiveContainerBundleIdentifierForContainerBundleIdentifier:containerBundleIdentifier extensionBundleIdentifier:extensionBundleIdentifier];
 
   return v7;
 }
 
-- (void)_addIconForDescriptor:(id)a3 withGridIndex:(id)a4 animated:(BOOL)a5
+- (void)_addIconForDescriptor:(id)descriptor withGridIndex:(id)index animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PRWidgetGridModel *)self iconModel];
-  v11 = [v8 uniqueIdentifier];
-  v12 = [v10 leafIconForIdentifier:v11];
+  animatedCopy = animated;
+  descriptorCopy = descriptor;
+  indexCopy = index;
+  iconModel = [(PRWidgetGridModel *)self iconModel];
+  uniqueIdentifier = [descriptorCopy uniqueIdentifier];
+  v12 = [iconModel leafIconForIdentifier:uniqueIdentifier];
 
   if (!v12)
   {
-    v13 = [v8 widget];
-    v14 = PRWidgetGridSupportsFamily([v13 family]);
+    widget = [descriptorCopy widget];
+    v14 = PRWidgetGridSupportsFamily([widget family]);
 
     if (v14)
     {
-      v15 = [(PRWidgetGridModel *)self complicationDescriptors];
+      complicationDescriptors = [(PRWidgetGridModel *)self complicationDescriptors];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __66__PRWidgetGridModel__addIconForDescriptor_withGridIndex_animated___block_invoke;
       v31[3] = &unk_1E7844750;
-      v16 = v8;
+      v16 = descriptorCopy;
       v32 = v16;
-      if (([v15 bs_containsObjectPassingTest:v31]& 1) == 0)
+      if (([complicationDescriptors bs_containsObjectPassingTest:v31]& 1) == 0)
       {
-        v17 = [v15 arrayByAddingObject:v16];
+        v17 = [complicationDescriptors arrayByAddingObject:v16];
         [(PRWidgetGridModel *)self setComplicationDescriptors:v17];
       }
 
       v30 = [(PRWidgetGridModel *)self _makeWidgetIconForComplicationDescriptor:v16];
-      v18 = [v9 unsignedLongValue];
-      v19 = [(PRWidgetGridModel *)self iconModel];
-      v20 = [v19 rootFolder];
-      v21 = [v20 firstList];
-      v22 = [v21 isValidGridCellIndex:v18 options:4];
+      unsignedLongValue = [indexCopy unsignedLongValue];
+      iconModel2 = [(PRWidgetGridModel *)self iconModel];
+      rootFolder = [iconModel2 rootFolder];
+      firstList = [rootFolder firstList];
+      v22 = [firstList isValidGridCellIndex:unsignedLongValue options:4];
 
-      v23 = [(PRWidgetGridModel *)self listModel];
-      v24 = v23;
-      if (v9 && (v22 & 1) != 0)
+      listModel = [(PRWidgetGridModel *)self listModel];
+      v24 = listModel;
+      if (indexCopy && (v22 & 1) != 0)
       {
         v25 = v30;
-        v26 = [v23 insertIcon:v30 atGridCellIndex:v18 gridCellInfoOptions:4 mutationOptions:8];
+        v26 = [listModel insertIcon:v30 atGridCellIndex:unsignedLongValue gridCellInfoOptions:4 mutationOptions:8];
       }
 
       else
       {
         v25 = v30;
-        v27 = [v23 addIcon:v30];
+        v27 = [listModel addIcon:v30];
       }
 
-      if (v5)
+      if (animatedCopy)
       {
-        v28 = [(PRWidgetGridModel *)self presenter];
-        [v28 performAnimatedInsertionForIcon:v25];
+        presenter = [(PRWidgetGridModel *)self presenter];
+        [presenter performAnimatedInsertionForIcon:v25];
       }
 
       [(PRWidgetGridModel *)self _setupFixedPositionsForRowLayout];
-      v29 = [(PRWidgetGridModel *)self iconModel];
-      [v29 saveIconStateIfNeeded];
+      iconModel3 = [(PRWidgetGridModel *)self iconModel];
+      [iconModel3 saveIconStateIfNeeded];
 
       [(PRWidgetGridModel *)self _fireWidgetGridModelDidUpdateIntents:0];
     }
 
     else
     {
-      v15 = PRLogCommon();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      complicationDescriptors = PRLogCommon();
+      if (os_log_type_enabled(complicationDescriptors, OS_LOG_TYPE_ERROR))
       {
-        [PRWidgetGridModel _addIconForDescriptor:v8 withGridIndex:v15 animated:?];
+        [PRWidgetGridModel _addIconForDescriptor:descriptorCopy withGridIndex:complicationDescriptors animated:?];
       }
     }
   }
@@ -725,35 +725,35 @@ uint64_t __66__PRWidgetGridModel__addIconForDescriptor_withGridIndex_animated___
   return v5;
 }
 
-- (id)_removeIconForDescriptor:(id)a3 animated:(BOOL)a4
+- (id)_removeIconForDescriptor:(id)descriptor animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PRWidgetGridModel *)self iconModel];
-  v8 = [v6 uniqueIdentifier];
+  animatedCopy = animated;
+  descriptorCopy = descriptor;
+  iconModel = [(PRWidgetGridModel *)self iconModel];
+  uniqueIdentifier = [descriptorCopy uniqueIdentifier];
 
-  v9 = [v7 leafIconForIdentifier:v8];
+  v9 = [iconModel leafIconForIdentifier:uniqueIdentifier];
 
   if (v9)
   {
-    v10 = [(PRWidgetGridModel *)self iconModel];
-    v11 = [v10 rootFolder];
-    v12 = [v11 firstList];
+    iconModel2 = [(PRWidgetGridModel *)self iconModel];
+    rootFolder = [iconModel2 rootFolder];
+    firstList = [rootFolder firstList];
 
-    v13 = [v12 gridCellInfoWithOptions:0];
-    v14 = [v12 gridCellIndexForIcon:v9 gridCellInfo:v13];
-    v15 = [(PRWidgetGridModel *)self iconModel];
-    [v15 removeIcon:v9];
+    v13 = [firstList gridCellInfoWithOptions:0];
+    v14 = [firstList gridCellIndexForIcon:v9 gridCellInfo:v13];
+    iconModel3 = [(PRWidgetGridModel *)self iconModel];
+    [iconModel3 removeIcon:v9];
 
-    if (v4)
+    if (animatedCopy)
     {
-      v16 = [(PRWidgetGridModel *)self presenter];
-      [v16 performAnimatedRemovalForIcon:v9];
+      presenter = [(PRWidgetGridModel *)self presenter];
+      [presenter performAnimatedRemovalForIcon:v9];
     }
 
     [(PRWidgetGridModel *)self _setupFixedPositionsForRowLayout];
-    v17 = [(PRWidgetGridModel *)self iconModel];
-    [v17 saveIconStateIfNeeded];
+    iconModel4 = [(PRWidgetGridModel *)self iconModel];
+    [iconModel4 saveIconStateIfNeeded];
 
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v14];
   }
@@ -766,55 +766,55 @@ uint64_t __66__PRWidgetGridModel__addIconForDescriptor_withGridIndex_animated___
   return v18;
 }
 
-- (id)_makeWidgetIconForComplicationDescriptor:(id)a3
+- (id)_makeWidgetIconForComplicationDescriptor:(id)descriptor
 {
   v3 = MEMORY[0x1E69D40E8];
-  v4 = a3;
+  descriptorCopy = descriptor;
   v21 = [v3 alloc];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v4 widget];
-  v7 = [v6 kind];
-  v8 = [v4 widget];
-  v9 = [v8 extensionIdentity];
-  v10 = [v9 extensionBundleIdentifier];
-  v11 = [v4 widget];
-  v12 = [v11 extensionIdentity];
-  v13 = [v12 containerBundleIdentifier];
-  v22 = [v21 initWithUniqueIdentifier:v5 kind:v7 extensionBundleIdentifier:v10 containerBundleIdentifier:v13];
+  uniqueIdentifier = [descriptorCopy uniqueIdentifier];
+  widget = [descriptorCopy widget];
+  kind = [widget kind];
+  widget2 = [descriptorCopy widget];
+  extensionIdentity = [widget2 extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+  widget3 = [descriptorCopy widget];
+  extensionIdentity2 = [widget3 extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity2 containerBundleIdentifier];
+  v22 = [v21 initWithUniqueIdentifier:uniqueIdentifier kind:kind extensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier];
 
   v14 = [objc_alloc(MEMORY[0x1E69D4118]) initWithWidget:v22];
-  v15 = [v4 uniqueIdentifier];
-  v16 = [v14 copyWithLeafIdentifier:v15];
+  uniqueIdentifier2 = [descriptorCopy uniqueIdentifier];
+  v16 = [v14 copyWithLeafIdentifier:uniqueIdentifier2];
 
-  v17 = [v4 widget];
+  widget4 = [descriptorCopy widget];
 
-  v18 = [v17 family];
-  v19 = PRIconGridSizeClassForWidgetFamily(v18);
+  family = [widget4 family];
+  v19 = PRIconGridSizeClassForWidgetFamily(family);
   [v16 setGridSizeClass:v19];
 
   return v16;
 }
 
-- (void)_fireDidUpdateListModel:(id)a3 observers:(id)a4
+- (void)_fireDidUpdateListModel:(id)model observers:(id)observers
 {
-  v6 = a3;
+  modelCopy = model;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__PRWidgetGridModel__fireDidUpdateListModel_observers___block_invoke;
   v8[3] = &unk_1E78451A0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(PRWidgetGridModel *)self _fireObserversForSelector:sel_widgetGridModel_didUpdateListModel_ observers:a4 withBlock:v8];
+  v9 = modelCopy;
+  v7 = modelCopy;
+  [(PRWidgetGridModel *)self _fireObserversForSelector:sel_widgetGridModel_didUpdateListModel_ observers:observers withBlock:v8];
 }
 
-- (void)_fireDidUpdateIconLayout:(id)a3 observers:(id)a4
+- (void)_fireDidUpdateIconLayout:(id)layout observers:(id)observers
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  observersCopy = observers;
   if (!self->_lastFiredIconLayout || (BSEqualObjects() & 1) == 0)
   {
-    v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v6 copyItems:1];
+    v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:layoutCopy copyItems:1];
     lastFiredIconLayout = self->_lastFiredIconLayout;
     self->_lastFiredIconLayout = v8;
 
@@ -823,31 +823,31 @@ uint64_t __66__PRWidgetGridModel__addIconForDescriptor_withGridIndex_animated___
     v10[2] = __56__PRWidgetGridModel__fireDidUpdateIconLayout_observers___block_invoke;
     v10[3] = &unk_1E78451A0;
     v10[4] = self;
-    v11 = v6;
-    [(PRWidgetGridModel *)self _fireObserversForSelector:sel_widgetGridModel_didUpdateIconLayout_ observers:v7 withBlock:v10];
+    v11 = layoutCopy;
+    [(PRWidgetGridModel *)self _fireObserversForSelector:sel_widgetGridModel_didUpdateIconLayout_ observers:observersCopy withBlock:v10];
   }
 }
 
-- (void)_fireDidUpdateLayoutInsetsMode:(unint64_t)a3 observers:(id)a4
+- (void)_fireDidUpdateLayoutInsetsMode:(unint64_t)mode observers:(id)observers
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __62__PRWidgetGridModel__fireDidUpdateLayoutInsetsMode_observers___block_invoke;
   v4[3] = &unk_1E78451C8;
   v4[4] = self;
-  v4[5] = a3;
-  [(PRWidgetGridModel *)self _fireObserversForSelector:sel_widgetGridModel_didUpdateLayoutInsetsMode_ observers:a4 withBlock:v4];
+  v4[5] = mode;
+  [(PRWidgetGridModel *)self _fireObserversForSelector:sel_widgetGridModel_didUpdateLayoutInsetsMode_ observers:observers withBlock:v4];
 }
 
-- (void)_fireWidgetGridModelDidUpdateIntents:(id)a3
+- (void)_fireWidgetGridModelDidUpdateIntents:(id)intents
 {
-  v4 = a3;
+  intentsCopy = intents;
   if (!self->_lastFiredIntentsDictionary || (v5 = objc_loadWeakRetained(&self->_store), [v5 intentsByDescriptorIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = BSEqualObjects(), v6, v5, (v7 & 1) == 0))
   {
     v8 = objc_alloc(MEMORY[0x1E695DF20]);
     WeakRetained = objc_loadWeakRetained(&self->_store);
-    v10 = [WeakRetained intentsByDescriptorIdentifier];
-    v11 = [v8 initWithDictionary:v10 copyItems:1];
+    intentsByDescriptorIdentifier = [WeakRetained intentsByDescriptorIdentifier];
+    v11 = [v8 initWithDictionary:intentsByDescriptorIdentifier copyItems:1];
     lastFiredIntentsDictionary = self->_lastFiredIntentsDictionary;
     self->_lastFiredIntentsDictionary = v11;
 
@@ -856,19 +856,19 @@ uint64_t __66__PRWidgetGridModel__addIconForDescriptor_withGridIndex_animated___
     v13[2] = __58__PRWidgetGridModel__fireWidgetGridModelDidUpdateIntents___block_invoke;
     v13[3] = &unk_1E78451F0;
     v13[4] = self;
-    [(PRWidgetGridModel *)self _fireObserversForSelector:sel_widgetGridModelDidUpdateIntents_ observers:v4 withBlock:v13];
+    [(PRWidgetGridModel *)self _fireObserversForSelector:sel_widgetGridModelDidUpdateIntents_ observers:intentsCopy withBlock:v13];
   }
 }
 
-- (void)_fireWidgetGridModelDidUpdateContent:(id)a3
+- (void)_fireWidgetGridModelDidUpdateContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   if (!self->_lastFiredIconLayout || (v5 = objc_loadWeakRetained(&self->_store), [v5 complicationDescriptorsByUniqueIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = BSEqualObjects(), v6, v5, (v7 & 1) == 0))
   {
     v8 = objc_alloc(MEMORY[0x1E695DF20]);
     WeakRetained = objc_loadWeakRetained(&self->_store);
-    v10 = [WeakRetained complicationDescriptorsByUniqueIdentifier];
-    v11 = [v8 initWithDictionary:v10 copyItems:1];
+    complicationDescriptorsByUniqueIdentifier = [WeakRetained complicationDescriptorsByUniqueIdentifier];
+    v11 = [v8 initWithDictionary:complicationDescriptorsByUniqueIdentifier copyItems:1];
     lastFiredIconLayout = self->_lastFiredIconLayout;
     self->_lastFiredIconLayout = v11;
 
@@ -877,29 +877,29 @@ uint64_t __66__PRWidgetGridModel__addIconForDescriptor_withGridIndex_animated___
     v13[2] = __58__PRWidgetGridModel__fireWidgetGridModelDidUpdateContent___block_invoke;
     v13[3] = &unk_1E78451F0;
     v13[4] = self;
-    [(PRWidgetGridModel *)self _fireObserversForSelector:sel_widgetGridModelDidUpdateContent_ observers:v4 withBlock:v13];
+    [(PRWidgetGridModel *)self _fireObserversForSelector:sel_widgetGridModelDidUpdateContent_ observers:contentCopy withBlock:v13];
   }
 }
 
-- (void)_fireObserversForSelector:(SEL)a3 observers:(id)a4 withBlock:(id)a5
+- (void)_fireObserversForSelector:(SEL)selector observers:(id)observers withBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  observersCopy = observers;
+  blockCopy = block;
+  if (blockCopy)
   {
-    if (!v7)
+    if (!observersCopy)
     {
-      v9 = [(NSHashTable *)self->_observers allObjects];
-      v7 = [v9 copy];
+      allObjects = [(NSHashTable *)self->_observers allObjects];
+      observersCopy = [allObjects copy];
     }
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v7;
-    v10 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    observersCopy = observersCopy;
+    v10 = [observersCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -911,20 +911,20 @@ uint64_t __66__PRWidgetGridModel__addIconForDescriptor_withGridIndex_animated___
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(observersCopy);
           }
 
           v14 = *(*(&v15 + 1) + 8 * v13);
           if (objc_opt_respondsToSelector())
           {
-            v8[2](v8, v14);
+            blockCopy[2](blockCopy, v14);
           }
 
           ++v13;
         }
 
         while (v11 != v13);
-        v11 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [observersCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);
@@ -942,67 +942,67 @@ uint64_t __66__PRWidgetGridModel__addIconForDescriptor_withGridIndex_animated___
   [WeakRetained invalidate];
 }
 
-- (void)iconList:(id)a3 didAddIcon:(id)a4
+- (void)iconList:(id)list didAddIcon:(id)icon
 {
-  if (![(PRWidgetGridModel *)self isConfiguringFixedPositions:a3])
+  if (![(PRWidgetGridModel *)self isConfiguringFixedPositions:list])
   {
     [(PRWidgetGridModel *)self _setupFixedPositionsForRowLayout];
   }
 
-  v5 = [(PRWidgetGridModel *)self iconModel];
-  [v5 saveIconStateIfNeeded];
+  iconModel = [(PRWidgetGridModel *)self iconModel];
+  [iconModel saveIconStateIfNeeded];
 }
 
-- (void)iconList:(id)a3 didMoveIcon:(id)a4
+- (void)iconList:(id)list didMoveIcon:(id)icon
 {
-  if (![(PRWidgetGridModel *)self isConfiguringFixedPositions:a3])
+  if (![(PRWidgetGridModel *)self isConfiguringFixedPositions:list])
   {
     [(PRWidgetGridModel *)self _setupFixedPositionsForRowLayout];
   }
 
-  v5 = [(PRWidgetGridModel *)self iconModel];
-  [v5 saveIconStateIfNeeded];
+  iconModel = [(PRWidgetGridModel *)self iconModel];
+  [iconModel saveIconStateIfNeeded];
 }
 
-- (void)iconList:(id)a3 didRemoveIcon:(id)a4
+- (void)iconList:(id)list didRemoveIcon:(id)icon
 {
-  v8 = a4;
-  if ([v8 isLeafIcon])
+  iconCopy = icon;
+  if ([iconCopy isLeafIcon])
   {
-    v5 = v8;
+    v5 = iconCopy;
     WeakRetained = objc_loadWeakRetained(&self->_store);
-    v7 = [v5 leafIdentifier];
+    leafIdentifier = [v5 leafIdentifier];
 
-    [WeakRetained removeComplicationDescriptorForIdentifier:v7];
+    [WeakRetained removeComplicationDescriptorForIdentifier:leafIdentifier];
     [(PRWidgetGridModel *)self _updateLayoutInsetsMode];
   }
 }
 
-- (id)gridSizeClassSizesForIconModel:(id)a3
+- (id)gridSizeClassSizesForIconModel:(id)model
 {
   v3 = [objc_alloc(MEMORY[0x1E69D4098]) initWithGridSizeClassesAndGridSizes:{@"PRIconGridSizeClassCircular", 65537, @"PRIconGridSizeClassRectangular", 65538, @"PRIconGridSizeClassSystemSmall", 131074, 0}];
 
   return v3;
 }
 
-- (id)iconModel:(id)a3 allowedGridSizeClassesForFolderClass:(Class)a4
+- (id)iconModel:(id)model allowedGridSizeClassesForFolderClass:(Class)class
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObjects:{@"PRIconGridSizeClassCircular", a4, @"PRIconGridSizeClassRectangular", @"PRIconGridSizeClassSystemSmall", 0}];
+  v4 = [MEMORY[0x1E695DFD8] setWithObjects:{@"PRIconGridSizeClassCircular", class, @"PRIconGridSizeClassRectangular", @"PRIconGridSizeClassSystemSmall", 0}];
   v5 = [objc_alloc(MEMORY[0x1E69D4090]) initWithGridSizeClasses:v4];
 
   return v5;
 }
 
-- (void)iconModel:(id)a3 didAddIcon:(id)a4
+- (void)iconModel:(id)model didAddIcon:(id)icon
 {
-  v31 = a3;
-  v6 = a4;
-  if ([v6 isLeafIcon])
+  modelCopy = model;
+  iconCopy = icon;
+  if ([iconCopy isLeafIcon])
   {
-    v7 = v6;
-    v8 = [v7 leafIdentifier];
+    v7 = iconCopy;
+    leafIdentifier = [v7 leafIdentifier];
     WeakRetained = objc_loadWeakRetained(&self->_store);
-    v10 = [WeakRetained containsComplicationForIdentifier:v8];
+    v10 = [WeakRetained containsComplicationForIdentifier:leafIdentifier];
 
     if ((v10 & 1) == 0)
     {
@@ -1028,41 +1028,41 @@ uint64_t __66__PRWidgetGridModel__addIconForDescriptor_withGridIndex_animated___
 
       v14 = v13;
 
-      v15 = [v14 activeWidget];
-      v30 = [v12 gridSizeClass];
+      activeWidget = [v14 activeWidget];
+      gridSizeClass = [v12 gridSizeClass];
 
-      v16 = PRWidgetFamilyForIconGridSizeClass(v30);
+      v16 = PRWidgetFamilyForIconGridSizeClass(gridSizeClass);
       v17 = objc_alloc(MEMORY[0x1E6994290]);
-      v18 = [v15 extensionBundleIdentifier];
-      v19 = [v15 containerBundleIdentifier];
-      v29 = [v17 initWithExtensionBundleIdentifier:v18 containerBundleIdentifier:v19 deviceIdentifier:0];
+      extensionBundleIdentifier = [activeWidget extensionBundleIdentifier];
+      containerBundleIdentifier = [activeWidget containerBundleIdentifier];
+      v29 = [v17 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier deviceIdentifier:0];
 
       v20 = objc_alloc(MEMORY[0x1E6994370]);
-      v21 = [v15 kind];
-      v22 = [v20 initWithExtensionIdentity:v29 kind:v21 family:v16 intent:0 activityIdentifier:0];
+      kind = [activeWidget kind];
+      v22 = [v20 initWithExtensionIdentity:v29 kind:kind family:v16 intent:0 activityIdentifier:0];
 
-      v23 = [[PRComplicationDescriptor alloc] initWithUniqueIdentifier:v8 widget:v22];
+      v23 = [[PRComplicationDescriptor alloc] initWithUniqueIdentifier:leafIdentifier widget:v22];
       v24 = objc_loadWeakRetained(&self->_store);
       [v24 addComplicationDescriptor:v23];
 
       v25 = objc_loadWeakRetained(&self->_store);
-      v26 = [v25 complicationDescriptors];
-      v27 = [v26 mutableCopy];
+      complicationDescriptors = [v25 complicationDescriptors];
+      v27 = [complicationDescriptors mutableCopy];
 
       [v27 addObject:v23];
       v28 = [v27 copy];
       [(PRWidgetGridModel *)self setComplicationDescriptors:v28];
 
-      [v31 saveIconStateIfNeeded];
+      [modelCopy saveIconStateIfNeeded];
     }
   }
 }
 
-- (void)iconModel:(id)a3 launchIcon:(id)a4 fromLocation:(id)a5 context:(id)a6
+- (void)iconModel:(id)model launchIcon:(id)icon fromLocation:(id)location context:(id)context
 {
-  v7 = a4;
-  v8 = [(PRWidgetGridModel *)self presenter];
-  [v8 handleLaunchRequestForIcon:v7];
+  iconCopy = icon;
+  presenter = [(PRWidgetGridModel *)self presenter];
+  [presenter handleLaunchRequestForIcon:iconCopy];
 }
 
 void __61__PRWidgetGridModel_extensionsDidChangeForExtensionProvider___block_invoke(uint64_t a1)
@@ -1072,16 +1072,16 @@ void __61__PRWidgetGridModel_extensionsDidChangeForExtensionProvider___block_inv
   [v1 setIconLayout:v2];
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v5 = a4;
+  subscriptionCopy = subscription;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__PRWidgetGridModel_appProtectionSubjectsChanged_forSubscription___block_invoke;
   v7[3] = &unk_1E7843070;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = subscriptionCopy;
+  selfCopy = self;
+  v6 = subscriptionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 

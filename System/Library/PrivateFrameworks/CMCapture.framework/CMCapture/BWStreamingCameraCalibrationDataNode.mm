@@ -1,19 +1,19 @@
 @interface BWStreamingCameraCalibrationDataNode
-- (BWStreamingCameraCalibrationDataNode)initWithCameraInfoByPortType:(id)a3;
+- (BWStreamingCameraCalibrationDataNode)initWithCameraInfoByPortType:(id)type;
 - (void)dealloc;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWStreamingCameraCalibrationDataNode
 
-- (BWStreamingCameraCalibrationDataNode)initWithCameraInfoByPortType:(id)a3
+- (BWStreamingCameraCalibrationDataNode)initWithCameraInfoByPortType:(id)type
 {
   v8.receiver = self;
   v8.super_class = BWStreamingCameraCalibrationDataNode;
   v4 = [(BWNode *)&v8 init];
   if (v4)
   {
-    v4->_cameraInfoByPortType = a3;
+    v4->_cameraInfoByPortType = type;
     v5 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v4];
     [(BWNodeInput *)v5 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [(BWNode *)v4 addInput:v5];
@@ -32,17 +32,17 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v22 = 0;
-  v6 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v6 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   memset(&v21, 0, sizeof(v21));
-  CMSampleBufferGetPresentationTimeStamp(&v21, a3);
-  v7 = CMGetAttachment(a3, @"OriginalCameraIntrinsicMatrix", 0);
+  CMSampleBufferGetPresentationTimeStamp(&v21, buffer);
+  v7 = CMGetAttachment(buffer, @"OriginalCameraIntrinsicMatrix", 0);
   if (v7)
   {
     v8 = v7;
-    v9 = CMGetAttachment(a3, @"OriginalCameraIntrinsicMatrixReferenceDimensions", 0);
+    v9 = CMGetAttachment(buffer, @"OriginalCameraIntrinsicMatrixReferenceDimensions", 0);
     if (v9)
     {
       cameraInfoByPortType = self->_cameraInfoByPortType;
@@ -58,7 +58,7 @@
         memset(&sampleTimingArray.presentationTimeStamp, 0, 48);
         *&sampleTimingArray.duration.value = *MEMORY[0x1E6960C70];
         sampleTimingArray.duration.epoch = *(MEMORY[0x1E6960C70] + 16);
-        CMSampleBufferGetPresentationTimeStamp(&sampleTimingArray.presentationTimeStamp, a3);
+        CMSampleBufferGetPresentationTimeStamp(&sampleTimingArray.presentationTimeStamp, buffer);
         sampleTimingArray.decodeTimeStamp = sampleTimingArray.duration;
         v17 = CMSampleBufferCreate(*MEMORY[0x1E695E480], 0, 1u, 0, 0, 0, 0, 1, &sampleTimingArray, 0, 0, &v22);
         v18 = v22;

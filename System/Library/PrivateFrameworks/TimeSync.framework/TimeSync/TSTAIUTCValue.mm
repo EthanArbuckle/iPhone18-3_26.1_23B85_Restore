@@ -1,8 +1,8 @@
 @interface TSTAIUTCValue
 - (NSDictionary)dictionary;
 - (TSTAIUTCValue)init;
-- (TSTAIUTCValue)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSTAIUTCValue)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSTAIUTCValue
@@ -34,44 +34,44 @@ uint64_t __21__TSTAIUTCValue_init__block_invoke()
   return [v3 setFormatOptions:3955];
 }
 
-- (TSTAIUTCValue)initWithDictionary:(id)a3
+- (TSTAIUTCValue)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(TSTAIUTCValue *)self init];
   if (v5)
   {
     v6 = TSTAIUTCValueDateFormatter;
-    v7 = [v4 objectForKeyedSubscript:@"utc_date"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"utc_date"];
     v8 = [v6 dateFromString:v7];
     utcDate = v5->_utcDate;
     v5->_utcDate = v8;
 
     v10 = TSTAIUTCValueDateFormatter;
-    v11 = [v4 objectForKeyedSubscript:@"tai_date"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"tai_date"];
     v12 = [v10 dateFromString:v11];
     taiDate = v5->_taiDate;
     v5->_taiDate = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"modified_julian_day"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"modified_julian_day"];
     v5->_modifiedJulianDay = [v14 integerValue];
 
-    v15 = [v4 objectForKeyedSubscript:@"constant"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"constant"];
     [v15 doubleValue];
     v5->_constant = v16;
 
-    v17 = [v4 objectForKeyedSubscript:@"offset"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"offset"];
     v5->_offset = [v17 integerValue];
 
-    v18 = [v4 objectForKeyedSubscript:@"coefficient"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"coefficient"];
     [v18 doubleValue];
     v5->_coefficient = v19;
 
     coefficient = v5->_coefficient;
     if (coefficient != 0.0)
     {
-      v21 = [(NSDate *)v5->_utcDate dateByAddingTimeInterval:v5->_constant + (v5->_modifiedJulianDay - v5->_offset) * coefficient];
+      coefficient = [(NSDate *)v5->_utcDate dateByAddingTimeInterval:v5->_constant + (v5->_modifiedJulianDay - v5->_offset) * coefficient];
       v22 = v5->_taiDate;
-      v5->_taiDate = v21;
+      v5->_taiDate = coefficient;
     }
   }
 
@@ -83,13 +83,13 @@ uint64_t __21__TSTAIUTCValue_init__block_invoke()
   v19[6] = *MEMORY[0x277D85DE8];
   v18[0] = @"utc_date";
   v3 = TSTAIUTCValueDateFormatter;
-  v4 = [(TSTAIUTCValue *)self utcDate];
-  v5 = [v3 stringFromDate:v4];
+  utcDate = [(TSTAIUTCValue *)self utcDate];
+  v5 = [v3 stringFromDate:utcDate];
   v19[0] = v5;
   v18[1] = @"tai_date";
   v6 = TSTAIUTCValueDateFormatter;
-  v7 = [(TSTAIUTCValue *)self taiDate];
-  v8 = [v6 stringFromDate:v7];
+  taiDate = [(TSTAIUTCValue *)self taiDate];
+  v8 = [v6 stringFromDate:taiDate];
   v19[1] = v8;
   v18[2] = @"modified_julian_day";
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[TSTAIUTCValue modifiedJulianDay](self, "modifiedJulianDay")}];
@@ -114,14 +114,14 @@ uint64_t __21__TSTAIUTCValue_init__block_invoke()
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(TSTAIUTCValue *)self utcDate];
-  [v4 setUtcDate:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  utcDate = [(TSTAIUTCValue *)self utcDate];
+  [v4 setUtcDate:utcDate];
 
-  v6 = [(TSTAIUTCValue *)self taiDate];
-  [v4 setTaiDate:v6];
+  taiDate = [(TSTAIUTCValue *)self taiDate];
+  [v4 setTaiDate:taiDate];
 
   [v4 setModifiedJulianDay:{-[TSTAIUTCValue modifiedJulianDay](self, "modifiedJulianDay")}];
   [(TSTAIUTCValue *)self constant];

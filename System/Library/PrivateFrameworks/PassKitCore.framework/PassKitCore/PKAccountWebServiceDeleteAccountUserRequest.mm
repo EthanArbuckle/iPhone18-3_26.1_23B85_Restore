@@ -1,14 +1,14 @@
 @interface PKAccountWebServiceDeleteAccountUserRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceDeleteAccountUserRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   baseURL = self->_baseURL;
   if (!baseURL)
   {
@@ -66,7 +66,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (v4)
+  if (informationCopy)
   {
     v18[0] = @"accounts";
     v18[1] = accountIdentifier;

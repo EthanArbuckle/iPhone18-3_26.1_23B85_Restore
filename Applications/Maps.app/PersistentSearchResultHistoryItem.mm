@@ -1,20 +1,20 @@
 @interface PersistentSearchResultHistoryItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PersistentSearchResultHistoryItem
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   searchResult = self->_searchResult;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (searchResult)
   {
     if (!v6)
@@ -22,7 +22,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(SearchResultRepr *)searchResult mergeFrom:?];
   }
 
@@ -33,21 +33,21 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(PersistentSearchResultHistoryItem *)self setSearchResult:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     searchResult = self->_searchResult;
-    if (searchResult | v4[1])
+    if (searchResult | equalCopy[1])
     {
       v6 = [(SearchResult *)searchResult isEqual:?];
     }
@@ -66,26 +66,26 @@ LABEL_7:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SearchResult *)self->_searchResult copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SearchResult *)self->_searchResult copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   searchResult = self->_searchResult;
   if (searchResult)
   {
-    [a3 setSearchResult:searchResult];
+    [to setSearchResult:searchResult];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_searchResult)
   {
@@ -99,8 +99,8 @@ LABEL_7:
   searchResult = self->_searchResult;
   if (searchResult)
   {
-    v5 = [(SearchResultRepr *)searchResult dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"searchResult"];
+    dictionaryRepresentation = [(SearchResultRepr *)searchResult dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"searchResult"];
   }
 
   return v3;
@@ -111,8 +111,8 @@ LABEL_7:
   v7.receiver = self;
   v7.super_class = PersistentSearchResultHistoryItem;
   v3 = [(PersistentSearchResultHistoryItem *)&v7 description];
-  v4 = [(PersistentSearchResultHistoryItem *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PersistentSearchResultHistoryItem *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

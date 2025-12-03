@@ -7,8 +7,8 @@
 
 - (__CFString)mf_encodedIMAPMailboxName
 {
-  v1 = a1;
-  v2 = [(__CFString *)v1 length];
+  selfCopy = self;
+  v2 = [(__CFString *)selfCopy length];
   if (!mf_encodedIMAPMailboxName_passThroughSet)
   {
     v45.location = 32;
@@ -16,15 +16,15 @@
     mf_encodedIMAPMailboxName_passThroughSet = CFCharacterSetCreateWithCharactersInRange(0, v45);
   }
 
-  v37 = v1;
+  v37 = selfCopy;
   v40 = 0;
   v41 = v2;
-  CharactersPtr = CFStringGetCharactersPtr(v1);
+  CharactersPtr = CFStringGetCharactersPtr(selfCopy);
   CStringPtr = 0;
   v38 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(v1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(selfCopy, 0x600u);
   }
 
   v35 = 0u;
@@ -111,7 +111,7 @@ LABEL_22:
 
     if (!v5)
     {
-      v13 = [objc_allocWithZone(MEMORY[0x277CBEB28]) initWithCapacity:{-[__CFString length](v1, "length")}];
+      v13 = [objc_allocWithZone(MEMORY[0x277CBEB28]) initWithCapacity:{-[__CFString length](selfCopy, "length")}];
       v5 = v13;
       if (v6 >= 1)
       {
@@ -197,8 +197,8 @@ LABEL_22:
 
     while (v28 != 38);
     [v5 appendBytes:"&" length:1];
-    v21 = [v14 mf_encodeModifiedBase64];
-    [v5 appendData:v21];
+    mf_encodeModifiedBase64 = [v14 mf_encodeModifiedBase64];
+    [v5 appendData:mf_encodeModifiedBase64];
 
     [v5 appendBytes:"-" length:1];
     v6 = v16;
@@ -209,19 +209,19 @@ LABEL_22:
   {
     v24 = CFStringCreateWithBytes(0, [v5 bytes], objc_msgSend(v5, "length"), 0x600u, 0);
 
-    v1 = v24;
+    selfCopy = v24;
   }
 
 LABEL_60:
 
-  return v1;
+  return selfCopy;
 }
 
 - (__CFString)mf_decodedIMAPMailboxName
 {
-  v1 = a1;
-  v2 = [(__CFString *)v1 length];
-  v3 = [(__CFString *)v1 rangeOfString:@"-" options:0 range:0, v2];
+  selfCopy = self;
+  v2 = [(__CFString *)selfCopy length];
+  v3 = [(__CFString *)selfCopy rangeOfString:@"-" options:0 range:0, v2];
   if (!v4)
   {
     v7 = 0;
@@ -234,7 +234,7 @@ LABEL_60:
   v8 = 0;
   do
   {
-    v9 = [(__CFString *)v1 rangeOfString:@"&" options:4 range:v8, v5 - v8];
+    v9 = [(__CFString *)selfCopy rangeOfString:@"&" options:4 range:v8, v5 - v8];
     if (!v10)
     {
 LABEL_10:
@@ -242,10 +242,10 @@ LABEL_10:
       {
         v16 = [v7 length];
         [v7 setLength:v16 + 2 * (v5 + v6 - v8)];
-        v17 = [v7 mutableBytes];
+        mutableBytes = [v7 mutableBytes];
         v35.location = v8;
         v35.length = v5 + v6 - v8;
-        CFStringGetCharacters(v1, v35, (v17 + v16));
+        CFStringGetCharacters(selfCopy, v35, (mutableBytes + v16));
       }
 
       goto LABEL_23;
@@ -277,7 +277,7 @@ LABEL_10:
 
       v39.location = v11 + 1;
       v39.length = v12;
-      if (CFStringFindCharacterFromSet(v1, MutableCopy, v39, 0, 0))
+      if (CFStringFindCharacterFromSet(selfCopy, MutableCopy, v39, 0, 0))
       {
         goto LABEL_10;
       }
@@ -285,21 +285,21 @@ LABEL_10:
       v18 = [objc_allocWithZone(MEMORY[0x277CBEB28]) initWithLength:v12];
       [v18 mutableBytes];
       MFStringGetBytes();
-      v19 = [v18 mf_decodeModifiedBase64];
-      v13 = [v19 mutableCopyWithZone:0];
+      mf_decodeModifiedBase64 = [v18 mf_decodeModifiedBase64];
+      v13 = [mf_decodeModifiedBase64 mutableCopyWithZone:0];
 
-      v20 = [v13 mutableBytes];
+      mutableBytes2 = [v13 mutableBytes];
       v21 = [v13 length];
       if ((v21 & 0xFFFFFFFFFFFFFFFELL) >= 1)
       {
-        v22 = &v20[v21 & 0xFFFFFFFFFFFFFFFELL];
+        v22 = &mutableBytes2[v21 & 0xFFFFFFFFFFFFFFFELL];
         do
         {
-          *v20 = bswap32(*v20) >> 16;
-          v20 += 2;
+          *mutableBytes2 = bswap32(*mutableBytes2) >> 16;
+          mutableBytes2 += 2;
         }
 
-        while (v20 < v22);
+        while (mutableBytes2 < v22);
       }
 
       if (!v13)
@@ -310,15 +310,15 @@ LABEL_10:
 
     if (!v7)
     {
-      v23 = [objc_allocWithZone(MEMORY[0x277CBEB28]) initWithCapacity:{2 * -[__CFString length](v1, "length")}];
+      v23 = [objc_allocWithZone(MEMORY[0x277CBEB28]) initWithCapacity:{2 * -[__CFString length](selfCopy, "length")}];
       v7 = v23;
       if (v8)
       {
         [v23 setLength:2 * v8];
-        v24 = [v7 mutableBytes];
+        mutableBytes3 = [v7 mutableBytes];
         v36.location = 0;
         v36.length = v8;
-        CFStringGetCharacters(v1, v36, v24);
+        CFStringGetCharacters(selfCopy, v36, mutableBytes3);
       }
     }
 
@@ -326,10 +326,10 @@ LABEL_10:
     {
       v25 = [v7 length];
       [v7 setLength:v25 + 2 * (v11 - v8)];
-      v26 = [v7 mutableBytes];
+      mutableBytes4 = [v7 mutableBytes];
       v37.location = v8;
       v37.length = v11 - v8;
-      CFStringGetCharacters(v1, v37, (v26 + v25));
+      CFStringGetCharacters(selfCopy, v37, (mutableBytes4 + v25));
     }
 
     [v7 appendData:v13];
@@ -338,7 +338,7 @@ LABEL_23:
     v27 = v8 + v2;
     v8 = v5 + v6;
     v2 = v27 - (v5 + v6);
-    v5 = [(__CFString *)v1 rangeOfString:@"-" options:0 range:v5 + v6, v2];
+    v5 = [(__CFString *)selfCopy rangeOfString:@"-" options:0 range:v5 + v6, v2];
     v6 = v28;
   }
 
@@ -349,20 +349,20 @@ LABEL_23:
     {
       v29 = [v7 length];
       [v7 setLength:v29 + 2 * v2];
-      v30 = [v7 mutableBytes];
+      mutableBytes5 = [v7 mutableBytes];
       v38.location = v8;
       v38.length = v2;
-      CFStringGetCharacters(v1, v38, (v30 + v29));
+      CFStringGetCharacters(selfCopy, v38, (mutableBytes5 + v29));
     }
 
     v31 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharacters:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length") >> 1}];
 
-    v1 = v31;
+    selfCopy = v31;
   }
 
 LABEL_29:
 
-  return v1;
+  return selfCopy;
 }
 
 @end

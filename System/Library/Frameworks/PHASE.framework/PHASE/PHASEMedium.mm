@@ -1,12 +1,12 @@
 @interface PHASEMedium
 - (PHASEEngine)engine;
 - (PHASEMedium)init;
-- (PHASEMedium)initWithEngine:(id)a3 preset:(int64_t)a4 privatePreset:(int64_t)a5 attenuationCoefficients:(id)a6 speedOfSound:(float)a7;
-- (PHASEMedium)initWithEngine:(id)a3 privatePreset:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initAirWithEngine:(id)a3 temperature:(float)a4 pressure:(float)a5 humidity:(float)a6 bandcount:(int)a7;
-- (id)initAirWithEngine:(id)a3 temperature:(float)a4 pressure:(float)a5 humidity:(float)a6 frequencies:(id)a7;
-- (id)initWaterWithEngine:(id)a3 temperature:(float)a4 depth:(float)a5 salinity:(float)a6 pH:(float)a7 frequencies:(id)a8;
+- (PHASEMedium)initWithEngine:(id)engine preset:(int64_t)preset privatePreset:(int64_t)privatePreset attenuationCoefficients:(id)coefficients speedOfSound:(float)sound;
+- (PHASEMedium)initWithEngine:(id)engine privatePreset:(int64_t)preset;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initAirWithEngine:(id)engine temperature:(float)temperature pressure:(float)pressure humidity:(float)humidity bandcount:(int)bandcount;
+- (id)initAirWithEngine:(id)engine temperature:(float)temperature pressure:(float)pressure humidity:(float)humidity frequencies:(id)frequencies;
+- (id)initWaterWithEngine:(id)engine temperature:(float)temperature depth:(float)depth salinity:(float)salinity pH:(float)h frequencies:(id)frequencies;
 - (void)dealloc;
 - (void)setDefault;
 @end
@@ -20,12 +20,12 @@
   return 0;
 }
 
-- (PHASEMedium)initWithEngine:(id)a3 privatePreset:(int64_t)a4
+- (PHASEMedium)initWithEngine:(id)engine privatePreset:(int64_t)preset
 {
-  v6 = a3;
+  engineCopy = engine;
   v7 = objc_opt_new();
   sGetFrequencies(v27, 0x1FuLL);
-  if (a4 == 1835291479)
+  if (preset == 1835291479)
   {
     Phase::Geometry::WaterUtility<double>::WaterUtility(v26);
     Phase::Geometry::WaterUtility<double>::SetTemperatureInCelsius(v26, 20.0);
@@ -73,17 +73,17 @@
   }
 
   *&v15 = v23;
-  v24 = [(PHASEMedium *)self initWithEngine:v6 preset:a4 privatePreset:a4 attenuationCoefficients:v7 speedOfSound:v15];
+  v24 = [(PHASEMedium *)self initWithEngine:engineCopy preset:preset privatePreset:preset attenuationCoefficients:v7 speedOfSound:v15];
 
   return v24;
 }
 
-- (PHASEMedium)initWithEngine:(id)a3 preset:(int64_t)a4 privatePreset:(int64_t)a5 attenuationCoefficients:(id)a6 speedOfSound:(float)a7
+- (PHASEMedium)initWithEngine:(id)engine preset:(int64_t)preset privatePreset:(int64_t)privatePreset attenuationCoefficients:(id)coefficients speedOfSound:(float)sound
 {
   v57 = *MEMORY[0x277D85DE8];
-  obj = a3;
-  v45 = a6;
-  v12 = [v45 count];
+  obj = engine;
+  coefficientsCopy = coefficients;
+  v12 = [coefficientsCopy count];
   if (!v12)
   {
     v37 = **(Phase::Logger::GetInstance(0) + 448);
@@ -101,11 +101,11 @@ LABEL_24:
     }
 
 LABEL_25:
-    v36 = 0;
+    selfCopy = 0;
     goto LABEL_26;
   }
 
-  if (a7 <= 0.0)
+  if (sound <= 0.0)
   {
     v41 = **(Phase::Logger::GetInstance(v12) + 448);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -115,7 +115,7 @@ LABEL_25:
       v53 = 1024;
       v54 = 191;
       v55 = 2048;
-      v56 = a7;
+      soundCopy = sound;
       v38 = "%25s:%-5d [PHASEMedium:initWithEngine:preset:privatePreset:attenuationCoefficients:speedOfSound]: Invalid speedOfSound: %f";
       v39 = v41;
       v40 = 28;
@@ -135,14 +135,14 @@ LABEL_25:
 
   v43 = v13;
   objc_storeWeak(&v13->_engine, obj);
-  v43->_preset = a4;
-  v43->_privatePreset = a5;
+  v43->_preset = preset;
+  v43->_privatePreset = privatePreset;
   v14 = objc_opt_new();
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v15 = v45;
+  v15 = coefficientsCopy;
   v16 = [v15 countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v16)
   {
@@ -157,10 +157,10 @@ LABEL_25:
         }
 
         v19 = *(*(&v46 + 1) + 8 * i);
-        v20 = [v19 value];
-        if (v21 < 0.0 || (v20 = [v19 value], v22 > 1.0))
+        value = [v19 value];
+        if (v21 < 0.0 || (value = [v19 value], v22 > 1.0))
         {
-          v23 = **(Phase::Logger::GetInstance(v20) + 448);
+          v23 = **(Phase::Logger::GetInstance(value) + 448);
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
           {
             [v19 value];
@@ -169,7 +169,7 @@ LABEL_25:
             v53 = 1024;
             v54 = 213;
             v55 = 2048;
-            v56 = v24;
+            soundCopy = v24;
             _os_log_impl(&dword_23A302000, v23, OS_LOG_TYPE_DEBUG, "%25s:%-5d PHASEMedium attenuation coefficient %f is out-of-range [0, 1]. Clamping...", buf, 0x1Cu);
           }
         }
@@ -200,18 +200,18 @@ LABEL_25:
   attenuationCoefficients = v43->_attenuationCoefficients;
   v43->_attenuationCoefficients = v31;
 
-  v43->_speedOfSound = a7;
+  v43->_speedOfSound = sound;
   *buf = v15;
   *&buf[8] = v43->_speedOfSound;
   WeakRetained = objc_loadWeakRetained(&v43->_engine);
-  v34 = [WeakRetained implementation];
-  [(PHASEMedium *)v43 setGeoMediumHandle:(*(**(v34 + 368) + 24))(*(v34 + 368), buf)];
+  implementation = [WeakRetained implementation];
+  [(PHASEMedium *)v43 setGeoMediumHandle:(*(**(implementation + 368) + 24))(*(implementation + 368), buf)];
 
   v35 = [(PHASEMedium *)v43 geoMediumHandle]== 0;
   v13 = v43;
   if (v35)
   {
-    v36 = 0;
+    selfCopy = 0;
     self = v43;
   }
 
@@ -219,22 +219,22 @@ LABEL_25:
   {
 LABEL_19:
     self = v13;
-    v36 = self;
+    selfCopy = self;
   }
 
 LABEL_26:
 
-  return v36;
+  return selfCopy;
 }
 
-- (id)initAirWithEngine:(id)a3 temperature:(float)a4 pressure:(float)a5 humidity:(float)a6 bandcount:(int)a7
+- (id)initAirWithEngine:(id)engine temperature:(float)temperature pressure:(float)pressure humidity:(float)humidity bandcount:(int)bandcount
 {
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = v12;
-  if ((a7 - 32) <= 0xFFFFFFE2)
+  engineCopy = engine;
+  v13 = engineCopy;
+  if ((bandcount - 32) <= 0xFFFFFFE2)
   {
-    v14 = **(Phase::Logger::GetInstance(v12) + 448);
+    v14 = **(Phase::Logger::GetInstance(engineCopy) + 448);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *__p = 136315650;
@@ -242,29 +242,29 @@ LABEL_26:
       *&__p[12] = 1024;
       *&__p[14] = 249;
       v28 = 1024;
-      v29 = a7;
+      bandcountCopy = bandcount;
       _os_log_impl(&dword_23A302000, v14, OS_LOG_TYPE_ERROR, "%25s:%-5d [PHASEMedium:initAirWithEngine:temperature:pressure:humidity:bandcount]: bandcount %d is out-of-range [3, 31]. Clamping...", __p, 0x18u);
     }
 
-    if (a7 <= 3)
+    if (bandcount <= 3)
     {
-      v15 = 3;
+      bandcountCopy2 = 3;
     }
 
     else
     {
-      v15 = a7;
+      bandcountCopy2 = bandcount;
     }
 
-    a7 = ((31 - v15) & ((31 - v15) >> 31)) + v15;
+    bandcount = ((31 - bandcountCopy2) & ((31 - bandcountCopy2) >> 31)) + bandcountCopy2;
   }
 
-  sGetFrequencies(__p, a7);
+  sGetFrequencies(__p, bandcount);
   v16 = objc_opt_new();
-  if (a7 >= 1)
+  if (bandcount >= 1)
   {
     v20 = 0;
-    v21 = 4 * a7;
+    v21 = 4 * bandcount;
     do
     {
       v22 = objc_alloc(MEMORY[0x277CCABB0]);
@@ -278,9 +278,9 @@ LABEL_26:
     while (v21 != v20);
   }
 
-  *&v17 = a4;
-  *&v18 = a5;
-  *&v19 = a6;
+  *&v17 = temperature;
+  *&v18 = pressure;
+  *&v19 = humidity;
   v25 = [(PHASEMedium *)self initAirWithEngine:v13 temperature:v16 pressure:v17 humidity:v18 frequencies:v19];
 
   if (*__p)
@@ -292,15 +292,15 @@ LABEL_26:
   return v25;
 }
 
-- (id)initAirWithEngine:(id)a3 temperature:(float)a4 pressure:(float)a5 humidity:(float)a6 frequencies:(id)a7
+- (id)initAirWithEngine:(id)engine temperature:(float)temperature pressure:(float)pressure humidity:(float)humidity frequencies:(id)frequencies
 {
   v52 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v12 = a7;
-  v13 = v12;
-  if (a5 < 5.0)
+  engineCopy = engine;
+  frequenciesCopy = frequencies;
+  v13 = frequenciesCopy;
+  if (pressure < 5.0)
   {
-    v14 = **(Phase::Logger::GetInstance(v12) + 448);
+    v14 = **(Phase::Logger::GetInstance(frequenciesCopy) + 448);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
@@ -308,11 +308,11 @@ LABEL_26:
       v43 = 1024;
       v44 = 276;
       v45 = 2048;
-      v46 = a5;
+      pressureCopy = pressure;
       _os_log_impl(&dword_23A302000, v14, OS_LOG_TYPE_ERROR, "%25s:%-5d [PHASEMedium:initAirWithEngine:temperature:pressure:humidity:frequencies]: Pressure %2.2f must be > 0.001 (1 Pa). Clamping...", buf, 0x1Cu);
     }
 
-    a5 = fmaxf(a5, 5.0);
+    pressure = fmaxf(pressure, 5.0);
   }
 
   v15 = [(Phase::Logger *)v13 count];
@@ -327,17 +327,17 @@ LABEL_26:
       v43 = 1024;
       v44 = 285;
       v45 = 2048;
-      v46 = v17;
+      pressureCopy = v17;
       _os_log_impl(&dword_23A302000, v16, OS_LOG_TYPE_ERROR, "%25s:%-5d [PHASEMedium:initAirWithEngine:temperature:pressure:humidity:frequencies]: frequencies.count %zu is out-of-range [3, 31].", buf, 0x1Cu);
     }
 
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_22;
   }
 
   Phase::Geometry::WeatherUtility<double>::WeatherUtility(buf);
-  Phase::Geometry::WeatherUtility<double>::SetTemperatureInCelsius(buf, a4);
-  v20 = Phase::Controller::sClamp<double>(v19, (a5 * 1000.0), v47, v48);
+  Phase::Geometry::WeatherUtility<double>::SetTemperatureInCelsius(buf, temperature);
+  v20 = Phase::Controller::sClamp<double>(v19, (pressure * 1000.0), v47, v48);
   if (v20 != v49)
   {
     v49 = v20;
@@ -353,7 +353,7 @@ LABEL_13:
   }
 
 LABEL_14:
-  Phase::Geometry::WeatherUtility<double>::SetRelativeHumidityPercentage(buf, a6);
+  Phase::Geometry::WeatherUtility<double>::SetRelativeHumidityPercentage(buf, humidity);
   v21 = v51;
   v22 = objc_opt_new();
   v38 = 0u;
@@ -396,39 +396,39 @@ LABEL_14:
 
   v32 = [MEMORY[0x277CBEA60] arrayWithArray:v22];
   *&v33 = v21;
-  self = [(PHASEMedium *)self initWithEngine:v35 attenuationCoefficients:v32 speedOfSound:v33];
+  self = [(PHASEMedium *)self initWithEngine:engineCopy attenuationCoefficients:v32 speedOfSound:v33];
 
-  v18 = self;
+  selfCopy = self;
 LABEL_22:
 
-  return v18;
+  return selfCopy;
 }
 
-- (id)initWaterWithEngine:(id)a3 temperature:(float)a4 depth:(float)a5 salinity:(float)a6 pH:(float)a7 frequencies:(id)a8
+- (id)initWaterWithEngine:(id)engine temperature:(float)temperature depth:(float)depth salinity:(float)salinity pH:(float)h frequencies:(id)frequencies
 {
   v73 = *MEMORY[0x277D85DE8];
-  v53 = a3;
-  v15 = a8;
+  engineCopy = engine;
+  frequenciesCopy = frequencies;
   Phase::Geometry::WaterUtility<double>::WaterUtility(v58);
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
   v18 = NSStringFromSelector(a2);
-  v19 = PHASEGetPropertyBounded<float>(v17, v18, a4, 0.0, 50.0);
+  v19 = PHASEGetPropertyBounded<float>(v17, v18, temperature, 0.0, 50.0);
 
   v20 = objc_opt_class();
   v21 = NSStringFromClass(v20);
   v22 = NSStringFromSelector(a2);
-  v23 = PHASEGetPropertyBounded<float>(v21, v22, a5, 0.0, 10000.0);
+  v23 = PHASEGetPropertyBounded<float>(v21, v22, depth, 0.0, 10000.0);
 
   v24 = objc_opt_class();
   v25 = NSStringFromClass(v24);
   v26 = NSStringFromSelector(a2);
-  v27 = PHASEGetPropertyBounded<float>(v25, v26, a6, 0.0, 50.0);
+  v27 = PHASEGetPropertyBounded<float>(v25, v26, salinity, 0.0, 50.0);
 
   v28 = objc_opt_class();
   v29 = NSStringFromClass(v28);
   v30 = NSStringFromSelector(a2);
-  v31 = PHASEGetPropertyBounded<float>(v29, v30, a7, 7.0, 9.0);
+  v31 = PHASEGetPropertyBounded<float>(v29, v30, h, 7.0, 9.0);
 
   Phase::Geometry::WaterUtility<double>::SetTemperatureInCelsius(v58, v19);
   Phase::Geometry::WaterUtility<double>::SetDepthInMeters(v58, v23);
@@ -465,8 +465,8 @@ LABEL_8:
   }
 
 LABEL_9:
-  v36 = [v15 count];
-  if (v36 >= 3 && (v36 = [v15 count], v36 < 0x20))
+  v36 = [frequenciesCopy count];
+  if (v36 >= 3 && (v36 = [frequenciesCopy count], v36 < 0x20))
   {
     v40 = v65;
     v37 = objc_opt_new();
@@ -474,7 +474,7 @@ LABEL_9:
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v41 = v15;
+    v41 = frequenciesCopy;
     v42 = [v41 countByEnumeratingWithState:&v54 objects:v66 count:16];
     if (v42)
     {
@@ -506,9 +506,9 @@ LABEL_9:
 
     v50 = [MEMORY[0x277CBEA60] arrayWithArray:v37];
     *&v51 = v40;
-    self = [(PHASEMedium *)self initWithEngine:v53 attenuationCoefficients:v50 speedOfSound:v51];
+    self = [(PHASEMedium *)self initWithEngine:engineCopy attenuationCoefficients:v50 speedOfSound:v51];
 
-    v39 = self;
+    selfCopy = self;
   }
 
   else
@@ -516,7 +516,7 @@ LABEL_9:
     v37 = **(Phase::Logger::GetInstance(v36) + 448);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      v38 = [v15 count];
+      v38 = [frequenciesCopy count];
       *buf = 136315650;
       v68 = "PHASEMedium.mm";
       v69 = 1024;
@@ -526,10 +526,10 @@ LABEL_9:
       _os_log_impl(&dword_23A302000, v37, OS_LOG_TYPE_ERROR, "%25s:%-5d [PHASEMedium initWaterEWithEngine:temperature:depth:salinity:pH:frequencies]: Frequencies %lu out-of-range [3, 31].", buf, 0x1Cu);
     }
 
-    v39 = 0;
+    selfCopy = 0;
   }
 
-  return v39;
+  return selfCopy;
 }
 
 - (void)setDefault
@@ -561,21 +561,21 @@ LABEL_9:
       v15 = 1024;
       v16 = 367;
       v17 = 2080;
-      v18 = [v11 UTF8String];
+      uTF8String = [v11 UTF8String];
       _os_log_impl(&dword_23A302000, v10, OS_LOG_TYPE_ERROR, "%25s:%-5d %s", &v13, 0x1Cu);
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   WeakRetained = objc_loadWeakRetained(&self->_engine);
-  v6 = [(PHASEMedium *)self preset];
-  v7 = [(PHASEMedium *)self privatePreset];
-  v8 = [(PHASEMedium *)self attenuationCoefficients];
+  preset = [(PHASEMedium *)self preset];
+  privatePreset = [(PHASEMedium *)self privatePreset];
+  attenuationCoefficients = [(PHASEMedium *)self attenuationCoefficients];
   [(PHASEMedium *)self speedOfSound];
-  v9 = [v4 initWithEngine:WeakRetained preset:v6 privatePreset:v7 attenuationCoefficients:v8 speedOfSound:?];
+  v9 = [v4 initWithEngine:WeakRetained preset:preset privatePreset:privatePreset attenuationCoefficients:attenuationCoefficients speedOfSound:?];
 
   return v9;
 }

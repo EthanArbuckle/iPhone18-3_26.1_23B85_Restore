@@ -2,8 +2,8 @@
 - (BOOL)_canLoadLayerStackFromDirectory;
 - (BOOL)_loadLayerStackFromDirectory;
 - (BOOL)tryLoadLayerStackFromDirectory;
-- (PUWallpaperShuffleLayerStackLoadingOperation)initWithPosterMedia:(id)a3 editConfiguration:(id)a4 assetDirectory:(id)a5 style:(id)a6 persistedStyle:(id)a7 allowedLayoutStrategies:(unint64_t)a8 enableSpatialPhoto:(BOOL)a9 shuffleType:(int64_t)a10 isPreloading:(BOOL)a11;
-- (void)_handleLayerStackResponse:(id)a3;
+- (PUWallpaperShuffleLayerStackLoadingOperation)initWithPosterMedia:(id)media editConfiguration:(id)configuration assetDirectory:(id)directory style:(id)style persistedStyle:(id)persistedStyle allowedLayoutStrategies:(unint64_t)strategies enableSpatialPhoto:(BOOL)photo shuffleType:(int64_t)self0 isPreloading:(BOOL)self1;
+- (void)_handleLayerStackResponse:(id)response;
 - (void)cancel;
 - (void)px_finishIfPossible;
 - (void)px_start;
@@ -17,12 +17,12 @@
   v3 = PLWallpaperGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
-    v5 = [v4 assetUUID];
+    posterMedia = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
+    assetUUID = [posterMedia assetUUID];
     *buf = 138543618;
-    v8 = v5;
+    v8 = assetUUID;
     v9 = 1024;
-    v10 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self isCancelled];
+    isCancelled = [(PUWallpaperShuffleLayerStackLoadingOperation *)self isCancelled];
     _os_log_impl(&dword_1B36F3000, v3, OS_LOG_TYPE_DEFAULT, "Finished layer stack loading operation for shuffle asset %{public}@ (cancelled: %d)", buf, 0x12u);
   }
 
@@ -36,32 +36,32 @@
   v5.receiver = self;
   v5.super_class = PUWallpaperShuffleLayerStackLoadingOperation;
   [(PXAsyncOperation *)&v5 cancel];
-  v3 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
-  v4 = [v3 renderContext];
-  [v4 cancelAllRequests];
+  layerStackRequest = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
+  renderContext = [layerStackRequest renderContext];
+  [renderContext cancelAllRequests];
 }
 
-- (void)_handleLayerStackResponse:(id)a3
+- (void)_handleLayerStackResponse:(id)response
 {
   v22 = *MEMORY[0x1E69E9840];
   v15 = 0;
-  v4 = [a3 result:&v15];
+  v4 = [response result:&v15];
   v5 = v15;
   if (v4)
   {
-    v6 = [v4 compoundLayerStack];
-    [(PUWallpaperShuffleLayerStackLoadingOperation *)self setLayerStack:v6];
+    compoundLayerStack = [v4 compoundLayerStack];
+    [(PUWallpaperShuffleLayerStackLoadingOperation *)self setLayerStack:compoundLayerStack];
 
     v7 = PLWallpaperGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self operationType];
-      v9 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
-      v10 = [v9 assetUUID];
+      operationType = [(PUWallpaperShuffleLayerStackLoadingOperation *)self operationType];
+      posterMedia = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
+      assetUUID = [posterMedia assetUUID];
       *buf = 138543618;
-      v17 = v8;
+      v17 = operationType;
       v18 = 2114;
-      v19 = v10;
+      v19 = assetUUID;
       v11 = "Finished %{public}@ layer stack for shuffle asset %{public}@";
       v12 = v7;
       v13 = OS_LOG_TYPE_DEFAULT;
@@ -77,13 +77,13 @@ LABEL_6:
     v7 = PLWallpaperGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self operationType];
-      v9 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
-      v10 = [v9 assetUUID];
+      operationType = [(PUWallpaperShuffleLayerStackLoadingOperation *)self operationType];
+      posterMedia = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
+      assetUUID = [posterMedia assetUUID];
       *buf = 138543874;
-      v17 = v8;
+      v17 = operationType;
       v18 = 2114;
-      v19 = v10;
+      v19 = assetUUID;
       v20 = 2114;
       v21 = v5;
       v11 = "Layer stack %{public}@ failed for shuffle asset %{public}@: %{public}@";
@@ -99,21 +99,21 @@ LABEL_6:
 
 - (BOOL)_loadLayerStackFromDirectory
 {
-  v3 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self assetDirectory];
-  v4 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
-  v5 = [v4 subpath];
-  v6 = [v3 URLByAppendingPathComponent:v5];
+  assetDirectory = [(PUWallpaperShuffleLayerStackLoadingOperation *)self assetDirectory];
+  posterMedia = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
+  subpath = [posterMedia subpath];
+  v6 = [assetDirectory URLByAppendingPathComponent:subpath];
 
   if (v6)
   {
     v17 = 0;
     v7 = [MEMORY[0x1E69BDF40] loadCompoundLayerStackFromWallpaperURL:v6 options:1283 error:&v17];
     v8 = v17;
-    v9 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self editConfiguration];
-    v10 = v9;
-    if (v9)
+    editConfiguration = [(PUWallpaperShuffleLayerStackLoadingOperation *)self editConfiguration];
+    v10 = editConfiguration;
+    if (editConfiguration)
     {
-      v11 = [v7 compoundLayerStackByUpdatingPortraitDepthEnabled:objc_msgSend(v9 landscapeDepthEnabled:{"isDepthEnabled"), objc_msgSend(v9, "isLandscapeDepthEnabled")}];
+      v11 = [v7 compoundLayerStackByUpdatingPortraitDepthEnabled:objc_msgSend(editConfiguration landscapeDepthEnabled:{"isDepthEnabled"), objc_msgSend(editConfiguration, "isLandscapeDepthEnabled")}];
 
       v12 = [v11 compoundLayerStackByUpdatingSpatialPhotoEnabled:{objc_msgSend(v10, "isSpatialPhotoEnabled")}];
 
@@ -122,10 +122,10 @@ LABEL_6:
 
     if ([(PUWallpaperShuffleLayerStackLoadingOperation *)self enableSpatialPhoto])
     {
-      v13 = [v7 portraitLayerStack];
-      v14 = [v13 spatialPhotoBackgroundLayer];
+      portraitLayerStack = [v7 portraitLayerStack];
+      spatialPhotoBackgroundLayer = [portraitLayerStack spatialPhotoBackgroundLayer];
 
-      if (!v14)
+      if (!spatialPhotoBackgroundLayer)
       {
 
         v7 = 0;
@@ -148,34 +148,34 @@ LABEL_6:
 
 - (BOOL)_canLoadLayerStackFromDirectory
 {
-  v3 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self assetDirectory];
+  assetDirectory = [(PUWallpaperShuffleLayerStackLoadingOperation *)self assetDirectory];
 
-  if (v3)
+  if (assetDirectory)
   {
-    v4 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
-    v5 = [v4 editConfiguration];
+    posterMedia = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
+    editConfiguration = [posterMedia editConfiguration];
 
-    if (v5)
+    if (editConfiguration)
     {
-      v6 = [v5 style];
+      style = [editConfiguration style];
     }
 
     else
     {
-      v8 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self persistedStyle];
-      v6 = [v8 bakedStyle];
+      persistedStyle = [(PUWallpaperShuffleLayerStackLoadingOperation *)self persistedStyle];
+      style = [persistedStyle bakedStyle];
     }
 
-    v9 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self style];
-    v10 = [v9 bakedStyle];
-    v11 = v10;
-    if (v6 == v10)
+    style2 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self style];
+    bakedStyle = [style2 bakedStyle];
+    v11 = bakedStyle;
+    if (style == bakedStyle)
     {
     }
 
     else
     {
-      v12 = [v6 isEqual:v10];
+      v12 = [style isEqual:bakedStyle];
 
       if ((v12 & 1) == 0)
       {
@@ -186,12 +186,12 @@ LABEL_15:
       }
     }
 
-    v13 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self editConfiguration];
+    editConfiguration2 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self editConfiguration];
     v7 = 1;
-    if (v13)
+    if (editConfiguration2)
     {
-      [v5 normalizedVisibleFrame];
-      [v13 normalizedVisibleFrame];
+      [editConfiguration normalizedVisibleFrame];
+      [editConfiguration2 normalizedVisibleFrame];
       if (!PXRectApproximatelyEqualToRect())
       {
         v7 = 0;
@@ -206,27 +206,27 @@ LABEL_15:
 
 - (BOOL)tryLoadLayerStackFromDirectory
 {
-  v3 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self _canLoadLayerStackFromDirectory];
-  if (v3)
+  _canLoadLayerStackFromDirectory = [(PUWallpaperShuffleLayerStackLoadingOperation *)self _canLoadLayerStackFromDirectory];
+  if (_canLoadLayerStackFromDirectory)
   {
 
-    LOBYTE(v3) = [(PUWallpaperShuffleLayerStackLoadingOperation *)self _loadLayerStackFromDirectory];
+    LOBYTE(_canLoadLayerStackFromDirectory) = [(PUWallpaperShuffleLayerStackLoadingOperation *)self _loadLayerStackFromDirectory];
   }
 
-  return v3;
+  return _canLoadLayerStackFromDirectory;
 }
 
 - (void)px_start
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
-  v5 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self assetDirectory];
-  v6 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self enableSpatialPhoto];
-  v7 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self segmentationItem];
-  v8 = v7;
-  if (v5)
+  posterMedia = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
+  assetDirectory = [(PUWallpaperShuffleLayerStackLoadingOperation *)self assetDirectory];
+  enableSpatialPhoto = [(PUWallpaperShuffleLayerStackLoadingOperation *)self enableSpatialPhoto];
+  segmentationItem = [(PUWallpaperShuffleLayerStackLoadingOperation *)self segmentationItem];
+  v8 = segmentationItem;
+  if (assetDirectory)
   {
-    v9 = v4 == 0;
+    v9 = posterMedia == 0;
   }
 
   else
@@ -234,22 +234,22 @@ LABEL_15:
     v9 = 1;
   }
 
-  if (v9 && !v7)
+  if (v9 && !segmentationItem)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleResourceManager.m" lineNumber:799 description:@"Invalid layer stack inputs"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleResourceManager.m" lineNumber:799 description:@"Invalid layer stack inputs"];
   }
 
   v10 = PLWallpaperGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self operationType];
-    v12 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
-    v13 = [v12 assetUUID];
+    operationType = [(PUWallpaperShuffleLayerStackLoadingOperation *)self operationType];
+    posterMedia2 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self posterMedia];
+    assetUUID = [posterMedia2 assetUUID];
     *buf = 138543618;
-    v41 = v11;
+    v41 = operationType;
     v42 = 2114;
-    v43 = v13;
+    v43 = assetUUID;
     _os_log_impl(&dword_1B36F3000, v10, OS_LOG_TYPE_DEFAULT, "Started %{public}@ layer stack for shuffle asset %{public}@.", buf, 0x16u);
   }
 
@@ -274,16 +274,16 @@ LABEL_15:
     }
 
     v16 = [objc_alloc(MEMORY[0x1E69B3C00]) initWithLevel:v15];
-    v17 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
-    [v17 setPriority:v16];
+    layerStackRequest = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
+    [layerStackRequest setPriority:v16];
 
-    v18 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self style];
-    v19 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
-    [v19 setStyle:v18];
+    style = [(PUWallpaperShuffleLayerStackLoadingOperation *)self style];
+    layerStackRequest2 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
+    [layerStackRequest2 setStyle:style];
 
-    v20 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self allowedLayoutStrategies];
-    v21 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
-    [v21 setAllowedLayoutStrategies:v20];
+    allowedLayoutStrategies = [(PUWallpaperShuffleLayerStackLoadingOperation *)self allowedLayoutStrategies];
+    layerStackRequest3 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
+    [layerStackRequest3 setAllowedLayoutStrategies:allowedLayoutStrategies];
 
     if ([MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration])
     {
@@ -295,7 +295,7 @@ LABEL_15:
       v22 = 3;
     }
 
-    if (v6)
+    if (enableSpatialPhoto)
     {
       [(PUWallpaperShuffleLayerStackLoadingOperation *)self shuffleType];
       IsSmart = PFPosterShuffleTypeIsSmart();
@@ -308,29 +308,29 @@ LABEL_15:
       v22 |= v24;
     }
 
-    v25 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
-    [v25 setLayerStackOptions:v22];
+    layerStackRequest4 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
+    [layerStackRequest4 setLayerStackOptions:v22];
 
-    v26 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
-    [v26 setSpatialPhotoEnabled:v6];
+    layerStackRequest5 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
+    [layerStackRequest5 setSpatialPhotoEnabled:enableSpatialPhoto];
 
-    v27 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self editConfiguration];
-    v28 = v27;
-    if (v27)
+    editConfiguration = [(PUWallpaperShuffleLayerStackLoadingOperation *)self editConfiguration];
+    v28 = editConfiguration;
+    if (editConfiguration)
     {
-      v29 = v27;
+      editConfiguration2 = editConfiguration;
     }
 
     else
     {
-      v29 = [v4 editConfiguration];
+      editConfiguration2 = [posterMedia editConfiguration];
     }
 
-    v30 = v29;
+    v30 = editConfiguration2;
 
-    v31 = [v30 userAdjustedVisibleFrame];
-    v32 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
-    [v32 setUserAdjustedVisibleFrame:v31];
+    userAdjustedVisibleFrame = [v30 userAdjustedVisibleFrame];
+    layerStackRequest6 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
+    [layerStackRequest6 setUserAdjustedVisibleFrame:userAdjustedVisibleFrame];
 
     if (v30)
     {
@@ -338,22 +338,22 @@ LABEL_15:
       if (!CGRectIsNull(v45))
       {
         v33 = [MEMORY[0x1E69BDF40] effectiveLayoutForSegmentationItem:v8 editConfiguration:v30 layerStackOptions:v22];
-        v34 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
-        [v34 setLayout:v33];
+        layerStackRequest7 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
+        [layerStackRequest7 setLayout:v33];
 
-        v35 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
-        [v35 setUpdateClockZPosition:1];
+        layerStackRequest8 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
+        [layerStackRequest8 setUpdateClockZPosition:1];
       }
     }
 
     objc_initWeak(buf, self);
-    v36 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
+    layerStackRequest9 = [(PUWallpaperShuffleLayerStackLoadingOperation *)self layerStackRequest];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __56__PUWallpaperShuffleLayerStackLoadingOperation_px_start__block_invoke;
     v38[3] = &unk_1E7B7DC10;
     objc_copyWeak(&v39, buf);
-    [v36 submit:v38];
+    [layerStackRequest9 submit:v38];
 
     objc_destroyWeak(&v39);
     objc_destroyWeak(buf);
@@ -367,34 +367,34 @@ void __56__PUWallpaperShuffleLayerStackLoadingOperation_px_start__block_invoke(u
   [WeakRetained _handleLayerStackResponse:v3];
 }
 
-- (PUWallpaperShuffleLayerStackLoadingOperation)initWithPosterMedia:(id)a3 editConfiguration:(id)a4 assetDirectory:(id)a5 style:(id)a6 persistedStyle:(id)a7 allowedLayoutStrategies:(unint64_t)a8 enableSpatialPhoto:(BOOL)a9 shuffleType:(int64_t)a10 isPreloading:(BOOL)a11
+- (PUWallpaperShuffleLayerStackLoadingOperation)initWithPosterMedia:(id)media editConfiguration:(id)configuration assetDirectory:(id)directory style:(id)style persistedStyle:(id)persistedStyle allowedLayoutStrategies:(unint64_t)strategies enableSpatialPhoto:(BOOL)photo shuffleType:(int64_t)self0 isPreloading:(BOOL)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
+  mediaCopy = media;
+  configurationCopy = configuration;
+  directoryCopy = directory;
+  styleCopy = style;
+  persistedStyleCopy = persistedStyle;
   v29.receiver = self;
   v29.super_class = PUWallpaperShuffleLayerStackLoadingOperation;
   v22 = [(PXAsyncOperation *)&v29 init];
   if (v22)
   {
-    v23 = [v17 copy];
+    v23 = [mediaCopy copy];
     posterMedia = v22->_posterMedia;
     v22->_posterMedia = v23;
 
-    v25 = [v18 copy];
+    v25 = [configurationCopy copy];
     editConfiguration = v22->_editConfiguration;
     v22->_editConfiguration = v25;
 
-    objc_storeStrong(&v22->_assetDirectory, a5);
-    objc_storeStrong(&v22->_style, a6);
-    objc_storeStrong(&v22->_persistedStyle, a7);
-    v22->_allowedLayoutStrategies = a8;
-    v22->_enableSpatialPhoto = a9;
-    v22->_shuffleType = a10;
-    v22->_isPreloading = a11;
-    if (a11)
+    objc_storeStrong(&v22->_assetDirectory, directory);
+    objc_storeStrong(&v22->_style, style);
+    objc_storeStrong(&v22->_persistedStyle, persistedStyle);
+    v22->_allowedLayoutStrategies = strategies;
+    v22->_enableSpatialPhoto = photo;
+    v22->_shuffleType = type;
+    v22->_isPreloading = preloading;
+    if (preloading)
     {
       v27 = @"preloading";
     }

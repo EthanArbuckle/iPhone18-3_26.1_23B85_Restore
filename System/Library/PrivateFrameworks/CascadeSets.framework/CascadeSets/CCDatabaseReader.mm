@@ -1,13 +1,13 @@
 @interface CCDatabaseReader
-+ (id)readerForDatabaseAtURL:(id)a3 accessAssertion:(id)a4;
-- (BOOL)_commitAndCloseReadTransactionIfExists:(id *)a3;
-- (BOOL)_openAndBeginReadTransactionIfNotExists:(id *)a3;
-- (BOOL)enumerateRecordResultsOfSelect:(id)a3 recordClass:(Class)a4 error:(id *)a5 usingBlock:(id)a6;
-- (BOOL)enumerateRowResultsOfSelect:(id)a3 error:(id *)a4 usingBlock:(id)a5;
-- (BOOL)firstResultOfSelect:(id)a3 outNumberValue:(id *)a4 error:(id *)a5;
++ (id)readerForDatabaseAtURL:(id)l accessAssertion:(id)assertion;
+- (BOOL)_commitAndCloseReadTransactionIfExists:(id *)exists;
+- (BOOL)_openAndBeginReadTransactionIfNotExists:(id *)exists;
+- (BOOL)enumerateRecordResultsOfSelect:(id)select recordClass:(Class)class error:(id *)error usingBlock:(id)block;
+- (BOOL)enumerateRowResultsOfSelect:(id)select error:(id *)error usingBlock:(id)block;
+- (BOOL)firstResultOfSelect:(id)select outNumberValue:(id *)value error:(id *)error;
 - (CCDatabaseReader)init;
-- (CCDatabaseReader)initWithConnection:(id)a3;
-- (id)enumeratorForRowResultsOfSelect:(id)a3 error:(id *)a4;
+- (CCDatabaseReader)initWithConnection:(id)connection;
+- (id)enumeratorForRowResultsOfSelect:(id)select error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -27,22 +27,22 @@
   objc_exception_throw(v2);
 }
 
-+ (id)readerForDatabaseAtURL:(id)a3 accessAssertion:(id)a4
++ (id)readerForDatabaseAtURL:(id)l accessAssertion:(id)assertion
 {
-  v4 = [CCDatabaseConnection readOnlyConnectionToDatabaseAtURL:a3 accessAssertion:a4];
+  v4 = [CCDatabaseConnection readOnlyConnectionToDatabaseAtURL:l accessAssertion:assertion];
   v5 = [objc_alloc(objc_opt_class()) initWithConnection:v4];
 
   return v5;
 }
 
-- (CCDatabaseReader)initWithConnection:(id)a3
+- (CCDatabaseReader)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = CCDatabaseReader;
   v6 = [(CCDatabaseReader *)&v11 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_connection, a3), !v7->_connection))
+  if (v6 && (objc_storeStrong(&v6->_connection, connection), !v7->_connection))
   {
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -61,7 +61,7 @@
   return v8;
 }
 
-- (BOOL)_openAndBeginReadTransactionIfNotExists:(id *)a3
+- (BOOL)_openAndBeginReadTransactionIfNotExists:(id *)exists
 {
   if (self->_inTransaction)
   {
@@ -70,7 +70,7 @@
 
   else
   {
-    if ([(CCDatabaseConnection *)self->_connection openWithError:?]&& [(CCDatabaseConnection *)self->_connection beginTransactionWithError:a3])
+    if ([(CCDatabaseConnection *)self->_connection openWithError:?]&& [(CCDatabaseConnection *)self->_connection beginTransactionWithError:exists])
     {
       self->_inTransaction = 1;
     }
@@ -79,11 +79,11 @@
   }
 }
 
-- (BOOL)_commitAndCloseReadTransactionIfExists:(id *)a3
+- (BOOL)_commitAndCloseReadTransactionIfExists:(id *)exists
 {
   if (self->_inTransaction)
   {
-    if ([(CCDatabaseConnection *)self->_connection commitTransactionWithError:?]&& [(CCDatabaseConnection *)self->_connection closeWithError:a3])
+    if ([(CCDatabaseConnection *)self->_connection commitTransactionWithError:?]&& [(CCDatabaseConnection *)self->_connection closeWithError:exists])
     {
       self->_inTransaction = 0;
     }
@@ -97,12 +97,12 @@
   }
 }
 
-- (BOOL)firstResultOfSelect:(id)a3 outNumberValue:(id *)a4 error:(id *)a5
+- (BOOL)firstResultOfSelect:(id)select outNumberValue:(id *)value error:(id *)error
 {
-  v8 = a3;
-  if ([(CCDatabaseReader *)self _openAndBeginReadTransactionIfNotExists:a5])
+  selectCopy = select;
+  if ([(CCDatabaseReader *)self _openAndBeginReadTransactionIfNotExists:error])
   {
-    v9 = [(CCDatabaseConnection *)self->_connection firstResultOfSelect:v8 outNumberValue:a4 error:a5];
+    v9 = [(CCDatabaseConnection *)self->_connection firstResultOfSelect:selectCopy outNumberValue:value error:error];
   }
 
   else
@@ -113,13 +113,13 @@
   return v9;
 }
 
-- (BOOL)enumerateRecordResultsOfSelect:(id)a3 recordClass:(Class)a4 error:(id *)a5 usingBlock:(id)a6
+- (BOOL)enumerateRecordResultsOfSelect:(id)select recordClass:(Class)class error:(id *)error usingBlock:(id)block
 {
-  v10 = a3;
-  v11 = a6;
-  if ([(CCDatabaseReader *)self _openAndBeginReadTransactionIfNotExists:a5])
+  selectCopy = select;
+  blockCopy = block;
+  if ([(CCDatabaseReader *)self _openAndBeginReadTransactionIfNotExists:error])
   {
-    v12 = [(CCDatabaseConnection *)self->_connection enumerateRecordResultsOfSelect:v10 recordClass:a4 error:a5 usingBlock:v11];
+    v12 = [(CCDatabaseConnection *)self->_connection enumerateRecordResultsOfSelect:selectCopy recordClass:class error:error usingBlock:blockCopy];
   }
 
   else
@@ -130,13 +130,13 @@
   return v12;
 }
 
-- (BOOL)enumerateRowResultsOfSelect:(id)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)enumerateRowResultsOfSelect:(id)select error:(id *)error usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  if ([(CCDatabaseReader *)self _openAndBeginReadTransactionIfNotExists:a4])
+  selectCopy = select;
+  blockCopy = block;
+  if ([(CCDatabaseReader *)self _openAndBeginReadTransactionIfNotExists:error])
   {
-    v10 = [(CCDatabaseConnection *)self->_connection enumerateRowResultsOfSelect:v8 error:a4 usingBlock:v9];
+    v10 = [(CCDatabaseConnection *)self->_connection enumerateRowResultsOfSelect:selectCopy error:error usingBlock:blockCopy];
   }
 
   else
@@ -147,12 +147,12 @@
   return v10;
 }
 
-- (id)enumeratorForRowResultsOfSelect:(id)a3 error:(id *)a4
+- (id)enumeratorForRowResultsOfSelect:(id)select error:(id *)error
 {
-  v6 = a3;
-  if ([(CCDatabaseReader *)self _openAndBeginReadTransactionIfNotExists:a4])
+  selectCopy = select;
+  if ([(CCDatabaseReader *)self _openAndBeginReadTransactionIfNotExists:error])
   {
-    v7 = [(CCDatabaseConnection *)self->_connection enumeratorForRowResultsOfSelect:v6 error:a4];
+    v7 = [(CCDatabaseConnection *)self->_connection enumeratorForRowResultsOfSelect:selectCopy error:error];
   }
 
   else

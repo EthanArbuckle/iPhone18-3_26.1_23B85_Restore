@@ -1,23 +1,23 @@
 @interface DSPProcessor
-- (BOOL)hasHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)a3;
-- (BOOL)setHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)a3 withData:(id)a4 withQualifier:(id)a5 error:(id *)a6;
-- (BOOL)validateAdaptConfigurationChangeRequest:(const void *)a3;
-- (DSPProcessor)initWithHostDescription:(id)a3 hostCallback:(id)a4 systemConfiguration:(SystemConfiguration *)a5;
+- (BOOL)hasHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)address;
+- (BOOL)setHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)address withData:(id)data withQualifier:(id)qualifier error:(id *)error;
+- (BOOL)validateAdaptConfigurationChangeRequest:(const void *)request;
+- (DSPProcessor)initWithHostDescription:(id)description hostCallback:(id)callback systemConfiguration:(SystemConfiguration *)configuration;
 - (id).cxx_construct;
-- (id)adaptToConfigurationChange:(id)a3 withCallbacks:(void *)a4 error:(id *)a5;
-- (id)doNegotiateConfigurationChange:(id)a3 simulate:(BOOL)a4 error:(id *)a5;
-- (id)getHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)a3 withQualifierData:(id)a4;
+- (id)adaptToConfigurationChange:(id)change withCallbacks:(void *)callbacks error:(id *)error;
+- (id)doNegotiateConfigurationChange:(id)change simulate:(BOOL)simulate error:(id *)error;
+- (id)getHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)address withQualifierData:(id)data;
 - (id)getHostedDSPPropertyInfoArray;
 - (id)initWithHostDescription:hostCallback:systemConfiguration:;
-- (id)negotiateConfigurationChange:(id)a3 error:(id *)a4;
-- (id)simulateConfigurationChange:(id)a3 error:(id *)a4;
+- (id)negotiateConfigurationChange:(id)change error:(id *)error;
+- (id)simulateConfigurationChange:(id)change error:(id *)error;
 - (uint64_t)initWithHostDescription:hostCallback:systemConfiguration:;
-- (void)connectRemoteProcessingBlockServer:(id)a3 host:(id)a4;
+- (void)connectRemoteProcessingBlockServer:(id)server host:(id)host;
 - (void)dealloc;
-- (void)disconnectRemoteProcessingBlockServer:(id)a3 host:(id)a4;
-- (void)dumpDiagnosticsWithNSObject:(id)a3 name:(id)a4;
+- (void)disconnectRemoteProcessingBlockServer:(id)server host:(id)host;
+- (void)dumpDiagnosticsWithNSObject:(id)object name:(id)name;
 - (void)initWithHostDescription:hostCallback:systemConfiguration:;
-- (void)registerExternalNotifications:(const NotificationSubscriptions *)a3;
+- (void)registerExternalNotifications:(const NotificationSubscriptions *)notifications;
 - (void)unregisterExternalNotifications;
 @end
 
@@ -68,10 +68,10 @@
   return self;
 }
 
-- (void)dumpDiagnosticsWithNSObject:(id)a3 name:(id)a4
+- (void)dumpDiagnosticsWithNSObject:(id)object name:(id)name
 {
-  v15 = a3;
-  v6 = a4;
+  objectCopy = object;
+  nameCopy = name;
   {
     if (v14)
     {
@@ -96,9 +96,9 @@
     }
 
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:p_var0];
-    v12 = [v7 stringWithFormat:@"%@(%@_%@)", v6, v9, v11];
+    v12 = [v7 stringWithFormat:@"%@(%@_%@)", nameCopy, v9, v11];
 
-    adm::utility::writeNSObjectToDisk(v15, v12, v13);
+    adm::utility::writeNSObjectToDisk(objectCopy, v12, v13);
   }
 }
 
@@ -163,10 +163,10 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerExternalNotifications:(const NotificationSubscriptions *)a3
+- (void)registerExternalNotifications:(const NotificationSubscriptions *)notifications
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (a3->var0)
+  if (notifications->var0)
   {
     objc_initWeak(location, self);
     v24[1] = MEMORY[0x277D85DD0];
@@ -201,7 +201,7 @@
     objc_destroyWeak(location);
   }
 
-  if (a3->var1)
+  if (notifications->var1)
   {
     if (self->_notificationVendor || (+[ADMNotificationVendor canonical], v7 = objc_claimAutoreleasedReturnValue(), v8 = self->_notificationVendor, self->_notificationVendor = v7, v8, self->_notificationVendor))
     {
@@ -231,11 +231,11 @@
 
       else if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v17 = [(ADMListenerRegistrationResults *)self->_coexNotificationRegistrationResults error];
-        v18 = v17;
-        v19 = [v17 UTF8String];
+        error = [(ADMListenerRegistrationResults *)self->_coexNotificationRegistrationResults error];
+        v18 = error;
+        uTF8String = [error UTF8String];
         LODWORD(location[0]) = 136315138;
-        *(location + 4) = v19;
+        *(location + 4) = uTF8String;
         _os_log_error_impl(&dword_223B4A000, v14, OS_LOG_TYPE_ERROR, "Failed to register inference coex. Cause: %s", location, 0xCu);
       }
 
@@ -303,12 +303,12 @@ void __46__DSPProcessor_registerExternalNotifications___block_invoke_50(uint64_t
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)a3 withQualifierData:(id)a4
+- (id)getHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)address withQualifierData:(id)data
 {
-  v11 = a3;
-  v5 = a4;
-  applesauce::CF::DataRef::from_ns(&cf, v5);
-  adm::CustomPropertyManager::getCustomProperty(&v10, &self->_customPropertyManager, &v11, &cf);
+  addressCopy = address;
+  dataCopy = data;
+  applesauce::CF::DataRef::from_ns(&cf, dataCopy);
+  adm::CustomPropertyManager::getCustomProperty(&v10, &self->_customPropertyManager, &addressCopy, &cf);
   v6 = v10;
   v7 = v6;
   if (v6)
@@ -324,14 +324,14 @@ void __46__DSPProcessor_registerExternalNotifications___block_invoke_50(uint64_t
   return v7;
 }
 
-- (BOOL)setHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)a3 withData:(id)a4 withQualifier:(id)a5 error:(id *)a6
+- (BOOL)setHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)address withData:(id)data withQualifier:(id)qualifier error:(id *)error
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  applesauce::CF::DataRef::from_ns(&v13, v8);
-  applesauce::CF::DataRef::from_ns(&cf, v9);
-  v10 = adm::CustomPropertyManager::setCustomProperty(&self->_customPropertyManager, &v14, &v13, &cf);
+  addressCopy = address;
+  dataCopy = data;
+  qualifierCopy = qualifier;
+  applesauce::CF::DataRef::from_ns(&v13, dataCopy);
+  applesauce::CF::DataRef::from_ns(&cf, qualifierCopy);
+  v10 = adm::CustomPropertyManager::setCustomProperty(&self->_customPropertyManager, &addressCopy, &v13, &cf);
   if (cf)
   {
     CFRelease(cf);
@@ -345,23 +345,23 @@ void __46__DSPProcessor_registerExternalNotifications___block_invoke_50(uint64_t
   return v10;
 }
 
-- (BOOL)hasHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)a3
+- (BOOL)hasHostedDSPPropertyAtAddress:(AudioObjectPropertyAddress)address
 {
   v3 = "";
   v4 = 224;
   result = 1;
   while (1)
   {
-    if (a3.mSelector == 707406378 || ((v6 = *(v3 - 2), v6 != 707406378) ? (v7 = v6 == a3.mSelector) : (v7 = 1), v7))
+    if (address.mSelector == 707406378 || ((v6 = *(v3 - 2), v6 != 707406378) ? (v7 = v6 == address.mSelector) : (v7 = 1), v7))
     {
-      if (a3.mScope == 707406378 || ((v8 = *(v3 - 1), v8 != 707406378) ? (v9 = v8 == a3.mScope) : (v9 = 1), v9))
+      if (address.mScope == 707406378 || ((v8 = *(v3 - 1), v8 != 707406378) ? (v9 = v8 == address.mScope) : (v9 = 1), v9))
       {
-        if (a3.mElement == -1)
+        if (address.mElement == -1)
         {
           break;
         }
 
-        if (*v3 == -1 || *v3 == a3.mElement)
+        if (*v3 == -1 || *v3 == address.mElement)
         {
           break;
         }
@@ -392,11 +392,11 @@ void __46__DSPProcessor_registerExternalNotifications___block_invoke_50(uint64_t
   return v3;
 }
 
-- (id)adaptToConfigurationChange:(id)a3 withCallbacks:(void *)a4 error:(id *)a5
+- (id)adaptToConfigurationChange:(id)change withCallbacks:(void *)callbacks error:(id *)error
 {
   v107 = *MEMORY[0x277D85DE8];
-  v83 = self;
-  v7 = a3;
+  selfCopy = self;
+  changeCopy = change;
   v80 = 1;
   v81 = 0;
   v82 = 0;
@@ -407,14 +407,14 @@ void __46__DSPProcessor_registerExternalNotifications___block_invoke_50(uint64_t
     _os_signpost_emit_with_name_impl(&dword_223B4A000, v8, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "ADM::Adapt", &unk_223C17543, &buf, 2u);
   }
 
-  if (*(&v83->_hostDescription.mBundleID.__rep_.__l + 23) < 0)
+  if (*(&selfCopy->_hostDescription.mBundleID.__rep_.__l + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&mBundleID, v83->_hostDescription.mBundleID.__rep_.__l.__data_, v83->_hostDescription.mBundleID.__rep_.__l.__size_);
+    std::string::__init_copy_ctor_external(&mBundleID, selfCopy->_hostDescription.mBundleID.__rep_.__l.__data_, selfCopy->_hostDescription.mBundleID.__rep_.__l.__size_);
   }
 
   else
   {
-    mBundleID = v83->_hostDescription.mBundleID;
+    mBundleID = selfCopy->_hostDescription.mBundleID;
   }
 
   v9 = get_adm_log_object();
@@ -433,14 +433,14 @@ void __46__DSPProcessor_registerExternalNotifications___block_invoke_50(uint64_t
 
   LOBYTE(v77) = 0;
   v78 = 0;
-  v11 = v83;
-  if (v83->_remoteProcessingBlockHost)
+  v11 = selfCopy;
+  if (selfCopy->_remoteProcessingBlockHost)
   {
-    [(RPBHost *)v83->_remoteProcessingBlockHost setUserInfo:v7 error:0];
-    v11 = v83;
+    [(RPBHost *)selfCopy->_remoteProcessingBlockHost setUserInfo:changeCopy error:0];
+    v11 = selfCopy;
   }
 
-  [(DSPProcessor *)v11 dumpDiagnosticsWithNSObject:v7 name:@"AdaptConfigChange"];
+  [(DSPProcessor *)v11 dumpDiagnosticsWithNSObject:changeCopy name:@"AdaptConfigChange"];
   LOBYTE(v59.super.isa) = 0;
   v61[0] = 0;
   v61[1] = 0;
@@ -457,7 +457,7 @@ void __46__DSPProcessor_registerExternalNotifications___block_invoke_50(uint64_t
   memset(v71, 0, sizeof(v71));
   v72 = 0;
   memset(v76, 0, sizeof(v76));
-  if ((adm::utility::convertFromDictionary(v7, &v59, v12) & 1) == 0)
+  if ((adm::utility::convertFromDictionary(changeCopy, &v59, v12) & 1) == 0)
   {
     v25 = get_adm_log_object();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -471,12 +471,12 @@ void __46__DSPProcessor_registerExternalNotifications___block_invoke_50(uint64_t
   }
 
   logConfigChangeRequestBasicInfo(&v59);
-  if (![(DSPProcessor *)v83 validateAdaptConfigurationChangeRequest:&v59])
+  if (![(DSPProcessor *)selfCopy validateAdaptConfigurationChangeRequest:&v59])
   {
     v26 = [MEMORY[0x277CCA9B8] errorWithDomain:@"AudioDSPManagerErrorDomain" code:1969448551 userInfo:0];
 LABEL_37:
     v27 = 0;
-    *a5 = v26;
+    *error = v26;
     goto LABEL_38;
   }
 
@@ -493,13 +493,13 @@ LABEL_37:
     v103 = 0;
     *(&buf + 1) = 0;
     *&buf = &buf + 8;
-    adm::CustomPropertyManager::attachToNode(&v83->_customPropertyManager, &v88, &buf);
+    adm::CustomPropertyManager::attachToNode(&selfCopy->_customPropertyManager, &v88, &buf);
     std::__tree<std::string>::destroy(*(&buf + 1));
-    [(DSPProcessor *)v83 unregisterExternalNotifications];
+    [(DSPProcessor *)selfCopy unregisterExternalNotifications];
     goto LABEL_55;
   }
 
-  adm::graph::GraphBuilder::buildGraph(&buf, &v83->_graphBuilder, &v59);
+  adm::graph::GraphBuilder::buildGraph(&buf, &selfCopy->_graphBuilder, &v59);
   if ((v106 & 1) == 0)
   {
     v40 = MEMORY[0x277CCA9B8];
@@ -507,7 +507,7 @@ LABEL_37:
     v100 = *MEMORY[0x277CCA450];
     v101 = @"ADM failed to build graph";
     v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v101 forKeys:&v100 count:1];
-    *a5 = [v40 errorWithDomain:@"AudioDSPManagerErrorDomain" code:v41 userInfo:v42];
+    *error = [v40 errorWithDomain:@"AudioDSPManagerErrorDomain" code:v41 userInfo:v42];
 
     v43 = get_adm_log_object();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -519,7 +519,7 @@ LABEL_37:
     goto LABEL_66;
   }
 
-  v88.__r_.__value_.__r.__words[0] = &v83;
+  v88.__r_.__value_.__r.__words[0] = &selfCopy;
   v88.__r_.__value_.__l.__size_ = &buf;
   if (v105 == -1)
   {
@@ -547,13 +547,13 @@ LABEL_70:
       }
     }
 
-    if (a5)
+    if (error)
     {
       v45 = MEMORY[0x277CCA9B8];
       v84 = *MEMORY[0x277CCA450];
       v85 = @"ADM failed to create DSP node";
       v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
-      *a5 = [v45 errorWithDomain:@"AudioDSPManagerErrorDomain" code:1970170734 userInfo:v46];
+      *error = [v45 errorWithDomain:@"AudioDSPManagerErrorDomain" code:1970170734 userInfo:v46];
     }
 
     v24 = 1;
@@ -573,8 +573,8 @@ LABEL_70:
     goto LABEL_70;
   }
 
-  adm::CustomPropertyManager::attachToNode(&v83->_customPropertyManager, &v56, &v60);
-  if (v83->_remoteProcessingBlockHost)
+  adm::CustomPropertyManager::attachToNode(&selfCopy->_customPropertyManager, &v56, &v60);
+  if (selfCopy->_remoteProcessingBlockHost)
   {
     v15 = objc_alloc(MEMORY[0x277D46118]);
     v16 = [v15 initWithName:@"DSP" inputs:*MEMORY[0x277CBEBE8] outputs:*MEMORY[0x277CBEBE8]];
@@ -583,8 +583,8 @@ LABEL_70:
     v52 = 0u;
     v53 = 0u;
     v51 = v16;
-    v17 = [(RPBHost *)v83->_remoteProcessingBlockHost items];
-    v18 = [v17 copy];
+    items = [(RPBHost *)selfCopy->_remoteProcessingBlockHost items];
+    v18 = [items copy];
 
     v19 = [v18 countByEnumeratingWithState:&v52 objects:v99 count:16];
     if (v19)
@@ -599,7 +599,7 @@ LABEL_70:
             objc_enumerationMutation(v18);
           }
 
-          [(RPBHost *)v83->_remoteProcessingBlockHost removeItem:*(*(&v52 + 1) + 8 * i)];
+          [(RPBHost *)selfCopy->_remoteProcessingBlockHost removeItem:*(*(&v52 + 1) + 8 * i)];
         }
 
         v19 = [v18 countByEnumeratingWithState:&v52 objects:v99 count:16];
@@ -608,14 +608,14 @@ LABEL_70:
       while (v19);
     }
 
-    [(RPBHost *)v83->_remoteProcessingBlockHost addItem:v51];
+    [(RPBHost *)selfCopy->_remoteProcessingBlockHost addItem:v51];
     (*(*v14 + 16))(v14, v51);
   }
 
   adm::graph::Node::createHandlers(&v88, v14);
-  std::__function::__value_func<void ()>::operator=[abi:ne200100](a4 + 96, v89);
-  std::__function::__value_func<void ()(unsigned int,AMCP::Proc_Cycle_Info const&,unsigned long,AMCP::Proc_Stream *,unsigned long,AMCP::Proc_Stream *)>::operator=[abi:ne200100](a4 + 32, v91);
-  std::__function::__value_func<void ()>::operator=[abi:ne200100](a4 + 128, v93);
+  std::__function::__value_func<void ()>::operator=[abi:ne200100](callbacks + 96, v89);
+  std::__function::__value_func<void ()(unsigned int,AMCP::Proc_Cycle_Info const&,unsigned long,AMCP::Proc_Stream *,unsigned long,AMCP::Proc_Stream *)>::operator=[abi:ne200100](callbacks + 32, v91);
+  std::__function::__value_func<void ()>::operator=[abi:ne200100](callbacks + 128, v93);
   if (v96)
   {
     v22 = (*(*v96 + 48))(v96);
@@ -654,7 +654,7 @@ LABEL_66:
   }
 
   LOWORD(v88.__r_.__value_.__l.__data_) = adm::config_policy::getRequiredNotificationSubscriptions(&v59, v23);
-  [(DSPProcessor *)v83 registerExternalNotifications:&v88];
+  [(DSPProcessor *)selfCopy registerExternalNotifications:&v88];
   if (v58 == 1 && v57.__cat_)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v57.__cat_);
@@ -664,18 +664,18 @@ LABEL_66:
 LABEL_55:
   if (LOBYTE(v59.super.isa) == 1)
   {
-    v32 = [(adm::utility *)v7 copy];
-    activeConfiguration = v83->_activeConfiguration;
-    v83->_activeConfiguration = v32;
+    v32 = [(adm::utility *)changeCopy copy];
+    activeConfiguration = selfCopy->_activeConfiguration;
+    selfCopy->_activeConfiguration = v32;
 
-    std::optional<adm::ConfigurationChangeRequest>::operator=[abi:ne200100]<adm::ConfigurationChangeRequest,void>(&v83->_activeChangeRequest, &v59);
-    v34 = v83;
-    p_pendingDeviceConfigChanges = &v83->_pendingDeviceConfigChanges;
-    if (v83->_activeDeviceConfigChanges.__engaged_ == v83->_pendingDeviceConfigChanges.__engaged_)
+    std::optional<adm::ConfigurationChangeRequest>::operator=[abi:ne200100]<adm::ConfigurationChangeRequest,void>(&selfCopy->_activeChangeRequest, &v59);
+    v34 = selfCopy;
+    p_pendingDeviceConfigChanges = &selfCopy->_pendingDeviceConfigChanges;
+    if (selfCopy->_activeDeviceConfigChanges.__engaged_ == selfCopy->_pendingDeviceConfigChanges.__engaged_)
     {
-      if (v83->_activeDeviceConfigChanges.__engaged_)
+      if (selfCopy->_activeDeviceConfigChanges.__engaged_)
       {
-        std::vector<adm::DeviceConfiguration>::__vdeallocate(&v83->_activeDeviceConfigChanges);
+        std::vector<adm::DeviceConfiguration>::__vdeallocate(&selfCopy->_activeDeviceConfigChanges);
         *&v34->_activeDeviceConfigChanges.var0.__null_state_ = *&v34->_pendingDeviceConfigChanges.var0.__null_state_;
         v34->_activeDeviceConfigChanges.var0.__val_.__cap_ = v34->_pendingDeviceConfigChanges.var0.__val_.__cap_;
         p_pendingDeviceConfigChanges->__end_ = 0;
@@ -684,16 +684,16 @@ LABEL_55:
       }
     }
 
-    else if (v83->_activeDeviceConfigChanges.__engaged_)
+    else if (selfCopy->_activeDeviceConfigChanges.__engaged_)
     {
-      *&buf = &v83->_activeDeviceConfigChanges;
+      *&buf = &selfCopy->_activeDeviceConfigChanges;
       std::vector<adm::DeviceConfiguration>::__destroy_vector::operator()[abi:ne200100](&buf);
       v34->_activeDeviceConfigChanges.__engaged_ = 0;
     }
 
     else
     {
-      *&v83->_activeDeviceConfigChanges.var0.__null_state_ = *&v83->_pendingDeviceConfigChanges.var0.__null_state_;
+      *&selfCopy->_activeDeviceConfigChanges.var0.__null_state_ = *&selfCopy->_pendingDeviceConfigChanges.var0.__null_state_;
       v34->_activeDeviceConfigChanges.var0.__val_.__cap_ = v34->_pendingDeviceConfigChanges.var0.__val_.__cap_;
       p_pendingDeviceConfigChanges->__end_ = 0;
       p_pendingDeviceConfigChanges->__cap_ = 0;
@@ -701,29 +701,29 @@ LABEL_55:
       v34->_activeDeviceConfigChanges.__engaged_ = 1;
     }
 
-    v37 = v83;
-    remoteProcessingBlockHost = v83->_remoteProcessingBlockHost;
+    v37 = selfCopy;
+    remoteProcessingBlockHost = selfCopy->_remoteProcessingBlockHost;
     if (!remoteProcessingBlockHost)
     {
       goto LABEL_88;
     }
 
-    p_activeConfiguration = &v83->_activeConfiguration;
+    p_activeConfiguration = &selfCopy->_activeConfiguration;
   }
 
   else
   {
-    v36 = v83->_activeConfiguration;
-    v83->_activeConfiguration = 0;
+    v36 = selfCopy->_activeConfiguration;
+    selfCopy->_activeConfiguration = 0;
 
-    std::optional<adm::ConfigurationChangeRequest>::operator=[abi:ne200100](&v83->_activeChangeRequest);
-    v37 = v83;
-    if (v83->_activeDeviceConfigChanges.__engaged_)
+    std::optional<adm::ConfigurationChangeRequest>::operator=[abi:ne200100](&selfCopy->_activeChangeRequest);
+    v37 = selfCopy;
+    if (selfCopy->_activeDeviceConfigChanges.__engaged_)
     {
-      *&buf = &v83->_activeDeviceConfigChanges;
+      *&buf = &selfCopy->_activeDeviceConfigChanges;
       std::vector<adm::DeviceConfiguration>::__destroy_vector::operator()[abi:ne200100](&buf);
       v37->_activeDeviceConfigChanges.__engaged_ = 0;
-      v37 = v83;
+      v37 = selfCopy;
     }
 
     remoteProcessingBlockHost = v37->_remoteProcessingBlockHost;
@@ -736,19 +736,19 @@ LABEL_55:
   }
 
   [(RPBHost *)remoteProcessingBlockHost setUserInfo:*p_activeConfiguration error:0];
-  v37 = v83;
+  v37 = selfCopy;
 LABEL_88:
   std::optional<adm::ConfigurationChangeRequest>::operator=[abi:ne200100](&v37->_pendingChangeRequest);
-  v47 = v83;
-  if (v83->_pendingDeviceConfigChanges.__engaged_)
+  v47 = selfCopy;
+  if (selfCopy->_pendingDeviceConfigChanges.__engaged_)
   {
-    *&buf = &v83->_pendingDeviceConfigChanges;
+    *&buf = &selfCopy->_pendingDeviceConfigChanges;
     std::vector<adm::DeviceConfiguration>::__destroy_vector::operator()[abi:ne200100](&buf);
     v47->_pendingDeviceConfigChanges.__engaged_ = 0;
   }
 
   v27 = adm::utility::convertToDictionary(&v77);
-  [(DSPProcessor *)v83 dumpDiagnosticsWithNSObject:v27 name:@"AdaptResponse"];
+  [(DSPProcessor *)selfCopy dumpDiagnosticsWithNSObject:v27 name:@"AdaptResponse"];
   v48 = get_adm_log_object();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
@@ -797,15 +797,15 @@ LABEL_38:
   return v27;
 }
 
-- (BOOL)validateAdaptConfigurationChangeRequest:(const void *)a3
+- (BOOL)validateAdaptConfigurationChangeRequest:(const void *)request
 {
-  v5 = *a3;
+  v5 = *request;
   engaged = self->_pendingChangeRequest.__engaged_;
   if (v5 == 1)
   {
     if (self->_pendingChangeRequest.__engaged_)
     {
-      if (self->_pendingChangeRequest.var0.__val_.mIOContextDescription.mSemantics.__tree_.__size_ != *(a3 + 3))
+      if (self->_pendingChangeRequest.var0.__val_.mIOContextDescription.mSemantics.__tree_.__size_ != *(request + 3))
       {
 LABEL_44:
         v26 = get_adm_log_object();
@@ -826,7 +826,7 @@ LABEL_50:
       p_end_node = &self->_pendingChangeRequest.var0.__val_.mIOContextDescription.mSemantics.__tree_.__end_node_;
       if (begin_node != &self->_pendingChangeRequest.var0.__val_.mIOContextDescription.mSemantics.__tree_.__end_node_)
       {
-        v9 = *(a3 + 1);
+        v9 = *(request + 1);
         while (std::equal_to<std::string>::operator()[abi:ne200100](&begin_node[4].__left_, v9 + 4))
         {
           left = begin_node[1].__left_;
@@ -893,7 +893,7 @@ LABEL_50:
   {
   }
 
-  if (self->_activeChangeRequest.__engaged_ && self->_activeChangeRequest.var0.__null_state_ == v5 && self->_activeChangeRequest.var0.__val_.mIOContextDescription.mSemantics.__tree_.__size_ == *(a3 + 3))
+  if (self->_activeChangeRequest.__engaged_ && self->_activeChangeRequest.var0.__null_state_ == v5 && self->_activeChangeRequest.var0.__val_.mIOContextDescription.mSemantics.__tree_.__size_ == *(request + 3))
   {
     v16 = self->_activeChangeRequest.var0.__val_.mIOContextDescription.mSemantics.__tree_.__begin_node_;
     v17 = &self->_activeChangeRequest.var0.__val_.mIOContextDescription.mSemantics.__tree_.__end_node_;
@@ -902,8 +902,8 @@ LABEL_50:
 LABEL_38:
       end = self->_activeChangeRequest.var0.__val_.mIOContextDescription.mStreamIDs.__end_;
       begin = self->_activeChangeRequest.var0.__val_.mIOContextDescription.mStreamIDs.__begin_;
-      v25 = *(a3 + 21);
-      if (end - begin == *(a3 + 22) - v25)
+      v25 = *(request + 21);
+      if (end - begin == *(request + 22) - v25)
       {
         while (begin != end)
         {
@@ -927,7 +927,7 @@ LABEL_38:
 
     else
     {
-      v18 = *(a3 + 1);
+      v18 = *(request + 1);
       while (std::equal_to<std::string>::operator()[abi:ne200100](&v16[4].__left_, v18 + 4))
       {
         v19 = v16[1].__left_;
@@ -1003,11 +1003,11 @@ LABEL_45:
   return 0;
 }
 
-- (id)doNegotiateConfigurationChange:(id)a3 simulate:(BOOL)a4 error:(id *)a5
+- (id)doNegotiateConfigurationChange:(id)change simulate:(BOOL)simulate error:(id *)error
 {
-  v6 = a4;
+  simulateCopy = simulate;
   v99[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  changeCopy = change;
   v70 = 0;
   if (*(&self->_hostDescription.mBundleID.__rep_.__l + 23) < 0)
   {
@@ -1021,7 +1021,7 @@ LABEL_45:
 
   v9 = get_adm_log_object();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (simulateCopy)
   {
     if (v10)
     {
@@ -1036,7 +1036,7 @@ LABEL_45:
       _os_log_impl(&dword_223B4A000, v9, OS_LOG_TYPE_DEFAULT, ">>> SIMULATE [%s]", buf, 0xCu);
     }
 
-    [(DSPProcessor *)self dumpDiagnosticsWithNSObject:v8 name:@"SimulateConfigChange"];
+    [(DSPProcessor *)self dumpDiagnosticsWithNSObject:changeCopy name:@"SimulateConfigChange"];
     std::__variant_detail::__dtor<std::__variant_detail::__traits<std::monostate,adm::ScopedSignpostSimulate,adm::ScopedSignpostNegotiate>,(std::__variant_detail::_Trait)1>::__destroy[abi:ne200100](v67);
     v12 = 1;
     v67[0] = 1;
@@ -1067,7 +1067,7 @@ LABEL_17:
       _os_log_impl(&dword_223B4A000, v9, OS_LOG_TYPE_DEFAULT, ">>> NEGOTIATE [%s]", buf, 0xCu);
     }
 
-    [(DSPProcessor *)self dumpDiagnosticsWithNSObject:v8 name:@"NegotiateConfigChange"];
+    [(DSPProcessor *)self dumpDiagnosticsWithNSObject:changeCopy name:@"NegotiateConfigChange"];
     std::__variant_detail::__dtor<std::__variant_detail::__traits<std::monostate,adm::ScopedSignpostSimulate,adm::ScopedSignpostNegotiate>,(std::__variant_detail::_Trait)1>::__destroy[abi:ne200100](v67);
     v67[0] = 1;
     v68 = 0;
@@ -1101,7 +1101,7 @@ LABEL_17:
   memset(v94, 0, sizeof(v94));
   v95 = 0;
   memset(v99, 0, 24);
-  if ((adm::utility::convertFromDictionary(v8, buf, v16) & 1) == 0)
+  if ((adm::utility::convertFromDictionary(changeCopy, buf, v16) & 1) == 0)
   {
     v30 = get_adm_log_object();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1119,7 +1119,7 @@ LABEL_17:
     v31 = [MEMORY[0x277CCA9B8] errorWithDomain:@"AudioDSPManagerErrorDomain" code:1969448551 userInfo:0];
 LABEL_49:
     v32 = 0;
-    *a5 = v31;
+    *error = v31;
     goto LABEL_56;
   }
 
@@ -1130,7 +1130,7 @@ LABEL_49:
     v57 = v62;
     if (v62)
     {
-      if (!v6)
+      if (!simulateCopy)
       {
         v18 = *(&v63 + 1);
         v17 = v63;
@@ -1291,7 +1291,7 @@ LABEL_49:
           }
         }
 
-        v48 = [(adm::utility *)v8 copy];
+        v48 = [(adm::utility *)changeCopy copy];
         pendingConfiguration = self->_pendingConfiguration;
         self->_pendingConfiguration = v48;
 
@@ -1329,7 +1329,7 @@ LABEL_49:
         operator delete(*v72);
       }
 
-      if (v6)
+      if (simulateCopy)
       {
         [(DSPProcessor *)self dumpDiagnosticsWithNSObject:v32 name:@"SimulateResponse"];
         v52 = get_adm_log_object();
@@ -1385,7 +1385,7 @@ LABEL_102:
     v78 = *MEMORY[0x277CCA450];
     v79 = @"ADM failed to determine IOContext configuration";
     v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
-    *a5 = [v36 errorWithDomain:@"AudioDSPManagerErrorDomain" code:v37 userInfo:v38];
+    *error = [v36 errorWithDomain:@"AudioDSPManagerErrorDomain" code:v37 userInfo:v38];
   }
 
   else
@@ -1395,7 +1395,7 @@ LABEL_102:
     v80 = *MEMORY[0x277CCA450];
     v81 = @"ADM failed to determine device configuration";
     v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
-    *a5 = [v33 errorWithDomain:@"AudioDSPManagerErrorDomain" code:v34 userInfo:v35];
+    *error = [v33 errorWithDomain:@"AudioDSPManagerErrorDomain" code:v34 userInfo:v35];
   }
 
   v32 = 0;
@@ -1435,16 +1435,16 @@ LABEL_56:
   return v32;
 }
 
-- (id)negotiateConfigurationChange:(id)a3 error:(id *)a4
+- (id)negotiateConfigurationChange:(id)change error:(id *)error
 {
-  v4 = [(DSPProcessor *)self doNegotiateConfigurationChange:a3 simulate:0 error:a4];
+  v4 = [(DSPProcessor *)self doNegotiateConfigurationChange:change simulate:0 error:error];
 
   return v4;
 }
 
-- (id)simulateConfigurationChange:(id)a3 error:(id *)a4
+- (id)simulateConfigurationChange:(id)change error:(id *)error
 {
-  v4 = [(DSPProcessor *)self doNegotiateConfigurationChange:a3 simulate:1 error:a4];
+  v4 = [(DSPProcessor *)self doNegotiateConfigurationChange:change simulate:1 error:error];
 
   return v4;
 }
@@ -1455,14 +1455,14 @@ LABEL_56:
   remoteProcessingBlockItem = self->_remoteProcessingBlockItem;
   if (remoteProcessingBlockItem)
   {
-    v4 = [(RPBItem *)remoteProcessingBlockItem superHost];
-    [v4 removeItem:self->_remoteProcessingBlockItem];
+    superHost = [(RPBItem *)remoteProcessingBlockItem superHost];
+    [superHost removeItem:self->_remoteProcessingBlockItem];
   }
 
   if (self->_remoteProcessingBlockHost)
   {
-    v5 = [MEMORY[0x277D46130] sharedInstance];
-    [v5 removeHost:self->_remoteProcessingBlockHost];
+    mEMORY[0x277D46130] = [MEMORY[0x277D46130] sharedInstance];
+    [mEMORY[0x277D46130] removeHost:self->_remoteProcessingBlockHost];
   }
 
   v6 = get_adm_log_object();
@@ -1477,21 +1477,21 @@ LABEL_56:
   [(DSPProcessor *)&v7 dealloc];
 }
 
-- (DSPProcessor)initWithHostDescription:(id)a3 hostCallback:(id)a4 systemConfiguration:(SystemConfiguration *)a5
+- (DSPProcessor)initWithHostDescription:(id)description hostCallback:(id)callback systemConfiguration:(SystemConfiguration *)configuration
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  descriptionCopy = description;
+  callbackCopy = callback;
   v18.receiver = self;
   v18.super_class = DSPProcessor;
   v11 = [(DSPProcessor *)&v18 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [descriptionCopy copy];
     v13 = *(v11 + 1);
     *(v11 + 1) = v12;
 
-    if ((adm::utility::convertFromDictionary(v9, v11 + 2, v14) & 1) == 0)
+    if ((adm::utility::convertFromDictionary(descriptionCopy, v11 + 2, v14) & 1) == 0)
     {
       v15 = get_adm_log_object();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1501,12 +1501,12 @@ LABEL_56:
       }
     }
 
-    adm::SystemConfiguration::operator=((v11 + 64), a5);
+    adm::SystemConfiguration::operator=((v11 + 64), configuration);
     std::optional<adm::graph::GraphBuilder>::emplace[abi:ne200100]<adm::SystemConfiguration &,adm::HostDescription &,void>((v11 + 328), (v11 + 64), v11 + 1);
     std::optional<adm::graph::NodeManager>::emplace[abi:ne200100]<adm::SystemConfiguration &,void>(v11 + 81, (v11 + 64));
   }
 
-  [0 dumpDiagnosticsWithNSObject:v9 name:@"HostDescription"];
+  [0 dumpDiagnosticsWithNSObject:descriptionCopy name:@"HostDescription"];
 
   v16 = *MEMORY[0x277D85DE8];
   return 0;
@@ -1516,7 +1516,7 @@ LABEL_56:
 {
   if (std::type_info::operator==[abi:ne200100](*(a2 + 8), "Z73-[DSPProcessor initWithHostDescription:hostCallback:systemConfiguration:]E3$_0"))
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -1534,76 +1534,76 @@ LABEL_56:
 - (id)initWithHostDescription:hostCallback:systemConfiguration:
 {
   *a2 = &unk_28371AAF8;
-  result = *(a1 + 8);
+  result = *(self + 8);
   a2[1] = result;
   return result;
 }
 
-- (void)disconnectRemoteProcessingBlockServer:(id)a3 host:(id)a4
+- (void)disconnectRemoteProcessingBlockServer:(id)server host:(id)host
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v7->_remoteProcessingBlockItem)
+  serverCopy = server;
+  hostCopy = host;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_remoteProcessingBlockItem)
   {
-    [v6 removeItem:?];
-    remoteProcessingBlockItem = v7->_remoteProcessingBlockItem;
-    v7->_remoteProcessingBlockItem = 0;
+    [hostCopy removeItem:?];
+    remoteProcessingBlockItem = selfCopy->_remoteProcessingBlockItem;
+    selfCopy->_remoteProcessingBlockItem = 0;
   }
 
-  if (v7->_remoteProcessingBlockHost)
+  if (selfCopy->_remoteProcessingBlockHost)
   {
-    [v10 removeHost:?];
-    remoteProcessingBlockHost = v7->_remoteProcessingBlockHost;
-    v7->_remoteProcessingBlockHost = 0;
+    [serverCopy removeHost:?];
+    remoteProcessingBlockHost = selfCopy->_remoteProcessingBlockHost;
+    selfCopy->_remoteProcessingBlockHost = 0;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)connectRemoteProcessingBlockServer:(id)a3 host:(id)a4
+- (void)connectRemoteProcessingBlockServer:(id)server host:(id)host
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (!v7->_remoteProcessingBlockItem)
+  serverCopy = server;
+  hostCopy = host;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_remoteProcessingBlockItem)
   {
-    p_hostDescription = &v7->_hostDescription;
-    if (*(&v7->_hostDescription.mBundleID.__rep_.__l + 23) < 0)
+    p_hostDescription = &selfCopy->_hostDescription;
+    if (*(&selfCopy->_hostDescription.mBundleID.__rep_.__l + 23) < 0)
     {
       p_hostDescription = p_hostDescription->__data_;
     }
 
-    p_var0 = &v7->_hostDescription.var0;
-    if (v7->_anon_30[15] < 0)
+    p_var0 = &selfCopy->_hostDescription.var0;
+    if (selfCopy->_anon_30[15] < 0)
     {
       p_var0 = *p_var0;
     }
 
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %s", p_hostDescription, p_var0];
+    p_var0 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %s", p_hostDescription, p_var0];
     v11 = objc_alloc(MEMORY[0x277D46118]);
-    v12 = [v11 initWithName:v10 inputs:*MEMORY[0x277CBEBE8] outputs:*MEMORY[0x277CBEBE8]];
-    remoteProcessingBlockItem = v7->_remoteProcessingBlockItem;
-    v7->_remoteProcessingBlockItem = v12;
+    v12 = [v11 initWithName:p_var0 inputs:*MEMORY[0x277CBEBE8] outputs:*MEMORY[0x277CBEBE8]];
+    remoteProcessingBlockItem = selfCopy->_remoteProcessingBlockItem;
+    selfCopy->_remoteProcessingBlockItem = v12;
 
-    [(RPBItem *)v7->_remoteProcessingBlockItem setUserInfo:v7->_nsDescription error:0];
-    [v6 addItem:v7->_remoteProcessingBlockItem];
-    v14 = [objc_alloc(MEMORY[0x277D46110]) initWithName:v10];
-    remoteProcessingBlockHost = v7->_remoteProcessingBlockHost;
-    v7->_remoteProcessingBlockHost = v14;
+    [(RPBItem *)selfCopy->_remoteProcessingBlockItem setUserInfo:selfCopy->_nsDescription error:0];
+    [hostCopy addItem:selfCopy->_remoteProcessingBlockItem];
+    v14 = [objc_alloc(MEMORY[0x277D46110]) initWithName:p_var0];
+    remoteProcessingBlockHost = selfCopy->_remoteProcessingBlockHost;
+    selfCopy->_remoteProcessingBlockHost = v14;
 
-    activeConfiguration = v7->_activeConfiguration;
+    activeConfiguration = selfCopy->_activeConfiguration;
     if (activeConfiguration)
     {
-      [(RPBHost *)v7->_remoteProcessingBlockHost setUserInfo:activeConfiguration error:0];
+      [(RPBHost *)selfCopy->_remoteProcessingBlockHost setUserInfo:activeConfiguration error:0];
     }
 
-    [v17 addHost:v7->_remoteProcessingBlockHost toItem:v7->_remoteProcessingBlockItem];
+    [serverCopy addHost:selfCopy->_remoteProcessingBlockHost toItem:selfCopy->_remoteProcessingBlockItem];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 @end

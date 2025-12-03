@@ -1,19 +1,19 @@
 @interface HDDeviceInformationService
 + (id)implementedProperties;
-- (HDDeviceInformationService)initWithServiceManager:(id)a3 peripheral:(id)a4 advertisementData:(id)a5 profile:(id)a6;
-- (void)performWhenDeviceInformationHasBeenLoaded:(id)a3;
-- (void)peripheral:(id)a3 didDiscoverCharacteristic:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 updateTime:(id)a5 error:(id)a6;
-- (void)readProperty:(id)a3;
+- (HDDeviceInformationService)initWithServiceManager:(id)manager peripheral:(id)peripheral advertisementData:(id)data profile:(id)profile;
+- (void)performWhenDeviceInformationHasBeenLoaded:(id)loaded;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristic:(id)characteristic;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic updateTime:(id)time error:(id)error;
+- (void)readProperty:(id)property;
 @end
 
 @implementation HDDeviceInformationService
 
-- (HDDeviceInformationService)initWithServiceManager:(id)a3 peripheral:(id)a4 advertisementData:(id)a5 profile:(id)a6
+- (HDDeviceInformationService)initWithServiceManager:(id)manager peripheral:(id)peripheral advertisementData:(id)data profile:(id)profile
 {
   v18.receiver = self;
   v18.super_class = HDDeviceInformationService;
-  v6 = [(HDHealthService *)&v18 initWithServiceManager:a3 peripheral:a4 advertisementData:a5 profile:a6];
+  v6 = [(HDHealthService *)&v18 initWithServiceManager:manager peripheral:peripheral advertisementData:data profile:profile];
   if (v6)
   {
     v8 = HKCreateSerialDispatchQueue();
@@ -43,76 +43,76 @@
   return v6;
 }
 
-- (void)performWhenDeviceInformationHasBeenLoaded:(id)a3
+- (void)performWhenDeviceInformationHasBeenLoaded:(id)loaded
 {
-  v4 = a3;
+  loadedCopy = loaded;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_DC00;
   v7[3] = &unk_5C9D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = loadedCopy;
+  v6 = loadedCopy;
   dispatch_async(queue, v7);
 }
 
 + (id)implementedProperties
 {
   v2 = _PropertyNamesToCharacteristicIdentifiers();
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-- (void)readProperty:(id)a3
+- (void)readProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_DDBC;
   v7[3] = &unk_5C8C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = propertyCopy;
+  v6 = propertyCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristic:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverCharacteristic:(id)characteristic
 {
-  v6 = a3;
-  v7 = a4;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_DF4C;
   block[3] = &unk_5C788;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = peripheralCopy;
+  v13 = characteristicCopy;
+  v9 = characteristicCopy;
+  v10 = peripheralCopy;
   dispatch_async(queue, block);
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 updateTime:(id)a5 error:(id)a6
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic updateTime:(id)time error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   queue = self->_queue;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_E08C;
   v16[3] = &unk_5C8A0;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v17 = peripheralCopy;
+  v18 = characteristicCopy;
+  v19 = errorCopy;
+  v13 = errorCopy;
+  v14 = characteristicCopy;
+  v15 = peripheralCopy;
   dispatch_async(queue, v16);
 }
 

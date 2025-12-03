@@ -36,7 +36,7 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_1D333DD88(0, 0, v6, &unk_1D33E5590, v8);
 }
 

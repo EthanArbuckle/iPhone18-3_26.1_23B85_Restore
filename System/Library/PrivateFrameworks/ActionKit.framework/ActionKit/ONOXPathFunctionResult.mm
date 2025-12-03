@@ -8,24 +8,24 @@
 
 - (NSString)stringValue
 {
-  v3 = [(ONOXPathFunctionResult *)self xmlXPath];
-  if (v3)
+  xmlXPath = [(ONOXPathFunctionResult *)self xmlXPath];
+  if (xmlXPath)
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithCString:-[ONOXPathFunctionResult xmlXPath](self encoding:{"xmlXPath")[32], 4}];
+    xmlXPath = [MEMORY[0x277CCACA8] stringWithCString:-[ONOXPathFunctionResult xmlXPath](self encoding:{"xmlXPath")[32], 4}];
   }
 
-  return v3;
+  return xmlXPath;
 }
 
 - (NSNumber)numberValue
 {
-  v3 = [(ONOXPathFunctionResult *)self xmlXPath];
-  if (v3)
+  xmlXPath = [(ONOXPathFunctionResult *)self xmlXPath];
+  if (xmlXPath)
   {
-    v3 = [MEMORY[0x277CCABB0] numberWithDouble:{-[ONOXPathFunctionResult xmlXPath](self, "xmlXPath")[24]}];
+    xmlXPath = [MEMORY[0x277CCABB0] numberWithDouble:{-[ONOXPathFunctionResult xmlXPath](self, "xmlXPath")[24]}];
   }
 
-  return v3;
+  return xmlXPath;
 }
 
 - (void)dealloc

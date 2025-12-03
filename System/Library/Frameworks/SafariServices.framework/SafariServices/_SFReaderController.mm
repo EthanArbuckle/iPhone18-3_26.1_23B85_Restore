@@ -1,81 +1,81 @@
 @interface _SFReaderController
 - (BOOL)_readerWebViewIsReady;
-- (BOOL)_webView:(id)a3 performDataInteractionOperationWithItemProviders:(id)a4;
+- (BOOL)_webView:(id)view performDataInteractionOperationWithItemProviders:(id)providers;
 - (NSString)readerLanguageTag;
 - (NSURL)readerURL;
 - (WBSReaderFontManager)fontManager;
 - (WKUIDelegatePrivate)webViewUIDelegate;
 - (WKWebView)readerWebView;
 - (WKWebView)webView;
-- (_SFReaderController)initWithWebView:(id)a3;
+- (_SFReaderController)initWithWebView:(id)view;
 - (_SFReaderControllerDelegate)delegate;
 - (_SFReaderTestController)testController;
-- (id)_webView:(id)a3 actionsForElement:(id)a4 defaultActions:(id)a5;
+- (id)_webView:(id)view actionsForElement:(id)element defaultActions:(id)actions;
 - (id)readerControllerProxy;
-- (id)webViewForSummarizationAnimationCoordinator:(id)a3;
-- (unint64_t)_webView:(id)a3 willUpdateDataInteractionOperationToOperation:(unint64_t)a4 forSession:(id)a5;
-- (void)_collectReaderContentForMailWithCompletion:(id)a3;
+- (id)webViewForSummarizationAnimationCoordinator:(id)coordinator;
+- (unint64_t)_webView:(id)view willUpdateDataInteractionOperationToOperation:(unint64_t)operation forSession:(id)session;
+- (void)_collectReaderContentForMailWithCompletion:(id)completion;
 - (void)_performActionsDelayedUntilReaderWebViewIsReady;
 - (void)_saveConfigurationAndSendToWebProcess;
-- (void)_sendReaderAvailabilityNotificationForState:(id)a3 reason:(int64_t)a4;
+- (void)_sendReaderAvailabilityNotificationForState:(id)state reason:(int64_t)reason;
 - (void)_setUpReaderActivityListener;
 - (void)_updateJavaScriptEnabled;
-- (void)_webView:(id)a3 contextMenuConfigurationForElement:(id)a4 completionHandler:(id)a5;
-- (void)_webView:(id)a3 contextMenuDidEndForElement:(id)a4;
-- (void)_webView:(id)a3 contextMenuForElement:(id)a4 willCommitWithAnimator:(id)a5;
-- (void)_webView:(id)a3 contextMenuWillPresentForElement:(id)a4;
-- (void)_webView:(id)a3 dataInteraction:(id)a4 session:(id)a5 didEndWithOperation:(unint64_t)a6;
-- (void)_webView:(id)a3 dataInteraction:(id)a4 sessionWillBegin:(id)a5;
-- (void)_webView:(id)a3 dataInteractionOperationWasHandled:(BOOL)a4 forSession:(id)a5 itemProviders:(id)a6;
-- (void)_webView:(id)a3 getAlternateURLFromImage:(id)a4 completionHandler:(id)a5;
-- (void)activateFont:(id)a3;
+- (void)_webView:(id)view contextMenuConfigurationForElement:(id)element completionHandler:(id)handler;
+- (void)_webView:(id)view contextMenuDidEndForElement:(id)element;
+- (void)_webView:(id)view contextMenuForElement:(id)element willCommitWithAnimator:(id)animator;
+- (void)_webView:(id)view contextMenuWillPresentForElement:(id)element;
+- (void)_webView:(id)view dataInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)_webView:(id)view dataInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)_webView:(id)view dataInteractionOperationWasHandled:(BOOL)handled forSession:(id)session itemProviders:(id)providers;
+- (void)_webView:(id)view getAlternateURLFromImage:(id)image completionHandler:(id)handler;
+- (void)activateFont:(id)font;
 - (void)checkReaderAvailability;
 - (void)collectArticleContent;
-- (void)collectReaderContentForMailWithCompletion:(id)a3;
-- (void)collectReadingListInfoWithBookmarkID:(int)a3 completionHandler:(id)a4;
-- (void)contentDidBecomeReadyWithArticleText:(id)a3;
+- (void)collectReaderContentForMailWithCompletion:(id)completion;
+- (void)collectReadingListInfoWithBookmarkID:(int)d completionHandler:(id)handler;
+- (void)contentDidBecomeReadyWithArticleText:(id)text;
 - (void)createArticleFinder;
-- (void)deactivateReaderNow:(unint64_t)a3;
+- (void)deactivateReaderNow:(unint64_t)now;
 - (void)dealloc;
 - (void)decreaseReaderTextSize;
-- (void)didCollectArticleContent:(id)a3;
-- (void)didCollectReaderContentForMail:(id)a3;
-- (void)didCollectReadingListItemInfo:(id)a3 bookmarkID:(id)a4;
-- (void)didCreateReaderWebView:(id)a3;
-- (void)didDetermineAdditionalTextSamples:(id)a3;
-- (void)didDetermineReaderAvailability:(id)a3;
-- (void)didDetermineReaderAvailabilityForDynamicCheck:(id)a3;
-- (void)didEncounterErrorForSummarization:(id)a3;
+- (void)didCollectArticleContent:(id)content;
+- (void)didCollectReaderContentForMail:(id)mail;
+- (void)didCollectReadingListItemInfo:(id)info bookmarkID:(id)d;
+- (void)didCreateReaderWebView:(id)view;
+- (void)didDetermineAdditionalTextSamples:(id)samples;
+- (void)didDetermineReaderAvailability:(id)availability;
+- (void)didDetermineReaderAvailabilityForDynamicCheck:(id)check;
+- (void)didEncounterErrorForSummarization:(id)summarization;
 - (void)didFinishPresentationUpdateAfterTransitioningToReader;
-- (void)didFinishSummarization:(id)a3;
-- (void)didPrepareReaderContentForPrinting:(id)a3;
+- (void)didFinishSummarization:(id)summarization;
+- (void)didPrepareReaderContentForPrinting:(id)printing;
 - (void)didRequestOnDeviceSummary;
-- (void)didSetReaderConfiguration:(id)a3;
-- (void)getReaderArticleTitleWithCompletion:(id)a3;
+- (void)didSetReaderConfiguration:(id)configuration;
+- (void)getReaderArticleTitleWithCompletion:(id)completion;
 - (void)increaseReaderTextSize;
 - (void)insertSummaryTextPlaceholder;
-- (void)insertSummaryTextPlaceholderForSummarizationAnimationCoordinator:(id)a3 completionHandler:(id)a4;
+- (void)insertSummaryTextPlaceholderForSummarizationAnimationCoordinator:(id)coordinator completionHandler:(id)handler;
 - (void)invalidate;
 - (void)loadNewArticle;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)owningWebViewDidCommitNavigation;
-- (void)prepareReaderPrintingIFrameWithCompletion:(id)a3;
-- (void)previewReaderImageURLWithCompletion:(id)a3;
-- (void)readerTextWasExtracted:(id)a3 withMetadata:(id)a4 wasDeterminingAvailabilility:(BOOL)a5;
-- (void)replacePlaceholderWithSummaryForSummarizationAnimationCoordinator:(id)a3;
-- (void)reportReaderEvent:(int64_t)a3 dataToReport:(id)a4;
+- (void)prepareReaderPrintingIFrameWithCompletion:(id)completion;
+- (void)previewReaderImageURLWithCompletion:(id)completion;
+- (void)readerTextWasExtracted:(id)extracted withMetadata:(id)metadata wasDeterminingAvailabilility:(BOOL)availabilility;
+- (void)replacePlaceholderWithSummaryForSummarizationAnimationCoordinator:(id)coordinator;
+- (void)reportReaderEvent:(int64_t)event dataToReport:(id)report;
 - (void)resetReaderTextSize;
 - (void)sendConfigurationToWebProcess;
-- (void)setArticleSummary:(id)a3 withSummaryHeader:(id)a4 tableOfContentsHeader:(id)a5 readerURLString:(id)a6 titles:(id)a7 paths:(id)a8 trailingText:(id)a9 tableOfContentsType:(int)a10 attribution:(id)a11;
-- (void)setOnDeviceSummaryButtonWithTitle:(id)a3;
-- (void)setReaderFont:(id)a3;
-- (void)setReaderInitialTopScrollOffset:(int64_t)a3 configuration:(id)a4 isViewingArchive:(BOOL)a5 scrollOffsetDictionary:(id)a6;
-- (void)setReaderIsActive:(BOOL)a3;
-- (void)setReaderLanguageTag:(id)a3;
-- (void)setReaderTheme:(int64_t)a3 forAppearance:(int64_t)a4;
-- (void)setTextVisibilityForSummarizationAnimationCoordinator:(id)a3 isVisible:(BOOL)a4;
-- (void)setUpReaderWebViewIfNeededAndPerformBlock:(id)a3;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
+- (void)setArticleSummary:(id)summary withSummaryHeader:(id)header tableOfContentsHeader:(id)contentsHeader readerURLString:(id)string titles:(id)titles paths:(id)paths trailingText:(id)text tableOfContentsType:(int)self0 attribution:(id)self1;
+- (void)setOnDeviceSummaryButtonWithTitle:(id)title;
+- (void)setReaderFont:(id)font;
+- (void)setReaderInitialTopScrollOffset:(int64_t)offset configuration:(id)configuration isViewingArchive:(BOOL)archive scrollOffsetDictionary:(id)dictionary;
+- (void)setReaderIsActive:(BOOL)active;
+- (void)setReaderLanguageTag:(id)tag;
+- (void)setReaderTheme:(int64_t)theme forAppearance:(int64_t)appearance;
+- (void)setTextVisibilityForSummarizationAnimationCoordinator:(id)coordinator isVisible:(BOOL)visible;
+- (void)setUpReaderWebViewIfNeededAndPerformBlock:(id)block;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
 @end
 
 @implementation _SFReaderController
@@ -87,15 +87,15 @@
   self->_eventsListenerInterface = v3;
 
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v6 = [WeakRetained _remoteObjectRegistry];
+  _remoteObjectRegistry = [WeakRetained _remoteObjectRegistry];
 
-  [v6 registerExportedObject:self interface:self->_eventsListenerInterface];
+  [_remoteObjectRegistry registerExportedObject:self interface:self->_eventsListenerInterface];
 }
 
 - (void)_updateJavaScriptEnabled
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  -[WBSReaderConfigurationManager setJavaScriptEnabled:](self->_configurationManager, "setJavaScriptEnabled:", [v3 safari_isJavaScriptEnabled]);
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  -[WBSReaderConfigurationManager setJavaScriptEnabled:](self->_configurationManager, "setJavaScriptEnabled:", [safari_browserDefaults safari_isJavaScriptEnabled]);
 }
 
 - (NSURL)readerURL
@@ -104,8 +104,8 @@
   if ((objc_opt_respondsToSelector() & 1) == 0 || ([WeakRetained readerURLForReaderController:self], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v5 = objc_loadWeakRetained(&self->_webView);
-    v6 = [v5 _committedURL];
-    v4 = [v6 safari_URLByReplacingSchemeWithString:@"safari-reader"];
+    _committedURL = [v5 _committedURL];
+    v4 = [_committedURL safari_URLByReplacingSchemeWithString:@"safari-reader"];
   }
 
   return v4;
@@ -113,8 +113,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v3 removeObserver:self forKeyPath:*MEMORY[0x1E69B1F00] context:kvoContext_0];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults removeObserver:self forKeyPath:*MEMORY[0x1E69B1F00] context:kvoContext_0];
 
   [(_SFReaderController *)self invalidate];
   v4.receiver = self;
@@ -127,9 +127,9 @@
   if (self->_eventsListenerInterface)
   {
     WeakRetained = objc_loadWeakRetained(&self->_webView);
-    v4 = [WeakRetained _remoteObjectRegistry];
+    _remoteObjectRegistry = [WeakRetained _remoteObjectRegistry];
 
-    [v4 unregisterExportedObject:self interface:self->_eventsListenerInterface];
+    [_remoteObjectRegistry unregisterExportedObject:self interface:self->_eventsListenerInterface];
     eventsListenerInterface = self->_eventsListenerInterface;
     self->_eventsListenerInterface = 0;
   }
@@ -137,13 +137,13 @@
   objc_storeWeak(&self->_readerControllerProxy, 0);
 }
 
-- (_SFReaderController)initWithWebView:(id)a3
+- (_SFReaderController)initWithWebView:(id)view
 {
   v13.receiver = self;
   v13.super_class = _SFReaderController;
-  v3 = a3;
+  viewCopy = view;
   v4 = [(_SFReaderController *)&v13 init];
-  objc_storeWeak(&v4->_webView, v3);
+  objc_storeWeak(&v4->_webView, viewCopy);
 
   [(_SFReaderController *)v4 _setUpReaderActivityListener:v13.receiver];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -151,9 +151,9 @@
   v4->_bookmarkIdentifierToReadingListItemInfoCompletionMap = v5;
 
   v7 = objc_alloc_init(MEMORY[0x1E69C9018]);
-  v8 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v8 addObserver:v4 forKeyPath:*MEMORY[0x1E69B1F00] options:3 context:kvoContext_0];
-  v9 = [v8 dictionaryForKey:*MEMORY[0x1E69B1F48]];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults addObserver:v4 forKeyPath:*MEMORY[0x1E69B1F00] options:3 context:kvoContext_0];
+  v9 = [safari_browserDefaults dictionaryForKey:*MEMORY[0x1E69B1F48]];
   v10 = [objc_alloc(MEMORY[0x1E69C9000]) initWithPersistedSettingsAsDictionaryRepresentation:v9 fontManager:v7 prefersLargerDefaultFontSize:_SFDeviceIsPad()];
   configurationManager = v4->_configurationManager;
   v4->_configurationManager = v10;
@@ -171,10 +171,10 @@
   if (!WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_webView);
-    v5 = [v4 _remoteObjectRegistry];
+    _remoteObjectRegistry = [v4 _remoteObjectRegistry];
 
     v6 = [MEMORY[0x1E69853F8] remoteObjectInterfaceWithProtocol:&unk_1F5098000];
-    WeakRetained = [v5 remoteObjectProxyWithInterface:v6];
+    WeakRetained = [_remoteObjectRegistry remoteObjectProxyWithInterface:v6];
   }
 
   objc_storeWeak(&self->_readerControllerProxy, WeakRetained);
@@ -182,40 +182,40 @@
   return WeakRetained;
 }
 
-- (void)setReaderInitialTopScrollOffset:(int64_t)a3 configuration:(id)a4 isViewingArchive:(BOOL)a5 scrollOffsetDictionary:(id)a6
+- (void)setReaderInitialTopScrollOffset:(int64_t)offset configuration:(id)configuration isViewingArchive:(BOOL)archive scrollOffsetDictionary:(id)dictionary
 {
-  v6 = a5;
-  v13 = a6;
-  v10 = a4;
-  v11 = [(_SFReaderController *)self readerControllerProxy];
-  [v11 setReaderInitialTopScrollOffset:a3 configuration:v10 isViewingArchive:v6];
+  archiveCopy = archive;
+  dictionaryCopy = dictionary;
+  configurationCopy = configuration;
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy setReaderInitialTopScrollOffset:offset configuration:configurationCopy isViewingArchive:archiveCopy];
 
-  if (v13)
+  if (dictionaryCopy)
   {
-    v12 = [(_SFReaderController *)self readerControllerProxy];
-    [v12 setInitalArticleScrollPositionAsDictionary:v13];
+    readerControllerProxy2 = [(_SFReaderController *)self readerControllerProxy];
+    [readerControllerProxy2 setInitalArticleScrollPositionAsDictionary:dictionaryCopy];
   }
 }
 
-- (void)collectReadingListInfoWithBookmarkID:(int)a3 completionHandler:(id)a4
+- (void)collectReadingListInfoWithBookmarkID:(int)d completionHandler:(id)handler
 {
-  v4 = *&a3;
+  v4 = *&d;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
+  handlerCopy = handler;
   v11 = [v6 numberWithInt:v4];
   bookmarkIdentifierToReadingListItemInfoCompletionMap = self->_bookmarkIdentifierToReadingListItemInfoCompletionMap;
-  v9 = [v7 copy];
+  v9 = [handlerCopy copy];
 
   [(NSMutableDictionary *)bookmarkIdentifierToReadingListItemInfoCompletionMap setObject:v9 forKey:v11];
-  v10 = [(_SFReaderController *)self readerControllerProxy];
-  [v10 collectReadingListItemInfoWithBookmarkID:v11];
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy collectReadingListItemInfoWithBookmarkID:v11];
 }
 
-- (void)prepareReaderPrintingIFrameWithCompletion:(id)a3
+- (void)prepareReaderPrintingIFrameWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [v4 copy];
+  v5 = [completionCopy copy];
   readerPrintContentCompletionHandler = self->_readerPrintContentCompletionHandler;
   self->_readerPrintContentCompletionHandler = v5;
 
@@ -224,7 +224,7 @@
   v8[2] = __65___SFReaderController_prepareReaderPrintingIFrameWithCompletion___block_invoke;
   v8[3] = &unk_1E8491000;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
   [(_SFReaderController *)self setUpReaderWebViewIfNeededAndPerformBlock:v8];
 
@@ -268,16 +268,16 @@
   self->_actionsDelayedUntilReaderWebViewIsReady = 0;
 }
 
-- (void)setUpReaderWebViewIfNeededAndPerformBlock:(id)a3
+- (void)setUpReaderWebViewIfNeededAndPerformBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [(_SFReaderController *)self _readerWebViewIsReady];
-  if (v6 || (objc_opt_respondsToSelector() & 1) == 0)
+  _readerWebViewIsReady = [(_SFReaderController *)self _readerWebViewIsReady];
+  if (_readerWebViewIsReady || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    if (v4)
+    if (blockCopy)
     {
-      v4[2](v4, v6);
+      blockCopy[2](blockCopy, _readerWebViewIsReady);
     }
   }
 
@@ -292,7 +292,7 @@
       v17[2] = __65___SFReaderController_setUpReaderWebViewIfNeededAndPerformBlock___block_invoke;
       v17[3] = &unk_1E8491028;
       v18 = v8;
-      v19 = v4;
+      v19 = blockCopy;
       v9 = v8;
       v10 = _Block_copy(v17);
       v11 = self->_actionsDelayedUntilReaderWebViewIsReady;
@@ -301,7 +301,7 @@
 
     else
     {
-      v12 = _Block_copy(v4);
+      v12 = _Block_copy(blockCopy);
       v13 = self->_actionsDelayedUntilReaderWebViewIsReady;
       self->_actionsDelayedUntilReaderWebViewIsReady = v12;
 
@@ -318,59 +318,59 @@
   }
 }
 
-- (void)deactivateReaderNow:(unint64_t)a3
+- (void)deactivateReaderNow:(unint64_t)now
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained readerController:self didDeactivateReaderWithMode:a3];
+    [WeakRetained readerController:self didDeactivateReaderWithMode:now];
   }
 }
 
 - (void)createArticleFinder
 {
-  v2 = [(_SFReaderController *)self readerControllerProxy];
-  [v2 prepareToTransitionToReader];
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy prepareToTransitionToReader];
 }
 
 - (void)didFinishPresentationUpdateAfterTransitioningToReader
 {
-  v2 = [(_SFReaderController *)self readerControllerProxy];
-  [v2 didFinishPresentationUpdateAfterTransitioningToReader];
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy didFinishPresentationUpdateAfterTransitioningToReader];
 }
 
-- (void)didCreateReaderWebView:(id)a3
+- (void)didCreateReaderWebView:(id)view
 {
   self->_contentIsReady = 0;
-  v4 = a3;
-  objc_storeWeak(&self->_readerWebView, v4);
-  v5 = [v4 configuration];
-  v6 = [v5 preferences];
-  [v6 _setShouldAllowUserInstalledFonts:1];
+  viewCopy = view;
+  objc_storeWeak(&self->_readerWebView, viewCopy);
+  configuration = [viewCopy configuration];
+  preferences = [configuration preferences];
+  [preferences _setShouldAllowUserInstalledFonts:1];
 
-  v8 = [v4 _handle];
+  _handle = [viewCopy _handle];
 
   [(_SFReaderController *)self createArticleFinder];
-  v7 = [(_SFReaderController *)self readerControllerProxy];
-  [v7 didCreateReaderPageContextHandle:v8];
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy didCreateReaderPageContextHandle:_handle];
 }
 
 - (void)loadNewArticle
 {
-  v2 = [(_SFReaderController *)self readerControllerProxy];
-  [v2 loadNewReaderArticle];
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy loadNewReaderArticle];
 }
 
-- (void)collectReaderContentForMailWithCompletion:(id)a3
+- (void)collectReaderContentForMailWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65___SFReaderController_collectReaderContentForMailWithCompletion___block_invoke;
   v6[3] = &unk_1E8491000;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(_SFReaderController *)self setUpReaderWebViewIfNeededAndPerformBlock:v6];
 
@@ -378,13 +378,13 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_collectReaderContentForMailWithCompletion:(id)a3
+- (void)_collectReaderContentForMailWithCompletion:(id)completion
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   p_readerMailContentCompletionHandlers = &self->_readerMailContentCompletionHandlers;
   readerMailContentCompletionHandlers = self->_readerMailContentCompletionHandlers;
-  v7 = _Block_copy(v4);
+  v7 = _Block_copy(completionCopy);
   v8 = [(NSArray *)readerMailContentCompletionHandlers arrayByAddingObject:v7];
   if (v8)
   {
@@ -393,23 +393,23 @@
 
   else
   {
-    v9 = _Block_copy(v4);
+    v9 = _Block_copy(completionCopy);
     v13[0] = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     v11 = *p_readerMailContentCompletionHandlers;
     *p_readerMailContentCompletionHandlers = v10;
   }
 
-  v12 = [(_SFReaderController *)self readerControllerProxy];
-  [v12 collectReaderContentForMail];
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy collectReaderContentForMail];
 }
 
-- (void)setReaderLanguageTag:(id)a3
+- (void)setReaderLanguageTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_fontManager);
-  [WeakRetained updateLanguageTag:v4];
+  [WeakRetained updateLanguageTag:tagCopy];
 
   v6 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -427,29 +427,29 @@
 - (NSString)readerLanguageTag
 {
   WeakRetained = objc_loadWeakRetained(&self->_fontManager);
-  v3 = [WeakRetained languageTag];
+  languageTag = [WeakRetained languageTag];
 
-  return v3;
+  return languageTag;
 }
 
-- (void)setReaderFont:(id)a3
+- (void)setReaderFont:(id)font
 {
   v4 = MEMORY[0x1E69C9008];
-  v5 = a3;
-  v6 = [v5 familyName];
-  [v4 postActivateNotification:v6];
+  fontCopy = font;
+  familyName = [fontCopy familyName];
+  [v4 postActivateNotification:familyName];
 
   configurationManager = self->_configurationManager;
   WeakRetained = objc_loadWeakRetained(&self->_fontManager);
-  v9 = [WeakRetained languageTag];
-  [(WBSReaderConfigurationManager *)configurationManager setFont:v5 forLanguageTag:v9];
+  languageTag = [WeakRetained languageTag];
+  [(WBSReaderConfigurationManager *)configurationManager setFont:fontCopy forLanguageTag:languageTag];
 
   [(_SFReaderController *)self _saveConfigurationAndSendToWebProcess];
 }
 
-- (void)setReaderTheme:(int64_t)a3 forAppearance:(int64_t)a4
+- (void)setReaderTheme:(int64_t)theme forAppearance:(int64_t)appearance
 {
-  [(WBSReaderConfigurationManager *)self->_configurationManager setTheme:a3 forAppearance:a4];
+  [(WBSReaderConfigurationManager *)self->_configurationManager setTheme:theme forAppearance:appearance];
 
   [(_SFReaderController *)self _saveConfigurationAndSendToWebProcess];
 }
@@ -477,34 +477,34 @@
 
 - (void)_saveConfigurationAndSendToWebProcess
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v4 = [(WBSReaderConfigurationManager *)self->_configurationManager configurationToSave];
-  [v3 setObject:v4 forKey:*MEMORY[0x1E69B1F48]];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  configurationToSave = [(WBSReaderConfigurationManager *)self->_configurationManager configurationToSave];
+  [safari_browserDefaults setObject:configurationToSave forKey:*MEMORY[0x1E69B1F48]];
 
   [(_SFReaderController *)self sendConfigurationToWebProcess];
 }
 
 - (void)sendConfigurationToWebProcess
 {
-  v4 = [(_SFReaderController *)self readerControllerProxy];
-  v3 = [(WBSReaderConfigurationManager *)self->_configurationManager configurationToSendToWebPage];
-  [v4 setConfiguration:v3];
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  configurationToSendToWebPage = [(WBSReaderConfigurationManager *)self->_configurationManager configurationToSendToWebPage];
+  [readerControllerProxy setConfiguration:configurationToSendToWebPage];
 }
 
-- (void)activateFont:(id)a3
+- (void)activateFont:(id)font
 {
   v4 = MEMORY[0x1E69C9008];
-  v5 = a3;
-  [v4 postActivateNotification:v5];
-  v6 = [(_SFReaderController *)self readerControllerProxy];
-  [v6 activateFont:v5];
+  fontCopy = font;
+  [v4 postActivateNotification:fontCopy];
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy activateFont:fontCopy];
 }
 
-- (void)setReaderIsActive:(BOOL)a3
+- (void)setReaderIsActive:(BOOL)active
 {
-  v3 = a3;
-  v4 = [(_SFReaderController *)self readerControllerProxy];
-  [v4 setReaderIsActive:v3];
+  activeCopy = active;
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy setReaderIsActive:activeCopy];
 }
 
 - (WBSReaderFontManager)fontManager
@@ -514,11 +514,11 @@
   return WeakRetained;
 }
 
-- (void)didDetermineReaderAvailability:(id)a3
+- (void)didDetermineReaderAvailability:(id)availability
 {
-  v6 = a3;
-  self->_readerAvailable = [v6 isReaderAvailable];
-  self->_doesPageUseSearchEngineOptimizationMetadata = [v6 doesPageUseSearchEngineOptimizationMetadata];
+  availabilityCopy = availability;
+  self->_readerAvailable = [availabilityCopy isReaderAvailable];
+  self->_doesPageUseSearchEngineOptimizationMetadata = [availabilityCopy doesPageUseSearchEngineOptimizationMetadata];
   if (!self->_readerAvailable)
   {
     unfilteredArticleText = self->_unfilteredArticleText;
@@ -528,65 +528,65 @@
     self->_readerTextForSummarization = 0;
   }
 
-  -[_SFReaderController _sendReaderAvailabilityNotificationForState:reason:](self, "_sendReaderAvailabilityNotificationForState:reason:", v6, [v6 isSameDocumentNavigation]);
-  [(_SFReaderController *)self _didCollectReaderAvailabilityResultForTesting:v6];
+  -[_SFReaderController _sendReaderAvailabilityNotificationForState:reason:](self, "_sendReaderAvailabilityNotificationForState:reason:", availabilityCopy, [availabilityCopy isSameDocumentNavigation]);
+  [(_SFReaderController *)self _didCollectReaderAvailabilityResultForTesting:availabilityCopy];
 }
 
-- (void)_sendReaderAvailabilityNotificationForState:(id)a3 reason:(int64_t)a4
+- (void)_sendReaderAvailabilityNotificationForState:(id)state reason:(int64_t)reason
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained readerController:self didDetermineReaderAvailability:v6 dueTo:a4];
+    [WeakRetained readerController:self didDetermineReaderAvailability:stateCopy dueTo:reason];
   }
 
-  v8 = [v6 isReaderAvailable];
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  isReaderAvailable = [stateCopy isReaderAvailable];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v12 = @"isAvailable";
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:isReaderAvailable];
   v13[0] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  [v9 postNotificationName:@"readerAvailabilityDidChange" object:self userInfo:v11];
+  [defaultCenter postNotificationName:@"readerAvailabilityDidChange" object:self userInfo:v11];
 }
 
-- (void)didSetReaderConfiguration:(id)a3
+- (void)didSetReaderConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained readerController:self didSetReaderConfiguration:v5];
+    [WeakRetained readerController:self didSetReaderConfiguration:configurationCopy];
   }
 }
 
-- (void)didCollectReadingListItemInfo:(id)a3 bookmarkID:(id)a4
+- (void)didCollectReadingListItemInfo:(id)info bookmarkID:(id)d
 {
-  v9 = a3;
-  v6 = a4;
+  infoCopy = info;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained readerController:self didCollectReadingListItemInfo:v9 bookmarkID:v6];
+    [WeakRetained readerController:self didCollectReadingListItemInfo:infoCopy bookmarkID:dCopy];
   }
 
-  v8 = [(NSMutableDictionary *)self->_bookmarkIdentifierToReadingListItemInfoCompletionMap objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_bookmarkIdentifierToReadingListItemInfoCompletionMap objectForKey:dCopy];
   if (v8)
   {
-    [(NSMutableDictionary *)self->_bookmarkIdentifierToReadingListItemInfoCompletionMap removeObjectForKey:v6];
-    (v8)[2](v8, v9, [v6 unsignedIntValue]);
+    [(NSMutableDictionary *)self->_bookmarkIdentifierToReadingListItemInfoCompletionMap removeObjectForKey:dCopy];
+    (v8)[2](v8, infoCopy, [dCopy unsignedIntValue]);
   }
 }
 
-- (void)didCollectReaderContentForMail:(id)a3
+- (void)didCollectReaderContentForMail:(id)mail
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mailCopy = mail;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained readerController:self didCollectReaderContentForMail:v4];
+    [WeakRetained readerController:self didCollectReaderContentForMail:mailCopy];
   }
 
   v6 = self->_readerMailContentCompletionHandlers;
@@ -627,37 +627,37 @@
 
 - (void)collectArticleContent
 {
-  v2 = [(_SFReaderController *)self readerControllerProxy];
-  [v2 collectArticleContent];
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy collectArticleContent];
 }
 
-- (void)didCollectArticleContent:(id)a3
+- (void)didCollectArticleContent:(id)content
 {
-  v5 = a3;
+  contentCopy = content;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained readerController:self didCollectArticleContent:v5];
+    [WeakRetained readerController:self didCollectArticleContent:contentCopy];
   }
 }
 
-- (void)didDetermineAdditionalTextSamples:(id)a3
+- (void)didDetermineAdditionalTextSamples:(id)samples
 {
-  v5 = a3;
+  samplesCopy = samples;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained readerController:self didDetermineAdditionalTextSamples:v5 dueTo:{objc_msgSend(v5, "isSameDocumentNavigation")}];
+    [WeakRetained readerController:self didDetermineAdditionalTextSamples:samplesCopy dueTo:{objc_msgSend(samplesCopy, "isSameDocumentNavigation")}];
   }
 }
 
-- (void)didPrepareReaderContentForPrinting:(id)a3
+- (void)didPrepareReaderContentForPrinting:(id)printing
 {
-  v7 = a3;
+  printingCopy = printing;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained readerController:self didPrepareReaderContentForPrinting:v7];
+    [WeakRetained readerController:self didPrepareReaderContentForPrinting:printingCopy];
   }
 
   v5 = _Block_copy(self->_readerPrintContentCompletionHandler);
@@ -666,27 +666,27 @@
     readerPrintContentCompletionHandler = self->_readerPrintContentCompletionHandler;
     self->_readerPrintContentCompletionHandler = 0;
 
-    v5[2](v5, v7);
+    v5[2](v5, printingCopy);
   }
 }
 
-- (void)contentDidBecomeReadyWithArticleText:(id)a3
+- (void)contentDidBecomeReadyWithArticleText:(id)text
 {
-  v8 = a3;
+  textCopy = text;
   self->_contentIsReady = 1;
   [(_SFReaderController *)self _performActionsDelayedUntilReaderWebViewIsReady];
-  v4 = v8;
-  if (v8)
+  v4 = textCopy;
+  if (textCopy)
   {
-    v5 = [v8 safari_bestKnownLanguageTag];
-    [(_SFReaderController *)self setReaderLanguageTag:v5];
-    v6 = [(_SFReaderController *)self readerControllerProxy];
-    [v6 setArticleLocale:v5];
+    safari_bestKnownLanguageTag = [textCopy safari_bestKnownLanguageTag];
+    [(_SFReaderController *)self setReaderLanguageTag:safari_bestKnownLanguageTag];
+    readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+    [readerControllerProxy setArticleLocale:safari_bestKnownLanguageTag];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained readerController:self contentDidBecomeReadyWithDetectedLanguage:v5];
+      [WeakRetained readerController:self contentDidBecomeReadyWithDetectedLanguage:safari_bestKnownLanguageTag];
     }
 
     if (objc_opt_respondsToSelector())
@@ -694,24 +694,24 @@
       [WeakRetained filteredArticleTextDidBecomeReadyForReaderController:self];
     }
 
-    v4 = v8;
+    v4 = textCopy;
   }
 }
 
-- (void)readerTextWasExtracted:(id)a3 withMetadata:(id)a4 wasDeterminingAvailabilility:(BOOL)a5
+- (void)readerTextWasExtracted:(id)extracted withMetadata:(id)metadata wasDeterminingAvailabilility:(BOOL)availabilility
 {
-  v12 = a3;
-  v8 = a4;
-  if (v12 || v8 || !a5)
+  extractedCopy = extracted;
+  metadataCopy = metadata;
+  if (extractedCopy || metadataCopy || !availabilility)
   {
-    v9 = [v12 copy];
+    v9 = [extractedCopy copy];
     unfilteredArticleText = self->_unfilteredArticleText;
     self->_unfilteredArticleText = v9;
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained readerController:self didExtractArticleText:v12 withMetadata:v8];
+      [WeakRetained readerController:self didExtractArticleText:extractedCopy withMetadata:metadataCopy];
     }
   }
 }
@@ -755,12 +755,12 @@
   }
 }
 
-- (void)reportReaderEvent:(int64_t)a3 dataToReport:(id)a4
+- (void)reportReaderEvent:(int64_t)event dataToReport:(id)report
 {
   v6 = MEMORY[0x1E69C8EB0];
-  v7 = a4;
-  v8 = [v6 sharedManager];
-  [v8 donateBrowsingAssistantReaderEventWithWebPageID:self->_webpageIdentifier eventType:a3 dataToReport:v7];
+  reportCopy = report;
+  sharedManager = [v6 sharedManager];
+  [sharedManager donateBrowsingAssistantReaderEventWithWebPageID:self->_webpageIdentifier eventType:event dataToReport:reportCopy];
 }
 
 - (void)owningWebViewDidCommitNavigation
@@ -775,80 +775,80 @@
 - (void)checkReaderAvailability
 {
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v4 = [WeakRetained _unreachableURL];
+  _unreachableURL = [WeakRetained _unreachableURL];
 
-  if (!v4)
+  if (!_unreachableURL)
   {
-    v5 = [(_SFReaderController *)self readerControllerProxy];
-    [v5 checkReaderAvailability];
+    readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+    [readerControllerProxy checkReaderAvailability];
   }
 }
 
-- (void)setArticleSummary:(id)a3 withSummaryHeader:(id)a4 tableOfContentsHeader:(id)a5 readerURLString:(id)a6 titles:(id)a7 paths:(id)a8 trailingText:(id)a9 tableOfContentsType:(int)a10 attribution:(id)a11
+- (void)setArticleSummary:(id)summary withSummaryHeader:(id)header tableOfContentsHeader:(id)contentsHeader readerURLString:(id)string titles:(id)titles paths:(id)paths trailingText:(id)text tableOfContentsType:(int)self0 attribution:(id)self1
 {
-  v18 = a11;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
-  v27 = [(_SFReaderController *)self readerControllerProxy];
-  LODWORD(v26) = a10;
-  [v27 setArticleSummary:v25 withSummaryHeader:v24 tableOfContentsHeader:v23 readerURLString:v22 titles:v21 paths:v20 trailingText:v19 tableOfContentsType:v26 attribution:v18];
+  attributionCopy = attribution;
+  textCopy = text;
+  pathsCopy = paths;
+  titlesCopy = titles;
+  stringCopy = string;
+  contentsHeaderCopy = contentsHeader;
+  headerCopy = header;
+  summaryCopy = summary;
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  LODWORD(v26) = type;
+  [readerControllerProxy setArticleSummary:summaryCopy withSummaryHeader:headerCopy tableOfContentsHeader:contentsHeaderCopy readerURLString:stringCopy titles:titlesCopy paths:pathsCopy trailingText:textCopy tableOfContentsType:v26 attribution:attributionCopy];
 }
 
-- (void)previewReaderImageURLWithCompletion:(id)a3
+- (void)previewReaderImageURLWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_SFReaderController *)self readerControllerProxy];
-  [v5 previewReaderImageURLWithReply:v4];
+  completionCopy = completion;
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy previewReaderImageURLWithReply:completionCopy];
 }
 
-- (void)setOnDeviceSummaryButtonWithTitle:(id)a3
+- (void)setOnDeviceSummaryButtonWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(_SFReaderController *)self readerControllerProxy];
-  [v5 setOnDeviceSummaryButtonWithTitle:v4];
+  titleCopy = title;
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy setOnDeviceSummaryButtonWithTitle:titleCopy];
 }
 
-- (void)getReaderArticleTitleWithCompletion:(id)a3
+- (void)getReaderArticleTitleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_SFReaderController *)self readerControllerProxy];
-  [v5 getReaderArticleTitleWithReply:v4];
+  completionCopy = completion;
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy getReaderArticleTitleWithReply:completionCopy];
 }
 
 - (void)insertSummaryTextPlaceholder
 {
-  v2 = [(_SFReaderController *)self readerControllerProxy];
-  [v2 insertSummaryTextPlaceholder];
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy insertSummaryTextPlaceholder];
 }
 
-- (id)webViewForSummarizationAnimationCoordinator:(id)a3
+- (id)webViewForSummarizationAnimationCoordinator:(id)coordinator
 {
   WeakRetained = objc_loadWeakRetained(&self->_readerWebView);
 
   return WeakRetained;
 }
 
-- (void)setTextVisibilityForSummarizationAnimationCoordinator:(id)a3 isVisible:(BOOL)a4
+- (void)setTextVisibilityForSummarizationAnimationCoordinator:(id)coordinator isVisible:(BOOL)visible
 {
-  v4 = a4;
-  v5 = [(_SFReaderController *)self readerControllerProxy];
-  [v5 updateSummaryTextVisibility:v4];
+  visibleCopy = visible;
+  readerControllerProxy = [(_SFReaderController *)self readerControllerProxy];
+  [readerControllerProxy updateSummaryTextVisibility:visibleCopy];
 }
 
-- (void)insertSummaryTextPlaceholderForSummarizationAnimationCoordinator:(id)a3 completionHandler:(id)a4
+- (void)insertSummaryTextPlaceholderForSummarizationAnimationCoordinator:(id)coordinator completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained insertSummaryTextPlaceholderForReaderController:self];
-  v5[2](v5);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)replacePlaceholderWithSummaryForSummarizationAnimationCoordinator:(id)a3
+- (void)replacePlaceholderWithSummaryForSummarizationAnimationCoordinator:(id)coordinator
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -857,12 +857,12 @@
   }
 }
 
-- (void)didFinishSummarization:(id)a3
+- (void)didFinishSummarization:(id)summarization
 {
-  if (self->_summarizer == a3)
+  if (self->_summarizer == summarization)
   {
-    v4 = [a3 summary];
-    v5 = [v4 length];
+    summary = [summarization summary];
+    v5 = [summary length];
 
     if (v5)
     {
@@ -873,12 +873,12 @@
   }
 }
 
-- (void)didEncounterErrorForSummarization:(id)a3
+- (void)didEncounterErrorForSummarization:(id)summarization
 {
-  v4 = a3;
-  if (self->_summarizer == v4)
+  summarizationCopy = summarization;
+  if (self->_summarizer == summarizationCopy)
   {
-    v6 = v4;
+    v6 = summarizationCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
@@ -887,74 +887,74 @@
 
     [(SFSummarizationAnimationCoordinator *)self->_summarizationAnimationCoordinator endAnimations];
 
-    v4 = v6;
+    summarizationCopy = v6;
   }
 }
 
-- (void)didDetermineReaderAvailabilityForDynamicCheck:(id)a3
+- (void)didDetermineReaderAvailabilityForDynamicCheck:(id)check
 {
   if (!self->_readerAvailable)
   {
-    v5 = a3;
-    self->_readerAvailable = [v5 isReaderAvailable];
-    [(_SFReaderController *)self _sendReaderAvailabilityNotificationForState:v5 reason:2];
+    checkCopy = check;
+    self->_readerAvailable = [checkCopy isReaderAvailable];
+    [(_SFReaderController *)self _sendReaderAvailabilityNotificationForState:checkCopy reason:2];
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v32 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  actionCopy = action;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v11 = [v8 request];
-  if ([v8 _syntheticClickType] == 2 && (objc_opt_respondsToSelector() & 1) != 0)
+  request = [actionCopy request];
+  if ([actionCopy _syntheticClickType] == 2 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v12 = [[_SFSyntheticClickContext alloc] initWithWebView:v32 navigationAction:v8];
+    v12 = [[_SFSyntheticClickContext alloc] initWithWebView:viewCopy navigationAction:actionCopy];
     [WeakRetained readerController:self didTwoFingerTapLinkInReaderWithContext:v12];
     goto LABEL_4;
   }
 
-  v13 = [v8 targetFrame];
+  targetFrame = [actionCopy targetFrame];
 
-  if (!v13 && ![v8 navigationType])
+  if (!targetFrame && ![actionCopy navigationType])
   {
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained readerController:self didClickLinkRequestingNewWindowInReaderWithRequest:v11];
+      [WeakRetained readerController:self didClickLinkRequestingNewWindowInReaderWithRequest:request];
     }
 
-    v19 = v9[2];
+    v19 = handlerCopy[2];
 LABEL_19:
-    v20 = v9;
+    v20 = handlerCopy;
     v21 = 0;
     goto LABEL_20;
   }
 
-  v14 = [v8 targetFrame];
-  v15 = [v14 isMainFrame];
+  targetFrame2 = [actionCopy targetFrame];
+  isMainFrame = [targetFrame2 isMainFrame];
 
-  if (v15)
+  if (isMainFrame)
   {
-    v12 = [v11 URL];
+    v12 = [request URL];
     if ([(_SFSyntheticClickContext *)v12 isFileURL])
     {
-      (v9[2])(v9, 1);
+      (handlerCopy[2])(handlerCopy, 1);
       goto LABEL_10;
     }
 
     if ([(_SFSyntheticClickContext *)v12 safari_hasScheme:@"safari-reader"])
     {
       v22 = objc_loadWeakRetained(&self->_webView);
-      v23 = [v22 _committedURL];
+      _committedURL = [v22 _committedURL];
 
-      v24 = [v23 host];
-      if (v24)
+      host = [_committedURL host];
+      if (host)
       {
-        v25 = v24;
-        v26 = [(_SFSyntheticClickContext *)v12 host];
-        v27 = [v23 host];
-        v28 = [v26 isEqualToString:v27];
+        v25 = host;
+        host2 = [(_SFSyntheticClickContext *)v12 host];
+        host3 = [_committedURL host];
+        v28 = [host2 isEqualToString:host3];
 
         v29 = v28;
       }
@@ -964,158 +964,158 @@ LABEL_19:
         v29 = 1;
       }
 
-      (v9[2])(v9, v29);
+      (handlerCopy[2])(handlerCopy, v29);
 
       goto LABEL_10;
     }
 
     if (([(_SFSyntheticClickContext *)v12 safari_isDataURL]& 1) == 0)
     {
-      v30 = [(_SFSyntheticClickContext *)v12 absoluteString];
-      v31 = [v30 safari_isJavaScriptURLString];
+      absoluteString = [(_SFSyntheticClickContext *)v12 absoluteString];
+      safari_isJavaScriptURLString = [absoluteString safari_isJavaScriptURLString];
 
-      if (!v31 && ![v8 navigationType] && (objc_opt_respondsToSelector() & 1) != 0)
+      if (!safari_isJavaScriptURLString && ![actionCopy navigationType] && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [WeakRetained readerController:self didClickLinkInReaderWithRequest:v11];
+        [WeakRetained readerController:self didClickLinkInReaderWithRequest:request];
       }
     }
 
 LABEL_4:
-    (v9[2])(v9, 0);
+    (handlerCopy[2])(handlerCopy, 0);
 LABEL_10:
 
     goto LABEL_21;
   }
 
   v16 = MEMORY[0x1E69C9020];
-  v17 = [v32 URL];
-  v18 = [v11 URL];
+  v17 = [viewCopy URL];
+  v18 = [request URL];
   LODWORD(v16) = [v16 readerPageWithURL:v17 canLoadFrameWithURL:v18];
 
-  v19 = v9[2];
+  v19 = handlerCopy[2];
   if (!v16)
   {
     goto LABEL_19;
   }
 
-  v20 = v9;
+  v20 = handlerCopy;
   v21 = 1;
 LABEL_20:
   v19(v20, v21);
 LABEL_21:
 }
 
-- (void)_webView:(id)a3 getAlternateURLFromImage:(id)a4 completionHandler:(id)a5
+- (void)_webView:(id)view getAlternateURLFromImage:(id)image completionHandler:(id)handler
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  imageCopy = image;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_webViewUIDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained _webView:v11 getAlternateURLFromImage:v8 completionHandler:v9];
+    [WeakRetained _webView:viewCopy getAlternateURLFromImage:imageCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (id)_webView:(id)a3 actionsForElement:(id)a4 defaultActions:(id)a5
+- (id)_webView:(id)view actionsForElement:(id)element defaultActions:(id)actions
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  actionsCopy = actions;
+  elementCopy = element;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_webViewUIDelegate);
-  v12 = [WeakRetained _webView:v10 actionsForElement:v9 defaultActions:v8];
+  v12 = [WeakRetained _webView:viewCopy actionsForElement:elementCopy defaultActions:actionsCopy];
 
   return v12;
 }
 
-- (void)_webView:(id)a3 contextMenuConfigurationForElement:(id)a4 completionHandler:(id)a5
+- (void)_webView:(id)view contextMenuConfigurationForElement:(id)element completionHandler:(id)handler
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  elementCopy = element;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_webViewUIDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained _webView:v11 contextMenuConfigurationForElement:v8 completionHandler:v9];
+    [WeakRetained _webView:viewCopy contextMenuConfigurationForElement:elementCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v9[2](v9, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)_webView:(id)a3 contextMenuWillPresentForElement:(id)a4
+- (void)_webView:(id)view contextMenuWillPresentForElement:(id)element
 {
-  v8 = a3;
-  v6 = a4;
+  viewCopy = view;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_webViewUIDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained _webView:v8 contextMenuWillPresentForElement:v6];
+    [WeakRetained _webView:viewCopy contextMenuWillPresentForElement:elementCopy];
   }
 }
 
-- (void)_webView:(id)a3 contextMenuForElement:(id)a4 willCommitWithAnimator:(id)a5
+- (void)_webView:(id)view contextMenuForElement:(id)element willCommitWithAnimator:(id)animator
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  elementCopy = element;
+  animatorCopy = animator;
   WeakRetained = objc_loadWeakRetained(&self->_webViewUIDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained _webView:v11 contextMenuForElement:v8 willCommitWithAnimator:v9];
+    [WeakRetained _webView:viewCopy contextMenuForElement:elementCopy willCommitWithAnimator:animatorCopy];
   }
 }
 
-- (void)_webView:(id)a3 contextMenuDidEndForElement:(id)a4
+- (void)_webView:(id)view contextMenuDidEndForElement:(id)element
 {
-  v8 = a3;
-  v6 = a4;
+  viewCopy = view;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_webViewUIDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained _webView:v8 contextMenuDidEndForElement:v6];
+    [WeakRetained _webView:viewCopy contextMenuDidEndForElement:elementCopy];
   }
 }
 
-- (void)_webView:(id)a3 dataInteraction:(id)a4 sessionWillBegin:(id)a5
+- (void)_webView:(id)view dataInteraction:(id)interaction sessionWillBegin:(id)begin
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  interactionCopy = interaction;
+  beginCopy = begin;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained _webView:v11 dataInteraction:v8 sessionWillBegin:v9];
+    [WeakRetained _webView:viewCopy dataInteraction:interactionCopy sessionWillBegin:beginCopy];
   }
 }
 
-- (void)_webView:(id)a3 dataInteraction:(id)a4 session:(id)a5 didEndWithOperation:(unint64_t)a6
+- (void)_webView:(id)view dataInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewCopy = view;
+  interactionCopy = interaction;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained _webView:v13 dataInteraction:v10 session:v11 didEndWithOperation:a6];
+    [WeakRetained _webView:viewCopy dataInteraction:interactionCopy session:sessionCopy didEndWithOperation:operation];
   }
 }
 
-- (unint64_t)_webView:(id)a3 willUpdateDataInteractionOperationToOperation:(unint64_t)a4 forSession:(id)a5
+- (unint64_t)_webView:(id)view willUpdateDataInteractionOperationToOperation:(unint64_t)operation forSession:(id)session
 {
-  v8 = a3;
-  v9 = a5;
+  viewCopy = view;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v11 = [WeakRetained _webView:v8 willUpdateDataInteractionOperationToOperation:a4 forSession:v9];
+    v11 = [WeakRetained _webView:viewCopy willUpdateDataInteractionOperationToOperation:operation forSession:sessionCopy];
   }
 
   else
@@ -1126,14 +1126,14 @@ LABEL_21:
   return v11;
 }
 
-- (BOOL)_webView:(id)a3 performDataInteractionOperationWithItemProviders:(id)a4
+- (BOOL)_webView:(id)view performDataInteractionOperationWithItemProviders:(id)providers
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  providersCopy = providers;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v9 = [WeakRetained _webView:v6 performDataInteractionOperationWithItemProviders:v7];
+    v9 = [WeakRetained _webView:viewCopy performDataInteractionOperationWithItemProviders:providersCopy];
   }
 
   else
@@ -1144,37 +1144,37 @@ LABEL_21:
   return v9;
 }
 
-- (void)_webView:(id)a3 dataInteractionOperationWasHandled:(BOOL)a4 forSession:(id)a5 itemProviders:(id)a6
+- (void)_webView:(id)view dataInteractionOperationWasHandled:(BOOL)handled forSession:(id)session itemProviders:(id)providers
 {
-  v8 = a4;
-  v13 = a3;
-  v10 = a5;
-  v11 = a6;
+  handledCopy = handled;
+  viewCopy = view;
+  sessionCopy = session;
+  providersCopy = providers;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained _webView:v13 dataInteractionOperationWasHandled:v8 forSession:v10 itemProviders:v11];
+    [WeakRetained _webView:viewCopy dataInteractionOperationWasHandled:handledCopy forSession:sessionCopy itemProviders:providersCopy];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  if (kvoContext_0 == a6)
+  pathCopy = path;
+  if (kvoContext_0 == context)
   {
     v12 = *MEMORY[0x1E696A500];
-    v13 = a5;
-    v11 = [v13 objectForKeyedSubscript:v12];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    changeCopy = change;
+    changeCopy2 = [changeCopy objectForKeyedSubscript:v12];
+    v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
 
-    if (v11 | v14 && ([v11 isEqual:v14] & 1) == 0)
+    if (changeCopy2 | v14 && ([changeCopy2 isEqual:v14] & 1) == 0)
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __70___SFReaderController_observeValueForKeyPath_ofObject_change_context___block_invoke;
       v15[3] = &unk_1E848F548;
-      v16 = v10;
-      v17 = self;
+      v16 = pathCopy;
+      selfCopy = self;
       dispatch_async(MEMORY[0x1E69E96A0], v15);
     }
   }
@@ -1183,8 +1183,8 @@ LABEL_21:
   {
     v18.receiver = self;
     v18.super_class = _SFReaderController;
-    v11 = a5;
-    [(_SFReaderController *)&v18 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+    changeCopy2 = change;
+    [(_SFReaderController *)&v18 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy2 context:context];
   }
 }
 

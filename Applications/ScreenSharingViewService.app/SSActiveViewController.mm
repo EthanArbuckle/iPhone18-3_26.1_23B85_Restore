@@ -1,19 +1,19 @@
 @interface SSActiveViewController
-- (SSActiveViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SSActiveViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)sendResultAndTerminate:(int)a3;
-- (void)setUserInfo:(id)a3;
+- (void)sendResultAndTerminate:(int)terminate;
+- (void)setUserInfo:(id)info;
 - (void)showControls;
 - (void)viewDidLoad;
 @end
 
 @implementation SSActiveViewController
 
-- (SSActiveViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SSActiveViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v22.receiver = self;
   v22.super_class = SSActiveViewController;
@@ -25,8 +25,8 @@
     [(SSActiveViewController *)v9 setHelperToolConnection:v10];
 
     v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ViewServiceProtocol];
-    v12 = [(SSActiveViewController *)v9 helperToolConnection];
-    [v12 setRemoteObjectInterface:v11];
+    helperToolConnection = [(SSActiveViewController *)v9 helperToolConnection];
+    [helperToolConnection setRemoteObjectInterface:v11];
 
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -34,18 +34,18 @@
     v20[3] = &unk_100008248;
     v13 = v9;
     v21 = v13;
-    v14 = [(SSActiveViewController *)v13 helperToolConnection];
-    [v14 setInvalidationHandler:v20];
+    helperToolConnection2 = [(SSActiveViewController *)v13 helperToolConnection];
+    [helperToolConnection2 setInvalidationHandler:v20];
 
-    v15 = [(SSActiveViewController *)v13 helperToolConnection];
-    [v15 resume];
+    helperToolConnection3 = [(SSActiveViewController *)v13 helperToolConnection];
+    [helperToolConnection3 resume];
 
-    v16 = [(SSActiveViewController *)v13 helperToolConnection];
-    v17 = [v16 remoteObjectProxyWithErrorHandler:&stru_100008288];
+    helperToolConnection4 = [(SSActiveViewController *)v13 helperToolConnection];
+    v17 = [helperToolConnection4 remoteObjectProxyWithErrorHandler:&stru_100008288];
     [(SSActiveViewController *)v13 setHelperTool:v17];
 
-    v18 = [(SSActiveViewController *)v13 helperTool];
-    sub_100000E20(v18);
+    helperTool = [(SSActiveViewController *)v13 helperTool];
+    sub_100000E20(helperTool);
   }
 
   return v9;
@@ -64,42 +64,42 @@
 
 - (void)showControls
 {
-  v3 = [(SSActiveViewController *)self isPausedNumber];
-  v4 = [v3 BOOLValue];
+  isPausedNumber = [(SSActiveViewController *)self isPausedNumber];
+  bOOLValue = [isPausedNumber BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"kSSScreenSharingPaused" value:&stru_1000083F8 table:0];
-    v7 = 0;
+    viewerName2 = 0;
   }
 
   else
   {
-    v8 = [(SSActiveViewController *)self viewerName];
+    viewerName = [(SSActiveViewController *)self viewerName];
 
-    if (v8)
+    if (viewerName)
     {
-      v7 = [(SSActiveViewController *)self viewerName];
+      viewerName2 = [(SSActiveViewController *)self viewerName];
     }
 
     else
     {
       v9 = +[NSBundle mainBundle];
-      v7 = [v9 localizedStringForKey:@"kSSAppleCare" value:&stru_1000083F8 table:0];
+      viewerName2 = [v9 localizedStringForKey:@"kSSAppleCare" value:&stru_1000083F8 table:0];
     }
 
     v5 = +[NSBundle mainBundle];
     v10 = [v5 localizedStringForKey:@"kSSViewingScreen" value:&stru_1000083F8 table:0];
-    v11 = [(SSActiveViewController *)self viewerName];
-    v6 = [NSString stringWithFormat:v10, v11];
+    viewerName3 = [(SSActiveViewController *)self viewerName];
+    v6 = [NSString stringWithFormat:v10, viewerName3];
   }
 
-  v12 = [UIAlertController alertControllerWithTitle:v7 message:v6 preferredStyle:1];
-  v13 = [(SSActiveViewController *)self isPausedNumber];
-  v14 = [v13 BOOLValue];
+  v12 = [UIAlertController alertControllerWithTitle:viewerName2 message:v6 preferredStyle:1];
+  isPausedNumber2 = [(SSActiveViewController *)self isPausedNumber];
+  bOOLValue2 = [isPausedNumber2 BOOLValue];
 
-  if (!v14)
+  if (!bOOLValue2)
   {
     v17 = +[NSBundle mainBundle];
     v18 = [v17 localizedStringForKey:@"kSSPauseScreenSharing" value:&stru_1000083F8 table:0];
@@ -112,10 +112,10 @@
     goto LABEL_11;
   }
 
-  v15 = [(SSActiveViewController *)self isScreenLockedNumber];
-  v16 = [v15 BOOLValue];
+  isScreenLockedNumber = [(SSActiveViewController *)self isScreenLockedNumber];
+  bOOLValue3 = [isScreenLockedNumber BOOLValue];
 
-  if ((v16 & 1) == 0)
+  if ((bOOLValue3 & 1) == 0)
   {
     v17 = +[NSBundle mainBundle];
     v18 = [v17 localizedStringForKey:@"kSSResumeScreenSharing" value:&stru_1000083F8 table:0];
@@ -150,13 +150,13 @@ LABEL_11:
   v26 = [UIAlertAction actionWithTitle:v25 style:2 handler:v30];
   [v12 addAction:v26];
 
-  v27 = [(SSActiveViewController *)self popoverPresentationController];
-  v28 = [(SSActiveViewController *)self view];
-  [v27 setSourceView:v28];
+  popoverPresentationController = [(SSActiveViewController *)self popoverPresentationController];
+  view = [(SSActiveViewController *)self view];
+  [popoverPresentationController setSourceView:view];
 
-  v29 = [(SSActiveViewController *)self view];
-  [v29 bounds];
-  [v27 setSourceRect:?];
+  view2 = [(SSActiveViewController *)self view];
+  [view2 bounds];
+  [popoverPresentationController setSourceRect:?];
 
   [(SSActiveViewController *)self presentViewController:v12 animated:1 completion:0];
 }
@@ -175,67 +175,67 @@ LABEL_11:
   [(SSActiveViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v19) = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "setUserInfo begin", &v19, 2u);
   }
 
-  if (v4)
+  if (infoCopy)
   {
-    v5 = [v4 objectForKeyedSubscript:@"isPaused"];
+    v5 = [infoCopy objectForKeyedSubscript:@"isPaused"];
 
     if (v5)
     {
-      v6 = [v4 objectForKeyedSubscript:@"isPaused"];
+      v6 = [infoCopy objectForKeyedSubscript:@"isPaused"];
       [(SSActiveViewController *)self setIsPausedNumber:v6];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isScreenLocked"];
+    v7 = [infoCopy objectForKeyedSubscript:@"isScreenLocked"];
 
     if (v7)
     {
-      v8 = [v4 objectForKeyedSubscript:@"isScreenLocked"];
+      v8 = [infoCopy objectForKeyedSubscript:@"isScreenLocked"];
       [(SSActiveViewController *)self setIsScreenLockedNumber:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"viewerName"];
+    v9 = [infoCopy objectForKeyedSubscript:@"viewerName"];
 
     if (v9)
     {
-      v10 = [v4 objectForKeyedSubscript:@"viewerName"];
+      v10 = [infoCopy objectForKeyedSubscript:@"viewerName"];
       [(SSActiveViewController *)self setViewerName:v10];
 
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(SSActiveViewController *)self viewerName];
-        v12 = [v11 UTF8String];
+        viewerName = [(SSActiveViewController *)self viewerName];
+        uTF8String = [viewerName UTF8String];
         v19 = 136315138;
-        v20 = v12;
+        v20 = uTF8String;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "*****set viewer name %s", &v19, 0xCu);
       }
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"isAppleSupportRequest"];
+    v13 = [infoCopy objectForKeyedSubscript:@"isAppleSupportRequest"];
     if (v13)
     {
       v14 = v13;
-      v15 = [v4 objectForKeyedSubscript:@"isAppleSupportRequest"];
+      v15 = [infoCopy objectForKeyedSubscript:@"isAppleSupportRequest"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v17 = [v4 objectForKeyedSubscript:@"isAppleSupportRequest"];
+        v17 = [infoCopy objectForKeyedSubscript:@"isAppleSupportRequest"];
         -[SSActiveViewController setIsAppleSupportRequest:](self, "setIsAppleSupportRequest:", [v17 BOOLValue]);
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [(SSActiveViewController *)self isAppleSupportRequest];
+          isAppleSupportRequest = [(SSActiveViewController *)self isAppleSupportRequest];
           v19 = 67109120;
-          LODWORD(v20) = v18;
+          LODWORD(v20) = isAppleSupportRequest;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Apple Support %d", &v19, 8u);
         }
       }
@@ -245,21 +245,21 @@ LABEL_11:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v4;
+      v20 = infoCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "userInfo:%@", &v19, 0xCu);
     }
   }
 }
 
-- (void)sendResultAndTerminate:(int)a3
+- (void)sendResultAndTerminate:(int)terminate
 {
   v8 = @"result";
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:terminate];
   v9 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
 
-  v6 = [(SSActiveViewController *)self helperTool];
-  sub_100000F4C(v6, v5);
+  helperTool = [(SSActiveViewController *)self helperTool];
+  sub_100000F4C(helperTool, v5);
 
   [(NSXPCConnection *)self->helperToolConnection invalidate];
   v7 = +[UIApplication sharedApplication];

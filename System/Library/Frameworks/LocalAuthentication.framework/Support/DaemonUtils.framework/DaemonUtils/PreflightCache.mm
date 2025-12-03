@@ -1,12 +1,12 @@
 @interface PreflightCache
 + (id)sharedInstance;
-- (BOOL)_isCacheable:(id)a3 callerUid:(unsigned int)a4;
-- (BOOL)_isPolicyCacheable:(int64_t)a3;
+- (BOOL)_isCacheable:(id)cacheable callerUid:(unsigned int)uid;
+- (BOOL)_isPolicyCacheable:(int64_t)cacheable;
 - (PreflightCache)init;
-- (id)acquireBypassAssertionWithReason:(id)a3;
-- (id)cachedPreflightResultForKey:(id)a3;
-- (void)addPreflightResult:(id)a3 forKey:(id)a4;
-- (void)invalidateWithReason:(id)a3;
+- (id)acquireBypassAssertionWithReason:(id)reason;
+- (id)cachedPreflightResultForKey:(id)key;
+- (void)addPreflightResult:(id)result forKey:(id)key;
+- (void)invalidateWithReason:(id)reason;
 @end
 
 @implementation PreflightCache
@@ -43,9 +43,9 @@ uint64_t __32__PreflightCache_sharedInstance__block_invoke()
     v2->_cache = v3;
 
     [(NSCache *)v2->_cache setCountLimit:32];
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     bypassAssertions = v2->_bypassAssertions;
-    v2->_bypassAssertions = v5;
+    v2->_bypassAssertions = weakObjectsHashTable;
 
     v7 = [[BiometryLockoutInvalidationSource alloc] initWithPreflightCache:v2];
     v23[0] = v7;
@@ -84,45 +84,45 @@ uint64_t __32__PreflightCache_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)cachedPreflightResultForKey:(id)a3
+- (id)cachedPreflightResultForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSCache *)self->_cache objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSCache *)self->_cache objectForKey:keyCopy];
   v6 = LA_LOG_0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(PreflightCache *)v4 cachedPreflightResultForKey:v5];
+    [(PreflightCache *)keyCopy cachedPreflightResultForKey:v5];
   }
 
   return v5;
 }
 
-- (void)addPreflightResult:(id)a3 forKey:(id)a4
+- (void)addPreflightResult:(id)result forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  resultCopy = result;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (resultCopy && keyCopy)
   {
     v9 = LA_LOG_0();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [PreflightCache addPreflightResult:v8 forKey:v6];
+      [PreflightCache addPreflightResult:v8 forKey:resultCopy];
     }
 
-    [(NSCache *)self->_cache setObject:v6 forKey:v8];
+    [(NSCache *)self->_cache setObject:resultCopy forKey:v8];
   }
 }
 
-- (void)invalidateWithReason:(id)a3
+- (void)invalidateWithReason:(id)reason
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = LA_LOG_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = reasonCopy;
     _os_log_impl(&dword_238B7F000, v5, OS_LOG_TYPE_DEFAULT, "Invalidating preflight cache (%{public}@)", &v7, 0xCu);
   }
 
@@ -130,38 +130,38 @@ uint64_t __32__PreflightCache_sharedInstance__block_invoke()
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)acquireBypassAssertionWithReason:(id)a3
+- (id)acquireBypassAssertionWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(PreflightCacheAssertion *)[PreflightCacheBypassAssertion alloc] initWithReason:v4 cache:self];
+  reasonCopy = reason;
+  v5 = [(PreflightCacheAssertion *)[PreflightCacheBypassAssertion alloc] initWithReason:reasonCopy cache:self];
 
   [(NSHashTable *)self->_bypassAssertions addObject:v5];
 
   return v5;
 }
 
-- (BOOL)_isPolicyCacheable:(int64_t)a3
+- (BOOL)_isPolicyCacheable:(int64_t)cacheable
 {
-  v3 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithInteger:cacheable];
   v4 = [&unk_284B71E58 containsObject:v3];
 
   return v4 ^ 1;
 }
 
-- (BOOL)_isCacheable:(id)a3 callerUid:(unsigned int)a4
+- (BOOL)_isCacheable:(id)cacheable callerUid:(unsigned int)uid
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:&unk_284B71CA8];
-  v8 = [v7 BOOLValue];
+  cacheableCopy = cacheable;
+  v7 = [cacheableCopy objectForKeyedSubscript:&unk_284B71CA8];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __41__PreflightCache__isCacheable_callerUid___block_invoke;
     v15 = &unk_278A614C0;
-    v16 = v6;
-    v17 = a4;
+    v16 = cacheableCopy;
+    uidCopy = uid;
     v9 = __41__PreflightCache__isCacheable_callerUid___block_invoke(&v12);
     v10 = v9 == geteuid() && [(NSHashTable *)self->_bypassAssertions count:v12]== 0;
   }

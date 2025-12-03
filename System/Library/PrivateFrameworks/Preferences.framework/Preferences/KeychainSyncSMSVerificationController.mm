@@ -32,20 +32,20 @@
 
   v15.receiver = self;
   v15.super_class = KeychainSyncSMSVerificationController;
-  v4 = [(PSKeychainSyncTextEntryController *)&v15 specifiers];
+  specifiers = [(PSKeychainSyncTextEntryController *)&v15 specifiers];
   phoneNumber = self->_phoneNumber;
-  v6 = [(KeychainSyncSMSVerificationController *)self countryCode];
-  v7 = [KeychainSyncCountryInfo countryInfoForCountryCode:v6 dialingPrefix:self->_dialingPrefix];
+  countryCode = [(KeychainSyncSMSVerificationController *)self countryCode];
+  v7 = [KeychainSyncCountryInfo countryInfoForCountryCode:countryCode dialingPrefix:self->_dialingPrefix];
   v8 = [PSKeychainSyncPhoneNumber phoneNumberWithDigits:phoneNumber countryInfo:v7];
 
-  v9 = [v8 formattedAndObfuscatedString];
-  v10 = [(PSKeychainSyncViewController *)self headerView];
+  formattedAndObfuscatedString = [v8 formattedAndObfuscatedString];
+  headerView = [(PSKeychainSyncViewController *)self headerView];
   v11 = MEMORY[0x1E696AEC0];
   v12 = PS_LocalizedStringForKeychainSync(@"VERIFICATION_CODE_SENT_TO");
-  v13 = [v11 stringWithFormat:v12, v9];
-  [v10 setDetailText:v13];
+  v13 = [v11 stringWithFormat:v12, formattedAndObfuscatedString];
+  [headerView setDetailText:v13];
 
-  return v4;
+  return specifiers;
 }
 
 - (void)loadView
@@ -58,25 +58,25 @@
   self->_footerButton = v3;
 
   [(UIButton *)self->_footerButton addTarget:self action:sel_showSupportVerification forControlEvents:64];
-  v5 = [(PSListController *)self table];
-  [v5 addSubview:self->_footerButton];
+  table = [(PSListController *)self table];
+  [table addSubview:self->_footerButton];
 
-  v6 = [(PSKeychainSyncViewController *)self headerView];
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 _referenceBounds];
-  [v6 setUsesCompactLayout:v8 == 480.0];
+  headerView = [(PSKeychainSyncViewController *)self headerView];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen _referenceBounds];
+  [headerView setUsesCompactLayout:v8 == 480.0];
 
   v9 = MEMORY[0x1E695DF90];
-  v10 = [MEMORY[0x1E69DC888] _systemInteractionTintColor];
+  _systemInteractionTintColor = [MEMORY[0x1E69DC888] _systemInteractionTintColor];
   v11 = *MEMORY[0x1E69DB650];
   v12 = [MEMORY[0x1E69DB878] systemFontOfSize:14.0];
-  v13 = [v9 dictionaryWithObjectsAndKeys:{v10, v11, v12, *MEMORY[0x1E69DB648], 0}];
+  v13 = [v9 dictionaryWithObjectsAndKeys:{_systemInteractionTintColor, v11, v12, *MEMORY[0x1E69DB648], 0}];
 
   v14 = PS_LocalizedStringForKeychainSync(@"DONT_HAVE_PHONE");
   v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v14 attributes:v13];
   [(UIButton *)self->_footerButton setAttributedTitle:v15 forState:0];
-  v16 = [MEMORY[0x1E69DC888] blackColor];
-  [v13 setObject:v16 forKey:v11];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [v13 setObject:blackColor forKey:v11];
 
   v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v14 attributes:v13];
   [(UIButton *)self->_footerButton setAttributedTitle:v17 forState:1];
@@ -88,8 +88,8 @@
   v31.receiver = self;
   v31.super_class = KeychainSyncSMSVerificationController;
   [(PSListController *)&v31 viewDidLayoutSubviews];
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 _referenceBounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen _referenceBounds];
   if (v4 == 480.0)
   {
     v5 = -21.0;
@@ -100,9 +100,9 @@
     v5 = 5.0;
   }
 
-  v6 = [(PSListController *)self table];
+  table = [(PSListController *)self table];
   v7 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  v8 = [table cellForRowAtIndexPath:v7];
   [v8 frame];
   v10 = v9;
   v12 = v11;
@@ -120,8 +120,8 @@
   v32.size.height = v16;
   v23 = v5 + CGRectGetMaxY(v32);
   [(UIButton *)self->_footerButton setFrame:v22, v23, v18, v20];
-  v24 = [(PSListController *)self table];
-  [v24 contentSize];
+  table2 = [(PSListController *)self table];
+  [table2 contentSize];
   v26 = v25;
   v28 = v27;
 
@@ -136,8 +136,8 @@
   v34.size.height = v20;
   if (v28 < CGRectGetMaxY(v34))
   {
-    v30 = [(PSListController *)self table];
-    [v30 setContentSize:{v26, v5 + MaxY}];
+    table3 = [(PSListController *)self table];
+    [table3 setContentSize:{v26, v5 + MaxY}];
   }
 }
 

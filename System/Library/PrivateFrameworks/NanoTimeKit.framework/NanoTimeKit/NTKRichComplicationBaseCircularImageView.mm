@@ -1,38 +1,38 @@
 @interface NTKRichComplicationBaseCircularImageView
-- (NTKRichComplicationBaseCircularImageView)initWithFamily:(int64_t)a3;
+- (NTKRichComplicationBaseCircularImageView)initWithFamily:(int64_t)family;
 - (int64_t)tritiumUpdateMode;
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3;
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration;
 - (void)layoutSubviews;
-- (void)setPaused:(BOOL)a3;
-- (void)setTintedFraction:(double)a3;
-- (void)setTintedPlatterColor:(id)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setPaused:(BOOL)paused;
+- (void)setTintedFraction:(double)fraction;
+- (void)setTintedPlatterColor:(id)color;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NTKRichComplicationBaseCircularImageView
 
-- (NTKRichComplicationBaseCircularImageView)initWithFamily:(int64_t)a3
+- (NTKRichComplicationBaseCircularImageView)initWithFamily:(int64_t)family
 {
   v13.receiver = self;
   v13.super_class = NTKRichComplicationBaseCircularImageView;
-  v3 = [(NTKRichComplicationCircularBaseView *)&v13 initWithFamily:a3];
+  v3 = [(NTKRichComplicationCircularBaseView *)&v13 initWithFamily:family];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CDRichComplicationView *)v3 device];
-    v6 = NTKShowGossamerUI(v5);
+    device = [(CDRichComplicationView *)v3 device];
+    v6 = NTKShowGossamerUI(device);
 
     v7 = [off_27877BEB0 alloc];
-    v8 = [(CDRichComplicationView *)v4 device];
-    v9 = [v7 initWithDevice:v8 useAccentColor:v6];
+    device2 = [(CDRichComplicationView *)v4 device];
+    v9 = [v7 initWithDevice:device2 useAccentColor:v6];
     imageView = v4->_imageView;
     v4->_imageView = v9;
 
     [(CDRichComplicationImageView *)v4->_imageView setPaused:[(CDRichComplicationView *)v4 paused]];
     [(CDRichComplicationImageView *)v4->_imageView setFilterProvider:v4];
-    v11 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
-    [v11 addSubview:v4->_imageView];
+    contentView = [(NTKRichComplicationCircularBaseView *)v4 contentView];
+    [contentView addSubview:v4->_imageView];
   }
 
   return v4;
@@ -43,40 +43,40 @@
   v7.receiver = self;
   v7.super_class = NTKRichComplicationBaseCircularImageView;
   [(NTKRichComplicationCircularBaseView *)&v7 layoutSubviews];
-  v3 = [(NTKRichComplicationCircularBaseView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKRichComplicationCircularBaseView *)self contentView];
+  [contentView bounds];
   [(CDRichComplicationImageView *)self->_imageView setFrame:?];
 
   [(CDRichComplicationImageView *)self->_imageView bounds];
   v5 = v4 * 0.5;
-  v6 = [(CDRichComplicationImageView *)self->_imageView layer];
-  [v6 setCornerRadius:v5];
+  layer = [(CDRichComplicationImageView *)self->_imageView layer];
+  [layer setCornerRadius:v5];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBaseCircularImageView;
   [(CDRichComplicationView *)&v5 setPaused:?];
-  [(CDRichComplicationImageView *)self->_imageView setPaused:v3];
+  [(CDRichComplicationImageView *)self->_imageView setPaused:pausedCopy];
 }
 
 - (int64_t)tritiumUpdateMode
 {
-  v3 = [(CDRichComplicationImageView *)self->_imageView tritiumUpdateMode];
-  v4 = v3;
-  if (v3)
+  tritiumUpdateMode = [(CDRichComplicationImageView *)self->_imageView tritiumUpdateMode];
+  v4 = tritiumUpdateMode;
+  if (tritiumUpdateMode)
   {
-    v5 = [v3 integerValue];
-    if (v5 >= 2)
+    integerValue = [tritiumUpdateMode integerValue];
+    if (integerValue >= 2)
     {
-      v6 = 2;
+      tritiumUpdateMode2 = 2;
     }
 
     else
     {
-      v6 = v5;
+      tritiumUpdateMode2 = integerValue;
     }
   }
 
@@ -84,35 +84,35 @@
   {
     v8.receiver = self;
     v8.super_class = NTKRichComplicationBaseCircularImageView;
-    v6 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
+    tritiumUpdateMode2 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
   }
 
-  return v6;
+  return tritiumUpdateMode2;
 }
 
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration
 {
-  v8[0] = a3->var0;
-  v5 = a3->var1;
-  var2 = a3->var2;
+  v8[0] = configuration->var0;
+  v5 = configuration->var1;
+  var2 = configuration->var2;
   v9 = v5;
   v10 = var2;
   v7.receiver = self;
   v7.super_class = NTKRichComplicationBaseCircularImageView;
   [(CDRichComplicationView *)&v7 _setFontConfiguration:v8];
-  if (a3->var1)
+  if (configuration->var1)
   {
     [(CDRichComplicationImageView *)self->_imageView setFontDescriptor:?];
-    [(CDRichComplicationImageView *)self->_imageView setFontSizeFactor:a3->var2];
+    [(CDRichComplicationImageView *)self->_imageView setFontSizeFactor:configuration->var2];
   }
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBaseCircularImageView;
   [(NTKRichComplicationCircularBaseView *)&v5 transitionToMonochromeWithFraction:?];
-  [(CDRichComplicationImageView *)self->_imageView transitionToMonochromeWithFraction:a3];
+  [(CDRichComplicationImageView *)self->_imageView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor
@@ -123,22 +123,22 @@
   [(CDRichComplicationImageView *)self->_imageView updateMonochromeColor];
 }
 
-- (void)setTintedFraction:(double)a3
+- (void)setTintedFraction:(double)fraction
 {
   if ([(CDRichComplicationImageView *)self->_imageView conformsToProtocol:&unk_28A81D338])
   {
     imageView = self->_imageView;
 
-    [(CDRichComplicationImageView *)imageView setTintedFraction:a3];
+    [(CDRichComplicationImageView *)imageView setTintedFraction:fraction];
   }
 }
 
-- (void)setTintedPlatterColor:(id)a3
+- (void)setTintedPlatterColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if ([(CDRichComplicationImageView *)self->_imageView conformsToProtocol:&unk_28A81D338])
   {
-    [(CDRichComplicationImageView *)self->_imageView setTintedPlatterColor:v4];
+    [(CDRichComplicationImageView *)self->_imageView setTintedPlatterColor:colorCopy];
   }
 }
 

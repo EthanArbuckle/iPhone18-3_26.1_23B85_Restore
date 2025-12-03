@@ -1,5 +1,5 @@
 @interface MUPlaceHeaderView
-- (MUPlaceHeaderView)initWithViewModel:(id)a3 coverPhotoOptions:(id)a4 trailingConstraintProvider:(id)a5 paddingConstraintProvider:(id)a6;
+- (MUPlaceHeaderView)initWithViewModel:(id)model coverPhotoOptions:(id)options trailingConstraintProvider:(id)provider paddingConstraintProvider:(id)constraintProvider;
 - (MUPlaceHeaderViewDelegate)delegate;
 - (double)_expansionProgress;
 - (double)_labelHeights;
@@ -21,11 +21,11 @@
 - (void)_updateHeroImage;
 - (void)_updateLogo;
 - (void)_updateTopToTitlePaddings;
-- (void)_updateWithTransitionController:(id)a3;
+- (void)_updateWithTransitionController:(id)controller;
 - (void)beginAnimatingActivityIndicator;
 - (void)dealloc;
-- (void)endAnimatingActivityIndicatorWithError:(id)a3;
-- (void)hideThirdTitle:(BOOL)a3;
+- (void)endAnimatingActivityIndicatorWithError:(id)error;
+- (void)hideThirdTitle:(BOOL)title;
 - (void)layoutSubviews;
 - (void)reloadSecondaryLabel;
 - (void)reloadTitleLabelFont;
@@ -33,9 +33,9 @@
 - (void)reloadTitleLabelMarquee;
 - (void)reloadTitleLabelPadding;
 - (void)reloadTitleLabels;
-- (void)setSuppressContainmentTap:(BOOL)a3;
-- (void)setVerifiedBusinessHeaderExpansionProgress:(double)a3;
-- (void)setViewModel:(id)a3;
+- (void)setSuppressContainmentTap:(BOOL)tap;
+- (void)setVerifiedBusinessHeaderExpansionProgress:(double)progress;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MUPlaceHeaderView
@@ -51,8 +51,8 @@
 {
   objc_initWeak(&location, self);
   viewModel = self->_viewModel;
-  v4 = [(MUPlaceHeaderView *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(MUPlaceHeaderView *)self traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -80,8 +80,8 @@ void __37__MUPlaceHeaderView__updateHeroImage__block_invoke(uint64_t a1, void *a
 {
   objc_initWeak(&location, self);
   viewModel = self->_viewModel;
-  v4 = self;
-  if (MUIdiomInTraitEnvironment(v4) == 5)
+  selfCopy = self;
+  if (MUIdiomInTraitEnvironment(selfCopy) == 5)
   {
     v5 = 56.0;
   }
@@ -91,7 +91,7 @@ void __37__MUPlaceHeaderView__updateHeroImage__block_invoke(uint64_t a1, void *a
     v5 = 72.0;
   }
 
-  v6 = v4;
+  v6 = selfCopy;
   if (MUIdiomInTraitEnvironment(v6) == 5)
   {
     v7 = 56.0;
@@ -102,8 +102,8 @@ void __37__MUPlaceHeaderView__updateHeroImage__block_invoke(uint64_t a1, void *a
     v7 = 72.0;
   }
 
-  v8 = [(MUPlaceHeaderView *)v6 traitCollection];
-  [v8 displayScale];
+  traitCollection = [(MUPlaceHeaderView *)v6 traitCollection];
+  [traitCollection displayScale];
   v10 = v9;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -132,8 +132,8 @@ void __32__MUPlaceHeaderView__updateLogo__block_invoke(uint64_t a1, void *a2, ui
   v4 = v3;
   objc_initWeak(&location, self);
   viewModel = self->_viewModel;
-  v6 = [(MUPlaceHeaderView *)self traitCollection];
-  [v6 displayScale];
+  traitCollection = [(MUPlaceHeaderView *)self traitCollection];
+  [traitCollection displayScale];
   v8 = v7;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -158,8 +158,8 @@ void __38__MUPlaceHeaderView__updateCoverPhoto__block_invoke(uint64_t a1, void *
 
 - (void)layoutSubviews
 {
-  v3 = [(MUPlaceHeaderView *)self delegate];
-  v4 = [v3 headerViewShouldLayoutSubviews:self];
+  delegate = [(MUPlaceHeaderView *)self delegate];
+  v4 = [delegate headerViewShouldLayoutSubviews:self];
 
   if (v4)
   {
@@ -192,19 +192,19 @@ void __38__MUPlaceHeaderView__updateCoverPhoto__block_invoke(uint64_t a1, void *
 {
   v6 = objc_alloc_init(MUPresentationOptions);
   [(MUPresentationOptions *)v6 setSourceView:self->_shareButton];
-  v3 = [(MUPlaceHeaderView *)self delegate];
+  delegate = [(MUPlaceHeaderView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MUPlaceHeaderView *)self delegate];
-    [v5 headerView:self didSelectShareWithPresentationOptions:v6];
+    delegate2 = [(MUPlaceHeaderView *)self delegate];
+    [delegate2 headerView:self didSelectShareWithPresentationOptions:v6];
   }
 }
 
-- (void)endAnimatingActivityIndicatorWithError:(id)a3
+- (void)endAnimatingActivityIndicatorWithError:(id)error
 {
-  [(MULinkView *)self->_containmentLabel setAlpha:a3, 1.0];
+  [(MULinkView *)self->_containmentLabel setAlpha:error, 1.0];
   containmentLabel = self->_containmentLabel;
 
   [(MULinkView *)containmentLabel setUserInteractionEnabled:1];
@@ -265,9 +265,9 @@ void __38__MUPlaceHeaderView__updateCoverPhoto__block_invoke(uint64_t a1, void *
 
 - (double)topToTitleSpacing
 {
-  v3 = [(MUPlaceHeaderViewModel *)self->_viewModel isDeveloperPlaceCard];
+  isDeveloperPlaceCard = [(MUPlaceHeaderViewModel *)self->_viewModel isDeveloperPlaceCard];
   result = 26.0;
-  if (!v3)
+  if (!isDeveloperPlaceCard)
   {
     [(MUPlaceHeaderView *)self _labelHeights];
     v6 = v5;
@@ -286,8 +286,8 @@ void __38__MUPlaceHeaderView__updateCoverPhoto__block_invoke(uint64_t a1, void *
 
   if (self->_containmentLabel)
   {
-    v6 = [(MUPlaceHeaderView *)self _containmentString];
-    v7 = [v6 length];
+    _containmentString = [(MUPlaceHeaderView *)self _containmentString];
+    v7 = [_containmentString length];
 
     if (v7)
     {
@@ -297,8 +297,8 @@ void __38__MUPlaceHeaderView__updateCoverPhoto__block_invoke(uint64_t a1, void *
 
   if (self->_secondaryTitleLabel)
   {
-    v8 = [(MUPlaceHeaderViewModel *)self->_viewModel placeSecondaryName];
-    v9 = [v8 length];
+    placeSecondaryName = [(MUPlaceHeaderViewModel *)self->_viewModel placeSecondaryName];
+    v9 = [placeSecondaryName length];
 
     if (v9)
     {
@@ -325,18 +325,18 @@ LABEL_5:
   return v8;
 }
 
-- (void)hideThirdTitle:(BOOL)a3
+- (void)hideThirdTitle:(BOOL)title
 {
-  v3 = a3;
+  titleCopy = title;
   if ([(MUPlaceHeaderViewModel *)self->_viewModel supportsContactAddressDescription])
   {
-    v5 = [(UILabel *)self->_contactAddressDescription attributedText];
-    v6 = [v5 length];
+    attributedText = [(UILabel *)self->_contactAddressDescription attributedText];
+    v6 = [attributedText length];
 
     contactAddressDescription = self->_contactAddressDescription;
     if (v6)
     {
-      v8 = !v3;
+      v8 = !titleCopy;
     }
 
     else
@@ -346,8 +346,8 @@ LABEL_5:
 
     if (v8)
     {
-      v9 = [(UILabel *)contactAddressDescription attributedText];
-      v10 = [v9 length];
+      attributedText2 = [(UILabel *)contactAddressDescription attributedText];
+      v10 = [attributedText2 length];
 
       if (v10)
       {
@@ -396,10 +396,10 @@ uint64_t __36__MUPlaceHeaderView_hideThirdTitle___block_invoke_2(uint64_t result
   return result;
 }
 
-- (void)setVerifiedBusinessHeaderExpansionProgress:(double)a3
+- (void)setVerifiedBusinessHeaderExpansionProgress:(double)progress
 {
   [(MUPlaceCoverPhotoTransitionController *)self->_coverPhotoTransitionController setExpansionProgress:?];
-  self->_cardExpansionProgress = a3;
+  self->_cardExpansionProgress = progress;
   if (!self->_coverPhotoTransitionController)
   {
 
@@ -433,8 +433,8 @@ uint64_t __36__MUPlaceHeaderView_hideThirdTitle___block_invoke_2(uint64_t result
     [(MUPlaceHeaderView *)self _expansionProgress];
     if (v3 <= 0.0)
     {
-      v8 = [(MUPlaceHeaderView *)self _containmentString];
-      v9 = [v8 length];
+      _containmentString = [(MUPlaceHeaderView *)self _containmentString];
+      v9 = [_containmentString length];
 
       if (v9)
       {
@@ -449,8 +449,8 @@ uint64_t __36__MUPlaceHeaderView_hideThirdTitle___block_invoke_2(uint64_t result
     else
     {
       [(UILabel *)self->_secondaryTitleLabel setHidden:0];
-      v4 = [(MUStackLayout *)self->_stackLayout arrangedLayoutItems];
-      v5 = [v4 containsObject:self->_containmentLabel];
+      arrangedLayoutItems = [(MUStackLayout *)self->_stackLayout arrangedLayoutItems];
+      v5 = [arrangedLayoutItems containsObject:self->_containmentLabel];
 
       v6 = self->_stackLayout;
       if (v5)
@@ -559,12 +559,12 @@ uint64_t __36__MUPlaceHeaderView_hideThirdTitle___block_invoke_2(uint64_t result
   [(MUPlaceHeaderView *)self _updateContainmentLineWithAttributedString];
 }
 
-- (void)setSuppressContainmentTap:(BOOL)a3
+- (void)setSuppressContainmentTap:(BOOL)tap
 {
-  if (self->_suppressContainmentTap != a3)
+  if (self->_suppressContainmentTap != tap)
   {
-    self->_suppressContainmentTap = a3;
-    [(MULinkView *)self->_containmentLabel setUserInteractionEnabled:!a3];
+    self->_suppressContainmentTap = tap;
+    [(MULinkView *)self->_containmentLabel setUserInteractionEnabled:!tap];
   }
 }
 
@@ -605,19 +605,19 @@ void __42__MUPlaceHeaderView__tappedEnclosingPlace__block_invoke(uint64_t a1, vo
   v3 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD28] weight:*MEMORY[0x1E69DB980]];
   [(UILabel *)self->_secondaryTitleLabel setFont:v3];
 
-  v4 = [(MUPlaceHeaderView *)self _verifiedAttributedString];
-  [(UILabel *)self->_verifiedLabel setAttributedText:v4];
+  _verifiedAttributedString = [(MUPlaceHeaderView *)self _verifiedAttributedString];
+  [(UILabel *)self->_verifiedLabel setAttributedText:_verifiedAttributedString];
 
-  v5 = [(MUPlaceHeaderViewModel *)self->_viewModel addressDescriptionForContact];
-  [(UILabel *)self->_contactAddressDescription setAttributedText:v5];
+  addressDescriptionForContact = [(MUPlaceHeaderViewModel *)self->_viewModel addressDescriptionForContact];
+  [(UILabel *)self->_contactAddressDescription setAttributedText:addressDescriptionForContact];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   if (([(MUPlaceHeaderViewModel *)self->_viewModel isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(MUPlaceHeaderView *)self _updateAppearance];
   }
 }
@@ -627,9 +627,9 @@ void __42__MUPlaceHeaderView__tappedEnclosingPlace__block_invoke(uint64_t a1, vo
   [(MUPlaceHeaderView *)self topToTitleSpacing];
   v4 = v3;
   self->_headerMetrics.topToTitleSpacing = v3;
-  v5 = [(MUPlaceHeaderViewModel *)self->_viewModel supportsCoverPhoto];
+  supportsCoverPhoto = [(MUPlaceHeaderViewModel *)self->_viewModel supportsCoverPhoto];
   v6 = 8.0;
-  if (v5)
+  if (supportsCoverPhoto)
   {
     v7 = 8.0;
   }
@@ -639,7 +639,7 @@ void __42__MUPlaceHeaderView__tappedEnclosingPlace__block_invoke(uint64_t a1, vo
     v7 = 20.0;
   }
 
-  if (v5)
+  if (supportsCoverPhoto)
   {
     v8 = 8.0;
   }
@@ -652,9 +652,9 @@ void __42__MUPlaceHeaderView__tappedEnclosingPlace__block_invoke(uint64_t a1, vo
   v9 = 0.0;
   [(MUCardButton *)self->_shareButton setDirectionalLayoutMargins:v8, 0.0, 0.0, v7];
   [(MUStackLayout *)self->_stackLayout setPadding:self->_heroImageView forArrangedLayoutItem:v4, 20.0, 0.0, 20.0];
-  v10 = [(MUPlaceCoverPhotoOptions *)self->_coverPhotoOptions insetsCoverPhoto];
+  insetsCoverPhoto = [(MUPlaceCoverPhotoOptions *)self->_coverPhotoOptions insetsCoverPhoto];
   v11 = 8.0;
-  if (!v10)
+  if (!insetsCoverPhoto)
   {
     v4 = *MEMORY[0x1E69DC5C0];
     v6 = *(MEMORY[0x1E69DC5C0] + 8);
@@ -676,14 +676,14 @@ void __42__MUPlaceHeaderView__tappedEnclosingPlace__block_invoke(uint64_t a1, vo
 - (void)_updateContainmentLineWithAttributedString
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v3 = [(MUPlaceHeaderViewModel *)self->_viewModel placeSecondaryName];
-  if (![v3 length])
+  placeSecondaryName = [(MUPlaceHeaderViewModel *)self->_viewModel placeSecondaryName];
+  if (![placeSecondaryName length])
   {
     goto LABEL_8;
   }
 
-  v4 = [(MUPlaceHeaderView *)self _containmentString];
-  if (![v4 length])
+  _containmentString = [(MUPlaceHeaderView *)self _containmentString];
+  if (![_containmentString length])
   {
 
 LABEL_8:
@@ -696,7 +696,7 @@ LABEL_8:
   if (v6 == 0.0)
   {
     v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v8 = [(MUPlaceHeaderViewModel *)self->_viewModel placeSecondaryName];
+    placeSecondaryName2 = [(MUPlaceHeaderViewModel *)self->_viewModel placeSecondaryName];
     v22[0] = *MEMORY[0x1E69DB650];
     v9 = +[MUInfoCardStyle secondaryTextColor];
     v23[0] = v9;
@@ -704,7 +704,7 @@ LABEL_8:
     v10 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD28] weight:*MEMORY[0x1E69DB980]];
     v23[1] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
-    v12 = [v7 initWithString:v8 attributes:v11];
+    v12 = [v7 initWithString:placeSecondaryName2 attributes:v11];
     [(MULinkView *)self->_containmentLabel setAttributedText:v12];
 
     secondaryContainmentTransitionTimer = self->_secondaryContainmentTransitionTimer;
@@ -728,8 +728,8 @@ LABEL_8:
   }
 
 LABEL_9:
-  v19 = [(MUPlaceHeaderView *)self _containmentString];
-  [(MULinkView *)self->_containmentLabel setAttributedText:v19];
+  _containmentString2 = [(MUPlaceHeaderView *)self _containmentString];
+  [(MULinkView *)self->_containmentLabel setAttributedText:_containmentString2];
   v18 = *MEMORY[0x1E69E9840];
 }
 
@@ -772,15 +772,15 @@ void __63__MUPlaceHeaderView__updateContainmentLineWithAttributedString__block_i
     [(MUPlaceHeaderView *)self _updateLogo];
   }
 
-  v3 = [(MUPlaceHeaderViewModel *)self->_viewModel placeName];
-  v4 = [v3 length];
+  placeName = [(MUPlaceHeaderViewModel *)self->_viewModel placeName];
+  v4 = [placeName length];
 
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v6 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v7 = [(MUPlaceHeaderViewModel *)self->_viewModel placeName];
-    v8 = [v6 initWithString:v7];
+    placeName2 = [(MUPlaceHeaderViewModel *)self->_viewModel placeName];
+    v8 = [v6 initWithString:placeName2];
 
     [v5 addObject:v8];
     if ([(MUPlaceHeaderViewModel *)self->_viewModel isClaimed])
@@ -801,8 +801,8 @@ void __63__MUPlaceHeaderView__updateContainmentLineWithAttributedString__block_i
       v16 = [v15 mutableCopy];
 
       v30 = *MEMORY[0x1E69DB650];
-      v17 = [MEMORY[0x1E69DC888] systemBlueColor];
-      v31[0] = v17;
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      v31[0] = systemBlueColor;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
       [v16 addAttributes:v18 range:{0, objc_msgSend(v16, "length")}];
 
@@ -814,8 +814,8 @@ void __63__MUPlaceHeaderView__updateContainmentLineWithAttributedString__block_i
     [(MUFadingMarqueeLabel *)self->_titleLabel setAttributedText:v20];
   }
 
-  v21 = [(MUPlaceHeaderViewModel *)self->_viewModel placeSecondaryName];
-  [(UILabel *)self->_secondaryTitleLabel setText:v21];
+  placeSecondaryName = [(MUPlaceHeaderViewModel *)self->_viewModel placeSecondaryName];
+  [(UILabel *)self->_secondaryTitleLabel setText:placeSecondaryName];
 
   if ([(MUPlaceHeaderViewModel *)self->_viewModel hasInitialData])
   {
@@ -906,26 +906,26 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
       [(MUSizeLayout *)v11 setPriority:v12];
       [v4 addObject:v11];
       verifiedBusinessCoverPhotoImageView = self->_verifiedBusinessCoverPhotoImageView;
-      v14 = [(MUVerifiedLogoImageView *)self->_verifiedBusinessLogoImageView centerXAnchor];
+      centerXAnchor = [(MUVerifiedLogoImageView *)self->_verifiedBusinessLogoImageView centerXAnchor];
       if (verifiedBusinessCoverPhotoImageView)
       {
-        v15 = [(MUPlaceHeaderCoverPhotoView *)self->_verifiedBusinessCoverPhotoImageView centerXAnchor];
-        v16 = [v14 constraintEqualToAnchor:v15];
+        centerXAnchor2 = [(MUPlaceHeaderCoverPhotoView *)self->_verifiedBusinessCoverPhotoImageView centerXAnchor];
+        v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         [v5 addObject:v16];
 
-        v17 = [(MUVerifiedLogoImageView *)self->_verifiedBusinessLogoImageView centerYAnchor];
-        v18 = [(MUPlaceHeaderCoverPhotoView *)self->_verifiedBusinessCoverPhotoImageView centerYAnchor];
-        v19 = [v17 constraintEqualToAnchor:v18];
+        centerYAnchor = [(MUVerifiedLogoImageView *)self->_verifiedBusinessLogoImageView centerYAnchor];
+        centerYAnchor2 = [(MUPlaceHeaderCoverPhotoView *)self->_verifiedBusinessCoverPhotoImageView centerYAnchor];
+        v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       }
 
       else
       {
-        v23 = [(UIView *)self->_verifiedBusinessContainerView centerXAnchor];
-        v24 = [v14 constraintEqualToAnchor:v23];
+        centerXAnchor3 = [(UIView *)self->_verifiedBusinessContainerView centerXAnchor];
+        v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor3];
         [v5 addObject:v24];
 
-        v17 = [(MUVerifiedLogoImageView *)self->_verifiedBusinessLogoImageView topAnchor];
-        v18 = [(UIView *)self->_verifiedBusinessContainerView topAnchor];
+        centerYAnchor = [(MUVerifiedLogoImageView *)self->_verifiedBusinessLogoImageView topAnchor];
+        centerYAnchor2 = [(UIView *)self->_verifiedBusinessContainerView topAnchor];
         v25 = MUIdiomInTraitEnvironment(self);
         v26 = 32.0;
         if (v25 == 5)
@@ -933,7 +933,7 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
           v26 = 16.0;
         }
 
-        v19 = [v17 constraintEqualToAnchor:v18 constant:v26];
+        v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:v26];
       }
 
       v27 = v19;
@@ -980,37 +980,37 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
     [(MUPlaceHeaderView *)self frame];
     [(MUPlaceCoverPhotoTransitionController *)coverPhotoTransitionController coverPhotoHeightForProposedWidth:CGRectGetWidth(v76)];
     v39 = v38;
-    v40 = [(UIView *)self->_verifiedBusinessContainerView heightAnchor];
-    v41 = [v40 constraintEqualToConstant:v39];
+    heightAnchor = [(UIView *)self->_verifiedBusinessContainerView heightAnchor];
+    v41 = [heightAnchor constraintEqualToConstant:v39];
     verifiedBusinessHeaderHeightConstraint = self->_verifiedBusinessHeaderHeightConstraint;
     self->_verifiedBusinessHeaderHeightConstraint = v41;
 
     [v5 addObject:self->_verifiedBusinessHeaderHeightConstraint];
-    v20 = [(UILayoutGuide *)self->_topToTitleLayoutGuide topAnchor];
-    v21 = [(UIView *)self->_verifiedBusinessContainerView bottomAnchor];
+    topAnchor = [(UILayoutGuide *)self->_topToTitleLayoutGuide topAnchor];
+    bottomAnchor = [(UIView *)self->_verifiedBusinessContainerView bottomAnchor];
   }
 
   else
   {
-    v20 = [(UILayoutGuide *)self->_topToTitleLayoutGuide topAnchor];
-    v21 = [(MUPlaceHeaderView *)self topAnchor];
+    topAnchor = [(UILayoutGuide *)self->_topToTitleLayoutGuide topAnchor];
+    bottomAnchor = [(MUPlaceHeaderView *)self topAnchor];
   }
 
-  v43 = v21;
-  v44 = [v20 constraintEqualToAnchor:v21];
+  v43 = bottomAnchor;
+  v44 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   [v5 addObject:v44];
 
-  v72 = [(UILayoutGuide *)self->_topToTitleLayoutGuide leadingAnchor];
-  v71 = [(MUPlaceHeaderView *)self leadingAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  leadingAnchor = [(UILayoutGuide *)self->_topToTitleLayoutGuide leadingAnchor];
+  leadingAnchor2 = [(MUPlaceHeaderView *)self leadingAnchor];
+  v70 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v75[0] = v70;
-  v45 = [(UILayoutGuide *)self->_topToTitleLayoutGuide trailingAnchor];
-  v46 = [(MUFadingMarqueeLabel *)self->_titleLabel trailingAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  trailingAnchor = [(UILayoutGuide *)self->_topToTitleLayoutGuide trailingAnchor];
+  trailingAnchor2 = [(MUFadingMarqueeLabel *)self->_titleLabel trailingAnchor];
+  v47 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v75[1] = v47;
-  v48 = [(UILayoutGuide *)self->_topToTitleLayoutGuide bottomAnchor];
-  v49 = [(MUFadingMarqueeLabel *)self->_titleLabel bottomAnchor];
-  v50 = [v48 constraintEqualToAnchor:v49];
+  bottomAnchor2 = [(UILayoutGuide *)self->_topToTitleLayoutGuide bottomAnchor];
+  bottomAnchor3 = [(MUFadingMarqueeLabel *)self->_titleLabel bottomAnchor];
+  v50 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v75[2] = v50;
   v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:3];
   [v5 addObjectsFromArray:v51];
@@ -1032,9 +1032,9 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
     [(MUStackLayout *)v73 setPadding:self->_secondaryTitleLabel forArrangedLayoutItem:1.0, 20.0, 0.0, 20.0];
   }
 
-  v57 = [(MUPlaceHeaderView *)self _containmentString];
-  v58 = v57;
-  if (self->_containmentLabel && [v57 length])
+  _containmentString = [(MUPlaceHeaderView *)self _containmentString];
+  v58 = _containmentString;
+  if (self->_containmentLabel && [_containmentString length])
   {
     [(MUStackLayout *)v73 addArrangedLayoutItem:self->_containmentLabel];
     [(MUStackLayout *)v73 setPadding:self->_containmentLabel forArrangedLayoutItem:1.0, 20.0, 0.0, 20.0];
@@ -1060,22 +1060,22 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
 
   if ([(MUPlaceCoverPhotoOptions *)self->_coverPhotoOptions showShareButton])
   {
-    v59 = [(MUPlaceHeaderViewModel *)self->_viewModel supportsCoverPhoto];
-    v60 = self;
-    if (v59)
+    supportsCoverPhoto = [(MUPlaceHeaderViewModel *)self->_viewModel supportsCoverPhoto];
+    selfCopy = self;
+    if (supportsCoverPhoto)
     {
-      v60 = self->_verifiedBusinessCoverPhotoImageView;
+      selfCopy = self->_verifiedBusinessCoverPhotoImageView;
     }
 
-    v61 = v60;
+    v61 = selfCopy;
     v62 = [[MUEdgeLayout alloc] initWithItem:self->_shareButton container:v61];
     [(MUEdgeLayout *)v62 setEdges:9];
     [v74 addObject:v62];
     if (self->_titleLabel)
     {
-      v63 = [(MUCardButton *)self->_shareButton leadingAnchor];
-      v64 = [(MUFadingMarqueeLabel *)self->_titleLabel trailingAnchor];
-      v65 = [v63 constraintGreaterThanOrEqualToAnchor:v64];
+      leadingAnchor3 = [(MUCardButton *)self->_shareButton leadingAnchor];
+      trailingAnchor3 = [(MUFadingMarqueeLabel *)self->_titleLabel trailingAnchor];
+      v65 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor3];
       [v5 addObject:v65];
     }
   }
@@ -1125,20 +1125,20 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
   return v21;
 }
 
-- (void)_updateWithTransitionController:(id)a3
+- (void)_updateWithTransitionController:(id)controller
 {
-  v4 = a3;
-  -[MUVerifiedLogoImageView setHidden:](self->_verifiedBusinessLogoImageView, "setHidden:", [v4 hideLogo]);
-  [v4 logoImageAlpha];
+  controllerCopy = controller;
+  -[MUVerifiedLogoImageView setHidden:](self->_verifiedBusinessLogoImageView, "setHidden:", [controllerCopy hideLogo]);
+  [controllerCopy logoImageAlpha];
   [(MUVerifiedLogoImageView *)self->_verifiedBusinessLogoImageView setAlpha:?];
-  [v4 coverPhotoAlpha];
+  [controllerCopy coverPhotoAlpha];
   [(MUPlaceHeaderCoverPhotoView *)self->_verifiedBusinessCoverPhotoImageView setAlpha:?];
-  [v4 expansionProgress];
+  [controllerCopy expansionProgress];
   [(MUVerifiedLogoImageView *)self->_verifiedBusinessLogoImageView setCardExpansionProgress:?];
-  [v4 expansionProgress];
+  [controllerCopy expansionProgress];
   [(MUPlaceHeaderCoverPhotoView *)self->_verifiedBusinessCoverPhotoImageView setCardExpansionProgress:?];
   [(MUPlaceHeaderView *)self frame];
-  [v4 coverPhotoHeightForProposedWidth:CGRectGetWidth(v8)];
+  [controllerCopy coverPhotoHeightForProposedWidth:CGRectGetWidth(v8)];
   v6 = v5;
 
   [(MUPlaceHeaderView *)self setVerifiedBusinessHeaderHeight:v6];
@@ -1148,9 +1148,9 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
 
 - (void)_setupSubviews
 {
-  v3 = [(MUPlaceHeaderViewModel *)self->_viewModel hasHeroImage];
+  hasHeroImage = [(MUPlaceHeaderViewModel *)self->_viewModel hasHeroImage];
   v4 = MEMORY[0x1E695F058];
-  if (v3)
+  if (hasHeroImage)
   {
     v5 = [[MUImageView alloc] initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     heroImageView = self->_heroImageView;
@@ -1189,7 +1189,7 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
       v11 = 0.0;
     }
 
-    v12 = [(MUPlaceHeaderViewModel *)self->_viewModel supportsLogo];
+    supportsLogo = [(MUPlaceHeaderViewModel *)self->_viewModel supportsLogo];
     if (MUIdiomInTraitEnvironment(self) == 5)
     {
       v13 = 56.0;
@@ -1214,11 +1214,11 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
     v16 = v15;
     GEOConfigGetDouble();
     v18 = v17;
-    v19 = [(MUPlaceHeaderViewModel *)self->_viewModel supportsCoverPhoto];
+    supportsCoverPhoto = [(MUPlaceHeaderViewModel *)self->_viewModel supportsCoverPhoto];
     *&self->_headerMetrics.topToTitleSpacing = v9;
     self->_headerMetrics.coverPhotoMetrics.aspectRatio = 0.379487187;
-    self->_headerMetrics.coverPhotoMetrics.hasLogo = v12;
-    self->_headerMetrics.coverPhotoMetrics.hasCoverPhoto = v19;
+    self->_headerMetrics.coverPhotoMetrics.hasLogo = supportsLogo;
+    self->_headerMetrics.coverPhotoMetrics.hasCoverPhoto = supportsCoverPhoto;
     *(&self->_headerMetrics.coverPhotoMetrics.hasCoverPhoto + 1) = 0;
     *(&self->_headerMetrics.coverPhotoMetrics.hasCoverPhoto + 5) = 0;
     self->_headerMetrics.coverPhotoMetrics.logoSize.width = v13;
@@ -1236,8 +1236,8 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
     objc_copyWeak(&v90, location);
     from[0] = v9;
     from[1] = 0x3FD84984A0000000;
-    v79 = v12;
-    v80 = v19;
+    v79 = supportsLogo;
+    v80 = supportsCoverPhoto;
     v81 = 0;
     v82 = 0;
     v83 = v13;
@@ -1269,15 +1269,15 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
       self->_verifiedBusinessCoverPhotoImageView = v30;
 
       [(MUPlaceHeaderCoverPhotoView *)self->_verifiedBusinessCoverPhotoImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v32 = [(MUPlaceHeaderViewModel *)self->_viewModel coverPhotoBackgroundColor];
-      v33 = v32;
-      if (!v32)
+      coverPhotoBackgroundColor = [(MUPlaceHeaderViewModel *)self->_viewModel coverPhotoBackgroundColor];
+      v33 = coverPhotoBackgroundColor;
+      if (!coverPhotoBackgroundColor)
       {
         v33 = +[MUInfoCardStyle punchoutButtonPlatterColor];
       }
 
       [(MUPlaceHeaderCoverPhotoView *)self->_verifiedBusinessCoverPhotoImageView setBackgroundColor:v33];
-      if (!v32)
+      if (!coverPhotoBackgroundColor)
       {
       }
 
@@ -1295,18 +1295,18 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
       self->_verifiedBusinessLogoImageView = v34;
 
       [(MUVerifiedLogoImageView *)self->_verifiedBusinessLogoImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v36 = [(MUVerifiedLogoImageView *)self->_verifiedBusinessLogoImageView image];
-      [v36 setAccessibilityIdentifier:@"PlaceHeaderLogoImage"];
+      image = [(MUVerifiedLogoImageView *)self->_verifiedBusinessLogoImageView image];
+      [image setAccessibilityIdentifier:@"PlaceHeaderLogoImage"];
 
-      v37 = [(MUPlaceHeaderViewModel *)self->_viewModel logoBackgroundColor];
-      v38 = v37;
-      if (!v37)
+      logoBackgroundColor = [(MUPlaceHeaderViewModel *)self->_viewModel logoBackgroundColor];
+      v38 = logoBackgroundColor;
+      if (!logoBackgroundColor)
       {
         v38 = +[MUInfoCardStyle verifiedLogoBackgroundColor];
       }
 
       [(MUVerifiedLogoImageView *)self->_verifiedBusinessLogoImageView setBackgroundColor:v38];
-      if (!v37)
+      if (!logoBackgroundColor)
       {
       }
 
@@ -1331,9 +1331,9 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
     if ([(MUPlaceHeaderViewModel *)self->_viewModel supportsCoverPhoto])
     {
       [(MUCardButton *)self->_shareButton setBlurBackground:1];
-      v41 = [(MUPlaceHeaderViewModel *)self->_viewModel supportsCoverPhoto];
+      supportsCoverPhoto2 = [(MUPlaceHeaderViewModel *)self->_viewModel supportsCoverPhoto];
       v42 = 8.0;
-      if (v41)
+      if (supportsCoverPhoto2)
       {
         v43 = 8.0;
       }
@@ -1358,17 +1358,17 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
 
     if ([(MUPlaceHeaderViewModel *)self->_viewModel supportsCoverPhoto])
     {
-      v46 = self->_verifiedBusinessCoverPhotoImageView;
+      selfCopy = self->_verifiedBusinessCoverPhotoImageView;
       v47 = self->_shareButton;
     }
 
     else
     {
       v47 = self->_shareButton;
-      v46 = self;
+      selfCopy = self;
     }
 
-    [v46 addSubview:v47];
+    [selfCopy addSubview:v47];
   }
 
   v48 = [[MUFadingMarqueeLabel alloc] initWithInterval:60.0];
@@ -1384,8 +1384,8 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
   [(MUFadingMarqueeLabel *)self->_titleLabel setAccessibilityIdentifier:@"PlaceHeaderTitle"];
   [(MUFadingMarqueeLabel *)self->_titleLabel setLineBreakStrategy:1];
   [(MUPlaceHeaderView *)self addSubview:self->_titleLabel];
-  v51 = [(MUPlaceHeaderViewModel *)self->_viewModel placeSecondaryName];
-  v52 = [v51 length];
+  placeSecondaryName = [(MUPlaceHeaderViewModel *)self->_viewModel placeSecondaryName];
+  v52 = [placeSecondaryName length];
 
   if (v52)
   {
@@ -1428,8 +1428,8 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
     objc_destroyWeak(from);
   }
 
-  v63 = [(MUPlaceHeaderViewModel *)self->_viewModel transitLabelItems];
-  v64 = [v63 count];
+  transitLabelItems = [(MUPlaceHeaderViewModel *)self->_viewModel transitLabelItems];
+  v64 = [transitLabelItems count];
 
   if (v64)
   {
@@ -1438,8 +1438,8 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
     self->_transitInfoLabelView = v65;
 
     [(MKTransitInfoLabelView *)self->_transitInfoLabelView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v67 = [(MUPlaceHeaderViewModel *)self->_viewModel transitLabelItems];
-    [(MKTransitInfoLabelView *)self->_transitInfoLabelView setLabelItems:v67];
+    transitLabelItems2 = [(MUPlaceHeaderViewModel *)self->_viewModel transitLabelItems];
+    [(MKTransitInfoLabelView *)self->_transitInfoLabelView setLabelItems:transitLabelItems2];
 
     [(MKTransitInfoLabelView *)self->_transitInfoLabelView setAccessibilityIdentifier:@"PlaceHeaderTransitInfo"];
     [(MUPlaceHeaderView *)self addSubview:self->_transitInfoLabelView];
@@ -1447,15 +1447,15 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
 
   if ([(MUPlaceHeaderViewModel *)self->_viewModel isVerified])
   {
-    v68 = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
+    _mapsui_defaultLabel = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
     verifiedLabel = self->_verifiedLabel;
-    self->_verifiedLabel = v68;
+    self->_verifiedLabel = _mapsui_defaultLabel;
 
     [(UILabel *)self->_verifiedLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)self->_verifiedLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)self->_verifiedLabel setNumberOfLines:0];
-    v70 = [(MUPlaceHeaderView *)self _verifiedAttributedString];
-    [(UILabel *)self->_verifiedLabel setAttributedText:v70];
+    _verifiedAttributedString = [(MUPlaceHeaderView *)self _verifiedAttributedString];
+    [(UILabel *)self->_verifiedLabel setAttributedText:_verifiedAttributedString];
 
     [(UILabel *)self->_verifiedLabel setAccessibilityIdentifier:@"PlaceHeaderVerifiedLabel"];
     [(MUPlaceHeaderView *)self addSubview:self->_verifiedLabel];
@@ -1463,15 +1463,15 @@ void __38__MUPlaceHeaderView__updateAppearance__block_invoke(uint64_t a1)
 
   if ([(MUPlaceHeaderViewModel *)self->_viewModel supportsContactAddressDescription])
   {
-    v71 = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
+    _mapsui_defaultLabel2 = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
     contactAddressDescription = self->_contactAddressDescription;
-    self->_contactAddressDescription = v71;
+    self->_contactAddressDescription = _mapsui_defaultLabel2;
 
     [(UILabel *)self->_contactAddressDescription setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)self->_contactAddressDescription setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)self->_contactAddressDescription setNumberOfLines:0];
-    v73 = [(MUPlaceHeaderViewModel *)self->_viewModel addressDescriptionForContact];
-    [(UILabel *)self->_contactAddressDescription setAttributedText:v73];
+    addressDescriptionForContact = [(MUPlaceHeaderViewModel *)self->_viewModel addressDescriptionForContact];
+    [(UILabel *)self->_contactAddressDescription setAttributedText:addressDescriptionForContact];
 
     [(UILabel *)self->_contactAddressDescription setAccessibilityIdentifier:@"ContactAddressDescriptionLabel"];
     [(MUPlaceHeaderView *)self addSubview:self->_contactAddressDescription];
@@ -1521,33 +1521,33 @@ void __35__MUPlaceHeaderView__setupSubviews__block_invoke_2(uint64_t a1)
   [(MUPlaceHeaderView *)&v4 dealloc];
 }
 
-- (MUPlaceHeaderView)initWithViewModel:(id)a3 coverPhotoOptions:(id)a4 trailingConstraintProvider:(id)a5 paddingConstraintProvider:(id)a6
+- (MUPlaceHeaderView)initWithViewModel:(id)model coverPhotoOptions:(id)options trailingConstraintProvider:(id)provider paddingConstraintProvider:(id)constraintProvider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  modelCopy = model;
+  optionsCopy = options;
+  providerCopy = provider;
+  constraintProviderCopy = constraintProvider;
   v23.receiver = self;
   v23.super_class = MUPlaceHeaderView;
   v15 = [(MUPlaceHeaderView *)&v23 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_viewModel, a3);
-    objc_storeStrong(&v16->_coverPhotoOptions, a4);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_viewModel, model);
+    objc_storeStrong(&v16->_coverPhotoOptions, options);
+    v17 = [providerCopy copy];
     trailingConstraintProvider = v16->_trailingConstraintProvider;
     v16->_trailingConstraintProvider = v17;
 
-    v19 = [v14 copy];
+    v19 = [constraintProviderCopy copy];
     paddingConstraintProvider = v16->_paddingConstraintProvider;
     v16->_paddingConstraintProvider = v19;
 
     [(MUPlaceHeaderView *)v16 setAccessibilityIdentifier:@"PlaceHeaderView"];
     [(MUPlaceHeaderView *)v16 _setupSubviews];
     [(MUPlaceHeaderView *)v16 _setupConstraints];
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v16 selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
 
     [(MUPlaceHeaderView *)v16 _updateAppearance];
   }

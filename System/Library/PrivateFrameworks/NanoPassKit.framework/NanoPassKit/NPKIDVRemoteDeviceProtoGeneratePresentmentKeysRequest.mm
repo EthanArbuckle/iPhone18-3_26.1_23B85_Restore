@@ -1,33 +1,33 @@
 @interface NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addConfiguredPartitionsIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addConfiguredPartitionsIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest
 
-- (void)addConfiguredPartitionsIdentifiers:(id)a3
+- (void)addConfiguredPartitionsIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   configuredPartitionsIdentifiers = self->_configuredPartitionsIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!configuredPartitionsIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_configuredPartitionsIdentifiers;
     self->_configuredPartitionsIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     configuredPartitionsIdentifiers = self->_configuredPartitionsIdentifiers;
   }
 
-  [(NSMutableArray *)configuredPartitionsIdentifiers addObject:v4];
+  [(NSMutableArray *)configuredPartitionsIdentifiers addObject:identifiersCopy];
 }
 
 - (id)description
@@ -36,20 +36,20 @@
   v8.receiver = self;
   v8.super_class = NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest;
   v4 = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest *)&v8 description];
-  v5 = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   credentialIdentifier = self->_credentialIdentifier;
   if (credentialIdentifier)
   {
-    [v3 setObject:credentialIdentifier forKey:@"credentialIdentifier"];
+    [dictionary setObject:credentialIdentifier forKey:@"credentialIdentifier"];
   }
 
   configuredPartitionsIdentifiers = self->_configuredPartitionsIdentifiers;
@@ -67,10 +67,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_credentialIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -117,41 +117,41 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_credentialIdentifier)
   {
-    [v8 setCredentialIdentifier:?];
+    [toCopy setCredentialIdentifier:?];
   }
 
   if ([(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest *)self configuredPartitionsIdentifiersCount])
   {
-    [v8 clearConfiguredPartitionsIdentifiers];
-    v4 = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest *)self configuredPartitionsIdentifiersCount];
-    if (v4)
+    [toCopy clearConfiguredPartitionsIdentifiers];
+    configuredPartitionsIdentifiersCount = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest *)self configuredPartitionsIdentifiersCount];
+    if (configuredPartitionsIdentifiersCount)
     {
-      v5 = v4;
+      v5 = configuredPartitionsIdentifiersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest *)self configuredPartitionsIdentifiersAtIndex:i];
-        [v8 addConfiguredPartitionsIdentifiers:v7];
+        [toCopy addConfiguredPartitionsIdentifiers:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 6) = self->_numKeys;
-    *(v8 + 28) |= 1u;
+    *(toCopy + 6) = self->_numKeys;
+    *(toCopy + 28) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_credentialIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_credentialIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -175,7 +175,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addConfiguredPartitionsIdentifiers:v13];
 
         ++v12;
@@ -198,16 +198,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   credentialIdentifier = self->_credentialIdentifier;
-  if (credentialIdentifier | *(v4 + 2))
+  if (credentialIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)credentialIdentifier isEqual:?])
     {
@@ -216,7 +216,7 @@
   }
 
   configuredPartitionsIdentifiers = self->_configuredPartitionsIdentifiers;
-  if (configuredPartitionsIdentifiers | *(v4 + 1))
+  if (configuredPartitionsIdentifiers | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)configuredPartitionsIdentifiers isEqual:?])
     {
@@ -224,10 +224,10 @@
     }
   }
 
-  v7 = (*(v4 + 28) & 1) == 0;
+  v7 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) != 0 && self->_numKeys == *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) != 0 && self->_numKeys == *(equalCopy + 6))
     {
       v7 = 1;
       goto LABEL_11;
@@ -259,11 +259,11 @@ LABEL_11:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(NPKIDVRemoteDeviceProtoGeneratePresentmentKeysRequest *)self setCredentialIdentifier:?];
   }
@@ -272,7 +272,7 @@ LABEL_11:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -296,9 +296,9 @@ LABEL_11:
     while (v7);
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_numKeys = *(v4 + 6);
+    self->_numKeys = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 

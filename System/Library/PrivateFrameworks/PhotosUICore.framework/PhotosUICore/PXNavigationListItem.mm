@@ -1,10 +1,10 @@
 @interface PXNavigationListItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNavigationListItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNavigationListItem:(id)item;
 - (NSString)description;
 - (NSString)visualDescription;
-- (PXNavigationListItem)initWithIdentifier:(id)a3 title:(id)a4 accessoryTitle:(id)a5 reorderable:(BOOL)a6 topLevelIdentifier:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PXNavigationListItem)initWithIdentifier:(id)identifier title:(id)title accessoryTitle:(id)accessoryTitle reorderable:(BOOL)reorderable topLevelIdentifier:(id)levelIdentifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -14,51 +14,51 @@
 {
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
-  v5 = [(PXNavigationListItem *)self title];
-  v6 = [(PXNavigationListItem *)self identifier];
-  v7 = [(PXNavigationListItem *)self isReorderable];
+  title = [(PXNavigationListItem *)self title];
+  identifier = [(PXNavigationListItem *)self identifier];
+  isReorderable = [(PXNavigationListItem *)self isReorderable];
   v8 = @"NO";
-  if (v7)
+  if (isReorderable)
   {
     v8 = @"YES";
   }
 
   v9 = v8;
-  v10 = [v3 stringWithFormat:@"<%@: %p title = %@, identifier = %@, reorderable = %@", v4, self, v5, v6, v9];;
+  v10 = [v3 stringWithFormat:@"<%@: %p title = %@, identifier = %@, reorderable = %@", v4, self, title, identifier, v9];;
 
-  v11 = [(PXNavigationListItem *)self topLevelIdentifier];
+  topLevelIdentifier = [(PXNavigationListItem *)self topLevelIdentifier];
 
-  if (v11)
+  if (topLevelIdentifier)
   {
-    v12 = [(PXNavigationListItem *)self topLevelIdentifier];
-    [v10 appendFormat:@", topLevelIdentifier = %@", v12];
+    topLevelIdentifier2 = [(PXNavigationListItem *)self topLevelIdentifier];
+    [v10 appendFormat:@", topLevelIdentifier = %@", topLevelIdentifier2];
   }
 
-  v13 = [(PXNavigationListItem *)self glyphImageName];
+  glyphImageName = [(PXNavigationListItem *)self glyphImageName];
 
-  if (v13)
+  if (glyphImageName)
   {
-    v14 = [(PXNavigationListItem *)self glyphImageName];
-    [v10 appendFormat:@", glyphImageName = %@", v14];
+    glyphImageName2 = [(PXNavigationListItem *)self glyphImageName];
+    [v10 appendFormat:@", glyphImageName = %@", glyphImageName2];
   }
 
-  v15 = [(PXNavigationListItem *)self accessoryTitle];
+  accessoryTitle = [(PXNavigationListItem *)self accessoryTitle];
 
-  if (v15)
+  if (accessoryTitle)
   {
-    v16 = [(PXNavigationListItem *)self accessoryTitle];
-    [v10 appendFormat:@", accessoryTitle = %@", v16];
+    accessoryTitle2 = [(PXNavigationListItem *)self accessoryTitle];
+    [v10 appendFormat:@", accessoryTitle = %@", accessoryTitle2];
   }
 
-  v17 = [(PXNavigationListItem *)self lockState];
-  if (v17 > 2)
+  lockState = [(PXNavigationListItem *)self lockState];
+  if (lockState > 2)
   {
     v18 = @"Unknown";
   }
 
   else
   {
-    v18 = off_1E77363C0[v17];
+    v18 = off_1E77363C0[lockState];
   }
 
   [v10 appendFormat:@", lockState = %@>", v18];
@@ -68,24 +68,24 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PXNavigationListItem *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(PXNavigationListItem *)self identifier];
+  v4 = [identifier hash];
 
-  v5 = [(PXNavigationListItem *)self title];
-  v6 = [v5 hash] ^ v4;
+  title = [(PXNavigationListItem *)self title];
+  v6 = [title hash] ^ v4;
 
-  v7 = [(PXNavigationListItem *)self accessoryTitle];
-  v8 = [v7 hash];
+  accessoryTitle = [(PXNavigationListItem *)self accessoryTitle];
+  v8 = [accessoryTitle hash];
 
-  v9 = [(PXNavigationListItem *)self glyphImageName];
-  v10 = v6 ^ v8 ^ [v9 hash];
+  glyphImageName = [(PXNavigationListItem *)self glyphImageName];
+  v10 = v6 ^ v8 ^ [glyphImageName hash];
 
-  v11 = [(PXNavigationListItem *)self topLevelIdentifier];
-  v12 = [v11 hash];
+  topLevelIdentifier = [(PXNavigationListItem *)self topLevelIdentifier];
+  v12 = [topLevelIdentifier hash];
 
-  v13 = [(PXNavigationListItem *)self isDraggable];
+  isDraggable = [(PXNavigationListItem *)self isDraggable];
   v14 = 2;
-  if (!v13)
+  if (!isDraggable)
   {
     v14 = 0;
   }
@@ -101,25 +101,25 @@
     v16 = 0;
   }
 
-  v17 = [(PXNavigationListItem *)self isRenamable];
+  isRenamable = [(PXNavigationListItem *)self isRenamable];
   v18 = 8;
-  if (!v17)
+  if (!isRenamable)
   {
     v18 = 0;
   }
 
   v19 = v16 ^ v18;
-  v20 = [(PXNavigationListItem *)self isExpandable];
+  isExpandable = [(PXNavigationListItem *)self isExpandable];
   v21 = 16;
-  if (!v20)
+  if (!isExpandable)
   {
     v21 = 0;
   }
 
   v22 = v15 ^ v19 ^ v21;
-  v23 = [(PXNavigationListItem *)self isGroup];
+  isGroup = [(PXNavigationListItem *)self isGroup];
   v24 = 32;
-  if (!v23)
+  if (!isGroup)
   {
     v24 = 0;
   }
@@ -135,32 +135,32 @@
     v26 = 0;
   }
 
-  v27 = [(PXNavigationListItem *)self isDeletable];
+  isDeletable = [(PXNavigationListItem *)self isDeletable];
   v28 = 256;
-  if (!v27)
+  if (!isDeletable)
   {
     v28 = 0;
   }
 
   v29 = v26 ^ v28;
-  v30 = [(PXNavigationListItem *)self displayInline];
+  displayInline = [(PXNavigationListItem *)self displayInline];
   v31 = 512;
-  if (!v30)
+  if (!displayInline)
   {
     v31 = 0;
   }
 
   v32 = v25 ^ v29 ^ v31 ^ ([(PXNavigationListItem *)self lockState]<< 10);
-  v33 = [(PXNavigationListItem *)self collection];
-  v34 = [v33 hash];
+  collection = [(PXNavigationListItem *)self collection];
+  v34 = [collection hash];
 
   return v32 ^ v34;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -168,34 +168,34 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PXNavigationListItem *)self isEqualToNavigationListItem:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PXNavigationListItem *)self isEqualToNavigationListItem:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToNavigationListItem:(id)a3
+- (BOOL)isEqualToNavigationListItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PXNavigationListItem *)self identifier];
-  v6 = [v4 identifier];
-  v7 = [v5 isEqualToString:v6];
+  itemCopy = item;
+  identifier = [(PXNavigationListItem *)self identifier];
+  identifier2 = [itemCopy identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if (!v7)
   {
     goto LABEL_29;
   }
 
-  v8 = [(PXNavigationListItem *)self title];
-  v9 = [v4 title];
-  v10 = v9;
-  if (v8 == v9)
+  title = [(PXNavigationListItem *)self title];
+  title2 = [itemCopy title];
+  v10 = title2;
+  if (title == title2)
   {
   }
 
   else
   {
-    v11 = [v8 isEqualToString:v9];
+    v11 = [title isEqualToString:title2];
 
     if ((v11 & 1) == 0)
     {
@@ -205,16 +205,16 @@ LABEL_29:
     }
   }
 
-  v12 = [(PXNavigationListItem *)self accessoryTitle];
-  v13 = [v4 accessoryTitle];
-  v14 = v13;
-  if (v12 == v13)
+  accessoryTitle = [(PXNavigationListItem *)self accessoryTitle];
+  accessoryTitle2 = [itemCopy accessoryTitle];
+  v14 = accessoryTitle2;
+  if (accessoryTitle == accessoryTitle2)
   {
   }
 
   else
   {
-    v15 = [v12 isEqualToString:v13];
+    v15 = [accessoryTitle isEqualToString:accessoryTitle2];
 
     if ((v15 & 1) == 0)
     {
@@ -222,16 +222,16 @@ LABEL_29:
     }
   }
 
-  v16 = [(PXNavigationListItem *)self glyphImageName];
-  v17 = [v4 glyphImageName];
-  v18 = v17;
-  if (v16 == v17)
+  glyphImageName = [(PXNavigationListItem *)self glyphImageName];
+  glyphImageName2 = [itemCopy glyphImageName];
+  v18 = glyphImageName2;
+  if (glyphImageName == glyphImageName2)
   {
   }
 
   else
   {
-    v19 = [v16 isEqualToString:v17];
+    v19 = [glyphImageName isEqualToString:glyphImageName2];
 
     if ((v19 & 1) == 0)
     {
@@ -239,16 +239,16 @@ LABEL_29:
     }
   }
 
-  v20 = [(PXNavigationListItem *)self topLevelIdentifier];
-  v21 = [v4 topLevelIdentifier];
-  v22 = v21;
-  if (v20 == v21)
+  topLevelIdentifier = [(PXNavigationListItem *)self topLevelIdentifier];
+  topLevelIdentifier2 = [itemCopy topLevelIdentifier];
+  v22 = topLevelIdentifier2;
+  if (topLevelIdentifier == topLevelIdentifier2)
   {
   }
 
   else
   {
-    v23 = [v20 isEqualToString:v21];
+    v23 = [topLevelIdentifier isEqualToString:topLevelIdentifier2];
 
     if ((v23 & 1) == 0)
     {
@@ -256,72 +256,72 @@ LABEL_29:
     }
   }
 
-  v24 = [(PXNavigationListItem *)self isDraggable];
-  if (v24 != [v4 isDraggable])
+  isDraggable = [(PXNavigationListItem *)self isDraggable];
+  if (isDraggable != [itemCopy isDraggable])
   {
     goto LABEL_29;
   }
 
-  v25 = [(PXNavigationListItem *)self isReorderable];
-  if (v25 != [v4 isReorderable])
+  isReorderable = [(PXNavigationListItem *)self isReorderable];
+  if (isReorderable != [itemCopy isReorderable])
   {
     goto LABEL_29;
   }
 
-  v26 = [(PXNavigationListItem *)self isRemovable];
-  if (v26 != [v4 isRemovable])
+  isRemovable = [(PXNavigationListItem *)self isRemovable];
+  if (isRemovable != [itemCopy isRemovable])
   {
     goto LABEL_29;
   }
 
-  v27 = [(PXNavigationListItem *)self isRenamable];
-  if (v27 != [v4 isRenamable])
+  isRenamable = [(PXNavigationListItem *)self isRenamable];
+  if (isRenamable != [itemCopy isRenamable])
   {
     goto LABEL_29;
   }
 
-  v28 = [(PXNavigationListItem *)self isExpandable];
-  if (v28 != [v4 isExpandable])
+  isExpandable = [(PXNavigationListItem *)self isExpandable];
+  if (isExpandable != [itemCopy isExpandable])
   {
     goto LABEL_29;
   }
 
-  v29 = [(PXNavigationListItem *)self isDeletable];
-  if (v29 != [v4 isDeletable])
+  isDeletable = [(PXNavigationListItem *)self isDeletable];
+  if (isDeletable != [itemCopy isDeletable])
   {
     goto LABEL_29;
   }
 
-  v30 = [(PXNavigationListItem *)self isGroup];
-  if (v30 != [v4 isGroup])
+  isGroup = [(PXNavigationListItem *)self isGroup];
+  if (isGroup != [itemCopy isGroup])
   {
     goto LABEL_29;
   }
 
-  v31 = [(PXNavigationListItem *)self indentationLevel];
-  if (v31 != [v4 indentationLevel])
+  indentationLevel = [(PXNavigationListItem *)self indentationLevel];
+  if (indentationLevel != [itemCopy indentationLevel])
   {
     goto LABEL_29;
   }
 
-  v32 = [(PXNavigationListItem *)self lockState];
-  if (v32 != [v4 lockState])
+  lockState = [(PXNavigationListItem *)self lockState];
+  if (lockState != [itemCopy lockState])
   {
     goto LABEL_29;
   }
 
-  v33 = [(PXNavigationListItem *)self collection];
-  v34 = [v4 collection];
-  if (v33 == v34)
+  collection = [(PXNavigationListItem *)self collection];
+  collection2 = [itemCopy collection];
+  if (collection == collection2)
   {
     v37 = 1;
   }
 
   else
   {
-    v35 = v34;
-    v36 = [v33 isEqual:v34];
-    v34 = v35;
+    v35 = collection2;
+    v36 = [collection isEqual:collection2];
+    collection2 = v35;
     v37 = v36;
   }
 
@@ -329,15 +329,15 @@ LABEL_30:
   return v37;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(PXNavigationListItem *)self identifier];
-  v6 = [(PXNavigationListItem *)self title];
-  v7 = [(PXNavigationListItem *)self accessoryTitle];
-  v8 = [(PXNavigationListItem *)self isReorderable];
-  v9 = [(PXNavigationListItem *)self topLevelIdentifier];
-  v10 = [v4 initWithIdentifier:v5 title:v6 accessoryTitle:v7 reorderable:v8 topLevelIdentifier:v9];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(PXNavigationListItem *)self identifier];
+  title = [(PXNavigationListItem *)self title];
+  accessoryTitle = [(PXNavigationListItem *)self accessoryTitle];
+  isReorderable = [(PXNavigationListItem *)self isReorderable];
+  topLevelIdentifier = [(PXNavigationListItem *)self topLevelIdentifier];
+  v10 = [v4 initWithIdentifier:identifier title:title accessoryTitle:accessoryTitle reorderable:isReorderable topLevelIdentifier:topLevelIdentifier];
 
   return v10;
 }
@@ -361,29 +361,29 @@ LABEL_30:
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = v3;
-  v7 = [(PXNavigationListItem *)self title];
-  v8 = [(PXNavigationListItem *)self accessoryTitle];
-  v9 = [v5 stringWithFormat:@"<%p> %@%@%@ (%@)", self, v4, v6, v7, v8];
+  title = [(PXNavigationListItem *)self title];
+  accessoryTitle = [(PXNavigationListItem *)self accessoryTitle];
+  v9 = [v5 stringWithFormat:@"<%p> %@%@%@ (%@)", self, v4, v6, title, accessoryTitle];
 
   return v9;
 }
 
-- (PXNavigationListItem)initWithIdentifier:(id)a3 title:(id)a4 accessoryTitle:(id)a5 reorderable:(BOOL)a6 topLevelIdentifier:(id)a7
+- (PXNavigationListItem)initWithIdentifier:(id)identifier title:(id)title accessoryTitle:(id)accessoryTitle reorderable:(BOOL)reorderable topLevelIdentifier:(id)levelIdentifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  identifierCopy = identifier;
+  titleCopy = title;
+  accessoryTitleCopy = accessoryTitle;
+  levelIdentifierCopy = levelIdentifier;
   v27.receiver = self;
   v27.super_class = PXNavigationListItem;
   v16 = [(PXNavigationListItem *)&v27 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [identifierCopy copy];
     identifier = v16->_identifier;
     v16->_identifier = v17;
 
-    v19 = [v13 copy];
+    v19 = [titleCopy copy];
     v20 = v19;
     if (v19)
     {
@@ -397,12 +397,12 @@ LABEL_30:
 
     objc_storeStrong(&v16->_title, v21);
 
-    v22 = [v14 copy];
+    v22 = [accessoryTitleCopy copy];
     accessoryTitle = v16->_accessoryTitle;
     v16->_accessoryTitle = v22;
 
-    v16->_reorderable = a6;
-    v24 = [v15 copy];
+    v16->_reorderable = reorderable;
+    v24 = [levelIdentifierCopy copy];
     topLevelIdentifier = v16->_topLevelIdentifier;
     v16->_topLevelIdentifier = v24;
   }

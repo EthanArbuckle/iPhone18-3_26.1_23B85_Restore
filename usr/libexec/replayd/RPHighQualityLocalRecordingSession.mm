@@ -6,35 +6,35 @@
 - (id)getSharedAVSystemController;
 - (id)outputPath;
 - (id)saveDestinationString;
-- (id)stringWithTimeInterval:(double)a3;
+- (id)stringWithTimeInterval:(double)interval;
 - (void)addCallStatusObservers;
 - (void)addMediaServicesResetObserver;
-- (void)captureDidFailWithError:(id)a3;
+- (void)captureDidFailWithError:(id)error;
 - (void)clearBackgroundActivityUI;
 - (void)clearFrontmostAudioOrVideoCall;
 - (void)clearSystemRecordingUI;
-- (void)executeOnMainQueue:(id)a3;
+- (void)executeOnMainQueue:(id)queue;
 - (void)handleDeviceLockedWarning;
-- (void)handleMediaServicesReset:(id)a3;
+- (void)handleMediaServicesReset:(id)reset;
 - (void)handleMemoryWarning;
-- (void)handleResumeCaptureWithCompletionHandler:(id)a3;
+- (void)handleResumeCaptureWithCompletionHandler:(id)handler;
 - (void)handleResumeContextIDFailure;
 - (void)handleSystemAlertStop;
-- (void)handleTUCallCenterNotification:(id)a3;
-- (void)handleTimerDidUpdate:(id)a3;
+- (void)handleTUCallCenterNotification:(id)notification;
+- (void)handleTimerDidUpdate:(id)update;
 - (void)pauseRecordingTimer;
 - (void)pauseSession;
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3 transform:(CGAffineTransform *)a4;
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer transform:(CGAffineTransform *)transform;
 - (void)removeCallStatusObservers;
 - (void)resumeRecordingTimer;
 - (void)setupBackgroundActivityUI;
-- (void)startHQLRRecordingWithMicrophoneID:(id)a3 cameraDeviceID:(id)a4 destination:(unint64_t)a5 fileURL:(id)a6 sandboxExtensionTokenForFileURL:(id)a7 audioOnly:(BOOL)a8 windowSize:(CGSize)a9 handler:(id)a10;
+- (void)startHQLRRecordingWithMicrophoneID:(id)d cameraDeviceID:(id)iD destination:(unint64_t)destination fileURL:(id)l sandboxExtensionTokenForFileURL:(id)rL audioOnly:(BOOL)only windowSize:(CGSize)size handler:(id)self0;
 - (void)startRecordingTimer;
-- (void)stopHQLRRecordingWithHandler:(id)a3;
+- (void)stopHQLRRecordingWithHandler:(id)handler;
 - (void)stopRecordingTimer;
-- (void)updateCallActive:(id)a3;
+- (void)updateCallActive:(id)active;
 - (void)updateFrontmostAudioOrVideoCall;
-- (void)updateRecordingTimer:(id)a3;
+- (void)updateRecordingTimer:(id)timer;
 @end
 
 @implementation RPHighQualityLocalRecordingSession
@@ -47,49 +47,49 @@
   return v3;
 }
 
-- (void)startHQLRRecordingWithMicrophoneID:(id)a3 cameraDeviceID:(id)a4 destination:(unint64_t)a5 fileURL:(id)a6 sandboxExtensionTokenForFileURL:(id)a7 audioOnly:(BOOL)a8 windowSize:(CGSize)a9 handler:(id)a10
+- (void)startHQLRRecordingWithMicrophoneID:(id)d cameraDeviceID:(id)iD destination:(unint64_t)destination fileURL:(id)l sandboxExtensionTokenForFileURL:(id)rL audioOnly:(BOOL)only windowSize:(CGSize)size handler:(id)self0
 {
-  height = a9.height;
-  width = a9.width;
-  v18 = a4;
-  v19 = a6;
-  v55 = a7;
-  v20 = a10;
-  v21 = a3;
+  height = size.height;
+  width = size.width;
+  iDCopy = iD;
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
+  dCopy = d;
   [(RPSession *)self setWindowSize:width, height];
-  v22 = [v21 copy];
+  v22 = [dCopy copy];
 
   microphoneDeviceID = self->_microphoneDeviceID;
   self->_microphoneDeviceID = v22;
 
-  v24 = [v18 copy];
+  v24 = [iDCopy copy];
   cameraDeviceID = self->_cameraDeviceID;
   self->_cameraDeviceID = v24;
 
-  self->_saveDestination = a5;
-  objc_storeStrong(&self->_fileURL, a6);
-  objc_storeStrong(&self->_sandboxExtensionTokenForFileURL, a7);
-  self->_audioOnly = a8;
+  self->_saveDestination = destination;
+  objc_storeStrong(&self->_fileURL, l);
+  objc_storeStrong(&self->_sandboxExtensionTokenForFileURL, rL);
+  self->_audioOnly = only;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v26 = [NSNumber numberWithUnsignedInt:[(RPSession *)self sessionState]];
-    v27 = [(RPHighQualityLocalRecordingSession *)self saveDestinationString];
+    saveDestinationString = [(RPHighQualityLocalRecordingSession *)self saveDestinationString];
     *buf = 136447234;
     v62 = "[RPHighQualityLocalRecordingSession startHQLRRecordingWithMicrophoneID:cameraDeviceID:destination:fileURL:sandboxExtensionTokenForFileURL:audioOnly:windowSize:handler:]";
     v63 = 1024;
     v64 = 84;
     v65 = 2112;
-    v66 = self;
+    selfCopy = self;
     v67 = 2112;
     v68 = v26;
     v69 = 2112;
-    v70 = v27;
+    v70 = saveDestinationString;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ starting in session state=%@ saveDestination=%@", buf, 0x30u);
   }
 
-  [(RPSession *)self setMicrophoneEnabled:v21 != 0];
-  self->_waitingForFirstVideoSample = v18 != 0;
-  v28 = [(RPSession *)self checkCaptureRequirementsWithMicrophoneEnabled:v21 != 0 cameraEnabled:width windowSize:height];
+  [(RPSession *)self setMicrophoneEnabled:dCopy != 0];
+  self->_waitingForFirstVideoSample = iDCopy != 0;
+  v28 = [(RPSession *)self checkCaptureRequirementsWithMicrophoneEnabled:dCopy != 0 cameraEnabled:width windowSize:height];
   if (v28)
   {
     if (dword_1000B6840 <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -104,16 +104,16 @@
     }
 
     [(RPSession *)self reportSessionEndReason:v28];
-    v20[2](v20, v28);
+    handlerCopy[2](handlerCopy, v28);
   }
 
   else
   {
-    v30 = [(RPSession *)self contextID];
+    contextID = [(RPSession *)self contextID];
     [(RPSession *)self windowSize];
     v59.receiver = self;
     v59.super_class = RPHighQualityLocalRecordingSession;
-    [(RPSession *)&v59 startWithContextID:v30 windowSize:?];
+    [(RPSession *)&v59 startWithContextID:contextID windowSize:?];
 
     v31 = +[AVSystemController sharedInstance];
     systemController = self->_systemController;
@@ -135,16 +135,16 @@
       v63 = 1024;
       v64 = 112;
       v65 = 1024;
-      LODWORD(v66) = callActive;
+      LODWORD(selfCopy) = callActive;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d initializing call active to %d", buf, 0x18u);
     }
 
-    if ([(RPSession *)self getAcknowledgementAlertResultsWithMicrophone:v21 != 0 cameraEnabled:v18 != 0])
+    if ([(RPSession *)self getAcknowledgementAlertResultsWithMicrophone:dCopy != 0 cameraEnabled:iDCopy != 0])
     {
       v36 = +[RPFeatureFlagUtility sharedInstance];
-      v37 = [v36 systemBannerEnabled];
+      systemBannerEnabled = [v36 systemBannerEnabled];
 
-      if (v37)
+      if (systemBannerEnabled)
       {
         v38 = +[RPAngelProxy sharedInstance];
         v58[0] = _NSConcreteStackBlock;
@@ -156,9 +156,9 @@
       }
 
       v39 = +[RPFeatureFlagUtility sharedInstance];
-      v40 = [v39 replayKitScreenRecordingHEVC];
+      replayKitScreenRecordingHEVC = [v39 replayKitScreenRecordingHEVC];
       v41 = &AVVideoCodecTypeHEVC;
-      if (!v40)
+      if (!replayKitScreenRecordingHEVC)
       {
         v41 = &AVVideoCodecTypeH264;
       }
@@ -169,8 +169,8 @@
       [(RPSession *)self windowSize];
       v45 = v44;
       v47 = v46;
-      v48 = [(RPHighQualityLocalRecordingSession *)self outputPath];
-      v49 = [(RPMovieWriter *)v43 initWithWindowSize:v48 outputPath:v42 videoCodecType:1718378851 audioCodecType:0 assetWriterSetting:v45, v47];
+      outputPath = [(RPHighQualityLocalRecordingSession *)self outputPath];
+      v49 = [(RPMovieWriter *)v43 initWithWindowSize:outputPath outputPath:v42 videoCodecType:1718378851 audioCodecType:0 assetWriterSetting:v45, v47];
       movieWriter = self->_movieWriter;
       self->_movieWriter = v49;
 
@@ -181,7 +181,7 @@
       v56[2] = sub_1000411D8;
       v56[3] = &unk_1000A1840;
       v56[4] = self;
-      v52 = v20;
+      v52 = handlerCopy;
 
       v57 = v52;
       [(RPMovieWriter *)v51 startWritingHandler:v56];
@@ -191,7 +191,7 @@
     {
       [(RPSession *)self setSessionState:3];
       v53 = [NSError _rpUserErrorForCode:-5803 userInfo:0];
-      v20[2](v20, v53);
+      handlerCopy[2](handlerCopy, v53);
     }
   }
 }
@@ -201,25 +201,25 @@
   saveDestination = self->_saveDestination;
   if (saveDestination == 4)
   {
-    v5 = [(NSURL *)self->_fileURL absoluteString];
+    absoluteString = [(NSURL *)self->_fileURL absoluteString];
   }
 
   else if (saveDestination == 1)
   {
-    v5 = @"Files";
+    absoluteString = @"Files";
   }
 
   else
   {
-    v5 = @"Photos";
+    absoluteString = @"Photos";
   }
 
-  return v5;
+  return absoluteString;
 }
 
-- (void)stopHQLRRecordingWithHandler:(id)a3
+- (void)stopHQLRRecordingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
@@ -227,9 +227,9 @@
     v17 = 1024;
     v18 = 224;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     v21 = 1024;
-    v22 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p stopping in session state %d", buf, 0x22u);
   }
 
@@ -244,7 +244,7 @@
     v13[2] = sub_1000418EC;
     v13[3] = &unk_1000A1840;
     v13[4] = self;
-    v14 = v4;
+    v14 = handlerCopy;
     v6 = objc_retainBlock(v13);
     v7 = v6;
     saveDestination = self->_saveDestination;
@@ -305,7 +305,7 @@
       sub_100064D1C();
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   [(RPHighQualityLocalRecordingSession *)self clearSystemRecordingUI];
@@ -325,7 +325,7 @@
   return v3;
 }
 
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3 transform:(CGAffineTransform *)a4
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer transform:(CGAffineTransform *)transform
 {
   if ([(RPSession *)self sessionState]== 4)
   {
@@ -342,23 +342,23 @@
   else
   {
     movieWriter = self->_movieWriter;
-    v8 = *&a4->c;
-    *v9 = *&a4->a;
+    v8 = *&transform->c;
+    *v9 = *&transform->a;
     *&v9[16] = v8;
-    v10 = *&a4->tx;
-    [(RPMovieWriter *)movieWriter appendVideoSampleBuffer:a3 withWindowTransform:v9];
+    v10 = *&transform->tx;
+    [(RPMovieWriter *)movieWriter appendVideoSampleBuffer:buffer withWindowTransform:v9];
   }
 }
 
-- (void)captureDidFailWithError:(id)a3
+- (void)captureDidFailWithError:(id)error
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100041ED0;
   v5[3] = &unk_1000A1348;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  errorCopy = error;
+  selfCopy = self;
+  v4 = errorCopy;
   [(RPHighQualityLocalRecordingSession *)self stopHQLRRecordingWithHandler:v5];
 }
 
@@ -369,9 +369,9 @@
   [v4 addObserver:self selector:"handleMediaServicesReset:" name:AVAudioSessionMediaServicesWereResetNotification object:v3];
 }
 
-- (void)handleMediaServicesReset:(id)a3
+- (void)handleMediaServicesReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   if (dword_1000B6840 <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100064E64();
@@ -439,17 +439,17 @@
 - (BOOL)hasSufficientFreeSpaceForRecording
 {
   v2 = +[NSFileManager defaultManager];
-  v3 = [v2 _srDeviceHasSufficientFreeSpaceForRecording];
+  _srDeviceHasSufficientFreeSpaceForRecording = [v2 _srDeviceHasSufficientFreeSpaceForRecording];
 
-  return v3;
+  return _srDeviceHasSufficientFreeSpaceForRecording;
 }
 
 - (BOOL)hasSufficientSpaceForCurrentRecording
 {
   v2 = +[NSFileManager defaultManager];
-  v3 = [v2 _srDeviceHasSufficientSpaceForCurrentRecording];
+  _srDeviceHasSufficientSpaceForCurrentRecording = [v2 _srDeviceHasSufficientSpaceForCurrentRecording];
 
-  return v3;
+  return _srDeviceHasSufficientSpaceForCurrentRecording;
 }
 
 - (void)pauseSession
@@ -462,7 +462,7 @@
     v8 = 1024;
     v9 = 416;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v3;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p pausing in session state %@", buf, 0x26u);
@@ -504,27 +504,27 @@
   }
 }
 
-- (void)handleTimerDidUpdate:(id)a3
+- (void)handleTimerDidUpdate:(id)update
 {
-  v7 = a3;
+  updateCopy = update;
   if ([(RPSession *)self sessionState]== 1 || [(RPSession *)self sessionState]== 4)
   {
     v4 = +[RPFeatureFlagUtility sharedInstance];
-    v5 = [v4 systemBannerEnabled];
+    systemBannerEnabled = [v4 systemBannerEnabled];
 
-    if (v5)
+    if (systemBannerEnabled)
     {
       v6 = +[RPAngelProxy sharedInstance];
-      [v6 updateTimer:v7];
+      [v6 updateTimer:updateCopy];
     }
 
-    [(RPClientProtocol *)self->super._clientProxy recordingTimerDidUpdate:v7];
+    [(RPClientProtocol *)self->super._clientProxy recordingTimerDidUpdate:updateCopy];
   }
 }
 
-- (void)handleResumeCaptureWithCompletionHandler:(id)a3
+- (void)handleResumeCaptureWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = [NSNumber numberWithUnsignedInt:[(RPSession *)self sessionState]];
@@ -533,7 +533,7 @@
     v19 = 1024;
     v20 = 457;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
     v24 = v5;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p resuming in session state %@", buf, 0x26u);
@@ -553,8 +553,8 @@
   v15[2] = sub_100042D78;
   v15[3] = &unk_1000A1840;
   v15[4] = self;
-  v16 = v4;
-  v14 = v4;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   [v6 startHQLRCaptureForDelegate:self micDeviceID:microphoneDeviceID cameraDeviceID:cameraDeviceID windowSize:audioOnly audioOnly:v15 didStartHandler:{v10, v12}];
 }
 
@@ -580,12 +580,12 @@
   }
 }
 
-- (void)executeOnMainQueue:(id)a3
+- (void)executeOnMainQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   if (+[NSThread isMainThread])
   {
-    v3[2](v3);
+    queueCopy[2](queueCopy);
   }
 
   else
@@ -594,7 +594,7 @@
     block[1] = 3221225472;
     block[2] = sub_100043170;
     block[3] = &unk_1000A1F28;
-    v5 = v3;
+    v5 = queueCopy;
     dispatch_sync(&_dispatch_main_q, block);
   }
 }
@@ -646,7 +646,7 @@
   [v4 removeObserver:self name:TUCallUpgradedToVideoNotification object:0];
 }
 
-- (void)handleTUCallCenterNotification:(id)a3
+- (void)handleTUCallCenterNotification:(id)notification
 {
   v9 = 0;
   v10 = &v9;
@@ -656,9 +656,9 @@
   v5[1] = 3221225472;
   v5[2] = sub_100043660;
   v5[3] = &unk_1000A23A0;
-  v4 = a3;
-  v6 = v4;
-  v7 = self;
+  notificationCopy = notification;
+  v6 = notificationCopy;
+  selfCopy = self;
   v8 = &v9;
   [(RPHighQualityLocalRecordingSession *)self executeOnMainQueue:v5];
   if (*(v10 + 24) == 1)
@@ -684,9 +684,9 @@
   return systemController;
 }
 
-- (void)updateCallActive:(id)a3
+- (void)updateCallActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136446466;
@@ -705,8 +705,8 @@
   v4 = [v3 attributeForKey:AVSystemController_CallIsActive];
 
   callActive = self->_callActive;
-  v6 = [v4 BOOLValue];
-  self->_callActive = v6;
+  bOOLValue = [v4 BOOLValue];
+  self->_callActive = bOOLValue;
   if (dword_1000B6840 <= 1)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -723,13 +723,13 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Updating callIsActive from %d to %d", &v9, 0x1Eu);
     }
 
-    v6 = self->_callActive;
+    bOOLValue = self->_callActive;
   }
 
-  if (callActive != v6)
+  if (callActive != bOOLValue)
   {
-    LOBYTE(callActive) = v6;
-    if ((v6 & 1) == 0)
+    LOBYTE(callActive) = bOOLValue;
+    if ((bOOLValue & 1) == 0)
     {
       [(RPHighQualityLocalRecordingSession *)self handleSystemAlertStop];
       LOBYTE(callActive) = self->_callActive;
@@ -771,13 +771,13 @@
   [(RPSession *)self setBackgroundActivity:v3];
 
   objc_initWeak(&location, self);
-  v4 = [(RPSession *)self backgroundActivity];
+  backgroundActivity = [(RPSession *)self backgroundActivity];
   v6 = _NSConcreteStackBlock;
   v7 = 3221225472;
   v8 = sub_100044164;
   v9 = &unk_1000A15E8;
   objc_copyWeak(&v10, &location);
-  [v4 activateWithUserInteractionHandler:&v6];
+  [backgroundActivity activateWithUserInteractionHandler:&v6];
 
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -853,7 +853,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)updateRecordingTimer:(id)a3
+- (void)updateRecordingTimer:(id)timer
 {
   if (self->_timerStartDate)
   {
@@ -866,14 +866,14 @@
   }
 }
 
-- (id)stringWithTimeInterval:(double)a3
+- (id)stringWithTimeInterval:(double)interval
 {
   v4 = objc_alloc_init(NSDateComponentsFormatter);
   [v4 setUnitsStyle:0];
   [v4 setIncludesApproximationPhrase:0];
   [v4 setIncludesTimeRemainingPhrase:0];
   [v4 setMaximumUnitCount:2];
-  if (a3 >= 60.0)
+  if (interval >= 60.0)
   {
     v5 = 240;
   }
@@ -885,15 +885,15 @@
   }
 
   [v4 setAllowedUnits:v5];
-  v6 = [v4 stringFromTimeInterval:a3];
+  v6 = [v4 stringFromTimeInterval:interval];
 
   return v6;
 }
 
 - (void)pauseRecordingTimer
 {
-  v3 = [(RPSession *)self elapsedTimeTimer];
-  if (v3)
+  elapsedTimeTimer = [(RPSession *)self elapsedTimeTimer];
+  if (elapsedTimeTimer)
   {
     timerStartDate = self->_timerStartDate;
 
@@ -917,8 +917,8 @@
 
 - (void)resumeRecordingTimer
 {
-  v3 = [(RPSession *)self elapsedTimeTimer];
-  if (v3)
+  elapsedTimeTimer = [(RPSession *)self elapsedTimeTimer];
+  if (elapsedTimeTimer)
   {
     timerPauseDate = self->_timerPauseDate;
 

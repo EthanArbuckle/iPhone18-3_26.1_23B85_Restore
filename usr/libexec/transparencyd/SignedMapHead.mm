@@ -1,27 +1,27 @@
 @interface SignedMapHead
-+ (id)signedTypeWithObject:(id)a3 verifier:(id)a4 dataStore:(id)a5;
++ (id)signedTypeWithObject:(id)object verifier:(id)verifier dataStore:(id)store;
 - (MapHead)parsedMapHead;
-- (id)copyManagedObject:(id *)a3;
-- (id)createManagedObjectWithError:(id *)a3;
+- (id)copyManagedObject:(id *)object;
+- (id)createManagedObjectWithError:(id *)error;
 - (id)diagnosticsJsonDictionary;
-- (unint64_t)verifyMMD:(double)a3 error:(id *)a4;
-- (unint64_t)verifyWithError:(id *)a3;
-- (void)setMMDVerifiedForMapHead:(unint64_t)a3 mmdError:(id)a4;
-- (void)setOverrideBeginTimeFromLogEntry:(id)a3;
+- (unint64_t)verifyMMD:(double)d error:(id *)error;
+- (unint64_t)verifyWithError:(id *)error;
+- (void)setMMDVerifiedForMapHead:(unint64_t)head mmdError:(id)error;
+- (void)setOverrideBeginTimeFromLogEntry:(id)entry;
 @end
 
 @implementation SignedMapHead
 
-+ (id)signedTypeWithObject:(id)a3 verifier:(id)a4 dataStore:(id)a5
++ (id)signedTypeWithObject:(id)object verifier:(id)verifier dataStore:(id)store
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  storeCopy = store;
+  verifierCopy = verifier;
+  objectCopy = object;
   v10 = objc_alloc_init(SignedMapHead);
-  [(SignedObjectHolder *)v10 setSignedObject:v9];
+  [(SignedObjectHolder *)v10 setSignedObject:objectCopy];
 
-  [(SignedObjectHolder *)v10 setVerifier:v8];
-  [(SignedObjectHolder *)v10 setDataStore:v7];
+  [(SignedObjectHolder *)v10 setVerifier:verifierCopy];
+  [(SignedObjectHolder *)v10 setDataStore:storeCopy];
 
   return v10;
 }
@@ -30,98 +30,98 @@
 {
   v9.receiver = self;
   v9.super_class = SignedMapHead;
-  v3 = [(SignedObjectHolder *)&v9 diagnosticsJsonDictionary];
-  v4 = [v3 mutableCopy];
+  diagnosticsJsonDictionary = [(SignedObjectHolder *)&v9 diagnosticsJsonDictionary];
+  v4 = [diagnosticsJsonDictionary mutableCopy];
 
-  v5 = [(SignedMapHead *)self parsedMapHead];
-  v6 = v5;
-  if (v5)
+  parsedMapHead = [(SignedMapHead *)self parsedMapHead];
+  v6 = parsedMapHead;
+  if (parsedMapHead)
   {
-    v7 = [v5 diagnosticsJsonDictionary];
-    [v4 setObject:v7 forKeyedSubscript:@"mapHead"];
+    diagnosticsJsonDictionary2 = [parsedMapHead diagnosticsJsonDictionary];
+    [v4 setObject:diagnosticsJsonDictionary2 forKeyedSubscript:@"mapHead"];
   }
 
   return v4;
 }
 
-- (void)setOverrideBeginTimeFromLogEntry:(id)a3
+- (void)setOverrideBeginTimeFromLogEntry:(id)entry
 {
-  v7 = a3;
-  if ([v7 hasSlh])
+  entryCopy = entry;
+  if ([entryCopy hasSlh])
   {
-    v4 = [v7 slh];
+    v4 = [entryCopy slh];
     v5 = [SignedLogHead signedTypeWithObject:v4];
 
-    v6 = [v5 parsedLogHead];
-    -[SignedMapHead setOverrideBeginTime:](self, "setOverrideBeginTime:", [v6 logBeginningMs]);
+    parsedLogHead = [v5 parsedLogHead];
+    -[SignedMapHead setOverrideBeginTime:](self, "setOverrideBeginTime:", [parsedLogHead logBeginningMs]);
   }
 }
 
-- (id)copyManagedObject:(id *)a3
+- (id)copyManagedObject:(id *)object
 {
-  v5 = [(SignedMapHead *)self parsedMapHead];
-  v6 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 application]);
+  parsedMapHead = [(SignedMapHead *)self parsedMapHead];
+  v6 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [parsedMapHead application]);
   v7 = [TransparencyApplication applicationIdentifierForValue:v6];
 
-  v8 = [(SignedObjectHolder *)self dataStore];
-  v9 = [(SignedMapHead *)self parsedMapHead];
-  v10 = [v9 mapHeadHash];
-  v11 = [(SignedMapHead *)self overrideBeginTime];
-  if (v11)
+  dataStore = [(SignedObjectHolder *)self dataStore];
+  parsedMapHead2 = [(SignedMapHead *)self parsedMapHead];
+  mapHeadHash = [parsedMapHead2 mapHeadHash];
+  overrideBeginTime = [(SignedMapHead *)self overrideBeginTime];
+  if (overrideBeginTime)
   {
-    v12 = [(SignedMapHead *)self overrideBeginTime];
+    overrideBeginTime2 = [(SignedMapHead *)self overrideBeginTime];
   }
 
   else
   {
-    v18 = [(SignedMapHead *)self parsedMapHead];
-    v12 = [v18 logBeginningMs];
+    parsedMapHead3 = [(SignedMapHead *)self parsedMapHead];
+    overrideBeginTime2 = [parsedMapHead3 logBeginningMs];
   }
 
-  v13 = [(SignedMapHead *)self parsedMapHead];
-  v14 = [v13 mapType];
-  v15 = [(SignedMapHead *)self parsedMapHead];
-  v16 = [v8 fetchTreeHead:v10 isMapHead:1 application:v7 logBeginTime:v12 logType:v14 revision:objc_msgSend(v15 error:{"revision"), a3}];
+  parsedMapHead4 = [(SignedMapHead *)self parsedMapHead];
+  mapType = [parsedMapHead4 mapType];
+  parsedMapHead5 = [(SignedMapHead *)self parsedMapHead];
+  v16 = [dataStore fetchTreeHead:mapHeadHash isMapHead:1 application:v7 logBeginTime:overrideBeginTime2 logType:mapType revision:objc_msgSend(parsedMapHead5 error:{"revision"), object}];
 
-  if (!v11)
+  if (!overrideBeginTime)
   {
   }
 
   return v16;
 }
 
-- (id)createManagedObjectWithError:(id *)a3
+- (id)createManagedObjectWithError:(id *)error
 {
-  v4 = [(SignedMapHead *)self parsedMapHead];
-  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 application]);
+  parsedMapHead = [(SignedMapHead *)self parsedMapHead];
+  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [parsedMapHead application]);
   v6 = [TransparencyApplication applicationIdentifierForValue:v5];
 
-  v7 = [(SignedObjectHolder *)self dataStore];
-  v8 = [(SignedObjectHolder *)self data];
-  v21 = [(SignedMapHead *)self overrideBeginTime];
+  dataStore = [(SignedObjectHolder *)self dataStore];
+  data = [(SignedObjectHolder *)self data];
+  overrideBeginTime = [(SignedMapHead *)self overrideBeginTime];
   v22 = v6;
-  if (v21)
+  if (overrideBeginTime)
   {
-    v20 = [(SignedMapHead *)self overrideBeginTime];
+    overrideBeginTime2 = [(SignedMapHead *)self overrideBeginTime];
   }
 
   else
   {
-    v19 = [(SignedMapHead *)self parsedMapHead];
-    v20 = [v19 logBeginningMs];
+    parsedMapHead2 = [(SignedMapHead *)self parsedMapHead];
+    overrideBeginTime2 = [parsedMapHead2 logBeginningMs];
   }
 
-  v9 = [(SignedMapHead *)self parsedMapHead];
-  v10 = [v9 mapHeadHash];
-  v11 = [(SignedMapHead *)self parsedMapHead];
-  v12 = [v11 mapType];
-  v13 = [(SignedMapHead *)self parsedMapHead];
-  v14 = [v13 revision];
-  v15 = [(SignedMapHead *)self parsedMapHead];
-  LOWORD(v18) = [v15 populating];
-  v16 = [v7 createMapHead:v8 application:v22 logBeginTime:v20 logHeadHash:v10 logType:v12 revision:v14 populating:v18 gossip:?];
+  parsedMapHead3 = [(SignedMapHead *)self parsedMapHead];
+  mapHeadHash = [parsedMapHead3 mapHeadHash];
+  parsedMapHead4 = [(SignedMapHead *)self parsedMapHead];
+  mapType = [parsedMapHead4 mapType];
+  parsedMapHead5 = [(SignedMapHead *)self parsedMapHead];
+  revision = [parsedMapHead5 revision];
+  parsedMapHead6 = [(SignedMapHead *)self parsedMapHead];
+  LOWORD(v18) = [parsedMapHead6 populating];
+  v16 = [dataStore createMapHead:data application:v22 logBeginTime:overrideBeginTime2 logHeadHash:mapHeadHash logType:mapType revision:revision populating:v18 gossip:?];
 
-  if (!v21)
+  if (!overrideBeginTime)
   {
   }
 
@@ -130,12 +130,12 @@
 
 - (MapHead)parsedMapHead
 {
-  v3 = [(SignedMapHead *)self mapHead];
-  if (v3 && (v4 = v3, -[SignedMapHead mapHead](self, "mapHead"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
+  mapHead = [(SignedMapHead *)self mapHead];
+  if (mapHead && (v4 = mapHead, -[SignedMapHead mapHead](self, "mapHead"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
   {
-    v7 = [(SignedMapHead *)self mapHead];
+    mapHead2 = [(SignedMapHead *)self mapHead];
     v13 = 0;
-    v8 = [(TransparencyGPBMessage *)MapHead parseFromData:v7 error:&v13];
+    v8 = [(TransparencyGPBMessage *)MapHead parseFromData:mapHead2 error:&v13];
     v9 = v13;
 
     if (v9)
@@ -175,7 +175,7 @@
   return v8;
 }
 
-- (unint64_t)verifyWithError:(id *)a3
+- (unint64_t)verifyWithError:(id *)error
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -183,58 +183,58 @@
   v12[3] = &unk_100328178;
   v12[4] = self;
   v5 = objc_retainBlock(v12);
-  v6 = [(SignedMapHead *)self parsedMapHead];
-  v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 application]);
+  parsedMapHead = [(SignedMapHead *)self parsedMapHead];
+  v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [parsedMapHead application]);
   v8 = [TransparencyApplication applicationIdentifierForValue:v7];
 
   v9 = [TransparencyAnalytics formatEventName:@"VerifySMHEvent" application:v8];
-  v10 = [TransparencyAnalytics doKTResultWithAnalyticsForEventName:v9 validateType:3 error:a3 block:v5];
+  v10 = [TransparencyAnalytics doKTResultWithAnalyticsForEventName:v9 validateType:3 error:error block:v5];
 
   return v10;
 }
 
-- (void)setMMDVerifiedForMapHead:(unint64_t)a3 mmdError:(id)a4
+- (void)setMMDVerifiedForMapHead:(unint64_t)head mmdError:(id)error
 {
-  v6 = a4;
-  v7 = [(SignedObjectHolder *)self dataStore];
+  errorCopy = error;
+  dataStore = [(SignedObjectHolder *)self dataStore];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10022DA74;
   v9[3] = &unk_10031A7F0;
-  v10 = v6;
-  v11 = a3;
+  v10 = errorCopy;
+  headCopy = head;
   v9[4] = self;
-  v8 = v6;
-  [v7 performBlockAndWait:v9];
+  v8 = errorCopy;
+  [dataStore performBlockAndWait:v9];
 }
 
-- (unint64_t)verifyMMD:(double)a3 error:(id *)a4
+- (unint64_t)verifyMMD:(double)d error:(id *)error
 {
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10022DDA8;
   v16[3] = &unk_10032BC18;
   v16[4] = self;
-  *&v16[5] = a3;
+  *&v16[5] = d;
   v6 = objc_retainBlock(v16);
   v15 = 0;
   v7 = [(SignedMapHead *)self verifyWithError:&v15];
   v8 = v15;
   [TransparencyMapEntryVerifier storeSMHSignatureResult:v7 smh:self error:v8];
-  if (a4 && v8)
+  if (error && v8)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   if (v7 == 1)
   {
-    v10 = [(SignedMapHead *)self parsedMapHead];
-    v11 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v10 application]);
+    parsedMapHead = [(SignedMapHead *)self parsedMapHead];
+    v11 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [parsedMapHead application]);
     v12 = [TransparencyApplication applicationIdentifierForValue:v11];
 
     v13 = [TransparencyAnalytics formatEventName:@"VerifySMHEvent" application:v12];
-    v7 = [TransparencyAnalytics doKTResultWithAnalyticsForEventName:v13 error:a4 block:v6];
+    v7 = [TransparencyAnalytics doKTResultWithAnalyticsForEventName:v13 error:error block:v6];
   }
 
   return v7;

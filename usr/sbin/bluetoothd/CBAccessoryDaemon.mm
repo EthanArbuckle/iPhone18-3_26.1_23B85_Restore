@@ -1,14 +1,14 @@
 @interface CBAccessoryDaemon
-- (id)descriptionWithLevel:(int)a3;
-- (id)diagnosticAccessoryFakeWithIdentifier:(id)a3 leftPercent:(int)a4 leftState:(unsigned __int8)a5 rightPercent:(int)a6 rightState:(unsigned __int8)a7 casePercent:(int)a8 caseState:(unsigned __int8)a9 lidClosed:(BOOL)a10 obcMinutes:(int)a11 error:(id *)a12;
-- (id)diagnosticControl:(id)a3 error:(id *)a4;
-- (id)findPrimaryCBDevice:(id)a3;
+- (id)descriptionWithLevel:(int)level;
+- (id)diagnosticAccessoryFakeWithIdentifier:(id)identifier leftPercent:(int)percent leftState:(unsigned __int8)state rightPercent:(int)rightPercent rightState:(unsigned __int8)rightState casePercent:(int)casePercent caseState:(unsigned __int8)caseState lidClosed:(BOOL)self0 obcMinutes:(int)self1 error:(id *)self2;
+- (id)diagnosticControl:(id)control error:(id *)error;
+- (id)findPrimaryCBDevice:(id)device;
 - (void)_accessoryDiscoveryEnsureStarted;
 - (void)_accessoryDiscoveryEnsureStopped;
-- (void)_accessoryDiscoveryFoundDevice:(id)a3;
+- (void)_accessoryDiscoveryFoundDevice:(id)device;
 - (void)_connectionMonitorEnsureStarted;
 - (void)_connectionMonitorEnsureStopped;
-- (void)_connectionMonitorFoundDevice:(id)a3;
+- (void)_connectionMonitorFoundDevice:(id)device;
 - (void)_connectionMonitorUpdate;
 - (void)_screenOnChanged;
 - (void)_update;
@@ -34,14 +34,14 @@
 - (void)_update
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v3 = [(CBDaemonServer *)self->_daemonServer stackController];
-  if (!v3)
+  stackController = [(CBDaemonServer *)self->_daemonServer stackController];
+  if (!stackController)
   {
     goto LABEL_15;
   }
 
-  v4 = v3;
-  v5 = [v3 getDevicesWithFlags:1 error:0];
+  v4 = stackController;
+  v5 = [stackController getDevicesWithFlags:1 error:0];
   if (!v5)
   {
 LABEL_12:
@@ -76,9 +76,9 @@ LABEL_5:
     }
 
     v11 = +[CBProductInfo productInfoWithProductID:](CBProductInfo, "productInfoWithProductID:", [*(*(&v14 + 1) + 8 * v10) productID]);
-    v12 = [v11 flags];
+    flags = [v11 flags];
 
-    if ((v12 & 0x100000) != 0)
+    if ((flags & 0x100000) != 0)
     {
       break;
     }
@@ -95,9 +95,9 @@ LABEL_5:
     }
   }
 
-  v13 = [(CUSystemMonitor *)self->_systemMonitor screenOn];
+  screenOn = [(CUSystemMonitor *)self->_systemMonitor screenOn];
 
-  if ((v13 & 1) == 0)
+  if ((screenOn & 1) == 0)
   {
     goto LABEL_15;
   }
@@ -190,8 +190,8 @@ LABEL_16:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v4 = [(NSMutableDictionary *)self->_connectionMap allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  allKeys = [(NSMutableDictionary *)self->_connectionMap allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v5)
   {
     v6 = v5;
@@ -203,7 +203,7 @@ LABEL_16:
       {
         if (*v39 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v38 + 1) + 8 * v8);
@@ -224,7 +224,7 @@ LABEL_16:
       }
 
       while (v6 != v8);
-      v12 = [v4 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v38 objects:v43 count:16];
       v6 = v12;
     }
 
@@ -237,8 +237,8 @@ LABEL_16:
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v14 = [v13 allKeys];
-  v15 = [v14 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  allKeys2 = [v13 allKeys];
+  v15 = [allKeys2 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (!v15)
   {
     v17 = 0;
@@ -255,7 +255,7 @@ LABEL_16:
     {
       if (*v35 != v18)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(allKeys2);
       }
 
       v20 = *(*(&v34 + 1) + 8 * v19);
@@ -296,7 +296,7 @@ LABEL_26:
     }
 
     while (v16 != v19);
-    v25 = [v14 countByEnumeratingWithState:&v34 objects:v42 count:16];
+    v25 = [allKeys2 countByEnumeratingWithState:&v34 objects:v42 count:16];
     v16 = v25;
   }
 
@@ -364,7 +364,7 @@ LABEL_38:
     v31[3] = &unk_100ADF590;
     v26 = v27;
     v32 = v26;
-    v33 = self;
+    selfCopy = self;
     dispatch_source_set_event_handler(v26, v31);
     CUDispatchTimerSet();
     dispatch_activate(v26);
@@ -375,7 +375,7 @@ LABEL_49:
 LABEL_51:
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v26 = 0;
   v27 = &v26;
@@ -385,7 +385,7 @@ LABEL_51:
   v31 = 0;
   v25 = 12;
   obj = 0;
-  v5 = a3;
+  levelCopy = level;
   v16 = objc_opt_class();
   CUAppendF();
   objc_storeStrong(&v31, 0);
@@ -406,7 +406,7 @@ LABEL_51:
   v18 = v8;
   CUAppendF();
   objc_storeStrong(v6, v23);
-  if (v5 <= 0x14)
+  if (levelCopy <= 0x14)
   {
     v9 = v27;
     v22 = v27[5];
@@ -428,7 +428,7 @@ LABEL_51:
     v19[2] = sub_1000F335C;
     v19[3] = &unk_100ADFE00;
     v19[4] = &v26;
-    v20 = a3;
+    levelCopy2 = level;
     [(NSMutableDictionary *)accessoryInfoMap enumerateKeysAndObjectsUsingBlock:v19, v17, v18];
   }
 
@@ -502,16 +502,16 @@ LABEL_51:
   self->_systemMonitor = 0;
 }
 
-- (id)diagnosticControl:(id)a3 error:(id *)a4
+- (id)diagnosticControl:(id)control error:(id *)error
 {
-  v6 = a3;
+  controlCopy = control;
   CFStringGetTypeID();
   v7 = CFDictionaryGetTypedValue();
-  v8 = [v7 UTF8String];
-  if (v8)
+  uTF8String = [v7 UTF8String];
+  if (uTF8String)
   {
-    v9 = v8;
-    if (!strcasecmp(v8, "accessory-help"))
+    v9 = uTF8String;
+    if (!strcasecmp(uTF8String, "accessory-help"))
     {
       v10 = @"accessory-fake-add[,paramKey1=paramValue1][,paramKey2=paramValue2][,etc.] -- Add/update fake accessory.\n    id=accessoryID\n    leftPercent=0-100\n    leftState=unknown/charging/discharging\n    rightPercent=0-100\n    rightState=unknown/charging/discharging\n    casePercent=0-100\n    caseState=unknown/charging/discharging\n    lidClosed=yes/no\n    obc=yes/no\naccessory-fake-remove -- Remove fake accessory\n\nExample: accessory-fake-add,casePercent=54,lidClosed=yes\n\n";
     }
@@ -526,10 +526,10 @@ LABEL_51:
           sub_100800E88();
         }
 
-        v12 = [(CBDevice *)v11 identifier];
-        v13 = [(NSMutableDictionary *)self->_accessoryInfoMap objectForKeyedSubscript:v12];
+        identifier = [(CBDevice *)v11 identifier];
+        v13 = [(NSMutableDictionary *)self->_accessoryInfoMap objectForKeyedSubscript:identifier];
         [v13 invalidate];
-        [(NSMutableDictionary *)self->_accessoryInfoMap setObject:0 forKeyedSubscript:v12];
+        [(NSMutableDictionary *)self->_accessoryInfoMap setObject:0 forKeyedSubscript:identifier];
         accessoryFakeDevice = self->_accessoryFakeDevice;
         self->_accessoryFakeDevice = 0;
 
@@ -550,9 +550,9 @@ LABEL_51:
         goto LABEL_77;
       }
 
-      v33 = a4;
-      v34 = self;
-      v38 = v6;
+      errorCopy = error;
+      selfCopy = self;
+      v38 = controlCopy;
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
@@ -564,15 +564,15 @@ LABEL_51:
       if (v17)
       {
         v18 = v17;
-        v37 = 0;
+        intValue = 0;
         v19 = @"FakeAccessoryID";
         v20 = *v45;
         v35 = 0;
         v36 = 2;
-        v41 = 82;
+        intValue3 = 82;
         v42 = 1;
-        v43 = 78;
-        v39 = 43;
+        intValue4 = 78;
+        intValue2 = 43;
         v40 = 1;
 LABEL_14:
         v21 = 0;
@@ -673,7 +673,7 @@ LABEL_65:
                           goto LABEL_73;
                         }
 
-                        v37 = [v25 intValue];
+                        intValue = [v25 intValue];
                       }
 
                       else
@@ -691,7 +691,7 @@ LABEL_65:
 
                   else
                   {
-                    v39 = [v25 intValue];
+                    intValue2 = [v25 intValue];
                   }
 
                   goto LABEL_66;
@@ -744,12 +744,12 @@ LABEL_65:
                 goto LABEL_65;
               }
 
-              v41 = [v25 intValue];
+              intValue3 = [v25 intValue];
             }
 
             else
             {
-              v43 = [v25 intValue];
+              intValue4 = [v25 intValue];
             }
           }
 
@@ -776,30 +776,30 @@ LABEL_67:
         }
       }
 
-      v37 = 0;
+      intValue = 0;
       v35 = 0;
       v36 = 2;
-      v41 = 82;
+      intValue3 = 82;
       v42 = 1;
-      v43 = 78;
-      v39 = 43;
+      intValue4 = 78;
+      intValue2 = 43;
       v40 = 1;
       v19 = @"FakeAccessoryID";
 LABEL_75:
 
-      HIDWORD(v32) = v37;
+      HIDWORD(v32) = intValue;
       BYTE1(v32) = v35;
       LOBYTE(v32) = v36;
-      v10 = [CBAccessoryDaemon diagnosticAccessoryFakeWithIdentifier:v34 leftPercent:"diagnosticAccessoryFakeWithIdentifier:leftPercent:leftState:rightPercent:rightState:casePercent:caseState:lidClosed:obcMinutes:error:" leftState:v19 rightPercent:v43 rightState:v42 casePercent:v41 caseState:v40 lidClosed:v39 obcMinutes:v32 error:v33];
+      v10 = [CBAccessoryDaemon diagnosticAccessoryFakeWithIdentifier:selfCopy leftPercent:"diagnosticAccessoryFakeWithIdentifier:leftPercent:leftState:rightPercent:rightState:casePercent:caseState:lidClosed:obcMinutes:error:" leftState:v19 rightPercent:intValue4 rightState:v42 casePercent:intValue3 caseState:v40 lidClosed:intValue2 obcMinutes:v32 error:errorCopy];
 LABEL_76:
-      v6 = v38;
+      controlCopy = v38;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     CBErrorF();
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -812,11 +812,11 @@ LABEL_77:
   return v10;
 }
 
-- (id)diagnosticAccessoryFakeWithIdentifier:(id)a3 leftPercent:(int)a4 leftState:(unsigned __int8)a5 rightPercent:(int)a6 rightState:(unsigned __int8)a7 casePercent:(int)a8 caseState:(unsigned __int8)a9 lidClosed:(BOOL)a10 obcMinutes:(int)a11 error:(id *)a12
+- (id)diagnosticAccessoryFakeWithIdentifier:(id)identifier leftPercent:(int)percent leftState:(unsigned __int8)state rightPercent:(int)rightPercent rightState:(unsigned __int8)rightState casePercent:(int)casePercent caseState:(unsigned __int8)caseState lidClosed:(BOOL)self0 obcMinutes:(int)self1 error:(id *)self2
 {
-  v27 = a7;
-  v14 = a5;
-  v17 = a3;
+  rightStateCopy = rightState;
+  stateCopy = state;
+  identifierCopy = identifier;
   v18 = self->_accessoryFakeDevice;
   v19 = v18;
   if (!v18)
@@ -826,42 +826,42 @@ LABEL_77:
     self->_accessoryFakeDevice = v19;
   }
 
-  [(CBDevice *)v19 setAccessoryStatusFlags:a10];
-  [(CBDevice *)v19 setAccessoryStatusOBCTime:(60 * a11)];
-  if (a4 >= 100)
+  [(CBDevice *)v19 setAccessoryStatusFlags:closed];
+  [(CBDevice *)v19 setAccessoryStatusOBCTime:(60 * minutes)];
+  if (percent >= 100)
   {
-    v21 = 100;
+    percentCopy = 100;
   }
 
   else
   {
-    v21 = a4;
+    percentCopy = percent;
   }
 
-  [(CBDevice *)v19 setBatteryInfoLeft:v21 & ~(v21 >> 31) | (v14 << 8)];
-  if (a6 >= 100)
+  [(CBDevice *)v19 setBatteryInfoLeft:percentCopy & ~(percentCopy >> 31) | (stateCopy << 8)];
+  if (rightPercent >= 100)
   {
-    v22 = 100;
+    rightPercentCopy = 100;
   }
 
   else
   {
-    v22 = a6;
+    rightPercentCopy = rightPercent;
   }
 
-  [(CBDevice *)v19 setBatteryInfoRight:v22 & ~(v22 >> 31) | (v27 << 8)];
-  if (a8 >= 100)
+  [(CBDevice *)v19 setBatteryInfoRight:rightPercentCopy & ~(rightPercentCopy >> 31) | (rightStateCopy << 8)];
+  if (casePercent >= 100)
   {
-    v23 = 100;
+    casePercentCopy = 100;
   }
 
   else
   {
-    v23 = a8;
+    casePercentCopy = casePercent;
   }
 
-  [(CBDevice *)v19 setBatteryInfoCase:v23 & ~(v23 >> 31) | (a9 << 8)];
-  [(CBDevice *)v19 setIdentifier:v17];
+  [(CBDevice *)v19 setBatteryInfoCase:casePercentCopy & ~(casePercentCopy >> 31) | (caseState << 8)];
+  [(CBDevice *)v19 setIdentifier:identifierCopy];
   [(CBDevice *)v19 setName:@"Fake Accessory"];
   [(CBDevice *)v19 setProductID:8206];
   [(CBDevice *)v19 setVendorID:76];
@@ -887,24 +887,24 @@ LABEL_77:
   return v24;
 }
 
-- (id)findPrimaryCBDevice:(id)a3
+- (id)findPrimaryCBDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = 1;
   while ((v4 & 1) != 0)
   {
-    v5 = [(CBDaemonServer *)self->_daemonServer stackController];
+    stackController = [(CBDaemonServer *)self->_daemonServer stackController];
     v6 = 1;
-    v27 = v5;
+    v27 = stackController;
     do
     {
-      v7 = (v5 != 0) & v6;
+      v7 = (stackController != 0) & v6;
       if (v7 != 1)
       {
         break;
       }
 
-      v8 = [v5 getDevicesWithFlags:2 error:0];
+      v8 = [stackController getDevicesWithFlags:2 error:0];
       v9 = v8;
       if (v8)
       {
@@ -928,9 +928,9 @@ LABEL_77:
               }
 
               v15 = *(*(&v28 + 1) + 8 * i);
-              v16 = [v15 findMyCaseIdentifier];
-              v17 = v3;
-              v18 = v16;
+              findMyCaseIdentifier = [v15 findMyCaseIdentifier];
+              v17 = deviceCopy;
+              v18 = findMyCaseIdentifier;
               v19 = v18;
               if (v18 == v17)
               {
@@ -949,7 +949,7 @@ LABEL_21:
                 goto LABEL_27;
               }
 
-              if ((v3 != 0) != (v18 == 0))
+              if ((deviceCopy != 0) != (v18 == 0))
               {
                 v20 = [v17 isEqual:v18];
 
@@ -975,7 +975,7 @@ LABEL_21:
 
           v21 = 0;
 LABEL_27:
-          v5 = v27;
+          stackController = v27;
           v7 = 1;
         }
 
@@ -1106,25 +1106,25 @@ LABEL_33:
   self->_connectionMonitor = 0;
 }
 
-- (void)_connectionMonitorFoundDevice:(id)a3
+- (void)_connectionMonitorFoundDevice:(id)device
 {
-  v4 = a3;
-  v5 = +[CBProductInfo productInfoWithProductID:](CBProductInfo, "productInfoWithProductID:", [v4 productID]);
+  deviceCopy = device;
+  v5 = +[CBProductInfo productInfoWithProductID:](CBProductInfo, "productInfoWithProductID:", [deviceCopy productID]);
   if (([v5 flags] & 0x100000) != 0)
   {
-    if (([v4 deviceFlags] & 0x40) != 0)
+    if (([deviceCopy deviceFlags] & 0x40) != 0)
     {
-      if (([v4 deviceFlags] & 0x8000000000) != 0)
+      if (([deviceCopy deviceFlags] & 0x8000000000) != 0)
       {
         sub_10080108C();
       }
 
       else
       {
-        v6 = [v4 findMyCaseIdentifier];
-        if (v6)
+        findMyCaseIdentifier = [deviceCopy findMyCaseIdentifier];
+        if (findMyCaseIdentifier)
         {
-          v7 = [(NSMutableDictionary *)self->_connectionMap objectForKeyedSubscript:v6];
+          v7 = [(NSMutableDictionary *)self->_connectionMap objectForKeyedSubscript:findMyCaseIdentifier];
           if (v7)
           {
             sub_100801104();
@@ -1145,7 +1145,7 @@ LABEL_33:
             else
             {
               v12 = objc_alloc_init(CBDevice);
-              [v12 setIdentifier:v6];
+              [v12 setIdentifier:findMyCaseIdentifier];
               if (dword_100B50958 <= 30 && (dword_100B50958 != -1 || _LogCategory_Initialize()))
               {
                 sub_10080117C();
@@ -1163,7 +1163,7 @@ LABEL_33:
               v17[4] = v12;
               v17[5] = v13;
               v17[6] = self;
-              v17[7] = v6;
+              v17[7] = findMyCaseIdentifier;
               v17[8] = v8;
               *&v17[9] = Current;
               [v13 activateWithCompletion:v17];
@@ -1177,7 +1177,7 @@ LABEL_33:
                 connectionMap = self->_connectionMap;
               }
 
-              [(NSMutableDictionary *)connectionMap setObject:v13 forKeyedSubscript:v6];
+              [(NSMutableDictionary *)connectionMap setObject:v13 forKeyedSubscript:findMyCaseIdentifier];
             }
           }
         }
@@ -1201,16 +1201,16 @@ LABEL_33:
   }
 }
 
-- (void)_accessoryDiscoveryFoundDevice:(id)a3
+- (void)_accessoryDiscoveryFoundDevice:(id)device
 {
-  v24 = a3;
-  v4 = [v24 identifier];
-  if (!v4)
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (!identifier)
   {
     goto LABEL_25;
   }
 
-  v5 = [(NSMutableDictionary *)self->_accessoryInfoMap objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_accessoryInfoMap objectForKeyedSubscript:identifier];
   if (!v5)
   {
     v5 = objc_alloc_init(CBAccessoryInfo);
@@ -1224,44 +1224,44 @@ LABEL_33:
       accessoryInfoMap = self->_accessoryInfoMap;
     }
 
-    [(NSMutableDictionary *)accessoryInfoMap setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)accessoryInfoMap setObject:v5 forKeyedSubscript:identifier];
   }
 
-  [(CBAccessoryInfo *)v5 setCbDevice:v24];
-  v9 = [(CBAccessoryInfo *)v5 primaryCBDevice];
-  v10 = [(CBAccessoryInfo *)v5 primaryCBDevice];
-  if (!v10 || (v11 = v10, v12 = [v24 changeFlags], v11, (v12 & 0x80000000000) != 0))
+  [(CBAccessoryInfo *)v5 setCbDevice:deviceCopy];
+  primaryCBDevice = [(CBAccessoryInfo *)v5 primaryCBDevice];
+  primaryCBDevice2 = [(CBAccessoryInfo *)v5 primaryCBDevice];
+  if (!primaryCBDevice2 || (v11 = primaryCBDevice2, v12 = [deviceCopy changeFlags], v11, (v12 & 0x80000000000) != 0))
   {
-    v13 = [v24 identifier];
-    v14 = [(CBAccessoryDaemon *)self findPrimaryCBDevice:v13];
+    identifier2 = [deviceCopy identifier];
+    v14 = [(CBAccessoryDaemon *)self findPrimaryCBDevice:identifier2];
 
     [(CBAccessoryInfo *)v5 setPrimaryCBDevice:v14];
-    v9 = v14;
+    primaryCBDevice = v14;
   }
 
-  v15 = [v9 findMyGroupIdentifier];
-  if (v15)
+  findMyGroupIdentifier = [primaryCBDevice findMyGroupIdentifier];
+  if (findMyGroupIdentifier)
   {
-    v16 = v15;
-    v17 = [v9 findMyGroupIdentifier];
-    v18 = [(CBAccessoryInfo *)v5 cbDevice];
-    v19 = [v18 findMyGroupIdentifier];
-    v20 = v17;
-    v21 = v19;
+    findMyGroupIdentifier4 = findMyGroupIdentifier;
+    findMyGroupIdentifier2 = [primaryCBDevice findMyGroupIdentifier];
+    cbDevice = [(CBAccessoryInfo *)v5 cbDevice];
+    findMyGroupIdentifier3 = [cbDevice findMyGroupIdentifier];
+    cbDevice2 = findMyGroupIdentifier2;
+    v21 = findMyGroupIdentifier3;
     v22 = v21;
-    if (v20 == v21)
+    if (cbDevice2 == v21)
     {
     }
 
     else
     {
-      if ((v20 != 0) == (v21 == 0))
+      if ((cbDevice2 != 0) == (v21 == 0))
       {
       }
 
       else
       {
-        v23 = [v20 isEqual:v21];
+        v23 = [cbDevice2 isEqual:v21];
 
         if (v23)
         {
@@ -1269,9 +1269,9 @@ LABEL_33:
         }
       }
 
-      v16 = [v9 findMyGroupIdentifier];
-      v20 = [(CBAccessoryInfo *)v5 cbDevice];
-      [v20 setFindMyGroupIdentifier:v16];
+      findMyGroupIdentifier4 = [primaryCBDevice findMyGroupIdentifier];
+      cbDevice2 = [(CBAccessoryInfo *)v5 cbDevice];
+      [cbDevice2 setFindMyGroupIdentifier:findMyGroupIdentifier4];
     }
   }
 

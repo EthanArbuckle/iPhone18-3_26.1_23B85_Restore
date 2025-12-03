@@ -1,15 +1,15 @@
 @interface UIInputViewAnimationStyle
-+ (id)animationStyleAnimated:(BOOL)a3 duration:(double)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)animationStyleAnimated:(BOOL)animated duration:(double)duration;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)finalTransform;
-- (id)controllerForStartPlacement:(id)a3 endPlacement:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)controllerForStartPlacement:(id)placement endPlacement:(id)endPlacement;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)legacyAnimationCopy;
-- (id)startPlacementForInputViewSet:(id)a3 currentPlacement:(id)a4 windowScene:(id)a5;
-- (void)addAnimationToCurrentAnimations:(id)a3;
+- (id)startPlacementForInputViewSet:(id)set currentPlacement:(id)placement windowScene:(id)scene;
+- (void)addAnimationToCurrentAnimations:(id)animations;
 - (void)cancelInterruptibleAnimations;
-- (void)launchAnimation:(id)a3 afterStarted:(id)a4 completion:(id)a5 forHost:(id)a6 fromCurrentPosition:(BOOL)a7;
+- (void)launchAnimation:(id)animation afterStarted:(id)started completion:(id)completion forHost:(id)host fromCurrentPosition:(BOOL)position;
 - (void)removePropertyAnimators;
 @end
 
@@ -17,13 +17,13 @@
 
 - (void)removePropertyAnimators
 {
-  v2 = [(UIInputViewAnimationStyle *)self propertyAnimators];
-  [v2 removeAllObjects];
+  propertyAnimators = [(UIInputViewAnimationStyle *)self propertyAnimators];
+  [propertyAnimators removeAllObjects];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAnimated:{-[UIInputViewAnimationStyle animated](self, "animated")}];
   [(UIInputViewAnimationStyle *)self duration];
   [v4 setDuration:?];
@@ -33,15 +33,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [v4 animated], v5 == -[UIInputViewAnimationStyle animated](self, "animated")) && v4[33] == self->_isLegacy)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [equalCopy animated], v5 == -[UIInputViewAnimationStyle animated](self, "animated")) && equalCopy[33] == self->_isLegacy)
   {
     if ([(UIInputViewAnimationStyle *)self animated])
     {
-      [v4 duration];
+      [equalCopy duration];
       v7 = v6;
       [(UIInputViewAnimationStyle *)self duration];
       v9 = v7 == v8;
@@ -69,12 +69,12 @@
   return v2;
 }
 
-+ (id)animationStyleAnimated:(BOOL)a3 duration:(double)a4
++ (id)animationStyleAnimated:(BOOL)animated duration:(double)duration
 {
-  v5 = a3;
-  v6 = objc_alloc_init(a1);
-  [v6 setAnimated:v5];
-  [v6 setDuration:a4];
+  animatedCopy = animated;
+  v6 = objc_alloc_init(self);
+  [v6 setAnimated:animatedCopy];
+  [v6 setDuration:duration];
   [v6 setExtraOptions:196608];
 
   return v6;
@@ -103,17 +103,17 @@
   return v5;
 }
 
-- (void)launchAnimation:(id)a3 afterStarted:(id)a4 completion:(id)a5 forHost:(id)a6 fromCurrentPosition:(BOOL)a7
+- (void)launchAnimation:(id)animation afterStarted:(id)started completion:(id)completion forHost:(id)host fromCurrentPosition:(BOOL)position
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  positionCopy = position;
+  animationCopy = animation;
+  startedCopy = started;
+  completionCopy = completion;
+  hostCopy = host;
   if ([(UIInputViewAnimationStyle *)self animated])
   {
-    v16 = [(UIInputViewAnimationStyle *)self extraOptions];
-    if (v7)
+    extraOptions = [(UIInputViewAnimationStyle *)self extraOptions];
+    if (positionCopy)
     {
       v17 = 6;
     }
@@ -123,7 +123,7 @@
       v17 = 2;
     }
 
-    [v15 syncToExistingAnimations];
+    [hostCopy syncToExistingAnimations];
     [(UIInputViewAnimationStyle *)self duration];
     v19 = v18;
     v20 = objc_opt_new();
@@ -131,27 +131,27 @@
     v23[1] = 3221225472;
     v23[2] = __97__UIInputViewAnimationStyle_launchAnimation_afterStarted_completion_forHost_fromCurrentPosition___block_invoke;
     v23[3] = &unk_1E70F0F78;
-    v24 = v12;
+    v24 = animationCopy;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __97__UIInputViewAnimationStyle_launchAnimation_afterStarted_completion_forHost_fromCurrentPosition___block_invoke_2;
     v21[3] = &unk_1E7107E48;
     v21[4] = self;
-    v22 = v14;
-    [UIView _animateWithDuration:v16 | v17 delay:v20 options:v23 factory:v13 animations:v21 start:v19 completion:0.0];
+    v22 = completionCopy;
+    [UIView _animateWithDuration:extraOptions | v17 delay:v20 options:v23 factory:startedCopy animations:v21 start:v19 completion:0.0];
   }
 
   else
   {
-    v12[2](v12);
-    if (v13)
+    animationCopy[2](animationCopy);
+    if (startedCopy)
     {
-      v13[2](v13);
+      startedCopy[2](startedCopy);
     }
 
-    if (v14)
+    if (completionCopy)
     {
-      (*(v14 + 2))(v14, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
 
     [(UIInputViewAnimationStyle *)self removePropertyAnimators];
@@ -179,14 +179,14 @@ uint64_t __97__UIInputViewAnimationStyle_launchAnimation_afterStarted_completion
   return [v3 removePropertyAnimators];
 }
 
-- (void)addAnimationToCurrentAnimations:(id)a3
+- (void)addAnimationToCurrentAnimations:(id)animations
 {
-  v10 = a3;
+  animationsCopy = animations;
   if (+[UIKeyboard inputUIOOP])
   {
-    v4 = [(UIInputViewAnimationStyle *)self propertyAnimators];
+    propertyAnimators = [(UIInputViewAnimationStyle *)self propertyAnimators];
 
-    if (!v4)
+    if (!propertyAnimators)
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
       [(UIInputViewAnimationStyle *)self setPropertyAnimators:v5];
@@ -195,16 +195,16 @@ uint64_t __97__UIInputViewAnimationStyle_launchAnimation_afterStarted_completion
     v6 = ([(UIInputViewAnimationStyle *)self extraOptions]>> 16) & 7;
     v7 = [UIViewPropertyAnimator alloc];
     [(UIInputViewAnimationStyle *)self duration];
-    v8 = [(UIViewPropertyAnimator *)v7 initWithDuration:v6 curve:v10 animations:?];
-    v9 = [(UIInputViewAnimationStyle *)self propertyAnimators];
-    [v9 addObject:v8];
+    v8 = [(UIViewPropertyAnimator *)v7 initWithDuration:v6 curve:animationsCopy animations:?];
+    propertyAnimators2 = [(UIInputViewAnimationStyle *)self propertyAnimators];
+    [propertyAnimators2 addObject:v8];
 
     [(UIViewPropertyAnimator *)v8 startAnimation];
   }
 
   else
   {
-    v10[2]();
+    animationsCopy[2]();
   }
 }
 
@@ -215,8 +215,8 @@ uint64_t __97__UIInputViewAnimationStyle_launchAnimation_afterStarted_completion
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(UIInputViewAnimationStyle *)self propertyAnimators];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  propertyAnimators = [(UIInputViewAnimationStyle *)self propertyAnimators];
+  v4 = [propertyAnimators countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -227,7 +227,7 @@ uint64_t __97__UIInputViewAnimationStyle_launchAnimation_afterStarted_completion
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(propertyAnimators);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -237,7 +237,7 @@ uint64_t __97__UIInputViewAnimationStyle_launchAnimation_afterStarted_completion
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [propertyAnimators countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -246,18 +246,18 @@ uint64_t __97__UIInputViewAnimationStyle_launchAnimation_afterStarted_completion
   [(UIInputViewAnimationStyle *)self removePropertyAnimators];
 }
 
-- (id)controllerForStartPlacement:(id)a3 endPlacement:(id)a4
+- (id)controllerForStartPlacement:(id)placement endPlacement:(id)endPlacement
 {
   v4 = objc_alloc_init(UIInputViewAnimationControllerBasic);
 
   return v4;
 }
 
-- (id)startPlacementForInputViewSet:(id)a3 currentPlacement:(id)a4 windowScene:(id)a5
+- (id)startPlacementForInputViewSet:(id)set currentPlacement:(id)placement windowScene:(id)scene
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  setCopy = set;
+  placementCopy = placement;
+  sceneCopy = scene;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -268,7 +268,7 @@ uint64_t __97__UIInputViewAnimationStyle_launchAnimation_afterStarted_completion
   v37[3] = &unk_1E70F2F20;
   v37[4] = &v38;
   [UIKeyboardImpl performWithoutFloatingLock:v37];
-  if (((v39[3] & 1) != 0 || ([v9 showsInputViews] & 1) == 0) && !objc_msgSend(v9, "isUndocked"))
+  if (((v39[3] & 1) != 0 || ([placementCopy showsInputViews] & 1) == 0) && !objc_msgSend(placementCopy, "isUndocked"))
   {
     if (*(v39 + 24) != 1)
     {
@@ -277,19 +277,19 @@ uint64_t __97__UIInputViewAnimationStyle_launchAnimation_afterStarted_completion
       v34[2] = __88__UIInputViewAnimationStyle_startPlacementForInputViewSet_currentPlacement_windowScene___block_invoke_2;
       v34[3] = &unk_1E710AFC0;
       v34[4] = self;
-      v35 = v8;
-      v36 = v10;
+      v35 = setCopy;
+      v36 = sceneCopy;
       v14 = [UIInputViewSetPlacement deactivatedKeyboardPlacementWithCurrentPlacement:v34];
 
       goto LABEL_18;
     }
 
-    v13 = [(UIInputViewAnimationStyle *)self endPlacementForInputViewSet:v8 windowScene:v10];
+    v13 = [(UIInputViewAnimationStyle *)self endPlacementForInputViewSet:setCopy windowScene:sceneCopy];
 
     if ([v13 isVisible])
     {
       v14 = [UIInputViewSetPlacementInvisibleForFloatingTransition placementWithPlacement:v13];
-      v9 = v13;
+      placementCopy = v13;
       goto LABEL_18;
     }
 
@@ -297,58 +297,58 @@ uint64_t __97__UIInputViewAnimationStyle_launchAnimation_afterStarted_completion
     goto LABEL_16;
   }
 
-  if (!+[UIKeyboard usesInputSystemUI](UIKeyboard, "usesInputSystemUI") && [v8 isInputViewPlaceholder])
+  if (!+[UIKeyboard usesInputSystemUI](UIKeyboard, "usesInputSystemUI") && [setCopy isInputViewPlaceholder])
   {
-    v11 = [v8 inputView];
-    v12 = [v11 fallbackView];
-    if (v12)
+    inputView = [setCopy inputView];
+    fallbackView = [inputView fallbackView];
+    if (fallbackView)
     {
     }
 
     else
     {
-      v16 = [v11 associatedView];
+      associatedView = [inputView associatedView];
 
-      if (v16)
+      if (associatedView)
       {
         goto LABEL_15;
       }
 
-      v11 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-      if (([v11 keyboardActive] & 1) == 0)
+      inputView = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
+      if (([inputView keyboardActive] & 1) == 0)
       {
-        v18 = [v8 inputView];
-        v19 = [v18 placeheldView];
+        inputView2 = [setCopy inputView];
+        placeheldView = [inputView2 placeheldView];
 
-        if (!v19)
+        if (!placeheldView)
         {
-          if (([v8 isCustomInputView] & 1) != 0 || (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isMinimized"), v20, v22 = 0.0, (v21 & 1) == 0))
+          if (([setCopy isCustomInputView] & 1) != 0 || (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isMinimized"), v20, v22 = 0.0, (v21 & 1) == 0))
           {
             v23 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
             [v23 intersectionHeightForWindowScene:0];
             v22 = v24;
           }
 
-          v25 = [v8 inputAccessoryView];
+          inputAccessoryView = [setCopy inputAccessoryView];
 
-          if (v25)
+          if (inputAccessoryView)
           {
-            v26 = [v8 inputAccessoryView];
-            [v26 frame];
+            inputAccessoryView2 = [setCopy inputAccessoryView];
+            [inputAccessoryView2 frame];
             v22 = v22 + v27;
           }
 
-          if (([v9 isUndocked] & 1) == 0)
+          if (([placementCopy isUndocked] & 1) == 0)
           {
             v28 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-            v29 = [v28 updatingHeight];
+            updatingHeight = [v28 updatingHeight];
 
-            if ((v29 & 1) == 0)
+            if ((updatingHeight & 1) == 0)
             {
               v30 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-              v31 = [v30 remoteKeyboardUndocked];
+              remoteKeyboardUndocked = [v30 remoteKeyboardUndocked];
 
-              if (!v31)
+              if (!remoteKeyboardUndocked)
               {
                 v15 = [UIInputViewSetPlacementPlaceholder placementWithHeight:v22];
                 goto LABEL_17;
@@ -370,9 +370,9 @@ uint64_t __97__UIInputViewAnimationStyle_launchAnimation_afterStarted_completion
   }
 
 LABEL_15:
-  v15 = v9;
+  v15 = placementCopy;
 LABEL_16:
-  v9 = v15;
+  placementCopy = v15;
 LABEL_17:
   v14 = v15;
 LABEL_18:

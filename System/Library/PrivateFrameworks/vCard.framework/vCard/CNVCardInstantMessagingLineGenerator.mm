@@ -1,19 +1,19 @@
 @interface CNVCardInstantMessagingLineGenerator
-+ (id)instantMessageUsernameWithSchemeForUsername:(id)a3 service:(id)a4;
-+ (id)serviceTypeStringForInstantMessageService:(id)a3;
-- (id)lineWithValue:(id)a3 label:(id)a4;
-- (id)makeLineWithName:(id)a3 value:(id)a4;
-- (id)standardLabelsForLabel:(id)a3;
++ (id)instantMessageUsernameWithSchemeForUsername:(id)username service:(id)service;
++ (id)serviceTypeStringForInstantMessageService:(id)service;
+- (id)lineWithValue:(id)value label:(id)label;
+- (id)makeLineWithName:(id)name value:(id)value;
+- (id)standardLabelsForLabel:(id)label;
 @end
 
 @implementation CNVCardInstantMessagingLineGenerator
 
-- (id)makeLineWithName:(id)a3 value:(id)a4
+- (id)makeLineWithName:(id)name value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  valueCopy = value;
   objc_opt_class();
-  v8 = v7;
+  v8 = valueCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -47,23 +47,23 @@
     v15 = [objc_opt_class() instantMessageUsernameWithSchemeForUsername:v14 service:v13];
     v17.receiver = self;
     v17.super_class = CNVCardInstantMessagingLineGenerator;
-    v12 = [(CNVCardLineGenerator *)&v17 makeLineWithName:v6 value:v15];
+    v12 = [(CNVCardLineGenerator *)&v17 makeLineWithName:nameCopy value:v15];
   }
 
   return v12;
 }
 
-- (id)lineWithValue:(id)a3 label:(id)a4
+- (id)lineWithValue:(id)value label:(id)label
 {
   v14.receiver = self;
   v14.super_class = CNVCardInstantMessagingLineGenerator;
-  v5 = a3;
-  v6 = [(CNVCardLineGenerator *)&v14 lineWithValue:v5 label:a4];
-  v7 = [v5 valueForKey:{@"service", v14.receiver, v14.super_class}];
-  v8 = [v5 valueForKey:@"userIdentifier"];
+  valueCopy = value;
+  v6 = [(CNVCardLineGenerator *)&v14 lineWithValue:valueCopy label:label];
+  v7 = [valueCopy valueForKey:{@"service", v14.receiver, v14.super_class}];
+  v8 = [valueCopy valueForKey:@"userIdentifier"];
   v9 = [objc_opt_class() serviceTypeStringForInstantMessageService:v7];
-  v10 = [v5 valueForKey:@"teamIdentifier"];
-  v11 = [v5 valueForKey:@"bundleIdentifiers"];
+  v10 = [valueCopy valueForKey:@"teamIdentifier"];
+  v11 = [valueCopy valueForKey:@"bundleIdentifiers"];
 
   if ([v11 count])
   {
@@ -87,82 +87,82 @@
   return v6;
 }
 
-+ (id)serviceTypeStringForInstantMessageService:(id)a3
++ (id)serviceTypeStringForInstantMessageService:(id)service
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AIMInstant"])
+  serviceCopy = service;
+  if ([serviceCopy isEqualToString:@"AIMInstant"])
   {
     v4 = @"AIM";
   }
 
-  else if ([v3 isEqualToString:@"FacebookInstant"])
+  else if ([serviceCopy isEqualToString:@"FacebookInstant"])
   {
     v4 = @"Facebook";
   }
 
-  else if ([v3 isEqualToString:@"GaduGaduInstant"])
+  else if ([serviceCopy isEqualToString:@"GaduGaduInstant"])
   {
     v4 = @"GaduGadu";
   }
 
-  else if ([v3 isEqualToString:@"GoogleTalkInstant"])
+  else if ([serviceCopy isEqualToString:@"GoogleTalkInstant"])
   {
     v4 = @"GoogleTalk";
   }
 
-  else if ([v3 isEqualToString:@"ICQInstant"])
+  else if ([serviceCopy isEqualToString:@"ICQInstant"])
   {
     v4 = @"ICQ";
   }
 
-  else if ([v3 isEqualToString:@"JabberInstant"])
+  else if ([serviceCopy isEqualToString:@"JabberInstant"])
   {
     v4 = @"Jabber";
   }
 
-  else if ([v3 isEqualToString:@"MSNInstant"])
+  else if ([serviceCopy isEqualToString:@"MSNInstant"])
   {
     v4 = @"MSN";
   }
 
-  else if ([v3 isEqualToString:@"QQInstant"])
+  else if ([serviceCopy isEqualToString:@"QQInstant"])
   {
     v4 = @"QQ";
   }
 
-  else if ([v3 isEqualToString:@"SkypeInstant"])
+  else if ([serviceCopy isEqualToString:@"SkypeInstant"])
   {
     v4 = @"Skype";
   }
 
-  else if ([v3 isEqualToString:@"YahooInstant"])
+  else if ([serviceCopy isEqualToString:@"YahooInstant"])
   {
     v4 = @"Yahoo";
   }
 
   else
   {
-    v4 = v3;
+    v4 = serviceCopy;
   }
 
   return v4;
 }
 
-+ (id)instantMessageUsernameWithSchemeForUsername:(id)a3 service:(id)a4
++ (id)instantMessageUsernameWithSchemeForUsername:(id)username service:(id)service
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  serviceCopy = service;
   v6 = MEMORY[0x277CCA900];
-  v7 = a3;
-  v8 = [v6 URLPathAllowedCharacterSet];
-  v9 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+  usernameCopy = username;
+  uRLPathAllowedCharacterSet = [v6 URLPathAllowedCharacterSet];
+  v9 = [usernameCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
   v22[0] = @"AIMInstant";
   v22[1] = @"ICQInstant";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
-  LODWORD(v7) = [v10 containsObject:v5];
+  LODWORD(usernameCopy) = [v10 containsObject:serviceCopy];
 
-  if (v7)
+  if (usernameCopy)
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"aim:%@", v9];
     goto LABEL_14;
@@ -172,7 +172,7 @@
   v21[1] = @"GoogleTalkInstant";
   v21[2] = @"JabberInstant";
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:3];
-  v12 = [v11 containsObject:v5];
+  v12 = [v11 containsObject:serviceCopy];
 
   if (v12)
   {
@@ -180,7 +180,7 @@
     goto LABEL_14;
   }
 
-  if ([v5 isEqualToString:@"MSNInstant"])
+  if ([serviceCopy isEqualToString:@"MSNInstant"])
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"msnim:%@", v9];
     goto LABEL_14;
@@ -189,7 +189,7 @@
   v20[0] = @"GaduGaduInstant";
   v20[1] = @"QQInstant";
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
-  v14 = [v13 containsObject:v5];
+  v14 = [v13 containsObject:serviceCopy];
 
   if (v14)
   {
@@ -199,14 +199,14 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if ([v5 isEqualToString:@"SkypeInstant"])
+  if ([serviceCopy isEqualToString:@"SkypeInstant"])
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"skype:%@", v9];
   }
 
   else
   {
-    v16 = [v5 isEqualToString:@"YahooInstant"];
+    v16 = [serviceCopy isEqualToString:@"YahooInstant"];
     v15 = MEMORY[0x277CCACA8];
     if (!v16)
     {
@@ -223,11 +223,11 @@ LABEL_9:
   return v17;
 }
 
-- (id)standardLabelsForLabel:(id)a3
+- (id)standardLabelsForLabel:(id)label
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"MobileMe"])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:@"MobileMe"])
   {
     v10[0] = @"MobileMe";
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
@@ -237,7 +237,7 @@ LABEL_9:
   {
     v9.receiver = self;
     v9.super_class = CNVCardInstantMessagingLineGenerator;
-    v5 = [(CNVCardLineGenerator *)&v9 standardLabelsForLabel:v4];
+    v5 = [(CNVCardLineGenerator *)&v9 standardLabelsForLabel:labelCopy];
   }
 
   v6 = v5;

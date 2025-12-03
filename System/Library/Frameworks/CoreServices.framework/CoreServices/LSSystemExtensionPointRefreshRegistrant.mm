@@ -1,30 +1,30 @@
 @interface LSSystemExtensionPointRefreshRegistrant
-- (LSSystemExtensionPointRefreshRegistrant)initWithStrategy:(id)a3 operationUUID:(id)a4;
-- (void)runWithCompletion:(id)a3;
+- (LSSystemExtensionPointRefreshRegistrant)initWithStrategy:(id)strategy operationUUID:(id)d;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation LSSystemExtensionPointRefreshRegistrant
 
-- (LSSystemExtensionPointRefreshRegistrant)initWithStrategy:(id)a3 operationUUID:(id)a4
+- (LSSystemExtensionPointRefreshRegistrant)initWithStrategy:(id)strategy operationUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  strategyCopy = strategy;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = LSSystemExtensionPointRefreshRegistrant;
   v9 = [(LSSystemExtensionPointRefreshRegistrant *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_strategy, a3);
-    objc_storeStrong(&v10->_uuid, a4);
+    objc_storeStrong(&v9->_strategy, strategy);
+    objc_storeStrong(&v10->_uuid, d);
   }
 
   return v10;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -47,7 +47,7 @@
   v6[5] = &v13;
   v6[6] = &v7;
   [(LSRegistrantStrategy *)strategy runSyncBlockInWriteContext:v6];
-  v4[2](v4, v8[5], v14[5]);
+  completionCopy[2](completionCopy, v8[5], v14[5]);
   [(LSRegistrantStrategy *)self->_strategy endModificationOperation];
   if (!v8[5])
   {

@@ -1,38 +1,38 @@
 @interface VUIRentalCheckInContext
-- (BOOL)isEqual:(id)a3;
-- (VUIRentalCheckInContext)initWithRentalID:(id)a3 dsid:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VUIRentalCheckInContext)initWithRentalID:(id)d dsid:(id)dsid;
 - (unint64_t)hash;
 @end
 
 @implementation VUIRentalCheckInContext
 
-- (VUIRentalCheckInContext)initWithRentalID:(id)a3 dsid:(id)a4
+- (VUIRentalCheckInContext)initWithRentalID:(id)d dsid:(id)dsid
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  dsidCopy = dsid;
   v12.receiver = self;
   v12.super_class = VUIRentalCheckInContext;
   v9 = [(VUIRentalCheckInContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_rentalID, a3);
-    objc_storeStrong(&v10->_dsid, a4);
+    objc_storeStrong(&v9->_rentalID, d);
+    objc_storeStrong(&v10->_dsid, dsid);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_6;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v11 = 1;
     goto LABEL_10;
@@ -42,13 +42,13 @@
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [(VUIRentalCheckInContext *)self rentalID];
-    v8 = [(VUIRentalCheckInContext *)v6 rentalID];
-    if ([v7 isEqualToNumber:v8])
+    rentalID = [(VUIRentalCheckInContext *)self rentalID];
+    rentalID2 = [(VUIRentalCheckInContext *)v6 rentalID];
+    if ([rentalID isEqualToNumber:rentalID2])
     {
-      v9 = [(VUIRentalCheckInContext *)self dsid];
-      v10 = [(VUIRentalCheckInContext *)v6 dsid];
-      v11 = [v9 isEqualToNumber:v10];
+      dsid = [(VUIRentalCheckInContext *)self dsid];
+      dsid2 = [(VUIRentalCheckInContext *)v6 dsid];
+      v11 = [dsid isEqualToNumber:dsid2];
     }
 
     else
@@ -70,10 +70,10 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(VUIRentalCheckInContext *)self rentalID];
-  v4 = [v3 hash];
-  v5 = [(VUIRentalCheckInContext *)self dsid];
-  v6 = [v5 hash];
+  rentalID = [(VUIRentalCheckInContext *)self rentalID];
+  v4 = [rentalID hash];
+  dsid = [(VUIRentalCheckInContext *)self dsid];
+  v6 = [dsid hash];
 
   return v6 ^ v4;
 }

@@ -1,17 +1,17 @@
 @interface PKPaymentSetupHeroViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (PKPaymentSetupHeroViewAccessibility)initWithContext:(int64_t)a3 featuredPaymentNetworks:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (PKPaymentSetupHeroViewAccessibility)initWithContext:(int64_t)context featuredPaymentNetworks:(id)networks;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PKPaymentSetupHeroViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaymentSetupHeroView" hasInstanceVariable:@"_context" withType:"q"];
-  [v3 validateClass:@"PKPaymentSetupHeroView" hasInstanceMethod:@"_isSmallPhone" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaymentSetupHeroView" hasInstanceVariable:@"_context" withType:"q"];
+  [validationsCopy validateClass:@"PKPaymentSetupHeroView" hasInstanceMethod:@"_isSmallPhone" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -57,11 +57,11 @@
   return v5;
 }
 
-- (PKPaymentSetupHeroViewAccessibility)initWithContext:(int64_t)a3 featuredPaymentNetworks:(id)a4
+- (PKPaymentSetupHeroViewAccessibility)initWithContext:(int64_t)context featuredPaymentNetworks:(id)networks
 {
   v6.receiver = self;
   v6.super_class = PKPaymentSetupHeroViewAccessibility;
-  v4 = [(PKPaymentSetupHeroViewAccessibility *)&v6 initWithContext:a3 featuredPaymentNetworks:a4];
+  v4 = [(PKPaymentSetupHeroViewAccessibility *)&v6 initWithContext:context featuredPaymentNetworks:networks];
   [(PKPaymentSetupHeroViewAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;

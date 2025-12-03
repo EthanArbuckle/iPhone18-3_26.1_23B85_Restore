@@ -1,6 +1,6 @@
 @interface SFUITTRReporter
 + (id)reporterForPeopleSuggestions;
-- (SFUITTRReporter)initWithReport:(id)a3;
+- (SFUITTRReporter)initWithReport:(id)report;
 - (id)_createSchemeURL;
 - (void)report;
 @end
@@ -10,21 +10,21 @@
 + (id)reporterForPeopleSuggestions
 {
   v3 = +[SFUITTRReport peopleSuggestionReport];
-  v4 = [[a1 alloc] initWithReport:v3];
+  v4 = [[self alloc] initWithReport:v3];
 
   return v4;
 }
 
-- (SFUITTRReporter)initWithReport:(id)a3
+- (SFUITTRReporter)initWithReport:(id)report
 {
-  v5 = a3;
+  reportCopy = report;
   v9.receiver = self;
   v9.super_class = SFUITTRReporter;
   v6 = [(SFUITTRReporter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internalReport, a3);
+    objc_storeStrong(&v6->_internalReport, report);
   }
 
   return v7;
@@ -32,16 +32,16 @@
 
 - (void)report
 {
-  v2 = [(SFUITTRReporter *)self _createSchemeURL];
-  if (v2)
+  _createSchemeURL = [(SFUITTRReporter *)self _createSchemeURL];
+  if (_createSchemeURL)
   {
-    v3 = [MEMORY[0x1E6963608] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __25__SFUITTRReporter_report__block_invoke;
     v5[3] = &unk_1E7EE4550;
-    v6 = v2;
-    [v3 openURL:v6 configuration:0 completionHandler:v5];
+    v6 = _createSchemeURL;
+    [defaultWorkspace openURL:v6 configuration:0 completionHandler:v5];
 
     v4 = v6;
   }
@@ -81,48 +81,48 @@ void __25__SFUITTRReporter_report__block_invoke(uint64_t a1, uint64_t a2, void *
 
 - (id)_createSchemeURL
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(SFUITTRReporter *)self internalReport];
-  v5 = [v4 title];
+  array = [MEMORY[0x1E695DF70] array];
+  internalReport = [(SFUITTRReporter *)self internalReport];
+  title = [internalReport title];
 
-  if (v5)
+  if (title)
   {
-    v6 = [MEMORY[0x1E696AF60] queryItemWithName:@"Title" value:v5];
-    [v3 addObject:v6];
+    v6 = [MEMORY[0x1E696AF60] queryItemWithName:@"Title" value:title];
+    [array addObject:v6];
   }
 
-  v7 = [(SFUITTRReporter *)self internalReport];
-  v8 = [v7 desc];
+  internalReport2 = [(SFUITTRReporter *)self internalReport];
+  desc = [internalReport2 desc];
 
-  if (v8)
+  if (desc)
   {
-    v9 = [MEMORY[0x1E696AF60] queryItemWithName:@"Description" value:v8];
-    [v3 addObject:v9];
+    v9 = [MEMORY[0x1E696AF60] queryItemWithName:@"Description" value:desc];
+    [array addObject:v9];
   }
 
   v10 = MEMORY[0x1E696AF60];
-  v11 = [(SFUITTRReporter *)self internalReport];
-  v12 = [v11 component];
-  v13 = [v12 identifier];
-  v14 = [v10 queryItemWithName:@"ComponentID" value:v13];
+  internalReport3 = [(SFUITTRReporter *)self internalReport];
+  component = [internalReport3 component];
+  identifier = [component identifier];
+  v14 = [v10 queryItemWithName:@"ComponentID" value:identifier];
 
   v15 = MEMORY[0x1E696AF60];
-  v16 = [(SFUITTRReporter *)self internalReport];
-  v17 = [v16 component];
-  v18 = [v17 name];
-  v19 = [v15 queryItemWithName:@"ComponentName" value:v18];
+  internalReport4 = [(SFUITTRReporter *)self internalReport];
+  component2 = [internalReport4 component];
+  name = [component2 name];
+  v19 = [v15 queryItemWithName:@"ComponentName" value:name];
 
   v20 = MEMORY[0x1E696AF60];
-  v21 = [(SFUITTRReporter *)self internalReport];
-  v22 = [v21 component];
-  v23 = [v22 version];
-  v24 = [v20 queryItemWithName:@"ComponentVersion" value:v23];
+  internalReport5 = [(SFUITTRReporter *)self internalReport];
+  component3 = [internalReport5 component];
+  version = [component3 version];
+  v24 = [v20 queryItemWithName:@"ComponentVersion" value:version];
 
-  [v3 addObject:v14];
-  [v3 addObject:v19];
-  [v3 addObject:v24];
+  [array addObject:v14];
+  [array addObject:v19];
+  [array addObject:v24];
   v25 = [MEMORY[0x1E696AF20] componentsWithString:@"tap-to-radar://new"];
-  [v25 setQueryItems:v3];
+  [v25 setQueryItems:array];
   v26 = [v25 URL];
 
   return v26;

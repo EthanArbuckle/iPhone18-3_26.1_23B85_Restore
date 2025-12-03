@@ -4,25 +4,25 @@
 - (BOOL)isKnown;
 - (BOOL)supportsAirPlayGrouping;
 - (BOOL)supportsGrouping;
-- (MRUVendorSpecificRoute)initWithDevice:(id)a3;
+- (MRUVendorSpecificRoute)initWithDevice:(id)device;
 - (MRUVendorSpecificRoute)preferredSubroute;
 - (NSArray)endpoints;
 - (NSArray)subroutes;
 - (NSString)protocolIdentifier;
 - (id)routeName;
 - (id)routeUID;
-- (int64_t)moreCapableTypeBetween:(int64_t)a3 otherType:(int64_t)a4;
+- (int64_t)moreCapableTypeBetween:(int64_t)between otherType:(int64_t)type;
 - (int64_t)routeType;
 - (int64_t)vendorSpecificRouteType;
-- (void)addSubRoute:(id)a3;
-- (void)setExpanded:(BOOL)a3;
+- (void)addSubRoute:(id)route;
+- (void)setExpanded:(BOOL)expanded;
 @end
 
 @implementation MRUVendorSpecificRoute
 
-- (MRUVendorSpecificRoute)initWithDevice:(id)a3
+- (MRUVendorSpecificRoute)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v32.receiver = self;
   v32.super_class = MRUVendorSpecificRoute;
   v6 = [(MRUVendorSpecificRoute *)&v32 init];
@@ -30,9 +30,9 @@
   if (v6)
   {
     v6->_shouldBeDisplayed = 1;
-    if (v5)
+    if (deviceCopy)
     {
-      objc_storeStrong(&v6->_device, a3);
+      objc_storeStrong(&v6->_device, device);
       if ([(MRUVendorSpecificRoute *)v7 isGroup])
       {
         v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -44,18 +44,18 @@
 
       else
       {
-        v14 = [v5 protocolType];
-        v15 = v14;
-        if (v14)
+        protocolType = [deviceCopy protocolType];
+        v15 = protocolType;
+        if (protocolType)
         {
           v16 = MEMORY[0x1E69A8A40];
-          v17 = [v14 identifier];
-          v18 = [v16 symbolForTypeIdentifier:v17 error:0];
+          identifier = [protocolType identifier];
+          v18 = [v16 symbolForTypeIdentifier:identifier error:0];
 
           if (v18)
           {
-            v19 = [MEMORY[0x1E69DCEB0] mainScreen];
-            [v19 scale];
+            mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+            [mainScreen scale];
             v21 = [v18 imageForSize:20.0 scale:{20.0, v20}];
 
             v22 = [MEMORY[0x1E69DCAB8] imageWithCGImage:{objc_msgSend(v21, "CGImage")}];
@@ -74,20 +74,20 @@
             protocolIcon = v7->_protocolIcon;
             v7->_protocolIcon = v24;
 
-            v28 = [v15 localizedDescription];
+            localizedDescription = [v15 localizedDescription];
 
-            if (v28)
+            if (localizedDescription)
             {
-              v29 = [v15 localizedDescription];
+              localizedDescription2 = [v15 localizedDescription];
             }
 
             else
             {
-              v29 = @"Unknown Protocol";
+              localizedDescription2 = @"Unknown Protocol";
             }
 
             protocolName = v7->_protocolName;
-            v7->_protocolName = &v29->isa;
+            v7->_protocolName = &localizedDescription2->isa;
           }
         }
 
@@ -123,19 +123,19 @@
   v22 = *MEMORY[0x1E69E9840];
   if ([(MRUVendorSpecificRoute *)self isGroup])
   {
-    v3 = [(DADevice *)self->_device endpoints];
-    v4 = [v3 allValues];
-    v5 = [v4 firstObject];
-    v6 = [v5 name];
+    endpoints = [(DADevice *)self->_device endpoints];
+    allValues = [endpoints allValues];
+    firstObject = [allValues firstObject];
+    name = [firstObject name];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [(DADevice *)self->_device endpoints];
-    v8 = [v7 allValues];
+    endpoints2 = [(DADevice *)self->_device endpoints];
+    allValues2 = [endpoints2 allValues];
 
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v9 = [allValues2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -146,22 +146,22 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues2);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [v13 underlyingDADevice];
+          underlyingDADevice = [v13 underlyingDADevice];
 
-          if (!v14)
+          if (!underlyingDADevice)
           {
-            v15 = [v13 name];
+            name2 = [v13 name];
 
-            v6 = v15;
+            name = name2;
             goto LABEL_14;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [allValues2 countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v10)
         {
           continue;
@@ -185,10 +185,10 @@ LABEL_14:
     {
       [(DADevice *)self->_device name];
     }
-    v6 = ;
+    name = ;
   }
 
-  return v6;
+  return name;
 }
 
 - (id)routeUID
@@ -216,8 +216,8 @@ LABEL_14:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(MRUVendorSpecificRoute *)self subroutes];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    subroutes = [(MRUVendorSpecificRoute *)self subroutes];
+    v4 = [subroutes countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -229,13 +229,13 @@ LABEL_14:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(subroutes);
           }
 
           v6 = -[MRUVendorSpecificRoute moreCapableTypeBetween:otherType:](self, "moreCapableTypeBetween:otherType:", v6, [*(*(&v11 + 1) + 8 * i) vendorSpecificRouteType]);
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [subroutes countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -276,8 +276,8 @@ LABEL_14:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(MRUVendorSpecificRoute *)self subroutes];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    subroutes = [(MRUVendorSpecificRoute *)self subroutes];
+    v4 = [subroutes countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
       v5 = 0;
@@ -288,13 +288,13 @@ LABEL_14:
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(subroutes);
           }
 
           v5 |= [*(*(&v10 + 1) + 8 * i) routeType] == 1;
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v4 = [subroutes countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v4);
@@ -316,21 +316,21 @@ LABEL_14:
 
 - (BOOL)isGroup
 {
-  v2 = [(DADevice *)self->_device endpoints];
-  v3 = [v2 count] > 1;
+  endpoints = [(DADevice *)self->_device endpoints];
+  v3 = [endpoints count] > 1;
 
   return v3;
 }
 
 - (NSArray)subroutes
 {
-  v2 = [(NSMutableDictionary *)self->_subrouteMap allValues];
+  allValues = [(NSMutableDictionary *)self->_subrouteMap allValues];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __35__MRUVendorSpecificRoute_subroutes__block_invoke;
   v5[3] = &__block_descriptor_40_e11_q24__0_8_16l;
   v5[4] = 577;
-  v3 = [v2 sortedArrayUsingComparator:v5];
+  v3 = [allValues sortedArrayUsingComparator:v5];
 
   return v3;
 }
@@ -355,9 +355,9 @@ uint64_t __35__MRUVendorSpecificRoute_subroutes__block_invoke(uint64_t a1, void 
 
 - (NSArray)endpoints
 {
-  v2 = [(DADevice *)self->_device endpoints];
-  v3 = [v2 allValues];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_39];
+  endpoints = [(DADevice *)self->_device endpoints];
+  allValues = [endpoints allValues];
+  v4 = [allValues sortedArrayUsingComparator:&__block_literal_global_39];
 
   return v4;
 }
@@ -414,8 +414,8 @@ BOOL __35__MRUVendorSpecificRoute_endpoints__block_invoke(uint64_t a1, void *a2,
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(MRUVendorSpecificRoute *)self subroutes];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    subroutes = [(MRUVendorSpecificRoute *)self subroutes];
+    v4 = [subroutes countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -427,7 +427,7 @@ BOOL __35__MRUVendorSpecificRoute_endpoints__block_invoke(uint64_t a1, void *a2,
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(subroutes);
           }
 
           if ([*(*(&v11 + 1) + 8 * v7) isDisplayedAsPicked])
@@ -440,7 +440,7 @@ BOOL __35__MRUVendorSpecificRoute_endpoints__block_invoke(uint64_t a1, void *a2,
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [subroutes countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           continue;
@@ -472,8 +472,8 @@ BOOL __35__MRUVendorSpecificRoute_endpoints__block_invoke(uint64_t a1, void *a2,
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v3 = [(MRUVendorSpecificRoute *)self subroutes];
-    v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subroutes = [(MRUVendorSpecificRoute *)self subroutes];
+    v4 = [subroutes countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v4)
     {
       v5 = v4;
@@ -484,11 +484,11 @@ LABEL_4:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subroutes);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
-        v9 = [v8 isKnown];
+        isKnown = [v8 isKnown];
         if ([v8 isAirPlayRoute])
         {
           break;
@@ -496,7 +496,7 @@ LABEL_4:
 
         if (v5 == ++v7)
         {
-          v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v5 = [subroutes countByEnumeratingWithState:&v13 objects:v17 count:16];
           if (v5)
           {
             goto LABEL_4;
@@ -509,10 +509,10 @@ LABEL_4:
 
     else
     {
-      v9 = 0;
+      isKnown = 0;
     }
 
-    return v9;
+    return isKnown;
   }
 
   else
@@ -535,23 +535,23 @@ LABEL_4:
 
 - (NSString)protocolIdentifier
 {
-  v2 = [(DADevice *)self->_device protocolType];
-  v3 = [v2 identifier];
+  protocolType = [(DADevice *)self->_device protocolType];
+  identifier = [protocolType identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  v3 = a3;
+  expandedCopy = expanded;
   v14 = *MEMORY[0x1E69E9840];
-  self->_expanded = a3;
+  self->_expanded = expanded;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableDictionary *)self->_subrouteMap allValues];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->_subrouteMap allValues];
+  v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -563,29 +563,29 @@ LABEL_4:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setShouldBeDisplayed:v3];
+        [*(*(&v9 + 1) + 8 * v8++) setShouldBeDisplayed:expandedCopy];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addSubRoute:(id)a3
+- (void)addSubRoute:(id)route
 {
   subrouteMap = self->_subrouteMap;
-  v6 = a3;
-  v5 = [v6 routeUID];
-  [(NSMutableDictionary *)subrouteMap setObject:v6 forKeyedSubscript:v5];
+  routeCopy = route;
+  routeUID = [routeCopy routeUID];
+  [(NSMutableDictionary *)subrouteMap setObject:routeCopy forKeyedSubscript:routeUID];
 
-  [v6 setParentRoute:self];
-  [v6 setShouldBeDisplayed:self->_expanded];
+  [routeCopy setParentRoute:self];
+  [routeCopy setShouldBeDisplayed:self->_expanded];
 }
 
 - (MRUVendorSpecificRoute)preferredSubroute
@@ -603,8 +603,8 @@ LABEL_4:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(NSMutableDictionary *)self->_subrouteMap allValues];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allValues = [(NSMutableDictionary *)self->_subrouteMap allValues];
+    v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -615,7 +615,7 @@ LABEL_4:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
@@ -627,7 +627,7 @@ LABEL_4:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           continue;
@@ -645,16 +645,16 @@ LABEL_13:
   return v3;
 }
 
-- (int64_t)moreCapableTypeBetween:(int64_t)a3 otherType:(int64_t)a4
+- (int64_t)moreCapableTypeBetween:(int64_t)between otherType:(int64_t)type
 {
-  if (a3 <= a4)
+  if (between <= type)
   {
-    return a4;
+    return type;
   }
 
   else
   {
-    return a3;
+    return between;
   }
 }
 

@@ -1,28 +1,28 @@
 @interface HKElectrocardiogramActiveAlgorithmVersion
-+ (id)_maxKnownAlgorithmVersionOnboardedWithKeyValueDomain:(id)a3;
-+ (id)knownAlgorithmVersionFromOnboardedVersion:(id)a3 keyValueDomain:(id)a4;
-+ (id)versionWithHealthStore:(id)a3 error:(id *)a4;
-+ (int64_t)algorithmVersionForOnboardingVersion:(int64_t)a3;
-+ (unint64_t)onboardingVersionForKnownAlgorithmVersion:(int64_t)a3;
++ (id)_maxKnownAlgorithmVersionOnboardedWithKeyValueDomain:(id)domain;
++ (id)knownAlgorithmVersionFromOnboardedVersion:(id)version keyValueDomain:(id)domain;
++ (id)versionWithHealthStore:(id)store error:(id *)error;
++ (int64_t)algorithmVersionForOnboardingVersion:(int64_t)version;
++ (unint64_t)onboardingVersionForKnownAlgorithmVersion:(int64_t)version;
 @end
 
 @implementation HKElectrocardiogramActiveAlgorithmVersion
 
-+ (id)versionWithHealthStore:(id)a3 error:(id *)a4
++ (id)versionWithHealthStore:(id)store error:(id *)error
 {
-  v6 = a3;
+  storeCopy = store;
   v7 = @"HKElectrocardiogramOnboardingCompleted";
-  v8 = [MEMORY[0x1E695E000] hk_heartRhythmDefaults];
-  v9 = [v8 objectForKey:v7];
+  hk_heartRhythmDefaults = [MEMORY[0x1E695E000] hk_heartRhythmDefaults];
+  v9 = [hk_heartRhythmDefaults objectForKey:v7];
 
   if (v9 && [v9 integerValue])
   {
-    v10 = [v9 integerValue];
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "algorithmVersionForOnboardingVersion:", v10)}];
+    integerValue = [v9 integerValue];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "algorithmVersionForOnboardingVersion:", integerValue)}];
     goto LABEL_14;
   }
 
-  v12 = [HKKeyValueDomain heartRhythmDefaultsDomainWithHealthStore:v6];
+  v12 = [HKKeyValueDomain heartRhythmDefaultsDomainWithHealthStore:storeCopy];
   v18 = 0;
   v13 = [v12 numberForKey:v7 error:&v18];
   v14 = v18;
@@ -35,18 +35,18 @@
       if (os_log_type_enabled(HKLogHeartRhythm, OS_LOG_TYPE_ERROR))
       {
         [(HKElectrocardiogramActiveAlgorithmVersion *)v7 versionWithHealthStore:v14 error:v15];
-        if (a4)
+        if (error)
         {
           goto LABEL_10;
         }
       }
 
-      else if (a4)
+      else if (error)
       {
 LABEL_10:
         v16 = v14;
         v11 = 0;
-        *a4 = v14;
+        *error = v14;
         goto LABEL_13;
       }
     }
@@ -55,7 +55,7 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v11 = [a1 knownAlgorithmVersionFromOnboardedVersion:v13 keyValueDomain:v12];
+  v11 = [self knownAlgorithmVersionFromOnboardedVersion:v13 keyValueDomain:v12];
 LABEL_13:
 
 LABEL_14:
@@ -63,15 +63,15 @@ LABEL_14:
   return v11;
 }
 
-+ (id)knownAlgorithmVersionFromOnboardedVersion:(id)a3 keyValueDomain:(id)a4
++ (id)knownAlgorithmVersionFromOnboardedVersion:(id)version keyValueDomain:(id)domain
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = +[HKElectrocardiogramActiveAlgorithmVersion algorithmVersionForOnboardingVersion:](HKElectrocardiogramActiveAlgorithmVersion, "algorithmVersionForOnboardingVersion:", [a3 integerValue]);
-  v8 = [a1 _maxKnownAlgorithmVersionOnboardedWithKeyValueDomain:v6];
+  domainCopy = domain;
+  v7 = +[HKElectrocardiogramActiveAlgorithmVersion algorithmVersionForOnboardingVersion:](HKElectrocardiogramActiveAlgorithmVersion, "algorithmVersionForOnboardingVersion:", [version integerValue]);
+  v8 = [self _maxKnownAlgorithmVersionOnboardedWithKeyValueDomain:domainCopy];
 
-  v9 = [v8 integerValue];
-  if (v9)
+  integerValue = [v8 integerValue];
+  if (integerValue)
   {
     if (v7 == 0x7FFFFFFF)
     {
@@ -89,7 +89,7 @@ LABEL_14:
 
     else
     {
-      v14 = v9;
+      v14 = integerValue;
       _HKInitializeLogging();
       v15 = HKLogHeartRhythm;
       v16 = os_log_type_enabled(HKLogHeartRhythm, OS_LOG_TYPE_DEFAULT);
@@ -144,16 +144,16 @@ LABEL_14:
   return v13;
 }
 
-+ (id)_maxKnownAlgorithmVersionOnboardedWithKeyValueDomain:(id)a3
++ (id)_maxKnownAlgorithmVersionOnboardedWithKeyValueDomain:(id)domain
 {
-  v3 = [HKHeartRhythmAvailability electrocardiogramOnboardingHistoryMaxKnownWithKeyValueDomain:a3];
+  v3 = [HKHeartRhythmAvailability electrocardiogramOnboardingHistoryMaxKnownWithKeyValueDomain:domain];
   if ([v3 count] == 1)
   {
-    v4 = [v3 allKeys];
-    v5 = [v4 firstObject];
-    v6 = [v5 integerValue];
+    allKeys = [v3 allKeys];
+    firstObject = [allKeys firstObject];
+    integerValue = [firstObject integerValue];
 
-    v7 = [HKElectrocardiogramActiveAlgorithmVersion algorithmVersionForOnboardingVersion:v6];
+    v7 = [HKElectrocardiogramActiveAlgorithmVersion algorithmVersionForOnboardingVersion:integerValue];
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
   }
 
@@ -175,21 +175,21 @@ LABEL_14:
   return v8;
 }
 
-+ (int64_t)algorithmVersionForOnboardingVersion:(int64_t)a3
++ (int64_t)algorithmVersionForOnboardingVersion:(int64_t)version
 {
-  if (!a3)
+  if (!version)
   {
     v3 = &_HKAppleECGAlgorithmVersionUnknown;
     return *v3;
   }
 
-  if (a3 >= 5)
+  if (version >= 5)
   {
     v3 = &_HKAppleECGAlgorithmVersionGreaterThanMax;
     return *v3;
   }
 
-  if (a3 == 4)
+  if (version == 4)
   {
     return 2;
   }
@@ -200,16 +200,16 @@ LABEL_14:
   }
 }
 
-+ (unint64_t)onboardingVersionForKnownAlgorithmVersion:(int64_t)a3
++ (unint64_t)onboardingVersionForKnownAlgorithmVersion:(int64_t)version
 {
-  if (a3 == 1)
+  if (version == 1)
   {
     return 3;
   }
 
   else
   {
-    return 4 * (a3 == 2);
+    return 4 * (version == 2);
   }
 }
 

@@ -1,13 +1,13 @@
 @interface BKPdfSearchOperation
 - (BKPdfSearchOperation)init;
 - (BOOL)_doSearch;
-- (BOOL)_doSearchWithString:(id)a3;
-- (BOOL)_hasSearchableCharacters:(id)a3;
+- (BOOL)_doSearchWithString:(id)string;
+- (BOOL)_hasSearchableCharacters:(id)characters;
 - (PDFDocument)pdfDocument;
 - (void)_clearDocumentIfNeeded;
 - (void)cancel;
 - (void)dealloc;
-- (void)didReceiveMemoryWarning:(id)a3;
+- (void)didReceiveMemoryWarning:(id)warning;
 @end
 
 @implementation BKPdfSearchOperation
@@ -36,7 +36,7 @@
   [(BKSearchOperation *)&v4 dealloc];
 }
 
-- (void)didReceiveMemoryWarning:(id)a3
+- (void)didReceiveMemoryWarning:(id)warning
 {
   obj = self;
   objc_sync_enter(obj);
@@ -46,32 +46,32 @@
 
 - (PDFDocument)pdfDocument
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_pdfDocument)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_pdfDocument)
   {
     v3 = +[AEPdfCache sharedInstance];
-    v4 = [(BKSearchOperation *)v2 bookURL];
-    v5 = [v3 copyCacheObjectForURL:v4];
+    bookURL = [(BKSearchOperation *)selfCopy bookURL];
+    v5 = [v3 copyCacheObjectForURL:bookURL];
 
-    v6 = [v5 document];
-    pdfDocument = v2->_pdfDocument;
-    v2->_pdfDocument = v6;
+    document = [v5 document];
+    pdfDocument = selfCopy->_pdfDocument;
+    selfCopy->_pdfDocument = document;
 
-    v2->_numberOfDocumentPages = [(PDFDocument *)v2->_pdfDocument pageCount];
+    selfCopy->_numberOfDocumentPages = [(PDFDocument *)selfCopy->_pdfDocument pageCount];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v8 = v2->_pdfDocument;
+  v8 = selfCopy->_pdfDocument;
 
   return v8;
 }
 
 - (void)cancel
 {
-  v3 = [(BKPdfSearchOperation *)self pdfDocument];
-  [v3 cancelFindString];
+  pdfDocument = [(BKPdfSearchOperation *)self pdfDocument];
+  [pdfDocument cancelFindString];
 
   v4.receiver = self;
   v4.super_class = BKPdfSearchOperation;
@@ -96,10 +96,10 @@
   }
 }
 
-- (BOOL)_hasSearchableCharacters:(id)a3
+- (BOOL)_hasSearchableCharacters:(id)characters
 {
-  v3 = a3;
-  v4 = [v3 length];
+  charactersCopy = characters;
+  v4 = [charactersCopy length];
   v5 = [@"\uFFFD" characterAtIndex:0];
   if (v4)
   {
@@ -109,7 +109,7 @@
     v9 = 0;
     for (i = 0; i != v4; ++i)
     {
-      v11 = [v3 characterAtIndex:i];
+      v11 = [charactersCopy characterAtIndex:i];
       if (v11)
       {
         v12 = v9;
@@ -170,29 +170,29 @@
   return v15;
 }
 
-- (BOOL)_doSearchWithString:(id)a3
+- (BOOL)_doSearchWithString:(id)string
 {
-  v4 = a3;
-  if ([v4 length] && (-[BKPdfSearchOperation pdfDocument](self, "pdfDocument"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5) && self->_currentPageIndex < self->_numberOfDocumentPages)
+  stringCopy = string;
+  if ([stringCopy length] && (-[BKPdfSearchOperation pdfDocument](self, "pdfDocument"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5) && self->_currentPageIndex < self->_numberOfDocumentPages)
   {
     v6 = &_s13BookAnalytics9UtilitiesC29cellularRadioAccessTechnologyAA08CellularefG0OyFZTj_ptr;
     +[NSDate timeIntervalSinceReferenceDate];
     v8 = v7;
     if (self->_currentPageIndex)
     {
-      v9 = [(BKSearchOperation *)self lastSavedSearchResult];
+      lastSavedSearchResult = [(BKSearchOperation *)self lastSavedSearchResult];
 
-      if (v9)
+      if (lastSavedSearchResult)
       {
         objc_opt_class();
-        v10 = [(BKSearchOperation *)self lastSavedSearchResult];
-        v9 = BUDynamicCast();
+        lastSavedSearchResult2 = [(BKSearchOperation *)self lastSavedSearchResult];
+        lastSavedSearchResult = BUDynamicCast();
       }
     }
 
     else
     {
-      v9 = 0;
+      lastSavedSearchResult = 0;
     }
 
     if (([(BKPdfSearchOperation *)self isCancelled]& 1) != 0)
@@ -226,7 +226,7 @@
         {
           self->super._isDone = 1;
           [(BKSearchOperation *)self setStartSearchFromIndex:self->_currentPageIndex];
-          [(BKSearchOperation *)self setLastSavedSearchResult:v9];
+          [(BKSearchOperation *)self setLastSavedSearchResult:lastSavedSearchResult];
           v38 = _AESearchLog();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
           {
@@ -248,7 +248,7 @@ LABEL_34:
         if (v18 - v8 > 0.4)
         {
           [(BKSearchOperation *)self setStartSearchFromIndex:self->_currentPageIndex];
-          [(BKSearchOperation *)self setLastSavedSearchResult:v9];
+          [(BKSearchOperation *)self setLastSavedSearchResult:lastSavedSearchResult];
           v38 = _AESearchLog();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
           {
@@ -263,8 +263,8 @@ LABEL_29:
           goto LABEL_30;
         }
 
-        v19 = [(BKPdfSearchOperation *)self pdfDocument];
-        v20 = [v19 findString:v4 fromSelection:v9 withOptions:1];
+        pdfDocument = [(BKPdfSearchOperation *)self pdfDocument];
+        v20 = [pdfDocument findString:stringCopy fromSelection:lastSavedSearchResult withOptions:1];
 
         if (!v20)
         {
@@ -277,17 +277,17 @@ LABEL_29:
 
           self->super._isDone = 1;
           [(BKSearchOperation *)self setHavePartialResults:0];
-          v9 = 0;
+          lastSavedSearchResult = 0;
           goto LABEL_34;
         }
 
-        v21 = v4;
+        v21 = stringCopy;
         v22 = v13;
-        v9 = v20;
-        v23 = [v20 pages];
-        v24 = [v23 lastObject];
-        v25 = [(BKPdfSearchOperation *)self pdfDocument];
-        v26 = [v25 indexForPage:v24];
+        lastSavedSearchResult = v20;
+        pages = [v20 pages];
+        lastObject = [pages lastObject];
+        pdfDocument2 = [(BKPdfSearchOperation *)self pdfDocument];
+        v26 = [pdfDocument2 indexForPage:lastObject];
 
         self->_currentPageIndex = v26;
         v27 = _AESearchLog();
@@ -299,20 +299,20 @@ LABEL_29:
           _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "Search: found result on page %@", buf, 0xCu);
         }
 
-        v29 = [v9 string];
-        v30 = [v9 copy];
+        string = [lastSavedSearchResult string];
+        v30 = [lastSavedSearchResult copy];
 
         [v30 extendSelectionForLineBoundaries];
         v31 = objc_alloc_init(BKPDFSearchResult);
-        v4 = v21;
+        stringCopy = v21;
         [(BKSearchResult *)v31 setSearchString:v21];
         [(BKSearchResult *)v31 setOrdinal:self->super._ordinal];
-        [(BKPDFSearchResult *)v31 setSelection:v9];
-        v32 = [v30 string];
-        [(BKSearchResult *)v31 setText:v32];
+        [(BKPDFSearchResult *)v31 setSelection:lastSavedSearchResult];
+        string2 = [v30 string];
+        [(BKSearchResult *)v31 setText:string2];
 
-        v33 = [(BKSearchResult *)v31 text];
-        v34 = [v33 rangeOfString:v29];
+        text = [(BKSearchResult *)v31 text];
+        v34 = [text rangeOfString:string];
         [(BKSearchResult *)v31 setSearchStringRange:v34, v35];
 
         [(BKSearchResult *)v31 setPageOffset:self->_currentPageIndex];
@@ -357,14 +357,14 @@ LABEL_35:
 
 - (BOOL)_doSearch
 {
-  v3 = [(BKSearchOperation *)self searchString];
-  v4 = [NSMutableString stringWithString:v3];
+  searchString = [(BKSearchOperation *)self searchString];
+  v4 = [NSMutableString stringWithString:searchString];
 
   if ([(BKPdfSearchOperation *)self _hasSearchableCharacters:v4])
   {
     v5 = [NSCharacterSet characterSetWithCharactersInString:@"\uFFFD"];
-    v6 = [(BKSearchOperation *)self searchString];
-    v7 = [v6 rangeOfCharacterFromSet:v5 options:4];
+    searchString2 = [(BKSearchOperation *)self searchString];
+    v7 = [searchString2 rangeOfCharacterFromSet:v5 options:4];
     v9 = v8;
 
     while (v7 != 0x7FFFFFFFFFFFFFFFLL)
@@ -375,8 +375,8 @@ LABEL_35:
         break;
       }
 
-      v10 = [(BKSearchOperation *)self searchString];
-      v7 = [v10 rangeOfCharacterFromSet:v5 options:4 range:{0, v7}];
+      searchString3 = [(BKSearchOperation *)self searchString];
+      v7 = [searchString3 rangeOfCharacterFromSet:v5 options:4 range:{0, v7}];
       v9 = v11;
     }
 

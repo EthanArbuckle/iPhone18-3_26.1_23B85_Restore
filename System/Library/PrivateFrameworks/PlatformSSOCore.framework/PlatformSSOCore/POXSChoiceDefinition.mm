@@ -1,9 +1,9 @@
 @interface POXSChoiceDefinition
 - (NSArray)elements;
 - (POXSChoiceDefinition)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)elementForValue:(id)a3;
-- (void)setName:(id)a3 namespaceURI:(id)a4 forType:(Class)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)elementForValue:(id)value;
+- (void)setName:(id)name namespaceURI:(id)i forType:(Class)type;
 @end
 
 @implementation POXSChoiceDefinition
@@ -23,21 +23,21 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = POXSChoiceDefinition;
   v5 = [(POXSDefinition *)&v9 copyWithZone:?];
-  v6 = [(NSMapTable *)self->_elements copyWithZone:a3];
+  v6 = [(NSMapTable *)self->_elements copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
   return v5;
 }
 
-- (id)elementForValue:(id)a3
+- (id)elementForValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = [(NSMapTable *)self->_elements objectForKey:objc_opt_class()];
   if (!v5)
   {
@@ -58,20 +58,20 @@
 
 - (NSArray)elements
 {
-  v2 = [(NSMapTable *)self->_elements objectEnumerator];
-  v3 = [v2 allObjects];
+  objectEnumerator = [(NSMapTable *)self->_elements objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (void)setName:(id)a3 namespaceURI:(id)a4 forType:(Class)a5
+- (void)setName:(id)name namespaceURI:(id)i forType:(Class)type
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[POXSElement alloc] initWithElementName:v9 namespaceURI:v8 type:a5];
+  iCopy = i;
+  nameCopy = name;
+  v10 = [[POXSElement alloc] initWithElementName:nameCopy namespaceURI:iCopy type:type];
 
-  [(NSMapTable *)self->_elements setObject:v10 forKey:a5];
-  [(POXSDefinition *)self setType:a5 forName:v9];
+  [(NSMapTable *)self->_elements setObject:v10 forKey:type];
+  [(POXSDefinition *)self setType:type forName:nameCopy];
 }
 
 @end

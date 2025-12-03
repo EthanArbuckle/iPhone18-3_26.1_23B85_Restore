@@ -1,8 +1,8 @@
 @interface AMSFollowUpNotification
 + (id)defaultOptions;
-+ (id)optionForString:(id)a3;
++ (id)optionForString:(id)string;
 - (AMSFollowUpNotification)init;
-- (AMSFollowUpNotification)initWithJSONDictionary:(id)a3 parentIdentifier:(id)a4 logKey:(id)a5;
+- (AMSFollowUpNotification)initWithJSONDictionary:(id)dictionary parentIdentifier:(id)identifier logKey:(id)key;
 - (id)generateNotification;
 @end
 
@@ -23,16 +23,16 @@
   return v2;
 }
 
-- (AMSFollowUpNotification)initWithJSONDictionary:(id)a3 parentIdentifier:(id)a4 logKey:(id)a5
+- (AMSFollowUpNotification)initWithJSONDictionary:(id)dictionary parentIdentifier:(id)identifier logKey:(id)key
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  keyCopy = key;
   v11 = [(AMSFollowUpNotification *)self init];
   if (v11)
   {
-    v12 = [v8 objectForKeyedSubscript:@"options"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"options"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       v13 = 0;
     }
 
-    v14 = [v8 objectForKeyedSubscript:@"activateAction"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"activateAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,15 +56,15 @@
       v15 = 0;
     }
 
-    v16 = [[AMSFollowUpAction alloc] initWithJSONDictionary:v15 parentIdentifier:v9];
-    [(AMSFollowUpAction *)v16 setLogKey:v10];
+    v16 = [[AMSFollowUpAction alloc] initWithJSONDictionary:v15 parentIdentifier:identifierCopy];
+    [(AMSFollowUpAction *)v16 setLogKey:keyCopy];
     v17 = [MEMORY[0x1E695DFA8] set];
     if (v13)
     {
       v28 = v15;
       v29 = v13;
-      v30 = v10;
-      v31 = v9;
+      v30 = keyCopy;
+      v31 = identifierCopy;
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
@@ -101,8 +101,8 @@
         while (v20);
       }
 
-      v10 = v30;
-      v9 = v31;
+      keyCopy = v30;
+      identifierCopy = v31;
       v15 = v28;
       v13 = v29;
       if ([v17 count])
@@ -141,24 +141,24 @@
   v4 = v3;
   _Block_object_dispose(&v14, 8);
   v5 = objc_alloc_init(v3);
-  v6 = [(AMSFollowUpNotification *)self title];
-  [v5 setTitle:v6];
+  title = [(AMSFollowUpNotification *)self title];
+  [v5 setTitle:title];
 
-  v7 = [(AMSFollowUpNotification *)self informativeText];
-  [v5 setInformativeText:v7];
+  informativeText = [(AMSFollowUpNotification *)self informativeText];
+  [v5 setInformativeText:informativeText];
 
-  v8 = [(AMSFollowUpNotification *)self options];
-  [v5 setOptions:v8];
+  options = [(AMSFollowUpNotification *)self options];
+  [v5 setOptions:options];
 
   [v5 setFirstNotificationDelay:0.0];
-  v9 = [(AMSFollowUpNotification *)self activateAction];
+  activateAction = [(AMSFollowUpNotification *)self activateAction];
 
-  if (v9)
+  if (activateAction)
   {
-    v10 = [(AMSFollowUpNotification *)self activateAction];
-    v11 = [v10 generateAction];
+    activateAction2 = [(AMSFollowUpNotification *)self activateAction];
+    generateAction = [activateAction2 generateAction];
 
-    [v5 setActivateAction:v11];
+    [v5 setActivateAction:generateAction];
   }
 
   return v5;
@@ -175,10 +175,10 @@
   return v6;
 }
 
-+ (id)optionForString:(id)a3
++ (id)optionForString:(id)string
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringCopy = string;
   v17[0] = @"bannerAlert";
   v4 = getFLNotificationOptionBannerAlert();
   v18[0] = v4;
@@ -214,7 +214,7 @@
   v20 = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
 
-  v11 = [v10 objectForKeyedSubscript:v3];
+  v11 = [v10 objectForKeyedSubscript:stringCopy];
 
   return v11;
 }

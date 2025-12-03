@@ -1,11 +1,11 @@
 @interface PKHeroCardWatchExplainationHeaderView
 - (CGSize)recommendedCardImageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKHeroCardWatchExplainationHeaderView)init;
 - (id)_deviceBackgroundColor;
 - (void)layoutSubviews;
-- (void)setCardImage:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCardImage:(id)image;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKHeroCardWatchExplainationHeaderView
@@ -18,8 +18,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(PKHeroCardWatchExplainationHeaderView *)v2 _deviceBackgroundColor];
-    [(PKHeroCardWatchExplainationHeaderView *)v3 setBackgroundColor:v4];
+    _deviceBackgroundColor = [(PKHeroCardWatchExplainationHeaderView *)v2 _deviceBackgroundColor];
+    [(PKHeroCardWatchExplainationHeaderView *)v3 setBackgroundColor:_deviceBackgroundColor];
 
     v5 = objc_alloc_init(PKWatchHeroImageView);
     watchView = v3->_watchView;
@@ -38,10 +38,10 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKWatchHeroImageView *)self->_watchView sizeThatFits:a3.width, a3.height];
+  width = fits.width;
+  [(PKWatchHeroImageView *)self->_watchView sizeThatFits:fits.width, fits.height];
   v5 = width;
   result.height = v4;
   result.width = v5;
@@ -63,28 +63,28 @@
   [(UIImageView *)passImageView setFrame:?];
 }
 
-- (void)setCardImage:(id)a3
+- (void)setCardImage:(id)image
 {
-  objc_storeStrong(&self->_cardImage, a3);
-  v5 = a3;
-  [(UIImageView *)self->_passImageView setImage:v5];
+  objc_storeStrong(&self->_cardImage, image);
+  imageCopy = image;
+  [(UIImageView *)self->_passImageView setImage:imageCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = PKHeroCardWatchExplainationHeaderView;
-  [(PKHeroCardWatchExplainationHeaderView *)&v5 traitCollectionDidChange:a3];
-  v4 = [(PKHeroCardWatchExplainationHeaderView *)self _deviceBackgroundColor];
-  [(PKHeroCardWatchExplainationHeaderView *)self setBackgroundColor:v4];
+  [(PKHeroCardWatchExplainationHeaderView *)&v5 traitCollectionDidChange:change];
+  _deviceBackgroundColor = [(PKHeroCardWatchExplainationHeaderView *)self _deviceBackgroundColor];
+  [(PKHeroCardWatchExplainationHeaderView *)self setBackgroundColor:_deviceBackgroundColor];
 }
 
 - (id)_deviceBackgroundColor
 {
-  v2 = [(PKHeroCardWatchExplainationHeaderView *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(PKHeroCardWatchExplainationHeaderView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 2)
+  if (userInterfaceStyle == 2)
   {
     PKProvisioningBackgroundColor();
   }

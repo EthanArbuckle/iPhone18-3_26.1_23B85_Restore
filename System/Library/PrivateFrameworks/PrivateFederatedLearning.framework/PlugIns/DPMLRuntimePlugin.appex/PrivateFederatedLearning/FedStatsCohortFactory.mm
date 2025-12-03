@@ -1,5 +1,5 @@
 @interface FedStatsCohortFactory
-+ (id)cohortQueryFieldByName:(id)a3;
++ (id)cohortQueryFieldByName:(id)name;
 + (id)sharedInstance;
 - (FedStatsCohortFactory)init;
 @end
@@ -228,7 +228,7 @@
   block[1] = 3221225472;
   block[2] = sub_100017AA4;
   block[3] = &unk_10002C6E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100039598 != -1)
   {
     dispatch_once(&qword_100039598, block);
@@ -239,12 +239,12 @@
   return v2;
 }
 
-+ (id)cohortQueryFieldByName:(id)a3
++ (id)cohortQueryFieldByName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[FedStatsCohortFactory sharedInstance];
-  v5 = [v4 cohortObjects];
-  v6 = [v5 objectForKey:v3];
+  cohortObjects = [v4 cohortObjects];
+  v6 = [cohortObjects objectForKey:nameCopy];
 
   return v6;
 }

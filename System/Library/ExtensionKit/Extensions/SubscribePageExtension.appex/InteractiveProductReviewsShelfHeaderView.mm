@@ -1,12 +1,12 @@
 @interface InteractiveProductReviewsShelfHeaderView
-- (_TtC22SubscribePageExtension40InteractiveProductReviewsShelfHeaderView)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension40InteractiveProductReviewsShelfHeaderView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation InteractiveProductReviewsShelfHeaderView
 
-- (_TtC22SubscribePageExtension40InteractiveProductReviewsShelfHeaderView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension40InteractiveProductReviewsShelfHeaderView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC22SubscribePageExtension40InteractiveProductReviewsShelfHeaderView_currentState;
   *v3 = 0u;
@@ -35,7 +35,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10022B464();
 }
 

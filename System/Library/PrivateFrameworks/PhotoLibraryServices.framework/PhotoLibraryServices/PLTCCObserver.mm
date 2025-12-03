@@ -1,7 +1,7 @@
 @interface PLTCCObserver
-- (PLTCCObserver)initWithLibraryBundleController:(id)a3;
+- (PLTCCObserver)initWithLibraryBundleController:(id)controller;
 - (id)_systemPhotoLibrary;
-- (void)_handleTCCEvent:(unint64_t)a3 auth_record:(id)a4;
+- (void)_handleTCCEvent:(unint64_t)event auth_record:(id)auth_record;
 - (void)registerAsTCCObserver;
 @end
 
@@ -14,17 +14,17 @@
   v2 = [PLLibraryServicesManager runningLibraryServicesManagerForWellKnownPhotoLibraryIdentifier:1 error:&v8];
   v3 = v8;
   v4 = PLBackendGetLog();
-  v5 = v4;
+  databaseContext = v4;
   if (v2)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_INFO, "TCC Observer: Opened system photo library", buf, 2u);
+      _os_log_impl(&dword_19BF1F000, databaseContext, OS_LOG_TYPE_INFO, "TCC Observer: Opened system photo library", buf, 2u);
     }
 
-    v5 = [v2 databaseContext];
-    v6 = [v5 newShortLivedLibraryWithName:"[PLTCCObserver _systemPhotoLibrary]"];
+    databaseContext = [v2 databaseContext];
+    v6 = [databaseContext newShortLivedLibraryWithName:"[PLTCCObserver _systemPhotoLibrary]"];
   }
 
   else
@@ -33,7 +33,7 @@
     {
       *buf = 138412290;
       v10 = v3;
-      _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "TCC Observer: Unable to open system photo library: %@", buf, 0xCu);
+      _os_log_impl(&dword_19BF1F000, databaseContext, OS_LOG_TYPE_ERROR, "TCC Observer: Unable to open system photo library: %@", buf, 0xCu);
     }
 
     v6 = 0;
@@ -42,10 +42,10 @@
   return v6;
 }
 
-- (void)_handleTCCEvent:(unint64_t)a3 auth_record:(id)a4
+- (void)_handleTCCEvent:(unint64_t)event auth_record:(id)auth_record
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  auth_recordCopy = auth_record;
   v7 = tcc_authorization_record_get_service();
   v8 = tcc_service_get_CF_name();
   v9 = tcc_authorization_record_get_subject_identity();
@@ -57,9 +57,9 @@
   if (!type)
   {
     v14 = identifier;
-    if (a3 == 3 && (([v8 isEqualToString:*MEMORY[0x1E69D55C8]] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E69D55D0])))
+    if (event == 3 && (([v8 isEqualToString:*MEMORY[0x1E69D55C8]] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E69D55D0])))
     {
-      v15 = [(PLTCCObserver *)self _systemPhotoLibrary];
+      _systemPhotoLibrary = [(PLTCCObserver *)self _systemPhotoLibrary];
       v16 = PLBackendGetLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
@@ -72,9 +72,9 @@
       v21[1] = 3221225472;
       v21[2] = __45__PLTCCObserver__handleTCCEvent_auth_record___block_invoke;
       v21[3] = &unk_1E7577B90;
-      v22 = v15;
+      v22 = _systemPhotoLibrary;
       v23 = v14;
-      v17 = v15;
+      v17 = _systemPhotoLibrary;
       [v17 performTransactionAndWait:v21];
     }
 
@@ -127,9 +127,9 @@ void __38__PLTCCObserver_registerAsTCCObserver__block_invoke(uint64_t a1, uint64
   [WeakRetained _handleTCCEvent:a2 auth_record:v5];
 }
 
-- (PLTCCObserver)initWithLibraryBundleController:(id)a3
+- (PLTCCObserver)initWithLibraryBundleController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = PLTCCObserver;
   v6 = [(PLTCCObserver *)&v13 init];
@@ -142,7 +142,7 @@ void __38__PLTCCObserver_registerAsTCCObserver__block_invoke(uint64_t a1, uint64
     observerQueue = v6->_observerQueue;
     v6->_observerQueue = v9;
 
-    objc_storeStrong(&v6->_libraryBundleController, a3);
+    objc_storeStrong(&v6->_libraryBundleController, controller);
     v11 = v6;
   }
 

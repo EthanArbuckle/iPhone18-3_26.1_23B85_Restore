@@ -1,35 +1,35 @@
 @interface AWDMETRICSCellularPowerLogPLMNScanEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsReasonForScan:(id)a3;
-- (int)StringAsScanResult:(id)a3;
-- (int)StringAsScanType:(id)a3;
+- (int)StringAsReasonForScan:(id)scan;
+- (int)StringAsScanResult:(id)result;
+- (int)StringAsScanType:(id)type;
 - (int)reasonForScan;
 - (int)scanResult;
 - (int)scanType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasReasonForScan:(BOOL)a3;
-- (void)setHasScanResult:(BOOL)a3;
-- (void)setHasScanType:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasReasonForScan:(BOOL)scan;
+- (void)setHasScanResult:(BOOL)result;
+- (void)setHasScanType:(BOOL)type;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSCellularPowerLogPLMNScanEvent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -60,7 +60,7 @@ LABEL_3:
     v9 = off_278259DA0[scanResult];
   }
 
-  [v3 setObject:v9 forKey:@"scan_result"];
+  [dictionary setObject:v9 forKey:@"scan_result"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -94,7 +94,7 @@ LABEL_16:
     v11 = @"FULL_BAND";
   }
 
-  [v3 setObject:v11 forKey:@"scan_type"];
+  [dictionary setObject:v11 forKey:@"scan_type"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -120,7 +120,7 @@ LABEL_22:
     v13 = off_278259DB8[reasonForScan];
   }
 
-  [v3 setObject:v13 forKey:@"reason_for_scan"];
+  [dictionary setObject:v13 forKey:@"reason_for_scan"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -136,18 +136,18 @@ LABEL_6:
 
 LABEL_26:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_duration];
-  [v3 setObject:v14 forKey:@"duration"];
+  [dictionary setObject:v14 forKey:@"duration"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_7:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v5 forKey:@"subs_id"];
+    [dictionary setObject:v5 forKey:@"subs_id"];
   }
 
 LABEL_8:
 
-  return v3;
+  return dictionary;
 }
 
 - (int)scanResult
@@ -163,9 +163,9 @@ LABEL_8:
   }
 }
 
-- (void)setHasScanResult:(BOOL)a3
+- (void)setHasScanResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 8;
   }
@@ -178,20 +178,20 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsScanResult:(id)a3
+- (int)StringAsScanResult:(id)result
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"COMPLETED"])
+  resultCopy = result;
+  if ([resultCopy isEqualToString:@"COMPLETED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FAILED"])
+  else if ([resultCopy isEqualToString:@"FAILED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ABORT"])
+  else if ([resultCopy isEqualToString:@"ABORT"])
   {
     v4 = 2;
   }
@@ -217,9 +217,9 @@ LABEL_8:
   }
 }
 
-- (void)setHasScanType:(BOOL)a3
+- (void)setHasScanType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -232,17 +232,17 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsScanType:(id)a3
+- (int)StringAsScanType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FULL_BAND"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"FULL_BAND"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"ACQ_DB"];
+    v4 = [typeCopy isEqualToString:@"ACQ_DB"];
   }
 
   return v4;
@@ -261,9 +261,9 @@ LABEL_8:
   }
 }
 
-- (void)setHasReasonForScan:(BOOL)a3
+- (void)setHasReasonForScan:(BOOL)scan
 {
-  if (a3)
+  if (scan)
   {
     v3 = 4;
   }
@@ -276,20 +276,20 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsReasonForScan:(id)a3
+- (int)StringAsReasonForScan:(id)scan
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LIMITED_SERV_RECOVERY"])
+  scanCopy = scan;
+  if ([scanCopy isEqualToString:@"LIMITED_SERV_RECOVERY"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MANUAL_LIST_REQUESTED_BY_USER"])
+  else if ([scanCopy isEqualToString:@"MANUAL_LIST_REQUESTED_BY_USER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HPPLMN_LIMITED_SERV_RECOVERY"])
+  else if ([scanCopy isEqualToString:@"HPPLMN_LIMITED_SERV_RECOVERY"])
   {
     v4 = 2;
   }
@@ -302,9 +302,9 @@ LABEL_8:
   return v4;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -317,9 +317,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 32;
   }
@@ -338,15 +338,15 @@ LABEL_8:
   v8.receiver = self;
   v8.super_class = AWDMETRICSCellularPowerLogPLMNScanEvent;
   v4 = [(AWDMETRICSCellularPowerLogPLMNScanEvent *)&v8 description];
-  v5 = [(AWDMETRICSCellularPowerLogPLMNScanEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSCellularPowerLogPLMNScanEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -427,14 +427,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -453,8 +453,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 6) = self->_scanResult;
-  *(v4 + 36) |= 8u;
+  *(toCopy + 6) = self->_scanResult;
+  *(toCopy + 36) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -468,8 +468,8 @@ LABEL_4:
   }
 
 LABEL_13:
-  *(v4 + 7) = self->_scanType;
-  *(v4 + 36) |= 0x10u;
+  *(toCopy + 7) = self->_scanType;
+  *(toCopy + 36) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -483,8 +483,8 @@ LABEL_5:
   }
 
 LABEL_14:
-  *(v4 + 5) = self->_reasonForScan;
-  *(v4 + 36) |= 4u;
+  *(toCopy + 5) = self->_reasonForScan;
+  *(toCopy + 36) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -498,21 +498,21 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(v4 + 4) = self->_duration;
-  *(v4 + 36) |= 2u;
+  *(toCopy + 4) = self->_duration;
+  *(toCopy + 36) |= 2u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_7:
-    *(v4 + 8) = self->_subsId;
-    *(v4 + 36) |= 0x20u;
+    *(toCopy + 8) = self->_subsId;
+    *(toCopy + 36) |= 0x20u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -594,23 +594,23 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_31:
     v5 = 0;
@@ -619,60 +619,60 @@ LABEL_31:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_scanResult != *(v4 + 6))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_scanResult != *(equalCopy + 6))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 8) != 0)
+  else if ((*(equalCopy + 36) & 8) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0 || self->_scanType != *(v4 + 7))
+    if ((*(equalCopy + 36) & 0x10) == 0 || self->_scanType != *(equalCopy + 7))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 0x10) != 0)
+  else if ((*(equalCopy + 36) & 0x10) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_reasonForScan != *(v4 + 5))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_reasonForScan != *(equalCopy + 5))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_duration != *(v4 + 4))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_duration != *(equalCopy + 4))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_31;
   }
 
-  v5 = (*(v4 + 36) & 0x20) == 0;
+  v5 = (*(equalCopy + 36) & 0x20) == 0;
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 36) & 0x20) == 0 || self->_subsId != *(v4 + 8))
+    if ((*(equalCopy + 36) & 0x20) == 0 || self->_subsId != *(equalCopy + 8))
     {
       goto LABEL_31;
     }
@@ -767,15 +767,15 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -788,14 +788,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 8) == 0)
+  else if ((*(fromCopy + 36) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_scanResult = *(v4 + 6);
+  self->_scanResult = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -808,9 +808,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_scanType = *(v4 + 7);
+  self->_scanType = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -823,9 +823,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_reasonForScan = *(v4 + 5);
+  self->_reasonForScan = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -838,12 +838,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_duration = *(v4 + 4);
+  self->_duration = *(fromCopy + 4);
   *&self->_has |= 2u;
-  if ((*(v4 + 36) & 0x20) != 0)
+  if ((*(fromCopy + 36) & 0x20) != 0)
   {
 LABEL_7:
-    self->_subsId = *(v4 + 8);
+    self->_subsId = *(fromCopy + 8);
     *&self->_has |= 0x20u;
   }
 

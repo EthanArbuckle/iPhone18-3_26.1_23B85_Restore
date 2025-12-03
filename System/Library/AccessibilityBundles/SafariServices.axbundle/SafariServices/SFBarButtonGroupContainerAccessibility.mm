@@ -1,15 +1,15 @@
 @interface SFBarButtonGroupContainerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SFBarButtonGroupContainerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFBarButtonGroupContainer" hasInstanceMethod:@"buttonIdentifiers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFBarButtonGroupContainer" hasInstanceVariable:@"barRegistration" withType:"?"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFBarButtonGroupContainer" hasInstanceMethod:@"buttonIdentifiers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFBarButtonGroupContainer" hasInstanceVariable:@"barRegistration" withType:"?"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

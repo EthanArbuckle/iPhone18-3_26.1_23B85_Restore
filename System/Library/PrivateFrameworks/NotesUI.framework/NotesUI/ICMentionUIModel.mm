@@ -6,20 +6,20 @@
 
 - (id)labelColor
 {
-  v3 = [(ICInlineAttachmentUIModel *)self attachment];
+  attachment = [(ICInlineAttachmentUIModel *)self attachment];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [attachment managedObjectContext];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __30__ICMentionUIModel_labelColor__block_invoke;
   v19[3] = &unk_1E8468FA8;
   v21 = &v22;
-  v5 = v3;
+  v5 = attachment;
   v20 = v5;
-  [v4 performBlockAndWait:v19];
+  [managedObjectContext performBlockAndWait:v19];
 
   if (v5 && *(v23 + 24) != 1)
   {
@@ -28,17 +28,17 @@
     v14 = 0x3032000000;
     v15 = __Block_byref_object_copy__56;
     v16 = __Block_byref_object_dispose__56;
-    v17 = [MEMORY[0x1E69DC888] ICUnknownInlineAttachmentTextColor];
-    v7 = [v5 managedObjectContext];
+    iCUnknownInlineAttachmentTextColor = [MEMORY[0x1E69DC888] ICUnknownInlineAttachmentTextColor];
+    managedObjectContext2 = [v5 managedObjectContext];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __30__ICMentionUIModel_labelColor__block_invoke_8;
     v9[3] = &unk_1E846B1D8;
     v10 = v5;
     v11 = &v12;
-    [v7 performBlockAndWait:v9];
+    [managedObjectContext2 performBlockAndWait:v9];
 
-    v6 = v13[5];
+    labelColor = v13[5];
     _Block_object_dispose(&v12, 8);
   }
 
@@ -46,12 +46,12 @@
   {
     v18.receiver = self;
     v18.super_class = ICMentionUIModel;
-    v6 = [(ICInlineAttachmentUIModel *)&v18 labelColor];
+    labelColor = [(ICInlineAttachmentUIModel *)&v18 labelColor];
   }
 
   _Block_object_dispose(&v22, 8);
 
-  return v6;
+  return labelColor;
 }
 
 uint64_t __30__ICMentionUIModel_labelColor__block_invoke(uint64_t a1)

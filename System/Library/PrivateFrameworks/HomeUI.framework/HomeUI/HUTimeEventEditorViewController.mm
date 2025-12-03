@@ -1,10 +1,10 @@
 @interface HUTimeEventEditorViewController
-- (BOOL)shouldHideFooterBelowSection:(int64_t)a3;
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUTimeEventEditorViewController)initWithFlow:(id)a3 stepIdentifier:(id)a4;
-- (HUTimeEventEditorViewController)initWithTimeEvent:(id)a3 triggerBuilder:(id)a4;
+- (BOOL)shouldHideFooterBelowSection:(int64_t)section;
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUTimeEventEditorViewController)initWithFlow:(id)flow stepIdentifier:(id)identifier;
+- (HUTimeEventEditorViewController)initWithTimeEvent:(id)event triggerBuilder:(id)builder;
 - (NSArray)selectedRecurrences;
 - (NSDateComponents)selectedFireTimeComponents;
 - (NSDateComponents)selectedSignificantEventOffset;
@@ -12,33 +12,33 @@
 - (id)_instructionsSectionIDs;
 - (id)_localizedRecurrenceDescription;
 - (id)_selectedSignificantEvent;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (void)_changeFireTime:(id)a3;
-- (void)_doneButtonPressed:(id)a3;
-- (void)datePickerCell:(id)a3 didSelectDate:(id)a4;
-- (void)dayOfWeekPickerCell:(id)a3 didChangeSelectedRecurrences:(id)a4;
-- (void)setLayoutOptions:(id)a3;
-- (void)setSelectedDateOptionItem:(id)a3;
-- (void)setSelectedFireTimeComponents:(id)a3;
-- (void)setSelectedRecurrences:(id)a3;
-- (void)setSelectedSignificantEventOffset:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)timerTriggerOffsetEditor:(id)a3 didFinishWithOffset:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (void)_changeFireTime:(id)time;
+- (void)_doneButtonPressed:(id)pressed;
+- (void)datePickerCell:(id)cell didSelectDate:(id)date;
+- (void)dayOfWeekPickerCell:(id)cell didChangeSelectedRecurrences:(id)recurrences;
+- (void)setLayoutOptions:(id)options;
+- (void)setSelectedDateOptionItem:(id)item;
+- (void)setSelectedFireTimeComponents:(id)components;
+- (void)setSelectedRecurrences:(id)recurrences;
+- (void)setSelectedSignificantEventOffset:(id)offset;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)timerTriggerOffsetEditor:(id)editor didFinishWithOffset:(id)offset;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUTimeEventEditorViewController
 
-- (HUTimeEventEditorViewController)initWithTimeEvent:(id)a3 triggerBuilder:(id)a4
+- (HUTimeEventEditorViewController)initWithTimeEvent:(id)event triggerBuilder:(id)builder
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[HUTimeEventEditorItemManager alloc] initWithTimeEvent:v8 triggerBuilder:v7 delegate:self];
+  builderCopy = builder;
+  eventCopy = event;
+  v9 = [[HUTimeEventEditorItemManager alloc] initWithTimeEvent:eventCopy triggerBuilder:builderCopy delegate:self];
 
   v19.receiver = self;
   v19.super_class = HUTimeEventEditorViewController;
@@ -46,48 +46,48 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_triggerBuilder, a4);
-    v12 = [MEMORY[0x277CBEA80] currentCalendar];
+    objc_storeStrong(&v10->_triggerBuilder, builder);
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v13 = _HULocalizedStringWithDefaultValue(@"HUTimerTriggerEditorTitle", @"HUTimerTriggerEditorTitle", 1);
     [(HUTimeEventEditorViewController *)v11 setTitle:v13];
 
-    v14 = [MEMORY[0x277CBEAA8] date];
-    v15 = [v12 dateByAddingUnit:32 value:1 toDate:v14 options:0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v15 = [currentCalendar dateByAddingUnit:32 value:1 toDate:date options:0];
 
-    v16 = [v12 components:96 fromDate:v15];
-    v17 = [(HUItemTableViewController *)v11 itemManager];
-    [v17 setDefaultFireTimeComponents:v16];
+    v16 = [currentCalendar components:96 fromDate:v15];
+    itemManager = [(HUItemTableViewController *)v11 itemManager];
+    [itemManager setDefaultFireTimeComponents:v16];
   }
 
   return v11;
 }
 
-- (HUTimeEventEditorViewController)initWithFlow:(id)a3 stepIdentifier:(id)a4
+- (HUTimeEventEditorViewController)initWithFlow:(id)flow stepIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 eventBuilderItem];
-  v9 = [v8 timeEventBuilder];
-  v10 = [v6 triggerBuilder];
-  v11 = [(HUTimeEventEditorViewController *)self initWithTimeEvent:v9 triggerBuilder:v10];
+  flowCopy = flow;
+  identifierCopy = identifier;
+  eventBuilderItem = [flowCopy eventBuilderItem];
+  timeEventBuilder = [eventBuilderItem timeEventBuilder];
+  triggerBuilder = [flowCopy triggerBuilder];
+  v11 = [(HUTimeEventEditorViewController *)self initWithTimeEvent:timeEventBuilder triggerBuilder:triggerBuilder];
 
   if (v11)
   {
-    [(HUTimeEventEditorViewController *)v11 setFlow:v6];
-    [(HUTimeEventEditorViewController *)v11 setStepIdentifier:v7];
-    v12 = [MEMORY[0x277CBEA80] currentCalendar];
-    v13 = [(HUTimeEventEditorViewController *)v11 flow];
-    v14 = [v13 originalEventBuilderItem];
+    [(HUTimeEventEditorViewController *)v11 setFlow:flowCopy];
+    [(HUTimeEventEditorViewController *)v11 setStepIdentifier:identifierCopy];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    flow = [(HUTimeEventEditorViewController *)v11 flow];
+    originalEventBuilderItem = [flow originalEventBuilderItem];
 
-    if (!v14)
+    if (!originalEventBuilderItem)
     {
       v21[0] = 0;
       v21[1] = v21;
       v21[2] = 0x2020000000;
       v21[3] = 1;
       v15 = MEMORY[0x277CBEA60];
-      v16 = [v12 weekdaySymbols];
-      v17 = [v16 count];
+      weekdaySymbols = [currentCalendar weekdaySymbols];
+      v17 = [weekdaySymbols count];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __63__HUTimeEventEditorViewController_initWithFlow_stepIdentifier___block_invoke;
@@ -116,9 +116,9 @@ id __63__HUTimeEventEditorViewController_initWithFlow_stepIdentifier___block_inv
   v32.receiver = self;
   v32.super_class = HUTimeEventEditorViewController;
   [(HUItemTableViewController *)&v32 viewDidLoad];
-  v3 = [(HUTimeEventEditorViewController *)self flow];
-  v4 = [(HUTimeEventEditorViewController *)self stepIdentifier];
-  v5 = [v3 shouldShowDoneButtonForStep:v4];
+  flow = [(HUTimeEventEditorViewController *)self flow];
+  stepIdentifier = [(HUTimeEventEditorViewController *)self stepIdentifier];
+  v5 = [flow shouldShowDoneButtonForStep:stepIdentifier];
 
   if (v5)
   {
@@ -128,9 +128,9 @@ id __63__HUTimeEventEditorViewController_initWithFlow_stepIdentifier___block_inv
 
   else
   {
-    v8 = [(HUTimeEventEditorViewController *)self flow];
-    v9 = [(HUTimeEventEditorViewController *)self stepIdentifier];
-    v10 = [v8 shouldShowNextButtonForStep:v9];
+    flow2 = [(HUTimeEventEditorViewController *)self flow];
+    stepIdentifier2 = [(HUTimeEventEditorViewController *)self stepIdentifier];
+    v10 = [flow2 shouldShowNextButtonForStep:stepIdentifier2];
 
     if (!v10)
     {
@@ -144,47 +144,47 @@ id __63__HUTimeEventEditorViewController_initWithFlow_stepIdentifier___block_inv
   v11 = objc_alloc(MEMORY[0x277D751E0]);
   v12 = _HULocalizedStringWithDefaultValue(v7, v7, 1);
   v13 = [v11 initWithTitle:v12 style:2 target:self action:*v6];
-  v14 = [(HUTimeEventEditorViewController *)self navigationItem];
-  [v14 setRightBarButtonItem:v13];
+  navigationItem = [(HUTimeEventEditorViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v13];
 
 LABEL_6:
-  v15 = [MEMORY[0x277CBEA80] currentCalendar];
-  v16 = [(HUItemTableViewController *)self itemManager];
-  v17 = [v16 timeOptionItem];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  timeOptionItem = [itemManager timeOptionItem];
 
-  v18 = [(HUTimeEventEditorViewController *)self timeEvent];
+  timeEvent = [(HUTimeEventEditorViewController *)self timeEvent];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v20 = [(HUTimeEventEditorViewController *)self timeEvent];
-  v21 = v20;
+  timeEvent2 = [(HUTimeEventEditorViewController *)self timeEvent];
+  timeEvent3 = timeEvent2;
   if (isKindOfClass)
   {
-    v22 = [v20 fireTimeComponents];
+    fireTimeComponents = [timeEvent2 fireTimeComponents];
 
-    if (v22)
+    if (fireTimeComponents)
     {
-      v23 = [v21 fireTimeComponents];
-      v24 = [(HUItemTableViewController *)self itemManager];
-      [v24 setDefaultFireTimeComponents:v23];
+      fireTimeComponents2 = [timeEvent3 fireTimeComponents];
+      itemManager2 = [(HUItemTableViewController *)self itemManager];
+      [itemManager2 setDefaultFireTimeComponents:fireTimeComponents2];
 LABEL_21:
 
       goto LABEL_22;
     }
 
-    v28 = [v21 fireDate];
+    fireDate = [timeEvent3 fireDate];
 
-    if (!v28)
+    if (!fireDate)
     {
 LABEL_22:
 
       goto LABEL_23;
     }
 
-    v23 = [v21 fireDate];
-    v24 = [v15 components:96 fromDate:v23];
-    v29 = [(HUItemTableViewController *)self itemManager];
-    [v29 setDefaultFireTimeComponents:v24];
+    fireTimeComponents2 = [timeEvent3 fireDate];
+    itemManager2 = [currentCalendar components:96 fromDate:fireTimeComponents2];
+    itemManager3 = [(HUItemTableViewController *)self itemManager];
+    [itemManager3 setDefaultFireTimeComponents:itemManager2];
 LABEL_20:
 
     goto LABEL_21;
@@ -195,58 +195,58 @@ LABEL_20:
 
   if (v25)
   {
-    v21 = [(HUTimeEventEditorViewController *)self timeEvent];
-    v23 = [v21 significantEvent];
-    if ([v23 isEqualToString:*MEMORY[0x277CD0FA8]])
+    timeEvent3 = [(HUTimeEventEditorViewController *)self timeEvent];
+    fireTimeComponents2 = [timeEvent3 significantEvent];
+    if ([fireTimeComponents2 isEqualToString:*MEMORY[0x277CD0FA8]])
     {
-      v26 = [(HUItemTableViewController *)self itemManager];
-      v27 = [v26 sunriseOptionItem];
+      itemManager4 = [(HUItemTableViewController *)self itemManager];
+      sunriseOptionItem = [itemManager4 sunriseOptionItem];
     }
 
     else
     {
-      if (![v23 isEqualToString:*MEMORY[0x277CD0FB0]])
+      if (![fireTimeComponents2 isEqualToString:*MEMORY[0x277CD0FB0]])
       {
         goto LABEL_17;
       }
 
-      v26 = [(HUItemTableViewController *)self itemManager];
-      v27 = [v26 sunsetOptionItem];
+      itemManager4 = [(HUItemTableViewController *)self itemManager];
+      sunriseOptionItem = [itemManager4 sunsetOptionItem];
     }
 
-    v30 = v27;
+    v30 = sunriseOptionItem;
 
-    v17 = v30;
+    timeOptionItem = v30;
 LABEL_17:
-    v24 = [(HUItemTableViewController *)self itemManager];
-    v29 = [v21 significantEventOffset];
-    if (v29)
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    itemManager3 = [timeEvent3 significantEventOffset];
+    if (itemManager3)
     {
-      [v24 setDefaultOffset:v29 forSignificantEvent:v23];
+      [itemManager2 setDefaultOffset:itemManager3 forSignificantEvent:fireTimeComponents2];
     }
 
     else
     {
       v31 = objc_opt_new();
-      [v24 setDefaultOffset:v31 forSignificantEvent:v23];
+      [itemManager2 setDefaultOffset:v31 forSignificantEvent:fireTimeComponents2];
     }
 
     goto LABEL_20;
   }
 
 LABEL_23:
-  [(HUTimeEventEditorViewController *)self setSelectedDateOptionItem:v17];
+  [(HUTimeEventEditorViewController *)self setSelectedDateOptionItem:timeOptionItem];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = HUTimeEventEditorViewController;
-  [(HUItemTableViewController *)&v8 viewWillAppear:a3];
+  [(HUItemTableViewController *)&v8 viewWillAppear:appear];
   if ([MEMORY[0x277D14CE8] useMacIdiom])
   {
-    v4 = [(HUTimeEventEditorViewController *)self view];
-    [v4 frame];
+    view = [(HUTimeEventEditorViewController *)self view];
+    [view frame];
     v7 = [HUGridLimitedWidthViewLayoutOptions defaultOptionsForViewSize:1 columnStyle:&unk_2824911A8 overrideSizeSubclass:v5, v6];
     [(HUTimeEventEditorViewController *)self setLayoutOptions:v7];
   }
@@ -257,56 +257,56 @@ LABEL_23:
   v15.receiver = self;
   v15.super_class = HUTimeEventEditorViewController;
   [(HUItemTableViewController *)&v15 viewDidLayoutSubviews];
-  v3 = [(HUTimeEventEditorViewController *)self navigationController];
-  v4 = [v3 navigationBar];
-  [v4 frame];
+  navigationController = [(HUTimeEventEditorViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v6 = v5;
 
-  v7 = [(HUTimeEventEditorViewController *)self tableView];
-  [v7 contentInset];
+  tableView = [(HUTimeEventEditorViewController *)self tableView];
+  [tableView contentInset];
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(HUTimeEventEditorViewController *)self tableView];
-  [v14 setContentInset:{v6, v9, v11, v13}];
+  tableView2 = [(HUTimeEventEditorViewController *)self tableView];
+  [tableView2 setContentInset:{v6, v9, v11, v13}];
 }
 
-- (void)setSelectedDateOptionItem:(id)a3
+- (void)setSelectedDateOptionItem:(id)item
 {
-  v44 = a3;
-  if (([v44 isEqual:self->_selectedDateOptionItem] & 1) == 0)
+  itemCopy = item;
+  if (([itemCopy isEqual:self->_selectedDateOptionItem] & 1) == 0)
   {
     v5 = self->_selectedDateOptionItem;
-    objc_storeStrong(&self->_selectedDateOptionItem, a3);
+    objc_storeStrong(&self->_selectedDateOptionItem, item);
     if (v5)
     {
-      v6 = [(HUItemTableViewController *)self itemManager];
-      v7 = [v6 indexPathForItem:v5];
+      itemManager = [(HUItemTableViewController *)self itemManager];
+      v7 = [itemManager indexPathForItem:v5];
 
       if (v7)
       {
-        v8 = [(HUTimeEventEditorViewController *)self tableView];
-        v9 = [v8 cellForRowAtIndexPath:v7];
+        tableView = [(HUTimeEventEditorViewController *)self tableView];
+        v9 = [tableView cellForRowAtIndexPath:v7];
 
         [(HUTimeEventEditorViewController *)self updateCell:v9 forItem:v5 indexPath:v7 animated:1];
       }
 
-      v10 = [(HUItemTableViewController *)self itemManager];
-      v11 = [v10 timeOptionItem];
+      itemManager2 = [(HUItemTableViewController *)self itemManager];
+      timeOptionItem = [itemManager2 timeOptionItem];
 
-      if (v5 == v11)
+      if (v5 == timeOptionItem)
       {
-        v12 = [(HUItemTableViewController *)self itemManager];
-        [v12 setDatePickerShown:0];
+        itemManager3 = [(HUItemTableViewController *)self itemManager];
+        [itemManager3 setDatePickerShown:0];
       }
     }
 
     if (!self->_selectedDateOptionItem)
     {
-      v26 = [(HUTimeEventEditorViewController *)self triggerBuilder];
-      v27 = [(HUTimeEventEditorViewController *)self timeEvent];
-      [v26 removeEventBuilder:v27];
+      triggerBuilder = [(HUTimeEventEditorViewController *)self triggerBuilder];
+      timeEvent = [(HUTimeEventEditorViewController *)self timeEvent];
+      [triggerBuilder removeEventBuilder:timeEvent];
 
       [(HUTimeEventEditorViewController *)self setTimeEvent:0];
 LABEL_24:
@@ -314,13 +314,13 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v13 = [(HUItemTableViewController *)self itemManager];
-    v14 = [v13 indexPathForItem:self->_selectedDateOptionItem];
+    itemManager4 = [(HUItemTableViewController *)self itemManager];
+    v14 = [itemManager4 indexPathForItem:self->_selectedDateOptionItem];
 
     if (v14)
     {
-      v15 = [(HUTimeEventEditorViewController *)self tableView];
-      v16 = [v15 cellForRowAtIndexPath:v14];
+      tableView2 = [(HUTimeEventEditorViewController *)self tableView];
+      v16 = [tableView2 cellForRowAtIndexPath:v14];
 
       if (v16)
       {
@@ -329,42 +329,42 @@ LABEL_24:
     }
 
     selectedDateOptionItem = self->_selectedDateOptionItem;
-    v18 = [(HUItemTableViewController *)self itemManager];
-    v19 = [v18 timeOptionItem];
-    LODWORD(selectedDateOptionItem) = [(HFItem *)selectedDateOptionItem isEqual:v19];
+    itemManager5 = [(HUItemTableViewController *)self itemManager];
+    timeOptionItem2 = [itemManager5 timeOptionItem];
+    LODWORD(selectedDateOptionItem) = [(HFItem *)selectedDateOptionItem isEqual:timeOptionItem2];
 
     if (selectedDateOptionItem)
     {
-      v20 = objc_alloc_init(MEMORY[0x277D14448]);
-      v21 = [(HUItemTableViewController *)self itemManager];
-      v22 = [v21 defaultFireTimeComponents];
-      [v20 setFireTimeComponents:v22];
+      _selectedSignificantEvent = objc_alloc_init(MEMORY[0x277D14448]);
+      itemManager6 = [(HUItemTableViewController *)self itemManager];
+      defaultFireTimeComponents = [itemManager6 defaultFireTimeComponents];
+      [_selectedSignificantEvent setFireTimeComponents:defaultFireTimeComponents];
 
-      v23 = [(HUTimeEventEditorViewController *)self triggerBuilder];
-      v24 = [(HUTimeEventEditorViewController *)self timeEvent];
-      [v23 removeEventBuilder:v24];
+      triggerBuilder2 = [(HUTimeEventEditorViewController *)self triggerBuilder];
+      timeEvent2 = [(HUTimeEventEditorViewController *)self timeEvent];
+      [triggerBuilder2 removeEventBuilder:timeEvent2];
 
-      v25 = [(HUTimeEventEditorViewController *)self triggerBuilder];
-      [v25 addEventBuilder:v20];
+      triggerBuilder3 = [(HUTimeEventEditorViewController *)self triggerBuilder];
+      [triggerBuilder3 addEventBuilder:_selectedSignificantEvent];
 
-      [(HUTimeEventEditorViewController *)self setTimeEvent:v20];
+      [(HUTimeEventEditorViewController *)self setTimeEvent:_selectedSignificantEvent];
     }
 
     else
     {
       v28 = self->_selectedDateOptionItem;
-      v29 = [(HUItemTableViewController *)self itemManager];
-      v30 = [v29 sunriseOptionItem];
-      if ([(HFItem *)v28 isEqual:v30])
+      itemManager7 = [(HUItemTableViewController *)self itemManager];
+      sunriseOptionItem = [itemManager7 sunriseOptionItem];
+      if ([(HFItem *)v28 isEqual:sunriseOptionItem])
       {
       }
 
       else
       {
         v31 = self->_selectedDateOptionItem;
-        v32 = [(HUItemTableViewController *)self itemManager];
-        v33 = [v32 sunsetOptionItem];
-        LODWORD(v31) = [(HFItem *)v31 isEqual:v33];
+        itemManager8 = [(HUItemTableViewController *)self itemManager];
+        sunsetOptionItem = [itemManager8 sunsetOptionItem];
+        LODWORD(v31) = [(HFItem *)v31 isEqual:sunsetOptionItem];
 
         if (!v31)
         {
@@ -373,32 +373,32 @@ LABEL_24:
         }
       }
 
-      v20 = [(HUTimeEventEditorViewController *)self _selectedSignificantEvent];
-      v34 = [(HUItemTableViewController *)self itemManager];
-      v35 = [v34 defaultOffsetForSignificantEvent:v20];
+      _selectedSignificantEvent = [(HUTimeEventEditorViewController *)self _selectedSignificantEvent];
+      itemManager9 = [(HUItemTableViewController *)self itemManager];
+      v35 = [itemManager9 defaultOffsetForSignificantEvent:_selectedSignificantEvent];
 
       v36 = objc_alloc_init(MEMORY[0x277D14AF0]);
-      [v36 setSignificantEvent:v20];
+      [v36 setSignificantEvent:_selectedSignificantEvent];
       [v36 setSignificantEventOffset:v35];
-      v37 = [(HUTimeEventEditorViewController *)self triggerBuilder];
-      v38 = [(HUTimeEventEditorViewController *)self timeEvent];
-      [v37 removeEventBuilder:v38];
+      triggerBuilder4 = [(HUTimeEventEditorViewController *)self triggerBuilder];
+      timeEvent3 = [(HUTimeEventEditorViewController *)self timeEvent];
+      [triggerBuilder4 removeEventBuilder:timeEvent3];
 
-      v39 = [(HUTimeEventEditorViewController *)self triggerBuilder];
-      [v39 addEventBuilder:v36];
+      triggerBuilder5 = [(HUTimeEventEditorViewController *)self triggerBuilder];
+      [triggerBuilder5 addEventBuilder:v36];
 
       [(HUTimeEventEditorViewController *)self setTimeEvent:v36];
     }
 
 LABEL_21:
     v40 = self->_selectedDateOptionItem;
-    v41 = [(HUItemTableViewController *)self itemManager];
-    v42 = [v41 timeOptionItem];
+    itemManager10 = [(HUItemTableViewController *)self itemManager];
+    timeOptionItem3 = [itemManager10 timeOptionItem];
 
-    if (v40 == v42)
+    if (v40 == timeOptionItem3)
     {
-      v43 = [(HUItemTableViewController *)self itemManager];
-      [v43 setDatePickerShown:1];
+      itemManager11 = [(HUItemTableViewController *)self itemManager];
+      [itemManager11 setDatePickerShown:1];
     }
 
     goto LABEL_24;
@@ -410,10 +410,10 @@ LABEL_25:
 - (NSDateComponents)selectedSignificantEventOffset
 {
   objc_opt_class();
-  v3 = [(HUTimeEventEditorViewController *)self timeEvent];
+  timeEvent = [(HUTimeEventEditorViewController *)self timeEvent];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = timeEvent;
   }
 
   else
@@ -423,11 +423,11 @@ LABEL_25:
 
   v5 = v4;
 
-  v6 = [v5 significantEventOffset];
+  significantEventOffset = [v5 significantEventOffset];
 
-  if (v6)
+  if (significantEventOffset)
   {
-    v7 = v6;
+    v7 = significantEventOffset;
   }
 
   else
@@ -440,14 +440,14 @@ LABEL_25:
   return v8;
 }
 
-- (void)setSelectedSignificantEventOffset:(id)a3
+- (void)setSelectedSignificantEventOffset:(id)offset
 {
-  v8 = a3;
+  offsetCopy = offset;
   objc_opt_class();
-  v4 = [(HUTimeEventEditorViewController *)self timeEvent];
+  timeEvent = [(HUTimeEventEditorViewController *)self timeEvent];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = timeEvent;
   }
 
   else
@@ -459,19 +459,19 @@ LABEL_25:
 
   if (v6)
   {
-    [v6 setSignificantEventOffset:v8];
-    v7 = [(HUItemTableViewController *)self itemManager];
-    [v7 updateForSignificantEventOffsetChange];
+    [v6 setSignificantEventOffset:offsetCopy];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    [itemManager updateForSignificantEventOffsetChange];
   }
 }
 
 - (NSDateComponents)selectedFireTimeComponents
 {
   objc_opt_class();
-  v3 = [(HUTimeEventEditorViewController *)self timeEvent];
+  timeEvent = [(HUTimeEventEditorViewController *)self timeEvent];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = timeEvent;
   }
 
   else
@@ -481,19 +481,19 @@ LABEL_25:
 
   v5 = v4;
 
-  v6 = [v5 fireTimeComponents];
+  fireTimeComponents = [v5 fireTimeComponents];
 
-  return v6;
+  return fireTimeComponents;
 }
 
-- (void)setSelectedFireTimeComponents:(id)a3
+- (void)setSelectedFireTimeComponents:(id)components
 {
-  v7 = a3;
+  componentsCopy = components;
   objc_opt_class();
-  v4 = [(HUTimeEventEditorViewController *)self timeEvent];
+  timeEvent = [(HUTimeEventEditorViewController *)self timeEvent];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = timeEvent;
   }
 
   else
@@ -505,99 +505,99 @@ LABEL_25:
 
   if (v6)
   {
-    [v6 setFireTimeComponents:v7];
+    [v6 setFireTimeComponents:componentsCopy];
   }
 }
 
 - (NSArray)selectedRecurrences
 {
-  v2 = [(HUTimeEventEditorViewController *)self triggerBuilder];
-  v3 = [v2 recurrences];
+  triggerBuilder = [(HUTimeEventEditorViewController *)self triggerBuilder];
+  recurrences = [triggerBuilder recurrences];
 
-  return v3;
+  return recurrences;
 }
 
-- (void)setSelectedRecurrences:(id)a3
+- (void)setSelectedRecurrences:(id)recurrences
 {
-  v4 = a3;
-  v5 = [(HUTimeEventEditorViewController *)self triggerBuilder];
-  [v5 setRecurrences:v4];
+  recurrencesCopy = recurrences;
+  triggerBuilder = [(HUTimeEventEditorViewController *)self triggerBuilder];
+  [triggerBuilder setRecurrences:recurrencesCopy];
 }
 
-- (void)setLayoutOptions:(id)a3
+- (void)setLayoutOptions:(id)options
 {
-  v16 = a3;
+  optionsCopy = options;
   if ([MEMORY[0x277D14CE8] useMacIdiom])
   {
-    v5 = [(HUTimeEventEditorViewController *)self layoutOptions];
-    v6 = [v16 isEqual:v5];
+    layoutOptions = [(HUTimeEventEditorViewController *)self layoutOptions];
+    v6 = [optionsCopy isEqual:layoutOptions];
 
     if ((v6 & 1) == 0)
     {
-      objc_storeStrong(&self->_layoutOptions, a3);
-      [v16 sectionTopMargin];
+      objc_storeStrong(&self->_layoutOptions, options);
+      [optionsCopy sectionTopMargin];
       v8 = v7;
-      [v16 sectionLeadingMargin];
+      [optionsCopy sectionLeadingMargin];
       v10 = v9;
-      [v16 sectionBottomMargin];
+      [optionsCopy sectionBottomMargin];
       v12 = v11;
-      [v16 sectionTrailingMargin];
+      [optionsCopy sectionTrailingMargin];
       v14 = v13;
-      v15 = [(HUTimeEventEditorViewController *)self tableView];
-      [v15 _setSectionContentInset:{v8, v10, v12, v14}];
+      tableView = [(HUTimeEventEditorViewController *)self tableView];
+      [tableView _setSectionContentInset:{v8, v10, v12, v14}];
     }
   }
 }
 
-- (void)_doneButtonPressed:(id)a3
+- (void)_doneButtonPressed:(id)pressed
 {
-  v4 = [(HUTimeEventEditorViewController *)self timeEvent];
-  v5 = [(HUTimeEventEditorViewController *)self flow];
-  v6 = [v5 eventBuilderItem];
-  [v6 setTimeEventBuilder:v4];
+  timeEvent = [(HUTimeEventEditorViewController *)self timeEvent];
+  flow = [(HUTimeEventEditorViewController *)self flow];
+  eventBuilderItem = [flow eventBuilderItem];
+  [eventBuilderItem setTimeEventBuilder:timeEvent];
 
-  v8 = [(HUTimeEventEditorViewController *)self flow];
-  v7 = [(HUTimeEventEditorViewController *)self stepIdentifier];
-  [v8 viewController:self didFinishStepWithIdentifier:v7];
+  flow2 = [(HUTimeEventEditorViewController *)self flow];
+  stepIdentifier = [(HUTimeEventEditorViewController *)self stepIdentifier];
+  [flow2 viewController:self didFinishStepWithIdentifier:stepIdentifier];
 }
 
-- (void)_changeFireTime:(id)a3
+- (void)_changeFireTime:(id)time
 {
-  v10 = a3;
+  timeCopy = time;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v10;
-    v5 = [v4 calendar];
-    v6 = [v4 date];
+    v4 = timeCopy;
+    calendar = [v4 calendar];
+    date = [v4 date];
 
-    v7 = [v5 components:96 fromDate:v6];
+    v7 = [calendar components:96 fromDate:date];
     [(HUTimeEventEditorViewController *)self setSelectedFireTimeComponents:v7];
 
-    v8 = [(HUTimeEventEditorViewController *)self selectedFireTimeComponents];
-    v9 = [(HUItemTableViewController *)self itemManager];
-    [v9 setDefaultFireTimeComponents:v8];
+    selectedFireTimeComponents = [(HUTimeEventEditorViewController *)self selectedFireTimeComponents];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    [itemManager setDefaultFireTimeComponents:selectedFireTimeComponents];
   }
 }
 
-- (void)datePickerCell:(id)a3 didSelectDate:(id)a4
+- (void)datePickerCell:(id)cell didSelectDate:(id)date
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a4;
-  v7 = [v5 currentCalendar];
-  v8 = [v7 components:96 fromDate:v6];
+  dateCopy = date;
+  currentCalendar = [v5 currentCalendar];
+  v8 = [currentCalendar components:96 fromDate:dateCopy];
 
   [(HUTimeEventEditorViewController *)self setSelectedFireTimeComponents:v8];
-  v10 = [(HUTimeEventEditorViewController *)self selectedFireTimeComponents];
-  v9 = [(HUItemTableViewController *)self itemManager];
-  [v9 setDefaultFireTimeComponents:v10];
+  selectedFireTimeComponents = [(HUTimeEventEditorViewController *)self selectedFireTimeComponents];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  [itemManager setDefaultFireTimeComponents:selectedFireTimeComponents];
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (-[HUItemTableViewController itemManager](self, "itemManager"), v6 = objc_claimAutoreleasedReturnValue(), [v6 dateOptionsItems], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "containsObject:", v5), v7, v6, (v8) || (-[HUItemTableViewController itemManager](self, "itemManager"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "datePickerItem"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10 == v5) || (-[HUItemTableViewController itemManager](self, "itemManager"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "recurrencesItem"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12 == v5))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (-[HUItemTableViewController itemManager](self, "itemManager"), v6 = objc_claimAutoreleasedReturnValue(), [v6 dateOptionsItems], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "containsObject:", itemCopy), v7, v6, (v8) || (-[HUItemTableViewController itemManager](self, "itemManager"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "datePickerItem"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10 == itemCopy) || (-[HUItemTableViewController itemManager](self, "itemManager"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "recurrencesItem"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12 == itemCopy))
   {
     v13 = objc_opt_class();
   }
@@ -612,14 +612,14 @@ LABEL_25:
   return v13;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v10 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v6 = v10;
+    v6 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -640,21 +640,21 @@ LABEL_25:
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
+  animatedCopy = animated;
   v43[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HUItemTableViewController *)self itemManager];
-  v14 = [v13 dateOptionsItems];
-  v15 = [v14 containsObject:v11];
+  cellCopy = cell;
+  itemCopy = item;
+  pathCopy = path;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  dateOptionsItems = [itemManager dateOptionsItems];
+  v15 = [dateOptionsItems containsObject:itemCopy];
 
   if (v15)
   {
     v16 = objc_opt_class();
-    v17 = v10;
+    v17 = cellCopy;
     if (v17)
     {
       if (objc_opt_isKindOfClass())
@@ -667,43 +667,43 @@ LABEL_25:
         v18 = 0;
       }
 
-      v19 = v17;
+      selectedRecurrences = v17;
       if (v18)
       {
         goto LABEL_9;
       }
 
-      v20 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      v22 = v21 = v12;
-      [v20 handleFailureInFunction:v22 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v16, objc_opt_class()}];
+      v22 = v21 = pathCopy;
+      [currentHandler handleFailureInFunction:v22 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v16, objc_opt_class()}];
 
-      v12 = v21;
+      pathCopy = v21;
     }
 
-    v19 = 0;
+    selectedRecurrences = 0;
 LABEL_9:
 
-    v23 = [v11 latestResults];
-    v24 = [v23 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-    [v19 setTitleText:v24];
+    latestResults = [itemCopy latestResults];
+    v24 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    [selectedRecurrences setTitleText:v24];
 
-    v25 = [(HUTimeEventEditorViewController *)self selectedDateOptionItem];
-    LODWORD(v24) = [v11 isEqual:v25];
+    selectedDateOptionItem = [(HUTimeEventEditorViewController *)self selectedDateOptionItem];
+    LODWORD(v24) = [itemCopy isEqual:selectedDateOptionItem];
 
     if (v24)
     {
-      v40 = v12;
-      v41 = v6;
-      [v19 setChecked:1];
-      v26 = [(HUItemTableViewController *)self itemManager];
-      v27 = [v26 sunriseOptionItem];
-      v43[0] = v27;
-      v28 = [(HUItemTableViewController *)self itemManager];
-      v29 = [v28 sunsetOptionItem];
-      v43[1] = v29;
+      v40 = pathCopy;
+      v41 = animatedCopy;
+      [selectedRecurrences setChecked:1];
+      itemManager2 = [(HUItemTableViewController *)self itemManager];
+      sunriseOptionItem = [itemManager2 sunriseOptionItem];
+      v43[0] = sunriseOptionItem;
+      itemManager3 = [(HUItemTableViewController *)self itemManager];
+      sunsetOptionItem = [itemManager3 sunsetOptionItem];
+      v43[1] = sunsetOptionItem;
       v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:2];
-      v31 = [v30 containsObject:v11];
+      v31 = [v30 containsObject:itemCopy];
 
       if (v31)
       {
@@ -715,15 +715,15 @@ LABEL_9:
         v32 = 0;
       }
 
-      [v19 setAccessoryType:v32];
-      v6 = v41;
-      v12 = v40;
+      [selectedRecurrences setAccessoryType:v32];
+      animatedCopy = v41;
+      pathCopy = v40;
     }
 
     else
     {
-      [v19 setChecked:0];
-      [v19 setAccessoryType:0];
+      [selectedRecurrences setChecked:0];
+      [selectedRecurrences setAccessoryType:0];
     }
 
     goto LABEL_22;
@@ -732,11 +732,11 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v33 = v10;
+    v33 = cellCopy;
     [v33 setDelegate:self];
     v34 = MEMORY[0x277CBEB98];
-    v19 = [(HUTimeEventEditorViewController *)self selectedRecurrences];
-    v35 = [v34 setWithArray:v19];
+    selectedRecurrences = [(HUTimeEventEditorViewController *)self selectedRecurrences];
+    v35 = [v34 setWithArray:selectedRecurrences];
     [v33 setSelectedRecurrences:v35];
 
 LABEL_22:
@@ -747,7 +747,7 @@ LABEL_22:
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v36 = v10;
+    v36 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v37 = v36;
@@ -760,32 +760,32 @@ LABEL_22:
 
     v38 = v37;
 
-    v39 = [(HUTimeEventEditorViewController *)self selectedFireTimeComponents];
-    [v38 setTimeComponents:v39];
+    selectedFireTimeComponents = [(HUTimeEventEditorViewController *)self selectedFireTimeComponents];
+    [v38 setTimeComponents:selectedFireTimeComponents];
   }
 
 LABEL_23:
   v42.receiver = self;
   v42.super_class = HUTimeEventEditorViewController;
-  [(HUItemTableViewController *)&v42 updateCell:v10 forItem:v11 indexPath:v12 animated:v6];
+  [(HUItemTableViewController *)&v42 updateCell:cellCopy forItem:itemCopy indexPath:pathCopy animated:animatedCopy];
 }
 
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section
 {
-  v5 = [(HUTimeEventEditorViewController *)self _instructionsSectionIDs];
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 displayedSectionIdentifierForSectionIndex:a3];
-  v8 = [v5 containsObject:v7];
+  _instructionsSectionIDs = [(HUTimeEventEditorViewController *)self _instructionsSectionIDs];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v7 = [itemManager displayedSectionIdentifierForSectionIndex:section];
+  v8 = [_instructionsSectionIDs containsObject:v7];
 
   return v8;
 }
 
-- (BOOL)shouldHideFooterBelowSection:(int64_t)a3
+- (BOOL)shouldHideFooterBelowSection:(int64_t)section
 {
-  v5 = [(HUTimeEventEditorViewController *)self _instructionsSectionIDs];
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 displayedSectionIdentifierForSectionIndex:a3];
-  v8 = [v5 containsObject:v7];
+  _instructionsSectionIDs = [(HUTimeEventEditorViewController *)self _instructionsSectionIDs];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v7 = [itemManager displayedSectionIdentifierForSectionIndex:section];
+  v8 = [_instructionsSectionIDs containsObject:v7];
 
   return v8;
 }
@@ -800,12 +800,12 @@ LABEL_23:
   return v2;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   v10 = [(HUItemTableViewController *)self moduleControllerForItem:v9];
 
@@ -813,52 +813,52 @@ LABEL_23:
   {
     v15.receiver = self;
     v15.super_class = HUTimeEventEditorViewController;
-    v11 = [(HUItemTableViewController *)&v15 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+    v11 = [(HUItemTableViewController *)&v15 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
   }
 
   else
   {
-    v12 = [(HUItemTableViewController *)self itemManager];
-    v13 = [v12 dateOptionsItems];
-    v11 = [v13 containsObject:v9];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    dateOptionsItems = [itemManager2 dateOptionsItems];
+    v11 = [dateOptionsItems containsObject:v9];
   }
 
   return v11;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = HUTimeEventEditorViewController;
-  [(HUItemTableViewController *)&v11 tableView:a3 accessoryButtonTappedForRowWithIndexPath:a4];
+  [(HUItemTableViewController *)&v11 tableView:view accessoryButtonTappedForRowWithIndexPath:path];
   v5 = [HUTimeEventOffsetEditorViewController alloc];
-  v6 = [(HUTimeEventEditorViewController *)self _selectedSignificantEvent];
-  v7 = [(HUTimeEventEditorViewController *)self selectedSignificantEventOffset];
-  v8 = [(HUTimeEventOffsetEditorViewController *)v5 initWithSignificantEvent:v6 currentOffset:v7 delegate:self];
+  _selectedSignificantEvent = [(HUTimeEventEditorViewController *)self _selectedSignificantEvent];
+  selectedSignificantEventOffset = [(HUTimeEventEditorViewController *)self selectedSignificantEventOffset];
+  v8 = [(HUTimeEventOffsetEditorViewController *)v5 initWithSignificantEvent:_selectedSignificantEvent currentOffset:selectedSignificantEventOffset delegate:self];
 
   v9 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v8];
   [v9 setModalPresentationStyle:2];
   v10 = [(UIViewController *)self hu_presentPreloadableViewController:v9 animated:1];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = HUTimeEventEditorViewController;
-  [(HUItemTableViewController *)&v14 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  [(HUItemTableViewController *)&v14 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   v10 = [(HUItemTableViewController *)self moduleControllerForItem:v9];
 
   if (!v10)
   {
-    [v6 deselectRowAtIndexPath:v7 animated:1];
-    v11 = [(HUItemTableViewController *)self itemManager];
-    v12 = [v11 dateOptionsItems];
-    v13 = [v12 containsObject:v9];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    dateOptionsItems = [itemManager2 dateOptionsItems];
+    v13 = [dateOptionsItems containsObject:v9];
 
     if (v13)
     {
@@ -867,29 +867,29 @@ LABEL_23:
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 displayedSectionIdentifierForSectionIndex:a4];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v7 = [itemManager displayedSectionIdentifierForSectionIndex:section];
   v8 = [v7 isEqualToString:@"HUTimeEventEditorSectionIdentifierRepeat"];
 
   if (v8)
   {
-    v9 = [(HUTimeEventEditorViewController *)self _localizedRecurrenceDescription];
+    _localizedRecurrenceDescription = [(HUTimeEventEditorViewController *)self _localizedRecurrenceDescription];
   }
 
   else
   {
-    v9 = 0;
+    _localizedRecurrenceDescription = 0;
   }
 
-  return v9;
+  return _localizedRecurrenceDescription;
 }
 
-- (void)dayOfWeekPickerCell:(id)a3 didChangeSelectedRecurrences:(id)a4
+- (void)dayOfWeekPickerCell:(id)cell didChangeSelectedRecurrences:(id)recurrences
 {
-  v5 = [a4 allObjects];
-  [(HUTimeEventEditorViewController *)self setSelectedRecurrences:v5];
+  allObjects = [recurrences allObjects];
+  [(HUTimeEventEditorViewController *)self setSelectedRecurrences:allObjects];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -920,14 +920,14 @@ void __84__HUTimeEventEditorViewController_dayOfWeekPickerCell_didChangeSelected
   [v8 endUpdates];
 }
 
-- (void)timerTriggerOffsetEditor:(id)a3 didFinishWithOffset:(id)a4
+- (void)timerTriggerOffsetEditor:(id)editor didFinishWithOffset:(id)offset
 {
-  v5 = a4;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [(HUTimeEventEditorViewController *)self _selectedSignificantEvent];
-  [v6 setDefaultOffset:v5 forSignificantEvent:v7];
+  offsetCopy = offset;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  _selectedSignificantEvent = [(HUTimeEventEditorViewController *)self _selectedSignificantEvent];
+  [itemManager setDefaultOffset:offsetCopy forSignificantEvent:_selectedSignificantEvent];
 
-  [(HUTimeEventEditorViewController *)self setSelectedSignificantEventOffset:v5];
+  [(HUTimeEventEditorViewController *)self setSelectedSignificantEventOffset:offsetCopy];
 
   [(HUTimeEventEditorViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
@@ -935,8 +935,8 @@ void __84__HUTimeEventEditorViewController_dayOfWeekPickerCell_didChangeSelected
 - (id)_localizedRecurrenceDescription
 {
   v2 = MEMORY[0x277CD1EB0];
-  v3 = [(HUTimeEventEditorViewController *)self selectedRecurrences];
-  v4 = [v2 hf_recurrenceNaturalLanguageStringWithRecurrences:v3];
+  selectedRecurrences = [(HUTimeEventEditorViewController *)self selectedRecurrences];
+  v4 = [v2 hf_recurrenceNaturalLanguageStringWithRecurrences:selectedRecurrences];
 
   return v4;
 }
@@ -949,11 +949,11 @@ void __84__HUTimeEventEditorViewController_dayOfWeekPickerCell_didChangeSelected
 
   if ([(HUTimeEventEditorViewController *)self _canCommitTriggerBuilder]&& [(HUTimeEventEditorViewController *)self _canContinue])
   {
-    v6 = [(HUTimeEventEditorViewController *)self triggerBuilder];
-    v7 = [v6 commitItem];
+    triggerBuilder = [(HUTimeEventEditorViewController *)self triggerBuilder];
+    commitItem = [triggerBuilder commitItem];
 
-    v8 = [v7 addFailureBlock:&__block_literal_global_75];
-    v5 = v7;
+    v8 = [commitItem addFailureBlock:&__block_literal_global_75];
+    v5 = commitItem;
   }
 
   return v5;
@@ -969,10 +969,10 @@ void __56__HUTimeEventEditorViewController__commitTriggerBuilder__block_invoke(u
 
 - (id)_selectedSignificantEvent
 {
-  v3 = [(HUTimeEventEditorViewController *)self selectedDateOptionItem];
-  v4 = [(HUItemTableViewController *)self itemManager];
-  v5 = [v4 sunriseOptionItem];
-  v6 = [v3 isEqual:v5];
+  selectedDateOptionItem = [(HUTimeEventEditorViewController *)self selectedDateOptionItem];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  sunriseOptionItem = [itemManager sunriseOptionItem];
+  v6 = [selectedDateOptionItem isEqual:sunriseOptionItem];
 
   if (v6)
   {
@@ -982,10 +982,10 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v8 = [(HUTimeEventEditorViewController *)self selectedDateOptionItem];
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 sunsetOptionItem];
-  v11 = [v8 isEqual:v10];
+  selectedDateOptionItem2 = [(HUTimeEventEditorViewController *)self selectedDateOptionItem];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  sunsetOptionItem = [itemManager2 sunsetOptionItem];
+  v11 = [selectedDateOptionItem2 isEqual:sunsetOptionItem];
 
   if (v11)
   {

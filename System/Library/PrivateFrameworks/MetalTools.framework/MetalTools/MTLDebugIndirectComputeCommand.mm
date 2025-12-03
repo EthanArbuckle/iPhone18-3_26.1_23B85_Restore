@@ -1,25 +1,25 @@
 @interface MTLDebugIndirectComputeCommand
-- (MTLDebugIndirectComputeCommand)initWithBaseObject:(id)a3 descriptor:(id)a4 indexCount:(unint64_t)a5 indirectCommandBuffer:(id)a6;
-- (void)concurrentDispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)concurrentDispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4;
+- (MTLDebugIndirectComputeCommand)initWithBaseObject:(id)object descriptor:(id)descriptor indexCount:(unint64_t)count indirectCommandBuffer:(id)buffer;
+- (void)concurrentDispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup;
+- (void)concurrentDispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup;
 - (void)dealloc;
-- (void)setComputePipelineState:(id)a3;
-- (void)setKernelBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
+- (void)setComputePipelineState:(id)state;
+- (void)setKernelBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
 @end
 
 @implementation MTLDebugIndirectComputeCommand
 
-- (MTLDebugIndirectComputeCommand)initWithBaseObject:(id)a3 descriptor:(id)a4 indexCount:(unint64_t)a5 indirectCommandBuffer:(id)a6
+- (MTLDebugIndirectComputeCommand)initWithBaseObject:(id)object descriptor:(id)descriptor indexCount:(unint64_t)count indirectCommandBuffer:(id)buffer
 {
   v11.receiver = self;
   v11.super_class = MTLDebugIndirectComputeCommand;
-  v9 = [(MTLToolsObject *)&v11 initWithBaseObject:a3 parent:a6];
+  v9 = [(MTLToolsObject *)&v11 initWithBaseObject:object parent:buffer];
   if (v9)
   {
-    v9->_iCB = a6;
-    v9->_desc = a4;
-    v9->_index = a5;
+    v9->_iCB = buffer;
+    v9->_desc = descriptor;
+    v9->_index = count;
   }
 
   return v9;
@@ -32,27 +32,27 @@
   [(MTLToolsObject *)&v3 dealloc];
 }
 
-- (void)setComputePipelineState:(id)a3
+- (void)setComputePipelineState:(id)state
 {
   if ([(MTLIndirectCommandBufferDescriptor *)self->_desc inheritPipelineState])
   {
     [MTLDebugIndirectComputeCommand setComputePipelineState:];
   }
 
-  if (([objc_msgSend(a3 "baseObject")] & 1) == 0)
+  if (([objc_msgSend(state "baseObject")] & 1) == 0)
   {
     [MTLDebugIndirectComputeCommand setComputePipelineState:];
   }
 
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v5 setComputePipelineState:v6];
+  [baseObject setComputePipelineState:baseObject2];
 }
 
-- (void)setKernelBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setKernelBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
-  if ([(MTLIndirectCommandBufferDescriptor *)self->_desc maxKernelBufferBindCount]<= a6)
+  if ([(MTLIndirectCommandBufferDescriptor *)self->_desc maxKernelBufferBindCount]<= index)
   {
     [MTLDebugIndirectComputeCommand setKernelBuffer:? offset:? attributeStride:? atIndex:?];
   }
@@ -62,57 +62,57 @@
     [MTLDebugIndirectComputeCommand setKernelBuffer:offset:attributeStride:atIndex:];
   }
 
-  if (a5 != -1 && ![(MTLIndirectCommandBufferDescriptor *)self->_desc supportDynamicAttributeStride])
+  if (stride != -1 && ![(MTLIndirectCommandBufferDescriptor *)self->_desc supportDynamicAttributeStride])
   {
     [MTLDebugIndirectComputeCommand setKernelBuffer:offset:attributeStride:atIndex:];
   }
 
-  v11 = [(MTLToolsObject *)self baseObject];
-  v12 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v11 setKernelBuffer:v12 offset:a4 attributeStride:a5 atIndex:a6];
+  [baseObject setKernelBuffer:baseObject2 offset:offset attributeStride:stride atIndex:index];
 }
 
-- (void)concurrentDispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)concurrentDispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup
 {
   if (([(MTLIndirectCommandBufferDescriptor *)self->_desc commandTypes]& 0x20) == 0)
   {
     [MTLDebugIndirectComputeCommand concurrentDispatchThreadgroups:threadsPerThreadgroup:];
   }
 
-  v7 = [(MTLToolsObject *)self baseObject];
-  v10 = *&a3->var0;
-  var2 = a3->var2;
-  v8 = *&a4->var0;
-  v9 = a4->var2;
-  [v7 concurrentDispatchThreadgroups:&v10 threadsPerThreadgroup:&v8];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v10 = *&threadgroups->var0;
+  var2 = threadgroups->var2;
+  v8 = *&threadgroup->var0;
+  v9 = threadgroup->var2;
+  [baseObject concurrentDispatchThreadgroups:&v10 threadsPerThreadgroup:&v8];
 }
 
-- (void)concurrentDispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)concurrentDispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup
 {
   if (([(MTLIndirectCommandBufferDescriptor *)self->_desc commandTypes]& 0x40) == 0)
   {
     [MTLDebugIndirectComputeCommand concurrentDispatchThreads:threadsPerThreadgroup:];
   }
 
-  v7 = [(MTLToolsObject *)self baseObject];
-  v10 = *&a3->var0;
-  var2 = a3->var2;
-  v8 = *&a4->var0;
-  v9 = a4->var2;
-  [v7 concurrentDispatchThreads:&v10 threadsPerThreadgroup:&v8];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v10 = *&threads->var0;
+  var2 = threads->var2;
+  v8 = *&threadgroup->var0;
+  v9 = threadgroup->var2;
+  [baseObject concurrentDispatchThreads:&v10 threadsPerThreadgroup:&v8];
 }
 
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
-  if ([(MTLIndirectCommandBufferDescriptor *)self->_desc maxKernelThreadgroupMemoryBindCount]<= a4)
+  if ([(MTLIndirectCommandBufferDescriptor *)self->_desc maxKernelThreadgroupMemoryBindCount]<= index)
   {
     [MTLDebugIndirectComputeCommand setThreadgroupMemoryLength:? atIndex:?];
   }
 
   v7.receiver = self;
   v7.super_class = MTLDebugIndirectComputeCommand;
-  [(MTLToolsIndirectComputeCommand *)&v7 setThreadgroupMemoryLength:a3 atIndex:a4];
+  [(MTLToolsIndirectComputeCommand *)&v7 setThreadgroupMemoryLength:length atIndex:index];
 }
 
 @end

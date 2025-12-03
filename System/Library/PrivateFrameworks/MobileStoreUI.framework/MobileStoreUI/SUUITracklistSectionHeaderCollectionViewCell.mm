@@ -1,25 +1,25 @@
 @interface SUUITracklistSectionHeaderCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (double)_titlesWidthForWidth:(double)a3 columnData:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5;
-- (SUUITracklistSectionHeaderCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)_buttonAction:(id)a3;
-- (void)_showConfirmationAction:(id)a3;
-- (void)itemOfferButtonWillAnimateTransition:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (double)_titlesWidthForWidth:(double)width columnData:(id)data;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated;
+- (SUUITracklistSectionHeaderCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)_buttonAction:(id)action;
+- (void)_showConfirmationAction:(id)action;
+- (void)itemOfferButtonWillAnimateTransition:(id)transition;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SUUITracklistSectionHeaderCollectionViewCell
 
-- (SUUITracklistSectionHeaderCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUITracklistSectionHeaderCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SUUITracklistSectionHeaderCollectionViewCell;
-  v3 = [(SUUIViewReuseCollectionViewCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseCollectionViewCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -30,22 +30,22 @@
     v7 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
     [(UIView *)v6 setBackgroundColor:v7];
 
-    v8 = [(SUUITracklistSectionHeaderCollectionViewCell *)v3 contentView];
-    [v8 addSubview:v3->_separatorView];
+    contentView = [(SUUITracklistSectionHeaderCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_separatorView];
   }
 
   return v3;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 button];
-  if (v9)
+  elementCopy = element;
+  contextCopy = context;
+  button = [elementCopy button];
+  if (button)
   {
-    v10 = [v8 prefetchResourcesForViewElement:v9 reason:a4];
+    v10 = [contextCopy prefetchResourcesForViewElement:button reason:reason];
   }
 
   else
@@ -53,12 +53,12 @@
     v10 = 0;
   }
 
-  v11 = [v7 titleLabels];
+  titleLabels = [elementCopy titleLabels];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v12 = [titleLabels countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -69,13 +69,13 @@
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(titleLabels);
         }
 
-        v10 |= [v8 prefetchResourcesForViewElement:*(*(&v17 + 1) + 8 * i) reason:a4];
+        v10 |= [contextCopy prefetchResourcesForViewElement:*(*(&v17 + 1) + 8 * i) reason:reason];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [titleLabels countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v13);
@@ -84,7 +84,7 @@
   return v10 & 1;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -93,22 +93,22 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 aggregateValueForKey:0x286AF1940];
-  [a1 _titlesWidthForWidth:v10 columnData:a4];
+  elementCopy = element;
+  contextCopy = context;
+  v10 = [contextCopy aggregateValueForKey:0x286AF1940];
+  [self _titlesWidthForWidth:v10 columnData:width];
   v12 = v11;
-  v27 = v8;
-  v13 = [v8 titleLabels];
-  v14 = [v9 labelLayoutCache];
+  v27 = elementCopy;
+  titleLabels = [elementCopy titleLabels];
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v15 = v13;
+  v15 = titleLabels;
   v16 = [v15 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v16)
   {
@@ -124,8 +124,8 @@
         }
 
         v20 = *(*(&v28 + 1) + 8 * i);
-        v21 = SUUITracklistAttributedStringForLabel(0, v20, v9);
-        [v14 requestLayoutForLabel:v20 attributedString:v21 width:v12];
+        v21 = SUUITracklistAttributedStringForLabel(0, v20, contextCopy);
+        [labelLayoutCache requestLayoutForLabel:v20 attributedString:v21 width:v12];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -134,31 +134,31 @@
     while (v17);
   }
 
-  v22 = [v27 button];
-  v23 = [v22 elementType];
-  if (v23 == 141 || v23 == 12)
+  button = [v27 button];
+  elementType = [button elementType];
+  if (elementType == 141 || elementType == 12)
   {
-    v24 = SUUITracklistAttributedStringForButton(0, v22, v9);
+    v24 = SUUITracklistAttributedStringForButton(0, button, contextCopy);
     v25 = [v10 columnForIdentifier:1];
     [v25 width];
-    [v14 requestLayoutForButton:v22 attributedString:v24 width:v26];
+    [labelLayoutCache requestLayoutForButton:button attributedString:v24 width:v26];
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [a4 titleLabels];
-  v10 = [v8 aggregateValueForKey:0x286AF1940];
-  [a1 _titlesWidthForWidth:v10 columnData:a3];
+  contextCopy = context;
+  titleLabels = [element titleLabels];
+  v10 = [contextCopy aggregateValueForKey:0x286AF1940];
+  [self _titlesWidthForWidth:v10 columnData:width];
   v12 = v11;
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = v9;
+  v13 = titleLabels;
   v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
@@ -174,7 +174,7 @@
           objc_enumerationMutation(v13);
         }
 
-        [v8 sizeForViewElement:*(*(&v23 + 1) + 8 * i) width:{v12, v23}];
+        [contextCopy sizeForViewElement:*(*(&v23 + 1) + 8 * i) width:{v12, v23}];
         v17 = v17 + v19;
       }
 
@@ -199,17 +199,17 @@
     v20 = v17 + 20.0;
   }
 
-  v21 = a3;
+  widthCopy = width;
   v22 = v20;
   result.height = v22;
-  result.width = v21;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   button = self->_button;
   self->_button = 0;
 
@@ -219,7 +219,7 @@
   buyButtonDescriptor = self->_buyButtonDescriptor;
   self->_buyButtonDescriptor = 0;
 
-  v13 = [v9 aggregateValueForKey:0x286AF1940];
+  v13 = [contextCopy aggregateValueForKey:0x286AF1940];
   columnData = self->_columnData;
   self->_columnData = v13;
 
@@ -227,14 +227,14 @@
   labels = self->_labels;
   self->_labels = v15;
 
-  v17 = [v8 style];
-  v18 = [v17 ikBorderColor];
-  v19 = [v18 color];
+  style = [elementCopy style];
+  ikBorderColor = [style ikBorderColor];
+  color = [ikBorderColor color];
 
   separatorView = self->_separatorView;
-  if (v19)
+  if (color)
   {
-    [(UIView *)self->_separatorView setBackgroundColor:v19];
+    [(UIView *)self->_separatorView setBackgroundColor:color];
   }
 
   else
@@ -247,12 +247,12 @@
   v24[1] = 3221225472;
   v24[2] = __84__SUUITracklistSectionHeaderCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
   v24[3] = &unk_2798F5EF0;
-  v27 = a4;
+  widthCopy = width;
   v24[4] = self;
-  v25 = v8;
-  v26 = v9;
-  v22 = v9;
-  v23 = v8;
+  v25 = elementCopy;
+  v26 = contextCopy;
+  v22 = contextCopy;
+  v23 = elementCopy;
   [(SUUIViewReuseCollectionViewCell *)self modifyUsingBlock:v24];
 }
 
@@ -318,18 +318,18 @@ void __84__SUUITracklistSectionHeaderCollectionViewCell_reloadWithViewElement_wi
   }
 }
 
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SUUIBuyButtonDescriptor *)self->_buyButtonDescriptor canPersonalizeUsingItemState:v8];
+  animatedCopy = animated;
+  stateCopy = state;
+  contextCopy = context;
+  v10 = [(SUUIBuyButtonDescriptor *)self->_buyButtonDescriptor canPersonalizeUsingItemState:stateCopy];
   if (v10)
   {
     button = self->_button;
     buyButtonDescriptor = self->_buyButtonDescriptor;
-    v13 = [v9 clientContext];
-    [(UIControl *)button setValuesUsingBuyButtonDescriptor:buyButtonDescriptor itemState:v8 clientContext:v13 animated:v5];
+    clientContext = [contextCopy clientContext];
+    [(UIControl *)button setValuesUsingBuyButtonDescriptor:buyButtonDescriptor itemState:stateCopy clientContext:clientContext animated:animatedCopy];
   }
 
   return v10;
@@ -341,8 +341,8 @@ void __84__SUUITracklistSectionHeaderCollectionViewCell_reloadWithViewElement_wi
   v58.receiver = self;
   v58.super_class = SUUITracklistSectionHeaderCollectionViewCell;
   [(SUUICollectionViewCell *)&v58 layoutSubviews];
-  v3 = [(SUUITracklistSectionHeaderCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUITracklistSectionHeaderCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 
@@ -449,42 +449,42 @@ void __84__SUUITracklistSectionHeaderCollectionViewCell_reloadWithViewElement_wi
     [(UIControl *)self->_button setFrame:v5 - v44 - v41, floorf(v45), v41, v43];
   }
 
-  v46 = [MEMORY[0x277D759A0] mainScreen];
-  [v46 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v48 = 1.0 / v47;
 
   [(SUUITracklistColumnData *)self->_columnData leftEdgeInset];
   [(UIView *)self->_separatorView setFrame:v49, v7 - v48, v5 - v49, v48];
 }
 
-- (void)itemOfferButtonWillAnimateTransition:(id)a3
+- (void)itemOfferButtonWillAnimateTransition:(id)transition
 {
-  v15 = a3;
-  [v15 frame];
+  transitionCopy = transition;
+  [transitionCopy frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  [v15 sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
+  [transitionCopy sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
   v12 = v11;
   v14 = v13;
   v17.origin.x = v4;
   v17.origin.y = v6;
   v17.size.width = v8;
   v17.size.height = v10;
-  [v15 setFrame:{CGRectGetMaxX(v17) - v12, v6, v12, v14}];
+  [transitionCopy setFrame:{CGRectGetMaxX(v17) - v12, v6, v12, v14}];
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v8 = SUUICollectionViewForView(self);
-  v4 = [v8 delegate];
+  delegate = [v8 delegate];
   v5 = objc_opt_respondsToSelector();
   buttonViewElement = self->_buttonViewElement;
   if (v5)
   {
     v7 = [v8 indexPathForCell:self];
-    [v4 collectionView:v8 didConfirmButtonElement:buttonViewElement withClickInfo:0 forItemAtIndexPath:v7];
+    [delegate collectionView:v8 didConfirmButtonElement:buttonViewElement withClickInfo:0 forItemAtIndexPath:v7];
   }
 
   else
@@ -493,29 +493,29 @@ void __84__SUUITracklistSectionHeaderCollectionViewCell_reloadWithViewElement_wi
   }
 }
 
-- (void)_showConfirmationAction:(id)a3
+- (void)_showConfirmationAction:(id)action
 {
-  v4 = a3;
-  v3 = [v4 superview];
-  [v3 bringSubviewToFront:v4];
+  actionCopy = action;
+  superview = [actionCopy superview];
+  [superview bringSubviewToFront:actionCopy];
 
-  [v4 setShowingConfirmation:1 animated:1];
+  [actionCopy setShowingConfirmation:1 animated:1];
 }
 
-+ (double)_titlesWidthForWidth:(double)a3 columnData:(id)a4
++ (double)_titlesWidthForWidth:(double)width columnData:(id)data
 {
-  v5 = a4;
-  v6 = [v5 columnForIdentifier:1];
+  dataCopy = data;
+  v6 = [dataCopy columnForIdentifier:1];
   v7 = v6;
   if (v6)
   {
     [v6 width];
-    v9 = a3 - v8;
-    [v5 interColumnSpacing];
-    a3 = v9 - v10;
+    v9 = width - v8;
+    [dataCopy interColumnSpacing];
+    width = v9 - v10;
   }
 
-  return a3;
+  return width;
 }
 
 @end

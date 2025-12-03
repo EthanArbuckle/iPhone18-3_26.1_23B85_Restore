@@ -1,17 +1,17 @@
 @interface NewFeaturesFlowManager
 - (BOOL)needsToRun;
 - (_TtC5Setup22NewFeaturesFlowManager)init;
-- (_TtC5Setup22NewFeaturesFlowManager)initWithChronicle:(id)a3 featureFlags:(id)a4;
-- (void)updatePresentedKey:(BOOL)a3;
+- (_TtC5Setup22NewFeaturesFlowManager)initWithChronicle:(id)chronicle featureFlags:(id)flags;
+- (void)updatePresentedKey:(BOOL)key;
 @end
 
 @implementation NewFeaturesFlowManager
 
-- (_TtC5Setup22NewFeaturesFlowManager)initWithChronicle:(id)a3 featureFlags:(id)a4
+- (_TtC5Setup22NewFeaturesFlowManager)initWithChronicle:(id)chronicle featureFlags:(id)flags
 {
-  v5 = a3;
+  chronicleCopy = chronicle;
   swift_unknownObjectRetain();
-  v6 = sub_10005E694(v5, a4);
+  v6 = sub_10005E694(chronicleCopy, flags);
 
   return v6;
 }
@@ -19,12 +19,12 @@
 - (BOOL)needsToRun
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC5Setup22NewFeaturesFlowManager_featureFlags);
-  v3 = self;
+  selfCopy = self;
   if ([v2 isSolariumEnabled])
   {
-    v4 = [*(&v3->super.isa + OBJC_IVAR____TtC5Setup22NewFeaturesFlowManager_chronicle) entryForFeature:7];
+    v4 = [*(&selfCopy->super.isa + OBJC_IVAR____TtC5Setup22NewFeaturesFlowManager_chronicle) entryForFeature:7];
 
-    v3 = v4;
+    selfCopy = v4;
     if (!v4)
     {
       return 1;
@@ -34,10 +34,10 @@
   return 0;
 }
 
-- (void)updatePresentedKey:(BOOL)a3
+- (void)updatePresentedKey:(BOOL)key
 {
-  v4 = self;
-  sub_10005E478(a3);
+  selfCopy = self;
+  sub_10005E478(key);
 }
 
 - (_TtC5Setup22NewFeaturesFlowManager)init

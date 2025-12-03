@@ -1,27 +1,27 @@
 @interface CloudArtworkImporter
-- (CloudArtworkImporter)initWithConfiguration:(id)a3 sourceType:(int64_t)a4;
-- (id)_artworkColorAnalysisOperationForArtworkAsset:(id)a3 library:(id)a4 artwork:(id)a5;
+- (CloudArtworkImporter)initWithConfiguration:(id)configuration sourceType:(int64_t)type;
+- (id)_artworkColorAnalysisOperationForArtworkAsset:(id)asset library:(id)library artwork:(id)artwork;
 - (void)_adjustOperationQueueStatusForMediaDownloads;
-- (void)cancelAllImportsAndWaitForOperationsToFinish:(BOOL)a3;
+- (void)cancelAllImportsAndWaitForOperationsToFinish:(BOOL)finish;
 - (void)dealloc;
 - (void)decreasePriorityForAllOperations;
-- (void)deprioritizeImportArtworkForCloudID:(unint64_t)a3 artworkType:(int64_t)a4;
-- (void)importCloudArtworkForRequests:(id)a3;
+- (void)deprioritizeImportArtworkForCloudID:(unint64_t)d artworkType:(int64_t)type;
+- (void)importCloudArtworkForRequests:(id)requests;
 - (void)increasePriorityForAllOperations;
 @end
 
 @implementation CloudArtworkImporter
 
-- (id)_artworkColorAnalysisOperationForArtworkAsset:(id)a3 library:(id)a4 artwork:(id)a5
+- (id)_artworkColorAnalysisOperationForArtworkAsset:(id)asset library:(id)library artwork:(id)artwork
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  libraryCopy = library;
+  artworkCopy = artwork;
   v11 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ _artworkColorAnalysisOperationForArtworkAsset calling color analysis for artwork asset", buf, 0xCu);
   }
 
@@ -30,13 +30,13 @@
   v18[1] = 3221225472;
   v18[2] = sub_10010A338;
   v18[3] = &unk_1001DE878;
-  v19 = v9;
-  v20 = v8;
-  v21 = self;
-  v22 = v10;
-  v13 = v10;
-  v14 = v8;
-  v15 = v9;
+  v19 = libraryCopy;
+  v20 = assetCopy;
+  selfCopy2 = self;
+  v22 = artworkCopy;
+  v13 = artworkCopy;
+  v14 = assetCopy;
+  v15 = libraryCopy;
   v16 = [v12 initWithStartHandler:v18];
 
   return v16;
@@ -44,33 +44,33 @@
 
 - (void)_adjustOperationQueueStatusForMediaDownloads
 {
-  v3 = [(CloudArtworkImporter *)self downloadManager];
-  v4 = [v3 hasActiveDownloads];
+  downloadManager = [(CloudArtworkImporter *)self downloadManager];
+  hasActiveDownloads = [downloadManager hasActiveDownloads];
 
-  v5 = [(CloudArtworkImporter *)self artworkDownloadOperationQueue];
-  v6 = [v5 maxConcurrentOperationCount];
+  artworkDownloadOperationQueue = [(CloudArtworkImporter *)self artworkDownloadOperationQueue];
+  maxConcurrentOperationCount = [artworkDownloadOperationQueue maxConcurrentOperationCount];
 
-  if (((v4 ^ (v6 != 1)) & 1) == 0)
+  if (((hasActiveDownloads ^ (maxConcurrentOperationCount != 1)) & 1) == 0)
   {
     v7 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = "Unthrottling";
-      if (v4)
+      if (hasActiveDownloads)
       {
         v8 = "Throttling";
       }
 
       v12 = 138543618;
-      v13 = self;
+      selfCopy = self;
       v14 = 2080;
       v15 = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ %s operations in coordination with media downloads", &v12, 0x16u);
     }
 
-    v9 = [(CloudArtworkImporter *)self artworkDownloadOperationQueue];
-    v10 = v9;
-    if (v4)
+    artworkDownloadOperationQueue2 = [(CloudArtworkImporter *)self artworkDownloadOperationQueue];
+    v10 = artworkDownloadOperationQueue2;
+    if (hasActiveDownloads)
     {
       v11 = 1;
     }
@@ -80,111 +80,111 @@
       v11 = 5;
     }
 
-    [v9 setMaxConcurrentOperationCount:v11];
+    [artworkDownloadOperationQueue2 setMaxConcurrentOperationCount:v11];
   }
 }
 
-- (void)cancelAllImportsAndWaitForOperationsToFinish:(BOOL)a3
+- (void)cancelAllImportsAndWaitForOperationsToFinish:(BOOL)finish
 {
-  v5 = [(CloudArtworkImporter *)self artworkDownloadOperationQueue];
-  v6 = [v5 progress];
+  artworkDownloadOperationQueue = [(CloudArtworkImporter *)self artworkDownloadOperationQueue];
+  progress = [artworkDownloadOperationQueue progress];
 
   v7 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 totalUnitCount];
+    totalUnitCount = [progress totalUnitCount];
     *buf = 138543618;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
-    v17 = v8 - [v6 completedUnitCount];
+    v17 = totalUnitCount - [progress completedUnitCount];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Cancelling %lld artwork download operations", buf, 0x16u);
   }
 
-  v9 = [(CloudArtworkImporter *)self artworkDownloadOperationQueue];
-  [v9 setSuspended:0];
+  artworkDownloadOperationQueue2 = [(CloudArtworkImporter *)self artworkDownloadOperationQueue];
+  [artworkDownloadOperationQueue2 setSuspended:0];
 
-  v10 = [(CloudArtworkImporter *)self artworkDownloadOperationQueue];
-  [v10 cancelAllOperations];
+  artworkDownloadOperationQueue3 = [(CloudArtworkImporter *)self artworkDownloadOperationQueue];
+  [artworkDownloadOperationQueue3 cancelAllOperations];
 
-  v11 = [(CloudArtworkImporter *)self artworkDownloadAccessQueue];
+  artworkDownloadAccessQueue = [(CloudArtworkImporter *)self artworkDownloadAccessQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10010AE5C;
   v12[3] = &unk_1001DE650;
-  v13 = a3;
+  finishCopy = finish;
   v12[4] = self;
-  dispatch_sync(v11, v12);
+  dispatch_sync(artworkDownloadAccessQueue, v12);
 }
 
 - (void)increasePriorityForAllOperations
 {
-  v3 = [(CloudArtworkImporter *)self artworkDownloadAccessQueue];
+  artworkDownloadAccessQueue = [(CloudArtworkImporter *)self artworkDownloadAccessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010AF58;
   block[3] = &unk_1001DF578;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(artworkDownloadAccessQueue, block);
 }
 
 - (void)decreasePriorityForAllOperations
 {
-  v3 = [(CloudArtworkImporter *)self artworkDownloadAccessQueue];
+  artworkDownloadAccessQueue = [(CloudArtworkImporter *)self artworkDownloadAccessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010B024;
   block[3] = &unk_1001DF578;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(artworkDownloadAccessQueue, block);
 }
 
-- (void)deprioritizeImportArtworkForCloudID:(unint64_t)a3 artworkType:(int64_t)a4
+- (void)deprioritizeImportArtworkForCloudID:(unint64_t)d artworkType:(int64_t)type
 {
-  v7 = [(CloudArtworkImporter *)self artworkDownloadAccessQueue];
+  artworkDownloadAccessQueue = [(CloudArtworkImporter *)self artworkDownloadAccessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010B104;
   block[3] = &unk_1001DE628;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = d;
+  block[6] = type;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(artworkDownloadAccessQueue, block);
 }
 
-- (void)importCloudArtworkForRequests:(id)a3
+- (void)importCloudArtworkForRequests:(id)requests
 {
-  v5 = a3;
+  requestsCopy = requests;
   v6 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2050;
-    v16 = [v5 count];
+    v16 = [requestsCopy count];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ import cloud artwork for %{public}lu requests.", buf, 0x16u);
   }
 
-  v7 = [(CloudArtworkImporter *)self artworkDownloadAccessQueue];
+  artworkDownloadAccessQueue = [(CloudArtworkImporter *)self artworkDownloadAccessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010B450;
   block[3] = &unk_1001DE600;
-  v11 = self;
+  selfCopy2 = self;
   v12 = a2;
-  v10 = v5;
-  v8 = v5;
-  dispatch_async(v7, block);
+  v10 = requestsCopy;
+  v8 = requestsCopy;
+  dispatch_async(artworkDownloadAccessQueue, block);
 }
 
 - (void)dealloc
 {
-  v3 = [(CloudArtworkImporter *)self downloadManager];
-  [v3 unregisterObserver:self];
+  downloadManager = [(CloudArtworkImporter *)self downloadManager];
+  [downloadManager unregisterObserver:self];
 
-  v4 = [(CloudArtworkImporter *)self artworkDownloadWatchdog];
-  [v4 suspend];
+  artworkDownloadWatchdog = [(CloudArtworkImporter *)self artworkDownloadWatchdog];
+  [artworkDownloadWatchdog suspend];
 
-  v5 = [(CloudArtworkImporter *)self powerAssertionIdentifier];
+  powerAssertionIdentifier = [(CloudArtworkImporter *)self powerAssertionIdentifier];
   CPSetPowerAssertionWithIdentifier();
 
   v6 = +[NSNotificationCenter defaultCenter];
@@ -195,12 +195,12 @@
   [(CloudArtworkImporter *)&v7 dealloc];
 }
 
-- (CloudArtworkImporter)initWithConfiguration:(id)a3 sourceType:(int64_t)a4
+- (CloudArtworkImporter)initWithConfiguration:(id)configuration sourceType:(int64_t)type
 {
-  v8 = a3;
-  v9 = [v8 userIdentity];
+  configurationCopy = configuration;
+  userIdentity = [configurationCopy userIdentity];
 
-  if (!v9)
+  if (!userIdentity)
   {
     v36 = +[NSAssertionHandler currentHandler];
     [v36 handleFailureInMethod:a2 object:self file:@"CloudArtworkImporter.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"configuration.userIdentity != nil"}];
@@ -212,10 +212,10 @@
   v11 = v10;
   if (v10)
   {
-    v10->_sourceType = a4;
-    objc_storeStrong(&v10->_configuration, a3);
-    v12 = [v8 userIdentity];
-    v13 = [ML3MusicLibrary musicLibraryForUserAccount:v12];
+    v10->_sourceType = type;
+    objc_storeStrong(&v10->_configuration, configuration);
+    userIdentity2 = [configurationCopy userIdentity];
+    v13 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity2];
     musicLibrary = v11->_musicLibrary;
     v11->_musicLibrary = v13;
 
@@ -225,8 +225,8 @@
     v16 = objc_alloc_init(NSOperationQueue);
     [(CloudArtworkImporter *)v11 setArtworkColorAnalysisOperationQueue:v16];
 
-    v17 = [(CloudArtworkImporter *)v11 artworkColorAnalysisOperationQueue];
-    [v17 setMaxConcurrentOperationCount:5];
+    artworkColorAnalysisOperationQueue = [(CloudArtworkImporter *)v11 artworkColorAnalysisOperationQueue];
+    [artworkColorAnalysisOperationQueue setMaxConcurrentOperationCount:5];
 
     v18 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
     [v18 setHTTPShouldUsePipelining:1];
@@ -239,16 +239,16 @@
     v21 = [[CloudArtworkOperationQueue alloc] initWithSourceType:[(CloudArtworkImporter *)v11 sourceType] configuration:v11->_configuration];
     [(CloudArtworkImporter *)v11 setArtworkDownloadOperationQueue:v21];
 
-    v22 = [(CloudArtworkImporter *)v11 artworkDownloadOperationQueue];
-    [v22 setMaxConcurrentOperationCount:5];
+    artworkDownloadOperationQueue = [(CloudArtworkImporter *)v11 artworkDownloadOperationQueue];
+    [artworkDownloadOperationQueue setMaxConcurrentOperationCount:5];
 
-    v23 = [(CloudArtworkImporter *)v11 artworkDownloadOperationQueue];
-    [v23 setQualityOfService:-1];
+    artworkDownloadOperationQueue2 = [(CloudArtworkImporter *)v11 artworkDownloadOperationQueue];
+    [artworkDownloadOperationQueue2 setQualityOfService:-1];
 
     v24 = +[ICDeviceInfo currentDeviceInfo];
-    v25 = [v24 isWatch];
+    isWatch = [v24 isWatch];
 
-    if (v25)
+    if (isWatch)
     {
       v41 = 0;
       v42 = &v41;
@@ -268,11 +268,11 @@
 
       v27 = v26;
       _Block_object_dispose(&v41, 8);
-      v28 = [v26 sharedManager];
-      [(CloudArtworkImporter *)v11 setDownloadManager:v28];
+      sharedManager = [v26 sharedManager];
+      [(CloudArtworkImporter *)v11 setDownloadManager:sharedManager];
 
-      v29 = [(CloudArtworkImporter *)v11 downloadManager];
-      [v29 registerObserver:v11];
+      downloadManager = [(CloudArtworkImporter *)v11 downloadManager];
+      [downloadManager registerObserver:v11];
 
       [(CloudArtworkImporter *)v11 _adjustOperationQueueStatusForMediaDownloads];
     }
@@ -286,8 +286,8 @@
     v32 = objc_alloc_init(MSVWatchdog);
     [(CloudArtworkImporter *)v11 setArtworkDownloadWatchdog:v32];
 
-    v33 = [(CloudArtworkImporter *)v11 artworkDownloadWatchdog];
-    [v33 setTimeoutInterval:3600.0];
+    artworkDownloadWatchdog = [(CloudArtworkImporter *)v11 artworkDownloadWatchdog];
+    [artworkDownloadWatchdog setTimeoutInterval:3600.0];
 
     objc_initWeak(location, v11);
     v37[0] = _NSConcreteStackBlock;
@@ -295,8 +295,8 @@
     v37[2] = sub_10010CB30;
     v37[3] = &unk_1001DE5B0;
     objc_copyWeak(&v38, location);
-    v34 = [(CloudArtworkImporter *)v11 artworkDownloadWatchdog];
-    [v34 setTimeoutCallback:v37];
+    artworkDownloadWatchdog2 = [(CloudArtworkImporter *)v11 artworkDownloadWatchdog];
+    [artworkDownloadWatchdog2 setTimeoutCallback:v37];
 
     objc_destroyWeak(&v38);
     objc_destroyWeak(location);

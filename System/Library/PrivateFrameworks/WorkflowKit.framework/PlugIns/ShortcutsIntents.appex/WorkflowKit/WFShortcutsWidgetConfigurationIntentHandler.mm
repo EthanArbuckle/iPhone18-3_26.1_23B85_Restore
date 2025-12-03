@@ -1,26 +1,26 @@
 @interface WFShortcutsWidgetConfigurationIntentHandler
 - (WFShortcutsWidgetConfigurationIntentHandler)init;
 - (id)allShortcutsFolder;
-- (void)provideFolderOptionsCollectionForShortcutsWidgetConfiguration:(id)a3 withCompletion:(id)a4;
+- (void)provideFolderOptionsCollectionForShortcutsWidgetConfiguration:(id)configuration withCompletion:(id)completion;
 @end
 
 @implementation WFShortcutsWidgetConfigurationIntentHandler
 
-- (void)provideFolderOptionsCollectionForShortcutsWidgetConfiguration:(id)a3 withCompletion:(id)a4
+- (void)provideFolderOptionsCollectionForShortcutsWidgetConfiguration:(id)configuration withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[WFDatabase defaultDatabase];
-  v7 = [v6 sortedVisibleFolders];
-  v8 = [v7 descriptors];
-  v9 = [v8 if_map:&stru_100008478];
+  sortedVisibleFolders = [v6 sortedVisibleFolders];
+  descriptors = [sortedVisibleFolders descriptors];
+  v9 = [descriptors if_map:&stru_100008478];
 
-  v10 = [(WFShortcutsWidgetConfigurationIntentHandler *)self allShortcutsFolder];
-  v14 = v10;
+  allShortcutsFolder = [(WFShortcutsWidgetConfigurationIntentHandler *)self allShortcutsFolder];
+  v14 = allShortcutsFolder;
   v11 = [NSArray arrayWithObjects:&v14 count:1];
   v12 = [v11 arrayByAddingObjectsFromArray:v9];
 
   v13 = [[INObjectCollection alloc] initWithItems:v12];
-  v5[2](v5, v13, 0);
+  completionCopy[2](completionCopy, v13, 0);
 }
 
 - (id)allShortcutsFolder

@@ -1,11 +1,11 @@
 @interface CycleChartsHeaderView
-- (_TtC24MenstrualCyclesAppPlugin21CycleChartsHeaderView)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin21CycleChartsHeaderView)initWithFrame:(CGRect)a3;
+- (_TtC24MenstrualCyclesAppPlugin21CycleChartsHeaderView)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin21CycleChartsHeaderView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CycleChartsHeaderView
 
-- (_TtC24MenstrualCyclesAppPlugin21CycleChartsHeaderView)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin21CycleChartsHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin21CycleChartsHeaderView_activeCycle;
   v5 = type metadata accessor for CycleChartCycle(0);
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin21CycleChartsHeaderView)initWithFrame:(CGRect)a3
+- (_TtC24MenstrualCyclesAppPlugin21CycleChartsHeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

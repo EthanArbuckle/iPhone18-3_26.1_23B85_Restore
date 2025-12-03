@@ -1,11 +1,11 @@
 @interface NLXSchemaCDMUserDialogAct
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NLXSchemaCDMDelegatedUserDialogAct)delegated;
 - (NLXSchemaCDMUserAccepted)accepted;
 - (NLXSchemaCDMUserAcknowledged)acknowledged;
 - (NLXSchemaCDMUserCancelled)cancelled;
-- (NLXSchemaCDMUserDialogAct)initWithDictionary:(id)a3;
-- (NLXSchemaCDMUserDialogAct)initWithJSON:(id)a3;
+- (NLXSchemaCDMUserDialogAct)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMUserDialogAct)initWithJSON:(id)n;
 - (NLXSchemaCDMUserRejected)rejected;
 - (NLXSchemaCDMUserStatedTask)userStatedTask;
 - (NLXSchemaCDMUserWantedToPause)wantedToPause;
@@ -13,7 +13,7 @@
 - (NLXSchemaCDMUserWantedToRepeat)wantedToRepeat;
 - (NLXSchemaCDMUserWantedToUndo)wantedToUndo;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -27,30 +27,30 @@
 - (void)deleteWantedToProceed;
 - (void)deleteWantedToRepeat;
 - (void)deleteWantedToUndo;
-- (void)setAccepted:(id)a3;
-- (void)setAcknowledged:(id)a3;
-- (void)setCancelled:(id)a3;
-- (void)setDelegated:(id)a3;
-- (void)setRejected:(id)a3;
-- (void)setUserStatedTask:(id)a3;
-- (void)setWantedToPause:(id)a3;
-- (void)setWantedToProceed:(id)a3;
-- (void)setWantedToRepeat:(id)a3;
-- (void)setWantedToUndo:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAccepted:(id)accepted;
+- (void)setAcknowledged:(id)acknowledged;
+- (void)setCancelled:(id)cancelled;
+- (void)setDelegated:(id)delegated;
+- (void)setRejected:(id)rejected;
+- (void)setUserStatedTask:(id)task;
+- (void)setWantedToPause:(id)pause;
+- (void)setWantedToProceed:(id)proceed;
+- (void)setWantedToRepeat:(id)repeat;
+- (void)setWantedToUndo:(id)undo;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMUserDialogAct
 
-- (NLXSchemaCDMUserDialogAct)initWithDictionary:(id)a3
+- (NLXSchemaCDMUserDialogAct)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v38.receiver = self;
   v38.super_class = NLXSchemaCDMUserDialogAct;
   v5 = [(NLXSchemaCDMUserDialogAct *)&v38 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"alignment"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"alignment"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
       [(NLXSchemaCDMUserDialogAct *)v5 setAlignment:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"reference"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"reference"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       [(NLXSchemaCDMUserDialogAct *)v5 setReference:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"accepted"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"accepted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(NLXSchemaCDMUserDialogAct *)v5 setAccepted:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"rejected"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"rejected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
       [(NLXSchemaCDMUserDialogAct *)v5 setRejected:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"cancelled"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"cancelled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
     }
 
     v34 = v14;
-    v16 = [v4 objectForKeyedSubscript:@"wantedToRepeat"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"wantedToRepeat"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
     }
 
     v33 = v16;
-    v18 = [v4 objectForKeyedSubscript:@"acknowledged"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"acknowledged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
     }
 
     v37 = v6;
-    v20 = [v4 objectForKeyedSubscript:@"wantedToProceed"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"wantedToProceed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,7 +119,7 @@
 
     v35 = v12;
     v36 = v8;
-    v22 = [v4 objectForKeyedSubscript:@"wantedToPause"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"wantedToPause"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,7 +128,7 @@
     }
 
     v24 = v10;
-    v25 = [v4 objectForKeyedSubscript:@"delegated"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"delegated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -136,7 +136,7 @@
       [(NLXSchemaCDMUserDialogAct *)v5 setDelegated:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"userStatedTask"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"userStatedTask"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -144,7 +144,7 @@
       [(NLXSchemaCDMUserDialogAct *)v5 setUserStatedTask:v28];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"wantedToUndo"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"wantedToUndo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -158,30 +158,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMUserDialogAct)initWithJSON:(id)a3
+- (NLXSchemaCDMUserDialogAct)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMUserDialogAct *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMUserDialogAct *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMUserDialogAct *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -194,202 +194,202 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_accepted)
   {
-    v4 = [(NLXSchemaCDMUserDialogAct *)self accepted];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    accepted = [(NLXSchemaCDMUserDialogAct *)self accepted];
+    dictionaryRepresentation = [accepted dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"accepted"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"accepted"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"accepted"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"accepted"];
     }
   }
 
   if (self->_acknowledged)
   {
-    v7 = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    acknowledged = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
+    dictionaryRepresentation2 = [acknowledged dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"acknowledged"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"acknowledged"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"acknowledged"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"acknowledged"];
     }
   }
 
   if (self->_alignment)
   {
-    v10 = [(NLXSchemaCDMUserDialogAct *)self alignment];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    alignment = [(NLXSchemaCDMUserDialogAct *)self alignment];
+    dictionaryRepresentation3 = [alignment dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"alignment"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"alignment"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"alignment"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"alignment"];
     }
   }
 
   if (self->_cancelled)
   {
-    v13 = [(NLXSchemaCDMUserDialogAct *)self cancelled];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    cancelled = [(NLXSchemaCDMUserDialogAct *)self cancelled];
+    dictionaryRepresentation4 = [cancelled dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"cancelled"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"cancelled"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"cancelled"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"cancelled"];
     }
   }
 
   if (self->_delegated)
   {
-    v16 = [(NLXSchemaCDMUserDialogAct *)self delegated];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    delegated = [(NLXSchemaCDMUserDialogAct *)self delegated];
+    dictionaryRepresentation5 = [delegated dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"delegated"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"delegated"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"delegated"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"delegated"];
     }
   }
 
   if (self->_reference)
   {
-    v19 = [(NLXSchemaCDMUserDialogAct *)self reference];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    reference = [(NLXSchemaCDMUserDialogAct *)self reference];
+    dictionaryRepresentation6 = [reference dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"reference"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"reference"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"reference"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"reference"];
     }
   }
 
   if (self->_rejected)
   {
-    v22 = [(NLXSchemaCDMUserDialogAct *)self rejected];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    rejected = [(NLXSchemaCDMUserDialogAct *)self rejected];
+    dictionaryRepresentation7 = [rejected dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"rejected"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"rejected"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"rejected"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"rejected"];
     }
   }
 
   if (self->_userStatedTask)
   {
-    v25 = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    userStatedTask = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
+    dictionaryRepresentation8 = [userStatedTask dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"userStatedTask"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"userStatedTask"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"userStatedTask"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"userStatedTask"];
     }
   }
 
   if (self->_wantedToPause)
   {
-    v28 = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    wantedToPause = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
+    dictionaryRepresentation9 = [wantedToPause dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"wantedToPause"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"wantedToPause"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"wantedToPause"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"wantedToPause"];
     }
   }
 
   if (self->_wantedToProceed)
   {
-    v31 = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    wantedToProceed = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
+    dictionaryRepresentation10 = [wantedToProceed dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"wantedToProceed"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"wantedToProceed"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"wantedToProceed"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"wantedToProceed"];
     }
   }
 
   if (self->_wantedToRepeat)
   {
-    v34 = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    wantedToRepeat = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
+    dictionaryRepresentation11 = [wantedToRepeat dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"wantedToRepeat"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"wantedToRepeat"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"wantedToRepeat"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"wantedToRepeat"];
     }
   }
 
   if (self->_wantedToUndo)
   {
-    v37 = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    wantedToUndo = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
+    dictionaryRepresentation12 = [wantedToUndo dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"wantedToUndo"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"wantedToUndo"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"wantedToUndo"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"wantedToUndo"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -408,34 +408,34 @@
   return v13 ^ [(NLXSchemaCDMUserWantedToUndo *)self->_wantedToUndo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_63;
   }
 
   whichUserdialogacttype = self->_whichUserdialogacttype;
-  if (whichUserdialogacttype != [v4 whichUserdialogacttype])
+  if (whichUserdialogacttype != [equalCopy whichUserdialogacttype])
   {
     goto LABEL_63;
   }
 
-  v6 = [(NLXSchemaCDMUserDialogAct *)self alignment];
-  v7 = [v4 alignment];
-  if ((v6 != 0) == (v7 == 0))
+  alignment = [(NLXSchemaCDMUserDialogAct *)self alignment];
+  alignment2 = [equalCopy alignment];
+  if ((alignment != 0) == (alignment2 == 0))
   {
     goto LABEL_62;
   }
 
-  v8 = [(NLXSchemaCDMUserDialogAct *)self alignment];
-  if (v8)
+  alignment3 = [(NLXSchemaCDMUserDialogAct *)self alignment];
+  if (alignment3)
   {
-    v9 = v8;
-    v10 = [(NLXSchemaCDMUserDialogAct *)self alignment];
-    v11 = [v4 alignment];
-    v12 = [v10 isEqual:v11];
+    v9 = alignment3;
+    alignment4 = [(NLXSchemaCDMUserDialogAct *)self alignment];
+    alignment5 = [equalCopy alignment];
+    v12 = [alignment4 isEqual:alignment5];
 
     if (!v12)
     {
@@ -447,20 +447,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMUserDialogAct *)self reference];
-  v7 = [v4 reference];
-  if ((v6 != 0) == (v7 == 0))
+  alignment = [(NLXSchemaCDMUserDialogAct *)self reference];
+  alignment2 = [equalCopy reference];
+  if ((alignment != 0) == (alignment2 == 0))
   {
     goto LABEL_62;
   }
 
-  v13 = [(NLXSchemaCDMUserDialogAct *)self reference];
-  if (v13)
+  reference = [(NLXSchemaCDMUserDialogAct *)self reference];
+  if (reference)
   {
-    v14 = v13;
-    v15 = [(NLXSchemaCDMUserDialogAct *)self reference];
-    v16 = [v4 reference];
-    v17 = [v15 isEqual:v16];
+    v14 = reference;
+    reference2 = [(NLXSchemaCDMUserDialogAct *)self reference];
+    reference3 = [equalCopy reference];
+    v17 = [reference2 isEqual:reference3];
 
     if (!v17)
     {
@@ -472,20 +472,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMUserDialogAct *)self accepted];
-  v7 = [v4 accepted];
-  if ((v6 != 0) == (v7 == 0))
+  alignment = [(NLXSchemaCDMUserDialogAct *)self accepted];
+  alignment2 = [equalCopy accepted];
+  if ((alignment != 0) == (alignment2 == 0))
   {
     goto LABEL_62;
   }
 
-  v18 = [(NLXSchemaCDMUserDialogAct *)self accepted];
-  if (v18)
+  accepted = [(NLXSchemaCDMUserDialogAct *)self accepted];
+  if (accepted)
   {
-    v19 = v18;
-    v20 = [(NLXSchemaCDMUserDialogAct *)self accepted];
-    v21 = [v4 accepted];
-    v22 = [v20 isEqual:v21];
+    v19 = accepted;
+    accepted2 = [(NLXSchemaCDMUserDialogAct *)self accepted];
+    accepted3 = [equalCopy accepted];
+    v22 = [accepted2 isEqual:accepted3];
 
     if (!v22)
     {
@@ -497,20 +497,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMUserDialogAct *)self rejected];
-  v7 = [v4 rejected];
-  if ((v6 != 0) == (v7 == 0))
+  alignment = [(NLXSchemaCDMUserDialogAct *)self rejected];
+  alignment2 = [equalCopy rejected];
+  if ((alignment != 0) == (alignment2 == 0))
   {
     goto LABEL_62;
   }
 
-  v23 = [(NLXSchemaCDMUserDialogAct *)self rejected];
-  if (v23)
+  rejected = [(NLXSchemaCDMUserDialogAct *)self rejected];
+  if (rejected)
   {
-    v24 = v23;
-    v25 = [(NLXSchemaCDMUserDialogAct *)self rejected];
-    v26 = [v4 rejected];
-    v27 = [v25 isEqual:v26];
+    v24 = rejected;
+    rejected2 = [(NLXSchemaCDMUserDialogAct *)self rejected];
+    rejected3 = [equalCopy rejected];
+    v27 = [rejected2 isEqual:rejected3];
 
     if (!v27)
     {
@@ -522,20 +522,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMUserDialogAct *)self cancelled];
-  v7 = [v4 cancelled];
-  if ((v6 != 0) == (v7 == 0))
+  alignment = [(NLXSchemaCDMUserDialogAct *)self cancelled];
+  alignment2 = [equalCopy cancelled];
+  if ((alignment != 0) == (alignment2 == 0))
   {
     goto LABEL_62;
   }
 
-  v28 = [(NLXSchemaCDMUserDialogAct *)self cancelled];
-  if (v28)
+  cancelled = [(NLXSchemaCDMUserDialogAct *)self cancelled];
+  if (cancelled)
   {
-    v29 = v28;
-    v30 = [(NLXSchemaCDMUserDialogAct *)self cancelled];
-    v31 = [v4 cancelled];
-    v32 = [v30 isEqual:v31];
+    v29 = cancelled;
+    cancelled2 = [(NLXSchemaCDMUserDialogAct *)self cancelled];
+    cancelled3 = [equalCopy cancelled];
+    v32 = [cancelled2 isEqual:cancelled3];
 
     if (!v32)
     {
@@ -547,20 +547,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
-  v7 = [v4 wantedToRepeat];
-  if ((v6 != 0) == (v7 == 0))
+  alignment = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
+  alignment2 = [equalCopy wantedToRepeat];
+  if ((alignment != 0) == (alignment2 == 0))
   {
     goto LABEL_62;
   }
 
-  v33 = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
-  if (v33)
+  wantedToRepeat = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
+  if (wantedToRepeat)
   {
-    v34 = v33;
-    v35 = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
-    v36 = [v4 wantedToRepeat];
-    v37 = [v35 isEqual:v36];
+    v34 = wantedToRepeat;
+    wantedToRepeat2 = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
+    wantedToRepeat3 = [equalCopy wantedToRepeat];
+    v37 = [wantedToRepeat2 isEqual:wantedToRepeat3];
 
     if (!v37)
     {
@@ -572,20 +572,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
-  v7 = [v4 acknowledged];
-  if ((v6 != 0) == (v7 == 0))
+  alignment = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
+  alignment2 = [equalCopy acknowledged];
+  if ((alignment != 0) == (alignment2 == 0))
   {
     goto LABEL_62;
   }
 
-  v38 = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
-  if (v38)
+  acknowledged = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
+  if (acknowledged)
   {
-    v39 = v38;
-    v40 = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
-    v41 = [v4 acknowledged];
-    v42 = [v40 isEqual:v41];
+    v39 = acknowledged;
+    acknowledged2 = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
+    acknowledged3 = [equalCopy acknowledged];
+    v42 = [acknowledged2 isEqual:acknowledged3];
 
     if (!v42)
     {
@@ -597,20 +597,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
-  v7 = [v4 wantedToProceed];
-  if ((v6 != 0) == (v7 == 0))
+  alignment = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
+  alignment2 = [equalCopy wantedToProceed];
+  if ((alignment != 0) == (alignment2 == 0))
   {
     goto LABEL_62;
   }
 
-  v43 = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
-  if (v43)
+  wantedToProceed = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
+  if (wantedToProceed)
   {
-    v44 = v43;
-    v45 = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
-    v46 = [v4 wantedToProceed];
-    v47 = [v45 isEqual:v46];
+    v44 = wantedToProceed;
+    wantedToProceed2 = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
+    wantedToProceed3 = [equalCopy wantedToProceed];
+    v47 = [wantedToProceed2 isEqual:wantedToProceed3];
 
     if (!v47)
     {
@@ -622,20 +622,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
-  v7 = [v4 wantedToPause];
-  if ((v6 != 0) == (v7 == 0))
+  alignment = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
+  alignment2 = [equalCopy wantedToPause];
+  if ((alignment != 0) == (alignment2 == 0))
   {
     goto LABEL_62;
   }
 
-  v48 = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
-  if (v48)
+  wantedToPause = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
+  if (wantedToPause)
   {
-    v49 = v48;
-    v50 = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
-    v51 = [v4 wantedToPause];
-    v52 = [v50 isEqual:v51];
+    v49 = wantedToPause;
+    wantedToPause2 = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
+    wantedToPause3 = [equalCopy wantedToPause];
+    v52 = [wantedToPause2 isEqual:wantedToPause3];
 
     if (!v52)
     {
@@ -647,20 +647,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMUserDialogAct *)self delegated];
-  v7 = [v4 delegated];
-  if ((v6 != 0) == (v7 == 0))
+  alignment = [(NLXSchemaCDMUserDialogAct *)self delegated];
+  alignment2 = [equalCopy delegated];
+  if ((alignment != 0) == (alignment2 == 0))
   {
     goto LABEL_62;
   }
 
-  v53 = [(NLXSchemaCDMUserDialogAct *)self delegated];
-  if (v53)
+  delegated = [(NLXSchemaCDMUserDialogAct *)self delegated];
+  if (delegated)
   {
-    v54 = v53;
-    v55 = [(NLXSchemaCDMUserDialogAct *)self delegated];
-    v56 = [v4 delegated];
-    v57 = [v55 isEqual:v56];
+    v54 = delegated;
+    delegated2 = [(NLXSchemaCDMUserDialogAct *)self delegated];
+    delegated3 = [equalCopy delegated];
+    v57 = [delegated2 isEqual:delegated3];
 
     if (!v57)
     {
@@ -672,20 +672,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
-  v7 = [v4 userStatedTask];
-  if ((v6 != 0) == (v7 == 0))
+  alignment = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
+  alignment2 = [equalCopy userStatedTask];
+  if ((alignment != 0) == (alignment2 == 0))
   {
     goto LABEL_62;
   }
 
-  v58 = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
-  if (v58)
+  userStatedTask = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
+  if (userStatedTask)
   {
-    v59 = v58;
-    v60 = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
-    v61 = [v4 userStatedTask];
-    v62 = [v60 isEqual:v61];
+    v59 = userStatedTask;
+    userStatedTask2 = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
+    userStatedTask3 = [equalCopy userStatedTask];
+    v62 = [userStatedTask2 isEqual:userStatedTask3];
 
     if (!v62)
     {
@@ -697,12 +697,12 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
-  v7 = [v4 wantedToUndo];
-  if ((v6 != 0) != (v7 == 0))
+  alignment = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
+  alignment2 = [equalCopy wantedToUndo];
+  if ((alignment != 0) != (alignment2 == 0))
   {
-    v63 = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
-    if (!v63)
+    wantedToUndo = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
+    if (!wantedToUndo)
     {
 
 LABEL_66:
@@ -710,10 +710,10 @@ LABEL_66:
       goto LABEL_64;
     }
 
-    v64 = v63;
-    v65 = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
-    v66 = [v4 wantedToUndo];
-    v67 = [v65 isEqual:v66];
+    v64 = wantedToUndo;
+    wantedToUndo2 = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
+    wantedToUndo3 = [equalCopy wantedToUndo];
+    v67 = [wantedToUndo2 isEqual:wantedToUndo3];
 
     if (v67)
     {
@@ -733,106 +733,106 @@ LABEL_64:
   return v68;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v29 = a3;
-  v4 = [(NLXSchemaCDMUserDialogAct *)self alignment];
+  toCopy = to;
+  alignment = [(NLXSchemaCDMUserDialogAct *)self alignment];
 
-  if (v4)
+  if (alignment)
   {
-    v5 = [(NLXSchemaCDMUserDialogAct *)self alignment];
+    alignment2 = [(NLXSchemaCDMUserDialogAct *)self alignment];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(NLXSchemaCDMUserDialogAct *)self reference];
+  reference = [(NLXSchemaCDMUserDialogAct *)self reference];
 
-  if (v6)
+  if (reference)
   {
-    v7 = [(NLXSchemaCDMUserDialogAct *)self reference];
+    reference2 = [(NLXSchemaCDMUserDialogAct *)self reference];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(NLXSchemaCDMUserDialogAct *)self accepted];
+  accepted = [(NLXSchemaCDMUserDialogAct *)self accepted];
 
-  if (v8)
+  if (accepted)
   {
-    v9 = [(NLXSchemaCDMUserDialogAct *)self accepted];
+    accepted2 = [(NLXSchemaCDMUserDialogAct *)self accepted];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(NLXSchemaCDMUserDialogAct *)self rejected];
+  rejected = [(NLXSchemaCDMUserDialogAct *)self rejected];
 
-  if (v10)
+  if (rejected)
   {
-    v11 = [(NLXSchemaCDMUserDialogAct *)self rejected];
+    rejected2 = [(NLXSchemaCDMUserDialogAct *)self rejected];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(NLXSchemaCDMUserDialogAct *)self cancelled];
+  cancelled = [(NLXSchemaCDMUserDialogAct *)self cancelled];
 
-  if (v12)
+  if (cancelled)
   {
-    v13 = [(NLXSchemaCDMUserDialogAct *)self cancelled];
+    cancelled2 = [(NLXSchemaCDMUserDialogAct *)self cancelled];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
+  wantedToRepeat = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
 
-  if (v14)
+  if (wantedToRepeat)
   {
-    v15 = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
+    wantedToRepeat2 = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
+  acknowledged = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
 
-  if (v16)
+  if (acknowledged)
   {
-    v17 = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
+    acknowledged2 = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
+  wantedToProceed = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
 
-  if (v18)
+  if (wantedToProceed)
   {
-    v19 = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
+    wantedToProceed2 = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
+  wantedToPause = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
 
-  if (v20)
+  if (wantedToPause)
   {
-    v21 = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
+    wantedToPause2 = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(NLXSchemaCDMUserDialogAct *)self delegated];
+  delegated = [(NLXSchemaCDMUserDialogAct *)self delegated];
 
-  if (v22)
+  if (delegated)
   {
-    v23 = [(NLXSchemaCDMUserDialogAct *)self delegated];
+    delegated2 = [(NLXSchemaCDMUserDialogAct *)self delegated];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
+  userStatedTask = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
 
-  if (v24)
+  if (userStatedTask)
   {
-    v25 = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
+    userStatedTask2 = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
+  wantedToUndo = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
 
-  v27 = v29;
-  if (v26)
+  v27 = toCopy;
+  if (wantedToUndo)
   {
-    v28 = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
+    wantedToUndo2 = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
     PBDataWriterWriteSubmessage();
 
-    v27 = v29;
+    v27 = toCopy;
   }
 }
 
@@ -861,9 +861,9 @@ LABEL_64:
   return v3;
 }
 
-- (void)setWantedToUndo:(id)a3
+- (void)setWantedToUndo:(id)undo
 {
-  v4 = a3;
+  undoCopy = undo;
   accepted = self->_accepted;
   self->_accepted = 0;
 
@@ -892,14 +892,14 @@ LABEL_64:
   self->_userStatedTask = 0;
 
   v14 = 12;
-  if (!v4)
+  if (!undoCopy)
   {
     v14 = 0;
   }
 
   self->_whichUserdialogacttype = v14;
   wantedToUndo = self->_wantedToUndo;
-  self->_wantedToUndo = v4;
+  self->_wantedToUndo = undoCopy;
 }
 
 - (void)deleteUserStatedTask
@@ -927,9 +927,9 @@ LABEL_64:
   return v3;
 }
 
-- (void)setUserStatedTask:(id)a3
+- (void)setUserStatedTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   accepted = self->_accepted;
   self->_accepted = 0;
 
@@ -958,14 +958,14 @@ LABEL_64:
   self->_wantedToUndo = 0;
 
   v14 = 11;
-  if (!v4)
+  if (!taskCopy)
   {
     v14 = 0;
   }
 
   self->_whichUserdialogacttype = v14;
   userStatedTask = self->_userStatedTask;
-  self->_userStatedTask = v4;
+  self->_userStatedTask = taskCopy;
 }
 
 - (void)deleteDelegated
@@ -993,9 +993,9 @@ LABEL_64:
   return v3;
 }
 
-- (void)setDelegated:(id)a3
+- (void)setDelegated:(id)delegated
 {
-  v4 = a3;
+  delegatedCopy = delegated;
   accepted = self->_accepted;
   self->_accepted = 0;
 
@@ -1024,14 +1024,14 @@ LABEL_64:
   self->_wantedToUndo = 0;
 
   v14 = 10;
-  if (!v4)
+  if (!delegatedCopy)
   {
     v14 = 0;
   }
 
   self->_whichUserdialogacttype = v14;
   delegated = self->_delegated;
-  self->_delegated = v4;
+  self->_delegated = delegatedCopy;
 }
 
 - (void)deleteWantedToPause
@@ -1059,9 +1059,9 @@ LABEL_64:
   return v3;
 }
 
-- (void)setWantedToPause:(id)a3
+- (void)setWantedToPause:(id)pause
 {
-  v4 = a3;
+  pauseCopy = pause;
   accepted = self->_accepted;
   self->_accepted = 0;
 
@@ -1090,14 +1090,14 @@ LABEL_64:
   self->_wantedToUndo = 0;
 
   v14 = 9;
-  if (!v4)
+  if (!pauseCopy)
   {
     v14 = 0;
   }
 
   self->_whichUserdialogacttype = v14;
   wantedToPause = self->_wantedToPause;
-  self->_wantedToPause = v4;
+  self->_wantedToPause = pauseCopy;
 }
 
 - (void)deleteWantedToProceed
@@ -1125,9 +1125,9 @@ LABEL_64:
   return v3;
 }
 
-- (void)setWantedToProceed:(id)a3
+- (void)setWantedToProceed:(id)proceed
 {
-  v4 = a3;
+  proceedCopy = proceed;
   accepted = self->_accepted;
   self->_accepted = 0;
 
@@ -1155,9 +1155,9 @@ LABEL_64:
   wantedToUndo = self->_wantedToUndo;
   self->_wantedToUndo = 0;
 
-  self->_whichUserdialogacttype = 8 * (v4 != 0);
+  self->_whichUserdialogacttype = 8 * (proceedCopy != 0);
   wantedToProceed = self->_wantedToProceed;
-  self->_wantedToProceed = v4;
+  self->_wantedToProceed = proceedCopy;
 }
 
 - (void)deleteAcknowledged
@@ -1185,9 +1185,9 @@ LABEL_64:
   return v3;
 }
 
-- (void)setAcknowledged:(id)a3
+- (void)setAcknowledged:(id)acknowledged
 {
-  v4 = a3;
+  acknowledgedCopy = acknowledged;
   accepted = self->_accepted;
   self->_accepted = 0;
 
@@ -1216,14 +1216,14 @@ LABEL_64:
   self->_wantedToUndo = 0;
 
   v14 = 7;
-  if (!v4)
+  if (!acknowledgedCopy)
   {
     v14 = 0;
   }
 
   self->_whichUserdialogacttype = v14;
   acknowledged = self->_acknowledged;
-  self->_acknowledged = v4;
+  self->_acknowledged = acknowledgedCopy;
 }
 
 - (void)deleteWantedToRepeat
@@ -1251,9 +1251,9 @@ LABEL_64:
   return v3;
 }
 
-- (void)setWantedToRepeat:(id)a3
+- (void)setWantedToRepeat:(id)repeat
 {
-  v4 = a3;
+  repeatCopy = repeat;
   accepted = self->_accepted;
   self->_accepted = 0;
 
@@ -1282,14 +1282,14 @@ LABEL_64:
   self->_wantedToUndo = 0;
 
   v14 = 6;
-  if (!v4)
+  if (!repeatCopy)
   {
     v14 = 0;
   }
 
   self->_whichUserdialogacttype = v14;
   wantedToRepeat = self->_wantedToRepeat;
-  self->_wantedToRepeat = v4;
+  self->_wantedToRepeat = repeatCopy;
 }
 
 - (void)deleteCancelled
@@ -1317,9 +1317,9 @@ LABEL_64:
   return v3;
 }
 
-- (void)setCancelled:(id)a3
+- (void)setCancelled:(id)cancelled
 {
-  v4 = a3;
+  cancelledCopy = cancelled;
   accepted = self->_accepted;
   self->_accepted = 0;
 
@@ -1348,14 +1348,14 @@ LABEL_64:
   self->_wantedToUndo = 0;
 
   v14 = 5;
-  if (!v4)
+  if (!cancelledCopy)
   {
     v14 = 0;
   }
 
   self->_whichUserdialogacttype = v14;
   cancelled = self->_cancelled;
-  self->_cancelled = v4;
+  self->_cancelled = cancelledCopy;
 }
 
 - (void)deleteRejected
@@ -1383,9 +1383,9 @@ LABEL_64:
   return v3;
 }
 
-- (void)setRejected:(id)a3
+- (void)setRejected:(id)rejected
 {
-  v4 = a3;
+  rejectedCopy = rejected;
   accepted = self->_accepted;
   self->_accepted = 0;
 
@@ -1413,9 +1413,9 @@ LABEL_64:
   wantedToUndo = self->_wantedToUndo;
   self->_wantedToUndo = 0;
 
-  self->_whichUserdialogacttype = 4 * (v4 != 0);
+  self->_whichUserdialogacttype = 4 * (rejectedCopy != 0);
   rejected = self->_rejected;
-  self->_rejected = v4;
+  self->_rejected = rejectedCopy;
 }
 
 - (void)deleteAccepted
@@ -1443,9 +1443,9 @@ LABEL_64:
   return v3;
 }
 
-- (void)setAccepted:(id)a3
+- (void)setAccepted:(id)accepted
 {
-  v4 = a3;
+  acceptedCopy = accepted;
   rejected = self->_rejected;
   self->_rejected = 0;
 
@@ -1474,126 +1474,126 @@ LABEL_64:
   self->_wantedToUndo = 0;
 
   v14 = 3;
-  if (!v4)
+  if (!acceptedCopy)
   {
     v14 = 0;
   }
 
   self->_whichUserdialogacttype = v14;
   accepted = self->_accepted;
-  self->_accepted = v4;
+  self->_accepted = acceptedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v43.receiver = self;
   v43.super_class = NLXSchemaCDMUserDialogAct;
-  v5 = [(SISchemaInstrumentationMessage *)&v43 applySensitiveConditionsPolicy:v4];
-  v6 = [(NLXSchemaCDMUserDialogAct *)self alignment];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v43 applySensitiveConditionsPolicy:policyCopy];
+  alignment = [(NLXSchemaCDMUserDialogAct *)self alignment];
+  v7 = [alignment applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLXSchemaCDMUserDialogAct *)self deleteAlignment];
   }
 
-  v9 = [(NLXSchemaCDMUserDialogAct *)self reference];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  reference = [(NLXSchemaCDMUserDialogAct *)self reference];
+  v10 = [reference applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(NLXSchemaCDMUserDialogAct *)self deleteReference];
   }
 
-  v12 = [(NLXSchemaCDMUserDialogAct *)self accepted];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  accepted = [(NLXSchemaCDMUserDialogAct *)self accepted];
+  v13 = [accepted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(NLXSchemaCDMUserDialogAct *)self deleteAccepted];
   }
 
-  v15 = [(NLXSchemaCDMUserDialogAct *)self rejected];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  rejected = [(NLXSchemaCDMUserDialogAct *)self rejected];
+  v16 = [rejected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(NLXSchemaCDMUserDialogAct *)self deleteRejected];
   }
 
-  v18 = [(NLXSchemaCDMUserDialogAct *)self cancelled];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  cancelled = [(NLXSchemaCDMUserDialogAct *)self cancelled];
+  v19 = [cancelled applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(NLXSchemaCDMUserDialogAct *)self deleteCancelled];
   }
 
-  v21 = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  wantedToRepeat = [(NLXSchemaCDMUserDialogAct *)self wantedToRepeat];
+  v22 = [wantedToRepeat applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(NLXSchemaCDMUserDialogAct *)self deleteWantedToRepeat];
   }
 
-  v24 = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  acknowledged = [(NLXSchemaCDMUserDialogAct *)self acknowledged];
+  v25 = [acknowledged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(NLXSchemaCDMUserDialogAct *)self deleteAcknowledged];
   }
 
-  v27 = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  wantedToProceed = [(NLXSchemaCDMUserDialogAct *)self wantedToProceed];
+  v28 = [wantedToProceed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(NLXSchemaCDMUserDialogAct *)self deleteWantedToProceed];
   }
 
-  v30 = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  wantedToPause = [(NLXSchemaCDMUserDialogAct *)self wantedToPause];
+  v31 = [wantedToPause applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(NLXSchemaCDMUserDialogAct *)self deleteWantedToPause];
   }
 
-  v33 = [(NLXSchemaCDMUserDialogAct *)self delegated];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  delegated = [(NLXSchemaCDMUserDialogAct *)self delegated];
+  v34 = [delegated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(NLXSchemaCDMUserDialogAct *)self deleteDelegated];
   }
 
-  v36 = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  userStatedTask = [(NLXSchemaCDMUserDialogAct *)self userStatedTask];
+  v37 = [userStatedTask applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(NLXSchemaCDMUserDialogAct *)self deleteUserStatedTask];
   }
 
-  v39 = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  wantedToUndo = [(NLXSchemaCDMUserDialogAct *)self wantedToUndo];
+  v40 = [wantedToUndo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(NLXSchemaCDMUserDialogAct *)self deleteWantedToUndo];
   }

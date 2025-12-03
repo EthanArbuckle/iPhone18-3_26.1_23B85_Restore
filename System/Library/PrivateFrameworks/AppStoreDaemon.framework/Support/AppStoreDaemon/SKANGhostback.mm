@@ -1,9 +1,9 @@
 @interface SKANGhostback
 + (id)defaultProperties;
-- (void)setFreeConversionValue:(int64_t)a3;
-- (void)setIsLocked:(BOOL)a3;
-- (void)setIsRegistered:(BOOL)a3;
-- (void)setRestrictedConversionValue:(int64_t)a3;
+- (void)setFreeConversionValue:(int64_t)value;
+- (void)setIsLocked:(BOOL)locked;
+- (void)setIsRegistered:(BOOL)registered;
+- (void)setRestrictedConversionValue:(int64_t)value;
 @end
 
 @implementation SKANGhostback
@@ -26,27 +26,27 @@
   return v2;
 }
 
-- (void)setRestrictedConversionValue:(int64_t)a3
+- (void)setRestrictedConversionValue:(int64_t)value
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:value];
   sub_10023E000(self, v4, @"restricted_conversion_value");
 }
 
-- (void)setFreeConversionValue:(int64_t)a3
+- (void)setFreeConversionValue:(int64_t)value
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:value];
   sub_10023E000(self, v4, @"free_conversion_value");
 }
 
-- (void)setIsRegistered:(BOOL)a3
+- (void)setIsRegistered:(BOOL)registered
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:registered];
   sub_10023E000(self, v4, @"is_registered");
 }
 
-- (void)setIsLocked:(BOOL)a3
+- (void)setIsLocked:(BOOL)locked
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:locked];
   sub_10023E000(self, v4, @"is_locked");
 }
 

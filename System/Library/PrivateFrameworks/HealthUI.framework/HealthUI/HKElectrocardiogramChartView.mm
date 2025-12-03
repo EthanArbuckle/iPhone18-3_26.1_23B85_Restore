@@ -5,20 +5,20 @@
 - (CGSize)gridSize;
 - (CGSize)intrinsicContentSize;
 - (CGSize)lastSize;
-- (HKElectrocardiogramChartView)initWithGridSize:(CGSize)a3;
-- (HKElectrocardiogramChartView)initWithGridSize:(CGSize)a3 gridOptions:(id)a4;
+- (HKElectrocardiogramChartView)initWithGridSize:(CGSize)size;
+- (HKElectrocardiogramChartView)initWithGridSize:(CGSize)size gridOptions:(id)options;
 - (NSArray)gridOptions;
 - (UIColor)lineColor;
 - (double)lineWidth;
 - (void)_setUpUI;
 - (void)_updateChartForSizeChange;
-- (void)displayElectrocardiogram:(id)a3 allowsScrolling:(BOOL)a4;
+- (void)displayElectrocardiogram:(id)electrocardiogram allowsScrolling:(BOOL)scrolling;
 - (void)layoutSubviews;
-- (void)setDisplayControlSignal:(BOOL)a3;
-- (void)setLineColor:(id)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setWaveformPath:(id)a3;
-- (void)setWaveformPaths:(id)a3;
+- (void)setDisplayControlSignal:(BOOL)signal;
+- (void)setLineColor:(id)color;
+- (void)setLineWidth:(double)width;
+- (void)setWaveformPath:(id)path;
+- (void)setWaveformPaths:(id)paths;
 @end
 
 @implementation HKElectrocardiogramChartView
@@ -27,20 +27,20 @@
 {
   v16[4] = *MEMORY[0x1E69E9840];
   v2 = [HKElectrocardiogramGridOptions alloc];
-  v3 = [MEMORY[0x1E69DC888] hk_electrocardiogramChartMajorGridlineColor];
-  v4 = [(HKElectrocardiogramGridOptions *)v2 initWithUnitMultiple:30 axis:1 lineColor:v3 lineWidth:HKUICeilToScreenScale(0.5)];
+  hk_electrocardiogramChartMajorGridlineColor = [MEMORY[0x1E69DC888] hk_electrocardiogramChartMajorGridlineColor];
+  v4 = [(HKElectrocardiogramGridOptions *)v2 initWithUnitMultiple:30 axis:1 lineColor:hk_electrocardiogramChartMajorGridlineColor lineWidth:HKUICeilToScreenScale(0.5)];
   v16[0] = v4;
   v5 = [HKElectrocardiogramGridOptions alloc];
-  v6 = [MEMORY[0x1E69DC888] hk_electrocardiogramChartMajorGridlineColor];
-  v7 = [(HKElectrocardiogramGridOptions *)v5 initWithUnitMultiple:25 axis:2 lineColor:v6 lineWidth:HKUICeilToScreenScale(0.5)];
+  hk_electrocardiogramChartMajorGridlineColor2 = [MEMORY[0x1E69DC888] hk_electrocardiogramChartMajorGridlineColor];
+  v7 = [(HKElectrocardiogramGridOptions *)v5 initWithUnitMultiple:25 axis:2 lineColor:hk_electrocardiogramChartMajorGridlineColor2 lineWidth:HKUICeilToScreenScale(0.5)];
   v16[1] = v7;
   v8 = [HKElectrocardiogramGridOptions alloc];
-  v9 = [MEMORY[0x1E69DC888] hk_electrocardiogramChartMinorGridlineColor];
-  v10 = [(HKElectrocardiogramGridOptions *)v8 initWithUnitMultiple:5 axis:3 lineColor:v9 lineWidth:HKUICeilToScreenScale(0.25)];
+  hk_electrocardiogramChartMinorGridlineColor = [MEMORY[0x1E69DC888] hk_electrocardiogramChartMinorGridlineColor];
+  v10 = [(HKElectrocardiogramGridOptions *)v8 initWithUnitMultiple:5 axis:3 lineColor:hk_electrocardiogramChartMinorGridlineColor lineWidth:HKUICeilToScreenScale(0.25)];
   v16[2] = v10;
   v11 = [HKElectrocardiogramGridOptions alloc];
-  v12 = [MEMORY[0x1E69DC888] hk_electrocardiogramChartVeryMinorGridlineColor];
-  v13 = [(HKElectrocardiogramGridOptions *)v11 initWithUnitMultiple:1 axis:3 lineColor:v12 lineWidth:HKUICeilToScreenScale(0.25)];
+  hk_electrocardiogramChartVeryMinorGridlineColor = [MEMORY[0x1E69DC888] hk_electrocardiogramChartVeryMinorGridlineColor];
+  v13 = [(HKElectrocardiogramGridOptions *)v11 initWithUnitMultiple:1 axis:3 lineColor:hk_electrocardiogramChartVeryMinorGridlineColor lineWidth:HKUICeilToScreenScale(0.25)];
   v16[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:4];
 
@@ -63,21 +63,21 @@
   return v8;
 }
 
-- (HKElectrocardiogramChartView)initWithGridSize:(CGSize)a3
+- (HKElectrocardiogramChartView)initWithGridSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [objc_opt_class() defaultGridOptions];
-  v7 = [(HKElectrocardiogramChartView *)self initWithGridSize:v6 gridOptions:width, height];
+  height = size.height;
+  width = size.width;
+  defaultGridOptions = [objc_opt_class() defaultGridOptions];
+  height = [(HKElectrocardiogramChartView *)self initWithGridSize:defaultGridOptions gridOptions:width, height];
 
-  return v7;
+  return height;
 }
 
-- (HKElectrocardiogramChartView)initWithGridSize:(CGSize)a3 gridOptions:(id)a4
+- (HKElectrocardiogramChartView)initWithGridSize:(CGSize)size gridOptions:(id)options
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
   v20.receiver = self;
   v20.super_class = HKElectrocardiogramChartView;
   v8 = *MEMORY[0x1E695F058];
@@ -87,9 +87,9 @@
   v12 = [(HKElectrocardiogramChartView *)&v20 initWithFrame:*MEMORY[0x1E695F058], v9, v10, v11];
   if (v12)
   {
-    v13 = [[HKElectrocardiogramGridView alloc] initWithUnitSize:v7 grids:width, height];
+    height = [[HKElectrocardiogramGridView alloc] initWithUnitSize:optionsCopy grids:width, height];
     gridView = v12->_gridView;
-    v12->_gridView = v13;
+    v12->_gridView = height;
 
     v15 = [[HKElectrocardiogramWaveformView alloc] initWithFrame:v8, v9, v10, v11];
     waveformView = v12->_waveformView;
@@ -108,13 +108,13 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(HKElectrocardiogramChartView *)self waveformView];
-  [v3 intrinsicContentSize];
+  waveformView = [(HKElectrocardiogramChartView *)self waveformView];
+  [waveformView intrinsicContentSize];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(HKElectrocardiogramChartView *)self gridView];
-  [v8 majorGridSize];
+  gridView = [(HKElectrocardiogramChartView *)self gridView];
+  [gridView majorGridSize];
   v10 = v9;
   v12 = v11;
 
@@ -127,56 +127,56 @@
 
 - (void)_setUpUI
 {
-  v3 = [(HKElectrocardiogramChartView *)self gridView];
-  [(HKElectrocardiogramChartView *)self addSubview:v3];
+  gridView = [(HKElectrocardiogramChartView *)self gridView];
+  [(HKElectrocardiogramChartView *)self addSubview:gridView];
 
-  v4 = [(HKElectrocardiogramChartView *)self waveformContainerView];
-  v5 = [(HKElectrocardiogramChartView *)self waveformView];
-  [v4 addSubview:v5];
+  waveformContainerView = [(HKElectrocardiogramChartView *)self waveformContainerView];
+  waveformView = [(HKElectrocardiogramChartView *)self waveformView];
+  [waveformContainerView addSubview:waveformView];
 
-  v6 = [(HKElectrocardiogramChartView *)self waveformContainerView];
-  [(HKElectrocardiogramChartView *)self addSubview:v6];
+  waveformContainerView2 = [(HKElectrocardiogramChartView *)self waveformContainerView];
+  [(HKElectrocardiogramChartView *)self addSubview:waveformContainerView2];
 
-  v7 = [(HKElectrocardiogramChartView *)self waveformContainerView];
-  [v7 setClipsToBounds:1];
+  waveformContainerView3 = [(HKElectrocardiogramChartView *)self waveformContainerView];
+  [waveformContainerView3 setClipsToBounds:1];
 
-  v8 = [(HKElectrocardiogramChartView *)self gridView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  gridView2 = [(HKElectrocardiogramChartView *)self gridView];
+  [gridView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(HKElectrocardiogramChartView *)self waveformView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  waveformView2 = [(HKElectrocardiogramChartView *)self waveformView];
+  [waveformView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(HKElectrocardiogramChartView *)self waveformContainerView];
-  [v10 hk_alignConstraintsWithView:self];
+  waveformContainerView4 = [(HKElectrocardiogramChartView *)self waveformContainerView];
+  [waveformContainerView4 hk_alignConstraintsWithView:self];
 
-  v11 = [(HKElectrocardiogramChartView *)self gridView];
-  [v11 hk_alignConstraintsWithView:self];
+  gridView3 = [(HKElectrocardiogramChartView *)self gridView];
+  [gridView3 hk_alignConstraintsWithView:self];
 
-  v12 = [(HKElectrocardiogramChartView *)self waveformView];
-  v13 = [v12 leftAnchor];
-  v14 = [(HKElectrocardiogramChartView *)self waveformContainerView];
-  v15 = [v14 leftAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  waveformView3 = [(HKElectrocardiogramChartView *)self waveformView];
+  leftAnchor = [waveformView3 leftAnchor];
+  waveformContainerView5 = [(HKElectrocardiogramChartView *)self waveformContainerView];
+  leftAnchor2 = [waveformContainerView5 leftAnchor];
+  v16 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v16 setActive:1];
 
-  v17 = [(HKElectrocardiogramChartView *)self waveformView];
-  v18 = [v17 centerYAnchor];
-  v19 = [(HKElectrocardiogramChartView *)self waveformContainerView];
-  v20 = [v19 centerYAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  waveformView4 = [(HKElectrocardiogramChartView *)self waveformView];
+  centerYAnchor = [waveformView4 centerYAnchor];
+  waveformContainerView6 = [(HKElectrocardiogramChartView *)self waveformContainerView];
+  centerYAnchor2 = [waveformContainerView6 centerYAnchor];
+  v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v21 setActive:1];
 
-  v25 = [(HKElectrocardiogramChartView *)self waveformView];
-  v22 = [v25 heightAnchor];
+  waveformView5 = [(HKElectrocardiogramChartView *)self waveformView];
+  heightAnchor = [waveformView5 heightAnchor];
   [(HKElectrocardiogramChartView *)self pointsPerMillivolt];
-  v24 = [v22 constraintEqualToConstant:v23 * 3.0999999];
+  v24 = [heightAnchor constraintEqualToConstant:v23 * 3.0999999];
   [v24 setActive:1];
 }
 
 - (CGSize)gridSize
 {
-  v2 = [(HKElectrocardiogramChartView *)self gridView];
-  [v2 unitSize];
+  gridView = [(HKElectrocardiogramChartView *)self gridView];
+  [gridView unitSize];
   v4 = v3;
   v6 = v5;
 
@@ -189,59 +189,59 @@
 
 - (NSArray)gridOptions
 {
-  v2 = [(HKElectrocardiogramChartView *)self gridView];
-  v3 = [v2 grids];
+  gridView = [(HKElectrocardiogramChartView *)self gridView];
+  grids = [gridView grids];
 
-  return v3;
+  return grids;
 }
 
 - (BOOL)isDisplayingControlSignal
 {
-  v2 = [(HKElectrocardiogramChartView *)self gridView];
-  v3 = [v2 controlSignalPath];
-  v4 = v3 != 0;
+  gridView = [(HKElectrocardiogramChartView *)self gridView];
+  controlSignalPath = [gridView controlSignalPath];
+  v4 = controlSignalPath != 0;
 
   return v4;
 }
 
-- (void)setDisplayControlSignal:(BOOL)a3
+- (void)setDisplayControlSignal:(BOOL)signal
 {
-  if (a3)
+  if (signal)
   {
-    v24 = objc_alloc_init(MEMORY[0x1E69DC728]);
-    [v24 moveToPoint:{0.0, 0.0}];
+    gridView2 = objc_alloc_init(MEMORY[0x1E69DC728]);
+    [gridView2 moveToPoint:{0.0, 0.0}];
     [(HKElectrocardiogramChartView *)self pointsPerSecond];
     v5 = (v4 + v4) / 9.0;
     [(HKElectrocardiogramChartView *)self controlSignalDuration];
-    [v24 addLineToPoint:{v6 * v5, 0.0}];
+    [gridView2 addLineToPoint:{v6 * v5, 0.0}];
     [(HKElectrocardiogramChartView *)self pointsPerSecond];
     v8 = (v7 + v7) / 9.0;
     [(HKElectrocardiogramChartView *)self controlSignalDuration];
     v10 = v9 * v8;
     [(HKElectrocardiogramChartView *)self pointsPerMillivolt];
-    [v24 addLineToPoint:{v10, -v11}];
+    [gridView2 addLineToPoint:{v10, -v11}];
     [(HKElectrocardiogramChartView *)self pointsPerSecond];
     v13 = v12 * 7.0 / 9.0;
     [(HKElectrocardiogramChartView *)self controlSignalDuration];
     v15 = v14 * v13;
     [(HKElectrocardiogramChartView *)self pointsPerMillivolt];
-    [v24 addLineToPoint:{v15, -v16}];
+    [gridView2 addLineToPoint:{v15, -v16}];
     [(HKElectrocardiogramChartView *)self pointsPerSecond];
     v18 = v17 * 7.0 / 9.0;
     [(HKElectrocardiogramChartView *)self controlSignalDuration];
-    [v24 addLineToPoint:{v19 * v18, 0.0}];
+    [gridView2 addLineToPoint:{v19 * v18, 0.0}];
     [(HKElectrocardiogramChartView *)self pointsPerSecond];
     v21 = v20 * 9.0 / 9.0;
     [(HKElectrocardiogramChartView *)self controlSignalDuration];
-    [v24 addLineToPoint:{v22 * v21, 0.0}];
-    v23 = [(HKElectrocardiogramChartView *)self gridView];
-    [v23 setControlSignalPath:v24];
+    [gridView2 addLineToPoint:{v22 * v21, 0.0}];
+    gridView = [(HKElectrocardiogramChartView *)self gridView];
+    [gridView setControlSignalPath:gridView2];
   }
 
   else
   {
-    v24 = [(HKElectrocardiogramChartView *)self gridView];
-    [v24 setControlSignalPath:0];
+    gridView2 = [(HKElectrocardiogramChartView *)self gridView];
+    [gridView2 setControlSignalPath:0];
   }
 }
 
@@ -258,53 +258,53 @@
     v8 = v7;
     v10 = v9;
     [(HKElectrocardiogramChartView *)self gridSize];
-    v12 = [HKGradientView hk_verticalWaveformMaskGradientWithInsetLocation:(v11 + v11) / v10];
-    [v12 setFrame:{v4, v6, v8, v10}];
-    v13 = [(HKElectrocardiogramChartView *)self waveformContainerView];
-    [v13 setMaskView:v12];
+    waveformContainerView2 = [HKGradientView hk_verticalWaveformMaskGradientWithInsetLocation:(v11 + v11) / v10];
+    [waveformContainerView2 setFrame:{v4, v6, v8, v10}];
+    waveformContainerView = [(HKElectrocardiogramChartView *)self waveformContainerView];
+    [waveformContainerView setMaskView:waveformContainerView2];
   }
 
   else
   {
-    v12 = [(HKElectrocardiogramChartView *)self waveformContainerView];
-    [v12 setMaskView:0];
+    waveformContainerView2 = [(HKElectrocardiogramChartView *)self waveformContainerView];
+    [waveformContainerView2 setMaskView:0];
   }
 
   [(HKElectrocardiogramChartView *)self _updateChartForSizeChange];
 }
 
-- (void)setWaveformPath:(id)a3
+- (void)setWaveformPath:(id)path
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  pathCopy = path;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  pathCopy2 = path;
+  v6 = [v4 arrayWithObjects:&pathCopy count:1];
 
-  [(HKElectrocardiogramChartView *)self setWaveformPaths:v6, v7, v8];
+  [(HKElectrocardiogramChartView *)self setWaveformPaths:v6, pathCopy, v8];
 }
 
-- (void)setWaveformPaths:(id)a3
+- (void)setWaveformPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(HKElectrocardiogramChartView *)self waveformView];
-  [v5 setPaths:v4];
+  pathsCopy = paths;
+  waveformView = [(HKElectrocardiogramChartView *)self waveformView];
+  [waveformView setPaths:pathsCopy];
 }
 
-- (void)displayElectrocardiogram:(id)a3 allowsScrolling:(BOOL)a4
+- (void)displayElectrocardiogram:(id)electrocardiogram allowsScrolling:(BOOL)scrolling
 {
-  v4 = a4;
-  [(HKElectrocardiogramChartView *)self setSample:a3];
-  [(HKElectrocardiogramChartView *)self setAllowsScrolling:v4];
-  if (v4)
+  scrollingCopy = scrolling;
+  [(HKElectrocardiogramChartView *)self setSample:electrocardiogram];
+  [(HKElectrocardiogramChartView *)self setAllowsScrolling:scrollingCopy];
+  if (scrollingCopy)
   {
-    v6 = [(HKElectrocardiogramChartView *)self sample];
+    sample = [(HKElectrocardiogramChartView *)self sample];
     [(HKElectrocardiogramChartView *)self pointsPerSecond];
     v8 = v7;
     [(HKElectrocardiogramChartView *)self pointsPerMillivolt];
     LODWORD(v9) = -1081711002;
     LODWORD(v10) = 1073951539;
-    v13 = [v6 hk_waveformPathsWithPointsPerSecond:v8 pointsPerMillivolt:v11 minimumValueInMillivolts:v9 maximumValueInMillivolts:v10];
+    v13 = [sample hk_waveformPathsWithPointsPerSecond:v8 pointsPerMillivolt:v11 minimumValueInMillivolts:v9 maximumValueInMillivolts:v10];
 
     if (v13)
     {
@@ -330,10 +330,10 @@
 
 - (void)_updateChartForSizeChange
 {
-  v3 = [(HKElectrocardiogramChartView *)self sample];
-  if (v3)
+  sample = [(HKElectrocardiogramChartView *)self sample];
+  if (sample)
   {
-    v30 = v3;
+    v30 = sample;
     if (![(HKElectrocardiogramChartView *)self allowsScrolling])
     {
       [(HKElectrocardiogramChartView *)self lastSize];
@@ -350,10 +350,10 @@
 
       [(HKElectrocardiogramChartView *)self bounds];
       [(HKElectrocardiogramChartView *)self setLastSize:v12, v13];
-      v14 = [(HKElectrocardiogramChartView *)self sample];
-      v15 = [v14 samplingFrequency];
-      v16 = [MEMORY[0x1E696C510] hertzUnit];
-      [v15 doubleValueForUnit:v16];
+      sample2 = [(HKElectrocardiogramChartView *)self sample];
+      samplingFrequency = [sample2 samplingFrequency];
+      hertzUnit = [MEMORY[0x1E696C510] hertzUnit];
+      [samplingFrequency doubleValueForUnit:hertzUnit];
       v18 = v17;
 
       v19 = v18 * 0.04;
@@ -361,49 +361,49 @@
       v21 = v20;
       [(HKElectrocardiogramChartView *)self gridSize];
       v23 = (v19 * (v21 / v22));
-      v24 = [(HKElectrocardiogramChartView *)self sample];
+      sample3 = [(HKElectrocardiogramChartView *)self sample];
       [(HKElectrocardiogramChartView *)self lastSize];
       v26 = v25;
       [(HKElectrocardiogramChartView *)self pointsPerMillivolt];
       LODWORD(v27) = -1081711002;
       LODWORD(v28) = 1073951539;
-      v30 = [v24 hk_waveformPathsWithNumberOfValues:v23 fitToWidth:v26 pointsPerMillivolt:v29 minimumValueInMillivolts:v27 maximumValueInMillivolts:v28];
+      v30 = [sample3 hk_waveformPathsWithNumberOfValues:v23 fitToWidth:v26 pointsPerMillivolt:v29 minimumValueInMillivolts:v27 maximumValueInMillivolts:v28];
 
       [(HKElectrocardiogramChartView *)self setWaveformPaths:v30];
     }
 
-    v3 = v30;
+    sample = v30;
   }
 }
 
 - (double)lineWidth
 {
-  v2 = [(HKElectrocardiogramChartView *)self waveformView];
-  [v2 lineWidth];
+  waveformView = [(HKElectrocardiogramChartView *)self waveformView];
+  [waveformView lineWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
-  v4 = [(HKElectrocardiogramChartView *)self waveformView];
-  [v4 setLineWidth:a3];
+  waveformView = [(HKElectrocardiogramChartView *)self waveformView];
+  [waveformView setLineWidth:width];
 }
 
 - (UIColor)lineColor
 {
-  v2 = [(HKElectrocardiogramChartView *)self waveformView];
-  v3 = [v2 lineColor];
+  waveformView = [(HKElectrocardiogramChartView *)self waveformView];
+  lineColor = [waveformView lineColor];
 
-  return v3;
+  return lineColor;
 }
 
-- (void)setLineColor:(id)a3
+- (void)setLineColor:(id)color
 {
-  v4 = a3;
-  v5 = [(HKElectrocardiogramChartView *)self waveformView];
-  [v5 setLineColor:v4];
+  colorCopy = color;
+  waveformView = [(HKElectrocardiogramChartView *)self waveformView];
+  [waveformView setLineColor:colorCopy];
 }
 
 - (CGSize)lastSize

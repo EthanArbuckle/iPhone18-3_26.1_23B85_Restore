@@ -1,23 +1,23 @@
 @interface _UIDocumentPropertiesIconView
 - (NSDirectionalEdgeInsets)iconInsets;
-- (_UIDocumentPropertiesIconView)initWithProperties:(id)a3 metadata:(id)a4;
+- (_UIDocumentPropertiesIconView)initWithProperties:(id)properties metadata:(id)metadata;
 - (id)_preferredSender;
-- (void)_fireTapAction:(id)a3;
-- (void)setIconInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setMetadata:(id)a3;
+- (void)_fireTapAction:(id)action;
+- (void)setIconInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setMetadata:(id)metadata;
 @end
 
 @implementation _UIDocumentPropertiesIconView
 
-- (_UIDocumentPropertiesIconView)initWithProperties:(id)a3 metadata:(id)a4
+- (_UIDocumentPropertiesIconView)initWithProperties:(id)properties metadata:(id)metadata
 {
   v43[4] = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v8 = a4;
-  if (!v8)
+  propertiesCopy = properties;
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:592 description:{@"Invalid parameter not satisfying: %@", @"metadata != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:592 description:{@"Invalid parameter not satisfying: %@", @"metadata != nil"}];
   }
 
   v37.receiver = self;
@@ -26,9 +26,9 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_properties, a3);
-    objc_storeStrong(&v10->_metadata, a4);
-    v11 = [objc_alloc(getLPLinkViewClass()) initWithMetadata:v8];
+    objc_storeStrong(&v9->_properties, properties);
+    objc_storeStrong(&v10->_metadata, metadata);
+    v11 = [objc_alloc(getLPLinkViewClass()) initWithMetadata:metadataCopy];
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v11 _setDisableTapGesture:1];
     [v11 _setDisableAnimations:1];
@@ -58,27 +58,27 @@
     [v11 _setSizeClassParameters:v14];
     objc_storeStrong(&v10->_linkView, v11);
     [(UIView *)v10 addSubview:v11];
-    v15 = [v11 centerXAnchor];
-    v16 = [(UIView *)v10 centerXAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    centerXAnchor = [v11 centerXAnchor];
+    centerXAnchor2 = [(UIView *)v10 centerXAnchor];
+    v17 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     centerXInsetConstraint = v10->_centerXInsetConstraint;
     v10->_centerXInsetConstraint = v17;
 
-    v19 = [v11 trailingAnchor];
-    v20 = [(UIView *)v10 trailingAnchor];
-    v21 = [v19 constraintLessThanOrEqualToAnchor:v20];
+    trailingAnchor = [v11 trailingAnchor];
+    trailingAnchor2 = [(UIView *)v10 trailingAnchor];
+    v21 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     trailingInsetConstraint = v10->_trailingInsetConstraint;
     v10->_trailingInsetConstraint = v21;
 
-    v23 = [v11 centerYAnchor];
-    v24 = [(UIView *)v10 centerYAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    centerYAnchor = [v11 centerYAnchor];
+    centerYAnchor2 = [(UIView *)v10 centerYAnchor];
+    v25 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     centerYInsetConstraint = v10->_centerYInsetConstraint;
     v10->_centerYInsetConstraint = v25;
 
-    v27 = [v11 topAnchor];
-    v28 = [(UIView *)v10 topAnchor];
-    v29 = [v27 constraintGreaterThanOrEqualToAnchor:v28];
+    topAnchor = [v11 topAnchor];
+    topAnchor2 = [(UIView *)v10 topAnchor];
+    v29 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     bottomInsetConstraint = v10->_bottomInsetConstraint;
     v10->_bottomInsetConstraint = v29;
 
@@ -91,7 +91,7 @@
     [v31 activateConstraints:v32];
 
     [(_UIDocumentPropertiesIconView *)v10 _updateImage];
-    if (v36)
+    if (propertiesCopy)
     {
       v33 = [[UITapGestureRecognizer alloc] initWithTarget:v10 action:sel__fireTapAction_];
       [(UIView *)v10 addGestureRecognizer:v33];
@@ -101,20 +101,20 @@
   return v10;
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  objc_storeStrong(&self->_metadata, a3);
+  objc_storeStrong(&self->_metadata, metadata);
 
   [(_UIDocumentPropertiesIconView *)self _updateImage];
 }
 
-- (void)setIconInsets:(NSDirectionalEdgeInsets)a3
+- (void)setIconInsets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  top = a3.top;
-  self->_iconInsets = a3;
-  [(NSLayoutConstraint *)self->_centerXInsetConstraint setConstant:(a3.leading - a3.trailing) * 0.5];
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  top = insets.top;
+  self->_iconInsets = insets;
+  [(NSLayoutConstraint *)self->_centerXInsetConstraint setConstant:(insets.leading - insets.trailing) * 0.5];
   [(NSLayoutConstraint *)self->_trailingInsetConstraint setConstant:-trailing];
   [(NSLayoutConstraint *)self->_centerYInsetConstraint setConstant:(top - bottom) * 0.5];
   bottomInsetConstraint = self->_bottomInsetConstraint;
@@ -122,21 +122,21 @@
   [(NSLayoutConstraint *)bottomInsetConstraint setConstant:-bottom];
 }
 
-- (void)_fireTapAction:(id)a3
+- (void)_fireTapAction:(id)action
 {
-  v4 = [(UIDocumentProperties *)self->_properties iconRepresentationAction];
-  if (v4)
+  iconRepresentationAction = [(UIDocumentProperties *)self->_properties iconRepresentationAction];
+  if (iconRepresentationAction)
   {
-    v5 = v4;
-    [v4 performWithSender:self target:0];
-    v4 = v5;
+    v5 = iconRepresentationAction;
+    [iconRepresentationAction performWithSender:self target:0];
+    iconRepresentationAction = v5;
   }
 }
 
 - (id)_preferredSender
 {
-  v2 = [(UIView *)self superview];
-  if (v2)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
     do
     {
@@ -146,15 +146,15 @@
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
+      superview = v2Superview;
     }
 
-    while (v3);
+    while (v2Superview);
   }
 
-  return v2;
+  return superview;
 }
 
 - (NSDirectionalEdgeInsets)iconInsets

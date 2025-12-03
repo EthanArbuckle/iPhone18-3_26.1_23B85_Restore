@@ -1,28 +1,28 @@
 @interface AXBasicSettingWithFooterController
-- (id)preferenceValue:(id)a3;
+- (id)preferenceValue:(id)value;
 - (id)specifiers;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)setSpecifier:(id)a3;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation AXBasicSettingWithFooterController
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = AXBasicSettingWithFooterController;
-  v4 = a3;
-  [(AXBasicSettingWithFooterController *)&v9 setSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"AXPSFooterText", v9.receiver, v9.super_class}];
+  specifierCopy = specifier;
+  [(AXBasicSettingWithFooterController *)&v9 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"AXPSFooterText", v9.receiver, v9.super_class}];
   [(AXBasicSettingWithFooterController *)self setFooterText:v5];
 
-  v6 = [v4 propertyForKey:@"AXPSSettingText"];
+  v6 = [specifierCopy propertyForKey:@"AXPSSettingText"];
   [(AXBasicSettingWithFooterController *)self setSettingText:v6];
 
-  v7 = [v4 propertyForKey:@"AXPSGetterBlock"];
+  v7 = [specifierCopy propertyForKey:@"AXPSGetterBlock"];
   [(AXBasicSettingWithFooterController *)self setGetterBlock:v7];
 
-  v8 = [v4 propertyForKey:@"AXPSSetterBlock"];
+  v8 = [specifierCopy propertyForKey:@"AXPSSetterBlock"];
 
   [(AXBasicSettingWithFooterController *)self setSetterBlock:v8];
 }
@@ -35,12 +35,12 @@
   {
     v5 = objc_alloc_init(NSMutableArray);
     v6 = +[PSSpecifier emptyGroupSpecifier];
-    v7 = [(AXBasicSettingWithFooterController *)self footerText];
-    [v6 setProperty:v7 forKey:PSFooterTextGroupKey];
+    footerText = [(AXBasicSettingWithFooterController *)self footerText];
+    [v6 setProperty:footerText forKey:PSFooterTextGroupKey];
 
     [v5 addObject:v6];
-    v8 = [(AXBasicSettingWithFooterController *)self settingText];
-    v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:"setPreferenceValue:specifier:" get:"preferenceValue:" detail:0 cell:6 edit:0];
+    settingText = [(AXBasicSettingWithFooterController *)self settingText];
+    v9 = [PSSpecifier preferenceSpecifierNamed:settingText target:self set:"setPreferenceValue:specifier:" get:"preferenceValue:" detail:0 cell:6 edit:0];
 
     [v5 addObject:v9];
     v10 = *&self->AXUISettingsBaseListController_opaque[v3];
@@ -52,17 +52,17 @@
   return v4;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(AXBasicSettingWithFooterController *)self setterBlock];
-  v6[2](v6, v5);
+  valueCopy = value;
+  setterBlock = [(AXBasicSettingWithFooterController *)self setterBlock];
+  setterBlock[2](setterBlock, valueCopy);
 }
 
-- (id)preferenceValue:(id)a3
+- (id)preferenceValue:(id)value
 {
-  v3 = [(AXBasicSettingWithFooterController *)self getterBlock];
-  v4 = v3[2]();
+  getterBlock = [(AXBasicSettingWithFooterController *)self getterBlock];
+  v4 = getterBlock[2]();
 
   return v4;
 }

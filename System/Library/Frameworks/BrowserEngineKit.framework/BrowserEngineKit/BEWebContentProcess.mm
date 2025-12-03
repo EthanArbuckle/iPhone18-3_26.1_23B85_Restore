@@ -1,23 +1,23 @@
 @interface BEWebContentProcess
-+ (void)webContentProcessWithBundleID:(id)a3 interruptionHandler:(id)a4 completion:(id)a5;
-+ (void)webContentProcessWithInterruptionHandler:(id)a3 completion:(id)a4;
++ (void)webContentProcessWithBundleID:(id)d interruptionHandler:(id)handler completion:(id)completion;
++ (void)webContentProcessWithInterruptionHandler:(id)handler completion:(id)completion;
 - (BEWebContentProcess)init;
 - (id)createVisibilityPropagationInteraction;
-- (id)grantCapability:(id)a3 error:(id *)a4 invalidationHandler:(id)a5;
+- (id)grantCapability:(id)capability error:(id *)error invalidationHandler:(id)handler;
 @end
 
 @implementation BEWebContentProcess
 
-+ (void)webContentProcessWithBundleID:(id)a3 interruptionHandler:(id)a4 completion:(id)a5
++ (void)webContentProcessWithBundleID:(id)d interruptionHandler:(id)handler completion:(id)completion
 {
   v8 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB0159C0, &qword_19D520AD0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x1EEE9AC00]();
   v10 = &v19 - v9;
-  v11 = _Block_copy(a4);
-  v12 = _Block_copy(a5);
-  if (a3)
+  v11 = _Block_copy(handler);
+  v12 = _Block_copy(completion);
+  if (d)
   {
-    a3 = sub_19D51E28C();
+    d = sub_19D51E28C();
     v14 = v13;
   }
 
@@ -35,7 +35,7 @@
   v18 = swift_allocObject();
   v18[2] = 0;
   v18[3] = 0;
-  v18[4] = a3;
+  v18[4] = d;
   v18[5] = v14;
   v18[6] = sub_19D5196A8;
   v18[7] = v15;
@@ -44,14 +44,14 @@
   sub_19D516AB4(0, 0, v10, &unk_19D521090, v18);
 }
 
-- (id)grantCapability:(id)a3 error:(id *)a4 invalidationHandler:(id)a5
+- (id)grantCapability:(id)capability error:(id *)error invalidationHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
-  v9 = a3;
-  v10 = self;
-  v11 = sub_19D504938(v9, sub_19D505164, v8, &OBJC_IVAR___BEWebContentProcess_inner, _s15_ProcessAdaptorVMa_2, &off_1F10D2EC0, type metadata accessor for WebContentProcess);
+  capabilityCopy = capability;
+  selfCopy = self;
+  v11 = sub_19D504938(capabilityCopy, sub_19D505164, v8, &OBJC_IVAR___BEWebContentProcess_inner, _s15_ProcessAdaptorVMa_2, &off_1F10D2EC0, type metadata accessor for WebContentProcess);
 
   return v11;
 }
@@ -63,7 +63,7 @@
   v5 = *(v4 + 64);
   MEMORY[0x1EEE9AC00](v3);
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   sub_19D51E05C();
   sub_19D51E03C();
   v9 = sub_19D51DFFC();
@@ -74,14 +74,14 @@
   return v11;
 }
 
-+ (void)webContentProcessWithInterruptionHandler:(id)a3 completion:(id)a4
++ (void)webContentProcessWithInterruptionHandler:(id)handler completion:(id)completion
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB0159C0, &qword_19D520AD0);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
-  v11 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
   *(v12 + 16) = v10;
   v13 = swift_allocObject();

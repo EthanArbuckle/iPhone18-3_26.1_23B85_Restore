@@ -1,9 +1,9 @@
 @interface NearbySharingInteractionViewModel
 - (_TtC9AirDropUI33NearbySharingInteractionViewModel)init;
-- (id)collaborationItemsProvider:(id)a3 resolveActivityItem:(id)a4;
-- (id)collaborationServiceForItemsProvider:(id)a3;
+- (id)collaborationItemsProvider:(id)provider resolveActivityItem:(id)item;
+- (id)collaborationServiceForItemsProvider:(id)provider;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change;
 @end
 
 @implementation NearbySharingInteractionViewModel
@@ -12,14 +12,14 @@
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC9AirDropUI33NearbySharingInteractionViewModel_contactDetailsResolvingTask))
   {
-    v3 = self;
+    selfCopy = self;
 
     Task.cancel()();
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -27,23 +27,23 @@
   [(NearbySharingInteractionViewModel *)&v5 dealloc];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4
+- (void)observable:(id)observable didChange:(unint64_t)change
 {
-  if (a4 == 4)
+  if (change == 4)
   {
     swift_unknownObjectRetain();
-    v6 = self;
-    v7 = [a3 shareOptions];
+    selfCopy = self;
+    shareOptions = [observable shareOptions];
     swift_getKeyPath();
     swift_getKeyPath();
-    v8 = v7;
+    v8 = shareOptions;
     static Published.subscript.setter();
 
     swift_unknownObjectRelease();
   }
 }
 
-- (id)collaborationItemsProvider:(id)a3 resolveActivityItem:(id)a4
+- (id)collaborationItemsProvider:(id)provider resolveActivityItem:(id)item
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -57,7 +57,7 @@
   return v5.super.isa;
 }
 
-- (id)collaborationServiceForItemsProvider:(id)a3
+- (id)collaborationServiceForItemsProvider:(id)provider
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC9AirDropUI33NearbySharingInteractionViewModel_collaborationService);
   if (v3)

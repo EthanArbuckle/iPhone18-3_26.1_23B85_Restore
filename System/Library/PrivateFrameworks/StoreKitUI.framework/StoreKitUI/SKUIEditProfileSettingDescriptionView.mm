@@ -1,22 +1,22 @@
 @interface SKUIEditProfileSettingDescriptionView
-+ (BOOL)prefetchResourcesForSettingDescription:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5;
-+ (id)_baselineFontForTextStyle:(id)a3;
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (id)_textFieldWithPlaceholder:(id)a3;
++ (BOOL)prefetchResourcesForSettingDescription:(id)description reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context;
++ (id)_baselineFontForTextStyle:(id)style;
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (id)_textFieldWithPlaceholder:(id)placeholder;
 - (void)_updateHandleTextFieldValidity;
 - (void)layoutSubviews;
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation SKUIEditProfileSettingDescriptionView
 
-+ (BOOL)prefetchResourcesForSettingDescription:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForSettingDescription:(id)description reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -33,7 +33,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -54,7 +54,7 @@
   return result;
 }
 
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -66,7 +66,7 @@
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -80,26 +80,26 @@
     }
   }
 
-  v15 = [a1 _baselineFontForTextStyle:*MEMORY[0x277D76918]];
+  v15 = [self _baselineFontForTextStyle:*MEMORY[0x277D76918]];
   [v15 _scaledValueForValue:48.0];
   v17 = v16 + v16;
 
-  v18 = a3;
+  widthCopy = width;
   v19 = v17;
   result.height = v19;
-  result.width = v18;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context
 {
-  v39 = a3;
-  objc_storeStrong(&self->_settingDescription, a3);
-  v8 = a5;
-  v9 = [v8 clientContext];
+  descriptionCopy = description;
+  objc_storeStrong(&self->_settingDescription, description);
+  contextCopy = context;
+  clientContext = [contextCopy clientContext];
 
   clientContext = self->_clientContext;
-  self->_clientContext = v9;
+  self->_clientContext = clientContext;
 
   imageView = self->_imageView;
   if (!imageView)
@@ -112,8 +112,8 @@
     imageView = self->_imageView;
   }
 
-  v14 = [(SKUIEditProfileSettingDescription *)self->_settingDescription photo];
-  [(SKUIImageView *)imageView setImage:v14];
+  photo = [(SKUIEditProfileSettingDescription *)self->_settingDescription photo];
+  [(SKUIImageView *)imageView setImage:photo];
 
   if (!self->_editButton)
   {
@@ -134,9 +134,9 @@
     v18 = ;
     [(UIButton *)self->_editButton setTitle:v18 forState:0];
     [(UIButton *)self->_editButton addTarget:self action:sel__editProfilePhoto forControlEvents:64];
-    v19 = [(UIButton *)self->_editButton titleLabel];
+    titleLabel = [(UIButton *)self->_editButton titleLabel];
     v20 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
-    [v19 setFont:v20];
+    [titleLabel setFont:v20];
 
     [(SKUIEditProfileSettingDescriptionView *)self addSubview:self->_editButton];
   }
@@ -165,8 +165,8 @@
     nameField = self->_nameField;
   }
 
-  v26 = [(SKUIEditProfileSettingDescription *)self->_settingDescription name];
-  [(UITextField *)nameField setText:v26];
+  name = [(SKUIEditProfileSettingDescription *)self->_settingDescription name];
+  [(UITextField *)nameField setText:name];
 
   handleField = self->_handleField;
   if (!handleField)
@@ -193,41 +193,41 @@
     handleField = self->_handleField;
   }
 
-  v32 = [(SKUIEditProfileSettingDescription *)self->_settingDescription handle];
-  [(UITextField *)handleField setText:v32];
+  handle = [(SKUIEditProfileSettingDescription *)self->_settingDescription handle];
+  [(UITextField *)handleField setText:handle];
 
   if (!self->_divider1)
   {
-    v33 = [MEMORY[0x277CD9ED0] layer];
+    layer = [MEMORY[0x277CD9ED0] layer];
     divider1 = self->_divider1;
-    self->_divider1 = v33;
+    self->_divider1 = layer;
 
     v35 = self->_divider1;
     v36 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
     -[CALayer setBackgroundColor:](v35, "setBackgroundColor:", [v36 CGColor]);
 
-    v37 = [(SKUIEditProfileSettingDescriptionView *)self layer];
-    [v37 addSublayer:self->_divider1];
+    layer2 = [(SKUIEditProfileSettingDescriptionView *)self layer];
+    [layer2 addSublayer:self->_divider1];
   }
 
-  v38 = [(SKUIEditProfileSettingDescription *)self->_settingDescription isEditing];
-  [(UIButton *)self->_editButton setHidden:v38 ^ 1];
-  [(UITextField *)self->_nameField setEnabled:v38];
-  [(UITextField *)self->_handleField setEnabled:v38];
+  isEditing = [(SKUIEditProfileSettingDescription *)self->_settingDescription isEditing];
+  [(UIButton *)self->_editButton setHidden:isEditing ^ 1];
+  [(UITextField *)self->_nameField setEnabled:isEditing];
+  [(UITextField *)self->_handleField setEnabled:isEditing];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  if ([a3 isEqual:self->_handleField])
+  if ([editing isEqual:self->_handleField])
   {
 
     [(SKUIEditProfileSettingDescriptionView *)self _updateHandleTextFieldValidity];
   }
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = [a3 isEqual:self->_nameField];
+  v4 = [return isEqual:self->_nameField];
   handleField = self->_handleField;
   if (v4)
   {
@@ -242,21 +242,21 @@
   return 0;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 text];
-  v12 = [v11 stringByReplacingCharactersInRange:location withString:{length, v10}];
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  text = [fieldCopy text];
+  v12 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
-  if ([v9 isEqual:self->_nameField])
+  if ([fieldCopy isEqual:self->_nameField])
   {
     [(SKUIEditProfileSettingDescription *)self->_settingDescription setName:v12];
   }
 
-  else if ([v9 isEqual:self->_handleField])
+  else if ([fieldCopy isEqual:self->_handleField])
   {
     [(SKUIEditProfileSettingDescriptionView *)self _updateHandleTextFieldValidity];
   }
@@ -264,26 +264,26 @@
   return 1;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v7 = a3;
-  if ([v7 isEqual:self->_nameField])
+  editingCopy = editing;
+  if ([editingCopy isEqual:self->_nameField])
   {
     settingDescription = self->_settingDescription;
-    v5 = [v7 text];
-    [(SKUIEditProfileSettingDescription *)settingDescription setName:v5];
+    text = [editingCopy text];
+    [(SKUIEditProfileSettingDescription *)settingDescription setName:text];
   }
 
   else
   {
-    if (![v7 isEqual:self->_handleField])
+    if (![editingCopy isEqual:self->_handleField])
     {
       goto LABEL_6;
     }
 
     v6 = self->_settingDescription;
-    v5 = [v7 text];
-    [(SKUIEditProfileSettingDescription *)v6 setHandle:v5];
+    text = [editingCopy text];
+    [(SKUIEditProfileSettingDescription *)v6 setHandle:text];
   }
 
 LABEL_6:
@@ -304,9 +304,9 @@ LABEL_6:
   v10 = v9;
   v55 = v11;
   ShouldReverseLayoutDirection = storeShouldReverseLayoutDirection();
-  v13 = [(UIButton *)self->_editButton titleLabel];
+  titleLabel = [(UIButton *)self->_editButton titleLabel];
   v14 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
-  [v13 setFont:v14];
+  [titleLabel setFont:v14];
   [v14 _scaledValueForValue:16.0];
   v16 = v15;
   [(UIButton *)self->_editButton sizeThatFits:1.0, 1.0];
@@ -317,7 +317,7 @@ LABEL_6:
   v57.size.width = 56.0;
   v57.size.height = 56.0;
   v21 = v16 + CGRectGetMaxY(v57);
-  [v13 _firstBaselineOffsetFromTop];
+  [titleLabel _firstBaselineOffsetFromTop];
   v23 = v21 - v22;
   v58.origin.y = 8.0;
   v58.origin.x = v4;
@@ -354,13 +354,13 @@ LABEL_6:
   v33 = v32;
   [v31 _scaledValueForValue:18.0];
   v50 = v33 + v34;
-  v35 = [(UITextField *)self->_nameField _placeholderLabel];
+  _placeholderLabel = [(UITextField *)self->_nameField _placeholderLabel];
   v60.origin.y = 8.0;
   v60.origin.x = v4;
   v60.size.width = 56.0;
   v60.size.height = 56.0;
   v36 = CGRectGetMaxX(v60) + 16.0;
-  [v35 _firstBaselineOffsetFromTop];
+  [_placeholderLabel _firstBaselineOffsetFromTop];
   v38 = v33 - v37;
   v49 = v33 - v37;
   v61.origin.x = v52;
@@ -378,8 +378,8 @@ LABEL_6:
   nameField = self->_nameField;
   SKUIRectByApplyingStoreUserInterfaceLayoutDirectionInRect(v36, v38 + 0.0, v39, v40, v52, v10, v55, v51);
   [(UITextField *)nameField setFrame:?];
-  v42 = [MEMORY[0x277D759A0] mainScreen];
-  [v42 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v44 = 1.0 / v43;
 
   divider1 = self->_divider1;
@@ -393,9 +393,9 @@ LABEL_6:
   [(SKUIImageView *)imageView setFrame:?];
 }
 
-+ (id)_baselineFontForTextStyle:(id)a3
++ (id)_baselineFontForTextStyle:(id)style
 {
-  v3 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:a3 addingSymbolicTraits:0 options:2];
+  v3 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:0 options:2];
   v4 = [MEMORY[0x277D74300] fontWithDescriptor:v3 size:0.0];
 
   return v4;
@@ -404,12 +404,12 @@ LABEL_6:
 - (void)_updateHandleTextFieldValidity
 {
   settingDescription = self->_settingDescription;
-  v4 = [(UITextField *)self->_handleField text];
-  [(SKUIEditProfileSettingDescription *)settingDescription setHandle:v4];
+  text = [(UITextField *)self->_handleField text];
+  [(SKUIEditProfileSettingDescription *)settingDescription setHandle:text];
 
-  v5 = [(SKUIEditProfileSettingDescription *)self->_settingDescription isHandleValid];
+  isHandleValid = [(SKUIEditProfileSettingDescription *)self->_settingDescription isHandleValid];
   handleField = self->_handleField;
-  if (v5)
+  if (isHandleValid)
   {
     [MEMORY[0x277D75348] blackColor];
   }
@@ -422,23 +422,23 @@ LABEL_6:
   [(UITextField *)handleField setTextColor:v7];
 }
 
-- (id)_textFieldWithPlaceholder:(id)a3
+- (id)_textFieldWithPlaceholder:(id)placeholder
 {
   v4 = MEMORY[0x277D75BB8];
-  v5 = a3;
+  placeholderCopy = placeholder;
   v6 = [v4 alloc];
   v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v7 setDelegate:self];
   v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   [v7 setFont:v8];
-  v9 = [MEMORY[0x277D75348] blackColor];
-  [v7 setTextColor:v9];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v7 setTextColor:blackColor];
 
   v10 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v11 = [MEMORY[0x277D75348] systemRedColor];
-  v12 = [v10 initWithObjectsAndKeys:{v11, *MEMORY[0x277D740C0], 0}];
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  v12 = [v10 initWithObjectsAndKeys:{systemRedColor, *MEMORY[0x277D740C0], 0}];
 
-  v13 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v5 attributes:v12];
+  v13 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:placeholderCopy attributes:v12];
   [v7 setAttributedPlaceholder:v13];
 
   return v7;

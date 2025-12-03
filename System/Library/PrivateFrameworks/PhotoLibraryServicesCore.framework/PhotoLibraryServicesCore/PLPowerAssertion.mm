@@ -1,16 +1,16 @@
 @interface PLPowerAssertion
-+ (unsigned)takePowerAssertionWithName:(id)a3 humanReadableReason:(id)a4 timeout:(double)a5 timeoutAction:(__CFString *)a6;
-+ (void)performNoTimeoutPowerAssertionTaskWithName:(id)a3 humanReadableReason:(id)a4 block:(id)a5;
-+ (void)performPowerAssertionTaskWithName:(id)a3 humanReadableReason:(id)a4 timeout:(double)a5 timeoutAction:(__CFString *)a6 block:(id)a7;
-+ (void)removePowerAssertionForAssertionID:(unsigned int)a3;
++ (unsigned)takePowerAssertionWithName:(id)name humanReadableReason:(id)reason timeout:(double)timeout timeoutAction:(__CFString *)action;
++ (void)performNoTimeoutPowerAssertionTaskWithName:(id)name humanReadableReason:(id)reason block:(id)block;
++ (void)performPowerAssertionTaskWithName:(id)name humanReadableReason:(id)reason timeout:(double)timeout timeoutAction:(__CFString *)action block:(id)block;
++ (void)removePowerAssertionForAssertionID:(unsigned int)d;
 @end
 
 @implementation PLPowerAssertion
 
-+ (void)removePowerAssertionForAssertionID:(unsigned int)a3
++ (void)removePowerAssertionForAssertionID:(unsigned int)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
     v4 = PLBackendGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -22,7 +22,7 @@
       _os_log_impl(&dword_1AA9BD000, v4, OS_LOG_TYPE_INFO, "%{public}@ Removing power assertion: -🔌", &v10, 0xCu);
     }
 
-    v7 = IOPMAssertionRelease(a3);
+    v7 = IOPMAssertionRelease(d);
     if (v7)
     {
       v8 = v7;
@@ -37,12 +37,12 @@
   }
 }
 
-+ (unsigned)takePowerAssertionWithName:(id)a3 humanReadableReason:(id)a4 timeout:(double)a5 timeoutAction:(__CFString *)a6
++ (unsigned)takePowerAssertionWithName:(id)name humanReadableReason:(id)reason timeout:(double)timeout timeoutAction:(__CFString *)action
 {
   v21 = *MEMORY[0x1E69E9840];
   AssertionID = 0;
-  v9 = a4;
-  v10 = a3;
+  reasonCopy = reason;
+  nameCopy = name;
   v11 = PLBackendGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -54,7 +54,7 @@
   }
 
   v14 = PLBundleIdentifier();
-  v15 = IOPMAssertionCreateWithDescription(@"PreventUserIdleSystemSleep", v10, v14, v9, 0, a5, a6, &AssertionID);
+  v15 = IOPMAssertionCreateWithDescription(@"PreventUserIdleSystemSleep", nameCopy, v14, reasonCopy, 0, timeout, action, &AssertionID);
 
   if (v15)
   {
@@ -70,22 +70,22 @@
   return AssertionID;
 }
 
-+ (void)performPowerAssertionTaskWithName:(id)a3 humanReadableReason:(id)a4 timeout:(double)a5 timeoutAction:(__CFString *)a6 block:(id)a7
++ (void)performPowerAssertionTaskWithName:(id)name humanReadableReason:(id)reason timeout:(double)timeout timeoutAction:(__CFString *)action block:(id)block
 {
-  v12 = a7;
-  v13 = [a1 takePowerAssertionWithName:a3 humanReadableReason:a4 timeout:a6 timeoutAction:a5];
-  v12[2](v12);
+  blockCopy = block;
+  v13 = [self takePowerAssertionWithName:name humanReadableReason:reason timeout:action timeoutAction:timeout];
+  blockCopy[2](blockCopy);
 
-  [a1 removePowerAssertionForAssertionID:v13];
+  [self removePowerAssertionForAssertionID:v13];
 }
 
-+ (void)performNoTimeoutPowerAssertionTaskWithName:(id)a3 humanReadableReason:(id)a4 block:(id)a5
++ (void)performNoTimeoutPowerAssertionTaskWithName:(id)name humanReadableReason:(id)reason block:(id)block
 {
-  v8 = a5;
-  v9 = [a1 takePowerAssertionWithName:a3 humanReadableReason:a4 timeout:@"TimeoutActionLog" timeoutAction:0.0];
-  v8[2](v8);
+  blockCopy = block;
+  v9 = [self takePowerAssertionWithName:name humanReadableReason:reason timeout:@"TimeoutActionLog" timeoutAction:0.0];
+  blockCopy[2](blockCopy);
 
-  [a1 removePowerAssertionForAssertionID:v9];
+  [self removePowerAssertionForAssertionID:v9];
 }
 
 @end

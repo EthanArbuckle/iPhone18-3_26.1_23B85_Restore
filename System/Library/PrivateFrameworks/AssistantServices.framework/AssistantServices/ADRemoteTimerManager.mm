@@ -1,40 +1,40 @@
 @interface ADRemoteTimerManager
 - (ADRemoteTimerManager)init;
-- (id)_storageForDeviceWithIdentifier:(id)a3;
-- (void)_invalidateStorageForDeviceWithIdentifier:(id)a3;
-- (void)_sendStereoPartnerAction:(id)a3 timerID:(id)a4 changes:(id)a5 completion:(id)a6;
-- (void)accessStorageForDeviceWithIdentifier:(id)a3 usingBlock:(id)a4;
-- (void)clockItemStorageDidUpdate:(id)a3 insertedItemIDs:(id)a4 updatedItemIDs:(id)a5 deletedItemIDs:(id)a6;
-- (void)finalizeStorageForDeviceWithIdentifier:(id)a3;
-- (void)getSnapshotForDeviceWithIdentifier:(id)a3 completion:(id)a4;
-- (void)getSnapshotsByDeviceIdentifierWithCompletion:(id)a3;
-- (void)handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6;
-- (void)prepareStorageForDeviceWithIdentifier:(id)a3;
-- (void)removeTimerWithID:(id)a3 completion:(id)a4;
-- (void)updateTimerWithID:(id)a3 changes:(id)a4 completion:(id)a5;
+- (id)_storageForDeviceWithIdentifier:(id)identifier;
+- (void)_invalidateStorageForDeviceWithIdentifier:(id)identifier;
+- (void)_sendStereoPartnerAction:(id)action timerID:(id)d changes:(id)changes completion:(id)completion;
+- (void)accessStorageForDeviceWithIdentifier:(id)identifier usingBlock:(id)block;
+- (void)clockItemStorageDidUpdate:(id)update insertedItemIDs:(id)ds updatedItemIDs:(id)iDs deletedItemIDs:(id)itemIDs;
+- (void)finalizeStorageForDeviceWithIdentifier:(id)identifier;
+- (void)getSnapshotForDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)getSnapshotsByDeviceIdentifierWithCompletion:(id)completion;
+- (void)handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)prepareStorageForDeviceWithIdentifier:(id)identifier;
+- (void)removeTimerWithID:(id)d completion:(id)completion;
+- (void)updateTimerWithID:(id)d changes:(id)changes completion:(id)completion;
 @end
 
 @implementation ADRemoteTimerManager
 
-- (void)_sendStereoPartnerAction:(id)a3 timerID:(id)a4 changes:(id)a5 completion:(id)a6
+- (void)_sendStereoPartnerAction:(id)action timerID:(id)d changes:(id)changes completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  actionCopy = action;
+  dCopy = d;
+  changesCopy = changes;
+  completionCopy = completion;
   if (AFIsHorseman())
   {
     v14 = objc_alloc_init(NSMutableDictionary);
-    [v14 setObject:v10 forKey:@"action"];
-    if (v11)
+    [v14 setObject:actionCopy forKey:@"action"];
+    if (dCopy)
     {
-      v15 = [v11 UUIDString];
-      [v14 setObject:v15 forKey:@"timer-id-string"];
+      uUIDString = [dCopy UUIDString];
+      [v14 setObject:uUIDString forKey:@"timer-id-string"];
     }
 
-    if (v12)
+    if (changesCopy)
     {
-      [v14 setObject:v12 forKey:@"timer-changes"];
+      [v14 setObject:changesCopy forKey:@"timer-changes"];
     }
 
     v16 = self->_queue;
@@ -54,69 +54,69 @@
     v20[2] = sub_10009B708;
     v20[3] = &unk_100514DE0;
     v21 = v16;
-    v22 = v13;
+    v22 = completionCopy;
     v19 = v16;
     [v18 sendStereoPartnerMessage:v14 messageType:@"clocktimer" completion:v20];
 
     goto LABEL_11;
   }
 
-  if (v13)
+  if (completionCopy)
   {
     v14 = [AFError errorWithCode:2114];
-    (*(v13 + 2))(v13, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
 LABEL_11:
   }
 }
 
-- (void)_invalidateStorageForDeviceWithIdentifier:(id)a3
+- (void)_invalidateStorageForDeviceWithIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v4 = [(NSMutableDictionary *)self->_storagesByDeviceIdentifier objectForKey:?];
   v5 = v4;
   if (v4)
   {
     [v4 invalidate];
-    [(NSMutableDictionary *)self->_storagesByDeviceIdentifier removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_storagesByDeviceIdentifier removeObjectForKey:identifierCopy];
   }
 }
 
-- (id)_storageForDeviceWithIdentifier:(id)a3
+- (id)_storageForDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_storagesByDeviceIdentifier objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_storagesByDeviceIdentifier objectForKey:identifierCopy];
   if (!v5)
   {
-    v5 = [[AFClockItemStorage alloc] initWithIdentifier:v4 delegate:self];
-    [(NSMutableDictionary *)self->_storagesByDeviceIdentifier setObject:v5 forKey:v4];
+    v5 = [[AFClockItemStorage alloc] initWithIdentifier:identifierCopy delegate:self];
+    [(NSMutableDictionary *)self->_storagesByDeviceIdentifier setObject:v5 forKey:identifierCopy];
   }
 
   return v5;
 }
 
-- (void)handleMessage:(id)a3 messageType:(id)a4 fromDeviceWithIdentifier:(id)a5 completion:(id)a6
+- (void)handleMessage:(id)message messageType:(id)type fromDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  messageCopy = message;
+  typeCopy = type;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v13 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v29 = "[ADRemoteTimerManager handleMessage:messageType:fromDeviceWithIdentifier:completion:]";
     v30 = 2112;
-    v31 = v11;
+    v31 = identifierCopy;
     v32 = 2112;
-    v33 = v10;
+    v33 = typeCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s deviceIdentifier = %@, messageType = %@", buf, 0x20u);
   }
 
   if (AFIsHorseman())
   {
-    if ([v10 isEqualToString:@"clocktimer"])
+    if ([typeCopy isEqualToString:@"clocktimer"])
     {
-      v14 = [v9 objectForKey:@"action"];
+      v14 = [messageCopy objectForKey:@"action"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -124,7 +124,7 @@ LABEL_11:
         v14 = 0;
       }
 
-      v15 = [v9 objectForKey:@"timer-id-string"];
+      v15 = [messageCopy objectForKey:@"timer-id-string"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -136,7 +136,7 @@ LABEL_11:
         v16 = 0;
       }
 
-      v19 = [v9 objectForKey:@"timer-changes"];
+      v19 = [messageCopy objectForKey:@"timer-changes"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -167,7 +167,7 @@ LABEL_11:
           v26[1] = 3221225472;
           v26[2] = sub_10009C1B4;
           v26[3] = &unk_100510060;
-          v27 = v12;
+          v27 = completionCopy;
           [v21 updateTimerWithID:v16 changes:v19 completion:v26];
 
           v22 = v27;
@@ -182,14 +182,14 @@ LABEL_11:
         v24[1] = 3221225472;
         v24[2] = sub_10009C3AC;
         v24[3] = &unk_100510060;
-        v25 = v12;
+        v25 = completionCopy;
         [v23 removeTimerWithID:v16 completion:v24];
 
         v22 = v25;
         goto LABEL_29;
       }
 
-      if (!v12)
+      if (!completionCopy)
       {
 LABEL_30:
 
@@ -197,7 +197,7 @@ LABEL_30:
       }
 
       v22 = [AFError errorWithCode:2114];
-      (*(v12 + 2))(v12, 0, v22);
+      (*(completionCopy + 2))(completionCopy, 0, v22);
 LABEL_29:
 
       goto LABEL_30;
@@ -209,9 +209,9 @@ LABEL_29:
       *buf = 136315394;
       v29 = "[ADRemoteTimerManager handleMessage:messageType:fromDeviceWithIdentifier:completion:]";
       v30 = 2112;
-      v31 = v10;
+      v31 = typeCopy;
       _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s Received message from unknown message type: %@", buf, 0x16u);
-      if (!v12)
+      if (!completionCopy)
       {
         goto LABEL_32;
       }
@@ -219,7 +219,7 @@ LABEL_29:
       goto LABEL_13;
     }
 
-    if (v12)
+    if (completionCopy)
     {
 LABEL_13:
       v17 = 1004;
@@ -227,66 +227,66 @@ LABEL_13:
     }
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
     v17 = 2114;
 LABEL_14:
     v14 = [AFError errorWithCode:v17];
-    (*(v12 + 2))(v12, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
 LABEL_31:
   }
 
 LABEL_32:
 }
 
-- (void)clockItemStorageDidUpdate:(id)a3 insertedItemIDs:(id)a4 updatedItemIDs:(id)a5 deletedItemIDs:(id)a6
+- (void)clockItemStorageDidUpdate:(id)update insertedItemIDs:(id)ds updatedItemIDs:(id)iDs deletedItemIDs:(id)itemIDs
 {
-  v6 = [ADCommandCenter sharedCommandCenter:a3];
+  v6 = [ADCommandCenter sharedCommandCenter:update];
   [v6 setAlertContextDirty];
 }
 
-- (void)removeTimerWithID:(id)a3 completion:(id)a4
+- (void)removeTimerWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009C6B0;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   dispatch_async(queue, block);
 }
 
-- (void)updateTimerWithID:(id)a3 changes:(id)a4 completion:(id)a5
+- (void)updateTimerWithID:(id)d changes:(id)changes completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  changesCopy = changes;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10009C848;
   v15[3] = &unk_10051E0D8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = changesCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = changesCopy;
+  v14 = dCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)accessStorageForDeviceWithIdentifier:(id)a3 usingBlock:(id)a4
+- (void)accessStorageForDeviceWithIdentifier:(id)identifier usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  blockCopy = block;
+  if (blockCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -294,45 +294,45 @@ LABEL_32:
     block[2] = sub_10009C9CC;
     block[3] = &unk_10051E088;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = identifierCopy;
+    v11 = blockCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)finalizeStorageForDeviceWithIdentifier:(id)a3
+- (void)finalizeStorageForDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009CAD8;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)prepareStorageForDeviceWithIdentifier:(id)a3
+- (void)prepareStorageForDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009CB7C;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)getSnapshotsByDeviceIdentifierWithCompletion:(id)a3
+- (void)getSnapshotsByDeviceIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v8[0] = _NSConcreteStackBlock;
@@ -340,17 +340,17 @@ LABEL_32:
     v8[2] = sub_10009CC68;
     v8[3] = &unk_10051E038;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     v7 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, v8);
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getSnapshotForDeviceWithIdentifier:(id)a3 completion:(id)a4
+- (void)getSnapshotForDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -358,8 +358,8 @@ LABEL_32:
     block[2] = sub_10009CF90;
     block[3] = &unk_10051E088;
     block[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = identifierCopy;
+    v12 = completionCopy;
     v9 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, block);
     dispatch_async(queue, v9);
   }

@@ -1,21 +1,21 @@
 @interface _DKEventTypeResultStatsCounter
-+ (id)counterInCollection:(void *)a3 withEventName:(void *)a4 eventType:(void *)a5 eventTypePossibleValues:;
++ (id)counterInCollection:(void *)collection withEventName:(void *)name eventType:(void *)type eventTypePossibleValues:;
 - (id)eventName;
 - (id)eventType;
 - (id)typeValues;
-- (void)incrementCountWithTypeValue:(int)a3 success:;
+- (void)incrementCountWithTypeValue:(int)value success:;
 @end
 
 @implementation _DKEventTypeResultStatsCounter
 
-+ (id)counterInCollection:(void *)a3 withEventName:(void *)a4 eventType:(void *)a5 eventTypePossibleValues:
++ (id)counterInCollection:(void *)collection withEventName:(void *)name eventType:(void *)type eventTypePossibleValues:
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  typeCopy = type;
+  nameCopy = name;
+  collectionCopy = collection;
   v11 = a2;
   v12 = objc_opt_self();
-  v13 = [_DKEventStatsCollection counterWithClass:v12 collectionName:v11 eventName:v10 eventType:v9 eventTypePossibleValues:v8 hasResult:1 scalar:1];
+  v13 = [_DKEventStatsCollection counterWithClass:v12 collectionName:v11 eventName:collectionCopy eventType:nameCopy eventTypePossibleValues:typeCopy hasResult:1 scalar:1];
 
   return v13;
 }
@@ -62,17 +62,17 @@
   }
 }
 
-- (void)incrementCountWithTypeValue:(int)a3 success:
+- (void)incrementCountWithTypeValue:(int)value success:
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    [(_DKEventStatsCounterInternal *)*(a1 + 8) incrementCountByNumber:v5 typeValue:a3 success:?];
+    [(_DKEventStatsCounterInternal *)*(self + 8) incrementCountByNumber:v5 typeValue:value success:?];
     OUTLINED_FUNCTION_3_16();
     if ((v6 & 1) == 0)
     {
-      Property = *(a1 + 8);
+      Property = *(self + 8);
       if (Property)
       {
         OUTLINED_FUNCTION_8_8();
@@ -80,7 +80,7 @@
       }
 
       v12 = @"false";
-      if (a3)
+      if (value)
       {
         v12 = @"true";
       }

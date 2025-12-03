@@ -1,23 +1,23 @@
 @interface VCPMetaTrackDecoder
-- (VCPMetaTrackDecoder)initWithTrack:(id)a3;
+- (VCPMetaTrackDecoder)initWithTrack:(id)track;
 - (void)dealloc;
 @end
 
 @implementation VCPMetaTrackDecoder
 
-- (VCPMetaTrackDecoder)initWithTrack:(id)a3
+- (VCPMetaTrackDecoder)initWithTrack:(id)track
 {
-  v4 = a3;
+  trackCopy = track;
   v17.receiver = self;
   v17.super_class = VCPMetaTrackDecoder;
   v5 = [(VCPMetaTrackDecoder *)&v17 init];
   if (v5)
   {
-    if (v4)
+    if (trackCopy)
     {
       v6 = objc_alloc(MEMORY[0x1E6987E78]);
-      v7 = [v4 asset];
-      v8 = [v6 initWithAsset:v7 error:0];
+      asset = [trackCopy asset];
+      v8 = [v6 initWithAsset:asset error:0];
       reader = v5->_reader;
       v5->_reader = v8;
 
@@ -27,7 +27,7 @@
         goto LABEL_12;
       }
 
-      v11 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v4 outputSettings:0];
+      v11 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:trackCopy outputSettings:0];
       readerOutput = v5->_readerOutput;
       v5->_readerOutput = v11;
 

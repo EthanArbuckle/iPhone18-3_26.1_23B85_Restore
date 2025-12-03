@@ -2,9 +2,9 @@
 - (CGRect)currentAdjustedViewBounds;
 - (CGRect)currentViewBounds;
 - (TUILivePinningLayoutController)init;
-- (id)liveAttributesForRenderModel:(id)a3;
-- (void)setRenderModel:(id)a3 withInvalidationContext:(id)a4;
-- (void)updatePinningTransformsWithViewBounds:(CGRect)a3 adjustedViewBounds:(CGRect)a4 invalidationContext:(id)a5 hasTabBar:(BOOL)a6;
+- (id)liveAttributesForRenderModel:(id)model;
+- (void)setRenderModel:(id)model withInvalidationContext:(id)context;
+- (void)updatePinningTransformsWithViewBounds:(CGRect)bounds adjustedViewBounds:(CGRect)viewBounds invalidationContext:(id)context hasTabBar:(BOOL)bar;
 @end
 
 @implementation TUILivePinningLayoutController
@@ -32,15 +32,15 @@
   return v3;
 }
 
-- (void)setRenderModel:(id)a3 withInvalidationContext:(id)a4
+- (void)setRenderModel:(id)model withInvalidationContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_renderModel != v7)
+  modelCopy = model;
+  contextCopy = context;
+  if (self->_renderModel != modelCopy)
   {
-    v24 = v8;
-    v25 = v7;
-    objc_storeStrong(&self->_renderModel, a3);
+    v24 = contextCopy;
+    v25 = modelCopy;
+    objc_storeStrong(&self->_renderModel, model);
     v9 = [NSMapTable mapTableWithKeyOptions:512 valueOptions:512];
     entryMap = self->_entryMap;
     self->_entryMap = v9;
@@ -119,24 +119,24 @@
     entries = self->_entries;
     self->_entries = v22;
 
-    v8 = v24;
+    contextCopy = v24;
     [(TUILivePinningLayoutController *)self updatePinningTransformsWithViewBounds:v24 adjustedViewBounds:self->_hasTabBar invalidationContext:self->_currentViewBounds.origin.x hasTabBar:self->_currentViewBounds.origin.y, self->_currentViewBounds.size.width, self->_currentViewBounds.size.height, self->_currentAdjustedViewBounds.origin.x, self->_currentAdjustedViewBounds.origin.y, self->_currentAdjustedViewBounds.size.width, self->_currentAdjustedViewBounds.size.height];
 
-    v7 = v25;
+    modelCopy = v25;
   }
 }
 
-- (void)updatePinningTransformsWithViewBounds:(CGRect)a3 adjustedViewBounds:(CGRect)a4 invalidationContext:(id)a5 hasTabBar:(BOOL)a6
+- (void)updatePinningTransformsWithViewBounds:(CGRect)bounds adjustedViewBounds:(CGRect)viewBounds invalidationContext:(id)context hasTabBar:(BOOL)bar
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.size.height;
-  v12 = a3.size.width;
-  v13 = a3.origin.y;
-  v14 = a3.origin.x;
-  v16 = a5;
+  height = viewBounds.size.height;
+  width = viewBounds.size.width;
+  y = viewBounds.origin.y;
+  x = viewBounds.origin.x;
+  v11 = bounds.size.height;
+  v12 = bounds.size.width;
+  v13 = bounds.origin.y;
+  v14 = bounds.origin.x;
+  contextCopy = context;
   self->_currentViewBounds.origin.x = v14;
   self->_currentViewBounds.origin.y = v13;
   self->_currentViewBounds.size.width = v12;
@@ -145,7 +145,7 @@
   self->_currentAdjustedViewBounds.origin.y = y;
   self->_currentAdjustedViewBounds.size.width = width;
   self->_currentAdjustedViewBounds.size.height = height;
-  self->_hasTabBar = a6;
+  self->_hasTabBar = bar;
   entries = self->_entries;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -159,21 +159,21 @@
   v26 = y;
   v27 = width;
   v28 = height;
-  v29 = a6;
+  barCopy = bar;
   v19[4] = self;
-  v20 = v16;
-  v18 = v16;
+  v20 = contextCopy;
+  v18 = contextCopy;
   [(NSArray *)entries enumerateObjectsUsingBlock:v19];
 }
 
-- (id)liveAttributesForRenderModel:(id)a3
+- (id)liveAttributesForRenderModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 liveTransform];
-  v6 = [(NSMapTable *)self->_entryMap objectForKey:v5];
-  [v4 center];
+  modelCopy = model;
+  liveTransform = [modelCopy liveTransform];
+  v6 = [(NSMapTable *)self->_entryMap objectForKey:liveTransform];
+  [modelCopy center];
   v8 = v7;
-  [v4 center];
+  [modelCopy center];
   v10 = v9;
   [v6 currentOffset];
   v12 = v8 + v11;
@@ -184,11 +184,11 @@
   v18 = v14 - v17;
   v19 = objc_alloc_init(TUILayoutAttributes);
   [(TUILayoutAttributes *)v19 setCenter:v16, v18];
-  [v4 size];
+  [modelCopy size];
   [(TUILayoutAttributes *)v19 setSize:?];
-  if (v4)
+  if (modelCopy)
   {
-    [v4 transform];
+    [modelCopy transform];
   }
 
   else

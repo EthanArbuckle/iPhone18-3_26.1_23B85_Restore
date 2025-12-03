@@ -1,24 +1,24 @@
 @interface BKUIPearlEnrollViewBottomContainer
 - (BKUIPearlBottomContainerDelegate)delegate;
-- (BKUIPearlEnrollViewBottomContainer)initWithFrame:(CGRect)a3 inBuddy:(BOOL)a4 scrollView:(id)a5 overlapScrollView:(id)a6 delegate:(id)a7 squareNeedsPositionLayout:(BOOL)a8;
+- (BKUIPearlEnrollViewBottomContainer)initWithFrame:(CGRect)frame inBuddy:(BOOL)buddy scrollView:(id)view overlapScrollView:(id)scrollView delegate:(id)delegate squareNeedsPositionLayout:(BOOL)layout;
 - (BKUIPearlInstructionView)instructionView;
-- (double)_topPaddingForButtonTray:(id)a3;
-- (id)_horizontalConstraintsForTagAlongTransitionView:(id)a3 state:(int)a4 position:(int64_t)a5;
-- (id)_locStateDetailedLabelNameForState:(int)a3;
-- (id)_locStateNameForState:(int)a3;
-- (id)_targetScrollViewForState:(int)a3;
-- (id)_updateTopPaddingAndReturnHorizontalConstraintsForScrollView:(id)a3 state:(int)a4 position:(int64_t)a5;
+- (double)_topPaddingForButtonTray:(id)tray;
+- (id)_horizontalConstraintsForTagAlongTransitionView:(id)view state:(int)state position:(int64_t)position;
+- (id)_locStateDetailedLabelNameForState:(int)state;
+- (id)_locStateNameForState:(int)state;
+- (id)_targetScrollViewForState:(int)state;
+- (id)_updateTopPaddingAndReturnHorizontalConstraintsForScrollView:(id)view state:(int)state position:(int64_t)position;
 - (id)bottomLinkButton;
 - (id)buttonTray;
 - (id)buttonTrayTopAnchor;
 - (id)nextStateButton;
-- (void)_updateButtonLayoutForScrollView:(id)a3;
-- (void)_updateButtonVisibilityForScrollView:(id)a3;
-- (void)escapeHatchButtonWasPressed:(id)a3;
+- (void)_updateButtonLayoutForScrollView:(id)view;
+- (void)_updateButtonVisibilityForScrollView:(id)view;
+- (void)escapeHatchButtonWasPressed:(id)pressed;
 - (void)finalizeInstructionAnimation;
 - (void)layoutSubviews;
-- (void)nextStateButtonWasPressed:(id)a3;
-- (void)retryWasPressed:(id)a3;
+- (void)nextStateButtonWasPressed:(id)pressed;
+- (void)retryWasPressed:(id)pressed;
 - (void)setupInitialUI;
 - (void)updateButtonLayout;
 - (void)updateButtonVisibility;
@@ -26,78 +26,78 @@
 
 @implementation BKUIPearlEnrollViewBottomContainer
 
-- (BKUIPearlEnrollViewBottomContainer)initWithFrame:(CGRect)a3 inBuddy:(BOOL)a4 scrollView:(id)a5 overlapScrollView:(id)a6 delegate:(id)a7 squareNeedsPositionLayout:(BOOL)a8
+- (BKUIPearlEnrollViewBottomContainer)initWithFrame:(CGRect)frame inBuddy:(BOOL)buddy scrollView:(id)view overlapScrollView:(id)scrollView delegate:(id)delegate squareNeedsPositionLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  scrollViewCopy = scrollView;
+  delegateCopy = delegate;
   v47.receiver = self;
   v47.super_class = BKUIPearlEnrollViewBottomContainer;
-  v21 = [(BKUIPearlEnrollViewBottomContainer *)&v47 initWithFrame:x, y, width, height];
-  v22 = v21;
-  if (v21)
+  height = [(BKUIPearlEnrollViewBottomContainer *)&v47 initWithFrame:x, y, width, height];
+  v22 = height;
+  if (height)
   {
-    objc_storeStrong(&v21->_scrollview, a5);
-    objc_storeStrong(&v22->_overlappingScrollview, a6);
-    v22->_squareNeedsPositionLayout = a8;
-    v23 = [(BKUIScrollableContainer *)v22->_scrollview buttonTray];
-    v24 = [v23 willUseActionDelegate];
+    objc_storeStrong(&height->_scrollview, view);
+    objc_storeStrong(&v22->_overlappingScrollview, scrollView);
+    v22->_squareNeedsPositionLayout = layout;
+    buttonTray = [(BKUIScrollableContainer *)v22->_scrollview buttonTray];
+    willUseActionDelegate = [buttonTray willUseActionDelegate];
 
-    if ((v24 & 1) == 0)
+    if ((willUseActionDelegate & 1) == 0)
     {
-      v25 = [(BKUIScrollableContainer *)v22->_scrollview buttonTray];
-      v26 = [v25 nextStateButton];
-      [v26 addTarget:v22 action:sel_nextStateButtonWasPressed_ forControlEvents:0x2000];
+      buttonTray2 = [(BKUIScrollableContainer *)v22->_scrollview buttonTray];
+      nextStateButton = [buttonTray2 nextStateButton];
+      [nextStateButton addTarget:v22 action:sel_nextStateButtonWasPressed_ forControlEvents:0x2000];
 
-      v27 = [(BKUIScrollableContainer *)v22->_scrollview buttonTray];
-      v28 = [v27 bottomLinkButton];
-      [v28 addTarget:v22 action:sel_escapeHatchButtonWasPressed_ forControlEvents:0x2000];
+      buttonTray3 = [(BKUIScrollableContainer *)v22->_scrollview buttonTray];
+      bottomLinkButton = [buttonTray3 bottomLinkButton];
+      [bottomLinkButton addTarget:v22 action:sel_escapeHatchButtonWasPressed_ forControlEvents:0x2000];
 
-      v29 = [(BKUIScrollableContainer *)v22->_scrollview buttonTray];
-      v30 = [v29 topLinkButton];
-      [v30 addTarget:v22 action:sel_retryWasPressed_ forControlEvents:0x2000];
+      buttonTray4 = [(BKUIScrollableContainer *)v22->_scrollview buttonTray];
+      topLinkButton = [buttonTray4 topLinkButton];
+      [topLinkButton addTarget:v22 action:sel_retryWasPressed_ forControlEvents:0x2000];
     }
 
-    v31 = [(BKUIScrollableContainer *)v22->_overlappingScrollview buttonTray];
-    v32 = [v31 willUseActionDelegate];
+    buttonTray5 = [(BKUIScrollableContainer *)v22->_overlappingScrollview buttonTray];
+    willUseActionDelegate2 = [buttonTray5 willUseActionDelegate];
 
-    if ((v32 & 1) == 0)
+    if ((willUseActionDelegate2 & 1) == 0)
     {
-      v33 = [(BKUIScrollableContainer *)v22->_overlappingScrollview buttonTray];
-      v34 = [v33 nextStateButton];
-      [v34 addTarget:v22 action:sel_nextStateButtonWasPressed_ forControlEvents:0x2000];
+      buttonTray6 = [(BKUIScrollableContainer *)v22->_overlappingScrollview buttonTray];
+      nextStateButton2 = [buttonTray6 nextStateButton];
+      [nextStateButton2 addTarget:v22 action:sel_nextStateButtonWasPressed_ forControlEvents:0x2000];
 
-      v35 = [(BKUIScrollableContainer *)v22->_overlappingScrollview buttonTray];
-      v36 = [v35 bottomLinkButton];
-      [v36 addTarget:v22 action:sel_escapeHatchButtonWasPressed_ forControlEvents:0x2000];
+      buttonTray7 = [(BKUIScrollableContainer *)v22->_overlappingScrollview buttonTray];
+      bottomLinkButton2 = [buttonTray7 bottomLinkButton];
+      [bottomLinkButton2 addTarget:v22 action:sel_escapeHatchButtonWasPressed_ forControlEvents:0x2000];
 
-      v37 = [(BKUIScrollableContainer *)v22->_overlappingScrollview buttonTray];
-      v38 = [v37 topLinkButton];
-      [v38 addTarget:v22 action:sel_retryWasPressed_ forControlEvents:0x2000];
+      buttonTray8 = [(BKUIScrollableContainer *)v22->_overlappingScrollview buttonTray];
+      topLinkButton2 = [buttonTray8 topLinkButton];
+      [topLinkButton2 addTarget:v22 action:sel_retryWasPressed_ forControlEvents:0x2000];
     }
 
-    v22->_inBuddy = a4;
-    v39 = [MEMORY[0x277CBEB38] dictionary];
+    v22->_inBuddy = buddy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     customInstructionStrings = v22->_customInstructionStrings;
-    v22->_customInstructionStrings = v39;
+    v22->_customInstructionStrings = dictionary;
 
-    v41 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     customDetailStrings = v22->_customDetailStrings;
-    v22->_customDetailStrings = v41;
+    v22->_customDetailStrings = dictionary2;
 
-    objc_storeWeak(&v22->_delegate, v20);
+    objc_storeWeak(&v22->_delegate, delegateCopy);
     v22->_overlapValue = 47.0;
     v43 = +[BKUIDevice sharedInstance];
     if ([v43 isZoomEnabled])
     {
-      v44 = [MEMORY[0x277D75418] currentDevice];
-      v45 = [v44 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (!v45)
+      if (!userInterfaceIdiom)
       {
         v22->_overlapValue = v22->_overlapValue * 0.800000012;
       }
@@ -114,100 +114,100 @@
 - (void)setupInitialUI
 {
   v50[8] = *MEMORY[0x277D85DE8];
-  v3 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
-  [(BKUIPearlEnrollViewBottomContainer *)self addSubview:v3];
+  scrollview = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
+  [(BKUIPearlEnrollViewBottomContainer *)self addSubview:scrollview];
 
-  v4 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
-  [(BKUIPearlEnrollViewBottomContainer *)self addSubview:v4];
+  overlappingScrollview = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
+  [(BKUIPearlEnrollViewBottomContainer *)self addSubview:overlappingScrollview];
 
-  v5 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
-  v6 = [v5 topAnchor];
-  v7 = [(BKUIPearlEnrollViewBottomContainer *)self topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
-  v9 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
-  [v9 setTopToSuperViewConstraint:v8];
+  scrollview2 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
+  topAnchor = [scrollview2 topAnchor];
+  topAnchor2 = [(BKUIPearlEnrollViewBottomContainer *)self topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  scrollview3 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
+  [scrollview3 setTopToSuperViewConstraint:v8];
 
-  v10 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
-  v11 = [v10 topAnchor];
-  v12 = [(BKUIPearlEnrollViewBottomContainer *)self topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
-  v14 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
-  [v14 setTopToSuperViewConstraint:v13];
+  overlappingScrollview2 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
+  topAnchor3 = [overlappingScrollview2 topAnchor];
+  topAnchor4 = [(BKUIPearlEnrollViewBottomContainer *)self topAnchor];
+  v13 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
+  overlappingScrollview3 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
+  [overlappingScrollview3 setTopToSuperViewConstraint:v13];
 
   v37 = MEMORY[0x277CCAAD0];
-  v49 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
-  v48 = [v49 topToSuperViewConstraint];
-  v50[0] = v48;
-  v47 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
-  v46 = [v47 bottomAnchor];
-  v45 = [(BKUIPearlEnrollViewBottomContainer *)self bottomAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  overlappingScrollview4 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
+  topToSuperViewConstraint = [overlappingScrollview4 topToSuperViewConstraint];
+  v50[0] = topToSuperViewConstraint;
+  overlappingScrollview5 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
+  bottomAnchor = [overlappingScrollview5 bottomAnchor];
+  bottomAnchor2 = [(BKUIPearlEnrollViewBottomContainer *)self bottomAnchor];
+  v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v50[1] = v44;
-  v43 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
-  v42 = [v43 leadingAnchor];
-  v41 = [(BKUIPearlEnrollViewBottomContainer *)self leadingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  overlappingScrollview6 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
+  leadingAnchor = [overlappingScrollview6 leadingAnchor];
+  leadingAnchor2 = [(BKUIPearlEnrollViewBottomContainer *)self leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v50[2] = v40;
-  v39 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
-  v38 = [v39 trailingAnchor];
-  v36 = [(BKUIPearlEnrollViewBottomContainer *)self trailingAnchor];
-  v35 = [v38 constraintEqualToAnchor:v36];
+  overlappingScrollview7 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
+  trailingAnchor = [overlappingScrollview7 trailingAnchor];
+  trailingAnchor2 = [(BKUIPearlEnrollViewBottomContainer *)self trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v50[3] = v35;
-  v34 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
-  v33 = [v34 topToSuperViewConstraint];
-  v50[4] = v33;
-  v32 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
-  v31 = [v32 bottomAnchor];
-  v30 = [(BKUIPearlEnrollViewBottomContainer *)self bottomAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  scrollview4 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
+  topToSuperViewConstraint2 = [scrollview4 topToSuperViewConstraint];
+  v50[4] = topToSuperViewConstraint2;
+  scrollview5 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
+  bottomAnchor3 = [scrollview5 bottomAnchor];
+  bottomAnchor4 = [(BKUIPearlEnrollViewBottomContainer *)self bottomAnchor];
+  v29 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v50[5] = v29;
-  v15 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
-  v16 = [v15 leadingAnchor];
-  v17 = [(BKUIPearlEnrollViewBottomContainer *)self leadingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  scrollview6 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
+  leadingAnchor3 = [scrollview6 leadingAnchor];
+  leadingAnchor4 = [(BKUIPearlEnrollViewBottomContainer *)self leadingAnchor];
+  v18 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v50[6] = v18;
-  v19 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
-  v20 = [v19 trailingAnchor];
-  v21 = [(BKUIPearlEnrollViewBottomContainer *)self trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  scrollview7 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
+  trailingAnchor3 = [scrollview7 trailingAnchor];
+  trailingAnchor4 = [(BKUIPearlEnrollViewBottomContainer *)self trailingAnchor];
+  v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v50[7] = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:8];
   [v37 activateConstraints:v23];
 
-  v24 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
-  [(BKUIPearlEnrollViewBottomContainer *)self setOnScreenScrollview:v24];
+  overlappingScrollview8 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
+  [(BKUIPearlEnrollViewBottomContainer *)self setOnScreenScrollview:overlappingScrollview8];
 
-  v25 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
-  [(BKUIPearlEnrollViewBottomContainer *)self setOffScreenScrollview:v25];
+  scrollview8 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
+  [(BKUIPearlEnrollViewBottomContainer *)self setOffScreenScrollview:scrollview8];
 
-  v26 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
-  v27 = [v26 instructionView];
-  [(BKUIPearlEnrollViewBottomContainer *)self _configureInstructionView:v27 forState:2 substate:0];
+  overlappingScrollview9 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
+  instructionView = [overlappingScrollview9 instructionView];
+  [(BKUIPearlEnrollViewBottomContainer *)self _configureInstructionView:instructionView forState:2 substate:0];
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_horizontalConstraintsForTagAlongTransitionView:(id)a3 state:(int)a4 position:(int64_t)a5
+- (id)_horizontalConstraintsForTagAlongTransitionView:(id)view state:(int)state position:(int64_t)position
 {
-  v7 = a3;
-  v8 = v7;
-  switch(a5)
+  viewCopy = view;
+  v8 = viewCopy;
+  switch(position)
   {
     case 2:
-      v11 = [v7 leftAnchor];
+      leftAnchor = [viewCopy leftAnchor];
       goto LABEL_7;
     case 1:
-      v11 = [v7 rightAnchor];
+      leftAnchor = [viewCopy rightAnchor];
 LABEL_7:
-      v9 = v11;
-      v10 = [(BKUIPearlEnrollViewBottomContainer *)self rightAnchor];
+      rightAnchor2 = leftAnchor;
+      rightAnchor = [(BKUIPearlEnrollViewBottomContainer *)self rightAnchor];
       goto LABEL_8;
     case 0:
-      v9 = [v7 rightAnchor];
-      v10 = [(BKUIPearlEnrollViewBottomContainer *)self leftAnchor];
+      rightAnchor2 = [viewCopy rightAnchor];
+      rightAnchor = [(BKUIPearlEnrollViewBottomContainer *)self leftAnchor];
 LABEL_8:
-      v12 = v10;
-      v13 = [v9 constraintEqualToAnchor:v10];
+      v12 = rightAnchor;
+      v13 = [rightAnchor2 constraintEqualToAnchor:rightAnchor];
 
       goto LABEL_10;
   }
@@ -218,41 +218,41 @@ LABEL_10:
   return v13;
 }
 
-- (id)_updateTopPaddingAndReturnHorizontalConstraintsForScrollView:(id)a3 state:(int)a4 position:(int64_t)a5
+- (id)_updateTopPaddingAndReturnHorizontalConstraintsForScrollView:(id)view state:(int)state position:(int64_t)position
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [v8 horizontalConstraint];
-  [v9 setActive:0];
+  viewCopy = view;
+  horizontalConstraint = [viewCopy horizontalConstraint];
+  [horizontalConstraint setActive:0];
 
-  v10 = [v8 scrollContentView];
-  v11 = v10;
-  if (a5 == 1)
+  scrollContentView = [viewCopy scrollContentView];
+  v11 = scrollContentView;
+  if (position == 1)
   {
-    v14 = [v10 rightAnchor];
+    rightAnchor = [scrollContentView rightAnchor];
   }
 
   else
   {
-    if (!a5)
+    if (!position)
     {
-      v12 = [v10 rightAnchor];
-      v13 = [(BKUIPearlEnrollViewBottomContainer *)self leftAnchor];
+      rightAnchor2 = [scrollContentView rightAnchor];
+      leftAnchor = [(BKUIPearlEnrollViewBottomContainer *)self leftAnchor];
       goto LABEL_7;
     }
 
-    v14 = [v10 leftAnchor];
+    rightAnchor = [scrollContentView leftAnchor];
   }
 
-  v12 = v14;
-  v13 = [(BKUIPearlEnrollViewBottomContainer *)self rightAnchor];
+  rightAnchor2 = rightAnchor;
+  leftAnchor = [(BKUIPearlEnrollViewBottomContainer *)self rightAnchor];
 LABEL_7:
-  v15 = v13;
-  v16 = [v12 constraintEqualToAnchor:v13];
+  v15 = leftAnchor;
+  v16 = [rightAnchor2 constraintEqualToAnchor:leftAnchor];
 
-  [v8 setHorizontalConstraint:v16];
-  v17 = [(BKUIPearlEnrollViewBottomContainer *)self squareNeedsPositionLayout];
-  if ((a4 - 5) < 0xFFFFFFFE || v17)
+  [viewCopy setHorizontalConstraint:v16];
+  squareNeedsPositionLayout = [(BKUIPearlEnrollViewBottomContainer *)self squareNeedsPositionLayout];
+  if ((state - 5) < 0xFFFFFFFE || squareNeedsPositionLayout)
   {
     v19 = 0.0;
   }
@@ -262,13 +262,13 @@ LABEL_7:
     v19 = 47.0;
   }
 
-  v20 = [v8 topToSuperViewConstraint];
-  [v20 setConstant:v19];
+  topToSuperViewConstraint = [viewCopy topToSuperViewConstraint];
+  [topToSuperViewConstraint setConstant:v19];
 
-  if (a4 == 10)
+  if (state == 10)
   {
-    v21 = [v8 topToSuperViewConstraint];
-    [v21 setConstant:0.0];
+    topToSuperViewConstraint2 = [viewCopy topToSuperViewConstraint];
+    [topToSuperViewConstraint2 setConstant:0.0];
   }
 
   v25[0] = v16;
@@ -294,10 +294,10 @@ void __84__BKUIPearlEnrollViewBottomContainer_updateInstructionViewContentForSta
   [v4 layoutIfNeeded];
 }
 
-- (id)_locStateDetailedLabelNameForState:(int)a3
+- (id)_locStateDetailedLabelNameForState:(int)state
 {
   v4 = [(BKUIPearlEnrollViewBottomContainer *)self _locStateNameForState:?];
-  if (a3 == 9)
+  if (state == 9)
   {
 
     v4 = @"PARTIAL_CAPTURE";
@@ -306,17 +306,17 @@ void __84__BKUIPearlEnrollViewBottomContainer_updateInstructionViewContentForSta
   return v4;
 }
 
-- (id)_locStateNameForState:(int)a3
+- (id)_locStateNameForState:(int)state
 {
   v4 = 0;
-  if (a3 <= 5)
+  if (state <= 5)
   {
-    if ((a3 - 1) < 2)
+    if ((state - 1) < 2)
     {
-      v19 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-      v20 = [v19 enrollmentConfiguration];
+      delegate = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+      enrollmentConfiguration = [delegate enrollmentConfiguration];
 
-      if (v20 == 4)
+      if (enrollmentConfiguration == 4)
       {
         v4 = 0;
       }
@@ -330,12 +330,12 @@ void __84__BKUIPearlEnrollViewBottomContainer_updateInstructionViewContentForSta
     else
     {
       v5 = @"FIRST_SCAN";
-      if (a3 != 5)
+      if (state != 5)
       {
         v5 = 0;
       }
 
-      if ((a3 - 3) >= 2)
+      if ((state - 3) >= 2)
       {
         v4 = v5;
       }
@@ -349,32 +349,32 @@ void __84__BKUIPearlEnrollViewBottomContainer_updateInstructionViewContentForSta
     goto LABEL_76;
   }
 
-  if (a3 > 7)
+  if (state > 7)
   {
-    if (a3 != 8)
+    if (state != 8)
     {
-      if (a3 != 9)
+      if (state != 9)
       {
-        if (a3 != 10)
+        if (state != 10)
         {
           goto LABEL_76;
         }
 
-        v6 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-        v7 = [v6 currentOperationHandler];
-        if ([v7 supportsPeriocularEnrollment] && -[BKUIPearlEnrollViewBottomContainer inBuddy](self, "inBuddy"))
+        delegate2 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+        currentOperationHandler = [delegate2 currentOperationHandler];
+        if ([currentOperationHandler supportsPeriocularEnrollment] && -[BKUIPearlEnrollViewBottomContainer inBuddy](self, "inBuddy"))
         {
-          v8 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-          v9 = [v8 currentOperationHandler];
-          v10 = [v9 identity];
-          if ([v10 hasPeriocularEnrollment])
+          delegate3 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+          currentOperationHandler2 = [delegate3 currentOperationHandler];
+          identity = [currentOperationHandler2 identity];
+          if ([identity hasPeriocularEnrollment])
           {
-            v11 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-            v12 = [v11 currentOperationHandler];
-            v13 = [v12 identity];
-            v14 = [v13 canAddPeriocularEnrollment];
+            delegate4 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+            currentOperationHandler3 = [delegate4 currentOperationHandler];
+            identity2 = [currentOperationHandler3 identity];
+            canAddPeriocularEnrollment = [identity2 canAddPeriocularEnrollment];
 
-            if (v14)
+            if (canAddPeriocularEnrollment)
             {
               v4 = @"PERIOCULAR_ENROLL_FINISHED_BUDDY";
               goto LABEL_76;
@@ -389,19 +389,19 @@ LABEL_67:
         goto LABEL_76;
       }
 
-      v29 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-      v30 = [v29 currentOperationHandler];
+      delegate5 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+      currentOperationHandler4 = [delegate5 currentOperationHandler];
 
-      v31 = [v30 enrollmentType];
-      switch(v31)
+      enrollmentType = [currentOperationHandler4 enrollmentType];
+      switch(enrollmentType)
       {
         case 3:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v60 = [v30 isEnrollmentAugmentationOnly];
+            isEnrollmentAugmentationOnly = [currentOperationHandler4 isEnrollmentAugmentationOnly];
             v61 = @"SECOND_SCAN_COMPLETE";
-            if (v60)
+            if (isEnrollmentAugmentationOnly)
             {
               v61 = @"FIRST_SCAN_COMPLETE";
             }
@@ -410,16 +410,16 @@ LABEL_67:
             goto LABEL_71;
           }
 
-          v44 = [v30 enrollmentConfiguration];
+          enrollmentConfiguration2 = [currentOperationHandler4 enrollmentConfiguration];
           v4 = 0;
-          if (v44 <= 2)
+          if (enrollmentConfiguration2 <= 2)
           {
-            if (v44 == 1)
+            if (enrollmentConfiguration2 == 1)
             {
               v4 = @"THIRD_SCAN_COMPLETE";
             }
 
-            else if (!v44)
+            else if (!enrollmentConfiguration2)
             {
               [BKUIPearlEnrollViewBottomContainer _locStateNameForState:];
             }
@@ -427,9 +427,9 @@ LABEL_67:
             goto LABEL_71;
           }
 
-          if (v44 != 3)
+          if (enrollmentConfiguration2 != 3)
           {
-            if (v44 != 4)
+            if (enrollmentConfiguration2 != 4)
             {
               goto LABEL_71;
             }
@@ -455,20 +455,20 @@ LABEL_71:
       goto LABEL_71;
     }
 
-    v21 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-    v22 = [v21 currentOperationHandler];
-    if ([v22 isEnrollmentAugmentationOnly])
+    delegate6 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+    currentOperationHandler5 = [delegate6 currentOperationHandler];
+    if ([currentOperationHandler5 isEnrollmentAugmentationOnly])
     {
-      v23 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-      if ([v23 isFinalEnrollment])
+      delegate7 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+      if ([delegate7 isFinalEnrollment])
       {
-        v24 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-        if ([v24 isFinalEnrollment])
+        delegate8 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+        if ([delegate8 isFinalEnrollment])
         {
-          v25 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-          v26 = [v25 currentOperationHandler];
-          v27 = [v26 enrollOperation];
-          v28 = v27 == 0;
+          delegate9 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+          currentOperationHandler6 = [delegate9 currentOperationHandler];
+          enrollOperation = [currentOperationHandler6 enrollOperation];
+          v28 = enrollOperation == 0;
         }
 
         else
@@ -488,13 +488,13 @@ LABEL_71:
       v28 = 0;
     }
 
-    v45 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-    v46 = [v45 currentOperationHandler];
-    if ([v46 isEnrollmentAugmentationOnly])
+    delegate10 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+    currentOperationHandler7 = [delegate10 currentOperationHandler];
+    if ([currentOperationHandler7 isEnrollmentAugmentationOnly])
     {
-      v47 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-      v48 = [v47 currentOperationHandler];
-      v49 = [v48 glassesFound] ^ 1;
+      delegate11 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+      currentOperationHandler8 = [delegate11 currentOperationHandler];
+      v49 = [currentOperationHandler8 glassesFound] ^ 1;
     }
 
     else
@@ -502,10 +502,10 @@ LABEL_71:
       v49 = 0;
     }
 
-    v50 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-    v51 = [v50 enrollmentConfiguration];
+    delegate12 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+    enrollmentConfiguration3 = [delegate12 enrollmentConfiguration];
 
-    if (v51 == 4)
+    if (enrollmentConfiguration3 == 4)
     {
       v4 = @"FACEID_SCAN_COMPLETE";
       goto LABEL_76;
@@ -518,27 +518,27 @@ LABEL_57:
       goto LABEL_76;
     }
 
-    v52 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-    if ([v52 isFinalEnrollment])
+    delegate13 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+    if ([delegate13 isFinalEnrollment])
     {
-      v53 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-      v54 = [v53 currentOperationHandler];
+      delegate14 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+      currentOperationHandler9 = [delegate14 currentOperationHandler];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v55 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-        v56 = [v55 currentOperationHandler];
-        v57 = [v56 centerBinComplete];
+        delegate15 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+        currentOperationHandler10 = [delegate15 currentOperationHandler];
+        centerBinComplete = [currentOperationHandler10 centerBinComplete];
 
         v4 = @"SECOND_SCAN_COMPLETE";
-        if (!v57)
+        if (!centerBinComplete)
         {
           goto LABEL_76;
         }
 
-        v58 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-        v59 = [v58 currentOperationHandler];
-        v42 = [v59 isEnrollmentAugmentationOnly];
+        delegate16 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+        currentOperationHandler11 = [delegate16 currentOperationHandler];
+        isEnrollmentAugmentationOnly2 = [currentOperationHandler11 isEnrollmentAugmentationOnly];
 
         v43 = @"THIRD_SCAN_COMPLETE";
         goto LABEL_62;
@@ -549,19 +549,19 @@ LABEL_57:
     goto LABEL_76;
   }
 
-  if (a3 == 6)
+  if (state == 6)
   {
     goto LABEL_57;
   }
 
-  v15 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  v16 = [v15 currentOperationHandler];
-  if ([v16 isEnrollmentAugmentationOnly])
+  delegate17 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  currentOperationHandler12 = [delegate17 currentOperationHandler];
+  if ([currentOperationHandler12 isEnrollmentAugmentationOnly])
   {
-    v17 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-    v18 = [v17 isFinalEnrollment];
+    delegate18 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+    isFinalEnrollment = [delegate18 isFinalEnrollment];
 
-    if (!v18)
+    if (!isFinalEnrollment)
     {
       goto LABEL_34;
     }
@@ -571,18 +571,18 @@ LABEL_57:
   {
   }
 
-  v32 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  v33 = [v32 enrollmentConfiguration];
+  delegate19 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  enrollmentConfiguration4 = [delegate19 enrollmentConfiguration];
 
-  if (v33 == 4)
+  if (enrollmentConfiguration4 == 4)
   {
 LABEL_34:
     v4 = @"FIRST_SCAN";
     goto LABEL_76;
   }
 
-  v34 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  if (([v34 isFinalEnrollment] & 1) == 0)
+  delegate20 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  if (([delegate20 isFinalEnrollment] & 1) == 0)
   {
 LABEL_73:
 
@@ -590,8 +590,8 @@ LABEL_73:
     goto LABEL_76;
   }
 
-  v35 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  v36 = [v35 currentOperationHandler];
+  delegate21 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  currentOperationHandler13 = [delegate21 currentOperationHandler];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -599,23 +599,23 @@ LABEL_73:
     goto LABEL_73;
   }
 
-  v37 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  v38 = [v37 currentOperationHandler];
-  v39 = [v38 centerBinComplete];
+  delegate22 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  currentOperationHandler14 = [delegate22 currentOperationHandler];
+  centerBinComplete2 = [currentOperationHandler14 centerBinComplete];
 
   v4 = @"SECOND_SCAN";
-  if (!v39)
+  if (!centerBinComplete2)
   {
     goto LABEL_76;
   }
 
-  v40 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  v41 = [v40 currentOperationHandler];
-  v42 = [v41 isEnrollmentAugmentationOnly];
+  delegate23 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  currentOperationHandler15 = [delegate23 currentOperationHandler];
+  isEnrollmentAugmentationOnly2 = [currentOperationHandler15 isEnrollmentAugmentationOnly];
 
   v43 = @"THIRD_SCAN";
 LABEL_62:
-  if (!v42)
+  if (!isEnrollmentAugmentationOnly2)
   {
     v4 = v43;
   }
@@ -630,21 +630,21 @@ LABEL_76:
   v4.receiver = self;
   v4.super_class = BKUIPearlEnrollViewBottomContainer;
   [(BKUIPearlEnrollViewBottomContainer *)&v4 layoutSubviews];
-  v3 = [(BKUIPearlEnrollViewBottomContainer *)self instructionView];
-  [v3 layoutIfNeeded];
+  instructionView = [(BKUIPearlEnrollViewBottomContainer *)self instructionView];
+  [instructionView layoutIfNeeded];
 }
 
-- (double)_topPaddingForButtonTray:(id)a3
+- (double)_topPaddingForButtonTray:(id)tray
 {
-  v4 = a3;
-  v5 = [v4 displayState];
-  if (v5 > 2)
+  trayCopy = tray;
+  displayState = [trayCopy displayState];
+  if (displayState > 2)
   {
-    if (v5 != 3)
+    if (displayState != 3)
     {
-      if (v5 == 4)
+      if (displayState == 4)
       {
-        [v4 size];
+        [trayCopy size];
         v3 = v8;
       }
 
@@ -652,8 +652,8 @@ LABEL_76:
     }
 
 LABEL_8:
-    v6 = [v4 nextStateButton];
-    [v6 alpha];
+    nextStateButton = [trayCopy nextStateButton];
+    [nextStateButton alpha];
     if (v9 == 0.0)
     {
       v3 = 25.0;
@@ -667,15 +667,15 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (v5 == 1)
+  if (displayState == 1)
   {
     goto LABEL_8;
   }
 
-  if (v5 == 2)
+  if (displayState == 2)
   {
-    v6 = [v4 bottomLinkButton];
-    [v6 origin];
+    nextStateButton = [trayCopy bottomLinkButton];
+    [nextStateButton origin];
     v3 = v7;
 LABEL_11:
   }
@@ -687,35 +687,35 @@ LABEL_12:
 
 - (void)finalizeInstructionAnimation
 {
-  v3 = [(BKUIPearlEnrollViewBottomContainer *)self buttonTray];
-  [v3 updateButtonLayout];
+  buttonTray = [(BKUIPearlEnrollViewBottomContainer *)self buttonTray];
+  [buttonTray updateButtonLayout];
 
-  v4 = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
-  [v4 setShowsVerticalScrollIndicator:0];
+  scrollview = [(BKUIPearlEnrollViewBottomContainer *)self scrollview];
+  [scrollview setShowsVerticalScrollIndicator:0];
 
-  v5 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
-  [v5 setShowsVerticalScrollIndicator:0];
+  overlappingScrollview = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
+  [overlappingScrollview setShowsVerticalScrollIndicator:0];
 
-  v6 = [(BKUIPearlEnrollViewBottomContainer *)self instructionView];
-  v11 = [v6 superview];
+  instructionView = [(BKUIPearlEnrollViewBottomContainer *)self instructionView];
+  superview = [instructionView superview];
 
-  v7 = [v11 superview];
-  [(BKUIPearlEnrollViewBottomContainer *)self bringSubviewToFront:v7];
+  v11Superview = [superview superview];
+  [(BKUIPearlEnrollViewBottomContainer *)self bringSubviewToFront:v11Superview];
   [(BKUIPearlEnrollViewBottomContainer *)self setNeedsLayout];
   [(BKUIPearlEnrollViewBottomContainer *)self layoutIfNeeded];
-  [v7 contentSize];
+  [v11Superview contentSize];
   v9 = v8;
-  [v7 bounds];
+  [v11Superview bounds];
   if (v9 > v10)
   {
-    [v7 setShowsVerticalScrollIndicator:1];
-    [v7 flashScrollIndicators];
+    [v11Superview setShowsVerticalScrollIndicator:1];
+    [v11Superview flashScrollIndicators];
   }
 }
 
-- (id)_targetScrollViewForState:(int)a3
+- (id)_targetScrollViewForState:(int)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
   }
@@ -731,77 +731,77 @@ LABEL_12:
 
 - (id)buttonTray
 {
-  v2 = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
-  v3 = [v2 buttonTray];
+  onScreenScrollview = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
+  buttonTray = [onScreenScrollview buttonTray];
 
-  return v3;
+  return buttonTray;
 }
 
 - (void)updateButtonLayout
 {
-  v3 = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
-  [(BKUIPearlEnrollViewBottomContainer *)self _updateButtonVisibilityForScrollView:v3];
+  onScreenScrollview = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
+  [(BKUIPearlEnrollViewBottomContainer *)self _updateButtonVisibilityForScrollView:onScreenScrollview];
 }
 
 - (id)bottomLinkButton
 {
-  v2 = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
-  v3 = [v2 buttonTray];
-  v4 = [v3 bottomLinkButton];
+  onScreenScrollview = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
+  buttonTray = [onScreenScrollview buttonTray];
+  bottomLinkButton = [buttonTray bottomLinkButton];
 
-  return v4;
+  return bottomLinkButton;
 }
 
 - (id)nextStateButton
 {
-  v2 = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
-  v3 = [v2 buttonTray];
-  v4 = [v3 nextStateButton];
+  onScreenScrollview = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
+  buttonTray = [onScreenScrollview buttonTray];
+  nextStateButton = [buttonTray nextStateButton];
 
-  return v4;
+  return nextStateButton;
 }
 
 - (id)buttonTrayTopAnchor
 {
-  v2 = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
-  v3 = [v2 buttonTrayTopAnchor];
+  onScreenScrollview = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
+  buttonTrayTopAnchor = [onScreenScrollview buttonTrayTopAnchor];
 
-  return v3;
+  return buttonTrayTopAnchor;
 }
 
 - (BKUIPearlInstructionView)instructionView
 {
-  v2 = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
-  v3 = [v2 instructionView];
+  onScreenScrollview = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
+  instructionView = [onScreenScrollview instructionView];
 
-  return v3;
+  return instructionView;
 }
 
-- (void)nextStateButtonWasPressed:(id)a3
+- (void)nextStateButtonWasPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  [v5 nextStateButtonPressed:v4];
+  pressedCopy = pressed;
+  delegate = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  [delegate nextStateButtonPressed:pressedCopy];
 }
 
-- (void)escapeHatchButtonWasPressed:(id)a3
+- (void)escapeHatchButtonWasPressed:(id)pressed
 {
-  v3 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  [v3 escapeHatchButtonPressed];
+  delegate = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  [delegate escapeHatchButtonPressed];
 }
 
-- (void)retryWasPressed:(id)a3
+- (void)retryWasPressed:(id)pressed
 {
-  v3 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  [v3 retryPressed];
+  delegate = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  [delegate retryPressed];
 }
 
 - (void)updateButtonVisibility
 {
-  v3 = [(BKUIPearlEnrollViewBottomContainer *)self instructionView];
-  v4 = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
-  v5 = [v4 instructionView];
-  if (v3 == v5)
+  instructionView = [(BKUIPearlEnrollViewBottomContainer *)self instructionView];
+  overlappingScrollview = [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
+  instructionView2 = [overlappingScrollview instructionView];
+  if (instructionView == instructionView2)
   {
     [(BKUIPearlEnrollViewBottomContainer *)self overlappingScrollview];
   }
@@ -815,30 +815,30 @@ LABEL_12:
   [(BKUIPearlEnrollViewBottomContainer *)self _updateButtonVisibilityForScrollView:v6];
 }
 
-- (void)_updateButtonVisibilityForScrollView:(id)a3
+- (void)_updateButtonVisibilityForScrollView:(id)view
 {
-  v4 = a3;
-  v7 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  v5 = [v7 state];
-  v6 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  -[BKUIPearlEnrollViewBottomContainer _updateButtonVisibilityForScrollView:state:subState:](self, "_updateButtonVisibilityForScrollView:state:subState:", v4, v5, [v6 substate]);
+  viewCopy = view;
+  delegate = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  state = [delegate state];
+  delegate2 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  -[BKUIPearlEnrollViewBottomContainer _updateButtonVisibilityForScrollView:state:subState:](self, "_updateButtonVisibilityForScrollView:state:subState:", viewCopy, state, [delegate2 substate]);
 }
 
-- (void)_updateButtonLayoutForScrollView:(id)a3
+- (void)_updateButtonLayoutForScrollView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 buttonTray];
-  [v5 updateButtonLayout];
+  viewCopy = view;
+  buttonTray = [viewCopy buttonTray];
+  [buttonTray updateButtonLayout];
 
-  v6 = [v4 instructionView];
-  [v6 layoutIfNeeded];
+  instructionView = [viewCopy instructionView];
+  [instructionView layoutIfNeeded];
 
-  v10 = [v4 buttonTray];
-  [(BKUIPearlEnrollViewBottomContainer *)self _topPaddingForButtonTray:v10];
+  buttonTray2 = [viewCopy buttonTray];
+  [(BKUIPearlEnrollViewBottomContainer *)self _topPaddingForButtonTray:buttonTray2];
   v8 = v7;
-  v9 = [v4 buttonTrayTopAnchor];
+  buttonTrayTopAnchor = [viewCopy buttonTrayTopAnchor];
 
-  [v9 setConstant:v8];
+  [buttonTrayTopAnchor setConstant:v8];
 }
 
 - (BKUIPearlBottomContainerDelegate)delegate

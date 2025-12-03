@@ -7,7 +7,7 @@
 - (void)pressedNewEntryButton
 {
   v2 = *((swift_isaMask & self->super.super.super.super.isa) + 0x78);
-  v3 = self;
+  selfCopy = self;
   v2(v9);
   if (v9[3])
   {

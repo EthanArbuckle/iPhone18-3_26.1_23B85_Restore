@@ -1,16 +1,16 @@
 @interface NSFileProviderMovingInfo
-+ (id)infoWithDestinationDirectoryURL:(id)a3;
-- (NSFileProviderMovingInfo)initWithCoder:(id)a3;
++ (id)infoWithDestinationDirectoryURL:(id)l;
+- (NSFileProviderMovingInfo)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSFileProviderMovingInfo
 
-+ (id)infoWithDestinationDirectoryURL:(id)a3
++ (id)infoWithDestinationDirectoryURL:(id)l
 {
   v4 = objc_opt_new();
-  v4[1] = a3;
+  v4[1] = l;
 
   return v4;
 }
@@ -24,7 +24,7 @@
   [(NSFileProviderMovingInfo *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -33,10 +33,10 @@
 
   destinationDirectoryURL = self->destinationDirectoryURL;
 
-  [a3 encodeObject:destinationDirectoryURL forKey:@"destinationDirectoryURL"];
+  [coder encodeObject:destinationDirectoryURL forKey:@"destinationDirectoryURL"];
 }
 
-- (NSFileProviderMovingInfo)initWithCoder:(id)a3
+- (NSFileProviderMovingInfo)initWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -44,7 +44,7 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileProviderMovingInfo should only ever be decoded by XPC" userInfo:0]);
   }
 
-  self->destinationDirectoryURL = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"destinationDirectoryURL"];
+  self->destinationDirectoryURL = [coder decodeObjectOfClass:objc_opt_class() forKey:@"destinationDirectoryURL"];
   return self;
 }
 

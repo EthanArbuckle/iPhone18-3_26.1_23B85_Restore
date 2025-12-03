@@ -5,58 +5,58 @@
 - (BOOL)resizeMayChangeAspectRatio;
 - (BOOL)shrinkTextToFit;
 - (CGAffineTransform)autosizedTransform;
-- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)a3;
+- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)geometry;
 - (CGAffineTransform)computeLayoutTransform;
 - (CGPoint)autosizePositionOffset;
-- (CGPoint)autosizePositionOffsetForFixedWidth:(BOOL)a3 height:(BOOL)a4;
-- (CGRect)autosizedFrameFor:(id)a3 textSize:(CGSize)a4;
-- (CGRect)nonAutosizedFrameFor:(id)a3;
-- (CGRect)p_rectInRootForSelectionPath:(id)a3 useParagraphModeRects:(BOOL)a4;
-- (CGRect)rectInRootForSelectionPath:(id)a3;
-- (CGRect)rectInRootForZoomingToSelectionPath:(id)a3;
-- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)a3;
+- (CGPoint)autosizePositionOffsetForFixedWidth:(BOOL)width height:(BOOL)height;
+- (CGRect)autosizedFrameFor:(id)for textSize:(CGSize)size;
+- (CGRect)nonAutosizedFrameFor:(id)for;
+- (CGRect)p_rectInRootForSelectionPath:(id)path useParagraphModeRects:(BOOL)rects;
+- (CGRect)rectInRootForSelectionPath:(id)path;
+- (CGRect)rectInRootForZoomingToSelectionPath:(id)path;
+- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)path;
 - (CRLWPPadding)layoutMargins;
-- (CRLWPShapeLayout)initWithInfo:(id)a3;
+- (CRLWPShapeLayout)initWithInfo:(id)info;
 - (CRLWrapSegments)interiorWrapSegments;
-- (Class)repClassFor:(id)a3;
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3;
+- (Class)repClassFor:(id)for;
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target;
 - (_TtC8Freeform14CRLWPShapeItem)wpShapeInfo;
 - (double)defaultFontSize;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7;
-- (double)viewScaleForZoomingToSelectionPath:(id)a3 targetPointSize:(double)a4;
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap;
+- (double)viewScaleForZoomingToSelectionPath:(id)path targetPointSize:(double)size;
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width;
 - (id)bidirectionalSizeDependentLayouts;
 - (id)captureDynamicInfoGeometryToBeginDynamicOperation;
 - (id)childInfosForChildLayouts;
 - (id)childSearchTargets;
-- (id)commandsToSetFontSizesWithFontRangeToSizeDict:(id)a3 scale:(double)a4;
+- (id)commandsToSetFontSizesWithFontRangeToSizeDict:(id)dict scale:(double)scale;
 - (id)dependentLayouts;
-- (id)dependentsOf:(id)a3;
-- (id)interiorWrapSegmentsFor:(id)a3;
+- (id)dependentsOf:(id)of;
+- (id)interiorWrapSegmentsFor:(id)for;
 - (id)makeStorageRangeToFontSizeDict;
 - (id)pathSource;
 - (id)textWrapper;
-- (int64_t)verticalAlignmentFor:(id)a3;
-- (unint64_t)autosizeFlagsFor:(id)a3;
-- (void)createTextLayoutForScribble:(BOOL)a3;
+- (int64_t)verticalAlignmentFor:(id)for;
+- (unint64_t)autosizeFlagsFor:(id)for;
+- (void)createTextLayoutForScribble:(BOOL)scribble;
 - (void)endDynamicOperation;
 - (void)invalidatePath;
 - (void)invalidateSize;
-- (void)processChangedProperty:(unint64_t)a3;
-- (void)setGeometry:(id)a3;
-- (void)setSupportsInstructionalText:(BOOL)a3;
-- (void)t_invalidateTextLayoutAfterPropertyChanged:(unint64_t)a3;
-- (void)takeFreeTransformFromTracker:(id)a3;
-- (void)takeSizeFromTracker:(id)a3;
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5;
+- (void)processChangedProperty:(unint64_t)property;
+- (void)setGeometry:(id)geometry;
+- (void)setSupportsInstructionalText:(BOOL)text;
+- (void)t_invalidateTextLayoutAfterPropertyChanged:(unint64_t)changed;
+- (void)takeFreeTransformFromTracker:(id)tracker;
+- (void)takeSizeFromTracker:(id)tracker;
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document;
 - (void)updateChildrenFromInfo;
 @end
 
 @implementation CRLWPShapeLayout
 
-- (CRLWPShapeLayout)initWithInfo:(id)a3
+- (CRLWPShapeLayout)initWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -89,14 +89,14 @@
 
   v16.receiver = self;
   v16.super_class = CRLWPShapeLayout;
-  v8 = [(CRLShapeLayout *)&v16 initWithInfo:v4];
+  v8 = [(CRLShapeLayout *)&v16 initWithInfo:infoCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [(CRLWPShapeLayout *)v8 wpShapeInfo];
-    v11 = [v10 text];
+    wpShapeInfo = [(CRLWPShapeLayout *)v8 wpShapeInfo];
+    text = [wpShapeInfo text];
 
-    if (!v11)
+    if (!text)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -132,22 +132,22 @@
 - (_TtC8Freeform14CRLWPShapeItem)wpShapeInfo
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100014370(v3, info);
 
   return v5;
 }
 
-- (void)setSupportsInstructionalText:(BOOL)a3
+- (void)setSupportsInstructionalText:(BOOL)text
 {
-  v3 = a3;
-  BYTE4(self->super.mDynamicPatternOffsetsBySubpath) = a3;
-  v5 = [(CRLWPShapeLayout *)self textLayout];
-  v6 = v5;
-  if (!v3)
+  textCopy = text;
+  BYTE4(self->super.mDynamicPatternOffsetsBySubpath) = text;
+  textLayout = [(CRLWPShapeLayout *)self textLayout];
+  v6 = textLayout;
+  if (!textCopy)
   {
-    v8 = [v5 storage];
-    v9 = [v8 length];
+    storage = [textLayout storage];
+    v9 = [storage length];
 
     if (v9)
     {
@@ -162,9 +162,9 @@
 
   if (v6)
   {
-    v10 = [(CRLWPShapeLayout *)self textLayout];
-    [v10 invalidateTextLayout];
-    v7 = v10;
+    textLayout2 = [(CRLWPShapeLayout *)self textLayout];
+    [textLayout2 invalidateTextLayout];
+    v7 = textLayout2;
 LABEL_10:
 
     return;
@@ -177,14 +177,14 @@ LABEL_10:
 {
   v8.receiver = self;
   v8.super_class = CRLWPShapeLayout;
-  v3 = [(CRLCanvasLayout *)&v8 childInfosForChildLayouts];
-  v4 = [v3 mutableCopy];
+  childInfosForChildLayouts = [(CRLCanvasLayout *)&v8 childInfosForChildLayouts];
+  v4 = [childInfosForChildLayouts mutableCopy];
 
   if ([(CRLWPShapeLayout *)self p_shouldCreateTextLayout]&& *(&self->_storageRangeToFontSizeDict + 3))
   {
-    v5 = [(CRLWPShapeLayout *)self wpShapeInfo];
-    v6 = [v5 text];
-    [v4 addObject:v6];
+    wpShapeInfo = [(CRLWPShapeLayout *)self wpShapeInfo];
+    text = [wpShapeInfo text];
+    [v4 addObject:text];
   }
 
   return v4;
@@ -198,29 +198,29 @@ LABEL_10:
   [(CRLCanvasLayout *)&v3 updateChildrenFromInfo];
 }
 
-- (void)createTextLayoutForScribble:(BOOL)a3
+- (void)createTextLayoutForScribble:(BOOL)scribble
 {
   if (!*(&self->_storageRangeToFontSizeDict + 3))
   {
-    v21 = a3;
-    v4 = [(CRLCanvasLayout *)self layoutController];
-    v22 = [v4 canvas];
+    scribbleCopy = scribble;
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    canvas = [layoutController canvas];
 
-    v5 = [v22 canvasController];
-    v6 = [v5 editorController];
-    v7 = [v6 selectionPath];
+    canvasController = [canvas canvasController];
+    editorController = [canvasController editorController];
+    selectionPath = [editorController selectionPath];
 
-    v8 = [v7 mostSpecificSelectionOfClass:objc_opt_class()];
-    v9 = [v7 mostSpecificSelectionOfClass:objc_opt_class()];
+    v8 = [selectionPath mostSpecificSelectionOfClass:objc_opt_class()];
+    v9 = [selectionPath mostSpecificSelectionOfClass:objc_opt_class()];
     v10 = 0;
     if (v9 && v8)
     {
-      v11 = [v8 boardItems];
-      v12 = [(CRLBoardItemLayout *)self boardItem];
-      if ([v11 containsObject:v12])
+      boardItems = [v8 boardItems];
+      boardItem = [(CRLBoardItemLayout *)self boardItem];
+      if ([boardItems containsObject:boardItem])
       {
-        v13 = [v7 indexForSelection:v9];
-        v10 = v13 > [v7 indexForSelection:v8];
+        v13 = [selectionPath indexForSelection:v9];
+        v10 = v13 > [selectionPath indexForSelection:v8];
       }
 
       else
@@ -230,11 +230,11 @@ LABEL_10:
     }
 
     v14 = [_TtC8Freeform11CRLWPLayout alloc];
-    v15 = [(CRLWPShapeLayout *)self wpShapeInfo];
-    v16 = [v15 text];
-    v17 = [(CRLWPLayout *)v14 initWithInfo:v16];
+    wpShapeInfo = [(CRLWPShapeLayout *)self wpShapeInfo];
+    text = [wpShapeInfo text];
+    v17 = [(CRLWPLayout *)v14 initWithInfo:text];
 
-    if (v10 || -[CRLWPShapeLayout supportsInstructionalText](self, "supportsInstructionalText") || -[CRLWPShapeLayout autosizeFlagsFor:](self, "autosizeFlagsFor:", v17) || (-[CRLWPShapeLayout wpShapeInfo](self, "wpShapeInfo"), v18 = objc_claimAutoreleasedReturnValue(), [v18 text], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "length"), v19, v18, v20) || v21)
+    if (v10 || -[CRLWPShapeLayout supportsInstructionalText](self, "supportsInstructionalText") || -[CRLWPShapeLayout autosizeFlagsFor:](self, "autosizeFlagsFor:", v17) || (-[CRLWPShapeLayout wpShapeInfo](self, "wpShapeInfo"), v18 = objc_claimAutoreleasedReturnValue(), [v18 text], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "length"), v19, v18, v20) || scribbleCopy)
     {
       if (!*(&self->_storageRangeToFontSizeDict + 3))
       {
@@ -253,28 +253,28 @@ LABEL_10:
     return 0;
   }
 
-  v4 = [(CRLShapeLayout *)self shapeInfo];
-  v5 = [v4 isFreehandDrawingShape];
+  shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+  isFreehandDrawingShape = [shapeInfo isFreehandDrawingShape];
 
-  return v5 ^ 1;
+  return isFreehandDrawingShape ^ 1;
 }
 
 - (id)dependentLayouts
 {
   v11.receiver = self;
   v11.super_class = CRLWPShapeLayout;
-  v3 = [(CRLCanvasLayout *)&v11 dependentLayouts];
-  v4 = [(CRLWPShapeLayout *)self textLayout];
-  if (v4)
+  dependentLayouts = [(CRLCanvasLayout *)&v11 dependentLayouts];
+  textLayout = [(CRLWPShapeLayout *)self textLayout];
+  if (textLayout)
   {
-    v5 = v4;
-    v6 = [(CRLWPShapeLayout *)self autosizes];
+    v5 = textLayout;
+    autosizes = [(CRLWPShapeLayout *)self autosizes];
 
-    if ((v6 & 1) == 0)
+    if ((autosizes & 1) == 0)
     {
-      if (v3)
+      if (dependentLayouts)
       {
-        v7 = [v3 mutableCopy];
+        v7 = [dependentLayouts mutableCopy];
       }
 
       else
@@ -283,14 +283,14 @@ LABEL_10:
       }
 
       v8 = v7;
-      v9 = [(CRLWPShapeLayout *)self textLayout];
-      [v8 addObject:v9];
+      textLayout2 = [(CRLWPShapeLayout *)self textLayout];
+      [v8 addObject:textLayout2];
 
-      v3 = v8;
+      dependentLayouts = v8;
     }
   }
 
-  return v3;
+  return dependentLayouts;
 }
 
 - (CRLWrapSegments)interiorWrapSegments
@@ -298,27 +298,27 @@ LABEL_10:
   v3 = *(&self->_supportsInstructionalText + 2);
   if (!v3)
   {
-    v4 = [(CRLWPShapeLayout *)self wpShapeInfo];
-    [v4 textInset];
+    wpShapeInfo = [(CRLWPShapeLayout *)self wpShapeInfo];
+    [wpShapeInfo textInset];
     v6 = v5;
 
-    v7 = [(CRLShapeLayout *)self shapeInfo];
-    v8 = [v7 stroke];
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    stroke = [shapeInfo stroke];
 
-    if (v8 && [v8 shouldRender])
+    if (stroke && [stroke shouldRender])
     {
-      [v8 width];
+      [stroke width];
       v6 = v9 * 0.5 + v6;
-      v10 = [v8 join];
+      join = [stroke join];
     }
 
     else
     {
-      v10 = 0;
+      join = 0;
     }
 
-    v11 = [(CRLWPShapeLayout *)self pathSource];
-    v12 = [v11 interiorWrapPathForInset:v10 joinStyle:v6];
+    pathSource = [(CRLWPShapeLayout *)self pathSource];
+    v12 = [pathSource interiorWrapPathForInset:join joinStyle:v6];
 
     v13 = [[CRLWrapSegments alloc] initWithPath:v12];
     v14 = *(&self->_supportsInstructionalText + 2);
@@ -334,63 +334,63 @@ LABEL_10:
 {
   if (*(&self->_storageRangeToFontSizeDict + 3) && [(CRLWPShapeLayout *)self autosizes])
   {
-    v3 = [*(&self->_storageRangeToFontSizeDict + 3) geometry];
-    [v3 size];
+    geometry = [*(&self->_storageRangeToFontSizeDict + 3) geometry];
+    [geometry size];
     v5 = v4;
     v7 = v6;
 
-    v8 = [(CRLShapeLayout *)self shapeInfo];
-    v9 = [v8 stroke];
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    stroke = [shapeInfo stroke];
 
-    if (v9 && [v9 shouldRender])
+    if (stroke && [stroke shouldRender])
     {
-      [v9 width];
+      [stroke width];
       v5 = v5 + v10;
-      [v9 width];
+      [stroke width];
       v7 = v7 + v11;
     }
 
-    v12 = [(CRLShapeLayout *)self shapeInfo];
-    v13 = [v12 pathSource];
-    v14 = [v13 copy];
+    shapeInfo2 = [(CRLShapeLayout *)self shapeInfo];
+    pathSource = [shapeInfo2 pathSource];
+    pathSource2 = [pathSource copy];
 
-    [v14 setNaturalSize:{v5, v7}];
+    [pathSource2 setNaturalSize:{v5, v7}];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = CRLWPShapeLayout;
-    v14 = [(CRLShapeLayout *)&v16 pathSource];
+    pathSource2 = [(CRLShapeLayout *)&v16 pathSource];
   }
 
-  return v14;
+  return pathSource2;
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v5.receiver = self;
   v5.super_class = CRLWPShapeLayout;
   [(CRLShapeLayout *)&v5 processChangedProperty:?];
-  if (a3 - 29 <= 1)
+  if (property - 29 <= 1)
   {
     if ([(CRLWPShapeLayout *)self autosizes])
     {
       [(CRLWPShapeLayout *)self invalidateSize];
     }
 
-    if (a3 == 30 && (([(CRLWPShapeLayout *)self p_shouldCreateTextLayout]^ (*(&self->_storageRangeToFontSizeDict + 3) == 0)) & 1) == 0)
+    if (property == 30 && (([(CRLWPShapeLayout *)self p_shouldCreateTextLayout]^ (*(&self->_storageRangeToFontSizeDict + 3) == 0)) & 1) == 0)
     {
       [(CRLCanvasLayout *)self invalidateChildren];
     }
   }
 
-  [(CRLWPShapeLayout *)self t_invalidateTextLayoutAfterPropertyChanged:a3];
+  [(CRLWPShapeLayout *)self t_invalidateTextLayoutAfterPropertyChanged:property];
 }
 
-- (void)t_invalidateTextLayoutAfterPropertyChanged:(unint64_t)a3
+- (void)t_invalidateTextLayoutAfterPropertyChanged:(unint64_t)changed
 {
-  if (a3 - 29 < 7 || a3 == 21 || a3 == 7)
+  if (changed - 29 < 7 || changed == 21 || changed == 7)
   {
     [(CRLWPShapeLayout *)self p_invalidateTextLayout];
   }
@@ -420,15 +420,15 @@ LABEL_10:
   return [(CRLCanvasLayout *)&v4 resizeMayChangeAspectRatio];
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v22.receiver = self;
   v22.super_class = CRLWPShapeLayout;
-  [(CRLShapeLayout *)&v22 setGeometry:a3];
+  [(CRLShapeLayout *)&v22 setGeometry:geometry];
   if (*(&self->_storageRangeToFontSizeDict + 3) && [(CRLWPShapeLayout *)self autosizes])
   {
-    v4 = [*(&self->_storageRangeToFontSizeDict + 3) geometry];
-    [v4 size];
+    geometry = [*(&self->_storageRangeToFontSizeDict + 3) geometry];
+    [geometry size];
     v6 = v5;
     v8 = v7;
 
@@ -437,14 +437,14 @@ LABEL_10:
     v12 = v11;
     v13 = -v9;
     v14 = -v11;
-    v15 = [(CRLShapeLayout *)self shapeInfo];
-    v16 = [v15 stroke];
+    shapeInfo = [(CRLShapeLayout *)self shapeInfo];
+    stroke = [shapeInfo stroke];
 
-    if (v16)
+    if (stroke)
     {
-      if ([v16 shouldRender])
+      if ([stroke shouldRender])
       {
-        [v16 width];
+        [stroke width];
         v18 = v17 * 0.5;
         v13 = v18 - v10;
         v14 = v18 - v12;
@@ -483,25 +483,25 @@ LABEL_10:
   }
 }
 
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document
 {
-  v5 = a5;
-  v8 = a3;
+  documentCopy = document;
+  infoCopy = info;
   v19.receiver = self;
   v19.super_class = CRLWPShapeLayout;
-  v9 = *&a4->c;
-  v18[0] = *&a4->a;
+  v9 = *&transform->c;
+  v18[0] = *&transform->a;
   v18[1] = v9;
-  v18[2] = *&a4->tx;
-  [(CRLShapeLayout *)&v19 transferLayoutGeometryToInfo:v8 withAdditionalTransform:v18 assertIfInDocument:v5];
+  v18[2] = *&transform->tx;
+  [(CRLShapeLayout *)&v19 transferLayoutGeometryToInfo:infoCopy withAdditionalTransform:v18 assertIfInDocument:documentCopy];
   v10 = objc_opt_class();
-  v11 = sub_100013F00(v10, v8);
+  v11 = sub_100013F00(v10, infoCopy);
   if ([(CRLWPShapeLayout *)self autosizes])
   {
     [(CRLWPShapeLayout *)self autosizePositionOffset];
     v13 = v12;
-    v14 = [v8 geometry];
-    v15 = [v14 mutableCopy];
+    geometry = [infoCopy geometry];
+    v15 = [geometry mutableCopy];
 
     [v15 position];
     [v15 setPosition:{sub_10011F31C(v16, v17, v13)}];
@@ -515,8 +515,8 @@ LABEL_10:
   {
     memset(&v17, 0, sizeof(v17));
     [(CRLWPShapeLayout *)self autosizedTransform];
-    v5 = [(CRLShapeLayout *)self layoutInfoGeometry];
-    [v5 position];
+    layoutInfoGeometry = [(CRLShapeLayout *)self layoutInfoGeometry];
+    [layoutInfoGeometry position];
     v7 = v6;
     v9 = v8;
 
@@ -542,18 +542,18 @@ LABEL_10:
 
 - (CGAffineTransform)autosizedTransform
 {
-  v5 = [(CRLShapeLayout *)self layoutInfoGeometry];
-  [(CRLWPShapeLayout *)self autosizedTransformForInfoGeometry:v5];
+  layoutInfoGeometry = [(CRLShapeLayout *)self layoutInfoGeometry];
+  [(CRLWPShapeLayout *)self autosizedTransformForInfoGeometry:layoutInfoGeometry];
 
   return result;
 }
 
-- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)a3
+- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)geometry
 {
   v13 = a4;
   v6 = objc_opt_class();
-  v7 = [(CRLCanvasLayout *)self info];
-  v8 = sub_100014370(v6, v7);
+  info = [(CRLCanvasLayout *)self info];
+  v8 = sub_100014370(v6, info);
 
   if (v8)
   {
@@ -580,27 +580,27 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)autosizePositionOffsetForFixedWidth:(BOOL)a3 height:(BOOL)a4
+- (CGPoint)autosizePositionOffsetForFixedWidth:(BOOL)width height:(BOOL)height
 {
-  v4 = a4;
-  v5 = a3;
+  heightCopy = height;
+  widthCopy = width;
   [(CRLWPShapeLayout *)self autosizedTransform];
   [(CRLShapeLayout *)self pathBoundsWithoutStroke];
   v8 = v7;
   v10 = v9;
-  v11 = [(CRLShapeLayout *)self layoutInfoGeometry];
-  v12 = [v11 mutableCopy];
+  layoutInfoGeometry = [(CRLShapeLayout *)self layoutInfoGeometry];
+  v12 = [layoutInfoGeometry mutableCopy];
 
   [v12 size];
   v14 = v13;
   v16 = v15;
-  if (([v12 widthValid] & 1) == 0 && v5)
+  if (([v12 widthValid] & 1) == 0 && widthCopy)
   {
     [v12 setWidthValid:1];
     v14 = v8;
   }
 
-  if (([v12 heightValid] & 1) == 0 && v4)
+  if (([v12 heightValid] & 1) == 0 && heightCopy)
   {
     [v12 setHeightValid:1];
     v16 = v10;
@@ -633,17 +633,17 @@ LABEL_10:
 {
   v9.receiver = self;
   v9.super_class = CRLWPShapeLayout;
-  v3 = [(CRLCanvasLayout *)&v9 bidirectionalSizeDependentLayouts];
+  bidirectionalSizeDependentLayouts = [(CRLCanvasLayout *)&v9 bidirectionalSizeDependentLayouts];
   v4 = [(CRLWPShapeLayout *)self autosizeFlagsFor:*(&self->_storageRangeToFontSizeDict + 3)];
   if ((~v4 & 0xF) != 0 && v4 && *(&self->_storageRangeToFontSizeDict + 3) != 0)
   {
-    if ([v3 count])
+    if ([bidirectionalSizeDependentLayouts count])
     {
       v10 = *(&self->_storageRangeToFontSizeDict + 3);
       v6 = [NSArray arrayWithObjects:&v10 count:1];
-      v7 = [v6 arrayByAddingObjectsFromArray:v3];
+      v7 = [v6 arrayByAddingObjectsFromArray:bidirectionalSizeDependentLayouts];
 
-      v3 = v6;
+      bidirectionalSizeDependentLayouts = v6;
     }
 
     else
@@ -652,10 +652,10 @@ LABEL_10:
       v7 = [NSArray arrayWithObjects:&v11 count:1];
     }
 
-    v3 = v7;
+    bidirectionalSizeDependentLayouts = v7;
   }
 
-  return v3;
+  return bidirectionalSizeDependentLayouts;
 }
 
 - (id)textWrapper
@@ -673,9 +673,9 @@ LABEL_10:
   return v2;
 }
 
-- (CGRect)rectInRootForSelectionPath:(id)a3
+- (CGRect)rectInRootForSelectionPath:(id)path
 {
-  [(CRLWPShapeLayout *)self p_rectInRootForSelectionPath:a3 useParagraphModeRects:1];
+  [(CRLWPShapeLayout *)self p_rectInRootForSelectionPath:path useParagraphModeRects:1];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -683,9 +683,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)rectInRootForZoomingToSelectionPath:(id)a3
+- (CGRect)rectInRootForZoomingToSelectionPath:(id)path
 {
-  [(CRLWPShapeLayout *)self p_rectInRootForSelectionPath:a3 useParagraphModeRects:0];
+  [(CRLWPShapeLayout *)self p_rectInRootForSelectionPath:path useParagraphModeRects:0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -693,10 +693,10 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)a3
+- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)path
 {
-  v3 = [(CRLCanvasAbstractLayout *)self geometryInRoot];
-  [v3 frame];
+  geometryInRoot = [(CRLCanvasAbstractLayout *)self geometryInRoot];
+  [geometryInRoot frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -713,20 +713,20 @@ LABEL_10:
   return result;
 }
 
-- (double)viewScaleForZoomingToSelectionPath:(id)a3 targetPointSize:(double)a4
+- (double)viewScaleForZoomingToSelectionPath:(id)path targetPointSize:(double)size
 {
-  v6 = a3;
-  v7 = [v6 mostSpecificSelectionOfClass:objc_opt_class()];
+  pathCopy = path;
+  v7 = [pathCopy mostSpecificSelectionOfClass:objc_opt_class()];
 
   v8 = 0.0;
   if (v7)
   {
-    v9 = [(CRLWPShapeLayout *)self makeStorageRangeToFontSizeDict];
-    if ([v9 count])
+    makeStorageRangeToFontSizeDict = [(CRLWPShapeLayout *)self makeStorageRangeToFontSizeDict];
+    if ([makeStorageRangeToFontSizeDict count])
     {
-      v10 = [v9 allValues];
-      v11 = [v10 firstObject];
-      [v11 floatValue];
+      allValues = [makeStorageRangeToFontSizeDict allValues];
+      firstObject = [allValues firstObject];
+      [firstObject floatValue];
       v8 = v12;
     }
 
@@ -744,12 +744,12 @@ LABEL_10:
 
   else
   {
-    v14 = a4 / v8;
+    v14 = size / v8;
   }
 
-  v15 = [(CRLCanvasLayout *)self layoutController];
-  v16 = [v15 canvas];
-  [v16 viewScale];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  [canvas viewScale];
   v18 = v17;
 
   if (v18 < v14)
@@ -760,35 +760,35 @@ LABEL_10:
   return v18;
 }
 
-- (CGRect)p_rectInRootForSelectionPath:(id)a3 useParagraphModeRects:(BOOL)a4
+- (CGRect)p_rectInRootForSelectionPath:(id)path useParagraphModeRects:(BOOL)rects
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CRLCanvasAbstractLayout *)self geometryInRoot];
-  [v7 frame];
+  rectsCopy = rects;
+  pathCopy = path;
+  geometryInRoot = [(CRLCanvasAbstractLayout *)self geometryInRoot];
+  [geometryInRoot frame];
   x = v8;
   y = v10;
   width = v12;
   height = v14;
 
-  v16 = [(CRLCanvasLayout *)self layoutController];
-  v17 = [v16 canvas];
-  v18 = [v17 canvasController];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  canvasController = [canvas canvasController];
 
-  v19 = [v18 modelsForSelectionPath:v6];
+  v19 = [canvasController modelsForSelectionPath:pathCopy];
   v20 = objc_opt_class();
-  v21 = [(CRLWPShapeLayout *)self textLayout];
-  v22 = [v21 storage];
-  v23 = sub_100014370(v20, v22);
+  textLayout = [(CRLWPShapeLayout *)self textLayout];
+  storage = [textLayout storage];
+  v23 = sub_100014370(v20, storage);
 
   if (v23 && [v19 containsObject:v23])
   {
-    v24 = [v6 mostSpecificSelectionOfClass:objc_opt_class()];
+    v24 = [pathCopy mostSpecificSelectionOfClass:objc_opt_class()];
     if (v24)
     {
-      v25 = [(CRLWPShapeLayout *)self textLayout];
-      v26 = [v25 columns];
-      [CRLWPColumn rectForSelection:v24 withColumns:v26 useParagraphModeRects:v4];
+      textLayout2 = [(CRLWPShapeLayout *)self textLayout];
+      columns = [textLayout2 columns];
+      [CRLWPColumn rectForSelection:v24 withColumns:columns useParagraphModeRects:rectsCopy];
       v28 = v27;
       v30 = v29;
       v32 = v31;
@@ -832,27 +832,27 @@ LABEL_10:
 {
   if ([(CRLWPShapeLayout *)self autosizes])
   {
-    v3 = [(CRLShapeLayout *)self layoutInfoGeometry];
+    layoutInfoGeometry = [(CRLShapeLayout *)self layoutInfoGeometry];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CRLWPShapeLayout;
-    v3 = [(CRLShapeLayout *)&v5 captureDynamicInfoGeometryToBeginDynamicOperation];
+    layoutInfoGeometry = [(CRLShapeLayout *)&v5 captureDynamicInfoGeometryToBeginDynamicOperation];
   }
 
-  return v3;
+  return layoutInfoGeometry;
 }
 
-- (void)takeSizeFromTracker:(id)a3
+- (void)takeSizeFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v47.receiver = self;
   v47.super_class = CRLWPShapeLayout;
-  [(CRLShapeLayout *)&v47 takeSizeFromTracker:v4];
-  v5 = [v4 knob];
-  v6 = [v5 tag];
+  [(CRLShapeLayout *)&v47 takeSizeFromTracker:trackerCopy];
+  knob = [trackerCopy knob];
+  v6 = [knob tag];
 
   if (!sub_10034601C(v6) || ![(CRLWPShapeLayout *)self autosizes])
   {
@@ -861,16 +861,16 @@ LABEL_10:
 
   if ([(CRLCanvasLayout *)self isInTopLevelContainerForEditing])
   {
-    if (v4)
+    if (trackerCopy)
     {
-      [v4 flippedIfNecessaryTransformForLayout:self];
+      [trackerCopy flippedIfNecessaryTransformForLayout:self];
       goto LABEL_9;
     }
   }
 
-  else if (v4)
+  else if (trackerCopy)
   {
-    [v4 transformForLayout:self];
+    [trackerCopy transformForLayout:self];
     goto LABEL_9;
   }
 
@@ -878,11 +878,11 @@ LABEL_10:
 LABEL_9:
   v46 = v45;
   memset(&v45, 0, sizeof(v45));
-  v7 = [(CRLCanvasLayout *)self originalPureGeometry];
-  v8 = v7;
-  if (v7)
+  originalPureGeometry = [(CRLCanvasLayout *)self originalPureGeometry];
+  v8 = originalPureGeometry;
+  if (originalPureGeometry)
   {
-    [v7 transform];
+    [originalPureGeometry transform];
   }
 
   else
@@ -897,24 +897,24 @@ LABEL_9:
   v9 = sub_100139A00(&v44.a);
   if (v9 != 1.0 && fabs(v9 + -1.0) >= 0.000000999999997)
   {
-    v10 = [v4 rep];
-    v11 = [v10 infoForTransforming];
+    v10 = [trackerCopy rep];
+    infoForTransforming = [v10 infoForTransforming];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v13 = [(CRLCanvasLayout *)self layoutController];
-      v14 = [v13 canvas];
-      v15 = [v14 canvasController];
+      layoutController = [(CRLCanvasLayout *)self layoutController];
+      canvas = [layoutController canvas];
+      canvasController = [canvas canvasController];
 
-      v16 = [v15 commandController];
+      commandController = [canvasController commandController];
       v17 = *(&self->super.mOkayToSetGeometryCount + 3);
       if (!v17)
       {
-        v18 = [(CRLWPShapeLayout *)self makeStorageRangeToFontSizeDict];
+        makeStorageRangeToFontSizeDict = [(CRLWPShapeLayout *)self makeStorageRangeToFontSizeDict];
         v19 = *(&self->super.mOkayToSetGeometryCount + 3);
-        *(&self->super.mOkayToSetGeometryCount + 3) = v18;
+        *(&self->super.mOkayToSetGeometryCount + 3) = makeStorageRangeToFontSizeDict;
 
         if ((objc_opt_respondsToSelector() & 1) == 0)
         {
@@ -945,9 +945,9 @@ LABEL_9:
           [CRLAssertionHandler handleFailureInFunction:v21 file:v22 lineNumber:497 isFatal:0 description:"Resize tracker should be able to say if it is enqueueing commands in real time."];
         }
 
-        if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 isEnqueueingCommandsInRealTime])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && [trackerCopy isEnqueueingCommandsInRealTime])
         {
-          if (([v16 isGroupOpen] & 1) == 0)
+          if (([commandController isGroupOpen] & 1) == 0)
           {
             +[CRLAssertionHandler _atomicIncrementAssertCount];
             if (qword_101AD5A10 != -1)
@@ -979,47 +979,47 @@ LABEL_9:
 
         else
         {
-          [v16 openGroup];
-          [v16 enableProgressiveEnqueuingInCurrentGroup];
+          [commandController openGroup];
+          [commandController enableProgressiveEnqueuingInCurrentGroup];
           BYTE3(self->super.mDynamicPatternOffsetsBySubpath) = 1;
         }
 
-        v26 = [(CRLCanvasLayout *)self info];
-        v27 = [v26 geometry];
-        if ([v27 widthValid])
+        info = [(CRLCanvasLayout *)self info];
+        geometry = [info geometry];
+        if ([geometry widthValid])
         {
-          v28 = [v27 heightValid];
+          heightValid = [geometry heightValid];
         }
 
         else
         {
-          v28 = 0;
+          heightValid = 0;
         }
 
-        if ([(CRLWPShapeLayout *)self autosizes]&& (v28 & 1) == 0)
+        if ([(CRLWPShapeLayout *)self autosizes]&& (heightValid & 1) == 0)
         {
-          v29 = [v4 rep];
-          v30 = [v29 layout];
-          v31 = [v30 finalInfoGeometryForResize];
+          v29 = [trackerCopy rep];
+          layout = [v29 layout];
+          finalInfoGeometryForResize = [layout finalInfoGeometryForResize];
 
-          if (!v31)
+          if (!finalInfoGeometryForResize)
           {
-            v31 = [v4 currentGeometryForLayout:self];
+            finalInfoGeometryForResize = [trackerCopy currentGeometryForLayout:self];
           }
 
-          v41 = v31;
-          v32 = [v4 rep];
-          v42 = [v32 newCommandToApplyGeometry:v31 toInfo:v26];
+          v41 = finalInfoGeometryForResize;
+          v32 = [trackerCopy rep];
+          v42 = [v32 newCommandToApplyGeometry:finalInfoGeometryForResize toInfo:info];
 
           v33 = [CRLCanvasCommandSelectionBehavior alloc];
-          [v15 canvasEditor];
-          v35 = v34 = v15;
-          v36 = [v34 editorController];
-          v37 = [v36 selectionPath];
-          v38 = [(CRLCanvasCommandSelectionBehavior *)v33 initWithCanvasEditor:v35 type:2 selectionPath:v37 selectionFlags:4];
+          [canvasController canvasEditor];
+          v35 = v34 = canvasController;
+          editorController = [v34 editorController];
+          selectionPath = [editorController selectionPath];
+          v38 = [(CRLCanvasCommandSelectionBehavior *)v33 initWithCanvasEditor:v35 type:2 selectionPath:selectionPath selectionFlags:4];
 
-          v15 = v34;
-          [v16 enqueueCommand:v42 withSelectionBehavior:v38];
+          canvasController = v34;
+          [commandController enqueueCommand:v42 withSelectionBehavior:v38];
         }
 
         v17 = *(&self->super.mOkayToSetGeometryCount + 3);
@@ -1027,20 +1027,20 @@ LABEL_9:
 
       v39 = [(CRLWPShapeLayout *)self commandsToSetFontSizesWithFontRangeToSizeDict:v17 scale:v9];
       v40 = [[_TtC8Freeform15CRLCommandGroup alloc] initWithCommands:v39];
-      [v16 enqueueCommand:v40];
+      [commandController enqueueCommand:v40];
     }
   }
 
 LABEL_49:
 }
 
-- (void)takeFreeTransformFromTracker:(id)a3
+- (void)takeFreeTransformFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v52.receiver = self;
   v52.super_class = CRLWPShapeLayout;
-  [(CRLShapeLayout *)&v52 takeFreeTransformFromTracker:v4];
-  if ([v4 isResizing])
+  [(CRLShapeLayout *)&v52 takeFreeTransformFromTracker:trackerCopy];
+  if ([trackerCopy isResizing])
   {
     if ([(CRLWPShapeLayout *)self autosizes])
     {
@@ -1048,20 +1048,20 @@ LABEL_49:
       v50 = 0u;
       v51 = 0u;
       v49 = 0u;
-      if (v4)
+      if (trackerCopy)
       {
-        [v4 resizeTransformForLayout:self];
+        [trackerCopy resizeTransformForLayout:self];
         v5 = 0uLL;
       }
 
       *&v48.c = v5;
       *&v48.tx = v5;
       *&v48.a = v5;
-      v6 = [(CRLCanvasLayout *)self originalPureGeometry];
-      v7 = v6;
-      if (v6)
+      originalPureGeometry = [(CRLCanvasLayout *)self originalPureGeometry];
+      v7 = originalPureGeometry;
+      if (originalPureGeometry)
       {
-        [v6 transform];
+        [originalPureGeometry transform];
       }
 
       else
@@ -1078,32 +1078,32 @@ LABEL_49:
       v9 = sub_100139A00(&v47.a);
       if (v9 != 1.0 && fabs(v9 + -1.0) >= 0.000000999999997)
       {
-        v10 = [(CRLCanvasLayout *)self layoutController];
-        v11 = [v10 canvas];
+        layoutController = [(CRLCanvasLayout *)self layoutController];
+        canvas = [layoutController canvas];
 
-        v12 = [v11 repForLayout:self];
-        v13 = [v12 infoForTransforming];
+        v12 = [canvas repForLayout:self];
+        infoForTransforming = [v12 infoForTransforming];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v15 = [(CRLCanvasLayout *)self layoutController];
-          v16 = [v15 canvas];
-          v17 = [v16 canvasController];
+          layoutController2 = [(CRLCanvasLayout *)self layoutController];
+          canvas2 = [layoutController2 canvas];
+          canvasController = [canvas2 canvasController];
 
-          v18 = [v17 commandController];
+          commandController = [canvasController commandController];
           v19 = *(&self->super.mOkayToSetGeometryCount + 3);
           if (!v19)
           {
-            v20 = [(CRLWPShapeLayout *)self makeStorageRangeToFontSizeDict];
+            makeStorageRangeToFontSizeDict = [(CRLWPShapeLayout *)self makeStorageRangeToFontSizeDict];
             v21 = *(&self->super.mOkayToSetGeometryCount + 3);
-            *(&self->super.mOkayToSetGeometryCount + 3) = v20;
+            *(&self->super.mOkayToSetGeometryCount + 3) = makeStorageRangeToFontSizeDict;
 
             if ((objc_opt_respondsToSelector() & 1) == 0)
             {
               +[CRLAssertionHandler _atomicIncrementAssertCount];
-              v45 = v17;
+              v45 = canvasController;
               if (qword_101AD5A10 != -1)
               {
                 sub_1013914FC();
@@ -1129,12 +1129,12 @@ LABEL_49:
               v24 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLWPShapeLayout.m"];
               [CRLAssertionHandler handleFailureInFunction:v23 file:v24 lineNumber:570 isFatal:0 description:"Resize tracker should be able to say if it is enqueueing commands in real time."];
 
-              v17 = v45;
+              canvasController = v45;
             }
 
-            if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 isEnqueueingCommandsInRealTime])
+            if ((objc_opt_respondsToSelector() & 1) != 0 && [trackerCopy isEnqueueingCommandsInRealTime])
             {
-              if (([v18 isGroupOpen] & 1) == 0)
+              if (([commandController isGroupOpen] & 1) == 0)
               {
                 +[CRLAssertionHandler _atomicIncrementAssertCount];
                 if (qword_101AD5A10 != -1)
@@ -1166,47 +1166,47 @@ LABEL_49:
 
             else
             {
-              [v18 openGroup];
-              [v18 enableProgressiveEnqueuingInCurrentGroup];
+              [commandController openGroup];
+              [commandController enableProgressiveEnqueuingInCurrentGroup];
               BYTE3(self->super.mDynamicPatternOffsetsBySubpath) = 1;
             }
 
-            v28 = [(CRLCanvasLayout *)self info];
-            v29 = [v28 geometry];
-            if ([v29 widthValid])
+            info = [(CRLCanvasLayout *)self info];
+            geometry = [info geometry];
+            if ([geometry widthValid])
             {
-              v30 = [v29 heightValid];
+              heightValid = [geometry heightValid];
             }
 
             else
             {
-              v30 = 0;
+              heightValid = 0;
             }
 
-            if ([(CRLWPShapeLayout *)self autosizes]&& (v30 & 1) == 0)
+            if ([(CRLWPShapeLayout *)self autosizes]&& (heightValid & 1) == 0)
             {
-              v44 = v18;
-              v31 = v17;
-              v32 = [v12 layout];
-              v33 = [v32 finalInfoGeometryForResize];
+              v44 = commandController;
+              v31 = canvasController;
+              layout = [v12 layout];
+              finalInfoGeometryForResize = [layout finalInfoGeometryForResize];
 
-              if (!v33)
+              if (!finalInfoGeometryForResize)
               {
-                v33 = [v4 currentGeometryForLayout:self];
+                finalInfoGeometryForResize = [trackerCopy currentGeometryForLayout:self];
               }
 
-              v42 = v33;
-              v41 = [v12 newCommandToApplyGeometry:v33 toInfo:v28];
+              v42 = finalInfoGeometryForResize;
+              v41 = [v12 newCommandToApplyGeometry:finalInfoGeometryForResize toInfo:info];
               v34 = [CRLCanvasCommandSelectionBehavior alloc];
-              v17 = v31;
+              canvasController = v31;
               [v31 canvasEditor];
-              v35 = v43 = v28;
-              v36 = [v31 editorController];
-              v37 = [v36 selectionPath];
-              v38 = [(CRLCanvasCommandSelectionBehavior *)v34 initWithCanvasEditor:v35 type:2 selectionPath:v37 selectionFlags:4];
+              v35 = v43 = info;
+              editorController = [v31 editorController];
+              selectionPath = [editorController selectionPath];
+              v38 = [(CRLCanvasCommandSelectionBehavior *)v34 initWithCanvasEditor:v35 type:2 selectionPath:selectionPath selectionFlags:4];
 
-              v28 = v43;
-              v18 = v44;
+              info = v43;
+              commandController = v44;
               [v44 enqueueCommand:v41 withSelectionBehavior:v38];
             }
 
@@ -1215,7 +1215,7 @@ LABEL_49:
 
           v39 = [(CRLWPShapeLayout *)self commandsToSetFontSizesWithFontRangeToSizeDict:v19 scale:v9, v41];
           v40 = [[_TtC8Freeform15CRLCommandGroup alloc] initWithCommands:v39];
-          [v18 enqueueCommand:v40];
+          [commandController enqueueCommand:v40];
         }
       }
     }
@@ -1223,8 +1223,8 @@ LABEL_49:
 
   else
   {
-    v8 = [(CRLWPShapeLayout *)self textLayout];
-    [v8 invalidatePosition];
+    textLayout = [(CRLWPShapeLayout *)self textLayout];
+    [textLayout invalidatePosition];
   }
 }
 
@@ -1232,12 +1232,12 @@ LABEL_49:
 {
   if (BYTE3(self->super.mDynamicPatternOffsetsBySubpath) == 1)
   {
-    v3 = [(CRLCanvasLayout *)self layoutController];
-    v4 = [v3 canvas];
-    v5 = [v4 canvasController];
-    v6 = [v5 commandController];
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    canvas = [layoutController canvas];
+    canvasController = [canvas canvasController];
+    commandController = [canvasController commandController];
 
-    [v6 closeGroup];
+    [commandController closeGroup];
     BYTE3(self->super.mDynamicPatternOffsetsBySubpath) = 0;
   }
 
@@ -1251,32 +1251,32 @@ LABEL_49:
 
 - (id)childSearchTargets
 {
-  v3 = [(CRLWPShapeLayout *)self textLayout];
-  v4 = [v3 isInstructional];
+  textLayout = [(CRLWPShapeLayout *)self textLayout];
+  isInstructional = [textLayout isInstructional];
 
-  if (v4)
+  if (isInstructional)
   {
-    v5 = &__NSArray0__struct;
+    childSearchTargets = &__NSArray0__struct;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = CRLWPShapeLayout;
-    v5 = [(CRLCanvasLayout *)&v7 childSearchTargets];
+    childSearchTargets = [(CRLCanvasLayout *)&v7 childSearchTargets];
   }
 
-  return v5;
+  return childSearchTargets;
 }
 
 - (BOOL)autosizes
 {
-  v2 = self;
-  v3 = [(CRLWPShapeLayout *)v2 textLayout];
-  if (v3)
+  selfCopy = self;
+  textLayout = [(CRLWPShapeLayout *)selfCopy textLayout];
+  if (textLayout)
   {
-    v4 = v3;
-    v5 = [(CRLWPShapeLayout *)v2 autosizeFlagsFor:v3];
+    v4 = textLayout;
+    v5 = [(CRLWPShapeLayout *)selfCopy autosizeFlagsFor:textLayout];
 
     return v5 != 0;
   }
@@ -1288,29 +1288,29 @@ LABEL_49:
   }
 }
 
-- (unint64_t)autosizeFlagsFor:(id)a3
+- (unint64_t)autosizeFlagsFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
+  forCopy = for;
+  selfCopy = self;
   v6 = _sSo16CRLWPShapeLayoutC8FreeformE13autosizeFlags3forSo013CRLWPAutoSizeE0VAC11CRLWPLayoutC_tF_0();
 
   return v6;
 }
 
-- (int64_t)verticalAlignmentFor:(id)a3
+- (int64_t)verticalAlignmentFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
+  forCopy = for;
+  selfCopy = self;
   v6 = _sSo16CRLWPShapeLayoutC8FreeformE17verticalAlignment3forSo013CRLWPVerticalE0VAC11CRLWPLayoutC_tF_0();
 
   return v6;
 }
 
-- (CGRect)nonAutosizedFrameFor:(id)a3
+- (CGRect)nonAutosizedFrameFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  CRLWPShapeLayout.nonAutosizedFrame(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  CRLWPShapeLayout.nonAutosizedFrame(for:)(forCopy);
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1327,10 +1327,10 @@ LABEL_49:
   return result;
 }
 
-- (CGRect)autosizedFrameFor:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameFor:(id)for textSize:(CGSize)size
 {
-  v5 = a3;
-  v6 = self;
+  forCopy = for;
+  selfCopy = self;
   _sSo16CRLWPShapeLayoutC8FreeformE14autosizedFrame3for8textSizeSo6CGRectVAC11CRLWPLayoutC_So6CGSizeVtF_0();
   v8 = v7;
   v10 = v9;
@@ -1348,11 +1348,11 @@ LABEL_49:
   return result;
 }
 
-- (id)dependentsOf:(id)a3
+- (id)dependentsOf:(id)of
 {
-  v4 = a3;
-  v5 = self;
-  CRLWPShapeLayout.dependents(of:)(v4);
+  ofCopy = of;
+  selfCopy = self;
+  CRLWPShapeLayout.dependents(of:)(ofCopy);
 
   sub_100006370(0, &qword_101A287B0);
   v6.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -1360,36 +1360,36 @@ LABEL_49:
   return v6.super.isa;
 }
 
-- (Class)repClassFor:(id)a3
+- (Class)repClassFor:(id)for
 {
   sub_100006370(0, &unk_101A0D840);
 
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)interiorWrapSegmentsFor:(id)a3
+- (id)interiorWrapSegmentsFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(CRLWPShapeLayout *)v5 textLayout];
-  if (v6 && (v7 = v6, type metadata accessor for CRLWPLayout(), v8 = v4, v9 = static NSObject.== infix(_:_:)(), v7, v8, (v9 & 1) != 0))
+  forCopy = for;
+  selfCopy = self;
+  textLayout = [(CRLWPShapeLayout *)selfCopy textLayout];
+  if (textLayout && (v7 = textLayout, type metadata accessor for CRLWPLayout(), v8 = forCopy, v9 = static NSObject.== infix(_:_:)(), v7, v8, (v9 & 1) != 0))
   {
-    v10 = [(CRLWPShapeLayout *)v5 interiorWrapSegments];
+    interiorWrapSegments = [(CRLWPShapeLayout *)selfCopy interiorWrapSegments];
   }
 
   else
   {
-    v10 = 0;
+    interiorWrapSegments = 0;
   }
 
-  return v10;
+  return interiorWrapSegments;
 }
 
 - (double)defaultFontSize
 {
-  v2 = self;
-  v3 = [(CRLWPShapeLayout *)v2 textLayout];
-  if (v3 && (v4 = v3, v5 = [(CRLWPLayout *)v3 storage], v4, v5))
+  selfCopy = self;
+  textLayout = [(CRLWPShapeLayout *)selfCopy textLayout];
+  if (textLayout && (v4 = textLayout, v5 = [(CRLWPLayout *)textLayout storage], v4, v5))
   {
     type metadata accessor for CRLWPStorage();
     v6 = swift_dynamicCastClass();
@@ -1416,7 +1416,7 @@ LABEL_49:
 
 - (id)makeStorageRangeToFontSizeDict
 {
-  v2 = self;
+  selfCopy = self;
   CRLWPShapeLayout.makeStorageRangeToFontSizeDict()();
 
   sub_100006370(0, &qword_101A04270);
@@ -1427,14 +1427,14 @@ LABEL_49:
   return v3.super.isa;
 }
 
-- (id)commandsToSetFontSizesWithFontRangeToSizeDict:(id)a3 scale:(double)a4
+- (id)commandsToSetFontSizesWithFontRangeToSizeDict:(id)dict scale:(double)scale
 {
   sub_100006370(0, &qword_101A04270);
   sub_100006370(0, &qword_1019FF3E0);
   sub_10000FDE0(&qword_101A0A0F0, &qword_101A04270);
   v6 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = self;
-  sub_100990D14(v6, a4);
+  selfCopy = self;
+  sub_100990D14(v6, scale);
 
   type metadata accessor for CRLCommand();
   v8.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -1442,29 +1442,29 @@ LABEL_49:
   return v8.super.isa;
 }
 
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
-  v4 = self;
+  selfCopy = self;
   _sSo16CRLWPShapeLayoutC8FreeformE5width14forColumnIndex9bodyWidth12CoreGraphics7CGFloatVSu_AItF_0();
   v6 = v5;
 
   return v6;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap
 {
   swift_unknownObjectRetain();
-  v12 = self;
-  v13 = sub_100992274(a3, a6, a7, a4);
+  selfCopy = self;
+  v13 = sub_100992274(index, outWidth, gap, width);
   swift_unknownObjectRelease();
 
   return v13;
 }
 
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _sSo16CRLWPShapeLayoutC8FreeformE14adjustedInsets3forSo06UIEdgeE0VSo17CRLWPLayoutTarget_pSg_tF_0();
   v6 = v5;
   v8 = v7;
@@ -1492,7 +1492,7 @@ LABEL_49:
 
 - (BOOL)shrinkTextToFit
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CRLWPShapeLayout.shrinkTextToFit.getter();
 
   return v3 & 1;

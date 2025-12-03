@@ -1,17 +1,17 @@
 @interface EKFrozenReminderSource
 - (NSString)sourceIdentifier;
 - (id)externalID;
-- (id)meltedObjectInStore:(id)a3;
+- (id)meltedObjectInStore:(id)store;
 - (id)title;
 - (int64_t)sourceTypeRaw;
 @end
 
 @implementation EKFrozenReminderSource
 
-- (id)meltedObjectInStore:(id)a3
+- (id)meltedObjectInStore:(id)store
 {
-  v4 = a3;
-  v5 = [v4 eventSourceForReminderSource:self];
+  storeCopy = store;
+  v5 = [storeCopy eventSourceForReminderSource:self];
   v6 = v5;
   if (v5)
   {
@@ -22,7 +22,7 @@
   {
     v10.receiver = self;
     v10.super_class = EKFrozenReminderSource;
-    v7 = [(EKPersistentObject *)&v10 meltedObjectInStore:v4];
+    v7 = [(EKPersistentObject *)&v10 meltedObjectInStore:storeCopy];
   }
 
   v8 = v7;
@@ -32,44 +32,44 @@
 
 - (NSString)sourceIdentifier
 {
-  v2 = [(EKFrozenReminderSource *)self remAccount];
-  v3 = [v2 objectID];
-  v4 = [v3 uuid];
-  v5 = [v4 UUIDString];
+  remAccount = [(EKFrozenReminderSource *)self remAccount];
+  objectID = [remAccount objectID];
+  uuid = [objectID uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v5;
+  return uUIDString;
 }
 
 - (int64_t)sourceTypeRaw
 {
-  v2 = [(EKFrozenReminderSource *)self remAccount];
-  v3 = [v2 type];
+  remAccount = [(EKFrozenReminderSource *)self remAccount];
+  type = [remAccount type];
 
-  if (v3 > 7)
+  if (type > 7)
   {
     return 2;
   }
 
   else
   {
-    return qword_1A81C3EE0[v3];
+    return qword_1A81C3EE0[type];
   }
 }
 
 - (id)title
 {
-  v2 = [(EKFrozenReminderSource *)self remAccount];
-  v3 = [v2 name];
+  remAccount = [(EKFrozenReminderSource *)self remAccount];
+  name = [remAccount name];
 
-  return v3;
+  return name;
 }
 
 - (id)externalID
 {
-  v2 = [(EKFrozenReminderSource *)self remAccount];
-  v3 = [v2 externalIdentifier];
+  remAccount = [(EKFrozenReminderSource *)self remAccount];
+  externalIdentifier = [remAccount externalIdentifier];
 
-  return v3;
+  return externalIdentifier;
 }
 
 @end

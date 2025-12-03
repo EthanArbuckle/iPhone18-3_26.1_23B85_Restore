@@ -2,15 +2,15 @@
 + (id)sharedWirelessSplitterSessionObserver;
 - (id)_init;
 - (void)_invalidate;
-- (void)bluetoothWirelessSplitterSession:(id)a3 sessionInfoDidChangeFrom:(id)a4 to:(id)a5;
-- (void)bluetoothWirelessSplitterSessionDidInvalidate:(id)a3;
+- (void)bluetoothWirelessSplitterSession:(id)session sessionInfoDidChangeFrom:(id)from to:(id)to;
+- (void)bluetoothWirelessSplitterSessionDidInvalidate:(id)invalidate;
 - (void)startObserving;
 - (void)stopObserving;
 @end
 
 @implementation ADBluetoothWirelessSplitterSessionObserver
 
-- (void)bluetoothWirelessSplitterSessionDidInvalidate:(id)a3
+- (void)bluetoothWirelessSplitterSessionDidInvalidate:(id)invalidate
 {
   v4 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
@@ -24,27 +24,27 @@
   [(AFNotifyStatePublisher *)self->_publisher publishState:AFBluetoothWirelessSplitterSessionStateUnknown];
 }
 
-- (void)bluetoothWirelessSplitterSession:(id)a3 sessionInfoDidChangeFrom:(id)a4 to:(id)a5
+- (void)bluetoothWirelessSplitterSession:(id)session sessionInfoDidChangeFrom:(id)from to:(id)to
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  fromCopy = from;
+  toCopy = to;
   v11 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
   {
     v13 = 136315650;
     v14 = "[ADBluetoothWirelessSplitterSessionObserver bluetoothWirelessSplitterSession:sessionInfoDidChangeFrom:to:]";
     v15 = 2112;
-    v16 = v9;
+    v16 = fromCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = toCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s Wireless Splitter session info changed from %@ to %@", &v13, 0x20u);
   }
 
-  v12 = [v9 state];
-  if (v12 != [v10 state])
+  state = [fromCopy state];
+  if (state != [toCopy state])
   {
-    -[AFNotifyStatePublisher publishState:](self->_publisher, "publishState:", [v10 state] == 2);
+    -[AFNotifyStatePublisher publishState:](self->_publisher, "publishState:", [toCopy state] == 2);
   }
 }
 

@@ -1,37 +1,37 @@
 @interface SPTextInput
-- (SPTextInput)initWithAttributedString:(id)a3;
-- (SPTextInput)initWithText:(id)a3;
-- (SPTextInput)initWithTokenIds:(id)a3;
+- (SPTextInput)initWithAttributedString:(id)string;
+- (SPTextInput)initWithText:(id)text;
+- (SPTextInput)initWithTokenIds:(id)ids;
 - (unint64_t)tokenLength;
 @end
 
 @implementation SPTextInput
 
-- (SPTextInput)initWithText:(id)a3
+- (SPTextInput)initWithText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v9.receiver = self;
   v9.super_class = SPTextInput;
   v6 = [(SPTextInput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_text, a3);
+    objc_storeStrong(&v6->_text, text);
     v7->_type = 1;
   }
 
   return v7;
 }
 
-- (SPTextInput)initWithTokenIds:(id)a3
+- (SPTextInput)initWithTokenIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   v9.receiver = self;
   v9.super_class = SPTextInput;
   v5 = [(SPTextInput *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [idsCopy copy];
     tokenIDs = v5->_tokenIDs;
     v5->_tokenIDs = v6;
 
@@ -41,16 +41,16 @@
   return v5;
 }
 
-- (SPTextInput)initWithAttributedString:(id)a3
+- (SPTextInput)initWithAttributedString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = SPTextInput;
   v6 = [(SPTextInput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attributedString, a3);
+    objc_storeStrong(&v6->_attributedString, string);
     v7->_type = 3;
   }
 
@@ -64,26 +64,26 @@
     return 0;
   }
 
-  v3 = [(SPTextInput *)self tokenIDs];
-  v4 = [v3 count];
+  tokenIDs = [(SPTextInput *)self tokenIDs];
+  v4 = [tokenIDs count];
 
   if (v4)
   {
-    v5 = [(SPTextInput *)self tokenIDs];
-    v6 = [v5 firstObject];
-    v7 = [v6 isEqualToNumber:&unk_287C3C928];
+    tokenIDs2 = [(SPTextInput *)self tokenIDs];
+    firstObject = [tokenIDs2 firstObject];
+    v7 = [firstObject isEqualToNumber:&unk_287C3C928];
 
     v4 -= v7;
-    v8 = [(SPTextInput *)self tokenIDs];
-    if ([v8 count] <= 1)
+    tokenIDs3 = [(SPTextInput *)self tokenIDs];
+    if ([tokenIDs3 count] <= 1)
     {
     }
 
     else
     {
-      v9 = [(SPTextInput *)self tokenIDs];
-      v10 = [v9 lastObject];
-      v11 = [v10 isEqualToNumber:&unk_287C3C928];
+      tokenIDs4 = [(SPTextInput *)self tokenIDs];
+      lastObject = [tokenIDs4 lastObject];
+      v11 = [lastObject isEqualToNumber:&unk_287C3C928];
 
       v4 -= v11 & 1;
     }

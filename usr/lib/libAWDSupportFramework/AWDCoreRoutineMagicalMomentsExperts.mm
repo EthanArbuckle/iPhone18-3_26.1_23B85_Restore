@@ -1,17 +1,17 @@
 @interface AWDCoreRoutineMagicalMomentsExperts
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addExperts:(id)a3;
-- (void)addSuggestions:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addExperts:(id)experts;
+- (void)addSuggestions:(id)suggestions;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDurationSinceLastSuccessfulTraining:(BOOL)a3;
-- (void)setHasTrainingTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDurationSinceLastSuccessfulTraining:(BOOL)training;
+- (void)setHasTrainingTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineMagicalMomentsExperts
@@ -25,9 +25,9 @@
   [(AWDCoreRoutineMagicalMomentsExperts *)&v3 dealloc];
 }
 
-- (void)setHasDurationSinceLastSuccessfulTraining:(BOOL)a3
+- (void)setHasDurationSinceLastSuccessfulTraining:(BOOL)training
 {
-  if (a3)
+  if (training)
   {
     v3 = 2;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTrainingTime:(BOOL)a3
+- (void)setHasTrainingTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 4;
   }
@@ -55,7 +55,7 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addExperts:(id)a3
+- (void)addExperts:(id)experts
 {
   experts = self->_experts;
   if (!experts)
@@ -64,10 +64,10 @@
     self->_experts = experts;
   }
 
-  [(NSMutableArray *)experts addObject:a3];
+  [(NSMutableArray *)experts addObject:experts];
 }
 
-- (void)addSuggestions:(id)a3
+- (void)addSuggestions:(id)suggestions
 {
   suggestions = self->_suggestions;
   if (!suggestions)
@@ -76,7 +76,7 @@
     self->_suggestions = suggestions;
   }
 
-  [(NSMutableArray *)suggestions addObject:a3];
+  [(NSMutableArray *)suggestions addObject:suggestions];
 }
 
 - (id)description
@@ -89,11 +89,11 @@
 - (id)dictionaryRepresentation
 {
   v29 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -112,11 +112,11 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_durationSinceLastSuccessfulTraining), @"durationSinceLastSuccessfulTraining"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_durationSinceLastSuccessfulTraining), @"durationSinceLastSuccessfulTraining"}];
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_trainingTime), @"trainingTime"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_trainingTime), @"trainingTime"}];
   }
 
 LABEL_5:
@@ -151,7 +151,7 @@ LABEL_5:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"experts"];
+    [dictionary setObject:v5 forKey:@"experts"];
   }
 
   if ([(NSMutableArray *)self->_suggestions count])
@@ -185,14 +185,14 @@ LABEL_5:
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"suggestions"];
+    [dictionary setObject:v11 forKey:@"suggestions"];
   }
 
   v17 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -289,7 +289,7 @@ LABEL_5:
   v18 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 1) == 0)
@@ -300,8 +300,8 @@ LABEL_5:
     }
 
 LABEL_15:
-    *(a3 + 4) = self->_durationSinceLastSuccessfulTraining;
-    *(a3 + 44) |= 2u;
+    *(to + 4) = self->_durationSinceLastSuccessfulTraining;
+    *(to + 44) |= 2u;
     if ((*&self->_has & 4) == 0)
     {
       goto LABEL_5;
@@ -310,8 +310,8 @@ LABEL_15:
     goto LABEL_4;
   }
 
-  *(a3 + 1) = self->_timestamp;
-  *(a3 + 44) |= 1u;
+  *(to + 1) = self->_timestamp;
+  *(to + 44) |= 1u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -322,44 +322,44 @@ LABEL_3:
   if ((has & 4) != 0)
   {
 LABEL_4:
-    *(a3 + 10) = self->_trainingTime;
-    *(a3 + 44) |= 4u;
+    *(to + 10) = self->_trainingTime;
+    *(to + 44) |= 4u;
   }
 
 LABEL_5:
   if ([(AWDCoreRoutineMagicalMomentsExperts *)self expertsCount])
   {
-    [a3 clearExperts];
-    v6 = [(AWDCoreRoutineMagicalMomentsExperts *)self expertsCount];
-    if (v6)
+    [to clearExperts];
+    expertsCount = [(AWDCoreRoutineMagicalMomentsExperts *)self expertsCount];
+    if (expertsCount)
     {
-      v7 = v6;
+      v7 = expertsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addExperts:{-[AWDCoreRoutineMagicalMomentsExperts expertsAtIndex:](self, "expertsAtIndex:", i)}];
+        [to addExperts:{-[AWDCoreRoutineMagicalMomentsExperts expertsAtIndex:](self, "expertsAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDCoreRoutineMagicalMomentsExperts *)self suggestionsCount])
   {
-    [a3 clearSuggestions];
-    v9 = [(AWDCoreRoutineMagicalMomentsExperts *)self suggestionsCount];
-    if (v9)
+    [to clearSuggestions];
+    suggestionsCount = [(AWDCoreRoutineMagicalMomentsExperts *)self suggestionsCount];
+    if (suggestionsCount)
     {
-      v10 = v9;
+      v10 = suggestionsCount;
       for (j = 0; j != v10; ++j)
       {
-        [a3 addSuggestions:{-[AWDCoreRoutineMagicalMomentsExperts suggestionsAtIndex:](self, "suggestionsAtIndex:", j)}];
+        [to addSuggestions:{-[AWDCoreRoutineMagicalMomentsExperts suggestionsAtIndex:](self, "suggestionsAtIndex:", j)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -413,7 +413,7 @@ LABEL_5:
           objc_enumerationMutation(experts);
         }
 
-        v13 = [*(*(&v26 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v26 + 1) + 8 * i) copyWithZone:zone];
         [v6 addExperts:v13];
       }
 
@@ -442,7 +442,7 @@ LABEL_5:
           objc_enumerationMutation(suggestions);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v22 + 1) + 8 * j) copyWithZone:zone];
         [v6 addSuggestions:v19];
       }
 
@@ -456,21 +456,21 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 44);
+    v6 = *(equal + 44);
     if (*&self->_has)
     {
-      if ((*(a3 + 44) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 44) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_21;
       }
     }
 
-    else if (*(a3 + 44))
+    else if (*(equal + 44))
     {
 LABEL_21:
       LOBYTE(v5) = 0;
@@ -479,35 +479,35 @@ LABEL_21:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 44) & 2) == 0 || self->_durationSinceLastSuccessfulTraining != *(a3 + 4))
+      if ((*(equal + 44) & 2) == 0 || self->_durationSinceLastSuccessfulTraining != *(equal + 4))
       {
         goto LABEL_21;
       }
     }
 
-    else if ((*(a3 + 44) & 2) != 0)
+    else if ((*(equal + 44) & 2) != 0)
     {
       goto LABEL_21;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 44) & 4) == 0 || self->_trainingTime != *(a3 + 10))
+      if ((*(equal + 44) & 4) == 0 || self->_trainingTime != *(equal + 10))
       {
         goto LABEL_21;
       }
     }
 
-    else if ((*(a3 + 44) & 4) != 0)
+    else if ((*(equal + 44) & 4) != 0)
     {
       goto LABEL_21;
     }
 
     experts = self->_experts;
-    if (!(experts | *(a3 + 3)) || (v5 = [(NSMutableArray *)experts isEqual:?]) != 0)
+    if (!(experts | *(equal + 3)) || (v5 = [(NSMutableArray *)experts isEqual:?]) != 0)
     {
       suggestions = self->_suggestions;
-      if (suggestions | *(a3 + 4))
+      if (suggestions | *(equal + 4))
       {
 
         LOBYTE(v5) = [(NSMutableArray *)suggestions isEqual:?];
@@ -565,15 +565,15 @@ LABEL_8:
   return v6 ^ [(NSMutableArray *)self->_suggestions hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 44);
+    v5 = *(from + 44);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -586,17 +586,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 44) & 2) == 0)
+  else if ((*(from + 44) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_durationSinceLastSuccessfulTraining = *(a3 + 4);
+  self->_durationSinceLastSuccessfulTraining = *(from + 4);
   *&self->_has |= 2u;
-  if ((*(a3 + 44) & 4) != 0)
+  if ((*(from + 44) & 4) != 0)
   {
 LABEL_4:
-    self->_trainingTime = *(a3 + 10);
+    self->_trainingTime = *(from + 10);
     *&self->_has |= 4u;
   }
 
@@ -605,7 +605,7 @@ LABEL_5:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = *(a3 + 3);
+  v6 = *(from + 3);
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
@@ -633,7 +633,7 @@ LABEL_5:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = *(a3 + 4);
+  v11 = *(from + 4);
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v12)
   {

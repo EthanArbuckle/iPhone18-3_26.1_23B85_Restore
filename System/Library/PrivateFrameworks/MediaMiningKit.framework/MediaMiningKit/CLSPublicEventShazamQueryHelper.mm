@@ -1,19 +1,19 @@
 @interface CLSPublicEventShazamQueryHelper
 - (CLSPublicEventShazamQueryHelper)init;
 - (void)cancel;
-- (void)launchPublicEventQueryWithCancellerBlock:(id)a3 completionBlock:(id)a4;
-- (void)launchQueryWithCancellerBlock:(id)a3 completionBlock:;
+- (void)launchPublicEventQueryWithCancellerBlock:(id)block completionBlock:(id)completionBlock;
+- (void)launchQueryWithCancellerBlock:(id)block completionBlock:;
 @end
 
 @implementation CLSPublicEventShazamQueryHelper
 
-- (void)launchQueryWithCancellerBlock:(id)a3 completionBlock:
+- (void)launchQueryWithCancellerBlock:(id)block completionBlock:
 {
   v4 = v3;
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DAD1990);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(block);
   v11 = _Block_copy(v4);
   v12 = swift_allocObject();
   v12[2] = v10;
@@ -35,13 +35,13 @@
   sub_22F91FC54(0, 0, v9, &unk_22F991EF0, v15);
 }
 
-- (void)launchPublicEventQueryWithCancellerBlock:(id)a3 completionBlock:(id)a4
+- (void)launchPublicEventQueryWithCancellerBlock:(id)block completionBlock:(id)completionBlock
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DAD1990);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
-  v11 = _Block_copy(a4);
+  v10 = _Block_copy(block);
+  v11 = _Block_copy(completionBlock);
   v12 = swift_allocObject();
   *(v12 + 16) = v10;
   v13 = swift_allocObject();

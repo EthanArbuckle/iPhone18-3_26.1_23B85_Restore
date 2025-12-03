@@ -1,13 +1,13 @@
 @interface WFDiskSanitizer
-+ (id)sanitizeValue:(id)a3;
-+ (id)sanitizedDictionary:(id)a3;
++ (id)sanitizeValue:(id)value;
++ (id)sanitizedDictionary:(id)dictionary;
 @end
 
 @implementation WFDiskSanitizer
 
-+ (id)sanitizedDictionary:(id)a3
++ (id)sanitizedDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v3 = sub_1B1F1A710();
   }
@@ -25,9 +25,9 @@
   return v4;
 }
 
-+ (id)sanitizeValue:(id)a3
++ (id)sanitizeValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     swift_unknownObjectRetain();
     sub_1B1F1AED0();

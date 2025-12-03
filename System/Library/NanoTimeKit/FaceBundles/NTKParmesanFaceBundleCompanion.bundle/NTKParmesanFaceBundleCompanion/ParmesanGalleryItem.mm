@@ -1,38 +1,38 @@
 @interface ParmesanGalleryItem
 - (_TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem)init;
-- (_TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem)initWithComposition:(id)a3 views:(id)a4;
+- (_TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem)initWithComposition:(id)composition views:(id)views;
 - (void)dealloc;
-- (void)setComposition:(id)a3;
-- (void)setViews:(id)a3;
+- (void)setComposition:(id)composition;
+- (void)setViews:(id)views;
 @end
 
 @implementation ParmesanGalleryItem
 
-- (void)setComposition:(id)a3
+- (void)setComposition:(id)composition
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_composition);
-  *(&self->super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_composition) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_composition) = composition;
+  compositionCopy = composition;
 }
 
-- (void)setViews:(id)a3
+- (void)setViews:(id)views
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_views);
-  *(&self->super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_views) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_views) = views;
+  viewsCopy = views;
 }
 
-- (_TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem)initWithComposition:(id)a3 views:(id)a4
+- (_TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem)initWithComposition:(id)composition views:(id)views
 {
   v6 = OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_composition;
   *(&self->super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_composition) = 0;
   v7 = OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_views;
-  *(&self->super.isa + v6) = a3;
-  *(&self->super.isa + v7) = a4;
+  *(&self->super.isa + v6) = composition;
+  *(&self->super.isa + v7) = views;
   v11.receiver = self;
   v11.super_class = type metadata accessor for ParmesanGalleryItem();
-  v8 = a3;
-  v9 = a4;
+  compositionCopy = composition;
+  viewsCopy = views;
   return [(ParmesanGalleryItem *)&v11 init];
 }
 
@@ -40,12 +40,12 @@
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_composition);
   *(&self->super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_composition) = 0;
-  v3 = self;
+  selfCopy = self;
 
-  v4 = *(&v3->super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_views);
-  *(&v3->super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_views) = 0;
+  v4 = *(&selfCopy->super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_views);
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion19ParmesanGalleryItem_views) = 0;
 
-  v5.receiver = v3;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for ParmesanGalleryItem();
   [(ParmesanGalleryItem *)&v5 dealloc];
 }

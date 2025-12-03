@@ -1,6 +1,6 @@
 @interface ICStoreHLSAssetInfo
 - (BOOL)isiTunesStoreStream;
-- (ICStoreHLSAssetInfo)initWithItemResponseDictionary:(id)a3;
+- (ICStoreHLSAssetInfo)initWithItemResponseDictionary:(id)dictionary;
 - (NSSet)audioTraits;
 - (NSString)keyServerProtocolType;
 - (NSURL)alternateKeyCertificateURL;
@@ -228,10 +228,10 @@ LABEL_9:
   return v3;
 }
 
-- (ICStoreHLSAssetInfo)initWithItemResponseDictionary:(id)a3
+- (ICStoreHLSAssetInfo)initWithItemResponseDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"hls-playlist-url"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"hls-playlist-url"];
   if (_NSIsNSString() && [v5 length])
   {
     v6 = [MEMORY[0x1E695DFF8] URLWithString:v5];
@@ -242,27 +242,27 @@ LABEL_9:
       if (v7)
       {
         objc_storeStrong(&v7->_playlistURL, v6);
-        v9 = [v4 copy];
+        v9 = [dictionaryCopy copy];
         itemResponseDictionary = v8->_itemResponseDictionary;
         v8->_itemResponseDictionary = v9;
       }
 
       self = v8;
-      v11 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

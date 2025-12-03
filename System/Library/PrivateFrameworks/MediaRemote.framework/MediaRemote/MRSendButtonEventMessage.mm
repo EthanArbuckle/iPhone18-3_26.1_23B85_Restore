@@ -1,14 +1,14 @@
 @interface MRSendButtonEventMessage
-- (MRSendButtonEventMessage)initWithButtonEvent:(_MRHIDButtonEvent)a3;
+- (MRSendButtonEventMessage)initWithButtonEvent:(_MRHIDButtonEvent)event;
 - (_MRHIDButtonEvent)buttonEvent;
 @end
 
 @implementation MRSendButtonEventMessage
 
-- (MRSendButtonEventMessage)initWithButtonEvent:(_MRHIDButtonEvent)a3
+- (MRSendButtonEventMessage)initWithButtonEvent:(_MRHIDButtonEvent)event
 {
-  var2 = a3.var2;
-  v4 = *&a3.var0;
+  var2 = event.var2;
+  v4 = *&event.var0;
   v8.receiver = self;
   v8.super_class = MRSendButtonEventMessage;
   v5 = [(MRProtocolMessage *)&v8 init];
@@ -26,13 +26,13 @@
 
 - (_MRHIDButtonEvent)buttonEvent
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 usagePage];
-  v4 = [v2 usage];
-  v5 = [v2 buttonDown];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  usagePage = [underlyingCodableMessage usagePage];
+  usage = [underlyingCodableMessage usage];
+  buttonDown = [underlyingCodableMessage buttonDown];
 
-  v6 = v3 | (v4 << 32);
-  v7 = v5;
+  v6 = usagePage | (usage << 32);
+  v7 = buttonDown;
   result.var0 = v6;
   result.var1 = HIDWORD(v6);
   result.var2 = v7;

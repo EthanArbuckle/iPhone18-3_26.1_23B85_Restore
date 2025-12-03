@@ -1,26 +1,26 @@
 @interface FCUISettingsDataSource
 + (void)initialize;
 - (FCUISettingsDataSource)init;
-- (id)_cloudSyncingEnabled:(id)a3;
-- (id)_focusStatusDetailLabel:(id)a3;
+- (id)_cloudSyncingEnabled:(id)enabled;
+- (id)_focusStatusDetailLabel:(id)label;
 - (id)_listController;
-- (id)_modeLabel:(id)a3;
-- (id)placeholderModeForSemanticType:(int64_t)a3;
+- (id)_modeLabel:(id)label;
+- (id)placeholderModeForSemanticType:(int64_t)type;
 - (unint64_t)_cloudSyncState;
-- (void)_modeSetUp:(id)a3;
-- (void)_setCloudSyncingEnabled:(id)a3 specifier:(id)a4;
+- (void)_modeSetUp:(id)up;
+- (void)_setCloudSyncingEnabled:(id)enabled specifier:(id)specifier;
 - (void)dealloc;
-- (void)didUpdateActiveModesForActivationManager:(id)a3 assertion:(id)a4;
-- (void)globalConfigurationService:(id)a3 didEditCloudSyncPreference:(BOOL)a4;
+- (void)didUpdateActiveModesForActivationManager:(id)manager assertion:(id)assertion;
+- (void)globalConfigurationService:(id)service didEditCloudSyncPreference:(BOOL)preference;
 - (void)loadSpecifiers;
-- (void)modeConfigurationService:(id)a3 didReceiveAvailableModesUpdate:(id)a4;
+- (void)modeConfigurationService:(id)service didReceiveAvailableModesUpdate:(id)update;
 @end
 
 @implementation FCUISettingsDataSource
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     FCUISettingsRegisterLogging();
@@ -83,14 +83,14 @@
   [(FCUISettingsDataSource *)&v4 dealloc];
 }
 
-- (id)placeholderModeForSemanticType:(int64_t)a3
+- (id)placeholderModeForSemanticType:(int64_t)type
 {
   allReservedModes = self->_allReservedModes;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_280C;
   v6[3] = &unk_20DF0;
-  v6[4] = a3;
+  v6[4] = type;
   v4 = [(NSSet *)allReservedModes bs_firstObjectPassingTest:v6];
 
   return v4;
@@ -99,7 +99,7 @@
 - (void)loadSpecifiers
 {
   v3 = +[NSBundle fcui_focusSettingsLocalizationBundle];
-  v64 = [(FCUISettingsDataSource *)self specifiers];
+  specifiers = [(FCUISettingsDataSource *)self specifiers];
   modeConfigurationService = self->_modeConfigurationService;
   v72 = 0;
   v5 = [(DNDModeConfigurationService *)modeConfigurationService allModesReturningError:&v72];
@@ -112,12 +112,12 @@
   self->_availableModes = v8;
 
   v10 = [(NSSet *)self->_allReservedModes bs_reduce:&off_21BE0 block:&stru_20E50];
-  v11 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
   [(FCUISettingsDataSource *)self _listController];
   v12 = &_s15FocusSettingsUI022ActivityDetailViewHostF5ModelC14_titleBarTitle7Combine9PublishedV9PublisherVySS_GvgTj_ptr;
-  v57 = v61 = v11;
-  [v57 setAddButtonHidden:{v11 >= +[DNDMode maxUIAddableModes](DNDMode, "maxUIAddableModes")}];
+  v57 = v61 = unsignedIntegerValue;
+  [v57 setAddButtonHidden:{unsignedIntegerValue >= +[DNDMode maxUIAddableModes](DNDMode, "maxUIAddableModes")}];
   if (v6 && os_log_type_enabled(FCUILogSettings, OS_LOG_TYPE_ERROR))
   {
     sub_13244();
@@ -132,9 +132,9 @@
     [v13 setProperty:v14 forKey:PSFooterTextGroupKey];
 
     v55 = v13;
-    [v64 addObject:v13];
-    v15 = [(NSSet *)self->_availableModes allObjects];
-    v16 = [v15 sortedArrayUsingComparator:&stru_20E90];
+    [specifiers addObject:v13];
+    allObjects = [(NSSet *)self->_availableModes allObjects];
+    v16 = [allObjects sortedArrayUsingComparator:&stru_20E90];
 
     v70 = 0u;
     v71 = 0u;
@@ -161,8 +161,8 @@
         }
 
         v19 = *(*(&v68 + 1) + 8 * i);
-        v20 = [v19 name];
-        v21 = [PSSpecifier preferenceSpecifierNamed:v20 target:self set:0 get:"_modeLabel:" detail:0 cell:2 edit:0];
+        name = [v19 name];
+        v21 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:"_modeLabel:" detail:0 cell:2 edit:0];
 
         if ([v19 isPlaceholder])
         {
@@ -179,30 +179,30 @@
           [v21 setDetailControllerClass:objc_opt_class()];
         }
 
-        v22 = [v19 modeIdentifier];
-        [v21 setProperty:v22 forKey:v63];
+        modeIdentifier = [v19 modeIdentifier];
+        [v21 setProperty:modeIdentifier forKey:v63];
 
-        v23 = [v19 symbolImageName];
-        if (v23)
+        symbolImageName = [v19 symbolImageName];
+        if (symbolImageName)
         {
-          v24 = [UIImage _systemImageNamed:v23];
+          v24 = [UIImage _systemImageNamed:symbolImageName];
           if (v24)
           {
             v25 = v24;
-            v26 = self;
-            v27 = [v19 tintColorName];
-            v28 = v27;
-            if (v27)
+            selfCopy = self;
+            tintColorName = [v19 tintColorName];
+            v28 = tintColorName;
+            if (tintColorName)
             {
-              v29 = v27;
+              defaultTintColorName = tintColorName;
             }
 
             else
             {
-              v29 = [v12[250] defaultTintColorName];
+              defaultTintColorName = [v12[250] defaultTintColorName];
             }
 
-            v30 = v29;
+            v30 = defaultTintColorName;
 
             v31 = NSSelectorFromString(v30);
             if (objc_opt_respondsToSelector())
@@ -219,7 +219,7 @@
 
             [v21 setProperty:v25 forKey:v59];
 
-            self = v26;
+            self = selfCopy;
             v12 = &_s15FocusSettingsUI022ActivityDetailViewHostF5ModelC14_titleBarTitle7Combine9PublishedV9PublisherVySS_GvgTj_ptr;
             v17 = v60;
           }
@@ -234,7 +234,7 @@
           [v21 setProperty:v36 forKey:@"FCUIDetailKey"];
         }
 
-        [v64 addObject:v21];
+        [specifiers addObject:v21];
 
 LABEL_26:
       }
@@ -251,18 +251,18 @@ LABEL_28:
   }
 
   v37 = +[PSSpecifier emptyGroupSpecifier];
-  v38 = [(FCUISettingsDataSource *)self _cloudSyncState];
-  v39 = v38 & 0xE;
+  _cloudSyncState = [(FCUISettingsDataSource *)self _cloudSyncState];
+  v39 = _cloudSyncState & 0xE;
   if (v39 == 14)
   {
     goto LABEL_37;
   }
 
-  if ((v38 & 8) != 0)
+  if ((_cloudSyncState & 8) != 0)
   {
-    if ((v38 & 4) != 0)
+    if ((_cloudSyncState & 4) != 0)
     {
-      if ((v38 & 2) != 0)
+      if ((_cloudSyncState & 2) != 0)
       {
 LABEL_37:
         v41 = [v3 localizedStringForKey:@"CLOUD_SYNCING_FOOTER_TEXT" value:&stru_21648 table:0];
@@ -293,7 +293,7 @@ LABEL_38:
   v42 = v39 == 14;
   v65 = PSFooterTextGroupKey;
   [v37 setProperty:v41 forKey:?];
-  [v64 addObject:v37];
+  [specifiers addObject:v37];
   [v3 localizedStringForKey:@"CLOUD_SYNCING" value:&stru_21648 table:0];
   v67 = v37;
   v44 = v43 = v3;
@@ -307,7 +307,7 @@ LABEL_38:
 
   v49 = PSAllowMultilineTitleKey;
   [(PSSpecifier *)self->_cloudSyncingSpecifier setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
-  [v64 addObject:self->_cloudSyncingSpecifier];
+  [specifiers addObject:self->_cloudSyncingSpecifier];
   v50 = +[PSSpecifier emptyGroupSpecifier];
   v51 = [v43 localizedStringForKey:@"FOCUS_STATUS" value:&stru_21648 table:0];
   v52 = [PSSpecifier preferenceSpecifierNamed:v51 target:self set:0 get:"_focusStatusDetailLabel:" detail:0 cell:2 edit:0];
@@ -319,23 +319,23 @@ LABEL_38:
   v54 = [v43 localizedStringForKey:@"FOCUS_STATUS_DESCRIPTION" value:&stru_21648 table:0];
   [v50 setProperty:v54 forKey:v65];
 
-  [v64 addObject:v50];
-  [v64 addObject:self->_focusStatusSpecifier];
+  [specifiers addObject:v50];
+  [specifiers addObject:self->_focusStatusSpecifier];
 }
 
-- (void)modeConfigurationService:(id)a3 didReceiveAvailableModesUpdate:(id)a4
+- (void)modeConfigurationService:(id)service didReceiveAvailableModesUpdate:(id)update
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_3428;
   v5[3] = &unk_20EB8;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
+  updateCopy = update;
+  v4 = updateCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)globalConfigurationService:(id)a3 didEditCloudSyncPreference:(BOOL)a4
+- (void)globalConfigurationService:(id)service didEditCloudSyncPreference:(BOOL)preference
 {
   objc_initWeak(&location, self);
   v4[0] = _NSConcreteStackBlock;
@@ -348,7 +348,7 @@ LABEL_38:
   objc_destroyWeak(&location);
 }
 
-- (void)didUpdateActiveModesForActivationManager:(id)a3 assertion:(id)a4
+- (void)didUpdateActiveModesForActivationManager:(id)manager assertion:(id)assertion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -372,25 +372,25 @@ LABEL_38:
   return v3;
 }
 
-- (id)_cloudSyncingEnabled:(id)a3
+- (id)_cloudSyncingEnabled:(id)enabled
 {
-  v3 = [(DNDGlobalConfigurationService *)self->_globalConfigurationService isCloudSyncActive];
+  isCloudSyncActive = [(DNDGlobalConfigurationService *)self->_globalConfigurationService isCloudSyncActive];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:isCloudSyncActive];
 }
 
-- (void)_setCloudSyncingEnabled:(id)a3 specifier:(id)a4
+- (void)_setCloudSyncingEnabled:(id)enabled specifier:(id)specifier
 {
-  -[FCUISettingsDataSource _setCloudSyncPreferenceEnabled:](self, "_setCloudSyncPreferenceEnabled:", [a3 BOOLValue]);
+  -[FCUISettingsDataSource _setCloudSyncPreferenceEnabled:](self, "_setCloudSyncPreferenceEnabled:", [enabled BOOLValue]);
 
   [(FCUISettingsDataSource *)self reloadSpecifiers];
 }
 
-- (id)_modeLabel:(id)a3
+- (id)_modeLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v5 = +[_TtC13FocusSettings30SettingsActivityViewController dndModeKey];
-  v6 = [v4 propertyForKey:v5];
+  v6 = [labelCopy propertyForKey:v5];
 
   if ([v6 isPlaceholder])
   {
@@ -414,7 +414,7 @@ LABEL_7:
   return v9;
 }
 
-- (id)_focusStatusDetailLabel:(id)a3
+- (id)_focusStatusDetailLabel:(id)label
 {
   v4 = +[NSBundle fcui_focusSettingsLocalizationBundle];
   v5 = @"OFF";
@@ -428,37 +428,37 @@ LABEL_7:
   return v6;
 }
 
-- (void)_modeSetUp:(id)a3
+- (void)_modeSetUp:(id)up
 {
-  v4 = a3;
+  upCopy = up;
   v5 = +[_TtC13FocusSettings30SettingsActivityViewController dndModeKey];
-  v12 = [v4 propertyForKey:v5];
+  v12 = [upCopy propertyForKey:v5];
 
   if ([(FCUISettingsDataSource *)self _shouldShowWelcomeController])
   {
-    v6 = [(FCUISettingsDataSource *)self _listController];
-    [v6 presentSetupControllerForPlaceholderMode:v12];
+    _listController = [(FCUISettingsDataSource *)self _listController];
+    [_listController presentSetupControllerForPlaceholderMode:v12];
   }
 
   else
   {
     v7 = [DNDMode alloc];
-    v8 = [v12 name];
-    v9 = [v12 modeIdentifier];
-    v10 = [v12 symbolImageName];
-    v11 = [v12 tintColorName];
-    v6 = [v7 initWithName:v8 modeIdentifier:v9 symbolImageName:v10 tintColorName:v11 semanticType:{objc_msgSend(v12, "semanticType")}];
+    name = [v12 name];
+    modeIdentifier = [v12 modeIdentifier];
+    symbolImageName = [v12 symbolImageName];
+    tintColorName = [v12 tintColorName];
+    _listController = [v7 initWithName:name modeIdentifier:modeIdentifier symbolImageName:symbolImageName tintColorName:tintColorName semanticType:{objc_msgSend(v12, "semanticType")}];
 
-    [(FCUISettingsDataSource *)self createDefaultModeConfigurationForMode:v6];
+    [(FCUISettingsDataSource *)self createDefaultModeConfigurationForMode:_listController];
   }
 }
 
 - (id)_listController
 {
   v2 = [(FCUISettingsDataSource *)self observersOfClass:objc_opt_class()];
-  v3 = [v2 anyObject];
+  anyObject = [v2 anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 @end

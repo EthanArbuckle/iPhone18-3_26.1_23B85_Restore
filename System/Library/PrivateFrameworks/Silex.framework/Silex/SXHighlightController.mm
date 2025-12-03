@@ -1,6 +1,6 @@
 @interface SXHighlightController
 - (SXHighlightController)init;
-- (void)applyHighlightForStorage:(id)a3 withRect:(CGRect)a4 inRange:(_NSRange)a5 icc:(id)a6 isActive:(BOOL)a7 keyboardHeight:(unint64_t)a8 isReload:(BOOL)a9;
+- (void)applyHighlightForStorage:(id)storage withRect:(CGRect)rect inRange:(_NSRange)range icc:(id)icc isActive:(BOOL)active keyboardHeight:(unint64_t)height isReload:(BOOL)reload;
 - (void)clearHighlights;
 - (void)removeActiveLayers;
 @end
@@ -14,56 +14,56 @@
   v2 = [(SXHighlightController *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     highlightLayers = v2->_highlightLayers;
-    v2->_highlightLayers = v3;
+    v2->_highlightLayers = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     activeLayers = v2->_activeLayers;
-    v2->_activeLayers = v5;
+    v2->_activeLayers = array2;
   }
 
   return v2;
 }
 
-- (void)applyHighlightForStorage:(id)a3 withRect:(CGRect)a4 inRange:(_NSRange)a5 icc:(id)a6 isActive:(BOOL)a7 keyboardHeight:(unint64_t)a8 isReload:(BOOL)a9
+- (void)applyHighlightForStorage:(id)storage withRect:(CGRect)rect inRange:(_NSRange)range icc:(id)icc isActive:(BOOL)active keyboardHeight:(unint64_t)height isReload:(BOOL)reload
 {
-  v81 = a7;
-  length = a5.length;
-  location = a5.location;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  activeCopy = active;
+  length = range.length;
+  location = range.location;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v85[1] = *MEMORY[0x1E69E9840];
-  v18 = a6;
-  v19 = a3;
-  v20 = [(SXTangierTextRenderCollectorItem *)v19 flowInfo];
-  v21 = [v18 repForInfo:v20];
+  iccCopy = icc;
+  storageCopy = storage;
+  flowInfo = [(SXTangierTextRenderCollectorItem *)storageCopy flowInfo];
+  v21 = [iccCopy repForInfo:flowInfo];
 
-  v22 = [(SXTangierTextRenderCollectorItem *)v19 storage];
-  v23 = [v21 storage];
-  v24 = [(SXTangierTextRenderCollectorItem *)v19 directLayerHost];
+  storage = [(SXTangierTextRenderCollectorItem *)storageCopy storage];
+  storage2 = [v21 storage];
+  directLayerHost = [(SXTangierTextRenderCollectorItem *)storageCopy directLayerHost];
 
-  if (v24)
+  if (directLayerHost)
   {
-    v71 = a8;
+    heightCopy = height;
     v74 = v21;
-    v78 = self;
-    v80 = v18;
-    v25 = [MEMORY[0x1E6979398] layer];
-    v26 = [MEMORY[0x1E6979508] layer];
-    v27 = v23;
-    v28 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v28 scale];
-    [v26 setContentsScale:?];
+    selfCopy = self;
+    v80 = iccCopy;
+    layer = [MEMORY[0x1E6979398] layer];
+    layer2 = [MEMORY[0x1E6979508] layer];
+    v27 = storage2;
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    [layer2 setContentsScale:?];
 
-    v29 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v29 scale];
-    [v25 setContentsScale:?];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 scale];
+    [layer setContentsScale:?];
 
-    v30 = [v22 characterStyleAtCharIndex:location effectiveRange:0];
-    v31 = [v22 paragraphStyleAtCharIndex:location effectiveRange:0];
+    v30 = [storage characterStyleAtCharIndex:location effectiveRange:0];
+    v31 = [storage paragraphStyleAtCharIndex:location effectiveRange:0];
     v79 = v27;
     v32 = [v27 substringWithRange:{location, length}];
     v77 = v31;
@@ -85,7 +85,7 @@
     LODWORD(v31) = [v39 BOOLValue];
 
     v40 = [v30 valueForProperty:20];
-    v41 = [v40 BOOLValue];
+    bOOLValue = [v40 BOOLValue];
 
     v82 = [v30 valueForProperty:18];
     v75 = v36;
@@ -99,17 +99,17 @@
     }
 
     v21 = v74;
-    if (v41)
+    if (bOOLValue)
     {
       v45 = [v43 fontDescriptorWithSymbolicTraits:1];
 
       v43 = v45;
     }
 
-    [v26 setFont:{objc_msgSend(MEMORY[0x1E69DB878], "fontWithDescriptor:size:", v43, v37)}];
-    [v26 setFontSize:v37];
-    [v26 setString:v83];
-    v18 = v80;
+    [layer2 setFont:{objc_msgSend(MEMORY[0x1E69DB878], "fontWithDescriptor:size:", v43, v37)}];
+    [layer2 setFontSize:v37];
+    [layer2 setString:v83];
+    iccCopy = v80;
     if (v74)
     {
       [v74 wordMetricsAtCharIndex:location];
@@ -126,56 +126,56 @@
       v46 = v46 - 0.0;
     }
 
-    [v26 setFrame:{x, v46, width, height + 0.0}];
-    [v25 setFrame:{x, y, width, height}];
-    [v25 setCornerRadius:4.0];
-    if (!v81)
+    [layer2 setFrame:{x, v46, width, height + 0.0}];
+    [layer setFrame:{x, y, width, height}];
+    [layer setCornerRadius:4.0];
+    if (!activeCopy)
     {
       [v82 luminance];
       if (v55 <= 0.5)
       {
-        [v26 setForegroundColor:{objc_msgSend(v82, "CGColor")}];
-        v59 = [MEMORY[0x1E69DC888] lightGrayColor];
-        [v25 setBackgroundColor:{objc_msgSend(v59, "CGColor")}];
+        [layer2 setForegroundColor:{objc_msgSend(v82, "CGColor")}];
+        lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+        [layer setBackgroundColor:{objc_msgSend(lightGrayColor, "CGColor")}];
 
-        v60 = [MEMORY[0x1E69DC888] clearColor];
-        [v25 setBorderColor:{objc_msgSend(v60, "CGColor")}];
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        [layer setBorderColor:{objc_msgSend(clearColor, "CGColor")}];
 
-        [v25 setBorderWidth:0.0];
+        [layer setBorderWidth:0.0];
       }
 
       else
       {
-        v56 = [MEMORY[0x1E69DC888] clearColor];
-        [v26 setForegroundColor:{objc_msgSend(v56, "CGColor")}];
+        clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+        [layer2 setForegroundColor:{objc_msgSend(clearColor2, "CGColor")}];
 
-        v57 = [MEMORY[0x1E69DC888] clearColor];
-        [v25 setBackgroundColor:{objc_msgSend(v57, "CGColor")}];
+        clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+        [layer setBackgroundColor:{objc_msgSend(clearColor3, "CGColor")}];
 
-        [v25 setBorderWidth:2.0];
-        v58 = [MEMORY[0x1E69DC888] whiteColor];
-        [v25 setBorderColor:{objc_msgSend(v58, "CGColor")}];
+        [layer setBorderWidth:2.0];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [layer setBorderColor:{objc_msgSend(whiteColor, "CGColor")}];
       }
 
-      v61 = [(SXHighlightController *)v78 highlightLayers];
-      [v61 addObject:v26];
+      highlightLayers = [(SXHighlightController *)selfCopy highlightLayers];
+      [highlightLayers addObject:layer2];
 
-      v62 = [(SXHighlightController *)v78 highlightLayers];
-      v63 = v62;
-      v64 = v25;
+      highlightLayers2 = [(SXHighlightController *)selfCopy highlightLayers];
+      v63 = highlightLayers2;
+      v64 = layer;
       goto LABEL_23;
     }
 
-    v47 = [MEMORY[0x1E69DC888] blackColor];
-    [v26 setForegroundColor:{objc_msgSend(v47, "CGColor")}];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [layer2 setForegroundColor:{objc_msgSend(blackColor, "CGColor")}];
 
-    v48 = [MEMORY[0x1E69DC888] systemYellowColor];
-    [v25 setBackgroundColor:{objc_msgSend(v48, "CGColor")}];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    [layer setBackgroundColor:{objc_msgSend(systemYellowColor, "CGColor")}];
 
-    if (!a9)
+    if (!reload)
     {
       [v80 sizeOfScrollViewEnclosingCanvas];
-      v50 = v49 - v71;
+      v50 = v49 - heightCopy;
       [v74 frameInCanvas];
       v52 = v50 * 0.5;
       if (v51 + 0.0 > v52)
@@ -196,24 +196,24 @@ LABEL_21:
     }
 
 LABEL_22:
-    v66 = [(SXHighlightController *)v78 activeLayers];
-    [v66 addObject:v25];
+    activeLayers = [(SXHighlightController *)selfCopy activeLayers];
+    [activeLayers addObject:layer];
 
-    v62 = [(SXHighlightController *)v78 activeLayers];
-    v63 = v62;
-    v64 = v26;
+    highlightLayers2 = [(SXHighlightController *)selfCopy activeLayers];
+    v63 = highlightLayers2;
+    v64 = layer2;
 LABEL_23:
-    [v62 addObject:v64];
+    [highlightLayers2 addObject:v64];
 
-    v67 = [v24 layer];
-    v68 = [v24 layer];
-    [v67 insertSublayer:v25 below:v68];
+    layer3 = [directLayerHost layer];
+    layer4 = [directLayerHost layer];
+    [layer3 insertSublayer:layer below:layer4];
 
-    v69 = [v24 layer];
-    v70 = [v24 layer];
-    [v69 insertSublayer:v26 below:v70];
+    layer5 = [directLayerHost layer];
+    layer6 = [directLayerHost layer];
+    [layer5 insertSublayer:layer2 below:layer6];
 
-    v23 = v79;
+    storage2 = v79;
   }
 }
 
@@ -224,8 +224,8 @@ LABEL_23:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SXHighlightController *)self activeLayers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  activeLayers = [(SXHighlightController *)self activeLayers];
+  v4 = [activeLayers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -237,21 +237,21 @@ LABEL_23:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeLayers);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) removeFromSuperlayer];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [activeLayers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(SXHighlightController *)self activeLayers];
-  [v8 removeAllObjects];
+  activeLayers2 = [(SXHighlightController *)self activeLayers];
+  [activeLayers2 removeAllObjects];
 }
 
 - (void)clearHighlights
@@ -261,8 +261,8 @@ LABEL_23:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SXHighlightController *)self highlightLayers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  highlightLayers = [(SXHighlightController *)self highlightLayers];
+  v4 = [highlightLayers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -274,21 +274,21 @@ LABEL_23:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(highlightLayers);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) removeFromSuperlayer];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [highlightLayers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(SXHighlightController *)self highlightLayers];
-  [v8 removeAllObjects];
+  highlightLayers2 = [(SXHighlightController *)self highlightLayers];
+  [highlightLayers2 removeAllObjects];
 
   [(SXHighlightController *)self removeActiveLayers];
 }

@@ -1,15 +1,15 @@
 @interface PUSelectableAssetCollectionViewLayout
-- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)a3;
-- (CGRect)_floatingSelectionBadgeFrameForItemFrame:(CGRect)a3 visibleItemFrame:(CGRect)a4 atIndexPath:(id)a5;
+- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)change;
+- (CGRect)_floatingSelectionBadgeFrameForItemFrame:(CGRect)frame visibleItemFrame:(CGRect)itemFrame atIndexPath:(id)path;
 - (CGRect)collectionViewBounds;
 - (CGSize)layoutReferenceSize;
 - (UIOffset)sharingBadgeOffset;
-- (id)_badgeLayoutAttributesForItemLayoutAttributes:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)setFloatingCellIndexPaths:(id)a3;
-- (void)setLayoutReferenceSize:(CGSize)a3;
+- (id)_badgeLayoutAttributesForItemLayoutAttributes:(id)attributes;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (void)setFloatingCellIndexPaths:(id)paths;
+- (void)setLayoutReferenceSize:(CGSize)size;
 @end
 
 @implementation PUSelectableAssetCollectionViewLayout
@@ -53,20 +53,20 @@
   return result;
 }
 
-- (void)setLayoutReferenceSize:(CGSize)a3
+- (void)setLayoutReferenceSize:(CGSize)size
 {
   p_layoutReferenceSize = &self->_layoutReferenceSize;
   width = self->_layoutReferenceSize.width;
   height = self->_layoutReferenceSize.height;
-  if (width == a3.width && height == a3.height)
+  if (width == size.width && height == size.height)
   {
     return;
   }
 
-  p_layoutReferenceSize->width = a3.width;
-  self->_layoutReferenceSize.height = a3.height;
-  v8 = [(PUSelectableAssetCollectionViewLayout *)self collectionView];
-  [v8 bounds];
+  p_layoutReferenceSize->width = size.width;
+  self->_layoutReferenceSize.height = size.height;
+  collectionView = [(PUSelectableAssetCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v10 = v9;
   v12 = v11;
 
@@ -87,18 +87,18 @@ LABEL_13:
   }
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  kindCopy = kind;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = PUSelectableAssetCollectionViewLayout;
-  v8 = [(PUSelectableAssetCollectionViewLayout *)&v11 layoutAttributesForSupplementaryViewOfKind:v6 atIndexPath:v7];
+  v8 = [(PUSelectableAssetCollectionViewLayout *)&v11 layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:pathCopy];
   if (!v8)
   {
-    if ([v6 isEqualToString:@"PUSelectableAssetBadgeKind"])
+    if ([kindCopy isEqualToString:@"PUSelectableAssetBadgeKind"])
     {
-      v9 = [(PUSelectableAssetCollectionViewLayout *)self layoutAttributesForItemAtIndexPath:v7];
+      v9 = [(PUSelectableAssetCollectionViewLayout *)self layoutAttributesForItemAtIndexPath:pathCopy];
       v8 = [(PUSelectableAssetCollectionViewLayout *)self _badgeLayoutAttributesForItemLayoutAttributes:v9];
     }
 
@@ -111,14 +111,14 @@ LABEL_13:
   return v8;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = PUSelectableAssetCollectionViewLayout;
-  v4 = a3;
-  v5 = [(PUHorizontalCollectionViewLayout *)&v10 layoutAttributesForItemAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(PUHorizontalCollectionViewLayout *)&v10 layoutAttributesForItemAtIndexPath:pathCopy];
   v6 = [(PUSelectableAssetCollectionViewLayout *)self floatingCellIndexPaths:v10.receiver];
-  v7 = [v6 member:v4];
+  v7 = [v6 member:pathCopy];
 
   v8 = 0.0;
   if (!v7)
@@ -131,11 +131,11 @@ LABEL_13:
   return v5;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v16.receiver = self;
   v16.super_class = PUSelectableAssetCollectionViewLayout;
-  v4 = [(PUHorizontalCollectionViewLayout *)&v16 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(PUHorizontalCollectionViewLayout *)&v16 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = [v4 mutableCopy];
 
   v6 = [v5 count];
@@ -145,9 +145,9 @@ LABEL_13:
     for (i = 0; i != v7; ++i)
     {
       v9 = [v5 objectAtIndexedSubscript:i];
-      v10 = [(PUSelectableAssetCollectionViewLayout *)self floatingCellIndexPaths];
-      v11 = [v9 indexPath];
-      v12 = [v10 member:v11];
+      floatingCellIndexPaths = [(PUSelectableAssetCollectionViewLayout *)self floatingCellIndexPaths];
+      indexPath = [v9 indexPath];
+      v12 = [floatingCellIndexPaths member:indexPath];
 
       if (v12)
       {
@@ -168,22 +168,22 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)a3
+- (BOOL)_shouldInvalidateCachedLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(PUSelectableAssetCollectionViewLayout *)self collectionViewBounds:a3.origin.x];
+  height = change.size.height;
+  width = change.size.width;
+  [(PUSelectableAssetCollectionViewLayout *)self collectionViewBounds:change.origin.x];
   return v6 != height || v5 != width;
 }
 
-- (id)_badgeLayoutAttributesForItemLayoutAttributes:(id)a3
+- (id)_badgeLayoutAttributesForItemLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (attributesCopy)
   {
-    v6 = [v4 indexPath];
-    v7 = [MEMORY[0x1E69DC858] layoutAttributesForSupplementaryViewOfKind:@"PUSelectableAssetBadgeKind" withIndexPath:v6];
+    indexPath = [attributesCopy indexPath];
+    v7 = [MEMORY[0x1E69DC858] layoutAttributesForSupplementaryViewOfKind:@"PUSelectableAssetBadgeKind" withIndexPath:indexPath];
     [(PUSelectableAssetCollectionViewLayout *)self collectionViewBounds];
     v9 = v8;
     v11 = v10;
@@ -237,9 +237,9 @@ LABEL_13:
     v34 = 0.0;
     if (!CGRectIsEmpty(*(&v29 - 3)))
     {
-      v35 = [(PUSelectableAssetCollectionViewLayout *)self floatingCellIndexPaths];
-      v36 = [v7 indexPath];
-      v37 = [v35 member:v36];
+      floatingCellIndexPaths = [(PUSelectableAssetCollectionViewLayout *)self floatingCellIndexPaths];
+      indexPath2 = [v7 indexPath];
+      v37 = [floatingCellIndexPaths member:indexPath2];
       if (v37)
       {
         v34 = 0.0;
@@ -252,7 +252,7 @@ LABEL_13:
     }
 
     [v7 setAlpha:v34];
-    [(PUSelectableAssetCollectionViewLayout *)self _floatingSelectionBadgeFrameForItemFrame:v6 visibleItemFrame:v17 atIndexPath:v19, v21, v23, v30, y, width, v39];
+    [(PUSelectableAssetCollectionViewLayout *)self _floatingSelectionBadgeFrameForItemFrame:indexPath visibleItemFrame:v17 atIndexPath:v19, v21, v23, v30, y, width, v39];
     [v7 setFrame:?];
     [v7 setZIndex:{objc_msgSend(v5, "zIndex") + 1}];
     [v7 setAlpha:1.0];
@@ -266,25 +266,25 @@ LABEL_13:
   return v7;
 }
 
-- (CGRect)_floatingSelectionBadgeFrameForItemFrame:(CGRect)a3 visibleItemFrame:(CGRect)a4 atIndexPath:(id)a5
+- (CGRect)_floatingSelectionBadgeFrameForItemFrame:(CGRect)frame visibleItemFrame:(CGRect)itemFrame atIndexPath:(id)path
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  v42 = a3.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  v41 = a3.size.width;
-  v8 = a3.origin.y;
-  v9 = a3.origin.x;
-  v11 = a5;
+  width = itemFrame.size.width;
+  height = itemFrame.size.height;
+  v42 = frame.size.height;
+  y = itemFrame.origin.y;
+  x = itemFrame.origin.x;
+  v6 = frame.size.height;
+  v7 = frame.size.width;
+  v41 = frame.size.width;
+  v8 = frame.origin.y;
+  v9 = frame.origin.x;
+  pathCopy = path;
   [(PUSelectableAssetCollectionViewLayout *)self sharingBadgeOffset];
   v13 = v12;
-  v14 = [(PUSelectableAssetCollectionViewLayout *)self collectionView];
-  v15 = [(PUHorizontalCollectionViewLayout *)self delegate];
+  collectionView = [(PUSelectableAssetCollectionViewLayout *)self collectionView];
+  delegate = [(PUHorizontalCollectionViewLayout *)self delegate];
   v39 = v9;
-  [v15 layout:self collectionView:v14 selectionBadgeFrameForItemFrame:v11 atIndexPath:{v9, v8, v7, v6}];
+  [delegate layout:self collectionView:collectionView selectionBadgeFrameForItemFrame:pathCopy atIndexPath:{v9, v8, v7, v6}];
   v17 = v16;
   v19 = v18;
   v40 = v20;
@@ -374,12 +374,12 @@ LABEL_13:
   return result;
 }
 
-- (void)setFloatingCellIndexPaths:(id)a3
+- (void)setFloatingCellIndexPaths:(id)paths
 {
-  v8 = a3;
+  pathsCopy = paths;
   v5 = self->_floatingCellIndexPaths;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == pathsCopy)
   {
   }
 
@@ -389,7 +389,7 @@ LABEL_13:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_floatingCellIndexPaths, a3);
+      objc_storeStrong(&self->_floatingCellIndexPaths, paths);
       [(PUSelectableAssetCollectionViewLayout *)self invalidateLayout];
     }
   }

@@ -1,9 +1,9 @@
 @interface SBDashBoardHostableEntityPresentationManager
 + (id)sharedInstance;
 - (SBDashBoardHostableEntityPresentationManager)init;
-- (void)dashBoardHostableEntityFluidSwitcherViewControllerDidDismiss:(id)a3;
-- (void)dismissEntity:(id)a3 completion:(id)a4;
-- (void)presentEntityWithRequest:(id)a3;
+- (void)dashBoardHostableEntityFluidSwitcherViewControllerDidDismiss:(id)dismiss;
+- (void)dismissEntity:(id)entity completion:(id)completion;
+- (void)presentEntityWithRequest:(id)request;
 @end
 
 @implementation SBDashBoardHostableEntityPresentationManager
@@ -16,9 +16,9 @@
   if (v2)
   {
     v3 = +[SBLockScreenManager sharedInstance];
-    v4 = [v3 coverSheetViewController];
+    coverSheetViewController = [v3 coverSheetViewController];
     coverSheetViewController = v2->_coverSheetViewController;
-    v2->_coverSheetViewController = v4;
+    v2->_coverSheetViewController = coverSheetViewController;
   }
 
   return v2;
@@ -43,21 +43,21 @@ void __62__SBDashBoardHostableEntityPresentationManager_sharedInstance__block_in
   sharedInstance___sharedInstance_14 = v0;
 }
 
-- (void)presentEntityWithRequest:(id)a3
+- (void)presentEntityWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 entity];
-  v6 = [v4 animated];
-  v7 = [v4 transitionRequest];
+  requestCopy = request;
+  entity = [requestCopy entity];
+  animated = [requestCopy animated];
+  transitionRequest = [requestCopy transitionRequest];
   switcherViewController = self->_switcherViewController;
   if (!switcherViewController)
   {
-    v12 = -[SBDashBoardHostableEntityHostingFluidSwitcherViewController initWithHostableEntity:isEphemeralSwitcher:]([SBDashBoardHostableEntityHostingFluidSwitcherViewController alloc], "initWithHostableEntity:isEphemeralSwitcher:", v5, [v4 isEphemeralSwitcher]);
+    v12 = -[SBDashBoardHostableEntityHostingFluidSwitcherViewController initWithHostableEntity:isEphemeralSwitcher:]([SBDashBoardHostableEntityHostingFluidSwitcherViewController alloc], "initWithHostableEntity:isEphemeralSwitcher:", entity, [requestCopy isEphemeralSwitcher]);
     v13 = self->_switcherViewController;
     self->_switcherViewController = v12;
 
     [(SBDashBoardHostableEntityHostingFluidSwitcherViewController *)self->_switcherViewController setDelegate:self];
-    -[SBDashBoardHostableEntityHostingFluidSwitcherViewController setDismissGestureEnabled:](self->_switcherViewController, "setDismissGestureEnabled:", [v4 dismissGestureEnabled]);
+    -[SBDashBoardHostableEntityHostingFluidSwitcherViewController setDismissGestureEnabled:](self->_switcherViewController, "setDismissGestureEnabled:", [requestCopy dismissGestureEnabled]);
     [(SBDashBoardHostableEntityHostingFluidSwitcherViewController *)self->_switcherViewController setSwitcherBackdropController:self->_coverSheetViewController];
     v15 = self->_switcherViewController;
     coverSheetViewController = self->_coverSheetViewController;
@@ -66,10 +66,10 @@ void __62__SBDashBoardHostableEntityPresentationManager_sharedInstance__block_in
     v23[2] = __73__SBDashBoardHostableEntityPresentationManager_presentEntityWithRequest___block_invoke;
     v23[3] = &unk_2783B6010;
     v23[4] = self;
-    v24 = v5;
-    v25 = v7;
-    v27 = v6;
-    v26 = v4;
+    v24 = entity;
+    v25 = transitionRequest;
+    v27 = animated;
+    v26 = requestCopy;
     [(CSCoverSheetViewController *)coverSheetViewController presentModalViewController:v15 animated:0 completion:v23];
 
     v16 = v24;
@@ -86,10 +86,10 @@ LABEL_8:
     v18[2] = __73__SBDashBoardHostableEntityPresentationManager_presentEntityWithRequest___block_invoke_3;
     v18[3] = &unk_2783B6010;
     v18[4] = self;
-    v19 = v5;
-    v20 = v7;
-    v22 = v6;
-    v21 = v4;
+    v19 = entity;
+    v20 = transitionRequest;
+    v22 = animated;
+    v21 = requestCopy;
     [(CSCoverSheetViewController *)v17 presentModalViewController:switcherViewController animated:0 completion:v18];
 
     v16 = v19;
@@ -106,7 +106,7 @@ LABEL_8:
     pendingPresentationRequests = self->_pendingPresentationRequests;
   }
 
-  [(NSMutableOrderedSet *)pendingPresentationRequests addObject:v4];
+  [(NSMutableOrderedSet *)pendingPresentationRequests addObject:requestCopy];
 LABEL_9:
 }
 
@@ -156,10 +156,10 @@ void __73__SBDashBoardHostableEntityPresentationManager_presentEntityWithRequest
   v4[2](v4, a2, *(*(a1 + 40) + 8));
 }
 
-- (void)dismissEntity:(id)a3 completion:(id)a4
+- (void)dismissEntity:(id)entity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  entityCopy = entity;
+  completionCopy = completion;
   self->_isDismissingEntity = 1;
   objc_initWeak(&location, self);
   p_switcherViewController = &self->_switcherViewController;
@@ -170,7 +170,7 @@ void __73__SBDashBoardHostableEntityPresentationManager_presentEntityWithRequest
   v12[2] = __73__SBDashBoardHostableEntityPresentationManager_dismissEntity_completion___block_invoke;
   v12[3] = &unk_2783AC308;
   objc_copyWeak(&v14, &location);
-  v11 = v7;
+  v11 = completionCopy;
   v13 = v11;
   [(SBDashBoardHostableEntityHostingFluidSwitcherViewController *)v9 dismissModalViewController:switcherViewController animated:1 completion:v12];
 
@@ -207,7 +207,7 @@ void __73__SBDashBoardHostableEntityPresentationManager_dismissEntity_completion
   }
 }
 
-- (void)dashBoardHostableEntityFluidSwitcherViewControllerDidDismiss:(id)a3
+- (void)dashBoardHostableEntityFluidSwitcherViewControllerDidDismiss:(id)dismiss
 {
   switcherViewController = self->_switcherViewController;
   self->_switcherViewController = 0;

@@ -22,8 +22,8 @@
 
 - (void)submitReport
 {
-  v2 = [(APSigningObservabilityCorrespondent *)self wrapper];
-  [v2 submitReport];
+  wrapper = [(APSigningObservabilityCorrespondent *)self wrapper];
+  [wrapper submitReport];
 }
 
 @end

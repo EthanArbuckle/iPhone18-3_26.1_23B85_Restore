@@ -1,8 +1,8 @@
 @interface IAPInfoManager
 - (IAPInfoManager)init;
 - (void)_handleAccountChangedNotification;
-- (void)pushService:(id)a3 didReceiveMessage:(id)a4 completionHandler:(id)a5;
-- (void)pushService:(id)a3 recoverFromDroppedMessagesOfActionType:(unint64_t)a4 completionHandler:(id)a5;
+- (void)pushService:(id)service didReceiveMessage:(id)message completionHandler:(id)handler;
+- (void)pushService:(id)service recoverFromDroppedMessagesOfActionType:(unint64_t)type completionHandler:(id)handler;
 @end
 
 @implementation IAPInfoManager
@@ -37,11 +37,11 @@
         v13 = objc_opt_class();
         v14 = v13;
         v15 = +[ActiveAccountObserver activeAccount];
-        v16 = [v15 hashedDescription];
+        hashedDescription = [v15 hashedDescription];
         *buf = 138412546;
         v23 = v13;
         v24 = 2114;
-        v25 = v16;
+        v25 = hashedDescription;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%@]: Begin observing, current account: %{public}@", buf, 0x16u);
       }
 
@@ -57,9 +57,9 @@
   return v2;
 }
 
-- (void)pushService:(id)a3 didReceiveMessage:(id)a4 completionHandler:(id)a5
+- (void)pushService:(id)service didReceiveMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = sub_1003FA4F0(XPCRequestToken, 1);
   dispatchQueue = self->_dispatchQueue;
   v11[0] = _NSConcreteStackBlock;
@@ -68,23 +68,23 @@
   v11[3] = &unk_10051C078;
   v11[4] = self;
   v12 = v7;
-  v13 = v6;
-  v9 = v6;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v7;
   sub_100005D90(dispatchQueue, v11);
 }
 
-- (void)pushService:(id)a3 recoverFromDroppedMessagesOfActionType:(unint64_t)a4 completionHandler:(id)a5
+- (void)pushService:(id)service recoverFromDroppedMessagesOfActionType:(unint64_t)type completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10034C050;
   v9[3] = &unk_10051B2D0;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   sub_100005D90(dispatchQueue, v9);
 }
 

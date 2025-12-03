@@ -35,7 +35,7 @@
 - (uint64_t)_sr_validateRequiredFieldsForSensors:()SensorKit error:
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (![a1 sk_usageDescription])
+  if (![self sk_usageDescription])
   {
     if (a4)
     {
@@ -53,7 +53,7 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  if (![a1 sk_privacyURL])
+  if (![self sk_privacyURL])
   {
     if (a4)
     {
@@ -65,7 +65,7 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if (![a1 objectForInfoDictionaryKey:@"NSSensorKitUsageDetail"] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (![self objectForInfoDictionaryKey:@"NSSensorKitUsageDetail"] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (a4)
     {
@@ -133,7 +133,7 @@ LABEL_30:
       }
 
       v14 = v13;
-      if (![objc_msgSend(a1 "sk_perCategoryDetailDescription")])
+      if (![objc_msgSend(self "sk_perCategoryDetailDescription")])
       {
         if (a4)
         {

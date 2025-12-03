@@ -1,10 +1,10 @@
 @interface FIDSNode_Computer
-+ (id)makeWithCoder:(id)a3;
++ (id)makeWithCoder:(id)coder;
 @end
 
 @implementation FIDSNode_Computer
 
-+ (id)makeWithCoder:(id)a3
++ (id)makeWithCoder:(id)coder
 {
   TGlobalNodes::RootNode(&v7);
   v3 = TNodeFromFINode(v7);

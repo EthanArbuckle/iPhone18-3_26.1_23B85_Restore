@@ -1,12 +1,12 @@
 @interface TUISyncLayoutController
-- (BOOL)_processUntilDirtyOrEndtime:(double)a3;
+- (BOOL)_processUntilDirtyOrEndtime:(double)endtime;
 - (BOOL)flush;
 - (TUISyncLayoutController)init;
-- (TUISyncLayoutController)initWithDelegate:(id)a3;
+- (TUISyncLayoutController)initWithDelegate:(id)delegate;
 - (TUISyncLayoutControllerDelegate)delegate;
-- (id)syncAssertionWithTimeout:(double)a3 transaction:(id)a4 feedId:(id)a5;
-- (void)_removeAssertion:(id)a3;
-- (void)removeAssertion:(id)a3;
+- (id)syncAssertionWithTimeout:(double)timeout transaction:(id)transaction feedId:(id)id;
+- (void)_removeAssertion:(id)assertion;
+- (void)removeAssertion:(id)assertion;
 @end
 
 @implementation TUISyncLayoutController
@@ -26,16 +26,16 @@
   return v2;
 }
 
-- (TUISyncLayoutController)initWithDelegate:(id)a3
+- (TUISyncLayoutController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = TUISyncLayoutController;
   v5 = [(TUISyncLayoutController *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [NSHashTable hashTableWithOptions:517];
     assertions = v6->_assertions;
     v6->_assertions = v7;
@@ -49,16 +49,16 @@
   flags = self->_flags;
   if ((flags & 1) == 0)
   {
-    v3 = self;
+    selfCopy = self;
     *&self->_flags = flags & 0xFA | 1;
     Current = CFAbsoluteTimeGetCurrent();
-    v5 = [(NSHashTable *)v3->_assertions allObjects];
-    if ([v5 count])
+    allObjects = [(NSHashTable *)selfCopy->_assertions allObjects];
+    if ([allObjects count])
     {
       v52 = flags;
       v6 = 0;
       v7 = 0;
-      p_isa = &v3->super.isa;
+      p_isa = &selfCopy->super.isa;
       do
       {
         if ((v7 & 1) == 0)
@@ -81,12 +81,12 @@
           }
         }
 
-        *&v3->_flags &= ~2u;
+        *&selfCopy->_flags &= ~2u;
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v12 = v5;
+        v12 = allObjects;
         v13 = [v12 countByEnumeratingWithState:&v62 objects:v74 count:16];
         if (v13)
         {
@@ -135,21 +135,21 @@
           v16 = 0.0;
         }
 
-        v3 = p_isa;
+        selfCopy = p_isa;
         v21 = [p_isa _processUntilDirtyOrEndtime:Current + v16];
-        v22 = [p_isa[2] allObjects];
-        v5 = v22;
+        allObjects2 = [p_isa[2] allObjects];
+        allObjects = allObjects2;
         if (v21)
         {
           break;
         }
 
-        v23 = [v22 count];
+        v23 = [allObjects2 count];
         v7 = 1;
       }
 
       while (v23);
-      v24 = [v5 count];
+      v24 = [allObjects count];
       v25 = CFAbsoluteTimeGetCurrent();
       if (v24)
       {
@@ -157,7 +157,7 @@
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v26 = v5;
+        v26 = allObjects;
         v27 = [v26 countByEnumeratingWithState:&v58 objects:v73 count:16];
         if (v27)
         {
@@ -246,14 +246,14 @@
         v40 = TUITransactionLog();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
-          sub_199E9C(v5, v40, v38);
+          sub_199E9C(allObjects, v40, v38);
         }
 
         v56 = 0u;
         v57 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v41 = v5;
+        v41 = allObjects;
         v42 = [v41 countByEnumeratingWithState:&v54 objects:v68 count:16];
         if (v42)
         {
@@ -301,7 +301,7 @@
           while (v49);
         }
 
-        v3 = p_isa;
+        selfCopy = p_isa;
       }
 
       v50 = TUITransactionLog();
@@ -313,20 +313,20 @@
       flags = v52;
     }
 
-    *&v3->_flags &= ~1u;
+    *&selfCopy->_flags &= ~1u;
   }
 
   return (flags & 1) == 0;
 }
 
-- (BOOL)_processUntilDirtyOrEndtime:(double)a3
+- (BOOL)_processUntilDirtyOrEndtime:(double)endtime
 {
   if ((*&self->_flags & 2) != 0)
   {
     return 0;
   }
 
-  while (a3 - CFAbsoluteTimeGetCurrent() > 0.0)
+  while (endtime - CFAbsoluteTimeGetCurrent() > 0.0)
   {
     v5 = TUIDispatchDrainWithTimeout();
     result = v5 == 3;
@@ -339,17 +339,17 @@
   return 1;
 }
 
-- (id)syncAssertionWithTimeout:(double)a3 transaction:(id)a4 feedId:(id)a5
+- (id)syncAssertionWithTimeout:(double)timeout transaction:(id)transaction feedId:(id)id
 {
-  v8 = a4;
-  v9 = [[_TUISyncLayoutAssertion alloc] initWithController:self timeout:v8 transaction:a5.var0 feedId:a3];
+  transactionCopy = transaction;
+  v9 = [[_TUISyncLayoutAssertion alloc] initWithController:self timeout:transactionCopy transaction:id.var0 feedId:timeout];
   [(NSHashTable *)self->_assertions addObject:v9];
   *&self->_flags |= 2u;
   v10 = TUITransactionLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v13 = 138543362;
-    v14 = v8;
+    v14 = transactionCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "scheduled sync-assertion for tx=%{public}@", &v13, 0xCu);
   }
 
@@ -363,12 +363,12 @@
   return v9;
 }
 
-- (void)removeAssertion:(id)a3
+- (void)removeAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   if (+[NSThread isMainThread])
   {
-    [(TUISyncLayoutController *)self _removeAssertion:v4];
+    [(TUISyncLayoutController *)self _removeAssertion:assertionCopy];
   }
 
   else
@@ -378,23 +378,23 @@
     v5[2] = sub_7F92C;
     v5[3] = &unk_25DCA0;
     v5[4] = self;
-    v6 = v4;
+    v6 = assertionCopy;
     TUIDispatchAsyncViaRunLoop(v5);
   }
 }
 
-- (void)_removeAssertion:(id)a3
+- (void)_removeAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = TUITransactionLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    sub_199F84(v4, v5);
+    sub_199F84(assertionCopy, v5);
   }
 
-  if (v4)
+  if (assertionCopy)
   {
-    [(NSHashTable *)self->_assertions removeObject:v4];
+    [(NSHashTable *)self->_assertions removeObject:assertionCopy];
   }
 
   *&self->_flags |= 2u;

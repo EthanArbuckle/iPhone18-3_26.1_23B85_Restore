@@ -1,46 +1,46 @@
 @interface TSCELogicalTest
-+ (id)logicalTestWithCriterion:(id)a3 evaluationContext:(id)a4 functionSpec:(id)a5 outError:(id *)a6;
-- (BOOL)compare:(id)a3 outError:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (TSCELogicalTest)initWithCriterion:(id)a3 evaluationContext:(id)a4 functionSpec:(id)a5 outError:(id *)a6;
++ (id)logicalTestWithCriterion:(id)criterion evaluationContext:(id)context functionSpec:(id)spec outError:(id *)error;
+- (BOOL)compare:(id)compare outError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (TSCELogicalTest)initWithCriterion:(id)criterion evaluationContext:(id)context functionSpec:(id)spec outError:(id *)error;
 - (id)description;
-- (int)parseRaconCriteriaString:(id)a3;
+- (int)parseRaconCriteriaString:(id)string;
 - (unint64_t)cost;
 @end
 
 @implementation TSCELogicalTest
 
-+ (id)logicalTestWithCriterion:(id)a3 evaluationContext:(id)a4 functionSpec:(id)a5 outError:(id *)a6
++ (id)logicalTestWithCriterion:(id)criterion evaluationContext:(id)context functionSpec:(id)spec outError:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  criterionCopy = criterion;
+  contextCopy = context;
+  specCopy = spec;
   v12 = objc_alloc(objc_opt_class());
-  v14 = objc_msgSend_initWithCriterion_evaluationContext_functionSpec_outError_(v12, v13, v9, v10, v11, a6);
+  v14 = objc_msgSend_initWithCriterion_evaluationContext_functionSpec_outError_(v12, v13, criterionCopy, contextCopy, specCopy, error);
 
   return v14;
 }
 
-- (TSCELogicalTest)initWithCriterion:(id)a3 evaluationContext:(id)a4 functionSpec:(id)a5 outError:(id *)a6
+- (TSCELogicalTest)initWithCriterion:(id)criterion evaluationContext:(id)context functionSpec:(id)spec outError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  criterionCopy = criterion;
+  contextCopy = context;
+  specCopy = spec;
   v97.receiver = self;
   v97.super_class = TSCELogicalTest;
   v13 = [(TSCELogicalTest *)&v97 init];
-  objc_storeStrong(&v13->_evaluationContext, a4);
+  objc_storeStrong(&v13->_evaluationContext, context);
   v13->_operation = 0;
-  if (objc_msgSend_isThunk(v10, v14, v15, v16, v17))
+  if (objc_msgSend_isThunk(criterionCopy, v14, v15, v16, v17))
   {
-    v21 = objc_msgSend_unwrapThunk_(v13->_evaluationContext, v18, v10, v19, v20);
+    v21 = objc_msgSend_unwrapThunk_(v13->_evaluationContext, v18, criterionCopy, v19, v20);
 
-    v10 = v21;
+    criterionCopy = v21;
   }
 
   evaluationContext = v13->_evaluationContext;
   v96 = 0;
-  v23 = objc_msgSend_deepType_outError_(v10, v18, evaluationContext, &v96, v20);
+  v23 = objc_msgSend_deepType_outError_(criterionCopy, v18, evaluationContext, &v96, v20);
   v24 = v96;
   v29 = v24;
   v30 = 0;
@@ -55,13 +55,13 @@
           if (v23 == 7)
           {
             v90 = v24;
-            v31 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v10, v25, v11, v12, 1, &v90);
+            v31 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(criterionCopy, v25, contextCopy, specCopy, 1, &v90);
             v32 = v90;
 
-            if (objc_msgSend_isRegexString(v10, v33, v34, v35, v36))
+            if (objc_msgSend_isRegexString(criterionCopy, v33, v34, v35, v36))
             {
               v13->_operation = 31;
-              isCaseSensitiveRegexString = objc_msgSend_isCaseSensitiveRegexString(v10, v37, v38, v39, v40);
+              isCaseSensitiveRegexString = objc_msgSend_isCaseSensitiveRegexString(criterionCopy, v37, v38, v39, v40);
               v89 = v32;
               v43 = objc_msgSend_regexMatcherWithRegexString_caseSensitive_outError_(TSCERegexMatcher, v42, v31, isCaseSensitiveRegexString, &v89);
               v29 = v89;
@@ -87,7 +87,7 @@
         }
 
         v95 = v24;
-        v68 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v10, v25, v11, v12, 0xFFFFFFFFLL, &v95);
+        v68 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(criterionCopy, v25, contextCopy, specCopy, 0xFFFFFFFFLL, &v95);
         v56 = v95;
 
         isDuration = objc_msgSend_isDuration(v68, v69, v70, v71, v72);
@@ -106,7 +106,7 @@
 
       v13->_operation = 12;
       v91 = v24;
-      v47 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v10, v25, v11, v12, 1, &v91);
+      v47 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(criterionCopy, v25, contextCopy, specCopy, 1, &v91);
       v50 = v91;
 
       objc_msgSend_setDate_(v13, v65, v47, v66, v67);
@@ -127,7 +127,7 @@ LABEL_24:
       {
         v13->_operation = 18;
         v93 = v24;
-        objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v10, v25, v11, v12, 1, &v93);
+        objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(criterionCopy, v25, contextCopy, specCopy, 1, &v93);
         v47 = v93;
 
         TSUDecimal::operator=();
@@ -158,7 +158,7 @@ LABEL_20:
 LABEL_29:
     v13->_operation = v30;
     v94 = v56;
-    v74 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v10, v25, v11, v12, 1, &v94);
+    v74 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(criterionCopy, v25, contextCopy, specCopy, 1, &v94);
     v29 = v94;
 
     v75 = v13->_value;
@@ -184,9 +184,9 @@ LABEL_29:
       goto LABEL_20;
     }
 
-    v47 = objc_msgSend_errorWithContext_(v10, v25, v11, v27, v28);
+    v47 = objc_msgSend_errorWithContext_(criterionCopy, v25, contextCopy, v27, v28);
 
-    v60 = objc_msgSend_errorWithContext_(v10, v57, v11, v58, v59);
+    v60 = objc_msgSend_errorWithContext_(criterionCopy, v57, contextCopy, v58, v59);
 
     if (!v60)
     {
@@ -206,7 +206,7 @@ LABEL_29:
     {
       if (v23 == 19)
       {
-        v47 = objc_msgSend_functionName(v12, v25, v26, v27, v28);
+        v47 = objc_msgSend_functionName(specCopy, v25, v26, v27, v28);
         v50 = objc_msgSend_cannotAcceptLambdaError_argIndex_(TSCEError, v48, v47, 1, v49);
 
         goto LABEL_24;
@@ -226,10 +226,10 @@ LABEL_32:
   }
 
 LABEL_35:
-  if (a6)
+  if (error)
   {
     v87 = v29;
-    *a6 = v29;
+    *error = v29;
   }
 
   v13 = 0;
@@ -254,21 +254,21 @@ LABEL_38:
   return v26;
 }
 
-- (int)parseRaconCriteriaString:(id)a3
+- (int)parseRaconCriteriaString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9 = objc_msgSend_zero(TSCENumberValue, v5, v6, v7, v8);
   value = self->_value;
   self->_value = v9;
 
   objc_msgSend_setString_(self, v11, 0, v12, v13);
   objc_msgSend_setDate_(self, v14, 0, v15, v16);
-  if ((objc_msgSend_isEqualToString_(v4, v17, @"=", v18, v19) & 1) == 0 && (objc_msgSend_isEqualToString_(v4, v20, &stru_2834BADA0, v21, v22) & 1) == 0)
+  if ((objc_msgSend_isEqualToString_(stringCopy, v17, @"=", v18, v19) & 1) == 0 && (objc_msgSend_isEqualToString_(stringCopy, v20, &stru_2834BADA0, v21, v22) & 1) == 0)
   {
-    LODWORD(v27) = objc_msgSend_hasPrefix_(v4, v23, @"=", v24, v25);
-    if (objc_msgSend_hasPrefix_(v4, v28, @"<", v29, v30))
+    LODWORD(v27) = objc_msgSend_hasPrefix_(stringCopy, v23, @"=", v24, v25);
+    if (objc_msgSend_hasPrefix_(stringCopy, v28, @"<", v29, v30))
     {
-      if (objc_msgSend_hasPrefix_(v4, v31, @"<=", v32, v33))
+      if (objc_msgSend_hasPrefix_(stringCopy, v31, @"<=", v32, v33))
       {
         v34 = 5;
         v27 = 2;
@@ -276,7 +276,7 @@ LABEL_38:
 
       else
       {
-        hasPrefix = objc_msgSend_hasPrefix_(v4, v31, @"<>", v32, v33);
+        hasPrefix = objc_msgSend_hasPrefix_(stringCopy, v31, @"<>", v32, v33);
         if (hasPrefix)
         {
           v34 = 1;
@@ -305,9 +305,9 @@ LABEL_38:
       v27 = v27;
     }
 
-    if (objc_msgSend_hasPrefix_(v4, v31, @">", v32, v33))
+    if (objc_msgSend_hasPrefix_(stringCopy, v31, @">", v32, v33))
     {
-      v39 = objc_msgSend_hasPrefix_(v4, v36, @">=", v37, v38);
+      v39 = objc_msgSend_hasPrefix_(stringCopy, v36, @">=", v37, v38);
       if (v39)
       {
         v34 = 3;
@@ -329,19 +329,19 @@ LABEL_38:
       }
     }
 
-    if (objc_msgSend_hasPrefix_(v4, v36, @"≤", v37, v38))
+    if (objc_msgSend_hasPrefix_(stringCopy, v36, @"≤", v37, v38))
     {
       v26 = 5;
     }
 
-    else if (objc_msgSend_hasPrefix_(v4, v40, @"≥", v41, v42))
+    else if (objc_msgSend_hasPrefix_(stringCopy, v40, @"≥", v41, v42))
     {
       v26 = 3;
     }
 
     else
     {
-      v43 = objc_msgSend_hasPrefix_(v4, v40, @"≠", v41, v42);
+      v43 = objc_msgSend_hasPrefix_(stringCopy, v40, @"≠", v41, v42);
       if (v43)
       {
         v26 = 1;
@@ -354,12 +354,12 @@ LABEL_38:
 
       if (!v43)
       {
-        objc_msgSend_substringFromIndex_(v4, v40, v27, v41, v42);
+        objc_msgSend_substringFromIndex_(stringCopy, v40, v27, v41, v42);
         goto LABEL_31;
       }
     }
 
-    objc_msgSend_substringFromIndex_(v4, v40, 1, v41, v42);
+    objc_msgSend_substringFromIndex_(stringCopy, v40, 1, v41, v42);
     v44 = LABEL_31:;
     v49 = objc_msgSend_locale(self->_evaluationContext, v45, v46, v47, v48);
     v54 = TSUCreateDateFromString();
@@ -496,22 +496,22 @@ LABEL_49:
   return v26;
 }
 
-- (BOOL)compare:(id)a3 outError:(id *)a4
+- (BOOL)compare:(id)compare outError:(id *)error
 {
-  v6 = a3;
-  v10 = objc_msgSend_deepType_(v6, v7, self->_evaluationContext, v8, v9);
-  LODWORD(v18) = objc_msgSend_valueIsEmptyWithContext_(v6, v11, self->_evaluationContext, v12, v13);
+  compareCopy = compare;
+  v10 = objc_msgSend_deepType_(compareCopy, v7, self->_evaluationContext, v8, v9);
+  LODWORD(v18) = objc_msgSend_valueIsEmptyWithContext_(compareCopy, v11, self->_evaluationContext, v12, v13);
   if (v10 == 5)
   {
     evaluationContext = self->_evaluationContext;
     v317 = 0;
-    v48 = objc_msgSend_asNumber_outError_(v6, v14, evaluationContext, &v317, v17);
+    v48 = objc_msgSend_asNumber_outError_(compareCopy, v14, evaluationContext, &v317, v17);
     v49 = v317;
     isDuration = objc_msgSend_isDuration(v48, v50, v51, v52, v53);
     if (v49)
     {
       v55 = v49;
-      *a4 = v49;
+      *error = v49;
 
       goto LABEL_15;
     }
@@ -527,9 +527,9 @@ LABEL_49:
     {
       if (v10 == 9)
       {
-        if (objc_msgSend_isReferenceValue(v6, v14, v15, v16, v17))
+        if (objc_msgSend_isReferenceValue(compareCopy, v14, v15, v16, v17))
         {
-          v19 = objc_msgSend_asReferenceValue(v6, v14, v15, v16, v17);
+          v19 = objc_msgSend_asReferenceValue(compareCopy, v14, v15, v16, v17);
           v24 = v19;
           if (v19 && (objc_msgSend_isNil(v19, v20, v21, v22, v23) & 1) == 0)
           {
@@ -537,7 +537,7 @@ LABEL_49:
             if (objc_msgSend_isCircularReferenceError(v28, v29, v30, v31, v32))
             {
               v33 = v28;
-              *a4 = v28;
+              *error = v28;
 LABEL_25:
 
               goto LABEL_15;
@@ -569,16 +569,16 @@ LABEL_25:
       v36 = objc_msgSend_locale(self->_evaluationContext, v14, v15, v16, v17);
       v37 = self->_evaluationContext;
       v316 = 0;
-      v40 = objc_msgSend_asString_outError_(v6, v38, v37, &v316, v39);
+      v40 = objc_msgSend_asString_outError_(compareCopy, v38, v37, &v316, v39);
       v41 = v316;
       if (v41)
       {
         v46 = v41;
-        *a4 = v41;
+        *error = v41;
 
 LABEL_15:
         LOBYTE(v18) = 0;
-        v56 = v6;
+        v56 = compareCopy;
         goto LABEL_199;
       }
 
@@ -593,7 +593,7 @@ LABEL_15:
         if (v71)
         {
           v10 = 7;
-          v56 = v6;
+          v56 = compareCopy;
 LABEL_146:
 
           v57 = 0;
@@ -620,12 +620,12 @@ LABEL_146:
 LABEL_23:
       v76 = self->_evaluationContext;
       v315 = 0;
-      v28 = objc_msgSend_asString_outError_(v6, v14, v76, &v315, v17);
+      v28 = objc_msgSend_asString_outError_(compareCopy, v14, v76, &v315, v17);
       v77 = v315;
       if (v77)
       {
         v24 = v77;
-        *a4 = v77;
+        *error = v77;
         goto LABEL_25;
       }
 
@@ -656,7 +656,7 @@ LABEL_23:
         v310 = 0;
         v309 = 0;
         v57 = TSUDurationFormatterTimeIntervalFromString();
-        v56 = v6;
+        v56 = compareCopy;
         if (v57)
         {
           v309 = TSUDurationFormatterMaxDurationUnitInUnits();
@@ -687,7 +687,7 @@ LABEL_23:
   }
 
 LABEL_30:
-  v56 = v6;
+  v56 = compareCopy;
 LABEL_31:
   switch(self->_operation)
   {
@@ -701,7 +701,7 @@ LABEL_31:
       v307 = 0;
       v87 = objc_msgSend_asNumber_outError_(v56, v14, v86, &v307, v17);
       v88 = v307;
-      v91 = objc_msgSend_eq_outError_(v87, v89, self->_value, a4, v90);
+      v91 = objc_msgSend_eq_outError_(v87, v89, self->_value, error, v90);
       goto LABEL_62;
     case 1:
       if ((v10 != 5) | (v57 | v18) & 1)
@@ -713,7 +713,7 @@ LABEL_31:
       v306 = 0;
       v87 = objc_msgSend_asNumber_outError_(v56, v14, v138, &v306, v17);
       v88 = v306;
-      v91 = objc_msgSend_ne_outError_(v87, v139, self->_value, a4, v140);
+      v91 = objc_msgSend_ne_outError_(v87, v139, self->_value, error, v140);
       goto LABEL_62;
     case 2:
       if (v57)
@@ -857,7 +857,7 @@ LABEL_74:
       {
 LABEL_197:
         v268 = v88;
-        *a4 = v88;
+        *error = v88;
 
 LABEL_198:
         LOBYTE(v18) = 0;
@@ -1197,7 +1197,7 @@ LABEL_172:
       v277 = 0;
       v127 = objc_msgSend_asNumber_outError_(v56, v14, v126, &v277, v17);
       v88 = v277;
-      v130 = objc_msgSend_compare_outError_(v127, v128, self->_value, a4, v129);
+      v130 = objc_msgSend_compare_outError_(v127, v128, self->_value, error, v129);
 LABEL_92:
       v178 = v130;
 
@@ -1213,7 +1213,7 @@ LABEL_92:
       v276 = 0;
       v105 = objc_msgSend_asNumber_outError_(v56, v14, v216, &v276, v17);
       v88 = v276;
-      v109 = objc_msgSend_compare_outError_(v105, v217, self->_value, a4, v218);
+      v109 = objc_msgSend_compare_outError_(v105, v217, self->_value, error, v218);
 LABEL_141:
       v219 = v109;
 
@@ -1254,7 +1254,7 @@ LABEL_141:
       v275 = 0;
       v94 = objc_msgSend_asNumber_outError_(v56, v14, v93, &v275, v17);
       v88 = v275;
-      v97 = objc_msgSend_compare_outError_(v94, v95, self->_value, a4, v96);
+      v97 = objc_msgSend_compare_outError_(v94, v95, self->_value, error, v96);
 LABEL_67:
       v145 = v97;
 
@@ -1290,7 +1290,7 @@ LABEL_67:
       v274 = 0;
       v99 = objc_msgSend_asNumber_outError_(v56, v14, v209, &v274, v17);
       v88 = v274;
-      v103 = objc_msgSend_compare_outError_(v99, v210, self->_value, a4, v211);
+      v103 = objc_msgSend_compare_outError_(v99, v210, self->_value, error, v211);
 LABEL_103:
       v184 = v103;
 
@@ -1326,7 +1326,7 @@ LABEL_103:
       v273 = 0;
       v111 = objc_msgSend_asNumber_outError_(v56, v14, v213, &v273, v17);
       v88 = v273;
-      v115 = objc_msgSend_compare_outError_(v111, v214, self->_value, a4, v215);
+      v115 = objc_msgSend_compare_outError_(v111, v214, self->_value, error, v215);
       goto LABEL_171;
     case 0x1D:
       if (v10 == 5)
@@ -1343,7 +1343,7 @@ LABEL_103:
       {
 LABEL_166:
         objc_msgSend_invalidComparisonError(TSCEError, v14, v15, v16, v17);
-        *a4 = LOBYTE(v18) = 0;
+        *error = LOBYTE(v18) = 0;
         goto LABEL_199;
       }
 
@@ -1369,7 +1369,7 @@ LABEL_165:
       v272 = 0;
       v117 = objc_msgSend_asNumber_outError_(v56, v14, v264, &v272, v17);
       v88 = v272;
-      v121 = objc_msgSend_compare_outError_(v117, v265, self->_value, a4, v266);
+      v121 = objc_msgSend_compare_outError_(v117, v265, self->_value, error, v266);
 LABEL_192:
       v267 = v121;
 
@@ -1399,9 +1399,9 @@ LABEL_73:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
   if (v5)

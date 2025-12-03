@@ -1,6 +1,6 @@
 @interface AccessibilityStateObserver
 + (_TtC7Measure26AccessibilityStateObserver)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 - (NSArray)orderedWorldLineIDs;
 - (NSDictionary)worldLines;
 - (NSDictionary)worldPoints;
@@ -23,21 +23,21 @@
   return v3;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = qword_1004A04F8;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
-    v6 = v4;
+    v6 = sharedCopy;
     swift_once();
-    v4 = v6;
+    sharedCopy = v6;
   }
 
   v5 = qword_1004D5060;
-  qword_1004D5060 = v4;
+  qword_1004D5060 = sharedCopy;
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(sharedCopy, v5);
 }
 
 - (_TtC7Measure26AccessibilityStateObserver)init
@@ -56,7 +56,7 @@
 
 - (int64_t)snapWorldPointType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10019CB80();
 
   return v3;
@@ -114,7 +114,7 @@
 
 - (NSDictionary)worldRectangles
 {
-  v2 = self;
+  selfCopy = self;
   sub_10019D2D4();
 
   type metadata accessor for WorldRectangle();

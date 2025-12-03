@@ -1,32 +1,32 @@
 @interface _UIImageIOSurfaceContent
-- (BOOL)addContentToDestination:(CGImageDestination *)a3 properties:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)addContentToDestination:(CGImageDestination *)destination properties:(id)properties;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)sizeInPixels;
-- (_UIImageIOSurfaceContent)initWithSDRIOSurface:(__IOSurface *)a3 HDRIOSurface:(__IOSurface *)a4 scale:(double)a5;
-- (_UIImageIOSurfaceContent)initWithScale:(double)a3;
+- (_UIImageIOSurfaceContent)initWithSDRIOSurface:(__IOSurface *)surface HDRIOSurface:(__IOSurface *)oSurface scale:(double)scale;
+- (_UIImageIOSurfaceContent)initWithScale:(double)scale;
 - (id)description;
 - (id)imageRendererFormat;
 - (id)layerContents;
 - (id)makeSDRVersion;
-- (void)_drawWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 renditionContext:(id)a6;
-- (void)_prepareForDrawingWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5;
+- (void)_drawWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context renditionContext:(id)renditionContext;
+- (void)_prepareForDrawingWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context;
 - (void)dealloc;
 @end
 
 @implementation _UIImageIOSurfaceContent
 
-- (_UIImageIOSurfaceContent)initWithSDRIOSurface:(__IOSurface *)a3 HDRIOSurface:(__IOSurface *)a4 scale:(double)a5
+- (_UIImageIOSurfaceContent)initWithSDRIOSurface:(__IOSurface *)surface HDRIOSurface:(__IOSurface *)oSurface scale:(double)scale
 {
-  if (!a3)
+  if (!surface)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1510 description:@"sdrSurface is nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1510 description:@"sdrSurface is nil"];
   }
 
-  v10 = CFGetTypeID(a3);
+  v10 = CFGetTypeID(surface);
   if (v10 == IOSurfaceGetTypeID())
   {
-    if (!a4)
+    if (!oSurface)
     {
       goto LABEL_7;
     }
@@ -34,32 +34,32 @@
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1511 description:@"sdrSurface is not an IOSurfaceRef"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1511 description:@"sdrSurface is not an IOSurfaceRef"];
 
-    if (!a4)
+    if (!oSurface)
     {
       goto LABEL_7;
     }
   }
 
-  v11 = CFGetTypeID(a4);
+  v11 = CFGetTypeID(oSurface);
   if (v11 != IOSurfaceGetTypeID())
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1513 description:@"hdrSurface is not an IOSurfaceRef"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1513 description:@"hdrSurface is not an IOSurfaceRef"];
   }
 
 LABEL_7:
   v18.receiver = self;
   v18.super_class = _UIImageIOSurfaceContent;
-  v12 = [(_UIImageContent *)&v18 initWithScale:a5];
+  v12 = [(_UIImageContent *)&v18 initWithScale:scale];
   if (v12)
   {
-    v12->_surface = CFRetain(a3);
-    if (a4)
+    v12->_surface = CFRetain(surface);
+    if (oSurface)
     {
-      hdrSurface = CFRetain(a4);
+      hdrSurface = CFRetain(oSurface);
       v12->_hdrSurface = hdrSurface;
       if (hdrSurface)
       {
@@ -85,10 +85,10 @@ LABEL_11:
   return v12;
 }
 
-- (_UIImageIOSurfaceContent)initWithScale:(double)a3
+- (_UIImageIOSurfaceContent)initWithScale:(double)scale
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1529 description:@"You need to use -initWithIOSurface:scale:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1529 description:@"You need to use -initWithIOSurface:scale:"];
 
   return 0;
 }
@@ -112,7 +112,7 @@ LABEL_11:
   v13[1] = *MEMORY[0x1E69E9840];
   if (![(_UIImageIOSurfaceContent *)self isHDR])
   {
-    v5 = self;
+    selfCopy = self;
     goto LABEL_5;
   }
 
@@ -121,9 +121,9 @@ LABEL_11:
     v3 = [_UIImageIOSurfaceContent alloc];
     surface = self->_surface;
     [(_UIImageContent *)self scale];
-    v5 = [(_UIImageIOSurfaceContent *)v3 initWithIOSurface:surface scale:?];
+    selfCopy = [(_UIImageIOSurfaceContent *)v3 initWithIOSurface:surface scale:?];
 LABEL_5:
-    v6 = v5;
+    v6 = selfCopy;
     goto LABEL_6;
   }
 
@@ -146,9 +146,9 @@ LABEL_6:
 {
   v4.receiver = self;
   v4.super_class = _UIImageIOSurfaceContent;
-  v2 = [(_UIImageContent *)&v4 imageRendererFormat];
+  imageRendererFormat = [(_UIImageContent *)&v4 imageRendererFormat];
 
-  return v2;
+  return imageRendererFormat;
 }
 
 - (id)layerContents
@@ -162,13 +162,13 @@ LABEL_6:
   return hdrSurface;
 }
 
-- (BOOL)addContentToDestination:(CGImageDestination *)a3 properties:(id)a4
+- (BOOL)addContentToDestination:(CGImageDestination *)destination properties:(id)properties
 {
-  v5 = a4;
+  propertiesCopy = properties;
   v6 = CGImageCreateFromIOSurface();
   if (v6)
   {
-    CGImageDestinationAddImage(a3, v6, v5);
+    CGImageDestinationAddImage(destination, v6, propertiesCopy);
     CGImageRelease(v6);
   }
 
@@ -185,12 +185,12 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIImageIOSurfaceContent;
-  v5 = [(_UIImageContent *)&v7 isEqual:v4]&& self->_surface == v4[5] && self->_hdrSurface == v4[6];
+  v5 = [(_UIImageContent *)&v7 isEqual:equalCopy]&& self->_surface == equalCopy[5] && self->_hdrSurface == equalCopy[6];
 
   return v5;
 }
@@ -213,17 +213,17 @@ LABEL_6:
   return v4;
 }
 
-- (void)_prepareForDrawingWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5
+- (void)_prepareForDrawingWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context
 {
-  CGContextTranslateCTM(a5, 0.0, a3.height);
+  CGContextTranslateCTM(context, 0.0, size.height);
 
-  CGContextScaleCTM(a5, 1.0, -1.0);
+  CGContextScaleCTM(context, 1.0, -1.0);
 }
 
-- (void)_drawWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 renditionContext:(id)a6
+- (void)_drawWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context renditionContext:(id)renditionContext
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9 = *MEMORY[0x1E695EFF8];
   v10 = *(MEMORY[0x1E695EFF8] + 8);
   CGImage = _UIRenderingBufferCreateCGImage(self->_surface, 0);
@@ -231,7 +231,7 @@ LABEL_6:
   v13.origin.y = v10;
   v13.size.width = width;
   v13.size.height = height;
-  CGContextDrawImage(a5, v13, CGImage);
+  CGContextDrawImage(context, v13, CGImage);
 
   CGImageRelease(CGImage);
 }

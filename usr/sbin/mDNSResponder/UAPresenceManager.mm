@@ -1,11 +1,11 @@
 @interface UAPresenceManager
-- (BOOL)_addRecordsFromPresence:(id)a3;
-- (BOOL)newSharableAddresses:(id)a3;
+- (BOOL)_addRecordsFromPresence:(id)presence;
+- (BOOL)newSharableAddresses:(id)addresses;
 - (UAPresenceManager)init;
 - (void)dealloc;
-- (void)initialCloudKitImportReceived:(id)a3;
+- (void)initialCloudKitImportReceived:(id)received;
 - (void)releaseSubscriptions;
-- (void)removeQhash:(unsigned int)a3 forInterface:(mDNSInterfaceID_dummystruct *)a4;
+- (void)removeQhash:(unsigned int)qhash forInterface:(mDNSInterfaceID_dummystruct *)interface;
 - (void)retainSubscription;
 - (void)updateCacheFromPresence;
 - (void)updateInvalidFromPresence;
@@ -13,7 +13,7 @@
 
 @implementation UAPresenceManager
 
-- (void)initialCloudKitImportReceived:(id)a3
+- (void)initialCloudKitImportReceived:(id)received
 {
   [s_presence setPresenceReady:1];
   v3 = _unicast_assist_cache_log();
@@ -26,13 +26,13 @@
 
 - (void)updateCacheFromPresence
 {
-  v3 = [(UAPresenceManager *)self presence];
-  v4 = [v3 presentDevices];
-  v5 = [v4 filterObjectsUsingBlock:&__block_literal_global_115];
+  presence = [(UAPresenceManager *)self presence];
+  presentDevices = [presence presentDevices];
+  v5 = [presentDevices filterObjectsUsingBlock:&__block_literal_global_115];
 
-  v97 = self;
-  v6 = [(UAPresenceManager *)self skUpdates];
-  v7 = [v6 allKeys];
+  selfCopy = self;
+  skUpdates = [(UAPresenceManager *)self skUpdates];
+  allKeys = [skUpdates allKeys];
 
   if ([v5 count])
   {
@@ -41,14 +41,14 @@
     v111[2] = __44__UAPresenceManager_updateCacheFromPresence__block_invoke_116;
     v111[3] = &unk_1001515F0;
     v112 = v5;
-    v8 = [v7 filterObjectsUsingBlock:v111];
+    v8 = [allKeys filterObjectsUsingBlock:v111];
 
-    v7 = v8;
+    allKeys = v8;
   }
 
-  if ([v7 count])
+  if ([allKeys count])
   {
-    v9 = [v7 count];
+    v9 = [allKeys count];
     sUAPresence_Count_update_devices_missing += v9;
   }
 
@@ -60,7 +60,7 @@
   v110 = 0u;
   v107 = 0u;
   v108 = 0u;
-  obj = v7;
+  obj = allKeys;
   v18 = [obj countByEnumeratingWithState:&v107 objects:v123 count:16];
   if (v18)
   {
@@ -76,8 +76,8 @@
         }
 
         v22 = *(*(&v107 + 1) + 8 * i);
-        v23 = [(UAPresenceManager *)v97 skUpdates];
-        v24 = [v23 objectForKeyedSubscript:v22];
+        skUpdates2 = [(UAPresenceManager *)selfCopy skUpdates];
+        v24 = [skUpdates2 objectForKeyedSubscript:v22];
 
         v25 = [v24 objectForKeyedSubscript:@"auth_records"];
         v26 = _unicast_assist_cache_log();
@@ -92,8 +92,8 @@
         }
 
         __44__UAPresenceManager_updateCacheFromPresence__block_invoke(v25);
-        v28 = [(UAPresenceManager *)v97 skUpdates];
-        [v28 setObject:0 forKeyedSubscript:v22];
+        skUpdates3 = [(UAPresenceManager *)selfCopy skUpdates];
+        [skUpdates3 setObject:0 forKeyedSubscript:v22];
       }
 
       v19 = [obj countByEnumeratingWithState:&v107 objects:v123 count:16];
@@ -126,12 +126,12 @@
 
         v94 = v31;
         v32 = *(*(&v103 + 1) + 8 * v31);
-        v33 = [v32 presencePayload];
-        v96 = [v33 payloadDictionary];
+        presencePayload = [v32 presencePayload];
+        payloadDictionary = [presencePayload payloadDictionary];
 
-        v34 = [(UAPresenceManager *)v97 skUpdates];
-        v35 = [v32 deviceIdentifier];
-        v36 = [v34 objectForKey:v35];
+        skUpdates4 = [(UAPresenceManager *)selfCopy skUpdates];
+        deviceIdentifier = [v32 deviceIdentifier];
+        v36 = [skUpdates4 objectForKey:deviceIdentifier];
 
         v95 = v36;
         v37 = [v36 objectForKeyedSubscript:@"time"];
@@ -139,7 +139,7 @@
         {
           v92 = v37;
           v93 = v32;
-          v42 = [v96 objectForKeyedSubscript:@"auth_records"];
+          v42 = [payloadDictionary objectForKeyedSubscript:@"auth_records"];
           v43 = [v36 objectForKeyedSubscript:@"auth_records"];
           v44 = v42;
           v102 = +[NSMutableArray array];
@@ -240,11 +240,11 @@
             if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
             {
               v64 = [v61 count];
-              v65 = [v93 deviceIdentifier];
+              deviceIdentifier2 = [v93 deviceIdentifier];
               *buf = 134218242;
               v127 = v64;
               v128 = 2112;
-              v129 = v65;
+              v129 = deviceIdentifier2;
               _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_INFO, "unicast assist updateCacheFromPresence: remove diffed (auth) count %lu from %@", buf, 0x16u);
             }
 
@@ -255,23 +255,23 @@
           if (os_log_type_enabled(v66, OS_LOG_TYPE_INFO))
           {
             v67 = [v99 count];
-            v68 = [v93 deviceIdentifier];
-            v69 = [v93 assertionTime];
+            deviceIdentifier3 = [v93 deviceIdentifier];
+            assertionTime = [v93 assertionTime];
             *buf = 134218498;
             v127 = v67;
             v128 = 2112;
-            v129 = v68;
+            v129 = deviceIdentifier3;
             v130 = 2112;
-            v131 = v69;
+            v131 = assertionTime;
             _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_INFO, "unicast assist updateCacheFromPresence: next (auth) count %lu from %@ time %@", buf, 0x20u);
 
             v62 = v93;
           }
 
-          v70 = [(UAPresenceManager *)v97 _addRecordsFromPresence:v99];
+          v70 = [(UAPresenceManager *)selfCopy _addRecordsFromPresence:v99];
           v120[0] = @"time";
-          v71 = [v62 assertionTime];
-          v121[0] = v71;
+          assertionTime2 = [v62 assertionTime];
+          v121[0] = assertionTime2;
           v121[1] = v99;
           v120[1] = @"auth_records";
           v120[2] = @"had_invalid_addr";
@@ -283,9 +283,9 @@
 
           v121[2] = v72;
           v73 = [NSDictionary dictionaryWithObjects:v121 forKeys:v120 count:3];
-          v74 = [(UAPresenceManager *)v97 skUpdates];
-          v75 = [v62 deviceIdentifier];
-          [v74 setObject:v73 forKeyedSubscript:v75];
+          skUpdates5 = [(UAPresenceManager *)selfCopy skUpdates];
+          deviceIdentifier4 = [v62 deviceIdentifier];
+          [skUpdates5 setObject:v73 forKeyedSubscript:deviceIdentifier4];
 
           ++sUAPresence_Count_update_devices;
           v37 = v92;
@@ -296,12 +296,12 @@
           v76 = _unicast_assist_cache_log();
           if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
           {
-            v78 = [v32 deviceIdentifier];
-            v79 = [v32 assertionTime];
+            deviceIdentifier5 = [v32 deviceIdentifier];
+            assertionTime3 = [v32 assertionTime];
             *buf = v87;
-            v127 = v78;
+            v127 = deviceIdentifier5;
             v128 = 2112;
-            v129 = v79;
+            v129 = assertionTime3;
             _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_INFO, "unicast assist updateCacheFromPresence: skipping stale update from %@ time %@", buf, 0x16u);
 
             v37 = v39;
@@ -593,15 +593,15 @@ BOOL __44__UAPresenceManager_updateCacheFromPresence__block_invoke_4(id a1, SKPr
 
 - (void)updateInvalidFromPresence
 {
-  v2 = self;
+  selfCopy = self;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v3 = [(UAPresenceManager *)self skUpdates];
-  v4 = [v3 allKeys];
+  skUpdates = [(UAPresenceManager *)self skUpdates];
+  allKeys = [skUpdates allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v37 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v5)
   {
     v7 = v5;
@@ -616,12 +616,12 @@ BOOL __44__UAPresenceManager_updateCacheFromPresence__block_invoke_4(id a1, SKPr
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v25 + 1) + 8 * v9);
-        v11 = [(UAPresenceManager *)v2 skUpdates];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        skUpdates2 = [(UAPresenceManager *)selfCopy skUpdates];
+        v12 = [skUpdates2 objectForKeyedSubscript:v10];
 
         v13 = [v12 objectForKeyedSubscript:@"had_invalid_addr"];
         if ([v13 BOOLValue])
@@ -641,7 +641,7 @@ BOOL __44__UAPresenceManager_updateCacheFromPresence__block_invoke_4(id a1, SKPr
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "unicast assist updateInvalidFromPresence: next (auth) count %lu from %@ time %@", buf, 0x20u);
           }
 
-          if (![(UAPresenceManager *)v2 _addRecordsFromPresence:v14])
+          if (![(UAPresenceManager *)selfCopy _addRecordsFromPresence:v14])
           {
             v29[0] = @"time";
             v29[1] = @"auth_records";
@@ -650,15 +650,15 @@ BOOL __44__UAPresenceManager_updateCacheFromPresence__block_invoke_4(id a1, SKPr
             v29[2] = @"had_invalid_addr";
             v30[2] = &__kCFBooleanFalse;
             v17 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:3];
-            [(UAPresenceManager *)v2 skUpdates];
-            v18 = v2;
+            [(UAPresenceManager *)selfCopy skUpdates];
+            v18 = selfCopy;
             v19 = v8;
-            v21 = v20 = v4;
+            v21 = v20 = allKeys;
             [v21 setObject:v17 forKeyedSubscript:v10];
 
-            v4 = v20;
+            allKeys = v20;
             v8 = v19;
-            v2 = v18;
+            selfCopy = v18;
           }
 
           v7 = v23;
@@ -668,21 +668,21 @@ BOOL __44__UAPresenceManager_updateCacheFromPresence__block_invoke_4(id a1, SKPr
       }
 
       while (v7 != v9);
-      v7 = [v4 countByEnumeratingWithState:&v25 objects:v37 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v25 objects:v37 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)_addRecordsFromPresence:(id)a3
+- (BOOL)_addRecordsFromPresence:(id)presence
 {
-  v3 = a3;
+  presenceCopy = presence;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v52 objects:v59 count:16];
+  v4 = [presenceCopy countByEnumeratingWithState:&v52 objects:v59 count:16];
   if (!v4)
   {
     goto LABEL_76;
@@ -691,7 +691,7 @@ BOOL __44__UAPresenceManager_updateCacheFromPresence__block_invoke_4(id a1, SKPr
   v5 = v4;
   v41 = 0;
   v43 = *v53;
-  v39 = v3;
+  v39 = presenceCopy;
   do
   {
     v6 = 0;
@@ -700,12 +700,12 @@ BOOL __44__UAPresenceManager_updateCacheFromPresence__block_invoke_4(id a1, SKPr
     {
       if (*v53 != v43)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(presenceCopy);
       }
 
       v7 = *(*(&v52 + 1) + 8 * v6);
       v8 = [v7 objectForKey:@"ifhash"];
-      v9 = [v8 unsignedIntValue];
+      unsignedIntValue = [v8 unsignedIntValue];
 
       v10 = [v7 objectForKey:@"addr"];
       v11 = [v7 objectForKey:@"qhashes"];
@@ -730,7 +730,7 @@ BOOL __44__UAPresenceManager_updateCacheFromPresence__block_invoke_4(id a1, SKPr
         *&v58[24] = 2101;
         *&v58[26] = &v50;
         *&v58[34] = 1024;
-        *&v58[36] = v9;
+        *&v58[36] = unsignedIntValue;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "unicast assist _addRecordsFromPresence: add qhashes %@ addr %{sensitive, mask.hash, mdnsresponder:ip_addr}.20P ifhash %x", buf, 0x2Cu);
 
         v11 = v13;
@@ -780,7 +780,7 @@ LABEL_28:
         }
 
         *buf = 0;
-        if (_unicast_assist_hash_for_interface(*(v15 + 3552), v50, buf) || *buf != v9)
+        if (_unicast_assist_hash_for_interface(*(v15 + 3552), v50, buf) || *buf != unsignedIntValue)
         {
           goto LABEL_27;
         }
@@ -844,9 +844,9 @@ LABEL_26:
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v46 + 1) + 8 * v22) unsignedIntValue];
+          unsignedIntValue2 = [*(*(&v46 + 1) + 8 * v22) unsignedIntValue];
           v45 = 0;
-          v24 = _unicast_assist_addr_update_ex("\bpresence", v23, 12, 8, &v50, v19, v9, 0, 0, &v45);
+          v24 = _unicast_assist_addr_update_ex("\bpresence", unsignedIntValue2, 12, 8, &v50, v19, unsignedIntValue, 0, 0, &v45);
           if (v24)
           {
             v25 = v24;
@@ -854,7 +854,7 @@ LABEL_26:
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
             {
               *buf = 67110147;
-              *v58 = v23;
+              *v58 = unsignedIntValue2;
               *&v58[4] = 2160;
               *&v58[6] = 1752392040;
               *&v58[14] = 1045;
@@ -903,14 +903,14 @@ LABEL_53:
             }
 
             *buf = 67109120;
-            *v58 = v23;
+            *v58 = unsignedIntValue2;
             _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "unicast assist (restart) - no active question for qnamehash %x", buf, 8u);
             goto LABEL_43;
           }
 
           while (1)
           {
-            if (*(v27 + 342) == 12 && *(v27 + 200) == v23)
+            if (*(v27 + 342) == 12 && *(v27 + 200) == unsignedIntValue2)
             {
               v28 = *(v27 + 136);
               if (v28 == v19 || v28 == 0)
@@ -926,7 +926,7 @@ LABEL_53:
             }
           }
 
-          v33 = &mDNSStorage[v23 % 0x1F3 + 34];
+          v33 = &mDNSStorage[unsignedIntValue2 % 0x1F3 + 34];
           while (1)
           {
             v33 = *v33;
@@ -935,7 +935,7 @@ LABEL_53:
               break;
             }
 
-            if (*(v33 + 2) == v23)
+            if (*(v33 + 2) == unsignedIntValue2)
             {
               if (CacheGroupHasAddressOnInterface(v33, 12, &v50, v19))
               {
@@ -959,7 +959,7 @@ LABEL_53:
             *buf = 136316163;
             *v58 = v34;
             *&v58[8] = 1024;
-            *&v58[10] = v23;
+            *&v58[10] = unsignedIntValue2;
             *&v58[14] = 2160;
             *&v58[16] = 1752392040;
             *&v58[24] = 1045;
@@ -990,7 +990,7 @@ LABEL_43:
         break;
       }
 
-      v3 = v39;
+      presenceCopy = v39;
 LABEL_72:
       v11 = v40;
 LABEL_31:
@@ -1002,7 +1002,7 @@ LABEL_32:
     }
 
     while (v6 != v5);
-    v36 = [v3 countByEnumeratingWithState:&v52 objects:v59 count:16];
+    v36 = [presenceCopy countByEnumeratingWithState:&v52 objects:v59 count:16];
     v5 = v36;
   }
 
@@ -1084,13 +1084,13 @@ BOOL __37__UAPresenceManager_handleAuthCheck___block_invoke(uint64_t a1, void *a
   return v5;
 }
 
-- (void)removeQhash:(unsigned int)a3 forInterface:(mDNSInterfaceID_dummystruct *)a4
+- (void)removeQhash:(unsigned int)qhash forInterface:(mDNSInterfaceID_dummystruct *)interface
 {
-  v4 = a4;
+  interfaceCopy = interface;
   v7 = objc_autoreleasePoolPush();
-  v8 = [NSNumber numberWithUnsignedInteger:v4];
-  v9 = [(UAPresenceManager *)self authRecords];
-  v10 = [v9 objectForKey:v8];
+  v8 = [NSNumber numberWithUnsignedInteger:interfaceCopy];
+  authRecords = [(UAPresenceManager *)self authRecords];
+  v10 = [authRecords objectForKey:v8];
 
   if (v10)
   {
@@ -1098,7 +1098,7 @@ BOOL __37__UAPresenceManager_handleAuthCheck___block_invoke(uint64_t a1, void *a
     v13[1] = 3221225472;
     v13[2] = __46__UAPresenceManager_removeQhash_forInterface___block_invoke;
     v13[3] = &__block_descriptor_36_e24_B32__0__UAQhash_8Q16_B24l;
-    v14 = a3;
+    qhashCopy = qhash;
     v11 = [v10 indexOfObjectPassingTest:v13];
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1111,15 +1111,15 @@ BOOL __37__UAPresenceManager_handleAuthCheck___block_invoke(uint64_t a1, void *a
   objc_autoreleasePoolPop(v7);
 }
 
-- (BOOL)newSharableAddresses:(id)a3
+- (BOOL)newSharableAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   v5 = +[NSMutableDictionary dictionary];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v4;
+  obj = addressesCopy;
   v6 = [obj countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (v6)
   {
@@ -1153,29 +1153,29 @@ BOOL __37__UAPresenceManager_handleAuthCheck___block_invoke(uint64_t a1, void *a
     while (v7);
   }
 
-  v14 = [(UAPresenceManager *)self localNetworkHashes];
-  v15 = [v14 allKeys];
-  v16 = [NSMutableSet setWithArray:v15];
+  localNetworkHashes = [(UAPresenceManager *)self localNetworkHashes];
+  allKeys = [localNetworkHashes allKeys];
+  v16 = [NSMutableSet setWithArray:allKeys];
 
-  v17 = [v5 allKeys];
-  v18 = [NSSet setWithArray:v17];
+  allKeys2 = [v5 allKeys];
+  v18 = [NSSet setWithArray:allKeys2];
   [v16 minusSet:v18];
 
   v19 = [v16 count];
   v20 = v19 != 0;
   if (v19)
   {
-    v21 = [(UAPresenceManager *)self localNetworkHashes];
-    v22 = [v16 allObjects];
-    [v21 removeObjectsForKeys:v22];
+    localNetworkHashes2 = [(UAPresenceManager *)self localNetworkHashes];
+    allObjects = [v16 allObjects];
+    [localNetworkHashes2 removeObjectsForKeys:allObjects];
   }
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v46 = [v5 allKeys];
-  v23 = [v46 countByEnumeratingWithState:&v48 objects:v56 count:16];
+  allKeys3 = [v5 allKeys];
+  v23 = [allKeys3 countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v23)
   {
     v24 = v23;
@@ -1187,13 +1187,13 @@ BOOL __37__UAPresenceManager_handleAuthCheck___block_invoke(uint64_t a1, void *a
       {
         if (*v49 != v25)
         {
-          objc_enumerationMutation(v46);
+          objc_enumerationMutation(allKeys3);
         }
 
         v27 = *(*(&v48 + 1) + 8 * j);
         v28 = [v5 objectForKeyedSubscript:v27];
-        v29 = [(UAPresenceManager *)self localNetworkHashes];
-        v30 = [v29 objectForKeyedSubscript:v27];
+        localNetworkHashes3 = [(UAPresenceManager *)self localNetworkHashes];
+        v30 = [localNetworkHashes3 objectForKeyedSubscript:v27];
 
         if (v30)
         {
@@ -1208,8 +1208,8 @@ BOOL __37__UAPresenceManager_handleAuthCheck___block_invoke(uint64_t a1, void *a
         else
         {
           v30 = +[NSMutableOrderedSet orderedSet];
-          v31 = [(UAPresenceManager *)self localNetworkHashes];
-          [v31 setObject:v30 forKeyedSubscript:v27];
+          localNetworkHashes4 = [(UAPresenceManager *)self localNetworkHashes];
+          [localNetworkHashes4 setObject:v30 forKeyedSubscript:v27];
         }
 
         v20 = 1;
@@ -1224,7 +1224,7 @@ LABEL_22:
           {
             v34 = v24;
             v35 = v25;
-            v36 = self;
+            selfCopy = self;
             v37 = v20;
             v38 = [v30 count];
             v39 = [v28 count] + v38 - 5;
@@ -1237,18 +1237,18 @@ LABEL_22:
 
             [v30 removeObjectsInRange:{0, v41}];
             v20 = v37;
-            self = v36;
+            self = selfCopy;
             v25 = v35;
             v24 = v34;
             v5 = v45;
           }
 
-          v42 = [v28 allObjects];
-          [v30 addObjectsFromArray:v42];
+          allObjects2 = [v28 allObjects];
+          [v30 addObjectsFromArray:allObjects2];
         }
       }
 
-      v24 = [v46 countByEnumeratingWithState:&v48 objects:v56 count:16];
+      v24 = [allKeys3 countByEnumeratingWithState:&v48 objects:v56 count:16];
     }
 
     while (v24);
@@ -1261,21 +1261,21 @@ LABEL_22:
 {
   if ([(UAPresenceManager *)self presenceSubscribed])
   {
-    v3 = [(UAPresenceManager *)self presence];
+    presence = [(UAPresenceManager *)self presence];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = __41__UAPresenceManager_releaseSubscriptions__block_invoke;
     v6[3] = &unk_100151460;
     v6[4] = self;
-    [v3 releaseTransientSubscriptionAssertionWithCompletion:v6];
+    [presence releaseTransientSubscriptionAssertionWithCompletion:v6];
   }
 
   v4 = _unicast_assist_cache_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(UAPresenceManager *)self presence];
+    presence2 = [(UAPresenceManager *)self presence];
     *buf = 138543362;
-    v8 = v5;
+    v8 = presence2;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "unicast assist SKPresence releaseSubscriptions: %{public}@", buf, 0xCu);
   }
 }
@@ -1323,8 +1323,8 @@ void __41__UAPresenceManager_releaseSubscriptions__block_invoke_56(id a1, NSErro
 
 - (void)retainSubscription
 {
-  v3 = [(UAPresenceManager *)self presence];
-  [v3 retainTransientSubscriptionAssertionWithCompletion:&__block_literal_global_4576];
+  presence = [(UAPresenceManager *)self presence];
+  [presence retainTransientSubscriptionAssertionWithCompletion:&__block_literal_global_4576];
 
   v4 = _unicast_assist_cache_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))

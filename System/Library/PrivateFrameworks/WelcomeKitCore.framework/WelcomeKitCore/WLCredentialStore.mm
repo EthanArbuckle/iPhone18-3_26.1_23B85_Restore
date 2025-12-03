@@ -1,9 +1,9 @@
 @interface WLCredentialStore
 + (id)sharedInstance;
 - (WLCredentialStore)init;
-- (id)credentialsForAuthentication:(id)a3;
+- (id)credentialsForAuthentication:(id)authentication;
 - (id)currentAuthentication;
-- (void)setCredentials:(id)a3 forAuthentication:(id)a4;
+- (void)setCredentials:(id)credentials forAuthentication:(id)authentication;
 @end
 
 @implementation WLCredentialStore
@@ -34,44 +34,44 @@ uint64_t __35__WLCredentialStore_sharedInstance__block_invoke()
   return [(WLCredentialStore *)&v3 init];
 }
 
-- (void)setCredentials:(id)a3 forAuthentication:(id)a4
+- (void)setCredentials:(id)credentials forAuthentication:(id)authentication
 {
-  v6 = a3;
-  v7 = a4;
+  credentialsCopy = credentials;
+  authenticationCopy = authentication;
   obj = self;
   objc_sync_enter(obj);
   credentials = obj->_credentials;
-  obj->_credentials = v6;
-  v9 = v6;
+  obj->_credentials = credentialsCopy;
+  v9 = credentialsCopy;
 
   authentication = obj->_authentication;
-  obj->_authentication = v7;
+  obj->_authentication = authenticationCopy;
 
   objc_sync_exit(obj);
 }
 
 - (id)currentAuthentication
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_authentication;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_authentication;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)credentialsForAuthentication:(id)a3
+- (id)credentialsForAuthentication:(id)authentication
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 sessionUUID];
-  v7 = [(WLDeviceAuthentication *)v5->_authentication sessionUUID];
-  v8 = [v6 isEqualToString:v7];
+  authenticationCopy = authentication;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sessionUUID = [authenticationCopy sessionUUID];
+  sessionUUID2 = [(WLDeviceAuthentication *)selfCopy->_authentication sessionUUID];
+  v8 = [sessionUUID isEqualToString:sessionUUID2];
 
   if (v8)
   {
-    v9 = v5->_credentials;
+    v9 = selfCopy->_credentials;
   }
 
   else
@@ -79,7 +79,7 @@ uint64_t __35__WLCredentialStore_sharedInstance__block_invoke()
     v9 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }

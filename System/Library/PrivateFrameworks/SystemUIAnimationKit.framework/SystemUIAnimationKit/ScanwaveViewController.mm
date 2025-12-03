@@ -1,16 +1,16 @@
 @interface ScanwaveViewController
-- (_TtC20SystemUIAnimationKit22ScanwaveViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20SystemUIAnimationKit22ScanwaveViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation ScanwaveViewController
 
-- (_TtC20SystemUIAnimationKit22ScanwaveViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20SystemUIAnimationKit22ScanwaveViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_26C614E48();
     v7 = v6;
@@ -22,16 +22,16 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_26C5F3688(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_26C5F3688(v5, v7, bundle);
 }
 
 - (void)dealloc
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit22ScanwaveViewController_prototypeSettings);
-  v3 = self;
+  selfCopy = self;
   [v2 removeKeyPathObserver_];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for ScanwaveViewController(0);
   [(ScanwaveViewController *)&v4 dealloc];
 }
@@ -42,13 +42,13 @@
   v6.super_class = type metadata accessor for ScanwaveViewController(0);
   v2 = v6.receiver;
   [(ScanwaveViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [v3 layer];
+    v4 = view;
+    layer = [view layer];
 
-    [v5 setAllowsGroupBlending_];
+    [layer setAllowsGroupBlending_];
   }
 
   else
@@ -59,19 +59,19 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_26C5F3EBC();
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit22ScanwaveViewController_prototypeSettings);
-  v5 = self;
+  selfCopy = self;
   v6 = v4;
   sub_26C5CBB7C(v6, v7);
 
-  memcpy(__dst, v5 + OBJC_IVAR____TtC20SystemUIAnimationKit22ScanwaveViewController_componentPrototypeSettings, 0x4D1uLL);
-  memcpy(v5 + OBJC_IVAR____TtC20SystemUIAnimationKit22ScanwaveViewController_componentPrototypeSettings, v7, 0x4D1uLL);
+  memcpy(__dst, selfCopy + OBJC_IVAR____TtC20SystemUIAnimationKit22ScanwaveViewController_componentPrototypeSettings, 0x4D1uLL);
+  memcpy(selfCopy + OBJC_IVAR____TtC20SystemUIAnimationKit22ScanwaveViewController_componentPrototypeSettings, v7, 0x4D1uLL);
   sub_26C602740(__dst);
   sub_26C5F5B5C();
 }

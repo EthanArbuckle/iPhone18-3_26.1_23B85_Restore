@@ -1,67 +1,67 @@
 @interface HKMCCycleSegment
-+ (id)_fertileWindowSegmentWithDays:(id)a3;
-+ (id)_menstruationSegmentWithDays:(id)a3;
++ (id)_fertileWindowSegmentWithDays:(id)days;
++ (id)_menstruationSegmentWithDays:(id)days;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)days;
-- (BOOL)isEqual:(id)a3;
-- (HKMCCycleSegment)initWithCoder:(id)a3;
-- (id)_initWithType:(int64_t)a3 days:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HKMCCycleSegment)initWithCoder:(id)coder;
+- (id)_initWithType:(int64_t)type days:(id)days;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMCCycleSegment
 
-+ (id)_menstruationSegmentWithDays:(id)a3
++ (id)_menstruationSegmentWithDays:(id)days
 {
-  v3 = [[a1 alloc] _initWithType:0 days:{a3.var0, a3.var1}];
+  v3 = [[self alloc] _initWithType:0 days:{days.var0, days.var1}];
 
   return v3;
 }
 
-+ (id)_fertileWindowSegmentWithDays:(id)a3
++ (id)_fertileWindowSegmentWithDays:(id)days
 {
-  v3 = [[a1 alloc] _initWithType:1 days:{a3.var0, a3.var1}];
+  v3 = [[self alloc] _initWithType:1 days:{days.var0, days.var1}];
 
   return v3;
 }
 
-- (id)_initWithType:(int64_t)a3 days:(id)a4
+- (id)_initWithType:(int64_t)type days:(id)days
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = days.var1;
+  var0 = days.var0;
   v8.receiver = self;
   v8.super_class = HKMCCycleSegment;
   result = [(HKMCCycleSegment *)&v8 init];
   if (result)
   {
     *(result + 2) = var1;
-    *(result + 3) = a3;
+    *(result + 3) = type;
     *(result + 1) = var0;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"Type"];
-  [v5 encodeInteger:self->_days.start forKey:@"DaysStart"];
-  [v5 encodeInteger:self->_days.duration forKey:@"DaysDuration"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"Type"];
+  [coderCopy encodeInteger:self->_days.start forKey:@"DaysStart"];
+  [coderCopy encodeInteger:self->_days.duration forKey:@"DaysDuration"];
 }
 
-- (HKMCCycleSegment)initWithCoder:(id)a3
+- (HKMCCycleSegment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HKMCCycleSegment;
   v5 = [(HKMCCycleSegment *)&v7 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"Type"];
-    v5->_days.start = [v4 decodeIntegerForKey:@"DaysStart"];
-    v5->_days.duration = [v4 decodeIntegerForKey:@"DaysDuration"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"Type"];
+    v5->_days.start = [coderCopy decodeIntegerForKey:@"DaysStart"];
+    v5->_days.duration = [coderCopy decodeIntegerForKey:@"DaysDuration"];
   }
 
   return v5;
@@ -80,10 +80,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -91,11 +91,11 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(HKMCCycleSegment *)self type], v5 == [(HKMCCycleSegment *)v4 type]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(HKMCCycleSegment *)self type], v5 == [(HKMCCycleSegment *)equalCopy type]))
     {
-      v6 = [(HKMCCycleSegment *)self days];
+      days = [(HKMCCycleSegment *)self days];
       v8 = v7;
-      v11 = v6 == [(HKMCCycleSegment *)v4 days]&& v8 == v9;
+      v11 = days == [(HKMCCycleSegment *)equalCopy days]&& v8 == v9;
     }
 
     else

@@ -1,15 +1,15 @@
 @interface ASASliderControl
 - (_ASASliderRange)range;
 - (unsigned)value;
-- (void)setValue:(unsigned int)a3;
+- (void)setValue:(unsigned int)value;
 @end
 
 @implementation ASASliderControl
 
-- (void)setValue:(unsigned int)a3
+- (void)setValue:(unsigned int)value
 {
-  v4 = a3;
-  if (![(ASAObject *)self setMainGlobalProperty:1935962742 withData:&v4 ofSize:4 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  valueCopy = value;
+  if (![(ASAObject *)self setMainGlobalProperty:1935962742 withData:&valueCopy ofSize:4 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
     _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Could not set value property\n", v3, 2u);

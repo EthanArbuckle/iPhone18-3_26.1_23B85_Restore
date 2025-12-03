@@ -1,6 +1,6 @@
 @interface OverlayLayerDataSourceRenderTargetSizeObserver
 - (CGSize)size;
-- (void)sizeDidChange:(CGSize)a3;
+- (void)sizeDidChange:(CGSize)change;
 @end
 
 @implementation OverlayLayerDataSourceRenderTargetSizeObserver
@@ -23,10 +23,10 @@
   return result;
 }
 
-- (void)sizeDidChange:(CGSize)a3
+- (void)sizeDidChange:(CGSize)change
 {
-  height = a3.height;
-  width = a3.width;
+  height = change.height;
+  width = change.width;
   p_mtx = &self->_mtx;
   v6 = pthread_rwlock_wrlock(&self->_mtx._lock);
   if (v6)

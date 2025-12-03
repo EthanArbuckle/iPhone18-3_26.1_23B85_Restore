@@ -1,12 +1,12 @@
 @interface JSNetworkProxy
-- (void)makeNetworkRequest:(NSURLRequest *)a3 requestProperties:(WLKURLRequestProperties *)a4 completion:(id)a5;
+- (void)makeNetworkRequest:(NSURLRequest *)request requestProperties:(WLKURLRequestProperties *)properties completion:(id)completion;
 @end
 
 @implementation JSNetworkProxy
 
-- (void)makeNetworkRequest:(NSURLRequest *)a3 requestProperties:(WLKURLRequestProperties *)a4 completion:(id)a5
+- (void)makeNetworkRequest:(NSURLRequest *)request requestProperties:(WLKURLRequestProperties *)properties completion:(id)completion
 {
-  v8 = OUTLINED_FUNCTION_196(self, a2, a3, a4, a5);
+  v8 = OUTLINED_FUNCTION_196(self, a2, request, properties, completion);
   v9 = swift_allocObject();
   v9[2] = v6;
   v9[3] = v5;

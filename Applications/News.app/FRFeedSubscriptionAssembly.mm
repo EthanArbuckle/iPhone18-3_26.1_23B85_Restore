@@ -1,7 +1,7 @@
 @interface FRFeedSubscriptionAssembly
 - (FRFeedSubscriptionAssembly)init;
-- (FRFeedSubscriptionAssembly)initWithWindow:(id)a3;
-- (void)loadInRegistry:(id)a3;
+- (FRFeedSubscriptionAssembly)initWithWindow:(id)window;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation FRFeedSubscriptionAssembly
@@ -13,10 +13,10 @@
   return [(FRFeedSubscriptionAssembly *)&v3 init];
 }
 
-- (FRFeedSubscriptionAssembly)initWithWindow:(id)a3
+- (FRFeedSubscriptionAssembly)initWithWindow:(id)window
 {
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  windowCopy = window;
+  if (!windowCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006FB1C();
   }
@@ -27,22 +27,22 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_window, a3);
+    objc_storeStrong(&v6->_window, window);
   }
 
   return v7;
 }
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&OBJC_PROTOCOL___FREnableNotificationsAlertPresenter factory:&stru_1000C4228];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&OBJC_PROTOCOL___FREnableNotificationsAlertPresenter factory:&stru_1000C4228];
   v6 = [v5 inScope:2];
 
-  v8 = [v3 privateContainer];
+  privateContainer = [registryCopy privateContainer];
 
-  v7 = [v8 registerClass:objc_opt_class() factory:&stru_1000C4268];
+  v7 = [privateContainer registerClass:objc_opt_class() factory:&stru_1000C4268];
 }
 
 @end

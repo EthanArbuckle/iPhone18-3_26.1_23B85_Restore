@@ -39,11 +39,11 @@
     [v12 setObject:v9 forKeyedSubscript:*MEMORY[0x1E6985E50]];
   }
 
-  v14 = [MEMORY[0x1E698DC80] sharedInstance];
-  v15 = [v14 authKitAccountWithAltDSID:v8];
-  if ([v14 accountAccessTelemetryOptInForAccount:v15])
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  v15 = [mEMORY[0x1E698DC80] authKitAccountWithAltDSID:v8];
+  if ([mEMORY[0x1E698DC80] accountAccessTelemetryOptInForAccount:v15])
   {
-    v16 = [v14 telemetryDeviceSessionIDForAccount:v15];
+    v16 = [mEMORY[0x1E698DC80] telemetryDeviceSessionIDForAccount:v15];
     [v13 setObject:v16 forKeyedSubscript:*MEMORY[0x1E6985E38]];
   }
 

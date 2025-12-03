@@ -1,34 +1,34 @@
 @interface THDocumentProperties
-- (THDocumentProperties)initWithContext:(id)a3;
+- (THDocumentProperties)initWithContext:(id)context;
 - (THPresentationType)defaultPresentationType;
 - (void)dealloc;
-- (void)setBookLocale:(id)a3;
-- (void)setBookVersion:(id)a3;
-- (void)setChapterBrowserPagePresentationType:(id)a3;
-- (void)setEquationEnvironmentEntry:(id)a3;
-- (void)setIntroMediaUrl:(id)a3;
-- (void)setModificationDate:(id)a3;
-- (void)setOriginalAssetSizes:(id)a3;
-- (void)setSearchIndexEntry:(id)a3;
-- (void)setSearchRefTextEntry:(id)a3;
-- (void)setThinnedAssetSizes:(id)a3;
+- (void)setBookLocale:(id)locale;
+- (void)setBookVersion:(id)version;
+- (void)setChapterBrowserPagePresentationType:(id)type;
+- (void)setEquationEnvironmentEntry:(id)entry;
+- (void)setIntroMediaUrl:(id)url;
+- (void)setModificationDate:(id)date;
+- (void)setOriginalAssetSizes:(id)sizes;
+- (void)setSearchIndexEntry:(id)entry;
+- (void)setSearchRefTextEntry:(id)entry;
+- (void)setThinnedAssetSizes:(id)sizes;
 @end
 
 @implementation THDocumentProperties
 
-- (void)setChapterBrowserPagePresentationType:(id)a3
+- (void)setChapterBrowserPagePresentationType:(id)type
 {
   [(THDocumentProperties *)self willModify];
-  v5 = a3;
+  typeCopy = type;
 
-  self->mChapterBrowserPagePresentationType = a3;
+  self->mChapterBrowserPagePresentationType = type;
 }
 
-- (THDocumentProperties)initWithContext:(id)a3
+- (THDocumentProperties)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = THDocumentProperties;
-  return [(THDocumentProperties *)&v4 initWithContext:a3];
+  return [(THDocumentProperties *)&v4 initWithContext:context];
 }
 
 - (void)dealloc
@@ -59,76 +59,76 @@
   [(THDocumentProperties *)&v3 dealloc];
 }
 
-- (void)setBookLocale:(id)a3
+- (void)setBookLocale:(id)locale
 {
   [(THDocumentProperties *)self willModify];
-  v5 = a3;
+  localeCopy = locale;
 
-  self->mBookLocale = a3;
+  self->mBookLocale = locale;
 }
 
-- (void)setBookVersion:(id)a3
+- (void)setBookVersion:(id)version
 {
   [(THDocumentProperties *)self willModify];
-  v5 = a3;
+  versionCopy = version;
 
-  self->mBookVersion = a3;
+  self->mBookVersion = version;
 }
 
-- (void)setIntroMediaUrl:(id)a3
+- (void)setIntroMediaUrl:(id)url
 {
   [(THDocumentProperties *)self willModify];
-  v5 = a3;
+  urlCopy = url;
 
-  self->mIntroMediaUrl = a3;
+  self->mIntroMediaUrl = url;
 }
 
-- (void)setSearchIndexEntry:(id)a3
+- (void)setSearchIndexEntry:(id)entry
 {
   [(THDocumentProperties *)self willModify];
-  v5 = a3;
+  entryCopy = entry;
 
-  self->mSearchIndexEntry = a3;
+  self->mSearchIndexEntry = entry;
 }
 
-- (void)setSearchRefTextEntry:(id)a3
+- (void)setSearchRefTextEntry:(id)entry
 {
   [(THDocumentProperties *)self willModify];
-  v5 = a3;
+  entryCopy = entry;
 
-  self->mSearchRefTextEntry = a3;
+  self->mSearchRefTextEntry = entry;
 }
 
-- (void)setEquationEnvironmentEntry:(id)a3
+- (void)setEquationEnvironmentEntry:(id)entry
 {
   [(THDocumentProperties *)self willModify];
-  v5 = a3;
+  entryCopy = entry;
 
-  self->mEquationEnvironmentEntry = a3;
+  self->mEquationEnvironmentEntry = entry;
 }
 
-- (void)setOriginalAssetSizes:(id)a3
+- (void)setOriginalAssetSizes:(id)sizes
 {
   [(THDocumentProperties *)self willModify];
-  v5 = a3;
+  sizesCopy = sizes;
 
-  self->mOriginalAssetSizes = a3;
+  self->mOriginalAssetSizes = sizes;
 }
 
-- (void)setThinnedAssetSizes:(id)a3
+- (void)setThinnedAssetSizes:(id)sizes
 {
   [(THDocumentProperties *)self willModify];
-  v5 = a3;
+  sizesCopy = sizes;
 
-  self->mThinnedAssetSizes = a3;
+  self->mThinnedAssetSizes = sizes;
 }
 
-- (void)setModificationDate:(id)a3
+- (void)setModificationDate:(id)date
 {
   [(THDocumentProperties *)self willModify];
-  v5 = a3;
+  dateCopy = date;
 
-  self->mModificationDate = a3;
+  self->mModificationDate = date;
 }
 
 - (THPresentationType)defaultPresentationType

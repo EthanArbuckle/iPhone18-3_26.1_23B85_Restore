@@ -1,12 +1,12 @@
 @interface HAP2TLVOldServiceList
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAP2TLVOldServiceList)init;
-- (HAP2TLVOldServiceList)initWithServiceList:(id)a3;
+- (HAP2TLVOldServiceList)initWithServiceList:(id)list;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAP2TLVOldServiceList
@@ -14,16 +14,16 @@
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HAP2TLVOldServiceList *)self serviceList];
-  v4 = [v2 stringWithFormat:@"<HAP2TLVOldServiceList serviceList=%@>", v3];
+  serviceList = [(HAP2TLVOldServiceList *)self serviceList];
+  v4 = [v2 stringWithFormat:@"<HAP2TLVOldServiceList serviceList=%@>", serviceList];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -33,19 +33,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HAP2TLVOldServiceList *)self serviceList];
-      v7 = [(HAP2TLVOldServiceList *)v5 serviceList];
-      if (v6 == v7)
+      v5 = equalCopy;
+      serviceList = [(HAP2TLVOldServiceList *)self serviceList];
+      serviceList2 = [(HAP2TLVOldServiceList *)v5 serviceList];
+      if (serviceList == serviceList2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(HAP2TLVOldServiceList *)self serviceList];
-        v9 = [(HAP2TLVOldServiceList *)v5 serviceList];
-        v10 = [v8 isEqual:v9];
+        serviceList3 = [(HAP2TLVOldServiceList *)self serviceList];
+        serviceList4 = [(HAP2TLVOldServiceList *)v5 serviceList];
+        v10 = [serviceList3 isEqual:serviceList4];
       }
     }
 
@@ -58,16 +58,16 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAP2TLVOldServiceList allocWithZone:a3];
-  v5 = [(HAP2TLVOldServiceList *)self serviceList];
-  v6 = [(HAP2TLVOldServiceList *)v4 initWithServiceList:v5];
+  v4 = [HAP2TLVOldServiceList allocWithZone:zone];
+  serviceList = [(HAP2TLVOldServiceList *)self serviceList];
+  v6 = [(HAP2TLVOldServiceList *)v4 initWithServiceList:serviceList];
 
   return v6;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
   v40 = 0u;
@@ -92,32 +92,32 @@
   v21 = 0u;
   v22 = 0u;
   TLV8BufferInit();
-  v5 = [(HAP2TLVOldServiceList *)self serviceList];
+  serviceList = [(HAP2TLVOldServiceList *)self serviceList];
 
-  if (!v5)
+  if (!serviceList)
   {
     goto LABEL_20;
   }
 
-  v6 = [(HAP2TLVOldServiceList *)self serviceList];
+  serviceList2 = [(HAP2TLVOldServiceList *)self serviceList];
   v20 = 0;
-  v7 = [v6 serializeWithError:&v20];
+  v7 = [serviceList2 serializeWithError:&v20];
   v8 = v20;
 
   if (!v8)
   {
-    v11 = [v7 bytes];
-    v12 = v11 + [v7 length];
+    bytes = [v7 bytes];
+    v12 = bytes + [v7 length];
     do
     {
-      if ((v12 - v11) >= 255)
+      if ((v12 - bytes) >= 255)
       {
         v13 = 255;
       }
 
       else
       {
-        v13 = v12 - v11;
+        v13 = v12 - bytes;
       }
 
       v14 = TLV8BufferAppend();
@@ -131,7 +131,7 @@
         v15 = v13;
       }
 
-      v11 += v15;
+      bytes += v15;
       if (v14)
       {
         v16 = 1;
@@ -139,7 +139,7 @@
 
       else
       {
-        v16 = v11 >= v12;
+        v16 = bytes >= v12;
       }
     }
 
@@ -148,11 +148,11 @@
 
     if (v17)
     {
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v17);
         v8 = 0;
-        *a3 = v10 = 0;
+        *error = v10 = 0;
         goto LABEL_23;
       }
 
@@ -166,11 +166,11 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  if (a3)
+  if (error)
   {
     v9 = v8;
     v10 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_23;
   }
 
@@ -184,11 +184,11 @@ LABEL_23:
   return v10;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
@@ -202,7 +202,7 @@ LABEL_13:
   {
     v9 = 0;
     v10 = 0;
-    v11 = v7 + v8;
+    v11 = bytes + v8;
     while (1)
     {
       v24 = 0;
@@ -212,10 +212,10 @@ LABEL_13:
       Next = TLV8GetNext();
       if (Next)
       {
-        if (a4)
+        if (error)
         {
           HMErrorFromOSStatus(Next);
-          *a4 = v16 = 0;
+          *error = v16 = 0;
           goto LABEL_20;
         }
 
@@ -230,7 +230,7 @@ LABEL_13:
       if (v24 == 22)
       {
         v21 = v10;
-        v13 = HAPTLVParseContiguousTlvs(22, v7, v11, v22, &v21);
+        v13 = HAPTLVParseContiguousTlvs(22, bytes, v11, v22, &v21);
         v14 = v21;
 
         if (!v14)
@@ -245,7 +245,7 @@ LABEL_13:
         v10 = v14;
       }
 
-      v7 = v22[0];
+      bytes = v22[0];
       if (v22[0] >= v11)
       {
         if (!v10)
@@ -266,11 +266,11 @@ LABEL_13:
     }
 
 LABEL_17:
-    if (a4)
+    if (error)
     {
       v18 = v10;
       v16 = 0;
-      *a4 = v10;
+      *error = v10;
       goto LABEL_20;
     }
 
@@ -283,16 +283,16 @@ LABEL_20:
   return v16;
 }
 
-- (HAP2TLVOldServiceList)initWithServiceList:(id)a3
+- (HAP2TLVOldServiceList)initWithServiceList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v9.receiver = self;
   v9.super_class = HAP2TLVOldServiceList;
   v6 = [(HAP2TLVOldServiceList *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceList, a3);
+    objc_storeStrong(&v6->_serviceList, list);
   }
 
   return v7;
@@ -305,24 +305,24 @@ LABEL_20:
   return [(HAP2TLVOldServiceList *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAP2TLVOldServiceList);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAP2TLVOldServiceList *)v6 parseFromData:v5 error:&v11];
+    [(HAP2TLVOldServiceList *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

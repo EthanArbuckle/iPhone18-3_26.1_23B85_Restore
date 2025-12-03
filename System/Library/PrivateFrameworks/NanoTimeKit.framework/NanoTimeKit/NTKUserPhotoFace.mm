@@ -1,30 +1,30 @@
 @interface NTKUserPhotoFace
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
-- (BOOL)_hasOptionsForCustomEditMode:(int64_t)a3;
-- (BOOL)_option:(id)a3 migratesToValidOption:(id *)a4 forCustomEditMode:(int64_t)a5;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
+- (BOOL)_hasOptionsForCustomEditMode:(int64_t)mode;
+- (BOOL)_option:(id)_option migratesToValidOption:(id *)option forCustomEditMode:(int64_t)mode;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKUserPhotoFace
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 14)
+  slotCopy = slot;
+  if (mode == 14)
   {
-    v7 = [(NTKFace *)self device];
-    v8 = [NTKDateAlignmentEditOption optionWithAlignment:0 forDevice:v7];
+    device = [(NTKFace *)self device];
+    v8 = [NTKDateAlignmentEditOption optionWithAlignment:0 forDevice:device];
     goto LABEL_5;
   }
 
-  if (a3 == 12)
+  if (mode == 12)
   {
-    v7 = [(NTKFace *)self device];
-    v8 = [NTKUserPhotoEditOption optionUsingDefaultPhoto:1 forDevice:v7];
+    device = [(NTKFace *)self device];
+    v8 = [NTKUserPhotoEditOption optionUsingDefaultPhoto:1 forDevice:device];
 LABEL_5:
     v9 = v8;
 
@@ -37,27 +37,27 @@ LABEL_7:
   return v9;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
-    v4 = [@"EDIT_MODE_LABEL_PHOTO_CONTENT" stringByAppendingString:{@"_COMPANION", a4}];
+    v4 = [@"EDIT_MODE_LABEL_PHOTO_CONTENT" stringByAppendingString:{@"_COMPANION", device}];
     v5 = NTKCompanionClockFaceLocalizedString(v4, @"Photo");
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___NTKUserPhotoFace;
-    v5 = objc_msgSendSuper2(&v7, sel__localizedNameOverrideForCustomEditMode_forDevice_, a3, a4);
+    v5 = objc_msgSendSuper2(&v7, sel__localizedNameOverrideForCustomEditMode_forDevice_, mode, device);
   }
 
   return v5;
 }
 
-- (BOOL)_hasOptionsForCustomEditMode:(int64_t)a3
+- (BOOL)_hasOptionsForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
     return 0;
   }
@@ -69,31 +69,31 @@ LABEL_7:
   return [(NTKFace *)&v6 _hasOptionsForCustomEditMode:?];
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 != 14)
+  if (mode != 14)
   {
     return 0;
   }
 
-  v4 = [(NTKFace *)self device:a3];
+  v4 = [(NTKFace *)self device:mode];
   v5 = [(NTKEnumeratedEditOption *)NTKDateAlignmentEditOption numberOfOptionsForDevice:v4];
 
   return v5;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a5;
-  if (a4 == 14)
+  slotCopy = slot;
+  if (mode == 14)
   {
-    v10 = [(NTKFace *)self device];
-    v9 = [(NTKEnumeratedEditOption *)NTKDateAlignmentEditOption optionAtIndex:a3 forDevice:v10];
+    device = [(NTKFace *)self device];
+    v9 = [(NTKEnumeratedEditOption *)NTKDateAlignmentEditOption optionAtIndex:index forDevice:device];
   }
 
-  else if (a4 == 12 && !a3)
+  else if (mode == 12 && !index)
   {
-    v9 = [(NTKFace *)self selectedOptionForCustomEditMode:12 slot:v8];
+    v9 = [(NTKFace *)self selectedOptionForCustomEditMode:12 slot:slotCopy];
   }
 
   else
@@ -104,26 +104,26 @@ LABEL_7:
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 14)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 14)
   {
-    v10 = [(NTKFace *)self device];
-    v11 = [(NTKEnumeratedEditOption *)NTKDateAlignmentEditOption indexOfOption:v8 forDevice:v10];
+    device = [(NTKFace *)self device];
+    v11 = [(NTKEnumeratedEditOption *)NTKDateAlignmentEditOption indexOfOption:optionCopy forDevice:device];
   }
 
   else
   {
-    if (a4 != 12)
+    if (mode != 12)
     {
       v11 = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_9;
     }
 
-    v10 = [(NTKFace *)self selectedOptionForCustomEditMode:12 slot:v9];
-    if (v10 == v8)
+    device = [(NTKFace *)self selectedOptionForCustomEditMode:12 slot:slotCopy];
+    if (device == optionCopy)
     {
       v11 = 0;
     }
@@ -138,30 +138,30 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)_option:(id)a3 migratesToValidOption:(id *)a4 forCustomEditMode:(int64_t)a5
+- (BOOL)_option:(id)_option migratesToValidOption:(id *)option forCustomEditMode:(int64_t)mode
 {
-  v7 = a3;
+  _optionCopy = _option;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = _optionCopy;
     if (([v8 isDefaultPhoto] & 1) == 0)
     {
-      v9 = [v8 path];
-      if (v9)
+      path = [v8 path];
+      if (path)
       {
-        v10 = v9;
-        [(NTKFace *)self setResourceDirectoryByTransferringOwnership:v9];
-        v11 = [MEMORY[0x277CCAA00] defaultManager];
-        [v11 removeItemAtPath:v10 error:0];
+        v10 = path;
+        [(NTKFace *)self setResourceDirectoryByTransferringOwnership:path];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        [defaultManager removeItemAtPath:v10 error:0];
       }
     }
 
-    v12 = [v8 isDefaultPhoto];
-    v13 = [(NTKFace *)self device];
-    *a4 = [NTKUserPhotoEditOption optionUsingDefaultPhoto:v12 forDevice:v13];
+    isDefaultPhoto = [v8 isDefaultPhoto];
+    device = [(NTKFace *)self device];
+    *option = [NTKUserPhotoEditOption optionUsingDefaultPhoto:isDefaultPhoto forDevice:device];
 
-    v14 = *a4 != 0;
+    v14 = *option != 0;
   }
 
   else
@@ -172,9 +172,9 @@ LABEL_9:
   return v14;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 12 || a3 == 14)
+  if (mode == 12 || mode == 14)
   {
     v4 = objc_opt_class();
   }

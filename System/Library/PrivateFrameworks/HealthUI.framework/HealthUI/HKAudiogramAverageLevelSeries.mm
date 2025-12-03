@@ -1,5 +1,5 @@
 @interface HKAudiogramAverageLevelSeries
-+ (id)audiogramAverageLevelSeriesWithColor:(id)a3;
++ (id)audiogramAverageLevelSeriesWithColor:(id)color;
 - (HKAudiogramAverageLevelSeries)init;
 @end
 
@@ -12,10 +12,10 @@
   return [(HKLineSeries *)&v3 init];
 }
 
-+ (id)audiogramAverageLevelSeriesWithColor:(id)a3
++ (id)audiogramAverageLevelSeriesWithColor:(id)color
 {
-  v3 = a3;
-  v4 = _s8HealthUI27AudiogramAverageLevelSeriesC04makecdeF012primaryColorACSo7UIColorC_tFZ_0(v3);
+  colorCopy = color;
+  v4 = _s8HealthUI27AudiogramAverageLevelSeriesC04makecdeF012primaryColorACSo7UIColorC_tFZ_0(colorCopy);
 
   return v4;
 }

@@ -1,28 +1,28 @@
 @interface _MLCANETransposeParameters
-+ (id)transposeUnitParametersWith:(id)a3;
-- (_MLCANETransposeParameters)initWithTransposeParams:(id)a3;
++ (id)transposeUnitParametersWith:(id)with;
+- (_MLCANETransposeParameters)initWithTransposeParams:(id)params;
 @end
 
 @implementation _MLCANETransposeParameters
 
-+ (id)transposeUnitParametersWith:(id)a3
++ (id)transposeUnitParametersWith:(id)with
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTransposeParams:v4];
+  withCopy = with;
+  v5 = [[self alloc] initWithTransposeParams:withCopy];
 
   return v5;
 }
 
-- (_MLCANETransposeParameters)initWithTransposeParams:(id)a3
+- (_MLCANETransposeParameters)initWithTransposeParams:(id)params
 {
-  v5 = a3;
+  paramsCopy = params;
   v9.receiver = self;
   v9.super_class = _MLCANETransposeParameters;
   v6 = [(_MLCANETransposeParameters *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transposeParams, a3);
+    objc_storeStrong(&v6->_transposeParams, params);
   }
 
   return v7;

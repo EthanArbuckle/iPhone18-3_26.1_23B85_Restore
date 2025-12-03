@@ -1,16 +1,16 @@
 @interface HDXPCListener
 + (id)serviceListener;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (HDXPCListener)init;
-- (HDXPCListener)initWithLabel:(id)a3;
-- (HDXPCListener)initWithMachServiceName:(id)a3;
-- (HDXPCListener)initWithUnderlyingListener:(id)a3 label:(id)a4;
+- (HDXPCListener)initWithLabel:(id)label;
+- (HDXPCListener)initWithMachServiceName:(id)name;
+- (HDXPCListener)initWithUnderlyingListener:(id)listener label:(id)label;
 - (HDXPCListenerClientProvider)clientProvider;
 - (HDXPCListenerDelegate)delegate;
 - (NSArray)allClients;
-- (void)_handleConnectionInvalidationForClient:(id)a3 exportedObject:(id)a4;
-- (void)_handleInterruptionWithClient:(id)a3 exportedObject:(id)a4;
-- (void)_handleInvalidationWithClient:(id)a3 exportedObject:(id)a4;
+- (void)_handleConnectionInvalidationForClient:(id)client exportedObject:(id)object;
+- (void)_handleInterruptionWithClient:(id)client exportedObject:(id)object;
+- (void)_handleInvalidationWithClient:(id)client exportedObject:(id)object;
 - (void)dealloc;
 @end
 
@@ -40,46 +40,46 @@
 
 - (HDXPCListener)init
 {
-  v3 = [MEMORY[0x277CCAE98] anonymousListener];
+  anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HDXPCListener *)self initWithUnderlyingListener:v3 label:v5];
+  v6 = [(HDXPCListener *)self initWithUnderlyingListener:anonymousListener label:v5];
 
   return v6;
 }
 
-- (HDXPCListener)initWithLabel:(id)a3
+- (HDXPCListener)initWithLabel:(id)label
 {
   v4 = MEMORY[0x277CCAE98];
-  v5 = a3;
-  v6 = [v4 anonymousListener];
-  v7 = [(HDXPCListener *)self initWithUnderlyingListener:v6 label:v5];
+  labelCopy = label;
+  anonymousListener = [v4 anonymousListener];
+  v7 = [(HDXPCListener *)self initWithUnderlyingListener:anonymousListener label:labelCopy];
 
   return v7;
 }
 
-- (HDXPCListener)initWithMachServiceName:(id)a3
+- (HDXPCListener)initWithMachServiceName:(id)name
 {
   v4 = MEMORY[0x277CCAE98];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithMachServiceName:v5];
-  v7 = [(HDXPCListener *)self initWithUnderlyingListener:v6 label:v5];
+  nameCopy = name;
+  v6 = [[v4 alloc] initWithMachServiceName:nameCopy];
+  v7 = [(HDXPCListener *)self initWithUnderlyingListener:v6 label:nameCopy];
 
   return v7;
 }
 
-- (HDXPCListener)initWithUnderlyingListener:(id)a3 label:(id)a4
+- (HDXPCListener)initWithUnderlyingListener:(id)listener label:(id)label
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  listenerCopy = listener;
+  labelCopy = label;
+  if (!listenerCopy)
   {
     [HDXPCListener initWithUnderlyingListener:a2 label:self];
   }
 
-  v10 = [v8 delegate];
+  delegate = [listenerCopy delegate];
 
-  if (v10)
+  if (delegate)
   {
     [HDXPCListener initWithUnderlyingListener:a2 label:self];
   }
@@ -90,9 +90,9 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_underlyingListener, a3);
+    objc_storeStrong(&v11->_underlyingListener, listener);
     [(NSXPCListener *)v12->_underlyingListener setDelegate:v12];
-    v13 = [v9 copy];
+    v13 = [labelCopy copy];
     label = v12->_label;
     v12->_label = v13;
 
@@ -131,8 +131,8 @@ void __32__HDXPCListener_serviceListener__block_invoke()
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSMapTable *)self->_exportedObjectsByClient keyEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  keyEnumerator = [(NSMapTable *)self->_exportedObjectsByClient keyEnumerator];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -143,13 +143,13 @@ void __32__HDXPCListener_serviceListener__block_invoke()
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         [v3 addObject:*(*(&v12 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -163,36 +163,36 @@ void __32__HDXPCListener_serviceListener__block_invoke()
   return v9;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v58 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 processIdentifier];
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
   _HKInitializeLogging();
   v7 = MEMORY[0x277CCC2B0];
   v8 = *MEMORY[0x277CCC2B0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B0], OS_LOG_TYPE_DEBUG))
   {
-    [(HDXPCListener *)self listener:v6 shouldAcceptNewConnection:v8];
+    [(HDXPCListener *)self listener:processIdentifier shouldAcceptNewConnection:v8];
   }
 
-  v9 = [(HDXPCListener *)self delegate];
-  if (v9)
+  delegate = [(HDXPCListener *)self delegate];
+  if (delegate)
   {
-    v10 = [(HDXPCListener *)self clientProvider];
-    v11 = v10;
-    if (v10)
+    clientProvider = [(HDXPCListener *)self clientProvider];
+    v11 = clientProvider;
+    if (clientProvider)
     {
       v51 = 0;
       v12 = &v51;
-      v13 = [v10 clientForListener:self connection:v5 error:&v51];
+      v13 = [clientProvider clientForListener:self connection:connectionCopy error:&v51];
     }
 
     else
     {
       v50 = 0;
       v12 = &v50;
-      v13 = [HDXPCClient clientWithConnection:v5 error:&v50];
+      v13 = [HDXPCClient clientWithConnection:connectionCopy error:&v50];
     }
 
     v16 = v13;
@@ -201,12 +201,12 @@ void __32__HDXPCListener_serviceListener__block_invoke()
     {
       v41 = v11;
       v18 = MEMORY[0x277CCACA8];
-      v19 = [v16 process];
-      v20 = [v19 bundleIdentifier];
-      v40 = [v18 stringWithFormat:@"%@ (%d)", v20, v6];
+      process = [v16 process];
+      bundleIdentifier = [process bundleIdentifier];
+      v40 = [v18 stringWithFormat:@"%@ (%d)", bundleIdentifier, processIdentifier];
 
       v49 = v17;
-      v21 = [v9 exportObjectForListener:self client:v16 error:&v49];
+      v21 = [delegate exportObjectForListener:self client:v16 error:&v49];
       v39 = v49;
 
       v15 = v21 != 0;
@@ -214,16 +214,16 @@ void __32__HDXPCListener_serviceListener__block_invoke()
       {
         if (self->_connectionQueue)
         {
-          [v5 _setQueue:?];
+          [connectionCopy _setQueue:?];
         }
 
-        v22 = [v21 remoteInterface];
-        [v5 setRemoteObjectInterface:v22];
+        remoteInterface = [v21 remoteInterface];
+        [connectionCopy setRemoteObjectInterface:remoteInterface];
 
-        v23 = [v21 exportedInterface];
-        [v5 setExportedInterface:v23];
+        exportedInterface = [v21 exportedInterface];
+        [connectionCopy setExportedInterface:exportedInterface];
 
-        [v5 setExportedObject:v21];
+        [connectionCopy setExportedObject:v21];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __52__HDXPCListener_listener_shouldAcceptNewConnection___block_invoke;
@@ -243,7 +243,7 @@ void __32__HDXPCListener_serviceListener__block_invoke()
         v46 = v24;
         v25 = v21;
         v47 = v25;
-        [v5 setInvalidationHandler:v45];
+        [connectionCopy setInvalidationHandler:v45];
         v42[0] = MEMORY[0x277D85DD0];
         v42[1] = 3221225472;
         v42[2] = __52__HDXPCListener_listener_shouldAcceptNewConnection___block_invoke_4;
@@ -253,14 +253,14 @@ void __32__HDXPCListener_serviceListener__block_invoke()
         v43 = v26;
         v27 = v25;
         v44 = v27;
-        [v5 setInterruptionHandler:v42];
+        [connectionCopy setInterruptionHandler:v42];
         os_unfair_lock_lock(&self->_lock);
         exportedObjectsByClient = self->_exportedObjectsByClient;
         if (!exportedObjectsByClient)
         {
-          v29 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+          strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
           v30 = self->_exportedObjectsByClient;
-          self->_exportedObjectsByClient = v29;
+          self->_exportedObjectsByClient = strongToStrongObjectsMapTable;
 
           exportedObjectsByClient = self->_exportedObjectsByClient;
         }
@@ -276,10 +276,10 @@ void __32__HDXPCListener_serviceListener__block_invoke()
 
         if (objc_opt_respondsToSelector())
         {
-          [v9 connectionConfiguredForListener:self client:v26 exportedObject:v27];
+          [delegate connectionConfiguredForListener:self client:v26 exportedObject:v27];
         }
 
-        [v5 resume];
+        [connectionCopy resume];
 
         v17 = v39;
       }
@@ -316,7 +316,7 @@ void __32__HDXPCListener_serviceListener__block_invoke()
         *buf = 138543874;
         v53 = v33;
         v54 = 2114;
-        v55 = v5;
+        v55 = connectionCopy;
         v56 = 2114;
         v57 = v17;
         _os_log_impl(&dword_25156C000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: Failed to create client for connection %{public}@: %{public}@", buf, 0x20u);
@@ -332,7 +332,7 @@ void __32__HDXPCListener_serviceListener__block_invoke()
     v14 = *v7;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [(HDXPCListener *)self listener:v5 shouldAcceptNewConnection:v14];
+      [(HDXPCListener *)self listener:connectionCopy shouldAcceptNewConnection:v14];
     }
 
     v15 = 0;
@@ -379,68 +379,68 @@ void __52__HDXPCListener_listener_shouldAcceptNewConnection___block_invoke_4(uin
   dispatch_async(v2, block);
 }
 
-- (void)_handleInvalidationWithClient:(id)a3 exportedObject:(id)a4
+- (void)_handleInvalidationWithClient:(id)client exportedObject:(id)object
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  objectCopy = object;
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC2B0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B0], OS_LOG_TYPE_INFO))
   {
     label = self->_label;
     v10 = v8;
-    v11 = [v6 process];
-    v12 = [v11 bundleIdentifier];
-    v13 = [v6 process];
+    process = [clientCopy process];
+    bundleIdentifier = [process bundleIdentifier];
+    process2 = [clientCopy process];
     v15 = 138543874;
     v16 = label;
     v17 = 2114;
-    v18 = v12;
+    v18 = bundleIdentifier;
     v19 = 1024;
-    v20 = [v13 processIdentifier];
+    processIdentifier = [process2 processIdentifier];
     _os_log_impl(&dword_25156C000, v10, OS_LOG_TYPE_INFO, "%{public}@: Connection to %{public}@ (%d) invalidated", &v15, 0x1Cu);
   }
 
-  [v7 connectionInvalidated];
-  [(HDXPCListener *)self _handleConnectionInvalidationForClient:v6 exportedObject:v7];
+  [objectCopy connectionInvalidated];
+  [(HDXPCListener *)self _handleConnectionInvalidationForClient:clientCopy exportedObject:objectCopy];
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMapTable *)self->_exportedObjectsByClient removeObjectForKey:v6];
+  [(NSMapTable *)self->_exportedObjectsByClient removeObjectForKey:clientCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleInterruptionWithClient:(id)a3 exportedObject:(id)a4
+- (void)_handleInterruptionWithClient:(id)client exportedObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  objectCopy = object;
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC2B0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B0], OS_LOG_TYPE_ERROR))
   {
-    [(HDXPCListener *)self _handleInterruptionWithClient:v8 exportedObject:v6];
+    [(HDXPCListener *)self _handleInterruptionWithClient:v8 exportedObject:clientCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v7 connectionInterrupted];
+    [objectCopy connectionInterrupted];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMapTable *)self->_exportedObjectsByClient removeObjectForKey:v6];
+  [(NSMapTable *)self->_exportedObjectsByClient removeObjectForKey:clientCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_handleConnectionInvalidationForClient:(id)a3 exportedObject:(id)a4
+- (void)_handleConnectionInvalidationForClient:(id)client exportedObject:(id)object
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(HDXPCListener *)self delegate];
+  clientCopy = client;
+  objectCopy = object;
+  delegate = [(HDXPCListener *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 connectionInvalidatedForListener:self client:v8 exportedObject:v6];
+    [delegate connectionInvalidatedForListener:self client:clientCopy exportedObject:objectCopy];
   }
 }
 

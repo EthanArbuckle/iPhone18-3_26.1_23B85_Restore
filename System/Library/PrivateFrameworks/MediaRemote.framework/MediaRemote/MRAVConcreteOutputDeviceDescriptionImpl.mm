@@ -1,5 +1,5 @@
 @interface MRAVConcreteOutputDeviceDescriptionImpl
-- (MRAVConcreteOutputDeviceDescriptionImpl)initWithAVDescription:(id)a3;
+- (MRAVConcreteOutputDeviceDescriptionImpl)initWithAVDescription:(id)description;
 - (unsigned)deviceSubtype;
 - (unsigned)deviceType;
 @end
@@ -8,28 +8,28 @@
 
 - (unsigned)deviceSubtype
 {
-  v2 = [(AVOutputDeviceDescription *)self->_avDescription deviceSubType];
+  deviceSubType = [(AVOutputDeviceDescription *)self->_avDescription deviceSubType];
 
-  return MRAVOutputDeviceSubtypeFromAVSubtype(v2);
+  return MRAVOutputDeviceSubtypeFromAVSubtype(deviceSubType);
 }
 
 - (unsigned)deviceType
 {
-  v2 = [(AVOutputDeviceDescription *)self->_avDescription deviceType];
+  deviceType = [(AVOutputDeviceDescription *)self->_avDescription deviceType];
 
-  return MRAVOutputDeviceTypeFromAVType(v2);
+  return MRAVOutputDeviceTypeFromAVType(deviceType);
 }
 
-- (MRAVConcreteOutputDeviceDescriptionImpl)initWithAVDescription:(id)a3
+- (MRAVConcreteOutputDeviceDescriptionImpl)initWithAVDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = MRAVConcreteOutputDeviceDescriptionImpl;
   v6 = [(MRAVConcreteOutputDeviceDescriptionImpl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_avDescription, a3);
+    objc_storeStrong(&v6->_avDescription, description);
   }
 
   return v7;

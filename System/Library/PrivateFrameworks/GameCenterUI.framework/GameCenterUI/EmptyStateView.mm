@@ -3,12 +3,12 @@
 + (_TtC12GameCenterUI14EmptyStateView)addFriendsEmptyStateView;
 + (_TtC12GameCenterUI14EmptyStateView)addFriendsEmptyStateViewTVOS;
 + (_TtC12GameCenterUI14EmptyStateView)addFriendsWithButtonEmptyStateView;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (id)buttonActionBlock;
-- (void)didTapButton:(id)a3;
+- (void)didTapButton:(id)button;
 - (void)layoutSubviews;
-- (void)setButtonActionBlock:(id)a3;
+- (void)setButtonActionBlock:(id)block;
 @end
 
 @implementation EmptyStateView
@@ -67,9 +67,9 @@
   return v4;
 }
 
-- (void)setButtonActionBlock:(id)a3
+- (void)setButtonActionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -82,15 +82,15 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   EmptyStateView.buttonActionBlock.setter(v4, v5);
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_24E2DE0F8();
   v7 = v6;
   v9 = v8;
@@ -111,15 +111,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   EmptyStateView.layoutSubviews()();
 }
 
-- (void)didTapButton:(id)a3
+- (void)didTapButton:(id)button
 {
-  if (a3)
+  if (button)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24E3487A8();
     swift_unknownObjectRelease();
@@ -128,7 +128,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_24E2DCCB4();
@@ -136,11 +136,11 @@
   sub_24DF8C95C(v6, &qword_27F1E0370);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = EmptyStateView.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;

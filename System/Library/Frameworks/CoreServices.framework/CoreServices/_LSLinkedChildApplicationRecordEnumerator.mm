@@ -1,31 +1,31 @@
 @interface _LSLinkedChildApplicationRecordEnumerator
-- (BOOL)_getObject:(id *)a3 atIndex:(unint64_t)a4 context:(LSContext *)a5;
-- (BOOL)_prepareWithContext:(LSContext *)a3 error:(id *)a4;
-- (_LSLinkedChildApplicationRecordEnumerator)initWithContext:(LSContext *)a3 parentBundleID:(id)a4 options:(unint64_t)a5;
+- (BOOL)_getObject:(id *)object atIndex:(unint64_t)index context:(LSContext *)context;
+- (BOOL)_prepareWithContext:(LSContext *)context error:(id *)error;
+- (_LSLinkedChildApplicationRecordEnumerator)initWithContext:(LSContext *)context parentBundleID:(id)d options:(unint64_t)options;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _LSLinkedChildApplicationRecordEnumerator
 
-- (_LSLinkedChildApplicationRecordEnumerator)initWithContext:(LSContext *)a3 parentBundleID:(id)a4 options:(unint64_t)a5
+- (_LSLinkedChildApplicationRecordEnumerator)initWithContext:(LSContext *)context parentBundleID:(id)d options:(unint64_t)options
 {
   v11.receiver = self;
   v11.super_class = _LSLinkedChildApplicationRecordEnumerator;
-  v7 = [(_LSDBEnumerator *)&v11 _initWithContext:a3];
+  v7 = [(_LSDBEnumerator *)&v11 _initWithContext:context];
   if (v7)
   {
-    v8 = [a4 copy];
+    v8 = [d copy];
     parentBundleID = v7->_parentBundleID;
     v7->_parentBundleID = v8;
 
-    v7->_options = a5;
+    v7->_options = options;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = _LSLinkedChildApplicationRecordEnumerator;
@@ -36,7 +36,7 @@
     std::vector<unsigned int>::__assign_with_size[abi:nn200100]<unsigned int *,unsigned int *>(&v5->_units.__begin_, self->_units.__begin_, self->_units.__end_, self->_units.__end_ - self->_units.__begin_);
   }
 
-  v7 = [(NSString *)self->_parentBundleID copyWithZone:a3];
+  v7 = [(NSString *)self->_parentBundleID copyWithZone:zone];
   parentBundleID = v6->_parentBundleID;
   v6->_parentBundleID = v7;
 
@@ -44,29 +44,29 @@
   return v6;
 }
 
-- (BOOL)_prepareWithContext:(LSContext *)a3 error:(id *)a4
+- (BOOL)_prepareWithContext:(LSContext *)context error:(id *)error
 {
   self->_units.__end_ = self->_units.__begin_;
-  if (_LSDatabaseGetStringForCFString(a3->db, self->_parentBundleID, 0))
+  if (_LSDatabaseGetStringForCFString(context->db, self->_parentBundleID, 0))
   {
-    _LSDatabaseEnumeratingBindingMap(a3->db);
+    _LSDatabaseEnumeratingBindingMap(context->db);
   }
 
   return 1;
 }
 
-- (BOOL)_getObject:(id *)a3 atIndex:(unint64_t)a4 context:(LSContext *)a5
+- (BOOL)_getObject:(id *)object atIndex:(unint64_t)index context:(LSContext *)context
 {
   begin = self->_units.__begin_;
   v7 = self->_units.__end_ - begin;
-  if (v7 > a4)
+  if (v7 > index)
   {
-    v11 = begin[a4];
-    v12 = _LSBundleGet(a5->db, begin[a4]);
+    v11 = begin[index];
+    v12 = _LSBundleGet(context->db, begin[index]);
     if (v12 && (v14 = v12, LaunchServices::AppRecordEnumeration::evaluateBundleNoIOCommon(v11, v12, self->_options, v13)))
     {
       v21 = 0;
-      v15 = [[LSApplicationRecord alloc] _initWithContext:a5 bundleID:v11 bundleData:v14 error:&v21];
+      v15 = [[LSApplicationRecord alloc] _initWithContext:context bundleID:v11 bundleData:v14 error:&v21];
       v16 = v21;
       if (!v15)
       {
@@ -79,18 +79,18 @@
         _LSEnumeratorFireErrorHandler(self, v16);
       }
 
-      v18 = *a3;
-      *a3 = v15;
+      v18 = *object;
+      *object = v15;
     }
 
     else
     {
-      v19 = *a3;
-      *a3 = 0;
+      v19 = *object;
+      *object = 0;
     }
   }
 
-  return v7 > a4;
+  return v7 > index;
 }
 
 - (id).cxx_construct

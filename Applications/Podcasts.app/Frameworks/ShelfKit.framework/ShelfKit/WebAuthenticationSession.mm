@@ -1,14 +1,14 @@
 @interface WebAuthenticationSession
 - (_TtC8ShelfKit24WebAuthenticationSession)init;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
 @end
 
 @implementation WebAuthenticationSession
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
-  v4 = a3;
-  v5 = self;
+  sessionCopy = session;
+  selfCopy = self;
   v6 = sub_3E5214();
 
   return v6;

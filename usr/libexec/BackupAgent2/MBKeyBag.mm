@@ -1,39 +1,39 @@
 @interface MBKeyBag
-+ (MBKeyBag)keybagWithData:(id)a3 error:(id *)a4;
-+ (MBKeyBag)keybagWithPassword:(id)a3 error:(id *)a4;
-+ (__MKBAssertion)holdLockAssertion:(id)a3;
-+ (id)OTAKeyBagWithData:(id)a3 error:(id *)a4;
++ (MBKeyBag)keybagWithData:(id)data error:(id *)error;
++ (MBKeyBag)keybagWithPassword:(id)password error:(id *)error;
++ (__MKBAssertion)holdLockAssertion:(id)assertion;
++ (id)OTAKeyBagWithData:(id)data error:(id *)error;
 + (id)randomSecret;
 + (id)sharedOTAKeyBag;
-+ (id)unlockedKeyBagWithData:(id)a3 password:(id)a4 error:(id *)a5;
-+ (int)codeWithReturnCode:(int)a3;
-+ (void)releaseLockAssertion:(__MKBAssertion *)a3;
++ (id)unlockedKeyBagWithData:(id)data password:(id)password error:(id *)error;
++ (int)codeWithReturnCode:(int)code;
++ (void)releaseLockAssertion:(__MKBAssertion *)assertion;
 + (void)startOTABackup;
-+ (void)startOTABackupForVolumeUUID:(id)a3;
++ (void)startOTABackupForVolumeUUID:(id)d;
 + (void)stopOTABackup;
-+ (void)stopOTABackupForVolumeUUID:(id)a3;
-- (BOOL)changePasswordFrom:(id)a3 toPassword:(id)a4 error:(id *)a5;
-- (BOOL)changeSecretFrom:(id)a3 toSecret:(id)a4 error:(id *)a5;
-- (BOOL)decryptFileWithPath:(id)a3 encryptionKey:(id)a4 size:(unint64_t)a5 error:(id *)a6;
-- (BOOL)decryptFileWithPath:(id)a3 encryptionKey:(id)a4 size:(unint64_t)a5 hardwareModel:(id)a6 error:(id *)a7;
-- (BOOL)unlockWithPassword:(id)a3 error:(id *)a4;
-- (BOOL)unlockWithSecret:(id)a3 error:(id *)a4;
-- (BOOL)validateEncryptionKey:(id)a3 file:(_mkbfileref *)a4 path:(id)a5 error:(id *)a6;
-- (BOOL)validateWrappedKey:(id)a3 error:(id *)a4;
-- (MBKeyBag)initWithHandle:(__MKBKeyBagHandle *)a3 OTA:(BOOL)a4;
-- (MBKeyBag)initWithOTAHandle:(__MKBOTABackupBagHandle *)a3 keyBagData:(id)a4;
-- (_mkbfileref)encryptedFileForRestoreWithPath:(id)a3 key:(id)a4 error:(id *)a5;
-- (id)UUIDWithError:(id *)a3;
-- (id)dataWithError:(id *)a3;
-- (id)encryptionKeyForFile:(_mkbfileref *)a3 path:(id)a4 error:(id *)a5;
++ (void)stopOTABackupForVolumeUUID:(id)d;
+- (BOOL)changePasswordFrom:(id)from toPassword:(id)password error:(id *)error;
+- (BOOL)changeSecretFrom:(id)from toSecret:(id)secret error:(id *)error;
+- (BOOL)decryptFileWithPath:(id)path encryptionKey:(id)key size:(unint64_t)size error:(id *)error;
+- (BOOL)decryptFileWithPath:(id)path encryptionKey:(id)key size:(unint64_t)size hardwareModel:(id)model error:(id *)error;
+- (BOOL)unlockWithPassword:(id)password error:(id *)error;
+- (BOOL)unlockWithSecret:(id)secret error:(id *)error;
+- (BOOL)validateEncryptionKey:(id)key file:(_mkbfileref *)file path:(id)path error:(id *)error;
+- (BOOL)validateWrappedKey:(id)key error:(id *)error;
+- (MBKeyBag)initWithHandle:(__MKBKeyBagHandle *)handle OTA:(BOOL)a;
+- (MBKeyBag)initWithOTAHandle:(__MKBOTABackupBagHandle *)handle keyBagData:(id)data;
+- (_mkbfileref)encryptedFileForRestoreWithPath:(id)path key:(id)key error:(id *)error;
+- (id)UUIDWithError:(id *)error;
+- (id)dataWithError:(id *)error;
+- (id)encryptionKeyForFile:(_mkbfileref *)file path:(id)path error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MBKeyBag
 
-+ (__MKBAssertion)holdLockAssertion:(id)a3
++ (__MKBAssertion)holdLockAssertion:(id)assertion
 {
-  v3 = a3;
+  assertionCopy = assertion;
   valuePtr = 300;
   v4 = CFNumberCreate(0, kCFNumberIntType, &valuePtr);
   *keys = *&off_1000FE420;
@@ -50,7 +50,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v12 = v3;
+      v12 = assertionCopy;
       v13 = 2048;
       v14 = v6;
       v15 = 1024;
@@ -63,7 +63,7 @@
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v12 = v3;
+    v12 = assertionCopy;
     v13 = 2112;
     v14 = 0;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Failed to acquire keybag lock assertion %{public}@: %@", buf, 0x16u);
@@ -73,28 +73,28 @@
   return v6;
 }
 
-+ (void)releaseLockAssertion:(__MKBAssertion *)a3
++ (void)releaseLockAssertion:(__MKBAssertion *)assertion
 {
-  if (a3)
+  if (assertion)
   {
     v4 = MBGetDefaultLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v6 = a3;
+      assertionCopy = assertion;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Releasing keybag lock assertion (%p)", buf, 0xCu);
       _MBLog();
     }
 
-    CFRelease(a3);
+    CFRelease(assertion);
   }
 }
 
-+ (int)codeWithReturnCode:(int)a3
++ (int)codeWithReturnCode:(int)code
 {
-  if (a3 > -4)
+  if (code > -4)
   {
-    switch(a3)
+    switch(code)
     {
       case -1:
         return 1;
@@ -107,14 +107,14 @@
     goto LABEL_12;
   }
 
-  if (a3 == -8)
+  if (code == -8)
   {
     return 4;
   }
 
-  if (a3 != -6)
+  if (code != -6)
   {
-    if (a3 == -4)
+    if (code == -4)
     {
       return 3;
     }
@@ -124,7 +124,7 @@ LABEL_12:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v8 = a3;
+      codeCopy = code;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "No code for MobileKeyBag error: %d", buf, 8u);
       _MBLog();
     }
@@ -137,10 +137,10 @@ LABEL_12:
   return [MBError codeForErrno:v6];
 }
 
-+ (MBKeyBag)keybagWithData:(id)a3 error:(id *)a4
++ (MBKeyBag)keybagWithData:(id)data error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
     sub_10009F2D4();
   }
@@ -158,10 +158,10 @@ LABEL_12:
       _MBLog();
     }
 
-    if (a4)
+    if (error)
     {
       [MBKeyBag errorWithReturnCode:v6 description:@"MKBKeyBagCreateWithData error"];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -190,12 +190,12 @@ LABEL_12:
   return v9;
 }
 
-+ (id)unlockedKeyBagWithData:(id)a3 password:(id)a4 error:(id *)a5
++ (id)unlockedKeyBagWithData:(id)data password:(id)password error:(id *)error
 {
-  v7 = a4;
-  v8 = [MBKeyBag keybagWithData:a3 error:a5];
+  passwordCopy = password;
+  v8 = [MBKeyBag keybagWithData:data error:error];
   v9 = v8;
-  if (v8 && [v8 unlockWithPassword:v7 error:a5])
+  if (v8 && [v8 unlockWithPassword:passwordCopy error:error])
   {
     v10 = v9;
   }
@@ -208,9 +208,9 @@ LABEL_12:
   return v10;
 }
 
-+ (MBKeyBag)keybagWithPassword:(id)a3 error:(id *)a4
++ (MBKeyBag)keybagWithPassword:(id)password error:(id *)error
 {
-  [a3 dataUsingEncoding:4];
+  [password dataUsingEncoding:4];
   Backup = MKBKeyBagCreateBackup();
   v6 = MBGetDefaultLog();
   v7 = v6;
@@ -224,10 +224,10 @@ LABEL_12:
       _MBLog();
     }
 
-    if (a4)
+    if (error)
     {
       [MBKeyBag errorWithReturnCode:Backup description:@"MKBKeyBagCreateBackup error"];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -256,9 +256,9 @@ LABEL_12:
   return v8;
 }
 
-+ (id)OTAKeyBagWithData:(id)a3 error:(id *)a4
++ (id)OTAKeyBagWithData:(id)data error:(id *)error
 {
-  v4 = [MBKeyBag keybagWithData:a3 error:a4];
+  v4 = [MBKeyBag keybagWithData:data error:error];
   [v4 setOTA:1];
 
   return v4;
@@ -326,22 +326,22 @@ LABEL_12:
   }
 }
 
-+ (void)startOTABackupForVolumeUUID:(id)a3
++ (void)startOTABackupForVolumeUUID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 UUIDString];
+  dCopy = d;
+  uUIDString = [dCopy UUIDString];
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = uUIDString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MKBOTABackupStartForVolume %{public}@", buf, 0xCu);
     _MBLog();
   }
 
   v15[0] = 0;
   v15[1] = 0;
-  [v3 getUUIDBytes:v15];
+  [dCopy getUUIDBytes:v15];
   v6 = [NSData dataWithBytes:v15 length:16];
   if (!v6)
   {
@@ -357,7 +357,7 @@ LABEL_12:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v12 = v4;
+      v12 = uUIDString;
       v13 = 1024;
       v14 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "MKBOTABackupStartForVolume %{public}@ failed: %d", buf, 0x12u);
@@ -366,22 +366,22 @@ LABEL_12:
   }
 }
 
-+ (void)stopOTABackupForVolumeUUID:(id)a3
++ (void)stopOTABackupForVolumeUUID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 UUIDString];
+  dCopy = d;
+  uUIDString = [dCopy UUIDString];
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = uUIDString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MKBOTABackupStopForVolume %{public}@", buf, 0xCu);
     _MBLog();
   }
 
   v15[0] = 0;
   v15[1] = 0;
-  [v3 getUUIDBytes:v15];
+  [dCopy getUUIDBytes:v15];
   v6 = [NSData dataWithBytes:v15 length:16];
   if (!v6)
   {
@@ -397,7 +397,7 @@ LABEL_12:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v12 = v4;
+      v12 = uUIDString;
       v13 = 1024;
       v14 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "MKBOTABackupStopForVolume %{public}@ failed: %d", buf, 0x12u);
@@ -421,9 +421,9 @@ LABEL_12:
   return v3;
 }
 
-- (MBKeyBag)initWithHandle:(__MKBKeyBagHandle *)a3 OTA:(BOOL)a4
+- (MBKeyBag)initWithHandle:(__MKBKeyBagHandle *)handle OTA:(BOOL)a
 {
-  if (!a3)
+  if (!handle)
   {
     sub_10009F464();
   }
@@ -433,17 +433,17 @@ LABEL_12:
   v7 = [(MBKeyBag *)&v9 init];
   if (v7)
   {
-    v7->_handle = CFRetain(a3);
-    v7->_OTA = a4;
+    v7->_handle = CFRetain(handle);
+    v7->_OTA = a;
   }
 
   return v7;
 }
 
-- (MBKeyBag)initWithOTAHandle:(__MKBOTABackupBagHandle *)a3 keyBagData:(id)a4
+- (MBKeyBag)initWithOTAHandle:(__MKBOTABackupBagHandle *)handle keyBagData:(id)data
 {
-  v7 = a4;
-  if (!a3)
+  dataCopy = data;
+  if (!handle)
   {
     sub_10009F4D0();
   }
@@ -454,9 +454,9 @@ LABEL_12:
   v9 = v8;
   if (v8)
   {
-    v8->_OTAHandle = a3;
+    v8->_OTAHandle = handle;
     *&v8->_OTA = 257;
-    objc_storeStrong(&v8->_keyBagData, a4);
+    objc_storeStrong(&v8->_keyBagData, data);
   }
 
   return v9;
@@ -480,17 +480,17 @@ LABEL_12:
   [(MBKeyBag *)&v4 dealloc];
 }
 
-- (BOOL)unlockWithPassword:(id)a3 error:(id *)a4
+- (BOOL)unlockWithPassword:(id)password error:(id *)error
 {
-  v6 = [a3 dataUsingEncoding:4];
-  LOBYTE(a4) = [(MBKeyBag *)self unlockWithSecret:v6 error:a4];
+  v6 = [password dataUsingEncoding:4];
+  LOBYTE(error) = [(MBKeyBag *)self unlockWithSecret:v6 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)unlockWithSecret:(id)a3 error:(id *)a4
+- (BOOL)unlockWithSecret:(id)secret error:(id *)error
 {
-  v6 = a3;
+  secretCopy = secret;
   if (self->_OTAHandle)
   {
     if (!self->_isUnlocked)
@@ -521,10 +521,10 @@ LABEL_12:
         _MBLog();
       }
 
-      if (a4)
+      if (error)
       {
         [MBKeyBag errorWithReturnCode:v10 description:@"MKBKeyBagUnlock error"];
-        *a4 = v7 = 0;
+        *error = v7 = 0;
       }
 
       else
@@ -555,17 +555,17 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)changePasswordFrom:(id)a3 toPassword:(id)a4 error:(id *)a5
+- (BOOL)changePasswordFrom:(id)from toPassword:(id)password error:(id *)error
 {
-  v8 = a4;
-  v9 = [a3 dataUsingEncoding:4];
-  v10 = [v8 dataUsingEncoding:4];
+  passwordCopy = password;
+  v9 = [from dataUsingEncoding:4];
+  v10 = [passwordCopy dataUsingEncoding:4];
 
-  LOBYTE(a5) = [(MBKeyBag *)self changeSecretFrom:v9 toSecret:v10 error:a5];
-  return a5;
+  LOBYTE(error) = [(MBKeyBag *)self changeSecretFrom:v9 toSecret:v10 error:error];
+  return error;
 }
 
-- (BOOL)changeSecretFrom:(id)a3 toSecret:(id)a4 error:(id *)a5
+- (BOOL)changeSecretFrom:(id)from toSecret:(id)secret error:(id *)error
 {
   handle = self->_handle;
   v8 = MKBKeyBagChangeSecret();
@@ -585,9 +585,9 @@ LABEL_12:
       _MBLog();
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MBKeyBag errorWithReturnCode:v8 description:@"MKBKeyBagChangeSecret error"];
+      *error = [MBKeyBag errorWithReturnCode:v8 description:@"MKBKeyBagChangeSecret error"];
     }
   }
 
@@ -609,12 +609,12 @@ LABEL_12:
   return v8 == 0;
 }
 
-- (BOOL)validateWrappedKey:(id)a3 error:(id *)a4
+- (BOOL)validateWrappedKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    if (a4)
+    if (error)
     {
       [MBError errorWithCode:205 format:@"Invalid encryption key (key is nil)", v13, v14];
       goto LABEL_9;
@@ -634,7 +634,7 @@ LABEL_10:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v16 = v6;
+      v16 = keyCopy;
       v17 = 1024;
       v18 = v8;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "MKBBackupValidateKeyUUID(%@): %d", buf, 0x12u);
@@ -642,11 +642,11 @@ LABEL_10:
       _MBLog();
     }
 
-    if (a4)
+    if (error)
     {
       [MBError errorWithCode:205 format:@"Encryption key is invalid: %d", v8, v14];
 LABEL_9:
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_14;
     }
 
@@ -656,7 +656,7 @@ LABEL_9:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v16 = v6;
+    v16 = keyCopy;
     v17 = 1024;
     v18 = 0;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "MKBBackupValidateKeyUUID(%@): %d", buf, 0x12u);
@@ -669,7 +669,7 @@ LABEL_14:
   return v11;
 }
 
-- (id)dataWithError:(id *)a3
+- (id)dataWithError:(id *)error
 {
   keyBagData = self->_keyBagData;
   if (keyBagData)
@@ -697,10 +697,10 @@ LABEL_14:
         _MBLog();
       }
 
-      if (a3)
+      if (error)
       {
         [MBKeyBag errorWithReturnCode:v10 description:@"MKBKeyBagCopyData error"];
-        *a3 = v4 = 0;
+        *error = v4 = 0;
       }
 
       else
@@ -735,7 +735,7 @@ LABEL_14:
   return v4;
 }
 
-- (id)UUIDWithError:(id *)a3
+- (id)UUIDWithError:(id *)error
 {
   if (self->_OTAHandle)
   {
@@ -757,13 +757,13 @@ LABEL_14:
         _MBLog();
       }
 
-      if (a3)
+      if (error)
       {
         v10 = @"MKBOTABackupBagCopyUUID error";
 LABEL_12:
         v15 = [MBKeyBag errorWithReturnCode:v7 description:v10, v18, v19];
         v16 = v15;
-        *a3 = v15;
+        *error = v15;
         goto LABEL_16;
       }
 
@@ -799,7 +799,7 @@ LABEL_19:
     _MBLog();
   }
 
-  if (a3)
+  if (error)
   {
     v10 = @"MKBKeyBagCopyUUID error";
     goto LABEL_12;
@@ -810,9 +810,9 @@ LABEL_16:
   return 0;
 }
 
-- (id)encryptionKeyForFile:(_mkbfileref *)a3 path:(id)a4 error:(id *)a5
+- (id)encryptionKeyForFile:(_mkbfileref *)file path:(id)path error:(id *)error
 {
-  v7 = a4;
+  pathCopy = path;
   handle = self->_handle;
   v9 = MKBFileCopyWrappedKey();
   v10 = MBGetDefaultLog();
@@ -823,7 +823,7 @@ LABEL_16:
     {
       v12 = self->_handle;
       *buf = 138412802;
-      v18 = v7;
+      v18 = pathCopy;
       v19 = 2048;
       v20 = v12;
       v21 = 1024;
@@ -833,9 +833,9 @@ LABEL_16:
       _MBLog();
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MBKeyBag errorWithReturnCode:v9 path:v7 description:@"MKBFileCopyWrappedKey error"];
+      *error = [MBKeyBag errorWithReturnCode:v9 path:pathCopy description:@"MKBFileCopyWrappedKey error"];
     }
   }
 
@@ -845,7 +845,7 @@ LABEL_16:
     {
       v13 = self->_handle;
       *buf = 138412802;
-      v18 = v7;
+      v18 = pathCopy;
       v19 = 2048;
       v20 = v13;
       v21 = 1024;
@@ -861,9 +861,9 @@ LABEL_16:
   return 0;
 }
 
-- (BOOL)validateEncryptionKey:(id)a3 file:(_mkbfileref *)a4 path:(id)a5 error:(id *)a6
+- (BOOL)validateEncryptionKey:(id)key file:(_mkbfileref *)file path:(id)path error:(id *)error
 {
-  v8 = a5;
+  pathCopy = path;
   handle = self->_handle;
   v10 = MKBFileValidateWrappedKey();
   v11 = MBGetDefaultLog();
@@ -874,7 +874,7 @@ LABEL_16:
     {
       v13 = self->_handle;
       *buf = 138412802;
-      v19 = v8;
+      v19 = pathCopy;
       v20 = 2048;
       v21 = v13;
       v22 = 1024;
@@ -884,9 +884,9 @@ LABEL_16:
       _MBLog();
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = [MBKeyBag errorWithReturnCode:v10 path:v8 description:@"MKBFileValidateWrappedKey error"];
+      *error = [MBKeyBag errorWithReturnCode:v10 path:pathCopy description:@"MKBFileValidateWrappedKey error"];
     }
   }
 
@@ -896,7 +896,7 @@ LABEL_16:
     {
       v14 = self->_handle;
       *buf = 138412802;
-      v19 = v8;
+      v19 = pathCopy;
       v20 = 2048;
       v21 = v14;
       v22 = 1024;
@@ -910,16 +910,16 @@ LABEL_16:
   return v10 == 0;
 }
 
-- (_mkbfileref)encryptedFileForRestoreWithPath:(id)a3 key:(id)a4 error:(id *)a5
+- (_mkbfileref)encryptedFileForRestoreWithPath:(id)path key:(id)key error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  pathCopy = path;
+  keyCopy = key;
+  if (!keyCopy)
   {
     sub_10009F6E8();
   }
 
-  v9 = v8;
+  v9 = keyCopy;
   handle = self->_handle;
   v11 = MKBFileCreateForRestore();
   v12 = MBGetDefaultLog();
@@ -929,7 +929,7 @@ LABEL_16:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v16 = v7;
+      v16 = pathCopy;
       v17 = 1024;
       v18 = v11;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "MKBFileCreateForRestore(%@, ...): %d", buf, 0x12u);
@@ -940,7 +940,7 @@ LABEL_16:
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v16 = v7;
+    v16 = pathCopy;
     v17 = 1024;
     v18 = 0;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "MKBFileCreateForRestore(%@, ...): %d", buf, 0x12u);
@@ -950,14 +950,14 @@ LABEL_16:
   return 0;
 }
 
-- (BOOL)decryptFileWithPath:(id)a3 encryptionKey:(id)a4 size:(unint64_t)a5 error:(id *)a6
+- (BOOL)decryptFileWithPath:(id)path encryptionKey:(id)key size:(unint64_t)size error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  pathCopy = path;
+  keyCopy = key;
   if (!self->_OTAHandle)
   {
     handle = self->_handle;
-    [v10 fileSystemRepresentation];
+    [pathCopy fileSystemRepresentation];
     v12 = MKBBackupDecryptInPlace();
     v18 = MBGetDefaultLog();
     v14 = v18;
@@ -969,23 +969,23 @@ LABEL_16:
         *buf = 134219010;
         v32 = v19;
         v33 = 2112;
-        v34 = v10;
+        v34 = pathCopy;
         v35 = 2048;
-        v36 = a5;
+        sizeCopy5 = size;
         v37 = 2112;
-        v38 = v11;
+        v38 = keyCopy;
         v39 = 1024;
         v40 = v12;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "MKBBackupDecryptInPlace(%p, %@, %llu, %@): %d", buf, 0x30u);
-        v29 = v11;
+        v29 = keyCopy;
         v30 = v12;
-        v27 = v10;
-        v28 = a5;
+        v27 = pathCopy;
+        sizeCopy6 = size;
         v24 = self->_handle;
         _MBLog();
       }
 
-      if (a6)
+      if (error)
       {
         v16 = @"MKBBackupDecryptInPlace error";
         goto LABEL_12;
@@ -1002,11 +1002,11 @@ LABEL_15:
       *buf = 134219010;
       v32 = v22;
       v33 = 2112;
-      v34 = v10;
+      v34 = pathCopy;
       v35 = 2048;
-      v36 = a5;
+      sizeCopy5 = size;
       v37 = 2112;
-      v38 = v11;
+      v38 = keyCopy;
       v39 = 1024;
       v40 = 0;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "MKBBackupDecryptInPlace(%p, %@, %llu, %@): %d", buf, 0x30u);
@@ -1020,7 +1020,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  [v10 fileSystemRepresentation];
+  [pathCopy fileSystemRepresentation];
   v12 = MKBOTABackupDecryptInPlace();
   v13 = MBGetDefaultLog();
   v14 = v13;
@@ -1032,11 +1032,11 @@ LABEL_19:
       *buf = 134219010;
       v32 = OTAHandle;
       v33 = 2112;
-      v34 = v10;
+      v34 = pathCopy;
       v35 = 2048;
-      v36 = a5;
+      sizeCopy5 = size;
       v37 = 2112;
-      v38 = v11;
+      v38 = keyCopy;
       v39 = 1024;
       v40 = 0;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "MKBOTABackupDecryptInPlace(%p, %@, %llu, %@): %d", buf, 0x30u);
@@ -1055,61 +1055,61 @@ LABEL_18:
     *buf = 134219010;
     v32 = v15;
     v33 = 2112;
-    v34 = v10;
+    v34 = pathCopy;
     v35 = 2048;
-    v36 = a5;
+    sizeCopy5 = size;
     v37 = 2112;
-    v38 = v11;
+    v38 = keyCopy;
     v39 = 1024;
     v40 = v12;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "MKBOTABackupDecryptInPlace(%p, %@, %llu, %@): %d", buf, 0x30u);
-    v29 = v11;
+    v29 = keyCopy;
     v30 = v12;
-    v27 = v10;
-    v28 = a5;
+    v27 = pathCopy;
+    sizeCopy6 = size;
     v24 = self->_OTAHandle;
     _MBLog();
   }
 
-  if (!a6)
+  if (!error)
   {
     goto LABEL_15;
   }
 
   v16 = @"MKBOTABackupDecryptInPlace error";
 LABEL_12:
-  [MBKeyBag errorWithReturnCode:v12 path:v10 description:v16, v24, v27, v28, v29, v30];
-  *a6 = v20 = 0;
+  [MBKeyBag errorWithReturnCode:v12 path:pathCopy description:v16, v24, v27, sizeCopy6, v29, v30];
+  *error = v20 = 0;
 LABEL_20:
 
   return v20;
 }
 
-- (BOOL)decryptFileWithPath:(id)a3 encryptionKey:(id)a4 size:(unint64_t)a5 hardwareModel:(id)a6 error:(id *)a7
+- (BOOL)decryptFileWithPath:(id)path encryptionKey:(id)key size:(unint64_t)size hardwareModel:(id)model error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (([v14 hasPrefix:@"N66"] & 1) != 0 || (objc_msgSend(v14, "hasPrefix:", @"N71") & 1) != 0 || (objc_msgSend(v14, "hasPrefix:", @"J98") & 1) != 0 || objc_msgSend(v14, "hasPrefix:", @"J99"))
+  pathCopy = path;
+  keyCopy = key;
+  modelCopy = model;
+  if (([modelCopy hasPrefix:@"N66"] & 1) != 0 || (objc_msgSend(modelCopy, "hasPrefix:", @"N71") & 1) != 0 || (objc_msgSend(modelCopy, "hasPrefix:", @"J98") & 1) != 0 || objc_msgSend(modelCopy, "hasPrefix:", @"J99"))
   {
-    v15 = [v13 mutableCopy];
+    v15 = [keyCopy mutableCopy];
     if (MKBBackupSetKeyEncryptionModeToXTS())
     {
       v16 = MBGetDefaultLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v21 = v12;
+        v21 = pathCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to set encryption mode to XTS for: %{public}@", buf, 0xCu);
-        v19 = v12;
+        v19 = pathCopy;
         _MBLog();
       }
     }
 
-    v13 = v15;
+    keyCopy = v15;
   }
 
-  v17 = [(MBKeyBag *)self decryptFileWithPath:v12 encryptionKey:v13 size:a5 error:a7, v19];
+  v17 = [(MBKeyBag *)self decryptFileWithPath:pathCopy encryptionKey:keyCopy size:size error:error, v19];
 
   return v17;
 }

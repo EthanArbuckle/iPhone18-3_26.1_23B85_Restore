@@ -1,5 +1,5 @@
 @interface _UIFontNameCacheKey
-- (BOOL)_isEqualToKey:(id)a3;
+- (BOOL)_isEqualToKey:(id)key;
 - (void)dealloc;
 @end
 
@@ -12,17 +12,17 @@
   [(_UIFontNameCacheKey *)&v3 dealloc];
 }
 
-- (BOOL)_isEqualToKey:(id)a3
+- (BOOL)_isEqualToKey:(id)key
 {
-  if (self->super._hash == *(a3 + 1))
+  if (self->super._hash == *(key + 1))
   {
     fontName = self->_fontName;
-    if (fontName == *(a3 + 3) || (v6 = [(NSString *)fontName isEqualToString:?]))
+    if (fontName == *(key + 3) || (v6 = [(NSString *)fontName isEqualToString:?]))
     {
-      if (self->_traits == *(a3 + 4))
+      if (self->_traits == *(key + 4))
       {
         pointSize = self->_pointSize;
-        [a3 pointSize];
+        [key pointSize];
         LOBYTE(v6) = vabdd_f64(pointSize, v8) < 0.00000011920929;
       }
 

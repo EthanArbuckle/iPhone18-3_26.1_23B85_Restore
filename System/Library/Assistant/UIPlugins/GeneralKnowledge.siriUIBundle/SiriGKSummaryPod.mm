@@ -1,24 +1,24 @@
 @interface SiriGKSummaryPod
-- (SiriGKSummaryPod)initWithPod:(id)a3 usingPersistentStore:(id)a4;
+- (SiriGKSummaryPod)initWithPod:(id)pod usingPersistentStore:(id)store;
 - (UIEdgeInsets)edgeInsets;
 @end
 
 @implementation SiriGKSummaryPod
 
-- (SiriGKSummaryPod)initWithPod:(id)a3 usingPersistentStore:(id)a4
+- (SiriGKSummaryPod)initWithPod:(id)pod usingPersistentStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  podCopy = pod;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = SiriGKSummaryPod;
   v8 = [(SiriGKSummaryPod *)&v16 init];
   if (v8)
   {
     v9 = [SiriGKSummaryView alloc];
-    v10 = [v6 text];
-    v11 = [v6 caption];
-    v12 = [v6 imageResource];
-    v13 = [(SiriGKSummaryView *)v9 initWithText:v10 caption:v11 imageResource:v12 usingPersistentStore:v7];
+    text = [podCopy text];
+    caption = [podCopy caption];
+    imageResource = [podCopy imageResource];
+    v13 = [(SiriGKSummaryView *)v9 initWithText:text caption:caption imageResource:imageResource usingPersistentStore:storeCopy];
     summaryView = v8->_summaryView;
     v8->_summaryView = v13;
   }

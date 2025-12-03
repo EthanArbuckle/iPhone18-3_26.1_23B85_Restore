@@ -19,8 +19,8 @@
 
 - (id)ams_message
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"AMSFailureReason"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"AMSFailureReason"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -38,8 +38,8 @@
 
 - (id)ams_title
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"AMSDescription"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"AMSDescription"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -57,8 +57,8 @@
 
 - (id)ams_underlyingError
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -77,27 +77,27 @@
 - (id)_ams_firstUnderlyingErrorPassingTest:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [a1 underlyingErrors];
-  v6 = [v5 ams_firstObjectPassingTest:v4];
+  underlyingErrors = [self underlyingErrors];
+  v6 = [underlyingErrors ams_firstObjectPassingTest:v4];
 
   return v6;
 }
 
 - (id)ams_sanitizedForSecureCoding
 {
-  v2 = [a1 userInfo];
+  userInfo = [self userInfo];
 
-  if (v2)
+  if (userInfo)
   {
-    v3 = [a1 userInfo];
-    v4 = [v3 ams_sanitizedForSecureCoding];
+    userInfo2 = [self userInfo];
+    ams_sanitizedForSecureCoding = [userInfo2 ams_sanitizedForSecureCoding];
 
     v5 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v6 = [a1 domain];
-    v7 = [a1 code];
-    if ([v4 count])
+    domain = [self domain];
+    code = [self code];
+    if ([ams_sanitizedForSecureCoding count])
     {
-      v8 = v4;
+      v8 = ams_sanitizedForSecureCoding;
     }
 
     else
@@ -105,27 +105,27 @@
       v8 = 0;
     }
 
-    v9 = [v5 initWithDomain:v6 code:v7 userInfo:v8];
+    selfCopy = [v5 initWithDomain:domain code:code userInfo:v8];
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)ams_errorByAddingToMultipleUnderlyingErrors:()AppleMediaServices
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 ams_multipleUnderlyingErrors];
+  ams_multipleUnderlyingErrors = [self ams_multipleUnderlyingErrors];
 
-  if (v5)
+  if (ams_multipleUnderlyingErrors)
   {
-    v6 = [a1 ams_multipleUnderlyingErrors];
-    v7 = [v6 arrayByAddingObjectsFromArray:v4];
+    ams_multipleUnderlyingErrors2 = [self ams_multipleUnderlyingErrors];
+    v7 = [ams_multipleUnderlyingErrors2 arrayByAddingObjectsFromArray:v4];
 
     v4 = v7;
   }
@@ -133,7 +133,7 @@
   v11 = *MEMORY[0x1E696A750];
   v12[0] = v4;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v9 = [a1 ams_errorByAddingUserInfo:v8];
+  v9 = [self ams_errorByAddingUserInfo:v8];
 
   return v9;
 }
@@ -141,8 +141,8 @@
 - (id)ams_errorByAddingUserInfo:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [a1 userInfo];
-  v6 = [v5 mutableCopy];
+  userInfo = [self userInfo];
+  v6 = [userInfo mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -158,8 +158,8 @@
 
   [v9 addEntriesFromDictionary:v4];
   v10 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v11 = [a1 domain];
-  v12 = [v10 initWithDomain:v11 code:objc_msgSend(a1 userInfo:{"code"), v9}];
+  domain = [self domain];
+  v12 = [v10 initWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v9}];
 
   return v12;
 }
@@ -173,7 +173,7 @@
   v5 = a3;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  v7 = [a1 ams_errorByAddingUserInfo:v6];
+  v7 = [self ams_errorByAddingUserInfo:v6];
 
   return v7;
 }
@@ -187,7 +187,7 @@
   v5 = a3;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  v7 = [a1 ams_errorByAddingUserInfo:v6];
+  v7 = [self ams_errorByAddingUserInfo:v6];
 
   return v7;
 }
@@ -195,8 +195,8 @@
 - (uint64_t)ams_hasDomain:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [a1 domain];
-  v6 = [v5 isEqualToString:v4];
+  domain = [self domain];
+  v6 = [domain isEqualToString:v4];
 
   return v6;
 }
@@ -204,10 +204,10 @@
 - (uint64_t)ams_hasDomain:()AppleMediaServices code:
 {
   v6 = a3;
-  if ([a1 code] == a4)
+  if ([self code] == a4)
   {
-    v7 = [a1 domain];
-    v8 = [v7 isEqualToString:v6];
+    domain = [self domain];
+    v8 = [domain isEqualToString:v6];
   }
 
   else
@@ -221,14 +221,14 @@
 - (BOOL)ams_recursiveHasDomain:()AppleMediaServices code:
 {
   v6 = a3;
-  if ([a1 ams_hasDomain:v6 code:a4])
+  if ([self ams_hasDomain:v6 code:a4])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [a1 ams_underlyingErrorWithDomain:v6 code:a4];
+    v8 = [self ams_underlyingErrorWithDomain:v6 code:a4];
     v7 = v8 != 0;
   }
 
@@ -244,7 +244,7 @@
   v8[3] = &unk_1E73BE2C0;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 _ams_firstUnderlyingErrorPassingTest:v8];
+  v6 = [self _ams_firstUnderlyingErrorPassingTest:v8];
 
   return v6;
 }
@@ -259,7 +259,7 @@
   v11 = v6;
   v12 = a4;
   v7 = v6;
-  v8 = [a1 _ams_firstUnderlyingErrorPassingTest:v10];
+  v8 = [self _ams_firstUnderlyingErrorPassingTest:v10];
 
   return v8;
 }

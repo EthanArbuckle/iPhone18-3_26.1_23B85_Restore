@@ -1,26 +1,26 @@
 @interface PRLikenessView
 + (void)initialize;
-- (BOOL)_isLikenessEqual:(id)a3;
+- (BOOL)_isLikenessEqual:(id)equal;
 - (BOOL)_shouldRenderStaticRepresentation;
-- (PRLikenessView)initWithFrame:(CGRect)a3;
-- (PRLikenessView)initWithLikeness:(id)a3;
+- (PRLikenessView)initWithFrame:(CGRect)frame;
+- (PRLikenessView)initWithLikeness:(id)likeness;
 - (id)_imageView;
 - (id)_monogramView;
-- (void)_imageForLikeness:(id)a3 completion:(id)a4;
-- (void)_setDisplayedView:(id)a3;
-- (void)_updateViewForLikeness:(BOOL)a3;
+- (void)_imageForLikeness:(id)likeness completion:(id)completion;
+- (void)_setDisplayedView:(id)view;
+- (void)_updateViewForLikeness:(BOOL)likeness;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setCircular:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLikeness:(id)a3;
+- (void)setCircular:(BOOL)circular;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLikeness:(id)likeness;
 @end
 
 @implementation PRLikenessView
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = _PRLikenessViewMainQueueKey;
     v3 = MEMORY[0x277D85CD0];
@@ -30,11 +30,11 @@
   }
 }
 
-- (PRLikenessView)initWithFrame:(CGRect)a3
+- (PRLikenessView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PRLikenessView;
-  v3 = [(PRLikenessView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PRLikenessView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -48,14 +48,14 @@
   return v4;
 }
 
-- (PRLikenessView)initWithLikeness:(id)a3
+- (PRLikenessView)initWithLikeness:(id)likeness
 {
-  v5 = a3;
+  likenessCopy = likeness;
   v6 = [(PRLikenessView *)self initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_likeness, a3);
+    objc_storeStrong(&v6->_likeness, likeness);
     [(PRLikenessView *)v7 _updateViewForLikeness:0];
   }
 
@@ -75,45 +75,45 @@
   [(PRLikenessView *)&v4 dealloc];
 }
 
-- (void)_updateViewForLikeness:(BOOL)a3
+- (void)_updateViewForLikeness:(BOOL)likeness
 {
-  if (a3 || [(PRLikenessView *)self _shouldRenderStaticRepresentation])
+  if (likeness || [(PRLikenessView *)self _shouldRenderStaticRepresentation])
   {
-    v4 = [(PRLikenessView *)self _imageView];
-    [(PRLikenessView *)self _setDisplayedView:v4];
+    _imageView = [(PRLikenessView *)self _imageView];
+    [(PRLikenessView *)self _setDisplayedView:_imageView];
     likeness = self->_likeness;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __41__PRLikenessView__updateViewForLikeness___block_invoke;
     v15[3] = &unk_279A1C308;
     v15[4] = self;
-    v16 = v4;
-    v6 = v4;
+    v16 = _imageView;
+    v6 = _imageView;
     [(PRLikenessView *)self _imageForLikeness:likeness completion:v15];
   }
 
   else
   {
-    v7 = [(PRLikenessView *)self likeness];
-    v8 = [v7 type];
+    likeness = [(PRLikenessView *)self likeness];
+    type = [likeness type];
 
-    if (v8 == 1)
+    if (type == 1)
     {
-      v9 = [(PRLikenessView *)self likeness];
-      v10 = [v9 recipe];
-      v14 = [PRMonogram monogramWithData:v10];
+      likeness2 = [(PRLikenessView *)self likeness];
+      recipe = [likeness2 recipe];
+      v14 = [PRMonogram monogramWithData:recipe];
 
-      v11 = [(PRLikenessView *)self _monogramView];
-      [v11 setMonogram:v14];
-      [(PRLikenessView *)self _setDisplayedView:v11];
+      _monogramView = [(PRLikenessView *)self _monogramView];
+      [_monogramView setMonogram:v14];
+      [(PRLikenessView *)self _setDisplayedView:_monogramView];
     }
 
     else
     {
-      v12 = [(PRLikenessView *)self likeness];
-      v13 = [v12 type];
+      likeness3 = [(PRLikenessView *)self likeness];
+      type2 = [likeness3 type];
 
-      if (v13 != 3)
+      if (type2 != 3)
       {
 
         [(PRLikenessView *)self _setDisplayedView:0];
@@ -174,34 +174,34 @@ LABEL_9:
 
 - (BOOL)_shouldRenderStaticRepresentation
 {
-  v3 = [(PRLikenessView *)self likeness];
-  v4 = [v3 type];
+  likeness = [(PRLikenessView *)self likeness];
+  type = [likeness type];
 
-  if (v4 == 2)
+  if (type == 2)
   {
     return 1;
   }
 
-  v6 = [(PRLikenessView *)self likeness];
-  v7 = [v6 recipe];
-  if (v7)
+  likeness2 = [(PRLikenessView *)self likeness];
+  recipe = [likeness2 recipe];
+  if (recipe)
   {
     v5 = 0;
   }
 
   else
   {
-    v8 = [(PRLikenessView *)self likeness];
-    if ([v8 staticRepresentation])
+    likeness3 = [(PRLikenessView *)self likeness];
+    if ([likeness3 staticRepresentation])
     {
       v5 = 1;
     }
 
     else
     {
-      v9 = [(PRLikenessView *)self likeness];
-      v10 = [v9 staticRepresentationData];
-      v5 = v10 != 0;
+      likeness4 = [(PRLikenessView *)self likeness];
+      staticRepresentationData = [likeness4 staticRepresentationData];
+      v5 = staticRepresentationData != 0;
     }
   }
 
@@ -247,17 +247,17 @@ LABEL_9:
   return imageView;
 }
 
-- (void)_imageForLikeness:(id)a3 completion:(id)a4
+- (void)_imageForLikeness:(id)likeness completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 staticRepresentation])
+  likenessCopy = likeness;
+  completionCopy = completion;
+  if ([likenessCopy staticRepresentation])
   {
     v8 = MEMORY[0x277D755B8];
-    v9 = [v6 staticRepresentation];
-    [v6 cropRect];
-    v10 = [v8 pr_imageWithCGImage:v9 cropRect:?];
-    v7[2](v7, v6, v10, 0);
+    staticRepresentation = [likenessCopy staticRepresentation];
+    [likenessCopy cropRect];
+    v10 = [v8 pr_imageWithCGImage:staticRepresentation cropRect:?];
+    completionCopy[2](completionCopy, likenessCopy, v10, 0);
   }
 
   else
@@ -265,8 +265,8 @@ LABEL_9:
     [(PRLikenessView *)self bounds];
     v10 = [PRLikenessCacheContext contextWithCacheSize:PRLikenessCacheSizeClosestToSize(v11, v12)];
     [v10 setForceDecode:1];
-    v13 = [MEMORY[0x277D759A0] mainScreen];
-    [v13 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     [v10 setScale:?];
 
     v14 = +[PRLikenessCache sharedInstance];
@@ -274,8 +274,8 @@ LABEL_9:
     v15[1] = 3221225472;
     v15[2] = __47__PRLikenessView__imageForLikeness_completion___block_invoke;
     v15[3] = &unk_279A1C358;
-    v17 = v7;
-    v16 = v6;
+    v17 = completionCopy;
+    v16 = likenessCopy;
     [v14 imageForLikeness:v16 context:v10 completion:v15];
   }
 }
@@ -303,19 +303,19 @@ void __47__PRLikenessView__imageForLikeness_completion___block_invoke(uint64_t a
   }
 }
 
-- (void)setLikeness:(id)a3
+- (void)setLikeness:(id)likeness
 {
-  v14 = a3;
+  likenessCopy = likeness;
   if (![(PRLikenessView *)self _isLikenessEqual:?])
   {
-    objc_storeStrong(&self->_likeness, a3);
-    self->_likenessType = [v14 type];
-    v5 = [v14 recipe];
-    v6 = [v5 copy];
+    objc_storeStrong(&self->_likeness, likeness);
+    self->_likenessType = [likenessCopy type];
+    recipe = [likenessCopy recipe];
+    v6 = [recipe copy];
     recipe = self->_recipe;
     self->_recipe = v6;
 
-    [v14 cropRect];
+    [likenessCopy cropRect];
     self->_cropRect.origin.x = v8;
     self->_cropRect.origin.y = v9;
     self->_cropRect.size.width = v10;
@@ -326,14 +326,14 @@ void __47__PRLikenessView__imageForLikeness_completion___block_invoke(uint64_t a
       CFRelease(staticRepresentation);
     }
 
-    v13 = [v14 staticRepresentation];
-    self->_staticRepresentation = v13;
-    if (v13)
+    staticRepresentation = [likenessCopy staticRepresentation];
+    self->_staticRepresentation = staticRepresentation;
+    if (staticRepresentation)
     {
-      CFRetain(v13);
+      CFRetain(staticRepresentation);
     }
 
-    if (v14)
+    if (likenessCopy)
     {
       [(PRLikenessView *)self _updateViewForLikeness:0];
     }
@@ -345,20 +345,20 @@ void __47__PRLikenessView__imageForLikeness_completion___block_invoke(uint64_t a
   }
 }
 
-- (BOOL)_isLikenessEqual:(id)a3
+- (BOOL)_isLikenessEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_likeness == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self->_likeness == equalCopy)
   {
-    if (!v4)
+    if (!equalCopy)
     {
       v6 = 1;
       goto LABEL_3;
     }
 
     likenessType = self->_likenessType;
-    if (likenessType == [(PRLikeness *)v4 type])
+    if (likenessType == [(PRLikeness *)equalCopy type])
     {
       staticRepresentation = self->_staticRepresentation;
       if (staticRepresentation == [(PRLikeness *)v5 staticRepresentation])
@@ -371,8 +371,8 @@ void __47__PRLikenessView__imageForLikeness_completion___block_invoke(uint64_t a
         if (CGRectEqualToRect(self->_cropRect, v16))
         {
           recipe = self->_recipe;
-          v15 = [(PRLikeness *)v5 recipe];
-          [(NSData *)recipe isEqual:v15];
+          recipe = [(PRLikeness *)v5 recipe];
+          [(NSData *)recipe isEqual:recipe];
         }
       }
     }
@@ -384,11 +384,11 @@ LABEL_3:
   return v6;
 }
 
-- (void)setCircular:(BOOL)a3
+- (void)setCircular:(BOOL)circular
 {
-  if (self->_circular != a3)
+  if (self->_circular != circular)
   {
-    self->_circular = a3;
+    self->_circular = circular;
     [(PRMonogramView *)self->_monogramView setCircular:?];
     [(PRImageView *)self->_imageView setCircular:[(PRLikenessView *)self isCircular]];
 
@@ -396,21 +396,21 @@ LABEL_3:
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(PRMonogramView *)self->_monogramView setHighlighted:?];
   }
 }
 
-- (void)_setDisplayedView:(id)a3
+- (void)_setDisplayedView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   imageView = self->_imageView;
-  v7 = v4;
-  if (imageView == v4)
+  v7 = viewCopy;
+  if (imageView == viewCopy)
   {
     [(PRImageView *)imageView setHidden:0];
   }

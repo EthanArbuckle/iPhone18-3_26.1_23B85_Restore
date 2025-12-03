@@ -1,6 +1,6 @@
 @interface MRDBackgroundTasks
 - (id)allowList;
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4;
+- (void)handleXPCMessage:(id)message fromClient:(id)client;
 @end
 
 @implementation MRDBackgroundTasks
@@ -17,17 +17,17 @@
   return v3;
 }
 
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4
+- (void)handleXPCMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  string = xpc_dictionary_get_string(v5, "MRXPC_NOTIFICATION_NAME_KEY");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "MRXPC_NOTIFICATION_NAME_KEY");
   v7 = [[NSString alloc] initWithCString:string encoding:4];
-  v8 = [(MRDBackgroundTasks *)self allowList];
-  v9 = [v8 containsObject:v7];
+  allowList = [(MRDBackgroundTasks *)self allowList];
+  v9 = [allowList containsObject:v7];
 
   if (v9)
   {
-    v10 = xpc_dictionary_get_double(v5, "MRXPC_NOTIFICATION_DELAY");
+    v10 = xpc_dictionary_get_double(messageCopy, "MRXPC_NOTIFICATION_DELAY");
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000B5950;

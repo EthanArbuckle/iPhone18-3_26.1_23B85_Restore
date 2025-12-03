@@ -1,22 +1,22 @@
 @interface VCAudioRelayIO
-- (BOOL)createPacketThreadWithIOBufferDuration:(double)a3 name:(id)a4 error:(id *)a5;
-- (BOOL)isEqualToRelayIO:(id)a3;
+- (BOOL)createPacketThreadWithIOBufferDuration:(double)duration name:(id)name error:(id *)error;
+- (BOOL)isEqualToRelayIO:(id)o;
 - (BOOL)isInitialized;
 - (VCAudioRelayIO)init;
-- (VCAudioRelayIO)initWithMicContext:(const tagVCAudioRelayIOContext *)a3 speakerContext:(const tagVCAudioRelayIOContext *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VCAudioRelayIO)initWithMicContext:(const tagVCAudioRelayIOContext *)context speakerContext:(const tagVCAudioRelayIOContext *)speakerContext;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)createAudioBuffers;
-- (void)createBuffersForIOContext:(tagVCAudioRelayIOContext *)a3;
+- (void)createBuffersForIOContext:(tagVCAudioRelayIOContext *)context;
 - (void)dealloc;
 - (void)destroyPacketThread;
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3;
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec;
 - (void)initializeFormatContextPointers;
-- (void)internalPushAudioSamples:(opaqueVCAudioBufferList *)a3;
+- (void)internalPushAudioSamples:(opaqueVCAudioBufferList *)samples;
 - (void)printStreamFormats;
-- (void)pullAudioSamples:(opaqueVCAudioBufferList *)a3;
-- (void)pushAudioSamples:(opaqueVCAudioBufferList *)a3;
-- (void)setClientFormat:(const tagVCAudioFrameFormat *)a3;
-- (void)setRemoteCodecInfo:(const _VCRemoteCodecInfo *)a3;
+- (void)pullAudioSamples:(opaqueVCAudioBufferList *)samples;
+- (void)pushAudioSamples:(opaqueVCAudioBufferList *)samples;
+- (void)setClientFormat:(const tagVCAudioFrameFormat *)format;
+- (void)setRemoteCodecInfo:(const _VCRemoteCodecInfo *)info;
 @end
 
 @implementation VCAudioRelayIO
@@ -36,7 +36,7 @@
   return v3;
 }
 
-- (VCAudioRelayIO)initWithMicContext:(const tagVCAudioRelayIOContext *)a3 speakerContext:(const tagVCAudioRelayIOContext *)a4
+- (VCAudioRelayIO)initWithMicContext:(const tagVCAudioRelayIOContext *)context speakerContext:(const tagVCAudioRelayIOContext *)speakerContext
 {
   v23 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
@@ -45,34 +45,34 @@
   v7 = v6;
   if (v6)
   {
-    v9 = *&a3->timeInfo.clientSampleRate;
-    v8 = *&a3->timeInfo.lastHostTime;
-    controllerTimestamp = a3->timeInfo.controllerTimestamp;
-    *(v6 + 20) = *&a3->sampleBuffer;
-    v11 = *&a3->callback;
-    *(v6 + 18) = *&a3->clientFormat;
+    v9 = *&context->timeInfo.clientSampleRate;
+    v8 = *&context->timeInfo.lastHostTime;
+    controllerTimestamp = context->timeInfo.controllerTimestamp;
+    *(v6 + 20) = *&context->sampleBuffer;
+    v11 = *&context->callback;
+    *(v6 + 18) = *&context->clientFormat;
     *(v6 + 19) = v11;
     *(v6 + 46) = controllerTimestamp;
     *(v6 + 21) = v9;
     *(v6 + 22) = v8;
     *(v6 + 40) = 0;
-    v13 = *&a4->timeInfo.clientSampleRate;
-    v12 = *&a4->timeInfo.lastHostTime;
-    v14 = a4->timeInfo.controllerTimestamp;
-    *(v6 + 408) = *&a4->sampleBuffer;
+    v13 = *&speakerContext->timeInfo.clientSampleRate;
+    v12 = *&speakerContext->timeInfo.lastHostTime;
+    v14 = speakerContext->timeInfo.controllerTimestamp;
+    *(v6 + 408) = *&speakerContext->sampleBuffer;
     *(v6 + 424) = v13;
-    v15 = *&a4->callback;
-    *(v6 + 376) = *&a4->clientFormat;
+    v15 = *&speakerContext->callback;
+    *(v6 + 376) = *&speakerContext->clientFormat;
     *(v6 + 392) = v15;
     *(v6 + 57) = v14;
     *(v6 + 440) = v12;
     *(v6 + 51) = 0;
-    v17 = *&a3->clientFormat->format.mBytesPerPacket;
-    v16 = *&a3->clientFormat->format.mBitsPerChannel;
-    *(v6 + 12) = *&a3->clientFormat->format.mSampleRate;
+    v17 = *&context->clientFormat->format.mBytesPerPacket;
+    v16 = *&context->clientFormat->format.mBitsPerChannel;
+    *(v6 + 12) = *&context->clientFormat->format.mSampleRate;
     *(v6 + 13) = v17;
     *(v6 + 14) = v16;
-    relayFormat = a3->relayFormat;
+    relayFormat = context->relayFormat;
     v20 = *&relayFormat->format.mBytesPerPacket;
     v19 = *&relayFormat->format.mBitsPerChannel;
     *(v6 + 15) = *&relayFormat->format.mSampleRate;
@@ -121,7 +121,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[VCAudioRelayIO alloc] initWithMicContext:&self->_micContext speakerContext:&self->_speakerContext];
   v5 = v4;
@@ -139,17 +139,17 @@
   return v5;
 }
 
-- (BOOL)isEqualToRelayIO:(id)a3
+- (BOOL)isEqualToRelayIO:(id)o
 {
   usePacketThread = self->_usePacketThread;
   result = 0;
-  if (usePacketThread == [a3 usePacketThread] && !memcmp(&self->_micContext, objc_msgSend(a3, "micContext"), 0x58uLL) && !memcmp(&self->_speakerContext, objc_msgSend(a3, "speakerContext"), 0x58uLL))
+  if (usePacketThread == [o usePacketThread] && !memcmp(&self->_micContext, objc_msgSend(o, "micContext"), 0x58uLL) && !memcmp(&self->_speakerContext, objc_msgSend(o, "speakerContext"), 0x58uLL))
   {
     updateRemoteCodecInfoCallback = self->_updateRemoteCodecInfoCallback;
-    if (updateRemoteCodecInfoCallback == [a3 updateRemoteCodecInfoCallback])
+    if (updateRemoteCodecInfoCallback == [o updateRemoteCodecInfoCallback])
     {
       updateRemoteCodecInfoContext = self->_updateRemoteCodecInfoContext;
-      if (updateRemoteCodecInfoContext == [a3 updateRemoteCodecInfoContext])
+      if (updateRemoteCodecInfoContext == [o updateRemoteCodecInfoContext])
       {
         return 1;
       }
@@ -159,12 +159,12 @@
   return result;
 }
 
-- (void)setRemoteCodecInfo:(const _VCRemoteCodecInfo *)a3
+- (void)setRemoteCodecInfo:(const _VCRemoteCodecInfo *)info
 {
-  if (a3)
+  if (info)
   {
-    codecType = a3->codecType;
-    sampleRate = a3->sampleRate;
+    codecType = info->codecType;
+    sampleRate = info->sampleRate;
   }
 
   else
@@ -178,20 +178,20 @@
   {
     p_remoteCodecInfo->codecType = codecType;
     self->_remoteCodecInfo.sampleRate = sampleRate;
-    v6 = [(VCAudioRelayIO *)self relay];
+    relay = [(VCAudioRelayIO *)self relay];
 
-    [(VCBasebandCodecNotifications *)v6 didUpdateBasebandCodec:p_remoteCodecInfo];
+    [(VCBasebandCodecNotifications *)relay didUpdateBasebandCodec:p_remoteCodecInfo];
   }
 }
 
-- (void)createBuffersForIOContext:(tagVCAudioRelayIOContext *)a3
+- (void)createBuffersForIOContext:(tagVCAudioRelayIOContext *)context
 {
   v11 = *MEMORY[0x1E69E9840];
-  sampleBuffer = a3->sampleBuffer;
-  p_sampleBuffer = &a3->sampleBuffer;
+  sampleBuffer = context->sampleBuffer;
+  p_sampleBuffer = &context->sampleBuffer;
   if (!sampleBuffer)
   {
-    clientFormat = a3->clientFormat;
+    clientFormat = context->clientFormat;
     v7 = 2 * clientFormat->samplesPerFrame;
     v8 = *&clientFormat->format.mSampleRate;
     v9 = *&clientFormat->format.mBytesPerPacket;
@@ -238,22 +238,22 @@
   VCAudioStructs_PrintFrameFormat("relay format:  ", &self->_relayFormat);
 }
 
-- (void)setClientFormat:(const tagVCAudioFrameFormat *)a3
+- (void)setClientFormat:(const tagVCAudioFrameFormat *)format
 {
   [(VCObject *)self lock];
-  if (a3 && !self->_isRunning)
+  if (format && !self->_isRunning)
   {
-    v6 = *&a3->format.mBytesPerPacket;
-    v5 = *&a3->format.mBitsPerChannel;
-    *&self->_clientFormat.format.mSampleRate = *&a3->format.mSampleRate;
+    v6 = *&format->format.mBytesPerPacket;
+    v5 = *&format->format.mBitsPerChannel;
+    *&self->_clientFormat.format.mSampleRate = *&format->format.mSampleRate;
     *&self->_clientFormat.format.mBytesPerPacket = v6;
     *&self->_clientFormat.format.mBitsPerChannel = v5;
-    v7 = *&a3->format.mSampleRate;
-    v8 = *&a3->format.mBitsPerChannel;
-    *&self->_relayFormat.format.mBytesPerPacket = *&a3->format.mBytesPerPacket;
+    v7 = *&format->format.mSampleRate;
+    v8 = *&format->format.mBitsPerChannel;
+    *&self->_relayFormat.format.mBytesPerPacket = *&format->format.mBytesPerPacket;
     *&self->_relayFormat.format.mBitsPerChannel = v8;
     *&self->_relayFormat.format.mSampleRate = v7;
-    mSampleRate = a3->format.mSampleRate;
+    mSampleRate = format->format.mSampleRate;
     self->_micContext.timeInfo.clientSampleRate = mSampleRate;
     self->_micContext.timeInfo.controllerSampleRate = mSampleRate;
     self->_speakerContext.timeInfo.clientSampleRate = mSampleRate;
@@ -263,18 +263,18 @@
   [(VCObject *)self unlock];
 }
 
-- (void)internalPushAudioSamples:(opaqueVCAudioBufferList *)a3
+- (void)internalPushAudioSamples:(opaqueVCAudioBufferList *)samples
 {
   p_micContext = &self->_micContext;
   if (self->_micContext.callback)
   {
-    Timestamp = VCAudioBufferList_GetTimestamp(a3);
-    HostTime = VCAudioBufferList_GetHostTime(a3);
-    SampleCount = VCAudioBufferList_GetSampleCount(a3);
+    Timestamp = VCAudioBufferList_GetTimestamp(samples);
+    HostTime = VCAudioBufferList_GetHostTime(samples);
+    SampleCount = VCAudioBufferList_GetSampleCount(samples);
     v9 = VCAudioBufferList_GetSampleCount(p_micContext->sampleBuffer);
-    if (v9 || (samplesPerFrame = self->_clientFormat.samplesPerFrame, sampleBuffer = a3, SampleCount != samplesPerFrame))
+    if (v9 || (samplesPerFrame = self->_clientFormat.samplesPerFrame, sampleBuffer = samples, SampleCount != samplesPerFrame))
     {
-      VCAudioBufferList_Append(p_micContext->sampleBuffer, a3, 0);
+      VCAudioBufferList_Append(p_micContext->sampleBuffer, samples, 0);
       sampleBuffer = p_micContext->sampleBuffer;
     }
 
@@ -294,15 +294,15 @@
       }
     }
 
-    VCAudioBufferList_SetTime(a3, Timestamp, HostTime);
+    VCAudioBufferList_SetTime(samples, Timestamp, HostTime);
   }
 }
 
-- (void)pushAudioSamples:(opaqueVCAudioBufferList *)a3
+- (void)pushAudioSamples:(opaqueVCAudioBufferList *)samples
 {
   if (self->_packetThread)
   {
-    if (!PacketThread_SendSampleBuffer(self->_packetThread, a3) && VRTraceGetErrorLogLevelForModule() >= 3)
+    if (!PacketThread_SendSampleBuffer(self->_packetThread, samples) && VRTraceGetErrorLogLevelForModule() >= 3)
     {
       v4 = VRTraceErrorLogLevelToCSTR();
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
@@ -315,11 +315,11 @@
   else
   {
 
-    [(VCAudioRelayIO *)self internalPushAudioSamples:a3];
+    [(VCAudioRelayIO *)self internalPushAudioSamples:samples];
   }
 }
 
-- (void)pullAudioSamples:(opaqueVCAudioBufferList *)a3
+- (void)pullAudioSamples:(opaqueVCAudioBufferList *)samples
 {
   p_speakerContext = &self->_speakerContext;
   if (!self->_speakerContext.callback)
@@ -327,9 +327,9 @@
     return;
   }
 
-  Timestamp = VCAudioBufferList_GetTimestamp(a3);
-  HostTime = VCAudioBufferList_GetHostTime(a3);
-  SampleCount = VCAudioBufferList_GetSampleCount(a3);
+  Timestamp = VCAudioBufferList_GetTimestamp(samples);
+  HostTime = VCAudioBufferList_GetHostTime(samples);
+  SampleCount = VCAudioBufferList_GetSampleCount(samples);
   v8 = VCAudioBufferList_GetSampleCount(p_speakerContext->sampleBuffer);
   v9 = v8;
   if (SampleCount >= v8)
@@ -342,10 +342,10 @@
     v10 = SampleCount;
   }
 
-  VCAudioBufferList_SetSampleCount(a3, 0);
+  VCAudioBufferList_SetSampleCount(samples, 0);
   if (v10)
   {
-    VCAudioBufferList_Append(a3, p_speakerContext->sampleBuffer, 0);
+    VCAudioBufferList_Append(samples, p_speakerContext->sampleBuffer, 0);
     VCAudioBufferList_Shift(p_speakerContext->sampleBuffer, v10);
     if (SampleCount > v9)
     {
@@ -361,7 +361,7 @@ LABEL_12:
       v15 = p_speakerContext->sampleBuffer;
       if (sampleBuffer == v15)
       {
-        v16 = VCAudioBufferList_Append(a3, v15, 0);
+        v16 = VCAudioBufferList_Append(samples, v15, 0);
         VCAudioBufferList_Shift(p_speakerContext->sampleBuffer, v16);
       }
     }
@@ -370,7 +370,7 @@ LABEL_12:
   else if (SampleCount)
   {
     p_mSampleRate = &p_speakerContext->clientFormat->format.mSampleRate;
-    sampleBuffer = a3;
+    sampleBuffer = samples;
     if (p_speakerContext->clientFormat->samplesPerFrame == p_speakerContext->relayFormat->samplesPerFrame)
     {
       goto LABEL_12;
@@ -379,14 +379,14 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  VCAudioBufferList_SetTime(a3, Timestamp, HostTime);
+  VCAudioBufferList_SetTime(samples, Timestamp, HostTime);
 }
 
-- (BOOL)createPacketThreadWithIOBufferDuration:(double)a3 name:(id)a4 error:(id *)a5
+- (BOOL)createPacketThreadWithIOBufferDuration:(double)duration name:(id)name error:(id *)error
 {
   v15[5] = *MEMORY[0x1E69E9840];
   [(VCObject *)self lock];
-  self->_relayFormat.samplesPerFrame = vcvtad_u64_f64(self->_relayFormat.format.mSampleRate * a3);
+  self->_relayFormat.samplesPerFrame = vcvtad_u64_f64(self->_relayFormat.format.mSampleRate * duration);
   v9 = 1;
   self->_micContext.timeInfo.didHostTimeReferenceChange = 1;
   self->_speakerContext.timeInfo.didHostTimeReferenceChange = 1;
@@ -397,13 +397,13 @@ LABEL_12:
   }
 
   SerializedSize = VCAudioBufferList_GetSerializedSize(self->_micBuffer);
-  v11 = [a4 UTF8String];
+  uTF8String = [name UTF8String];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __68__VCAudioRelayIO_createPacketThreadWithIOBufferDuration_name_error___block_invoke;
   v15[3] = &unk_1E85F5668;
   v15[4] = self;
-  v12 = PacketThread_Create(SerializedSize, 0, 0x10u, 19, v11, v15);
+  v12 = PacketThread_Create(SerializedSize, 0, 0x10u, 19, uTF8String, v15);
   self->_packetThread = v12;
   if (v12)
   {
@@ -422,7 +422,7 @@ LABEL_4:
     }
   }
 
-  [GKVoiceChatError getNSError:a5 code:32005 detailedCode:0 filePath:0 description:@"createPacketThreadWithIOBufferDuration failed" reason:@"PacketThread_Create failed"];
+  [GKVoiceChatError getNSError:error code:32005 detailedCode:0 filePath:0 description:@"createPacketThreadWithIOBufferDuration failed" reason:@"PacketThread_Create failed"];
   v9 = 0;
 LABEL_5:
   [(VCObject *)self unlock];
@@ -441,14 +441,14 @@ LABEL_5:
   self->_isRunning = 0;
 }
 
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec
 {
   updateRemoteCodecInfoCallback = self->_updateRemoteCodecInfoCallback;
   if (updateRemoteCodecInfoCallback)
   {
     updateRemoteCodecInfoContext = self->_updateRemoteCodecInfoContext;
 
-    updateRemoteCodecInfoCallback(updateRemoteCodecInfoContext, a3);
+    updateRemoteCodecInfoCallback(updateRemoteCodecInfoContext, codec);
   }
 
   else if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -457,7 +457,7 @@ LABEL_5:
     v7 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [(VCAudioRelayIO *)v6 didUpdateBasebandCodec:a3, v7];
+      [(VCAudioRelayIO *)v6 didUpdateBasebandCodec:codec, v7];
     }
   }
 }

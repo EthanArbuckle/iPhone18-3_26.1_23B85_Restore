@@ -1,23 +1,23 @@
 @interface DNDSLifetimeMonitorResult
-- (DNDSLifetimeMonitorResult)initWithActiveUUIDs:(id)a3 expiredUUIDs:(id)a4;
+- (DNDSLifetimeMonitorResult)initWithActiveUUIDs:(id)ds expiredUUIDs:(id)iDs;
 @end
 
 @implementation DNDSLifetimeMonitorResult
 
-- (DNDSLifetimeMonitorResult)initWithActiveUUIDs:(id)a3 expiredUUIDs:(id)a4
+- (DNDSLifetimeMonitorResult)initWithActiveUUIDs:(id)ds expiredUUIDs:(id)iDs
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  iDsCopy = iDs;
   v14.receiver = self;
   v14.super_class = DNDSLifetimeMonitorResult;
   v8 = [(DNDSLifetimeMonitorResult *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dsCopy copy];
     activeUUIDs = v8->_activeUUIDs;
     v8->_activeUUIDs = v9;
 
-    v11 = [v7 copy];
+    v11 = [iDsCopy copy];
     expiredUUIDs = v8->_expiredUUIDs;
     v8->_expiredUUIDs = v11;
   }

@@ -1,19 +1,19 @@
 @interface TrafficIncidentViewModel
 - (_TtC4Maps24TrafficIncidentViewModel)init;
-- (void)didReceiveIncidentUpdateWithNotification:(id)a3;
+- (void)didReceiveIncidentUpdateWithNotification:(id)notification;
 - (void)incidentsReportingEnablementDidUpdate;
 @end
 
 @implementation TrafficIncidentViewModel
 
-- (void)didReceiveIncidentUpdateWithNotification:(id)a3
+- (void)didReceiveIncidentUpdateWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10034D7F4();
 
   (*(v5 + 8))(v7, v4);
@@ -36,7 +36,7 @@
   v7 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v8 = self;
+  selfCopy = self;
 
   v9 = static MainActor.shared.getter();
   v10 = swift_allocObject();

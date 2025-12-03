@@ -9,8 +9,8 @@
 + (unint64_t)processMemory
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 processIdentifier];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processIdentifier = [processInfo processIdentifier];
 
   v4 = memorystatus_control();
   if (v4)
@@ -20,7 +20,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v9 = v3;
+      v9 = processIdentifier;
       v10 = 1024;
       v11 = v5;
       _os_log_impl(&dword_241215000, v6, OS_LOG_TYPE_DEFAULT, "Warning: Failed to get memory limit info for pid %d. Errorno: %d, Limits will appear as 0MB and not fatal.\n", buf, 0xEu);
@@ -33,26 +33,26 @@
 + (unint64_t)viewerMemoryAvailableForTexturesOnThisDevice
 {
   v7 = *MEMORY[0x277D85DE8];
-  v2 = [a1 processMemory];
+  processMemory = [self processMemory];
   v3 = AssetViewerLogHandleForCategory(1);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = v2;
+    v6 = processMemory;
     _os_log_impl(&dword_241215000, v3, OS_LOG_TYPE_DEFAULT, "processMemory for textures is %lu", &v5, 0xCu);
   }
 
-  if (v2 < 0x1F5)
+  if (processMemory < 0x1F5)
   {
     return 52428800;
   }
 
-  if (v2 < 0x2BD)
+  if (processMemory < 0x2BD)
   {
     return 157286400;
   }
 
-  if (v2 >= 0x465)
+  if (processMemory >= 0x465)
   {
     return +[ASVMemoryLimits viewerMemoryAvailableForTexturesOnHighMemoryDevices];
   }

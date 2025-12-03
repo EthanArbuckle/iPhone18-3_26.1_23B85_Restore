@@ -1,6 +1,6 @@
 @interface FMDRestrictedRegions
 + (id)sharedInstance;
-- (BOOL)isRestrictedLocationWithLatitude:(double)a3 longitude:(double)a4;
+- (BOOL)isRestrictedLocationWithLatitude:(double)latitude longitude:(double)longitude;
 - (BOOL)isRestrictedSKU;
 - (FMDRestrictedRegions)init;
 - (GEOMapRegion)fineKoreaRegion;
@@ -37,7 +37,7 @@
   return v3;
 }
 
-- (BOOL)isRestrictedLocationWithLatitude:(double)a3 longitude:(double)a4
+- (BOOL)isRestrictedLocationWithLatitude:(double)latitude longitude:(double)longitude
 {
   if (_os_feature_enabled_impl())
   {
@@ -63,8 +63,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(FMDRestrictedRegions *)self regions];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  regions = [(FMDRestrictedRegions *)self regions];
+  v11 = [regions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -75,19 +75,19 @@
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(regions);
         }
 
-        if ([*(*(&v17 + 1) + 8 * i) containsCoordinate:{a3, a4}])
+        if ([*(*(&v17 + 1) + 8 * i) containsCoordinate:{latitude, longitude}])
         {
-          v15 = [(FMDRestrictedRegions *)self fineKoreaRegion];
-          v7 = [v15 containsCoordinate:{a3, a4}];
+          fineKoreaRegion = [(FMDRestrictedRegions *)self fineKoreaRegion];
+          v7 = [fineKoreaRegion containsCoordinate:{latitude, longitude}];
 
           goto LABEL_17;
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [regions countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v12)
       {
         continue;
@@ -147,8 +147,8 @@ LABEL_17:
     while (v7);
   }
 
-  v18 = [(FMDRestrictedRegions *)self regions];
-  [v18 addObject:v5];
+  regions = [(FMDRestrictedRegions *)self regions];
+  [regions addObject:v5];
 }
 
 - (GEOMapRegion)fineKoreaRegion
@@ -196,17 +196,17 @@ LABEL_17:
   {
   }
 
-  v6 = [(FMDRestrictedRegions *)self currentDeviceSKURegion];
+  currentDeviceSKURegion = [(FMDRestrictedRegions *)self currentDeviceSKURegion];
 
-  if (!v6)
+  if (!currentDeviceSKURegion)
   {
     v7 = MGCopyAnswer();
     [(FMDRestrictedRegions *)self setCurrentDeviceSKURegion:v7];
   }
 
   v8 = [(FMDRestrictedRegions *)self sku];
-  v9 = [(FMDRestrictedRegions *)self currentDeviceSKURegion];
-  v10 = [v8 containsObject:v9];
+  currentDeviceSKURegion2 = [(FMDRestrictedRegions *)self currentDeviceSKURegion];
+  v10 = [v8 containsObject:currentDeviceSKURegion2];
 
   return v10;
 }

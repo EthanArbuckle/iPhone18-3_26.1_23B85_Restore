@@ -1,7 +1,7 @@
 @interface _HDDeletedSampleEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
 - (id)orderedProperties;
 @end
 
@@ -25,12 +25,12 @@
   return v2;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v6 = objc_alloc_init(HDCodableHealthObject);
   v7 = +[HDDeletedSampleEntity _externalSyncMetadataForRow:];
-  v8 = [v7 hk_codableMetadata];
-  [(HDCodableHealthObject *)v6 setMetadataDictionary:v8];
+  hk_codableMetadata = [v7 hk_codableMetadata];
+  [(HDCodableHealthObject *)v6 setMetadataDictionary:hk_codableMetadata];
 
   v9 = HDSQLiteColumnWithNameAsData();
   [(HDCodableHealthObject *)v6 setUuid:v9];
@@ -46,16 +46,16 @@
   [(HDCodableSample *)v10 setObject:v6];
   [(HDCodableSample *)v10 setDataType:HDSQLiteColumnWithNameAsInt64()];
   v11 = HDSQLiteColumnWithName();
-  if ((MEMORY[0x22AAC6CD0](a4, v11) & 1) == 0)
+  if ((MEMORY[0x22AAC6CD0](row, v11) & 1) == 0)
   {
-    MEMORY[0x22AAC6C50](a4, v11);
+    MEMORY[0x22AAC6C50](row, v11);
     [(HDCodableSample *)v10 setStartDate:?];
   }
 
   v12 = HDSQLiteColumnWithName();
-  if ((MEMORY[0x22AAC6CD0](a4, v12) & 1) == 0)
+  if ((MEMORY[0x22AAC6CD0](row, v12) & 1) == 0)
   {
-    MEMORY[0x22AAC6C50](a4, v12);
+    MEMORY[0x22AAC6C50](row, v12);
     [(HDCodableSample *)v10 setEndDate:?];
   }
 
@@ -65,7 +65,7 @@
   return v13;
 }
 
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v5 = HDSQLiteColumnWithNameAsUUID();
   v6 = MEMORY[0x277CCD2E0];
@@ -75,13 +75,13 @@
   return v8;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  LOBYTE(a6) = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  LOBYTE(error) = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
-  return a6;
+  return error;
 }
 
 @end

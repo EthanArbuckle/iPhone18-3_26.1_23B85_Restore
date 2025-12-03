@@ -1,36 +1,36 @@
 @interface PFCloudKitStoreComparer
-+ (id)trimExcessiveValuesForLog:(id)a3;
-- (BOOL)compareAttributesOnObject:(id)a3 toObject:(id)a4 error:(id *)a5;
-- (BOOL)compareCloudKitMetadataOfStore:(id)a3 toStore:(id)a4 error:(id *)a5;
-- (BOOL)compareContentOfStore:(id)a3 toStore:(id)a4 error:(id *)a5;
-- (BOOL)compareDatabaseScopeAndIdentityInStore:(id)a3 toStore:(id)a4 error:(id *)a5;
-- (BOOL)compareObjectsInStore:(id)a3 toStore:(id)a4 error:(id *)a5;
-- (BOOL)compareRelationshipsOfRecordID:(id)a3 withStoreObject:(id)a4 andOtherObject:(id)a5 error:(id *)a6;
-- (BOOL)ensureContentsMatch:(id *)a3;
-- (BOOL)ensureContentsOfRecordStorageMatchForStorage:(id)a3 andOtherStore:(id)a4 error:(id *)a5;
-- (BOOL)ensureContentsOfStore:(id)a3 matchContentsOfStore:(id)a4 error:(id *)a5;
-- (BOOL)ensureMirroredRelationshipsMatchForStore:(id)a3 otherStore:(id)a4 error:(id *)a5;
-- (BOOL)ensureMoveReceiptsMatchForStore:(id)a3 otherStore:(id)a4 error:(id *)a5;
-- (BOOL)ensureRecordMetadataMatchesForRecordID:(id)a3 inStore:(id)a4 andOtherStore:(id)a5 error:(id *)a6;
-- (BOOL)ensureStoresAgreeOnCloudKitTables:(id)a3 error:(id *)a4;
-- (BOOL)isValue:(id)a3 equalToValue:(id)a4 forAttribute:(id)a5;
-- (BOOL)validateValue:(id)a3 againstOtherValue:(id)a4 forIgnoredAttribute:(id)a5;
-- (PFCloudKitStoreComparer)initWithStore:(id)a3 otherStore:(id)a4;
-- (id)getObjectMatchingRecordID:(id)a3 fromStore:(id)a4 withManagedObjectContext:(id)a5;
-- (id)getRecordIDsForRelationship:(id)a3 onObject:(id)a4;
++ (id)trimExcessiveValuesForLog:(id)log;
+- (BOOL)compareAttributesOnObject:(id)object toObject:(id)toObject error:(id *)error;
+- (BOOL)compareCloudKitMetadataOfStore:(id)store toStore:(id)toStore error:(id *)error;
+- (BOOL)compareContentOfStore:(id)store toStore:(id)toStore error:(id *)error;
+- (BOOL)compareDatabaseScopeAndIdentityInStore:(id)store toStore:(id)toStore error:(id *)error;
+- (BOOL)compareObjectsInStore:(id)store toStore:(id)toStore error:(id *)error;
+- (BOOL)compareRelationshipsOfRecordID:(id)d withStoreObject:(id)object andOtherObject:(id)otherObject error:(id *)error;
+- (BOOL)ensureContentsMatch:(id *)match;
+- (BOOL)ensureContentsOfRecordStorageMatchForStorage:(id)storage andOtherStore:(id)store error:(id *)error;
+- (BOOL)ensureContentsOfStore:(id)store matchContentsOfStore:(id)ofStore error:(id *)error;
+- (BOOL)ensureMirroredRelationshipsMatchForStore:(id)store otherStore:(id)otherStore error:(id *)error;
+- (BOOL)ensureMoveReceiptsMatchForStore:(id)store otherStore:(id)otherStore error:(id *)error;
+- (BOOL)ensureRecordMetadataMatchesForRecordID:(id)d inStore:(id)store andOtherStore:(id)otherStore error:(id *)error;
+- (BOOL)ensureStoresAgreeOnCloudKitTables:(id)tables error:(id *)error;
+- (BOOL)isValue:(id)value equalToValue:(id)toValue forAttribute:(id)attribute;
+- (BOOL)validateValue:(id)value againstOtherValue:(id)otherValue forIgnoredAttribute:(id)attribute;
+- (PFCloudKitStoreComparer)initWithStore:(id)store otherStore:(id)otherStore;
+- (id)getObjectMatchingRecordID:(id)d fromStore:(id)store withManagedObjectContext:(id)context;
+- (id)getRecordIDsForRelationship:(id)relationship onObject:(id)object;
 - (void)dealloc;
 @end
 
 @implementation PFCloudKitStoreComparer
 
-- (PFCloudKitStoreComparer)initWithStore:(id)a3 otherStore:(id)a4
+- (PFCloudKitStoreComparer)initWithStore:(id)store otherStore:(id)otherStore
 {
   v8.receiver = self;
   v8.super_class = PFCloudKitStoreComparer;
   v6 = [(PFCloudKitStoreComparer *)&v8 init];
   if (v6)
   {
-    v6->_cache = [[PFCloudKitStoreComparisonCache alloc] initWithStore:a3 otherStore:a4];
+    v6->_cache = [[PFCloudKitStoreComparisonCache alloc] initWithStore:store otherStore:otherStore];
     v6->_archivingUtilities = objc_alloc_init(PFCloudKitArchivingUtilities);
     v6->_onlyCompareSharedZones = 0;
   }
@@ -45,48 +45,48 @@
   [(PFCloudKitStoreComparer *)&v3 dealloc];
 }
 
-- (BOOL)ensureContentsMatch:(id *)a3
+- (BOOL)ensureContentsMatch:(id *)match
 {
-  v5 = [(PFCloudKitStoreComparisonCache *)self->_cache store];
-  v6 = [(PFCloudKitStoreComparisonCache *)self->_cache otherStore];
+  store = [(PFCloudKitStoreComparisonCache *)self->_cache store];
+  otherStore = [(PFCloudKitStoreComparisonCache *)self->_cache otherStore];
 
-  return [(PFCloudKitStoreComparer *)self ensureContentsOfStore:v5 matchContentsOfStore:v6 error:a3];
+  return [(PFCloudKitStoreComparer *)self ensureContentsOfStore:store matchContentsOfStore:otherStore error:match];
 }
 
-- (BOOL)ensureContentsOfStore:(id)a3 matchContentsOfStore:(id)a4 error:(id *)a5
+- (BOOL)ensureContentsOfStore:(id)store matchContentsOfStore:(id)ofStore error:(id *)error
 {
   v35[2] = *MEMORY[0x1E69E9840];
   v26 = 0;
-  if ([objc_msgSend(a3 "URL")])
+  if ([objc_msgSend(store "URL")])
   {
     goto LABEL_2;
   }
 
-  if ([a3 isCloudKitEnabled])
+  if ([store isCloudKitEnabled])
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = [objc_msgSend(objc_msgSend(a3 "options")];
+    v10 = [objc_msgSend(objc_msgSend(store "options")];
   }
 
-  if ([a4 isCloudKitEnabled])
+  if ([ofStore isCloudKitEnabled])
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = [objc_msgSend(objc_msgSend(a4 "options")];
+    v11 = [objc_msgSend(objc_msgSend(ofStore "options")];
   }
 
   if (v10 == v11)
   {
-    v35[0] = a3;
-    v35[1] = a4;
-    if (!-[PFCloudKitStoreComparer ensureStoresAgreeOnCloudKitTables:error:](self, "ensureStoresAgreeOnCloudKitTables:error:", [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2], &v26) || !-[PFCloudKitStoreComparer compareContentOfStore:toStore:error:](self, "compareContentOfStore:toStore:error:", a3, a4, &v26))
+    v35[0] = store;
+    v35[1] = ofStore;
+    if (!-[PFCloudKitStoreComparer ensureStoresAgreeOnCloudKitTables:error:](self, "ensureStoresAgreeOnCloudKitTables:error:", [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2], &v26) || !-[PFCloudKitStoreComparer compareContentOfStore:toStore:error:](self, "compareContentOfStore:toStore:error:", store, ofStore, &v26))
     {
 LABEL_15:
       v14 = v26;
@@ -96,10 +96,10 @@ LABEL_15:
       }
 
 LABEL_22:
-      if (a5)
+      if (error)
       {
         LOBYTE(v9) = 0;
-        *a5 = v14;
+        *error = v14;
         goto LABEL_25;
       }
 
@@ -108,11 +108,11 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v12 = [a3 mirroringDelegate];
-    v13 = [a4 mirroringDelegate];
-    if (v12 && v13)
+    mirroringDelegate = [store mirroringDelegate];
+    mirroringDelegate2 = [ofStore mirroringDelegate];
+    if (mirroringDelegate && mirroringDelegate2)
     {
-      if (![(PFCloudKitStoreComparer *)self compareCloudKitMetadataOfStore:a3 toStore:a4 error:&v26])
+      if (![(PFCloudKitStoreComparer *)self compareCloudKitMetadataOfStore:store toStore:ofStore error:&v26])
       {
         goto LABEL_15;
       }
@@ -122,7 +122,7 @@ LABEL_2:
       goto LABEL_25;
     }
 
-    if (!(v12 | v13))
+    if (!(mirroringDelegate | mirroringDelegate2))
     {
       goto LABEL_2;
     }
@@ -130,7 +130,7 @@ LABEL_2:
     v23 = MEMORY[0x1E696ABC0];
     v24 = *MEMORY[0x1E696A250];
     v33 = *MEMORY[0x1E696A588];
-    v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Stores don't match because they do not have the same mirroring configuration:\n%@ - %@\n%@ - %@", a3, v12, a4, v13];
+    v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Stores don't match because they do not have the same mirroring configuration:\n%@ - %@\n%@ - %@", store, mirroringDelegate, ofStore, mirroringDelegate2];
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
     v20 = v23;
     v21 = v24;
@@ -141,7 +141,7 @@ LABEL_2:
     v17 = MEMORY[0x1E696ABC0];
     v18 = *MEMORY[0x1E696A250];
     v31 = *MEMORY[0x1E696A588];
-    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Stores don't match because they do not have the same mirroring options:\n%@ - %@\n%@ - %@", a3, objc_msgSend(a3, "options"), a4, objc_msgSend(a4, "options")];
+    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Stores don't match because they do not have the same mirroring options:\n%@ - %@\n%@ - %@", store, objc_msgSend(store, "options"), ofStore, objc_msgSend(ofStore, "options")];
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v20 = v17;
     v21 = v18;
@@ -182,7 +182,7 @@ LABEL_25:
   return v9;
 }
 
-- (id)getObjectMatchingRecordID:(id)a3 fromStore:(id)a4 withManagedObjectContext:(id)a5
+- (id)getObjectMatchingRecordID:(id)d fromStore:(id)store withManagedObjectContext:(id)context
 {
   v8 = 0;
   v9 = &v8;
@@ -195,11 +195,11 @@ LABEL_25:
   v7[2] = __88__PFCloudKitStoreComparer_getObjectMatchingRecordID_fromStore_withManagedObjectContext___block_invoke;
   v7[3] = &unk_1E6EC2638;
   v7[4] = self;
-  v7[5] = a3;
-  v7[7] = a5;
+  v7[5] = d;
+  v7[7] = context;
   v7[8] = &v8;
-  v7[6] = a4;
-  [a5 performBlockAndWait:v7];
+  v7[6] = store;
+  [context performBlockAndWait:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
   return v5;
@@ -284,16 +284,16 @@ LABEL_15:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)compareContentOfStore:(id)a3 toStore:(id)a4 error:(id *)a5
+- (BOOL)compareContentOfStore:(id)store toStore:(id)toStore error:(id *)error
 {
   v49[1] = *MEMORY[0x1E69E9840];
   v40 = 0;
-  if ([objc_msgSend(a3 "URL")])
+  if ([objc_msgSend(store "URL")])
   {
     goto LABEL_2;
   }
 
-  if (![(PFCloudKitStoreComparisonCache *)self->_cache populate:&v40]|| ![(PFCloudKitStoreComparer *)self compareDatabaseScopeAndIdentityInStore:a3 toStore:a4 error:&v40]|| ![(PFCloudKitStoreComparer *)self compareObjectsInStore:a3 toStore:a4 error:&v40])
+  if (![(PFCloudKitStoreComparisonCache *)self->_cache populate:&v40]|| ![(PFCloudKitStoreComparer *)self compareDatabaseScopeAndIdentityInStore:store toStore:toStore error:&v40]|| ![(PFCloudKitStoreComparer *)self compareObjectsInStore:store toStore:toStore error:&v40])
   {
     goto LABEL_26;
   }
@@ -306,8 +306,8 @@ LABEL_15:
   cache = self->_cache;
   if (!self->_onlyCompareSharedZones)
   {
-    v19 = [(PFCloudKitStoreComparisonCache *)cache mtmKeysForStore:a3];
-    v20 = [(PFCloudKitStoreComparisonCache *)self->_cache mtmKeysForStore:a4];
+    v19 = [(PFCloudKitStoreComparisonCache *)cache mtmKeysForStore:store];
+    v20 = [(PFCloudKitStoreComparisonCache *)self->_cache mtmKeysForStore:toStore];
     if ([v19 isEqualToSet:v20])
     {
       goto LABEL_2;
@@ -317,7 +317,7 @@ LABEL_15:
     [v21 minusSet:v20];
     v22 = [v20 mutableCopy];
     [v22 minusSet:v19];
-    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Mirrored relationships don't match for stores:\nStore has these extra keys: %@\n%@\nOther Store has these extra keys: %@\n%@", objc_msgSend(a3, "URL"), objc_msgSend(objc_msgSend(v21, "allObjects"), "sortedArrayUsingSelector:", sel_localizedCaseInsensitiveCompare_), objc_msgSend(a4, "URL"), objc_msgSend(objc_msgSend(v22, "allObjects"), "sortedArrayUsingSelector:", sel_localizedCaseInsensitiveCompare_)];
+    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Mirrored relationships don't match for stores:\nStore has these extra keys: %@\n%@\nOther Store has these extra keys: %@\n%@", objc_msgSend(store, "URL"), objc_msgSend(objc_msgSend(v21, "allObjects"), "sortedArrayUsingSelector:", sel_localizedCaseInsensitiveCompare_), objc_msgSend(toStore, "URL"), objc_msgSend(objc_msgSend(v22, "allObjects"), "sortedArrayUsingSelector:", sel_localizedCaseInsensitiveCompare_)];
     v24 = MEMORY[0x1E696ABC0];
     v25 = *MEMORY[0x1E696A250];
     v48 = *MEMORY[0x1E696A588];
@@ -331,10 +331,10 @@ LABEL_25:
 LABEL_26:
     if (v40)
     {
-      if (a5)
+      if (error)
       {
         LOBYTE(v9) = 0;
-        *a5 = v40;
+        *error = v40;
         goto LABEL_34;
       }
     }
@@ -369,8 +369,8 @@ LABEL_26:
     goto LABEL_34;
   }
 
-  v11 = [(PFCloudKitStoreComparisonCache *)cache sharedZoneIDsForStore:a3];
-  if (![v11 isEqualToSet:{-[PFCloudKitStoreComparisonCache sharedZoneIDsForStore:](self->_cache, "sharedZoneIDsForStore:", a4)}])
+  v11 = [(PFCloudKitStoreComparisonCache *)cache sharedZoneIDsForStore:store];
+  if (![v11 isEqualToSet:{-[PFCloudKitStoreComparisonCache sharedZoneIDsForStore:](self->_cache, "sharedZoneIDsForStore:", toStore)}])
   {
     v29 = _PFLogGetLogStream(17);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -413,15 +413,15 @@ LABEL_2:
       }
 
       v16 = *(*(&v36 + 1) + 8 * i);
-      v17 = [(PFCloudKitStoreComparisonCache *)self->_cache mtmKeysForRecordZone:v16 inStore:a3];
-      v18 = [(PFCloudKitStoreComparisonCache *)self->_cache mtmKeysForRecordZone:v16 inStore:a4];
+      v17 = [(PFCloudKitStoreComparisonCache *)self->_cache mtmKeysForRecordZone:v16 inStore:store];
+      v18 = [(PFCloudKitStoreComparisonCache *)self->_cache mtmKeysForRecordZone:v16 inStore:toStore];
       if (([v17 isEqualToSet:v18] & 1) == 0)
       {
         v21 = [v17 mutableCopy];
         [v21 minusSet:v18];
         v22 = [v18 mutableCopy];
         [v22 minusSet:v17];
-        v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Mirrored relationships don't match for stores:\nStore has these extra keys: %@\n%@\nOther Store has these extra keys: %@\n%@", objc_msgSend(a3, "URL"), objc_msgSend(objc_msgSend(v21, "allObjects"), "sortedArrayUsingSelector:", sel_localizedCaseInsensitiveCompare_), objc_msgSend(a4, "URL"), objc_msgSend(objc_msgSend(v22, "allObjects"), "sortedArrayUsingSelector:", sel_localizedCaseInsensitiveCompare_)];
+        v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Mirrored relationships don't match for stores:\nStore has these extra keys: %@\n%@\nOther Store has these extra keys: %@\n%@", objc_msgSend(store, "URL"), objc_msgSend(objc_msgSend(v21, "allObjects"), "sortedArrayUsingSelector:", sel_localizedCaseInsensitiveCompare_), objc_msgSend(toStore, "URL"), objc_msgSend(objc_msgSend(v22, "allObjects"), "sortedArrayUsingSelector:", sel_localizedCaseInsensitiveCompare_)];
         v24 = MEMORY[0x1E696ABC0];
         v25 = *MEMORY[0x1E696A250];
         v45 = *MEMORY[0x1E696A588];
@@ -448,11 +448,11 @@ LABEL_34:
   return v9;
 }
 
-- (BOOL)compareDatabaseScopeAndIdentityInStore:(id)a3 toStore:(id)a4 error:(id *)a5
+- (BOOL)compareDatabaseScopeAndIdentityInStore:(id)store toStore:(id)toStore error:(id *)error
 {
   v36[3] = *MEMORY[0x1E69E9840];
-  v9 = -[PFCloudKitStoreComparisonCache databaseScopeForStoreWithIdentifier:](self->_cache, "databaseScopeForStoreWithIdentifier:", [a3 identifier]);
-  v10 = -[PFCloudKitStoreComparisonCache databaseScopeForStoreWithIdentifier:](self->_cache, "databaseScopeForStoreWithIdentifier:", [a4 identifier]);
+  v9 = -[PFCloudKitStoreComparisonCache databaseScopeForStoreWithIdentifier:](self->_cache, "databaseScopeForStoreWithIdentifier:", [store identifier]);
+  v10 = -[PFCloudKitStoreComparisonCache databaseScopeForStoreWithIdentifier:](self->_cache, "databaseScopeForStoreWithIdentifier:", [toStore identifier]);
   if (self->_onlyCompareSharedZones || (v11 = v10, v9 == v10))
   {
     LOBYTE(v19) = 1;
@@ -461,8 +461,8 @@ LABEL_34:
       goto LABEL_17;
     }
 
-    v20 = -[PFCloudKitStoreComparisonCache identityRecordNameForStoreWithIdentifier:](self->_cache, "identityRecordNameForStoreWithIdentifier:", [a3 identifier]);
-    v21 = -[PFCloudKitStoreComparisonCache identityRecordNameForStoreWithIdentifier:](self->_cache, "identityRecordNameForStoreWithIdentifier:", [a4 identifier]);
+    v20 = -[PFCloudKitStoreComparisonCache identityRecordNameForStoreWithIdentifier:](self->_cache, "identityRecordNameForStoreWithIdentifier:", [store identifier]);
+    v21 = -[PFCloudKitStoreComparisonCache identityRecordNameForStoreWithIdentifier:](self->_cache, "identityRecordNameForStoreWithIdentifier:", [toStore identifier]);
     if (v20 == v21 || (v22 = v21, ([(__CFString *)v20 isEqualToString:v21]& 1) != 0))
     {
       LOBYTE(v19) = 1;
@@ -473,7 +473,7 @@ LABEL_34:
     v13 = *MEMORY[0x1E696A250];
     v33[0] = *MEMORY[0x1E696A588];
     v34[0] = @"Store identity record names do not match.";
-    v33[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-identity", objc_msgSend(a3, "identifier")];
+    v33[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-identity", objc_msgSend(store, "identifier")];
     if (v20)
     {
       v26 = v20;
@@ -485,7 +485,7 @@ LABEL_34:
     }
 
     v34[1] = v26;
-    v33[2] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-identity", objc_msgSend(a4, "identifier")];
+    v33[2] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-identity", objc_msgSend(toStore, "identifier")];
     if (v22)
     {
       v27 = v22;
@@ -506,9 +506,9 @@ LABEL_34:
   {
     v12 = MEMORY[0x1E696ABC0];
     v13 = *MEMORY[0x1E696A250];
-    v35[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-scope", objc_msgSend(a3, "identifier")];
+    v35[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-scope", objc_msgSend(store, "identifier")];
     v36[0] = (softLinkCKDatabaseScopeString[0])(v9);
-    v35[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-scope", objc_msgSend(a4, "identifier")];
+    v35[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-scope", objc_msgSend(toStore, "identifier")];
     v14 = (softLinkCKDatabaseScopeString[0])(v11);
     v35[2] = *MEMORY[0x1E696A588];
     v36[1] = v14;
@@ -521,10 +521,10 @@ LABEL_34:
   v18 = [v12 errorWithDomain:v13 code:134060 userInfo:{objc_msgSend(v15, "dictionaryWithObjects:forKeys:count:", v16, v17, 3)}];
   if (v18)
   {
-    if (a5)
+    if (error)
     {
       LOBYTE(v19) = 0;
-      *a5 = v18;
+      *error = v18;
       goto LABEL_17;
     }
 
@@ -560,18 +560,18 @@ LABEL_17:
   return v19;
 }
 
-- (BOOL)compareObjectsInStore:(id)a3 toStore:(id)a4 error:(id *)a5
+- (BOOL)compareObjectsInStore:(id)store toStore:(id)toStore error:(id *)error
 {
   v84[3] = *MEMORY[0x1E69E9840];
   v71 = 0;
   v9 = [(PFCloudKitStoreComparisonCache *)self->_cache identifiersForStore:?];
-  v10 = [(PFCloudKitStoreComparisonCache *)self->_cache identifiersForStore:a4];
-  v11 = [(PFCloudKitStoreComparisonCache *)self->_cache recordIdsForStore:a3];
-  v12 = [(PFCloudKitStoreComparisonCache *)self->_cache recordIdsForStore:a4];
-  v66 = [(PFCloudKitStoreComparisonCache *)self->_cache sharedZoneIDsForStore:a3];
-  v64 = a4;
+  v10 = [(PFCloudKitStoreComparisonCache *)self->_cache identifiersForStore:toStore];
+  v11 = [(PFCloudKitStoreComparisonCache *)self->_cache recordIdsForStore:store];
+  v12 = [(PFCloudKitStoreComparisonCache *)self->_cache recordIdsForStore:toStore];
+  v66 = [(PFCloudKitStoreComparisonCache *)self->_cache sharedZoneIDsForStore:store];
+  toStoreCopy = toStore;
   v62 = v12;
-  v63 = [(PFCloudKitStoreComparisonCache *)self->_cache sharedZoneIDsForStore:a4];
+  v63 = [(PFCloudKitStoreComparisonCache *)self->_cache sharedZoneIDsForStore:toStore];
   v65 = v11;
   if (!self->_onlyCompareSharedZones)
   {
@@ -591,16 +591,16 @@ LABEL_17:
       v57 = *MEMORY[0x1E696A250];
       v83[0] = *MEMORY[0x1E696A588];
       v32 = MEMORY[0x1E696AEC0];
-      v33 = [a3 identifier];
+      identifier = [store identifier];
       v34 = [v65 count];
-      v35 = [v64 identifier];
+      identifier2 = [toStoreCopy identifier];
       v52 = [v12 count];
       v36 = v32;
       v11 = v65;
-      v84[0] = [v36 stringWithFormat:@"Stores do not contain the same record names. (%@:%lu / %@:%lu)", v33, v34, v35, v52];
-      v83[1] = [a3 identifier];
+      v84[0] = [v36 stringWithFormat:@"Stores do not contain the same record names. (%@:%lu / %@:%lu)", identifier, v34, identifier2, v52];
+      v83[1] = [store identifier];
       v84[1] = v31;
-      v83[2] = [v64 identifier];
+      v83[2] = [toStoreCopy identifier];
       v84[2] = v19;
       v71 = [v59 errorWithDomain:v57 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v84, v83, 3)}];
     }
@@ -619,20 +619,20 @@ LABEL_17:
       v58 = *MEMORY[0x1E696A250];
       v81[0] = *MEMORY[0x1E696A588];
       v37 = MEMORY[0x1E696AEC0];
-      v38 = [a3 identifier];
+      identifier3 = [store identifier];
       v39 = [v9 count];
-      v40 = [v64 identifier];
+      identifier4 = [toStoreCopy identifier];
       v53 = [v10 count];
       v41 = v37;
       v11 = v65;
-      v82[0] = [v41 stringWithFormat:@"Stores do not contain the same identifiers. (%@:%lu / %@:%lu)", v38, v39, v40, v53];
-      v81[1] = [a3 identifier];
+      v82[0] = [v41 stringWithFormat:@"Stores do not contain the same identifiers. (%@:%lu / %@:%lu)", identifier3, v39, identifier4, v53];
+      v81[1] = [store identifier];
       v82[1] = v56;
-      v81[2] = [v64 identifier];
+      v81[2] = [toStoreCopy identifier];
       v82[2] = v55;
-      v81[3] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-RecordIDs", objc_msgSend(a3, "identifier")];
+      v81[3] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-RecordIDs", objc_msgSend(store, "identifier")];
       v82[3] = v54;
-      v81[4] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-RecordIDs", objc_msgSend(v64, "identifier")];
+      v81[4] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-RecordIDs", objc_msgSend(toStoreCopy, "identifier")];
       v82[4] = v19;
       v71 = [v60 errorWithDomain:v58 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v82, v81, 5)}];
     }
@@ -648,7 +648,7 @@ LABEL_2:
   {
     v14 = v13;
     v15 = *v68;
-    v61 = a5;
+    errorCopy = error;
     do
     {
       v16 = 0;
@@ -662,41 +662,41 @@ LABEL_2:
         v17 = *(*(&v67 + 1) + 8 * v16);
         if (!self->_onlyCompareSharedZones || [v66 containsObject:{objc_msgSend(*(*(&v67 + 1) + 8 * v16), "zoneID")}] && objc_msgSend(v63, "containsObject:", objc_msgSend(v17, "zoneID")))
         {
-          v18 = [(PFCloudKitStoreComparer *)self getObjectMatchingRecordID:v17 fromStore:a3 withManagedObjectContext:[(PFCloudKitStoreComparisonCache *)self->_cache storeMoc]];
+          v18 = [(PFCloudKitStoreComparer *)self getObjectMatchingRecordID:v17 fromStore:store withManagedObjectContext:[(PFCloudKitStoreComparisonCache *)self->_cache storeMoc]];
           v19 = [objc_msgSend(objc_msgSend(v18 "entity")];
           if (!v18)
           {
             v42 = MEMORY[0x1E696ABC0];
             v43 = *MEMORY[0x1E696A250];
             v72 = *MEMORY[0x1E696A588];
-            v73 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to retrieve object with recordID '%@' from store %@", v17, a3];
-            v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
+            store = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to retrieve object with recordID '%@' from store %@", v17, store];
+            v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&store forKeys:&v72 count:1];
             v45 = v43;
             v11 = v65;
             v71 = [v42 errorWithDomain:v45 code:134060 userInfo:v44];
-            a5 = v61;
+            error = errorCopy;
             goto LABEL_38;
           }
 
-          v20 = [(PFCloudKitStoreComparer *)self getObjectMatchingRecordID:v17 fromStore:v64 withManagedObjectContext:[(PFCloudKitStoreComparisonCache *)self->_cache otherStoreMoc]];
+          v20 = [(PFCloudKitStoreComparer *)self getObjectMatchingRecordID:v17 fromStore:toStoreCopy withManagedObjectContext:[(PFCloudKitStoreComparisonCache *)self->_cache otherStoreMoc]];
           if (!v20)
           {
             v46 = MEMORY[0x1E696ABC0];
             v47 = *MEMORY[0x1E696A250];
             v74 = *MEMORY[0x1E696A588];
-            v75 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to retrieve object with recordID '%@' from store %@", v17, v64];
-            v71 = [v46 errorWithDomain:v47 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v75, &v74, 1)}];
+            toStoreCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to retrieve object with recordID '%@' from store %@", v17, toStoreCopy];
+            v71 = [v46 errorWithDomain:v47 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &toStoreCopy, &v74, 1)}];
 LABEL_37:
 
-            a5 = v61;
+            error = errorCopy;
             v11 = v65;
             goto LABEL_38;
           }
 
-          v21 = [v18 entity];
-          if (v21)
+          entity = [v18 entity];
+          if (entity)
           {
-            v22 = *(v21 + 160);
+            v22 = *(entity + 160);
           }
 
           else
@@ -704,10 +704,10 @@ LABEL_37:
             v22 = 0;
           }
 
-          v23 = [v20 entity];
-          if (v23)
+          entity2 = [v20 entity];
+          if (entity2)
           {
-            v24 = *(v23 + 160);
+            v24 = *(entity2 + 160);
           }
 
           else
@@ -749,7 +749,7 @@ LABEL_37:
           if (!v27)
           {
             v29 = 0;
-            a5 = v61;
+            error = errorCopy;
             goto LABEL_39;
           }
         }
@@ -761,7 +761,7 @@ LABEL_37:
       v28 = [v11 countByEnumeratingWithState:&v67 objects:v80 count:16];
       v14 = v28;
       v29 = 1;
-      a5 = v61;
+      error = errorCopy;
     }
 
     while (v28);
@@ -778,9 +778,9 @@ LABEL_39:
   {
     if (v71)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = v71;
+        *error = v71;
       }
     }
 
@@ -812,7 +812,7 @@ LABEL_39:
   return v29;
 }
 
-- (BOOL)compareAttributesOnObject:(id)a3 toObject:(id)a4 error:(id *)a5
+- (BOOL)compareAttributesOnObject:(id)object toObject:(id)toObject error:(id *)error
 {
   v66 = *MEMORY[0x1E69E9840];
   v51 = 0;
@@ -831,7 +831,7 @@ LABEL_39:
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = [objc_msgSend(objc_msgSend(a3 "entity")];
+  v7 = [objc_msgSend(objc_msgSend(object "entity")];
   v8 = [v7 countByEnumeratingWithState:&v41 objects:v65 count:16];
   if (!v8)
   {
@@ -851,24 +851,24 @@ LABEL_39:
 
       v10 = *(*(&v41 + 1) + 8 * v9);
       v11 = [objc_msgSend(objc_msgSend(v10 "userInfo")];
-      v12 = [a3 managedObjectContext];
+      managedObjectContext = [object managedObjectContext];
       v40[0] = MEMORY[0x1E69E9820];
       v40[1] = 3221225472;
       v40[2] = __68__PFCloudKitStoreComparer_compareAttributesOnObject_toObject_error___block_invoke;
       v40[3] = &unk_1E6EC23F0;
       v40[5] = v10;
       v40[6] = &v51;
-      v40[4] = a3;
-      [v12 performBlockAndWait:v40];
-      v13 = [a4 managedObjectContext];
+      v40[4] = object;
+      [managedObjectContext performBlockAndWait:v40];
+      managedObjectContext2 = [toObject managedObjectContext];
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __68__PFCloudKitStoreComparer_compareAttributesOnObject_toObject_error___block_invoke_2;
       v39[3] = &unk_1E6EC23F0;
       v39[5] = v10;
       v39[6] = &v45;
-      v39[4] = a4;
-      [v13 performBlockAndWait:v39];
+      v39[4] = toObject;
+      [managedObjectContext2 performBlockAndWait:v39];
       v14 = v52[5];
       if (v11)
       {
@@ -876,9 +876,9 @@ LABEL_39:
         {
           v24 = MEMORY[0x1E696AEC0];
           v25 = [objc_msgSend(v10 "entity")];
-          v26 = [v10 name];
+          name = [v10 name];
           v27 = [PFCloudKitStoreComparer trimExcessiveValuesForLog:v52[5]];
-          v28 = [v24 stringWithFormat:@"Ignored attribute (%@:%@) appears to have been synced:\nValue: %@\nOther value: %@", v25, v26, v27, +[PFCloudKitStoreComparer trimExcessiveValuesForLog:](PFCloudKitStoreComparer, "trimExcessiveValuesForLog:", v46[5])];
+          v28 = [v24 stringWithFormat:@"Ignored attribute (%@:%@) appears to have been synced:\nValue: %@\nOther value: %@", v25, name, v27, +[PFCloudKitStoreComparer trimExcessiveValuesForLog:](PFCloudKitStoreComparer, "trimExcessiveValuesForLog:", v46[5])];
           v29 = MEMORY[0x1E696ABC0];
           v63 = *MEMORY[0x1E696A588];
           v64 = v28;
@@ -908,9 +908,9 @@ LABEL_19:
           v62[0] = @"Attribute values do not match.";
           v61[0] = v20;
           v61[1] = @"storeObjectID";
-          v62[1] = [a3 objectID];
+          v62[1] = [object objectID];
           v61[2] = @"otherStoreObjectID";
-          v62[2] = [a4 objectID];
+          v62[2] = [toObject objectID];
           v61[3] = [MEMORY[0x1E696AEC0] stringWithFormat:@"store-%@", objc_msgSend(v10, "name")];
           v21 = v52[5];
           if (!v21)
@@ -961,9 +961,9 @@ LABEL_25:
   {
     if (v17)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = v17;
+        *error = v17;
       }
     }
 
@@ -1011,15 +1011,15 @@ id __68__PFCloudKitStoreComparer_compareAttributesOnObject_toObject_error___bloc
   return result;
 }
 
-- (BOOL)isValue:(id)a3 equalToValue:(id)a4 forAttribute:(id)a5
+- (BOOL)isValue:(id)value equalToValue:(id)toValue forAttribute:(id)attribute
 {
   v58 = *MEMORY[0x1E69E9840];
-  v9 = [a5 attributeType];
-  if (v9 <= 699)
+  attributeType = [attribute attributeType];
+  if (attributeType <= 699)
   {
-    if (v9 <= 299)
+    if (attributeType <= 299)
     {
-      if (!v9)
+      if (!attributeType)
       {
         LogStream = _PFLogGetLogStream(17);
         if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
@@ -1042,21 +1042,21 @@ id __68__PFCloudKitStoreComparer_compareAttributesOnObject_toObject_error___bloc
         goto LABEL_61;
       }
 
-      if (v9 != 100 && v9 != 200)
+      if (attributeType != 100 && attributeType != 200)
       {
         goto LABEL_53;
       }
     }
 
-    else if (v9 > 499)
+    else if (attributeType > 499)
     {
-      if (v9 != 500 && v9 != 600)
+      if (attributeType != 500 && attributeType != 600)
       {
         goto LABEL_53;
       }
     }
 
-    else if (v9 != 300 && v9 != 400)
+    else if (attributeType != 300 && attributeType != 400)
     {
       goto LABEL_53;
     }
@@ -1064,42 +1064,42 @@ id __68__PFCloudKitStoreComparer_compareAttributesOnObject_toObject_error___bloc
 LABEL_22:
     v15 = *MEMORY[0x1E69E9840];
 
-    LOBYTE(v16) = [a3 isEqualToNumber:a4];
+    LOBYTE(v16) = [value isEqualToNumber:toValue];
     return v16;
   }
 
-  if (v9 > 1099)
+  if (attributeType > 1099)
   {
-    if (v9 <= 1799)
+    if (attributeType <= 1799)
     {
-      if (v9 != 1100)
+      if (attributeType != 1100)
       {
-        if (v9 != 1200)
+        if (attributeType != 1200)
         {
           goto LABEL_53;
         }
 
-        v10 = [a3 absoluteString];
-        v11 = [a4 absoluteString];
+        absoluteString = [value absoluteString];
+        absoluteString2 = [toValue absoluteString];
         v12 = *MEMORY[0x1E69E9840];
-        v13 = v11;
-        v14 = v10;
+        toValueCopy = absoluteString2;
+        valueCopy = absoluteString;
         goto LABEL_65;
       }
 
       goto LABEL_73;
     }
 
-    if (v9 != 1800)
+    if (attributeType != 1800)
     {
-      if (v9 == 2100)
+      if (attributeType == 2100)
       {
-        v17 = [a5 elements];
+        elements = [attribute elements];
         v49 = 0u;
         v50 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v18 = [v17 countByEnumeratingWithState:&v49 objects:v53 count:16];
+        v18 = [elements countByEnumeratingWithState:&v49 objects:v53 count:16];
         if (v18)
         {
           v19 = v18;
@@ -1110,12 +1110,12 @@ LABEL_22:
             {
               if (*v50 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(elements);
               }
 
               v22 = *(*(&v49 + 1) + 8 * i);
-              v23 = [a3 valueForKey:{objc_msgSend(v22, "name")}];
-              v24 = [a4 valueForKey:{objc_msgSend(v22, "name")}];
+              v23 = [value valueForKey:{objc_msgSend(v22, "name")}];
+              v24 = [toValue valueForKey:{objc_msgSend(v22, "name")}];
               if (v23)
               {
                 v25 = v24 == 0;
@@ -1140,7 +1140,7 @@ LABEL_22:
               }
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v49 objects:v53 count:16];
+            v19 = [elements countByEnumeratingWithState:&v49 objects:v53 count:16];
             LOBYTE(v16) = 1;
           }
 
@@ -1160,7 +1160,7 @@ LABEL_53:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v55 = [a5 attributeType];
+        attributeType2 = [attribute attributeType];
         _os_log_error_impl(&dword_18565F000, v29, OS_LOG_TYPE_ERROR, "CoreData: fault: Unknown attribute type: %lu\n", buf, 0xCu);
       }
 
@@ -1168,9 +1168,9 @@ LABEL_53:
       v16 = os_log_type_enabled(v30, OS_LOG_TYPE_FAULT);
       if (v16)
       {
-        v31 = [a5 attributeType];
+        attributeType3 = [attribute attributeType];
         *buf = 134217984;
-        v55 = v31;
+        attributeType2 = attributeType3;
         v32 = "CoreData: Unknown attribute type: %lu";
         v33 = v30;
         v34 = 12;
@@ -1188,7 +1188,7 @@ LABEL_69:
 LABEL_50:
       v28 = *MEMORY[0x1E69E9840];
 
-      LOBYTE(v16) = [a3 isEqualToData:a4];
+      LOBYTE(v16) = [value isEqualToData:toValue];
       return v16;
     }
 
@@ -1197,11 +1197,11 @@ LABEL_50:
     {
 LABEL_64:
       v37 = *MEMORY[0x1E69E9840];
-      v14 = a3;
-      v13 = a4;
+      valueCopy = value;
+      toValueCopy = toValue;
 LABEL_65:
 
-      LOBYTE(v16) = [v14 isEqualToString:v13];
+      LOBYTE(v16) = [valueCopy isEqualToString:toValueCopy];
       return v16;
     }
 
@@ -1209,14 +1209,14 @@ LABEL_65:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v39 = [a3 recordID];
-      v40 = [a4 recordID];
+      recordID = [value recordID];
+      recordID2 = [toValue recordID];
       v41 = *MEMORY[0x1E69E9840];
-      v42 = v40;
-      v43 = v39;
+      toValueCopy2 = recordID2;
+      valueCopy2 = recordID;
 LABEL_74:
 
-      LOBYTE(v16) = [v43 isEqual:v42];
+      LOBYTE(v16) = [valueCopy2 isEqual:toValueCopy2];
       return v16;
     }
 
@@ -1225,8 +1225,8 @@ LABEL_74:
     {
 LABEL_73:
       v44 = *MEMORY[0x1E69E9840];
-      v43 = a3;
-      v42 = a4;
+      valueCopy2 = value;
+      toValueCopy2 = toValue;
       goto LABEL_74;
     }
 
@@ -1234,9 +1234,9 @@ LABEL_73:
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v55 = objc_opt_class();
+      attributeType2 = objc_opt_class();
       v56 = 2112;
-      v57 = a5;
+      attributeCopy2 = attribute;
       _os_log_error_impl(&dword_18565F000, v45, OS_LOG_TYPE_ERROR, "CoreData: fault: Unknown value type '%@' for attribute: %@\n", buf, 0x16u);
     }
 
@@ -1249,9 +1249,9 @@ LABEL_73:
 
     v47 = objc_opt_class();
     *buf = 138412546;
-    v55 = v47;
+    attributeType2 = v47;
     v56 = 2112;
-    v57 = a5;
+    attributeCopy2 = attribute;
     v32 = "CoreData: Unknown value type '%@' for attribute: %@";
     v33 = v46;
     v34 = 22;
@@ -1262,11 +1262,11 @@ LABEL_62:
     goto LABEL_69;
   }
 
-  if (v9 <= 899)
+  if (attributeType <= 899)
   {
-    if (v9 != 700)
+    if (attributeType != 700)
     {
-      if (v9 != 800)
+      if (attributeType != 800)
       {
         goto LABEL_53;
       }
@@ -1277,9 +1277,9 @@ LABEL_62:
     goto LABEL_64;
   }
 
-  if (v9 != 900)
+  if (attributeType != 900)
   {
-    if (v9 != 1000)
+    if (attributeType != 1000)
     {
       goto LABEL_53;
     }
@@ -1289,16 +1289,16 @@ LABEL_62:
 
   v27 = *MEMORY[0x1E69E9840];
 
-  LOBYTE(v16) = [a3 isEqualToDate:a4];
+  LOBYTE(v16) = [value isEqualToDate:toValue];
   return v16;
 }
 
-- (BOOL)validateValue:(id)a3 againstOtherValue:(id)a4 forIgnoredAttribute:(id)a5
+- (BOOL)validateValue:(id)value againstOtherValue:(id)otherValue forIgnoredAttribute:(id)attribute
 {
   result = 1;
-  if (a3)
+  if (value)
   {
-    if (a4)
+    if (otherValue)
     {
       return ![PFCloudKitStoreComparer isValue:"isValue:equalToValue:forAttribute:" equalToValue:? forAttribute:?];
     }
@@ -1307,18 +1307,18 @@ LABEL_62:
   return result;
 }
 
-- (BOOL)compareRelationshipsOfRecordID:(id)a3 withStoreObject:(id)a4 andOtherObject:(id)a5 error:(id *)a6
+- (BOOL)compareRelationshipsOfRecordID:(id)d withStoreObject:(id)object andOtherObject:(id)otherObject error:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
-  v40 = [objc_msgSend(a4 "objectID")];
-  v47 = a5;
-  v39 = [objc_msgSend(a5 "objectID")];
+  v40 = [objc_msgSend(object "objectID")];
+  otherObjectCopy = otherObject;
+  v39 = [objc_msgSend(otherObject "objectID")];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v46 = a4;
-  obj = [objc_msgSend(objc_msgSend(a4 "entity")];
+  objectCopy = object;
+  obj = [objc_msgSend(objc_msgSend(object "entity")];
   v10 = [obj countByEnumeratingWithState:&v48 objects:v66 count:16];
   if (!v10)
   {
@@ -1352,11 +1352,11 @@ LABEL_3:
       v15 = [objc_msgSend(objc_msgSend(objc_msgSend(v14 "inverseRelationship")];
     }
 
-    v16 = [(PFCloudKitStoreComparer *)self getRecordIDsForRelationship:v14 onObject:v46];
-    v17 = [(PFCloudKitStoreComparer *)self getRecordIDsForRelationship:v14 onObject:v47];
+    v16 = [(PFCloudKitStoreComparer *)self getRecordIDsForRelationship:v14 onObject:objectCopy];
+    v17 = [(PFCloudKitStoreComparer *)self getRecordIDsForRelationship:v14 onObject:otherObjectCopy];
     if (![v16 isEqualToSet:v17])
     {
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relationship doesn't match for object with record name (%@): %@\nStore: %@\nOther Store: %@", objc_msgSend(v14, "name"), a3, objc_msgSend(objc_msgSend(v16, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31), objc_msgSend(objc_msgSend(v17, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31)];
+      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Relationship doesn't match for object with record name (%@): %@\nStore: %@\nOther Store: %@", objc_msgSend(v14, "name"), d, objc_msgSend(objc_msgSend(v16, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31), objc_msgSend(objc_msgSend(v17, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31)];
       v24 = MEMORY[0x1E696ABC0];
       v56 = v42;
       v57 = v23;
@@ -1381,12 +1381,12 @@ LABEL_21:
     }
 
     v38 = v12;
-    v18 = -[PFCloudKitStoreComparisonCache recordIDsRelatedToRecordID:byRelationshipNamed:inStore:](self->_cache, "recordIDsRelatedToRecordID:byRelationshipNamed:inStore:", a3, [v14 name], v40);
-    v19 = -[PFCloudKitStoreComparisonCache recordIDsRelatedToRecordID:byRelationshipNamed:inStore:](self->_cache, "recordIDsRelatedToRecordID:byRelationshipNamed:inStore:", a3, [v14 name], v39);
+    v18 = -[PFCloudKitStoreComparisonCache recordIDsRelatedToRecordID:byRelationshipNamed:inStore:](self->_cache, "recordIDsRelatedToRecordID:byRelationshipNamed:inStore:", d, [v14 name], v40);
+    v19 = -[PFCloudKitStoreComparisonCache recordIDsRelatedToRecordID:byRelationshipNamed:inStore:](self->_cache, "recordIDsRelatedToRecordID:byRelationshipNamed:inStore:", d, [v14 name], v39);
     v20 = [v18 count];
     if (v20 != [v16 count] || (objc_msgSend(v16, "isEqualToSet:", v18) & 1) == 0)
     {
-      v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Mirrored relationships don't match actual record for '%@' in %@\nObject: %@\nMirrored Relationships: %@", a3, objc_msgSend(v40, "URL"), objc_msgSend(objc_msgSend(v16, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31), objc_msgSend(objc_msgSend(v18, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31)];
+      v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Mirrored relationships don't match actual record for '%@' in %@\nObject: %@\nMirrored Relationships: %@", d, objc_msgSend(v40, "URL"), objc_msgSend(objc_msgSend(v16, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31), objc_msgSend(objc_msgSend(v18, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31)];
       v24 = MEMORY[0x1E696ABC0];
       v62 = v42;
       v63 = v28;
@@ -1399,7 +1399,7 @@ LABEL_21:
     v21 = [v19 count];
     if (v21 != [v17 count] || (objc_msgSend(v19, "isEqualToSet:", v17) & 1) == 0)
     {
-      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Mirrored relationships don't match actual record for '%@' in %@\nObject: %@\nMirrored Relationships: %@", a3, objc_msgSend(v39, "URL"), objc_msgSend(objc_msgSend(v17, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31), objc_msgSend(objc_msgSend(v19, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31)];
+      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Mirrored relationships don't match actual record for '%@' in %@\nObject: %@\nMirrored Relationships: %@", d, objc_msgSend(v39, "URL"), objc_msgSend(objc_msgSend(v17, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31), objc_msgSend(objc_msgSend(v19, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31)];
       v24 = MEMORY[0x1E696ABC0];
       v60 = v42;
       v61 = v29;
@@ -1411,7 +1411,7 @@ LABEL_21:
 
     if (([v18 isEqualToSet:v19] & 1) == 0)
     {
-      v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Mirrored relationships don't match for object with record name (%@): \nStore: %@\nOther Store: %@", a3, objc_msgSend(objc_msgSend(v18, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31), objc_msgSend(objc_msgSend(v19, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31)];
+      v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Mirrored relationships don't match for object with record name (%@): \nStore: %@\nOther Store: %@", d, objc_msgSend(objc_msgSend(v18, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31), objc_msgSend(objc_msgSend(v19, "allObjects"), "sortedArrayUsingComparator:", &__block_literal_global_31)];
       v24 = MEMORY[0x1E696ABC0];
       v58 = v42;
       v59 = v30;
@@ -1450,10 +1450,10 @@ LABEL_23:
 LABEL_32:
   if (v12)
   {
-    if (a6)
+    if (error)
     {
       LOBYTE(v32) = 0;
-      *a6 = v12;
+      *error = v12;
       goto LABEL_40;
     }
 
@@ -1488,19 +1488,19 @@ LABEL_40:
   return v32;
 }
 
-- (id)getRecordIDsForRelationship:(id)a3 onObject:(id)a4
+- (id)getRecordIDsForRelationship:(id)relationship onObject:(id)object
 {
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v8 = [a4 managedObjectContext];
+  managedObjectContext = [object managedObjectContext];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__PFCloudKitStoreComparer_getRecordIDsForRelationship_onObject___block_invoke;
   v10[3] = &unk_1E6EC2920;
-  v10[4] = a4;
-  v10[5] = a3;
+  v10[4] = object;
+  v10[5] = relationship;
   v10[6] = v7;
   v10[7] = self;
-  [v8 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
   return v7;
 }
 
@@ -1661,7 +1661,7 @@ LABEL_9:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)ensureStoresAgreeOnCloudKitTables:(id)a3 error:(id *)a4
+- (BOOL)ensureStoresAgreeOnCloudKitTables:(id)tables error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
   v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1669,7 +1669,7 @@ LABEL_9:
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v35 objects:v44 count:16];
+  v4 = [tables countByEnumeratingWithState:&v35 objects:v44 count:16];
   if (v4)
   {
     v5 = *v36;
@@ -1679,7 +1679,7 @@ LABEL_9:
       {
         if (*v36 != v5)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(tables);
         }
 
         v7 = *(*(&v35 + 1) + 8 * i);
@@ -1699,7 +1699,7 @@ LABEL_9:
         _Block_object_dispose(buf, 8);
       }
 
-      v4 = [a3 countByEnumeratingWithState:&v35 objects:v44 count:16];
+      v4 = [tables countByEnumeratingWithState:&v35 objects:v44 count:16];
     }
 
     while (v4);
@@ -1709,9 +1709,9 @@ LABEL_9:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = [v29 allKeys];
+  allKeys = [v29 allKeys];
   v10 = 0;
-  v11 = [v9 countByEnumeratingWithState:&v30 objects:v41 count:16];
+  v11 = [allKeys countByEnumeratingWithState:&v30 objects:v41 count:16];
   if (v11)
   {
     v12 = *v31;
@@ -1721,19 +1721,19 @@ LABEL_9:
       {
         if (*v31 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = [v29 objectForKey:*(*(&v30 + 1) + 8 * j)];
         v15 = v14;
         if (v10)
         {
-          v16 = [v10 BOOLValue];
-          if (v16 != [v15 BOOLValue])
+          bOOLValue = [v10 BOOLValue];
+          if (bOOLValue != [v15 BOOLValue])
           {
             v17 = objc_alloc(MEMORY[0x1E696ABC0]);
             v39 = *MEMORY[0x1E696A588];
-            v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Stores disagree about whether or not CloudKit metadata tables are present: %@\n%@", a3, v29];
+            v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Stores disagree about whether or not CloudKit metadata tables are present: %@\n%@", tables, v29];
             v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
             v19 = [v17 initWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:v18];
             v20 = 0;
@@ -1748,7 +1748,7 @@ LABEL_9:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v30 objects:v41 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v30 objects:v41 count:16];
     }
 
     while (v11);
@@ -1763,9 +1763,9 @@ LABEL_20:
     v21 = v19;
     if (v21)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = v21;
+        *error = v21;
       }
     }
 
@@ -1879,20 +1879,20 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)compareCloudKitMetadataOfStore:(id)a3 toStore:(id)a4 error:(id *)a5
+- (BOOL)compareCloudKitMetadataOfStore:(id)store toStore:(id)toStore error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0;
-  if (![(PFCloudKitStoreComparer *)self ensureMirroredRelationshipsMatchForStore:a3 otherStore:a4 error:&v16]|| ![(PFCloudKitStoreComparer *)self ensureMoveReceiptsMatchForStore:a3 otherStore:a4 error:&v16])
+  if (![(PFCloudKitStoreComparer *)self ensureMirroredRelationshipsMatchForStore:store otherStore:toStore error:&v16]|| ![(PFCloudKitStoreComparer *)self ensureMoveReceiptsMatchForStore:store otherStore:toStore error:&v16])
   {
     v10 = v16;
     v11 = v16;
     if (v11)
     {
-      if (a5)
+      if (error)
       {
         v9 = 0;
-        *a5 = v11;
+        *error = v11;
         goto LABEL_12;
       }
     }
@@ -1931,9 +1931,9 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)ensureMoveReceiptsMatchForStore:(id)a3 otherStore:(id)a4 error:(id *)a5
+- (BOOL)ensureMoveReceiptsMatchForStore:(id)store otherStore:(id)otherStore error:(id *)error
 {
-  v7 = self;
+  selfCopy = self;
   v88 = *MEMORY[0x1E69E9840];
   v71 = 0;
   v72 = 0;
@@ -1957,9 +1957,9 @@ LABEL_12:
     v48 = *v63;
     v43 = *MEMORY[0x1E696A250];
     v44 = *MEMORY[0x1E696A588];
-    v46 = a3;
-    v47 = v7;
-    v42 = a4;
+    storeCopy = store;
+    v47 = selfCopy;
+    otherStoreCopy = otherStore;
 LABEL_3:
     v10 = 0;
     v49 = v9;
@@ -1971,8 +1971,8 @@ LABEL_3:
       }
 
       v11 = *(*(&v62 + 1) + 8 * v10);
-      v12 = [(PFCloudKitStoreComparisonCache *)v7->_cache metadataForObjectWithID:[(PFCloudKitStoreComparisonCache *)v7->_cache objectIDForRecordID:v11 inStore:a3]];
-      v13 = [(PFCloudKitStoreComparisonCache *)v7->_cache metadataForObjectWithID:[(PFCloudKitStoreComparisonCache *)v7->_cache objectIDForRecordID:v11 inStore:a4]];
+      v12 = [(PFCloudKitStoreComparisonCache *)selfCopy->_cache metadataForObjectWithID:[(PFCloudKitStoreComparisonCache *)selfCopy->_cache objectIDForRecordID:v11 inStore:store]];
+      v13 = [(PFCloudKitStoreComparisonCache *)selfCopy->_cache metadataForObjectWithID:[(PFCloudKitStoreComparisonCache *)selfCopy->_cache objectIDForRecordID:v11 inStore:otherStore]];
       v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
       *buf = 0;
       *&buf[8] = buf;
@@ -1980,18 +1980,18 @@ LABEL_3:
       v84 = __Block_byref_object_copy__47;
       v85 = __Block_byref_object_dispose__47;
       v86 = 0;
-      v15 = [v12 managedObjectContext];
+      managedObjectContext = [v12 managedObjectContext];
       v61[0] = MEMORY[0x1E69E9820];
       v61[1] = 3221225472;
       v61[2] = __76__PFCloudKitStoreComparer_ensureMoveReceiptsMatchForStore_otherStore_error___block_invoke;
       v61[3] = &unk_1E6EC3D28;
       v61[4] = v12;
       v61[5] = v14;
-      v61[6] = v7;
+      v61[6] = selfCopy;
       v61[7] = buf;
       v61[8] = &v66;
       v61[9] = &v72;
-      [v15 performBlockAndWait:v61];
+      [managedObjectContext performBlockAndWait:v61];
       if (*(v73 + 24) == 1)
       {
         v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -2001,7 +2001,7 @@ LABEL_3:
         v58 = __Block_byref_object_copy__47;
         v59 = __Block_byref_object_dispose__47;
         v60 = 0;
-        v17 = [v13 managedObjectContext];
+        managedObjectContext2 = [v13 managedObjectContext];
         v54[0] = MEMORY[0x1E69E9820];
         v54[1] = 3221225472;
         v54[2] = __76__PFCloudKitStoreComparer_ensureMoveReceiptsMatchForStore_otherStore_error___block_invoke_2;
@@ -2012,7 +2012,7 @@ LABEL_3:
         v54[6] = v47;
         v54[8] = &v66;
         v54[9] = &v72;
-        [v17 performBlockAndWait:v54];
+        [managedObjectContext2 performBlockAndWait:v54];
         v18 = [v14 count];
         if (v18 == [v16 count])
         {
@@ -2020,8 +2020,8 @@ LABEL_3:
           v53 = 0u;
           v50 = 0u;
           v51 = 0u;
-          v19 = [v14 allKeys];
-          v20 = [v19 countByEnumeratingWithState:&v50 objects:v82 count:16];
+          allKeys = [v14 allKeys];
+          v20 = [allKeys countByEnumeratingWithState:&v50 objects:v82 count:16];
           if (v20)
           {
             v21 = *v51;
@@ -2031,7 +2031,7 @@ LABEL_3:
               {
                 if (*v51 != v21)
                 {
-                  objc_enumerationMutation(v19);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v23 = *(*(&v50 + 1) + 8 * i);
@@ -2039,24 +2039,24 @@ LABEL_3:
                 {
                   *(v73 + 24) = 0;
                   v26 = objc_alloc(MEMORY[0x1E696ABC0]);
-                  a4 = v42;
+                  otherStore = otherStoreCopy;
                   v80[0] = v44;
                   v80[1] = @"recordID";
                   v81[0] = @"Move receipt dates don't match.";
                   v81[1] = v11;
                   v80[2] = @"movedRecordName";
                   v81[2] = v23;
-                  v80[3] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-receipts", objc_msgSend(v46, "identifier")];
+                  v80[3] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-receipts", objc_msgSend(storeCopy, "identifier")];
                   v81[3] = v14;
-                  v80[4] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-receipts", objc_msgSend(v42, "identifier")];
+                  v80[4] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-receipts", objc_msgSend(otherStoreCopy, "identifier")];
                   v81[4] = v16;
                   v25 = [v26 initWithDomain:v43 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v81, v80, 5)}];
                   goto LABEL_19;
                 }
               }
 
-              v20 = [v19 countByEnumeratingWithState:&v50 objects:v82 count:16];
-              a4 = v42;
+              v20 = [allKeys countByEnumeratingWithState:&v50 objects:v82 count:16];
+              otherStore = otherStoreCopy;
               if (v20)
               {
                 continue;
@@ -2075,16 +2075,16 @@ LABEL_3:
           v78[1] = @"recordID";
           v79[0] = @"Move receipts don't match.";
           v79[1] = v11;
-          v78[2] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-receipts", objc_msgSend(a3, "identifier")];
+          v78[2] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-receipts", objc_msgSend(store, "identifier")];
           v79[2] = v14;
-          v78[3] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-receipts", objc_msgSend(a4, "identifier")];
+          v78[3] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-receipts", objc_msgSend(otherStore, "identifier")];
           v79[3] = v16;
           v25 = [v24 initWithDomain:v43 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v79, v78, 4)}];
 LABEL_19:
           v67[5] = v25;
         }
 
-        a3 = v46;
+        store = storeCopy;
         if (*(v73 + 24) == 1)
         {
           v27 = *(*&buf[8] + 40);
@@ -2099,7 +2099,7 @@ LABEL_19:
               v76[1] = @"recordID";
               v77[0] = @"Shares don't match for record zone.";
               v77[1] = v11;
-              v76[2] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-share", objc_msgSend(v46, "identifier")];
+              v76[2] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-share", objc_msgSend(storeCopy, "identifier")];
               v31 = *(*&buf[8] + 40);
               if (!v31)
               {
@@ -2107,7 +2107,7 @@ LABEL_19:
               }
 
               v77[2] = v31;
-              v76[3] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-share", objc_msgSend(a4, "identifier")];
+              v76[3] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-share", objc_msgSend(otherStore, "identifier")];
               v32 = v56[5];
               if (!v32)
               {
@@ -2123,7 +2123,7 @@ LABEL_19:
 
         v56[5] = 0;
         _Block_object_dispose(&v55, 8);
-        v7 = v47;
+        selfCopy = v47;
       }
 
       *(*&buf[8] + 40) = 0;
@@ -2152,9 +2152,9 @@ LABEL_19:
     v38 = v67[5];
     if (v38)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = v38;
+        *error = v38;
       }
     }
 
@@ -2328,7 +2328,7 @@ void __76__PFCloudKitStoreComparer_ensureMoveReceiptsMatchForStore_otherStore_er
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)ensureMirroredRelationshipsMatchForStore:(id)a3 otherStore:(id)a4 error:(id *)a5
+- (BOOL)ensureMirroredRelationshipsMatchForStore:(id)store otherStore:(id)otherStore error:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
   v45 = 0;
@@ -2353,8 +2353,8 @@ void __76__PFCloudKitStoreComparer_ensureMoveReceiptsMatchForStore_otherStore_er
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v55[0] = a3;
-  v55[1] = a4;
+  v55[0] = store;
+  v55[1] = otherStore;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:2];
   v9 = [v8 countByEnumeratingWithState:&v27 objects:v56 count:16];
   if (v9)
@@ -2380,8 +2380,8 @@ LABEL_3:
       v26[4] = v12;
       v26[5] = self;
       v26[6] = v13;
-      v26[7] = a3;
-      v26[8] = a4;
+      v26[7] = store;
+      v26[8] = otherStore;
       v26[9] = &v45;
       v26[10] = &v41;
       v26[11] = &v31;
@@ -2408,7 +2408,7 @@ LABEL_3:
 
   if (*(v32 + 24) != 1)
   {
-    v17 = a5;
+    errorCopy2 = error;
     v18 = v36[5];
     goto LABEL_14;
   }
@@ -2419,17 +2419,17 @@ LABEL_3:
   {
     v19 = MEMORY[0x1E696ABC0];
     v53 = *MEMORY[0x1E696A588];
-    v17 = a5;
+    errorCopy2 = error;
     v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Stores don't have the same number of mirrored relationships: %lu / %lu", v14, v15];
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
     v18 = [v19 errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:v20];
 LABEL_14:
     if (v18)
     {
-      if (v17)
+      if (errorCopy2)
       {
         v16 = 0;
-        *v17 = v18;
+        *errorCopy2 = v18;
         goto LABEL_22;
       }
     }
@@ -2549,12 +2549,12 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)ensureRecordMetadataMatchesForRecordID:(id)a3 inStore:(id)a4 andOtherStore:(id)a5 error:(id *)a6
+- (BOOL)ensureRecordMetadataMatchesForRecordID:(id)d inStore:(id)store andOtherStore:(id)otherStore error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v28 = 0;
-  v10 = [(PFCloudKitStoreComparisonCache *)self->_cache metadataForRecordID:a3 inStore:a4];
-  v11 = [(PFCloudKitStoreComparisonCache *)self->_cache metadataForRecordID:a3 inStore:a5];
+  v10 = [(PFCloudKitStoreComparisonCache *)self->_cache metadataForRecordID:d inStore:store];
+  v11 = [(PFCloudKitStoreComparisonCache *)self->_cache metadataForRecordID:d inStore:otherStore];
   v12 = v11;
   if (v10)
   {
@@ -2594,27 +2594,27 @@ LABEL_16:
   v30 = __Block_byref_object_copy__47;
   v31 = __Block_byref_object_dispose__47;
   v32 = 0;
-  v16 = [v10 managedObjectContext];
+  managedObjectContext = [v10 managedObjectContext];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __94__PFCloudKitStoreComparer_ensureRecordMetadataMatchesForRecordID_inStore_andOtherStore_error___block_invoke;
   v27[3] = &unk_1E6EC1860;
   v27[4] = v10;
   v27[5] = buf;
-  [v16 performBlockAndWait:v27];
+  [managedObjectContext performBlockAndWait:v27];
   v17 = [(PFCloudKitArchivingUtilities *)self->_archivingUtilities recordFromEncodedData:&v28 error:?];
 
   *(*&buf[8] + 40) = 0;
   if (v17)
   {
-    v18 = [v12 managedObjectContext];
+    managedObjectContext2 = [v12 managedObjectContext];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __94__PFCloudKitStoreComparer_ensureRecordMetadataMatchesForRecordID_inStore_andOtherStore_error___block_invoke_2;
     v26[3] = &unk_1E6EC1860;
     v26[4] = v12;
     v26[5] = buf;
-    [v18 performBlockAndWait:v26];
+    [managedObjectContext2 performBlockAndWait:v26];
     v19 = [(PFCloudKitArchivingUtilities *)self->_archivingUtilities recordFromEncodedData:&v28 error:?];
 
     *(*&buf[8] + 40) = 0;
@@ -2636,10 +2636,10 @@ LABEL_19:
 
   if (v28)
   {
-    if (a6)
+    if (error)
     {
       LOBYTE(v21) = 0;
-      *a6 = v28;
+      *error = v28;
       goto LABEL_20;
     }
 
@@ -2719,11 +2719,11 @@ id __94__PFCloudKitStoreComparer_ensureRecordMetadataMatchesForRecordID_inStore_
   return result;
 }
 
-- (BOOL)ensureContentsOfRecordStorageMatchForStorage:(id)a3 andOtherStore:(id)a4 error:(id *)a5
+- (BOOL)ensureContentsOfRecordStorageMatchForStorage:(id)storage andOtherStore:(id)store error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:{objc_msgSend(a3, "allKeys")}];
-  [v8 addObjectsFromArray:{objc_msgSend(a4, "allKeys")}];
+  v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:{objc_msgSend(storage, "allKeys")}];
+  [v8 addObjectsFromArray:{objc_msgSend(store, "allKeys")}];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -2735,7 +2735,7 @@ id __94__PFCloudKitStoreComparer_ensureRecordMetadataMatchesForRecordID_inStore_
   }
 
   v10 = v9;
-  v26 = a5;
+  errorCopy = error;
   v11 = *v28;
   while (2)
   {
@@ -2749,8 +2749,8 @@ id __94__PFCloudKitStoreComparer_ensureRecordMetadataMatchesForRecordID_inStore_
       v13 = *(*(&v27 + 1) + 8 * i);
       if (([v13 isEqualToString:@"_PFFakeCKDatabaseAncestorRecordKey"] & 1) == 0)
       {
-        v14 = [a3 objectForKeyedSubscript:v13];
-        v15 = [a4 objectForKeyedSubscript:v13];
+        v14 = [storage objectForKeyedSubscript:v13];
+        v15 = [store objectForKeyedSubscript:v13];
         if (v14 != v15)
         {
           v16 = v15;
@@ -2789,10 +2789,10 @@ id __94__PFCloudKitStoreComparer_ensureRecordMetadataMatchesForRecordID_inStore_
 
               if (v21)
               {
-                if (v26)
+                if (errorCopy)
                 {
                   LOBYTE(v17) = 0;
-                  *v26 = v21;
+                  *errorCopy = v21;
                   goto LABEL_27;
                 }
               }
@@ -2848,15 +2848,15 @@ LABEL_27:
   return v17;
 }
 
-+ (id)trimExcessiveValuesForLog:(id)a3
++ (id)trimExcessiveValuesForLog:(id)log
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([a3 length] >= 0x101)
+    if ([log length] >= 0x101)
     {
       v4 = MEMORY[0x1E696AEC0];
-      v5 = [a3 substringToIndex:255];
+      v5 = [log substringToIndex:255];
       goto LABEL_9;
     }
   }
@@ -2864,10 +2864,10 @@ LABEL_27:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ((objc_opt_respondsToSelector() & 1) == 0 || [a3 fileURL]) && objc_msgSend(a3, "length") >= 0x101)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ((objc_opt_respondsToSelector() & 1) == 0 || [log fileURL]) && objc_msgSend(log, "length") >= 0x101)
     {
       v4 = MEMORY[0x1E696AEC0];
-      v5 = [a3 subdataWithRange:{0, 255}];
+      v5 = [log subdataWithRange:{0, 255}];
 LABEL_9:
       result = [v4 stringWithFormat:@"Trimmed: %@", v5];
       if (result)
@@ -2877,9 +2877,9 @@ LABEL_9:
     }
   }
 
-  v7 = a3;
+  logCopy = log;
 
-  return v7;
+  return logCopy;
 }
 
 @end

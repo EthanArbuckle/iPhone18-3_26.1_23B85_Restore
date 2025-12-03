@@ -1,16 +1,16 @@
 @interface ManagedFoundInMailItem
-- (_TtC10FinanceKit22ManagedFoundInMailItem)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit22ManagedFoundInMailItem)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (void).cxx_construct;
 - (void)willSave;
 @end
 
 @implementation ManagedFoundInMailItem
 
-- (_TtC10FinanceKit22ManagedFoundInMailItem)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit22ManagedFoundInMailItem)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedFoundInMailItem *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedFoundInMailItem *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 - (void).cxx_construct
@@ -22,7 +22,7 @@
 
 - (void)willSave
 {
-  v2 = self;
+  selfCopy = self;
   ManagedFoundInMailItem.willSave()();
 }
 

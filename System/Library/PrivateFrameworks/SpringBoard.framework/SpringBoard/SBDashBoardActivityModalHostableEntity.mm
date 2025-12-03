@@ -1,23 +1,23 @@
 @interface SBDashBoardActivityModalHostableEntity
 - (CSCoverSheetViewPresenting)hostingViewController;
 - (NSString)applicationBundleIdentifier;
-- (SBDashBoardActivityModalHostableEntity)initWithActivityItem:(id)a3;
+- (SBDashBoardActivityModalHostableEntity)initWithActivityItem:(id)item;
 - (SBDisplayItem)displayItemRepresentation;
 - (id)hostingContainerViewController;
 @end
 
 @implementation SBDashBoardActivityModalHostableEntity
 
-- (SBDashBoardActivityModalHostableEntity)initWithActivityItem:(id)a3
+- (SBDashBoardActivityModalHostableEntity)initWithActivityItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = SBDashBoardActivityModalHostableEntity;
   v6 = [(SBDashBoardActivityModalHostableEntity *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activityItem, a3);
+    objc_storeStrong(&v6->_activityItem, item);
   }
 
   return v7;
@@ -29,8 +29,8 @@
   if (!activityViewController)
   {
     v4 = objc_alloc(MEMORY[0x277D02B88]);
-    v5 = [(SBActivityItem *)self->_activityItem descriptor];
-    v6 = [v4 initWithDescriptor:v5];
+    descriptor = [(SBActivityItem *)self->_activityItem descriptor];
+    v6 = [v4 initWithDescriptor:descriptor];
     v7 = self->_activityViewController;
     self->_activityViewController = v6;
 
@@ -51,20 +51,20 @@
 - (SBDisplayItem)displayItemRepresentation
 {
   v3 = [SBDisplayItem alloc];
-  v4 = [(SBActivityItem *)self->_activityItem descriptor];
-  v5 = [v4 platterTargetBundleIdentifier];
-  v6 = [(SBActivityItem *)self->_activityItem identifier];
-  v7 = [(SBDisplayItem *)v3 initWithType:7 bundleIdentifier:v5 uniqueIdentifier:v6];
+  descriptor = [(SBActivityItem *)self->_activityItem descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+  identifier = [(SBActivityItem *)self->_activityItem identifier];
+  v7 = [(SBDisplayItem *)v3 initWithType:7 bundleIdentifier:platterTargetBundleIdentifier uniqueIdentifier:identifier];
 
   return v7;
 }
 
 - (NSString)applicationBundleIdentifier
 {
-  v2 = [(SBActivityItem *)self->_activityItem descriptor];
-  v3 = [v2 platterTargetBundleIdentifier];
+  descriptor = [(SBActivityItem *)self->_activityItem descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
-  return v3;
+  return platterTargetBundleIdentifier;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface MPSeekCommandEvent
-- (MPSeekCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5;
+- (MPSeekCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options;
 @end
 
 @implementation MPSeekCommandEvent
 
-- (MPSeekCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5
+- (MPSeekCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options
 {
   v7.receiver = self;
   v7.super_class = MPSeekCommandEvent;
-  result = [(MPRemoteCommandEvent *)&v7 initWithCommand:a3 mediaRemoteType:*&a4 options:a5];
+  result = [(MPRemoteCommandEvent *)&v7 initWithCommand:command mediaRemoteType:*&type options:options];
   if (result)
   {
-    result->_commandType = a4;
-    result->_type = (a4 & 0xFFFFFFFD) != 8;
+    result->_commandType = type;
+    result->_type = (type & 0xFFFFFFFD) != 8;
   }
 
   return result;

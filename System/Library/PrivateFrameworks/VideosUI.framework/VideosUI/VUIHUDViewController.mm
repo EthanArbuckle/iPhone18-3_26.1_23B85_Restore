@@ -4,9 +4,9 @@
 - (CGSize)playerViewSize;
 - (VUIHUDViewController)init;
 - (void)_addViewControllerToHud;
-- (void)addBorderWithColor:(id)a3 width:(double)a4 cornerRadius:(double)a5;
+- (void)addBorderWithColor:(id)color width:(double)width cornerRadius:(double)radius;
 - (void)dealloc;
-- (void)setHudContentViewController:(id)a3;
+- (void)setHudContentViewController:(id)controller;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -45,22 +45,22 @@
   v5.receiver = self;
   v5.super_class = VUIHUDViewController;
   [(VUIHUDViewController *)&v5 viewDidLoad];
-  v3 = [(VUIHUDViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(VUIHUDViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
-- (void)setHudContentViewController:(id)a3
+- (void)setHudContentViewController:(id)controller
 {
-  objc_storeStrong(&self->_hudContentViewController, a3);
+  objc_storeStrong(&self->_hudContentViewController, controller);
 
   [(VUIHUDViewController *)self _addViewControllerToHud];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(VUIHUDViewController *)self view];
-  [v3 bounds];
+  view = [(VUIHUDViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -93,18 +93,18 @@ void __45__VUIHUDViewController_viewDidLayoutSubviews__block_invoke(uint64_t a1)
   if (v3)
   {
     v8 = v3;
-    v4 = [(UIViewController *)v3 parentViewController];
+    parentViewController = [(UIViewController *)v3 parentViewController];
 
     v3 = v8;
-    if (v4 != self)
+    if (parentViewController != self)
     {
       [(VUIHUDViewController *)self addChildViewController:v8];
-      v5 = [(VUIHUDViewController *)self view];
-      v6 = [(UIViewController *)v8 view];
-      [v5 addSubview:v6];
+      view = [(VUIHUDViewController *)self view];
+      view2 = [(UIViewController *)v8 view];
+      [view addSubview:view2];
 
-      v7 = [(VUIHUDViewController *)self view];
-      [v7 setClipsToBounds:0];
+      view3 = [(VUIHUDViewController *)self view];
+      [view3 setClipsToBounds:0];
 
       [(UIViewController *)v8 didMoveToParentViewController:self];
       v3 = v8;
@@ -138,16 +138,16 @@ void __45__VUIHUDViewController_viewDidLayoutSubviews__block_invoke(uint64_t a1)
   v7 = VUIDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(VUIHUDViewController *)self tabIdentifier];
+    tabIdentifier = [(VUIHUDViewController *)self tabIdentifier];
     [(VUIHUDViewController *)self _resolvedPlayerViewSize];
     v9 = NSStringFromCGSize(v26);
     v27.width = 0.0;
     v27.height = v6;
     v10 = NSStringFromCGSize(v27);
     v13 = 134219266;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v8;
+    v16 = tabIdentifier;
     v17 = 2112;
     v18 = v9;
     v19 = 2048;
@@ -169,8 +169,8 @@ void __45__VUIHUDViewController_viewDidLayoutSubviews__block_invoke(uint64_t a1)
 - (CGSize)_resolvedPlayerViewSize
 {
   v2 = +[VUITVAppLauncher sharedInstance];
-  v3 = [v2 appWindow];
-  [v3 bounds];
+  appWindow = [v2 appWindow];
+  [appWindow bounds];
   v5 = v4;
   v7 = v6;
 
@@ -181,25 +181,25 @@ void __45__VUIHUDViewController_viewDidLayoutSubviews__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)addBorderWithColor:(id)a3 width:(double)a4 cornerRadius:(double)a5
+- (void)addBorderWithColor:(id)color width:(double)width cornerRadius:(double)radius
 {
-  v8 = a3;
-  v9 = [(VUIHUDViewController *)self view];
-  v10 = [v9 layer];
-  v11 = [v8 CGColor];
+  colorCopy = color;
+  view = [(VUIHUDViewController *)self view];
+  layer = [view layer];
+  cGColor = [colorCopy CGColor];
 
-  [v10 setBorderColor:v11];
-  v12 = [(VUIHUDViewController *)self view];
-  v13 = [v12 layer];
-  [v13 setBorderWidth:a4];
+  [layer setBorderColor:cGColor];
+  view2 = [(VUIHUDViewController *)self view];
+  layer2 = [view2 layer];
+  [layer2 setBorderWidth:width];
 
-  v14 = [(VUIHUDViewController *)self view];
-  v15 = [v14 layer];
-  [v15 setCornerRadius:a5];
+  view3 = [(VUIHUDViewController *)self view];
+  layer3 = [view3 layer];
+  [layer3 setCornerRadius:radius];
 
-  v17 = [(VUIHUDViewController *)self view];
-  v16 = [v17 layer];
-  [v16 setMasksToBounds:1];
+  view4 = [(VUIHUDViewController *)self view];
+  layer4 = [view4 layer];
+  [layer4 setMasksToBounds:1];
 }
 
 - (CGSize)playerViewSize

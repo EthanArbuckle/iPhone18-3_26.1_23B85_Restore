@@ -1,6 +1,6 @@
 @interface UIKeyboardEmojiGenerationPresenter
 + (id)sharedInstance;
-- (void)presentEmojiGenerationControllerWithInputString:(id)a3;
+- (void)presentEmojiGenerationControllerWithInputString:(id)string;
 @end
 
 @implementation UIKeyboardEmojiGenerationPresenter
@@ -24,9 +24,9 @@ void __52__UIKeyboardEmojiGenerationPresenter_sharedInstance__block_invoke()
   _MergedGlobals_1279 = v0;
 }
 
-- (void)presentEmojiGenerationControllerWithInputString:(id)a3
+- (void)presentEmojiGenerationControllerWithInputString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -47,12 +47,12 @@ void __52__UIKeyboardEmojiGenerationPresenter_sharedInstance__block_invoke()
   _Block_object_dispose(&v12, 8);
   v6 = objc_alloc_init(v4);
   v7 = +[UIPeripheralHost sharedInstance];
-  v8 = [v7 transformedContainerView];
+  transformedContainerView = [v7 transformedContainerView];
 
-  v9 = [v8 window];
-  v10 = [v9 rootViewController];
-  [v10 addChildViewController:v6];
-  [v6 presentEmojiGenerationControllerWithInputString:v3];
+  window = [transformedContainerView window];
+  rootViewController = [window rootViewController];
+  [rootViewController addChildViewController:v6];
+  [v6 presentEmojiGenerationControllerWithInputString:stringCopy];
 }
 
 @end

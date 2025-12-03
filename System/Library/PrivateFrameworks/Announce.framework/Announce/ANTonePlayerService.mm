@@ -79,8 +79,8 @@ void __27__ANTonePlayerService_init__block_invoke_47()
 
 - (void)invalidate
 {
-  v2 = [(ANTonePlayerService *)self connection];
-  [v2 invalidate];
+  connection = [(ANTonePlayerService *)self connection];
+  [connection invalidate];
 }
 
 void __78__ANTonePlayerService_playTone_audioSessionID_endpointUUID_completionHandler___block_invoke(uint64_t a1, void *a2)

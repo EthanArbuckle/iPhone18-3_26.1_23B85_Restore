@@ -1,6 +1,6 @@
 @interface ArtworkComponentVideoView
 + (Class)layerClass;
-- (_TtC16MusicMessagesApp25ArtworkComponentVideoView)initWithFrame:(CGRect)a3;
+- (_TtC16MusicMessagesApp25ArtworkComponentVideoView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ArtworkComponentVideoView
@@ -12,12 +12,12 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC16MusicMessagesApp25ArtworkComponentVideoView)initWithFrame:(CGRect)a3
+- (_TtC16MusicMessagesApp25ArtworkComponentVideoView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (&self->super.super.super.isa + OBJC_IVAR____TtC16MusicMessagesApp25ArtworkComponentVideoView_statusHandler);
   *v7 = 0;
   v7[1] = 0;

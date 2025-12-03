@@ -1,13 +1,13 @@
 @interface ApplicationDownloadProgress
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ApplicationDownloadProgress
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(DownloadHandle *)self->_applicationHandle copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(DownloadHandle *)self->_applicationHandle copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 

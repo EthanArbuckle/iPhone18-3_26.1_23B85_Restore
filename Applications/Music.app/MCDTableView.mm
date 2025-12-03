@@ -1,19 +1,19 @@
 @interface MCDTableView
-- (MCDTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (MCDTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (id)preferredFocusEnvironments;
 - (void)_updateContentSizeIfNeeded;
 - (void)layoutSubview;
-- (void)setContentSize:(CGSize)a3;
-- (void)setForcesVerticalScrollIndicators:(BOOL)a3;
+- (void)setContentSize:(CGSize)size;
+- (void)setForcesVerticalScrollIndicators:(BOOL)indicators;
 @end
 
 @implementation MCDTableView
 
-- (MCDTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (MCDTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = MCDTableView;
-  v4 = [(MCDTableView *)&v7 initWithFrame:a4 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(MCDTableView *)&v7 initWithFrame:style style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -28,37 +28,37 @@
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [(MCDTableView *)self window];
+  window = [(MCDTableView *)self window];
 
-  if (v3)
+  if (window)
   {
     v6.receiver = self;
     v6.super_class = MCDTableView;
-    v4 = [(MCDTableView *)&v6 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(MCDTableView *)&v6 preferredFocusEnvironments];
   }
 
   else
   {
-    v7 = self;
-    v4 = [NSArray arrayWithObjects:&v7 count:1];
+    selfCopy = self;
+    preferredFocusEnvironments = [NSArray arrayWithObjects:&selfCopy count:1];
   }
 
-  return v4;
+  return preferredFocusEnvironments;
 }
 
-- (void)setForcesVerticalScrollIndicators:(BOOL)a3
+- (void)setForcesVerticalScrollIndicators:(BOOL)indicators
 {
-  if (self->_forcesVerticalScrollIndicators != a3)
+  if (self->_forcesVerticalScrollIndicators != indicators)
   {
-    self->_forcesVerticalScrollIndicators = a3;
+    self->_forcesVerticalScrollIndicators = indicators;
     [(MCDTableView *)self _updateContentSizeIfNeeded];
   }
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (self->_forcesVerticalScrollIndicators)
   {
     [(MCDTableView *)self bounds];

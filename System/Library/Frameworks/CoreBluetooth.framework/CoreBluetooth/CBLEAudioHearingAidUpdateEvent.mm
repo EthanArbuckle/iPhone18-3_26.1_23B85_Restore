@@ -1,15 +1,15 @@
 @interface CBLEAudioHearingAidUpdateEvent
-- (CBLEAudioHearingAidUpdateEvent)initWithEventType:(int64_t)a3;
-- (CBLEAudioHearingAidUpdateEvent)initWithValue:(int64_t)a3 withValue:(id)a4;
+- (CBLEAudioHearingAidUpdateEvent)initWithEventType:(int64_t)type;
+- (CBLEAudioHearingAidUpdateEvent)initWithValue:(int64_t)value withValue:(id)withValue;
 @end
 
 @implementation CBLEAudioHearingAidUpdateEvent
 
-- (CBLEAudioHearingAidUpdateEvent)initWithEventType:(int64_t)a3
+- (CBLEAudioHearingAidUpdateEvent)initWithEventType:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = CBLEAudioHearingAidUpdateEvent;
-  v3 = [(CBLEAudioPeripheralUpdateEvent *)&v7 initWithEventType:a3];
+  v3 = [(CBLEAudioPeripheralUpdateEvent *)&v7 initWithEventType:type];
   v4 = v3;
   if (v3)
   {
@@ -19,11 +19,11 @@
   return v4;
 }
 
-- (CBLEAudioHearingAidUpdateEvent)initWithValue:(int64_t)a3 withValue:(id)a4
+- (CBLEAudioHearingAidUpdateEvent)initWithValue:(int64_t)value withValue:(id)withValue
 {
   v8.receiver = self;
   v8.super_class = CBLEAudioHearingAidUpdateEvent;
-  v4 = [(CBLEAudioPeripheralUpdateEvent *)&v8 initWithValue:a3 withValue:a4];
+  v4 = [(CBLEAudioPeripheralUpdateEvent *)&v8 initWithValue:value withValue:withValue];
   v5 = v4;
   if (v4)
   {

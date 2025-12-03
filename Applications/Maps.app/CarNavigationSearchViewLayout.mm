@@ -1,54 +1,54 @@
 @interface CarNavigationSearchViewLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
 - (CarNavigationSearchViewLayout)init;
-- (double)preferredHeightForItemCount:(unint64_t)a3 availableSize:(CGSize)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (void)getNumberOfRows:(unint64_t *)a3 itemSize:(CGSize *)a4 forItemCount:(unint64_t)a5 availableSize:(CGSize)a6;
+- (double)preferredHeightForItemCount:(unint64_t)count availableSize:(CGSize)size;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (void)getNumberOfRows:(unint64_t *)rows itemSize:(CGSize *)size forItemCount:(unint64_t)count availableSize:(CGSize)availableSize;
 - (void)prepareLayout;
 @end
 
 @implementation CarNavigationSearchViewLayout
 
-- (void)getNumberOfRows:(unint64_t *)a3 itemSize:(CGSize *)a4 forItemCount:(unint64_t)a5 availableSize:(CGSize)a6
+- (void)getNumberOfRows:(unint64_t *)rows itemSize:(CGSize *)size forItemCount:(unint64_t)count availableSize:(CGSize)availableSize
 {
-  v6 = vcvtd_n_f64_u64(a5, 1uLL);
+  v6 = vcvtd_n_f64_u64(count, 1uLL);
   v7 = vcvtpd_u64_f64(v6);
-  if (a3)
+  if (rows)
   {
-    *a3 = v7;
+    *rows = v7;
   }
 
-  if (a4)
+  if (size)
   {
-    v8 = floor(a6.width + -8.0) * 0.5;
-    a4->width = v8;
-    a4->height = fmin(v8, (a6.height + (v7 - 1) * -8.0) / ceil(v6));
+    v8 = floor(availableSize.width + -8.0) * 0.5;
+    size->width = v8;
+    size->height = fmin(v8, (availableSize.height + (v7 - 1) * -8.0) / ceil(v6));
   }
 }
 
-- (double)preferredHeightForItemCount:(unint64_t)a3 availableSize:(CGSize)a4
+- (double)preferredHeightForItemCount:(unint64_t)count availableSize:(CGSize)size
 {
   v6 = 0;
   v7 = 0.0;
   v5 = 0;
-  [(CarNavigationSearchViewLayout *)self getNumberOfRows:&v5 itemSize:&v6 forItemCount:a3 availableSize:a4.width, a4.height];
+  [(CarNavigationSearchViewLayout *)self getNumberOfRows:&v5 itemSize:&v6 forItemCount:count availableSize:size.width, size.height];
   return v7 * v5 + (v5 - 1) * 8.0;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = [NSMutableArray arrayWithCapacity:[(NSMapTable *)self->_layoutAttributes count]];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [(NSMapTable *)self->_layoutAttributes objectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  objectEnumerator = [(NSMapTable *)self->_layoutAttributes objectEnumerator];
+  v10 = [objectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -59,7 +59,7 @@
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
@@ -78,7 +78,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v11 = [objectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v11);
@@ -95,12 +95,12 @@
   v24.super_class = CarNavigationSearchViewLayout;
   [(CarNavigationSearchViewLayout *)&v24 prepareLayout];
   [(NSMapTable *)self->_layoutAttributes removeAllObjects];
-  v3 = [(CarNavigationSearchViewLayout *)self collectionView];
-  v4 = [v3 numberOfItemsInSection:0];
+  collectionView = [(CarNavigationSearchViewLayout *)self collectionView];
+  v4 = [collectionView numberOfItemsInSection:0];
 
   v23 = 0;
-  v5 = [(CarNavigationSearchViewLayout *)self collectionView];
-  [v5 bounds];
+  collectionView2 = [(CarNavigationSearchViewLayout *)self collectionView];
+  [collectionView2 bounds];
   v7 = v6;
   v9 = v8;
 
@@ -152,11 +152,11 @@
   }
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = [(CarNavigationSearchViewLayout *)self collectionView:a3.origin.x];
+  height = change.size.height;
+  width = change.size.width;
+  v5 = [(CarNavigationSearchViewLayout *)self collectionView:change.origin.x];
   [v5 bounds];
   v8 = width != v6 || height != v7;
 

@@ -1,14 +1,14 @@
 @interface _UIDefaultSwipeViewManipulator
-- (CGRect)restingFrameForSwipedView:(id)a3 atIndexPath:(id)a4;
-- (void)moveSwipedView:(id)a3 atIndexPath:(id)a4 withSwipeInfo:(id *)a5 animator:(id)a6;
-- (void)removeAnimationsFromSwipedView:(id)a3 atIndexPath:(id)a4;
+- (CGRect)restingFrameForSwipedView:(id)view atIndexPath:(id)path;
+- (void)moveSwipedView:(id)view atIndexPath:(id)path withSwipeInfo:(id *)info animator:(id)animator;
+- (void)removeAnimationsFromSwipedView:(id)view atIndexPath:(id)path;
 @end
 
 @implementation _UIDefaultSwipeViewManipulator
 
-- (CGRect)restingFrameForSwipedView:(id)a3 atIndexPath:(id)a4
+- (CGRect)restingFrameForSwipedView:(id)view atIndexPath:(id)path
 {
-  [a3 frame];
+  [view frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -23,54 +23,54 @@
   return result;
 }
 
-- (void)removeAnimationsFromSwipedView:(id)a3 atIndexPath:(id)a4
+- (void)removeAnimationsFromSwipedView:(id)view atIndexPath:(id)path
 {
-  v7 = [a3 layer];
-  v4 = [v7 presentationLayer];
-  if (v4)
+  layer = [view layer];
+  presentationLayer = [layer presentationLayer];
+  if (presentationLayer)
   {
-    v5 = [v7 animationKeys];
-    v6 = [v5 count];
+    animationKeys = [layer animationKeys];
+    v6 = [animationKeys count];
 
     if (v6)
     {
-      [v4 position];
-      [v7 setPosition:?];
-      [v7 removeAllAnimations];
+      [presentationLayer position];
+      [layer setPosition:?];
+      [layer removeAllAnimations];
     }
   }
 }
 
-- (void)moveSwipedView:(id)a3 atIndexPath:(id)a4 withSwipeInfo:(id *)a5 animator:(id)a6
+- (void)moveSwipedView:(id)view atIndexPath:(id)path withSwipeInfo:(id *)info animator:(id)animator
 {
-  v10 = a3;
-  v11 = a6;
-  [(_UIDefaultSwipeViewManipulator *)self restingFrameForSwipedView:v10 atIndexPath:a4];
+  viewCopy = view;
+  animatorCopy = animator;
+  [(_UIDefaultSwipeViewManipulator *)self restingFrameForSwipedView:viewCopy atIndexPath:path];
   x = v22.origin.x;
   y = v22.origin.y;
   width = v22.size.width;
   height = v22.size.height;
-  v16 = CGRectGetMidX(v22) + a5->var3;
+  v16 = CGRectGetMidX(v22) + info->var3;
   v23.origin.x = x;
   v23.origin.y = y;
   v23.size.width = width;
   v23.size.height = height;
   MidY = CGRectGetMidY(v23);
-  if (v11)
+  if (animatorCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __84___UIDefaultSwipeViewManipulator_moveSwipedView_atIndexPath_withSwipeInfo_animator___block_invoke;
     v18[3] = &unk_1E70F6848;
-    v19 = v10;
+    v19 = viewCopy;
     v20 = v16;
     v21 = MidY;
-    [v11 addAnimations:v18];
+    [animatorCopy addAnimations:v18];
   }
 
   else
   {
-    [v10 setCenter:{v16, MidY}];
+    [viewCopy setCenter:{v16, MidY}];
   }
 }
 

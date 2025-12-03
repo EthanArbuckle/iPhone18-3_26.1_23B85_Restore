@@ -1,9 +1,9 @@
 @interface FMClusteredAnnotationView
 - (MKAnnotation)annotation;
-- (_TtC6FindMy25FMClusteredAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
+- (_TtC6FindMy25FMClusteredAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 - (void)prepareForDisplay;
-- (void)setAnnotation:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAnnotation:(id)annotation;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMClusteredAnnotationView
@@ -12,21 +12,21 @@
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  v2 = [(FMClusteredAnnotationView *)&v4 annotation];
+  annotation = [(FMClusteredAnnotationView *)&v4 annotation];
 
-  return v2;
+  return annotation;
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10008FDD8(a3);
+  selfCopy = self;
+  sub_10008FDD8(annotation);
 }
 
-- (_TtC6FindMy25FMClusteredAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_TtC6FindMy25FMClusteredAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -44,17 +44,17 @@
 
 - (void)prepareForDisplay
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000914AC();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(FMClusteredAnnotationView *)&v7 traitCollectionDidChange:v4];
+  [(FMClusteredAnnotationView *)&v7 traitCollectionDidChange:changeCopy];
 
   sub_10008FF20(v6);
 

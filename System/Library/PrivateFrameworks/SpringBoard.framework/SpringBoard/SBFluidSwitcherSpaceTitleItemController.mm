@@ -1,20 +1,20 @@
 @interface SBFluidSwitcherSpaceTitleItemController
-- (SBFluidSwitcherSpaceTitleItemController)initWithAppLayout:(id)a3 applicationSceneHandleProvider:(id)a4 displayIdentity:(id)a5 showCanvasTitles:(BOOL)a6 isChamoisOrFlexibleWindowingEnabled:(BOOL)a7 isFooterViewOfItemContainer:(BOOL)a8;
+- (SBFluidSwitcherSpaceTitleItemController)initWithAppLayout:(id)layout applicationSceneHandleProvider:(id)provider displayIdentity:(id)identity showCanvasTitles:(BOOL)titles isChamoisOrFlexibleWindowingEnabled:(BOOL)enabled isFooterViewOfItemContainer:(BOOL)container;
 - (id)_computeHeaderItems;
-- (id)_iconForDisplayItem:(id)a3;
+- (id)_iconForDisplayItem:(id)item;
 - (id)_iconImageAppearance;
-- (id)_iconImageForDisplayItem:(id)a3;
-- (id)_iconViewForDisplayItem:(id)a3;
+- (id)_iconImageForDisplayItem:(id)item;
+- (id)_iconViewForDisplayItem:(id)item;
 - (void)_performUpdateHandler;
 - (void)_updateDisplayItemIcons;
 - (void)dealloc;
-- (void)iconImageDidUpdate:(id)a3;
-- (void)setCustomTitleText:(id)a3 forDisplayItem:(id)a4;
-- (void)setMaximumNumberOfVisibleIcons:(int64_t)a3;
-- (void)setMultiWindowIndicatorRoles:(id)a3;
-- (void)setUpdateHandler:(id)a3;
-- (void)setUseDarkLabels:(BOOL)a3;
-- (void)setUserInterfaceStyle:(int64_t)a3;
+- (void)iconImageDidUpdate:(id)update;
+- (void)setCustomTitleText:(id)text forDisplayItem:(id)item;
+- (void)setMaximumNumberOfVisibleIcons:(int64_t)icons;
+- (void)setMultiWindowIndicatorRoles:(id)roles;
+- (void)setUpdateHandler:(id)handler;
+- (void)setUseDarkLabels:(BOOL)labels;
+- (void)setUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation SBFluidSwitcherSpaceTitleItemController
@@ -90,15 +90,15 @@
     updateHandler = self->_updateHandler;
     if (updateHandler)
     {
-      v4 = [(SBFluidSwitcherSpaceTitleItemController *)self _computeHeaderItems];
-      updateHandler[2](updateHandler, self, v4);
+      _computeHeaderItems = [(SBFluidSwitcherSpaceTitleItemController *)self _computeHeaderItems];
+      updateHandler[2](updateHandler, self, _computeHeaderItems);
     }
   }
 }
 
 - (id)_computeHeaderItems
 {
-  v23 = [(SBFluidSwitcherSpaceTitleItemController *)self _iconImageAppearance];
+  _iconImageAppearance = [(SBFluidSwitcherSpaceTitleItemController *)self _iconImageAppearance];
   v3 = 0;
   if ([(NSArray *)self->_displayItems count])
   {
@@ -112,14 +112,14 @@
       v8 = [objc_alloc(v5[9]) initWithDisplayItem:v7];
       if ([v7 type] == 6)
       {
-        v9 = [MEMORY[0x277CCA8D8] mainBundle];
-        v10 = [v9 localizedStringForKey:@"SHELF_PLUS_CONTROL_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        v10 = [mainBundle localizedStringForKey:@"SHELF_PLUS_CONTROL_TITLE" value:&stru_283094718 table:@"SpringBoard"];
         [v8 setTitleText:v10];
       }
 
       else
       {
-        v9 = [(NSMutableDictionary *)self->_displayItemToIcon objectForKey:v7];
+        mainBundle = [(NSMutableDictionary *)self->_displayItemToIcon objectForKey:v7];
         v11 = [(NSMutableDictionary *)self->_displayItemToCustomTitleText objectForKey:v7];
         v10 = v11;
         if (v11)
@@ -129,24 +129,24 @@
 
         else
         {
-          v12 = [v9 displayNameForLocation:v22];
+          v12 = [mainBundle displayNameForLocation:v22];
         }
 
         v13 = v12;
         [v8 setTitleText:v12];
         v14 = [(NSMutableDictionary *)self->_displayItemToSceneHandle objectForKey:v7];
-        v15 = [v14 sceneTitle];
-        [v8 setSubtitleText:v15];
+        sceneTitle = [v14 sceneTitle];
+        [v8 setSubtitleText:sceneTitle];
 
         if (v4 < self->_numVisibleIcons)
         {
           v16 = [(SBFluidSwitcherSpaceTitleItemController *)self _iconViewForDisplayItem:v7];
           [v8 setImageView:v16];
 
-          v17 = [v9 uniqueIdentifier];
-          [v8 setIconIdentifier:v17];
+          uniqueIdentifier = [mainBundle uniqueIdentifier];
+          [v8 setIconIdentifier:uniqueIdentifier];
 
-          [v8 setImageAppearance:v23];
+          [v8 setImageAppearance:_iconImageAppearance];
         }
 
         v5 = off_2783A0000;
@@ -196,26 +196,26 @@
 
 - (id)_iconImageAppearance
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [v3 windowSceneForDisplayIdentity:self->_displayIdentity];
+  windowSceneManager = [SBApp windowSceneManager];
+  v4 = [windowSceneManager windowSceneForDisplayIdentity:self->_displayIdentity];
 
-  v5 = [v4 homeScreenController];
-  v6 = [v5 currentIconImageStyleConfiguration];
+  homeScreenController = [v4 homeScreenController];
+  currentIconImageStyleConfiguration = [homeScreenController currentIconImageStyleConfiguration];
 
-  v7 = [v6 iconImageAppearanceWithUserInterfaceStyle:{-[SBFluidSwitcherSpaceTitleItemController userInterfaceStyle](self, "userInterfaceStyle")}];
+  v7 = [currentIconImageStyleConfiguration iconImageAppearanceWithUserInterfaceStyle:{-[SBFluidSwitcherSpaceTitleItemController userInterfaceStyle](self, "userInterfaceStyle")}];
 
   return v7;
 }
 
-- (SBFluidSwitcherSpaceTitleItemController)initWithAppLayout:(id)a3 applicationSceneHandleProvider:(id)a4 displayIdentity:(id)a5 showCanvasTitles:(BOOL)a6 isChamoisOrFlexibleWindowingEnabled:(BOOL)a7 isFooterViewOfItemContainer:(BOOL)a8
+- (SBFluidSwitcherSpaceTitleItemController)initWithAppLayout:(id)layout applicationSceneHandleProvider:(id)provider displayIdentity:(id)identity showCanvasTitles:(BOOL)titles isChamoisOrFlexibleWindowingEnabled:(BOOL)enabled isFooterViewOfItemContainer:(BOOL)container
 {
-  v9 = a7;
-  v10 = a6;
+  enabledCopy = enabled;
+  titlesCopy = titles;
   v59 = *MEMORY[0x277D85DE8];
-  v48 = a3;
-  v16 = a4;
-  v47 = a5;
-  if ((v16 == 0) != (v47 == 0))
+  layoutCopy = layout;
+  providerCopy = provider;
+  identityCopy = identity;
+  if ((providerCopy == 0) != (identityCopy == 0))
   {
     [SBFluidSwitcherSpaceTitleItemController initWithAppLayout:a2 applicationSceneHandleProvider:self displayIdentity:? showCanvasTitles:? isChamoisOrFlexibleWindowingEnabled:? isFooterViewOfItemContainer:?];
   }
@@ -227,15 +227,15 @@
   if (v17)
   {
     v18 = v17;
-    objc_storeStrong(&v17->_appLayout, a3);
-    objc_storeStrong(&v18->_displayIdentity, a5);
-    v18->_isChamoisOrFlexibleWindowingEnabled = v9;
-    v18->_isFooterViewOfItemContainer = a8;
-    if (v9)
+    objc_storeStrong(&v17->_appLayout, layout);
+    objc_storeStrong(&v18->_displayIdentity, identity);
+    v18->_isChamoisOrFlexibleWindowingEnabled = enabledCopy;
+    v18->_isFooterViewOfItemContainer = container;
+    if (enabledCopy)
     {
-      v19 = [(SBAppLayout *)v18->_appLayout allItems];
+      allItems = [(SBAppLayout *)v18->_appLayout allItems];
       displayItems = v18->_displayItems;
-      v18->_displayItems = v19;
+      v18->_displayItems = allItems;
     }
 
     else
@@ -260,7 +260,7 @@
     }
 
     v18->_numVisibleIcons = [(NSArray *)v18->_displayItems count];
-    if (v10)
+    if (titlesCopy)
     {
       v55 = 0u;
       v56 = 0u;
@@ -272,7 +272,7 @@
       {
         v27 = v26;
         v28 = *v54;
-        v49 = v16;
+        v49 = providerCopy;
         v50 = v25;
         do
         {
@@ -286,19 +286,19 @@
             v30 = *(*(&v53 + 1) + 8 * i);
             if (![v30 type])
             {
-              v31 = [v30 bundleIdentifier];
-              if (v31)
+              bundleIdentifier = [v30 bundleIdentifier];
+              if (bundleIdentifier)
               {
                 v32 = +[SBApplicationController sharedInstance];
-                v33 = [v32 applicationWithBundleIdentifier:v31];
+                v33 = [v32 applicationWithBundleIdentifier:bundleIdentifier];
 
-                v34 = [v33 info];
-                v35 = [v34 supportsMultiwindow];
+                info = [v33 info];
+                supportsMultiwindow = [info supportsMultiwindow];
 
-                if (v35)
+                if (supportsMultiwindow)
                 {
-                  v36 = [v30 uniqueIdentifier];
-                  v37 = [v16 sceneIdentityForApplication:v33 uniqueIdentifier:v36];
+                  uniqueIdentifier = [v30 uniqueIdentifier];
+                  v37 = [providerCopy sceneIdentityForApplication:v33 uniqueIdentifier:uniqueIdentifier];
 
                   if (v37)
                   {
@@ -306,7 +306,7 @@
                     v52 = v37;
                     v39 = [SBApplicationSceneHandleRequest defaultRequestForApplication:v33 sceneIdentity:v37 displayIdentity:v51->_displayIdentity];
                     v40 = objc_opt_class();
-                    v41 = [v16 fetchOrCreateApplicationSceneHandleForRequest:v39];
+                    v41 = [providerCopy fetchOrCreateApplicationSceneHandleForRequest:v39];
                     v42 = SBSafeCast(v40, v41);
 
                     if (v42)
@@ -326,7 +326,7 @@
                       [v42 addObserver:v38];
                     }
 
-                    v16 = v49;
+                    providerCopy = v49;
                     v37 = v52;
                   }
 
@@ -358,8 +358,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->_displayItemToSceneHandle objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_displayItemToSceneHandle objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -371,14 +371,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) removeObserver:self];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -389,9 +389,9 @@
   [(SBFluidSwitcherSpaceTitleItemController *)&v8 dealloc];
 }
 
-- (void)iconImageDidUpdate:(id)a3
+- (void)iconImageDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
@@ -403,7 +403,7 @@
   v7[1] = 3221225472;
   v7[2] = __62__SBFluidSwitcherSpaceTitleItemController_iconImageDidUpdate___block_invoke;
   v7[3] = &unk_2783C3B80;
-  v6 = v4;
+  v6 = updateCopy;
   v8 = v6;
   v9 = v10;
   [(NSMutableDictionary *)displayItemToIcon enumerateKeysAndObjectsUsingBlock:v7];
@@ -423,18 +423,18 @@ void __62__SBFluidSwitcherSpaceTitleItemController_iconImageDidUpdate___block_in
   }
 }
 
-- (void)setUseDarkLabels:(BOOL)a3
+- (void)setUseDarkLabels:(BOOL)labels
 {
-  if (self->_useDarkLabels != a3)
+  if (self->_useDarkLabels != labels)
   {
-    self->_useDarkLabels = a3;
+    self->_useDarkLabels = labels;
     [(SBFluidSwitcherSpaceTitleItemController *)self _performUpdateHandler];
   }
 }
 
-- (void)setMultiWindowIndicatorRoles:(id)a3
+- (void)setMultiWindowIndicatorRoles:(id)roles
 {
-  obj = a3;
+  obj = roles;
   if ([obj isEmpty])
   {
 
@@ -454,11 +454,11 @@ void __62__SBFluidSwitcherSpaceTitleItemController_iconImageDidUpdate___block_in
   }
 }
 
-- (void)setUpdateHandler:(id)a3
+- (void)setUpdateHandler:(id)handler
 {
-  if (self->_updateHandler != a3)
+  if (self->_updateHandler != handler)
   {
-    v5 = [a3 copy];
+    v5 = [handler copy];
     updateHandler = self->_updateHandler;
     self->_updateHandler = v5;
 
@@ -466,19 +466,19 @@ void __62__SBFluidSwitcherSpaceTitleItemController_iconImageDidUpdate___block_in
   }
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
-  if (self->_userInterfaceStyle != a3)
+  if (self->_userInterfaceStyle != style)
   {
-    self->_userInterfaceStyle = a3;
+    self->_userInterfaceStyle = style;
     [(SBFluidSwitcherSpaceTitleItemController *)self _performUpdateHandler];
   }
 }
 
-- (void)setCustomTitleText:(id)a3 forDisplayItem:(id)a4
+- (void)setCustomTitleText:(id)text forDisplayItem:(id)item
 {
-  v13 = a3;
-  v6 = a4;
+  textCopy = text;
+  itemCopy = item;
   displayItemToCustomTitleText = self->_displayItemToCustomTitleText;
   if (!displayItemToCustomTitleText)
   {
@@ -489,58 +489,58 @@ void __62__SBFluidSwitcherSpaceTitleItemController_iconImageDidUpdate___block_in
     displayItemToCustomTitleText = self->_displayItemToCustomTitleText;
   }
 
-  v10 = [(NSMutableDictionary *)displayItemToCustomTitleText objectForKey:v6];
+  v10 = [(NSMutableDictionary *)displayItemToCustomTitleText objectForKey:itemCopy];
   v11 = BSEqualStrings();
 
   if ((v11 & 1) == 0)
   {
     v12 = self->_displayItemToCustomTitleText;
-    if (v13)
+    if (textCopy)
     {
-      [(NSMutableDictionary *)v12 setObject:v13 forKey:v6];
+      [(NSMutableDictionary *)v12 setObject:textCopy forKey:itemCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)v12 removeObjectForKey:v6];
+      [(NSMutableDictionary *)v12 removeObjectForKey:itemCopy];
     }
 
     [(SBFluidSwitcherSpaceTitleItemController *)self _performUpdateHandler];
   }
 }
 
-- (void)setMaximumNumberOfVisibleIcons:(int64_t)a3
+- (void)setMaximumNumberOfVisibleIcons:(int64_t)icons
 {
   v5 = [(NSArray *)self->_displayItems count];
-  if (v5 >= a3)
+  if (v5 >= icons)
   {
-    v6 = a3;
+    iconsCopy = icons;
   }
 
   else
   {
-    v6 = v5;
+    iconsCopy = v5;
   }
 
-  if (self->_numVisibleIcons != v6)
+  if (self->_numVisibleIcons != iconsCopy)
   {
-    self->_numVisibleIcons = v6;
+    self->_numVisibleIcons = iconsCopy;
 
     [(SBFluidSwitcherSpaceTitleItemController *)self _performUpdateHandler];
   }
 }
 
-- (id)_iconForDisplayItem:(id)a3
+- (id)_iconForDisplayItem:(id)item
 {
-  v4 = a3;
-  if ([v4 type] == 5)
+  itemCopy = item;
+  if ([itemCopy type] == 5)
   {
-    [v4 webClipIdentifier];
+    [itemCopy webClipIdentifier];
   }
 
   else
   {
-    [v4 bundleIdentifier];
+    [itemCopy bundleIdentifier];
   }
   v5 = ;
 
@@ -553,13 +553,13 @@ void __62__SBFluidSwitcherSpaceTitleItemController_iconImageDidUpdate___block_in
 
     else
     {
-      v7 = [SBApp windowSceneManager];
-      v8 = [v7 windowSceneForDisplayIdentity:self->_displayIdentity];
+      windowSceneManager = [SBApp windowSceneManager];
+      v8 = [windowSceneManager windowSceneForDisplayIdentity:self->_displayIdentity];
 
-      v9 = [v8 iconController];
-      v10 = [v9 iconModel];
+      iconController = [v8 iconController];
+      iconModel = [iconController iconModel];
 
-      v6 = [v10 leafIconForIdentifier:v5];
+      v6 = [iconModel leafIconForIdentifier:v5];
     }
   }
 
@@ -571,58 +571,58 @@ void __62__SBFluidSwitcherSpaceTitleItemController_iconImageDidUpdate___block_in
   return v6;
 }
 
-- (id)_iconImageForDisplayItem:(id)a3
+- (id)_iconImageForDisplayItem:(id)item
 {
   v4 = SBApp;
-  v5 = a3;
-  v6 = [v4 windowSceneManager];
-  v7 = [v6 windowSceneForDisplayIdentity:self->_displayIdentity];
+  itemCopy = item;
+  windowSceneManager = [v4 windowSceneManager];
+  v7 = [windowSceneManager windowSceneForDisplayIdentity:self->_displayIdentity];
 
-  v8 = [v7 iconController];
-  v9 = [v8 appSwitcherHeaderIconImageCache];
+  iconController = [v7 iconController];
+  appSwitcherHeaderIconImageCache = [iconController appSwitcherHeaderIconImageCache];
 
-  v10 = [(SBFluidSwitcherSpaceTitleItemController *)self _iconImageAppearance];
-  v11 = [(NSMutableDictionary *)self->_displayItemToIcon objectForKey:v5];
+  _iconImageAppearance = [(SBFluidSwitcherSpaceTitleItemController *)self _iconImageAppearance];
+  v11 = [(NSMutableDictionary *)self->_displayItemToIcon objectForKey:itemCopy];
 
   if (v11)
   {
-    [v9 imageForIcon:v11 imageAppearance:v10 options:0];
+    [appSwitcherHeaderIconImageCache imageForIcon:v11 imageAppearance:_iconImageAppearance options:0];
   }
 
   else
   {
-    [v9 genericImageWithImageAppearance:v10 options:0];
+    [appSwitcherHeaderIconImageCache genericImageWithImageAppearance:_iconImageAppearance options:0];
   }
   v12 = ;
 
   return v12;
 }
 
-- (id)_iconViewForDisplayItem:(id)a3
+- (id)_iconViewForDisplayItem:(id)item
 {
   v4 = SBApp;
-  v5 = a3;
-  v6 = [v4 windowSceneManager];
-  v7 = [v6 windowSceneForDisplayIdentity:self->_displayIdentity];
+  itemCopy = item;
+  windowSceneManager = [v4 windowSceneManager];
+  v7 = [windowSceneManager windowSceneForDisplayIdentity:self->_displayIdentity];
 
-  v8 = [v7 iconController];
-  v9 = [v8 appSwitcherHeaderIconImageCache];
+  iconController = [v7 iconController];
+  appSwitcherHeaderIconImageCache = [iconController appSwitcherHeaderIconImageCache];
 
-  v10 = [(SBFluidSwitcherSpaceTitleItemController *)self _iconImageAppearance];
-  v11 = [MEMORY[0x277D75C80] sbh_traitCollectionWithIconImageAppearance:v10];
-  [v9 iconImageInfo];
+  _iconImageAppearance = [(SBFluidSwitcherSpaceTitleItemController *)self _iconImageAppearance];
+  v11 = [MEMORY[0x277D75C80] sbh_traitCollectionWithIconImageAppearance:_iconImageAppearance];
+  [appSwitcherHeaderIconImageCache iconImageInfo];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(NSMutableDictionary *)self->_displayItemToIcon objectForKey:v5];
+  genericApplicationIcon = [(NSMutableDictionary *)self->_displayItemToIcon objectForKey:itemCopy];
 
-  if (!v20)
+  if (!genericApplicationIcon)
   {
-    v20 = [MEMORY[0x277D66368] genericApplicationIcon];
+    genericApplicationIcon = [MEMORY[0x277D66368] genericApplicationIcon];
   }
 
-  v21 = [v20 iconLayerViewWithInfo:v11 traitCollection:1 options:-1 priority:{v13, v15, v17, v19}];
+  v21 = [genericApplicationIcon iconLayerViewWithInfo:v11 traitCollection:1 options:-1 priority:{v13, v15, v17, v19}];
 
   return v21;
 }

@@ -29,44 +29,44 @@
 
 - (int64_t)cps_storeItemIdentifier
 {
-  v2 = [(PSSpecifier *)self cps_appClipApplicationRecord];
-  v3 = [v2 iTunesMetadata];
-  v4 = [v3 storeItemIdentifier];
+  cps_appClipApplicationRecord = [(PSSpecifier *)self cps_appClipApplicationRecord];
+  iTunesMetadata = [cps_appClipApplicationRecord iTunesMetadata];
+  storeItemIdentifier = [iTunesMetadata storeItemIdentifier];
 
-  return v4;
+  return storeItemIdentifier;
 }
 
 - (BOOL)cps_isAppClipInstalled
 {
-  v2 = [(PSSpecifier *)self cps_appClipApplicationRecord];
-  v3 = [v2 applicationState];
-  v4 = [v3 isInstalled];
+  cps_appClipApplicationRecord = [(PSSpecifier *)self cps_appClipApplicationRecord];
+  applicationState = [cps_appClipApplicationRecord applicationState];
+  isInstalled = [applicationState isInstalled];
 
-  return v4;
+  return isInstalled;
 }
 
 - (BOOL)cps_isTestFlight
 {
-  v2 = [(PSSpecifier *)self cps_appClipApplicationRecord];
-  v3 = [v2 isBeta];
+  cps_appClipApplicationRecord = [(PSSpecifier *)self cps_appClipApplicationRecord];
+  isBeta = [cps_appClipApplicationRecord isBeta];
 
-  return v3;
+  return isBeta;
 }
 
 - (LSApplicationRecord)cps_appClipApplicationRecord
 {
-  v2 = [(PSSpecifier *)self cps_bundleIdentifier];
-  if ([v2 length])
+  cps_bundleIdentifier = [(PSSpecifier *)self cps_bundleIdentifier];
+  if ([cps_bundleIdentifier length])
   {
     v7 = 0;
-    v3 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v2 allowPlaceholder:0 error:&v7];
+    v3 = [[LSApplicationRecord alloc] initWithBundleIdentifier:cps_bundleIdentifier allowPlaceholder:0 error:&v7];
     v4 = v7;
     if (v4)
     {
       v5 = sub_59B0();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        sub_A370(v2, v5, v4);
+        sub_A370(cps_bundleIdentifier, v5, v4);
       }
     }
   }

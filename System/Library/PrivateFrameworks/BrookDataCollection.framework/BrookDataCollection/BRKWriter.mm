@@ -1,21 +1,21 @@
 @interface BRKWriter
-- (BRKWriter)initWithPath:(id)a3;
+- (BRKWriter)initWithPath:(id)path;
 - (void)dealloc;
-- (void)performWithLock:(id)a3;
+- (void)performWithLock:(id)lock;
 @end
 
 @implementation BRKWriter
 
-- (BRKWriter)initWithPath:(id)a3
+- (BRKWriter)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = BRKWriter;
   v6 = [(BRKWriter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, path);
     v7->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -34,13 +34,13 @@
   [(BRKWriter *)&v3 dealloc];
 }
 
-- (void)performWithLock:(id)a3
+- (void)performWithLock:(id)lock
 {
-  if (a3)
+  if (lock)
   {
-    v4 = a3;
+    lockCopy = lock;
     os_unfair_lock_lock(&self->_lock);
-    v4[2](v4);
+    lockCopy[2](lockCopy);
 
     os_unfair_lock_unlock(&self->_lock);
   }

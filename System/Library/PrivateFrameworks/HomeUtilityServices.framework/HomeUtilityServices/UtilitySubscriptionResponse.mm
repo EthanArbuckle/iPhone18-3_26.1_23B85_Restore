@@ -1,13 +1,13 @@
 @interface UtilitySubscriptionResponse
 - (_TtC19HomeUtilityServices27UtilitySubscriptionResponse)init;
-- (_TtC19HomeUtilityServices27UtilitySubscriptionResponse)initWithSubscription:(id)a3 authorizationToken:(id)a4;
+- (_TtC19HomeUtilityServices27UtilitySubscriptionResponse)initWithSubscription:(id)subscription authorizationToken:(id)token;
 @end
 
 @implementation UtilitySubscriptionResponse
 
-- (_TtC19HomeUtilityServices27UtilitySubscriptionResponse)initWithSubscription:(id)a3 authorizationToken:(id)a4
+- (_TtC19HomeUtilityServices27UtilitySubscriptionResponse)initWithSubscription:(id)subscription authorizationToken:(id)token
 {
-  if (a4)
+  if (token)
   {
     v6 = sub_20E0091D4();
   }
@@ -18,13 +18,13 @@
     v7 = 0;
   }
 
-  *(self + OBJC_IVAR____TtC19HomeUtilityServices27UtilitySubscriptionResponse_subscription) = a3;
+  *(self + OBJC_IVAR____TtC19HomeUtilityServices27UtilitySubscriptionResponse_subscription) = subscription;
   v8 = (self + OBJC_IVAR____TtC19HomeUtilityServices27UtilitySubscriptionResponse_authorizationToken);
   *v8 = v6;
   v8[1] = v7;
   v11.receiver = self;
   v11.super_class = type metadata accessor for UtilitySubscriptionResponse();
-  v9 = a3;
+  subscriptionCopy = subscription;
   return [(UtilitySubscriptionResponse *)&v11 init];
 }
 

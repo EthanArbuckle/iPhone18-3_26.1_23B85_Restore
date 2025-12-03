@@ -1,52 +1,52 @@
 @interface NETunnelProviderProtocol
-+ (BOOL)isLegacyPluginType:(id)a3;
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (BOOL)setServiceProtocolsInService:(__SCNetworkService *)a3;
-- (BOOL)updateWithServiceProtocolsFromService:(__SCNetworkService *)a3;
++ (BOOL)isLegacyPluginType:(id)type;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (BOOL)setServiceProtocolsInService:(__SCNetworkService *)service;
+- (BOOL)updateWithServiceProtocolsFromService:(__SCNetworkService *)service;
 - (NETunnelProviderProtocol)init;
-- (NETunnelProviderProtocol)initWithCoder:(id)a3;
-- (NETunnelProviderProtocol)initWithPluginType:(id)a3;
+- (NETunnelProviderProtocol)initWithCoder:(id)coder;
+- (NETunnelProviderProtocol)initWithPluginType:(id)type;
 - (__SCNetworkInterface)createInterface;
 - (id)copyLegacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)copyPasswordsFromKeychainInDomain:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPluginType:(id)a3;
-- (void)syncWithKeychainInDomain:(int64_t)a3 configuration:(id)a4 suffix:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)copyPasswordsFromKeychainInDomain:(int64_t)domain;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPluginType:(id)type;
+- (void)syncWithKeychainInDomain:(int64_t)domain configuration:(id)configuration suffix:(id)suffix;
 @end
 
 @implementation NETunnelProviderProtocol
 
-- (void)syncWithKeychainInDomain:(int64_t)a3 configuration:(id)a4 suffix:(id)a5
+- (void)syncWithKeychainInDomain:(int64_t)domain configuration:(id)configuration suffix:(id)suffix
 {
   v14.receiver = self;
   v14.super_class = NETunnelProviderProtocol;
-  [(NEVPNProtocol *)&v14 syncWithKeychainInDomain:a3 configuration:a4 suffix:a5];
-  if (a3 == 1)
+  [(NEVPNProtocol *)&v14 syncWithKeychainInDomain:domain configuration:configuration suffix:suffix];
+  if (domain == 1)
   {
-    v7 = [(NEVPNProtocol *)self passwordKeychainItem];
-    if (v7)
+    passwordKeychainItem = [(NEVPNProtocol *)self passwordKeychainItem];
+    if (passwordKeychainItem)
     {
-      v8 = v7;
-      v9 = [(NEVPNProtocol *)self passwordKeychainItem];
-      if ([v9 domain] == 1)
+      passwordKeychainItem4 = passwordKeychainItem;
+      passwordKeychainItem2 = [(NEVPNProtocol *)self passwordKeychainItem];
+      if ([passwordKeychainItem2 domain] == 1)
       {
-        v10 = [(NEVPNProtocol *)self passwordKeychainItem];
-        v11 = [v10 persistentReference];
-        if (v11)
+        passwordKeychainItem3 = [(NEVPNProtocol *)self passwordKeychainItem];
+        persistentReference = [passwordKeychainItem3 persistentReference];
+        if (persistentReference)
         {
-          v12 = v11;
-          v13 = [(NEVPNProtocol *)self passwordReference];
+          v12 = persistentReference;
+          passwordReference = [(NEVPNProtocol *)self passwordReference];
 
-          if (v13)
+          if (passwordReference)
           {
             return;
           }
 
-          v8 = [(NEVPNProtocol *)self passwordKeychainItem];
-          v9 = [v8 persistentReference];
-          [(NEVPNProtocol *)self setPasswordReference:v9];
+          passwordKeychainItem4 = [(NEVPNProtocol *)self passwordKeychainItem];
+          passwordKeychainItem2 = [passwordKeychainItem4 persistentReference];
+          [(NEVPNProtocol *)self setPasswordReference:passwordKeychainItem2];
         }
 
         else
@@ -57,40 +57,40 @@
   }
 }
 
-- (void)copyPasswordsFromKeychainInDomain:(int64_t)a3
+- (void)copyPasswordsFromKeychainInDomain:(int64_t)domain
 {
   v16.receiver = self;
   v16.super_class = NETunnelProviderProtocol;
   [(NEVPNProtocol *)&v16 copyPasswordsFromKeychainInDomain:?];
-  v5 = [(NEVPNProtocol *)self passwordKeychainItem];
-  if (v5)
+  passwordKeychainItem = [(NEVPNProtocol *)self passwordKeychainItem];
+  if (passwordKeychainItem)
   {
-    v6 = v5;
-    v7 = [(NEVPNProtocol *)self passwordKeychainItem];
-    v8 = [v7 domain];
+    v6 = passwordKeychainItem;
+    passwordKeychainItem2 = [(NEVPNProtocol *)self passwordKeychainItem];
+    domain = [passwordKeychainItem2 domain];
 
-    if (v8 == a3)
+    if (domain == domain)
     {
-      v9 = [(NEVPNProtocol *)self passwordEncryption];
-      if (!v9 || (v10 = v9, -[NEVPNProtocol passwordEncryption](self, "passwordEncryption"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqualToString:*MEMORY[0x1E6982950]], v11, v10, (v12 & 1) == 0))
+      passwordEncryption = [(NEVPNProtocol *)self passwordEncryption];
+      if (!passwordEncryption || (v10 = passwordEncryption, -[NEVPNProtocol passwordEncryption](self, "passwordEncryption"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqualToString:*MEMORY[0x1E6982950]], v11, v10, (v12 & 1) == 0))
       {
-        v13 = [(NEVPNProtocol *)self passwordKeychainItem];
-        v14 = [v13 copyData];
-        v15 = [(NEVPNProtocol *)self passwordKeychainItem];
-        [v15 setData:v14];
+        passwordKeychainItem3 = [(NEVPNProtocol *)self passwordKeychainItem];
+        copyData = [passwordKeychainItem3 copyData];
+        passwordKeychainItem4 = [(NEVPNProtocol *)self passwordKeychainItem];
+        [passwordKeychainItem4 setData:copyData];
       }
     }
   }
 }
 
-- (BOOL)updateWithServiceProtocolsFromService:(__SCNetworkService *)a3
+- (BOOL)updateWithServiceProtocolsFromService:(__SCNetworkService *)service
 {
   v9.receiver = self;
   v9.super_class = NETunnelProviderProtocol;
   v5 = [(NEVPNProtocol *)&v9 updateWithServiceProtocolsFromService:?];
   if (v5)
   {
-    Interface = SCNetworkServiceGetInterface(a3);
+    Interface = SCNetworkServiceGetInterface(service);
     if (Interface)
     {
       v7 = SCNetworkInterfaceGetInterface(Interface);
@@ -104,7 +104,7 @@
   return v5;
 }
 
-- (BOOL)setServiceProtocolsInService:(__SCNetworkService *)a3
+- (BOOL)setServiceProtocolsInService:(__SCNetworkService *)service
 {
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -112,7 +112,7 @@
   v5 = [(NEVPNProtocol *)&v15 setServiceProtocolsInService:?];
   if (v5)
   {
-    Interface = SCNetworkServiceGetInterface(a3);
+    Interface = SCNetworkServiceGetInterface(service);
     if (Interface && (v7 = SCNetworkInterfaceGetInterface(Interface)) != 0 && (v8 = v7, [(NETunnelProviderProtocol *)self providerConfiguration], v9 = objc_claimAutoreleasedReturnValue(), LODWORD(v8) = SCNetworkInterfaceSetConfiguration(v8, v9), v9, !v8))
     {
       v11 = ne_log_obj();
@@ -143,8 +143,8 @@
 - (__SCNetworkInterface)createInterface
 {
   v2 = *MEMORY[0x1E6982370];
-  v3 = [(NETunnelProviderProtocol *)self pluginType];
-  v4 = SCNetworkInterfaceCreateWithInterface(v2, v3);
+  pluginType = [(NETunnelProviderProtocol *)self pluginType];
+  v4 = SCNetworkInterfaceCreateWithInterface(v2, pluginType);
 
   if (!v4)
   {
@@ -156,12 +156,12 @@
   return v5;
 }
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = NETunnelProviderProtocol;
-  v5 = [(NEVPNProtocol *)&v24 initFromLegacyDictionary:v4];
+  v5 = [(NEVPNProtocol *)&v24 initFromLegacyDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_15;
@@ -172,10 +172,10 @@
     dispatch_once(&initFromLegacyDictionary__initOurKeys, &__block_literal_global_24038);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"__NEVPNPluginType"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"__NEVPNPluginType"];
   [v5 setPluginType:v6];
 
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982758]];
+  v7 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982758]];
   if (isa_nsstring(v7))
   {
     if ([v7 isEqualToString:*MEMORY[0x1E6982960]])
@@ -195,18 +195,18 @@ LABEL_9:
 
 LABEL_10:
   v9 = *MEMORY[0x1E6982750];
-  v10 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6982750]];
+  v10 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982750]];
   v11 = isa_nsstring(v10);
 
   if (v11)
   {
-    v12 = [v4 objectForKeyedSubscript:v9];
+    v12 = [dictionaryCopy objectForKeyedSubscript:v9];
     v13 = [v12 copy];
     v14 = v5[26];
     v5[26] = v13;
   }
 
-  v15 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v4];
+  v15 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:dictionaryCopy];
   [v15 removeObjectsForKeys:initFromLegacyDictionary__nsprotocolkeys];
   if (![v15 count])
   {
@@ -218,11 +218,11 @@ LABEL_10:
   v5[27] = v15;
   v17 = v15;
 
-  v18 = [v4 objectForKeyedSubscript:@"NEProviderBundleIdentifier"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"NEProviderBundleIdentifier"];
   v19 = v5[23];
   v5[23] = v18;
 
-  v20 = [v4 objectForKeyedSubscript:@"DesignatedRequirement"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"DesignatedRequirement"];
   v21 = v5[25];
   v5[25] = v20;
 
@@ -296,11 +296,11 @@ void __53__NETunnelProviderProtocol_initFromLegacyDictionary___block_invoke()
 {
   v12.receiver = self;
   v12.super_class = NETunnelProviderProtocol;
-  v3 = [(NEVPNProtocol *)&v12 copyLegacyDictionary];
-  v4 = [(NETunnelProviderProtocol *)self authenticationMethod];
-  if (v4)
+  copyLegacyDictionary = [(NEVPNProtocol *)&v12 copyLegacyDictionary];
+  authenticationMethod = [(NETunnelProviderProtocol *)self authenticationMethod];
+  if (authenticationMethod)
   {
-    if (v4 != 1)
+    if (authenticationMethod != 1)
     {
       goto LABEL_6;
     }
@@ -313,66 +313,66 @@ void __53__NETunnelProviderProtocol_initFromLegacyDictionary___block_invoke()
     v5 = MEMORY[0x1E6982960];
   }
 
-  [v3 setObject:*v5 forKeyedSubscript:*MEMORY[0x1E6982758]];
+  [copyLegacyDictionary setObject:*v5 forKeyedSubscript:*MEMORY[0x1E6982758]];
 LABEL_6:
-  v6 = [(NETunnelProviderProtocol *)self authenticationPluginType];
+  authenticationPluginType = [(NETunnelProviderProtocol *)self authenticationPluginType];
 
-  if (v6)
+  if (authenticationPluginType)
   {
-    v7 = [(NETunnelProviderProtocol *)self authenticationPluginType];
-    [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6982750]];
+    authenticationPluginType2 = [(NETunnelProviderProtocol *)self authenticationPluginType];
+    [copyLegacyDictionary setObject:authenticationPluginType2 forKeyedSubscript:*MEMORY[0x1E6982750]];
   }
 
-  v8 = [(NETunnelProviderProtocol *)self vendorInfo];
+  vendorInfo = [(NETunnelProviderProtocol *)self vendorInfo];
 
-  if (v8)
+  if (vendorInfo)
   {
-    [v3 addEntriesFromDictionary:self->_vendorInfo];
+    [copyLegacyDictionary addEntriesFromDictionary:self->_vendorInfo];
   }
 
-  v9 = [(NETunnelProviderProtocol *)self providerBundleIdentifier];
-  [v3 setObject:v9 forKeyedSubscript:@"NEProviderBundleIdentifier"];
+  providerBundleIdentifier = [(NETunnelProviderProtocol *)self providerBundleIdentifier];
+  [copyLegacyDictionary setObject:providerBundleIdentifier forKeyedSubscript:@"NEProviderBundleIdentifier"];
 
-  v10 = [(NETunnelProviderProtocol *)self designatedRequirement];
-  [v3 setObject:v10 forKeyedSubscript:@"DesignatedRequirement"];
+  designatedRequirement = [(NETunnelProviderProtocol *)self designatedRequirement];
+  [copyLegacyDictionary setObject:designatedRequirement forKeyedSubscript:@"DesignatedRequirement"];
 
-  return v3;
+  return copyLegacyDictionary;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   v8.receiver = self;
   v8.super_class = NETunnelProviderProtocol;
-  v5 = [(NEVPNProtocol *)&v8 checkValidityAndCollectErrors:v4];
-  v6 = [(NETunnelProviderProtocol *)self pluginType];
+  v5 = [(NEVPNProtocol *)&v8 checkValidityAndCollectErrors:errorsCopy];
+  pluginType = [(NETunnelProviderProtocol *)self pluginType];
 
-  if (!v6)
+  if (!pluginType)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     v5 = 0;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16.receiver = self;
   v16.super_class = NETunnelProviderProtocol;
-  v4 = [(NEVPNProtocol *)&v16 copyWithZone:a3];
-  v5 = [(NETunnelProviderProtocol *)self pluginType];
-  [v4 setPluginType:v5];
+  v4 = [(NEVPNProtocol *)&v16 copyWithZone:zone];
+  pluginType = [(NETunnelProviderProtocol *)self pluginType];
+  [v4 setPluginType:pluginType];
 
-  v6 = [(NETunnelProviderProtocol *)self vendorInfo];
-  [v4 setVendorInfo:v6];
+  vendorInfo = [(NETunnelProviderProtocol *)self vendorInfo];
+  [v4 setVendorInfo:vendorInfo];
 
-  v7 = [(NETunnelProviderProtocol *)self authenticationPluginType];
-  [v4 setAuthenticationPluginType:v7];
+  authenticationPluginType = [(NETunnelProviderProtocol *)self authenticationPluginType];
+  [v4 setAuthenticationPluginType:authenticationPluginType];
 
   [v4 setAuthenticationMethod:{-[NETunnelProviderProtocol authenticationMethod](self, "authenticationMethod")}];
-  v8 = [(NETunnelProviderProtocol *)self providerConfiguration];
-  [v4 setProviderConfiguration:v8];
+  providerConfiguration = [(NETunnelProviderProtocol *)self providerConfiguration];
+  [v4 setProviderConfiguration:providerConfiguration];
 
   if (self)
   {
@@ -390,50 +390,50 @@ LABEL_6:
     objc_setProperty_atomic(v4, v11, v12, 88);
   }
 
-  v13 = [(NETunnelProviderProtocol *)self providerBundleIdentifier];
-  [v4 setProviderBundleIdentifier:v13];
+  providerBundleIdentifier = [(NETunnelProviderProtocol *)self providerBundleIdentifier];
+  [v4 setProviderBundleIdentifier:providerBundleIdentifier];
 
-  v14 = [(NETunnelProviderProtocol *)self designatedRequirement];
-  [v4 setDesignatedRequirement:v14];
+  designatedRequirement = [(NETunnelProviderProtocol *)self designatedRequirement];
+  [v4 setDesignatedRequirement:designatedRequirement];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = NETunnelProviderProtocol;
-  v4 = a3;
-  [(NEVPNProtocol *)&v11 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(NEVPNProtocol *)&v11 encodeWithCoder:coderCopy];
   v5 = [(NETunnelProviderProtocol *)self pluginType:v11.receiver];
-  [v4 encodeObject:v5 forKey:@"PluginType"];
+  [coderCopy encodeObject:v5 forKey:@"PluginType"];
 
-  v6 = [(NETunnelProviderProtocol *)self vendorInfo];
-  [v4 encodeObject:v6 forKey:@"VendorInfo"];
+  vendorInfo = [(NETunnelProviderProtocol *)self vendorInfo];
+  [coderCopy encodeObject:vendorInfo forKey:@"VendorInfo"];
 
-  v7 = [(NETunnelProviderProtocol *)self authenticationPluginType];
-  [v4 encodeObject:v7 forKey:@"AuthenticationPluginType"];
+  authenticationPluginType = [(NETunnelProviderProtocol *)self authenticationPluginType];
+  [coderCopy encodeObject:authenticationPluginType forKey:@"AuthenticationPluginType"];
 
-  [v4 encodeInt32:-[NETunnelProviderProtocol authenticationMethod](self forKey:{"authenticationMethod"), @"AuthenticationMethod"}];
-  v8 = [(NETunnelProviderProtocol *)self providerConfiguration];
-  [v4 encodeObject:v8 forKey:@"VendorConfiguration"];
+  [coderCopy encodeInt32:-[NETunnelProviderProtocol authenticationMethod](self forKey:{"authenticationMethod"), @"AuthenticationMethod"}];
+  providerConfiguration = [(NETunnelProviderProtocol *)self providerConfiguration];
+  [coderCopy encodeObject:providerConfiguration forKey:@"VendorConfiguration"];
 
-  v9 = [(NETunnelProviderProtocol *)self providerBundleIdentifier];
-  [v4 encodeObject:v9 forKey:@"NEProviderBundleIdentifier"];
+  providerBundleIdentifier = [(NETunnelProviderProtocol *)self providerBundleIdentifier];
+  [coderCopy encodeObject:providerBundleIdentifier forKey:@"NEProviderBundleIdentifier"];
 
-  v10 = [(NETunnelProviderProtocol *)self designatedRequirement];
-  [v4 encodeObject:v10 forKey:@"DesignatedRequirement"];
+  designatedRequirement = [(NETunnelProviderProtocol *)self designatedRequirement];
+  [coderCopy encodeObject:designatedRequirement forKey:@"DesignatedRequirement"];
 }
 
-- (NETunnelProviderProtocol)initWithCoder:(id)a3
+- (NETunnelProviderProtocol)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = NETunnelProviderProtocol;
-  v5 = [(NEVPNProtocol *)&v30 initWithCoder:v4];
+  v5 = [(NEVPNProtocol *)&v30 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PluginType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PluginType"];
     [(NETunnelProviderProtocol *)v5 setPluginType:v6];
 
     v7 = MEMORY[0x1E695DFD8];
@@ -442,30 +442,30 @@ LABEL_6:
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v7 setWithObjects:{v8, v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"VendorInfo"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"VendorInfo"];
     vendorInfo = v5->_vendorInfo;
     v5->_vendorInfo = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AuthenticationPluginType"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AuthenticationPluginType"];
     authenticationPluginType = v5->_authenticationPluginType;
     v5->_authenticationPluginType = v15;
 
-    v5->_authenticationMethod = [v4 decodeInt32ForKey:@"AuthenticationMethod"];
+    v5->_authenticationMethod = [coderCopy decodeInt32ForKey:@"AuthenticationMethod"];
     v17 = MEMORY[0x1E695DFD8];
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v20 = objc_opt_class();
     v21 = objc_opt_class();
     v22 = [v17 setWithObjects:{v18, v19, v20, v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"VendorConfiguration"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"VendorConfiguration"];
     providerConfiguration = v5->_providerConfiguration;
     v5->_providerConfiguration = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NEProviderBundleIdentifier"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NEProviderBundleIdentifier"];
     providerBundleIdentifier = v5->_providerBundleIdentifier;
     v5->_providerBundleIdentifier = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DesignatedRequirement"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DesignatedRequirement"];
     designatedRequirement = v5->_designatedRequirement;
     v5->_designatedRequirement = v27;
   }
@@ -473,16 +473,16 @@ LABEL_6:
   return v5;
 }
 
-- (NETunnelProviderProtocol)initWithPluginType:(id)a3
+- (NETunnelProviderProtocol)initWithPluginType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v8.receiver = self;
   v8.super_class = NETunnelProviderProtocol;
   v5 = [(NEVPNProtocol *)&v8 initWithType:4];
   v6 = v5;
   if (v5)
   {
-    [(NETunnelProviderProtocol *)v5 setPluginType:v4];
+    [(NETunnelProviderProtocol *)v5 setPluginType:typeCopy];
     v6->_authenticationMethod = 0;
   }
 
@@ -502,23 +502,23 @@ LABEL_6:
   return result;
 }
 
-- (void)setPluginType:(id)a3
+- (void)setPluginType:(id)type
 {
-  v11 = a3;
+  typeCopy = type;
   if (!self->_pluginType)
   {
-    v4 = [v11 copy];
+    v4 = [typeCopy copy];
     pluginType = self->_pluginType;
     self->_pluginType = v4;
   }
 
-  v6 = [(NETunnelProviderProtocol *)self pluginType];
-  v7 = [NETunnelProviderProtocol isLegacyPluginType:v6];
+  pluginType = [(NETunnelProviderProtocol *)self pluginType];
+  v7 = [NETunnelProviderProtocol isLegacyPluginType:pluginType];
 
   if (v7)
   {
     self->super._keychainDomain = 0;
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
   }
 
@@ -526,23 +526,23 @@ LABEL_6:
   {
     self->super._keychainDomain = 1;
     v10 = @"com.apple.managed.vpn.shared";
-    v9 = self;
+    selfCopy2 = self;
   }
 
-  objc_setProperty_atomic(v9, v8, v10, 88);
+  objc_setProperty_atomic(selfCopy2, v8, v10, 88);
 }
 
-+ (BOOL)isLegacyPluginType:(id)a3
++ (BOOL)isLegacyPluginType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.cisco.anyconnect.applevpn.plugin"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.ac-otc-authen.vpn.plugin") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"net.juniper.sslvpn"))
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"com.cisco.anyconnect.applevpn.plugin"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"com.apple.ac-otc-authen.vpn.plugin") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"net.juniper.sslvpn"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasSuffix:@".vpnplugin"];
+    v4 = [typeCopy hasSuffix:@".vpnplugin"];
   }
 
   return v4;

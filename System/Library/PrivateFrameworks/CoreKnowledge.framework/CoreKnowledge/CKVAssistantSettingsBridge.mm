@@ -13,18 +13,18 @@
 
 + (BOOL)isDictationEnabled
 {
-  v2 = [MEMORY[0x1E698D1C0] sharedPreferences];
-  v3 = [v2 dictationIsEnabled];
+  mEMORY[0x1E698D1C0] = [MEMORY[0x1E698D1C0] sharedPreferences];
+  dictationIsEnabled = [mEMORY[0x1E698D1C0] dictationIsEnabled];
 
-  return v3;
+  return dictationIsEnabled;
 }
 
 + (BOOL)isAssistantEnabled
 {
-  v2 = [MEMORY[0x1E698D1C0] sharedPreferences];
-  v3 = [v2 assistantIsEnabled];
+  mEMORY[0x1E698D1C0] = [MEMORY[0x1E698D1C0] sharedPreferences];
+  assistantIsEnabled = [mEMORY[0x1E698D1C0] assistantIsEnabled];
 
-  return v3;
+  return assistantIsEnabled;
 }
 
 + (id)getConformingSharedUserIds
@@ -77,18 +77,18 @@ void __59__CKVAssistantSettingsBridge_currentDictationLanguageCodes__block_invok
 
 + (id)currentSiriLanguageCode
 {
-  v2 = [MEMORY[0x1E698D1C0] sharedPreferences];
-  v3 = [v2 languageCode];
+  mEMORY[0x1E698D1C0] = [MEMORY[0x1E698D1C0] sharedPreferences];
+  languageCode = [mEMORY[0x1E698D1C0] languageCode];
 
-  if (![v3 length])
+  if (![languageCode length])
   {
-    v4 = [MEMORY[0x1E698D1C0] sharedPreferences];
-    v5 = [v4 bestSupportedLanguageCodeForLanguageCode:0];
+    mEMORY[0x1E698D1C0]2 = [MEMORY[0x1E698D1C0] sharedPreferences];
+    v5 = [mEMORY[0x1E698D1C0]2 bestSupportedLanguageCodeForLanguageCode:0];
 
-    v3 = v5;
+    languageCode = v5;
   }
 
-  return v3;
+  return languageCode;
 }
 
 + (BOOL)isASRSupported

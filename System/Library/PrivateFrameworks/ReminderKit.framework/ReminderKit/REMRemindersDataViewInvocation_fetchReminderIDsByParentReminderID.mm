@@ -1,85 +1,85 @@
 @interface REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID
-- (BOOL)isEqual:(id)a3;
-- (REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID)initWithCoder:(id)a3;
-- (REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID)initWithParentReminderID:(id)a3 includeIncomplete:(BOOL)a4 includeCompleted:(BOOL)a5 isUnsupported:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID)initWithCoder:(id)coder;
+- (REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID)initWithParentReminderID:(id)d includeIncomplete:(BOOL)incomplete includeCompleted:(BOOL)completed isUnsupported:(BOOL)unsupported;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID
 
-- (REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID)initWithParentReminderID:(id)a3 includeIncomplete:(BOOL)a4 includeCompleted:(BOOL)a5 isUnsupported:(BOOL)a6
+- (REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID)initWithParentReminderID:(id)d includeIncomplete:(BOOL)incomplete includeCompleted:(BOOL)completed isUnsupported:(BOOL)unsupported
 {
-  v11 = a3;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID;
   v12 = [(REMStoreInvocationValueStorage *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_parentReminderID, a3);
-    v13->_includeIncomplete = a4;
-    v13->_includeCompleted = a5;
-    v13->_isUnsupported = a6;
+    objc_storeStrong(&v12->_parentReminderID, d);
+    v13->_includeIncomplete = incomplete;
+    v13->_includeCompleted = completed;
+    v13->_isUnsupported = unsupported;
   }
 
   return v13;
 }
 
-- (REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID)initWithCoder:(id)a3
+- (REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentReminderID"];
-  v6 = [v4 decodeBoolForKey:@"includeIncomplete"];
-  v7 = [v4 decodeBoolForKey:@"includeCompleted"];
-  v8 = [v4 decodeBoolForKey:@"isUnsupported"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentReminderID"];
+  v6 = [coderCopy decodeBoolForKey:@"includeIncomplete"];
+  v7 = [coderCopy decodeBoolForKey:@"includeCompleted"];
+  v8 = [coderCopy decodeBoolForKey:@"isUnsupported"];
 
   if (v5)
   {
     self = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self initWithParentReminderID:v5 includeIncomplete:v6 includeCompleted:v7 isUnsupported:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self parentReminderID];
-  [v5 encodeObject:v4 forKey:@"parentReminderID"];
+  coderCopy = coder;
+  parentReminderID = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self parentReminderID];
+  [coderCopy encodeObject:parentReminderID forKey:@"parentReminderID"];
 
-  [v5 encodeBool:-[REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID includeIncomplete](self forKey:{"includeIncomplete"), @"includeIncomplete"}];
-  [v5 encodeBool:-[REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID includeCompleted](self forKey:{"includeCompleted"), @"includeCompleted"}];
-  [v5 encodeBool:-[REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID isUnsupported](self forKey:{"isUnsupported"), @"isUnsupported"}];
+  [coderCopy encodeBool:-[REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID includeIncomplete](self forKey:{"includeIncomplete"), @"includeIncomplete"}];
+  [coderCopy encodeBool:-[REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID includeCompleted](self forKey:{"includeCompleted"), @"includeCompleted"}];
+  [coderCopy encodeBool:-[REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID isUnsupported](self forKey:{"isUnsupported"), @"isUnsupported"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v5 = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self parentReminderID];
-  v6 = [v4 parentReminderID];
-  v7 = v6;
-  if (v5 == v6)
+  parentReminderID = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self parentReminderID];
+  parentReminderID2 = [equalCopy parentReminderID];
+  v7 = parentReminderID2;
+  if (parentReminderID == parentReminderID2)
   {
   }
 
   else
   {
-    v8 = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self parentReminderID];
-    v9 = [v4 parentReminderID];
-    v10 = [v8 isEqual:v9];
+    parentReminderID3 = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self parentReminderID];
+    parentReminderID4 = [equalCopy parentReminderID];
+    v10 = [parentReminderID3 isEqual:parentReminderID4];
 
     if (!v10)
     {
@@ -87,14 +87,14 @@
     }
   }
 
-  v11 = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self includeIncomplete];
-  if (v11 == [v4 includeIncomplete])
+  includeIncomplete = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self includeIncomplete];
+  if (includeIncomplete == [equalCopy includeIncomplete])
   {
-    v12 = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self includeCompleted];
-    if (v12 == [v4 includeCompleted])
+    includeCompleted = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self includeCompleted];
+    if (includeCompleted == [equalCopy includeCompleted])
     {
-      v15 = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self isUnsupported];
-      v13 = v15 ^ [v4 isUnsupported] ^ 1;
+      isUnsupported = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self isUnsupported];
+      v13 = isUnsupported ^ [equalCopy isUnsupported] ^ 1;
       goto LABEL_9;
     }
   }
@@ -108,8 +108,8 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self parentReminderID];
-  v4 = [v3 hash];
+  parentReminderID = [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self parentReminderID];
+  v4 = [parentReminderID hash];
   v5 = v4 + [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self includeIncomplete];
   v6 = v5 + [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self includeCompleted];
   v7 = v6 + [(REMRemindersDataViewInvocation_fetchReminderIDsByParentReminderID *)self isUnsupported];

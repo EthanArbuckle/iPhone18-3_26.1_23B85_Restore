@@ -1,20 +1,20 @@
 @interface ACCiAP2ShimServerDelegateInfo
-- (ACCiAP2ShimServerDelegateInfo)initWithDelegate:(id)a3;
+- (ACCiAP2ShimServerDelegateInfo)initWithDelegate:(id)delegate;
 - (void)dealloc;
 @end
 
 @implementation ACCiAP2ShimServerDelegateInfo
 
-- (ACCiAP2ShimServerDelegateInfo)initWithDelegate:(id)a3
+- (ACCiAP2ShimServerDelegateInfo)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = ACCiAP2ShimServerDelegateInfo;
   v6 = [(ACCiAP2ShimServerDelegateInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
   }
 
   return v7;

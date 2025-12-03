@@ -1,53 +1,53 @@
 @interface MFPhonePatternBrush
-+ (id)patternBrushWithBitmap:(id)a3 usePaletteForBilevel:(BOOL)a4;
-- (MFPhonePatternBrush)initWithBitmap:(id)a3 usePaletteForBilevel:(BOOL)a4;
-- (void)fillPath:(id)a3 in_path:(id)a4;
++ (id)patternBrushWithBitmap:(id)bitmap usePaletteForBilevel:(BOOL)bilevel;
+- (MFPhonePatternBrush)initWithBitmap:(id)bitmap usePaletteForBilevel:(BOOL)bilevel;
+- (void)fillPath:(id)path in_path:(id)in_path;
 @end
 
 @implementation MFPhonePatternBrush
 
-+ (id)patternBrushWithBitmap:(id)a3 usePaletteForBilevel:(BOOL)a4
++ (id)patternBrushWithBitmap:(id)bitmap usePaletteForBilevel:(BOOL)bilevel
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[a1 alloc] initWithBitmap:v6 usePaletteForBilevel:v4];
+  bilevelCopy = bilevel;
+  bitmapCopy = bitmap;
+  v7 = [[self alloc] initWithBitmap:bitmapCopy usePaletteForBilevel:bilevelCopy];
 
   return v7;
 }
 
-- (MFPhonePatternBrush)initWithBitmap:(id)a3 usePaletteForBilevel:(BOOL)a4
+- (MFPhonePatternBrush)initWithBitmap:(id)bitmap usePaletteForBilevel:(BOOL)bilevel
 {
-  v7 = a3;
+  bitmapCopy = bitmap;
   v11.receiver = self;
   v11.super_class = MFPhonePatternBrush;
   v8 = [(MFPhonePatternBrush *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->m_pattern, a3);
-    v9->m_usePaletteForBilevel = a4;
+    objc_storeStrong(&v8->m_pattern, bitmap);
+    v9->m_usePaletteForBilevel = bilevel;
   }
 
   return v9;
 }
 
-- (void)fillPath:(id)a3 in_path:(id)a4
+- (void)fillPath:(id)path in_path:(id)in_path
 {
-  v9 = a3;
-  v6 = a4;
-  [(MFPhoneBrush *)self setPolyFillMode:v9 in_path:v6];
-  if (![(MFPhoneBrush *)self fillWithROP:v9 in_path:v6])
+  pathCopy = path;
+  in_pathCopy = in_path;
+  [(MFPhoneBrush *)self setPolyFillMode:pathCopy in_path:in_pathCopy];
+  if (![(MFPhoneBrush *)self fillWithROP:pathCopy in_path:in_pathCopy])
   {
     if (!self->m_usePaletteForBilevel)
     {
-      [(MFBitmap *)self->m_pattern setMonoPalette:v9];
+      [(MFBitmap *)self->m_pattern setMonoPalette:pathCopy];
     }
 
-    v7 = [(MFPhoneBitmap *)self->m_pattern getImage];
-    v8 = [OITSUColor colorWithPatternImage:v7];
+    getImage = [(MFPhoneBitmap *)self->m_pattern getImage];
+    v8 = [OITSUColor colorWithPatternImage:getImage];
 
     [v8 set];
-    [v6 fill];
+    [in_pathCopy fill];
   }
 }
 

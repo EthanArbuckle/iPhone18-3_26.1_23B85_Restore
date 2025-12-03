@@ -1,39 +1,39 @@
 @interface CPSWebRequest
-- (BOOL)isEqual:(id)a3;
-- (CPSWebRequest)initWithCoder:(id)a3;
-- (CPSWebRequest)initWithURL:(id)a3 callback:(id)a4 additionalHeaderFields:(id)a5;
-- (CPSWebRequest)initWithURL:(id)a3 callbackScheme:(id)a4 additionalHeaderFields:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (CPSWebRequest)initWithCoder:(id)coder;
+- (CPSWebRequest)initWithURL:(id)l callback:(id)callback additionalHeaderFields:(id)fields;
+- (CPSWebRequest)initWithURL:(id)l callbackScheme:(id)scheme additionalHeaderFields:(id)fields;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSWebRequest
 
-- (CPSWebRequest)initWithURL:(id)a3 callbackScheme:(id)a4 additionalHeaderFields:(id)a5
+- (CPSWebRequest)initWithURL:(id)l callbackScheme:(id)scheme additionalHeaderFields:(id)fields
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  lCopy = l;
+  schemeCopy = scheme;
+  fieldsCopy = fields;
+  if (!lCopy)
   {
     [CPSWebRequest initWithURL:a2 callbackScheme:? additionalHeaderFields:?];
   }
 
-  if (!v11)
+  if (!schemeCopy)
   {
     [CPSWebRequest initWithURL:a2 callbackScheme:? additionalHeaderFields:?];
   }
 
-  v13 = v12;
+  v13 = fieldsCopy;
   v21.receiver = self;
   v21.super_class = CPSWebRequest;
   v14 = [(CPSWebRequest *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_URL, a3);
-    v16 = [v11 copy];
+    objc_storeStrong(&v14->_URL, l);
+    v16 = [schemeCopy copy];
     callbackScheme = v15->_callbackScheme;
     v15->_callbackScheme = v16;
 
@@ -45,30 +45,30 @@
   return v15;
 }
 
-- (CPSWebRequest)initWithURL:(id)a3 callback:(id)a4 additionalHeaderFields:(id)a5
+- (CPSWebRequest)initWithURL:(id)l callback:(id)callback additionalHeaderFields:(id)fields
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  lCopy = l;
+  callbackCopy = callback;
+  fieldsCopy = fields;
+  if (!lCopy)
   {
     [CPSWebRequest initWithURL:a2 callback:? additionalHeaderFields:?];
   }
 
-  if (!v11)
+  if (!callbackCopy)
   {
     [CPSWebRequest initWithURL:a2 callback:? additionalHeaderFields:?];
   }
 
-  v13 = v12;
+  v13 = fieldsCopy;
   v19.receiver = self;
   v19.super_class = CPSWebRequest;
   v14 = [(CPSWebRequest *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_URL, a3);
-    objc_storeStrong(&v15->_callback, a4);
+    objc_storeStrong(&v14->_URL, l);
+    objc_storeStrong(&v15->_callback, callback);
     v16 = [v13 copy];
     additionalHeaderFields = v15->_additionalHeaderFields;
     v15->_additionalHeaderFields = v16;
@@ -77,19 +77,19 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x277CF0C20];
   v6 = objc_opt_self();
-  v7 = [v5 builderWithObject:v4 ofExpectedClass:v6];
+  v7 = [v5 builderWithObject:equalCopy ofExpectedClass:v6];
 
   URL = self->_URL;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __25__CPSWebRequest_isEqual___block_invoke;
   v29[3] = &unk_278DF1800;
-  v9 = v4;
+  v9 = equalCopy;
   v30 = v9;
   v10 = [v7 appendObject:URL counterpart:v29];
   callback = self->_callback;
@@ -131,20 +131,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_URL];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_URL];
   if (self->_callback)
   {
-    v5 = [v3 appendObject:?];
+    v5 = [builder appendObject:?];
   }
 
   else
   {
-    v6 = [v3 appendString:self->_callbackScheme];
+    v6 = [builder appendString:self->_callbackScheme];
   }
 
-  v7 = [v3 appendObject:self->_additionalHeaderFields];
-  v8 = [v3 hash];
+  v7 = [builder appendObject:self->_additionalHeaderFields];
+  v8 = [builder hash];
 
   return v8;
 }
@@ -171,17 +171,17 @@
   v9 = CUPrintNSObjectMasked();
   v10 = [v3 appendObject:v9 withName:@"additionalHeaderFields" skipIfNil:1];
 
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
-- (CPSWebRequest)initWithCoder:(id)a3
+- (CPSWebRequest)initWithCoder:(id)coder
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"URL"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"URL"];
 
   if (!v6)
   {
@@ -191,13 +191,13 @@
     v25[0] = @"Failed to decode CPSWebRequest: missing URL value";
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v9 = [v14 errorWithDomain:v15 code:4865 userInfo:v7];
-    [v4 failWithError:v9];
+    [coderCopy failWithError:v9];
     goto LABEL_5;
   }
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callback"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callback"];
   v8 = objc_opt_self();
-  v9 = [v4 decodeObjectOfClass:v8 forKey:@"callbackScheme"];
+  v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"callbackScheme"];
 
   if (!(v7 | v9))
   {
@@ -207,15 +207,15 @@
     v23 = @"Failed to decode CPSWebRequest: missing callback value";
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v13 = [v10 errorWithDomain:v11 code:4865 userInfo:v12];
-    [v4 failWithError:v13];
+    [coderCopy failWithError:v13];
 
 LABEL_5:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
   v17 = objc_opt_class();
-  v18 = [v4 decodeDictionaryWithKeysOfClass:v17 objectsOfClass:objc_opt_class() forKey:@"additionalHeaderFields"];
+  v18 = [coderCopy decodeDictionaryWithKeysOfClass:v17 objectsOfClass:objc_opt_class() forKey:@"additionalHeaderFields"];
   if (v7)
   {
     v19 = [(CPSWebRequest *)self initWithURL:v6 callback:v7 additionalHeaderFields:v18];
@@ -228,18 +228,18 @@ LABEL_5:
 
   self = v19;
 
-  v16 = self;
+  selfCopy = self;
 LABEL_10:
 
   v20 = *MEMORY[0x277D85DE8];
-  return v16;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   URL = self->_URL;
-  v7 = a3;
-  [v7 encodeObject:URL forKey:@"URL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:URL forKey:@"URL"];
   callback = self->_callback;
   if (callback)
   {
@@ -252,8 +252,8 @@ LABEL_10:
     v6 = @"callbackScheme";
   }
 
-  [v7 encodeObject:callback forKey:v6];
-  [v7 encodeObject:self->_additionalHeaderFields forKey:@"additionalHeaderFields"];
+  [coderCopy encodeObject:callback forKey:v6];
+  [coderCopy encodeObject:self->_additionalHeaderFields forKey:@"additionalHeaderFields"];
 }
 
 - (void)initWithURL:(char *)a1 callbackScheme:additionalHeaderFields:.cold.1(char *a1)

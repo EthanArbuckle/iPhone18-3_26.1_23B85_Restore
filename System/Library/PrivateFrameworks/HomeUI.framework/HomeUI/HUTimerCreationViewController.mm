@@ -1,34 +1,34 @@
 @interface HUTimerCreationViewController
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (HUTimerCreationDelegate)delegate;
-- (HUTimerCreationViewController)initWithMediaProfileContainer:(id)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (void)alarmEditSettingController:(id)a3 didEditAlarm:(id)a4;
-- (void)cancelTimerCreation:(id)a3;
-- (void)createTimer:(id)a3;
-- (void)pickerView:(id)a3 didChangeSelectedDuration:(double)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textFieldDidChange:(id)a3;
+- (HUTimerCreationViewController)initWithMediaProfileContainer:(id)container;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (void)alarmEditSettingController:(id)controller didEditAlarm:(id)alarm;
+- (void)cancelTimerCreation:(id)creation;
+- (void)createTimer:(id)timer;
+- (void)pickerView:(id)view didChangeSelectedDuration:(double)duration;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textFieldDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation HUTimerCreationViewController
 
-- (HUTimerCreationViewController)initWithMediaProfileContainer:(id)a3
+- (HUTimerCreationViewController)initWithMediaProfileContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v11.receiver = self;
   v11.super_class = HUTimerCreationViewController;
   v6 = [(HUTimerCreationViewController *)&v11 initWithStyle:2];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaProfileContainer, a3);
-    v8 = [v5 hf_parentRoom];
+    objc_storeStrong(&v6->_mediaProfileContainer, container);
+    hf_parentRoom = [containerCopy hf_parentRoom];
     selectedRoom = v7->_selectedRoom;
-    v7->_selectedRoom = v8;
+    v7->_selectedRoom = hf_parentRoom;
   }
 
   return v7;
@@ -39,8 +39,8 @@
   v27.receiver = self;
   v27.super_class = HUTimerCreationViewController;
   [(HUTimerCreationViewController *)&v27 viewDidLoad];
-  v3 = [(HUTimerCreationViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"HUTimerContainerCellIdentifier"];
+  tableView = [(HUTimerCreationViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"HUTimerContainerCellIdentifier"];
 
   v4 = [HUTimerIntervalPickerView alloc];
   v5 = *MEMORY[0x277CBF3A0];
@@ -50,48 +50,48 @@
   v9 = [(HUTimerIntervalPickerView *)v4 initWithFrame:*MEMORY[0x277CBF3A0], v6, v7, v8];
   [(HUTimerCreationViewController *)self setTimePickerView:v9];
 
-  v10 = [(HUTimerCreationViewController *)self timePickerView];
-  [v10 setDelegate:self];
+  timePickerView = [(HUTimerCreationViewController *)self timePickerView];
+  [timePickerView setDelegate:self];
 
   [(HUTimerCreationViewController *)self setEdgesForExtendedLayout:0];
   v11 = [objc_alloc(MEMORY[0x277D75BB8]) initWithFrame:{v5, v6, v7, v8}];
   [(HUTimerCreationViewController *)self setNameField:v11];
 
   v12 = _HULocalizedStringWithDefaultValue(@"HUTimerLabelPlaceholder", @"HUTimerLabelPlaceholder", 1);
-  v13 = [(HUTimerCreationViewController *)self nameField];
-  [v13 setPlaceholder:v12];
+  nameField = [(HUTimerCreationViewController *)self nameField];
+  [nameField setPlaceholder:v12];
 
-  v14 = [(HUTimerCreationViewController *)self nameField];
-  [v14 setAutocapitalizationType:1];
+  nameField2 = [(HUTimerCreationViewController *)self nameField];
+  [nameField2 setAutocapitalizationType:1];
 
-  v15 = [(HUTimerCreationViewController *)self nameField];
-  [v15 setClearButtonMode:1];
+  nameField3 = [(HUTimerCreationViewController *)self nameField];
+  [nameField3 setClearButtonMode:1];
 
-  v16 = [(HUTimerCreationViewController *)self nameField];
-  [v16 setDelegate:self];
+  nameField4 = [(HUTimerCreationViewController *)self nameField];
+  [nameField4 setDelegate:self];
 
   v17 = _HULocalizedStringWithDefaultValue(@"HUNewTimer", @"HUNewTimer", 1);
-  v18 = [(HUTimerCreationViewController *)self navigationItem];
-  [v18 setTitle:v17];
+  navigationItem = [(HUTimerCreationViewController *)self navigationItem];
+  [navigationItem setTitle:v17];
 
   v19 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelTimerCreation_];
-  v20 = [(HUTimerCreationViewController *)self navigationItem];
-  [v20 setLeftBarButtonItem:v19];
+  navigationItem2 = [(HUTimerCreationViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v19];
 
   v21 = objc_alloc(MEMORY[0x277D751E0]);
   v22 = _HULocalizedStringWithDefaultValue(@"HUStartTimer", @"HUStartTimer", 1);
   v23 = [v21 initWithTitle:v22 style:2 target:self action:sel_createTimer_];
-  v24 = [(HUTimerCreationViewController *)self navigationItem];
-  [v24 setRightBarButtonItem:v23];
+  navigationItem3 = [(HUTimerCreationViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:v23];
 
-  v25 = [(HUTimerCreationViewController *)self navigationItem];
-  v26 = [v25 rightBarButtonItem];
-  [v26 setEnabled:0];
+  navigationItem4 = [(HUTimerCreationViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem4 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 == 2)
+  if (section == 2)
   {
     v5 = _HULocalizedStringWithDefaultValue(@"HUTimerToneHeaderLabel", @"HUTimerToneHeaderLabel", 1);
   }
@@ -104,18 +104,18 @@
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"HUTimerContainerCellIdentifier" forIndexPath:v6];
-  if (![v6 section])
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"HUTimerContainerCellIdentifier" forIndexPath:pathCopy];
+  if (![pathCopy section])
   {
-    v13 = [v7 contentView];
-    v14 = [(HUTimerCreationViewController *)self nameField];
-    [v13 addSubview:v14];
+    contentView = [v7 contentView];
+    nameField = [(HUTimerCreationViewController *)self nameField];
+    [contentView addSubview:nameField];
 
-    v15 = [(HUTimerCreationViewController *)self nameField];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    nameField2 = [(HUTimerCreationViewController *)self nameField];
+    [nameField2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v16 = MEMORY[0x277CCAAD0];
     v36[0] = MEMORY[0x277D85DD0];
@@ -130,15 +130,15 @@
 
     if ([MEMORY[0x277D14CE8] isProxHandOffV2Config])
     {
-      v19 = [(HUTimerCreationViewController *)self nameField];
-      [v19 setEnabled:0];
+      nameField3 = [(HUTimerCreationViewController *)self nameField];
+      [nameField3 setEnabled:0];
 
-      v20 = [(HUTimerCreationViewController *)self nameField];
-      [v20 setUserInteractionEnabled:0];
+      nameField4 = [(HUTimerCreationViewController *)self nameField];
+      [nameField4 setUserInteractionEnabled:0];
 
-      v21 = [MEMORY[0x277D75348] systemGrayColor];
-      v22 = [(HUTimerCreationViewController *)self nameField];
-      [v22 setTextColor:v21];
+      systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+      nameField5 = [(HUTimerCreationViewController *)self nameField];
+      [nameField5 setTextColor:systemGrayColor];
 
       [v17 setSelectionStyle:0];
     }
@@ -147,29 +147,29 @@
     goto LABEL_10;
   }
 
-  if ([v6 section] != 1)
+  if ([pathCopy section] != 1)
   {
     goto LABEL_11;
   }
 
-  if (![v6 row])
+  if (![pathCopy row])
   {
-    v24 = [v7 contentView];
-    v25 = [(HUTimerCreationViewController *)self timePickerView];
-    [v24 addSubview:v25];
+    contentView2 = [v7 contentView];
+    timePickerView = [(HUTimerCreationViewController *)self timePickerView];
+    [contentView2 addSubview:timePickerView];
 
-    v26 = [(HUTimerCreationViewController *)self timePickerView];
-    [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+    timePickerView2 = [(HUTimerCreationViewController *)self timePickerView];
+    [timePickerView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v27 = MEMORY[0x277CCAAD0];
     v30 = MEMORY[0x277D85DD0];
     v31 = 3221225472;
     v32 = __65__HUTimerCreationViewController_tableView_cellForRowAtIndexPath___block_invoke_2;
     v33 = &unk_277DC0BD8;
-    v34 = self;
+    selfCopy = self;
     v35 = v7;
     v28 = __65__HUTimerCreationViewController_tableView_cellForRowAtIndexPath___block_invoke_2(&v30);
-    [v27 activateConstraints:{v28, v30, v31, v32, v33, v34}];
+    [v27 activateConstraints:{v28, v30, v31, v32, v33, selfCopy}];
 
     v23 = v35;
 LABEL_10:
@@ -177,16 +177,16 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v6 row] == 1)
+  if ([pathCopy row] == 1)
   {
     v8 = _HULocalizedStringWithDefaultValue(@"HUAlarmPlayInLabel", @"HUAlarmPlayInLabel", 1);
-    v9 = [v7 textLabel];
-    [v9 setText:v8];
+    textLabel = [v7 textLabel];
+    [textLabel setText:v8];
 
-    v10 = [(HUTimerCreationViewController *)self selectedRoom];
-    v11 = [v10 name];
-    v12 = [v7 detailTextLabel];
-    [v12 setText:v11];
+    selectedRoom = [(HUTimerCreationViewController *)self selectedRoom];
+    name = [selectedRoom name];
+    detailTextLabel = [v7 detailTextLabel];
+    [detailTextLabel setText:name];
 
     [v7 setAccessoryType:1];
   }
@@ -264,79 +264,79 @@ id __65__HUTimerCreationViewController_tableView_cellForRowAtIndexPath___block_i
   return v2;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section] == 1)
+  pathCopy = path;
+  if ([pathCopy section] == 1)
   {
-    if ([v5 row])
+    if ([pathCopy row])
     {
       v6 = *MEMORY[0x277D76F30];
     }
 
     else
     {
-      v10 = [(HUTimerCreationViewController *)self timePickerView];
-      [v10 bounds];
+      timePickerView = [(HUTimerCreationViewController *)self timePickerView];
+      [timePickerView bounds];
       v6 = v11;
     }
   }
 
   else
   {
-    v7 = [MEMORY[0x277D756E0] cellConfiguration];
-    v8 = [(HUTimerCreationViewController *)self traitCollection];
-    [v7 _minimumHeightForTraitCollection:v8];
+    cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+    traitCollection = [(HUTimerCreationViewController *)self traitCollection];
+    [cellConfiguration _minimumHeightForTraitCollection:traitCollection];
     v6 = v9;
   }
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a4;
-  if ([v10 section] == 1 && objc_msgSend(v10, "row") == 1)
+  pathCopy = path;
+  if ([pathCopy section] == 1 && objc_msgSend(pathCopy, "row") == 1)
   {
     v5 = [HUAlarmEditSettingViewController alloc];
-    v6 = [(HUTimerCreationViewController *)self mediaProfileContainer];
-    v7 = [(HUTimerCreationViewController *)self selectedRoom];
-    v8 = [(HUAlarmEditSettingViewController *)v5 initPlayInSettingWithMediaProfileContainer:v6 selectedRoom:v7];
+    mediaProfileContainer = [(HUTimerCreationViewController *)self mediaProfileContainer];
+    selectedRoom = [(HUTimerCreationViewController *)self selectedRoom];
+    v8 = [(HUAlarmEditSettingViewController *)v5 initPlayInSettingWithMediaProfileContainer:mediaProfileContainer selectedRoom:selectedRoom];
 
     [v8 setDelegate:self];
     [(HUTimerCreationViewController *)self preferredContentSize];
     [v8 setPreferredContentSize:?];
-    v9 = [(HUTimerCreationViewController *)self navigationController];
-    [v9 pushViewController:v8 animated:1];
+    navigationController = [(HUTimerCreationViewController *)self navigationController];
+    [navigationController pushViewController:v8 animated:1];
   }
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v5 = [a3 object];
-  v4 = [v5 text];
-  [(HUTimerCreationViewController *)self setTimerTitle:v4];
+  object = [change object];
+  text = [object text];
+  [(HUTimerCreationViewController *)self setTimerTitle:text];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [v4 text];
-  [(HUTimerCreationViewController *)self setTimerTitle:v5];
+  returnCopy = return;
+  text = [returnCopy text];
+  [(HUTimerCreationViewController *)self setTimerTitle:text];
 
-  [v4 resignFirstResponder];
+  [returnCopy resignFirstResponder];
   return 1;
 }
 
-- (void)pickerView:(id)a3 didChangeSelectedDuration:(double)a4
+- (void)pickerView:(id)view didChangeSelectedDuration:(double)duration
 {
-  [(HUTimerCreationViewController *)self setTimerDuration:a3];
-  v7 = [(HUTimerCreationViewController *)self navigationItem];
-  v6 = [v7 rightBarButtonItem];
-  [v6 setEnabled:a4 > 0.0];
+  [(HUTimerCreationViewController *)self setTimerDuration:view];
+  navigationItem = [(HUTimerCreationViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:duration > 0.0];
 }
 
-- (void)cancelTimerCreation:(id)a3
+- (void)cancelTimerCreation:(id)creation
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -345,27 +345,27 @@ id __65__HUTimerCreationViewController_tableView_cellForRowAtIndexPath___block_i
     v5 = 136315394;
     v6 = "[HUTimerCreationViewController cancelTimerCreation:]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%s(%@): Cancelling timer creation", &v5, 0x16u);
   }
 
   [(HUTimerCreationViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)alarmEditSettingController:(id)a3 didEditAlarm:(id)a4
+- (void)alarmEditSettingController:(id)controller didEditAlarm:(id)alarm
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v5 = [a3 selectedRoom];
-  [(HUTimerCreationViewController *)self setSelectedRoom:v5];
+  selectedRoom = [controller selectedRoom];
+  [(HUTimerCreationViewController *)self setSelectedRoom:selectedRoom];
 
   v6 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:1];
-  v7 = [(HUTimerCreationViewController *)self tableView];
+  tableView = [(HUTimerCreationViewController *)self tableView];
   v9[0] = v6;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  [v7 reloadRowsAtIndexPaths:v8 withRowAnimation:5];
+  [tableView reloadRowsAtIndexPaths:v8 withRowAnimation:5];
 }
 
-- (void)createTimer:(id)a3
+- (void)createTimer:(id)timer
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
@@ -374,38 +374,38 @@ id __65__HUTimerCreationViewController_tableView_cellForRowAtIndexPath___block_i
     v21 = 136315394;
     v22 = "[HUTimerCreationViewController createTimer:]";
     v23 = 2112;
-    v24 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%s(%@) done", &v21, 0x16u);
   }
 
   [(HUTimerCreationViewController *)self timerDuration];
   if (v5 > 0.0)
   {
-    v6 = [(HUTimerCreationViewController *)self nameField];
-    v7 = [v6 isEditing];
+    nameField = [(HUTimerCreationViewController *)self nameField];
+    isEditing = [nameField isEditing];
 
-    if (v7)
+    if (isEditing)
     {
-      v8 = [(HUTimerCreationViewController *)self nameField];
-      v9 = [v8 text];
-      [(HUTimerCreationViewController *)self setTimerTitle:v9];
+      nameField2 = [(HUTimerCreationViewController *)self nameField];
+      text = [nameField2 text];
+      [(HUTimerCreationViewController *)self setTimerTitle:text];
 
-      v10 = [(HUTimerCreationViewController *)self nameField];
-      [v10 endEditing:1];
+      nameField3 = [(HUTimerCreationViewController *)self nameField];
+      [nameField3 endEditing:1];
     }
 
     v11 = objc_alloc(MEMORY[0x277D29700]);
     [(HUTimerCreationViewController *)self timerDuration];
     v12 = [v11 initWithState:3 duration:?];
-    v13 = [(HUTimerCreationViewController *)self timerTitle];
-    [v12 setTitle:v13];
+    timerTitle = [(HUTimerCreationViewController *)self timerTitle];
+    [v12 setTitle:timerTitle];
 
     v14 = [MEMORY[0x277D29708] toneSoundWithIdentifier:0 vibrationIdentifer:0 volume:0];
     [v12 setSound:v14];
 
-    v15 = [(HUTimerCreationViewController *)self selectedRoom];
-    v16 = [(HUTimerCreationViewController *)self mediaProfileContainer];
-    [v12 hf_moveToRoom:v15 withMediaProfileContainer:v16];
+    selectedRoom = [(HUTimerCreationViewController *)self selectedRoom];
+    mediaProfileContainer = [(HUTimerCreationViewController *)self mediaProfileContainer];
+    [v12 hf_moveToRoom:selectedRoom withMediaProfileContainer:mediaProfileContainer];
 
     v17 = HFLogForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -413,19 +413,19 @@ id __65__HUTimerCreationViewController_tableView_cellForRowAtIndexPath___block_i
       v21 = 136315650;
       v22 = "[HUTimerCreationViewController createTimer:]";
       v23 = 2112;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
       v26 = v12;
       _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "%s(%@): Creating timer %@", &v21, 0x20u);
     }
 
-    v18 = [(HUTimerCreationViewController *)self delegate];
+    delegate = [(HUTimerCreationViewController *)self delegate];
     v19 = objc_opt_respondsToSelector();
 
     if (v19)
     {
-      v20 = [(HUTimerCreationViewController *)self delegate];
-      [v20 timerCreationViewController:self didCreateTimer:v12];
+      delegate2 = [(HUTimerCreationViewController *)self delegate];
+      [delegate2 timerCreationViewController:self didCreateTimer:v12];
     }
 
     [(HUTimerCreationViewController *)self dismissViewControllerAnimated:1 completion:0];

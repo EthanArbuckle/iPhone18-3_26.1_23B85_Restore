@@ -1,27 +1,27 @@
 @interface HMAppleMediaAccessoryPowerAction
-- (BOOL)_handleUpdates:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValidWithError:(id *)a3;
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)_handleUpdates:(id)updates;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValidWithError:(id *)error;
+- (BOOL)mergeFromNewObject:(id)object;
 - (HMAccessory)accessory;
 - (HMAppleMediaAccessoryPowerAction)init;
-- (HMAppleMediaAccessoryPowerAction)initWithAccessory:(id)a3 targetSleepWakeState:(unint64_t)a4;
-- (HMAppleMediaAccessoryPowerAction)initWithCoder:(id)a3;
-- (HMAppleMediaAccessoryPowerAction)initWithDictionary:(id)a3 home:(id)a4;
-- (HMAppleMediaAccessoryPowerAction)initWithUUID:(id)a3;
+- (HMAppleMediaAccessoryPowerAction)initWithAccessory:(id)accessory targetSleepWakeState:(unint64_t)state;
+- (HMAppleMediaAccessoryPowerAction)initWithCoder:(id)coder;
+- (HMAppleMediaAccessoryPowerAction)initWithDictionary:(id)dictionary home:(id)home;
+- (HMAppleMediaAccessoryPowerAction)initWithUUID:(id)d;
 - (id)_serializeForAdd;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)targetSleepWakeState;
-- (void)initWithAccessory:(void *)a1 targetSleepWakeState:(void *)a2 uuid:(uint64_t)a3;
-- (void)updateWithAction:(id)a3 completionHandler:(id)a4;
+- (void)initWithAccessory:(void *)accessory targetSleepWakeState:(void *)state uuid:(uint64_t)uuid;
+- (void)updateWithAction:(id)action completionHandler:(id)handler;
 @end
 
 @implementation HMAppleMediaAccessoryPowerAction
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -31,7 +31,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -43,14 +43,14 @@
     v7 = v6;
     if (v6)
     {
-      v8 = [(HMAppleMediaAccessoryPowerAction *)v6 accessory];
-      v9 = [v8 uuid];
-      v10 = [(HMAppleMediaAccessoryPowerAction *)self accessory];
-      v11 = [v10 uuid];
-      if ([v9 hmf_isEqualToUUID:v11])
+      accessory = [(HMAppleMediaAccessoryPowerAction *)v6 accessory];
+      uuid = [accessory uuid];
+      accessory2 = [(HMAppleMediaAccessoryPowerAction *)self accessory];
+      uuid2 = [accessory2 uuid];
+      if ([uuid hmf_isEqualToUUID:uuid2])
       {
-        v12 = [(HMAppleMediaAccessoryPowerAction *)v7 targetSleepWakeState];
-        v13 = v12 == [(HMAppleMediaAccessoryPowerAction *)self targetSleepWakeState];
+        targetSleepWakeState = [(HMAppleMediaAccessoryPowerAction *)v7 targetSleepWakeState];
+        v13 = targetSleepWakeState == [(HMAppleMediaAccessoryPowerAction *)self targetSleepWakeState];
       }
 
       else
@@ -68,46 +68,46 @@
   return v13;
 }
 
-- (BOOL)_handleUpdates:(id)a3
+- (BOOL)_handleUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(HMAction *)self actionSet];
-  v6 = [v5 home];
+  updatesCopy = updates;
+  actionSet = [(HMAction *)self actionSet];
+  home = [actionSet home];
 
-  v7 = [v4 hmf_UUIDForKey:@"accessory"];
-  v8 = [v6 accessoryWithUUID:v7];
-  v9 = [v4 hmf_numberForKey:@"HMAPA.targetState"];
+  v7 = [updatesCopy hmf_UUIDForKey:@"accessory"];
+  v8 = [home accessoryWithUUID:v7];
+  v9 = [updatesCopy hmf_numberForKey:@"HMAPA.targetState"];
 
-  v10 = [v9 unsignedIntegerValue];
-  v11 = [v8 category];
-  v12 = [v11 categoryType];
-  v13 = [v12 isEqualToString:@"F6D2A2AC-3A6E-4E6F-8196-678ABE909D8E"];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
+  category = [v8 category];
+  categoryType = [category categoryType];
+  v13 = [categoryType isEqualToString:@"F6D2A2AC-3A6E-4E6F-8196-678ABE909D8E"];
 
   if (v13)
   {
     os_unfair_lock_lock_with_options();
     objc_storeStrong(&self->_accessory, v8);
-    self->_targetSleepWakeState = v10;
+    self->_targetSleepWakeState = unsignedIntegerValue;
     os_unfair_lock_unlock(&self->_lock);
   }
 
   return v13;
 }
 
-- (HMAppleMediaAccessoryPowerAction)initWithDictionary:(id)a3 home:(id)a4
+- (HMAppleMediaAccessoryPowerAction)initWithDictionary:(id)dictionary home:(id)home
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  homeCopy = home;
   v26.receiver = self;
   v26.super_class = HMAppleMediaAccessoryPowerAction;
-  v8 = [(HMAction *)&v26 initWithDictionary:v6 home:v7];
+  v8 = [(HMAction *)&v26 initWithDictionary:dictionaryCopy home:homeCopy];
   if (!v8)
   {
     goto LABEL_5;
   }
 
-  v9 = [v6 hmf_UUIDForKey:@"accessory"];
+  v9 = [dictionaryCopy hmf_UUIDForKey:@"accessory"];
   if (!v9)
   {
     v14 = objc_autoreleasePoolPush();
@@ -135,7 +135,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v10 = [v7 accessoryWithUUID:v9];
+  v10 = [homeCopy accessoryWithUUID:v9];
   accessory = v8->_accessory;
   v8->_accessory = v10;
 
@@ -163,7 +163,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v12 = [v6 hmf_numberForKey:@"targetState"];
+  v12 = [dictionaryCopy hmf_numberForKey:@"targetState"];
   v8->_targetSleepWakeState = [v12 unsignedIntegerValue];
 
 LABEL_5:
@@ -178,13 +178,13 @@ LABEL_12:
 {
   v11.receiver = self;
   v11.super_class = HMAppleMediaAccessoryPowerAction;
-  v3 = [(HMAction *)&v11 _serializeForAdd];
-  v4 = [v3 mutableCopy];
+  _serializeForAdd = [(HMAction *)&v11 _serializeForAdd];
+  v4 = [_serializeForAdd mutableCopy];
 
-  v5 = [(HMAppleMediaAccessoryPowerAction *)self accessory];
-  v6 = [v5 uuid];
-  v7 = [v6 UUIDString];
-  [v4 setObject:v7 forKeyedSubscript:@"accessory"];
+  accessory = [(HMAppleMediaAccessoryPowerAction *)self accessory];
+  uuid = [accessory uuid];
+  uUIDString = [uuid UUIDString];
+  [v4 setObject:uUIDString forKeyedSubscript:@"accessory"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HMAppleMediaAccessoryPowerAction targetSleepWakeState](self, "targetSleepWakeState")}];
   [v4 setObject:v8 forKeyedSubscript:@"targetState"];
@@ -194,12 +194,12 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)isValidWithError:(id *)a3
+- (BOOL)isValidWithError:(id *)error
 {
-  v4 = [(HMAppleMediaAccessoryPowerAction *)self accessory];
-  v5 = [v4 category];
-  v6 = [v5 categoryType];
-  if ([v6 isEqualToString:@"F6D2A2AC-3A6E-4E6F-8196-678ABE909D8E"])
+  accessory = [(HMAppleMediaAccessoryPowerAction *)self accessory];
+  category = [accessory category];
+  categoryType = [category categoryType];
+  if ([categoryType isEqualToString:@"F6D2A2AC-3A6E-4E6F-8196-678ABE909D8E"])
   {
     v7 = [(HMAppleMediaAccessoryPowerAction *)self targetSleepWakeState]!= 0;
   }
@@ -212,31 +212,31 @@ LABEL_12:
   return v7;
 }
 
-- (void)updateWithAction:(id)a3 completionHandler:(id)a4
+- (void)updateWithAction:(id)action completionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HMAction *)self actionSet];
-  if (v7)
+  actionCopy = action;
+  handlerCopy = handler;
+  actionSet = [(HMAction *)self actionSet];
+  if (actionSet)
   {
-    v8 = [v9 _serializeForAdd];
-    [v7 _updateAction:self changes:v8 completionHandler:v6];
+    _serializeForAdd = [actionCopy _serializeForAdd];
+    [actionSet _updateAction:self changes:_serializeForAdd completionHandler:handlerCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:4];
-    v6[2](v6, v8);
+    _serializeForAdd = [MEMORY[0x1E696ABC0] hmfErrorWithCode:4];
+    handlerCopy[2](handlerCopy, _serializeForAdd);
   }
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -247,19 +247,19 @@ LABEL_12:
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMAppleMediaAccessoryPowerAction *)self accessory];
-    v8 = [v6 accessory];
-    v9 = [v7 uuid];
-    v10 = [v8 uuid];
-    v11 = [v9 hmf_isEqualToUUID:v10];
+    accessory = [(HMAppleMediaAccessoryPowerAction *)self accessory];
+    accessory2 = [v6 accessory];
+    uuid = [accessory uuid];
+    uuid2 = [accessory2 uuid];
+    v11 = [uuid hmf_isEqualToUUID:uuid2];
 
     if ((v11 & 1) == 0)
     {
-      [(HMAppleMediaAccessoryPowerAction *)self setAccessory:v8];
+      [(HMAppleMediaAccessoryPowerAction *)self setAccessory:accessory2];
     }
 
-    v12 = [(HMAppleMediaAccessoryPowerAction *)self targetSleepWakeState];
-    if (v12 == [v6 targetSleepWakeState])
+    targetSleepWakeState = [(HMAppleMediaAccessoryPowerAction *)self targetSleepWakeState];
+    if (targetSleepWakeState == [v6 targetSleepWakeState])
     {
       v13 = v11 ^ 1;
     }
@@ -279,25 +279,25 @@ LABEL_12:
   return v13;
 }
 
-- (HMAppleMediaAccessoryPowerAction)initWithCoder:(id)a3
+- (HMAppleMediaAccessoryPowerAction)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = HMAppleMediaAccessoryPowerAction;
-  v5 = [(HMAction *)&v17 initWithCoder:v4];
+  v5 = [(HMAction *)&v17 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAPA.accessory"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAPA.accessory"];
   accessory = v5->_accessory;
   v5->_accessory = v6;
 
   if (v5->_accessory)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAPA.targetState"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAPA.targetState"];
     v5->_targetSleepWakeState = [v8 unsignedIntegerValue];
 
 LABEL_4:
@@ -327,7 +327,7 @@ LABEL_8:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock_with_options();
   v4 = [HMAppleMediaAccessoryPowerAction initWithAccessory:self->_accessory targetSleepWakeState:self->_targetSleepWakeState uuid:?];
@@ -335,23 +335,23 @@ LABEL_8:
   return v4;
 }
 
-- (void)initWithAccessory:(void *)a1 targetSleepWakeState:(void *)a2 uuid:(uint64_t)a3
+- (void)initWithAccessory:(void *)accessory targetSleepWakeState:(void *)state uuid:(uint64_t)uuid
 {
-  v6 = a2;
-  if (a1)
+  stateCopy = state;
+  if (accessory)
   {
-    v9.receiver = a1;
+    v9.receiver = accessory;
     v9.super_class = HMAppleMediaAccessoryPowerAction;
     v7 = objc_msgSendSuper2(&v9, sel_initWithUUID_, 0);
-    a1 = v7;
+    accessory = v7;
     if (v7)
     {
-      objc_storeStrong(v7 + 7, a2);
-      a1[8] = a3;
+      objc_storeStrong(v7 + 7, state);
+      accessory[8] = uuid;
     }
   }
 
-  return a1;
+  return accessory;
 }
 
 - (unint64_t)targetSleepWakeState
@@ -371,26 +371,26 @@ LABEL_8:
   return v3;
 }
 
-- (HMAppleMediaAccessoryPowerAction)initWithAccessory:(id)a3 targetSleepWakeState:(unint64_t)a4
+- (HMAppleMediaAccessoryPowerAction)initWithAccessory:(id)accessory targetSleepWakeState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [v6 category];
-  v8 = [v7 categoryType];
-  v9 = [v8 isEqualToString:@"F6D2A2AC-3A6E-4E6F-8196-678ABE909D8E"];
+  accessoryCopy = accessory;
+  category = [accessoryCopy category];
+  categoryType = [category categoryType];
+  v9 = [categoryType isEqualToString:@"F6D2A2AC-3A6E-4E6F-8196-678ABE909D8E"];
 
-  v10 = 0;
-  if (a4 && v9)
+  selfCopy = 0;
+  if (state && v9)
   {
-    self = [HMAppleMediaAccessoryPowerAction initWithAccessory:v6 targetSleepWakeState:a4 uuid:?];
-    v10 = self;
+    self = [HMAppleMediaAccessoryPowerAction initWithAccessory:accessoryCopy targetSleepWakeState:state uuid:?];
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (HMAppleMediaAccessoryPowerAction)initWithUUID:(id)a3
+- (HMAppleMediaAccessoryPowerAction)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];

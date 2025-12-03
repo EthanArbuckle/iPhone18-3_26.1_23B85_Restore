@@ -1,30 +1,30 @@
 @interface AVPlaybackCoordinationMedium
 - (AVPlaybackCoordinationMedium)init;
-- (BOOL)_updateTransportControlState:(id)a3 forIdentifier:(id)a4;
+- (BOOL)_updateTransportControlState:(id)state forIdentifier:(id)identifier;
 - (NSArray)connectedPlaybackCoordinators;
 - (id)_initialStateOriginator;
-- (id)_mediumParticipantForCoordinator:(id)a3 orIdentifier:(id)a4;
+- (id)_mediumParticipantForCoordinator:(id)coordinator orIdentifier:(id)identifier;
 - (id)_participantStatesAsArray;
 - (id)_participants;
-- (id)_transportControlStateForItemIdentifier:(id)a3;
+- (id)_transportControlStateForItemIdentifier:(id)identifier;
 - (id)_transportControlStatesAsArray;
-- (id)localParticipantUUIDForPlaybackCoordinator:(id)a3;
-- (int)connectPlaybackCoordinator:(id)a3;
-- (int)disconnectPlaybackCoordinatorWithIdentifier:(id)a3;
+- (id)localParticipantUUIDForPlaybackCoordinator:(id)coordinator;
+- (int)connectPlaybackCoordinator:(id)coordinator;
+- (int)disconnectPlaybackCoordinatorWithIdentifier:(id)identifier;
 - (unsigned)_lowestInUseDefaultItemIdentifier;
-- (unsigned)areAllCoordinatorsSuspendedForReason:(id)a3;
-- (void)_removeParticipant:(id)a3;
-- (void)_removeParticipantStateForIdentifier:(id)a3;
+- (unsigned)areAllCoordinatorsSuspendedForReason:(id)reason;
+- (void)_removeParticipant:(id)participant;
+- (void)_removeParticipantStateForIdentifier:(id)identifier;
 - (void)_removeUnusedTransportControlStates;
-- (void)_setInitialStateOriginator:(id)a3;
+- (void)_setInitialStateOriginator:(id)originator;
 - (void)_updateLowestInUseDefaultItemIdentifier;
-- (void)_updateParticipantState:(id)a3 forIdentifier:(id)a4;
-- (void)_updateParticipantsWithParticipant:(id)a3;
+- (void)_updateParticipantState:(id)state forIdentifier:(id)identifier;
+- (void)_updateParticipantsWithParticipant:(id)participant;
 - (void)dealloc;
-- (void)endSuspensionOnAllCoordinatorsWithReason:(id)a3;
-- (void)playbackCoordinator:(id)a3 broadcastLocalParticipantStateDictionary:(id)a4;
-- (void)playbackCoordinator:(id)a3 broadcastTransportControlStateDictionary:(id)a4 forItemWithIdentifier:(id)a5;
-- (void)playbackCoordinator:(id)a3 reloadTransportControlStateForItemWithIdentifier:(id)a4 completionHandler:(id)a5;
+- (void)endSuspensionOnAllCoordinatorsWithReason:(id)reason;
+- (void)playbackCoordinator:(id)coordinator broadcastLocalParticipantStateDictionary:(id)dictionary;
+- (void)playbackCoordinator:(id)coordinator broadcastTransportControlStateDictionary:(id)dictionary forItemWithIdentifier:(id)identifier;
+- (void)playbackCoordinator:(id)coordinator reloadTransportControlStateForItemWithIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation AVPlaybackCoordinationMedium
@@ -159,7 +159,7 @@ uint64_t __45__AVPlaybackCoordinationMedium__participants__block_invoke(uint64_t
   return result;
 }
 
-- (void)_updateParticipantsWithParticipant:(id)a3
+- (void)_updateParticipantsWithParticipant:(id)participant
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -167,11 +167,11 @@ uint64_t __45__AVPlaybackCoordinationMedium__participants__block_invoke(uint64_t
   v4[2] = __67__AVPlaybackCoordinationMedium__updateParticipantsWithParticipant___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = participant;
   dispatch_sync(stateQueue, v4);
 }
 
-- (void)_removeParticipant:(id)a3
+- (void)_removeParticipant:(id)participant
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -179,7 +179,7 @@ uint64_t __45__AVPlaybackCoordinationMedium__participants__block_invoke(uint64_t
   v4[2] = __51__AVPlaybackCoordinationMedium__removeParticipant___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = participant;
   dispatch_sync(stateQueue, v4);
 }
 
@@ -211,7 +211,7 @@ uint64_t __57__AVPlaybackCoordinationMedium__participantStatesAsArray__block_inv
   return result;
 }
 
-- (void)_updateParticipantState:(id)a3 forIdentifier:(id)a4
+- (void)_updateParticipantState:(id)state forIdentifier:(id)identifier
 {
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -219,12 +219,12 @@ uint64_t __57__AVPlaybackCoordinationMedium__participantStatesAsArray__block_inv
   block[2] = __70__AVPlaybackCoordinationMedium__updateParticipantState_forIdentifier___block_invoke;
   block[3] = &unk_1E7460E90;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = state;
+  block[6] = identifier;
   dispatch_sync(stateQueue, block);
 }
 
-- (void)_removeParticipantStateForIdentifier:(id)a3
+- (void)_removeParticipantStateForIdentifier:(id)identifier
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -232,7 +232,7 @@ uint64_t __57__AVPlaybackCoordinationMedium__participantStatesAsArray__block_inv
   v4[2] = __69__AVPlaybackCoordinationMedium__removeParticipantStateForIdentifier___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = identifier;
   dispatch_sync(stateQueue, v4);
 }
 
@@ -264,7 +264,7 @@ uint64_t __62__AVPlaybackCoordinationMedium__transportControlStatesAsArray__bloc
   return result;
 }
 
-- (id)_transportControlStateForItemIdentifier:(id)a3
+- (id)_transportControlStateForItemIdentifier:(id)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -277,7 +277,7 @@ uint64_t __62__AVPlaybackCoordinationMedium__transportControlStatesAsArray__bloc
   block[1] = 3221225472;
   block[2] = __72__AVPlaybackCoordinationMedium__transportControlStateForItemIdentifier___block_invoke;
   block[3] = &unk_1E7461068;
-  block[5] = a3;
+  block[5] = identifier;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(stateQueue, block);
@@ -397,15 +397,15 @@ uint64_t __67__AVPlaybackCoordinationMedium__removeUnusedTransportControlStates_
   return result;
 }
 
-- (unsigned)areAllCoordinatorsSuspendedForReason:(id)a3
+- (unsigned)areAllCoordinatorsSuspendedForReason:(id)reason
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(AVPlaybackCoordinationMedium *)self _participants];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _participants = [(AVPlaybackCoordinationMedium *)self _participants];
+  v4 = [_participants countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -416,7 +416,7 @@ LABEL_3:
     {
       if (*v11 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(_participants);
       }
 
       [objc_msgSend(*(*(&v10 + 1) + 8 * v7) "playbackCoordinator")];
@@ -428,7 +428,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [_participants countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -448,15 +448,15 @@ LABEL_9:
   return v8;
 }
 
-- (void)endSuspensionOnAllCoordinatorsWithReason:(id)a3
+- (void)endSuspensionOnAllCoordinatorsWithReason:(id)reason
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(AVPlaybackCoordinationMedium *)self _participants];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _participants = [(AVPlaybackCoordinationMedium *)self _participants];
+  v5 = [_participants countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -468,14 +468,14 @@ LABEL_9:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_participants);
         }
 
         [objc_msgSend(*(*(&v9 + 1) + 8 * v8++) "playbackCoordinator")];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_participants countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -510,7 +510,7 @@ id __55__AVPlaybackCoordinationMedium__initialStateOriginator__block_invoke(uint
   return result;
 }
 
-- (void)_setInitialStateOriginator:(id)a3
+- (void)_setInitialStateOriginator:(id)originator
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -518,7 +518,7 @@ id __55__AVPlaybackCoordinationMedium__initialStateOriginator__block_invoke(uint
   v4[2] = __59__AVPlaybackCoordinationMedium__setInitialStateOriginator___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = originator;
   dispatch_sync(stateQueue, v4);
 }
 
@@ -529,7 +529,7 @@ id __59__AVPlaybackCoordinationMedium__setInitialStateOriginator___block_invoke(
   return result;
 }
 
-- (id)_mediumParticipantForCoordinator:(id)a3 orIdentifier:(id)a4
+- (id)_mediumParticipantForCoordinator:(id)coordinator orIdentifier:(id)identifier
 {
   v9 = 0;
   v10 = &v9;
@@ -537,7 +537,7 @@ id __59__AVPlaybackCoordinationMedium__setInitialStateOriginator___block_invoke(
   v12 = __Block_byref_object_copy__1;
   v13 = __Block_byref_object_dispose__1;
   v14 = 0;
-  if (a3 | a4)
+  if (coordinator | identifier)
   {
     stateQueue = self->_stateQueue;
     v8[0] = MEMORY[0x1E69E9820];
@@ -545,8 +545,8 @@ id __59__AVPlaybackCoordinationMedium__setInitialStateOriginator___block_invoke(
     v8[2] = __78__AVPlaybackCoordinationMedium__mediumParticipantForCoordinator_orIdentifier___block_invoke;
     v8[3] = &unk_1E74610E0;
     v8[4] = self;
-    v8[5] = a3;
-    v8[6] = a4;
+    v8[5] = coordinator;
+    v8[6] = identifier;
     v8[7] = &v9;
     dispatch_sync(stateQueue, v8);
     v5 = v10[5];
@@ -641,7 +641,7 @@ id __78__AVPlaybackCoordinationMedium__mediumParticipantForCoordinator_orIdentif
   return v3;
 }
 
-- (id)localParticipantUUIDForPlaybackCoordinator:(id)a3
+- (id)localParticipantUUIDForPlaybackCoordinator:(id)coordinator
 {
   v7 = 0;
   v8 = &v7;
@@ -655,7 +655,7 @@ id __78__AVPlaybackCoordinationMedium__mediumParticipantForCoordinator_orIdentif
   block[2] = __75__AVPlaybackCoordinationMedium_localParticipantUUIDForPlaybackCoordinator___block_invoke;
   block[3] = &unk_1E7460F30;
   block[4] = self;
-  block[5] = a3;
+  block[5] = coordinator;
   block[6] = &v7;
   dispatch_sync(stateQueue, block);
   v4 = v8[5];
@@ -706,16 +706,16 @@ uint64_t __75__AVPlaybackCoordinationMedium_localParticipantUUIDForPlaybackCoord
   return result;
 }
 
-- (void)playbackCoordinator:(id)a3 broadcastLocalParticipantStateDictionary:(id)a4
+- (void)playbackCoordinator:(id)coordinator broadcastLocalParticipantStateDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x1E69E9840];
-  -[AVPlaybackCoordinationMedium _updateParticipantState:forIdentifier:](self, "_updateParticipantState:forIdentifier:", a4, [a4 objectForKeyedSubscript:@"UUID"]);
+  -[AVPlaybackCoordinationMedium _updateParticipantState:forIdentifier:](self, "_updateParticipantState:forIdentifier:", dictionary, [dictionary objectForKeyedSubscript:@"UUID"]);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(AVPlaybackCoordinationMedium *)self _participants];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _participants = [(AVPlaybackCoordinationMedium *)self _participants];
+  v8 = [_participants countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -726,7 +726,7 @@ uint64_t __75__AVPlaybackCoordinationMedium_localParticipantUUIDForPlaybackCoord
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_participants);
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
@@ -736,18 +736,18 @@ uint64_t __75__AVPlaybackCoordinationMedium_localParticipantUUIDForPlaybackCoord
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [_participants countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)playbackCoordinator:(id)a3 broadcastTransportControlStateDictionary:(id)a4 forItemWithIdentifier:(id)a5
+- (void)playbackCoordinator:(id)coordinator broadcastTransportControlStateDictionary:(id)dictionary forItemWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
   [(NSCondition *)self->_condition lock];
-  [(AVPlaybackCoordinationMedium *)self _updateTransportControlState:a4 forIdentifier:a5];
+  [(AVPlaybackCoordinationMedium *)self _updateTransportControlState:dictionary forIdentifier:identifier];
   if (self->_itemIdentifierConditionWaitsOn && [(AVPlaybackCoordinationMedium *)self _transportControlStateForItemIdentifier:?])
   {
     [(NSCondition *)self->_condition signal];
@@ -758,8 +758,8 @@ uint64_t __75__AVPlaybackCoordinationMedium_localParticipantUUIDForPlaybackCoord
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(AVPlaybackCoordinationMedium *)self _participants];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _participants = [(AVPlaybackCoordinationMedium *)self _participants];
+  v10 = [_participants countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -770,7 +770,7 @@ uint64_t __75__AVPlaybackCoordinationMedium_localParticipantUUIDForPlaybackCoord
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_participants);
         }
 
         v14 = *(*(&v15 + 1) + 8 * i);
@@ -780,26 +780,26 @@ uint64_t __75__AVPlaybackCoordinationMedium_localParticipantUUIDForPlaybackCoord
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [_participants countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)playbackCoordinator:(id)a3 reloadTransportControlStateForItemWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)playbackCoordinator:(id)coordinator reloadTransportControlStateForItemWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v9 = [-[AVPlaybackCoordinationMedium _transportControlStateForItemIdentifier:](self _transportControlStateForItemIdentifier:{a4), "mutableCopy"}];
+  v9 = [-[AVPlaybackCoordinationMedium _transportControlStateForItemIdentifier:](self _transportControlStateForItemIdentifier:{identifier), "mutableCopy"}];
   v10 = v9;
   if (v9)
   {
     [v9 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"IsAuthoritative"];
-    [a3 handleNewTransportControlStateDictionary:v10];
+    [coordinator handleNewTransportControlStateDictionary:v10];
   }
 
   else
   {
-    v11 = [(AVPlaybackCoordinationMedium *)self _mediumParticipantForCoordinator:a3 orIdentifier:0];
+    v11 = [(AVPlaybackCoordinationMedium *)self _mediumParticipantForCoordinator:coordinator orIdentifier:0];
     if ([(AVPlaybackCoordinationMedium *)self _initialStateOriginator])
     {
       if ([(AVPlaybackCoordinationMedium *)self _initialStateOriginator]!= v11)
@@ -810,9 +810,9 @@ uint64_t __75__AVPlaybackCoordinationMedium_localParticipantUUIDForPlaybackCoord
         v13[2] = __119__AVPlaybackCoordinationMedium_playbackCoordinator_reloadTransportControlStateForItemWithIdentifier_completionHandler___block_invoke;
         v13[3] = &unk_1E7461108;
         v13[4] = self;
-        v13[5] = a4;
-        v13[6] = a3;
-        v13[7] = a5;
+        v13[5] = identifier;
+        v13[6] = coordinator;
+        v13[7] = handler;
         dispatch_async(dispatchQueue, v13);
         goto LABEL_4;
       }
@@ -824,7 +824,7 @@ uint64_t __75__AVPlaybackCoordinationMedium_localParticipantUUIDForPlaybackCoord
     }
   }
 
-  (*(a5 + 2))(a5);
+  (*(handler + 2))(handler);
 LABEL_4:
 }
 
@@ -857,13 +857,13 @@ uint64_t __119__AVPlaybackCoordinationMedium_playbackCoordinator_reloadTransport
   return v4();
 }
 
-- (BOOL)_updateTransportControlState:(id)a3 forIdentifier:(id)a4
+- (BOOL)_updateTransportControlState:(id)state forIdentifier:(id)identifier
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  if (a4)
+  if (identifier)
   {
     stateQueue = self->_stateQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -871,8 +871,8 @@ uint64_t __119__AVPlaybackCoordinationMedium_playbackCoordinator_reloadTransport
     v7[2] = __75__AVPlaybackCoordinationMedium__updateTransportControlState_forIdentifier___block_invoke;
     v7[3] = &unk_1E7461090;
     v7[4] = self;
-    v7[5] = a4;
-    v7[6] = a3;
+    v7[5] = identifier;
+    v7[6] = state;
     v7[7] = &v8;
     dispatch_sync(stateQueue, v7);
     v5 = *(v9 + 24);
@@ -957,17 +957,17 @@ uint64_t __71__AVPlaybackCoordinationMedium__updateLowestInUseDefaultItemIdentif
   return result;
 }
 
-- (int)connectPlaybackCoordinator:(id)a3
+- (int)connectPlaybackCoordinator:(id)coordinator
 {
-  if (a3)
+  if (coordinator)
   {
-    v5 = -[AVPlaybackCoordinationMediumParticipant initWithPlaybackCoordinator:participantIdentifier:]([AVPlaybackCoordinationMediumParticipant alloc], "initWithPlaybackCoordinator:participantIdentifier:", a3, [MEMORY[0x1E696AFB0] UUID]);
+    v5 = -[AVPlaybackCoordinationMediumParticipant initWithPlaybackCoordinator:participantIdentifier:]([AVPlaybackCoordinationMediumParticipant alloc], "initWithPlaybackCoordinator:participantIdentifier:", coordinator, [MEMORY[0x1E696AFB0] UUID]);
     [(AVPlaybackCoordinationMedium *)self _updateParticipantsWithParticipant:v5];
     [(AVPlaybackCoordinationMedium *)self _updateLowestInUseDefaultItemIdentifier];
-    [a3 setDefaultItemIdentifierCounter:-[AVPlaybackCoordinationMedium _lowestInUseDefaultItemIdentifier](self postingNotification:{"_lowestInUseDefaultItemIdentifier"), 1}];
-    [a3 setCoordinationMediumDelegate:self];
-    [a3 handleReplacementParticipantStateDictionaries:{-[AVPlaybackCoordinationMedium _participantStatesAsArray](self, "_participantStatesAsArray")}];
-    v6 = [(AVPlaybackCoordinationMedium *)self _transportControlStatesAsArray];
+    [coordinator setDefaultItemIdentifierCounter:-[AVPlaybackCoordinationMedium _lowestInUseDefaultItemIdentifier](self postingNotification:{"_lowestInUseDefaultItemIdentifier"), 1}];
+    [coordinator setCoordinationMediumDelegate:self];
+    [coordinator handleReplacementParticipantStateDictionaries:{-[AVPlaybackCoordinationMedium _participantStatesAsArray](self, "_participantStatesAsArray")}];
+    _transportControlStatesAsArray = [(AVPlaybackCoordinationMedium *)self _transportControlStatesAsArray];
     OUTLINED_FUNCTION_1();
     v8 = [v7 countByEnumeratingWithState:? objects:? count:?];
     if (v8)
@@ -981,15 +981,15 @@ uint64_t __71__AVPlaybackCoordinationMedium__updateLowestInUseDefaultItemIdentif
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_transportControlStatesAsArray);
           }
 
-          [a3 handleNewTransportControlStateDictionary:*(v13 + 8 * v11++)];
+          [coordinator handleNewTransportControlStateDictionary:*(v13 + 8 * v11++)];
         }
 
         while (v9 != v11);
         OUTLINED_FUNCTION_1();
-        v9 = [v6 countByEnumeratingWithState:? objects:? count:?];
+        v9 = [_transportControlStatesAsArray countByEnumeratingWithState:? objects:? count:?];
       }
 
       while (v9);
@@ -1004,18 +1004,18 @@ uint64_t __71__AVPlaybackCoordinationMedium__updateLowestInUseDefaultItemIdentif
   return 0;
 }
 
-- (int)disconnectPlaybackCoordinatorWithIdentifier:(id)a3
+- (int)disconnectPlaybackCoordinatorWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (a3)
+  identifierCopy = identifier;
+  if (identifier)
   {
-    v5 = [(AVPlaybackCoordinationMedium *)self _mediumParticipantForCoordinator:0 orIdentifier:a3];
+    v5 = [(AVPlaybackCoordinationMedium *)self _mediumParticipantForCoordinator:0 orIdentifier:identifier];
     if (v5)
     {
       [(AVPlaybackCoordinationMedium *)self _removeParticipant:v5];
     }
 
-    v6 = [(AVPlaybackCoordinationMedium *)self _participants];
+    _participants = [(AVPlaybackCoordinationMedium *)self _participants];
     OUTLINED_FUNCTION_1();
     v8 = [v7 countByEnumeratingWithState:? objects:? count:?];
     if (v8)
@@ -1028,21 +1028,21 @@ uint64_t __71__AVPlaybackCoordinationMedium__updateLowestInUseDefaultItemIdentif
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_participants);
           }
 
           [objc_msgSend(*(v13 + 8 * i) "playbackCoordinator")];
         }
 
         OUTLINED_FUNCTION_1();
-        v9 = [v6 countByEnumeratingWithState:? objects:? count:?];
+        v9 = [_participants countByEnumeratingWithState:? objects:? count:?];
       }
 
       while (v9);
     }
 
-    v3 = [objc_msgSend(v3 "UUIDString")];
-    [(AVPlaybackCoordinationMedium *)self _removeParticipantStateForIdentifier:v3];
+    identifierCopy = [objc_msgSend(identifierCopy "UUIDString")];
+    [(AVPlaybackCoordinationMedium *)self _removeParticipantStateForIdentifier:identifierCopy];
     [(AVPlaybackCoordinationMedium *)self _removeUnusedTransportControlStates];
     if ([(AVPlaybackCoordinationMedium *)self _initialStateOriginator]== v5)
     {

@@ -1,17 +1,17 @@
 @interface WFObjectType
-+ (WFObjectType)typeWithClass:(Class)a3;
-+ (WFObjectType)typeWithClassName:(id)a3 frameworkName:(id)a4 location:(unint64_t)a5;
-+ (id)typesWithClasses:(id)a3;
-- (BOOL)conformsToClass:(Class)a3;
-- (BOOL)conformsToType:(id)a3;
-- (BOOL)isEqualToClass:(Class)a3;
-- (BOOL)isEqualToType:(id)a3;
++ (WFObjectType)typeWithClass:(Class)class;
++ (WFObjectType)typeWithClassName:(id)name frameworkName:(id)frameworkName location:(unint64_t)location;
++ (id)typesWithClasses:(id)classes;
+- (BOOL)conformsToClass:(Class)class;
+- (BOOL)conformsToType:(id)type;
+- (BOOL)isEqualToClass:(Class)class;
+- (BOOL)isEqualToType:(id)type;
 - (Class)objectClass;
-- (WFObjectType)initWithClassName:(id)a3 inBundle:(id)a4;
-- (WFObjectType)initWithCoder:(id)a3;
-- (WFObjectType)initWithObjectClass:(Class)a3;
+- (WFObjectType)initWithClassName:(id)name inBundle:(id)bundle;
+- (WFObjectType)initWithCoder:(id)coder;
+- (WFObjectType)initWithObjectClass:(Class)class;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFObjectType
@@ -21,37 +21,37 @@
   v7.receiver = self;
   v7.super_class = WFObjectType;
   v3 = [(WFType *)&v7 hash];
-  v4 = [(WFObjectType *)self className];
-  v5 = [v4 hash];
+  className = [(WFObjectType *)self className];
+  v5 = [className hash];
 
   return v5 ^ v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFObjectType *)self className];
-  [v4 encodeObject:v5 forKey:@"className"];
+  coderCopy = coder;
+  className = [(WFObjectType *)self className];
+  [coderCopy encodeObject:className forKey:@"className"];
 
-  v7 = [(WFObjectType *)self bundle];
-  v6 = [v7 bundlePath];
-  [v4 encodeObject:v6 forKey:@"bundlePath"];
+  bundle = [(WFObjectType *)self bundle];
+  bundlePath = [bundle bundlePath];
+  [coderCopy encodeObject:bundlePath forKey:@"bundlePath"];
 }
 
-- (WFObjectType)initWithCoder:(id)a3
+- (WFObjectType)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"className"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundlePath"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"className"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundlePath"];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CCA8D8] bundleWithPath:v6];
-    if (v7)
+    selfCopy2 = [MEMORY[0x277CCA8D8] bundleWithPath:v6];
+    if (selfCopy2)
     {
-      self = [(WFObjectType *)self initWithClassName:v5 inBundle:v7];
+      self = [(WFObjectType *)self initWithClassName:v5 inBundle:selfCopy2];
 
-      v7 = self;
+      selfCopy2 = self;
     }
   }
 
@@ -61,16 +61,16 @@
     if (v8)
     {
       self = [(WFObjectType *)self initWithObjectClass:v8];
-      v7 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy2 = 0;
     }
   }
 
-  return v7;
+  return selfCopy2;
 }
 
 - (Class)objectClass
@@ -78,14 +78,14 @@
   objectClass = self->_objectClass;
   if (!objectClass)
   {
-    v5 = [(WFObjectType *)self bundle];
+    bundle = [(WFObjectType *)self bundle];
     v16 = 0;
-    v6 = [v5 loadAndReturnError:&v16];
+    v6 = [bundle loadAndReturnError:&v16];
     v7 = v16;
     if (v6)
     {
-      v8 = [(WFObjectType *)self className];
-      v9 = NSClassFromString(v8);
+      className = [(WFObjectType *)self className];
+      v9 = NSClassFromString(className);
       v10 = self->_objectClass;
       self->_objectClass = v9;
 
@@ -100,14 +100,14 @@
 
     else
     {
-      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Unable to load bundle %@: %@", v5, v7}];
+      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Unable to load bundle %@: %@", bundle, v7}];
       __break(1u);
     }
 
     v13 = MEMORY[0x277CBEAD8];
     v14 = *MEMORY[0x277CBE658];
-    v15 = [(WFObjectType *)self className];
-    [v13 raise:v14 format:{@"Unable to load object class named %@ from bundle: %@", v15, v5}];
+    className2 = [(WFObjectType *)self className];
+    [v13 raise:v14 format:{@"Unable to load object class named %@ from bundle: %@", className2, bundle}];
 
     __break(1u);
     return result;
@@ -119,35 +119,35 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)conformsToClass:(Class)a3
+- (BOOL)conformsToClass:(Class)class
 {
-  v4 = [(WFObjectType *)self objectClass];
+  objectClass = [(WFObjectType *)self objectClass];
 
-  return [(objc_class *)v4 isSubclassOfClass:a3];
+  return [(objc_class *)objectClass isSubclassOfClass:class];
 }
 
-- (BOOL)conformsToType:(id)a3
+- (BOOL)conformsToType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 className];
-    v6 = [(WFObjectType *)self objectClass];
+    className = [typeCopy className];
+    objectClass = [(WFObjectType *)self objectClass];
     do
     {
-      v7 = NSStringFromClass(v6);
-      v8 = [v7 isEqualToString:v5];
+      v7 = NSStringFromClass(objectClass);
+      v8 = [v7 isEqualToString:className];
 
       if (v8)
       {
         break;
       }
 
-      v6 = [(objc_class *)v6 superclass];
+      objectClass = [(objc_class *)objectClass superclass];
     }
 
-    while (v6);
+    while (objectClass);
   }
 
   else
@@ -158,19 +158,19 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)isEqualToClass:(Class)a3
+- (BOOL)isEqualToClass:(Class)class
 {
-  v4 = NSStringFromClass(a3);
-  v5 = [(WFObjectType *)self className];
-  v6 = [v4 isEqualToString:v5];
+  v4 = NSStringFromClass(class);
+  className = [(WFObjectType *)self className];
+  v6 = [v4 isEqualToString:className];
 
   return v6;
 }
 
-- (BOOL)isEqualToType:(id)a3
+- (BOOL)isEqualToType:(id)type
 {
-  v4 = a3;
-  if (v4 == self)
+  typeCopy = type;
+  if (typeCopy == self)
   {
     v7 = 1;
   }
@@ -180,9 +180,9 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFObjectType *)v4 className];
-      v6 = [(WFObjectType *)self className];
-      v7 = [v5 isEqualToString:v6];
+      className = [(WFObjectType *)typeCopy className];
+      className2 = [(WFObjectType *)self className];
+      v7 = [className isEqualToString:className2];
     }
 
     else
@@ -194,12 +194,12 @@ LABEL_6:
   return v7;
 }
 
-- (WFObjectType)initWithObjectClass:(Class)a3
+- (WFObjectType)initWithObjectClass:(Class)class
 {
-  if (!a3)
+  if (!class)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFObjectType.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"objectClass"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFObjectType.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"objectClass"}];
   }
 
   v13.receiver = self;
@@ -208,8 +208,8 @@ LABEL_6:
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_objectClass, a3);
-    v7 = NSStringFromClass(a3);
+    objc_storeStrong(&v5->_objectClass, class);
+    v7 = NSStringFromClass(class);
     className = v6->_className;
     v6->_className = v7;
 
@@ -219,14 +219,14 @@ LABEL_6:
   return v6;
 }
 
-- (WFObjectType)initWithClassName:(id)a3 inBundle:(id)a4
+- (WFObjectType)initWithClassName:(id)name inBundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  nameCopy = name;
+  bundleCopy = bundle;
+  v9 = bundleCopy;
+  if (nameCopy)
   {
-    if (v8)
+    if (bundleCopy)
     {
       goto LABEL_3;
     }
@@ -234,8 +234,8 @@ LABEL_6:
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFObjectType.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"className"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFObjectType.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"className"}];
 
     if (v9)
     {
@@ -243,8 +243,8 @@ LABEL_6:
     }
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"WFObjectType.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"bundle"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFObjectType.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"bundle"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -252,24 +252,24 @@ LABEL_3:
   v10 = [(WFObjectType *)&v17 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     className = v10->_className;
     v10->_className = v11;
 
-    objc_storeStrong(&v10->_bundle, a4);
+    objc_storeStrong(&v10->_bundle, bundle);
     v13 = v10;
   }
 
   return v10;
 }
 
-+ (WFObjectType)typeWithClassName:(id)a3 frameworkName:(id)a4 location:(unint64_t)a5
++ (WFObjectType)typeWithClassName:(id)name frameworkName:(id)frameworkName location:(unint64_t)location
 {
-  v8 = a4;
+  frameworkNameCopy = frameworkName;
   v9 = MEMORY[0x277CBEBC0];
-  v10 = a3;
+  nameCopy = name;
   v11 = [[v9 alloc] initFileURLWithPath:@"/" isDirectory:1];
-  if ((a5 & 0xFFFFFFFFFFFFFFFELL) == 2 && _CFMZEnabled())
+  if ((location & 0xFFFFFFFFFFFFFFFELL) == 2 && _CFMZEnabled())
   {
     v12 = [v11 URLByAppendingPathComponent:@"/System/iOSSupport/" isDirectory:1];
 
@@ -278,14 +278,14 @@ LABEL_3:
 
   v13 = [v11 URLByAppendingPathComponent:@"/System/Library/" isDirectory:1];
 
-  if ((a5 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((location & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     v14 = @"PrivateFrameworks";
   }
 
   else
   {
-    if ((a5 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+    if ((location & 0xFFFFFFFFFFFFFFFDLL) != 0)
     {
       goto LABEL_9;
     }
@@ -297,30 +297,30 @@ LABEL_3:
 
   v13 = v15;
 LABEL_9:
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.framework", v8];
-  v17 = [v13 URLByAppendingPathComponent:v16 isDirectory:1];
+  frameworkNameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.framework", frameworkNameCopy];
+  v17 = [v13 URLByAppendingPathComponent:frameworkNameCopy isDirectory:1];
 
   v18 = [MEMORY[0x277CCA8D8] bundleWithURL:v17];
-  v19 = [[a1 alloc] initWithClassName:v10 inBundle:v18];
+  v19 = [[self alloc] initWithClassName:nameCopy inBundle:v18];
 
   return v19;
 }
 
-+ (id)typesWithClasses:(id)a3
++ (id)typesWithClasses:(id)classes
 {
-  v5 = a3;
-  if (!v5)
+  classesCopy = classes;
+  if (!classesCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"WFObjectType.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"objectClasses"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFObjectType.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"objectClasses"}];
   }
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __33__WFObjectType_typesWithClasses___block_invoke;
   v9[3] = &__block_descriptor_40_e25___WFObjectType_24__0_8Q16l;
-  v9[4] = a1;
-  v6 = [v5 if_map:v9];
+  v9[4] = self;
+  v6 = [classesCopy if_map:v9];
 
   return v6;
 }
@@ -332,9 +332,9 @@ id __33__WFObjectType_typesWithClasses___block_invoke(uint64_t a1, uint64_t a2)
   return v2;
 }
 
-+ (WFObjectType)typeWithClass:(Class)a3
++ (WFObjectType)typeWithClass:(Class)class
 {
-  v3 = [[a1 alloc] initWithObjectClass:a3];
+  v3 = [[self alloc] initWithObjectClass:class];
 
   return v3;
 }

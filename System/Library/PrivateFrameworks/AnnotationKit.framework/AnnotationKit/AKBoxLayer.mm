@@ -1,13 +1,13 @@
 @interface AKBoxLayer
-- (AKBoxLayer)initWithBorderWidth:(double)a3 cornerRadius:(double)a4;
+- (AKBoxLayer)initWithBorderWidth:(double)width cornerRadius:(double)radius;
 - (void)_updateBoxPath;
-- (void)setBorderWidthScale:(double)a3;
-- (void)setBounds:(CGRect)a3;
+- (void)setBorderWidthScale:(double)scale;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation AKBoxLayer
 
-- (AKBoxLayer)initWithBorderWidth:(double)a3 cornerRadius:(double)a4
+- (AKBoxLayer)initWithBorderWidth:(double)width cornerRadius:(double)radius
 {
   v10.receiver = self;
   v10.super_class = AKBoxLayer;
@@ -16,32 +16,32 @@
   if (v6)
   {
     [(AKBoxLayer *)v6 setAnchorPoint:0.5, 0.5];
-    [(AKBoxLayer *)v7 setLineWidth:a3];
-    v8 = [MEMORY[0x277D75348] akBoxBorderColor];
-    -[AKBoxLayer setStrokeColor:](v7, "setStrokeColor:", [v8 CGColor]);
+    [(AKBoxLayer *)v7 setLineWidth:width];
+    akBoxBorderColor = [MEMORY[0x277D75348] akBoxBorderColor];
+    -[AKBoxLayer setStrokeColor:](v7, "setStrokeColor:", [akBoxBorderColor CGColor]);
 
     [(AKBoxLayer *)v7 setFillColor:0];
     v7->_borderWidthScale = 1.0;
-    v7->_boxCornerRadius = a4;
-    v7->_nominalBorderWidth = a3;
+    v7->_boxCornerRadius = radius;
+    v7->_nominalBorderWidth = width;
   }
 
   return v7;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = AKBoxLayer;
-  [(AKBoxLayer *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AKBoxLayer *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(AKBoxLayer *)self _updateBoxPath];
 }
 
-- (void)setBorderWidthScale:(double)a3
+- (void)setBorderWidthScale:(double)scale
 {
-  if (self->_borderWidthScale != a3)
+  if (self->_borderWidthScale != scale)
   {
-    self->_borderWidthScale = a3;
+    self->_borderWidthScale = scale;
     [(AKBoxLayer *)self nominalBorderWidth];
     v6 = v5;
     [(AKBoxLayer *)self borderWidthScale];

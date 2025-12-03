@@ -1,31 +1,31 @@
 @interface TranscriptView.TranscriptTextView
-- (_TtCC10VoiceMemos14TranscriptView18TranscriptTextView)initWithCoder:(id)a3;
-- (_TtCC10VoiceMemos14TranscriptView18TranscriptTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtCC10VoiceMemos14TranscriptView18TranscriptTextView)initWithCoder:(id)coder;
+- (_TtCC10VoiceMemos14TranscriptView18TranscriptTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 @end
 
 @implementation TranscriptView.TranscriptTextView
 
-- (_TtCC10VoiceMemos14TranscriptView18TranscriptTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtCC10VoiceMemos14TranscriptView18TranscriptTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *&self->findInteractionObserver[OBJC_IVAR____TtCC10VoiceMemos14TranscriptView18TranscriptTextView_findInteractionObserver] = 0;
   swift_unknownObjectWeakInit();
   v11.receiver = self;
   v11.super_class = type metadata accessor for TranscriptView.TranscriptTextView();
-  return [(TranscriptView.TranscriptTextView *)&v11 initWithFrame:a4 textContainer:x, y, width, height];
+  return [(TranscriptView.TranscriptTextView *)&v11 initWithFrame:container textContainer:x, y, width, height];
 }
 
-- (_TtCC10VoiceMemos14TranscriptView18TranscriptTextView)initWithCoder:(id)a3
+- (_TtCC10VoiceMemos14TranscriptView18TranscriptTextView)initWithCoder:(id)coder
 {
   *&self->findInteractionObserver[OBJC_IVAR____TtCC10VoiceMemos14TranscriptView18TranscriptTextView_findInteractionObserver] = 0;
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for TranscriptView.TranscriptTextView();
-  v5 = a3;
-  v6 = [(TranscriptView.TranscriptTextView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(TranscriptView.TranscriptTextView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

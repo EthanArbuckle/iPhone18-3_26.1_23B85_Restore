@@ -1,33 +1,33 @@
 @interface PXFocusRing
-+ (void)updateView:(id)a3 infoProviderBlock:(id)a4;
-- (PXFocusRing)initWithFrame:(CGRect)a3;
++ (void)updateView:(id)view infoProviderBlock:(id)block;
+- (PXFocusRing)initWithFrame:(CGRect)frame;
 - (void)_updateColors;
-- (void)_updateWithInfo:(id)a3;
-- (void)_updateWithView:(id)a3;
-- (void)_updateWithView:(id)a3 focusRect:(CGRect)a4 cornerRadius:(double)a5 innerBorderWidth:(double)a6 outerBorderWidth:(double)a7;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)_updateWithInfo:(id)info;
+- (void)_updateWithView:(id)view;
+- (void)_updateWithView:(id)view focusRect:(CGRect)rect cornerRadius:(double)radius innerBorderWidth:(double)width outerBorderWidth:(double)borderWidth;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PXFocusRing
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PXFocusRing *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  traitCollection = [(PXFocusRing *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(PXFocusRing *)self _updateColors];
   }
 }
 
-- (void)_updateWithInfo:(id)a3
+- (void)_updateWithInfo:(id)info
 {
-  v4 = a3;
-  [v4 cornerRadius];
+  infoCopy = info;
+  [infoCopy cornerRadius];
   v6 = v5 + 4.0;
   v7 = 0.0;
   if (v6 >= 0.0)
@@ -40,15 +40,15 @@
     v8 = 0.0;
   }
 
-  v9 = [v4 view];
-  [v9 bounds];
+  view = [infoCopy view];
+  [view bounds];
   v18 = CGRectInset(v17, -4.0, -4.0);
   x = v18.origin.x;
   y = v18.origin.y;
   width = v18.size.width;
   height = v18.size.height;
 
-  if ([v4 wantsInnerBorder])
+  if ([infoCopy wantsInnerBorder])
   {
     v14 = 1.0;
   }
@@ -58,69 +58,69 @@
     v14 = 0.0;
   }
 
-  if ([v4 wantsOuterBorder])
+  if ([infoCopy wantsOuterBorder])
   {
     v7 = 1.0;
   }
 
-  v15 = [v4 view];
+  view2 = [infoCopy view];
 
-  [(PXFocusRing *)self _updateWithView:v15 focusRect:x cornerRadius:y innerBorderWidth:width outerBorderWidth:height, v8, v14, v7];
+  [(PXFocusRing *)self _updateWithView:view2 focusRect:x cornerRadius:y innerBorderWidth:width outerBorderWidth:height, v8, v14, v7];
 }
 
-- (void)_updateWithView:(id)a3
+- (void)_updateWithView:(id)view
 {
-  v5 = a3;
-  v4 = [v5 layer];
-  [v4 cornerRadius];
+  viewCopy = view;
+  layer = [viewCopy layer];
+  [layer cornerRadius];
 
-  [v5 bounds];
-  [PXFocusRing _updateWithView:"_updateWithView:focusRect:cornerRadius:innerBorderWidth:outerBorderWidth:" focusRect:v5 cornerRadius:? innerBorderWidth:? outerBorderWidth:?];
+  [viewCopy bounds];
+  [PXFocusRing _updateWithView:"_updateWithView:focusRect:cornerRadius:innerBorderWidth:outerBorderWidth:" focusRect:viewCopy cornerRadius:? innerBorderWidth:? outerBorderWidth:?];
 }
 
-- (void)_updateWithView:(id)a3 focusRect:(CGRect)a4 cornerRadius:(double)a5 innerBorderWidth:(double)a6 outerBorderWidth:(double)a7
+- (void)_updateWithView:(id)view focusRect:(CGRect)rect cornerRadius:(double)radius innerBorderWidth:(double)width outerBorderWidth:(double)borderWidth
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v25 = a3;
-  v15 = [(PXFocusRing *)self superview];
-  if (!v15)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  superview = [(PXFocusRing *)self superview];
+  if (!superview)
   {
     goto LABEL_23;
   }
 
-  [v25 bounds];
-  [v15 convertRect:v25 fromView:?];
+  [viewCopy bounds];
+  [superview convertRect:viewCopy fromView:?];
   [(PXFocusRing *)self setFrame:?];
   [(CALayer *)self->_focusLayer setFrame:x, y, width, height];
   [(CALayer *)self->_focusLayer setBorderWidth:3.0];
-  [(CALayer *)self->_focusLayer setCornerRadius:a5];
+  [(CALayer *)self->_focusLayer setCornerRadius:radius];
   innerLayer = self->_innerLayer;
-  if (a6 > 0.0 && !innerLayer)
+  if (width > 0.0 && !innerLayer)
   {
-    v17 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     v18 = self->_innerLayer;
-    self->_innerLayer = v17;
+    self->_innerLayer = layer;
 
     [(CALayer *)self->_innerLayer setBorderWidth:1.0];
-    v19 = a5 + -3.0;
-    if (a5 + -3.0 < 0.0)
+    v19 = radius + -3.0;
+    if (radius + -3.0 < 0.0)
     {
       v19 = 0.0;
     }
 
     [(CALayer *)self->_innerLayer setCornerRadius:v19];
-    v20 = [(PXFocusRing *)self layer];
-    [v20 addSublayer:self->_innerLayer];
+    layer2 = [(PXFocusRing *)self layer];
+    [layer2 addSublayer:self->_innerLayer];
     goto LABEL_10;
   }
 
-  if (a6 <= 0.0 && innerLayer)
+  if (width <= 0.0 && innerLayer)
   {
     [(CALayer *)innerLayer removeFromSuperlayer];
-    v20 = self->_innerLayer;
+    layer2 = self->_innerLayer;
     self->_innerLayer = 0;
 LABEL_10:
 
@@ -138,28 +138,28 @@ LABEL_10:
   }
 
   outerLayer = self->_outerLayer;
-  if (a7 <= 0.0 || outerLayer)
+  if (borderWidth <= 0.0 || outerLayer)
   {
-    if (a7 > 0.0 || !outerLayer)
+    if (borderWidth > 0.0 || !outerLayer)
     {
       goto LABEL_20;
     }
 
     [(CALayer *)outerLayer removeFromSuperlayer];
-    v24 = self->_outerLayer;
+    layer4 = self->_outerLayer;
     self->_outerLayer = 0;
   }
 
   else
   {
-    v22 = [MEMORY[0x1E6979398] layer];
+    layer3 = [MEMORY[0x1E6979398] layer];
     v23 = self->_outerLayer;
-    self->_outerLayer = v22;
+    self->_outerLayer = layer3;
 
     [(CALayer *)self->_outerLayer setBorderWidth:1.0];
-    [(CALayer *)self->_outerLayer setCornerRadius:a5 + 1.0];
-    v24 = [(PXFocusRing *)self layer];
-    [v24 addSublayer:self->_outerLayer];
+    [(CALayer *)self->_outerLayer setCornerRadius:radius + 1.0];
+    layer4 = [(PXFocusRing *)self layer];
+    [layer4 addSublayer:self->_outerLayer];
   }
 
   outerLayer = self->_outerLayer;
@@ -180,13 +180,13 @@ LABEL_23:
 
 - (void)_updateColors
 {
-  v3 = [(PXFocusRing *)self traitCollection];
+  traitCollection = [(PXFocusRing *)self traitCollection];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __28__PXFocusRing__updateColors__block_invoke;
   v4[3] = &unk_1E774C648;
   v4[4] = self;
-  [v3 performAsCurrentTraitCollection:v4];
+  [traitCollection performAsCurrentTraitCollection:v4];
 }
 
 void __28__PXFocusRing__updateColors__block_invoke(uint64_t a1)
@@ -202,34 +202,34 @@ void __28__PXFocusRing__updateColors__block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 424) setBorderColor:{objc_msgSend(v5, "CGColor")}];
 }
 
-- (PXFocusRing)initWithFrame:(CGRect)a3
+- (PXFocusRing)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PXFocusRing;
-  v3 = [(PXFocusRing *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXFocusRing *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PXFocusRing *)v3 setUserInteractionEnabled:0];
-    v5 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     focusLayer = v4->_focusLayer;
-    v4->_focusLayer = v5;
+    v4->_focusLayer = layer;
 
-    v7 = [(PXFocusRing *)v4 layer];
-    [v7 addSublayer:v4->_focusLayer];
+    layer2 = [(PXFocusRing *)v4 layer];
+    [layer2 addSublayer:v4->_focusLayer];
   }
 
   return v4;
 }
 
-+ (void)updateView:(id)a3 infoProviderBlock:(id)a4
++ (void)updateView:(id)view infoProviderBlock:(id)block
 {
-  v21 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  viewCopy = view;
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
-    v8 = (*(v6 + 2))(v6);
+    v8 = (*(blockCopy + 2))(blockCopy);
   }
 
   else
@@ -237,40 +237,40 @@ void __28__PXFocusRing__updateColors__block_invoke(uint64_t a1)
     v8 = 0;
   }
 
-  v9 = [v8 view];
-  v10 = [v9 superview];
-  v11 = v10;
-  if (v10)
+  view = [v8 view];
+  superview = [view superview];
+  v11 = superview;
+  if (superview)
   {
-    v12 = v10;
+    v12 = superview;
   }
 
   else
   {
-    v13 = [v21 superview];
-    if (v13)
+    superview2 = [viewCopy superview];
+    if (superview2)
     {
-      v14 = v13;
+      v14 = superview2;
     }
 
     else
     {
-      v14 = v21;
+      v14 = viewCopy;
     }
 
     v12 = v14;
   }
 
-  v15 = NSStringFromClass(a1);
+  v15 = NSStringFromClass(self);
   v16 = [v15 hash];
 
   v17 = [v12 viewWithTag:v16];
-  v18 = [v21 isFocused];
-  v19 = v18;
-  if (!v17 && v18)
+  isFocused = [viewCopy isFocused];
+  v19 = isFocused;
+  if (!v17 && isFocused)
   {
     v20 = [PXFocusRing alloc];
-    [v21 bounds];
+    [viewCopy bounds];
     v17 = [(PXFocusRing *)v20 initWithFrame:?];
     [(PXFocusRing *)v17 setTag:v16];
   }
@@ -285,7 +285,7 @@ void __28__PXFocusRing__updateColors__block_invoke(uint64_t a1)
 
     else
     {
-      [(PXFocusRing *)v17 _updateWithView:v21];
+      [(PXFocusRing *)v17 _updateWithView:viewCopy];
     }
   }
 

@@ -2,59 +2,59 @@
 - (BOOL)_isCachedFileLocationValid;
 - (BOOL)generatePreviewOutOfProcess;
 - (Class)placeholderBalloonViewClass;
-- (id)attachmentSummary:(unint64_t)a3;
-- (id)generateThumbnailForWidth:(double)a3 orientation:(char)a4;
-- (id)linkMetadataForWidth:(double)a3 orientation:(char)a4;
+- (id)attachmentSummary:(unint64_t)summary;
+- (id)generateThumbnailForWidth:(double)width orientation:(char)orientation;
+- (id)linkMetadataForWidth:(double)width orientation:(char)orientation;
 @end
 
 @implementation CKWatchfaceMediaObject
 
-- (id)attachmentSummary:(unint64_t)a3
+- (id)attachmentSummary:(unint64_t)summary
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = IMSharedUtilitiesFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"%lu Watch Faces" value:&stru_1F04268F8 table:@"IMSharedUtilities"];
-  v7 = [v4 localizedStringWithFormat:v6, a3];
+  summary = [v4 localizedStringWithFormat:v6, summary];
 
-  return v7;
+  return summary;
 }
 
 - (Class)placeholderBalloonViewClass
 {
   v4.receiver = self;
   v4.super_class = CKWatchfaceMediaObject;
-  v2 = [(CKMediaObject *)&v4 previewBalloonViewClass];
+  previewBalloonViewClass = [(CKMediaObject *)&v4 previewBalloonViewClass];
 
-  return v2;
+  return previewBalloonViewClass;
 }
 
 - (BOOL)generatePreviewOutOfProcess
 {
-  v3 = [(CKWatchfaceMediaObject *)self hasOutOfProcessPreviewGenerator];
-  if (v3)
+  hasOutOfProcessPreviewGenerator = [(CKWatchfaceMediaObject *)self hasOutOfProcessPreviewGenerator];
+  if (hasOutOfProcessPreviewGenerator)
   {
     v5.receiver = self;
     v5.super_class = CKWatchfaceMediaObject;
-    LOBYTE(v3) = [(CKMediaObject *)&v5 generatePreviewOutOfProcess];
+    LOBYTE(hasOutOfProcessPreviewGenerator) = [(CKMediaObject *)&v5 generatePreviewOutOfProcess];
   }
 
-  return v3;
+  return hasOutOfProcessPreviewGenerator;
 }
 
-- (id)generateThumbnailForWidth:(double)a3 orientation:(char)a4
+- (id)generateThumbnailForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   v25 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = a3;
+      widthCopy = width;
       *buf = 134218240;
-      *&buf[4] = v8;
+      *&buf[4] = widthCopy;
       *&buf[12] = 1024;
-      *&buf[14] = v4;
+      *&buf[14] = orientationCopy;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Generating Greenfield thumbnail in-process (width=%.3g, orientation=%d)", buf, 0x12u);
     }
   }
@@ -67,7 +67,7 @@
   v24 = 0;
   v9 = dispatch_group_create();
   dispatch_group_enter(v9);
-  v10 = [(CKMediaObject *)self fileURL];
+  fileURL = [(CKMediaObject *)self fileURL];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __64__CKWatchfaceMediaObject_generateThumbnailForWidth_orientation___block_invoke;
@@ -75,7 +75,7 @@
   v20 = buf;
   v11 = v9;
   v19 = v11;
-  [CKWatchfaceInProcessPreviewGenerator generateFacePreviewImageFromUrl:v10 completionBlock:v18];
+  [CKWatchfaceInProcessPreviewGenerator generateFacePreviewImageFromUrl:fileURL completionBlock:v18];
 
   v12 = dispatch_time(0, 5000000000);
   if (dispatch_group_wait(v11, v12))
@@ -143,18 +143,18 @@ void __64__CKWatchfaceMediaObject_generateThumbnailForWidth_orientation___block_
 - (BOOL)_isCachedFileLocationValid
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(LPLinkMetadata *)self->_linkMetadata originalURL];
-  v4 = [(CKMediaObject *)self fileURL];
-  v5 = [v3 isEqual:v4];
+  originalURL = [(LPLinkMetadata *)self->_linkMetadata originalURL];
+  fileURL = [(CKMediaObject *)self fileURL];
+  v5 = [originalURL isEqual:fileURL];
 
   if (v5)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(LPLinkMetadata *)self->_linkMetadata originalURL];
-    v8 = [v6 stringWithUTF8String:{objc_msgSend(v7, "fileSystemRepresentation")}];
+    originalURL2 = [(LPLinkMetadata *)self->_linkMetadata originalURL];
+    v8 = [v6 stringWithUTF8String:{objc_msgSend(originalURL2, "fileSystemRepresentation")}];
 
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v9 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v10 = [defaultManager fileExistsAtPath:v8];
 
     if ((v10 & 1) == 0 && IMOSLoggingEnabled())
     {
@@ -175,12 +175,12 @@ void __64__CKWatchfaceMediaObject_generateThumbnailForWidth_orientation___block_
       v12 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [(LPLinkMetadata *)self->_linkMetadata originalURL];
-        v14 = [(CKMediaObject *)self fileURL];
+        originalURL3 = [(LPLinkMetadata *)self->_linkMetadata originalURL];
+        fileURL2 = [(CKMediaObject *)self fileURL];
         v16 = 138412546;
-        v17 = v13;
+        v17 = originalURL3;
         v18 = 2112;
-        v19 = v14;
+        v19 = fileURL2;
         _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "Cached link metadata fileURL does not match current media object fileURL.  Cached: %@  Current: %@", &v16, 0x16u);
       }
     }
@@ -191,20 +191,20 @@ void __64__CKWatchfaceMediaObject_generateThumbnailForWidth_orientation___block_
   return v10;
 }
 
-- (id)linkMetadataForWidth:(double)a3 orientation:(char)a4
+- (id)linkMetadataForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   v31 = *MEMORY[0x1E69E9840];
-  if (self->_linkMetadata && vabdd_f64(a3, self->_cachedWidth) <= 1.0 && self->_cachedOrientation == a4 && [(CKWatchfaceMediaObject *)self _isCachedFileLocationValid])
+  if (self->_linkMetadata && vabdd_f64(width, self->_cachedWidth) <= 1.0 && self->_cachedOrientation == orientation && [(CKWatchfaceMediaObject *)self _isCachedFileLocationValid])
   {
     if (IMOSLoggingEnabled())
     {
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [(CKMediaObject *)self fileURL];
+        fileURL = [(CKMediaObject *)self fileURL];
         v29 = 138412290;
-        v30 = v8;
+        v30 = fileURL;
         _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Using cached link metadata for fileURL: %@", &v29, 0xCu);
       }
     }
@@ -218,9 +218,9 @@ void __64__CKWatchfaceMediaObject_generateThumbnailForWidth_orientation___block_
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(CKMediaObject *)self fileURL];
+      fileURL2 = [(CKMediaObject *)self fileURL];
       v29 = 138412290;
-      v30 = v11;
+      v30 = fileURL2;
       _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Generating link metadata for fileURL: %@", &v29, 0xCu);
     }
   }
@@ -230,15 +230,15 @@ void __64__CKWatchfaceMediaObject_generateThumbnailForWidth_orientation___block_
   v14 = [v13 localizedStringForKey:@"ADD_WATCHFACE" value:&stru_1F04268F8 table:@"ChatKit"];
   [v12 setName:v14];
 
-  v15 = [(CKMediaObject *)self filename];
+  filename = [(CKMediaObject *)self filename];
   v16 = IMUTITypeForFilename();
   [v12 setType:v16];
 
-  v17 = [(CKMediaObject *)self fileURL];
-  LOBYTE(v15) = v17 == 0;
+  fileURL3 = [(CKMediaObject *)self fileURL];
+  LOBYTE(filename) = fileURL3 == 0;
 
   v18 = IMOSLoggingEnabled();
-  if ((v15 & 1) == 0)
+  if ((filename & 1) == 0)
   {
     if (v18)
     {
@@ -250,7 +250,7 @@ void __64__CKWatchfaceMediaObject_generateThumbnailForWidth_orientation___block_
       }
     }
 
-    v20 = [(CKMediaObject *)self previewForWidth:v4 orientation:a3];
+    v20 = [(CKMediaObject *)self previewForWidth:orientationCopy orientation:width];
     v21 = IMOSLoggingEnabled();
     if (v20)
     {
@@ -298,13 +298,13 @@ LABEL_33:
 LABEL_34:
   v9 = objc_alloc_init(MEMORY[0x1E696ECA0]);
   [(LPLinkMetadata *)v9 setSpecialization:v12];
-  v25 = [(CKMediaObject *)self fileURL];
-  [(LPLinkMetadata *)v9 setOriginalURL:v25];
+  fileURL4 = [(CKMediaObject *)self fileURL];
+  [(LPLinkMetadata *)v9 setOriginalURL:fileURL4];
 
-  v26 = [v12 thumbnail];
-  LOBYTE(v25) = v26 == 0;
+  thumbnail = [v12 thumbnail];
+  LOBYTE(fileURL4) = thumbnail == 0;
 
-  if ((v25 & 1) == 0)
+  if ((fileURL4 & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -317,8 +317,8 @@ LABEL_34:
     }
 
     objc_storeStrong(&self->_linkMetadata, v9);
-    self->_cachedWidth = a3;
-    self->_cachedOrientation = v4;
+    self->_cachedWidth = width;
+    self->_cachedOrientation = orientationCopy;
   }
 
 LABEL_41:

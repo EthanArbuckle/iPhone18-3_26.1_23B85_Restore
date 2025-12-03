@@ -1,19 +1,19 @@
 @interface BKEventDeferringGraph
 - (BKEventDeferringGraph)init;
 - (NSString)description;
-- (id)_aggregateIdentitiesLabel:(uint64_t)a1;
+- (id)_aggregateIdentitiesLabel:(uint64_t)label;
 - (id)_dictionaryWithGraphToIdentityMapping;
-- (id)deferringPathForPID:(void *)a3 environment:(void *)a4 display:(void *)a5 dispatchTarget:(void *)a6 returnModalities:;
-- (id)describeDeliveryChains:(id)a3 identifier:(id)a4;
-- (void)_mapSelectionTargetablesByEnvironment:(void *)a3 block:;
-- (void)_setRules:(int)a3 forPID:(void *)a4 toDisplay:;
-- (void)logGraphToTarget:(uint64_t)a1;
-- (void)logRulesToTarget:(uint64_t)a1;
+- (id)deferringPathForPID:(void *)d environment:(void *)environment display:(void *)display dispatchTarget:(void *)target returnModalities:;
+- (id)describeDeliveryChains:(id)chains identifier:(id)identifier;
+- (void)_mapSelectionTargetablesByEnvironment:(void *)environment block:;
+- (void)_setRules:(int)rules forPID:(void *)d toDisplay:;
+- (void)logGraphToTarget:(uint64_t)target;
+- (void)logRulesToTarget:(uint64_t)target;
 @end
 
 @implementation BKEventDeferringGraph
 
-- (id)describeDeliveryChains:(id)a3 identifier:(id)a4
+- (id)describeDeliveryChains:(id)chains identifier:(id)identifier
 {
   sub_223CC73DC(0, &qword_28133EF10, 0x277CF05F8);
   sub_223CC73DC(0, &qword_28133EF38, off_2784F5E98);
@@ -31,31 +31,31 @@
 {
   v3 = objc_alloc_init(BKStringTranscriptTarget);
   [(BKEventDeferringGraph *)self logGraphToTarget:v3];
-  v4 = [(BKStringTranscriptTarget *)v3 build];
+  build = [(BKStringTranscriptTarget *)v3 build];
 
-  return v4;
+  return build;
 }
 
-- (void)logGraphToTarget:(uint64_t)a1
+- (void)logGraphToTarget:(uint64_t)target
 {
   v3 = a2;
-  if (a1)
+  if (target)
   {
-    v4 = [(BKEventDeferringGraph *)a1 _dictionaryWithGraphToIdentityMapping];
+    _dictionaryWithGraphToIdentityMapping = [(BKEventDeferringGraph *)target _dictionaryWithGraphToIdentityMapping];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __42__BKEventDeferringGraph_logGraphToTarget___block_invoke;
     v5[3] = &unk_2784F6D40;
-    v5[4] = a1;
+    v5[4] = target;
     v6 = v3;
-    [v4 enumerateKeysAndObjectsUsingBlock:v5];
+    [_dictionaryWithGraphToIdentityMapping enumerateKeysAndObjectsUsingBlock:v5];
   }
 }
 
 - (id)_dictionaryWithGraphToIdentityMapping
 {
   v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v3 = *(a1 + 8);
+  v3 = *(self + 8);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__BKEventDeferringGraph__dictionaryWithGraphToIdentityMapping__block_invoke;
@@ -78,15 +78,15 @@ void __42__BKEventDeferringGraph_logGraphToTarget___block_invoke(uint64_t a1, vo
   [*(a1 + 40) writeString:@"\n"];
 }
 
-- (id)_aggregateIdentitiesLabel:(uint64_t)a1
+- (id)_aggregateIdentitiesLabel:(uint64_t)label
 {
-  if (a1)
+  if (label)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __51__BKEventDeferringGraph__aggregateIdentitiesLabel___block_invoke;
     v5[3] = &unk_2784F6D18;
-    v5[4] = a1;
+    v5[4] = label;
     v2 = [a2 bs_map:v5];
     v3 = [v2 componentsJoinedByString:@"|"];
   }
@@ -437,35 +437,35 @@ LABEL_65:
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logRulesToTarget:(uint64_t)a1
+- (void)logRulesToTarget:(uint64_t)target
 {
-  if (a1)
+  if (target)
   {
     v2 = MEMORY[0x277CF0C08];
-    v3 = *(a1 + 16);
+    v3 = *(target + 16);
     v4 = a2;
-    v7 = [v3 allValues];
-    v5 = [v7 bs_flatten];
-    v6 = [v2 descriptionForRootObject:v5];
+    allValues = [v3 allValues];
+    bs_flatten = [allValues bs_flatten];
+    v6 = [v2 descriptionForRootObject:bs_flatten];
     [v4 writeString:v6];
   }
 }
 
-- (void)_mapSelectionTargetablesByEnvironment:(void *)a3 block:
+- (void)_mapSelectionTargetablesByEnvironment:(void *)environment block:
 {
-  v5 = a3;
+  environmentCopy = environment;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__BKEventDeferringGraph__mapSelectionTargetablesByEnvironment_block___block_invoke;
   v10[3] = &unk_2784F6DB8;
-  v10[4] = a1;
+  v10[4] = self;
   v6 = [a2 bs_dictionaryByPartitioning:v10];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__BKEventDeferringGraph__mapSelectionTargetablesByEnvironment_block___block_invoke_3;
   v8[3] = &unk_2784F6DE0;
-  v8[4] = a1;
-  v7 = v5;
+  v8[4] = self;
+  v7 = environmentCopy;
   v9 = v7;
   [v6 enumerateKeysAndObjectsUsingBlock:v8];
 }
@@ -927,21 +927,21 @@ LABEL_20:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)deferringPathForPID:(void *)a3 environment:(void *)a4 display:(void *)a5 dispatchTarget:(void *)a6 returnModalities:
+- (id)deferringPathForPID:(void *)d environment:(void *)environment display:(void *)display dispatchTarget:(void *)target returnModalities:
 {
   v79 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v11 = MEMORY[0x277CF05F8];
-    v12 = a6;
-    v13 = a5;
-    v14 = a4;
-    v15 = a3;
-    v16 = [[v11 alloc] initWithDisplay:v14 environment:v15];
+    targetCopy = target;
+    displayCopy = display;
+    environmentCopy = environment;
+    dCopy = d;
+    v16 = [[v11 alloc] initWithDisplay:environmentCopy environment:dCopy];
 
-    v17 = [*(a1 + 8) objectForKey:v16];
-    v18 = v13;
-    v19 = v12;
+    v17 = [*(self + 8) objectForKey:v16];
+    v18 = displayCopy;
+    v19 = targetCopy;
     if (!v17)
     {
       v20 = 0;
@@ -968,27 +968,27 @@ LABEL_48:
     }
 
     v27 = v26;
-    v28 = [v18 selectionPathIdentifier];
-    if (!v28)
+    selectionPathIdentifier = [v18 selectionPathIdentifier];
+    if (!selectionPathIdentifier)
     {
-      v28 = [MEMORY[0x277CF0648] primary];
+      selectionPathIdentifier = [MEMORY[0x277CF0648] primary];
     }
 
-    v29 = [*(v17 + 48) objectForKey:v28];
+    v29 = [*(v17 + 48) objectForKey:selectionPathIdentifier];
     if (!v29)
     {
-      v29 = [[BKEventDeferringSelectionPathContainer alloc] initWithPathIdentifier:v28];
-      [*(v17 + 48) setObject:v29 forKey:v28];
+      v29 = [[BKEventDeferringSelectionPathContainer alloc] initWithPathIdentifier:selectionPathIdentifier];
+      [*(v17 + 48) setObject:v29 forKey:selectionPathIdentifier];
     }
 
-    v63 = v28;
+    v63 = selectionPathIdentifier;
     v64 = v27;
     if (v18)
     {
-      v30 = [v18 deferringToken];
-      v62 = v30 != 0;
-      v31 = v25;
-      if (v30)
+      deferringToken = [v18 deferringToken];
+      v62 = deferringToken != 0;
+      firstObject = v25;
+      if (deferringToken)
       {
         v72 = 0u;
         v73 = 0u;
@@ -996,7 +996,7 @@ LABEL_48:
         v71 = 0u;
         obj = v27;
         v32 = [obj countByEnumeratingWithState:&v70 objects:v78 count:16];
-        v31 = v25;
+        firstObject = v25;
         if (v32)
         {
           v33 = v32;
@@ -1019,9 +1019,9 @@ LABEL_13:
             v36 = *(*(&v70 + 1) + 8 * v35);
             v37 = v36 ? v36[2] : 0;
             v38 = v37;
-            v39 = [v38 predicate];
-            v40 = [v39 token];
-            v41 = [v40 isEqual:v30];
+            predicate = [v38 predicate];
+            token = [predicate token];
+            v41 = [token isEqual:deferringToken];
 
             if (v41)
             {
@@ -1035,7 +1035,7 @@ LABEL_13:
               if (!v42)
               {
                 v25 = v56;
-                v31 = v56;
+                firstObject = v56;
                 goto LABEL_27;
               }
 
@@ -1043,7 +1043,7 @@ LABEL_13:
             }
           }
 
-          v31 = v36;
+          firstObject = v36;
           v25 = v56;
 
 LABEL_27:
@@ -1057,7 +1057,7 @@ LABEL_27:
         v27 = v64;
       }
 
-      if (v31)
+      if (firstObject)
       {
         goto LABEL_31;
       }
@@ -1066,15 +1066,15 @@ LABEL_27:
     else
     {
       v62 = 0;
-      v31 = v25;
+      firstObject = v25;
       if (v25)
       {
         goto LABEL_31;
       }
     }
 
-    v31 = [v27 firstObject];
-    if (!v31)
+    firstObject = [v27 firstObject];
+    if (!firstObject)
     {
 LABEL_35:
       if (v19)
@@ -1086,8 +1086,8 @@ LABEL_35:
         v69 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v44 = [v20 reverseObjectEnumerator];
-        v45 = [v44 countByEnumeratingWithState:&v66 objects:buf count:16];
+        reverseObjectEnumerator = [v20 reverseObjectEnumerator];
+        v45 = [reverseObjectEnumerator countByEnumeratingWithState:&v66 objects:buf count:16];
         if (v45)
         {
           v46 = v45;
@@ -1099,7 +1099,7 @@ LABEL_35:
             {
               if (*v67 != v47)
               {
-                objc_enumerationMutation(v44);
+                objc_enumerationMutation(reverseObjectEnumerator);
               }
 
               v50 = [(BKEventDeferringSelectionPathContainer *)v29 modalitiesForNode:?];
@@ -1112,7 +1112,7 @@ LABEL_35:
               }
             }
 
-            v46 = [v44 countByEnumeratingWithState:&v66 objects:buf count:16];
+            v46 = [reverseObjectEnumerator countByEnumeratingWithState:&v66 objects:buf count:16];
             v19 = v48;
             if (v46)
             {
@@ -1141,11 +1141,11 @@ LABEL_31:
       *buf = 138543618;
       v75 = v29;
       v76 = 2114;
-      v77 = v31;
+      v77 = firstObject;
       _os_log_debug_impl(&dword_223CBE000, v43, OS_LOG_TYPE_DEBUG, "CHOOSE %{public}@ @ %{public}@", buf, 0x16u);
     }
 
-    [BKEventDeferringEnvironmentGraph _chooseSubnodeOfNode:v31 forSelectionPath:v29 appendToPath:v20];
+    [BKEventDeferringEnvironmentGraph _chooseSubnodeOfNode:firstObject forSelectionPath:v29 appendToPath:v20];
     if (!v62)
     {
       [v20 removeObjectAtIndex:0];
@@ -1167,35 +1167,35 @@ void __43__BKEventDeferringGraph_setSenderDisplays___block_invoke(uint64_t a1, v
   -[BKEventDeferringGraph _setRules:forPID:toDisplay:](*(a1 + 32), v5, [a2 intValue], *(a1 + 40));
 }
 
-- (void)_setRules:(int)a3 forPID:(void *)a4 toDisplay:
+- (void)_setRules:(int)rules forPID:(void *)d toDisplay:
 {
-  v7 = a4;
-  v8 = v7;
-  if (a1)
+  dCopy = d;
+  v8 = dCopy;
+  if (self)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __52__BKEventDeferringGraph__setRules_forPID_toDisplay___block_invoke;
     v20[3] = &unk_2784F6E50;
-    v9 = v7;
+    v9 = dCopy;
     v21 = v9;
     v10 = [a2 bs_dictionaryByPartitioning:v20];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __52__BKEventDeferringGraph__setRules_forPID_toDisplay___block_invoke_2;
     v18[3] = &unk_2784F6E78;
-    v18[4] = a1;
-    v19 = a3;
+    v18[4] = self;
+    rulesCopy = rules;
     [v10 enumerateKeysAndObjectsUsingBlock:v18];
-    v11 = [*(a1 + 8) copy];
+    v11 = [*(self + 8) copy];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __52__BKEventDeferringGraph__setRules_forPID_toDisplay___block_invoke_3;
     v13[3] = &unk_2784F6EA0;
     v14 = v9;
     v15 = v10;
-    v17 = a3;
-    v16 = a1;
+    rulesCopy2 = rules;
+    selfCopy = self;
     v12 = v10;
     [v11 enumerateKeysAndObjectsUsingBlock:v13];
   }

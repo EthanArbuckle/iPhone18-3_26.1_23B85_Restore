@@ -4,8 +4,8 @@
 - (FCPersonalizationData)personalizationData;
 - (FCPrivateChannelMembershipController)privateChannelMembershipController;
 - (FCPrivateDataContext)init;
-- (FCPrivateDataContext)initWithConfiguration:(id)a3 context:(id)a4 privateDataHostDirectory:(id)a5 privateDataActionProvider:(id)a6 encryptionDelegate:(id)a7 networkBehaviorMonitor:(id)a8 privateDataSyncingEnabled:(BOOL)a9;
-- (FCPrivateDataContext)initWithConfiguration:(id)a3 context:(id)a4 privateDatabase:(id)a5 privateDataDirectory:(id)a6 privateDataActionProvider:(id)a7 encryptionDelegate:(id)a8 networkBehaviorMonitor:(id)a9 privateDataSyncingEnabled:(BOOL)a10;
+- (FCPrivateDataContext)initWithConfiguration:(id)configuration context:(id)context privateDataHostDirectory:(id)directory privateDataActionProvider:(id)provider encryptionDelegate:(id)delegate networkBehaviorMonitor:(id)monitor privateDataSyncingEnabled:(BOOL)enabled;
+- (FCPrivateDataContext)initWithConfiguration:(id)configuration context:(id)context privateDatabase:(id)database privateDataDirectory:(id)directory privateDataActionProvider:(id)provider encryptionDelegate:(id)delegate networkBehaviorMonitor:(id)monitor privateDataSyncingEnabled:(BOOL)self0;
 - (FCPrivateDataContextInternal)internalPrivateDataContext;
 - (FCPushNotificationHandling)privatePushNotificationHandler;
 - (FCPuzzleHistory)puzzleHistory;
@@ -18,7 +18,7 @@
 - (FCUserInfo)userInfo;
 - (NSString)privateDataDirectory;
 - (id)_privateDataControllers;
-- (id)privateStoreWithName:(id)a3 version:(unint64_t)a4 options:(unint64_t)a5;
+- (id)privateStoreWithName:(id)name version:(unint64_t)version options:(unint64_t)options;
 - (void)preparePrivateDataControllersForUse;
 @end
 
@@ -53,10 +53,10 @@
 
 - (void)preparePrivateDataControllersForUse
 {
-  v3 = [(FCPrivateDataContext *)self _privateDataControllers];
-  [v3 makeObjectsPerformSelector:sel_prepareForUse];
-  [v3 makeObjectsPerformSelector:sel_addStateObserver_ withObject:self];
-  [v3 makeObjectsPerformSelector:sel_assertReadyForUse];
+  _privateDataControllers = [(FCPrivateDataContext *)self _privateDataControllers];
+  [_privateDataControllers makeObjectsPerformSelector:sel_prepareForUse];
+  [_privateDataControllers makeObjectsPerformSelector:sel_addStateObserver_ withObject:self];
+  [_privateDataControllers makeObjectsPerformSelector:sel_assertReadyForUse];
 }
 
 - (FCPrivateDataContextInternal)internalPrivateDataContext
@@ -547,16 +547,16 @@
   objc_exception_throw(v6);
 }
 
-- (FCPrivateDataContext)initWithConfiguration:(id)a3 context:(id)a4 privateDataHostDirectory:(id)a5 privateDataActionProvider:(id)a6 encryptionDelegate:(id)a7 networkBehaviorMonitor:(id)a8 privateDataSyncingEnabled:(BOOL)a9
+- (FCPrivateDataContext)initWithConfiguration:(id)configuration context:(id)context privateDataHostDirectory:(id)directory privateDataActionProvider:(id)provider encryptionDelegate:(id)delegate networkBehaviorMonitor:(id)monitor privateDataSyncingEnabled:(BOOL)enabled
 {
   v41 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v15 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  contextCopy = context;
+  directoryCopy = directory;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  monitorCopy = monitor;
+  if (!contextCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "context != nil"];
     *buf = 136315906;
@@ -570,7 +570,7 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (!v16 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!directoryCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "privateDataHostDirectory != nil"];
     *buf = 136315906;
@@ -585,33 +585,33 @@
   }
 
   v20 = [FCCKPrivateDatabase alloc];
-  v21 = [v14 privateDataContainerIdentifier];
-  v22 = [v14 privateDataSecureContainerIdentifier];
-  v23 = -[FCCKPrivateDatabase initWithContainerIdentifier:secureContainerIdentifier:productionEnvironment:encryptionDelegate:networkBehaviorMonitor:privateDataSyncingEnabled:](v20, v21, v22, [v14 isProductionPrivateDataEnvironment], v18, v19, a9);
+  privateDataContainerIdentifier = [configurationCopy privateDataContainerIdentifier];
+  privateDataSecureContainerIdentifier = [configurationCopy privateDataSecureContainerIdentifier];
+  v23 = -[FCCKPrivateDatabase initWithContainerIdentifier:secureContainerIdentifier:productionEnvironment:encryptionDelegate:networkBehaviorMonitor:privateDataSyncingEnabled:](v20, privateDataContainerIdentifier, privateDataSecureContainerIdentifier, [configurationCopy isProductionPrivateDataEnvironment], delegateCopy, monitorCopy, enabled);
 
-  v24 = [v14 privateDataContainerCombinationIdentifier];
-  v25 = [v16 URLByAppendingPathComponent:v24 isDirectory:1];
+  privateDataContainerCombinationIdentifier = [configurationCopy privateDataContainerCombinationIdentifier];
+  v25 = [directoryCopy URLByAppendingPathComponent:privateDataContainerCombinationIdentifier isDirectory:1];
 
-  LOBYTE(v31) = a9;
-  v26 = [(FCPrivateDataContext *)self initWithConfiguration:v14 context:v15 privateDatabase:v23 privateDataDirectory:v25 privateDataActionProvider:v17 encryptionDelegate:v18 networkBehaviorMonitor:v19 privateDataSyncingEnabled:v31];
+  LOBYTE(v31) = enabled;
+  v26 = [(FCPrivateDataContext *)self initWithConfiguration:configurationCopy context:contextCopy privateDatabase:v23 privateDataDirectory:v25 privateDataActionProvider:providerCopy encryptionDelegate:delegateCopy networkBehaviorMonitor:monitorCopy privateDataSyncingEnabled:v31];
 
   v27 = *MEMORY[0x1E69E9840];
   return v26;
 }
 
-- (FCPrivateDataContext)initWithConfiguration:(id)a3 context:(id)a4 privateDatabase:(id)a5 privateDataDirectory:(id)a6 privateDataActionProvider:(id)a7 encryptionDelegate:(id)a8 networkBehaviorMonitor:(id)a9 privateDataSyncingEnabled:(BOOL)a10
+- (FCPrivateDataContext)initWithConfiguration:(id)configuration context:(id)context privateDatabase:(id)database privateDataDirectory:(id)directory privateDataActionProvider:(id)provider encryptionDelegate:(id)delegate networkBehaviorMonitor:(id)monitor privateDataSyncingEnabled:(BOOL)self0
 {
   v96 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v85 = a7;
-  v20 = a8;
-  v84 = a9;
-  if (!v17 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  contextCopy = context;
+  databaseCopy = database;
+  directoryCopy = directory;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  monitorCopy = monitor;
+  if (!contextCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v68 = v20;
+    v68 = delegateCopy;
     v69 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "context != nil"];
     *buf = 136315906;
     v89 = "[FCPrivateDataContext initWithConfiguration:context:privateDatabase:privateDataDirectory:privateDataActionProvider:encryptionDelegate:networkBehaviorMonitor:privateDataSyncingEnabled:]";
@@ -623,13 +623,13 @@
     v95 = v69;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    v20 = v68;
+    delegateCopy = v68;
   }
 
-  v21 = v18;
-  if (!v18 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  v21 = databaseCopy;
+  if (!databaseCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v70 = v20;
+    v70 = delegateCopy;
     v71 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "privateDatabase != nil"];
     *buf = 136315906;
     v89 = "[FCPrivateDataContext initWithConfiguration:context:privateDatabase:privateDataDirectory:privateDataActionProvider:encryptionDelegate:networkBehaviorMonitor:privateDataSyncingEnabled:]";
@@ -641,21 +641,21 @@
     v95 = v71;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    v20 = v70;
-    if (v19)
+    delegateCopy = v70;
+    if (directoryCopy)
     {
       goto LABEL_9;
     }
   }
 
-  else if (v19)
+  else if (directoryCopy)
   {
     goto LABEL_9;
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v72 = v20;
+    v72 = delegateCopy;
     v73 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "privateDataDirectory != nil"];
     *buf = 136315906;
     v89 = "[FCPrivateDataContext initWithConfiguration:context:privateDatabase:privateDataDirectory:privateDataActionProvider:encryptionDelegate:networkBehaviorMonitor:privateDataSyncingEnabled:]";
@@ -667,7 +667,7 @@
     v95 = v73;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    v20 = v72;
+    delegateCopy = v72;
   }
 
 LABEL_9:
@@ -677,23 +677,23 @@ LABEL_9:
   v23 = v22;
   if (v22)
   {
-    v80 = v20;
-    v83 = v16;
-    objc_storeStrong(&v22->_contentContext, a4);
-    v23->_privateDataSyncingEnabled = a10;
-    v24 = [v19 path];
-    v25 = [v24 copy];
+    v80 = delegateCopy;
+    v83 = configurationCopy;
+    objc_storeStrong(&v22->_contentContext, context);
+    v23->_privateDataSyncingEnabled = enabled;
+    path = [directoryCopy path];
+    v25 = [path copy];
     privateDataDirectory = v23->_privateDataDirectory;
     v23->_privateDataDirectory = v25;
 
-    objc_storeStrong(&v23->_networkBehaviorMonitor, a9);
-    v27 = [v19 path];
-    v28 = [[FCPushNotificationCenter alloc] initWithPrivateDatabase:v21 storeDirectory:v27];
+    objc_storeStrong(&v23->_networkBehaviorMonitor, monitor);
+    path2 = [directoryCopy path];
+    v28 = [[FCPushNotificationCenter alloc] initWithPrivateDatabase:v21 storeDirectory:path2];
     objc_storeStrong(&v23->_privatePushNotificationHandler, v28);
     v29 = objc_opt_new();
     objc_storeStrong(&v23->_internalPrivateDataContext, v29);
-    v30 = [v17 appActivityMonitor];
-    [v29 setAppActivityMonitor:v30];
+    appActivityMonitor = [contextCopy appActivityMonitor];
+    [v29 setAppActivityMonitor:appActivityMonitor];
 
     [v29 setPrivateDatabase:v21];
     v87[0] = @"AudioPlaylist";
@@ -714,79 +714,79 @@ LABEL_9:
     v79 = v29;
     [v29 setRecordZoneManager:v31];
 
-    v32 = [[FCSubscriptionList alloc] initWithContext:v17 pushNotificationCenter:v28 storeDirectory:v27];
+    v32 = [[FCSubscriptionList alloc] initWithContext:contextCopy pushNotificationCenter:v28 storeDirectory:path2];
     subscriptionList = v23->_subscriptionList;
     v23->_subscriptionList = v32;
 
-    v77 = [[FCIssueReadingHistory alloc] initWithContext:v17 pushNotificationCenter:v28 storeDirectory:v27];
+    v77 = [[FCIssueReadingHistory alloc] initWithContext:contextCopy pushNotificationCenter:v28 storeDirectory:path2];
     objc_storeStrong(&v23->_issueReadingHistory, v77);
-    v76 = [[FCReadingHistory alloc] initWithContext:v17 pushNotificationCenter:v28 storeDirectory:v27];
+    v76 = [[FCReadingHistory alloc] initWithContext:contextCopy pushNotificationCenter:v28 storeDirectory:path2];
     objc_storeStrong(&v23->_readingHistory, v76);
-    v34 = [[FCReadingList alloc] initWithContext:v17 pushNotificationCenter:v28 storeDirectory:v27];
+    v34 = [[FCReadingList alloc] initWithContext:contextCopy pushNotificationCenter:v28 storeDirectory:path2];
     readingList = v23->_readingList;
     v23->_readingList = v34;
 
-    v36 = [[FCPuzzleHistory alloc] initWithContext:v17 pushNotificationCenter:v28 storeDirectory:v27];
+    v36 = [[FCPuzzleHistory alloc] initWithContext:contextCopy pushNotificationCenter:v28 storeDirectory:path2];
     puzzleHistory = v23->_puzzleHistory;
     v23->_puzzleHistory = v36;
 
-    v38 = [[FCShortcutList alloc] initWithContext:v17 pushNotificationCenter:v28 storeDirectory:v27];
+    v38 = [[FCShortcutList alloc] initWithContext:contextCopy pushNotificationCenter:v28 storeDirectory:path2];
     shortcutList = v23->_shortcutList;
     v23->_shortcutList = v38;
 
-    v40 = [[FCShortcutCategoryList alloc] initWithContext:v17 pushNotificationCenter:v28 storeDirectory:v27];
+    v40 = [[FCShortcutCategoryList alloc] initWithContext:contextCopy pushNotificationCenter:v28 storeDirectory:path2];
     shortcutCategoryList = v23->_shortcutCategoryList;
     v23->_shortcutCategoryList = v40;
 
-    v42 = [[FCAudioPlaylist alloc] initWithContext:v17 pushNotificationCenter:v28 storeDirectory:v27];
+    v42 = [[FCAudioPlaylist alloc] initWithContext:contextCopy pushNotificationCenter:v28 storeDirectory:path2];
     audioPlaylist = v23->_audioPlaylist;
     v23->_audioPlaylist = v42;
 
-    v44 = [v19 URLByAppendingPathComponent:@"personalization-sessions" isDirectory:1];
+    v44 = [directoryCopy URLByAppendingPathComponent:@"personalization-sessions" isDirectory:1];
     v45 = [FCUserEventHistoryStorage alloc];
-    v46 = [v17 appConfigurationManager];
+    appConfigurationManager = [contextCopy appConfigurationManager];
     v75 = v44;
-    v47 = [(FCUserEventHistoryStorage *)v45 initWithRootDirectory:v44 configurationManager:v46];
+    v47 = [(FCUserEventHistoryStorage *)v45 initWithRootDirectory:v44 configurationManager:appConfigurationManager];
 
     v74 = v47;
-    v48 = [[FCUserEventHistory alloc] initWithContext:v17 pushNotificationCenter:v28 storeDirectory:v27 sessionStorage:v47];
+    v48 = [[FCUserEventHistory alloc] initWithContext:contextCopy pushNotificationCenter:v28 storeDirectory:path2 sessionStorage:v47];
     userEventHistory = v23->_userEventHistory;
     v23->_userEventHistory = v48;
 
-    v81 = v19;
-    v50 = [v19 URLByAppendingPathComponent:@"recipe-personalization-sessions" isDirectory:1];
+    v81 = directoryCopy;
+    v50 = [directoryCopy URLByAppendingPathComponent:@"recipe-personalization-sessions" isDirectory:1];
     v51 = [FCUserEventHistoryStorage alloc];
-    v52 = [v17 appConfigurationManager];
-    v53 = [(FCUserEventHistoryStorage *)v51 initWithRootDirectory:v50 configurationManager:v52];
+    appConfigurationManager2 = [contextCopy appConfigurationManager];
+    v53 = [(FCUserEventHistoryStorage *)v51 initWithRootDirectory:v50 configurationManager:appConfigurationManager2];
 
-    v54 = [(FCUserEventHistory *)[FCRecipeUserEventHistory alloc] initWithContext:v17 pushNotificationCenter:v28 storeDirectory:v27 sessionStorage:v53];
+    v54 = [(FCUserEventHistory *)[FCRecipeUserEventHistory alloc] initWithContext:contextCopy pushNotificationCenter:v28 storeDirectory:path2 sessionStorage:v53];
     recipeUserEventHistory = v23->_recipeUserEventHistory;
     v23->_recipeUserEventHistory = v54;
 
-    v56 = [[FCPrivateChannelMembershipController alloc] initWithContext:v17 pushNotificationCenter:v28 storeDirectory:v27];
+    v56 = [[FCPrivateChannelMembershipController alloc] initWithContext:contextCopy pushNotificationCenter:v28 storeDirectory:path2];
     objc_storeStrong(&v23->_privateChannelMembershipController, v56);
-    v57 = [[FCUserInfo alloc] initWithContext:v17 pushNotificationCenter:v28 storeDirectory:v27];
+    v57 = [[FCUserInfo alloc] initWithContext:contextCopy pushNotificationCenter:v28 storeDirectory:path2];
     objc_storeStrong(&v23->_userInfo, v57);
-    v58 = [(FCUserInfo *)v23->_userInfo tagSettings];
+    tagSettings = [(FCUserInfo *)v23->_userInfo tagSettings];
     tagSettings = v23->_tagSettings;
-    v23->_tagSettings = v58;
+    v23->_tagSettings = tagSettings;
 
-    v60 = [(FCUserInfo *)v23->_userInfo puzzleTypeSettings];
+    puzzleTypeSettings = [(FCUserInfo *)v23->_userInfo puzzleTypeSettings];
     puzzleTypeSettings = v23->_puzzleTypeSettings;
-    v23->_puzzleTypeSettings = v60;
+    v23->_puzzleTypeSettings = puzzleTypeSettings;
 
-    v62 = [[FCPersonalizationData alloc] initWithContext:v17 pushNotificationCenter:v28 storeDirectory:v27];
+    v62 = [[FCPersonalizationData alloc] initWithContext:contextCopy pushNotificationCenter:v28 storeDirectory:path2];
     personalizationData = v23->_personalizationData;
     v23->_personalizationData = v62;
 
-    v64 = [(FCPrivateDataContext *)v23 _privateDataControllers];
-    if (v85)
+    _privateDataControllers = [(FCPrivateDataContext *)v23 _privateDataControllers];
+    if (providerCopy)
     {
-      v65 = [[FCNonDestructivePrivateDataMigrationHandler alloc] initWithPrivateDataActionProvider:v85 privateDataControllers:v64 privateDataSyncingEnabled:a10];
+      v65 = [[FCNonDestructivePrivateDataMigrationHandler alloc] initWithPrivateDataActionProvider:providerCopy privateDataControllers:_privateDataControllers privateDataSyncingEnabled:enabled];
       [(FCNonDestructivePrivateDataMigrationHandler *)v65 handleMigrationWithPrivateDataDirectory:v23->_privateDataDirectory];
     }
 
-    if (a10)
+    if (enabled)
     {
       [(FCPushNotificationCenter *)v28 enableSyncing];
     }
@@ -796,13 +796,13 @@ LABEL_9:
       [(FCPushNotificationCenter *)v28 disableSyncing];
     }
 
-    [(FCCKPrivateDatabase *)v82 registerZoneRestorationSources:v64];
-    [(FCCKPrivateDatabase *)v82 registerZonePruningAssistants:v64];
+    [(FCCKPrivateDatabase *)v82 registerZoneRestorationSources:_privateDataControllers];
+    [(FCCKPrivateDatabase *)v82 registerZonePruningAssistants:_privateDataControllers];
 
     v21 = v82;
-    v16 = v83;
-    v20 = v80;
-    v19 = v81;
+    configurationCopy = v83;
+    delegateCopy = v80;
+    directoryCopy = v81;
   }
 
   v66 = *MEMORY[0x1E69E9840];
@@ -842,12 +842,12 @@ LABEL_9:
   return privatePushNotificationHandler;
 }
 
-- (id)privateStoreWithName:(id)a3 version:(unint64_t)a4 options:(unint64_t)a5
+- (id)privateStoreWithName:(id)name version:(unint64_t)version options:(unint64_t)options
 {
-  v8 = a3;
+  nameCopy = name;
   v9 = [FCKeyValueStore alloc];
-  v10 = [(FCPrivateDataContext *)self privateDataDirectory];
-  v11 = [(FCKeyValueStore *)v9 initWithName:v8 directory:v10 version:a4 options:a5 classRegistry:0];
+  privateDataDirectory = [(FCPrivateDataContext *)self privateDataDirectory];
+  v11 = [(FCKeyValueStore *)v9 initWithName:nameCopy directory:privateDataDirectory version:version options:options classRegistry:0];
 
   return v11;
 }

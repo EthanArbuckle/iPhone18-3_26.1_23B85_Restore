@@ -1,21 +1,21 @@
 @interface PGFeatureExtractorAssetMediaType
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorAssetMediaType
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
   v5 = MEMORY[0x277D22C68];
-  v6 = a3;
+  entityCopy = entity;
   v7 = [v5 zerosOfCount:{-[PGFeatureExtractorAssetMediaType featureLength](self, "featureLength")}];
-  v8 = [v6 mediaType];
+  mediaType = [entityCopy mediaType];
 
-  if (v8 <= 3)
+  if (mediaType <= 3)
   {
     LODWORD(v9) = 1.0;
-    [v7 setFloat:v8 atIndex:v9];
+    [v7 setFloat:mediaType atIndex:v9];
   }
 
   return v7;

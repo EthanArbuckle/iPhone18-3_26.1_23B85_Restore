@@ -1,17 +1,17 @@
 @interface StepperButton
-- (_TtC8PaperKit13StepperButton)initWithFrame:(CGRect)a3;
-- (void)addTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5;
-- (void)removeTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5;
+- (_TtC8PaperKit13StepperButton)initWithFrame:(CGRect)frame;
+- (void)addTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events;
+- (void)removeTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events;
 - (void)updateUI;
 @end
 
 @implementation StepperButton
 
-- (void)addTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5
+- (void)addTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events
 {
-  if (a3)
+  if (target)
   {
-    v8 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -20,19 +20,19 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v9 = self;
+    selfCopy2 = self;
   }
 
-  StepperButton.addTarget(_:action:for:)(v10, a4, a5);
+  StepperButton.addTarget(_:action:for:)(v10, action, events);
 
   outlined destroy of Any?(v10);
 }
 
-- (void)removeTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5
+- (void)removeTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events
 {
-  if (a3)
+  if (target)
   {
-    v8 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -41,21 +41,21 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v9 = self;
+    selfCopy2 = self;
   }
 
-  StepperButton.removeTarget(_:action:for:)(v10, a4, a5);
+  StepperButton.removeTarget(_:action:for:)(v10, action, events);
 
   outlined destroy of Any?(v10);
 }
 
 - (void)updateUI
 {
-  v2 = self;
+  selfCopy = self;
   StepperButton.updateUI()();
 }
 
-- (_TtC8PaperKit13StepperButton)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit13StepperButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,54 +1,54 @@
 @interface _INPBProperty
-- (BOOL)isEqual:(id)a3;
-- (_INPBProperty)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBProperty)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRole:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRole:(id)role;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBProperty
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBProperty *)self payload];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"payload"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  payload = [(_INPBProperty *)self payload];
+  dictionaryRepresentation = [payload dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"payload"];
 
   if (self->_role)
   {
-    v6 = [(_INPBProperty *)self role];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"role"];
+    role = [(_INPBProperty *)self role];
+    v7 = [role copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"role"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBProperty *)self payload];
-  v6 = [v4 payload];
-  if ((v5 != 0) == (v6 == 0))
+  payload = [(_INPBProperty *)self payload];
+  payload2 = [equalCopy payload];
+  if ((payload != 0) == (payload2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBProperty *)self payload];
-  if (v7)
+  payload3 = [(_INPBProperty *)self payload];
+  if (payload3)
   {
-    v8 = v7;
-    v9 = [(_INPBProperty *)self payload];
-    v10 = [v4 payload];
-    v11 = [v9 isEqual:v10];
+    v8 = payload3;
+    payload4 = [(_INPBProperty *)self payload];
+    payload5 = [equalCopy payload];
+    v11 = [payload4 isEqual:payload5];
 
     if (!v11)
     {
@@ -60,12 +60,12 @@
   {
   }
 
-  v5 = [(_INPBProperty *)self role];
-  v6 = [v4 role];
-  if ((v5 != 0) != (v6 == 0))
+  payload = [(_INPBProperty *)self role];
+  payload2 = [equalCopy role];
+  if ((payload != 0) != (payload2 == 0))
   {
-    v12 = [(_INPBProperty *)self role];
-    if (!v12)
+    role = [(_INPBProperty *)self role];
+    if (!role)
     {
 
 LABEL_15:
@@ -73,10 +73,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBProperty *)self role];
-    v15 = [v4 role];
-    v16 = [v14 isEqual:v15];
+    v13 = role;
+    role2 = [(_INPBProperty *)self role];
+    role3 = [equalCopy role];
+    v16 = [role2 isEqual:role3];
 
     if (v16)
     {
@@ -96,65 +96,65 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBProperty allocWithZone:](_INPBProperty init];
-  v6 = [(_INPBIntentSlotValue *)self->_payload copyWithZone:a3];
+  v6 = [(_INPBIntentSlotValue *)self->_payload copyWithZone:zone];
   [(_INPBProperty *)v5 setPayload:v6];
 
-  v7 = [(NSString *)self->_role copyWithZone:a3];
+  v7 = [(NSString *)self->_role copyWithZone:zone];
   [(_INPBProperty *)v5 setRole:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBProperty *)self data];
+  coderCopy = coder;
+  data = [(_INPBProperty *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBProperty)initWithCoder:(id)a3
+- (_INPBProperty)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBProperty *)self initWithData:v6];
+    self = [(_INPBProperty *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_INPBProperty *)self payload];
+  toCopy = to;
+  payload = [(_INPBProperty *)self payload];
 
-  if (v4)
+  if (payload)
   {
-    v5 = [(_INPBProperty *)self payload];
+    payload2 = [(_INPBProperty *)self payload];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBProperty *)self role];
+  role = [(_INPBProperty *)self role];
 
-  if (v6)
+  if (role)
   {
     role = self->_role;
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setRole:(id)a3
+- (void)setRole:(id)role
 {
-  v4 = [a3 copy];
+  v4 = [role copy];
   role = self->_role;
   self->_role = v4;
 

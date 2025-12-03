@@ -2,12 +2,12 @@
 - (BOOL)outline;
 - (UIColor)glyphColor;
 - (UIEdgeInsets)glyphInsets;
-- (WFGlyphView)initWithFrame:(CGRect)a3;
+- (WFGlyphView)initWithFrame:(CGRect)frame;
 - (unsigned)glyphCharacter;
-- (void)drawRect:(CGRect)a3;
-- (void)setGlyphCharacter:(unsigned __int16)a3;
-- (void)setGlyphColor:(id)a3;
-- (void)setOutline:(BOOL)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setGlyphCharacter:(unsigned __int16)character;
+- (void)setGlyphColor:(id)color;
+- (void)setOutline:(BOOL)outline;
 @end
 
 @implementation WFGlyphView
@@ -25,17 +25,17 @@
   return result;
 }
 
-- (void)setGlyphColor:(id)a3
+- (void)setGlyphColor:(id)color
 {
-  v8 = a3;
-  v4 = [(WFGlyphView *)self glyphColor];
-  v5 = [v4 isEqual:v8];
+  colorCopy = color;
+  glyphColor = [(WFGlyphView *)self glyphColor];
+  v5 = [glyphColor isEqual:colorCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [objc_alloc(MEMORY[0x277D79E20]) initWithPlatformColor:v8];
-    v7 = [(WFGlyphView *)self iconDrawer];
-    [v7 setGlyphColor:v6];
+    v6 = [objc_alloc(MEMORY[0x277D79E20]) initWithPlatformColor:colorCopy];
+    iconDrawer = [(WFGlyphView *)self iconDrawer];
+    [iconDrawer setGlyphColor:v6];
 
     [(WFGlyphView *)self setNeedsDisplay];
   }
@@ -43,20 +43,20 @@
 
 - (UIColor)glyphColor
 {
-  v2 = [(WFGlyphView *)self iconDrawer];
-  v3 = [v2 glyphColor];
-  v4 = [v3 UIColor];
+  iconDrawer = [(WFGlyphView *)self iconDrawer];
+  glyphColor = [iconDrawer glyphColor];
+  uIColor = [glyphColor UIColor];
 
-  return v4;
+  return uIColor;
 }
 
-- (void)setGlyphCharacter:(unsigned __int16)a3
+- (void)setGlyphCharacter:(unsigned __int16)character
 {
-  v3 = a3;
-  if ([(WFGlyphView *)self glyphCharacter]!= a3)
+  characterCopy = character;
+  if ([(WFGlyphView *)self glyphCharacter]!= character)
   {
-    v5 = [(WFGlyphView *)self iconDrawer];
-    [v5 setGlyphCharacter:v3];
+    iconDrawer = [(WFGlyphView *)self iconDrawer];
+    [iconDrawer setGlyphCharacter:characterCopy];
 
     [(WFGlyphView *)self setNeedsDisplay];
   }
@@ -64,60 +64,60 @@
 
 - (unsigned)glyphCharacter
 {
-  v2 = [(WFGlyphView *)self iconDrawer];
-  v3 = [v2 glyphCharacter];
+  iconDrawer = [(WFGlyphView *)self iconDrawer];
+  glyphCharacter = [iconDrawer glyphCharacter];
 
-  return v3;
+  return glyphCharacter;
 }
 
-- (void)setOutline:(BOOL)a3
+- (void)setOutline:(BOOL)outline
 {
-  v3 = a3;
-  v4 = [(WFGlyphView *)self iconDrawer];
-  [v4 setOutline:v3];
+  outlineCopy = outline;
+  iconDrawer = [(WFGlyphView *)self iconDrawer];
+  [iconDrawer setOutline:outlineCopy];
 }
 
 - (BOOL)outline
 {
-  v2 = [(WFGlyphView *)self iconDrawer];
-  v3 = [v2 outline];
+  iconDrawer = [(WFGlyphView *)self iconDrawer];
+  outline = [iconDrawer outline];
 
-  return v3;
+  return outline;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v19.receiver = self;
   v19.super_class = WFGlyphView;
   [(WFGlyphView *)&v19 drawRect:?];
-  v8 = [(WFGlyphView *)self traitCollection];
-  v9 = [v8 userInterfaceStyle] == 2;
-  v10 = [(WFGlyphView *)self iconDrawer];
-  [v10 setDark:v9];
+  traitCollection = [(WFGlyphView *)self traitCollection];
+  v9 = [traitCollection userInterfaceStyle] == 2;
+  iconDrawer = [(WFGlyphView *)self iconDrawer];
+  [iconDrawer setDark:v9];
 
-  v11 = [v8 accessibilityContrast] == 1;
-  v12 = [(WFGlyphView *)self iconDrawer];
-  [v12 setHighContrast:v11];
+  v11 = [traitCollection accessibilityContrast] == 1;
+  iconDrawer2 = [(WFGlyphView *)self iconDrawer];
+  [iconDrawer2 setHighContrast:v11];
 
-  v13 = [(WFGlyphView *)self iconDrawer];
+  iconDrawer3 = [(WFGlyphView *)self iconDrawer];
   v14 = [MEMORY[0x277D79DF8] currentContextWithScale:0.0];
   [(WFGlyphView *)self glyphInsets];
-  [v13 drawInContext:v14 inRect:{x + v18, y + v15, width - (v18 + v16), height - (v15 + v17)}];
+  [iconDrawer3 drawInContext:v14 inRect:{x + v18, y + v15, width - (v18 + v16), height - (v15 + v17)}];
 }
 
-- (WFGlyphView)initWithFrame:(CGRect)a3
+- (WFGlyphView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = WFGlyphView;
-  v3 = [(WFGlyphView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFGlyphView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(WFGlyphView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(WFGlyphView *)v3 setBackgroundColor:clearColor];
 
     [(WFGlyphView *)v3 setGlyphInsets:5.0, 5.0, 5.0, 5.0];
     [(WFGlyphView *)v3 setContentMode:3];

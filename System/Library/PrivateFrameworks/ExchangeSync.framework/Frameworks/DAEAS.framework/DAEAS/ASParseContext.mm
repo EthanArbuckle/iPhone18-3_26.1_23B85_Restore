@@ -1,21 +1,21 @@
 @interface ASParseContext
 - (ASParseContext)init;
-- (BOOL)advanceOffsetByAmount:(unsigned int)a3 retainLastToken:(BOOL)a4;
-- (BOOL)hasNumberOfTokensRemaining:(unsigned int)a3;
+- (BOOL)advanceOffsetByAmount:(unsigned int)amount retainLastToken:(BOOL)token;
+- (BOOL)hasNumberOfTokensRemaining:(unsigned int)remaining;
 - (id)bufferWithAllData;
-- (int)_numTokensForNextOpaqueDataCheckNumTokens:(BOOL)a3;
+- (int)_numTokensForNextOpaqueDataCheckNumTokens:(BOOL)tokens;
 - (int)numTokensForNextString;
-- (int)numTokensStreamableForNextStringSizeOfTerminator:(int *)a3;
-- (int)numberOfBytesUntilStringEnd:(char *)a3 searchStringLength:(int)a4 acceptingBufferBits:(BOOL)a5;
+- (int)numTokensStreamableForNextStringSizeOfTerminator:(int *)terminator;
+- (int)numberOfBytesUntilStringEnd:(char *)end searchStringLength:(int)length acceptingBufferBits:(BOOL)bits;
 - (int64_t)goodSizeForBuffer;
-- (unsigned)byteAtOffsetFromCurrentByte:(unsigned int)a3;
+- (unsigned)byteAtOffsetFromCurrentByte:(unsigned int)byte;
 - (unsigned)currentByte;
-- (void)addData:(id)a3;
+- (void)addData:(id)data;
 - (void)dealloc;
 - (void)flushLogs;
 - (void)invalidateBuffers;
 - (void)resetToZeroOffset;
-- (void)setShouldLog:(BOOL)a3;
+- (void)setShouldLog:(BOOL)log;
 @end
 
 @implementation ASParseContext
@@ -35,13 +35,13 @@
   return v3;
 }
 
-- (void)setShouldLog:(BOOL)a3
+- (void)setShouldLog:(BOOL)log
 {
-  if (a3)
+  if (log)
   {
-    v4 = [(ASParseContext *)self trafficLogger];
+    trafficLogger = [(ASParseContext *)self trafficLogger];
 
-    if (!v4)
+    if (!trafficLogger)
     {
       v5 = objc_opt_new();
       [(ASParseContext *)self setTrafficLogger:v5];
@@ -57,102 +57,102 @@
   [(ASParseContext *)&v3 dealloc];
 }
 
-- (BOOL)hasNumberOfTokensRemaining:(unsigned int)a3
+- (BOOL)hasNumberOfTokensRemaining:(unsigned int)remaining
 {
-  v5 = [(ASParseContext *)self dataBuffers];
-  v6 = [v5 count];
+  dataBuffers = [(ASParseContext *)self dataBuffers];
+  v6 = [dataBuffers count];
 
   if (!v6)
   {
     return 0;
   }
 
-  v7 = [(ASParseContext *)self dataBuffers];
-  v8 = [v7 objectAtIndexedSubscript:0];
+  dataBuffers2 = [(ASParseContext *)self dataBuffers];
+  v8 = [dataBuffers2 objectAtIndexedSubscript:0];
   v9 = [v8 length];
   v10 = v9 + ~[(ASParseContext *)self offsetIntoFirstData];
 
-  if (v10 >= a3)
+  if (v10 >= remaining)
   {
     return 1;
   }
 
-  v11 = [(ASParseContext *)self dataBuffers];
-  v12 = [v11 count];
+  dataBuffers3 = [(ASParseContext *)self dataBuffers];
+  v12 = [dataBuffers3 count];
 
   if (v12 < 2)
   {
     return 0;
   }
 
-  v13 = a3;
+  remainingCopy = remaining;
   v14 = 2;
   v15 = 1;
   do
   {
-    v16 = [(ASParseContext *)self dataBuffers];
-    v17 = [v16 objectAtIndexedSubscript:v15];
+    dataBuffers4 = [(ASParseContext *)self dataBuffers];
+    v17 = [dataBuffers4 objectAtIndexedSubscript:v15];
     v10 += [v17 length];
 
-    v18 = v10 >= v13;
-    if (v10 >= v13)
+    v18 = v10 >= remainingCopy;
+    if (v10 >= remainingCopy)
     {
       break;
     }
 
     v15 = v14;
-    v19 = [(ASParseContext *)self dataBuffers];
-    v20 = [v19 count];
+    dataBuffers5 = [(ASParseContext *)self dataBuffers];
+    v20 = [dataBuffers5 count];
   }
 
   while (v20 > v14++);
   return v18;
 }
 
-- (int)numberOfBytesUntilStringEnd:(char *)a3 searchStringLength:(int)a4 acceptingBufferBits:(BOOL)a5
+- (int)numberOfBytesUntilStringEnd:(char *)end searchStringLength:(int)length acceptingBufferBits:(BOOL)bits
 {
-  v5 = a5;
-  if (a4 >= 3)
+  bitsCopy = bits;
+  if (length >= 3)
   {
     [ASParseContext numberOfBytesUntilStringEnd:a2 searchStringLength:self acceptingBufferBits:?];
   }
 
-  v9 = [(ASParseContext *)self dataBuffers];
-  v10 = [v9 count];
+  dataBuffers = [(ASParseContext *)self dataBuffers];
+  v10 = [dataBuffers count];
 
   if (v10)
   {
-    v11 = [(ASParseContext *)self dataBuffers];
-    v12 = [v11 objectAtIndexedSubscript:0];
+    dataBuffers2 = [(ASParseContext *)self dataBuffers];
+    v12 = [dataBuffers2 objectAtIndexedSubscript:0];
 
     v13 = [v12 length];
     v14 = v13 - [(ASParseContext *)self offsetIntoFirstData];
     if (![(ASParseContext *)self lastFoundBufferWithoutLineEnding])
     {
-      v33 = [v12 bytes];
-      v34 = (v33 + [(ASParseContext *)self offsetIntoFirstData]);
-      v35 = memmem(v34, v14, a3, a4);
+      bytes = [v12 bytes];
+      v34 = (bytes + [(ASParseContext *)self offsetIntoFirstData]);
+      v35 = memmem(v34, v14, end, length);
       if (v35)
       {
         v36 = v35;
         [(ASParseContext *)self setLastFoundBufferWithoutLineEnding:0];
         [(ASParseContext *)self setNumTokensInBuffersWithoutLineEndings:0];
         [(ASParseContext *)self setLastLookedAtBufferHadStringEndPrefix:0];
-        v31 = v36 + a4 - v34;
+        v31 = v36 + length - v34;
         goto LABEL_29;
       }
 
-      if (a4 >= 2)
+      if (length >= 2)
       {
-        [(ASParseContext *)self setLastLookedAtBufferHadStringEndPrefix:v34[v14 - 1] == *a3];
+        [(ASParseContext *)self setLastLookedAtBufferHadStringEndPrefix:v34[v14 - 1] == *end];
       }
     }
 
     v40 = v14;
-    if (!v5)
+    if (!bitsCopy)
     {
-      v15 = [(ASParseContext *)self dataBuffers];
-      v16 = [v15 count];
+      dataBuffers3 = [(ASParseContext *)self dataBuffers];
+      v16 = [dataBuffers3 count];
       v17 = [(ASParseContext *)self lastFoundBufferWithoutLineEnding]+ 1;
 
       if (v16 <= v17)
@@ -161,37 +161,37 @@
       }
     }
 
-    v18 = [(ASParseContext *)self lastFoundBufferWithoutLineEnding];
-    v19 = v18 + 1;
-    v20 = [(ASParseContext *)self dataBuffers];
-    v21 = [v20 count];
+    lastFoundBufferWithoutLineEnding = [(ASParseContext *)self lastFoundBufferWithoutLineEnding];
+    v19 = lastFoundBufferWithoutLineEnding + 1;
+    dataBuffers4 = [(ASParseContext *)self dataBuffers];
+    v21 = [dataBuffers4 count];
 
     if (v21 > v19)
     {
-      v22 = v18 + 2;
+      v22 = lastFoundBufferWithoutLineEnding + 2;
       while (1)
       {
         v23 = v12;
-        v24 = [(ASParseContext *)self dataBuffers];
-        v12 = [v24 objectAtIndexedSubscript:v19];
+        dataBuffers5 = [(ASParseContext *)self dataBuffers];
+        v12 = [dataBuffers5 objectAtIndexedSubscript:v19];
 
-        if (a4 == 2 && -[ASParseContext lastLookedAtBufferHadStringEndPrefix](self, "lastLookedAtBufferHadStringEndPrefix") && *[v12 bytes] == a3[1])
+        if (length == 2 && -[ASParseContext lastLookedAtBufferHadStringEndPrefix](self, "lastLookedAtBufferHadStringEndPrefix") && *[v12 bytes] == end[1])
         {
           break;
         }
 
-        v25 = memmem([v12 bytes], objc_msgSend(v12, "length"), a3, a4);
+        v25 = memmem([v12 bytes], objc_msgSend(v12, "length"), end, length);
         if (v25)
         {
           v37 = v25;
-          v38 = [(ASParseContext *)self numTokensInBuffersWithoutLineEndings];
-          v31 = v40 + a4 + v38 + v37 - [v12 bytes];
+          numTokensInBuffersWithoutLineEndings = [(ASParseContext *)self numTokensInBuffersWithoutLineEndings];
+          v31 = v40 + length + numTokensInBuffersWithoutLineEndings + v37 - [v12 bytes];
           goto LABEL_29;
         }
 
-        if (a4 >= 2)
+        if (length >= 2)
         {
-          -[ASParseContext setLastLookedAtBufferHadStringEndPrefix:](self, "setLastLookedAtBufferHadStringEndPrefix:", *([v12 bytes] + objc_msgSend(v12, "length") - 1) == *a3);
+          -[ASParseContext setLastLookedAtBufferHadStringEndPrefix:](self, "setLastLookedAtBufferHadStringEndPrefix:", *([v12 bytes] + objc_msgSend(v12, "length") - 1) == *end);
         }
 
         [(ASParseContext *)self setLastFoundBufferWithoutLineEnding:[(ASParseContext *)self lastFoundBufferWithoutLineEnding]+ 1];
@@ -204,8 +204,8 @@
 
         [(ASParseContext *)self setNumTokensInBuffersWithoutLineEndings:[(ASParseContext *)self numTokensInBuffersWithoutLineEndings]+ v27];
         v19 = v22;
-        v28 = [(ASParseContext *)self dataBuffers];
-        v29 = [v28 count];
+        dataBuffers6 = [(ASParseContext *)self dataBuffers];
+        v29 = [dataBuffers6 count];
 
         if (v29 <= v22++)
         {
@@ -218,7 +218,7 @@
     }
 
 LABEL_20:
-    if (v5)
+    if (bitsCopy)
     {
       v32 = [(ASParseContext *)self numTokensInBuffersWithoutLineEndings]+ v40;
       v31 = v32 - [(ASParseContext *)self lastLookedAtBufferHadStringEndPrefix];
@@ -240,14 +240,14 @@ LABEL_29:
 
 - (int64_t)goodSizeForBuffer
 {
-  v3 = [(ASParseContext *)self currentBytesReceivedCount];
-  if (v3 == [(ASParseContext *)self curOffset])
+  currentBytesReceivedCount = [(ASParseContext *)self currentBytesReceivedCount];
+  if (currentBytesReceivedCount == [(ASParseContext *)self curOffset])
   {
     return 0;
   }
 
-  v5 = [(ASParseContext *)self dataBuffers];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  dataBuffers = [(ASParseContext *)self dataBuffers];
+  v6 = [dataBuffers objectAtIndexedSubscript:0];
   v7 = [v6 length];
   v4 = v7 - [(ASParseContext *)self offsetIntoFirstData];
 
@@ -262,8 +262,8 @@ LABEL_29:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(ASParseContext *)self dataBuffers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  dataBuffers = [(ASParseContext *)self dataBuffers];
+  v5 = [dataBuffers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -274,13 +274,13 @@ LABEL_29:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataBuffers);
         }
 
         [v3 appendData:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [dataBuffers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -291,29 +291,29 @@ LABEL_29:
   return v3;
 }
 
-- (BOOL)advanceOffsetByAmount:(unsigned int)a3 retainLastToken:(BOOL)a4
+- (BOOL)advanceOffsetByAmount:(unsigned int)amount retainLastToken:(BOOL)token
 {
-  v4 = a4;
+  tokenCopy = token;
   [(ASParseContext *)self setLastFoundBufferWithoutLineEnding:0];
   [(ASParseContext *)self setNumTokensInBuffersWithoutLineEndings:0];
   [(ASParseContext *)self setLastLookedAtBufferHadStringEndPrefix:0];
-  v7 = [(ASParseContext *)self hasNumberOfTokensRemaining:a3 - !v4];
+  v7 = [(ASParseContext *)self hasNumberOfTokensRemaining:amount - !tokenCopy];
   if (v7)
   {
-    v8 = [(ASParseContext *)self dataBuffers];
-    v9 = [v8 count];
+    dataBuffers = [(ASParseContext *)self dataBuffers];
+    v9 = [dataBuffers count];
 
     if (v9)
     {
-      v10 = a3;
+      amountCopy = amount;
       while (1)
       {
-        v11 = [(ASParseContext *)self dataBuffers];
-        v12 = [v11 objectAtIndexedSubscript:0];
+        dataBuffers2 = [(ASParseContext *)self dataBuffers];
+        v12 = [dataBuffers2 objectAtIndexedSubscript:0];
         v13 = [v12 length];
         v14 = v13 - [(ASParseContext *)self offsetIntoFirstData];
 
-        if (v14 > v10)
+        if (v14 > amountCopy)
         {
           break;
         }
@@ -321,26 +321,26 @@ LABEL_29:
         [(ASParseContext *)self setOffsetIntoFirstData:0];
         if ([(ASParseContext *)self keepPreviousData])
         {
-          v15 = [(ASParseContext *)self bypassedDataBuffers];
+          bypassedDataBuffers = [(ASParseContext *)self bypassedDataBuffers];
 
-          if (!v15)
+          if (!bypassedDataBuffers)
           {
             v16 = objc_opt_new();
             [(ASParseContext *)self setBypassedDataBuffers:v16];
           }
 
-          v17 = [(ASParseContext *)self bypassedDataBuffers];
-          v18 = [(ASParseContext *)self dataBuffers];
-          v19 = [v18 objectAtIndexedSubscript:0];
-          [v17 addObject:v19];
+          bypassedDataBuffers2 = [(ASParseContext *)self bypassedDataBuffers];
+          dataBuffers3 = [(ASParseContext *)self dataBuffers];
+          v19 = [dataBuffers3 objectAtIndexedSubscript:0];
+          [bypassedDataBuffers2 addObject:v19];
         }
 
-        v10 -= v14;
-        v20 = [(ASParseContext *)self dataBuffers];
-        [v20 removeObjectAtIndex:0];
+        amountCopy -= v14;
+        dataBuffers4 = [(ASParseContext *)self dataBuffers];
+        [dataBuffers4 removeObjectAtIndex:0];
 
-        v21 = [(ASParseContext *)self dataBuffers];
-        v22 = [v21 count];
+        dataBuffers5 = [(ASParseContext *)self dataBuffers];
+        v22 = [dataBuffers5 count];
 
         if (!v22)
         {
@@ -348,11 +348,11 @@ LABEL_29:
         }
       }
 
-      [(ASParseContext *)self setOffsetIntoFirstData:[(ASParseContext *)self offsetIntoFirstData]+ v10];
+      [(ASParseContext *)self setOffsetIntoFirstData:[(ASParseContext *)self offsetIntoFirstData]+ amountCopy];
     }
 
 LABEL_12:
-    [(ASParseContext *)self setCurOffset:[(ASParseContext *)self curOffset]+ a3];
+    [(ASParseContext *)self setCurOffset:[(ASParseContext *)self curOffset]+ amount];
   }
 
   return v7;
@@ -360,32 +360,32 @@ LABEL_12:
 
 - (void)resetToZeroOffset
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"ASParseContext.m" lineNumber:229 description:@"You can't reset a parse context if you didn't tell it to keep around the previous data"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"ASParseContext.m" lineNumber:229 description:@"You can't reset a parse context if you didn't tell it to keep around the previous data"];
 }
 
-- (void)addData:(id)a3
+- (void)addData:(id)data
 {
-  v8 = a3;
-  if ([v8 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    v4 = [(ASParseContext *)self dataBuffers];
+    dataBuffers = [(ASParseContext *)self dataBuffers];
 
-    if (!v4)
+    if (!dataBuffers)
     {
       v5 = objc_opt_new();
       [(ASParseContext *)self setDataBuffers:v5];
     }
 
     [(ASParseContext *)self setDataGeneration:[(ASParseContext *)self dataGeneration]+ 1];
-    -[ASParseContext setCurrentBytesReceivedCount:](self, "setCurrentBytesReceivedCount:", -[ASParseContext currentBytesReceivedCount](self, "currentBytesReceivedCount") + [v8 length]);
-    v6 = [(ASParseContext *)self dataBuffers];
-    [v6 addObject:v8];
+    -[ASParseContext setCurrentBytesReceivedCount:](self, "setCurrentBytesReceivedCount:", -[ASParseContext currentBytesReceivedCount](self, "currentBytesReceivedCount") + [dataCopy length]);
+    dataBuffers2 = [(ASParseContext *)self dataBuffers];
+    [dataBuffers2 addObject:dataCopy];
 
     if (getDALogLevel() >= 6)
     {
-      v7 = [(ASParseContext *)self trafficLogger];
-      [v7 logWBXMLData:v8];
+      trafficLogger = [(ASParseContext *)self trafficLogger];
+      [trafficLogger logWBXMLData:dataCopy];
     }
   }
 }
@@ -393,57 +393,57 @@ LABEL_12:
 - (unsigned)currentByte
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [(ASParseContext *)self logFileHandle];
+  logFileHandle = [(ASParseContext *)self logFileHandle];
 
-  if (v4)
+  if (logFileHandle)
   {
-    v5 = [(ASParseContext *)self offsetIntoFirstData];
-    v6 = [(ASParseContext *)self dataBuffers];
-    v7 = [v6 objectAtIndexedSubscript:0];
+    offsetIntoFirstData = [(ASParseContext *)self offsetIntoFirstData];
+    dataBuffers = [(ASParseContext *)self dataBuffers];
+    v7 = [dataBuffers objectAtIndexedSubscript:0];
     v8 = [v7 length];
 
-    if (v5 >= v8)
+    if (offsetIntoFirstData >= v8)
     {
       v9 = DALoggingwithCategory();
       v10 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v9, v10))
       {
-        v11 = [(ASParseContext *)self dataBuffers];
-        v12 = [v11 objectAtIndexedSubscript:0];
+        dataBuffers2 = [(ASParseContext *)self dataBuffers];
+        v12 = [dataBuffers2 objectAtIndexedSubscript:0];
         v20 = 134218240;
         v21 = [v12 length];
         v22 = 2048;
-        v23 = [(ASParseContext *)self offsetIntoFirstData];
+        offsetIntoFirstData2 = [(ASParseContext *)self offsetIntoFirstData];
         _os_log_impl(&dword_24A0AC000, v9, v10, "Big failure: we were about to dereference garbage.  Please save your DA logs, and file a bug (length = %luu, offset = %lu)", &v20, 0x16u);
       }
 
       [(ASParseContext *)self setTrafficLogger:0];
-      v13 = [MEMORY[0x277CCA890] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"ASParseContext.m" lineNumber:262 description:{@"Big failure: we were about to dereference garbage.  Please save your DA logs, and file a bug"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ASParseContext.m" lineNumber:262 description:{@"Big failure: we were about to dereference garbage.  Please save your DA logs, and file a bug"}];
     }
   }
 
-  v14 = [(ASParseContext *)self dataBuffers];
-  v15 = [v14 objectAtIndexedSubscript:0];
-  v16 = [v15 bytes];
-  v17 = *(v16 + [(ASParseContext *)self offsetIntoFirstData]);
+  dataBuffers3 = [(ASParseContext *)self dataBuffers];
+  v15 = [dataBuffers3 objectAtIndexedSubscript:0];
+  bytes = [v15 bytes];
+  v17 = *(bytes + [(ASParseContext *)self offsetIntoFirstData]);
 
   v18 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (unsigned)byteAtOffsetFromCurrentByte:(unsigned int)a3
+- (unsigned)byteAtOffsetFromCurrentByte:(unsigned int)byte
 {
-  v5 = [(ASParseContext *)self dataBuffers];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  dataBuffers = [(ASParseContext *)self dataBuffers];
+  v6 = [dataBuffers objectAtIndexedSubscript:0];
 
   v7 = [v6 length];
-  if (v7 - [(ASParseContext *)self offsetIntoFirstData]<= a3)
+  if (v7 - [(ASParseContext *)self offsetIntoFirstData]<= byte)
   {
     v10 = [v6 length];
-    v11 = [(ASParseContext *)self offsetIntoFirstData];
-    v12 = [(ASParseContext *)self dataBuffers];
-    v13 = [v12 count];
+    offsetIntoFirstData = [(ASParseContext *)self offsetIntoFirstData];
+    dataBuffers2 = [(ASParseContext *)self dataBuffers];
+    v13 = [dataBuffers2 count];
 
     if (v13 < 2)
     {
@@ -453,13 +453,13 @@ LABEL_7:
 
     else
     {
-      v14 = v11 - v10 + a3;
+      v14 = offsetIntoFirstData - v10 + byte;
       v15 = 2;
       v16 = 1;
       while (1)
       {
-        v17 = [(ASParseContext *)self dataBuffers];
-        v18 = [v17 objectAtIndexedSubscript:v16];
+        dataBuffers3 = [(ASParseContext *)self dataBuffers];
+        v18 = [dataBuffers3 objectAtIndexedSubscript:v16];
 
         if ([v18 length] > v14)
         {
@@ -469,8 +469,8 @@ LABEL_7:
         v14 -= [v18 length];
 
         v16 = v15;
-        v19 = [(ASParseContext *)self dataBuffers];
-        v20 = [v19 count];
+        dataBuffers4 = [(ASParseContext *)self dataBuffers];
+        v20 = [dataBuffers4 count];
 
         if (v20 <= v15++)
         {
@@ -484,8 +484,8 @@ LABEL_7:
 
   else
   {
-    v8 = [v6 bytes];
-    v9 = *(v8 + [(ASParseContext *)self offsetIntoFirstData]+ a3);
+    bytes = [v6 bytes];
+    v9 = *(bytes + [(ASParseContext *)self offsetIntoFirstData]+ byte);
   }
 
   return v9;
@@ -519,10 +519,10 @@ LABEL_7:
   return v3;
 }
 
-- (int)_numTokensForNextOpaqueDataCheckNumTokens:(BOOL)a3
+- (int)_numTokensForNextOpaqueDataCheckNumTokens:(BOOL)tokens
 {
-  v3 = a3;
-  if (a3 && ![(ASParseContext *)self hasNumberOfTokensRemaining:4])
+  tokensCopy = tokens;
+  if (tokens && ![(ASParseContext *)self hasNumberOfTokensRemaining:4])
   {
     return -1;
   }
@@ -538,7 +538,7 @@ LABEL_7:
     {
       v10 = v8;
       v11 = [(ASParseContext *)self byteAtOffsetFromCurrentByte:v8];
-      if (v3)
+      if (tokensCopy)
       {
         break;
       }
@@ -571,13 +571,13 @@ LABEL_7:
   return v6 + v10;
 }
 
-- (int)numTokensStreamableForNextStringSizeOfTerminator:(int *)a3
+- (int)numTokensStreamableForNextStringSizeOfTerminator:(int *)terminator
 {
   result = [(ASParseContext *)self numberOfBytesUntilStringEnd:&unk_24A14E043 searchStringLength:1 acceptingBufferBits:0];
   if (result == -1)
   {
     result = [(ASParseContext *)self numberOfBytesUntilStringEnd:&unk_24A14E043 searchStringLength:1 acceptingBufferBits:1];
-    if (!a3)
+    if (!terminator)
     {
       return result;
     }
@@ -587,7 +587,7 @@ LABEL_7:
 
   else
   {
-    if (!a3)
+    if (!terminator)
     {
       return result;
     }
@@ -595,14 +595,14 @@ LABEL_7:
     v6 = 1;
   }
 
-  *a3 = v6;
+  *terminator = v6;
   return result;
 }
 
 - (void)flushLogs
 {
-  v2 = [(ASParseContext *)self trafficLogger];
-  [v2 flushLogs];
+  trafficLogger = [(ASParseContext *)self trafficLogger];
+  [trafficLogger flushLogs];
 }
 
 - (void)invalidateBuffers

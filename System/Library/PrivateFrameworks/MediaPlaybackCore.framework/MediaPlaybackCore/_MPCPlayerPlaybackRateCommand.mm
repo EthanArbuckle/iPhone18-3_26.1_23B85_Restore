@@ -1,13 +1,13 @@
 @interface _MPCPlayerPlaybackRateCommand
-- (id)setPlaybackRate:(float)a3;
+- (id)setPlaybackRate:(float)rate;
 @end
 
 @implementation _MPCPlayerPlaybackRateCommand
 
-- (id)setPlaybackRate:(float)a3
+- (id)setPlaybackRate:(float)rate
 {
-  v5 = [(_MPCPlayerPlaybackRateCommand *)self extendedSupportedPlaybackRates];
-  if ([v5 count])
+  extendedSupportedPlaybackRates = [(_MPCPlayerPlaybackRateCommand *)self extendedSupportedPlaybackRates];
+  if ([extendedSupportedPlaybackRates count])
   {
     [(_MPCPlayerPlaybackRateCommand *)self extendedSupportedPlaybackRates];
   }
@@ -18,11 +18,11 @@
   }
   v6 = ;
 
-  v7 = [(_MPCPlayerCommand *)self response];
-  v8 = [v7 request];
-  if ([v8 disablePlaybackRateValidation])
+  response = [(_MPCPlayerCommand *)self response];
+  request = [response request];
+  if ([request disablePlaybackRateValidation])
   {
-    *&v9 = a3;
+    *&v9 = rate;
     v10 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
   }
 
@@ -32,7 +32,7 @@
     v23[1] = 3221225472;
     v23[2] = __49___MPCPlayerPlaybackRateCommand_setPlaybackRate___block_invoke;
     v23[3] = &__block_descriptor_36_e18_B16__0__NSNumber_8l;
-    v24 = a3;
+    rateCopy = rate;
     v10 = [v6 msv_firstWhere:v23];
   }
 
@@ -42,21 +42,21 @@
   {
     v12 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
     [v12 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69B1188]];
-    v13 = [(_MPCPlayerItemCommand *)self contentItemID];
-    v14 = [v13 length];
+    contentItemID = [(_MPCPlayerItemCommand *)self contentItemID];
+    v14 = [contentItemID length];
 
     if (v14)
     {
-      v15 = [(_MPCPlayerItemCommand *)self contentItemID];
-      [v12 setObject:v15 forKeyedSubscript:*MEMORY[0x1E69B1150]];
+      contentItemID2 = [(_MPCPlayerItemCommand *)self contentItemID];
+      [v12 setObject:contentItemID2 forKeyedSubscript:*MEMORY[0x1E69B1150]];
     }
 
-    v16 = [(_MPCPlayerCommand *)self response];
+    response2 = [(_MPCPlayerCommand *)self response];
     v17 = [MPCPlayerCommandRequest alloc];
-    v18 = [v16 controller];
-    v19 = [v16 request];
-    v20 = [v19 label];
-    v21 = [(MPCPlayerCommandRequest *)v17 initWithMediaRemoteCommand:19 options:v12 controller:v18 label:v20];
+    controller = [response2 controller];
+    request2 = [response2 request];
+    label = [request2 label];
+    v21 = [(MPCPlayerCommandRequest *)v17 initWithMediaRemoteCommand:19 options:v12 controller:controller label:label];
   }
 
   else

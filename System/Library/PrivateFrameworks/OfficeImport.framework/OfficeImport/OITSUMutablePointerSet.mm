@@ -1,18 +1,18 @@
 @interface OITSUMutablePointerSet
 - (OITSUMutablePointerSet)init;
-- (OITSUMutablePointerSet)initWithCFSet:(__CFSet *)a3;
-- (OITSUMutablePointerSet)initWithCapacity:(unint64_t)a3;
-- (OITSUMutablePointerSet)initWithObjects:(const void *)a3 count:(unint64_t)a4;
+- (OITSUMutablePointerSet)initWithCFSet:(__CFSet *)set;
+- (OITSUMutablePointerSet)initWithCapacity:(unint64_t)capacity;
+- (OITSUMutablePointerSet)initWithObjects:(const void *)objects count:(unint64_t)count;
 - (id)allObjects;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)member:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)member:(id)member;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)objectEnumerator;
-- (id)setByAddingObject:(id)a3;
-- (id)setByAddingObjectsFromArray:(id)a3;
-- (id)setByAddingObjectsFromSet:(id)a3;
+- (id)setByAddingObject:(id)object;
+- (id)setByAddingObjectsFromArray:(id)array;
+- (id)setByAddingObjectsFromSet:(id)set;
 - (void)dealloc;
-- (void)getObjects:(id *)a3;
+- (void)getObjects:(id *)objects;
 @end
 
 @implementation OITSUMutablePointerSet
@@ -47,48 +47,48 @@
   }
 }
 
-- (OITSUMutablePointerSet)initWithCapacity:(unint64_t)a3
+- (OITSUMutablePointerSet)initWithCapacity:(unint64_t)capacity
 {
   v6.receiver = self;
   v6.super_class = OITSUMutablePointerSet;
   v4 = [(OITSUMutablePointerSet *)&v6 init];
   if (v4)
   {
-    v4->mSet = CFSetCreateMutable(0, a3, 0);
+    v4->mSet = CFSetCreateMutable(0, capacity, 0);
   }
 
   return v4;
 }
 
-- (OITSUMutablePointerSet)initWithObjects:(const void *)a3 count:(unint64_t)a4
+- (OITSUMutablePointerSet)initWithObjects:(const void *)objects count:(unint64_t)count
 {
-  v4 = a4;
-  v6 = [(OITSUMutablePointerSet *)self initWithCapacity:a4];
-  if (v6 && v4)
+  countCopy = count;
+  v6 = [(OITSUMutablePointerSet *)self initWithCapacity:count];
+  if (v6 && countCopy)
   {
     do
     {
-      v7 = *a3++;
+      v7 = *objects++;
       CFSetAddValue(v6->mSet, v7);
-      --v4;
+      --countCopy;
     }
 
-    while (v4);
+    while (countCopy);
   }
 
   return v6;
 }
 
-- (OITSUMutablePointerSet)initWithCFSet:(__CFSet *)a3
+- (OITSUMutablePointerSet)initWithCFSet:(__CFSet *)set
 {
-  if (a3)
+  if (set)
   {
     v7.receiver = self;
     v7.super_class = OITSUMutablePointerSet;
     v5 = [(OITSUMutablePointerSet *)&v7 init];
     if (v5)
     {
-      v5->mSet = CFSetCreateMutableCopy(0, 0, a3);
+      v5->mSet = CFSetCreateMutableCopy(0, 0, set);
     }
 
     return v5;
@@ -101,7 +101,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc([objc_opt_class() privateNonMutableClass]);
   mSet = self->mSet;
@@ -109,7 +109,7 @@
   return [v4 initWithCFSet:mSet];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc([objc_opt_class() privateMutableClass]);
   mSet = self->mSet;
@@ -117,15 +117,15 @@
   return [v4 initWithCFSet:mSet];
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
   value = 0;
-  if (!a3)
+  if (!member)
   {
     return 0;
   }
 
-  if (CFSetGetValueIfPresent(self->mSet, a3, &value))
+  if (CFSetGetValueIfPresent(self->mSet, member, &value))
   {
     return value;
   }
@@ -140,14 +140,14 @@
   return v2;
 }
 
-- (void)getObjects:(id *)a3
+- (void)getObjects:(id *)objects
 {
   Count = CFSetGetCount(self->mSet);
-  if (a3 && Count)
+  if (objects && Count)
   {
     mSet = self->mSet;
 
-    CFSetGetValues(mSet, a3);
+    CFSetGetValues(mSet, objects);
   }
 }
 
@@ -186,7 +186,7 @@
   return CFMakeCollectable(v7);
 }
 
-- (id)setByAddingObject:(id)a3
+- (id)setByAddingObject:(id)object
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v5 = [(OITSUMutablePointerSet *)self count];
@@ -209,7 +209,7 @@
   }
 
   [(OITSUMutablePointerSet *)self getObjects:v9];
-  *&v9[8 * v6] = a3;
+  *&v9[8 * v6] = object;
   v10 = [objc_msgSend(objc_opt_class() "privateNonMutableClass")];
   if (v7 >= 0x41)
   {
@@ -219,11 +219,11 @@
   return v10;
 }
 
-- (id)setByAddingObjectsFromSet:(id)a3
+- (id)setByAddingObjectsFromSet:(id)set
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = [(OITSUMutablePointerSet *)self count];
-  v6 = [a3 count];
+  v6 = [set count];
   v7 = v6 + v5;
   if (v6 + v5 >= 0x41)
   {
@@ -248,7 +248,7 @@
   [(OITSUMutablePointerSet *)self getObjects:v9];
   if (objc_opt_respondsToSelector())
   {
-    [a3 getObjects:&v9[8 * v5]];
+    [set getObjects:&v9[8 * v5]];
   }
 
   else
@@ -257,7 +257,7 @@
     v20 = 0u;
     v18 = 0u;
     v17 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v10 = [set countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -269,14 +269,14 @@
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(set);
           }
 
           *v12 = *(*(&v17 + 1) + 8 * i);
           v12 += 8;
         }
 
-        v11 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [set countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v11);
@@ -292,11 +292,11 @@
   return v15;
 }
 
-- (id)setByAddingObjectsFromArray:(id)a3
+- (id)setByAddingObjectsFromArray:(id)array
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v5 = [(OITSUMutablePointerSet *)self count];
-  v6 = [a3 count];
+  v6 = [array count];
   v7 = v6 + v5;
   MEMORY[0x28223BE20]();
   v9 = v12 - v8;
@@ -310,7 +310,7 @@
   }
 
   [(OITSUMutablePointerSet *)self getObjects:v9];
-  [a3 getObjects:&v9[8 * v5] range:{0, v6}];
+  [array getObjects:&v9[8 * v5] range:{0, v6}];
   v10 = [objc_msgSend(objc_opt_class() "privateNonMutableClass")];
   if (v7 >= 0x41)
   {

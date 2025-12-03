@@ -1,56 +1,56 @@
 @interface MediaControlsVolumeContainerView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MediaControlsVolumeContainerView)initWithFrame:(CGRect)a3;
-- (MediaControlsVolumeContainerView)initWithFrame:(CGRect)a3 slider:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MediaControlsVolumeContainerView)initWithFrame:(CGRect)frame;
+- (MediaControlsVolumeContainerView)initWithFrame:(CGRect)frame slider:(id)slider;
 - (void)_updateVolumeCapabilities;
 - (void)_updateVolumeStyle;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setOnScreen:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setTransitioning:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3;
-- (void)setVolumeSlider:(id)a3;
+- (void)setOnScreen:(BOOL)screen;
+- (void)setStyle:(int64_t)style;
+- (void)setTransitioning:(BOOL)transitioning;
+- (void)setVisualStylingProvider:(id)provider;
+- (void)setVolumeSlider:(id)slider;
 @end
 
 @implementation MediaControlsVolumeContainerView
 
-- (MediaControlsVolumeContainerView)initWithFrame:(CGRect)a3
+- (MediaControlsVolumeContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(MPVolumeSlider *)[MediaControlsVolumeSlider alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v9 = [(MediaControlsVolumeContainerView *)self initWithFrame:v8 slider:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v8 = [(MPVolumeSlider *)[MediaControlsVolumeSlider alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  height = [(MediaControlsVolumeContainerView *)self initWithFrame:v8 slider:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (MediaControlsVolumeContainerView)initWithFrame:(CGRect)a3 slider:(id)a4
+- (MediaControlsVolumeContainerView)initWithFrame:(CGRect)frame slider:(id)slider
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  sliderCopy = slider;
   v16.receiver = self;
   v16.super_class = MediaControlsVolumeContainerView;
-  v10 = [(MediaControlsVolumeContainerView *)&v16 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(MediaControlsVolumeContainerView *)&v16 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(MediaControlsVolumeContainerView *)v10 setVolumeSlider:v9];
+    [(MediaControlsVolumeContainerView *)height setVolumeSlider:sliderCopy];
     [(MediaControlsVolumeContainerView *)v11 addSubview:v11->_volumeSlider];
-    v12 = [[MediaControlsRelativeVolumeStepper alloc] initWithFrame:x, y, width, height];
+    height2 = [[MediaControlsRelativeVolumeStepper alloc] initWithFrame:x, y, width, height];
     volumeStepper = v11->_volumeStepper;
-    v11->_volumeStepper = v12;
+    v11->_volumeStepper = height2;
 
-    v14 = [v9 volumeController];
-    [(MediaControlsRelativeVolumeStepper *)v11->_volumeStepper setVolumeController:v14];
+    volumeController = [sliderCopy volumeController];
+    [(MediaControlsRelativeVolumeStepper *)v11->_volumeStepper setVolumeController:volumeController];
 
     [(MediaControlsRelativeVolumeStepper *)v11->_volumeStepper setHidden:1];
     [(MediaControlsVolumeContainerView *)v11 addSubview:v11->_volumeStepper];
@@ -64,8 +64,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E6970440] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6970440] object:0];
 
   v4.receiver = self;
   v4.super_class = MediaControlsVolumeContainerView;
@@ -79,9 +79,9 @@
   [(MediaControlsVolumeContainerView *)&v15 layoutSubviews];
   [(MediaControlsVolumeContainerView *)self bounds];
   [(MediaControlsRelativeVolumeStepper *)self->_volumeStepper setFrame:?];
-  v3 = [(MediaControlsVolumeContainerView *)self volumeSlider];
+  volumeSlider = [(MediaControlsVolumeContainerView *)self volumeSlider];
   [(MediaControlsVolumeContainerView *)self bounds];
-  [v3 sizeThatFits:{v4, v5}];
+  [volumeSlider sizeThatFits:{v4, v5}];
 
   [(MediaControlsVolumeContainerView *)self bounds];
   UIRectCenteredIntegralRect();
@@ -89,23 +89,23 @@
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(MediaControlsVolumeContainerView *)self volumeSlider];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  volumeSlider2 = [(MediaControlsVolumeContainerView *)self volumeSlider];
+  [volumeSlider2 setFrame:{v7, v9, v11, v13}];
 }
 
-- (void)setVolumeSlider:(id)a3
+- (void)setVolumeSlider:(id)slider
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  sliderCopy = slider;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = *MEMORY[0x1E6970440];
-  [v5 removeObserver:self name:*MEMORY[0x1E6970440] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6970440] object:0];
 
   volumeSlider = self->_volumeSlider;
-  self->_volumeSlider = v4;
-  v8 = v4;
+  self->_volumeSlider = sliderCopy;
+  v8 = sliderCopy;
 
-  v9 = [(MPVolumeSlider *)v8 volumeController];
-  [(MediaControlsRelativeVolumeStepper *)self->_volumeStepper setVolumeController:v9];
+  volumeController = [(MPVolumeSlider *)v8 volumeController];
+  [(MediaControlsRelativeVolumeStepper *)self->_volumeStepper setVolumeController:volumeController];
 
   [(MediaControlsVolumeSlider *)self->_volumeSlider setVisualStylingProvider:self->_visualStylingProvider];
   v10 = +[MediaControlsTheme volumeMinImage];
@@ -114,21 +114,21 @@
   v11 = +[MediaControlsTheme volumeMaxImage];
   [(MediaControlsVolumeSlider *)self->_volumeSlider setMaximumValueImage:v11];
 
-  v12 = [(MediaControlsVolumeSlider *)self->_volumeSlider _minValueView];
-  [v12 setContentMode:4];
+  _minValueView = [(MediaControlsVolumeSlider *)self->_volumeSlider _minValueView];
+  [_minValueView setContentMode:4];
 
-  v13 = [(MediaControlsVolumeSlider *)self->_volumeSlider _maxValueView];
-  [v13 setContentMode:4];
+  _maxValueView = [(MediaControlsVolumeSlider *)self->_volumeSlider _maxValueView];
+  [_maxValueView setContentMode:4];
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v14 addObserver:self selector:sel__updateVolumeCapabilities name:v6 object:v8];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__updateVolumeCapabilities name:v6 object:v8];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(MediaControlsVolumeContainerView *)self _updateVolumeStyle];
 
     [(MediaControlsVolumeContainerView *)self setNeedsLayout];
@@ -151,41 +151,41 @@
   [(MediaControlsVolumeContainerView *)self _updateVolumeStyle];
 }
 
-- (void)setTransitioning:(BOOL)a3
+- (void)setTransitioning:(BOOL)transitioning
 {
-  if (self->_transitioning != a3)
+  if (self->_transitioning != transitioning)
   {
-    v3 = a3;
-    self->_transitioning = a3;
-    if (a3 || self->_style == 1)
+    transitioningCopy = transitioning;
+    self->_transitioning = transitioning;
+    if (transitioning || self->_style == 1)
     {
-      v4 = [(MediaControlsVolumeContainerView *)self volumeSlider];
-      [v4 setHidden:!v3];
+      volumeSlider = [(MediaControlsVolumeContainerView *)self volumeSlider];
+      [volumeSlider setHidden:!transitioningCopy];
     }
   }
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    v4 = a3;
-    self->_onScreen = a3;
-    v5 = [(MediaControlsVolumeContainerView *)self volumeSlider];
-    [v5 _setIsOffScreen:!v4];
+    screenCopy = screen;
+    self->_onScreen = screen;
+    volumeSlider = [(MediaControlsVolumeContainerView *)self volumeSlider];
+    [volumeSlider _setIsOffScreen:!screenCopy];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(MediaControlsVolumeContainerView *)self volumeSlider];
-  [v6 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  volumeSlider = [(MediaControlsVolumeContainerView *)self volumeSlider];
+  [volumeSlider sizeThatFits:{width, height}];
   v8 = v7;
 
-  v9 = [(MediaControlsVolumeContainerView *)self traitCollection];
-  [v9 displayScale];
+  traitCollection = [(MediaControlsVolumeContainerView *)self traitCollection];
+  [traitCollection displayScale];
   UIRoundToScale();
   v11 = v10;
 
@@ -196,44 +196,44 @@
   return result;
 }
 
-- (void)setVisualStylingProvider:(id)a3
+- (void)setVisualStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_visualStylingProvider != v5)
+  providerCopy = provider;
+  if (self->_visualStylingProvider != providerCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_visualStylingProvider, a3);
+    v10 = providerCopy;
+    objc_storeStrong(&self->_visualStylingProvider, provider);
     visualStylingProvider = self->_visualStylingProvider;
-    v7 = [(MediaControlsVolumeContainerView *)self volumeStepper];
-    [v7 setVisualStylingProvider:visualStylingProvider];
+    volumeStepper = [(MediaControlsVolumeContainerView *)self volumeStepper];
+    [volumeStepper setVisualStylingProvider:visualStylingProvider];
 
     v8 = self->_visualStylingProvider;
-    v9 = [(MediaControlsVolumeContainerView *)self volumeSlider];
-    [v9 setVisualStylingProvider:v8];
+    volumeSlider = [(MediaControlsVolumeContainerView *)self volumeSlider];
+    [volumeSlider setVisualStylingProvider:v8];
 
-    v5 = v10;
+    providerCopy = v10;
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(MediaControlsVolumeContainerView *)self volumeSlider];
-  [v6 hitRectInsets];
+  touchCopy = touch;
+  volumeSlider = [(MediaControlsVolumeContainerView *)self volumeSlider];
+  [volumeSlider hitRectInsets];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(MediaControlsVolumeContainerView *)self volumeSlider];
-  v16 = [v15 thumbView];
-  [v16 frame];
+  volumeSlider2 = [(MediaControlsVolumeContainerView *)self volumeSlider];
+  thumbView = [volumeSlider2 thumbView];
+  [thumbView frame];
   v18 = v10 + v17;
   v20 = v8 + v19;
   v22 = v21 - (v10 + v14);
   v24 = v23 - (v8 + v12);
 
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   v26 = v25;
   v28 = v27;
 
@@ -250,8 +250,8 @@
 - (void)_updateVolumeStyle
 {
   style = self->_style;
-  v4 = [(MediaControlsVolumeContainerView *)self volumeSlider];
-  v5 = v4;
+  volumeSlider = [(MediaControlsVolumeContainerView *)self volumeSlider];
+  v5 = volumeSlider;
   if (style == 1)
   {
     v6 = 0.0;
@@ -262,33 +262,33 @@
     v6 = 1.0;
   }
 
-  [v4 setAlpha:v6];
+  [volumeSlider setAlpha:v6];
 
-  v7 = [(MediaControlsVolumeContainerView *)self volumeStepper];
-  [v7 setAlpha:v6];
+  volumeStepper = [(MediaControlsVolumeContainerView *)self volumeStepper];
+  [volumeStepper setAlpha:v6];
 
   [(MediaControlsVolumeContainerView *)self _updateVolumeCapabilities];
 }
 
 - (void)_updateVolumeCapabilities
 {
-  v3 = [(MPVolumeSlider *)self->_volumeSlider volumeController];
-  v4 = [v3 volumeCapabilities];
+  volumeController = [(MPVolumeSlider *)self->_volumeSlider volumeController];
+  volumeCapabilities = [volumeController volumeCapabilities];
 
-  if (self->_volumeCapabilities == v4)
+  if (self->_volumeCapabilities == volumeCapabilities)
   {
     return;
   }
 
-  self->_volumeCapabilities = v4;
-  if ((v4 & 2) != 0)
+  self->_volumeCapabilities = volumeCapabilities;
+  if ((volumeCapabilities & 2) != 0)
   {
     volumeSlider = self->_volumeSlider;
     goto LABEL_6;
   }
 
   volumeSlider = self->_volumeSlider;
-  if ((v4 & 1) == 0)
+  if ((volumeCapabilities & 1) == 0)
   {
 LABEL_6:
     [(MPVolumeSlider *)volumeSlider setHidden:0];

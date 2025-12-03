@@ -1,10 +1,10 @@
 @interface FullScreenMotionActivityCollectionViewCell
-- (_TtC7Journal42FullScreenMotionActivityCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC7Journal42FullScreenMotionActivityCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation FullScreenMotionActivityCollectionViewCell
 
-- (_TtC7Journal42FullScreenMotionActivityCollectionViewCell)initWithCoder:(id)a3
+- (_TtC7Journal42FullScreenMotionActivityCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Journal42FullScreenMotionActivityCollectionViewCell_motionActivityView;
   type metadata accessor for MotionActivityGridView();

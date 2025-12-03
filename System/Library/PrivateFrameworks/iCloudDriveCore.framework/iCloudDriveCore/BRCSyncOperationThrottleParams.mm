@@ -1,20 +1,20 @@
 @interface BRCSyncOperationThrottleParams
 - (BOOL)check;
-- (BOOL)isEqual:(id)a3;
-- (BRCSyncOperationThrottleParams)initWithParams:(id)a3 defaults:(id)a4;
-- (double)doubleForKey:(id)a3 inParams:(id)a4 defaults:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BRCSyncOperationThrottleParams)initWithParams:(id)params defaults:(id)defaults;
+- (double)doubleForKey:(id)key inParams:(id)params defaults:(id)defaults;
 - (id)paramsToDictionary;
 - (unint64_t)hash;
-- (void)setupWithParams:(id)a3 defaults:(id)a4;
+- (void)setupWithParams:(id)params defaults:(id)defaults;
 @end
 
 @implementation BRCSyncOperationThrottleParams
 
-- (double)doubleForKey:(id)a3 inParams:(id)a4 defaults:(id)a5
+- (double)doubleForKey:(id)key inParams:(id)params defaults:(id)defaults
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 objectForKeyedSubscript:v7];
+  keyCopy = key;
+  defaultsCopy = defaults;
+  v9 = [params objectForKeyedSubscript:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -24,7 +24,7 @@
 
   else
   {
-    v12 = [v8 objectForKeyedSubscript:v7];
+    v12 = [defaultsCopy objectForKeyedSubscript:keyCopy];
     [v12 doubleValue];
     v11 = v13;
   }
@@ -32,23 +32,23 @@
   return v11;
 }
 
-- (void)setupWithParams:(id)a3 defaults:(id)a4
+- (void)setupWithParams:(id)params defaults:(id)defaults
 {
-  v6 = a4;
-  v7 = a3;
-  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"wait-at-least" inParams:v7 defaults:v6];
+  defaultsCopy = defaults;
+  paramsCopy = params;
+  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"wait-at-least" inParams:paramsCopy defaults:defaultsCopy];
   self->minWait = v8;
-  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"wait-at-most" inParams:v7 defaults:v6];
+  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"wait-at-most" inParams:paramsCopy defaults:defaultsCopy];
   self->maxWait = v9;
-  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"success-ratio" inParams:v7 defaults:v6];
+  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"success-ratio" inParams:paramsCopy defaults:defaultsCopy];
   self->ratioOnSuccess = v10;
-  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"quota-clear-ratio" inParams:v7 defaults:v6];
+  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"quota-clear-ratio" inParams:paramsCopy defaults:defaultsCopy];
   self->ratioOnQuotaErrorClear = v11;
-  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"error-ratio" inParams:v7 defaults:v6];
+  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"error-ratio" inParams:paramsCopy defaults:defaultsCopy];
   self->ratioOnFailure = v12;
-  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"kickback-delay" inParams:v7 defaults:v6];
+  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"kickback-delay" inParams:paramsCopy defaults:defaultsCopy];
   self->inactivityKickbackDelay = v13;
-  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"kickback-ratio" inParams:v7 defaults:v6];
+  [(BRCSyncOperationThrottleParams *)self doubleForKey:@"kickback-ratio" inParams:paramsCopy defaults:defaultsCopy];
   v15 = v14;
 
   self->inactivityKickbackRatio = v15;
@@ -79,11 +79,11 @@
   return inactivityKickbackRatio <= 1.0 && inactivityKickbackRatio >= 0.0;
 }
 
-- (BRCSyncOperationThrottleParams)initWithParams:(id)a3 defaults:(id)a4
+- (BRCSyncOperationThrottleParams)initWithParams:(id)params defaults:(id)defaults
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  defaultsCopy = defaults;
   v16.receiver = self;
   v16.super_class = BRCSyncOperationThrottleParams;
   v8 = [(BRCSyncOperationThrottleParams *)&v16 init];
@@ -92,7 +92,7 @@
     goto LABEL_15;
   }
 
-  if (!v6)
+  if (!paramsCopy)
   {
     goto LABEL_14;
   }
@@ -103,7 +103,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(BRCSyncOperationThrottleParams *)v8 setupWithParams:v6 defaults:v7];
+      [(BRCSyncOperationThrottleParams *)v8 setupWithParams:paramsCopy defaults:defaultsCopy];
       if ([(BRCSyncOperationThrottleParams *)v8 check])
       {
 LABEL_15:
@@ -130,25 +130,25 @@ LABEL_15:
     }
 
     *buf = 138412802;
-    v18 = v6;
+    v18 = paramsCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = defaultsCopy;
     v21 = 2112;
     v22 = v10;
     v12 = "[ERROR] Invalid user defaults: %@, using %@%@";
     goto LABEL_18;
   }
 
-  if (![(BRCSyncOperationThrottleParams *)v6 check])
+  if (![(BRCSyncOperationThrottleParams *)paramsCopy check])
   {
     v10 = brc_bread_crumbs();
     v11 = brc_default_log();
     if (os_log_type_enabled(v11, 0x90u))
     {
       *buf = 138412802;
-      v18 = v6;
+      v18 = paramsCopy;
       v19 = 2112;
-      v20 = v7;
+      v20 = defaultsCopy;
       v21 = 2112;
       v22 = v10;
       v12 = "[ERROR] Default value %@ is malformed, using %@%@";
@@ -159,13 +159,13 @@ LABEL_18:
 LABEL_13:
 
 LABEL_14:
-    [(BRCSyncOperationThrottleParams *)v8 setupWithParams:0 defaults:v7];
-    v6 = 0;
+    [(BRCSyncOperationThrottleParams *)v8 setupWithParams:0 defaults:defaultsCopy];
+    paramsCopy = 0;
     goto LABEL_15;
   }
 
-  v9 = v6;
-  v6 = v9;
+  v9 = paramsCopy;
+  paramsCopy = v9;
 LABEL_16:
   v13 = v9;
 
@@ -204,10 +204,10 @@ LABEL_16:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -217,9 +217,9 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(BRCSyncOperationThrottleParams *)self paramsToDictionary];
-      v6 = [(BRCSyncOperationThrottleParams *)v4 paramsToDictionary];
-      v7 = [v5 isEqual:v6];
+      paramsToDictionary = [(BRCSyncOperationThrottleParams *)self paramsToDictionary];
+      paramsToDictionary2 = [(BRCSyncOperationThrottleParams *)equalCopy paramsToDictionary];
+      v7 = [paramsToDictionary isEqual:paramsToDictionary2];
     }
 
     else
@@ -233,8 +233,8 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v2 = [(BRCSyncOperationThrottleParams *)self paramsToDictionary];
-  v3 = [v2 hash];
+  paramsToDictionary = [(BRCSyncOperationThrottleParams *)self paramsToDictionary];
+  v3 = [paramsToDictionary hash];
 
   return v3;
 }

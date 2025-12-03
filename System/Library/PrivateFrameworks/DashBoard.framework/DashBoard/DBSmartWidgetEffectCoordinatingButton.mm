@@ -1,30 +1,30 @@
 @interface DBSmartWidgetEffectCoordinatingButton
 - (double)cornerRadius;
-- (void)configureWithBackgroundColor:(id)a3;
-- (void)configureWithImage:(id)a3;
+- (void)configureWithBackgroundColor:(id)color;
+- (void)configureWithImage:(id)image;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
+- (void)setCornerRadius:(double)radius;
 @end
 
 @implementation DBSmartWidgetEffectCoordinatingButton
 
-- (void)configureWithBackgroundColor:(id)a3
+- (void)configureWithBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  DBSmartWidgetEffectCoordinatingButton.configureWith(backgroundColor:)(v4);
+  colorCopy = color;
+  selfCopy = self;
+  DBSmartWidgetEffectCoordinatingButton.configureWith(backgroundColor:)(colorCopy);
 }
 
-- (void)configureWithImage:(id)a3
+- (void)configureWithImage:(id)image
 {
-  v4 = a3;
-  v5 = self;
-  DBSmartWidgetEffectCoordinatingButton.configureWith(image:)(v4);
+  imageCopy = image;
+  selfCopy = self;
+  DBSmartWidgetEffectCoordinatingButton.configureWith(image:)(imageCopy);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DBSmartWidgetEffectCoordinatingButton.layoutSubviews()();
 }
 
@@ -35,12 +35,12 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   v5 = OBJC_IVAR____TtC9DashBoard37DBSmartWidgetEffectCoordinatingButton_cornerRadius;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
-  v6 = self;
+  *(&self->super.super.super.super.super.super.isa + v5) = radius;
+  selfCopy = self;
   sub_2482A035C();
 }
 

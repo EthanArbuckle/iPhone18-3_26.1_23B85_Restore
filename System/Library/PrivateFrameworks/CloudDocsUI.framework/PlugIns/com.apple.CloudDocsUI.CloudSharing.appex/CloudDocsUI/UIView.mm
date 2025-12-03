@@ -12,8 +12,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(UIView *)self subviews];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subviews = [(UIView *)self subviews];
+  v5 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -24,14 +24,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) allSubViews];
-        [v3 addObjectsFromArray:v9];
+        allSubViews = [*(*(&v11 + 1) + 8 * i) allSubViews];
+        [v3 addObjectsFromArray:allSubViews];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

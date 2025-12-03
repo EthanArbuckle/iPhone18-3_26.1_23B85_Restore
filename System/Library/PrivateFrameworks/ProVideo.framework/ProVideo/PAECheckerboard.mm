@@ -1,22 +1,22 @@
 @interface PAECheckerboard
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4;
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5;
-- (BOOL)parameterChanged:(unsigned int)a3;
-- (PAECheckerboard)initWithAPIManager:(id)a3;
-- (id)multiplyMatrix:(id)a3 byMatrix:(id)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)parameterChanged:(unsigned int)changed;
+- (PAECheckerboard)initWithAPIManager:(id)manager;
+- (id)multiplyMatrix:(id)matrix byMatrix:(id)byMatrix;
 - (id)properties;
 - (void)getTransformMatrix:(double *)(a3 forCenterX:centerY:angle:andOutputImage:;
-- (void)updateShapeParameter:(unsigned int)a3 atTime:(id)a4;
+- (void)updateShapeParameter:(unsigned int)parameter atTime:(id)time;
 @end
 
 @implementation PAECheckerboard
 
-- (PAECheckerboard)initWithAPIManager:(id)a3
+- (PAECheckerboard)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAECheckerboard;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (BOOL)addParameters
@@ -39,14 +39,14 @@
   v6 = !v5;
   if (!v5)
   {
-    v7 = [v4 versionAtCreation];
+    versionAtCreation = [v4 versionAtCreation];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     [v3 addPopupMenuWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultValue:@"Checkerboard::Type" menuEntries:0 parmFlags:{0), 1, 0, objc_msgSend(objc_msgSend(v8, "localizedStringForKey:value:table:", @"Checkerboard::Types", 0, 0), "componentsSeparatedByString:", @";", 1}];
     [v3 addPointParameterWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultX:@"Checkerboard::Center" defaultY:0 parmFlags:{0), 310, 0, 0.5, 0.5}];
     [v3 addColorParameterWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultRed:@"Checkerboard::Color 1" defaultGreen:0 defaultBlue:0) defaultAlpha:311 parmFlags:{0, 1.0, 1.0, 1.0, 1.0}];
     [v3 addColorParameterWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultRed:@"Checkerboard::Color 2" defaultGreen:0 defaultBlue:0) defaultAlpha:312 parmFlags:{0, 0.0, 0.0, 0.0, 1.0}];
     v9 = [v8 localizedStringForKey:@"Checkerboard::Size" value:0 table:0];
-    if (v7 >= 2)
+    if (versionAtCreation >= 2)
     {
       v10 = 3200.0;
     }
@@ -56,7 +56,7 @@
       v10 = 800.0;
     }
 
-    if (v7 >= 2)
+    if (versionAtCreation >= 2)
     {
       v11 = 1600.0;
     }
@@ -92,15 +92,15 @@
   return v6;
 }
 
-- (void)updateShapeParameter:(unsigned int)a3 atTime:(id)a4
+- (void)updateShapeParameter:(unsigned int)parameter atTime:(id)time
 {
-  v5 = *&a3;
+  v5 = *&parameter;
   v7 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735BAA0];
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_287366FF0];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v18 = 0;
-  [v7 getIntValue:&v18 fromParm:v5 atFxTime:a4.var1];
+  [v7 getIntValue:&v18 fromParm:v5 atFxTime:time.var1];
   v17 = 0;
   v16 = 0;
   v15 = 0;
@@ -162,7 +162,7 @@
   [v8 setParameterFlags:v14 toParm:(v5 + 4)];
 }
 
-- (BOOL)parameterChanged:(unsigned int)a3
+- (BOOL)parameterChanged:(unsigned int)changed
 {
   v5 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v6 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735BAA0];
@@ -186,17 +186,17 @@
 
   v29 = *MEMORY[0x277CC0898];
   v30 = *(MEMORY[0x277CC0898] + 16);
-  switch(a3)
+  switch(changed)
   {
     case 0xCu:
-      v14 = self;
+      selfCopy2 = self;
       v15 = 12;
       goto LABEL_20;
     case 7u:
-      v14 = self;
+      selfCopy2 = self;
       v15 = 7;
 LABEL_20:
-      [(PAECheckerboard *)v14 updateShapeParameter:v15 atTime:&v29];
+      [(PAECheckerboard *)selfCopy2 updateShapeParameter:v15 atTime:&v29];
       return v10;
     case 1u:
       v11 = v7;
@@ -321,32 +321,32 @@ LABEL_27:
   return [v2 dictionaryWithObjectsAndKeys:{v3, @"MayRemapTime", v4, @"PreservesAlpha", v5, @"SupportsHeliumRendering", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", 3), @"AutoColorProcessingSupport", 0}];
 }
 
-- (id)multiplyMatrix:(id)a3 byMatrix:(id)a4
+- (id)multiplyMatrix:(id)matrix byMatrix:(id)byMatrix
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [a3 matrix];
-  v6 = [a4 matrix];
+  matrix = [matrix matrix];
+  matrix2 = [byMatrix matrix];
   v7 = 0;
-  v8 = v5 + 96;
-  v9 = *v6;
-  v10 = v6[1];
-  v11 = v6[2];
-  v12 = v6[3];
-  v13 = v6[4];
-  v14 = v6[5];
-  v15 = v6[6];
-  v16 = v6[7];
-  v17 = v6[8];
-  v18 = v6[9];
-  v19 = v6[10];
-  v20 = v6[11];
-  v21 = v6[12];
-  v22 = v6[13];
-  v23 = v6[14];
-  v24 = v6[15];
+  v8 = matrix + 96;
+  v9 = *matrix2;
+  v10 = matrix2[1];
+  v11 = matrix2[2];
+  v12 = matrix2[3];
+  v13 = matrix2[4];
+  v14 = matrix2[5];
+  v15 = matrix2[6];
+  v16 = matrix2[7];
+  v17 = matrix2[8];
+  v18 = matrix2[9];
+  v19 = matrix2[10];
+  v20 = matrix2[11];
+  v21 = matrix2[12];
+  v22 = matrix2[13];
+  v23 = matrix2[14];
+  v24 = matrix2[15];
   do
   {
-    v25 = *(v5 + v7);
+    v25 = *(matrix + v7);
     v26 = *(v8 + v7 - 64);
     v27 = *(v8 + v7 - 32);
     v28 = *(v8 + v7);
@@ -391,7 +391,7 @@ LABEL_27:
   *a3 = [-[PAECheckerboard multiplyMatrix:byMatrix:](self multiplyMatrix:-[PAECheckerboard multiplyMatrix:byMatrix:](self byMatrix:{"multiplyMatrix:byMatrix:", -[FxMatrix44 initWithMatrix44Data:]([FxMatrix44 alloc], "initWithMatrix44Data:", v13), objc_msgSend(a7, "inversePixelTransform")), -[FxMatrix44 initWithMatrix44Data:]([FxMatrix44 alloc], "initWithMatrix44Data:", v21)), "matrix"}];
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info
 {
   v7 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
@@ -410,7 +410,7 @@ LABEL_27:
     return 0;
   }
 
-  v11 = [v8 versionAtCreation];
+  versionAtCreation = [v8 versionAtCreation];
   v197 = 0;
   v195 = 0x3FE0000000000000;
   v196 = 0x3FE0000000000000;
@@ -438,17 +438,17 @@ LABEL_27:
   v173 = 0.0;
   v172 = 0;
   v171 = 1.0;
-  [a3 height];
-  [a3 width];
-  [v7 getIntValue:&v197 fromParm:1 atFxTime:a4->var0.var1];
-  [v7 getXValue:&v196 YValue:&v195 fromParm:310 atFxTime:a4->var0.var1];
-  [v7 getRedValue:&v194 greenValue:&v193 blueValue:&v192 alphaValue:&v191 fromParm:311 atFxTime:a4->var0.var1];
-  if (v11)
+  [output height];
+  [output width];
+  [v7 getIntValue:&v197 fromParm:1 atFxTime:info->var0.var1];
+  [v7 getXValue:&v196 YValue:&v195 fromParm:310 atFxTime:info->var0.var1];
+  [v7 getRedValue:&v194 greenValue:&v193 blueValue:&v192 alphaValue:&v191 fromParm:311 atFxTime:info->var0.var1];
+  if (versionAtCreation)
   {
     v193 = v191 * v193;
     v194 = v191 * v194;
     v192 = v191 * v192;
-    [v7 getRedValue:&v190 greenValue:&v189 blueValue:&v188 alphaValue:&v187 fromParm:312 atFxTime:a4->var0.var1];
+    [v7 getRedValue:&v190 greenValue:&v189 blueValue:&v188 alphaValue:&v187 fromParm:312 atFxTime:info->var0.var1];
     v189 = v187 * v189;
     v190 = v187 * v190;
     v188 = v187 * v188;
@@ -456,52 +456,52 @@ LABEL_27:
 
   else
   {
-    [v7 getRedValue:&v190 greenValue:&v189 blueValue:&v188 alphaValue:&v187 fromParm:312 atFxTime:a4->var0.var1];
+    [v7 getRedValue:&v190 greenValue:&v189 blueValue:&v188 alphaValue:&v187 fromParm:312 atFxTime:info->var0.var1];
   }
 
-  [v7 getFloatValue:&v186 fromParm:313 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v185 fromParm:2 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v184 fromParm:314 atFxTime:a4->var0.var1];
-  [v7 getIntValue:&v183 fromParm:7 atFxTime:a4->var0.var1];
-  [v7 getIntValue:&v182 fromParm:9 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v181 fromParm:10 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v180 fromParm:11 atFxTime:a4->var0.var1];
-  [v7 getIntValue:&v179 fromParm:12 atFxTime:a4->var0.var1];
-  [v7 getIntValue:&v178 fromParm:14 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v177 fromParm:15 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v176 fromParm:16 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v175 fromParm:17 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v174 fromParm:3 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v173 fromParm:4 atFxTime:a4->var0.var1];
-  [v7 getIntValue:&v172 fromParm:5 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v171 fromParm:6 atFxTime:a4->var0.var1];
-  [a3 origin];
-  v12 = [a3 imageType];
-  v10 = v12 == 3;
-  if (v12 == 3)
+  [v7 getFloatValue:&v186 fromParm:313 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v185 fromParm:2 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v184 fromParm:314 atFxTime:info->var0.var1];
+  [v7 getIntValue:&v183 fromParm:7 atFxTime:info->var0.var1];
+  [v7 getIntValue:&v182 fromParm:9 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v181 fromParm:10 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v180 fromParm:11 atFxTime:info->var0.var1];
+  [v7 getIntValue:&v179 fromParm:12 atFxTime:info->var0.var1];
+  [v7 getIntValue:&v178 fromParm:14 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v177 fromParm:15 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v176 fromParm:16 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v175 fromParm:17 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v174 fromParm:3 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v173 fromParm:4 atFxTime:info->var0.var1];
+  [v7 getIntValue:&v172 fromParm:5 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v171 fromParm:6 atFxTime:info->var0.var1];
+  [output origin];
+  imageType = [output imageType];
+  v10 = imageType == 3;
+  if (imageType == 3)
   {
     if (v197 > 1)
     {
       if (v197 == 2)
       {
-        v105 = [a3 pixelTransform];
-        [a3 bounds];
+        pixelTransform = [output pixelTransform];
+        [output bounds];
         v163 = v107;
         v167 = v106;
         v170 = xmmword_260343E50;
-        [v7 getXValue:&v170 YValue:&v170.f64[1] fromParm:310 atFxTime:a4->var0.var1];
+        [v7 getXValue:&v170 YValue:&v170.f64[1] fromParm:310 atFxTime:info->var0.var1];
         __asm { FMOV            V1.2D, #0.5 }
 
         v109 = vsubq_f64(_Q1, v170);
         _Q1.f64[0] = v167;
         _Q1.f64[1] = v163;
         v170 = vmulq_f64(_Q1, v109);
-        [v105 transform2DPoint:*&v170];
+        [pixelTransform transform2DPoint:*&v170];
         v170.f64[0] = v110;
         v170.f64[1] = v111;
         v184 = v184 * v184;
         v169 = 0;
-        [PAECheckerboard getTransformMatrix:"getTransformMatrix:forCenterX:centerY:angle:andOutputImage:" forCenterX:&v169 centerY:a3 angle:? andOutputImage:?];
+        [PAECheckerboard getTransformMatrix:"getTransformMatrix:forCenterX:centerY:angle:andOutputImage:" forCenterX:&v169 centerY:output angle:? andOutputImage:?];
         v40 = HGObject::operator new(0x1A0uLL);
         HgcShapeCheckerboard::HgcShapeCheckerboard(v40);
         v112 = v186;
@@ -542,7 +542,7 @@ LABEL_27:
         (*(*v40 + 96))(v40, 13, v130, v131, v132, v133);
         v168 = v40;
         (*(*v40 + 16))(v40);
-        [a3 setHeliumRef:&v168];
+        [output setHeliumRef:&v168];
         if (v168)
         {
           (*(*v168 + 24))(v168);
@@ -560,12 +560,12 @@ LABEL_27:
         v69 = v175 * sqrt(v186 * v186 + v68 * v68 + v186 * (v68 + v68) * -0.5);
         v70 = atan(v69 / (v186 * 0.5));
         v71 = __sincos_stret(v70);
-        v72 = [a3 pixelTransform];
-        [a3 bounds];
+        pixelTransform2 = [output pixelTransform];
+        [output bounds];
         v162 = v74;
         v166 = v73;
         v170 = xmmword_260343E50;
-        [v7 getXValue:&v170 YValue:&v170.f64[1] fromParm:310 atFxTime:a4->var0.var1];
+        [v7 getXValue:&v170 YValue:&v170.f64[1] fromParm:310 atFxTime:info->var0.var1];
         __asm { FMOV            V1.2D, #1.0 }
 
         v76 = vsubq_f64(_Q1, v170);
@@ -575,11 +575,11 @@ LABEL_27:
         _Q1.f64[0] = v166;
         _Q1.f64[1] = v162;
         v170 = vmulq_f64(_Q1, v78);
-        [v72 transform2DPoint:*&v170];
+        [pixelTransform2 transform2DPoint:*&v170];
         v170.f64[0] = v79;
         v170.f64[1] = v80;
         v169 = 0;
-        [PAECheckerboard getTransformMatrix:"getTransformMatrix:forCenterX:centerY:angle:andOutputImage:" forCenterX:&v169 centerY:a3 angle:? andOutputImage:?];
+        [PAECheckerboard getTransformMatrix:"getTransformMatrix:forCenterX:centerY:angle:andOutputImage:" forCenterX:&v169 centerY:output angle:? andOutputImage:?];
         v81 = 1.0 / v68;
         v82 = 1.0 / v69;
         v83 = v68;
@@ -612,7 +612,7 @@ LABEL_27:
         (*(*v67 + 96))(v67, 1, v100, v101, v102, v103);
         v168 = v67;
         (*(*v67 + 16))(v67);
-        [a3 setHeliumRef:&v168];
+        [output setHeliumRef:&v168];
         if (v168)
         {
           (*(*v168 + 24))(v168);
@@ -632,11 +632,11 @@ LABEL_27:
 
       if (v197 == 1)
       {
-        [a3 bounds];
+        [output bounds];
         v161 = v14;
         v164 = v13;
         v170 = xmmword_260343E50;
-        [v7 getXValue:&v170 YValue:&v170.f64[1] fromParm:310 atFxTime:a4->var0.var1];
+        [v7 getXValue:&v170 YValue:&v170.f64[1] fromParm:310 atFxTime:info->var0.var1];
         __asm { FMOV            V1.2D, #1.0 }
 
         v19 = vsubq_f64(_Q1, v170);
@@ -646,8 +646,8 @@ LABEL_27:
         _Q1.f64[0] = v164;
         _Q1.f64[1] = v161;
         v170 = vmulq_f64(_Q1, v21);
-        v22 = [a3 pixelTransform];
-        [v22 transform2DPoint:*&v170];
+        pixelTransform3 = [output pixelTransform];
+        [pixelTransform3 transform2DPoint:*&v170];
         v170.f64[0] = v23;
         v170.f64[1] = v24;
         v25 = v191 + v187;
@@ -656,8 +656,8 @@ LABEL_27:
         v27 = v192 + v188;
         v174 = 360.0 / (v174 + v174);
         v28 = v174 * 3.14159265;
-        v29 = [a3 height];
-        v173 = v173 * (6.28318531 / (v29 / a4->var4));
+        height = [output height];
+        v173 = v173 * (6.28318531 / (height / info->var4));
         v30 = 1.0 / v171;
         v171 = v30;
         v186 = pow(v186, v30);
@@ -675,7 +675,7 @@ LABEL_27:
         v35 = v165 * 0.5;
         v36 = v27 * 0.5;
         v37 = v28 / 180.0;
-        [(PAECheckerboard *)self getTransformMatrix:&v169 forCenterX:a3 centerY:*&v170 angle:v185 andOutputImage:?];
+        [(PAECheckerboard *)self getTransformMatrix:&v169 forCenterX:output centerY:*&v170 angle:v185 andOutputImage:?];
         v38 = v172;
         v39 = HGObject::operator new(0x1A0uLL);
         v40 = v39;
@@ -722,7 +722,7 @@ LABEL_27:
           (*(*v40 + 96))(v40, 11, v63, v64, v65, v66);
           v168 = v40;
           (*(*v40 + 16))(v40);
-          [a3 setHeliumRef:&v168];
+          [output setHeliumRef:&v168];
           if (v168)
           {
             (*(*v168 + 24))(v168);
@@ -772,7 +772,7 @@ LABEL_27:
           (*(*v40 + 96))(v40, 11, v156, v157, v158, v159);
           v168 = v40;
           (*(*v40 + 16))(v40);
-          [a3 setHeliumRef:&v168];
+          [output setHeliumRef:&v168];
           if (v168)
           {
             (*(*v168 + 24))(v168);
@@ -788,14 +788,14 @@ LABEL_31:
   return v10;
 }
 
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a5 = 0;
-  *a4 = 1;
-  v5 = *&a3->var2;
-  v7[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 1;
+  v5 = *&setup->var2;
+  v7[0] = *&setup->var0.var0;
   v7[1] = v5;
-  v7[2] = *&a3->var4;
+  v7[2] = *&setup->var4;
   [PAESharedDefaultBase overrideFrameSetupForRenderMode:"overrideFrameSetupForRenderMode:hardware:software:" hardware:v7 software:?];
   return 1;
 }

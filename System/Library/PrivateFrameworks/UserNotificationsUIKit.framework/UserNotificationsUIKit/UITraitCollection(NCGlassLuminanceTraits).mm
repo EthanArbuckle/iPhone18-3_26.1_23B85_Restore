@@ -8,7 +8,7 @@
 {
   v2 = objc_opt_class();
 
-  return [a1 valueForCGFloatTrait:v2];
+  return [self valueForCGFloatTrait:v2];
 }
 
 @end

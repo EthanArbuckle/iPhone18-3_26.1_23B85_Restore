@@ -1,7 +1,7 @@
 @interface CHSWidgetConfigurationReader
 - (CHSWidgetConfigurationReader)init;
-- (id)_transformResults:(id)a3;
-- (void)allConfiguredWidgetsWithCompletion:(id)a3;
+- (id)_transformResults:(id)results;
+- (void)allConfiguredWidgetsWithCompletion:(id)completion;
 @end
 
 @implementation CHSWidgetConfigurationReader
@@ -21,17 +21,17 @@
   return v2;
 }
 
-- (void)allConfiguredWidgetsWithCompletion:(id)a3
+- (void)allConfiguredWidgetsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   connection = self->_connection;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__CHSWidgetConfigurationReader_allConfiguredWidgetsWithCompletion___block_invoke;
   v7[3] = &unk_1E7453E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CHSChronoServicesConnection *)connection allWidgetConfigurationsByHostWithCompletion:v7];
 }
 
@@ -56,23 +56,23 @@ void __67__CHSWidgetConfigurationReader_allConfiguredWidgetsWithCompletion___blo
   }
 }
 
-- (id)_transformResults:(id)a3
+- (id)_transformResults:(id)results
 {
-  v5 = a3;
-  if (!v5)
+  resultsCopy = results;
+  if (!resultsCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"CHSWidgetConfigurationReader.m" lineNumber:43 description:@"Must have results to parse results."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CHSWidgetConfigurationReader.m" lineNumber:43 description:@"Must have results to parse results."];
   }
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__CHSWidgetConfigurationReader__transformResults___block_invoke;
   v10[3] = &unk_1E7453E50;
-  v7 = v6;
+  v7 = array;
   v11 = v7;
-  [v5 enumerateKeysAndObjectsUsingBlock:v10];
+  [resultsCopy enumerateKeysAndObjectsUsingBlock:v10];
 
   return v7;
 }

@@ -1,54 +1,54 @@
 @interface _INPBRefinementItem
-- (BOOL)isEqual:(id)a3;
-- (_INPBRefinementItem)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRefinementItem)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSubKeyPath:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSubKeyPath:(id)path;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRefinementItem
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBRefinementItem *)self item];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"item"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  item = [(_INPBRefinementItem *)self item];
+  dictionaryRepresentation = [item dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"item"];
 
   if (self->_subKeyPath)
   {
-    v6 = [(_INPBRefinementItem *)self subKeyPath];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"subKeyPath"];
+    subKeyPath = [(_INPBRefinementItem *)self subKeyPath];
+    v7 = [subKeyPath copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"subKeyPath"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBRefinementItem *)self item];
-  v6 = [v4 item];
-  if ((v5 != 0) == (v6 == 0))
+  item = [(_INPBRefinementItem *)self item];
+  item2 = [equalCopy item];
+  if ((item != 0) == (item2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBRefinementItem *)self item];
-  if (v7)
+  item3 = [(_INPBRefinementItem *)self item];
+  if (item3)
   {
-    v8 = v7;
-    v9 = [(_INPBRefinementItem *)self item];
-    v10 = [v4 item];
-    v11 = [v9 isEqual:v10];
+    v8 = item3;
+    item4 = [(_INPBRefinementItem *)self item];
+    item5 = [equalCopy item];
+    v11 = [item4 isEqual:item5];
 
     if (!v11)
     {
@@ -60,12 +60,12 @@
   {
   }
 
-  v5 = [(_INPBRefinementItem *)self subKeyPath];
-  v6 = [v4 subKeyPath];
-  if ((v5 != 0) != (v6 == 0))
+  item = [(_INPBRefinementItem *)self subKeyPath];
+  item2 = [equalCopy subKeyPath];
+  if ((item != 0) != (item2 == 0))
   {
-    v12 = [(_INPBRefinementItem *)self subKeyPath];
-    if (!v12)
+    subKeyPath = [(_INPBRefinementItem *)self subKeyPath];
+    if (!subKeyPath)
     {
 
 LABEL_15:
@@ -73,10 +73,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBRefinementItem *)self subKeyPath];
-    v15 = [v4 subKeyPath];
-    v16 = [v14 isEqual:v15];
+    v13 = subKeyPath;
+    subKeyPath2 = [(_INPBRefinementItem *)self subKeyPath];
+    subKeyPath3 = [equalCopy subKeyPath];
+    v16 = [subKeyPath2 isEqual:subKeyPath3];
 
     if (v16)
     {
@@ -96,65 +96,65 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRefinementItem allocWithZone:](_INPBRefinementItem init];
-  v6 = [(_INPBSelectionItem *)self->_item copyWithZone:a3];
+  v6 = [(_INPBSelectionItem *)self->_item copyWithZone:zone];
   [(_INPBRefinementItem *)v5 setItem:v6];
 
-  v7 = [(NSString *)self->_subKeyPath copyWithZone:a3];
+  v7 = [(NSString *)self->_subKeyPath copyWithZone:zone];
   [(_INPBRefinementItem *)v5 setSubKeyPath:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRefinementItem *)self data];
+  coderCopy = coder;
+  data = [(_INPBRefinementItem *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRefinementItem)initWithCoder:(id)a3
+- (_INPBRefinementItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRefinementItem *)self initWithData:v6];
+    self = [(_INPBRefinementItem *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_INPBRefinementItem *)self item];
+  toCopy = to;
+  item = [(_INPBRefinementItem *)self item];
 
-  if (v4)
+  if (item)
   {
-    v5 = [(_INPBRefinementItem *)self item];
+    item2 = [(_INPBRefinementItem *)self item];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBRefinementItem *)self subKeyPath];
+  subKeyPath = [(_INPBRefinementItem *)self subKeyPath];
 
-  if (v6)
+  if (subKeyPath)
   {
     subKeyPath = self->_subKeyPath;
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setSubKeyPath:(id)a3
+- (void)setSubKeyPath:(id)path
 {
-  v4 = [a3 copy];
+  v4 = [path copy];
   subKeyPath = self->_subKeyPath;
   self->_subKeyPath = v4;
 

@@ -1,6 +1,6 @@
 @interface HSMachPortListener
-+ (SendRight)getSendRightFromServer:(const SendRight *)a3;
-- (HSMachPortListener)initWithReceiveRight:(ReceiveRight *)a3 queue:(id)a4 clientHandler:(id)a5;
++ (SendRight)getSendRightFromServer:(const SendRight *)server;
+- (HSMachPortListener)initWithReceiveRight:(ReceiveRight *)right queue:(id)queue clientHandler:(id)handler;
 - (id).cxx_construct;
 - (void)_handleClient;
 - (void)close;
@@ -9,13 +9,13 @@
 
 @implementation HSMachPortListener
 
-+ (SendRight)getSendRightFromServer:(const SendRight *)a3
++ (SendRight)getSendRightFromServer:(const SendRight *)server
 {
   v5 = v3;
-  if (a3->_mp - 1 >= 0xFFFFFFFE)
+  if (server->_mp - 1 >= 0xFFFFFFFE)
   {
     v15 = +[NSAssertionHandler currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"HSMachPortListener.mm" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"serverSendRight"}];
+    [v15 handleFailureInMethod:a2 object:self file:@"HSMachPortListener.mm" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"serverSendRight"}];
   }
 
   HSUtil::ReceiveRight::ReceiveRight(v23);
@@ -31,7 +31,7 @@
   }
 
   *&msg.msgh_bits = 5139;
-  msg.msgh_remote_port = HSUtil::PortRight::port(a3);
+  msg.msgh_remote_port = HSUtil::PortRight::port(server);
   msg.msgh_id = 0;
   *&msg.msgh_local_port = HSUtil::PortRight::port(v23);
   if (!mach_msg(&msg, 17, 0x18u, 0, 0, 0, 0))
@@ -155,13 +155,13 @@ LABEL_10:
   return result;
 }
 
-- (HSMachPortListener)initWithReceiveRight:(ReceiveRight *)a3 queue:(id)a4 clientHandler:(id)a5
+- (HSMachPortListener)initWithReceiveRight:(ReceiveRight *)right queue:(id)queue clientHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  if (a3->var1 - 1 < 0xFFFFFFFE)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (right->var1 - 1 < 0xFFFFFFFE)
   {
-    if (v10)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -170,7 +170,7 @@ LABEL_8:
     v18 = +[NSAssertionHandler currentHandler];
     [v18 handleFailureInMethod:a2 object:self file:@"HSMachPortListener.mm" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -181,13 +181,13 @@ LABEL_8:
   v17 = +[NSAssertionHandler currentHandler];
   [v17 handleFailureInMethod:a2 object:self file:@"HSMachPortListener.mm" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"receiveRight"}];
 
-  if (!v10)
+  if (!queueCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
@@ -203,8 +203,8 @@ LABEL_4:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(v12 + 1, a4);
-    v14 = objc_retainBlock(v11);
+    objc_storeStrong(v12 + 1, queue);
+    v14 = objc_retainBlock(handlerCopy);
     v15 = *(v13 + 2);
     *(v13 + 2) = v14;
 

@@ -1,36 +1,36 @@
 @interface HDSPSleepModeStateMachine
 - (BOOL)hasSleepFocusMode;
 - (BOOL)isAppleWatch;
-- (BOOL)shouldGoIntoSleepModeDuringState:(unint64_t)a3;
+- (BOOL)shouldGoIntoSleepModeDuringState:(unint64_t)state;
 - (BOOL)sleepFeaturesEnabled;
-- (HDSPSleepModeStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7;
+- (HDSPSleepModeStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
 - (NSDate)currentDate;
 - (unint64_t)sleepScheduleState;
-- (void)automationTurnedOffSleepModeWithReason:(unint64_t)a3;
-- (void)automationTurnedOnSleepModeWithReason:(unint64_t)a3;
-- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5;
+- (void)automationTurnedOffSleepModeWithReason:(unint64_t)reason;
+- (void)automationTurnedOnSleepModeWithReason:(unint64_t)reason;
+- (void)sleepModeDidChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason;
 - (void)sleepModeTurnedOffForUnknownReason;
 - (void)sleepModeTurnedOnForUnknownReason;
-- (void)sleepScheduleStateChangedToBedtime:(unint64_t)a3 fromState:(unint64_t)a4;
+- (void)sleepScheduleStateChangedToBedtime:(unint64_t)bedtime fromState:(unint64_t)state;
 - (void)sleepScheduleStateChangedToDisabled;
-- (void)sleepScheduleStateChangedToWakeUp:(unint64_t)a3 fromState:(unint64_t)a4;
-- (void)sleepScheduleStateChangedToWindDown:(unint64_t)a3 fromState:(unint64_t)a4;
-- (void)userTurnedOffSleepModeWithReason:(unint64_t)a3;
-- (void)userTurnedOnSleepModeWithReason:(unint64_t)a3;
+- (void)sleepScheduleStateChangedToWakeUp:(unint64_t)up fromState:(unint64_t)state;
+- (void)sleepScheduleStateChangedToWindDown:(unint64_t)down fromState:(unint64_t)state;
+- (void)userTurnedOffSleepModeWithReason:(unint64_t)reason;
+- (void)userTurnedOnSleepModeWithReason:(unint64_t)reason;
 @end
 
 @implementation HDSPSleepModeStateMachine
 
-- (HDSPSleepModeStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7
+- (HDSPSleepModeStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider
 {
   v41[7] = *MEMORY[0x277D85DE8];
   v12 = MEMORY[0x277CBEB98];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  dateProviderCopy = dateProvider;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  persistenceCopy = persistence;
+  identifierCopy = identifier;
   v41[0] = objc_opt_class();
   v41[1] = objc_opt_class();
   v41[2] = objc_opt_class();
@@ -43,7 +43,7 @@
 
   v40.receiver = self;
   v40.super_class = HDSPSleepModeStateMachine;
-  v20 = [(HKSPPersistentStateMachine *)&v40 initWithIdentifier:v17 allowedStates:v19 persistence:v16 delegate:v15 infoProvider:v14 currentDateProvider:v13];
+  v20 = [(HKSPPersistentStateMachine *)&v40 initWithIdentifier:identifierCopy allowedStates:v19 persistence:persistenceCopy delegate:delegateCopy infoProvider:providerCopy currentDateProvider:dateProviderCopy];
 
   if (v20)
   {
@@ -75,9 +75,9 @@
     automatedOffState = v20->_automatedOffState;
     v20->_automatedOffState = v33;
 
-    v35 = [(HKSPPersistentStateMachine *)v20 persistedState];
-    v36 = v35;
-    if (!v35)
+    persistedState = [(HKSPPersistentStateMachine *)v20 persistedState];
+    v36 = persistedState;
+    if (!persistedState)
     {
       v36 = v20->_offState;
     }
@@ -91,132 +91,132 @@
   return v20;
 }
 
-- (void)sleepScheduleStateChangedToWindDown:(unint64_t)a3 fromState:(unint64_t)a4
+- (void)sleepScheduleStateChangedToWindDown:(unint64_t)down fromState:(unint64_t)state
 {
-  v6 = [(HKSPStateMachine *)self currentState];
-  [v6 sleepScheduleStateChangedToWindDown:a3 fromState:a4];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState sleepScheduleStateChangedToWindDown:down fromState:state];
 }
 
-- (void)sleepScheduleStateChangedToBedtime:(unint64_t)a3 fromState:(unint64_t)a4
+- (void)sleepScheduleStateChangedToBedtime:(unint64_t)bedtime fromState:(unint64_t)state
 {
-  v6 = [(HKSPStateMachine *)self currentState];
-  [v6 sleepScheduleStateChangedToBedtime:a3 fromState:a4];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState sleepScheduleStateChangedToBedtime:bedtime fromState:state];
 }
 
-- (void)sleepScheduleStateChangedToWakeUp:(unint64_t)a3 fromState:(unint64_t)a4
+- (void)sleepScheduleStateChangedToWakeUp:(unint64_t)up fromState:(unint64_t)state
 {
-  v6 = [(HKSPStateMachine *)self currentState];
-  [v6 sleepScheduleStateChangedToWakeUp:a3 fromState:a4];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState sleepScheduleStateChangedToWakeUp:up fromState:state];
 }
 
 - (void)sleepScheduleStateChangedToDisabled
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 sleepScheduleStateChangedToDisabled];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState sleepScheduleStateChangedToDisabled];
 }
 
-- (void)userTurnedOffSleepModeWithReason:(unint64_t)a3
+- (void)userTurnedOffSleepModeWithReason:(unint64_t)reason
 {
-  v4 = [(HKSPStateMachine *)self currentState];
-  [v4 userTurnedOffSleepModeWithReason:a3];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState userTurnedOffSleepModeWithReason:reason];
 }
 
-- (void)userTurnedOnSleepModeWithReason:(unint64_t)a3
+- (void)userTurnedOnSleepModeWithReason:(unint64_t)reason
 {
-  v4 = [(HKSPStateMachine *)self currentState];
-  [v4 userTurnedOnSleepModeWithReason:a3];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState userTurnedOnSleepModeWithReason:reason];
 }
 
-- (void)automationTurnedOnSleepModeWithReason:(unint64_t)a3
+- (void)automationTurnedOnSleepModeWithReason:(unint64_t)reason
 {
-  v4 = [(HKSPStateMachine *)self currentState];
-  [v4 automationTurnedOnSleepModeWithReason:a3];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState automationTurnedOnSleepModeWithReason:reason];
 }
 
-- (void)automationTurnedOffSleepModeWithReason:(unint64_t)a3
+- (void)automationTurnedOffSleepModeWithReason:(unint64_t)reason
 {
-  v4 = [(HKSPStateMachine *)self currentState];
-  [v4 automationTurnedOffSleepModeWithReason:a3];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState automationTurnedOffSleepModeWithReason:reason];
 }
 
 - (void)sleepModeTurnedOnForUnknownReason
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 sleepModeTurnedOnForUnknownReason];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState sleepModeTurnedOnForUnknownReason];
 }
 
 - (void)sleepModeTurnedOffForUnknownReason
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 sleepModeTurnedOffForUnknownReason];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState sleepModeTurnedOffForUnknownReason];
 }
 
-- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5
+- (void)sleepModeDidChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __68__HDSPSleepModeStateMachine_sleepModeDidChange_previousMode_reason___block_invoke;
   v5[3] = &__block_descriptor_56_e45_v16__0___HDSPSleepModeStateMachineDelegate__8l;
-  v5[4] = a3;
-  v5[5] = a4;
-  v5[6] = a5;
+  v5[4] = change;
+  v5[5] = mode;
+  v5[6] = reason;
   [(HKSPStateMachine *)self notifyDelegateWithBlock:v5];
 }
 
 - (NSDate)currentDate
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 currentDate];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  currentDate = [infoProvider currentDate];
 
-  return v3;
+  return currentDate;
 }
 
 - (HKSPSleepScheduleModel)sleepScheduleModel
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepScheduleModel];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
 
-  return v3;
+  return sleepScheduleModel;
 }
 
 - (unint64_t)sleepScheduleState
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepScheduleState];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepScheduleState = [infoProvider sleepScheduleState];
 
-  return v3;
+  return sleepScheduleState;
 }
 
 - (BOOL)isAppleWatch
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 isAppleWatch];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  isAppleWatch = [infoProvider isAppleWatch];
 
-  return v3;
+  return isAppleWatch;
 }
 
 - (BOOL)sleepFeaturesEnabled
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepFeaturesEnabled];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepFeaturesEnabled = [infoProvider sleepFeaturesEnabled];
 
-  return v3;
+  return sleepFeaturesEnabled;
 }
 
-- (BOOL)shouldGoIntoSleepModeDuringState:(unint64_t)a3
+- (BOOL)shouldGoIntoSleepModeDuringState:(unint64_t)state
 {
-  v4 = [(HKSPStateMachine *)self infoProvider];
-  LOBYTE(a3) = [v4 shouldGoIntoSleepModeDuringState:a3];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  LOBYTE(state) = [infoProvider shouldGoIntoSleepModeDuringState:state];
 
-  return a3;
+  return state;
 }
 
 - (BOOL)hasSleepFocusMode
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 hasSleepFocusMode];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  hasSleepFocusMode = [infoProvider hasSleepFocusMode];
 
-  return v3;
+  return hasSleepFocusMode;
 }
 
 @end

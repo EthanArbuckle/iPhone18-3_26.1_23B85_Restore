@@ -1,16 +1,16 @@
 @interface BMAppWebUsage
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAppWebUsage)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMAppWebUsage)initWithUniqueID:(id)a3 absoluteTimestamp:(id)a4 usageState:(int)a5 webpageURL:(id)a6 webDomain:(id)a7 applicationID:(id)a8 deviceID:(id)a9 isUsageTrusted:(id)a10 safariProfileID:(id)a11;
-- (BOOL)isEqual:(id)a3;
+- (BMAppWebUsage)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMAppWebUsage)initWithUniqueID:(id)d absoluteTimestamp:(id)timestamp usageState:(int)state webpageURL:(id)l webDomain:(id)domain applicationID:(id)iD deviceID:(id)deviceID isUsageTrusted:(id)self0 safariProfileID:(id)self1;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAppWebUsage
@@ -43,25 +43,25 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAppWebUsage *)self uniqueID];
-    v7 = [v5 uniqueID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    uniqueID = [(BMAppWebUsage *)self uniqueID];
+    uniqueID2 = [v5 uniqueID];
+    v8 = uniqueID2;
+    if (uniqueID == uniqueID2)
     {
     }
 
     else
     {
-      v9 = [(BMAppWebUsage *)self uniqueID];
-      v10 = [v5 uniqueID];
-      v11 = [v9 isEqual:v10];
+      uniqueID3 = [(BMAppWebUsage *)self uniqueID];
+      uniqueID4 = [v5 uniqueID];
+      v11 = [uniqueID3 isEqual:uniqueID4];
 
       if (!v11)
       {
@@ -69,18 +69,18 @@
       }
     }
 
-    v13 = [(BMAppWebUsage *)self absoluteTimestamp];
-    v14 = [v5 absoluteTimestamp];
-    v15 = v14;
-    if (v13 == v14)
+    absoluteTimestamp = [(BMAppWebUsage *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v15 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v16 = [(BMAppWebUsage *)self absoluteTimestamp];
-      v17 = [v5 absoluteTimestamp];
-      v18 = [v16 isEqual:v17];
+      absoluteTimestamp3 = [(BMAppWebUsage *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v18 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v18)
       {
@@ -88,21 +88,21 @@
       }
     }
 
-    v19 = [(BMAppWebUsage *)self usageState];
-    if (v19 == [v5 usageState])
+    usageState = [(BMAppWebUsage *)self usageState];
+    if (usageState == [v5 usageState])
     {
-      v20 = [(BMAppWebUsage *)self webpageURL];
-      v21 = [v5 webpageURL];
-      v22 = v21;
-      if (v20 == v21)
+      webpageURL = [(BMAppWebUsage *)self webpageURL];
+      webpageURL2 = [v5 webpageURL];
+      v22 = webpageURL2;
+      if (webpageURL == webpageURL2)
       {
       }
 
       else
       {
-        v23 = [(BMAppWebUsage *)self webpageURL];
-        v24 = [v5 webpageURL];
-        v25 = [v23 isEqual:v24];
+        webpageURL3 = [(BMAppWebUsage *)self webpageURL];
+        webpageURL4 = [v5 webpageURL];
+        v25 = [webpageURL3 isEqual:webpageURL4];
 
         if (!v25)
         {
@@ -110,18 +110,18 @@
         }
       }
 
-      v26 = [(BMAppWebUsage *)self webDomain];
-      v27 = [v5 webDomain];
-      v28 = v27;
-      if (v26 == v27)
+      webDomain = [(BMAppWebUsage *)self webDomain];
+      webDomain2 = [v5 webDomain];
+      v28 = webDomain2;
+      if (webDomain == webDomain2)
       {
       }
 
       else
       {
-        v29 = [(BMAppWebUsage *)self webDomain];
-        v30 = [v5 webDomain];
-        v31 = [v29 isEqual:v30];
+        webDomain3 = [(BMAppWebUsage *)self webDomain];
+        webDomain4 = [v5 webDomain];
+        v31 = [webDomain3 isEqual:webDomain4];
 
         if (!v31)
         {
@@ -129,18 +129,18 @@
         }
       }
 
-      v32 = [(BMAppWebUsage *)self applicationID];
-      v33 = [v5 applicationID];
-      v34 = v33;
-      if (v32 == v33)
+      applicationID = [(BMAppWebUsage *)self applicationID];
+      applicationID2 = [v5 applicationID];
+      v34 = applicationID2;
+      if (applicationID == applicationID2)
       {
       }
 
       else
       {
-        v35 = [(BMAppWebUsage *)self applicationID];
-        v36 = [v5 applicationID];
-        v37 = [v35 isEqual:v36];
+        applicationID3 = [(BMAppWebUsage *)self applicationID];
+        applicationID4 = [v5 applicationID];
+        v37 = [applicationID3 isEqual:applicationID4];
 
         if (!v37)
         {
@@ -148,18 +148,18 @@
         }
       }
 
-      v38 = [(BMAppWebUsage *)self deviceID];
-      v39 = [v5 deviceID];
-      v40 = v39;
-      if (v38 == v39)
+      deviceID = [(BMAppWebUsage *)self deviceID];
+      deviceID2 = [v5 deviceID];
+      v40 = deviceID2;
+      if (deviceID == deviceID2)
       {
       }
 
       else
       {
-        v41 = [(BMAppWebUsage *)self deviceID];
-        v42 = [v5 deviceID];
-        v43 = [v41 isEqual:v42];
+        deviceID3 = [(BMAppWebUsage *)self deviceID];
+        deviceID4 = [v5 deviceID];
+        v43 = [deviceID3 isEqual:deviceID4];
 
         if (!v43)
         {
@@ -169,18 +169,18 @@
 
       if (!-[BMAppWebUsage hasIsUsageTrusted](self, "hasIsUsageTrusted") && ![v5 hasIsUsageTrusted] || -[BMAppWebUsage hasIsUsageTrusted](self, "hasIsUsageTrusted") && objc_msgSend(v5, "hasIsUsageTrusted") && (v44 = -[BMAppWebUsage isUsageTrusted](self, "isUsageTrusted"), v44 == objc_msgSend(v5, "isUsageTrusted")))
       {
-        v46 = [(BMAppWebUsage *)self safariProfileID];
-        v47 = [v5 safariProfileID];
-        if (v46 == v47)
+        safariProfileID = [(BMAppWebUsage *)self safariProfileID];
+        safariProfileID2 = [v5 safariProfileID];
+        if (safariProfileID == safariProfileID2)
         {
           v12 = 1;
         }
 
         else
         {
-          v48 = [(BMAppWebUsage *)self safariProfileID];
-          v49 = [v5 safariProfileID];
-          v12 = [v48 isEqual:v49];
+          safariProfileID3 = [(BMAppWebUsage *)self safariProfileID];
+          safariProfileID4 = [v5 safariProfileID];
+          v12 = [safariProfileID3 isEqual:safariProfileID4];
         }
 
         goto LABEL_34;
@@ -220,13 +220,13 @@ LABEL_35:
 - (id)jsonDictionary
 {
   v35[9] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAppWebUsage *)self uniqueID];
-  v4 = [(BMAppWebUsage *)self absoluteTimestamp];
-  if (v4)
+  uniqueID = [(BMAppWebUsage *)self uniqueID];
+  absoluteTimestamp = [(BMAppWebUsage *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(BMAppWebUsage *)self absoluteTimestamp];
-    [v6 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMAppWebUsage *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v7 = [v5 numberWithDouble:?];
   }
 
@@ -236,10 +236,10 @@ LABEL_35:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAppWebUsage usageState](self, "usageState")}];
-  v9 = [(BMAppWebUsage *)self webpageURL];
-  v33 = [(BMAppWebUsage *)self webDomain];
-  v32 = [(BMAppWebUsage *)self applicationID];
-  v10 = [(BMAppWebUsage *)self deviceID];
+  webpageURL = [(BMAppWebUsage *)self webpageURL];
+  webDomain = [(BMAppWebUsage *)self webDomain];
+  applicationID = [(BMAppWebUsage *)self applicationID];
+  deviceID = [(BMAppWebUsage *)self deviceID];
   if ([(BMAppWebUsage *)self hasIsUsageTrusted])
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAppWebUsage isUsageTrusted](self, "isUsageTrusted")}];
@@ -250,88 +250,88 @@ LABEL_35:
     v11 = 0;
   }
 
-  v12 = [(BMAppWebUsage *)self safariProfileID];
+  safariProfileID = [(BMAppWebUsage *)self safariProfileID];
   v34[0] = @"uniqueID";
-  v13 = v3;
-  if (!v3)
+  null = uniqueID;
+  if (!uniqueID)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v13;
-  v35[0] = v13;
+  v28 = null;
+  v35[0] = null;
   v34[1] = @"absoluteTimestamp";
-  v14 = v7;
+  null2 = v7;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v14;
-  v35[1] = v14;
+  v27 = null2;
+  v35[1] = null2;
   v34[2] = @"usageState";
-  v15 = v8;
+  null3 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v15;
-  v35[2] = v15;
+  v26 = null3;
+  v35[2] = null3;
   v34[3] = @"webpageURL";
-  v16 = v9;
-  if (!v9)
+  null4 = webpageURL;
+  if (!webpageURL)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v3;
-  v25 = v16;
-  v35[3] = v16;
+  v31 = uniqueID;
+  v25 = null4;
+  v35[3] = null4;
   v34[4] = @"webDomain";
-  v17 = v33;
-  if (!v33)
+  null5 = webDomain;
+  if (!webDomain)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v30 = v7;
-  v35[4] = v17;
+  v35[4] = null5;
   v34[5] = @"applicationID";
-  v18 = v32;
-  if (!v32)
+  null6 = applicationID;
+  if (!applicationID)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[5] = v18;
+  v35[5] = null6;
   v34[6] = @"deviceID";
-  v19 = v10;
-  if (!v10)
+  null7 = deviceID;
+  if (!deviceID)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v9;
-  v35[6] = v19;
+  v20 = webpageURL;
+  v35[6] = null7;
   v34[7] = @"isUsageTrusted";
-  v21 = v11;
+  null8 = v11;
   if (!v11)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[7] = v21;
+  v35[7] = null8;
   v34[8] = @"safariProfileID";
-  v22 = v12;
-  if (!v12)
+  null9 = safariProfileID;
+  if (!safariProfileID)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[8] = v22;
+  v35[8] = null9;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:9];
-  if (v12)
+  if (safariProfileID)
   {
     if (v11)
     {
@@ -340,7 +340,7 @@ LABEL_35:
 
 LABEL_40:
 
-    if (v10)
+    if (deviceID)
     {
       goto LABEL_28;
     }
@@ -354,7 +354,7 @@ LABEL_40:
   }
 
 LABEL_27:
-  if (v10)
+  if (deviceID)
   {
     goto LABEL_28;
   }
@@ -362,11 +362,11 @@ LABEL_27:
 LABEL_41:
 
 LABEL_28:
-  if (!v32)
+  if (!applicationID)
   {
   }
 
-  if (!v33)
+  if (!webDomain)
   {
   }
 
@@ -419,16 +419,16 @@ LABEL_36:
   return v29;
 }
 
-- (BMAppWebUsage)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAppWebUsage)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v90[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"uniqueID"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"uniqueID"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
 LABEL_4:
-    v8 = [v5 objectForKeyedSubscript:@"absoluteTimestamp"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -457,7 +457,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v9 = 0;
             v20 = 0;
@@ -473,7 +473,7 @@ LABEL_4:
           v58 = [v56 initWithDomain:v57 code:2 userInfo:?];
           v9 = 0;
           v20 = 0;
-          *a4 = v58;
+          *error = v58;
           goto LABEL_44;
         }
 
@@ -489,7 +489,7 @@ LABEL_4:
     }
 
 LABEL_16:
-    v22 = [v5 objectForKeyedSubscript:@"usageState"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"usageState"];
     v66 = v8;
     v69 = v22;
     if (v22 && (v23 = v22, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -505,7 +505,7 @@ LABEL_16:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v71 = 0;
             v20 = 0;
@@ -523,7 +523,7 @@ LABEL_16:
           v9 = v48;
           v71 = 0;
           v20 = 0;
-          *a4 = [v47 initWithDomain:v50 code:2 userInfo:v24];
+          *error = [v47 initWithDomain:v50 code:2 userInfo:v24];
 LABEL_43:
 
           v8 = v66;
@@ -541,14 +541,14 @@ LABEL_44:
       v71 = 0;
     }
 
-    v24 = [v5 objectForKeyedSubscript:@"webpageURL"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"webpageURL"];
     v70 = v7;
     if (v24 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v32 = 0;
           v20 = 0;
@@ -566,7 +566,7 @@ LABEL_44:
         v9 = v36;
         v32 = 0;
         v20 = 0;
-        *a4 = [v35 initWithDomain:v38 code:2 userInfo:v25];
+        *error = [v35 initWithDomain:v38 code:2 userInfo:v25];
         goto LABEL_42;
       }
 
@@ -578,7 +578,7 @@ LABEL_44:
       v65 = 0;
     }
 
-    v25 = [v5 objectForKeyedSubscript:@"webDomain"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"webDomain"];
     v61 = v6;
     v64 = v9;
     if (v25 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -586,7 +586,7 @@ LABEL_44:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v68 = 0;
           v20 = 0;
@@ -602,7 +602,7 @@ LABEL_44:
         v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
         v68 = 0;
         v20 = 0;
-        *a4 = [v39 initWithDomain:v40 code:2 userInfo:v26];
+        *error = [v39 initWithDomain:v40 code:2 userInfo:v26];
         goto LABEL_86;
       }
 
@@ -614,19 +614,19 @@ LABEL_44:
       v68 = 0;
     }
 
-    v26 = [v5 objectForKeyedSubscript:@"applicationID"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"applicationID"];
     if (!v26 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v63 = 0;
 LABEL_28:
-      v27 = [v5 objectForKeyedSubscript:@"deviceID"];
-      v67 = self;
+      v27 = [dictionaryCopy objectForKeyedSubscript:@"deviceID"];
+      selfCopy = self;
       if (v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v62 = 0;
             v20 = 0;
@@ -642,7 +642,7 @@ LABEL_28:
           v46 = [v44 initWithDomain:v45 code:2 userInfo:v28];
           v62 = 0;
           v20 = 0;
-          *a4 = v46;
+          *error = v46;
           goto LABEL_39;
         }
 
@@ -654,13 +654,13 @@ LABEL_28:
         v62 = 0;
       }
 
-      v28 = [v5 objectForKeyedSubscript:@"isUsageTrusted"];
+      v28 = [dictionaryCopy objectForKeyedSubscript:@"isUsageTrusted"];
       if (v28 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v29 = 0;
             v20 = 0;
@@ -676,7 +676,7 @@ LABEL_28:
           v53 = [v51 initWithDomain:v52 code:2 userInfo:v30];
           v29 = 0;
           v20 = 0;
-          *a4 = v53;
+          *error = v53;
           goto LABEL_38;
         }
 
@@ -688,13 +688,13 @@ LABEL_28:
         v29 = 0;
       }
 
-      v30 = [v5 objectForKeyedSubscript:@"safariProfileID"];
+      v30 = [dictionaryCopy objectForKeyedSubscript:@"safariProfileID"];
       if (v30 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v60 = objc_alloc(MEMORY[0x1E696ABC0]);
             v59 = *MEMORY[0x1E698F240];
@@ -702,7 +702,7 @@ LABEL_28:
             v54 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"safariProfileID"];
             v74 = v54;
             v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
-            *a4 = [v60 initWithDomain:v59 code:2 userInfo:v55];
+            *error = [v60 initWithDomain:v59 code:2 userInfo:v55];
           }
 
           v31 = 0;
@@ -718,12 +718,12 @@ LABEL_28:
         v31 = 0;
       }
 
-      v20 = -[BMAppWebUsage initWithUniqueID:absoluteTimestamp:usageState:webpageURL:webDomain:applicationID:deviceID:isUsageTrusted:safariProfileID:](v67, "initWithUniqueID:absoluteTimestamp:usageState:webpageURL:webDomain:applicationID:deviceID:isUsageTrusted:safariProfileID:", v70, v64, [v71 intValue], v65, v68, v63, v62, v29, v31);
-      v67 = v20;
+      v20 = -[BMAppWebUsage initWithUniqueID:absoluteTimestamp:usageState:webpageURL:webDomain:applicationID:deviceID:isUsageTrusted:safariProfileID:](selfCopy, "initWithUniqueID:absoluteTimestamp:usageState:webpageURL:webDomain:applicationID:deviceID:isUsageTrusted:safariProfileID:", v70, v64, [v71 intValue], v65, v68, v63, v62, v29, v31);
+      selfCopy = v20;
 LABEL_38:
 
 LABEL_39:
-      self = v67;
+      self = selfCopy;
 LABEL_40:
       v32 = v65;
 
@@ -743,7 +743,7 @@ LABEL_42:
       goto LABEL_28;
     }
 
-    if (a4)
+    if (error)
     {
       v41 = objc_alloc(MEMORY[0x1E696ABC0]);
       v42 = *MEMORY[0x1E698F240];
@@ -754,7 +754,7 @@ LABEL_42:
       v43 = [v41 initWithDomain:v42 code:2 userInfo:v27];
       v63 = 0;
       v20 = 0;
-      *a4 = v43;
+      *error = v43;
       goto LABEL_40;
     }
 
@@ -772,7 +772,7 @@ LABEL_86:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v7 = 0;
     v20 = 0;
@@ -789,7 +789,7 @@ LABEL_86:
   v9 = v18;
   v7 = 0;
   v20 = 0;
-  *a4 = [v16 initWithDomain:v19 code:2 userInfo:v8];
+  *error = [v16 initWithDomain:v19 code:2 userInfo:v8];
 LABEL_45:
 
 LABEL_46:
@@ -801,14 +801,14 @@ LABEL_46:
 {
   v3 = objc_opt_new();
   [(BMAppWebUsage *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_uniqueID)
   {
     PBDataWriterWriteStringField();
@@ -832,36 +832,36 @@ LABEL_46:
     PBDataWriterWriteStringField();
   }
 
-  v6 = v8;
+  v6 = toCopy;
   if (self->_applicationID)
   {
     PBDataWriterWriteStringField();
-    v6 = v8;
+    v6 = toCopy;
   }
 
   if (self->_deviceID)
   {
     PBDataWriterWriteStringField();
-    v6 = v8;
+    v6 = toCopy;
   }
 
   if (self->_hasIsUsageTrusted)
   {
     isUsageTrusted = self->_isUsageTrusted;
     PBDataWriterWriteBOOLField();
-    v6 = v8;
+    v6 = toCopy;
   }
 
   if (self->_safariProfileID)
   {
     PBDataWriterWriteStringField();
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v39.receiver = self;
   v39.super_class = BMAppWebUsage;
   v5 = [(BMEventBase *)&v39 init];
@@ -870,12 +870,12 @@ LABEL_46:
     goto LABEL_72;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -886,18 +886,18 @@ LABEL_46:
       while (1)
       {
         LOBYTE(v40) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v40) & 0x7F) << v7;
@@ -915,9 +915,9 @@ LABEL_46:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -935,18 +935,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v40) = 0;
-              v23 = [v4 position] + 1;
-              if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+              v23 = [fromCopy position] + 1;
+              if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
               {
-                v25 = [v4 data];
-                [v25 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v22 |= (LOBYTE(v40) & 0x7F) << v20;
@@ -962,7 +962,7 @@ LABEL_16:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v22 > 3)
+            if (([fromCopy hasError] & 1) != 0 || v22 > 3)
             {
 LABEL_64:
               LODWORD(v22) = 0;
@@ -993,18 +993,18 @@ LABEL_64:
           {
             v5->_hasRaw_absoluteTimestamp = 1;
             v40 = 0.0;
-            v18 = [v4 position] + 8;
-            if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 8, v19 <= objc_msgSend(v4, "length")))
+            v18 = [fromCopy position] + 8;
+            if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 8, v19 <= objc_msgSend(fromCopy, "length")))
             {
-              v36 = [v4 data];
-              [v36 getBytes:&v40 range:{objc_msgSend(v4, "position"), 8}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v5->_raw_absoluteTimestamp = v40;
@@ -1046,18 +1046,18 @@ LABEL_64:
             while (1)
             {
               LOBYTE(v40) = 0;
-              v32 = [v4 position] + 1;
-              if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+              v32 = [fromCopy position] + 1;
+              if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
               {
-                v34 = [v4 data];
-                [v34 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v31 |= (LOBYTE(v40) & 0x7F) << v29;
@@ -1075,7 +1075,7 @@ LABEL_64:
               }
             }
 
-            v35 = (v31 != 0) & ~[v4 hasError];
+            v35 = (v31 != 0) & ~[fromCopy hasError];
 LABEL_67:
             v5->_isUsageTrusted = v35;
             goto LABEL_49;
@@ -1096,13 +1096,13 @@ LABEL_48:
       }
 
 LABEL_49:
-      v28 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v28 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_71:
     v37 = 0;
@@ -1120,41 +1120,41 @@ LABEL_72:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMAppWebUsage *)self uniqueID];
-  v5 = [(BMAppWebUsage *)self absoluteTimestamp];
+  uniqueID = [(BMAppWebUsage *)self uniqueID];
+  absoluteTimestamp = [(BMAppWebUsage *)self absoluteTimestamp];
   v6 = BMAppWebUsageStateAsString([(BMAppWebUsage *)self usageState]);
-  v7 = [(BMAppWebUsage *)self webpageURL];
-  v8 = [(BMAppWebUsage *)self webDomain];
-  v9 = [(BMAppWebUsage *)self applicationID];
-  v10 = [(BMAppWebUsage *)self deviceID];
+  webpageURL = [(BMAppWebUsage *)self webpageURL];
+  webDomain = [(BMAppWebUsage *)self webDomain];
+  applicationID = [(BMAppWebUsage *)self applicationID];
+  deviceID = [(BMAppWebUsage *)self deviceID];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAppWebUsage isUsageTrusted](self, "isUsageTrusted")}];
-  v12 = [(BMAppWebUsage *)self safariProfileID];
-  v13 = [v3 initWithFormat:@"BMAppWebUsage with uniqueID: %@, absoluteTimestamp: %@, usageState: %@, webpageURL: %@, webDomain: %@, applicationID: %@, deviceID: %@, isUsageTrusted: %@, safariProfileID: %@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  safariProfileID = [(BMAppWebUsage *)self safariProfileID];
+  v13 = [v3 initWithFormat:@"BMAppWebUsage with uniqueID: %@, absoluteTimestamp: %@, usageState: %@, webpageURL: %@, webDomain: %@, applicationID: %@, deviceID: %@, isUsageTrusted: %@, safariProfileID: %@", uniqueID, absoluteTimestamp, v6, webpageURL, webDomain, applicationID, deviceID, v11, safariProfileID];
 
   return v13;
 }
 
-- (BMAppWebUsage)initWithUniqueID:(id)a3 absoluteTimestamp:(id)a4 usageState:(int)a5 webpageURL:(id)a6 webDomain:(id)a7 applicationID:(id)a8 deviceID:(id)a9 isUsageTrusted:(id)a10 safariProfileID:(id)a11
+- (BMAppWebUsage)initWithUniqueID:(id)d absoluteTimestamp:(id)timestamp usageState:(int)state webpageURL:(id)l webDomain:(id)domain applicationID:(id)iD deviceID:(id)deviceID isUsageTrusted:(id)self0 safariProfileID:(id)self1
 {
-  v28 = a3;
-  v17 = a4;
-  v27 = a6;
-  v26 = a7;
-  v25 = a8;
-  v24 = a9;
-  v18 = a10;
-  v19 = a11;
+  dCopy = d;
+  timestampCopy = timestamp;
+  lCopy = l;
+  domainCopy = domain;
+  iDCopy = iD;
+  deviceIDCopy = deviceID;
+  trustedCopy = trusted;
+  profileIDCopy = profileID;
   v29.receiver = self;
   v29.super_class = BMAppWebUsage;
   v20 = [(BMEventBase *)&v29 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v20->_uniqueID, a3);
-    if (v17)
+    objc_storeStrong(&v20->_uniqueID, d);
+    if (timestampCopy)
     {
       v20->_hasRaw_absoluteTimestamp = 1;
-      [v17 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1164,15 +1164,15 @@ LABEL_72:
     }
 
     v20->_raw_absoluteTimestamp = v21;
-    v20->_usageState = a5;
-    objc_storeStrong(&v20->_webpageURL, a6);
-    objc_storeStrong(&v20->_webDomain, a7);
-    objc_storeStrong(&v20->_applicationID, a8);
-    objc_storeStrong(&v20->_deviceID, a9);
-    if (v18)
+    v20->_usageState = state;
+    objc_storeStrong(&v20->_webpageURL, l);
+    objc_storeStrong(&v20->_webDomain, domain);
+    objc_storeStrong(&v20->_applicationID, iD);
+    objc_storeStrong(&v20->_deviceID, deviceID);
+    if (trustedCopy)
     {
       v20->_hasIsUsageTrusted = 1;
-      v20->_isUsageTrusted = [v18 BOOLValue];
+      v20->_isUsageTrusted = [trustedCopy BOOLValue];
     }
 
     else
@@ -1181,7 +1181,7 @@ LABEL_72:
       v20->_isUsageTrusted = 0;
     }
 
-    objc_storeStrong(&v20->_safariProfileID, a11);
+    objc_storeStrong(&v20->_safariProfileID, profileID);
   }
 
   return v20;
@@ -1214,13 +1214,13 @@ LABEL_72:
   return v11;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMAppWebUsage alloc] initByReadFrom:v6];
     v8 = v7;

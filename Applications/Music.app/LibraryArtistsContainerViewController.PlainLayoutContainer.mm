@@ -1,8 +1,8 @@
 @interface LibraryArtistsContainerViewController.PlainLayoutContainer
 - (UINavigationItem)navigationItem;
 - (_TtCC5Music37LibraryArtistsContainerViewControllerP33_CE2A41BFB64A7DDBA59CF94A5FD1A01F20PlainLayoutContainer)init;
-- (_TtCC5Music37LibraryArtistsContainerViewControllerP33_CE2A41BFB64A7DDBA59CF94A5FD1A01F20PlainLayoutContainer)initWithCoder:(id)a3;
-- (_TtCC5Music37LibraryArtistsContainerViewControllerP33_CE2A41BFB64A7DDBA59CF94A5FD1A01F20PlainLayoutContainer)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtCC5Music37LibraryArtistsContainerViewControllerP33_CE2A41BFB64A7DDBA59CF94A5FD1A01F20PlainLayoutContainer)initWithCoder:(id)coder;
+- (_TtCC5Music37LibraryArtistsContainerViewControllerP33_CE2A41BFB64A7DDBA59CF94A5FD1A01F20PlainLayoutContainer)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -17,7 +17,7 @@
   return [(LibraryArtistsContainerViewController.PlainLayoutContainer *)&v3 initWithNibName:0 bundle:0];
 }
 
-- (_TtCC5Music37LibraryArtistsContainerViewControllerP33_CE2A41BFB64A7DDBA59CF94A5FD1A01F20PlainLayoutContainer)initWithCoder:(id)a3
+- (_TtCC5Music37LibraryArtistsContainerViewControllerP33_CE2A41BFB64A7DDBA59CF94A5FD1A01F20PlainLayoutContainer)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5Music37LibraryArtistsContainerViewControllerP33_CE2A41BFB64A7DDBA59CF94A5FD1A01F20PlainLayoutContainer_artistListViewController) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5Music37LibraryArtistsContainerViewControllerP33_CE2A41BFB64A7DDBA59CF94A5FD1A01F20PlainLayoutContainer_navigatedArtistDetailViewController) = 0;
@@ -31,11 +31,11 @@
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtCC5Music37LibraryArtistsContainerViewControllerP33_CE2A41BFB64A7DDBA59CF94A5FD1A01F20PlainLayoutContainer_artistListViewController);
   if (v3)
   {
-    v4 = self;
-    v5 = [v3 navigationItem];
-    if (v5)
+    selfCopy = self;
+    navigationItem = [v3 navigationItem];
+    if (navigationItem)
     {
-      v6 = v5;
+      navigationItem2 = navigationItem;
 
       goto LABEL_6;
     }
@@ -43,25 +43,25 @@
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for LibraryArtistsContainerViewController.PlainLayoutContainer();
-  v6 = [(LibraryArtistsContainerViewController.PlainLayoutContainer *)&v9 navigationItem];
+  navigationItem2 = [(LibraryArtistsContainerViewController.PlainLayoutContainer *)&v9 navigationItem];
 
 LABEL_6:
 
-  return v6;
+  return navigationItem2;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004589E4();
 }
 
-- (_TtCC5Music37LibraryArtistsContainerViewControllerP33_CE2A41BFB64A7DDBA59CF94A5FD1A01F20PlainLayoutContainer)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCC5Music37LibraryArtistsContainerViewControllerP33_CE2A41BFB64A7DDBA59CF94A5FD1A01F20PlainLayoutContainer)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

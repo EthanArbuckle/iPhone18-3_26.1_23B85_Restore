@@ -1,7 +1,7 @@
 @interface CIRenderInfo
-+ (CIRenderInfo)renderInfoWithCompletedTask:(id)a3;
++ (CIRenderInfo)renderInfoWithCompletedTask:(id)task;
 - (CIRenderInfo)init;
-- (CIRenderInfo)initWithCompletedTask:(id)a3;
+- (CIRenderInfo)initWithCompletedTask:(id)task;
 - (id)_pdfDataRepresentation;
 - (id)description;
 - (void)dealloc;
@@ -20,28 +20,28 @@
   return 0;
 }
 
-- (CIRenderInfo)initWithCompletedTask:(id)a3
+- (CIRenderInfo)initWithCompletedTask:(id)task
 {
   v7.receiver = self;
   v7.super_class = CIRenderInfo;
   v4 = [(CIRenderInfo *)&v7 init];
   if (v4)
   {
-    v5 = [a3 internalRepresentation];
-    if (v5)
+    internalRepresentation = [task internalRepresentation];
+    if (internalRepresentation)
     {
-      v5 = CI::Object::ref(v5);
+      internalRepresentation = CI::Object::ref(internalRepresentation);
     }
 
-    v4->_priv = v5;
+    v4->_priv = internalRepresentation;
   }
 
   return v4;
 }
 
-+ (CIRenderInfo)renderInfoWithCompletedTask:(id)a3
++ (CIRenderInfo)renderInfoWithCompletedTask:(id)task
 {
-  v3 = [[CIRenderInfo alloc] initWithCompletedTask:a3];
+  v3 = [[CIRenderInfo alloc] initWithCompletedTask:task];
 
   return v3;
 }

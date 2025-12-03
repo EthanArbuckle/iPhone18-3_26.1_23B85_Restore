@@ -1,9 +1,9 @@
 @interface CNFInternalLoggingListController
 - (id)specifiers;
-- (id)technicalFailureUI:(id)a3;
-- (id)vcpLogging:(id)a3;
-- (void)setTechnicalFailureUI:(id)a3 specifier:(id)a4;
-- (void)setVCPLogging:(id)a3 specifier:(id)a4;
+- (id)technicalFailureUI:(id)i;
+- (id)vcpLogging:(id)logging;
+- (void)setTechnicalFailureUI:(id)i specifier:(id)specifier;
+- (void)setVCPLogging:(id)logging specifier:(id)specifier;
 @end
 
 @implementation CNFInternalLoggingListController
@@ -24,16 +24,16 @@
   return v4;
 }
 
-- (id)technicalFailureUI:(id)a3
+- (id)technicalFailureUI:(id)i
 {
   v3 = CNFGetAppBooleanValueForKey();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setTechnicalFailureUI:(id)a3 specifier:(id)a4
+- (void)setTechnicalFailureUI:(id)i specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [i BOOLValue];
   CNFSetAppBooleanValueForKey();
   if (CNFSyncPreferences())
   {
@@ -43,7 +43,7 @@
   }
 }
 
-- (id)vcpLogging:(id)a3
+- (id)vcpLogging:(id)logging
 {
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"EnableVCPLogging", @"com.apple.VideoProcessing", &keyExistsAndHasValidFormat);
@@ -63,9 +63,9 @@
   return v6;
 }
 
-- (void)setVCPLogging:(id)a3 specifier:(id)a4
+- (void)setVCPLogging:(id)logging specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([logging BOOLValue])
   {
     v4 = [NSNumber numberWithBool:1];
   }
@@ -77,9 +77,9 @@
 
   CFPreferencesSetAppValue(@"EnableVCPLogging", v4, @"com.apple.VideoProcessing");
   CFPreferencesAppSynchronize(@"com.apple.VideoProcessing");
-  v5 = [@"killall -9 mediaserverd SpringBoard imagent MobilePhone" UTF8String];
+  uTF8String = [@"killall -9 mediaserverd SpringBoard imagent MobilePhone" UTF8String];
 
-  _IMPerformSystem(v5);
+  _IMPerformSystem(uTF8String);
 }
 
 @end

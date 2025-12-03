@@ -1,19 +1,19 @@
 @interface _CNUIUserActionContactItem
-- (BOOL)isEqual:(id)a3;
-- (_CNUIUserActionContactItem)initWithContact:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CNUIUserActionContactItem)initWithContact:(id)contact;
 @end
 
 @implementation _CNUIUserActionContactItem
 
-- (_CNUIUserActionContactItem)initWithContact:(id)a3
+- (_CNUIUserActionContactItem)initWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v10.receiver = self;
   v10.super_class = _CNUIUserActionContactItem;
   v5 = [(_CNUIUserActionContactItem *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contactCopy copy];
     contact = v5->_contact;
     v5->_contact = v6;
 
@@ -23,15 +23,15 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     contact = self->_contact;
-    v6 = [v4 contact];
-    v7 = [(CNContact *)contact isEqual:v6];
+    contact = [equalCopy contact];
+    v7 = [(CNContact *)contact isEqual:contact];
   }
 
   else

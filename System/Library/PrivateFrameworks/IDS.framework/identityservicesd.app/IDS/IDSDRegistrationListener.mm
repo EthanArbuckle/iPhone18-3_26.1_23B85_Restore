@@ -1,10 +1,10 @@
 @interface IDSDRegistrationListener
 + (id)sharedInstance;
 - (IDSDRegistrationListener)init;
-- (id)addBlockForRegistrationCompletion:(id)a3;
-- (void)_callBlocksWithResult:(BOOL)a3 registrations:(id)a4 error:(id)a5;
+- (id)addBlockForRegistrationCompletion:(id)completion;
+- (void)_callBlocksWithResult:(BOOL)result registrations:(id)registrations error:(id)error;
 - (void)dealloc;
-- (void)registrationController:(id)a3 allRegistrationsSucceeded:(id)a4;
+- (void)registrationController:(id)controller allRegistrationsSucceeded:(id)succeeded;
 @end
 
 @implementation IDSDRegistrationListener
@@ -52,9 +52,9 @@
   [(IDSDRegistrationListener *)&v4 dealloc];
 }
 
-- (id)addBlockForRegistrationCompletion:(id)a3
+- (id)addBlockForRegistrationCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_completionBlocks)
   {
     v5 = objc_alloc_init(NSMutableSet);
@@ -62,7 +62,7 @@
     self->_completionBlocks = v5;
   }
 
-  v7 = [v4 copy];
+  v7 = [completionCopy copy];
 
   v8 = self->_completionBlocks;
   v9 = objc_retainBlock(v7);
@@ -73,10 +73,10 @@
   return v10;
 }
 
-- (void)_callBlocksWithResult:(BOOL)a3 registrations:(id)a4 error:(id)a5
+- (void)_callBlocksWithResult:(BOOL)result registrations:(id)registrations error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  registrationsCopy = registrations;
+  errorCopy = error;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -109,9 +109,9 @@
   }
 }
 
-- (void)registrationController:(id)a3 allRegistrationsSucceeded:(id)a4
+- (void)registrationController:(id)controller allRegistrationsSucceeded:(id)succeeded
 {
-  v5 = a4;
+  succeededCopy = succeeded;
   v6 = +[IMRGLog registrationListener];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -119,7 +119,7 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Told all registrations succeeded, calling completion blocks", v7, 2u);
   }
 
-  [(IDSDRegistrationListener *)self _callBlocksWithResult:1 registrations:v5 error:0];
+  [(IDSDRegistrationListener *)self _callBlocksWithResult:1 registrations:succeededCopy error:0];
 }
 
 @end

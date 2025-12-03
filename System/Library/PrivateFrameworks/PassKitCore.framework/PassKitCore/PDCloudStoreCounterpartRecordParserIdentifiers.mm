@@ -1,9 +1,9 @@
 @interface PDCloudStoreCounterpartRecordParserIdentifiers
 - (PDCloudStoreCounterpartRecordParserIdentifiers)init;
 - (id)allRecords;
-- (id)allRecordsWithIdentifier:(id)a3;
-- (void)addRecord:(id)a3 identifier:(id)a4;
-- (void)removeIdentifiers:(id)a3;
+- (id)allRecordsWithIdentifier:(id)identifier;
+- (void)addRecord:(id)record identifier:(id)identifier;
+- (void)removeIdentifiers:(id)identifiers;
 @end
 
 @implementation PDCloudStoreCounterpartRecordParserIdentifiers
@@ -23,29 +23,29 @@
   return v2;
 }
 
-- (void)addRecord:(id)a3 identifier:(id)a4
+- (void)addRecord:(id)record identifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_identifierToParserZones objectForKey:v6];
+  recordCopy = record;
+  identifierCopy = identifier;
+  v7 = [(NSMutableDictionary *)self->_identifierToParserZones objectForKey:identifierCopy];
   if (!v7)
   {
     v7 = objc_alloc_init(PDCloudStoreCounterpartRecordParserZones);
-    [(NSMutableDictionary *)self->_identifierToParserZones setObject:v7 forKey:v6];
+    [(NSMutableDictionary *)self->_identifierToParserZones setObject:v7 forKey:identifierCopy];
   }
 
-  [(PDCloudStoreCounterpartRecordParserZones *)v7 addRecord:v8];
+  [(PDCloudStoreCounterpartRecordParserZones *)v7 addRecord:recordCopy];
 }
 
-- (id)allRecordsWithIdentifier:(id)a3
+- (id)allRecordsWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(v4);
-  v7 = [(NSMutableDictionary *)self->_identifierToParserZones objectForKey:v5];
+  v7 = [(NSMutableDictionary *)self->_identifierToParserZones objectForKey:identifierCopy];
 
-  v8 = [v7 allRecords];
-  [v6 addObjectsFromArray:v8];
+  allRecords = [v7 allRecords];
+  [v6 addObjectsFromArray:allRecords];
 
   v9 = [v6 copy];
 
@@ -77,15 +77,15 @@ void __60__PDCloudStoreCounterpartRecordParserIdentifiers_allRecords__block_invo
   }
 }
 
-- (void)removeIdentifiers:(id)a3
+- (void)removeIdentifiers:(id)identifiers
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [identifiersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -97,14 +97,14 @@ void __60__PDCloudStoreCounterpartRecordParserIdentifiers_allRecords__block_invo
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         [(NSMutableDictionary *)self->_identifierToParserZones removeObjectForKey:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [identifiersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);

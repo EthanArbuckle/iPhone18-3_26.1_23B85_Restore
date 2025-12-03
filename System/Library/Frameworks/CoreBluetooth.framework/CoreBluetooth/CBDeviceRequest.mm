@@ -1,7 +1,7 @@
 @interface CBDeviceRequest
-- (CBDeviceRequest)initWithXPCObject:(id)a3 error:(id *)a4;
+- (CBDeviceRequest)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBDeviceRequest
@@ -38,28 +38,28 @@
   return v7;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   requestFlags = self->_requestFlags;
-  xdict = v4;
+  xdict = objectCopy;
   if (requestFlags)
   {
-    xpc_dictionary_set_uint64(v4, "dvRF", requestFlags);
-    v4 = xdict;
+    xpc_dictionary_set_uint64(objectCopy, "dvRF", requestFlags);
+    objectCopy = xdict;
   }
 
   timeoutSeconds = self->_timeoutSeconds;
   if (timeoutSeconds != 0.0)
   {
     xpc_dictionary_set_double(xdict, "timO", timeoutSeconds);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 }
 
-- (CBDeviceRequest)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBDeviceRequest)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v7 = OUTLINED_FUNCTION_18();
   if (!v7)
   {

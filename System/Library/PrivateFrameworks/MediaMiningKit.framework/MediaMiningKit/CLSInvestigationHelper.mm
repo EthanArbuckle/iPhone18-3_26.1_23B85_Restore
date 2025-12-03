@@ -1,69 +1,69 @@
 @interface CLSInvestigationHelper
-- (CLSInvestigationHelper)initWithServiceManager:(id)a3 locationCache:(id)a4 aoiCache:(id)a5 poiCache:(id)a6 roiCache:(id)a7 natureCache:(id)a8;
-- (id)parentNodesOfTaxonomyNode:(id)a3;
-- (id)taxonomyNodeForSceneIdentifier:(unint64_t)a3 sceneModel:(id)a4;
-- (unint64_t)_maxLevelWithTaxonomyNode:(id)a3;
-- (void)enumerateTaxonomyNodesLevelsAndWeightsStartingWithNode:(id)a3 usingBlock:(id)a4;
+- (CLSInvestigationHelper)initWithServiceManager:(id)manager locationCache:(id)cache aoiCache:(id)aoiCache poiCache:(id)poiCache roiCache:(id)roiCache natureCache:(id)natureCache;
+- (id)parentNodesOfTaxonomyNode:(id)node;
+- (id)taxonomyNodeForSceneIdentifier:(unint64_t)identifier sceneModel:(id)model;
+- (unint64_t)_maxLevelWithTaxonomyNode:(id)node;
+- (void)enumerateTaxonomyNodesLevelsAndWeightsStartingWithNode:(id)node usingBlock:(id)block;
 @end
 
 @implementation CLSInvestigationHelper
 
-- (unint64_t)_maxLevelWithTaxonomyNode:(id)a3
+- (unint64_t)_maxLevelWithTaxonomyNode:(id)node
 {
-  v4 = a3;
-  v5 = [v4 taxonomy];
-  v6 = [v5 digest];
+  nodeCopy = node;
+  taxonomy = [nodeCopy taxonomy];
+  digest = [taxonomy digest];
 
-  if (v6)
+  if (digest)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "extendedSceneClassId")}];
-    v8 = [(NSMutableDictionary *)self->_maxTaxonomyNodeLevelBySceneIdentifierBySceneModelIdentifier objectForKeyedSubscript:v6];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(nodeCopy, "extendedSceneClassId")}];
+    v8 = [(NSMutableDictionary *)self->_maxTaxonomyNodeLevelBySceneIdentifierBySceneModelIdentifier objectForKeyedSubscript:digest];
     if (!v8)
     {
       v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      [(NSMutableDictionary *)self->_maxTaxonomyNodeLevelBySceneIdentifierBySceneModelIdentifier setObject:v8 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_maxTaxonomyNodeLevelBySceneIdentifierBySceneModelIdentifier setObject:v8 forKeyedSubscript:digest];
     }
 
     v9 = [v8 objectForKeyedSubscript:v7];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
     }
 
     else
     {
-      v11 = _maxTaxonomyNodeLevel(v4);
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
+      unsignedIntegerValue = _maxTaxonomyNodeLevel(nodeCopy);
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
       [v8 setObject:v12 forKeyedSubscript:v7];
     }
   }
 
   else
   {
-    v11 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v11;
+  return unsignedIntegerValue;
 }
 
-- (void)enumerateTaxonomyNodesLevelsAndWeightsStartingWithNode:(id)a3 usingBlock:(id)a4
+- (void)enumerateTaxonomyNodesLevelsAndWeightsStartingWithNode:(id)node usingBlock:(id)block
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 taxonomy];
-  v9 = [v8 digest];
+  nodeCopy = node;
+  blockCopy = block;
+  taxonomy = [nodeCopy taxonomy];
+  digest = [taxonomy digest];
 
-  if (v9)
+  if (digest)
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v6, "extendedSceneClassId")}];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(nodeCopy, "extendedSceneClassId")}];
     os_unfair_lock_lock(&self->_taxonomyNodesLevelsAndWeightsLock);
-    v11 = [(NSMutableDictionary *)self->_taxonomyNodesLevelsAndWeightsBySceneIdentifierBySceneModelIdentifier objectForKeyedSubscript:v9];
+    v11 = [(NSMutableDictionary *)self->_taxonomyNodesLevelsAndWeightsBySceneIdentifierBySceneModelIdentifier objectForKeyedSubscript:digest];
     if (!v11)
     {
       v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      [(NSMutableDictionary *)self->_taxonomyNodesLevelsAndWeightsBySceneIdentifierBySceneModelIdentifier setObject:v11 forKeyedSubscript:v9];
+      [(NSMutableDictionary *)self->_taxonomyNodesLevelsAndWeightsBySceneIdentifierBySceneModelIdentifier setObject:v11 forKeyedSubscript:digest];
     }
 
     v12 = [v11 objectForKeyedSubscript:v10];
@@ -89,7 +89,7 @@
               objc_enumerationMutation(obj);
             }
 
-            v7[2](v7, *(*(&v38 + 1) + 8 * i));
+            blockCopy[2](blockCopy, *(*(&v38 + 1) + 8 * i));
           }
 
           v14 = [obj countByEnumeratingWithState:&v38 objects:v46 count:16];
@@ -102,24 +102,24 @@
     else
     {
       v31 = 0;
-      v34 = v9;
+      v34 = digest;
       v32 = v11;
       v33 = v10;
       obj = objc_alloc_init(MEMORY[0x277CBEB18]);
       [v11 setObject:? forKeyedSubscript:?];
-      v17 = [(CLSInvestigationHelper *)self _maxLevelWithTaxonomyNode:v6];
-      v35 = v6;
-      v18 = [MEMORY[0x277CBEB58] setWithObject:v6];
+      v17 = [(CLSInvestigationHelper *)self _maxLevelWithTaxonomyNode:nodeCopy];
+      v35 = nodeCopy;
+      v18 = [MEMORY[0x277CBEB58] setWithObject:nodeCopy];
       v36 = v17 + 1;
       v19 = v17;
       while (1)
       {
         if ([v18 count] == 1)
         {
-          v20 = [v18 anyObject];
-          v21 = [v20 isRoot];
+          anyObject = [v18 anyObject];
+          isRoot = [anyObject isRoot];
 
-          if (v21)
+          if (isRoot)
           {
             break;
           }
@@ -149,7 +149,7 @@
               if (([v27 isRoot] & 1) == 0)
               {
                 v28 = [[CLSInvestigationHelperSceneNodeLevelAndWeight alloc] initWithTaxonomyNode:v27 level:v17 andWeight:(v36 - v17) / v19];
-                (v7)[2](v7, v28);
+                (blockCopy)[2](blockCopy, v28);
                 [obj addObject:v28];
                 v29 = [(CLSInvestigationHelper *)self parentNodesOfTaxonomyNode:v27];
                 v30 = v29;
@@ -181,8 +181,8 @@
 
       os_unfair_lock_unlock(&self->_taxonomyNodesLevelsAndWeightsLock);
 
-      v9 = v34;
-      v6 = v35;
+      digest = v34;
+      nodeCopy = v35;
       v11 = v32;
       v10 = v33;
       v12 = v31;
@@ -190,28 +190,28 @@
   }
 }
 
-- (id)parentNodesOfTaxonomyNode:(id)a3
+- (id)parentNodesOfTaxonomyNode:(id)node
 {
-  v4 = a3;
-  v5 = [v4 taxonomy];
-  v6 = [v5 digest];
+  nodeCopy = node;
+  taxonomy = [nodeCopy taxonomy];
+  digest = [taxonomy digest];
 
-  if (v6)
+  if (digest)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "extendedSceneClassId")}];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(nodeCopy, "extendedSceneClassId")}];
     os_unfair_lock_lock(&self->_parentTaxonomyNodesLock);
-    v8 = [(NSMutableDictionary *)self->_parentTaxonomyNodesBySceneIdentifierBySceneModelIdentifier objectForKeyedSubscript:v6];
+    v8 = [(NSMutableDictionary *)self->_parentTaxonomyNodesBySceneIdentifierBySceneModelIdentifier objectForKeyedSubscript:digest];
     if (!v8)
     {
       v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      [(NSMutableDictionary *)self->_parentTaxonomyNodesBySceneIdentifierBySceneModelIdentifier setObject:v8 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_parentTaxonomyNodesBySceneIdentifierBySceneModelIdentifier setObject:v8 forKeyedSubscript:digest];
     }
 
-    v9 = [v8 objectForKeyedSubscript:v7];
-    if (!v9)
+    parents = [v8 objectForKeyedSubscript:v7];
+    if (!parents)
     {
-      v9 = [v4 parents];
-      [v8 setObject:v9 forKeyedSubscript:v7];
+      parents = [nodeCopy parents];
+      [v8 setObject:parents forKeyedSubscript:v7];
     }
 
     os_unfair_lock_unlock(&self->_parentTaxonomyNodesLock);
@@ -219,54 +219,54 @@
 
   else
   {
-    v9 = [MEMORY[0x277CBEB98] set];
+    parents = [MEMORY[0x277CBEB98] set];
   }
 
-  return v9;
+  return parents;
 }
 
-- (id)taxonomyNodeForSceneIdentifier:(unint64_t)a3 sceneModel:(id)a4
+- (id)taxonomyNodeForSceneIdentifier:(unint64_t)identifier sceneModel:(id)model
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([v6 isResponsibleForSignalIdentifier:a3])
+  modelCopy = model;
+  if ([modelCopy isResponsibleForSignalIdentifier:identifier])
   {
-    v7 = [v6 identifier];
-    if (v7)
+    identifier = [modelCopy identifier];
+    if (identifier)
     {
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:identifier];
       os_unfair_lock_lock(&self->_taxonomyNodesLock);
-      v9 = [(NSMutableDictionary *)self->_taxonomyNodeBySceneIdentifierBySceneModelIdentifier objectForKeyedSubscript:v7];
+      v9 = [(NSMutableDictionary *)self->_taxonomyNodeBySceneIdentifierBySceneModelIdentifier objectForKeyedSubscript:identifier];
       if (!v9)
       {
         v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        [(NSMutableDictionary *)self->_taxonomyNodeBySceneIdentifierBySceneModelIdentifier setObject:v9 forKeyedSubscript:v7];
+        [(NSMutableDictionary *)self->_taxonomyNodeBySceneIdentifierBySceneModelIdentifier setObject:v9 forKeyedSubscript:identifier];
       }
 
-      v10 = [v9 objectForKeyedSubscript:v8];
-      if (!v10)
+      null = [v9 objectForKeyedSubscript:v8];
+      if (!null)
       {
-        v10 = [v6 taxonomyNodeForSceneIdentifier:a3];
-        if (!v10)
+        null = [modelCopy taxonomyNodeForSceneIdentifier:identifier];
+        if (!null)
         {
-          v10 = [MEMORY[0x277CBEB68] null];
+          null = [MEMORY[0x277CBEB68] null];
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
             v13[0] = 67109120;
-            v13[1] = a3;
+            v13[1] = identifier;
             _os_log_error_impl(&dword_22F907000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "No taxonomy node found for sceneIdentifier %d", v13, 8u);
           }
         }
 
-        [v9 setObject:v10 forKeyedSubscript:v8];
+        [v9 setObject:null forKeyedSubscript:v8];
       }
 
-      v11 = [MEMORY[0x277CBEB68] null];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v10 == v11)
+      if (null == null2)
       {
 
-        v10 = 0;
+        null = 0;
       }
 
       os_unfair_lock_unlock(&self->_taxonomyNodesLock);
@@ -274,38 +274,38 @@
 
     else
     {
-      v10 = 0;
+      null = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    null = 0;
   }
 
-  return v10;
+  return null;
 }
 
-- (CLSInvestigationHelper)initWithServiceManager:(id)a3 locationCache:(id)a4 aoiCache:(id)a5 poiCache:(id)a6 roiCache:(id)a7 natureCache:(id)a8
+- (CLSInvestigationHelper)initWithServiceManager:(id)manager locationCache:(id)cache aoiCache:(id)aoiCache poiCache:(id)poiCache roiCache:(id)roiCache natureCache:(id)natureCache
 {
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  managerCopy = manager;
+  cacheCopy = cache;
+  aoiCacheCopy = aoiCache;
+  poiCacheCopy = poiCache;
+  roiCacheCopy = roiCache;
+  natureCacheCopy = natureCache;
   v32.receiver = self;
   v32.super_class = CLSInvestigationHelper;
   v18 = [(CLSInvestigationHelper *)&v32 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_serviceManager, a3);
-    objc_storeStrong(&v19->_locationCache, a4);
-    objc_storeStrong(&v19->_aoiCache, a5);
-    objc_storeStrong(&v19->_poiCache, a6);
-    objc_storeStrong(&v19->_roiCache, a7);
-    objc_storeStrong(&v19->_natureCache, a8);
+    objc_storeStrong(&v18->_serviceManager, manager);
+    objc_storeStrong(&v19->_locationCache, cache);
+    objc_storeStrong(&v19->_aoiCache, aoiCache);
+    objc_storeStrong(&v19->_poiCache, poiCache);
+    objc_storeStrong(&v19->_roiCache, roiCache);
+    objc_storeStrong(&v19->_natureCache, natureCache);
     v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
     parentTaxonomyNodesBySceneIdentifierBySceneModelIdentifier = v19->_parentTaxonomyNodesBySceneIdentifierBySceneModelIdentifier;
     v19->_parentTaxonomyNodesBySceneIdentifierBySceneModelIdentifier = v20;

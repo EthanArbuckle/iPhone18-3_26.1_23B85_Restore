@@ -7,27 +7,27 @@
 - (uint64_t)filter_description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 snapshotIndex];
-  [a1 energyBurned];
+  snapshotIndex = [self snapshotIndex];
+  [self energyBurned];
   v5 = v4;
-  [a1 energyBurnedGoal];
+  [self energyBurnedGoal];
   v7 = v6;
-  [a1 mmv];
+  [self mmv];
   v9 = v8;
-  [a1 mmg];
+  [self mmg];
   v11 = v10;
-  [a1 briskMinutes];
+  [self briskMinutes];
   v13 = v12;
-  [a1 briskMinutesGoal];
+  [self briskMinutesGoal];
   v15 = v14;
-  [a1 activeHours];
+  [self activeHours];
   v17 = v16;
-  [a1 activeHoursGoal];
+  [self activeHoursGoal];
   v19 = v18;
-  [a1 stepCount];
+  [self stepCount];
   v21 = v20;
-  [a1 walkingAndRunningDistance];
-  return [v2 stringWithFormat:@"_HKFitnessFriendActivitySnapshot: %lld, %f/%f, %f/%f, %f/%f, %f/%f, %lu, %f", v3, v5, v7, v9, v11, v13, v15, v17, v19, v21, v22];
+  [self walkingAndRunningDistance];
+  return [v2 stringWithFormat:@"_HKFitnessFriendActivitySnapshot: %lld, %f/%f, %f/%f, %f/%f, %f/%f, %lu, %f", snapshotIndex, v5, v7, v9, v11, v13, v15, v17, v19, v21, v22];
 }
 
 @end

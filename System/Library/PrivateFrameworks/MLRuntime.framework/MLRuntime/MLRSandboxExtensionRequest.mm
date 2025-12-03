@@ -1,20 +1,20 @@
 @interface MLRSandboxExtensionRequest
-- (MLRSandboxExtensionRequest)initWithURLs:(id)a3 requireWrite:(BOOL)a4;
+- (MLRSandboxExtensionRequest)initWithURLs:(id)ls requireWrite:(BOOL)write;
 @end
 
 @implementation MLRSandboxExtensionRequest
 
-- (MLRSandboxExtensionRequest)initWithURLs:(id)a3 requireWrite:(BOOL)a4
+- (MLRSandboxExtensionRequest)initWithURLs:(id)ls requireWrite:(BOOL)write
 {
-  v7 = a3;
+  lsCopy = ls;
   v11.receiver = self;
   v11.super_class = MLRSandboxExtensionRequest;
   v8 = [(MLRSandboxExtensionRequest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_URLs, a3);
-    v9->_requireWrite = a4;
+    objc_storeStrong(&v8->_URLs, ls);
+    v9->_requireWrite = write;
   }
 
   return v9;

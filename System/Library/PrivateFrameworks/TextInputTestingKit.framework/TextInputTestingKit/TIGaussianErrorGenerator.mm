@@ -1,10 +1,10 @@
 @interface TIGaussianErrorGenerator
 - (CGPoint)globalBias;
-- (CGPoint)randomErrorForKeyString:(id)a3 rect:(CGRect)a4;
+- (CGPoint)randomErrorForKeyString:(id)string rect:(CGRect)rect;
 - (CGPoint)randomPointInDistribution;
-- (CGPoint)randomPointWithStandardDeviationX:(float)a3 Y:(float)a4;
-- (CGPoint)randomTargetForSpaceBarRect:(CGRect)a3;
-- (TIGaussianErrorGenerator)initWithAttributes:(id)a3;
+- (CGPoint)randomPointWithStandardDeviationX:(float)x Y:(float)y;
+- (CGPoint)randomTargetForSpaceBarRect:(CGRect)rect;
+- (TIGaussianErrorGenerator)initWithAttributes:(id)attributes;
 - (void)reset;
 - (void)updateGlobalBias;
 @end
@@ -23,19 +23,19 @@
   self->_globalBias.y = v6;
 }
 
-- (CGPoint)randomErrorForKeyString:(id)a3 rect:(CGRect)a4
+- (CGPoint)randomErrorForKeyString:(id)string rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  stringCopy = string;
   *&v10 = self->_perTouchStdevX;
   *&v11 = self->_perTouchStdevY;
   [(TIGaussianErrorGenerator *)self randomPointWithStandardDeviationX:v10 Y:v11];
   v13 = v12;
   v15 = v14;
-  if ([v9 isEqualToString:@" "] && -[TIErrorGenerator spaceHorizontalErrorMode](self, "spaceHorizontalErrorMode") == 1)
+  if ([stringCopy isEqualToString:@" "] && -[TIErrorGenerator spaceHorizontalErrorMode](self, "spaceHorizontalErrorMode") == 1)
   {
     v22.origin.x = x;
     v22.origin.y = y;
@@ -70,12 +70,12 @@
   return result;
 }
 
-- (CGPoint)randomTargetForSpaceBarRect:(CGRect)a3
+- (CGPoint)randomTargetForSpaceBarRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v17.receiver = self;
   v17.super_class = TIGaussianErrorGenerator;
   [(TIErrorGenerator *)&v17 persistentBiasForSpaceBarRect:?];
@@ -158,7 +158,7 @@
   return result;
 }
 
-- (CGPoint)randomPointWithStandardDeviationX:(float)a3 Y:(float)a4
+- (CGPoint)randomPointWithStandardDeviationX:(float)x Y:(float)y
 {
   do
   {
@@ -171,19 +171,19 @@
 
   while (v11 > 1.0);
   v12 = sqrtf((logf((v10 * v10) + (v8 * v8)) * -2.0) / v11);
-  v13 = ((v12 * v8) * a3);
-  v14 = ((v12 * v10) * a4);
+  v13 = ((v12 * v8) * x);
+  v14 = ((v12 * v10) * y);
   result.y = v14;
   result.x = v13;
   return result;
 }
 
-- (TIGaussianErrorGenerator)initWithAttributes:(id)a3
+- (TIGaussianErrorGenerator)initWithAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v24.receiver = self;
   v24.super_class = TIGaussianErrorGenerator;
-  v5 = [(TIErrorGenerator *)&v24 initWithAttributes:v4];
+  v5 = [(TIErrorGenerator *)&v24 initWithAttributes:attributesCopy];
   v6 = v5;
   if (v5)
   {
@@ -191,47 +191,47 @@
     v5->_perTouchStdevY = 0.0;
     v5->_globalStdevX = 0.0;
     v5->_globalStdevY = 0.0;
-    v7 = [v4 valueForKey:@"GAUSSIAN_ERROR_STDDEV_X"];
+    v7 = [attributesCopy valueForKey:@"GAUSSIAN_ERROR_STDDEV_X"];
 
     if (v7)
     {
-      v8 = [v4 objectForKey:@"GAUSSIAN_ERROR_STDDEV_X"];
+      v8 = [attributesCopy objectForKey:@"GAUSSIAN_ERROR_STDDEV_X"];
       [v8 floatValue];
       v6->_perTouchStdevX = v9;
     }
 
-    v10 = [v4 valueForKey:@"GAUSSIAN_ERROR_STDDEV_Y"];
+    v10 = [attributesCopy valueForKey:@"GAUSSIAN_ERROR_STDDEV_Y"];
 
     if (v10)
     {
-      v11 = [v4 objectForKey:@"GAUSSIAN_ERROR_STDDEV_Y"];
+      v11 = [attributesCopy objectForKey:@"GAUSSIAN_ERROR_STDDEV_Y"];
       [v11 floatValue];
       v6->_perTouchStdevY = v12;
     }
 
-    v13 = [v4 valueForKey:@"SKEW_STDDEV_X"];
+    v13 = [attributesCopy valueForKey:@"SKEW_STDDEV_X"];
 
     if (v13)
     {
-      v14 = [v4 valueForKey:@"SKEW_STDDEV_X"];
+      v14 = [attributesCopy valueForKey:@"SKEW_STDDEV_X"];
       [v14 floatValue];
       v6->_globalStdevX = v15;
     }
 
-    v16 = [v4 valueForKey:@"SKEW_STDDEV_Y"];
+    v16 = [attributesCopy valueForKey:@"SKEW_STDDEV_Y"];
 
     if (v16)
     {
-      v17 = [v4 valueForKey:@"SKEW_STDDEV_Y"];
+      v17 = [attributesCopy valueForKey:@"SKEW_STDDEV_Y"];
       [v17 floatValue];
       v6->_globalStdevY = v18;
     }
 
-    v19 = [v4 valueForKey:@"SCALE_ERROR_UNITS_TO_POINTS"];
+    v19 = [attributesCopy valueForKey:@"SCALE_ERROR_UNITS_TO_POINTS"];
 
     if (v19)
     {
-      v20 = [v4 valueForKey:@"SCALE_ERROR_UNITS_TO_POINTS"];
+      v20 = [attributesCopy valueForKey:@"SCALE_ERROR_UNITS_TO_POINTS"];
       [v20 floatValue];
       v22 = v21;
     }

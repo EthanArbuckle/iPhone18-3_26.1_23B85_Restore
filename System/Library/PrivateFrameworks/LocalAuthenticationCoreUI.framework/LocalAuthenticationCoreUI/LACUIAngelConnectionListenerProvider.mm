@@ -19,7 +19,7 @@
   v5 = *(&self->super.isa + OBJC_IVAR____TtC25LocalAuthenticationCoreUI36LACUIAngelConnectionListenerProvider_protocolServiceName);
   v6 = *&self->domainName[OBJC_IVAR____TtC25LocalAuthenticationCoreUI36LACUIAngelConnectionListenerProvider_protocolServiceName];
   v7 = objc_allocWithZone(MEMORY[0x277D24130]);
-  v8 = self;
+  selfCopy = self;
   v9 = MEMORY[0x259C58D00](v3, v4);
   v10 = MEMORY[0x259C58D00](v5, v6);
   v11 = [v7 initWithDomainName:v9 protocolServiceName:v10];

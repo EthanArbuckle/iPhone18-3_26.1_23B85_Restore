@@ -1,23 +1,23 @@
 @interface SXTextTangierLayout
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
 - (CGSize)adjustedInsets;
 - (CGSize)initialTextSize;
-- (Class)repClassForTextLayout:(id)a3;
+- (Class)repClassForTextLayout:(id)layout;
 - (id)textWrapperForExteriorWrap;
 - (void)invalidate;
 @end
 
 @implementation SXTextTangierLayout
 
-- (Class)repClassForTextLayout:(id)a3
+- (Class)repClassForTextLayout:(id)layout
 {
   v3 = objc_opt_class();
 
   return v3;
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -30,10 +30,10 @@
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v6 = *MEMORY[0x1E695F058];
   v7 = *(MEMORY[0x1E695F058] + 8);
   result.size.height = height;
@@ -45,9 +45,9 @@
 
 - (CGSize)initialTextSize
 {
-  v2 = [(TSDLayout *)self info];
-  v3 = [v2 geometry];
-  [v3 size];
+  info = [(TSDLayout *)self info];
+  geometry = [info geometry];
+  [geometry size];
   v5 = v4;
 
   v6 = 10000000.0;
@@ -63,27 +63,27 @@
   v16.super_class = SXTextTangierLayout;
   [(TSDLayout *)&v16 invalidate];
   [(SXTextTangierLayout *)self setTextWrapper:0];
-  v3 = [(TSDAbstractLayout *)self children];
-  v4 = [v3 count];
+  children = [(TSDAbstractLayout *)self children];
+  v4 = [children count];
 
   if (v4 == 1)
   {
-    v5 = [(TSDAbstractLayout *)self children];
-    v6 = [v5 firstObject];
+    children2 = [(TSDAbstractLayout *)self children];
+    firstObject = [children2 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v8 = [MEMORY[0x1E69D5768] currentHandler];
+      currentHandler = [MEMORY[0x1E69D5768] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[SXTextTangierLayout invalidate]"];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/FeldsparServicesUI/Modules/silex/Silex/Text/Tangier/SXTextTangierLayout.mm"];
-      [v8 handleFailureInFunction:v9 file:v10 lineNumber:77 description:@"TSWPLayout expected here"];
+      [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:77 description:@"TSWPLayout expected here"];
     }
 
     objc_opt_class();
-    v11 = [(TSDAbstractLayout *)self children];
-    v12 = [v11 firstObject];
+    children3 = [(TSDAbstractLayout *)self children];
+    firstObject2 = [children3 firstObject];
     v13 = TSUDynamicCast();
 
     v14 = *MEMORY[0x1E69D5748];
@@ -112,18 +112,18 @@
 
 - (id)textWrapperForExteriorWrap
 {
-  v3 = [(SXTextTangierLayout *)self textWrapper];
+  textWrapper = [(SXTextTangierLayout *)self textWrapper];
 
-  if (!v3)
+  if (!textWrapper)
   {
     v4 = objc_alloc_init(SXTextTangierTextWrapper);
     [(SXTextTangierLayout *)self setTextWrapper:v4];
 
-    v5 = [(TSDLayout *)self info];
-    v6 = [v5 fixedExclusionPaths];
-    v7 = [v6 allObjects];
-    v8 = [(SXTextTangierLayout *)self textWrapper];
-    [v8 setExclusionPaths:v7];
+    info = [(TSDLayout *)self info];
+    fixedExclusionPaths = [info fixedExclusionPaths];
+    allObjects = [fixedExclusionPaths allObjects];
+    textWrapper2 = [(SXTextTangierLayout *)self textWrapper];
+    [textWrapper2 setExclusionPaths:allObjects];
   }
 
   return [(SXTextTangierLayout *)self textWrapper];

@@ -1,12 +1,12 @@
 @interface PLProgressHUD
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PLProgressHUD)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PLProgressHUD)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)done;
 - (void)hide;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
-- (void)showInView:(id)a3;
+- (void)setText:(id)text;
+- (void)showInView:(id)view;
 @end
 
 @implementation PLProgressHUD
@@ -43,10 +43,10 @@
   [(UIImageView *)self->_checkmarkView setFrame:v19.origin.x, v19.origin.y, v19.size.width, v19.size.height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [MEMORY[0x277D750E8] defaultSizeForStyle:100];
   v7 = v6;
   v9 = v8;
@@ -98,12 +98,12 @@
   [(PLProgressHUD *)self removeFromSuperview];
 }
 
-- (void)showInView:(id)a3
+- (void)showInView:(id)view
 {
   self->_isShowing = 1;
-  [a3 addSubview:self];
+  [view addSubview:self];
   [(UIActivityIndicatorView *)self->_activityIndicatorView startAnimating];
-  [a3 bounds];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   [(PLProgressHUD *)self sizeThatFits:v5, v7];
@@ -117,9 +117,9 @@
   [(PLProgressHUD *)self setAutoresizingMask:45];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  [(UILabel *)self->_label setText:a3];
+  [(UILabel *)self->_label setText:text];
 
   [(PLProgressHUD *)self setNeedsLayout];
 }
@@ -136,7 +136,7 @@
   [(PLProgressHUD *)&v3 dealloc];
 }
 
-- (PLProgressHUD)initWithFrame:(CGRect)a3
+- (PLProgressHUD)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = PLProgressHUD;

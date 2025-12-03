@@ -1,16 +1,16 @@
 @interface WebFramePolicyListener
-- (WebFramePolicyListener)initWithFrame:(NakedPtr<WebCore:(void *)a4 :(unsigned __int8)a5 LocalFrame>)a3 policyFunction:(id)a6 defaultPolicy:(id)a7 appLinkURL:referrerURL:;
-- (WebFramePolicyListener)initWithFrame:(NakedPtr<WebCore:(void *)a4 :(unsigned __int8)a5 LocalFrame>)a3 policyFunction:defaultPolicy:;
+- (WebFramePolicyListener)initWithFrame:(NakedPtr<WebCore:(void *)frame :(unsigned __int8)a5 LocalFrame>)a3 policyFunction:(id)function defaultPolicy:(id)policy appLinkURL:referrerURL:;
+- (WebFramePolicyListener)initWithFrame:(NakedPtr<WebCore:(void *)frame :(unsigned __int8)a5 LocalFrame>)a3 policyFunction:defaultPolicy:;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)invalidate;
-- (void)receivedPolicyDecision:(unsigned __int8)a3;
+- (void)receivedPolicyDecision:(unsigned __int8)decision;
 - (void)use;
 @end
 
 @implementation WebFramePolicyListener
 
-- (WebFramePolicyListener)initWithFrame:(NakedPtr<WebCore:(void *)a4 :(unsigned __int8)a5 LocalFrame>)a3 policyFunction:defaultPolicy:
+- (WebFramePolicyListener)initWithFrame:(NakedPtr<WebCore:(void *)frame :(unsigned __int8)a5 LocalFrame>)a3 policyFunction:defaultPolicy:
 {
   result = [(WebFramePolicyListener *)self init];
   if (result)
@@ -30,8 +30,8 @@
         v14 = result;
         (*(*m_ptr + 8))(m_ptr);
         result = v14;
-        v15 = *a4;
-        *a4 = 0;
+        v15 = *frame;
+        *frame = 0;
         ptr = v14->_policyFunction.m_function.m_callableWrapper.__ptr_;
         v14->_policyFunction.m_function.m_callableWrapper.__ptr_ = v15;
         if (!ptr)
@@ -45,8 +45,8 @@
       --*(m_ptr + 4);
     }
 
-    v11 = *a4;
-    *a4 = 0;
+    v11 = *frame;
+    *frame = 0;
     ptr = result->_policyFunction.m_function.m_callableWrapper.__ptr_;
     result->_policyFunction.m_function.m_callableWrapper.__ptr_ = v11;
     if (!ptr)
@@ -66,24 +66,24 @@ LABEL_8:
   return result;
 }
 
-- (WebFramePolicyListener)initWithFrame:(NakedPtr<WebCore:(void *)a4 :(unsigned __int8)a5 LocalFrame>)a3 policyFunction:(id)a6 defaultPolicy:(id)a7 appLinkURL:referrerURL:
+- (WebFramePolicyListener)initWithFrame:(NakedPtr<WebCore:(void *)frame :(unsigned __int8)a5 LocalFrame>)a3 policyFunction:(id)function defaultPolicy:(id)policy appLinkURL:referrerURL:
 {
   v23[0] = *a3.m_ptr;
-  v9 = [(WebFramePolicyListener *)self initWithFrame:v23 policyFunction:a4 defaultPolicy:a5];
+  v9 = [(WebFramePolicyListener *)self initWithFrame:v23 policyFunction:frame defaultPolicy:a5];
   if (v9)
   {
-    if (a6)
+    if (function)
     {
-      v10 = a6;
+      functionCopy = function;
     }
 
     m_ptr = v9->_appLinkURL.m_ptr;
-    v9->_appLinkURL.m_ptr = a6;
+    v9->_appLinkURL.m_ptr = function;
     if (m_ptr)
     {
     }
 
-    MEMORY[0x1CCA63960](v21, a7);
+    MEMORY[0x1CCA63960](v21, policy);
     WebCore::SecurityOrigin::create(&v22, v21, v12);
     WebCore::SecurityOrigin::toURL(v23, v22);
     WTF::URL::createCFURL(&v24, v23);
@@ -135,9 +135,9 @@ LABEL_8:
     if (*(m_ptr + 4) == 1)
     {
       (*(*m_ptr + 8))(m_ptr, a2);
-      v6 = self;
+      selfCopy = self;
       ptr = self->_policyFunction.m_function.m_callableWrapper.__ptr_;
-      v6->_policyFunction.m_function.m_callableWrapper.__ptr_ = 0;
+      selfCopy->_policyFunction.m_function.m_callableWrapper.__ptr_ = 0;
       if (!ptr)
       {
         return;
@@ -216,7 +216,7 @@ LABEL_8:
   }
 }
 
-- (void)receivedPolicyDecision:(unsigned __int8)a3
+- (void)receivedPolicyDecision:(unsigned __int8)decision
 {
   m_ptr = self->_frame.m_ptr;
   self->_frame.m_ptr = 0;
@@ -226,7 +226,7 @@ LABEL_8:
     self->_policyFunction.m_function.m_callableWrapper.__ptr_ = 0;
     if (ptr)
     {
-      (*(*ptr + 16))(ptr, a3);
+      (*(*ptr + 16))(ptr, decision);
       (*(*ptr + 8))(ptr);
     }
 

@@ -1,7 +1,7 @@
 @interface _MFNTLMAuthenticator
-- (id)responseForServerData:(id)a3;
+- (id)responseForServerData:(id)data;
 - (void)dealloc;
-- (void)setAuthenticationState:(int)a3;
+- (void)setAuthenticationState:(int)state;
 @end
 
 @implementation _MFNTLMAuthenticator
@@ -18,12 +18,12 @@
   [(MFSASLAuthenticator *)&v3 dealloc];
 }
 
-- (void)setAuthenticationState:(int)a3
+- (void)setAuthenticationState:(int)state
 {
   v11.receiver = self;
   v11.super_class = _MFNTLMAuthenticator;
   [(MFSASLAuthenticator *)&v11 setAuthenticationState:?];
-  if (a3 == 1)
+  if (state == 1)
   {
     v5 = MFLogGeneral();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -47,7 +47,7 @@
     self->_ntlmError = 0;
     v8 = MFLogGeneral();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-    if (a3 == 4)
+    if (state == 4)
     {
       if (!v9)
       {
@@ -75,19 +75,19 @@
   _os_log_impl(&dword_258BDA000, v7, OS_LOG_TYPE_INFO, v6, v10, 2u);
 }
 
-- (id)responseForServerData:(id)a3
+- (id)responseForServerData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
   if (!self->_ntlmError)
   {
     if (self->_ntlmGeneratorRef)
     {
-      v5 = [(MFSASLAuthenticator *)self account];
-      v6 = [v5 domain];
-      v7 = [v5 username];
-      if (v7)
+      account = [(MFSASLAuthenticator *)self account];
+      domain = [account domain];
+      username = [account username];
+      if (username)
       {
-        v8 = v7;
+        v8 = username;
       }
 
       else
@@ -95,13 +95,13 @@
         v8 = &stru_2869ED3E0;
       }
 
-      [v5 password];
+      [account password];
       v9 = MFLogGeneral();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        if (v6)
+        if (domain)
         {
-          v10 = v6;
+          v10 = domain;
         }
 
         else
@@ -122,7 +122,7 @@
 
     else
     {
-      if ([a3 length])
+      if ([data length])
       {
         v13 = MFLogGeneral();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))

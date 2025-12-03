@@ -1,14 +1,14 @@
 @interface CarPlayObserver
 + (_TtC5Music15CarPlayObserver)shared;
-- (void)setPlayerState:(int64_t)a3;
+- (void)setPlayerState:(int64_t)state;
 @end
 
 @implementation CarPlayObserver
 
-- (void)setPlayerState:(int64_t)a3
+- (void)setPlayerState:(int64_t)state
 {
-  v4 = self;
-  sub_100647604(a3);
+  selfCopy = self;
+  sub_100647604(state);
 }
 
 + (_TtC5Music15CarPlayObserver)shared

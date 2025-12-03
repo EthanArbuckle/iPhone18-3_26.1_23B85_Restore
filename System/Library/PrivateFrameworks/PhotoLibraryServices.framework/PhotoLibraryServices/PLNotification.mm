@@ -1,6 +1,6 @@
 @interface PLNotification
-+ (id)_UNCategoryFromNotificationType:(int64_t)a3;
-+ (id)requestIdentifierByNotificationType:(int64_t)a3 keyObjectUUID:(id)a4 photosBatchID:(id)a5;
++ (id)_UNCategoryFromNotificationType:(int64_t)type;
++ (id)requestIdentifierByNotificationType:(int64_t)type keyObjectUUID:(id)d photosBatchID:(id)iD;
 - (NSArray)suppressionContexts;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)destinationURLString;
@@ -9,34 +9,34 @@
 - (NSString)requestIdentifier;
 - (NSString)title;
 - (PLNotification)init;
-- (PLNotification)initWithAssetAdded:(id)a3 atIndex:(unint64_t)a4 toAlbum:(id)a5;
-- (PLNotification)initWithAssetsAdded:(id)a3 toAlbum:(id)a4;
-- (PLNotification)initWithAssetsAdded:(id)a3 toCollectionShare:(id)a4;
-- (PLNotification)initWithCommentAdded:(id)a3;
-- (PLNotification)initWithExpiringMomentShareUUIDs:(id)a3 thumbnailImageData:(id)a4 notificationTitle:(id)a5 notificationSubtitle:(id)a6;
-- (PLNotification)initWithExpiringMomentShares:(id)a3;
-- (PLNotification)initWithInterestingMemoryNotificationWithMemoryUUID:(id)a3 keyAssetUUID:(id)a4 notificationTitle:(id)a5 notificationSubtitle:(id)a6 photoLibraryURLString:(id)a7;
-- (PLNotification)initWithInvitationAlbum:(id)a3;
-- (PLNotification)initWithInvitationCollectionShare:(id)a3;
-- (PLNotification)initWithInvitationRecordStatusChanged:(id)a3;
-- (PLNotification)initWithLikeAdded:(id)a3;
-- (PLNotification)initWithMultipleContributorEnabledForAlbum:(id)a3;
-- (PLNotification)initWithMultipleContributorEnabledForCollectionShare:(id)a3;
-- (PLNotification)initWithParticipantAcceptanceStatusChanged:(id)a3;
+- (PLNotification)initWithAssetAdded:(id)added atIndex:(unint64_t)index toAlbum:(id)album;
+- (PLNotification)initWithAssetsAdded:(id)added toAlbum:(id)album;
+- (PLNotification)initWithAssetsAdded:(id)added toCollectionShare:(id)share;
+- (PLNotification)initWithCommentAdded:(id)added;
+- (PLNotification)initWithExpiringMomentShareUUIDs:(id)ds thumbnailImageData:(id)data notificationTitle:(id)title notificationSubtitle:(id)subtitle;
+- (PLNotification)initWithExpiringMomentShares:(id)shares;
+- (PLNotification)initWithInterestingMemoryNotificationWithMemoryUUID:(id)d keyAssetUUID:(id)iD notificationTitle:(id)title notificationSubtitle:(id)subtitle photoLibraryURLString:(id)string;
+- (PLNotification)initWithInvitationAlbum:(id)album;
+- (PLNotification)initWithInvitationCollectionShare:(id)share;
+- (PLNotification)initWithInvitationRecordStatusChanged:(id)changed;
+- (PLNotification)initWithLikeAdded:(id)added;
+- (PLNotification)initWithMultipleContributorEnabledForAlbum:(id)album;
+- (PLNotification)initWithMultipleContributorEnabledForCollectionShare:(id)share;
+- (PLNotification)initWithParticipantAcceptanceStatusChanged:(id)changed;
 - (double)completionPercentage;
-- (id)_initWithCommentsCount:(int64_t)a3 commentDate:(id)a4 firstCommentGUID:(id)a5 toAssetWithUUID:(id)a6 photosBatchID:(id)a7 mainAssetIsMine:(BOOL)a8 mainAssetIsVideo:(BOOL)a9 inAlbumWithTitle:(id)a10 albumUUID:(id)a11 albumCloudGUID:(id)a12 assetUUIDs:(id)a13 placeholderAssetUUIDs:(id)a14 lowResThumbAssetUUIDs:(id)a15;
-- (id)_initWithLikesCount:(int64_t)a3 commentDate:(id)a4 firstCommentGUID:(id)a5 toAssetWithUUID:(id)a6 photosBatchID:(id)a7 mainAssetIsMine:(BOOL)a8 mainAssetIsVideo:(BOOL)a9 inAlbumWithTitle:(id)a10 albumUUID:(id)a11 albumCloudGUID:(id)a12 assetUUIDs:(id)a13 placeholderAssetUUIDs:(id)a14 lowResThumbAssetUUIDs:(id)a15 senderNames:(id)a16 forMultipleAsset:(BOOL)a17 allMultipleAssetIsMine:(BOOL)a18 isMixedType:(BOOL)a19;
-- (id)_initWithPhotosAddedNotification:(id)a3 mergedWithNotification:(id)a4;
-- (id)_initWithPhotosAddedNotification:(id)a3 mergedWithNotificationDictionary:(id)a4;
-- (id)_initWithType:(int64_t)a3;
+- (id)_initWithCommentsCount:(int64_t)count commentDate:(id)date firstCommentGUID:(id)d toAssetWithUUID:(id)iD photosBatchID:(id)batchID mainAssetIsMine:(BOOL)mine mainAssetIsVideo:(BOOL)video inAlbumWithTitle:(id)self0 albumUUID:(id)self1 albumCloudGUID:(id)self2 assetUUIDs:(id)self3 placeholderAssetUUIDs:(id)self4 lowResThumbAssetUUIDs:(id)self5;
+- (id)_initWithLikesCount:(int64_t)count commentDate:(id)date firstCommentGUID:(id)d toAssetWithUUID:(id)iD photosBatchID:(id)batchID mainAssetIsMine:(BOOL)mine mainAssetIsVideo:(BOOL)video inAlbumWithTitle:(id)self0 albumUUID:(id)self1 albumCloudGUID:(id)self2 assetUUIDs:(id)self3 placeholderAssetUUIDs:(id)self4 lowResThumbAssetUUIDs:(id)self5 senderNames:(id)self6 forMultipleAsset:(BOOL)self7 allMultipleAssetIsMine:(BOOL)self8 isMixedType:(BOOL)self9;
+- (id)_initWithPhotosAddedNotification:(id)notification mergedWithNotification:(id)withNotification;
+- (id)_initWithPhotosAddedNotification:(id)notification mergedWithNotificationDictionary:(id)dictionary;
+- (id)_initWithType:(int64_t)type;
 - (id)description;
-- (id)initCMMInvitationReadyToViewWithMomentShare:(id)a3;
-- (id)initCMMInvitationWithMomentShare:(id)a3;
-- (id)initForSharedLibraryExitInitatedByOwnerWithType:(signed __int16)a3 retentionPolicy:(int64_t)a4 ownerName:(id)a5;
-- (id)initForSharedLibraryParticipantAssetTrashNotificationWithTrashedPhotoCount:(unint64_t)a3 videoCount:(unint64_t)a4 itemCount:(unint64_t)a5;
-- (id)initForSharedLibraryScopeAcceptWithLibraryScopeIdentifier:(id)a3 participantName:(id)a4;
-- (id)notificationByMergingWithNotification:(id)a3;
-- (id)notificationByMergingWithNotificationDictionary:(id)a3;
+- (id)initCMMInvitationReadyToViewWithMomentShare:(id)share;
+- (id)initCMMInvitationWithMomentShare:(id)share;
+- (id)initForSharedLibraryExitInitatedByOwnerWithType:(signed __int16)type retentionPolicy:(int64_t)policy ownerName:(id)name;
+- (id)initForSharedLibraryParticipantAssetTrashNotificationWithTrashedPhotoCount:(unint64_t)count videoCount:(unint64_t)videoCount itemCount:(unint64_t)itemCount;
+- (id)initForSharedLibraryScopeAcceptWithLibraryScopeIdentifier:(id)identifier participantName:(id)name;
+- (id)notificationByMergingWithNotification:(id)notification;
+- (id)notificationByMergingWithNotificationDictionary:(id)dictionary;
 @end
 
 @implementation PLNotification
@@ -54,9 +54,9 @@
   }
 
   v4 = objc_opt_class();
-  v5 = [(PLNotification *)self notificationType];
-  v6 = [(PLNotification *)self keyObjectUUID];
-  v7 = [v4 requestIdentifierByNotificationType:v5 keyObjectUUID:v6 photosBatchID:v3];
+  notificationType = [(PLNotification *)self notificationType];
+  keyObjectUUID = [(PLNotification *)self keyObjectUUID];
+  v7 = [v4 requestIdentifierByNotificationType:notificationType keyObjectUUID:keyObjectUUID photosBatchID:v3];
 
   return v7;
 }
@@ -144,8 +144,8 @@ LABEL_20:
   v7.receiver = self;
   v7.super_class = PLNotification;
   v3 = [(PLNotification *)&v7 description];
-  v4 = [(PLNotification *)self message];
-  v5 = [v3 stringByAppendingFormat:@" - %@", v4];
+  message = [(PLNotification *)self message];
+  v5 = [v3 stringByAppendingFormat:@" - %@", message];
 
   return v5;
 }
@@ -176,16 +176,16 @@ LABEL_20:
     [(NSDictionary *)v3 setObject:v7 forKey:*MEMORY[0x1E69C0260]];
   }
 
-  v8 = [(PLNotification *)self title];
-  if (v8)
+  title = [(PLNotification *)self title];
+  if (title)
   {
-    [(NSDictionary *)v3 setObject:v8 forKey:*MEMORY[0x1E69C0298]];
+    [(NSDictionary *)v3 setObject:title forKey:*MEMORY[0x1E69C0298]];
   }
 
-  v9 = [(PLNotification *)self message];
-  if (v9)
+  message = [(PLNotification *)self message];
+  if (message)
   {
-    [(NSDictionary *)v3 setObject:v9 forKey:*MEMORY[0x1E69C0228]];
+    [(NSDictionary *)v3 setObject:message forKey:*MEMORY[0x1E69C0228]];
   }
 
   date = self->_date;
@@ -206,10 +206,10 @@ LABEL_20:
     [(NSDictionary *)v3 setObject:expirationDate forKey:*MEMORY[0x1E69C0208]];
   }
 
-  v13 = [(PLNotification *)self destinationURLString];
-  if (v13)
+  destinationURLString = [(PLNotification *)self destinationURLString];
+  if (destinationURLString)
   {
-    [(NSDictionary *)v3 setObject:v13 forKey:*MEMORY[0x1E69C01F0]];
+    [(NSDictionary *)v3 setObject:destinationURLString forKey:*MEMORY[0x1E69C01F0]];
   }
 
   if ([(PLNotification *)self hasThumbnail])
@@ -279,10 +279,10 @@ LABEL_36:
     [(NSDictionary *)v3 setObject:commentText forKey:*MEMORY[0x1E69C01E0]];
   }
 
-  v24 = [(PLNotification *)self suppressionContexts];
-  if (v24)
+  suppressionContexts = [(PLNotification *)self suppressionContexts];
+  if (suppressionContexts)
   {
-    [(NSDictionary *)v3 setObject:v24 forKey:*MEMORY[0x1E69C0280]];
+    [(NSDictionary *)v3 setObject:suppressionContexts forKey:*MEMORY[0x1E69C0280]];
   }
 
   if ([(PLNotification *)self isCommentPiggyBackedOnPhotosAddedNotification])
@@ -300,8 +300,8 @@ LABEL_36:
   senderNames = self->_senderNames;
   if (senderNames)
   {
-    v28 = [(NSMutableSet *)senderNames allObjects];
-    [(NSDictionary *)v3 setObject:v28 forKey:*MEMORY[0x1E69C0278]];
+    allObjects = [(NSMutableSet *)senderNames allObjects];
+    [(NSDictionary *)v3 setObject:allObjects forKey:*MEMORY[0x1E69C0278]];
   }
 
   if (self->_forMultipleAsset)
@@ -357,10 +357,10 @@ LABEL_36:
     [(NSDictionary *)v3 setObject:self->_thumbnailImageData forKey:*MEMORY[0x1E69C0290]];
   }
 
-  v37 = [(PLNotification *)self requestIdentifier];
-  if (v37)
+  requestIdentifier = [(PLNotification *)self requestIdentifier];
+  if (requestIdentifier)
   {
-    [(NSDictionary *)v3 setObject:v37 forKey:*MEMORY[0x1E69C0270]];
+    [(NSDictionary *)v3 setObject:requestIdentifier forKey:*MEMORY[0x1E69C0270]];
   }
 
   v38 = v3;
@@ -370,19 +370,19 @@ LABEL_36:
 
 - (NSArray)suppressionContexts
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(PLNotification *)self notificationType]== 6)
   {
     v4 = MEMORY[0x1E69BFFF0];
 LABEL_7:
-    [v3 addObject:*v4];
+    [array addObject:*v4];
     goto LABEL_8;
   }
 
   if ([(PLNotification *)self notificationType]!= 10)
   {
-    [v3 addObject:*MEMORY[0x1E69BFFD8]];
-    [v3 addObject:*MEMORY[0x1E69BFFE8]];
+    [array addObject:*MEMORY[0x1E69BFFD8]];
+    [array addObject:*MEMORY[0x1E69BFFE8]];
     v4 = MEMORY[0x1E69BFFE0];
     goto LABEL_7;
   }
@@ -390,12 +390,12 @@ LABEL_7:
   if (self->_keyMomentShareUUID)
   {
     v5 = PLSuppressionContextForMomentShareUUID();
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
 LABEL_8:
 
-  return v3;
+  return array;
 }
 
 - (NSString)destinationURLString
@@ -528,8 +528,8 @@ LABEL_3:
         albumTitle = &stru_1F0F06D80;
       }
 
-      v7 = albumTitle;
-      if (![(__CFString *)v5 length]|| ![(__CFString *)v7 length])
+      anyObject = albumTitle;
+      if (![(__CFString *)v5 length]|| ![(__CFString *)anyObject length])
       {
         [(__CFString *)v5 length];
       }
@@ -597,7 +597,7 @@ LABEL_52:
         if (v16 == 1)
         {
           v5 = PLServicesLocalizedFrameworkStringForAssetsd();
-          v7 = [(NSMutableSet *)self->_senderNames anyObject];
+          anyObject = [(NSMutableSet *)self->_senderNames anyObject];
           v2 = PFLocalizedStringWithValidatedFormat();
 LABEL_80:
 
@@ -668,7 +668,7 @@ LABEL_90:
 
         v5 = v27;
         v14 = PLServicesLocalizedFrameworkStringForAssetsd();
-        v22 = [(NSMutableSet *)self->_senderNames anyObject];
+        anyObject2 = [(NSMutableSet *)self->_senderNames anyObject];
 LABEL_47:
         v2 = PFStringWithValidatedFormat();
 
@@ -842,7 +842,7 @@ LABEL_24:
       }
 
 LABEL_46:
-      v22 = PLServicesLocalizedFrameworkStringForAssetsd();
+      anyObject2 = PLServicesLocalizedFrameworkStringForAssetsd();
       goto LABEL_47;
     default:
       goto LABEL_91;
@@ -929,18 +929,18 @@ LABEL_11:
   }
 }
 
-- (id)notificationByMergingWithNotificationDictionary:(id)a3
+- (id)notificationByMergingWithNotificationDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(PLNotification *)self originalDate];
+  dictionaryCopy = dictionary;
+  originalDate = [(PLNotification *)self originalDate];
   v6 = *MEMORY[0x1E69C0258];
-  v7 = [v4 objectForKey:*MEMORY[0x1E69C0258]];
+  v7 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C0258]];
   v8 = v7;
-  if (v5)
+  if (originalDate)
   {
     if (v7)
     {
-      [v5 timeIntervalSinceDate:v7];
+      [originalDate timeIntervalSinceDate:v7];
       if (v9 > 14400.0)
       {
         v14 = 0;
@@ -949,26 +949,26 @@ LABEL_11:
     }
   }
 
-  v10 = [v4 objectForKey:*MEMORY[0x1E69C0248]];
+  v10 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C0248]];
   notificationType = [v10 integerValue];
 
-  v12 = [v4 objectForKey:*MEMORY[0x1E69C0188]];
-  v13 = [v4 objectForKey:*MEMORY[0x1E69C0290]];
+  v12 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C0188]];
+  v13 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C0290]];
   if (self->_notificationType == notificationType)
   {
     if (notificationType == 3)
     {
       if ([(NSString *)self->_albumUUID isEqualToString:v12])
       {
-        v14 = [[PLNotification alloc] _initWithPhotosAddedNotification:self mergedWithNotificationDictionary:v4];
-        v15 = [v14 thumbnailImageData];
+        v14 = [[PLNotification alloc] _initWithPhotosAddedNotification:self mergedWithNotificationDictionary:dictionaryCopy];
+        thumbnailImageData = [v14 thumbnailImageData];
 
-        if (!v15 && v13)
+        if (!thumbnailImageData && v13)
         {
           [v14 setThumbnailImageData:v13];
         }
 
-        v16 = [v4 objectForKey:v6];
+        v16 = [dictionaryCopy objectForKey:v6];
         [v14 setOriginalDate:v16];
         goto LABEL_48;
       }
@@ -978,12 +978,12 @@ LABEL_11:
 
     if ((notificationType & 0xFFFFFFFFFFFFFFFELL) == 4 && [(NSString *)self->_albumUUID isEqualToString:v12])
     {
-      v17 = [v4 objectForKey:*MEMORY[0x1E69C01C8]];
+      v17 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C01C8]];
       v63 = [(NSDate *)self->_commentDate earlierDate:v17];
       v59 = v17;
       if ([v63 isEqualToDate:v17])
       {
-        v18 = [v4 objectForKey:*MEMORY[0x1E69C01B8]];
+        v18 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C01B8]];
       }
 
       else
@@ -992,16 +992,16 @@ LABEL_11:
       }
 
       v19 = v18;
-      v20 = [v4 objectForKey:*MEMORY[0x1E69C01C0]];
+      v20 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C01C0]];
       v58 = v20;
       if (v20)
       {
-        v56 = [v20 integerValue];
+        integerValue = [v20 integerValue];
       }
 
       else
       {
-        v56 = 0;
+        integerValue = 0;
       }
 
       commentCount = self->_commentCount;
@@ -1017,51 +1017,51 @@ LABEL_11:
 
       v64 = v23;
       v24 = *MEMORY[0x1E69C0278];
-      v25 = [v4 objectForKey:*MEMORY[0x1E69C0278]];
+      v25 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C0278]];
 
       if (v25)
       {
-        v26 = [v4 objectForKey:v24];
+        v26 = [dictionaryCopy objectForKey:v24];
         [v64 addObjectsFromArray:v26];
       }
 
       v27 = *MEMORY[0x1E69C0210];
-      v28 = [v4 objectForKey:*MEMORY[0x1E69C0210]];
+      v28 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C0210]];
 
       if (v28)
       {
-        v29 = [v4 objectForKey:v27];
-        v30 = [v29 BOOLValue];
+        v29 = [dictionaryCopy objectForKey:v27];
+        bOOLValue = [v29 BOOLValue];
       }
 
       else
       {
-        v30 = 0;
+        bOOLValue = 0;
       }
 
       v60 = 1;
-      if (!self->_forMultipleAsset && (v30 & 1) == 0)
+      if (!self->_forMultipleAsset && (bOOLValue & 1) == 0)
       {
         mainAssetUUID = self->_mainAssetUUID;
-        v32 = [v4 objectForKey:*MEMORY[0x1E69C01B0]];
+        v32 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C01B0]];
         v60 = ![(NSString *)mainAssetUUID isEqualToString:v32];
       }
 
       v33 = *MEMORY[0x1E69C0230];
-      v34 = [v4 objectForKey:*MEMORY[0x1E69C0230]];
+      v34 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C0230]];
 
       if (v34)
       {
-        v35 = [v4 objectForKey:v33];
-        v36 = [v35 BOOLValue];
+        v35 = [dictionaryCopy objectForKey:v33];
+        bOOLValue2 = [v35 BOOLValue];
       }
 
       else
       {
-        v36 = 0;
+        bOOLValue2 = 0;
       }
 
-      mainAssetIsVideo = self->_isMixedType | v36;
+      mainAssetIsVideo = self->_isMixedType | bOOLValue2;
       v62 = v19;
       v57 = v21;
       if ((mainAssetIsVideo & 1) == 0 && ((v60 ^ 1) & 1) == 0)
@@ -1070,16 +1070,16 @@ LABEL_11:
       }
 
       v54 = mainAssetIsVideo;
-      v38 = [v4 objectForKey:*MEMORY[0x1E69C01A0]];
-      v39 = [v38 BOOLValue];
+      v38 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C01A0]];
+      bOOLValue3 = [v38 BOOLValue];
 
       v40 = *MEMORY[0x1E69C0190];
-      v41 = [v4 objectForKey:*MEMORY[0x1E69C0190]];
+      v41 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C0190]];
 
-      v42 = (v41 != 0) | v39;
-      if (v41 && (v39 & 1) == 0)
+      v42 = (v41 != 0) | bOOLValue3;
+      if (v41 && (bOOLValue3 & 1) == 0)
       {
-        v43 = [v4 objectForKey:v40];
+        v43 = [dictionaryCopy objectForKey:v40];
         v42 = v43 != 0;
       }
 
@@ -1092,7 +1092,7 @@ LABEL_11:
         BYTE1(v53) = v47;
         LOBYTE(v53) = v60;
         LOBYTE(v52) = self->_mainAssetIsVideo;
-        v46 = [PLNotification _initWithLikesCount:v48 commentDate:"_initWithLikesCount:commentDate:firstCommentGUID:toAssetWithUUID:photosBatchID:mainAssetIsMine:mainAssetIsVideo:inAlbumWithTitle:albumUUID:albumCloudGUID:assetUUIDs:placeholderAssetUUIDs:lowResThumbAssetUUIDs:senderNames:forMultipleAsset:allMultipleAssetIsMine:isMixedType:" firstCommentGUID:commentCount + v56 toAssetWithUUID:v63 photosBatchID:v62 mainAssetIsMine:self->_mainAssetUUID mainAssetIsVideo:self->_photosBatchID inAlbumWithTitle:self->_mainAssetIsMine albumUUID:v52 albumCloudGUID:self->_albumTitle assetUUIDs:self->_albumUUID placeholderAssetUUIDs:self->_albumCloudGUID lowResThumbAssetUUIDs:v57 senderNames:v65 forMultipleAsset:v61 allMultipleAssetIsMine:v64 isMixedType:v53];
+        v46 = [PLNotification _initWithLikesCount:v48 commentDate:"_initWithLikesCount:commentDate:firstCommentGUID:toAssetWithUUID:photosBatchID:mainAssetIsMine:mainAssetIsVideo:inAlbumWithTitle:albumUUID:albumCloudGUID:assetUUIDs:placeholderAssetUUIDs:lowResThumbAssetUUIDs:senderNames:forMultipleAsset:allMultipleAssetIsMine:isMixedType:" firstCommentGUID:commentCount + integerValue toAssetWithUUID:v63 photosBatchID:v62 mainAssetIsMine:self->_mainAssetUUID mainAssetIsVideo:self->_photosBatchID inAlbumWithTitle:self->_mainAssetIsMine albumUUID:v52 albumCloudGUID:self->_albumTitle assetUUIDs:self->_albumUUID placeholderAssetUUIDs:self->_albumCloudGUID lowResThumbAssetUUIDs:v57 senderNames:v65 forMultipleAsset:v61 allMultipleAssetIsMine:v64 isMixedType:v53];
       }
 
       else
@@ -1105,16 +1105,16 @@ LABEL_11:
 
         v45 = [PLNotification alloc];
         LOBYTE(v52) = self->_mainAssetIsVideo;
-        v46 = [(PLNotification *)v45 _initWithCommentsCount:commentCount + v56 commentDate:v63 firstCommentGUID:v62 toAssetWithUUID:self->_mainAssetUUID photosBatchID:self->_photosBatchID mainAssetIsMine:self->_mainAssetIsMine mainAssetIsVideo:v52 inAlbumWithTitle:self->_albumTitle albumUUID:self->_albumUUID albumCloudGUID:self->_albumCloudGUID assetUUIDs:v57 placeholderAssetUUIDs:v65 lowResThumbAssetUUIDs:v61];
+        v46 = [(PLNotification *)v45 _initWithCommentsCount:commentCount + integerValue commentDate:v63 firstCommentGUID:v62 toAssetWithUUID:self->_mainAssetUUID photosBatchID:self->_photosBatchID mainAssetIsMine:self->_mainAssetIsMine mainAssetIsVideo:v52 inAlbumWithTitle:self->_albumTitle albumUUID:self->_albumUUID albumCloudGUID:self->_albumCloudGUID assetUUIDs:v57 placeholderAssetUUIDs:v65 lowResThumbAssetUUIDs:v61];
       }
 
       v14 = v46;
 LABEL_47:
-      [v14 setOriginalDate:v5];
-      v49 = [v4 objectForKey:*MEMORY[0x1E69C0288]];
-      v50 = [v49 BOOLValue];
+      [v14 setOriginalDate:originalDate];
+      v49 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C0288]];
+      bOOLValue4 = [v49 BOOLValue];
 
-      [v14 setSuppressAlert:(self->_suppressAlert | v50) & 1];
+      [v14 setSuppressAlert:(self->_suppressAlert | bOOLValue4) & 1];
       [v14 setThumbnailImageData:v13];
 
       v16 = v59;
@@ -1132,56 +1132,56 @@ LABEL_50:
   return v14;
 }
 
-- (id)notificationByMergingWithNotification:(id)a3
+- (id)notificationByMergingWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  notificationCopy = notification;
+  v5 = notificationCopy;
+  if (!notificationCopy)
   {
     goto LABEL_26;
   }
 
-  v6 = [(PLNotification *)v4 notificationType];
+  notificationType = [(PLNotification *)notificationCopy notificationType];
   notificationType = self->_notificationType;
   if (notificationType != 3 || (v8 = [(NSString *)self->_albumUUID isEqualToString:v5->_albumUUID], notificationType = self->_notificationType, !v8))
   {
-    v12 = v6 == notificationType && (notificationType & 0xFFFFFFFFFFFFFFFELL) == 4;
+    v12 = notificationType == notificationType && (notificationType & 0xFFFFFFFFFFFFFFFELL) == 4;
     if (!v12 || ![(NSString *)self->_albumUUID isEqualToString:v5->_albumUUID]|| self->_commentIsCaption || v5->_commentIsCaption)
     {
       goto LABEL_26;
     }
 
-    v13 = self;
-    v11 = [(NSDate *)v13->_commentDate earlierDate:v5->_commentDate];
-    v9 = v13;
-    if ([(PLNotification *)v11 isEqualToDate:v5->_commentDate])
+    selfCopy = self;
+    selfCopy2 = [(NSDate *)selfCopy->_commentDate earlierDate:v5->_commentDate];
+    selfCopy3 = selfCopy;
+    if ([(PLNotification *)selfCopy2 isEqualToDate:v5->_commentDate])
     {
-      v9 = v5;
+      selfCopy3 = v5;
     }
 
     commentCount = v5->_commentCount;
-    v42 = v13->_commentCount;
-    originalDate = v13->_originalDate;
+    v42 = selfCopy->_commentCount;
+    originalDate = selfCopy->_originalDate;
     if (originalDate)
     {
       v15 = [(NSDate *)originalDate earlierDate:v5->_originalDate];
-      v16 = [v15 copy];
+      thumbnailImageData2 = [v15 copy];
     }
 
     else
     {
-      v16 = [(NSDate *)v5->_originalDate copy];
+      thumbnailImageData2 = [(NSDate *)v5->_originalDate copy];
     }
 
-    v24 = [(NSMutableSet *)v13->_assetUUIDs mutableCopy];
+    v24 = [(NSMutableSet *)selfCopy->_assetUUIDs mutableCopy];
     [v24 unionSet:v5->_assetUUIDs];
-    v25 = [(NSMutableOrderedSet *)v13->_placeholderAssetUUIDs mutableCopy];
+    v25 = [(NSMutableOrderedSet *)selfCopy->_placeholderAssetUUIDs mutableCopy];
     [v25 unionOrderedSet:v5->_placeholderAssetUUIDs];
-    v43 = [(NSMutableOrderedSet *)v13->_lowResThumbAssetUUIDs mutableCopy];
+    v43 = [(NSMutableOrderedSet *)selfCopy->_lowResThumbAssetUUIDs mutableCopy];
     [v43 unionOrderedSet:v5->_lowResThumbAssetUUIDs];
     v26 = [MEMORY[0x1E695DFA8] set];
     v27 = v26;
-    if (v13->_senderNames)
+    if (selfCopy->_senderNames)
     {
       [v26 unionSet:?];
     }
@@ -1192,17 +1192,17 @@ LABEL_50:
     }
 
     v44 = v24;
-    if (v13->_forMultipleAsset || v5->_forMultipleAsset)
+    if (selfCopy->_forMultipleAsset || v5->_forMultipleAsset)
     {
       v28 = 1;
     }
 
     else
     {
-      v28 = ![(NSString *)v13->_mainAssetUUID isEqualToString:v5->_mainAssetUUID];
+      v28 = ![(NSString *)selfCopy->_mainAssetUUID isEqualToString:v5->_mainAssetUUID];
     }
 
-    if (v13->_isMixedType)
+    if (selfCopy->_isMixedType)
     {
       isMixedType = 1;
     }
@@ -1212,11 +1212,11 @@ LABEL_50:
       isMixedType = v5->_isMixedType;
       if ((isMixedType & 1) == 0 && ((v28 ^ 1) & 1) == 0)
       {
-        isMixedType = v13->_mainAssetIsVideo != v5->_mainAssetIsVideo;
+        isMixedType = selfCopy->_mainAssetIsVideo != v5->_mainAssetIsVideo;
       }
     }
 
-    v30 = v13->_allMultipleAssetIsMine && v5->_allMultipleAssetIsMine;
+    v30 = selfCopy->_allMultipleAssetIsMine && v5->_allMultipleAssetIsMine;
     v31 = self->_notificationType;
     if (v31 == 5)
     {
@@ -1226,8 +1226,8 @@ LABEL_50:
       LOBYTE(v40) = v28;
       v33 = v43;
       v34 = v44;
-      LOBYTE(v39) = v9->_mainAssetIsVideo;
-      v35 = [PLNotification _initWithLikesCount:v36 commentDate:"_initWithLikesCount:commentDate:firstCommentGUID:toAssetWithUUID:photosBatchID:mainAssetIsMine:mainAssetIsVideo:inAlbumWithTitle:albumUUID:albumCloudGUID:assetUUIDs:placeholderAssetUUIDs:lowResThumbAssetUUIDs:senderNames:forMultipleAsset:allMultipleAssetIsMine:isMixedType:" firstCommentGUID:commentCount + v42 toAssetWithUUID:v9->_commentDate photosBatchID:v9->_firstCommentGUID mainAssetIsMine:v9->_mainAssetUUID mainAssetIsVideo:v9->_photosBatchID inAlbumWithTitle:v9->_mainAssetIsMine albumUUID:v39 albumCloudGUID:v9->_albumTitle assetUUIDs:v9->_albumUUID placeholderAssetUUIDs:v9->_albumCloudGUID lowResThumbAssetUUIDs:v44 senderNames:v25 forMultipleAsset:v43 allMultipleAssetIsMine:v27 isMixedType:v40];
+      LOBYTE(v39) = selfCopy3->_mainAssetIsVideo;
+      v35 = [PLNotification _initWithLikesCount:v36 commentDate:"_initWithLikesCount:commentDate:firstCommentGUID:toAssetWithUUID:photosBatchID:mainAssetIsMine:mainAssetIsVideo:inAlbumWithTitle:albumUUID:albumCloudGUID:assetUUIDs:placeholderAssetUUIDs:lowResThumbAssetUUIDs:senderNames:forMultipleAsset:allMultipleAssetIsMine:isMixedType:" firstCommentGUID:commentCount + v42 toAssetWithUUID:selfCopy3->_commentDate photosBatchID:selfCopy3->_firstCommentGUID mainAssetIsMine:selfCopy3->_mainAssetUUID mainAssetIsVideo:selfCopy3->_photosBatchID inAlbumWithTitle:selfCopy3->_mainAssetIsMine albumUUID:v39 albumCloudGUID:selfCopy3->_albumTitle assetUUIDs:selfCopy3->_albumUUID placeholderAssetUUIDs:selfCopy3->_albumCloudGUID lowResThumbAssetUUIDs:v44 senderNames:v25 forMultipleAsset:v43 allMultipleAssetIsMine:v27 isMixedType:v40];
     }
 
     else
@@ -1243,27 +1243,27 @@ LABEL_50:
       v32 = [PLNotification alloc];
       v33 = v43;
       v34 = v44;
-      LOBYTE(v39) = v9->_mainAssetIsVideo;
-      v35 = [(PLNotification *)v32 _initWithCommentsCount:commentCount + v42 commentDate:v9->_commentDate firstCommentGUID:v9->_firstCommentGUID toAssetWithUUID:v9->_mainAssetUUID photosBatchID:v9->_photosBatchID mainAssetIsMine:v9->_mainAssetIsMine mainAssetIsVideo:v39 inAlbumWithTitle:v9->_albumTitle albumUUID:v9->_albumUUID albumCloudGUID:v9->_albumCloudGUID assetUUIDs:v44 placeholderAssetUUIDs:v25 lowResThumbAssetUUIDs:v43];
+      LOBYTE(v39) = selfCopy3->_mainAssetIsVideo;
+      v35 = [(PLNotification *)v32 _initWithCommentsCount:commentCount + v42 commentDate:selfCopy3->_commentDate firstCommentGUID:selfCopy3->_firstCommentGUID toAssetWithUUID:selfCopy3->_mainAssetUUID photosBatchID:selfCopy3->_photosBatchID mainAssetIsMine:selfCopy3->_mainAssetIsMine mainAssetIsVideo:v39 inAlbumWithTitle:selfCopy3->_albumTitle albumUUID:selfCopy3->_albumUUID albumCloudGUID:selfCopy3->_albumCloudGUID assetUUIDs:v44 placeholderAssetUUIDs:v25 lowResThumbAssetUUIDs:v43];
     }
 
     v18 = v35;
 LABEL_58:
-    [v18 setOriginalDate:v16];
-    v37 = v9->_suppressAlert || v5->_suppressAlert;
+    [v18 setOriginalDate:thumbnailImageData2];
+    v37 = selfCopy3->_suppressAlert || v5->_suppressAlert;
     [v18 setSuppressAlert:v37 & 1];
-    v38 = [(PLNotification *)v5 thumbnailImageData];
-    [v18 setThumbnailImageData:v38];
+    thumbnailImageData = [(PLNotification *)v5 thumbnailImageData];
+    [v18 setThumbnailImageData:thumbnailImageData];
 
     goto LABEL_62;
   }
 
-  if (v6 != notificationType)
+  if (notificationType != notificationType)
   {
-    if (v6 == 4 && v5->_commentIsCaption)
+    if (notificationType == 4 && v5->_commentIsCaption)
     {
-      v11 = self;
-      v9 = v5;
+      selfCopy2 = self;
+      selfCopy3 = v5;
       goto LABEL_23;
     }
 
@@ -1272,21 +1272,21 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v9 = self;
+  selfCopy3 = self;
   v10 = v5;
-  v11 = v10;
-  if (v6 != 4 && v10->_containsBatchFirstKnownAsset)
+  selfCopy2 = v10;
+  if (notificationType != 4 && v10->_containsBatchFirstKnownAsset)
   {
 
 LABEL_23:
-    v17 = v11;
-    v11 = v9;
-    v9 = v17;
+    v17 = selfCopy2;
+    selfCopy2 = selfCopy3;
+    selfCopy3 = v17;
   }
 
-  v18 = [[PLNotification alloc] _initWithPhotosAddedNotification:v9 mergedWithNotification:v11];
-  v19 = v9->_originalDate;
-  v20 = v11->_originalDate;
+  v18 = [[PLNotification alloc] _initWithPhotosAddedNotification:selfCopy3 mergedWithNotification:selfCopy2];
+  v19 = selfCopy3->_originalDate;
+  v20 = selfCopy2->_originalDate;
   if (v19)
   {
     v21 = [(NSDate *)v19 earlierDate:v20];
@@ -1298,10 +1298,10 @@ LABEL_23:
     [v18 setOriginalDate:v20];
   }
 
-  v23 = v9->_suppressAlert || v11->_suppressAlert;
+  v23 = selfCopy3->_suppressAlert || selfCopy2->_suppressAlert;
   [v18 setSuppressAlert:v23 & 1];
-  v16 = [(PLNotification *)v5 thumbnailImageData];
-  [v18 setThumbnailImageData:v16];
+  thumbnailImageData2 = [(PLNotification *)v5 thumbnailImageData];
+  [v18 setThumbnailImageData:thumbnailImageData2];
 LABEL_62:
 
 LABEL_27:
@@ -1309,56 +1309,56 @@ LABEL_27:
   return v18;
 }
 
-- (id)initForSharedLibraryExitInitatedByOwnerWithType:(signed __int16)a3 retentionPolicy:(int64_t)a4 ownerName:(id)a5
+- (id)initForSharedLibraryExitInitatedByOwnerWithType:(signed __int16)type retentionPolicy:(int64_t)policy ownerName:(id)name
 {
-  v6 = a3;
-  v8 = a5;
-  if (v6 >= 2)
+  typeCopy = type;
+  nameCopy = name;
+  if (typeCopy >= 2)
   {
     v10 = [(PLNotification *)self _initWithType:16];
     v11 = v10;
     if (v10)
     {
-      *(v10 + 132) = v6;
-      v10[34] = a4;
-      v12 = [v8 copy];
+      *(v10 + 132) = typeCopy;
+      v10[34] = policy;
+      v12 = [nameCopy copy];
       v13 = v11[29];
       v11[29] = v12;
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)initForSharedLibraryParticipantAssetTrashNotificationWithTrashedPhotoCount:(unint64_t)a3 videoCount:(unint64_t)a4 itemCount:(unint64_t)a5
+- (id)initForSharedLibraryParticipantAssetTrashNotificationWithTrashedPhotoCount:(unint64_t)count videoCount:(unint64_t)videoCount itemCount:(unint64_t)itemCount
 {
   result = [(PLNotification *)self _initWithType:14];
   if (result)
   {
-    *(result + 30) = a3;
-    *(result + 31) = a4;
-    *(result + 32) = a5;
+    *(result + 30) = count;
+    *(result + 31) = videoCount;
+    *(result + 32) = itemCount;
   }
 
   return result;
 }
 
-- (id)initForSharedLibraryScopeAcceptWithLibraryScopeIdentifier:(id)a3 participantName:(id)a4
+- (id)initForSharedLibraryScopeAcceptWithLibraryScopeIdentifier:(id)identifier participantName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  nameCopy = name;
+  v9 = nameCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -1366,8 +1366,8 @@ LABEL_27:
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:795 description:{@"Invalid parameter not satisfying: %@", @"scopeIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:795 description:{@"Invalid parameter not satisfying: %@", @"scopeIdentifier"}];
 
     if (v9)
     {
@@ -1375,14 +1375,14 @@ LABEL_27:
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:796 description:{@"Invalid parameter not satisfying: %@", @"participantName"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:796 description:{@"Invalid parameter not satisfying: %@", @"participantName"}];
 
 LABEL_3:
   v10 = [(PLNotification *)self _initWithType:13];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     v12 = v10[28];
     v10[28] = v11;
 
@@ -1394,34 +1394,34 @@ LABEL_3:
   return v10;
 }
 
-- (PLNotification)initWithExpiringMomentShareUUIDs:(id)a3 thumbnailImageData:(id)a4 notificationTitle:(id)a5 notificationSubtitle:(id)a6
+- (PLNotification)initWithExpiringMomentShareUUIDs:(id)ds thumbnailImageData:(id)data notificationTitle:(id)title notificationSubtitle:(id)subtitle
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (![v12 count])
+  dsCopy = ds;
+  dataCopy = data;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  if (![dsCopy count])
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:763 description:{@"Invalid parameter not satisfying: %@", @"UUIDs.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:763 description:{@"Invalid parameter not satisfying: %@", @"UUIDs.count"}];
   }
 
   v16 = [(PLNotification *)self _initWithType:9];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(v16 + 26, a3);
-    v18 = [v12 firstObject];
-    v19 = [v18 copy];
+    objc_storeStrong(v16 + 26, ds);
+    firstObject = [dsCopy firstObject];
+    v19 = [firstObject copy];
     keyMomentShareUUID = v17->_keyMomentShareUUID;
     v17->_keyMomentShareUUID = v19;
 
-    objc_storeStrong(&v17->_thumbnailImageData, a4);
-    v21 = [v14 copy];
+    objc_storeStrong(&v17->_thumbnailImageData, data);
+    v21 = [titleCopy copy];
     notificationTitle = v17->_notificationTitle;
     v17->_notificationTitle = v21;
 
-    v23 = [v15 copy];
+    v23 = [subtitleCopy copy];
     notificationSubtitle = v17->_notificationSubtitle;
     v17->_notificationSubtitle = v23;
   }
@@ -1429,52 +1429,52 @@ LABEL_3:
   return v17;
 }
 
-- (PLNotification)initWithExpiringMomentShares:(id)a3
+- (PLNotification)initWithExpiringMomentShares:(id)shares
 {
-  v5 = a3;
-  v6 = [v5 firstObject];
-  if (!v6)
+  sharesCopy = shares;
+  firstObject = [sharesCopy firstObject];
+  if (!firstObject)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:741 description:{@"Invalid parameter not satisfying: %@", @"firstMomentShare"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:741 description:{@"Invalid parameter not satisfying: %@", @"firstMomentShare"}];
   }
 
-  v7 = [v6 thumbnailImageData];
+  thumbnailImageData = [firstObject thumbnailImageData];
 
-  if (!v7)
+  if (!thumbnailImageData)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:742 description:{@"Invalid parameter not satisfying: %@", @"firstMomentShare.thumbnailImageData"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:742 description:{@"Invalid parameter not satisfying: %@", @"firstMomentShare.thumbnailImageData"}];
   }
 
   v8 = [(PLNotification *)self _initWithType:9];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(sharesCopy, "count")}];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __47__PLNotification_initWithExpiringMomentShares___block_invoke;
     v24[3] = &unk_1E7572220;
     v10 = v9;
     v25 = v10;
-    [v5 enumerateObjectsUsingBlock:v24];
+    [sharesCopy enumerateObjectsUsingBlock:v24];
     momentShareUUIDs = v8->_momentShareUUIDs;
     v8->_momentShareUUIDs = v10;
     v12 = v10;
 
-    v13 = [v6 shareURL];
-    v14 = [v13 absoluteString];
+    shareURL = [firstObject shareURL];
+    absoluteString = [shareURL absoluteString];
     destinationURLString = v8->_destinationURLString;
-    v8->_destinationURLString = v14;
+    v8->_destinationURLString = absoluteString;
 
-    v16 = [v6 uuid];
-    v17 = [v16 copy];
+    uuid = [firstObject uuid];
+    v17 = [uuid copy];
     keyMomentShareUUID = v8->_keyMomentShareUUID;
     v8->_keyMomentShareUUID = v17;
 
-    v19 = [v6 thumbnailImageData];
+    thumbnailImageData2 = [firstObject thumbnailImageData];
     thumbnailImageData = v8->_thumbnailImageData;
-    v8->_thumbnailImageData = v19;
+    v8->_thumbnailImageData = thumbnailImageData2;
   }
 
   return v8;
@@ -1487,34 +1487,34 @@ void __47__PLNotification_initWithExpiringMomentShares___block_invoke(uint64_t a
   [v2 addObject:v3];
 }
 
-- (id)initCMMInvitationReadyToViewWithMomentShare:(id)a3
+- (id)initCMMInvitationReadyToViewWithMomentShare:(id)share
 {
-  v5 = a3;
-  if (!v5)
+  shareCopy = share;
+  if (!shareCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:715 description:{@"Invalid parameter not satisfying: %@", @"momentShare"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:715 description:{@"Invalid parameter not satisfying: %@", @"momentShare"}];
   }
 
-  v6 = [v5 previewData];
-  v7 = [objc_alloc(MEMORY[0x1E6994B28]) initWithData:v6];
-  v8 = [v7 previewImageDatas];
-  v9 = [v8 firstObject];
+  previewData = [shareCopy previewData];
+  v7 = [objc_alloc(MEMORY[0x1E6994B28]) initWithData:previewData];
+  previewImageDatas = [v7 previewImageDatas];
+  firstObject = [previewImageDatas firstObject];
 
-  if (!v9)
+  if (!firstObject)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:719 description:{@"Invalid parameter not satisfying: %@", @"thumbnailImageData"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:719 description:{@"Invalid parameter not satisfying: %@", @"thumbnailImageData"}];
   }
 
-  v10 = [v5 owner];
-  v11 = [v10 nameComponents];
+  owner = [shareCopy owner];
+  nameComponents = [owner nameComponents];
 
-  if (v11)
+  if (nameComponents)
   {
     v12 = objc_alloc_init(MEMORY[0x1E696ADF8]);
     [v12 setStyle:1];
-    v13 = [v12 stringFromPersonNameComponents:v11];
+    v13 = [v12 stringFromPersonNameComponents:nameComponents];
   }
 
   else
@@ -1525,64 +1525,64 @@ void __47__PLNotification_initWithExpiringMomentShares___block_invoke(uint64_t a
   v14 = [(PLNotification *)self _initWithType:10];
   if (v14)
   {
-    v15 = [v5 shareURL];
-    v16 = [v15 absoluteString];
+    shareURL = [shareCopy shareURL];
+    absoluteString = [shareURL absoluteString];
     v17 = *(v14 + 2);
-    *(v14 + 2) = v16;
+    *(v14 + 2) = absoluteString;
 
-    v18 = [v5 uuid];
-    v19 = [v18 copy];
+    uuid = [shareCopy uuid];
+    v19 = [uuid copy];
     v20 = *(v14 + 25);
     *(v14 + 25) = v19;
 
-    objc_storeStrong(v14 + 41, v9);
+    objc_storeStrong(v14 + 41, firstObject);
     objc_storeStrong(v14 + 27, v13);
   }
 
   return v14;
 }
 
-- (id)initCMMInvitationWithMomentShare:(id)a3
+- (id)initCMMInvitationWithMomentShare:(id)share
 {
-  v5 = a3;
-  if (!v5)
+  shareCopy = share;
+  if (!shareCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:702 description:{@"Invalid parameter not satisfying: %@", @"momentShare"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:702 description:{@"Invalid parameter not satisfying: %@", @"momentShare"}];
   }
 
   v6 = [(PLNotification *)self _initWithType:8];
   if (v6)
   {
-    v7 = [v5 shareURL];
-    v8 = [v7 absoluteString];
+    shareURL = [shareCopy shareURL];
+    absoluteString = [shareURL absoluteString];
     v9 = v6[2];
-    v6[2] = v8;
+    v6[2] = absoluteString;
 
-    v10 = [v5 uuid];
-    v11 = [v10 copy];
+    uuid = [shareCopy uuid];
+    v11 = [uuid copy];
     v12 = v6[25];
     v6[25] = v11;
 
-    v13 = [v5 owner];
-    v14 = [v13 emailAddress];
+    owner = [shareCopy owner];
+    emailAddress = [owner emailAddress];
     v15 = v6[4];
-    v6[4] = v14;
+    v6[4] = emailAddress;
   }
 
   return v6;
 }
 
-- (PLNotification)initWithInterestingMemoryNotificationWithMemoryUUID:(id)a3 keyAssetUUID:(id)a4 notificationTitle:(id)a5 notificationSubtitle:(id)a6 photoLibraryURLString:(id)a7
+- (PLNotification)initWithInterestingMemoryNotificationWithMemoryUUID:(id)d keyAssetUUID:(id)iD notificationTitle:(id)title notificationSubtitle:(id)subtitle photoLibraryURLString:(id)string
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (v14)
+  dCopy = d;
+  iDCopy = iD;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  stringCopy = string;
+  if (dCopy)
   {
-    if (v16)
+    if (titleCopy)
     {
       goto LABEL_3;
     }
@@ -1590,22 +1590,22 @@ void __47__PLNotification_initWithExpiringMomentShares___block_invoke(uint64_t a
 
   else
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:682 description:{@"Invalid parameter not satisfying: %@", @"memoryUUID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:682 description:{@"Invalid parameter not satisfying: %@", @"memoryUUID"}];
 
-    if (v16)
+    if (titleCopy)
     {
 LABEL_3:
-      if (v17)
+      if (subtitleCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_12:
-      v32 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v32 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:684 description:{@"Invalid parameter not satisfying: %@", @"notificationSubtitle"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:684 description:{@"Invalid parameter not satisfying: %@", @"notificationSubtitle"}];
 
-      if (v18)
+      if (stringCopy)
       {
         goto LABEL_5;
       }
@@ -1614,48 +1614,48 @@ LABEL_12:
     }
   }
 
-  v31 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v31 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:683 description:{@"Invalid parameter not satisfying: %@", @"notificationTitle"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:683 description:{@"Invalid parameter not satisfying: %@", @"notificationTitle"}];
 
-  if (!v17)
+  if (!subtitleCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_4:
-  if (v18)
+  if (stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_13:
-  v33 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v33 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:685 description:{@"Invalid parameter not satisfying: %@", @"photoLibraryURLString"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:685 description:{@"Invalid parameter not satisfying: %@", @"photoLibraryURLString"}];
 
 LABEL_5:
   v19 = [(PLNotification *)self _initWithType:6];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(v19 + 22, a3);
-    if (v15)
+    objc_storeStrong(v19 + 22, d);
+    if (iDCopy)
     {
-      v21 = [v15 copy];
+      v21 = [iDCopy copy];
       mainAssetUUID = v20->_mainAssetUUID;
       v20->_mainAssetUUID = v21;
 
       [(NSMutableOrderedSet *)v20->_lowResThumbAssetUUIDs addObject:v20->_mainAssetUUID];
     }
 
-    v23 = [v16 copy];
+    v23 = [titleCopy copy];
     notificationTitle = v20->_notificationTitle;
     v20->_notificationTitle = v23;
 
-    v25 = [v17 copy];
+    v25 = [subtitleCopy copy];
     notificationSubtitle = v20->_notificationSubtitle;
     v20->_notificationSubtitle = v25;
 
-    v27 = [v18 copy];
+    v27 = [stringCopy copy];
     photoLibraryURLString = v20->_photoLibraryURLString;
     v20->_photoLibraryURLString = v27;
   }
@@ -1663,81 +1663,81 @@ LABEL_5:
   return v20;
 }
 
-- (id)_initWithLikesCount:(int64_t)a3 commentDate:(id)a4 firstCommentGUID:(id)a5 toAssetWithUUID:(id)a6 photosBatchID:(id)a7 mainAssetIsMine:(BOOL)a8 mainAssetIsVideo:(BOOL)a9 inAlbumWithTitle:(id)a10 albumUUID:(id)a11 albumCloudGUID:(id)a12 assetUUIDs:(id)a13 placeholderAssetUUIDs:(id)a14 lowResThumbAssetUUIDs:(id)a15 senderNames:(id)a16 forMultipleAsset:(BOOL)a17 allMultipleAssetIsMine:(BOOL)a18 isMixedType:(BOOL)a19
+- (id)_initWithLikesCount:(int64_t)count commentDate:(id)date firstCommentGUID:(id)d toAssetWithUUID:(id)iD photosBatchID:(id)batchID mainAssetIsMine:(BOOL)mine mainAssetIsVideo:(BOOL)video inAlbumWithTitle:(id)self0 albumUUID:(id)self1 albumCloudGUID:(id)self2 assetUUIDs:(id)self3 placeholderAssetUUIDs:(id)self4 lowResThumbAssetUUIDs:(id)self5 senderNames:(id)self6 forMultipleAsset:(BOOL)self7 allMultipleAssetIsMine:(BOOL)self8 isMixedType:(BOOL)self9
 {
-  v43 = a4;
-  obj = a5;
-  v22 = a5;
-  v23 = a7;
-  v41 = v22;
-  v40 = a6;
-  v39 = a7;
-  v44 = a10;
-  v42 = a11;
-  v38 = a12;
-  v24 = a13;
-  v25 = a14;
-  v37 = a15;
-  v26 = a16;
+  dateCopy = date;
+  obj = d;
+  dCopy = d;
+  batchIDCopy = batchID;
+  v41 = dCopy;
+  iDCopy = iD;
+  batchIDCopy2 = batchID;
+  titleCopy = title;
+  uIDCopy = uID;
+  gUIDCopy = gUID;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  uIDsCopy = uIDs;
+  namesCopy = names;
   v27 = [(PLNotification *)self _initWithType:5];
   v28 = v27;
   if (v27)
   {
-    objc_storeStrong(v27 + 7, a6);
-    objc_storeStrong(v28 + 6, v23);
-    *(v28 + 64) = a8;
-    *(v28 + 65) = a9;
+    objc_storeStrong(v27 + 7, iD);
+    objc_storeStrong(v28 + 6, batchIDCopy);
+    *(v28 + 64) = mine;
+    *(v28 + 65) = video;
     objc_storeStrong(v28 + 15, obj);
-    objc_storeStrong(v28 + 16, a4);
-    objc_storeStrong(v28 + 5, a10);
-    v28[18] = a3;
+    objc_storeStrong(v28 + 16, date);
+    objc_storeStrong(v28 + 5, title);
+    v28[18] = count;
     v29 = v28[3];
     v28[3] = 0;
 
-    objc_storeStrong(v28 + 20, a16);
+    objc_storeStrong(v28 + 20, names);
     v30 = v28[4];
     v28[4] = 0;
 
-    objc_storeStrong(v28 + 9, a13);
-    v28[10] = [v24 count];
-    objc_storeStrong(v28 + 35, a11);
-    objc_storeStrong(v28 + 36, a12);
-    objc_storeStrong(v28 + 11, a14);
-    objc_storeStrong(v28 + 12, a15);
-    *(v28 + 168) = a17;
-    *(v28 + 169) = a18;
-    *(v28 + 170) = a19;
+    objc_storeStrong(v28 + 9, ds);
+    v28[10] = [dsCopy count];
+    objc_storeStrong(v28 + 35, uID);
+    objc_storeStrong(v28 + 36, gUID);
+    objc_storeStrong(v28 + 11, iDs);
+    objc_storeStrong(v28 + 12, uIDs);
+    *(v28 + 168) = asset;
+    *(v28 + 169) = isMine;
+    *(v28 + 170) = type;
   }
 
   return v28;
 }
 
-- (id)_initWithCommentsCount:(int64_t)a3 commentDate:(id)a4 firstCommentGUID:(id)a5 toAssetWithUUID:(id)a6 photosBatchID:(id)a7 mainAssetIsMine:(BOOL)a8 mainAssetIsVideo:(BOOL)a9 inAlbumWithTitle:(id)a10 albumUUID:(id)a11 albumCloudGUID:(id)a12 assetUUIDs:(id)a13 placeholderAssetUUIDs:(id)a14 lowResThumbAssetUUIDs:(id)a15
+- (id)_initWithCommentsCount:(int64_t)count commentDate:(id)date firstCommentGUID:(id)d toAssetWithUUID:(id)iD photosBatchID:(id)batchID mainAssetIsMine:(BOOL)mine mainAssetIsVideo:(BOOL)video inAlbumWithTitle:(id)self0 albumUUID:(id)self1 albumCloudGUID:(id)self2 assetUUIDs:(id)self3 placeholderAssetUUIDs:(id)self4 lowResThumbAssetUUIDs:(id)self5
 {
-  v38 = a4;
-  v36 = a5;
-  v34 = a6;
-  v33 = a7;
-  v37 = a10;
-  v35 = a11;
-  v19 = a12;
-  v20 = a13;
-  v21 = a14;
-  v32 = a15;
+  dateCopy = date;
+  dCopy = d;
+  iDCopy = iD;
+  batchIDCopy = batchID;
+  titleCopy = title;
+  uIDCopy = uID;
+  gUIDCopy = gUID;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  uIDsCopy = uIDs;
   v22 = [(PLNotification *)self _initWithType:4];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(v22 + 7, a6);
-    objc_storeStrong(v23 + 6, a7);
-    *(v23 + 64) = a8;
-    *(v23 + 65) = a9;
-    objc_storeStrong(v23 + 15, a5);
-    objc_storeStrong(v23 + 16, a4);
-    objc_storeStrong(v23 + 5, a10);
+    objc_storeStrong(v22 + 7, iD);
+    objc_storeStrong(v23 + 6, batchID);
+    *(v23 + 64) = mine;
+    *(v23 + 65) = video;
+    objc_storeStrong(v23 + 15, d);
+    objc_storeStrong(v23 + 16, date);
+    objc_storeStrong(v23 + 5, title);
     v24 = v23[17];
     v23[17] = 0;
-    v23[18] = a3;
+    v23[18] = count;
 
     v25 = v23[3];
     v23[3] = 0;
@@ -1748,46 +1748,46 @@ LABEL_5:
     v27 = v23[4];
     v23[4] = 0;
 
-    objc_storeStrong(v23 + 9, a13);
-    v23[10] = [v20 count];
-    objc_storeStrong(v23 + 35, a11);
-    objc_storeStrong(v23 + 36, a12);
-    objc_storeStrong(v23 + 11, a14);
-    objc_storeStrong(v23 + 12, a15);
+    objc_storeStrong(v23 + 9, ds);
+    v23[10] = [dsCopy count];
+    objc_storeStrong(v23 + 35, uID);
+    objc_storeStrong(v23 + 36, gUID);
+    objc_storeStrong(v23 + 11, iDs);
+    objc_storeStrong(v23 + 12, uIDs);
   }
 
   return v23;
 }
 
-- (PLNotification)initWithLikeAdded:(id)a3
+- (PLNotification)initWithLikeAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v5 = [(PLNotification *)self _initWithType:5];
   if (v5)
   {
-    v6 = [v4 asset];
-    v7 = [v6 uuid];
-    v8 = [v7 copy];
+    asset = [addedCopy asset];
+    uuid = [asset uuid];
+    v8 = [uuid copy];
     mainAssetUUID = v5->_mainAssetUUID;
     v5->_mainAssetUUID = v8;
 
-    v10 = [v6 cloudBatchID];
-    v11 = [v10 copy];
+    cloudBatchID = [asset cloudBatchID];
+    v11 = [cloudBatchID copy];
     photosBatchID = v5->_photosBatchID;
     v5->_photosBatchID = v11;
 
-    v13 = [v4 cloudGUID];
-    v14 = [v13 copy];
+    cloudGUID = [addedCopy cloudGUID];
+    v14 = [cloudGUID copy];
     firstCommentGUID = v5->_firstCommentGUID;
     v5->_firstCommentGUID = v14;
 
-    v16 = [v4 commentDate];
-    v17 = [v16 copy];
+    commentDate = [addedCopy commentDate];
+    v17 = [commentDate copy];
     commentDate = v5->_commentDate;
     v5->_commentDate = v17;
 
-    v19 = [v4 commenterDisplayName];
-    v20 = [v19 copy];
+    commenterDisplayName = [addedCopy commenterDisplayName];
+    v20 = [commenterDisplayName copy];
     senderName = v5->_senderName;
     v5->_senderName = v20;
 
@@ -1800,34 +1800,34 @@ LABEL_5:
       [(NSMutableSet *)v5->_senderNames addObject:?];
     }
 
-    v24 = [v4 commenterEmail];
-    v25 = [v24 copy];
+    commenterEmail = [addedCopy commenterEmail];
+    v25 = [commenterEmail copy];
     senderEmailAddress = v5->_senderEmailAddress;
     v5->_senderEmailAddress = v25;
 
     v5->_commentCount = 1;
-    v27 = [v6 collectionShare];
-    v28 = [v27 title];
-    v29 = [v28 copy];
+    collectionShare = [asset collectionShare];
+    title = [collectionShare title];
+    v29 = [title copy];
     albumTitle = v5->_albumTitle;
     v5->_albumTitle = v29;
 
-    v31 = [v6 collectionShare];
-    v32 = [v31 uuid];
-    v33 = [v32 copy];
+    collectionShare2 = [asset collectionShare];
+    uuid2 = [collectionShare2 uuid];
+    v33 = [uuid2 copy];
     albumUUID = v5->_albumUUID;
     v5->_albumUUID = v33;
 
-    v35 = [v6 collectionShare];
-    v36 = [v35 scopeIdentifier];
-    v37 = [v36 copy];
+    collectionShare3 = [asset collectionShare];
+    scopeIdentifier = [collectionShare3 scopeIdentifier];
+    v37 = [scopeIdentifier copy];
     albumCloudGUID = v5->_albumCloudGUID;
     v5->_albumCloudGUID = v37;
 
-    v39 = [v6 cloudIsMyAsset];
-    v5->_mainAssetIsMine = v39;
-    v5->_allMultipleAssetIsMine = v39;
-    v5->_mainAssetIsVideo = [v6 isVideo];
+    cloudIsMyAsset = [asset cloudIsMyAsset];
+    v5->_mainAssetIsMine = cloudIsMyAsset;
+    v5->_allMultipleAssetIsMine = cloudIsMyAsset;
+    v5->_mainAssetIsVideo = [asset isVideo];
     v40 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     assetUUIDs = v5->_assetUUIDs;
     v5->_assetUUIDs = v40;
@@ -1843,10 +1843,10 @@ LABEL_5:
 
     [(NSMutableSet *)v5->_assetUUIDs addObject:v5->_mainAssetUUID];
     v5->_assetCount = 1;
-    v47 = [v6 cloudSharedPlaceholderKind];
-    if (v47 != 2)
+    cloudSharedPlaceholderKind = [asset cloudSharedPlaceholderKind];
+    if (cloudSharedPlaceholderKind != 2)
     {
-      if (v47 != 3)
+      if (cloudSharedPlaceholderKind != 3)
       {
 LABEL_8:
 
@@ -1865,35 +1865,35 @@ LABEL_9:
   return v5;
 }
 
-- (PLNotification)initWithCommentAdded:(id)a3
+- (PLNotification)initWithCommentAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v5 = [(PLNotification *)self _initWithType:4];
   if (v5)
   {
-    v6 = [v4 asset];
-    v7 = [v6 uuid];
-    v8 = [v7 copy];
+    asset = [addedCopy asset];
+    uuid = [asset uuid];
+    v8 = [uuid copy];
     mainAssetUUID = v5->_mainAssetUUID;
     v5->_mainAssetUUID = v8;
 
-    v10 = [v6 cloudBatchID];
-    v11 = [v10 copy];
+    cloudBatchID = [asset cloudBatchID];
+    v11 = [cloudBatchID copy];
     photosBatchID = v5->_photosBatchID;
     v5->_photosBatchID = v11;
 
-    v13 = [v4 cloudGUID];
-    v14 = [v13 copy];
+    cloudGUID = [addedCopy cloudGUID];
+    v14 = [cloudGUID copy];
     firstCommentGUID = v5->_firstCommentGUID;
     v5->_firstCommentGUID = v14;
 
-    v16 = [v4 commentDate];
-    v17 = [v16 copy];
+    commentDate = [addedCopy commentDate];
+    v17 = [commentDate copy];
     commentDate = v5->_commentDate;
     v5->_commentDate = v17;
 
-    v19 = [v4 commenterDisplayName];
-    v20 = [v19 copy];
+    commenterDisplayName = [addedCopy commenterDisplayName];
+    v20 = [commenterDisplayName copy];
     senderName = v5->_senderName;
     v5->_senderName = v20;
 
@@ -1906,40 +1906,40 @@ LABEL_9:
       [(NSMutableSet *)v5->_senderNames addObject:?];
     }
 
-    v24 = [v4 commenterEmail];
-    v25 = [v24 copy];
+    commenterEmail = [addedCopy commenterEmail];
+    v25 = [commenterEmail copy];
     senderEmailAddress = v5->_senderEmailAddress;
     v5->_senderEmailAddress = v25;
 
-    v27 = [v4 commentText];
-    v28 = [v27 copy];
+    commentText = [addedCopy commentText];
+    v28 = [commentText copy];
     commentText = v5->_commentText;
     v5->_commentText = v28;
 
     v5->_commentCount = 1;
-    v30 = [v4 isCaption];
-    v5->_commentIsCaption = [v30 BOOLValue];
+    isCaption = [addedCopy isCaption];
+    v5->_commentIsCaption = [isCaption BOOLValue];
 
-    v31 = [v6 collectionShare];
-    v32 = [v31 title];
-    v33 = [v32 copy];
+    collectionShare = [asset collectionShare];
+    title = [collectionShare title];
+    v33 = [title copy];
     albumTitle = v5->_albumTitle;
     v5->_albumTitle = v33;
 
-    v35 = [v6 collectionShare];
-    v36 = [v35 uuid];
-    v37 = [v36 copy];
+    collectionShare2 = [asset collectionShare];
+    uuid2 = [collectionShare2 uuid];
+    v37 = [uuid2 copy];
     albumUUID = v5->_albumUUID;
     v5->_albumUUID = v37;
 
-    v39 = [v6 collectionShare];
-    v40 = [v39 scopeIdentifier];
-    v41 = [v40 copy];
+    collectionShare3 = [asset collectionShare];
+    scopeIdentifier = [collectionShare3 scopeIdentifier];
+    v41 = [scopeIdentifier copy];
     albumCloudGUID = v5->_albumCloudGUID;
     v5->_albumCloudGUID = v41;
 
-    v5->_mainAssetIsMine = [v6 cloudIsMyAsset];
-    v5->_mainAssetIsVideo = [v6 isVideo];
+    v5->_mainAssetIsMine = [asset cloudIsMyAsset];
+    v5->_mainAssetIsVideo = [asset isVideo];
     v43 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     assetUUIDs = v5->_assetUUIDs;
     v5->_assetUUIDs = v43;
@@ -1955,10 +1955,10 @@ LABEL_9:
 
     [(NSMutableSet *)v5->_assetUUIDs addObject:v5->_mainAssetUUID];
     v5->_assetCount = 1;
-    v50 = [v6 cloudSharedPlaceholderKind];
-    if (v50 != 2)
+    cloudSharedPlaceholderKind = [asset cloudSharedPlaceholderKind];
+    if (cloudSharedPlaceholderKind != 2)
     {
-      if (v50 != 3)
+      if (cloudSharedPlaceholderKind != 3)
       {
 LABEL_8:
 
@@ -1977,15 +1977,15 @@ LABEL_9:
   return v5;
 }
 
-- (id)_initWithPhotosAddedNotification:(id)a3 mergedWithNotificationDictionary:(id)a4
+- (id)_initWithPhotosAddedNotification:(id)notification mergedWithNotificationDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  dictionaryCopy = dictionary;
   v8 = [(PLNotification *)self _initWithType:3];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 3, v6[3]);
+    objc_storeStrong(v8 + 3, notificationCopy[3]);
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v11 = v9[20];
     v9[20] = v10;
@@ -1995,47 +1995,47 @@ LABEL_9:
       [v9[20] addObject:?];
     }
 
-    objc_storeStrong(v9 + 4, v6[4]);
-    objc_storeStrong(v9 + 5, v6[5]);
-    objc_storeStrong(v9 + 35, v6[35]);
-    objc_storeStrong(v9 + 36, v6[36]);
-    objc_storeStrong(v9 + 7, v6[7]);
-    objc_storeStrong(v9 + 6, v6[6]);
-    *(v9 + 64) = *(v6 + 64);
-    *(v9 + 65) = *(v6 + 65);
-    *(v9 + 66) = *(v6 + 66);
-    v12 = [v6[9] mutableCopy];
+    objc_storeStrong(v9 + 4, notificationCopy[4]);
+    objc_storeStrong(v9 + 5, notificationCopy[5]);
+    objc_storeStrong(v9 + 35, notificationCopy[35]);
+    objc_storeStrong(v9 + 36, notificationCopy[36]);
+    objc_storeStrong(v9 + 7, notificationCopy[7]);
+    objc_storeStrong(v9 + 6, notificationCopy[6]);
+    *(v9 + 64) = *(notificationCopy + 64);
+    *(v9 + 65) = *(notificationCopy + 65);
+    *(v9 + 66) = *(notificationCopy + 66);
+    v12 = [notificationCopy[9] mutableCopy];
     v13 = v9[9];
     v9[9] = v12;
 
-    v14 = v6[10];
-    v15 = [v7 objectForKey:*MEMORY[0x1E69C0198]];
+    v14 = notificationCopy[10];
+    v15 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C0198]];
     v9[10] = &v14[[v15 integerValue]];
 
-    v16 = [v6[11] mutableCopy];
+    v16 = [notificationCopy[11] mutableCopy];
     v17 = v9[11];
     v9[11] = v16;
 
-    v18 = [v6[12] mutableCopy];
+    v18 = [notificationCopy[12] mutableCopy];
     v19 = v9[12];
     v9[12] = v18;
 
-    v20 = v6;
+    v20 = notificationCopy;
     objc_storeStrong(v9 + 15, v20[15]);
     objc_storeStrong(v9 + 16, v20[16]);
     objc_storeStrong(v9 + 17, v20[17]);
     *(v9 + 152) = *(v20 + 152);
-    v21 = [v7 objectForKey:*MEMORY[0x1E69C0248]];
-    v22 = [v21 integerValue];
+    v21 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C0248]];
+    integerValue = [v21 integerValue];
 
-    v23 = [v7 objectForKey:*MEMORY[0x1E69C01D0]];
-    v24 = [v23 BOOLValue];
+    v23 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C01D0]];
+    bOOLValue = [v23 BOOLValue];
 
-    if (v22 == 4 || v22 == 3 && v24)
+    if (integerValue == 4 || integerValue == 3 && bOOLValue)
     {
-      v25 = [v7 objectForKey:*MEMORY[0x1E69C01B8]];
-      v26 = [v7 objectForKey:*MEMORY[0x1E69C01C8]];
-      v27 = [v7 objectForKey:*MEMORY[0x1E69C01E0]];
+      v25 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C01B8]];
+      v26 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C01C8]];
+      v27 = [dictionaryCopy objectForKey:*MEMORY[0x1E69C01E0]];
       v28 = v9[15];
       v9[15] = v25;
       v29 = v25;
@@ -2047,22 +2047,22 @@ LABEL_9:
       v32 = v9[17];
       v9[17] = v27;
 
-      *(v9 + 152) = v24;
+      *(v9 + 152) = bOOLValue;
     }
   }
 
   return v9;
 }
 
-- (id)_initWithPhotosAddedNotification:(id)a3 mergedWithNotification:(id)a4
+- (id)_initWithPhotosAddedNotification:(id)notification mergedWithNotification:(id)withNotification
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  withNotificationCopy = withNotification;
   v8 = [(PLNotification *)self _initWithType:3];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 3, *(v6 + 3));
+    objc_storeStrong(v8 + 3, *(notificationCopy + 3));
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v11 = v9[20];
     v9[20] = v10;
@@ -2072,52 +2072,52 @@ LABEL_9:
       [v9[20] addObject:?];
     }
 
-    objc_storeStrong(v9 + 4, *(v6 + 4));
-    objc_storeStrong(v9 + 5, *(v6 + 5));
-    objc_storeStrong(v9 + 35, *(v6 + 35));
-    objc_storeStrong(v9 + 36, *(v6 + 36));
-    objc_storeStrong(v9 + 7, *(v6 + 7));
-    objc_storeStrong(v9 + 6, *(v6 + 6));
-    *(v9 + 64) = *(v6 + 64);
-    *(v9 + 65) = *(v6 + 65);
-    *(v9 + 66) = *(v6 + 66);
-    v12 = v7[41];
+    objc_storeStrong(v9 + 4, *(notificationCopy + 4));
+    objc_storeStrong(v9 + 5, *(notificationCopy + 5));
+    objc_storeStrong(v9 + 35, *(notificationCopy + 35));
+    objc_storeStrong(v9 + 36, *(notificationCopy + 36));
+    objc_storeStrong(v9 + 7, *(notificationCopy + 7));
+    objc_storeStrong(v9 + 6, *(notificationCopy + 6));
+    *(v9 + 64) = *(notificationCopy + 64);
+    *(v9 + 65) = *(notificationCopy + 65);
+    *(v9 + 66) = *(notificationCopy + 66);
+    v12 = withNotificationCopy[41];
     if (v12)
     {
       objc_storeStrong(v9 + 41, v12);
     }
 
-    v13 = [*(v6 + 9) mutableCopy];
+    v13 = [*(notificationCopy + 9) mutableCopy];
     v14 = v9[9];
     v9[9] = v13;
 
-    [v9[9] unionSet:v7[9]];
-    v15 = [v6 notificationType];
-    if (v15 == [v7 notificationType])
+    [v9[9] unionSet:withNotificationCopy[9]];
+    notificationType = [notificationCopy notificationType];
+    if (notificationType == [withNotificationCopy notificationType])
     {
       v16 = [v9[9] count];
     }
 
     else
     {
-      v16 = *(v6 + 10);
+      v16 = *(notificationCopy + 10);
     }
 
     v9[10] = v16;
-    v17 = [*(v6 + 11) mutableCopy];
+    v17 = [*(notificationCopy + 11) mutableCopy];
     v18 = v9[11];
     v9[11] = v17;
 
-    [v9[11] unionOrderedSet:v7[11]];
-    v19 = [*(v6 + 12) mutableCopy];
+    [v9[11] unionOrderedSet:withNotificationCopy[11]];
+    v19 = [*(notificationCopy + 12) mutableCopy];
     v20 = v9[12];
     v9[12] = v19;
 
-    [v9[12] unionOrderedSet:v7[12]];
-    v21 = v6;
-    if ([v7 notificationType] == 4)
+    [v9[12] unionOrderedSet:withNotificationCopy[12]];
+    v21 = notificationCopy;
+    if ([withNotificationCopy notificationType] == 4)
     {
-      v22 = v7;
+      v22 = withNotificationCopy;
 
       v21 = v22;
     }
@@ -2131,19 +2131,19 @@ LABEL_9:
   return v9;
 }
 
-- (PLNotification)initWithAssetsAdded:(id)a3 toAlbum:(id)a4
+- (PLNotification)initWithAssetsAdded:(id)added toAlbum:(id)album
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  addedCopy = added;
+  albumCopy = album;
+  if (!addedCopy)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:371 description:{@"Invalid parameter not satisfying: %@", @"assetsAdded"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:371 description:{@"Invalid parameter not satisfying: %@", @"assetsAdded"}];
   }
 
-  if ([v7 count])
+  if ([addedCopy count])
   {
-    if (v8)
+    if (albumCopy)
     {
       goto LABEL_5;
     }
@@ -2151,17 +2151,17 @@ LABEL_9:
 
   else
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:372 description:{@"Invalid parameter not satisfying: %@", @"[assetsAdded count]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:372 description:{@"Invalid parameter not satisfying: %@", @"[assetsAdded count]"}];
 
-    if (v8)
+    if (albumCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v44 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v44 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:373 description:{@"Invalid parameter not satisfying: %@", @"album"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:373 description:{@"Invalid parameter not satisfying: %@", @"album"}];
 
 LABEL_5:
   v9 = [(PLNotification *)self _initWithType:3];
@@ -2172,19 +2172,19 @@ LABEL_5:
     v52 = 0x3032000000;
     v53 = __Block_byref_object_copy__78590;
     v54 = __Block_byref_object_dispose__78591;
-    v55 = [v7 firstObject];
-    v10 = [v8 assets];
+    firstObject = [addedCopy firstObject];
+    assets = [albumCopy assets];
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __46__PLNotification_initWithAssetsAdded_toAlbum___block_invoke;
     v47[3] = &unk_1E75721F8;
-    v11 = v7;
+    v11 = addedCopy;
     v48 = v11;
     v49 = &v50;
-    [v10 enumerateObjectsUsingBlock:v47];
+    [assets enumerateObjectsUsingBlock:v47];
 
-    v12 = [v51[5] cloudOwnerFullName];
-    v13 = [v12 copy];
+    cloudOwnerFullName = [v51[5] cloudOwnerFullName];
+    v13 = [cloudOwnerFullName copy];
     senderName = v9->_senderName;
     v9->_senderName = v13;
 
@@ -2197,33 +2197,33 @@ LABEL_5:
       [(NSMutableSet *)v9->_senderNames addObject:?];
     }
 
-    v17 = [v51[5] cloudOwnerEmail];
-    v18 = [v17 copy];
+    cloudOwnerEmail = [v51[5] cloudOwnerEmail];
+    v18 = [cloudOwnerEmail copy];
     senderEmailAddress = v9->_senderEmailAddress;
     v9->_senderEmailAddress = v18;
 
-    v20 = [v8 localizedTitle];
-    v21 = [v20 copy];
+    localizedTitle = [albumCopy localizedTitle];
+    v21 = [localizedTitle copy];
     albumTitle = v9->_albumTitle;
     v9->_albumTitle = v21;
 
-    v23 = [v8 uuid];
-    v24 = [v23 copy];
+    uuid = [albumCopy uuid];
+    v24 = [uuid copy];
     albumUUID = v9->_albumUUID;
     v9->_albumUUID = v24;
 
-    v26 = [v8 cloudGUID];
-    v27 = [v26 copy];
+    cloudGUID = [albumCopy cloudGUID];
+    v27 = [cloudGUID copy];
     albumCloudGUID = v9->_albumCloudGUID;
     v9->_albumCloudGUID = v27;
 
-    v29 = [v51[5] uuid];
-    v30 = [v29 copy];
+    uuid2 = [v51[5] uuid];
+    v30 = [uuid2 copy];
     mainAssetUUID = v9->_mainAssetUUID;
     v9->_mainAssetUUID = v30;
 
-    v32 = [v51[5] cloudBatchID];
-    v33 = [v32 copy];
+    cloudBatchID = [v51[5] cloudBatchID];
+    v33 = [cloudBatchID copy];
     photosBatchID = v9->_photosBatchID;
     v9->_photosBatchID = v33;
 
@@ -2294,14 +2294,14 @@ LABEL_6:
   [v7 addObject:v8];
 }
 
-- (PLNotification)initWithAssetAdded:(id)a3 atIndex:(unint64_t)a4 toAlbum:(id)a5
+- (PLNotification)initWithAssetAdded:(id)added atIndex:(unint64_t)index toAlbum:(id)album
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  addedCopy = added;
+  albumCopy = album;
+  v11 = albumCopy;
+  if (addedCopy)
   {
-    if (v10)
+    if (albumCopy)
     {
       goto LABEL_3;
     }
@@ -2309,8 +2309,8 @@ LABEL_6:
 
   else
   {
-    v49 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v49 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"assetAdded"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"assetAdded"}];
 
     if (v11)
     {
@@ -2318,8 +2318,8 @@ LABEL_6:
     }
   }
 
-  v50 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v50 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"album"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"album"}];
 
 LABEL_3:
   v12 = [(PLNotification *)self _initWithType:3];
@@ -2328,8 +2328,8 @@ LABEL_3:
     goto LABEL_12;
   }
 
-  v13 = [v9 cloudOwnerFullName];
-  v14 = [v13 copy];
+  cloudOwnerFullName = [addedCopy cloudOwnerFullName];
+  v14 = [cloudOwnerFullName copy];
   senderName = v12->_senderName;
   v12->_senderName = v14;
 
@@ -2342,38 +2342,38 @@ LABEL_3:
     [(NSMutableSet *)v12->_senderNames addObject:?];
   }
 
-  v18 = [v9 cloudOwnerEmail];
-  v19 = [v18 copy];
+  cloudOwnerEmail = [addedCopy cloudOwnerEmail];
+  v19 = [cloudOwnerEmail copy];
   senderEmailAddress = v12->_senderEmailAddress;
   v12->_senderEmailAddress = v19;
 
-  v21 = [v11 localizedTitle];
-  v22 = [v21 copy];
+  localizedTitle = [v11 localizedTitle];
+  v22 = [localizedTitle copy];
   albumTitle = v12->_albumTitle;
   v12->_albumTitle = v22;
 
-  v24 = [v11 uuid];
-  v25 = [v24 copy];
+  uuid = [v11 uuid];
+  v25 = [uuid copy];
   albumUUID = v12->_albumUUID;
   v12->_albumUUID = v25;
 
-  v27 = [v11 cloudGUID];
-  v28 = [v27 copy];
+  cloudGUID = [v11 cloudGUID];
+  v28 = [cloudGUID copy];
   albumCloudGUID = v12->_albumCloudGUID;
   v12->_albumCloudGUID = v28;
 
-  v30 = [v9 uuid];
-  v31 = [v30 copy];
+  uuid2 = [addedCopy uuid];
+  v31 = [uuid2 copy];
   mainAssetUUID = v12->_mainAssetUUID;
   v12->_mainAssetUUID = v31;
 
-  v33 = [v9 cloudBatchID];
-  v34 = [v33 copy];
+  cloudBatchID = [addedCopy cloudBatchID];
+  v34 = [cloudBatchID copy];
   photosBatchID = v12->_photosBatchID;
   v12->_photosBatchID = v34;
 
-  v12->_mainAssetIsMine = [v9 cloudIsMyAsset];
-  v12->_mainAssetIsVideo = [v9 isVideo];
+  v12->_mainAssetIsMine = [addedCopy cloudIsMyAsset];
+  v12->_mainAssetIsVideo = [addedCopy isVideo];
   v36 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v12->_mainAssetUUID, 0}];
   assetUUIDs = v12->_assetUUIDs;
   v12->_assetUUIDs = v36;
@@ -2388,10 +2388,10 @@ LABEL_3:
   lowResThumbAssetUUIDs = v12->_lowResThumbAssetUUIDs;
   v12->_lowResThumbAssetUUIDs = v41;
 
-  v43 = [v9 cloudSharedPlaceholderKind];
-  if (v43 != 2)
+  cloudSharedPlaceholderKind = [addedCopy cloudSharedPlaceholderKind];
+  if (cloudSharedPlaceholderKind != 2)
   {
-    if (v43 != 3)
+    if (cloudSharedPlaceholderKind != 3)
     {
       goto LABEL_10;
     }
@@ -2402,14 +2402,14 @@ LABEL_3:
   [*p_placeholderAssetUUIDs addObject:v12->_mainAssetUUID];
 LABEL_10:
   v12->_containsBatchFirstKnownAsset = 1;
-  if (a4)
+  if (index)
   {
-    v44 = [v11 assets];
-    v45 = [v44 objectAtIndex:a4 - 1];
+    assets = [v11 assets];
+    v45 = [assets objectAtIndex:index - 1];
 
-    v46 = [v9 cloudBatchID];
-    v47 = [v45 cloudBatchID];
-    v12->_containsBatchFirstKnownAsset = [v46 isEqualToString:v47] ^ 1;
+    cloudBatchID2 = [addedCopy cloudBatchID];
+    cloudBatchID3 = [v45 cloudBatchID];
+    v12->_containsBatchFirstKnownAsset = [cloudBatchID2 isEqualToString:cloudBatchID3] ^ 1;
   }
 
 LABEL_12:
@@ -2417,19 +2417,19 @@ LABEL_12:
   return v12;
 }
 
-- (PLNotification)initWithAssetsAdded:(id)a3 toCollectionShare:(id)a4
+- (PLNotification)initWithAssetsAdded:(id)added toCollectionShare:(id)share
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  addedCopy = added;
+  shareCopy = share;
+  if (!addedCopy)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:267 description:{@"Invalid parameter not satisfying: %@", @"assetsAdded"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:267 description:{@"Invalid parameter not satisfying: %@", @"assetsAdded"}];
   }
 
-  if ([v7 count])
+  if ([addedCopy count])
   {
-    if (v8)
+    if (shareCopy)
     {
       goto LABEL_5;
     }
@@ -2437,17 +2437,17 @@ LABEL_12:
 
   else
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"[assetsAdded count]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"[assetsAdded count]"}];
 
-    if (v8)
+    if (shareCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v44 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v44 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:269 description:{@"Invalid parameter not satisfying: %@", @"collectionShare"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:269 description:{@"Invalid parameter not satisfying: %@", @"collectionShare"}];
 
 LABEL_5:
   v9 = [(PLNotification *)self _initWithType:3];
@@ -2458,19 +2458,19 @@ LABEL_5:
     v52 = 0x3032000000;
     v53 = __Block_byref_object_copy__78590;
     v54 = __Block_byref_object_dispose__78591;
-    v55 = [v7 firstObject];
-    v10 = [v8 collectionShareAssets];
+    firstObject = [addedCopy firstObject];
+    collectionShareAssets = [shareCopy collectionShareAssets];
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __56__PLNotification_initWithAssetsAdded_toCollectionShare___block_invoke;
     v47[3] = &unk_1E75721D0;
-    v11 = v7;
+    v11 = addedCopy;
     v48 = v11;
     v49 = &v50;
-    [v10 enumerateObjectsUsingBlock:v47];
+    [collectionShareAssets enumerateObjectsUsingBlock:v47];
 
-    v12 = [v51[5] cloudOwnerFullName];
-    v13 = [v12 copy];
+    cloudOwnerFullName = [v51[5] cloudOwnerFullName];
+    v13 = [cloudOwnerFullName copy];
     senderName = v9->_senderName;
     v9->_senderName = v13;
 
@@ -2483,33 +2483,33 @@ LABEL_5:
       [(NSMutableSet *)v9->_senderNames addObject:?];
     }
 
-    v17 = [v51[5] cloudOwnerEmail];
-    v18 = [v17 copy];
+    cloudOwnerEmail = [v51[5] cloudOwnerEmail];
+    v18 = [cloudOwnerEmail copy];
     senderEmailAddress = v9->_senderEmailAddress;
     v9->_senderEmailAddress = v18;
 
-    v20 = [v8 title];
-    v21 = [v20 copy];
+    title = [shareCopy title];
+    v21 = [title copy];
     albumTitle = v9->_albumTitle;
     v9->_albumTitle = v21;
 
-    v23 = [v8 uuid];
-    v24 = [v23 copy];
+    uuid = [shareCopy uuid];
+    v24 = [uuid copy];
     albumUUID = v9->_albumUUID;
     v9->_albumUUID = v24;
 
-    v26 = [v8 scopeIdentifier];
-    v27 = [v26 copy];
+    scopeIdentifier = [shareCopy scopeIdentifier];
+    v27 = [scopeIdentifier copy];
     albumCloudGUID = v9->_albumCloudGUID;
     v9->_albumCloudGUID = v27;
 
-    v29 = [v51[5] uuid];
-    v30 = [v29 copy];
+    uuid2 = [v51[5] uuid];
+    v30 = [uuid2 copy];
     mainAssetUUID = v9->_mainAssetUUID;
     v9->_mainAssetUUID = v30;
 
-    v32 = [v51[5] cloudBatchID];
-    v33 = [v32 copy];
+    cloudBatchID = [v51[5] cloudBatchID];
+    v33 = [cloudBatchID copy];
     photosBatchID = v9->_photosBatchID;
     v9->_photosBatchID = v33;
 
@@ -2580,13 +2580,13 @@ LABEL_6:
   [v7 addObject:v8];
 }
 
-- (PLNotification)initWithMultipleContributorEnabledForAlbum:(id)a3
+- (PLNotification)initWithMultipleContributorEnabledForAlbum:(id)album
 {
-  v4 = a3;
+  albumCopy = album;
   v5 = [(PLNotification *)self _initWithType:2];
   if (v5)
   {
-    v6 = [v4 cloudOwnerDisplayNameIncludingEmail:0 allowsEmail:1];
+    v6 = [albumCopy cloudOwnerDisplayNameIncludingEmail:0 allowsEmail:1];
     v7 = [v6 copy];
     senderName = v5->_senderName;
     v5->_senderName = v7;
@@ -2600,23 +2600,23 @@ LABEL_6:
       [(NSMutableSet *)v5->_senderNames addObject:?];
     }
 
-    v11 = [v4 cloudOwnerEmail];
-    v12 = [v11 copy];
+    cloudOwnerEmail = [albumCopy cloudOwnerEmail];
+    v12 = [cloudOwnerEmail copy];
     senderEmailAddress = v5->_senderEmailAddress;
     v5->_senderEmailAddress = v12;
 
-    v14 = [v4 localizedTitle];
-    v15 = [v14 copy];
+    localizedTitle = [albumCopy localizedTitle];
+    v15 = [localizedTitle copy];
     albumTitle = v5->_albumTitle;
     v5->_albumTitle = v15;
 
-    v17 = [v4 uuid];
-    v18 = [v17 copy];
+    uuid = [albumCopy uuid];
+    v18 = [uuid copy];
     albumUUID = v5->_albumUUID;
     v5->_albumUUID = v18;
 
-    v20 = [v4 cloudGUID];
-    v21 = [v20 copy];
+    cloudGUID = [albumCopy cloudGUID];
+    v21 = [cloudGUID copy];
     albumCloudGUID = v5->_albumCloudGUID;
     v5->_albumCloudGUID = v21;
   }
@@ -2624,15 +2624,15 @@ LABEL_6:
   return v5;
 }
 
-- (PLNotification)initWithMultipleContributorEnabledForCollectionShare:(id)a3
+- (PLNotification)initWithMultipleContributorEnabledForCollectionShare:(id)share
 {
-  v4 = a3;
+  shareCopy = share;
   v5 = [(PLNotification *)self _initWithType:2];
   if (v5)
   {
-    v6 = [v4 owner];
-    v7 = [v6 fullName];
-    v8 = [v7 copy];
+    owner = [shareCopy owner];
+    fullName = [owner fullName];
+    v8 = [fullName copy];
     senderName = v5->_senderName;
     v5->_senderName = v8;
 
@@ -2645,24 +2645,24 @@ LABEL_6:
       [(NSMutableSet *)v5->_senderNames addObject:?];
     }
 
-    v12 = [v4 owner];
-    v13 = [v12 emailAddress];
-    v14 = [v13 copy];
+    owner2 = [shareCopy owner];
+    emailAddress = [owner2 emailAddress];
+    v14 = [emailAddress copy];
     senderEmailAddress = v5->_senderEmailAddress;
     v5->_senderEmailAddress = v14;
 
-    v16 = [v4 title];
-    v17 = [v16 copy];
+    title = [shareCopy title];
+    v17 = [title copy];
     albumTitle = v5->_albumTitle;
     v5->_albumTitle = v17;
 
-    v19 = [v4 uuid];
-    v20 = [v19 copy];
+    uuid = [shareCopy uuid];
+    v20 = [uuid copy];
     albumUUID = v5->_albumUUID;
     v5->_albumUUID = v20;
 
-    v22 = [v4 scopeIdentifier];
-    v23 = [v22 copy];
+    scopeIdentifier = [shareCopy scopeIdentifier];
+    v23 = [scopeIdentifier copy];
     albumCloudGUID = v5->_albumCloudGUID;
     v5->_albumCloudGUID = v23;
   }
@@ -2670,14 +2670,14 @@ LABEL_6:
   return v5;
 }
 
-- (PLNotification)initWithInvitationRecordStatusChanged:(id)a3
+- (PLNotification)initWithInvitationRecordStatusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = [(PLNotification *)self _initWithType:1];
   if (v5)
   {
-    v6 = [v4 album];
-    v7 = [v4 inviteeDisplayNameIncludingEmail:0];
+    album = [changedCopy album];
+    v7 = [changedCopy inviteeDisplayNameIncludingEmail:0];
     v8 = [v7 copy];
     senderName = v5->_senderName;
     v5->_senderName = v8;
@@ -2691,27 +2691,27 @@ LABEL_6:
       [(NSMutableSet *)v5->_senderNames addObject:?];
     }
 
-    v12 = [v4 inviteeEmails];
-    v13 = [v12 firstObject];
-    v14 = [v13 copy];
+    inviteeEmails = [changedCopy inviteeEmails];
+    firstObject = [inviteeEmails firstObject];
+    v14 = [firstObject copy];
     senderEmailAddress = v5->_senderEmailAddress;
     v5->_senderEmailAddress = v14;
 
-    v16 = [v6 localizedTitle];
-    v17 = [v16 copy];
+    localizedTitle = [album localizedTitle];
+    v17 = [localizedTitle copy];
     albumTitle = v5->_albumTitle;
     v5->_albumTitle = v17;
 
-    v19 = [v6 uuid];
-    v20 = [v19 copy];
+    uuid = [album uuid];
+    v20 = [uuid copy];
     albumUUID = v5->_albumUUID;
     v5->_albumUUID = v20;
 
-    v22 = [v4 invitationState];
-    v5->_invitationState = [v22 intValue];
+    invitationState = [changedCopy invitationState];
+    v5->_invitationState = [invitationState intValue];
 
-    v23 = [v6 cloudGUID];
-    v24 = [v23 copy];
+    cloudGUID = [album cloudGUID];
+    v24 = [cloudGUID copy];
     albumCloudGUID = v5->_albumCloudGUID;
     v5->_albumCloudGUID = v24;
   }
@@ -2719,15 +2719,15 @@ LABEL_6:
   return v5;
 }
 
-- (PLNotification)initWithParticipantAcceptanceStatusChanged:(id)a3
+- (PLNotification)initWithParticipantAcceptanceStatusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = [(PLNotification *)self _initWithType:17];
   if (v5)
   {
-    v6 = [v4 share];
-    v7 = [v4 fullName];
-    v8 = [v7 copy];
+    share = [changedCopy share];
+    fullName = [changedCopy fullName];
+    v8 = [fullName copy];
     senderName = v5->_senderName;
     v5->_senderName = v8;
 
@@ -2740,24 +2740,24 @@ LABEL_6:
       [(NSMutableSet *)v5->_senderNames addObject:?];
     }
 
-    v12 = [v4 emailAddress];
-    v13 = [v12 copy];
+    emailAddress = [changedCopy emailAddress];
+    v13 = [emailAddress copy];
     senderEmailAddress = v5->_senderEmailAddress;
     v5->_senderEmailAddress = v13;
 
-    v15 = [v6 title];
-    v16 = [v15 copy];
+    title = [share title];
+    v16 = [title copy];
     albumTitle = v5->_albumTitle;
     v5->_albumTitle = v16;
 
-    v18 = [v6 uuid];
-    v19 = [v18 copy];
+    uuid = [share uuid];
+    v19 = [uuid copy];
     albumUUID = v5->_albumUUID;
     v5->_albumUUID = v19;
 
-    v5->_acceptanceStatus = [v4 acceptanceStatus];
-    v21 = [v6 scopeIdentifier];
-    v22 = [v21 copy];
+    v5->_acceptanceStatus = [changedCopy acceptanceStatus];
+    scopeIdentifier = [share scopeIdentifier];
+    v22 = [scopeIdentifier copy];
     albumCloudGUID = v5->_albumCloudGUID;
     v5->_albumCloudGUID = v22;
   }
@@ -2765,13 +2765,13 @@ LABEL_6:
   return v5;
 }
 
-- (PLNotification)initWithInvitationAlbum:(id)a3
+- (PLNotification)initWithInvitationAlbum:(id)album
 {
-  v4 = a3;
+  albumCopy = album;
   v5 = [(PLNotification *)self _initWithType:0];
   if (v5)
   {
-    v6 = [v4 cloudOwnerDisplayNameIncludingEmail:0 allowsEmail:1];
+    v6 = [albumCopy cloudOwnerDisplayNameIncludingEmail:0 allowsEmail:1];
     v7 = [v6 copy];
     senderName = v5->_senderName;
     v5->_senderName = v7;
@@ -2785,41 +2785,41 @@ LABEL_6:
       [(NSMutableSet *)v5->_senderNames addObject:?];
     }
 
-    v11 = [v4 cloudOwnerEmail];
-    v12 = [v11 copy];
+    cloudOwnerEmail = [albumCopy cloudOwnerEmail];
+    v12 = [cloudOwnerEmail copy];
     senderEmailAddress = v5->_senderEmailAddress;
     v5->_senderEmailAddress = v12;
 
-    v14 = [v4 localizedTitle];
-    v15 = [v14 copy];
+    localizedTitle = [albumCopy localizedTitle];
+    v15 = [localizedTitle copy];
     albumTitle = v5->_albumTitle;
     v5->_albumTitle = v15;
 
-    v17 = [v4 uuid];
-    v18 = [v17 copy];
+    uuid = [albumCopy uuid];
+    v18 = [uuid copy];
     albumUUID = v5->_albumUUID;
     v5->_albumUUID = v18;
 
-    v20 = [v4 cloudGUID];
-    v21 = [v20 copy];
+    cloudGUID = [albumCopy cloudGUID];
+    v21 = [cloudGUID copy];
     albumCloudGUID = v5->_albumCloudGUID;
     v5->_albumCloudGUID = v21;
 
-    v5->_offerToReportAsJunk = [v4 cloudOwnerIsWhitelisted] ^ 1;
+    v5->_offerToReportAsJunk = [albumCopy cloudOwnerIsWhitelisted] ^ 1;
   }
 
   return v5;
 }
 
-- (PLNotification)initWithInvitationCollectionShare:(id)a3
+- (PLNotification)initWithInvitationCollectionShare:(id)share
 {
-  v4 = a3;
+  shareCopy = share;
   v5 = [(PLNotification *)self _initWithType:0];
   if (v5)
   {
-    v6 = [v4 owner];
-    v7 = [v6 fullName];
-    v8 = [v7 copy];
+    owner = [shareCopy owner];
+    fullName = [owner fullName];
+    v8 = [fullName copy];
     senderName = v5->_senderName;
     v5->_senderName = v8;
 
@@ -2832,37 +2832,37 @@ LABEL_6:
       [(NSMutableSet *)v5->_senderNames addObject:?];
     }
 
-    v12 = [v4 owner];
-    v13 = [v12 emailAddress];
-    v14 = [v13 copy];
+    owner2 = [shareCopy owner];
+    emailAddress = [owner2 emailAddress];
+    v14 = [emailAddress copy];
     senderEmailAddress = v5->_senderEmailAddress;
     v5->_senderEmailAddress = v14;
 
-    v16 = [v4 title];
-    v17 = [v16 copy];
+    title = [shareCopy title];
+    v17 = [title copy];
     albumTitle = v5->_albumTitle;
     v5->_albumTitle = v17;
 
-    v19 = [v4 uuid];
-    v20 = [v19 copy];
+    uuid = [shareCopy uuid];
+    v20 = [uuid copy];
     albumUUID = v5->_albumUUID;
     v5->_albumUUID = v20;
 
-    v22 = [v4 scopeIdentifier];
-    v23 = [v22 copy];
+    scopeIdentifier = [shareCopy scopeIdentifier];
+    v23 = [scopeIdentifier copy];
     albumCloudGUID = v5->_albumCloudGUID;
     v5->_albumCloudGUID = v23;
 
-    v25 = [v4 owner];
-    LOBYTE(v13) = [v25 allowlistedState] != 1;
+    owner3 = [shareCopy owner];
+    LOBYTE(emailAddress) = [owner3 allowlistedState] != 1;
 
-    v5->_offerToReportAsJunk = v13;
+    v5->_offerToReportAsJunk = emailAddress;
   }
 
   return v5;
 }
 
-- (id)_initWithType:(int64_t)a3
+- (id)_initWithType:(int64_t)type
 {
   v15.receiver = self;
   v15.super_class = PLNotification;
@@ -2870,9 +2870,9 @@ LABEL_6:
   v5 = v4;
   if (v4)
   {
-    v4->_notificationType = a3;
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [v6 copy];
+    v4->_notificationType = type;
+    date = [MEMORY[0x1E695DF00] date];
+    v7 = [date copy];
     date = v5->_date;
     v5->_date = v7;
 
@@ -2891,38 +2891,38 @@ LABEL_6:
 
 - (PLNotification)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:131 description:@"Do not use this initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLNotification.m" lineNumber:131 description:@"Do not use this initializer"];
 
   return 0;
 }
 
-+ (id)_UNCategoryFromNotificationType:(int64_t)a3
++ (id)_UNCategoryFromNotificationType:(int64_t)type
 {
-  if ((a3 - 1) > 0x10)
+  if ((type - 1) > 0x10)
   {
     return @"PLUNCategoryInvitationReceived";
   }
 
   else
   {
-    return off_1E7572270[a3 - 1];
+    return off_1E7572270[type - 1];
   }
 }
 
-+ (id)requestIdentifierByNotificationType:(int64_t)a3 keyObjectUUID:(id)a4 photosBatchID:(id)a5
++ (id)requestIdentifierByNotificationType:(int64_t)type keyObjectUUID:(id)d photosBatchID:(id)iD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 _UNCategoryFromNotificationType:a3];
-  if ([v8 length])
+  iDCopy = iD;
+  dCopy = d;
+  v10 = [self _UNCategoryFromNotificationType:type];
+  if ([iDCopy length])
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@_%@", v10, v9, v8];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@_%@", v10, dCopy, iDCopy];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v10, v9, v13];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v10, dCopy, v13];
   }
   v11 = ;
 

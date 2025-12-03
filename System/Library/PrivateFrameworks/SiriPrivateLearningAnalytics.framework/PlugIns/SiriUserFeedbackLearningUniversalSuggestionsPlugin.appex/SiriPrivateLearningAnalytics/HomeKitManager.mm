@@ -1,6 +1,6 @@
 @interface HomeKitManager
 - (_TtC50SiriUserFeedbackLearningUniversalSuggestionsPlugin14HomeKitManager)init;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation HomeKitManager
@@ -18,10 +18,10 @@
   return [(HomeKitManager *)&v6 init];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = self;
+  homesCopy = homes;
+  selfCopy = self;
   sub_10002791C();
 }
 

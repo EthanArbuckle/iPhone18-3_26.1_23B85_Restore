@@ -1,57 +1,57 @@
 @interface TVRUIChannelButton
-- (CATransform3D)_transformForLeftWingExpanded:(SEL)a3;
-- (CATransform3D)_transformForRightWingExpanded:(SEL)a3;
-- (TVRUIChannelButton)initWithTitle:(id)a3 styleProvider:(id)a4;
+- (CATransform3D)_transformForLeftWingExpanded:(SEL)expanded;
+- (CATransform3D)_transformForRightWingExpanded:(SEL)expanded;
+- (TVRUIChannelButton)initWithTitle:(id)title styleProvider:(id)provider;
 - (_TVRUIEventDelegate)buttonEventDelegate;
 - (id)_newSpringAnimation;
-- (id)chevronLeftWingAnimationExpand:(BOOL)a3;
-- (id)chevronRightWingAnimationExpand:(BOOL)a3;
-- (void)_buttonPressed:(id)a3;
-- (void)_buttonReleased:(id)a3;
-- (void)_darkenSystemColorsChanged:(id)a3;
+- (id)chevronLeftWingAnimationExpand:(BOOL)expand;
+- (id)chevronRightWingAnimationExpand:(BOOL)expand;
+- (void)_buttonPressed:(id)pressed;
+- (void)_buttonReleased:(id)released;
+- (void)_darkenSystemColorsChanged:(id)changed;
 - (void)collapse;
 - (void)expand;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation TVRUIChannelButton
 
-- (TVRUIChannelButton)initWithTitle:(id)a3 styleProvider:(id)a4
+- (TVRUIChannelButton)initWithTitle:(id)title styleProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  providerCopy = provider;
   v35.receiver = self;
   v35.super_class = TVRUIChannelButton;
   v8 = [(TVRUIChannelButton *)&v35 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v9 = v8;
   if (v8)
   {
-    [(TVRUIChannelButton *)v8 setStyleProvider:v7];
+    [(TVRUIChannelButton *)v8 setStyleProvider:providerCopy];
     v10 = objc_alloc_init(MEMORY[0x277D75D18]);
     contentView = v9->_contentView;
     v9->_contentView = v10;
 
     [(UIView *)v9->_contentView setClipsToBounds:1];
-    [v7 mediaControlsButtonSize];
+    [providerCopy mediaControlsButtonSize];
     v13 = v12 * 0.5;
-    v14 = [(UIView *)v9->_contentView layer];
-    [v14 setCornerRadius:v13];
+    layer = [(UIView *)v9->_contentView layer];
+    [layer setCornerRadius:v13];
 
     v15 = *MEMORY[0x277CDA138];
-    v16 = [(UIView *)v9->_contentView layer];
-    [v16 setCornerCurve:v15];
+    layer2 = [(UIView *)v9->_contentView layer];
+    [layer2 setCornerCurve:v15];
 
-    v17 = [(UIView *)v9->_contentView layer];
-    [v17 setAnchorPoint:{0.5, 1.0}];
+    layer3 = [(UIView *)v9->_contentView layer];
+    [layer3 setAnchorPoint:{0.5, 1.0}];
 
     [(TVRUIChannelButton *)v9 addSubview:v9->_contentView];
     v18 = [[TVRUIPageButton alloc] initWithType:26 hasTapAction:0];
     topButton = v9->_topButton;
     v9->_topButton = v18;
 
-    v20 = [MEMORY[0x277D75348] clearColor];
-    [(TVRUIPageButton *)v9->_topButton setBackgroundColor:v20];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(TVRUIPageButton *)v9->_topButton setBackgroundColor:clearColor];
 
     [(TVRUIButton *)v9->_topButton setDisableHighlightEffect:1];
     [(UIView *)v9->_contentView addSubview:v9->_topButton];
@@ -60,12 +60,12 @@
     v9->_bottomButton = v21;
 
     CATransform3DMakeRotation(&v34, 3.14159265, 0.0, 0.0, 1.0);
-    v23 = [(TVRUIPageButton *)v9->_bottomButton contentLayer];
+    contentLayer = [(TVRUIPageButton *)v9->_bottomButton contentLayer];
     v33 = v34;
-    [v23 setTransform:&v33];
+    [contentLayer setTransform:&v33];
 
-    v24 = [MEMORY[0x277D75348] clearColor];
-    [(TVRUIPageButton *)v9->_bottomButton setBackgroundColor:v24];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(TVRUIPageButton *)v9->_bottomButton setBackgroundColor:clearColor2];
 
     [(TVRUIButton *)v9->_bottomButton setDisableHighlightEffect:1];
     [(UIView *)v9->_contentView addSubview:v9->_bottomButton];
@@ -73,12 +73,12 @@
     titleLabel = v9->_titleLabel;
     v9->_titleLabel = v25;
 
-    [(UILabel *)v9->_titleLabel setText:v6];
-    v27 = [v7 buttonTextColor];
-    [(UILabel *)v9->_titleLabel setTextColor:v27];
+    [(UILabel *)v9->_titleLabel setText:titleCopy];
+    buttonTextColor = [providerCopy buttonTextColor];
+    [(UILabel *)v9->_titleLabel setTextColor:buttonTextColor];
 
-    v28 = [v7 pagingButtonFont];
-    [(UILabel *)v9->_titleLabel setFont:v28];
+    pagingButtonFont = [providerCopy pagingButtonFont];
+    [(UILabel *)v9->_titleLabel setFont:pagingButtonFont];
 
     [(UILabel *)v9->_titleLabel setTextAlignment:1];
     [(UILabel *)v9->_titleLabel setAdjustsFontForContentSizeCategory:1];
@@ -88,14 +88,14 @@
     [(TVRUIPageButton *)v9->_topButton addTarget:v9 action:sel__buttonReleased_ forControlEvents:448];
     [(TVRUIPageButton *)v9->_bottomButton addTarget:v9 action:sel__buttonPressed_ forControlEvents:1];
     [(TVRUIPageButton *)v9->_bottomButton addTarget:v9 action:sel__buttonReleased_ forControlEvents:448];
-    v29 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v29 addObserver:v9 selector:sel__darkenSystemColorsChanged_ name:*MEMORY[0x277D76460] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__darkenSystemColorsChanged_ name:*MEMORY[0x277D76460] object:0];
 
     [(TVRUIChannelButton *)v9 setUserInteractionEnabled:1];
     v30 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v9 action:sel_expand];
     [(TVRUIChannelButton *)v9 addGestureRecognizer:v30];
-    v31 = [MEMORY[0x277D75348] clearColor];
-    [(TVRUIChannelButton *)v9 setBackgroundColor:v31];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(TVRUIChannelButton *)v9 setBackgroundColor:clearColor3];
 
     [(TVRUIButton *)v9->_topButton setEnabled:0];
     [(TVRUIButton *)v9->_bottomButton setEnabled:0];
@@ -104,40 +104,40 @@
   return v9;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_enabled = a3;
-  if (a3)
+  self->_enabled = enabled;
+  if (enabled)
   {
-    v4 = [(TVRUIChannelButton *)self topButton];
-    [v4 setEnabled:1];
+    topButton = [(TVRUIChannelButton *)self topButton];
+    [topButton setEnabled:1];
 
-    v5 = [(TVRUIChannelButton *)self bottomButton];
-    [v5 setEnabled:1];
+    bottomButton = [(TVRUIChannelButton *)self bottomButton];
+    [bottomButton setEnabled:1];
 
-    v6 = [(TVRUIChannelButton *)self styleProvider];
-    v7 = [v6 buttonTextColor];
+    styleProvider = [(TVRUIChannelButton *)self styleProvider];
+    buttonTextColor = [styleProvider buttonTextColor];
     v8 = 1.0;
   }
 
   else
   {
-    v9 = [(TVRUIChannelButton *)self styleProvider];
-    [v9 disabledButtonAlpha];
+    styleProvider2 = [(TVRUIChannelButton *)self styleProvider];
+    [styleProvider2 disabledButtonAlpha];
     v8 = v10;
 
-    v11 = [(TVRUIChannelButton *)self topButton];
-    [v11 setEnabled:0];
+    topButton2 = [(TVRUIChannelButton *)self topButton];
+    [topButton2 setEnabled:0];
 
-    v12 = [(TVRUIChannelButton *)self bottomButton];
-    [v12 setEnabled:0];
+    bottomButton2 = [(TVRUIChannelButton *)self bottomButton];
+    [bottomButton2 setEnabled:0];
 
-    v6 = [(TVRUIChannelButton *)self styleProvider];
-    v7 = [v6 tintColorForButtonDisabled];
+    styleProvider = [(TVRUIChannelButton *)self styleProvider];
+    buttonTextColor = [styleProvider tintColorForButtonDisabled];
   }
 
-  v13 = [(TVRUIChannelButton *)self titleLabel];
-  [v13 setTextColor:v7];
+  titleLabel = [(TVRUIChannelButton *)self titleLabel];
+  [titleLabel setTextColor:buttonTextColor];
 
   [(TVRUIChannelButton *)self setAlpha:v8];
 }
@@ -152,36 +152,36 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TVRUIChannelButton *)self isExpanded];
-  v12 = [(TVRUIChannelButton *)self contentView];
-  v13 = v12;
-  if (v11)
+  isExpanded = [(TVRUIChannelButton *)self isExpanded];
+  contentView = [(TVRUIChannelButton *)self contentView];
+  v13 = contentView;
+  if (isExpanded)
   {
-    [v12 setBounds:{0.0, 0.0, v8, 144.0}];
+    [contentView setBounds:{0.0, 0.0, v8, 144.0}];
 
     v31.origin.x = v4;
     v31.origin.y = v6;
     v31.size.width = v8;
     v31.size.height = v10;
     MidX = CGRectGetMidX(v31);
-    v15 = [(TVRUIChannelButton *)self contentView];
-    [v15 bounds];
+    contentView2 = [(TVRUIChannelButton *)self contentView];
+    [contentView2 bounds];
     MidY = CGRectGetMidY(v32);
-    v17 = [(TVRUIChannelButton *)self titleLabel];
-    [v17 setCenter:{MidX, MidY}];
+    titleLabel = [(TVRUIChannelButton *)self titleLabel];
+    [titleLabel setCenter:{MidX, MidY}];
 
-    v18 = [(TVRUIChannelButton *)self topButton];
+    topButton = [(TVRUIChannelButton *)self topButton];
     v19 = 72.0;
-    [v18 setFrame:{0.0, 0.0, v8, 72.0}];
+    [topButton setFrame:{0.0, 0.0, v8, 72.0}];
 
-    v20 = [(TVRUIChannelButton *)self contentView];
-    [v20 bounds];
+    contentView3 = [(TVRUIChannelButton *)self contentView];
+    [contentView3 bounds];
     MaxY = CGRectGetMidY(v33);
   }
 
   else
   {
-    [v12 setFrame:{v4, v6, v8, v10}];
+    [contentView setFrame:{v4, v6, v8, v10}];
 
     v34.origin.x = v4;
     v34.origin.y = v6;
@@ -193,32 +193,32 @@
     v35.size.width = v8;
     v35.size.height = v10;
     v23 = CGRectGetMidY(v35);
-    v24 = [(TVRUIChannelButton *)self titleLabel];
-    [v24 setCenter:{v22, v23}];
+    titleLabel2 = [(TVRUIChannelButton *)self titleLabel];
+    [titleLabel2 setCenter:{v22, v23}];
 
-    v25 = [(TVRUIChannelButton *)self titleLabel];
-    [v25 frame];
+    titleLabel3 = [(TVRUIChannelButton *)self titleLabel];
+    [titleLabel3 frame];
     v26 = CGRectGetMinY(v36) + -10.0;
-    v27 = [(TVRUIChannelButton *)self topButton];
+    topButton2 = [(TVRUIChannelButton *)self topButton];
     v19 = 10.0;
-    [v27 setFrame:{0.0, v26, v8, 10.0}];
+    [topButton2 setFrame:{0.0, v26, v8, 10.0}];
 
-    v20 = [(TVRUIChannelButton *)self titleLabel];
-    [v20 frame];
+    contentView3 = [(TVRUIChannelButton *)self titleLabel];
+    [contentView3 frame];
     MaxY = CGRectGetMaxY(v37);
   }
 
   v28 = MaxY;
-  v29 = [(TVRUIChannelButton *)self bottomButton];
-  [v29 setFrame:{0.0, v28, v8, v19}];
+  bottomButton = [(TVRUIChannelButton *)self bottomButton];
+  [bottomButton setFrame:{0.0, v28, v8, v19}];
 }
 
 - (void)expand
 {
   if (![(TVRUIChannelButton *)self isExpanded]&& ![(TVRUIChannelButton *)self isAnimating])
   {
-    v3 = [(TVRUIChannelButton *)self contentView];
-    [v3 bounds];
+    contentView = [(TVRUIChannelButton *)self contentView];
+    [contentView bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -235,13 +235,13 @@
     v68.size.height = 144.0;
     MidY = CGRectGetMidY(v68);
     v11 = MidY + -36.0;
-    v12 = [(TVRUIChannelButton *)self titleLabel];
-    [v12 frame];
+    titleLabel = [(TVRUIChannelButton *)self titleLabel];
+    [titleLabel frame];
     v14 = 36.0 - v13 * 0.5;
 
     v15 = MidY + 36.0;
-    v16 = [(TVRUIChannelButton *)self titleLabel];
-    [v16 frame];
+    titleLabel2 = [(TVRUIChannelButton *)self titleLabel];
+    [titleLabel2 frame];
     v18 = v17 * 0.5 + 36.0;
 
     [MEMORY[0x277CD9FF0] begin];
@@ -263,102 +263,102 @@
     *&v66[13] = v15;
     *&v66[14] = v18;
     [MEMORY[0x277CD9FF0] setCompletionBlock:v66];
-    v19 = [(TVRUIChannelButton *)self _newSpringAnimation];
-    [v19 setKeyPath:?];
+    _newSpringAnimation = [(TVRUIChannelButton *)self _newSpringAnimation];
+    [_newSpringAnimation setKeyPath:?];
     v20 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
-    v65 = v19;
-    [v19 setToValue:v20];
+    v65 = _newSpringAnimation;
+    [_newSpringAnimation setToValue:v20];
 
-    v21 = [(TVRUIChannelButton *)self topButton];
-    v22 = [v21 contentLayer];
-    [v22 addAnimation:v19 forKey:@"topChevronContentLayerPositionAnim"];
+    topButton = [(TVRUIChannelButton *)self topButton];
+    contentLayer = [topButton contentLayer];
+    [contentLayer addAnimation:_newSpringAnimation forKey:@"topChevronContentLayerPositionAnim"];
 
-    v23 = [(TVRUIChannelButton *)self topButton];
-    v24 = [v23 leftWing];
+    topButton2 = [(TVRUIChannelButton *)self topButton];
+    leftWing = [topButton2 leftWing];
     v25 = [(TVRUIChannelButton *)self chevronLeftWingAnimationExpand:1];
-    [v24 addAnimation:v25 forKey:@"transform.rotate"];
+    [leftWing addAnimation:v25 forKey:@"transform.rotate"];
 
-    v26 = [(TVRUIChannelButton *)self topButton];
-    v27 = [v26 rightWing];
+    topButton3 = [(TVRUIChannelButton *)self topButton];
+    rightWing = [topButton3 rightWing];
     v28 = [(TVRUIChannelButton *)self chevronRightWingAnimationExpand:1];
-    [v27 addAnimation:v28 forKey:@"transform.rotate"];
+    [rightWing addAnimation:v28 forKey:@"transform.rotate"];
 
-    v29 = [(TVRUIChannelButton *)self _newSpringAnimation];
-    [v29 setKeyPath:@"bounds.size.height"];
+    _newSpringAnimation2 = [(TVRUIChannelButton *)self _newSpringAnimation];
+    [_newSpringAnimation2 setKeyPath:@"bounds.size.height"];
     v30 = [MEMORY[0x277CCABB0] numberWithDouble:72.0];
-    [v29 setToValue:v30];
+    [_newSpringAnimation2 setToValue:v30];
 
-    v31 = [(TVRUIChannelButton *)self topButton];
-    v32 = [v31 layer];
-    [v32 addAnimation:v29 forKey:@"topChevronBoundsAnim"];
+    topButton4 = [(TVRUIChannelButton *)self topButton];
+    layer = [topButton4 layer];
+    [layer addAnimation:_newSpringAnimation2 forKey:@"topChevronBoundsAnim"];
 
-    v33 = [(TVRUIChannelButton *)self _newSpringAnimation];
-    [v33 setKeyPath:@"position.y"];
+    _newSpringAnimation3 = [(TVRUIChannelButton *)self _newSpringAnimation];
+    [_newSpringAnimation3 setKeyPath:@"position.y"];
     v34 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
-    [v33 setToValue:v34];
+    [_newSpringAnimation3 setToValue:v34];
 
-    v35 = [(TVRUIChannelButton *)self topButton];
-    v36 = [v35 layer];
-    [v36 addAnimation:v33 forKey:@"topChevronPositionAnim"];
+    topButton5 = [(TVRUIChannelButton *)self topButton];
+    layer2 = [topButton5 layer];
+    [layer2 addAnimation:_newSpringAnimation3 forKey:@"topChevronPositionAnim"];
 
-    v37 = [(TVRUIChannelButton *)self _newSpringAnimation];
-    [v37 setKeyPath:@"position.y"];
+    _newSpringAnimation4 = [(TVRUIChannelButton *)self _newSpringAnimation];
+    [_newSpringAnimation4 setKeyPath:@"position.y"];
     v69.origin.x = v5;
     v69.origin.y = v7;
     v69.size.width = v63;
     v69.size.height = 144.0;
     v38 = [MEMORY[0x277CCABB0] numberWithDouble:CGRectGetMidY(v69)];
-    [v37 setToValue:v38];
+    [_newSpringAnimation4 setToValue:v38];
 
-    v39 = [(TVRUIChannelButton *)self titleLabel];
-    v40 = [v39 layer];
-    [v40 addAnimation:v37 forKey:@"channelPosAnim"];
+    titleLabel3 = [(TVRUIChannelButton *)self titleLabel];
+    layer3 = [titleLabel3 layer];
+    [layer3 addAnimation:_newSpringAnimation4 forKey:@"channelPosAnim"];
 
-    v41 = [(TVRUIChannelButton *)self _newSpringAnimation];
-    [v41 setKeyPath:@"position.y"];
+    _newSpringAnimation5 = [(TVRUIChannelButton *)self _newSpringAnimation];
+    [_newSpringAnimation5 setKeyPath:@"position.y"];
     v42 = [MEMORY[0x277CCABB0] numberWithDouble:v18];
-    [v41 setToValue:v42];
+    [_newSpringAnimation5 setToValue:v42];
 
-    v43 = [(TVRUIChannelButton *)self bottomButton];
-    v44 = [v43 contentLayer];
-    [v44 addAnimation:v41 forKey:@"bottomChevronContentLayerPositionAnim"];
+    bottomButton = [(TVRUIChannelButton *)self bottomButton];
+    contentLayer2 = [bottomButton contentLayer];
+    [contentLayer2 addAnimation:_newSpringAnimation5 forKey:@"bottomChevronContentLayerPositionAnim"];
 
-    v45 = [(TVRUIChannelButton *)self bottomButton];
-    v46 = [v45 leftWing];
+    bottomButton2 = [(TVRUIChannelButton *)self bottomButton];
+    leftWing2 = [bottomButton2 leftWing];
     v47 = [(TVRUIChannelButton *)self chevronLeftWingAnimationExpand:1];
-    [v46 addAnimation:v47 forKey:@"transform.rotate"];
+    [leftWing2 addAnimation:v47 forKey:@"transform.rotate"];
 
-    v48 = [(TVRUIChannelButton *)self bottomButton];
-    v49 = [v48 rightWing];
+    bottomButton3 = [(TVRUIChannelButton *)self bottomButton];
+    rightWing2 = [bottomButton3 rightWing];
     v50 = [(TVRUIChannelButton *)self chevronRightWingAnimationExpand:1];
-    [v49 addAnimation:v50 forKey:@"transform.rotate"];
+    [rightWing2 addAnimation:v50 forKey:@"transform.rotate"];
 
-    v51 = [(TVRUIChannelButton *)self _newSpringAnimation];
-    [v51 setKeyPath:@"bounds.size.height"];
+    _newSpringAnimation6 = [(TVRUIChannelButton *)self _newSpringAnimation];
+    [_newSpringAnimation6 setKeyPath:@"bounds.size.height"];
     v52 = [MEMORY[0x277CCABB0] numberWithDouble:72.0];
-    [v51 setToValue:v52];
+    [_newSpringAnimation6 setToValue:v52];
 
-    v53 = [(TVRUIChannelButton *)self bottomButton];
-    v54 = [v53 layer];
-    [v54 addAnimation:v51 forKey:@"bottomChevronBoundsAnim"];
+    bottomButton4 = [(TVRUIChannelButton *)self bottomButton];
+    layer4 = [bottomButton4 layer];
+    [layer4 addAnimation:_newSpringAnimation6 forKey:@"bottomChevronBoundsAnim"];
 
-    v55 = [(TVRUIChannelButton *)self _newSpringAnimation];
-    [v55 setKeyPath:@"position.y"];
+    _newSpringAnimation7 = [(TVRUIChannelButton *)self _newSpringAnimation];
+    [_newSpringAnimation7 setKeyPath:@"position.y"];
     v56 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
-    [v55 setToValue:v56];
+    [_newSpringAnimation7 setToValue:v56];
 
-    v57 = [(TVRUIChannelButton *)self bottomButton];
-    v58 = [v57 layer];
-    [v58 addAnimation:v55 forKey:@"bottomChevronPositionAnim"];
+    bottomButton5 = [(TVRUIChannelButton *)self bottomButton];
+    layer5 = [bottomButton5 layer];
+    [layer5 addAnimation:_newSpringAnimation7 forKey:@"bottomChevronPositionAnim"];
 
-    v59 = [(TVRUIChannelButton *)self _newSpringAnimation];
-    [v59 setKeyPath:@"bounds.size.height"];
+    _newSpringAnimation8 = [(TVRUIChannelButton *)self _newSpringAnimation];
+    [_newSpringAnimation8 setKeyPath:@"bounds.size.height"];
     v60 = [MEMORY[0x277CCABB0] numberWithDouble:144.0];
-    [v59 setToValue:v60];
+    [_newSpringAnimation8 setToValue:v60];
 
-    v61 = [(TVRUIChannelButton *)self contentView];
-    v62 = [v61 layer];
-    [v62 addAnimation:v59 forKey:@"contentLayerBoundsAnim"];
+    contentView2 = [(TVRUIChannelButton *)self contentView];
+    layer6 = [contentView2 layer];
+    [layer6 addAnimation:_newSpringAnimation8 forKey:@"contentLayerBoundsAnim"];
 
     [MEMORY[0x277CD9FF0] commit];
     [(TVRUIChannelButton *)self setIsAnimating:1];
@@ -620,7 +620,7 @@ uint64_t __28__TVRUIChannelButton_expand__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (CATransform3D)_transformForLeftWingExpanded:(SEL)a3
+- (CATransform3D)_transformForLeftWingExpanded:(SEL)expanded
 {
   v4 = -0.279253;
   if (a4)
@@ -631,7 +631,7 @@ uint64_t __28__TVRUIChannelButton_expand__block_invoke(uint64_t a1)
   return CATransform3DMakeRotation(retstr, v4, 0.0, 0.0, 1.0);
 }
 
-- (CATransform3D)_transformForRightWingExpanded:(SEL)a3
+- (CATransform3D)_transformForRightWingExpanded:(SEL)expanded
 {
   v4 = 0.279253;
   if (a4)
@@ -642,12 +642,12 @@ uint64_t __28__TVRUIChannelButton_expand__block_invoke(uint64_t a1)
   return CATransform3DMakeRotation(retstr, v4, 0.0, 0.0, 1.0);
 }
 
-- (id)chevronLeftWingAnimationExpand:(BOOL)a3
+- (id)chevronLeftWingAnimationExpand:(BOOL)expand
 {
-  v3 = a3;
-  v4 = [(TVRUIChannelButton *)self _newSpringAnimation];
-  [v4 setKeyPath:@"transform.rotation.z"];
-  if (v3)
+  expandCopy = expand;
+  _newSpringAnimation = [(TVRUIChannelButton *)self _newSpringAnimation];
+  [_newSpringAnimation setKeyPath:@"transform.rotation.z"];
+  if (expandCopy)
   {
     v5 = &unk_287E84E80;
   }
@@ -657,17 +657,17 @@ uint64_t __28__TVRUIChannelButton_expand__block_invoke(uint64_t a1)
     v5 = &unk_287E84E90;
   }
 
-  [v4 setToValue:v5];
+  [_newSpringAnimation setToValue:v5];
 
-  return v4;
+  return _newSpringAnimation;
 }
 
-- (id)chevronRightWingAnimationExpand:(BOOL)a3
+- (id)chevronRightWingAnimationExpand:(BOOL)expand
 {
-  v3 = a3;
-  v4 = [(TVRUIChannelButton *)self _newSpringAnimation];
-  [v4 setKeyPath:@"transform.rotation.z"];
-  if (v3)
+  expandCopy = expand;
+  _newSpringAnimation = [(TVRUIChannelButton *)self _newSpringAnimation];
+  [_newSpringAnimation setKeyPath:@"transform.rotation.z"];
+  if (expandCopy)
   {
     v5 = &unk_287E84EA0;
   }
@@ -677,9 +677,9 @@ uint64_t __28__TVRUIChannelButton_expand__block_invoke(uint64_t a1)
     v5 = &unk_287E84EB0;
   }
 
-  [v4 setToValue:v5];
+  [_newSpringAnimation setToValue:v5];
 
-  return v4;
+  return _newSpringAnimation;
 }
 
 - (void)collapse
@@ -688,8 +688,8 @@ uint64_t __28__TVRUIChannelButton_expand__block_invoke(uint64_t a1)
   {
     if (![(TVRUIChannelButton *)self isAnimating])
     {
-      v3 = [(TVRUIChannelButton *)self contentView];
-      [v3 bounds];
+      contentView = [(TVRUIChannelButton *)self contentView];
+      [contentView bounds];
       v5 = v4;
       v7 = v6;
       v9 = v8;
@@ -704,14 +704,14 @@ uint64_t __28__TVRUIChannelButton_expand__block_invoke(uint64_t a1)
       v67.size.width = v9;
       v67.size.height = 64.0;
       MidY = CGRectGetMidY(v67);
-      v12 = [(TVRUIChannelButton *)self titleLabel];
-      v13 = [v12 layer];
-      [v13 frame];
+      titleLabel = [(TVRUIChannelButton *)self titleLabel];
+      layer = [titleLabel layer];
+      [layer frame];
       v15 = MidY - v14 * 0.5 + -5.0;
 
-      v16 = [(TVRUIChannelButton *)self titleLabel];
-      v17 = [v16 layer];
-      [v17 frame];
+      titleLabel2 = [(TVRUIChannelButton *)self titleLabel];
+      layer2 = [titleLabel2 layer];
+      [layer2 frame];
       v19 = MidY + v18 * 0.5 + 5.0;
 
       [MEMORY[0x277CD9FF0] begin];
@@ -732,98 +732,98 @@ uint64_t __28__TVRUIChannelButton_expand__block_invoke(uint64_t a1)
       v65[12] = 0x4014000000000000;
       *&v65[13] = v19;
       [MEMORY[0x277CD9FF0] setCompletionBlock:v65];
-      v20 = [(TVRUIChannelButton *)self _newSpringAnimation];
-      [v20 setKeyPath:?];
+      _newSpringAnimation = [(TVRUIChannelButton *)self _newSpringAnimation];
+      [_newSpringAnimation setKeyPath:?];
       v21 = [MEMORY[0x277CCABB0] numberWithDouble:5.0];
-      v64 = v20;
-      [v20 setToValue:v21];
+      v64 = _newSpringAnimation;
+      [_newSpringAnimation setToValue:v21];
 
-      v22 = [(TVRUIChannelButton *)self topButton];
-      v23 = [v22 contentLayer];
-      [v23 addAnimation:v20 forKey:@"topChevronContentLayerPositionAnim"];
+      topButton = [(TVRUIChannelButton *)self topButton];
+      contentLayer = [topButton contentLayer];
+      [contentLayer addAnimation:_newSpringAnimation forKey:@"topChevronContentLayerPositionAnim"];
 
-      v24 = [(TVRUIChannelButton *)self topButton];
-      v25 = [v24 leftWing];
+      topButton2 = [(TVRUIChannelButton *)self topButton];
+      leftWing = [topButton2 leftWing];
       v26 = [(TVRUIChannelButton *)self chevronLeftWingAnimationExpand:0];
-      [v25 addAnimation:v26 forKey:@"transform.rotate"];
+      [leftWing addAnimation:v26 forKey:@"transform.rotate"];
 
-      v27 = [(TVRUIChannelButton *)self topButton];
-      v28 = [v27 rightWing];
+      topButton3 = [(TVRUIChannelButton *)self topButton];
+      rightWing = [topButton3 rightWing];
       v29 = [(TVRUIChannelButton *)self chevronRightWingAnimationExpand:0];
-      [v28 addAnimation:v29 forKey:@"transform.rotate"];
+      [rightWing addAnimation:v29 forKey:@"transform.rotate"];
 
-      v30 = [(TVRUIChannelButton *)self _newSpringAnimation];
-      [v30 setKeyPath:@"bounds.size.height"];
+      _newSpringAnimation2 = [(TVRUIChannelButton *)self _newSpringAnimation];
+      [_newSpringAnimation2 setKeyPath:@"bounds.size.height"];
       v31 = [MEMORY[0x277CCABB0] numberWithDouble:10.0];
-      [v30 setToValue:v31];
+      [_newSpringAnimation2 setToValue:v31];
 
-      v32 = [(TVRUIChannelButton *)self topButton];
-      v33 = [v32 layer];
-      [v33 addAnimation:v30 forKey:@"topChevronBoundsAnim"];
+      topButton4 = [(TVRUIChannelButton *)self topButton];
+      layer3 = [topButton4 layer];
+      [layer3 addAnimation:_newSpringAnimation2 forKey:@"topChevronBoundsAnim"];
 
-      v34 = [(TVRUIChannelButton *)self _newSpringAnimation];
-      [v34 setKeyPath:@"position.y"];
+      _newSpringAnimation3 = [(TVRUIChannelButton *)self _newSpringAnimation];
+      [_newSpringAnimation3 setKeyPath:@"position.y"];
       v35 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
-      [v34 setToValue:v35];
+      [_newSpringAnimation3 setToValue:v35];
 
-      v36 = [(TVRUIChannelButton *)self topButton];
-      v37 = [v36 layer];
-      [v37 addAnimation:v34 forKey:@"topChevronPositionAnim"];
+      topButton5 = [(TVRUIChannelButton *)self topButton];
+      layer4 = [topButton5 layer];
+      [layer4 addAnimation:_newSpringAnimation3 forKey:@"topChevronPositionAnim"];
 
-      v38 = [(TVRUIChannelButton *)self _newSpringAnimation];
-      [v38 setKeyPath:@"position.y"];
+      _newSpringAnimation4 = [(TVRUIChannelButton *)self _newSpringAnimation];
+      [_newSpringAnimation4 setKeyPath:@"position.y"];
       v39 = [MEMORY[0x277CCABB0] numberWithDouble:MidY];
-      [v38 setToValue:v39];
+      [_newSpringAnimation4 setToValue:v39];
 
-      v40 = [(TVRUIChannelButton *)self titleLabel];
-      v41 = [v40 layer];
-      [v41 addAnimation:v38 forKey:@"channelPosAnim"];
+      titleLabel3 = [(TVRUIChannelButton *)self titleLabel];
+      layer5 = [titleLabel3 layer];
+      [layer5 addAnimation:_newSpringAnimation4 forKey:@"channelPosAnim"];
 
-      v42 = [(TVRUIChannelButton *)self _newSpringAnimation];
-      [v42 setKeyPath:@"position.y"];
+      _newSpringAnimation5 = [(TVRUIChannelButton *)self _newSpringAnimation];
+      [_newSpringAnimation5 setKeyPath:@"position.y"];
       v43 = [MEMORY[0x277CCABB0] numberWithDouble:5.0];
-      [v42 setToValue:v43];
+      [_newSpringAnimation5 setToValue:v43];
 
-      v44 = [(TVRUIChannelButton *)self bottomButton];
-      v45 = [v44 contentLayer];
-      [v45 addAnimation:v42 forKey:@"bottomChevronContentLayerPositionAnim"];
+      bottomButton = [(TVRUIChannelButton *)self bottomButton];
+      contentLayer2 = [bottomButton contentLayer];
+      [contentLayer2 addAnimation:_newSpringAnimation5 forKey:@"bottomChevronContentLayerPositionAnim"];
 
-      v46 = [(TVRUIChannelButton *)self bottomButton];
-      v47 = [v46 leftWing];
+      bottomButton2 = [(TVRUIChannelButton *)self bottomButton];
+      leftWing2 = [bottomButton2 leftWing];
       v48 = [(TVRUIChannelButton *)self chevronLeftWingAnimationExpand:0];
-      [v47 addAnimation:v48 forKey:@"transform.rotate"];
+      [leftWing2 addAnimation:v48 forKey:@"transform.rotate"];
 
-      v49 = [(TVRUIChannelButton *)self bottomButton];
-      v50 = [v49 rightWing];
+      bottomButton3 = [(TVRUIChannelButton *)self bottomButton];
+      rightWing2 = [bottomButton3 rightWing];
       v51 = [(TVRUIChannelButton *)self chevronRightWingAnimationExpand:0];
-      [v50 addAnimation:v51 forKey:@"transform.rotate"];
+      [rightWing2 addAnimation:v51 forKey:@"transform.rotate"];
 
-      v52 = [(TVRUIChannelButton *)self _newSpringAnimation];
-      [v52 setKeyPath:@"bounds.size.height"];
+      _newSpringAnimation6 = [(TVRUIChannelButton *)self _newSpringAnimation];
+      [_newSpringAnimation6 setKeyPath:@"bounds.size.height"];
       v53 = [MEMORY[0x277CCABB0] numberWithDouble:10.0];
-      [v52 setToValue:v53];
+      [_newSpringAnimation6 setToValue:v53];
 
-      v54 = [(TVRUIChannelButton *)self bottomButton];
-      v55 = [v54 layer];
-      [v55 addAnimation:v52 forKey:@"bottomChevronBoundsAnim"];
+      bottomButton4 = [(TVRUIChannelButton *)self bottomButton];
+      layer6 = [bottomButton4 layer];
+      [layer6 addAnimation:_newSpringAnimation6 forKey:@"bottomChevronBoundsAnim"];
 
-      v56 = [(TVRUIChannelButton *)self _newSpringAnimation];
-      [v56 setKeyPath:@"position.y"];
+      _newSpringAnimation7 = [(TVRUIChannelButton *)self _newSpringAnimation];
+      [_newSpringAnimation7 setKeyPath:@"position.y"];
       v57 = [MEMORY[0x277CCABB0] numberWithDouble:v19];
-      [v56 setToValue:v57];
+      [_newSpringAnimation7 setToValue:v57];
 
-      v58 = [(TVRUIChannelButton *)self bottomButton];
-      v59 = [v58 layer];
-      [v59 addAnimation:v56 forKey:@"bottomChevronPositionAnim"];
+      bottomButton5 = [(TVRUIChannelButton *)self bottomButton];
+      layer7 = [bottomButton5 layer];
+      [layer7 addAnimation:_newSpringAnimation7 forKey:@"bottomChevronPositionAnim"];
 
-      v60 = [(TVRUIChannelButton *)self _newSpringAnimation];
-      [v60 setKeyPath:@"bounds.size.height"];
+      _newSpringAnimation8 = [(TVRUIChannelButton *)self _newSpringAnimation];
+      [_newSpringAnimation8 setKeyPath:@"bounds.size.height"];
       v61 = [MEMORY[0x277CCABB0] numberWithDouble:64.0];
-      [v60 setToValue:v61];
+      [_newSpringAnimation8 setToValue:v61];
 
-      v62 = [(TVRUIChannelButton *)self contentView];
-      v63 = [v62 layer];
-      [v63 addAnimation:v60 forKey:@"contentLayerBoundsAnim"];
+      contentView2 = [(TVRUIChannelButton *)self contentView];
+      layer8 = [contentView2 layer];
+      [layer8 addAnimation:_newSpringAnimation8 forKey:@"contentLayerBoundsAnim"];
 
       [MEMORY[0x277CD9FF0] commit];
       [(TVRUIChannelButton *)self setIsAnimating:1];
@@ -1073,7 +1073,7 @@ uint64_t __30__TVRUIChannelButton_collapse__block_invoke(uint64_t a1)
   return [*(a1 + 32) setIsAnimating:0];
 }
 
-- (void)_darkenSystemColorsChanged:(id)a3
+- (void)_darkenSystemColorsChanged:(id)changed
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = _TVRUIViewControllerLog();
@@ -1084,43 +1084,43 @@ uint64_t __30__TVRUIChannelButton_collapse__block_invoke(uint64_t a1)
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  v5 = [(TVRUIChannelButton *)self styleProvider];
-  v6 = [v5 buttonBackgroundColor];
-  [(TVRUIChannelButton *)self setBackgroundColor:v6];
+  styleProvider = [(TVRUIChannelButton *)self styleProvider];
+  buttonBackgroundColor = [styleProvider buttonBackgroundColor];
+  [(TVRUIChannelButton *)self setBackgroundColor:buttonBackgroundColor];
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
-  v9 = +[TVRUIButtonEvent createButtonEvent:buttonType:](TVRUIButtonEvent, "createButtonEvent:buttonType:", 1, [a3 buttonType]);
-  v4 = [(TVRUIChannelButton *)self buttonEventDelegate];
-  if (v4)
+  v9 = +[TVRUIButtonEvent createButtonEvent:buttonType:](TVRUIButtonEvent, "createButtonEvent:buttonType:", 1, [pressed buttonType]);
+  buttonEventDelegate = [(TVRUIChannelButton *)self buttonEventDelegate];
+  if (buttonEventDelegate)
   {
-    v5 = v4;
-    v6 = [(TVRUIChannelButton *)self buttonEventDelegate];
+    v5 = buttonEventDelegate;
+    buttonEventDelegate2 = [(TVRUIChannelButton *)self buttonEventDelegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(TVRUIChannelButton *)self buttonEventDelegate];
-      [v8 generatedButtonEvent:v9];
+      buttonEventDelegate3 = [(TVRUIChannelButton *)self buttonEventDelegate];
+      [buttonEventDelegate3 generatedButtonEvent:v9];
     }
   }
 }
 
-- (void)_buttonReleased:(id)a3
+- (void)_buttonReleased:(id)released
 {
-  v9 = +[TVRUIButtonEvent createButtonEvent:buttonType:](TVRUIButtonEvent, "createButtonEvent:buttonType:", 2, [a3 buttonType]);
-  v4 = [(TVRUIChannelButton *)self buttonEventDelegate];
-  if (v4)
+  v9 = +[TVRUIButtonEvent createButtonEvent:buttonType:](TVRUIButtonEvent, "createButtonEvent:buttonType:", 2, [released buttonType]);
+  buttonEventDelegate = [(TVRUIChannelButton *)self buttonEventDelegate];
+  if (buttonEventDelegate)
   {
-    v5 = v4;
-    v6 = [(TVRUIChannelButton *)self buttonEventDelegate];
+    v5 = buttonEventDelegate;
+    buttonEventDelegate2 = [(TVRUIChannelButton *)self buttonEventDelegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(TVRUIChannelButton *)self buttonEventDelegate];
-      [v8 generatedButtonEvent:v9];
+      buttonEventDelegate3 = [(TVRUIChannelButton *)self buttonEventDelegate];
+      [buttonEventDelegate3 generatedButtonEvent:v9];
     }
   }
 }

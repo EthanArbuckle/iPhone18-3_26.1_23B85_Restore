@@ -1,6 +1,6 @@
 @interface _UIPageCurl
 + (void)be_swizzlePageCurlFilter;
-- (id)bepageCurlHack_newAnimationForState:(id)a3 withKeyPath:(id)a4 duration:(double)a5 fromValue:(id)a6;
+- (id)bepageCurlHack_newAnimationForState:(id)state withKeyPath:(id)path duration:(double)duration fromValue:(id)value;
 - (id)bepageCurlHack_newFilter;
 @end
 
@@ -14,14 +14,14 @@
   }
 }
 
-- (id)bepageCurlHack_newAnimationForState:(id)a3 withKeyPath:(id)a4 duration:(double)a5 fromValue:(id)a6
+- (id)bepageCurlHack_newAnimationForState:(id)state withKeyPath:(id)path duration:(double)duration fromValue:(id)value
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  valueCopy = value;
+  pathCopy = path;
+  stateCopy = state;
   v13 = +[BEPageCurlConfig shared];
   v14 = v13;
-  if (a5 == 0.4)
+  if (duration == 0.4)
   {
     [v13 tapAnimationDuration];
     v16 = v15;
@@ -29,23 +29,23 @@
 
   else
   {
-    v17 = [v13 pageCurlDelegate];
-    [v17 interactiveAnimationDuration];
+    pageCurlDelegate = [v13 pageCurlDelegate];
+    [pageCurlDelegate interactiveAnimationDuration];
     v16 = v18;
   }
 
-  v19 = [(_UIPageCurl *)self bepageCurlHack_newAnimationForState:v12 withKeyPath:v11 duration:v10 fromValue:v16];
+  v19 = [(_UIPageCurl *)self bepageCurlHack_newAnimationForState:stateCopy withKeyPath:pathCopy duration:valueCopy fromValue:v16];
 
   return v19;
 }
 
 - (id)bepageCurlHack_newFilter
 {
-  v2 = [(_UIPageCurl *)self bepageCurlHack_newFilter];
+  bepageCurlHack_newFilter = [(_UIPageCurl *)self bepageCurlHack_newFilter];
   v3 = +[BEPageCurlConfig shared];
-  [v3 applyToFilter:v2];
+  [v3 applyToFilter:bepageCurlHack_newFilter];
 
-  return v2;
+  return bepageCurlHack_newFilter;
 }
 
 @end

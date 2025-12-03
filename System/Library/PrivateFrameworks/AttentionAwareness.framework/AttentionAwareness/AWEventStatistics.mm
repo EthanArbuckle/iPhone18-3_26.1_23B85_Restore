@@ -1,7 +1,7 @@
 @interface AWEventStatistics
 + (id)sharedStatistics;
 - (AWEventStatistics)init;
-- (void)logEvent:(unint64_t)a3;
+- (void)logEvent:(unint64_t)event;
 @end
 
 @implementation AWEventStatistics
@@ -198,16 +198,16 @@ LABEL_38:
   return v3;
 }
 
-- (void)logEvent:(unint64_t)a3
+- (void)logEvent:(unint64_t)event
 {
   dispatch_assert_queue_V2(self->_queue);
   stats = self->_stats;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:event];
   v12 = [(NSMutableDictionary *)stats objectForKeyedSubscript:v6];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v12, "integerValue") + 1}];
   v8 = self->_stats;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:event];
   [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:v9];
 
   if (!self->_timerResumed)
@@ -243,14 +243,14 @@ LABEL_38:
     v8 = v2;
     v15 = v8;
     dispatch_source_set_event_handler(v7, handler);
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v10 = v8[6];
-    v8[6] = v9;
+    v8[6] = dictionary;
 
     v8[4] = absTimeNS();
-    v11 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v12 = v8[5];
-    v8[5] = v11;
+    v8[5] = date;
   }
 
   return v2;

@@ -1,44 +1,44 @@
 @interface ATXTrendPlot
-- (ATXTrendPlot)initWithStartDate:(id)a3 endDate:(id)a4 granularity:(int64_t)a5 binInitialDataProvider:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXTrendPlot:(id)a3;
+- (ATXTrendPlot)initWithStartDate:(id)date endDate:(id)endDate granularity:(int64_t)granularity binInitialDataProvider:(id)provider;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXTrendPlot:(id)plot;
 - (NSDate)endDate;
 - (NSDate)startDate;
-- (id)_dateComponentsForGranularity:(int64_t)a3;
-- (id)binAtDate:(id)a3;
-- (unint64_t)_binIndexForDate:(id)a3;
+- (id)_dateComponentsForGranularity:(int64_t)granularity;
+- (id)binAtDate:(id)date;
+- (unint64_t)_binIndexForDate:(id)date;
 - (unint64_t)hash;
 @end
 
 @implementation ATXTrendPlot
 
-- (ATXTrendPlot)initWithStartDate:(id)a3 endDate:(id)a4 granularity:(int64_t)a5 binInitialDataProvider:(id)a6
+- (ATXTrendPlot)initWithStartDate:(id)date endDate:(id)endDate granularity:(int64_t)granularity binInitialDataProvider:(id)provider
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  providerCopy = provider;
   v33.receiver = self;
   v33.super_class = ATXTrendPlot;
   v13 = [(ATXTrendPlot *)&v33 init];
   v14 = v13;
   if (v13)
   {
-    v13->_granularity = a5;
-    v15 = [MEMORY[0x1E695DEE8] currentCalendar];
+    v13->_granularity = granularity;
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v16 = [(ATXTrendPlot *)v14 _dateComponentsForGranularity:v14->_granularity];
     v17 = MEMORY[0x1E695DF70];
-    v18 = [[ATXTrendPlotBin alloc] initWithStartDate:v10];
+    v18 = [[ATXTrendPlotBin alloc] initWithStartDate:dateCopy];
     v19 = [v17 arrayWithObject:v18];
 
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __77__ATXTrendPlot_initWithStartDate_endDate_granularity_binInitialDataProvider___block_invoke;
     v30[3] = &unk_1E86A4EE8;
-    v20 = v11;
+    v20 = endDateCopy;
     v31 = v20;
     v21 = v19;
     v32 = v21;
-    [v15 enumerateDatesStartingAfterDate:v10 matchingComponents:v16 options:2 usingBlock:v30];
+    [currentCalendar enumerateDatesStartingAfterDate:dateCopy matchingComponents:v16 options:2 usingBlock:v30];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __77__ATXTrendPlot_initWithStartDate_endDate_granularity_binInitialDataProvider___block_invoke_2;
@@ -46,7 +46,7 @@
     v22 = v21;
     v27 = v22;
     v28 = v20;
-    v29 = v12;
+    v29 = providerCopy;
     [(NSArray *)v22 enumerateObjectsUsingBlock:v26];
     bins = v14->_bins;
     v14->_bins = v22;
@@ -102,23 +102,23 @@ void __77__ATXTrendPlot_initWithStartDate_endDate_granularity_binInitialDataProv
 
 - (NSDate)startDate
 {
-  v2 = [(NSArray *)self->_bins firstObject];
-  v3 = [v2 startDate];
+  firstObject = [(NSArray *)self->_bins firstObject];
+  startDate = [firstObject startDate];
 
-  return v3;
+  return startDate;
 }
 
 - (NSDate)endDate
 {
-  v2 = [(NSArray *)self->_bins lastObject];
-  v3 = [v2 endDate];
+  lastObject = [(NSArray *)self->_bins lastObject];
+  endDate = [lastObject endDate];
 
-  return v3;
+  return endDate;
 }
 
-- (id)binAtDate:(id)a3
+- (id)binAtDate:(id)date
 {
-  v4 = [(ATXTrendPlot *)self _binIndexForDate:a3];
+  v4 = [(ATXTrendPlot *)self _binIndexForDate:date];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -132,18 +132,18 @@ void __77__ATXTrendPlot_initWithStartDate_endDate_granularity_binInitialDataProv
   return v5;
 }
 
-- (unint64_t)_binIndexForDate:(id)a3
+- (unint64_t)_binIndexForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (![(NSArray *)self->_bins count])
   {
     goto LABEL_7;
   }
 
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v6 = v5;
-  v7 = [(ATXTrendPlot *)self startDate];
-  [v7 timeIntervalSinceReferenceDate];
+  startDate = [(ATXTrendPlot *)self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   if (v6 < v8)
   {
 
@@ -152,10 +152,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v10 = v9;
-  v11 = [(ATXTrendPlot *)self endDate];
-  [v11 timeIntervalSinceReferenceDate];
+  endDate = [(ATXTrendPlot *)self endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v13 = v12;
 
   if (v10 >= v13)
@@ -163,11 +163,11 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v15 = v14;
-  v16 = [(NSArray *)self->_bins lastObject];
-  v17 = [v16 startDate];
-  [v17 timeIntervalSinceReferenceDate];
+  lastObject = [(NSArray *)self->_bins lastObject];
+  startDate2 = [lastObject startDate];
+  [startDate2 timeIntervalSinceReferenceDate];
   v19 = v18;
 
   if (v15 >= v19)
@@ -177,11 +177,11 @@ LABEL_7:
 
   else
   {
-    v20 = [[ATXTrendPlotBin alloc] initWithStartDate:v4];
+    v20 = [[ATXTrendPlotBin alloc] initWithStartDate:dateCopy];
     v21 = [(NSArray *)self->_bins indexOfObject:v20 inSortedRange:0 options:[(NSArray *)self->_bins count]- 1 usingComparator:1024, &__block_literal_global_20];
     v22 = [(NSArray *)self->_bins objectAtIndexedSubscript:v21];
-    v23 = [v22 startDate];
-    v24 = [v23 isEqualToDate:v4];
+    startDate3 = [v22 startDate];
+    v24 = [startDate3 isEqualToDate:dateCopy];
 
     v25 = v21 - (v24 ^ 1u);
   }
@@ -201,11 +201,11 @@ uint64_t __33__ATXTrendPlot__binIndexForDate___block_invoke(uint64_t a1, void *a
   return v7;
 }
 
-- (id)_dateComponentsForGranularity:(int64_t)a3
+- (id)_dateComponentsForGranularity:(int64_t)granularity
 {
   v4 = objc_opt_new();
   v5 = v4;
-  switch(a3)
+  switch(granularity)
   {
     case 3:
       [v4 setWeekday:2];
@@ -221,27 +221,27 @@ uint64_t __33__ATXTrendPlot__binIndexForDate___block_invoke(uint64_t a1, void *a
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXTrendPlot *)self isEqualToATXTrendPlot:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXTrendPlot *)self isEqualToATXTrendPlot:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXTrendPlot:(id)a3
+- (BOOL)isEqualToATXTrendPlot:(id)plot
 {
-  v4 = a3;
-  if (self->_granularity == v4[1] && (v5 = -[NSArray count](self->_bins, "count"), v5 == [v4[2] count]))
+  plotCopy = plot;
+  if (self->_granularity == plotCopy[1] && (v5 = -[NSArray count](self->_bins, "count"), v5 == [plotCopy[2] count]))
   {
     v12 = 0;
     v13 = &v12;
@@ -252,7 +252,7 @@ uint64_t __33__ATXTrendPlot__binIndexForDate___block_invoke(uint64_t a1, void *a
     v9[1] = 3221225472;
     v9[2] = __38__ATXTrendPlot_isEqualToATXTrendPlot___block_invoke;
     v9[3] = &unk_1E86A4F58;
-    v10 = v4;
+    v10 = plotCopy;
     v11 = &v12;
     [(NSArray *)bins enumerateObjectsUsingBlock:v9];
     v7 = *(v13 + 24);
@@ -316,11 +316,11 @@ LABEL_5:
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 startDate];
-        v10 = [v9 hash] - granularity + 32 * granularity;
+        startDate = [v8 startDate];
+        v10 = [startDate hash] - granularity + 32 * granularity;
 
-        v11 = [v8 data];
-        granularity = [v11 hash] - v10 + 32 * v10;
+        data = [v8 data];
+        granularity = [data hash] - v10 + 32 * v10;
       }
 
       v5 = [(NSArray *)v3 countByEnumeratingWithState:&v14 objects:v18 count:16];

@@ -1,9 +1,9 @@
 @interface CNUIContactPropertyIDSHandle
-+ (id)idsIDForEmail:(id)a3;
-+ (id)idsIDForPhoneNumber:(id)a3;
++ (id)idsIDForEmail:(id)email;
++ (id)idsIDForPhoneNumber:(id)number;
 + (id)supportedContactPropertyKeys;
-- (BOOL)isEqual:(id)a3;
-- (CNUIContactPropertyIDSHandle)initWithContactProperty:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNUIContactPropertyIDSHandle)initWithContactProperty:(id)property;
 - (NSString)description;
 - (unint64_t)hash;
 @end
@@ -21,13 +21,13 @@
   return v3;
 }
 
-+ (id)idsIDForPhoneNumber:(id)a3
++ (id)idsIDForPhoneNumber:(id)number
 {
-  v3 = a3;
-  v4 = [v3 digits];
-  v5 = [v3 countryCode];
-  v6 = v4;
-  v7 = v5;
+  numberCopy = number;
+  digits = [numberCopy digits];
+  countryCode = [numberCopy countryCode];
+  v6 = digits;
+  v7 = countryCode;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -54,9 +54,9 @@
   return v10;
 }
 
-+ (id)idsIDForEmail:(id)a3
++ (id)idsIDForEmail:(id)email
 {
-  v3 = a3;
+  emailCopy = email;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -78,25 +78,25 @@
     _Unwind_Resume(v8);
   }
 
-  v6 = v4(v3);
+  v6 = v4(emailCopy);
 
   return v6;
 }
 
-- (CNUIContactPropertyIDSHandle)initWithContactProperty:(id)a3
+- (CNUIContactPropertyIDSHandle)initWithContactProperty:(id)property
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() supportedContactPropertyKeys];
-  v6 = [v4 key];
-  v7 = [v5 containsObject:v6];
+  propertyCopy = property;
+  supportedContactPropertyKeys = [objc_opt_class() supportedContactPropertyKeys];
+  v6 = [propertyCopy key];
+  v7 = [supportedContactPropertyKeys containsObject:v6];
 
   if ((v7 & 1) == 0)
   {
     v20 = MEMORY[0x1E695DF30];
     v21 = *MEMORY[0x1E695D930];
     v27 = @"unsupportedKey";
-    v22 = [v4 key];
+    v22 = [propertyCopy key];
     v28[0] = v22;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v24 = [v20 exceptionWithName:v21 reason:@"Unsupported key passed to CNUIContactPropertyIDSHandle" userInfo:v23];
@@ -110,23 +110,23 @@
   v8 = [(CNUIContactPropertyIDSHandle *)&v26 init];
   if (v8)
   {
-    v9 = [v4 copy];
+    v9 = [propertyCopy copy];
     contactProperty = v8->_contactProperty;
     v8->_contactProperty = v9;
 
-    v11 = [v4 key];
+    v11 = [propertyCopy key];
     v12 = [v11 isEqual:*MEMORY[0x1E695C330]];
 
     v13 = objc_opt_class();
-    v14 = [v4 value];
+    value = [propertyCopy value];
     if (v12)
     {
-      [v13 idsIDForPhoneNumber:v14];
+      [v13 idsIDForPhoneNumber:value];
     }
 
     else
     {
-      [v13 idsIDForEmail:v14];
+      [v13 idsIDForEmail:value];
     }
     v15 = ;
 
@@ -143,28 +143,28 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNUIContactPropertyIDSHandle *)self contactProperty];
-  v5 = [v3 appendName:@"contactProperty" object:v4];
+  contactProperty = [(CNUIContactPropertyIDSHandle *)self contactProperty];
+  v5 = [v3 appendName:@"contactProperty" object:contactProperty];
 
-  v6 = [(CNUIContactPropertyIDSHandle *)self idsID];
-  v7 = [v3 appendName:@"idsID" object:v6];
+  idsID = [(CNUIContactPropertyIDSHandle *)self idsID];
+  v7 = [v3 appendName:@"idsID" object:idsID];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__CNUIContactPropertyIDSHandle_isEqual___block_invoke;
   v8[3] = &unk_1E76E7A88;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = equalCopy;
+  v6 = equalCopy;
   LOBYTE(self) = [v5 isObject:self equalToOther:v6 withBlocks:{v8, 0}];
 
   return self;

@@ -1,7 +1,7 @@
 @interface CalendarUsageBundleStorageReporter
-- (BOOL)allowDeletionForCategory:(id)a3;
+- (BOOL)allowDeletionForCategory:(id)category;
 - (CalendarUsageBundleStorageReporter)init;
-- (float)sizeForCategory:(id)a3;
+- (float)sizeForCategory:(id)category;
 - (id)usageBundleApps;
 - (void)populateUsageBundleApps;
 @end
@@ -39,8 +39,8 @@
 
   [v29 setName:v28];
   v27 = [[EKEventStore alloc] initWithEKOptions:132];
-  v4 = [v27 fetchStorageUsage];
-  v5 = [v4 objectForKeyedSubscript:EKStorageUsageEventsKey];
+  fetchStorageUsage = [v27 fetchStorageUsage];
+  v5 = [fetchStorageUsage objectForKeyedSubscript:EKStorageUsageEventsKey];
   v6 = v5;
   if (v5)
   {
@@ -54,7 +54,7 @@
 
   v8 = v7;
 
-  v9 = [v4 objectForKeyedSubscript:EKStorageUsageAttachmentsKey];
+  v9 = [fetchStorageUsage objectForKeyedSubscript:EKStorageUsageAttachmentsKey];
   v10 = v9;
   if (v9)
   {
@@ -68,8 +68,8 @@
 
   v12 = v11;
 
-  v13 = [v8 longLongValue];
-  v26 = &v13[[v12 longLongValue]];
+  longLongValue = [v8 longLongValue];
+  v26 = &longLongValue[[v12 longLongValue]];
   v14 = [[NSMutableArray alloc] initWithCapacity:2];
   v15 = [[NSMutableDictionary alloc] initWithCapacity:2];
   cachedCategorySizes = self->_cachedCategorySizes;
@@ -109,9 +109,9 @@
   return cachedBundleApps;
 }
 
-- (BOOL)allowDeletionForCategory:(id)a3
+- (BOOL)allowDeletionForCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = qword_8740;
   if (!qword_8740)
   {
@@ -128,16 +128,16 @@
     v4 = qword_8740;
   }
 
-  v9 = [v3 identifier];
-  v10 = [v4 objectForKey:v9];
-  v11 = [v10 BOOLValue];
+  identifier = [categoryCopy identifier];
+  v10 = [v4 objectForKey:identifier];
+  bOOLValue = [v10 BOOLValue];
 
-  return v11;
+  return bOOLValue;
 }
 
-- (float)sizeForCategory:(id)a3
+- (float)sizeForCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   cachedCategorySizes = self->_cachedCategorySizes;
   if (!cachedCategorySizes)
   {
@@ -145,8 +145,8 @@
     cachedCategorySizes = self->_cachedCategorySizes;
   }
 
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)cachedCategorySizes objectForKey:v6];
+  identifier = [categoryCopy identifier];
+  v7 = [(NSMutableDictionary *)cachedCategorySizes objectForKey:identifier];
   [v7 floatValue];
   v9 = v8;
 

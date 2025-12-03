@@ -1,27 +1,27 @@
 @interface VMUObjectIdentifierDriverKitSupport
-- (VMUObjectIdentifierDriverKitSupport)initWithObjectIdentifier:(id)a3;
-- (id)_fieldsFromStructureLayout:(id *)a3 withOffset:(unint64_t)a4;
-- (id)_fieldsOfLegacyOSObject:(id)a3;
-- (id)_fieldsOfLocalDriverKitOSObject:(id)a3;
-- (id)_fieldsOfOSObject:(id)a3 startOffset:(unint64_t)a4;
-- (id)_fieldsOfRemoteDriverKitOSObject:(id)a3;
-- (id)_labelForDriverKitOSClassLoadInformation:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)_labelForDriverKitOSMetaClass:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)classInfoForDriverKitMemory:(void *)a3 length:(unint64_t)a4 atOffset:(unint64_t)a5 translatedIsa:(unint64_t)a6 symbol:(_CSTypeRef)a7 remoteAddress:(unint64_t)a8;
+- (VMUObjectIdentifierDriverKitSupport)initWithObjectIdentifier:(id)identifier;
+- (id)_fieldsFromStructureLayout:(id *)layout withOffset:(unint64_t)offset;
+- (id)_fieldsOfLegacyOSObject:(id)object;
+- (id)_fieldsOfLocalDriverKitOSObject:(id)object;
+- (id)_fieldsOfOSObject:(id)object startOffset:(unint64_t)offset;
+- (id)_fieldsOfRemoteDriverKitOSObject:(id)object;
+- (id)_labelForDriverKitOSClassLoadInformation:(void *)information length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)_labelForDriverKitOSMetaClass:(void *)class length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)classInfoForDriverKitMemory:(void *)memory length:(unint64_t)length atOffset:(unint64_t)offset translatedIsa:(unint64_t)isa symbol:(_CSTypeRef)symbol remoteAddress:(unint64_t)address;
 - (id)classInfoForDriverKitOSClassScan;
 - (id)classInfoForDriverKitOSMetaClass;
 - (id)classInfoForDriverKitOSMetaClassPrivate;
-- (id)driverKitClassInfoForMemory:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5;
-- (id)labelForDriverKitMemory:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5 class:(id)a6;
+- (id)driverKitClassInfoForMemory:(void *)memory length:(unint64_t)length remoteAddress:(unint64_t)address;
+- (id)labelForDriverKitMemory:(void *)memory length:(unint64_t)length remoteAddress:(unint64_t)address class:(id)class;
 - (void)dealloc;
 @end
 
 @implementation VMUObjectIdentifierDriverKitSupport
 
-- (VMUObjectIdentifierDriverKitSupport)initWithObjectIdentifier:(id)a3
+- (VMUObjectIdentifierDriverKitSupport)initWithObjectIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 taskIsDriverKit])
+  identifierCopy = identifier;
+  if ([identifierCopy taskIsDriverKit])
   {
     v23.receiver = self;
     v23.super_class = VMUObjectIdentifierDriverKitSupport;
@@ -29,18 +29,18 @@
     v6 = v5;
     if (v5)
     {
-      objc_storeWeak(&v5->_objectIdentifier, v4);
-      v7 = [v4 scanner];
-      v6->_task = [v7 task];
+      objc_storeWeak(&v5->_objectIdentifier, identifierCopy);
+      scanner = [identifierCopy scanner];
+      v6->_task = [scanner task];
 
-      [v4 symbolicator];
+      [identifierCopy symbolicator];
       SymbolOwnerWithNameAtTime = CSSymbolicatorGetSymbolOwnerWithNameAtTime();
       v10 = v9;
-      v11 = [v4 memoryReader];
-      StructureLayoutDescription = getStructureLayoutDescription(SymbolOwnerWithNameAtTime, v10, "gOSMetaClassBasePrivateLayout", v11);
+      memoryReader = [identifierCopy memoryReader];
+      StructureLayoutDescription = getStructureLayoutDescription(SymbolOwnerWithNameAtTime, v10, "gOSMetaClassBasePrivateLayout", memoryReader);
 
-      v13 = [v4 memoryReader];
-      v14 = getStructureLayoutDescription(SymbolOwnerWithNameAtTime, v10, "gOSMetaClassBaseRemotePrivateLayout", v13);
+      memoryReader2 = [identifierCopy memoryReader];
+      v14 = getStructureLayoutDescription(SymbolOwnerWithNameAtTime, v10, "gOSMetaClassBaseRemotePrivateLayout", memoryReader2);
 
       if (StructureLayoutDescription)
       {
@@ -75,15 +75,15 @@
     }
 
     self = v6;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -99,14 +99,14 @@
   [(VMUObjectIdentifierDriverKitSupport *)&v4 dealloc];
 }
 
-- (id)_fieldsFromStructureLayout:(id *)a3 withOffset:(unint64_t)a4
+- (id)_fieldsFromStructureLayout:(id *)layout withOffset:(unint64_t)offset
 {
-  v4 = a4;
+  offsetCopy = offset;
   v7 = objc_opt_new();
-  var4 = a3->var4;
+  var4 = layout->var4;
   if (var4)
   {
-    p_var3 = &a3->var5[0].var3;
+    p_var3 = &layout->var5[0].var3;
     do
     {
       v10 = task_peek_string(self->_task, *(p_var3 - 3));
@@ -117,7 +117,7 @@
       v15 = *(p_var3 - 2);
       v16 = *p_var3;
       p_var3 += 5;
-      v17 = [(VMUFieldInfo *)v12 initWithName:v13 type:v14 scan:1 offset:(v15 + v4) size:v16];
+      v17 = [(VMUFieldInfo *)v12 initWithName:v13 type:v14 scan:1 offset:(v15 + offsetCopy) size:v16];
 
       [v7 addObject:v17];
       --var4;
@@ -129,35 +129,35 @@
   return v7;
 }
 
-- (id)_fieldsOfLegacyOSObject:(id)a3
+- (id)_fieldsOfLegacyOSObject:(id)object
 {
   v30[19] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 pointerSize];
-  v29 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"server" type:@"^{IOUserServer_IVars}" scan:1 offset:0 size:v4];
-  v27 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"objectRefsListEntryNext" type:@"^v" scan:4 offset:8 size:v4];
-  v26 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"objectRefsListEntryPrev" type:@"^v" scan:4 offset:16 size:v4];
+  objectCopy = object;
+  pointerSize = [objectCopy pointerSize];
+  v29 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"server" type:@"^{IOUserServer_IVars}" scan:1 offset:0 size:pointerSize];
+  v27 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"objectRefsListEntryNext" type:@"^v" scan:4 offset:8 size:pointerSize];
+  v26 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"objectRefsListEntryPrev" type:@"^v" scan:4 offset:16 size:pointerSize];
   v28 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"objectRef" type:@"Q" scan:0 offset:24 size:8];
   v24 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"flags" type:@"Q" scan:0 offset:32 size:8];
   v23 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"sendRights" type:@"L" scan:0 offset:40 size:4];
   v25 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"remoteQueueCount" type:@"L" scan:0 offset:44 size:4];
   v22 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"remoteMethodsCount" type:@"L" scan:0 offset:48 size:4];
-  v21 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"remoteQueues" type:@"^Q" scan:1 offset:56 size:v4];
-  v20 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"remoteMethods" type:@"^Q" scan:1 offset:64 size:v4];
+  v21 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"remoteQueues" type:@"^Q" scan:1 offset:56 size:pointerSize];
+  v20 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"remoteMethods" type:@"^Q" scan:1 offset:64 size:pointerSize];
   v19 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"queueAlloc" type:@"L" scan:0 offset:72 size:4];
-  v5 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"queueArray" type:@"^@IODispatchQueue" scan:1 offset:80 size:v4];
-  v18 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"vtable" type:@"^" scan:0 offset:88 size:v4];
+  v5 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"queueArray" type:@"^@IODispatchQueue" scan:1 offset:80 size:pointerSize];
+  v18 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"vtable" type:@"^" scan:0 offset:88 size:pointerSize];
   v17 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"refcount" type:@"l" scan:0 offset:96 size:4];
   v6 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"reserved" type:@"l" scan:0 offset:100 size:4];
-  v16 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"meta" type:@"@" scan:1 offset:104 size:v4];
-  v7 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"metaClassPrivate" type:@"^{OSMetaClassPrivate}" scan:1 offset:112 size:v4];
+  v16 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"meta" type:@"@" scan:1 offset:104 size:pointerSize];
+  v7 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"metaClassPrivate" type:@"^{OSMetaClassPrivate}" scan:1 offset:112 size:pointerSize];
   v15 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"retainCount" type:@"i" scan:0 offset:120 size:4];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v3 className];
+  className = [objectCopy className];
 
-  v10 = [v8 stringWithFormat:@"^{%@_IVars}", v9];
+  v10 = [v8 stringWithFormat:@"^{%@_IVars}", className];
 
-  v11 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"ivars" type:v10 scan:1 offset:128 size:v4];
+  v11 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"ivars" type:v10 scan:1 offset:128 size:pointerSize];
   v30[0] = v29;
   v30[1] = v27;
   v30[2] = v26;
@@ -184,23 +184,23 @@
   return v14;
 }
 
-- (id)_fieldsOfOSObject:(id)a3 startOffset:(unint64_t)a4
+- (id)_fieldsOfOSObject:(id)object startOffset:(unint64_t)offset
 {
   v20[7] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 pointerSize];
-  v19 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"vtable" type:@"^" scan:0 offset:a4 size:v6];
-  v18 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"refcount" type:@"l" scan:0 offset:(a4 + 8) size:4];
-  v7 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"reserved" type:@"l" scan:0 offset:(a4 + 12) size:4];
-  v8 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"meta" type:@"@" scan:1 offset:(a4 + 16) size:v6];
-  v9 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"metaClassPrivate" type:@"^{OSMetaClassPrivate}" scan:1 offset:(a4 + 24) size:v6];
-  v10 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"extra" type:@"i" scan:0 offset:(a4 + 32) size:4];
+  objectCopy = object;
+  pointerSize = [objectCopy pointerSize];
+  v19 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"vtable" type:@"^" scan:0 offset:offset size:pointerSize];
+  v18 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"refcount" type:@"l" scan:0 offset:(offset + 8) size:4];
+  v7 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"reserved" type:@"l" scan:0 offset:(offset + 12) size:4];
+  v8 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"meta" type:@"@" scan:1 offset:(offset + 16) size:pointerSize];
+  v9 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"metaClassPrivate" type:@"^{OSMetaClassPrivate}" scan:1 offset:(offset + 24) size:pointerSize];
+  v10 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"extra" type:@"i" scan:0 offset:(offset + 32) size:4];
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v5 displayName];
+  displayName = [objectCopy displayName];
 
-  v13 = [v11 stringWithFormat:@"^{%@_IVars}", v12];
+  v13 = [v11 stringWithFormat:@"^{%@_IVars}", displayName];
 
-  v14 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"ivars" type:v13 scan:1 offset:(a4 + 40) size:v6];
+  v14 = [(VMUFieldInfo *)[VMUMutableFieldInfo alloc] initWithName:@"ivars" type:v13 scan:1 offset:(offset + 40) size:pointerSize];
   v20[0] = v19;
   v20[1] = v18;
   v20[2] = v7;
@@ -215,21 +215,21 @@
   return v15;
 }
 
-- (id)_fieldsOfRemoteDriverKitOSObject:(id)a3
+- (id)_fieldsOfRemoteDriverKitOSObject:(id)object
 {
   vtableOffsetOfRemoteDriverKitOSObject = self->_vtableOffsetOfRemoteDriverKitOSObject;
   v6 = self->_privateFieldsOfRemoteDriverKitOSObject;
-  v7 = [(VMUObjectIdentifierDriverKitSupport *)self _fieldsOfOSObject:a3 startOffset:vtableOffsetOfRemoteDriverKitOSObject];
+  v7 = [(VMUObjectIdentifierDriverKitSupport *)self _fieldsOfOSObject:object startOffset:vtableOffsetOfRemoteDriverKitOSObject];
   v8 = [(NSArray *)v6 arrayByAddingObjectsFromArray:v7];
 
   return v8;
 }
 
-- (id)_fieldsOfLocalDriverKitOSObject:(id)a3
+- (id)_fieldsOfLocalDriverKitOSObject:(id)object
 {
   vtableOffsetOfLocalDriverKitOSObject = self->_vtableOffsetOfLocalDriverKitOSObject;
   v6 = self->_privateFieldsOfLocalDriverKitOSObject;
-  v7 = [(VMUObjectIdentifierDriverKitSupport *)self _fieldsOfOSObject:a3 startOffset:vtableOffsetOfLocalDriverKitOSObject];
+  v7 = [(VMUObjectIdentifierDriverKitSupport *)self _fieldsOfOSObject:object startOffset:vtableOffsetOfLocalDriverKitOSObject];
   v8 = [(NSArray *)v6 arrayByAddingObjectsFromArray:v7];
 
   return v8;
@@ -259,26 +259,26 @@
   return v3;
 }
 
-- (id)classInfoForDriverKitMemory:(void *)a3 length:(unint64_t)a4 atOffset:(unint64_t)a5 translatedIsa:(unint64_t)a6 symbol:(_CSTypeRef)a7 remoteAddress:(unint64_t)a8
+- (id)classInfoForDriverKitMemory:(void *)memory length:(unint64_t)length atOffset:(unint64_t)offset translatedIsa:(unint64_t)isa symbol:(_CSTypeRef)symbol remoteAddress:(unint64_t)address
 {
-  opaque_2 = a7._opaque_2;
-  opaque_1 = a7._opaque_1;
+  opaque_2 = symbol._opaque_2;
+  opaque_1 = symbol._opaque_1;
   __s1 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_objectIdentifier);
-  v15 = [WeakRetained _isaPointerRefersToVTable:a6 remoteAddress:a8 symbol:opaque_1 symbolNameOut:{opaque_2, &__s1}];
+  v15 = [WeakRetained _isaPointerRefersToVTable:isa remoteAddress:address symbol:opaque_1 symbolNameOut:{opaque_2, &__s1}];
 
   if (!__s1)
   {
 LABEL_6:
-    v17 = 0;
+    classInfoForDriverKitOSMetaClass = 0;
     goto LABEL_23;
   }
 
   if (!v15)
   {
-    if (!a5 && strstr(__s1, "_Class"))
+    if (!offset && strstr(__s1, "_Class"))
     {
-      if (a4 < 0x28)
+      if (length < 0x28)
       {
         [(VMUObjectIdentifierDriverKitSupport *)self classInfoForDriverKitOSClassScan];
       }
@@ -287,7 +287,7 @@ LABEL_6:
       {
         [(VMUObjectIdentifierDriverKitSupport *)self classInfoForDriverKitOSMetaClassPrivate];
       }
-      v17 = ;
+      classInfoForDriverKitOSMetaClass = ;
       goto LABEL_23;
     }
 
@@ -297,57 +297,57 @@ LABEL_6:
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:__s1 + 11];
   if ([v16 hasSuffix:@"MetaClass"])
   {
-    v17 = [(VMUObjectIdentifierDriverKitSupport *)self classInfoForDriverKitOSMetaClass];
+    classInfoForDriverKitOSMetaClass = [(VMUObjectIdentifierDriverKitSupport *)self classInfoForDriverKitOSMetaClass];
   }
 
   else
   {
-    if (a5)
+    if (offset)
     {
       CSSymbolGetSymbolOwner();
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:CSSymbolOwnerGetPath()];
-      v17 = [(VMUClassInfo *)VMUMutableClassInfo classInfoWithClassName:v16 binaryPath:v18 type:128];
+      classInfoForDriverKitOSMetaClass = [(VMUClassInfo *)VMUMutableClassInfo classInfoWithClassName:v16 binaryPath:v18 type:128];
 
-      if (self->_vtableOffsetOfRemoteDriverKitOSObject == a5)
+      if (self->_vtableOffsetOfRemoteDriverKitOSObject == offset)
       {
-        v19 = [(VMUObjectIdentifierDriverKitSupport *)self _fieldsOfRemoteDriverKitOSObject:v17];
+        v19 = [(VMUObjectIdentifierDriverKitSupport *)self _fieldsOfRemoteDriverKitOSObject:classInfoForDriverKitOSMetaClass];
       }
 
-      else if (self->_vtableOffsetOfLocalDriverKitOSObject == a5)
+      else if (self->_vtableOffsetOfLocalDriverKitOSObject == offset)
       {
-        v19 = [(VMUObjectIdentifierDriverKitSupport *)self _fieldsOfLocalDriverKitOSObject:v17];
+        v19 = [(VMUObjectIdentifierDriverKitSupport *)self _fieldsOfLocalDriverKitOSObject:classInfoForDriverKitOSMetaClass];
       }
 
       else
       {
-        if (self->_vtableOffsetOfLegacyOSObject != a5)
+        if (self->_vtableOffsetOfLegacyOSObject != offset)
         {
           goto LABEL_22;
         }
 
-        v19 = [(VMUObjectIdentifierDriverKitSupport *)self _fieldsOfLegacyOSObject:v17];
+        v19 = [(VMUObjectIdentifierDriverKitSupport *)self _fieldsOfLegacyOSObject:classInfoForDriverKitOSMetaClass];
       }
 
       v20 = v19;
       if (v19)
       {
-        [v17 setFields:v19];
+        [classInfoForDriverKitOSMetaClass setFields:v19];
       }
 
       goto LABEL_22;
     }
 
-    v17 = 0;
+    classInfoForDriverKitOSMetaClass = 0;
   }
 
 LABEL_22:
 
 LABEL_23:
 
-  return v17;
+  return classInfoForDriverKitOSMetaClass;
 }
 
-- (id)driverKitClassInfoForMemory:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)driverKitClassInfoForMemory:(void *)memory length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   vtableOffsetsCount = self->_vtableOffsetsCount;
   if (vtableOffsetsCount)
@@ -355,10 +355,10 @@ LABEL_23:
     for (i = 0; i < vtableOffsetsCount; ++i)
     {
       v11 = self->_vtableOffsets[i];
-      if (v11 + 8 <= a4)
+      if (v11 + 8 <= length)
       {
         WeakRetained = objc_loadWeakRetained(&self->_objectIdentifier);
-        v13 = [WeakRetained _classInfoForMemory:a3 length:a4 atOffset:v11 remoteAddress:a5];
+        v13 = [WeakRetained _classInfoForMemory:memory length:length atOffset:v11 remoteAddress:address];
 
         if (v13)
         {
@@ -376,12 +376,12 @@ LABEL_8:
   return v13;
 }
 
-- (id)_labelForDriverKitOSClassLoadInformation:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)_labelForDriverKitOSClassLoadInformation:(void *)information length:(unint64_t)length remoteAddress:(unint64_t)address
 {
-  if (HIDWORD(*a3))
+  if (HIDWORD(*information))
   {
-    v5 = (*a3 & 7) == 0;
-    *a3;
+    v5 = (*information & 7) == 0;
+    *information;
   }
 
   else
@@ -406,14 +406,14 @@ LABEL_8:
   return Name;
 }
 
-- (id)_labelForDriverKitOSMetaClass:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5
+- (id)_labelForDriverKitOSMetaClass:(void *)class length:(unint64_t)length remoteAddress:(unint64_t)address
 {
   if (self->_vtableOffsetsCount)
   {
     v9 = 0;
     while (1)
     {
-      v10 = *(a3 + self->_vtableOffsets[v9]);
+      v10 = *(class + self->_vtableOffsets[v9]);
       WeakRetained = objc_loadWeakRetained(&self->_objectIdentifier);
       v12 = [WeakRetained translateIsaPointer:v10];
 
@@ -428,7 +428,7 @@ LABEL_8:
         {
           v22 = 0;
           v18 = objc_loadWeakRetained(&self->_objectIdentifier);
-          v19 = [v18 _isaPointerRefersToVTable:v12 remoteAddress:a5 symbol:SymbolWithAddressAtTime symbolNameOut:{v17, &v22}];
+          v19 = [v18 _isaPointerRefersToVTable:v12 remoteAddress:address symbol:SymbolWithAddressAtTime symbolNameOut:{v17, &v22}];
 
           if (v19)
           {
@@ -456,34 +456,34 @@ LABEL_16:
   return v20;
 }
 
-- (id)labelForDriverKitMemory:(void *)a3 length:(unint64_t)a4 remoteAddress:(unint64_t)a5 class:(id)a6
+- (id)labelForDriverKitMemory:(void *)memory length:(unint64_t)length remoteAddress:(unint64_t)address class:(id)class
 {
-  v10 = a6;
-  v11 = [v10 className];
-  if ([v11 isEqualToString:@"struct OSClassScan"])
+  classCopy = class;
+  className = [classCopy className];
+  if ([className isEqualToString:@"struct OSClassScan"])
   {
 
 LABEL_4:
-    v14 = [(VMUObjectIdentifierDriverKitSupport *)self _labelForDriverKitOSClassLoadInformation:a3 length:a4 remoteAddress:a5];
+    v14 = [(VMUObjectIdentifierDriverKitSupport *)self _labelForDriverKitOSClassLoadInformation:memory length:length remoteAddress:address];
 LABEL_5:
     v15 = v14;
     goto LABEL_6;
   }
 
-  v12 = [v10 className];
-  v13 = [v12 isEqualToString:@"struct OSMetaClassPrivate"];
+  className2 = [classCopy className];
+  v13 = [className2 isEqualToString:@"struct OSMetaClassPrivate"];
 
   if (v13)
   {
     goto LABEL_4;
   }
 
-  v17 = [v10 className];
-  v18 = [v17 isEqualToString:@"OSMetaClass"];
+  className3 = [classCopy className];
+  v18 = [className3 isEqualToString:@"OSMetaClass"];
 
   if (v18)
   {
-    v14 = [(VMUObjectIdentifierDriverKitSupport *)self _labelForDriverKitOSMetaClass:a3 length:a4 remoteAddress:a5];
+    v14 = [(VMUObjectIdentifierDriverKitSupport *)self _labelForDriverKitOSMetaClass:memory length:length remoteAddress:address];
     goto LABEL_5;
   }
 

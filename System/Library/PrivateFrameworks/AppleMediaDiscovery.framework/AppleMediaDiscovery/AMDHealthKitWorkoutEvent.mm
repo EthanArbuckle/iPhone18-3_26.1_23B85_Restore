@@ -1,17 +1,17 @@
 @interface AMDHealthKitWorkoutEvent
-+ (BOOL)validateInput:(id)a3;
-- (void)populateRecord:(id)a3;
++ (BOOL)validateInput:(id)input;
+- (void)populateRecord:(id)record;
 @end
 
 @implementation AMDHealthKitWorkoutEvent
 
-+ (BOOL)validateInput:(id)a3
++ (BOOL)validateInput:(id)input
 {
   v26 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, input);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
   v11 = [obj countByEnumeratingWithState:__b objects:v25 count:16];
@@ -119,13 +119,13 @@ LABEL_22:
   return v24 & 1;
 }
 
-- (void)populateRecord:(id)a3
+- (void)populateRecord:(id)record
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = v20;
+  objc_storeStrong(location, record);
+  v16 = selfCopy;
   v17 = [location[0] valueForKey:0x2852AC9C8];
   -[AMDHealthKitWorkoutEvent setEventTime:](v16, "setEventTime:", [v17 unsignedLongLongValue]);
   MEMORY[0x277D82BD8](v17);
@@ -133,7 +133,7 @@ LABEL_22:
   MEMORY[0x277D82BD8](v18);
   if (v18)
   {
-    v14 = v20;
+    v14 = selfCopy;
     v15 = [location[0] valueForKey:@"activityType"];
     [(AMDHealthKitWorkoutEvent *)v14 setActivityType:?];
     MEMORY[0x277D82BD8](v15);
@@ -143,25 +143,25 @@ LABEL_22:
   MEMORY[0x277D82BD8](v13);
   if (v13)
   {
-    v11 = v20;
+    v11 = selfCopy;
     v12 = [location[0] valueForKey:@"activityUUID"];
     [(AMDHealthKitWorkoutEvent *)v11 setActivityUUID:?];
     MEMORY[0x277D82BD8](v12);
   }
 
-  v3 = v20;
+  v3 = selfCopy;
   v4 = [location[0] valueForKey:@"eventType"];
   -[AMDHealthKitWorkoutEvent setEventType:](v3, "setEventType:", [v4 unsignedShortValue]);
   MEMORY[0x277D82BD8](v4);
-  v5 = v20;
+  v5 = selfCopy;
   v6 = [location[0] valueForKey:@"isFirstPartyDonation"];
   -[AMDHealthKitWorkoutEvent setIsFirstPartyDonation:](v5, "setIsFirstPartyDonation:", [v6 BOOLValue]);
   MEMORY[0x277D82BD8](v6);
-  v7 = v20;
+  v7 = selfCopy;
   v8 = [location[0] valueForKey:@"isIndoor"];
   -[AMDHealthKitWorkoutEvent setIsIndoor:](v7, "setIsIndoor:", [v8 BOOLValue]);
   MEMORY[0x277D82BD8](v8);
-  v9 = v20;
+  v9 = selfCopy;
   v10 = [location[0] valueForKey:@"isUpdate"];
   -[AMDHealthKitWorkoutEvent setIsUpdate:](v9, "setIsUpdate:", [v10 BOOLValue]);
   MEMORY[0x277D82BD8](v10);

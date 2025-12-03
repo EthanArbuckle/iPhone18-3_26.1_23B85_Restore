@@ -1,5 +1,5 @@
 @interface FKDelayedOperation
-- (FKDelayedOperation)initWithQueue:(id)a3 delay:(double)a4 block:(id)a5;
+- (FKDelayedOperation)initWithQueue:(id)queue delay:(double)delay block:(id)block;
 - (void)_queue_executeBlock;
 - (void)execute;
 - (void)invalidate;
@@ -7,26 +7,26 @@
 
 @implementation FKDelayedOperation
 
-- (FKDelayedOperation)initWithQueue:(id)a3 delay:(double)a4 block:(id)a5
+- (FKDelayedOperation)initWithQueue:(id)queue delay:(double)delay block:(id)block
 {
-  v9 = a3;
-  v10 = a5;
+  queueCopy = queue;
+  blockCopy = block;
   v20.receiver = self;
   v20.super_class = FKDelayedOperation;
   v11 = [(FKDelayedOperation *)&v20 init];
   if (v11)
   {
-    v12 = MEMORY[0x24C252D80](v10);
+    v12 = MEMORY[0x24C252D80](blockCopy);
     v13 = *(v11 + 1);
     *(v11 + 1) = v12;
 
-    objc_storeStrong(v11 + 2, a3);
+    objc_storeStrong(v11 + 2, queue);
     *(v11 + 4) = 0;
     v14 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(v11 + 2));
     v15 = *(v11 + 5);
     *(v11 + 5) = v14;
 
-    *(v11 + 6) = a4;
+    *(v11 + 6) = delay;
     v16 = *(v11 + 5);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;

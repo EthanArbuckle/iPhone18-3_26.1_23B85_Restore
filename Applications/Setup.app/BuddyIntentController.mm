@@ -1,21 +1,21 @@
 @interface BuddyIntentController
 + (id)cloudConfigSkipKey;
-+ (void)skippedByCloudConfigWithEnvironment:(id)a3;
++ (void)skippedByCloudConfigWithEnvironment:(id)environment;
 - (BOOL)controllerNeedsToRun;
 - (BYRunState)runState;
 - (BuddyNetworkProvider)networkProvider;
-- (_TtC5Setup21BuddyIntentController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC5Setup21BuddyIntentController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC5Setup21BuddyIntentController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC5Setup21BuddyIntentController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (id)showModalWiFiSettingsBlock;
 - (void)controllerWasPopped;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)setAnalyticsEventAppearance:(id)a3;
-- (void)setChildSetupPresenter:(id)a3;
-- (void)setFlowItemDispositionProvider:(id)a3;
-- (void)setManagedConfiguration:(id)a3;
-- (void)setProximitySetupController:(id)a3;
-- (void)setSetupMethod:(id)a3;
-- (void)setShowModalWiFiSettingsBlock:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)setAnalyticsEventAppearance:(id)appearance;
+- (void)setChildSetupPresenter:(id)presenter;
+- (void)setFlowItemDispositionProvider:(id)provider;
+- (void)setManagedConfiguration:(id)configuration;
+- (void)setProximitySetupController:(id)controller;
+- (void)setSetupMethod:(id)method;
+- (void)setShowModalWiFiSettingsBlock:(id)block;
 - (void)setUpForChildTapped;
 - (void)setUpForMyselfTapped;
 - (void)viewDidLoad;
@@ -25,19 +25,19 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001A06C();
 }
 
 - (void)setUpForMyselfTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001A3C4();
 }
 
 - (void)setUpForChildTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001A620();
 }
 
@@ -48,46 +48,46 @@
   return v2;
 }
 
-- (void)setSetupMethod:(id)a3
+- (void)setSetupMethod:(id)method
 {
   v4 = *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_setupMethod);
-  *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_setupMethod) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_setupMethod) = method;
+  methodCopy = method;
 }
 
-- (void)setFlowItemDispositionProvider:(id)a3
+- (void)setFlowItemDispositionProvider:(id)provider
 {
   v4 = *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_flowItemDispositionProvider);
-  *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_flowItemDispositionProvider) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_flowItemDispositionProvider) = provider;
+  providerCopy = provider;
 }
 
-- (void)setProximitySetupController:(id)a3
+- (void)setProximitySetupController:(id)controller
 {
   v4 = *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_proximitySetupController);
-  *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_proximitySetupController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_proximitySetupController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)setManagedConfiguration:(id)a3
+- (void)setManagedConfiguration:(id)configuration
 {
   v4 = *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_managedConfiguration);
-  *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_managedConfiguration) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_managedConfiguration) = configuration;
+  configurationCopy = configuration;
 }
 
-- (void)setAnalyticsEventAppearance:(id)a3
+- (void)setAnalyticsEventAppearance:(id)appearance
 {
   v4 = *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_analyticsEventAppearance);
-  *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_analyticsEventAppearance) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_analyticsEventAppearance) = appearance;
+  appearanceCopy = appearance;
 }
 
-- (void)setChildSetupPresenter:(id)a3
+- (void)setChildSetupPresenter:(id)presenter
 {
   v4 = *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_childSetupPresenter);
-  *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_childSetupPresenter) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_childSetupPresenter) = presenter;
+  presenterCopy = presenter;
 }
 
 - (BuddyNetworkProvider)networkProvider
@@ -119,9 +119,9 @@
   return v3;
 }
 
-- (void)setShowModalWiFiSettingsBlock:(id)a3
+- (void)setShowModalWiFiSettingsBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = v4;
@@ -139,7 +139,7 @@
   v8 = *(self + OBJC_IVAR____TtC5Setup21BuddyIntentController_showModalWiFiSettingsBlock);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_10001C91C(v8);
 }
 
@@ -153,20 +153,20 @@
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10001B588();
 
   return v3 & 1;
 }
 
-+ (void)skippedByCloudConfigWithEnvironment:(id)a3
++ (void)skippedByCloudConfigWithEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  v4 = [a3 setupMethod];
-  if (v4)
+  setupMethod = [environment setupMethod];
+  if (setupMethod)
   {
-    v5 = v4;
-    if (![v4 intent])
+    v5 = setupMethod;
+    if (![setupMethod intent])
     {
       [v5 setIntent:1];
     }
@@ -175,12 +175,12 @@
   swift_unknownObjectRelease();
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_10001BFEC(v5, v4);
+  selfCopy = self;
+  sub_10001BFEC(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
@@ -194,14 +194,14 @@
   }
 }
 
-- (_TtC5Setup21BuddyIntentController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5Setup21BuddyIntentController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Setup21BuddyIntentController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5Setup21BuddyIntentController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

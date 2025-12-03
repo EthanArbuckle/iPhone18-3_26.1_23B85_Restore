@@ -1,34 +1,34 @@
 @interface PXStateBadgeView
-- (PXStateBadgeView)initWithState:(id)a3;
-- (id)symbolWithState:(id)a3;
-- (void)setState:(id)a3;
+- (PXStateBadgeView)initWithState:(id)state;
+- (id)symbolWithState:(id)state;
+- (void)setState:(id)state;
 @end
 
 @implementation PXStateBadgeView
 
-- (id)symbolWithState:(id)a3
+- (id)symbolWithState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Rejected"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Rejected"])
   {
     v4 = @"❌";
   }
 
-  else if ([v3 isEqualToString:@"Chosen"])
+  else if ([stateCopy isEqualToString:@"Chosen"])
   {
     v4 = @"✅";
   }
 
-  else if ([v3 isEqualToString:@"ForceChosen"])
+  else if ([stateCopy isEqualToString:@"ForceChosen"])
   {
     v4 = @"✳️";
   }
 
   else
   {
-    v5 = [v3 isEqualToString:@"Required"];
+    v5 = [stateCopy isEqualToString:@"Required"];
     v6 = @"⁉️";
-    if (!v3)
+    if (!stateCopy)
     {
       v6 = 0;
     }
@@ -47,15 +47,15 @@
   return v4;
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v4 = [(PXStateBadgeView *)self symbolWithState:a3];
+  v4 = [(PXStateBadgeView *)self symbolWithState:state];
   [(PXTextSymbolView *)self setSymbol:v4];
 }
 
-- (PXStateBadgeView)initWithState:(id)a3
+- (PXStateBadgeView)initWithState:(id)state
 {
-  v4 = [(PXStateBadgeView *)self symbolWithState:a3];
+  v4 = [(PXStateBadgeView *)self symbolWithState:state];
   v7.receiver = self;
   v7.super_class = PXStateBadgeView;
   v5 = [(PXTextSymbolView *)&v7 initWithSymbol:v4];

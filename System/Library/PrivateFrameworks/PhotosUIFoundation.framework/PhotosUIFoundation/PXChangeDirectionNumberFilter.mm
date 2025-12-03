@@ -1,5 +1,5 @@
 @interface PXChangeDirectionNumberFilter
-- (PXChangeDirectionNumberFilter)initWithInput:(double)a3;
+- (PXChangeDirectionNumberFilter)initWithInput:(double)input;
 - (double)updatedOutput;
 @end
 
@@ -66,14 +66,14 @@ LABEL_4:
   return v6;
 }
 
-- (PXChangeDirectionNumberFilter)initWithInput:(double)a3
+- (PXChangeDirectionNumberFilter)initWithInput:(double)input
 {
   v5.receiver = self;
   v5.super_class = PXChangeDirectionNumberFilter;
   result = [(PXNumberFilter *)&v5 initWithInput:?];
   if (result)
   {
-    result->_threshold = a3;
+    result->_threshold = input;
   }
 
   return result;

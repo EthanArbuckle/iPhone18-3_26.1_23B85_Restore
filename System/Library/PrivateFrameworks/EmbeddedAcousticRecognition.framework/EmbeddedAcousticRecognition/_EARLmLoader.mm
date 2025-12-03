@@ -2,8 +2,8 @@
 + (void)initialize;
 - (_EARLmLoader)init;
 - (id).cxx_construct;
-- (id)fetchOrLoadModelWithDirectory:(id)a3 recognizer:(id)a4;
-- (id)loadForRecognitionWithDirectory:(id)a3 recognizer:(id)a4 task:(id)a5 applicationName:(id)a6;
+- (id)fetchOrLoadModelWithDirectory:(id)directory recognizer:(id)recognizer;
+- (id)loadForRecognitionWithDirectory:(id)directory recognizer:(id)recognizer task:(id)task applicationName:(id)name;
 @end
 
 @implementation _EARLmLoader
@@ -11,7 +11,7 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
@@ -32,16 +32,16 @@
   return v2;
 }
 
-- (id)fetchOrLoadModelWithDirectory:(id)a3 recognizer:(id)a4
+- (id)fetchOrLoadModelWithDirectory:(id)directory recognizer:(id)recognizer
 {
   __p[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  directoryCopy = directory;
+  recognizerCopy = recognizer;
+  v8 = recognizerCopy;
   ptr = self->_loader.__ptr_;
-  if (v6)
+  if (directoryCopy)
   {
-    [v6 ear_toString];
+    [directoryCopy ear_toString];
     if (v8)
     {
 LABEL_3:
@@ -54,7 +54,7 @@ LABEL_3:
   else
   {
     memset(__p, 0, 24);
-    if (v7)
+    if (recognizerCopy)
     {
       goto LABEL_3;
     }
@@ -66,21 +66,21 @@ LABEL_6:
   quasar::LmLoader2::fetchOrLoadModel(ptr, __p, SysConfig);
 }
 
-- (id)loadForRecognitionWithDirectory:(id)a3 recognizer:(id)a4 task:(id)a5 applicationName:(id)a6
+- (id)loadForRecognitionWithDirectory:(id)directory recognizer:(id)recognizer task:(id)task applicationName:(id)name
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  directoryCopy = directory;
+  recognizerCopy = recognizer;
+  taskCopy = task;
+  nameCopy = name;
   ptr = self->_loader.__ptr_;
-  if (v10)
+  if (directoryCopy)
   {
-    [v10 ear_toString];
-    if (v11)
+    [directoryCopy ear_toString];
+    if (recognizerCopy)
     {
 LABEL_3:
-      [v11 getRecognizer];
+      [recognizerCopy getRecognizer];
       v15 = v26;
       goto LABEL_6;
     }
@@ -91,7 +91,7 @@ LABEL_3:
     v30[0] = 0;
     v30[1] = 0;
     v31 = 0;
-    if (v11)
+    if (recognizerCopy)
     {
       goto LABEL_3;
     }
@@ -102,13 +102,13 @@ LABEL_3:
   v27 = 0;
 LABEL_6:
   SysConfig = quasar::SpeechRecognizer::getSysConfig(v15);
-  if (v12)
+  if (taskCopy)
   {
-    [v12 ear_toString];
-    if (v13)
+    [taskCopy ear_toString];
+    if (nameCopy)
     {
 LABEL_8:
-      [v13 ear_toString];
+      [nameCopy ear_toString];
       goto LABEL_11;
     }
   }
@@ -118,7 +118,7 @@ LABEL_8:
     v24[0] = 0;
     v24[1] = 0;
     v25 = 0;
-    if (v13)
+    if (nameCopy)
     {
       goto LABEL_8;
     }

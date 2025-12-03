@@ -2,18 +2,18 @@
 - (id)_matchingCriteria;
 - (unint64_t)numberOfDevicesConnected;
 - (void)_addFakeKeyboardDevice;
-- (void)_didReceiveActionWithIdentifier:(id)a3 start:(BOOL)a4 ignoreInputHold:(BOOL)a5;
-- (void)_didUpdateAvailability:(BOOL)a3 withDetail:(unint64_t)a4;
+- (void)_didReceiveActionWithIdentifier:(id)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold;
+- (void)_didUpdateAvailability:(BOOL)availability withDetail:(unint64_t)detail;
 - (void)_removeFakeKeyboardDevice;
 - (void)_startDetectingDevices;
 - (void)_startHandlingEvents;
 - (void)_stopDetectingDevices;
 - (void)_stopHandlingEvents;
 - (void)dealloc;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 - (void)startRunning;
 - (void)stopRunning;
-- (void)updateWithSwitches:(id)a3 recipe:(id)a4;
+- (void)updateWithSwitches:(id)switches recipe:(id)recipe;
 @end
 
 @implementation SCATHardwareInputSource
@@ -28,8 +28,8 @@
 
   else
   {
-    v4 = [(SCATHardwareInputSource *)self hidManager];
-    if (v4 && (v5 = IOHIDManagerCopyDevices(v4)) != 0)
+    hidManager = [(SCATHardwareInputSource *)self hidManager];
+    if (hidManager && (v5 = IOHIDManagerCopyDevices(hidManager)) != 0)
     {
       v6 = v5;
       Count = CFSetGetCount(v5);
@@ -44,36 +44,36 @@
   }
 }
 
-- (void)_didReceiveActionWithIdentifier:(id)a3 start:(BOOL)a4 ignoreInputHold:(BOOL)a5
+- (void)_didReceiveActionWithIdentifier:(id)identifier start:(BOOL)start ignoreInputHold:(BOOL)hold
 {
-  v8 = a3;
-  v9 = [(SCATInputSource *)self delegate];
-  v10 = [(SCATInputSource *)self queue];
-  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  identifierCopy = identifier;
+  delegate = [(SCATInputSource *)self delegate];
+  queue = [(SCATInputSource *)self queue];
+  if (queue && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100085350;
     v11[3] = &unk_1001D5B70;
-    v12 = v9;
-    v13 = self;
-    v14 = v8;
-    v15 = a4;
-    v16 = a5;
-    [v10 performAsynchronousWritingBlock:v11];
+    v12 = delegate;
+    selfCopy = self;
+    v14 = identifierCopy;
+    startCopy = start;
+    holdCopy = hold;
+    [queue performAsynchronousWritingBlock:v11];
   }
 }
 
-- (void)_didUpdateAvailability:(BOOL)a3 withDetail:(unint64_t)a4
+- (void)_didUpdateAvailability:(BOOL)availability withDetail:(unint64_t)detail
 {
-  v5 = a3;
-  v7 = [(SCATHardwareInputSource *)self isAvailable];
-  v8 = [(SCATHardwareInputSource *)self availabilityDetail];
-  if (v7 != v5 || v8 != a4)
+  availabilityCopy = availability;
+  isAvailable = [(SCATHardwareInputSource *)self isAvailable];
+  availabilityDetail = [(SCATHardwareInputSource *)self availabilityDetail];
+  if (isAvailable != availabilityCopy || availabilityDetail != detail)
   {
-    v9 = [(SCATInputSource *)self delegate];
-    v10 = [(SCATInputSource *)self queue];
-    if (v10)
+    delegate = [(SCATInputSource *)self delegate];
+    queue = [(SCATInputSource *)self queue];
+    if (queue)
     {
       if (objc_opt_respondsToSelector())
       {
@@ -81,16 +81,16 @@
         v12 = 3221225472;
         v13 = sub_100085488;
         v14 = &unk_1001D5918;
-        v15 = v9;
-        v16 = self;
-        v18 = v5;
-        v17 = a4;
-        [v10 performAsynchronousWritingBlock:&v11];
+        v15 = delegate;
+        selfCopy = self;
+        v18 = availabilityCopy;
+        detailCopy = detail;
+        [queue performAsynchronousWritingBlock:&v11];
       }
     }
 
-    [(SCATHardwareInputSource *)self setAvailable:v5, v11, v12, v13, v14];
-    [(SCATHardwareInputSource *)self setAvailabilityDetail:a4];
+    [(SCATHardwareInputSource *)self setAvailable:availabilityCopy, v11, v12, v13, v14];
+    [(SCATHardwareInputSource *)self setAvailabilityDetail:detail];
   }
 }
 
@@ -137,8 +137,8 @@
   if (![(SCATHardwareInputSource *)self isMIDIInputSource]&& ![(SCATHardwareInputSource *)self hidManager])
   {
     v3 = IOHIDManagerCreate(kCFAllocatorDefault, 0);
-    v4 = [(SCATHardwareInputSource *)self _matchingCriteria];
-    IOHIDManagerSetDeviceMatchingMultiple(v3, v4);
+    _matchingCriteria = [(SCATHardwareInputSource *)self _matchingCriteria];
+    IOHIDManagerSetDeviceMatchingMultiple(v3, _matchingCriteria);
 
     IOHIDManagerRegisterDeviceMatchingCallback(v3, sub_100085834, self);
     IOHIDManagerRegisterDeviceRemovalCallback(v3, sub_100085840, self);
@@ -201,10 +201,10 @@
 
   if (![(SCATHardwareInputSource *)self isMIDIInputSource])
   {
-    v3 = [(SCATHardwareInputSource *)self hidManager];
-    if (v3)
+    hidManager = [(SCATHardwareInputSource *)self hidManager];
+    if (hidManager)
     {
-      CFRelease(v3);
+      CFRelease(hidManager);
 
       [(SCATHardwareInputSource *)self setHidManager:0];
     }
@@ -247,11 +247,11 @@
   [(SCATHardwareInputSource *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = SCATHardwareInputSource;
-  [(SCATInputSource *)&v4 setDelegate:a3 queue:a4];
+  [(SCATInputSource *)&v4 setDelegate:delegate queue:queue];
 }
 
 - (void)startRunning
@@ -284,13 +284,13 @@
   }
 }
 
-- (void)updateWithSwitches:(id)a3 recipe:(id)a4
+- (void)updateWithSwitches:(id)switches recipe:(id)recipe
 {
-  v6 = a4;
+  recipeCopy = recipe;
   v19.receiver = self;
   v19.super_class = SCATHardwareInputSource;
-  v7 = a3;
-  [(SCATInputSource *)&v19 updateWithSwitches:v7 recipe:v6];
+  switchesCopy = switches;
+  [(SCATInputSource *)&v19 updateWithSwitches:switchesCopy recipe:recipeCopy];
   v8 = objc_alloc_init(NSMutableDictionary);
   v9 = +[NSMutableDictionary dictionary];
   +[NSMutableDictionary dictionary];
@@ -300,13 +300,13 @@
   v14[3] = &unk_1001D5D80;
   v14[4] = self;
   v15 = v8;
-  v16 = v6;
+  v16 = recipeCopy;
   v18 = v17 = v9;
   v10 = v18;
   v11 = v9;
-  v12 = v6;
+  v12 = recipeCopy;
   v13 = v8;
-  [v7 enumerateObjectsUsingBlock:v14];
+  [switchesCopy enumerateObjectsUsingBlock:v14];
 
   [(SCATInputSource *)self setActions:v13];
   [(SCATHardwareInputSource *)self setPersistentSwitchIdentifiers:v11];

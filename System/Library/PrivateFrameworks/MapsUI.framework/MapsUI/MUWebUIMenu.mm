@@ -1,12 +1,12 @@
 @interface MUWebUIMenu
-- (_TtC6MapsUI11MUWebUIMenu)initWithCoder:(id)a3;
-- (_TtC6MapsUI11MUWebUIMenu)initWithFrame:(CGRect)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (_TtC6MapsUI11MUWebUIMenu)initWithCoder:(id)coder;
+- (_TtC6MapsUI11MUWebUIMenu)initWithFrame:(CGRect)frame;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 @end
 
 @implementation MUWebUIMenu
 
-- (_TtC6MapsUI11MUWebUIMenu)initWithCoder:(id)a3
+- (_TtC6MapsUI11MUWebUIMenu)initWithCoder:(id)coder
 {
   *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC6MapsUI11MUWebUIMenu_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   sub_1C5626E40(0, &qword_1EC171138, 0x1E69DC8D8);
   v4 = swift_allocObject();
@@ -26,7 +26,7 @@
   return v5;
 }
 
-- (_TtC6MapsUI11MUWebUIMenu)initWithFrame:(CGRect)a3
+- (_TtC6MapsUI11MUWebUIMenu)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

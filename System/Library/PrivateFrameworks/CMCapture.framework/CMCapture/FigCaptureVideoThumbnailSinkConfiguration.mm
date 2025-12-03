@@ -1,7 +1,7 @@
 @interface FigCaptureVideoThumbnailSinkConfiguration
 - (CGSize)thumbnailSize;
-- (FigCaptureVideoThumbnailSinkConfiguration)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FigCaptureVideoThumbnailSinkConfiguration)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (void)dealloc;
 @end
@@ -21,7 +21,7 @@
 {
   v11.receiver = self;
   v11.super_class = FigCaptureVideoThumbnailSinkConfiguration;
-  v3 = [(FigCaptureSinkConfiguration *)&v11 copyXPCEncoding];
+  copyXPCEncoding = [(FigCaptureSinkConfiguration *)&v11 copyXPCEncoding];
   DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(self->_thumbnailSize);
   FigXPCMessageSetCFDictionary();
   if ([(NSArray *)self->_smartStyles count])
@@ -29,7 +29,7 @@
     smartStyles = self->_smartStyles;
     v6 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
     [v6 encodeObject:smartStyles forKey:*MEMORY[0x1E696A508]];
-    v7 = [v6 encodedData];
+    encodedData = [v6 encodedData];
 
     v8 = "smartStyles";
   }
@@ -41,12 +41,12 @@
       goto LABEL_6;
     }
 
-    v7 = csr_serializeObjectUsingNSSecureCoding(self->_filters);
+    encodedData = csr_serializeObjectUsingNSSecureCoding(self->_filters);
     v8 = "filters";
   }
 
-  v9 = xpc_data_create([v7 bytes], objc_msgSend(v7, "length"));
-  xpc_dictionary_set_value(v3, v8, v9);
+  v9 = xpc_data_create([encodedData bytes], objc_msgSend(encodedData, "length"));
+  xpc_dictionary_set_value(copyXPCEncoding, v8, v9);
   xpc_release(v9);
 LABEL_6:
   if (DictionaryRepresentation)
@@ -54,7 +54,7 @@ LABEL_6:
     CFRelease(DictionaryRepresentation);
   }
 
-  return v3;
+  return copyXPCEncoding;
 }
 
 - (void)dealloc
@@ -64,7 +64,7 @@ LABEL_6:
   [(FigCaptureSinkConfiguration *)&v3 dealloc];
 }
 
-- (FigCaptureVideoThumbnailSinkConfiguration)initWithXPCEncoding:(id)a3
+- (FigCaptureVideoThumbnailSinkConfiguration)initWithXPCEncoding:(id)encoding
 {
   v20.receiver = self;
   v20.super_class = FigCaptureVideoThumbnailSinkConfiguration;
@@ -75,7 +75,7 @@ LABEL_6:
     FigXPCMessageCopyCFDictionary();
     CGSizeMakeWithDictionaryRepresentation(0, &v4->_thumbnailSize);
     length[0] = 0;
-    data = xpc_dictionary_get_data(a3, "smartStyles", length);
+    data = xpc_dictionary_get_data(encoding, "smartStyles", length);
     if (data)
     {
       v6 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:data length:length[0] freeWhenDone:0];
@@ -102,7 +102,7 @@ LABEL_6:
     else
     {
       v21 = 0;
-      v13 = xpc_dictionary_get_data(a3, "filters", &v21);
+      v13 = xpc_dictionary_get_data(encoding, "filters", &v21);
       if (!v13)
       {
         return v4;
@@ -127,11 +127,11 @@ LABEL_6:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = FigCaptureVideoThumbnailSinkConfiguration;
-  v4 = [(FigCaptureSinkConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(FigCaptureSinkConfiguration *)&v6 copyWithZone:zone];
   [(FigCaptureVideoThumbnailSinkConfiguration *)self thumbnailSize];
   [v4 setThumbnailSize:?];
   [v4 setFilters:{-[FigCaptureVideoThumbnailSinkConfiguration filters](self, "filters")}];

@@ -1,9 +1,9 @@
 @interface ATXPredictionUserContext
-- (ATXPredictionUserContext)initWithLastUnlockDate:(id)a3 lastAppLaunch:(id)a4 lastAppLaunchDate:(id)a5 secondMostRecentAppLaunch:(id)a6 lastAppActionLaunch:(id)a7;
-- (ATXPredictionUserContext)initWithProto:(id)a3;
-- (ATXPredictionUserContext)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXPredictionUserContext:(id)a3;
+- (ATXPredictionUserContext)initWithLastUnlockDate:(id)date lastAppLaunch:(id)launch lastAppLaunchDate:(id)launchDate secondMostRecentAppLaunch:(id)appLaunch lastAppActionLaunch:(id)actionLaunch;
+- (ATXPredictionUserContext)initWithProto:(id)proto;
+- (ATXPredictionUserContext)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXPredictionUserContext:(id)context;
 - (NSDate)lastAppLaunchDate;
 - (NSDate)lastUnlockDate;
 - (id)description;
@@ -29,13 +29,13 @@
   return v2;
 }
 
-- (ATXPredictionUserContext)initWithLastUnlockDate:(id)a3 lastAppLaunch:(id)a4 lastAppLaunchDate:(id)a5 secondMostRecentAppLaunch:(id)a6 lastAppActionLaunch:(id)a7
+- (ATXPredictionUserContext)initWithLastUnlockDate:(id)date lastAppLaunch:(id)launch lastAppLaunchDate:(id)launchDate secondMostRecentAppLaunch:(id)appLaunch lastAppActionLaunch:(id)actionLaunch
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dateCopy = date;
+  launchCopy = launch;
+  launchDateCopy = launchDate;
+  appLaunchCopy = appLaunch;
+  actionLaunchCopy = actionLaunch;
   v28.receiver = self;
   v28.super_class = ATXPredictionUserContext;
   v17 = [(ATXPredictionUserContext *)&v28 init];
@@ -43,28 +43,28 @@
   {
     v18 = 0.0;
     v19 = 0.0;
-    if (v12)
+    if (dateCopy)
     {
-      [v12 timeIntervalSince1970];
+      [dateCopy timeIntervalSince1970];
     }
 
     v17->_absoluteLastUnlockDate = v19;
-    v20 = [v13 copy];
+    v20 = [launchCopy copy];
     lastAppLaunch = v17->_lastAppLaunch;
     v17->_lastAppLaunch = v20;
 
-    if (v14)
+    if (launchDateCopy)
     {
-      [v14 timeIntervalSince1970];
+      [launchDateCopy timeIntervalSince1970];
       v18 = v22;
     }
 
     v17->_absoluteLastAppLaunchDate = v18;
-    v23 = [v15 copy];
+    v23 = [appLaunchCopy copy];
     secondMostRecentAppLaunch = v17->_secondMostRecentAppLaunch;
     v17->_secondMostRecentAppLaunch = v23;
 
-    v25 = [v16 copy];
+    v25 = [actionLaunchCopy copy];
     lastAppActionLaunch = v17->_lastAppActionLaunch;
     v17->_lastAppActionLaunch = v25;
   }
@@ -89,8 +89,8 @@
 
 - (id)description
 {
-  v2 = [(ATXPredictionUserContext *)self jsonDict];
-  v3 = [v2 description];
+  jsonDict = [(ATXPredictionUserContext *)self jsonDict];
+  v3 = [jsonDict description];
 
   return v3;
 }
@@ -99,11 +99,11 @@
 {
   v17[5] = *MEMORY[0x277D85DE8];
   v16[0] = @"lastUnlockDate";
-  v5 = [(ATXPredictionUserContext *)self lastUnlockDate];
-  if (v5)
+  lastUnlockDate = [(ATXPredictionUserContext *)self lastUnlockDate];
+  if (lastUnlockDate)
   {
-    v2 = [(ATXPredictionUserContext *)self lastUnlockDate];
-    v6 = [v2 description];
+    lastUnlockDate2 = [(ATXPredictionUserContext *)self lastUnlockDate];
+    v6 = [lastUnlockDate2 description];
   }
 
   else
@@ -121,11 +121,11 @@
   v17[1] = lastAppLaunch;
   v16[1] = @"lastAppLaunch";
   v16[2] = @"lastAppLaunchDate";
-  v8 = [(ATXPredictionUserContext *)self lastAppLaunchDate];
-  if (v8)
+  lastAppLaunchDate = [(ATXPredictionUserContext *)self lastAppLaunchDate];
+  if (lastAppLaunchDate)
   {
-    v3 = [(ATXPredictionUserContext *)self lastAppLaunchDate];
-    v9 = [v3 description];
+    lastAppLaunchDate2 = [(ATXPredictionUserContext *)self lastAppLaunchDate];
+    v9 = [lastAppLaunchDate2 description];
   }
 
   else
@@ -156,11 +156,11 @@
 
   v17[4] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:5];
-  if (v8)
+  if (lastAppLaunchDate)
   {
   }
 
-  if (v5)
+  if (lastUnlockDate)
   {
   }
 
@@ -169,40 +169,40 @@
   return v13;
 }
 
-- (ATXPredictionUserContext)initWithProtoData:(id)a3
+- (ATXPredictionUserContext)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBPredictionUserContext alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBPredictionUserContext alloc] initWithData:dataCopy];
 
     self = [(ATXPredictionUserContext *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXPredictionUserContext *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXPredictionUserContext *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXPredictionUserContext)initWithProto:(id)a3
+- (ATXPredictionUserContext)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_8:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
@@ -218,7 +218,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   if ([v5 hasLastUnlockDate])
   {
     v6 = objc_alloc(MEMORY[0x277CBEAA8]);
@@ -243,15 +243,15 @@ LABEL_8:
     v11 = 0;
   }
 
-  v12 = [v5 lastAppLaunch];
-  v13 = [v5 secondMostRecentAppLaunch];
-  v14 = [v5 lastAppActionLaunch];
-  self = [(ATXPredictionUserContext *)self initWithLastUnlockDate:v7 lastAppLaunch:v12 lastAppLaunchDate:v11 secondMostRecentAppLaunch:v13 lastAppActionLaunch:v14];
+  lastAppLaunch = [v5 lastAppLaunch];
+  secondMostRecentAppLaunch = [v5 secondMostRecentAppLaunch];
+  lastAppActionLaunch = [v5 lastAppActionLaunch];
+  self = [(ATXPredictionUserContext *)self initWithLastUnlockDate:v7 lastAppLaunch:lastAppLaunch lastAppLaunchDate:v11 secondMostRecentAppLaunch:secondMostRecentAppLaunch lastAppActionLaunch:lastAppActionLaunch];
 
-  v9 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)proto
@@ -275,34 +275,34 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPredictionUserContext *)self isEqualToATXPredictionUserContext:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPredictionUserContext *)self isEqualToATXPredictionUserContext:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXPredictionUserContext:(id)a3
+- (BOOL)isEqualToATXPredictionUserContext:(id)context
 {
-  v4 = a3;
-  if (self->_absoluteLastUnlockDate != v4[1])
+  contextCopy = context;
+  if (self->_absoluteLastUnlockDate != contextCopy[1])
   {
     goto LABEL_7;
   }
 
   v5 = self->_lastAppLaunch;
   v6 = v5;
-  if (v5 == *(v4 + 3))
+  if (v5 == *(contextCopy + 3))
   {
   }
 
@@ -316,7 +316,7 @@ LABEL_14:
     }
   }
 
-  if (self->_absoluteLastAppLaunchDate != v4[2])
+  if (self->_absoluteLastAppLaunchDate != contextCopy[2])
   {
 LABEL_7:
     v8 = 0;
@@ -325,7 +325,7 @@ LABEL_7:
 
   v10 = self->_secondMostRecentAppLaunch;
   v11 = v10;
-  if (v10 == *(v4 + 4))
+  if (v10 == *(contextCopy + 4))
   {
   }
 
@@ -341,7 +341,7 @@ LABEL_7:
 
   v13 = self->_lastAppActionLaunch;
   v14 = v13;
-  if (v13 == *(v4 + 5))
+  if (v13 == *(contextCopy + 5))
   {
     v8 = 1;
   }

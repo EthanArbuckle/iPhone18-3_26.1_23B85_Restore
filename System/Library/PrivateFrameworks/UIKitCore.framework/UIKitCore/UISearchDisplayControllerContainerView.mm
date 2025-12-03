@@ -1,21 +1,21 @@
 @interface UISearchDisplayControllerContainerView
-- (UISearchDisplayControllerContainerView)initWithFrame:(CGRect)a3 topViewHeight:(double)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
-- (void)adjustTopAttributeConstantByDelta:(double)a3;
-- (void)configureInteractionForContainment:(BOOL)a3;
-- (void)updateTopAttributeConstant:(double)a3;
-- (void)updateTopViewHeight:(double)a3 animateUpdate:(BOOL)a4;
+- (UISearchDisplayControllerContainerView)initWithFrame:(CGRect)frame topViewHeight:(double)height;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
+- (void)adjustTopAttributeConstantByDelta:(double)delta;
+- (void)configureInteractionForContainment:(BOOL)containment;
+- (void)updateTopAttributeConstant:(double)constant;
+- (void)updateTopViewHeight:(double)height animateUpdate:(BOOL)update;
 @end
 
 @implementation UISearchDisplayControllerContainerView
 
-- (UISearchDisplayControllerContainerView)initWithFrame:(CGRect)a3 topViewHeight:(double)a4
+- (UISearchDisplayControllerContainerView)initWithFrame:(CGRect)frame topViewHeight:(double)height
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v44.receiver = self;
   v44.super_class = UISearchDisplayControllerContainerView;
   v9 = [(UIView *)&v44 initWithFrame:?];
@@ -29,7 +29,7 @@
     v45.origin.y = y;
     v45.size.width = width;
     v45.size.height = height;
-    CGRectDivide(v45, &slice, &remainder, a4, CGRectMinYEdge);
+    CGRectDivide(v45, &slice, &remainder, height, CGRectMinYEdge);
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = objc_opt_class();
@@ -54,7 +54,7 @@
     [(UIView *)v10 addSubview:v10->_bottomView];
     [(UIView *)v10 insertSubview:v10->_behindView belowSubview:v10->_topView];
     v22 = MEMORY[0x1E69977A0];
-    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"V:[_topView(==%f)][_bottomView]", *&a4];
+    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"V:[_topView(==%f)][_bottomView]", *&height];
     v24 = _NSDictionaryOfVariableBindings(&cfstr_TopviewBottomv.isa, v10->_topView, v10->_bottomView, 0);
     v25 = [v22 constraintsWithVisualFormat:v23 options:0 metrics:0 views:v24];
 
@@ -93,12 +93,12 @@
   return v10;
 }
 
-- (void)updateTopViewHeight:(double)a3 animateUpdate:(BOOL)a4
+- (void)updateTopViewHeight:(double)height animateUpdate:(BOOL)update
 {
-  v4 = a4;
-  v11 = [(UISearchDisplayControllerContainerView *)self topViewHeightConstraint];
-  [v11 constant];
-  if (v7 == a3)
+  updateCopy = update;
+  topViewHeightConstraint = [(UISearchDisplayControllerContainerView *)self topViewHeightConstraint];
+  [topViewHeightConstraint constant];
+  if (v7 == height)
   {
   }
 
@@ -113,10 +113,10 @@
       aBlock[2] = __76__UISearchDisplayControllerContainerView_updateTopViewHeight_animateUpdate___block_invoke;
       aBlock[3] = &unk_1E70F32F0;
       aBlock[4] = self;
-      *&aBlock[5] = a3;
+      *&aBlock[5] = height;
       v9 = _Block_copy(aBlock);
       v10 = v9;
-      if (v4)
+      if (updateCopy)
       {
         (*(v9 + 2))(v9);
       }
@@ -140,31 +140,31 @@ uint64_t __76__UISearchDisplayControllerContainerView_updateTopViewHeight_animat
   return [v4 layoutIfNeeded];
 }
 
-- (void)updateTopAttributeConstant:(double)a3
+- (void)updateTopAttributeConstant:(double)constant
 {
-  v5 = [(UISearchDisplayControllerContainerView *)self topViewAttributeTopConstraint];
-  [v5 constant];
+  topViewAttributeTopConstraint = [(UISearchDisplayControllerContainerView *)self topViewAttributeTopConstraint];
+  [topViewAttributeTopConstraint constant];
   v7 = v6;
 
-  if (v7 != a3)
+  if (v7 != constant)
   {
-    v8 = [(UISearchDisplayControllerContainerView *)self topViewAttributeTopConstraint];
-    [v8 setConstant:a3];
+    topViewAttributeTopConstraint2 = [(UISearchDisplayControllerContainerView *)self topViewAttributeTopConstraint];
+    [topViewAttributeTopConstraint2 setConstant:constant];
 
     [(UIView *)self layoutIfNeeded];
   }
 }
 
-- (void)adjustTopAttributeConstantByDelta:(double)a3
+- (void)adjustTopAttributeConstantByDelta:(double)delta
 {
-  v6 = [(UISearchDisplayControllerContainerView *)self topViewAttributeTopConstraint];
-  [v6 constant];
-  [(UISearchDisplayControllerContainerView *)self updateTopAttributeConstant:v5 + a3];
+  topViewAttributeTopConstraint = [(UISearchDisplayControllerContainerView *)self topViewAttributeTopConstraint];
+  [topViewAttributeTopConstraint constant];
+  [(UISearchDisplayControllerContainerView *)self updateTopAttributeConstant:v5 + delta];
 }
 
-- (void)configureInteractionForContainment:(BOOL)a3
+- (void)configureInteractionForContainment:(BOOL)containment
 {
-  if (!a3)
+  if (!containment)
   {
     [(UIView *)self->_topView setUserInteractionEnabled:0];
     behindView = self->_behindView;
@@ -173,11 +173,11 @@ uint64_t __76__UISearchDisplayControllerContainerView_updateTopViewHeight_animat
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = UISearchDisplayControllerContainerView;
-  v5 = [(UIView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -192,15 +192,15 @@ uint64_t __76__UISearchDisplayControllerContainerView_updateTopViewHeight_animat
   return v7;
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  v6 = a4;
+  toWindowCopy = toWindow;
   v7.receiver = self;
   v7.super_class = UISearchDisplayControllerContainerView;
-  [(UIView *)&v7 _didMoveFromWindow:a3 toWindow:v6];
-  if (v6)
+  [(UIView *)&v7 _didMoveFromWindow:window toWindow:toWindowCopy];
+  if (toWindowCopy)
   {
-    [v6 updateConstraintsIfNeeded];
+    [toWindowCopy updateConstraintsIfNeeded];
   }
 }
 

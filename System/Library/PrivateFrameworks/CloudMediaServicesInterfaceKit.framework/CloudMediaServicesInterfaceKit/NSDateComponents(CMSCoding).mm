@@ -87,26 +87,26 @@ LABEL_16:
 
 - (id)cmsCoded
 {
-  v25 = [a1 era];
-  v2 = [a1 year];
-  v30 = [a1 month];
-  v29 = [a1 day];
-  v26 = [a1 hour];
-  v27 = [a1 minute];
-  v28 = [a1 second];
-  v3 = [a1 nanosecond];
-  v4 = (2 * (v25 != 0x7FFFFFFFFFFFFFFFLL)) | (4 * (v2 != 0x7FFFFFFFFFFFFFFFLL)) | (8 * (v30 != 0x7FFFFFFFFFFFFFFFLL)) | (16 * (v29 != 0x7FFFFFFFFFFFFFFFLL)) | (32 * (v26 != 0x7FFFFFFFFFFFFFFFLL)) | ((v27 != 0x7FFFFFFFFFFFFFFFLL) << 6) | ((v28 != 0x7FFFFFFFFFFFFFFFLL) << 7);
-  v5 = v4 | ((v3 != 0x7FFFFFFFFFFFFFFFLL) << 15);
+  v25 = [self era];
+  year = [self year];
+  month = [self month];
+  v29 = [self day];
+  hour = [self hour];
+  minute = [self minute];
+  second = [self second];
+  nanosecond = [self nanosecond];
+  v4 = (2 * (v25 != 0x7FFFFFFFFFFFFFFFLL)) | (4 * (year != 0x7FFFFFFFFFFFFFFFLL)) | (8 * (month != 0x7FFFFFFFFFFFFFFFLL)) | (16 * (v29 != 0x7FFFFFFFFFFFFFFFLL)) | (32 * (hour != 0x7FFFFFFFFFFFFFFFLL)) | ((minute != 0x7FFFFFFFFFFFFFFFLL) << 6) | ((second != 0x7FFFFFFFFFFFFFFFLL) << 7);
+  v5 = v4 | ((nanosecond != 0x7FFFFFFFFFFFFFFFLL) << 15);
   switch(v5)
   {
     case 0x1CuLL:
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%04d-%02d-%02d", v2, v30, v29];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%04d-%02d-%02d", year, month, v29];
       goto LABEL_7;
     case 0xCuLL:
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%04d-%02d", v2, v30, v24];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%04d-%02d", year, month, v24];
       goto LABEL_7;
     case 4uLL:
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%04d", v2, v23, v24];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%04d", year, v23, v24];
       v6 = LABEL_7:;
       goto LABEL_8;
   }
@@ -114,20 +114,20 @@ LABEL_16:
   if ((v4 & 0xFFFFFFFFFFFF7FFFLL) == 0xFC)
   {
     v8 = cmsDateFormatter();
-    v9 = [a1 date];
-    v6 = [v8 stringFromDate:v9];
+    date = [self date];
+    v6 = [v8 stringFromDate:date];
 
     goto LABEL_8;
   }
 
-  v10 = v3;
+  v10 = nanosecond;
   v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:10];
-  v11 = [a1 calendar];
-  v12 = [a1 timeZone];
-  if (v11)
+  calendar = [self calendar];
+  timeZone = [self timeZone];
+  if (calendar)
   {
-    v13 = [v11 calendarIdentifier];
-    [v6 setValue:v13 forKey:@"calendarIdentifier"];
+    calendarIdentifier = [calendar calendarIdentifier];
+    [v6 setValue:calendarIdentifier forKey:@"calendarIdentifier"];
   }
 
   if (v25 != 0x7FFFFFFFFFFFFFFFLL)
@@ -136,13 +136,13 @@ LABEL_16:
     [v6 setValue:v14 forKey:@"era"];
   }
 
-  if (v2 != 0x7FFFFFFFFFFFFFFFLL)
+  if (year != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [MEMORY[0x277CCABB0] numberWithInteger:v2];
+    v15 = [MEMORY[0x277CCABB0] numberWithInteger:year];
     [v6 setValue:v15 forKey:@"year"];
   }
 
-  if (v30 != 0x7FFFFFFFFFFFFFFFLL)
+  if (month != 0x7FFFFFFFFFFFFFFFLL)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithInteger:?];
     [v6 setValue:v16 forKey:@"month"];
@@ -154,19 +154,19 @@ LABEL_16:
     [v6 setValue:v17 forKey:@"day"];
   }
 
-  if (v26 != 0x7FFFFFFFFFFFFFFFLL)
+  if (hour != 0x7FFFFFFFFFFFFFFFLL)
   {
     v18 = [MEMORY[0x277CCABB0] numberWithInteger:?];
     [v6 setValue:v18 forKey:@"hour"];
   }
 
-  if (v27 != 0x7FFFFFFFFFFFFFFFLL)
+  if (minute != 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = [MEMORY[0x277CCABB0] numberWithInteger:?];
     [v6 setValue:v19 forKey:@"minute"];
   }
 
-  if (v28 == 0x7FFFFFFFFFFFFFFFLL)
+  if (second == 0x7FFFFFFFFFFFFFFFLL)
   {
     if ((v5 & 0x8000) == 0)
     {
@@ -177,7 +177,7 @@ LABEL_32:
     v22 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
     [v6 setValue:v22 forKey:@"nanosecond"];
 
-    if (v12)
+    if (timeZone)
     {
       goto LABEL_30;
     }
@@ -196,14 +196,14 @@ LABEL_33:
   }
 
 LABEL_29:
-  if (!v12)
+  if (!timeZone)
   {
     goto LABEL_33;
   }
 
 LABEL_30:
-  v20 = [v12 name];
-  [v6 setValue:v20 forKey:@"timeZone"];
+  name = [timeZone name];
+  [v6 setValue:name forKey:@"timeZone"];
 
 LABEL_34:
 LABEL_8:

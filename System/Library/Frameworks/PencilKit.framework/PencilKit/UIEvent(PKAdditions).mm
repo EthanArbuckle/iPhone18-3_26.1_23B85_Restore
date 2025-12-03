@@ -8,7 +8,7 @@
 
 - (const)PK_isEventFromPencil
 {
-  result = [a1 _hidEvent];
+  result = [self _hidEvent];
   if (result)
   {
     result = IOHIDEventGetChildren();
@@ -32,10 +32,10 @@
 
 - (const)PK_isEventFromCrayon
 {
-  result = [a1 _hidEvent];
+  result = [self _hidEvent];
   if (result)
   {
-    result = [a1 PK_isEventFromPencil];
+    result = [self PK_isEventFromPencil];
     if (result)
     {
       result = IOHIDEventGetChildren();
@@ -61,13 +61,13 @@
 - (uint64_t)PK_activeInputPropertiesForTouch:()PKAdditions
 {
   v4 = a3;
-  if ([a1 PK_isEventFromPencil])
+  if ([self PK_isEventFromPencil])
   {
     if ([v4 estimatedProperties])
     {
-      v6 = [v4 estimationUpdateIndex];
+      estimationUpdateIndex = [v4 estimationUpdateIndex];
 
-      if (v6)
+      if (estimationUpdateIndex)
       {
         v5 = 23;
       }

@@ -1,40 +1,40 @@
 @interface BMPrivateCloudComputeRequestLog
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMPrivateCloudComputeRequestLog)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMPrivateCloudComputeRequestLog)initWithTimestamp:(id)a3 requestId:(id)a4 pipelineKind:(id)a5 pipelineParameters:(id)a6 nodes:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMPrivateCloudComputeRequestLog)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMPrivateCloudComputeRequestLog)initWithTimestamp:(id)timestamp requestId:(id)id pipelineKind:(id)kind pipelineParameters:(id)parameters nodes:(id)nodes;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)timestamp;
 - (NSString)description;
 - (id)_nodesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPrivateCloudComputeRequestLog
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMPrivateCloudComputeRequestLog *)self timestamp];
-    v7 = [v5 timestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    timestamp = [(BMPrivateCloudComputeRequestLog *)self timestamp];
+    timestamp2 = [v5 timestamp];
+    v8 = timestamp2;
+    if (timestamp == timestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMPrivateCloudComputeRequestLog *)self timestamp];
-      v10 = [v5 timestamp];
-      v11 = [v9 isEqual:v10];
+      timestamp3 = [(BMPrivateCloudComputeRequestLog *)self timestamp];
+      timestamp4 = [v5 timestamp];
+      v11 = [timestamp3 isEqual:timestamp4];
 
       if (!v11)
       {
@@ -42,18 +42,18 @@
       }
     }
 
-    v13 = [(BMPrivateCloudComputeRequestLog *)self requestId];
-    v14 = [v5 requestId];
-    v15 = v14;
-    if (v13 == v14)
+    requestId = [(BMPrivateCloudComputeRequestLog *)self requestId];
+    requestId2 = [v5 requestId];
+    v15 = requestId2;
+    if (requestId == requestId2)
     {
     }
 
     else
     {
-      v16 = [(BMPrivateCloudComputeRequestLog *)self requestId];
-      v17 = [v5 requestId];
-      v18 = [v16 isEqual:v17];
+      requestId3 = [(BMPrivateCloudComputeRequestLog *)self requestId];
+      requestId4 = [v5 requestId];
+      v18 = [requestId3 isEqual:requestId4];
 
       if (!v18)
       {
@@ -61,18 +61,18 @@
       }
     }
 
-    v19 = [(BMPrivateCloudComputeRequestLog *)self pipelineKind];
-    v20 = [v5 pipelineKind];
-    v21 = v20;
-    if (v19 == v20)
+    pipelineKind = [(BMPrivateCloudComputeRequestLog *)self pipelineKind];
+    pipelineKind2 = [v5 pipelineKind];
+    v21 = pipelineKind2;
+    if (pipelineKind == pipelineKind2)
     {
     }
 
     else
     {
-      v22 = [(BMPrivateCloudComputeRequestLog *)self pipelineKind];
-      v23 = [v5 pipelineKind];
-      v24 = [v22 isEqual:v23];
+      pipelineKind3 = [(BMPrivateCloudComputeRequestLog *)self pipelineKind];
+      pipelineKind4 = [v5 pipelineKind];
+      v24 = [pipelineKind3 isEqual:pipelineKind4];
 
       if (!v24)
       {
@@ -80,18 +80,18 @@
       }
     }
 
-    v25 = [(BMPrivateCloudComputeRequestLog *)self pipelineParameters];
-    v26 = [v5 pipelineParameters];
-    v27 = v26;
-    if (v25 == v26)
+    pipelineParameters = [(BMPrivateCloudComputeRequestLog *)self pipelineParameters];
+    pipelineParameters2 = [v5 pipelineParameters];
+    v27 = pipelineParameters2;
+    if (pipelineParameters == pipelineParameters2)
     {
     }
 
     else
     {
-      v28 = [(BMPrivateCloudComputeRequestLog *)self pipelineParameters];
-      v29 = [v5 pipelineParameters];
-      v30 = [v28 isEqual:v29];
+      pipelineParameters3 = [(BMPrivateCloudComputeRequestLog *)self pipelineParameters];
+      pipelineParameters4 = [v5 pipelineParameters];
+      v30 = [pipelineParameters3 isEqual:pipelineParameters4];
 
       if (!v30)
       {
@@ -103,18 +103,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMPrivateCloudComputeRequestLog *)self nodes];
-    v32 = [v5 nodes];
-    if (v31 == v32)
+    nodes = [(BMPrivateCloudComputeRequestLog *)self nodes];
+    nodes2 = [v5 nodes];
+    if (nodes == nodes2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMPrivateCloudComputeRequestLog *)self nodes];
-      v34 = [v5 nodes];
-      v12 = [v33 isEqual:v34];
+      nodes3 = [(BMPrivateCloudComputeRequestLog *)self nodes];
+      nodes4 = [v5 nodes];
+      v12 = [nodes3 isEqual:nodes4];
     }
 
     goto LABEL_23;
@@ -146,12 +146,12 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(BMPrivateCloudComputeRequestLog *)self timestamp];
-  if (v3)
+  timestamp = [(BMPrivateCloudComputeRequestLog *)self timestamp];
+  if (timestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMPrivateCloudComputeRequestLog *)self timestamp];
-    [v5 timeIntervalSince1970];
+    timestamp2 = [(BMPrivateCloudComputeRequestLog *)self timestamp];
+    [timestamp2 timeIntervalSince1970];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -160,64 +160,64 @@ LABEL_24:
     v6 = 0;
   }
 
-  v7 = [(BMPrivateCloudComputeRequestLog *)self requestId];
-  v8 = [(BMPrivateCloudComputeRequestLog *)self pipelineKind];
-  v9 = [(BMPrivateCloudComputeRequestLog *)self pipelineParameters];
-  v10 = [(BMPrivateCloudComputeRequestLog *)self _nodesJSONArray];
+  requestId = [(BMPrivateCloudComputeRequestLog *)self requestId];
+  pipelineKind = [(BMPrivateCloudComputeRequestLog *)self pipelineKind];
+  pipelineParameters = [(BMPrivateCloudComputeRequestLog *)self pipelineParameters];
+  _nodesJSONArray = [(BMPrivateCloudComputeRequestLog *)self _nodesJSONArray];
   v21[0] = @"timestamp";
-  v11 = v6;
+  null = v6;
   if (!v6)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v11;
-  v23[0] = v11;
+  v20 = null;
+  v23[0] = null;
   v21[1] = @"requestId";
-  v12 = v7;
-  if (!v7)
+  null2 = requestId;
+  if (!requestId)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v12;
+  v23[1] = null2;
   v21[2] = @"pipelineKind";
-  v13 = v8;
-  if (!v8)
+  null3 = pipelineKind;
+  if (!pipelineKind)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v13;
+  v23[2] = null3;
   v21[3] = @"pipelineParameters";
-  v14 = v9;
-  if (!v9)
+  null4 = pipelineParameters;
+  if (!pipelineParameters)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v14;
+  v23[3] = null4;
   v21[4] = @"nodes";
-  if (v10)
+  if (_nodesJSONArray)
   {
-    v24 = v10;
+    v24 = _nodesJSONArray;
     v22 = @"attestations";
-    v15 = v10;
+    null6 = _nodesJSONArray;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
-    v24 = v19;
+    null5 = [MEMORY[0x1E695DFB0] null];
+    v24 = null5;
     v22 = @"attestations";
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v15;
+  v25 = null6;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v21 count:6];
-  if (v10)
+  if (_nodesJSONArray)
   {
-    if (v9)
+    if (pipelineParameters)
     {
       goto LABEL_17;
     }
@@ -226,10 +226,10 @@ LABEL_24:
   else
   {
 
-    if (v9)
+    if (pipelineParameters)
     {
 LABEL_17:
-      if (v8)
+      if (pipelineKind)
       {
         goto LABEL_18;
       }
@@ -238,10 +238,10 @@ LABEL_17:
     }
   }
 
-  if (v8)
+  if (pipelineKind)
   {
 LABEL_18:
-    if (v7)
+    if (requestId)
     {
       goto LABEL_19;
     }
@@ -258,7 +258,7 @@ LABEL_26:
 
 LABEL_25:
 
-  if (!v7)
+  if (!requestId)
   {
     goto LABEL_26;
   }
@@ -285,8 +285,8 @@ LABEL_20:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMPrivateCloudComputeRequestLog *)self nodes];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  nodes = [(BMPrivateCloudComputeRequestLog *)self nodes];
+  v5 = [nodes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -297,14 +297,14 @@ LABEL_20:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodes);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [nodes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -315,11 +315,11 @@ LABEL_20:
   return v3;
 }
 
-- (BMPrivateCloudComputeRequestLog)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMPrivateCloudComputeRequestLog)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v109[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"timestamp"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -347,28 +347,28 @@ LABEL_6:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v8 = 0;
-        v36 = 0;
+        selfCopy2 = 0;
         goto LABEL_63;
       }
 
       v68 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v84 = a4;
+      errorCopy = error;
       v69 = *MEMORY[0x1E698F240];
       v108 = *MEMORY[0x1E696A578];
-      v70 = v6;
+      v70 = dictionaryCopy;
       v71 = objc_alloc(MEMORY[0x1E696AEC0]);
       v75 = objc_opt_class();
       v72 = v71;
-      v6 = v70;
+      dictionaryCopy = v70;
       v34 = [v72 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 1970), NSString (ISO8601 format), or NSDate", v75, @"timestamp"];
       v109[0] = v34;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v109 forKeys:&v108 count:1];
       v8 = 0;
-      v36 = 0;
-      *v84 = [v68 initWithDomain:v69 code:2 userInfo:v16];
+      selfCopy2 = 0;
+      *errorCopy = [v68 initWithDomain:v69 code:2 userInfo:v16];
       goto LABEL_62;
     }
 
@@ -380,7 +380,7 @@ LABEL_6:
   v8 = [v15 dateFromString:v7];
 
 LABEL_9:
-  v16 = [v6 objectForKeyedSubscript:@"requestId"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
   if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v87 = 0;
@@ -392,13 +392,13 @@ LABEL_9:
   {
     v87 = v16;
 LABEL_12:
-    v17 = [v6 objectForKeyedSubscript:@"pipelineKind"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"pipelineKind"];
     v89 = v17;
     if (!v17 || (v18 = v17, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v85 = 0;
 LABEL_15:
-      v19 = [v6 objectForKeyedSubscript:@"pipelineParameters"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"pipelineParameters"];
       v80 = v16;
       v86 = v19;
       if (v19 && (v20 = v19, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -406,10 +406,10 @@ LABEL_15:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v88 = 0;
-            v36 = 0;
+            selfCopy2 = 0;
             v34 = v87;
             v35 = v85;
             goto LABEL_59;
@@ -418,36 +418,36 @@ LABEL_15:
           v50 = objc_alloc(MEMORY[0x1E696ABC0]);
           v51 = *MEMORY[0x1E698F240];
           v102 = *MEMORY[0x1E696A578];
-          v52 = a4;
+          errorCopy2 = error;
           v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"pipelineParameters"];
           v103 = v21;
           v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v103 forKeys:&v102 count:1];
           v53 = [v50 initWithDomain:v51 code:2 userInfo:v24];
           v88 = 0;
-          v36 = 0;
-          *v52 = v53;
+          selfCopy2 = 0;
+          *errorCopy2 = v53;
           goto LABEL_56;
         }
 
-        v81 = a4;
+        errorCopy4 = error;
         v88 = v20;
       }
 
       else
       {
-        v81 = a4;
+        errorCopy4 = error;
         v88 = 0;
       }
 
-      v21 = [v6 objectForKeyedSubscript:@"nodes"];
-      v22 = [MEMORY[0x1E695DFB0] null];
-      v23 = [v21 isEqual:v22];
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"nodes"];
+      null = [MEMORY[0x1E695DFB0] null];
+      v23 = [v21 isEqual:null];
 
       v79 = v8;
       if (v23)
       {
         v77 = v7;
-        v78 = self;
+        selfCopy3 = self;
 
         v21 = 0;
 LABEL_25:
@@ -465,7 +465,7 @@ LABEL_25:
 
         v26 = v25;
         v27 = *v92;
-        v76 = v6;
+        v76 = dictionaryCopy;
 LABEL_27:
         v28 = 0;
         while (1)
@@ -485,11 +485,11 @@ LABEL_27:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v6 = v76;
-            self = v78;
+            dictionaryCopy = v76;
+            self = selfCopy3;
             v8 = v79;
-            v54 = v81;
-            if (!v81)
+            v54 = errorCopy4;
+            if (!errorCopy4)
             {
               goto LABEL_55;
             }
@@ -513,19 +513,19 @@ LABEL_27:
           if (v33)
           {
             v60 = v33;
-            if (v81)
+            if (errorCopy4)
             {
               v62 = v33;
-              *v81 = v60;
+              *errorCopy4 = v60;
             }
 
-            v6 = v76;
-            self = v78;
+            dictionaryCopy = v76;
+            self = selfCopy3;
             v8 = v79;
 LABEL_54:
 
 LABEL_55:
-            v36 = 0;
+            selfCopy2 = 0;
             v7 = v77;
             goto LABEL_56;
           }
@@ -535,7 +535,7 @@ LABEL_55:
           if (v26 == ++v28)
           {
             v26 = [v21 countByEnumeratingWithState:&v91 objects:v99 count:16];
-            v6 = v76;
+            dictionaryCopy = v76;
             if (v26)
             {
               goto LABEL_27;
@@ -546,8 +546,8 @@ LABEL_35:
             v8 = v79;
             v34 = v87;
             v35 = v85;
-            self = [(BMPrivateCloudComputeRequestLog *)v78 initWithTimestamp:v79 requestId:v87 pipelineKind:v85 pipelineParameters:v88 nodes:v24];
-            v36 = self;
+            self = [(BMPrivateCloudComputeRequestLog *)selfCopy3 initWithTimestamp:v79 requestId:v87 pipelineKind:v85 pipelineParameters:v88 nodes:v24];
+            selfCopy2 = self;
             v7 = v77;
 LABEL_57:
 
@@ -562,11 +562,11 @@ LABEL_60:
           }
         }
 
-        v6 = v76;
-        self = v78;
+        dictionaryCopy = v76;
+        self = selfCopy3;
         v8 = v79;
-        v54 = v81;
-        if (!v81)
+        v54 = errorCopy4;
+        if (!errorCopy4)
         {
           goto LABEL_55;
         }
@@ -590,13 +590,13 @@ LABEL_50:
       if (!v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v77 = v7;
-        v78 = self;
+        selfCopy3 = self;
         goto LABEL_25;
       }
 
-      if (!v81)
+      if (!errorCopy4)
       {
-        v36 = 0;
+        selfCopy2 = 0;
         v34 = v87;
         v35 = v85;
         goto LABEL_58;
@@ -608,9 +608,9 @@ LABEL_50:
       v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"nodes"];
       v101 = v24;
       v67 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v101 forKeys:&v100 count:1];
-      *v81 = [v65 initWithDomain:v66 code:2 userInfo:v67];
+      *errorCopy4 = [v65 initWithDomain:v66 code:2 userInfo:v67];
 
-      v36 = 0;
+      selfCopy2 = 0;
 LABEL_56:
       v34 = v87;
       v35 = v85;
@@ -624,10 +624,10 @@ LABEL_56:
       goto LABEL_15;
     }
 
-    if (a4)
+    if (error)
     {
       v42 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v83 = a4;
+      errorCopy5 = error;
       v43 = *MEMORY[0x1E698F240];
       v104 = *MEMORY[0x1E696A578];
       v44 = v16;
@@ -641,24 +641,24 @@ LABEL_56:
       v48 = v42;
       v49 = v47;
       v35 = 0;
-      v36 = 0;
-      *v83 = [v48 initWithDomain:v43 code:2 userInfo:v47];
+      selfCopy2 = 0;
+      *errorCopy5 = [v48 initWithDomain:v43 code:2 userInfo:v47];
       v34 = v87;
       goto LABEL_60;
     }
 
     v35 = 0;
-    v36 = 0;
+    selfCopy2 = 0;
     v34 = v87;
 LABEL_61:
 
     goto LABEL_62;
   }
 
-  if (a4)
+  if (error)
   {
     v37 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v82 = a4;
+    errorCopy6 = error;
     v38 = *MEMORY[0x1E698F240];
     v106 = *MEMORY[0x1E696A578];
     v39 = v16;
@@ -670,33 +670,33 @@ LABEL_61:
     v107 = v35;
     v89 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v107 forKeys:&v106 count:1];
     v34 = 0;
-    v36 = 0;
-    *v82 = [v37 initWithDomain:v38 code:2 userInfo:?];
+    selfCopy2 = 0;
+    *errorCopy6 = [v37 initWithDomain:v38 code:2 userInfo:?];
     goto LABEL_61;
   }
 
   v34 = 0;
-  v36 = 0;
+  selfCopy2 = 0;
 LABEL_62:
 
 LABEL_63:
   v63 = *MEMORY[0x1E69E9840];
-  return v36;
+  return selfCopy2;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMPrivateCloudComputeRequestLog *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_hasRaw_timestamp)
   {
     raw_timestamp = self->_raw_timestamp;
@@ -739,7 +739,7 @@ LABEL_63:
 
         v11 = *(*(&v13 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v11 writeTo:v4];
+        [v11 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -752,9 +752,9 @@ LABEL_63:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v31.receiver = self;
   v31.super_class = BMPrivateCloudComputeRequestLog;
   v5 = [(BMEventBase *)&v31 init];
@@ -764,12 +764,12 @@ LABEL_63:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_39;
       }
@@ -780,18 +780,18 @@ LABEL_63:
       while (1)
       {
         LOBYTE(v32[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v32 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v32[0] & 0x7F) << v8;
@@ -808,9 +808,9 @@ LABEL_63:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_39;
       }
@@ -834,18 +834,18 @@ LABEL_16:
         {
           v5->_hasRaw_timestamp = 1;
           v32[0] = 0;
-          v17 = [v4 position] + 8;
-          if (v17 >= [v4 position] && (v18 = objc_msgSend(v4, "position") + 8, v18 <= objc_msgSend(v4, "length")))
+          v17 = [fromCopy position] + 8;
+          if (v17 >= [fromCopy position] && (v18 = objc_msgSend(fromCopy, "position") + 8, v18 <= objc_msgSend(fromCopy, "length")))
           {
-            v24 = [v4 data];
-            [v24 getBytes:v32 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:v32 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           *&v5->_raw_timestamp = v32[0];
@@ -863,7 +863,7 @@ LABEL_34:
 
       v32[0] = 0;
       v32[1] = 0;
-      if (!PBReaderPlaceMark() || (v21 = [[BMPrivateCloudComputeRequestLogAttestation alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v21 = [[BMPrivateCloudComputeRequestLogAttestation alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_43:
 
@@ -875,8 +875,8 @@ LABEL_43:
       PBReaderRecallMark();
 
 LABEL_38:
-      v25 = [v4 position];
-      if (v25 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_39;
       }
@@ -908,8 +908,8 @@ LABEL_39:
   nodes = v5->_nodes;
   v5->_nodes = v26;
 
-  v28 = [v4 hasError];
-  if (v28)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_40:
     v29 = 0;
@@ -927,33 +927,33 @@ LABEL_41:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMPrivateCloudComputeRequestLog *)self timestamp];
-  v5 = [(BMPrivateCloudComputeRequestLog *)self requestId];
-  v6 = [(BMPrivateCloudComputeRequestLog *)self pipelineKind];
-  v7 = [(BMPrivateCloudComputeRequestLog *)self pipelineParameters];
-  v8 = [(BMPrivateCloudComputeRequestLog *)self nodes];
-  v9 = [v3 initWithFormat:@"BMPrivateCloudComputeRequestLog with timestamp: %@, requestId: %@, pipelineKind: %@, pipelineParameters: %@, nodes: %@", v4, v5, v6, v7, v8];
+  timestamp = [(BMPrivateCloudComputeRequestLog *)self timestamp];
+  requestId = [(BMPrivateCloudComputeRequestLog *)self requestId];
+  pipelineKind = [(BMPrivateCloudComputeRequestLog *)self pipelineKind];
+  pipelineParameters = [(BMPrivateCloudComputeRequestLog *)self pipelineParameters];
+  nodes = [(BMPrivateCloudComputeRequestLog *)self nodes];
+  v9 = [v3 initWithFormat:@"BMPrivateCloudComputeRequestLog with timestamp: %@, requestId: %@, pipelineKind: %@, pipelineParameters: %@, nodes: %@", timestamp, requestId, pipelineKind, pipelineParameters, nodes];
 
   return v9;
 }
 
-- (BMPrivateCloudComputeRequestLog)initWithTimestamp:(id)a3 requestId:(id)a4 pipelineKind:(id)a5 pipelineParameters:(id)a6 nodes:(id)a7
+- (BMPrivateCloudComputeRequestLog)initWithTimestamp:(id)timestamp requestId:(id)id pipelineKind:(id)kind pipelineParameters:(id)parameters nodes:(id)nodes
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  timestampCopy = timestamp;
+  idCopy = id;
+  kindCopy = kind;
+  parametersCopy = parameters;
+  nodesCopy = nodes;
   v20.receiver = self;
   v20.super_class = BMPrivateCloudComputeRequestLog;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v12)
+    if (timestampCopy)
     {
       v17->_hasRaw_timestamp = 1;
-      [v12 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -963,10 +963,10 @@ LABEL_41:
     }
 
     v17->_raw_timestamp = v18;
-    objc_storeStrong(&v17->_requestId, a4);
-    objc_storeStrong(&v17->_pipelineKind, a5);
-    objc_storeStrong(&v17->_pipelineParameters, a6);
-    objc_storeStrong(&v17->_nodes, a7);
+    objc_storeStrong(&v17->_requestId, id);
+    objc_storeStrong(&v17->_pipelineKind, kind);
+    objc_storeStrong(&v17->_pipelineParameters, parameters);
+    objc_storeStrong(&v17->_nodes, nodes);
   }
 
   return v17;
@@ -1031,9 +1031,9 @@ id __42__BMPrivateCloudComputeRequestLog_columns__block_invoke(uint64_t a1, void
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1041,8 +1041,8 @@ id __42__BMPrivateCloudComputeRequestLog_columns__block_invoke(uint64_t a1, void
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMPrivateCloudComputeRequestLog alloc] initByReadFrom:v7];
     v4 = v8;

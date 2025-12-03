@@ -1,8 +1,8 @@
 @interface AKInkAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
 + (id)keyPathsForValuesAffectingDrawingBounds;
 + (id)keyPathsForValuesAffectingHitTestBounds;
-- (AKInkAnnotation)initWithCoder:(id)a3;
+- (AKInkAnnotation)initWithCoder:(id)coder;
 - (CGRect)hitTestBounds;
 - (CGRect)rectangle;
 - (CGSize)drawingSize;
@@ -10,9 +10,9 @@
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
 - (void)adjustModelToCompensateForOriginalExif;
-- (void)encodeWithCoder:(id)a3;
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4;
-- (void)translateBy:(CGPoint)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size;
+- (void)translateBy:(CGPoint)by;
 @end
 
 @implementation AKInkAnnotation
@@ -20,7 +20,7 @@
 + (id)keyPathsForValuesAffectingHitTestBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKInkAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingHitTestBounds);
   v4 = [v2 setWithSet:v3];
@@ -33,7 +33,7 @@
 + (id)keyPathsForValuesAffectingDrawingBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKInkAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingDrawingBounds);
   v4 = [v2 setWithSet:v3];
@@ -43,16 +43,16 @@
   return v4;
 }
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"rectangle"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"rectangle"])
   {
     v5 = @"Bounds";
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"drawing"])
+  if ([keyCopy isEqualToString:@"drawing"])
   {
     v5 = @"Drawing";
 LABEL_5:
@@ -65,9 +65,9 @@ LABEL_5:
     }
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___AKInkAnnotation;
-  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
 LABEL_7:
 
   return v7;
@@ -86,8 +86,8 @@ LABEL_7:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKInkAnnotation;
-  v3 = [(AKAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BAF20];
 
@@ -99,8 +99,8 @@ LABEL_7:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKInkAnnotation;
-  v3 = [(AKAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BAF38];
 
@@ -144,18 +144,18 @@ LABEL_7:
   [(AKInkAnnotation *)self setRectangle:?];
 }
 
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:a3];
+  height = size.height;
+  width = size.width;
+  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:orientation];
   [(AKInkAnnotation *)self rectangle];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   memset(&v16[1], 0, sizeof(CGAffineTransform));
-  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:a3 withOriginalModelSize:width, height];
+  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:orientation withOriginalModelSize:width, height];
   v16[0] = v16[1];
   v17.origin.x = v9;
   v17.origin.y = v11;
@@ -165,59 +165,59 @@ LABEL_7:
   [(AKInkAnnotation *)self setRectangle:v18.origin.x, v18.origin.y, v18.size.width, v18.size.height];
 }
 
-- (void)translateBy:(CGPoint)a3
+- (void)translateBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  y = by.y;
+  x = by.x;
+  if (by.x != *MEMORY[0x277CBF348] || by.y != *(MEMORY[0x277CBF348] + 8))
   {
-    v7 = [(AKAnnotation *)self isTranslating];
+    isTranslating = [(AKAnnotation *)self isTranslating];
     [(AKAnnotation *)self setIsTranslating:1];
     [(AKInkAnnotation *)self rectangle];
     [(AKInkAnnotation *)self setRectangle:x + v8, y + v9];
 
-    [(AKAnnotation *)self setIsTranslating:v7];
+    [(AKAnnotation *)self setIsTranslating:isTranslating];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = AKInkAnnotation;
-  v4 = a3;
-  [(AKAnnotation *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AKAnnotation *)&v9 encodeWithCoder:coderCopy];
   [(AKInkAnnotation *)self rectangle:v9.receiver];
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v11);
-  [v4 encodeObject:DictionaryRepresentation forKey:@"rectangle"];
-  v6 = [(AKInkAnnotation *)self drawing];
-  v7 = [v6 serialize];
+  [coderCopy encodeObject:DictionaryRepresentation forKey:@"rectangle"];
+  drawing = [(AKInkAnnotation *)self drawing];
+  serialize = [drawing serialize];
 
-  [v4 encodeObject:v7 forKey:@"drawing"];
+  [coderCopy encodeObject:serialize forKey:@"drawing"];
   [(AKInkAnnotation *)self drawingSize];
   v8 = CGSizeCreateDictionaryRepresentation(v10);
 
-  [v4 encodeObject:v8 forKey:@"drawingSize"];
+  [coderCopy encodeObject:v8 forKey:@"drawingSize"];
 }
 
-- (AKInkAnnotation)initWithCoder:(id)a3
+- (AKInkAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = AKInkAnnotation;
-  v5 = [(AKAnnotation *)&v25 initWithCoder:v4];
+  v5 = [(AKAnnotation *)&v25 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"rectangle"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"rectangle"];
 
     CGRectMakeWithDictionaryRepresentation(v10, &v5->_rectangle);
     v11 = MEMORY[0x277CBEB98];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"drawing"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"drawing"];
 
     v24 = 0;
     v15 = [objc_alloc(MEMORY[0x277CD95F8]) initWithData:v14 error:&v24];
@@ -232,13 +232,13 @@ LABEL_7:
     }
 
     [(AKInkAnnotation *)v5 setDrawing:v15];
-    if ([v4 containsValueForKey:@"drawingSize"])
+    if ([coderCopy containsValueForKey:@"drawingSize"])
     {
       v18 = MEMORY[0x277CBEB98];
       v19 = objc_opt_class();
       v20 = objc_opt_class();
       v21 = [v18 setWithObjects:{v19, v20, objc_opt_class(), 0}];
-      v22 = [v4 decodeObjectOfClasses:v21 forKey:@"drawingSize"];
+      v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"drawingSize"];
 
       CGSizeMakeWithDictionaryRepresentation(v22, &v5->_drawingSize);
     }

@@ -1,5 +1,5 @@
 @interface _PASZonedObject
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 - (_NSZone)allocationZone;
 - (void)dealloc;
 @end
@@ -29,12 +29,12 @@
   NSZoneFree(v4, v5);
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  InstanceSize = class_getInstanceSize(a1);
-  v6 = NSZoneCalloc(a3, 1uLL, InstanceSize);
+  InstanceSize = class_getInstanceSize(self);
+  v6 = NSZoneCalloc(zone, 1uLL, InstanceSize);
 
-  return objc_constructInstance(a1, v6);
+  return objc_constructInstance(self, v6);
 }
 
 @end

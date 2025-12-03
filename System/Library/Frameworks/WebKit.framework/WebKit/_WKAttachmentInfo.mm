@@ -3,7 +3,7 @@
 - (NSFileWrapper)fileWrapper;
 - (NSString)contentType;
 - (NSString)name;
-- (_WKAttachmentInfo)initWithAttachment:(const void *)a3;
+- (_WKAttachmentInfo)initWithAttachment:(const void *)attachment;
 - (id).cxx_construct;
 - (uint64_t)data;
 - (uint64_t)name;
@@ -11,22 +11,22 @@
 
 @implementation _WKAttachmentInfo
 
-- (_WKAttachmentInfo)initWithAttachment:(const void *)a3
+- (_WKAttachmentInfo)initWithAttachment:(const void *)attachment
 {
   v29.receiver = self;
   v29.super_class = _WKAttachmentInfo;
   v4 = [(_WKAttachmentInfo *)&v29 init];
   if (v4)
   {
-    CFRetain(*(a3 + 1));
+    CFRetain(*(attachment + 1));
     m_ptr = v4->_attachment.m_ptr;
-    v4->_attachment.m_ptr = a3;
+    v4->_attachment.m_ptr = attachment;
     if (m_ptr)
     {
       CFRelease(*(m_ptr + 1));
     }
 
-    v6 = *(a3 + 5);
+    v6 = *(attachment + 5);
     if (v6)
     {
       atomic_fetch_add_explicit(v6, 2u, memory_order_relaxed);
@@ -57,7 +57,7 @@
       }
     }
 
-    API::Attachment::mimeType(a3, &v27);
+    API::Attachment::mimeType(attachment, &v27);
     v12 = v27;
     if (v27)
     {
@@ -96,7 +96,7 @@
       WTF::StringImpl::destroy(v18, v13);
     }
 
-    API::Attachment::utiType(a3, &v27);
+    API::Attachment::utiType(attachment, &v27);
     v19 = v27;
     if (v27)
     {
@@ -209,7 +209,7 @@
     result = 0;
   }
 
-  **(a1 + 8) = result;
+  **(self + 8) = result;
   return result;
 }
 
@@ -225,7 +225,7 @@
     result = [a2 preferredFilename];
   }
 
-  **(a1 + 8) = result;
+  **(self + 8) = result;
   return result;
 }
 

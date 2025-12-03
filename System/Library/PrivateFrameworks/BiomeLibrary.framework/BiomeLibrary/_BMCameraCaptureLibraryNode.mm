@@ -2,7 +2,7 @@
 + (id)AutoFocusROI;
 + (id)configurationForAutoFocusROI;
 + (id)storeConfigurationForAutoFocusROI;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)AutoFocusROI
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAutoFocusROI];
+  configurationForAutoFocusROI = [self configurationForAutoFocusROI];
   v3 = +[BMCameraCaptureAutoFocusROI columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"CameraCapture.AutoFocusROI" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"CameraCapture.AutoFocusROI" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"CameraCapture.AutoFocusROI" schema:v9 configuration:configurationForAutoFocusROI];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForAutoFocusROI
 {
-  v3 = [a1 storeConfigurationForAutoFocusROI];
-  v4 = [a1 syncPolicyForAutoFocusROI];
+  storeConfigurationForAutoFocusROI = [self storeConfigurationForAutoFocusROI];
+  syncPolicyForAutoFocusROI = [self syncPolicyForAutoFocusROI];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"7FC26DAC-580D-4867-BBF8-7F01AA998DF6"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"CameraCapture.AutoFocusROI" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.cameracaptured" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"CameraCapture.AutoFocusROI" eventClass:objc_opt_class() storeConfig:storeConfigurationForAutoFocusROI syncPolicy:syncPolicyForAutoFocusROI legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.cameracaptured" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"AutoFocusROI"])
+  if ([name isEqualToString:@"AutoFocusROI"])
   {
-    v4 = [a1 AutoFocusROI];
+    autoFocusROI = [self AutoFocusROI];
   }
 
   else
   {
-    v4 = 0;
+    autoFocusROI = 0;
   }
 
-  return v4;
+  return autoFocusROI;
 }
 
 + (id)validKeyPaths

@@ -20,56 +20,56 @@
 - (BOOL)fakeWiFiNetworkMismatchSymptom;
 - (BOOL)fakeWiFiPerformanceSymptom;
 - (BOOL)fakeWiFiSymptom;
-- (HUAccessoryDebugModule)initWithItemUpdater:(id)a3 homeKitObject:(id)a4;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (HUAccessoryDebugModule)initWithItemUpdater:(id)updater homeKitObject:(id)object;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
 - (void)_pushSymptomUpdate;
 - (void)_reloadItemProviders;
-- (void)setFake8021xNetworkSymptom:(BOOL)a3;
-- (void)setFakeCDPSymptom:(BOOL)a3;
-- (void)setFakeCaptiveLeaseRenewalSymptom:(BOOL)a3;
-- (void)setFakeGeneralFixSymptom:(BOOL)a3;
-- (void)setFakeHardwareFixSymptom:(BOOL)a3;
-- (void)setFakeHomeKitSymptom:(BOOL)a3;
-- (void)setFakeICloudSymptom:(BOOL)a3;
-- (void)setFakeITunesSymptom:(BOOL)a3;
-- (void)setFakeInternetFixSymptom:(BOOL)a3;
-- (void)setFakeNetworkNotShareableSymptom:(BOOL)a3;
-- (void)setFakeNetworkProfileFixSymptom:(BOOL)a3;
-- (void)setFakeNetworkProfileInstallSymptom:(BOOL)a3;
-- (void)setFakeNetworkStrengthError:(BOOL)a3;
-- (void)setFakeStereoPairGeneralSymptom:(BOOL)a3;
-- (void)setFakeStereoPairNotFoundSymptom:(BOOL)a3;
-- (void)setFakeStereoPairVersionMismatchSymptom:(BOOL)a3;
-- (void)setFakeUnreachableError:(BOOL)a3;
-- (void)setFakeVPNProfileExpiredSymptom:(BOOL)a3;
-- (void)setFakeWiFiNetworkMismatchSymptom:(BOOL)a3;
-- (void)setFakeWiFiPerformanceSymptom:(BOOL)a3;
-- (void)setFakeWiFiSymptom:(BOOL)a3;
+- (void)setFake8021xNetworkSymptom:(BOOL)symptom;
+- (void)setFakeCDPSymptom:(BOOL)symptom;
+- (void)setFakeCaptiveLeaseRenewalSymptom:(BOOL)symptom;
+- (void)setFakeGeneralFixSymptom:(BOOL)symptom;
+- (void)setFakeHardwareFixSymptom:(BOOL)symptom;
+- (void)setFakeHomeKitSymptom:(BOOL)symptom;
+- (void)setFakeICloudSymptom:(BOOL)symptom;
+- (void)setFakeITunesSymptom:(BOOL)symptom;
+- (void)setFakeInternetFixSymptom:(BOOL)symptom;
+- (void)setFakeNetworkNotShareableSymptom:(BOOL)symptom;
+- (void)setFakeNetworkProfileFixSymptom:(BOOL)symptom;
+- (void)setFakeNetworkProfileInstallSymptom:(BOOL)symptom;
+- (void)setFakeNetworkStrengthError:(BOOL)error;
+- (void)setFakeStereoPairGeneralSymptom:(BOOL)symptom;
+- (void)setFakeStereoPairNotFoundSymptom:(BOOL)symptom;
+- (void)setFakeStereoPairVersionMismatchSymptom:(BOOL)symptom;
+- (void)setFakeUnreachableError:(BOOL)error;
+- (void)setFakeVPNProfileExpiredSymptom:(BOOL)symptom;
+- (void)setFakeWiFiNetworkMismatchSymptom:(BOOL)symptom;
+- (void)setFakeWiFiPerformanceSymptom:(BOOL)symptom;
+- (void)setFakeWiFiSymptom:(BOOL)symptom;
 @end
 
 @implementation HUAccessoryDebugModule
 
-- (HUAccessoryDebugModule)initWithItemUpdater:(id)a3 homeKitObject:(id)a4
+- (HUAccessoryDebugModule)initWithItemUpdater:(id)updater homeKitObject:(id)object
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  updaterCopy = updater;
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v91 = [MEMORY[0x277CCA890] currentHandler];
-    [v91 handleFailureInMethod:a2 object:self file:@"HUAccessoryDebugModule.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"homeKitObject"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessoryDebugModule.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"homeKitObject"}];
   }
 
   v138.receiver = self;
   v138.super_class = HUAccessoryDebugModule;
-  v9 = [(HFItemModule *)&v138 initWithItemUpdater:v7];
+  v9 = [(HFItemModule *)&v138 initWithItemUpdater:updaterCopy];
   v10 = v9;
   if (v9)
   {
-    v92 = v7;
-    objc_storeStrong(&v9->_homeKitObject, a4);
+    v92 = updaterCopy;
+    objc_storeStrong(&v9->_homeKitObject, object);
     objc_opt_class();
-    v11 = v8;
+    v11 = objectCopy;
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
@@ -100,9 +100,9 @@
     if ([v13 hf_isHomeMediaAccessory])
     {
       objc_storeStrong(&v10->_accessory, v12);
-      v17 = [v13 symptomsHandler];
+      symptomsHandler = [v13 symptomsHandler];
       symptomsHandler = v10->_symptomsHandler;
-      v10->_symptomsHandler = v17;
+      v10->_symptomsHandler = symptomsHandler;
 
       v19 = objc_alloc(MEMORY[0x277D14B38]);
       v135[0] = MEMORY[0x277D85DD0];
@@ -306,9 +306,9 @@
 
     if (v16)
     {
-      v73 = [v16 symptomsHandler];
+      symptomsHandler2 = [v16 symptomsHandler];
       v74 = v10->_symptomsHandler;
-      v10->_symptomsHandler = v73;
+      v10->_symptomsHandler = symptomsHandler2;
 
       v75 = objc_alloc(MEMORY[0x277D14B38]);
       v99[0] = MEMORY[0x277D85DD0];
@@ -387,7 +387,7 @@
     v10->_debugItemProvider = v88;
 
     objc_destroyWeak(&location);
-    v7 = v92;
+    updaterCopy = v92;
   }
 
   return v10;
@@ -726,51 +726,51 @@ id __60__HUAccessoryDebugModule_initWithItemUpdater_homeKitObject___block_invoke
 - (id)itemProviders
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUAccessoryDebugModule *)self debugItemProvider];
-  v4 = [v2 setWithObject:v3];
+  debugItemProvider = [(HUAccessoryDebugModule *)self debugItemProvider];
+  v4 = [v2 setWithObject:debugItemProvider];
 
   return v4;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
-  if (HFPreferencesInternalDebuggingEnabled() && [v4 count])
+  itemsCopy = items;
+  if (HFPreferencesInternalDebuggingEnabled() && [itemsCopy count])
   {
     v5 = MEMORY[0x277CBEB98];
-    v6 = [(HUAccessoryDebugModule *)self fakeUnreachableItem];
-    v7 = [(HUAccessoryDebugModule *)self fakeNetworkStrengthErrorItem];
-    v8 = [v5 setWithObjects:{v6, v7, 0}];
-    v34 = [v8 na_setByIntersectingWithSet:v4];
+    fakeUnreachableItem = [(HUAccessoryDebugModule *)self fakeUnreachableItem];
+    fakeNetworkStrengthErrorItem = [(HUAccessoryDebugModule *)self fakeNetworkStrengthErrorItem];
+    v8 = [v5 setWithObjects:{fakeUnreachableItem, fakeNetworkStrengthErrorItem, 0}];
+    v34 = [v8 na_setByIntersectingWithSet:itemsCopy];
 
     v32 = MEMORY[0x277CBEB98];
-    v41 = [(HUAccessoryDebugModule *)self fakeInternetFixSymptomItem];
-    v31 = [(HUAccessoryDebugModule *)self fakeWiFiSymptomItem];
-    v39 = [(HUAccessoryDebugModule *)self fakeWiFiPerformanceSymptomItem];
-    v38 = [(HUAccessoryDebugModule *)self fake8021xNetworkSymptomItem];
+    fakeInternetFixSymptomItem = [(HUAccessoryDebugModule *)self fakeInternetFixSymptomItem];
+    fakeWiFiSymptomItem = [(HUAccessoryDebugModule *)self fakeWiFiSymptomItem];
+    fakeWiFiPerformanceSymptomItem = [(HUAccessoryDebugModule *)self fakeWiFiPerformanceSymptomItem];
+    fake8021xNetworkSymptomItem = [(HUAccessoryDebugModule *)self fake8021xNetworkSymptomItem];
     [(HUAccessoryDebugModule *)self fakeNetworkProfileFixSymptomItem];
-    v37 = v40 = v4;
-    v36 = [(HUAccessoryDebugModule *)self fakeNetworkProfileInstallSymptomItem];
-    v35 = [(HUAccessoryDebugModule *)self fakeNetworkNotShareableSymptomItem];
-    v30 = [(HUAccessoryDebugModule *)self fakeHardwareFixSymptomItem];
-    v9 = [(HUAccessoryDebugModule *)self fakeGeneralFixSymptomItem];
-    v10 = [(HUAccessoryDebugModule *)self fakeHomeKitSymptomItem];
-    v29 = [(HUAccessoryDebugModule *)self fakeITunesSymptomItem];
-    v11 = [(HUAccessoryDebugModule *)self fakeICloudSymptomItem];
-    v12 = [(HUAccessoryDebugModule *)self fakeCDPSymptomItem];
-    v13 = [(HUAccessoryDebugModule *)self fakeWifiNetworkMismatchSymptomItem];
-    v14 = [(HUAccessoryDebugModule *)self fakeVPNProfileExpiredSymptomItem];
-    v15 = [(HUAccessoryDebugModule *)self fakeCaptiveLeaseRenewalSymptomItem];
-    v16 = [v32 setWithObjects:{v41, v31, v39, v38, v37, v36, v35, v30, v9, v10, v29, v11, v12, v13, v14, v15, 0}];
+    v37 = v40 = itemsCopy;
+    fakeNetworkProfileInstallSymptomItem = [(HUAccessoryDebugModule *)self fakeNetworkProfileInstallSymptomItem];
+    fakeNetworkNotShareableSymptomItem = [(HUAccessoryDebugModule *)self fakeNetworkNotShareableSymptomItem];
+    fakeHardwareFixSymptomItem = [(HUAccessoryDebugModule *)self fakeHardwareFixSymptomItem];
+    fakeGeneralFixSymptomItem = [(HUAccessoryDebugModule *)self fakeGeneralFixSymptomItem];
+    fakeHomeKitSymptomItem = [(HUAccessoryDebugModule *)self fakeHomeKitSymptomItem];
+    fakeITunesSymptomItem = [(HUAccessoryDebugModule *)self fakeITunesSymptomItem];
+    fakeICloudSymptomItem = [(HUAccessoryDebugModule *)self fakeICloudSymptomItem];
+    fakeCDPSymptomItem = [(HUAccessoryDebugModule *)self fakeCDPSymptomItem];
+    fakeWifiNetworkMismatchSymptomItem = [(HUAccessoryDebugModule *)self fakeWifiNetworkMismatchSymptomItem];
+    fakeVPNProfileExpiredSymptomItem = [(HUAccessoryDebugModule *)self fakeVPNProfileExpiredSymptomItem];
+    fakeCaptiveLeaseRenewalSymptomItem = [(HUAccessoryDebugModule *)self fakeCaptiveLeaseRenewalSymptomItem];
+    v16 = [v32 setWithObjects:{fakeInternetFixSymptomItem, fakeWiFiSymptomItem, fakeWiFiPerformanceSymptomItem, fake8021xNetworkSymptomItem, v37, fakeNetworkProfileInstallSymptomItem, fakeNetworkNotShareableSymptomItem, fakeHardwareFixSymptomItem, fakeGeneralFixSymptomItem, fakeHomeKitSymptomItem, fakeITunesSymptomItem, fakeICloudSymptomItem, fakeCDPSymptomItem, fakeWifiNetworkMismatchSymptomItem, fakeVPNProfileExpiredSymptomItem, fakeCaptiveLeaseRenewalSymptomItem, 0}];
     v33 = [v16 na_setByIntersectingWithSet:v40];
 
-    v4 = v40;
+    itemsCopy = v40;
     v17 = MEMORY[0x277CBEB98];
-    v18 = [(HUAccessoryDebugModule *)self fakeStereoPairNotFoundSymptomItem];
-    v19 = [(HUAccessoryDebugModule *)self fakeStereoPairVersionMismatchSymptomItem];
-    v20 = [(HUAccessoryDebugModule *)self fakeStereoPairGeneralSymptomItem];
-    v21 = [(HUAccessoryDebugModule *)self fake8021xNetworkSymptomItem];
-    v22 = [v17 setWithObjects:{v18, v19, v20, v21, 0}];
+    fakeStereoPairNotFoundSymptomItem = [(HUAccessoryDebugModule *)self fakeStereoPairNotFoundSymptomItem];
+    fakeStereoPairVersionMismatchSymptomItem = [(HUAccessoryDebugModule *)self fakeStereoPairVersionMismatchSymptomItem];
+    fakeStereoPairGeneralSymptomItem = [(HUAccessoryDebugModule *)self fakeStereoPairGeneralSymptomItem];
+    fake8021xNetworkSymptomItem2 = [(HUAccessoryDebugModule *)self fake8021xNetworkSymptomItem];
+    v22 = [v17 setWithObjects:{fakeStereoPairNotFoundSymptomItem, fakeStereoPairVersionMismatchSymptomItem, fakeStereoPairGeneralSymptomItem, fake8021xNetworkSymptomItem2, 0}];
     v23 = [v22 na_setByIntersectingWithSet:v40];
 
     v24 = objc_opt_new();
@@ -817,20 +817,20 @@ id __58__HUAccessoryDebugModule_buildSectionsWithDisplayedItems___block_invoke(v
 
 - (BOOL)fakeICloudSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeICloudSymptom:(BOOL)a3
+- (void)setFakeICloudSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -840,20 +840,20 @@ id __58__HUAccessoryDebugModule_buildSectionsWithDisplayedItems___block_invoke(v
 
 - (BOOL)fakeITunesSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeITunesSymptom:(BOOL)a3
+- (void)setFakeITunesSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -863,20 +863,20 @@ id __58__HUAccessoryDebugModule_buildSectionsWithDisplayedItems___block_invoke(v
 
 - (BOOL)fakeCDPSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeCDPSymptom:(BOOL)a3
+- (void)setFakeCDPSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -886,20 +886,20 @@ id __58__HUAccessoryDebugModule_buildSectionsWithDisplayedItems___block_invoke(v
 
 - (BOOL)fakeGeneralFixSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeGeneralFixSymptom:(BOOL)a3
+- (void)setFakeGeneralFixSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -909,20 +909,20 @@ id __58__HUAccessoryDebugModule_buildSectionsWithDisplayedItems___block_invoke(v
 
 - (BOOL)fakeHomeKitSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeHomeKitSymptom:(BOOL)a3
+- (void)setFakeHomeKitSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -932,29 +932,29 @@ id __58__HUAccessoryDebugModule_buildSectionsWithDisplayedItems___block_invoke(v
 
 - (BOOL)fakeUnreachableError
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeUnreachableError:(BOOL)a3
+- (void)setFakeUnreachableError:(BOOL)error
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
-  v7 = [MEMORY[0x277D146E8] sharedDispatcher];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke;
   v8[3] = &unk_277DBEF60;
   v8[4] = self;
-  [v7 dispatchAccessoryObserverMessage:v8 sender:0];
+  [mEMORY[0x277D146E8] dispatchAccessoryObserverMessage:v8 sender:0];
 
   [(HUAccessoryDebugModule *)self _reloadItemProviders];
 }
@@ -977,20 +977,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeWiFiNetworkMismatchSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeWiFiNetworkMismatchSymptom:(BOOL)a3
+- (void)setFakeWiFiNetworkMismatchSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1000,20 +1000,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeVPNProfileExpiredSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeVPNProfileExpiredSymptom:(BOOL)a3
+- (void)setFakeVPNProfileExpiredSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1023,20 +1023,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeWiFiSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeWiFiSymptom:(BOOL)a3
+- (void)setFakeWiFiSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1046,20 +1046,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeWiFiPerformanceSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeWiFiPerformanceSymptom:(BOOL)a3
+- (void)setFakeWiFiPerformanceSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1069,20 +1069,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeInternetFixSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeInternetFixSymptom:(BOOL)a3
+- (void)setFakeInternetFixSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1092,20 +1092,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeHardwareFixSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeHardwareFixSymptom:(BOOL)a3
+- (void)setFakeHardwareFixSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1115,20 +1115,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeStereoPairGeneralSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeStereoPairGeneralSymptom:(BOOL)a3
+- (void)setFakeStereoPairGeneralSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1138,20 +1138,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeStereoPairNotFoundSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeStereoPairNotFoundSymptom:(BOOL)a3
+- (void)setFakeStereoPairNotFoundSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1161,20 +1161,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeStereoPairVersionMismatchSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeStereoPairVersionMismatchSymptom:(BOOL)a3
+- (void)setFakeStereoPairVersionMismatchSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1184,20 +1184,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fake8021xNetworkSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFake8021xNetworkSymptom:(BOOL)a3
+- (void)setFake8021xNetworkSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1207,20 +1207,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeNetworkProfileFixSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeNetworkProfileFixSymptom:(BOOL)a3
+- (void)setFakeNetworkProfileFixSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1230,20 +1230,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeNetworkProfileInstallSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeNetworkProfileInstallSymptom:(BOOL)a3
+- (void)setFakeNetworkProfileInstallSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1253,20 +1253,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeNetworkNotShareableSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeNetworkNotShareableSymptom:(BOOL)a3
+- (void)setFakeNetworkNotShareableSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1276,20 +1276,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeCaptiveLeaseRenewalSymptom
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeCaptiveLeaseRenewalSymptom:(BOOL)a3
+- (void)setFakeCaptiveLeaseRenewalSymptom:(BOOL)symptom
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _pushSymptomUpdate];
@@ -1299,20 +1299,20 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 
 - (BOOL)fakeNetworkStrengthError
 {
-  v2 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v3 = [v2 uniqueIdentifier];
-  v4 = [v3 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   v5 = HFPreferencesAccessoryValueForKey();
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setFakeNetworkStrengthError:(BOOL)a3
+- (void)setFakeNetworkStrengthError:(BOOL)error
 {
-  v4 = [(HUAccessoryDebugModule *)self homeKitObject];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  homeKitObject = [(HUAccessoryDebugModule *)self homeKitObject];
+  uniqueIdentifier = [homeKitObject uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
   HFPreferencesAccessorySetValueForKey();
 
   [(HUAccessoryDebugModule *)self _reloadItemProviders];
@@ -1321,24 +1321,24 @@ void __50__HUAccessoryDebugModule_setFakeUnreachableError___block_invoke(uint64_
 - (void)_reloadItemProviders
 {
   v4 = MEMORY[0x277D14788];
-  v5 = [(HUAccessoryDebugModule *)self itemProviders];
-  v8 = [v4 requestToReloadItemProviders:v5 senderSelector:a2];
+  itemProviders = [(HUAccessoryDebugModule *)self itemProviders];
+  v8 = [v4 requestToReloadItemProviders:itemProviders senderSelector:a2];
 
-  v6 = [(HFItemModule *)self itemUpdater];
-  v7 = [v6 performItemUpdateRequest:v8];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v7 = [itemUpdater performItemUpdateRequest:v8];
 }
 
 - (void)_pushSymptomUpdate
 {
-  v2 = [(HUAccessoryDebugModule *)self symptomsHandler];
-  v3 = [MEMORY[0x277D146E8] sharedDispatcher];
+  symptomsHandler = [(HUAccessoryDebugModule *)self symptomsHandler];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __44__HUAccessoryDebugModule__pushSymptomUpdate__block_invoke;
   v5[3] = &unk_277DC1018;
-  v6 = v2;
-  v4 = v2;
-  [v3 dispatchSymptomsHandlerMessage:v5 sender:0];
+  v6 = symptomsHandler;
+  v4 = symptomsHandler;
+  [mEMORY[0x277D146E8] dispatchSymptomsHandlerMessage:v5 sender:0];
 }
 
 void __44__HUAccessoryDebugModule__pushSymptomUpdate__block_invoke(uint64_t a1, void *a2)

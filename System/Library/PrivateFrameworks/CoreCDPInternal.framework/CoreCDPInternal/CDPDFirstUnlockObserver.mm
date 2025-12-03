@@ -1,14 +1,14 @@
 @interface CDPDFirstUnlockObserver
 - (BOOL)currentDeviceUnlockedForTheFirstTime;
 - (CDPDFirstUnlockObserver)init;
-- (CDPDFirstUnlockObserver)initWithUserDefaults:(id)a3 localDevice:(id)a4 bootSessionID:(id)a5;
-- (CDPDFirstUnlockObserver)initWithUserDefaults:(id)a3 urlBag:(id)a4 localDevice:(id)a5 bootSessionID:(id)a6;
+- (CDPDFirstUnlockObserver)initWithUserDefaults:(id)defaults localDevice:(id)device bootSessionID:(id)d;
+- (CDPDFirstUnlockObserver)initWithUserDefaults:(id)defaults urlBag:(id)bag localDevice:(id)device bootSessionID:(id)d;
 - (NSArray)listeners;
 - (NSUUID)bootSessionID;
 - (NSUUID)savedBootSessionID;
-- (void)reactTo:(const char *)a3;
-- (void)registerListener:(id)a3;
-- (void)setListeners:(id)a3;
+- (void)reactTo:(const char *)to;
+- (void)registerListener:(id)listener;
+- (void)setListeners:(id)listeners;
 @end
 
 @implementation CDPDFirstUnlockObserver
@@ -23,7 +23,7 @@
   return v3;
 }
 
-- (void)setListeners:(id)a3
+- (void)setListeners:(id)listeners
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27EE0C590, &qword_24519A1B8);
   v4 = sub_245193914();
@@ -52,13 +52,13 @@
   return v10;
 }
 
-- (CDPDFirstUnlockObserver)initWithUserDefaults:(id)a3 localDevice:(id)a4 bootSessionID:(id)a5
+- (CDPDFirstUnlockObserver)initWithUserDefaults:(id)defaults localDevice:(id)device bootSessionID:(id)d
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE0C508, &qword_24519A198);
   v9 = *(*(v8 - 8) + 64);
   MEMORY[0x28223BE20](v8 - 8);
   v11 = &v18 - v10;
-  if (a5)
+  if (d)
   {
     sub_2451937B4();
     v12 = sub_2451937C4();
@@ -71,20 +71,20 @@
     (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   }
 
-  v14 = a3;
-  v15 = a4;
-  v16 = sub_245183A70(v14, v15, v11);
+  defaultsCopy = defaults;
+  deviceCopy = device;
+  v16 = sub_245183A70(defaultsCopy, deviceCopy, v11);
 
   return v16;
 }
 
-- (CDPDFirstUnlockObserver)initWithUserDefaults:(id)a3 urlBag:(id)a4 localDevice:(id)a5 bootSessionID:(id)a6
+- (CDPDFirstUnlockObserver)initWithUserDefaults:(id)defaults urlBag:(id)bag localDevice:(id)device bootSessionID:(id)d
 {
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE0C508, &qword_24519A198);
   v11 = *(*(v10 - 8) + 64);
   MEMORY[0x28223BE20](v10 - 8);
   v13 = &v17 - v12;
-  if (a6)
+  if (d)
   {
     sub_2451937B4();
     v14 = sub_2451937C4();
@@ -97,26 +97,26 @@
     (*(*(v15 - 8) + 56))(v13, 1, 1, v15);
   }
 
-  return sub_245180064(a3, a4, a5, v13);
+  return sub_245180064(defaults, bag, device, v13);
 }
 
-- (void)registerListener:(id)a3
+- (void)registerListener:(id)listener
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_2451802F8();
   swift_unknownObjectRelease();
 }
 
-- (void)reactTo:(const char *)a3
+- (void)reactTo:(const char *)to
 {
-  v4 = self;
-  sub_245180484(a3);
+  selfCopy = self;
+  sub_245180484(to);
 }
 
 - (BOOL)currentDeviceUnlockedForTheFirstTime
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2451818B4();
 
   return v3 & 1;
@@ -128,7 +128,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_2451823E8(v6);
 
   v8 = sub_2451937C4();

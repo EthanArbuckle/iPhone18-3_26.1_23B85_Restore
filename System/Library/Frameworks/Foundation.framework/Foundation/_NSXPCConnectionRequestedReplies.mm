@@ -1,8 +1,8 @@
 @interface _NSXPCConnectionRequestedReplies
 - (id)progressForSequence:(id)result;
-- (void)beginTransactionForSequence:(const char *)a3 selector:(const void *)a4 reply:(const void *)a5 withProgress:;
+- (void)beginTransactionForSequence:(const char *)sequence selector:(const void *)selector reply:(const void *)reply withProgress:;
 - (void)dealloc;
-- (void)endTransactionForSequence:(uint64_t)a3 completionHandler:;
+- (void)endTransactionForSequence:(uint64_t)sequence completionHandler:;
 - (void)invalidate;
 @end
 
@@ -36,57 +36,57 @@
 
 - (void)invalidate
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    *(a1 + 36) = 1;
-    v2 = *(a1 + 24);
+    *(self + 36) = 1;
+    v2 = *(self + 24);
     if (v2)
     {
       CFRelease(v2);
     }
 
-    *(a1 + 24) = 0;
-    v3 = *(a1 + 8);
+    *(self + 24) = 0;
+    v3 = *(self + 8);
     if (v3)
     {
       CFRelease(v3);
     }
 
-    *(a1 + 8) = 0;
-    v4 = *(a1 + 16);
+    *(self + 8) = 0;
+    v4 = *(self + 16);
     if (v4)
     {
       CFRelease(v4);
     }
 
-    *(a1 + 16) = 0;
+    *(self + 16) = 0;
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((self + 32));
   }
 }
 
-- (void)endTransactionForSequence:(uint64_t)a3 completionHandler:
+- (void)endTransactionForSequence:(uint64_t)sequence completionHandler:
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    v6 = *(a1 + 36);
-    if (!*(a1 + 36))
+    v6 = *(self + 36);
+    if (!*(self + 36))
     {
-      v7 = *(a1 + 24);
+      v7 = *(self + 24);
       if (v7)
       {
         CFDictionaryRemoveValue(v7, a2);
       }
     }
 
-    v8 = *(a1 + 8);
+    v8 = *(self + 8);
     if (v8)
     {
       Value = CFDictionaryGetValue(v8, a2);
       v10 = Value;
-      CFDictionaryRemoveValue(*(a1 + 8), a2);
+      CFDictionaryRemoveValue(*(self + 8), a2);
     }
 
     else
@@ -94,12 +94,12 @@
       Value = 0;
     }
 
-    v11 = *(a1 + 16);
+    v11 = *(self + 16);
     if (v11)
     {
       v12 = CFDictionaryGetValue(v11, a2);
       v13 = v12;
-      CFDictionaryRemoveValue(*(a1 + 16), a2);
+      CFDictionaryRemoveValue(*(self + 16), a2);
     }
 
     else
@@ -107,54 +107,54 @@
       v12 = 0;
     }
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((self + 32));
     if (!v6)
     {
-      (*(a3 + 16))(a3);
+      (*(sequence + 16))(sequence);
     }
   }
 }
 
-- (void)beginTransactionForSequence:(const char *)a3 selector:(const void *)a4 reply:(const void *)a5 withProgress:
+- (void)beginTransactionForSequence:(const char *)sequence selector:(const void *)selector reply:(const void *)reply withProgress:
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    if (!*(a1 + 36))
+    if (!*(self + 36))
     {
-      sel_getName(a3);
+      sel_getName(sequence);
       v10 = os_transaction_create();
-      if (a5)
+      if (reply)
       {
-        Mutable = *(a1 + 24);
+        Mutable = *(self + 24);
         if (!Mutable)
         {
           Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E4A8], 0, 0, MEMORY[0x1E695E9E8]);
-          *(a1 + 24) = Mutable;
+          *(self + 24) = Mutable;
         }
 
-        CFDictionarySetValue(Mutable, a2, a5);
+        CFDictionarySetValue(Mutable, a2, reply);
       }
 
-      v12 = *(a1 + 8);
+      v12 = *(self + 8);
       if (!v12)
       {
         v12 = CFDictionaryCreateMutable(*MEMORY[0x1E695E4A8], 1, 0, &_xpcTypeCallbacks);
-        *(a1 + 8) = v12;
+        *(self + 8) = v12;
       }
 
-      CFDictionarySetValue(v12, a2, a4);
-      v13 = *(a1 + 16);
+      CFDictionarySetValue(v12, a2, selector);
+      v13 = *(self + 16);
       if (!v13)
       {
         v13 = CFDictionaryCreateMutable(*MEMORY[0x1E695E4A8], 1, 0, MEMORY[0x1E695E9E8]);
-        *(a1 + 16) = v13;
+        *(self + 16) = v13;
       }
 
       CFDictionarySetValue(v13, a2, v10);
     }
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((self + 32));
   }
 }
 

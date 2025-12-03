@@ -1,15 +1,15 @@
 @interface DEDIDSConnection
 + (id)archivedClasses;
-+ (id)packPayload:(id)a3;
-+ (id)unpackProtobuf:(id)a3;
-- (BOOL)sendMessage:(int)a3 withData:(id)a4 forIDSDeviceIDs:(id)a5 isResponse:(BOOL)a6;
++ (id)packPayload:(id)payload;
++ (id)unpackProtobuf:(id)protobuf;
+- (BOOL)sendMessage:(int)message withData:(id)data forIDSDeviceIDs:(id)ds isResponse:(BOOL)response;
 - (DEDClientProtocol)remoteSideDelegate;
-- (DEDIDSConnection)initWithController:(id)a3;
-- (void)discoverDevicesWithCompletion:(id)a3;
-- (void)ids_didStartBugSessionWithInfo:(id)a3 forID:(id)a4;
-- (void)ids_startBugSessionWithIdentifier:(id)a3 configuration:(id)a4 caller:(id)a5 target:(id)a6;
-- (void)incomingDeviceReceived:(id)a3;
-- (void)setDeviceCallback:(id)a3;
+- (DEDIDSConnection)initWithController:(id)controller;
+- (void)discoverDevicesWithCompletion:(id)completion;
+- (void)ids_didStartBugSessionWithInfo:(id)info forID:(id)d;
+- (void)ids_startBugSessionWithIdentifier:(id)identifier configuration:(id)configuration caller:(id)caller target:(id)target;
+- (void)incomingDeviceReceived:(id)received;
+- (void)setDeviceCallback:(id)callback;
 @end
 
 @implementation DEDIDSConnection
@@ -53,44 +53,44 @@ void __35__DEDIDSConnection_archivedClasses__block_invoke()
   archivedClasses__classes_1 = v9;
 }
 
-+ (id)packPayload:(id)a3
++ (id)packPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v10];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:payloadCopy requiringSecureCoding:1 error:&v10];
   v5 = v10;
   if (v5)
   {
     v6 = +[DEDUtils sharedLog];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(DEDIDSConnection *)v3 packPayload:v5, v6];
+      [(DEDIDSConnection *)payloadCopy packPayload:v5, v6];
     }
 
-    v7 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
   }
 
   else
   {
-    v7 = v4;
+    data = v4;
   }
 
-  v8 = v7;
+  v8 = data;
 
   return v8;
 }
 
-+ (id)unpackProtobuf:(id)a3
++ (id)unpackProtobuf:(id)protobuf
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 data], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  protobufCopy = protobuf;
+  v5 = protobufCopy;
+  if (protobufCopy && ([protobufCopy data], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = MEMORY[0x277CCAAC8];
-    v8 = [a1 archivedClasses];
-    v9 = [v5 data];
+    archivedClasses = [self archivedClasses];
+    data = [v5 data];
     v17 = 0;
-    v10 = [v7 unarchivedObjectOfClasses:v8 fromData:v9 error:&v17];
+    v10 = [v7 unarchivedObjectOfClasses:archivedClasses fromData:data error:&v17];
     v11 = v17;
 
     if (v11)
@@ -101,15 +101,15 @@ void __35__DEDIDSConnection_archivedClasses__block_invoke()
         [(DEDIDSConnection *)v5 unpackProtobuf:v11, v12];
       }
 
-      v13 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     else
     {
-      v13 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v10];
+      dictionary = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v10];
     }
 
-    v15 = v13;
+    dictionary2 = dictionary;
   }
 
   else
@@ -120,16 +120,16 @@ void __35__DEDIDSConnection_archivedClasses__block_invoke()
       [(DEDIDSConnection *)v5 unpackProtobuf:v14];
     }
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  return v15;
+  return dictionary2;
 }
 
-- (DEDIDSConnection)initWithController:(id)a3
+- (DEDIDSConnection)initWithController:(id)controller
 {
   v78[31] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v76.receiver = self;
   v76.super_class = DEDIDSConnection;
   v5 = [(DEDIDSConnection *)&v76 init];
@@ -157,8 +157,8 @@ void __35__DEDIDSConnection_archivedClasses__block_invoke()
     run_queue = v5->_run_queue;
     v5->_run_queue = v12;
 
-    v73 = v4;
-    v14 = [[DEDIDSInbound alloc] initWithConnection:v5 controller:v4];
+    v73 = controllerCopy;
+    v14 = [[DEDIDSInbound alloc] initWithConnection:v5 controller:controllerCopy];
     incomingDelegate = v5->_incomingDelegate;
     v5->_incomingDelegate = v14;
 
@@ -166,17 +166,17 @@ void __35__DEDIDSConnection_archivedClasses__block_invoke()
     v17 = dispatch_get_global_queue(2, 0);
     dispatch_set_target_queue(v16, v17);
 
-    v18 = [(DEDIDSConnection *)v5 service];
-    [v18 setProtobufAction:sel_logMalformedMessage forIncomingRequestsOfType:0];
+    service = [(DEDIDSConnection *)v5 service];
+    [service setProtobufAction:sel_logMalformedMessage forIncomingRequestsOfType:0];
 
-    v19 = [(DEDIDSConnection *)v5 service];
-    [v19 setProtobufAction:sel_logMalformedMessage forIncomingResponsesOfType:0];
+    service2 = [(DEDIDSConnection *)v5 service];
+    [service2 setProtobufAction:sel_logMalformedMessage forIncomingResponsesOfType:0];
 
-    v20 = [(DEDIDSConnection *)v5 localService];
-    [v20 setProtobufAction:sel_logMalformedMessage forIncomingRequestsOfType:0];
+    localService = [(DEDIDSConnection *)v5 localService];
+    [localService setProtobufAction:sel_logMalformedMessage forIncomingRequestsOfType:0];
 
-    v21 = [(DEDIDSConnection *)v5 localService];
-    [v21 setProtobufAction:sel_logMalformedMessage forIncomingResponsesOfType:0];
+    localService2 = [(DEDIDSConnection *)v5 localService];
+    [localService2 setProtobufAction:sel_logMalformedMessage forIncomingResponsesOfType:0];
 
     v77[0] = &unk_285B89A78;
     v71 = NSStringFromSelector(sel_remote_device_query_request_service_account_fromID_context_);
@@ -280,39 +280,39 @@ void __35__DEDIDSConnection_archivedClasses__block_invoke()
     v31 = v5;
     v75 = v31;
     [v30 enumerateKeysAndObjectsUsingBlock:v74];
-    v32 = [(DEDIDSConnection *)v31 service];
-    [v32 setProtobufAction:sel_did_present_notification_on_passthrough_daemon_service_account_fromID_context_ forIncomingResponsesOfType:28];
+    service3 = [(DEDIDSConnection *)v31 service];
+    [service3 setProtobufAction:sel_did_present_notification_on_passthrough_daemon_service_account_fromID_context_ forIncomingResponsesOfType:28];
 
-    v33 = [(DEDIDSConnection *)v31 service];
-    [v33 setProtobufAction:sel_did_remove_notification_on_passthrough_daemon_service_account_fromID_context_ forIncomingResponsesOfType:29];
+    service4 = [(DEDIDSConnection *)v31 service];
+    [service4 setProtobufAction:sel_did_remove_notification_on_passthrough_daemon_service_account_fromID_context_ forIncomingResponsesOfType:29];
 
-    v34 = [(DEDIDSConnection *)v31 service];
-    [v34 setProtobufAction:sel_did_load_extension_text_data_service_account_fromID_context_ forIncomingResponsesOfType:31];
+    service5 = [(DEDIDSConnection *)v31 service];
+    [service5 setProtobufAction:sel_did_load_extension_text_data_service_account_fromID_context_ forIncomingResponsesOfType:31];
 
-    v35 = [(DEDIDSConnection *)v31 service];
-    [v35 setProtobufAction:sel_local_device_query_callback_service_account_fromID_context_ forIncomingResponsesOfType:1];
+    service6 = [(DEDIDSConnection *)v31 service];
+    [service6 setProtobufAction:sel_local_device_query_callback_service_account_fromID_context_ forIncomingResponsesOfType:1];
 
-    v36 = [(DEDIDSConnection *)v31 localService];
-    [v36 setProtobufAction:sel_local_device_query_callback_service_account_fromID_context_ forIncomingResponsesOfType:1];
+    localService3 = [(DEDIDSConnection *)v31 localService];
+    [localService3 setProtobufAction:sel_local_device_query_callback_service_account_fromID_context_ forIncomingResponsesOfType:1];
 
-    v37 = [(DEDIDSConnection *)v31 localService];
-    [v37 setProtobufAction:sel_did_present_notification_on_passthrough_daemon_service_account_fromID_context_ forIncomingResponsesOfType:28];
+    localService4 = [(DEDIDSConnection *)v31 localService];
+    [localService4 setProtobufAction:sel_did_present_notification_on_passthrough_daemon_service_account_fromID_context_ forIncomingResponsesOfType:28];
 
-    v38 = [(DEDIDSConnection *)v31 localService];
-    [v38 setProtobufAction:sel_did_remove_notification_on_passthrough_daemon_service_account_fromID_context_ forIncomingResponsesOfType:29];
+    localService5 = [(DEDIDSConnection *)v31 localService];
+    [localService5 setProtobufAction:sel_did_remove_notification_on_passthrough_daemon_service_account_fromID_context_ forIncomingResponsesOfType:29];
 
-    v39 = [(DEDIDSConnection *)v31 localService];
-    [v39 setProtobufAction:sel_did_load_extension_text_data_service_account_fromID_context_ forIncomingResponsesOfType:31];
+    localService6 = [(DEDIDSConnection *)v31 localService];
+    [localService6 setProtobufAction:sel_did_load_extension_text_data_service_account_fromID_context_ forIncomingResponsesOfType:31];
 
-    v40 = [(DEDIDSConnection *)v31 service];
-    v41 = [(DEDIDSConnection *)v31 incomingDelegate];
-    v42 = [(DEDIDSConnection *)v31 run_queue];
-    [v40 addDelegate:v41 queue:v42];
+    service7 = [(DEDIDSConnection *)v31 service];
+    incomingDelegate = [(DEDIDSConnection *)v31 incomingDelegate];
+    run_queue = [(DEDIDSConnection *)v31 run_queue];
+    [service7 addDelegate:incomingDelegate queue:run_queue];
 
-    v43 = [(DEDIDSConnection *)v31 localService];
-    v44 = [(DEDIDSConnection *)v31 incomingDelegate];
-    v45 = [(DEDIDSConnection *)v31 run_queue];
-    [v43 addDelegate:v44 queue:v45];
+    localService7 = [(DEDIDSConnection *)v31 localService];
+    incomingDelegate2 = [(DEDIDSConnection *)v31 incomingDelegate];
+    run_queue2 = [(DEDIDSConnection *)v31 run_queue];
+    [localService7 addDelegate:incomingDelegate2 queue:run_queue2];
 
     v46 = DEDIDSConnectionLog();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
@@ -320,7 +320,7 @@ void __35__DEDIDSConnection_archivedClasses__block_invoke()
       [DEDIDSConnection initWithController:v46];
     }
 
-    v4 = v73;
+    controllerCopy = v73;
   }
 
   v47 = *MEMORY[0x277D85DE8];
@@ -342,39 +342,39 @@ void __39__DEDIDSConnection_initWithController___block_invoke(uint64_t a1, void 
   [v11 setProtobufAction:v9 forIncomingRequestsOfType:v10];
 }
 
-- (void)setDeviceCallback:(id)a3
+- (void)setDeviceCallback:(id)callback
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callbackCopy = callback;
   v5 = DEDIDSConnectionLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v4 == 0;
+    v7[1] = callbackCopy == 0;
     _os_log_impl(&dword_248AD7000, v5, OS_LOG_TYPE_DEFAULT, "Setting device status callback. Nil? [%i]", v7, 8u);
   }
 
-  [(DEDIDSConnection *)self setDeviceStatusCallback:v4];
+  [(DEDIDSConnection *)self setDeviceStatusCallback:callbackCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)sendMessage:(int)a3 withData:(id)a4 forIDSDeviceIDs:(id)a5 isResponse:(BOOL)a6
+- (BOOL)sendMessage:(int)message withData:(id)data forIDSDeviceIDs:(id)ds isResponse:(BOOL)response
 {
-  v31 = a6;
+  responseCopy = response;
   v47 = *MEMORY[0x277D85DE8];
-  v32 = a4;
-  v8 = a5;
-  v9 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  dataCopy = data;
+  dsCopy = ds;
+  v9 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:1];
-  v29 = self;
-  v11 = [(DEDIDSConnection *)self localService];
-  v34 = [v11 devices];
+  selfCopy = self;
+  localService = [(DEDIDSConnection *)self localService];
+  devices = [localService devices];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v12 = v8;
+  v12 = dsCopy;
   v13 = [v12 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v13)
   {
@@ -400,7 +400,7 @@ void __39__DEDIDSConnection_initWithController___block_invoke(uint64_t a1, void 
           v40 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v18 = v34;
+          v18 = devices;
           v19 = [v18 countByEnumeratingWithState:&v37 objects:v45 count:16];
           if (v19)
           {
@@ -468,58 +468,58 @@ LABEL_25:
     while (v25);
   }
 
-  v26 = [(DEDIDSConnection *)v29 sendMessage:a3 withData:v32 forIDSDeviceIDs:v9 localIDSDeviceIDs:v10 isResponse:v31];
+  v26 = [(DEDIDSConnection *)selfCopy sendMessage:message withData:dataCopy forIDSDeviceIDs:v9 localIDSDeviceIDs:v10 isResponse:responseCopy];
   v27 = *MEMORY[0x277D85DE8];
   return v26;
 }
 
-- (void)ids_startBugSessionWithIdentifier:(id)a3 configuration:(id)a4 caller:(id)a5 target:(id)a6
+- (void)ids_startBugSessionWithIdentifier:(id)identifier configuration:(id)configuration caller:(id)caller target:(id)target
 {
   v22[4] = *MEMORY[0x277D85DE8];
   v21[0] = @"targetDevice";
   v21[1] = @"sessionID";
-  v22[0] = a6;
-  v22[1] = a3;
+  v22[0] = target;
+  v22[1] = identifier;
   v21[2] = @"config";
   v21[3] = @"callingDevice";
-  v22[2] = a4;
-  v22[3] = a5;
+  v22[2] = configuration;
+  v22[3] = caller;
   v10 = MEMORY[0x277CBEAC0];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  targetCopy = target;
+  callerCopy = caller;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   v15 = [v10 dictionaryWithObjects:v22 forKeys:v21 count:4];
   v16 = [DEDIDSConnection packPayload:v15];
   v17 = MEMORY[0x277CBEB98];
-  v18 = [v11 address];
-  v19 = [v17 setWithObject:v18];
+  address = [targetCopy address];
+  v19 = [v17 setWithObject:address];
 
   [(DEDIDSConnection *)self sendMessage:8 withData:v16 forIDSDeviceIDs:v19 isResponse:0];
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ids_didStartBugSessionWithInfo:(id)a3 forID:(id)a4
+- (void)ids_didStartBugSessionWithInfo:(id)info forID:(id)d
 {
-  v6 = a4;
-  v8 = [DEDIDSConnection packPayload:a3];
-  v7 = [MEMORY[0x277CBEB98] setWithObject:v6];
+  dCopy = d;
+  v8 = [DEDIDSConnection packPayload:info];
+  v7 = [MEMORY[0x277CBEB98] setWithObject:dCopy];
 
   [(DEDIDSConnection *)self sendMessage:9 withData:v8 forIDSDeviceIDs:v7 isResponse:0];
 }
 
-- (void)discoverDevicesWithCompletion:(id)a3
+- (void)discoverDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DEDIDSConnection *)self discovery_queue];
+  completionCopy = completion;
+  discovery_queue = [(DEDIDSConnection *)self discovery_queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__DEDIDSConnection_discoverDevicesWithCompletion___block_invoke;
   v7[3] = &unk_278F65B20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(discovery_queue, v7);
 }
 
 void __50__DEDIDSConnection_discoverDevicesWithCompletion___block_invoke(uint64_t a1)
@@ -620,34 +620,34 @@ void __50__DEDIDSConnection_discoverDevicesWithCompletion___block_invoke(uint64_
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)incomingDeviceReceived:(id)a3
+- (void)incomingDeviceReceived:(id)received
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  receivedCopy = received;
   v5 = DEDIDSConnectionLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 publicLogDescription];
-    v7 = [v4 identifier];
+    publicLogDescription = [receivedCopy publicLogDescription];
+    identifier = [receivedCopy identifier];
     v11 = 138543618;
-    v12 = v6;
+    v12 = publicLogDescription;
     v13 = 2114;
-    v14 = v7;
+    v14 = identifier;
     _os_log_impl(&dword_248AD7000, v5, OS_LOG_TYPE_INFO, "Got device ping for device [%{public}@] identifier: [%{public}@]", &v11, 0x16u);
   }
 
-  v8 = [(DEDIDSConnection *)self deviceStatusCallback];
+  deviceStatusCallback = [(DEDIDSConnection *)self deviceStatusCallback];
 
-  if (v8)
+  if (deviceStatusCallback)
   {
-    v9 = [(DEDIDSConnection *)self deviceStatusCallback];
-    (*(v9 + 16))(v9, v4, 1);
+    deviceStatusCallback2 = [(DEDIDSConnection *)self deviceStatusCallback];
+    (*(deviceStatusCallback2 + 16))(deviceStatusCallback2, receivedCopy, 1);
   }
 
   else
   {
-    v9 = DEDIDSConnectionLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    deviceStatusCallback2 = DEDIDSConnectionLog();
+    if (os_log_type_enabled(deviceStatusCallback2, OS_LOG_TYPE_ERROR))
     {
       [DEDIDSConnection incomingDeviceReceived:];
     }

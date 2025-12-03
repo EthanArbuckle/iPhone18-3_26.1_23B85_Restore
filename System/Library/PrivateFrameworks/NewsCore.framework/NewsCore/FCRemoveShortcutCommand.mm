@@ -1,17 +1,17 @@
 @interface FCRemoveShortcutCommand
-- (FCRemoveShortcutCommand)initWithShortcutID:(id)a3;
+- (FCRemoveShortcutCommand)initWithShortcutID:(id)d;
 @end
 
 @implementation FCRemoveShortcutCommand
 
-- (FCRemoveShortcutCommand)initWithShortcutID:(id)a3
+- (FCRemoveShortcutCommand)initWithShortcutID:(id)d
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695BA90];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 alloc];
   v7 = [v6 initWithZoneName:@"Shortcuts" ownerName:*MEMORY[0x1E695B728]];
-  v8 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v5 zoneID:v7];
+  v8 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:dCopy zoneID:v7];
 
   if (v8)
   {

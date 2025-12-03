@@ -1,32 +1,32 @@
 @interface DTTapMemoHandler
-- (DTTapMemoHandler)initWithConfig:(id)a3 delegate:(id)a4;
-- (id)handleMemo:(id)a3;
+- (DTTapMemoHandler)initWithConfig:(id)config delegate:(id)delegate;
+- (id)handleMemo:(id)memo;
 @end
 
 @implementation DTTapMemoHandler
 
-- (DTTapMemoHandler)initWithConfig:(id)a3 delegate:(id)a4
+- (DTTapMemoHandler)initWithConfig:(id)config delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  configCopy = config;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = DTTapMemoHandler;
   v9 = [(DTTapMemoHandler *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    if (!v7)
+    if (!configCopy)
     {
       sub_24802D420();
     }
 
-    if (!v8)
+    if (!delegateCopy)
     {
       sub_24802D3F4();
     }
 
-    objc_storeStrong(&v9->_config, a3);
-    objc_storeStrong(&v10->_delegate, a4);
+    objc_storeStrong(&v9->_config, config);
+    objc_storeStrong(&v10->_delegate, delegate);
     v11 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v12 = dispatch_queue_create("com.apple.dt.tap.memoHandler", v11);
     serialQueue = v10->_serialQueue;
@@ -38,9 +38,9 @@
   return v10;
 }
 
-- (id)handleMemo:(id)a3
+- (id)handleMemo:(id)memo
 {
-  v4 = a3;
+  memoCopy = memo;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
@@ -51,20 +51,20 @@
   {
     if (!self->_sentRecordingInfo)
     {
-      v8 = v4;
+      v8 = memoCopy;
       if ([(DTTapConfig *)self->_config bufferMode]== 2)
       {
         if ([v8 supportsPeek])
         {
-          v9 = [(DTTapConfig *)self->_config recordingInfoHandler];
+          recordingInfoHandler = [(DTTapConfig *)self->_config recordingInfoHandler];
 
-          if (v9)
+          if (recordingInfoHandler)
           {
             v10 = [(DTTapMemoHandlerDelegate *)self->_delegate peekAtMemo:v8];
             if (v10)
             {
-              v11 = [(DTTapConfig *)self->_config recordingInfoHandler];
-              (v11)[2](v11, v10);
+              recordingInfoHandler2 = [(DTTapConfig *)self->_config recordingInfoHandler];
+              (recordingInfoHandler2)[2](recordingInfoHandler2, v10);
 
               self->_sentRecordingInfo = 1;
             }
@@ -75,7 +75,7 @@
 
     if ((isKindOfClass & 1) == 0)
     {
-      v12 = v4;
+      v12 = memoCopy;
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = sub_247F9AFB4;
@@ -93,11 +93,11 @@
   if (isKindOfClass)
   {
 LABEL_13:
-    v15 = [(DTTapConfig *)self->_config statusHandler];
+    statusHandler = [(DTTapConfig *)self->_config statusHandler];
 
-    if (v15)
+    if (statusHandler)
     {
-      v16 = v4;
+      v16 = memoCopy;
       if (([v16 status] & 0x80000000) != 0)
       {
         v23 = dispatch_get_global_queue(0, 0);
@@ -137,7 +137,7 @@ LABEL_13:
 
   if (v7)
   {
-    v19 = v4;
+    v19 = memoCopy;
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = sub_247F9B068;

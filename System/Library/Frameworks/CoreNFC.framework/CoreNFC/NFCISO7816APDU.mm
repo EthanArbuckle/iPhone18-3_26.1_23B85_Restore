@@ -2,7 +2,7 @@
 - (NFCISO7816APDU)initWithData:(NSData *)data;
 - (NFCISO7816APDU)initWithInstructionClass:(uint8_t)instructionClass instructionCode:(uint8_t)instructionCode p1Parameter:(uint8_t)p1Parameter p2Parameter:(uint8_t)p2Parameter data:(NSData *)data expectedResponseLength:(NSInteger)expectedResponseLength;
 - (NSData)data;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -56,7 +56,7 @@
       _os_log_impl(&dword_23728C000, v28, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid expectedResponseLength value; should be from 1 to 65536 or -1", buf, 0x22u);
     }
 
-    v31 = 0;
+    selfCopy = 0;
     goto LABEL_32;
   }
 
@@ -143,17 +143,17 @@
     v17->_fullPacket = v18;
 
     self = v17;
-    v31 = self;
+    selfCopy = self;
 LABEL_32:
 
     goto LABEL_33;
   }
 
-  v31 = 0;
+  selfCopy = 0;
 LABEL_33:
 
   v39 = *MEMORY[0x277D85DE8];
-  return v31;
+  return selfCopy;
 }
 
 - (NFCISO7816APDU)initWithData:(NSData *)data
@@ -168,7 +168,7 @@ LABEL_33:
     goto LABEL_14;
   }
 
-  v7 = [(NSData *)v5 bytes];
+  bytes = [(NSData *)v5 bytes];
   v8.f64[0] = NAN;
   v8.f64[1] = NAN;
   *(v6 + 8) = vnegq_f64(v8);
@@ -180,9 +180,9 @@ LABEL_33:
       goto LABEL_16;
     }
 
-    v26 = (v7 + 4);
+    v26 = (bytes + 4);
     v27 = [(NSData *)v5 length];
-    v28 = (v7 + v27);
+    v28 = (bytes + v27);
     if (v27 < 5)
     {
       v43 = 0;
@@ -197,13 +197,13 @@ LABEL_33:
       v30 = *v26 == 0;
       if (*v26)
       {
-        v26 = (v7 + 5);
+        v26 = (bytes + 5);
         v31 = v29;
 LABEL_22:
         v32 = v29 != 0;
         if (v28 - v26 >= v31)
         {
-          *(v6 + 1) = &v26[-v7];
+          *(v6 + 1) = &v26[-bytes];
           *(v6 + 2) = v31;
           v26 += v31;
         }
@@ -267,7 +267,7 @@ LABEL_22:
         v43 = 0;
         v31 = 0;
         v30 = 0;
-        v26 = (v7 + 5);
+        v26 = (bytes + 5);
         v32 = 1;
       }
 
@@ -323,8 +323,8 @@ LABEL_22:
           goto LABEL_12;
         }
 
-        v26 = (v7 + 7);
-        v31 = __rev16(*(v7 + 5));
+        v26 = (bytes + 7);
+        v31 = __rev16(*(bytes + 5));
         if (v31)
         {
           goto LABEL_22;
@@ -668,7 +668,7 @@ LABEL_18:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v5 = objc_opt_new();
@@ -677,7 +677,7 @@ LABEL_18:
   {
     *(v5 + 8) = self->_payloadOffset;
     *(v5 + 24) = self->_le;
-    v7 = [(NSData *)self->_fullPacket copyWithZone:a3];
+    v7 = [(NSData *)self->_fullPacket copyWithZone:zone];
     v8 = v6[4];
     v6[4] = v7;
   }
@@ -688,7 +688,7 @@ LABEL_18:
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:@"["];
-  v4 = [(NSData *)self->_fullPacket bytes];
+  bytes = [(NSData *)self->_fullPacket bytes];
   if ([(NSData *)self->_fullPacket length])
   {
     v5 = 0;
@@ -704,7 +704,7 @@ LABEL_18:
         v6 = @"0x%02X, ";
       }
 
-      [v3 appendFormat:v6, v4[v5++]];
+      [v3 appendFormat:v6, bytes[v5++]];
     }
 
     while ([(NSData *)self->_fullPacket length]> v5);

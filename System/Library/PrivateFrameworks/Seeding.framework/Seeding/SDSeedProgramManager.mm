@@ -2,8 +2,8 @@
 + (BOOL)_canEnrollInBetaSoftware;
 + (BOOL)_currentAudienceIsSeed;
 + (BOOL)_currentCatalogIsSeed;
-+ (BOOL)_setAudienceForSeedProgram:(int64_t)a3;
-+ (BOOL)_setCatalogForSeedProgram:(int64_t)a3;
++ (BOOL)_setAudienceForSeedProgram:(int64_t)program;
++ (BOOL)_setCatalogForSeedProgram:(int64_t)program;
 + (BOOL)canFileFeedback;
 + (BOOL)fixUpAssetAudience;
 + (BOOL)isEnrolledInSeedProgram;
@@ -11,19 +11,19 @@
 + (NSDictionary)currentEnrollmentMetadata;
 + (id)_loadSeedAudiencesFromPlist;
 + (id)_loadSeedCatalogsFromPlist;
-+ (id)stringForSeedProgram:(int64_t)a3;
++ (id)stringForSeedProgram:(int64_t)program;
 + (int64_t)_currentSeedProgramFromDisk;
 + (int64_t)_legacyCurrentSeedProgram;
-+ (int64_t)_seedProgramForString:(id)a3;
++ (int64_t)_seedProgramForString:(id)string;
 + (int64_t)currentSeedProgram;
-+ (int64_t)currentSeedProgramForDiskAtPath:(id)a3;
++ (int64_t)currentSeedProgramForDiskAtPath:(id)path;
 + (void)_clearSeedCatalog;
 + (void)_createFeedbackAssistantSymlink;
 + (void)_currentSeedProgramFromDisk;
-+ (void)_setHelpFeedbackMenuEnabled:(BOOL)a3;
-+ (void)_setSeedOptOutUIDisabled:(BOOL)a3;
-+ (void)_setSeedProgramPref:(int64_t)a3;
-+ (void)enrollInSeedProgramNamed:(id)a3 withAssetAudience:(id)a4 completion:(id)a5;
++ (void)_setHelpFeedbackMenuEnabled:(BOOL)enabled;
++ (void)_setSeedOptOutUIDisabled:(BOOL)disabled;
++ (void)_setSeedProgramPref:(int64_t)pref;
++ (void)enrollInSeedProgramNamed:(id)named withAssetAudience:(id)audience completion:(id)completion;
 @end
 
 @implementation SDSeedProgramManager
@@ -31,9 +31,9 @@
 + (int64_t)currentSeedProgram
 {
   v2 = +[SDBetaManager _currentBetaProgram];
-  v3 = [v2 program];
+  program = [v2 program];
 
-  return v3;
+  return program;
 }
 
 + (int64_t)_legacyCurrentSeedProgram
@@ -56,9 +56,9 @@
   }
 }
 
-+ (void)_setSeedProgramPref:(int64_t)a3
++ (void)_setSeedProgramPref:(int64_t)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = [SDSeedProgramManager stringForSeedProgram:?];
   }
@@ -73,14 +73,14 @@
   CFPreferencesAppSynchronize(@"com.apple.seeding");
 }
 
-+ (int64_t)currentSeedProgramForDiskAtPath:(id)a3
++ (int64_t)currentSeedProgramForDiskAtPath:(id)path
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy)
   {
-    if ([v4 isEqualToString:@"/"])
+    if ([pathCopy isEqualToString:@"/"])
     {
       v6 = +[SDSeedingLogging fwHandle];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -90,7 +90,7 @@
         _os_log_impl(&dword_22E41E000, v6, OS_LOG_TYPE_DEFAULT, "%s called on local disk, using preferences instead.", &v19, 0xCu);
       }
 
-      v7 = [a1 currentSeedProgram];
+      currentSeedProgram = [self currentSeedProgram];
       goto LABEL_21;
     }
 
@@ -98,8 +98,8 @@
     v10 = [v9 stringByAppendingPathComponent:@"Preferences"];
     v11 = [v10 stringByAppendingPathComponent:@"com.apple.seeding.plist"];
 
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    LOBYTE(v10) = [v12 fileExistsAtPath:v11];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    LOBYTE(v10) = [defaultManager fileExistsAtPath:v11];
 
     if (v10)
     {
@@ -108,9 +108,9 @@
       if (v13)
       {
         v15 = [v13 valueForKey:@"SeedProgram"];
-        v7 = [v15 intValue];
+        currentSeedProgram = [v15 intValue];
 
-        if ((v7 - 1) < 4)
+        if ((currentSeedProgram - 1) < 4)
         {
 LABEL_20:
 
@@ -143,7 +143,7 @@ LABEL_20:
       }
     }
 
-    v7 = 0;
+    currentSeedProgram = 0;
     goto LABEL_20;
   }
 
@@ -153,16 +153,16 @@ LABEL_20:
     +[SDSeedProgramManager currentSeedProgramForDiskAtPath:];
   }
 
-  v7 = 0;
+  currentSeedProgram = 0;
 LABEL_21:
 
   v17 = *MEMORY[0x277D85DE8];
-  return v7;
+  return currentSeedProgram;
 }
 
 + (BOOL)isEnrolledInSeedProgram
 {
-  v2 = [objc_opt_class() currentSeedProgram];
+  currentSeedProgram = [objc_opt_class() currentSeedProgram];
   if (!getuid())
   {
     v3 = +[SDSeedingLogging fwHandle];
@@ -172,10 +172,10 @@ LABEL_21:
       _os_log_impl(&dword_22E41E000, v3, OS_LOG_TYPE_DEFAULT, "Seeding: isEnrolledInSeedProgram called as root", v5, 2u);
     }
 
-    v2 = [objc_opt_class() _currentSeedProgramFromDisk];
+    currentSeedProgram = [objc_opt_class() _currentSeedProgramFromDisk];
   }
 
-  return v2 != 0;
+  return currentSeedProgram != 0;
 }
 
 + (BOOL)unenrollFromSeedProgram
@@ -193,9 +193,9 @@ LABEL_21:
   {
     v4 = objc_opt_class();
     v5 = [v4 stringForSeedProgram:{objc_msgSend(objc_opt_class(), "currentSeedProgram")}];
-    v6 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v13 = 136315138;
-    v14 = v6;
+    v14 = uTF8String;
     _os_log_impl(&dword_22E41E000, v3, OS_LOG_TYPE_DEFAULT, "Seeding: Un-enrolling from seed program: %s", &v13, 0xCu);
   }
 
@@ -236,8 +236,8 @@ LABEL_21:
 + (int64_t)_currentSeedProgramFromDisk
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:@"/var/Managed Preferences/mobile/com.apple.seeding.plist"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:@"/var/Managed Preferences/mobile/com.apple.seeding.plist"];
 
   if (v4)
   {
@@ -252,7 +252,7 @@ LABEL_21:
       }
 
       v7 = [v5 objectForKey:@"SeedProgram"];
-      v8 = [a1 _seedProgramForString:v7];
+      v8 = [self _seedProgramForString:v7];
     }
 
     else
@@ -296,7 +296,7 @@ LABEL_21:
   v9[3] = &unk_2787CB880;
   v7 = v6;
   v10 = v7;
-  v11 = a1;
+  selfCopy = self;
   [v5 enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
@@ -328,7 +328,7 @@ void __50__SDSeedProgramManager__loadSeedCatalogsFromPlist__block_invoke(uint64_
   v9[3] = &unk_2787CB880;
   v7 = v6;
   v10 = v7;
-  v11 = a1;
+  selfCopy = self;
   [v5 enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
@@ -349,29 +349,29 @@ void __51__SDSeedProgramManager__loadSeedAudiencesFromPlist__block_invoke(uint64
 
 + (BOOL)_currentCatalogIsSeed
 {
-  v2 = [objc_opt_class() _loadSeedCatalogsFromPlist];
+  _loadSeedCatalogsFromPlist = [objc_opt_class() _loadSeedCatalogsFromPlist];
   v3 = +[SDCatalogUtilities _currentCatalog];
-  v4 = [v2 allValues];
-  v5 = [v4 containsObject:v3];
+  allValues = [_loadSeedCatalogsFromPlist allValues];
+  v5 = [allValues containsObject:v3];
 
   return v5;
 }
 
 + (BOOL)_currentAudienceIsSeed
 {
-  v2 = [objc_opt_class() _loadSeedAudiencesFromPlist];
+  _loadSeedAudiencesFromPlist = [objc_opt_class() _loadSeedAudiencesFromPlist];
   v3 = +[SDCatalogUtilities _currentAssetAudience];
-  v4 = [v2 allValues];
-  v5 = [v4 containsObject:v3];
+  allValues = [_loadSeedAudiencesFromPlist allValues];
+  v5 = [allValues containsObject:v3];
 
   return v5;
 }
 
-+ (BOOL)_setCatalogForSeedProgram:(int64_t)a3
++ (BOOL)_setCatalogForSeedProgram:(int64_t)program
 {
-  v5 = [objc_opt_class() _loadSeedCatalogsFromPlist];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v7 = [v5 objectForKey:v6];
+  _loadSeedCatalogsFromPlist = [objc_opt_class() _loadSeedCatalogsFromPlist];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:program];
+  v7 = [_loadSeedCatalogsFromPlist objectForKey:v6];
 
   if (v7)
   {
@@ -383,7 +383,7 @@ void __51__SDSeedProgramManager__loadSeedAudiencesFromPlist__block_invoke(uint64
     v8 = +[SDSeedingLogging fwHandle];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(SDSeedProgramManager *)a1 _setCatalogForSeedProgram:a3];
+      [(SDSeedProgramManager *)self _setCatalogForSeedProgram:program];
     }
   }
 
@@ -400,8 +400,8 @@ void __51__SDSeedProgramManager__loadSeedAudiencesFromPlist__block_invoke(uint64
     _os_log_impl(&dword_22E41E000, v3, OS_LOG_TYPE_DEFAULT, "Fixing Asset Audience.", &v11, 2u);
   }
 
-  v4 = [a1 currentSeedProgram];
-  if ((v4 - 1) >= 4)
+  currentSeedProgram = [self currentSeedProgram];
+  if ((currentSeedProgram - 1) >= 4)
   {
     v6 = +[SDSeedingLogging fwHandle];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -415,7 +415,7 @@ void __51__SDSeedProgramManager__loadSeedAudiencesFromPlist__block_invoke(uint64
 
   else
   {
-    v5 = v4;
+    v5 = currentSeedProgram;
     v6 = +[SDCatalogUtilities _currentAssetAudience];
     v7 = +[SDSeedingLogging fwHandle];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -425,18 +425,18 @@ void __51__SDSeedProgramManager__loadSeedAudiencesFromPlist__block_invoke(uint64
       _os_log_impl(&dword_22E41E000, v7, OS_LOG_TYPE_DEFAULT, "Current Asset Audience [%{public}@]", &v11, 0xCu);
     }
 
-    v8 = [a1 _setAudienceForSeedProgram:v5];
+    v8 = [self _setAudienceForSeedProgram:v5];
   }
 
   v9 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-+ (BOOL)_setAudienceForSeedProgram:(int64_t)a3
++ (BOOL)_setAudienceForSeedProgram:(int64_t)program
 {
-  v5 = [objc_opt_class() _loadSeedAudiencesFromPlist];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v7 = [v5 objectForKey:v6];
+  _loadSeedAudiencesFromPlist = [objc_opt_class() _loadSeedAudiencesFromPlist];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:program];
+  v7 = [_loadSeedAudiencesFromPlist objectForKey:v6];
 
   if (v7)
   {
@@ -448,7 +448,7 @@ void __51__SDSeedProgramManager__loadSeedAudiencesFromPlist__block_invoke(uint64
     v8 = +[SDSeedingLogging fwHandle];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(SDSeedProgramManager *)a1 _setAudienceForSeedProgram:a3];
+      [(SDSeedProgramManager *)self _setAudienceForSeedProgram:program];
     }
   }
 
@@ -467,9 +467,9 @@ void __51__SDSeedProgramManager__loadSeedAudiencesFromPlist__block_invoke(uint64
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_setHelpFeedbackMenuEnabled:(BOOL)a3
++ (void)_setHelpFeedbackMenuEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = *MEMORY[0x277CBED28];
   }
@@ -487,9 +487,9 @@ void __51__SDSeedProgramManager__loadSeedAudiencesFromPlist__block_invoke(uint64
   CFPreferencesSynchronize(v4, v5, v6);
 }
 
-+ (void)_setSeedOptOutUIDisabled:(BOOL)a3
++ (void)_setSeedOptOutUIDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = *MEMORY[0x277CBED28];
   }
@@ -511,7 +511,7 @@ void __51__SDSeedProgramManager__loadSeedAudiencesFromPlist__block_invoke(uint64
   v9 = *MEMORY[0x277D85DE8];
   [@"/Applications/Utilities/Feedback Assistant.app" UTF8String];
   [@"/System/Library/CoreServices/Applications/Feedback Assistant.app" UTF8String];
-  v2 = [a1 description];
+  v2 = [self description];
   [v2 UTF8String];
   OUTLINED_FUNCTION_0();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0x20u);
@@ -572,10 +572,10 @@ LABEL_8:
 + (NSDictionary)currentEnrollmentMetadata
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-  v4 = [a1 currentSeedProgram];
-  if (v4)
+  currentSeedProgram = [self currentSeedProgram];
+  if (currentSeedProgram)
   {
-    v5 = [a1 stringForSeedProgram:v4];
+    v5 = [self stringForSeedProgram:currentSeedProgram];
     [v3 setObject:v5 forKey:@"SeedProgram"];
   }
 
@@ -591,40 +591,40 @@ LABEL_8:
   return v8;
 }
 
-+ (void)enrollInSeedProgramNamed:(id)a3 withAssetAudience:(id)a4 completion:(id)a5
++ (void)enrollInSeedProgramNamed:(id)named withAssetAudience:(id)audience completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 _seedProgramForString:v8];
+  namedCopy = named;
+  audienceCopy = audience;
+  completionCopy = completion;
+  v11 = [self _seedProgramForString:namedCopy];
   if (v11)
   {
-    v12 = [a1 stringForSeedProgram:v11];
+    v12 = [self stringForSeedProgram:v11];
     v13 = +[SDHTTPClient sharedInstance];
-    v14 = [v13 baseURL];
+    baseURL = [v13 baseURL];
 
-    v28 = v14;
-    v15 = [v14 URLByAppendingPathComponent:@"migration"];
+    v28 = baseURL;
+    v15 = [baseURL URLByAppendingPathComponent:@"migration"];
     v16 = [v15 URLByAppendingPathComponent:@"v1"];
 
-    v29 = v9;
-    v17 = [v9 stringByAppendingPathExtension:@"mobileconfig"];
+    v29 = audienceCopy;
+    v17 = [audienceCopy stringByAppendingPathExtension:@"mobileconfig"];
     v18 = [v16 URLByAppendingPathComponent:v12];
     v19 = [v18 URLByAppendingPathComponent:v17];
 
     v20 = [MEMORY[0x277CCAD20] requestWithURL:v19 cachePolicy:1 timeoutInterval:120.0];
     v21 = +[SDHTTPClient sharedInstance];
-    v22 = [v21 urlSession];
+    urlSession = [v21 urlSession];
 
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __78__SDSeedProgramManager_enrollInSeedProgramNamed_withAssetAudience_completion___block_invoke;
     v30[3] = &unk_2787CB8A8;
-    v32 = v10;
+    v32 = completionCopy;
     v23 = v12;
     v31 = v23;
-    v24 = [v22 dataTaskWithRequest:v20 completionHandler:v30];
+    v24 = [urlSession dataTaskWithRequest:v20 completionHandler:v30];
     v25 = +[SDSeedingLogging fwHandle];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
@@ -634,7 +634,7 @@ LABEL_8:
     }
 
     [v24 resume];
-    v9 = v29;
+    audienceCopy = v29;
   }
 
   else
@@ -645,9 +645,9 @@ LABEL_8:
       +[SDSeedProgramManager enrollInSeedProgramNamed:withAssetAudience:completion:];
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -756,13 +756,13 @@ LABEL_27:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (int64_t)_seedProgramForString:(id)a3
++ (int64_t)_seedProgramForString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
-    if ([v3 isEqualToString:@"CustomerSeed"])
+    if ([stringCopy isEqualToString:@"CustomerSeed"])
     {
       v5 = 1;
     }
@@ -796,16 +796,16 @@ LABEL_27:
   return v5;
 }
 
-+ (id)stringForSeedProgram:(int64_t)a3
++ (id)stringForSeedProgram:(int64_t)program
 {
-  if ((a3 - 1) > 3)
+  if ((program - 1) > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *off_2787CB8C8[a3 - 1];
+    v4 = *off_2787CB8C8[program - 1];
   }
 
   return v4;

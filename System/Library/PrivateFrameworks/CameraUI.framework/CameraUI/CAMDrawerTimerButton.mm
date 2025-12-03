@@ -1,28 +1,28 @@
 @interface CAMDrawerTimerButton
-- (BOOL)isMenuItemSelected:(id)a3;
+- (BOOL)isMenuItemSelected:(id)selected;
 - (id)loadMenuItems;
-- (void)didSelectMenuItem:(id)a3;
-- (void)setTimerDuration:(int64_t)a3;
+- (void)didSelectMenuItem:(id)item;
+- (void)setTimerDuration:(int64_t)duration;
 @end
 
 @implementation CAMDrawerTimerButton
 
-- (void)setTimerDuration:(int64_t)a3
+- (void)setTimerDuration:(int64_t)duration
 {
-  if (self->_timerDuration != a3)
+  if (self->_timerDuration != duration)
   {
-    self->_timerDuration = a3;
+    self->_timerDuration = duration;
     [(CAMControlDrawerButton *)self updateImage];
 
     [(CAMControlDrawerMenuButton *)self updateLabelsIfNeeded];
   }
 }
 
-- (BOOL)isMenuItemSelected:(id)a3
+- (BOOL)isMenuItemSelected:(id)selected
 {
-  v4 = [a3 value];
-  v5 = [v4 integerValue];
-  LOBYTE(self) = v5 == [(CAMDrawerTimerButton *)self timerDuration];
+  value = [selected value];
+  integerValue = [value integerValue];
+  LOBYTE(self) = integerValue == [(CAMDrawerTimerButton *)self timerDuration];
 
   return self;
 }
@@ -62,16 +62,16 @@
   return v18;
 }
 
-- (void)didSelectMenuItem:(id)a3
+- (void)didSelectMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CAMDrawerTimerButton *)self timerDuration];
-  v6 = [v4 value];
+  itemCopy = item;
+  timerDuration = [(CAMDrawerTimerButton *)self timerDuration];
+  value = [itemCopy value];
 
-  v7 = [v6 integerValue];
-  if (v7 != v5)
+  integerValue = [value integerValue];
+  if (integerValue != timerDuration)
   {
-    [(CAMDrawerTimerButton *)self setTimerDuration:v7];
+    [(CAMDrawerTimerButton *)self setTimerDuration:integerValue];
 
     [(CAMDrawerTimerButton *)self sendActionsForControlEvents:4096];
   }

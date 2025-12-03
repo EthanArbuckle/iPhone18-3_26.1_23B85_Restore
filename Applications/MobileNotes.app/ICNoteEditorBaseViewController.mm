@@ -7,7 +7,7 @@
 - (ICRealtimeCollaborationController)realtimeCollaborationController
 {
   v2 = qword_1006BC7C8;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();

@@ -1,20 +1,20 @@
 @interface VSAppDocumentController
-- (BOOL)_updateViewModel:(id)a3 error:(id *)a4;
-- (BOOL)document:(id)a3 evaluateStyleMediaQuery:(id)a4;
+- (BOOL)_updateViewModel:(id)model error:(id *)error;
+- (BOOL)document:(id)document evaluateStyleMediaQuery:(id)query;
 - (VSAppDocumentController)init;
-- (VSAppDocumentController)initWithAppDocument:(id)a3;
+- (VSAppDocumentController)initWithAppDocument:(id)document;
 - (VSAppDocumentControllerDelegate)delegate;
-- (id)_getSupportedButtonTextsforTemplate:(id)a3 andElementKeys:(id)a4 supportedCount:(unint64_t)a5;
-- (id)_imageItemProviderWithImageElement:(id)a3;
-- (void)_notiftyDidFailToUpdateViewModelWithError:(id)a3;
-- (void)_notiftyDidUpdateViewModel:(id)a3;
-- (void)_notifyDidUpdateLogoViewModel:(id)a3;
-- (void)_startObservingViewModel:(id)a3;
-- (void)_stopObservingViewModel:(id)a3;
+- (id)_getSupportedButtonTextsforTemplate:(id)template andElementKeys:(id)keys supportedCount:(unint64_t)count;
+- (id)_imageItemProviderWithImageElement:(id)element;
+- (void)_notiftyDidFailToUpdateViewModelWithError:(id)error;
+- (void)_notiftyDidUpdateViewModel:(id)model;
+- (void)_notifyDidUpdateLogoViewModel:(id)model;
+- (void)_startObservingViewModel:(id)model;
+- (void)_stopObservingViewModel:(id)model;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
-- (void)documentNeedsUpdate:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)documentDidUpdate:(id)update;
+- (void)documentNeedsUpdate:(id)update;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)userInterfaceStyleDidUpdate;
 @end
 
@@ -30,30 +30,30 @@
   return 0;
 }
 
-- (VSAppDocumentController)initWithAppDocument:(id)a3
+- (VSAppDocumentController)initWithAppDocument:(id)document
 {
-  v5 = a3;
+  documentCopy = document;
   v17.receiver = self;
   v17.super_class = VSAppDocumentController;
   v6 = [(VSAppDocumentController *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appDocument, a3);
+    objc_storeStrong(&v6->_appDocument, document);
     [(IKAppDocument *)v7->_appDocument setDelegate:v7];
-    v8 = [(IKAppDocument *)v7->_appDocument templateElement];
+    templateElement = [(IKAppDocument *)v7->_appDocument templateElement];
     templateElement = v7->_templateElement;
-    v7->_templateElement = v8;
+    v7->_templateElement = templateElement;
 
-    v10 = [(VSAppDocumentController *)v7 _newViewModel];
-    objc_storeStrong(&v7->_viewModel, v10);
+    _newViewModel = [(VSAppDocumentController *)v7 _newViewModel];
+    objc_storeStrong(&v7->_viewModel, _newViewModel);
     v16 = 0;
-    v11 = [(VSAppDocumentController *)v7 _updateViewModel:v10 error:&v16];
+    v11 = [(VSAppDocumentController *)v7 _updateViewModel:_newViewModel error:&v16];
     v12 = v16;
     v13 = v16;
     if (v11)
     {
-      [(VSAppDocumentController *)v7 _startObservingViewModel:v10];
+      [(VSAppDocumentController *)v7 _startObservingViewModel:_newViewModel];
     }
 
     else
@@ -82,45 +82,45 @@
   [(VSAppDocumentController *)&v4 dealloc];
 }
 
-- (void)documentNeedsUpdate:(id)a3
+- (void)documentNeedsUpdate:(id)update
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  updateCopy = update;
   v4 = VSDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = updateCopy;
     _os_log_impl(&dword_270DD4000, v4, OS_LOG_TYPE_DEFAULT, "Document needs update: %@", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v4;
+    v17 = updateCopy;
     _os_log_impl(&dword_270DD4000, v5, OS_LOG_TYPE_DEFAULT, "Document did update: %@", buf, 0xCu);
   }
 
   v6 = MEMORY[0x277CE2298];
-  v7 = [(VSAppDocumentController *)self viewModel];
-  v8 = [v6 optionalWithObject:v7];
+  viewModel = [(VSAppDocumentController *)self viewModel];
+  v8 = [v6 optionalWithObject:viewModel];
 
-  v9 = [v8 forceUnwrapObject];
+  forceUnwrapObject = [v8 forceUnwrapObject];
   v15 = 0;
-  v10 = [(VSAppDocumentController *)self _updateViewModel:v9 error:&v15];
+  v10 = [(VSAppDocumentController *)self _updateViewModel:forceUnwrapObject error:&v15];
   v11 = v15;
   v12 = v11;
   if (v10)
   {
-    [(VSAppDocumentController *)self _notiftyDidUpdateViewModel:v9];
+    [(VSAppDocumentController *)self _notiftyDidUpdateViewModel:forceUnwrapObject];
   }
 
   else
@@ -131,7 +131,7 @@
     }
 
     v13 = v12;
-    [(VSAppDocumentController *)self _stopObservingViewModel:v9];
+    [(VSAppDocumentController *)self _stopObservingViewModel:forceUnwrapObject];
     [(VSAppDocumentController *)self setViewModel:0];
     [(VSAppDocumentController *)self setViewModelError:v13];
     [(VSAppDocumentController *)self _notiftyDidFailToUpdateViewModelWithError:v13];
@@ -140,23 +140,23 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)document:(id)a3 evaluateStyleMediaQuery:(id)a4
+- (BOOL)document:(id)document evaluateStyleMediaQuery:(id)query
 {
   v4 = MEMORY[0x277D759A0];
-  v5 = a4;
-  v6 = [v4 mainScreen];
-  [v6 scale];
+  queryCopy = query;
+  mainScreen = [v4 mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
-  v9 = [v5 featureValues];
+  featureValues = [queryCopy featureValues];
 
-  v10 = [v9 objectForKey:@"min-pixel-ratio"];
-  v11 = [v10 integerValue];
+  v10 = [featureValues objectForKey:@"min-pixel-ratio"];
+  integerValue = [v10 integerValue];
 
-  return v8 == v11;
+  return v8 == integerValue;
 }
 
-- (BOOL)_updateViewModel:(id)a3 error:(id *)a4
+- (BOOL)_updateViewModel:(id)model error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -164,10 +164,10 @@
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v6 = [(VSAppDocumentController *)self templateElement];
-  v7 = [v6 children];
+  templateElement = [(VSAppDocumentController *)self templateElement];
+  children = [templateElement children];
 
-  v8 = [v7 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  v8 = [children countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v8)
   {
     v9 = v8;
@@ -178,7 +178,7 @@
       {
         if (*v42 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(children);
         }
 
         v12 = *(*(&v41 + 1) + 8 * i);
@@ -188,7 +188,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v41 objects:v49 count:16];
+      v9 = [children countByEnumeratingWithState:&v41 objects:v49 count:16];
     }
 
     while (v9);
@@ -251,14 +251,14 @@
             }
 
             v30 = v26;
-            v31 = [v30 text];
-            v32 = [v31 string];
+            text = [v30 text];
+            string = [text string];
 
             v33 = VSErrorLogObject();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v46 = v32;
+              v46 = string;
               _os_log_error_impl(&dword_270DD4000, v33, OS_LOG_TYPE_ERROR, "Attempted to add extra button with text: %@", buf, 0xCu);
             }
           }
@@ -277,29 +277,29 @@
   return 1;
 }
 
-- (id)_getSupportedButtonTextsforTemplate:(id)a3 andElementKeys:(id)a4 supportedCount:(unint64_t)a5
+- (id)_getSupportedButtonTextsforTemplate:(id)template andElementKeys:(id)keys supportedCount:(unint64_t)count
 {
   v49 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v7 = a4;
+  templateCopy = template;
+  keysCopy = keys;
   v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [(VSAppDocumentController *)self filteredButtonLockupElements];
-  v9 = [v8 count];
+  filteredButtonLockupElements = [(VSAppDocumentController *)self filteredButtonLockupElements];
+  v9 = [filteredButtonLockupElements count];
 
   if (v9)
   {
-    v10 = [(VSAppDocumentController *)self filteredButtonLockupElements];
-    v11 = [v10 count];
+    filteredButtonLockupElements2 = [(VSAppDocumentController *)self filteredButtonLockupElements];
+    v11 = [filteredButtonLockupElements2 count];
 
     if (v11)
     {
       v12 = 0;
       v37 = *MEMORY[0x277CBE660];
-      v33 = self;
+      selfCopy = self;
       do
       {
-        v13 = [(VSAppDocumentController *)self filteredButtonLockupElements];
-        v14 = [v13 objectAtIndex:v12];
+        filteredButtonLockupElements3 = [(VSAppDocumentController *)self filteredButtonLockupElements];
+        v14 = [filteredButtonLockupElements3 objectAtIndex:v12];
 
         if (v14)
         {
@@ -333,8 +333,8 @@
                 else
                 {
                   v21 = *(*(&v40 + 1) + 8 * i);
-                  v22 = [v21 elementName];
-                  if (v22 && [v7 containsObject:v22])
+                  elementName = [v21 elementName];
+                  if (elementName && [keysCopy containsObject:elementName])
                   {
                     if (!v21)
                     {
@@ -342,20 +342,20 @@
                     }
 
                     v23 = v21;
-                    v24 = [v23 text];
-                    v25 = [v24 string];
+                    text = [v23 text];
+                    string = [text string];
 
-                    if (v25)
+                    if (string)
                     {
-                      if (v39 >= a5)
+                      if (v39 >= count)
                       {
                         v27 = VSErrorLogObject();
                         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
                         {
                           *buf = 138412546;
-                          v45 = v35;
+                          v45 = templateCopy;
                           v46 = 2112;
-                          v47 = v25;
+                          v47 = string;
                           _os_log_error_impl(&dword_270DD4000, v27, OS_LOG_TYPE_ERROR, "Tried to add invalid extra button to %@ Template with text: %@", buf, 0x16u);
                         }
                       }
@@ -366,17 +366,17 @@
                         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
                         {
                           *buf = 138412546;
-                          v45 = v35;
+                          v45 = templateCopy;
                           v46 = 2112;
-                          v47 = v25;
+                          v47 = string;
                           _os_log_impl(&dword_270DD4000, v26, OS_LOG_TYPE_DEFAULT, "Setting %@ Template button with text: %@", buf, 0x16u);
                         }
 
-                        v27 = [v25 copy];
+                        v27 = [string copy];
                         [v36 addObject:v27];
                       }
 
-                      v18 = v39 < a5;
+                      v18 = v39 < count;
                     }
 
                     else
@@ -398,14 +398,14 @@
             while (v17);
           }
 
-          self = v33;
+          self = selfCopy;
           v14 = v34;
           v12 = v39;
         }
 
         ++v12;
-        v28 = [(VSAppDocumentController *)self filteredButtonLockupElements];
-        v29 = [v28 count];
+        filteredButtonLockupElements4 = [(VSAppDocumentController *)self filteredButtonLockupElements];
+        v29 = [filteredButtonLockupElements4 count];
       }
 
       while (v12 < v29);
@@ -417,7 +417,7 @@
     v30 = VSErrorLogObject();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      [VSAppDocumentController _getSupportedButtonTextsforTemplate:v35 andElementKeys:v30 supportedCount:?];
+      [VSAppDocumentController _getSupportedButtonTextsforTemplate:templateCopy andElementKeys:v30 supportedCount:?];
     }
   }
 
@@ -426,29 +426,29 @@
   return v36;
 }
 
-- (void)_startObservingViewModel:(id)a3
+- (void)_startObservingViewModel:(id)model
 {
   v4 = kVSKeyValueObservingContext_ViewModelViewState;
-  v5 = a3;
-  [v5 addObserver:self forKeyPath:@"viewState" options:3 context:v4];
-  [v5 addObserver:self forKeyPath:@"userInterfaceStyle" options:1 context:kVSKeyValueObservingContext_ViewModelUserInterfaceStyle];
+  modelCopy = model;
+  [modelCopy addObserver:self forKeyPath:@"viewState" options:3 context:v4];
+  [modelCopy addObserver:self forKeyPath:@"userInterfaceStyle" options:1 context:kVSKeyValueObservingContext_ViewModelUserInterfaceStyle];
 }
 
-- (void)_stopObservingViewModel:(id)a3
+- (void)_stopObservingViewModel:(id)model
 {
   v4 = kVSKeyValueObservingContext_ViewModelViewState;
-  v5 = a3;
-  [v5 removeObserver:self forKeyPath:@"viewState" context:v4];
-  [v5 removeObserver:self forKeyPath:@"userInterfaceStyle" context:kVSKeyValueObservingContext_ViewModelUserInterfaceStyle];
+  modelCopy = model;
+  [modelCopy removeObserver:self forKeyPath:@"viewState" context:v4];
+  [modelCopy removeObserver:self forKeyPath:@"userInterfaceStyle" context:kVSKeyValueObservingContext_ViewModelUserInterfaceStyle];
 }
 
-- (id)_imageItemProviderWithImageElement:(id)a3
+- (id)_imageItemProviderWithImageElement:(id)element
 {
-  v3 = [a3 vs_url];
-  if (v3)
+  vs_url = [element vs_url];
+  if (vs_url)
   {
     v4 = objc_alloc(MEMORY[0x277CCAA88]);
-    v5 = [v4 initWithItem:v3 typeIdentifier:*MEMORY[0x277CC20B0]];
+    v5 = [v4 initWithItem:vs_url typeIdentifier:*MEMORY[0x277CC20B0]];
   }
 
   else
@@ -459,20 +459,20 @@
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (kVSKeyValueObservingContext_ViewModelViewState == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (kVSKeyValueObservingContext_ViewModelViewState == context)
   {
-    v14 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
-    v15 = [v14 unsignedIntegerValue];
+    v14 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-    if (v15 > 3)
+    if (unsignedIntegerValue > 3)
     {
-      if (v15 == 4)
+      if (unsignedIntegerValue == 4)
       {
         v24 = VSDefaultLogObject();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -481,8 +481,8 @@
           _os_log_impl(&dword_270DD4000, v24, OS_LOG_TYPE_DEFAULT, "Will call onDisappear()", buf, 2u);
         }
 
-        v25 = [(VSAppDocumentController *)self appDocument];
-        [v25 onDisappear];
+        appDocument = [(VSAppDocumentController *)self appDocument];
+        [appDocument onDisappear];
 
         v18 = VSDefaultLogObject();
         if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -495,7 +495,7 @@
         goto LABEL_26;
       }
 
-      if (v15 != 6)
+      if (unsignedIntegerValue != 6)
       {
         goto LABEL_28;
       }
@@ -507,8 +507,8 @@
         _os_log_impl(&dword_270DD4000, v20, OS_LOG_TYPE_DEFAULT, "Will call onUnload()", buf, 2u);
       }
 
-      v21 = [(VSAppDocumentController *)self appDocument];
-      [v21 onUnload];
+      appDocument2 = [(VSAppDocumentController *)self appDocument];
+      [appDocument2 onUnload];
 
       v18 = VSDefaultLogObject();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -521,7 +521,7 @@
 
     else
     {
-      if (v15 == 1)
+      if (unsignedIntegerValue == 1)
       {
         v22 = VSDefaultLogObject();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -530,8 +530,8 @@
           _os_log_impl(&dword_270DD4000, v22, OS_LOG_TYPE_DEFAULT, "Will call onLoad()", buf, 2u);
         }
 
-        v23 = [(VSAppDocumentController *)self appDocument];
-        [v23 onLoad];
+        appDocument3 = [(VSAppDocumentController *)self appDocument];
+        [appDocument3 onLoad];
 
         v18 = VSDefaultLogObject();
         if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -544,7 +544,7 @@
         goto LABEL_26;
       }
 
-      if (v15 != 2)
+      if (unsignedIntegerValue != 2)
       {
         goto LABEL_28;
       }
@@ -556,8 +556,8 @@
         _os_log_impl(&dword_270DD4000, v16, OS_LOG_TYPE_DEFAULT, "Will call onAppear()", buf, 2u);
       }
 
-      v17 = [(VSAppDocumentController *)self appDocument];
-      [v17 onAppear];
+      appDocument4 = [(VSAppDocumentController *)self appDocument];
+      [appDocument4 onAppear];
 
       v18 = VSDefaultLogObject();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -574,7 +574,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (kVSKeyValueObservingContext_ViewModelUserInterfaceStyle == a6)
+  if (kVSKeyValueObservingContext_ViewModelUserInterfaceStyle == context)
   {
     [(VSAppDocumentController *)self userInterfaceStyleDidUpdate];
   }
@@ -583,67 +583,67 @@ LABEL_27:
   {
     v26.receiver = self;
     v26.super_class = VSAppDocumentController;
-    [(VSAppDocumentController *)&v26 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VSAppDocumentController *)&v26 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
 LABEL_28:
 }
 
-- (void)_notiftyDidUpdateViewModel:(id)a3
+- (void)_notiftyDidUpdateViewModel:(id)model
 {
-  v5 = a3;
-  v4 = [(VSAppDocumentController *)self delegate];
+  modelCopy = model;
+  delegate = [(VSAppDocumentController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 appDocumentController:self didUpdateViewModel:v5];
+    [delegate appDocumentController:self didUpdateViewModel:modelCopy];
   }
 }
 
-- (void)_notiftyDidFailToUpdateViewModelWithError:(id)a3
+- (void)_notiftyDidFailToUpdateViewModelWithError:(id)error
 {
-  v5 = a3;
-  v4 = [(VSAppDocumentController *)self delegate];
+  errorCopy = error;
+  delegate = [(VSAppDocumentController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 appDocumentController:self didFailToUpdateViewModelWithError:v5];
+    [delegate appDocumentController:self didFailToUpdateViewModelWithError:errorCopy];
   }
 }
 
-- (void)_notifyDidUpdateLogoViewModel:(id)a3
+- (void)_notifyDidUpdateLogoViewModel:(id)model
 {
-  v5 = a3;
-  v4 = [(VSAppDocumentController *)self delegate];
+  modelCopy = model;
+  delegate = [(VSAppDocumentController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 appDocumentController:self didUpdateLogoViewModel:v5];
+    [delegate appDocumentController:self didUpdateLogoViewModel:modelCopy];
   }
 }
 
 - (void)userInterfaceStyleDidUpdate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(VSAppDocumentController *)self viewModel];
-  if (v3)
+  viewModel = [(VSAppDocumentController *)self viewModel];
+  if (viewModel)
   {
-    v4 = [(VSAppDocumentController *)self viewModel];
+    viewModel2 = [(VSAppDocumentController *)self viewModel];
 
-    if (!v4)
+    if (!viewModel2)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self viewModel] parameter must not be nil."];
     }
 
-    v5 = [(VSAppDocumentController *)self viewModel];
-    if ([v5 conformsToProtocol:&unk_2880E88E0])
+    viewModel3 = [(VSAppDocumentController *)self viewModel];
+    if ([viewModel3 conformsToProtocol:&unk_2880E88E0])
     {
-      v5 = v5;
+      viewModel3 = viewModel3;
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v6 = [(VSAppDocumentController *)self templateElement];
-      v7 = [v6 children];
+      templateElement = [(VSAppDocumentController *)self templateElement];
+      children = [templateElement children];
 
-      v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [children countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         v9 = v8;
@@ -654,7 +654,7 @@ LABEL_28:
           {
             if (*v20 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(children);
             }
 
             v12 = *(*(&v19 + 1) + 8 * i);
@@ -671,14 +671,14 @@ LABEL_28:
               }
 
               v17 = [(VSAppDocumentController *)self _imageItemProviderWithImageElement:v12];
-              [v5 setLogoProvider:v17];
-              [(VSAppDocumentController *)self _notifyDidUpdateLogoViewModel:v5];
+              [viewModel3 setLogoProvider:v17];
+              [(VSAppDocumentController *)self _notifyDidUpdateLogoViewModel:viewModel3];
 
               goto LABEL_17;
             }
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v9 = [children countByEnumeratingWithState:&v19 objects:v23 count:16];
           if (v9)
           {
             continue;

@@ -1,17 +1,17 @@
 @interface RTSCFaceReframingV1
 - (RTSCFaceReframingV1)init;
-- (__n128)_softClampShift:(int8x16_t)a3 ofViewPortBox:(double)a4 toBoundingRect:(double)a5 boundingCircle:(float64x2_t)a6 transitionThreshold:(float64_t)a7;
-- (double)_estimateRatiosOfProjectedCorners:(float32x4_t)a3 cornerRadii:(double)a4 toMaxCornerShifts:(float32x4_t)a5 maxRadius:(double)a6 circleCenter:(float)a7 forRotation:(int32x2_t)a8;
-- (float32x2_t)_computeNominalTrackingTimescaleFromViewPortMargins:(float32x2_t)a3 faceBoxSize:;
-- (float32x2_t)_filterFramingOffset:(float32x2_t)a3 smoothingPole:(float32x2_t)a4 viewPortSize:;
-- (id)_updateOffsetOfViewPortBox:(double)a3 withinBoundingRect:(double)a4;
-- (id)updateFaceCorrectionAfterStabilization:(__n128)a3 viewPort:(__n128)a4 boundingRect:(float64x2_t)a5 boundingCircle:(float64_t)a6;
+- (__n128)_softClampShift:(int8x16_t)shift ofViewPortBox:(double)box toBoundingRect:(double)rect boundingCircle:(float64x2_t)circle transitionThreshold:(float64_t)threshold;
+- (double)_estimateRatiosOfProjectedCorners:(float32x4_t)corners cornerRadii:(double)radii toMaxCornerShifts:(float32x4_t)shifts maxRadius:(double)radius circleCenter:(float)center forRotation:(int32x2_t)rotation;
+- (float32x2_t)_computeNominalTrackingTimescaleFromViewPortMargins:(float32x2_t)margins faceBoxSize:;
+- (float32x2_t)_filterFramingOffset:(float32x2_t)offset smoothingPole:(float32x2_t)pole viewPortSize:;
+- (id)_updateOffsetOfViewPortBox:(double)box withinBoundingRect:(double)rect;
+- (id)updateFaceCorrectionAfterStabilization:(__n128)stabilization viewPort:(__n128)port boundingRect:(float64x2_t)rect boundingCircle:(float64_t)circle;
 - (void)_adjustFramingOffset:(RTSCFaceReframingV1 *)self;
-- (void)_computeViewPortSmoothingTimescaleForViewPortMargins:(double)a3 predictedViewPortMargins:(double)a4 centeredViewPortMargins:(double)a5 faceBoxSize:;
-- (void)_estimateMinShift:(RTSCFaceReframingV1 *)self maxShift:(SEL)a2 forViewPortBox:withinBoundingRect:;
+- (void)_computeViewPortSmoothingTimescaleForViewPortMargins:(double)margins predictedViewPortMargins:(double)portMargins centeredViewPortMargins:(double)viewPortMargins faceBoxSize:;
+- (void)_estimateMinShift:(RTSCFaceReframingV1 *)self maxShift:(SEL)shift forViewPortBox:withinBoundingRect:;
 - (void)dealloc;
 - (void)reset;
-- (void)updateFacesWithMetadata:(__n128)a3 bufferSize:(__n128)a4 cameraMatrix:(__n128)a5 rotationFromPrevFrame:(__n128)a6 atTime:(__n128)a7;
+- (void)updateFacesWithMetadata:(__n128)metadata bufferSize:(__n128)size cameraMatrix:(__n128)matrix rotationFromPrevFrame:(__n128)frame atTime:(__n128)time;
 @end
 
 @implementation RTSCFaceReframingV1
@@ -70,28 +70,28 @@ LABEL_6:
   self->_sceneSpaceFramingBiasSmoothingTimescale = 0.0;
 }
 
-- (void)updateFacesWithMetadata:(__n128)a3 bufferSize:(__n128)a4 cameraMatrix:(__n128)a5 rotationFromPrevFrame:(__n128)a6 atTime:(__n128)a7
+- (void)updateFacesWithMetadata:(__n128)metadata bufferSize:(__n128)size cameraMatrix:(__n128)matrix rotationFromPrevFrame:(__n128)frame atTime:(__n128)time
 {
-  *&v48[16] = a4;
-  *&v48[32] = a5;
-  *v48 = a3;
+  *&v48[16] = size;
+  *&v48[32] = matrix;
+  *v48 = metadata;
   v47 = a11;
-  if ((*(a1 + 8) & 1) == 0)
+  if ((*(self + 8) & 1) == 0)
   {
-    *(a1 + 184) = a9 - *(a1 + 176);
+    *(self + 184) = a9 - *(self + 176);
     v56 = __invert_f3(*v48);
-    *(a1 + 136) = v56.columns[0].i32[2];
-    *(a1 + 128) = v56.columns[0].i64[0];
-    *(a1 + 152) = v56.columns[1].i32[2];
-    *(a1 + 144) = v56.columns[1].i64[0];
-    *(a1 + 168) = v56.columns[2].i32[2];
-    *(a1 + 160) = v56.columns[2].i64[0];
-    *(a1 + 8) = 1;
+    *(self + 136) = v56.columns[0].i32[2];
+    *(self + 128) = v56.columns[0].i64[0];
+    *(self + 152) = v56.columns[1].i32[2];
+    *(self + 144) = v56.columns[1].i64[0];
+    *(self + 168) = v56.columns[2].i32[2];
+    *(self + 160) = v56.columns[2].i64[0];
+    *(self + 8) = 1;
   }
 
-  v13 = a9 - *(a1 + 184);
-  *(a1 + 176) = v13;
-  v14 = [v47 objectForKeyedSubscript:{kFigCaptureStreamMetadata_DetectedObjectsInfo, *&a6, *&a7}];
+  v13 = a9 - *(self + 184);
+  *(self + 176) = v13;
+  v14 = [v47 objectForKeyedSubscript:{kFigCaptureStreamMetadata_DetectedObjectsInfo, *&frame, *&time}];
   v15 = 0;
   v49 = v38;
   v50 = v41;
@@ -110,9 +110,9 @@ LABEL_6:
   v17 = v52;
   v18 = v53;
   v19 = v54;
-  v20 = *(a1 + 144);
-  v21 = *(a1 + 160);
-  v49 = *(a1 + 128);
+  v20 = *(self + 144);
+  v21 = *(self + 160);
+  v49 = *(self + 128);
   v50 = v20;
   v51 = v21;
   v52 = 0u;
@@ -128,15 +128,15 @@ LABEL_6:
   v44 = v53;
   v39 = v52;
   v42 = v54;
-  [*(a1 + 16) trackedFaceBox];
+  [*(self + 16) trackedFaceBox];
   v23 = vaddq_f32(v42, vmlaq_lane_f32(vmulq_n_f32(v39, v22.f32[0]), v44, *v22.f32, 1));
   v24 = vextq_s8(v23, v23, 8uLL).u32[0];
   v23.i64[1] = v22.i64[1];
   v25 = vrecpe_f32(v24);
   v26 = vmul_f32(v25, vrecps_f32(v24, v25));
   v45 = vsubq_f32(vmulq_n_f32(v23, vmul_f32(v26, vrecps_f32(v24, v26)).f32[0]), v22).u64[0];
-  [*(a1 + 16) trackFaceBoxesWithDetectedObjects:v14 atTime:a9 bufferSize:a2 changeFromPrevFrame:?];
-  [*(a1 + 16) trackedFaceBox];
+  [*(self + 16) trackFaceBoxesWithDetectedObjects:v14 atTime:a9 bufferSize:a2 changeFromPrevFrame:?];
+  [*(self + 16) trackedFaceBox];
   v29 = v28 > *(&a2 + 1);
   if (v28 < 0.0)
   {
@@ -144,22 +144,22 @@ LABEL_6:
   }
 
   v31 = v27 < 0.0 || v27 > *&a2 || v29;
-  [*(a1 + 16) trackingStaleTime];
+  [*(self + 16) trackingStaleTime];
   if ((v31 & 1) != 0 || v32 > 0.7)
   {
-    [*(a1 + 16) reset];
+    [*(self + 16) reset];
   }
 
-  v33 = [*(a1 + 16) isTracking];
+  isTracking = [*(self + 16) isTracking];
   if (v31)
   {
-    *(a1 + 64) = 0;
+    *(self + 64) = 0;
     v34 = 0.0;
   }
 
   else
   {
-    if (v33)
+    if (isTracking)
     {
       v35 = 1.0;
     }
@@ -170,40 +170,40 @@ LABEL_6:
     }
 
     v36 = fminf(fmaxf(v35, 0.0), 1.0);
-    v34 = v36 + ((*(a1 + 68) / (*(a1 + 68) + *(a1 + 176))) * (*(a1 + 64) - v36));
-    *(a1 + 64) = v34;
+    v34 = v36 + ((*(self + 68) / (*(self + 68) + *(self + 176))) * (*(self + 64) - v36));
+    *(self + 64) = v34;
   }
 
-  [a1 _adjustFramingOffset:{COERCE_DOUBLE(vmul_n_f32(v45, v34))}];
-  *(a1 + 80) = *v48;
-  *(a1 + 96) = *&v48[16];
-  *(a1 + 112) = *&v48[32];
+  [self _adjustFramingOffset:{COERCE_DOUBLE(vmul_n_f32(v45, v34))}];
+  *(self + 80) = *v48;
+  *(self + 96) = *&v48[16];
+  *(self + 112) = *&v48[32];
   v57 = __invert_f3(*v48);
-  *(a1 + 136) = v57.columns[0].i32[2];
-  *(a1 + 128) = v57.columns[0].i64[0];
-  *(a1 + 152) = v57.columns[1].i32[2];
-  *(a1 + 144) = v57.columns[1].i64[0];
-  *(a1 + 168) = v57.columns[2].i32[2];
-  *(a1 + 160) = v57.columns[2].i64[0];
-  *(a1 + 184) = a9;
+  *(self + 136) = v57.columns[0].i32[2];
+  *(self + 128) = v57.columns[0].i64[0];
+  *(self + 152) = v57.columns[1].i32[2];
+  *(self + 144) = v57.columns[1].i64[0];
+  *(self + 168) = v57.columns[2].i32[2];
+  *(self + 160) = v57.columns[2].i64[0];
+  *(self + 184) = a9;
 }
 
-- (float32x2_t)_filterFramingOffset:(float32x2_t)a3 smoothingPole:(float32x2_t)a4 viewPortSize:
+- (float32x2_t)_filterFramingOffset:(float32x2_t)offset smoothingPole:(float32x2_t)pole viewPortSize:
 {
-  v4 = a1[3];
-  v5 = vmla_f32(a2, vsub_f32(a1[4], a2), a3);
-  a1[4] = v5;
-  result = vmla_f32(v5, vsub_f32(v4, v5), a3);
-  a1[3] = result;
+  v4 = self[3];
+  v5 = vmla_f32(a2, vsub_f32(self[4], a2), offset);
+  self[4] = v5;
+  result = vmla_f32(v5, vsub_f32(v4, v5), offset);
+  self[3] = result;
   v7 = vsub_f32(result, v4);
   v8 = vmul_f32(v7, v7);
-  v9 = vmul_n_f32(vadd_f32(a4, a4), a1[22].f32[0]);
+  v9 = vmul_n_f32(vadd_f32(pole, pole), self[22].f32[0]);
   v10 = vmul_f32(v9, v9);
   v11 = vadd_f32(vzip1_s32(v8, v10), vzip2_s32(v8, v10));
   if (v11.f32[0] > v11.f32[1])
   {
-    [(float32x2_t *)a1 _adjustFramingOffset:COERCE_DOUBLE(vmul_n_f32(v7, sqrtf(v11.f32[1] / v11.f32[0]) + -1.0))];
-    return a1[3];
+    [(float32x2_t *)self _adjustFramingOffset:COERCE_DOUBLE(vmul_n_f32(v7, sqrtf(v11.f32[1] / v11.f32[0]) + -1.0))];
+    return self[3];
   }
 
   return result;
@@ -216,24 +216,24 @@ LABEL_6:
   *&self->_smoothedFramingOffset[8] = v3;
 }
 
-- (id)updateFaceCorrectionAfterStabilization:(__n128)a3 viewPort:(__n128)a4 boundingRect:(float64x2_t)a5 boundingCircle:(float64_t)a6
+- (id)updateFaceCorrectionAfterStabilization:(__n128)stabilization viewPort:(__n128)port boundingRect:(float64x2_t)rect boundingCircle:(float64_t)circle
 {
   a7.f64[1] = a8;
-  a5.f64[1] = a6;
-  v41 = vmla_f32(vcvt_f32_f64(a5), 0x3F0000003F000000, vcvt_f32_f64(a7));
+  rect.f64[1] = circle;
+  v41 = vmla_f32(vcvt_f32_f64(rect), 0x3F0000003F000000, vcvt_f32_f64(a7));
   *&v42 = vcvt_hight_f32_f64(v41, a7).u64[0];
-  [a1 _updateOffsetOfViewPortBox:? withinBoundingRect:?];
-  *(a1 + 40) = v21;
-  v23 = *(a1 + 64);
+  [self _updateOffsetOfViewPortBox:? withinBoundingRect:?];
+  *(self + 40) = v21;
+  v23 = *(self + 64);
   if (v23 > 0.0)
   {
     v24 = 0;
-    v25 = *(a1 + 80);
-    v26 = *(a1 + 96);
-    v27 = *(a1 + 112);
+    v25 = *(self + 80);
+    v26 = *(self + 96);
+    v27 = *(self + 112);
     v43 = a2;
-    v44 = a3;
-    v45 = a4;
+    stabilizationCopy = stabilization;
+    portCopy = port;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
@@ -248,11 +248,11 @@ LABEL_6:
     v29 = v46;
     v30 = v47;
     v31 = v48;
-    v32 = *(a1 + 144);
-    v22 = *(a1 + 160);
-    v43 = *(a1 + 128);
-    v44 = v32;
-    v45 = v22;
+    v32 = *(self + 144);
+    v22 = *(self + 160);
+    v43 = *(self + 128);
+    stabilizationCopy = v32;
+    portCopy = v22;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
@@ -271,12 +271,12 @@ LABEL_6:
   }
 
   v22.n128_u32[0] = 1058642330;
-  result = [a1 _softClampShift:COERCE_DOUBLE(vmul_n_f32(v21 ofViewPortBox:*(a1 + 192))) toBoundingRect:v42 boundingCircle:a10 transitionThreshold:{a11, a12, a13, a14, v22.n128_f64[0]}];
-  *(a1 + 208) = v37;
+  result = [self _softClampShift:COERCE_DOUBLE(vmul_n_f32(v21 ofViewPortBox:*(self + 192))) toBoundingRect:v42 boundingCircle:a10 transitionThreshold:{a11, a12, a13, a14, v22.n128_f64[0]}];
+  *(self + 208) = v37;
   return result;
 }
 
-- (void)_estimateMinShift:(RTSCFaceReframingV1 *)self maxShift:(SEL)a2 forViewPortBox:withinBoundingRect:
+- (void)_estimateMinShift:(RTSCFaceReframingV1 *)self maxShift:(SEL)shift forViewPortBox:withinBoundingRect:
 {
   v9 = v3;
   v26 = v7;
@@ -308,78 +308,78 @@ LABEL_6:
   *v9 = vmul_f32(v31, *&_simd_tan_f4(v22));
 }
 
-- (float32x2_t)_computeNominalTrackingTimescaleFromViewPortMargins:(float32x2_t)a3 faceBoxSize:
+- (float32x2_t)_computeNominalTrackingTimescaleFromViewPortMargins:(float32x2_t)margins faceBoxSize:
 {
   v4 = vneg_f32(*a2.i8);
   v5 = vextq_s8(a2, a2, 8uLL);
-  *v5.f32 = vmaxnm_f32(vdiv_f32(vminnm_f32(v4, *v5.f32), a3), 0);
+  *v5.f32 = vmaxnm_f32(vdiv_f32(vminnm_f32(v4, *v5.f32), margins), 0);
   v6 = _simd_pow_f4(v5, xmmword_11D00).u64[0];
-  v7 = (a1 + 48);
+  v7 = (self + 48);
   v8 = vld1_dup_f32(v7);
   v9 = vmaxnm_f32(v6, v8);
   v8.f32[0] = vaddv_f32(v9) * 0.5;
   return vminnm_f32(v9, vdup_lane_s32(v8, 0));
 }
 
-- (void)_computeViewPortSmoothingTimescaleForViewPortMargins:(double)a3 predictedViewPortMargins:(double)a4 centeredViewPortMargins:(double)a5 faceBoxSize:
+- (void)_computeViewPortSmoothingTimescaleForViewPortMargins:(double)margins predictedViewPortMargins:(double)portMargins centeredViewPortMargins:(double)viewPortMargins faceBoxSize:
 {
-  if (fminf(*&a5, *(&a5 + 1)) <= 0.0)
+  if (fminf(*&viewPortMargins, *(&viewPortMargins + 1)) <= 0.0)
   {
     __asm { FMOV            V0.2S, #6.0 }
   }
 
   else
   {
-    if ([*&a1[2] isTracking])
+    if ([*&self[2] isTracking])
     {
-      v6 = a1[6].f32[0] * powf(0.1, a1[22].f32[0]);
-      a1[6].f32[0] = v6;
-      [*&a1[2] trackingStaleTime];
+      v6 = self[6].f32[0] * powf(0.1, self[22].f32[0]);
+      self[6].f32[0] = v6;
+      [*&self[2] trackingStaleTime];
       v8 = fmaxf(v6, v7 + v7);
     }
 
     else
     {
-      v8 = a1[24].f32[0] * 6.0;
+      v8 = self[24].f32[0] * 6.0;
     }
 
-    v14 = &a1[6];
-    a1[6].f32[0] = v8;
-    [(float32x2_t *)a1 _computeNominalTrackingTimescaleFromViewPortMargins:a4 faceBoxSize:a5];
+    v14 = &self[6];
+    self[6].f32[0] = v8;
+    [(float32x2_t *)self _computeNominalTrackingTimescaleFromViewPortMargins:portMargins faceBoxSize:viewPortMargins];
     __asm { FMOV            V8.2S, #20.0 }
 
     v17 = vminnm_f32(v16, _D8);
-    a1[6].f32[0] = fmaxf(fmaxf(a1[6].f32[0], fminf(v17.f32[0], v17.f32[1]) * 0.05), 0.04);
-    [(float32x2_t *)a1 _computeNominalTrackingTimescaleFromViewPortMargins:a2 faceBoxSize:a5];
+    self[6].f32[0] = fmaxf(fmaxf(self[6].f32[0], fminf(v17.f32[0], v17.f32[1]) * 0.05), 0.04);
+    [(float32x2_t *)self _computeNominalTrackingTimescaleFromViewPortMargins:a2 faceBoxSize:viewPortMargins];
     v19 = vld1_dup_f32(v14);
-    v20 = vmaxnm_f32(vmaxnm_f32(vminnm_f32(v18, _D8), v19), vmul_n_f32(a1[7], powf(0.000001, a1[22].f32[0])));
-    [(float32x2_t *)a1 _computeNominalTrackingTimescaleFromViewPortMargins:a3 faceBoxSize:a5];
+    v20 = vmaxnm_f32(vmaxnm_f32(vminnm_f32(v18, _D8), v19), vmul_n_f32(self[7], powf(0.000001, self[22].f32[0])));
+    [(float32x2_t *)self _computeNominalTrackingTimescaleFromViewPortMargins:margins faceBoxSize:viewPortMargins];
     v22 = vminnm_f32(v21, v20);
     v23.i32[3] = 0;
-    v23.f32[0] = -a1[22].f32[0];
-    *(v23.i64 + 4) = a1[22].u32[0];
+    v23.f32[0] = -self[22].f32[0];
+    *(v23.i64 + 4) = self[22].u32[0];
     v24 = _simd_pow_f4(xmmword_11D10, v23).u64[0];
     v25 = vld1_dup_f32(v14);
-    v26 = vmaxnm_f32(vminnm_f32(vminnm_f32(vmaxnm_f32(v22, vmul_n_f32(a1[7], v24.f32[0])), vmul_lane_f32(a1[7], v24, 1)), v20), v25);
+    v26 = vmaxnm_f32(vminnm_f32(vminnm_f32(vmaxnm_f32(v22, vmul_n_f32(self[7], v24.f32[0])), vmul_lane_f32(self[7], v24, 1)), v20), v25);
   }
 }
 
-- (id)_updateOffsetOfViewPortBox:(double)a3 withinBoundingRect:(double)a4
+- (id)_updateOffsetOfViewPortBox:(double)box withinBoundingRect:(double)rect
 {
   v49 = vextq_s8(a2, a2, 8uLL).u64[0];
   *v11.f32 = vneg_f32(v49);
   *&v11.u32[2] = v49;
-  *v12.f32 = a1[3];
+  *v12.f32 = self[3];
   v12.i64[1] = v12.i64[0];
   v46 = *v12.f32;
   v48 = v12;
   v13.i64[0] = 0x3F0000003F000000;
   v13.i64[1] = 0x3F0000003F000000;
   v51 = vmlaq_f32(v12, v13, v11);
-  [*&a1[2] trackedFaceBox];
+  [*&self[2] trackedFaceBox];
   v50 = v14;
   v44 = vsubq_f32(v14, a2).u64[0];
-  [*&a1[2] topOfFaceDirection];
+  [*&self[2] topOfFaceDirection];
   v16.i32[0] = vdup_lane_s32(v15, 1).u32[0];
   v16.f32[1] = -*v15.i32;
   v17 = vmul_f32(v15, v15);
@@ -398,9 +398,9 @@ LABEL_6:
   v29 = vsub_f32(v46, vmla_f32(*v28.i8, vsub_f32(*&vextq_s8(v28, v28, 8uLL), *v28.i8), vsub_f32(0x3F0000003F000000, vmla_f32(vmul_f32(v16, 0), vdup_n_s32(0xBE19999A), v15))));
   v53 = 0;
   v54 = 0;
-  [(float32x2_t *)a1 _estimateMinShift:&v54 maxShift:&v53 forViewPortBox:*a2.i64 withinBoundingRect:a3, a4, a5, a6];
+  [(float32x2_t *)self _estimateMinShift:&v54 maxShift:&v53 forViewPortBox:*a2.i64 withinBoundingRect:box, rect, a5, a6];
   v30 = COERCE_DOUBLE(vminnm_f32(vmaxnm_f32(v29, v54), v53));
-  [(float32x2_t *)a1 _adjustFramingOffset:COERCE_DOUBLE(vsub_f32(vminnm_f32(vmaxnm_f32(a1[3], v54), v53), a1[3]))];
+  [(float32x2_t *)self _adjustFramingOffset:COERCE_DOUBLE(vsub_f32(vminnm_f32(vmaxnm_f32(self[3], v54), v53), self[3]))];
   __asm { FMOV            V0.2S, #1.25 }
 
   v32 = vmla_f32(vmul_f32(v18, _D0), _D0, v17);
@@ -411,7 +411,7 @@ LABEL_6:
   v35.i64[1] = 0x3F0000003F000000;
   *&v47 = vsubq_f32(v51, vmlaq_f32(v45, v35, v34)).u64[0];
   v48.i64[0] = vsubq_f32(v51, vmlaq_f32(v48, v35, v34)).u64[0];
-  [*&a1[2] predictFaceBoxAtTimeOffset:0.0];
+  [*&self[2] predictFaceBoxAtTimeOffset:0.0];
   v37 = vsubq_f32(v36, a2).u64[0];
   *v36.f32 = vminnm_f32(vmul_f32(v32, *&vextq_s8(v36, v36, 8uLL)), v24);
   *v38.f32 = vneg_f32(*v36.f32);
@@ -419,13 +419,13 @@ LABEL_6:
   v39 = vdupq_lane_s64(v37, 0);
   v40.i64[0] = 0x3F0000003F000000;
   v40.i64[1] = 0x3F0000003F000000;
-  [(float32x2_t *)a1 _computeViewPortSmoothingTimescaleForViewPortMargins:v47 predictedViewPortMargins:*vsubq_f32(v51 centeredViewPortMargins:vmlaq_f32(v39 faceBoxSize:v40, v38)).i64, *v48.i64, *v50.i64];
-  a1[7] = v41;
-  *v42.i32 = a1[22].f32[0] + a1[22].f32[0];
-  return [(float32x2_t *)a1 _filterFramingOffset:v30 smoothingPole:COERCE_DOUBLE(vdiv_f32(v41 viewPortSize:vadd_f32(v41, vdup_lane_s32(v42, 0)))), *&v49];
+  [(float32x2_t *)self _computeViewPortSmoothingTimescaleForViewPortMargins:v47 predictedViewPortMargins:*vsubq_f32(v51 centeredViewPortMargins:vmlaq_f32(v39 faceBoxSize:v40, v38)).i64, *v48.i64, *v50.i64];
+  self[7] = v41;
+  *v42.i32 = self[22].f32[0] + self[22].f32[0];
+  return [(float32x2_t *)self _filterFramingOffset:v30 smoothingPole:COERCE_DOUBLE(vdiv_f32(v41 viewPortSize:vadd_f32(v41, vdup_lane_s32(v42, 0)))), *&v49];
 }
 
-- (double)_estimateRatiosOfProjectedCorners:(float32x4_t)a3 cornerRadii:(double)a4 toMaxCornerShifts:(float32x4_t)a5 maxRadius:(double)a6 circleCenter:(float)a7 forRotation:(int32x2_t)a8
+- (double)_estimateRatiosOfProjectedCorners:(float32x4_t)corners cornerRadii:(double)radii toMaxCornerShifts:(float32x4_t)shifts maxRadius:(double)radius circleCenter:(float)center forRotation:(int32x2_t)rotation
 {
   v12 = 0;
   _S0 = _Q7.u32[1];
@@ -459,9 +459,9 @@ LABEL_6:
   v35.i64[0] = __PAIR64__(_S3 - (_Q7.f32[0] * _Q7.f32[0]), v26);
   v35.i64[1] = COERCE_UNSIGNED_INT(_S19 + _S19);
   v31.i64[1] = _S2;
-  v36 = *(a1 + 5);
-  v37 = *(a1 + 6);
-  v38 = *(a1 + 7);
+  v36 = *(self + 5);
+  v37 = *(self + 6);
+  v38 = *(self + 7);
   v56 = v33;
   v57 = v35;
   v58 = v31;
@@ -479,9 +479,9 @@ LABEL_6:
   v40 = v59;
   v41 = v60;
   v42 = v61;
-  v43 = *(a1 + 9);
-  v44 = *(a1 + 10);
-  v56 = *(a1 + 8);
+  v43 = *(self + 9);
+  v44 = *(self + 10);
+  v56 = *(self + 8);
   v57 = v43;
   v58 = v44;
   v59 = 0u;
@@ -504,7 +504,7 @@ LABEL_6:
   v61 = 0u;
   do
   {
-    *(&v59 + v45) = vaddq_f32(vdupq_laneq_s32(*(&v56 + v45), 2), vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v56 + v45))), a3, *&v56.i8[v45], 1));
+    *(&v59 + v45) = vaddq_f32(vdupq_laneq_s32(*(&v56 + v45), 2), vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v56 + v45))), corners, *&v56.i8[v45], 1));
     v45 += 16;
   }
 
@@ -514,65 +514,65 @@ LABEL_6:
   v49 = vmulq_f32(v48, vrecpsq_f32(v61, v48));
   v50 = vmulq_f32(v59, v49);
   v51 = vmulq_f32(v60, v49);
-  if (a7 > 0.00000011921)
+  if (center > 0.00000011921)
   {
-    v55 = a5;
+    shiftsCopy = shifts;
     v54 = a2;
     v53 = v50;
-    _simd_hypot_f4(vsubq_f32(v50, vdupq_lane_s32(a8, 0)), vsubq_f32(v51, vdupq_lane_s32(a8, 1)));
+    _simd_hypot_f4(vsubq_f32(v50, vdupq_lane_s32(rotation, 0)), vsubq_f32(v51, vdupq_lane_s32(rotation, 1)));
     v50 = v53;
     a2 = v54;
-    a5 = v55;
+    shifts = shiftsCopy;
   }
 
-  *&result = vdivq_f32(vsubq_f32(v50, a2), a5).u64[0];
+  *&result = vdivq_f32(vsubq_f32(v50, a2), shifts).u64[0];
   return result;
 }
 
-- (__n128)_softClampShift:(int8x16_t)a3 ofViewPortBox:(double)a4 toBoundingRect:(double)a5 boundingCircle:(float64x2_t)a6 transitionThreshold:(float64_t)a7
+- (__n128)_softClampShift:(int8x16_t)shift ofViewPortBox:(double)box toBoundingRect:(double)rect boundingCircle:(float64x2_t)circle transitionThreshold:(float64_t)threshold
 {
   v70 = a9;
-  v11 = vmul_f32(*&vextq_s8(a3, a3, 8uLL), 0x3F0000003F000000);
-  v12 = vmlaq_n_f32(vdupq_lane_s32(*a3.i8, 0), xmmword_11BA0, v11.f32[0]);
-  v13 = vmlaq_lane_f32(vdupq_lane_s32(*a3.i8, 1), xmmword_11B90, v11, 1);
-  a6.f64[1] = a7;
-  v14 = vmul_f32(vcvt_f32_f64(a6), 0x3F0000003F000000);
-  *&a4 = a4;
-  *&a4 = v14.f32[0] + *&a4;
-  v15 = vmlaq_n_f32(vdupq_lane_s32(*&a4, 0), xmmword_11BA0, v14.f32[0]);
-  v16 = a5;
-  *&a4 = v14.f32[1] + v16;
+  v11 = vmul_f32(*&vextq_s8(shift, shift, 8uLL), 0x3F0000003F000000);
+  v12 = vmlaq_n_f32(vdupq_lane_s32(*shift.i8, 0), xmmword_11BA0, v11.f32[0]);
+  v13 = vmlaq_lane_f32(vdupq_lane_s32(*shift.i8, 1), xmmword_11B90, v11, 1);
+  circle.f64[1] = threshold;
+  v14 = vmul_f32(vcvt_f32_f64(circle), 0x3F0000003F000000);
+  *&box = box;
+  *&box = v14.f32[0] + *&box;
+  v15 = vmlaq_n_f32(vdupq_lane_s32(*&box, 0), xmmword_11BA0, v14.f32[0]);
+  rectCopy = rect;
+  *&box = v14.f32[1] + rectCopy;
   v75 = *v13.i64;
   v76 = *v12.i64;
-  v17 = vsubq_f32(vmlaq_lane_f32(vdupq_lane_s32(*&a4, 0), xmmword_11B90, v14, 1), v13);
+  v17 = vsubq_f32(vmlaq_lane_f32(vdupq_lane_s32(*&box, 0), xmmword_11B90, v14, 1), v13);
   v18.i64[0] = 0x3400000034000000;
   v18.i64[1] = 0x3400000034000000;
   *&v72 = vmulq_f32(vmaxnmq_f32(vmulq_f32(v17, xmmword_11B90), v18), xmmword_11B90).u64[0];
   *&v73 = vmulq_f32(vmaxnmq_f32(vmulq_f32(vsubq_f32(v15, v12), xmmword_11BA0), v18), xmmword_11BA0).u64[0];
   v77 = a8.n128_f64[0];
-  v78 = *a3.i8;
+  v78 = *shift.i8;
   v19 = a8.n128_f32[2];
   v20 = 0;
   if (a8.n128_f32[2] > 0.00000011921)
   {
     v21 = _simd_hypot_f4(vsubq_f32(v12, vdupq_lane_s32(a8.n128_u64[0], 0)), vsubq_f32(v13, vdupq_lane_s32(a8.n128_u64[0], 1)));
-    *a3.i8 = v78;
+    *shift.i8 = v78;
     v22.i32[1] = -1275068416;
     *v22.i32 = v19 + -0.00000011921;
     v20 = vminnmq_f32(v21, vdupq_lane_s32(v22, 0)).u64[0];
   }
 
   v71 = *&v20;
-  v24 = a1[8];
-  v23 = a1[9];
-  v25 = a1[10];
-  v26 = vaddq_f32(v25, vmlaq_lane_f32(vmulq_n_f32(v24, *a3.i32), v23, *a3.i8, 1));
+  v24 = self[8];
+  v23 = self[9];
+  v25 = self[10];
+  v26 = vaddq_f32(v25, vmlaq_lane_f32(vmulq_n_f32(v24, *shift.i32), v23, *shift.i8, 1));
   v27 = vmulq_f32(v26, v26);
   *&v28 = v27.f32[2] + vaddv_f32(*v27.f32);
   *v27.f32 = vrsqrte_f32(v28);
   *v27.f32 = vmul_f32(*v27.f32, vrsqrts_f32(v28, vmul_f32(*v27.f32, *v27.f32)));
   v29 = vmulq_n_f32(v26, vmul_f32(*v27.f32, vrsqrts_f32(v28, vmul_f32(*v27.f32, *v27.f32))).f32[0]);
-  *v26.f32 = vadd_f32(*a3.i8, a2);
+  *v26.f32 = vadd_f32(*shift.i8, a2);
   v30 = vaddq_f32(v25, vmlaq_lane_f32(vmulq_n_f32(v24, v26.f32[0]), v23, *v26.f32, 1));
   v31 = vmulq_f32(v30, v30);
   v25.f32[0] = v31.f32[2] + vaddv_f32(*v31.f32);
@@ -581,7 +581,7 @@ LABEL_6:
   v74 = v29;
   v32 = simd_quaternion(v29, vmulq_n_f32(v30, vmul_f32(*v31.f32, vrsqrts_f32(v25.u32[0], vmul_f32(*v31.f32, *v31.f32))).f32[0]));
   *&v33 = v19;
-  [(float32x4_t *)a1 _estimateRatiosOfProjectedCorners:v76 cornerRadii:v75 toMaxCornerShifts:v71 maxRadius:v73 circleCenter:v72 forRotation:v33, v77, v32];
+  [(float32x4_t *)self _estimateRatiosOfProjectedCorners:v76 cornerRadii:v75 toMaxCornerShifts:v71 maxRadius:v73 circleCenter:v72 forRotation:v33, v77, v32];
   v34.f32[0] = vmaxvq_f32(v34);
   v80 = vmaxvq_f32(v35);
   v82 = v34.i64[0];
@@ -608,14 +608,14 @@ LABEL_6:
       v83 = _Q3;
       [(RTSCWeightedInterpolationModel *)v38 interpolateTo:*&v70];
       v48 = vadd_f32(v78, v47);
-      v49 = vaddq_f32(a1[10], vmlaq_lane_f32(vmulq_n_f32(a1[8], v48.f32[0]), a1[9], v48, 1));
+      v49 = vaddq_f32(self[10], vmlaq_lane_f32(vmulq_n_f32(self[8], v48.f32[0]), self[9], v48, 1));
       v50 = vmulq_f32(v49, v49);
       *&v51 = v50.f32[2] + vaddv_f32(*v50.f32);
       *v50.f32 = vrsqrte_f32(v51);
       *v50.f32 = vmul_f32(*v50.f32, vrsqrts_f32(v51, vmul_f32(*v50.f32, *v50.f32)));
       v52 = simd_quaternion(v74, vmulq_n_f32(v49, vmul_f32(*v50.f32, vrsqrts_f32(v51, vmul_f32(*v50.f32, *v50.f32))).f32[0]));
       *&v53 = v19;
-      [(float32x4_t *)a1 _estimateRatiosOfProjectedCorners:v76 cornerRadii:v75 toMaxCornerShifts:v71 maxRadius:v73 circleCenter:v72 forRotation:v53, v77, v52];
+      [(float32x4_t *)self _estimateRatiosOfProjectedCorners:v76 cornerRadii:v75 toMaxCornerShifts:v71 maxRadius:v73 circleCenter:v72 forRotation:v53, v77, v52];
       *(&v40 + 1) = *(&v81 + 1);
       *(&_Q3 + 1) = *(&v83 + 1);
       v57 = vmaxnmq_f32(vmaxnmq_f32(v54, v55), v56);
@@ -652,7 +652,7 @@ LABEL_6:
 
   [(RTSCWeightedInterpolationModel *)v38 interpolateTo:*&v41, *&v70];
   v64 = vadd_f32(v78, v63);
-  v65 = vaddq_f32(a1[10], vmlaq_lane_f32(vmulq_n_f32(a1[8], v64.f32[0]), a1[9], v64, 1));
+  v65 = vaddq_f32(self[10], vmlaq_lane_f32(vmulq_n_f32(self[8], v64.f32[0]), self[9], v64, 1));
   v66 = vmulq_f32(v65, v65);
   *&v67 = v66.f32[2] + vaddv_f32(*v66.f32);
   *v66.f32 = vrsqrte_f32(v67);

@@ -1,25 +1,25 @@
 @interface ConfigurationListResolutionResult
-+ (id)confirmationRequiredWithConfigurationListToConfirm:(id)a3;
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3;
-+ (id)disambiguationWithConfigurationListsToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedConfigurationList:(id)a3;
-+ (id)successWithResolvedObject:(id)a3;
-- (ConfigurationListResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4;
++ (id)confirmationRequiredWithConfigurationListToConfirm:(id)confirm;
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm;
++ (id)disambiguationWithConfigurationListsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedConfigurationList:(id)list;
++ (id)successWithResolvedObject:(id)object;
+- (ConfigurationListResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent;
 @end
 
 @implementation ConfigurationListResolutionResult
 
-+ (id)successWithResolvedConfigurationList:(id)a3
++ (id)successWithResolvedConfigurationList:(id)list
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_23030D998(v4);
+  listCopy = list;
+  v5 = sub_23030D998(listCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithConfigurationListsToDisambiguate:(id)a3
++ (id)disambiguationWithConfigurationListsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for ConfigurationList();
   v3 = sub_23030FCD8();
@@ -29,45 +29,45 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithConfigurationListToConfirm:(id)a3
++ (id)confirmationRequiredWithConfigurationListToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_23030DBFC(a3);
+  confirmCopy = confirm;
+  v5 = sub_23030DBFC(confirm);
 
   return v5;
 }
 
-+ (id)successWithResolvedObject:(id)a3
++ (id)successWithResolvedObject:(id)object
 {
   result = sub_230310AE8();
   __break(1u);
   return result;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   result = sub_230310AE8();
   __break(1u);
   return result;
 }
 
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm
 {
   result = sub_230310AE8();
   __break(1u);
   return result;
 }
 
-- (ConfigurationListResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4
+- (ConfigurationListResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent
 {
   sub_23030F658();
-  v6 = a4;
+  intentCopy = intent;
   v7 = sub_23030F638();
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for ConfigurationListResolutionResult();
-  v8 = [(ConfigurationListResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:v6];
+  v8 = [(ConfigurationListResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:intentCopy];
 
   if (v8)
   {

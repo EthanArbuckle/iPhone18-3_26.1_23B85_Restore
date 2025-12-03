@@ -2,18 +2,18 @@
 - ($3E8622391F623B53F6251319F3599675)currentGeometry;
 - (TabDocumentViewGeometryProviding)geometryProvider;
 - (double)scrollDistance;
-- (void)_performReaderTransitionWithCompletion:(id)a3;
-- (void)applyGeometry:(id *)a3 toWebView:(id)a4;
-- (void)applyGeometryToWebView:(id)a3;
+- (void)_performReaderTransitionWithCompletion:(id)completion;
+- (void)applyGeometry:(id *)geometry toWebView:(id)view;
+- (void)applyGeometryToWebView:(id)view;
 - (void)beginInteractiveGeometryChanges;
 - (void)endInteractiveGeometryChanges;
 - (void)ensureContentOffsetWithinContentInsets;
 - (void)layoutSubviews;
-- (void)setInteractionHintPresented:(BOOL)a3 animated:(BOOL)a4;
-- (void)setReaderWebView:(id)a3;
-- (void)setShowingReader:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setShowsInteractionHint:(BOOL)a3;
-- (void)setWebView:(id)a3;
+- (void)setInteractionHintPresented:(BOOL)presented animated:(BOOL)animated;
+- (void)setReaderWebView:(id)view;
+- (void)setShowingReader:(BOOL)reader animated:(BOOL)animated completion:(id)completion;
+- (void)setShowsInteractionHint:(BOOL)hint;
+- (void)setWebView:(id)view;
 @end
 
 @implementation TabDocumentView
@@ -21,29 +21,29 @@
 - (void)ensureContentOffsetWithinContentInsets
 {
   [(TabDocumentView *)self layoutIfNeeded];
-  v13 = [(WKWebView *)self->_webView scrollView];
-  if (([v13 isDragging] & 1) == 0)
+  scrollView = [(WKWebView *)self->_webView scrollView];
+  if (([scrollView isDragging] & 1) == 0)
   {
-    [v13 contentOffset];
+    [scrollView contentOffset];
     v4 = v3;
     v6 = v5;
-    [v13 adjustedContentInset];
+    [scrollView adjustedContentInset];
     if (v6 < -v7)
     {
-      [v13 setContentOffset:v4];
+      [scrollView setContentOffset:v4];
     }
   }
 
-  v14 = [(WKWebView *)self->_readerWebView scrollView];
-  if (([v14 isDragging] & 1) == 0)
+  scrollView2 = [(WKWebView *)self->_readerWebView scrollView];
+  if (([scrollView2 isDragging] & 1) == 0)
   {
-    [v14 contentOffset];
+    [scrollView2 contentOffset];
     v9 = v8;
     v11 = v10;
-    [v14 adjustedContentInset];
+    [scrollView2 adjustedContentInset];
     if (v11 < -v12)
     {
-      [v14 setContentOffset:v9];
+      [scrollView2 setContentOffset:v9];
     }
   }
 }
@@ -54,9 +54,9 @@
   v46.receiver = self;
   v46.super_class = TabDocumentView;
   [(TabDocumentView *)&v46 layoutSubviews];
-  v3 = [(WKWebView *)self->_webView _sf_effectiveViewToLayOut];
+  _sf_effectiveViewToLayOut = [(WKWebView *)self->_webView _sf_effectiveViewToLayOut];
   readerWebView = self->_readerWebView;
-  v47[0] = v3;
+  v47[0] = _sf_effectiveViewToLayOut;
   v47[1] = readerWebView;
   interactionHint = self->_interactionHint;
   v47[2] = self->_readerTransitionContainerView;
@@ -82,9 +82,9 @@
   webView = self->_webView;
   if (webView)
   {
-    v7 = [(WKWebView *)webView isHidden];
+    isHidden = [(WKWebView *)webView isHidden];
     v8 = self->_webView;
-    if (self->_showingReader != v7)
+    if (self->_showingReader != isHidden)
     {
       [(WKWebView *)self->_webView setHidden:?];
       v8 = self->_webView;
@@ -138,9 +138,9 @@
   v10 = self->_readerWebView;
   if (v10)
   {
-    v11 = [(WKWebView *)v10 isHidden];
+    isHidden2 = [(WKWebView *)v10 isHidden];
     showingReader = self->_showingReader;
-    if (showingReader == v11)
+    if (showingReader == isHidden2)
     {
       [(WKWebView *)self->_readerWebView setHidden:showingReader ^ 1u];
     }
@@ -208,15 +208,15 @@
   return result;
 }
 
-- (void)setWebView:(id)a3
+- (void)setWebView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   webView = self->_webView;
-  v7 = v5;
-  if (webView != v5)
+  v7 = viewCopy;
+  if (webView != viewCopy)
   {
     [(WKWebView *)webView removeFromSuperview];
-    objc_storeStrong(&self->_webView, a3);
+    objc_storeStrong(&self->_webView, view);
     if (v7)
     {
       [(TabDocumentView *)self addSubview:v7];
@@ -226,15 +226,15 @@
   }
 }
 
-- (void)setReaderWebView:(id)a3
+- (void)setReaderWebView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   readerWebView = self->_readerWebView;
-  v7 = v5;
-  if (readerWebView != v5)
+  v7 = viewCopy;
+  if (readerWebView != viewCopy)
   {
     [(WKWebView *)readerWebView removeFromSuperview];
-    objc_storeStrong(&self->_readerWebView, a3);
+    objc_storeStrong(&self->_readerWebView, view);
     if (v7)
     {
       [(TabDocumentView *)self addSubview:v7];
@@ -244,12 +244,12 @@
   }
 }
 
-- (void)setShowingReader:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setShowingReader:(BOOL)reader animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v11 = a5;
-  if (self->_showingReader != v6)
+  animatedCopy = animated;
+  readerCopy = reader;
+  completionCopy = completion;
+  if (self->_showingReader != readerCopy)
   {
     if (self->_interactiveGeometryUpdateCount)
     {
@@ -265,10 +265,10 @@
 
       [*(&self->super.super.super.isa + *v8) _endInteractiveObscuredInsetsChange];
       interactiveGeometryUpdateCount = self->_interactiveGeometryUpdateCount;
-      self->_showingReader = v6;
+      self->_showingReader = readerCopy;
       if (interactiveGeometryUpdateCount)
       {
-        if (v6)
+        if (readerCopy)
         {
           v10 = &OBJC_IVAR___TabDocumentView__readerWebView;
         }
@@ -281,7 +281,7 @@
         [*(&self->super.super.super.isa + *v10) _beginInteractiveObscuredInsetsChange];
       }
 
-      if (v5)
+      if (animatedCopy)
       {
         goto LABEL_12;
       }
@@ -289,28 +289,28 @@
 
     else
     {
-      self->_showingReader = v6;
-      if (v5)
+      self->_showingReader = readerCopy;
+      if (animatedCopy)
       {
 LABEL_12:
-        [(TabDocumentView *)self _performReaderTransitionWithCompletion:v11];
+        [(TabDocumentView *)self _performReaderTransitionWithCompletion:completionCopy];
         goto LABEL_16;
       }
     }
 
     [(TabDocumentView *)self setNeedsLayout];
-    if (v11)
+    if (completionCopy)
     {
-      v11[2]();
+      completionCopy[2]();
     }
   }
 
 LABEL_16:
 }
 
-- (void)_performReaderTransitionWithCompletion:(id)a3
+- (void)_performReaderTransitionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(UIView *)self->_readerTransitionContainerView removeFromSuperview];
   v5 = objc_alloc(MEMORY[0x277D75D18]);
   [(TabDocumentView *)self bounds];
@@ -351,8 +351,8 @@ LABEL_16:
   v14 = objc_alloc(MEMORY[0x277D75D18]);
   [v13 bounds];
   v15 = [v14 initWithFrame:?];
-  v16 = [MEMORY[0x277D75348] blackColor];
-  [v15 setBackgroundColor:v16];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v15 setBackgroundColor:blackColor];
 
   v17 = 0.0;
   if (!self->_showingReader)
@@ -378,7 +378,7 @@ LABEL_16:
   v43[3] = &unk_2781D61F8;
   v19 = v15;
   v44 = v19;
-  v45 = self;
+  selfCopy = self;
   [v18 animateWithDuration:0 delay:v43 options:0 animations:0.3 completion:0.0];
   v20 = MEMORY[0x277D75D18];
   LODWORD(v18) = self->_showingReader;
@@ -403,7 +403,7 @@ LABEL_16:
   v25 = v7;
   v42 = &v46;
   v39 = v25;
-  v40 = self;
+  selfCopy2 = self;
   v26 = v13;
   v41 = v26;
   v34[0] = MEMORY[0x277D85DD0];
@@ -412,8 +412,8 @@ LABEL_16:
   v34[3] = &unk_2781DB628;
   v27 = v33;
   v35 = v27;
-  v36 = self;
-  v28 = v4;
+  selfCopy3 = self;
+  v28 = completionCopy;
   v37 = v28;
   *&v29 = minimum;
   *&v30 = maximum;
@@ -497,46 +497,46 @@ uint64_t __58__TabDocumentView__performReaderTransitionWithCompletion___block_in
     v2 = &OBJC_IVAR___TabDocumentView__webView;
   }
 
-  v3 = [*(&self->super.super.super.isa + *v2) scrollView];
-  [v3 contentOffset];
+  scrollView = [*(&self->super.super.super.isa + *v2) scrollView];
+  [scrollView contentOffset];
   v5 = v4;
-  [v3 adjustedContentInset];
+  [scrollView adjustedContentInset];
   v7 = v5 + v6;
 
   return v7;
 }
 
-- (void)setShowsInteractionHint:(BOOL)a3
+- (void)setShowsInteractionHint:(BOOL)hint
 {
-  v3 = a3;
+  hintCopy = hint;
   v56[8] = *MEMORY[0x277D85DE8];
-  if ([(TabDocumentView *)self showsInteractionHint]!= a3)
+  if ([(TabDocumentView *)self showsInteractionHint]!= hint)
   {
     v5 = 0x277D75000uLL;
-    if (v3)
+    if (hintCopy)
     {
       v6 = objc_alloc_init(MEMORY[0x277D75D18]);
       interactionHint = self->_interactionHint;
       self->_interactionHint = v6;
 
       [(UIView *)self->_interactionHint _setContinuousCornerRadius:25.0];
-      v8 = [MEMORY[0x277D75348] blackColor];
-      v9 = [v8 CGColor];
-      v10 = [(UIView *)self->_interactionHint layer];
-      [v10 setShadowColor:v9];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      cGColor = [blackColor CGColor];
+      layer = [(UIView *)self->_interactionHint layer];
+      [layer setShadowColor:cGColor];
 
-      v11 = [(UIView *)self->_interactionHint layer];
-      [v11 setShadowOffset:{0.0, 5.0}];
+      layer2 = [(UIView *)self->_interactionHint layer];
+      [layer2 setShadowOffset:{0.0, 5.0}];
 
-      v12 = [(UIView *)self->_interactionHint layer];
+      layer3 = [(UIView *)self->_interactionHint layer];
       LODWORD(v13) = 1042536202;
-      [v12 setShadowOpacity:v13];
+      [layer3 setShadowOpacity:v13];
 
-      v14 = [(UIView *)self->_interactionHint layer];
-      [v14 setShadowPathIsBounds:1];
+      layer4 = [(UIView *)self->_interactionHint layer];
+      [layer4 setShadowPathIsBounds:1];
 
-      v15 = [(UIView *)self->_interactionHint layer];
-      [v15 setShadowRadius:20.0];
+      layer5 = [(UIView *)self->_interactionHint layer];
+      [layer5 setShadowRadius:20.0];
 
       [(UIView *)self->_interactionHint setLayoutMargins:15.0, 20.0, 15.0, 20.0];
       [(UIView *)self->_interactionHint setOverrideUserInterfaceStyle:2];
@@ -559,45 +559,45 @@ uint64_t __58__TabDocumentView__performReaderTransitionWithCompletion___block_in
       LODWORD(v20) = 1148846080;
       [v18 setContentHuggingPriority:1 forAxis:v20];
       [(UIView *)self->_interactionHint addSubview:v18];
-      v21 = [(UIView *)self->_interactionHint topAnchor];
-      v22 = [(TabDocumentView *)self topAnchor];
-      v23 = [v21 constraintEqualToAnchor:v22 constant:0.0];
+      topAnchor = [(UIView *)self->_interactionHint topAnchor];
+      topAnchor2 = [(TabDocumentView *)self topAnchor];
+      v23 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
       interactionHintTopAnchor = self->_interactionHintTopAnchor;
       self->_interactionHintTopAnchor = v23;
 
-      v54 = [(UIView *)self->_interactionHint layoutMarginsGuide];
+      layoutMarginsGuide = [(UIView *)self->_interactionHint layoutMarginsGuide];
       v25 = MEMORY[0x277CCAAD0];
-      v52 = [v18 leadingAnchor];
-      v47 = [v54 leadingAnchor];
-      v46 = [v52 constraintEqualToAnchor:?];
+      leadingAnchor = [v18 leadingAnchor];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v46 = [leadingAnchor constraintEqualToAnchor:?];
       v56[0] = v46;
-      v51 = [v18 trailingAnchor];
-      v45 = [v54 trailingAnchor];
-      v44 = [v51 constraintEqualToAnchor:?];
+      trailingAnchor = [v18 trailingAnchor];
+      trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+      v44 = [trailingAnchor constraintEqualToAnchor:?];
       v56[1] = v44;
-      v50 = [v18 topAnchor];
-      v43 = [v54 topAnchor];
-      v42 = [v50 constraintEqualToAnchor:?];
+      topAnchor3 = [v18 topAnchor];
+      topAnchor4 = [layoutMarginsGuide topAnchor];
+      v42 = [topAnchor3 constraintEqualToAnchor:?];
       v56[2] = v42;
-      v49 = [v18 bottomAnchor];
-      v41 = [v54 bottomAnchor];
-      v26 = [v49 constraintEqualToAnchor:?];
+      bottomAnchor = [v18 bottomAnchor];
+      bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+      v26 = [bottomAnchor constraintEqualToAnchor:?];
       v27 = self->_interactionHintTopAnchor;
       v40 = v26;
       v56[3] = v26;
       v56[4] = v27;
-      v48 = [(UIView *)self->_interactionHint centerXAnchor];
-      v39 = [(TabDocumentView *)self centerXAnchor];
-      v38 = [v48 constraintEqualToAnchor:?];
+      centerXAnchor = [(UIView *)self->_interactionHint centerXAnchor];
+      centerXAnchor2 = [(TabDocumentView *)self centerXAnchor];
+      v38 = [centerXAnchor constraintEqualToAnchor:?];
       v56[5] = v38;
-      v28 = [(UIView *)self->_interactionHint leadingAnchor];
-      v29 = [(TabDocumentView *)self leadingAnchor];
-      v30 = [v28 constraintGreaterThanOrEqualToAnchor:v29 constant:20.0];
+      leadingAnchor3 = [(UIView *)self->_interactionHint leadingAnchor];
+      leadingAnchor4 = [(TabDocumentView *)self leadingAnchor];
+      v30 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:20.0];
       v56[6] = v30;
-      v31 = [(UIView *)self->_interactionHint trailingAnchor];
-      v32 = [(TabDocumentView *)self trailingAnchor];
+      trailingAnchor3 = [(UIView *)self->_interactionHint trailingAnchor];
+      trailingAnchor4 = [(TabDocumentView *)self trailingAnchor];
       v33 = v25;
-      v34 = [v31 constraintLessThanOrEqualToAnchor:v32 constant:-20.0];
+      v34 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-20.0];
       v56[7] = v34;
       v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:8];
       [v33 activateConstraints:v35];
@@ -622,22 +622,22 @@ uint64_t __58__TabDocumentView__performReaderTransitionWithCompletion___block_in
   }
 }
 
-- (void)setInteractionHintPresented:(BOOL)a3 animated:(BOOL)a4
+- (void)setInteractionHintPresented:(BOOL)presented animated:(BOOL)animated
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__TabDocumentView_setInteractionHintPresented_animated___block_invoke;
   v4[3] = &unk_2781D6638;
   v4[4] = self;
-  v5 = a3;
-  [MEMORY[0x277D75D18] sf_animate:a4 withDuration:0 delay:v4 options:0 animations:0.2 completion:0.0];
+  presentedCopy = presented;
+  [MEMORY[0x277D75D18] sf_animate:animated withDuration:0 delay:v4 options:0 animations:0.2 completion:0.0];
 }
 
-- (void)applyGeometryToWebView:(id)a3
+- (void)applyGeometryToWebView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(TabDocumentView *)self currentGeometry];
-  [(TabDocumentView *)self applyGeometry:&v5 toWebView:v4];
+  [(TabDocumentView *)self applyGeometry:&v5 toWebView:viewCopy];
 }
 
 - (void)beginInteractiveGeometryChanges
@@ -682,11 +682,11 @@ uint64_t __58__TabDocumentView__performReaderTransitionWithCompletion___block_in
   }
 }
 
-- (void)applyGeometry:(id *)a3 toWebView:(id)a4
+- (void)applyGeometry:(id *)geometry toWebView:(id)view
 {
   v110 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  viewCopy = view;
+  if (viewCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_geometryProvider);
     if ([WeakRetained shouldFreezeWebViewUpdatesForTabDocumentView:self])
@@ -694,14 +694,14 @@ uint64_t __58__TabDocumentView__performReaderTransitionWithCompletion___block_in
       goto LABEL_27;
     }
 
-    x = a3->var0.origin.x;
-    y = a3->var0.origin.y;
-    width = a3->var0.size.width;
-    height = a3->var0.size.height;
-    v12 = [v6 _sf_effectiveViewToLayOut];
-    [v12 setFrame:{x, y, width, height}];
+    x = geometry->var0.origin.x;
+    y = geometry->var0.origin.y;
+    width = geometry->var0.size.width;
+    height = geometry->var0.size.height;
+    _sf_effectiveViewToLayOut = [viewCopy _sf_effectiveViewToLayOut];
+    [_sf_effectiveViewToLayOut setFrame:{x, y, width, height}];
 
-    if (a3->var8 || (objc_opt_respondsToSelector() & 1) != 0 && ([WeakRetained shouldModifyWebViewGeometryForTabDocumentView:self] & 1) == 0)
+    if (geometry->var8 || (objc_opt_respondsToSelector() & 1) != 0 && ([WeakRetained shouldModifyWebViewGeometryForTabDocumentView:self] & 1) == 0)
     {
       goto LABEL_27;
     }
@@ -709,33 +709,33 @@ uint64_t __58__TabDocumentView__performReaderTransitionWithCompletion___block_in
     v13 = WBS_LOG_CHANNEL_PREFIXLayout();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = objc_getAssociatedObject(v6, &[TabDocumentView applyGeometry:toWebView:]::lastAppliedGeometryKey);
-      v15 = *&a3->var7.top;
-      v94[12] = a3->var6;
+      v14 = objc_getAssociatedObject(viewCopy, &[TabDocumentView applyGeometry:toWebView:]::lastAppliedGeometryKey);
+      v15 = *&geometry->var7.top;
+      v94[12] = geometry->var6;
       v94[13] = v15;
-      v16 = *&a3->var8;
-      v94[14] = *&a3->var7.bottom;
+      v16 = *&geometry->var8;
+      v94[14] = *&geometry->var7.bottom;
       v94[15] = v16;
-      v17 = *&a3->var3.var1.bottom;
-      v94[8] = *&a3->var3.var1.top;
+      v17 = *&geometry->var3.var1.bottom;
+      v94[8] = *&geometry->var3.var1.top;
       v94[9] = v17;
-      var5 = a3->var5;
-      v94[10] = a3->var4;
+      var5 = geometry->var5;
+      v94[10] = geometry->var4;
       v94[11] = var5;
-      v19 = *&a3->var2.bottom;
-      v94[4] = *&a3->var2.top;
+      v19 = *&geometry->var2.bottom;
+      v94[4] = *&geometry->var2.top;
       v94[5] = v19;
-      v20 = *&a3->var3.var0.bottom;
-      v94[6] = *&a3->var3.var0.top;
+      v20 = *&geometry->var3.var0.bottom;
+      v94[6] = *&geometry->var3.var0.top;
       v94[7] = v20;
-      size = a3->var0.size;
-      v94[0] = a3->var0.origin;
+      size = geometry->var0.size;
+      v94[0] = geometry->var0.origin;
       v94[1] = size;
-      v22 = *&a3->var1.bottom;
-      v94[2] = *&a3->var1.top;
+      v22 = *&geometry->var1.bottom;
+      v94[2] = *&geometry->var1.top;
       v94[3] = v22;
       v23 = [MEMORY[0x277CCAE60] valueWithBytes:v94 objCType:"{?={CGRect={CGPoint=dd}{CGSize=dd}}{UIEdgeInsets=dddd}{UIEdgeInsets=dddd}{SFScrollIndicatorInsets={UIEdgeInsets=dddd}{UIEdgeInsets=dddd}}{CGSize=dd}{CGSize=dd}{CGSize=dd}{UIEdgeInsets=dddd}Bd}"];
-      objc_setAssociatedObject(v6, &[TabDocumentView applyGeometry:toWebView:]::lastAppliedGeometryKey, v23, 0x301);
+      objc_setAssociatedObject(viewCopy, &[TabDocumentView applyGeometry:toWebView:]::lastAppliedGeometryKey, v23, 0x301);
 
       if (v14)
       {
@@ -757,29 +757,29 @@ uint64_t __58__TabDocumentView__performReaderTransitionWithCompletion___block_in
         *&buf[16] = v79;
         v96 = v80;
         v97 = v81;
-        v24 = *&a3->var7.top;
-        v76[12] = a3->var6;
+        v24 = *&geometry->var7.top;
+        v76[12] = geometry->var6;
         v76[13] = v24;
-        v25 = *&a3->var8;
-        v76[14] = *&a3->var7.bottom;
+        v25 = *&geometry->var8;
+        v76[14] = *&geometry->var7.bottom;
         v76[15] = v25;
-        v26 = *&a3->var3.var1.bottom;
-        v76[8] = *&a3->var3.var1.top;
+        v26 = *&geometry->var3.var1.bottom;
+        v76[8] = *&geometry->var3.var1.top;
         v76[9] = v26;
-        v27 = a3->var5;
-        v76[10] = a3->var4;
+        v27 = geometry->var5;
+        v76[10] = geometry->var4;
         v76[11] = v27;
-        v28 = *&a3->var2.bottom;
-        v76[4] = *&a3->var2.top;
+        v28 = *&geometry->var2.bottom;
+        v76[4] = *&geometry->var2.top;
         v76[5] = v28;
-        v29 = *&a3->var3.var0.bottom;
-        v76[6] = *&a3->var3.var0.top;
+        v29 = *&geometry->var3.var0.bottom;
+        v76[6] = *&geometry->var3.var0.top;
         v76[7] = v29;
-        v30 = a3->var0.size;
-        v76[0] = a3->var0.origin;
+        v30 = geometry->var0.size;
+        v76[0] = geometry->var0.origin;
         v76[1] = v30;
-        v31 = *&a3->var1.bottom;
-        v76[2] = *&a3->var1.top;
+        v31 = *&geometry->var1.bottom;
+        v76[2] = *&geometry->var1.top;
         v76[3] = v31;
         v32 = WebViewGeometryDescriptionOfDifferenceFromGeometry(buf, v76, &v77);
         if (!v77)
@@ -791,7 +791,7 @@ uint64_t __58__TabDocumentView__performReaderTransitionWithCompletion___block_in
             *buf = 138543874;
             *&buf[4] = v75;
             *&buf[12] = 2048;
-            *&buf[14] = v6;
+            *&buf[14] = viewCopy;
             *&buf[22] = 2114;
             *&buf[24] = v32;
             _os_log_debug_impl(&dword_215819000, v33, OS_LOG_TYPE_DEBUG, "Updating <%{public}@: %p> geometry with %{public}@", buf, 0x20u);
@@ -805,35 +805,35 @@ uint64_t __58__TabDocumentView__performReaderTransitionWithCompletion___block_in
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
         {
           v65 = objc_opt_class();
-          v66 = *&a3->var7.top;
-          var6 = a3->var6;
+          v66 = *&geometry->var7.top;
+          var6 = geometry->var6;
           v91 = v66;
-          v67 = *&a3->var8;
-          v92 = *&a3->var7.bottom;
+          v67 = *&geometry->var8;
+          v92 = *&geometry->var7.bottom;
           v93 = v67;
-          v68 = *&a3->var3.var1.bottom;
-          v86 = *&a3->var3.var1.top;
+          v68 = *&geometry->var3.var1.bottom;
+          v86 = *&geometry->var3.var1.top;
           v87 = v68;
-          v69 = a3->var5;
-          var4 = a3->var4;
+          v69 = geometry->var5;
+          var4 = geometry->var4;
           v89 = v69;
-          v70 = *&a3->var2.bottom;
-          v82 = *&a3->var2.top;
+          v70 = *&geometry->var2.bottom;
+          v82 = *&geometry->var2.top;
           v83 = v70;
-          v71 = *&a3->var3.var0.bottom;
-          v84 = *&a3->var3.var0.top;
+          v71 = *&geometry->var3.var0.bottom;
+          v84 = *&geometry->var3.var0.top;
           v85 = v71;
-          v72 = a3->var0.size;
-          origin = a3->var0.origin;
+          v72 = geometry->var0.size;
+          origin = geometry->var0.origin;
           v79 = v72;
-          v73 = *&a3->var1.bottom;
-          v80 = *&a3->var1.top;
+          v73 = *&geometry->var1.bottom;
+          v80 = *&geometry->var1.top;
           v81 = v73;
           v74 = WebViewGeometryDescription(&origin);
           *buf = 138543874;
           *&buf[4] = v65;
           *&buf[12] = 2048;
-          *&buf[14] = v6;
+          *&buf[14] = viewCopy;
           *&buf[22] = 2114;
           *&buf[24] = v74;
           _os_log_debug_impl(&dword_215819000, v34, OS_LOG_TYPE_DEBUG, "Setting initial geometry of <%{public}@: %p> with %{public}@", buf, 0x20u);
@@ -841,80 +841,80 @@ uint64_t __58__TabDocumentView__performReaderTransitionWithCompletion___block_in
       }
     }
 
-    v35 = *&a3->var7.top;
-    var6 = a3->var6;
+    v35 = *&geometry->var7.top;
+    var6 = geometry->var6;
     v91 = v35;
-    v36 = *&a3->var8;
-    v92 = *&a3->var7.bottom;
+    v36 = *&geometry->var8;
+    v92 = *&geometry->var7.bottom;
     v93 = v36;
-    v37 = *&a3->var3.var1.bottom;
-    v86 = *&a3->var3.var1.top;
+    v37 = *&geometry->var3.var1.bottom;
+    v86 = *&geometry->var3.var1.top;
     v87 = v37;
-    v38 = a3->var5;
-    var4 = a3->var4;
+    v38 = geometry->var5;
+    var4 = geometry->var4;
     v89 = v38;
-    v39 = *&a3->var2.bottom;
-    v82 = *&a3->var2.top;
+    v39 = *&geometry->var2.bottom;
+    v82 = *&geometry->var2.top;
     v83 = v39;
-    v40 = *&a3->var3.var0.bottom;
-    v84 = *&a3->var3.var0.top;
+    v40 = *&geometry->var3.var0.bottom;
+    v84 = *&geometry->var3.var0.top;
     v85 = v40;
-    v41 = a3->var0.size;
-    origin = a3->var0.origin;
+    v41 = geometry->var0.size;
+    origin = geometry->var0.origin;
     v79 = v41;
-    v42 = *&a3->var1.bottom;
-    v80 = *&a3->var1.top;
+    v42 = *&geometry->var1.bottom;
+    v80 = *&geometry->var1.top;
     v81 = v42;
-    [v6 sf_setDisplayedWebViewGeometry:&origin];
-    [v6 _setObscuredInsets:{a3->var2.top, a3->var2.left, a3->var2.bottom, a3->var2.right}];
-    [v6 _setUnobscuredSafeAreaInsets:{a3->var1.top, a3->var1.left, a3->var1.bottom, a3->var1.right}];
-    [v6 _setMinimumEffectiveDeviceWidth:a3->var9];
+    [viewCopy sf_setDisplayedWebViewGeometry:&origin];
+    [viewCopy _setObscuredInsets:{geometry->var2.top, geometry->var2.left, geometry->var2.bottom, geometry->var2.right}];
+    [viewCopy _setUnobscuredSafeAreaInsets:{geometry->var1.top, geometry->var1.left, geometry->var1.bottom, geometry->var1.right}];
+    [viewCopy _setMinimumEffectiveDeviceWidth:geometry->var9];
     v43 = objc_opt_respondsToSelector();
-    v44 = a3->var4.width;
-    v45 = a3->var4.height;
+    v44 = geometry->var4.width;
+    v45 = geometry->var4.height;
     if (v43)
     {
-      [v6 _overrideLayoutParametersWithMinimumLayoutSize:v44 minimumUnobscuredSizeOverride:v45 maximumUnobscuredSizeOverride:{a3->var5.width, a3->var5.height, a3->var6.width, a3->var6.height}];
+      [viewCopy _overrideLayoutParametersWithMinimumLayoutSize:v44 minimumUnobscuredSizeOverride:v45 maximumUnobscuredSizeOverride:{geometry->var5.width, geometry->var5.height, geometry->var6.width, geometry->var6.height}];
     }
 
     else
     {
-      [v6 _overrideLayoutParametersWithMinimumLayoutSize:v44 maximumUnobscuredSizeOverride:{v45, a3->var6.width, a3->var6.height}];
+      [viewCopy _overrideLayoutParametersWithMinimumLayoutSize:v44 maximumUnobscuredSizeOverride:{v45, geometry->var6.width, geometry->var6.height}];
     }
 
-    v46 = [v6 scrollView];
-    v47 = *&a3->var3.var0.bottom;
-    origin = *&a3->var3.var0.top;
+    scrollView = [viewCopy scrollView];
+    v47 = *&geometry->var3.var0.bottom;
+    origin = *&geometry->var3.var0.top;
     v79 = v47;
-    v48 = *&a3->var3.var1.bottom;
-    v80 = *&a3->var3.var1.top;
+    v48 = *&geometry->var3.var1.bottom;
+    v80 = *&geometry->var3.var1.top;
     v81 = v48;
-    [v46 _sf_setScrollIndicatorInsets:&origin];
-    [v46 contentInset];
+    [scrollView _sf_setScrollIndicatorInsets:&origin];
+    [scrollView contentInset];
     v50 = v49;
     v52 = v51;
     v54 = v53;
     v56 = v55;
-    [v46 _sf_setContentInsetAdjustments:{a3->var7.top, a3->var7.left, a3->var7.bottom, a3->var7.right}];
+    [scrollView _sf_setContentInsetAdjustments:{geometry->var7.top, geometry->var7.left, geometry->var7.bottom, geometry->var7.right}];
     if (objc_opt_respondsToSelector())
     {
       v57 = [WeakRetained tabDocumentView:self contentOffsetAdjustmentEdgeWithPreviousContentInset:{v50, v52, v54, v56}];
-      [v46 contentOffset];
+      [scrollView contentOffset];
       v59 = v58;
       v61 = v60;
       if (v57)
       {
-        [v46 contentInset];
+        [scrollView contentInset];
         v63 = v61 - (v64 - v50);
         goto LABEL_25;
       }
 
       if ((v57 & 4) != 0)
       {
-        [v46 contentInset];
+        [scrollView contentInset];
         v63 = v61 + v62 - v54;
 LABEL_25:
-        [v46 _setContentOffsetPinned:{v59, v63}];
+        [scrollView _setContentOffsetPinned:{v59, v63}];
       }
     }
 

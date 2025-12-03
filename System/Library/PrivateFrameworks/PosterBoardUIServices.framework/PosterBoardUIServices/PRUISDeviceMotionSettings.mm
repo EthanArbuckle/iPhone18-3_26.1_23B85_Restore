@@ -1,42 +1,42 @@
 @interface PRUISDeviceMotionSettings
-- (void)setDeviceMotionMode:(unint64_t)a3;
-- (void)setLowPowerModeEnabled:(BOOL)a3;
-- (void)setReducedMotionEnabled:(BOOL)a3;
-- (void)setSignificantMotion:(BOOL)a3;
+- (void)setDeviceMotionMode:(unint64_t)mode;
+- (void)setLowPowerModeEnabled:(BOOL)enabled;
+- (void)setReducedMotionEnabled:(BOOL)enabled;
+- (void)setSignificantMotion:(BOOL)motion;
 @end
 
 @implementation PRUISDeviceMotionSettings
 
-- (void)setReducedMotionEnabled:(BOOL)a3
+- (void)setReducedMotionEnabled:(BOOL)enabled
 {
-  if (self->_reducedMotionEnabled != a3)
+  if (self->_reducedMotionEnabled != enabled)
   {
-    self->_reducedMotionEnabled = a3;
+    self->_reducedMotionEnabled = enabled;
   }
 }
 
-- (void)setLowPowerModeEnabled:(BOOL)a3
+- (void)setLowPowerModeEnabled:(BOOL)enabled
 {
-  if (self->_lowPowerModeEnabled != a3)
+  if (self->_lowPowerModeEnabled != enabled)
   {
-    self->_lowPowerModeEnabled = a3;
+    self->_lowPowerModeEnabled = enabled;
   }
 }
 
-- (void)setSignificantMotion:(BOOL)a3
+- (void)setSignificantMotion:(BOOL)motion
 {
-  if (self->_significantMotion != a3)
+  if (self->_significantMotion != motion)
   {
-    self->_significantMotion = a3;
+    self->_significantMotion = motion;
   }
 }
 
-- (void)setDeviceMotionMode:(unint64_t)a3
+- (void)setDeviceMotionMode:(unint64_t)mode
 {
-  if (self->_deviceMotionMode != a3)
+  if (self->_deviceMotionMode != mode)
   {
-    self->_deviceMotionMode = a3;
-    self->_shouldIgnoreReducedMotionChange = a3 == 2;
+    self->_deviceMotionMode = mode;
+    self->_shouldIgnoreReducedMotionChange = mode == 2;
   }
 }
 

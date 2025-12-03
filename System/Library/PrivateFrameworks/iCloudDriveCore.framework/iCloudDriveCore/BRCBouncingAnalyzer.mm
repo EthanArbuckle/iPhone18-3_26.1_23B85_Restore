@@ -1,37 +1,37 @@
 @interface BRCBouncingAnalyzer
-- (BOOL)_isGenericUntitledFileName:(id)a3;
-- (BOOL)analyzeServerBouncingOfItem:(id)a3 withServerItem:(id)a4;
-- (BOOL)analyzeServerBouncingOriginalRecord:(id)a3 savedRecord:(id)a4;
-- (BRCBouncingAnalyzer)initWithSessionContext:(id)a3;
-- (int)analyzeBouncingOfItem:(id)a3 withServerItem:(id)a4 bounceReason:(int)a5;
-- (void)analyzeBouncingOfItem:(id)a3 withTemplateItem:(id)a4;
+- (BOOL)_isGenericUntitledFileName:(id)name;
+- (BOOL)analyzeServerBouncingOfItem:(id)item withServerItem:(id)serverItem;
+- (BOOL)analyzeServerBouncingOriginalRecord:(id)record savedRecord:(id)savedRecord;
+- (BRCBouncingAnalyzer)initWithSessionContext:(id)context;
+- (int)analyzeBouncingOfItem:(id)item withServerItem:(id)serverItem bounceReason:(int)reason;
+- (void)analyzeBouncingOfItem:(id)item withTemplateItem:(id)templateItem;
 - (void)close;
-- (void)reportInitialScanItemTypeMismatch:(id)a3;
+- (void)reportInitialScanItemTypeMismatch:(id)mismatch;
 - (void)startBouncingIncidentBatch;
 - (void)stopBouncingIncidentBatch;
 @end
 
 @implementation BRCBouncingAnalyzer
 
-- (BRCBouncingAnalyzer)initWithSessionContext:(id)a3
+- (BRCBouncingAnalyzer)initWithSessionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = BRCBouncingAnalyzer;
   v5 = [(BRCBouncingAnalyzer *)&v15 init];
   if (v5)
   {
-    v6 = [v4 tapToRadarManager];
+    tapToRadarManager = [contextCopy tapToRadarManager];
     tapToRadarManager = v5->_tapToRadarManager;
-    v5->_tapToRadarManager = v6;
+    v5->_tapToRadarManager = tapToRadarManager;
 
-    v8 = [v4 analyticsReporter];
+    analyticsReporter = [contextCopy analyticsReporter];
     analyticsReporter = v5->_analyticsReporter;
-    v5->_analyticsReporter = v8;
+    v5->_analyticsReporter = analyticsReporter;
 
-    v10 = [v4 clientReadWriteDatabaseFacade];
+    clientReadWriteDatabaseFacade = [contextCopy clientReadWriteDatabaseFacade];
     dbFacade = v5->_dbFacade;
-    v5->_dbFacade = v10;
+    v5->_dbFacade = clientReadWriteDatabaseFacade;
 
     v12 = objc_opt_new();
     bounceIncidentsInBatch = v5->_bounceIncidentsInBatch;
@@ -52,30 +52,30 @@
   self->_analyticsReporter = 0;
 }
 
-- (void)reportInitialScanItemTypeMismatch:(id)a3
+- (void)reportInitialScanItemTypeMismatch:(id)mismatch
 {
-  v4 = a3;
+  mismatchCopy = mismatch;
   v5 = +[BRCAutoBugCaptureReporter sharedABCReporter];
   [v5 captureLogsForOperationType:@"SyncHealth" ofSubtype:@"InitialScanBounce" forError:0];
 
   [(BRCAnalyticsReporter *)self->_analyticsReporter aggregateReportForAppTelemetryIdentifier:300 error:0];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [v4 itemID];
+  itemID = [mismatchCopy itemID];
 
-  v10 = [v6 stringWithFormat:@"Item %@ type was not compatible with local initial scan item", v7];
+  v10 = [v6 stringWithFormat:@"Item %@ type was not compatible with local initial scan item", itemID];
 
   tapToRadarManager = self->_tapToRadarManager;
-  v9 = [MEMORY[0x277CCA9B8] brc_errorInitialScanItemTypeMismatch];
-  [(BRCTapToRadarManager *)tapToRadarManager requestTapToRadarWithTitle:@"[Bouncing] Initial scan item type mismatch" description:v10 keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:1 displayReason:@"type mismatch between server and client item during reimport" triggerRootCause:v9 additionalDevices:0];
+  brc_errorInitialScanItemTypeMismatch = [MEMORY[0x277CCA9B8] brc_errorInitialScanItemTypeMismatch];
+  [(BRCTapToRadarManager *)tapToRadarManager requestTapToRadarWithTitle:@"[Bouncing] Initial scan item type mismatch" description:v10 keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:1 displayReason:@"type mismatch between server and client item during reimport" triggerRootCause:brc_errorInitialScanItemTypeMismatch additionalDevices:0];
 }
 
-- (BOOL)analyzeServerBouncingOriginalRecord:(id)a3 savedRecord:(id)a4
+- (BOOL)analyzeServerBouncingOriginalRecord:(id)record savedRecord:(id)savedRecord
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recordType];
-  v9 = [v8 isEqualToString:@"structure"];
+  recordCopy = record;
+  savedRecordCopy = savedRecord;
+  recordType = [recordCopy recordType];
+  v9 = [recordType isEqualToString:@"structure"];
 
   if (v9)
   {
@@ -85,7 +85,7 @@
     v33 = 0;
     v30 = 0;
     v31 = 0;
-    if (![v6 deserializeFilename:0 basename:&location bounceno:&v34 extension:&v33 userInfo:0 error:0] || !objc_msgSend(v7, "deserializeFilename:basename:bounceno:extension:userInfo:error:", 0, &v32, &v31, &v30, 0, 0))
+    if (![recordCopy deserializeFilename:0 basename:&location bounceno:&v34 extension:&v33 userInfo:0 error:0] || !objc_msgSend(savedRecordCopy, "deserializeFilename:basename:bounceno:extension:userInfo:error:", 0, &v32, &v31, &v30, 0, 0))
     {
       goto LABEL_21;
     }
@@ -94,9 +94,9 @@
     v11 = brc_default_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v29 = [v6 recordID];
+      recordID = [recordCopy recordID];
       *buf = 138414082;
-      v37 = v29;
+      v37 = recordID;
       v38 = 2112;
       v39 = location;
       v40 = 2112;
@@ -128,25 +128,25 @@
       v20 = brc_default_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        [(BRCBouncingAnalyzer *)v6 analyzeServerBouncingOriginalRecord:v19 savedRecord:v20];
+        [(BRCBouncingAnalyzer *)recordCopy analyzeServerBouncingOriginalRecord:v19 savedRecord:v20];
       }
 
       v21 = +[BRCAutoBugCaptureReporter sharedABCReporter];
       [v21 captureLogsForOperationType:@"SyncHealth" ofSubtype:@"ServerBouncedItem" forError:0];
 
-      v22 = [v6 pluginFields];
-      v23 = [v22 objectForKeyedSubscript:@"br_initialItem"];
+      pluginFields = [recordCopy pluginFields];
+      v23 = [pluginFields objectForKeyedSubscript:@"br_initialItem"];
 
       if (v23)
       {
         v24 = MEMORY[0x277CCACA8];
-        v25 = [v6 recordID];
-        v26 = [v24 stringWithFormat:@"Item %@ got bounced by server after being set that it is from initial scan", v25];
+        recordID2 = [recordCopy recordID];
+        v26 = [v24 stringWithFormat:@"Item %@ got bounced by server after being set that it is from initial scan", recordID2];
 
         tapToRadarManager = self->_tapToRadarManager;
-        v28 = [MEMORY[0x277CCA9B8] brc_errorRecordBouncedByServer];
+        brc_errorRecordBouncedByServer = [MEMORY[0x277CCA9B8] brc_errorRecordBouncedByServer];
         v16 = 1;
-        [(BRCTapToRadarManager *)tapToRadarManager requestTapToRadarWithTitle:@"[Bouncing] Initial scan item got bounced by server" description:v26 keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:1 displayReason:@"reimported item got bounced by server" triggerRootCause:v28 additionalDevices:0];
+        [(BRCTapToRadarManager *)tapToRadarManager requestTapToRadarWithTitle:@"[Bouncing] Initial scan item got bounced by server" description:v26 keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:1 displayReason:@"reimported item got bounced by server" triggerRootCause:brc_errorRecordBouncedByServer additionalDevices:0];
       }
 
       else
@@ -171,18 +171,18 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)analyzeServerBouncingOfItem:(id)a3 withServerItem:(id)a4
+- (BOOL)analyzeServerBouncingOfItem:(id)item withServerItem:(id)serverItem
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && [v7 isLive])
+  itemCopy = item;
+  serverItemCopy = serverItem;
+  v8 = serverItemCopy;
+  if (itemCopy && [serverItemCopy isLive])
   {
     v30 = 0;
-    v9 = [v6 st];
-    v10 = [v9 logicalNameWithoutLocalBounce];
+    v9 = [itemCopy st];
+    logicalNameWithoutLocalBounce = [v9 logicalNameWithoutLocalBounce];
     v29 = 0;
-    v11 = [v10 br_stringByDeletingPathBounceNo:&v30 andPathExtension:&v29];
+    v11 = [logicalNameWithoutLocalBounce br_stringByDeletingPathBounceNo:&v30 andPathExtension:&v29];
     v12 = v29;
 
     if (v11)
@@ -211,9 +211,9 @@ LABEL_21:
 
     v28 = 0;
     v17 = [v8 st];
-    v18 = [v17 logicalName];
+    logicalName = [v17 logicalName];
     v27 = 0;
-    v19 = [v18 br_stringByDeletingPathBounceNo:&v28 andPathExtension:&v27];
+    v19 = [logicalName br_stringByDeletingPathBounceNo:&v28 andPathExtension:&v27];
     v20 = v27;
 
     if (v19)
@@ -260,114 +260,114 @@ LABEL_21:
   return v25;
 }
 
-- (BOOL)_isGenericUntitledFileName:(id)a3
+- (BOOL)_isGenericUntitledFileName:(id)name
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 bundleForClass:objc_opt_class()];
   v6 = _BRLocalizedStringWithFormat();
-  v7 = [v6 localizedLowercaseString];
+  localizedLowercaseString = [v6 localizedLowercaseString];
 
-  v8 = [v4 st];
+  v8 = [nameCopy st];
 
-  v9 = [v8 logicalName];
-  v10 = [v9 localizedLowercaseString];
+  logicalName = [v8 logicalName];
+  localizedLowercaseString2 = [logicalName localizedLowercaseString];
 
-  LOBYTE(v8) = [v10 hasPrefix:v7];
+  LOBYTE(v8) = [localizedLowercaseString2 hasPrefix:localizedLowercaseString];
   return v8;
 }
 
-- (int)analyzeBouncingOfItem:(id)a3 withServerItem:(id)a4 bounceReason:(int)a5
+- (int)analyzeBouncingOfItem:(id)item withServerItem:(id)serverItem bounceReason:(int)reason
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5 == 501)
+  itemCopy = item;
+  serverItemCopy = serverItem;
+  if (reason == 501)
   {
-    if ([v8 isDead])
+    if ([itemCopy isDead])
     {
-      a5 = 513;
+      reason = 513;
     }
 
-    else if ([v8 isFromInitialScan])
+    else if ([itemCopy isFromInitialScan])
     {
-      a5 = 517;
+      reason = 517;
     }
 
-    else if ([v8 isKnownByServer])
+    else if ([itemCopy isKnownByServer])
     {
-      if (([v8 localDiffs] & 0x20) != 0)
+      if (([itemCopy localDiffs] & 0x20) != 0)
       {
-        a5 = 515;
+        reason = 515;
       }
 
-      else if (([v8 localDiffs] & 0x40) != 0)
+      else if (([itemCopy localDiffs] & 0x40) != 0)
       {
-        a5 = 516;
+        reason = 516;
       }
 
-      else if ([(BRCBouncingAnalyzer *)self _isGenericUntitledFileName:v9])
+      else if ([(BRCBouncingAnalyzer *)self _isGenericUntitledFileName:serverItemCopy])
       {
-        if ([v8 isChildSharedItem] && (objc_msgSend(v9, "isChildSharedItem") & 1) != 0)
+        if ([itemCopy isChildSharedItem] && (objc_msgSend(serverItemCopy, "isChildSharedItem") & 1) != 0)
         {
-          a5 = 518;
+          reason = 518;
         }
 
         else
         {
-          a5 = 519;
+          reason = 519;
         }
       }
 
       else
       {
-        a5 = 501;
+        reason = 501;
       }
     }
 
     else
     {
-      if ([v8 isDirectory] && objc_msgSend(v9, "isDirectory"))
+      if ([itemCopy isDirectory] && objc_msgSend(serverItemCopy, "isDirectory"))
       {
         v10 = +[BRCAutoBugCaptureReporter sharedABCReporter];
         [v10 captureLogsForOperationType:@"SyncHealth" ofSubtype:@"CollidingDirectoryApplyNotKnownByServerBounce" forError:0];
 
         v11 = MEMORY[0x277CCACA8];
-        v12 = [v8 itemID];
-        v13 = [v11 stringWithFormat:@"Directory %@ got bounced due to a colliding new directory applied on server", v12];
+        itemID = [itemCopy itemID];
+        v13 = [v11 stringWithFormat:@"Directory %@ got bounced due to a colliding new directory applied on server", itemID];
 
         tapToRadarManager = self->_tapToRadarManager;
-        v15 = [MEMORY[0x277CCA9B8] brc_errorBouncedItemNotKnownByServer];
-        [(BRCTapToRadarManager *)tapToRadarManager requestTapToRadarWithTitle:@"[Bouncing] Directory name collision when applying from server" description:v13 keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:1 displayReason:@"directory bounced due to a new directory applied from server" triggerRootCause:v15 additionalDevices:0];
+        brc_errorBouncedItemNotKnownByServer = [MEMORY[0x277CCA9B8] brc_errorBouncedItemNotKnownByServer];
+        [(BRCTapToRadarManager *)tapToRadarManager requestTapToRadarWithTitle:@"[Bouncing] Directory name collision when applying from server" description:v13 keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:1 displayReason:@"directory bounced due to a new directory applied from server" triggerRootCause:brc_errorBouncedItemNotKnownByServer additionalDevices:0];
       }
 
-      a5 = 514;
+      reason = 514;
     }
   }
 
-  return a5;
+  return reason;
 }
 
-- (void)analyzeBouncingOfItem:(id)a3 withTemplateItem:(id)a4
+- (void)analyzeBouncingOfItem:(id)item withTemplateItem:(id)templateItem
 {
-  v15 = a3;
-  v6 = a4;
-  if ([v15 isDirectory])
+  itemCopy = item;
+  templateItemCopy = templateItem;
+  if ([itemCopy isDirectory])
   {
-    v7 = [v6 contentType];
-    v8 = [v7 br_isDirectoryType];
+    contentType = [templateItemCopy contentType];
+    br_isDirectoryType = [contentType br_isDirectoryType];
 
-    if (v8)
+    if (br_isDirectoryType)
     {
       v9 = +[BRCAutoBugCaptureReporter sharedABCReporter];
       [v9 captureLogsForOperationType:@"SyncHealth" ofSubtype:@"CollidingDirectoryBounceInFPCreate" forError:0];
 
       v10 = MEMORY[0x277CCACA8];
-      v11 = [v15 itemID];
-      v12 = [v10 stringWithFormat:@"Directory %@ got bounced due to a colliding new directory created on disk", v11];
+      itemID = [itemCopy itemID];
+      v12 = [v10 stringWithFormat:@"Directory %@ got bounced due to a colliding new directory created on disk", itemID];
 
       tapToRadarManager = self->_tapToRadarManager;
-      v14 = [MEMORY[0x277CCA9B8] brc_errorInitialScanItemBouncedByServer];
-      [(BRCTapToRadarManager *)tapToRadarManager requestTapToRadarWithTitle:@"[Bouncing] Directory name collision when creating new item" description:v12 keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:1 displayReason:@"directory bounced due to a new directory created on disk" triggerRootCause:v14 additionalDevices:0];
+      brc_errorInitialScanItemBouncedByServer = [MEMORY[0x277CCA9B8] brc_errorInitialScanItemBouncedByServer];
+      [(BRCTapToRadarManager *)tapToRadarManager requestTapToRadarWithTitle:@"[Bouncing] Directory name collision when creating new item" description:v12 keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:1 displayReason:@"directory bounced due to a new directory created on disk" triggerRootCause:brc_errorInitialScanItemBouncedByServer additionalDevices:0];
     }
   }
 }
@@ -410,8 +410,8 @@ LABEL_21:
 
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"some items got bounced on latest update:\n%@", v4];
     tapToRadarManager = self->_tapToRadarManager;
-    v12 = [v7 array];
-    [(BRCTapToRadarManager *)tapToRadarManager requestTapToRadarWithTitle:@"[Bouncing] some items got bounced on latest update" description:v10 keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:1 displayReason:@"some items got bounced on latest update" triggerRootCause:v8 additionalDevices:v12];
+    array = [v7 array];
+    [(BRCTapToRadarManager *)tapToRadarManager requestTapToRadarWithTitle:@"[Bouncing] some items got bounced on latest update" description:v10 keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:1 displayReason:@"some items got bounced on latest update" triggerRootCause:v8 additionalDevices:array];
   }
 }
 

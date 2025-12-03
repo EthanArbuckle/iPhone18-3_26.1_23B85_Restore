@@ -1,54 +1,54 @@
 @interface HandController
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
 - (HandController)init;
-- (double)valueForSpecifier:(id)a3;
-- (id)_doubleTapAction:(id)a3;
-- (id)_longPressAction:(id)a3;
-- (id)_orbAction:(id)a3;
-- (id)_singleTapAction:(id)a3;
-- (id)alwaysShowMenuEnabled:(id)a3;
-- (id)alwaysShowSoftwareKeyboard:(id)a3;
-- (id)dwellControlAutorevertAction:(id)a3;
-- (id)dwellControlEnabled:(id)a3;
-- (id)gameControllerEnabled:(id)a3;
-- (id)getCurrentActionForHomeActionListController:(id)a3;
-- (id)handEnabled:(id)a3;
-- (id)idleOpacitySummary:(id)a3;
-- (id)mouseBehavesLikeFinger:(id)a3;
-- (id)mouseClickSoundsEnabled:(id)a3;
-- (id)payWithAST:(id)a3;
-- (id)selectSpecifier:(id)a3;
+- (double)valueForSpecifier:(id)specifier;
+- (id)_doubleTapAction:(id)action;
+- (id)_longPressAction:(id)action;
+- (id)_orbAction:(id)action;
+- (id)_singleTapAction:(id)action;
+- (id)alwaysShowMenuEnabled:(id)enabled;
+- (id)alwaysShowSoftwareKeyboard:(id)keyboard;
+- (id)dwellControlAutorevertAction:(id)action;
+- (id)dwellControlEnabled:(id)enabled;
+- (id)gameControllerEnabled:(id)enabled;
+- (id)getCurrentActionForHomeActionListController:(id)controller;
+- (id)handEnabled:(id)enabled;
+- (id)idleOpacitySummary:(id)summary;
+- (id)mouseBehavesLikeFinger:(id)finger;
+- (id)mouseClickSoundsEnabled:(id)enabled;
+- (id)payWithAST:(id)t;
+- (id)selectSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
+- (id)stringValueForSpecifier:(id)specifier;
 - (id)swaggleOpensMenu;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)touchSpeed;
-- (id)useExtendedKeyboardPredictions:(id)a3;
-- (id)virtualTrackpadEnabled:(id)a3;
-- (void)_handleAssistiveTouchHardwareToggled:(id)a3;
-- (void)_handleAssistiveTouchToggled:(id)a3;
+- (id)useExtendedKeyboardPredictions:(id)predictions;
+- (id)virtualTrackpadEnabled:(id)enabled;
+- (void)_handleAssistiveTouchHardwareToggled:(id)toggled;
+- (void)_handleAssistiveTouchToggled:(id)toggled;
 - (void)_handleSettingsChange;
 - (void)_presentASTAlwaysShowMenuDisabledConfirmationAlert;
-- (void)_updateASTAlwaysShowMenuGroupSpecifier:(id)a3;
+- (void)_updateASTAlwaysShowMenuGroupSpecifier:(id)specifier;
 - (void)_updateASTAlwaysShowMenuSpecifiers;
-- (void)_updateAssistiveTouchControlItems:(id)a3 reload:(BOOL)a4;
-- (void)actualSetHandEnabled:(BOOL)a3;
+- (void)_updateAssistiveTouchControlItems:(id)items reload:(BOOL)reload;
+- (void)actualSetHandEnabled:(BOOL)enabled;
 - (void)dealloc;
-- (void)homeActionListController:(id)a3 selectedAction:(id)a4;
-- (void)setAlwaysShowMenuEnabled:(id)a3 specifier:(id)a4;
-- (void)setAlwaysShowSoftwareKeyboard:(id)a3 specifier:(id)a4;
-- (void)setDwellControlEnabled:(id)a3 specifier:(id)a4;
-- (void)setGameControllerEnabled:(id)a3 specifier:(id)a4;
-- (void)setHandEnabled:(id)a3 specifier:(id)a4;
-- (void)setMouseBehavesLikeFinger:(id)a3 specifier:(id)a4;
-- (void)setMouseClickSoundsEnabled:(id)a3 specifier:(id)a4;
-- (void)setPayWithAST:(id)a3 specifier:(id)a4;
-- (void)setSwaggleOpensMenu:(id)a3 specifier:(id)a4;
-- (void)setTouchSpeed:(id)a3;
-- (void)setUseExtendedKeyboardPredictions:(id)a3 specifier:(id)a4;
-- (void)specifier:(id)a3 setValue:(double)a4;
+- (void)homeActionListController:(id)controller selectedAction:(id)action;
+- (void)setAlwaysShowMenuEnabled:(id)enabled specifier:(id)specifier;
+- (void)setAlwaysShowSoftwareKeyboard:(id)keyboard specifier:(id)specifier;
+- (void)setDwellControlEnabled:(id)enabled specifier:(id)specifier;
+- (void)setGameControllerEnabled:(id)enabled specifier:(id)specifier;
+- (void)setHandEnabled:(id)enabled specifier:(id)specifier;
+- (void)setMouseBehavesLikeFinger:(id)finger specifier:(id)specifier;
+- (void)setMouseClickSoundsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPayWithAST:(id)t specifier:(id)specifier;
+- (void)setSwaggleOpensMenu:(id)menu specifier:(id)specifier;
+- (void)setTouchSpeed:(id)speed;
+- (void)setUseExtendedKeyboardPredictions:(id)predictions specifier:(id)specifier;
+- (void)specifier:(id)specifier setValue:(double)value;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HandController
@@ -286,7 +286,7 @@ void __22__HandController_init__block_invoke_12(uint64_t a1)
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *&self->super.super.AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (v3)
   {
@@ -295,7 +295,7 @@ void __22__HandController_init__block_invoke_12(uint64_t a1)
 
   v122 = OBJC_IVAR___PSListController__specifiers;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [(HandController *)v2 loadSpecifiersFromPlistName:@"HandSettings" target:v2 bundle:v4];
+  v5 = [(HandController *)selfCopy loadSpecifiersFromPlistName:@"HandSettings" target:selfCopy bundle:v4];
 
   v125 = [v5 ax_firstObjectUsingBlock:&__block_literal_global_34];
   v6 = [v125 propertyForKey:@"content"];
@@ -304,7 +304,7 @@ void __22__HandController_init__block_invoke_12(uint64_t a1)
   v8 = AXTeachableFeatureAssistiveTouch;
   v9 = [AXTeachableMomentsManager teachableItemsForFeature:AXTeachableFeatureAssistiveTouch];
   v10 = AXValidationManager_ptr;
-  v131 = v2;
+  v131 = selfCopy;
   obj = v5;
   v123 = v7;
   v121 = v9;
@@ -333,12 +333,12 @@ void __22__HandController_init__block_invoke_12(uint64_t a1)
 
           v17 = *(*(&v138 + 1) + 8 * i);
           v149[0] = @"headerLabel";
-          v18 = [v17 itemTitle];
-          v150[0] = v18;
+          itemTitle = [v17 itemTitle];
+          v150[0] = itemTitle;
           v149[1] = @"contentLabel";
-          v19 = [v17 itemDescription];
+          itemDescription = [v17 itemDescription];
           v149[2] = @"alreadyLocalized";
-          v150[1] = v19;
+          v150[1] = itemDescription;
           v150[2] = &__kCFBooleanTrue;
           v20 = [NSDictionary dictionaryWithObjects:v150 forKeys:v149 count:3];
           [v11 addObject:v20];
@@ -383,7 +383,7 @@ void __22__HandController_init__block_invoke_12(uint64_t a1)
 
   [v125 setProperty:v7 forKey:@"content"];
   v124 = [v10[486] arrayWithArray:v5];
-  v26 = [v10[486] array];
+  array = [v10[486] array];
   v27 = settingsLocString(@"ACTIONS_TITLE", @"HandSettings");
   v28 = [PSSpecifier groupSpecifierWithName:v27];
 
@@ -393,56 +393,56 @@ void __22__HandController_init__block_invoke_12(uint64_t a1)
 
   [v28 setIdentifier:@"ActionsGroupSpecifier"];
   v119 = v28;
-  [v26 addObject:v28];
+  [array addObject:v28];
   v30 = settingsLocString(@"SINGLE_TAP_ACTION", @"HandSettings");
-  v31 = [PSSpecifier preferenceSpecifierNamed:v30 target:v2 set:0 get:"_singleTapAction:" detail:objc_opt_class() cell:2 edit:0];
+  v31 = [PSSpecifier preferenceSpecifierNamed:v30 target:selfCopy set:0 get:"_singleTapAction:" detail:objc_opt_class() cell:2 edit:0];
 
   [v31 setProperty:&off_27A1B8 forKey:@"HomeAction"];
   [v31 setIdentifier:@"TapSpecifier"];
   v118 = v31;
-  [v26 addObject:v31];
+  [array addObject:v31];
   v32 = settingsLocString(@"DOUBLE_TAP_ACTION", @"HandSettings");
-  v33 = [PSSpecifier preferenceSpecifierNamed:v32 target:v2 set:0 get:"_doubleTapAction:" detail:objc_opt_class() cell:2 edit:0];
+  v33 = [PSSpecifier preferenceSpecifierNamed:v32 target:selfCopy set:0 get:"_doubleTapAction:" detail:objc_opt_class() cell:2 edit:0];
 
   v34 = PSSpecifierIsSearchableKey;
   [v33 setProperty:&__kCFBooleanFalse forKey:PSSpecifierIsSearchableKey];
   [v33 setProperty:&off_27A1D0 forKey:@"HomeAction"];
   [v33 setIdentifier:@"DoubleTapSpecifier"];
   v117 = v33;
-  [v26 addObject:v33];
+  [array addObject:v33];
   v35 = settingsLocString(@"LONG_PRESS_ACTION", @"HandSettings");
-  v36 = [PSSpecifier preferenceSpecifierNamed:v35 target:v2 set:0 get:"_longPressAction:" detail:objc_opt_class() cell:2 edit:0];
+  v36 = [PSSpecifier preferenceSpecifierNamed:v35 target:selfCopy set:0 get:"_longPressAction:" detail:objc_opt_class() cell:2 edit:0];
 
   [v36 setProperty:&__kCFBooleanFalse forKey:v34];
   [v36 setProperty:&off_27A1E8 forKey:@"HomeAction"];
   [v36 setIdentifier:@"LongPressSpecifier"];
   v116 = v36;
-  [v26 addObject:v36];
+  [array addObject:v36];
   if (AXHasCapability())
   {
     v37 = settingsLocString(@"FORCE_TOUCH_AST_ACTION_TITLE", @"Accessibility");
-    v38 = [PSSpecifier preferenceSpecifierNamed:v37 target:v2 set:0 get:"_orbAction:" detail:objc_opt_class() cell:2 edit:0];
+    v38 = [PSSpecifier preferenceSpecifierNamed:v37 target:selfCopy set:0 get:"_orbAction:" detail:objc_opt_class() cell:2 edit:0];
     [v38 setProperty:&off_27A200 forKey:@"HomeAction"];
     [v38 setProperty:&__kCFBooleanFalse forKey:v34];
     [v38 setIdentifier:@"ForceTouchSpecifier"];
-    [v26 addObject:v38];
+    [array addObject:v38];
   }
 
   v39 = [obj indexOfObjectPassingTest:&__block_literal_global_466_0];
   if (v39 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v40 = v39;
-    v41 = [(CustomGestureController *)v2 customGestureSpecifiers];
-    v42 = [v26 arrayByAddingObjectsFromArray:v41];
+    customGestureSpecifiers = [(CustomGestureController *)selfCopy customGestureSpecifiers];
+    v42 = [array arrayByAddingObjectsFromArray:customGestureSpecifiers];
 
     v43 = [obj objectAtIndexedSubscript:v40];
     [v124 ps_insertObjectsFromArray:v42 afterObject:v43];
   }
 
   v44 = +[AXSettings sharedInstance];
-  v45 = [v44 laserEnabled];
+  laserEnabled = [v44 laserEnabled];
 
-  if (v45)
+  if (laserEnabled)
   {
     v46 = [v124 specifierForID:@"ASTMousePointerCustomization"];
     [v124 removeObject:v46];
@@ -460,25 +460,25 @@ void __22__HandController_init__block_invoke_12(uint64_t a1)
   v114 = v49;
   [v48 addObject:v49];
   v51 = settingsLocString(@"MOUSE_POINTER_DWELL_CONTROL", @"HandSettings");
-  v52 = [PSSpecifier preferenceSpecifierNamed:v51 target:v2 set:"setDwellControlEnabled:specifier:" get:"dwellControlEnabled:" detail:0 cell:6 edit:0];
+  v52 = [PSSpecifier preferenceSpecifierNamed:v51 target:selfCopy set:"setDwellControlEnabled:specifier:" get:"dwellControlEnabled:" detail:0 cell:6 edit:0];
 
   [v52 setIdentifier:@"DwellEnabledSpecifier"];
   v113 = v52;
   [v48 addObject:v52];
   v53 = settingsLocString(@"MOUSE_POINTER_DWELL_AUTOREVERT", @"HandSettings");
-  v54 = [PSSpecifier preferenceSpecifierNamed:v53 target:v2 set:0 get:"dwellControlAutorevertAction:" detail:objc_opt_class() cell:2 edit:0];
+  v54 = [PSSpecifier preferenceSpecifierNamed:v53 target:selfCopy set:0 get:"dwellControlAutorevertAction:" detail:objc_opt_class() cell:2 edit:0];
 
   [v54 setIdentifier:@"DwellAutorevertSpecifier"];
   v112 = v54;
   [v48 addObject:v54];
   v55 = settingsLocString(@"MOUSE_POINTER_DWELL_TOLERANCE", @"HandSettings");
-  v56 = [PSSpecifier preferenceSpecifierNamed:v55 target:v2 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+  v56 = [PSSpecifier preferenceSpecifierNamed:v55 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
   [v56 setIdentifier:@"DwellToleranceSpecifier"];
   v111 = v56;
   [v48 addObject:v56];
   v57 = settingsLocString(@"MOUSE_POINTER_DWELL_HOT_CORNERS", @"HandSettings");
-  v58 = [PSSpecifier preferenceSpecifierNamed:v57 target:v2 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+  v58 = [PSSpecifier preferenceSpecifierNamed:v57 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
   [v58 setIdentifier:@"DwellCornersSpecifier"];
   v110 = v58;
@@ -486,7 +486,7 @@ void __22__HandController_init__block_invoke_12(uint64_t a1)
   if ((AXRuntimeCheck_DwellKeyboardKeyTimer() & 1) == 0 && !AXRuntimeCheck_DwellKeyboardSwipe())
   {
     v62 = AXParameterizedLocalizedString();
-    v60 = [PSSpecifier preferenceSpecifierNamed:v62 target:v2 set:"setUseExtendedKeyboardPredictions:specifier:" get:"useExtendedKeyboardPredictions:" detail:0 cell:6 edit:0];
+    v60 = [PSSpecifier preferenceSpecifierNamed:v62 target:selfCopy set:"setUseExtendedKeyboardPredictions:specifier:" get:"useExtendedKeyboardPredictions:" detail:0 cell:6 edit:0];
 
     v61 = @"DwellExtendedPredictionsSpecifier";
     goto LABEL_23;
@@ -495,7 +495,7 @@ void __22__HandController_init__block_invoke_12(uint64_t a1)
   if (AXDeviceSupportsOnDeviceEyeTracking())
   {
     v59 = settingsLocString(@"DWELL_KEYBOARD_SETTINGS", @"Accessibility");
-    v60 = [PSSpecifier preferenceSpecifierNamed:v59 target:v2 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+    v60 = [PSSpecifier preferenceSpecifierNamed:v59 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
     v61 = @"DwellKeyboardSpecifier";
 LABEL_23:
@@ -503,8 +503,8 @@ LABEL_23:
     [v48 addObject:v60];
   }
 
-  v120 = v26;
-  v63 = [PSSpecifier ax_stepperSpecifierWithDelegate:v2];
+  v120 = array;
+  v63 = [PSSpecifier ax_stepperSpecifierWithDelegate:selfCopy];
   [v63 setIdentifier:@"DwellTimeoutSpecifier"];
   v109 = v63;
   [v48 addObject:v63];
@@ -540,7 +540,7 @@ LABEL_23:
         v73 = [v72 propertyForKey:v67];
         if ([v73 isEqualToString:@"AlwaysShowMenuGroup"])
         {
-          [(HandController *)v2 _updateASTAlwaysShowMenuGroupSpecifier:v72];
+          [(HandController *)selfCopy _updateASTAlwaysShowMenuGroupSpecifier:v72];
         }
 
         if ([v73 isEqualToString:@"TouchSpeed"])
@@ -559,7 +559,7 @@ LABEL_23:
           v79 = [NSNumber numberWithFloat:v78];
           [v72 setProperty:v79 forKey:v70];
 
-          v2 = v131;
+          selfCopy = v131;
         }
       }
 
@@ -577,7 +577,7 @@ LABEL_23:
 
   [v124 addObject:v80];
   v83 = settingsLocString(@"SOUND_ACTIONS", @"Accessibility");
-  v84 = [PSSpecifier preferenceSpecifierNamed:v83 target:v2 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+  v84 = [PSSpecifier preferenceSpecifierNamed:v83 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
   [v84 setProperty:@"SOUND_ACTIONS" forKey:v81];
   [v124 addObject:v84];
@@ -649,13 +649,13 @@ LABEL_23:
 
     [v124 addObject:v87];
     v101 = settingsLocString(@"APPLE_PAY_LABEL", @"HandSettings");
-    v102 = [PSSpecifier preferenceSpecifierNamed:v101 target:v2 set:"setPayWithAST:specifier:" get:"payWithAST:" detail:0 cell:6 edit:0];
+    v102 = [PSSpecifier preferenceSpecifierNamed:v101 target:selfCopy set:"setPayWithAST:specifier:" get:"payWithAST:" detail:0 cell:6 edit:0];
 
     [v102 setIdentifier:@"APPLE_PAY_SWITCH"];
     [v124 addObject:v102];
   }
 
-  [(HandController *)v2 setupLongTitleSpecifiers:v124];
+  [(HandController *)selfCopy setupLongTitleSpecifiers:v124];
   if ((AXHasCapability() & 1) == 0)
   {
     v103 = [v124 indexOfSpecifierWithID:@"ASTVirtualTrackpadFooterID"];
@@ -683,10 +683,10 @@ LABEL_23:
     [v124 removeObjectAtIndex:v106];
   }
 
-  v107 = *&v2->super.super.AXUISettingsBaseListController_opaque[v122];
-  *&v2->super.super.AXUISettingsBaseListController_opaque[v122] = v124;
+  v107 = *&selfCopy->super.super.AXUISettingsBaseListController_opaque[v122];
+  *&selfCopy->super.super.AXUISettingsBaseListController_opaque[v122] = v124;
 
-  v3 = *&v2->super.super.AXUISettingsBaseListController_opaque[v122];
+  v3 = *&selfCopy->super.super.AXUISettingsBaseListController_opaque[v122];
 LABEL_62:
 
   return v3;
@@ -708,11 +708,11 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   return v5;
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = HandController;
-  v4 = [(HandController *)&v6 selectSpecifier:a3];
+  v4 = [(HandController *)&v6 selectSpecifier:specifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -731,13 +731,13 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   [(HandController *)self _updateASTAlwaysShowMenuGroupSpecifier:v4];
 }
 
-- (void)_updateASTAlwaysShowMenuGroupSpecifier:(id)a3
+- (void)_updateASTAlwaysShowMenuGroupSpecifier:(id)specifier
 {
-  v8 = a3;
+  specifierCopy = specifier;
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchAlwaysShowMenuEnabled];
+  assistiveTouchAlwaysShowMenuEnabled = [v4 assistiveTouchAlwaysShowMenuEnabled];
 
-  if (v5)
+  if (assistiveTouchAlwaysShowMenuEnabled)
   {
     v6 = @"AlwaysShowMenuEnabledFooterText";
   }
@@ -748,17 +748,17 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   }
 
   v7 = settingsLocString(v6, @"HandSettings");
-  [v8 setProperty:v7 forKey:PSFooterTextGroupKey];
+  [specifierCopy setProperty:v7 forKey:PSFooterTextGroupKey];
 
-  [(HandController *)self reloadSpecifier:v8];
+  [(HandController *)self reloadSpecifier:specifierCopy];
 }
 
-- (id)_singleTapAction:(id)a3
+- (id)_singleTapAction:(id)action
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchSingleTapAction];
+  assistiveTouchSingleTapAction = [v3 assistiveTouchSingleTapAction];
 
-  if (v4)
+  if (assistiveTouchSingleTapAction)
   {
     v5 = AXUIAssistiveTouchStringForName();
     v6 = [v5 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
@@ -772,12 +772,12 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   return v6;
 }
 
-- (id)_doubleTapAction:(id)a3
+- (id)_doubleTapAction:(id)action
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchDoubleTapAction];
+  assistiveTouchDoubleTapAction = [v3 assistiveTouchDoubleTapAction];
 
-  if (v4)
+  if (assistiveTouchDoubleTapAction)
   {
     v5 = AXUIAssistiveTouchStringForName();
     v6 = [v5 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
@@ -791,12 +791,12 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   return v6;
 }
 
-- (id)_longPressAction:(id)a3
+- (id)_longPressAction:(id)action
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchLongPressAction];
+  assistiveTouchLongPressAction = [v3 assistiveTouchLongPressAction];
 
-  if (v4)
+  if (assistiveTouchLongPressAction)
   {
     v5 = AXUIAssistiveTouchStringForName();
     v6 = [v5 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
@@ -810,12 +810,12 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   return v6;
 }
 
-- (id)_orbAction:(id)a3
+- (id)_orbAction:(id)action
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchOrbAction];
+  assistiveTouchOrbAction = [v3 assistiveTouchOrbAction];
 
-  if (v4)
+  if (assistiveTouchOrbAction)
   {
     v5 = AXUIAssistiveTouchStringForName();
     v6 = [v5 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
@@ -829,7 +829,7 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   return v6;
 }
 
-- (id)idleOpacitySummary:(id)a3
+- (id)idleOpacitySummary:(id)summary
 {
   v3 = +[AXSettings sharedInstance];
   [v3 assistiveTouchIdleOpacity];
@@ -838,7 +838,7 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   return v4;
 }
 
-- (id)virtualTrackpadEnabled:(id)a3
+- (id)virtualTrackpadEnabled:(id)enabled
 {
   v3 = @"OFF";
   if (AXDeviceSupportsVirtualTrackpad())
@@ -858,33 +858,33 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   v6.receiver = self;
   v6.super_class = HandController;
   [(AXNamedItemsListController *)&v6 viewDidLoad];
-  v3 = [(HandController *)self table];
+  table = [(HandController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXUISettingsEditableTableCellWithStepper cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HandController;
-  [(CustomGestureController *)&v5 viewWillAppear:a3];
+  [(CustomGestureController *)&v5 viewWillAppear:appear];
   if (!_AXSInUnitTestMode())
   {
-    v4 = [(HandController *)self specifiers];
-    [(HandController *)self _updateAssistiveTouchControlItems:v4 reload:0];
+    specifiers = [(HandController *)self specifiers];
+    [(HandController *)self _updateAssistiveTouchControlItems:specifiers reload:0];
   }
 }
 
-- (void)_updateAssistiveTouchControlItems:(id)a3 reload:(BOOL)a4
+- (void)_updateAssistiveTouchControlItems:(id)items reload:(BOOL)reload
 {
-  v4 = a4;
-  v10 = [(CustomGestureController *)self specifierForKey:@"HandEnabled" withSpecifiers:a3];
+  reloadCopy = reload;
+  v10 = [(CustomGestureController *)self specifierForKey:@"HandEnabled" withSpecifiers:items];
   v6 = _AXSAssistiveTouchScannerEnabled();
   v7 = [NSNumber numberWithBool:v6 == 0];
   [v10 setProperty:v7 forKey:PSEnabledKey];
 
-  if (v4)
+  if (reloadCopy)
   {
     [(HandController *)self reloadSpecifier:v10];
   }
@@ -894,16 +894,16 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   [v9 setCellEnabled:v8];
 }
 
-- (void)_handleAssistiveTouchHardwareToggled:(id)a3
+- (void)_handleAssistiveTouchHardwareToggled:(id)toggled
 {
-  v4 = [(HandController *)self specifiers];
-  [(HandController *)self _updateAssistiveTouchControlItems:v4 reload:1];
+  specifiers = [(HandController *)self specifiers];
+  [(HandController *)self _updateAssistiveTouchControlItems:specifiers reload:1];
 }
 
-- (void)_handleAssistiveTouchToggled:(id)a3
+- (void)_handleAssistiveTouchToggled:(id)toggled
 {
-  v4 = [(HandController *)self specifiers];
-  [(HandController *)self _updateAssistiveTouchControlItems:v4 reload:1];
+  specifiers = [(HandController *)self specifiers];
+  [(HandController *)self _updateAssistiveTouchControlItems:specifiers reload:1];
 }
 
 - (void)_handleSettingsChange
@@ -917,7 +917,7 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   [v4 reloadData];
 }
 
-- (id)mouseBehavesLikeFinger:(id)a3
+- (id)mouseBehavesLikeFinger:(id)finger
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchMouseBehavesLikeFinger]);
@@ -925,14 +925,14 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   return v4;
 }
 
-- (void)setMouseBehavesLikeFinger:(id)a3 specifier:(id)a4
+- (void)setMouseBehavesLikeFinger:(id)finger specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [finger BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchMouseBehavesLikeFinger:v4];
+  [v5 setAssistiveTouchMouseBehavesLikeFinger:bOOLValue];
 }
 
-- (id)alwaysShowMenuEnabled:(id)a3
+- (id)alwaysShowMenuEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchAlwaysShowMenuEnabled]);
@@ -940,21 +940,21 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   return v4;
 }
 
-- (void)setAlwaysShowMenuEnabled:(id)a3 specifier:(id)a4
+- (void)setAlwaysShowMenuEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 assistiveTouchMouseDwellControlCornerCustomization];
-  v8 = [v7 allValues];
-  v9 = [v8 containsObject:AXAssistiveTouchIconTypeOpenMenu];
+  assistiveTouchMouseDwellControlCornerCustomization = [v6 assistiveTouchMouseDwellControlCornerCustomization];
+  allValues = [assistiveTouchMouseDwellControlCornerCustomization allValues];
+  v9 = [allValues containsObject:AXAssistiveTouchIconTypeOpenMenu];
 
-  if ((v5 & 1) != 0 || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 assistiveTouchMouseDwellControlEnabled], v10, v9 & 1 | ((v11 & 1) == 0)))
+  if ((bOOLValue & 1) != 0 || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 assistiveTouchMouseDwellControlEnabled], v10, v9 & 1 | ((v11 & 1) == 0)))
   {
     v12 = +[AXSettings sharedInstance];
-    [v12 setAssistiveTouchAlwaysShowMenuEnabled:v5];
+    [v12 setAssistiveTouchAlwaysShowMenuEnabled:bOOLValue];
 
-    v13 = [(HandController *)self specifiers];
-    [(HandController *)self _updateAssistiveTouchControlItems:v13 reload:1];
+    specifiers = [(HandController *)self specifiers];
+    [(HandController *)self _updateAssistiveTouchControlItems:specifiers reload:1];
   }
 
   else
@@ -964,7 +964,7 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   }
 }
 
-- (id)mouseClickSoundsEnabled:(id)a3
+- (id)mouseClickSoundsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchMouseClickSoundsEnabled]);
@@ -972,14 +972,14 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   return v4;
 }
 
-- (void)setMouseClickSoundsEnabled:(id)a3 specifier:(id)a4
+- (void)setMouseClickSoundsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchMouseClickSoundsEnabled:v4];
+  [v5 setAssistiveTouchMouseClickSoundsEnabled:bOOLValue];
 }
 
-- (id)alwaysShowSoftwareKeyboard:(id)a3
+- (id)alwaysShowSoftwareKeyboard:(id)keyboard
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchMouseAlwaysShowSoftwareKeyboardEnabled]);
@@ -987,14 +987,14 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   return v4;
 }
 
-- (void)setAlwaysShowSoftwareKeyboard:(id)a3 specifier:(id)a4
+- (void)setAlwaysShowSoftwareKeyboard:(id)keyboard specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [keyboard BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchMouseAlwaysShowSoftwareKeyboardEnabled:v4];
+  [v5 setAssistiveTouchMouseAlwaysShowSoftwareKeyboardEnabled:bOOLValue];
 }
 
-- (id)gameControllerEnabled:(id)a3
+- (id)gameControllerEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchGameControllerEnabled]);
@@ -1002,42 +1002,42 @@ BOOL __28__HandController_specifiers__block_invoke_463(id a1, PSSpecifier *a2, u
   return v4;
 }
 
-- (void)setGameControllerEnabled:(id)a3 specifier:(id)a4
+- (void)setGameControllerEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchGameControllerEnabled:v4];
+  [v5 setAssistiveTouchGameControllerEnabled:bOOLValue];
 }
 
-- (id)handEnabled:(id)a3
+- (id)handEnabled:(id)enabled
 {
   v3 = _AXSAssistiveTouchEnabled() != 0;
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setHandEnabled:(id)a3 specifier:(id)a4
+- (void)setHandEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  if ([v6 laserEnabled] && (objc_msgSend(v5, "BOOLValue") & 1) == 0)
+  if ([v6 laserEnabled] && (objc_msgSend(enabledCopy, "BOOLValue") & 1) == 0)
   {
     v8 = +[AXSpringBoardServer server];
-    v7 = [v8 currentDevicesHaveAssistiveTouchCustomActions];
+    currentDevicesHaveAssistiveTouchCustomActions = [v8 currentDevicesHaveAssistiveTouchCustomActions];
   }
 
   else
   {
-    v7 = 0;
+    currentDevicesHaveAssistiveTouchCustomActions = 0;
   }
 
-  v9 = ([v5 BOOLValue] & 1) == 0 && _AXSAssistiveTouchEnabled() && _AXSAssistiveTouchHardwareEnabled() != 0;
-  if (([v5 BOOLValue] & 1) == 0)
+  v9 = ([enabledCopy BOOLValue] & 1) == 0 && _AXSAssistiveTouchEnabled() && _AXSAssistiveTouchHardwareEnabled() != 0;
+  if (([enabledCopy BOOLValue] & 1) == 0)
   {
     v13 = +[AXSpringBoardServer server];
-    v10 = [v13 connectedDevicesRequireAssistiveTouch];
+    connectedDevicesRequireAssistiveTouch = [v13 connectedDevicesRequireAssistiveTouch];
 
-    if (!v7)
+    if (!currentDevicesHaveAssistiveTouchCustomActions)
     {
       goto LABEL_11;
     }
@@ -1049,23 +1049,23 @@ LABEL_14:
     v17[2] = __43__HandController_setHandEnabled_specifier___block_invoke;
     v17[3] = &unk_257688;
     v17[4] = self;
-    v18 = v5;
+    v18 = enabledCopy;
     [v14 showAlert:23 withHandler:v17];
 
     v12 = v18;
     goto LABEL_15;
   }
 
-  v10 = 0;
-  if (v7)
+  connectedDevicesRequireAssistiveTouch = 0;
+  if (currentDevicesHaveAssistiveTouchCustomActions)
   {
     goto LABEL_14;
   }
 
 LABEL_11:
-  if (((v9 | v10) & 1) == 0)
+  if (((v9 | connectedDevicesRequireAssistiveTouch) & 1) == 0)
   {
-    -[HandController actualSetHandEnabled:](self, "actualSetHandEnabled:", [v5 BOOLValue]);
+    -[HandController actualSetHandEnabled:](self, "actualSetHandEnabled:", [enabledCopy BOOLValue]);
     goto LABEL_17;
   }
 
@@ -1075,7 +1075,7 @@ LABEL_11:
   v15[2] = __43__HandController_setHandEnabled_specifier___block_invoke_2;
   v15[3] = &unk_257688;
   v15[4] = self;
-  v16 = v5;
+  v16 = enabledCopy;
   [v11 showAlert:10 withHandler:v15];
 
   v12 = v16;
@@ -1133,15 +1133,15 @@ id __43__HandController_setHandEnabled_specifier___block_invoke_2(id result, uin
   return result;
 }
 
-- (void)actualSetHandEnabled:(BOOL)a3
+- (void)actualSetHandEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchMouseDwellControlShowPrompt:v3];
+  [v5 setAssistiveTouchMouseDwellControlShowPrompt:enabledCopy];
 
   _AXSAssistiveTouchSetEnabled();
   _AXSAssistiveTouchSetUIEnabled();
-  if (v3)
+  if (enabledCopy)
   {
     _AXSHomeButtonSetRestingUnlock();
     _AXLogWithFacility();
@@ -1158,13 +1158,13 @@ id __43__HandController_setHandEnabled_specifier___block_invoke_2(id result, uin
   return v3;
 }
 
-- (void)setSwaggleOpensMenu:(id)a3 specifier:(id)a4
+- (void)setSwaggleOpensMenu:(id)menu specifier:(id)specifier
 {
-  v4 = a3;
+  menuCopy = menu;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [menuCopy BOOLValue];
 
-  [v6 setAssistiveTouchOpenMenuSwaggleEnabled:v5];
+  [v6 setAssistiveTouchOpenMenuSwaggleEnabled:bOOLValue];
 }
 
 - (id)touchSpeed
@@ -1177,55 +1177,55 @@ id __43__HandController_setHandEnabled_specifier___block_invoke_2(id result, uin
   return v4;
 }
 
-- (void)setTouchSpeed:(id)a3
+- (void)setTouchSpeed:(id)speed
 {
-  v3 = a3;
+  speedCopy = speed;
   v6 = +[AXSettings sharedInstance];
-  [v3 floatValue];
+  [speedCopy floatValue];
   v5 = v4;
 
   [v6 setAssistiveTouchSpeed:v5];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = HandController;
-  v4 = [(HandController *)&v15 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 specifier];
-  v6 = [v5 propertyForKey:PSKeyNameKey];
+  v4 = [(HandController *)&v15 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v4 specifier];
+  v6 = [specifier propertyForKey:PSKeyNameKey];
   v7 = [v6 isEqualToString:@"TouchSpeed"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && v7)
   {
-    v8 = [v4 control];
-    if (!v8)
+    control = [v4 control];
+    if (!control)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v4 contentView];
-        v10 = [v9 subviews];
-        v8 = [v10 ax_firstObjectUsingBlock:&__block_literal_global_639];
+        contentView = [v4 contentView];
+        subviews = [contentView subviews];
+        control = [subviews ax_firstObjectUsingBlock:&__block_literal_global_639];
       }
 
       else
       {
-        v8 = 0;
+        control = 0;
       }
     }
 
-    [v8 setEnabled:1];
-    [v8 setContinuous:1];
+    [control setEnabled:1];
+    [control setContinuous:1];
   }
 
-  v11 = [v5 identifier];
-  v12 = [v11 isEqualToString:@"APPLE_PAY_SWITCH"];
+  identifier = [specifier identifier];
+  v12 = [identifier isEqualToString:@"APPLE_PAY_SWITCH"];
 
   if (v12)
   {
-    v13 = [v4 titleLabel];
-    [v13 setNumberOfLines:0];
+    titleLabel = [v4 titleLabel];
+    [titleLabel setNumberOfLines:0];
   }
 
   return v4;
@@ -1240,109 +1240,109 @@ BOOL __50__HandController_tableView_cellForRowAtIndexPath___block_invoke(id a1, 
   return isKindOfClass & 1;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v4 = [a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 specifier];
-  v6 = [v5 propertyForKey:PSKeyNameKey];
+  v4 = [view cellForRowAtIndexPath:path];
+  specifier = [v4 specifier];
+  v6 = [specifier propertyForKey:PSKeyNameKey];
 
-  LOBYTE(v5) = [v6 isEqualToString:@"TouchSpeed"];
-  return v5 ^ 1;
+  LOBYTE(specifier) = [v6 isEqualToString:@"TouchSpeed"];
+  return specifier ^ 1;
 }
 
-- (id)getCurrentActionForHomeActionListController:(id)a3
+- (id)getCurrentActionForHomeActionListController:(id)controller
 {
-  v3 = [a3 homeActionType];
+  homeActionType = [controller homeActionType];
   v4 = 0;
-  if (v3 > 2)
+  if (homeActionType > 2)
   {
-    if (v3 == (&dword_0 + 3))
+    if (homeActionType == (&dword_0 + 3))
     {
       v5 = +[AXSettings sharedInstance];
-      v6 = [v5 assistiveTouchLongPressAction];
+      assistiveTouchLongPressAction = [v5 assistiveTouchLongPressAction];
     }
 
     else
     {
-      if (v3 != &dword_4)
+      if (homeActionType != &dword_4)
       {
         goto LABEL_11;
       }
 
       v5 = +[AXSettings sharedInstance];
-      v6 = [v5 assistiveTouchOrbAction];
+      assistiveTouchLongPressAction = [v5 assistiveTouchOrbAction];
     }
   }
 
-  else if (v3 == (&dword_0 + 1))
+  else if (homeActionType == (&dword_0 + 1))
   {
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 assistiveTouchSingleTapAction];
+    assistiveTouchLongPressAction = [v5 assistiveTouchSingleTapAction];
   }
 
   else
   {
-    if (v3 != (&dword_0 + 2))
+    if (homeActionType != (&dword_0 + 2))
     {
       goto LABEL_11;
     }
 
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 assistiveTouchDoubleTapAction];
+    assistiveTouchLongPressAction = [v5 assistiveTouchDoubleTapAction];
   }
 
-  v4 = v6;
+  v4 = assistiveTouchLongPressAction;
 
 LABEL_11:
 
   return v4;
 }
 
-- (void)homeActionListController:(id)a3 selectedAction:(id)a4
+- (void)homeActionListController:(id)controller selectedAction:(id)action
 {
-  v7 = a4;
-  v5 = [a3 homeActionType];
-  if (v5 > 2)
+  actionCopy = action;
+  homeActionType = [controller homeActionType];
+  if (homeActionType > 2)
   {
-    if (v5 == (&dword_0 + 3))
+    if (homeActionType == (&dword_0 + 3))
     {
       v6 = +[AXSettings sharedInstance];
-      [v6 setAssistiveTouchLongPressAction:v7];
+      [v6 setAssistiveTouchLongPressAction:actionCopy];
     }
 
     else
     {
-      if (v5 != &dword_4)
+      if (homeActionType != &dword_4)
       {
         goto LABEL_11;
       }
 
       v6 = +[AXSettings sharedInstance];
-      [v6 setAssistiveTouchOrbAction:v7];
+      [v6 setAssistiveTouchOrbAction:actionCopy];
     }
   }
 
-  else if (v5 == (&dword_0 + 1))
+  else if (homeActionType == (&dword_0 + 1))
   {
     v6 = +[AXSettings sharedInstance];
-    [v6 setAssistiveTouchSingleTapAction:v7];
+    [v6 setAssistiveTouchSingleTapAction:actionCopy];
   }
 
   else
   {
-    if (v5 != (&dword_0 + 2))
+    if (homeActionType != (&dword_0 + 2))
     {
       goto LABEL_11;
     }
 
     v6 = +[AXSettings sharedInstance];
-    [v6 setAssistiveTouchDoubleTapAction:v7];
+    [v6 setAssistiveTouchDoubleTapAction:actionCopy];
   }
 
 LABEL_11:
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
   v3 = +[AXSettings sharedInstance];
   [v3 assistiveTouchMouseDwellControlActivationTimeout];
@@ -1351,22 +1351,22 @@ LABEL_11:
   return v5;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchMouseDwellControlActivationTimeout:a4];
+  [v5 setAssistiveTouchMouseDwellControlActivationTimeout:value];
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(HandController *)self valueForSpecifier:a3];
+  [(HandController *)self valueForSpecifier:specifier];
   v3 = [NSNumber numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 
   return v4;
 }
 
-- (id)dwellControlEnabled:(id)a3
+- (id)dwellControlEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchMouseDwellControlEnabled]);
@@ -1374,11 +1374,11 @@ LABEL_11:
   return v4;
 }
 
-- (void)setDwellControlEnabled:(id)a3 specifier:(id)a4
+- (void)setDwellControlEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 assistiveTouchAlwaysShowMenuEnabled] | v4;
+  v6 = [v5 assistiveTouchAlwaysShowMenuEnabled] | bOOLValue;
   v7 = +[AXSettings sharedInstance];
   [v7 setAssistiveTouchAlwaysShowMenuEnabled:v6 & 1];
 
@@ -1386,18 +1386,18 @@ LABEL_11:
   [v8 setAssistiveTouchMouseDwellControlShowPrompt:1];
 
   v9 = +[AXSettings sharedInstance];
-  [v9 setAssistiveTouchMouseDwellControlEnabled:v4];
+  [v9 setAssistiveTouchMouseDwellControlEnabled:bOOLValue];
 }
 
-- (id)dwellControlAutorevertAction:(id)a3
+- (id)dwellControlAutorevertAction:(id)action
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchMouseDwellControlAutorevertEnabled];
+  assistiveTouchMouseDwellControlAutorevertEnabled = [v3 assistiveTouchMouseDwellControlAutorevertEnabled];
 
-  if (v4)
+  if (assistiveTouchMouseDwellControlAutorevertEnabled)
   {
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 assistiveTouchMouseDwellControlAutorevertAction];
+    assistiveTouchMouseDwellControlAutorevertAction = [v5 assistiveTouchMouseDwellControlAutorevertAction];
 
     v7 = AXUIAssistiveTouchStringForName();
     v8 = [v7 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
@@ -1411,9 +1411,9 @@ LABEL_11:
   return v8;
 }
 
-- (void)setPayWithAST:(id)a3 specifier:(id)a4
+- (void)setPayWithAST:(id)t specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([t BOOLValue])
   {
     if (!self->_localAuthContext)
     {
@@ -1480,7 +1480,7 @@ void __42__HandController_setPayWithAST_specifier___block_invoke_661(id a1, NSEr
   }
 }
 
-- (id)payWithAST:(id)a3
+- (id)payWithAST:(id)t
 {
   v3 = [[LAStorage alloc] initWithDomain:0 authenticationContext:0];
   v10 = 0;
@@ -1534,14 +1534,14 @@ void __68__HandController__presentASTAlwaysShowMenuDisabledConfirmationAlert__bl
   [v2 setAssistiveTouchAlwaysShowMenuEnabled:0];
 }
 
-- (void)setUseExtendedKeyboardPredictions:(id)a3 specifier:(id)a4
+- (void)setUseExtendedKeyboardPredictions:(id)predictions specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [predictions BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchShouldUseExtendedKeyboardPredictions:v4];
+  [v5 setAssistiveTouchShouldUseExtendedKeyboardPredictions:bOOLValue];
 }
 
-- (id)useExtendedKeyboardPredictions:(id)a3
+- (id)useExtendedKeyboardPredictions:(id)predictions
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchShouldUseExtendedKeyboardPredictions]);

@@ -1,36 +1,36 @@
 @interface CNSaveRequestContactIdentifierCollector
-- (CNSaveRequestContactIdentifierCollector)initWithSaveRequest:(id)a3;
+- (CNSaveRequestContactIdentifierCollector)initWithSaveRequest:(id)request;
 - (NSArray)allContactIdentifiers;
 - (NSArray)insertedContactIdentifiers;
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitDifferentMeCardEvent:(id)a3;
-- (void)visitLinkContactsEvent:(id)a3;
-- (void)visitPreferredContactForImageEvent:(id)a3;
-- (void)visitPreferredContactForNameEvent:(id)a3;
-- (void)visitUnlinkContactEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitDifferentMeCardEvent:(id)event;
+- (void)visitLinkContactsEvent:(id)event;
+- (void)visitPreferredContactForImageEvent:(id)event;
+- (void)visitPreferredContactForNameEvent:(id)event;
+- (void)visitUnlinkContactEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
 @end
 
 @implementation CNSaveRequestContactIdentifierCollector
 
-- (CNSaveRequestContactIdentifierCollector)initWithSaveRequest:(id)a3
+- (CNSaveRequestContactIdentifierCollector)initWithSaveRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v14.receiver = self;
   v14.super_class = CNSaveRequestContactIdentifierCollector;
   v6 = [(CNSaveRequestContactIdentifierCollector *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
-    v8 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v6->_request, request);
+    array = [MEMORY[0x1E695DF70] array];
     allIdentifiers = v7->_allIdentifiers;
-    v7->_allIdentifiers = v8;
+    v7->_allIdentifiers = array;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     insertedIdentifiers = v7->_insertedIdentifiers;
-    v7->_insertedIdentifiers = v10;
+    v7->_insertedIdentifiers = array2;
 
     v12 = v7;
   }
@@ -52,94 +52,94 @@
   return v2;
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
   allIdentifiers = self->_allIdentifiers;
-  v5 = a3;
-  v6 = [v5 contact];
-  v7 = [v6 identifier];
-  [(NSMutableArray *)allIdentifiers addObject:v7];
+  eventCopy = event;
+  contact = [eventCopy contact];
+  identifier = [contact identifier];
+  [(NSMutableArray *)allIdentifiers addObject:identifier];
 
   insertedIdentifiers = self->_insertedIdentifiers;
-  v10 = [v5 contact];
+  contact2 = [eventCopy contact];
 
-  v9 = [v10 identifier];
-  [(NSMutableArray *)insertedIdentifiers addObject:v9];
+  identifier2 = [contact2 identifier];
+  [(NSMutableArray *)insertedIdentifiers addObject:identifier2];
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
   allIdentifiers = self->_allIdentifiers;
-  v5 = [a3 contact];
-  v4 = [v5 identifier];
-  [(NSMutableArray *)allIdentifiers addObject:v4];
+  contact = [event contact];
+  identifier = [contact identifier];
+  [(NSMutableArray *)allIdentifiers addObject:identifier];
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
   allIdentifiers = self->_allIdentifiers;
-  v4 = [a3 contactIdentifier];
-  [(NSMutableArray *)allIdentifiers addObject:v4];
+  contactIdentifier = [event contactIdentifier];
+  [(NSMutableArray *)allIdentifiers addObject:contactIdentifier];
 }
 
-- (void)visitLinkContactsEvent:(id)a3
+- (void)visitLinkContactsEvent:(id)event
 {
   allIdentifiers = self->_allIdentifiers;
-  v5 = a3;
-  v6 = [v5 fromContact];
-  v7 = [v6 identifier];
-  [(NSMutableArray *)allIdentifiers addObject:v7];
+  eventCopy = event;
+  fromContact = [eventCopy fromContact];
+  identifier = [fromContact identifier];
+  [(NSMutableArray *)allIdentifiers addObject:identifier];
 
   v8 = self->_allIdentifiers;
-  v10 = [v5 toContact];
+  toContact = [eventCopy toContact];
 
-  v9 = [v10 identifier];
-  [(NSMutableArray *)v8 addObject:v9];
+  identifier2 = [toContact identifier];
+  [(NSMutableArray *)v8 addObject:identifier2];
 }
 
-- (void)visitPreferredContactForImageEvent:(id)a3
+- (void)visitPreferredContactForImageEvent:(id)event
 {
   allIdentifiers = self->_allIdentifiers;
-  v5 = a3;
-  v6 = [v5 preferredContact];
-  v7 = [v6 identifier];
-  [(NSMutableArray *)allIdentifiers addObject:v7];
+  eventCopy = event;
+  preferredContact = [eventCopy preferredContact];
+  identifier = [preferredContact identifier];
+  [(NSMutableArray *)allIdentifiers addObject:identifier];
 
   v8 = self->_allIdentifiers;
-  v10 = [v5 unifiedContact];
+  unifiedContact = [eventCopy unifiedContact];
 
-  v9 = [v10 identifier];
-  [(NSMutableArray *)v8 addObject:v9];
+  identifier2 = [unifiedContact identifier];
+  [(NSMutableArray *)v8 addObject:identifier2];
 }
 
-- (void)visitPreferredContactForNameEvent:(id)a3
+- (void)visitPreferredContactForNameEvent:(id)event
 {
   allIdentifiers = self->_allIdentifiers;
-  v5 = a3;
-  v6 = [v5 preferredContact];
-  v7 = [v6 identifier];
-  [(NSMutableArray *)allIdentifiers addObject:v7];
+  eventCopy = event;
+  preferredContact = [eventCopy preferredContact];
+  identifier = [preferredContact identifier];
+  [(NSMutableArray *)allIdentifiers addObject:identifier];
 
   v8 = self->_allIdentifiers;
-  v10 = [v5 unifiedContact];
+  unifiedContact = [eventCopy unifiedContact];
 
-  v9 = [v10 identifier];
-  [(NSMutableArray *)v8 addObject:v9];
+  identifier2 = [unifiedContact identifier];
+  [(NSMutableArray *)v8 addObject:identifier2];
 }
 
-- (void)visitUnlinkContactEvent:(id)a3
+- (void)visitUnlinkContactEvent:(id)event
 {
   allIdentifiers = self->_allIdentifiers;
-  v5 = [a3 contact];
-  v4 = [v5 identifier];
-  [(NSMutableArray *)allIdentifiers addObject:v4];
+  contact = [event contact];
+  identifier = [contact identifier];
+  [(NSMutableArray *)allIdentifiers addObject:identifier];
 }
 
-- (void)visitDifferentMeCardEvent:(id)a3
+- (void)visitDifferentMeCardEvent:(id)event
 {
   allIdentifiers = self->_allIdentifiers;
-  v4 = [a3 contactIdentifier];
-  [(NSMutableArray *)allIdentifiers _cn_addNonNilObject:v4];
+  contactIdentifier = [event contactIdentifier];
+  [(NSMutableArray *)allIdentifiers _cn_addNonNilObject:contactIdentifier];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface HAP2EncodedCharacteristicEvent
 + (id)new;
 - (HAP2EncodedCharacteristicEvent)init;
-- (HAP2EncodedCharacteristicEvent)initWithInstanceID:(id)a3 encodedValueData:(id)a4 encodedContextData:(id)a5;
+- (HAP2EncodedCharacteristicEvent)initWithInstanceID:(id)d encodedValueData:(id)data encodedContextData:(id)contextData;
 @end
 
 @implementation HAP2EncodedCharacteristicEvent
 
-- (HAP2EncodedCharacteristicEvent)initWithInstanceID:(id)a3 encodedValueData:(id)a4 encodedContextData:(id)a5
+- (HAP2EncodedCharacteristicEvent)initWithInstanceID:(id)d encodedValueData:(id)data encodedContextData:(id)contextData
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  dataCopy = data;
+  contextDataCopy = contextData;
   v15.receiver = self;
   v15.super_class = HAP2EncodedCharacteristicEvent;
   v12 = [(HAP2EncodedCharacteristicEvent *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_instanceID, a3);
-    objc_storeStrong(&v13->_encodedValueData, a4);
-    objc_storeStrong(&v13->_encodedContextData, a5);
+    objc_storeStrong(&v12->_instanceID, d);
+    objc_storeStrong(&v13->_encodedValueData, data);
+    objc_storeStrong(&v13->_encodedContextData, contextData);
   }
 
   return v13;

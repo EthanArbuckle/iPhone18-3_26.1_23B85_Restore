@@ -1,28 +1,28 @@
 @interface BBActionGroup
-+ (id)actionGroupWithActions:(id)a3;
-- (BBActionGroup)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)awakeAfterUsingCoder:(id)a3;
-- (id)replacementObjectForCoder:(id)a3;
++ (id)actionGroupWithActions:(id)actions;
+- (BBActionGroup)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)awakeAfterUsingCoder:(id)coder;
+- (id)replacementObjectForCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BBActionGroup
 
-+ (id)actionGroupWithActions:(id)a3
++ (id)actionGroupWithActions:(id)actions
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setActions:v4];
+  actionsCopy = actions;
+  v5 = objc_alloc_init(self);
+  [v5 setActions:actionsCopy];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -32,13 +32,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
+      v5 = equalCopy;
       v10.receiver = self;
       v10.super_class = BBActionGroup;
       if ([(BBAction *)&v10 isEqual:v5])
       {
-        v6 = [(BBActionGroup *)self actions];
-        v7 = [(BBActionGroup *)v5 actions];
+        actions = [(BBActionGroup *)self actions];
+        actions2 = [(BBActionGroup *)v5 actions];
         v8 = BSEqualObjects();
       }
 
@@ -62,50 +62,50 @@
   v7.receiver = self;
   v7.super_class = BBActionGroup;
   v3 = [(BBAction *)&v7 hash];
-  v4 = [(BBActionGroup *)self actions];
-  v5 = [v4 hash];
+  actions = [(BBActionGroup *)self actions];
+  v5 = [actions hash];
 
   return v5 ^ v3;
 }
 
-- (BBActionGroup)initWithCoder:(id)a3
+- (BBActionGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = BBActionGroup;
-  v5 = [(BBAction *)&v9 initWithCoder:v4];
+  v5 = [(BBAction *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = BBAllowedClasses();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"actions"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"actions"];
     [(BBActionGroup *)v5 setActions:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BBActionGroup;
-  v4 = a3;
-  [(BBAction *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(BBAction *)&v6 encodeWithCoder:coderCopy];
   v5 = [(BBActionGroup *)self actions:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"actions"];
+  [coderCopy encodeObject:v5 forKey:@"actions"];
 }
 
-- (id)replacementObjectForCoder:(id)a3
+- (id)replacementObjectForCoder:(id)coder
 {
-  v4 = [self bb_objectCache];
-  v5 = [v4 cacheObject:self];
+  bb_objectCache = [self bb_objectCache];
+  v5 = [bb_objectCache cacheObject:self];
 
   return v5;
 }
 
-- (id)awakeAfterUsingCoder:(id)a3
+- (id)awakeAfterUsingCoder:(id)coder
 {
-  v4 = [self bb_objectCache];
-  v5 = [v4 cacheObject:self];
+  bb_objectCache = [self bb_objectCache];
+  v5 = [bb_objectCache cacheObject:self];
 
   return v5;
 }

@@ -1,35 +1,35 @@
 @interface CRKSequentialOperation
-+ (id)sequentialOperationWithOperations:(id)a3;
-- (CRKSequentialOperation)initWithSequentialOperations:(id)a3 queue:(id)a4;
++ (id)sequentialOperationWithOperations:(id)operations;
+- (CRKSequentialOperation)initWithSequentialOperations:(id)operations queue:(id)queue;
 - (void)cancel;
 - (void)enqueueFront;
-- (void)frontOperationDidFinish:(id)a3;
+- (void)frontOperationDidFinish:(id)finish;
 - (void)main;
 @end
 
 @implementation CRKSequentialOperation
 
-- (CRKSequentialOperation)initWithSequentialOperations:(id)a3 queue:(id)a4
+- (CRKSequentialOperation)initWithSequentialOperations:(id)operations queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  operationsCopy = operations;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = CRKSequentialOperation;
   v8 = [(CRKSequentialOperation *)&v13 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [operationsCopy copy];
     operations = v8->_operations;
     v8->_operations = v9;
 
-    v11 = v7;
-    if (!v7)
+    crk_backgroundQueue = queueCopy;
+    if (!queueCopy)
     {
-      v11 = [MEMORY[0x277CF9540] crk_backgroundQueue];
+      crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
     }
 
-    objc_storeStrong(&v8->_queue, v11);
-    if (!v7)
+    objc_storeStrong(&v8->_queue, crk_backgroundQueue);
+    if (!queueCopy)
     {
     }
   }
@@ -37,10 +37,10 @@
   return v8;
 }
 
-+ (id)sequentialOperationWithOperations:(id)a3
++ (id)sequentialOperationWithOperations:(id)operations
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSequentialOperations:v4 queue:0];
+  operationsCopy = operations;
+  v5 = [[self alloc] initWithSequentialOperations:operationsCopy queue:0];
 
   return v5;
 }
@@ -118,22 +118,22 @@ LABEL_8:
     return;
   }
 
-  v3 = [(CRKSequentialOperation *)self operations];
-  if ([v3 count])
+  operations = [(CRKSequentialOperation *)self operations];
+  if ([operations count])
   {
-    v4 = [(CRKSequentialOperation *)self frontOfQueue];
-    v5 = [(CRKSequentialOperation *)self operations];
-    v6 = [v5 count] - 1;
+    frontOfQueue = [(CRKSequentialOperation *)self frontOfQueue];
+    operations2 = [(CRKSequentialOperation *)self operations];
+    v6 = [operations2 count] - 1;
 
-    if (v4 <= v6)
+    if (frontOfQueue <= v6)
     {
-      v7 = [(CRKSequentialOperation *)self operations];
-      v9 = [v7 objectAtIndexedSubscript:{-[CRKSequentialOperation frontOfQueue](self, "frontOfQueue")}];
+      operations3 = [(CRKSequentialOperation *)self operations];
+      v9 = [operations3 objectAtIndexedSubscript:{-[CRKSequentialOperation frontOfQueue](self, "frontOfQueue")}];
 
       [(CRKSequentialOperation *)self setFrontOfQueue:[(CRKSequentialOperation *)self frontOfQueue]+ 1];
       [v9 addTarget:self selector:sel_frontOperationDidFinish_ forOperationEvents:6];
-      v8 = [(CRKSequentialOperation *)self queue];
-      [v8 addOperation:v9];
+      queue = [(CRKSequentialOperation *)self queue];
+      [queue addOperation:v9];
 
       goto LABEL_8;
     }
@@ -146,15 +146,15 @@ LABEL_8:
   [(CRKSequentialOperation *)self endOperationWithResultObject:0];
 }
 
-- (void)frontOperationDidFinish:(id)a3
+- (void)frontOperationDidFinish:(id)finish
 {
-  v8 = a3;
-  v4 = [v8 error];
-  if (v4 && (v5 = v4, v6 = [(CRKSequentialOperation *)self isCancelled], v5, (v6 & 1) == 0))
+  finishCopy = finish;
+  error = [finishCopy error];
+  if (error && (v5 = error, v6 = [(CRKSequentialOperation *)self isCancelled], v5, (v6 & 1) == 0))
   {
-    [(CRKSequentialOperation *)self setFailedOperation:v8];
-    v7 = [v8 error];
-    [(CRKSequentialOperation *)self endOperationWithError:v7];
+    [(CRKSequentialOperation *)self setFailedOperation:finishCopy];
+    error2 = [finishCopy error];
+    [(CRKSequentialOperation *)self endOperationWithError:error2];
   }
 
   else

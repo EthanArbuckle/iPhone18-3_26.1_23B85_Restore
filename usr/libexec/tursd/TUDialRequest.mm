@@ -1,12 +1,12 @@
 @interface TUDialRequest
-+ (void)_logProvider:(id)a3;
++ (void)_logProvider:(id)provider;
 - (BOOL)nph_isSOS;
 - (BOOL)nph_needsPrompt;
 - (BOOL)nph_needsRTTDisambiguationPrompt;
 - (id)nph_localizedShortDescription;
 - (unint64_t)nph_audioMessageType;
-- (void)nph_logWithReason:(id)a3 indented:(BOOL)a4;
-- (void)setNph_audioMessageType:(unint64_t)a3;
+- (void)nph_logWithReason:(id)reason indented:(BOOL)indented;
+- (void)setNph_audioMessageType:(unint64_t)type;
 @end
 
 @implementation TUDialRequest
@@ -28,31 +28,31 @@
 
   if (NPHDeviceOSIsInternalInstall() && v4 && (-[TUDialRequest handle](self, "handle"), v5 = objc_claimAutoreleasedReturnValue(), [v5 value], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", v4), v6, v5, (v7 & 1) != 0))
   {
-    v8 = 1;
+    isSOS = 1;
   }
 
   else
   {
-    v8 = [(TUDialRequest *)self isSOS];
+    isSOS = [(TUDialRequest *)self isSOS];
   }
 
-  return v8;
+  return isSOS;
 }
 
 - (BOOL)nph_needsRTTDisambiguationPrompt
 {
-  v3 = [(TUDialRequest *)self provider];
-  v4 = [v3 isTelephonyProvider];
+  provider = [(TUDialRequest *)self provider];
+  isTelephonyProvider = [provider isTelephonyProvider];
 
-  return v4 && sub_1000015F0() - 1 <= 1 && [(TUDialRequest *)self ttyType]== 0;
+  return isTelephonyProvider && sub_1000015F0() - 1 <= 1 && [(TUDialRequest *)self ttyType]== 0;
 }
 
-- (void)nph_logWithReason:(id)a3 indented:(BOOL)a4
+- (void)nph_logWithReason:(id)reason indented:(BOOL)indented
 {
-  v4 = a4;
-  v6 = a3;
+  indentedCopy = indented;
+  reasonCopy = reason;
   v7 = &stru_100014D40;
-  if (v4)
+  if (indentedCopy)
   {
     v7 = @"\t";
   }
@@ -64,26 +64,26 @@
     v10 = 138413058;
     v11 = v8;
     v12 = 2112;
-    v13 = v6;
+    v13 = reasonCopy;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@%@ TUDialRequest %p: %@", &v10, 0x2Au);
   }
 }
 
-+ (void)_logProvider:(id)a3
++ (void)_logProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = sub_100001C24();
   v5 = v4;
-  if (v3)
+  if (providerCopy)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = v3;
+      v7 = providerCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "provider: %@", &v6, 0xCu);
     }
   }
@@ -94,25 +94,25 @@
   }
 }
 
-- (void)setNph_audioMessageType:(unint64_t)a3
+- (void)setNph_audioMessageType:(unint64_t)type
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:type];
   objc_setAssociatedObject(self, "nph_audioMessageType", v4, 3);
 }
 
 - (unint64_t)nph_audioMessageType
 {
   v2 = objc_getAssociatedObject(self, "nph_audioMessageType");
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (id)nph_localizedShortDescription
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [(TUDialRequest *)self handle];
-  v5 = [v4 value];
+  handle = [(TUDialRequest *)self handle];
+  value = [handle value];
   v6 = TUNetworkCountryCode();
   if (v6)
   {

@@ -1,17 +1,17 @@
 @interface PodcastsUPPConsumer
 + (NSString)identifier;
-- (_TtC17MediaPlaybackCore19PodcastsUPPConsumer)initWithPlaybackEngine:(id)a3 playbackPositionHandler:(id)a4;
-- (void)subscribeToEventStream:(id)a3;
-- (void)unsubscribeFromEventStream:(id)a3;
+- (_TtC17MediaPlaybackCore19PodcastsUPPConsumer)initWithPlaybackEngine:(id)engine playbackPositionHandler:(id)handler;
+- (void)subscribeToEventStream:(id)stream;
+- (void)unsubscribeFromEventStream:(id)stream;
 @end
 
 @implementation PodcastsUPPConsumer
 
-- (void)subscribeToEventStream:(id)a3
+- (void)subscribeToEventStream:(id)stream
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C5C7EE38(a3);
+  selfCopy = self;
+  sub_1C5C7EE38(stream);
   swift_unknownObjectRelease();
 }
 
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (_TtC17MediaPlaybackCore19PodcastsUPPConsumer)initWithPlaybackEngine:(id)a3 playbackPositionHandler:(id)a4
+- (_TtC17MediaPlaybackCore19PodcastsUPPConsumer)initWithPlaybackEngine:(id)engine playbackPositionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   if (v5)
   {
     v6 = swift_allocObject();
@@ -38,13 +38,13 @@
     v6 = 0;
   }
 
-  return sub_1C5C7565C(a3, v5, v6);
+  return sub_1C5C7565C(engine, v5, v6);
 }
 
-- (void)unsubscribeFromEventStream:(id)a3
+- (void)unsubscribeFromEventStream:(id)stream
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1C5CD18AC();
   swift_unknownObjectRelease();
 }

@@ -1,23 +1,23 @@
 @interface BLSCacheFlipbookOnDisplayWakeAttribute
 + (id)cacheFlipbook;
-+ (id)cacheFlipbookForFBSScene:(id)a3;
-+ (id)cacheFlipbookForFBSSceneIdentityToken:(id)a3;
++ (id)cacheFlipbookForFBSScene:(id)scene;
++ (id)cacheFlipbookForFBSSceneIdentityToken:(id)token;
 @end
 
 @implementation BLSCacheFlipbookOnDisplayWakeAttribute
 
-+ (id)cacheFlipbookForFBSScene:(id)a3
++ (id)cacheFlipbookForFBSScene:(id)scene
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFBSScene:v4];
+  sceneCopy = scene;
+  v5 = [[self alloc] initWithFBSScene:sceneCopy];
 
   return v5;
 }
 
-+ (id)cacheFlipbookForFBSSceneIdentityToken:(id)a3
++ (id)cacheFlipbookForFBSSceneIdentityToken:(id)token
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSceneIdentityToken:v4];
+  tokenCopy = token;
+  v5 = [[self alloc] initWithSceneIdentityToken:tokenCopy];
 
   return v5;
 }

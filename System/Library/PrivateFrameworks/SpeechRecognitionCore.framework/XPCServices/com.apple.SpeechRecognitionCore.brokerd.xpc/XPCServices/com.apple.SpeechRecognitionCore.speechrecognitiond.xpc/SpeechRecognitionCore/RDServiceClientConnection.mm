@@ -1,7 +1,7 @@
 @interface RDServiceClientConnection
 - (SRDInternalClientProtocol)proxy;
 - (_TtC50com_apple_SpeechRecognitionCore_speechrecognitiond25RDServiceClientConnection)init;
-- (_TtC50com_apple_SpeechRecognitionCore_speechrecognitiond25RDServiceClientConnection)initWithConnection:(id)a3;
+- (_TtC50com_apple_SpeechRecognitionCore_speechrecognitiond25RDServiceClientConnection)initWithConnection:(id)connection;
 @end
 
 @implementation RDServiceClientConnection
@@ -14,10 +14,10 @@
   return v3;
 }
 
-- (_TtC50com_apple_SpeechRecognitionCore_speechrecognitiond25RDServiceClientConnection)initWithConnection:(id)a3
+- (_TtC50com_apple_SpeechRecognitionCore_speechrecognitiond25RDServiceClientConnection)initWithConnection:(id)connection
 {
-  v3 = a3;
-  v4 = sub_10005EBE0(v3);
+  connectionCopy = connection;
+  v4 = sub_10005EBE0(connectionCopy);
 
   return v4;
 }

@@ -1,20 +1,20 @@
 @interface MIBUDiagnosticsOperation
-- (BOOL)isCommandAllowed:(id)a3;
-- (MIBUDiagnosticsOperation)initWithDelegate:(id)a3;
+- (BOOL)isCommandAllowed:(id)allowed;
+- (MIBUDiagnosticsOperation)initWithDelegate:(id)delegate;
 - (void)_cleanup;
 - (void)_operationDone;
 - (void)_resume;
-- (void)appDidExitWithError:(id)a3;
-- (void)appDidLaunchWithError:(id)a3;
+- (void)appDidExitWithError:(id)error;
+- (void)appDidLaunchWithError:(id)error;
 @end
 
 @implementation MIBUDiagnosticsOperation
 
-- (MIBUDiagnosticsOperation)initWithDelegate:(id)a3
+- (MIBUDiagnosticsOperation)initWithDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = MIBUDiagnosticsOperation;
-  v3 = [(MIBUOperation *)&v7 initWithDelegate:a3];
+  v3 = [(MIBUOperation *)&v7 initWithDelegate:delegate];
   v4 = v3;
   if (v3)
   {
@@ -45,7 +45,7 @@
       v8 = v7;
       v9 = [NSString stringWithFormat:@"Starting Diagnostics operation"];
       *buf = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
       v14 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@", buf, 0x16u);
@@ -73,7 +73,7 @@
     v5 = v4;
     v6 = [NSString stringWithFormat:@"Diagnostics operation already in progress resuming..."];;
     *buf = 138543618;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2114;
     v14 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@", buf, 0x16u);
@@ -82,28 +82,28 @@ LABEL_11:
   }
 }
 
-- (BOOL)isCommandAllowed:(id)a3
+- (BOOL)isCommandAllowed:(id)allowed
 {
-  v3 = a3;
+  allowedCopy = allowed;
   v4 = [NSSet setWithArray:&off_1000A9AB8];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:allowedCopy];
 
   return v5;
 }
 
-- (void)appDidLaunchWithError:(id)a3
+- (void)appDidLaunchWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v5 = [(MIBUOperation *)self syncQueue];
+    syncQueue = [(MIBUOperation *)self syncQueue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000209C4;
     v9[3] = &unk_100099480;
     v9[4] = self;
-    v10 = v4;
-    dispatch_async(v5, v9);
+    v10 = errorCopy;
+    dispatch_async(syncQueue, v9);
   }
 
   else
@@ -119,7 +119,7 @@ LABEL_11:
       v7 = v6;
       v8 = [NSString stringWithFormat:@"Diagnostic app successfully launched!"];
       *buf = 138543618;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
       v14 = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@", buf, 0x16u);
@@ -127,18 +127,18 @@ LABEL_11:
   }
 }
 
-- (void)appDidExitWithError:(id)a3
+- (void)appDidExitWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(MIBUOperation *)self syncQueue];
+  errorCopy = error;
+  syncQueue = [(MIBUOperation *)self syncQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100020C8C;
   v7[3] = &unk_100099480;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(syncQueue, v7);
 }
 
 - (void)_cleanup
@@ -154,7 +154,7 @@ LABEL_11:
     v4 = v3;
     v5 = [NSString stringWithFormat:@"removing default preference keys..."];
     *buf = 138543618;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2114;
     v19 = v5;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@", buf, 0x16u);
@@ -172,15 +172,15 @@ LABEL_11:
     v7 = v6;
     v8 = [NSString stringWithFormat:@"Terminating diag controller..."];
     *buf = 138543618;
-    v17 = self;
+    selfCopy3 = self;
     v18 = 2114;
     v19 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@", buf, 0x16u);
   }
 
-  v9 = [(MIBUDiagnosticsOperation *)self diagController];
+  diagController = [(MIBUDiagnosticsOperation *)self diagController];
   v15 = 0;
-  v10 = [v9 terminate:&v15];
+  v10 = [diagController terminate:&v15];
   v11 = v15;
 
   if ((v10 & 1) == 0)
@@ -196,7 +196,7 @@ LABEL_11:
       v13 = v12;
       v14 = [NSString stringWithFormat:@"Failed to terminate Diagnostics App. err: %@", v11];
       *buf = 138543618;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2114;
       v19 = v14;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@", buf, 0x16u);
@@ -207,8 +207,8 @@ LABEL_11:
 - (void)_operationDone
 {
   [(MIBUDiagnosticsOperation *)self _cleanup];
-  v3 = [(MIBUOperation *)self delegate];
-  [v3 operationFinishedWithError:self->_error];
+  delegate = [(MIBUOperation *)self delegate];
+  [delegate operationFinishedWithError:self->_error];
 }
 
 @end

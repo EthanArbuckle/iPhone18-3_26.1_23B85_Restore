@@ -1,10 +1,10 @@
 @interface OrgApacheLuceneUtilFstBuilder
-- (BOOL)validOutputWithId:(id)a3;
+- (BOOL)validOutputWithId:(id)id;
 - (id)finish;
 - (int64_t)fstRamBytesUsed;
 - (int64_t)getMappedStateCount;
 - (int64_t)getTermCount;
-- (void)addWithOrgApacheLuceneUtilIntsRef:(id)a3 withId:(id)a4;
+- (void)addWithOrgApacheLuceneUtilIntsRef:(id)ref withId:(id)id;
 - (void)dealloc;
 @end
 
@@ -47,33 +47,33 @@ LABEL_5:
   }
 }
 
-- (void)addWithOrgApacheLuceneUtilIntsRef:(id)a3 withId:(id)a4
+- (void)addWithOrgApacheLuceneUtilIntsRef:(id)ref withId:(id)id
 {
-  if (!a4)
+  if (!id)
   {
     goto LABEL_106;
   }
 
-  NO_OUTPUT = a4;
-  v6 = self;
-  if ([a4 isEqual:self->NO_OUTPUT_])
+  NO_OUTPUT = id;
+  selfCopy = self;
+  if ([id isEqual:self->NO_OUTPUT_])
   {
-    NO_OUTPUT = v6->NO_OUTPUT_;
+    NO_OUTPUT = selfCopy->NO_OUTPUT_;
   }
 
-  if (!a3)
+  if (!ref)
   {
     goto LABEL_106;
   }
 
-  v92 = v6;
-  if (*(a3 + 5))
+  v92 = selfCopy;
+  if (*(ref + 5))
   {
     v95 = NO_OUTPUT;
-    v7 = *(a3 + 4);
-    v8 = JavaLangMath_minWithInt_withInt_([(OrgApacheLuceneUtilIntsRefBuilder *)v6->lastInput_ length], *(a3 + 5));
-    p_frontier = &v6->frontier_;
-    frontier = v6->frontier_;
+    v7 = *(ref + 4);
+    v8 = JavaLangMath_minWithInt_withInt_([(OrgApacheLuceneUtilIntsRefBuilder *)selfCopy->lastInput_ length], *(ref + 5));
+    p_frontier = &selfCopy->frontier_;
+    frontier = selfCopy->frontier_;
     if (!frontier)
     {
       goto LABEL_106;
@@ -103,8 +103,8 @@ LABEL_5:
         goto LABEL_30;
       }
 
-      v21 = [(OrgApacheLuceneUtilIntsRefBuilder *)v6->lastInput_ intAtWithInt:v17];
-      v22 = *(a3 + 1);
+      v21 = [(OrgApacheLuceneUtilIntsRefBuilder *)selfCopy->lastInput_ intAtWithInt:v17];
+      v22 = *(ref + 1);
       if (!v22)
       {
         goto LABEL_106;
@@ -141,7 +141,7 @@ LABEL_106:
 
     v91 = v33;
     v34 = v33 + 1;
-    v35 = *(a3 + 5) + 1;
+    v35 = *(ref + 5) + 1;
     if (*(*p_frontier + 2) < v35)
     {
       if ((atomic_load_explicit(&OrgApacheLuceneUtilRamUsageEstimator__initialized, memory_order_acquire) & 1) == 0)
@@ -163,18 +163,18 @@ LABEL_106:
         do
         {
           v39 = [OrgApacheLuceneUtilFstBuilder_UnCompiledNode alloc];
-          OrgApacheLuceneUtilFstBuilder_UnCompiledNode_initWithOrgApacheLuceneUtilFstBuilder_withInt_(v39, &v6->super.isa, v38);
+          OrgApacheLuceneUtilFstBuilder_UnCompiledNode_initWithOrgApacheLuceneUtilFstBuilder_withInt_(v39, &selfCopy->super.isa, v38);
           IOSObjectArray_SetAndConsume(v37, v38++, v39);
         }
 
         while (v38 < v37->super.size_);
       }
 
-      JreStrongAssign(&v6->frontier_, v37);
+      JreStrongAssign(&selfCopy->frontier_, v37);
     }
 
-    sub_100136CF0(v6, v34);
-    v40 = *(a3 + 5);
+    sub_100136CF0(selfCopy, v34);
+    v40 = *(ref + 5);
     if (v34 <= v40)
     {
       v94 = v34;
@@ -194,14 +194,14 @@ LABEL_106:
           goto LABEL_106;
         }
 
-        v45 = *(a3 + 1);
+        v45 = *(ref + 1);
         if (!v45)
         {
           goto LABEL_106;
         }
 
         v46 = *(v45 + 8);
-        v47 = v41 + *(a3 + 4);
+        v47 = v41 + *(ref + 4);
         if (v47 < 0 || v47 >= v46)
         {
           IOSArray_throwOutOfBoundsWithMsg(v46, v47);
@@ -228,7 +228,7 @@ LABEL_106:
         }
 
         ++*(v51 + 48);
-        v40 = *(a3 + 5);
+        v40 = *(ref + 5);
         ++v41;
       }
 
@@ -243,8 +243,8 @@ LABEL_106:
     }
 
     v53 = *(*p_frontier + v40 + 3);
-    v54 = [(OrgApacheLuceneUtilIntsRefBuilder *)v6->lastInput_ length];
-    v55 = *(a3 + 5);
+    v54 = [(OrgApacheLuceneUtilIntsRefBuilder *)selfCopy->lastInput_ length];
+    v55 = *(ref + 5);
     v56 = v91;
     if (v54 != v55 || v91 != v55)
     {
@@ -254,7 +254,7 @@ LABEL_106:
       }
 
       *(v53 + 40) = 1;
-      JreStrongAssign((v53 + 32), v6->NO_OUTPUT_);
+      JreStrongAssign((v53 + 32), selfCopy->NO_OUTPUT_);
       v56 = v91;
     }
 
@@ -285,24 +285,24 @@ LABEL_106:
           goto LABEL_106;
         }
 
-        v64 = *(a3 + 1);
+        v64 = *(ref + 1);
         if (!v64)
         {
           goto LABEL_106;
         }
 
-        v65 = v58 + *(a3 + 4);
+        v65 = v58 + *(ref + 4);
         v66 = *(v64 + 8);
         if (v65 < 0 || v65 >= v66)
         {
-          IOSArray_throwOutOfBoundsWithMsg(v66, v58 + *(a3 + 4));
+          IOSArray_throwOutOfBoundsWithMsg(v66, v58 + *(ref + 4));
         }
 
         v67 = [v63 getLastOutputWithInt:*(v64 + 12 + 4 * v65)];
-        v68 = v6->NO_OUTPUT_;
+        v68 = selfCopy->NO_OUTPUT_;
         if (v67 != v68)
         {
-          fst = v6->fst_;
+          fst = selfCopy->fst_;
           if (!fst)
           {
             goto LABEL_106;
@@ -316,13 +316,13 @@ LABEL_106:
           }
 
           v68 = [(OrgApacheLuceneUtilFstOutputs *)outputs commonWithId:v95 withId:v70];
-          v72 = [(OrgApacheLuceneUtilFstOutputs *)v6->fst_->outputs_ subtractWithId:v70 withId:v68];
-          v73 = *(a3 + 1);
-          v74 = v58 + *(a3 + 4);
+          v72 = [(OrgApacheLuceneUtilFstOutputs *)selfCopy->fst_->outputs_ subtractWithId:v70 withId:v68];
+          v73 = *(ref + 1);
+          v74 = v58 + *(ref + 4);
           v75 = *(v73 + 8);
           if (v74 < 0 || v74 >= v75)
           {
-            IOSArray_throwOutOfBoundsWithMsg(v75, v58 + *(a3 + 4));
+            IOSArray_throwOutOfBoundsWithMsg(v75, v58 + *(ref + 4));
           }
 
           [v63 setLastOutputWithInt:*(v73 + 12 + 4 * v74) withId:v68];
@@ -332,10 +332,10 @@ LABEL_106:
           }
 
           [v62 prependOutputWithId:v72];
-          v6 = v92;
+          selfCopy = v92;
         }
 
-        v76 = v6->fst_;
+        v76 = selfCopy->fst_;
         if (!v76)
         {
           goto LABEL_106;
@@ -353,8 +353,8 @@ LABEL_106:
       while (v93 != ++v58);
     }
 
-    v78 = [(OrgApacheLuceneUtilIntsRefBuilder *)v6->lastInput_ length];
-    v79 = *(a3 + 5);
+    v78 = [(OrgApacheLuceneUtilIntsRefBuilder *)selfCopy->lastInput_ length];
+    v79 = *(ref + 5);
     if (v78 == v79 && v91 == v79)
     {
       if (!v90)
@@ -362,7 +362,7 @@ LABEL_106:
         goto LABEL_106;
       }
 
-      v86 = v6->fst_;
+      v86 = selfCopy->fst_;
       if (!v86)
       {
         goto LABEL_106;
@@ -391,31 +391,31 @@ LABEL_106:
         goto LABEL_106;
       }
 
-      v83 = *(a3 + 1);
+      v83 = *(ref + 1);
       if (!v83)
       {
         goto LABEL_106;
       }
 
       v84 = *(v83 + 8);
-      v85 = *(a3 + 4) + v91;
+      v85 = *(ref + 4) + v91;
       if (v85 < 0 || v85 >= v84)
       {
         IOSArray_throwOutOfBoundsWithMsg(v84, v85);
       }
 
       [v82 setLastOutputWithInt:*(v83 + 12 + 4 * v85) withId:v95];
-      v6 = v92;
+      selfCopy = v92;
     }
 
-    lastInput = v6->lastInput_;
+    lastInput = selfCopy->lastInput_;
 
-    [(OrgApacheLuceneUtilIntsRefBuilder *)lastInput copyIntsWithOrgApacheLuceneUtilIntsRef:a3];
+    [(OrgApacheLuceneUtilIntsRefBuilder *)lastInput copyIntsWithOrgApacheLuceneUtilIntsRef:ref];
   }
 
   else
   {
-    v26 = v6->frontier_;
+    v26 = selfCopy->frontier_;
     if (!v26)
     {
       goto LABEL_106;
@@ -458,20 +458,20 @@ LABEL_106:
   }
 }
 
-- (BOOL)validOutputWithId:(id)a3
+- (BOOL)validOutputWithId:(id)id
 {
   NO_OUTPUT = self->NO_OUTPUT_;
-  if (NO_OUTPUT == a3)
+  if (NO_OUTPUT == id)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 isEqual:NO_OUTPUT] ^ 1;
+  return [id isEqual:NO_OUTPUT] ^ 1;
 }
 
 - (id)finish

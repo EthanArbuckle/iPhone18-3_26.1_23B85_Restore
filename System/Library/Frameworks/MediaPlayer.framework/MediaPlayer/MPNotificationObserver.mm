@@ -1,5 +1,5 @@
 @interface MPNotificationObserver
-- (MPNotificationObserver)initWithName:(id)a3 object:(id)a4 handler:(id)a5;
+- (MPNotificationObserver)initWithName:(id)name object:(id)object handler:(id)handler;
 - (id)object;
 - (void)dealloc;
 @end
@@ -8,10 +8,10 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   name = self->_name;
   WeakRetained = objc_loadWeakRetained(&self->_object);
-  [v3 removeObserver:self name:name object:WeakRetained];
+  [defaultCenter removeObserver:self name:name object:WeakRetained];
 
   v6.receiver = self;
   v6.super_class = MPNotificationObserver;
@@ -25,27 +25,27 @@
   return WeakRetained;
 }
 
-- (MPNotificationObserver)initWithName:(id)a3 object:(id)a4 handler:(id)a5
+- (MPNotificationObserver)initWithName:(id)name object:(id)object handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  objectCopy = object;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = MPNotificationObserver;
   v11 = [(MPNotificationObserver *)&v18 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    objc_storeWeak(&v11->_object, v9);
-    v14 = [v10 copy];
+    objc_storeWeak(&v11->_object, objectCopy);
+    v14 = [handlerCopy copy];
     handler = v11->_handler;
     v11->_handler = v14;
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v11 selector:sel__handleNotification_ name:v8 object:v9];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__handleNotification_ name:nameCopy object:objectCopy];
   }
 
   return v11;

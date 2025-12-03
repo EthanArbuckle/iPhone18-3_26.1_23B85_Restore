@@ -1,7 +1,7 @@
 @interface NewsUserProfileShim
 - (NSSet)purchasedTagIDs;
 - (_TtC10StocksCoreP33_6F15235305946077A82EB95D8E9A724719NewsUserProfileShim)init;
-- (void)prepareForUseWithCompletion:(id)a3;
+- (void)prepareForUseWithCompletion:(id)completion;
 @end
 
 @implementation NewsUserProfileShim
@@ -24,9 +24,9 @@
   return v4;
 }
 
-- (void)prepareForUseWithCompletion:(id)a3
+- (void)prepareForUseWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   if (v3)
   {
     v4 = v3;

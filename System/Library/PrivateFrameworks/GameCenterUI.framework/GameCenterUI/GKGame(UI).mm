@@ -22,26 +22,26 @@
 
 - (uint64_t)isInstalled
 {
-  v2 = [a1 bundleIdentifier];
+  bundleIdentifier = [self bundleIdentifier];
 
-  if (v2)
+  if (bundleIdentifier)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x277D0BFE0] defaultWorkspace];
-  v5 = [a1 bundleIdentifier];
-  v6 = [v4 applicationIsInstalled:v5];
+  defaultWorkspace = [MEMORY[0x277D0BFE0] defaultWorkspace];
+  bundleIdentifier2 = [self bundleIdentifier];
+  v6 = [defaultWorkspace applicationIsInstalled:bundleIdentifier2];
 
   return v6;
 }
 
 - (id)utilityService
 {
-  v0 = [MEMORY[0x277D0C010] daemonProxy];
-  v1 = [v0 utilityService];
+  daemonProxy = [MEMORY[0x277D0C010] daemonProxy];
+  utilityService = [daemonProxy utilityService];
 
-  return v1;
+  return utilityService;
 }
 
 - (id)networkImageSourceWithName:()UI imageBrush:
@@ -89,10 +89,10 @@
   if ((a3 - 2) >= 2)
   {
 LABEL_14:
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v8 == 1)
+    if (userInterfaceIdiom == 1)
     {
       result = 128.0;
       if (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0)
@@ -104,10 +104,10 @@ LABEL_14:
     return 64.0;
   }
 
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if (v5 != 1)
+  if (userInterfaceIdiom2 != 1)
   {
     return 128.0;
   }
@@ -125,19 +125,19 @@ LABEL_14:
 {
   [objc_opt_class() serverImageSizeForIconStyle:a3];
   v5 = v4;
-  v6 = [a1 internal];
-  v7 = [v6 icons];
-  v8 = [MEMORY[0x277D0C8A8] sharedController];
-  [v8 greatestScreenScale];
-  v9 = [v7 _gkImageURLForSize:v5 scale:?];
+  internal = [self internal];
+  icons = [internal icons];
+  mEMORY[0x277D0C8A8] = [MEMORY[0x277D0C8A8] sharedController];
+  [mEMORY[0x277D0C8A8] greatestScreenScale];
+  v9 = [icons _gkImageURLForSize:v5 scale:?];
 
   return v9;
 }
 
 - (id)imageSourceForiOSIconStyle:()UI
 {
-  v5 = [MEMORY[0x277D0C8E0] brush];
-  v6 = v5;
+  brush = [MEMORY[0x277D0C8E0] brush];
+  v6 = brush;
   if (a3 > 9)
   {
     goto LABEL_15;
@@ -149,8 +149,8 @@ LABEL_14:
     block[1] = 3221225472;
     block[2] = __41__GKGame_UI__imageSourceForiOSIconStyle___block_invoke_3;
     block[3] = &unk_279669E48;
-    block[4] = a1;
-    v12 = v5;
+    block[4] = self;
+    v12 = brush;
     if (imageSourceForiOSIconStyle__onceToken_12 != -1)
     {
       dispatch_once(&imageSourceForiOSIconStyle__onceToken_12, block);
@@ -169,8 +169,8 @@ LABEL_6:
     v15[1] = 3221225472;
     v15[2] = __41__GKGame_UI__imageSourceForiOSIconStyle___block_invoke;
     v15[3] = &unk_279669E48;
-    v16 = v5;
-    v17 = a1;
+    v16 = brush;
+    selfCopy = self;
     if (imageSourceForiOSIconStyle__onceToken != -1)
     {
       dispatch_once(&imageSourceForiOSIconStyle__onceToken, v15);
@@ -188,8 +188,8 @@ LABEL_15:
     v13[1] = 3221225472;
     v13[2] = __41__GKGame_UI__imageSourceForiOSIconStyle___block_invoke_2;
     v13[3] = &unk_279669E48;
-    v13[4] = a1;
-    v14 = v5;
+    v13[4] = self;
+    v14 = brush;
     if (imageSourceForiOSIconStyle__onceToken_7 != -1)
     {
       dispatch_once(&imageSourceForiOSIconStyle__onceToken_7, v13);
@@ -204,7 +204,7 @@ LABEL_15:
   v10[1] = 3221225472;
   v10[2] = __41__GKGame_UI__imageSourceForiOSIconStyle___block_invoke_4;
   v10[3] = &unk_2796699A8;
-  v10[4] = a1;
+  v10[4] = self;
   if (imageSourceForiOSIconStyle__onceToken_17 != -1)
   {
     dispatch_once(&imageSourceForiOSIconStyle__onceToken_17, v10);
@@ -218,23 +218,23 @@ LABEL_7:
 
 - (id)macBrushForIconStyle:()UI
 {
-  v4 = [MEMORY[0x277D0C890] brush];
+  brush = [MEMORY[0x277D0C890] brush];
   [objc_opt_class() serverImageSizeForIconStyle:a3];
-  [v4 setOutputSize:?];
+  [brush setOutputSize:?];
 
-  return v4;
+  return brush;
 }
 
 - (id)imageSourceForIconStyle:()UI
 {
-  v5 = [a1 imageSourceForiOSIconStyle:?];
-  if ([a1 platform] == 2)
+  v5 = [self imageSourceForiOSIconStyle:?];
+  if ([self platform] == 2)
   {
-    v6 = [a1 macBrushForIconStyle:a3];
-    v7 = [MEMORY[0x277D0C8C8] sharedTheme];
-    v8 = [v7 macGameIconSource];
+    v6 = [self macBrushForIconStyle:a3];
+    mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+    macGameIconSource = [mEMORY[0x277D0C8C8] macGameIconSource];
 
-    v5 = [v8 subsourceWithBrush:v6];
+    v5 = [macGameIconSource subsourceWithBrush:v6];
   }
 
   return v5;
@@ -242,8 +242,8 @@ LABEL_7:
 
 - (id)iconForStyle:()UI
 {
-  v5 = [a1 _imageURLForIconStyle:?];
-  v6 = [a1 imageSourceForIconStyle:a3];
+  v5 = [self _imageURLForIconStyle:?];
+  v6 = [self imageSourceForIconStyle:a3];
   v7 = [v6 cachedImageForIdentifier:v5];
 
   return v7;
@@ -251,8 +251,8 @@ LABEL_7:
 
 - (id)cachedIconForStyle:()UI
 {
-  v5 = [a1 _imageURLForIconStyle:?];
-  v6 = [a1 imageSourceForIconStyle:a3];
+  v5 = [self _imageURLForIconStyle:?];
+  v6 = [self imageSourceForIconStyle:a3];
   v7 = [v6 fastCachedOrDefaultImageForIdentifier:v5];
 
   return v7;
@@ -265,23 +265,23 @@ LABEL_7:
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/CommonUI/GKGame+UI.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 stringWithFormat:@"%@ (size.width == size.height)\n[%s (%s:%d)]", v6, "-[GKGame(UI) _imageSourceForIconSize:]", objc_msgSend(v8, "UTF8String"), 241];
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = [v5 stringWithFormat:@"%@ (size.width == size.height)\n[%s (%s:%d)]", v6, "-[GKGame(UI) _imageSourceForIconSize:]", objc_msgSend(lastPathComponent, "UTF8String"), 241];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
   }
 
-  v10 = [MEMORY[0x277D0C8D8] brush];
-  v11 = v10;
+  brush = [MEMORY[0x277D0C8D8] brush];
+  v11 = brush;
   if (a2 <= 64.0)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __38__GKGame_UI___imageSourceForIconSize___block_invoke;
     block[3] = &unk_279669E48;
-    block[4] = a1;
+    block[4] = self;
     v12 = &v24;
-    v24 = v10;
+    v24 = brush;
     if (_imageSourceForIconSize__onceToken != -1)
     {
       dispatch_once(&_imageSourceForIconSize__onceToken, block);
@@ -296,9 +296,9 @@ LABEL_7:
     v21[1] = 3221225472;
     v21[2] = __38__GKGame_UI___imageSourceForIconSize___block_invoke_2;
     v21[3] = &unk_279669E48;
-    v21[4] = a1;
+    v21[4] = self;
     v12 = &v22;
-    v22 = v10;
+    v22 = brush;
     if (_imageSourceForIconSize__onceToken_43 != -1)
     {
       dispatch_once(&_imageSourceForIconSize__onceToken_43, v21);
@@ -313,9 +313,9 @@ LABEL_7:
     v19[1] = 3221225472;
     v19[2] = __38__GKGame_UI___imageSourceForIconSize___block_invoke_3;
     v19[3] = &unk_279669E48;
-    v19[4] = a1;
+    v19[4] = self;
     v12 = &v20;
-    v20 = v10;
+    v20 = brush;
     if (_imageSourceForIconSize__onceToken_47 != -1)
     {
       dispatch_once(&_imageSourceForIconSize__onceToken_47, v19);
@@ -330,9 +330,9 @@ LABEL_7:
     v17[1] = 3221225472;
     v17[2] = __38__GKGame_UI___imageSourceForIconSize___block_invoke_4;
     v17[3] = &unk_279669E48;
-    v17[4] = a1;
+    v17[4] = self;
     v12 = &v18;
-    v18 = v10;
+    v18 = brush;
     if (_imageSourceForIconSize__onceToken_51 != -1)
     {
       dispatch_once(&_imageSourceForIconSize__onceToken_51, v17);
@@ -350,20 +350,20 @@ LABEL_7:
 - (id)loadIconForSize:()UI scale:withCompletionHandler:
 {
   v10 = a6;
-  v11 = [a1 _imageSourceForIconSize:{a2 * a4, a3 * a4}];
-  v12 = [a1 internal];
-  v13 = [v12 icons];
-  v14 = v13;
+  v11 = [self _imageSourceForIconSize:{a2 * a4, a3 * a4}];
+  internal = [self internal];
+  icons = [internal icons];
+  v14 = icons;
   if (a4 == 0.0)
   {
-    v15 = [MEMORY[0x277D0C8A8] sharedController];
-    [v15 greatestScreenScale];
+    mEMORY[0x277D0C8A8] = [MEMORY[0x277D0C8A8] sharedController];
+    [mEMORY[0x277D0C8A8] greatestScreenScale];
     v16 = [v14 _gkImageURLForSize:a2 scale:?];
   }
 
   else
   {
-    v16 = [v13 _gkImageURLForSize:a2 scale:a4];
+    v16 = [icons _gkImageURLForSize:a2 scale:a4];
   }
 
   v20[0] = MEMORY[0x277D85DD0];
@@ -372,7 +372,7 @@ LABEL_7:
   v20[3] = &unk_27966AB40;
   v21 = v10;
   v17 = v10;
-  [v11 loadImageForURLString:v16 reference:a1 queue:MEMORY[0x277D85CD0] handler:v20];
+  [v11 loadImageForURLString:v16 reference:self queue:MEMORY[0x277D85CD0] handler:v20];
   v18 = [v11 fastCachedImageForIdentifier:v16];
 
   return v18;
@@ -381,15 +381,15 @@ LABEL_7:
 - (id)loadIconForStyle:()UI withCompletionHandler:
 {
   v6 = a4;
-  v7 = [a1 imageSourceForIconStyle:a3];
-  v8 = [a1 _imageURLForIconStyle:a3];
+  v7 = [self imageSourceForIconStyle:a3];
+  v8 = [self _imageURLForIconStyle:a3];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__GKGame_UI__loadIconForStyle_withCompletionHandler___block_invoke;
   v12[3] = &unk_27966AB40;
   v13 = v6;
   v9 = v6;
-  [v7 loadImageForURLString:v8 reference:a1 queue:MEMORY[0x277D85CD0] handler:v12];
+  [v7 loadImageForURLString:v8 reference:self queue:MEMORY[0x277D85CD0] handler:v12];
   v10 = [v7 fastCachedImageForIdentifier:v8];
 
   return v10;
@@ -411,7 +411,7 @@ LABEL_7:
   v14 = v13;
   v16 = v14;
   v17 = a4;
-  v18 = a1;
+  selfCopy = self;
   [v11 enumerateObjectsWithOptions:1 usingBlock:v15];
 
   if (v8)
@@ -427,27 +427,27 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __39__GKGame_UI__logoImageWithMaximumSize___block_invoke;
   block[3] = &unk_2796699A8;
-  block[4] = a1;
+  block[4] = self;
   if (logoImageWithMaximumSize__onceToken != -1)
   {
     dispatch_once(&logoImageWithMaximumSize__onceToken, block);
   }
 
-  v5 = [MEMORY[0x277D0C048] currentGame];
-  v6 = [v5 bundleIdentifier];
+  currentGame = [MEMORY[0x277D0C048] currentGame];
+  bundleIdentifier = [currentGame bundleIdentifier];
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-logo(%g, %g)", v6, *&a2, *&a3];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-logo(%g, %g)", bundleIdentifier, *&a2, *&a3];
   v8 = [logoImageWithMaximumSize__sImageSource cachedImageForIdentifier:v7];
   if (!v8)
   {
-    v9 = [MEMORY[0x277D0BFE0] defaultWorkspace];
-    v10 = [v9 applicationProxyForBundleID:v6];
-    v11 = [v10 bundle];
-    v12 = [v11 infoDictionary];
-    v13 = [v12 objectForKeyedSubscript:@"GKDashboardLogo"];
+    defaultWorkspace = [MEMORY[0x277D0BFE0] defaultWorkspace];
+    v10 = [defaultWorkspace applicationProxyForBundleID:bundleIdentifier];
+    bundle = [v10 bundle];
+    infoDictionary = [bundle infoDictionary];
+    v13 = [infoDictionary objectForKeyedSubscript:@"GKDashboardLogo"];
     if (v13)
     {
-      v14 = [v11 pathForResource:v13 ofType:0];
+      v14 = [bundle pathForResource:v13 ofType:0];
       if (v14)
       {
         v15 = [MEMORY[0x277D755B8] imageWithContentsOfFile:v14];
@@ -458,7 +458,7 @@ LABEL_7:
           if (v17 > a3)
           {
             v18 = v16 * (a3 / v17);
-            v31 = v9;
+            v31 = defaultWorkspace;
             v19 = MEMORY[0x277D0C878];
             v32[0] = MEMORY[0x277D85DD0];
             v32[1] = 3221225472;
@@ -470,7 +470,7 @@ LABEL_7:
             v20 = [v19 contextDrawnWithSize:4 scale:v32 options:v18 usingBlock:{a3, 1.0}];
             [logoImageWithMaximumSize__sImageSource cacheImageFromContext:v20 forIdentifier:v7];
 
-            v9 = v31;
+            defaultWorkspace = v31;
           }
 
 LABEL_24:
@@ -519,9 +519,9 @@ LABEL_24:
       *buf = 138413058;
       v38 = v10;
       v39 = 2112;
-      v40 = v11;
+      v40 = bundle;
       v41 = 2048;
-      v42 = v12;
+      v42 = infoDictionary;
       v43 = 2112;
       v44 = v13;
       _os_log_error_impl(&dword_24DE53000, v28, OS_LOG_TYPE_ERROR, "Logo image missing: proxy:%@ bundle:%@ dict:%p resourceName:%@", buf, 0x2Au);

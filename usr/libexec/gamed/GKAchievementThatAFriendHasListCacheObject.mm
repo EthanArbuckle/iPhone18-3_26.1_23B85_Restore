@@ -1,24 +1,24 @@
 @interface GKAchievementThatAFriendHasListCacheObject
-+ (id)dateFromMillisecondsSinceEpoch:(double)a3;
-+ (id)friendsForAchievement:(id)a3 plist:(id)a4 profileProvider:(id)a5;
++ (id)dateFromMillisecondsSinceEpoch:(double)epoch;
++ (id)friendsForAchievement:(id)achievement plist:(id)plist profileProvider:(id)provider;
 - (BOOL)isValid;
-- (void)updateWithServerRepresentation:(id)a3 expirationDate:(id)a4 playerId:(id)a5 achievementId:(id)a6;
+- (void)updateWithServerRepresentation:(id)representation expirationDate:(id)date playerId:(id)id achievementId:(id)achievementId;
 @end
 
 @implementation GKAchievementThatAFriendHasListCacheObject
 
-+ (id)friendsForAchievement:(id)a3 plist:(id)a4 profileProvider:(id)a5
++ (id)friendsForAchievement:(id)achievement plist:(id)plist profileProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  achievementCopy = achievement;
+  plistCopy = plist;
+  providerCopy = provider;
   v10 = objc_alloc_init(NSMutableArray);
-  v11 = [v8 objectForKeyedSubscript:@"results"];
+  v11 = [plistCopy objectForKeyedSubscript:@"results"];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_10012A338;
   v39[3] = &unk_100367A40;
-  v12 = v7;
+  v12 = achievementCopy;
   v40 = v12;
   v13 = [v11 indexOfObjectPassingTest:v39];
 
@@ -30,9 +30,9 @@
   else
   {
     v31 = v12;
-    v32 = v8;
+    v32 = plistCopy;
     v34 = v10;
-    v15 = [v8 objectForKeyedSubscript:@"results"];
+    v15 = [plistCopy objectForKeyedSubscript:@"results"];
     v16 = [v15 objectAtIndexedSubscript:v13];
 
     [v16 objectForKeyedSubscript:@"friends-with-achievement"];
@@ -56,7 +56,7 @@
 
           v21 = *(*(&v35 + 1) + 8 * i);
           v22 = [v21 objectForKeyedSubscript:@"friend-player-id"];
-          v23 = v9[2](v9, v22);
+          v23 = providerCopy[2](providerCopy, v22);
 
           v24 = [v21 objectForKeyedSubscript:@"timestamp"];
           [v24 doubleValue];
@@ -85,17 +85,17 @@
     v14 = [v34 copy];
 
     v12 = v31;
-    v8 = v32;
+    plistCopy = v32;
   }
 
   return v14;
 }
 
-+ (id)dateFromMillisecondsSinceEpoch:(double)a3
++ (id)dateFromMillisecondsSinceEpoch:(double)epoch
 {
-  v4 = fabs(a3);
+  v4 = fabs(epoch);
   v5 = [NSDate alloc];
-  v6 = a3 / 1000.0;
+  v6 = epoch / 1000.0;
   if (v4 == INFINITY)
   {
     v6 = 0.0;
@@ -106,20 +106,20 @@
   return v7;
 }
 
-- (void)updateWithServerRepresentation:(id)a3 expirationDate:(id)a4 playerId:(id)a5 achievementId:(id)a6
+- (void)updateWithServerRepresentation:(id)representation expirationDate:(id)date playerId:(id)id achievementId:(id)achievementId
 {
   v14.receiver = self;
   v14.super_class = GKAchievementThatAFriendHasListCacheObject;
-  v9 = a6;
-  v10 = a3;
-  [(GKExpiringCacheObject *)&v14 updateWithServerRepresentation:v10 expirationDate:a4];
+  achievementIdCopy = achievementId;
+  representationCopy = representation;
+  [(GKExpiringCacheObject *)&v14 updateWithServerRepresentation:representationCopy expirationDate:date];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10012A514;
   v13[3] = &unk_100367A68;
   v13[4] = self;
   v11 = objc_retainBlock(v13);
-  v12 = [GKAchievementThatAFriendHasListCacheObject friendsForAchievement:v9 plist:v10 profileProvider:v11];
+  v12 = [GKAchievementThatAFriendHasListCacheObject friendsForAchievement:achievementIdCopy plist:representationCopy profileProvider:v11];
 
   [(GKListCacheObject *)self updateEntriesWithRepresentations:v12 entryForRepresentation:&stru_100367AA8 reuseEntriesByIndex:1];
 }
@@ -133,9 +133,9 @@
     return 0;
   }
 
-  v3 = [(GKAchievementThatAFriendHasListCacheObject *)self game];
-  v4 = [v3 name];
-  v5 = v4 != 0;
+  game = [(GKAchievementThatAFriendHasListCacheObject *)self game];
+  name = [game name];
+  v5 = name != 0;
 
   return v5;
 }

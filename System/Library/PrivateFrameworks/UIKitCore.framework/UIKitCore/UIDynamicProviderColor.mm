@@ -1,48 +1,48 @@
 @interface UIDynamicProviderColor
-- (BOOL)isEqual:(id)a3;
-- (UIDynamicProviderColor)initWithProvider:(id)a3;
-- (id)_resolvedColorWithTraitCollection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UIDynamicProviderColor)initWithProvider:(id)provider;
+- (id)_resolvedColorWithTraitCollection:(id)collection;
 - (id)description;
-- (id)replacementObjectForCoder:(id)a3;
+- (id)replacementObjectForCoder:(id)coder;
 @end
 
 @implementation UIDynamicProviderColor
 
-- (UIDynamicProviderColor)initWithProvider:(id)a3
+- (UIDynamicProviderColor)initWithProvider:(id)provider
 {
-  v4 = a3;
-  if (v4)
+  providerCopy = provider;
+  if (providerCopy)
   {
     v10.receiver = self;
     v10.super_class = UIDynamicProviderColor;
     v5 = [(UIDynamicProviderColor *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [providerCopy copy];
       provider = v5->_provider;
       v5->_provider = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)replacementObjectForCoder:(id)a3
+- (id)replacementObjectForCoder:(id)coder
 {
   v34 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  v33 = v4;
-  v6 = v4 < 2 || v4 - 5 < 6;
+  v33 = userInterfaceIdiom;
+  v6 = userInterfaceIdiom < 2 || userInterfaceIdiom - 5 < 6;
   v38 = v6;
   v28 = +[UITraitCollection _currentTraitCollectionIfExists];
   v36 = 0;
@@ -86,8 +86,8 @@
           v21 = (*(self->_provider + 2))();
           if (!v21)
           {
-            v25 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v25 handleFailureInMethod:a2 object:self file:@"UIColor.m" lineNumber:5348 description:@"Dynamic color provider must return a non-nil color"];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"UIColor.m" lineNumber:5348 description:@"Dynamic color provider must return a non-nil color"];
           }
 
           v22 = _UIThemeKeyFromTraitValues(-1, v10, v13, v16, v18, 0);
@@ -123,10 +123,10 @@
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -134,23 +134,23 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4->_provider == self->_provider;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy->_provider == self->_provider;
   }
 
   return v5;
 }
 
-- (id)_resolvedColorWithTraitCollection:(id)a3
+- (id)_resolvedColorWithTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v6 = +[UITraitCollection _currentTraitCollectionIfExists];
-  [UITraitCollection setCurrentTraitCollection:v5];
+  [UITraitCollection setCurrentTraitCollection:collectionCopy];
   v7 = (*(self->_provider + 2))();
   [UITraitCollection setCurrentTraitCollection:v6];
   if (!v7)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UIColor.m" lineNumber:5397 description:{@"Dynamic color provider must return a non-nil color. %@ resolved with %@", self, v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIColor.m" lineNumber:5397 description:{@"Dynamic color provider must return a non-nil color. %@ resolved with %@", self, collectionCopy}];
   }
 
   return v7;

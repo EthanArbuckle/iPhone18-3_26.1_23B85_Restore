@@ -1,11 +1,11 @@
 @interface WFWorkoutType
 + (id)allTypes;
-- (WFWorkoutType)initWithActivityType:(unint64_t)a3;
+- (WFWorkoutType)initWithActivityType:(unint64_t)type;
 @end
 
 @implementation WFWorkoutType
 
-- (WFWorkoutType)initWithActivityType:(unint64_t)a3
+- (WFWorkoutType)initWithActivityType:(unint64_t)type
 {
   v10.receiver = self;
   v10.super_class = WFWorkoutType;
@@ -13,8 +13,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_activityType = a3;
-    v6 = softLinkHKUILocalizedWorkoutTypeName(a3);
+    v4->_activityType = type;
+    v6 = softLinkHKUILocalizedWorkoutTypeName(type);
     name = v5->_name;
     v5->_name = v6;
 
@@ -26,8 +26,8 @@
 
 + (id)allTypes
 {
-  v2 = [(objc_class *)getHKWorkoutClass() _allWorkoutActivityTypes];
-  v3 = [v2 if_map:&__block_literal_global_3605];
+  _allWorkoutActivityTypes = [(objc_class *)getHKWorkoutClass() _allWorkoutActivityTypes];
+  v3 = [_allWorkoutActivityTypes if_map:&__block_literal_global_3605];
   v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_457];
 
   return v4;

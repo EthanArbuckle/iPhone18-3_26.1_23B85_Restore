@@ -1,30 +1,30 @@
 @interface BLCellularNetworkEvaluator
-+ (id)evaluatorForIdentity:(id)a3;
-- (BLCellularNetworkEvaluator)initWithIdentity:(id)a3;
-- (int64_t)evaluateForDownload:(id)a3;
++ (id)evaluatorForIdentity:(id)identity;
+- (BLCellularNetworkEvaluator)initWithIdentity:(id)identity;
+- (int64_t)evaluateForDownload:(id)download;
 @end
 
 @implementation BLCellularNetworkEvaluator
 
-+ (id)evaluatorForIdentity:(id)a3
++ (id)evaluatorForIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentity:v4];
+  identityCopy = identity;
+  v5 = [[self alloc] initWithIdentity:identityCopy];
 
   return v5;
 }
 
-- (BLCellularNetworkEvaluator)initWithIdentity:(id)a3
+- (BLCellularNetworkEvaluator)initWithIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v11.receiver = self;
   v11.super_class = BLCellularNetworkEvaluator;
   v6 = [(BLCellularNetworkEvaluator *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identity, a3);
-    v8 = [BUCellularSettings settingsForIdentity:v5];
+    objc_storeStrong(&v6->_identity, identity);
+    v8 = [BUCellularSettings settingsForIdentity:identityCopy];
     settings = v7->_settings;
     v7->_settings = v8;
   }
@@ -32,31 +32,31 @@
   return v7;
 }
 
-- (int64_t)evaluateForDownload:(id)a3
+- (int64_t)evaluateForDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   v5 = BLServiceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 logKey];
+    logKey = [downloadCopy logKey];
     *buf = 138543874;
-    v30 = v6;
+    v30 = logKey;
     v31 = 2048;
-    v32 = [v4 bytes];
+    bytes = [downloadCopy bytes];
     v33 = 1024;
-    v34 = [v4 isAutomatic];
+    isAutomatic = [downloadCopy isAutomatic];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Evaluating download, size = %llu automatic = %d", buf, 0x1Cu);
   }
 
-  v7 = [(BUCellularSettings *)self->_settings allowAutomaticDownloads];
-  if ([v4 isAutomatic] && (v7 & 1) == 0)
+  allowAutomaticDownloads = [(BUCellularSettings *)self->_settings allowAutomaticDownloads];
+  if ([downloadCopy isAutomatic] && (allowAutomaticDownloads & 1) == 0)
   {
     v8 = BLServiceLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 logKey];
+      logKey2 = [downloadCopy logKey];
       *buf = 138543362;
-      v30 = v9;
+      v30 = logKey2;
       v10 = "[%{public}@]: Implicitly denied - automatic downloads are disabled in Settings > Books > Cellular Data and will only happen on WiFi";
 LABEL_17:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v10, buf, 0xCu);
@@ -68,15 +68,15 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v11 = [(BUCellularSettings *)self->_settings cellularDataPrompt];
+  cellularDataPrompt = [(BUCellularSettings *)self->_settings cellularDataPrompt];
   if (![(BUCellularIdentity *)self->_identity isRoaming])
   {
-    if (v11 == 1)
+    if (cellularDataPrompt == 1)
     {
       goto LABEL_15;
     }
 
-    if (v11 == 2)
+    if (cellularDataPrompt == 2)
     {
       v8 = BLServiceLog();
       if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -86,15 +86,15 @@ LABEL_33:
         goto LABEL_20;
       }
 
-      v9 = [v4 logKey];
+      logKey2 = [downloadCopy logKey];
       *buf = 138543362;
-      v30 = v9;
+      v30 = logKey2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Implicitly allowed - cellular prompt disabled", buf, 0xCu);
     }
 
     else
     {
-      if (![v4 bytes])
+      if (![downloadCopy bytes])
       {
         v8 = BLServiceLog();
         if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -102,9 +102,9 @@ LABEL_33:
           goto LABEL_19;
         }
 
-        v9 = [v4 logKey];
+        logKey2 = [downloadCopy logKey];
         *buf = 138543362;
-        v30 = v9;
+        v30 = logKey2;
         v10 = "[%{public}@]: Implicitly denied - download size is unavailable";
         goto LABEL_17;
       }
@@ -118,8 +118,8 @@ LABEL_33:
       else
       {
         v17 = +[BUBag defaultBag];
-        v18 = [v4 kind];
-        v19 = [AMSNetworkConstraints networkConstraintsForMediaType:v18 withBag:v17];
+        kind = [downloadCopy kind];
+        v19 = [AMSNetworkConstraints networkConstraintsForMediaType:kind withBag:v17];
         v28 = 0;
         v20 = [v19 resultWithError:&v28];
         v8 = v28;
@@ -129,15 +129,15 @@ LABEL_33:
         constraints = self->_constraints;
         if (!constraints)
         {
-          v9 = BLServiceLog();
-          if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+          logKey2 = BLServiceLog();
+          if (os_log_type_enabled(logKey2, OS_LOG_TYPE_ERROR))
           {
-            v27 = [v4 logKey];
+            logKey3 = [downloadCopy logKey];
             *buf = 138543618;
-            v30 = v27;
+            v30 = logKey3;
             v31 = 2112;
-            v32 = v8;
-            _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "[%{public}@]: Implicitly denied - failed to load constraints:  %@", buf, 0x16u);
+            bytes = v8;
+            _os_log_impl(&_mh_execute_header, logKey2, OS_LOG_TYPE_ERROR, "[%{public}@]: Implicitly denied - failed to load constraints:  %@", buf, 0x16u);
           }
 
           goto LABEL_18;
@@ -145,19 +145,19 @@ LABEL_33:
       }
 
       v22 = [(AMSNetworkConstraints *)constraints sizeLimitForNetworkType:AMSNetworkTypeCellular];
-      v23 = [v4 bytes];
-      v9 = BLServiceLog();
-      v24 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-      if (v23 > v22)
+      bytes2 = [downloadCopy bytes];
+      logKey2 = BLServiceLog();
+      v24 = os_log_type_enabled(logKey2, OS_LOG_TYPE_DEFAULT);
+      if (bytes2 > v22)
       {
         if (v24)
         {
-          v25 = [v4 logKey];
+          logKey4 = [downloadCopy logKey];
           *buf = 138543618;
-          v30 = v25;
+          v30 = logKey4;
           v31 = 2048;
-          v32 = v22;
-          _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Implicitly denied - exceeded cellular limit (of %llu bytes)", buf, 0x16u);
+          bytes = v22;
+          _os_log_impl(&_mh_execute_header, logKey2, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Implicitly denied - exceeded cellular limit (of %llu bytes)", buf, 0x16u);
         }
 
         goto LABEL_18;
@@ -165,12 +165,12 @@ LABEL_33:
 
       if (v24)
       {
-        v26 = [v4 logKey];
+        logKey5 = [downloadCopy logKey];
         *buf = 138543618;
-        v30 = v26;
+        v30 = logKey5;
         v31 = 2048;
-        v32 = v22;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Implicitly allowed - cellular limit (of %llu bytes) applies", buf, 0x16u);
+        bytes = v22;
+        _os_log_impl(&_mh_execute_header, logKey2, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Implicitly allowed - cellular limit (of %llu bytes) applies", buf, 0x16u);
       }
     }
 
@@ -180,9 +180,9 @@ LABEL_33:
   v12 = BLServiceLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v4 logKey];
+    logKey6 = [downloadCopy logKey];
     *buf = 138543362;
-    v30 = v13;
+    v30 = logKey6;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Overriding cellular prompt - network is roaming", buf, 0xCu);
   }
 
@@ -190,9 +190,9 @@ LABEL_15:
   v8 = BLServiceLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 logKey];
+    logKey2 = [downloadCopy logKey];
     *buf = 138543362;
-    v30 = v9;
+    v30 = logKey2;
     v10 = "[%{public}@]: Implicitly denied - cellular prompt required";
     goto LABEL_17;
   }

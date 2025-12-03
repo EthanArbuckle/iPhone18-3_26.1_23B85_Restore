@@ -1,21 +1,21 @@
 @interface MTConfigAMSMetricsDelegate
-- (MTConfigAMSMetricsDelegate)initWithAMSBag:(id)a3;
+- (MTConfigAMSMetricsDelegate)initWithAMSBag:(id)bag;
 - (id)sources;
 @end
 
 @implementation MTConfigAMSMetricsDelegate
 
-- (MTConfigAMSMetricsDelegate)initWithAMSBag:(id)a3
+- (MTConfigAMSMetricsDelegate)initWithAMSBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v8.receiver = self;
   v8.super_class = MTConfigAMSMetricsDelegate;
   v5 = [(MTConfigAMSMetricsDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MTConfigAMSMetricsDelegate *)v5 setBag:v4];
-    [MEMORY[0x277CEE400] registerBagKeySetForMetricsConfiguration:v4];
+    [(MTConfigAMSMetricsDelegate *)v5 setBag:bagCopy];
+    [MEMORY[0x277CEE400] registerBagKeySetForMetricsConfiguration:bagCopy];
   }
 
   return v6;

@@ -2,10 +2,10 @@
 - (CSBluetoothWirelessSplitterMonitorImplDarwin)init;
 - (unint64_t)splitterState;
 - (void)_didReceiveWirelessSplitterStateChange;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)splitterState:(id)a3;
-- (void)updateSplitterState:(unint64_t)a3 shouldDisableSpeakerVerificationInSplitterMode:(BOOL)a4;
+- (void)splitterState:(id)state;
+- (void)updateSplitterState:(unint64_t)state shouldDisableSpeakerVerificationInSplitterMode:(BOOL)mode;
 @end
 
 @implementation CSBluetoothWirelessSplitterMonitorImplDarwin
@@ -31,7 +31,7 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   [(CSBluetoothWirelessSplitterMonitorImplDarwin *)self _didReceiveWirelessSplitterStateChange];
   v3 = CSLogContextFacilityCoreSpeech;
@@ -56,37 +56,37 @@
   return 0;
 }
 
-- (void)splitterState:(id)a3
+- (void)splitterState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    (*(a3 + 2))(a3, self->_splitterState, self->_shouldDisableSpeakerVerificationInSplitterMode);
+    (*(state + 2))(state, self->_splitterState, self->_shouldDisableSpeakerVerificationInSplitterMode);
   }
 }
 
-- (void)updateSplitterState:(unint64_t)a3 shouldDisableSpeakerVerificationInSplitterMode:(BOOL)a4
+- (void)updateSplitterState:(unint64_t)state shouldDisableSpeakerVerificationInSplitterMode:(BOOL)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
     *&v9[4] = "[CSBluetoothWirelessSplitterMonitorImplDarwin updateSplitterState:shouldDisableSpeakerVerificationInSplitterMode:]";
     *v9 = 136315650;
-    if (v4)
+    if (modeCopy)
     {
       v8 = @"YES";
     }
 
     *&v9[12] = 2050;
-    *&v9[14] = a3;
+    *&v9[14] = state;
     v10 = 2114;
     v11 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s splitterState : %{public}lu, shouldDisableSpeakerVerification : %{public}@", v9, 0x20u);
   }
 
-  self->_splitterState = a3;
-  self->_shouldDisableSpeakerVerificationInSplitterMode = v4;
+  self->_splitterState = state;
+  self->_shouldDisableSpeakerVerificationInSplitterMode = modeCopy;
   [(CSBluetoothWirelessSplitterMonitorImplDarwin *)self _didReceiveWirelessSplitterStateChange];
 }
 
@@ -104,15 +104,15 @@
     }
 
     self = v3;
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

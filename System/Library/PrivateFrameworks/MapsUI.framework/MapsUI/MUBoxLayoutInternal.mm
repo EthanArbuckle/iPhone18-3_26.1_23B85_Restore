@@ -1,35 +1,35 @@
 @interface MUBoxLayoutInternal
 - (BOOL)horizontalAlignmentBoundsContent;
 - (BOOL)verticalAlignmentBoundsContent;
-- (MUBoxLayoutInternal)initWithContainer:(id)a3;
+- (MUBoxLayoutInternal)initWithContainer:(id)container;
 - (MULayoutItem)container;
 - (NSArray)arrangedLayoutItems;
 - (NSDirectionalEdgeInsets)insets;
-- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)a3;
-- (UIOffset)offsetForArrangedLayoutItem:(id)a3;
+- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)item;
+- (UIOffset)offsetForArrangedLayoutItem:(id)item;
 - (float)horizontalAlignmentFittingSizePriority;
 - (float)verticalAlignmentFittingSizePriority;
 - (int64_t)horizontalAlignment;
-- (int64_t)horizontalAlignmentForArrangedLayoutItem:(id)a3;
+- (int64_t)horizontalAlignmentForArrangedLayoutItem:(id)item;
 - (int64_t)verticalAlignment;
-- (int64_t)verticalAlignmentForArrangedLayoutItem:(id)a3;
-- (void)removeArrangedLayoutItem:(id)a3;
-- (void)setArrangedLayoutItems:(id)a3;
-- (void)setContainer:(id)a3;
-- (void)setHorizontalAlignment:(int64_t)a3;
-- (void)setHorizontalAlignmentBoundsContent:(BOOL)a3;
-- (void)setHorizontalAlignmentFittingSizePriority:(float)a3;
-- (void)setInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setOffset:(UIOffset)a3 forArrangedLayoutItem:(id)a4;
-- (void)setPadding:(NSDirectionalEdgeInsets)a3 forArrangedLayoutItem:(id)a4;
-- (void)setVerticalAlignment:(int64_t)a3;
-- (void)setVerticalAlignmentBoundsContent:(BOOL)a3;
-- (void)setVerticalAlignmentFittingSizePriority:(float)a3;
+- (int64_t)verticalAlignmentForArrangedLayoutItem:(id)item;
+- (void)removeArrangedLayoutItem:(id)item;
+- (void)setArrangedLayoutItems:(id)items;
+- (void)setContainer:(id)container;
+- (void)setHorizontalAlignment:(int64_t)alignment;
+- (void)setHorizontalAlignmentBoundsContent:(BOOL)content;
+- (void)setHorizontalAlignmentFittingSizePriority:(float)priority;
+- (void)setInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setOffset:(UIOffset)offset forArrangedLayoutItem:(id)item;
+- (void)setPadding:(NSDirectionalEdgeInsets)padding forArrangedLayoutItem:(id)item;
+- (void)setVerticalAlignment:(int64_t)alignment;
+- (void)setVerticalAlignmentBoundsContent:(BOOL)content;
+- (void)setVerticalAlignmentFittingSizePriority:(float)priority;
 @end
 
 @implementation MUBoxLayoutInternal
 
-- (MUBoxLayoutInternal)initWithContainer:(id)a3
+- (MUBoxLayoutInternal)initWithContainer:(id)container
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC16E940, &qword_1C586A750);
   swift_unknownObjectRetain_n();
@@ -50,7 +50,7 @@
 - (MULayoutItem)container
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   Strong = swift_unknownObjectWeakLoadStrong();
 
@@ -59,12 +59,12 @@
   return Strong;
 }
 
-- (void)setContainer:(id)a3
+- (void)setContainer:(id)container
 {
   v4 = OBJC_IVAR___MUBoxLayoutInternal_builder;
   v5 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1C5623A68(v10);
   swift_unknownObjectWeakAssign();
   v7 = *(&self->super.super.isa + v4);
@@ -77,7 +77,7 @@
 - (int64_t)verticalAlignment
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   v4 = sub_1C57243F4();
 
@@ -85,13 +85,13 @@
   return v4;
 }
 
-- (void)setVerticalAlignment:(int64_t)a3
+- (void)setVerticalAlignment:(int64_t)alignment
 {
   v5 = OBJC_IVAR___MUBoxLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  sub_1C572440C(a3);
+  sub_1C572440C(alignment);
   v8 = *(&self->super.super.isa + v5);
   sub_1C567D378(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -101,7 +101,7 @@
 - (BOOL)verticalAlignmentBoundsContent
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v5);
   LOBYTE(v2) = sub_1C5724830();
 
@@ -109,13 +109,13 @@
   return v2 & 1;
 }
 
-- (void)setVerticalAlignmentBoundsContent:(BOOL)a3
+- (void)setVerticalAlignmentBoundsContent:(BOOL)content
 {
   v5 = OBJC_IVAR___MUBoxLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  sub_1C5724854(a3);
+  sub_1C5724854(content);
   v8 = *(&self->super.super.isa + v5);
   sub_1C567D378(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -125,7 +125,7 @@
 - (float)verticalAlignmentFittingSizePriority
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   v4 = sub_1C5724800();
 
@@ -133,13 +133,13 @@
   return v4;
 }
 
-- (void)setVerticalAlignmentFittingSizePriority:(float)a3
+- (void)setVerticalAlignmentFittingSizePriority:(float)priority
 {
   v5 = OBJC_IVAR___MUBoxLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  sub_1C57248B8(a3);
+  sub_1C57248B8(priority);
   v8 = *(&self->super.super.isa + v5);
   sub_1C567D378(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -149,7 +149,7 @@
 - (int64_t)horizontalAlignment
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   v4 = sub_1C57243F4();
 
@@ -157,13 +157,13 @@
   return v4;
 }
 
-- (void)setHorizontalAlignment:(int64_t)a3
+- (void)setHorizontalAlignment:(int64_t)alignment
 {
   v5 = OBJC_IVAR___MUBoxLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  sub_1C572440C(a3);
+  sub_1C572440C(alignment);
   v8 = *(&self->super.super.isa + v5);
   sub_1C567D378(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -173,7 +173,7 @@
 - (BOOL)horizontalAlignmentBoundsContent
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v5);
   LOBYTE(v2) = sub_1C5724830();
 
@@ -181,13 +181,13 @@
   return v2 & 1;
 }
 
-- (void)setHorizontalAlignmentBoundsContent:(BOOL)a3
+- (void)setHorizontalAlignmentBoundsContent:(BOOL)content
 {
   v5 = OBJC_IVAR___MUBoxLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  sub_1C5724854(a3);
+  sub_1C5724854(content);
   v8 = *(&self->super.super.isa + v5);
   sub_1C567D378(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -197,7 +197,7 @@
 - (float)horizontalAlignmentFittingSizePriority
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   v4 = sub_1C5724800();
 
@@ -205,13 +205,13 @@
   return v4;
 }
 
-- (void)setHorizontalAlignmentFittingSizePriority:(float)a3
+- (void)setHorizontalAlignmentFittingSizePriority:(float)priority
 {
   v5 = OBJC_IVAR___MUBoxLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  sub_1C57248B8(a3);
+  sub_1C57248B8(priority);
   v8 = *(&self->super.super.isa + v5);
   sub_1C567D378(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -221,7 +221,7 @@
 - (NSDirectionalEdgeInsets)insets
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v12);
 
   v4 = *&v12[4];
@@ -240,15 +240,15 @@
   return result;
 }
 
-- (void)setInsets:(NSDirectionalEdgeInsets)a3
+- (void)setInsets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
   v8 = OBJC_IVAR___MUBoxLayoutInternal_builder;
   v9 = *(&self->super.super.isa + OBJC_IVAR___MUBoxLayoutInternal_builder);
-  v10 = self;
+  selfCopy = self;
   sub_1C5623A68(v14);
   v15 = top;
   v16 = leading;
@@ -262,7 +262,7 @@
 
 - (NSArray)arrangedLayoutItems
 {
-  v2 = self;
+  selfCopy = self;
   BoxLayout.arrangedLayoutItems.getter();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC16DC50, &qword_1C586A8F0);
@@ -271,20 +271,20 @@
   return v3;
 }
 
-- (void)setArrangedLayoutItems:(id)a3
+- (void)setArrangedLayoutItems:(id)items
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC16DC50, &qword_1C586A8F0);
   v4 = sub_1C584F770();
-  v5 = self;
+  selfCopy = self;
   BoxLayout.arrangedLayoutItems.setter(v4);
 }
 
-- (void)removeArrangedLayoutItem:(id)a3
+- (void)removeArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain_n();
-  v4 = self;
+  selfCopy = self;
   sub_1C56236C4();
-  v5 = (*((*MEMORY[0x1E69E7D40] & v4->super.super.isa) + 0x98))(v10);
+  v5 = (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.isa) + 0x98))(v10);
   v7 = v6;
   v8 = sub_1C56829E0(sub_1C5676CD0);
   v9 = *(*v7 + 16);
@@ -303,10 +303,10 @@
   }
 }
 
-- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)a3
+- (NSDirectionalEdgeInsets)paddingForArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = BoxLayout.padding(forArrangedLayoutItem:)();
   v7 = v6;
   v9 = v8;
@@ -324,22 +324,22 @@
   return result;
 }
 
-- (void)setPadding:(NSDirectionalEdgeInsets)a3 forArrangedLayoutItem:(id)a4
+- (void)setPadding:(NSDirectionalEdgeInsets)padding forArrangedLayoutItem:(id)item
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = padding.trailing;
+  bottom = padding.bottom;
+  leading = padding.leading;
+  top = padding.top;
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   BoxLayout.setPadding(_:forArrangedLayoutItem:)(top, leading, bottom, trailing);
   swift_unknownObjectRelease();
 }
 
-- (UIOffset)offsetForArrangedLayoutItem:(id)a3
+- (UIOffset)offsetForArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = BoxLayout.offset(forArrangedLayoutItem:)();
   v7 = v6;
   swift_unknownObjectRelease();
@@ -351,25 +351,25 @@
   return result;
 }
 
-- (void)setOffset:(UIOffset)a3 forArrangedLayoutItem:(id)a4
+- (void)setOffset:(UIOffset)offset forArrangedLayoutItem:(id)item
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   BoxLayout.setOffset(_:forArrangedLayoutItem:)(horizontal, vertical);
   swift_unknownObjectRelease();
 }
 
-- (int64_t)verticalAlignmentForArrangedLayoutItem:(id)a3
+- (int64_t)verticalAlignmentForArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1C5681100(&v9);
   v6 = v9;
   if ((~v9 & 0xFFFFFFFE) == 0)
   {
-    (*((*MEMORY[0x1E69E7D40] & v4->super.super.isa) + 0xA0))(&v10, v5);
+    (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.isa) + 0xA0))(&v10, v5);
     v6 = v10;
   }
 
@@ -380,15 +380,15 @@
   return v7;
 }
 
-- (int64_t)horizontalAlignmentForArrangedLayoutItem:(id)a3
+- (int64_t)horizontalAlignmentForArrangedLayoutItem:(id)item
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1C5681B10(&v9);
   v6 = v9;
   if ((~v9 & 0xFFFFFFFE) == 0)
   {
-    (*((*MEMORY[0x1E69E7D40] & v4->super.super.isa) + 0x100))(&v10, v5);
+    (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.isa) + 0x100))(&v10, v5);
     v6 = v10;
   }
 

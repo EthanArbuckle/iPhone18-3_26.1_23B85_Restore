@@ -1,41 +1,41 @@
 @interface SFUZipInflateInputStream
-- (SFUZipInflateInputStream)initWithInput:(id)a3;
-- (SFUZipInflateInputStream)initWithOffset:(int64_t)a3 end:(int64_t)a4 uncompressedSize:(unint64_t)a5 crc:(unint64_t)a6 dataRepresentation:(id)a7;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
-- (unint64_t)readToOwnBuffer:(const char *)a3 size:(unint64_t)a4;
+- (SFUZipInflateInputStream)initWithInput:(id)input;
+- (SFUZipInflateInputStream)initWithOffset:(int64_t)offset end:(int64_t)end uncompressedSize:(unint64_t)size crc:(unint64_t)crc dataRepresentation:(id)representation;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
+- (unint64_t)readToOwnBuffer:(const char *)buffer size:(unint64_t)size;
 - (void)close;
 - (void)dealloc;
-- (void)seekToOffset:(int64_t)a3;
+- (void)seekToOffset:(int64_t)offset;
 - (void)setupInflateStream;
 @end
 
 @implementation SFUZipInflateInputStream
 
-- (SFUZipInflateInputStream)initWithOffset:(int64_t)a3 end:(int64_t)a4 uncompressedSize:(unint64_t)a5 crc:(unint64_t)a6 dataRepresentation:(id)a7
+- (SFUZipInflateInputStream)initWithOffset:(int64_t)offset end:(int64_t)end uncompressedSize:(unint64_t)size crc:(unint64_t)crc dataRepresentation:(id)representation
 {
   v12 = [(SFUZipInflateInputStream *)self init];
   v13 = v12;
   if (v12)
   {
     *&v12->mReachedEnd = 256;
-    v12->mOffset = a3;
-    v12->mCheckCrc = a6;
+    v12->mOffset = offset;
+    v12->mCheckCrc = crc;
     v12->mCalculatedCrc = crc32(0, 0, 0);
-    v13->mInput = [a7 bufferedInputStreamWithOffset:a3 length:a4 - a3];
-    v14 = 0x40000;
-    if (a5 < 0x40000)
+    v13->mInput = [representation bufferedInputStreamWithOffset:offset length:end - offset];
+    sizeCopy = 0x40000;
+    if (size < 0x40000)
     {
-      v14 = a5;
+      sizeCopy = size;
     }
 
-    v13->mOutBufferSize = v14;
+    v13->mOutBufferSize = sizeCopy;
     [(SFUZipInflateInputStream *)v13 setupInflateStream];
   }
 
   return v13;
 }
 
-- (SFUZipInflateInputStream)initWithInput:(id)a3
+- (SFUZipInflateInputStream)initWithInput:(id)input
 {
   v7.receiver = self;
   v7.super_class = SFUZipInflateInputStream;
@@ -45,7 +45,7 @@
   {
     *&v4->mReachedEnd = 0;
     v4->mOffset = 0;
-    v4->mInput = [[SFUBufferedInputStream alloc] initWithStream:a3];
+    v4->mInput = [[SFUBufferedInputStream alloc] initWithStream:input];
     v5->mOutBufferSize = 0x40000;
     [(SFUZipInflateInputStream *)v5 setupInflateStream];
   }
@@ -63,7 +63,7 @@
   [(SFUZipInflateInputStream *)&v3 dealloc];
 }
 
-- (unint64_t)readToOwnBuffer:(const char *)a3 size:(unint64_t)a4
+- (unint64_t)readToOwnBuffer:(const char *)buffer size:(unint64_t)size
 {
   mOutBuffer = self->mOutBuffer;
   if (!mOutBuffer)
@@ -77,36 +77,36 @@
     }
   }
 
-  *a3 = mOutBuffer;
+  *buffer = mOutBuffer;
   v8 = self->mOutBuffer;
-  if (a4 - 1 >= self->mOutBufferSize)
+  if (size - 1 >= self->mOutBufferSize)
   {
     mOutBufferSize = self->mOutBufferSize;
   }
 
   else
   {
-    mOutBufferSize = a4;
+    mOutBufferSize = size;
   }
 
   return [(SFUZipInflateInputStream *)self readToBuffer:v8 size:mOutBufferSize];
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
-  v4 = a4;
+  sizeCopy = size;
   v7 = 0x279D65000uLL;
-  if (a4 >= 0xFFFFFFFF)
+  if (size >= 0xFFFFFFFF)
   {
     v8 = +[TSUAssertionHandler currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SFUZipInflateInputStream readToBuffer:size:]"];
     [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/sf/SFUZipInflateInputStream.m"), 130, @"overflow in readToBuffer:"}];
   }
 
-  self->mStream.avail_out = v4;
-  self->mStream.next_out = a3;
-  next_out = a3;
-  if (v4)
+  self->mStream.avail_out = sizeCopy;
+  self->mStream.next_out = buffer;
+  next_out = buffer;
+  if (sizeCopy)
   {
     LODWORD(v11) = 0;
     do
@@ -131,10 +131,10 @@
         if (v12 >= 0xFFFFFFFF)
         {
           v14 = v7;
-          v15 = [*(v7 + 1520) currentHandler];
+          currentHandler = [*(v7 + 1520) currentHandler];
           v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SFUZipInflateInputStream readToBuffer:size:]"];
           v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/sf/SFUZipInflateInputStream.m"];
-          v18 = v15;
+          v18 = currentHandler;
           v7 = v14;
           [v18 handleFailureInFunction:v16 file:v17 lineNumber:144 description:@"overflow in readToBuffer:size:"];
         }
@@ -154,22 +154,22 @@
     next_out = self->mStream.next_out;
   }
 
-  if ((next_out - a3) >= 0xFFFFFFFF)
+  if ((next_out - buffer) >= 0xFFFFFFFF)
   {
-    v19 = [*(v7 + 1520) currentHandler];
+    currentHandler2 = [*(v7 + 1520) currentHandler];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SFUZipInflateInputStream readToBuffer:size:]"];
-    [v19 handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/sf/SFUZipInflateInputStream.m"), 157, @"overflow in readToBuffer:"}];
+    [currentHandler2 handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/sf/SFUZipInflateInputStream.m"), 157, @"overflow in readToBuffer:"}];
   }
 
-  if (next_out == a3)
+  if (next_out == buffer)
   {
     self->mReachedEnd = 1;
   }
 
-  return next_out - a3;
+  return next_out - buffer;
 }
 
-- (void)seekToOffset:(int64_t)a3
+- (void)seekToOffset:(int64_t)offset
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SFUZipInflateInputStream seekToOffset:]"];

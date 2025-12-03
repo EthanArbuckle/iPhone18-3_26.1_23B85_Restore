@@ -2,8 +2,8 @@
 - (NSArray)devices;
 - (TransparencyDeviceList)init;
 - (id)_authController;
-- (id)updateDevicesList:(id)a3;
-- (void)refreshDeviceList:(id)a3 complete:(id)a4;
+- (id)updateDevicesList:(id)list;
+- (void)refreshDeviceList:(id)list complete:(id)complete;
 @end
 
 @implementation TransparencyDeviceList
@@ -41,21 +41,21 @@
 - (NSArray)devices
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(TransparencyDeviceList *)self cachedDevices];
+  cachedDevices = [(TransparencyDeviceList *)self cachedDevices];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return cachedDevices;
 }
 
-- (id)updateDevicesList:(id)a3
+- (id)updateDevicesList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = listCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -92,16 +92,16 @@
   return v5;
 }
 
-- (void)refreshDeviceList:(id)a3 complete:(id)a4
+- (void)refreshDeviceList:(id)list complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  listCopy = list;
+  completeCopy = complete;
+  if (!listCopy)
   {
     v12 = [NSError aa_errorWithCode:-3 underlyingError:0];
 LABEL_13:
     v9 = v12;
-    v7[2](v7, 0, v12);
+    completeCopy[2](completeCopy, 0, v12);
     goto LABEL_25;
   }
 
@@ -127,7 +127,7 @@ LABEL_13:
   v9 = v8;
   if (v8)
   {
-    [v8 setAltDSID:v6];
+    [v8 setAltDSID:listCopy];
     v10 = objc_alloc_init(AKAppleIDAuthenticationController);
     if (v10)
     {
@@ -136,7 +136,7 @@ LABEL_13:
       v16[2] = sub_100225A74;
       v16[3] = &unk_10032B648;
       v16[4] = self;
-      v17 = v7;
+      v17 = completeCopy;
       [v10 deviceListWithContext:v9 completion:v16];
     }
 
@@ -155,7 +155,7 @@ LABEL_13:
       }
 
       v15 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-335 description:@"can't get authController"];
-      v7[2](v7, 0, v15);
+      completeCopy[2](completeCopy, 0, v15);
     }
   }
 
@@ -174,7 +174,7 @@ LABEL_13:
     }
 
     v10 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-334 description:@"can't get AKDeviceListRequestContextClass"];
-    v7[2](v7, 0, v10);
+    completeCopy[2](completeCopy, 0, v10);
   }
 
 LABEL_25:

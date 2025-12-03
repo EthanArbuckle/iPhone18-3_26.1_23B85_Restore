@@ -1,24 +1,24 @@
 @interface MTLToolsBuffer
 - (BOOL)detachBacking;
-- (BOOL)replaceBackingWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 deallocator:(id)a5;
+- (BOOL)replaceBackingWithBytesNoCopy:(void *)copy length:(unint64_t)length deallocator:(id)deallocator;
 - (__IOSurface)_aneIOSurface;
 - (__IOSurface)iosurface;
-- (id)formattedDescription:(unint64_t)a3;
-- (id)newLinearTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6;
-- (id)newTensorWithDescriptor:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5;
+- (id)formattedDescription:(unint64_t)description;
+- (id)newLinearTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image;
+- (id)newTensorWithDescriptor:(id)descriptor offset:(unint64_t)offset error:(id *)error;
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row;
 - (int64_t)sparseBufferTier;
 - (unint64_t)gpuAddress;
 - (unint64_t)length;
 - (unint64_t)parentGPUAddress;
 - (unint64_t)parentGPUSize;
-- (void)addDebugMarker:(id)a3 range:(_NSRange)a4;
+- (void)addDebugMarker:(id)marker range:(_NSRange)range;
 - (void)contents;
 - (void)dealloc;
-- (void)didModifyRange:(_NSRange)a3;
+- (void)didModifyRange:(_NSRange)range;
 - (void)removeAllDebugMarkers;
-- (void)setParentGPUAddress:(unint64_t)a3;
-- (void)setParentGPUSize:(unint64_t)a3;
+- (void)setParentGPUAddress:(unint64_t)address;
+- (void)setParentGPUSize:(unint64_t)size;
 @end
 
 @implementation MTLToolsBuffer
@@ -30,25 +30,25 @@
   [(MTLToolsResource *)&v2 dealloc];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v6 = MEMORY[0x277CCACA8];
   v7 = [-[MTLToolsObject baseObject](self "baseObject")];
   v11[0] = v5;
   v11[1] = @"label =";
   if ([(MTLToolsResource *)self label])
   {
-    v8 = [(MTLToolsResource *)self label];
+    label = [(MTLToolsResource *)self label];
   }
 
   else
   {
-    v8 = @"<none>";
+    label = @"<none>";
   }
 
-  v11[2] = v8;
+  v11[2] = label;
   result = [v6 stringWithFormat:@"%@%@", v7, objc_msgSend(objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v11, 3), "componentsJoinedByString:", @" "];
   v10 = *MEMORY[0x277D85DE8];
   return result;
@@ -56,63 +56,63 @@
 
 - (unint64_t)length
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 length];
+  return [baseObject length];
 }
 
 - (unint64_t)gpuAddress
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuAddress];
+  return [baseObject gpuAddress];
 }
 
 - (unint64_t)parentGPUAddress
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 parentGPUAddress];
+  return [baseObject parentGPUAddress];
 }
 
-- (void)setParentGPUAddress:(unint64_t)a3
+- (void)setParentGPUAddress:(unint64_t)address
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setParentGPUAddress:a3];
+  [baseObject setParentGPUAddress:address];
 }
 
 - (unint64_t)parentGPUSize
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 parentGPUSize];
+  return [baseObject parentGPUSize];
 }
 
-- (void)setParentGPUSize:(unint64_t)a3
+- (void)setParentGPUSize:(unint64_t)size
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setParentGPUSize:a3];
+  [baseObject setParentGPUSize:size];
 }
 
 - (void)contents
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 contents];
+  return [baseObject contents];
 }
 
-- (void)didModifyRange:(_NSRange)a3
+- (void)didModifyRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(MTLToolsObject *)self baseObject];
+  length = range.length;
+  location = range.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v5 didModifyRange:{location, length}];
+  [baseObject didModifyRange:{location, length}];
 }
 
-- (id)newLinearTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5 bytesPerImage:(unint64_t)a6
+- (id)newLinearTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -128,28 +128,28 @@
 
 - (__IOSurface)_aneIOSurface
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 _aneIOSurface];
+  return [baseObject _aneIOSurface];
 }
 
-- (void)addDebugMarker:(id)a3 range:(_NSRange)a4
+- (void)addDebugMarker:(id)marker range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [(MTLToolsObject *)self baseObject];
+  length = range.length;
+  location = range.location;
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v7 addDebugMarker:a3 range:{location, length}];
+  [baseObject addDebugMarker:marker range:{location, length}];
 }
 
 - (void)removeAllDebugMarkers
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 removeAllDebugMarkers];
+  [baseObject removeAllDebugMarkers];
 }
 
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4 bytesPerRow:(unint64_t)a5
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -163,7 +163,7 @@
   return result;
 }
 
-- (id)newTensorWithDescriptor:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)newTensorWithDescriptor:(id)descriptor offset:(unint64_t)offset error:(id *)error
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -179,30 +179,30 @@
 
 - (__IOSurface)iosurface
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 iosurface];
+  return [baseObject iosurface];
 }
 
 - (BOOL)detachBacking
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 detachBacking];
+  return [baseObject detachBacking];
 }
 
-- (BOOL)replaceBackingWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 deallocator:(id)a5
+- (BOOL)replaceBackingWithBytesNoCopy:(void *)copy length:(unint64_t)length deallocator:(id)deallocator
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 replaceBackingWithBytesNoCopy:a3 length:a4 deallocator:a5];
+  return [baseObject replaceBackingWithBytesNoCopy:copy length:length deallocator:deallocator];
 }
 
 - (int64_t)sparseBufferTier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 sparseBufferTier];
+  return [baseObject sparseBufferTier];
 }
 
 @end

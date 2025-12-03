@@ -1,14 +1,14 @@
 @interface MPModelLibraryPlaylistEditAlbumDataSource
-- (MPModelLibraryPlaylistEditAlbumDataSource)initWithLibrary:(id)a3 album:(id)a4 trackProperties:(id)a5 authorProfile:(id)a6;
-- (void)loadEntriesWithCompletion:(id)a3;
+- (MPModelLibraryPlaylistEditAlbumDataSource)initWithLibrary:(id)library album:(id)album trackProperties:(id)properties authorProfile:(id)profile;
+- (void)loadEntriesWithCompletion:(id)completion;
 @end
 
 @implementation MPModelLibraryPlaylistEditAlbumDataSource
 
-- (void)loadEntriesWithCompletion:(id)a3
+- (void)loadEntriesWithCompletion:(id)completion
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [MPModelSong kindWithVariants:3];
   v6 = +[MPPropertySet emptyPropertySet];
   v7 = objc_alloc_init(MPModelLibraryRequest);
@@ -34,8 +34,8 @@
   v14[2] = __71__MPModelLibraryPlaylistEditAlbumDataSource_loadEntriesWithCompletion___block_invoke;
   v14[3] = &unk_1E767C080;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [(MPModelLibraryRequest *)v7 performWithResponseHandler:v14];
 }
 
@@ -80,34 +80,34 @@ id __71__MPModelLibraryPlaylistEditAlbumDataSource_loadEntriesWithCompletion___b
   return v2;
 }
 
-- (MPModelLibraryPlaylistEditAlbumDataSource)initWithLibrary:(id)a3 album:(id)a4 trackProperties:(id)a5 authorProfile:(id)a6
+- (MPModelLibraryPlaylistEditAlbumDataSource)initWithLibrary:(id)library album:(id)album trackProperties:(id)properties authorProfile:(id)profile
 {
-  v30 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 identifiers];
-  v15 = [v14 library];
-  v16 = [v15 persistentID];
+  libraryCopy = library;
+  albumCopy = album;
+  propertiesCopy = properties;
+  profileCopy = profile;
+  identifiers = [albumCopy identifiers];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
-  if (v16)
+  if (persistentID)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [v14 library];
-    [v17 stringWithFormat:@"l.%lld", objc_msgSend(v18, "persistentID")];
+    library2 = [identifiers library];
+    [v17 stringWithFormat:@"l.%lld", objc_msgSend(library2, "persistentID")];
     v22 = LABEL_5:;
 
     goto LABEL_6;
   }
 
-  v19 = [v14 universalStore];
-  v20 = [v19 adamID];
+  universalStore = [identifiers universalStore];
+  adamID = [universalStore adamID];
 
-  if (v20)
+  if (adamID)
   {
     v21 = MEMORY[0x1E696AEC0];
-    v18 = [v14 universalStore];
-    [v21 stringWithFormat:@"a.%lld", objc_msgSend(v18, "adamID")];
+    library2 = [identifiers universalStore];
+    [v21 stringWithFormat:@"a.%lld", objc_msgSend(library2, "adamID")];
     goto LABEL_5;
   }
 
@@ -119,16 +119,16 @@ LABEL_6:
 
   v31.receiver = self;
   v31.super_class = MPModelLibraryPlaylistEditAlbumDataSource;
-  v26 = [(MPModelLibraryPlaylistEditDataSource *)&v31 initWithIdentifier:v25 authorProfile:v13];
+  v26 = [(MPModelLibraryPlaylistEditDataSource *)&v31 initWithIdentifier:v25 authorProfile:profileCopy];
 
   if (v26)
   {
-    objc_storeStrong(&v26->_library, a3);
-    v27 = [v11 copy];
+    objc_storeStrong(&v26->_library, library);
+    v27 = [albumCopy copy];
     album = v26->_album;
     v26->_album = v27;
 
-    objc_storeStrong(&v26->_trackPropertySet, a5);
+    objc_storeStrong(&v26->_trackPropertySet, properties);
   }
 
   return v26;

@@ -1,9 +1,9 @@
 @interface DeviceRecoveryBrainSpaceManager
-- (DeviceRecoveryBrainSpaceManager)initWithMounts:(id)a3 userDataVolumeMountPath:(id)a4 updateVolumeMountPath:(id)a5;
-- (id)freeSpaceOnMainContainerTillThreshold:(id)a3;
-- (id)getContainerDeviceNodeForVolumeAtPath:(id)a3 outError:(id *)a4;
-- (id)getFreeSpaceOnContainerForVolumeMountedAtPath:(id)a3 error:(id *)a4;
-- (id)getFreeSpaceOnDeviceForUser:(id *)a3;
+- (DeviceRecoveryBrainSpaceManager)initWithMounts:(id)mounts userDataVolumeMountPath:(id)path updateVolumeMountPath:(id)mountPath;
+- (id)freeSpaceOnMainContainerTillThreshold:(id)threshold;
+- (id)getContainerDeviceNodeForVolumeAtPath:(id)path outError:(id *)error;
+- (id)getFreeSpaceOnContainerForVolumeMountedAtPath:(id)path error:(id *)error;
+- (id)getFreeSpaceOnDeviceForUser:(id *)user;
 - (void)cleanupMobileAssets;
 - (void)cleanupUpdateVolume;
 - (void)deleteMobileBackupSnapshots;
@@ -13,33 +13,33 @@
 
 @implementation DeviceRecoveryBrainSpaceManager
 
-- (DeviceRecoveryBrainSpaceManager)initWithMounts:(id)a3 userDataVolumeMountPath:(id)a4 updateVolumeMountPath:(id)a5
+- (DeviceRecoveryBrainSpaceManager)initWithMounts:(id)mounts userDataVolumeMountPath:(id)path updateVolumeMountPath:(id)mountPath
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  mountsCopy = mounts;
+  pathCopy = path;
+  mountPathCopy = mountPath;
   v15.receiver = self;
   v15.super_class = DeviceRecoveryBrainSpaceManager;
   v12 = [(DeviceRecoveryBrainSpaceManager *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_systemDataVolumeMountPath, a3);
-    objc_storeStrong(&v13->_userDataVolumeMountPath, a4);
-    objc_storeStrong(&v13->_updateVolumeMountPath, a5);
+    objc_storeStrong(&v12->_systemDataVolumeMountPath, mounts);
+    objc_storeStrong(&v13->_userDataVolumeMountPath, path);
+    objc_storeStrong(&v13->_updateVolumeMountPath, mountPath);
   }
 
   return v13;
 }
 
-- (id)freeSpaceOnMainContainerTillThreshold:(id)a3
+- (id)freeSpaceOnMainContainerTillThreshold:(id)threshold
 {
-  v37 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(DeviceRecoveryBrainSpaceManager *)v4 userDataVolumeMountPath];
+  thresholdCopy = threshold;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userDataVolumeMountPath = [(DeviceRecoveryBrainSpaceManager *)selfCopy userDataVolumeMountPath];
 
-  if (!v5)
+  if (!userDataVolumeMountPath)
   {
     v32 = DRGetLogHandle();
     [DeviceRecoveryBrainSpaceManager freeSpaceOnMainContainerTillThreshold:v32];
@@ -52,7 +52,7 @@
   }
 
   v43 = 0;
-  v6 = [(DeviceRecoveryBrainSpaceManager *)v4 getFreeSpaceOnDeviceForUser:&v43];
+  v6 = [(DeviceRecoveryBrainSpaceManager *)selfCopy getFreeSpaceOnDeviceForUser:&v43];
   v7 = v43;
   if (v7 || !v6)
   {
@@ -65,8 +65,8 @@
     goto LABEL_29;
   }
 
-  v8 = [v6 unsignedLongLongValue];
-  if (v8 > [v37 unsignedLongLongValue])
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
+  if (unsignedLongLongValue > [thresholdCopy unsignedLongLongValue])
   {
     v9 = DRGetLogHandle();
     obj = v9;
@@ -126,14 +126,14 @@
       }
 
       v21 = NSSelectorFromString(v19);
-      v22 = [(DeviceRecoveryBrainSpaceManager *)v4 methodSignatureForSelector:v21];
+      v22 = [(DeviceRecoveryBrainSpaceManager *)selfCopy methodSignatureForSelector:v21];
       v23 = [NSInvocation invocationWithMethodSignature:v22];
 
       [v23 setSelector:v21];
-      [v23 setTarget:v4];
+      [v23 setTarget:selfCopy];
       [v23 invoke];
       v38 = 0;
-      v6 = [(DeviceRecoveryBrainSpaceManager *)v4 getFreeSpaceOnDeviceForUser:&v38];
+      v6 = [(DeviceRecoveryBrainSpaceManager *)selfCopy getFreeSpaceOnDeviceForUser:&v38];
       v24 = v38;
 
       if (v24 || !v6)
@@ -148,17 +148,17 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v25 = [v6 unsignedLongLongValue];
-      if (v25 > [v37 unsignedLongLongValue])
+      unsignedLongLongValue2 = [v6 unsignedLongLongValue];
+      if (unsignedLongLongValue2 > [thresholdCopy unsignedLongLongValue])
       {
         v28 = DRGetLogHandle();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [v6 unsignedLongLongValue];
+          unsignedLongLongValue3 = [v6 unsignedLongLongValue];
           *buf = 136446466;
           v45 = "[DeviceRecoveryBrainSpaceManager freeSpaceOnMainContainerTillThreshold:]";
           v46 = 2048;
-          v47 = v29;
+          v47 = unsignedLongLongValue3;
           _os_log_impl(&dword_0, v28, OS_LOG_TYPE_DEFAULT, "%{public}s: Sufficient free space now availaible(%llu)", buf, 0x16u);
         }
 
@@ -169,11 +169,11 @@ LABEL_26:
       v26 = DRGetLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v6 unsignedLongLongValue];
+        unsignedLongLongValue4 = [v6 unsignedLongLongValue];
         *buf = 136446466;
         v45 = "[DeviceRecoveryBrainSpaceManager freeSpaceOnMainContainerTillThreshold:]";
         v46 = 2048;
-        v47 = v27;
+        v47 = unsignedLongLongValue4;
         _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "%{public}s: Free space is not yet sufficient(%llu). Proceeding to next cleanup step", buf, 0x16u);
       }
 
@@ -195,18 +195,18 @@ LABEL_27:
 
 LABEL_28:
 LABEL_29:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (id)getFreeSpaceOnDeviceForUser:(id *)a3
+- (id)getFreeSpaceOnDeviceForUser:(id *)user
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = [(DeviceRecoveryBrainSpaceManager *)v3 userDataVolumeMountPath];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userDataVolumeMountPath = [(DeviceRecoveryBrainSpaceManager *)selfCopy userDataVolumeMountPath];
   v48 = 0;
-  v5 = [(DeviceRecoveryBrainSpaceManager *)v3 getContainerDeviceNodeForVolumeAtPath:v4 outError:&v48];
+  v5 = [(DeviceRecoveryBrainSpaceManager *)selfCopy getContainerDeviceNodeForVolumeAtPath:userDataVolumeMountPath outError:&v48];
   v6 = v48;
 
   if (!v5)
@@ -224,9 +224,9 @@ LABEL_29:
     goto LABEL_24;
   }
 
-  v7 = [(DeviceRecoveryBrainSpaceManager *)v3 userDataVolumeMountPath];
+  userDataVolumeMountPath2 = [(DeviceRecoveryBrainSpaceManager *)selfCopy userDataVolumeMountPath];
   v47 = 0;
-  v42 = [(DeviceRecoveryBrainSpaceManager *)v3 getFreeSpaceOnContainerForVolumeMountedAtPath:v7 error:&v47];
+  v42 = [(DeviceRecoveryBrainSpaceManager *)selfCopy getFreeSpaceOnContainerForVolumeMountedAtPath:userDataVolumeMountPath2 error:&v47];
   v8 = v47;
 
   if (v8)
@@ -252,9 +252,9 @@ LABEL_29:
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}s: Free space on userdata volume: %{public}@ bytes", buf, 0x16u);
   }
 
-  v10 = [(DeviceRecoveryBrainSpaceManager *)v3 systemDataVolumeMountPath];
+  systemDataVolumeMountPath = [(DeviceRecoveryBrainSpaceManager *)selfCopy systemDataVolumeMountPath];
   v46 = v6;
-  v11 = [(DeviceRecoveryBrainSpaceManager *)v3 getContainerDeviceNodeForVolumeAtPath:v10 outError:&v46];
+  v11 = [(DeviceRecoveryBrainSpaceManager *)selfCopy getContainerDeviceNodeForVolumeAtPath:systemDataVolumeMountPath outError:&v46];
   v12 = v46;
 
   if (!v11)
@@ -286,9 +286,9 @@ LABEL_29:
 
   else
   {
-    v14 = [(DeviceRecoveryBrainSpaceManager *)v3 systemDataVolumeMountPath];
+    systemDataVolumeMountPath2 = [(DeviceRecoveryBrainSpaceManager *)selfCopy systemDataVolumeMountPath];
     v45 = 0;
-    v41 = [(DeviceRecoveryBrainSpaceManager *)v3 getFreeSpaceOnContainerForVolumeMountedAtPath:v14 error:&v45];
+    v41 = [(DeviceRecoveryBrainSpaceManager *)selfCopy getFreeSpaceOnContainerForVolumeMountedAtPath:systemDataVolumeMountPath2 error:&v45];
     v8 = v45;
 
     if (v8)
@@ -314,9 +314,9 @@ LABEL_29:
     }
   }
 
-  v15 = [(DeviceRecoveryBrainSpaceManager *)v3 updateVolumeMountPath];
+  updateVolumeMountPath = [(DeviceRecoveryBrainSpaceManager *)selfCopy updateVolumeMountPath];
   v44 = v12;
-  v16 = [(DeviceRecoveryBrainSpaceManager *)v3 getContainerDeviceNodeForVolumeAtPath:v15 outError:&v44];
+  v16 = [(DeviceRecoveryBrainSpaceManager *)selfCopy getContainerDeviceNodeForVolumeAtPath:updateVolumeMountPath outError:&v44];
   v17 = v44;
 
   if (!v16)
@@ -351,9 +351,9 @@ LABEL_39:
 
   else
   {
-    v29 = [(DeviceRecoveryBrainSpaceManager *)v3 updateVolumeMountPath];
+    updateVolumeMountPath2 = [(DeviceRecoveryBrainSpaceManager *)selfCopy updateVolumeMountPath];
     v43 = 0;
-    v20 = [(DeviceRecoveryBrainSpaceManager *)v3 getFreeSpaceOnContainerForVolumeMountedAtPath:v29 error:&v43];
+    v20 = [(DeviceRecoveryBrainSpaceManager *)selfCopy getFreeSpaceOnContainerForVolumeMountedAtPath:updateVolumeMountPath2 error:&v43];
     v19 = v43;
 
     v18 = DRGetLogHandle();
@@ -367,10 +367,10 @@ LABEL_39:
     }
   }
 
-  v21 = [v42 unsignedLongLongValue];
-  v22 = [v41 unsignedLongLongValue];
-  v23 = __CFADD__(v21, v22);
-  v24 = &v22[v21];
+  unsignedLongLongValue = [v42 unsignedLongLongValue];
+  unsignedLongLongValue2 = [v41 unsignedLongLongValue];
+  v23 = __CFADD__(unsignedLongLongValue, unsignedLongLongValue2);
+  v24 = &unsignedLongLongValue2[unsignedLongLongValue];
   if (v23)
   {
     v36 = DRGetLogHandle();
@@ -384,8 +384,8 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v25 = [v20 unsignedLongLongValue];
-  if (__CFADD__(v24, v25))
+  unsignedLongLongValue3 = [v20 unsignedLongLongValue];
+  if (__CFADD__(v24, unsignedLongLongValue3))
   {
     v38 = DRGetLogHandle();
     [DeviceRecoveryBrainSpaceManager getFreeSpaceOnDeviceForUser:v38];
@@ -395,7 +395,7 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v26 = [NSNumber numberWithUnsignedLongLong:&v25[v24]];
+  v26 = [NSNumber numberWithUnsignedLongLong:&unsignedLongLongValue3[v24]];
   v8 = 0;
 LABEL_22:
   v12 = v17;
@@ -404,11 +404,11 @@ LABEL_23:
   v6 = v12;
 LABEL_24:
 
-  objc_sync_exit(v3);
-  if (a3 && v19)
+  objc_sync_exit(selfCopy);
+  if (user && v19)
   {
     v27 = v19;
-    *a3 = v19;
+    *user = v19;
   }
 
   return v26;
@@ -427,15 +427,15 @@ LABEL_24:
 {
   v3 = objc_autoreleasePoolPush();
   v4 = +[NSFileManager defaultManager];
-  v5 = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
+  updateVolumeMountPath = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
 
-  if (v5)
+  if (updateVolumeMountPath)
   {
-    v37 = v5;
+    v37 = updateVolumeMountPath;
     v38 = v3;
-    v6 = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
+    updateVolumeMountPath2 = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
     v40 = v4;
-    v7 = [v4 enumeratorAtPath:v6];
+    v7 = [v4 enumeratorAtPath:updateVolumeMountPath2];
 
     v8 = objc_alloc_init(NSMutableArray);
     v46 = 0u;
@@ -444,7 +444,7 @@ LABEL_24:
     v49 = 0u;
     v9 = v7;
     v10 = [v9 countByEnumeratingWithState:&v46 objects:v57 count:16];
-    v39 = self;
+    selfCopy = self;
     if (v10)
     {
       v11 = v10;
@@ -462,13 +462,13 @@ LABEL_24:
           v15 = *(*(&v46 + 1) + 8 * i);
           if (([&off_33AC0 containsObject:v15] & 1) != 0 || (objc_msgSend(v15, "hasPrefix:", @"softwareupdated.") & 1) != 0 || objc_msgSend(v15, "hasSuffix:", @"-MSUData"))
           {
-            v16 = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
+            updateVolumeMountPath3 = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
             v17 = [NSString stringWithFormat:@"/%@", v15];
-            v18 = [v16 stringByAppendingString:v17];
+            v18 = [updateVolumeMountPath3 stringByAppendingString:v17];
 
             [v8 addObject:v18];
             v12 = v18;
-            self = v39;
+            self = selfCopy;
           }
         }
 
@@ -554,9 +554,9 @@ LABEL_24:
       while (v30);
     }
 
-    self = v39;
+    self = selfCopy;
     v4 = v40;
-    v5 = v37;
+    updateVolumeMountPath = v37;
     v3 = v38;
   }
 
@@ -572,7 +572,7 @@ LABEL_24:
   }
 
   objc_autoreleasePoolPop(v3);
-  if (v5)
+  if (updateVolumeMountPath)
   {
     [(DeviceRecoveryBrainSpaceManager *)self syncVolumes];
   }
@@ -580,11 +580,11 @@ LABEL_24:
 
 - (void)performAPFSPurge
 {
-  v3 = [(DeviceRecoveryBrainSpaceManager *)self userDataVolumeMountPath];
+  userDataVolumeMountPath = [(DeviceRecoveryBrainSpaceManager *)self userDataVolumeMountPath];
 
   v4 = DRGetLogHandle();
   v5 = v4;
-  if (v3)
+  if (userDataVolumeMountPath)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -604,8 +604,8 @@ LABEL_24:
     v29 = 0u;
     *&buf[1] = 0u;
     buf[0] = 256;
-    v6 = [(DeviceRecoveryBrainSpaceManager *)self userDataVolumeMountPath];
-    v7 = fsctl([v6 fileSystemRepresentation], 0xC0A84A6EuLL, buf, 0);
+    userDataVolumeMountPath2 = [(DeviceRecoveryBrainSpaceManager *)self userDataVolumeMountPath];
+    v7 = fsctl([userDataVolumeMountPath2 fileSystemRepresentation], 0xC0A84A6EuLL, buf, 0);
 
     v8 = DRGetLogHandle();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -663,22 +663,22 @@ LABEL_12:
   }
 
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(DeviceRecoveryBrainSpaceManager *)self userDataVolumeMountPath];
+  userDataVolumeMountPath = [(DeviceRecoveryBrainSpaceManager *)self userDataVolumeMountPath];
 
-  if (v6)
+  if (userDataVolumeMountPath)
   {
-    v7 = [(DeviceRecoveryBrainSpaceManager *)self systemDataVolumeMountPath];
-    v8 = [NSString stringWithFormat:@"%@/%@", v7, @"MobileAsset/AssetsV2"];
+    systemDataVolumeMountPath = [(DeviceRecoveryBrainSpaceManager *)self systemDataVolumeMountPath];
+    v8 = [NSString stringWithFormat:@"%@/%@", systemDataVolumeMountPath, @"MobileAsset/AssetsV2"];
 
     [v5 addObject:v8];
   }
 
-  v9 = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
+  updateVolumeMountPath = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
 
-  if (v9)
+  if (updateVolumeMountPath)
   {
-    v10 = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
-    v11 = [NSString stringWithFormat:@"%@/MobileAsset/AssetsV2", v10];
+    updateVolumeMountPath2 = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
+    v11 = [NSString stringWithFormat:@"%@/MobileAsset/AssetsV2", updateVolumeMountPath2];
 
     [v5 addObject:v11];
   }
@@ -751,8 +751,8 @@ LABEL_12:
               else
               {
                 v22 = [v13 stringByAppendingPathComponent:v21];
-                v23 = [v22 stringByDeletingLastPathComponent];
-                v24 = [v23 isEqualToString:v13];
+                stringByDeletingLastPathComponent = [v22 stringByDeletingLastPathComponent];
+                v24 = [stringByDeletingLastPathComponent isEqualToString:v13];
 
                 if (v24)
                 {
@@ -851,12 +851,12 @@ LABEL_12:
   v13 = v2;
   do
   {
-    v5 = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
+    updateVolumeMountPath = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
 
-    if (v5)
+    if (updateVolumeMountPath)
     {
-      v6 = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
-      v7 = sync_volume_np([v6 fileSystemRepresentation], 3);
+      updateVolumeMountPath2 = [(DeviceRecoveryBrainSpaceManager *)self updateVolumeMountPath];
+      v7 = sync_volume_np([updateVolumeMountPath2 fileSystemRepresentation], 3);
 
       if (v7)
       {
@@ -874,12 +874,12 @@ LABEL_12:
       }
     }
 
-    v9 = [(DeviceRecoveryBrainSpaceManager *)self userDataVolumeMountPath];
+    userDataVolumeMountPath = [(DeviceRecoveryBrainSpaceManager *)self userDataVolumeMountPath];
 
-    if (v9)
+    if (userDataVolumeMountPath)
     {
-      v10 = [(DeviceRecoveryBrainSpaceManager *)self userDataVolumeMountPath];
-      v11 = sync_volume_np([v10 fileSystemRepresentation], 3);
+      userDataVolumeMountPath2 = [(DeviceRecoveryBrainSpaceManager *)self userDataVolumeMountPath];
+      v11 = sync_volume_np([userDataVolumeMountPath2 fileSystemRepresentation], 3);
 
       if (v11)
       {
@@ -903,13 +903,13 @@ LABEL_12:
   while (v4 != 3);
 }
 
-- (id)getFreeSpaceOnContainerForVolumeMountedAtPath:(id)a3 error:(id *)a4
+- (id)getFreeSpaceOnContainerForVolumeMountedAtPath:(id)path error:(id *)error
 {
-  v6 = a3;
+  pathCopy = path;
   v21 = 0;
   v22 = 0;
   v20 = 0;
-  v7 = [(DeviceRecoveryBrainSpaceManager *)self getContainerDeviceNodeForVolumeAtPath:v6 outError:&v20];
+  v7 = [(DeviceRecoveryBrainSpaceManager *)self getContainerDeviceNodeForVolumeAtPath:pathCopy outError:&v20];
   v8 = v20;
   v9 = DRGetLogHandle();
   v10 = v9;
@@ -920,9 +920,9 @@ LABEL_12:
       [DeviceRecoveryBrainSpaceManager getFreeSpaceOnContainerForVolumeMountedAtPath:error:];
     }
 
-    v14 = [NSString stringWithFormat:@"Failed to determine device node for volume at path %@", v6];
-    v15 = DRCreateError(@"DeviceRecoveryError", 18, v14, @"Failed to determine device node for volume at path %@", v8, "[DeviceRecoveryBrainSpaceManager getFreeSpaceOnContainerForVolumeMountedAtPath:error:]", "/Library/Caches/com.apple.xbs/Sources/DeviceRecovery/DeviceRecoveryBrainSupport_Framework/DeviceRecoveryBrainSpaceManager.m", 0x198u);
-    v12 = 0;
+    pathCopy = [NSString stringWithFormat:@"Failed to determine device node for volume at path %@", pathCopy];
+    v15 = DRCreateError(@"DeviceRecoveryError", 18, pathCopy, @"Failed to determine device node for volume at path %@", v8, "[DeviceRecoveryBrainSpaceManager getFreeSpaceOnContainerForVolumeMountedAtPath:error:]", "/Library/Caches/com.apple.xbs/Sources/DeviceRecovery/DeviceRecoveryBrainSupport_Framework/DeviceRecoveryBrainSpaceManager.m", 0x198u);
+    spaceInfo = 0;
     goto LABEL_8;
   }
 
@@ -939,23 +939,23 @@ LABEL_12:
   SpaceInfo = APFSContainerGetSpaceInfo();
   if (SpaceInfo)
   {
-    v12 = [NSString stringWithFormat:@"Unable to determine free space on container %@: %d", v7, SpaceInfo];
+    spaceInfo = [NSString stringWithFormat:@"Unable to determine free space on container %@: %d", v7, SpaceInfo];
     v13 = DRGetLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       [DeviceRecoveryBrainSpaceManager getFreeSpaceOnContainerForVolumeMountedAtPath:error:];
     }
 
-    v14 = [NSString stringWithFormat:@"%@", v12];
-    v15 = DRCreateError(@"DeviceRecoveryError", 18, v14, @"%@", 0, "[DeviceRecoveryBrainSpaceManager getFreeSpaceOnContainerForVolumeMountedAtPath:error:]", "/Library/Caches/com.apple.xbs/Sources/DeviceRecovery/DeviceRecoveryBrainSupport_Framework/DeviceRecoveryBrainSpaceManager.m", 0x1A1u);
+    pathCopy = [NSString stringWithFormat:@"%@", spaceInfo];
+    v15 = DRCreateError(@"DeviceRecoveryError", 18, pathCopy, @"%@", 0, "[DeviceRecoveryBrainSpaceManager getFreeSpaceOnContainerForVolumeMountedAtPath:error:]", "/Library/Caches/com.apple.xbs/Sources/DeviceRecovery/DeviceRecoveryBrainSupport_Framework/DeviceRecoveryBrainSpaceManager.m", 0x1A1u);
 LABEL_8:
 
     v16 = 0;
-    if (a4 && v15)
+    if (error && v15)
     {
       v17 = v15;
       v16 = 0;
-      *a4 = v15;
+      *error = v15;
     }
 
     goto LABEL_14;
@@ -975,51 +975,51 @@ LABEL_8:
 
   v16 = [NSNumber numberWithUnsignedLongLong:v21];
   v15 = 0;
-  v12 = &stru_30AA8;
+  spaceInfo = &stru_30AA8;
 LABEL_14:
 
   return v16;
 }
 
-- (id)getContainerDeviceNodeForVolumeAtPath:(id)a3 outError:(id *)a4
+- (id)getContainerDeviceNodeForVolumeAtPath:(id)path outError:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
     [DeviceRecoveryBrainSpaceManager getContainerDeviceNodeForVolumeAtPath:&v14 outError:?];
     v6 = 0;
     goto LABEL_16;
   }
 
-  v6 = [LPStaticMedia mediaForPath:v5];
+  v6 = [LPStaticMedia mediaForPath:pathCopy];
   if (!v6)
   {
-    [(DeviceRecoveryBrainSpaceManager *)v5 getContainerDeviceNodeForVolumeAtPath:&v14 outError:?];
+    [(DeviceRecoveryBrainSpaceManager *)pathCopy getContainerDeviceNodeForVolumeAtPath:&v14 outError:?];
     goto LABEL_16;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 container];
+    container = [v6 container];
 LABEL_8:
-    v8 = v7;
-    if (v7)
+    v8 = container;
+    if (container)
     {
       goto LABEL_9;
     }
 
-    [(DeviceRecoveryBrainSpaceManager *)v5 getContainerDeviceNodeForVolumeAtPath:&v14 outError:?];
+    [(DeviceRecoveryBrainSpaceManager *)pathCopy getContainerDeviceNodeForVolumeAtPath:&v14 outError:?];
 LABEL_16:
     v10 = v14;
 
-    v9 = 0;
-    if (a4 && v10)
+    devNodePath = 0;
+    if (error && v10)
     {
       v12 = v10;
-      v9 = 0;
+      devNodePath = 0;
       v8 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -1032,17 +1032,17 @@ LABEL_16:
 
   if (![v6 isWhole])
   {
-    v7 = [v6 wholeMediaForMedia];
+    container = [v6 wholeMediaForMedia];
     goto LABEL_8;
   }
 
   v8 = v6;
 LABEL_9:
-  v9 = [v8 devNodePath];
+  devNodePath = [v8 devNodePath];
   v10 = 0;
 LABEL_10:
 
-  return v9;
+  return devNodePath;
 }
 
 - (void)freeSpaceOnMainContainerTillThreshold:(NSObject *)a1 .cold.1(NSObject *a1)

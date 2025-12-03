@@ -1,32 +1,32 @@
 @interface VNHeatMapExtrema
-- (CGRect)computeRectFromExtremaUsingThreshold:(float)a3 vImage:(vImage_Buffer *)a4;
+- (CGRect)computeRectFromExtremaUsingThreshold:(float)threshold vImage:(vImage_Buffer *)image;
 - (VNHeatMapExtrema)init;
-- (void)updateExtrema:(float)a3 x:(int)a4 y:(int)a5;
+- (void)updateExtrema:(float)extrema x:(int)x y:(int)y;
 @end
 
 @implementation VNHeatMapExtrema
 
-- (CGRect)computeRectFromExtremaUsingThreshold:(float)a3 vImage:(vImage_Buffer *)a4
+- (CGRect)computeRectFromExtremaUsingThreshold:(float)threshold vImage:(vImage_Buffer *)image
 {
   x = self->_extrema[0].x;
   v7 = x;
   if (v7 > 0.0 && v7 < 3.4028e38)
   {
     y = self->_extrema[0].y;
-    v10 = a4->data + a4->rowBytes * y;
+    v10 = image->data + image->rowBytes * y;
     v11 = *&v10[4 * (v7 + -1.0)];
-    x = x - (1.0 - ((a3 - v11) / (*&v10[4 * v7] - v11)));
+    x = x - (1.0 - ((threshold - v11) / (*&v10[4 * v7] - v11)));
     self->_extrema[0].x = x;
   }
 
   v12 = self->_extrema[1].x;
   v13 = v12;
-  if (v13 > -1.0 && v13 < (a4->width - 1))
+  if (v13 > -1.0 && v13 < (image->width - 1))
   {
     v15 = self->_extrema[1].y;
-    v16 = a4->data + a4->rowBytes * v15;
+    v16 = image->data + image->rowBytes * v15;
     v17 = *&v16[4 * (v13 + 1.0)];
-    v12 = v12 + (1.0 - ((a3 - v17) / (*&v16[4 * v13] - v17)));
+    v12 = v12 + (1.0 - ((threshold - v17) / (*&v16[4 * v13] - v17)));
     self->_extrema[1].x = v12;
   }
 
@@ -36,20 +36,20 @@
   {
     v21 = self->_extrema[2].x;
     v22 = v21;
-    rowBytes = a4->rowBytes;
-    v24 = *(a4->data + 4 * v21 + rowBytes * (v19 + -1.0));
-    v18 = v18 - (1.0 - ((a3 - v24) / (*(a4->data + 4 * v22 + rowBytes * v19) - v24)));
+    rowBytes = image->rowBytes;
+    v24 = *(image->data + 4 * v21 + rowBytes * (v19 + -1.0));
+    v18 = v18 - (1.0 - ((threshold - v24) / (*(image->data + 4 * v22 + rowBytes * v19) - v24)));
     self->_extrema[2].y = v18;
   }
 
   v25 = self->_extrema[3].y;
   v26 = v25;
-  if (v26 > -1.0 && v26 < (a4->height - 1))
+  if (v26 > -1.0 && v26 < (image->height - 1))
   {
     v28 = self->_extrema[3].x;
-    v29 = a4->rowBytes;
-    v30 = *(a4->data + 4 * v28 + v29 * (v26 + 1.0));
-    v25 = v25 + (1.0 - ((a3 - v30) / (*(a4->data + 4 * v28 + v29 * v26) - v30)));
+    v29 = image->rowBytes;
+    v30 = *(image->data + 4 * v28 + v29 * (v26 + 1.0));
+    v25 = v25 + (1.0 - ((threshold - v30) / (*(image->data + 4 * v28 + v29 * v26) - v30)));
     self->_extrema[3].y = v25;
   }
 
@@ -57,8 +57,8 @@
   v32 = v25 - v18;
   v51 = CGRectStandardize(*&x);
   v52 = CGRectInset(v51, v51.size.width * -0.05, v51.size.height * -0.05);
-  v55.size.width = (a4->width - 1);
-  v55.size.height = (a4->height - 1);
+  v55.size.width = (image->width - 1);
+  v55.size.height = (image->height - 1);
   v33 = 0.0;
   v55.origin.x = 0.0;
   v55.origin.y = 0.0;
@@ -66,7 +66,7 @@
   v34 = v53.origin.x;
   width = v53.size.width;
   height = v53.size.height;
-  v37 = a4->height - (v53.origin.y + v53.size.height);
+  v37 = image->height - (v53.origin.y + v53.size.height);
   v53.origin.y = v37;
   IsNull = CGRectIsNull(v53);
   v39 = 1.0;
@@ -74,8 +74,8 @@
   v41 = 1.0;
   if (!IsNull)
   {
-    v42 = a4->height;
-    v43 = a4->width;
+    v42 = image->height;
+    v43 = image->width;
     v44 = 0.0;
     v45 = 0.0;
     v46 = 0.0;
@@ -105,40 +105,40 @@
   return result;
 }
 
-- (void)updateExtrema:(float)a3 x:(int)a4 y:(int)a5
+- (void)updateExtrema:(float)extrema x:(int)x y:(int)y
 {
-  v5 = a4;
+  xCopy = x;
   x = self->_extrema[0].x;
-  if (x > a4 || x == a4 && self->_extremeValues[0] < a3)
+  if (x > x || x == x && self->_extremeValues[0] < extrema)
   {
-    self->_extrema[0].x = v5;
-    self->_extrema[0].y = a5;
-    self->_extremeValues[0] = a3;
+    self->_extrema[0].x = xCopy;
+    self->_extrema[0].y = y;
+    self->_extremeValues[0] = extrema;
   }
 
   v7 = self->_extrema[1].x;
-  if (v7 < v5 || v7 == v5 && self->_extremeValues[1] < a3)
+  if (v7 < xCopy || v7 == xCopy && self->_extremeValues[1] < extrema)
   {
-    self->_extrema[1].x = v5;
-    self->_extrema[1].y = a5;
-    self->_extremeValues[1] = a3;
+    self->_extrema[1].x = xCopy;
+    self->_extrema[1].y = y;
+    self->_extremeValues[1] = extrema;
   }
 
-  v8 = a5;
+  yCopy = y;
   y = self->_extrema[2].y;
-  if (y > a5 || y == a5 && self->_extremeValues[2] < a3)
+  if (y > y || y == y && self->_extremeValues[2] < extrema)
   {
-    self->_extrema[2].x = v5;
-    self->_extrema[2].y = v8;
-    self->_extremeValues[2] = a3;
+    self->_extrema[2].x = xCopy;
+    self->_extrema[2].y = yCopy;
+    self->_extremeValues[2] = extrema;
   }
 
   v10 = self->_extrema[3].y;
-  if (v10 < v8 || v10 == v8 && self->_extremeValues[3] < a3)
+  if (v10 < yCopy || v10 == yCopy && self->_extremeValues[3] < extrema)
   {
-    self->_extrema[3].x = v5;
-    self->_extrema[3].y = v8;
-    self->_extremeValues[3] = a3;
+    self->_extrema[3].x = xCopy;
+    self->_extrema[3].y = yCopy;
+    self->_extremeValues[3] = extrema;
   }
 }
 

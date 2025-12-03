@@ -1,24 +1,24 @@
 @interface HMIVideoFrameTrackerFrameCandidate
-- (HMIVideoFrameTrackerFrameCandidate)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3 score:(float)a4 motionDetections:(id)a5 tracks:(id)a6;
+- (HMIVideoFrameTrackerFrameCandidate)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer score:(float)score motionDetections:(id)detections tracks:(id)tracks;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation HMIVideoFrameTrackerFrameCandidate
 
-- (HMIVideoFrameTrackerFrameCandidate)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3 score:(float)a4 motionDetections:(id)a5 tracks:(id)a6
+- (HMIVideoFrameTrackerFrameCandidate)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer score:(float)score motionDetections:(id)detections tracks:(id)tracks
 {
-  v11 = a5;
-  v12 = a6;
+  detectionsCopy = detections;
+  tracksCopy = tracks;
   v15.receiver = self;
   v15.super_class = HMIVideoFrameTrackerFrameCandidate;
   v13 = [(HMIVideoFrameTrackerFrameCandidate *)&v15 init];
   if (v13)
   {
-    v13->_sbuf = CFRetain(a3);
-    v13->_score = a4;
-    objc_storeStrong(&v13->_motionDetections, a5);
-    objc_storeStrong(&v13->_tracks, a6);
+    v13->_sbuf = CFRetain(buffer);
+    v13->_score = score;
+    objc_storeStrong(&v13->_motionDetections, detections);
+    objc_storeStrong(&v13->_tracks, tracks);
   }
 
   return v13;

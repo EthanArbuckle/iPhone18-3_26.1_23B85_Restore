@@ -1,14 +1,14 @@
 @interface TransferReflectionViewModel
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TransferReflectionViewModel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TransferReflectionViewModel.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TransferReflectionViewModel.encode(with:)(coderCopy);
 }
 
 @end

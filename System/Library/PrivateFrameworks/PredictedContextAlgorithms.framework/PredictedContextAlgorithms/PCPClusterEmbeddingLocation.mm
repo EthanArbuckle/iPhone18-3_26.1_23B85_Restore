@@ -1,12 +1,12 @@
 @interface PCPClusterEmbeddingLocation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPClusterEmbeddingLocation
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = PCPClusterEmbeddingLocation;
   v4 = [(PCPClusterEmbeddingLocation *)&v8 description];
-  v5 = [(PCPClusterEmbeddingLocation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPClusterEmbeddingLocation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   placeName = self->_placeName;
   if (placeName)
   {
-    [v3 setObject:placeName forKey:@"placeName"];
+    [dictionary setObject:placeName forKey:@"placeName"];
   }
 
   placeType = self->_placeType;
@@ -42,84 +42,84 @@
   placeLocation = self->_placeLocation;
   if (placeLocation)
   {
-    v8 = [(PCPLocation *)placeLocation dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"placeLocation"];
+    dictionaryRepresentation = [(PCPLocation *)placeLocation dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"placeLocation"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_placeName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_placeType)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_placeLocation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_placeName)
   {
-    [v4 setPlaceName:?];
-    v4 = v5;
+    [toCopy setPlaceName:?];
+    toCopy = v5;
   }
 
   if (self->_placeType)
   {
     [v5 setPlaceType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_placeLocation)
   {
     [v5 setPlaceLocation:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_placeName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_placeName copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_placeType copyWithZone:a3];
+  v8 = [(NSString *)self->_placeType copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(PCPLocation *)self->_placeLocation copyWithZone:a3];
+  v10 = [(PCPLocation *)self->_placeLocation copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((placeName = self->_placeName, !(placeName | v4[2])) || -[NSString isEqual:](placeName, "isEqual:")) && ((placeType = self->_placeType, !(placeType | v4[3])) || -[NSString isEqual:](placeType, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((placeName = self->_placeName, !(placeName | equalCopy[2])) || -[NSString isEqual:](placeName, "isEqual:")) && ((placeType = self->_placeType, !(placeType | equalCopy[3])) || -[NSString isEqual:](placeType, "isEqual:")))
   {
     placeLocation = self->_placeLocation;
-    if (placeLocation | v4[1])
+    if (placeLocation | equalCopy[1])
     {
       v8 = [(PCPLocation *)placeLocation isEqual:?];
     }
@@ -145,24 +145,24 @@
   return v4 ^ [(PCPLocation *)self->_placeLocation hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[2])
   {
     [(PCPClusterEmbeddingLocation *)self setPlaceName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(PCPClusterEmbeddingLocation *)self setPlaceType:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   placeLocation = self->_placeLocation;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (placeLocation)
   {
     if (v6)

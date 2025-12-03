@@ -4,9 +4,9 @@
 - (MPSKernel)initWithCoder:(NSCoder *)aDecoder;
 - (MPSKernel)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (id)debugDescription;
-- (id)sharedInitWithDevice:(id)a3;
+- (id)sharedInitWithDevice:(id)device;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setLabel:(NSString *)label;
 @end
 
@@ -46,9 +46,9 @@
   }
 }
 
-- (id)sharedInitWithDevice:(id)a3
+- (id)sharedInitWithDevice:(id)device
 {
-  if (!a3)
+  if (!device)
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -58,7 +58,7 @@
     goto LABEL_9;
   }
 
-  MPSDevice = MPSDevice::GetMPSDevice(a3);
+  MPSDevice = MPSDevice::GetMPSDevice(device);
   if (!MPSDevice)
   {
     if (!MTLReportFailureTypeEnabled())
@@ -107,9 +107,9 @@ LABEL_9:
       v22 = objc_opt_class();
       v23 = NSStringFromClass(v22);
       v27 = objc_msgSend_cStringUsingEncoding_(v23, v24, 1, v25, v26);
-      v32 = objc_msgSend_name(a3, v28, v29, v30, v31);
+      v32 = objc_msgSend_name(device, v28, v29, v30, v31);
       v36 = objc_msgSend_cStringUsingEncoding_(v32, v33, 1, v34, v35);
-      sub_22E367184(self, v37, "[%s initWithDevice: %p] device is not supported: %s\nReturning nil.", v27, a3, v36);
+      sub_22E367184(self, v37, "[%s initWithDevice: %p] device is not supported: %s\nReturning nil.", v27, device, v36);
       goto LABEL_11;
     }
   }
@@ -230,31 +230,31 @@ LABEL_14:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = self->_fileVersion.bits & 0xFFFFFF00 | 1;
   self->_fileVersion.bits = v6;
-  objc_msgSend_encodeInt32_forKey_(a3, a2, v6, @"MPSKernel._fileVersion", v3);
-  objc_msgSend_encodeInt64_forKey_(a3, v7, self->_options, @"MPSKernel._options", v8);
-  objc_msgSend_encodeInt64_forKey_(a3, v9, self->_verbosityLevel, @"MPSKernel._verbosityLevel", v10);
-  objc_msgSend_encodeInt32_forKey_(a3, v11, self->_tuningParams, @"MPSKernel._tuningParams", v12);
-  objc_msgSend_encodeInt32_forKey_(a3, v13, self->_maxTuningParams, @"MPSKernel._maxTuningParams", v14);
+  objc_msgSend_encodeInt32_forKey_(coder, a2, v6, @"MPSKernel._fileVersion", v3);
+  objc_msgSend_encodeInt64_forKey_(coder, v7, self->_options, @"MPSKernel._options", v8);
+  objc_msgSend_encodeInt64_forKey_(coder, v9, self->_verbosityLevel, @"MPSKernel._verbosityLevel", v10);
+  objc_msgSend_encodeInt32_forKey_(coder, v11, self->_tuningParams, @"MPSKernel._tuningParams", v12);
+  objc_msgSend_encodeInt32_forKey_(coder, v13, self->_maxTuningParams, @"MPSKernel._maxTuningParams", v14);
   if (self->_label)
   {
-    objc_msgSend_encodeObject_forKey_(a3, v15, self->_label, @"MPSKernel._label", v16);
+    objc_msgSend_encodeObject_forKey_(coder, v15, self->_label, @"MPSKernel._label", v16);
   }
 
   else
   {
-    objc_msgSend_encodeObject_forKey_(a3, v15, &stru_28421E100, @"MPSKernel._label", v16);
+    objc_msgSend_encodeObject_forKey_(coder, v15, &stru_28421E100, @"MPSKernel._label", v16);
   }
 
   v21 = objc_msgSend_name(*(self->_device + 2), v17, v18, v19, v20);
-  objc_msgSend_encodeObject_forKey_(a3, v22, v21, @"MPSKernel.originalDevice", v23);
-  objc_msgSend_encodeInt32_forKey_(a3, v24, self->_privateOptions, @"MPSKernel.tableOptions", v25);
+  objc_msgSend_encodeObject_forKey_(coder, v22, v21, @"MPSKernel.originalDevice", v23);
+  objc_msgSend_encodeInt32_forKey_(coder, v24, self->_privateOptions, @"MPSKernel.tableOptions", v25);
   enableConcurrency = self->_enableConcurrency;
 
-  MEMORY[0x2821F9670](a3, sel_encodeBool_forKey_, enableConcurrency, @"MPSKernel.enableConcurrency", v26);
+  MEMORY[0x2821F9670](coder, sel_encodeBool_forKey_, enableConcurrency, @"MPSKernel.enableConcurrency", v26);
 }
 
 - (MPSKernel)initWithCoder:(NSCoder *)aDecoder

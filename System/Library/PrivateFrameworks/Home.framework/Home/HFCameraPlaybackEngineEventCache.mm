@@ -1,8 +1,8 @@
 @interface HFCameraPlaybackEngineEventCache
-+ (BOOL)isValidEvent:(id)a3;
-- (BOOL)containsClip:(id)a3;
-- (BOOL)isFirstEventOfTheDay:(id)a3;
-- (HFCameraPlaybackEngineEventCache)initWithDebugLogger:(id)a3;
++ (BOOL)isValidEvent:(id)event;
+- (BOOL)containsClip:(id)clip;
+- (BOOL)isFirstEventOfTheDay:(id)day;
+- (HFCameraPlaybackEngineEventCache)initWithDebugLogger:(id)logger;
 - (HMCameraClip)clipWithLongestDuration;
 - (NSArray)clips;
 - (NSArray)events;
@@ -12,39 +12,39 @@
 - (NSMapTable)firstOfTheDayEvents;
 - (id)_events;
 - (id)daysWithClips;
-- (id)firstOfTheDayClipForDate:(id)a3;
+- (id)firstOfTheDayClipForDate:(id)date;
 - (id)removeAllEvents;
-- (id)removeEventUUIDs:(id)a3;
-- (id)resetAndUpdateWithEvents:(id)a3;
-- (id)updateWithEvents:(id)a3;
-- (void)_generateViewModelWithRawEventUpdates:(id)a3 completion:(id)a4;
-- (void)_removeAllEventsWithCompletion:(id)a3;
-- (void)_removeEventUUIDs:(id)a3 completion:(id)a4;
+- (id)removeEventUUIDs:(id)ds;
+- (id)resetAndUpdateWithEvents:(id)events;
+- (id)updateWithEvents:(id)events;
+- (void)_generateViewModelWithRawEventUpdates:(id)updates completion:(id)completion;
+- (void)_removeAllEventsWithCompletion:(id)completion;
+- (void)_removeEventUUIDs:(id)ds completion:(id)completion;
 - (void)_setupDebugHandler;
-- (void)_updateWithEvents:(id)a3 completion:(id)a4;
-- (void)_validateAndInsertRawEvents:(id)a3 completion:(id)a4;
+- (void)_updateWithEvents:(id)events completion:(id)completion;
+- (void)_validateAndInsertRawEvents:(id)events completion:(id)completion;
 - (void)dealloc;
-- (void)setClipWithLongestDuration:(id)a3;
-- (void)setClips:(id)a3;
-- (void)setEvents:(id)a3;
-- (void)setFirstOfTheDayClips:(id)a3;
-- (void)setFirstOfTheDayEvents:(id)a3;
-- (void)setRawEvents:(id)a3;
-- (void)setRawEventsByUniqueIdentifier:(id)a3;
+- (void)setClipWithLongestDuration:(id)duration;
+- (void)setClips:(id)clips;
+- (void)setEvents:(id)events;
+- (void)setFirstOfTheDayClips:(id)clips;
+- (void)setFirstOfTheDayEvents:(id)events;
+- (void)setRawEvents:(id)events;
+- (void)setRawEventsByUniqueIdentifier:(id)identifier;
 @end
 
 @implementation HFCameraPlaybackEngineEventCache
 
-- (HFCameraPlaybackEngineEventCache)initWithDebugLogger:(id)a3
+- (HFCameraPlaybackEngineEventCache)initWithDebugLogger:(id)logger
 {
-  v5 = a3;
+  loggerCopy = logger;
   v21.receiver = self;
   v21.super_class = HFCameraPlaybackEngineEventCache;
   v6 = [(HFCameraPlaybackEngineEventCache *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_debugLogger, a3);
+    objc_storeStrong(&v6->_debugLogger, logger);
     rawEvents = v7->_rawEvents;
     v9 = MEMORY[0x277CBEBF8];
     v7->_rawEvents = MEMORY[0x277CBEBF8];
@@ -58,13 +58,13 @@
     clips = v7->_clips;
     v7->_clips = v9;
 
-    v13 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     firstOfTheDayClips = v7->_firstOfTheDayClips;
-    v7->_firstOfTheDayClips = v13;
+    v7->_firstOfTheDayClips = strongToWeakObjectsMapTable;
 
-    v15 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     firstOfTheDayEvents = v7->_firstOfTheDayEvents;
-    v7->_firstOfTheDayEvents = v15;
+    v7->_firstOfTheDayEvents = strongToWeakObjectsMapTable2;
 
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_create("com.apple.HFCameraPlaybackEngineEventCache.workQueue", v17);
@@ -77,12 +77,12 @@
   return v7;
 }
 
-- (void)setRawEvents:(id)a3
+- (void)setRawEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   os_unfair_lock_lock_with_options();
   rawEvents = self->_rawEvents;
-  self->_rawEvents = v4;
+  self->_rawEvents = eventsCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -96,12 +96,12 @@
   return v3;
 }
 
-- (void)setRawEventsByUniqueIdentifier:(id)a3
+- (void)setRawEventsByUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
   rawEventsByUniqueIdentifier = self->_rawEventsByUniqueIdentifier;
-  self->_rawEventsByUniqueIdentifier = v4;
+  self->_rawEventsByUniqueIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -115,12 +115,12 @@
   return v3;
 }
 
-- (void)setEvents:(id)a3
+- (void)setEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   os_unfair_lock_lock_with_options();
   events = self->_events;
-  self->_events = v4;
+  self->_events = eventsCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -138,8 +138,8 @@
 {
   if (!+[HFUtilities isInternalTest])
   {
-    v3 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
-    dispatch_assert_queue_V2(v3);
+    workQueue = [(HFCameraPlaybackEngineEventCache *)self workQueue];
+    dispatch_assert_queue_V2(workQueue);
   }
 
   events = self->_events;
@@ -147,12 +147,12 @@
   return events;
 }
 
-- (void)setClips:(id)a3
+- (void)setClips:(id)clips
 {
-  v4 = a3;
+  clipsCopy = clips;
   os_unfair_lock_lock_with_options();
   clips = self->_clips;
-  self->_clips = v4;
+  self->_clips = clipsCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -166,12 +166,12 @@
   return v3;
 }
 
-- (void)setClipWithLongestDuration:(id)a3
+- (void)setClipWithLongestDuration:(id)duration
 {
-  v4 = a3;
+  durationCopy = duration;
   os_unfair_lock_lock_with_options();
   clipWithLongestDuration = self->_clipWithLongestDuration;
-  self->_clipWithLongestDuration = v4;
+  self->_clipWithLongestDuration = durationCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -185,12 +185,12 @@
   return v3;
 }
 
-- (void)setFirstOfTheDayEvents:(id)a3
+- (void)setFirstOfTheDayEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   os_unfair_lock_lock_with_options();
   firstOfTheDayEvents = self->_firstOfTheDayEvents;
-  self->_firstOfTheDayEvents = v4;
+  self->_firstOfTheDayEvents = eventsCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -204,12 +204,12 @@
   return v3;
 }
 
-- (void)setFirstOfTheDayClips:(id)a3
+- (void)setFirstOfTheDayClips:(id)clips
 {
-  v4 = a3;
+  clipsCopy = clips;
   os_unfair_lock_lock_with_options();
   firstOfTheDayClips = self->_firstOfTheDayClips;
-  self->_firstOfTheDayClips = v4;
+  self->_firstOfTheDayClips = clipsCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -223,39 +223,39 @@
   return v3;
 }
 
-- (BOOL)isFirstEventOfTheDay:(id)a3
+- (BOOL)isFirstEventOfTheDay:(id)day
 {
-  v4 = a3;
-  v5 = [(HFCameraPlaybackEngineEventCache *)self firstOfTheDayEvents];
-  v6 = [v4 dateOfOccurrence];
-  v7 = [v6 hf_startOfDay];
-  v8 = [v5 objectForKey:v7];
+  dayCopy = day;
+  firstOfTheDayEvents = [(HFCameraPlaybackEngineEventCache *)self firstOfTheDayEvents];
+  dateOfOccurrence = [dayCopy dateOfOccurrence];
+  hf_startOfDay = [dateOfOccurrence hf_startOfDay];
+  v8 = [firstOfTheDayEvents objectForKey:hf_startOfDay];
 
-  v9 = [v8 uniqueIdentifier];
-  v10 = [v4 uniqueIdentifier];
+  uniqueIdentifier = [v8 uniqueIdentifier];
+  uniqueIdentifier2 = [dayCopy uniqueIdentifier];
 
-  LOBYTE(v4) = [v9 isEqual:v10];
-  return v4;
+  LOBYTE(dayCopy) = [uniqueIdentifier isEqual:uniqueIdentifier2];
+  return dayCopy;
 }
 
-- (id)firstOfTheDayClipForDate:(id)a3
+- (id)firstOfTheDayClipForDate:(id)date
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFCameraPlaybackEngineEventCache *)self firstOfTheDayClips];
-  v6 = [v4 hf_startOfDay];
-  v7 = [v5 objectForKey:v6];
+  dateCopy = date;
+  firstOfTheDayClips = [(HFCameraPlaybackEngineEventCache *)self firstOfTheDayClips];
+  hf_startOfDay = [dateCopy hf_startOfDay];
+  v7 = [firstOfTheDayClips objectForKey:hf_startOfDay];
 
   if (v7)
   {
     v8 = HFLogForCategory(0x17uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 hf_prettyDescription];
+      hf_prettyDescription = [v7 hf_prettyDescription];
       v12 = 138412546;
-      v13 = v4;
+      v13 = dateCopy;
       v14 = 2112;
-      v15 = v9;
+      v15 = hf_prettyDescription;
       _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Found first of the day clip for date: %@; clip: %@", &v12, 0x16u);
     }
   }
@@ -268,48 +268,48 @@
 - (id)daysWithClips
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFCameraPlaybackEngineEventCache *)self firstOfTheDayClips];
-  v4 = [v3 keyEnumerator];
-  v5 = [v4 allObjects];
-  v6 = [v2 setWithArray:v5];
+  firstOfTheDayClips = [(HFCameraPlaybackEngineEventCache *)self firstOfTheDayClips];
+  keyEnumerator = [firstOfTheDayClips keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  v6 = [v2 setWithArray:allObjects];
 
   return v6;
 }
 
-- (BOOL)containsClip:(id)a3
+- (BOOL)containsClip:(id)clip
 {
-  v4 = a3;
-  v5 = [(HFCameraPlaybackEngineEventCache *)self rawEventsByUniqueIdentifier];
-  v6 = [v4 uniqueIdentifier];
+  clipCopy = clip;
+  rawEventsByUniqueIdentifier = [(HFCameraPlaybackEngineEventCache *)self rawEventsByUniqueIdentifier];
+  uniqueIdentifier = [clipCopy uniqueIdentifier];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
-  LOBYTE(v4) = v7 != 0;
+  v7 = [rawEventsByUniqueIdentifier objectForKeyedSubscript:uniqueIdentifier];
+  LOBYTE(clipCopy) = v7 != 0;
 
-  return v4;
+  return clipCopy;
 }
 
-- (id)updateWithEvents:(id)a3
+- (id)updateWithEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
-  dispatch_assert_queue_not_V2(v5);
+  eventsCopy = events;
+  workQueue = [(HFCameraPlaybackEngineEventCache *)self workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
   v6 = MEMORY[0x277D2C900];
   v14 = MEMORY[0x277D85DD0];
-  v7 = v4;
+  v7 = eventsCopy;
   v15 = v7;
   v8 = [HFUtilities isInternalTest:v14];
   v9 = MEMORY[0x277D2C938];
   if (v8)
   {
-    v10 = [MEMORY[0x277D2C938] immediateScheduler];
-    v11 = [v6 futureWithBlock:&v14 scheduler:v10];
+    immediateScheduler = [MEMORY[0x277D2C938] immediateScheduler];
+    v11 = [v6 futureWithBlock:&v14 scheduler:immediateScheduler];
   }
 
   else
   {
-    v10 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
-    v12 = [v9 schedulerWithDispatchQueue:v10];
+    immediateScheduler = [(HFCameraPlaybackEngineEventCache *)self workQueue];
+    v12 = [v9 schedulerWithDispatchQueue:immediateScheduler];
     v11 = [v6 futureWithBlock:&v14 scheduler:v12];
   }
 
@@ -330,15 +330,15 @@ void __53__HFCameraPlaybackEngineEventCache_updateWithEvents___block_invoke(uint
   [v5 _updateWithEvents:v4 completion:v7];
 }
 
-- (void)_updateWithEvents:(id)a3 completion:(id)a4
+- (void)_updateWithEvents:(id)events completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  eventsCopy = events;
   if (!+[HFUtilities isInternalTest])
   {
-    v8 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
-    dispatch_assert_queue_V2(v8);
+    workQueue = [(HFCameraPlaybackEngineEventCache *)self workQueue];
+    dispatch_assert_queue_V2(workQueue);
   }
 
   v9 = HFLogForCategory(0x17uLL);
@@ -354,35 +354,35 @@ void __53__HFCameraPlaybackEngineEventCache_updateWithEvents___block_invoke(uint
   v12[2] = __65__HFCameraPlaybackEngineEventCache__updateWithEvents_completion___block_invoke;
   v12[3] = &unk_277DF2900;
   v12[4] = self;
-  v13 = v6;
-  v10 = v6;
-  [(HFCameraPlaybackEngineEventCache *)self _validateAndInsertRawEvents:v7 completion:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [(HFCameraPlaybackEngineEventCache *)self _validateAndInsertRawEvents:eventsCopy completion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)removeEventUUIDs:(id)a3
+- (id)removeEventUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
-  dispatch_assert_queue_not_V2(v5);
+  dsCopy = ds;
+  workQueue = [(HFCameraPlaybackEngineEventCache *)self workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
   v6 = MEMORY[0x277D2C900];
   v14 = MEMORY[0x277D85DD0];
-  v7 = v4;
+  v7 = dsCopy;
   v15 = v7;
   v8 = [HFUtilities isInternalTest:v14];
   v9 = MEMORY[0x277D2C938];
   if (v8)
   {
-    v10 = [MEMORY[0x277D2C938] immediateScheduler];
-    v11 = [v6 futureWithBlock:&v14 scheduler:v10];
+    immediateScheduler = [MEMORY[0x277D2C938] immediateScheduler];
+    v11 = [v6 futureWithBlock:&v14 scheduler:immediateScheduler];
   }
 
   else
   {
-    v10 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
-    v12 = [v9 schedulerWithDispatchQueue:v10];
+    immediateScheduler = [(HFCameraPlaybackEngineEventCache *)self workQueue];
+    v12 = [v9 schedulerWithDispatchQueue:immediateScheduler];
     v11 = [v6 futureWithBlock:&v14 scheduler:v12];
   }
 
@@ -403,28 +403,28 @@ void __53__HFCameraPlaybackEngineEventCache_removeEventUUIDs___block_invoke(uint
   [v5 _removeEventUUIDs:v4 completion:v7];
 }
 
-- (void)_removeEventUUIDs:(id)a3 completion:(id)a4
+- (void)_removeEventUUIDs:(id)ds completion:(id)completion
 {
-  v26 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   if (!+[HFUtilities isInternalTest])
   {
-    v7 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
-    dispatch_assert_queue_V2(v7);
+    workQueue = [(HFCameraPlaybackEngineEventCache *)self workQueue];
+    dispatch_assert_queue_V2(workQueue);
   }
 
-  v8 = [(HFCameraPlaybackEngineEventCache *)self rawEvents];
-  v9 = [v8 mutableCopy];
+  rawEvents = [(HFCameraPlaybackEngineEventCache *)self rawEvents];
+  v9 = [rawEvents mutableCopy];
 
-  v10 = [(HFCameraPlaybackEngineEventCache *)self rawEventsByUniqueIdentifier];
-  v11 = [v10 mutableCopy];
+  rawEventsByUniqueIdentifier = [(HFCameraPlaybackEngineEventCache *)self rawEventsByUniqueIdentifier];
+  v11 = [rawEventsByUniqueIdentifier mutableCopy];
 
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
   v44 = __Block_byref_object_copy_;
   v45 = __Block_byref_object_dispose_;
-  v46 = [(HFCameraPlaybackEngineEventCache *)self clipWithLongestDuration];
+  clipWithLongestDuration = [(HFCameraPlaybackEngineEventCache *)self clipWithLongestDuration];
   v12 = [MEMORY[0x277CBEB58] set];
   v13 = [MEMORY[0x277CBEB58] set];
   v35[0] = MEMORY[0x277D85DD0];
@@ -454,14 +454,14 @@ void __53__HFCameraPlaybackEngineEventCache_removeEventUUIDs___block_invoke(uint
 
   if ([v16 count])
   {
-    v18 = [(HFCameraPlaybackEngineEventCache *)self events];
+    events = [(HFCameraPlaybackEngineEventCache *)self events];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __65__HFCameraPlaybackEngineEventCache__removeEventUUIDs_completion___block_invoke_3;
     v31[3] = &unk_277DF2978;
     v32 = v16;
     v33 = v15;
-    [v18 na_each:v31];
+    [events na_each:v31];
   }
 
   [(HFCameraPlaybackEngineEventCache *)self setRawEvents:v17];
@@ -478,7 +478,7 @@ void __53__HFCameraPlaybackEngineEventCache_removeEventUUIDs___block_invoke(uint
   v28[3] = &unk_277DF2900;
   v24 = v15;
   v29 = v24;
-  v25 = v6;
+  v25 = completionCopy;
   v30 = v25;
   [(HFCameraPlaybackEngineEventCache *)self _generateViewModelWithRawEventUpdates:v23 completion:v28];
 
@@ -631,8 +631,8 @@ void __65__HFCameraPlaybackEngineEventCache__removeEventUUIDs_completion___block
 
 - (id)removeAllEvents
 {
-  v3 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
-  dispatch_assert_queue_not_V2(v3);
+  workQueue = [(HFCameraPlaybackEngineEventCache *)self workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
   v4 = MEMORY[0x277D2C900];
   v11[0] = MEMORY[0x277D85DD0];
@@ -644,14 +644,14 @@ void __65__HFCameraPlaybackEngineEventCache__removeEventUUIDs_completion___block
   v6 = MEMORY[0x277D2C938];
   if (v5)
   {
-    v7 = [MEMORY[0x277D2C938] immediateScheduler];
-    v8 = [v4 futureWithBlock:v11 scheduler:v7];
+    immediateScheduler = [MEMORY[0x277D2C938] immediateScheduler];
+    v8 = [v4 futureWithBlock:v11 scheduler:immediateScheduler];
   }
 
   else
   {
-    v7 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
-    v9 = [v6 schedulerWithDispatchQueue:v7];
+    immediateScheduler = [(HFCameraPlaybackEngineEventCache *)self workQueue];
+    v9 = [v6 schedulerWithDispatchQueue:immediateScheduler];
     v8 = [v4 futureWithBlock:v11 scheduler:v9];
   }
 
@@ -671,24 +671,24 @@ void __51__HFCameraPlaybackEngineEventCache_removeAllEvents__block_invoke(uint64
   [v4 _removeAllEventsWithCompletion:v6];
 }
 
-- (void)_removeAllEventsWithCompletion:(id)a3
+- (void)_removeAllEventsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!+[HFUtilities isInternalTest])
   {
-    v5 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
-    dispatch_assert_queue_V2(v5);
+    workQueue = [(HFCameraPlaybackEngineEventCache *)self workQueue];
+    dispatch_assert_queue_V2(workQueue);
   }
 
   v6 = [MEMORY[0x277CBEB58] set];
-  v7 = [(HFCameraPlaybackEngineEventCache *)self events];
+  events = [(HFCameraPlaybackEngineEventCache *)self events];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __67__HFCameraPlaybackEngineEventCache__removeAllEventsWithCompletion___block_invoke;
   v19[3] = &unk_277DF29C8;
   v8 = v6;
   v20 = v8;
-  [v7 na_each:v19];
+  [events na_each:v19];
 
   [(HFCameraPlaybackEngineEventCache *)self setRawEvents:MEMORY[0x277CBEBF8]];
   [(HFCameraPlaybackEngineEventCache *)self setRawEventsByUniqueIdentifier:MEMORY[0x277CBEC10]];
@@ -704,8 +704,8 @@ void __51__HFCameraPlaybackEngineEventCache_removeAllEvents__block_invoke(uint64
   v16[2] = __67__HFCameraPlaybackEngineEventCache__removeAllEventsWithCompletion___block_invoke_2;
   v16[3] = &unk_277DF2900;
   v17 = v8;
-  v18 = v4;
-  v14 = v4;
+  v18 = completionCopy;
+  v14 = completionCopy;
   v15 = v8;
   [(HFCameraPlaybackEngineEventCache *)self _generateViewModelWithRawEventUpdates:v13 completion:v16];
 }
@@ -727,31 +727,31 @@ void __67__HFCameraPlaybackEngineEventCache__removeAllEventsWithCompletion___blo
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)resetAndUpdateWithEvents:(id)a3
+- (id)resetAndUpdateWithEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(HFCameraPlaybackEngineEventCache *)self removeAllEvents];
+  eventsCopy = events;
+  removeAllEvents = [(HFCameraPlaybackEngineEventCache *)self removeAllEvents];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__HFCameraPlaybackEngineEventCache_resetAndUpdateWithEvents___block_invoke;
   v9[3] = &unk_277DF29F0;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 flatMap:v9];
+  v10 = eventsCopy;
+  v6 = eventsCopy;
+  v7 = [removeAllEvents flatMap:v9];
 
   return v7;
 }
 
-- (void)_validateAndInsertRawEvents:(id)a3 completion:(id)a4
+- (void)_validateAndInsertRawEvents:(id)events completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  completionCopy = completion;
   if (!+[HFUtilities isInternalTest])
   {
-    v8 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
-    dispatch_assert_queue_V2(v8);
+    workQueue = [(HFCameraPlaybackEngineEventCache *)self workQueue];
+    dispatch_assert_queue_V2(workQueue);
   }
 
   v9 = HFLogForCategory(0x17uLL);
@@ -760,15 +760,15 @@ void __67__HFCameraPlaybackEngineEventCache__removeAllEventsWithCompletion___blo
     *buf = 136315394;
     *&buf[4] = "[HFCameraPlaybackEngineEventCache _validateAndInsertRawEvents:completion:]";
     *&buf[12] = 2048;
-    *&buf[14] = [v6 count];
+    *&buf[14] = [eventsCopy count];
     _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "%s, with (%lu) events", buf, 0x16u);
   }
 
-  v10 = [(HFCameraPlaybackEngineEventCache *)self rawEventsByUniqueIdentifier];
-  v11 = [v10 mutableCopy];
+  rawEventsByUniqueIdentifier = [(HFCameraPlaybackEngineEventCache *)self rawEventsByUniqueIdentifier];
+  v11 = [rawEventsByUniqueIdentifier mutableCopy];
 
-  v12 = [(HFCameraPlaybackEngineEventCache *)self rawEvents];
-  v13 = [v12 mutableCopy];
+  rawEvents = [(HFCameraPlaybackEngineEventCache *)self rawEvents];
+  v13 = [rawEvents mutableCopy];
 
   v14 = [MEMORY[0x277CBEB58] set];
   v15 = [MEMORY[0x277CBEB58] set];
@@ -777,12 +777,12 @@ void __67__HFCameraPlaybackEngineEventCache__removeAllEventsWithCompletion___blo
   *&buf[16] = 0x3032000000;
   v36 = __Block_byref_object_copy_;
   v37 = __Block_byref_object_dispose_;
-  v38 = [(HFCameraPlaybackEngineEventCache *)self clipWithLongestDuration];
+  clipWithLongestDuration = [(HFCameraPlaybackEngineEventCache *)self clipWithLongestDuration];
   v25 = MEMORY[0x277D85DD0];
   v26 = 3221225472;
   v27 = __75__HFCameraPlaybackEngineEventCache__validateAndInsertRawEvents_completion___block_invoke;
   v28 = &unk_277DF2A40;
-  v29 = self;
+  selfCopy = self;
   v34 = buf;
   v16 = v11;
   v30 = v16;
@@ -792,18 +792,18 @@ void __67__HFCameraPlaybackEngineEventCache__removeAllEventsWithCompletion___blo
   v32 = v18;
   v19 = v14;
   v33 = v19;
-  [v6 na_each:&v25];
-  [(HFCameraPlaybackEngineEventCache *)self setRawEvents:v17, v25, v26, v27, v28, v29];
+  [eventsCopy na_each:&v25];
+  [(HFCameraPlaybackEngineEventCache *)self setRawEvents:v17, v25, v26, v27, v28, selfCopy];
   [(HFCameraPlaybackEngineEventCache *)self setRawEventsByUniqueIdentifier:v16];
   [(HFCameraPlaybackEngineEventCache *)self setClipWithLongestDuration:*(*&buf[8] + 40)];
-  v20 = [(HFCameraPlaybackEngineEventCache *)self debugLogger];
-  [v20 logEvents:v6 toJSONWithDebugLogType:0 completionHandler:&__block_literal_global_0];
+  debugLogger = [(HFCameraPlaybackEngineEventCache *)self debugLogger];
+  [debugLogger logEvents:eventsCopy toJSONWithDebugLogType:0 completionHandler:&__block_literal_global_0];
 
   v21 = [HFCameraPlaybackEngineEventCacheUpdateResult alloc];
   v22 = [MEMORY[0x277CBEB98] set];
   v23 = [(HFCameraPlaybackEngineEventCacheUpdateResult *)v21 initWithUpdatedIdentifiers:v19 replacedIdentifiers:v18 removedIdentifiers:v22];
 
-  v7[2](v7, v23);
+  completionCopy[2](completionCopy, v23);
   _Block_object_dispose(buf, 8);
 
   v24 = *MEMORY[0x277D85DE8];
@@ -1018,39 +1018,39 @@ uint64_t __75__HFCameraPlaybackEngineEventCache__validateAndInsertRawEvents_comp
   return v5;
 }
 
-- (void)_generateViewModelWithRawEventUpdates:(id)a3 completion:(id)a4
+- (void)_generateViewModelWithRawEventUpdates:(id)updates completion:(id)completion
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v38 = a4;
+  updatesCopy = updates;
+  completionCopy = completion;
   if (!+[HFUtilities isInternalTest])
   {
-    v7 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
-    dispatch_assert_queue_V2(v7);
+    workQueue = [(HFCameraPlaybackEngineEventCache *)self workQueue];
+    dispatch_assert_queue_V2(workQueue);
   }
 
-  v40 = [(HFCameraPlaybackEngineEventCache *)self rawEvents];
-  v8 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
-  v9 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+  rawEvents = [(HFCameraPlaybackEngineEventCache *)self rawEvents];
+  strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+  strongToWeakObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
   v10 = [MEMORY[0x277CBEB58] set];
   v11 = [MEMORY[0x277CBEB58] set];
-  v12 = [MEMORY[0x277CBEB18] array];
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__HFCameraPlaybackEngineEventCache__generateViewModelWithRawEventUpdates_completion___block_invoke;
   aBlock[3] = &unk_277DF2A88;
-  v14 = v12;
+  v14 = array;
   v55 = v14;
-  v36 = v6;
+  v36 = updatesCopy;
   v56 = v36;
   v37 = v10;
   v57 = v37;
   v15 = v11;
   v58 = v15;
-  v39 = v8;
+  v39 = strongToWeakObjectsMapTable;
   v59 = v39;
-  v16 = v9;
+  v16 = strongToWeakObjectsMapTable2;
   v60 = v16;
   v17 = _Block_copy(aBlock);
   v48 = 0;
@@ -1066,14 +1066,14 @@ uint64_t __75__HFCameraPlaybackEngineEventCache__validateAndInsertRawEvents_comp
   v47 = &v48;
   v18 = v17;
   v46 = v18;
-  v19 = v13;
+  v19 = array2;
   v45 = v19;
-  [v40 na_each:v44];
+  [rawEvents na_each:v44];
   if (v49[5])
   {
-    v20 = [v40 lastObject];
+    lastObject = [rawEvents lastObject];
     objc_opt_class();
-    v21 = v20;
+    v21 = lastObject;
     if (objc_opt_isKindOfClass())
     {
       v22 = v21;
@@ -1117,8 +1117,8 @@ uint64_t __75__HFCameraPlaybackEngineEventCache__validateAndInsertRawEvents_comp
   [(HFCameraPlaybackEngineEventCache *)self setClips:v19];
   [(HFCameraPlaybackEngineEventCache *)self setFirstOfTheDayClips:v39];
   [(HFCameraPlaybackEngineEventCache *)self setFirstOfTheDayEvents:v16];
-  v30 = [(HFCameraPlaybackEngineEventCache *)self debugLogger];
-  [v30 logEvents:v14 toJSONWithDebugLogType:1 completionHandler:&__block_literal_global_44];
+  debugLogger = [(HFCameraPlaybackEngineEventCache *)self debugLogger];
+  [debugLogger logEvents:v14 toJSONWithDebugLogType:1 completionHandler:&__block_literal_global_44];
 
   v31 = [HFCameraPlaybackEngineEventCacheUpdateResult alloc];
   v32 = [MEMORY[0x277CBEB98] set];
@@ -1126,19 +1126,19 @@ uint64_t __75__HFCameraPlaybackEngineEventCache__validateAndInsertRawEvents_comp
 
   if (+[HFUtilities isInternalTest])
   {
-    v38[2](v38, v33);
+    completionCopy[2](completionCopy, v33);
   }
 
   else
   {
-    v34 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
+    workQueue2 = [(HFCameraPlaybackEngineEventCache *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __85__HFCameraPlaybackEngineEventCache__generateViewModelWithRawEventUpdates_completion___block_invoke_2;
     block[3] = &unk_277DF2AD8;
-    v43 = v38;
+    v43 = completionCopy;
     v42 = v33;
-    dispatch_async(v34, block);
+    dispatch_async(workQueue2, block);
   }
 
   _Block_object_dispose(&v48, 8);
@@ -1447,12 +1447,12 @@ LABEL_26:
 LABEL_27:
 }
 
-+ (BOOL)isValidEvent:(id)a3
++ (BOOL)isValidEvent:(id)event
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
-  v4 = v3;
+  v4 = eventCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -1500,8 +1500,8 @@ LABEL_9:
 
   v11 = v9;
   v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-*MEMORY[0x277CCF378]];
-  v12 = [v11 dateOfOccurrence];
-  v13 = [v12 compare:v6];
+  dateOfOccurrence = [v11 dateOfOccurrence];
+  v13 = [dateOfOccurrence compare:v6];
 
   v8 = v13 == 1;
   if (v13 != 1)

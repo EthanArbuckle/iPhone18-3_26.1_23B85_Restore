@@ -1,29 +1,29 @@
 @interface MPCAssistantEndpointContext
 - (MPCAssistantEndpointContext)init;
-- (void)_discoverLocalEndpointFromClusterUsingDeviceInfo:(id)a3 completion:(id)a4;
-- (void)_discoverLocalEndpointFromDeviceInfo:(id)a3 completion:(id)a4;
-- (void)_discoverLocalEndpointFromHomeTheaterUsingDeviceInfo:(id)a3 completion:(id)a4;
-- (void)_discoverLocalEndpointFromMultiplayerUsingDeviceInfo:(id)a3 completion:(id)a4;
-- (void)_modifyOutputDevices:(id)a3 onEndpoint:(id)a4 completion:(id)a5;
-- (void)_updateDiscoverableDeviceList:(id)a3 deviceInfo:(id)a4 completion:(id)a5;
-- (void)modifySystemMusicContextForDestination:(id)a3 completion:(id)a4;
-- (void)modifySystemMusicContextForEndpointDestination:(id)a3 completion:(id)a4;
-- (void)modifySystemMusicContextForEndpointDestination:(id)a3 discoveryHandler:(id)a4 completion:(id)a5;
+- (void)_discoverLocalEndpointFromClusterUsingDeviceInfo:(id)info completion:(id)completion;
+- (void)_discoverLocalEndpointFromDeviceInfo:(id)info completion:(id)completion;
+- (void)_discoverLocalEndpointFromHomeTheaterUsingDeviceInfo:(id)info completion:(id)completion;
+- (void)_discoverLocalEndpointFromMultiplayerUsingDeviceInfo:(id)info completion:(id)completion;
+- (void)_modifyOutputDevices:(id)devices onEndpoint:(id)endpoint completion:(id)completion;
+- (void)_updateDiscoverableDeviceList:(id)list deviceInfo:(id)info completion:(id)completion;
+- (void)modifySystemMusicContextForDestination:(id)destination completion:(id)completion;
+- (void)modifySystemMusicContextForEndpointDestination:(id)destination completion:(id)completion;
+- (void)modifySystemMusicContextForEndpointDestination:(id)destination discoveryHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation MPCAssistantEndpointContext
 
-- (void)_modifyOutputDevices:(id)a3 onEndpoint:(id)a4 completion:(id)a5
+- (void)_modifyOutputDevices:(id)devices onEndpoint:(id)endpoint completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   callbackQueue = self->_callbackQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__MPCAssistantEndpointContext__modifyOutputDevices_onEndpoint_completion___block_invoke;
   v11[3] = &unk_1E8238D28;
-  v12 = v8;
-  v10 = v8;
-  [a4 setOutputDevices:a3 initiator:@"MPCAssistantEndpointContext" withReplyQueue:callbackQueue completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [endpoint setOutputDevices:devices initiator:@"MPCAssistantEndpointContext" withReplyQueue:callbackQueue completion:v11];
 }
 
 void __74__MPCAssistantEndpointContext__modifyOutputDevices_onEndpoint_completion___block_invoke(uint64_t a1, void *a2)
@@ -51,20 +51,20 @@ void __74__MPCAssistantEndpointContext__modifyOutputDevices_onEndpoint_completio
   }
 }
 
-- (void)_discoverLocalEndpointFromMultiplayerUsingDeviceInfo:(id)a3 completion:(id)a4
+- (void)_discoverLocalEndpointFromMultiplayerUsingDeviceInfo:(id)info completion:(id)completion
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   discoveryEndpoint = self->_discoveryEndpoint;
-  v8 = [a3 deviceUID];
-  v13[0] = v8;
+  deviceUID = [info deviceUID];
+  v13[0] = deviceUID;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __95__MPCAssistantEndpointContext__discoverLocalEndpointFromMultiplayerUsingDeviceInfo_completion___block_invoke;
   v11[3] = &unk_1E8231030;
-  v12 = v6;
-  v10 = v6;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(MPCAssistantDiscovery *)discoveryEndpoint discoverRemoteControlEndpointsMatchingUIDs:v9 completion:v11];
 }
 
@@ -75,51 +75,51 @@ void __95__MPCAssistantEndpointContext__discoverLocalEndpointFromMultiplayerUsin
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)_discoverLocalEndpointFromClusterUsingDeviceInfo:(id)a3 completion:(id)a4
+- (void)_discoverLocalEndpointFromClusterUsingDeviceInfo:(id)info completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  completionCopy = completion;
   v8 = MEMORY[0x1E69B0980];
-  v9 = a3;
-  v10 = [v8 sharedController];
-  if ([v10 clusterType] != 1)
+  infoCopy = info;
+  sharedController = [v8 sharedController];
+  if ([sharedController clusterType] != 1)
   {
-    v11 = [MEMORY[0x1E69B0980] sharedController];
-    v12 = [v11 clusterType];
+    mEMORY[0x1E69B0980] = [MEMORY[0x1E69B0980] sharedController];
+    clusterType = [mEMORY[0x1E69B0980] clusterType];
 
-    if (v12 == 3)
+    if (clusterType == 3)
     {
       goto LABEL_5;
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MPCAssistantEndpointContext.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"MRAVClusterController.sharedController.clusterType == MRAVOutputDeviceClusterTypeStereoPair || MRAVClusterController.sharedController.clusterType == MRAVOutputDeviceClusterTypeGenericAudio"}];
+    sharedController = [MEMORY[0x1E696AAA8] currentHandler];
+    [sharedController handleFailureInMethod:a2 object:self file:@"MPCAssistantEndpointContext.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"MRAVClusterController.sharedController.clusterType == MRAVOutputDeviceClusterTypeStereoPair || MRAVClusterController.sharedController.clusterType == MRAVOutputDeviceClusterTypeGenericAudio"}];
   }
 
 LABEL_5:
-  v13 = [v9 deviceUID];
-  v14 = [v9 isAirPlayActive];
+  deviceUID = [infoCopy deviceUID];
+  isAirPlayActive = [infoCopy isAirPlayActive];
 
   v15 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (v14)
+  if (isAirPlayActive)
   {
     if (v16)
     {
       *buf = 138543362;
-      v25 = v13;
+      v25 = deviceUID;
       _os_log_impl(&dword_1C5C61000, v15, OS_LOG_TYPE_DEFAULT, "Searching for endpoint, pilot %{public}@", buf, 0xCu);
     }
 
     discoveryEndpoint = self->_discoveryEndpoint;
-    v23 = v13;
+    v23 = deviceUID;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __91__MPCAssistantEndpointContext__discoverLocalEndpointFromClusterUsingDeviceInfo_completion___block_invoke;
     v20[3] = &unk_1E8231008;
-    v21 = v13;
-    v22 = v7;
+    v21 = deviceUID;
+    v22 = completionCopy;
     [(MPCAssistantDiscovery *)discoveryEndpoint discoverRemoteControlEndpointsMatchingUIDs:v18 completion:v20];
   }
 
@@ -132,7 +132,7 @@ LABEL_5:
     }
 
     LocalEndpoint = MRAVEndpointGetLocalEndpoint();
-    (*(v7 + 2))(v7, LocalEndpoint);
+    (*(completionCopy + 2))(completionCopy, LocalEndpoint);
   }
 }
 
@@ -260,41 +260,41 @@ LABEL_26:
 LABEL_28:
 }
 
-- (void)_discoverLocalEndpointFromHomeTheaterUsingDeviceInfo:(id)a3 completion:(id)a4
+- (void)_discoverLocalEndpointFromHomeTheaterUsingDeviceInfo:(id)info completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E69B0980] sharedController];
-  v10 = [v9 clusterType];
+  infoCopy = info;
+  completionCopy = completion;
+  mEMORY[0x1E69B0980] = [MEMORY[0x1E69B0980] sharedController];
+  clusterType = [mEMORY[0x1E69B0980] clusterType];
 
-  if (v10 != 2)
+  if (clusterType != 2)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPCAssistantEndpointContext.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"MRAVClusterController.sharedController.clusterType == MRAVOutputDeviceClusterTypeHomeTheater"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCAssistantEndpointContext.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"MRAVClusterController.sharedController.clusterType == MRAVOutputDeviceClusterTypeHomeTheater"}];
   }
 
   v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v7 deviceUID];
+    deviceUID = [infoCopy deviceUID];
     *buf = 138543362;
-    v24 = v12;
+    v24 = deviceUID;
     _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "Local endpoint: %{public}@", buf, 0xCu);
   }
 
   discoveryEndpoint = self->_discoveryEndpoint;
-  v14 = [v7 deviceUID];
-  v22 = v14;
+  deviceUID2 = [infoCopy deviceUID];
+  v22 = deviceUID2;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __95__MPCAssistantEndpointContext__discoverLocalEndpointFromHomeTheaterUsingDeviceInfo_completion___block_invoke;
   v19[3] = &unk_1E8231008;
-  v20 = v7;
-  v21 = v8;
-  v16 = v8;
-  v17 = v7;
+  v20 = infoCopy;
+  v21 = completionCopy;
+  v16 = completionCopy;
+  v17 = infoCopy;
   [(MPCAssistantDiscovery *)discoveryEndpoint discoverRemoteControlEndpointsMatchingUIDs:v15 completion:v19];
 }
 
@@ -435,22 +435,22 @@ uint64_t __95__MPCAssistantEndpointContext__discoverLocalEndpointFromHomeTheater
   return v5;
 }
 
-- (void)_discoverLocalEndpointFromDeviceInfo:(id)a3 completion:(id)a4
+- (void)_discoverLocalEndpointFromDeviceInfo:(id)info completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF00] date];
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
+  infoCopy = info;
+  completionCopy = completion;
+  date = [MEMORY[0x1E695DF00] date];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v11 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"discoverLocalEndpointFromDeviceInfo", v10];
-  v12 = [v6 deviceUID];
+  v11 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"discoverLocalEndpointFromDeviceInfo", uUIDString];
+  deviceUID = [infoCopy deviceUID];
 
-  if (v12)
+  if (deviceUID)
   {
-    v13 = [v6 deviceUID];
-    [(__CFString *)v11 appendFormat:@" for %@", v13];
+    deviceUID2 = [infoCopy deviceUID];
+    [(__CFString *)v11 appendFormat:@" for %@", deviceUID2];
   }
 
   v14 = _MRLogForCategory();
@@ -465,20 +465,20 @@ uint64_t __95__MPCAssistantEndpointContext__discoverLocalEndpointFromHomeTheater
   aBlock[1] = 3221225472;
   aBlock[2] = __79__MPCAssistantEndpointContext__discoverLocalEndpointFromDeviceInfo_completion___block_invoke;
   aBlock[3] = &unk_1E8230FB8;
-  v15 = v6;
+  v15 = infoCopy;
   v32 = v15;
-  v16 = v10;
+  v16 = uUIDString;
   v33 = v16;
-  v17 = v8;
+  v17 = date;
   v34 = v17;
-  v18 = v7;
+  v18 = completionCopy;
   v35 = v18;
   v19 = _Block_copy(aBlock);
-  v20 = [MEMORY[0x1E69B0980] sharedController];
-  v21 = [v20 clusterType];
+  mEMORY[0x1E69B0980] = [MEMORY[0x1E69B0980] sharedController];
+  clusterType = [mEMORY[0x1E69B0980] clusterType];
 
-  v22 = [v15 deviceUID];
-  v23 = [v22 length];
+  deviceUID3 = [v15 deviceUID];
+  v23 = [deviceUID3 length];
 
   if (!v23)
   {
@@ -497,11 +497,11 @@ uint64_t __95__MPCAssistantEndpointContext__discoverLocalEndpointFromHomeTheater
     goto LABEL_14;
   }
 
-  if (v21 <= 1)
+  if (clusterType <= 1)
   {
-    if (v21)
+    if (clusterType)
     {
-      if (v21 == 1)
+      if (clusterType == 1)
       {
         v24 = _MRLogForCategory();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -523,10 +523,10 @@ LABEL_19:
       goto LABEL_28;
     }
 
-    v27 = [MEMORY[0x1E69B0B08] currentSettings];
-    v28 = [v27 isMultiplayerHost];
+    currentSettings = [MEMORY[0x1E69B0B08] currentSettings];
+    isMultiplayerHost = [currentSettings isMultiplayerHost];
 
-    if (v28)
+    if (isMultiplayerHost)
     {
       v29 = _MRLogForCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -545,13 +545,13 @@ LABEL_19:
     }
 
 LABEL_14:
-    v26 = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
-    v19[2](v19, v26);
+    mEMORY[0x1E69B09A0] = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
+    v19[2](v19, mEMORY[0x1E69B09A0]);
 
     goto LABEL_28;
   }
 
-  if (v21 == 2)
+  if (clusterType == 2)
   {
     v30 = _MRLogForCategory();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -568,7 +568,7 @@ LABEL_14:
     [(MPCAssistantEndpointContext *)self _discoverLocalEndpointFromHomeTheaterUsingDeviceInfo:v15 completion:v19];
   }
 
-  else if (v21 == 3)
+  else if (clusterType == 3)
   {
     v24 = _MRLogForCategory();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -702,55 +702,55 @@ LABEL_15:
   (*(*(a1 + 56) + 16))(*(a1 + 56), v3, v23, v24, v25, v26, v27, v28);
 }
 
-- (void)_updateDiscoverableDeviceList:(id)a3 deviceInfo:(id)a4 completion:(id)a5
+- (void)_updateDiscoverableDeviceList:(id)list deviceInfo:(id)info completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 deviceUID];
-  if (![v8 containsObject:v11])
+  listCopy = list;
+  infoCopy = info;
+  completionCopy = completion;
+  deviceUID = [infoCopy deviceUID];
+  if (![listCopy containsObject:deviceUID])
   {
     goto LABEL_8;
   }
 
-  v12 = [v9 tightSyncUID];
-  if (![v12 length])
+  tightSyncUID = [infoCopy tightSyncUID];
+  if (![tightSyncUID length])
   {
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v13 = [(MPCAssistantEndpointContext *)self shouldSearchForLogicalDevices];
+  shouldSearchForLogicalDevices = [(MPCAssistantEndpointContext *)self shouldSearchForLogicalDevices];
 
-  if (!v13)
+  if (!shouldSearchForLogicalDevices)
   {
 LABEL_9:
-    v10[2](v10, v8);
+    completionCopy[2](completionCopy, listCopy);
     goto LABEL_10;
   }
 
   v14 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v9 tightSyncUID];
+    tightSyncUID2 = [infoCopy tightSyncUID];
     *buf = 138543362;
-    v25 = v15;
+    v25 = tightSyncUID2;
     _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_DEFAULT, "Discover logical devices: %{public}@", buf, 0xCu);
   }
 
   discoveryLogical = self->_discoveryLogical;
-  v17 = [v9 tightSyncUID];
-  v23 = v17;
+  tightSyncUID3 = [infoCopy tightSyncUID];
+  v23 = tightSyncUID3;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __83__MPCAssistantEndpointContext__updateDiscoverableDeviceList_deviceInfo_completion___block_invoke;
   v19[3] = &unk_1E8232278;
-  v20 = v8;
-  v21 = self;
-  v22 = v10;
+  v20 = listCopy;
+  selfCopy = self;
+  v22 = completionCopy;
   [(MPCAssistantDiscovery *)discoveryLogical discoverAirplayDevicesMatchingLogicalDeviceIDs:v18 expectedCount:1 completion:v19];
 
 LABEL_10:
@@ -772,61 +772,61 @@ void __83__MPCAssistantEndpointContext__updateDiscoverableDeviceList_deviceInfo_
   (*(v8 + 16))(v8, v9);
 }
 
-- (void)modifySystemMusicContextForEndpointDestination:(id)a3 discoveryHandler:(id)a4 completion:(id)a5
+- (void)modifySystemMusicContextForEndpointDestination:(id)destination discoveryHandler:(id)handler completion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E69B0A20] localDeviceInfo];
+  destinationCopy = destination;
+  handlerCopy = handler;
+  completionCopy = completion;
+  localDeviceInfo = [MEMORY[0x1E69B0A20] localDeviceInfo];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __106__MPCAssistantEndpointContext_modifySystemMusicContextForEndpointDestination_discoveryHandler_completion___block_invoke;
   aBlock[3] = &unk_1E8230F68;
   aBlock[4] = self;
-  v12 = v11;
+  v12 = localDeviceInfo;
   v35 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v36 = v13;
-  v14 = v9;
+  v14 = handlerCopy;
   v37 = v14;
   v15 = _Block_copy(aBlock);
-  v16 = [v8 outputGroupID];
+  outputGroupID = [destinationCopy outputGroupID];
 
-  if (v16)
+  if (outputGroupID)
   {
     v17 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v8 outputGroupID];
+      outputGroupID2 = [destinationCopy outputGroupID];
       *buf = 138543362;
-      v39 = v18;
+      selfCopy2 = outputGroupID2;
       _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_DEFAULT, "Discover devices of group: %{public}@", buf, 0xCu);
     }
 
     discoveryAudio = self->_discoveryAudio;
-    v20 = [v8 outputGroupID];
-    [(MPCAssistantDiscovery *)discoveryAudio discoverAirplayDevicesMatchingGroupID:v20 completion:v15];
+    outputGroupID3 = [destinationCopy outputGroupID];
+    [(MPCAssistantDiscovery *)discoveryAudio discoverAirplayDevicesMatchingGroupID:outputGroupID3 completion:v15];
   }
 
   else
   {
-    v21 = [v8 outputDeviceUIDs];
-    v22 = [v21 count];
+    outputDeviceUIDs = [destinationCopy outputDeviceUIDs];
+    v22 = [outputDeviceUIDs count];
 
     if (v22)
     {
-      v23 = [v8 outputDeviceUIDs];
+      outputDeviceUIDs2 = [destinationCopy outputDeviceUIDs];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __106__MPCAssistantEndpointContext_modifySystemMusicContextForEndpointDestination_discoveryHandler_completion___block_invoke_15;
       v30[3] = &unk_1E8232278;
-      v31 = v8;
-      v32 = self;
+      v31 = destinationCopy;
+      selfCopy = self;
       v33 = v15;
-      [(MPCAssistantEndpointContext *)self _updateDiscoverableDeviceList:v23 deviceInfo:v12 completion:v30];
+      [(MPCAssistantEndpointContext *)self _updateDiscoverableDeviceList:outputDeviceUIDs2 deviceInfo:v12 completion:v30];
 
-      v20 = v31;
+      outputGroupID3 = v31;
     }
 
     else
@@ -836,7 +836,7 @@ void __83__MPCAssistantEndpointContext__updateDiscoverableDeviceList_deviceInfo_
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v39 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C5C61000, v25, OS_LOG_TYPE_DEFAULT, "[KAOS] <%p> Sending default local endpoint to caller", buf, 0xCu);
       }
 
@@ -847,8 +847,8 @@ void __83__MPCAssistantEndpointContext__updateDiscoverableDeviceList_deviceInfo_
       v28 = v24;
       v29 = v13;
       v26 = v14[2];
-      v20 = v24;
-      v26(v14, v20, 0, v27);
+      outputGroupID3 = v24;
+      v26(v14, outputGroupID3, 0, v27);
     }
   }
 }
@@ -992,14 +992,14 @@ id __106__MPCAssistantEndpointContext_modifySystemMusicContextForEndpointDestina
   return v6;
 }
 
-- (void)modifySystemMusicContextForEndpointDestination:(id)a3 completion:(id)a4
+- (void)modifySystemMusicContextForEndpointDestination:(id)destination completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69B0AA0] localOrigin];
-  v10 = v6;
-  v8 = v5;
-  v9 = v6;
+  destinationCopy = destination;
+  completionCopy = completion;
+  localOrigin = [MEMORY[0x1E69B0AA0] localOrigin];
+  v10 = completionCopy;
+  v8 = destinationCopy;
+  v9 = completionCopy;
   MRMediaRemoteGetDeviceInfo();
 }
 
@@ -1147,16 +1147,16 @@ void __89__MPCAssistantEndpointContext_modifySystemMusicContextForEndpointDestin
   }
 }
 
-- (void)modifySystemMusicContextForDestination:(id)a3 completion:(id)a4
+- (void)modifySystemMusicContextForDestination:(id)destination completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __81__MPCAssistantEndpointContext_modifySystemMusicContextForDestination_completion___block_invoke;
   v8[3] = &unk_1E8230EA8;
-  v9 = v6;
-  v7 = v6;
-  [(MPCAssistantEndpointContext *)self modifySystemMusicContextForEndpointDestination:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(MPCAssistantEndpointContext *)self modifySystemMusicContextForEndpointDestination:destination completion:v8];
 }
 
 - (MPCAssistantEndpointContext)init

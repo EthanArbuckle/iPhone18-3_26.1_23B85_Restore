@@ -1,9 +1,9 @@
 @interface SUBBridgeServer
 - (SUBBridgeServer)init;
-- (void)addClient:(id)a3;
-- (void)forwardIDSMessage:(id)a3;
-- (void)forwardXPCMessage:(id)a3 fromClient:(id)a4 withReply:(id)a5;
-- (void)removeClient:(id)a3;
+- (void)addClient:(id)client;
+- (void)forwardIDSMessage:(id)message;
+- (void)forwardXPCMessage:(id)message fromClient:(id)client withReply:(id)reply;
+- (void)removeClient:(id)client;
 - (void)resetLocale;
 @end
 
@@ -44,49 +44,49 @@
   exit(0);
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000ACBC;
   v7[3] = &unk_10002D210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000AD60;
   v7[3] = &unk_10002D210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)forwardXPCMessage:(id)a3 fromClient:(id)a4 withReply:(id)a5
+- (void)forwardXPCMessage:(id)message fromClient:(id)client withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = sub_10000BAD4(v8);
+  messageCopy = message;
+  clientCopy = client;
+  replyCopy = reply;
+  v11 = sub_10000BAD4(messageCopy);
   endpoint = self->_endpoint;
-  if (v10)
+  if (replyCopy)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_10000AF00;
     v20[3] = &unk_10002D238;
     v13 = &v21;
-    v21 = v10;
+    v21 = replyCopy;
     [(SUBMessageEndpoint *)endpoint sendMessage:v11 isCritical:1 withReply:v20];
   }
 
@@ -97,26 +97,26 @@
     v15[2] = sub_10000AF10;
     v15[3] = &unk_10002D260;
     v13 = &v16;
-    v16 = v8;
+    v16 = messageCopy;
     v14 = v11;
     v17 = v14;
-    v18 = self;
-    v19 = v9;
+    selfCopy = self;
+    v19 = clientCopy;
     [(SUBMessageEndpoint *)endpoint sendMessage:v14 isCritical:1 completion:v15];
   }
 }
 
-- (void)forwardIDSMessage:(id)a3
+- (void)forwardIDSMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000B1CC;
   v7[3] = &unk_10002D210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = messageCopy;
+  v6 = messageCopy;
   dispatch_sync(queue, v7);
 }
 

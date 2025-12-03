@@ -1,21 +1,21 @@
 @interface PFXString
 - (NSString)nsString;
-- (PFXString)initWithXmlString:(const char *)a3;
+- (PFXString)initWithXmlString:(const char *)string;
 - (void)dealloc;
 @end
 
 @implementation PFXString
 
-- (PFXString)initWithXmlString:(const char *)a3
+- (PFXString)initWithXmlString:(const char *)string
 {
-  if (a3)
+  if (string)
   {
     v6.receiver = self;
     v6.super_class = PFXString;
     v4 = [(PFXString *)&v6 init];
     if (v4)
     {
-      v4->mXmlString = xmlStrdup(a3);
+      v4->mXmlString = xmlStrdup(string);
     }
   }
 

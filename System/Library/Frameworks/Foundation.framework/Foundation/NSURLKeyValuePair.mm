@@ -1,11 +1,11 @@
 @interface NSURLKeyValuePair
 + (id)pair;
-+ (id)pairWithKey:(id)a3 value:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (NSURLKeyValuePair)initWithKey:(id)a3 value:(id)a4;
++ (id)pairWithKey:(id)key value:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (NSURLKeyValuePair)initWithKey:(id)key value:(id)value;
 - (void)dealloc;
-- (void)setKey:(id)a3;
-- (void)setValue:(id)a3;
+- (void)setKey:(id)key;
+- (void)setValue:(id)value;
 @end
 
 @implementation NSURLKeyValuePair
@@ -17,14 +17,14 @@
   return v2;
 }
 
-+ (id)pairWithKey:(id)a3 value:(id)a4
++ (id)pairWithKey:(id)key value:(id)value
 {
-  v4 = [[NSURLKeyValuePair alloc] initWithKey:a3 value:a4];
+  v4 = [[NSURLKeyValuePair alloc] initWithKey:key value:value];
 
   return v4;
 }
 
-- (NSURLKeyValuePair)initWithKey:(id)a3 value:(id)a4
+- (NSURLKeyValuePair)initWithKey:(id)key value:(id)value
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -33,9 +33,9 @@
   v7 = v6;
   if (v6)
   {
-    [(NSURLKeyValuePair *)v6 setKey:a3];
-    [(NSURLKeyValuePair *)v7 setValue:a4];
-    v7->hash = [a3 hash];
+    [(NSURLKeyValuePair *)v6 setKey:key];
+    [(NSURLKeyValuePair *)v7 setValue:value];
+    v7->hash = [key hash];
   }
 
   return v7;
@@ -50,45 +50,45 @@
   [(NSURLKeyValuePair *)&v3 dealloc];
 }
 
-- (void)setKey:(id)a3
+- (void)setKey:(id)key
 {
   key = self->key;
-  if (key != a3)
+  if (key != key)
   {
 
-    self->key = a3;
+    self->key = key;
   }
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   value = self->value;
-  if (value != a3)
+  if (value != value)
   {
 
-    self->value = a3;
+    self->value = value;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = [a3 isMemberOfClass:objc_opt_class()];
+    v5 = [equal isMemberOfClass:objc_opt_class()];
     if (v5)
     {
-      v5 = [self->key isEqual:{objc_msgSend(a3, "key")}];
+      v5 = [self->key isEqual:{objc_msgSend(equal, "key")}];
       if (v5)
       {
         value = self->value;
-        v7 = [a3 value];
+        value = [equal value];
 
-        LOBYTE(v5) = [value isEqual:v7];
+        LOBYTE(v5) = [value isEqual:value];
       }
     }
   }
